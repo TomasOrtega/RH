@@ -13,6 +13,27 @@ noncomputable section
 
 namespace GlobalTheory.JacSpan
 
+/- English proof (translation)
+Establish `hsq : ∀ b, ∀ x ∈ RingHom.ker e ^ 2, δ b x = 0`. Introduce `b x hx`. Rewrite `hx` using `[pow_two]`. Use `Submodule.mul_induction_on hx (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[hmul, RingHom.mem_ker.1 hx, RingHom.mem_ker.1 hy, zero_mul, zero_mul, add_zero]`.
+
+Rewrite using `[map_add, hx, hy, add_zero]`. Establish `hsmul : ∀ b (c : ℂ) (x : A), δ b (c • x) = c * δ b x`. Introduce `b c x`. Rewrite using `[Algebra.smul_def, hmul, hc, he, mul_zero, add_zero]`. Use `set φ' : Fin d → A := fun j => φ j - algebraMap ℂ A (e (φ j)) with hφ'`.
+
+Establish `hφ'e : ∀ j, e (φ' j) = 0` using `fun j => by simp only [hφ', map_sub, he, sub_self]`. Use `choose C hC using fun j => hgs (φ' j) (hφ'e j)`. Set `M : Matrix (Fin d) (Fin d) ℂ` to `Matrix.of fun k b => δ b (g k)`. Establish `hJ : (Matrix.of fun a b => δ b (φ a)) = Matrix.of C * M`. Use extensionality with `a b`.
+
+Establish `h1` using `hsq b _ (hC a)`. Rewrite `h1` using `[map_sub, map_sum]`. Simplify using `only [hsmul] at h1`. Establish `h2 : δ b (φ' a) = δ b (φ a)` using `by simp only [hφ', map_sub, hc, sub_zero]`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, ← h2]`.
+
+Simplify using `only [M, Matrix.of_apply]`. Take the linear combination `h1`. Establish `hdetC : (Matrix.of C).det ≠ 0`. Rewrite `hdet` using `[hJ, Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul hdet`.
+
+Establish `hu : IsUnit (Matrix.of C).det` using `isUnit_iff_ne_zero.2 hdetC`. Introduce `a ha`. Take `⟨β, hβ⟩` from `hgs a (RingHom.mem_ker.1 ha)`. Use `set γ := Matrix.vecMul β (Matrix.of C)⁻¹ with hγdef`. Establish `hγ : Matrix.vecMul γ (Matrix.of C) = β`.
+
+Rewrite using `[hγdef, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Establish `hsum : ∑ j, γ j • ∑ k, C j k • g k = ∑ k, β k • g k`. Rewrite using `[← hγ]`. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul, Matrix.of_apply]`. Conclude with `Finset.sum_comm`.
+
+Establish `hspan : ∑ j, γ j • φ' j ∈ Ideal.span (Set.range φ')` using `Ideal.sum_mem _ fun j _ => Submodule.smul_of_tower_mem _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `hrest : a - ∑ j, γ j • φ' j ∈ RingHom.ker e ^ 2`. Establish `h3 : a - ∑ j, γ j • φ' j = (a - ∑ k, β k • g k) - ∑ j, γ j • (φ' j - ∑ k, C j k • g k)`. Rewrite using `[← hsum]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h3]`. Conclude with `sub_mem hβ (Ideal.sum_mem _ fun j _ => Submodule.smul_of_tower_mem _ _ (hC j))`. Establish `h4 : a = (a - ∑ j, γ j • φ' j) + ∑ j, γ j • φ' j` using `by abel`. Rewrite using `[h4]`.
+
+Conclude with `add_mem (Ideal.mem_sup_right hrest) (Ideal.mem_sup_left hspan)`.
+-/
 theorem ker_le_span_sup {A : Type} [CommRing A] [Algebra ℂ A] (e : A →+* ℂ)
     (he : ∀ c : ℂ, e (algebraMap ℂ A c) = c) {d : ℕ} (δ : Fin d → A →+ ℂ)
     (hmul : ∀ b f g, δ b (f * g) = e f * δ b g + e g * δ b f)
@@ -76,6 +97,15 @@ end GlobalTheory.JacSpan
 
 open GlobalTheory.ChartGlue in
 
+/- English proof (translation)
+Introduce `X p d _ U hU ch φ z hzc hz hdet`. Take `⟨g, _, hgs, _⟩` from `GlobalTheory.CotDim.exists_cotangent_basis X p d U hU z hz`. Establish `hd : ∀ f : Γ(X, U), DifferentiableAt ℂ (CxPts.ev p (RingHom.id ℂ) U f ∘ ch.e.symm) (ch.e z)` using `fun f => ch.differentiableAt_ev f hzc hz`. Establish `hn : ∀ᶠ v in nhds (ch.e z), ch.e.symm v ∈ CxPts.ptsIn p (RingHom.id ℂ) U` using `Filter.eventually_of_mem ((isOpen_over ch.e (CxPts.isOpen_ptsIn U)).mem_nhds (mem_over ch.e hzc hz)) fun _ h => h.2`. Set `δ : Fin d → Γ(X, U) →+ ℂ` to `fun b => AddMonoidHom.mk' (fun f => fderiv ℂ (CxPts.ev p (RingHom.id ℂ) U f ∘ ch.e.symm) (ch.e z) (EuclideanSpace.single b 1)) (fun f g => by`.
+
+Establish `e : CxPts.ev p (RingHom.id ℂ) U (f + g) ∘ ch.e.symm = (CxPts.ev p (RingHom.id ℂ) U f ∘ ch.e.symm) + (CxPts.ev p (RingHom.id ℂ) U g ∘ ch.e.symm)`. Use function extensionality and compare the values at `fun v => CxPts.ev_add _ _ _`. Simplify using `only [e, fderiv_add (hd f) (hd g), ContinuousLinearMap.add_apply])`. Establish `hmul : ∀ b (f g : Γ(X, U)), δ b (f * g) = CxPts.evHom hz f * δ b g + CxPts.evHom hz g * δ b f`. Introduce `b f g`.
+
+Establish `e : CxPts.ev p (RingHom.id ℂ) U (f * g) ∘ ch.e.symm = (CxPts.ev p (RingHom.id ℂ) U f ∘ ch.e.symm) * (CxPts.ev p (RingHom.id ℂ) U g ∘ ch.e.symm)`. Use function extensionality and compare the values at `fun v => CxPts.ev_mul _ _ _`. Simplify using `only [δ, AddMonoidHom.mk'_apply, e, fderiv_mul (hd f) (hd g), Function.comp_apply, ch.e.left_inv hzc, CxPts.ev_eq hz, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Establish `hc : ∀ b (c : ℂ), δ b (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U c) = 0`. Introduce `b c`.
+
+Establish `e : CxPts.ev p (RingHom.id ℂ) U (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U c) ∘ ch.e.symm =ᶠ[nhds (ch.e z)] fun _ => c` using `hn.mono fun v hv => CxPts.ev_algX hv c`. Simplify using `only [δ, AddMonoidHom.mk'_apply]`. Rewrite using `[e.fderiv_eq]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.JacSpan.ker_le_span_sup (A := GlobalTheory.CechDR.Sec p U) (CxPts.evHom hz) (fun c => (CxPts.ev_eq hz _).symm.trans (CxPts.ev_algX hz c)) δ hmul hc g hgs φ hdet`.
+-/
 theorem GlobalTheory.JacSpan.ker_le_span_jac : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (U : X.Opens), IsAffineOpen U →
     ∀ (ch : GlobalTheory.AlgChart p (RingHom.id ℂ) d) (φ : Fin d → Γ(X, U)) (z : GlobalTheory.CxPts p (RingHom.id ℂ))
       (_hzc : z ∈ ch.e.source) (hz : z ∈ GlobalTheory.CxPts.ptsIn p (RingHom.id ℂ) U), (ch.jacMat φ z).det ≠ 0 →

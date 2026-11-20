@@ -39,6 +39,13 @@ def Unif {D : Datum H} {l : Level H} (Xo : Moduli D l) (σ : KA l →+* ℂ) {g 
       toUnit _ ≫ Xo.univ.eta a = e ((l.M : ℂ)⁻¹ • P (t a))) ∧
     ∀ a, toUnit _ ≫ Xo.univ.etaA a = e ((l.A : ℂ)⁻¹ • P (t a))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, Hm, h5, h6, h7⟩` from `hP`. Establish `hr : (P.comp gam.symm.toLinearMap.toAddMonoidHom).range = P.range`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨gam.symm a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩; exact ⟨gam a, by simp⟩`. Use `⟨fun a x i => ?_, h2.comp gam.symm.injective, by rw [hr]; exact h3, ?_, Hm, h5, h6, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `using h1 a (gam.symm x) i`. Rewrite using `[← h4, ← AddMonoidHom.coe_range, hr, AddMonoidHom.coe_range]`.
+
+Use `hgam (gam.symm x) (gam.symm y)` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Rewrite using `[this, ← h7]`. Both sides reduce to the same expression.
+-/
 theorem isPeriod_transport {D' D'' : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (gam : D'.La ≃ₗ[𝓞 E] D''.La)
     (hgam : ∀ a b, D''.EF (gam a) (gam b) = D'.EF a b) {P : D'.La →+ (Fin g → ℂ)} (hP : IsPeriod D' ty P) :
     IsPeriod D'' ty (P.comp gam.symm.toLinearMap.toAddMonoidHom) := by
@@ -55,9 +62,23 @@ theorem isPeriod_transport {D' D'' : Datum H} {g : ℕ} {ty : Fin g → (E →+*
     simp only [LinearEquiv.apply_symm_apply] at this
     rw [this, ← h7]; rfl
 
+/- English proof (translation)
+The claim follows from `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`.
+-/
 theorem level_pos (l : Level H) : 0 < l.M' :=
   Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
 
+/- English proof (translation)
+Establish `hprim : IsPrimitiveRoot (σ (baseKA l).ζ) l.A` using `(baseKA l).ζ_prim.map_of_injective σ.injective`. Take `⟨i, -, hi, hζ⟩` from `(Complex.isPrimitiveRoot_iff _ _ l.A_pos.ne').mp hprim`. Take `⟨s, c, hc⟩` from `hs { l with A := 1, A_pos := one_pos } l.A (-(i : ℤ)) l.A_pos (Nat.isCoprime_iff_coprime.mpr hi).neg_left (by simp)`. Use `⟨s.f l.M', rfl, rfl, s.f, s.ν, fun n m hn hm a => ?_, fun n hn => ?_, s.mult, ?_, rfl⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `s.tower n m hn hm a`.
+
+Conclude with `⟨b, by rw [← hb]; abel⟩`. Take `⟨g, hg⟩` from `s.inv n hn`. Use `⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, he⟩`. Take `⟨b, hb⟩` from `(hg a).1`.
+
+Conclude with `⟨g e - b, by rw [smul_sub, ← hb, he, map_nsmul]; abel⟩`. Introduce and unpack `⟨e, rfl⟩`. Conclude with `⟨s.f n e, map_nsmul _ _ _⟩`. Take `⟨b, hb⟩` from `(hg a').2`. Conclude with `⟨g a', -b, by rw [smul_neg, ← hb]; abel⟩`.
+
+Establish `hA : (l.A : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr l.A_pos.ne'`. Establish `h1 : (s.ν l.A : ℂ) = -(i : ℂ) + l.A * c`. Establish `: s.ν l.A = -(i : ℤ) + l.A * c` using `by linarith`. Rewrite using `[this]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hζ, h1, Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨c, by field_simp; ring⟩`.
+-/
 theorem exists_inGenus (D : Datum H) (l : Level H) (σ : KA l →+* ℂ)
     (hs : ∀ (l : Level H) (N : ℕ) (ν : ℤ), 0 < N → IsCoprime ν (N : ℤ) → (l.A : ℤ) ∣ ν - 1 →
       ∃ g : Sim D, (N : ℤ) ∣ g.ν N - ν) : ∃ t, InGenus D l σ D t := by
@@ -84,6 +105,15 @@ theorem exists_inGenus (D : Datum H) (l : Level H) (σ : KA l →+* ℂ)
     rw [← hζ, h1, Complex.exp_eq_exp_iff_exists_int]
     exact ⟨c, by field_simp; ring⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hn`. Prove the components needed by the constructor for the conclusion. Introduce `h b hb`. Use `Submodule.smul_induction_on hb (fun c hc b' _ => ?_) ?_` and prove the remaining obligations. Take `⟨a, e, rfl⟩` from `ht b'`.
+
+Take `⟨x, hx⟩` from `h (c • a) (Submodule.smul_mem_smul hc trivial)`. Use `⟨x + k • (gam (c • e) - c • e), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← t.map_smul, map_add, hx, smul_comm c, map_nsmul, smul_add, ← mul_smul, hk, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `x y ⟨u, hu⟩ ⟨v, hv⟩`.
+
+Conclude with `⟨u + v, by rw [map_add, hu, hv, smul_add]; abel⟩`. Introduce `h a ha`. Use `h _ (Submodule.smul_induction_on ha (fun c hc a' _ => ?_) fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[t.map_smul]`. Conclude with `Submodule.smul_mem_smul hc trivial`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem triv_iff {D D' : Datum H} (l : Level H) (t : D.La →ₗ[𝓞 E] D'.La)
     (ht : ∀ b, ∃ a e, b = t a + l.M' • e) (gam : D'.La ≃ₗ[𝓞 E] D'.La) (I : Ideal (𝓞 E)) (n : ℕ) (hn : n ∣ l.M') :
     (∀ a ∈ I • (⊤ : Submodule (𝓞 E) D.La), ∃ x, gam (t a) = t a + n • x) ↔
@@ -104,11 +134,17 @@ theorem triv_iff {D D' : Datum H} (l : Level H) (t : D.La →ₗ[𝓞 E] D'.La)
     · rw [t.map_smul]; exact Submodule.smul_mem_smul hc trivial
     · rw [map_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Simplify using `using triv_iff l t ht gam ⊤ n hn`.
+-/
 theorem triv_iff_top {D D' : Datum H} (l : Level H) (t : D.La →ₗ[𝓞 E] D'.La)
     (ht : ∀ b, ∃ a e, b = t a + l.M' • e) (gam : D'.La ≃ₗ[𝓞 E] D'.La) (n : ℕ) (hn : n ∣ l.M') :
     (∀ a, ∃ x, gam (t a) = t a + n • x) ↔ ∀ a, ∃ x, gam a = a + n • x := by
   simpa using triv_iff l t ht gam ⊤ n hn
 
+/- English proof (translation)
+Take `⟨N, i, -, hi, h⟩` from `Xo.qproj`. Use `isProper_str (KA l) N` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`.
+-/
 theorem quasiCompact_str {D : Datum H} {l : Level H} (Xo : Moduli D l) : QuasiCompact Xo.s := by
   obtain ⟨N, i, -, hi, h⟩ := Xo.qproj
   have := isProper_str (KA l) N
@@ -133,12 +169,20 @@ variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g 
 
 include upUniq in
 
+/- English proof (translation)
+The claim follows from `(upUniq _ _ _ _ _ _ _ _ _ _ h h').mpr ⟨LinearEquiv.refl _ _, LinearEquiv.refl _ _, fun _ _ => rfl, fun _ _ => ⟨0, by simp⟩, fun _ => ⟨0, by simp⟩, fun _ => rfl⟩`.
+-/
 theorem point_eq {D' : Datum H} {t : D.La →ₗ[𝓞 E] D'.La} {P : D'.La →+ (Fin g → ℂ)} {y y' : Sp ℂ ⟶ Xo.X} {e e'}
     (h : Unif Xo σ ty D' t P y e) (h' : Unif Xo σ ty D' t P y' e') : y = y' :=
   (upUniq _ _ _ _ _ _ _ _ _ _ h h').mpr ⟨LinearEquiv.refl _ _, LinearEquiv.refl _ _, fun _ _ => rfl,
     fun _ _ => ⟨0, by simp⟩, fun _ => ⟨0, by simp⟩, fun _ => rfl⟩
 
 include perObj upUniq in
+/- English proof (translation)
+Introduce and unpack `x' ⟨hg', P', e', hu'⟩`. Take `⟨-, P, e, hu⟩` from `hx`. Take `⟨-, P₂, e₂, hu₂⟩` from `hx'`. Take `⟨gam, h, h1, h2, h3, -⟩` from `(upUniq _ _ _ _ _ _ _ _ _ _ hu hu').mp rfl`. Take `⟨y'', e'', hu''⟩` from `perObj _ _ _ hg' (isPeriod_transport gam h1 hu₂.2.1)`.
+
+Establish `: y' = y''` using `(upUniq _ _ _ _ _ _ _ _ _ _ hu₂ hu'').mpr ⟨gam, LinearEquiv.refl _ _, h1, h2, h3, fun a => by simp⟩`. Substitute `this` using the available equality. Conclude with `⟨hg', _, _, hu''⟩`.
+-/
 theorem cls_subset {y y' : Sp ℂ ⟶ Xo.X} {x} (hx : x ∈ cls Xo σ ty y) (hx' : x ∈ cls Xo σ ty y') :
     cls Xo σ ty y ⊆ cls Xo σ ty y' := by
   rintro x' ⟨hg', P', e', hu'⟩
@@ -153,6 +197,9 @@ theorem cls_subset {y y' : Sp ℂ ⟶ Xo.X} {x} (hx : x ∈ cls Xo σ ty y) (hx'
 
 include perObj upUniq in
 
+/- English proof (translation)
+The claim follows from `(cls_subset perObj upUniq hx hx').antisymm (cls_subset perObj upUniq hx' hx)`.
+-/
 theorem cls_eq {y y' : Sp ℂ ⟶ Xo.X} {x} (hx : x ∈ cls Xo σ ty y) (hx' : x ∈ cls Xo σ ty y') :
     cls Xo σ ty y = cls Xo σ ty y' :=
   (cls_subset perObj upUniq hx hx').antisymm (cls_subset perObj upUniq hx' hx)
@@ -165,6 +212,29 @@ namespace GlobalTheory
 
 open UnifParts
 
+/- English proof (translation)
+Introduce `perExist ptUnif perObj upUniq locLift holU compFin thetaFam simMult E _ _ _ H D l Xo σ g ty h1 h2 h3`. Use `replace ptUnif : ∀ y : Sp ℂ ⟶ Xo.X, y ≫ Xo.s = spMap σ → ∃ x, x ∈ cls Xo σ ty y := fun y hy => by`. Take `⟨D', t, P, e, hg, hu⟩` from `ptUnif E H D l Xo σ g ty h1 h2 h3 y hy`. Conclude with `⟨⟨D', t⟩, hg, P, e, hu⟩`. Use `replace perObj : ∀ (D' : Datum H) (t : D.La →ₗ[𝓞 E] D'.La) (P : D'.La →+ (Fin g → ℂ)), InGenus D l σ D' t → IsPeriod D' ty P → ∃ y e, Unif Xo σ ty D' t P y e := perObj E H D l Xo σ g ty h1 h2 h3`.
+
+Use `replace upUniq := upUniq E H D l Xo σ g ty h1 h2 h3`. Use `replace locLift := locLift E H D l Xo σ g ty h1 h2 h3`. Use `replace holU := holU E H D l Xo σ g ty h1 h2 h3`. Use `replace thetaFam := thetaFam E H D l Xo σ g ty h1 h2 h3`. Establish `hfin : (cls Xo σ ty '' {x | x ≫ Xo.s = spMap σ}).Finite`.
+
+Use `compFin (KA l) σ Xo.X Xo.s D.dim _ (cls Xo σ ty) Xo.smooth (quasiCompact_str Xo) fun B y hB hy hh b₀ hb₀ => ?_` and prove the remaining obligations. Take `⟨x, hg, P₀, e₀, hu⟩` from `ptUnif _ (hy b₀ hb₀)`. Take `⟨B', P, e, hB', hb', -, -, -, -, hub⟩` from `locLift x.1 x.2 _ B y b₀ P₀ e₀ hB hb₀ hy hh hu`. Use `filter_upwards [hB'.mem_nhds hb'] with b hb`. Conclude with `cls_eq perObj upUniq (x := x) ⟨hg, _, _, hub b hb⟩ ⟨hg, _, _, hu⟩`.
+
+Establish `hne : (cls Xo σ ty '' {x | x ≫ Xo.s = spMap σ}).Nonempty`. Take `⟨t, ht⟩` from `exists_inGenus D l σ fun l' N ν a b c => (simMult E H D l' N ν a b c).imp fun _ h => h.1`. Take `⟨P, hP⟩` from `perExist E H D g ty h3`. Take `⟨y, e, hu⟩` from `perObj D t P ht hP`. Conclude with `⟨_, y, hu.1, rfl⟩`.
+
+Take `⟨n, ⟨φ⟩⟩` from `Finite.exists_equiv_fin _ (h := hfin.to_subtype)`. Establish `hn : 0 < n` using `Fin.pos (φ ⟨_, hne.some_mem⟩)`. Establish `hY : ∀ i, ∃ y : Sp ℂ ⟶ Xo.X, y ≫ Xo.s = spMap σ ∧ cls Xo σ ty y = φ.symm i` using `fun i => (φ.symm i).2`. Use `choose Y hYσ hY using hY`. Use `choose x hx using fun i => ptUnif _ (hYσ i)`.
+
+Establish `hue : ∀ i (P : (x i).1.La →+ (Fin g → ℂ)), ∃ (y : Sp ℂ ⟶ Xo.X) (e : (Fin g → ℂ) → (Over.mk y ⟶ Xo.univ.t.G)), IsPeriod (x i).1 ty P → Unif Xo σ ty (x i).1 (x i).2 P y e` using `fun i P => by`. Distinguish the cases in `hP : IsPeriod (x i).1 ty P`. Take `⟨y, e, h⟩` from `perObj _ _ P (hx i).1 hP`. Conclude with `⟨y, e, fun _ => h⟩`. Conclude with `⟨Y i, fun _ => 1, fun h => absurd h hP⟩`.
+
+Use `choose u ex hu using hue`. Establish `hcls : ∀ y : Sp ℂ ⟶ Xo.X, y ≫ Xo.s = spMap σ → ∃ i, x i ∈ cls Xo σ ty y` using `fun y hy => by`. Use `⟨φ ⟨_, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use `hx (φ ⟨_, y, hy, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hY, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+
+Establish `hts : ∀ i, (∀ a, (∃ b, (x i).2 a = l.M' • b) ↔ ∃ b, a = l.M' • b) ∧ ∀ b, ∃ a e, b = (x i).2 a + l.M' • e` using `fun i => by`. Take `⟨-, -, f, ν, -, hf, -, -, ht⟩` from `(hx i).1`. Rewrite using `[ht]`. Conclude with `hf _ (level_pos l)`. Establish `hhol : ∀ i (m : ℕ) (B : Set (Fin m → ℂ)) (P : (Fin m → ℂ) → ((x i).1.La →+ (Fin g → ℂ))), IsOpen B → IsHolPeriods (x i).1 ty B P → IsHolTo B (fun b => u i (P b)) ∧ IsHolTo (B ×ˢ Set.univ) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => (ex i (P bz.1) bz.2).left)` using `fun i m B P hB hP => holU _ _ m B P (fun b => u i (P b)) (fun b => ex i (P b)) (hx i).1 hB hP fun b hb => hu i _ (hP.1 b hb)`.
+
+Use `⟨{ n := n n_pos := hn Di := fun i => (x i).1 sig := fun i => ⟨(hx i).1.1, (hx i).1.2.1⟩ t := fun i => (x i).2 t_inj := fun i => (hts i).1 t_surj := fun i => (hts i).2 u := u ex := ex over_σ := fun i P hP => (hu i P hP).1 ex_add := fun i P hP => (hu i P hP).2.2.1.1 ex_onto := fun …` and prove the remaining obligations. Take `⟨i, -, P, e, h⟩` from `hcls y hy`. Conclude with `⟨i, P, h.2.1, point_eq upUniq (hu i P h.2.1) h⟩`. Establish `hi : cls Xo σ ty (Y i) = cls Xo σ ty (u i P)` using `cls_eq perObj upUniq (hx i) ⟨(hx i).1, _, _, hu i P hP⟩`. Establish `hj : cls Xo σ ty (Y j) = cls Xo σ ty (u j P')` using `cls_eq perObj upUniq (hx j) ⟨(hx j).1, _, _, hu j P' hP'⟩`.
+
+Apply `φ.symm.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hY, ← hY, hi, hj, h]`. Rewrite using `[upUniq _ _ _ _ _ _ _ _ _ _ (hu i P hP) (hu i P' hP')]`. Use `exists_congr fun gam => exists_congr fun h => ?_` and prove the remaining obligations.
+
+Rewrite using `[triv_iff l _ (hts i).2 gam _ l.M (Nat.dvd_lcm_left _ _), triv_iff_top l _ (hts i).2 gam l.A (Nat.dvd_lcm_right _ _)]`. Take `⟨i, -, P₀, e₀, h⟩` from `hcls _ (hy b₀ hb₀)`. Take `⟨B', P, e, hB', hb', hsub, -, hP, -, hub⟩` from `locLift _ _ m B y b₀ P₀ e₀ hB hb₀ hy hh h`. Conclude with `⟨B', i, P, hB', hb', hsub, hP, fun b hb => point_eq upUniq (hu i _ (hP.1 b hb)) (hub b hb)⟩`.
+-/
 theorem familyUnif_of_parts : (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D
     : Datum H) (g : ℕ) (ty : Fin g → (E →+*
     ℂ)), IsTypeFn H D.p D.q ty → ∃ P, IsPeriod D ty P) → (∀ (E : Type) [Field E] [NumberField

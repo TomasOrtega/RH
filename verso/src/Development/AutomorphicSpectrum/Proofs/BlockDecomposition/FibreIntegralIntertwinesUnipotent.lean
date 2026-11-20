@@ -34,6 +34,9 @@ def mulVecHomeo {t : ℕ} (w : GL (Fin t) k) : (Fin t → k) ≃ₜ (Fin t → k
   continuous_toFun := Continuous.matrix_mulVec continuous_const continuous_id
   continuous_invFun := Continuous.matrix_mulVec continuous_const continuous_id
 
+/- English proof (translation)
+Establish `lG : IsLocallyConstant (B ∘ Ψ)` using `lΨ.comp B`. Establish `cG : HasCompactSupport (B ∘ Ψ)` using `cΨ.comp_left (map_zero B)`. Establish `lGL : IsLocallyConstant ((B ∘ Ψ) ∘ (mulVecHomeo w⁻¹))` using `lG.comp_continuous (mulVecHomeo w⁻¹).continuous`. Establish `cGL : HasCompactSupport ((B ∘ Ψ) ∘ (mulVecHomeo w⁻¹))` using `cG.comp_homeomorph (mulVecHomeo w⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smInt_transform {t : ℕ} [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)]
     (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure]
     {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
@@ -61,6 +64,9 @@ section Group
 
 variable (k : Type) [Field k]
 
+/- English proof (translation)
+Establish `h` using `levi_mul_uM k (i + t) q⁻¹ y`. Rewrite `h` using `[hx, uM_add, map_inv]`. Establish `h2 : uM k (i + t) y = levi k (i + t) q * (uM k (i + t) (topV k i t x) * uM k (i + t) (midV k i t u) * (levi k (i + t) q)⁻¹)` using `inv_mul_eq_iff_eq_mul.mp h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem point_eq (i t : ℕ) (q g : GL (Fin (i + t)) k) (y : Fin (i + t) → k) (x : Fin i → k) (u : Fin t → k)
     (hx : ((q⁻¹ : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y = topV k i t x + midV k i t u) :
     uM k (i + t) y * levi k (i + t) (q * g) =
@@ -82,6 +88,13 @@ section Rep
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {i t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v u`. Establish `e : (twKer τ (MirUin k i) 1).mkQ (τ (uM k i x) v) = (twKer τ (MirUin k i) 1).mkQ v`.
+
+Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨uM k i x, uM_mem k i x⟩, v, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e2 : (twKer τ (MirUin k i) 1).mkQ (τ (levi k i a * uM k i x) v) = psiMinus k τ a ((twKer τ (MirUin k i) 1).mkQ v)`. Rewrite using `[← e, map_mul]`. Both sides reduce to the same expression.
+
+Simplify using `only [clT, extTensor_tmul, LinearMap.rTensor_tmul]`. Rewrite using `[e2]`.
+-/
 theorem clT_extTensor (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (a : GL (Fin i) k) (x : Fin i → k) (w : GL (Fin t) k) (z : V ⊗[ℂ] W) :
     clT τ W (extTensor τ σ (levi k i a * uM k i x, w) z) =
@@ -100,6 +113,11 @@ theorem clT_extTensor (τ : Representation ℂ (Mir k i) V) (σ : Representation
     simp only [clT, extTensor_tmul, LinearMap.rTensor_tmul]
     rw [e2]
 
+/- English proof (translation)
+Take `⟨m1, p1⟩` from `GlobalTheory.T.levi_block_mem_parabolic k i t q`. Take `⟨m2, p2⟩` from `GlobalTheory.T.unipotent_top_mem_parabolic k i t x`. Establish `key` using `f.1.1.2 ((⟨_, m1⟩ : HPG k i t) * ⟨_, m2⟩) (uM k (i + t) (midV k i t u) * levi k (i + t) g)`. Establish `e : pgProj k i t ((⟨_, m1⟩ : HPG k i t) * ⟨_, m2⟩) = (levi k i (qBlocks k i t q).1 * uM k i x, (qBlocks k i t q).2)`. Rewrite using `[map_mul, p1, p2]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fibV_mul (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (f : cIndSpace (HPG k i t) (hRep τ σ)) (q : Qp k i t) (g : GL (Fin (i + t)) k) (v u : Fin t → k) (x : Fin i → k)
     (hx : (((q : GL (Fin (i + t)) k)⁻¹ : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec (midV k i t v) =
@@ -122,6 +140,13 @@ theorem fibV_mul (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ 
 
 end Rep
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ f q g`. Establish `h1` using `GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f ((q : GL (Fin (i + t)) k) * g)`. Establish `h2` using `GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f g`. Establish `hpt : ∀ v, clT τ W (fibV f ((q : GL (Fin (i + t)) k) * g) v) = extTensor (psiMinus k τ) σ ((qBlocks k i t q).1, (qBlocks k i t q).2) (clT τ W (fibV f g ((((qBlocks k i t q).2⁻¹ : GL (Fin t) k) : Matrix (Fin t) (Fin t) k).mulVec v)))`. Introduce `v`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.T.mulVec_mid_block_decomp k i t q⁻¹ v`. Establish `hb : (qBlocks k i t q⁻¹).2 = (qBlocks k i t q).2⁻¹`. Rewrite using `[map_inv, Prod.snd_inv]`. Rewrite `hx` using `[hb]`. Establish `e` using `fibV_mul τ σ f q g v _ x hx`.
+
+Conclude with `(congrArg (clT τ W) e).trans (clT_extTensor τ σ _ x _ _)`. Conclude with `smInt_transform μ _ _ (clT τ W) (extTensor (psiMinus k τ) σ ((qBlocks k i t q).1, (qBlocks k i t q).2)) (qBlocks k i t q).2 h1.1 h1.2 h2.1 h2.2 hpt`.
+-/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W), IsSmooth τ → IsSmooth σ → ∀ [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure], ∀ (f : cIndSpace (HPG k i t) (hRep τ σ)) (q : Qp k i t) (g : GL (Fin (i + t)) k), fibInt μ f ((q : GL (Fin (i + t)) k) * g) = qRep τ σ q (fibInt μ f g) := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ hτ hσ _ _ μ _ f q g
   have h1 := GlobalTheory.T.fibre_function_locally_constant_compact k i t τ σ hτ hσ f ((q : GL (Fin (i + t)) k) * g)

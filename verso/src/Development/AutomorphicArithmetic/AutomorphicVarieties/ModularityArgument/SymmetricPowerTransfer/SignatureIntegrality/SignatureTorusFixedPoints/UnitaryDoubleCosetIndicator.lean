@@ -10,11 +10,17 @@ namespace UpperTheory.V.Z.Sym.Sig
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `h`. Conclude with `⟨u * a, (V.J 3).mul_mem hu ha, b * v, (V.J 3).mul_mem hb hv, by group⟩`.
+-/
 private theorem dc_mul (V : Lev k) {d : Fin 3 → kˣ} {u v g : GL (Fin 3) k} (hu : u ∈ V.J 3) (hv : v ∈ V.J 3)
     (h : g ∈ V.DC d) : u * g * v ∈ V.DC d := by
   obtain ⟨a, ha, b, hb, rfl⟩ := h
   exact ⟨u * a, (V.J 3).mul_mem hu ha, b * v, (V.J 3).mul_mem hb hv, by group⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `dc_mul V ((V.J 3).inv_mem hu) ((V.J 3).inv_mem hv) h`. Simplify `h2` using `[mul_assoc]`. Conclude with `dc_mul V hu hv`.
+-/
 private theorem dc_iff (V : Lev k) {d : Fin 3 → kˣ} {u v : GL (Fin 3) k} (hu : u ∈ V.J 3) (hv : v ∈ V.J 3)
     (g : GL (Fin 3) k) : u * g * v ∈ V.DC d ↔ g ∈ V.DC d := by
   constructor
@@ -23,6 +29,11 @@ private theorem dc_iff (V : Lev k) {d : Fin 3 → kˣ} {u v : GL (Fin 3) k} (hu 
     simpa [mul_assoc] using h2
   · exact dc_mul V hu hv
 
+/- English proof (translation)
+Establish `hF` using `thFacts k V`. Establish `key : u * g * th k 3 u' * (Phi k)⁻¹ = u * (g * (Phi k)⁻¹) * th' k u'`. Establish `h7` using `hF.2.2.2.2.2.2 u'`. Establish `: th k 3 u' = (Phi k)⁻¹ * th' k u' * Phi k`. Rewrite using `[mul_assoc, h7]`.
+
+Use `group`. Rewrite using `[this]`. Use `group`. Simplify using `only [Lev.unitaryDoubleCosetIndicator]`. Rewrite using `[key, dc_iff V hu (hF.2.1 u' hu')]`.
+-/
 private theorem gl3_spherical_bi_invariant (V : Lev k) (d : Fin 3 → kˣ) {u u' : GL (Fin 3) k} (hu : u ∈ V.J 3) (hu' : u' ∈ V.J 3)
     (g : GL (Fin 3) k) : V.unitaryDoubleCosetIndicator d (u * g * th k 3 u') = V.unitaryDoubleCosetIndicator d g := by
   have hF := thFacts k V
@@ -36,6 +47,21 @@ private theorem gl3_spherical_bi_invariant (V : Lev k) (d : Fin 3 → kˣ) {u u'
   simp only [Lev.unitaryDoubleCosetIndicator]
   rw [key, dc_iff V hu (hF.2.1 u' hu')]
 
+/- English proof (translation)
+Establish `hF` using `thFacts k V`. Establish `hJ` using `(finFacts k V).2.2.2.2.2 3`. Establish `horb : (MulAction.orbit (V.J 3) ((dg d : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3)).Finite` using `hJ.1 (dg d)`. Set `F : GL (Fin 3) k ⧸ (V.J 3).map (th k 3) → GL (Fin 3) k ⧸ V.J 3` to `fun y => ((Quotient.out y * (Phi k)⁻¹ : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3)`. Use `Set.Finite.of_finite_image (f := F) (horb.subset ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, Lev.unitaryDoubleCosetIndicator] at hy`. Establish `hy' : Quotient.out y * (Phi k)⁻¹ ∈ V.DC d`. Assume the negation of the conclusion as `hc`. Rewrite `hy` using `[if_neg hc]`.
+
+Conclude with `hy rfl`. Take `⟨a, ha, b, hb, hab⟩` from `hy'`. Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Use `show ((a * dg d : GL (Fin 3) k) : GL (Fin 3) k ⧸ V.J 3) = F y`. Simplify using `only [F]`.
+
+Rewrite using `[hab, QuotientGroup.eq]`. Simplify `hb` using `[mul_assoc]`. Introduce `y1 _ y2 _ h`. Simplify using `only [F] at h`. Rewrite `h` using `[QuotientGroup.eq]`.
+
+Rewrite using `[← QuotientGroup.out_eq' y1, ← QuotientGroup.out_eq' y2, QuotientGroup.eq]`. Use `set w := Phi k * ((Quotient.out y1)⁻¹ * Quotient.out y2) * (Phi k)⁻¹ with hw`. Use `⟨th' k w, hF.2.1 w ?_, ?_⟩` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hw]`.
+
+Use `group`. Establish `h7` using `hF.2.2.2.2.2.2 (th' k w)`. Rewrite `h7` using `[Pres.invol hF.1 w]`. Establish `: th k 3 (th' k w) = (Phi k)⁻¹ * (w * Phi k)`. Rewrite using `[h7]`.
+
+Use `group`. Rewrite using `[this, hw]`. Use `group`.
+-/
 private theorem gl3_spherical_finite_support (V : Lev k) (d : Fin 3 → kˣ) :
     {y : GL (Fin 3) k ⧸ (V.J 3).map (th k 3) | V.unitaryDoubleCosetIndicator d y.out ≠ 0}.Finite := by
   have hF := thFacts k V
@@ -75,6 +101,11 @@ private theorem gl3_spherical_finite_support (V : Lev k) (d : Fin 3 → kˣ) :
 
 end UpperTheory.V.Z.Sym.Sig
 
+/- English proof (translation)
+Introduce `k _ _ _ _ V ω Rs Ry x z d`. Use `⟨fun u hu u' hu' g => ⟨gl3_spherical_bi_invariant V d hu hu' g, ?_⟩, gl3_spherical_finite_support V d, ?_⟩` and prove the remaining obligations. Simplify using `only [Lev.fG, gl3_spherical_bi_invariant V _ hu hu' g]`. Use `(Set.Finite.biUnion Rs.finite_toSet fun e _ => Set.Finite.biUnion Ry.finite_toSet fun y _ => gl3_spherical_finite_support V ![x * e, y, z]).subset ?_` and prove the remaining obligations. Introduce `q hq`.
+
+Establish `hq' : ∑ e ∈ Rs, ∑ y ∈ Ry, (ω e : ℂ) * V.unitaryDoubleCosetIndicator ![x * e, y, z] q.out ≠ 0` using `hq`. Take `⟨e, he, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hq'`. Take `⟨y, hy, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `Set.mem_biUnion he (Set.mem_biUnion hy (right_ne_zero_of_mul h))`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.eqG :
     UpperTheory.V.Z.Sym.Sig.EqG := by
   intro k _ _ _ _ V ω Rs Ry x z d

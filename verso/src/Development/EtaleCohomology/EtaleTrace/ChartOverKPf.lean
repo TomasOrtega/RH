@@ -6,6 +6,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace LateralTheory.EtaleTrace.Cov
 
+/- English proof (translation)
+Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises. Introduce `y hy`. Establish `: Nonempty U` using `⟨⟨y, hy⟩⟩`. Establish `hst : s = t`. Apply `Scheme.germToFunctionField_injective X U` to reduce the goal to its premises.
+
+Use `h y hy` as an intermediate fact. Rewrite `this` using `[Scheme.algebraMap_germ_eq_germToFunctionField, Scheme.algebraMap_germ_eq_germToFunctionField]`. Then use the resulting hypothesis. Rewrite using `[hst]`.
+-/
 theorem sect_eq_of_alg (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (s t : Γ(X, U))
     (h : ∀ (y : X) (hy : y ∈ U), algebraMap (X.presheaf.stalk y) X.functionField (X.presheaf.germ U y hy s) =
       algebraMap (X.presheaf.stalk y) X.functionField (X.presheaf.germ U y hy t)) : s = t := by
@@ -18,6 +23,9 @@ theorem sect_eq_of_alg (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (s t : Γ(X
     rwa [Scheme.algebraMap_germ_eq_germToFunctionField, Scheme.algebraMap_germ_eq_germToFunctionField] at this
   rw [hst]
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[HomogeneousLocalization.fromZeroRingHom]`. Both sides reduce to the same expression.
+-/
 theorem fromZero_eq_mk {k : Type} [Field k] {N : ℕ} (i : Fin (N + 1))
     (hx : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 1) (c : k)
     (hg : (C c : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k (0 • 1)) :
@@ -27,6 +35,13 @@ theorem fromZero_eq_mk {k : Type} [Field k] {N : ℕ} (i : Fin (N + 1))
   simp [HomogeneousLocalization.fromZeroRingHom]
   rfl
 
+/- English proof (translation)
+Use extensionality with `c`. Establish `hg : (C c : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k (0 • 1)` using `(mem_homogeneousSubmodule _ _).2 (by simpa using isHomogeneous_C (Fin (N + 1)) c)`. Establish `hsec : φ (HomogeneousLocalization.Away.mk _ hx 0 (C c) hg) = X.presheaf.map (homOfLE le_top : U ⟶ ⊤).op (p.appTop ((Scheme.ΓSpecIso (CommRingCat.of k)).inv c))`. Apply `sect_eq_of_alg X` to reduce the goal to its premises. Introduce `y hy`.
+
+Rewrite using `[hφ, TopCat.Presheaf.germ_res_apply]`. Establish `: Nonempty (⊤ : X.Opens)` using `⟨⟨y, trivial⟩⟩`. Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField]`. Simplify using `[kHom]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`.
+
+Rewrite using `[fromZero_eq_mk i hx c hg, hsec]`. Simplify using `only [Scheme.Hom.comp_appTop, Scheme.Opens.ι_appTop, Scheme.Opens.topIso_inv, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `erw [← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem chart_key {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (N : ℕ)
   (w : Fin (N + 1) → X.functionField) (i : Fin (N + 1)) (U : X.Opens)
   (hx : (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ∈ homogeneousSubmodule (Fin (N + 1)) k 1)
@@ -57,6 +72,11 @@ theorem chart_key {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] (p : X �
   erw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `k _ X _ p N w i hi U hx φ hφ`. Establish `hR : U.ι ≫ p = U.toScheme.toSpecΓ ≫ Spec.map ((U.ι ≫ p).appTop) ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv`. Rewrite using `[← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `key` using `chart_key p N w i U hx φ hφ`. Rewrite using `[hR]`.
+
+Unfold `chartMor PNto`. Simplify using `only [Category.assoc]`. Rewrite using `[Proj.awayι_toSpecZero_assoc, ← Spec.map_comp, ← Spec.map_comp, ← key]`. Simplify using `only [Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem ChartOverK_of : ChartOverK := by
   intro k _ X _ p N w i hi U hx φ hφ
   have hR : U.ι ≫ p = U.toScheme.toSpecΓ ≫ Spec.map ((U.ι ≫ p).appTop) ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv := by

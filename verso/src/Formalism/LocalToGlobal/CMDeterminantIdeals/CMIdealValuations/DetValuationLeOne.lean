@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain MeasureTheory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped nonZeroDivisors ComplexOrder
 
+/- English proof (translation)
+Introduce `h`. Take `⟨κ, h1, h2, h3, h4⟩` from `h`. Use `⟨κ, h1, h2, ?_, h4.2⟩` and prove the remaining obligations. Introduce `R K _ _ _ _ _ _ _ x xK hpb`. Take `⟨u, hu, -⟩` from `h3 R K x xK hpb`.
+
+Conclude with `⟨u, hu⟩`.
+-/
 theorem key_formula_link : KeyCoreLink := by
   intro h
   obtain ⟨κ, h1, h2, h3, h4⟩ := h
@@ -19,6 +24,33 @@ theorem key_formula_link : KeyCoreLink := by
 
 section Core
 
+/- English proof (translation)
+Take `⟨κ, hH, hF, hU1, hU2⟩` from `hKF`. Use `set k : K := (κ K x : K) with hkdef`. Establish `hk : k ≠ 0` using `(κ K x).ne_zero`. Establish `hloc' : ∀ p : HeightOneSpectrum (𝓞 K), ∃ ca cd : K, IsLocGen p ca T.I ∧ IsLocGen p cd abelian₂.I ∧ p.valuation K k ≤ p.valuation K (ca ^ 8 / cd ^ 4) ∧ p.valuation K k⁻¹ ≤ p.valuation K (ca ^ 8 / cd ^ 4)⁻¹`. Introduce `p`.
+
+Take `⟨K', _, _, R, _, _, _, _, _, f, x', a, d, ca, cd, ua, ud, hPB, hInt, hval, ha, hd, hca, hcd⟩` from `hloc p`. Take `⟨th', hth', v', hv', M, xR, hth'eq, hv'eq, hMdet, hPBR⟩` from `hInt`. Establish `hFx : (κ K' x' : K') = f k` using `hF K K' f x x' hPB`. Establish `hHx : a ^ 8 * (κ K' ⟨x'.P, x'.g_pos, x'.rig, x'.rig_gen, th', hth', v', hv'⟩ : K') = M.det ^ 4 * (κ K' x' : K')` using `hH K' x'.P x'.g_pos x'.rig x'.rig_gen x'.th x'.th_ne x'.v x'.basis th' hth' v' hv' a M hth'eq hv'eq`. Take `⟨u, hu⟩` from `hU1 R K' xR _ hPBR`.
+
+Rewrite `hHx` using `[hu, hFx, hMdet, ha, hd]`. Establish `hfa : f ca ≠ 0` using `(map_ne_zero f).2 hca.1`. Establish `hfd : f cd ≠ 0` using `(map_ne_zero f).2 hcd.1`. Establish `hD : algebraMap R K' (ud : R) ≠ 0` using `(ud.isUnit.map (algebraMap R K')).ne_zero`. Establish `hc : ca ^ 8 / cd ^ 4 ≠ 0` using `div_ne_zero (pow_ne_zero _ hca.1) (pow_ne_zero _ hcd.1)`.
+
+Establish `hfk : f k = (f ca * algebraMap R K' (ua : R)) ^ 8 * algebraMap R K' (u : R) / (f cd * algebraMap R K' (ud : R)) ^ 4`. Rewrite using `[eq_div_iff (pow_ne_zero _ (mul_ne_zero hfd hD)), hHx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : f (k / (ca ^ 8 / cd ^ 4)) = algebraMap R K' ((ua ^ 8 * u * ud⁻¹ ^ 4 : Rˣ) : R)`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_mul, map_mul, map_pow, map_pow, map_units_inv, map_div₀, map_div₀, map_pow, map_pow, hfk]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hw' : f (k⁻¹ / (ca ^ 8 / cd ^ 4)⁻¹) = algebraMap R K' (((ua ^ 8 * u * ud⁻¹ ^ 4)⁻¹ : Rˣ) : R)`. Rewrite using `[inv_div_inv, ← inv_div, map_inv₀, hw, map_units_inv]`. Conclude with `⟨ca, cd, hca, hcd, valuation_le_of_eq_algebraMap p f hval hc _ hw, valuation_le_of_eq_algebraMap p f hval (inv_ne_zero hc) _ hw'⟩`. Establish `hJ : T.I ^ 8 * (abelian₂.I ^ 4)⁻¹ ≠ 0` using `mul_ne_zero (pow_ne_zero _ hT.1) (inv_ne_zero (pow_ne_zero _ hL.1))`.
+
+Establish `hspan : FractionalIdeal.spanSingleton (𝓞 K)⁰ k = T.I ^ 8 * (abelian₂.I ^ 4)⁻¹` using `hS _ k hJ hk (fun p => by`. Take `⟨ca, cd, h1, h2, h3, h4⟩` from `hloc' p`. Conclude with `⟨_, isLocGen_pow8_div_pow4 hT.1 hL.1 h1 h2, h3, h4⟩)`. Establish `hNT : ((FractionalIdeal.absNorm T.I : ℚ) : ℝ) ≠ 0`. Conclude with `(FractionalIdeal.absNorm_eq_zero_iff.not.2 hT.1)` after adjusting the coercions.
+
+Establish `hNL : ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ) ≠ 0`. Conclude with `(FractionalIdeal.absNorm_eq_zero_iff.not.2 hL.1)` after adjusting the coercions. Establish `hNk : Real.log ((FractionalIdeal.absNorm (FractionalIdeal.spanSingleton (𝓞 K)⁰ k) : ℚ) : ℝ) = 8 * Real.log ((FractionalIdeal.absNorm T.I : ℚ) : ℝ) - 4 * Real.log ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ)`. Rewrite using `[hspan, map_mul, map_inv₀, map_pow, map_pow]`. Use `push_cast`.
+
+Rewrite using `[Real.log_mul (pow_ne_zero _ hNT) (inv_ne_zero (pow_ne_zero _ hNL)), Real.log_inv, Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `harch' : ∀ σ : K →+* ℂ, Real.log ‖σ k‖ + 8 * Real.log (T.n σ) - 4 * Real.log (abelian₂.n σ) = 2 * (x.P.g : ℝ) * Real.log (2 * Real.pi)`. Introduce `σ`.
+
+Take `⟨xσ, u, Hm, W, χ, θ, Fd, hPB, hAH, hRig, hFn, hDiff, hFD, hTn, hLn⟩` from `harch σ`. Establish `hFσ : (κ ℂ xσ : ℂ) = σ k` using `hF K ℂ σ x xσ hPB`. Take `⟨_, _, _, hg, _⟩` from `hPB`. Establish `he : (volume Fd).toReal / (Real.pi ^ xσ.P.g * ‖W.det‖ ^ 2) = (abelian₂.n σ ^ 2)⁻¹`. Rewrite using `[hLn, inv_div]`.
+
+Establish `hU` using `hU2 xσ u Hm W χ θ Fd _ _ hAH hRig hFn hDiff hFD hTn rfl`. Rewrite `hU` using `[he, hFσ, hg]`. Establish `hsk0 : 0 < ‖σ k‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hk)`. Establish `ht` using `hT.2 σ`. Establish `hl` using `hL.2 σ`.
+
+Establish `h8 : ‖σ k‖ * (T.n σ ^ 2) ^ 4 * ((abelian₂.n σ ^ 2)⁻¹) ^ 2 = ‖σ k‖ * T.n σ ^ 8 * (abelian₂.n σ ^ 4)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite `hU` using `[h8]`. Use `congrArg Real.log hU` as an intermediate fact. Rewrite `this` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_inv, Real.log_pow, Real.log_pow, Real.log_pow]`.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_congr (s₁ := (Finset.univ : Finset (K →+* ℂ))) rfl (fun σ _ => harch' σ)`. Rewrite `hsum` using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card K ℂ, nsmul_eq_mul, hN k hk, hNk]`. Simplify using `only [MLine.deg, MLine.dual, map_inv₀, Rat.cast_inv, Real.log_inv, Finset.sum_neg_distrib]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem keyDegCore_core (hKF : KeyCore) (K : Type) [Field K] [NumberField K] (x : KeyIn K) (T abelian₂ : MLine K)
     (hT : T.Good) (hL : abelian₂.Good) (hloc : ∀ p, KeyLocAt x T abelian₂ p) (harch : ∀ σ, KeyArchAt x T abelian₂ σ)
     (hN : ∀ k : K, k ≠ 0 → ∑ σ : K →+* ℂ, Real.log ‖σ k‖ =
@@ -101,6 +133,11 @@ theorem keyDegCore_core (hKF : KeyCore) (K : Type) [Field K] [NumberField K] (x 
 
 end Core
 
+/- English proof (translation)
+Introduce `hKC K _ _ x T abelian₂ hT hL hloc harch`. Use `keyDegCore_core hKC K x T abelian₂ hT hL hloc harch (fun k hk => sum_log_norm_embeddings hk) (fun I k hI hk hlocI => ?_)` and prove the remaining obligations. Establish `hsk : FractionalIdeal.spanSingleton (𝓞 K)⁰ k ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hk`.
+
+Use `eq_of_count_eq hsk hI (fun p => ?_)` and prove the remaining obligations. Take `⟨c, h1, h2, h3⟩` from `hlocI p`. Rewrite using `[count_eq_of_valuation_le p hk h1.1 h2 h3, h1.2]`.
+-/
 theorem key_degree_essential : KeyDegCore := by
   intro hKC K _ _ x T abelian₂ hT hL hloc harch
   refine keyDegCore_core hKC K x T abelian₂ hT hL hloc harch (fun k hk => sum_log_norm_embeddings hk)
@@ -113,6 +150,9 @@ theorem key_degree_essential : KeyDegCore := by
 
 section Lie
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [lieGram, Matrix.of_apply, Matrix.smul_apply, Matrix.transpose_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lieGram_eq {g : ℕ} (Hm W : Matrix (Fin g) (Fin g) ℂ) :
     lieGram Hm W = (Real.pi : ℂ) • (W * Hm * W.conjTranspose).transpose := by
   ext i j
@@ -129,6 +169,13 @@ section Had
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hP : (∏ j, (ℓ j).I) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hℓ j`. Establish `hs : FractionalIdeal.spanSingleton (𝓞 K)⁰ d ≠ 0` using `spanSingleton_ne_zero' hd`. Establish `hX0 : (∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d ≠ 0` using `mul_ne_zero hP hs`. Establish `h1 : (∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d * abelian₂.I⁻¹ ≤ 1`. Apply `le_one_of_count_nonneg (mul_ne_zero hX0 (inv_ne_zero hLam))` to reduce the goal to its premises.
+
+Introduce `p`. Take `⟨cd, cl, hcd, hcl, hv⟩` from `hloc p`. Establish `hgen : IsLocGen p ((∏ j, cl j) * d) ((∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d)` using `IsLocGen.mul' (IsLocGen.prod' Finset.univ cl (fun j => (ℓ j).I) hcl hℓ) ⟨hd, rfl⟩ hP hs`. Rewrite using `[FractionalIdeal.count_mul K p hX0 (inv_ne_zero hLam), FractionalIdeal.count_inv, ← hgen.2, ← hcd.2]`. Rewrite `hv` using `[valuation_eq_exp_count p hgen.1, valuation_eq_exp_count p hcd.1, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc _ abelian₂.I⁻¹, inv_mul_cancel₀ hLam, mul_one]`. Use `_ ≤ 1 * abelian₂.I := mul_le_mul' h1 le_rfl`. Use `_ = abelian₂.I := one_mul _`.
+-/
 theorem prod_span_le_of_loc {g : ℕ} (abelian₂ : MLine K) (ℓ : Fin g → MLine K) (d : K) (hLam : abelian₂.I ≠ 0)
     (hℓ : ∀ j, (ℓ j).I ≠ 0) (hd : d ≠ 0)
     (hloc : ∀ p : HeightOneSpectrum (𝓞 K), ∃ (cd : K) (cl : Fin g → K), IsLocGen p cd abelian₂.I ∧
@@ -152,6 +199,33 @@ theorem prod_span_le_of_loc {g : ℕ} (abelian₂ : MLine K) (ℓ : Fin g → ML
     _ ≤ 1 * abelian₂.I := mul_le_mul' h1 le_rfl
     _ = abelian₂.I := one_mul _
 
+/- English proof (translation)
+Use `set d := (Matrix.of u).det with hd`. Establish `hX0 : (∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => (hℓ j).1) (by rwa [Ne, FractionalIdeal.spanSingleton_eq_zero_iff])`. Establish `hN` using `A2.absNorm_anti' hle hX0`. Establish `hposI : ∀ j, (0 : ℝ) < ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ)` using `fun j => by`. Conclude with `A2.absNorm_pos' (hℓ j).1` after adjusting the coercions.
+
+Establish `hposd : ∀ σ : K →+* ℂ, 0 < ‖σ d‖` using `fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 hdne)`. Establish `hposD` using `A2.absNorm_pos' hLam`. Establish `hNX : ((FractionalIdeal.absNorm ((∏ j, (ℓ j).I) * FractionalIdeal.spanSingleton (𝓞 K)⁰ d) : ℚ) : ℝ) = (∏ j, ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ)) * ∏ σ : K →+* ℂ, ‖σ d‖`. Rewrite using `[map_mul, map_prod, Rat.cast_mul, Rat.cast_prod, A2.absNorm_span_real]`. Establish `hlogN : Real.log ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ) ≤ ∑ j, Real.log ((FractionalIdeal.absNorm (ℓ j).I : ℚ) : ℝ) + ∑ σ : K →+* ℂ, Real.log ‖σ d‖`.
+
+Rewrite using `[← Real.log_prod (fun j _ => (hposI j).ne'), ← Real.log_prod (fun σ _ => (hposd σ).ne'), ← Real.log_mul (Finset.prod_pos fun j _ => hposI j).ne' (Finset.prod_pos fun σ _ => hposd σ).ne', ← hNX]`. Conclude with `Real.log_le_log (by exact_mod_cast hposD) (by exact_mod_cast hN)`. Establish `hσ : ∀ σ : K →+* ℂ, Real.log ‖σ d‖ + Real.log (Real.sqrt (H σ).det.re) ≤ ∑ j, (Real.log La + Real.log ((ℓ j).n σ))`. Introduce `σ`. Establish `hD` using `A2.det_re_pos (hH σ)`.
+
+Establish `hGpd : (ReciprocityTheory.MultiplicativeHeights.gramC (H σ) σ u).PosDef`. Rewrite using `[A2.gramC_eq]`. Apply `(hH σ).conjTranspose_mul_mul_same` to reduce the goal to its premises. Apply `Matrix.mulVec_injective_iff_isUnit.2` to reduce the goal to its premises. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `IsUnit.mk0 _ ((map_ne_zero σ).2 hdne)`. Establish `hdiagpos : ∀ j, 0 < (ReciprocityTheory.MultiplicativeHeights.gramC (H σ) σ u j j).re` using `fun j => by`. Simplify using `using (Complex.lt_def.1 (hGpd.diag_pos (i := j))).1`. Establish `hHd` using `hadamardInequality g _ hGpd`. Rewrite `hHd` using `[A2.gramC_det, Complex.re_ofReal_mul]`.
+
+Establish `hbound : ∏ j, (ReciprocityTheory.MultiplicativeHeights.gramC (H σ) σ u j j).re ≤ ∏ j, (La * (ℓ j).n σ) ^ 2`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `j _`. Conclude with `(hdiagpos j).le`. Introduce `j _`.
+
+Conclude with `hsq σ j`. Establish `key : ‖σ d‖ ^ 2 * (H σ).det.re ≤ ∏ j, (La * (ℓ j).n σ) ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `hHd.trans hbound`. Establish `hpos' : 0 < ‖σ d‖ ^ 2 * (H σ).det.re`.
+
+Use `hposd σ` as an intermediate fact. Check the signs of the components of the expression. Establish `hlog` using `Real.log_le_log hpos' key`. Establish `hnpos : ∀ j, 0 < (ℓ j).n σ` using `fun j => (hℓ j).2 σ`. Rewrite `hlog` using `[Real.log_mul (by have := hposd σ; positivity) hD.ne', Real.log_pow, Real.log_prod (fun j _ => by have := hnpos j; positivity)]`.
+
+Establish `hs : ∑ j, Real.log ((La * (ℓ j).n σ) ^ 2) = 2 * ∑ j, (Real.log La + Real.log ((ℓ j).n σ))`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[Real.log_pow, Real.log_mul hLa.ne' (hnpos j).ne']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hlog` using `[hs]`. Rewrite using `[Real.log_sqrt hD.le]`. Move the coercions through the operations in `at hlog`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumσ` using `Finset.sum_le_sum fun σ (_ : σ ∈ (Finset.univ : Finset (K →+* ℂ))) => hσ σ`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hsumσ`. Establish `hc : ∑ σ : K →+* ℂ, ∑ j, Real.log ((ℓ j).n σ) = ∑ j, ∑ σ : K →+* ℂ, Real.log ((ℓ j).n σ)` using `Finset.sum_comm`. Establish `hcard : (Fintype.card (K →+* ℂ) : ℝ) = Module.finrank ℚ K`.
+
+Conclude with `NumberField.Embeddings.card K ℂ` after adjusting the coercions. Rewrite `hsumσ` using `[hc, hcard]`. Establish `hLd : abelian₂.deg = -Real.log ((FractionalIdeal.absNorm abelian₂.I : ℚ) : ℝ) - ∑ σ, Real.log (Real.sqrt (H σ).det.re)`. Simplify using `only [MLine.deg, hn]`. Rewrite using `[hLd]`.
+
+Simplify using `only [MLine.deg, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hadamard_of_le (g : ℕ) (abelian₂ : MLine K) (ℓ : Fin g → MLine K) (u : Fin g → Fin g → K)
     (H : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ) (La : ℝ) (hLam : abelian₂.I ≠ 0) (hℓ : ∀ j, (ℓ j).Good)
     (hdne : (Matrix.of u).det ≠ 0) (hLa : 0 < La) (hH : ∀ σ, (H σ).PosDef)
@@ -234,11 +308,21 @@ theorem hadamard_of_le (g : ℕ) (abelian₂ : MLine K) (ℓ : Fin g → MLine K
 
 end Had
 
+/- English proof (translation)
+Introduce `K _ _ g abelian₂ ℓ U H La hLam hℓ hdet hLa hH hn hloc hsq`. Establish `hle` using `prod_span_le_of_loc abelian₂ ℓ U.det hLam (fun j => (hℓ j).1) hdet hloc`. Conclude with `hadamard_of_le g abelian₂ ℓ U H La hLam hℓ hdet hLa hH hn hle hsq`.
+-/
 theorem hadamard_local_base : HadamardLoc0 := by
   intro K _ _ g abelian₂ ℓ U H La hLam hℓ hdet hLa hH hn hloc hsq
   have hle := prod_span_le_of_loc abelian₂ ℓ U.det hLam (fun j => (hℓ j).1) hdet hloc
   exact hadamard_of_le g abelian₂ ℓ U H La hLam hℓ hdet hLa hH hn hle hsq
 
+/- English proof (translation)
+Introduce `hKC K _ _ x T abelian₂ ℓ U H La logOm V _ c G μ n S Rr hT hL hloc harch hℓ hdne hLa hH hn hlocU hsq hnd hcf hmem hS hRr hev`. Establish `hdeg` using `key_degree_essential hKC K x T abelian₂ hT hL hloc harch`. Establish `hHad` using `hadamard_local_base K x.P.g abelian₂ ℓ U H La hL.1 hℓ hdne (by linarith) hH hn hlocU hsq`. Establish `hTd : T.dual.Good` using `(degree_algebraic K T T hT hT).2.2.1`. Establish `hd` using `finrank_pos_real K`.
+
+Establish `hnd' : T.dual.ndeg ≤ (1 / 2) * abelian₂.dual.ndeg + (x.P.g : ℝ) / 4 * Real.log (2 * Real.pi)`. Apply `le_of_eq` to reduce the goal to its premises. Simplify using `only [MLine.ndeg]`. Rewrite using `[hdeg]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `lambda_number_base K x.P.g abelian₂ ℓ T.dual La logOm V c G μ n S Rr ⟨hL, hℓ, hTd, hLa, hHad, hnd, hnd'⟩ hcf hmem hS hRr hev`.
+-/
 theorem lambda_key_formula : LamKey := by
   intro hKC K _ _ x T abelian₂ ℓ U H La logOm V _ c G μ n S Rr hT hL hloc harch hℓ hdne hLa hH hn hlocU hsq hnd
     hcf hmem hS hRr hev

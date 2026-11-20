@@ -6,6 +6,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.Gal.TP.Chr
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `E _ _ _ μ hU`. Set `e` to `GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (GlobalTheory.GalOfCusp.isCMExt_real E)`. Set `f : (AE (↥(maximalRealSubfield E)) E)ˣ →* (AdeleRing (𝓞 E) E)ˣ` to `Units.map (e : _ →* _)`. Use `⟨{ toFun := fun z => ⟨((μ.1 (f z) : ℂˣ) : ℂ), mem_sphere_zero_iff_norm.2 (hU (f z))⟩, map_one' := ?_, map_mul' := ?_ }, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_mul, Units.val_mul]`. Both sides reduce to the same expression.
+
+Introduce `z`. Both sides reduce to the same expression. Establish `hf : Continuous f` using `by show Continuous (Units.map (e : AE (↥(maximalRealSubfield E)) E →* AdeleRing (𝓞 E) E))`. Conclude with `Continuous.units_map _ (GlobalTheory.UnitaryHeckeBaseChange.continuous_toAdele _ E)`. Establish `hμc : Continuous (μ.1 : Ideles E → ℂˣ)` using `μ.2.1`.
+
+Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (hμc.comp hf)`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((μ.1 (f _) : ℂˣ) : ℂ) = 1`.
+
+Rewrite using `[show f _ = diagUnits E x from Units.ext ?_, μ.2.2 x]`. Both sides reduce to the same expression. Conclude with `GlobalTheory.UnitaryHeckeBaseChange.toAdele_incA (x : E)`.
+-/
 theorem UpperTheory.Gal.TP.Chr.readEx :
     UpperTheory.Gal.TP.Chr.ReadEx := by
   intro E _ _ _ μ hU

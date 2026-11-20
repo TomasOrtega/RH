@@ -20,6 +20,41 @@ set_option autoImplicit false
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 X c hc u e hu h χ hAH x hx a ha`. Take `⟨U0, hU0⟩` from `GlobalTheory.T.product_abelian_uniformization X.A X.ab (X.diag c) _ u`. Establish `hAb2` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Take `⟨U, H, χ', hUex, hF⟩` from `GlobalTheory.T.exists_appell_humbert_line_bundle (X.A ⊗ X.A) hAb2 _ _ U0 (X.P c) (X.isLB c)`. Establish `hex : ∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)` using `fun x y => by rw [hUex]; exact hU0 x y`.
+
+Establish `hb` using `GlobalTheory.T.torus_real_mult_appell_humbert F 𝔠 X c hc u e hu h χ hAH U H χ' hex hF`. Establish `hχ` using `GlobalTheory.T.product_torus_factor_appell_humbert X.A (X.diag c) _ u (X.P c) (X.isLB c) (X.rig₂ c) U H χ' hex hF (fun z w => by rw [hb]; simp [hermForm])`. Take `⟨u', hu'ex, hu'ch, hu'fr⟩` from `GlobalTheory.T.translated_uniformization_pullback X.A (X.diag c) _ u (X.P c) U hex x`. Establish `hgen : HasGen ((X.P c).pull (lift (𝟙 X.A) (toUnit X.A ≫ u.ex x)).left)`. Use `GlobalTheory.T.theta_nonvanishing_bundle_generated X.A X.ab (GlobalTheory.T.totally_positive_polarization_projective F 𝔠 X c hc) _ (LB.isLB_pull (X.isLB c) _) _ u' (fun z => Complex.exp (Real.pi * hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) z x / 2)) ?_ (fun z => Complex.exp_ne_ …` and prove the remaining obligations.
+
+Simplify using `only [hermForm, dotProduct] fun_prop`. Introduce `l hl i z hz`. Establish `hlu : l ∈ u.Λ` using `by rw [← u.ker, ← hu'ex]; exact (u'.ker l).2 hl`. Establish `h0 : u.ex 0 = 1` using `(u.ker 0).2 u.Λ.zero_mem`. Establish `hm : Fin.append l (0 : Fin (Module.finrank ℚ F) → ℂ) ∈ U.Λ`.
+
+Rewrite using `[← U.ker, hex, (u.ker l).2 hlu, ← h0, ← hex]`. Establish `hz0 : Fin.append (0 : Fin (Module.finrank ℚ F) → ℂ) (0 : Fin (Module.finrank ℚ F) → ℂ) = 0`. Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun k => ?_) (fun k => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.zero_apply]`.
+
+Simplify using `only [Fin.append_right, Pi.zero_apply]`. Rewrite using `[hz0]`. Conclude with `(U.ker 0).2 U.Λ.zero_mem`. Establish `hz' : ⊤ ≤ (U.ex (Fin.append z x)).left ⁻¹ᵁ (X.P c).U (i PUnit.unit)` using `(hu'ch i z).1 hz`. Establish `happ : Fin.append z x + Fin.append l 0 = Fin.append (z + l) x`.
+
+Use function extensionality and compare the values at `k`. Use `Fin.addCases (fun k => ?_) (fun k => ?_) k` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Fin.append_left]`. Simplify using `only [Pi.add_apply, Fin.append_right, Pi.zero_apply, add_zero]`. Establish `e1 : hermForm H (Fin.append z x) (Fin.append l 0) = hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l / 2`.
+
+Rewrite using `[hb]`. Simplify using `[hermForm]`. Establish `e2 : hermForm H (Fin.append l 0) (Fin.append l 0) = 0`. Rewrite using `[hb]`. Simplify using `[hermForm]`.
+
+Establish `hf : U.fr (i PUnit.unit) (Fin.append z x) = Complex.exp (Real.pi * (hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l / 2)) * U.fr (i PUnit.unit) (Fin.append (z + l) x)`. Establish `h3` using `hF.2.2 ⟨_, hm⟩ (i PUnit.unit) (Fin.append z x) hz'`. Rewrite `h3` using `[hχ ⟨_, hm⟩ l rfl, _root_.one_mul]`. Simplify using `only at h3`. Rewrite using `[h3, happ]`.
+
+Use `congr 2`. Rewrite using `[show (Fin.append z x ⬝ᵥ H.mulVec (star (Fin.append l 0))) = hermForm H (Fin.append z x) (Fin.append l 0) from rfl, show (Fin.append l 0 ⬝ᵥ H.mulVec (star (Fin.append l 0))) = hermForm H (Fin.append l 0) (Fin.append l 0) from rfl, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `hx ⟨l, hlu⟩`. Establish `hs : hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l = ∑ j, (h j : ℂ) * (x j * starRingEnd ℂ (l j))`.
+
+Simplify using `only [hermForm, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hsw : hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) l x = starRingEnd ℂ (hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l)`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, Complex.star_def, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Establish `hadd : hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) (z + l) x = hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) z x + hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) l x`. Simplify using `only [hermForm, add_dotProduct]`. Establish `hc : starRingEnd ℂ (hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l) = hermForm (Matrix.diagonal fun j ↦ (h j : ℂ)) x l - 4 * n * Complex.I`. Rewrite using `[hs]`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Simplify using `only [Complex.conj_im, Complex.sub_im, Complex.mul_im, Complex.I_re, Complex.I_im]`. Rewrite using `[hn]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hu'fr, hu'fr, hf]`. Use `beta_reduce`. Rewrite using `[← _root_.mul_assoc, ← Complex.exp_add]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨-n, ?_⟩` and prove the remaining obligations. Rewrite using `[hadd, hsw, hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hgen2 : HasGen ((X.P c).pull (lift (fst X.A (𝟙_ (Over (Sp ℂ)))) (snd X.A (𝟙_ (Over (Sp ℂ))) ≫ u.ex x)).left)`.
+
+Take `⟨t, ht⟩` from `hgen`. Establish `hm : lift (fst X.A (𝟙_ (Over (Sp ℂ)))) (snd X.A (𝟙_ (Over (Sp ℂ))) ≫ u.ex x) = fst X.A (𝟙_ (Over (Sp ℂ))) ≫ lift (𝟙 X.A) (toUnit X.A ≫ u.ex x)`. Use `ext`. Simplify using the standard rewrite rules. Establish `hs : snd X.A (𝟙_ (Over (Sp ℂ))) = fst X.A (𝟙_ (Over (Sp ℂ))) ≫ toUnit X.A` using `toUnit_unique _ _`.
+
+Simplify using `[hs]`. Rewrite using `[hm, Over.comp_left]`. Conclude with `⟨LB.pullGen _ (fun _ : PUnit => _) (fun _ => 1) t (fst X.A _).left, DVR.pullGen_isGen _ _ _ t ht _⟩`. Establish `h1` using `X.ker c (𝟙_ _) (u.ex x) hgen2 a ha`. Rewrite using `[← u.ker, hu a x]`.
+
+Conclude with `h1`.
+-/
 theorem GlobalTheory.RiemFormKer.smul_mem_lattice : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

@@ -10,6 +10,9 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.TypicalCurveBases
 
+/- English proof (translation)
+The claim follows from `have h2 : TypicalCurveEigenspace := GlobalTheory.TypicalCurve.typicalCurves_of_type_of_typical_tangents GlobalTheory.PTypicalTangent.exists_pTypical_tangent ⟨h2, GlobalTheory.typicalBasis_coordinates h2⟩`.
+-/
 theorem typical_curves_tangent_and_bases : TypicalCurveEigenspace ∧ TypicalCurveBasisExists :=
   have h2 : TypicalCurveEigenspace :=
     GlobalTheory.TypicalCurve.typicalCurves_of_type_of_typical_tangents GlobalTheory.PTypicalTangent.exists_pTypical_tangent

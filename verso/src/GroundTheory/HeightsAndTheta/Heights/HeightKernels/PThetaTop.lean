@@ -6,6 +6,15 @@ namespace GroundTheory.Heights₂.Heights
 
 open Matrix Real
 
+/- English proof (translation)
+Take `⟨C₃, hC₃, hG⟩` from `hG`. Take `⟨C, hC, hK⟩` from `hConst C₃ hC₃`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `g _ X Y ρ a b _ hY hR _ _`. Use `⟨hMean g X Y a b hY, fun u₁ u₂ => ?_⟩` and prove the remaining obligations.
+
+Use `set δ := Metric.infDist (u₁ 0 + a 0) (Set.range ((↑) : ℤ → ℝ))`. Establish `hdet : Y.det⁻¹ ≤ ρ ^ 2 * (2 * (g : ℝ)) ^ (g - 1)`. Establish `h` using `hR.det_le`. Rewrite `h` using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Then use the resulting hypothesis. Establish `hg : 1 ≤ g` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne g)`.
+
+Establish `h1` using `hMaj g X Y a b u₁ u₂ hY`. Establish `h2` using `hSplit g Y ρ a u₁ hY hR.pos hR.first`. Establish `h3` using `(hG g Y ρ hY hR.pos hR.min (a + u₁)).2`. Establish `h4` using `hK g ρ Y.det hg hR.pos hY.det_pos hR.sq_le hdet`. Establish `he : 0 ≤ exp (-(π / (2 * ρ ^ 2)) * δ ^ 2)` using `(exp_pos _).le`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[exp_add (-(π / (2 * ρ ^ 2)) * δ ^ 2)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ThetaBound.proof (hG : GaussianSum.Statement) (hMean : ThetaMean.Statement)
     (hMaj : ThetaNormMajorant.Statement) (hSplit : ThetaFirstCoordSplit.Statement)
     (hConst : ThetaConstants.Statement) : ThetaBound.Statement := by

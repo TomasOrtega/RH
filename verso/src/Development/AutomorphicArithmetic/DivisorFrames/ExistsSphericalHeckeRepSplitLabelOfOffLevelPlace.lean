@@ -12,6 +12,9 @@ open Formalism.CohomologicalDescent.DepthNonnegative (NablaT)
 open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.FrameAut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `ℓ`. Rewrite using `[map_sub, map_sum, map_sum, sub_eq_zero]`. Conclude with `(h ℓ).symm`.
+-/
 private theorem UpperTheory.sum_eq_of_dual_sums {G ι κ : Type} {M : Type} [AddCommGroup M] [Module ℂ M] (R : Finset ι) (B : Finset κ)
     (u : ι → G) (v : κ → G) (Fm : G → M)
     (h : ∀ ℓ : Module.Dual ℂ M, ∑ a ∈ B, ℓ (Fm (v a)) = ∑ γ ∈ R, ℓ (Fm (u γ))) :
@@ -21,11 +24,17 @@ private theorem UpperTheory.sum_eq_of_dual_sums {G ι κ : Type} {M : Type} [Add
   rw [map_sub, map_sum, map_sum, sub_eq_zero]
   exact (h ℓ).symm
 
+/- English proof (translation)
+Rewrite using `[hF, hk, Units.val_one, one_smul]`.
+-/
 private theorem UpperTheory.dual_invariant_of_trivial_character {G : Type} [Group G] {M : Type} [AddCommGroup M] [Module ℂ M] (J : Subgroup G) (χ : J →* ℂˣ)
     (Fm : G → M) (hF : ∀ (κ : J) g, Fm (g * κ) = ((χ κ : ℂˣ) : ℂ) • Fm g) (ℓ : Module.Dual ℂ M) (g : G) (k : J)
     (hk : χ k = 1) : ℓ (Fm (g * k)) = ℓ (Fm g) := by
   rw [hF, hk, Units.val_one, one_smul]
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.Hk3.hkF V P (Finsupp.single d 1) F g = (1 : ℂ) • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (g * (Formalism.L2.Theta.finHom V).rangeRestrict γ)` using `Finsupp.sum_single_index (h := fun d (z : ℂ) => z • ∑ γ ∈ GlobalTheory.Hk3.rep V P d, F (g * (Formalism.L2.Theta.finHom V).rangeRestrict γ)) (zero_smul ℂ _)`. Conclude with `e1.trans (one_smul ℂ _)`.
+-/
 private theorem UpperTheory.hecke_single_eq_sum {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (P : HeightOneSpectrum (𝓞 D.host.E)) (d : List ℤ)
     (F : Bridge.Gf V → ℂ) (g : Bridge.Gf V) :
     GlobalTheory.Hk3.hkF V P (Finsupp.single d 1) F g =
@@ -37,6 +46,9 @@ private theorem UpperTheory.hecke_single_eq_sum {D : D7} (V : Formalism.BasicNot
       (zero_smul ℂ _)
   exact e1.trans (one_smul ℂ _)
 
+/- English proof (translation)
+Establish `hl` using `fun e f' he => (GlobalTheory.LevSplit.lev_split V β Λ 1 (Formalism.IndefR.Lev.flag1L L) hc').2 P e f' he h1 hoff`. Introduce and unpack `⟨y, hy⟩ ⟨e, f', a, he, ha, hxa, hs⟩`. Take `rfl : y = (Formalism.L2.Theta.finHom V).rangeRestrict a` from `Subtype.ext hxa`. Conclude with `Units.ext ((hl e f' he).2.1 a ⟨ha, hy⟩ hs)`.
+-/
 private theorem UpperTheory.level_character_trivial {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (hc' : Formalism.IndefR.Lev.IsBaseFrame V β Λ 1) (P : HeightOneSpectrum (𝓞 D.host.E))
@@ -48,6 +60,13 @@ private theorem UpperTheory.level_character_trivial {D : D7} (V : Formalism.Basi
   obtain rfl : y = (Formalism.L2.Theta.finHom V).rangeRestrict a := Subtype.ext hxa
   exact Units.ext ((hl e f' he).2.1 a ⟨ha, hy⟩ hs)
 
+/- English proof (translation)
+Use `hβ.elim fun c hc => ?_` and prove the remaining obligations. Establish `hc' : Formalism.IndefR.Lev.IsBaseFrame V β Λ 1` using `(one_pow c : (1 : ℕ) ^ c = 1) ▸ hc`. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+
+Establish `hχ` using `UpperTheory.level_character_trivial V β Λ L hc' P h1 hoff`. Establish `H` using `GlobalTheory.T.doubleCosetOperator_eq_labelOperator_localReps V β Λ 1 L hc' P h1 hoff d x B hd hx hB hDC`. Establish `hs : GlobalTheory.Hk3.SphOp V (Formalism.DivisionValues.conjPl (Formalism.DivisionValues.conjPl P)) d (GlobalTheory.Hk3.rep V P d)`. Rewrite using `[GlobalTheory.SphConj.conjPl_conjPl]`. Conclude with `GlobalTheory.SphLabelOps.sphOp_rep H.1`.
+
+Use `⟨GlobalTheory.Hk3.rep V P d, GlobalTheory.SphConj.sphOp_conj V _ d _ hs, fun M _ _ Fm hF g => ?_⟩` and prove the remaining obligations. Use `UpperTheory.sum_eq_of_dual_sums _ _ (fun γ => g * (Formalism.L2.Theta.finHom V).rangeRestrict γ) (fun a => g * a) Fm fun ℓ => ?_` and prove the remaining obligations. Establish `h2` using `H.2 ℂ (fun h => ℓ (Fm h)) (fun h k hk => UpperTheory.dual_invariant_of_trivial_character _ _ Fm hF ℓ h k (hχ k hk))`. Conclude with `(congrFun h2 g).trans (UpperTheory.hecke_single_eq_sum V P d (fun h => ℓ (Fm h)) g)`.
+-/
 private theorem UpperTheory.hecke_offprime_sum {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (hβ : ∃ c : ℕ, Formalism.IndefR.Lev.IsBaseFrame V β Λ (1 ^ c)) (P : HeightOneSpectrum (𝓞 D.host.E))
@@ -73,6 +92,9 @@ private theorem UpperTheory.hecke_offprime_sum {D : D7} (V : Formalism.BasicNoti
   have h2 := H.2 ℂ (fun h => ℓ (Fm h)) (fun h k hk => UpperTheory.dual_invariant_of_trivial_character _ _ Fm hF ℓ h k (hχ k hk))
   exact (congrFun h2 g).trans (UpperTheory.hecke_single_eq_sum V P d (fun h => ℓ (Fm h)) g)
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p j t Q k hpos hk`. Take `⟨hg, -, -⟩` from `(GlobalTheory.GoodPrimes.good_primes p.R.toRealDat (p.P.face p.Dcf p.Spf p.Del p.h0 Csz).lv2 p.charW.base.lev).2.2.2 p.charW.base.fam t Q.1 Q.2`. Establish `hs` using `fun x => GlobalTheory.T.split_hecke_element_label_zeros_then_neg_ones (Vc D j) p.R.pl _ ((Q, k) : _ × ℕ) x`. Establish `hloc : ∀ a ∈ hkA p j t (Q, k), GlobalTheory.Hk3.IsLocElt (Vc D j) (plOf p j t Q) a` using `fun a ha => (hs a).2.1 ((p.R.B.L j t).hecke.hA_loc (Q, k) ⟨hpos, hk⟩ a ha)`. Conclude with `⟨hloc, UpperTheory.hecke_offprime_sum (Vc D j) (p.R.βV j) (p.R.ΛV j) (p.R.datVt j t) (p.charW.base.lev.βV j) (plOf p j t Q) hg _ ((p.R.B.L j t).hecke.hx (Q, k)) (hkA p j t (Q, k)) (hs 1).2.2 ((hs _).1 hk ((p.R.B.L j t).hecke.hx_ok (Q, k) ⟨hpos, hk⟩)) hloc ((p.R.B.L j t).hecke.hDC …`.
+-/
 theorem UpperTheory.exists_sphericalHeckeRep_splitLabel_of_offLevelPlace :
     ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
         {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (Q : (blk p j t).Pl) (k : ℕ), 1 ≤ k → k ≤ (Vc D j).rank →

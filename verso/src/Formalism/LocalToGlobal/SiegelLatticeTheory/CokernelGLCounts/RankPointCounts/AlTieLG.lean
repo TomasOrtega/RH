@@ -11,6 +11,29 @@ namespace Formalism.L2.SG.Pf.AlTieLG
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.AlTie
   Formalism.L2.SG.Pf.AlTieEta Filter Topology
 
+/- English proof (translation)
+Set `f : K → K` to `fun a => a ^ 2 - tr * a + nm`. Set `f' : K → K` to `fun a => 2 * a - tr`. Establish `hid : ∀ a, f' a ^ 2 = 4 * f a + c`. Introduce `a`. Simplify using `only [f, f']`.
+
+Rewrite using `[← hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hder : ∀ a, ‖f a‖ < 1 → ‖f' a‖ = 1`. Introduce `a ha`. Establish `h1 : ‖4 * f a‖ < 1`.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖f' a ^ 2‖ = 1`. Rewrite using `[hid, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hc1]; exact h1.ne), hc1]`. Conclude with `max_eq_right h1.le`.
+
+Rewrite `h2` using `[norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h2`. Establish `hstep : ∀ a, f' a ≠ 0 → f (a - f a / f' a) = (f a / f' a) ^ 2`. Introduce `a ha`. Establish `e : f a / f' a * f' a = f a` using `div_mul_cancel₀ _ ha`.
+
+Establish `e2 : f (a - f a / f' a) = f a - f a / f' a * f' a + (f a / f' a) ^ 2`. Simplify using `only [f, f']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, e, sub_self, zero_add]`. Set `seq : ℕ → K` to `fun n => Nat.rec a₀ (fun _ a => a - f a / f' a) n`.
+
+Establish `hseq : ∀ n, seq (n + 1) = seq n - f (seq n) / f' (seq n)` using `fun n => rfl`. Establish `hρ0 : 0 ≤ ‖f a₀‖` using `norm_nonneg _`. Establish `hbound : ∀ n, ‖f (seq n)‖ ≤ ‖f a₀‖ ^ (2 ^ n)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp [seq]`. Consider the case `succ n ih`. Establish `hlt : ‖f (seq n)‖ < 1` using `lt_of_le_of_lt ih (pow_lt_one₀ hρ0 h0 (by positivity))`. Establish `hd` using `hder _ hlt`. Establish `hne : f' (seq n) ≠ 0`.
+
+Introduce `h`. Rewrite `hd` using `[h, norm_zero]`. Conclude with `zero_ne_one hd`. Rewrite using `[hseq, hstep _ hne, norm_pow, norm_div, hd, div_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hbound' : ∀ n, ‖f (seq n)‖ ≤ ‖f a₀‖ ^ n` using `fun n => (hbound n).trans (pow_le_pow_of_le_one hρ0 h0.le (Nat.lt_two_pow_self).le)`. Establish `hdist : ∀ n, dist (seq n) (seq (n + 1)) ≤ 1 * ‖f a₀‖ ^ n`. Introduce `n`. Establish `hlt : ‖f (seq n)‖ < 1` using `lt_of_le_of_lt (hbound n) (pow_lt_one₀ hρ0 h0 (by positivity))`. Establish `hd` using `hder _ hlt`.
+
+Rewrite using `[dist_eq_norm, hseq, sub_sub_cancel, norm_div, hd, div_one, one_mul]`. Conclude with `hbound' n`. Establish `hcs : CauchySeq seq` using `cauchySeq_of_le_geometric _ _ h0 hdist`. Take `⟨α, hα⟩` from `cauchySeq_tendsto_of_complete hcs`. Use `⟨α, ?_⟩` and prove the remaining obligations.
+
+Establish `hcont : Continuous f` using `by simp only [f]; fun_prop`. Establish `h1 : Tendsto (fun n => f (seq n)) atTop (𝓝 (f α))` using `(hcont.tendsto α).comp hα`. Establish `h2 : Tendsto (fun n => f (seq n)) atTop (𝓝 0)` using `squeeze_zero_norm hbound' (tendsto_pow_atTop_nhds_zero_of_lt_one hρ0 h0)`. Conclude with `tendsto_nhds_unique h1 h2`.
+-/
 theorem newton_quad {K : Type*} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (tr nm c : K) (hc : tr ^ 2 - 4 * nm = c) (hc1 : ‖c‖ = 1) (h4 : ‖(4 : K)‖ ≤ 1)
     (a₀ : K) (h0 : ‖a₀ ^ 2 - tr * a₀ + nm‖ < 1) : ∃ α : K, α ^ 2 - tr * α + nm = 0 := by
@@ -79,19 +102,43 @@ structure QuadAlg : Prop where
 
 variable {T t n}
 
+/- English proof (translation)
+Take `⟨x, y, hz⟩` from `hQ.span z`. Conclude with `⟨x, y, by rw [hz, Algebra.smul_def, Algebra.smul_def, mul_one]⟩`.
+-/
 theorem QuadAlg.span' (hQ : QuadAlg T t n) (z : A) : ∃ x y : K, z = algebraMap K A x + algebraMap K A y * T := by
   obtain ⟨x, y, hz⟩ := hQ.span z
   exact ⟨x, y, by rw [hz, Algebra.smul_def, Algebra.smul_def, mul_one]⟩
 
+/- English proof (translation)
+The claim follows from `hQ.indep x y (by rw [Algebra.smul_def, Algebra.smul_def, mul_one]; exact h)`.
+-/
 theorem QuadAlg.indep' (hQ : QuadAlg T t n) (x y : K) (h : algebraMap K A x + algebraMap K A y * T = 0) :
     x = 0 ∧ y = 0 := hQ.indep x y (by rw [Algebra.smul_def, Algebra.smul_def, mul_one]; exact h)
 
+/- English proof (translation)
+Simplify using `only [map_add, map_sub, map_mul]`. Take the linear combination `(algebraMap K A p * algebraMap K A p') * hQ.rel`.
+-/
 private theorem linear_mul_linear_of_quadAlg (hQ : QuadAlg T t n) (p q p' q' : K) :
     (algebraMap K A p * T + algebraMap K A q) * (algebraMap K A p' * T + algebraMap K A q') =
       algebraMap K A (p * q' + q * p' + p * p' * t) * T + algebraMap K A (q * q' - p * p' * n) := by
   simp only [map_add, map_sub, map_mul]
   linear_combination (algebraMap K A p * algebraMap K A p') * hQ.rel
 
+/- English proof (translation)
+Take `⟨e, he, he0, he1⟩` from `h`. Take `⟨x, y, rfl⟩` from `hQ.span' e`. Establish `he' : (algebraMap K A y * T + algebraMap K A x) * (algebraMap K A y * T + algebraMap K A x) = algebraMap K A y * T + algebraMap K A x`. Rewrite using `[add_comm (algebraMap K A y * T)]`. Conclude with `he`.
+
+Rewrite `he'` using `[linear_mul_linear_of_quadAlg hQ]`. Establish `key : algebraMap K A (x * x - y * y * n - x) + algebraMap K A (y * x + x * y + y * y * t - y) * T = 0`. Simplify using `only [map_sub, map_add, map_mul] at he' ⊢`. Take the linear combination `he'`. Take `⟨h1, h2⟩` from `hQ.indep' _ _ key`.
+
+Distinguish the cases in `hy : y = 0`. It suffices to derive a contradiction. Substitute `hy` using the available equality. Establish `hx : x * (x - 1) = 0` using `by linear_combination h1`. Break down `mul_eq_zero.1 hx with hx | hx` into its components or cases.
+
+Apply `he0` to reduce the goal to its premises. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Apply `he1` to reduce the goal to its premises. Rewrite using `[sub_eq_zero.1 hx]`.
+
+Simplify using the standard rewrite rules. Establish `h2' : 2 * x + y * t - 1 = 0`. Establish `h3 : y * (2 * x + y * t - 1) = 0` using `by linear_combination h2`. Conclude with `(mul_eq_zero.1 h3).resolve_left hy`. Use `⟨x / y + t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show (x / y + t) ^ 2 - t * (x / y + t) + n = (x ^ 2 + x * y * t + n * y ^ 2) / y ^ 2 by`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring]`. Rewrite using `[div_eq_zero_iff]`. Use `left`.
+
+Take the linear combination `x * h2' - h1`.
+-/
 theorem root_of_idem (hQ : QuadAlg T t n) (h : IdemNT A) : ∃ β : K, β ^ 2 - t * β + n = 0 := by
   obtain ⟨e, he, he0, he1⟩ := h
   obtain ⟨x, y, rfl⟩ := hQ.span' e
@@ -127,6 +174,17 @@ theorem root_of_idem (hQ : QuadAlg T t n) (h : IdemNT A) : ∃ β : K, β ^ 2 - 
     left
     linear_combination x * h2' - h1
 
+/- English proof (translation)
+Establish `hd : (2 * β - t) ^ 2 ≠ 0`. Rewrite using `[show (2 * β - t) ^ 2 = t ^ 2 - 4 * n by linear_combination 4 * hβ]`. Conclude with `hQ.disc`. Establish `hne : 2 * β - t ≠ 0` using `fun h0 => hd (by rw [h0]; ring)`. Use `set c := (2 * β - t)⁻¹ with hc_def`.
+
+Establish `hc : c * (2 * β - t) = 1` using `inv_mul_cancel₀ hne`. Establish `hc0 : c ≠ 0` using `inv_ne_zero hne`. Use `⟨algebraMap K A c * T + algebraMap K A (-(c * (t - β))), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[linear_mul_linear_of_quadAlg hQ]`. Establish `hX : c * -(c * (t - β)) + -(c * (t - β)) * c + c * c * t = c`.
+
+Take the linear combination `c * hc`. Establish `hY : -(c * (t - β)) * -(c * (t - β)) - c * c * n = -(c * (t - β))`. Take the linear combination `(-c * (t - β)) * hc - c ^ 2 * hβ`. Rewrite using `[hX, hY]`. Introduce `h0`.
+
+Establish `h1 : algebraMap K A (-(c * (t - β))) + algebraMap K A c * T = 0`. Rewrite using `[add_comm]`. Conclude with `h0`. Conclude with `hc0 (hQ.indep' _ _ h1).2`. Introduce `h0`.
+
+Establish `h1 : algebraMap K A (-(c * (t - β)) - 1) + algebraMap K A c * T = 0`. Rewrite using `[map_sub, map_one]`. Take the linear combination `h0`. Conclude with `hc0 (hQ.indep' _ _ h1).2`.
+-/
 theorem idem_of_root (hQ : QuadAlg T t n) {β : K} (hβ : β ^ 2 - t * β + n = 0) : IdemNT A := by
   have hd : (2 * β - t) ^ 2 ≠ 0 := by
     rw [show (2 * β - t) ^ 2 = t ^ 2 - 4 * n by linear_combination 4 * hβ]
@@ -153,9 +211,25 @@ theorem idem_of_root (hQ : QuadAlg T t n) {β : K} (hβ : β ^ 2 - t * β + n = 
       linear_combination h0
     exact hc0 (hQ.indep' _ _ h1).2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨root_of_idem hQ, fun ⟨_, hβ⟩ => idem_of_root hQ hβ⟩`.
+-/
 theorem idem_iff_root (hQ : QuadAlg T t n) : IdemNT A ↔ ∃ β : K, β ^ 2 - t * β + n = 0 :=
   ⟨root_of_idem hQ, fun ⟨_, hβ⟩ => idem_of_root hQ hβ⟩
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨x, y, rfl⟩` from `hQ.span' z`. Use `set N := x ^ 2 + x * y * t + y ^ 2 * n with hN_def`. Establish `hN : N ≠ 0`. Introduce `hN0`.
+
+Distinguish the cases in `hy : y = 0`. Apply `hz` to reduce the goal to its premises. Establish `hx : x = 0`. Establish `: x ^ 2 = 0` using `by rw [hN_def, hy] at hN0; linear_combination hN0`. Conclude with `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 this`.
+
+Rewrite using `[hx, hy]`. Simplify using the standard rewrite rules. Apply `h` to reduce the goal to its premises. Use `⟨-x / y, ?_⟩` and prove the remaining obligations. Rewrite using `[show (-x / y) ^ 2 - t * (-x / y) + n = N / y ^ 2 by`.
+
+Rewrite using `[hN_def]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring]`. Rewrite using `[hN0, zero_div]`. Establish `hw : (algebraMap K A x + algebraMap K A y * T) * (algebraMap K A (-(N⁻¹ * y)) * T + algebraMap K A (N⁻¹ * (x + y * t))) = 1`.
+
+Rewrite using `[add_comm (algebraMap K A x), linear_mul_linear_of_quadAlg hQ]`. Establish `hX : y * (N⁻¹ * (x + y * t)) + x * -(N⁻¹ * y) + y * -(N⁻¹ * y) * t = 0` using `by ring`. Establish `hY : x * (N⁻¹ * (x + y * t)) - y * -(N⁻¹ * y) * n = 1`. Rewrite using `[show x * (N⁻¹ * (x + y * t)) - y * -(N⁻¹ * y) * n = N⁻¹ * N by rw [hN_def]; ring]`. Conclude with `inv_mul_cancel₀ hN`.
+
+Rewrite using `[hX, hY, map_zero, map_one, zero_mul, zero_add]`. Conclude with `⟨⟨_, _, hw, by rw [mul_comm]; exact hw⟩, rfl⟩`.
+-/
 theorem unit_of_noRoot (hQ : QuadAlg T t n) (h : ¬ ∃ β : K, β ^ 2 - t * β + n = 0) :
     ∀ z : A, z ≠ 0 → IsUnit z := by
   intro z hz
@@ -187,6 +261,11 @@ theorem unit_of_noRoot (hQ : QuadAlg T t n) (h : ¬ ∃ β : K, β ^ 2 - t * β 
     rw [hX, hY, map_zero, map_one, zero_mul, zero_add]
   exact ⟨⟨_, _, hw, by rw [mul_comm]; exact hw⟩, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `hu ⟨β, hβ⟩`. Take `⟨e, he, he0, he1⟩` from `idem_of_root hQ hβ`. Establish `h1e : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h2 : 1 - e = 0` using `((hu e he0).mul_right_eq_zero).1 h1e`.
+
+Conclude with `he1 (sub_eq_zero.1 h2).symm`. Conclude with `unit_of_noRoot hQ`.
+-/
 theorem field_iff_noRoot (hQ : QuadAlg T t n) :
     (∀ z : A, z ≠ 0 → IsUnit z) ↔ ¬ ∃ β : K, β ^ 2 - t * β + n = 0 := by
   constructor
@@ -206,6 +285,9 @@ variable {R K F : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K
 abbrev OOv : Subalgebra R K :=
   Localization.subalgebra.ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact Localization.subalgebra.mem_range_mapToFractionRing_iff_ofField K _ _ (Localization v.asIdeal.primeCompl) x`.
+-/
 theorem mem_OOv (x : K) :
     x ∈ OOv (K := K) v ↔ ∃ (a s : R) (_ : s ∈ v.asIdeal.primeCompl),
       x = algebraMap R K a * (algebraMap R K s)⁻¹ := by
@@ -213,11 +295,17 @@ theorem mem_OOv (x : K) :
   | exact Iff.rfl
   | exact Localization.subalgebra.mem_range_mapToFractionRing_iff_ofField K _ _ (Localization v.asIdeal.primeCompl) x
 
+/- English proof (translation)
+Use `haveI := Localization.subalgebra.isLocalization_ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`. Conclude with `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot _`.
+-/
 theorem isDVR_OOv : IsDiscreteValuationRing (OOv (K := K) v) := by
   haveI := Localization.subalgebra.isLocalization_ofField K v.asIdeal.primeCompl
     v.asIdeal.primeCompl_le_nonZeroDivisors
   exact IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R v.ne_bot _
 
+/- English proof (translation)
+Introduce `h0`. Apply `hs` to reduce the goal to its premises. Establish `h1 : s = 0` using `IsFractionRing.injective R K (h0.trans (map_zero _).symm)`. Rewrite using `[h1]`. Conclude with `zero_mem _`.
+-/
 theorem alg_ne_zero {s : R} (hs : s ∉ v.asIdeal) : algebraMap R K s ≠ 0 := by
   intro h0
   apply hs
@@ -225,9 +313,15 @@ theorem alg_ne_zero {s : R} (hs : s ∉ v.asIdeal) : algebraMap R K s ≠ 0 := b
   rw [h1]
   exact zero_mem _
 
+/- English proof (translation)
+The claim follows from `v.valuedAdicCompletion_eq_valuation' k`.
+-/
 theorem val_alg (k : K) : Valued.v (algebraMap K (v.adicCompletion K) k) = v.valuation K k :=
   v.valuedAdicCompletion_eq_valuation' k
 
+/- English proof (translation)
+Establish `h1 : a ∈ (IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime K v).toSubring` using `by show a ∈ IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime K v`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).2 h`. Rewrite `h1` using `[IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime_toSubring]`. Conclude with `h1`.
+-/
 theorem mem_OOv_of_val {a : K} (h : v.valuation K a ≤ 1) : a ∈ OOv (K := K) v := by
   have h1 : a ∈ (IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime K v).toSubring := by
     show a ∈ IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime K v
@@ -236,6 +330,13 @@ theorem mem_OOv_of_val {a : K} (h : v.valuation K a ≤ 1) : a ∈ OOv (K := K) 
   rw [IsDedekindDomain.HeightOneSpectrum.valuationSubringAtPrime_toSubring] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1 : Ideal.span {s} ⊔ v.asIdeal = ⊤`. Assume the negation of the conclusion as `hne`. Establish `heq` using `v.isMaximal.eq_of_le hne (le_sup_right : v.asIdeal ≤ Ideal.span {s} ⊔ v.asIdeal)`. Apply `hs` to reduce the goal to its premises. Rewrite using `[heq]`.
+
+Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self s)`. Establish `h2 : Ideal.span {s} ⊔ v.asIdeal ^ n = ⊤` using `Ideal.sup_pow_eq_top h1`. Establish `h3 : (1 : R) ∈ Ideal.span {s} ⊔ v.asIdeal ^ n` using `by rw [h2]; exact Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h3`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+
+Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: 1 - s * t = z` using `by rw [← hyz]; ring`. Rewrite using `[this]`. Conclude with `hz`.
+-/
 theorem exists_inv_mod (n : ℕ) {s : R} (hs : s ∉ v.asIdeal) : ∃ t : R, 1 - s * t ∈ v.asIdeal ^ n := by
   have h1 : Ideal.span {s} ⊔ v.asIdeal = ⊤ := by
     by_contra hne
@@ -252,6 +353,27 @@ theorem exists_inv_mod (n : ℕ) {s : R} (hs : s ∉ v.asIdeal) : ∃ t : R, 1 -
   rw [this]
   exact hz
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.intValuation_exists_uniformizer`. Use `set p : v.adicCompletion K := algebraMap K (v.adicCompletion K) (algebraMap R K π) with hp`. Establish `hpv : Valued.v p = WithZero.exp (-1 : ℤ)`. Rewrite using `[hp, val_alg, HeightOneSpectrum.valuation_of_algebraMap, hπ]`. Establish `hpn : Valued.v (p ^ n) = WithZero.exp (-(n : ℤ))`.
+
+Rewrite using `[map_pow, hpv, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hopen : IsOpen {x : v.adicCompletion K | (x - (c : v.adicCompletion K)) * (p ^ n)⁻¹ ∈ (Valued.v.valuationSubring : ValuationSubring (v.adicCompletion K))}` using `(Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage ((continuous_sub_right _).mul continuous_const)`. Take `⟨k, hk⟩` from `(v.denseRange_algebraMap K).exists_mem_open hopen ⟨c, by simp⟩`.
+
+Establish `hk' : Valued.v (algebraMap K (v.adicCompletion K) k - (c : v.adicCompletion K)) ≤ WithZero.exp (-(n : ℤ))`. Establish `h1 : Valued.v ((algebraMap K (v.adicCompletion K) k - (c : v.adicCompletion K)) * (p ^ n)⁻¹) ≤ 1` using `(Valuation.mem_valuationSubring_iff _ _).1 hk`. Rewrite `h1` using `[map_mul, map_inv₀, hpn]`. Establish `h2` using `mul_le_mul' h1 (le_refl (WithZero.exp (-(n : ℤ))))`. Rewrite `h2` using `[mul_assoc, inv_mul_cancel₀ WithZero.exp_ne_zero, mul_one, one_mul]`. Then use the resulting hypothesis.
+
+Establish `hle1 : WithZero.exp (-(n : ℤ)) ≤ (1 : WithZero (Multiplicative ℤ))`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hk1 : v.valuation K k ≤ 1`. Rewrite using `[← val_alg]`.
+
+Establish `e : algebraMap K (v.adicCompletion K) k = (algebraMap K (v.adicCompletion K) k - c) + c` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (hk'.trans hle1) ((HeightOneSpectrum.mem_adicCompletionIntegers R K v).1 c.2)`. Take `⟨a, s, hs, rfl⟩` from `(mem_OOv v k).mp (mem_OOv_of_val v hk1)`. Take `⟨t, ht⟩` from `exists_inv_mod v n hs`.
+
+Use `⟨a * t, ?_⟩` and prove the remaining obligations. Establish `hs0` using `alg_ne_zero (K := K) v hs`. Establish `e1 : algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t) = algebraMap R K a * algebraMap R K (1 - s * t) * (algebraMap R K s)⁻¹`. Simplify using `only [map_mul, map_sub, map_one]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : v.valuation K (algebraMap R K s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_eq_one_iff_mem_primeCompl s).2 hs`. Establish `h3 : v.valuation K (algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t)) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[e1, map_mul, map_mul, map_inv₀, h2, inv_one, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul' (v.valuation_le_one a) ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_le_pow_iff_mem _ n).2 ht`. Use `_ = _ := one_mul _`.
+
+Establish `e2 : (c : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap R K (a * t)) = -(algebraMap K (v.adicCompletion K) (algebraMap R K a * (algebraMap R K s)⁻¹) - c) + algebraMap K (v.adicCompletion K) (algebraMap R K a * (algebraMap R K s)⁻¹ - algebraMap R K (a * t))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `Valuation.map_add_le _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Valuation.map_neg]`. Conclude with `hk'`. Rewrite using `[val_alg]`. Conclude with `h3`.
+-/
 theorem approx (c : v.adicCompletionIntegers K) (n : ℕ) :
     ∃ r : R, Valued.v ((c : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap R K r)) ≤
       WithZero.exp (-(n : ℤ)) := by
@@ -314,23 +436,41 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 abbrev iotaR : 𝓞 F →+* v.adicCompletion F := (algebraMap F (v.adicCompletion F)).comp (algebraMap (𝓞 F) F)
 
+/- English proof (translation)
+Rewrite using `[iotaR, RingHom.comp_apply, val_alg, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`.
+-/
 theorem val_int (x : 𝓞 F) : Valued.v (iotaR v x) = v.intValuation x := by
   rw [iotaR, RingHom.comp_apply, val_alg, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[Valued.toNormedField.norm_lt_one_iff, val_int, IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem]`.
+-/
 theorem norm_int_lt_one (x : 𝓞 F) : ‖iotaR v x‖ < 1 ↔ x ∈ v.asIdeal := by
   rw [Valued.toNormedField.norm_lt_one_iff, val_int, IsDedekindDomain.HeightOneSpectrum.intValuation_lt_one_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[Valued.toNormedField.norm_le_one_iff, val_int]`. Conclude with `v.intValuation_le_one x`.
+-/
 theorem norm_int_le_one (x : 𝓞 F) : ‖iotaR v x‖ ≤ 1 := by
   rw [Valued.toNormedField.norm_le_one_iff, val_int]
   exact v.intValuation_le_one x
 
+/- English proof (translation)
+The claim follows from `le_antisymm (norm_int_le_one v x) (not_lt.1 fun h => hx ((norm_int_lt_one v x).1 h))`.
+-/
 theorem norm_int_eq_one (x : 𝓞 F) (hx : x ∉ v.asIdeal) : ‖iotaR v x‖ = 1 :=
   le_antisymm (norm_int_le_one v x) (not_lt.1 fun h => hx ((norm_int_lt_one v x).1 h))
 
+/- English proof (translation)
+Establish `h` using `IsUltrametricDist.norm_natCast_le_one (v.adicCompletion F) 4`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_four_le : ‖(4 : v.adicCompletion F)‖ ≤ 1 := by
   have h := IsUltrametricDist.norm_natCast_le_one (v.adicCompletion F) 4
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hβ' : Valued.v β ≤ 1` using `Valued.toNormedField.norm_le_one_iff.1 hβ`. Take `⟨r, hr⟩` from `approx (K := F) v ⟨β, hβ'⟩ 1`. Use `⟨r, Valued.toNormedField.norm_lt_one_iff.2 (lt_of_le_of_lt hr ?_)⟩` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+-/
 theorem approx_one (β : v.adicCompletion F) (hβ : ‖β‖ ≤ 1) : ∃ b : 𝓞 F, ‖β - iotaR v b‖ < 1 := by
   have hβ' : Valued.v β ≤ 1 := Valued.toNormedField.norm_le_one_iff.1 hβ
   obtain ⟨r, hr⟩ := approx (K := F) v ⟨β, hβ'⟩ 1
@@ -340,10 +480,18 @@ theorem approx_one (β : v.adicCompletion F) (hβ : ‖β‖ ≤ 1) : ∃ b : �
 
 end Compl
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Simplify `IsUltrametricDist.norm_add_le_max a (-b)` using `[norm_neg]`.
+-/
 theorem nsub_le {K : Type*} [NormedField K] [IsUltrametricDist K] (a b : K) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ := by
   rw [sub_eq_add_neg]
   simpa [norm_neg] using IsUltrametricDist.norm_add_le_max a (-b)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hb`. Use `push_neg at hb`. Establish `h1 : β ^ 2 = tr * β - nm` using `by linear_combination h`. Establish `hn : ‖β‖ ^ 2 ≤ max (‖tr‖ * ‖β‖) ‖nm‖`. Rewrite using `[← norm_pow, h1, ← norm_mul]`.
+
+Conclude with `nsub_le _ _`. Establish `hb0 : 0 ≤ ‖β‖` using `norm_nonneg β`. Establish `ht0 : 0 ≤ ‖tr‖` using `norm_nonneg tr`. Apply the tactic sequence `rcases le_max_iff.1 hn with h2 | h2 <;> nlinarith`.
+-/
 theorem root_norm_le {K : Type*} [NormedField K] [IsUltrametricDist K] {tr nm β : K} (htr : ‖tr‖ ≤ 1)
     (hnm : ‖nm‖ ≤ 1) (h : β ^ 2 - tr * β + nm = 0) : ‖β‖ ≤ 1 := by
   by_contra hb
@@ -369,6 +517,9 @@ structure ThetaAt (p : PlF D) (θ : D.host.E) (c tr nm : 𝓞 D.host.F) : Prop w
   htr : ((tr : D.host.F) : D.host.E) = θ + D.conjF θ
   hnm : ((nm : D.host.F) : D.host.E) = θ * D.conjF θ
 
+/- English proof (translation)
+Take `⟨θ, c, tr, nm, h1, h2, h3, h4, h5⟩` from `Formalism.L2.SG.Pf.LocUnramP.exists_theta (p := p)`. Conclude with `⟨θ, c, tr, nm, ⟨h1, h2, h3, h4, h5⟩⟩`.
+-/
 theorem thetaAt_exists : ∃ θ c tr nm, ThetaAt p θ c tr nm := by
   obtain ⟨θ, c, tr, nm, h1, h2, h3, h4, h5⟩ := Formalism.L2.SG.Pf.LocUnramP.exists_theta (p := p)
   exact ⟨θ, c, tr, nm, ⟨h1, h2, h3, h4, h5⟩⟩
@@ -377,10 +528,18 @@ variable {p}
 
 def thO (h : ThetaAt p θ c tr nm) : 𝓞 D.host.E := ⟨θ, h.int⟩
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.LocalModelPeriodLattices.conjF_eq_complexConj]`. Both sides reduce to the same expression.
+-/
 theorem sigO_thO (h : ThetaAt p θ c tr nm) : ((sigO (thO h) : 𝓞 D.host.E) : D.host.E) = D.conjF θ := by
   rw [Formalism.MainNotions.LocalModelPeriodLattices.conjF_eq_complexConj]
   rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun x : 𝓞 D.host.F => ((x : D.host.F) : D.host.E))` using `Subtype.val_injective.comp RingOfIntegers.coe_injective`. Rewrite using `[show tr ^ 2 - 4 * nm = tr ^ 2 - (nm + nm + nm + nm) by ring]`. Apply `hinj` to reduce the goal to its premises. Simplify using `only`. Use `push_cast`.
+
+Rewrite using `[h.hc, h.htr, h.hnm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem disc_O (h : ThetaAt p θ c tr nm) : tr ^ 2 - 4 * nm = c := by
   have hinj : Function.Injective (fun x : 𝓞 D.host.F => ((x : D.host.F) : D.host.E)) :=
     Subtype.val_injective.comp RingOfIntegers.coe_injective
@@ -391,6 +550,11 @@ theorem disc_O (h : ThetaAt p θ c tr nm) : tr ^ 2 - 4 * nm = c := by
   rw [h.hc, h.htr, h.hnm]
   ring
 
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `hb : ∀ z : 𝓞 D.host.F, ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) z : 𝓞 D.host.E) : D.host.E) = ((z : D.host.F) : D.host.E)` using `fun z => rfl`. Move the coercions through the operations in `[hb, sigO_thO h]`. Rewrite using `[h.htr, h.hnm]`. Use `show (θ - _) * (D.conjF θ - _) = _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_eq (h : ThetaAt p θ c tr nm) (b : 𝓞 D.host.F) :
     (thO h - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b) * (sigO (thO h) - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b) =
       algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (b ^ 2 - tr * b + nm) := by
@@ -403,6 +567,11 @@ theorem prod_eq (h : ThetaAt p θ c tr nm) (b : 𝓞 D.host.F) :
   show (θ - _) * (D.conjF θ - _) = _
   ring
 
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `hb : algebraMap (𝓞 D.host.E) D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) = ((c : D.host.F) : D.host.E)` using `rfl`. Rewrite using `[hb, h.hc, map_pow, map_sub]`. Use `show _ = ((thO h : D.host.E) - ((sigO (thO h) : 𝓞 D.host.E) : D.host.E)) ^ 2`. Rewrite using `[sigO_thO h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem c_eq_O (h : ThetaAt p θ c tr nm) :
     algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c = (thO h - sigO (thO h)) ^ 2 := by
   apply RingOfIntegers.coe_injective
@@ -413,10 +582,32 @@ theorem c_eq_O (h : ThetaAt p θ c tr nm) :
   rw [sigO_thO h]
   rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `[sigO]`.
+-/
 theorem sigO_sigO (x : 𝓞 D.host.E) : sigO (sigO x) = x := by
   apply RingOfIntegers.coe_injective
   simp [sigO]
 
+/- English proof (translation)
+Introduce `hpr`. Establish `hb1 : ‖β‖ ≤ 1` using `root_norm_le (norm_int_le_one p tr) (norm_int_le_one p nm) hβ`. Take `⟨b, hb⟩` from `approx_one p β hb1`. Establish `hfb : b ^ 2 - tr * b + nm ∈ p.asIdeal`. Rewrite using `[← norm_int_lt_one p]`.
+
+Establish `e : iotaR p (b ^ 2 - tr * b + nm) = (iotaR p b - β) * (iotaR p b + β - iotaR p tr)`. Simplify using `only [map_add, map_sub, map_mul, map_pow]`. Take the linear combination `hβ`. Rewrite using `[e, norm_mul]`. Establish `h1 : ‖iotaR p b - β‖ < 1` using `by rw [norm_sub_rev]; exact hb`.
+
+Establish `h2 : ‖iotaR p b + β - iotaR p tr‖ ≤ 1`. Use `(nsub_le _ _).trans (max_le ?_ (norm_int_le_one p tr))` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (norm_int_le_one p b) hb1)`. Combine the equalities or inequalities in the displayed calculation. Use `set I := p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) with hI`.
+
+Establish `hσI : ∀ z ∈ I, sigO z ∈ I`. Establish `hmap : I.map ((sigO (D` using `D) : 𝓞 D.host.E →+* 𝓞 D.host.E)) = I := by`. Rewrite using `[hI, Ideal.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun a => sigO_alg a`.
+
+Introduce `z hz`. Rewrite using `[← hmap]`. Conclude with `Ideal.mem_map_of_mem ((sigO (D := D) : 𝓞 D.host.E →+* 𝓞 D.host.E)) hz`. Establish `hmem : (thO h - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b) * (sigO (thO h) - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b) ∈ I`. Rewrite using `[prod_eq h b]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hfb`. Establish `h1 : thO h - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b ∈ I ∧ sigO (thO h) - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) b ∈ I`. Break down `hpr.mem_or_mem hmem with h' | h'` into its components or cases. Use `⟨h', ?_⟩` and prove the remaining obligations. Use `hσI _ h'` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sigO_alg]`. Then use the resulting hypothesis. Use `⟨?_, h'⟩` and prove the remaining obligations. Use `hσI _ h'` as an intermediate fact. Rewrite `this` using `[map_sub, sigO_sigO, sigO_alg]`. Then use the resulting hypothesis. Establish `h2 : thO h - sigO (thO h) ∈ I`.
+
+Use `I.sub_mem h1.1 h1.2` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Establish `h3 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c ∈ I`. Rewrite using `[c_eq_O h]`. Conclude with `Ideal.pow_mem_of_mem I h2 2 two_pos`.
+
+Establish `: p.asIdeal.IsMaximal` using `p.isMaximal`. Establish `hcomap : I.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = p.asIdeal` using `(p.isMaximal.eq_of_le (Ideal.comap_ne_top _ hpr.ne_top) Ideal.le_comap_map).symm`. Conclude with `h.hcp (hcomap ▸ Ideal.mem_comap.2 h3)`.
+-/
 theorem not_prime_of_root (h : ThetaAt p θ c tr nm) (β : p.adicCompletion D.host.F)
     (hβ : β ^ 2 - iotaR p tr * β + iotaR p nm = 0) :
     ¬ (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime := by
@@ -467,6 +658,29 @@ theorem not_prime_of_root (h : ThetaAt p θ c tr nm) (β : p.adicCompletion D.ho
     (p.isMaximal.eq_of_le (Ideal.comap_ne_top _ hpr.ne_top) Ideal.le_comap_map).symm
   exact h.hcp (hcomap ▸ Ideal.mem_comap.2 h3)
 
+/- English proof (translation)
+Take `⟨P, Q, hPQ, hP, hQ, hPc, hQc⟩` from `h2`. Establish `: p.asIdeal.IsMaximal` using `p.isMaximal`. Establish `hq0` using `p.ne_bot`. Establish `hP' : P ∈ IsDedekindDomain.primesOverFinset p.asIdeal (𝓞 D.host.E)` using `(IsDedekindDomain.mem_primesOverFinset_iff hq0 _).2 ⟨hP, ⟨hPc.symm⟩⟩`. Establish `hQ' : Q ∈ IsDedekindDomain.primesOverFinset p.asIdeal (𝓞 D.host.E)` using `(IsDedekindDomain.mem_primesOverFinset_iff hq0 _).2 ⟨hQ, ⟨hQc.symm⟩⟩`.
+
+Establish `hsum` using `Ideal.sum_ramification_inertia (𝓞 D.host.E) D.host.F D.host.E hq0`. Rewrite `hsum` using `[Formalism.BasicNotions.Examples₂.finrank_FE D.host]`. Establish `hpos : ∀ R ∈ IsDedekindDomain.primesOverFinset p.asIdeal (𝓞 D.host.E), 1 ≤ p.asIdeal.ramificationIdx' R * p.asIdeal.inertiaDeg' R`. Introduce `R hR`. Rewrite `hR` using `[IsDedekindDomain.mem_primesOverFinset_iff hq0]`.
+
+Take `⟨hRp, hRl⟩` from `hR`. Establish `he : p.asIdeal.ramificationIdx' R ≠ 0`. Use `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero ?_ hRp ?_` and prove the remaining obligations. Conclude with `Ideal.map_ne_bot_of_ne_bot hq0`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Conclude with `le_of_eq hRl.over`. Establish `hf` using `Ideal.inertiaDeg'_pos p.asIdeal R`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero he hf.ne')`. Establish `hle : p.asIdeal.ramificationIdx' P * p.asIdeal.inertiaDeg' P + p.asIdeal.ramificationIdx' Q * p.asIdeal.inertiaDeg' Q ≤ 2`. Rewrite using `[← hsum]`.
+
+Conclude with `Finset.add_le_sum (f := fun R => p.asIdeal.ramificationIdx' R * p.asIdeal.inertiaDeg' R) (fun _ _ => Nat.zero_le _) hP' hQ' hPQ`. Establish `hPpos` using `hpos P hP'`. Establish `hQpos` using `hpos Q hQ'`. Establish `hef : p.asIdeal.ramificationIdx' P * p.asIdeal.inertiaDeg' P = 1` using `by omega`. Establish `hf1 : p.asIdeal.inertiaDeg' P = 1` using `Nat.eq_one_of_mul_eq_one_left hef`.
+
+Establish `: P.LiesOver p.asIdeal` using `⟨hPc.symm⟩`. Establish `: P.IsPrime` using `hP`. Rewrite `hf1` using `[Ideal.inertiaDeg_algebraMap]`. Use `letI : Field (𝓞 D.host.F ⧸ p.asIdeal) := Ideal.Quotient.field p.asIdeal`. Establish `hbt` using `Subalgebra.bot_eq_top_of_finrank_eq_one hf1`.
+
+Establish `hmem : Ideal.Quotient.mk P (thO h) ∈ (⊥ : Subalgebra (𝓞 D.host.F ⧸ p.asIdeal) (𝓞 D.host.E ⧸ P))`. Rewrite using `[hbt]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c', hc'⟩` from `Algebra.mem_bot.1 hmem`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c'`.
+
+Rewrite `hc'` using `[Ideal.Quotient.algebraMap_mk_of_liesOver]`. Establish `ha : thO h - algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a ∈ P`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `hc'.symm`. Establish `hfa : a ^ 2 - tr * a + nm ∈ p.asIdeal`.
+
+Rewrite using `[← hPc, Ideal.mem_comap, ← prod_eq h a]`. Conclude with `P.mul_mem_right _ ha`. Establish `hdisc : iotaR p tr ^ 2 - 4 * iotaR p nm = iotaR p c`. Rewrite using `[← disc_O h]`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`.
+
+Establish `ha0 : ‖iotaR p a ^ 2 - iotaR p tr * iotaR p a + iotaR p nm‖ < 1`. Establish `e : iotaR p a ^ 2 - iotaR p tr * iotaR p a + iotaR p nm = iotaR p (a ^ 2 - tr * a + nm)`. Simplify using `only [map_add, map_sub, map_mul, map_pow]`. Rewrite using `[e, norm_int_lt_one]`. Conclude with `hfa`.
+
+Conclude with `newton_quad _ _ _ hdisc (norm_int_eq_one p c h.hcp) (norm_four_le p) _ ha0`.
+-/
 theorem root_of_twoOver (h : ThetaAt p θ c tr nm) (h2 : TwoOver p.asIdeal) :
     ∃ β : p.adicCompletion D.host.F, β ^ 2 - iotaR p tr * β + iotaR p nm = 0 := by
   obtain ⟨P, Q, hPQ, hP, hQ, hPc, hQc⟩ := h2
@@ -522,6 +736,9 @@ theorem root_of_twoOver (h : ThetaAt p θ c tr nm) (h2 : TwoOver p.asIdeal) :
     exact hfa
   exact newton_quad _ _ _ hdisc (norm_int_eq_one p c h.hcp) (norm_four_le p) _ ha0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨β, hβ⟩ => not_prime_of_root h β hβ, fun hn => root_of_twoOver h ((twoOver_iff p).2 hn)⟩`.
+-/
 theorem root_iff (h : ThetaAt p θ c tr nm) :
     (∃ β : p.adicCompletion D.host.F, β ^ 2 - iotaR p tr * β + iotaR p nm = 0) ↔
       ¬ (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime :=
@@ -535,6 +752,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {p : PlF D} {θ : D.host.E} {c tr nm : 𝓞 D.host.F}
 
+/- English proof (translation)
+Introduce `hθ`. Apply `h.hcp` to reduce the goal to its premises. Establish `h0 : ((c : D.host.F) : D.host.E) = 0`. Rewrite using `[h.hc, hθ, AlgHom.commutes, sub_self]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc0 : c = 0`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises. Simplify using `using h0`. Rewrite using `[hc0]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem theta_notF (h : ThetaAt p θ c tr nm) (a : D.host.F) : θ ≠ algebraMap D.host.F D.host.E a := by
   intro hθ
   apply h.hcp
@@ -548,6 +772,13 @@ theorem theta_notF (h : ThetaAt p θ c tr nm) (a : D.host.F) : θ ≠ algebraMap
   rw [hc0]
   exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`.
+
+Conclude with `⟨(smul_eq_zero.1 hst).resolve_right one_ne_zero, rfl⟩`. It suffices to derive a contradiction. Apply `theta_notF h (-(s / t))` to reduce the goal to its premises. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Establish `: t • θ = -(s • (1 : D.host.E))` using `eq_neg_of_add_eq_zero_right hst`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem li_theta (h : ThetaAt p θ c tr nm) : LinearIndependent D.host.F ![(1 : D.host.E), θ] := by
   rw [LinearIndependent.pair_iff]
   intro s t hst
@@ -565,6 +796,9 @@ theorem li_theta (h : ThetaAt p θ c tr nm) : LinearIndependent D.host.F ![(1 : 
 def basE (h : ThetaAt p θ c tr nm) : Module.Basis (Fin 2) D.host.F D.host.E :=
   basisOfLinearIndependentOfCardEqFinrank (li_theta h) (by rw [Fintype.card_fin, Formalism.BasicNotions.Examples₂.finrank_FE D.host])
 
+/- English proof (translation)
+Simplify using `[basE]`.
+-/
 theorem basE_apply (h : ThetaAt p θ c tr nm) (i : Fin 2) : basE h i = ![(1 : D.host.E), θ] i := by
   simp [basE]
 
@@ -572,14 +806,23 @@ def basA (h : ThetaAt p θ c tr nm) :
     Module.Basis (Fin 2) (p.adicCompletion D.host.F) (p.adicCompletion D.host.F ⊗[D.host.F] D.host.E) :=
   Algebra.TensorProduct.basis (p.adicCompletion D.host.F) (basE h)
 
+/- English proof (translation)
+Rewrite using `[basA, Algebra.TensorProduct.basis_apply, basE_apply]`. Both sides reduce to the same expression.
+-/
 theorem basA_zero (h : ThetaAt p θ c tr nm) : basA h 0 = 1 := by
   rw [basA, Algebra.TensorProduct.basis_apply, basE_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[basA, Algebra.TensorProduct.basis_apply, basE_apply]`. Both sides reduce to the same expression.
+-/
 theorem basA_one (h : ThetaAt p θ c tr nm) : basA h 1 = (1 : p.adicCompletion D.host.F) ⊗ₜ θ := by
   rw [basA, Algebra.TensorProduct.basis_apply, basE_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one a, Algebra.algebraMap_eq_smul_one a, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules.
+-/
 theorem tens_one (a : D.host.F) :
     (1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E a) =
       algebraMap (p.adicCompletion D.host.F) (p.adicCompletion D.host.F ⊗[D.host.F] D.host.E)
@@ -588,12 +831,20 @@ theorem tens_one (a : D.host.F) :
     Algebra.algebraMap_eq_smul_one a, TensorProduct.tmul_smul, TensorProduct.smul_tmul']
   simp
 
+/- English proof (translation)
+Rewrite using `[← tens_one, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem tens_alg (a : D.host.F) (y : D.host.E) :
     (1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E a * y) =
       algebraMap (p.adicCompletion D.host.F) (p.adicCompletion D.host.F ⊗[D.host.F] D.host.E)
         (algebraMap D.host.F (p.adicCompletion D.host.F) a) * ((1 : p.adicCompletion D.host.F) ⊗ₜ y) := by
   rw [← tens_one, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Use `congr 1`. Establish `e1 : algebraMap D.host.F D.host.E (tr : D.host.F) = ((tr : D.host.F) : D.host.E)` using `rfl`. Establish `e2 : algebraMap D.host.F D.host.E (nm : D.host.F) = ((nm : D.host.F) : D.host.E)` using `rfl`. Rewrite using `[e1, e2, h.htr, h.hnm]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_sq (h : ThetaAt p θ c tr nm) :
     ((1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] θ) * ((1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] θ) =
       (1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F]
@@ -605,6 +856,9 @@ theorem tens_sq (h : ThetaAt p θ c tr nm) :
   rw [e1, e2, h.htr, h.hnm]
   ring
 
+/- English proof (translation)
+Rewrite using `[tens_sq h, TensorProduct.tmul_sub, tens_alg, tens_one]`. Both sides reduce to the same expression.
+-/
 theorem tens_rel (h : ThetaAt p θ c tr nm) :
     ((1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] θ) * ((1 : p.adicCompletion D.host.F) ⊗ₜ[D.host.F] θ) =
       algebraMap (p.adicCompletion D.host.F) (p.adicCompletion D.host.F ⊗[D.host.F] D.host.E) (iotaR p tr) *
@@ -613,6 +867,15 @@ theorem tens_rel (h : ThetaAt p θ c tr nm) :
   rw [tens_sq h, TensorProduct.tmul_sub, tens_alg, tens_one]
   rfl
 
+/- English proof (translation)
+Use `⟨(basA h).repr z 0, (basA h).repr z 1, ?_⟩` and prove the remaining obligations. Establish `hs` using `(basA h).sum_repr z`. Rewrite `hs` using `[Fin.sum_univ_two, basA_zero, basA_one]`. Conclude with `hs.symm`. Use `indep x y hxy := by`.
+
+Establish `hli` using `Fintype.linearIndependent_iff.1 (basA h).linearIndependent ![x, y] (by`. Rewrite using `[Fin.sum_univ_two, basA_zero, basA_one]`. Conclude with `hxy)`. Conclude with `⟨hli 0, hli 1⟩`. Use `rel := tens_rel h`.
+
+Use `disc := by`. Establish `e : iotaR p tr ^ 2 - 4 * iotaR p nm = iotaR p c`. Rewrite using `[← disc_O h]`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Rewrite using `[e]`.
+
+Introduce `h0`. Use `norm_int_eq_one p c h.hcp` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem quadAlg_tens (h : ThetaAt p θ c tr nm) :
     QuadAlg (A := p.adicCompletion D.host.F ⊗[D.host.F] D.host.E) ((1 : p.adicCompletion D.host.F) ⊗ₜ θ)
       (iotaR p tr) (iotaR p nm) where
@@ -636,6 +899,9 @@ theorem quadAlg_tens (h : ThetaAt p θ c tr nm) :
     rw [h0, norm_zero] at this
     exact zero_ne_one this
 
+/- English proof (translation)
+Take `⟨θ, c, tr, nm, h⟩` from `thetaAt_exists p`. Rewrite using `[idem_iff_root (quadAlg_tens h)]`. Conclude with `root_iff h`.
+-/
 theorem idem_iff_notPrime (p : PlF D) :
     IdemNT (p.adicCompletion D.host.F ⊗[D.host.F] D.host.E) ↔
       ¬ (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime := by
@@ -643,6 +909,9 @@ theorem idem_iff_notPrime (p : PlF D) :
   rw [idem_iff_root (quadAlg_tens h)]
   exact root_iff h
 
+/- English proof (translation)
+Take `⟨θ, c, tr, nm, h⟩` from `thetaAt_exists p`. Rewrite using `[field_iff_noRoot (quadAlg_tens h), root_iff h, not_not]`.
+-/
 theorem unit_iff_prime (p : PlF D) :
     (∀ z : p.adicCompletion D.host.F ⊗[D.host.F] D.host.E, z ≠ 0 → IsUnit z) ↔
       (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime := by
@@ -657,6 +926,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Introduce `v`. Establish `hjk : ∀ a : X.B.I.F, X.ιE (algebraMap X.B.I.F X.B.I.E a) = algebraMap D.host.F D.host.E (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X a)` using `fun a => (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF_coe X a).symm`. Establish `h1` using `idemNT_iff (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X) X.ιE hjk v`. Establish `hiff : IdemNT (v.adicCompletion X.B.I.F ⊗[X.B.I.F] X.B.I.E) ↔ ¬ ((plEquiv X v).asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime` using `h1.trans (idem_iff_notPrime (plEquiv X v))`. Unfold `Formalism.L2.SG.LocVol.etaV Formalism.HermitianLattices.Ext.L3.etaF`.
+
+Use `split_ifs with ha hb hb`. Conclude with `absurd hb (hiff.1 ha)`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `absurd (hiff.2 hb) ha`.
+-/
 theorem etaF_holds : EtaF X := by
   intro v
   have hjk : ∀ a : X.B.I.F, X.ιE (algebraMap X.B.I.F X.B.I.E a) =
@@ -673,9 +947,21 @@ theorem etaF_holds : EtaF X := by
   · simp
   · exact absurd (hiff.2 hb) ha
 
+/- English proof (translation)
+The claim follows from `fieldDict_of_eta X (etaF_holds X) u u'`.
+-/
 theorem fieldDict_holds (u u' : D.what₂.Word) : Formalism.L2.SG.Pf.NcVal.FieldDict X u u' :=
   fieldDict_of_eta X (etaF_holds X) u u'
 
+/- English proof (translation)
+Establish `h1 : (∀ x : (D.s.atP p).Ep, x ≠ 0 → IsUnit x) ↔ (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime`. Rewrite using `[← unit_iff_prime p]`. Take `⟨e⟩` from `hL p`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`.
+
+Establish `h2` using `h (e.eE.symm z) ((map_ne_zero_iff _ e.eE.symm.injective).2 hz)`. Establish `h4` using `h2.map e.eE`. Use `erw [RingEquiv.apply_symm_apply] at h4`. Conclude with `h4`. Introduce `h x hx`.
+
+Establish `h2` using `h (e.eE x) ((map_ne_zero_iff _ e.eE.injective).2 hx)`. Establish `h4` using `h2.map e.eE.symm`. Use `erw [RingEquiv.symm_apply_apply] at h4`. Conclude with `h4`. Unfold `Formalism.HermitianLattices.Ext.L3.etaF`.
+
+Distinguish the cases in `hp : (p.asIdeal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).IsPrime`. Rewrite using `[if_pos (h1.2 hp), if_pos hp]`. Rewrite using `[if_neg (mt h1.1 hp), if_neg hp]`.
+-/
 theorem etaLoc_of_tied (hL : Formalism.L2.SG.Pf.LocCP.LocTied D) (p : PlF D) :
     (if ∀ x : (D.s.atP p).Ep, x ≠ 0 → IsUnit x then (-1 : ℝ) else 1) =
       Formalism.HermitianLattices.Ext.L3.etaF D.host.E D.host.F p.asIdeal := by

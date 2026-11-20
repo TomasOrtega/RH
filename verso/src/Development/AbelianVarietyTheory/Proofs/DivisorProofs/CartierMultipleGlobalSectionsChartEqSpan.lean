@@ -18,12 +18,21 @@ noncomputable section
 
 namespace GlobalTheory.Desc.ChartSpan
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 theorem sp_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
+/- English proof (translation)
+Establish `h : spMap (GlobalTheory.Desc.cst p) = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop ≫ X.presheaf.germ ⊤ (genericPoint X) trivial)` using `rfl`. Rewrite using `[h, Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 theorem gp_comp {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp R) :
     gp X ≫ p = spMap (GlobalTheory.Desc.cst p) := by
   have h : spMap (GlobalTheory.Desc.cst p) = Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop ≫
@@ -32,13 +41,24 @@ theorem gp_comp {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X �
     ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `sp_inj (by rw [← gp_comp, ← sp_comp, ← gp_comp, Category.assoc])`.
+-/
 theorem cst_comp {R S : Type} [CommRing R] [CommRing S] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp S) (a : R →+* S) :
     GlobalTheory.Desc.cst (p ≫ spMap a) = (GlobalTheory.Desc.cst p).comp a :=
   sp_inj (by rw [← gp_comp, ← sp_comp, ← gp_comp, Category.assoc])
 
+/- English proof (translation)
+The claim follows from `regAt_fnOf (U := ⊤) trivial trivial _`.
+-/
 theorem regAt_cst {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp R) (x : X) (r : R) :
     RegAt x (GlobalTheory.Desc.cst p r) := regAt_fnOf (U := ⊤) trivial trivial _
 
+/- English proof (translation)
+Establish `h1 : Function.Injective p.appTop.hom`. Establish `h : p.appTop ≫ e.appTop = 𝟙 _` using `by rw [← Scheme.Hom.comp_appTop, he, Scheme.Hom.id_appTop]`. Use `Function.LeftInverse.injective (g := e.appTop.hom) fun a => ?_` and prove the remaining obligations. Conclude with `congrArg (fun g => CommRingCat.Hom.hom g a) h`. Establish `h2 : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.injective`.
+
+Conclude with `(fnOf_injective ⊤ trivial).comp (h1.comp h2)`.
+-/
 theorem cst_injective {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp R) (e : Sp R ⟶ X)
     (he : e ≫ p = 𝟙 _) : Function.Injective (GlobalTheory.Desc.cst p) := by
   have h1 : Function.Injective p.appTop.hom := by
@@ -49,6 +69,11 @@ theorem cst_injective {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p
     (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.injective
   exact (fnOf_injective ⊤ trivial).comp (h1.comp h2)
 
+/- English proof (translation)
+Use `algebraize [ρ]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `hne`. Use `Module.Flat.isSMulRegular_of_isRegular (M := S) (IsRegular.of_ne_zero hne)` as an intermediate fact.
+
+Establish `h2 : (1 : S) = 0` using `this (by`. Express the relevant statement in the definitionally equal form `r • (1 : S) = r • (0 : S)`. Rewrite using `[smul_zero, Algebra.smul_def, _root_.mul_one]`. Conclude with `hr)`. Conclude with `one_ne_zero h2`.
+-/
 theorem injective_of_flat {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [Nontrivial S] (ρ : R →+* S)
     (h : ρ.Flat) : Function.Injective ρ := by
   algebraize [ρ]
@@ -61,6 +86,11 @@ theorem injective_of_flat {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [N
     rw [smul_zero, Algebra.smul_def, _root_.mul_one]; exact hr)
   exact one_ne_zero h2
 
+/- English proof (translation)
+Establish `hx'` using `(Order.coheight_le_coe_iff (n := 1)).1 hx`. Use `(Order.coheight_le_coe_iff (n := 1)).2 fun y hy ↦ ?_` and prove the remaining obligations. Take `⟨x', h₁, rfl⟩` from `hp (show y ⤳ p x from hy.le)`. Establish `hlt : x < x'` using `⟨h₁, fun h ↦ hy.not_ge (Specializes.map h p.continuous)⟩`. Establish `hm : IsMax x'` using `by simpa using hx' x' hlt`.
+
+Establish `: IsMax (p x')` using `fun w hw ↦ by`. Take `⟨x'', h₂, rfl⟩` from `hp (show w ⤳ p x' from hw)`. Conclude with `Specializes.map (hm (show x' ≤ x'' from h₂)) p.continuous`. Simplify using `using this`.
+-/
 theorem coheight_le_one {H S : Scheme.{0}} (p : H ⟶ S) (hp : GeneralizingMap p) (x : H)
     (hx : Order.coheight x ≤ 1) : Order.coheight (p x) ≤ 1 := by
   have hx' := (Order.coheight_le_coe_iff (n := 1)).1 hx
@@ -73,6 +103,13 @@ theorem coheight_le_one {H S : Scheme.{0}} (p : H ⟶ S) (hp : GeneralizingMap p
     exact Specializes.map (hm (show x' ≤ x'' from h₂)) p.continuous
   simpa using this
 
+/- English proof (translation)
+Establish `h1` using `hz.1`. Rewrite `h1` using `[ringKrullDim_stalk_eq_coheight]`. Establish `h2 : Order.coheight z ≤ 1` using `le_of_eq (by exact_mod_cast h1)`. Establish `h3` using `coheight_le_one p (Flat.generalizingMap p) z h2`. Rewrite `h3` using `[← idealHeight_eq_coheight]`.
+
+Use `haveI := (p z).isPrime`. Use `le_antisymm h3 (Order.one_le_iff_ne_zero.2 fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[Ideal.height_eq_zero_iff_eq_bot]`. Use `hz.2` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Conclude with `hf this`.
+-/
 theorem height_of_vert {S : Type} [CommRing S] [IsDomain S] {X : Scheme.{0}} (p : X ⟶ Sp S) [Flat p] {f : S}
     (hf : f ≠ 0) {z : X} (hz : Vert p f z) : (p z).asIdeal.height = 1 := by
   have h1 := hz.1
@@ -87,6 +124,27 @@ theorem height_of_vert {S : Type} [CommRing S] [IsDomain S] {X : Scheme.{0}} (p 
   rw [h] at this
   exact hf this
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hx⟩⟩`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (hU.fromSpec ≫ p)`. Establish `key : ∀ (g : S) (q : PrimeSpectrum Γ(X, U)), g ∈ (p (hU.fromSpec q)).asIdeal ↔ φ.hom g ∈ q.asIdeal`.
+
+Introduce `g q`. Establish `h : p (hU.fromSpec q) = (Spec.map φ) q`. Rewrite using `[hφ]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Establish `key' : ∀ (g : S) (y : U), g ∈ (p y.1).asIdeal ↔ φ.hom g ∈ (hU.primeIdealOf y).asIdeal`. Introduce `g y`. Rewrite using `[← key, hU.fromSpec_primeIdealOf]`. Establish `ha : φ.hom f ≠ 0`.
+
+Introduce `h0`. Establish `hO : IsOpen ((PrimeSpectrum.basicOpen f : TopologicalSpace.Opens (PrimeSpectrum S)) : Set (PrimeSpectrum S))` using `(PrimeSpectrum.basicOpen f).isOpen`. Establish `hne : ((PrimeSpectrum.basicOpen f : TopologicalSpace.Opens (PrimeSpectrum S)) : Set (PrimeSpectrum S)).Nonempty` using `⟨⟨⊥, Ideal.isPrime_bot⟩, by simpa using hf⟩`. Take `⟨y, hy⟩` from `p.denseRange.exists_mem_open hO hne`. Take `⟨w, hwU, hw⟩` from `nonempty_preirreducible_inter U.isOpen (hO.preimage p.continuous) ⟨x, hx⟩ ⟨y, hy⟩`.
+
+Establish `: f ∈ (p w).asIdeal` using `(key' f ⟨w, hwU⟩).2 (h0 ▸ Ideal.zero_mem _)`. Conclude with `hw this`. Establish `hle : Ideal.span {φ.hom f} ≤ (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 ((key' f ⟨x, hx⟩).1 hfx)`. Take `⟨Q, hQ, hQx⟩` from `Ideal.exists_minimalPrimes_le hle`. Use `haveI hQp : Q.IsPrime := hQ.1.1`.
+
+Establish `haQ : φ.hom f ∈ Q` using `hQ.1.2 (Ideal.mem_span_singleton_self _)`. Establish `h1 : Q.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ`. Establish `h0 : Q.height ≠ 0`. Introduce `h`. Rewrite `h` using `[Ideal.height_eq_zero_iff_eq_bot]`.
+
+Conclude with `ha (by simpa [h] using haQ)`. Establish `hQ1 : Q.height = 1` using `le_antisymm h1 (Order.one_le_iff_ne_zero.2 h0)`. Set `P : PrimeSpectrum Γ(X, U)` to `⟨Q, hQp⟩`. Establish `hz : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`.
+
+Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Set `z : U` to `⟨hU.fromSpec P, hz⟩`. Establish `hP : hU.primeIdealOf z = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf z)`. Use `clear_value z`. Use `letI := X.presheaf.algebra_section_stalk z`.
+
+Use `haveI := hU.isLocalization_stalk z`. Use `⟨z.1, ⟨?_, (key' f z).2 (by rw [hP]; exact haQ)⟩, fun g hg => ?_⟩` and prove the remaining obligations. Use `IsLocalization.AtPrime.ringKrullDim_eq_height (hU.primeIdealOf z).asIdeal (X.presheaf.stalk (z : X))` as an intermediate fact. Rewrite using `[this, hP]`. Express the relevant statement in the definitionally equal form `((Q.height : ℕ∞) : WithBot ℕ∞) = 1`.
+
+Rewrite using `[hQ1]`. Both sides reduce to the same expression. Establish `h2` using `(key' g z).1 hg`. Rewrite `h2` using `[hP]`. Conclude with `(key' g ⟨x, hx⟩).2 (hQx h2)`.
+-/
 theorem exists_vert_le {S : Type} [CommRing S] [IsDomain S] {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (p : X ⟶ Sp S) [IsDominant p] {f : S} (hf : f ≠ 0) (x : X) (hfx : f ∈ (p x).asIdeal) :
     ∃ z : X, Vert p f z ∧ (p z).asIdeal ≤ (p x).asIdeal := by
@@ -143,6 +201,13 @@ theorem exists_vert_le {S : Type} [CommRing S] [IsDomain S] {X : Scheme.{0}} [Is
     rw [hP] at h2
     exact (key' g ⟨x, hx⟩).2 (hQx h2)
 
+/- English proof (translation)
+Establish `hpe : ∀ y : Sp S, p (e y) = y` using `fun y => by rw [← Scheme.Hom.comp_apply, he]; rfl`. Use `haveI : IsDominant p := ⟨Function.Surjective.denseRange fun y => ⟨e y, hpe y⟩⟩`. Set `y : Sp S` to `(⟨q, hq⟩ : PrimeSpectrum S)`. Take `⟨z, hz, hle⟩` from `exists_vert_le p hf (e y) (by rw [hpe]; exact hfq)`. Rewrite `hle` using `[hpe]`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Use `haveI := (p z).isPrime`. Use `Ideal.eq_of_le_of_height_le (I := (p z).asIdeal) (J := q) hle ?_` and prove the remaining obligations. Rewrite using `[h1]`. Use `Order.one_le_iff_ne_zero.2 fun h => ?_` and prove the remaining obligations.
+
+Rewrite `h` using `[Ideal.height_eq_zero_iff_eq_bot]`. Use `hz.2` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `hf this`.
+-/
 theorem exists_vert_over {S : Type} [CommRing S] [IsDomain S] [IsNoetherianRing S] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] (p : X ⟶ Sp S) (e : Sp S ⟶ X) (he : e ≫ p = 𝟙 _) {f : S} (hf : f ≠ 0)
     (q : Ideal S) [hq : q.IsPrime] (h1 : q.height = 1) (hfq : f ∈ q) : ∃ z : X, Vert p f z ∧ (p z).asIdeal = q := by
@@ -161,6 +226,9 @@ theorem exists_vert_over {S : Type} [CommRing S] [IsDomain S] [IsNoetherianRing 
   rw [h] at this
   exact hf this
 
+/- English proof (translation)
+Take `⟨l, h1, h2⟩` from `σ.hθ x`. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[← sp_comp, ← sp_comp, Setup.c₀, ← gp_comp, ← gp_comp, ← reassoc_of% h2, ← h1, (σ.cart x).w]`. Simplify using `only [Category.assoc]`.
+-/
 theorem theta_comp (σ : Setup) (x : Sp σ.R) :
     (σ.θ x).comp σ.c₀ = (GlobalTheory.Desc.cst (σ.C x).G.hom).comp (σ.ρ x) := by
   obtain ⟨l, h1, h2⟩ := σ.hθ x
@@ -168,6 +236,11 @@ theorem theta_comp (σ : Setup) (x : Sp σ.R) :
   rw [← sp_comp, ← sp_comp, Setup.c₀, ← gp_comp, ← gp_comp, ← reassoc_of% h2, ← h1, (σ.cart x).w]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Establish `h` using `(σ.C x).centre`. Rewrite `h` using `[σ.hρ x]`. Assume the negation of the conclusion as `hu`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← h]`.
+
+Conclude with `(mem_maximalIdeal _).2 hu`.
+-/
 theorem isUnit_of_not_mem (σ : Setup) (x : Sp σ.R) {s : σ.R} (hs : s ∉ x.asIdeal) : IsUnit (σ.ρ x s) := by
   have h := (σ.C x).centre
   rw [σ.hρ x] at h
@@ -176,6 +249,11 @@ theorem isUnit_of_not_mem (σ : Setup) (x : Sp σ.R) {s : σ.R} (hs : s ∉ x.as
   rw [← h]
   exact (mem_maximalIdeal _).2 hu
 
+/- English proof (translation)
+Establish `hc : ∀ r, σ.θ x (σ.c₀ r) = GlobalTheory.Desc.cst (σ.C x).G.hom (σ.ρ x r)` using `fun r => RingHom.congr_fun (theta_comp σ x) r`. Use `⟨fun a ha b hb z hz => ?_, fun r a ha z hz => ?_, fun s hs a ha z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(ha z hz).add (hb z hz)`. Rewrite using `[map_mul, hc]`.
+
+Conclude with `(regAt_cst _ _ _).mul (ha z hz)`. Take `⟨u, hu⟩` from `isUnit_of_not_mem σ x hs`. Rewrite using `[map_mul, map_inv₀, hc, ← hu, ← map_units_inv]`. Conclude with `(regAt_cst _ _ _).mul (ha z hz)`.
+-/
 theorem W_closed (σ : Setup) (x : Sp σ.R) :
     (∀ a ∈ σ.W x, ∀ b ∈ σ.W x, a + b ∈ σ.W x) ∧ (∀ r, ∀ a ∈ σ.W x, σ.c₀ r * a ∈ σ.W x) ∧
       (∀ s, s ∉ x.asIdeal → ∀ a ∈ σ.W x, (σ.c₀ s)⁻¹ * a ∈ σ.W x) := by
@@ -188,6 +266,25 @@ theorem W_closed (σ : Setup) (x : Sp σ.R) :
     rw [map_mul, map_inv₀, hc, ← hu, ← map_units_inv]
     exact (regAt_cst _ _ _).mul (ha z hz)
 
+/- English proof (translation)
+Introduce `σ x k`. Use `haveI := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (σ.C x).R).2`. Use `haveI : Smooth (σ.C x).G.hom := (σ.C x).semi.smooth`. Use `haveI : IsLocallyNoetherian (σ.C x).G.left := LocallyOfFiniteType.isLocallyNoetherian (σ.C x).G.hom`. Use `haveI : IsProper σ.A.hom := σ.ab.proper`.
+
+Set `e : Sp (σ.C x).R ⟶ (σ.C x).G.left` to `(η[(σ.C x).G] : 𝟙_ _ ⟶ (σ.C x).G).left`. Establish `he : e ≫ (σ.C x).G.hom = 𝟙 _` using `Over.w (η[(σ.C x).G] : 𝟙_ _ ⟶ (σ.C x).G)`. Establish `hρ` using `injective_of_flat _ (σ.flat x)`. Establish `hρf : σ.ρ x σ.f ≠ 0` using `fun h => σ.hf (hρ (h.trans (map_zero _).symm))`. Establish `hc` using `theta_comp σ x`.
+
+Establish `hc₀ : Function.Injective σ.c₀`. Apply `Function.Injective.of_comp (f := σ.θ x)` to reduce the goal to its premises. Rewrite using `[← RingHom.coe_comp, hc]`. Conclude with `(cst_injective _ e he).comp hρ`. Take `⟨hld, hsec⟩` from `GlobalTheory.T.cartierSections_flat_baseChange_linearlyDisjoint σ.R (σ.C x).R (σ.ρ x) (σ.flat x) σ.A.left (σ.C x).G.left (σ.V x).toScheme (σ.A.hom ≫ awayMap σ.f) (σ.C x).G.hom (σ.V x).ι (σ.φ x) (σ.θ x) inferInstance inferInstance (σ.cart x) (σ.hθ x) σ.D (σ.D₁ x) (σ.pull x)`.
+
+Establish `hinv : ∀ y : σ.A.left, RegAt y (σ.c₀ σ.f)⁻¹` using `fun y => by`. Take `⟨u, hu⟩` from `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away σ.f) σ.f`. Establish `h : σ.c₀ σ.f = GlobalTheory.Desc.cst σ.A.hom u` using `by rw [Setup.c₀, cst_comp, hu]; rfl`. Rewrite using `[h, ← map_units_inv]`. Conclude with `regAt_cst _ _ _`.
+
+Set `W : Ideal σ.R → Set σ.A.left.functionField` to `fun p => {u | ∀ h : p.IsPrime, u ∈ σ.W (⟨p, h⟩ : PrimeSpectrum σ.R)}`. Establish `hW : ∀ y : Sp σ.R, W y.asIdeal = σ.W y` using `fun y => Set.ext fun u => ⟨fun h => h y.isPrime, fun h _ => h⟩`. Set `W₁ : Ideal (σ.C x).R → Set (σ.C x).G.left.functionField` to `fun q => {v | ∀ z, Vert (σ.C x).G.hom (σ.ρ x σ.f) z → ((σ.C x).G.hom z).asIdeal = q → RegAt z v}`. Establish `key` using `GlobalTheory.T.ringHomCoeffSpanSet_sections_flat_baseChange_normal σ.R (σ.C x).R _ _ (σ.ρ x) σ.c₀ (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x) σ.f σ.hf (σ.flat x) hρ hc₀ hc hld (Sec σ.D k) (fun y => ((k • σ.D).vanishesAt_zero y).regularAt) (fun a ha b hb y => (ha y).add (hb y)) …`. Establish `h` using `W_closed σ (⟨p, hp⟩ : PrimeSpectrum σ.R)`.
+
+Conclude with `⟨fun a ha b hb _ => h.1 a (ha hp) b (hb hp), fun r a ha _ => h.2.1 r a (ha hp), fun s hs a ha _ => h.2.2 s hs a (ha hp)⟩)`. Use the proof step `(fun q hq h1 hfq v hv => by`. Establish `hG : ∀ z, Vert (σ.C x).G.hom (σ.ρ x σ.f) z → ((σ.C x).G.hom z).asIdeal = q → (RegAt z v ↔ ∃ s, s ∉ q ∧ GlobalTheory.Desc.cst (σ.C x).G.hom s * v ∈ spanBy (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x '' W (q.comap (σ.ρ x))))`. Introduce and unpack `z hz rfl`. Establish `h` using `(GlobalTheory.T.gaussProperty_codimOne_chart_heightOnePrime σ x z hz).1 v hv`.
+
+Rewrite `h` using `[← hW]`. Conclude with `h`. Take `⟨z, hz, hzq⟩` from `exists_vert_over _ e he hρf q h1 hfq`. Conclude with `⟨fun h => (hG z hz hzq).1 (h z hz hzq), fun h z' hz' hq' => (hG z' hz' hq').2 h⟩)`. Establish `hN : σ.N k = {u | u ∈ Sec σ.D k ∧ ∀ p : Ideal σ.R, p.IsPrime → p.height = 1 → σ.f ∈ p → u ∈ W p}`.
+
+Use extensionality with `u`. Use `and_congr_right fun _ => (GlobalTheory.T.forall_mem_regularChart_iff_heightOne_primes σ u).trans ⟨fun h p hp h1 hf _ => ?_, fun h p h1 hf => ?_⟩` and prove the remaining obligations. Conclude with `h (⟨p, hp⟩ : PrimeSpectrum σ.R) h1 hf`. Conclude with `h p.asIdeal p.isPrime h1 hf p.isPrime`. Rewrite using `[hN, key, ← hsec k]`.
+
+Use extensionality with `v`. Use `(GlobalTheory.T.mem_cartierMultiple_chart_iff_regular_codimOne σ x k v).trans (and_congr_right fun _ => ⟨fun h q _ _ _ z hz _ => h z hz, fun h z hz => ?_⟩)` and prove the remaining obligations. Conclude with `h _ ((σ.C x).G.hom z).isPrime (height_of_vert _ hρf hz) hz.2 z hz rfl`.
+-/
 theorem sec_eq_spanBy : ∀ (σ : Setup) (x : Sp σ.R) (k : ℕ), Sec (σ.D₁ x) k = spanBy (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x '' σ.N k) := by
   intro σ x k
   haveI := (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (σ.C x).R).2

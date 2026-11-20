@@ -10,6 +10,9 @@ noncomputable section
 
 namespace PullbackMulMem
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∑ i, ((c.ε i : ℕ) : ℤ) * v i, by simp only [dotProduct, HalfChar.a, intVec, Finset.sum_mul] push_cast refine Finset.sum_congr rfl fun i _ => ?_ ring⟩`.
+-/
 lemma two_a_dot {g : ℕ} (c : HalfChar g) (v : Fin g → ℤ) :
     ∃ s : ℤ, (c.a ⬝ᵥ intVec v) * 2 = s :=
   ⟨∑ i, ((c.ε i : ℕ) : ℤ) * v i, by
@@ -18,6 +21,9 @@ lemma two_a_dot {g : ℕ} (c : HalfChar g) (v : Fin g → ℤ) :
     refine Finset.sum_congr rfl fun i _ => ?_
     ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∑ i, u i * ((c.ε' i : ℕ) : ℤ), by simp only [dotProduct, HalfChar.b, intVec, Finset.sum_mul] push_cast refine Finset.sum_congr rfl fun i _ => ?_ ring⟩`.
+-/
 lemma two_dot_b {g : ℕ} (c : HalfChar g) (u : Fin g → ℤ) :
     ∃ s : ℤ, (intVec u ⬝ᵥ c.b) * 2 = s :=
   ⟨∑ i, u i * ((c.ε' i : ℕ) : ℤ), by
@@ -26,15 +32,26 @@ lemma two_dot_b {g : ℕ} (c : HalfChar g) (u : Fin g → ℤ) :
     refine Finset.sum_congr rfl fun i _ => ?_
     ring⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Int.even_mul_succ_self ((m : ℤ) - 1)`. Establish `h : ((m : ℤ) - 1) * m = r + r` using `by simpa using hr`. Conclude with `⟨r, by exact_mod_cast h⟩`.
+-/
 lemma even_pred_mul (m : ℕ) : ∃ r : ℤ, ((m : ℂ) - 1) * m = r + r := by
   obtain ⟨r, hr⟩ := Int.even_mul_succ_self ((m : ℤ) - 1)
   have h : ((m : ℤ) - 1) * m = r + r := by simpa using hr
   exact ⟨r, by exact_mod_cast h⟩
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[intVec]`.
+-/
 lemma intVec_mul {g : ℕ} (m : ℕ) (u : Fin g → ℤ) :
     intVec (fun i => (m : ℤ) * u i) = (m : ℂ) • intVec u := by
   ext i; simp [intVec]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `two_a_dot c v`. Take `⟨r, hr⟩` from `even_pred_mul m`. Unfold `perFactor`. Rewrite using `[intVec_mul, dotProduct_smul, smul_eq_mul, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨-((N : ℤ) * r * s), ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Take the linear combination `(-2 * π * I * N * (c.a ⬝ᵥ intVec v)) * hr + (-2 * π * I * N * r) * hs`.
+-/
 lemma perFactor_mul {g : ℕ} (c : HalfChar g) (N m : ℕ) (v : Fin g → ℤ) :
     perFactor c N (fun i => (m : ℤ) * v i) = perFactor c (N * m ^ 2) v := by
   obtain ⟨s, hs⟩ := two_a_dot c v
@@ -45,6 +62,11 @@ lemma perFactor_mul {g : ℕ} (c : HalfChar g) (N m : ℕ) (v : Fin g → ℤ) :
   push_cast
   linear_combination (-2 * π * I * N * (c.a ⬝ᵥ intVec v)) * hr + (-2 * π * I * N * r) * hs
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `two_dot_b c u`. Take `⟨r, hr⟩` from `even_pred_mul m`. Unfold `autFactor`. Simplify using `only [intVec_mul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, dotProduct_add, smul_eq_mul]`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Use `⟨(N : ℤ) * r * s, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(2 * π * I * N * (intVec u ⬝ᵥ c.b)) * hr + (2 * π * I * N * r) * hs`.
+-/
 lemma autFactor_mul {g : ℕ} (P : SiegelPt g) (c : HalfChar g) (N m : ℕ) (u : Fin g → ℤ)
     (z : Fin g → ℂ) :
     autFactor P c N (fun i => (m : ℤ) * u i) ((m : ℂ) • z) = autFactor P c (N * m ^ 2) u z := by
@@ -62,6 +84,11 @@ end PullbackMulMem
 
 open RigSymForm
 
+/- English proof (translation)
+Introduce `P m N f hf`. Establish `hS : ∀ n, P.S n = thetaSec P.pt P.ch n` using `fun n => by`. Rewrite using `[← P.span_eq n, Submodule.span_eq]`. Rewrite `hf`, the goal using `[hS]`. Take `⟨hd, h1, h2⟩` from `hf`.
+
+Use `⟨hd.comp (differentiable_id.const_smul (m : ℂ)), fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Use `show f ((m : ℂ) • (z + intVec v)) = perFactor P.ch (N * m ^ 2) v * f ((m : ℂ) • z)`. Rewrite using `[smul_add, ← PullbackMulMem.intVec_mul, h1, PullbackMulMem.perFactor_mul]`. Use `show f ((m : ℂ) • (z + P.pt.τ *ᵥ intVec u)) = autFactor P.pt P.ch (N * m ^ 2) u z * f ((m : ℂ) • z)`. Rewrite using `[smul_add, ← Matrix.mulVec_smul, ← PullbackMulMem.intVec_mul, h2, PullbackMulMem.autFactor_mul]`.
+-/
 theorem PullbackMulMem.proof : PullbackMulMem.Statement := by
   intro P m N f hf
   have hS : ∀ n, P.S n = thetaSec P.pt P.ch n := fun n => by

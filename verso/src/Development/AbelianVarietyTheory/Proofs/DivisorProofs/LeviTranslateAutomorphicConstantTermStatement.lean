@@ -12,6 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.LeviShift.isAutOn_levi_comb | exact GlobalTheory.ThK.LeviShift.isAutOn_levi_comb | (intros; apply GlobalTheory.ThK.LeviShift.isAutOn_levi_comb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_translate_automorphic_constant_term : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (P : Plane E n n₁) (c : E) (hc : c ≠ 0)
     (t : (AE F E)ˣ) (m : UA σ Y.J), IsLevi (W₁ := Y₁) P t 1 m →

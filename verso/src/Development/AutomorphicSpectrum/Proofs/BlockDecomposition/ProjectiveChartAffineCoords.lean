@@ -21,6 +21,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 noncomputable section
 namespace GlobalTheory.CompanionTheory.ConeTransfer
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem pull_resU_comp {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R)
     {U V W : ObjectProperty C} (h : V ≤ U) (h' : W ≤ V) (j : ℕ) (x : HU F U j) :
     (resU F h').pull j ((resU F h).pull j x) = (resU F (h'.trans h)).pull j x := by
@@ -30,6 +33,9 @@ theorem pull_resU_comp {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F 
 section
 variable {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Unfold `resKS`. Rewrite using `[GlobalTheory.CompanionTheory.ConeZarCap.resU_eq]`. Both sides reduce to the same expression.
+-/
 theorem resKS_eq (s : ℕ) {V V' : X.Opens} (h : V ≤ V') (r r' : ℤ) (j : ℕ) (x : HQ (KS q s {V'}) r r' j) :
     resKS q s h r r' j x =
       (resU (sq (thFil (smFun X q) r) (thFil (smFun X q) r')) (ks_le q s h)).pull j x := by
@@ -43,9 +49,15 @@ section
 variable {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
   {Q : ObjectProperty (Thick (smFun X q))}
 
+/- English proof (translation)
+The claim follows from `(IsNilpotent.isUnit_quotient_mk_iff (GlobalTheory.CompanionTheory.ConeZcls.J_nil T)).1 h`.
+-/
 theorem isUnit_of_mk (T : Thick (smFun X q)) (x : T.B) (h : IsUnit (Ideal.Quotient.mk T.J x)) : IsUnit x :=
   (IsNilpotent.isUnit_quotient_mk_iff (GlobalTheory.CompanionTheory.ConeZcls.J_nil T)).1 h
 
+/- English proof (translation)
+Use `choose v hv using hu`. Take `rfl : ĝ = fun T => (v T : T.obj.B)` from `funext fun T => (hv T).symm`. Conclude with `GlobalTheory.CompanionTheory.RepLifts.d_dlogC s hs v hc`.
+-/
 theorem dlog_cocycle (s : ℕ) (hs : ∀ T : Q.FullSubcategory, T.obj.pdPow s = ⊥)
     (ĝ : ∀ T : Q.FullSubcategory, T.obj.B) (hu : ∀ T, IsUnit (ĝ T))
     (hc : ∀ (T T' : Q.FullSubcategory) (f : T ⟶ T'), ĝ T' - f.hom.φ (ĝ T) ∈ T'.obj.J) :
@@ -54,6 +66,11 @@ theorem dlog_cocycle (s : ℕ) (hs : ∀ T : Q.FullSubcategory, T.obj.pdPow s = 
   obtain rfl : ĝ = fun T => (v T : T.obj.B) := funext fun T => (hv T).symm
   exact GlobalTheory.CompanionTheory.RepLifts.d_dlogC s hs v hc
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil Q`. Use `choose v hv using hu`. Take `rfl : ĝ = fun T => (v T : T.obj.B)` from `funext fun T => (hv T).symm`. Rewrite using `[hF.one]`. Express the relevant statement in the definitionally equal form `(show (σ.obj (Fin.last 1)).obj.B from dlogC Q s (fun T => (v T : T.obj.B)) σ) ∈ (σ.obj (Fin.last 1)).obj.J`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.RepLifts.dlogC_eq s v σ]`. Conclude with `GlobalTheory.CompanionTheory.RepLifts.plogK_mem _ _ (GlobalTheory.CompanionTheory.RepLifts.rU_sub_mem v hc _)`.
+-/
 theorem dlog_mem (s : ℕ) (ĝ : ∀ T : Q.FullSubcategory, T.obj.B) (hu : ∀ T, IsUnit (ĝ T))
     (hc : ∀ (T T' : Q.FullSubcategory) (f : T ⟶ T'), ĝ T' - f.hom.φ (ĝ T) ∈ T'.obj.J)
     (σ : ComposableArrows Q.FullSubcategory 1) : dlogC Q s ĝ σ ∈ (sFil Q 1).S _ := by
@@ -67,6 +84,11 @@ theorem dlog_mem (s : ℕ) (ĝ : ∀ T : Q.FullSubcategory, T.obj.B) (hu : ∀ T
 
 end
 
+/- English proof (translation)
+Take `⟨f, hf, hc, hz⟩` from `h`. Take `⟨f', hf', hc', hz'⟩` from `h'`. Establish `e : f = f'` using `funext fun s => Subtype.ext ((hz s).trans (hz' s).symm)`. Substitute `e` using the available equality. Establish `a1 : c = (CH.cx (U.ι ⋙ sq a b)).cls f hf` using `hc`.
+
+Establish `a2 : c' = (CH.cx (U.ι ⋙ sq a b)).cls f hf` using `hc'`. Conclude with `a1.trans a2.symm`.
+-/
 theorem rep_uniqueU {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C ⥤ CommAlgCat.{0} R) (a b : IdF A)
     (U : ObjectProperty C) {j : ℕ} (z : CH.Cn (CH.modF (U.ι ⋙ A)) j) (c c' : HU (sq a b) U j)
     (h : Rep (a.res U.ι) (b.res U.ι) z c) (h' : Rep (a.res U.ι) (b.res U.ι) z c') : c = c' := by
@@ -78,6 +100,11 @@ theorem rep_uniqueU {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (A : C
   have a2 : c' = (CH.cx (U.ι ⋙ sq a b)).cls f hf := hc'
   exact a1.trans a2.symm
 
+/- English proof (translation)
+Apply `hi` to reduce the goal to its premises. Rewrite using `[map_add, map_sum, ← e0, ← e2]`. Establish `e5 : ∀ j, (resU F h).pull m ((resU F (hA j)).pull m (ω' j)) = (resU F (hP j)).pull m (ω j)` using `fun j => by`. Rewrite using `[← hω j, pull_resU_comp, pull_resU_comp]`. Rewrite using `[Finset.sum_congr rfl fun j _ => e5 j]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem glue {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type} [Fintype ι]
     {Q P : ObjectProperty C} (A B : ι → ObjectProperty C) (h : P ≤ Q) (hA : ∀ j, Q ≤ A j) (hB : ∀ j, B j ≤ A j)
     (hP : ∀ j, P ≤ B j) (m : ℕ) (hi : Function.Injective ((resU F h).pull m))
@@ -92,6 +119,9 @@ theorem glue {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ Mo
   rw [Finset.sum_congr rfl fun j _ => e5 j]
   abel
 
+/- English proof (translation)
+Rewrite using `[e, map_add, map_sum]`. Use `congrArg (· + _) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[pull_resU_comp]`.
+-/
 theorem glue_res {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type} [Fintype ι]
     {Q W : ObjectProperty C} (A : ι → ObjectProperty C) (h : W ≤ Q) (hA : ∀ j, Q ≤ A j) (hW : ∀ j, W ≤ A j) (m : ℕ)
     (c x : HU F Q m) (ω' : ∀ j, HU F (A j) m) (e : c = ∑ j, (resU F (hA j)).pull m (ω' j) + x) :
@@ -103,6 +133,9 @@ theorem glue_res {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C �
 section
 variable {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.ConeLocal.rep_xdtC_add (d := n + 1) s V t x y a b ha hb`.
+-/
 theorem rep_add' (s n : ℕ) (V : X.Opens) (t : Fin (n + 1) → Γ(X, V)) (x y : Γ(X, V))
     (a b : HQ (KS q s {V}) ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1))
     (ha : Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (xdtC s V t x) a)
@@ -110,6 +143,9 @@ theorem rep_add' (s n : ℕ) (V : X.Opens) (t : Fin (n + 1) → Γ(X, V)) (x y :
     Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (xdtC s V t (x + y)) (a + b) :=
   GlobalTheory.CompanionTheory.ConeLocal.rep_xdtC_add (d := n + 1) s V t x y a b ha hb
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Conclude with `rep_add' s n V t _ _ _ _ (h j) ih`.
+-/
 theorem rep_sum (s n : ℕ) (V : X.Opens) (t : Fin (n + 1) → Γ(X, V))
     (h0 : Rep (sFil (KS q s {V}) ((n : ℤ) + 1)) (sFil (KS q s {V}) ((n : ℤ) + 1 + 1)) (xdtC s V t 0) 0)
     {ι : Type} [DecidableEq ι] (S : Finset ι) (x : ι → Γ(X, V))
@@ -124,6 +160,11 @@ theorem rep_sum (s n : ℕ) (V : X.Opens) (t : Fin (n + 1) → Γ(X, V))
 
 end
 
+/- English proof (translation)
+Take `⟨x, hx, hu⟩` from `GlobalTheory.CompanionTheory.ConeTopChart.top_chart h1 h2 h3 q n s hs V c 0`. Establish `h` using `rep_add' s n V c.t x x 0 0 hx hx`. Rewrite `h` using `[add_zero]`. Establish `e : x + x = x` using `hu _ h`. Establish `e0 : x = 0` using `by simpa using e`.
+
+Rewrite `hx` using `[e0]`. Then use the resulting hypothesis.
+-/
 theorem rep_zero_xdt (h1 : CrystallineSemistableComparison.Pb.KH.LocGr) (h2 : CrystallineSemistableComparison.Pb.KH.PolyTf) (h3 : CrystallineSemistableComparison.Pb.KH.GrAff)
     {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)
     [SmoothOfRelativeDimension (n + 1) q] (s : ℕ) (hs : n + 1 < s) (V : X.Opens) (c : Coord q V (n + 1)) :
@@ -137,6 +178,27 @@ theorem rep_zero_xdt (h1 : CrystallineSemistableComparison.Pb.KH.LocGr) (h2 : Cr
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hLG hPT hGA K _ _ X q n _ N i y haff V hV c D hD g hg ĝ hĝ c0 hc0 ω f hf hdf hrep`. Establish `hun : (Finset.univ : Finset (Fin (n + 2))).Nonempty` using `Finset.univ_nonempty`. Establish `her : ∀ j : Fin (n + 2), (Finset.univ.erase j).Nonempty` using `fun j => by`. Use `⟨if j = 0 then 1 else 0, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `(Fin.zero_ne_one).symm`. Conclude with `fun e => h e.symm`. Take `⟨h1, hb1⟩` from `GlobalTheory.CompanionTheory.ConeZarCap.main q i y (n + 2) Finset.univ hun ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1)`.
+
+Take `⟨h1', hb0⟩` from `GlobalTheory.CompanionTheory.ConeZarCap.main q i y (n + 2) Finset.univ hun (n : ℤ) ((n : ℤ) + 1) n`. Establish `hj` using `fun j : Fin (n + 2) => GlobalTheory.CompanionTheory.ConeZarCap.main q i y (n + 2) (Finset.univ.erase j) (her j) ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1)`. Use `choose hjl hjb using hj`. Establish `hle : ∀ j : Fin (n + 2), (⨅ k ∈ Finset.univ, uy i y k) ≤ (⨅ k ∈ Finset.univ.erase j, uy i y k)` using `fun j => le_iInf₂ fun k _ => iInf₂_le k (Finset.mem_univ k)`. Establish `hlift : ∀ k (T : (KS q (n + 2) {⨅ k ∈ Finset.univ, uy i y k}).FullSubcategory), Ideal.Quotient.mk T.obj.J (liftV T.obj (ks_in q (n + 2) _ T.obj T.property) (g k)) = ev T.obj (ks_in q (n + 2) _ T.obj T.property) (g k)` using `fun k T => GlobalTheory.CompanionTheory.ConeLocal.XdtAdd.mk_liftV T.obj _ (g k)`.
+
+Establish `hunit : ∀ k (T : (KS q (n + 2) {⨅ k ∈ Finset.univ, uy i y k}).FullSubcategory), IsUnit (liftV T.obj (ks_in q (n + 2) _ T.obj T.property) (g k))` using `fun k T => isUnit_of_mk T.obj _ ((hlift k T).symm ▸ (hg k).map (ev T.obj (ks_in q (n + 2) _ T.obj T.property)))`. Establish `hcomp` using `fun k => GlobalTheory.CompanionTheory.RepLifts.lift_compat (Q := KS q (n + 2) {⨅ k ∈ Finset.univ, uy i y k}) (ks_in q (n + 2) _) (g k) (fun T => liftV T.obj (ks_in q (n + 2) _ T.obj T.property) (g k)) (hlift k)`. Take `⟨c', hc'⟩ : ∃ c' : HQ (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)}) ((n : ℤ) + 1) ((n : ℤ) + 1 + 1) (n + 1), Rep (sFil (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)}) ((n : ℤ) + 1)) (sFil (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)}) ((n : ℤ) + 1 + 1)) (cupListC (sP (KS q (n + 2 …` from `GlobalTheory.CompanionTheory.ConeRepCup.exists_rep (sP (KS q (n + 2) {⨅ k ∈ Finset.univ, uy i y k})) (sFil (KS q (n + 2) {⨅ k ∈ Finset.univ, uy i y k})) (GlobalTheory.CompanionTheory.DPFil.isFil_sFil _) (m := n + 1) (fun k => dlogC _ (n + 2) fun T => liftV T.obj (ks_in q (n + 2) …`. Establish `r1` using `GlobalTheory.CompanionTheory.ConeRep.rep_resB (thA (smFun X q)) (thFil (smFun X q) ((n : ℤ) + 1)) (thFil (smFun X q) ((n : ℤ) + 1 + 1)) h1 _ c' hc'`. Set `ĝ2 : Fin (n + 1) → ∀ T : (capS (wK q i y (n + 2)) Finset.univ).FullSubcategory, T.obj.B` to `fun k T => liftV T.obj (ks_in q (n + 2) _ T.obj (h1 _ T.property)) (g k)`.
+
+Establish `e1 : resB (thA (smFun X q)) h1 (cupListC (sP (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)})).A fun k => dlogC _ (n + 2) fun T => liftV T.obj (ks_in q (n + 2) _ T.obj T.property) (g k)) = cupListC (sP (capS (wK q i y (n + 2)) Finset.univ)).A fun k => dlogC (capS (wK q i y (n + 2)) …` using `GlobalTheory.CompanionTheory.ConeLocal.cup_resQ h1 _`. Rewrite `r1` using `[e1]`. Establish `hρ : Rep (sFil (capS (wK q i y (n + 2)) Finset.univ) ((n : ℤ) + 1)) (sFil (capS (wK q i y (n + 2)) Finset.univ) ((n : ℤ) + 1 + 1)) (cupListC (sP (capS (wK q i y (n + 2)) Finset.univ)).A fun k => dlogC (capS (wK q i y (n + 2)) Finset.univ) (n + 2) (ĝ2 k)) c0` using `GlobalTheory.CompanionTheory.RepLifts.main (capS (wK q i y (n + 2)) Finset.univ) (n + 2) (fun T hT => (h1 T hT).1.1) ĝ ĝ2 (fun k T => isUnit_of_mk T.obj _ ((hĝ k T (ks_in q (n + 2) _ T.obj (h1 _ T.property))).symm ▸ (hg k).map (ev T.obj (ks_in q (n + 2) _ T.obj (h1 _ T.property)) …`. Establish `e0 : c0 = (resU (sq (thFil (smFun X q) ((n : ℤ) + 1)) (thFil (smFun X q) ((n : ℤ) + 1 + 1))) h1).pull (n + 1) c'` using `rep_uniqueU (thA (smFun X q)) (thFil (smFun X q) ((n : ℤ) + 1)) (thFil (smFun X q) ((n : ℤ) + 1 + 1)) (capS (wK q i y (n + 2)) Finset.univ) _ _ _ hρ r1`. Establish `hω : ∀ j, ∃ w, (resU (sq (thFil (smFun X q) ((n : ℤ) + 1)) (thFil (smFun X q) ((n : ℤ) + 1 + 1))) (hjl j)).pull (n + 1) w = ω j` using `fun j => (hjb j).2 (ω j)`.
+
+Use `choose ω' hω' using hω`. Take `⟨f', hf'1, hf'2, hf'3⟩` from `GlobalTheory.CompanionTheory.ConeRepExact.exact_lift (thP (smFun X q)) (thFil (smFun X q)) (GlobalTheory.CompanionTheory.DPFil.isFil_thFil _) h1 n hb0.2 f hf hdf`. Take `⟨xf, hxf⟩` from `GlobalTheory.CompanionTheory.ConeLocal.rep_exists (a := sFil (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)}) ((n : ℤ) + 1)) (b := sFil (KS q (n + 2) {(⨅ k ∈ Finset.univ, uy i y k)}) ((n : ℤ) + 1 + 1)) (CH.d _ n f') hf'2 (fun σ => by rw [CH.d_d]; exact zero_mem _)`. Establish `e2` using `hf'3 _ xf hrep hxf`. Establish `t1 : Function.Injective ((resU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) h1).pull (n + 1)) := hb1.1`.
+
+Establish `t2 : ∀ j, (resU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) (hjl j)).pull (n + 1) (ω' j) = ω j := hω'`. Establish `t3 : c0 = (resU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) h1).pull (n + 1) c' := e0`. Establish `t4 : c0 - ∑ j, (resU (gr (Φ` using `thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) (capS_univ_le (wK q i y (n + 2)) (Finset.univ.erase j))).pull (n + 1) (ω j) = (resU (gr (Φ := thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) h1).pull (n + 1) xf := e2`. Establish `e3` using `glue (gr (Φ := thP (smFun X q)) (thFil (smFun X q)) ((n : ℤ) + 1)) (fun j : Fin (n + 2) => KS q (n + 2) {⨅ k ∈ Finset.univ.erase j, uy i y k}) (fun j : Fin (n + 2) => capS (wK q i y (n + 2)) (Finset.univ.erase j)) h1 (fun j => ks_le q (n + 2) (hle j)) hjl (fun j => capS_univ_le ( …`. Establish `hUaff` using `haff _ hun`.
+
+Establish `hd` using `GlobalTheory.CompanionTheory.ConeLdlog.main hLG hPT hGA q n (n + 2) (by omega) V _ (hV Finset.univ) hUaff c D hD g hg (fun k T => liftV T.obj (ks_in q (n + 2) _ T.obj T.property) (g k)) hlift c' hc'`. Establish `hr` using `fun j : Fin (n + 2) => GlobalTheory.CompanionTheory.ConeLRestr.main hLG hPT hGA q n (n + 2) (by omega) V _ (hV (Finset.univ.erase j)) (haff _ (her j)) c D hD (ω' j)`. Use `choose x hx hxr using hr`. Take `⟨η, hη, hηr⟩` from `GlobalTheory.CompanionTheory.ConeLocal.LExact.main hLG hPT hGA q n (n + 2) (by omega) V _ (hV Finset.univ) hUaff c D hD f' hf'1 hf'2 xf hxf`. Establish `e4 : resKS q (n + 2) (hV Finset.univ) _ _ _ c' = ∑ j, resKS q (n + 2) (hV (Finset.univ.erase j)) _ _ _ (ω' j) + resKS q (n + 2) (hV Finset.univ) _ _ _ xf`.
+
+Rewrite using `[resKS_eq, resKS_eq, Finset.sum_congr rfl fun j _ => resKS_eq q (n + 2) (hV (Finset.univ.erase j)) _ _ _ (ω' j)]`. Conclude with `glue_res (sq (thFil (smFun X q) ((n : ℤ) + 1)) (thFil (smFun X q) ((n : ℤ) + 1 + 1))) (fun j : Fin (n + 2) => KS q (n + 2) {⨅ k ∈ Finset.univ.erase j, uy i y k}) (ks_le q (n + 2) (hV Finset.univ)) (fun j => ks_le q (n + 2) (hle j)) (fun j => ks_le q (n + 2) (hV (Finset.univ.erase …`. Establish `hsum` using `rep_add' (n + 2) n V c.t _ _ _ _ (rep_sum (n + 2) n V c.t (rep_zero_xdt hLG hPT hGA q n (n + 2) (by omega) V c) Finset.univ x _ hxr) hηr`. Rewrite `hsum` using `[← e4]`. Use `⟨x, η, hx, hη, ?_⟩` and prove the remaining obligations.
+
+Break down `hd with hd | hd` into its components or cases. Conclude with `Or.inl ((GlobalTheory.CompanionTheory.ConeTopChart.top_chart hLG hPT hGA q n (n + 2) (by omega) V c _).unique hd hsum)`. Conclude with `Or.inr ((GlobalTheory.CompanionTheory.ConeTopChart.top_chart hLG hPT hGA q n (n + 2) (by omega) V c _).unique hd hsum)`.
+-/
 theorem main : KH.LocGr → KH.PolyTf → KH.GrAff →
     ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)
     [SmoothOfRelativeDimension (n + 1) q] {N : ℕ} (i : X ⟶ PSpace K N) (y : Fin (n + 2) → MvPolynomial (Fin (N + 1)) K),

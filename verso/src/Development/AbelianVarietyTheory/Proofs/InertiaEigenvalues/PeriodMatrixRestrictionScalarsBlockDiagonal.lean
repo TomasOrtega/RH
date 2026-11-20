@@ -9,11 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Simplify using `only [ks, RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, Polynomial.algebraMap_apply]`.
+-/
 theorem unramifiedToBst_algebraMap_padic {l : ℕ} [Fact l.Prime] (P : LocPrime l) (q : ℚ_[l]) :
     ks P (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) q) = algebraMap ℚ_[l] (Bst P) q := by
   simp only [ks, RingHom.comp_apply]
   rw [← IsScalarTower.algebraMap_apply, Polynomial.algebraMap_apply]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, ih, add_comm, fr_add, fr_one]`. Use `phiSt_algebraMap P (fr l m c)` as an intermediate fact.
+
+Rewrite `this` using `[Polynomial.algebraMap_apply, Polynomial.algebraMap_apply]`. Conclude with `this`.
+-/
 theorem frobeniusSemistablePow_unramifiedToBst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (m : ℕ) (c : ↥(MaximalUnramifiedExtension l)) :
     (phiSt P ^ m) (ks P c) = ks P (fr l m c) := by
   induction m with
@@ -24,6 +32,9 @@ theorem frobeniusSemistablePow_unramifiedToBst {l : ℕ} [Fact l.Prime] (P : Loc
     rw [Polynomial.algebraMap_apply, Polynomial.algebraMap_apply] at this
     exact this
 
+/- English proof (translation)
+Proceed by induction on `m generalizing b with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [pow_succ', AlgHom.mul_apply, ih, phiSt_actSt, AlgHom.mul_apply]`.
+-/
 theorem frobeniusSemistablePow_galoisAction_comm {l : ℕ} [Fact l.Prime] (P : LocPrime l) (g : GQ l) (m : ℕ) (b : Bst P) :
     (phiSt P ^ m) (actSt P g b) = actSt P g ((phiSt P ^ m) b) := by
   induction m generalizing b with
@@ -34,6 +45,11 @@ end GlobalTheory.PMon
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Set `S : Subfield ↥(MaximalUnramifiedExtension l)` to `K.1.toSubfield.comap (algebraMap ↥(MaximalUnramifiedExtension l) (Om l))`. Set `A : Matrix N N S` to `Matrix.of fun i j => ⟨(p : Matrix N N ↥(MaximalUnramifiedExtension l)) i j, h i j⟩`. Establish `hA : (S.subtype).mapMatrix A = (p : Matrix N N ↥(MaximalUnramifiedExtension l))` using `by refine Matrix.ext fun i j => ?_; rfl`. Establish `hmem : ((p : Matrix N N ↥(MaximalUnramifiedExtension l))⁻¹ i j) ∈ S`. Rewrite using `[Matrix.inv_def, ← hA, ← RingHom.map_adjugate, ← RingHom.map_det]`.
+
+Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Conclude with `S.mul_mem (S.inv_mem (A.det).2) (A.adjugate i j).2`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `hmem`.
+-/
 theorem inv_entries_mem_finiteExtension_unramified {l : ℕ} [Fact l.Prime] {N : Type} [Fintype N] [DecidableEq N] (K : FinExt l)
     (p : GL N ↥(MaximalUnramifiedExtension l)) (h : ∀ i j, (((p : Matrix N N ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) ∈ K.1) (i j : N) :
     ((((p⁻¹ : GL N ↥(MaximalUnramifiedExtension l)) : Matrix N N ↥(MaximalUnramifiedExtension l)) i j : ↥(MaximalUnramifiedExtension l)) : Om l) ∈ K.1 := by
@@ -47,6 +63,23 @@ theorem inv_entries_mem_finiteExtension_unramified {l : ℕ} [Fact l.Prime] {N :
   rw [Matrix.coe_units_inv]
   exact hmem
 
+/- English proof (translation)
+Introduce `l _ P n _ _ K r σ Q ρ₀ p h1 h2 h3`. Set `φm : Fin r → Bst P →+* Bst P` to `fun m => ((phiSt P ^ (m : ℕ) : Bst P →ₐ[ℚ_[l]] Bst P) : Bst P →+* Bst P)`. Set `Pu : GL (n × Fin r) (Bst P)` to `Units.map (RingHom.mapMatrix (m := n × Fin r) (ks P)).toMonoidHom p⁻¹`. Set `Du : GL (n × Fin r) (Bst P)` to `Units.map (Matrix.blockDiagonalRingHom n (Fin r) (Bst P)).toMonoidHom (MulEquiv.piUnits.symm fun m => Units.map (RingHom.mapMatrix (m := n) (φm m)).toMonoidHom Q)`. Use `⟨Pu * Du, fun g => ?_⟩` and prove the remaining obligations.
+
+Use `set pv : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l) := ((p⁻¹ : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)) : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) with hpv`. Establish `hPu : (Pu : Matrix (n × Fin r) (n × Fin r) (Bst P)) = pv.map (ks P)` using `rfl`. Establish `hDu : (Du : Matrix (n × Fin r) (n × Fin r) (Bst P)) = Matrix.blockDiagonal fun m => (Q : Matrix n n (Bst P)).map (φm m)` using `rfl`. Use `set act := actSt P (g : GQ l)`. Establish `hPfix : (pv.map (ks P)).map act = pv.map (ks P)`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Conclude with `act_ks P g (inv_entries_mem_finiteExtension_unramified K p h2 i j)`. Establish `hrel : (ρ₀ g : Matrix (n × Fin r) (n × Fin r) ℚ_[l]).map (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) * pv = pv * Matrix.blockDiagonal (fun m : Fin r => (σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m))`. Establish `hp : pv * (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) = 1`.
+
+Rewrite using `[hpv, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hp' : (p : Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l)) * pv = 1`. Rewrite using `[hpv, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hrelB` using `congrArg (fun M => M.map (ks P)) hrel`.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_map] at hrelB`. Establish `hks : (ks P) ∘ (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) = algebraMap ℚ_[l] (Bst P)` using `funext (unramifiedToBst_algebraMap_padic P)`. Rewrite `hrelB` using `[hks, Matrix.blockDiagonal_map _ _ (map_zero _)]`. Establish `hblock : ∀ m : Fin r, ((σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m)).map (ks P) * ((Q : Matrix n n (Bst P)).map (φm m)).map act = (Q : Matrix n n (Bst P)).map (φm m)`. Introduce `m`.
+
+Establish `e1 : ((σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l m)).map (ks P) = ((σ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (ks P)).map (φm m)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, φm, AlgHom.coe_toRingHom]`. Conclude with `(frobeniusSemistablePow_unramifiedToBst P m _).symm`. Establish `e2 : ((Q : Matrix n n (Bst P)).map (φm m)).map act = ((Q : Matrix n n (Bst P)).map act).map (φm m)`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, φm, AlgHom.coe_toRingHom, act]`. Conclude with `(frobeniusSemistablePow_galoisAction_comm P _ m _).symm`. Rewrite using `[e1, e2, ← Matrix.map_mul, h1 g]`. Rewrite using `[Units.val_mul, hPu, hDu, Matrix.map_mul, hPfix, Matrix.blockDiagonal_map _ _ (map_zero _), ← Matrix.mul_assoc, hrelB, Matrix.mul_assoc, ← Matrix.blockDiagonal_mul]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `m`. Conclude with `hblock m`.
+-/
 theorem period_resScalars : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (Q : GL n (Bst P)) (ρ₀ : ↥(GK K) →* GL (n × Fin r) ℚ_[l])
     (p : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)),

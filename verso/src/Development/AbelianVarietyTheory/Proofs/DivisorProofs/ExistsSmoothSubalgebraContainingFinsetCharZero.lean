@@ -5,6 +5,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F K _ _ _ _ s`. Use `haveI : PerfectField F := PerfectField.ofCharZero`. Set `C : Subalgebra F K` to `Algebra.adjoin F (↑s : Set K)`. Use `haveI : Algebra.FiniteType F C := ⟨(Subalgebra.fg_top C).mpr (Subalgebra.fg_adjoin_finset s)⟩`. Take `⟨f, hf0, hsm, -⟩` from `GlobalTheory.SS.exists_smooth_free_away F C C`.
+
+Establish `hinjC : Function.Injective (algebraMap C K)` using `Subtype.val_injective`. Establish `hfK : IsUnit (algebraMap C K f)`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Introduce `h`. Conclude with `hf0 (hinjC (by simpa using h))`.
+
+Set `g : Localization.Away f →ₐ[F] K` to `{ IsLocalization.Away.lift f hfK with commutes' := fun r => by show IsLocalization.Away.lift f hfK (algebraMap F (Localization.Away f) r) = algebraMap F K r`. Rewrite using `[IsScalarTower.algebraMap_apply F C (Localization.Away f), IsLocalization.Away.lift_eq]`. Use `rfl }`. Establish `hginj : Function.Injective g` using `by show Function.Injective (IsLocalization.Away.lift f hfK)`. Rewrite using `[IsLocalization.Away.lift, IsLocalization.lift_injective_iff]`.
+
+Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[IsLocalization.injective (Localization.Away f) (powers_le_nonZeroDivisors_of_noZeroDivisors hf0) h]`. Introduce `h`.
+
+Establish `: x = y` using `hinjC h`. Rewrite using `[this]`. Use `⟨g.range, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `⟨algebraMap C (Localization.Away f) ⟨x, Algebra.subset_adjoin hx⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show IsLocalization.Away.lift f hfK _ = x`. Rewrite using `[IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression. Conclude with `Algebra.Smooth.of_equiv (AlgEquiv.ofInjective g hginj)`.
+-/
 theorem exists_smooth_subalgebra_of_finset : ∀ (F K : Type) [Field F] [CharZero F] [Field K]
     [Algebra F K] (s : Finset K), ∃ R : Subalgebra F K, (↑s : Set K) ⊆ (R : Set K) ∧
       Algebra.Smooth F R := by

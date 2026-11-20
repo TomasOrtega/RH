@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.FlatOfIsFiniteOfFini
 
 namespace GlobalTheory.CompanionTheory.FlatFib
 
+/- English proof (translation)
+Introduce `R _ X Y f h1 h0 h2 h3 H`. Conclude with `GlobalTheory.flat_of_isFinite_of_finitePresentation_of_flat_geometric_fibres _ X Y f h1 h0 h2 h3 H`.
+-/
 theorem flatOfFibresFinite : PositivityTheory.Tls2.Zar3.Ch1.FlatOfFibresFinite := by
   intro R _ X Y f h1 h0 h2 h3 H
   exact GlobalTheory.flat_of_isFinite_of_finitePresentation_of_flat_geometric_fibres _ X Y f h1 h0 h2 h3 H

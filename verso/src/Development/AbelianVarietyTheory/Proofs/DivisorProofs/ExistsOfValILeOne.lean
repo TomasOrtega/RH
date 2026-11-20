@@ -13,9 +13,37 @@ variable (V) in
 
 abbrev valI : Valuation F (ValuationRing.ValueGroup V F) := ValuationRing.valuation V F
 
+/- English proof (translation)
+The claim follows from `(ValuationRing.mem_integer_iff V F x).1 h`.
+-/
 theorem exists_of_valI_le_one {x : F} (h : valI V x ≤ 1) : ∃ a : V, algebraMap V F a = x :=
   (ValuationRing.mem_integer_iff V F x).1 h
 
+/- English proof (translation)
+Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun r => valI V (A r 0)) Finset.univ_nonempty`. Establish `hcol : ∃ r, A r 0 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hA (Matrix.det_eq_zero_of_column_eq_zero 0 h)`.
+
+Establish `hp0 : A p 0 ≠ 0`. Take `⟨r, hr⟩` from `hcol`. Introduce `h0`. Use `hp r (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `hr ((valI V).zero_iff.1 (le_antisymm this zero_le))`. Set `σ : Equiv.Perm (Fin (n + 1))` to `Equiv.swap 0 p`. Set `P : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `σ.toPEquiv.toMatrix`. Establish `hc : ∀ i, ∃ a : V, algebraMap V F a = A (σ i) 0 / A p 0`. Introduce `i`.
+
+Apply `exists_of_valI_le_one` to reduce the goal to its premises. Rewrite using `[map_div₀]`. Establish `hpos : valI V (A p 0) ≠ 0` using `by simpa using hp0`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hpos)]`. Conclude with `hp _ (Finset.mem_univ _)`.
+
+Use `choose c hc using hc`. Set `E : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `Matrix.of fun i j => if i = j then 1 else if j = 0 then -c i else 0`. Use `⟨E * P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations.
+
+Establish `hE : E.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular E]`. Simplify using `[E]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`.
+
+Establish `hj : j ≠ 0` using `fun h => by subst h; exact Fin.not_lt_zero _ hij'`. Simplify using `only [E, Matrix.of_apply, if_neg (ne_of_lt hij'), if_neg hj]`. Rewrite using `[hE]`. Conclude with `isUnit_one`. Simplify using `only [P, Matrix.det_permutation]`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Introduce `i`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `hPA : ∀ r, (P.map (algebraMap V F) * A) r 0 = A (σ r) 0`. Introduce `r`.
+
+Simplify using `[P, Matrix.mul_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]`. Simplify using `only [hPA, Matrix.map_apply, E, Matrix.of_apply]`. Rewrite using `[if_neg (Fin.succ_ne_zero i)]`. Simplify using `only [if_true, Fin.succ_ne_zero, map_neg, map_one, map_zero, zero_mul]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using `only [if_true, map_one, one_mul]`. Rewrite using `[hc]`. Establish `: σ 0 = p` using `by simp [σ]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[if_neg (fun h => hji (Fin.succ_injective _ h).symm)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (hA : A.det ≠ 0) :
     ∃ Q : Matrix (Fin (n + 1)) (Fin (n + 1)) V, IsUnit Q.det ∧
       ∀ i : Fin n, (Q.map (algebraMap V F) * A) i.succ 0 = 0 := by
@@ -75,6 +103,9 @@ theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (h
       simp
     · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+The claim follows from `| 0, A, _ => ⟨1, A, by simp, fun i => i.elim0, fun i => i.elim0, by ext i; exact i.elim0⟩ | n + 1, A, hA => by obtain ⟨Q, hQ, hQA⟩ := exists_clear_col (V := V) A hA set B := Q.map (algebraMap V F) * A with hB have hdetB : B.det = B 0 0 * (B.submatrix Fin.succ Fin.succ).det := by …`.
+-/
 theorem iwasawa_matrix : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠ 0 →
     ∃ (k : Matrix (Fin n) (Fin n) V) (U : Matrix (Fin n) (Fin n) F), IsUnit k.det ∧ U.BlockTriangular id ∧
       (∀ i, U i i ≠ 0) ∧ A = k.map (algebraMap V F) * U
@@ -130,6 +161,11 @@ theorem iwasawa_matrix : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠
     · rw [Matrix.map_mul, Matrix.mul_assoc, hKU, hB, ← Matrix.mul_assoc, ← Matrix.map_mul,
         Matrix.nonsing_inv_mul Q hQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ N g`. Take `⟨k, U, hk, hU, -, hg⟩` from `iwasawa_matrix (V := V) g.1 (Matrix.GeneralLinearGroup.det_ne_zero g)`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det k).2 hk`. Use `⟨u, (GeneralLinearGroup.map (n := Fin N) (algebraMap V K) u)⁻¹ * g, ?_, by simp⟩` and prove the remaining obligations. Establish `: ((GeneralLinearGroup.map (n` using `Fin N) (algebraMap V K) u)⁻¹ * g).1 = U := by`.
+
+Establish `h1 : g.1 = (GeneralLinearGroup.map (n` using `Fin N) (algebraMap V K) u).1 * U := hg`. Rewrite using `[Units.val_mul, h1, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hU`.
+-/
 theorem iwasawa : ∀ (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] (N : ℕ) (g : GL (Fin N) K), ∃ (k : GL (Fin N) V) (b : GL (Fin N) K),
     b.1.BlockTriangular id ∧ g = GeneralLinearGroup.map (algebraMap V K) k * b := by

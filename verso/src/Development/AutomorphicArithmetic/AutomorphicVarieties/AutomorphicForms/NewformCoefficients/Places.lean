@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V.Sd
 
+/- English proof (translation)
+Introduce `w`. Establish `hq` using `Rat.HeightOneSpectrum.prime_natGenerator w`. Establish `hspan` using `Rat.HeightOneSpectrum.span_natGenerator w`. Establish `hN : normV w = Rat.HeightOneSpectrum.natGenerator w`. Unfold `normV`.
+
+Rewrite using `[Nat.card_congr (Ideal.quotientEquiv w.asIdeal _ (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) hspan).toEquiv, Nat.card_congr (Int.quotientSpanNatEquivZMod _).toEquiv, Nat.card_zmod]`. Establish `hP : w.asIdeal = Ideal.span {((Rat.HeightOneSpectrum.natGenerator w : ℕ) : 𝓞 ℚ)}`. Use extensionality with `x`. Rewrite using `[Ideal.mem_span_singleton, ← Ideal.apply_mem_of_equiv_iff (f := Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)), ← hspan, Ideal.mem_span_singleton, ← map_dvd_iff (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)), map_natCast]`. Use `⟨by rw [hN]; exact hq, by rw [hN]; exact hP, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Introduce `M hM hndvd`. Unfold `UpperTheory.V.Af.Nf.lev ordI`. Establish `hne : Ideal.span {(M : 𝓞 ℚ)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(by omega : M ≠ 0)` after adjusting the coercions. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[← Ne, Associates.count_ne_zero_iff_dvd hne w.irreducible, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Apply `hndvd` to reduce the goal to its premises.
+
+Rewrite using `[hN, Rat.HeightOneSpectrum.natGenerator_dvd_iff, ← map_natCast (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) M, Ideal.apply_mem_of_equiv_iff]`. Conclude with `hc`.
+-/
 theorem UpperTheory.V.Af.Nf.places :
     UpperTheory.V.Af.Nf.Places := by
   intro w

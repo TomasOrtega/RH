@@ -29,6 +29,11 @@ def CongUWG (Ty : UnitaryAutomorphicTypeClass) (Gen : ℕ → ℕ → Multiset �
             ϑ = Sum.elim θ' (fun p : ↥W × ℤ => ι.symm (c p.1 p.2 * PowSatU U' p.1 p.2))} ∧
         ((∀ j g, ∃ q : ℚ, O.f j g = q) → ∃ L : FinExt l, ∀ j, θ j ∈ L.1)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((l : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ (u.under (𝓞 (maximalRealSubfield E))).asIdeal`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _`. Simplify using `using hu`. Rewrite `h1` using `[← h]`.
+
+Apply `hw` to reduce the goal to its premises. Establish `h2 : ((l : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) w.asIdeal` using `h1`. Simplify using `using h2`.
+-/
 theorem apart_of_not_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ}
     {u w : HeightOneSpectrum (𝓞 E)} (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal) (hw : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) : Apart w u := by
   intro h

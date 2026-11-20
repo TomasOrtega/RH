@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.LinkFam
 
+/- English proof (translation)
+Introduce `eps Fm hC`. Take `⟨C, x0, h⟩` from `hC`. Establish `hA : Formalism.MainNotions.TwistedPlaces.AdmF Fm` using `⟨C, x0, fun x hx hx1 i hS => by`. Take `⟨X, hX⟩` from `h x hx hx1 i hS`. Conclude with `GlobalTheory.T.admittedStatements_of_localBoundsConclusion_alt _ _ _ X C hX⟩`.
+
+Conclude with `Formalism.MainNotions.N.linkN_of Fm hA (Formalism.MainNotions.TwistedPlaces.stmtF_holds Fm)`.
+-/
 theorem main : ∀ {eps : ℝ} (Fm : FamP eps), ConclF Fm → Formalism.MainNotions.LinkN Fm := by
   intro eps Fm hC
   obtain ⟨C, x0, h⟩ := hC

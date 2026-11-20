@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.EigDiff
 
+/- English proof (translation)
+Introduce `E _ _ _ _ H p _`. Establish `hv : (Valued.v : Valuation ℂ_[p] ℝ≥0).Integers 𝓞_ℂ_[p]` using `Valuation.valuationSubring.integers _`. Take `⟨δ, hδ0, hδ⟩` from `GlobalTheory.T.idempotent_trace_separating_element E ℂ_[p] Valued.v 𝓞_ℂ_[p] hv`. Use `⟨δ, hδ0, ?_⟩` and prove the remaining obligations. Introduce `l c _ _ Q τ w hw`.
+
+Rewrite using `[htLat_psi]`. Take `⟨⟨n, r, a, hsum⟩, hb⟩` from `hδ (embAt c ℂ_[p] τ.1)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `GlobalTheory.HTLat.Point.smul_latTQuot_le_latT Q _ δ r a hsum h`.
+
+Introduce `h`. Take `⟨m, u, ℓ, e, h1, h2, h3⟩` from `GlobalTheory.T.p_adic_point_linear_functional_cm Q (embAt c ℂ_[p] τ.1)`. Conclude with `GlobalTheory.T.p_adic_point_trace_dual Q _ δ hδ0 hb m u ℓ e h1 h2 h3 w hw h`.
+-/
 theorem eigSt_holds : EigSt := by
   intro E _ _ _ _ H p _
   have hv : (Valued.v : Valuation ℂ_[p] ℝ≥0).Integers 𝓞_ℂ_[p] := Valuation.valuationSubring.integers _

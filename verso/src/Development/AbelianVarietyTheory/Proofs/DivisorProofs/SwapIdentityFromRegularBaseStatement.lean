@@ -9,5 +9,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.swap2_of_swapRegular | exact GlobalTheory.CovTest.swap2_of_swapRegular | (intros; apply GlobalTheory.CovTest.swap2_of_swapRegular <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.swap_identity_from_regular_base : ArCalc → RegularAlteration → GdegPull → ∀ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, SwapReg G → Swap2 G := by
   first | exact @GlobalTheory.CovTest.swap2_of_swapRegular | exact GlobalTheory.CovTest.swap2_of_swapRegular | (intros; apply GlobalTheory.CovTest.swap2_of_swapRegular <;> assumption)

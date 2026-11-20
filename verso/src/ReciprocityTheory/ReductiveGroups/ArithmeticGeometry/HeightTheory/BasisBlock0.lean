@@ -15,6 +15,31 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `letI _inst : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Take `⟨L, E, _, _, _, _, eL, eE, hcomp, hconst, hLc⟩` from `d.decomp_block0 hd h c`. Use `letI iLY : Algebra (FractionRing (MvPolynomial (Fin (d.N + 1)) L)) (FractionRing (MvPolynomial (Fin (d.N + 1)) E)) := (VariableBasisExtension.liftY (L := L) (E := E) (σ := Fin (d.N + 1))).toAlgebra`. Take `⟨b', _, hb'2⟩` from `VariableBasisExtension.basis_extend (σ := Fin (d.N + 1)) (Module.finBasis L E)`. Use `letI iFO : Algebra (FractionRing (MvPolynomial (Fin (d.N + 1)) L)) (OmS (Ω c) d.D d.N) := ((d.KTtoS h c).comp eL.symm.toRingHom).toAlgebra`.
+
+Establish `hback : ∀ q : FractionRing (MvPolynomial (Fin (d.N + 1)) L), eE.symm (VariableBasisExtension.liftY q) = d.KTtoS h c (eL.symm q)`. Introduce `q`. Establish `h1` using `hcomp (eL.symm q)`. Rewrite `h1` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[← h1, RingEquiv.symm_apply_apply]`.
+
+Set `eEl : FractionRing (MvPolynomial (Fin (d.N + 1)) E) ≃ₗ[FractionRing (MvPolynomial (Fin (d.N + 1)) L)] OmS (Ω c) d.D d.N` to `AddEquiv.toLinearEquiv eE.symm.toAddEquiv (by`. Introduce `q x`. Use `show eE.symm (q • x) = q • eE.symm x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `congr 1`.
+
+Conclude with `hback q)`. Set `B0` to `b'.map eEl`. Set `B : Module.Basis (Fin (Module.finrank L E)) (KTf K d.D d.N) (OmS (Ω c) d.D d.N)` to `B0.mapCoeffs eL.symm (fun q x => rfl)`. Establish `htr : ∀ (y : OmS (Ω c) d.D d.N) a a', Algebra.leftMulMatrix B y a a' = eL.symm (Algebra.leftMulMatrix b' (eE y) a a')`. Introduce `y a a'`.
+
+Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `hy : eEl.symm (y * eEl (b' a')) = eE y * b' a'` using `by show eE (y * eE.symm (b' a')) = eE y * b' a'`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Simplify using `only [B]`. Use `erw [Module.Basis.mapCoeffs_apply, Module.Basis.mapCoeffs_repr]`.
+
+Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.restrictScalars_apply, Finsupp.mapRange.linearEquiv_apply, Finsupp.mapRange_apply, B0, Module.Basis.map_apply, Module.Basis.map_repr]`. Rewrite using `[hy]`. Conclude with `rfl`. Use `choose e he using hconst`. Use `choose P Q hQ hPinv hQinv hPQ using hLc`.
+
+Set `mm : Fin (d.N + 1) × Fin (Module.finrank L E) × Fin (Module.finrank L E) → L` to `fun t => Algebra.leftMulMatrix (Module.finBasis L E) (e (ratio (Ω := Ω c) (d.w t.1 c) (d.w (d.jc c) c))) t.2.1 t.2.2`. Establish `hinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`. Establish `hne : ∀ t, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (∏ s ∈ Finset.univ.erase t, Q (mm s)) ≠ 0`. Introduce `t`. Rewrite using `[map_ne_zero_iff _ hinj]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun s _ => hQ _`. Establish `hfrac : ∀ t, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (P (mm t)) / algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (Q (mm t)) = algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (P (mm t) * ∏ s ∈ Finset.univ.erase t, Q (mm s)) / algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (∏ s, Q (mm s))`. Introduce `t`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun s => Q (mm s)) (Finset.mem_univ t), map_mul, map_mul, mul_div_mul_right _ _ (hne t)]`. Establish `hLtoC : ∀ l : L, algebraMap L (FractionRing (MvPolynomial (Fin (d.N + 1)) L)) l = algebraMap (MvPolynomial (Fin (d.N + 1)) L) (FractionRing (MvPolynomial (Fin (d.N + 1)) L)) (MvPolynomial.C l)`.
+
+Introduce `l`. Rewrite using `[IsScalarTower.algebraMap_apply L (MvPolynomial (Fin (d.N + 1)) L) (FractionRing (MvPolynomial (Fin (d.N + 1)) L)), MvPolynomial.algebraMap_eq]`. Use `⟨Module.finrank L E, B, ∏ s, Q (mm s), fun j => Matrix.of fun a a' => P (mm (j, a, a')) * ∏ s ∈ Finset.univ.erase (j, a, a'), Q (mm s), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.mpr fun s _ => hQ _`. Introduce `x`.
+
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun s _ => hQinv _ x`. Introduce `j a a' x`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[map_mul, map_prod, hPinv]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s _ => hQinv _ x`. Introduce `j`. Use extensionality with `a a'`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`.
+
+Rewrite using `[htr, he, hb'2, Matrix.map_apply, hLtoC, hPQ]`. Conclude with `hfrac (j, a, a')`.
+-/
 theorem basis_block0 (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra;
     ∃ (n : ℕ) (b : Module.Basis (Fin n) (KTf K d.D d.N) (OmS (Ω c) d.D d.N)) (Q0 : KTp K d.D d.N)

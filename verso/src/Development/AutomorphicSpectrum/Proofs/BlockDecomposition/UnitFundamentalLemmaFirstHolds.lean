@@ -8,6 +8,17 @@ namespace GlobalTheory.CompanionTheory.UnitFL
 
 noncomputable section
 
+/- English proof (translation)
+Set `s : Setoid G` to `{ r := fun a b => ∃ h ∈ H, ∃ κ ∈ K, b = h * a * κ iseqv := ⟨fun a => ⟨1, H.one_mem, 1, K.one_mem, by simp⟩, fun {a b} ⟨h, hh, κ, hκ, e⟩ => ⟨h⁻¹, H.inv_mem hh, κ⁻¹, K.inv_mem hκ, by rw [e]; group⟩, fun {a b c} ⟨h, hh, κ, hκ, e⟩ ⟨h', hh', κ', hκ', e'⟩ => ⟨h' * h, H.mul_mem hh' hh, …`. Set `f : Quotient s → G` to `fun q => if hq : ∃ a ∈ A, (Quotient.mk s a) = q then hq.choose else q.out`. Establish `hf : ∀ q, Quotient.mk s (f q) = q`. Introduce `q`. Distinguish the cases in `hq : ∃ a ∈ A, (Quotient.mk s a) = q`.
+
+Simplify using `only [f, dif_pos hq]`. Conclude with `hq.choose_spec.2`. Simplify using `only [f, dif_neg hq]`. Conclude with `Quotient.out_eq q`. Use `⟨Set.range f, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha`. Establish `hq : ∃ a' ∈ A, Quotient.mk s a' = Quotient.mk s a` using `⟨a, ha, rfl⟩`. Use `⟨Quotient.mk s a, ?_⟩` and prove the remaining obligations. Simplify using `only [f, dif_pos hq]`. Conclude with `hA _ hq.choose_spec.1 _ ha (Quotient.exact hq.choose_spec.2)`.
+
+Introduce `g`. Conclude with `⟨f (Quotient.mk s g), ⟨_, rfl⟩, Quotient.exact (hf (Quotient.mk s g))⟩`. Introduce and unpack `_ ⟨q, rfl⟩ _ ⟨q', rfl⟩ hr`. Establish `: q = q'`. Rewrite using `[← hf q, ← hf q']`.
+
+Conclude with `Quotient.sound hr`. Rewrite using `[this]`.
+-/
 theorem exists_doubleCoset_reps {G : Type*} [Group G] (H K : Subgroup G) (A : Set G)
     (hA : ∀ a ∈ A, ∀ a' ∈ A, (∃ h ∈ H, ∃ κ ∈ K, a' = h * a * κ) → a = a') :
     ∃ R : Set G, A ⊆ R ∧ (∀ g, ∃ r ∈ R, ∃ h ∈ H, ∃ κ ∈ K, g = h * r * κ) ∧
@@ -40,6 +51,13 @@ theorem exists_doubleCoset_reps {G : Type*} [Group G] (H K : Subgroup G) (A : Se
       exact Quotient.sound hr
     rw [this]
 
+/- English proof (translation)
+Establish `h1 : ∑' t : T, f (φ t) = ∑' a : Rα, f a`. Use `Function.Injective.tsum_eq (g := fun t : T => (⟨φ t, hm t t.2⟩ : Rα)) (f := fun a : Rα => f a) ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (hφ a.2 b.2 (congrArg Subtype.val hab))`. Introduce `a ha`.
+
+Take `⟨t, ht, e⟩` from `hf a a.2 ha`. Conclude with `⟨⟨t, ht⟩, Subtype.ext e⟩`. Establish `h2 : ∑' t : T, g t = ∑' b : Rβ, g b`. Use `Function.Injective.tsum_eq (g := fun t : T => (⟨t, hT t.2⟩ : Rβ)) (f := fun b : Rβ => g b) ?_ ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Conclude with `Subtype.ext (congrArg (fun x : Rβ => (x : β)) hab)`. Introduce `b hb`. Conclude with `⟨⟨b, hg b b.2 hb⟩, rfl⟩`. Rewrite using `[← h1, ← h2]`. Conclude with `tsum_congr fun t => hfg t t.2`.
+-/
 theorem tsum_match {α β : Type*} (Rα : Set α) (Rβ : Set β) (T : Set β) (hT : T ⊆ Rβ) (φ : β → α)
     (f : α → ℝ≥0∞) (g : β → ℝ≥0∞) (hφ : Set.InjOn φ T) (hm : ∀ t ∈ T, φ t ∈ Rα)
     (hf : ∀ a ∈ Rα, f a ≠ 0 → a ∈ φ '' T) (hg : ∀ b ∈ Rβ, g b ≠ 0 → b ∈ T)
@@ -63,6 +81,13 @@ theorem tsum_match {α β : Type*} (Rα : Set α) (Rβ : Set β) (T : Set β) (h
   rw [← h1, ← h2]
   exact tsum_congr fun t => hfg t t.2
 
+/- English proof (translation)
+Establish `hN : ∀ (m j : ℕ), Commute ((θ ^ j) a) (twNorm θ m b)`. Introduce `m j`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Rewrite using `[twNorm_succ]`. Conclude with `ih.mul_right (hc j m)`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Rewrite using `[twNorm_succ, twNorm_succ, twNorm_succ, ih, map_mul, mul_assoc, mul_assoc, ← mul_assoc (twNorm θ m b), ← (hN m m).eq, mul_assoc]`.
+-/
 theorem twNorm_mul' {G : Type*} [Group G] (θ : Monoid.End G) (a b : G)
     (hc : ∀ i j : ℕ, Commute ((θ ^ i) a) ((θ ^ j) b)) (m : ℕ) :
     twNorm θ m (a * b) = twNorm θ m a * twNorm θ m b := by
@@ -79,16 +104,45 @@ theorem twNorm_mul' {G : Type*} [Group G] (θ : Monoid.End G) (a b : G)
     rw [twNorm_succ, twNorm_succ, twNorm_succ, ih, map_mul, mul_assoc, mul_assoc,
       ← mul_assoc (twNorm θ m b), ← (hN m m).eq, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [twNorm_succ, ih]`. Simplify using the standard rewrite rules.
+-/
 theorem twNorm_one' {G : Type*} [Group G] (θ : Monoid.End G) (m : ℕ) : twNorm θ m (1 : G) = 1 := by
   induction m with
   | zero => simp
   | succ m ih => rw [twNorm_succ, ih]; simp
 
+/- English proof (translation)
+Simplify using `only [twConj, map_mul]`. Use `group`.
+-/
 theorem twConj_mul' {G : Type*} [Group G] (θ : Monoid.End G) (a b d : G) :
     twConj θ (a * b) d = twConj θ b (twConj θ a d) := by
   simp only [twConj, map_mul]
   group
 
+/- English proof (translation)
+Establish `hA : ∀ a ∈ (fun r => w * ι r) '' {r | r ∈ R₁ ∧ r⁻¹ * γ * r ∈ K₁}, ∀ a' ∈ (fun r => w * ι r) '' {r | r ∈ R₁ ∧ r⁻¹ * γ * r ∈ K₁}, (∃ h ∈ twCent θ δ, ∃ κ ∈ K₂, a' = h * a * κ) → a = a'`. Introduce and unpack `_ ⟨r, hr, rfl⟩ _ ⟨r', hr', rfl⟩ ⟨a, ha, κ, hκ, e⟩`. Establish `hx : w⁻¹ * a * w ∈ twCent θ c` using `(hH3 _).2 (by convert ha using 1; group)`. Rewrite `hx` using `[hcent]`. Take `⟨t, ht, htw⟩` from `hx`.
+
+Establish `e1 : ι r' = ι t * ι r * κ`. Apply `mul_left_cancel (a := w)` to reduce the goal to its premises. Establish `e' : w * ι r' = a * (w * ι r) * κ` using `e`. Rewrite using `[e', htw]`. Use `group`.
+
+Establish `h1 : (t * r)⁻¹ * r' ∈ K₁` using `(hι _).1 (by`. Rewrite using `[map_mul, map_inv, map_mul, e1]`. Use `hκ using 1` and compare the differences between its conclusion and the goal. Use the proof step `group)`. Establish `h2` using `hR₁i r hr.1 r' hr'.1 ⟨t, ht, _, h1, by group⟩`.
+
+Simplify using `only [h2]`. Take `⟨R₂, hAR, hc2, hi2⟩` from `exists_doubleCoset_reps (twCent θ δ) K₂ _ hA`. Use `⟨R₂, hc2, hi2, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr hrγ`. Use `⟨hAR ⟨r, ⟨hr, hrγ⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[twConj_mul', hc, hL4]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hθι]`. Simplify using `[K₂.one_mem]`. Use `(hι _).2 hrγ` as an intermediate fact.
+
+Simplify `this` using `[map_mul]`. Introduce `a ha hsupp`. Establish `h1 : twConj θ (w⁻¹ * a) c ∈ K₂`. Rewrite using `[← hc, ← twConj_mul']`. Simplify using `using hsupp`.
+
+Take `⟨h2, h3⟩` from `(hL4 _).1 h1`. Take `⟨y, hy⟩` from `hL3 _ h2`. Establish `hy1 : y⁻¹ * γ * y ∈ K₁` using `(hι _).1 (by`. Establish `e : ι (y⁻¹ * γ * y) = ((ι y)⁻¹ * (w⁻¹ * a)) * ((w⁻¹ * a)⁻¹ * ι γ * (w⁻¹ * a)) * ((ι y)⁻¹ * (w⁻¹ * a))⁻¹`. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`. Rewrite using `[e]`. Conclude with `K₂.mul_mem (K₂.mul_mem hy h3) (K₂.inv_mem hy))`. Take `⟨r, hr, t, ht, κ', hκ', ey⟩` from `hR₁c y`. Establish `htγ : t⁻¹ * γ * t = γ`.
+
+Use `Subgroup.mem_centralizer_singleton_iff.1 ht` as an intermediate fact. Rewrite using `[mul_assoc, ← this]`. Use `group`. Establish `hr1 : r⁻¹ * γ * r ∈ K₁`. Establish `e : r⁻¹ * γ * r = κ' * (y⁻¹ * γ * y) * κ'⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `K₁.mul_mem (K₁.mul_mem hκ' hy1) (K₁.inv_mem hκ')`. Establish `hm : w * ι t * w⁻¹ ∈ twCent θ δ` using `(hH3 _).1 (by rw [hcent]; exact ⟨t, ht, rfl⟩)`. Establish `hκ2 : ι κ' * ((ι y)⁻¹ * (w⁻¹ * a)) ∈ K₂` using `K₂.mul_mem ((hι _).2 hκ') hy`.
+
+Establish `hrm : w * ι r ∈ R₂` using `hAR ⟨r, ⟨hr, hr1⟩, rfl⟩`. Use `⟨r, hr, hr1, (hi2 _ hrm _ ha ⟨_, hm, _, hκ2, ?_⟩).symm⟩` and prove the remaining obligations. Establish `e : ι y = ι t * ι r * ι κ'` using `by rw [ey]; simp only [map_mul]`. Rewrite using `[e]`. Use `group`.
+-/
 theorem exists_matching_reps {G₁ G₂ : Type*} [Group G₁] [Group G₂] (ι : G₁ →* G₂)
     (θ : Monoid.End G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (c w δ : G₂)
     (hι : ∀ g, ι g ∈ K₂ ↔ g ∈ K₁) (hθι : ∀ g, θ (ι g) = ι g)
@@ -172,25 +226,46 @@ variable {k E : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarch
   [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
   [Algebra k E] [ValuativeExtension k E] [FiniteDimensional k E] [IsGalois k E]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `σ.commutes _`.
+-/
 theorem sigmaGL_incl' {n : ℕ} (σ : E ≃ₐ[k] E) (y : GL (Fin n) k) :
     sigmaGL σ (incl y : GL (Fin n) E) = incl y := by
   apply Units.ext
   ext i j
   exact σ.commutes _
 
+/- English proof (translation)
+The claim follows from `Matrix.charpoly_map _ _`.
+-/
 theorem charpoly_incl' {n : ℕ} (γ : GL (Fin n) k) :
     ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly =
       ((γ : Matrix (Fin n) (Fin n) k).charpoly).map (algebraMap k E) :=
   Matrix.charpoly_map _ _
 
+/- English proof (translation)
+Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`.
+-/
 theorem sigma_pow_finrank (σ : E ≃ₐ[k] E) : σ ^ Module.finrank k E = 1 := by
   rw [← IsGalois.card_aut_eq_finrank]
   exact pow_card_eq_one'
 
+/- English proof (translation)
+Rewrite using `[← sigmaGL_pow, sigma_pow_finrank, sigmaGL_one]`.
+-/
 theorem sigmaGL_pow_finrank {n : ℕ} (σ : E ≃ₐ[k] E) :
     (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1 := by
   rw [← sigmaGL_pow, sigma_pow_finrank, sigmaGL_one]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Polynomial.map_add, map_add, ← hp, ← hq]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Consider the case `monomial m a`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def]`. Establish `h : ((Γ ^ m).map σ) = Γ ^ m`. Use `(RingHom.mapMatrix (σ : E →+* E)).map_pow Γ m` as an intermediate fact. Establish `h2 : RingHom.mapMatrix (σ : E →+* E) Γ = Γ` using `hΓ`.
+
+Rewrite `this` using `[h2]`. Conclude with `this`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.coe_coe] at this ⊢`.
+
+Rewrite using `[map_mul, this]`.
+-/
 theorem map_aeval_fixed {n : ℕ} (σ : E ≃ₐ[k] E) (Γ : Matrix (Fin n) (Fin n) E)
     (hΓ : Γ.map σ = Γ) (p : E[X]) :
     (aeval Γ p).map σ = aeval Γ (p.map (σ : E →+* E)) := by
@@ -215,6 +290,9 @@ theorem map_aeval_fixed {n : ℕ} (σ : E ≃ₐ[k] E) (Γ : Matrix (Fin n) (Fin
 def PolyIn {n : ℕ} (Γ : Matrix (Fin n) (Fin n) E) (a : GL (Fin n) E) : Prop :=
   ∃ p : E[X], (a : Matrix (Fin n) (Fin n) E) = aeval Γ p
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`. Apply `Units.ext` to reduce the goal to its premises. Use `show (a : Matrix (Fin n) (Fin n) E) * b = b * a`. Rewrite using `[hp, hq, ← map_mul, ← map_mul, mul_comm]`.
+-/
 theorem PolyIn.comm {n : ℕ} {Γ : Matrix (Fin n) (Fin n) E} {a b : GL (Fin n) E}
     (ha : PolyIn Γ a) (hb : PolyIn Γ b) : Commute a b := by
   obtain ⟨p, hp⟩ := ha
@@ -223,6 +301,9 @@ theorem PolyIn.comm {n : ℕ} {Γ : Matrix (Fin n) (Fin n) E} {a b : GL (Fin n) 
   show (a : Matrix (Fin n) (Fin n) E) * b = b * a
   rw [hp, hq, ← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `ha`. Use `⟨p.map (σ : E →+* E), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_aeval_fixed σ Γ hΓ, ← hp]`. Both sides reduce to the same expression.
+-/
 theorem PolyIn.sigma {n : ℕ} (σ : E ≃ₐ[k] E) {Γ : Matrix (Fin n) (Fin n) E} (hΓ : Γ.map σ = Γ)
     {a : GL (Fin n) E} (ha : PolyIn Γ a) : PolyIn Γ (sigmaGL σ a) := by
   obtain ⟨p, hp⟩ := ha
@@ -230,6 +311,9 @@ theorem PolyIn.sigma {n : ℕ} (σ : E ≃ₐ[k] E) {Γ : Matrix (Fin n) (Fin n)
   rw [← map_aeval_fixed σ Γ hΓ, ← hp]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simpa using ha`. Consider the case `succ i ih`. Rewrite using `[pow_succ_apply']`. Conclude with `ih.sigma σ hΓ`.
+-/
 theorem PolyIn.sigma_pow {n : ℕ} (σ : E ≃ₐ[k] E) {Γ : Matrix (Fin n) (Fin n) E} (hΓ : Γ.map σ = Γ)
     {a : GL (Fin n) E} (ha : PolyIn Γ a) (i : ℕ) : PolyIn Γ (((sigmaGL σ) ^ i) a) := by
   induction i with
@@ -238,11 +322,29 @@ theorem PolyIn.sigma_pow {n : ℕ} (σ : E ≃ₐ[k] E) {Γ : Matrix (Fin n) (Fi
     rw [pow_succ_apply']
     exact ih.sigma σ hΓ
 
+/- English proof (translation)
+The claim follows from `twNorm_mul' _ a b (fun i j => (ha.sigma_pow σ hΓ i).comm (hb.sigma_pow σ hΓ j)) _`.
+-/
 theorem normGL_mul_polyIn {n : ℕ} (σ : E ≃ₐ[k] E) {Γ : Matrix (Fin n) (Fin n) E} (hΓ : Γ.map σ = Γ)
     {a b : GL (Fin n) E} (ha : PolyIn Γ a) (hb : PolyIn Γ b) :
     normGL σ (a * b) = normGL σ a * normGL σ b :=
   twNorm_mul' _ a b (fun i j => (ha.sigma_pow σ hΓ i).comm (hb.sigma_pow σ hΓ j)) _
 
+/- English proof (translation)
+Establish `hΓ : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map σ = ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)` using `congrArg Units.val (sigmaGL_incl' σ γ)`. Establish `hN' : normGL σ (twConj (sigmaGL σ) h δ) = incl γ`. Unfold `normGL`. Rewrite using `[twNorm_twConj_of_pow_eq_one _ (sigmaGL_pow_finrank σ)]`. Express the relevant statement in the definitionally equal form `h⁻¹ * normGL σ δ * h = _`.
+
+Rewrite using `[hN]`. Use `group`. Establish `hsep : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable`. Rewrite using `[charpoly_incl']`. Conclude with `(Polynomial.separable_map _).2 hγ`.
+
+Take `⟨-, p', hp'⟩` from `hA2 k E hun σ hgen n _ γ hN' hsep`. Establish `hδ' : PolyIn ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) (twConj (sigmaGL σ) h δ)` using `⟨p', hp'⟩`. Establish `hu : PolyIn ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) (c⁻¹ * twConj (sigmaGL σ) h δ)`. Take `⟨q, hq⟩` from `hci`. Use `⟨q * p', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← hq, ← hp']`. Both sides reduce to the same expression. Establish `hnorm : normGL σ (c⁻¹ * twConj (sigmaGL σ) h δ) = 1`. Rewrite using `[normGL_mul_polyIn σ hΓ hci hδ', hN', ← hcN, ← normGL_mul_polyIn σ hΓ hci hc]`. Simplify `twNorm_one' (sigmaGL σ) (Module.finrank k E)` using `[normGL]`.
+
+Take `⟨x, hx, hux⟩` from `hA3 k E hun σ hgen n γ hγ _ hu hnorm`. Establish `hxc : x * c = c * x` using `(PolyIn.comm hx hc).eq`. Use `⟨x⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : x * incl γ = incl γ * x` using `(PolyIn.comm hx (⟨X, by simp⟩ : PolyIn ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) (incl γ))).eq`. Establish `h2 : x⁻¹ * incl γ = incl γ * x⁻¹`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, inv_mul_eq_iff_eq_mul, h1]`. Conclude with `congrArg Units.val h2`. Rewrite using `[twConj_mul']`. Establish `e : twConj (sigmaGL σ) h δ = c * (x⁻¹ * sigmaGL σ x)`. Rewrite using `[← hux]`.
+
+Use `group`. Rewrite using `[e, twConj, map_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_twConj_eq (hA2 : A2) (hA3 : A3) (hun : IsUnramifiedLoc k E) (σ : E ≃ₐ[k] E)
     (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) {n : ℕ} (δ h c : GL (Fin n) E)
     (γ : GL (Fin n) k) (hγ : IsRegSemisimple γ) (hN : normGL σ δ = h * incl γ * h⁻¹)
@@ -291,6 +393,9 @@ theorem exists_twConj_eq (hA2 : A2) (hA3 : A3) (hun : IsUnramifiedLoc k E) (σ :
     calc x * (c * (x⁻¹ * sigmaGL σ x)) * (sigmaGL σ x)⁻¹ = (x * c) * x⁻¹ := by group
       _ = c := by rw [hxc]; group
 
+/- English proof (translation)
+Introduce `a b e`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `(algebraMap k E).injective` to reduce the goal to its premises. Conclude with `congrArg (fun M : GL (Fin n) E => (M : Matrix (Fin n) (Fin n) E) i j) e`.
+-/
 theorem incl_injective' {n : ℕ} :
     Function.Injective (incl : GL (Fin n) k → GL (Fin n) E) := by
   intro a b e
@@ -299,6 +404,15 @@ theorem incl_injective' {n : ℕ} :
   apply (algebraMap k E).injective
   exact congrArg (fun M : GL (Fin n) E => (M : Matrix (Fin n) (Fin n) E) i j) e
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Rewrite `h1`, `h2` using `[charpoly_incl']`. Simplify using `only [Polynomial.coeff_map] at h1 h2`. Use `⟨fun i => (hO _).1 (h1 i), ?_⟩` and prove the remaining obligations. Establish `ha : (γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0 ∈ intO k` using `(hO _).1 (h1 0)`.
+
+Establish `ha0 : (γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0 ≠ 0`. Introduce `e`. Rewrite `h2` using `[e, map_zero, map_zero]`. Conclude with `zero_ne_one h2`. Establish `hi : ((γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0)⁻¹ ∈ intO k` using `(hO _).1 (by`.
+
+Rewrite using `[map_inv₀]`. Use `show ValuativeRel.valuation E _ ≤ 1`. Rewrite using `[map_inv₀, h2, inv_one])`. Establish `e1 : ValuativeRel.valuation k ((γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0) ≤ 1` using `ha`. Establish `e2 : ValuativeRel.valuation k (((γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0)⁻¹) ≤ 1` using `hi`.
+
+Rewrite `e2` using `[map_inv₀]`. Establish `hv0 : ValuativeRel.valuation k ((γ : Matrix (Fin n) (Fin n) k).charpoly.coeff 0) ≠ 0` using `(Valuation.ne_zero_iff _).2 ha0`. Conclude with `le_antisymm e1 ((inv_le_one₀ (zero_lt_iff.2 hv0)).1 e2)`.
+-/
 theorem isUnitIntegral_of_incl (hO : ∀ a : k, algebraMap k E a ∈ intO E ↔ a ∈ intO k) {n : ℕ}
     (γ : GL (Fin n) k) (h : IsUnitIntegral (incl γ : GL (Fin n) E)) : IsUnitIntegral γ := by
   obtain ⟨h1, h2⟩ := h
@@ -321,22 +435,34 @@ theorem isUnitIntegral_of_incl (hO : ∀ a : k, algebraMap k E a ∈ intO E ↔ 
     (Valuation.ne_zero_iff _).2 ha0
   exact le_antisymm e1 ((inv_le_one₀ (zero_lt_iff.2 hv0)).1 e2)
 
+/- English proof (translation)
+Unfold `quotLIntegral`. Apply the tactic sequence `split_ifs <;> simp [hF]`.
+-/
 theorem quotLIntegral_zero' {G : Type*} [Group G] [MeasurableSpace G] (μG : Measure G)
     (H : Subgroup G) (μH : Measure H) (F : G → ℝ≥0∞) (hF : ∀ g, F g = 0) :
     quotLIntegral μG H μH F = 0 := by
   unfold quotLIntegral
   split_ifs <;> simp [hF]
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem (s := ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))) hx _`.
+-/
 theorem unitFn_of_mem' {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} {x : GL (Fin n) F}
     (hx : x ∈ unitGL (n := Fin n) F) : unitFn (n := Fin n) F x = 1 :=
   Set.indicator_of_mem (s := ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F)))
     hx _
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_notMem (s := ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))) hx _`.
+-/
 theorem unitFn_of_notMem' {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} {x : GL (Fin n) F}
     (hx : x ∉ unitGL (n := Fin n) F) : unitFn (n := Fin n) F x = 0 :=
   Set.indicator_of_notMem (s := ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F)))
     hx _
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ unitGL (n := Fin n) F`. Rewrite using `[unitFn_of_mem' hx, unitFn_of_mem' (h.1 hx)]`. Rewrite using `[unitFn_of_notMem' hx, unitFn_of_notMem' (fun hy => hx (h.2 hy))]`.
+-/
 theorem unitFn_congr' {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} {x y : GL (Fin n) F}
     (h : x ∈ unitGL (n := Fin n) F ↔ y ∈ unitGL (n := Fin n) F) :
     unitFn (n := Fin n) F x = unitFn (n := Fin n) F y := by
@@ -344,6 +470,9 @@ theorem unitFn_congr' {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} {x y : GL
   · rw [unitFn_of_mem' hx, unitFn_of_mem' (h.1 hx)]
   · rw [unitFn_of_notMem' hx, unitFn_of_notMem' (fun hy => hx (h.2 hy))]
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun x => g * x) '' K, ?_, (isOpenMap_mul_left g) _ hK, ⟨1, K.one_mem, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, hκ, rfl⟩`. Conclude with `hS g hg κ hκ`.
+-/
 theorem isOpen_of_rightInv {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K : Subgroup G) (hK : IsOpen (K : Set G)) (S : Set G) (hS : ∀ g ∈ S, ∀ κ ∈ K, g * κ ∈ S) :
     IsOpen S := by
@@ -353,6 +482,11 @@ theorem isOpen_of_rightInv {G : Type*} [Group G] [TopologicalSpace G] [IsTopolog
   rintro _ ⟨κ, hκ, rfl⟩
   exact hS g hg κ hκ
 
+/- English proof (translation)
+Establish `hS : IsOpen (f ⁻¹' ((unitGL (n` using `Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))) := isOpen_of_rightInv K hK _ (fun g hg κ hκ => hf g κ hκ hg)`. Establish `e : (fun g => unitFn (n` using `Fin n) F (f g)) = (f ⁻¹' ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F))).indicator 1 := by`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : f g ∈ unitGL (n := Fin n) F`. Rewrite using `[unitFn_of_mem' hg]`.
+
+Conclude with `(Set.indicator_of_mem (show g ∈ f ⁻¹' ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F)) from hg) (1 : G → ℝ≥0∞)).symm`. Rewrite using `[unitFn_of_notMem' hg]`. Conclude with `(Set.indicator_of_notMem (show g ∉ f ⁻¹' ((unitGL (n := Fin n) F : Subgroup (GL (Fin n) F)) : Set (GL (Fin n) F)) from hg) (1 : G → ℝ≥0∞)).symm`. Rewrite using `[e]`. Conclude with `measurable_one.indicator hS.measurableSet`.
+-/
 theorem measurable_unitFn_comp {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} {G : Type*} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (K : Subgroup G) (hK : IsOpen (K : Set G)) (f : G → GL (Fin n) F)
@@ -373,6 +507,11 @@ theorem measurable_unitFn_comp {F : Type*} [Field F] [ValuativeRel F] {n : ℕ} 
   rw [e]
   exact measurable_one.indicator hS.measurableSet
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ Subgroup.centralizer {γ}, ∃ p : K[X], (x : Matrix (Fin n) (Fin n) K) = aeval (γ : Matrix (Fin n) (Fin n) K) p` using `fun x hx => hA1 K n _ hs _ (congrArg Units.val (Subgroup.mem_centralizer_singleton_iff.1 hx))`. Take `⟨p, hp⟩` from `key a ha`. Take `⟨q, hq⟩` from `key b hb`. Apply `Units.ext` to reduce the goal to its premises. Use `show (a : Matrix (Fin n) (Fin n) K) * b = b * a`.
+
+Rewrite using `[hp, hq, ← map_mul, ← map_mul, mul_comm]`.
+-/
 theorem centralizer_comm (hA1 : A1) {K : Type} [Field K] {n : ℕ} (γ : GL (Fin n) K)
     (hs : (γ : Matrix (Fin n) (Fin n) K).charpoly.Separable) {a b : GL (Fin n) K}
     (ha : a ∈ Subgroup.centralizer {γ}) (hb : b ∈ Subgroup.centralizer {γ}) : a * b = b * a := by
@@ -385,6 +524,11 @@ theorem centralizer_comm (hA1 : A1) {K : Type} [Field K] {n : ℕ} (γ : GL (Fin
   show (a : Matrix (Fin n) (Fin n) K) * b = b * a
   rw [hp, hq, ← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨-, hO, -⟩` from `hD k E hun σ hgen`. Establish `zk : ∀ g : GL (Fin n) k, unitFn (n` using `Fin n) k (g⁻¹ * γ * g) = 0 := fun g => unitFn_of_notMem' (fun hg => hγ (hL2.1 k n γ ⟨g, hg⟩))`. Establish `zE : ∀ g : GL (Fin n) E, unitFn (n` using `Fin n) E (twConj (sigmaGL σ) g δ) = 0 := fun g => unitFn_of_notMem' (fun hg => hγ (by`. Establish `h1` using `hL2.2 k E hun σ hgen n δ g hg`. Rewrite `h1` using `[hN]`.
+
+Establish `h2 : IsUnitIntegral (incl γ : GL (Fin n) E)` using `hL2.1 E n _ ⟨h⁻¹ * g, by convert h1 using 1; group⟩`. Conclude with `isUnitIntegral_of_incl hO γ h2))`. Rewrite using `[twOrbIntegral, orbIntegral, quotLIntegral_zero' _ _ _ _ zE, quotLIntegral_zero' _ _ _ _ zk]`.
+-/
 theorem unit_fundamental_lemma_nonintegral (hD : D0a) (hL2 : L2) (hun : IsUnramifiedLoc k E) (σ : E ≃ₐ[k] E)
     (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) {n : ℕ}
     [MeasurableSpace (GL (Fin n) E)] [MeasurableSpace (GL (Fin n) k)]
@@ -407,6 +551,9 @@ theorem unit_fundamental_lemma_nonintegral (hD : D0a) (hL2 : L2) (hun : IsUnrami
 
 open ValuativeRel in
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace F`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := F)`. Use `letI : (Valued.v (R := F)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := F).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `infer_instance`.
+-/
 theorem t2Space_of_nonarchimedeanLocalField (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] : T2Space F := by
   letI := IsTopologicalAddGroup.rightUniformSpace F
@@ -417,12 +564,44 @@ theorem t2Space_of_nonarchimedeanLocalField (F : Type) [Field F] [ValuativeRel F
         MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
   infer_instance
 
+/- English proof (translation)
+Use `haveI := t2Space_of_nonarchimedeanLocalField F`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) F) := inferInstanceAs (T2Space (Fin n → Fin n → F))`. Conclude with `(Units.isEmbedding_embedProduct (M := Matrix (Fin n) (Fin n) F)).t2Space`.
+-/
 theorem t2Space_general_linear_group (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (n : ℕ) : T2Space (GL (Fin n) F) := by
   haveI := t2Space_of_nonarchimedeanLocalField F
   haveI : T2Space (Matrix (Fin n) (Fin n) F) := inferInstanceAs (T2Space (Fin n → Fin n → F))
   exact (Units.isEmbedding_embedProduct (M := Matrix (Fin n) (Fin n) F)).t2Space
 
+/- English proof (translation)
+Take `⟨-, -, hincl, hσK, -, -⟩` from `hD k E hun σ hgen`. Establish `hsepE : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable`. Establish `h0 : ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable` using `hreg`. Rewrite `h0` using `[hN, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `h0`.
+
+Establish `hγreg : IsRegSemisimple γ`. Rewrite `hsepE` using `[charpoly_incl']`. Conclude with `(Polynomial.separable_map _).1 hsepE`. Take `⟨c, ⟨p, hp, hpi⟩, ⟨q, hq, hqi⟩, hcN⟩` from `hN4 k E hun σ hgen n γ hγ`. Take `⟨z, hz, hw⟩` from `exists_twConj_eq hA2 hA3 hun σ hgen δ h c γ hγreg hN ⟨p, hp⟩ ⟨q, hq⟩ hcN`.
+
+Take `⟨hL4a, hL4b⟩` from `hL4 k E hun σ hgen n γ c hγreg ⟨p, hp, hpi⟩ ⟨q, hq, hqi⟩ hcN`. Take `⟨Rk, -, hRc, hRi⟩` from `exists_doubleCoset_reps (Subgroup.centralizer {γ}) (unitGL (n := Fin n) k) ∅ (by simp)`. Take `⟨RE, hEc, hEi, hE3, hE4⟩` from `exists_matching_reps incl (sigmaGL σ) (unitGL (n := Fin n) k) (unitGL (n := Fin n) E) γ c (h * z) δ (hincl n) (sigmaGL_incl' σ) hw hL4a hL4b (fun x => by`. Use `hH3 _ (sigmaGL σ) (h * z) δ x` as an intermediate fact. Rewrite using `[hw] at this)` and apply the resulting hypothesis.
+
+Use the proof step `(hL3 k E hun σ hgen n) Rk hRc hRi`. Take `⟨hTa, hTb⟩` from `hT`. Establish `hKE : ∀ (g κ : GL (Fin n) E), κ ∈ unitGL (n` using `Fin n) E → (twConj (sigmaGL σ) (g * κ) δ ∈ unitGL (n := Fin n) E ↔ twConj (sigmaGL σ) g δ ∈ unitGL (n := Fin n) E) := by`. Introduce `g κ hκ`. Rewrite using `[twConj_mul']`.
+
+Use `show κ⁻¹ * twConj (sigmaGL σ) g δ * sigmaGL σ κ ∈ _ ↔ _`. Rewrite using `[Subgroup.mul_mem_cancel_right _ ((hσK σ n κ).2 hκ), Subgroup.mul_mem_cancel_left _ (Subgroup.inv_mem _ hκ)]`. Establish `hKk : ∀ (g κ : GL (Fin n) k), κ ∈ unitGL (n` using `Fin n) k → ((g * κ)⁻¹ * γ * (g * κ) ∈ unitGL (n := Fin n) k ↔ g⁻¹ * γ * g ∈ unitGL (n := Fin n) k) := by`. Introduce `g κ hκ`. Establish `e : (g * κ)⁻¹ * γ * (g * κ) = κ⁻¹ * (g⁻¹ * γ * g) * κ` using `by group`.
+
+Rewrite using `[e, Subgroup.mul_mem_cancel_right _ hκ, Subgroup.mul_mem_cancel_left _ (Subgroup.inv_mem _ hκ)]`. Establish `hclosed : IsClosed ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k))`. Establish `e : ((Subgroup.centralizer {γ} : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) = {t | t * γ = γ * t}`. Use extensionality with `t`. Conclude with `Subgroup.mem_centralizer_singleton_iff`.
+
+Rewrite using `[e]`. Use `haveI := t2Space_general_linear_group k n`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Establish `hcommE : ∀ a ∈ twCent (sigmaGL σ) δ, ∀ b ∈ twCent (sigmaGL σ) δ, a * b = b * a`. Introduce `a ha b hb`.
+
+Establish `ha'` using `conj_twCent_mem_centralizer (sigmaGL σ) (sigmaGL_pow_finrank σ) hN ha`. Establish `hb'` using `conj_twCent_mem_centralizer (sigmaGL σ) (sigmaGL_pow_finrank σ) hN hb`. Establish `e` using `centralizer_comm hA1 (incl γ) hsepE ha' hb'`. Combine the equalities or inequalities in the displayed calculation. Establish `eE` using `hH2 E n μE (twCent (sigmaGL σ) δ) μδ hμE (hTb k E hun σ hgen n δ) hcommE hμδ (fun g => unitFn (n := Fin n) E (twConj (sigmaGL σ) g δ)) (measurable_unitFn_comp _ (hTa E n).2.2.1 _ (fun g κ hκ hx => (hKE g κ hκ).2 hx)) (fun a ha g => by show unitFn (n := Fin n) E _ = unitFn (n := F …`.
+
+Rewrite using `[twConj_mul_left _ _ ha])`. Use the proof step `(fun g κ hκ => unitFn_congr' (hKE g κ hκ)) RE hEc hEi`. Establish `ek` using `hH2 k n μk (Subgroup.centralizer {γ}) μγ hμk hclosed (fun a ha b hb => centralizer_comm hA1 γ hγreg ha hb) hμγ (fun g => unitFn (n := Fin n) k (g⁻¹ * γ * g)) (measurable_unitFn_comp _ (hTa k n).2.2.1 _ (fun g κ hκ hx => (hKk g κ hκ).2 hx)) (fun t ht g => by`. Establish `e : (t * g)⁻¹ * γ * (t * g) = g⁻¹ * γ * g`. Use `Subgroup.mem_centralizer_singleton_iff.1 ht` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show unitFn (n := Fin n) k _ = unitFn (n := Fin n) k _`. Rewrite using `[e])`. Use the proof step `(fun g κ hκ => unitFn_congr' (hKk g κ hκ)) Rk hRc hRi`. Rewrite using `[twOrbIntegral, orbIntegral, eE, ek, hE1, hk1]`.
+
+Use `tsum_match RE Rk {r | r ∈ Rk ∧ r⁻¹ * γ * r ∈ unitGL (n := Fin n) k} (fun r hr => hr.1) (fun r => h * z * incl r) (fun a => unitFn (n := Fin n) E (twConj (sigmaGL σ) a δ) * 1 / μδ {x : twCent (sigmaGL σ) δ | a⁻¹ * (x : GL (Fin n) E) * a ∈ unitGL (n := Fin n) E}) (fun b => unitFn ( …` and prove the remaining obligations. Introduce `a _ b _ e`. Conclude with `incl_injective' (mul_left_cancel e)`. Introduce `a ha hne`. Establish `hs : twConj (sigmaGL σ) a δ ∈ unitGL (n` using `Fin n) E := by`.
+
+Assume the negation of the conclusion as `hn`. Apply `hne` to reduce the goal to its premises. Rewrite using `[unitFn_of_notMem' hn]`. Simplify using the standard rewrite rules. Take `⟨r, hr, hr1, e⟩` from `hE4 a ha hs`.
+
+Conclude with `⟨r, ⟨hr, hr1⟩, e.symm⟩`. Introduce `b hb hne`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[unitFn_of_notMem' hn]`. Simplify using the standard rewrite rules. Introduce `t ht`. Rewrite using `[unitFn_of_mem' (hE3 t ht.1 ht.2).2, unitFn_of_mem' ht.2, hH4 k E hun σ hgen n δ γ h μδ μγ hreg hN hcomp t z hz]`.
+-/
 theorem unit_fundamental_lemma_integral (hD : D0a) (hT : T0) (hA1 : A1) (hA2 : A2) (hA3 : A3) (hN4 : N4) (hL3 : L3)
     (hL4 : L4) (hH2 : H2) (hH3 : H3) (hH4 : H4) (hun : IsUnramifiedLoc k E) (σ : E ≃ₐ[k] E)
     (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) {n : ℕ}
@@ -540,6 +719,9 @@ theorem unit_fundamental_lemma_integral (hD : D0a) (hT : T0) (hA1 : A1) (hA2 : A
 
 end GLSide
 
+/- English proof (translation)
+Introduce `hD hT hA1 hA2 hA3 hN4 hL2 hL3 hL4 hH2 hH3 hH4`. Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n _ _ _ _ μE μk hμE hμk hE1 hk1 δ γ h μδ μγ hreg hN hμδ hμγ hcomp`. Distinguish the cases in `hγ : IsUnitIntegral γ`. Conclude with `unit_fundamental_lemma_integral hD hT hA1 hA2 hA3 hN4 hL3 hL4 hH2 hH3 hH4 hun σ hgen μE μk hμE hμk hE1 hk1 δ γ h μδ μγ hreg hN hμδ hμγ hcomp hγ`. Conclude with `unit_fundamental_lemma_nonintegral hD hL2 hun σ hgen μE μk δ γ h μδ μγ hN hγ`.
+-/
 theorem unit_fundamental_lemma_first : D0a → T0 → A1 → A2 → A3 → N4 → L2 → L3 → L4 → H2 → H3 → H4 → Z1 := by
   intro hD hT hA1 hA2 hA3 hN4 hL2 hL3 hL4 hH2 hH3 hH4
   intro k E _ _ _ _ _ _ _ _ _ _ _ _ hun σ hgen n _ _ _ _ μE μk hμE hμk hE1 hk1 δ γ h μδ μγ hreg hN

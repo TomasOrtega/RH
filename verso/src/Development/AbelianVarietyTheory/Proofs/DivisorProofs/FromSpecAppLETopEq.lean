@@ -6,14 +6,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CechKSSmul
 
+/- English proof (translation)
+Simplify using `only [valR, dif_pos h, map_mul]`.
+-/
 theorem valR_mul_of_le {A : Type} [CommRing A] {Z : Scheme.{0}} (x : Sp A ⟶ Z) (O : Z.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ O) (a b : Γ(Z, O)) : valR x O (a * b) = valR x O a * valR x O b := by
   simp only [valR, dif_pos h, map_mul]
 
+/- English proof (translation)
+Simplify using `only [valR, dif_pos h, map_sub]`.
+-/
 theorem valR_sub_of_le {A : Type} [CommRing A] {Z : Scheme.{0}} (x : Sp A ⟶ Z) (O : Z.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ O) (a b : Γ(Z, O)) : valR x O (a - b) = valR x O a - valR x O b := by
   simp only [valR, dif_pos h, map_sub]
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (x ≫ g) ⁻¹ᵁ U` using `fun y hy => e (h hy)`. Simplify using `only [valR, dif_pos h, dif_pos h']`. Conclude with `congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (q.hom a)) (Scheme.Hom.appLE_comp_appLE x g U W ⊤ e h)`.
+-/
 theorem valR_appLE_comp {A : Type} [CommRing A] {Y Z : Scheme.{0}} (x : Sp A ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens)
     (W : Y.Opens) (e : W ≤ g ⁻¹ᵁ U) (h : ⊤ ≤ x ⁻¹ᵁ W) (a : Γ(Z, U)) :
     valR x W ((g.appLE U W e).hom a) = valR (x ≫ g) U a := by
@@ -22,12 +31,22 @@ theorem valR_appLE_comp {A : Type} [CommRing A] {Y Z : Scheme.{0}} (x : Sp A ⟶
   exact congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (q.hom a))
     (Scheme.Hom.appLE_comp_appLE x g U W ⊤ e h)
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+-/
 theorem fromSpec_appLE_top_eq {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ h = (Scheme.ΓSpecIso Γ(X, U)).inv := by
   rw [Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]
   convert Category.comp_id _
   exact (Spec Γ(X, U)).presheaf.map_id _
 
+/- English proof (translation)
+Establish `h1 : ⊤ ≤ (chart U) ⁻¹ᵁ U.1` using `by show ⊤ ≤ U.2.fromSpec ⁻¹ᵁ U.1`. Rewrite using `[U.2.fromSpec_preimage_self]`. Rewrite using `[← valR_appLE_comp (spMap φ) (chart U) U.1 ⊤ h1 (fun _ _ => trivial)]`. Establish `e : (chart U).appLE U.1 ⊤ h1 = (Scheme.ΓSpecIso Γ(X, U.1)).inv`. Conclude with `fromSpec_appLE_top_eq U.2 h1`.
+
+Rewrite using `[e]`. Simplify using `only [valR, dif_pos (show ⊤ ≤ spMap φ ⁻¹ᵁ ⊤ from fun _ _ => trivial)]`. Establish `e2 : (spMap φ).appLE ⊤ ⊤ (fun _ _ => trivial) = (spMap φ).appTop` using `Scheme.Hom.appLE_eq_app (f := spMap φ) (U := ⊤)`. Rewrite using `[e2]`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`.
+
+Use `congrArg (fun q => q.hom ((Scheme.ΓSpecIso Γ(X, U.1)).inv.hom r)) n` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Rewrite using `[this]`. Use `congr 1`. Conclude with `(Scheme.ΓSpecIso Γ(X, U.1)).inv_hom_id_apply r`.
+-/
 theorem valR_spMap_chart {X : Scheme.{0}} (U : X.affineOpens) {S : Type} [CommRing S] (φ : Γ(X, U.1) →+* S)
     (r : Γ(X, U.1)) : valR (spMap φ ≫ chart U) U.1 r = φ r := by
   have h1 : ⊤ ≤ (chart U) ⁻¹ᵁ U.1 := by
@@ -48,6 +67,9 @@ theorem valR_spMap_chart {X : Scheme.{0}} (U : X.affineOpens) {S : Type} [CommRi
   congr 1
   exact (Scheme.ΓSpecIso Γ(X, U.1)).inv_hom_id_apply r
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.appLE_map f e (homOfLE h).op]`. Both sides reduce to the same expression.
+-/
 theorem resG_appLE' {Y Z : Scheme.{0}} (f : Y ⟶ Z) {W : Z.Opens} {O O' : Y.Opens} (h : O' ≤ O) (e : O ≤ f ⁻¹ᵁ W)
     (a : Γ(Z, W)) : resG Y h ((f.appLE W O e).hom a) = (f.appLE W O' (h.trans e)).hom a := by
   rw [← Scheme.Hom.appLE_map f e (homOfLE h).op]

@@ -28,6 +28,21 @@ namespace GlobalTheory.LowTypeMap
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hB` using `hm.triple.base`. Establish `hM` using `hm.triple.geo.hM`. Establish `hw` using `hm.triple.weil`. Establish `hL` using `GlobalTheory.RealLift.actsLaws F (Fin a × Fin (a + a'))`. Establish `hop : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a × Fin (a + a')), (∀ f : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (1, k)) f (A f)) ∧ ∃ T : R.Pi →ₗ[ℂ] R.Pi, ∀ g ∈ G.M.Pol B.ψ B.emb, R.p (A g) = T (R.p g)`.
+
+Introduce `k hk`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hB hM hw k hk`. Use `⟨A, hA, GlobalTheory.TwPartStab.descent R.p hm.real.quot.onto A fun f hf hpf => ?_⟩` and prove the remaining obligations. Establish `h0` using `hm.real.cpt k hk f hf 0 (zero_mem _) (A f) 0 (hA f) (GlobalTheory.TwPartStab.acts_zero _) (by rw [hpf, map_zero])`. Rewrite using `[h0, map_zero]`.
+
+Use `choose! A hA T hT using hop`. Establish `hpol : ∀ k ∈ KInf σ G.W B.emb, ∀ g ∈ G.M.Pol B.ψ B.emb, A k g ∈ G.M.Pol B.ψ B.emb` using `fun k hk g hg => GlobalTheory.T.polynomialFockSpace_stable_archimedeanMaximalCompact F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hB hM hw k hk g hg (A k g) (hA k hk g)`. Establish `onto : ∀ v : R.Pi, ∃ g ∈ G.M.Pol B.ψ B.emb, R.p g = v` using `fun v => by`. Establish `hv : v ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hm.real.quot.onto]; trivial`. Take `⟨g, hg, e⟩` from `hv`.
+
+Conclude with `⟨g, hg, e⟩`. Use `⟨T, fun k hk f => ⟨A k f, hA k hk f⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk f hf f₁ h`. Rewrite using `[(hL f f₁ (A k f)).2.2.2.1 _ h (hA k hk f), hT k hk f hf]`. Introduce `k hk k' hk' v`.
+
+Take `⟨g, hg, rfl⟩` from `onto v`. Establish `hkk` using `GlobalTheory.HwCoef.kInf_mul_mem hk hk'`. Establish `c` using `GlobalTheory.TwPartStab.acts_mul hw k' k (hA k' hk' g) (hA k hk (A k' g))`. Establish `e` using `(hL _ _ _).2.2.2.1 _ c (hA _ hkk g)`. Rewrite using `[← hT _ hkk g hg, ← e, hT k hk _ (hpol k' hk' g hg), hT k' hk' g hg]`.
+
+Introduce `v`. Take `⟨g, hg, rfl⟩` from `onto v`. Establish `h1 : Acts (evI F) (om (1, 1)) g g` using `fun r _ => by`. Rewrite using `[show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one]`. Both sides reduce to the same expression.
+
+Establish `e` using `(hL _ _ _).2.2.2.1 _ h1 (hA 1 GlobalTheory.HwCoef.one_mem_kInf g)`. Rewrite using `[← hT 1 GlobalTheory.HwCoef.one_mem_kInf g hg, ← e]`. Introduce `k hk v hv`. Take `⟨g, hg, rfl⟩` from `hv`. Conclude with `⟨A k g, GlobalTheory.TwPartStab.fockDeg_stable hB hw hk (hA k hk) _ hg, hT k hk g (fockDeg_le_pol _ _ _ _ hg)⟩`.
+-/
 theorem ops (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a') (hm : IsMatched B G X om om' R Rf) :
     ∃ T : UA σ G.W.J → (R.Pi →ₗ[ℂ] R.Pi),
@@ -81,6 +96,39 @@ end GlobalTheory.LowTypeMap
 
 namespace GlobalTheory.LowTypeMap
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Take `⟨T, hTex, hTacts, hTmul, hTone, -⟩` from `ops B G X om om' R Rf hm`. Take `⟨T₁, hT₁ex, hT₁acts, hT₁mul, hT₁one, hT₁low⟩` from `ops B G₁ X om₁ om₁' R₁ Rf₁ hm₁`. Establish `hKS` using `GlobalTheory.TwPartStab.kStabL_twPart hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Take `⟨-, -, hirr⟩` from `GlobalTheory.T.config_a_theta_local_factor hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`.
+
+Establish `onto : ∀ v : R.Pi, ∃ f ∈ G.M.Pol B.ψ B.emb, R.p f = v` using `fun v => by`. Establish `hv : v ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hm.real.quot.onto]; trivial`. Take `⟨f, hf, e⟩` from `hv`. Conclude with `⟨f, hf, e⟩`. Establish `stabT : ∀ N : Submodule ℂ R.Pi, KStabL B G.M om R.p G₁.W H' N → ∀ k ∈ KInf σ G.W B.emb, ∀ k₁ ∈ KInf σ G₁.W B.emb, IsLevi H' 1 k₁ k → ∀ v ∈ N, T k v ∈ N`.
+
+Introduce `N hN k hk k₁ hk₁ hl v hv`. Take `⟨f, hf, rfl⟩` from `onto v`. Take `⟨f₁, h₁⟩` from `hTex k hk f`. Rewrite using `[← hTacts k hk f hf f₁ h₁]`. Conclude with `hN k hk k₁ hk₁ hl f hf f₁ h₁ hv`.
+
+Distinguish the cases in `htw : twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p) = ⊥`. Use `⟨0, ?_, fun h => absurd htw h, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_zero]`. Conclude with `bot_le`. Introduce `k₁ hk₁ k hk hl g hg g₁ hg₁ hlow f hf f₁ hf₁ he`.
+
+Rewrite `he`, the goal using `[LinearMap.zero_apply]`. Rewrite using `[hTacts k hk f hf f₁ hf₁, ← he, map_zero]`. Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (hm₁.triple.geo.hW.sig w) (hm₁.triple.geo.hW.cartan w)`. Establish `hCa : ∀ w, GlobalTheory.ThK.RealK.IsAdapted B.emb w G₁.W (C w)` using `fun w => ⟨hC w, hCθ w⟩`. Take `⟨x, hx, ξ, -, hxco⟩` from `GlobalTheory.T.matched_theta_q_zero_real_matrix hKP F E σ B b a' G₁ X om₁ om₁' R₁ Rf₁ hm₁ hcfg.q1 C hCa`.
+
+Take `⟨y, hy, η, hη, hyco⟩` from `GlobalTheory.T.config_a_triple_rep_pair_identity hKP F E σ B b a' G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁ C hCa htw`. Set `Γ : Submonoid (UA σ G₁.W.J × UA σ G.W.J)` to `{ carrier := {q | q.1 ∈ KInf σ G₁.W B.emb ∧ q.2 ∈ KInf σ G.W B.emb ∧ IsLevi H' 1 q.1 q.2} mul_mem' := by`. Introduce and unpack `⟨k₁, k⟩ ⟨k₁', k'⟩ ⟨h1, h2, hx1, hy1, hι1⟩ ⟨h1', h2', hx1', hy1', hι1'⟩`. Establish `e : mat (k * k') = mat k * mat k'` using `rfl`. Establish `e₁ : mat (k₁ * k₁') = mat k₁ * mat k₁'` using `rfl`.
+
+Simplify using `only [inv_one, Units.val_one, map_one, one_smul] at hx1 hy1 hx1' hy1'`. Use `⟨GlobalTheory.HwCoef.kInf_mul_mem h1 h1', GlobalTheory.HwCoef.kInf_mul_mem h2 h2', ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one, Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `mat (k * k') *ᵥ _ = _`. Rewrite using `[e, ← Matrix.mulVec_mulVec, hx1', hx1]`.
+
+Simplify using `only [inv_one, Units.val_one, map_one, one_smul]`. Express the relevant statement in the definitionally equal form `mat (k * k') *ᵥ _ = _`. Rewrite using `[e, ← Matrix.mulVec_mulVec, hy1', hy1]`. Express the relevant statement in the definitionally equal form `mat (k * k') * _ = _ * mat (k₁ * k₁')`. Rewrite using `[e, e₁, Matrix.mul_assoc, hι1', ← Matrix.mul_assoc, hι1, Matrix.mul_assoc]`.
+
+Use the proof step `one_mem' := by`. Use `⟨GlobalTheory.HwCoef.one_mem_kInf, GlobalTheory.HwCoef.one_mem_kInf, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_one, one_smul]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) *ᵥ _ = _`. Rewrite using `[Matrix.one_mulVec]`.
+
+Simplify using `only [inv_one, Units.val_one, map_one, one_smul]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) *ᵥ _ = _`. Rewrite using `[Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * _ = _ * (1 : Matrix _ _ _)`. Rewrite using `[Matrix.one_mul, Matrix.mul_one] }`.
+
+Establish `hx'` using `hx`. Take `⟨f₀, hf₀, hf₀x⟩` from `hx'`. Establish `hf₀P` using `fockDeg_le_pol _ _ _ _ hf₀`. Take `⟨e₀, he₀, he₀y⟩` from `onto y`. Take `⟨s, hs1, hsxy, hseq⟩` from `GlobalTheory.HwCoef.intertwiner_of_coef (Γ := Γ) (fun q => T₁ q.1.1) (fun q => T q.1.2) (lowPartInf B G₁.M R₁.p) (twPart B G.M om R.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M R.p)) (fun g h v => hT₁mul _ g.2.1 _ h.2.1 v) (fun v => hT₁one v) (fun g h v => hTmul _ g.2.2.1 _ h.2 …`.
+
+Take `⟨k, hk, hl⟩` from `GlobalTheory.KLeviReal.exists_kInf_isLevi_one F E σ B _ _ G.W G₁.W H' _ _ _ _ hm.triple.base.cm hm.triple.geo.hW hcfg.hH' k₁ hk₁`. Rewrite using `[hT₁acts k₁ hk₁ f hf f₁ hf₁]`. Conclude with `hst ⟨(k₁, k), hk₁, hk, hl⟩ _ hpf)`. Use the proof step `(fun N hN hst => hirr N hN fun k hk k₁ hk₁ hl f hf f₁ hf₁ hpf => by`. Rewrite using `[hTacts k hk f hf f₁ hf₁]`.
+
+Conclude with `hst ⟨(k₁, k), hk₁, hk, hl⟩ _ hpf)`. Use `hx ξ hy η hη (fun q => by`. Take `⟨⟨k₁, k⟩, hk₁, hk, hl⟩` from `q`. Take `⟨gr, hgr⟩` from `GlobalTheory.HwCoef.exists_reading B.emb C (fun w => (hC w).2) k₁`. Take `⟨f₁, hf₁⟩` from `hT₁ex k₁ hk₁ f₀`.
+
+Take `⟨e₁, he₁⟩` from `hTex k hk e₀`. Use `show ξ (T₁ k₁ x) = η (T k y)`. Rewrite using `[← hf₀x, ← hT₁acts k₁ hk₁ f₀ hf₀P f₁ hf₁, hxco k₁ hk₁ gr hgr f₀ hf₀P hf₀x f₁ hf₁, ← he₀y, ← hTacts k hk e₀ he₀ e₁ he₁, hyco k₁ hk₁ k hk hl gr hgr e₀ he₀ he₀y e₁ he₁])`. Use `⟨s, hs1, fun _ hb => ?_, ?_⟩` and prove the remaining obligations. Establish `hm' : y ∈ (lowPartInf B G₁.M R₁.p).map s` using `⟨x, hx, hsxy⟩`.
+
+Rewrite `hm'` using `[hb, Submodule.mem_bot]`. Rewrite `hη` using `[hm', map_zero]`. Conclude with `zero_ne_one hη`. Introduce `k₁ hk₁ k hk hl g hg g₁ hg₁ hlow f hf f₁ hf₁ he`. Rewrite using `[hT₁acts k₁ hk₁ g hg g₁ hg₁, hTacts k hk f hf f₁ hf₁, ← he]`.
+
+Conclude with `hseq ⟨(k₁, k), hk₁, hk, hl⟩ _ hlow`.
+-/
 theorem exists_lowType_map : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

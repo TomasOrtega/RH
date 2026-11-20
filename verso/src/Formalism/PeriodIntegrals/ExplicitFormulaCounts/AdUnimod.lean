@@ -3,5 +3,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.Con
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.ConstructionB
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnimodularity.ConstructionD
 
+/- English proof (translation)
+The claim follows from `PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable PI.adelic_index_eq`.
+-/
 theorem adUnimod_closed : PI.AdUnimod :=
   PI.WAU.adUnimod_of PI.WAU.kg_subgroup PI.WAU.maximal_compact_isCompact PI.WAU.compact_countable PI.adelic_index_eq

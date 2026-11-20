@@ -11,6 +11,9 @@ variable (D : D7) [hL : IsEmpty D.nd.Loc] (C : TwCore D.R D.host D.what₂ D.LL0
   (he : ∀ g : G0g D.nd, D.what₂.embLL ((I.eL g : ↥D.LL0) : D.what₂.LL) = D.ntypes.e0.coeff g)
   (E : EmbC D C) (S : StdMt D C I)
 
+/- English proof (translation)
+Use `iInf_eq_top.mpr fun u => LinearMap.ker_eq_top.mpr ?_` and prove the remaining obligations. Establish `hu : u = 1` using `Subsingleton.elim _ _`. Substitute `hu` using the available equality. Rewrite using `[Subgroup.coe_one, map_one, map_one, Units.val_one, one_smul]`. Conclude with `sub_self _`.
+-/
 theorem trivialSubgroup_eigenspace_top {Γ K V : Type} [Group Γ] [Field K] [AddCommGroup V] [Module K V] (ψ : Γ →* Kˣ) :
     (⨅ u : (⊥ : Subgroup Γ), LinearMap.ker ((scalAct K V ψ u).toLinearMap -
       (((1 : (⊥ : Subgroup Γ) →* Kˣ) u : Kˣ) : K) • LinearMap.id)) = ⊤ := by
@@ -21,21 +24,33 @@ theorem trivialSubgroup_eigenspace_top {Γ K V : Type} [Group Γ] [Field K] [Add
   exact sub_self _
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `I.hPsi i b (I.ix j → FractionRing (C.O i))`.
+-/
 theorem nEG_one (i : C.Tw) (j : ℕ) (b : Bool) : NForms.eG (recN D C I he) i j b = 1 :=
   I.hPsi i b (I.ix j → FractionRing (C.O i))
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `trivialSubgroup_eigenspace_top (Γ := G0g D.nd) (K := FractionRing (C.O i)) (V := I.ix j → FractionRing (C.O i)) (I.Psi i)`.
+-/
 theorem nFm0_top (i : C.Tw) (j : ℕ) (b : Bool) : NForms.Fm0 (recN D C I he) i j b = ⊤ :=
   trivialSubgroup_eigenspace_top (Γ := G0g D.nd) (K := FractionRing (C.O i)) (V := I.ix j → FractionRing (C.O i)) (I.Psi i)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Unfold `NForms.V0`. Rewrite using `[nEG_one D C I he i j b, nFm0_top D C I he i j b]`. Conclude with `Submodule.map_id _`.
+-/
 theorem newformsBase_top (i : (recN D C I he).ntw.Tw) (j : ℕ) (b : Bool) : NForms.V0 (recN D C I he) i j b = ⊤ := by
   unfold NForms.V0
   rw [nEG_one D C I he i j b, nFm0_top D C I he i j b]
   exact Submodule.map_id _
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Rewrite using `[newformsBase_top D C I he i j b, Submodule.restrictScalars_top, Submodule.baseChange_top]`.
+-/
 theorem nV0bc_top (i : (recN D C I he).ntw.Tw) (j : ℕ) (b : Bool) (k : ℕ) :
     ((NForms.V0 (recN D C I he) i j b).restrictScalars ((recN D C I he).ntw.O i)).baseChange
       ((recN D C I he).ntw.Ok i k) = ⊤ := by
@@ -58,6 +73,9 @@ structure StdMj where
 
 variable (T : StdMj D C I he S X)
 
+/- English proof (translation)
+Rewrite using `[eMjN_apply]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `congrArg (E.embW w) (T.th_std w j h1 h2 x y hy a)`.
+-/
 theorem eMjN_th (w : D.what₂.places.Pl) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (x : D.what₂.MtL (D.what₂.muTw w) j) (y : (mjH D C I he X j).V)
     (hy : jMD D C I he X j y = D.what₂.thetaP (D.what₂.muTw w) j (D.what₂.jMt (D.what₂.muTw w) j x)) :

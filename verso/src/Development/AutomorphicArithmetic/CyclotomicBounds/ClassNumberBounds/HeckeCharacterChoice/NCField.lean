@@ -15,6 +15,13 @@ def RamLE (E : Type*) [Field E] [NumberField E] (l e : ℕ) : Prop :=
 
 variable (E : Type*) [Field E] [NumberField E] {l : ℕ}
 
+/- English proof (translation)
+Use `Fact.mk hl` as an intermediate fact. Unfold `rootNu`. Rewrite using `[Nat.pos_iff_ne_zero, ne_eq, padicValNat.eq_zero_iff]`. Establish `h1` using `hl.one_lt`. Establish `h2` using `Units.torsionOrder_pos E`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`. Conclude with `h (Or.inr (Or.inr h'))`. Introduce and unpack `h (h' | h' | h')`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Conclude with `h' h`.
+-/
 private theorem rootNu_pos_iff (hl : l.Prime) : 0 < rootNu E l ↔ l ∣ Units.torsionOrder E := by
   have := Fact.mk hl
   unfold rootNu
@@ -30,6 +37,21 @@ private theorem rootNu_pos_iff (hl : l.Prime) : 0 < rootNu E l ↔ l ∣ Units.t
     · omega
     · exact h' h
 
+/- English proof (translation)
+Use `Fact.mk hl` as an intermediate fact. Establish `: NeZero l` using `⟨hl.ne_zero⟩`. Establish `: IsGalois E (CyclotomicField l E)` using `IsCyclotomicExtension.isGalois {l} E _`. Establish `: FiniteDimensional E (CyclotomicField l E)` using `IsCyclotomicExtension.finiteDimensional {l} E _`. Establish `hz` using `IsCyclotomicExtension.zeta_spec l E (CyclotomicField l E)`.
+
+Establish `hc : Nat.card (CyclotomicField l E ≃ₐ[E] CyclotomicField l E) = rootDeg E l` using `IsGalois.card_aut_eq_finrank E _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Subgroup.card_dvd_of_injective _ (hz.autToPow_injective E)`. Rewrite `h` using `[hc, Nat.card_eq_fintype_card, ZMod.card_units]`. Then use the resulting hypothesis. Introduce `h`.
+
+Rewrite using `[rootNu_pos_iff E hl]`. Establish `hb : (⊥ : Subalgebra E (CyclotomicField l E)) = ⊤` using `Subalgebra.bot_eq_top_of_finrank_eq_one h`. Establish `hm : IsCyclotomicExtension.zeta l E (CyclotomicField l E) ∈ (⊥ : Subalgebra E (CyclotomicField l E))` using `hb ▸ Algebra.mem_top`. Take `⟨y, hy⟩` from `Algebra.mem_bot.1 hm`. Rewrite `hz` using `[← hy]`.
+
+Conclude with `Units.dvd_torsionOrder_of_isPrimitiveRoot (hz.of_map_of_injective (algebraMap E (CyclotomicField l E)).injective)`. Introduce `h`. Rewrite `h` using `[rootNu_pos_iff E hl]`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' (G := Units.torsion E) l h`. Establish `h1 : IsPrimitiveRoot x l` using `hx ▸ IsPrimitiveRoot.orderOf x`.
+
+Establish `h3 : IsPrimitiveRoot (x : (𝓞 E)ˣ) l` using `h1.map_of_injective (f := (Units.torsion E).subtype) Subtype.val_injective`. Establish `h4 : IsPrimitiveRoot ((x : (𝓞 E)ˣ) : 𝓞 E) l` using `IsPrimitiveRoot.coe_units_iff.mpr h3`. Establish `h5 : IsPrimitiveRoot (algebraMap (𝓞 E) E ((x : (𝓞 E)ˣ) : 𝓞 E)) l` using `h4.map_of_injective (RingOfIntegers.coe_injective)`. Generalize the expression as in `algebraMap (𝓞 E) E ((x : (𝓞 E)ˣ) : 𝓞 E) = y at h5`. Establish `h6 : IsPrimitiveRoot (algebraMap E (CyclotomicField l E) y) l` using `h5.map_of_injective (algebraMap E (CyclotomicField l E)).injective`.
+
+Rewrite using `[← hc, Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun σ τ => h6.autToPow_injective E ?_⟩, ⟨1⟩⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `ZMod.val_injective` to reduce the goal to its premises. Apply `h6.pow_inj (ZMod.val_lt _) (ZMod.val_lt _)` to reduce the goal to its premises.
+
+Rewrite using `[h6.autToPow_spec E σ, h6.autToPow_spec E τ, σ.commutes, τ.commutes]`.
+-/
 theorem rootDeg_dvd (hl : l.Prime) :
     rootDeg E l ∣ l - 1 ∧ (rootDeg E l = 1 ↔ 0 < rootNu E l) := by
   have := Fact.mk hl
@@ -72,6 +94,15 @@ theorem rootDeg_dvd (hl : l.Prime) :
     apply h6.pow_inj (ZMod.val_lt _) (ZMod.val_lt _)
     rw [h6.autToPow_spec E σ, h6.autToPow_spec E τ, σ.commutes, τ.commutes]
 
+/- English proof (translation)
+Use `Fact.mk hl` as an intermediate fact. Establish `: NeZero l` using `⟨hl.ne_zero⟩`. Take `⟨⟨Q, hQ1, hQ2⟩⟩` from `Ideal.nonempty_primesOver (S := 𝓞 L) P`. Establish `hQ3 : Q.LiesOver (Ideal.span {(l : ℤ)})` using `Ideal.LiesOver.trans Q P _`. Establish `hc : IsCyclotomicExtension {l} ℚ (IntermediateField.adjoin ℚ {z})` using `hz.intermediateField_adjoin_isCyclotomicExtension ℚ`.
+
+Use `set R := Q.under (𝓞 (IntermediateField.adjoin ℚ {z}))`. Establish `hR : R.LiesOver (Ideal.span {(l : ℤ)})` using `Ideal.LiesOver.tower_bot Q R _`. Establish `h1` using `Ideal.ramificationIdx_below_dvd (R := ℤ) R Q`. Rewrite `h1` using `[IsCyclotomicExtension.Rat.ramificationIdx_eq_of_prime l _ R]`. Establish `h2` using `Nat.le_of_dvd (Ideal.ramificationIdx_pos _ _) h1`.
+
+Rewrite `h2` using `[Ideal.ramificationIdx_tower (R := ℤ) P Q]`. Use `h2.trans (Nat.mul_le_mul_left _ ?_)` and prove the remaining obligations. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot (p := Ideal.span {(l : ℤ)}) (by simpa using hl.ne_zero) P`. Establish `: P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hP0`. Use `(IsDedekindDomain.primesOver_finite P (𝓞 L)).fintype` as an intermediate fact.
+
+Establish `h3` using `Ideal.sum_ramification_inertia_eq_finrank P (𝓞 L)`. Rewrite `h3` using `[← IsFractionRing.finrank_eq (𝓞 E) E (𝓞 L) L]`. Rewrite using `[← h3]`. Use `le_trans ?_ (Finset.single_le_sum (f := fun q : P.primesOver (𝓞 L) => q.1.ramificationIdx (𝓞 E) * q.1.inertiaDeg (𝓞 E)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ⟨Q, hQ1, hQ2⟩))` and prove the remaining obligations. Conclude with `Nat.le_mul_of_pos_right _ (Ideal.inertiaDeg_pos _ _)`.
+-/
 private theorem prime_sub_one_le_ramification_degree {E L : Type*} [Field E] [NumberField E] [Field L] [NumberField L]
     [Algebra E L] {l : ℕ} (hl : l.Prime) {z : L} (hz : IsPrimitiveRoot z l) (P : Ideal (𝓞 E))
     [P.IsPrime] [P.LiesOver (Ideal.span {(l : ℤ)})] :
@@ -101,6 +132,9 @@ private theorem prime_sub_one_le_ramification_degree {E L : Type*} [Field E] [Nu
     (Finset.mem_univ ⟨Q, hQ1, hQ2⟩))
   exact Nat.le_mul_of_pos_right _ (Ideal.inertiaDeg_pos _ _)
 
+/- English proof (translation)
+Establish `: NeZero l` using `⟨hl.ne_zero⟩`. Take `⟨P, hP, hPl, he⟩` from `h`. Establish `: NumberField (CyclotomicField l E)` using `IsCyclotomicExtension.numberField {l} E _`. Conclude with `(prime_sub_one_le_ramification_degree hl (IsCyclotomicExtension.zeta_spec l E (CyclotomicField l E)) P).trans (Nat.mul_le_mul_right _ he)`.
+-/
 theorem RamLE.pred_le {E : Type*} [Field E] [NumberField E] {l e : ℕ} (hl : l.Prime)
     (h : RamLE E l e) : l - 1 ≤ e * rootDeg E l := by
   have : NeZero l := ⟨hl.ne_zero⟩
@@ -109,6 +143,9 @@ theorem RamLE.pred_le {E : Type*} [Field E] [NumberField E] {l e : ℕ} (hl : l.
   exact (prime_sub_one_le_ramification_degree hl (IsCyclotomicExtension.zeta_spec l E (CyclotomicField l E)) P).trans
     (Nat.mul_le_mul_right _ he)
 
+/- English proof (translation)
+The claim follows from `hS nu_two := (rootNu_pos_iff E Nat.prime_two).2 (Units.even_torsionOrder E).two_dvd one_lt := fun l hl h0 => by obtain ⟨h1, h2⟩ := rootDeg_dvd E hl have h3 := hl.two_le have h4 : 0 < rootDeg E l := Nat.pos_of_dvd_of_pos h1 (by omega) have h5 : rootDeg E l ≠ 1 := fun h => by have …`.
+-/
 theorem rootData_field {S L : Finset ℕ} (hS : ∀ l ∈ S, l.Prime)
     (hunr : ∀ l, l.Prime → l ≠ 2 → l ∉ S → l ∉ L → RamLE E l 1)
     (hL : ∀ l ∈ L, l.Prime ∧ 3 < l ∧ RamLE E l 2) :

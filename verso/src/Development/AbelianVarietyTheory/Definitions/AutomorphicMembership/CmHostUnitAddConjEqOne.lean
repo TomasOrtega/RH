@@ -24,6 +24,9 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing 
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
   (U : Unif (maximalIdeal R) D A G) (hR : AdmBase R (maximalIdeal R)) [GeometricallyConnected G.hom]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, -⟩` from `FamFree.exists_fam_single (F := FractionRing R) GlobalTheory.globalFns_holds D.tau_bimult le_rfl 0 (x • secGenK D 0)`. Take `⟨s, rfl⟩` from `(expand_bijective U hR).2 Φ`. Conclude with `⟨s, smul_left_injective _ (secGenK_ne D 0) ((coef_spec U hR s 0).symm.trans hΦ)⟩`.
+-/
 theorem exists_coef_zero (x : FractionRing R) : ∃ s, coef U hR s 0 = x := by
   obtain ⟨Φ, hΦ, -⟩ := FamFree.exists_fam_single (F := FractionRing R) GlobalTheory.globalFns_holds D.tau_bimult le_rfl 0
     (x • secGenK D 0)
@@ -49,10 +52,16 @@ def tau : B.Ylat → B.Ylat → (FractionRing B.R)ˣ :=
   letI := H.starRing
   (exists_reading B.U.D B.U.oD).choose
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing (exists_reading B.U.D B.U.oD).choose_spec`.
+-/
 theorem tau_spec : letI := H.starRing; IsReading B.U.D (𝓞 E) B.tau :=
   letI := H.starRing
   (exists_reading B.U.D B.U.oD).choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨B.noeth, B.dom, B.normal, B.complete⟩`.
+-/
 theorem adm : AdmBase B.R (maximalIdeal B.R) := ⟨B.noeth, B.dom, B.normal, B.complete⟩
 
 instance : GeometricallyConnected B.t.G.hom := B.t.semi.geomConnected
@@ -71,6 +80,9 @@ open Bdy
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hc, A.H.bar_eq]`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem bar_eq_of_conj (A : Amb D) {c c' : 𝓞 D.host.E} (hc : (c' : D.host.E) = D.host.conj (c : D.host.E)) :
     c' = A.H.bar c := by
   apply RingOfIntegers.ext
@@ -78,6 +90,9 @@ theorem bar_eq_of_conj (A : Amb D) {c c' : 𝓞 D.host.E} (hc : (c' : D.host.E) 
   apply D.host.φ₀.injective
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
+/- English proof (translation)
+Rewrite using `[← bar_eq_of_conj A (one_sub_halfSqrt_eq_conj D), add_sub_cancel]`.
+-/
 theorem cmHostUnit_add_conj_eq_one (A : Amb D) : w0 D + A.H.bar (w0 D) = 1 := by
   rw [← bar_eq_of_conj A (one_sub_halfSqrt_eq_conj D), add_sub_cancel]
 
@@ -88,6 +103,9 @@ variable (ct : At S κ p)
 def BPt : Type :=
   {x : ct.Xm.X // IsClosed ({x} : Set ct.Xm.X) ∧ ¬ ct.Xm.abP x ∧ IsDomain (Cpl ct.Xm.X x) ∧ IsIntegrallyClosed (Cpl ct.Xm.X x)}
 
+/- English proof (translation)
+The claim follows from `haveI := z.2.2.2.1 haveI := z.2.2.2.2 Bdy.nonempty_bdat ct.hp.ne_zero ct.hW ct.Xm ((S.sys.clauses p ct.W ct.hp ct.hW).2 _).1 ((S.sys.clauses p ct.W ct.hp ct.hW).2 _).2.1 z.1`.
+-/
 theorem nonempty_bdat (z : ct.BPt) : Nonempty (BDat ct.Xm.t z.1) :=
   haveI := z.2.2.2.1
   haveI := z.2.2.2.2
@@ -121,6 +139,11 @@ def bdyTrue (ct : At S κ p) : BdySt ct where
   fc z := (ct.bdat z).fc
   trU z := (ct.bdat z).trU (cmHostUnit_add_conj_eq_one A)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h` using `congrArg (algebraMap (𝓞 D.host.E) D.host.E) A.H.two_weight_eq_one_add_root`. Rewrite `h` using `[map_mul, map_add, map_one, map_ofNat]`. Establish `h' : algebraMap (𝓞 D.host.E) D.host.E A.H.rt = D.host.sqrtMinusD` using `A.rt_eq`. Express the relevant statement in the definitionally equal form `(1 + D.host.sqrtMinusD) / 2 = algebraMap (𝓞 D.host.E) D.host.E A.H.w0`.
+
+Rewrite using `[← h', ← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (A : Amb D) : w0 D = A.H.w0 := by
   apply RingOfIntegers.ext
   have h := congrArg (algebraMap (𝓞 D.host.E) D.host.E) A.H.two_weight_eq_one_add_root
@@ -130,12 +153,18 @@ example (A : Amb D) : w0 D = A.H.w0 := by
   rw [← h', ← h]
   ring
 
+/- English proof (translation)
+The claim follows from `letI := A.H.starRing (ct.bdat z).tau_spec.pos_max ha`.
+-/
 example (ct : At S κ p) (z : (bdyTrue ct).BPt) (a : (bdyTrue ct).Yb z) (ha : a ≠ 0) :
     ∃ r ∈ maximalIdeal ((bdyTrue ct).Rl z), algebraMap _ (FractionRing ((bdyTrue ct).Rl z)) r =
       (bdyTrue ct).taub z a ((bdyTrue ct).phib z a) :=
   letI := A.H.starRing
   (ct.bdat z).tau_spec.pos_max ha
 
+/- English proof (translation)
+The claim follows from `exists_coef_zero (ct.bdat z).U.U (ct.bdat z).adm 1`.
+-/
 example (ct : At S κ p) (z : (bdyTrue ct).BPt) : ∃ s, (bdyTrue ct).fc z s 0 = 1 :=
   exists_coef_zero (ct.bdat z).U.U (ct.bdat z).adm 1
 

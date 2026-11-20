@@ -22,10 +22,16 @@ section Pure
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_all.mpr fun i => (x i).2.2`.
+-/
 theorem eventually_int (x : κ → AF F) :
     ∀ᶠ u in cofinite, ∀ i, evFin F u (x i) ∈ u.adicCompletionIntegers F :=
   Filter.eventually_all.mpr fun i => (x i).2.2
 
+/- English proof (translation)
+Establish `h : ∀ᶠ u in cofinite, φ u (fun i => evFin F u (x i)) = 1` using `by filter_upwards [hφ, eventually_int x] with u hu hx`. Rewrite using `[hu]`. Simplify using `[indO, Set.indicator, hx]`. Conclude with `(Filter.eventually_cofinite.mp h).subset fun u hu hp => hu hp`.
+-/
 theorem finite_mulSupport (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : ∀ᶠ u in cofinite, φ u = indO u)
     (x : κ → AF F) : (Function.mulSupport fun u => φ u (fun i => evFin F u (x i))).Finite := by
   have h : ∀ᶠ u in cofinite, φ u (fun i => evFin F u (x i)) = 1 := by
@@ -34,6 +40,11 @@ theorem finite_mulSupport (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : �
     simp [indO, Set.indicator, hx]
   exact (Filter.eventually_cofinite.mp h).subset fun u hu hp => hu hp
 
+/- English proof (translation)
+Establish `hφ' : ∀ᶠ u in cofinite, Function.update φ v g u = indO u` using `by filter_upwards [hφ, (Set.finite_singleton v).compl_mem_cofinite] with u hu hv`. Rewrite using `[Function.update_of_ne hv, hu]`. Establish `hfin` using `finite_mulSupport _ hφ' x`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Rewrite using `[← mul_finprod_cond_ne v hfin, Function.update_self]`.
+
+Establish `: (∏ᶠ (u) (_ : u ≠ v), Function.update φ v g u (fun i => evFin F u (x i))) = ∏ᶠ (u) (_ : u ≠ v), φ u (fun i => evFin F u (x i))` using `finprod_congr fun u => finprod_congr fun hu => by rw [Function.update_of_ne hu]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_update (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ) (hφ : ∀ᶠ u in cofinite, φ u = indO u)
     (v : Pl F) (g : (κ → Fv F v) → ℂ) (x : κ → AF F) :
     pure f (Function.update φ v g) x = g (fun i => evFin F v (x i)) *
@@ -50,12 +61,18 @@ theorem pure_update (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ)
   rw [this]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[pure_update f φ hφ]`. Simplify using the standard rewrite rules.
+-/
 theorem pure_update_zero (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ)
     (hφ : ∀ᶠ u in cofinite, φ u = indO u) (v : Pl F) : pure f (Function.update φ v 0) = 0 := by
   funext x
   rw [pure_update f φ hφ]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, pure_update f φ hφ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_update_add (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ)
     (hφ : ∀ᶠ u in cofinite, φ u = indO u) (v : Pl F) (g h : (κ → Fv F v) → ℂ) :
     pure f (Function.update φ v (g + h)) = pure f (Function.update φ v g) + pure f (Function.update φ v h) := by
@@ -63,6 +80,9 @@ theorem pure_update_add (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → 
   simp only [Pi.add_apply, pure_update f φ hφ]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, pure_update f φ hφ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pure_update_smul (f : SInf F κ) (φ : ∀ u : Pl F, (κ → Fv F u) → ℂ)
     (hφ : ∀ᶠ u in cofinite, φ u = indO u) (v : Pl F) (a : ℂ) (g : (κ → Fv F v) → ℂ) :
     pure f (Function.update φ v (a • g)) = a • pure f (Function.update φ v g) := by
@@ -74,6 +94,13 @@ end Pure
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, x, -, y, -, rfl⟩` from `hz`. Introduce `u hu`. Rewrite using `[← smul_assoc, ha u hu, zero_smul]`.
+
+Consider the case `zero => intro u _`. Conclude with `smul_zero u`. Consider the case `add z z' _ _ hz hz' => intro u hu`. Rewrite using `[smul_add, hz u hu, hz' u hu, add_zero]`. Consider the case `neg z _ hz => intro u hu`.
+
+Rewrite using `[smul_neg, hz u hu, neg_zero]`.
+-/
 theorem at_of_mem_latAtV {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ} {X : Spc F E n}
     {W : Spc F E d} {v : Pl F} {γ : Matrix (Fin n) (Fin d) (AE F E)} (hγ : γ ∈ latAtV X W v) :
     At (evFin F v) γ := by
@@ -86,6 +113,31 @@ theorem at_of_mem_latAtV {E : Type} [Field E] [NumberField E] [Algebra F E] {n d
   | add z z' _ _ hz hz' => intro u hu; rw [smul_add, hz u hu, hz' u hu, add_zero]
   | neg z _ hz => intro u hu; rw [smul_neg, hz u hu, neg_zero]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM A hA hcomm f φ hφSB hφv`. Establish `hvacO : ∀ᶠ u in cofinite, M.vac u = indO u` using `by filter_upwards [hM.std] with u hu`. Rewrite using `[hu]`. Both sides reduce to the same expression. Establish `hvacSB : ∀ u, M.vac u ∈ SB _` using `fun u => (hM.vac u).1`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.weil_rep_lattice_scalar_action M B.ψ hM`. Establish `hpv : pure f M.vac ∈ schA F _` using `GlobalTheory.T.pure_tensor_mem_schwartz_adelic f M.vac hvacSB hvacO`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.T.weil_rep_scalar_char_of_signature B X W M r s r' s' hB hX hW hM c hc (A (pure f M.vac)) (hA _ hpv) fun v γ hγ => by rw [← hcomm v γ (at_of_mem_latAtV hγ) _ hpv, hc v γ hγ f, map_smul]`. Establish `key : ∀ S : Finset (Pl F), ∀ φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ, (∀ v, φ v ∈ SB _) → (∀ v ∉ S, φ v = M.vac v) → A (pure f φ) = pure f₁ φ`. Introduce `S`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `φ _ h`. Take `rfl : φ = M.vac` from `funext fun v => h v (Finset.notMem_empty v)`. Conclude with `hf₁`.
+
+Consider the case `insert v S hvS ih`. Introduce `φ hSB hS`. Establish `h0SB : ∀ u, Function.update φ v (M.vac v) u ∈ SB _` using `fun u => by`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hvacSB u`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hSB u`. Establish `h0S : ∀ u ∉ S, Function.update φ v (M.vac v) u = M.vac u` using `fun u hu => by`.
+
+Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne h]; exact hS u (by simp [h, hu])`. Establish `h0O : ∀ᶠ u in cofinite, Function.update φ v (M.vac v) u = indO u` using `by filter_upwards [hvacO, S.finite_toSet.compl_mem_cofinite] with u hu huS`.
+
+Rewrite using `[h0S u huS, hu]`. Establish `hIH` using `ih _ h0SB h0S`. Establish `hmem0` using `GlobalTheory.T.pure_tensor_mem_schwartz_adelic f _ h0SB h0O`. Take `⟨hc1, hne⟩` from `GlobalTheory.T.standard_char_continuous_nontrivial B.ψ hB.std v`. Establish `hφv : φ v ∈ Submodule.span ℂ (Set.range fun p => locOp B.ψ v p (M.vac v))` using `GlobalTheory.T.local_span_translates_of_nonzero_schwartz B.ψ v hc1 hne (M.vac v) (φ v) (hvacSB v) (hM.vac v).2.1 (hSB v)`.
+
+Establish `hφeq : φ = Function.update (Function.update φ v (M.vac v)) v (φ v)`. Rewrite using `[Function.update_idem, Function.update_eq_self]`. Establish `step : ∀ g ∈ Submodule.span ℂ (Set.range fun p => locOp B.ψ v p (M.vac v)), A (pure f (Function.update (Function.update φ v (M.vac v)) v g)) = pure f₁ (Function.update (Function.update φ v (M.vac v)) v g)`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+
+Consider the case `mem g hg`. Take `⟨p, rfl⟩` from `hg`. Take `⟨w, hw, hwp⟩` from `GlobalTheory.T.exists_local_point_model_eval M v p`. Establish `e1` using `GlobalTheory.T.weil_rep_pure_tensor_local M B.ψ v w hw f _ h0O`. Establish `e2` using `GlobalTheory.T.weil_rep_pure_tensor_local M B.ψ v w hw f₁ _ h0O`.
+
+Rewrite `e1`, `e2` using `[hwp, Function.update_self, Function.update_idem]`. Simplify using `only [Function.update_idem]`. Rewrite using `[← e1, hcomm v w hw _ hmem0, hIH, e2]`. Consider the case `zero => rw [pure_update_zero f _ h0O, pure_update_zero f₁ _ h0O, map_zero]`. Consider the case `add g h _ _ hg hh`.
+
+Rewrite using `[pure_update_add f _ h0O, pure_update_add f₁ _ h0O, map_add, hg, hh]`. Consider the case `smul a g _ hg => rw [pure_update_smul f _ h0O, pure_update_smul f₁ _ h0O, map_smul, hg]`. Rewrite using `[hφeq]`. Conclude with `step _ hφv`. Establish `hfin : {v | φ v ≠ M.vac v}.Finite` using `Filter.eventually_cofinite.mp hφv`.
+
+Conclude with `⟨f₁, key hfin.toFinset φ hφSB fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hfin.mem_toFinset.mpr h)⟩`.
+-/
 theorem commutant_pure : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (r s r' s' : ℕ),
     B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → M.IsGood B.ψ →

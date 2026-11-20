@@ -64,6 +64,39 @@ section P
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ S δ M hA L u u' hT hPH hC F0 what₂ hrows ϖ hϖ nc hnc α hα hbdd κ hκ Y hY`. Take `⟨hdens0, th, dn, hres, hdnS, hPS, hFC⟩` from `hRD hsig δ M hA L u u' hT hPH F0 what₂ hrows ϖ hϖ nc hnc`. Take `⟨θ0, hU⟩` from `hTU δ M hA (D.mem u).A.T (D.mem u').A.T`. Use `set sd := supDens L δ ϖ u u' F0 what₂ with hsdd`. Establish `hsd0 : 0 ≤ sd` using `Real.sSup_nonneg (fun d hd => hdens0 d hd)`.
+
+Establish `hdn : ∀ γ w, EligAt γ w → dn γ ≤ sd` using `fun γ w h => le_csSup hbdd (hdnS γ w h)`. Establish `hFC' : FiberCntC δ M (PairVal.vRdef D u u' F0 what₂ δ M) (nc * α) th (fun γ => dn γ / α)`. Introduce `w hG γ₀ w₀ h0`. Establish `e : (n0 (nc * α) (D.mem u).A.T (D.mem u').A.T w : ℂ) * ((dn γ₀ / α : ℝ) : ℂ) = (n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dn γ₀ : ℂ)`. Unfold `n0`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite using `[e]`. Conclude with `hFC w hG γ₀ w₀ h0`.
+
+Establish `hnc' : 0 < nc * α` using `mul_pos hnc.1 hα`. Set `pt0 : Point D.host.E (D.R.rS + 1)` to `⟨[(1, D.R.rS + 1)], by simp, by simp⟩`. Set `wOf : Y → Point D.host.E (D.R.rS + 1)` to `fun x => (ptOfList (D.R.rS + 1) x.1).getD pt0`. Establish `hP` using `dom_points hN hA hrows hnc' (PairVal.vRdef D u u' F0 what₂ δ M) hκ (hTF u u') hsig hU (hres θ0 (fun w => (hU w).1)) (sd / α) (div_nonneg hsd0 hα.le) (fun γ w h => div_le_div_of_nonneg_right (hdn γ w h) hα.le) hPS hFC' wOf`. Set `φi : Y → ℂ` to `fun x => if (ptOfList (D.R.rS + 1) x.1).isSome then ((phi (D.R.rS + 1) x.1 : ℝ) : ℂ)⁻¹ else 0`.
+
+Establish `hr : (dOf S δ M u u').r = D.R.rS` using `hC.1`. Unfold `TB.PSDOn`. Rewrite using `[hr]`. Establish `key : (Matrix.of fun x y : Y => ((sd / α : ℝ) : ℂ) * (dOf S δ M u u').Kr (D.R.rS + 1) x.1 y.1 - rowKer (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) x.1 y.1) = (Matrix.diagonal φi).conjTranspose * (Matrix.of fun x y : Y => ((sd / α : ℝ) : ℂ) * KtopG M δ (D.mem u).A.T (D.mem u'). …`. Use extensionality with `x y`.
+
+Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply, Matrix.of_apply]`. Use `show _ = star (φi x) * _ * φi y`. Break down `hx : ptOfList (D.R.rS + 1) x.1 with _ | wx` into its components or cases. Establish `h0 : φi x = 0` using `by simp [φi, hx]`. Rewrite using `[h0, star_zero, zero_mul, zero_mul]`.
+
+Establish `hK : (dOf S δ M u u').Kr (D.R.rS + 1) x.1 y.1 = 0` using `by show KrOf δ M (D.mem u).A.T (D.mem u').A.T (D.R.rS + 1) x.1 y.1 = 0`. Unfold `KrOf`. Rewrite using `[if_neg (Nat.succ_ne_zero _), if_neg (lt_irrefl _), hx]`. Establish `hR : rowKer (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) x.1 y.1 = 0`. Unfold `rowKer`.
+
+Simplify using `[rowVec, hx]`. Rewrite using `[hK, hR]`. Simplify using the standard rewrite rules. Break down `hy : ptOfList (D.R.rS + 1) y.1 with _ | wy` into its components or cases. Establish `h0 : φi y = 0` using `by simp [φi, hy]`.
+
+Rewrite using `[h0, mul_zero]`. Establish `hK : (dOf S δ M u u').Kr (D.R.rS + 1) x.1 y.1 = 0` using `by show KrOf δ M (D.mem u).A.T (D.mem u').A.T (D.R.rS + 1) x.1 y.1 = 0`. Unfold `KrOf`. Rewrite using `[if_neg (Nat.succ_ne_zero _), if_neg (lt_irrefl _), hx, hy]`. Establish `hR : rowKer (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) x.1 y.1 = 0`.
+
+Unfold `rowKer`. Simplify using `[rowVec, hy]`. Rewrite using `[hK, hR]`. Simplify using the standard rewrite rules. Establish `hwx : wOf x = wx` using `by simp [wOf, hx]`.
+
+Establish `hwy : wOf y = wy` using `by simp [wOf, hy]`. Establish `hφx : φi x = ((phi (D.R.rS + 1) x.1 : ℝ) : ℂ)⁻¹` using `by simp [φi, hx]`. Establish `hφy : φi y = ((phi (D.R.rS + 1) y.1 : ℝ) : ℂ)⁻¹` using `by simp [φi, hy]`. Establish `hx' : Formalism.L2.S.IsPtL x.1 (D.R.rS + 1)`. Assume the negation of the conclusion as `hn`.
+
+Simplify using `[ptOfList, isPtL_signPt, hn] at hx`. Establish `hy' : Formalism.L2.S.IsPtL y.1 (D.R.rS + 1)`. Assume the negation of the conclusion as `hn`. Simplify using `[ptOfList, isPtL_signPt, hn] at hy`. Establish `hpx : ((phi (D.R.rS + 1) x.1 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (phi_pos hx').ne'`.
+
+Establish `hpy : ((phi (D.R.rS + 1) y.1 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (phi_pos hy').ne'`. Establish `hK : (dOf S δ M u u').Kr (D.R.rS + 1) x.1 y.1 = KtopG M δ (D.mem u).A.T (D.mem u').A.T wx wy / (((phi (D.R.rS + 1) x.1 : ℝ) : ℂ) * ((phi (D.R.rS + 1) y.1 : ℝ) : ℂ))` using `by show KrOf δ M (D.mem u).A.T (D.mem u').A.T (D.R.rS + 1) x.1 y.1 = _`. Unfold `KrOf`. Rewrite using `[if_neg (Nat.succ_ne_zero _), if_neg (lt_irrefl _), hx, hy]`. Simplify using `only`.
+
+Rewrite using `[Kglob, dif_pos rfl]`. Establish `hR : rowKer (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) x.1 y.1 = (∑' ρ, chat (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) ρ wx * star (chat (PairVal.vRdef D u u' F0 what₂ δ M) κ (nc * α) ρ wy)) / (((phi (D.R.rS + 1) x.1 : ℝ) : ℂ) * ((phi (D.R.rS + 1) y.1 : ℝ) : ℂ))`. Unfold `rowKer`. Rewrite using `[← tsum_div_const]`. Use `tsum_congr fun ρ => ?_` and prove the remaining obligations.
+
+Rewrite using `[rowVec_eq_chat _ _ _ ρ x.1 wx hx, rowVec_eq_chat _ _ _ ρ y.1 wy hy]`. Simplify using `only [Complex.star_def, map_div₀, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hK, hR, hwx, hwy, hφx, hφy]`. Simplify using `only [star_inv₀, Complex.star_def, Complex.conj_ofReal]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `hP.conjTranspose_mul_mul_same _`.
+-/
 theorem rowsDomAtP_of (hN : SupportG.NormProd D) (hTU : TopUnram D) (hRD : RowsDatumP D)
     (hTF : ∀ u u' : D.what₂.Word, TermDef.TermsAtFinite D u u') (hsig : (VS D).SigOK) : RowsDomAtP D := by
   classical
@@ -161,6 +194,9 @@ theorem rowsDomAtP_of (hN : SupportG.NormProd D) (hTU : TopUnram D) (hRD : RowsD
   rw [key]
   exact hP.conjTranspose_mul_mul_same _
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ S δ M hA L u u' hT hPH hC F0 what₂ hrows ϖ hϖ nc hnc α hα hbdd`. Use `⟨rowLabelExists_of hG hR u u' F0 what₂ hrows, fun κ hκ => ?_⟩` and prove the remaining obligations. Introduce `Y hY R`. Conclude with `psdOn_of_full Y _ _ (fun x => hF δ M hA u u' hT F0 what₂ hrows (nc * α) κ hκ x) (hDm Wp Wq S δ M hA L u u' hT hPH hC F0 what₂ hrows ϖ hϖ nc hnc α hα hbdd κ hκ Y hY) R`.
+-/
 theorem rowsInputP_of (hG : Corank.ScalarEquivG) (hR : ∀ u u' : D.what₂.Word, Corank.ScalarRepFree D u u')
     (hF : RowsFinAt D) (hDm : RowsDomAtP D) : RowsInputP D := by
   intro Wp Wq _ _ _ _ S δ M hA L u u' hT hPH hC F0 what₂ hrows ϖ hϖ nc hnc α hα hbdd
@@ -169,19 +205,31 @@ theorem rowsInputP_of (hG : Corank.ScalarEquivG) (hR : ∀ u u' : D.what₂.Word
   exact psdOn_of_full Y _ _ (fun x => hF δ M hA u u' hT F0 what₂ hrows (nc * α) κ hκ x)
     (hDm Wp Wq S δ M hA L u u' hT hPH hC F0 what₂ hrows ϖ hϖ nc hnc α hα hbdd κ hκ Y hY) R
 
+/- English proof (translation)
+The claim follows from `rowsInputP_of Formalism.L2.SG.Closed.ScalarEquivG_holds (fun u u' => Formalism.L2.SG.Closed.ScalarRepFree_holds (D := D) (u := u) (u' := u')) (rowsFinAt_of hTF hsig) (rowsDomAtP_of hN hTU hRD hTF hsig)`.
+-/
 theorem rowsInputP_of_termsFinite_sig (hN : SupportG.NormProd D) (hTU : TopUnram D) (hRD : RowsDatumP D)
     (hTF : ∀ u u' : D.what₂.Word, TermDef.TermsAtFinite D u u') (hsig : (VS D).SigOK) : RowsInputP D :=
   rowsInputP_of Formalism.L2.SG.Closed.ScalarEquivG_holds
     (fun u u' => Formalism.L2.SG.Closed.ScalarRepFree_holds (D := D) (u := u) (u' := u'))
     (rowsFinAt_of hTF hsig) (rowsDomAtP_of hN hTU hRD hTF hsig)
 
+/- English proof (translation)
+The claim follows from `rowsInputP_of_termsFinite_sig hN hTU hRD (fun u u' => terms_at_point_finite D u u') (PI.TermsAtPtFiniteW.sigOK_holds D)`.
+-/
 theorem rowsInputP_of_normProd_topUnram (hN : Formalism.L2.SG.SupportG.NormProd D) (hTU : TopUnram D) (hRD : RowsDatumP D) :
     RowsInputP D :=
   rowsInputP_of_termsFinite_sig hN hTU hRD (fun u u' => terms_at_point_finite D u u') (PI.TermsAtPtFiniteW.sigOK_holds D)
 
+/- English proof (translation)
+The claim follows from `rowsInputP_of_normProd_topUnram hN (Formalism.L2.SG.Pf.topUnram_holds D) hRD`.
+-/
 theorem rowsInputP_of_normProd (hN : Formalism.L2.SG.SupportG.NormProd D) (hRD : RowsDatumP D) : RowsInputP D :=
   rowsInputP_of_normProd_topUnram hN (Formalism.L2.SG.Pf.topUnram_holds D) hRD
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.DataInst.RowsInputAt`. Use `intros`. Apply the tactic sequence `apply h <;> first | assumption | exact hPH _ _`.
+-/
 theorem rowsInputAt_of_P (h : RowsInputP D)
     (hPH : ∀ u u' : D.what₂.Word, Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) :
     Formalism.L2.SG.DataInst.RowsInputAt D := by
@@ -198,6 +246,9 @@ namespace Formalism.L2.SG.LsDatumB
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermDef Formalism.L2.SG.DataCut
 open Classical ValuativeRel
 
+/- English proof (translation)
+Introduce `hsig δ M hA L u u' hc hPH F0 what₂ hRo ϖ hϖ nc hnc`. Conclude with `rowsDatum_at (h hsig δ M hA L u u' hc hPH F0 what₂ hRo) (eligFinite_of (Formalism.L2.SG.Closed.TermsAtFinite_holds D u u') hsig hRo) hRo ϖ hϖ nc hnc`.
+-/
 theorem rowsDatumP_of {D : Formalism.BasicNotions.D7}
     (h : (VS D).SigOK → ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep),
       (∀ p, Agree δ M p) → ∀ (L : CntLocal.LocSp D M) (u u' : D.what₂.Word),

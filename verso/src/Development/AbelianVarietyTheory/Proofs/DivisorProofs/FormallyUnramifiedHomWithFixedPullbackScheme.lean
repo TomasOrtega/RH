@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.EndLoc.HomFixUnr
 
+/- English proof (translation)
+Use `congrArg (fun k => k.base y) e` as an intermediate fact. Simplify `this` using `only [Scheme.Hom.comp_base, TopCat.hom_comp, ContinuousMap.comp_apply]`.
+-/
 theorem base_eq {X Y Z Y' Z' : Scheme.{0}} (b : Y ⟶ X) (c : Z ⟶ Y) (b' : Y' ⟶ X) (c' : Z' ⟶ Y')
     (h : Z' ⟶ Z) (e : c' ≫ b' = h ≫ c ≫ b) (y : Z') : b' (c' y) = b (c (h y)) := by
   have := congrArg (fun k => k.base y) e
@@ -41,6 +44,9 @@ def chartPullPullPull {X Y Z Y' Z' : Scheme.{0}} (M : LB X) (b : Y ⟶ X) (c : Z
     have e' : (𝟙 Z' ≫ c') ≫ b' = (h ≫ c) ≫ b := by rw [Category.id_comp, e, Category.assoc]
     rw [e']
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullSame L (fun _ => ψA) (fun _ => φA) (fun _ => 1) χA fun _ => hA.symm) (chartPullPullPull M φB Φ ψB v χA (by rw [← hB, ← Category.assoc, hv, Category.assoc])) H`.
+-/
 theorem lbIso_pull_square {XA XB YA YB ZA ZB : Scheme.{0}} (L : LB XA) (M : LB XB) (φA : YA ⟶ XA) (φB : YB ⟶ XB)
     (Φ : YA ⟶ YB) (ψA : ZA ⟶ XA) (ψB : ZB ⟶ XB) (v : ZA ⟶ ZB) (χA : ZA ⟶ YA) (χB : ZB ⟶ YB)
     (hA : χA ≫ φA = ψA) (hB : χB ≫ φB = ψB) (hv : v ≫ χB = χA ≫ Φ)
@@ -54,6 +60,31 @@ namespace GlobalTheory.EndLoc
 
 open GlobalTheory.EndLoc.HomFixUnr in
 
+/- English proof (translation)
+Introduce `S A B _ _ _ _ L M Rp hA _`. Use `FormallyUnramified.of_hom_ext _ fun R R₀ q hq hsq g₁ g₂ hi hg ↦ ?_` and prove the remaining obligations. Set `f : Spec R ⟶ S` to `g₁ ≫ Rp.π`. Set `AT : Over (Spec R)` to `(Over.pullback f).obj A`. Set `BT : Over (Spec R)` to `(Over.pullback f).obj B`.
+
+Set `ψA : AT.left ⟶ A.left` to `pullback.fst A.hom f`. Set `ψB : BT.left ⟶ B.left` to `pullback.fst B.hom f`. Establish `hAT : IsGrpPullback AT A f ψA` using `isGrpPullback_pullback A f`. Establish `hBT : IsGrpPullback BT B f ψB` using `isGrpPullback_pullback B f`. Establish `hAbT : IsAbelianScheme AT` using `GlobalTheory.isAbelianScheme_pullback_obj f A hA`.
+
+Establish `tr : ∀ (g : Spec R ⟶ Rp.H), g ≫ Rp.π = f → ∀ (G : Over S) [GrpObj G] (GH : Over Rp.H) [GrpObj GH] (φ : GH.left ⟶ G.left), IsGrpPullback GH G Rp.π φ → ∃ e : (Over.pullback f).obj G ≅ (Over.pullback g).obj GH, IsMonHom e.hom ∧ IsGrpPullback ((Over.pullback f).obj G) GH g (e.hom.lef …`. Introduce `g hgf G _ GH _ φ hG`. Establish `h' : IsGrpPullback ((Over.pullback g).obj GH) G f (pullback.fst GH.hom g ≫ φ)` using `((isGrpPullback_pullback GH g).comp hG).congr hgf rfl`. Take `⟨e, he, heφ⟩` from `grpPullback_iso (isGrpPullback_pullback G f) h'`. Use `haveI := he`.
+
+Conclude with `⟨e, he, ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback GH g)).congr (Category.id_comp _) rfl, by rw [Category.assoc, heφ]⟩`. Establish `build : ∀ g : Spec R ⟶ Rp.H, g ≫ Rp.π = f → ∃ (v : AT ⟶ BT) (χA : AT.left ⟶ Rp.AH.left) (χB : BT.left ⟶ Rp.BH.left), IsMonHom v ∧ IsGrpPullback AT Rp.AH g χA ∧ IsGrpPullback BT Rp.BH g χB ∧ χA ≫ Rp.φA = ψA ∧ χB ≫ Rp.φB = ψB ∧ v.left ≫ χB = χA ≫ Rp.Φ.left`. Introduce `g hgf`. Take `⟨eA, heA, hpA, hφA⟩` from `tr g hgf A Rp.AH Rp.φA Rp.pbA`. Take `⟨eB, heB, hpB, hφB⟩` from `tr g hgf B Rp.BH Rp.φB Rp.pbB`.
+
+Use `haveI := heA`. Use `haveI := heB`. Use `haveI := Rp.hom`. Establish `hie : eB.inv.left ≫ eB.hom.left = 𝟙 _` using `by rw [← Over.comp_left, eB.inv_hom_id, Over.id_left]`. Use `⟨eA.hom ≫ (Over.pullback g).map Rp.Φ ≫ eB.inv, _, _, inferInstance, hpA, hpB, hφA, hφB, ?_⟩` and prove the remaining obligations.
+
+Establish `hm : ((Over.pullback g).map Rp.Φ).left ≫ pullback.fst Rp.BH.hom g = pullback.fst Rp.AH.hom g ≫ Rp.Φ.left` using `pullback.lift_fst _ _ _`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% hie, hm]`. Take `⟨v₁, χA₁, χB₁, hv₁, hpA₁, hpB₁, hχA₁, hχB₁, hχ₁⟩` from `build g₁ rfl`. Take `⟨v₂, χA₂, χB₂, hv₂, hpA₂, hpB₂, hχA₂, hχB₂, hχ₂⟩` from `build g₂ hg.symm`.
+
+Set `I : Ideal R` to `RingHom.ker q.hom`. Establish `hI : IsNilpotent I` using `⟨2, hsq⟩`. Set `j : Sp (R ⧸ I) ⟶ Sp R` to `spMap (Ideal.Quotient.mk I)`. Establish `hj : j ≫ g₁ = j ≫ g₂`. Set `ε : (R ⧸ I) ≃+* R₀` to `RingHom.quotientKerEquivOfSurjective hq`.
+
+Establish `hε : Spec.map q = Spec.map (CommRingCat.ofHom ε.toRingHom) ≫ j`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `haveI : IsIso (CommRingCat.ofHom ε.toRingHom) := ε.toCommRingCatIso.isIso_hom`. Rewrite `hi` using `[hε, Category.assoc, Category.assoc]`.
+
+Conclude with `(cancel_epi _).1 hi`. Establish `hχA : pullback.fst AT.hom j ≫ χA₁ = pullback.fst AT.hom j ≫ χA₂`. Apply `Rp.pbA.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hχA₁, hχA₂]`. Rewrite using `[Category.assoc, Category.assoc, hpA₁.1.w, hpA₂.1.w, pullback.condition_assoc, pullback.condition_assoc, hj]`.
+
+Establish `hv : v₁ = v₂`. Use `GlobalTheory.NilRigidity.eq_of_pullback_quotient_eq I hI AT BT hAbT v₁ v₂ ?_` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[show ((Over.pullback j).map v₁).left ≫ pullback.fst BT.hom j = pullback.fst AT.hom j ≫ v₁.left from pullback.lift_fst _ _ _, show ((Over.pullback j).map v₂).left ≫ pullback.fst BT.hom j = pullback.fst AT.hom j ≫ v₂.left from pullback.lift_fst _ _ _]`.
+
+Apply `hBT.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, Category.assoc, Over.w v₁, Over.w v₂]`. Rewrite using `[show ((Over.pullback j).map v₁).left ≫ pullback.snd BT.hom j = pullback.snd AT.hom j from pullback.lift_snd _ _ _, show ((Over.pullback j).map v₂).left ≫ pullback.snd BT.hom j = pullback.snd AT.hom j from pullback.lift_snd _ _ _]`. Establish `hL : LBIso (L.pull ψA) ((M.pull ψB).pull v₁.left)` using `lbIso_pull_square L M Rp.φA Rp.φB Rp.Φ.left ψA ψB v₁.left χA₁ χB₁ hχA₁ hχB₁ hχ₁ Rp.iso`.
+
+Take `⟨g, -, hg'⟩` from `Rp.rep (Spec R) f AT BT ψA ψB v₁ hAT hBT hv₁ hL`. Establish `e1` using `hg' g₁ ⟨rfl, χA₁, χB₁, hpA₁, hpB₁, hχA₁, hχB₁, hχ₁⟩`. Establish `e2` using `hg' g₂ ⟨hg.symm, χA₂, χB₂, hpA₂, hpB₂, hχA₂, hχB₂, by rw [hv]; exact hχ₂⟩`. Rewrite using `[e1, e2]`.
+-/
 theorem formallyUnramified_homFixRep : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B]
     [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (R : HomFixRep A B L M), IsAbelianScheme A → IsAbelianScheme B →
     FormallyUnramified R.π := by

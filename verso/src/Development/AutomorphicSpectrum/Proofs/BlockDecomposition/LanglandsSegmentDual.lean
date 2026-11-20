@@ -13,6 +13,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SegLDual
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA hZ Δ N V _ _ π hπ`. Take `⟨hd, hco⟩` from `id hπ`. Establish `hsm : IsSmooth π` using `hco.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)`. Take `⟨hirr, f, hf, -⟩` from `hco`. Establish `hci : (contra π).IsIrreducible` using `GlobalTheory.ContraRefl.contra_isIrreducible (GlobalTheory.SqIntUnit.compactOpen_basis k N) (hA k N V π hsm hirr) hirr`.
+
+Take `⟨hd', ⟨e⟩⟩` from `GlobalTheory.T.contragredient_segment_product_equiv hA Δ hd`. Establish `hinj : Function.Injective (GlobalTheory.ContraRefl.contraMap f)` using `fun a b h => Subtype.ext (LinearMap.ext fun v => by`. Take `⟨w, rfl⟩` from `hf v`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h) w)`. Conclude with `GlobalTheory.T.irreducible_sub_segment_product hA hZ (segDual Δ) hd' (contra π) (isSmooth_smoothRep _) hci (e.toIntertwiningMap.comp (GlobalTheory.ContraRefl.contraMap f)) (e.toLinearEquiv.injective.comp hinj)`.
+-/
 theorem lSegDual : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hZ : GlobalTheory.Published.SegmentRepresentation), LSegDual k := by
   intro k _ _ _ _ hA hZ Δ N V _ _ π hπ

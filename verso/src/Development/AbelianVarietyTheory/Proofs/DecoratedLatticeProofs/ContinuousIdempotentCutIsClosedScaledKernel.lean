@@ -13,9 +13,17 @@ namespace GlobalTheory.FinPl.SetCut
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mt_cutTop (V : HSp D) : Continuous (fun g : GA D V => Formalism.L2.Theta.mt V g) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AE D) := IsModuleTopology.toContinuousAdd (AF D.host.F) (AE D)`. Use `haveI hs : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul (AF D.host.F) (AE D)`. Use `haveI : ContinuousConstSMul (AF D.host.F) (AE D) := @ContinuousSMul.continuousConstSMul (AF D.host.F) (AE D) _ _ _ hs`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+
+Establish `h : (fun g : GA D V => Formalism.L2.Theta.mt V (cutG V ε hε g) i j) = fun g : GA D V => ε • Formalism.L2.Theta.mt V g i j + ((1 - algebraMap (AF D.host.F) (AE D) ε) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))) i j`. Use function extensionality and compare the values at `g`. Rewrite using `[mt_cutG, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Algebra.smul_def ε]`. Rewrite using `[h]`. Conclude with `(((continuous_mt_cutTop V).matrix_elem i j).const_smul ε).add continuous_const`.
+-/
 theorem continuous_mt_cutG (V : HSp D) (ε : AF D.host.F) (hε : ε * ε = ε) :
     Continuous (fun g : GA D V => Formalism.L2.Theta.mt V (cutG V ε hε g)) := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -32,6 +40,11 @@ theorem continuous_mt_cutG (V : HSp D) (ε : AF D.host.F) (hε : ε * ε = ε) :
   rw [h]
   exact (((continuous_mt_cutTop V).matrix_elem i j).const_smul ε).add continuous_const
 
+/- English proof (translation)
+Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨continuous_mt_cutG V ε hε, ?_⟩)` and prove the remaining obligations. Establish `h` using `(continuous_mt_cutG V ε hε).comp (continuous_inv (G := GA D V))`. Use `h.congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem continuous_cutG (V : HSp D) (ε : AF D.host.F) (hε : ε * ε = ε) : Continuous (cutG V ε hε) := by
   haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram
   refine continuous_induced_rng.2 (Units.continuous_iff.2 ⟨continuous_mt_cutG V ε hε, ?_⟩)
@@ -40,6 +53,13 @@ theorem continuous_cutG (V : HSp D) (ε : AF D.host.F) (hε : ε * ε = ε) : Co
   rw [Function.comp_apply, map_inv]
   rfl
 
+/- English proof (translation)
+Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Use `haveI : T2Space (AE D) := e.isEmbedding.t2Space`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`.
+
+Use `haveI hs : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul (AF D.host.F) (AE D)`. Use `haveI : ContinuousConstSMul (AF D.host.F) (AE D) := @ContinuousSMul.continuousConstSMul (AF D.host.F) (AE D) _ _ _ hs`. Establish `h : {g : GA D V | ∀ i j, algebraMap (AF D.host.F) (AE D) c * (Formalism.L2.Theta.mt V g - 1) i j = 0} = ⋂ i, ⋂ j, {g : GA D V | c • Formalism.L2.Theta.mt V g i j = c • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`.
+
+Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, mul_sub, sub_eq_zero, Algebra.smul_def, Algebra.smul_def]`. Rewrite using `[h]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (((continuous_mt_cutTop V).matrix_elem i j).const_smul c) continuous_const`.
+-/
 theorem isClosed_smul_sub_one_eq_zero (V : HSp D) (c : AF D.host.F) :
     IsClosed {g : GA D V | ∀ i j, algebraMap (AF D.host.F) (AE D) c * (Formalism.L2.Theta.mt V g - 1) i j = 0} := by
   haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _
@@ -61,6 +81,9 @@ theorem isClosed_smul_sub_one_eq_zero (V : HSp D) (c : AF D.host.F) :
   exact isClosed_iInter fun i => isClosed_iInter fun j =>
     isClosed_eq (((continuous_mt_cutTop V).matrix_elem i j).const_smul c) continuous_const
 
+/- English proof (translation)
+Introduce `_ V` and use `⟨continuous_cutG V, isClosed_smul_sub_one_eq_zero V⟩`.
+-/
 theorem continuous_cutG_and_isClosed : ∀ (D : D7) (V : HSp D), (∀ (ε : AF D.host.F) (hε : ε * ε = ε), Continuous (GlobalTheory.FinPl.SetCut.cutG V ε hε)) ∧ ∀ c : AF D.host.F, IsClosed {g : GA D V | ∀ i j, algebraMap (AF D.host.F) (AE D) c * (Formalism.L2.Theta.mt V g - 1) i j = 0} :=
   fun _ V => ⟨continuous_cutG V, isClosed_smul_sub_one_eq_zero V⟩
 

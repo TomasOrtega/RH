@@ -16,18 +16,30 @@ namespace GlobalTheory.LevelSeries.SpanInt
 
 variable {D : D7} {T : CoreJ D} {j : ℕ} {σ : T.Q.c.F →+* ℂ}
 
+/- English proof (translation)
+Simplify using `only [Cover.rd, map_add, smul_add]`.
+-/
 theorem rd_add (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f g : Rul C.d.Xo₂ C.d.c₂) :
     C.rd a (f + g) = C.rd a f + C.rd a g := by
   simp only [Cover.rd, map_add, smul_add]
 
+/- English proof (translation)
+Simplify using `only [Cover.rd, LinearMap.map_smulₛₗ, map_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem rd_smul (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (x : C.d.c₂.F) (f : Rul C.d.Xo₂ C.d.c₂) :
     C.rd a (x • f) = C.σ₂ x • C.rd a f := by
   simp only [Cover.rd, LinearMap.map_smulₛₗ, map_smul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Simplify using `only [Cover.rd, map_zero, smul_zero]`.
+-/
 theorem rd_zero (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) : C.rd a 0 = 0 := by
   simp only [Cover.rd, map_zero, smul_zero]
 
+/- English proof (translation)
+Unfold `vAdd`. Establish `h2 : (la.valuation k) x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx0`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr hx`. Rewrite `h3` using `[WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_nonneg {k : Type} [Field k] [NumberField k] (la : HeightOneSpectrum (𝓞 k)) {x : k} (hx0 : x ≠ 0)
     (hx : la.valuation k x ≤ 1) : 0 ≤ vAdd la x := by
   unfold vAdd
@@ -36,17 +48,33 @@ theorem vAdd_nonneg {k : Type} [Field k] [NumberField k] (la : HeightOneSpectrum
   rw [WithZero.log_one] at h3
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨add_mem hf.1 hg.1, by rw [map_add]; exact add_mem hf.2 hg.2⟩`.
+-/
 theorem cuspSec_add (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) {f g : Rul C.d.Xo₂ C.d.c₂}
     (hf : f ∈ C.cuspSec a n) (hg : g ∈ C.cuspSec a n) : f + g ∈ C.cuspSec a n :=
   ⟨add_mem hf.1 hg.1, by rw [map_add]; exact add_mem hf.2 hg.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Submodule.smul_mem _ x hf.1, by rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ hf.2⟩`.
+-/
 theorem cuspSec_smul (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : C.d.c₂.F)
     {f : Rul C.d.Xo₂ C.d.c₂} (hf : f ∈ C.cuspSec a n) : x • f ∈ C.cuspSec a n :=
   ⟨Submodule.smul_mem _ x hf.1, by rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ hf.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩`.
+-/
 theorem cuspSec_zero (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) : (0 : Rul C.d.Xo₂ C.d.c₂) ∈ C.cuspSec a n :=
   ⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, cuspSec_zero C a n, rd_zero C a⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, rfl⟩` from `hx`.
+
+Take `⟨g, hg, rfl⟩` from `hy`. Conclude with `⟨f + g, cuspSec_add C a n hf hg, rd_add C a f g⟩`. Consider the case `smul s x _ hx`. Take `⟨f, hf, rfl⟩` from `hx`. Take `⟨s, y, rfl⟩` from `s`.
+
+Conclude with `⟨y • f, cuspSec_smul C a n y hf, by rw [rd_smul]; rfl⟩`.
+-/
 theorem exists_of_mem_span_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     {φ : GA D (T.V j σ) → ℂ} (hφ : φ ∈ Submodule.span C.σ₂.range (C.ratForms a n)) :
     ∃ f ∈ C.cuspSec a n, C.rd a f = φ := by
@@ -62,6 +90,17 @@ theorem exists_of_mem_span_ratForms (C : Cover T j σ) (a : (D.host.E →+* ℂ)
     obtain ⟨s, y, rfl⟩ := s
     exact ⟨y • f, cuspSec_smul C a n y hf, by rw [rd_smul]; rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, ⟨hf, hv⟩, rfl⟩` from `hx`. Conclude with `⟨f, hf, hv la rfl, rfl⟩`. Consider the case `zero`.
+
+Use `⟨0, cuspSec_zero C a n, fun v hv => ?_, rd_zero C a⟩` and prove the remaining obligations. Rewrite using `[(isVal_valSet la v hv).zero]`. Conclude with `le_top`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, hvf, rfl⟩` from `hx`.
+
+Take `⟨g, hg, hvg, rfl⟩` from `hy`. Conclude with `⟨f + g, cuspSec_add C a n hf hg, fun v hv => (le_min (hvf v hv) (hvg v hv)).trans ((isVal_valSet la v hv).add _ _), rd_add C a f g⟩`. Consider the case `smul s x _ hx`. Take `⟨f, hf, hvf, rfl⟩` from `hx`. Take `⟨s, y, hy, rfl⟩` from `s`.
+
+Use `⟨y • f, cuspSec_smul C a n y hf, fun v hv => ?_, by rw [rd_smul]; rfl⟩` and prove the remaining obligations. Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0, zero_smul, (isVal_valSet la v hv).zero]`. Conclude with `le_top`. Rewrite using `[(isVal_valSet la v hv).smul y f h0]`.
+
+Conclude with `add_nonneg (by exact_mod_cast vAdd_nonneg la h0 hy) (hvf v hv)`.
+-/
 theorem exists_of_mem_span_intForms (C : Cover T j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (la : HeightOneSpectrum (𝓞 C.d.c₂.F)) {φ : GA D (T.V j σ) → ℂ}
     (hφ : φ ∈ Submodule.span (locRing C.σ₂ la) (C.intForms a n {la})) :
@@ -89,6 +128,11 @@ theorem exists_of_mem_span_intForms (C : Cover T j σ) (a : (D.host.E →+* ℂ)
     · rw [(isVal_valSet la v hv).smul y f h0]
       exact add_nonneg (by exact_mod_cast vAdd_nonneg la h0 hy) (hvf v hv)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hli : LinearIndependent C.d.c₂.F (fun _ : Fin 1 => f - g)` using `LinearIndependent.of_subsingleton 0 (sub_ne_zero.2 hne)`. Establish `h2` using `GlobalTheory.CoverIndep.cover_rd_linearIndependent D T hT j hj σ hσ C hC hcc a n ha 1 (fun _ => f - g) (fun _ => sub_mem hf hg) hli`. Establish `h3 : C.rd a (f - g) = 0`. Establish `e` using `rd_add C a (f - g) g`.
+
+Rewrite `e` using `[sub_add_cancel, h]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2.ne_zero 0 h3`.
+-/
 theorem eq_of_rd_eq (D : D7) (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : Formalism.L2.Pj.InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (C : Cover T j σ) (hC : C.IsUnif) (hcc : CUnit C.cc₂) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (ha : Dom a n) {f g : Rul C.d.Xo₂ C.d.c₂} (hf : f ∈ sec C.d.Xo₂ C.d.c₂ a n) (hg : g ∈ sec C.d.Xo₂ C.d.c₂ a n)
@@ -105,6 +149,11 @@ theorem eq_of_rd_eq (D : D7) (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : Formal
       _ = 0 := by rw [← e, sub_self]
   exact h2.ne_zero 0 h3
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ C hC hcc wa n hn S φ hφ hS`. Take `⟨f, hf, rfl⟩` from `exists_of_mem_span_ratForms C wa n hφ`. Use `⟨f, ⟨hf, fun la hla => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨g, hg, hvg, hfg⟩` from `exists_of_mem_span_intForms C wa n la (hS la hla)`. Rewrite using `[eq_of_rd_eq D T hT j hj σ hσ C hC hcc wa n hn hf.1 hg.1 hfg.symm]`.
+
+Conclude with `hvg`.
+-/
 theorem mem_intForms_of_spans : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → CUnit C.cc₂ → ∀ (wa : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom wa n → ∀ (S : Set (HeightOneSpectrum (𝓞 C.d.c₂.F))) (φ : GA D (T.V j σ) → ℂ), φ ∈ Submodule.span C.σ₂.range (C.ratForms wa n) → (∀ la ∈ S, φ ∈ Submodule.span (locRing C.σ₂ la) (C.intForms wa n {la})) → φ ∈ C.intForms wa n S := by
   intro D T hT j hj σ hσ C hC hcc wa n hn S φ hφ hS
   obtain ⟨f, hf, rfl⟩ := exists_of_mem_span_ratForms C wa n hφ

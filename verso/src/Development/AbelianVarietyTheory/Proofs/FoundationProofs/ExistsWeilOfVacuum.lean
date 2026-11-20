@@ -19,6 +19,27 @@ namespace GlobalTheory.FinWeil
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hg : admG1 D` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Take `⟨w, γ, WA, hM⟩` from `GlobalTheory.T.exists_adelicWeilRepresentationModel D hg cc δ hc N N'`. Take `⟨hT, hfix, hspan⟩` from `GlobalTheory.T.adelicWeil_vacuum_fixed_and_translates_span D hg cc δ hc N N' w γ WA hM e0 he h0`. Take `⟨lam, hlam, hsq⟩` from `GlobalTheory.T.exists_goodIndexNormalization_negative_inert D`. Take `⟨c', hc1', hc2'⟩` from `GlobalTheory.T.exists_split_character_unitary_group D N χ N'`.
+
+Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.exists_split_character_unitary_group D N' χ' N`. Establish `hidx` using `GlobalTheory.T.heisenbergRelativeIndex_translate_completed_lattice D hg cc δ hc N N'`. Establish `hM'` using `hM`. Take `⟨hH, hSD, hinv, hrat, hcont⟩` from `hM'`. Take `⟨Om, hOm1, hOm2⟩` from `GlobalTheory.T.exists_weil_representation_heisenberg hH lam hlam _ hSD ⟨e0, hT⟩ (fun h => h0 (congrArg Subtype.val h)) hfix hspan (actA D N N') hinv (fun u => (hidx u.1 u.2).1)`.
+
+Set `O : GA D N → GA D N' → (VC D N N' → ℂ) → (VC D N N' → ℂ)` to `fun g g' F => if h : F ∈ TTs D (tor0 D cc δ) N N' then ((((c' g' * c g : ℂˣ) : ℂ) • Om (g, g') ⟨F, h⟩ : TTs D (tor0 D cc δ) N N') : VC D N N' → ℂ) else 0`. Establish `hO : ∀ g g' (F : TTs D (tor0 D cc δ) N N'), O g g' F = ((((c' g' * c g : ℂˣ) : ℂ) • Om (g, g') F : TTs D (tor0 D cc δ) N N') : VC D N N' → ℂ)` using `fun g g' F => dif_pos F.2`. Use `⟨{ nz := h0, chV := χ, chV' := χ', ep := 1, ep' := 1, ep_pm := ⟨Or.inl rfl, Or.inl rfl⟩, Om := O, maps := ?_, add := ?_, smul := ?_, one := ?_, mul := ?_, lift := ?_, inert := ?_, split := ?_ }, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `g g' F hF`. Rewrite using `[hO g g' ⟨F, hF⟩]`.
+
+Conclude with `Subtype.property _`. Introduce `g g' F hF F' hF'`. Use `hO g g' (⟨F, hF⟩ + ⟨F', hF'⟩)` as an intermediate fact. Rewrite `this` using `[map_add, smul_add, Submodule.coe_add, Submodule.coe_add, ← hO, ← hO]`. Conclude with `this`.
+
+Introduce `g g' a F hF`. Use `hO g g' (a • ⟨F, hF⟩)` as an intermediate fact. Rewrite `this` using `[map_smul, smul_comm, Submodule.coe_smul, Submodule.coe_smul a, ← hO]`. Conclude with `this`. Introduce `F hF`.
+
+Rewrite using `[hO 1 1 ⟨F, hF⟩, map_one, map_one, mul_one, Units.val_one, one_smul, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression. Introduce `g₁ g₂ g₁' g₂' F hF`. Rewrite using `[hO _ _ ⟨F, hF⟩, hO g₂ g₂' ⟨F, hF⟩, hO, map_smul, smul_smul, ← Prod.mk_mul_mk, map_mul Om, map_mul, map_mul, ← Units.val_mul, mul_mul_mul_comm]`. Both sides reduce to the same expression.
+
+Introduce `g g' z F hF`. Take `⟨m, hm, h⟩` from `hcont (actA D N N' (g, g') (z.map (inc D))) (Om (g, g') ⟨F, hF⟩)`. Use `⟨m, hm, fun z' hz' => ?_⟩` and prove the remaining obligations. Use `choose a ha1 ha2 using hz'`. Establish `h1 : z'.map (inc D) = actA D N N' (g, g') (z.map (inc D)) + m • (Matrix.of a : XA D N N')`.
+
+Rewrite using `[← sub_eq_iff_eq_add']`. Use extensionality with `i j`. Rewrite using `[actA_apply, ha2 i j, Matrix.smul_apply, Matrix.of_apply, nsmul_eq_mul]`. Establish `h2` using `hrat z ⟨F, hF⟩`. Rewrite using `[← h2, hO, hO g g' ⟨F, hF⟩, ← hrat, map_smul, hOm1, h1, h (Matrix.of a) ha1]`.
+
+Introduce `k k' hk hk' hs hs'`. Establish `h3` using `(GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le hH _ _ (hOm2 (k, k')).1).2.2 ((hidx k k').2.2 hk hk')`. Rewrite using `[hO k k' ⟨e0, hT⟩, hc1 k hs, hc1' k' hs', mul_one, Units.val_one, one_smul, (hOm2 (k, k')).2, normOp, h3.1, h3.2 _ hfix, map_one, inv_one, one_smul]`. Introduce `g g' x x' L₁ L₁' hs hs' hx h1 h1' hL hL'`. Establish `h3` using `GlobalTheory.T.thetaIntertwiner_eq_normalisedAdelicSum D hg cc δ hc N N' w γ WA hM g g' L₁ L₁' hL hL' (hOm2 (g, g')).1 ⟨e0, hT⟩ hfix`.
+
+Establish `h4` using `hsq _ (hidx g g').1 fun q hq hi => (hidx g g').2.1 q hq (hs q hq hi) (hs' q hq hi)`. Rewrite using `[hO g g' ⟨e0, hT⟩, hc2 g x (fun q hq hi => (hx q hq hi).1) h1, hc2' g' x' (fun q hq hi => (hx q hq hi).2) h1', (hOm2 (g, g')).2, normOp, h4, Submodule.coe_smul, Submodule.coe_smul, ← h3, zpow_one, zpow_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_weil_of_vacuum (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (N N' : ℕ)
     (e0 : VC D N N' → ℂ) (he : e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N')) (h0 : e0 ≠ 0) (χ : HeckeU D N) (χ' : HeckeU D N') :
     ∃ W : WeilO D cc δ N N' e0, W.chV = χ ∧ W.chV' = χ' ∧ W.ep = 1 ∧ W.ep' = 1 := by
@@ -79,6 +100,9 @@ theorem exists_weil_of_vacuum (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (
       (hOm2 (g, g')).2, normOp, h4, Submodule.coe_smul, Submodule.coe_smul, ← h3, zpow_one, zpow_one]
     rfl
 
+/- English proof (translation)
+Introduce `D cc δ hc N N' _ _ e0 he h0 χ χ'` and use `exists_weil_of_vacuum D cc δ hc N N' e0 he h0 χ χ'`.
+-/
 theorem exists_weil : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ N N' : ℕ, Even N → Even N' → ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'), e0 ≠ 0 → ∀ (χ : HeckeU D N) (χ' : HeckeU D N'), ∃ W : WeilO D cc δ N N' e0, W.chV = χ ∧ W.chV' = χ' ∧ W.ep = 1 ∧ W.ep' = 1 :=
   fun D cc δ hc N N' _ _ e0 he h0 χ χ' => exists_weil_of_vacuum D cc δ hc N N' e0 he h0 χ χ'
 

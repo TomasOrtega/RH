@@ -3,6 +3,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConvexNerveComplex
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms.Faceexact
 
 open UpperTheory.V UpperTheory.V.Af.BA UpperTheory.V.KT Pointwise in
+/- English proof (translation)
+Introduce `hB hGood hAct hSpan hOrb hMin L _ _ _ N σ hσ`. Take `⟨x, hx1, hx2⟩` from `hAct L N σ hσ`. Use `letI := x`. Take `⟨hFC, hS0, hA⟩` from `UpperTheory.V.ConeExtensionAcyclic.acyc_simp (hGood L N σ hσ)`. Set `K : Cx (Fix N σ) (UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N))` to `{ S := UpperTheory.V.ConeExtensionAcyclic.simp (qr L N) (Tr L N) comp := fun f t ht => by`.
+
+Take `⟨z, hz, hzt⟩` from `ht`. Conclude with `⟨z, hz, fun j => hzt (f j)⟩`. Use `smul := fun g t ht => hx2 _ g t ht }`. Use `hB _ _ K (fun m => UpperTheory.V.KT.faceexact _ _ hFC hS0 hA m) ?_ ?_` and prove the remaining obligations. Introduce `p`.
+
+Take `⟨R, hRf, hR⟩` from `hOrb L N σ hσ p`. Use `⟨{t : K.Tup p | (fun j => (((t.1 j : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N)) : HR L N) : UpperTheory.V.KT.HS L N)) ∈ R}, ?_, ?_⟩` and prove the remaining obligations. Use `hRf.preimage ?_` and prove the remaining obligations. Introduce `a _ b _ hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j`. Conclude with `Subtype.ext (Subtype.ext (congrFun hab j))`. Introduce `t`. Take `⟨g, hg, hgR⟩` from `hR t.1 t.2`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hfun : (fun j => ((((⟨g, hg⟩ : Fix N σ) • t.1 j : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N)) : HR L N) : UpperTheory.V.KT.HS L N)) = fun j => g • (((t.1 j : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N)) : HR L N) : UpperTheory.V.KT.HS L N)`. Use function extensionality and compare the values at `fun j => hx1 _ _`. Use `show (fun j => ((((⟨g, hg⟩ : Fix N σ) • t.1 j : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N)) : HR L N) : UpperTheory.V.KT.HS L N)) ∈ R`. Rewrite using `[hfun]`. Conclude with `hgR`.
+
+Introduce `t set v : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N) := t.1 0 with hv set hh : UpperTheory.V.KT.HS L N := ((v : HR L N) : UpperTheory.V.KT.HS L N) with hhh`. Establish `hRy : hh ∈ UpperTheory.V.KT.Ry L N`. Introduce `y hy`. Conclude with `v.2.1 ⟨y, hy⟩`. Establish `hsp` using `hSpan L N σ hσ 0 t.1 t.2`.
+
+Establish `hmv : UpperTheory.V.KT.minVec hh = {y | ∀ j : Fin (0 + 1), UpperTheory.V.KT.q (((t.1 j : UpperTheory.V.ConeExtensionAcyclic.Vert (qr L N)) : HR L N) : UpperTheory.V.KT.HS L N) y = 1}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy j`. Establish `hj : j = 0` using `Fin.ext (by omega)`.
+
+Rewrite using `[hj]`. Conclude with `hy`. Introduce `hy`. Conclude with `hy 0`. Establish `hsp' : UpperTheory.V.KT.Spans (UpperTheory.V.KT.minVec hh)`.
+
+Rewrite using `[hmv]`. Conclude with `hsp`. Use `haveI := hMin L N hh hRy hsp'`. Use `Finite.of_injective (β := MulAction.stabilizer (UpperTheory.V.KT.Gm L N) (UpperTheory.V.KT.minVec hh)) (fun g => ⟨((g.1 : Fix N σ) : UpperTheory.V.KT.Gm L N), ?_⟩) ?_` and prove the remaining obligations. Establish `hgt : (g.1 : Fix N σ) • t = t` using `g.2`.
+
+Establish `hgv : (g.1 : Fix N σ) • v = v` using `congrArg (fun s : K.Tup 0 => s.1 0) hgt`. Establish `hgh : ((g.1 : Fix N σ) : UpperTheory.V.KT.Gm L N) • hh = hh`. Rewrite using `[hhh, ← hx1, hgv]`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use extensionality with `z`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show UpperTheory.V.KT.q hh (((g.1 : Fix N σ) : UpperTheory.V.KT.Gm L N)⁻¹ • z) = 1 ↔ UpperTheory.V.KT.q hh z = 1`. Rewrite using `[← UpperTheory.V.KT.q_smul, hgh]`. Introduce `a b hab`. Establish `hab'` using `congrArg Subtype.val hab`.
+
+Conclude with `Subtype.ext (Subtype.ext hab')`.
+-/
 theorem UpperTheory.bddFix_of_bounded_complex :
     UpperTheory.V.Af.BA.BddCx → UpperTheory.V.Af.BA.GoodRe → UpperTheory.V.Af.BA.ActRe → UpperTheory.V.Af.BA.SpanRe → UpperTheory.V.Af.BA.OrbRe → UpperTheory.V.Af.BA.MinStab → UpperTheory.V.Af.BA.BddFix := by
   intro hB hGood hAct hSpan hOrb hMin L _ _ _ N σ hσ

@@ -18,11 +18,17 @@ section Matrices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {J : Type} [Fintype J]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [matAct, Matrix.mul_apply, Rat.cast_sum, Rat.cast_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem matAct_matAct (A A' : Matrix J J ℚ) (x : J → Ω) : matAct A (matAct A' x) = matAct (A * A') x := by
   funext i
   simp only [matAct, Matrix.mul_apply, Rat.cast_sum, Rat.cast_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hA`. Take `⟨C', hC'⟩` from `hA'`. Use `⟨C' * C, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (hC' (C.mulVec v)).1, (hC v).1]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, (hC (A'.mulVec v)).2, (hC' v).2]`.
+-/
 theorem isInvMat_mul {A A' : Matrix J J ℚ} (hA : IsInvMat A) (hA' : IsInvMat A') : IsInvMat (A * A') := by
   obtain ⟨C, hC⟩ := hA
   obtain ⟨C', hC'⟩ := hA'
@@ -37,6 +43,11 @@ def scaleMat {D : ℕ} (e : Fin (D + 1) → J) (m : ℕ) : Matrix J J ℚ :=
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [matAct, scaleMat, Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Rewrite using `[if_pos rfl]`. Unfold `scaleOff`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem matAct_scaleMat {D : ℕ} (e : Fin (D + 1) → J) (m : ℕ) (y : J → Ω) :
     matAct (scaleMat e m) y = scaleOff e m y := by
   funext i
@@ -48,6 +59,11 @@ theorem matAct_scaleMat {D : ℕ} (e : Fin (D + 1) → J) (m : ℕ) (y : J → �
 
 open Classical in
 
+/- English proof (translation)
+Establish `hc : ∀ i, (if i ∈ Set.range e then 1 else (m : ℚ)) ≠ 0` using `fun i => by split_ifs`. Conclude with `one_ne_zero`. Conclude with `hm.ne'` after adjusting the coercions. Use `⟨Matrix.diagonal fun i => (if i ∈ Set.range e then 1 else (m : ℚ))⁻¹, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [scaleMat, Matrix.mulVec_diagonal]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hc i), one_mul]`. Use function extensionality and compare the values at `i`. Simplify using `only [scaleMat, Matrix.mulVec_diagonal]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hc i), one_mul]`.
+-/
 theorem isInvMat_scaleMat {D : ℕ} (e : Fin (D + 1) → J) {m : ℕ} (hm : 0 < m) : IsInvMat (scaleMat e m) := by
   have hc : ∀ i, (if i ∈ Set.range e then 1 else (m : ℚ)) ≠ 0 := fun i => by
     split_ifs
@@ -63,6 +79,13 @@ theorem isInvMat_scaleMat {D : ℕ} (e : Fin (D + 1) → J) {m : ℕ} (hm : 0 < 
 
 end Matrices
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d`. Take `⟨B₀, e, hB₀, hfr⟩` from `hN D Ω κ d.x d.arith`. Take `⟨m, hm, hfr'⟩` from `exists_scaleOff_isProjFrame (matAct B₀ d.x) e hfr`. Establish `hB : IsInvMat (scaleMat e m * B₀)` using `isInvMat_mul (isInvMat_scaleMat e hm) hB₀`. Take `⟨d', hx', hm', hG⟩` from `hT D Ω κ d _ hB`.
+
+Establish `hx'' : d'.x = scaleOff e m (matAct B₀ d.x)`. Rewrite using `[hx', ← matAct_matAct, matAct_scaleMat]`. Use `⟨_, d', e, hB, hx', hm', by rw [hx'']; exact hfr', ?_⟩` and prove the remaining obligations. Establish `h0` using `hI D Ω κ d d' _ hB hx' hG`. Establish `hz : (fun n => resChi d' n - resChi d n - latLogIndex d.x d'.x n) = fun _ => (0 : ℝ)`.
+
+Use function extensionality and compare the values at `fun n => by rw [h0 n, sub_self]`. Rewrite using `[hz]`. Conclude with `isLittleO_zero _ _`.
+-/
 theorem proof (hN : RatNoetherFrame.Statement) (hT : HSMTransport.Statement) (hI : ResChiIndex.Statement) :
     FrameChange.Statement := by
   intro D Ω _ _ κ _ d

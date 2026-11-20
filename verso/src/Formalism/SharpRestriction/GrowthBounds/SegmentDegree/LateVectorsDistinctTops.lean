@@ -8,6 +8,71 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X hX j x hx`. Take `⟨-, -, -, hnext, hTT, -⟩` from `hX.valid`. Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne n')`. Establish `hstep : ∀ t : ℤ, ∀ i < r, ∀ i' < r, X.F.fr t i < X.F.fr (t + 1) i'`.
+
+Introduce `t i hi i' hi'`. Combine the equalities or inequalities in the displayed calculation. Establish `hlt' : ∀ t : ℤ, ∀ k : ℕ, ∀ i < r, ∀ i' < r, X.F.fr t i < X.F.fr (t + 1 + k) i'`. Introduce `t k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `i hi i' hi'`. Simplify using `using hstep t i hi i' hi'`. Consider the case `succ k ih`. Introduce `i hi i' hi'`.
+
+Rewrite using `[show t + 1 + ((k + 1 : ℕ) : ℤ) = t + 1 + k + 1 by push_cast; ring]`. Conclude with `(ih i hi 0 hr).trans (hstep _ 0 hr i' hi')`. Establish `hlt : ∀ t t' : ℤ, t < t' → ∀ i < r, ∀ i' < r, X.F.fr t i < X.F.fr t' i'`. Introduce `t t' htt i hi i' hi'`. Take `⟨k, hk⟩ : ∃ k : ℕ, t' = t + 1 + k` from `⟨(t' - t - 1).toNat, by omega⟩`.
+
+Rewrite using `[hk]`. Conclude with `hlt' t k i hi i' hi'`. Establish `hinjfr : ∀ t t' : ℤ, ∀ i < r, ∀ i' < r, X.F.fr t i = X.F.fr t' i' → t = t' ∧ i = i'`. Introduce `t t' i hi i' hi' h`. Break down `lt_trichotomy t t' with h1 | rfl | h1` into its components or cases.
+
+Conclude with `absurd h (hlt t t' h1 i hi i' hi').ne`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy i i' with h2 | h2 | h2` into its components or cases. Conclude with `absurd h (bk_fr_lt hX.valid t i i' h2 hi').ne`. Conclude with `h2`.
+
+Conclude with `absurd h.symm (bk_fr_lt hX.valid t i' i h2 hi).ne`. Conclude with `absurd h.symm (hlt t' t h1 i' hi' i hi).ne`. Rewrite `hx` using `[mem_late]`. Take `⟨-, hxW⟩` from `hx`. Simplify using `only [Frames.IsW, not_le] at hxW`.
+
+Take `⟨S, hS⟩ : ∃ S : Finset ℤ, S = {z ∈ X.F.letters j | Even z ∧ z < x}` from `⟨_, rfl⟩`. Establish `hmem : ∀ z, z ∈ evL X.F j x ↔ z ∈ S` using `fun z => by`. Rewrite using `[hS]`. Conclude with `Finset.mem_sort _`. Establish `hsort : (evL X.F j x).Pairwise (· < ·)`.
+
+Rewrite using `[evL, ← hS]`. Conclude with `((Finset.pairwise_sort S _).and (Finset.sort_nodup S _)).imp (fun h => lt_of_le_of_ne h.1 h.2)`. Establish `hlen : (evL X.F j x).length = S.card`. Rewrite using `[evL, ← hS]`. Conclude with `Finset.length_sort _`.
+
+Establish `hfrS : ∀ t : ℤ, ∀ i < r, X.F.fr (j - 1) 0 ≤ X.F.fr t i → X.F.fr t i ≤ X.F.fr j (r - 1) → X.F.fr t i < x → X.F.fr t i ∈ S`. Introduce `t i hi h1 h2 h3`. Rewrite using `[hS]`. Simplify using `only [Finset.mem_filter, Frames.letters, Finset.mem_Icc]`. Conclude with `⟨⟨⟨h1, h2⟩, (hTT t i hi).1⟩, (hTT t i hi).2, h3⟩`.
+
+Establish `hSlo : ∀ z ∈ S, X.F.fr (j - 1) 0 ≤ z ∧ z ≤ X.F.fr j (r - 1) ∧ z < x`. Introduce `z hz`. Rewrite `hz` using `[hS, Finset.mem_filter]`. Establish `hb` using `mem_letters_bounds hz.1`. Conclude with `⟨hb.1, hb.2.1, hz.2.2⟩`.
+
+Establish `hlenr : r ≤ S.card`. Establish `hsub : (Finset.range r).image (fun i => X.F.fr (j - 1) i) ⊆ S`. Introduce `z hz`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hz`. Take `⟨i, hi, rfl⟩` from `hz`.
+
+Establish `hA : X.F.fr (j - 1) i ≤ X.F.fr (j - 1) (r - 1)` using `bk_fr_le hX.valid _ i (r - 1) (by omega) (by omega)`. Establish `hB : X.F.fr (j - 1) i < X.F.fr j (r - 1)` using `hlt (j - 1) j (by omega) i hi (r - 1) (by omega)`. Conclude with `hfrS _ i hi (fr_zero_le hX.valid _ i hi) hB.le (lt_of_le_of_lt hA hxW)`. Establish `hinj' : Set.InjOn (fun i => X.F.fr (j - 1) i) ↑(Finset.range r)`. Introduce `a ha b hb h`.
+
+Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Conclude with `(hinjfr _ _ a ha b hb h).2`. Establish `hc` using `Finset.card_le_card hsub`. Rewrite `hc` using `[Finset.card_image_of_injOn hinj', Finset.card_range]`. Conclude with `hc`.
+
+Simplify using `only [row_eq]`. Generalize the expression as in `evL X.F j x = l at hmem hsort hlen ⊢`. Establish `hNr : r ≤ l.length` using `hlen ▸ hlenr`. Establish `hget : ∀ k (hk : k < l.length), l.getD k 0 = l[k]` using `fun k hk => List.getD_eq_getElem _ _ hk`. Establish `hpw` using `List.pairwise_iff_getElem.mp hsort`.
+
+Establish `hm : l.length - r < l.length` using `by omega`. Establish `hinS : ∀ k, k < l.length → l.getD k 0 ∈ S`. Introduce `k hk`. Rewrite using `[hget k hk]`. Conclude with `(hmem _).1 (List.getElem_mem _)`.
+
+Establish `hbound : ∀ k, l.length - r ≤ k → k < l.length → l.getD (l.length - r) 0 ≤ l.getD k 0 ∧ l.getD k 0 < l.getD (l.length - r) 0 + n'`. Introduce `k hk1 hk2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hk1 with h | h` into its components or cases. Rewrite using `[h]`.
+
+Rewrite using `[hget _ hm, hget _ hk2]`. Conclude with `(hpw _ _ hm hk2 h).le`. Assume the negation of the conclusion as `hz push_neg at hz`. Establish `hy1S` using `hinS _ hm`. Establish `hzS` using `hinS _ hk2`.
+
+Take `⟨hy1lo, -, -⟩` from `hSlo _ hy1S`. Take `⟨-, hzhi, hzx⟩` from `hSlo _ hzS`. Take `⟨y1, hy1⟩ : ∃ y1, y1 = l.getD (l.length - r) 0` from `⟨_, rfl⟩`. Take `⟨z, hzdef⟩ : ∃ z, z = l.getD k 0` from `⟨_, rfl⟩`. Rewrite `hz` using `[← hy1, ← hzdef]`.
+
+Rewrite `hy1lo`, `hy1S` using `[← hy1]`. Rewrite `hzhi`, `hzx`, `hzS` using `[← hzdef]`. Set `w : ℕ → ℤ` to `fun i => X.F.fr (0 + (-((X.F.fr 0 i - y1) / n')) * X.F.J) i`. Establish `hwr : ∀ i < r, y1 ≤ w i ∧ w i < y1 + n'`. Introduce `i hi`.
+
+Establish `hw : w i = X.F.fr 0 i + (-((X.F.fr 0 i - y1) / n')) * n'` using `fr_period hX.valid 0 i (-((X.F.fr 0 i - y1) / n'))`. Establish `e1` using `Int.mul_ediv_add_emod (X.F.fr 0 i - y1) (n' : ℤ)`. Establish `e2` using `Int.emod_nonneg (X.F.fr 0 i - y1) (ne_of_gt hn)`. Establish `e3` using `Int.emod_lt_of_pos (X.F.fr 0 i - y1) hn`. Establish `e4 : (-((X.F.fr 0 i - y1) / n')) * (n' : ℤ) = -((n' : ℤ) * ((X.F.fr 0 i - y1) / n'))` using `by ring`.
+
+Apply the tactic sequence `constructor <;> linarith`. Take `⟨T, hT⟩ : ∃ T : Finset ℤ, T = S.filter (fun s => y1 ≤ s)` from `⟨_, rfl⟩`. Establish `hTcard : T.card ≤ r`. Establish `hsub : T ⊆ (Finset.Ico (l.length - r) l.length).image (fun k => l.getD k 0)`. Introduce `s hs`.
+
+Rewrite `hs` using `[hT, Finset.mem_filter]`. Take `⟨k', hk', rfl⟩` from `List.getElem_of_mem ((hmem _).2 hs.1)`. Use `Finset.mem_image.2 ⟨k', Finset.mem_Ico.2 ⟨?_, hk'⟩, hget k' hk'⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt2`. Use `push_neg at hlt2`.
+
+Establish `h3` using `hpw k' _ hk' hm hlt2`. Establish `h2` using `hs.2`. Rewrite `h2` using `[hy1, hget _ hm]`. Conclude with `absurd h2 (not_le.2 h3)`. Use `(Finset.card_le_card hsub).trans Finset.card_image_le` as an intermediate fact.
+
+Rewrite `this` using `[Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers. Establish `hwinj : Set.InjOn w ↑(Finset.range r)`. Introduce `a ha b hb h`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`.
+
+Conclude with `(hinjfr _ _ a ha b hb h).2`. Establish `hznot : z ∉ (Finset.range r).image w`. Introduce `hzin`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hzin`. Take `⟨i, hi, hwi⟩` from `hzin`.
+
+Use `(hwr i hi).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hUsub : insert z ((Finset.range r).image w) ⊆ T`. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_insert]`.
+
+Rewrite using `[hT, Finset.mem_filter]`. Break down `hs with rfl | hs` into its components or cases. Conclude with `⟨hzS, by linarith⟩`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hs`. Take `⟨i, hi, rfl⟩` from `hs`.
+
+Take `⟨hw1, hw2⟩` from `hwr i hi`. Conclude with `⟨hfrS _ i hi (by linarith) (by linarith) (by linarith), hw1⟩`. Establish `hc` using `Finset.card_le_card hUsub`. Rewrite `hc` using `[Finset.card_insert_of_notMem hznot, Finset.card_image_of_injOn hwinj, Finset.card_range]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `a b hab`. Simplify using `only at hab`. Establish `ha` using `hbound (l.length - r + a) (by omega) (by omega)`. Establish `hb` using `hbound (l.length - r + b) (by omega) (by omega)`. Establish `he` using `posOf_injOn (l.getD (l.length - r) 0 - 1) (show l.getD (l.length - r + a) 0 ∈ Set.Ioc _ _ from ⟨by linarith [ha.1], by linarith [ha.2]⟩) (show l.getD (l.length - r + b) 0 ∈ Set.Ioc _ _ from ⟨by linarith [hb.1], by linarith [hb.2]⟩) hab`.
+
+Establish `hia : l.length - r + (a : ℕ) < l.length` using `by omega`. Establish `hib : l.length - r + (b : ℕ) < l.length` using `by omega`. Rewrite `he` using `[hget _ hia, hget _ hib]`. Apply `Fin.ext` to reduce the goal to its premises. Break down `lt_trichotomy (l.length - r + (a : ℕ)) (l.length - r + (b : ℕ)) with h | h | h` into its components or cases.
+
+Conclude with `absurd he (hpw _ _ hia hib h).ne`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd he.symm (hpw _ _ hib hia h).ne`.
+-/
 theorem late_vectors_distinct_tops : LateVectorsDistinctLeadingTerms := by
   intro p n' r K _ _ _ X hX j x hx
   obtain ⟨-, -, -, hnext, hTT, -⟩ := hX.valid

@@ -2,6 +2,21 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R G X _ _ _ _ _ _ _ _ ρ H _ hH hρ tr f hf`. Use `show Continuous (fun g => ∑ q : G ⧸ H, ρ (g • q).out (f ((g • q).out⁻¹ * g * q.out)))`. Use `continuous_finset_sum _ (fun q _ => ?_)` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 (fun g₀ => ?_)` and prove the remaining obligations. Establish `hsmul : ∀ g : G, g • q = ((g * q.out : G) : G ⧸ H)`.
+
+Introduce `g`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Set `ψ : G → G` to `fun g => (g * q.out)⁻¹ * (g₀ • q).out`. Establish `hψc : Continuous ψ` using `by fun_prop`.
+
+Set `V : Set G` to `ψ ⁻¹' (H : Set G)`. Establish `hVo : IsOpen V` using `hH.preimage hψc`. Establish `key : ∀ g ∈ V, g • q = g₀ • q`. Introduce `g hg`. Establish `h1 : ((g * q.out : G) : G ⧸ H) = ((g₀ • q).out : G ⧸ H)` using `QuotientGroup.eq.2 hg`.
+
+Rewrite using `[hsmul g, h1, QuotientGroup.out_eq']`. Establish `hg₀ : g₀ ∈ V` using `by show (g₀ * q.out)⁻¹ * (g₀ • q).out ∈ H`. Apply `QuotientGroup.eq.1` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq', hsmul]`. Establish `hmem : ∀ g ∈ V, (g₀ • q).out⁻¹ * g * q.out ∈ H`.
+
+Introduce `g hg`. Establish `h1` using `QuotientGroup.eq.1 (show (((g₀ • q).out : G) : G ⧸ H) = ((g * q.out : G) : G ⧸ H) by`. Rewrite using `[QuotientGroup.out_eq', ← hsmul g, key g hg])`. Simplify `h1` using `[mul_assoc]`. Establish `hV : V ∈ nhds g₀` using `hVo.mem_nhds hg₀`.
+
+Establish `hc : ContinuousAt (fun g => ρ (g₀ • q).out (f ((g₀ • q).out⁻¹ * g * q.out))) g₀`. Establish `hφ : Continuous (fun g : G => (g₀ • q).out⁻¹ * g * q.out)` using `by fun_prop`. Establish `hw : ContinuousWithinAt (fun g => f ((g₀ • q).out⁻¹ * g * q.out)) V g₀` using `ContinuousWithinAt.comp (g := f) (f := fun g : G => (g₀ • q).out⁻¹ * g * q.out) (t := (H : Set G)) (hf _ (hmem g₀ hg₀)) hφ.continuousWithinAt (fun g hg => hmem g hg)`. Conclude with `(hρ _).continuousAt.comp (hw.continuousAt hV)`. Use `hc.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hV] with g hg`. Rewrite using `[key g hg]`.
+-/
 theorem transfer_continuous_of_continuousOn : ∀ (R G X : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module R X] [TopologicalSpace X] [IsTopologicalAddGroup X] (ρ : Representation R G X) (H : Subgroup G) [Fintype (G ⧸ H)], IsOpen (H : Set G) → (∀ g, Continuous (ρ g)) → let tr : (G → X) → G → X := fun f g => ∑ q : G ⧸ H, ρ (g • q).out (f ((g • q).out⁻¹ * g * q.out)); ∀ f : G → X, ContinuousOn f H → Continuous (tr f) := by
   intro R G X _ _ _ _ _ _ _ _ ρ H _ hH hρ tr f hf
   show Continuous (fun g => ∑ q : G ⧸ H, ρ (g • q).out (f ((g • q).out⁻¹ * g * q.out)))

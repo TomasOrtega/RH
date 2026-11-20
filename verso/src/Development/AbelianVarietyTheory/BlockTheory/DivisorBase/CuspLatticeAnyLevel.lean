@@ -28,6 +28,9 @@ def MjFull (A : FormsL LL Ks WL W G) (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC
   FiniteDimensional LL (A.Wgood J0 lam0 eC) ∧
     ∀ (d : ℕ) (b : Fin d → WL), IsGoodBasis A J0 lam0 eC b → Submodule.IsLattice LL (A.Mcoord J0 lam0 eC b)
 
+/- English proof (translation)
+Set `B` to `Module.finBasis LL (A.Wgood J0 lam0 eC)`. Use `⟨fun i => (A.Wgood J0 lam0 eC).subtype (B i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `B.linearIndependent.map' _ (Submodule.ker_subtype _)`. Use `show Submodule.span LL (Set.range ((A.Wgood J0 lam0 eC).subtype ∘ B)) = _`. Rewrite using `[Set.range_comp, Submodule.span_image, B.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem exists_isGoodBasis (A : FormsL LL Ks WL W G) (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC : G → LL)
     [FiniteDimensional LL (A.Wgood J0 lam0 eC)] :
     ∃ b : Fin (Module.finrank LL (A.Wgood J0 lam0 eC)) → WL, IsGoodBasis A J0 lam0 eC b := by
@@ -114,10 +117,18 @@ def MLatAnyLevel : Prop :=
     (A : FormsL LL T.Q.c.F WL W G) (ι : Cusp T j w →ₗ[T.Q.c.F] WL), CarriesCusp T j w A ι →
   ∀ (J0 : Subgroup G) (lam0 : J0 →* LLˣ) (eC : G → LL), MjFull A J0 lam0 eC
 
+/- English proof (translation)
+Introduce `D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA Pg _ φ _ ψ _ eC _`. Conclude with `h D T hT j hj w hw LL WL W G A ι hA _ _ eC`.
+-/
 theorem MLat.of_anyLevel (h : MLatAnyLevel) : MLat := by
   intro D T hT j hj w hw LL _ _ _ WL _ _ _ _ _ _ _ _ W _ _ G _ _ A ι hA Pg _ φ _ ψ _ eC _
   exact h D T hT j hj w hw LL WL W G A ι hA _ _ eC
 
+/- English proof (translation)
+Use `⟨DIV.Cons.kaWt_n D hK hn j, fun τ => ⟨fun i => ?_, fun c => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← (hK j hj.1 hj.2 τ).1 i, ← DIV.Cons.kaWt_big D hK hn j hj.1 hj.2 τ i]`. Simplify using the standard rewrite rules. Establish `h1` using `DIV.Cons.kaWt_small D hK hn j hj.1 hj.2 τ (Fin.rev c)`. Establish `h2` using `(hK j hj.1 hj.2 τ).2 c`.
+
+Rewrite `h1` using `[Fin.rev_rev]`. Establish `h3 : (((DIV.Cons.kaWt D hK hn j).aM τ (Fin.rev c) : ℕ) : ℚ) = -(D.what₂.kaSmall j τ c : ℚ)`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h3, h2, neg_neg]`.
+-/
 theorem isKappa_kaWt (hK : DV.KapDef D) (hn : Even D.R.nV) {j : ℕ} (hj : InR D j) :
     IsKappa D j (DIV.Cons.kaWt D hK hn j) := by
   refine ⟨DIV.Cons.kaWt_n D hK hn j, fun τ => ⟨fun i => ?_, fun c => ?_⟩⟩
@@ -129,12 +140,20 @@ theorem isKappa_kaWt (hK : DV.KapDef D) (hn : Even D.R.nV) {j : ℕ} (hj : InR D
       exact_mod_cast h1
     rw [h3, h2, neg_neg]
 
+/- English proof (translation)
+Use `⟨fun g h => ?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Apply the tactic sequence `rw [Finset.sum_eq_single (1 : G)] <;> simp +contextual`.
+-/
 example {LL G : Type} [Field LL] [Group G] [Fintype G] [DecidableEq G] :
     IsCentralIdem (fun g : G => if g = 1 then (1 : LL) else 0) := by
   refine ⟨fun g h => ?_, fun g => ?_⟩
   · simp [mul_inv_eq_one, mul_inv_eq_iff_eq_mul]
   · rw [Finset.sum_eq_single (1 : G)] <;> simp +contextual
 
+/- English proof (translation)
+Use `⟨TensorProduct.isBaseChange _ _ LL, rfl, fun lp f h => ?_⟩` and prove the remaining obligations. Establish `e : (LinearEquiv.ofInjective (incl (K` using `T.Q.c.F) (L := LL) (M := Cusp T j w)) incl_injective).symm ⟨incl f, h⟩ = f := by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `forall_congr' fun y => ?_` and prove the remaining obligations.
+
+Use `show T.nrmM j lp y (((LinearEquiv.ofInjective (incl (K := T.Q.c.F) (L := LL) (M := Cusp T j w)) incl_injective).symm ⟨incl f, h⟩ : Cusp T j w) : T.R j) ≤ 1 ↔ _`. Rewrite using `[e]`.
+-/
 theorem carriesCusp_formsLOf (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j)
     {LL : Type} [Field LL] [NumberField LL] [Algebra T.Q.c.F LL]
     {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
@@ -155,12 +174,20 @@ theorem carriesCusp_formsLOf (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j)
     incl_injective).symm ⟨incl f, h⟩ : Cusp T j w) : T.R j) ≤ 1 ↔ _
   rw [e]
 
+/- English proof (translation)
+Unfold `nrmOf`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+-/
 theorem nrmOf_nonneg {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (v : EReal) :
     0 ≤ nrmOf la v := by
   unfold nrmOf; split_ifs
   · exact le_rfl
   · exact Real.rpow_nonneg (Nat.cast_nonneg _) _
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = ⊤`. Substitute `hv` using the available equality. Simplify `nrmOf_nonneg la u` using `[nrmOf]`. Establish `hu' : u ≠ ⊤` using `fun e => hv (top_le_iff.mp (e ▸ h))`. Unfold `nrmOf`.
+
+Rewrite using `[if_neg hv, if_neg hu']`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hu hv))`.
+-/
 theorem nrmOf_anti {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {u v : EReal} (hu : u ≠ ⊥)
     (h : u ≤ v) : nrmOf la v ≤ nrmOf la u := by
   by_cases hv : v = ⊤
@@ -170,6 +197,13 @@ theorem nrmOf_anti {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum 
   rw [if_neg hv, if_neg hu']
   exact Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hu hv))
 
+/- English proof (translation)
+Establish `hv` using `isVal_valSet lp y.1 y.2`. Establish `hz : T.nrmM j lp y 0 = 0` using `by simp [Core.nrmM, hv.zero, nrmOf]`. Use `⟨fun f => nrmOf_nonneg _ _, hz, fun f g => ?_, fun x f => ?_⟩` and prove the remaining obligations. Break down `le_total (y.1 f) (y.1 g) with h | h` into its components or cases. Conclude with `(nrmOf_anti lp (hv.ne_bot f) ((min_eq_left h).symm.le.trans (hv.add f g))).trans (le_max_left _ _)`.
+
+Conclude with `(nrmOf_anti lp (hv.ne_bot g) ((min_eq_right h).symm.le.trans (hv.add f g))).trans (le_max_right _ _)`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[zero_smul, hz]`. Simplify using the standard rewrite rules.
+
+Unfold `Core.nrmM`. Rewrite using `[hv.smul x f hx]`. Conclude with `nrmOf_smul lp hx (hv.ne_bot f)`.
+-/
 theorem nrmM_laws (T : Core D) (j : ℕ) (lp : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtM j lp) :
     (∀ f, 0 ≤ T.nrmM j lp y f) ∧ T.nrmM j lp y 0 = 0 ∧
       (∀ f g, T.nrmM j lp y (f + g) ≤ max (T.nrmM j lp y f) (T.nrmM j lp y g)) ∧

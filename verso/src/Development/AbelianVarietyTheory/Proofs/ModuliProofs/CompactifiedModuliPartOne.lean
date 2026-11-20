@@ -16,6 +16,9 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt`.
+-/
 theorem _root_.GlobalTheory.partI_closed : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.PartI :=
   _root_.GlobalTheory.partI_of_semistableReduction _root_.GlobalTheory.SS.semistableReductionSt
 

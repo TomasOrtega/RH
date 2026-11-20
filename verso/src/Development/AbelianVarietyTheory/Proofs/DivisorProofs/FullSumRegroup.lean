@@ -42,6 +42,9 @@ def phi {G : HTGroup p} (q : FCls G) (Q : Cls G) : ConjClasses (grp G (Quot.out 
       ((y⁻¹ * (Quot.out Q).γ * y, (Quot.out Q).c) : G.Cˣ × ℚˣ) ∈ grp G (Quot.out q).β
   then ConjClasses.mk ⟨_, h.choose_spec.2⟩ else ConjClasses.mk 1
 
+/- English proof (translation)
+Establish `h : ∃ y : G.Cˣ, (∃ s : ℚ, 0 < s ∧ ((Quot.out Q).β : G.C) = algebraMap ℚ G.C s * (y * (Quot.out q).β * sh G y)) ∧ ((y⁻¹ * (Quot.out Q).γ * y, (Quot.out Q).c) : G.Cˣ × ℚˣ) ∈ grp G (Quot.out q).β` using `⟨y, ⟨s, hs, hβ⟩, hm⟩`. Take `⟨⟨s₁, hs₁, hβ₁⟩, hm₁⟩` from `h.choose_spec`. Conclude with `⟨h.choose, s₁, hs₁, hβ₁, hm₁, by rw [phi, dif_pos h]⟩`.
+-/
 theorem phi_spec {G : HTGroup p} (q : FCls G) (Q : Cls G) (y : G.Cˣ) (s : ℚ) (hs : 0 < s)
     (hβ : ((Quot.out Q).β : G.C) = algebraMap ℚ G.C s * (y * (Quot.out q).β * sh G y))
     (hm : ((y⁻¹ * (Quot.out Q).γ * y, (Quot.out Q).c) : G.Cˣ × ℚˣ) ∈ grp G (Quot.out q).β) :

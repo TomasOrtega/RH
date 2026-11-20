@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Zq
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.ML UpperTheory.V.X
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c e h5 h2 hev hd`. Distinguish the cases in `h : l - 1 ∣ e`. Conclude with `UpperTheory.V.X.zOne Ω l c.O (by omega) e (by omega) h`. Conclude with `UpperTheory.V.X.zQuad Ω l c.O h5 e hev hd h`.
+-/
 theorem UpperTheory.V.X.propZ :
     HV.PropZ := by
   intro Ω _ _ _ l _ c e h5 h2 hev hd

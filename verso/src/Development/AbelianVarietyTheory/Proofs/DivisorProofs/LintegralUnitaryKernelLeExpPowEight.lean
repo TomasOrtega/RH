@@ -17,6 +17,15 @@ open scoped ENNReal ComplexOrder
 
 namespace GlobalTheory.KernelIntegral
 
+/- English proof (translation)
+Use `set H := (uni (glue e w))ᴴ * A * uni (glue e w) with hH`. Establish `hR` using `reindex_conj_glue he A w`. Establish `hS : shear (reindex e e A) (toMat w.1) = fromBlocks (-1) (-(toMat w.1)) (-(toMat w.1)ᴴ) (hQ (toMat w.1))`. Rewrite using `[hA]`. Conclude with `GlobalTheory.FlagFibreInt.shear_neg_J _`.
+
+Establish `h22 : (reindex e e H).toBlocks₂₂ = (uni w.2.1)ᴴ * hQ (toMat w.1) * uni w.2.1`. Rewrite using `[hR, blockDiag_conj, toBlocks_fromBlocks₂₂, hS, toBlocks_fromBlocks₂₂]`. Establish `hd : (reindex e e H).toBlocks₂₂.det = (hQ (toMat w.1)).det`. Rewrite using `[h22, det_mul, det_mul, det_conjTranspose, det_uni]`. Simplify using the standard rewrite rules.
+
+Establish `hpd : (hQ (toMat w.1)).PosDef` using `hw`. Establish `hu : IsUnit (reindex e e H).toBlocks₂₂.det`. Rewrite using `[hd]`. Conclude with `hpd.det_pos.ne'.isUnit`. Rewrite using `[(GlobalTheory.FlagFibre.lminor_block r p q e he H hu).2 i 0 (by simp [hi]), hd]`.
+
+Simplify using `[lminor]`.
+-/
 theorem lminor_glue {r p q : ℕ} {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockSL2Embedding e) {A : Matrix (Fin r) (Fin r) ℂ}
     (hA : reindex e e A = -Formalism.UG.Jpq p q) (w : (Fin p × Fin q → ℂ) × (Low q → ℂ) × (Low p → ℂ))
     (hw : toMat w.1 ∈ hcDom p q) (i : Fin (r + 1)) (hi : (i : ℕ) = q) :
@@ -36,6 +45,9 @@ theorem lminor_glue {r p q : ℕ} {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockS
   rw [(GlobalTheory.FlagFibre.lminor_block r p q e he H hu).2 i 0 (by simp [hi]), hd]
   simp [lminor]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `glue_surjective he y`. Rewrite `hy`, the goal using `[base_glue he]`. Conclude with `lminor_glue he hA w hy i hi`.
+-/
 theorem lminor_base {r p q : ℕ} {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockSL2Embedding e) {A : Matrix (Fin r) (Fin r) ℂ}
     (hA : reindex e e A = -Formalism.UG.Jpq p q) (y : Low r → ℂ) (hy : toMat (base e y) ∈ hcDom p q)
     (i : Fin (r + 1)) (hi : (i : ℕ) = q) :
@@ -44,6 +56,9 @@ theorem lminor_base {r p q : ℕ} {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockS
   rw [base_glue he] at hy ⊢
   exact lminor_glue he hA w hy i hi
 
+/- English proof (translation)
+Establish `h : {v : Fin p × Fin q → ℂ | toMat v ∈ hcDom p q} = (fun v : Fin p × Fin q → ℂ => fun x : Unit × Fin p × Fin q => v x.2) ⁻¹' DomFlat Unit p q`. Use extensionality with `v`. Conclude with `⟨fun h _ => h, fun h => h ()⟩`. Rewrite using `[h]`. Conclude with `(GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat.preimage (by fun_prop)).measurableSet`.
+-/
 theorem measurableSet_hc (p q : ℕ) : MeasurableSet {v : Fin p × Fin q → ℂ | toMat v ∈ hcDom p q} := by
   have h : {v : Fin p × Fin q → ℂ | toMat v ∈ hcDom p q} =
       (fun v : Fin p × Fin q → ℂ => fun x : Unit × Fin p × Fin q => v x.2) ⁻¹' DomFlat Unit p q := by
@@ -52,6 +67,9 @@ theorem measurableSet_hc (p q : ℕ) : MeasurableSet {v : Fin p × Fin q → ℂ
   rw [h]
   exact (GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat.preimage (by fun_prop)).measurableSet
 
+/- English proof (translation)
+Establish `hpd : (hQ Z).PosDef` using `hZ`. Use `⟨(ExhA.det_re_pos_im hpd).1, ?_⟩` and prove the remaining obligations. Establish `h : hQ Z = 1 - Zᴴ * Zᴴᴴ` using `by rw [conjTranspose_conjTranspose]; rfl`. Rewrite `hpd`, the goal using `[h]`. Conclude with `ExhA.det_re_le_one hpd`.
+-/
 theorem det_hQ_pos {p q : ℕ} {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : Z ∈ hcDom p q) :
     0 < (hQ Z).det.re ∧ (hQ Z).det.re ≤ 1 := by
   have hpd : (hQ Z).PosDef := hZ
@@ -60,6 +78,11 @@ theorem det_hQ_pos {p q : ℕ} {Z : Matrix (Fin p) (Fin q) ℂ} (hZ : Z ∈ hcDo
   rw [h] at hpd ⊢
   exact ExhA.det_re_le_one hpd
 
+/- English proof (translation)
+Establish `hpd : (1 - (toMat v)ᴴ * toMat v).PosDef` using `hv`. Establish `h` using `hpd.diag_pos (i := x.2)`. Establish `e : (1 - (toMat v)ᴴ * toMat v : Matrix (Fin q) (Fin q) ℂ) x.2 x.2 = ((1 - ∑ a, ‖v (a, x.2)‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.mul_apply, conjTranspose_apply, toMat, Matrix.of_apply, RCLike.star_def, Complex.conj_mul']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e, Complex.zero_lt_real]`. Establish `h2 : ‖v x‖ ^ 2 ≤ ∑ a, ‖v (a, x.2)‖ ^ 2` using `Finset.single_le_sum (f := fun a => ‖v (a, x.2)‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ x.1)`. Use polynomial arithmetic with `[norm_nonneg (v x)]`.
+-/
 theorem norm_le_one_of_hc {p q : ℕ} {v : Fin p × Fin q → ℂ} (hv : toMat v ∈ hcDom p q) (x : Fin p × Fin q) :
     ‖v x‖ ≤ 1 := by
   have hpd : (1 - (toMat v)ᴴ * toMat v).PosDef := hv
@@ -82,6 +105,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 noncomputable def wt (p q : ℕ) (bb : ℝ) (v : Fin p × Fin q → ℂ) : ℝ≥0∞ :=
   {v : Fin p × Fin q → ℂ | toMat v ∈ hcDom p q}.indicator (fun v => ENNReal.ofReal ((hQ (toMat v)).det.re ^ bb)) v
 
+/- English proof (translation)
+Use `Measurable.indicator ?_ (measurableSet_hc p q)` and prove the remaining obligations. Establish `hc : Continuous fun v : Fin p × Fin q → ℂ => (hQ (toMat v)).det`. Unfold `hQ`. Conclude with `(continuous_const.sub (continuous_toMat.matrix_conjTranspose.matrix_mul continuous_toMat)).matrix_det`. Conclude with `((Complex.continuous_re.comp hc).measurable.pow_const bb).ennreal_ofReal`.
+-/
 theorem measurable_wt (p q : ℕ) (bb : ℝ) : Measurable (wt p q bb) := by
   refine Measurable.indicator ?_ (measurableSet_hc p q)
   have hc : Continuous fun v : Fin p × Fin q → ℂ => (hQ (toMat v)).det := by
@@ -89,11 +115,23 @@ theorem measurable_wt (p q : ℕ) (bb : ℝ) : Measurable (wt p q bb) := by
     exact (continuous_const.sub (continuous_toMat.matrix_conjTranspose.matrix_mul continuous_toMat)).matrix_det
   exact ((Complex.continuous_re.comp hc).measurable.pow_const bb).ennreal_ofReal
 
+/- English proof (translation)
+Rewrite using `[sgnMat, hp]`. Conclude with `reindex_sgn hj`.
+-/
 theorem sgn_reindex (X : Data E r) {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) :
     reindex (idx hj) (idx hj) (sgnMat r X.p0) = -Formalism.UG.Jpq j (r - j) := by
   rw [sgnMat, hp]
   exact reindex_sgn hj
 
+/- English proof (translation)
+Use `set κ := Equiv.refl X.Ψ`. Establish `hx : cpt X (x0F X) z ∈ X.dom` using `hz`. Establish `hD` using `domPt_mem X hj κ hp hx`. Establish `hmat : ∀ t, toMat (base (idx hj) (coords X κ z t)) = domPt X hj κ (cpt X (x0F X) z) t` using `fun t => by`. Use extensionality with `a b`.
+
+Conclude with `(proj_eq X hj κ z t (a, b)).symm`. Establish `hc : ∀ t, toMat (base (idx hj) (coords X κ z t)) ∈ hcDom j (r - j)` using `fun t => by`. Rewrite using `[hmat t]`. Conclude with `hD t`. Establish `hmin : ∀ t : X.Ψ, dmin X.Gm (cpt X (x0F X) z) t ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ = (hQ (toMat (base (idx hj) (coords X κ z t)))).det` using `fun t => (dmin_cpt X κ z t _).trans (lminor_base (isBlockOrderedSumEquiv_trueIndex hj) (sgn_reindex X hj hp) _ (hc t) _ hp)`.
+
+Establish `hk : kaF X (x0F X) bb z = ∏ t, (hQ (toMat (base (idx hj) (coords X κ z t)))).det.re ^ bb`. Simplify using `only [kaF, rhF, hmin]`. Rewrite using `[neg_mul_neg, Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `hpd : (hQ (toMat (base (idx hj) (coords X κ z t)))).PosDef` using `hc t`.
+
+Rewrite using `[ExF.norm_of_pos hpd.det_pos, Real.rpow_def_of_pos (det_hQ_pos (hc t)).1, mul_comm]`. Rewrite using `[densF_eq X κ, hk, ENNReal.ofReal_prod_of_nonneg fun _ _ => dens_nonneg _ _, ENNReal.ofReal_prod_of_nonneg fun t _ => Real.rpow_nonneg (det_hQ_pos (hc t)).1.le _, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[wt, Set.indicator_of_mem (show base (idx hj) (coords X κ z t) ∈ {v : Fin j × Fin (r - j) → ℂ | toMat v ∈ hcDom j (r - j)} from hc t)]`.
+-/
 theorem dens_kaF_eq (X : Data E r) {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) (bb : ℝ) {z : V (nd X)}
     (hz : z ∈ OmF X (x0F X)) :
     ENNReal.ofReal (densF X (x0F X) z) * ENNReal.ofReal (kaF X (x0F X) bb z) =
@@ -131,6 +169,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 def cube (p q : ℕ) : Set (Fin p × Fin q → ℂ) := Set.univ.pi fun _ => Metric.closedBall (0 : ℂ) 1
 
+/- English proof (translation)
+Distinguish the cases in `hv : toMat v ∈ hcDom j (r - j)`. Establish `hc : v ∈ cube j (r - j)` using `fun x _ => by`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `norm_le_one_of_hc hv x`. Rewrite using `[wt, Set.indicator_of_mem (show v ∈ {v : Fin j × Fin (r - j) → ℂ | toMat v ∈ hcDom j (r - j)} from hv), Set.indicator_of_mem hc, Pi.one_apply, mul_one, GlobalTheory.FlagFibreInt.lintegral_dens_glue r j (r - j) (idx hj) (isBlockOrderedSumEquiv_trueIndex hj) _ (sgn_reindex X hj hp) …`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Take `⟨h0, h1⟩` from `det_hQ_pos hv`. Establish `hc0 : 0 < flagConst j * flagConst (r - j)` using `mul_pos (flagConst_pos _) (flagConst_pos _)`. Use `set d := (hQ (toMat v)).det.re`. Establish `hN : (((j + (r - j) : ℕ) : ℤ) : ℝ) = r`.
+
+Rewrite using `[Nat.add_sub_cancel' hj]`. Simplify using the standard rewrite rules. Establish `e : d ^ bb * d ^ (-((j + (r - j) : ℕ) : ℤ)) = d ^ (bb - r)`. Rewrite using `[← Real.rpow_intCast, Int.cast_neg, hN, ← Real.rpow_add h0, sub_eq_add_neg]`. Rewrite using `[← mul_div_assoc, e, div_le_div_iff_of_pos_right hc0]`.
+
+Conclude with `Real.rpow_le_one h0.le h1 (by linarith)`. Rewrite using `[wt, Set.indicator_of_notMem (show v ∉ {v : Fin j × Fin (r - j) → ℂ | toMat v ∈ hcDom j (r - j)} from hv), zero_mul]`. Conclude with `zero_le'`.
+-/
 theorem fibre_bound (X : Data E r) {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) {bb : ℝ} (hbb : (r : ℝ) ≤ bb)
     (v : Fin j × Fin (r - j) → ℂ) :
     wt j (r - j) bb v * ∫⁻ b : (Low (r - j) → ℂ) × (Low j → ℂ), ENNReal.ofReal (dens (sgnMat r X.p0) (glue (idx hj) (v, b)))
@@ -156,6 +203,23 @@ theorem fibre_bound (X : Data E r) {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) 
       zero_mul]
     exact zero_le'
 
+/- English proof (translation)
+Use `set κ := Equiv.refl X.Ψ`. Use `set e := idx hj`. Use `set D : (Low r → ℂ) → ℝ≥0∞ := fun y => ENNReal.ofReal (dens (sgnMat r X.p0) y) with hDdef`. Use `set φ : (X.Ψ → Fin j × Fin (r - j) → ℂ) → ℝ≥0∞ := fun a => ∏ t, wt j (r - j) bb (a t) with hφdef`. Use `set G : (X.Ψ → Low r → ℂ) → ℝ≥0∞ := fun c => φ (fun t => base e (c t)) * ∏ t, D (c t) with hGdef`.
+
+Establish `hDm : Measurable D` using `(measurable_dens _).ennreal_ofReal`. Establish `hφm : Measurable φ` using `Finset.measurable_prod _ fun t _ => (measurable_wt _ _ _).comp (measurable_pi_apply t)`. Establish `hGm : Measurable G` using `(hφm.comp (measurable_pi_lambda _ fun t => (measurable_base _).comp (measurable_pi_apply t))).mul (Finset.measurable_prod _ fun t _ => hDm.comp (measurable_pi_apply t))`. Establish `hco` using `GlobalTheory.FlagFibre.measurePreserving_coords_sorted E r X X.Ψ κ`. Establish `hdm : Measurable fun z => ENNReal.ofReal (densF X (x0F X) z)`.
+
+Establish `e1 : (fun z => ENNReal.ofReal (densF X (x0F X) z)) = fun z => ∏ t, D (coords X κ z t)`. Use function extensionality and compare the values at `z`. Rewrite using `[densF_eq X κ, ENNReal.ofReal_prod_of_nonneg fun _ _ => dens_nonneg _ _]`. Rewrite using `[e1]`. Conclude with `Finset.measurable_prod _ fun t _ => hDm.comp ((measurable_pi_apply t).comp hco.measurable)`.
+
+Establish `key` using `GlobalTheory.ProdFibre.lintegral_pi_fibre X.Ψ _ _ _ (glue e) (base e) D φ (GlobalTheory.T.measurePreserving_glueLowerUnitriangularBlocks _ _ _ _ (isBlockOrderedSumEquiv_trueIndex hj)) (measurable_base _) (base_glue (isBlockOrderedSumEquiv_trueIndex hj)) hDm hφm`. Use `set K := ENNReal.ofReal (1 / (flagConst j * flagConst (r - j)))`. Establish `hcube : MeasurableSet (cube j (r - j))` using `MeasurableSet.univ_pi fun _ => Metric.isClosed_closedBall.measurableSet`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[hφdef]`. Simplify using `only`. Rewrite using `[← Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_coe]`.
+
+Use `congr 1`. Distinguish the cases in `h : a ∈ Set.univ.pi fun _ : X.Ψ => cube j (r - j)`. Rewrite using `[Set.indicator_of_mem h, Pi.one_apply]`. Conclude with `Finset.prod_eq_one fun t _ => by`. Rewrite using `[Set.indicator_of_mem (h t (Set.mem_univ _)), Pi.one_apply]`.
+
+Rewrite using `[Set.indicator_of_notMem h]`. Simplify using `only [Set.mem_univ_pi, not_forall] at h`. Take `⟨t, ht⟩` from `h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ t) (by rw [Set.indicator_of_notMem ht])`. Use `_ = (K * volume (cube j (r - j))) ^ X.Ψ.card := by`.
+
+Rewrite using `[lintegral_const_mul _ (measurable_one.indicator (MeasurableSet.univ_pi fun _ => hcube)), lintegral_indicator_one (MeasurableSet.univ_pi fun _ => hcube), volume_pi_pi, Finset.prod_const, Finset.card_univ, Fintype.card_coe, mul_pow]`.
+-/
 theorem lintegral_x0F_le (X : Data E r) {j : ℕ} (hj : j ≤ r) (hp : X.p0 = r - j) {bb : ℝ} (hbb : (r : ℝ) ≤ bb) :
     ∫⁻ z, ENNReal.ofReal (kaF X (x0F X) bb z) ∂muF X (x0F X) ≤
       (ENNReal.ofReal (1 / (flagConst j * flagConst (r - j))) * volume (cube j (r - j))) ^ X.Ψ.card := by
@@ -218,6 +282,11 @@ end GlobalTheory.KernelIntegral
 
 namespace GlobalTheory.KernelIntegral
 
+/- English proof (translation)
+Establish `hπ1 : 1 ≤ Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `h : (Real.pi ^ (m * m))⁻¹ ≤ flagConst m`. Establish `e : (Real.pi ^ (m * m))⁻¹ = ∏ _i ∈ Finset.range m, (Real.pi ^ m)⁻¹`. Rewrite using `[Finset.prod_const, Finset.card_range, pow_mul, inv_pow]`. Rewrite using `[e, flagConst]`.
+
+Use `Finset.prod_le_prod (fun _ _ => by positivity) fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ m` using `(Finset.mem_range.1 hi).le`. Establish `h1 : (1 : ℝ) ≤ i.factorial` using `by exact_mod_cast i.factorial_pos`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_div_flagConst_le (m : ℕ) : 1 / flagConst m ≤ Real.pi ^ (m * m) := by
   have hπ1 : 1 ≤ Real.pi := by linarith [Real.pi_gt_three]
   have h : (Real.pi ^ (m * m))⁻¹ ≤ flagConst m := by
@@ -235,6 +304,19 @@ theorem one_div_flagConst_le (m : ℕ) : 1 / flagConst m ≤ Real.pi ^ (m * m) :
         one_div_le_one_div_of_le (inv_pos.2 (pow_pos Real.pi_pos _)) h
     _ = Real.pi ^ (m * m) := by rw [one_div, inv_inv]
 
+/- English proof (translation)
+Establish `hv : volume (cube j (r - j)) = ENNReal.ofReal (Real.pi ^ (j * (r - j)))`. Rewrite using `[cube, volume_pi_pi, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, Complex.volume_closedBall, ENNReal.ofReal_one, one_pow, one_mul, ← ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, ENNReal.ofReal_pow Real.pi_pos.le]`. Establish `hc0 : 0 < flagConst j * flagConst (r - j)` using `mul_pos (flagConst_pos _) (flagConst_pos _)`. Rewrite using `[hv, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_pow (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Establish `hπ1 : 1 ≤ Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `hπe : Real.pi ≤ Real.exp 3` using `by linarith [Real.pi_le_four, Real.add_one_le_exp 3]`. Take `⟨k, rfl⟩ : ∃ k, r = j + k` from `⟨r - j, (Nat.add_sub_cancel' hj).symm⟩`. Rewrite using `[Nat.add_sub_cancel_left]`. Establish `h1 : 1 / (flagConst j * flagConst k) * Real.pi ^ (j * k) ≤ Real.pi ^ ((j + k) * (j + k))`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (pow_pos Real.pi_pos _).le` and prove the remaining obligations. Conclude with `mul_le_mul (one_div_flagConst_le j) (one_div_flagConst_le k) (one_div_pos.2 (flagConst_pos k)).le (pow_pos Real.pi_pos _).le`. Use `_ = Real.pi ^ (j * j + k * k + j * k) := by rw [pow_add, pow_add]`. Use `_ ≤ Real.pi ^ ((j + k) * (j + k)) := pow_le_pow_right₀ hπ1 (by nlinarith)`.
+
+Establish `hn : ((j + k) * (j + k) * f : ℕ) ≤ (f * (j + k)) ^ 8`. Break down `Nat.eq_zero_or_pos (f * (j + k)) with h | h` into its components or cases. Apply the tactic sequence `rcases Nat.mul_eq_zero.1 h with h' | h' <;> simp [h']`. Combine the equalities or inequalities in the displayed calculation. Establish `hf : 1 ≤ f` using `Nat.pos_of_ne_zero fun h0 => by simp [h0] at h`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ (f * (j + k)) ^ 8 := Nat.pow_le_pow_right h (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, ← Real.exp_nat_mul, mul_comm]`. Use `_ ≤ Real.exp (3 * ((f : ℝ) * ((j + k : ℕ) : ℝ)) ^ 8) := by`.
+
+Use `Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (by norm_num))` and prove the remaining obligations. Conclude with `hn` after adjusting the coercions.
+-/
 theorem bound_num (r j f : ℕ) (hj : j ≤ r) :
     (ENNReal.ofReal (1 / (flagConst j * flagConst (r - j))) * volume (cube j (r - j))) ^ f ≤
       ENNReal.ofReal (Real.exp (3 * ((f : ℝ) * r) ^ 8)) := by
@@ -276,6 +358,15 @@ theorem bound_num (r j f : ℕ) (hj : j ≤ r) :
         refine Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (by norm_num))
         exact_mod_cast hn
 
+/- English proof (translation)
+Use `⟨3, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ r X y _ _ hy`. Establish `hj : r - X.p0 ≤ r` using `Nat.sub_le _ _`. Establish `hp : X.p0 = r - (r - X.p0)` using `(Nat.sub_sub_self X.p0_le).symm`. Establish `hf : (1 : ℝ) ≤ X.Ψ.card`.
+
+Use `Finset.card_pos.2 (Finset.nonempty_coe_sort.1 (psi_nonempty X))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hbb : (r : ℝ) ≤ 4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1`. Establish `hr : (r : ℝ) ≤ (r : ℝ) ^ 2`. Establish `: r ≤ r * r` using `Nat.le_mul_self r`.
+
+Rewrite using `[sq]`. Conclude with `this` after adjusting the coercions. Use polynomial arithmetic with `[sq_nonneg (r : ℝ)]`. Establish `hka : kaF X y (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) = kaF X (x0F X) (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [kaF, GlobalTheory.Up.PoleValue.rhF_eq (isOrth_x0F X) hy]`. Rewrite using `[hka, GlobalTheory.Up.PoleValue.muF_eq (isOrth_x0F X) hy]`. Conclude with `(lintegral_x0F_le X hj hp hbb).trans (bound_num r (r - X.p0) X.Ψ.card hj)`.
+-/
 theorem lintegral_kaF_le : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (y : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), 0 < X.p0 → X.p0 < r →
     ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X y →

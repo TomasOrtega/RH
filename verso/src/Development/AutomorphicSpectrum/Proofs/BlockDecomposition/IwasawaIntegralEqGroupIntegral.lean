@@ -10,6 +10,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GL2Unfolding.Ptw
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ W₀ W' Φ s hΦ p hp`. Establish `hW` using `GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.main F ψ hψ W₀ Φ hΦ (hI p)`. Establish `hw : ((wR p : ℝ) : ℂ) = mp p.1 (-1)`. Rewrite using `[wR, mp, Complex.cpow_neg_one]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hpt : ∀ g : GL (Fin 2) F, Aq ψ W₀ W' Φ s (p, g) = (((wR p : ℝ) : ℂ) * mp (GeneralLinearGroup.det (hI p)) s * W' (hI p)) * (pFT ψ Φ g.val (e2r (hI p * g⁻¹)) * mp (GeneralLinearGroup.det g) (1 / 2) * W₀ (hI p * g⁻¹))`. Introduce `g`. Establish `e1 : hI p * g⁻¹ * g = hI p` using `by group`. Establish `e2 : mp (GeneralLinearGroup.det (hI p * g⁻¹)) s = mp (GeneralLinearGroup.det (hI p)) s * mp (GeneralLinearGroup.det g) (-s)`.
+
+Rewrite using `[map_mul, map_inv, Iter.mp_mul, Iter.mp_inv]`. Establish `e3 : mp (GeneralLinearGroup.det g) (s + 1 / 2) * mp (GeneralLinearGroup.det g) (-s) = mp (GeneralLinearGroup.det g) (1 / 2)`. Rewrite using `[← Iter.mp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Aq, Bq]`. Rewrite using `[e1, e2]`. Take the linear combination `(((wR p : ℝ) : ℂ) * mp (GeneralLinearGroup.det (hI p)) s * W' (hI p) * pFT ψ Φ g.val (e2r (hI p * g⁻¹)) * W₀ (hI p * g⁻¹)) * e3`. Establish `hc : mp (GeneralLinearGroup.det (hI p)) (1 / 2) * mp p.1 (s - 3 / 2) * mp p.2.1 (2 * s - 1) = mp p.1 (-1) * mp (GeneralLinearGroup.det (hI p)) s`. Establish `ea : mp p.1 (1 / 2) * mp p.1 (s - 3 / 2) = mp p.1 (-1) * mp p.1 s`.
+
+Rewrite using `[← Iter.mp_add, ← Iter.mp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eb : mp p.2.1 (2 * (1 / 2)) * mp p.2.1 (2 * s - 1) = mp p.2.1 (2 * s)`. Rewrite using `[← Iter.mp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Iter.mp_det_hI p hp, Iter.mp_det_hI p hp]`. Take the linear combination `(mp p.2.1 (2 * (1 / 2)) * mp p.2.1 (2 * s - 1)) * ea + (mp p.1 (-1) * mp p.1 s) * eb`. Establish `hiw : iw (LFS.Wp ψ W₀ Φ) W' s p = LFS.Wp ψ W₀ Φ (em (hI p)) * W' (hI p) * mp p.1 (s - 3 / 2) * mp p.2.1 (2 * s - 1)` using `rfl`.
+
+Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, hiw, hW, hw]`. Take the linear combination `((∫ g, pFT ψ Φ g.val (e2r (hI p * g⁻¹)) * mp (GeneralLinearGroup.det g) (1 / 2) * W₀ (hI p * g⁻¹) ∂LFS.hG ψ) * W' (hI p)) * hc`.
+-/
 theorem main : ForS fun F _ _ _ _ _ _ ψ => ∀ (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ), Φ ∈ LFS.SB F →
   ∀ p : Fˣ × Fˣ × GL (Fin 2) F, p.2.2 ∈ K2 F →
     iw (LFS.Wp ψ W₀ Φ) W' s p = ∫ g, Aq ψ W₀ W' Φ s (p, g) ∂LFS.hG ψ := by

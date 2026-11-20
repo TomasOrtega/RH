@@ -10,6 +10,29 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw X t F _ _ Y V ρ' ρ J K W p hp n hK r s f f' σ σ' hf hf' M N a S S' κ hS hS' hD hκ hn T T' P P' hP hP' v e y z yt hT j hj u u' hu hu'`. Establish `hv : (p : 𝓞 F) ∈ v.asIdeal`. Use `residueCharacteristic_mem v` as an intermediate fact. Rewrite `this` using `[hT.1]`. Then use the resulting hypothesis. Establish `hle : ∀ c, ‖ioOf p e c‖ ≤ 1 ↔ e.w c ≤ 1` using `fun c => by rw [ioOf_le_one_iff p hv e, e.mem_O]`.
+
+Establish `hlt : ∀ c, ‖ioOf p e c‖ < 1 → e.w c < 1` using `fun c hc => by`. Break down `eq_or_ne c 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Establish `h1` using `hle c⁻¹`. Rewrite `h1` using `[map_inv₀, map_inv₀, norm_inv, inv_le_one₀ (norm_pos_iff.2 ((map_ne_zero _).2 h0)), inv_le_one₀ (e.w.pos h0)]`.
+
+Rewrite using `[← not_le, ← h1, not_le]`. Conclude with `hc`. Take `⟨x, ch, hx, hch⟩` from `hK v e y z yt hT`. Take `⟨ex, hxx, b, hex, -, hPt, hE, hA⟩` from `hch j hj`. Take `⟨A, hA1, hA2⟩` from `hA M r a f T (P j) (hP j)`.
+
+Take `⟨A', hA1', hA2'⟩` from `hA M s a f' T' (P' j) (hP' j)`. Set `k : F →+* ℂ_[p]` to `(ioOf p e).comp (algebraMap F (AlgebraicClosure F))`. Take `⟨δ, hδ0, hδ, hc⟩` from `hS k`. Take `⟨δ', hδ0', hδ', hc'⟩` from `hS' k`. Establish `htan : ∀ i, IsTanAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (spMap (dualMap (intO ℂ_[p]).subtype) ≫ ex i)` using `fun i => GlobalTheory.LieMet.isTan_map _ rfl (hex.1 i)`.
+
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hnd : ‖δ‖ = (p : ℝ) ^ (-κ)`. Rewrite using `[← Real.exp_log (norm_pos_iff.2 hδ0), hδ, Real.rpow_def_of_pos hp0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hnd' : ‖δ'‖ = 1`. Rewrite using `[← Real.exp_log (norm_pos_iff.2 hδ0'), hδ']`. Simplify using the standard rewrite rules. Establish `h1 : ‖δ‖ ≤ 1`.
+
+Rewrite using `[hnd]; exact Real.rpow_le_one_of_one_le_of_nonpos hp1.le (by linarith)`. Establish `h2 : (p : ℝ) ^ 2 ≤ (p : ℝ) ^ n * ‖δ‖`. Rewrite using `[hnd, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_add hp0]`. Use `Real.rpow_le_rpow_of_exponent_le hp1.le ?_` and prove the remaining obligations. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0` using `hf v e y`. Establish `hf0'` using `hf' v e y`. Rewrite `hf0`, `hf0'` using `[← hx]`. Establish `hI` using `(UpperTheory.tangent_combination_transitivity E H X t _ _ _ _ _ _ A htan hA1).2 hf0.1`.
+
+Establish `hI'` using `(UpperTheory.tangent_combination_transitivity E H X t _ _ _ _ _ _ A' htan hA1').2 hf0'.1`. Establish `key` using `UpperTheory.cut_lattice_two_embeddings_bound E H Dw p n _ _ b _ hPt (k.comp σ) (k.comp σ') M N r s a _ _ δ δ' A A' hc hc' (hD k) hδ0 h1 hnd' h2 hI hI' (fun i => hE _ _ (hA1 i) _ (hf0.2 i).2) (fun i => hE _ _ (hA1' i) _ (hf0'.2 i).2) (ioOf p e ∘ u) (ioOf p e ∘ u')`. Establish `e1` using `hA2 N S`. Establish `e2` using `hA2' N S'`. Establish `m1 : ∀ i, (covMat (fun j m => k (S j m)) (fun m k => (hxx (a m) k : ℂ_[p])) A *ᵥ (ioOf p e ∘ u)) i = ioOf p e ((vals V (constM V S * P j) T z (below y.1) *ᵥ u) i)` using `fun i => by`.
+
+Rewrite using `[RingHom.map_mulVec, e1]`. Both sides reduce to the same expression. Establish `m2 : ∀ i, (covMat (fun j m => k (S' j m)) (fun m k => (hxx (a m) k : ℂ_[p])) A' *ᵥ (ioOf p e ∘ u')) i = ioOf p e ((vals V (constM V S' * P' j) T' z (below y.1) *ᵥ u') i)` using `fun i => by`. Rewrite using `[RingHom.map_mulVec, e2]`. Both sides reduce to the same expression.
+
+Establish `key2` using `key (fun i => by rw [m1]; exact (hle _).2 (hu i)) (fun i => by rw [m2]; exact (hle _).2 (hu' i))`. Use `hlt _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_dotProduct]`. Rewrite `key2` using `[funext m1, funext m2]`. Conclude with `key2`.
+-/
 theorem UpperTheory.height_charts_two_families :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X) (J : Type) (K : Charts Dw t V ρ' J) (W : Y.X.Opens) (p : ℕ) [Fact p.Prime] (n : ℕ), K.HTAt ρ W p n → ∀ (r s : ℕ) (f : (∀ y : Y.X, Fin r → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))) (f' : (∀ y : Y.X, Fin s → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))) (σ σ' : 𝓞 E →+* F), EigFr t p ρ f σ → EigFr t p ρ f' σ' → ∀ (M N : ℕ) (a : Fin M → Dw.La) (S S' : Fin N → Fin M → F) (κ : ℝ), CutAll Dw p σ a S κ → CutAll Dw p σ' a S' 0 → (∀ k : F →+* ℂ_[p], DualL Dw (k.comp σ') a (fun j m => k (S j m)) (fun j m => k (S' j m))) → 0 ≤ κ → κ + 2 ≤ n → ∀ (T : Y.X → Matrix (Fin r) (Fin r) Y.Fn) (T' : Y.X → Matrix (Fin s) (Fin s) Y.Fn) (P : J → Matrix (Fin M) (Fin r) V.G.functionField) (P' : J → Matrix (Fin M) (Fin s) V.G.functionField), (∀ j, ChartCo t V ρ' (K.aff j) (K.e j) (fun m => K.h j (a m)) f T (P j)) → (∀ j, ChartCo t V ρ' (K.aff j) (K.e j) (fun m => K.h j (a m)) f' T' (P' j)) → Orth V W p K.U (fun j => constM V S * P j) T (fun j => constM V S' * P' j) T' := by
   intro E _ _ _ H Dw X t F _ _ Y V ρ' ρ J K W p hp n hK r s f f' σ σ' hf hf' M N a S S' κ hS hS' hD hκ hn T T' P P' hP hP'

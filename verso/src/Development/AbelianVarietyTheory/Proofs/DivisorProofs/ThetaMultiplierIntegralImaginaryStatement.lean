@@ -17,6 +17,9 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaLiouville.im_form_mem_int | exact GlobalTheory.ThetaLiouville.im_form_mem_int | (intros; apply GlobalTheory.ThetaLiouville.im_form_mem_int <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_multiplier_integral_imaginary : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ →
     ∀ (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.IsHermitian → ∀ (w : Fin g → ℂ) (θ : (Fin g → ℂ) → ℂ),
     Differentiable ℂ θ → (∀ z, θ z ≠ 0) →

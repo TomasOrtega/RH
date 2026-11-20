@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.RationalStabiliserDomains
 
+/- English proof (translation)
+Set `f : (Γ ⊓ S).subgroupOf S → Γ` to `fun g => ⟨g.1.1, g.2.1⟩`. Establish `hf : Function.Injective f` using `fun a b h => Subtype.ext (Subtype.ext (congrArg (fun z : Γ => (z : G)) h))`. Establish `hc : Continuous f` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `: Countable ((Γ ⊓ S).subgroupOf S)` using `hf.countable`. Establish `: DiscreteTopology ((Γ ⊓ S).subgroupOf S)` using `DiscreteTopology.of_continuous_injective hc hf`.
+
+Establish `: SecondCountableTopology S` using `TopologicalSpace.Subtype.secondCountableTopology (S : Set G)`. Conclude with `GlobalTheory.RationalUnitaryDomains.isDiscreteWithDomains_of_discrete _`.
+-/
 theorem isDiscreteWithDomains_inf_subgroupOf {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (Γ S : Subgroup G) [Countable Γ] [DiscreteTopology Γ] :
@@ -20,6 +25,11 @@ theorem isDiscreteWithDomains_inf_subgroupOf {G : Type} [Group G] [TopologicalSp
   have : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology (S : Set G)
   exact GlobalTheory.RationalUnitaryDomains.isDiscreteWithDomains_of_discrete _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ M J _ x _`. Use `(GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ M J).2.1` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA σ J` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA σ J` as an intermediate fact. Establish `h` using `GlobalTheory.RationalUnitaryDomains.isDiscreteWithDomains_ratPts' F E σ M J`.
+
+Use `h.1` as an intermediate fact. Use `h.2.1` as an intermediate fact. Conclude with `isDiscreteWithDomains_inf_subgroupOf (ratPts (AF F) σ J) (Hstab (AF F) σ J x)`.
+-/
 theorem isDiscreteWithDomains_HstabFin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ x : Fin 1 → Fin M → E, hE σ J (x 0) (x 0) ≠ 0 → IsDiscreteWithDomains (HstabFin (AF F) σ J x) := by
   intro F E _ _ _ _ _ σ _ M J _ x _
   have := (GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ M J).2.1

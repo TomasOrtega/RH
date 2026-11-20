@@ -18,13 +18,33 @@ section Conj
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
 
+/- English proof (translation)
+The claim follows from `(Subgroup.mem_inf.1 γ.2).1`.
+-/
 theorem gam_mem_GF (γ : Gam X u) : (γ : X.B.I.GA) ∈ X.B.I.GFset := (Subgroup.mem_inf.1 γ.2).1
 
+/- English proof (translation)
+The claim follows from `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`.
+-/
 theorem gam_fst_mem (γ : Gam X u) : (γ : X.B.I.GA).1 ∈ Hinf X u :=
   (Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaF_coe (γ : Gam X u) : ((iotaF X u γ : Hfin X u) : X.B.I.Gf) = (γ : X.B.I.GA).2 := rfl
 
+/- English proof (translation)
+Rewrite `hs`, the goal using `[mem_gcS]`. Take `⟨ν, hG, rfl, hN, hF, hk⟩` from `hs`. Use `⟨(γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹, ?_, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem (gam_mem_GF X u γ) hG) ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).inv_mem (gam_mem_GF X u γ))`. Establish `hH` using `gam_fst_mem X u γ`.
+
+Establish `he : ∀ v a, uMat ((γ : X.B.I.GA).1 v) *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)` using `fun v a => hH v _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Establish `hz : ∀ v, uMat ((γ : X.B.I.GA).1 v) *ᵥ rv X.B.I v (X.zR u) = rv X.B.I v (X.zR u)` using `fun v => hH v _ (Or.inr rfl)`. Use `(Formalism.L2.SG.CovariantRepresentation.ninf_conj_iff X u (γ : X.B.I.GA).1 he hz _).2 ?_` and prove the remaining obligations. Establish `: (γ : X.B.I.GA).1⁻¹ * ((γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹).1 * (γ : X.B.I.GA).1 = ν.1`. Simplify using `only [Prod.fst_mul, Prod.fst_inv]`.
+
+Use `group`. Rewrite using `[this]`. Conclude with `hN`. Use `(nfinConj_holds X u (iotaF X u γ) ν.2 hF).1` as an intermediate fact. Rewrite `this` using `[iotaF_coe]`.
+
+Simplify `this` using `only [Prod.snd_mul, Prod.snd_inv]`. Establish `hκ : (X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u ∈ X.K2` using `κ.2`. Establish `e : (((iotaF X u γ * h * (κ : Hfin X u) : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * ((γ : X.B.I.GA) * ν * (γ : X.B.I.GA)⁻¹).2 * (((iotaF X u γ * h * (κ : Hfin X u) : Hfin X u) : X.B.I.Gf) * X.xu u) = ((X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * (((h : X.B.I.Gf) * X.xu u)⁻¹ * …`. Simplify using `only [Subgroup.coe_mul, iotaF_coe, Prod.snd_mul, Prod.snd_inv]`. Use `group`.
+
+Rewrite using `[e]`. Conclude with `hK.2.1 _ (hK.2.1 _ (hK.2.2.1 _ hκ) _ hk) _ hκ`.
+-/
 theorem gc_conj_sub (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) (s : X.B.I.Ginf)
     (hs : s ∈ GcS X u hK ((h : X.B.I.Gf) * X.xu u)) :
     (γ : X.B.I.GA).1 * s * (γ : X.B.I.GA).1⁻¹ ∈
@@ -60,6 +80,13 @@ theorem gc_conj_sub (γ : Gam X u) (h : Hfin X u) (κ : Ku X u hK) (s : X.B.I.Gi
 
 end Conj
 
+/- English proof (translation)
+Introduce `D X u hK γ h κ`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Establish `e : (iotaF X u γ⁻¹ * (iotaF X u γ * h * (κ : Hfin X u)) * ((κ⁻¹ : Ku X u hK) : Hfin X u) : Hfin X u) = h`.
+
+Rewrite using `[map_inv, InvMemClass.coe_inv]`. Use `group`. Use `gc_conj_sub X u hK γ⁻¹ (iotaF X u γ * h * (κ : Hfin X u)) κ⁻¹ s hs` as an intermediate fact. Rewrite `this` using `[e]`. Use `⟨_, this, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [InvMemClass.coe_inv, Prod.fst_inv]`. Use `group`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `gc_conj_sub X u hK γ h κ t ht`.
+-/
 theorem gcConjC_holds : GcConjC := by
   intro D X u hK γ h κ
   ext s
@@ -75,6 +102,17 @@ theorem gcConjC_holds : GcConjC := by
   · rintro ⟨t, ht, rfl⟩
     exact gc_conj_sub X u hK γ h κ t ht
 
+/- English proof (translation)
+Establish `hpre : (fun y => a * y) '' Ω = {x | a⁻¹ * x ∈ Ω}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+
+Introduce `hx; exact ⟨a⁻¹ * x, hx, by group⟩`. Rewrite using `[hpre]`. Use `⟨(measurable_const_mul a⁻¹) hΩ.1, fun x => ?_, fun x hx s' hs' hsx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 (a⁻¹ * x)`. Use `⟨a * s * a⁻¹, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show a⁻¹ * (a * s * a⁻¹ * x) ∈ Ω`. Establish `: a⁻¹ * (a * s * a⁻¹ * x) = s * (a⁻¹ * x)` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨s, hs, rfl⟩` from `hs'`. Establish `h2 : s * (a⁻¹ * x) ∈ Ω`.
+
+Establish `: a⁻¹ * (a * s * a⁻¹ * x) = s * (a⁻¹ * x)` using `by group`. Establish `h` using `hsx`. Simplify using `only [Set.mem_ofPred_eq] at h`. Rewrite `h` using `[this]`. Then use the resulting hypothesis. Use `hΩ.2.2 _ hx s hs h2` as an intermediate fact.
+
+Rewrite using `[this]`. Use `group`.
+-/
 theorem isSFund_conj {D : D7} (X : HidaSetting D) (S : Set X.B.I.Ginf) (Ω : Set X.B.I.Ginf)
     (hΩ : IsSFund X.B.I S Ω) (a : X.B.I.Ginf) :
     IsSFund X.B.I ((fun s => a * s * a⁻¹) '' S) ((fun y => a * y) '' Ω) := by
@@ -96,6 +134,13 @@ theorem isSFund_conj {D : D7} (X : HidaSetting D) (S : Set X.B.I.Ginf) (Ω : Set
     have := hΩ.2.2 _ hx s hs h2
     rw [this]; group
 
+/- English proof (translation)
+Establish `hL` using `((Y.rowsOK u).1 _ ((Y.cs u).lam_mem ρ)).1.1`. Use `Formalism.L2.SG.Pf.ROsub_discrete X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) hL 1` as an intermediate fact. Take `⟨Ω, hΩ⟩` from `Formalism.L2.SG.Pf.isSFund_of_discrete X.B.I (Formalism.L2.SG.Pf.ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1)`. Use `⟨Ω, ?_⟩` and prove the remaining obligations. Establish `e : ((Formalism.L2.SG.Pf.ROsub X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) = Formalism.L2.SG.TermOp.KExpCut.NOcol (X.Fu u) (Y.cs u) ρ`.
+
+Use extensionality with `y`. Use `show y ∈ ROset X (X.Fu u) (X.Fu u) ((Y.cs u).lamOf ρ) ((Y.cs u).lamOf ρ) 1 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, h1, h2, h3, -⟩`. Conclude with `⟨x, n, h1, h2, h3⟩`.
+
+Introduce and unpack `⟨x, n, h1, h2, h3⟩`. Conclude with `⟨x, n, h1, h2, h3, by simpa using h3⟩`. Rewrite `hΩ` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem nocol_fund_exists {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word)
     (ρ : (Y.cs u).Cl) : ∃ Ω, IsSFund X.B.I (Formalism.L2.SG.TermOp.KExpCut.NOcol (X.Fu u) (Y.cs u) ρ) Ω := by
   have hL := ((Y.rowsOK u).1 _ ((Y.cs u).lam_mem ρ)).1.1
@@ -114,6 +159,11 @@ theorem nocol_fund_exists {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what�
       exact ⟨x, n, h1, h2, h3, by simpa using h3⟩
   rwa [e] at hΩ
 
+/- English proof (translation)
+Introduce `D X Y u h`. Take `⟨ρ, ⟨γ, κ, rfl⟩, -⟩` from `Y.colReps u h`. Take `⟨Ω, hΩ⟩` from `nocol_fund_exists Y u ρ`. Rewrite `hΩ` using `[nocolEqC_holds D X Y u ρ]`. Rewrite using `[gcConjC_holds D X u Y.hK γ ((Y.cs u).h ρ) κ]`.
+
+Conclude with `⟨_, isSFund_conj X _ Ω hΩ _⟩`.
+-/
 theorem gcFundC_holds : GcFundC := by
   intro D X Y u h
   obtain ⟨ρ, ⟨γ, κ, rfl⟩, -⟩ := Y.colReps u h

@@ -53,6 +53,9 @@ def movedYS : NX.NExpRealS (fullHeckeRealDatMovedReadings Rl w) cG (movedS YS w)
 
 variable (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Rl.HW j (sg0 D A3.A)).e ((Rl.FW j).j (sg0 D A3.A) ((Rl.FW j).ρ (w j (sg0 D A3.A)) ((YS.fi j).e x))) (v₀ j _) = (Rl.HW j (sg0 D A3.A)).e ((Rl.FW j).j (sg0 D A3.A) ((YS.fi j).e ((S.A _).ρ ((YS.fi j).eG.symm (w j (sg0 D A3.A))) x))) (v₀ j _)`. Rewrite using `[(YS.fi j).rho, MulEquiv.apply_symm_apply]`.
+-/
 theorem evW_moved (j : Fin D.R.m) (x : S.WL ((j : ℕ) + 1)) :
     evW (movedYS YS w) v₀ j x = evW YS v₀ j ((S.A ((j : ℕ) + 1)).ρ ((YS.fi j).eG.symm (w j (sg0 D A3.A))) x) := by
   change (Rl.HW j (sg0 D A3.A)).e ((Rl.FW j).j (sg0 D A3.A) ((Rl.FW j).ρ (w j (sg0 D A3.A)) ((YS.fi j).e x))) (v₀ j _) =
@@ -60,6 +63,11 @@ theorem evW_moved (j : Fin D.R.m) (x : S.WL ((j : ℕ) + 1)) :
       (v₀ j _)
   rw [(YS.fi j).rho, MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (map_zero _).trans (map_zero _).symm⟩`. Consider the case `add x y hx hy`. Take `⟨x', ex⟩` from `hx`. Take `⟨y', ey⟩` from `hy`.
+
+Conclude with `⟨x' + y', (map_add _ _ _).trans ((congrArg₂ (· + ·) ex ey).trans (map_add _ _ _).symm)⟩`. Consider the case `tmul a f`. Use `⟨a ⊗ₜ (⟨(S.A ((j : ℕ) + 1)).ρ ((YS.fi j).eG.symm (w j (sg0 D A3.A))) (show ↥(S.A ((j : ℕ) + 1)).WK from f).1, YS.rho _ (Nat.le_add_left _ _) j.2 _ _ (show ↥(S.A ((j : ℕ) + 1)).WK from f).2⟩ : ↥(S.A ((j : ℕ) + 1)).WK), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (ρ.e i b a • ·) (evW_moved YS w v₀ j _)`.
+-/
 theorem evK_moved {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
     ∃ y, evK (movedYS YS w) v₀ hρ i j b x = evK YS v₀ hρ i j b y := by
@@ -74,6 +82,9 @@ theorem evK_moved {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R
       YS.rho _ (Nat.le_add_left _ _) j.2 _ _ (show ↥(S.A ((j : ℕ) + 1)).WK from f).2⟩ : ↥(S.A ((j : ℕ) + 1)).WK), ?_⟩
     exact congrArg (ρ.e i b a • ·) (evW_moved YS w v₀ j _)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `evK_moved YS w v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)`. Use `⟨(YS.eF i _ b (Nat.le_add_left _ _) j.2).symm y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ν⁻¹ • evK (movedYS YS w) v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f) = ν⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 ((YS.eF i _ b (Nat.le_add_left _ _) j.2).symm y))`. Rewrite using `[hy]`. Conclude with `congrArg (fun z => ν⁻¹ • evK YS v₀ hρ i j b z) ((YS.eF i _ b (Nat.le_add_left _ _) j.2).apply_symm_apply (show NX.Fm S i ((j : ℕ) + 1) b from y)).symm`.
+-/
 theorem realRd_moved {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (ν : ℂ)
     (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     ∃ f', realRd (movedYS YS w) v₀ hρ i j b ν f = realRd YS v₀ hρ i j b ν f' := by
@@ -94,6 +105,11 @@ open GlobalTheory.ExportSeries
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ : Setup X} (hρ : ρ.Good)
   {Y : NExp D.R D.host D.what₂ D.LL0 N X} {i : X.Tw} {j : Fin D.R.m} {b : Bool} {rd rd' : Rd ρ Y i j b}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (map_zero _).trans (map_zero _).symm⟩`. Consider the case `add x y hx hy`. Take `⟨x', ex⟩` from `hx`. Take `⟨y', ey⟩` from `hy`.
+
+Conclude with `⟨x' + y', (map_add _ _ _).trans ((congrArg₂ (· + ·) ex ey).trans (map_add _ _ _).symm)⟩`. Consider the case `tmul a f`. Take `⟨f', e⟩` from `h f`. Conclude with `⟨a ⊗ₜ f', by rw [rdK_tmul, rdK_tmul, e]⟩`.
+-/
 theorem rdK_sub (h : ∀ f, ∃ f', rd' f = rd f') (k : ℕ) (x : X.Ok i k ⊗[X.O i] Y.Fm i ((j : ℕ) + 1) b) :
     ∃ x', rdK rd' hρ k x = rdK rd hρ k x' := by
   induction x using TensorProduct.induction_on with
@@ -106,6 +122,13 @@ theorem rdK_sub (h : ∀ f, ∃ f', rd' f = rd f') (k : ℕ) (x : X.Ok i k ⊗[X
     obtain ⟨f', e⟩ := h f
     exact ⟨a ⊗ₜ f', by rw [rdK_tmul, rdK_tmul, e]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h'`. Use `⟨fun s g P hd => ?_, fun k Q ψ hk hQ s g P hd x hx => ?_, fun Q M hQ s g P hd hs a => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `h1 s g P hd`. Take `⟨f', e⟩` from `h f`. Conclude with `⟨f', e.symm.trans hf⟩`.
+
+Take `⟨y, hy⟩` from `h2 k Q ψ hk hQ s g P hd hx`. Take `⟨y', e⟩` from `rdK_sub hρ h k y`. Conclude with `⟨y', e.symm.trans hy⟩`. Take `⟨f, hf⟩` from `h3 Q M hQ s g P hd hs a`. Take `⟨f', e⟩` from `h f`.
+
+Conclude with `⟨f', e.symm.trans hf⟩`.
+-/
 theorem rat_of_sub (h : ∀ f, ∃ f', rd' f = rd f') (h' : Rat hρ rd') : Rat hρ rd := by
   obtain ⟨h1, h2, h3⟩ := h'
   refine ⟨fun s g P hd => ?_, fun k Q ψ hk hQ s g P hd x hx => ?_, fun Q M hQ s g P hd hs a => ?_⟩
@@ -121,6 +144,9 @@ theorem rat_of_sub (h : ∀ f, ∃ f', rd' f = rd f') (h' : Rat hρ rd') : Rat h
 
 end GlobalTheory.UnframeForms
 
+/- English proof (translation)
+Introduce `Rl _ _ YS w _` and use `⟨GlobalTheory.UnframeForms.movedS YS w, GlobalTheory.UnframeForms.movedYS YS w, fun v₀ _ hρ i j b ⟨ν, hn, hr⟩ => ⟨ν, hn, GlobalTheory.UnframeForms.rat_of_sub hρ (GlobalTheory.UnframeForms.realRd_moved YS w v₀ hρ i j b ν) hr⟩⟩`.
+-/
 theorem GlobalTheory.UnframeForms.ratRow_back : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (w : Fin D.R.m → (D.what₂.LL →+* ℂ) → Γ), (∀ i σ, w i σ ∈ Subgroup.center Γ) → ∃ (S' : NX.RatDat D.ntw) (YS' : NX.NExpRealS (fullHeckeRealDatMovedReadings Rl w) cG S'), ∀ (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool), RatRow YS' v₀ hρ i j b → RatRow YS v₀ hρ i j b :=
   fun Rl _ _ YS w _ => ⟨GlobalTheory.UnframeForms.movedS YS w, GlobalTheory.UnframeForms.movedYS YS w, fun v₀ _ hρ i j b ⟨ν, hn, hr⟩ =>
     ⟨ν, hn, GlobalTheory.UnframeForms.rat_of_sub hρ (GlobalTheory.UnframeForms.realRd_moved YS w v₀ hρ i j b ν) hr⟩⟩

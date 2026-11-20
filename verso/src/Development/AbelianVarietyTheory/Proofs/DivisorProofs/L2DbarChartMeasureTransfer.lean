@@ -18,6 +18,15 @@ open scoped ENNReal
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hc : ∀ i, chartMeas (e i) (ρ i) F = 0` using `fun i => by`. Rewrite using `[chartMeas_apply (e i) (ρ i) hF]`. Conclude with `setLIntegral_measure_zero _ _ (h0 i)`. Establish `hle : glueMeas e ρ ≤ (glueMeas e ρ).restrict Fᶜ`. Use `iSup_le fun i => Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.restrict_apply hB]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h : y ∈ F`. Conclude with `Or.inr h`. Conclude with `Or.inl ⟨hy, h⟩`.
+
+Use `_ ≤ chartMeas (e i) (ρ i) (B ∩ Fᶜ) + chartMeas (e i) (ρ i) F := measure_union_le _ _`. Use `_ = chartMeas (e i) (ρ i) (B ∩ Fᶜ) := by rw [hc i, add_zero]`. Use `_ ≤ glueMeas e ρ (B ∩ Fᶜ) := Measure.le_iff'.1 (le_iSup (fun i => chartMeas (e i) (ρ i)) i) _`. Establish `h` using `Measure.le_iff'.1 hle F`. Rewrite `h` using `[Measure.restrict_apply hF, inter_compl_self, measure_empty]`.
+
+Conclude with `nonpos_iff_eq_zero.1 h`.
+-/
 theorem glueMeas_null {X ι : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     (e : ι → OpenPartialHomeomorph X (V n)) (ρ : ι → X → ℝ≥0∞)
     {F : Set X} (hF : MeasurableSet F) (h0 : ∀ i, volume ((e i) '' ((e i).source ∩ F)) = 0) :
@@ -49,6 +58,25 @@ variable {A B ι κ : Type} [TopologicalSpace A] [TopologicalSpace B] [T2Space A
   {e : ι → OpenPartialHomeomorph A (V n)} {ρ : ι → A → ℝ≥0∞}
   {e' : κ → OpenPartialHomeomorph B (V n)} {ρ' : κ → B → ℝ≥0∞} {m : B → A}
 
+/- English proof (translation)
+Establish `hfin : ∀ y ∉ T, (m ⁻¹' {y}).Finite` using `fun y hy => finite_of_encard_eq_coe (hfib y hy)`. Establish `hcard : ∀ y (hy : y ∉ T), (hfin y hy).toFinset.card = d` using `fun y hy => by`. Establish `h` using `hfib y hy`. Rewrite `h` using `[← (hfin y hy).coe_toFinset, encard_coe_eq_coe_finsetCard]`. Conclude with `h` after adjusting the coercions.
+
+Take `⟨U, hU, hUd⟩` from `(hfin x hx).t2_separation`. Establish `hFc` using `hcard x hx`. Establish `hFm : ∀ z, z ∈ (hfin x hx).toFinset ↔ m z = x` using `fun z => by simp`. Generalize the expression as in `(hfin x hx).toFinset = F at hFc hFm`. Establish `hzF : ∀ z ∈ F, m z = x` using `fun z hz => (hFm z).1 hz`.
+
+Establish `hzT : ∀ z ∈ F, m z ∉ T` using `fun z hz => by rwa [hzF z hz]`. Establish `hsheet : ∀ z, z ∈ F → ∃ M : Set B, M ⊆ U z ∧ IsOpen M ∧ z ∈ M ∧ IsOpen (m '' M) ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ m '' M → glueMeas e' ρ' (M ∩ m ⁻¹' Q) = glueMeas e ρ Q` using `fun z hz => exists_sheet hd hρ hd' hρ' hm (hch z (hzT z hz)) (hU z).2 (hU z).1`. Use `choose! M hMU hMo hzM hMi hMQ using hsheet`. Use `⟨(⋂ z ∈ F, m '' M z) ∩ Tᶜ, (isOpen_biInter_finset hMi).inter hT.isOpen_compl, ⟨mem_iInter₂.2 fun z hz => ⟨z, hzM z hz, hzF z hz⟩, hx⟩, fun Q hQ hQW => ?_⟩` and prove the remaining obligations. Establish `hdisj : ∀ z₁ ∈ F, ∀ z₂ ∈ F, z₁ ≠ z₂ → Disjoint (M z₁) (M z₂)` using `fun z₁ h₁ z₂ h₂ hne => Disjoint.mono (hMU z₁ h₁) (hMU z₂ h₂) (hUd (hzF z₁ h₁) (hzF z₂ h₂) hne)`.
+
+Establish `key : m ⁻¹' Q = ⋃ z ∈ F, (M z ∩ m ⁻¹' Q)`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hWx` using `hQW hw`.
+
+Establish `hpre : ∀ z ∈ F, ∃ z', z' ∈ M z ∧ m z' = m w` using `fun z hz => by`. Take `⟨z', h₁, h₂⟩` from `mem_iInter₂.1 hWx.1 z hz`. Conclude with `⟨z', h₁, h₂⟩`. Use `haveI : Nonempty B := ⟨w⟩`. Use `choose! f hfM hfm using hpre`.
+
+Establish `hinj : InjOn f F` using `fun z₁ h₁ z₂ h₂ h12 => by`. Assume the negation of the conclusion as `hne`. Conclude with `disjoint_left.1 (hdisj z₁ h₁ z₂ h₂ hne) (hfM z₁ h₁) (h12 ▸ hfM z₂ h₂)`. Establish `hsub : F.image f ⊆ (hfin (m w) hWx.2).toFinset` using `fun v hv => by`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 hv`.
+
+Simplify using `using hfm z hz`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub (by`. Rewrite using `[Finset.card_image_of_injOn hinj, hcard _ hWx.2, hFc])`. Establish `hwm : w ∈ F.image f`. Rewrite using `[heq]`.
+
+Simplify using the standard rewrite rules. Take `⟨z, hz, hzw⟩` from `Finset.mem_image.1 hwm`. Conclude with `mem_iUnion₂.2 ⟨z, hz, hzw ▸ hfM z hz, hw⟩`. Introduce `hw`. Take `⟨z, _, _, h⟩` from `mem_iUnion₂.1 hw`.
+
+Conclude with `h`. Rewrite using `[key, measure_biUnion_finset (fun z₁ h₁ z₂ h₂ hne => Disjoint.mono inter_subset_left inter_subset_left (hdisj z₁ h₁ z₂ h₂ hne)) (fun z hz => (hMo z hz).measurableSet.inter (hm.measurable hQ)), Finset.sum_congr rfl fun z hz => hMQ z hz Q hQ fun y hy => mem_iInter₂.1 (hQW hy).1 z h …`.
+-/
 theorem exists_evenly_covered_closed
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ovl e i j))
     (hρ : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source →
@@ -118,6 +146,17 @@ theorem exists_evenly_covered_closed
       fun y hy => mem_iInter₂.1 (hQW hy).1 z hz,
     Finset.sum_const, nsmul_eq_mul, hFc]
 
+/- English proof (translation)
+Establish `hW : ∀ x : {x // x ∉ T}, ∃ W : Set A, IsOpen W ∧ x.1 ∈ W ∧ ∀ Q : Set A, MeasurableSet Q → Q ⊆ W → glueMeas e' ρ' (m ⁻¹' Q) = d * glueMeas e ρ Q` using `fun x => exists_evenly_covered_closed hd hρ hd' hρ' hm hT hfib hch x.2`. Use `choose W hWo hxW hWQ using hW`. Take `⟨C, hC, hCW⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Use `haveI : Countable C := hC.to_subtype`. Use `Measure.ext_of_iUnion_eq_univ (s := fun o : Option C => o.elim T fun c => W c.1) ?_ fun o => ?_` and prove the remaining obligations.
+
+Use `eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ T`. Conclude with `mem_iUnion.2 ⟨none, hx⟩`. Establish `hmem : x ∈ ⋃ i ∈ C, W i`. Rewrite using `[hCW]`.
+
+Conclude with `mem_iUnion.2 ⟨⟨x, hx⟩, hxW _⟩`. Take `⟨c, hc, hxc⟩` from `mem_iUnion₂.1 hmem`. Conclude with `mem_iUnion.2 ⟨some ⟨c, hc⟩, hxc⟩`. Consider the cases of `o with`. Consider the case `none => show (Measure.map m (glueMeas e' ρ')).restrict T = ((d : ℝ≥0∞) • glueMeas e ρ).restrict T`.
+
+Rewrite using `[Measure.restrict_eq_zero.2, Measure.restrict_eq_zero.2]`. Simplify using `[glueMeas_null e ρ hT.measurableSet hT0]`. Rewrite using `[Measure.map_apply hm.measurable hT.measurableSet]`. Conclude with `glueMeas_null e' ρ' (hT.preimage hm).measurableSet hT0'`. Consider the case `some c => show (Measure.map m (glueMeas e' ρ')).restrict (W c.1) = ((d : ℝ≥0∞) • glueMeas e ρ).restrict (W c.1)`.
+
+Use extensionality with `Q hQ`. Establish `hQW` using `hQ.inter (hWo c.1).measurableSet`. Rewrite using `[Measure.restrict_apply hQ, Measure.restrict_apply hQ, Measure.map_apply hm.measurable hQW, hWQ c.1 _ hQW inter_subset_right]`. Simplify using the standard rewrite rules.
+-/
 theorem map_glueMeas_closed
     (hd : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ovl e i j))
     (hρ : ∀ i j y, y ∈ (e i).source → y ∈ (e j).source →
@@ -167,6 +206,9 @@ theorem map_glueMeas_closed
 
 end Cover
 
+/- English proof (translation)
+Introduce `n A B ι κ _ _ _ _ _ _ _ _ _ _ e ρ e' ρ' hd hρ hd' hρ' m hm T hT hT0 hT0' d hfib hch`. Conclude with `map_glueMeas_closed hd hρ hd' hρ' hm hT hT0 hT0' hfib hch`.
+-/
 theorem map_glueMeas_of_cover : ∀ (n : ℕ) (A B ι κ : Type) [TopologicalSpace A] [TopologicalSpace B] [T2Space A] [T2Space B] [SecondCountableTopology A] [SecondCountableTopology B] [MeasurableSpace A] [BorelSpace A] [MeasurableSpace B] [BorelSpace B] (e : ι → OpenPartialHomeomorph A (ReciprocityTheory.L2DbarEstimates.V n)) (ρ : ι → A → ENNReal) (e' : κ → OpenPartialHomeomorph B (ReciprocityTheory.L2DbarEstimates.V n)) (ρ' : κ → B → ENNReal), (∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) (ReciprocityTheory.L2DbarEstimates.Y.ovl e i j)) → (∀ i j y, y ∈ (e i).source → y ∈ (e j).source → ρ i y = ENNReal.ofReal (‖GlobalTheory.ChartGlue.transDet (e i) (e j) y‖ ^ 2) * ρ j y) → (∀ i j, DifferentiableOn ℂ (e' j ∘ (e' i).symm) (ReciprocityTheory.L2DbarEstimates.Y.ovl e' i j)) → (∀ i j y, y ∈ (e' i).source → y ∈ (e' j).source → ρ' i y = ENNReal.ofReal (‖GlobalTheory.ChartGlue.transDet (e' i) (e' j) y‖ ^ 2) * ρ' j y) → ∀ (m : B → A), Continuous m → ∀ T : Set A, IsClosed T → (∀ i, MeasureTheory.volume ((e i) '' ((e i).source ∩ T)) = 0) → (∀ j, MeasureTheory.volume ((e' j) '' ((e' j).source ∩ m ⁻¹' T)) = 0) → ∀ d : ℕ, (∀ x ∉ T, (m ⁻¹' {x}).encard = d) → (∀ z, m z ∉ T → ∃ i j, z ∈ (e' j).source ∧ m z ∈ (e i).source ∧ ∀ w ∈ (e' j).source, m w ∈ (e i).source → e' j w = e i (m w) ∧ ρ' j w = ρ i (m w)) → MeasureTheory.Measure.map m (GlobalTheory.ChartGlue.glueMeas e' ρ') = (d : ENNReal) • GlobalTheory.ChartGlue.glueMeas e ρ := by
   intro n A B ι κ _ _ _ _ _ _ _ _ _ _ e ρ e' ρ' hd hρ hd' hρ' m hm T hT hT0 hT0' d hfib hch
   exact map_glueMeas_closed hd hρ hd' hρ' hm hT hT0 hT0' hfib hch

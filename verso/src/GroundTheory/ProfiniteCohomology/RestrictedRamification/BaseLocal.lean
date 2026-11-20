@@ -26,6 +26,9 @@ def rootsOfUnityMapHom (f : M →* N) : rootsOfUnity n M →* rootsOfUnity n N :
     rw [MonoidHom.comp_apply, mem_rootsOfUnity, ← map_pow]
     exact (congrArg (Units.map f) ((mem_rootsOfUnity n _).1 ζ.2)).trans (map_one _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_rootsOfUnityMapHom (f : M →* N) (ζ : rootsOfUnity n M) :
     ((rootsOfUnityMapHom n f ζ : Nˣ) : N) = f ((ζ : Mˣ) : M) :=
   rfl
@@ -36,6 +39,11 @@ section RootsMapField
 
 variable {M N : Type*} [Field M] [Field N] (n : ℕ) [NeZero n]
 
+/- English proof (translation)
+Use `⟨fun a b h => ?_, fun ω => ?_⟩` and prove the remaining obligations. Establish `e : f ((a : Mˣ) : M) = f ((b : Mˣ) : M)` using `congrArg (fun x : rootsOfUnity n N => ((x : Nˣ) : N)) h`. Conclude with `Subtype.ext (Units.ext (f.injective e))`. Establish `hω : IsPrimitiveRoot (f z) n` using `hz.map_of_injective f.injective`. Take `⟨i, -, hi⟩` from `hω.eq_pow_of_pow_eq_one (ξ := ((ω : Nˣ) : N)) (by rw [← Units.val_pow_eq_pow_val, (mem_rootsOfUnity n _).1 ω.2, Units.val_one])`.
+
+Use `⟨hz.toRootsOfUnity ^ i, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[coe_rootsOfUnityMapHom, ← hi]`. Express the relevant statement in the definitionally equal form `f (((hz.toRootsOfUnity : Mˣ) ^ i : Mˣ) : M) = f z ^ i`. Rewrite using `[Units.val_pow_eq_pow_val, IsPrimitiveRoot.val_toRootsOfUnity_coe, map_pow]`.
+-/
 theorem bijective_rootsOfUnityMapHom (f : M →+* N) {z : M} (hz : IsPrimitiveRoot z n) :
     Function.Bijective (rootsOfUnityMapHom n f.toMonoidHom) := by
   refine ⟨fun a b h => ?_, fun ω => ?_⟩
@@ -67,17 +75,26 @@ def invOfBijective {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijective f
     rw [e.apply_symm_apply]⟩
 
 omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] in
+/- English proof (translation)
+The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a => (LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a))`.
+-/
 theorem comp_invOfBijective {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijective f.hom) :
     f ≫ invOfBijective f hf = 𝟙 A :=
   Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a =>
     (LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a))
 
 omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] in
+/- English proof (translation)
+The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun b => (LinearEquiv.ofBijective f.hom.toLinearMap hf).apply_symm_apply b))`.
+-/
 theorem invOfBijective_comp {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijective f.hom) :
     invOfBijective f hf ≫ f = 𝟙 B :=
   Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun b =>
     (LinearEquiv.ofBijective f.hom.toLinearMap hf).apply_symm_apply b))
 
+/- English proof (translation)
+The claim follows from `bijective_cohomologyMap_of_comp_eq_id f (invOfBijective f hf) (comp_invOfBijective f hf) (invOfBijective_comp f hf) m`.
+-/
 theorem bijective_cohomologyMap_of_bijective {A B : Rep.{u} k Γ} [IsDiscreteRep A] [IsDiscreteRep B]
     (f : A ⟶ B) (hf : Function.Bijective f.hom) (m : ℕ) : Function.Bijective (cohomologyMap f m).hom :=
   bijective_cohomologyMap_of_comp_eq_id f (invOfBijective f hf) (comp_invOfBijective f hf)
@@ -89,6 +106,9 @@ section CompApply
 
 variable {k Γ : Type u} [CommRing k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
+/- English proof (translation)
+Rewrite using `[cohomologyMap_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem cohomologyMap_comp_hom_apply {A B C : Rep.{u} k Γ} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
     (f : A ⟶ B) (g : B ⟶ C) (m : ℕ) (z : cohomology A m) :
     (cohomologyMap (f ≫ g) m).hom z = (cohomologyMap g m).hom ((cohomologyMap f m).hom z) := by
@@ -101,6 +121,15 @@ section AbstractLocal
 variable {F Fsep : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [Field Fsep] [Algebra F Fsep] [IsSepClosure F Fsep]
 
+/- English proof (translation)
+Establish `hnat : (cohomologyMap f' 2).hom (cohomologyULiftIntAddEquiv A 2 z) = cohomologyULiftIntAddEquiv (galUnits.{0} F Fsep) 2 ((cohomologyMap f 2).hom z)`. Take `⟨w, rfl⟩` from `cohomologyπ_surjective A 2 z`. Express the relevant statement in the definitionally equal form `cohomologyMap f' 2 (cohomologyULiftIntAddEquiv A 2 (cohomologyπ A 2 w)) = cohomologyULiftIntAddEquiv (galUnits.{0} F Fsep) 2 (cohomologyMap f 2 (cohomologyπ A 2 w))`. Rewrite using `[cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ']`. Use `congr 1`.
+
+Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt]`. Establish `: IsDiscreteRep (uliftIntToIntRep (galUnits.{0} F Fsep))` using `⟨fun a => isOpen_stabilizer (galUnits.{0} F Fsep) a⟩`. Express the relevant statement in the definitionally equal form `_ = cochainOf (uliftIntToIntRep (galUnits.{0} F Fsep)) (cocycleι (uliftIntToIntRep (galUnits.{0} F Fsep)) 2 (cocyclesULiftInt _ _))`. Rewrite using `[cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cyclesMap]`.
+
+Use function extensionality and compare the values at `σ`. Conclude with `hf _`. Rewrite using `[hnat]`. Set `` to `algebraicValuativeRel F Fsep`. Set `` to `algebraicTopology F Fsep`.
+
+Use `algebraicTopology_isValuativeTopology F Fsep` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension F Fsep` as an intermediate fact. Conclude with `brauerInvZ_cohomologyULiftIntAddEquiv F Fsep _`.
+-/
 theorem brauerInvZOfIsSepClosure_cohomologyMap_uliftInt_base (A : Rep.{0} (ULift.{0} ℤ) Gal(Fsep/F))
     [IsDiscreteRep A] (f : A ⟶ galUnits.{0} F Fsep) (f' : uliftIntToIntRep A ⟶ galUnitsZ.{0} F Fsep)
     (hf : ∀ a, f'.hom a = f.hom a) (z : cohomology A 2) :
@@ -148,6 +177,9 @@ def gsRootsLocalMor (v : S) :
         (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
           maxUnramifiedOutside K.1 ℚ̄ S))))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsRootsLocalMor_hom_apply (v : S) (ζ : Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) :
     (Additive.toMul ((gsRootsLocalMor S ιs n v).hom ζ)).val.val =
       ιs v ((Additive.toMul ζ).val.val : ℚ̄) :=
@@ -155,6 +187,11 @@ theorem gsRootsLocalMor_hom_apply (v : S) (ζ : Additive (rootsOfUnity n (maxUnr
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n`. Establish `hzS : z ∈ maxUnramifiedOutside K.1 ℚ̄ S`. Take `⟨x, rfl⟩ : ∃ x : K.1, (x : ℚ̄) = z` from `⟨⟨z, hμ z hz.pow_eq_one⟩, rfl⟩`. Conclude with `(maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem x`. Establish `hzS' : IsPrimitiveRoot (⟨z, hzS⟩ : maxUnramifiedOutside K.1 ℚ̄ S) n` using `hz.of_map_of_injective (f := (maxUnramifiedOutside K.1 ℚ̄ S).val) Subtype.val_injective`.
+
+Establish `hF` using `bijective_rootsOfUnityMapHom n ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom hzS'`. Conclude with `Additive.ofMul.bijective.comp (hF.comp Additive.toMul.bijective)`.
+-/
 theorem bijective_gsRootsLocalMor [NeZero n] (hμ : ∀ ζ : ℚ̄, ζ ^ n = 1 → ζ ∈ K.1) (v : S) :
     Function.Bijective (gsRootsLocalMor S ιs n v).hom := by
   obtain ⟨z, hz⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n
@@ -166,6 +203,9 @@ theorem bijective_gsRootsLocalMor [NeZero n] (hμ : ∀ ζ : ℚ̄, ζ ^ n = 1 �
   have hF := bijective_rootsOfUnityMapHom n ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom hzS'
   exact Additive.ofMul.bijective.comp (hF.comp Additive.toMul.bijective)
 
+/- English proof (translation)
+Use `(DFunLike.congr_fun (gsLocalInvRootsQZ_eq S ιs n v) z).trans ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (AddMonoidHom.comp_apply _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `brauerInvZOfIsSepClosure_cohomologyMap_uliftInt_base _ _ (rootsLocalMorZ S ιs n v) (fun _ => rfl) z`.
+-/
 theorem gsLocalInvRootsQZ_eq_brauerInv_base (v : S)
     (z : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     gsLocalInvRootsQZ S ιs n v z =
@@ -181,10 +221,16 @@ theorem gsLocalInvRootsQZ_eq_brauerInv_base (v : S)
 
 variable [NeZero n]
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 (NeZero.ne n)`.
+-/
 theorem natCast_ne_zero_adicCompletion (v : S) :
     (n : (v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) ≠ 0 :=
   Nat.cast_ne_zero.2 (NeZero.ne n)
 
+/- English proof (translation)
+Apply `zmodToQZ_injective` to reduce the goal to its premises. Use `(zmodToQZ_gsLocalInvRoots S ιs n v z).trans ?_` and prove the remaining obligations. Use `(gsLocalInvRootsQZ_eq_brauerInv_base S ιs n v z).trans ?_` and prove the remaining obligations. Use `(congrArg (brauerInvOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (cohomologyMap_comp_hom_apply _ _ 2 z)).trans ?_` and prove the remaining obligations. Conclude with `brauerInvOfIsSepClosure_rootsOfUnity (natCast_ne_zero_adicCompletion S n v) _`.
+-/
 theorem gsLocalInvRoots_eq (v : S) (z : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     gsLocalInvRoots S ιs n v z =
       (localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
@@ -197,12 +243,18 @@ theorem gsLocalInvRoots_eq (v : S) (z : cohomology (Rep.res (gsFinFamily S ιs v
       (cohomologyMap_comp_hom_apply _ _ 2 z)).trans ?_
   exact brauerInvOfIsSepClosure_rootsOfUnity (natCast_ne_zero_adicCompletion S n v) _
 
+/- English proof (translation)
+The claim follows from `((localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)).t ⊤).bijective.comp (bijective_cohomologyRes_top _ 2)`.
+-/
 theorem bijective_localDualityHypotheses_tTop (v : S) :
     Function.Bijective (localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
       (natCast_ne_zero_adicCompletion S n v)).tTop :=
   ((localDualityHypotheses (Ksep := AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))
     (natCast_ne_zero_adicCompletion S n v)).t ⊤).bijective.comp (bijective_cohomologyRes_top _ 2)
 
+/- English proof (translation)
+Establish `e : ⇑(gsLocalInvRoots S ιs n v) = (localDualityHypotheses (Ksep` using `AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) (natCast_ne_zero_adicCompletion S n v)).tTop ∘ (cohomologyMap (gsRootsLocalMor S ιs n v) 2).hom :=`. Use function extensionality and compare the values at `(gsLocalInvRoots_eq S ιs n v)`. Rewrite using `[e]`. Conclude with `(bijective_localDualityHypotheses_tTop S n v).comp (bijective_cohomologyMap_of_bijective _ (bijective_gsRootsLocalMor S ιs n hμ v) 2)`.
+-/
 theorem bijective_gsLocalInvRoots (hμ : ∀ ζ : ℚ̄, ζ ^ n = 1 → ζ ∈ K.1) (v : S) :
     Function.Bijective (gsLocalInvRoots S ιs n v) := by
   have e : ⇑(gsLocalInvRoots S ιs n v) =

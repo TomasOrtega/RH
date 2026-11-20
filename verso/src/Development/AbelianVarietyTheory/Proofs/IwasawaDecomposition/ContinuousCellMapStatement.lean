@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsClos
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UniMatBlockTriangular
 open Module TopologicalSpace GlobalTheory.FlagPts
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagPts.continuous_cellMap | exact GlobalTheory.FlagPts.continuous_cellMap | (intros; apply GlobalTheory.FlagPts.continuous_cellMap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuous_cellMap' : ∀ (k : Type) [Field k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (b : Frames k V), Continuous (cellMap b) := by
   first | exact @GlobalTheory.FlagPts.continuous_cellMap | exact GlobalTheory.FlagPts.continuous_cellMap | (intros; apply GlobalTheory.FlagPts.continuous_cellMap <;> assumption)

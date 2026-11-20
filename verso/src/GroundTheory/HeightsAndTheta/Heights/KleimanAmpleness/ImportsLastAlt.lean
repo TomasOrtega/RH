@@ -21,6 +21,9 @@ def SpecialCurvesLift.Statement : Prop :=
             NumbersDVR.specialIdeal (mIdealOver O y) ≤ W ∧
             baseComap (IsLocalRing.ResidueField O) k₀ e W = P
 
+/- English proof (translation)
+Use `⟨SpecialCurves.hyps.1, ?_⟩` and prove the remaining obligations. Rewrite using `[ModelCurvesLift.oneBlock_pnPt]`. Conclude with `SpecialCurves.hyps.2.1`.
+-/
 theorem SpecialCurvesLift.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
       NumbersDVR.IsMultiProjPrime (NumbersDVR.specialIdeal (mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.oneBlock
@@ -29,6 +32,9 @@ theorem SpecialCurvesLift.hyps :
   rw [ModelCurvesLift.oneBlock_pnPt]
   exact SpecialCurves.hyps.2.1
 
+/- English proof (translation)
+The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1 (Equiv.refl _) _ rfl SpecialCurvesLift.hyps.1 _ SpecialCurvesLift.hyps.2 le_rfl`.
+-/
 example (h : SpecialCurvesLift.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1
     (Equiv.refl _) _ rfl SpecialCurvesLift.hyps.1 _ SpecialCurvesLift.hyps.2 le_rfl

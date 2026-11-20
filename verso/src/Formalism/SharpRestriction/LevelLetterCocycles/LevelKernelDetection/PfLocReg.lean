@@ -18,6 +18,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 namespace LocReg
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hR.2.2.2.2.1`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hQq : W.Q = W.q` using `by show (W.φA ^ (W.s - 1)) W.q = W.q`. Rewrite using `[hs1, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[hQq, hu]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, qP]`.
+-/
 theorem hQ (hs1 : W.s = 1) (hR : Ring9 W) : ∃ u : (LetA O n)ˣ, W.Q = (u : LetA O n) * qP W := by
   obtain ⟨u, hu⟩ := hR.2.2.2.2.1
   refine ⟨u, ?_⟩
@@ -32,6 +37,21 @@ theorem hQ (hs1 : W.s = 1) (hR : Ring9 W) : ∃ u : (LetA O n)ˣ, W.Q = (u : Let
 
 end LocReg
 
+/- English proof (translation)
+Introduce `s hs w`. Establish `hW : ∀ z ∈ (latOf C).pull (c - (ell : ZMod n)) ell, z ∈ (latOf C).W c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell)` using `fun z hz => Submodule.mem_comap.2 (Submodule.smul_mem _ _ hz)`. Establish `key : ∀ (z : C.V) (hz : z ∈ (latOf C).pull (c - (ell : ZMod n)) ell), prL s ((lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s ⟨z, hW z hz⟩) ∈ Xi (KsW W s) (Tw (LL` using `LL) (D := Dc W T c) 0) := by`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz0`. Take `⟨y, hy, rfl⟩` from `hz0`. Use `Formalism.ExponentWindows.G.SlopeTestRemainingChoices.mem_Xi.2 fun k => ?_` and prove the remaining obligations. Rewrite using `[level_expansion_d_direct Hy j M g η kind b m hκ hk1b hUnits hP5 (LocReg.hQ hs1 hR) levN_eq levB_φ lev_φ hp0 y hy ⟨_, hW _ (Submodule.subset_span ⟨y, hy, rfl⟩)⟩ rfl s hs k]`. Distinguish the cases in `hk : 0 ≤ k`.
+
+Conclude with `Submodule.tmul_mem_baseChange_of_mem _ (by simp [Tw, hk])`. Rewrite using `[frobeniusCoeff_low_eq_zero Lb T c ell _ 0 (fun k' hk' => levelExpansion_neg_eq_zero levN_eq hs1 T hP4 _ _ k' hk') k (not_le.1 hk), TensorProduct.tmul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero`. Establish `e : (⟨0, hW 0 (Submodule.zero_mem _)⟩ : ↥((latOf C).W c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell))) = 0` using `rfl`.
+
+Rewrite using `[e, map_zero]`. Use `zero_mem (Xi (KsW W s) (Tw (LL := LL) (D := Dc W T c) 0)) using 1` and compare the differences between its conclusion and the goal. Conclude with `map_zero (prL (hΔ := Hy.delta) (ell := ell) s)`. Consider the case `add x y hx hy ihx ihy`. Establish `e : (⟨x + y, hW _ (Submodule.add_mem _ hx hy)⟩ : ↥((latOf C).W c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell))) = ⟨x, hW x hx⟩ + ⟨y, hW y hy⟩` using `rfl`.
+
+Rewrite using `[e, map_add]`. Use `add_mem ihx ihy using 1` and compare the differences between its conclusion and the goal. Conclude with `map_add (prL (hΔ := Hy.delta) (ell := ell) s) _ _`. Consider the case `smul a x hx ih`. Establish `e : (⟨a • x, hW _ (Submodule.smul_mem _ a hx)⟩ : ↥((latOf C).W c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell))) = a • ⟨x, hW x hx⟩` using `rfl`.
+
+Rewrite using `[e, LinearMap.map_smul]`. Use `xi_module_structure LL (KsW W s) (Dc W T c) _ (tw_mono 0) (rhoL hR c s a) _ ih using 1` and compare the differences between its conclusion and the goal. Conclude with `prL_smul (hΔ := Hy.delta) s a _`. Establish `hw' : Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (w : C.V) ∈ (latOf C).pull (c - (ell : ZMod n)) ell` using `Submodule.mem_comap.1 w.2`. Establish `e : Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w = (lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s ⟨Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (w : C.V), hW _ hw'⟩`.
+
+Rewrite using `[← LinearMap.map_smul]`. Both sides reduce to the same expression. Use `show prL s (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell • (lvData Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η).loc s w) ∈ _`. Rewrite using `[e]`. Conclude with `key _ hw'`.
+-/
 theorem locReg_holds {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}
     {H : ℕ → ℕ} {κ : PowerSeries O} {r : ℕ} {lam : Fin r → Dc W T c}
     (Hy : LvHyp Lb hR uZ ιZ C c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ lam) (j M g η : ℕ)

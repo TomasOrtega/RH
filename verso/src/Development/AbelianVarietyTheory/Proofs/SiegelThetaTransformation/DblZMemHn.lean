@@ -10,12 +10,18 @@ namespace GlobalTheory.SW.DblPoint
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Simplify using `only [aLin, mulVec, dotProduct, of_apply, if_pos h, hermC, FD.col, mat, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+-/
 theorem aLin_mulVec_of_lt (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) (w : Fin r → ℂ) {a : Fin r}
     (h : (a : ℕ) < X.p0) :
     (aLin X x₁ x₂ τ *ᵥ w) a = hermC τ.1 X.Gm w (FD.col (mat x₂ τ) a) := by
   simp only [aLin, mulVec, dotProduct, of_apply, if_pos h, hermC, FD.col, mat, Finset.sum_mul]
   refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Simplify using `only [aLin, mulVec, dotProduct, of_apply, if_neg h]`.
+-/
 theorem aLin_mulVec_of_not_lt (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) (w : Fin r → ℂ) {a : Fin r}
     (h : ¬ (a : ℕ) < X.p0) :
     (aLin X x₁ x₂ τ *ᵥ w) a = ((mat x₁ τ)⁻¹ *ᵥ w) a := by
@@ -23,6 +29,15 @@ theorem aLin_mulVec_of_not_lt (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) (w : Fin r 
 
 variable {X}
 
+/- English proof (translation)
+Use `set c := (mat x₁ τ)⁻¹ *ᵥ w with hc`. Establish `hu : IsUnit (mat x₁ τ).det` using `isUnit_iff_ne_zero.2 (h₁ τ).1`. Establish `hcw : mat x₁ τ *ᵥ c = w` using `by rw [hc, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`. Establish `hc0 : ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → c a = 0` using `fun a ha => by`. Rewrite using `[hc, ← aLin_mulVec_of_not_lt X x₁ x₂ τ w ha, h a ha]`.
+
+Establish `hsum : w = ∑ a : Fin X.p0, c (Fin.castLE X.p0_le a) • X.colP x₁ τ a`. Rewrite using `[← hcw, Data.mulVec_eq_sum_col]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE X.p0_le) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_univ _) (fun i _ hi => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[hc0 i, zero_smul]`.
+
+Introduce `hlt`. Conclude with `hi ⟨⟨i, hlt⟩, by simp, rfl⟩`. Establish `hne : (fun a : Fin X.p0 => c (Fin.castLE X.p0_le a)) ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+
+Rewrite using `[hsum]`. Conclude with `Finset.sum_eq_zero fun a _ => by rw [congrFun h0 a, Pi.zero_apply, zero_smul]`. Use `quad_re_pos (X.gramPos_posDef h₁ τ) hne` as an intermediate fact. Rewrite using `[hsum, hermC_quad]`. Conclude with `this`.
+-/
 theorem pos_of_upper {x₁ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (x₂ : Frame X.Ψ r) (τ : X.Ψ)
     {w : Fin r → ℂ} (hw : w ≠ 0)
     (h : ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → (aLin X x₁ x₂ τ *ᵥ w) a = 0) :
@@ -49,6 +64,9 @@ theorem pos_of_upper {x₁ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (x₂ : Frame
   rw [hsum, hermC_quad]
   exact this
 
+/- English proof (translation)
+The claim follows from `X.neg_of_perp h₂ τ hw fun b => by have hb : ((Fin.castLE X.p0_le b : Fin r) : ℕ) < X.p0 := b.2 rw [Data.colP, ← aLin_mulVec_of_lt X x₁ x₂ τ w hb, h _ hb]`.
+-/
 theorem neg_of_lower (x₁ : Frame X.Ψ r) {x₂ : Frame X.Ψ r} (h₂ : x₂ ∈ X.dom) (τ : X.Ψ)
     {w : Fin r → ℂ} (hw : w ≠ 0)
     (h : ∀ a : Fin r, (a : ℕ) < X.p0 → (aLin X x₁ x₂ τ *ᵥ w) a = 0) :
@@ -57,6 +75,9 @@ theorem neg_of_lower (x₁ : Frame X.Ψ r) {x₂ : Frame X.Ψ r} (h₂ : x₂ �
     have hb : ((Fin.castLE X.p0_le b : Fin r) : ℕ) < X.p0 := b.2
     rw [Data.colP, ← aLin_mulVec_of_lt X x₁ x₂ τ w hb, h _ hb]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨w, hw, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `a` using `pos_of_upper h₁ x₂ τ hw fun a _ => congrFun h0 a`. Establish `b` using `neg_of_lower x₁ h₂ τ hw fun a _ => congrFun h0 a`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem det_aLin_ne_zero {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) (τ : X.Ψ) :
     (aLin X x₁ x₂ τ).det ≠ 0 := by
   intro h
@@ -67,6 +88,11 @@ theorem det_aLin_ne_zero {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h�
 
 variable (X) in
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [aLin, aAnti, map_apply, of_apply]`. Use `split_ifs`. Simplify using `only [map_sum, map_mul, ← emb_cc, X.Gm_herm]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+
+Rewrite using `[Complex.conj_conj]`.
+-/
 theorem aLin_swap (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aLin X x₂ x₁ τ = (aAnti X x₁ x₂ τ).map conj := by
   ext a c
@@ -76,12 +102,34 @@ theorem aLin_swap (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     exact Finset.sum_congr rfl fun b _ => mul_comm _ _
   · rw [Complex.conj_conj]
 
+/- English proof (translation)
+Introduce `h`. Apply `det_aLin_ne_zero h₂ h₁ τ` to reduce the goal to its premises. Rewrite using `[aLin_swap, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]`.
+-/
 theorem det_aAnti_ne_zero {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) (τ : X.Ψ) :
     (aAnti X x₁ x₂ τ).det ≠ 0 := by
   intro h
   apply det_aLin_ne_zero h₂ h₁ τ
   rw [aLin_swap, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]
 
+/- English proof (translation)
+Use `set A := aLin X x₁ x₂ τ with hA`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 (det_aLin_ne_zero h₁ h₂ τ)`. Use `set y := A *ᵥ d with hy`. Use `set yp : Fin r → ℂ := fun a => if (a : ℕ) < X.p0 then y a else 0 with hyp`. Use `set ym : Fin r → ℂ := fun a => if (a : ℕ) < X.p0 then 0 else y a with hym`.
+
+Use `set d₁ := A⁻¹ *ᵥ yp with hd₁`. Use `set d₂ := A⁻¹ *ᵥ ym with hd₂`. Establish `e₁ : A *ᵥ d₁ = yp` using `by rw [hd₁, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`. Establish `e₂ : A *ᵥ d₂ = ym` using `by rw [hd₂, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`. Establish `hsum : d = d₁ + d₂`.
+
+Establish `: yp + ym = y`. Apply the tactic sequence `funext a; simp only [hyp, hym, Pi.add_apply]; split_ifs <;> simp`. Rewrite using `[hd₁, hd₂, ← mulVec_add, this, hy, mulVec_mulVec, nonsing_inv_mul _ hu, one_mulVec]`. Establish `hS : (A⁻¹ * Matrix.diagonal (fun a : Fin r => (-(sgn X.p0 a : ℝ) : ℂ)) * A) *ᵥ d = d₂ - d₁`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hd₁, hd₂, ← mulVec_sub, ← hy]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [mulVec_diagonal, hyp, hym, Pi.sub_apply, sgn]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `p₁ : d₁ ≠ 0 → 0 < (hermC τ.1 X.Gm d₁ d₁).re` using `fun h => pos_of_upper h₁ x₂ τ h fun a ha => by rw [← hA, e₁]; simp only [hyp, if_neg ha]`.
+
+Establish `p₂ : d₂ ≠ 0 → (hermC τ.1 X.Gm d₂ d₂).re < 0` using `fun h => neg_of_lower x₁ h₂ τ h fun a ha => by rw [← hA, e₂]; simp only [hym, if_pos ha]`. Establish `hc : (hermC τ.1 X.Gm d₁ d₂).re = (hermC τ.1 X.Gm d₂ d₁).re`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm d₁ d₂, Complex.conj_re]`. Establish `key : (hermC τ.1 X.Gm (d₂ - d₁) (d₁ + d₂)).re = (hermC τ.1 X.Gm d₂ d₂).re - (hermC τ.1 X.Gm d₁ d₁).re`. Rewrite using `[hermC_sub_left, hermC_add_right, hermC_add_right]`.
+
+Simplify using `only [Complex.sub_re, Complex.add_re, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS]`. Rewrite `key` using `[← hsum]`. Rewrite using `[key]`.
+
+Distinguish the cases in `z₁ : d₁ = 0`. Establish `z₂ : d₂ ≠ 0` using `fun z₂ => hd (by rw [hsum, z₁, z₂, add_zero])`. Use `p₂ z₂` as an intermediate fact. Rewrite using `[z₁, hermC_zero_left, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `p₁ z₁` as an intermediate fact. Distinguish the cases in `z₂ : d₂ = 0`. Rewrite using `[z₂, hermC_zero_left, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `p₂ z₂` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_hermC_invol_neg {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) (τ : X.Ψ)
     {d : Fin r → ℂ} (hd : d ≠ 0) :
     (hermC τ.1 X.Gm (((aLin X x₁ x₂ τ)⁻¹ *
@@ -133,6 +181,15 @@ theorem re_hermC_invol_neg {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h
     · have := p₂ z₂
       linarith
 
+/- English proof (translation)
+Rewrite using `[posDef_iff_dotProduct_mulVec]`. Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Unfold `imH`. Rewrite using `[IsHermitian, conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose, ← neg_sub Z, smul_neg, ← neg_smul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `e : star v ⬝ᵥ Zᴴ *ᵥ v = conj (star v ⬝ᵥ Z *ᵥ v)`. Simplify using `only [dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, Complex.star_def, map_sum, map_mul, Complex.conj_conj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+
+Establish `: star v ⬝ᵥ imH Z *ᵥ v = ((star v ⬝ᵥ Z *ᵥ v).im : ℂ)`. Unfold `imH`. Rewrite using `[smul_mulVec, dotProduct_smul, sub_mulVec, dotProduct_sub, e, Complex.sub_conj, smul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `h v hv` after adjusting the coercions.
+-/
 theorem posDef_imH {N : ℕ} {Z : Matrix (Fin N) (Fin N) ℂ}
     (h : ∀ v : Fin N → ℂ, v ≠ 0 → 0 < (star v ⬝ᵥ Z *ᵥ v).im) : (imH Z).PosDef := by
   rw [posDef_iff_dotProduct_mulVec]
@@ -158,6 +215,9 @@ theorem posDef_imH {N : ℕ} {Z : Matrix (Fin N) (Fin N) ℂ}
 
 variable (X) in
 
+/- English proof (translation)
+Establish `h : conj (τ X.ξ0) = -τ X.ξ0` using `by rw [← emb_cc, X.ξ0_im, map_neg]`. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.conj_re, Complex.neg_re] at h'`. Establish `h0 : (τ X.ξ0).re = 0` using `by linarith`. Apply the tactic sequence `rcases X.κ0_xi with e | e <;> simp [e, h0, map_ofNat]`.
+-/
 theorem re_kappa (τ : E →+* ℂ) : (τ X.κ0).re = 0 := by
   have h : conj (τ X.ξ0) = -τ X.ξ0 := by rw [← emb_cc, X.ξ0_im, map_neg]
   have h' := congrArg Complex.re h
@@ -165,6 +225,15 @@ theorem re_kappa (τ : E →+* ℂ) : (τ X.κ0).re = 0 := by
   have h0 : (τ X.ξ0).re = 0 := by linarith
   rcases X.κ0_xi with e | e <;> simp [e, h0, map_ofNat]
 
+/- English proof (translation)
+Introduce `τ`. Use `posDef_imH fun v hv => ?_` and prove the remaining obligations. Establish `hd : star v ≠ 0` using `by simpa using hv`. Establish `h` using `re_hermC_invol_neg h₁ h₂ τ hd`. Use `set S := (aLin X x₁ x₂ τ)⁻¹ * Matrix.diagonal (fun a : Fin r => (-(sgn X.p0 a : ℝ) : ℂ)) * aLin X x₁ x₂ τ with hS`.
+
+Establish `e : star v ⬝ᵥ dblZ X x₁ x₂ τ *ᵥ v = τ.1 X.κ0 / 4 * hermC τ.1 X.Gm (S *ᵥ star v) (star v)`. Unfold `dblZ`. Rewrite using `[← hS, smul_mulVec, dotProduct_smul, smul_eq_mul, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`. Use `congr 1`. Simplify using `[hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+
+Rewrite using `[e, Complex.mul_im]`. Establish `k₁ : (τ.1 X.κ0 / 4).re = 0` using `by simp [re_kappa X τ.1]`. Establish `k₂ : (τ.1 X.κ0 / 4).im < 0`. Use `X.κ0_sign τ` as an intermediate fact. Simplify using `only [Complex.div_ofNat_im]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[k₁, zero_mul, zero_add]`. Conclude with `mul_pos_of_neg_of_neg k₂ h`.
+-/
 theorem dblZ_mem {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom) :
     dblZ X x₁ x₂ ∈ Hn X.Ψ r := by
   intro τ
@@ -193,6 +262,9 @@ end GlobalTheory.SW.DblPoint
 
 namespace GlobalTheory.SW
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ X x₁ h₁ x₂ h₂` and use `⟨X.cmType, DblPoint.dblZ_mem h₁ h₂, fun τ => ⟨DblPoint.det_aLin_ne_zero h₁ h₂ τ, DblPoint.det_aAnti_ne_zero h₁ h₂ τ, DblPoint.aLin_swap X x₁ x₂ τ⟩⟩`.
+-/
 theorem dblZ_mem_Hn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, IsType X.Ψ ∧ dblZ X x₁ x₂ ∈ Hn X.Ψ r ∧ ∀ τ, (aLin X x₁ x₂ τ).det ≠ 0 ∧ (aAnti X x₁ x₂ τ).det ≠ 0 ∧ aLin X x₂ x₁ τ = (aAnti X x₁ x₂ τ).map conj :=
   fun _ _ _ _ _ X x₁ h₁ x₂ h₂ => ⟨X.cmType, DblPoint.dblZ_mem h₁ h₂, fun τ =>
     ⟨DblPoint.det_aLin_ne_zero h₁ h₂ τ, DblPoint.det_aAnti_ne_zero h₁ h₂ τ,

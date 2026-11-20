@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.SecGlue.Red
 
+/- English proof (translation)
+Establish `hle : W ≤ X.hom ⁻¹ᵁ ⊤` using `by simp`. Set `b` to `(X.hom.appLE ⊤ W hle).hom`. Establish `hft : b.FiniteType` using `by haveI := hsm`. Conclude with `HasRingHomProperty.appLE @LocallyOfFiniteType X.hom inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ hle`. Establish `hcomp : ∀ (u : Sp S ⟶ X.left) (h : u ⁻¹ᵁ W = ⊤), (chartHom W u h).comp b = (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.comp (u ≫ X.hom).appTop.hom`.
+
+Introduce `u h`. Establish `e : (u ≫ X.hom).appTop = (u ≫ X.hom).appLE ⊤ ⊤ le_top`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[e, ← Scheme.Hom.appLE_comp_appLE u X.hom ⊤ W ⊤ hle h.ge]`.
+
+Both sides reduce to the same expression. Use `letI : Algebra Γ(Sp R, ⊤) Γ(X.left, W) := b.toAlgebra`. Use `letI : Algebra Γ(Sp R, ⊤) S := ((chartHom W u₁ h₁).comp b).toAlgebra`. Use `haveI : Algebra.FiniteType Γ(Sp R, ⊤) Γ(X.left, W) := hft`. Set `χ₁ : Γ(X.left, W) →ₐ[Γ(Sp R, ⊤)] S` to `{ chartHom W u₁ h₁ with commutes' := fun r => rfl }`.
+
+Set `χ₂ : Γ(X.left, W) →ₐ[Γ(Sp R, ⊤)] S` to `{ chartHom W u₂ h₂ with commutes' := fun r => by`. Use `congrArg (fun φ : Γ(Sp R, ⊤) →+* S => φ r) ((hcomp u₂ h₂).trans (hu ▸ (hcomp u₁ h₁).symm))` as an intermediate fact. Conclude with `this }`. Conclude with `GlobalTheory.T.exists_pow_mul_eq_of_algebraMap_localizationAway_eq _ _ _ χ₁ χ₂ g hg`.
+-/
 theorem chartHom_pow_mul_eq {R : Type} [CommRing R] (X : Over (Sp R)) (hsm : Smooth X.hom)
     (W : X.left.Opens) (hW : IsAffineOpen W) {S : Type} [CommRing S] (u₁ u₂ : Sp S ⟶ X.left)
     (hu : u₁ ≫ X.hom = u₂ ≫ X.hom) (h₁ : u₁ ⁻¹ᵁ W = ⊤) (h₂ : u₂ ⁻¹ᵁ W = ⊤) (g : S)
@@ -48,17 +57,26 @@ end GlobalTheory.SecGlue.Red
 
 namespace GlobalTheory.SecGlue.Red
 
+/- English proof (translation)
+Substitute `hu hc hw ha` using the available equality. Conclude with `h`.
+-/
 theorem isCombIn_congr {Y : Scheme.{0}} {V : Y.Opens} {S : Type} [CommRing S] {ι : Type} [Fintype ι]
     {u u' c c' : Sp S ⟶ Y} {w w' : ι → (Sp S ⟶ Y)} {a a' : ι → S} (hu : u = u') (hc : c = c')
     (hw : w = w') (ha : a = a') (h : IsCombIn V u c w a) : IsCombIn V u' c' w' a' := by
   subst hu hc hw ha; exact h
 
+/- English proof (translation)
+Take `⟨hu, hc, hw, hx⟩` from `h`. Conclude with `⟨hu, hc, hw 0, fun x => by simpa using hx x⟩`.
+-/
 theorem isCombIn_one {Y : Scheme.{0}} {V : Y.Opens} {S : Type} [CommRing S] {u c w : Sp S ⟶ Y} {a : S}
     (h : IsCombIn V u c ![w] ![a]) : ∃ (hu : u ⁻¹ᵁ V = ⊤) (hc : c ⁻¹ᵁ V = ⊤) (hw : w ⁻¹ᵁ V = ⊤),
       ∀ x, chartHom V c hc x = chartHom V u hu x + a * (chartHom V w hw x - chartHom V u hu x) := by
   obtain ⟨hu, hc, hw, hx⟩ := h
   exact ⟨hu, hc, hw 0, fun x => by simpa using hx x⟩
 
+/- English proof (translation)
+Take `⟨hu, hc, hw, hx⟩` from `h`. Conclude with `⟨hu, hc, hw 0, hw 1, fun x => by simpa [Fin.sum_univ_two, add_assoc] using hx x⟩`.
+-/
 theorem isCombIn_two {Y : Scheme.{0}} {V : Y.Opens} {S : Type} [CommRing S] {u c w₀ w₁ : Sp S ⟶ Y}
     {a₀ a₁ : S} (h : IsCombIn V u c ![w₀, w₁] ![a₀, a₁]) :
     ∃ (hu : u ⁻¹ᵁ V = ⊤) (hc : c ⁻¹ᵁ V = ⊤) (hw₀ : w₀ ⁻¹ᵁ V = ⊤) (hw₁ : w₁ ⁻¹ᵁ V = ⊤),
@@ -67,17 +85,26 @@ theorem isCombIn_two {Y : Scheme.{0}} {V : Y.Opens} {S : Type} [CommRing S] {u c
   obtain ⟨hu, hc, hw, hx⟩ := h
   exact ⟨hu, hc, hw 0, hw 1, fun x => by simpa [Fin.sum_univ_two, add_assoc] using hx x⟩
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, hu, ← spMap_comp, hρ]`.
+-/
 theorem comp_overR {R : Type} [CommRing R] (X : Over (Sp R)) (a : R) {S : Type} [CommRing S] [Algebra R S]
     (ρ : Localization.Away a →+* S) (hρ : ρ.comp (algebraMap R _) = algebraMap R S)
     (u : Sp (Localization.Away a) ⟶ X.left) (hu : u ≫ X.hom = spMap (algebraMap R _)) :
     (spMap ρ ≫ u) ≫ X.hom = spMap (algebraMap R S) := by
   rw [Category.assoc, hu, ← spMap_comp, hρ]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (IsLocalization.Away.awayToAwayRight_eq x y)`.
+-/
 theorem awR_comp {R : Type} [CommRing R] (x y : R) :
     (IsLocalization.Away.awayToAwayRight (P := Localization.Away (x * y)) x y).comp
       (algebraMap R (Localization.Away x)) = algebraMap R _ :=
   RingHom.ext (IsLocalization.Away.awayToAwayRight_eq x y)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (IsLocalization.Away.awayToAwayLeft_eq x y)`.
+-/
 theorem awL_comp {R : Type} [CommRing R] (x y : R) :
     (IsLocalization.Away.awayToAwayLeft (P := Localization.Away (y * x)) x y).comp
       (algebraMap R (Localization.Away x)) = algebraMap R _ :=
@@ -88,6 +115,35 @@ end GlobalTheory.SecGlue.Red
 namespace GlobalTheory.SecGlue.Red
 
 open IsLocalization.Away in
+/- English proof (translation)
+Use `set fS := algebraMap R S fk with hfS`. Set `ι : S →+* Localization.Away fS` to `algebraMap S (Localization.Away fS)`. Establish `hι : ι.comp (algebraMap R S) = algebraMap R (Localization.Away fS)` using `(IsScalarTower.algebraMap_eq R S _).symm`. Establish `rA` using `isRed_of_away π hπ g₀ fj ej rej S ρj hρj`. Establish `rTJ` using `isRed_of_away π hπ g₀ fj tj rtj S ρj hρj`.
+
+Establish `rEL` using `isRed_of_away π hπ g₀ fl el rel S ρl hρl`. Establish `rTL` using `isRed_of_away π hπ g₀ fl tl rtl S ρl hρl`. Establish `hq` using `Ideal.Quotient.mk_surjective (I := redI π S)`. Establish `hq2` using `ker_mk_sq π hsq S`. Establish `land : ∀ u, IsRed π hπ g₀ S u → u ⁻¹ᵁ W = ⊤` using `fun u hu => (GlobalTheory.T.preimage_eq_of_square_zero_thickening S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA`.
+
+Take `⟨c, hc, -, hcR⟩` from `GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart X.left W hW S _ _ hq hq2 (Fin 2) (spMap ρl ≫ el) ![spMap ρl ≫ tl, spMap ρj ≫ ej] ![1, 1 - fS ^ N] (land _ rEL) (Fin.forall_fin_two.2 ⟨rTL.eq rEL, rA.eq rEL⟩)`. Establish `oEL` using `comp_overR X fl ρl hρl el hel`. Establish `hcX : c ≫ X.hom = spMap (algebraMap R S)`. Rewrite using `[hcR R X.hom (Fin.forall_fin_two.2 ⟨(comp_overR X fl ρl hρl tl htl).trans oEL.symm, (comp_overR X fj ρj hρj ej hej).trans oEL.symm⟩), oEL]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Establish `uk : IsUnit (algebraMap R (Localization.Away fS) fk)`. Rewrite using `[← hι, RingHom.comp_apply]`. Conclude with `IsLocalization.Away.algebraMap_isUnit fS`. Establish `hιρ : ∀ (a : R) (ρ : Localization.Away a →+* S), ρ.comp (algebraMap R _) = algebraMap R S → (ι.comp ρ).comp (algebraMap R _) = algebraMap R (Localization.Away fS)`. Introduce `a ρ h`.
+
+Rewrite using `[RingHom.comp_assoc, h, hι]`. Set `εk` to `IsLocalization.Away.lift (S := Localization.Away fk) fk uk`. Establish `hεk : εk.comp (algebraMap R _) = algebraMap R (Localization.Away fS)` using `IsLocalization.Away.lift_comp _ _`. Establish `hq'` using `Ideal.Quotient.mk_surjective (I := redI π (Localization.Away fS))`. Establish `hq2'` using `ker_mk_sq π hsq (Localization.Away fS)`.
+
+Establish `rEK` using `isRed_of_away π hπ g₀ fk ek rek _ εk hεk`. Establish `side : ∀ (fa : R) (Va : X.left.Opens), IsAffineOpen Va → ∀ (ea ta : Sp (Localization.Away fa) ⟶ X.left) (ρa : Localization.Away fa →+* S), ρa.comp (algebraMap R _) = algebraMap R S → spMap (Localization.awayMap π fa) ≫ ea = spMap (algebraMap R₀ (Localization.Away (π fa))) ≫ g₀ → …` using `Localization.Away (fa * fk)) fa fk) ≫ ea) (spMap (awayToAwayRight (P := Localization.Away (fa * fk)) fa fk) ≫ ta) ![spMap (awayToAwayLeft (P := Localization.Away (fa * fk)) fk fa) ≫ ek] ![algebraMap R (Localization.Away (fa * fk)) fk ^ N] → IsCombIn W (spMap ι ≫ spMap ρa ≫ ea) (s …`. Introduce `fa Va hVa ea ta ρa hρa rea hEa hca`. Establish `ua : IsUnit (algebraMap R (Localization.Away fS) (fa * fk))`. Rewrite using `[map_mul]`.
+
+Conclude with `(isUnit_of_away fa _ (hιρ fa ρa hρa)).mul uk`. Set `β` to `IsLocalization.Away.lift (S := Localization.Away (fa * fk)) (fa * fk) ua`. Establish `hβ : β.comp (algebraMap R _) = algebraMap R (Localization.Away fS)` using `IsLocalization.Away.lift_comp _ _`. Establish `e1 : β.comp (awayToAwayRight (P` using `Localization.Away (fa * fk)) fa fk) = ι.comp ρa := away_ext fa _ _ (by rw [RingHom.comp_assoc, awR_comp, hβ, hιρ fa ρa hρa])`. Establish `e2 : β.comp (awayToAwayLeft (P` using `Localization.Away (fa * fk)) fk fa) = εk := away_ext fk _ _ (by rw [RingHom.comp_assoc, awL_comp, hβ, hεk])`.
+
+Establish `h1` using `GlobalTheory.T.isAffineCombinationInChart_specMap_comp X.left Va _ _ β (Fin 1) _ _ _ _ hca`. Establish `h1' : IsCombIn Va (spMap ι ≫ spMap ρa ≫ ea) (spMap ι ≫ spMap ρa ≫ ta) ![spMap εk ≫ ek] ![ι fS ^ N]`. Use `isCombIn_congr ?_ ?_ ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← spMap_comp, e1, spMap_comp, Category.assoc]`. Rewrite using `[← Category.assoc, ← spMap_comp, e1, spMap_comp, Category.assoc]`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_fin_one]`. Rewrite using `[← Category.assoc, ← spMap_comp, e2]`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_fin_one, map_pow]`. Rewrite using `[← RingHom.comp_apply, hβ, ← hι, RingHom.comp_apply]`. Conclude with `GlobalTheory.T.isAffineCombination_independent_of_chart X.left Va W hVa hW _ _ _ hq' hq2' (Fin 1) _ _ _ _ (Fin.forall_fin_one.2 (rEK.eq (isRed_comp π hπ g₀ ι hι (isRed_of_away π hπ g₀ fa ea rea S ρa hρa)))) h1' (GlobalTheory.SecGlue.preimage_spMap_comp_eq_top ι hEa)`. Establish `sj` using `side fj Vj hVj ej tj ρj hρj rej hA hcj`.
+
+Establish `sl` using `side fl Vl hVl el tl ρl hρl rel (land _ rEL) hcl`. Establish `sc` using `GlobalTheory.T.isAffineCombinationInChart_specMap_comp X.left W S _ ι (Fin 2) _ _ _ _ hc`. Establish `sc' : IsCombIn W (spMap ι ≫ spMap ρl ≫ el) (spMap ι ≫ c) ![spMap ι ≫ spMap ρl ≫ tl, spMap ι ≫ spMap ρj ≫ ej] ![1, 1 - ι fS ^ N]`. Use `isCombIn_congr rfl rfl ?_ ?_ sc` and prove the remaining obligations. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> simp`. Take `⟨_, _, _, kj⟩` from `isCombIn_one sj`. Take `⟨_, _, _, kl⟩` from `isCombIn_one sl`. Take `⟨_, _, _, _, kc⟩` from `isCombIn_two sc'`. Establish `hTJ` using `land _ rTJ`.
+
+Establish `hTL` using `land _ rTL`. Establish `hEL` using `land _ rEL`. Establish `hcW : c ⁻¹ᵁ W = ⊤` using `hc.2.1`. Take `⟨M₀, hM⟩` from `chartHom_pow_mul_eq X hsm W hW (spMap ρj ≫ tj) c ((comp_overR X fj ρj hρj tj htj).trans hcX.symm) hTJ hcW fS (fun x => by`. Establish `k1` using `kj x`.
+
+Establish `k2` using `kl x`. Establish `k3` using `kc x`. Simplify using `only [GlobalTheory.SecGlue.chartHom_spMap_comp W ι _ hA, GlobalTheory.SecGlue.chartHom_spMap_comp W ι _ hTJ, GlobalTheory.SecGlue.chartHom_spMap_comp W ι _ hEL, GlobalTheory.SecGlue.chartHom_spMap_comp W ι _ hTL, GlobalTheory.SecGlue.chartHom_spMap_comp W ι _ hcW] at k1 k2 k3`. Take the linear combination `k1 - k3 - k2)`. Conclude with `⟨M₀, fun h₁ h₂ x => hM x⟩`.
+-/
 theorem exists_comb_pow {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = ⊥) (X : Over (Sp R)) (hsm : Smooth X.hom)
     (g₀ : Sp R₀ ⟶ X.left) (fj fl fk : R) (Vj Vl W : X.left.Opens) (hVj : IsAffineOpen Vj)
@@ -218,6 +274,21 @@ end GlobalTheory.SecGlue.Red
 
 namespace GlobalTheory.SecGlue.Red
 
+/- English proof (translation)
+Use `set fS := algebraMap R S fk with hfS`. Establish `rA` using `isRed_of_away π hπ g₀ fj ej rej S ρj hρj`. Establish `rTJ` using `isRed_of_away π hπ g₀ fj tj rtj S ρj hρj`. Establish `rEL` using `isRed_of_away π hπ g₀ fl el rel S ρl hρl`. Establish `rTL` using `isRed_of_away π hπ g₀ fl tl rtl S ρl hρl`.
+
+Establish `hq` using `Ideal.Quotient.mk_surjective (I := redI π S)`. Establish `hq2` using `ker_mk_sq π hsq S`. Establish `land : ∀ u, IsRed π hπ g₀ S u → u ⁻¹ᵁ W = ⊤` using `fun u hu => (GlobalTheory.T.preimage_eq_of_square_zero_thickening S _ _ hq hq2 X.left u _ (hu.eq rA) W).trans hA`. Establish `move : ∀ (fa : R) (Va : X.left.Opens), IsAffineOpen Va → ∀ (ea ta t'a : Sp (Localization.Away fa) ⟶ X.left) (ρa : Localization.Away fa →+* S), ρa.comp (algebraMap R _) = algebraMap R S → IsRed π hπ g₀ S (spMap ρa ≫ ea) → IsRed π hπ g₀ S (spMap ρa ≫ ta) → IsCombIn Va ea t'a ![ta] …`. Introduce `fa Va hVa ea ta t'a ρa hρa rE rT h`.
+
+Establish `a1` using `GlobalTheory.T.isAffineCombinationInChart_specMap_comp X.left Va _ S ρa (Fin 1) _ _ _ _ h`. Establish `a1' : IsCombIn Va (spMap ρa ≫ ea) (spMap ρa ≫ t'a) ![spMap ρa ≫ ta] ![fS ^ M]`. Use `isCombIn_congr rfl rfl ?_ ?_ a1` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_fin_one, map_pow]`. Rewrite using `[← RingHom.comp_apply, hρa]`.
+
+Conclude with `GlobalTheory.T.isAffineCombination_independent_of_chart X.left Va W hVa hW S _ _ hq hq2 (Fin 1) _ _ _ _ (Fin.forall_fin_one.2 (rT.eq rE)) a1' (land _ rE)`. Take `⟨hA', hT'J, hTJ, k1⟩` from `isCombIn_one (move fj Vj hVj ej tj t'j ρj hρj rA rTJ h'j)`. Take `⟨hEL, hT'L, hTL, k2⟩` from `isCombIn_one (move fl Vl hVl el tl t'l ρl hρl rEL rTL h'l)`. Take `⟨_, hcW, _, _, k3⟩` from `isCombIn_two hc`. Use `⟨hEL, hT'J, Fin.forall_fin_two.2 ⟨hT'L, hA⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `k4` using `hM₀ hTJ hcW x`. Establish `k1` using `k1 x`. Establish `k2` using `k2 x`. Establish `k3` using `k3 x`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hM`.
+
+Rewrite using `[Fin.sum_univ_two]`. Use `show chartHom W _ hT'J x = chartHom W _ hEL x + ((1 : S) * (chartHom W (spMap ρl ≫ t'l) hT'L x - chartHom W _ hEL x) + (1 - fS ^ (N + (M₀ + d))) * (chartHom W (spMap ρj ≫ ej) hA x - chartHom W _ hEL x))`. Take the linear combination `k1 - k2 + fS ^ (M₀ + d) * k3 + fS ^ d * k4`.
+-/
 theorem affineCombination_squareZero_lifts_cocycle {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = ⊥) (X : Over (Sp R))
     (g₀ : Sp R₀ ⟶ X.left) (fj fl fk : R) (Vj Vl W : X.left.Opens) (hVj : IsAffineOpen Vj)
@@ -284,6 +355,17 @@ end GlobalTheory.SecGlue.Red
 
 open GlobalTheory.SecGlue GlobalTheory.SecGlue.Red IsLocalization.Away in
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π hπ hsq X hsm g₀ _hg₀ κ _ f V hV e he hered hev N t ht htred htv hcomb n s W hs hW hej`. Set `ρR : ∀ j l (i : Fin (n j l)), Localization.Away (f j) →+* Localization.Away (s j l i)` to `fun j l i => (algebraMap (Localization.Away (f j * f l)) _).comp (awayToAwayRight (P := Localization.Away (f j * f l)) (f j) (f l))`. Set `ρL : ∀ j l (i : Fin (n j l)), Localization.Away (f l) →+* Localization.Away (s j l i)` to `fun j l i => (algebraMap (Localization.Away (f j * f l)) _).comp (awayToAwayLeft (P := Localization.Away (f j * f l)) (f l) (f j))`. Establish `hρR : ∀ j l i, (ρR j l i).comp (algebraMap R _) = algebraMap R _` using `fun j l i => by`. Simplify using `only [ρR]`.
+
+Rewrite using `[RingHom.comp_assoc, awR_comp, ← IsScalarTower.algebraMap_eq]`. Establish `hρL : ∀ j l i, (ρL j l i).comp (algebraMap R _) = algebraMap R _` using `fun j l i => by`. Simplify using `only [ρL]`. Rewrite using `[RingHom.comp_assoc, awL_comp, ← IsScalarTower.algebraMap_eq]`. Establish `hA : ∀ j l i, (spMap (ρR j l i) ≫ e j) ⁻¹ᵁ W j l i = ⊤` using `fun j l i => by`.
+
+Use `hej j l i` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ← spMap_comp]`. Then use the resulting hypothesis. Establish `hQ` using `fun j l k (i : Fin (n j l)) => exists_comb_pow π hπ hsq X hsm g₀ (f j) (f l) (f k) (V j) (V l) (W j l i) (hV j) (hV l) (hW j l i) (e j) (t k j) (e l) (t k l) (e k) (he j) (ht k j) (he l) (ht k l) (hered j) (htred k j) (hered l) (htred k l) (hered k) N (hcomb k j) (hcomb k l) _ (ρ …`. Use `choose c hc M₀ hM₀ using hQ`. Set `M` to `Finset.univ.sup (fun p : (j : κ) × (l : κ) × κ × Fin (n j l) => M₀ p.1 p.2.1 p.2.2.1 p.2.2.2)`.
+
+Establish `hMle : ∀ j l k i, M₀ j l k i ≤ M` using `fun j l k i => Finset.le_sup (f := fun p : (j : κ) × (l : κ) × κ × Fin (n j l) => M₀ p.1 p.2.1 p.2.2.1 p.2.2.2) (Finset.mem_univ ⟨j, l, k, i⟩)`. Establish `hT` using `fun k j => GlobalTheory.T.exists_affineCombination_squareZero_lifts_chart X.left (V j) (hV j) (Localization.Away (f j)) _ (Ideal.Quotient.mk (redI π (Localization.Away (f j)))) Ideal.Quotient.mk_surjective (ker_mk_sq π hsq _) (Fin 1) (e j) ![t k j] ![algebraMap R (Localization.Aw …`. Use `choose t' ht'c ht'q ht'R using hT`. Use `⟨M, t', fun k j => ?_, fun k j => ?_, fun k j => (ht'c k j).2.1, fun j l k i => ?_⟩` and prove the remaining obligations. Conclude with `(ht'R k j R X.hom (Fin.forall_fin_one.2 ((ht k j).trans (he j).symm))).trans (he j)`.
+
+Conclude with `(awayMap_eq_of_red π (f j) _ _ (ht'q k j)).trans (hered j)`. Establish `h` using `affineCombination_squareZero_lifts_cocycle π hπ hsq X g₀ (f j) (f l) (f k) (V j) (V l) (W j l i) (hV j) (hV l) (hW j l i) (e j) (t k j) (t' k j) (e l) (t k l) (t' k l) (hered j) (htred k j) (hered l) (htred k l) N M (M₀ j l k i) (hMle j l k i) (ht'c k j) (ht'c k l) _ (ρR j l i) ( …`. Simplify `h` using `only [ρR, ρL, spMap_comp, Category.assoc]`.
+-/
 theorem GlobalTheory.SecGlue.exists_pow_cocycle : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ →
     ∀ (X : Over (Sp R)), Smooth X.hom → ∀ g₀ : Sp R₀ ⟶ X.left, g₀ ≫ X.hom = spMap π →
     ∀ (κ : Type) [Fintype κ] (f : κ → R), ∀ (V : κ → X.left.Opens), (∀ k, IsAffineOpen (V k)) →

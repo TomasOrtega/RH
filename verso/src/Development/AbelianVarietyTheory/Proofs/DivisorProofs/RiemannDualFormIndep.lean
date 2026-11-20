@@ -23,11 +23,25 @@ section Frames
 
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L N : LB A.left} {L' : LB A'.left} {g : ℕ}
 
+/- English proof (translation)
+Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`.
+-/
 theorem ex_add_mem (u : HolUnif A L g) (l : u.Λ) (z : Fin g → ℂ) : u.ex (z + l) = u.ex z := by
   rw [u.ex_add, (u.ker l).2 l.2, _root_.mul_one]
 
 open PullHermitian in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(CechPic.cls_eq_zero_iff hN).1 h0`. Take `⟨r, hr, hrφ⟩` from `exists_glue (fun i : N.ι => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U i}) (fun i => (u.hol _ 0).1) (fun z => exists_chart (u.ex z).left hN) (fun i z => valAt' (u.ex z).left _ (t.s i).val / u.fr i z) (fun i => by`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(u.hol _ (t.s i).val).2.mul ((u.fr_hol i).inv fun z hz => u.fr_ne i z hz))`. Use the proof step `(fun i j z hi hj => by`.
+
+Establish `hij` using `inf_of _ hi hj`. Establish `e` using `congrArg (unitVal _ hij) (ht i j)`. Establish `e' : unitVal _ hi (t.s i) = unitVal _ hij (N.g i j) * unitVal _ hj (t.s j)` using `(unitVal_res _ inf_le_left hij hi _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg (_ * ·) (unitVal_res _ inf_le_right hij hj _))))`. Rewrite using `[div_eq_div_iff (u.fr_ne _ _ hi) (u.fr_ne _ _ hj), u.fr_compat i j z hij, valAt'_eq_unitVal _ hi, valAt'_eq_unitVal _ hj, valAt'_eq_unitVal _ hij, e', Units.val_mul]`. Use the proof step `ring)`.
+
+Use `haveI := u.discrete`. Use `(appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full B c r hB hc hr (fun z => ?_) fun l z => ?_).1` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hN`. Rewrite using `[hrφ i z hi, valAt'_eq_unitVal _ hi]`. Conclude with `div_ne_zero (Units.ne_zero _) (u.fr_ne _ _ hi)`.
+
+Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hN`. Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ N.U i` using `by rwa [ex_add_mem]`. Establish `h1` using `u.fr_ne _ _ hi`. Establish `h2` using `u.fr_ne _ _ hi'`. Rewrite using `[hrφ i z hi, hrφ i (z + l) hi', ex_add_mem, div_eq_iff h2, mul_right_comm, ← hf l i z hi]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem herm_eq_zero (hN : N.IsLB) (h0 : cls N hN = 0) (u : HolUnif A N g) (B : Matrix (Fin g) (Fin g) ℂ)
     (c : u.Λ → ℂ) (hB : B.IsHermitian) (hc : ∀ l, ‖c l‖ = 1)
     (hf : ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ N.U i → u.fr i z =
@@ -62,6 +76,11 @@ theorem herm_eq_zero (hN : N.IsLB) (h0 : cls N hN = 0) (u : HolUnif A N g) (B : 
 
 variable (u : HolUnif A L g) (u' : HolUnif A' L' g) (ψ : A ⟶ A') (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
 
+/- English proof (translation)
+Use `fin_cases k`. Express the relevant statement in the definitionally equal form `u'.ex (T z + T z) = u.ex z ≫ (ψ * ψ)`. Rewrite using `[u'.ex_add, hT, MonObj.comp_mul]`. Conclude with `hT z`. Express the relevant statement in the definitionally equal form `u'.ex 0 = u.ex z ≫ 1`.
+
+Rewrite using `[MonObj.comp_one]`. Conclude with `(u'.ker 0).2 (zero_mem _)`.
+-/
 theorem covers (hT : ∀ z, u'.ex (T z) = u.ex z ≫ ψ) (k : Fin 3) (z : Fin g → ℂ) :
     u'.ex (![T + T, T, 0] k z) = u.ex z ≫ ![ψ * ψ, ψ, 1] k := by
   fin_cases k
@@ -75,12 +94,28 @@ theorem covers (hT : ∀ z, u'.ex (T z) = u.ex z ≫ ψ) (k : Fin 3) (z : Fin g 
 abbrev diagLB (L' : LB A'.left) (ψ : A ⟶ A') : LB A.left :=
   LB.LinComb L' (fun k => (![ψ * ψ, ψ, 1] k).left) ![1, -2, 1]
 
+/- English proof (translation)
+Use `(CechPic.cls_linComb hL' _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_three, lam]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`. Use `module`.
+-/
 theorem cls_diagLB (hL' : L'.IsLB) (h : (diagLB L' ψ).IsLB) : cls _ h = lam (cls L' hL') ψ ψ := by
   refine (CechPic.cls_linComb hL' _ _ h).trans ?_
   rw [Fin.sum_univ_three, lam]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
   module
 
+/- English proof (translation)
+Establish `hl : T l ∈ u'.Λ`. Rewrite using `[← u'.ker, hT, (u.ker l).2 l.2, ← (u.ker 0).2 u.Λ.zero_mem, ← hT, map_zero]`. Conclude with `(u'.ker 0).2 u'.Λ.zero_mem`. Establish `hχ` using `hA.2.2.1`. Use `⟨χ ⟨T l + T l, add_mem hl hl⟩ / χ ⟨T l, hl⟩ ^ 2, by simp [hχ], fun i z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ∀ k, ⊤ ≤ (u'.ex (![T + T, T, 0] k z)).left ⁻¹ᵁ L'.U (i k)` using `fun k => by`. Rewrite using `[covers u u' ψ T hT]`. Conclude with `(CubeValues.le_preimage_wchart (u.ex z).left L' _ i).1 hz k`. Establish `h0` using `hA.2.2.2 ⟨T l + T l, add_mem hl hl⟩ (i 0) (T z + T z) (hc 0)`. Establish `h1` using `hA.2.2.2 ⟨T l, hl⟩ (i 1) (T z) (hc 1)`.
+
+Establish `h4 : χ ⟨T l, hl⟩ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hχ]; exact one_ne_zero)`. Express the relevant statement in the definitionally equal form `∏ k, u'.fr (i k) (![T + T, T, 0] k z) ^ (![1, -2, 1] k : ℤ) = _ * ∏ k, u'.fr (i k) (![T + T, T, 0] k (z + l)) ^ (![1, -2, 1] k : ℤ)`. Simplify using `only [Fin.prod_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, LinearMap.add_apply, LinearMap.zero_apply, map_add, zpow_one, zpow_neg, zpow_ofNat]`. Rewrite using `[h0, h1, add_zero]`. Simplify using `only [hermForm, star_add, Matrix.mulVec_add, add_dotProduct, dotProduct_add]`.
+
+Generalize the expression as in `(T z ⬝ᵥ H.mulVec (star (T l))) = a`. Generalize the expression as in `(T l ⬝ᵥ H.mulVec (star (T l))) = b`. Establish `e : Complex.exp (Real.pi * (a + a + (a + a)) + Real.pi / 2 * (b + b + (b + b))) = Complex.exp (Real.pi * (2 * a) + Real.pi / 2 * (2 * b)) * Complex.exp (Real.pi * a + Real.pi / 2 * b) ^ 2`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `Complex.exp_ne_zero (Real.pi * a + Real.pi / 2 * b)`. Rewrite using `[e]`. Generalize the expression as in `Complex.exp (Real.pi * a + Real.pi / 2 * b) = s at h6`.
+
+Simplify using `only [mul_pow, mul_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem factor_diag (hT : ∀ z, u'.ex (T z) = u.ex z ≫ ψ) {H : Matrix (Fin g) (Fin g) ℂ} {χ : u'.Λ → ℂ}
     (hA : u'.IsAH H χ) (l : u.Λ) : ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (diagLB L' ψ).U i →
       (linCombUnif u u' _ _ ![1, -2, 1] (covers u u' ψ T hT)).fr i z =
@@ -119,6 +154,17 @@ theorem factor_diag (hT : ∀ z, u'.ex (T z) = u.ex z ≫ ψ) {H : Matrix (Fin g
 
 open PullHermitian in
 
+/- English proof (translation)
+Establish `hI : ∀ z, u.ex (LinearMap.id (R` using `ℂ) z) = u.ex z ≫ 𝟙 A := fun z => (Category.comp_id _).symm`. Use `choose c hc hf using factor_diag u u (𝟙 A) LinearMap.id hI hA`. Use `choose c' hc' hf' using factor_diag u u' ψ T hT hA'`. Establish `d : (diagLB L (𝟙 A)).IsLB` using `LB.isLB_linComb hL _ _`. Establish `d' : (diagLB L' ψ).IsLB` using `LB.isLB_linComb hL' _ _`.
+
+Use `set H₂ := (LinearMap.toMatrix' T).transpose * H' * (LinearMap.toMatrix' T).transpose.conjTranspose with hH₂`. Establish `hH₂h : H₂.IsHermitian` using `Matrix.isHermitian_mul_mul_conjTranspose _ hA'.1`. Establish `hs : ∀ z w, hermForm ((2 : ℂ) • H₂ - (2 : ℂ) • H) z w = 2 * hermForm H' (T z) (T w) - 2 * hermForm H z w` using `fun z w => by rw [hermForm_sub_smul, hH₂, hermForm_pull]`. Establish `key` using `herm_eq_zero (LB.isLB_div d' d) (by rw [CechPic.cls_div d' d, cls_diagLB ψ hL', cls_diagLB _ hL, h, sub_self]) (SameFactor.divUnif (linCombUnif u u _ _ ![1, -2, 1] (covers u u _ _ hI)) (linCombUnif u u' _ _ ![1, -2, 1] (covers u u' ψ T hT)) rfl) ((2 : ℂ) • H₂ - (2 : ℂ) • H) (fun …`. Take `⟨h1, h2⟩` from `(top_le_preimage_inf _ _ _).1 hz`.
+
+Establish `e1` using `hf' l i.1 z h1`. Establish `e2` using `hf l i.2 z h2`. Use `(congrArg₂ (fun a b => a * b⁻¹) e1 e2).trans ?_` and prove the remaining obligations. Rewrite using `[hs, hs]`. Express the relevant statement in the definitionally equal form `_ = _ * (_ * _⁻¹)`.
+
+Rewrite using `[mul_sub, mul_sub, sub_add_sub_comm, Complex.exp_sub]`. Simplify using `only [LinearMap.id_apply, mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `hs z w` as an intermediate fact. Rewrite `this` using `[key]`.
+
+Simplify using `only [hermForm, Matrix.zero_mulVec, dotProduct_zero] at this ⊢`. Take the linear combination `(-1 / 2 : ℂ) * this`.
+-/
 theorem hermForm_eq_of_lam (hL : L.IsLB) (hL' : L'.IsLB) (hT : ∀ z, u'.ex (T z) = u.ex z ≫ ψ)
     {H H' : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} {χ' : u'.Λ → ℂ} (hA : u.IsAH H χ) (hA' : u'.IsAH H' χ')
     (h : lam (cls L' hL') ψ ψ = lam (cls L hL) (𝟙 A) (𝟙 A)) (z w : Fin g → ℂ) :
@@ -155,6 +201,17 @@ theorem hermForm_eq_of_lam (hL : L.IsLB) (hL' : L'.IsLB) (hT : ∀ z, u'.ex (T z
 
 end Frames
 
+/- English proof (translation)
+Take `⟨ψ, e⟩` from `SharpPull.exists_lift d.isPull d'.isPull (𝟙 P.A)`. Establish `hψ` using `SharpPull.isMonHom_lift d.isPull d'.isPull e`. Establish `hψφ : ψ.left ≫ d'.φ = d.φ` using `e.trans (Category.comp_id _)`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback P.isAb d.isPull`. Establish `hA'` using `PolPull.isAbelianScheme_of_isGrpPullback P.isAb d'.isPull`.
+
+Take `⟨t₁, t₂⟩` from `TorusTransfer.tangent_bijective d'.u ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback d'.isPull.1 P.smoothDim)`. Take `⟨T, hT, -⟩` from `HomLinear.exists_linear_of_isMonHom d.B d'.B hA hA' d.L d'.L P.g P.g d.u d'.u t₁ t₂ ψ hψ`. Use `⟨T, fun z => ?_, hermForm_eq_of_lam d.u d'.u ψ T d.isLB d'.isLB hT d.isAH d'.isAH ?_⟩` and prove the remaining obligations. Rewrite using `[hT, Over.comp_left, Category.assoc, hψφ]`. Establish `k (b : P.RiemannData y) (x : d.B ⟶ b.B) : lam (cls b.L b.isLB) x x = CechPic.pull ((lift x x).left ≫ sqMap b.isPull.1.w) P.c`.
+
+Rewrite using `[CechPic.pull_comp, b.pol, CechPic.pull_lam, lift_fst, lift_snd]`. Establish `k₁ (b : P.RiemannData y) (x : d.B ⟶ b.B) : ((lift x x).left ≫ sqMap b.isPull.1.w) ≫ pullback.fst _ _ = x.left ≫ b.φ`. Use `(Category.assoc _ _ _).trans ((congrArg _ (pullback.lift_fst _ _ _)).trans ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (·.left ≫ b.φ) (lift_fst x x))`. Establish `k₂ (b : P.RiemannData y) (x : d.B ⟶ b.B) : ((lift x x).left ≫ sqMap b.isPull.1.w) ≫ pullback.snd _ _ = x.left ≫ b.φ`.
+
+Use `(Category.assoc _ _ _).trans ((congrArg _ (pullback.lift_snd _ _ _)).trans ?_)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (·.left ≫ b.φ) (lift_snd x x))`. Establish `k₃ : ψ.left ≫ d'.φ = (𝟙 d.B : d.B ⟶ d.B).left ≫ d.φ` using `hψφ.trans (Category.id_comp _).symm`. Rewrite using `[k, k]`. Use `congr 2`.
+
+Conclude with `pullback.hom_ext ((k₁ _ _).trans (k₃.trans (k₁ _ _).symm)) ((k₂ _ _).trans (k₃.trans (k₂ _ _).symm))`.
+-/
 theorem exists_lin (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d d' : P.RiemannData y) :
     ∃ T : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ), (∀ z, (d'.u.ex (T z)).left ≫ d'.φ = (d.u.ex z).left ≫ d.φ) ∧
       ∀ z w, hermForm d'.H (T z) (T w) = hermForm d.H z w := by
@@ -186,6 +243,23 @@ theorem exists_lin (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d d' : P.Ri
 
 open Matrix HermFrame in
 
+/- English proof (translation)
+Introduce `S P y d d' W f f' hW`. Take `⟨T, hT, hH⟩` from `RiemIndep.exists_lin S P y d d'`. Use `set M := LinearMap.toMatrix' T with hM`. Establish `hMv : ∀ z, M *ᵥ z = T z` using `fun z => LinearMap.toMatrix'_mulVec T z`. Establish `hchg : d.H = chg M d'.H`.
+
+Use extensionality with `a b`. Rewrite using `[← form_single (chg M d'.H), form_chg, hMv, hMv]`. Conclude with `(form_single d.H a b).symm.trans (hH _ _).symm`. Establish `hinj : Function.Injective M.mulVec`. Use `(injective_iff_map_eq_zero M.mulVecLin).2 fun v hv => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `(posDef_iff.1 d.posDef).2 v hne`. Rewrite `h1` using `[hchg, form_chg]`. Establish `h0 : M *ᵥ v = 0` using `hv`. Rewrite `h1` using `[h0]`.
+
+Simplify using `[form] at h1`. Establish `hU : IsUnit M` using `mulVec_injective_iff_isUnit.1 hinj`. Establish `hMN : M * M⁻¹ = 1` using `mul_nonsing_inv M ((isUnit_iff_isUnit_det M).1 hU)`. Establish `hfn : ∀ g : Γ(P.A.left, W), d.fn W g = d'.fn W g ∘ T` using `fun g => by`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [PPAS.RiemannData.fn, Function.comp_apply, hT]`. Establish `hTd : ∀ v, fderiv ℂ (⇑T) 0 v = T v` using `fun v => by`. Use `(LinearMap.toContinuousLinearMap T).fderiv (x := 0)` as an intermediate fact. Conclude with `congrArg (fun L => L v) this`. Establish `hcov : ∀ g : Γ(P.A.left, W), d.cov W g = Mᵀ *ᵥ d'.cov W g` using `fun g => by`.
+
+Use function extensionality and compare the values at `a`. Establish `hd` using `d'.differentiableAt_fn g hW`. Establish `hd' : DifferentiableAt ℂ (d'.fn W g) (T 0)` using `by rw [map_zero]; exact hd`. Establish `hTdiff : DifferentiableAt ℂ (⇑T) 0` using `(LinearMap.toContinuousLinearMap T).differentiableAt`. Simplify using `only [PPAS.RiemannData.cov]`.
+
+Rewrite using `[hfn, fderiv_comp 0 hd' hTdiff, ContinuousLinearMap.comp_apply, hTd, map_zero, ← hMv, mulVec_single_one]`. Express the relevant statement in the definitionally equal form `_ = ∑ b, M.col a b * fderiv ℂ (d'.fn W g) 0 (Pi.single b 1)`. Generalize the expression as in `fderiv ℂ (d'.fn W g) 0 = L`. Use `conv_lhs => rw [pi_eq_sum_univ (M.col a)]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[hchg, dualGram_chg hMN, form_chg, hcov, hcov, mulVec_mulVec, mulVec_mulVec, ← transpose_mul, hMN, transpose_one, one_mulVec, one_mulVec]`.
+-/
 theorem riemann_dual_form_indep : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d d' : P.RiemannData y)
     (W : P.A.left.Opens) (f f' : Γ(P.A.left, W)), ⊤ ≤ (y ≫ LieVB.unitSec P.A) ⁻¹ᵁ W →
     HermFrame.form (HermFrame.dualGram d.H) (d.cov W f) (d.cov W f') =

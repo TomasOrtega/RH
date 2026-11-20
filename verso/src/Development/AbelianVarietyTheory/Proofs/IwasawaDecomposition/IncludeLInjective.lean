@@ -13,6 +13,9 @@ section Rat
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : Nontrivial (AFplus L) := Formalism.L2.GlobalTheoryTheory.Br.finiteAdeleRing_nontrivial`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := L) (RingHom.injective _)`.
+-/
 theorem includeL_injective : Function.Injective (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) := by
   haveI : Nontrivial (AFplus L) := Formalism.L2.GlobalTheoryTheory.Br.finiteAdeleRing_nontrivial
   exact Algebra.TensorProduct.includeLeft_injective (S := L) (RingHom.injective _)
@@ -20,6 +23,11 @@ theorem includeL_injective : Function.Injective (Algebra.TensorProduct.includeLe
 abbrev incGL : GL (Fin n) L →* GL (Fin n) (AL L) :=
   Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L)
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `includeL_injective (L := L)` to reduce the goal to its premises. Use `congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) h` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem incGL_injective : Function.Injective (incGL (L := L) (n := n)) := by
   intro a b h
   apply Units.ext
@@ -28,13 +36,22 @@ theorem incGL_injective : Function.Injective (incGL (L := L) (n := n)) := by
   have := congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) h
   simpa using this
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_subgroupOf.1 γ.2`.
+-/
 theorem mem_incGL (γ : GQ L n) : ((γ : GA L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map incGL :=
   Subgroup.mem_subgroupOf.1 γ.2
 
 def ratFun (γ : GQ L n) : GL (Fin n) L := (Subgroup.mem_map.1 (mem_incGL γ)).choose
 
+/- English proof (translation)
+The claim follows from `(Subgroup.mem_map.1 (mem_incGL γ)).choose_spec.1`.
+-/
 theorem ratFun_mem (γ : GQ L n) : ratFun γ ∈ GQ0 L n := (Subgroup.mem_map.1 (mem_incGL γ)).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(Subgroup.mem_map.1 (mem_incGL γ)).choose_spec.2`.
+-/
 theorem incGL_ratFun (γ : GQ L n) : incGL (ratFun γ) = ((γ : GA L n) : GL (Fin n) (AL L)) :=
   (Subgroup.mem_map.1 (mem_incGL γ)).choose_spec.2
 
@@ -43,8 +60,14 @@ def ratHom : GQ L n →* GL (Fin n) L where
   map_one' := incGL_injective (by rw [incGL_ratFun, map_one]; rfl)
   map_mul' γ δ := incGL_injective (by rw [map_mul, incGL_ratFun, incGL_ratFun, incGL_ratFun]; rfl)
 
+/- English proof (translation)
+The claim follows from `ratFun_mem γ`.
+-/
 theorem ratHom_mem (γ : GQ L n) : ratHom γ ∈ GQ0 L n := ratFun_mem γ
 
+/- English proof (translation)
+Apply `incGL_injective` to reduce the goal to its premises. Rewrite using `[show ratHom γ = ratFun γ from rfl, incGL_ratFun]`. Conclude with `(Units.ext h).symm`.
+-/
 theorem ratHom_eq_of_match (γ : GQ L n) (γ₀ : GL (Fin n) L)
     (h : (((γ : GA L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
       (γ₀ : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)) : γ₀ = ratHom γ := by

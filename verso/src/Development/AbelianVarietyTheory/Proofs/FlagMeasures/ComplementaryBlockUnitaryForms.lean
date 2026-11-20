@@ -24,30 +24,51 @@ namespace GlobalTheory.LeviIso.Chart
 def twist {j : ℕ} (p : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ →+* ℂ) (x : Fin j → Fin j → ℂ) : Fin j → Fin j → ℂ :=
   fun r s => (p * (Matrix.of x).map τ * p⁻¹) r s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_twist {j : ℕ} (p : Matrix (Fin j) (Fin j) ℂ) (τ : ℂ →+* ℂ) (x : Fin j → Fin j → ℂ) :
     Matrix.of (twist p τ x) = p * (Matrix.of x).map τ * p⁻¹ := rfl
 
 variable {j : ℕ} {p : Matrix (Fin j) (Fin j) ℂ} {τ : ℂ →+* ℂ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hτ with rfl | rfl <;> simp`.
+-/
 theorem norm_tau (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) (z : ℂ) : ‖τ z‖ = ‖z‖ := by
   rcases hτ with rfl | rfl <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hτ with rfl | rfl <;> simp`.
+-/
 theorem tau_tau (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) (z : ℂ) : τ (τ z) = z := by
   rcases hτ with rfl | rfl <;> simp
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_map_tau (x : Matrix (Fin j) (Fin j) ℂ) : (x.map τ).det = τ x.det := by
   rw [RingHom.map_det]; rfl
 
+/- English proof (translation)
+Rewrite using `[of_twist, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hp), Matrix.det_one, one_mul, det_map_tau]`.
+-/
 theorem det_twist (hp : p.det ≠ 0) (x : Fin j → Fin j → ℂ) :
     (Matrix.of (twist p τ x)).det = τ (Matrix.of x).det := by
   rw [of_twist, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul,
     Matrix.mul_nonsing_inv _ (Ne.isUnit hp), Matrix.det_one, one_mul, det_map_tau]
 
+/- English proof (translation)
+Rewrite using `[det_twist hp]`. Conclude with `(map_ne_zero τ).2 hx`.
+-/
 theorem det_twist_ne (hp : p.det ≠ 0) {x : Fin j → Fin j → ℂ} (hx : (Matrix.of x).det ≠ 0) :
     (Matrix.of (twist p τ x)).det ≠ 0 := by
   rw [det_twist hp]
   exact (map_ne_zero τ).2 hx
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun r s => (Matrix.of x * Matrix.of y) r s) = Matrix.of x * Matrix.of y` using `rfl`. Rewrite using `[of_twist, of_twist, of_twist, e, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ (Ne.isUnit hp)]`.
+-/
 theorem twist_mul (hp : p.det ≠ 0) (x y : Fin j → Fin j → ℂ) :
     Matrix.of (twist p τ fun r s => (Matrix.of x * Matrix.of y) r s) =
       Matrix.of (twist p τ x) * Matrix.of (twist p τ y) := by
@@ -56,6 +77,9 @@ theorem twist_mul (hp : p.det ≠ 0) (x y : Fin j → Fin j → ℂ) :
   simp only [Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul_cancel_left _ _ (Ne.isUnit hp)]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun M => p⁻¹ * (M * p)) h`. Simplify using `only [of_twist, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (Ne.isUnit hp), Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ (Ne.isUnit hp)] at h2`. Use function extensionality and compare the values at `r s`. Conclude with `τ.injective (congrFun (congrFun h2 r) s)`.
+-/
 theorem twist_inj (hp : p.det ≠ 0) {x y : Fin j → Fin j → ℂ}
     (h : Matrix.of (twist p τ x) = Matrix.of (twist p τ y)) : x = y := by
   have h2 := congrArg (fun M => p⁻¹ * (M * p)) h
@@ -64,6 +88,11 @@ theorem twist_inj (hp : p.det ≠ 0) {x y : Fin j → Fin j → ℂ}
   funext r s
   exact τ.injective (congrFun (congrFun h2 r) s)
 
+/- English proof (translation)
+Use `⟨fun r s => τ ((p⁻¹ * y * p) r s), ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of fun r s => τ ((p⁻¹ * y * p) r s)).map τ = p⁻¹ * y * p`. Use extensionality with `r s`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, tau_tau hτ]`. Rewrite using `[of_twist, e]`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit hp), Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ (Ne.isUnit hp)]`.
+-/
 theorem twist_surj (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) (hp : p.det ≠ 0) (y : Matrix (Fin j) (Fin j) ℂ) :
     ∃ x, Matrix.of (twist p τ x) = y := by
   refine ⟨fun r s => τ ((p⁻¹ * y * p) r s), ?_⟩
@@ -74,6 +103,9 @@ theorem twist_surj (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) (hp : p.
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit hp), Matrix.mul_one,
     Matrix.mul_nonsing_inv_cancel_left _ _ (Ne.isUnit hp)]
 
+/- English proof (translation)
+Establish `hq : p⁻¹.det ≠ 0` using `(Matrix.isUnit_nonsing_inv_det p (Ne.isUnit hp)).ne_zero`. Establish `h1` using `GlobalTheory.HaarMul.measurePreserving_mul_mul j p p⁻¹ hp hq`. Break down `hτ with rfl | rfl` into its components or cases. Conclude with `h1`. Conclude with `h1.comp (haarLoc_conj_and_null j).1`.
+-/
 theorem measurePreserving_twist (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) (hp : p.det ≠ 0) :
     MeasurePreserving (twist p τ) (haarLoc j) (haarLoc j) := by
   have hq : p⁻¹.det ≠ 0 := (Matrix.isUnit_nonsing_inv_det p (Ne.isUnit hp)).ne_zero
@@ -82,9 +114,45 @@ theorem measurePreserving_twist (hτ : τ = RingHom.id ℂ ∨ τ = starRingEnd 
   · exact h1
   · exact h1.comp (haarLoc_conj_and_null j).1
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 theorem uMat_injective {n : ℕ} {ε : Fin n → Bool} {g h : Formalism.REAL.UJ ε} (e : uMat g = uMat h) : g = h :=
   Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+Introduce `n n₀ a j ε ε₀ W A C A₀ τ τ₀ hτ hτ₀ hn hC1 hC0 hAA hA0 h00 hsp hiso`. Take `⟨B, p, q, hB1, hB0, htri, hAB, hBA, hpq⟩` from `BlockGS.block_gramSchmidt n a j A C hC1 hC0`. Establish `hspB : SpansFlag B W` using `GlobalTheory.T.columnBlocksSpanFlag_of_block_triangular n a j A B p q W htri hAB hBA hsp`. Establish `hBJA : ∀ (m : ℕ) (X : Matrix (Fin n) (Fin m) ℂ), (∀ i, (A i)ᴴ * Formalism.REAL.Jm ε * X = 0) → ∀ i, (B i)ᴴ * Formalism.REAL.Jm ε * X = 0`. Introduce `m X hX i`.
+
+Rewrite using `[hBA i, Matrix.conjTranspose_sum, Matrix.sum_mul, Matrix.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc (q k i)ᴴ, Matrix.mul_assoc (q k i)ᴴ, hX, Matrix.mul_zero]`. Establish `hBJB : ∀ i k, (B i)ᴴ * Formalism.REAL.Jm ε * B k = 0`. Introduce `i k`.
+
+Use `hBJA _ _ (fun l => ?_) i` and prove the remaining obligations. Rewrite using `[hBA k, Matrix.mul_sum]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hAA, Matrix.zero_mul]`. Take `⟨B₀, s, d, hF, hA₀⟩` from `GlobalTheory.T.exists_orthonormalFrame_of_isotropicBlocks n n₀ a j ε ε₀ B A₀ hn hB1 hB0 hBJB (hBJA _ _ hA0) h00`.
+
+Take `⟨θ₀, hθm, hθ⟩` from `GlobalTheory.T.exists_measurable_unitaryLeviBlockMap n n₀ a j ε ε₀ B B₀ hF`. Take `⟨C₀, hC₀, hC₀m⟩` from `exists_conj_gauge_invariant n₀ ε₀ τ₀ hτ₀`. Establish `hp : ∀ i, (p i i).det ≠ 0` using `fun i => (Matrix.isUnit_det_of_right_inverse (hpq i)).ne_zero`. Set `R : (∀ i, Fin (j i) → Fin (j i) → ℂ) × Formalism.REAL.UJ ε₀ → (∀ i, Fin (j i) → Fin (j i) → ℂ) × Formalism.REAL.UJ ε₀` to `Prod.map (fun x i => twist (p i i) τ (x i)) (fun g => s * C₀ g * s⁻¹)`. Establish `hcont : Continuous fun g : Formalism.REAL.UJ ε₀ => s * C₀ g * s⁻¹` using `(continuous_const.mul C₀.continuous_toFun).mul continuous_const`.
+
+Establish `hR1 : Measurable fun (x : ∀ i, Fin (j i) → Fin (j i) → ℂ) i => twist (p i i) τ (x i)` using `measurable_pi_lambda _ fun i => (measurePreserving_twist hτ (hp i)).measurable.comp (measurable_pi_apply i)`. Establish `hRm : Measurable R` using `hR1.prodMap hcont.measurable`. Establish `hθR : ∀ z, (∀ i, (Matrix.of (z.1 i)).det ≠ 0) → uMat (θ₀ (R z)) = lev ε B B₀ (fun i => Matrix.of (twist (p i i) τ (z.1 i))) (uMat (s * C₀ z.2 * s⁻¹))` using `fun z hz => hθ (R z) fun i => det_twist_ne (hp i) (hz i)`. Use `⟨θ₀ ∘ R, hθm.comp hRm, fun m => ?_, fun z z' hz hz' => ⟨?_, fun e => ?_⟩, fun z hz => ⟨fun i => ?_, fun g hg hg0 => ?_⟩, fun μ c hμ hc => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.mem_isotropicFlagSelfAdjointLevi_iff_block n n₀ a j ε ε₀ B B₀ hF W hspB m]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, g, hx, hm⟩ choose y hy using fun i => twist_surj hτ (hp i) (x i)`. Establish `hy0 : ∀ i, (Matrix.of (y i)).det ≠ 0`. Introduce `i h0`. Apply `hx i` to reduce the goal to its premises.
+
+Rewrite using `[← hy i, det_twist (hp i), h0, map_zero]`. Use `⟨(y, C₀.symm (s⁻¹ * g * s)), hy0, uMat_injective ?_⟩` and prove the remaining obligations. Establish `e : s * C₀ (C₀.symm (s⁻¹ * g * s)) * s⁻¹ = g`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Use `group`.
+
+Rewrite using `[Function.comp_apply, hθR _ hy0, hm]`. Simplify using `only [hy, e]`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨_, _, fun i => det_twist_ne (hp i) (hz i), hθR z hz⟩`. Apply `uMat_injective` to reduce the goal to its premises.
+
+Establish `hzz : ∀ i, (Matrix.of fun r s => (Matrix.of (z.1 i) * Matrix.of (z'.1 i)) r s).det ≠ 0`. Introduce `i`. Express the relevant statement in the definitionally equal form `(Matrix.of (z.1 i) * Matrix.of (z'.1 i)).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hz i) (hz' i)`.
+
+Establish `e : uMat (s * C₀ (z.2 * z'.2) * s⁻¹) = uMat (s * C₀ z.2 * s⁻¹) * uMat (s * C₀ z'.2 * s⁻¹)`. Express the relevant statement in the definitionally equal form `_ = uMat ((s * C₀ z.2 * s⁻¹) * (s * C₀ z'.2 * s⁻¹))`. Use `congr 1`. Rewrite using `[map_mul]`. Use `group`.
+
+Express the relevant statement in the definitionally equal form `uMat (θ₀ (R z)) * uMat (θ₀ (R z')) = uMat (θ₀ (R _))`. Rewrite using `[hθR z hz, hθR z' hz', hθR _ hzz, ← hF.lev_mul]`. Simplify using `only [twist_mul (hp _), e]`. Establish `e2 : uMat (θ₀ (R z)) = uMat (θ₀ (R z'))` using `congrArg uMat e`. Rewrite `e2` using `[hθR z hz, hθR z' hz']`.
+
+Take `⟨e3, e4⟩` from `hF.lev_inj _ _ _ _ e2`. Use `Prod.ext (funext fun i => twist_inj (τ := τ) (hp i) (congrFun e3 i)) ?_` and prove the remaining obligations. Establish `e5` using `uMat_injective e4`. Conclude with `C₀.injective (mul_left_cancel (mul_right_cancel e5))`. Rewrite using `[Function.comp_apply, Size.locSize_blocks n a j B W hB1 hB0 hspB _ (fun i => Matrix.of (twist (p i i) τ (z.1 i))) (fun i => det_twist_ne (hp i) (hz i)) (fun i => by rw [hθR z hz, hF.lev_mul_B]) i, det_twist (hp i), norm_tau hτ]`.
+
+Use `GlobalTheory.T.flagStabilizer_mul_inv_leviComponent_mem_unipotent n n₀ a j ε ε₀ B B₀ hF W A A₀ p d s (C₀ z.2) (fun i => (Matrix.of (z.1 i)).map τ) g _ hsp hspB (fun k i h => (htri k i h).1) hp hAB hA₀ (fun i => ?_) hg (by rw [hC₀]; exact hg0) (hθR z hz)` and prove the remaining obligations. Rewrite using `[det_map_tau]`. Conclude with `(map_ne_zero τ).2 (hz i)`. Establish `hR : MeasurePreserving R ((Measure.pi fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)).prod (ENNReal.ofReal c • Formalism.REAL.muG ε₀)) ((Measure.pi fun i => ENNReal.ofReal (2 ^ (j i ^ 2)) • haarLoc (j i)).prod (ENNReal.ofReal c • Formalism.REAL.muG ε₀))`. Use `MeasurePreserving.prod ?_ ⟨hcont.measurable, hC₀m s c hc⟩` and prove the remaining obligations.
+
+Conclude with `measurePreserving_pi _ _ fun i => (measurePreserving_twist hτ (hp i)).smul_measure _`. Rewrite using `[← Measure.map_map hθm hRm, hR.map_eq]`. Take `⟨g1, g2⟩` from `GlobalTheory.T.levi_chart_map_haar_carried_invariant n n₀ a j ε ε₀ B B₀ hF W hspB θ₀ hθm hθ c`. Establish `g3` using `GlobalTheory.T.isRadial_map_unitaryLeviBlockProduct n n₀ a j ε ε₀ B B₀ hF θ₀ hθm hθ c hc`. Establish `hν : IsGaugeSub (flagM ε W) (n₀ ^ 2 + 2 * ∑ i, j i ^ 2) _` using `⟨g1, g2, g3⟩`.
+
+Establish `hd : n - 2 * ∑ i, j i = n₀` using `by omega`. Establish `halg` using `GlobalTheory.LeviAlgebra.exists_levi_algebra n ε a j W hiso`. Rewrite `halg` using `[hd]`. Take `⟨𝒜, E, a1, a2, a3, a4⟩` from `halg`. Rewrite `hμ`, `hν` using `[a4]`.
+
+Conclude with `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε 𝒜 _ E a1 a2 a3 _ hν).2.2.1 μ hμ`.
+-/
 theorem exists_leviChart : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) (A : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (C : ∀ i, Matrix (Fin (j i)) (Fin n) ℂ) (A₀ : Matrix (Fin n) (Fin n₀) ℂ) (τ τ₀ : ℂ →+* ℂ), (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) → (τ₀ = RingHom.id ℂ ∨ τ₀ = starRingEnd ℂ) → n = n₀ + 2 * ∑ i, j i → (∀ i, C i * A i = 1) → (∀ i k, i ≠ k → C i * A k = 0) → (∀ i k, (A i)ᴴ * Formalism.REAL.Jm ε * A k = 0) → (∀ i, (A i)ᴴ * Formalism.REAL.Jm ε * A₀ = 0) → A₀ᴴ * Formalism.REAL.Jm ε * A₀ = Formalism.REAL.Jm ε₀ → SpansFlag A W → IsIsoFlag ε j W → ∃ θ, IsLeviChart ε ε₀ W A A₀ τ τ₀ θ := by
   intro n n₀ a j ε ε₀ W A C A₀ τ τ₀ hτ hτ₀ hn hC1 hC0 hAA hA0 h00 hsp hiso
   obtain ⟨B, p, q, hB1, hB0, htri, hAB, hBA, hpq⟩ := BlockGS.block_gramSchmidt n a j A C hC1 hC0

@@ -16,6 +16,11 @@ def fockLattice {p : ℕ} (hV : ValuationProperties p O) (σ : Type) : Submodule
   add_mem' := fun hF hG => fock_lattice_add_mem hV hF hG
   smul_mem' := fun o _ hF => fock_lattice_smul_mem hV o hF
 
+/- English proof (translation)
+Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm (fun x : ι × Fin n => d x.1))).subset ?_` and prove the remaining obligations. Introduce `m hm`. Rewrite using `[Set.mem_Iic, Finsupp.le_def]`. Introduce and unpack `⟨i, c⟩`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`.
+
+Rewrite using `[← hm i]`. Conclude with `Finset.single_le_sum (f := fun c' => m (i, c')) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)`.
+-/
 theorem multidegree_monomials_finite {ι : Type} [Fintype ι] {n : ℕ} (d : ι → ℕ) :
     {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i}.Finite := by
   classical
@@ -27,6 +32,23 @@ theorem multidegree_monomials_finite {ι : Type} [Fintype ι] {n : ℕ} (d : ι 
   rw [← hm i]
   exact Finset.single_le_sum (f := fun c' => m (i, c')) (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)
 
+/- English proof (translation)
+Use `set S := (multidegree_monomials_finite (ι := ι) (n := n) d).toFinset with hS`. Set `f : ↥(Pol (KK O) n d) →ₗ[O] (S → KK O)` to `{ toFun := fun F s => (p : KK O) ^ N * (F : MvPolynomial (ι × Fin n) (KK O)).coeff s.1 map_add' := fun F G => by`. Use function extensionality and compare the values at `s`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun o F => by`.
+
+Use function extensionality and compare the values at `s`. Simplify using `[MvPolynomial.coeff_smul, mul_smul_comm] }`. Set `g : (S → O) →ₗ[O] (S → KK O)` to `LinearMap.pi (fun s => (Algebra.linearMap O (KK O)).comp (LinearMap.proj s))`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `F hF`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `m`. Simplify using `only [Submodule.coe_zero, MvPolynomial.coeff_zero]`. Distinguish the cases in `hm : m ∈ S`.
+
+Establish `h0` using `congrFun hF ⟨m, hm⟩`. Express the relevant statement in the definitionally equal form `(p : KK O) ^ N * (F : MvPolynomial _ (KK O)).coeff m = 0 at h0`. Conclude with `(mul_eq_zero.1 h0).resolve_left (pow_ne_zero _ hp0)`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises.
+
+Establish `hF2 : (F : MvPolynomial (ι × Fin n) (KK O)) ∈ MvPolynomial.restrictSupport (KK O) {m | ∀ i, multideg m i = d i}` using `F.2`. Establish `hsupp : m ∈ (F : MvPolynomial _ (KK O)).support` using `MvPolynomial.mem_support_iff.2 hne`. Conclude with `(Set.Finite.mem_toFinset _).2 (((MvPolynomial.mem_restrictSupport_iff _).1 hF2) (Finset.mem_coe.2 hsupp))`. Establish `hle : (latticeMultidegreePart L d).map f ≤ LinearMap.range g`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `hx' : (x : MvPolynomial (ι × Fin n) (KK O)) ∈ L` using `hx`. Use `choose o ho using fun s : S => h _ hx' s.1 ((Set.Finite.mem_toFinset _).1 s.2)`. Use `⟨o, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `(ho s).symm`.
+
+Establish `hW : (LinearMap.range g).FG`. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map g`. Use `haveI : IsNoetherian O (LinearMap.range g) := isNoetherian_of_fg_of_noetherian _ hW`. Establish `h1 : (((latticeMultidegreePart L d).map f).comap (LinearMap.range g).subtype).FG` using `IsNoetherian.noetherian _`.
+
+Establish `h2` using `h1.map (LinearMap.range g).subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.2 hle]`. Conclude with `Submodule.fg_of_fg_map_injective f hinj h2`.
+-/
 theorem multidegree_part_finitely_generated {p : ℕ} (hp0 : (p : KK O) ≠ 0) {ι : Type} [Fintype ι] {n : ℕ}
     (L : Submodule O (MvPolynomial (ι × Fin n) (KK O))) (d : ι → ℕ) (N : ℕ)
     (h : ∀ F ∈ L, ∀ m, (∀ i, multideg m i = d i) → ∃ o : O, (p : KK O) ^ N * F.coeff m = algebraMap O (KK O) o) :
@@ -75,6 +97,17 @@ theorem multidegree_part_finitely_generated {p : ℕ} (hp0 : (p : KK O) ≠ 0) {
   rw [Submodule.map_comap_subtype, inf_eq_right.2 hle] at h2
   exact Submodule.fg_of_fg_map_injective f hinj h2
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Establish `hx : (x : MvPolynomial (ι × Fin n) (KK O)) ∈ MvPolynomial.restrictSupport (KK O) {m | ∀ i, multideg m i = d i}` using `x.2`. Establish `key : ∀ m ∈ (x : MvPolynomial (ι × Fin n) (KK O)).support, monomial m (1 : KK O) ∈ Pol (KK O) n d`. Introduce `m hm`.
+
+Use `show monomial m (1 : KK O) ∈ MvPolynomial.restrictSupport (KK O) {m | ∀ i, multideg m i = d i}`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m' hm'`. Rewrite `hm'` using `[Finset.mem_coe]`. Establish `hm''` using `MvPolynomial.support_monomial_subset hm'`.
+
+Rewrite `hm''` using `[Finset.mem_singleton]`. Substitute `hm''` using the available equality. Conclude with `((MvPolynomial.mem_restrictSupport_iff _).1 hx) (Finset.mem_coe.2 hm)`. Establish `hx2 : x = ∑ m ∈ (x : MvPolynomial (ι × Fin n) (KK O)).support.attach, (x : MvPolynomial (ι × Fin n) (KK O)).coeff m.1 • (⟨monomial m.1 1, key m.1 m.2⟩ : Pol (KK O) n d)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[Finset.sum_attach _ (fun m => monomial m ((x : MvPolynomial (ι × Fin n) (KK O)).coeff m))]`. Conclude with `(x : MvPolynomial (ι × Fin n) (KK O)).as_sum`. Rewrite using `[hx2]`.
+
+Use `show _ ∈ Submodule.span (KK O) _`. Use `Submodule.sum_mem _ (fun m _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_))` and prove the remaining obligations. Conclude with `h m.1`.
+-/
 theorem multidegree_part_spans {ι : Type} [Fintype ι] {n : ℕ}
     (L : Submodule O (MvPolynomial (ι × Fin n) (KK O))) (d : ι → ℕ)
     (h : ∀ m, monomial m (1 : KK O) ∈ L) : MQ (K := KK O) (latticeMultidegreePart L d) = ⊤ := by
@@ -107,6 +140,25 @@ theorem multidegree_part_spans {ι : Type} [Fintype ι] {n : ℕ}
   refine Submodule.sum_mem _ (fun m _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_))
   exact h m.1
 
+/- English proof (translation)
+Introduce `n ι _`. Establish `hp0 : (p : KK O) ≠ 0`. Introduce `h0`. Establish `h1` using `hV.2.2.2.1 p hp.ne_zero`. Rewrite `h1` using `[h0, hV.1]`.
+
+Conclude with `WithTop.top_ne_coe h1`. Establish `hv1 : vK p (1 : KK O) = 0`. Establish `h1` using `hV.2.2.2.1 1 one_ne_zero`. Rewrite `h1` using `[Nat.cast_one, padicValNat.one]`. Simplify using `using h1`.
+
+Establish `key : ∀ (x : WithTop ℚ) (a b : ℚ), 0 ≤ x + (a : WithTop ℚ) → a ≤ b → 0 ≤ (b : WithTop ℚ) + x`. Introduce `x a b hx hab`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe q`.
+
+Rewrite `hx`, the goal using `[← WithTop.coe_add]`. Rewrite `hx`, the goal using `[WithTop.coe_nonneg]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmono : ∀ m : ι × Fin n →₀ ℕ, monomial m (1 : KK O) ∈ fockLattice hV (ι × Fin n)`. Introduce `m`.
+
+Use `show InBB (O := O) p (monomial m (1 : KK O))`. Rewrite using `[fock_lattice_monomial_iff hV, hv1, zero_add]`. Unfold `halfFactorialValuation`. Conclude with `WithTop.coe_nonneg.2 (by positivity)`. Use `⟨fockLattice hV (ι × Fin n), fun F => Iff.rfl, fun d => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `multidegree_part_finitely_generated hp0 _ d 0 (fun F hF m _ => by simpa using (mem_integral_poly_iff_coeff F).1 hF m)`. Conclude with `multidegree_part_spans _ d (fun m => by simpa using integer_monomial_mem_integral (O := O) m 1)`. Use `multidegree_part_finitely_generated hp0 _ d (∑ m ∈ (multidegree_monomials_finite (ι := ι) (n := n) d).toFinset, padicValNat p (expFact m)) ?_` and prove the remaining obligations. Introduce `F hF m hm`. Establish `hF' : InBB (O` using `O) p F := hF`.
+
+Establish `h0` using `(mem_fock_lattice_iff_coeff hV F).1 hF' m`. Unfold `halfFactorialValuation at h0`. Apply `(hV.2.2.2.2.2 _).1` to reduce the goal to its premises. Use `haveI := Fact.mk hp`. Rewrite using `[hV.2.1, ← Nat.cast_pow, hV.2.2.2.1 _ (pow_ne_zero _ hp.ne_zero), padicValNat.prime_pow]`.
+
+Use `key _ _ _ h0 ?_` and prove the remaining obligations. Establish `hmS : m ∈ (multidegree_monomials_finite (ι` using `ι) (n := n) d).toFinset := (Set.Finite.mem_toFinset _).2 hm`. Establish `hle` using `Finset.single_le_sum (f := fun m => padicValNat p (expFact m)) (fun _ _ => Nat.zero_le _) hmS`. Establish `hle' : (padicValNat p (expFact m) : ℚ) ≤ ((∑ m ∈ (multidegree_monomials_finite (ι` using `ι) (n := n) d).toFinset, padicValNat p (expFact m) : ℕ) : ℚ) := by`. Conclude with `hle` after adjusting the coercions.
+
+Establish `hnn : (0 : ℚ) ≤ padicValNat p (expFact m)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `multidegree_part_spans _ d hmono`.
+-/
 theorem fock_lattice_finite_spanning_holds {p : ℕ} (hp : p.Prime) (S0 : UniformizedDVR p O) (hV : ValuationProperties p O) : FockLatticeFiniteSpanning p O := by
   intro n ι _
   have hp0 : (p : KK O) ≠ 0 := by

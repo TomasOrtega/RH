@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Scala
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.CnjApply
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.ScalarCommutation.ValOfNotMem
 
+/- English proof (translation)
+Introduce `hW E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq X`. Take `⟨r, W, hrX, haux⟩` from `UpperTheory.Gal.Spc.auxiliary_prime_holds E A n p S x U w₀ Up V hgen X`. Use `⟨r, haux.prime, hrX, haux.ne, ?_⟩` and prove the remaining obligations. Introduce `N hrN hst J g θ hseen`. Take `⟨L, hw, Ty, hTy⟩` from `UpperTheory.Gal.Spc.tyEx E A n p S F x U w₀ Up V hoff r W haux N hrN hst`.
+
+Establish `hx : UpperTheory.Gal.Spc.Extra S F.j`. Rewrite using `[F.j_tr]`. Conclude with `⟨fun w hp => UpperTheory.Gal.Spc.plTr E A n p S F.tr w hp, fun q hq' hqp g hg => UpperTheory.Gal.Spc.regTr E A n p S F.tr q hq' hqp g hg⟩`. Conclude with `UpperTheory.Gal.Spc.specData hW E A n p S F x U w₀ Up V hodd hsc hgen hoff hq r W haux N hrN hst L hw Ty hTy hx J g θ hseen`.
+-/
 theorem UpperTheory.Gal.Spc.specTopG :
     UpperTheory.Gal.Int.Geo.Pl.WtOf → UpperTheory.Gal.Spc.SpecTopG := by
   intro hW E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq X

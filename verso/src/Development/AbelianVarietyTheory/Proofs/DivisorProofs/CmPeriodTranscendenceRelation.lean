@@ -20,6 +20,29 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CMEigen
 
+/- English proof (translation)
+Introduce `hPC hD _hDC E _ _ _ I _ φ L 𝔠 X₀ X p U v₀ v a hp _hφ hva hex hdesc`. Take `⟨P, hspan, hP⟩` from `GlobalTheory.T.cm_de_rham_period_map_equivariant hPC E I φ L 𝔠 X U`. Take `⟨b, hbL, hbprim⟩` from `GlobalTheory.T.exists_primitive_lattice_multiplier E I φ L 𝔠 X U`. Take `⟨α, hαm, hα⟩` from `hex b hbL`. Use `haveI := hαm`.
+
+Take `⟨α₀, hα₀m, hα₀⟩` from `hdesc b α hα`. Use `haveI := hα₀m`. Take `⟨hf, heig⟩` from `GlobalTheory.T.generator_minpoly_eigenvalue_compat E (HdR X.A) P hspan b (push (dp0 ℂ) (𝟙 _) α) (hP b α hα) hbprim`. Establish `hE₀ : LieExact X₀.A` using `(hD.2.1 Qb X₀.A _ X₀.ab X₀.dim).1`. Establish `hE : LieExact X.A` using `(hD.2.1 ℂ X.A _ X.ab X.dim).1`.
+
+Take `⟨hBC, hF⟩` from `hD.2.2.1 Qb X₀.A _ X₀.ab X₀.dim ℂ X.A p hp.grp`. Set `D : (Fin (Module.finrank ℚ (FR E)) → ℂ) →L[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `ContinuousLinearMap.pi fun j ↦ φ (U.e j) b • ContinuousLinearMap.proj j`. Establish `hDz : ∀ z, D z = fun j ↦ φ (U.e j) b * z j` using `fun z ↦ by`. Use function extensionality and compare the values at `j`. Simplify using `[D]`.
+
+Establish `hD' : ∀ z, U.u.ex (D z) = U.u.ex z ≫ α` using `fun z ↦ by rw [hDz]; exact hα z`. Establish `key : ∀ i, ∃ (y₀ : HdR X₀.A) (yv : HdR X.A), y₀ ≠ 0 ∧ (GlobalTheory.Published.AbelianDeRham.bcMor hp.grp).Corr y₀ yv ∧ U.IsCMVec i yv (a i)`. Introduce `i`. Take `⟨hLC, hdiff, ha⟩` from `hva i`. Take `⟨Q, c, hQ, hQ1⟩` from `GlobalTheory.T.minimal_polynomial_linear_factor_split E b (φ i)`.
+
+Take `⟨h₀, hh₀⟩` from `hE₀.2 (v₀ i).hom (v₀ i).isTangent`. Take `⟨h, hh⟩` from `hBC.exists h₀`. Establish `hlie : IsLieImage h (v i).hom` using `IsLieImage.baseChange (hφ := hp.grp) hF hE hh hLC hh₀`. Establish `hcorr` using `GlobalTheory.T.de_rham_correspondence_polynomial Qb ℂ (algebraMap Qb ℂ) X₀.A X.A _ p (GlobalTheory.Published.AbelianDeRham.bcMor hp.grp) α₀ α hα₀.symm h₀ h hh Q`. Establish `hDw : D (Pi.single (U.e.symm i) (a i)) = φ i b • Pi.single (U.e.symm i) (a i)`.
+
+Rewrite using `[hDz]`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = U.e.symm i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hj]`. Take `⟨v', hv'1, hv'2⟩` from `GlobalTheory.T.lie_image_polynomial_endomorphism X.A (X.diag U.c) _ U.u α D hD' h (v i).hom _ (φ i b) hlie hdiff hDw (Q.map (algebraMap Qb ℂ))`. Rewrite `hv'2` using `[hQ1, one_smul]`. Establish `hTy : push (dp0 ℂ) (𝟙 _) α (Polynomial.aeval (push (dp0 ℂ) (𝟙 _) α) (Q.map (algebraMap Qb ℂ)) h) = φ i b • Polynomial.aeval (push (dp0 ℂ) (𝟙 _) α) (Q.map (algebraMap Qb ℂ)) h`. Establish `e1` using `congrArg (Polynomial.aeval (push (dp0 ℂ) (𝟙 _) α)) hQ`.
+
+Rewrite `e1` using `[map_mul, map_mul, hf, mul_zero, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Establish `e2` using `LinearMap.congr_fun e1 h`. Rewrite `e2` using `[Module.End.mul_apply, LinearMap.sub_apply, LinearMap.zero_apply, sub_eq_zero]`. Simplify `e2` using `[Algebra.algebraMap_eq_smul_one]`. Use `⟨_, _, ?_, hcorr, fun a' α' _ hα' ↦ heig (φ i) a' _ (hP a' α' hα') _ hTy, v', hv'1, hv'2⟩` and prove the remaining obligations.
+
+Introduce `h0`. Rewrite `hcorr` using `[h0]`. Establish `hz : (GlobalTheory.Published.AbelianDeRham.bcMor hp.grp).Corr 0 0` using `fun c ↦ by simp`. Establish `hy0` using `hBC.unique hcorr hz`. Rewrite `hv'1` using `[hy0]`.
+
+Establish `hv1 : v' = 1` using `(hE.1 0).unique hv'1 (isLieImage_one_iff.2 (zero_mem _))`. Rewrite `hv'2` using `[hv1]`. Use `GlobalTheory.ArchMetricCompare.eq_zero_of_isDiff U.u hv'2` as an intermediate fact. Conclude with `ha (by simpa using congrFun this (U.e.symm i))`. Use `choose y₀ yv hy using key`.
+
+Conclude with `⟨y₀, yv, a, fun i ↦ ⟨(hy i).1, (hy i).2.1, (hy i).2.2, (hva i).2.2, by rw [div_self (hva i).2.2]; exact isAlgebraic_one⟩⟩`.
+-/
 theorem exists_algebraic_eigenvectors : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (L : Set E)
     (𝔠 : FracId (FR E)) (X₀ : Obj (FR E) 𝔠 (Sp Qb)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (p : X.A.left ⟶ X₀.A.left)

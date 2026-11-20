@@ -22,6 +22,15 @@ variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
   {χS χT : (AE D)ˣ →* Circle}
 
+/- English proof (translation)
+Take `⟨β, rfl, h1, h0⟩` from `hε`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `hβα : β * α = α` using `GlobalTheory.SplitIdem.af_ext _ fun w => by`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1, one_mul]`. Rewrite using `[hP w hw, mul_zero]`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = _ ⊗ₜ _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) hβα`.
+
+Consider the case `zero => rw [smul_zero]`. Consider the case `add x x' _ _ h h' => rw [smul_add, h, h']`. Consider the case `neg x _ h => rw [smul_neg, h]`.
+-/
 theorem placeIdem_smul_self {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {u : WO S T}
     (hu : u ∈ latO S T ΛS ΛT fun w => w = v) : algebraMap (AF D.host.F) (AE D) ε • u = u := by
   obtain ⟨β, rfl, h1, h0⟩ := hε
@@ -44,6 +53,23 @@ theorem placeIdem_smul_self {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.h
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨haa, -, hinf, hsp', hns⟩` from `ha`. Establish `hsp : ∀ e, IsSplitIdem D e → a * (e + cA D e) = e ∨ a * (e + cA D e) = cA D e` using `fun e he => (hsp' e he).imp (fun h => by rw [mul_add, h.1, h.2, add_zero]) fun h => by rw [mul_add, h.1, h.2, zero_add]`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Set `d : GA D V →* (AE D)ˣ` to `Matrix.GeneralLinearGroup.det.comp (matHom V)`. Establish `hd : ∀ g, (d g : AE D) = (Formalism.L2.Theta.mt V g).det` using `fun _ => rfl`.
+
+Establish `hc : Continuous d` using `Matrix.GeneralLinearGroup.continuous_det.comp continuous_subtype_val`. Establish `htriv : ∀ g, (∀ i j, a * (Formalism.L2.Theta.mt V g - 1) i j = 0) → χ (cut a haa (d g)) = 1` using `fun g hg => by`. Establish `: cut a haa (d g) = 1` using `Units.ext (by`. Rewrite using `[cut_val, hd, mul_det a _ hg, add_sub_cancel, Units.val_one])`. Rewrite using `[this, map_one]`.
+
+Use `⟨χ.comp ((cut a haa).comp d), hχ.1.comp ((continuous_cut a haa).comp hc), fun g hg => htriv g fun i j => ?_, fun v ε h g hg => htriv g fun i j => ?_, fun e he g hg x hx => ?_, fun g x hx => congrArg χ (Units.ext hx.symm)⟩` and prove the remaining obligations. Use `GlobalTheory.PlaceIdem.parts_inj D _ _ (by rw [RingHom.map_mul, hinf, zero_mul, RingHom.map_zero]) ?_` and prove the remaining obligations. Establish `h1 : (finPart D).mapMatrix (Formalism.L2.Theta.mt V g) = 1` using `congrArg Units.val hg`. Establish `h2 : (finPart D).mapMatrix (Formalism.L2.Theta.mt V g - 1) = 0`. Rewrite using `[RingHom.map_sub, h1, RingHom.map_one, sub_self]`.
+
+Establish `h3 : finPart D ((Formalism.L2.Theta.mt V g - 1) i j) = 0` using `congrFun (congrFun h2 i) j`. Rewrite using `[RingHom.map_mul, h3, mul_zero, RingHom.map_zero]`. Rewrite using `[← hg i j, ← mul_assoc, mul_comm a, hns v ε h, zero_mul]`. Use `show χ (cut a haa (d g)) = χ x`. Establish `hout` using `mul_det (1 - (e + cA D e)) (Formalism.L2.Theta.mt V g) fun i j => by rw [sub_mul, one_mul, hg i j, sub_self]`.
+
+Establish `hx' : (x : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e)` using `hx`. Break down `hsp e he with h | h` into its components or cases. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[cut_val, hd, hx']`.
+
+Take the linear combination `a * hout + ((Formalism.L2.Theta.mt V g).det - 1) * h`. Establish `hy : (cut a haa (d g) : AE D) = cA D e * (Formalism.L2.Theta.mt V g).det + (1 - cA D e)`. Rewrite using `[cut_val, hd]`. Take the linear combination `a * hout + ((Formalism.L2.Theta.mt V g).det - 1) * h`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he.1]`.
+
+Establish `hu` using `det_conj_mul V g`. Establish `h1 : (cut a haa (d g) : AE D) * cA D x = 1`. Rewrite using `[hy, hx', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`. Generalize the expression as in `(Formalism.L2.Theta.mt V g).det = z at hu`. Take the linear combination `(z * cA D z - z - cA D z + 1) * hcc + cA D e * hu`.
+
+Establish `h2` using `char_norm hres x (x * (cut a haa (d g))⁻¹) (by`. Rewrite using `[Units.val_mul, Units.inv_eq_of_mul_eq_one_right h1])`. Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h2.symm`.
+-/
 theorem exists_half_character {a : AE D} (ha : IsHalfIdem D a) (V : HSp D) (χ : (AE D)ˣ →* Circle) (n : ℕ)
     (hχ : IsHeckeChar D χ) (hres : ResEta D χ n) :
     ∃ ν : GA D V →* Circle, Continuous ν ∧ (∀ g ∈ GinfC V, ν g = 1) ∧
@@ -93,6 +119,11 @@ theorem exists_half_character {a : AE D} (ha : IsHalfIdem D a) (V : HSp D) (χ :
       rw [map_mul, map_inv, mul_inv_eq_one] at h2
       exact h2.symm
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Establish `hc : ∀ (V : HSp D) τ, ∃ s, IsCartanInv (gramAt D V τ) s` using `fun V τ => GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv (GlobalTheory.SmoothForms.RealPts.gramAt_herm V τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit V τ)`. Use `choose s hcs using hc`. Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ S T (s S) (s T) (hcs S) (hcs T) _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T)`. Take `⟨hth, -⟩` from `hf 1`.
+
+Simplify using `only [one_mul] at hth`. Conclude with `⟨f, f0, hth⟩`.
+-/
 theorem exists_theta (hψ : IsStdChar D ψ (-1)) (S T : HSp D) : ∃ f, f ≠ 0 ∧ IsThetaFunO ψ S T f := by
   obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
   have hc : ∀ (V : HSp D) τ, ∃ s, IsCartanInv (gramAt D V τ) s := fun V τ =>
@@ -105,6 +136,17 @@ theorem exists_theta (hψ : IsStdChar D ψ (-1)) (S T : HSp D) : ∃ f, f ≠ 0 
   simp only [one_mul] at hth
   exact ⟨f, f0, hth⟩
 
+/- English proof (translation)
+Take `⟨f, f0, hf⟩` from `exists_theta hψ S T`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, e0⟩ : ∃ e, Fixes (opF hψ.1 S T w) (latF S T ΛS ΛT) e ∧ e ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `: (⊤ : Submodule ℂ (thetaSub ψ S T)) ≤ ⊥`.
+
+Rewrite using `[← h.span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, e, he, rfl⟩`. Rewrite using `[hn e he, map_zero]`. Conclude with `zero_mem _`. Conclude with `f0 (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 (this (Submodule.mem_top (x := ⟨f, hf⟩)))))`.
+
+Use `⟨e, fun h0 => e0 (Subtype.ext h0), e.2, fun v η hv u hu => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `exists_half_of_nonSplit hv`. Establish `hu'` using `GlobalTheory.PlaceModel.latO_le_top _ hu`. Set `a : XF S T` to `XF.mk u (latO_fin hu')`. Establish `ha : a ∈ latF S T ΛS ΛT` using `hu'`.
+
+Establish `e0 : algebraMap (AF D.host.F) (AE D) η • u = u` using `placeIdem_smul_self hv.1 hu`. Establish `e1 : a = 2 • (b • a)`. Rewrite using `[two_nsmul, ← add_smul, ← two_mul, hb']`. Conclude with `XF.ext e0.symm`. Establish `e2 : b • a ∈ latF S T ΛS ΛT` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ b hb _ ha`.
+
+Establish `h1` using `congrArg Subtype.val (he a ha)`. Rewrite `h1` using `[coe_opF]`. Establish `h2 : phase ψ w a = 1` using `by rw [e1]; exact phase_two h.sd w e2`. Rewrite `h1` using `[h2, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_vacuum (hψ : IsStdChar D ψ (-1)) {w : 𝓞 D.host.E} {lam : ℕ →* ℂ}
     {Om : GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T)} (h : IsLatRep hψ.1 ΛS ΛT w lam Om) :
     ∃ f, f ≠ 0 ∧ IsThetaFunO ψ S T f ∧ ∀ v η, NonSplitAt D v η →
@@ -134,10 +176,18 @@ theorem exists_vacuum (hψ : IsStdChar D ψ (-1)) {w : 𝓞 D.host.E} {lam : ℕ
   have h2 : phase ψ w a = 1 := by rw [e1]; exact phase_two h.sd w e2
   rwa [h2, one_smul] at h1
 
+/- English proof (translation)
+Rewrite using `[actO, actO, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mt_mul_inv, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one]`.
+-/
 theorem actO_actO_inv (g : GA D S) (h : GA D T) (x : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   rw [actO, actO, inv_inv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mt_mul_inv, Matrix.one_mul, Matrix.mul_assoc, mt_mul_inv,
     Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨a, ha, k, hk, e1⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D S).1 p.1`. Take `⟨a', ha', k', hk', e2⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D T).1 p.2`. Establish `e : p = (a, a') * (k, k')` using `Prod.ext e1 e2`. Take `⟨c, hc, h⟩` from `GlobalTheory.ThetaSchur.schur D ψ hψ S T (o₁ (k, k') * o₂ (k⁻¹, k'⁻¹)) (fun f hf => h₁.pres _ _ (h₂.pres _ _ hf)) (fun u f hf => by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h₂.Heisenberg₂ _ (inv_mem hk) _ (inv_mem hk') u f hf, h₁.Heisenberg₂ _ hk _ hk' _ _ (h₂.pres _ _ hf), actO_actO_inv])`.
+
+Use the proof step `(fun μ 𝓕 hμ h𝓕 f hf => by`. Rewrite using `[Module.End.mul_apply, h₁.unit μ 𝓕 hμ h𝓕 _ _ (h₂.pres _ _ hf), h₂.unit μ 𝓕 hμ h𝓕 _ _ hf])`. Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h₁.triv _ ha _ ha' _ (h₁.pres _ _ hf), h₂.triv _ ha _ ha' _ (h₂.pres _ _ hf), ← h _ (h₂.pres _ _ hf), Module.End.mul_apply, ← Module.End.mul_apply (o₂ _), ← map_mul, show ((k⁻¹, k'⁻¹) * (k, k') : GA D S × GA D T) = …`.
+-/
 theorem exists_scalar (hψ : IsStdChar D ψ (-1)) {o₁ o₂ : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (h₁ : IsFinWeil ψ S T ΛS ΛT χS χT o₁) (h₂ : IsFinWeil ψ S T ΛS ΛT χS χT o₂) (p : GA D S × GA D T) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f, IsThetaFunO ψ S T f → o₁ p f = c • o₂ p f := by
@@ -156,6 +206,15 @@ theorem exists_scalar (hψ : IsStdChar D ψ (-1)) {o₁ o₂ : GA D S × GA D T 
     h₂.triv _ ha _ ha' _ (h₂.pres _ _ hf), ← h _ (h₂.pres _ _ hf), Module.End.mul_apply, ← Module.End.mul_apply (o₂ _),
     ← map_mul, show ((k⁻¹, k'⁻¹) * (k, k') : GA D S × GA D T) = 1 from inv_mul_cancel (k, k'), map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Use `choose c hc h using exists_scalar hψ h₁ h₂`. Take `⟨f, f0, hf⟩` from `exists_theta hψ S T`. Establish `hne : ∀ p, o₂ p f ≠ 0` using `fun p h0 => f0 (by`. Use `congrArg (o₂ p⁻¹) h0` as an intermediate fact. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero, Module.End.one_apply] at this)` and apply the resulting hypothesis.
+
+Use `⟨MonoidHom.mk' (fun p => ⟨c p, mem_sphere_zero_iff_norm.2 (hc p)⟩) fun p q => Circle.ext ?_, ?_, h⟩` and prove the remaining obligations. Use `show c (p * q) = c p * c q`. Use `smul_left_injective ℂ (hne (p * q)) ?_` and prove the remaining obligations. Use `show c (p * q) • o₂ (p * q) f = (c p * c q) • o₂ (p * q) f`. Rewrite using `[← h _ f hf, map_mul, Module.End.mul_apply, h p _ (h₁.pres _ _ hf), h q f hf, map_smul, smul_smul, map_mul, Module.End.mul_apply]`.
+
+Use `Continuous.subtype_mk (continuous_iff_continuousAt.2 fun q => ?_) _` and prove the remaining obligations. Take `⟨u, hu⟩` from `Function.ne_iff.1 (hne q)`. Use `(((h₁.cont f hf u).continuousAt).div (h₂.cont f hf u).continuousAt hu).congr ?_` and prove the remaining obligations. Use `filter_upwards [(h₂.cont f hf u).continuousAt.eventually_ne hu] with p hp`. Use `show o₁ p f u / o₂ p f u = c p`.
+
+Rewrite using `[h p f hf, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hp]`.
+-/
 theorem exists_character (hψ : IsStdChar D ψ (-1)) {o₁ o₂ : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (h₁ : IsFinWeil ψ S T ΛS ΛT χS χT o₁) (h₂ : IsFinWeil ψ S T ΛS ΛT χS χT o₂) :
     ∃ ν : GA D S × GA D T →* Circle, Continuous ν ∧ ∀ p f, IsThetaFunO ψ S T f → o₁ p f = (ν p : ℂ) • o₂ p f := by
@@ -177,12 +236,33 @@ theorem exists_character (hψ : IsStdChar D ψ (-1)) {o₁ o₂ : GA D S × GA D
     show o₁ p f u / o₂ p f u = c p
     rw [h p f hf, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hp]
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val (finHom V).map_one`.
+-/
 theorem finMat_one (V : HSp D) : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1 :=
   congrArg Units.val (finHom V).map_one
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cut e he.1 (Matrix.GeneralLinearGroup.det (matHom V g)), rfl⟩`.
+-/
 theorem exists_isDetAt {e : AE D} (he : IsSplitIdem D e) (V : HSp D) (g : GA D V) : ∃ x, IsDetAt e V g x :=
   ⟨cut e he.1 (Matrix.GeneralLinearGroup.det (matHom V g)), rfl⟩
 
+/- English proof (translation)
+Take `⟨ν, hc, hν⟩` from `exists_character hψ h₁ h₂`. Take `⟨lam, hlam, -⟩` from `exists_goodNorm D`. Take `⟨w, Om, hOm⟩` from `exists_isLatRep hψ hS hT hlam`. Take `⟨f₀, f0, hf₀, hvac⟩` from `exists_vacuum hψ hOm`. Establish `key : ∀ q, o₁ q f₀ = f₀ → o₂ q f₀ = f₀ → ν q = 1` using `fun q a b => by`.
+
+Use `hν q f₀ hf₀` as an intermediate fact. Rewrite `this` using `[a, b]`. Conclude with `Circle.ext (smul_left_injective ℂ f0 (this.symm.trans (one_smul ℂ f₀).symm))`. Establish `hreal : ∀ g ∈ GinfC S, ∀ k ∈ GinfC T, ν (g, k) = 1` using `fun g hg k hk => key _ (h₁.triv g hg k hk _ hf₀) (h₂.triv g hg k hk _ hf₀)`. Establish `hsplit : ∀ e, IsSplitIdem D e → ∀ g k, SuppAt e S g → SuppAt e T k → ν (g, k) = 1` using `fun e he g k hg hk => by`.
+
+Take `⟨x, hx⟩` from `exists_isDetAt he S g`. Take `⟨y, hy⟩` from `exists_isDetAt he T k`. Take `⟨r, hr, a⟩` from `h₁.split e he g k hg hk x y hx hy`. Take `⟨r', hr', b⟩` from `h₂.split e he g k hg hk x y hx hy`. Take `⟨ℓ, hℓ, f₁, hf₁, h0⟩` from `GlobalTheory.HalfCoinv.exists_invariant_form D ψ hψ S T e he`.
+
+Establish `c` using `a ℓ hℓ f₁ hf₁`. Rewrite `c` using `[hν _ _ hf₁, map_smul, b ℓ hℓ f₁ hf₁, smul_eq_mul, ← mul_assoc, ← mul_assoc]`. Establish `c2` using `mul_right_cancel₀ (Circle.coe_ne_zero _) (mul_right_cancel₀ h0 c)`. Establish `c3` using `congrArg norm c2`. Rewrite `c3` using `[norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hr.le, Real.norm_of_nonneg hr'.le]`.
+
+Rewrite `c2` using `[c3]`. Conclude with `Circle.ext (mul_right_cancel₀ (Complex.ofReal_ne_zero.2 hr.ne') (c2.trans (one_mul _).symm))`. Establish `hin : ∀ v η, NonSplitAt D v η → ∀ g k, SuppPl η S g → SuppPl η T k → (∀ u, u ∈ (latO S T ΛS ΛT fun w => w = v) ↔ actO S T g k u ∈ (latO S T ΛS ΛT fun w => w = v)) → ν (g, k) = 1` using `fun v η hv g k hg hk hst => key _ (h₁.inert v η hv g k hg hk hst _ hf₀ (hvac v η hv)) (h₂.inert v η hv g k hg hk hst _ hf₀ (hvac v η hv))`. Establish `s1 : ∀ (V : HSp D) (a : AE D) i j, a * (Formalism.L2.Theta.mt V 1 - 1) i j = (Formalism.L2.Theta.mt V 1 - 1) i j` using `fun V a i j => by`. Rewrite using `[mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+
+Establish `hl` using `GlobalTheory.T.unitaryAdelicCharacter_trivial_of_local D S (ν.comp (MonoidHom.inl _ _)) (hc.comp (Continuous.prodMk_left 1)) (fun g hg => hreal g hg 1 (one_mem _)) (fun e he g hg => hsplit e he g 1 hg (s1 T _)) fun v η hv => GlobalTheory.T.adelic_unitary_character_trivial_at_nons …`. Establish `hr` using `GlobalTheory.T.unitaryAdelicCharacter_trivial_of_local D T (ν.comp (MonoidHom.inr _ _)) (hc.comp (Continuous.prodMk_right 1)) (fun g hg => hreal 1 (one_mem _) g hg) (fun e he g hg => hsplit e he 1 g (s1 S _) hg) fun v η hv => GlobalTheory.T.adelic_unitary_character_trivial_at_non …`. Establish `h1 : ν p = 1`. Establish `: p = (p.1, 1) * (1, p.2)` using `Prod.ext (mul_one _).symm (one_mul _).symm`. Rewrite using `[this, map_mul, show ν (p.1, 1) = 1 from hl p.1, show ν (1, p.2) = 1 from hr p.2, mul_one]`.
+
+Rewrite using `[hν p f hf, h1, Circle.coe_one, one_smul]`.
+-/
 theorem unique (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     {o₁ o₂ : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (h₁ : IsFinWeil ψ S T ΛS ΛT χS χT o₁) (h₂ : IsFinWeil ψ S T ΛS ΛT χS χT o₂) (p : GA D S × GA D T)
@@ -231,6 +311,19 @@ theorem unique (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS) (hT : IsSelf
     rw [this, map_mul, show ν (p.1, 1) = 1 from hl p.1, show ν (1, p.2) = 1 from hr p.2, mul_one]
   rw [hν p f hf, h1, Circle.coe_one, one_smul]
 
+/- English proof (translation)
+Introduce `D ψ hψ S T ΛS ΛT hS hT χS χT nS nT hχS hχT hrS hrT of hof lam hlam hsq w Om h ε hε g₀ k₀ x₀ y₀ hx₀ hy₀ f₀`. Take `⟨c, c1, c2, c3, c4, c5⟩` from `exists_half_character hε S χT _ hχT hrT`. Take `⟨d, d1, d2, d3, d4, d5⟩` from `exists_half_character hε T χS _ hχS hrS`. Set `z : GA D S × GA D T → Circle` to `fun p => (c p.1)⁻¹ * d p.2`. Establish `z1 : z 1 = 1` using `by simp [z]`.
+
+Establish `z2 : ∀ p q, z (p * q) = z p * z q` using `fun p q => by`. Simplify using `only [z, Prod.fst_mul, Prod.snd_mul, map_mul, _root_.mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `z3 : Continuous z` using `(c1.comp continuous_fst).inv.mul (d1.comp continuous_snd)`. Take `⟨om, hom⟩` from `exists_extend (thetaSub ψ S T) ({ toFun := fun p => (z p : ℂ) • Om p map_one' := by rw [z1, Circle.coe_one, one_smul, map_one] map_mul' := fun p q => by rw [z2, map_mul, Circle.coe_mul, smul_mul_smul_comm] } : GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T))`.
+
+Establish `ho : ∀ p f (hf : IsThetaFunO ψ S T f), om p f = (z p : ℂ) • (Om p ⟨f, hf⟩ : WO S T → ℂ)` using `fun p f hf => hom p ⟨f, hf⟩`. Establish `hom' : IsFinWeil ψ S T ΛS ΛT χS χT om`. Use `⟨⟨fun p f hf => ?_, fun f hf u => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_⟩, fun g hg k hk f hf => ?_, fun g hg k hk u f hf => ?_, fun e he g k hg hk x y hx hy => ?_, fun v η hv g k hg hk hst f hf hfix => ?_⟩` and prove the remaining obligations. Rewrite using `[ho p f hf]`. Conclude with `(thetaSub ψ S T).smul_mem _ (Om p ⟨f, hf⟩).2`.
+
+Simplify using `only [ho _ f hf, Pi.smul_apply, smul_eq_mul]`. Conclude with `(continuous_subtype_val.comp z3).mul (h.cont hS hT ⟨f, hf⟩ u)`. Rewrite using `[← h.unit hlam μ 𝓕 hμ h𝓕 p ⟨f, hf⟩, ho p f hf]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, enorm_smul, ← ofReal_norm_eq_enorm (z p : ℂ), Circle.norm_coe, ENNReal.ofReal_one, one_mul]`.
+
+Rewrite using `[ho _ f hf, h.real_triv hg hk, show z (g, k) = 1 by simp [z, c2 g hg, d2 k hk], Circle.coe_one, one_smul]`. Take `⟨f', h1, h2⟩` from `h.Heisenberg₂ hψ hg hk u ⟨f, hf⟩`. Rewrite using `[ho _ f hf, heisO_smul, ← h2, ← h1]`. Conclude with `hom _ f'`. Take `⟨r, hr, h1⟩` from `h.split hsq he hg hk`.
+
+Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[ho _ f hf, map_smul, h1 ℓ hℓ, smul_eq_mul, show z (g, k) = splitFacO χS χT x y by simp only [z, splitFacO, c4 e he g hg x hx, d4 e he k hk y hy]]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ho _ f hf, h.inert hv hg hk (fun u hu => (hst u).1 hu) ⟨f, hf⟩ hfix, show z (g, k) = 1 by simp [z, c3 v η hv g hg, d3 v η hv k hk], Circle.coe_one, one_smul]`. Rewrite using `[unique hψ hS hT hof hom' _ _ f₀.2, ho _ _ f₀.2, ← c5 g₀ x₀ hx₀, ← d5 k₀ y₀ hy₀]`.
+-/
 theorem finWeil_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ (χS χT : (AE D)ˣ →* Circle) (nS nT : ℕ), IsHeckeChar D χS → IsHeckeChar D χT → ResEta D χS nS → ResEta D χT nT → ∀ of : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsFinWeil ψ S T ΛS ΛT χS χT of → ∀ (lam : ℕ →* ℂ), GoodNorm (GlobalTheory.FinWeil.sgO D) lam → (∀ n : ℕ, n ≠ 0 → (∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → ¬ q ∣ n) → lam n = (Real.sqrt n : ℂ)) → ∀ (w : 𝓞 D.host.E) (Om : GA D S × GA D T →* Module.End ℂ (thetaSub ψ S T)), IsLatRep hψ.1 ΛS ΛT w lam Om → ∀ ε, IsHalfIdem D ε → ∀ (g : GA D S) (h : GA D T) (x y : (AE D)ˣ), (x : AE D) = ε * (Formalism.L2.Theta.mt S g).det + (1 - ε) → (y : AE D) = ε * (Formalism.L2.Theta.mt T h).det + (1 - ε) → ∀ f : thetaSub ψ S T, of (g, h) f = ((((χT x)⁻¹ * χS y : Circle) : ℂ)) • (Om (g, h) f : WO S T → ℂ) := by
   intro D ψ hψ S T ΛS ΛT hS hT χS χT nS nT hχS hχT hrS hrT of hof lam hlam hsq w Om h ε hε g₀ k₀ x₀ y₀ hx₀ hy₀ f₀
   obtain ⟨c, c1, c2, c3, c4, c5⟩ := exists_half_character hε S χT _ hχT hrT

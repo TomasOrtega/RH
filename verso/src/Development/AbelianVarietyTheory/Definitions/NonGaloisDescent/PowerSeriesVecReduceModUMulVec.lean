@@ -21,11 +21,17 @@ def vecs (B : Subalgebra O K⟦X⟧) : Submodule B (ι → K⟦X⟧) where
   zero_mem' _ := B.zero_mem
   smul_mem' c _ hv i := B.mul_mem c.2 (hv i)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vecs {B : Subalgebra O K⟦X⟧} {v : ι → K⟦X⟧} : v ∈ vecs ι B ↔ ∀ i, v i ∈ B := Iff.rfl
 
 def tot {B : Subalgebra O K⟦X⟧} (P : ZMod a → Submodule B (ι → K⟦X⟧)) :
     Submodule B (Vec K a ι) := Submodule.pi Set.univ P
 
+/- English proof (translation)
+Simplify using `[tot]`.
+-/
 theorem mem_tot {B : Subalgebra O K⟦X⟧} {P : ZMod a → Submodule B (ι → K⟦X⟧)} {v : Vec K a ι} :
     v ∈ tot P ↔ ∀ τ, v τ ∈ P τ := by simp [tot]
 
@@ -34,6 +40,9 @@ def red0 : (ι → K⟦X⟧) →ₗ[K] (ι → K) where
   map_add' v w := by ext; simp
   map_smul' c v := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem powerSeriesVecReduceModU_apply (v : ι → K⟦X⟧) (i : ι) : red0 v i = constantCoeff (v i) := rfl
 
 def red : Vec K a ι →ₗ[K] (ZMod a → ι → K) where
@@ -41,6 +50,9 @@ def red : Vec K a ι →ₗ[K] (ZMod a → ι → K) where
   map_add' v w := by ext; simp
   map_smul' c v := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem red_apply (v : Vec K a ι) (τ : ZMod a) : red v τ = red0 (v τ) := rfl
 
 def frobV (l : ℕ) [Fact l.Prime] : (ι → K⟦X⟧) →ₗ[K] (ι → K⟦X⟧) where
@@ -48,6 +60,9 @@ def frobV (l : ℕ) [Fact l.Prime] : (ι → K⟦X⟧) →ₗ[K] (ι → K⟦X�
   map_add' v w := by ext1; simp
   map_smul' c v := by ext1; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem frobV_apply (l : ℕ) [Fact l.Prime] (v : ι → K⟦X⟧) (i : ι) :
     frobV l v i = frob K l (v i) := rfl
 
@@ -56,9 +71,15 @@ variable (K a) in
 def frobTot (l : ℕ) [Fact l.Prime] : (ZMod a → K⟦X⟧) →ₐ[K] (ZMod a → K⟦X⟧) :=
   AlgHom.pi fun τ => (frob K l).comp (Pi.evalAlgHom K (fun _ : ZMod a => K⟦X⟧) (τ - 1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem frobTot_apply (l : ℕ) [Fact l.Prime] (f : ZMod a → K⟦X⟧) (τ : ZMod a) :
     frobTot K a l f τ = frob K l (f (τ - 1)) := rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Conclude with `RingHom.map_mulVec constantCoeff Y v i`.
+-/
 theorem powerSeriesVecReduceModU_mulVec {κ : Type} [Fintype ι] (Y : Matrix κ ι K⟦X⟧) (v : ι → K⟦X⟧) :
     red0 (Y *ᵥ v) = Y.map constantCoeff *ᵥ red0 v := by
   ext i
@@ -86,14 +107,26 @@ def mxInv (τ : ZMod a) : Matrix ι ι K⟦X⟧ :=
   (((P.mat τ)⁻¹ : GL ι (invE l e (A O K))) : Matrix ι ι (invE l e (A O K))).map
     (invE l e (A O K)).val
 
+/- English proof (translation)
+The claim follows from `Subtype.prop _`.
+-/
 theorem mx_mem (τ : ZMod a) (i j : ι) : P.mx τ i j ∈ invE l e (A O K) := Subtype.prop _
 
+/- English proof (translation)
+The claim follows from `Subtype.prop _`.
+-/
 theorem mxInv_mem (τ : ZMod a) (i j : ι) : P.mxInv τ i j ∈ invE l e (A O K) := Subtype.prop _
 
+/- English proof (translation)
+Rewrite using `[mx, mxInv, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem mx_mul_mxInv (τ : ZMod a) : P.mx τ * P.mxInv τ = 1 := by
   rw [mx, mxInv, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[mx, mxInv, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem mxInv_mul_mx (τ : ZMod a) : P.mxInv τ * P.mx τ = 1 := by
   rw [mx, mxInv, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel]
   exact Matrix.map_one _ (map_zero _) (map_one _)
@@ -113,6 +146,9 @@ def ofMatrix (Y Y' : ZMod a → Matrix ι ι K⟦X⟧) (hY : ∀ τ i j, Y τ i 
         rw [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
         exact mul_eq_one_comm.1 (h τ)) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mx_ofMatrix (Y Y' : ZMod a → Matrix ι ι K⟦X⟧)
     (hY : ∀ τ i j, Y τ i j ∈ invE l e (A O K)) (hY' : ∀ τ i j, Y' τ i j ∈ invE l e (A O K))
     (h : ∀ τ, Y τ * Y' τ = 1) (τ : ZMod a) : (ofMatrix Y Y' hY hY' h).mx τ = Y τ := rfl
@@ -139,6 +175,11 @@ abbrev Lk (k : ℝ) : Submodule (R O K l k) (Vec K a ι) := P.ext (R O K l k)
 
 def FilMM (j : ℕ) : Submodule (S O K e) (Vec K a ι) := Fil O K l e j • P.MM
 
+/- English proof (translation)
+Rewrite using `[extc, Submodule.mem_span_range_iff_exists_fun]`. Establish `key (c : ι → B) : ∑ i, c i • (P.mx τ).col i = P.mx τ *ᵥ fun i => (c i : K⟦X⟧)` using `by ext1 j`. Simplify using `[Matrix.mulVec, dotProduct, Subalgebra.smul_def, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+
+Conclude with `⟨_, fun i => (c i).2, key c⟩`. Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `⟨fun i => ⟨m i, hm i⟩, key _⟩`.
+-/
 theorem mem_extc {B : Subalgebra O K⟦X⟧} {τ : ZMod a} {v : ι → K⟦X⟧} :
     v ∈ P.extc B τ ↔ ∃ m ∈ vecs ι B, v = P.mx τ *ᵥ m := by
   rw [extc, Submodule.mem_span_range_iff_exists_fun]
@@ -151,6 +192,11 @@ theorem mem_extc {B : Subalgebra O K⟦X⟧} {τ : ZMod a} {v : ι → K⟦X⟧}
   · rintro ⟨m, hm, rfl⟩
     exact ⟨fun i => ⟨m i, hm i⟩, key _⟩
 
+/- English proof (translation)
+Rewrite using `[mem_extc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, mxInv_mul_mx, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`.
+
+Conclude with `⟨_, h, by rw [Matrix.mulVec_mulVec, mx_mul_mxInv, Matrix.one_mulVec]⟩`.
+-/
 theorem mem_extc_iff {B : Subalgebra O K⟦X⟧} {τ : ZMod a} {v : ι → K⟦X⟧} :
     v ∈ P.extc B τ ↔ P.mxInv τ *ᵥ v ∈ vecs ι B := by
   rw [mem_extc]
@@ -160,6 +206,9 @@ theorem mem_extc_iff {B : Subalgebra O K⟦X⟧} {τ : ZMod a} {v : ι → K⟦X
   · intro h
     exact ⟨_, h, by rw [Matrix.mulVec_mulVec, mx_mul_mxInv, Matrix.one_mulVec]⟩
 
+/- English proof (translation)
+Establish `h : LinearIndependent K⟦X⟧ (P.mx τ).col` using `Matrix.linearIndependent_cols_of_det_ne_zero (Matrix.isUnit_det_of_right_inverse (P.mx_mul_mxInv τ)).ne_zero`. Conclude with `h.restrict_scalars' B`.
+-/
 theorem linearIndependent_col (B : Subalgebra O K⟦X⟧) (τ : ZMod a) :
     LinearIndependent B (P.mx τ).col := by
   have h : LinearIndependent K⟦X⟧ (P.mx τ).col :=
@@ -170,16 +219,29 @@ theorem linearIndependent_col (B : Subalgebra O K⟦X⟧) (τ : ZMod a) :
 def basisExt (B : Subalgebra O K⟦X⟧) (τ : ZMod a) : Module.Basis ι B (P.extc B τ) :=
   Module.Basis.span (P.linearIndependent_col B τ)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (Module.Basis.span_apply _ i)`.
+-/
 @[simp] theorem coe_basisExt (B : Subalgebra O K⟦X⟧) (τ : ZMod a) (i : ι) :
     (P.basisExt B τ i : ι → K⟦X⟧) = (P.mx τ).col i :=
   congrArg Subtype.val (Module.Basis.span_apply _ i)
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_mono Submodule.subset_span) (Submodule.span_le.2 fun v hv => ?_)` and prove the remaining obligations. Take `⟨m, hm, rfl⟩` from `P.mem_extc.1 hv`. Conclude with `P.mem_extc.2 ⟨m, fun i => h (hm i), rfl⟩`.
+-/
 theorem extc_eq_span {B : Subalgebra O K⟦X⟧} (h : A O K ≤ B) (τ : ZMod a) :
     P.extc B τ = Submodule.span B (P.Lcomp τ : Set (ι → K⟦X⟧)) := by
   refine le_antisymm (Submodule.span_mono Submodule.subset_span) (Submodule.span_le.2 fun v hv => ?_)
   obtain ⟨m, hm, rfl⟩ := P.mem_extc.1 hv
   exact P.mem_extc.2 ⟨m, fun i => h (hm i), rfl⟩
 
+/- English proof (translation)
+Establish `key (Y : ZMod a → Matrix ι ι K⟦X⟧) (hY : ∀ τ i j, Y τ i j ∈ invE l e (A O K)) : ∃ n : ℕ, ∀ τ, ∀ m ∈ vecs ι (A O K), E K l e ^ n • (Y τ *ᵥ m) ∈ vecs ι (A O K)` using `by choose n hn using fun p : ZMod a × ι × ι => hY p.1 p.2.1 p.2.2`. Use `⟨Finset.univ.sup n, fun τ m hm i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Matrix.mulVec, dotProduct, smul_eq_mul, Finset.mul_sum]`. Use `Subalgebra.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ (τ, i, j)))`.
+
+Rewrite using `[hc, pow_add, mul_assoc, ← mul_assoc (E K l e ^ n _)]`. Conclude with `mul_mem (pow_mem (E_mem l e _) c) (mul_mem (hn (τ, i, j)) (hm j))`. Take `⟨α, hα⟩` from `key P.mx P.mx_mem`. Take `⟨β, hβ⟩` from `key P.mxInv P.mxInv_mem`. Use `⟨α, β, fun v hv => mem_tot.2 fun τ => ?_, fun v hv => mem_tot.2 fun τ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, hm, h⟩` from `P.mem_extc.1 (mem_tot.1 hv τ)`. Rewrite using `[Pi.smul_apply, h]`. Conclude with `hα τ m hm`. Rewrite using `[mem_extc_iff, Pi.smul_apply, Matrix.mulVec_smul]`. Conclude with `hβ τ _ (mem_tot.1 hv τ)`.
+-/
 theorem exists_exponents [NeZero a] : ∃ α β : ℕ, (∀ v ∈ P.L, E K l e ^ α • v ∈ P.M) ∧
     ∀ v ∈ P.M, E K l e ^ β • v ∈ P.L := by
   have key (Y : ZMod a → Matrix ι ι K⟦X⟧) (hY : ∀ τ i j, Y τ i j ∈ invE l e (A O K)) :
@@ -204,6 +266,15 @@ abbrev D (_ : PhiMod O K l e a ι) : Type := ZMod a → ι → K
 
 def uL (τ : ZMod a) : Submodule (A O K) (P.Lcomp τ) := Ideal.span {uIn (A O K)} • ⊤
 
+/- English proof (translation)
+Rewrite using `[uL, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, -, rfl⟩`. Use extensionality with `i`. Simplify using `[Subalgebra.smul_def]`.
+
+Introduce `h`. Establish `hm` using `P.mem_extc_iff.1 v.2`. Establish `h0 : red0 (P.mxInv τ *ᵥ v) = 0` using `by rw [powerSeriesVecReduceModU_mulVec, h, Matrix.mulVec_zero]`. Establish `h1 (i : ι) : X * PowerSeries.mk (fun n => coeff (n + 1) ((P.mxInv τ *ᵥ v) i)) = (P.mxInv τ *ᵥ v) i`. Use `PowerSeries.eq_X_mul_shift_add_const ((P.mxInv τ *ᵥ v) i)` as an intermediate fact.
+
+Rewrite `this` using `[show constantCoeff ((P.mxInv τ *ᵥ v) i) = 0 from congrFun h0 i, map_zero, add_zero]`. Conclude with `this.symm`. Use `⟨⟨P.mx τ *ᵥ fun i => PowerSeries.mk fun n => coeff (n + 1) ((P.mxInv τ *ᵥ v) i), P.mem_extc.2 ⟨_, fun i n => by rw [coeff_mk]; exact hm i _, rfl⟩⟩, trivial, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(X : K⟦X⟧) • (P.mx τ *ᵥ _) = _`. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Establish `: ((X : K⟦X⟧) • fun i => PowerSeries.mk fun n => coeff (n + 1) ((P.mxInv τ *ᵥ v) i)) = P.mxInv τ *ᵥ v` using `funext h1`. Rewrite using `[this, Matrix.mulVec_mulVec, mx_mul_mxInv, Matrix.one_mulVec]`.
+-/
 theorem mem_uL_iff {τ : ZMod a} {v : P.Lcomp τ} : v ∈ P.uL τ ↔ red0 (v : ι → K⟦X⟧) = 0 := by
   rw [uL, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
   constructor
@@ -231,14 +302,23 @@ def redQ (τ : ZMod a) : (P.Lcomp τ ⧸ (P.uL τ).restrictScalars O) →ₗ[O] 
   Submodule.liftQ _ ((red0.restrictScalars O).comp ((P.Lcomp τ).subtype.restrictScalars O))
     fun _ hv => P.mem_uL_iff.1 hv
 
+/- English proof (translation)
+The claim follows from `LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ fun _ hv => P.mem_uL_iff.2 hv)`.
+-/
 theorem redQ_injective (τ : ZMod a) : Function.Injective (P.redQ τ) :=
   LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ fun _ hv => P.mem_uL_iff.2 hv)
 
 def mx0 (τ : ZMod a) : Matrix ι ι K := (P.mx τ).map constantCoeff
 
+/- English proof (translation)
+Rewrite using `[mx0, ← Matrix.map_mul, mx_mul_mxInv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem matrix_mul_inv_const_eq_one (τ : ZMod a) : P.mx0 τ * (P.mxInv τ).map constantCoeff = 1 := by
   rw [mx0, ← Matrix.map_mul, mx_mul_mxInv, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 (P.matrix_mul_inv_const_eq_one τ)`.
+-/
 theorem inv_const_mul_matrix_eq_one (τ : ZMod a) : (P.mxInv τ).map constantCoeff * P.mx0 τ = 1 :=
   mul_eq_one_comm.1 (P.matrix_mul_inv_const_eq_one τ)
 
@@ -250,6 +330,9 @@ def phiD : P.D ≃ₗ[K] P.D where
   left_inv d := by ext1; simp [inv_const_mul_matrix_eq_one]
   right_inv d := by ext1; simp [matrix_mul_inv_const_eq_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiD_apply (d : P.D) (τ : ZMod a) : P.phiD d τ = P.mx0 τ *ᵥ d (τ - 1) := rfl
 
 variable [Fact l.Prime]
@@ -259,9 +342,15 @@ def phi : Vec K a ι →ₗ[K] Vec K a ι where
   map_add' v w := by ext1; simp [Matrix.mulVec_add]
   map_smul' c v := by ext1; simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (v : Vec K a ι) (τ : ZMod a) :
     P.phi v τ = P.mx τ *ᵥ frobV l (v (τ - 1)) := rfl
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[Pi.smul_apply', phi_apply, phi_apply, ← Matrix.mulVec_smul]`. Use `congr 1`. Use `ext1 i`. Simplify using the standard rewrite rules.
+-/
 theorem phi_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
     P.phi (f • v) = frobTot K a l f • P.phi v := by
   ext1 τ
@@ -270,9 +359,15 @@ theorem phi_smul_tot (f : ZMod a → K⟦X⟧) (v : Vec K a ι) :
   ext1 i
   simp
 
+/- English proof (translation)
+The claim follows from `P.phi_smul_tot (fun _ => f) v`.
+-/
 theorem phi_smul (f : K⟦X⟧) (v : Vec K a ι) : P.phi (f • v) = frob K l f • P.phi v :=
   P.phi_smul_tot (fun _ => f) v
 
+/- English proof (translation)
+Introduce `v w h` and use `by ext1 τ ext1 i have := congrArg (fun x => (P.mxInv (τ + 1) *ᵥ x (τ + 1)) i) h simp only [phi_apply, Matrix.mulVec_mulVec, mxInv_mul_mx, Matrix.one_mulVec, add_sub_cancel_right, frobV_apply] at this exact frob_injective l this`.
+-/
 theorem phi_injective : Function.Injective P.phi := fun v w h => by
   ext1 τ
   ext1 i
@@ -281,13 +376,30 @@ theorem phi_injective : Function.Injective P.phi := fun v w h => by
     frobV_apply] at this
   exact frob_injective l this
 
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ => P.mem_extc.2 ⟨_, fun i => hB _ (mem_tot.1 hv (τ - 1) i), rfl⟩`.
+-/
 theorem phi_mem_ext {B : Subalgebra O K⟦X⟧} (hB : ∀ f ∈ B, frob K l f ∈ B) {v : Vec K a ι}
     (hv : v ∈ P.Mext B) : P.phi v ∈ P.ext B :=
   mem_tot.2 fun τ => P.mem_extc.2 ⟨_, fun i => hB _ (mem_tot.1 hv (τ - 1) i), rfl⟩
 
+/- English proof (translation)
+The claim follows from `P.phi_mem_ext (fun _ => frob_mem_A l) hv`.
+-/
 theorem phi_mem_L {v : Vec K a ι} (hv : v ∈ P.M) : P.phi v ∈ P.L :=
   P.phi_mem_ext (fun _ => frob_mem_A l) hv
 
+/- English proof (translation)
+Use `le_antisymm (fun v hv => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Establish `: P.Lcomp τ ≤ (Submodule.span (A O K) (P.phi '' P.M)).comap (LinearMap.single (A O K) (fun _ : ZMod a => ι → K⟦X⟧) τ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.subset_span ⟨Pi.single (τ - 1) (Pi.single j 1), mem_tot.2 fun σ i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.single_apply] split_ifs`. Rewrite using `[Pi.single_apply] split_ifs exacts [one_mem _, zero_mem _]`. Conclude with `zero_mem _`.
+
+Use `ext1 σ`. Rewrite using `[phi_apply]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Establish `: frobV l (Pi.single j (1 : K⟦X⟧)) = Pi.single j 1` using `by ext1 i`.
+
+Rewrite using `[frobV_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[this]`. Simplify using `[h]`. Conclude with `this (mem_tot.1 hv τ)`.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `P.phi_mem_L hv`.
+-/
 theorem L_eq_span [NeZero a] : P.L = Submodule.span (A O K) (P.phi '' P.M) := by
   refine le_antisymm (fun v hv => ?_) (Submodule.span_le.2 ?_)
   · rw [← Finset.univ_sum_single v]
@@ -317,6 +429,9 @@ theorem L_eq_span [NeZero a] : P.L = Submodule.span (A O K) (P.phi '' P.M) := by
   · rintro _ ⟨v, hv, rfl⟩
     exact P.phi_mem_L hv
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[red_apply, phi_apply, powerSeriesVecReduceModU_mulVec, phiD_apply]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem red_phi (v : Vec K a ι) : red (P.phi v) = P.phiD (red v) := by
   ext1 τ
   rw [red_apply, phi_apply, powerSeriesVecReduceModU_mulVec, phiD_apply]
@@ -326,6 +441,19 @@ theorem red_phi (v : Vec K a ι) : red (P.phi v) = P.phiD (red v) := by
 
 variable [NormedAlgebra ℚ_[l] K]
 
+/- English proof (translation)
+Introduce and unpack `⟨_, n, rfl⟩`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hl : (l : K) ^ n ≠ 0` using `pow_ne_zero _ (l_ne_zero l)`. Establish `: ⇑(algebraMap O (Module.End O (ι → K)) ((l : O) ^ n)) = fun y => (l : K) ^ n • y`. Use extensionality with `y i`.
+
+Rewrite using `[Module.algebraMap_end_apply]`. Simplify using `[Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `(MulAction.toPerm (Units.mk0 _ hl)).bijective`. Use `surj y := by choose n b hb using fun i => exists_pow_mul_mem (O := O) l (((P.mxInv τ).map constantCoeff *ᵥ y) i)`.
+
+Set `m` to `Finset.univ.sup n`. Use `⟨⟨Submodule.Quotient.mk ⟨P.mx τ *ᵥ fun i => C ((l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i), P.mem_extc.2 ⟨_, fun i => ?_, rfl⟩⟩, ⟨_, m, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ i))`. Establish `: (l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i = algebraMap O K ((l : O) ^ c * b i)`. Rewrite using `[map_mul, ← hb, show m = c + n i from hc, pow_add]`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[this, ← algebraMap_eq_C]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Express the relevant statement in the definitionally equal form `((l : O) ^ m) • y = red0 (P.mx τ *ᵥ _)`. Establish `: (red0 fun i => C ((l : K) ^ m * ((P.mxInv τ).map constantCoeff *ᵥ y) i)) = (l : K) ^ m • ((P.mxInv τ).map constantCoeff *ᵥ y)`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[powerSeriesVecReduceModU_mulVec, this, Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Use `erw [P.matrix_mul_inv_const_eq_one τ]`. Use extensionality with `i`.
+
+Simplify using `[Algebra.smul_def]`. Use `exists_of_eq h := ⟨1, by rw [P.redQ_injective τ h]⟩`.
+-/
 theorem isLocalizedModule_redQ (τ : ZMod a) :
     IsLocalizedModule (Submonoid.powers (l : O)) (P.redQ τ) where
   map_units := by
@@ -384,6 +512,9 @@ def app (F : Hom P Q) : Vec K a ι →ₗ[K⟦X⟧] Vec K a κ where
   map_add' v w := by ext1; simp [Matrix.mulVec_add]
   map_smul' c v := by ext1; simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem app_apply (F : Hom P Q) (v : Vec K a ι) (τ : ZMod a) : F.app v τ = F.mat τ *ᵥ v τ := rfl
 
 def onD (F : Hom P Q) : P.D →ₗ[K] Q.D where
@@ -391,9 +522,15 @@ def onD (F : Hom P Q) : P.D →ₗ[K] Q.D where
   map_add' v w := by ext1; simp [Matrix.mulVec_add]
   map_smul' c v := by ext1; simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+The claim follows from `funext fun τ => powerSeriesVecReduceModU_mulVec (F.mat τ) (v τ)`.
+-/
 theorem red_app (F : Hom P Q) (v : Vec K a ι) : red (F.app v) = F.onD (red v) :=
   funext fun τ => powerSeriesVecReduceModU_mulVec (F.mat τ) (v τ)
 
+/- English proof (translation)
+Use `ext1 τ`. Rewrite using `[app_apply, P.phi_apply, Q.phi_apply, app_apply, Matrix.mulVec_mulVec, F.comm, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use `ext1 i`. Conclude with `(RingHom.map_mulVec (frob K l).toRingHom _ _ i).symm`.
+-/
 theorem app_phi (F : Hom P Q) (v : Vec K a ι) : F.app (P.phi v) = Q.phi (F.app v) := by
   ext1 τ
   rw [app_apply, P.phi_apply, Q.phi_apply, app_apply, Matrix.mulVec_mulVec, F.comm,
@@ -402,14 +539,23 @@ theorem app_phi (F : Hom P Q) (v : Vec K a ι) : F.app (P.phi v) = Q.phi (F.app 
   ext1 i
   exact (RingHom.map_mulVec (frob K l).toRingHom _ _ i).symm
 
+/- English proof (translation)
+The claim follows from `mem_tot.2 fun τ i => Subalgebra.sum_mem _ fun j _ => mul_mem (hB (F.mem τ i j)) (mem_tot.1 hv τ j)`.
+-/
 theorem app_mem_Mext (F : Hom P Q) {B : Subalgebra O K⟦X⟧} (hB : A O K ≤ B) {v : Vec K a ι}
     (hv : v ∈ P.Mext B) : F.app v ∈ Q.Mext B :=
   mem_tot.2 fun τ i => Subalgebra.sum_mem _ fun j _ =>
     mul_mem (hB (F.mem τ i j)) (mem_tot.1 hv τ j)
 
+/- English proof (translation)
+The claim follows from `F.app_mem_Mext le_rfl hv`.
+-/
 theorem app_mem_M (F : Hom P Q) {v : Vec K a ι} (hv : v ∈ P.M) : F.app v ∈ Q.M :=
   F.app_mem_Mext le_rfl hv
 
+/- English proof (translation)
+Use `mem_tot.2 fun τ => ?_` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `P.mem_extc.1 (mem_tot.1 hv τ)`. Rewrite using `[app_apply, h, Matrix.mulVec_mulVec, F.comm, ← Matrix.mulVec_mulVec]`. Conclude with `Q.mem_extc.2 ⟨_, fun i => Subalgebra.sum_mem _ fun j _ => mul_mem (hB (frob_mem_A l (F.mem _ i j))) (hm j), rfl⟩`.
+-/
 theorem app_mem_ext (F : Hom P Q) {B : Subalgebra O K⟦X⟧} (hB : A O K ≤ B) {v : Vec K a ι}
     (hv : v ∈ P.ext B) : F.app v ∈ Q.ext B := by
   refine mem_tot.2 fun τ => ?_
@@ -436,6 +582,9 @@ def scalar (c : O) : Hom P P where
     rw [this]
     simp
 
+/- English proof (translation)
+Use `ext1 τ`. Simplify using `only [app_apply, scalar, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply]`.
+-/
 theorem app_scalar (c : O) (v : Vec K a ι) : (scalar P c).app v = algebraMap O K⟦X⟧ c • v := by
   ext1 τ
   simp only [app_apply, scalar, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply]
@@ -446,6 +595,9 @@ def comp (G : Hom Q T) (F : Hom P Q) : Hom P T where
   comm τ := by
     rw [Matrix.mul_assoc, F.comm, ← Matrix.mul_assoc, G.comm, Matrix.mul_assoc, Matrix.map_mul]
 
+/- English proof (translation)
+Use `ext1 τ`. Simplify using `only [app_apply, comp, Matrix.mulVec_mulVec]`.
+-/
 theorem app_comp (G : Hom Q T) (F : Hom P Q) (v : Vec K a ι) :
     (G.comp F).app v = G.app (F.app v) := by
   ext1 τ
@@ -467,36 +619,63 @@ def hat (f : K⟦X⟧) : AhatE O K l e :=
 
 variable {O K}
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem hat_of_mem {f : K⟦X⟧} (h : f ∈ RpiE O K l e) : hat O l e f = toHatE O K l e ⟨f, h⟩ :=
   dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_pos f.2`.
+-/
 @[simp] theorem hat_coe (f : RpiE O K l e) : hat O l e (f : K⟦X⟧) = toHatE O K l e f :=
   dif_pos f.2
 
+/- English proof (translation)
+Rewrite using `[hat_of_mem l e (le_away _ _ f.2)]`. Conclude with `toHatE_eq l e rfl`.
+-/
 theorem hat_coe_Rpi (f : Rpi O K l e) :
     hat O l e (f : K⟦X⟧) = algebraMap _ _ (toHat O K l e f) := by
   rw [hat_of_mem l e (le_away _ _ f.2)]
   exact toHatE_eq l e rfl
 
+/- English proof (translation)
+Rewrite using `[show (f : K⟦X⟧) = (⟨f, A_le_Rpi l e f.2⟩ : Rpi O K l e) from rfl, hat_coe_Rpi]`. Conclude with `congrArg _ (toHat_eq_ofAl l e rfl)`.
+-/
 theorem hat_coe_A (f : A O K) : hat O l e (f : K⟦X⟧) = algebraMap _ _ (ofA O K l e f) := by
   rw [show (f : K⟦X⟧) = (⟨f, A_le_Rpi l e f.2⟩ : Rpi O K l e) from rfl, hat_coe_Rpi]
   exact congrArg _ (toHat_eq_ofAl l e rfl)
 
+/- English proof (translation)
+Rewrite using `[hat_of_mem l e hf, hat_of_mem l e hg, ← map_add, ← hat_coe]`. Both sides reduce to the same expression.
+-/
 theorem hat_add {f g : K⟦X⟧} (hf : f ∈ RpiE O K l e) (hg : g ∈ RpiE O K l e) :
     hat O l e (f + g) = hat O l e f + hat O l e g := by
   rw [hat_of_mem l e hf, hat_of_mem l e hg, ← map_add, ← hat_coe]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hat_of_mem l e hf, hat_of_mem l e hg, ← map_mul, ← hat_coe]`. Both sides reduce to the same expression.
+-/
 theorem hat_mul {f g : K⟦X⟧} (hf : f ∈ RpiE O K l e) (hg : g ∈ RpiE O K l e) :
     hat O l e (f * g) = hat O l e f * hat O l e g := by
   rw [hat_of_mem l e hf, hat_of_mem l e hg, ← map_mul, ← hat_coe]
   rfl
 
+/- English proof (translation)
+The claim follows from `(hat_coe_Rpi l e (EIn l e _)).trans (congrArg _ (toHat_E O K l e))`.
+-/
 theorem hat_E : hat O l e (E K l e) = algebraMap _ _ (Ehat O K l e) :=
   (hat_coe_Rpi l e (EIn l e _)).trans (congrArg _ (toHat_E O K l e))
 
+/- English proof (translation)
+The claim follows from `invE_le_RpiE l e (A_le_Rpi l e)`.
+-/
 theorem invE_A_le_RpiE : invE l e (A O K) ≤ RpiE O K l e := invE_le_RpiE l e (A_le_Rpi l e)
 
+/- English proof (translation)
+The claim follows from `invE_le_RpiE l e (invL_S_le_Rpi l e)`.
+-/
 theorem invE_invL_S_le_RpiE : invE l e (invL l (S O K e)) ≤ RpiE O K l e :=
   invE_le_RpiE l e (invL_S_le_Rpi l e)
 
@@ -515,6 +694,13 @@ variable (O K ι) in
 
 def Mhatc : Submodule (Ahat O K l e) (ι → AhatE O K l e) := hatSpan O l e (Mc O K ι)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `: Mhatc O K l e ι ≤ Submodule.pi Set.univ fun _ => 1` using `Submodule.span_le.2 <| by`. Introduce and unpack `_ ⟨v, ⟨hv, -⟩, rfl⟩ i -`. Conclude with `Submodule.mem_one.2 ⟨_, (hat_coe_A l e ⟨v i, hv i⟩).symm⟩`.
+
+Conclude with `fun i => Submodule.mem_one.1 (this hw i trivial)`. Introduce `hw choose x hx using hw`. Establish `h1 : w = ∑ i, x i • hatV O l e (Pi.single i (1 : K⟦X⟧))`. Use extensionality with `j`. Establish `h0 : hat O l e (0 : K⟦X⟧) = 0` using `(hat_coe l e 0).trans (map_zero _)`.
+
+Establish `h1 : hat O l e (1 : K⟦X⟧) = 1` using `(hat_coe l e 1).trans (map_one _)`. Simplify using `[hatV, Pi.single_apply, apply_ite (hat O l e), h0, h1, Algebra.smul_def, hx]`. Rewrite using `[h1]`. Apply the tactic sequence `refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨fun j => ?_, fun j => ?_⟩, rfl⟩) <;> rw [Pi.single_apply] <;> split_ifs <;> simp`.
+-/
 theorem mem_Mhatc {w : ι → AhatE O K l e} :
     w ∈ Mhatc O K l e ι ↔ ∀ i, ∃ x : Ahat O K l e, algebraMap _ _ x = w i := by
   constructor
@@ -549,6 +735,13 @@ def Lhat : Submodule (Ahat O K l e) (ZMod a → ι → AhatE O K l e) := Submodu
 def hatTot (_ : PhiMod O K l e a ι) (v : Vec K a ι) : ZMod a → ι → AhatE O K l e :=
   fun τ => hatV O l e (v τ)
 
+/- English proof (translation)
+Establish `hX (i j : ι) : P.mx τ i j ∈ RpiE O K l e` using `invE_A_le_RpiE l e (P.mx_mem τ i j)`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, ⟨hv, -⟩, rfl⟩`. Take `⟨m, hm, rfl⟩` from `P.mem_extc.1 hv`. Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun j => toHat O K l e ⟨m j, hB (hm j)⟩, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `: (P.mx τ *ᵥ m) i = ((∑ j, ⟨m j, le_away _ _ (hB (hm j))⟩ * ⟨P.mx τ i j, hX i j⟩ : RpiE O K l e) : K⟦X⟧)`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[hatV, this, hat_coe, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Pi.smul_apply, Algebra.smul_def, hatV, Matrix.col_apply, hat_of_mem l e (hX i j), toHatE_eq l e (f := ⟨m j, le_away _ _ (hB (hm j))⟩) (g := ⟨m j, hB (hm j)⟩) rfl]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨_, ⟨Submodule.subset_span ⟨j, rfl⟩, fun i => hX i j⟩, rfl⟩`.
+-/
 theorem hatSpan_extc {B : Subalgebra O K⟦X⟧} (hB : B ≤ Rpi O K l e) (τ : ZMod a) :
     hatSpan O l e (P.extc B τ) =
       Submodule.span _ (Set.range fun j => hatV O l e ((P.mx τ).col j)) := by
@@ -579,6 +772,9 @@ variable [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e]
 def Eunit : (invE l e (A O K))ˣ :=
   (IsLocalization.Away.algebraMap_isUnit (S := invE l e (A O K)) (EIn l e (A O K))).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_Eunit : ((Eunit O K l e : invE l e (A O K)) : K⟦X⟧) = E K l e := rfl
 
 variable {a} in
@@ -588,14 +784,25 @@ def rankOne (j : ZMod a → ℤ) : PhiMod O K l e a Unit where
 
 variable {O K l e a}
 
+/- English proof (translation)
+Simplify using `[PhiMod.mx, rankOne, h, Matrix.diagonal_pow]`.
+-/
 theorem mx_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n) :
     (rankOne O K l e j).mx τ () () = E K l e ^ n := by
   simp [PhiMod.mx, rankOne, h, Matrix.diagonal_pow]
 
+/- English proof (translation)
+Simplify using `[PhiMod.mxInv, rankOne, h, ← map_inv, Matrix.diagonal_pow]`.
+-/
 theorem mxInv_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = -n) :
     (rankOne O K l e j).mxInv τ () () = E K l e ^ n := by
   simp [PhiMod.mxInv, rankOne, h, ← map_inv, Matrix.diagonal_pow]
 
+/- English proof (translation)
+Rewrite using `[PhiMod.mem_extc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Conclude with `⟨m (), hm (), by simp [Matrix.mulVec, dotProduct, mx_rankOne h]⟩`. Introduce and unpack `⟨m, hm, hv⟩`.
+
+Conclude with `⟨fun _ => m, fun _ => hm, funext fun _ => by`. Simplify using `[Matrix.mulVec, dotProduct, mx_rankOne h, hv]⟩`.
+-/
 theorem mem_Lcomp_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n)
     {v : Unit → K⟦X⟧} :
     v ∈ (rankOne O K l e j).Lcomp τ ↔ ∃ m ∈ A O K, v () = E K l e ^ n * m := by
@@ -607,10 +814,18 @@ theorem mem_Lcomp_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ
     exact ⟨fun _ => m, fun _ => hm, funext fun _ => by
       simp [Matrix.mulVec, dotProduct, mx_rankOne h, hv]⟩
 
+/- English proof (translation)
+Simplify using `[PhiMod.phiD_apply, PhiMod.mx0, Matrix.mulVec, dotProduct, mx_rankOne h, constantCoeff_E]`.
+-/
 theorem phiD_rankOne {j : ZMod a → ℤ} {τ : ZMod a} {n : ℕ} (h : j τ = n)
     (d : (rankOne O K l e j).D) : (rankOne O K l e j).phiD d τ () = (l : K) ^ n * d (τ - 1) () := by
   simp [PhiMod.phiD_apply, PhiMod.mx0, Matrix.mulVec, dotProduct, mx_rankOne h, constantCoeff_E]
 
+/- English proof (translation)
+Rewrite using `[mem_Lcomp_rankOne (n := 1) rfl]`. Introduce and unpack `⟨m, hm, h⟩`. Establish `h1` using `congrArg (fun f => ‖constantCoeff f‖) h`. Simplify using `only [map_one, norm_one, pow_one, map_mul, constantCoeff_E, norm_mul] at h1`. Establish `h2` using `hm 0`.
+
+Rewrite `h2` using `[coeff_zero_eq_constantCoeff]`. Use `norm_l_lt_one (K := K) l` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (l : K)]`.
+-/
 theorem one_notMem_Lcomp_rankOne (τ : ZMod a) :
     (fun _ => 1) ∉ (rankOne O K l e fun _ : ZMod a => 1).Lcomp τ := by
   rw [mem_Lcomp_rankOne (n := 1) rfl]
@@ -624,8 +839,16 @@ theorem one_notMem_Lcomp_rankOne (τ : ZMod a) :
 
 end RankOne
 
+/- English proof (translation)
+The claim follows from `rankOne _ _ _ _ fun _ => 5`.
+-/
 example [Fact (Nat.Prime 3)] : PhiMod ℤ_[3] ℚ_[3] 3 8 2 Unit := rankOne _ _ _ _ fun _ => 5
 
+/- English proof (translation)
+Establish `h0 : ‖(l.factorial : K)‖ ≠ 0` using `norm_ne_zero_iff.2 (natCast_ne_zero' l l.factorial_ne_zero)`. Use `⟨monomial_mem_S ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv, inv_mul_cancel₀ h0]`. Establish `h1` using `h (e * l)`. Rewrite `h1` using `[coeff_monomial_same, norm_inv]`.
+
+Establish `h2` using `norm_factorial_le (K := K) l l`. Rewrite `h2` using `[Nat.div_self (Fact.out : l.Prime).pos, pow_one]`. Establish `h3` using `h2.trans_lt (norm_l_lt_one l)`. Conclude with `absurd ((inv_le_one₀ (lt_of_le_of_ne (norm_nonneg _) h0.symm)).1 h1) (not_le.2 h3)`.
+-/
 example [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
     monomial (e * l) ((l.factorial : K)⁻¹) ∈ S O K e ∧
       monomial (e * l) ((l.factorial : K)⁻¹) ∉ A O K := by
@@ -639,6 +862,11 @@ example [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
     have h3 := h2.trans_lt (norm_l_lt_one l)
     exact absurd ((inv_le_one₀ (lt_of_le_of_ne (norm_nonneg _) h0.symm)).1 h1) (not_le.2 h3)
 
+/- English proof (translation)
+Establish `h : idE O K l e ^ 1 ≠ ⊤`. Rewrite using `[pow_one, Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨g, hg⟩` from `hu.exists_right_inv`. Establish `hg' : E K l e * g = 1` using `congrArg Subtype.val hg`.
+
+Establish `: (g : K⟦X⟧) = 0` using `eq_zero_of_E_mul l e (invL_A_le_Rpi l e g.2) fun n => by`. Rewrite using `[hg', coeff_one, if_neg (by have := NeZero.pos e; omega)]`. Simplify using `[this] at hg'`. Use `Ideal.Quotient.nontrivial_iff.2 h` as an intermediate fact. Conclude with `(AdicCompletion.evalₐ (idE O K l e) 1).toRingHom.domain_nontrivial`.
+-/
 theorem nontrivial_Ahat [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
     Nontrivial (Ahat O K l e) := by
   have h : idE O K l e ^ 1 ≠ ⊤ := by

@@ -32,6 +32,9 @@ namespace GlobalTheory.DefRead
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
+/- English proof (translation)
+Use extensionality with `F`. Simplify using `[Formalism.IndefR.Arith.FormsL.mem_typeP, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem typeSubspace_eq_iInf_ker {LL Ks : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL] {n : ℕ}
     {Wσ : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (Wσ σ)] [∀ σ, InnerProductSpace ℂ (Wσ σ)]
     {G0 : Type} [Group G0] [Fintype G0] (A : Formalism.IndefR.Arith.FormsL LL Ks (Fin n → LL) Wσ G0) (J0 : Subgroup G0)
@@ -42,6 +45,37 @@ theorem typeSubspace_eq_iInf_ker {LL Ks : Type} [Field LL] [NumberField LL] [Fie
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨lam, ψ, hW, hlam, -⟩` from `GlobalTheory.ShareOn.baseLevel_isWhit D L hT Gi Gl Kc Y0 cX ex Csz p hp.1`. Establish `hfin : Finite (G0g D.nd)` using `Finite.of_equiv _ (p.R.eG.trans p.cG).toEquiv`. Set `e` to `p.R.eG.trans p.cG`. Set `Pb` to `p.P.P0.map e.toMonoidHom`. Set `lamb : Pb.comap (MonoidHom.id (G0g D.nd)) →* ℂˣ` to `lam.comp (MulEquiv.subgroupCongr (Subgroup.comap_id Pb)).toMonoidHom`.
+
+Establish `hEig : eig (repAt p i) (Pb.comap (MonoidHom.id (G0g D.nd))) lamb = eig (twBC D.what₂.embLL (p.R.toRealDat.FW i).ρ (p.R.toRealDat.FW i).chi) (p.F.lv2.lvl false).P ((Units.map D.what₂.embLL.toMonoidHom).comp (p.F.lv2.lvl false).ψ⁻¹)`. Use extensionality with `v`. Rewrite using `[mem_eig, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`.
+
+Establish `hm : e g ∈ Pb` using `⟨g, g.2, rfl⟩`. Use `h ⟨e g, hm⟩` as an intermediate fact. Rewrite `this` using `[repAt_apply]`. Simplify using `only [e, MulEquiv.symm_apply_apply] at this`. Rewrite using `[this]`.
+
+Use `congr 2`. Conclude with `Units.ext (hlam g hm)`. Introduce `h γ`. Take `⟨g, hg, hge⟩` from `γ.2`. Use `h ⟨g, hg⟩` as an intermediate fact.
+
+Rewrite using `[repAt_apply]`. Establish `h1 : (p.R.eG.trans p.cG).symm (γ : G0g D.nd) = g`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `hge.symm`. Rewrite using `[h1, this]`.
+
+Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Establish `h2` using `hlam ⟨g, hg⟩ ⟨g, hg, rfl⟩`. Establish `h3 : lamb γ = lam ⟨e g, ⟨g, hg, rfl⟩⟩` using `by show lam ⟨(γ : G0g D.nd), _⟩ = _`. Use `congr 1`.
+
+Conclude with `Subtype.ext hge.symm`. Rewrite using `[h3, h2]`. Both sides reduce to the same expression. Use `⟨G0g D.nd, inferInstance, hfin, VAt p i, inferInstance, inferInstance, inferInstance, MonoidHom.id _, MonoidHom.id _, repAt p i, Pb, lam, ψ, lamb, GlobalTheory.BadCount.Inh.halfH D, ⟨fun g => rfl, fun g γ hγ => ?_⟩, hW, fun γ => rfl, fun k => GlobalTheory.BadCount.Inh.isHalf_half …` and prove the remaining obligations. Establish `: γ = 1` using `hγ`.
+
+Substitute `this` using the available equality. Simplify using the standard rewrite rules. Take `⟨X, hX, hXd, hact, A, hf, hA, hc⟩` from `hfree k`. Set `f : (GlobalTheory.BadCount.Inh.halfH D k).comap (MonoidHom.id (G0g D.nd)) →* GlobalTheory.BadCount.Inh.halfH D k` to `{ toFun := fun h => ⟨h.1, h.2⟩, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Use `letI : MulAction ((GlobalTheory.BadCount.Inh.halfH D k).comap (MonoidHom.id (G0g D.nd))) X := MulAction.compHom X f`.
+
+Use `⟨X, hX, hXd, this, A, fun h y hy => ?_, hA, fun h y v hv => hc (f h) y v hv⟩` and prove the remaining obligations. Use `hf (f h) y hy` as an intermediate fact. Conclude with `Subtype.ext (congrArg Subtype.val this)`. Establish `hC` using `GlobalTheory.T.gram_lattice_span_eq_top p i hp hg`. Establish `hB` using `GlobalTheory.T.arithmetic_forms_span_invariant D.what₂.LL p.T.Q.c.F (p.R.nW i) _ p.P.Gp (p.R.toRealDat.FW i) (p.F.lv2.lvl false).P (p.F.lv2.lvl false).ψ⁻¹ (eGood p.R.toRealDat i) hC`.
+
+Establish `hA` using `GlobalTheory.T.finrank_characterEigenspace_twistedComplexification D.what₂.LL (Fin (p.R.nW i) → D.what₂.LL) p.P.Gp D.what₂.embLL (p.R.toRealDat.FW i).ρ (p.R.toRealDat.FW i).chi (p.F.lv2.lvl false).P (p.F.lv2.lvl false).ψ⁻¹ (fun g => (Formalism.L2.DIV.idemOf p.P.A3.A.X).coeff g)`. Use `show Formalism.HN.rkK ((p.R.toRealDat.FW i).Mall _ _) = _`. Rewrite using `[hB.1, typeSubspace_eq_iInf_ker, hA.1, hEig]`. Establish `hC` using `GlobalTheory.T.gram_lattice_span_eq_top p i hp hg`. Establish `hB` using `GlobalTheory.T.arithmetic_forms_span_invariant D.what₂.LL p.T.Q.c.F (p.R.nW i) _ p.P.Gp (p.R.toRealDat.FW i) (p.F.lv2.lvl false).P (p.F.lv2.lvl false).ψ⁻¹ (eGood p.R.toRealDat i) hC`.
+
+Establish `hA` using `GlobalTheory.T.finrank_characterEigenspace_twistedComplexification D.what₂.LL (Fin (p.R.nW i) → D.what₂.LL) p.P.Gp D.what₂.embLL (p.R.toRealDat.FW i).ρ (p.R.toRealDat.FW i).chi (p.F.lv2.lvl false).P (p.F.lv2.lvl false).ψ⁻¹ (fun g => (Formalism.L2.DIV.idemOf p.P.A3.A.X).coeff g)`. Take `⟨-, -, -, hc, -, -⟩` from `p.grpRecPin`. Establish `hsum : ∀ x : MonoidAlgebra ℂ (G0g D.nd), x = ∑ h, MonoidAlgebra.single h (x.coeff h)` using `fun x => MonoidAlgebra.ext (by`. Rewrite using `[MonoidAlgebra.coeff_sum]`. Simplify using `only [MonoidAlgebra.coeff_single]`.
+
+Conclude with `(Finsupp.univ_sum_single _).symm)`. Establish `he0 : D.ntypes.e0 = ∑ g : p.P.Gp, MonoidAlgebra.single (e g) (D.what₂.embLL ((Formalism.L2.DIV.idemOf p.P.A3.A.X).coeff g))`. Rewrite using `[hsum D.ntypes.e0, ← Equiv.sum_comp e.toEquiv]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hc g]`.
+
+Both sides reduce to the same expression. Establish `hK : Representation.asAlgebraHom ((repAt p i).comp (MonoidHom.id (G0g D.nd))) D.ntypes.e0 = Representation.asAlgebraHom (twBC D.what₂.embLL (p.R.toRealDat.FW i).ρ (p.R.toRealDat.FW i).chi) (∑ g, MonoidAlgebra.single g (D.what₂.embLL ((Formalism.L2.DIV.idemOf p.P.A3.A.X).coeff g)) …`. Rewrite using `[he0, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_single, Representation.asAlgebraHom_single]`.
+
+Establish `hee : (p.R.eG.trans p.cG).symm (e g) = g` using `MulEquiv.symm_apply_apply _ _`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.id_apply, repAt_apply, hee]`. Use `show Formalism.HN.rkK ((p.R.toRealDat.FW i).Mall _ _ ⊓ (LinearMap.ker (eGood p.R.toRealDat i)).restrictScalars _) = _`. Establish `hEG : eGood p.R.toRealDat i = ∑ g, ((Formalism.L2.DIV.idemOf p.P.A3.A.X).coeff g * (((p.R.toRealDat.FW i).chi g)⁻¹ : D.what₂.LLˣ)) • (p.R.toRealDat.FW i).ρ g`. Unfold `eGood Formalism.IndefR.Arith.FormsL.eOp`.
+
+Both sides reduce to the same expression. Rewrite using `[hB.2, typeSubspace_eq_iInf_ker, hEG, hA.2]`. Rewrite using `[hEig, hK]`.
+-/
 theorem point_read (p : PtAt ex Csz) (i : Fin D.R.m) (hp : RowsT p) (hg : GramAt p i)
     (hfree : ∀ k : Fin 2, ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction (GlobalTheory.BadCount.Inh.halfH D k) X)
       (A : X → Submodule ℂ (VAt p i)),
@@ -151,6 +185,13 @@ namespace GlobalTheory.DefRead
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hG`. Establish `h1` using `GlobalTheory.T.half_heisenberg_free_action_decomposition hP hG`. Establish `h2` using `hG`. Unfold `Gram at h2`. Unfold `Lifts at h1 h2 ⊢`.
+
+Use `(h1.and h2).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩` from `h`. Take `⟨x0, e⟩` from `e1.and e2`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `e x hx hle ι p hp`.
+
+Conclude with `point_read p i hp (a2 i) (a1 i hi)`.
+-/
 theorem exists_rep_def : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∃ (Γ : Type) (_ : Group Γ) (_ : Finite Γ) (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (_ : FiniteDimensional ℂ V) (π : Γ →* G0g (Fm.D x ι).nd) (s : G0g (Fm.D x ι).nd →* Γ) (ρ : Representation ℂ Γ V) (Pb : Subgroup (G0g (Fm.D x ι).nd)) (lam : Pb →* ℂˣ) (ψ : ∀ kv : (Σ k : Fin 2, (Fm.D x ι).nd.PlG k), AddChar (ZMod ((Fm.D x ι).host.g kv.1)) ℂ) (lamb : Pb.comap π →* ℂˣ) (H : Fin 2 → Subgroup (G0g (Fm.D x ι).nd)), IsSplit π s ∧ IsWhit (Fm.D x ι) Pb lam ψ ∧ (∀ γ : Pb.comap π, lamb γ = lam ⟨π γ, γ.2⟩) ∧ (∀ k, IsHalf (Fm.D x ι) k (H k)) ∧ (∀ k, ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction ((H k).comap π) X) (A : X → Submodule ℂ V), (∀ (h : (H k).comap π) (y : X), h • y = y → h = 1) ∧ DirectSum.IsInternal A ∧ ∀ (h : (H k).comap π) (y : X), ∀ v ∈ A y, ρ (h : Γ) v ∈ A (h • y)) ∧ Formalism.HN.rkK (latType p.R.toRealDat p.F.lv2 i) = Module.finrank ℂ (eig ρ (Pb.comap π) lamb) ∧ Formalism.HN.rkK (latBad p.R.toRealDat p.F.lv2 i) = Module.finrank ℂ (eig ρ (Pb.comap π) lamb ⊓ LinearMap.ker (Representation.asAlgebraHom (ρ.comp s : Representation ℂ (G0g (Fm.D x ι).nd) V) (Fm.D x ι).ntypes.e0) : Submodule ℂ V) := by
   intro hP hG
   have h1 := GlobalTheory.T.half_heisenberg_free_action_decomposition hP hG

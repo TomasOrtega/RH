@@ -11,6 +11,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Use `⟨((unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega`.
+-/
 private theorem unip_blocks' {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) :
     ∃ B, (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv =
       Matrix.fromBlocks 1 B 0 (1 : Matrix (Fin b) (Fin b) R) := by
@@ -19,6 +22,9 @@ private theorem unip_blocks' {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + 
   rcases i with i | i <;> rcases j with j | j <;>
     simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `unip_blocks' X`. Use `⟨B * b.val, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv, coe_unipGL, hB]`. Simplify using `[blk, Matrix.fromBlocks_multiply]`.
+-/
 private theorem unip_blk' {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a b : GL (Fin 2) R) :
     ∃ B, (unipGL X * blk a b).val.submatrix finSumFinEquiv finSumFinEquiv =
       Matrix.fromBlocks a.val B 0 b.val := by
@@ -27,6 +33,9 @@ private theorem unip_blk' {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) (a 
   rw [Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv, coe_unipGL, hB]
   simp [blk, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `h : detModule K 2 ((m : AdelicGLn.AdelicGL K 2) * zt K t) = ⟨Real.exp t, Real.exp_pos t⟩`. Rewrite using `[map_mul, mem_normOneGL_iff_detModule.1 m.2, one_mul, zt, detModule_centralSection two_pos]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_retractOne, h]`. Conclude with `mul_inv_cancel_right _ _`.
+-/
 private theorem ret_zt {K : Type} [Field K] [NumberField K] (m : G1 K 2) (t : ℝ) :
     retractOne ((m : AdelicGLn.AdelicGL K 2) * zt K t) = m := by
   have h : detModule K 2 ((m : AdelicGLn.AdelicGL K 2) * zt K t) = ⟨Real.exp t, Real.exp_pos t⟩ := by
@@ -35,6 +44,37 @@ private theorem ret_zt {K : Type} [Field K] [NumberField K] (m : G1 K 2) (t : �
   rw [coe_retractOne, h]
   exact mul_inv_cancel_right _ _
 
+/- English proof (translation)
+Introduce `K _ _`. Take `⟨S, ν, hS, -, hmem, -⟩` from `parHaar (K := K) (Measure.haar)`. Take `⟨hlv, hmul, hone, -⟩` from `blkLaws (K := K)`. Take `⟨-, -, hinj, -⟩` from `pkLaws (K := K)`. Establish `hp : ∀ p : S, ∃ X m₁ m₂ t, (p : G1 K (2 + 2)) = nn X * lv m₁ m₂ t` using `fun p => (hmem p).1 p.2`.
+
+Use `choose X m₁ m₂ t hX using hp`. Establish `hcomm : ∀ (a b : G1 K 2) (u : ℝ) Y, ∃ Z, lv a b u * nn Y = nn Z * lv a b u`. Introduce `a b u Y`. Take `⟨e, he, -⟩` from `adMeas a b u`. Conclude with `⟨e.symm Y, by rw [he, e.apply_symm_apply]⟩`.
+
+Establish `hprod : ∀ p q : S, m₁ (p * q) = m₁ p * m₁ q ∧ m₂ (p * q) = m₂ p * m₂ q`. Introduce `p q`. Take `⟨Z, hZ⟩` from `hcomm (m₁ p) (m₂ p) (t p) (X q)`. Establish `h : nn (X (p * q)) * lv (m₁ (p * q)) (m₂ (p * q)) (t (p * q)) = nn (X p + Z) * lv (m₁ p * m₁ q) (m₂ p * m₂ q) (t p + t q)`. Rewrite using `[← hX, Subgroup.coe_mul, hX p, hX q, mul_assoc, ← mul_assoc (lv _ _ _), hZ, mul_assoc, hmul, ← mul_assoc]`.
+
+Conclude with `congrArg (· * _) (unipOne_add 2 _ _).symm`. Take `⟨-, h1, h2, -⟩` from `hinj _ _ _ _ _ _ _ _ h`. Conclude with `⟨h1, h2⟩`. Establish `hunit : ∀ (Y : UPos (2 + 2) 2 → 𝔸[K]) (a b : G1 K 2) (u : ℝ) (p : S), (p : G1 K (2 + 2)) = nn Y * lv a b u → m₁ p = a ∧ m₂ p = b`. Introduce `Y a b u p h`.
+
+Take `⟨-, h1, h2, -⟩` from `hinj _ _ _ _ _ _ _ _ ((hX p).symm.trans h)`. Conclude with `⟨h1, h2⟩`. Set `π : S →* G1 K 2 × G1 K 2` to `{ toFun := fun p => (m₁ p, m₂ p) map_one' := by`. Take `⟨h1, h2⟩` from `hunit 0 1 1 0 1 (by rw [hone, mul_one]; exact (unipOne_zero 2).symm)`. Conclude with `Prod.ext h1 h2`.
+
+Use the proof step `map_mul' := fun p q => Prod.ext (hprod p q).1 (hprod p q).2 }`. Set `F : G1 K (2 + 2) → Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) 𝔸[K]` to `fun g => (g : AdelicGLn.AdelicGL K (2 + 2)).val.submatrix finSumFinEquiv finSumFinEquiv`. Establish `hF : Continuous F` using `(Units.continuous_val.comp continuous_subtype_val).matrix_submatrix _ _`. Set `A : S → AdelicGLn.AdelicGL K 2` to `fun p => (m₁ p : AdelicGLn.AdelicGL K 2) * zt K (t p)`. Set `D : S → AdelicGLn.AdelicGL K 2` to `fun p => (m₂ p : AdelicGLn.AdelicGL K 2) * zt K (-t p)`.
+
+Establish `hblk : ∀ p : S, ∃ B, F p = Matrix.fromBlocks (A p).val B 0 (D p).val`. Introduce `p`. Take `⟨B, hB⟩` from `unip_blk' (X p) (A p) (D p)`. Use `⟨B, ?_⟩` and prove the remaining obligations. Rewrite using `[← hB]`.
+
+Simplify using `only [F, hX p, Subgroup.coe_mul, hlv, coe_unipOne, A, D]`. Establish `hFinv : ∀ p : S, F (p : G1 K (2 + 2)) * F ((p⁻¹ : S) : G1 K (2 + 2)) = 1`. Introduce `p`. Simplify using `only [F, Matrix.submatrix_mul_equiv, Subgroup.coe_inv, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.submatrix_one_equiv]`. Establish `hinv : ∀ p : S, (A p)⁻¹ = A p⁻¹ ∧ (D p)⁻¹ = D p⁻¹`.
+
+Introduce `p`. Take `⟨B, hB⟩` from `hblk p`. Take `⟨B', hB'⟩` from `hblk p⁻¹`. Establish `e` using `hFinv p`. Rewrite `e` using `[hB, hB', Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e`. Conclude with `⟨(eq_inv_of_mul_eq_one_right (Units.ext e.1)).symm, (eq_inv_of_mul_eq_one_right (Units.ext e.2.2.2)).symm⟩`. Establish `hF₁ : Continuous fun p : S => F (p : G1 K (2 + 2))` using `hF.comp continuous_subtype_val`. Establish `hF₂ : Continuous fun p : S => F ((p⁻¹ : S) : G1 K (2 + 2))` using `hF₁.comp continuous_inv`. Establish `hA : Continuous A` using `Units.continuous_iff.2 ⟨(hF₁.matrix_submatrix Sum.inl Sum.inl).congr fun p => by`.
+
+Take `⟨B, hB⟩` from `hblk p`. Use `show (F p).toBlocks₁₁ = _`. Rewrite using `[hB]`. Use the proof step `rfl,`. Use the proof step `(hF₂.matrix_submatrix Sum.inl Sum.inl).congr fun p => by`.
+
+Take `⟨B, hB⟩` from `hblk p⁻¹`. Use `show (F (p⁻¹ : S)).toBlocks₁₁ = _`. Rewrite using `[hB, ← (hinv p).1]`. Use the proof step `rfl⟩`. Establish `hD : Continuous D` using `Units.continuous_iff.2 ⟨(hF₁.matrix_submatrix Sum.inr Sum.inr).congr fun p => by`.
+
+Take `⟨B, hB⟩` from `hblk p`. Use `show (F p).toBlocks₂₂ = _`. Rewrite using `[hB]`. Use the proof step `rfl,`. Use the proof step `(hF₂.matrix_submatrix Sum.inr Sum.inr).congr fun p => by`.
+
+Take `⟨B, hB⟩` from `hblk p⁻¹`. Use `show (F (p⁻¹ : S)).toBlocks₂₂ = _`. Rewrite using `[hB, ← (hinv p).2]`. Use the proof step `rfl⟩`. Establish `hπ : Continuous π` using `((continuous_retractOne.comp hA).prodMk (continuous_retractOne.comp hD)).congr fun p => Prod.ext (ret_zt _ _) (ret_zt _ _)`.
+
+Use `⟨S, π, hS, hπ, hmem, fun Y a b u p h => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hunit Y a b u p h`. Conclude with `Prod.ext h1 h2`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.levProj :
     ∀ {K : Type} [Field K] [NumberField K], ∃ (S : Subgroup (G1 K (2 + 2))) (π : S →* G1 K 2 × G1 K 2), IsClosed (S : Set (G1 K (2 + 2))) ∧ Continuous π ∧
       (∀ g, g ∈ S ↔ ∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t) ∧ ∀ X m₁ m₂ t (p : S), (p : G1 K (2 + 2)) = nn X * lv m₁ m₂ t → π p = (m₁, m₂) := by

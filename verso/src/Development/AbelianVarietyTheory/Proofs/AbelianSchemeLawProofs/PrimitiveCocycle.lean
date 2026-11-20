@@ -20,6 +20,13 @@ abbrev lamφ (B : Over S) [GrpObj B] : ULift.{0} (Finset (Fin 2)) → ((B ⊗ B)
 
 abbrev lamε : ULift.{0} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
+/- English proof (translation)
+Apply the tactic sequence `have e : ∀ I, (lift x y).left ≫ lamφ B I = (psum B ![x, y] I.down).left := fun I => congrArg (fun q => q.left) ((psum_hom (preHom (lift x y)) (x2 B) I.down).trans (congrArg (fun q => psum B q I.down) (funext fun i => by fin_cases i <;> simp [preHom, x2])))`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Finset (Fin 2)) ≃ Finset (Fin 2)) _ (fun I => h (psum B ![x, y] I).left ^ ((-1 : ℤ) ^ (2 - I.card))) (fun I => congrArg (fun q => h q ^ lamε I) (e I))).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum B ![x, y] ∅ = 1` using `rfl`. Establish `p₁ : psum B ![x, y] {0} = x` using `_root_.mul_one x`.
+
+Establish `p₂ : psum B ![x, y] {1} = y` using `_root_.mul_one y`. Establish `p₄ : psum B ![x, y] {0, 1} = x * y` using `congrArg (x * ·) (_root_.mul_one y)`. Rewrite using `[p₀, p₁, p₂, p₄]`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`.
+
+Establish `q₄ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[q₀, q₁, q₁, q₄]`. Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+-/
 theorem prod_lam {T : Over S} (x y : T ⟶ B) {U : Type} [CommGroup U] (h : (T.left ⟶ B.left) → U) :
     ∏ I, h ((lift x y).left ≫ lamφ B I) ^ lamε I =
       h (x * y).left * (h x.left)⁻¹ * (h y.left)⁻¹ * h (1 : T ⟶ B).left := by
@@ -44,6 +51,11 @@ theorem prod_lam {T : Over S} (x y : T ⟶ B) {U : Type} [CommGroup U] (h : (T.l
   simp only [zpow_neg, zpow_one]
   ac_rfl
 
+/- English proof (translation)
+Take `⟨u, hu, hv⟩` from `exists_gen hL (φ' := lamφ B) (ε' := lamε) (fun V _ k => by`. Use `Eq.trans (DVR.prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := V) _ (c := ∏ i, k (lamφ B i) ^ lamε i) rfl (DVR.prod_neg _ _ (prod_lam (1 : B ⊗ B ⟶ B) (1 : B ⊗ B ⟶ B) k))) ?_` and prove the remaining obligations. Use the proof step `simp)`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t (lift (1 : B ⊗ B ⟶ B) (1 : B ⊗ B ⟶ B)).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)))`.
+
+Use `⟨u, hu, fun T z J hJ => ?_⟩` and prove the remaining obligations. Establish `: (lift (1 : T ⟶ B) (1 : T ⟶ B)).left ≫ (lift (1 : B ⊗ B ⟶ B) (1 : B ⊗ B ⟶ B)).left = (lift (1 : T ⟶ B) (1 : T ⟶ B)).left`. Rewrite using `[← Over.comp_left, comp_lift, MonObj.comp_one]`. Rewrite using `[val₂, hv _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]`.
+-/
 theorem exists_normalised {L : LB B.left} (hL : L.IsLB) (t : LB.Gen (LB.LinComb L (lamφ B) lamε)) (ht : t.IsGen) :
     ∃ u : LB.Gen (LB.LinComb L (lamφ B) lamε), u.IsGen ∧
       ∀ (T : Over S) (z : T.left) (J), Good L z J → val₂ u z J (1 : T ⟶ B) 1 = 1 := by
@@ -61,6 +73,13 @@ theorem exists_normalised {L : LB B.left} (hL : L.IsLB) (t : LB.Gen (LB.LinComb 
     rw [← Over.comp_left, comp_lift, MonObj.comp_one]
   rw [val₂, hv _ _ z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]
 
+/- English proof (translation)
+Establish `vp : ∀ {T T' : Over S} (ρ : T' ⟶ T) {z : T'.left} {J}, Good L z J → ∀ a b : T ⟶ B, val (LB.pullGen L _ _ u (lift a b).left) ρ.left z J = val₂ u z J (ρ ≫ a) (ρ ≫ b)` using `fun ρ z J hJ a b => by`. Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift]`. Both sides reduce to the same expression. Establish `sj : Function.Surjective ((snd B (B ⊗ B)).left ≫ (snd B B).left ≫ B.hom).appTop.hom` using `surj_comp (surj_snd hG hB _) (surj_comp (surj_snd hG hB _) (hG _ _ hB).2)`. Establish `he : e.left ≫ (snd B (B ⊗ B)).left ≫ (snd B B).left ≫ B.hom = 𝟙 _`.
+
+Rewrite using `[Over.w, Over.w]`. Conclude with `Over.w e`. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ G3 B) {z : T'.left} {J}, Good L z J → ∀ a b c d : G3 B ⟶ B, val (LB.mulGen L _ _ _ _ (LB.pullGen L _ _ u (lift a b).left) (LB.pullGen L _ _ u (lift c d).left)) σ.left z J = val₂ u z J (σ ≫ a) (σ ≫ b) * val₂ u z J (σ ≫ c) (σ ≫ d)` using `fun σ z J hJ a b c d => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vp σ hJ _ _) (vp σ hJ _ _))`. Use `(ev ρ hJ a b c d).symm.trans (Eq.trans (gen_unique' hL (fun V _ k => ?_) _ e.left he sj (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) (DVR.pullGen_isGen _ _ _ _ hu _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _) (DVR.pullGen_isGen _ _ _ _ h …` and prove the remaining obligations. Conclude with `(DVR.prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := V) _ (prod_lam a' b' k) (prod_lam c' d' k)).trans ((hF V fun q => k q.left).trans (DVR.prod_sum₂ (K := ULift.{0} (Finset (Fin 2))) (K' := ULift.{0} (Finset (Fin 2))) (U := V) _ (prod_lam a b …`.
+
+Use `(ev e hI a b c d).trans (Eq.trans ?_ (ev e hI a' b' c' d').symm)` and prove the remaining obligations. Rewrite using `[ha, hb, hc, hd, ha', hb', hc', hd']`.
+-/
 theorem val_mul_eq (hG : GlobalFnsSt) (hB : IsAbelianScheme B) {L : LB B.left} (hL : L.IsLB)
     (u : LB.Gen (LB.LinComb L (lamφ B) lamε)) (hu : u.IsGen)
     (e : 𝟙_ (Over S) ⟶ G3 B) (a b c d a' b' c' d' : G3 B ⟶ B)
@@ -94,6 +113,19 @@ theorem val_mul_eq (hG : GlobalFnsSt) (hB : IsAbelianScheme B) {L : LB B.left} (
   · refine (ev e hI a b c d).trans (Eq.trans ?_ (ev e hI a' b' c' d').symm)
     rw [ha, hb, hc, hd, ha', hb', hc', hd']
 
+/- English proof (translation)
+Introduce and unpack `hG S B _ _ hB O ⟨t, ht⟩`. Take `⟨u, hu, h₀⟩` from `exists_normalised O.isLB t ht`. Use `⟨u, hu, fun Z z J hJ => ?_⟩` and prove the remaining obligations. Use `show (∀ x, val₂ u z J x 1 = 1) ∧ (∀ x y, val₂ u z J x y = val₂ u z J y x) ∧ ∀ x y w, val₂ u z J (x * y) w * val₂ u z J x y = val₂ u z J x (y * w) * val₂ u z J y w`. Set `p₀` to `x3 B 0`.
+
+Set `p₁` to `x3 B 1`. Set `p₂` to `x3 B 2`. Set `e : 𝟙_ (Over S) ⟶ G3 B` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ p₀ = 1` using `by simp [e, p₀, x3]`. Establish `e₁ : e ≫ p₁ = 1` using `by simp [e, p₁, x3]`.
+
+Establish `e₂ : e ≫ p₂ = 1` using `by simp [e, p₂, x3]`. Establish `o : e ≫ (1 : G3 B ⟶ B) = 1` using `MonObj.comp_one _`. Establish `r₀ : ∀ x y w : Z ⟶ B, lift x (lift y w) ≫ p₀ = x` using `fun x y w => by simp [p₀, x3]`. Establish `r₁ : ∀ x y w : Z ⟶ B, lift x (lift y w) ≫ p₁ = y` using `fun x y w => by simp [p₁, x3]`. Establish `r₂ : ∀ x y w : Z ⟶ B, lift x (lift y w) ≫ p₂ = w` using `fun x y w => by simp [p₂, x3]`.
+
+Use `⟨fun x => ?_, fun x y => ?_, fun x y w => ?_⟩` and prove the remaining obligations. Use `val_mul_eq hG hB O.isLB u hu e p₀ 1 1 1 1 1 1 1 (fun V _ k => by simp) e₀ o o o o o o o (lift x (lift x x)) hJ` as an intermediate fact. Rewrite `this` using `[r₀, MonObj.comp_one, h₀ Z z J hJ]`. Simplify using `using this`. Use `val_mul_eq hG hB O.isLB u hu e p₀ p₁ 1 1 p₁ p₀ 1 1 (fun V _ k => by` as an intermediate fact.
+
+Rewrite using `[mul_comm p₁ p₀, mul_right_comm (k (p₀ * p₁))]) e₀ e₁ o o e₁ e₀ o o (lift x (lift y x)) hJ`. Rewrite `this` using `[r₀, r₁]`. Conclude with `mul_right_cancel this`. Use `val_mul_eq hG hB O.isLB u hu e (p₀ * p₁) p₂ p₀ p₁ p₀ (p₁ * p₂) p₁ p₂ (fun V _ k => by` as an intermediate fact. Rewrite using `[_root_.mul_assoc p₀ p₁ p₂]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) ((MonObj.comp_mul _ _ _).trans (by rw [e₀, e₁, _root_.mul_one])) e₂ e₀ e₁ e₀`. Use the proof step `((MonObj.comp_mul _ _ _).trans (by rw [e₁, e₂, _root_.mul_one])) e₁ e₂ (lift x (lift y w)) hJ`. Rewrite `this` using `[MonObj.comp_mul, MonObj.comp_mul, r₀, r₁, r₂]`. Then use the resulting hypothesis.
+-/
 theorem primitive_cocycle : GlobalFnsSt → ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ (O : RigLB B), (∃ t : LB.Gen (abelian₂ B O.L), t.IsGen) → ∃ t : LB.Gen (abelian₂ B O.L), t.IsGen ∧ ∀ (Z : Over S) (z : Z.left) (J : (Z.left ⟶ B.left) → O.L.ι), Geo.Tor.Good O.L z J → let v : (Z ⟶ B) → (Z ⟶ B) → (Z.left.presheaf.stalk z)ˣ := fun x y => Geo.Tor.val (L := O.L) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum B (x2 B) I.down).left) (ε := fun I => (-1) ^ (2 - I.down.card)) t (lift x y).left z J; (∀ x, v x 1 = 1) ∧ (∀ x y, v x y = v y x) ∧ ∀ x y w, v (x * y) w * v x y = v x (y * w) * v y w := by
   rintro hG S B _ _ hB O ⟨t, ht⟩
   obtain ⟨u, hu, h₀⟩ := exists_normalised O.isLB t ht

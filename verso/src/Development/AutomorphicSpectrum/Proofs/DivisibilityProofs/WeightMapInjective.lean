@@ -7,6 +7,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4 GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Top GlobalTheory.CompanionTheory.Ar.Top.FlDeg
 
+/- English proof (translation)
+Take `⟨τ, i⟩` from `p`. Simplify using `only [PB.gapX, map_sub, aeval_X]`. Use `split_ifs with h`. Rewrite using `[aeval_X]`. Establish `hI : Finset.Ici i = insert i (Finset.Ici (⟨(i : ℕ) + 1, h⟩ : Fin N))`.
+
+Use extensionality with `s`. Use `s.2` as an intermediate fact. Simplify using `only [Finset.mem_Ici, Finset.mem_insert, Fin.le_def, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, Finset.sum_insert (by simp [Fin.le_def])]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : Finset.Ici i = {i}`. Use extensionality with `s`. Use `s.2` as an intermediate fact. Simplify using `only [Finset.mem_Ici, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[map_zero, sub_zero, hI, Finset.sum_singleton]`.
+-/
 theorem aeval_tail_gapX {Ψ : Type} {N : ℕ} (p : Ψ × Fin N) :
     (aeval (fun q : Ψ × Fin N => ∑ s ∈ Finset.Ici q.2, (X (q.1, s) : MvPolynomial (Ψ × Fin N) ℝ)))
       (PB.gapX p) = X p := by
@@ -28,6 +37,11 @@ theorem aeval_tail_gapX {Ψ : Type} {N : ℕ} (p : Ψ × Fin N) :
       omega
     rw [map_zero, sub_zero, hI, Finset.sum_singleton]
 
+/- English proof (translation)
+Use `set T : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ := aeval (fun q : Ψ × Fin N => ∑ s ∈ Finset.Ici q.2, (X (q.1, s) : MvPolynomial (Ψ × Fin N) ℝ)) with hT`. Establish `hli : T.comp PB.toWt = AlgHom.id ℝ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, PB.toWt, aeval_X, hT]`.
+
+Conclude with `aeval_tail_gapX p`. Introduce `a b hab`. Establish `ha : T (PB.toWt a) = a` using `by rw [← AlgHom.comp_apply, hli, AlgHom.id_apply]`. Establish `hb : T (PB.toWt b) = b` using `by rw [← AlgHom.comp_apply, hli, AlgHom.id_apply]`. Rewrite using `[← ha, ← hb, hab]`.
+-/
 theorem toWt_leftInverse_injective (Ψ : Type) (N : ℕ) :
     Function.Injective (PB.toWt : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ) := by
   set T : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ := aeval (fun q : Ψ × Fin N => ∑ s ∈ Finset.Ici q.2, (X (q.1, s) : MvPolynomial (Ψ × Fin N) ℝ)) with hT

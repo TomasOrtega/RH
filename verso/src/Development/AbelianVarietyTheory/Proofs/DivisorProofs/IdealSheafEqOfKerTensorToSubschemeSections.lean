@@ -8,6 +8,11 @@ noncomputable section
 namespace GlobalTheory.HilbAff.IdealDet
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
 
+/- English proof (translation)
+Establish `h1` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B))`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a) = (str A B).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)` using `congrArg (fun f => f.hom a) h1`. Establish `key : (str A B).appTop ≫ (pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp) = g.appLE ⊤ U (by simp) ≫ (pullback.snd (str A B) g).app U`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Rewrite using `[h2, secAlg, RingHom.comp_apply, ← CommRingCat.comp_apply, key, CommRingCat.comp_apply]`.
+-/
 theorem comm_fst {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) (a : A) :
     ((pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp)).hom
       ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a)) =
@@ -42,6 +47,9 @@ def theta {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) :
       commutes' := fun a => comm_fst A B g U a }
     (fun _ _ => Commute.all _ _)).toRingHom
 
+/- English proof (translation)
+Use `letI := (secAlg A g U).toAlgebra`. Use `letI : Algebra A Γ(pullback (str A B) g, (pullback.snd (str A B) g) ⁻¹ᵁ U) := (((pullback.snd (str A B) g).app U).hom.comp (secAlg A g U)).toAlgebra`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+-/
 theorem theta_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) (c : Γ(T, U)) (b : B) :
     letI := (secAlg A g U).toAlgebra
     theta A B g U (c ⊗ₜ[A] b) = ((pullback.snd (str A B) g).app U).hom c *
@@ -52,6 +60,13 @@ theorem theta_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.O
     (((pullback.snd (str A B) g).app U).hom.comp (secAlg A g U)).toAlgebra
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
 
+/- English proof (translation)
+Use `letI := (secAlg A g U).toAlgebra`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Both sides reduce to the same expression. Consider the case `tmul c b`. Rewrite using `[kappa_tmul, theta_tmul, map_mul]`. Establish `e : (pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp) ≫ I.subschemeι.app ((pullback.snd (str A B) g) ⁻¹ᵁ U) = (I.subschemeι ≫ pullback.fst (str A B) g).appLE ⊤ ((I.subschemeι ≫ pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp)`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`. Use `congr 1`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem kappa_apply {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (str A B) g).IdealSheafData) (U : T.Opens) :
     letI := (secAlg A g U).toAlgebra
@@ -72,6 +87,19 @@ theorem kappa_apply {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     congr 1
     rw [← e]; rfl
 
+/- English proof (translation)
+Use `letI := (secAlg A g U).toAlgebra`. Establish `hP` using `ReciprocityTheory.ChartRestriction.G.Out.GtBCPf.isPushout_appLE (IsPullback.of_hasPullback (str A B) g) inferInstance (isAffineOpen_top _) hU le_top (by simp)`. Set `R : CommRingCat.{0}` to `CommRingCat.of (Γ(T, U) ⊗[A] B)`. Set `k : Γ(T, U) ⟶ R` to `CommRingCat.ofHom (Algebra.TensorProduct.includeLeft (S := A)).toRingHom`. Set `h : Γ(Spec (CommRingCat.of B), (str A B) ⁻¹ᵁ ⊤) ⟶ R` to `(Scheme.ΓSpecIso (CommRingCat.of B)).hom ≫ CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := A) (A := Γ(T, U))).toRingHom`.
+
+Establish `w : (str A B).app ⊤ ≫ h = g.appLE ⊤ U le_top ≫ k`. Use extensionality with `x`. Take `⟨a, rfl⟩ : ∃ a, (Scheme.ΓSpecIso (CommRingCat.of A)).inv a = x` from `⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom x, by simp⟩`. Establish `h1` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B))`. Establish `h2 : (str A B).app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) = (Scheme.ΓSpecIso (CommRingCat.of B)).inv (algebraMap A B a)` using `(congrArg (fun f => f.hom a) h1).symm`.
+
+Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.includeRight (R := A) (A := Γ(T, U))) ((Scheme.ΓSpecIso (CommRingCat.of B)).hom ((str A B).app ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a))) = (Algebra.TensorProduct.includeLeft (S := A)) (secAlg A g U a)`. Rewrite using `[h2, Iso.inv_hom_id_apply]`. Conclude with `((Algebra.TensorProduct.includeRight).commutes a).trans ((Algebra.TensorProduct.includeLeft (S := A)).commutes a).symm`. Set `ψ` to `hP.desc h k w`. Establish `hθ : ψ ≫ CommRingCat.ofHom (theta A B g U) = 𝟙 _`.
+
+Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[hP.inl_desc_assoc, Category.comp_id]`. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `theta A B g U ((1 : Γ(T, U)) ⊗ₜ[A] ((Scheme.ΓSpecIso (CommRingCat.of B)).hom z)) = _`. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).hom z) = z` using `Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of B)) z`.
+
+Rewrite using `[theta_tmul, map_one, one_mul, e]`. Both sides reduce to the same expression. Rewrite using `[hP.inr_desc_assoc, Category.comp_id]`. Use extensionality with `c`. Express the relevant statement in the definitionally equal form `theta A B g U (c ⊗ₜ[A] (1 : B)) = _`.
+
+Rewrite using `[theta_tmul, map_one, map_one, mul_one]`. Introduce `y`. Conclude with `⟨ψ y, congrArg (fun F => F.hom y) hθ⟩`.
+-/
 theorem theta_surjective {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens)
     (hU : IsAffineOpen U) : Function.Surjective (theta A B g U) := by
   letI := (secAlg A g U).toAlgebra
@@ -114,6 +142,13 @@ theorem theta_surjective {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U
   intro y
   exact ⟨ψ y, congrArg (fun F => F.hom y) hθ⟩
 
+/- English proof (translation)
+Introduce `A B _ _ _ T g I₁ I₂ h`. Use `haveI : IsAffineHom (pullback.snd (str A B) g) := isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback (str A B) g) (inferInstance : IsAffineHom (str A B))`. Set `W : T.affineOpens → (pullback (str A B) g).affineOpens` to `fun U => ⟨pullback.snd (str A B) g ⁻¹ᵁ U, U.2.preimage _⟩`. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top W ?_ ?_` and prove the remaining obligations. Conclude with `(pullback.snd (str A B) g).iSup_preimage_eq_top (iSup_affineOpens_eq_top T)`.
+
+Introduce `U`. Use `letI := (secAlg A g U).toAlgebra`. Establish `key : ∀ I : (pullback (str A B) g).IdealSheafData, I.ideal (W U) = Ideal.map (theta A B g U) (RingHom.ker (kappa A B g I U))`. Introduce `I`. Establish `e : RingHom.ker (kappa A B g I U) = Ideal.comap (theta A B g U) (I.ideal (W U))`.
+
+Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, Ideal.mem_comap, ← I.ker_subschemeι_app (W U), RingHom.mem_ker, kappa_apply]`. Both sides reduce to the same expression. Rewrite using `[e, Ideal.map_comap_of_surjective _ (theta_surjective A B g U U.2)]`. Rewrite using `[key, key, h U]`.
+-/
 theorem eq_of_ker_kappa_eq : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) (I₁ I₂ : (pullback (GlobalTheory.HilbAff.str A B) g).IdealSheafData),
     (∀ U : T.affineOpens, RingHom.ker (GlobalTheory.HilbAff.kappa A B g I₁ U) =

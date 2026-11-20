@@ -19,28 +19,66 @@ noncomputable section
 
 namespace GlobalTheory.FlatModel.LiftGen
 
+/- English proof (translation)
+Rewrite using `[CategoryTheory.Hom.one_def]`. Simplify using `[eSec]`.
+-/
 theorem one_left_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] (P : Over S) :
     (1 : P ⟶ G).left = P.hom ≫ eSec G := by
   rw [CategoryTheory.Hom.one_def]
   simp [eSec]
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id' (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul]`.
+-/
 theorem epsMul_comp_alg {R : Type} [CommRing R] (c : R) :
     (epsMul c).comp (algebraMap R (DualNumber R)) = algebraMap R (DualNumber R) := by
   refine RingHom.ext fun z => ?_
   ext <;> simp [epsMul]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using `[epsMul]`.
+-/
 theorem fst_comp_epsMul {R : Type} [CommRing R] (c : R) :
     (TrivSqZeroExt.fstHom R R R).toRingHom.comp (epsMul c) = (TrivSqZeroExt.fstHom R R R).toRingHom := by
   refine RingHom.ext fun z => ?_
   simp [epsMul]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using `[dualMap]`.
+-/
 theorem fst_comp_dualMap {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (dualMap f) = f.comp (TrivSqZeroExt.fstHom R R R).toRingHom := by
   refine RingHom.ext fun z => ?_
   simp [dualMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y A _ ξ g e he L _ io yL hyL cf`. Establish `hv : ∀ i, IsTanAtG Y.t (yL ≫ Y.j) (bcV Y.t io e i)`. Introduce `i`. Take `⟨h1, h2⟩` from `he.1 i`. Prove the components needed by the constructor for the conclusion.
+
+Use `show (spMap (dualMap io) ≫ e i) ≫ Y.t.G.hom = _`. Rewrite using `[Category.assoc, h1, ← Category.assoc, PullbackSections.spMap_comp_spMap, dualMap_comp_alg, ← PullbackSections.spMap_comp_spMap, Category.assoc, hyL]`. Use `show spMap _ ≫ spMap (dualMap io) ≫ e i = _`. Rewrite using `[← Category.assoc, PullbackSections.spMap_comp_spMap, fst_comp_dualMap, ← PullbackSections.spMap_comp_spMap, Category.assoc, h2, one_left_eq, one_left_eq]`. Simplify using `only [Over.mk_hom]`.
+
+Rewrite using `[hyL, Category.assoc]`. Set `u : Fin g → (tEpsG (yL ≫ Y.j) ⟶ Y.t.G)` to `fun i => Over.homMk (spMap (epsMul (cf i)) ≫ bcV Y.t io e i) (by show (spMap (epsMul (cf i)) ≫ bcV Y.t io e i) ≫ Y.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ yL ≫ Y.j`. Rewrite using `[Category.assoc, (hv i).1, ← Category.assoc, PullbackSections.spMap_comp_spMap, epsMul_comp_alg])`. Set `wG : Sp (DualNumber L) ⟶ Y.t.G.left` to `((List.ofFn u).prod).left`. Establish `hcomb : IsCombAtG Y.t (yL ≫ Y.j) (bcV Y.t io e) cf wG` using `⟨u, fun i => rfl, rfl⟩`.
+
+Establish `hwG : wG ≫ Y.t.G.hom = (spMap (algebraMap L (DualNumber L)) ≫ yL) ≫ (Y.jQ ≫ pullback.fst _ _)`. Use `Over.w ((List.ofFn u).prod)` as an intermediate fact. Simplify `this` using `[wG, Model.j]`. Set `w : Sp (DualNumber L) ⟶ Y.oF.t.G.left` to `Y.m.cart.1.lift wG _ hwG`. Establish `hwφ : w ≫ Y.m.φ = wG` using `Y.m.cart.1.lift_fst _ _ _`.
+
+Establish `hwh : w ≫ Y.oF.t.G.hom = spMap (algebraMap L (DualNumber L)) ≫ yL` using `Y.m.cart.1.lift_snd _ _ _`. Use `⟨w, hwφ ▸ hcomb, hwh, ?_⟩` and prove the remaining obligations. Set `δ : Over.mk (yL ≫ Y.j) ⟶ tEpsG (yL ≫ Y.j)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom L L L).toRingHom) (by show spMap _ ≫ spMap (algebraMap L (DualNumber L)) ≫ yL ≫ Y.j = yL ≫ Y.j`. Rewrite using `[← Category.assoc, PullbackSections.spMap_comp_spMap]`. Establish `: (TrivSqZeroExt.fstHom L L L).toRingHom.comp (algebraMap L (DualNumber L)) = RingHom.id L`.
+
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[this, spMap_id']`. Conclude with `Category.id_comp _)`. Establish `hδu : ∀ i, δ ≫ u i = 1`.
+
+Introduce `i`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show spMap _ ≫ spMap (epsMul (cf i)) ≫ bcV Y.t io e i = _`. Rewrite using `[← Category.assoc, PullbackSections.spMap_comp_spMap, fst_comp_epsMul]`. Conclude with `(hv i).2`.
+
+Establish `hδ : δ ≫ (List.ofFn u).prod = 1`. Establish `h` using `map_list_prod (Formalism.L2.Pj.preHom (G := Y.t.G) δ) (List.ofFn u)`. Rewrite `h` using `[List.map_ofFn]`. Use `(congrArg _ rfl).trans (h.trans ?_)` and prove the remaining obligations. Establish `hf : (⇑(Formalism.L2.Pj.preHom (G` using `Y.t.G) δ) ∘ u) = fun _ => 1 := by`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hδu i`. Rewrite using `[hf, List.ofFn_const, List.prod_replicate, one_pow]`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `show (spMap _ ≫ w) ≫ Y.m.cm.F = _`.
+
+Rewrite using `[Category.assoc, hwφ]`. Establish `h1 : spMap (TrivSqZeroExt.fstHom L L L).toRingHom ≫ wG = (δ ≫ (List.ofFn u).prod).left` using `rfl`. Rewrite using `[h1, hδ, one_left_eq, one_left_eq, Category.assoc, Y.m.cm.e_comm, Y.m.base]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hwh, Over.w (1 : Over.mk yL ⟶ Y.oF.t.G), ← Category.assoc, PullbackSections.spMap_comp_spMap]`.
+
+Establish `: (TrivSqZeroExt.fstHom L L L).toRingHom.comp (algebraMap L (DualNumber L)) = RingHom.id L`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[this, spMap_id']`. Conclude with `Category.id_comp _`.
+-/
 theorem exists_lift_comb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ)
     (Y : Model Xo' c' (c'.V W).subtype) (A : Type) [CommRing A] (ξ : Sp A ⟶ Y.X) (g : ℕ)

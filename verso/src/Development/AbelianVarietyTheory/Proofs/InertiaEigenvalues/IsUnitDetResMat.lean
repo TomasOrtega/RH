@@ -16,10 +16,16 @@ def resMat (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r → ↥(MaximalUnr
     Matrix (n × Fin r) (n × Fin r) ↥(MaximalUnramifiedExtension l) :=
   Matrix.kroneckerMap (· * ·) (1 : Matrix n n ↥(MaximalUnramifiedExtension l)) (frobMat ω)
 
+/- English proof (translation)
+Simplify using `[resMat, frobMat, Matrix.kroneckerMap_apply, Matrix.one_apply]`.
+-/
 theorem resMat_apply (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (a b : n × Fin r) :
     resMat n ω a b = if a.1 = b.1 then fr l a.2 (ω b.2) else 0 := by
   simp [resMat, frobMat, Matrix.kroneckerMap_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[resMat, Matrix.det_kronecker, Matrix.det_one, one_pow, one_mul]`. Conclude with `(isUnit_iff_ne_zero.2 hdet).pow _`.
+-/
 theorem isUnit_det_resMat (n : Type) [Fintype n] [DecidableEq n] (ω : Fin r → ↥(MaximalUnramifiedExtension l))
     (hdet : (frobMat ω).det ≠ 0) : IsUnit (resMat n ω).det := by
   rw [resMat, Matrix.det_kronecker, Matrix.det_one, one_pow, one_mul]

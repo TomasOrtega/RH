@@ -11,6 +11,11 @@ namespace GlobalTheory.TypeSum.EigenSpan
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Mx n → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `h0 : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `hc : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X`. Rewrite `h0` using `[hXs, Matrix.neg_mul]`. Conclude with `neg_add_eq_zero.1 h0`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ((t : ℂ) • X)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * ((t : ℂ) • X) = 0`. Rewrite using `[conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, smul_mul_assoc, mul_smul_comm, ← smul_add, h0, smul_zero]`. Rewrite using `[smul_mul_assoc, mul_smul_comm, hc]`.
+-/
 theorem inK_smul {X : Mx n} (hX : X ∈ lieSet ε) (hXs : Xᴴ = -X) (t : ℝ) : Formalism.REAL.inK ε ((t : ℂ) • X) := by
   have h0 : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0 := hX
   have hc : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X := by
@@ -22,11 +27,19 @@ theorem inK_smul {X : Mx n} (hX : X ∈ lieSet ε) (hXs : Xᴴ = -X) (t : ℝ) :
       smul_zero]
   · rw [smul_mul_assoc, mul_smul_comm, hc]
 
+/- English proof (translation)
+Use `(maximal_compact_facts n ε).2.2.2.1 _ (inK_smul hX hXs t)` as an intermediate fact. Rewrite `this` using `[Complex.coe_smul]`. Then use the resulting hypothesis.
+-/
 theorem exp_mem_K {X : Mx n} (hX : X ∈ lieSet ε) (hXs : Xᴴ = -X) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.REAL.Kset ε := by
   have := (maximal_compact_facts n ε).2.2.2.1 _ (inK_smul hX hXs t)
   rwa [Complex.coe_smul] at this
 
+/- English proof (translation)
+Establish `hc : IsClosed (F : Set H)` using `F.closed_of_finiteDimensional`. Establish `hm : ∀ t : ℝ, σ (NormedSpace.exp (t • X)) v ∈ F` using `fun t => hF _ (exp_mem_K hX hXs t) v hv`. Unfold `dRep`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun t : ℝ => σ (NormedSpace.exp (t • X)) v) 0`. Use `hc.mem_of_tendsto (hasDerivAt_iff_tendsto_slope.1 hd.hasDerivAt) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Rewrite using `[slope_def_module]`. Conclude with `(F.restrictScalars ℝ).smul_mem _ (F.sub_mem (hm t) (hm 0))`. Rewrite using `[deriv_zero_of_not_differentiableAt hd]`. Conclude with `F.zero_mem`.
+-/
 theorem dRep_mem_of_kStable {X : Mx n} (hX : X ∈ lieSet ε) (hXs : Xᴴ = -X) {F : Submodule ℂ H}
     [FiniteDimensional ℂ F] (hF : IsKStableOn ε σ F) {v : H} (hv : v ∈ F) : dRep σ X v ∈ F := by
   have hc : IsClosed (F : Set H) := F.closed_of_finiteDimensional
@@ -40,6 +53,11 @@ theorem dRep_mem_of_kStable {X : Mx n} (hX : X ∈ lieSet ε) (hXs : Xᴴ = -X) 
   · rw [deriv_zero_of_not_differentiableAt hd]
     exact F.zero_mem
 
+/- English proof (translation)
+Unfold `IsKFin at hx`. Use `choose S hSfin hxS hSst using hx`. Use `haveI : ∀ j, FiniteDimensional ℂ (S j) := hSfin`. Use `⟨⨆ j, S j, inferInstance, fun g hg v hv => ?_, fun j => Submodule.mem_iSup_of_mem j (hxS j)⟩` and prove the remaining obligations. Use `Submodule.iSup_induction S (motive := fun v => σ g v ∈ ⨆ j, S j) hv (fun j v hv => Submodule.mem_iSup_of_mem j (hSst j g hg v hv)) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+-/
 theorem exists_kStable {p : ℕ} {x : Fin p → H} (hx : ∀ j, IsKFin ε σ (x j)) :
     ∃ F : Submodule ℂ H, FiniteDimensional ℂ F ∧ IsKStableOn ε σ F ∧ ∀ j, x j ∈ F := by
   unfold IsKFin at hx
@@ -51,6 +69,9 @@ theorem exists_kStable {p : ℕ} {x : Fin p → H} (hx : ∀ j, IsKFin ε σ (x 
   · rw [map_zero]; exact Submodule.zero_mem _
   · intro a b ha hb; rw [map_add]; exact Submodule.add_mem _ ha hb
 
+/- English proof (translation)
+Establish `h : ∀ i, ⟪v, dRep σ (X i) (dRep σ (X i) v)⟫_ℂ = -⟪dRep σ (X i) v, dRep σ (X i) v⟫_ℂ` using `fun i => inner_dRep (isUnit_Jm ε) hσ hv (dRep_mem (isUnit_Jm ε) hσ hv (hX i)) (hX i)`. Simplify using `only [onePlusCas, inner_sub_right, inner_sum, h, Finset.sum_neg_distrib, sub_neg_eq_add, inner_self_eq_norm_sq_to_K]`. Use `norm_cast`.
+-/
 theorem inner_onePlusCas_self (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n} (hX : ∀ i, X i ∈ lieSet ε)
     {v : H} (hv : Sm ε σ v) :
     ⟪v, onePlusCas σ X v⟫_ℂ = ((‖v‖ ^ 2 + ∑ i, ‖dRep σ (X i) v‖ ^ 2 : ℝ) : ℂ) := by
@@ -60,6 +81,23 @@ theorem inner_onePlusCas_self (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin 
     inner_self_eq_norm_sq_to_K]
   norm_cast
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hS d X hX p x hx`. Take `⟨F, hFfin, hFst, hxF⟩` from `exists_kStable hx`. Establish `hσ : IsURepOn (UJset ε) σ` using `hS.1`. Establish `hXl : ∀ i, X i ∈ lieSet ε` using `fun i => (hX i).1`. Establish `hKF : ∀ v ∈ F, IsKFin ε σ v` using `fun v hv => ⟨F, hFfin, hv, hFst⟩`.
+
+Establish `hSm : ∀ v ∈ F, Sm ε σ v` using `fun v hv => hS.2.2.1 v (hKF v hv)`. Establish `hD : ∀ i, ∀ v ∈ F, dRep σ (X i) v ∈ F` using `fun i v hv => dRep_mem_of_kStable (hX i).1 (hX i).2 hFst hv`. Establish `hT : ∀ v ∈ F, onePlusCas σ X v ∈ F` using `fun v hv => F.sub_mem hv (F.sum_mem fun i _ => hD i _ (hD i v hv))`. Set `T : F →ₗ[ℂ] F` to `{ toFun := fun v => ⟨onePlusCas σ X v, hT v v.2⟩ map_add' := fun a b => Subtype.ext (by`. Establish `h : ∀ i, dRep σ (X i) (dRep σ (X i) ((a : H) + b)) = dRep σ (X i) (dRep σ (X i) a) + dRep σ (X i) (dRep σ (X i) b)` using `fun i => Dw_add hσ (l := [X i, X i]) (by simp [hXl i]) (hSm a a.2) (hSm b b.2)`.
+
+Use `show onePlusCas σ X ((a : H) + b) = onePlusCas σ X a + onePlusCas σ X b`. Simplify using `only [onePlusCas, h, Finset.sum_add_distrib]`. Use the proof step `abel)`. Use the proof step `map_smul' := fun c a => Subtype.ext (onePlusCas_smul hσ hXl c (hSm a a.2)) }`. Establish `hTv : ∀ v : F, (T v : H) = onePlusCas σ X v` using `fun v => rfl`.
+
+Establish `hTs : T.IsSymmetric` using `fun a b => by`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, hTv, hTv]`. Conclude with `(inner_onePlusCas hσ hXl (hSm a a.2) (hSm b b.2)).symm`. Set `E` to `hTs.eigenvectorBasis (rfl : Module.finrank ℂ F = Module.finrank ℂ F)`. Establish `hE : ∀ i, onePlusCas σ X (E i : H) = (hTs.eigenvalues rfl i : ℂ) • (E i : H)` using `fun i => by`.
+
+Rewrite using `[← hTv]`. Conclude with `congrArg Subtype.val (hTs.apply_eigenvectorBasis rfl i)`. Use `⟨Module.finrank ℂ F, fun i => (E i : H), hTs.eigenvalues rfl, ?_, fun i => hKF _ (E i).2, fun i => ?_, hE, fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact E.orthonormal.comp_linearIsometry F.subtypeₗᵢ`. Establish `h1` using `inner_onePlusCas_self hσ hXl (hSm _ (E i).2)`.
+
+Establish `hn : ‖(E i : H)‖ = 1` using `E.orthonormal.1 i`. Rewrite `h1` using `[hE i, inner_smul_right, inner_self_eq_norm_sq_to_K, hn]`. Establish `h2 : hTs.eigenvalues rfl i = 1 + ∑ k, ‖dRep σ (X k) (E i : H)‖ ^ 2`. Simplify using `only [RCLike.ofReal_one, Complex.ofReal_one, one_pow, mul_one] at h1`. Conclude with `h1` after adjusting the coercions.
+
+Rewrite using `[h2]`. Establish `: 0 ≤ ∑ k, ‖dRep σ (X k) (E i : H)‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `congrArg Subtype.val (E.sum_repr' ⟨x j, hxF j⟩)`. Rewrite `h` using `[Submodule.coe_sum]`.
+
+Simplify using `only [Submodule.coe_smul, Submodule.coe_inner] at h`. Conclude with `h.symm`.
+-/
 theorem exists_orthonormal_eigen : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ (d : ℕ) (X : Fin d → Mx n),
     (∀ i, X i ∈ lieSet ε ∧ (X i)ᴴ = -X i) → ∀ (p : ℕ) (x : Fin p → H), (∀ j, IsKFin ε σ (x j)) →

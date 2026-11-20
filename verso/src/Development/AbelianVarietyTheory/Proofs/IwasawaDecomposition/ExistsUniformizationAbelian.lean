@@ -17,6 +17,15 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.GenFan
 
+/- English proof (translation)
+Take `⟨hn, hi, hc, hz⟩` from `hR`. Take `⟨l1, l2, l3, l4, l5, -⟩` from `GlobalTheory.allSixLaws`. Establish `hadm` using `GlobalTheory.isAdmissibleCompleteLocalDomainPrime_maximalIdeal R hn hi hc`. Establish `hpir : IsPrincipalIdealRing (R ⧸ maximalIdeal R)`. Use `letI := Ideal.Quotient.field (maximalIdeal R)`.
+
+Use `infer_instance`. Take `⟨P, hP⟩` from `LN.UnifPrime.exists_pelUnif l1 l2 l3 l4 l5 LN.ega_holds uniformisation_dvr_unconditional LN.pelSt_holds E H R _ hadm hpir t hpol (GoodTrait.splitOver_of_abLocus t.G t.semi hab) hth`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `hmax : (maximalIdeal R ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one]`.
+
+Use `infer_instance`. Establish `hF : IsField (R ⧸ maximalIdeal R ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 hmax`. Establish `p : Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (0 + 1)))`. Use `letI := hF.toField`. Conclude with `(default : PrimeSpectrum (R ⧸ maximalIdeal R ^ (0 + 1)))`.
+
+Set `g` to `P.U.gt 0`. Establish `: Mono g.i` using `⟨fun a b h => g.isKernel.hom_ext h (CartesianMonoidalCategory.toUnit_unique _ _)⟩`. Conclude with `ArcNotAbelian.subsingleton_of_mem_abLocus t.G t.semi _ hF (thick R (maximalIdeal R) 0) p (hab _) P.D.toPre.X g.i g.i_hom`.
+-/
 theorem exists_pelUnif_torsionIso_subsingleton_of_abLocus {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (hR : IsCN R) (hpol : PolAt t (jK R))
     (hth : ThetaNZ t.G t.PP.L) (hab : ∀ x, x ∈ abLocus t.G) :

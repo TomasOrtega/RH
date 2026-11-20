@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UObjDim.smoothOfRelativeDimension_obj | exact GlobalTheory.UObjDim.smoothOfRelativeDimension_obj | (intros; apply GlobalTheory.UObjDim.smoothOfRelativeDimension_obj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smoothOfRelativeDimension_shimuraObject_abelianScheme : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (l : Geo.Tor.Level H) {S : Scheme.{0}} (s : S ⟶ Sp (KA l)) (o : Obj D l (baseKA l) s), SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom := by
   first | exact @GlobalTheory.UObjDim.smoothOfRelativeDimension_obj | exact GlobalTheory.UObjDim.smoothOfRelativeDimension_obj | (intros; apply GlobalTheory.UObjDim.smoothOfRelativeDimension_obj <;> assumption)

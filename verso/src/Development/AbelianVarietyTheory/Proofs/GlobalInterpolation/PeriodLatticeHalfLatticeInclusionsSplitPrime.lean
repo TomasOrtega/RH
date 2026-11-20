@@ -12,6 +12,11 @@ section Loc
 
 variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module (𝓞 E) W]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hne : M.comap (LinearMap.toSpanSingleton (𝓞 E) W x) ≠ ⊤` using `fun e => hx (by`. Establish `: (1 : 𝓞 E) ∈ M.comap (LinearMap.toSpanSingleton (𝓞 E) W x)` using `e ▸ Submodule.mem_top`. Simplify using `using this)`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+
+Take `⟨s, hs, hsx⟩` from `h ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩`. Conclude with `hs (hle (by simpa using hsx))`.
+-/
 theorem mem_of_loc {M : Submodule (𝓞 E) W} {x : W} (h : ∀ Q : HeightOneSpectrum (𝓞 E), x ∈ localization₂ Q.asIdeal M) : x ∈ M := by
   by_contra hx
   have hne : M.comap (LinearMap.toSpanSingleton (𝓞 E) W x) ≠ ⊤ := fun e => hx (by
@@ -21,11 +26,19 @@ theorem mem_of_loc {M : Submodule (𝓞 E) W} {x : W} (h : ∀ Q : HeightOneSpec
   obtain ⟨s, hs, hsx⟩ := h ⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩
   exact hs (hle (by simpa using hsx))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩`.
+-/
 theorem loc_self (Q : HeightOneSpectrum (𝓞 E)) {M : Submodule (𝓞 E) W} {x : W} (hx : x ∈ M) : x ∈ localization₂ Q.asIdeal M :=
   ⟨1, Q.asIdeal.primeCompl.one_mem, by rwa [one_smul]⟩
 
 variable [Module E W] [IsScalarTower (𝓞 E) E W]
 
+/- English proof (translation)
+Take `⟨t, ht, hx⟩` from `hx`. Use `⟨t * s, Q.asIdeal.primeCompl.mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `: (t * s) • k • x = r • t • k' • x`. Simplify using `only [← algebraMap_smul E (_ : 𝓞 E), smul_smul, map_mul]`. Use `congr 1`.
+
+Establish `h' : algebraMap (𝓞 E) E s * k = algebraMap (𝓞 E) E r * k'` using `h`. Take the linear combination `(algebraMap (𝓞 E) E t) * h'`. Rewrite using `[this]`. Conclude with `M.smul_mem _ hx`.
+-/
 theorem loc_smul {Q : HeightOneSpectrum (𝓞 E)} {M : Submodule (𝓞 E) W} {x : W} {k k' : E}
     (hx : k' • x ∈ localization₂ Q.asIdeal M) (r s : 𝓞 E) (hs : s ∉ Q.asIdeal) (h : (s : E) * k = (r : E) * k') :
     k • x ∈ localization₂ Q.asIdeal M := by
@@ -39,15 +52,26 @@ theorem loc_smul {Q : HeightOneSpectrum (𝓞 E)} {M : Submodule (𝓞 E) W} {x 
   rw [this]
   exact M.smul_mem _ hx
 
+/- English proof (translation)
+The claim follows from `loc_smul (k' := 1) (by rwa [one_smul]) r s hs (by rwa [mul_one])`.
+-/
 theorem loc_smul' {Q : HeightOneSpectrum (𝓞 E)} {M : Submodule (𝓞 E) W} {x : W} {k : E}
     (hx : x ∈ localization₂ Q.asIdeal M) (r s : 𝓞 E) (hs : s ∉ Q.asIdeal) (h : (s : E) * k = (r : E)) :
     k • x ∈ localization₂ Q.asIdeal M :=
   loc_smul (k' := 1) (by rwa [one_smul]) r s hs (by rwa [mul_one])
 
+/- English proof (translation)
+Simplify using `[twist₂, Submodule.mem_iInf]`.
+-/
 theorem mem_twO (M : Submodule (𝓞 E) W) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (y : W) :
     y ∈ twist₂ M c e ↔ ∀ Q : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q)⁻¹ • y ∈ localization₂ Q.asIdeal M := by
   simp [twist₂, Submodule.mem_iInf]
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc`. Establish `e : ∀ m : W, (c : 𝓞 E) • m = (c : E) • m` using `fun m => by`. Rewrite using `[← algebraMap_smul E, map_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`.
+
+Simplify `hm` using `[e, smul_smul, hcE]`. Introduce `h`. Conclude with `⟨_, h, by simp [e, smul_smul, hcE]⟩`.
+-/
 theorem mem_mulLat (M : Submodule (𝓞 E) W) {c : ℕ} (hc : c ≠ 0) (y : W) :
     y ∈ mulLat c M ↔ (c : E)⁻¹ • y ∈ M := by
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc
@@ -59,12 +83,18 @@ theorem mem_mulLat (M : Submodule (𝓞 E) W) {c : ℕ} (hc : c ≠ 0) (y : W) :
   · intro h
     exact ⟨_, h, by simp [e, smul_smul, hcE]⟩
 
+/- English proof (translation)
+Introduce `hn` and use `by obtain ⟨u, v, huv⟩ : IsCoprime (n : 𝓞 E) (p : 𝓞 E) := h.cast exact Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left _ hn) (Q.asIdeal.mul_mem_left _ hp)))`.
+-/
 theorem nat_notMem {Q : HeightOneSpectrum (𝓞 E)} {n p : ℕ} (h : Nat.Coprime n p) (hp : (p : 𝓞 E) ∈ Q.asIdeal) :
     (n : 𝓞 E) ∉ Q.asIdeal := fun hn => by
   obtain ⟨u, v, huv⟩ : IsCoprime (n : 𝓞 E) (p : 𝓞 E) := h.cast
   exact Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (huv ▸ Q.asIdeal.add_mem (Q.asIdeal.mul_mem_left _ hn) (Q.asIdeal.mul_mem_left _ hp)))
 
+/- English proof (translation)
+Establish `hu : ¬ IsUnit (p : 𝓞 E)` using `fun h => by`. Establish `: IsUnit (p : ℤ)` using `isUnit_of_map_unit (algebraMap ℤ (𝓞 E)) _ (by simpa using h)`. Conclude with `hp.one_lt.ne' (by simpa [Int.isUnit_iff_natAbs_eq] using this)`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 E)}) (by simpa [Ideal.span_singleton_eq_top] using hu)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩, hle (Ideal.mem_span_singleton_self _)⟩`.
+-/
 theorem exists_prime_over {p : ℕ} (hp : p.Prime) : ∃ Q : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ Q.asIdeal := by
   have hu : ¬ IsUnit (p : 𝓞 E) := fun h => by
     have : IsUnit (p : ℤ) := isUnit_of_map_unit (algebraMap ℤ (𝓞 E)) _ (by simpa using h)
@@ -73,6 +103,9 @@ theorem exists_prime_over {p : ℕ} (hp : p.Prime) : ∃ Q : HeightOneSpectrum (
   exact ⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩,
     hle (Ideal.mem_span_singleton_self _)⟩
 
+/- English proof (translation)
+Unfold `expS`. Rewrite using `[GlobalTheory.CharValCompare.conjP_conjP]`. Distinguish the cases in `h1 : Q ∈ S`. Simplify using `[h1, hS Q h1]`. Apply the tactic sequence `by_cases h2 : conjPrime₂ Q ∈ S <;> simp [h1, h2]`.
+-/
 theorem expS_conj [StarRing E] {S : Finset (HeightOneSpectrum (𝓞 E))} (hS : ∀ P ∈ S, conjPrime₂ P ∉ S)
     (Q : HeightOneSpectrum (𝓞 E)) : expS S (conjPrime₂ Q) = -expS S Q := by
   unfold expS
@@ -81,6 +114,9 @@ theorem expS_conj [StarRing E] {S : Finset (HeightOneSpectrum (𝓞 E))} (hS : �
   · simp [h1, hS Q h1]
   · by_cases h2 : conjPrime₂ Q ∈ S <;> simp [h1, h2]
 
+/- English proof (translation)
+Unfold `expS`. Distinguish the cases in `h1 : Q ∈ S`. Simplify using `[h1]`. Apply the tactic sequence `by_cases h2 : conjPrime₂ Q ∈ S <;> simp [h1, h2]`.
+-/
 theorem expS_cases [StarRing E] (S : Finset (HeightOneSpectrum (𝓞 E))) (Q : HeightOneSpectrum (𝓞 E)) :
     (Q ∈ S ∧ expS S Q = 1) ∨ (Q ∉ S ∧ conjPrime₂ Q ∈ S ∧ expS S Q = -1) ∨ (Q ∉ S ∧ conjPrime₂ Q ∉ S ∧ expS S Q = 0) := by
   unfold expS
@@ -90,6 +126,65 @@ theorem expS_cases [StarRing E] (S : Finset (HeightOneSpectrum (𝓞 E))) (Q : H
 
 end Loc
 
+/- English proof (translation)
+Introduce `X A a b S SG ϖ p g cA N N' hC hN hN'`. Take `⟨hX, ⟨hδ, -, hSc, hAS, hfg, hLa⟩, hAc, -, hp, hϖ, hcop, hS, hSG, hg, hcA⟩` from `hC`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hg0 : g ≠ 0` using `by rintro rfl; exact hp.one_lt.ne' (by simpa using hg)`. Establish `hcA0 : cA ≠ 0` using `by rintro rfl; exact hp.one_lt.ne' (by simpa using hcA)`.
+
+Establish `hpE : (p : X.E) ≠ 0` using `by exact_mod_cast hp0`. Establish `hgE : (g : X.E) ≠ 0` using `by exact_mod_cast hg0`. Establish `hcE : (cA : X.E) ≠ 0` using `by exact_mod_cast hcA0`. Establish `hpO : (p : 𝓞 X.E) ≠ 0` using `by exact_mod_cast hp0`. Establish `hϖO : ϖ ≠ 0` using `left_ne_zero_of_mul (hϖ ▸ hpO)`.
+
+Take `⟨w, hw⟩ : ∃ w, w = X.conjO ϖ` from `⟨_, rfl⟩`. Establish `hstar : star (ϖ : X.E) = (w : X.E)` using `by rw [hw]; rfl`. Establish `hconj : ∀ Q : HeightOneSpectrum (𝓞 X.E), w ∈ Q.asIdeal → conjPrime₂ Q ∈ S` using `fun Q h => (hS _).2 (Or.inl (by rw [hw] at h; exact h))`. Rewrite `hϖ`, `hcop`, `hAc` using `[← hw]`. Establish `hwO : w ≠ 0` using `right_ne_zero_of_mul (hϖ ▸ hpO)`.
+
+Establish `hpE' : (p : X.E) = (ϖ : X.E) * (w : X.E)`. Use `congrArg (algebraMap (𝓞 X.E) X.E) hϖ` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Conclude with `this.symm`. Establish `hϖE : (ϖ : X.E) ≠ 0` using `left_ne_zero_of_mul (hpE' ▸ hpE)`.
+
+Establish `hwE : (w : X.E) ≠ 0` using `right_ne_zero_of_mul (hpE' ▸ hpE)`. Establish `hSw : ∀ Q ∈ S, w ∉ Q.asIdeal` using `fun Q hQ h => hSc Q hQ (hconj Q h)`. Establish `hnS : ∀ Q : HeightOneSpectrum (𝓞 X.E), Q ∉ S → ϖ ∉ Q.asIdeal` using `fun Q hQ h => hQ ((hS Q).2 (Or.inl h))`. Establish `hpm : ∀ Q : HeightOneSpectrum (𝓞 X.E), ϖ ∈ Q.asIdeal → (p : 𝓞 X.E) ∈ Q.asIdeal` using `fun Q h => hϖ ▸ Q.asIdeal.mul_mem_right _ h`. Establish `hone : ∀ Q : HeightOneSpectrum (𝓞 X.E), (1 : 𝓞 X.E) ∉ Q.asIdeal` using `fun Q => Q.asIdeal.primeCompl.one_mem`.
+
+Establish `hmul : ∀ (Q : HeightOneSpectrum (𝓞 X.E)) {s t : 𝓞 X.E}, s ∉ Q.asIdeal → t ∉ Q.asIdeal → s * t ∉ Q.asIdeal` using `fun Q _ _ hs ht => Q.asIdeal.primeCompl.mul_mem hs ht`. Establish `hAA : A.AA ≠ ⊥`. Take `⟨Q, hQ⟩` from `exists_prime_over (E := X.E) hp`. Establish `h1 : localization₂ Q.asIdeal A.AA = localization₂ Q.asIdeal 1`. Break down `Q.isPrime.mem_or_mem (hϖ ▸ hQ) with h | h` into its components or cases.
+
+Conclude with `hAS Q ((hS Q).2 (Or.inl h))`. Conclude with `hAc Q ((mem_divs hwO Q).2 h)`. Introduce `h0`. Establish `h2 : (1 : X.E) ∈ localization₂ Q.asIdeal A.AA` using `h1 ▸ loc_self Q (Submodule.mem_one.2 ⟨1, map_one _⟩)`. Take `⟨s, hs, h3⟩` from `h2`.
+
+Rewrite `h3` using `[h0, Submodule.mem_bot, Algebra.smul_def, mul_one, RingOfIntegers.coe_eq_zero_iff]`. Conclude with `hs (h3 ▸ Q.asIdeal.zero_mem)`. Establish `hloc` using `fun P hP => (GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hAA hN hN').2.2.2 P (hAS P hP)`. Establish `hhom : ∀ T : Finset (HeightOneSpectrum (𝓞 X.E)), (∀ P ∈ T, P ∈ S) → ∀ y : HomE X.E a b, y ∈ homAt T N N' ↔ ∀ P ∈ T, y ∈ localization₂ P.asIdeal (per A N N')` using `fun T hT y => forall₂_congr fun P hP => (hloc P (hT P hP) y).symm`. Establish `hhS` using `hhom S fun _ h => h`.
+
+Establish `hhG` using `hhom SG fun P h => (hS P).2 (Or.inr h)`. Establish `hhD` using `hhom (divs ϖ) fun P h => (hS P).2 (Or.inl ((mem_divs hϖO P).1 h))`. Establish `hcoc` using `(GlobalTheory.MomT.CocInt.cocycle_integral X A a b N N' hX hδ (hLa N N' hN hN').2).2.2`. Establish `hpg : p * g ≠ 0` using `mul_ne_zero hp0 hg0`. Simplify using `only [hstar]`.
+
+Use `⟨hAA, fun y hy => ?_, fun y hy => ?_, fun x _ hx t ht htx => ?_, fun y hy => ⟨?_, ?_, ?_, ?_⟩, fun y n hn hy => ?_, fun x hx y hy => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use `(mem_twO _ _ _ _).2 fun Q => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Apply the tactic sequence `rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> rw [e]`. Use `loc_smul' (loc_self Q hy) 1 (w * w) (hmul Q (hSw Q h1) (hSw Q h1)) ?_ push_cast` and prove the remaining obligations.
+
+Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Use `loc_smul' (loc_self Q hy) (g * g * ϖ * ϖ) 1 (hone Q) ?_ push_cast` and prove the remaining obligations. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts.
+
+Use `loc_smul' (loc_self Q hy) (g * ϖ) w (fun h => h2 (hconj Q h)) ?_ push_cast` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `mem_of_loc fun Q => ?_` and prove the remaining obligations. Establish `h` using `(mem_twO _ _ _ _).1 hy Q`. Apply the tactic sequence `rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> rw [e] at h`.
+
+Use `loc_smul h (g * g * w * w) 1 (hone Q) ?_ push_cast` and prove the remaining obligations. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Use `loc_smul h 1 (ϖ * ϖ) (hmul Q (hnS Q h1) (hnS Q h1)) ?_ push_cast` and prove the remaining obligations. Simplify using `only [hpE']`.
+
+Clear the denominators using the available nonvanishing facts. Use `loc_smul h (g * w) ϖ (hnS Q h1) ?_ push_cast` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `mem_of_loc fun Q => ?_` and prove the remaining obligations. Establish `h` using `(mem_twO _ _ _ _).1 ht Q`.
+
+Apply the tactic sequence `rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> simp only [e, neg_zero, neg_neg] at h`. Distinguish the cases in `hQ : ϖ ∈ Q.asIdeal`. Establish `h3` using `(hhD x).1 hx Q ((mem_divs hϖO Q).2 hQ)`. Establish `h4` using `(hhS _).1 ((mem_mulLat _ hpg _).1 htx) Q h1`. Establish `h5 : (1 : X.E) • (t - x) ∈ localization₂ Q.asIdeal (per A N N')`.
+
+Use `loc_smul h4 (p * g) 1 (hone Q) ?_` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h5` using `[one_smul]`. Establish `h6` using `add_mem h3 h5`.
+
+Rewrite `h6` using `[add_sub_cancel]`. Use `loc_smul' h6 (cA * g) 1 (hone Q) ?_` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `loc_smul h 1 p (hSG Q (((hS Q).1 h1).resolve_left hQ)) ?_ push_cast` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Use `loc_smul h (cA * g * (cA * (p * g))) 1 (hone Q) ?_ push_cast` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `loc_smul h (cA * g) 1 (hone Q) ?_ push_cast` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `(hhS y).2 fun P _ => loc_self P hy`. Use `(mem_twO _ _ _ _).2 fun Q => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Apply the tactic sequence `rcases expS_cases S Q with ⟨h1, e⟩ | ⟨h1, h2, e⟩ | ⟨h1, h2, e⟩ <;> simp only [e, neg_zero, neg_neg]`. Use `loc_smul' (loc_self Q hy) (cA * (p * g) * (cA * g * w)) 1 (hone Q) ?_ push_cast` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Use `loc_smul' (loc_self Q hy) 1 ϖ (hnS Q h1) ?_ push_cast` and prove the remaining obligations. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Use `loc_smul' (loc_self Q hy) (cA * g * w) 1 (hone Q) ?_ push_cast` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Use `(mem_mulLat _ hpg _).2 ((hhG _).2 fun P hP => ?_)` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `loc_smul' (loc_self P hy) cA ϖ (fun h => hSG P hP (hpm P h)) ?_` and prove the remaining obligations. Use `push_cast`.
+
+Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mem_mulLat _ hpg, hhS, smul_smul, mem_smulLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `⟨(ϖ : X.E)⁻¹ • y, mem_of_loc fun Q => ?_, by rw [smul_smul, mul_inv_cancel₀ hϖE, one_smul]⟩` and prove the remaining obligations. Distinguish the cases in `hQ : ϖ ∈ Q.asIdeal`. Use `loc_smul (h Q ((hS Q).2 (Or.inl hQ))) 1 cA (nat_notMem hcA (hpm Q hQ)) ?_ push_cast` and prove the remaining obligations. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts.
+
+Use `loc_smul' (loc_self Q hy) 1 ϖ hQ ?_ push_cast` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨m, hm, rfl⟩ P _`. Rewrite using `[smul_smul]`. Use `loc_smul' (loc_self P hm) cA 1 (hone P) ?_` and prove the remaining obligations.
+
+Use `push_cast`. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Take `⟨m, hm, e⟩` from `hy`. Establish `hn0 : (n : X.E) ≠ 0`.
+
+Establish `: n ≠ 0` using `by rintro rfl; exact hp.one_lt.ne' (by simpa using hn)`. Conclude with `this` after adjusting the coercions. Establish `e' : y = ((n : X.E)⁻¹ * ((ϖ : X.E) / (w : X.E))) • m`. Establish `e2 : ((ϖ : X.E) / (w : X.E)) • m = (n : X.E) • y` using `e`. Rewrite using `[mul_smul, e2, smul_smul, inv_mul_cancel₀ hn0, one_smul]`.
+
+Use `(mem_mulLat _ hp0 _).2 ((hhD _).2 fun P hP => ?_)` and prove the remaining obligations. Establish `hP'` using `(mem_divs hϖO P).1 hP`. Establish `hw'` using `hSw P ((hS P).2 (Or.inl hP'))`. Rewrite using `[e', smul_smul]`. Use `loc_smul' (loc_self P hm) 1 (n * (w * w)) (hmul P (nat_notMem hn (hpm P hP')) (hmul P hw' hw')) ?_` and prove the remaining obligations.
+
+Use `push_cast`. Simplify using `only [hpE']`. Clear the denominators using the available nonvanishing facts. Use `hcoc x y fun Q => ⟨((p * g : ℕ) : X.E) ^ expS S Q, zpow_ne_zero _ (by exact_mod_cast hpg), (mem_twO _ _ _ _).1 hx Q, ?_⟩` and prove the remaining obligations. Establish `h` using `(mem_twO _ _ _ _).1 hy (conjPrime₂ Q)`.
+
+Rewrite `h` using `[expS_conj hSc, zpow_neg, inv_inv, ← star_natCast (R := X.E), ← star_zpow₀]`. Then use the resulting hypothesis. Use `hcoc x y fun Q => ⟨((cA * (p * g) : ℕ) : X.E) ^ (-expS S Q), zpow_ne_zero _ (by exact_mod_cast mul_ne_zero hcA0 hpg), (mem_twO _ _ _ _).1 hx Q, ?_⟩` and prove the remaining obligations. Establish `h` using `(mem_twO _ _ _ _).1 hy (conjPrime₂ Q)`. Rewrite `h` using `[expS_conj hSc, zpow_neg, inv_inv, ← star_natCast (R := X.E), ← star_zpow₀]`. Then use the resulting hypothesis.
+-/
 theorem half_inclusions : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S SG : Finset (HeightOneSpectrum (𝓞 X.E))) (ϖ : 𝓞 X.E) (p g cA : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), Ctx A a b S SG ϖ p g cA → IsSdLat N → IsSdLat N' → A.AA ≠ ⊥ ∧ (∀ y ∈ per A N N', ((g : X.E) * ((ϖ : X.E) / star (ϖ : X.E))) • y ∈ halfBO S (per A N N') (p * g)) ∧ (∀ y ∈ halfBO S (per A N N') (p * g), ((g : X.E) * (star (ϖ : X.E) / (ϖ : X.E))) • y ∈ per A N N') ∧ (∀ x ∈ divLat cA (homAt S N N'), x ∈ homAt (divs ϖ) N N' → ∀ t ∈ halfAO S (per A N N') (cA * (p * g)), t - x ∈ mulLat (p * g) (homAt S N N') → ((cA * g : ℕ) : X.E) • t ∈ per A N N') ∧ (∀ y ∈ per A N N', y ∈ homAt S N N' ∧ (((cA * g : ℕ) : X.E) * star (ϖ : X.E)) • y ∈ halfAO S (per A N N') (cA * (p * g)) ∧ (((cA * g : ℕ) : X.E) * star (ϖ : X.E)) • y ∈ mulLat (p * g) (homAt SG N N') ∧ ((((cA * g : ℕ) : X.E) * star (ϖ : X.E)) • y ∈ mulLat (p * g) (homAt S N N') ↔ y ∈ smulLat (ϖ : X.E) (per A N N'))) ∧ (∀ (y : HomE X.E a b) (n : ℕ), Nat.Coprime n p → (n : X.E) • y ∈ smulLat ((ϖ : X.E) / star (ϖ : X.E)) (per A N N') → y ∈ mulLat p (homAt (divs ϖ) N N')) ∧ (∀ x ∈ halfBO S (per A N N') (p * g), ∀ y ∈ halfBO S (per A N N') (p * g), ∃ n : ℤ, coc A x y = n) ∧ ∀ x ∈ halfAO S (per A N N') (cA * (p * g)), ∀ y ∈ halfAO S (per A N N') (cA * (p * g)), ∃ n : ℤ, coc A x y = n := by
   intro X A a b S SG ϖ p g cA N N' hC hN hN'
   obtain ⟨hX, ⟨hδ, -, hSc, hAS, hfg, hLa⟩, hAc, -, hp, hϖ, hcop, hS, hSG, hg, hcA⟩ := hC

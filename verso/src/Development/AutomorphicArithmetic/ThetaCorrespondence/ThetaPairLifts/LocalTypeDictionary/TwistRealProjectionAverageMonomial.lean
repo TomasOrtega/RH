@@ -12,6 +12,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 noncomputable section
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hPr hInp hL hB`. Take `⟨m, ρ, hρm, hρs, hact⟩` from `_root_.GlobalTheory.T.twist_boundary_real_action hPr hInp hL hB`. Take `⟨n, hn⟩` from `GlobalTheory.T.average_det_char_monomial_eq_sum_prod_minors (ι := D.what₂.Tau) A'.rank WW.rank m`. Use `⟨n, fun κ hκ hκp t x hx h hh k => ?_⟩` and prove the remaining obligations. Set `Λ : GlobalTheory.MinorFrame.Pol D.what₂.Tau WW.rank A'.rank →ₗ[ℂ] ℂ` to `(LinearMap.proj (R := ℂ) (φ := fun _ : WO A' WW => ℂ) 0).comp ((X.ω' t (x, h)).comp (pureTensorO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.B X.rW.B (X.f' t)))`.
+
+Establish `hΛ : ∀ P, Λ P = X.ker' W.ψ W.θ t P h x` using `fun P => rfl`. Take `⟨M, r, U, hr, hI⟩` from `hn κ hκp hκ ρ hρm hρs Λ k`. Use `⟨M, r, U, hr, ?_⟩` and prove the remaining obligations. Establish `e : (fun g : GinfC A' => X.ker' W.ψ W.θ t (MvPolynomial.monomial k 1) h (x * (g : GA D A'))) = fun g => (∏ τ, (ρ g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ).det ^ (m τ)) * Λ (GlobalTheory.MinorFrame.colSub (fun τ => (ρ g τ : Matrix (Fin A'.rank) (Fin A'.rank) ℂ)) (MvPolynomial.mo …`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hact t x hx h hh g, hΛ]`. Rewrite using `[e, hI]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.RealProj.realProjection_average_monomial : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -47,6 +54,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealProj.realProjection_average_monomial | exact _root_.GlobalTheory.RealProj.realProjection_average_monomial | (intros; apply _root_.GlobalTheory.RealProj.realProjection_average_monomial <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_realProjection_average_monomial : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

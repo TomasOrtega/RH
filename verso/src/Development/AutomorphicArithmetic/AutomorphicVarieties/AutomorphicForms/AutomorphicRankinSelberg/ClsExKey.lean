@@ -3,6 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 open CongruenceSubgroup UpperHalfPlane
 open scoped MatrixGroups
 
+/- English proof (translation)
+Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Simplify using `only [UpperTheory.V.Af.Rs.cls, UpperTheory.V.Af.Rs.row, Pi.smul_apply, smul_eq_mul, Int.cast_mul, Int.cast_natCast] at h0 h1`. Establish `hdet : ((γ 0 0 : ℤ) : ZMod L) * (γ 1 1 : ℤ) - (γ 0 1 : ℤ) * (γ 1 0 : ℤ) = 1`. Use `γ.det_coe` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `congrArg (fun t : ℤ => (t : ZMod L)) this` after adjusting the coercions. Establish `hn : (n : ZMod L) = m * (((γ 0 0 : ℤ) : ZMod L) * (δ 1 1 : ℤ) - (γ 0 1 : ℤ) * (δ 1 0 : ℤ))`. Take the linear combination `(-(n : ZMod L)) * hdet - ((γ 0 0 : ℤ) : ZMod L) * h1 + ((γ 0 1 : ℤ) : ZMod L) * h0`. Distinguish the cases in `hm : IsUnit (m : ZMod L)`.
+
+Take `⟨η, hη⟩ : ∃ η : SL(2, ℤ), η = δ * γ⁻¹` from `⟨_, rfl⟩`. Establish `e10 : (η 1 0 : ℤ) = δ 1 0 * γ 1 1 - δ 1 1 * γ 1 0`. Rewrite using `[hη]`. Simplify using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e11 : (η 1 1 : ℤ) = δ 1 1 * γ 0 0 - δ 1 0 * γ 0 1`. Rewrite using `[hη]`. Simplify using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : η ∈ Gamma0 L`.
+
+Rewrite using `[Gamma0_mem, e10]`. Use `push_cast`. Use `(hm.mul_right_eq_zero).1 ?_` and prove the remaining obligations. Take the linear combination `((γ 1 1 : ℤ) : ZMod L) * h0 - ((γ 1 0 : ℤ) : ZMod L) * h1`. Establish `hδ : δ = η * γ`.
+
+Rewrite using `[hη, inv_mul_cancel_right]`. Establish `hn' : (n : ZMod L) = m * ((η 1 1 : ℤ) : ZMod L)`. Rewrite using `[e11, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hδ, mul_smul, hF η hmem, hn', map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn' : ¬IsUnit (n : ZMod L)`. Introduce `hu`. Rewrite `hu` using `[hn]`.
+
+Conclude with `hm (isUnit_of_mul_isUnit_left hu)`. Rewrite using `[MulChar.map_nonunit _ hm, MulChar.map_nonunit _ hn']`. Simplify using the standard rewrite rules.
+-/
 private theorem clsEx_key (L : ℕ) (ψ : DirichletCharacter ℂ L) (F : ℍ → ℂ)
     (hF : ∀ γ : SL(2, ℤ), γ ∈ Gamma0 L → ∀ z, F (γ • z) = ψ ((γ 1 1 : ℤ) : ZMod L) * F z)
     (n m : ℕ) (γ δ : SL(2, ℤ))
@@ -52,6 +69,11 @@ private theorem clsEx_key (L : ℕ) (ψ : DirichletCharacter ℂ L) (F : ℍ →
     rw [MulChar.map_nonunit _ hm, MulChar.map_nonunit _ hn']
     simp
 
+/- English proof (translation)
+Introduce `_ L _ ψ F hF`. Use `⟨fun v z => if h : ∃ p : ℕ × SL(2, ℤ), cls L ((p.1 : ℤ) • row p.2) = v then ψ (h.choose.1 : ZMod L) * F (h.choose.2 • z) else 0, ?_⟩` and prove the remaining obligations. Introduce `n γ z`. Establish `h : ∃ p : ℕ × SL(2, ℤ), cls L ((p.1 : ℤ) • row p.2) = cls L ((n : ℤ) • row γ)` using `⟨(n, γ), rfl⟩`. Simplify using `only [dif_pos h]`.
+
+Conclude with `clsEx_key L ψ F hF n _ γ _ h.choose_spec z`.
+-/
 theorem UpperTheory.V.Af.Rs.clsEx :
     UpperTheory.V.Af.Rs.RowBij → UpperTheory.V.Af.Rs.ClsEx := by
   intro _ L _ ψ F hF

@@ -5,6 +5,45 @@ open scoped IntermediateField
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j c hφ hc L hL hloc`. Use `haveI := IsAlgClosure.isAlgebraic (R := E) (K := Ω)`. Use `haveI := IsAlgClosure.isAlgebraic (R := E') (K := Ω')`. Choose the witnesses or unpack the hypotheses as in `⟨α, rfl⟩ : ∃ α : Ω, E⟮α⟯ = L := by`. Take `⟨α₀, hα₀⟩` from `Field.exists_primitive_element E L`.
+
+Use `⟨(α₀ : Ω), ?_⟩` and prove the remaining obligations. Use `congrArg (IntermediateField.map L.val) hα₀` as an intermediate fact. Rewrite `this` using `[IntermediateField.adjoin_map, Set.image_singleton, ← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val]`. Conclude with `this`. Establish `hint : IsIntegral E α` using `Algebra.IsIntegral.isIntegral α`.
+
+Use `set α' : Ω' := φ α with hα'`. Establish `hint' : IsIntegral E' α'` using `Algebra.IsIntegral.isIntegral α'`. Use `set p := minpoly E α with hp`. Use `set m' := minpoly E' α' with hm'`. Establish `hcomp : (algebraMap E' Ω').comp j = (φ : Ω →+* Ω').comp (algebraMap E Ω)`.
+
+Use extensionality with `x`. Conclude with `(hφ x).symm`. Establish `key : ∀ β : Ω, φ (aeval β p) = aeval (φ β) (p.map j)`. Introduce `β`. Rewrite using `[aeval_def, aeval_def, eval₂_map, hcomp]`.
+
+Conclude with `Polynomial.hom_eval₂ p (algebraMap E Ω) (φ : Ω →+* Ω') β`. Establish `hpmon : p.Monic` using `minpoly.monic hint`. Establish `hqne : p.map j ≠ 0` using `(hpmon.map j).ne_zero`. Establish `hdvd : m' ∣ p.map j` using `minpoly.dvd E' α' (by rw [← key, minpoly.aeval]; simp)`. Establish `hm'root : ∀ σ' : G E' Ω', aeval (σ' α') m' = 0`.
+
+Introduce `σ'`. Rewrite using `[show σ' α' = (σ' : Ω' →ₐ[E'] Ω') α' from rfl, aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hq : ∀ y : Ω', aeval y m' = 0 → aeval y (p.map j) = 0`. Introduce `y hy`. Take `⟨r, hr⟩` from `hdvd`.
+
+Rewrite using `[hr, map_mul, hy, zero_mul]`. Establish `horb : ∀ β : Ω, aeval β p = 0 → ∃ τ : Weil h, (τ : G E Ω) α = β`. Introduce `β hβ`. Establish `hmin : minpoly E β = minpoly E α` using `(minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hint) hβ hpmon).symm`. Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := E) (E := Ω)).1 hmin`.
+
+Take `⟨τ, hτ⟩` from `hloc σ`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Use `hτ ⟨α, IntermediateField.mem_adjoin_simple_self E α⟩` as an intermediate fact. Simplify using `only [IntermediateField.algebraMap_apply] at this`. Rewrite using `[this]`.
+
+Conclude with `hσ`. Use `set L' : IntermediateField E' Ω' := E'⟮α'⟯ with hL'`. Establish `hsub : ∀ x : E⟮α⟯, φ (x : Ω) ∈ L'`. Set `S : IntermediateField E Ω` to `Subfield.toIntermediateField (L'.toSubfield.comap (φ : Ω →+* Ω')) (fun x => by show φ (algebraMap E Ω x) ∈ L'`. Rewrite using `[hφ]`.
+
+Conclude with `L'.algebraMap_mem (j x))`. Establish `hle : E⟮α⟯ ≤ S` using `IntermediateField.adjoin_simple_le_iff.2 (show φ α ∈ L' from IntermediateField.mem_adjoin_simple_self E' α')`. Introduce `x`. Conclude with `hle x.2`. Set `jL : E⟮α⟯ →+* L'` to `RingHom.codRestrict ((φ : Ω →+* Ω').comp (algebraMap E⟮α⟯ Ω)) L' hsub`.
+
+Use `⟨L', jL, IntermediateField.adjoin.finiteDimensional hint', ?_, ?_, fun x => rfl, ?_⟩` and prove the remaining obligations. Introduce `σ'`. Establish `h1 : aeval (σ' α') (p.map j) = 0` using `hq _ (hm'root σ')`. Establish `h2 : aeval (φ.symm (σ' α')) p = 0`. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[key, φ.apply_symm_apply, h1, map_zero]`. Take `⟨τ, hτ⟩` from `horb _ h2`. Use `⟨c τ, fun x => ?_⟩` and prove the remaining obligations. Establish `e : φ ((τ : G E Ω) α) = (c τ : G E' Ω') α'` using `hc τ α`. Establish `hx : (c τ : G E' Ω') α' = σ' α'`.
+
+Rewrite using `[← e, hτ, φ.apply_symm_apply]`. Establish `hle : L'.toSubalgebra ≤ AlgHom.equalizer ((c τ : G E' Ω') : Ω' →ₐ[E'] Ω') (σ' : Ω' →ₐ[E'] Ω')`. Rewrite using `[hL', IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint'.isAlgebraic, Algebra.adjoin_le_iff, Set.singleton_subset_iff]`. Conclude with `hx`. Conclude with `hle x.2`.
+
+Rewrite using `[IntermediateField.adjoin.finrank hint', IntermediateField.adjoin.finrank hint]`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E haveI : IsAlgClosed Ω' := IsAlgClosure.isAlgClosed E'`. Establish `hsep : p.Separable` using `(minpoly.irreducible hint).separable`.
+
+Establish `hnd : (p.aroots Ω).Nodup` using `nodup_roots (hsep.map)`. Establish `hm'ne : m' ≠ 0` using `minpoly.ne_zero hint'`. Establish `hpne : p ≠ 0` using `hpmon.ne_zero`. Establish `himg : (p.aroots Ω).toFinset.image φ ⊆ (m'.aroots Ω').toFinset`. Introduce `y hy`.
+
+Take `⟨β, hβ, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hβ`, the goal using `[Multiset.mem_toFinset, mem_aroots]`. Take `⟨τ, rfl⟩` from `horb _ hβ.2`. Use `⟨hm'ne, ?_⟩` and prove the remaining obligations. Establish `e : φ ((τ : G E Ω) α) = (c τ : G E' Ω') α'` using `hc τ α`.
+
+Rewrite using `[e]`. Conclude with `hm'root _`. Combine the equalities or inequalities in the displayed calculation. Apply `Subalgebra.map_injective (f := L'.val) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[AlgHom.map_adjoin, Algebra.map_top, IntermediateField.range_val]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `(jL x).2`. Establish `hsg : ({α'} : Set Ω') ⊆ L'.val '' Set.range jL` using `Set.singleton_subset_iff.2 ⟨jL ⟨α, IntermediateField.mem_adjoin_simple_self E α⟩, ⟨_, rfl⟩, rfl⟩`.
+
+Use `le_trans ?_ (Algebra.adjoin_mono hsg)` and prove the remaining obligations. Rewrite using `[hL', IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint'.isAlgebraic]`.
+-/
 theorem GlobalTheory.LocLanglands.exists_isLocalExt_transport : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (φ : Ω ≃+* Ω') (j : E →+* E') (c : Weil h ≃* Weil h'), (∀ x, φ (algebraMap E Ω x) = algebraMap E' Ω' (j x)) → (∀ σ, WeilRel φ σ (c σ)) → ∀ L : IntermediateField E Ω, FiniteDimensional E L → IsLocalExt L h → ∃ (L' : IntermediateField E' Ω') (jL : L →+* L'), FiniteDimensional E' L' ∧ IsLocalExt L' h' ∧ Module.finrank E' L' = Module.finrank E L ∧ (∀ x : L, φ (x : Ω) = (jL x : Ω')) ∧ Algebra.adjoin E' (Set.range jL) = ⊤ := by
   intro E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' φ j c hφ hc L hL hloc
   classical

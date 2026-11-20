@@ -8,6 +8,13 @@ namespace PositivityTheory.Rg.Cz.TGK
 
 variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] {P : Type} [Fintype P] [DecidableEq P]
 
+/- English proof (translation)
+Use `haveI hS : ∀ J : P → Fin n, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun γ => ρ γ (y J))) := fun J => hfin (y J)`. Use `set T : Submodule ℂ M := ⨆ J : P → Fin n, Submodule.span ℂ (Set.range fun γ => ρ γ (y J)) with hT`. Use `haveI : FiniteDimensional ℂ T := by rw [hT]; infer_instance`. Set `L : ((P → Fin n) → T) →ₗ[ℂ] TV n M P` to `LinearMap.pi fun I => T.subtype ∘ₗ LinearMap.proj I`. Establish `hle : Submodule.span ℂ (Set.range fun γ => actT lab κ ρ γ y) ≤ LinearMap.range L`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨γ, rfl⟩`. Establish `hmem : ∀ I, actT lab κ ρ γ y I ∈ T`. Introduce `I`. Simplify using `only [actT, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+
+Use `Submodule.sum_mem _ fun J _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem J (Submodule.subset_span ⟨γ, rfl⟩)`. Conclude with `⟨fun I => ⟨_, hmem I⟩, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem actT_fin {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M)
     (hfin : ∀ y, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun γ => ρ γ y))) (y : TV n M P) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun γ => actT lab κ ρ γ y)) := by
@@ -29,6 +36,13 @@ theorem actT_fin {ι Γ : Type} (lab : P → ι) (κ : ι → Γ → Matrix (Fin
     exact ⟨fun I => ⟨_, hmem I⟩, rfl⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Establish `h1 : ∀ x : TV n M P, lam x = ∑ I : P → Fin n, (lam ∘ₗ LinearMap.single ℂ (fun _ : P → Fin n => M) I) (x I)`. Introduce `x`. Use `conv_lhs => rw [← Finset.univ_sum_single x]`. Simplify using `[map_sum]`. Establish `key : (fun γ => lam (actT lab κ ρ γ y)) = fun γ => ∑ I : P → Fin n, ∑ J : P → Fin n, (∏ p : P, κ (lab p) γ (I p) (J p)) * (lam ∘ₗ LinearMap.single ℂ (fun _ : P → Fin n => M) I) (ρ γ (y J))`.
+
+Use function extensionality and compare the values at `γ`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `only [actT, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul]`. Rewrite using `[key]`. Use `continuous_finset_sum _ fun I _ => continuous_finset_sum _ fun J _ => ?_` and prove the remaining obligations. Conclude with `(continuous_finset_prod _ fun p _ => hκ _ _ _).mul (hc (y J) _)`.
+-/
 theorem actT_cont {ι Γ : Type} [TopologicalSpace Γ] (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (ρ : Γ → Module.End ℂ M) (hκ : ∀ τ i j, Continuous fun γ => κ τ γ i j)
     (hc : ∀ y (lam : M →ₗ[ℂ] ℂ), Continuous fun γ => lam (ρ γ y)) (y : TV n M P) (lam : TV n M P →ₗ[ℂ] ℂ) :

@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CuspFormValues
 
+/- English proof (translation)
+Use `choose j hj using hmem`. Conclude with `⟨{ toFun := j map_add' := fun f g => hinj (by rw [hadd, hj, hj, hj, hφa]) map_smul' := fun a f => hinj (by rw [hsmul, hj, hj, hφs]) }, hj⟩`.
+-/
 theorem evEx_of_range {K C H X : Type} [Field K] [AddCommGroup C] [Module K C] [AddCommGroup H] [Module ℂ H]
     [AddCommGroup X] [Module ℂ X] (σ : K →+* ℂ) (ev : H → X) (φ : C → X) (hinj : Function.Injective ev)
     (hadd : ∀ x y, ev (x + y) = ev x + ev y) (hsmul : ∀ (a : ℂ) x, ev (a • x) = a • ev x)
@@ -20,6 +23,9 @@ theorem evEx_of_range {K C H X : Type} [Field K] [AddCommGroup C] [Module K C] [
            map_add' := fun f g => hinj (by rw [hadd, hj, hj, hj, hφa])
            map_smul' := fun a f => hinj (by rw [hsmul, hj, hj, hφs]) }, hj⟩
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+-/
 theorem phiC_eq {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) :
     phiC T hV a f = adel W (castDict hV (T.dict j σ)) (muPin W (castDict hV (T.dict j σ)) (castDict hV (T.mu j σ)) (T.cE j σ))
@@ -28,6 +34,13 @@ theorem phiC_eq {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : H
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Introduce `hdec hvol D G _ _ Pl0 T0 A T _ R κ v₀ hlev hmod htie hpb i σ hσ hV`. Establish `hr` using `GlobalTheory.T.hilbertModel_extremalValues_eq_holomorphicCuspForms hdec hvol D G Pl0 T0 A T R κ v₀ hlev hmod htie hpb i σ hσ hV`. Use `evEx_of_range _ _ _ (GlobalTheory.EvalAtUnitVector.evInj T R v₀ hmod.HW htie.hv₀ i σ hσ) (fun x y => ?_) (fun a x => ?_) (fun f g => ?_) (fun a f => ?_) (fun f => ?_)` and prove the remaining obligations. Unfold `evAt`. Rewrite using `[map_add]`.
+
+Both sides reduce to the same expression. Unfold `evAt`. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Simplify using `only [phiC_eq]`.
+
+Rewrite using `[Submodule.coe_add, map_add, smul_add, map_add]`. Simplify using `only [phiC_eq]`. Rewrite using `[Submodule.coe_smul, map_smulₛₗ (rdU _), smul_comm, map_smul]`. Rewrite using `[hr, phiC_eq]`. Conclude with `⟨_, Submodule.smul_mem _ _ (Submodule.mem_inf.2 ⟨((mem_cusp _ _ _ _ _ _).1 f.2).2 _ hσ, rdU_mem_offZero _ _⟩), rfl⟩`.
+-/
 theorem jEvExists : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → JEvExists T R κ v₀ := by
   intro hdec hvol D G _ _ Pl0 T0 A T _ R κ v₀ hlev hmod htie hpb i σ hσ hV
   have hr := GlobalTheory.T.hilbertModel_extremalValues_eq_holomorphicCuspForms hdec hvol D G Pl0 T0 A T R κ v₀ hlev hmod htie hpb i σ hσ hV

@@ -19,6 +19,9 @@ noncomputable def scalarRingHom : k →+* Γ(X, ⊤) :=
 noncomputable instance stalkAlgebra (x : X) : Algebra k (X.presheaf.stalk x) :=
   ((X.presheaf.germ ⊤ x trivial).hom.comp (scalarRingHom X)).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma algebraMap_stalk (x : X) (c : k) :
     algebraMap k (X.presheaf.stalk x) c = X.presheaf.germ ⊤ x trivial (scalarRingHom X c) := rfl
 
@@ -29,6 +32,9 @@ instance : Nonempty (⊤ : X.Opens) := ⟨⟨(inferInstance : Nonempty X).some, 
 noncomputable instance functionFieldAlgebra : Algebra k X.functionField :=
   ((X.germToFunctionField ⊤).hom.comp (scalarRingHom X)).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma algebraMap_functionField (c : k) :
     algebraMap k X.functionField c = X.germToFunctionField ⊤ (scalarRingHom X c) := rfl
 
@@ -43,6 +49,9 @@ section DimensionOne
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Set `` to `specializationOrder X`. Establish `h` using `coheight_le_krullDim (irreducibleSetEquivPoints.symm x : TopologicalSpace.IrreducibleCloseds X)`. Rewrite `h` using `[coheight_orderIso]`. Conclude with `h`.
+-/
 lemma coheight_le_topologicalKrullDim (x : X) :
     (coheight x : WithBot ℕ∞) ≤ topologicalKrullDim X := by
   let := specializationOrder X
@@ -51,12 +60,20 @@ lemma coheight_le_topologicalKrullDim (x : X) :
   rw [coheight_orderIso] at h
   exact h
 
+/- English proof (translation)
+Use `(coheight_le_topologicalKrullDim x).trans hX` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 lemma coheight_le_one (hX : topologicalKrullDim X ≤ 1) (x : X) : coheight x ≤ 1 := by
   have := (coheight_le_topologicalKrullDim x).trans hX
   exact_mod_cast this
 
 variable [IsIntegral X]
 
+/- English proof (translation)
+Use `le_antisymm (coheight_le_one hX x) ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero, Ne, coheight_eq_zero]`. Introduce `hmax`. Establish `h1 : x ≤ genericPoint X` using `genericPoint_specializes x`. Establish `h2 : genericPoint X ≤ x` using `hmax h1`.
+
+Conclude with `hx (Specializes.antisymm (h2 : x ⤳ genericPoint X) (h1 : genericPoint X ⤳ x)).eq`.
+-/
 lemma coheight_eq_one (hX : topologicalKrullDim X ≤ 1) {x : X} (hx : x ≠ genericPoint X) :
     coheight x = 1 := by
   refine le_antisymm (coheight_le_one hX x) ?_
@@ -66,11 +83,17 @@ lemma coheight_eq_one (hX : topologicalKrullDim X ≤ 1) {x : X} (hx : x ≠ gen
   have h2 : genericPoint X ≤ x := hmax h1
   exact hx (Specializes.antisymm (h2 : x ⤳ genericPoint X) (h1 : genericPoint X ⤳ x)).eq
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_stalk_eq_coheight, coheight_eq_one hX hx]`. Both sides reduce to the same expression.
+-/
 lemma ringKrullDim_stalk_eq_one (hX : topologicalKrullDim X ≤ 1) {x : X}
     (hx : x ≠ genericPoint X) : ringKrullDim (X.presheaf.stalk x) = 1 := by
   rw [ringKrullDim_stalk_eq_coheight, coheight_eq_one hX hx]
   rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `Z.coheight_point`. Rewrite `h1` using `[h, coheight_eq_zero.mpr (fun y _ => genericPoint_specializes y)]`. Conclude with `zero_ne_one h1`.
+-/
 lemma PrimeDivisor.point_ne_genericPoint (Z : PrimeDivisor X) : Z.point ≠ genericPoint X := by
   intro h
   have h1 := Z.coheight_point
@@ -84,6 +107,11 @@ noncomputable def primeDivisorEquiv (hX : topologicalKrullDim X ≤ 1) :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `y hy`. Rewrite `hy` using `[← specializes_iff_mem_closure]`. Assume the negation of the conclusion as `hne`. Establish `hlt : y < x` using `lt_of_le_not_ge (hy : y ≤ x) fun hxy => hne (Specializes.antisymm (hxy : y ⤳ x) hy).eq`.
+
+Establish `h` using `coheight_add_one_le hlt`. Rewrite `h` using `[coheight_eq_one hX hx]`. Establish `h2` using `coheight_le_one hX y`. Establish `: (1 : ℕ∞) + 1 ≤ 1` using `h.trans h2`. Evaluate the numerical expressions using `at this`.
+-/
 lemma isClosed_singleton_of_ne (hX : topologicalKrullDim X ≤ 1) {x : X}
     (hx : x ≠ genericPoint X) : IsClosed ({x} : Set X) := by
   rw [← closure_subset_iff_isClosed]

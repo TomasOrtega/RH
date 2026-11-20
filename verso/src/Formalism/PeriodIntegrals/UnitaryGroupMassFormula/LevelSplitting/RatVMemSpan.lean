@@ -16,36 +16,59 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 
 def covR (x : Fin n → E) : Fin n → R ⊗[F] E := fun j => inclR R (∑ i, σ (x i) * J i j)
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (a : E) : sigR R σ (inclR R a) = inclR R (σ a) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, covR, ratV, JR, Matrix.map_apply, sigR_inclR, dotProduct, map_sum, map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem hR_ratV_left (x : Fin n → E) (y : Fin n → R ⊗[F] E) :
     hR R σ J (ratV (F := F) R x) y = covR R σ J x ⬝ᵥ y := by
   simp only [hR, Formalism.UG.hform, covR, ratV, JR, Matrix.map_apply, sigR_inclR, dotProduct,
     map_sum, map_mul, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [covR, ratV, hE, Formalism.UG.hform, dotProduct, Finset.sum_mul, map_sum, map_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem covR_ratV (x y : Fin n → E) :
     covR R σ J x ⬝ᵥ ratV (F := F) R y = inclR R (hE σ J x y) := by
   simp only [covR, ratV, hE, Formalism.UG.hform, dotProduct, Finset.sum_mul, map_sum, map_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+-/
 theorem ratV_add (x y : Fin n → E) :
     ratV (F := F) R (x + y) = ratV (F := F) R x + ratV (F := F) R y := by
   funext i
   simp [ratV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ratV, smul_eq_mul, map_mul]`.
+-/
 theorem ratV_smul (c : E) (x : Fin n → E) :
     ratV (F := F) R (c • x) = inclR (F := F) R c • ratV (F := F) R x := by
   funext i
   simp [ratV, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+-/
 theorem ratV_zero : ratV (F := F) R (0 : Fin n → E) = 0 := by
   funext i
   simp [ratV]
 
 variable {R σ J}
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero => rw [ratV_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [ratV_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [ratV_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem ratV_mem_span {m : ℕ} (Y : Fin m → Fin n → E) (x : Fin n → E)
     (hx : x ∈ Submodule.span E (Set.range Y)) :
     ratV (F := F) R x ∈ Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (Y a)) := by
@@ -57,6 +80,11 @@ theorem ratV_mem_span {m : ℕ} (Y : Fin m → Fin n → E) (x : Fin n → E)
   | add y z _ _ hy hz => rw [ratV_add]; exact Submodule.add_mem _ hy hz
   | smul c y _ hy => rw [ratV_smul]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Conclude with `hY a`. Consider the case `zero => exact map_zero _`.
+
+Consider the case `add w w' _ _ hw hw' => rw [map_add, hw, hw']`. Consider the case `smul c w _ hw => rw [map_smul, hw]`.
+-/
 theorem lin_fix_span (g : HA R σ J) {m : ℕ} (Y : Fin m → Fin n → E)
     (hY : ∀ a, lin R σ J g (ratV (F := F) R (Y a)) = ratV (F := F) R (Y a))
     (y : Fin n → R ⊗[F] E)
@@ -70,11 +98,17 @@ theorem lin_fix_span (g : HA R σ J) {m : ℕ} (Y : Fin m → Fin n → E)
   | add w w' _ _ hw hw' => rw [map_add, hw, hw']
   | smul c w _ hw => rw [map_smul, hw]
 
+/- English proof (translation)
+Simplify using `only [spanR, Set.image_univ]`.
+-/
 theorem spanR_univ {m : ℕ} (Y : Fin m → Fin n → E) :
     spanR (F := F) R Y Set.univ =
       Submodule.span (R ⊗[F] E) (Set.range fun a => ratV (F := F) R (Y a)) := by
   simp only [spanR, Set.image_univ]
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hinv, hJ.1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_swap (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
   simp only [hE, Formalism.UG.hform, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hinv, hJ.1]
@@ -82,16 +116,27 @@ theorem hE_swap (hJ : IsHermND σ J) (hinv : ∀ x, σ (σ x) = x) (x y : Fin n 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite `hk` using `[Hsub, mem_stabT]`. Simplify `hk (Fin.castAdd r (Fin.castSucc a))` using `[tupH, F0, Fin.append_left, Fin.snoc_castSucc]`.
+-/
 theorem H_fix_e {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J k (ratV (F := F) R (P.e a)) = ratV (F := F) R (P.e a) := by
   rw [Hsub, mem_stabT] at hk
   simpa [tupH, F0, Fin.append_left, Fin.snoc_castSucc] using hk (Fin.castAdd r (Fin.castSucc a))
 
+/- English proof (translation)
+Rewrite `hk` using `[Hsub, mem_stabT]`. Simplify `hk (Fin.natAdd (r + 1) a)` using `[tupH, Fin.append_right]`.
+-/
 theorem H_fix_f {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J k (ratV (F := F) R (P.f a)) = ratV (F := F) R (P.f a) := by
   rw [Hsub, mem_stabT] at hk
   simpa [tupH, Fin.append_right] using hk (Fin.natAdd (r + 1) a)
 
+/- English proof (translation)
+Establish `key : ∀ u : Fin n → E, lin R σ J k (ratV (F` using `F) R u) = ratV (F := F) R u → hE σ J u w = 0 → covR R σ J u ⬝ᵥ lin R σ J k (ratV (F := F) R w) = 0 := by`. Introduce `u hu h0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, hR_ratV_left]`. Use `_ = hR R σ J (ratV (F := F) R u) (ratV (F := F) R w) := by rw [hR_lin]`.
+
+Use `_ = 0 := by rw [hR_ratV_left, covR_ratV, h0, map_zero]`. Conclude with `⟨key _ (H_fix_e P k hk b) (hw b).1, key _ (H_fix_f P k hk b) (hw b).2⟩`.
+-/
 theorem H_perp {r : ℕ} (P : Frame E n r) (k : HA R σ J) (hk : k ∈ Hsub R σ J P) (w : Fin n → E)
     (hw : ∀ a, hE σ J (P.e a) w = 0 ∧ hE σ J (P.f a) w = 0) (b : Fin r) :
     covR R σ J (P.e b) ⬝ᵥ lin R σ J k (ratV (F := F) R w) = 0 ∧
@@ -116,19 +161,39 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 def phiV (v : HeightOneSpectrum (𝓞 F)) : Af F ⊗[F] E →+* Fv F v ⊗[F] E :=
   (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Simplify using `[phiV, inclR]`.
+-/
 theorem phiV_inclR (v : HeightOneSpectrum (𝓞 F)) (a : E) :
     phiV v (inclR (Af F) a) = inclR (Fv F v) a := by
   simp [phiV, inclR]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `phiV_inclR v (x i)`.
+-/
 theorem phiV_ratV (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E) :
     (fun i => phiV v (ratV (F := F) (Af F) x i)) = ratV (F := F) (Fv F v) x := by
   funext i
   exact phiV_inclR v (x i)
 
+/- English proof (translation)
+Simplify using `only [dotProduct, map_sum, map_mul, covR, phiV_inclR]`.
+-/
 theorem phiV_cov (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E) (y : Fin n → Af F ⊗[F] E) :
     phiV v (covR (Af F) σ J x ⬝ᵥ y) = covR (Fv F v) σ J x ⬝ᵥ fun i => phiV v (y i) := by
   simp only [dotProduct, map_sum, map_mul, covR, phiV_inclR]
 
+/- English proof (translation)
+Rewrite `hy` using `[spanR_univ]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, rfl⟩` from `hw`. Rewrite using `[phiV_ratV]`.
+
+Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero`. Establish `h0 : (fun i => phiV v ((0 : Fin n → Af F ⊗[F] E) i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add w w' _ _ hw hw'`. Establish `h1 : (fun i => phiV v ((w + w') i)) = (fun i => phiV v (w i)) + fun i => phiV v (w' i)`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ hw hw'`. Consider the case `smul c w _ hw`. Establish `h1 : (fun i => phiV v ((c • w) i)) = phiV v c • fun i => phiV v (w i)`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ hw`.
+-/
 theorem phiV_span (v : HeightOneSpectrum (𝓞 F)) {m : ℕ} (Y : Fin m → Fin n → E)
     (y : Fin n → Af F ⊗[F] E) (hy : y ∈ spanR (F := F) (Af F) Y Set.univ) :
     (fun i => phiV v (y i)) ∈
@@ -152,6 +217,9 @@ theorem phiV_span (v : HeightOneSpectrum (𝓞 F)) {m : ℕ} (Y : Fin m → Fin 
       funext i; simp
     rw [h1]; exact Submodule.smul_mem _ _ hw
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (phiV v) (HA.mat (R := Af F) (σ := σ) (J := J) g : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) x i).symm`.
+-/
 theorem compV_mulVec (v : HeightOneSpectrum (𝓞 F)) (g : HA (Af F) σ J) (x : Fin n → Af F ⊗[F] E) :
     Matrix.mulVec ((compV v (incAf σ J g) : GL (Fin n) (Fv F v ⊗[F] E)) :
       Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (fun i => phiV v (x i)) =
@@ -160,6 +228,9 @@ theorem compV_mulVec (v : HeightOneSpectrum (𝓞 F)) (g : HA (Af F) σ J) (x : 
   exact (RingHom.map_mulVec (phiV v)
     (HA.mat (R := Af F) (σ := σ) (J := J) g : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) x i).symm
 
+/- English proof (translation)
+Apply the tactic sequence `simp only [Kf, Subgroup.mem_iInf, Subgroup.mem_comap, MonoidHom.coe_comp, Function.comp_apply] <;>`. Conclude with `Iff.rfl`.
+-/
 theorem mem_Kf (Λ : Set (Fin n → E)) (g : HA (Af F) σ J) :
     g ∈ Kf σ J Λ ↔ ∀ v, ∀ x, x ∈ latLoc (E := E) v Λ ↔
       Matrix.mulVec ((compV v (incAf σ J g) : GL (Fin n) (Fv F v ⊗[F] E)) :

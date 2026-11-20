@@ -4,6 +4,9 @@ open UpperHalfPlane Set
 
 namespace UpperTheory.V.Af.Rs
 
+/- English proof (translation)
+The claim follows from `|a ^ (-t) - b ^ (-t)| ≤ 128 * (a - b) * m ^ (-3 : ℝ) := by have hm0 : 0 < m := by linarith have hb0 : 0 < b := by linarith have ha0 : 0 < a := by linarith set A := a ^ t with hA set B := b ^ t with hB have hApos : 0 < A := Real.rpow_pos_of_pos ha0 t have hBpos : 0 < B := Real.rpo …`.
+-/
 private lemma kd_pow {a b t m : ℝ} (hm : 1 ≤ m) (hb : m / 2 ≤ b) (hab : b ≤ a) (ht : 2 ≤ t) (ht' : t ≤ 4) :
     |a ^ (-t) - b ^ (-t)| ≤ 128 * (a - b) * m ^ (-3 : ℝ) := by
   have hm0 : 0 < m := by linarith
@@ -72,10 +75,18 @@ private lemma kd_pow {a b t m : ℝ} (hm : 1 ≤ m) (hb : m / 2 ≤ b) (hab : b 
     _ = 128 * (a - b) * (m ^ 3)⁻¹ * (m ^ 3 / 32) := h32.symm
     _ ≤ 128 * (a - b) * (m ^ 3)⁻¹ * (b * B) := mul_le_mul_of_nonneg_left hbB hc
 
+/- English proof (translation)
+Use `norm_le_pi_norm x i` as an intermediate fact. Rewrite `this` using `[Int.norm_eq_abs]`. Then use the resulting hypothesis.
+-/
 private lemma kd_abs (x : Fin 2 → ℤ) (i : Fin 2) : |(x i : ℝ)| ≤ ‖x‖ := by
   have := norm_le_pi_norm x i
   rwa [Int.norm_eq_abs] at this
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (funext h)`. Establish `h1 : (1 : ℝ) ≤ |((x i : ℤ) : ℝ)|`.
+
+Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs hi` after adjusting the coercions. Conclude with `h1.trans (kd_abs x i)`.
+-/
 private lemma kd_one {x : Fin 2 → ℤ} (hx : x ≠ 0) : 1 ≤ ‖x‖ := by
   obtain ⟨i, hi⟩ : ∃ i, x i ≠ 0 := by
     by_contra h
@@ -86,6 +97,11 @@ private lemma kd_one {x : Fin 2 → ℤ} (hx : x ≠ 0) : 1 ≤ ‖x‖ := by
     exact_mod_cast Int.one_le_abs hi
   exact h1.trans (kd_abs x i)
 
+/- English proof (translation)
+Establish `h3` using `ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz`. Establish `hy` using `z.im_pos`. Take `⟨h1, h2⟩` from `hz`. Rewrite `h1` using `[Complex.normSq_apply]`. Simplify using `only [UpperHalfPlane.coe_re, UpperHalfPlane.coe_im] at h1 h2`.
+
+Rewrite `h2` using `[abs_le]`. Use `⟨by nlinarith, h2.1, h2.2, by nlinarith⟩` and prove the remaining obligations.
+-/
 private lemma kd_fd {z : ℍ} (hz : z ∈ ModularGroup.fd) :
     1 ≤ z.re ^ 2 + z.im ^ 2 ∧ -(1 / 2) ≤ z.re ∧ z.re ≤ 1 / 2 ∧ 1 / 2 ≤ z.im := by
   have h3 := ModularGroup.three_le_four_mul_im_sq_of_mem_fd hz
@@ -96,6 +112,25 @@ private lemma kd_fd {z : ℍ} (hz : z ∈ ModularGroup.fd) :
   rw [abs_le] at h2
   refine ⟨by nlinarith, h2.1, h2.2, by nlinarith⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `kd_fd hz`. Use `set c : ℝ := (x 0 : ℝ)`. Use `set d : ℝ := (x 1 : ℝ)`. Establish `hsq : ‖(x 0 : ℂ) * z + (x 1 : ℂ)‖ ^ 2 = (c * z.re + d) ^ 2 + (c * z.im) ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`.
+
+Simplify using `[c, d]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmax : ‖x‖ ≤ max |c| |d|`. Rewrite using `[pi_norm_le_iff_of_nonneg (le_max_of_le_left (abs_nonneg _))]`. Introduce `i`.
+
+Rewrite using `[Int.norm_eq_abs]`. Use `fin_cases i`. Conclude with `le_max_left _ _`. Conclude with `le_max_right _ _`. Establish `hN : ‖x‖ ^ 2 ≤ c ^ 2 + d ^ 2`.
+
+Establish `hN0` using `norm_nonneg x`. Break down `le_max_iff.mp hmax with h | h` into its components or cases. Establish `: ‖x‖ ^ 2 ≤ |c| ^ 2` using `pow_le_pow_left₀ hN0 h 2`. Rewrite `this` using `[sq_abs]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: ‖x‖ ^ 2 ≤ |d| ^ 2` using `pow_le_pow_left₀ hN0 h 2`. Rewrite `this` using `[sq_abs]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hcd : |2 * c * d * z.re| ≤ |c * d|`. Rewrite using `[show 2 * c * d * z.re = (c * d) * (2 * z.re) by ring, abs_mul]`.
+
+Apply the tactic sequence `have : |2 * z.re| ≤ 1 := by rw [abs_le]; constructor <;> linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hcd2 : 2 * |c * d| ≤ c ^ 2 + d ^ 2`. Rewrite using `[abs_mul]`. Use `sq_nonneg (|c| - |d|)` as an intermediate fact.
+
+Use polynomial arithmetic with `[sq_abs c, sq_abs d]`. Establish `hlow : (‖x‖ / 2) ^ 2 ≤ ‖(x 0 : ℂ) * z + (x 1 : ℂ)‖ ^ 2`. Rewrite using `[hsq]`. Establish `e : (c * z.re + d) ^ 2 + (c * z.im) ^ 2 = c ^ 2 * (z.re ^ 2 + z.im ^ 2) + 2 * c * d * z.re + d ^ 2` using `by ring`. Rewrite using `[e]`.
+
+Use `neg_abs_le (2 * c * d * z.re)` as an intermediate fact. Establish `hc2 : c ^ 2 ≤ c ^ 2 * (z.re ^ 2 + z.im ^ 2)`. Use polynomial arithmetic with `[sq_nonneg c]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hw0` using `norm_nonneg ((x 0 : ℂ) * z + (x 1 : ℂ))`.
+
+Use polynomial arithmetic with `[norm_nonneg x]`.
+-/
 private lemma kd_low (x : Fin 2 → ℤ) {z : ℍ} (hz : z ∈ ModularGroup.fd) :
     ‖x‖ / 2 ≤ ‖(x 0 : ℂ) * z + (x 1 : ℂ)‖ := by
   obtain ⟨h1, h2, h3, h4⟩ := kd_fd hz
@@ -141,6 +176,13 @@ private lemma kd_low (x : Fin 2 → ℤ) {z : ℍ} (hz : z ∈ ModularGroup.fd) 
   have hw0 := norm_nonneg ((x 0 : ℂ) * z + (x 1 : ℂ))
   nlinarith [norm_nonneg x]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `kd_fd hz`. Establish `hz' : ‖(z : ℂ)‖ ≤ 1 / 2 + z.im`. Use `Complex.norm_le_abs_re_add_abs_im (z : ℂ)` as an intermediate fact. Simplify using `only [UpperHalfPlane.coe_re, UpperHalfPlane.coe_im] at this`. Rewrite `this` using `[abs_of_pos z.im_pos]`.
+
+Establish `: |z.re| ≤ 1 / 2` using `abs_le.mpr ⟨h2, h3⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0` using `norm_nonneg x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.norm_intCast, Complex.norm_intCast]`.
+
+Establish `a0` using `kd_abs x 0`. Establish `a1` using `kd_abs x 1`. Use `norm_nonneg (z : ℂ)` as an intermediate fact. Use polynomial arithmetic with `[abs_nonneg ((x 0 : ℤ) : ℝ)]`. Use `_ ≤ 4 * ‖x‖ * z.im := by nlinarith`.
+-/
 private lemma kd_up (x : Fin 2 → ℤ) {z : ℍ} (hz : z ∈ ModularGroup.fd) :
     ‖(x 0 : ℂ) * z + (x 1 : ℂ)‖ ≤ 4 * ‖x‖ * z.im := by
   obtain ⟨h1, h2, h3, h4⟩ := kd_fd hz
@@ -161,6 +203,9 @@ private lemma kd_up (x : Fin 2 → ℤ) {z : ℍ} (hz : z ∈ ModularGroup.fd) :
         nlinarith [abs_nonneg ((x 0 : ℤ) : ℝ)]
     _ ≤ 4 * ‖x‖ * z.im := by nlinarith
 
+/- English proof (translation)
+Unfold `ker`. Establish `hy` using `z.im_pos`. Rewrite using `[Complex.normSq_eq_norm_sq, Real.div_rpow hy.le (by positivity), Real.rpow_neg (norm_nonneg _), Real.rpow_mul (norm_nonneg _), div_eq_mul_inv]`. Evaluate the numerical expressions.
+-/
 private lemma kd_ker (s : ℝ) (x : Fin 2 → ℤ) (z : ℍ) :
     ker s x z = z.im ^ s * ‖(x 0 : ℂ) * z + (x 1 : ℂ)‖ ^ (-(2 * s)) := by
   unfold ker
@@ -172,6 +217,29 @@ private lemma kd_ker (s : ℝ) (x : Fin 2 → ℤ) (z : ℍ) :
 end UpperTheory.V.Af.Rs
 
 open UpperTheory.V.Af.Rs in
+/- English proof (translation)
+Use `⟨1024, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `s hs x x' hx hx' z hz`. Take `⟨hs1, hs2⟩` from `hs`. Take `⟨-, -, -, hy2⟩` from `kd_fd hz`. Establish `hy : 0 < z.im` using `z.im_pos`.
+
+Rewrite using `[kd_ker, kd_ker]`. Use `set w : ℂ := (x 0 : ℂ) * z + (x 1 : ℂ) with hw`. Use `set w' : ℂ := (x' 0 : ℂ) * z + (x' 1 : ℂ) with hw'`. Use `set S : ℝ := ‖x‖ ^ (-3 : ℝ) + ‖x'‖ ^ (-3 : ℝ) with hS`. Establish `hS1 : 0 ≤ ‖x‖ ^ (-3 : ℝ)` using `Real.rpow_nonneg (norm_nonneg _) _`.
+
+Establish `hS2 : 0 ≤ ‖x'‖ ^ (-3 : ℝ)` using `Real.rpow_nonneg (norm_nonneg _) _`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `hdiff : ‖w‖ - ‖w'‖ ≤ 4 * ‖x - x'‖ * z.im ∧ ‖w'‖ - ‖w‖ ≤ 4 * ‖x - x'‖ * z.im`. Establish `e : w - w' = (((x - x') 0 : ℤ) : ℂ) * z + (((x - x') 1 : ℤ) : ℂ)`. Simplify using `only [hw, hw', Pi.sub_apply, Int.cast_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hu` using `kd_up (x - x') hz`. Rewrite `hu` using `[← e]`. Establish `h1` using `abs_norm_sub_norm_le w w'`. Rewrite `h1` using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2]`. Establish `hD : |‖w‖ ^ (-(2 * s)) - ‖w'‖ ^ (-(2 * s))| ≤ 128 * (4 * ‖x - x'‖ * z.im) * S`. Break down `le_total ‖w'‖ ‖w‖ with h | h` into its components or cases. Use `kd_pow (kd_one hx') (kd_low x' hz) h (by linarith : (2 : ℝ) ≤ 2 * s) (by linarith)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `mul_le_mul_of_nonneg_right _ hS2` to reduce the goal to its premises. Combine the linear relations using `[hdiff.1]`. Use `_ ≤ _ := by`. Apply `mul_le_mul_of_nonneg_left (by linarith)` to reduce the goal to its premises. Use `norm_nonneg (x - x')` as an intermediate fact.
+
+Check the signs of the components of the expression. Rewrite using `[abs_sub_comm]`. Use `kd_pow (kd_one hx) (kd_low x hz) h (by linarith : (2 : ℝ) ≤ 2 * s) (by linarith)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hS1` to reduce the goal to its premises.
+
+Combine the linear relations using `[hdiff.2]`. Use `_ ≤ _ := by`. Apply `mul_le_mul_of_nonneg_left (by linarith)` to reduce the goal to its premises. Use `norm_nonneg (x - x')` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hys : z.im ^ s ≤ 2 * z.im ^ 2`. Break down `le_total z.im 1 with h | h` into its components or cases. Establish `h1 : z.im ^ s ≤ z.im ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_ge hy h hs1`. Rewrite `h1` using `[Real.rpow_one]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h1 : z.im ^ s ≤ z.im ^ (2 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le h hs2`. Rewrite `h1` using `[Real.rpow_two]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hyspos : 0 ≤ z.im ^ s` using `Real.rpow_nonneg hy.le _`. Rewrite using `[← mul_sub, abs_mul, abs_of_nonneg hyspos]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Af.Rs.kerDiff :
     UpperTheory.V.Af.Rs.KerDiff := by
   refine ⟨1024, by norm_num, ?_⟩

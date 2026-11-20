@@ -17,6 +17,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.SV
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `id hi`. Establish `hp' : ∀ s, p * r s = r' s * p` using `fun s => by rw [hp, inv_mul_cancel_right]`. Establish `ew : ∀ (w : HeightOneSpectrum (𝓞 F)) (hw : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w), wdOf h hw ι r' = wdOf h hw ι r` using `fun w hw A h => ((isWDOf_wdOf (h := h) hw ι (Units.continuous_val.comp H.cont)).of_conj hw p fun g => hp' _).wdOf_eq hw`. Establish `hc : ∀ (A : ValuationSubring Ω) (g : ↥(Dec (F` using `F) A)), r'.comp (Dec (F := F) A).subtype g = p * r.comp (Dec (F := F) A).subtype g * p⁻¹ := fun A g => hp g`. Use `⟨continuous_of_iso H.cont hi, hs, H.plain, fun w σ hσ hP => ⟨fun A h rc hrc => ⟨fun hl => ?_, fun O _ _ _ Bw hj g => ?_⟩, fun A h O _ _ _ Bw hj => ?_⟩, fun w hw B hB => (H.frob w hw B hB).of_iso hi, fun w hw A h m => ew w hw A h ▸ H.ratio w hw A h m, H.weights, H.weights_sym, fun …` and prove the remaining obligations.
+
+Conclude with `(((H.loc w σ hσ hP).1 A h rc hrc).1 hl).of_conj hl p fun g => hp' _`. Take `⟨a1, a2⟩` from `((H.loc w σ hσ hP).1 A h rc hrc).2 O Bw hj g`. Conclude with `⟨ExLib.isPstAt_conj (Loc.PP l) Bw p (hc A) a1, ExLib.wdAt_conj (Loc.PP l) ι Bw h hj p (hc A) ▸ a2⟩`. Take `⟨k1, -, -, k4⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant l (Loc.PP l) F Ω O _ Bw n _ _ p (hc A)`. Take `⟨a1, a2⟩` from `(H.loc w σ hσ hP).2 A h O Bw hj`.
+
+Conclude with `⟨k1 a1, fun τ LL' τ' hτ => k4 τ _ (a2 τ LL' τ' hτ)⟩`. Take `⟨-, k2, -, -⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant l (Loc.PP l) F Ω O _ Bw n _ _ p (hc A)`. Conclude with `k2 (H.crys w A h O Bw hj σ hσ hS)`.
+-/
 theorem galRS_iso {F Ω : Type} [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {π : TR.CuspSub F n}
     {r r' : G F Ω →* GL (Fin n) (Qbar l)} {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRS π ι r wt HT)

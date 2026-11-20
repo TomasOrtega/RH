@@ -22,8 +22,14 @@ def wn (n : ℕ) : Wc.Wm l r.k n →+* (base l).Acr n :=
     obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 ha
     rw [RingHom.comp_apply, map_mul, map_mul, map_pow, map_natCast, map_pow, map_natCast, (base l).pow_l_acr, mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wn_mk (n : ℕ) (a : WittVector l r.k) : wn r n (Ideal.Quotient.mk _ a) = (base l).cris n (r.w a) := rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, Ideal.mem_comap, wn_mk, map_natCast, map_natCast]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`.
+-/
 theorem im_le (n : ℕ) : Wc.Im l r.k n ≤ (B.JJ true (base l) n).comap (wn r n) := by
   rw [Ideal.map_le_iff_le_comap, Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, Ideal.mem_comap,
     wn_mk, map_natCast, map_natCast]
@@ -36,9 +42,17 @@ abbrev Lm (M : Model l K) (n : ℕ) : (B.bs l true n).Fun := (B.schFn M.p).cr (B
 
 def phiP (l : ℕ) [Fact l.Prime] (n N : ℕ) : (base l).Acr n →+* (base l).Acr n := (base l).phi n ^ N
 
+/- English proof (translation)
+Rewrite using `[phiP, pow_succ']`. Both sides reduce to the same expression.
+-/
 theorem phiP_succ (n N : ℕ) (x : (base l).Acr n) : phiP l n (N + 1) x = (base l).phi n (phiP l n N x) := by
   rw [phiP, pow_succ']; rfl
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => exact ⟨by rw [phiP, pow_zero]; exact (Ideal.map_id _).le, fun _ _ => rfl⟩`. Consider the case `succ N ih`. Establish `e : phiP l n (N + 1) = ((base l).phi n).comp (phiP l n N)` using `RingHom.ext (phiP_succ n N)`. Rewrite using `[e]`.
+
+Conclude with `IsDPMorphism.comp _ ((base l).dpP_phi n) ih`.
+-/
 theorem dp_phiP (n N : ℕ) : IsDPMorphism (B.DD true (base l) n) (B.DD true (base l) n) (phiP l n N) := by
   induction N with
   | zero => exact ⟨by rw [phiP, pow_zero]; exact (Ideal.map_id _).le, fun _ _ => rfl⟩
@@ -52,9 +66,17 @@ def phiQ (l : ℕ) [Fact l.Prime] (n N : ℕ) : (B.bs l true n).R ⧸ (B.bs l tr
 
 def TeichmullerCongruence (r : Res l K) (N : ℕ) : Prop := ∀ n (x : OK l K), phiQ l n N (B.κb (okToOC l K) true n x) = κm r n x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiQ_mk (n N : ℕ) (x : (B.bs l true n).R) :
     phiQ l n N (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (phiP l n N x) := rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Proceed by induction on `N generalizing x with`. Consider the case `zero => rw [phiQ_mk, pow_zero, pow_one]`. Both sides reduce to the same expression. Consider the case `succ N ih`.
+
+Rewrite using `[phiQ_mk, phiP_succ, pow_succ, pow_mul]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk ((base l).PFil n) ((base l).phi n (phiP l n N x)) = _`. Rewrite using `[B.phi_mk, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem phiQ_pow (n N : ℕ) (q : (B.bs l true n).R ⧸ (B.bs l true n).I) : phiQ l n N q = q ^ l ^ N := by
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective q
   induction N generalizing x with
@@ -68,6 +90,11 @@ def frbN {B₀ : Type} [CommRing B₀] (h : (l : B₀) = 0) : ℕ → (B₀ →+
   | 0 => RingHom.id _
   | N + 1 => (Wc.frb h).comp (frbN h N)
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rw [pow_zero, pow_one]`. Both sides reduce to the same expression. Consider the case `succ N ih`. Express the relevant statement in the definitionally equal form `(frbN h N x) ^ l = _`.
+
+Rewrite using `[ih, pow_succ, pow_mul]`.
+-/
 theorem frbN_apply {B₀ : Type} [CommRing B₀] (h : (l : B₀) = 0) (N : ℕ) (x : B₀) : frbN h N x = x ^ l ^ N := by
   induction N with
   | zero => rw [pow_zero, pow_one]; rfl
@@ -75,6 +102,9 @@ theorem frbN_apply {B₀ : Type} [CommRing B₀] (h : (l : B₀) = 0) (N : ℕ) 
     change (frbN h N x) ^ l = _
     rw [ih, pow_succ, pow_mul]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast ψ, ← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem.2 (show ((l : (base l).Acr n)) ∈ (B.bs l true n).I from Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)), map_zero]`.
+-/
 theorem l_zero {B₀ : Type} [CommRing B₀] {n : ℕ} (ψ : (B.bs l true n).R ⧸ (B.bs l true n).I →+* B₀) : (l : B₀) = 0 := by
   rw [← map_natCast ψ, ← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem.2
     (show ((l : (base l).Acr n)) ∈ (B.bs l true n).I from Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)), map_zero]
@@ -130,9 +160,15 @@ variable (l) in
 
 def phiA (N : ℕ) : Acris l →+* Acris l := ACris.phi ℂ_[l] l ^ N
 
+/- English proof (translation)
+Rewrite using `[phiA, pow_succ']`. Both sides reduce to the same expression.
+-/
 theorem phiA_succ (N : ℕ) (a : Acris l) : phiA l (N + 1) a = ACris.phi ℂ_[l] l (phiA l N a) := by
   rw [phiA, pow_succ']; rfl
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rfl`. Consider the case `succ N ih => rw [phiP_succ, ih, phiA_succ, (base l).phi_cris]`.
+-/
 theorem phiP_cris (n N : ℕ) (a : Acris l) : phiP l n N ((base l).cris n a) = (base l).cris n (phiA l N a) := by
   induction N with
   | zero => rfl

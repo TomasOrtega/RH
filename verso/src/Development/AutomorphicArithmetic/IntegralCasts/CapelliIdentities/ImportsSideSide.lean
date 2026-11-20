@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k _ _ N P Q B C hP hQ hB i j`. Establish `hPB : ∀ a b : Fin N, ValuativeRel.valuation k ((P * B) a b) ≤ C`. Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+
+Introduce `m _`. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+
+Introduce `l _`. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.Ylb4.main :
     ∀ {k : Type} [inst : Field k] [inst_1 : ValuativeRel k] {N : ℕ} {P Q B : Matrix (Fin N) (Fin N) k}
       {C : ValuativeRel.ValueGroupWithZero k},

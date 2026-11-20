@@ -51,6 +51,15 @@ variable {F W : Type*} [AddCommGroup F] [Module ℂ F] [AddCommGroup W] [Module 
 
 variable {L : Type} [Field L] [NumberField L] {V : Type} [AddCommGroup V] [Module (𝓞 L) V]
 
+/- English proof (translation)
+Establish `tm : ∀ (σ : L →+* ℂ) (z : ComplexAt σ) (x : V), (z ⊗ₜ[𝓞 L] x : Fibre σ V) = ((ofComplex σ).symm z : ℂ) • ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x)` using `fun σ z x => by`. Rewrite using `[TensorProduct.smul_tmul', complex_smul_def]`. Simplify using the standard rewrite rules. Establish `cm : ∀ (σ : L →+* ℂ) (x : V), conjMap σ V ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) = (1 : ComplexAt (conjugate σ)) ⊗ₜ[𝓞 L] x` using `fun σ x => by`. Rewrite using `[conjMap_tmul, map_one]`.
+
+Use `⟨⟨fun σ => coreOfForm (e σ) (h σ) (hh σ) (hp σ), fun σ x y => ?_⟩, fun σ x y => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h _ (e _ _) (e _ _) = starRingEnd ℂ (h σ (e σ x) (e σ y))`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`.
+
+Consider the case `tmul z a`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc' hd => simp only [map_add, ← hc', ← hd]`. Consider the case `tmul w b`.
+
+Rewrite using `[tm σ z a, tm σ w b, conjMap_smul, conjMap_smul, cm, cm]`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, hc, smul_eq_mul, map_mul, Complex.conj_conj, RingHom.id_apply]`.
+-/
 theorem exists_metric [Module.Finite (𝓞 L) V] [Module.Projective (𝓞 L) V]
     (W : (L →+* ℂ) → Type) [∀ σ, AddCommGroup (W σ)] [∀ σ, Module ℂ (W σ)]
     (e : ∀ σ, Fibre σ V ≃ₗ[ℂ] W σ) (h : ∀ σ, W σ →ₗ⋆[ℂ] W σ →ₗ[ℂ] ℂ)
@@ -83,6 +92,17 @@ end Linear
 
 section Geo
 
+/- English proof (translation)
+Use `letI i₀ : Algebra (𝓞 L) ℂ := (σ.comp (algebraMap (𝓞 L) L)).toAlgebra`. Use `letI i₂ : Module (𝓞 L) W := Module.compHom W (algebraMap (𝓞 L) ℂ)`. Use `haveI i₃ : IsScalarTower (𝓞 L) ℂ W := ⟨fun a z w => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`.
+
+Set `j' : V →ₗ[𝓞 L] W` to `{ toFun := j, map_add' := map_add j, map_smul' := fun a v => j.map_smulₛₗ a v }`. Establish `hb : IsBaseChange ℂ j'` using `GlobalTheory.T.lie_model_isBaseChange S G (𝓞 L) ℂ x V W M Mσ j' hj`. Set `l : ComplexAt σ ≃ₗ[𝓞 L] ℂ` to `{ toFun := (ofComplex σ).symm, invFun := ofComplex σ, map_add' := map_add _, map_smul' := fun a z => rfl, left_inv := (ofComplex σ).left_inv, right_inv := (ofComplex σ).right_inv }`. Set `e₀ : Fibre σ V ≃ₗ[𝓞 L] ℂ ⊗[𝓞 L] V` to `TensorProduct.congr l (LinearEquiv.refl _ V)`. Set `E : Fibre σ V ≃+ W` to `e₀.toAddEquiv.trans hb.equiv.toAddEquiv`.
+
+Establish `he : ∀ z a, E (z ⊗ₜ a) = ((ofComplex σ).symm z) • j a` using `fun z a => by`. Express the relevant statement in the definitionally equal form `hb.equiv (e₀ (z ⊗ₜ a)) = _`. Express the relevant statement in the definitionally equal form `hb.equiv (l z ⊗ₜ a) = _`. Rewrite using `[hb.equiv_tmul]`. Both sides reduce to the same expression.
+
+Use `⟨{ E with map_smul' := fun c t => ?_ }, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `E (c • t) = c • E t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a`.
+
+Rewrite using `[TensorProduct.smul_tmul', he, he, complex_smul_def, map_mul, mul_smul]`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb' => rw [smul_add, map_add, map_add, ha, hb', smul_add]`. Conclude with `(he 1 a).trans (by simp)`.
+-/
 theorem exists_fibre_equiv {S : Scheme.{0}} (G : Over S) [GrpObj G] [Smooth G.hom] {L : Type} [Field L] [NumberField L]
     (x : Sp (𝓞 L) ⟶ S) {V : Type} [AddCommGroup V] [Module (𝓞 L) V] (M : LieModel G x V) (σ : L →+* ℂ)
     {W : Type} [AddCommGroup W] [Module ℂ W] (Mσ : LieModel G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ x) W)
@@ -117,14 +137,23 @@ theorem exists_fibre_equiv {S : Scheme.{0}} (G : Over S) [GrpObj G] [Smooth G.ho
     | add a b ha hb' => rw [smul_add, map_add, map_add, ha, hb', smul_add]
   · exact (he 1 a).trans (by simp)
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+-/
 theorem dualMap_comp_alt {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
+/- English proof (translation)
+The claim follows from `(Category.comp_id _).symm.trans h`.
+-/
 theorem lifts_left {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRing R] [CommRing R'] {x : Sp R ⟶ S}
     {V : Type} [AddCommGroup V] [Module R V] (M : LieModel G x V) {c : R →+* R'} {x' : Sp R' ⟶ S} {a : V}
     {v : epsAt x' ⟶ G} (h : M.Lifts c (𝟙 G.left) a v) : v.left = spMap (dualMap c) ≫ (M.pt a).left :=
@@ -132,6 +161,11 @@ theorem lifts_left {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommR
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨hP, hA, -⟩` from `hK`. Take `⟨t', ⟨m₁⟩⟩` from `exists_sab (spMap σ) tK`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₁`. Establish `e : spMap σ ≫ spMap (algebraMap (𝓞 L) L) = spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _`. Rewrite using `[Category.comp_id, spectrumMap_comp]`.
+
+Use `⟨t', e ▸ n, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsProper) m₁.cart.1 hP`. Take `⟨w, gw, -⟩` from `m₁.lin`. Conclude with `relAmple_pull m₁.cart.1 tK.PP.isLB t'.PP.isLB ((isGen_iff w).1 gw) ⊤ (isAffineOpen_top _) (fun _ => trivial) hA`.
+-/
 theorem polarised_at {L : Type} [Field L] [NumberField L] (t : SAB H (Sp (𝓞 L))) (tK : SAB H (Sp L))
     (m : SABMap tK t (spMap (algebraMap (𝓞 L) L))) (hK : IsPrincipal tK) (σ : L →+* ℂ) :
     ∃ (t' : SAB H (Sp ℂ)) (_ : SABMap t' t (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _)),
@@ -147,6 +181,9 @@ theorem polarised_at {L : Type} [Field L] [NumberField L] (t : SAB H (Sp (𝓞 L
     exact relAmple_pull m₁.cart.1 tK.PP.isLB t'.PP.isLB ((isGen_iff w).1 gw) ⊤ (isAffineOpen_top _)
       (fun _ => trivial) hA
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Conclude with `GlobalTheory.T.hodge_inner_product_conjugate E H X t z v w v' w' c hv hw h`.
+-/
 theorem hodgeInnerProduct_conj_of_eq {X : Scheme.{0}} (t : SAB H X) {z z' : Sp ℂ ⟶ X}
     (hz : z' = spMap (starRingEnd ℂ) ≫ z) {v w : epsAt z ⟶ t.G} {v' w' : epsAt z' ⟶ t.G} {c : ℂ}
     (hv : v'.left = spMap (dualMap (starRingEnd ℂ)) ≫ v.left)
@@ -157,6 +194,19 @@ theorem hodgeInnerProduct_conj_of_eq {X : Scheme.{0}} (t : SAB H X) {z z' : Sp �
 
 end Geo
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ t tK m hK`. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Take `⟨V, i₁, i₂, ⟨M⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists _ t.G (𝓞 L) (𝟙 _)`. Take `⟨hf, hpj⟩` from `GlobalTheory.T.lie_model_finite_projective _ t.G (𝓞 L) (𝟙 _) V M`. Establish `hW` using `fun σ : L →+* ℂ => GlobalTheory.CompanionTheory.Ar.lieModel_exists _ t.G ℂ (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _)`.
+
+Use `choose W iW₁ iW₂ hM using hW`. Set `Mσ : ∀ σ : L →+* ℂ, LieModel t.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _) (W σ)` to `fun σ => (hM σ).some`. Use `choose j hj using fun σ : L →+* ℂ => (GlobalTheory.CompanionTheory.Ar.LieBaseChange.existsUnique_semilinear_lifts _ t.G (𝓞 L) ℂ (σ.comp (algebraMap (𝓞 L) L)) (𝟙 _) V (W σ) M (Mσ σ)).exists`. Use `choose e he using fun σ : L →+* ℂ => exists_fibre_equiv t.G (𝟙 _) M σ (Mσ σ) (j σ) (hj σ)`. Use `choose h hI hh hp using fun σ : L →+* ℂ => GlobalTheory.CompanionTheory.Ar.exists_hodgeInnerProduct_form E H _ t _ (W σ) (Mσ σ) (polarised_at t tK m hK σ)`.
+
+Establish `hcs : ∀ σ : L →+* ℂ, (conjugate σ).comp (algebraMap (𝓞 L) L) = (starRingEnd ℂ).comp (σ.comp (algebraMap (𝓞 L) L))` using `fun σ => RingHom.ext fun a => rfl`. Establish `hl : ∀ (σ : L →+* ℂ) (x : V), ((Mσ (conjugate σ)).pt (j _ x)).left = spMap (dualMap (starRingEnd ℂ)) ≫ ((Mσ σ).pt (j σ x)).left` using `fun σ x => by`. Establish `e₁ : spMap (dualMap ((conjugate σ).comp (algebraMap (𝓞 L) L))) = spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (σ.comp (algebraMap (𝓞 L) L)))`. Rewrite using `[hcs, dualMap_comp_alt, spectrumMap_comp]`. Conclude with `(lifts_left M (hj _ x)).trans ((congrArg (· ≫ (M.pt x).left) e₁).trans ((Category.assoc _ _ _).trans (congrArg (spMap (dualMap (starRingEnd ℂ)) ≫ ·) (lifts_left M (hj σ x)).symm)))`.
+
+Establish `hz : ∀ σ : L →+* ℂ, spMap ((conjugate σ).comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _ = spMap (starRingEnd ℂ) ≫ spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _` using `fun σ => by`. Rewrite using `[Category.comp_id, Category.comp_id, hcs, spectrumMap_comp]`. Take `⟨mt, hmt⟩` from `exists_metric W e h hh hp fun σ x y => by`. Rewrite using `[he, he, he, he]`. Conclude with `((hI _ _ _ _).1 (hodgeInnerProduct_conj_of_eq t (hz σ) (hl σ x) (hl σ y) ((hI σ _ _ _).2 rfl))).symm`.
+
+Use `⟨{ carrier := V, metric := mt }, M, fun σ x x' v v' hv hv' => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (a : V) (u : epsAt (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 _) ⟶ t.G), M.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 t.G.left) a u → u = (Mσ σ).pt (j σ a)` using `fun a u ha => by`. Conclude with `Over.OverMorphism.ext ((lifts_left M ha).trans (lifts_left M (hj σ a)).symm)`. Take `rfl` from `key x v hv`. Take `rfl` from `key x' v' hv'`.
+
+Use `hmt σ x x'` as an intermediate fact. Rewrite `this` using `[he, he]`. Rewrite using `[this]`. Conclude with `(hI σ _ _ _).2 rfl`.
+-/
 theorem exists_hermitianBundle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (t : SAB H (Sp (𝓞 L))) (tK : SAB H (Sp L)) (_ : SABMap tK t (spMap (algebraMap (𝓞 L) L))), IsPrincipal tK → ∃ (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel t.G (𝟙 _) B.carrier), IsFibre (HodgeIP t.G t.PP.L) (𝟙 _) B MB := by
   intro E _ _ _ H L _ _ t tK m hK
   haveI : Smooth t.G.hom := t.semi.smooth

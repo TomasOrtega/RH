@@ -14,12 +14,18 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+Unfold `posIdele`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `: (⟨(1 : ℝ) ^ w.mult, pow_pos one_pos _⟩ : {r : ℝ // 0 < r}) = 1` using `Subtype.ext (one_pow _)`. Rewrite using `[this, map_one]`.
+-/
 theorem A_posIdele_one : posIdele (K := E) 1 one_pos = 1 := by
   unfold posIdele
   refine Finset.prod_eq_one fun w _ => ?_
   have : (⟨(1 : ℝ) ^ w.mult, pow_pos one_pos _⟩ : {r : ℝ // 0 < r}) = 1 := Subtype.ext (one_pow _)
   rw [this, map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[diagonal_mul, mul_diagonal]`. Distinguish the cases in `hm : M i j = 0`. Simplify using `[hm]`. Rewrite using `[h i j hm, mul_comm]`.
+-/
 theorem A_diag_comm {n : ℕ} {R : Type*} [CommRing R] (d : Fin n → R) (M : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, M i j ≠ 0 → d i = d j) : diagonal d * M = M * diagonal d := by
   ext i j
@@ -28,6 +34,11 @@ theorem A_diag_comm {n : ℕ} {R : Type*} [CommRing R] (d : Fin n → R) (M : Ma
   · simp [hm]
   · rw [h i j hm, mul_comm]
 
+/- English proof (translation)
+Unfold `An.tor`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, posIdele_mul]`.
+
+Use `congr 1`. Simplify using `[Real.exp_add]`.
+-/
 theorem A_tor_mul {n : ℕ} (x y : Fin n → ℝ) : An.tor E x * An.tor E y = An.tor E (x + y) := by
   unfold An.tor
   rw [← map_mul]
@@ -37,6 +48,11 @@ theorem A_tor_mul {n : ℕ} (x y : Fin n → ℝ) : An.tor E x * An.tor E y = An
   congr 1
   simp [Real.exp_add]
 
+/- English proof (translation)
+Unfold `An.tor`. Establish `e : (fun i : Fin n => posIdele (K` using `E) (Real.exp ((0 : Fin n → ℝ) i)) (Real.exp_pos _)) = 1 := by`. Use function extensionality and compare the values at `i`. Establish `h1 : posIdele (K` using `E) (Real.exp ((0 : Fin n → ℝ) i)) (Real.exp_pos _) = posIdele (K := E) 1 one_pos := by`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, A_posIdele_one]`. Both sides reduce to the same expression. Rewrite using `[e, map_one]`.
+-/
 theorem A_tor_zero {n : ℕ} : An.tor E (0 : Fin n → ℝ) = 1 := by
   unfold An.tor
   have e : (fun i : Fin n => posIdele (K := E) (Real.exp ((0 : Fin n → ℝ) i)) (Real.exp_pos _)) = 1 := by
@@ -47,13 +63,24 @@ theorem A_tor_zero {n : ℕ} : An.tor E (0 : Fin n → ℝ) = 1 := by
     rfl
   rw [e, map_one]
 
+/- English proof (translation)
+The claim follows from `JDict.aT_eq N r t`.
+-/
 theorem A_aT_tor (N r : ℕ) (t : ℝ) : aT E N r t = An.tor E fun i : Fin N => if (i : ℕ) < r then t else 0 :=
   JDict.aT_eq N r t
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem A_coe_tor {n : ℕ} (x : Fin n → ℝ) :
     ((An.tor E x : GL (Fin n) (Ad E)) : Matrix (Fin n) (Fin n) (Ad E)) =
       diagonal fun i => ((posIdele (K := E) (Real.exp (x i)) (Real.exp_pos _) : (Ad E)ˣ) : Ad E) := rfl
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, A_coe_tor]`. Use `A_diag_comm _ _ fun i j hij => ?_` and prove the remaining obligations. Establish `e : (if (i : ℕ) < r then t else 0) = (if (j : ℕ) < r then t else 0)`.
+
+Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[if_pos hi, if_pos ((h i j hij).1 hi)]`. Rewrite using `[if_neg hi, if_neg (fun hj => hi ((h i j hij).2 hj))]`. Conclude with `congrArg (fun x : ℝ => ((posIdele (K := E) (Real.exp x) (Real.exp_pos _) : (Ad E)ˣ) : Ad E)) e`.
+-/
 theorem A_aT_comm {N r : ℕ} (t : ℝ) (g : GA E N)
     (h : ∀ i j, (g : Matrix (Fin N) (Fin N) (Ad E)) i j ≠ 0 → ((i : ℕ) < r ↔ (j : ℕ) < r)) :
     aT E N r t * g = g * aT E N r t := by
@@ -67,6 +94,9 @@ theorem A_aT_comm {N r : ℕ} (t : ℝ) (g : GA E N)
     · rw [if_neg hi, if_neg (fun hj => hi ((h i j hij).2 hj))]
   exact congrArg (fun x : ℝ => ((posIdele (K := E) (Real.exp x) (Real.exp_pos _) : (Ad E)ˣ) : Ad E)) e
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, A_aT_tor, A_aT_tor, A_tor_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem aT_add (N r : ℕ) (s t : ℝ) : aT E N r (s + t) = aT E N r s * aT E N r t := by
   rw [A_aT_tor, A_aT_tor, A_aT_tor, A_tor_mul]
   congr 1
@@ -74,34 +104,65 @@ theorem aT_add (N r : ℕ) (s t : ℝ) : aT E N r (s + t) = aT E N r s * aT E N 
   simp only [Pi.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, ← A_tor_zero (E := E) (n := N)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem aT_zero (N r : ℕ) : aT E N r 0 = 1 := by
   rw [A_aT_tor, ← A_tor_zero (E := E) (n := N)]
   congr 1
   funext i
   simp
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, A_aT_tor, A_tor_mul, A_tor_mul, add_comm]`.
+-/
 theorem aT_comm (N r r' : ℕ) (s t : ℝ) : aT E N r s * aT E N r' t = aT E N r' t * aT E N r s := by
   rw [A_aT_tor, A_aT_tor, A_tor_mul, A_tor_mul, add_comm]
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, ← JDict.tor_const]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[if_pos i.2]`.
+-/
 theorem splitCentre_eq_aT (N : ℕ) (t : ℝ) : splitCentre E N t = aT E N N t := by
   rw [A_aT_tor, ← JDict.tor_const]
   congr 1
   funext i
   rw [if_pos i.2]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.SmGL.stdSum]`.
+-/
 theorem A_stdSum_inl {r s : ℕ} (a : Fin r) : ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) = a := by
   simp [GlobalTheory.SmGL.stdSum]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.SmGL.stdSum]`.
+-/
 theorem A_stdSum_inr {r s : ℕ} (b : Fin s) :
     ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) = r + b := by
   simp [GlobalTheory.SmGL.stdSum]
 
+/- English proof (translation)
+Rewrite using `[CapStable.val_lev, CapStable.blockM, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+-/
 theorem A_lev_apply {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin r) R × GL (Fin s) R) (p q : Fin r ⊕ Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (GlobalTheory.SmGL.stdSum rfl p) (GlobalTheory.SmGL.stdSum rfl q) =
       fromBlocks (m.1 : Matrix (Fin r) (Fin r) R) 0 0 (m.2 : Matrix (Fin s) (Fin s) R) p q := by
   rw [CapStable.val_lev, CapStable.blockM, reindex_apply, submatrix_apply, Equiv.symm_apply_apply,
     Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Rewrite using `[A_lev_apply]`.
+
+Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Simplify using `only [fromBlocks_apply₁₁, A_coe_tor, diagonal_apply, hinj.eq_iff, Sum.inl.injEq]`. Distinguish the cases in `h1 : a = c`. Substitute `h1` using the available equality.
+
+Establish `ha : ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r`. Rewrite using `[A_stdSum_inl]`. Conclude with `a.2`. Rewrite using `[if_pos rfl, if_pos rfl, dif_pos ha]`. Use `congr 3`.
+
+Rewrite using `[if_neg h1, if_neg h1]`. Simplify using `[A_coe_tor, hinj.eq_iff]`. Simplify using `[A_coe_tor, hinj.eq_iff]`. Simplify using `only [fromBlocks_apply₂₂, A_coe_tor, diagonal_apply, hinj.eq_iff, Sum.inr.injEq]`. Distinguish the cases in `h1 : b = d`.
+
+Substitute `h1` using the available equality. Establish `hb : ¬ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < r`. Rewrite using `[A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos rfl, if_pos rfl, dif_neg hb]`.
+
+Use `congr 3`. Use `congrArg y (Fin.ext ?_)` and prove the remaining obligations. Simplify using `only [A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h1]`.
+-/
 theorem A_lev_tor {r s : ℕ} (x : Fin r → ℝ) (y : Fin s → ℝ) :
     lev (Ad E) r s (An.tor E x, An.tor E y) =
       An.tor E fun i : Fin (r + s) => if h : (i : ℕ) < r then x ⟨i, h⟩ else y ⟨i - r, by omega⟩ := by
@@ -134,6 +195,11 @@ theorem A_lev_tor {r s : ℕ} (x : Fin r → ℝ) (y : Fin s → ℝ) :
       omega
     · rw [if_neg h1, if_neg h1]
 
+/- English proof (translation)
+Use `A_aT_comm t _ fun i j hij => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Rewrite `hij` using `[A_lev_apply]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`.
+
+Rewrite using `[A_stdSum_inl, A_stdSum_inl]`. Conclude with `iff_of_true a.2 c.2`. Conclude with `absurd (by simp) hij`. Conclude with `absurd (by simp) hij`. Rewrite using `[A_stdSum_inr, A_stdSum_inr]; exact iff_of_false (by omega) (by omega)`.
+-/
 theorem aT_comm_lev (r s : ℕ) (t : ℝ) (m : GA E r × GA E s) :
     aT E (r + s) r t * lev (Ad E) r s m = lev (Ad E) r s m * aT E (r + s) r t := by
   refine A_aT_comm t _ fun i j hij => ?_
@@ -146,6 +212,9 @@ theorem aT_comm_lev (r s : ℕ) (t : ℝ) (m : GA E r × GA E s) :
   · exact absurd (by simp) hij
   · rw [A_stdSum_inr, A_stdSum_inr]; exact iff_of_false (by omega) (by omega)
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := s), A_lev_tor]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp_all; omega`.
+-/
 theorem lev_aT_left (r s r₁ : ℕ) (h : r₁ ≤ r) (t : ℝ) :
     lev (Ad E) r s (aT E r r₁ t, 1) = aT E (r + s) r₁ t := by
   rw [A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := s), A_lev_tor]
@@ -153,6 +222,9 @@ theorem lev_aT_left (r s r₁ : ℕ) (h : r₁ ≤ r) (t : ℝ) :
   funext i
   split_ifs <;> simp_all; omega
 
+/- English proof (translation)
+Rewrite using `[A_aT_tor, A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := r), A_lev_tor, A_tor_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+-/
 theorem lev_aT_right (r s r₂ : ℕ) (h : r₂ ≤ s) (t : ℝ) :
     lev (Ad E) r s (1, aT E s r₂ t) = aT E (r + s) (r + r₂) t * aT E (r + s) r (-t) := by
   rw [A_aT_tor, A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := r), A_lev_tor, A_tor_mul]
@@ -161,6 +233,11 @@ theorem lev_aT_right (r s r₂ : ℕ) (h : r₂ ≤ s) (t : ℝ) :
   simp only [Pi.add_apply, Pi.zero_apply]
   split_ifs <;> simp_all <;> omega
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_unipGL, coe_diagUnits, unipMatrix, add_mul, mul_add, one_mul, mul_one]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, blockEntry_apply, blockEntry_apply]`.
+
+Use `split_ifs`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem A_unipGL_mul_diag {n r : ℕ} {R : Type*} [CommRing R] (d : Fin n → Rˣ) (X : UPos n r → R) :
     unipGL X * diagUnits n d = diagUnits n d * unipGL (fun p => ((d p.1.1)⁻¹ : Rˣ) * X p * d p.1.2) := by
   apply Units.ext
@@ -172,6 +249,9 @@ theorem A_unipGL_mul_diag {n r : ℕ} {R : Type*} [CommRing R] (d : Fin n → R�
   · rw [← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]
   · simp
 
+/- English proof (translation)
+Establish `h` using `A_unipGL_mul_diag (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) (r := r) x`. Rewrite `h` using `[GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Conclude with `⟨_, by rw [A_aT_tor]; exact h⟩`.
+-/
 theorem unip_mul_aT (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
     ∃ x' : BlockIx N r → Ad E, unip x * aT E N r t = aT E N r t * unip x' := by
   have h := A_unipGL_mul_diag (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0))
@@ -179,6 +259,11 @@ theorem unip_mul_aT (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
   rw [GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip] at h
   exact ⟨_, by rw [A_aT_tor]; exact h⟩
 
+/- English proof (translation)
+Use `A_aT_comm t _ fun i j hij => ?_` and prove the remaining obligations. Distinguish the cases in `hij' : i = j`. Rewrite using `[hij']`. Rewrite `hij` using `[coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply_ne hij', zero_add, parEntry_apply]`. Use `split_ifs at hij with h`.
+
+Rewrite `hij`, `with`, `ht` using `[joinPos] at hij split_ifs`. Conclude with `absurd rfl hij`. Conclude with `hS _ ht`. Conclude with `absurd rfl hij`.
+-/
 theorem aT_comm_parGL {S : Finset ℕ} (N r r' : ℕ) (t : ℝ)
     (hS : ∀ q : PPos N S, ¬ IsTop r' q → ((q.1.1 : ℕ) < r ↔ (q.1.2 : ℕ) < r))
     (b : {q : PPos N S // ¬ IsTop r' q} → Ad E) :
@@ -194,6 +279,9 @@ theorem aT_comm_parGL {S : Finset ℕ} (N r r' : ℕ) (t : ℝ)
     · exact hS _ ht
   · exact absurd rfl hij
 
+/- English proof (translation)
+Take `⟨s', hs', h1, h2⟩` from `q.2`. Establish `hq' : ¬ ((q.1.1 : ℕ) < r ∧ r ≤ (q.1.2 : ℕ))` using `hq`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Apply the tactic sequence `rcases hs' with rfl | rfl <;> omega`.
+-/
 theorem parabolic_position_left_bounds {r s r₁ : ℕ} (h : r₁ < r) (q : PPos (r + s) {r₁, r}) (hq : ¬ IsTop r q) :
     (q.1.1 : ℕ) < r₁ ∧ r₁ ≤ (q.1.2 : ℕ) ∧ (q.1.2 : ℕ) < r := by
   obtain ⟨s', hs', h1, h2⟩ := q.2
@@ -209,6 +297,27 @@ def eL (r s r₁ : ℕ) (h : r₁ < r) : UPos r r₁ ≃ {q : PPos (r + s) {r₁
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`.
+
+Rewrite using `[A_lev_apply, coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply, parEntry_apply]`. Simplify using `only [hinj.eq_iff]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Rewrite using `[fromBlocks_apply₁₁, coe_unipGL, unipMatrix, Matrix.add_apply, Matrix.one_apply, blockEntry_apply]`. Simplify using `only [Sum.inl.injEq]`.
+
+Use `congr 1`. Distinguish the cases in `hb : (a : ℕ) < r₁ ∧ r₁ ≤ (c : ℕ)`. Establish `h' : ∃ s' ∈ ({r₁, r} : Finset ℕ), ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < s' ∧ s' ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl c) : Fin (r + s)) : ℕ)` using `⟨r₁, by simp, by rw [A_stdSum_inl]; exact hb.1, by rw [A_stdSum_inl]; exact hb.2⟩`. Rewrite using `[dif_pos hb, dif_pos h', joinPos, dif_neg]`. Both sides reduce to the same expression.
+
+Introduce `ht`. Use `ht.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl c) : Fin (r + s)) : ℕ) at this`. Rewrite `this` using `[A_stdSum_inl]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[dif_neg hb, dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Rewrite `h1`, `h2` using `[A_stdSum_inl]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Break down `hs' with rfl | rfl` into its components or cases.
+
+Conclude with `hb ⟨h1, h2⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₁₂]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Use `split_ifs with h'`.
+
+Rewrite using `[joinPos, dif_pos]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r ∧ r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)`. Rewrite using `[A_stdSum_inl, A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₁]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`.
+
+Rewrite `*` using `[A_stdSum_inr, A_stdSum_inl]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₂₂]`. Simplify using `only [Sum.inr.injEq]`.
+
+Rewrite using `[dif_neg, add_zero, Units.val_one, Matrix.one_apply]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lev_unipGL_left (r s r₁ : ℕ) (h : r₁ < r) (A : UPos r r₁ → Ad E) :
     lev (Ad E) r s (unipGL A, 1) = parGL (joinPos (r := r) 0 fun q => A ((eL r s r₁ h).symm q)) := by
   apply Units.ext
@@ -265,6 +374,9 @@ theorem lev_unipGL_left (r s r₁ : ℕ) (h : r₁ < r) (A : UPos r r₁ → Ad 
     simp only [Finset.mem_insert, Finset.mem_singleton] at hs'
     omega
 
+/- English proof (translation)
+Take `⟨s', hs', h1, h2⟩` from `q.2`. Establish `hq' : ¬ ((q.1.1 : ℕ) < r ∧ r ≤ (q.1.2 : ℕ))` using `hq`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Apply the tactic sequence `rcases hs' with rfl | rfl <;> omega`.
+-/
 theorem parabolic_position_right_bounds {r s r₂ : ℕ} (q : PPos (r + s) {r, r + r₂}) (hq : ¬ IsTop r q) :
     r ≤ (q.1.1 : ℕ) ∧ (q.1.1 : ℕ) < r + r₂ ∧ r + r₂ ≤ (q.1.2 : ℕ) := by
   obtain ⟨s', hs', h1, h2⟩ := q.2
@@ -282,6 +394,29 @@ def eR (r s r₂ : ℕ) (h : 0 < r₂) : UPos s r₂ ≃ {q : PPos (r + s) {r, r
     have := parabolic_position_right_bounds q.1 q.2
     exact Subtype.ext (Subtype.ext (Prod.ext (Fin.ext (by simp; omega)) (Fin.ext (by simp; omega))))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`.
+
+Rewrite using `[A_lev_apply, coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply, parEntry_apply]`. Simplify using `only [hinj.eq_iff]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Rewrite using `[fromBlocks_apply₁₁]`. Simplify using `only [Sum.inl.injEq]`.
+
+Rewrite using `[dif_neg, add_zero, Units.val_one, Matrix.one_apply]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inl] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use `c.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₁₂]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Use `split_ifs with h'`. Rewrite using `[joinPos, dif_pos]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r ∧ r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)`. Rewrite using `[A_stdSum_inl, A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+
+Rewrite using `[fromBlocks_apply₂₁]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr, A_stdSum_inl] at h1 h2`.
+
+Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₂₂, coe_unipGL, unipMatrix, Matrix.add_apply, Matrix.one_apply, blockEntry_apply]`. Simplify using `only [Sum.inr.injEq]`. Use `congr 1`.
+
+Distinguish the cases in `hb : (b : ℕ) < r₂ ∧ r₂ ≤ (d : ℕ)`. Establish `h' : ∃ s' ∈ ({r, r + r₂} : Finset ℕ), ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < s' ∧ s' ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)` using `⟨r + r₂, by simp, by rw [A_stdSum_inr]; omega, by rw [A_stdSum_inr]; omega⟩`. Rewrite using `[dif_pos hb, dif_pos h', joinPos, dif_neg]`. Apply the tactic sequence `refine congrArg A (Subtype.ext (Prod.ext (Fin.ext ?_) (Fin.ext ?_))) <;> simp [eR, A_stdSum_inr]`. Introduce `ht`.
+
+Use `ht.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < r at this`. Rewrite `this` using `[A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hb, dif_neg]`.
+
+Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Break down `hs' with rfl | rfl` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `hb ⟨by omega, by omega⟩`.
+-/
 theorem lev_unipGL_right (r s r₂ : ℕ) (h : 0 < r₂) (A : UPos s r₂ → Ad E) :
     lev (Ad E) r s (1, unipGL A) = parGL (joinPos (r := r) 0 fun q => A ((eR r s r₂ h).symm q)) := by
   apply Units.ext

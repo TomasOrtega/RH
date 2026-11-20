@@ -7,5 +7,8 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InvertIdeal.main | exact GlobalTheory.InvertIdeal.main | (intros; apply GlobalTheory.InvertIdeal.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_model_refinement_generating : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : GlobalTheory.TrueGeo.Model Y) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (V : M.X.Opens) (d n : ℕ) (s : Fin n → Y.Fn) (z : M.X), (∀ y, Δ.IsEqn y (t y)) → z ∈ V → Generates M t V d s → ∃ (N : GlobalTheory.TrueGeo.Model Y) (π : N.X ⟶ M.X) (V' : M.X.Opens), N.j ≫ π = M.j ∧ π ≫ M.p = N.p ∧ z ∈ V' ∧ V' ≤ V ∧ ∀ x ∈ π ⁻¹ᵁ V', ∃ (i : Fin n) (W : N.X.Opens), x ∈ W ∧ s i ≠ 0 ∧ ∀ k, ∃ g : Γ(N.X, W), ∀ h : genericPoint Y.X ∈ N.j ⁻¹ᵁ W, fnOf (N.j ⁻¹ᵁ W) h (N.j.app W g) * s i = s k := by
   first | exact @GlobalTheory.InvertIdeal.main | exact GlobalTheory.InvertIdeal.main | (intros; apply GlobalTheory.InvertIdeal.main <;> assumption)

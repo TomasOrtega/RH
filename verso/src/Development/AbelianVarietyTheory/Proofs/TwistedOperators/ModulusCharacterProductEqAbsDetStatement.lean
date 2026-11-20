@@ -18,5 +18,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open GlobalTheory.LeviShift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviShift.prod_absChi_Iic | exact GlobalTheory.LeviShift.prod_absChi_Iic | (intros; apply GlobalTheory.LeviShift.prod_absChi_Iic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.modulus_character_product_eq_abs_det : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (j : Fin (wittIndex V)) (p : PA Φ.flag0), ∏ i ∈ Finset.Iic j, absChi Φ i p = absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) (stdVec j) p) := by
   first | exact @GlobalTheory.LeviShift.prod_absChi_Iic | exact GlobalTheory.LeviShift.prod_absChi_Iic | (intros; apply GlobalTheory.LeviShift.prod_absChi_Iic <;> assumption)

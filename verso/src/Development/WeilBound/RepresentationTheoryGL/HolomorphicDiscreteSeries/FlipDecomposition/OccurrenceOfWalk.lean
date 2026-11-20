@@ -14,6 +14,9 @@ def shL (lam : Fin (n + 1) → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) : Fin (n
 
 def shM (mu : Fin n → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) : Fin n → ℝ := mu + fun j => (b (Sum.inr j) : ℝ)
 
+/- English proof (translation)
+The claim follows from `|x - y| ≤ |(x + p) - (y + q)| := by rcases le_total x y with h | h · have := h1 h have h' : (p : ℝ) ≤ q := by exact_mod_cast this rw [abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)] linarith · have := h2 h have h' : (q : ℝ) ≤ p := by exact_mod_cast this rw [abs_of_nonne …`.
+-/
 theorem abs_le_shift {x y : ℝ} {p q : ℕ} (h1 : x ≤ y → p ≤ q) (h2 : y ≤ x → q ≤ p) :
     |x - y| ≤ |(x + p) - (y + q)| := by
   rcases le_total x y with h | h
@@ -26,6 +29,11 @@ theorem abs_le_shift {x y : ℝ} {p q : ℕ} (h1 : x ≤ y → p ≤ q) (h2 : y 
     rw [abs_of_nonneg (by linarith), abs_of_nonneg (by linarith)]
     linarith
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hl.1 hij`. Establish `h2 : (c j : ℝ) ≤ c i` using `by exact_mod_cast hc j i h1.le`. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨z, hz⟩` from `hl.2 a`. Conclude with `⟨z + c a, by simp only [Pi.add_apply]; push_cast; linarith⟩`.
+-/
 theorem hc_shift {m : ℕ} {lam : Fin m → ℝ} (hl : Formalism.QuantumDeterminants.IsHCParam lam) (c : Fin m → ℕ)
     (hc : ∀ i j, lam i ≤ lam j → c i ≤ c j) : Formalism.QuantumDeterminants.IsHCParam (lam + fun i => (c i : ℝ)) := by
   refine ⟨fun i j hij => ?_, fun a => ?_⟩
@@ -36,6 +44,9 @@ theorem hc_shift {m : ℕ} {lam : Fin m → ℝ} (hl : Formalism.QuantumDetermin
   · obtain ⟨z, hz⟩ := hl.2 a
     exact ⟨z + c a, by simp only [Pi.add_apply]; push_cast; linarith⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Use `(hg a b hab).trans ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Conclude with `abs_le_shift (hc a b) (hc b a)`.
+-/
 theorem gap_shift {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {h : ℝ} (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (c : Fin m → ℕ)
     (hc : ∀ i j, lam i ≤ lam j → c i ≤ c j) : Formalism.QuantumDeterminants.GapAtLeast ε (lam + fun i => (c i : ℝ)) h := by
   intro a b hab
@@ -46,6 +57,9 @@ theorem gap_shift {m : ℕ} {ε : Fin m → Bool} {lam : Fin m → ℝ} {h : ℝ
 def Mono (lam : Fin (n + 1) → ℝ) (mu : Fin n → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) : Prop :=
   ∀ x y, Sum.elim lam mu x ≤ Sum.elim lam mu y → b x ≤ b y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hG.fits, hG.two, hG.neg, hG.le, hc_shift hG.hc _ fun i j h => hb (Sum.inl i) (Sum.inl j) h, hc_shift hG.hc' _ fun i j h => hb (Sum.inr i) (Sum.inr j) h, gap_shift hG.gap _ fun i j h => hb (Sum.inl i) (Sum.inl j) h, gap_shift hG.gap' _ fun i j h => hb (Sum.inr i) (Sum.inr j) h⟩`.
+-/
 theorem gp_shift {ε : Fin (n + 1) → Bool} {lam : Fin (n + 1) → ℝ} {ε' : Fin n → Bool} {mu : Fin n → ℝ}
     {e : Fin n ⊕ Unit ≃ Fin (n + 1)} (hG : Gp ε lam ε' mu e) {b : Fin (n + 1) ⊕ Fin n → ℕ} (hb : Mono lam mu b) :
     Gp ε (shL lam b) ε' (shM mu b) e :=
@@ -54,6 +68,9 @@ theorem gp_shift {ε : Fin (n + 1) → Bool} {lam : Fin (n + 1) → ℝ} {ε' : 
     gap_shift hG.gap _ fun i j h => hb (Sum.inl i) (Sum.inl j) h,
     gap_shift hG.gap' _ fun i j h => hb (Sum.inr i) (Sum.inr j) h⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hl.2 i`. Take `⟨b, hb⟩` from `hm.2 j`. Use `⟨a - b, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at ha hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hm : Formalism.QuantumDeterminants.IsHCParam mu)
     (i : Fin (n + 1)) (j : Fin n) : ∃ z : ℤ, lam i - mu j = z + 1 / 2 := by
   obtain ⟨a, ha⟩ := hl.2 i
@@ -62,6 +79,11 @@ theorem half {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hl : Formalism.Qu
   push_cast at ha hb ⊢
   linarith
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `h`. Introduce `h0`. Establish `h1 : ((2 * z + 1 : ℤ) : ℝ) = 0`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : (2 * z + 1 : ℤ) = 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem half_ne {x : ℝ} (h : ∃ z : ℤ, x = z + 1 / 2) : x ≠ 0 := by
   obtain ⟨z, rfl⟩ := h
   intro h0
@@ -71,6 +93,11 @@ theorem half_ne {x : ℝ} (h : ∃ z : ℤ, x = z + 1 / 2) : x ≠ 0 := by
   have h2 : (2 * z + 1 : ℤ) = 0 := by exact_mod_cast h1
   omega
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `h`. Establish `h1 : ((-1 : ℤ) : ℝ) < z`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : (-1 : ℤ) < z` using `by exact_mod_cast h1`.
+
+Establish `hz0 : (0 : ℤ) ≤ z` using `by omega`. Establish `h2 : (0 : ℝ) ≤ z` using `by exact_mod_cast hz0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half_ge {x : ℝ} (h : ∃ z : ℤ, x = z + 1 / 2) (hx : 0 < x) : 1 / 2 ≤ x := by
   obtain ⟨z, rfl⟩ := h
   have h1 : ((-1 : ℤ) : ℝ) < z := by
@@ -81,6 +108,11 @@ theorem half_ge {x : ℝ} (h : ∃ z : ℤ, x = z + 1 / 2) (hx : 0 < x) : 1 / 2 
   have h2 : (0 : ℝ) ≤ z := by exact_mod_cast hz0
   linarith
 
+/- English proof (translation)
+Introduce `x y hxy`. Apply the tactic sequence `rcases x with i | j <;> rcases y with i' | j'`. Simplify using `only [Sum.elim_inl] at hxy`. Rewrite using `[hl.1.injective hxy]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hxy`.
+
+Conclude with `absurd (sub_eq_zero.2 hxy) (half_ne (half hl hm i j'))`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hxy`. Conclude with `absurd (sub_eq_zero.2 hxy.symm) (half_ne (half hl hm i' j))`. Simplify using `only [Sum.elim_inr] at hxy`. Rewrite using `[hm.1.injective hxy]`.
+-/
 theorem inj_merge {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hm : Formalism.QuantumDeterminants.IsHCParam mu) :
     Function.Injective (Sum.elim lam mu) := by
   intro x y hxy
@@ -101,6 +133,15 @@ variable {lam : Fin (n + 1) → ℝ} {mu : Fin n → ℝ} (hl : Formalism.Quantu
   (hmin : ∀ y, 0 < b y → Sum.elim lam mu x ≤ Sum.elim lam mu y)
 include hl hm hb hx hmin
 
+/- English proof (translation)
+Introduce `y z hyz`. Apply the tactic sequence `by_cases hy : y = x <;> by_cases hz : z = x`. Rewrite using `[hy, hz]`. Rewrite using `[hy, Function.update_self, Function.update_of_ne hz]`. Establish `h` using `hb y z hyz`.
+
+Rewrite `h` using `[hy]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, Function.update_of_ne hy, Function.update_self]`. Break down `Nat.eq_zero_or_pos (b y) with h0 | hpos` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+It suffices to derive a contradiction. Apply `hy` to reduce the goal to its premises. Apply `inj_merge hl hm` to reduce the goal to its premises. Rewrite `hyz` using `[hz]`. Conclude with `le_antisymm hyz (hmin y hpos)`.
+
+Rewrite using `[Function.update_of_ne hy, Function.update_of_ne hz]`. Conclude with `hb y z hyz`.
+-/
 theorem mono_down : Mono lam mu (Function.update b x (b x - 1)) := by
   intro y z hyz
   by_cases hy : y = x <;> by_cases hz : z = x
@@ -120,6 +161,17 @@ theorem mono_down : Mono lam mu (Function.update b x (b x - 1)) := by
   · rw [Function.update_of_ne hy, Function.update_of_ne hz]
     exact hb y z hyz
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Introduce `heq`. Simplify using `only [shL, shM, Pi.add_apply] at heq`. Establish `hh` using `half hl hm s j`. Break down `lt_trichotomy (mu j) (lam s) with hlt | heq' | hgt` into its components or cases.
+
+Establish `h1` using `hb (Sum.inr j) (Sum.inl s) hlt.le`. Establish `hge` using `half_ge hh (by linarith)`. Establish `hc1 : (b (Sum.inr j) : ℝ) ≤ b (Sum.inl s)` using `by exact_mod_cast h1`. Establish `hbeq : b (Sum.inr j) = b (Sum.inl s)`. Establish `h2 : (b (Sum.inr j) : ℝ) = b (Sum.inl s)` using `by linarith`.
+
+Conclude with `h2` after adjusting the coercions. Establish `hpos : 0 < b (Sum.inr j)`. Rewrite using `[hbeq]`. Conclude with `hx`. Establish `h3` using `hmin (Sum.inr j) hpos`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `half_ne hh (by linarith)`. Establish `h1` using `hb (Sum.inl s) (Sum.inr j) hgt.le`. Establish `hc1 : (b (Sum.inl s) : ℝ) ≤ b (Sum.inr j)` using `by exact_mod_cast h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cond_down_l (s : Fin (n + 1)) (hs : x = Sum.inl s) (j : Fin n) : shL lam b s - 1 / 2 ≠ shM mu b j := by
   subst hs
   intro heq
@@ -143,6 +195,17 @@ theorem cond_down_l (s : Fin (n + 1)) (hs : x = Sum.inl s) (j : Fin n) : shL lam
     have hc1 : (b (Sum.inl s) : ℝ) ≤ b (Sum.inr j) := by exact_mod_cast h1
     linarith
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Introduce `heq`. Simplify using `only [shL, shM, Pi.add_apply] at heq`. Establish `hh : ∃ z : ℤ, mu j - lam s = z + 1 / 2`. Take `⟨z, hz⟩` from `half hl hm s j`.
+
+Conclude with `⟨-z - 1, by push_cast; linarith⟩`. Break down `lt_trichotomy (lam s) (mu j) with hlt | heq' | hgt` into its components or cases. Establish `h1` using `hb (Sum.inl s) (Sum.inr j) hlt.le`. Establish `hge` using `half_ge hh (by linarith)`. Establish `hc1 : (b (Sum.inl s) : ℝ) ≤ b (Sum.inr j)` using `by exact_mod_cast h1`.
+
+Establish `hbeq : b (Sum.inl s) = b (Sum.inr j)`. Establish `h2 : (b (Sum.inl s) : ℝ) = b (Sum.inr j)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `hpos : 0 < b (Sum.inl s)`. Rewrite using `[hbeq]`.
+
+Conclude with `hx`. Establish `h3` using `hmin (Sum.inl s) hpos`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `half_ne hh (by linarith)`.
+
+Establish `h1` using `hb (Sum.inr j) (Sum.inl s) hgt.le`. Establish `hc1 : (b (Sum.inr j) : ℝ) ≤ b (Sum.inl s)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cond_down_m (j : Fin n) (hs : x = Sum.inr j) (s : Fin (n + 1)) : shM mu b j - 1 / 2 ≠ shL lam b s := by
   subst hs
   intro heq
@@ -170,6 +233,11 @@ theorem cond_down_m (j : Fin n) (hs : x = Sum.inr j) (s : Fin (n + 1)) : shM mu 
 
 end Step
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [shL, Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `h : i = s`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Pi.single_eq_same, Nat.cast_sub (by omega : 1 ≤ b (Sum.inl i))]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.update_of_ne (fun h' => h (Sum.inl_injective h')), Pi.single_eq_of_ne h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shL_down (lam : Fin (n + 1) → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) (s : Fin (n + 1)) (hx : 0 < b (Sum.inl s)) :
     shL lam (Function.update b (Sum.inl s) (b (Sum.inl s) - 1)) = shL lam b - Pi.single s 1 := by
   funext i
@@ -182,12 +250,20 @@ theorem shL_down (lam : Fin (n + 1) → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ)
   · rw [Function.update_of_ne (fun h' => h (Sum.inl_injective h')), Pi.single_eq_of_ne h]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [shM, Pi.add_apply]`. Rewrite using `[Function.update_of_ne Sum.inr_ne_inl]`.
+-/
 theorem shM_down_l (mu : Fin n → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) (s : Fin (n + 1)) :
     shM mu (Function.update b (Sum.inl s) (b (Sum.inl s) - 1)) = shM mu b := by
   funext j
   simp only [shM, Pi.add_apply]
   rw [Function.update_of_ne Sum.inr_ne_inl]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [shM, Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Pi.single_eq_same, Nat.cast_sub (by omega : 1 ≤ b (Sum.inr i))]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Function.update_of_ne (fun h' => h (Sum.inr_injective h')), Pi.single_eq_of_ne h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shM_down (mu : Fin n → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) (j : Fin n) (hx : 0 < b (Sum.inr j)) :
     shM mu (Function.update b (Sum.inr j) (b (Sum.inr j) - 1)) = shM mu b - Pi.single j 1 := by
   funext i
@@ -200,18 +276,37 @@ theorem shM_down (mu : Fin n → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) (j : F
   · rw [Function.update_of_ne (fun h' => h (Sum.inr_injective h')), Pi.single_eq_of_ne h]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [shL, Pi.add_apply]`. Rewrite using `[Function.update_of_ne Sum.inl_ne_inr]`.
+-/
 theorem shL_down_m (lam : Fin (n + 1) → ℝ) (b : Fin (n + 1) ⊕ Fin n → ℕ) (j : Fin n) :
     shL lam (Function.update b (Sum.inr j) (b (Sum.inr j) - 1)) = shL lam b := by
   funext i
   simp only [shL, Pi.add_apply]
   rw [Function.update_of_ne Sum.inl_ne_inr]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_update_of_mem (mem_univ x), ← Finset.add_sum_erase _ _ (mem_univ x)]`. Rewrite using `[show (univ \ {x} : Finset _) = univ.erase x from (Finset.erase_eq _ _).symm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_down (b : Fin (n + 1) ⊕ Fin n → ℕ) (x : Fin (n + 1) ⊕ Fin n) (hx : 0 < b x) :
     ∑ y, Function.update b x (b x - 1) y + 1 = ∑ y, b y := by
   rw [Finset.sum_update_of_mem (mem_univ x), ← Finset.add_sum_erase _ _ (mem_univ x)]
   rw [show (univ \ {x} : Finset _) = univ.erase x from (Finset.erase_eq _ _).symm]
   omega
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `b hs _ ho`. Establish `h0 : ∀ y, b y = 0` using `fun y => (Finset.sum_eq_zero_iff.1 hs) y (mem_univ y)`.
+
+Establish `e1 : shL lam b = lam` using `by funext i; simp [shL, h0]`. Establish `e2 : shM mu b = mu` using `by funext i; simp [shM, h0]`. Rewrite `ho` using `[e1, e2]`. Then use the resulting hypothesis. Consider the case `succ k ih`. Introduce `b hs hb ho`.
+
+Establish `hne : (univ.filter fun y => 0 < b y).Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Establish `: ∑ y, b y = 0` using `Finset.sum_eq_zero fun y _ => by have := h (mem_univ y); omega`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨x, hx, hmin⟩` from `Finset.exists_min_image _ (Sum.elim lam mu) hne`. Establish `hx' : 0 < b x` using `(mem_filter.1 hx).2`. Establish `hmin' : ∀ y, 0 < b y → Sum.elim lam mu x ≤ Sum.elim lam mu y` using `fun y hy => hmin y (mem_filter.2 ⟨mem_univ y, hy⟩)`. Establish `hb'` using `mono_down hG.hc hG.hc' hb hx' hmin'`. Establish `hs' : ∑ y, Function.update b x (b x - 1) y = k` using `by have := sum_down b x hx'; omega`.
+
+Use `ih _ hs' hb' ?_` and prove the remaining obligations. Establish `hGb` using `gp_shift hG hb`. Establish `hGb'` using `gp_shift hG hb'`. Break down `x with s | j` into its components or cases. Rewrite `hGb'`, the goal using `[shL_down lam b s hx', shM_down_l]`.
+
+Conclude with `hL n ε _ ε' _ e hGb s hGb' (cond_down_l hG.hc hG.hc' hb hx' hmin' s rfl) ho`. Rewrite `hGb'`, the goal using `[shM_down mu b j hx', shL_down_m]`. Conclude with `hM n ε _ ε' _ e hGb j hGb' (cond_down_m hG.hc hG.hc' hb hx' hmin' j rfl) ho`.
+-/
 theorem down (hL : StepL) (hM : StepM) {ε : Fin (n + 1) → Bool} {lam : Fin (n + 1) → ℝ} {ε' : Fin n → Bool}
     {mu : Fin n → ℝ} {e : Fin n ⊕ Unit ≃ Fin (n + 1)} (hG : Gp ε lam ε' mu e) :
     ∀ (k : ℕ) (b : Fin (n + 1) ⊕ Fin n → ℕ), ∑ y, b y = k → Mono lam mu b →
@@ -245,6 +340,9 @@ theorem down (hL : StepL) (hM : StepM) {ε : Fin (n + 1) → Bool} {lam : Fin (n
     · rw [shM_down mu b j hx', shL_down_m] at hGb' ⊢
       exact hM n ε _ ε' _ e hGb j hGb' (cond_down_m hG.hc hG.hc' hb hx' hmin' j rfl) ho
 
+/- English proof (translation)
+Introduce `n ε lam ε' mu e hG hW`. Take `⟨a, ha, ho⟩` from `hB n ε lam ε' mu e hG hW`. Conclude with `down hL hM hG _ a rfl ha ho`.
+-/
 theorem occurrence_of_walk (hL : StepL) (hM : StepM) (hB : Base) : Occ := by
   intro n ε lam ε' mu e hG hW
   obtain ⟨a, ha, ho⟩ := hB n ε lam ε' mu e hG hW

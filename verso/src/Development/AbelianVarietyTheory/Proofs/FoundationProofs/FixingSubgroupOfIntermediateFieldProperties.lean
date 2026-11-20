@@ -9,6 +9,11 @@ namespace GlobalTheory.K4.Geo
 
 open Topology GlobalTheory.NeedB
 
+/- English proof (translation)
+Establish `hle : IntermediateField.adjoin k S ≤ IntermediateField.fixedField (fixingSubgroup (Ω ≃ₐ[k] Ω) S)`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixedField_iff]`. Introduce `f hf`.
+
+Conclude with `(mem_fixingSubgroup_iff _).1 hf x hx`. Conclude with `(IntermediateField.le_iff_le _ _).1 hle ((mem_fixingSubgroup_iff _).2 fun x hx => hg x hx)`.
+-/
 theorem mem_fixingSubgroup_adjoin_of {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (S : Set Ω)
     (g : Ω ≃ₐ[k] Ω) (hg : ∀ x ∈ S, g x = x) : g ∈ (IntermediateField.adjoin k S).fixingSubgroup := by
   have hle : IntermediateField.adjoin k S ≤ IntermediateField.fixedField (fixingSubgroup (Ω ≃ₐ[k] Ω) S) := by
@@ -19,6 +24,9 @@ theorem mem_fixingSubgroup_adjoin_of {k Ω : Type} [Field k] [Field Ω] [Algebra
     exact (mem_fixingSubgroup_iff _).1 hf x hx
   exact (IntermediateField.le_iff_le _ _).1 hle ((mem_fixingSubgroup_iff _).2 fun x hx => hg x hx)
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `h0 : B.valuation y ≠ 0` using `by simpa using hy`. Rewrite using `[← B.valuation_le_one_iff, map_inv₀, inv_le_one₀ (zero_lt_iff.2 h0)]`. Simplify using `[hy, not_le]`.
+-/
 theorem valuation_lt_one_iff' {Ω : Type} [Field Ω] (B : ValuationSubring Ω) (y : Ω) :
     B.valuation y < 1 ↔ y = 0 ∨ y⁻¹ ∉ B := by
   by_cases hy : y = 0
@@ -40,6 +48,13 @@ def equiv : (Ω ≃ₐ[K] Ω) ≃* GlobalTheory.K4.geo F K Ω where
 
 variable [Algebra.IsAlgebraic F Ω]
 
+/- English proof (translation)
+Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Rewrite using `[Filter.mem_map]`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff F Ω U).1 hU`.
+
+Take `⟨S, hS⟩ : E.FG` from `IntermediateField.fg_of_fg_toSubalgebra _ (Subalgebra.fg_of_fg_toSubmodule ((Submodule.fg_iff_finiteDimensional _).2 hE))`. Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.tower_top (K := F) K`. Establish `hfd : FiniteDimensional K (IntermediateField.adjoin K (S : Set Ω))` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsIntegral.isIntegral x)`. Use `Filter.mem_of_superset ((IntermediateField.adjoin K (S : Set Ω)).fixingSubgroup_isOpen.mem_nhds (Subgroup.one_mem _)) ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Apply `hEU` to reduce the goal to its premises. Rewrite using `[← hS]`. Apply `mem_fixingSubgroup_adjoin_of` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (IntermediateField.subset_adjoin _ _ hx)`.
+-/
 theorem continuous_restrict :
     Continuous (AlgEquiv.restrictScalarsHom F : (Ω ≃ₐ[K] Ω) →* (Ω ≃ₐ[F] Ω)) := by
   apply continuous_of_continuousAt_one
@@ -61,6 +76,13 @@ theorem continuous_restrict :
   intro x hx
   exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x (IntermediateField.subset_adjoin _ _ hx)
 
+/- English proof (translation)
+Apply `continuous_of_continuousAt_one (equiv F K Ω).symm` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Rewrite using `[Filter.mem_map]`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff K Ω U).1 hU`.
+
+Take `⟨S, hS⟩ : E.FG` from `IntermediateField.fg_of_fg_toSubalgebra _ (Subalgebra.fg_of_fg_toSubmodule ((Submodule.fg_iff_finiteDimensional _).2 hE))`. Establish `hfd : FiniteDimensional F (IntermediateField.adjoin F (S : Set Ω))` using `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsIntegral.isIntegral x)`. Use `(mem_nhds_subtype _ _ _).2 ⟨_, (IntermediateField.adjoin F (S : Set Ω)).fixingSubgroup_isOpen.mem_nhds (Subgroup.one_mem _), ?_⟩` and prove the remaining obligations. Introduce `h hh`. Simplify using `only [Set.mem_preimage] at hh ⊢`.
+
+Apply `hEU` to reduce the goal to its premises. Rewrite using `[← hS]`. Apply `mem_fixingSubgroup_adjoin_of` to reduce the goal to its premises. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hh x (IntermediateField.subset_adjoin _ _ hx)`.
+-/
 theorem continuous_symm : Continuous (equiv F K Ω).symm := by
   apply continuous_of_continuousAt_one (equiv F K Ω).symm
   rw [ContinuousAt, map_one]
@@ -81,11 +103,27 @@ theorem continuous_symm : Continuous (equiv F K Ω).symm := by
   intro x hx
   exact (IntermediateField.mem_fixingSubgroup_iff _ _).1 hh x (IntermediateField.subset_adjoin _ _ hx)
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 (continuous_restrict F K Ω)`.
+-/
 theorem continuous_equiv : Continuous (equiv F K Ω) :=
   continuous_induced_rng.2 (continuous_restrict F K Ω)
 
 end GlobalTheory.K4.Geo
 
+/- English proof (translation)
+Introduce `F K Ω _ _ _ _ _ _ _ _`. Use `⟨fun g => GlobalTheory.K4.TopW.mem_geo g, ⟨GlobalTheory.K4.Geo.equiv F K Ω, fun g x => rfl, GlobalTheory.K4.Geo.continuous_equiv F K Ω, GlobalTheory.K4.Geo.continuous_symm F K Ω⟩, fun _ => ⟨fun n hn g => GlobalTheory.K4.TopW.conj_mem_geo g hn⟩, fun _ => ?_, ?_⟩` and prove the remaining obligations. Establish `hr : (GlobalTheory.K4.geo F K Ω : Set (Ω ≃ₐ[F] Ω)) = Set.range (AlgEquiv.restrictScalarsHom F : (Ω ≃ₐ[K] Ω) →* (Ω ≃ₐ[F] Ω))`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hh`. Conclude with `⟨(GlobalTheory.K4.Geo.equiv F K Ω).symm ⟨h, hh⟩, AlgEquiv.ext fun _ => rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `(GlobalTheory.K4.Geo.equiv F K Ω g).2`. Rewrite using `[hr]`.
+
+Conclude with `isCompact_range (GlobalTheory.K4.Geo.continuous_restrict F K Ω)`. Introduce `B r g hr x hx`. Rewrite `hx` using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_comap]`. Establish `h1` using `hr _ ((B.valuation_le_one_iff _).2 hx)`. Rewrite `h1` using `[GlobalTheory.K4.Geo.valuation_lt_one_iff']`.
+
+Rewrite using `[GlobalTheory.K4.Geo.valuation_lt_one_iff']`. Establish `key : (g : Ω →+* Ω) ((g⁻¹ * r * g) x - x) = r ((g : Ω →+* Ω) x) - (g : Ω →+* Ω) x`. Simplify using `[AlgEquiv.mul_apply]`. Break down `h1 with h0 | h0` into its components or cases. Use `left`.
+
+Apply `g.injective` to reduce the goal to its premises. Establish `: g ((g⁻¹ * r * g) x - x) = 0` using `by simpa using key.trans h0`. Rewrite using `[this, map_zero]`. Use `right`. Introduce `hm`.
+
+Apply `h0` to reduce the goal to its premises. Rewrite `hm` using `[ValuationSubring.mem_comap, map_inv₀, key]`. Conclude with `hm`.
+-/
 theorem GlobalTheory.K4.geo_facts : ∀ (F K Ω : Type) [Field F] [Field K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [Algebra.IsAlgebraic F Ω],
  (∀ g : Ω ≃ₐ[F] Ω, g ∈ GlobalTheory.K4.geo F K Ω ↔ ∀ x : K, g (algebraMap K Ω x) = algebraMap K Ω x) ∧
  (∃ e : (Ω ≃ₐ[K] Ω) ≃* GlobalTheory.K4.geo F K Ω, (∀ g x, ((e g : GlobalTheory.K4.geo F K Ω) : Ω ≃ₐ[F] Ω) x = g x) ∧ Continuous e ∧ Continuous e.symm) ∧

@@ -9,6 +9,9 @@ open scoped LaurentPolynomial
 
 namespace CrystallineSemistableComparison.D
 
+/- English proof (translation)
+Introduce `A _ G _ _ f L _ _ ι hc T _ y hy`. Break down `hc with ⟨h1, h2, h3⟩` into its components or cases. Use `GlobalTheory.CompanionTheory.ColimLift.exists_lift_of_surj_ker (fun n => (f n).toRingHom) (fun n => (ι n).toRingHom) (fun n k x => tr f n k x) h1 (fun _ _ => rfl) (fun _ _ _ => rfl) h2 (fun n x hx => ?_) y hy` and prove the remaining obligations. Take `⟨k, hk⟩` from `h3 n 1 (fun _ => x) (fun _ => hx)`. Conclude with `⟨k, hk 0⟩`.
+-/
 theorem colim_lift : ∀ (A : Type) [CommRing A](G : ℕ → Type) [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)] (f : ∀ n, G n →ₐ[A] G (n + 1))(L : Type) [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L), IsColim f ι → ∀ (T : Type) [CommRing T] (y : ∀ n, G n →+* T), (∀ n x, y (n + 1) (f n x) = y n x) → ∃ z : L →+* T, ∀ n x, z (ι n x) = y n x := by
   intro A _ G _ _ f L _ _ ι hc T _ y hy
   rcases hc with ⟨h1, h2, h3⟩

@@ -23,6 +23,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.CuspTransfer
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ ψ hψ`. Take `⟨K', hK', Kc, d, ψs, a, Ψ, hI, hψs, h0, ha1, c1, c2, c3, c4, c5⟩` from `GlobalTheory.T.skew_plane_measure_normalization F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ ψ hψ`. Establish `hcont` using `GlobalTheory.ThK.CuspTransfer.continuous_of_isInd F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc (d + 1) ψs a Ψ hI hψs c1 c3`. Take `⟨hlN, hlM⟩` from `GlobalTheory.T.skew_plane_haar_decomposition F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc (d + 1) ψs a Ψ hI hψs`. Use `⟨K', hK', Ψ, ⟨⟨hlN, hlM, ?_, hcont, GlobalTheory.T.skew_plane_jacobian_identity F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc (d + 1) ψs a Ψ hI hψs c1 c3 c4, GlobalTheory.T.skew_plane_ …` and prove the remaining obligations.
+
+Take `⟨U, hU, hU'⟩` from `c2`. Use `⟨U, hU, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, t, m, y, k₀, hk₀, hm, rfl⟩` from `hI.1 g`. Take `⟨hk1, hk2⟩` from `hU' k hk hkf k₀ hk₀`. Rewrite using `[mul_assoc, hI.2 u hu t m y _ hk1 hm, hI.2 u hu t m y k₀ hk₀ hm]`.
+
+Simplify using `only [hk2]`. Introduce `t m y hm`. Establish `e` using `hI.2 1 (one_mem _) t m y 1 c1.2.1 hm`. Rewrite `e` using `[one_mul, mul_one]`. Rewrite using `[map_mul]`.
+
+Use `e.trans ?_` and prove the remaining obligations. Simplify using `[ha1, h0]`.
+-/
 theorem exists_cuspOn_transfer : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

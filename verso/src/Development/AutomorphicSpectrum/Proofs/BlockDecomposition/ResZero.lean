@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 
 namespace GlobalTheory.CompanionTheory.EtRes
 
+/- English proof (translation)
+Introduce `R _ F U`. Take `⟨h0, h1, -, h3⟩` from `GlobalTheory.EtC.resSec R F U`. Conclude with `⟨h1, h0, h3⟩`.
+-/
 theorem resZero : CrystallineSemistableComparison.E.ResZero := by
   intro R _ F U
   obtain ⟨h0, h1, -, h3⟩ := GlobalTheory.EtC.resSec R F U

@@ -11,6 +11,11 @@ namespace GlobalTheory.Mum.Conj
 
 open GlobalTheory.FieldBaseChange ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Introduce `R _ _ I D N σ F₀ s hs`. Establish `hL` using `D.P.isLB`. Use `fam_ext fun α j => congrArg (fun q => LB.Sec.f q j) (sec_ext' hL fun y J hJ => ?_)` and prove the remaining obligations. Use `show sval (termPull D (Kb R) (TwF σ) N α (s.s α)) (𝟙 _) y J = _`. Use `(sval_pullOver _ _ _ _ hJ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← SectionScalarValuation.secScal_sval (hs α) _ y hJ, ← SectionScalarValuation.secScal_sval (hs α) (𝟙 _) y hJ]`. Use `congr 1`. Establish `e : (famMap D (Kb R) (TwF σ)).left ≫ (DegPre.prB D (Kb R)).left = (DegPre.prB D (TwF σ)).left` using `congrArg (fun q => q.left) (famMap_snd D (Kb R) (TwF σ))`. Conclude with `(Category.assoc _ _ _).trans (congrArg (fun q => 𝟙 _ ≫ q) e)`.
+-/
 theorem famTw_eq_of_over : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) (F₀ : IntFam I D N) (s : Fam D (Kb R) N), F₀.Over s → famTw D N σ s = s := by
   intro R _ _ I D N σ F₀ s hs

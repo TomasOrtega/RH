@@ -24,6 +24,9 @@ section Gen
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E)))
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_lift H x`. Establish `e : (QuotientGroup.mk a : DtQ H SQ) = 1` using `(normOneFiniteAdeleDetClass_of_isDetLift H SQ x a ha).symm.trans h`. Establish `ha' : a ∈ KDq H SQ` using `(QuotientGroup.eq_one_iff a).1 e`. Use `(GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a ha).2 fun w => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H a).1 (Subgroup.mem_sup_left (KDq_le_KD H SQ ha')) w (conjPrime₂ w) ((isConjPl_iff H w _).2 rfl)`.
+-/
 theorem mem_integralNormOne_of_normOneDetClass_eq_one (x : Formalism.L2.Herm.unitaryOneFiniteAdeles (host_cmData R H)) (h : u1Dt H SQ x = 1) :
     x.1 ∈ Formalism.L2.Herm.IntegralUnitGroup (host_cmData R H) := by
   obtain ⟨a, ha⟩ := exists_lift H x
@@ -33,6 +36,13 @@ theorem mem_integralNormOne_of_normOneDetClass_eq_one (x : Formalism.L2.Herm.uni
   exact (GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H a).1 (Subgroup.mem_sup_left (KDq_le_KD H SQ ha')) w (conjPrime₂ w)
     ((isConjPl_iff H w _).2 rfl)
 
+/- English proof (translation)
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨x, hx⟩` from `exists_of_idele H a`. Use `⟨x, ?_, normOneFiniteAdeleDetClass_of_isDetLift H SQ x a hx⟩` and prove the remaining obligations.
+
+Use `(GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a hx).2 fun w => ?_` and prove the remaining obligations. Conclude with `(ha w).trans (ha (conjPrime₂ w)).symm`. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨a, ha⟩` from `exists_lift H x`. Rewrite using `[normOneFiniteAdeleDetClass_of_isDetLift H SQ x a ha, mk_mem_UOQ, KDq_sup_unitIdl]`.
+
+Use `(GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H a).2 fun w w' hw => ?_` and prove the remaining obligations. Rewrite using `[(isConjPl_iff H w w').1 hw]`. Conclude with `(GlobalTheory.T.mem_normOneIntegral_iff_conjugate_valuations_eq R H x a ha).1 hx w`.
+-/
 theorem unitIdeleImage_eq_map_integralNormOne : UOQ H SQ = ((Formalism.L2.Herm.IntegralUnitGroup (host_cmData R H)).subgroupOf (Formalism.L2.Herm.unitaryOneFiniteAdeles (host_cmData R H))).map (u1Dt H SQ) := by
   ext t
   constructor
@@ -57,6 +67,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X)
 
+/- English proof (translation)
+Take `⟨p, hp, hN⟩` from `hR.k_std (chOf c)`. Use `GlobalTheory.T.pointDeterminant_eq_normOneClass_of_level B.R B.host _ _ _ _ I.SQ _ (y c) (k (chOf c)) x (GlobalTheory.Mem.LevTwist.levOk_twists B X I hI).1 (hR.pt c) hp.uni (hN ▸ hp.lat) (fun P hP => ?_) hx` and prove the remaining obligations. Use `hR.k_off _ _ (GlobalTheory.T.memberLevelPrime_not_mem_under_levelPrimes B X I hI u P hP) ?_ (Or.inl rfl)` and prove the remaining obligations. Introduce and unpack `⟨Q, hQ, -⟩`. Rewrite `hQ` using `[GlobalTheory.T.q_mu0_eq_empty B X I]`.
+
+Conclude with `absurd hQ (Finset.notMem_empty Q)`.
+-/
 theorem detPt_of_reads (hI : I.Ok) (u : B.Word) (i : ℕ) {Ch : Type} {chOf : (I.stp u I.mu0 i).Cl → Ch}
     {Lb : Ch → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} {U : Ch → Subgroup (GA B (B.R.N i))} {chi : ∀ β, U β →* ℂˣ}
     {y : (I.stp u I.mu0 i).Cl → GA B (B.R.N i)} {st : ∀ c, (I.stp u I.mu0 i).Stab c → GL (Fin (B.R.N i)) B.host.E}
@@ -72,6 +87,9 @@ theorem detPt_of_reads (hI : I.Ok) (u : B.Word) (i : ℕ) {Ch : Type} {chOf : (I
   rw [GlobalTheory.T.q_mu0_eq_empty B X I] at hQ
   exact absurd hQ (Finset.notMem_empty Q)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `[reGL, Matrix.GeneralLinearGroup.det]`.
+-/
 theorem det_reGL {a b : ℕ} (h : a = b) {A : Type} [CommRing A] (g : GL (Fin a) A) :
     Matrix.GeneralLinearGroup.det (reGL h A g) = Matrix.GeneralLinearGroup.det g := by
   subst h
@@ -82,6 +100,9 @@ variable (l : I.Laws) (Z : TC.Later B (I.cols l)) (C : ColsTiedSym (I.rec7 l Z))
 
 include I in
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `(hS u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Use `detPt_of_reads I hI u 0 hk c x ?_` and prove the remaining obligations. Establish `e` using `(C.car0 u).y_eq c`. Rewrite using `[hx]`. Conclude with `(e ▸ det_reGL _ _).symm`.
+-/
 theorem det_normOne_classStepZero_trueColumns (hI : I.Ok) (hS : I.StdC l Z C) (u : B.Word) (c : ((I.rec7 l Z).mem u).C.cls 0)
     (x : Formalism.L2.Herm.unitaryOneFiniteAdeles (host_cmData B.R B.host))
     (hx : Matrix.GeneralLinearGroup.det x.1 = Matrix.GeneralLinearGroup.det ((C.herm.base.lev0 u).y c).1) :
@@ -94,6 +115,13 @@ theorem det_normOne_classStepZero_trueColumns (hI : I.Ok) (hS : I.StdC l Z C) (u
 
 include I in
 
+/- English proof (translation)
+Distinguish the cases in `h2 : i + 1 ≤ B.R.m`. Take `⟨k, hk⟩` from `(hS u).mid i h1 h2`. Use `detPt_of_reads I hI u i hk c x ?_` and prove the remaining obligations. Establish `e` using `(C.carC u i h1 h2 (C.herm.base.chOf u i c)).y_eq ⟨c, rfl⟩`. Rewrite using `[hx]`.
+
+Conclude with `(e ▸ det_reGL _ _).symm`. Take `rfl : i = B.R.m` from `by omega`. Take `⟨k, hk⟩` from `(hS u).ends B.R.m le_rfl (Or.inr rfl)`. Use `detPt_of_reads I hI u _ hk c x ?_` and prove the remaining obligations. Establish `e` using `(C.carM u).y_eq c`.
+
+Establish `key : ∀ (β : C.herm.base.Ch u B.R.m) (hb : C.herm.base.chOf u B.R.m c = β), Matrix.GeneralLinearGroup.det ((C.herm.base.cls u B.R.m h1 hm β).y ⟨c, hb⟩).1 = Matrix.GeneralLinearGroup.det ((C.herm.base.cls u B.R.m h1 hm (C.herm.base.chOf u B.R.m c)).y ⟨c, rfl⟩).1`. Introduce and unpack `_ rfl`. Both sides reduce to the same expression. Rewrite using `[hx, ← key _ (chOf_m C.herm.base u c)]`. Conclude with `(e ▸ det_reGL _ _).symm`.
+-/
 theorem detI_std (hI : I.Ok) (hS : I.StdC l Z C) (u : B.Word) (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ B.R.m)
     (c : ((I.rec7 l Z).mem u).C.cls i) (x : Formalism.L2.Herm.unitaryOneFiniteAdeles (host_cmData B.R B.host))
     (hx : Matrix.GeneralLinearGroup.det x.1 = Matrix.GeneralLinearGroup.det
@@ -128,6 +156,9 @@ def hermS (hI : I.Ok) (hS : I.StdC l Z C) : Formalism.L2.Herm.SymmetricHermitian
     det0 := fun u c x h => det_normOne_classStepZero_trueColumns I l Z C hI hS u c x h
     detI := fun u i h1 hm c x h => detI_std I l Z C hI hS u i h1 hm c x h }
 
+/- English proof (translation)
+Introduce `N L L' g _ hg x hx`. Take `⟨idl, hp⟩` from `GlobalTheory.Mem.NormOneIdeal.pinned_of_finer (I.rec7 l Z) I.SQ (MulEquiv.refl _) (by ext t; exact ⟨fun h => ⟨t, h, rfl⟩, fun ⟨_, h, e⟩ => e ▸ h⟩) (fun _ => rfl) (fun N L L' t h => h)`. Conclude with `GlobalTheory.Mem.NormOneIdeal.relDet_eq_of_pinned (I.rec7 l Z) idl hp _ (hermS I l Z C hI hS).dt (hermS I l Z C hI hS).dt_ker (hermS I l Z C hI hS).dt_UO (hermS I l Z C hI hS).dt_rat L L' g x hg hx`.
+-/
 theorem relDet_std (hI : I.Ok) (hS : I.StdC l Z C) : Formalism.L2.Herm.SymmetricRelativeDeterminant (I.rec7 l Z) (hermS I l Z C hI hS) := by
   intro N L L' g _ hg x hx
   obtain ⟨idl, hp⟩ := GlobalTheory.Mem.NormOneIdeal.pinned_of_finer (I.rec7 l Z) I.SQ (MulEquiv.refl _)
@@ -136,6 +167,9 @@ theorem relDet_std (hI : I.Ok) (hS : I.StdC l Z C) : Formalism.L2.Herm.Symmetric
   exact GlobalTheory.Mem.NormOneIdeal.relDet_eq_of_pinned (I.rec7 l Z) idl hp _ (hermS I l Z C hI hS).dt (hermS I l Z C hI hS).dt_ker
     (hermS I l Z C hI hS).dt_UO (hermS I l Z C hI hS).dt_rat L L' g x hg hx
 
+/- English proof (translation)
+Introduce `B X I hI _ l Z C g hS hV`. Set `Fu : Formalism.L2.Herm.FullTiedS (I.rec7 l Z)` to `{ base := hermS I l Z C hI hS atT := C.herm.atT vol := hV levelZeroCompatibility := C.herm.levelZeroCompatibility g := g ad := C.herm.ad cof := C.herm.cof piG := C.herm.piG stabMap := C.herm.stabMap fvI := C.herm.fvI relDet := relDet_std I l Z C hI hS std := C.herm.std vpos := B. …`. Use `⟨⟨Fu, rfl⟩, HEq.rfl, ?_⟩` and prove the remaining obligations. Introduce `x a ha`. Conclude with `normOneFiniteAdeleDetClass_of_isDetLift B.host I.SQ x a ha`.
+-/
 theorem exists_colsFullS : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (C : ColsTiedSym (I.rec7 l Z)) (g : Formalism.L2.Herm.SymmetricGroupCompatibility (I.rec7 l Z) C.herm.base), I.StdC l Z C → Formalism.L2.Herm.VolumeCompatible (I.rec7 l Z) → ∃ Fu : ColsFullS C, HEq Fu.1.g g ∧ I.StdDt l Z Fu.1.base.dt := by
   intro B X I hI _ l Z C g hS hV
   let Fu : Formalism.L2.Herm.FullTiedS (I.rec7 l Z) :=

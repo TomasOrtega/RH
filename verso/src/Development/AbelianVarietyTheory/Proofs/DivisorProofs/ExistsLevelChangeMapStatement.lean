@@ -13,6 +13,9 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevelMapBase.levelMap_coeff_le | exact GlobalTheory.LevelMapBase.levelMap_coeff_le | (intros; apply GlobalTheory.LevelMapBase.levelMap_coeff_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_level_change_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (hle : c.F ≤ c'.F),
     1 ≤ Dw.p + Dw.q → l.Dvd l' →

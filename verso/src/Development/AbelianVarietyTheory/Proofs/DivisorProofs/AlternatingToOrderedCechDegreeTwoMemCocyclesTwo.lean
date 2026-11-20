@@ -21,12 +21,21 @@ def triVal (c : CC F 2) (X : (NE κ)ᵒᵖ) (s : Finset κ) : F.obj X :=
 
 variable {F}
 
+/- English proof (translation)
+The claim follows from `Subsingleton.elim _ _`.
+-/
 theorem hom_eq {a b : (NE κ)ᵒᵖ} (f g : a ⟶ b) : f = g := Subsingleton.elim _ _
 
+/- English proof (translation)
+Unfold `triVal`. Rewrite using `[dif_pos ⟨hs, h⟩]`.
+-/
 theorem triVal_eq (c : CC F 2) (X : (NE κ)ᵒᵖ) {s : Finset κ} (hs : s.card = 2 + 1) (h : s ⊆ sub X) :
     mp F (homOf (a := ne s (card_nonempty ⟨s, hs⟩)) (b := X) h) (c ⟨s, hs⟩) = triVal F c X s := by
   unfold triVal; rw [dif_pos ⟨hs, h⟩]
 
+/- English proof (translation)
+Unfold `triVal`. Distinguish the cases in `hs : s.card = 2 + 1`. Rewrite using `[dif_pos ⟨hs, h⟩, dif_pos ⟨hs, h.trans (sub_subset f)⟩, ← mp_comp]`. Use `congr 1`. Rewrite using `[dif_neg (fun h' => hs h'.1), dif_neg (fun h' => hs h'.1), map_zero]`.
+-/
 theorem triVal_map (c : CC F 2) {X Y : (NE κ)ᵒᵖ} (f : X ⟶ Y) {s : Finset κ} (h : s ⊆ sub X) :
     mp F f (triVal F c X s) = triVal F c Y s := by
   unfold triVal
@@ -35,6 +44,11 @@ theorem triVal_map (c : CC F 2) {X Y : (NE κ)ᵒᵖ} (f : X ⟶ Y) {s : Finset 
     congr 1
   · rw [dif_neg (fun h' => hs h'.1), dif_neg (fun h' => hs h'.1), map_zero]
 
+/- English proof (translation)
+Unfold `e2`. Simplify using `only [LinearMap.pi_apply]`. Use `split_ifs with h`. Simplify using `only [LinearMap.neg_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[← triVal_eq c d (card_three h.1 h.2) (triple_subset f g)]`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem alternatingToOrderedCechDegreeTwo_apply_triple (c : CC F 2) {a b d : (NE κ)ᵒᵖ} (f : a ⟶ b) (g : b ⟶ d) :
     e2 F c a b d f g = if mn d < mn b ∧ mn b < mn a then -triVal F c d {mn d, mn b, mn a} else 0 := by
   unfold e2
@@ -50,11 +64,23 @@ end GlobalTheory.CechPoset
 namespace GlobalTheory.CechPoset
 variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] {F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `s`. Rewrite using `[← triVal_eq c X hs (sub_subset f), hom_eq f (homOf (sub_subset f))]`.
+-/
 theorem triVal_eq' (c : CC F 2) {X : (NE κ)ᵒᵖ} (s : {s : Finset κ // s.card = 2 + 1})
     (f : ne s.1 (card_nonempty s) ⟶ X) : mp F f (c s) = triVal F c X s.1 := by
   obtain ⟨s, hs⟩ := s
   rw [← triVal_eq c X hs (sub_subset f), hom_eq f (homOf (sub_subset f))]
 
+/- English proof (translation)
+Establish `ht : ({w, x, y, z} : Finset κ).card = 2 + 1 + 1`. Rewrite using `[Finset.card_insert_of_notMem (by simp [h1.ne, (h1.trans h2).ne, (h1.trans (h2.trans h3)).ne]), Finset.card_insert_of_notMem (by simp [h2.ne, (h2.trans h3).ne]), Finset.card_pair h3.ne]`. Establish `e` using `congrArg (mp F (homOf (a := ne _ (card_nonempty ⟨_, ht⟩)) (b := X) hs)) (congrFun hc ⟨_, ht⟩)`. Rewrite `e` using `[δ_apply, map_sum, Pi.zero_apply, map_zero]`. Establish `e' : ∑ i ∈ ({w, x, y, z} : Finset κ), GlobalTheory.cubeSign ({w, x, y, z} : Finset κ) i • triVal F c X (({w, x, y, z} : Finset κ).erase i) = 0`.
+
+Rewrite using `[← e, ← Finset.sum_coe_sort]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← mp_comp, triVal_eq']`. Rewrite `e'` using `[Finset.sum_insert (by simp [h1.ne, (h1.trans h2).ne, (h1.trans (h2.trans h3)).ne]), Finset.sum_insert (by simp [h2.ne, (h2.trans h3).ne]), Finset.sum_pair h3.ne]`. Establish `hwx` using `h1.ne`.
+
+Establish `hwy` using `(h1.trans h2).ne`. Establish `hwz` using `(h1.trans (h2.trans h3)).ne`. Establish `hxy` using `h2.ne`. Establish `hxz` using `(h2.trans h3).ne`. Establish `hyz` using `h3.ne`.
+
+Simplify using `only [GlobalTheory.cubeSign, Finset.filter_insert, Finset.filter_singleton, h1, h2, h3, h1.trans h2, h1.trans (h2.trans h3), h2.trans h3, lt_irrefl, not_lt_of_gt, if_true, if_false] at e'`. Simplify using `only [Finset.insert_empty, Finset.card_empty, Finset.card_singleton, Finset.card_pair hwx, Finset.card_insert_of_notMem (show w ∉ ({x, y} : Finset κ) by simp [hwx, hwy]), Finset.card_pair hxy] at e'`. Rewrite `e'` using `[Finset.erase_insert (by simp [hwx, hwy, hwz]), Finset.erase_insert_of_ne hwx, Finset.erase_insert (by simp [hxy, hxz]), Finset.erase_insert_of_ne hwy, Finset.erase_insert_of_ne hxy, Finset.erase_insert (by simp [hyz]), Finset.erase_insert_of_ne hwz, Finset.erase_insert_of_ne hxz …`. Evaluate the numerical expressions using `at e'`. Take the linear combination `e'`.
+-/
 theorem triVal_rel (c : CC F 2) (hc : δ F 2 c = 0) (X : (NE κ)ᵒᵖ) {w x y z : κ}
     (h1 : w < x) (h2 : x < y) (h3 : y < z) (hs : ({w, x, y, z} : Finset κ) ⊆ sub X) :
     triVal F c X {x, y, z} - triVal F c X {w, y, z} + triVal F c X {w, x, z} - triVal F c X {w, x, y} = 0 := by
@@ -92,6 +118,9 @@ end GlobalTheory.CechPoset
 namespace GlobalTheory.CechPoset
 variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] {F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Rewrite using `[alternatingToOrderedCechDegreeTwo_apply_triple]`. Use `split_ifs`. Rewrite using `[map_neg, triVal_map c f'' (triple_subset f f')]`. Conclude with `map_zero _`.
+-/
 theorem alternatingToOrderedCechDegreeTwo_map_apply (c : CC F 2) {a b d g : (NE κ)ᵒᵖ} (f : a ⟶ b) (f' : b ⟶ d) (f'' : d ⟶ g) :
     mp F f'' (e2 F c a b d f f') =
       if mn d < mn b ∧ mn b < mn a then -triVal F c g {mn d, mn b, mn a} else 0 := by
@@ -100,6 +129,17 @@ theorem alternatingToOrderedCechDegreeTwo_map_apply (c : CC F 2) {a b d g : (NE 
   · rw [map_neg, triVal_map c f'' (triple_subset f f')]
   · exact map_zero _
 
+/- English proof (translation)
+Introduce `a b d g φ ψ χ`. Establish `hab` using `mn_le_of_hom φ`. Establish `hbd` using `mn_le_of_hom ψ`. Establish `hdg` using `mn_le_of_hom χ`. Establish `hs : ({mn g, mn d, mn b, mn a} : Finset κ) ⊆ sub g`.
+
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `mn_mem g`. Conclude with `sub_subset χ (mn_mem d)`.
+
+Conclude with `sub_subset (ψ ≫ χ) (mn_mem b)`. Conclude with `sub_subset (φ ≫ ψ ≫ χ) (mn_mem a)`. Establish `hrel : mn g < mn d → mn d < mn b → mn b < mn a → triVal F c g {mn d, mn b, mn a} - triVal F c g {mn g, mn b, mn a} + triVal F c g {mn g, mn d, mn a} - triVal F c g {mn g, mn d, mn b} = 0` using `fun h1 h2 h3 => triVal_rel c hc g h1 h2 h3 hs`. Rewrite using `[alternatingToOrderedCechDegreeTwo_map_apply, alternatingToOrderedCechDegreeTwo_apply_triple, alternatingToOrderedCechDegreeTwo_apply_triple, alternatingToOrderedCechDegreeTwo_apply_triple]`. Generalize the expression as in `mn a = xa at *`.
+
+Generalize the expression as in `mn b = xb at *`. Generalize the expression as in `mn d = xd at *`. Generalize the expression as in `mn g = xg at *`. Apply the tactic sequence `rcases hdg.lt_or_eq with h1 | rfl <;> rcases hbd.lt_or_eq with h2 | rfl <;>`. Apply the tactic sequence `rcases hab.lt_or_eq with h3 | rfl <;>`.
+
+Simplify using `[lt_irrefl, not_lt_of_ge, le_of_lt]`. Rewrite using `[if_pos (h2.trans h3), if_pos (h1.trans h2)]`. Take the linear combination `-hrel`.
+-/
 theorem e2_mem_Z2_of_delta_eq_zero (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (c : CC F 2) (hc : δ F 2 c = 0) :
     e2 F c ∈ Z2 F := by
   intro a b d g φ ψ χ

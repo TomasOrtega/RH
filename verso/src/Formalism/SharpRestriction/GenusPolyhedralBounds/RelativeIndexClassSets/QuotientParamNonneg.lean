@@ -4,6 +4,17 @@ noncomputable section
 
 namespace Formalism.MainNotions.Gaps.T0
 
+/- English proof (translation)
+Establish `hSS' : SS ≤ δ * (G * ((D + 2) * L + 5 * fr * T))` using `hSS.trans (mul_le_mul_of_nonneg_left (hΛ.trans (mul_le_mul_of_nonneg_left hF hG)) hδ)`. Establish `haFw : aF * w ≤ 4 / 3 * (D + 4) * δ * (PH * L)` using `(mul_le_mul_of_nonneg_right haF hw0).trans (mul_le_mul_of_nonneg_left hw (by positivity))`. Establish `haFw' : D * (aF * w) ≤ D * (4 / 3 * (D + 4) * δ * (PH * L))` using `mul_le_mul_of_nonneg_left haFw hD`. Establish `haδw : aδ * w ≤ 4 / 3 * δ * (PH * L)` using `(mul_le_mul_of_nonneg_right haδ hw0).trans (mul_le_mul_of_nonneg_left hw (by positivity))`. Establish `haδw' : D * (aδ * w) ≤ D * (4 / 3 * δ * (PH * L))` using `mul_le_mul_of_nonneg_left haδw hD`.
+
+Establish `hXb0 : 0 ≤ (D + 1) * δ * (2 * G + 6 * PH) * L + D * (4 / 3 * δ * (PH * L))` using `by positivity`. Establish `hin : Hδ + D * aδ * w ≤ (D + 1) * δ * (2 * G + 6 * PH) * L + D * (4 / 3 * δ * (PH * L))`. Establish `e : D * aδ * w = D * (aδ * w)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB' : B ≤ ((D + 1) * δ * (2 * G + 6 * PH) * L + D * (4 / 3 * δ * (PH * L))) + T * c * δ * Pη`.
+
+Establish `e2` using `mul_le_mul_of_nonneg_left hin hcg0`. Establish `e3` using `mul_le_of_le_one_left hXb0 hcg1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAB : A + 1 / 2 * B ≤ δ * ((D + 4) * (D + 1) * (3 * G + 9 * PH) * L + 5 * G * fr * T + lδ + 1 / 2 * T * c * Pη)`. Establish `p1 : 0 ≤ δ * G * L * D ^ 2` using `by positivity`.
+
+Establish `p2 : 0 ≤ δ * G * L * D` using `by positivity`. Establish `p3 : 0 ≤ δ * G * L` using `by positivity`. Establish `p4 : 0 ≤ δ * PH * L * D ^ 2` using `by positivity`. Establish `p5 : 0 ≤ δ * PH * L * D` using `by positivity`. Establish `p6 : 0 ≤ δ * PH * L` using `by positivity`.
+
+Establish `p7 : 0 ≤ δ * lδ` using `by positivity`. Establish `e : D * aF * w = D * (aF * w)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT0 : 0 ≤ ((D + 4) * (D + 1) * (3 * G + 9 * PH) * L + 5 * G * fr * T + lδ + 1 / 2 * T * c * Pη)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem levels_real (A B R δ d D T cg c w G PH Pη L F' fr aδ aF HF Hδ SS Λ' lδ : ℝ)
     (hR : 0 ≤ R) (hRδ : R * δ ≤ d) (hδ : 0 ≤ δ) (hlδ : 0 ≤ lδ) (hD : 0 ≤ D) (hT : 0 ≤ T) (hc : 0 ≤ c)
     (hcg0 : 0 ≤ cg) (hcg1 : cg ≤ 1) (hw0 : 0 ≤ w) (hw : w ≤ PH * L) (hG : 0 ≤ G) (hPH : 0 ≤ PH)
@@ -47,6 +58,21 @@ theorem levels_real (A B R δ d D T cg c w G PH Pη L F' fr aδ aF HF Hδ SS Λ'
     _ = (R * δ) * ((D + 4) * (D + 1) * (3 * G + 9 * PH) * L + 5 * G * fr * T + lδ + 1 / 2 * T * c * Pη) := by ring
     _ ≤ d * ((D + 4) * (D + 1) * (3 * G + 9 * PH) * L + 5 * G * fr * T + lδ + 1 / 2 * T * c * Pη) := mul_le_mul_of_nonneg_right hRδ hT0
 
+/- English proof (translation)
+Establish `hT0 : 0 < T` using `by linarith`. Establish `hD0 : 0 ≤ D` using `by linarith`. Establish `hLT : L ≤ 2 * κ / T`. Rewrite using `[le_div_iff₀ hT0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hDD : (D + 4) * (D + 1) ≤ 10 * D ^ 2` using `by nlinarith`. Establish `hk : 0 ≤ 2 * κ / T` using `by positivity`. Establish `hGP : 0 ≤ 3 * G + 9 * PH` using `by positivity`. Establish `e1 : (D + 4) * (D + 1) * (3 * G + 9 * PH) * L ≤ (60 * G + 180 * PH) * D ^ 2 * κ / T`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPd0 : 0 ≤ Pd` using `le_trans hlδ0 hlδ`. Establish `e2 : lδ ≤ Pd * T` using `hlδ.trans (le_mul_of_one_le_right hPd0 hT)`. Establish `hX : (D + 4) * (D + 1) * (3 * G + 9 * PH) * L + 5 * G * fr * T + lδ + 1 / 2 * T * c * Pη ≤ ((60 * G + 180 * PH) * D ^ 2 * κ / T + (5 * G * fr + Pd) * T + Pη / 2 * T * c)`. Establish `ea : (5 * G * fr + Pd) * T = 5 * G * fr * T + Pd * T` using `by ring`. Establish `eb : Pη / 2 * T * c = 1 / 2 * T * c * Pη` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `g1` using `mul_le_mul_of_nonneg_left hX hd`. Establish `f1 : ρ * (PD * κ) ≤ (ρ' + 22 * D ^ 2 * d / T) * (PD * κ)` using `mul_le_mul_of_nonneg_right hρ (mul_nonneg hPD hκ)`. Establish `f2 : ρ' * ((PD + PQ) * κ) ≤ d * (DivisibilityWeightConstant * (RR ^ 2 * c + 1 / T) / γ) * ((PD + PQ) * κ)` using `mul_le_mul_of_nonneg_right hρ' (mul_nonneg (add_nonneg hPD hPQ) hκ)`. Establish `e5 : 22 * D ^ 2 * d / T * (PD * κ) ≤ d * (40 * PD * D ^ 2 * κ / T)`.
+
+Establish `h0 : 0 ≤ d * PD * D ^ 2 * κ / T` using `by positivity`. Establish `ea : 22 * D ^ 2 * d / T * (PD * κ) = 22 * (d * PD * D ^ 2 * κ / T)` using `by ring`. Establish `eb : d * (40 * PD * D ^ 2 * κ / T) = 40 * (d * PD * D ^ 2 * κ / T)` using `by ring`. Rewrite using `[ea, eb]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `eq1 : d * ((60 * G + 180 * PH + 40 * PD) * D ^ 2 * κ / T + (5 * G * fr + Pd) * T + Pη / 2 * T * c + DivisibilityWeightConstant * (PD + PQ) * (1 / T + RR ^ 2 * c) * κ / γ) = d * ((60 * G + 180 * PH) * D ^ 2 * κ / T + (5 * G * fr + Pd) * T + Pη / 2 * T * c) + d * (40 * PD * D ^ 2 * …` using `by ring`. Establish `eq2 : ρ * PD * κ + ρ' * PQ * κ = ρ * (PD * κ) + ρ' * ((PD + PQ) * κ) - ρ' * (PD * κ)` using `by ring`. Establish `eq3 : (ρ' + 22 * D ^ 2 * d / T) * (PD * κ) = ρ' * (PD * κ) + 22 * D ^ 2 * d / T * (PD * κ)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem total_named_real (d D T c G PH Pη Pd PD PQ DivisibilityWeightConstant RR γ L κ fr lδ ρ ρ' : ℝ)
     (hd : 0 ≤ d) (hD : 1 ≤ D) (hT : 1 ≤ T) (hG : 0 ≤ G) (hPH : 0 ≤ PH) (hPD : 0 ≤ PD) (hPQ : 0 ≤ PQ)
     (hκ : 0 ≤ κ) (hS2 : T * L ≤ 2 * κ) (hlδ0 : 0 ≤ lδ) (hlδ : lδ ≤ Pd)
@@ -97,6 +123,11 @@ theorem total_named_real (d D T c G PH Pη Pd PD PQ DivisibilityWeightConstant R
   rw [eq1]
   linarith
 
+/- English proof (translation)
+Establish `a1 : P1 * D ^ 2 * (κ / T) ≤ PP ^ 2 * D ^ 3 * (κ / T)` using `mul_le_mul_of_nonneg_right h1 (by positivity)`. Establish `a2 : P2 * T ≤ PP ^ 3 * T` using `mul_le_mul_of_nonneg_right h2 hT.le`. Establish `a3 : P3 * (T * c) ≤ PP ^ 2 * (T * c)` using `mul_le_mul_of_nonneg_right h3 (by positivity)`. Establish `a4 : P4 * ((1 / T + RR ^ 2 * c) * κ / γ) ≤ PP ^ 2 * ((1 / T + RR ^ 2 * c) * κ / γ)` using `mul_le_mul_of_nonneg_right h4 (by positivity)`. Establish `hsum : P1 * D ^ 2 * κ / T + P2 * T + P3 * T * c + P4 * (1 / T + RR ^ 2 * c) * κ / γ ≤ PP ^ 2 * (D ^ 3 * κ / T + T * c + (RR ^ 2 * c + 1 / T) * κ / γ) + PP ^ 3 * T`.
+
+Establish `e : P1 * D ^ 2 * κ / T + P2 * T + P3 * T * c + P4 * (1 / T + RR ^ 2 * c) * κ / γ = P1 * D ^ 2 * (κ / T) + P2 * T + P3 * (T * c) + P4 * ((1 / T + RR ^ 2 * c) * κ / γ)` using `by ring`. Establish `e' : PP ^ 2 * (D ^ 3 * κ / T + T * c + (RR ^ 2 * c + 1 / T) * κ / γ) + PP ^ 3 * T = PP ^ 2 * D ^ 3 * (κ / T) + PP ^ 3 * T + PP ^ 2 * (T * c) + PP ^ 2 * ((1 / T + RR ^ 2 * c) * κ / γ)` using `by ring`. Rewrite using `[e, e']`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem total_le_of_bounds (d D T c RR γ κ P1 P2 P3 P4 PP : ℝ)
     (hd : 0 ≤ d) (hT : 0 < T) (hc : 0 ≤ c) (hκ : 0 ≤ κ) (hγ : 0 < γ)
     (h1 : P1 * D ^ 2 ≤ PP ^ 2 * D ^ 3) (h2 : P2 ≤ PP ^ 3) (h3 : P3 ≤ PP ^ 2) (h4 : P4 ≤ PP ^ 2) :
@@ -266,8 +297,14 @@ structure Page (PP C k b m δ₂ q DF : ℝ) : Prop where
 
 variable {X}
 
+/- English proof (translation)
+The claim follows from `le_trans (mul_nonneg h.R0 (by linarith [h.δ1])) h.Rδ`.
+-/
 theorem Ok.d0 (h : X.Ok) : 0 ≤ X.d := le_trans (mul_nonneg h.R0 (by linarith [h.δ1])) h.Rδ
 
+/- English proof (translation)
+Establish `e : ∀ la, X.rr la * X.l la = X.R * (X.I la * X.l la) + X.R * (1 / 2 * (X.T * (X.c / X.i))) * (X.N la * X.l la) + X.cD la * X.l la + (X.vQ la + X.ρ' * X.be la) * X.l la` using `fun la => by`. Unfold `SumDat.rr`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_split (X : SumDat ι) :
     ∑ la ∈ X.s, X.rr la * X.l la =
       X.R * (∑ la ∈ X.s, X.I la * X.l la + 1 / 2 * (X.T * (X.c / X.i) * ∑ la ∈ X.s, X.N la * X.l la))
@@ -280,6 +317,11 @@ theorem sum_split (X : SumDat ι) :
   simp only [e, Finset.sum_add_distrib, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Establish `hδ0 : 0 ≤ X.δ` using `by linarith [h.δ1]`. Establish `hw0 : 0 ≤ Real.log X.rw + 1 / 2` using `by linarith [Real.log_nonneg h.rw1]`. Establish `hw : Real.log X.rw + 1 / 2 ≤ X.PH * X.L` using `h.lrw.trans (mul_le_mul_of_nonneg_right h.PrwPH h.L0)`. Establish `hcg0 : 0 ≤ X.T * X.c * X.g₀` using `mul_nonneg (mul_nonneg (by linarith [h.T1]) h.c0) h.g0`. Establish `key` using `levels_real _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h.R0 h.Rδ hδ0 (Real.log_nonneg h.δ1) (by linarith [h.D1]) (by linarith [h.T1]) h.c0 hcg0 h.Tcg hw0 hw h.G0 h.height_param_nonneg h.Pη0 h.L0 (mul_nonneg h.f0 (sq_nonneg X.r)) h.lev1 h.lev2 h.SSle h.S4 h.S3 h.aδle h.aFle h.H …`.
+
+Unfold `SumDat.lev`. Conclude with `key`.
+-/
 theorem Ok.levels (h : X.Ok) :
     X.R * (∑ la ∈ X.s, X.I la * X.l la + 1 / 2 * (X.T * (X.c / X.i) * ∑ la ∈ X.s, X.N la * X.l la)) ≤
       X.d * X.lev := by
@@ -293,6 +335,11 @@ theorem Ok.levels (h : X.Ok) :
   unfold SumDat.lev
   exact key
 
+/- English proof (translation)
+Rewrite using `[sum_split]`. Establish `hL` using `h.levels`. Establish `key` using `total_named_real (fr := X.f * X.r ^ 2) (Pη := X.Pη) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h.d0 h.D1 h.T1 h.G0 h.height_param_nonneg h.BaseRankDimension h.quotient_param_nonneg h.κ0 h.S2 (Real.log_nonneg h.δ1) h.lδ h.shρ h.shρ'`. Unfold `SumDat.totalNamed SumDat.P1 SumDat.P2 SumDat.P3 SumDat.P4`. Unfold `SumDat.lev at hL`.
+
+Combine the linear relations using `[h.deep, h.quot]`.
+-/
 theorem Ok.sum_le_named (h : X.Ok) : ∑ la ∈ X.s, X.rr la * X.l la ≤ X.totalNamed := by
   rw [sum_split]
   have hL := h.levels
@@ -302,13 +349,44 @@ theorem Ok.sum_le_named (h : X.Ok) : ∑ la ∈ X.s, X.rr la * X.l la ≤ X.tota
   unfold SumDat.lev at hL
   linarith [h.deep, h.quot]
 
+/- English proof (translation)
+Unfold `SumDat.totalNamed SumDat.total`. Conclude with `total_le_of_bounds _ _ _ _ _ _ _ _ _ _ _ _ h.d0 (by linarith [h.T1]) h.c0 h.κ0 h.γ0 hP.r1 hP.r2 hP.r3 hP.r4`.
+-/
 theorem Ok.named_le_total (h : X.Ok) {PP : ℝ} (hP : X.Rel PP) : X.totalNamed ≤ X.total PP := by
   unfold SumDat.totalNamed SumDat.total
   exact total_le_of_bounds _ _ _ _ _ _ _ _ _ _ _ _ h.d0 (by linarith [h.T1]) h.c0 h.κ0 h.γ0 hP.r1 hP.r2 hP.r3 hP.r4
 
+/- English proof (translation)
+The claim follows from `(h.sum_le_named).trans (h.named_le_total hP)`.
+-/
 theorem Ok.sum_le_total (h : X.Ok) {PP : ℝ} (hP : X.Rel PP) :
     ∑ la ∈ X.s, X.rr la * X.l la ≤ X.total PP := (h.sum_le_named).trans (h.named_le_total hP)
 
+/- English proof (translation)
+Take `⟨tableDegreeThreeBase, one_le_radius_alt, q0, C0, k0, b0, m0, δ₂0, Tγ, S1, ps0, ps1, cdef, g1, qlow, TPP, primeSetTwoBounds⟩` from `hp`. Establish `T0 : 0 < X.T` using `by linarith [h.T1]`. Establish `hD3 : 1 ≤ X.D ^ 3` using `one_le_pow₀ h.D1`. Establish `f0` using `h.f0`. Establish `κ0` using `h.κ0`.
+
+Establish `γ0` using `h.γ0`. Establish `d0` using `h.d0`. Establish `hc0` using `h.c0`. Establish `mδ : 0 < m * δ₂` using `mul_pos m0 δ₂0`. Establish `ps1' : 4 * C * PP ^ 2 * X.D ^ 3 * k ≤ X.T * (m * δ₂)`.
+
+Rewrite `ps1` using `[div_le_iff₀ mδ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `primePairSetFirst : 1 ≤ PP` using `by nlinarith`. Establish `cubicPeriodConstant : 1 ≤ PP ^ 3` using `one_le_pow₀ primePairSetFirst`. Establish `hq : X.RR * PP ^ 3 * DF ^ 2 ≤ q`.
+
+Establish `hR4 : X.RR ≤ X.RR ^ 4` using `le_self_pow₀ one_le_radius_alt (by norm_num)`. Combine the equalities or inequalities in the displayed calculation. Establish `hq3 : X.RR ^ 3 * PP ^ 3 * DF ^ 2 ≤ q`. Establish `hR4 : X.RR ^ 3 ≤ X.RR ^ 4` using `pow_le_pow_right₀ one_le_radius_alt (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc1 : PP ^ 2 * X.c ≤ 1`. Rewrite using `[cdef, show PP ^ 2 * (X.RR * PP * DF ^ 2 / q) = X.RR * PP ^ 3 * DF ^ 2 / q by ring, div_le_one q0]`. Conclude with `hq`. Establish `hc2 : PP ^ 2 * (X.RR ^ 2 * X.c) ≤ 1`. Rewrite using `[cdef, show PP ^ 2 * (X.RR ^ 2 * (X.RR * PP * DF ^ 2 / q)) = X.RR ^ 3 * PP ^ 3 * DF ^ 2 / q by ring, div_le_one q0]`.
+
+Conclude with `hq3`. Establish `hT1 : PP ^ 2 / X.T ≤ 1` using `(div_le_one T0).mpr TPP`. Establish `tA : PP ^ 2 * X.D ^ 3 * X.κ / X.T ≤ X.f * m * b * δ₂ / 4`. Rewrite using `[div_le_iff₀ T0]`. Establish `e1 : PP ^ 2 * X.D ^ 3 * X.κ ≤ PP ^ 2 * X.D ^ 3 * (C * k * X.f * b)` using `mul_le_mul_of_nonneg_left S1 (by positivity)`.
+
+Establish `e2 : (4 * C * PP ^ 2 * X.D ^ 3 * k) * (X.f * b) ≤ (X.T * (m * δ₂)) * (X.f * b)` using `mul_le_mul_of_nonneg_right ps1' (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `tB : PP ^ 2 * (X.T * X.c) ≤ X.f * m * b * δ₂ / 4`. Establish `e : PP ^ 2 * (X.T * X.c) = X.T * (PP ^ 2 * X.c)` using `by ring`. Establish `e2 : X.T * (PP ^ 2 * X.c) ≤ X.T` using `mul_le_of_le_one_right T0.le hc1`.
+
+Establish `e3 : X.T ≤ PP ^ 3 * X.T` using `le_mul_of_one_le_left T0.le cubicPeriodConstant`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `tC : PP ^ 2 * ((X.RR ^ 2 * X.c + 1 / X.T) * X.κ / X.γ₀) ≤ X.f * m * b * δ₂ / 4`. Establish `e1 : PP ^ 2 * (X.RR ^ 2 * X.c + 1 / X.T) ≤ 2`. Establish `e : PP ^ 2 * (X.RR ^ 2 * X.c + 1 / X.T) = PP ^ 2 * (X.RR ^ 2 * X.c) + PP ^ 2 / X.T` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : X.κ / X.γ₀ ≤ X.κ / X.T` using `div_le_div_of_nonneg_left κ0 T0 Tγ`. Establish `e3 : X.κ / X.T ≤ X.f * m * b * δ₂ / 8`. Rewrite using `[div_le_iff₀ T0]`. Establish `hCk : 0 ≤ C * k` using `mul_nonneg C0 k0`.
+
+Establish `a0 : 2 ≤ PP ^ 2 * X.D ^ 3` using `by nlinarith`. Establish `a1 : C * k * 2 ≤ C * k * (PP ^ 2 * X.D ^ 3)` using `mul_le_mul_of_nonneg_left a0 hCk`. Establish `a2 : 8 * (C * k) * (X.f * b) ≤ X.T * (m * δ₂) * (X.f * b)` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsum : PP ^ 2 * (X.D ^ 3 * X.κ / X.T + X.T * X.c + (X.RR ^ 2 * X.c + 1 / X.T) * X.κ / X.γ₀) + PP ^ 3 * X.T ≤ X.f * m * b * δ₂`. Establish `e : PP ^ 2 * (X.D ^ 3 * X.κ / X.T + X.T * X.c + (X.RR ^ 2 * X.c + 1 / X.T) * X.κ / X.γ₀) = PP ^ 2 * X.D ^ 3 * X.κ / X.T + PP ^ 2 * (X.T * X.c) + PP ^ 2 * ((X.RR ^ 2 * X.c + 1 / X.T) * X.κ / X.γ₀)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `SumDat.total`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Ok.total_le_page (h : X.Ok) {PP C k b m δ₂ q DF : ℝ} (hp : X.Page PP C k b m δ₂ q DF) :
     X.total PP ≤ X.d * X.f * m * b * δ₂ := by
   obtain ⟨tableDegreeThreeBase, one_le_radius_alt, q0, C0, k0, b0, m0, δ₂0, Tγ, S1, ps0, ps1, cdef, g1, qlow, TPP, primeSetTwoBounds⟩ := hp
@@ -390,10 +468,16 @@ theorem Ok.total_le_page (h : X.Ok) {PP C k b m δ₂ q DF : ℝ} (hp : X.Page P
     _ ≤ X.d * (X.f * m * b * δ₂) := mul_le_mul_of_nonneg_left hsum d0
     _ = X.d * X.f * m * b * δ₂ := by ring
 
+/- English proof (translation)
+The claim follows from `(h.sum_le_total hP).trans (h.total_le_page hp)`.
+-/
 theorem Ok.sum_le_page (h : X.Ok) {PP C k b m δ₂ q DF : ℝ} (hP : X.Rel PP)
     (hp : X.Page PP C k b m δ₂ q DF) :
     ∑ la ∈ X.s, X.rr la * X.l la ≤ X.d * X.f * m * b * δ₂ := (h.sum_le_total hP).trans (h.total_le_page hp)
 
+/- English proof (translation)
+Use `⟨summable_of_ne_finset_zero h0, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_eq_sum h0]`. Conclude with `h.sum_le_page hP hp`.
+-/
 theorem Ok.tsum_le_page (h : X.Ok) {PP C k b m δ₂ q DF : ℝ} (hP : X.Rel PP)
     (hp : X.Page PP C k b m δ₂ q DF) (h0 : ∀ la ∉ X.s, X.rr la * X.l la = 0) :
     Summable (fun la => X.rr la * X.l la) ∧ ∑' la, X.rr la * X.l la ≤ X.d * X.f * m * b * δ₂ := by
@@ -401,6 +485,9 @@ theorem Ok.tsum_le_page (h : X.Ok) {PP C k b m δ₂ q DF : ℝ} (hP : X.Rel PP)
   rw [tsum_eq_sum h0]
   exact h.sum_le_page hP hp
 
+/- English proof (translation)
+Unfold `SumDat.rr`. Rewrite using `[mul_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rr_nonneg (X : SumDat ι) (la : ι) (h1 : 0 ≤ X.R * X.I la)
     (h2 : 0 ≤ X.R * (X.T * (X.c / (2 * X.i)) * X.N la)) (h3 : 0 ≤ X.cD la)
     (h4 : 0 ≤ X.vQ la + X.ρ' * X.be la) : 0 ≤ X.rr la := by
@@ -410,24 +497,44 @@ theorem rr_nonneg (X : SumDat ι) (la : ι) (h1 : 0 ≤ X.R * X.I la)
 
 end SumDat
 
+/- English proof (translation)
+Rewrite `h` using `[div_le_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem share_of_div {ρ' d x : ℝ} (hd : 0 < d) (h : ρ' / d ≤ x) : ρ' ≤ d * x := by
   rw [div_le_iff₀ hd] at h
   linarith
 
+/- English proof (translation)
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_half_le_mul {lrw Prw L : ℝ} (h : lrw ≤ Prw * (L - 1)) (hP : 1 / 2 ≤ Prw) :
     lrw + 1 / 2 ≤ Prw * L := by linarith
 
+/- English proof (translation)
+Establish `hδd : δ ≤ d` using `by nlinarith`. Conclude with `(Real.log_le_log hδ hδd).trans hd`.
+-/
 theorem log_delta_le {R δ d Pd : ℝ} (hR : 1 ≤ R) (hδ : 0 < δ) (hRδ : R * δ ≤ d) (hd : Real.log d ≤ Pd) :
     Real.log δ ≤ Pd := by
   have hδd : δ ≤ d := by nlinarith
   exact (Real.log_le_log hδ hδd).trans hd
 
+/- English proof (translation)
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mul_le_two_mul_of_eq {κ F' T L : ℝ} (h : κ = F' + T * L - T) (hF : 0 ≤ F') (hT : T ≤ κ) :
     T * L ≤ 2 * κ := by linarith
 
+/- English proof (translation)
+Take the linear combination `h0 - h`.
+-/
 theorem deep_norm {κ F' F0 T D L : ℝ} (h : κ = F' + T * L - T) (h0 : F0 = F' + D * L - D) :
     (T - D) * L + F0 = κ + T - D := by linear_combination h0 - h
 
+/- English proof (translation)
+Establish `e1 : aG1 * w ≤ 4 / 3 * δ * (Prw * L)` using `(mul_le_mul_of_nonneg_right ha hw0).trans (mul_le_mul_of_nonneg_left hw (by positivity))`. Establish `e2` using `mul_le_mul_of_nonneg_left e1 hD`. Establish `e3 : D * aG1 * w = D * (aG1 * w)` using `by ring`. Establish `q1 : 0 ≤ δ * D * L * (PH - PI4 - Prw)` using `mul_nonneg (by positivity) (by linarith)`. Establish `q2 : 0 ≤ δ * D * L * PI4` using `by positivity`.
+
+Establish `q3 : 0 ≤ δ * D * L * Prw` using `by positivity`. Establish `q4 : 0 ≤ δ * L * PH` using `mul_nonneg (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Hdel_le {HL Hδ δ D G PH PI4 Prw L aG1 w : ℝ} (hδ : 0 ≤ δ) (hD : 0 ≤ D) (hL : 0 ≤ L)
     (hPI : 0 ≤ PI4) (hPrw : 0 ≤ Prw) (hw0 : 0 ≤ w) (hw : w ≤ Prw * L) (hP : PI4 + Prw ≤ PH)
     (ha : aG1 ≤ 4 / 3 * δ) (hHL : HL ≤ (D + 1) * δ * (2 * G + 4 * PH) * L)
@@ -443,6 +550,13 @@ theorem Hdel_le {HL Hδ δ D G PH PI4 Prw L aG1 w : ℝ} (hδ : 0 ≤ δ) (hD : 
   have q4 : 0 ≤ δ * L * PH := mul_nonneg (by positivity) (by linarith)
   linarith
 
+/- English proof (translation)
+Establish `e1 : aG2 * w ≤ 4 / 3 * (D + 4) * δ * (Prw * L)` using `(mul_le_mul_of_nonneg_right ha hw0).trans (mul_le_mul_of_nonneg_left hw (by positivity))`. Establish `e2` using `mul_le_mul_of_nonneg_left e1 hD`. Establish `e3 : D * aG2 * w = D * (aG2 * w)` using `by ring`. Establish `e4 : (D + 4) * HL ≤ (D + 4) * ((D + 1) * δ * (2 * G + 4 * PH) * L)` using `mul_le_mul_of_nonneg_left hHL (by positivity)`. Establish `q0 : 0 ≤ δ * L * (D + 4) * (D + 1) * (PH - PI4 - Prw)` using `mul_nonneg (by positivity) (by linarith)`.
+
+Establish `q1 : 0 ≤ δ * L * PI4 * D ^ 2` using `by positivity`. Establish `q2 : 0 ≤ δ * L * PI4 * D` using `by positivity`. Establish `q3 : 0 ≤ δ * L * PI4` using `by positivity`. Establish `q4 : 0 ≤ δ * L * Prw * D ^ 2` using `by positivity`. Establish `q5 : 0 ≤ δ * L * Prw * D` using `by positivity`.
+
+Establish `q6 : 0 ≤ δ * L * Prw` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HF_le {HL HF δ D G PH PI4 Prw L aG2 w : ℝ} (hδ : 0 ≤ δ) (hD : 0 ≤ D) (hL : 0 ≤ L)
     (hPI : 0 ≤ PI4) (hPrw : 0 ≤ Prw) (hw0 : 0 ≤ w) (hw : w ≤ Prw * L) (hP : PI4 + Prw ≤ PH)
     (ha : aG2 ≤ 4 / 3 * (D + 4) * δ) (hHL : HL ≤ (D + 1) * δ * (2 * G + 4 * PH) * L)
@@ -463,6 +577,11 @@ theorem HF_le {HL HF δ D G PH PI4 Prw L aG2 w : ℝ} (hδ : 0 ≤ δ) (hD : 0 �
   have q6 : 0 ≤ δ * L * Prw := by positivity
   linarith
 
+/- English proof (translation)
+Establish `hTD : 0 ≤ T - D` using `by linarith`. Establish `e1 : (T - D) * ΛW ≤ (T - D) * (G * L)` using `mul_le_mul_of_nonneg_left hW hTD`. Establish `e2 : (T - D) * lrw ≤ (T - D) * (Prw * (L - 1))` using `mul_le_mul_of_nonneg_left hrw hTD`. Establish `e3 : G * (κ + T - D) ≤ G * (2 * κ)` using `mul_le_mul_of_nonneg_left (by linarith) hG`. Establish `e4 : G * ((T - D) * L + F0) = G * (κ + T - D)` using `by rw [hn]`.
+
+Establish `e5 : Prw * ((T - D) * L + F0) = Prw * (κ + T - D)` using `by rw [hn]`. Establish `e6 : 0 ≤ Prw * F0` using `mul_nonneg hPrw hF0`. Establish `e7 : PE ≤ PE * κ` using `le_mul_of_one_le_right hPE hκ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deep_size {T D ΛW Λ0 lrw A E G Prw tableDegreeThreeBase PE L F0 κ : ℝ} (hD : 0 ≤ D) (hDT : D ≤ T) (hG : 0 ≤ G)
     (hPrw : 0 ≤ Prw) (hPE : 0 ≤ PE) (hF0 : 0 ≤ F0) (hκ : 1 ≤ κ) (hTκ : T ≤ κ)
     (hW : ΛW ≤ G * L) (h0 : Λ0 ≤ G * F0) (hrw : lrw ≤ Prw * (L - 1))
@@ -478,9 +597,23 @@ theorem deep_size {T D ΛW Λ0 lrw A E G Prw tableDegreeThreeBase PE L F0 κ : �
   have e7 : PE ≤ PE * κ := le_mul_of_one_le_right hPE hκ
   linarith
 
+/- English proof (translation)
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deep_E {ld ln lr Pd PO : ℝ} (hPd : 0 ≤ Pd) (h1 : ld ≤ Pd) (h2 : ln ≤ PO) (h3 : lr ≤ PO) :
     ld + 1 / 2 * ln + lr ≤ 3 / 2 * (Pd + PO) := by linarith
 
+/- English proof (translation)
+Establish `hZ1 : 1 ≤ Z` using `by linarith`. Establish `hZ0 : 0 ≤ Z` using `by linarith`. Establish `hCP0 : 0 ≤ CP` using `by linarith`. Establish `hPP2 : PP ^ 2 = CP ^ 2 * Z ^ 24` using `by rw [hPP]; ring`. Establish `hPP3 : PP ^ 3 = CP ^ 3 * Z ^ 36` using `by rw [hPP]; ring`.
+
+Establish `cp2 : CP ≤ CP ^ 2` using `le_self_pow₀ hCP (by norm_num)`. Establish `cp3 : CP ≤ CP ^ 3` using `le_self_pow₀ hCP (by norm_num)`. Establish `z6 : Z ^ 6 ≤ Z ^ 24` using `pow_le_pow_right₀ hZ1 (by norm_num)`. Establish `z5 : Z ^ 5 ≤ Z ^ 36` using `pow_le_pow_right₀ hZ1 (by norm_num)`. Establish `z3 : Z ^ 3 ≤ Z ^ 24` using `pow_le_pow_right₀ hZ1 (by norm_num)`.
+
+Establish `z14 : 2 * Z ^ 14 ≤ Z ^ 24`. Establish `a : (2 : ℝ) ≤ Z ^ 10` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hZ 10)`. Combine the equalities or inequalities in the displayed calculation. Establish `r1 : X.P1 * X.D ^ 2 ≤ PP ^ 2 * X.D ^ 3`. Establish `a : X.P1 ≤ PP ^ 2` using `h1.trans (by rw [hPP2]; exact mul_le_mul cp2 z6 (by positivity) (by positivity))`.
+
+Establish `b : X.P1 * X.D ^ 2 ≤ PP ^ 2 * X.D ^ 2` using `mul_le_mul_of_nonneg_right a (sq_nonneg _)`. Establish `c : X.D ^ 2 ≤ X.D ^ 3` using `pow_le_pow_right₀ hD (by norm_num)`. Conclude with `b.trans (mul_le_mul_of_nonneg_left c (sq_nonneg _))`. Establish `r2 : X.P2 ≤ PP ^ 3` using `h2.trans (by rw [hPP3]; exact mul_le_mul cp3 z5 (by positivity) (by positivity))`. Establish `r3 : X.P3 ≤ PP ^ 2` using `h3.trans (by rw [hPP2]; exact mul_le_mul cp2 z3 (by positivity) (by positivity))`.
+
+Establish `r4 : X.P4 ≤ PP ^ 2`. Use `h4.trans ?_` and prove the remaining obligations. Rewrite using `[hPP2, show 2 * (CP * Z ^ 10) * (CP * Z ^ 4) = CP ^ 2 * (2 * Z ^ 14) by ring]`. Conclude with `mul_le_mul_of_nonneg_left z14 (by positivity)`. Conclude with `⟨r1, r2, r3, r4⟩`.
+-/
 theorem SumDat.rel_of_abs {ι : Type*} (X : SumDat ι) {CP Z PP : ℝ} (hCP : 1 ≤ CP) (hZ : 2 ≤ Z)
     (hPP : PP = CP * Z ^ 12) (hD : 1 ≤ X.D) (h1 : X.P1 ≤ CP * Z ^ 6) (h2 : X.P2 ≤ CP * Z ^ 5)
     (h3 : X.P3 ≤ CP * Z ^ 3) (h4 : X.P4 ≤ 2 * (CP * Z ^ 10) * (CP * Z ^ 4)) : X.Rel PP := by
@@ -514,6 +647,23 @@ theorem SumDat.rel_of_abs {ι : Type*} (X : SumDat ι) {CP Z PP : ℝ} (hCP : 1 
     exact mul_le_mul_of_nonneg_left z14 (by positivity)
   exact ⟨r1, r2, r3, r4⟩
 
+/- English proof (translation)
+Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hw0 : 0 ≤ lrw + 1 / 2` using `by linarith`. Establish `b1 : HM ≤ (D + 1) * δ * (tableDegreeThreeBase * L + G * L + 1 / 2 * (Prw * L))` using `hHM.trans (mul_le_mul_of_nonneg_left (by linarith) (by positivity))`. Establish `b2 : δ * (Sν + tableLineDegreeFive * DF + c * tableLineDegreeTwo) ≤ δ * (PN * L + tableLineDegreeFive * L + tableLineDegreeTwo * L)`. Establish `i1 : tableLineDegreeFive * DF ≤ tableLineDegreeFive * L` using `mul_le_mul_of_nonneg_left hDF hP14`.
+
+Establish `i2 : c * tableLineDegreeTwo ≤ 1 * tableLineDegreeTwo` using `mul_le_mul_of_nonneg_right hc1 hP16`. Establish `i3 : tableLineDegreeTwo ≤ tableLineDegreeTwo * L` using `le_mul_of_one_le_right hP16 hL`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hδ`. Establish `b3 : D * cg * aδ * (lrw + 1 / 2) ≤ D * (1 / 2 * (4 / 3 * δ) * (Prw * L))`. Establish `i1 : cg * aδ ≤ cg * (4 / 3 * δ)` using `mul_le_mul_of_nonneg_left haδ hcg0`.
+
+Establish `i2 : cg * (4 / 3 * δ) ≤ 1 / 2 * (4 / 3 * δ)` using `mul_le_mul_of_nonneg_right hcg (by positivity)`. Establish `i3 : cg * aδ * (lrw + 1 / 2) ≤ 1 / 2 * (4 / 3 * δ) * (lrw + 1 / 2)` using `mul_le_mul_of_nonneg_right (i1.trans i2) hw0`. Establish `i4 : 1 / 2 * (4 / 3 * δ) * (lrw + 1 / 2) ≤ 1 / 2 * (4 / 3 * δ) * (Prw * L)` using `mul_le_mul_of_nonneg_left hw (by positivity)`. Establish `i5` using `mul_le_mul_of_nonneg_left (i3.trans i4) hD`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `b4 : Y ≤ δ * PI4 * D * L + D * (4 / 3 * δ * (Prw * L))`. Establish `i1 : aG1 * (lrw + 1 / 2) ≤ 4 / 3 * δ * (lrw + 1 / 2)` using `mul_le_mul_of_nonneg_right haG hw0`. Establish `i2 : 4 / 3 * δ * (lrw + 1 / 2) ≤ 4 / 3 * δ * (Prw * L)` using `mul_le_mul_of_nonneg_left hw (by positivity)`. Establish `i3` using `mul_le_mul_of_nonneg_left (i1.trans i2) hD`. Establish `e : D * aG1 * (lrw + 1 / 2) = D * (aG1 * (lrw + 1 / 2))` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX8b0 : 0 ≤ ((D + 1) * δ * (tableDegreeThreeBase * L + G * L + 1 / 2 * (Prw * L)) + δ * (PN * L + tableLineDegreeFive * L + tableLineDegreeTwo * L) + D * (1 / 2 * (4 / 3 * δ) * (Prw * L)))` using `by positivity`. Establish `hmax : max X8 0 ≤ ((D + 1) * δ * (tableDegreeThreeBase * L + G * L + 1 / 2 * (Prw * L)) + δ * (PN * L + tableLineDegreeFive * L + tableLineDegreeTwo * L) + D * (1 / 2 * (4 / 3 * δ) * (Prw * L)))` using `max_le (by linarith) hX8b0`. Establish `q0 : 0 ≤ δ * L * (D + 1) * (PH - (tableDegreeThreeBase + PN + tableLineDegreeFive + tableLineDegreeTwo + PI4 + Prw))` using `mul_nonneg (by positivity) (by linarith)`. Establish `qa0 : 0 ≤ δ * L * tableDegreeThreeBase` using `by positivity`.
+
+Establish `qb0 : 0 ≤ δ * L * tableDegreeThreeBase * D` using `by positivity`. Establish `qa1 : 0 ≤ δ * L * PN` using `by positivity`. Establish `qb1 : 0 ≤ δ * L * PN * D` using `by positivity`. Establish `qa2 : 0 ≤ δ * L * tableLineDegreeFive` using `by positivity`. Establish `qb2 : 0 ≤ δ * L * tableLineDegreeFive * D` using `by positivity`.
+
+Establish `qa3 : 0 ≤ δ * L * tableLineDegreeTwo` using `by positivity`. Establish `qb3 : 0 ≤ δ * L * tableLineDegreeTwo * D` using `by positivity`. Establish `qa4 : 0 ≤ δ * L * PI4` using `by positivity`. Establish `qb4 : 0 ≤ δ * L * PI4 * D` using `by positivity`. Establish `qa5 : 0 ≤ δ * L * Prw` using `by positivity`.
+
+Establish `qb5 : 0 ≤ δ * L * Prw * D` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HL_le {HL X8 Y HM δ D G PH tableDegreeThreeBase PN tableLineDegreeFive tableLineDegreeTwo PI4 Prw L lrw ΛW Sν DF c cg aδ aG1 : ℝ}
     (hδ : 0 ≤ δ) (hD : 0 ≤ D) (hL : 1 ≤ L) (hG : 0 ≤ G) (hPP0 : 0 ≤ tableDegreeThreeBase) (hPN : 0 ≤ PN) (hP14 : 0 ≤ tableLineDegreeFive)
     (hP16 : 0 ≤ tableLineDegreeTwo) (hPI : 0 ≤ PI4) (hPrw : 0 ≤ Prw) (hlrw : 0 ≤ lrw) (hw : lrw + 1 / 2 ≤ Prw * L)

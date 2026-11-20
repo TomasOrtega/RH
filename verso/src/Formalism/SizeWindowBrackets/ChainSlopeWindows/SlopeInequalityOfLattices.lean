@@ -20,12 +20,26 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
 variable {ι : Type} [DecidableEq ι]
 variable (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) (P : ∀ u0, W u0 → PData ι m)
 
+/- English proof (translation)
+Introduce `hI u0 u`. Unfold `Data.Ee PData.Ee UnitWeightPartition.Ee`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hI u0 u).2.2 j`.
+-/
 theorem exponent_transfer : BridgeEe D P := by
   intro hI u0 u
   unfold Data.Ee PData.Ee UnitWeightPartition.Ee
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => (hI u0 u).2.2 j
 
+/- English proof (translation)
+Introduce `hH hI hS u0 u`. Take `⟨hLow, hLow2, hHigh⟩` from `hH u0 u`. Take `⟨hGa, hFo, -⟩` from `hI u0 u`. Take `⟨h4, hB, hsz⟩` from `hS`. Take `⟨hIO, hLT, hRX⟩` from `hsz u0 u`.
+
+Establish `hEe` using `exponent_transfer D P hI u0 u`. Establish `lo` using `UnitWeightPartition.lower_bound_simplified _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hLow hLow2`. Establish `hi` using `UnitWeightPartition.claimHigh_valid _ _ _ _ _ _ _ _ _ _ _ hHigh`. Establish `hIOp : 0 ≤ (P u0 u).IOp`. Establish `h1 : UnitWeightPartition.IO (P u0 u).S (P u0 u).l (P u0 u).io = 2 * (P u0 u).IOp` using `hLow2.2.2.2.2.2.2.1`.
+
+Establish `h2 : 0 ≤ UnitWeightPartition.IO (P u0 u).S (P u0 u).l (P u0 u).io` using `Finset.sum_nonneg fun w hw => mul_nonneg (mul_nonneg (by norm_num) (hLow.1 w hw)) (hLow.2.2.2.2.2.2.2.1 w hw)`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hGa, hFo, hEe]`. Unfold `PData.Ga PData.Fo PData.Ee`. Prove the components needed by the constructor for the conclusion.
+
+Establish `h0 : 0 ≤ C.cSl1 * (m : ℝ) * D.B0`. Rewrite using `[mul_assoc]; exact mul_nonneg (by linarith) hB`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Lo5`. Establish `h1 : 4 * (P u0 u).IOp ≤ C.cSl1 * D.IO u0`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem unit_weight_transfer : QuotientSlopeBoundsOfPlaceSums D C Xpp P := by
   intro hH hI hS u0 u
   obtain ⟨hLow, hLow2, hHigh⟩ := hH u0 u
@@ -62,6 +76,11 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
 variable {ι : Type} [DecidableEq ι]
 variable (D : Data U0 W Top m f) (C : Consts) (Xpp cT : ℝ) (Q : ∀ u0, W u0 → PPrim ι m)
 
+/- English proof (translation)
+Introduce `h u0 u`. Take `⟨hl, hdM, hT2, hT4, hdu, hsub, htauT, htau, hio, hG1, hT5, hlam, hlT, hsg, hRd, hmu, hmax, hMu, hMaxMu, hTa, hsmall, hmap, hfib, hiop⟩` from `h u0 u`. Take `⟨d1, d2, d3, d4⟩` from `UnitWeightPartition.deficit_bounds f (D.T u0 u) (Q u0 u).dM (Q u0 u).du hdM hT2 hdu`. Establish `hTpos : 0 < D.T u0 u` using `by linarith`. Establish `hhalf : 2 * (f : ℝ) / D.T u0 u ≤ 1 / 2`.
+
+Rewrite using `[div_le_iff₀ hTpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPT` using `UnitWeightPartition.truncatedLength_bound (Q u0 u).ST (Q u0 u).l (Q u0 u).len (Q u0 u).dM (Q u0 u).du (1 - (Q u0 u).du / (Q u0 u).dM) (Q u0 u).lam (D.T u0 u) (fun w hw => hl w (hsub hw)) hdM d2 (le_trans d4 hhalf) d1 hlam hT5 hlT`. Establish `hU` using `UnitWeightPartition.unit_weight_partition (Q u0 u).S (Q u0 u).Pr (Q u0 u).pr (Q u0 u).l (Q u0 u).io (Q u0 u).iop hmap hfib hiop`. Conclude with `⟨⟨hl, hdM, d2, d3, d1, hsub, htauT, hio, hG1, hPT, hRd, hmu⟩, ⟨hMu, d4, hhalf, htau, hTa, hsmall, hU, le_refl _, le_refl _⟩, ⟨hl, hsg, hmax, hMaxMu⟩⟩`.
+-/
 theorem primitive_transfer : BridgePrim D Q := by
   intro h u0 u
   obtain ⟨hl, hdM, hT2, hT4, hdu, hsub, htauT, htau, hio, hG1, hT5, hlam, hlT, hsg, hRd, hmu, hmax,
@@ -79,6 +98,13 @@ theorem primitive_transfer : BridgePrim D Q := by
     ⟨hMu, d4, hhalf, htau, hTa, hsmall, hU, le_refl _, le_refl _⟩,
     ⟨hl, hsg, hmax, hMaxMu⟩⟩
 
+/- English proof (translation)
+Introduce `hT h`. Take `⟨h4, hcT, hB, hab, hsz⟩` from `h`. Use `⟨h4, hB, fun u0 u => ?_⟩` and prove the remaining obligations. Take `⟨hIO, hlam, hRd⟩` from `hsz u0 u`. Use `⟨hIO, ?_, hRd⟩` and prove the remaining obligations.
+
+Establish `hlog : 0 ≤ Real.log (D.T u0 u)` using `Real.log_nonneg (by linarith [hT u0 u])`. Establish `hX : 0 ≤ D.nT * (m : ℝ) * (D.a / D.k + D.b')` using `mul_nonneg (mul_nonneg (by unfold Data.nT; positivity) (by positivity)) hab`. Establish `h1 : 4 * (Q u0 u).lam ≤ C.cSl1 * D.nT * (m : ℝ) * (D.a / D.k + D.b')`. Use `mul_le_mul_of_nonneg_right hcT hX` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `mul_le_mul_of_nonneg_right h1 hlog`.
+-/
 theorem primitive_transfer_sizes : BridgePrimSizes D C Xpp cT Q := by
   intro hT h
   obtain ⟨h4, hcT, hB, hab, hsz⟩ := h
@@ -93,6 +119,9 @@ theorem primitive_transfer_sizes : BridgePrimSizes D C Xpp cT Q := by
     nlinarith
   exact mul_le_mul_of_nonneg_right h1 hlog
 
+/- English proof (translation)
+Introduce `hH hI hS`. Conclude with `unit_weight_transfer D C Xpp (toP D Q) (primitive_transfer D Q hH) hI (primitive_transfer_sizes D C Xpp cT Q (fun u0 u => (hH u0 u).2.2.1) hS)`.
+-/
 theorem unit_weight_of_primitive : QuotientSlopeBoundsOfPrimitiveData D C Xpp cT Q := by
   intro hH hI hS
   exact unit_weight_transfer D C Xpp (toP D Q) (primitive_transfer D Q hH) hI
@@ -110,6 +139,23 @@ variable (D : Data U0 W Top m f) (C : Consts) (Xpp : ℝ) (P : ∀ u0, W u0 → 
 
 end Round
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N β hM hM0 hN hrk hβ S eR l sg' tau len hoff he hl hsg htau hlen`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Take `⟨-, -, h1, h2⟩` from `slopeLatticeData.slope_via_lengths K V ι b X hX σ τ M N β hM hM0 hN hrk hβ`. Establish `hd : (rkK M : ℝ) ≠ 0` using `by exact_mod_cast (slopeLatticeData.rkK_pos hM0).ne'`. Establish `hSg : slopeLatticeData.sgSum σ τ = UnitWeightPartition.Sg S l sg' tau`.
+
+Unfold `slopeLatticeData.sgSum UnitWeightPartition.Sg`. Establish `hsub : σ.support ∪ τ.support ⊆ S`. Introduce `w hw`. Assume the negation of the conclusion as `hS`. Take `⟨a, b', -⟩` from `hoff w hS`.
+
+Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Conclude with `(Finsupp.mem_support_iff.1 h) a`. Conclude with `(Finsupp.mem_support_iff.1 h) b'`. Establish `hstep : ∑ w ∈ σ.support ∪ τ.support, 2 * slopeLatticeData.ell w * ((σ w : ℝ) - (τ w : ℝ)) = ∑ w ∈ S, 2 * slopeLatticeData.ell w * ((σ w : ℝ) - (τ w : ℝ))`. Use `Finset.sum_subset hsub fun w _ hw => ?_` and prove the remaining obligations.
+
+Rewrite `hw` using `[Finset.mem_union, not_or, Finsupp.notMem_support_iff, Finsupp.notMem_support_iff]`. Rewrite using `[hw.1, hw.2]`. Simplify using the standard rewrite rules. Use `Eq.trans ?_ (hstep.trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr (by congr) fun _ _ => rfl`.
+
+Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Use `(he w hw).ne'` as an intermediate fact. Rewrite using `[hl w hw, hsg w hw, htau w hw]`. Clear the denominators using the available nonvanishing facts. Establish `hBe : ∑ᶠ w : slopeLatticeData.FinPl K, 2 * slopeLatticeData.ell w * β w = UnitWeightPartition.BeSum S l (rkK M : ℝ) len tau`.
+
+Rewrite using `[finsum_eq_sum_of_support_subset (s := S)]`. Unfold `UnitWeightPartition.BeSum UnitWeightPartition.be`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Use `(he w hw).ne'` as an intermediate fact. Rewrite using `[hl w hw, hlen w hw, htau w hw]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `w hw`. Assume the negation of the conclusion as `hS`. Rewrite `hw` using `[Function.mem_support, (hoff w hS).2.2, mul_zero]`.
+
+Conclude with `hw rfl`. Rewrite using `[← hSg, ← hBe]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem slope_formula_transfer : LatticeSlopeComparison := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N β hM hM0 hN hrk hβ S eR l sg' tau len hoff he hl hsg
     htau hlen
@@ -158,6 +204,11 @@ variable {U0 : Type} [Fintype U0] {W : U0 → Type} [∀ u0, Fintype (W u0)]
   [∀ u0, Nonempty (W u0)] {Top : Type} [Fintype Top] {m f : ℕ}
 variable (D : Data U0 W Top m f) (C : Consts)
 
+/- English proof (translation)
+Establish `e : ∀ a b : ℝ, 4 * a * b = 4 * (a * b)` using `fun a b => mul_assoc 4 a b`. Unfold `BridgeF Data.SlopeIneq SideF ConclFAt PhiMonotonicityLemmas.ConclF PhiMonotonicityLemmas.ErrF PhiMonotonicityLemmas.phi`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h u0 ⟨h1, h2, h3, h4, h5, h6, h7⟩`. Use `h u0 h1 h2 h3 h4 h5 h6 h7` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `h u0 h1 h2 h3 h4 h5 h6 h7`. Use `h u0 ⟨h1, h2, h3, h4, h5, h6, h7⟩` as an intermediate fact. Rewrite using `[e]` and apply the resulting hypothesis.
+-/
 theorem function_transfer : BridgeF D := by
   have e : ∀ a b : ℝ, 4 * a * b = 4 * (a * b) := fun a b => mul_assoc 4 a b
   unfold BridgeF Data.SlopeIneq SideF ConclFAt PhiMonotonicityLemmas.ConclF PhiMonotonicityLemmas.ErrF PhiMonotonicityLemmas.phi
@@ -169,6 +220,21 @@ theorem function_transfer : BridgeF D := by
     have := h u0 ⟨h1, h2, h3, h4, h5, h6, h7⟩
     rwa [e]
 
+/- English proof (translation)
+Take `⟨hd, hmuN, hmuMax, hcc, hmin⟩` from `hId`. Take `⟨-, -, -, -, -, s6, s7⟩` from `hSide`. Establish `hpos : (0 : ℝ) < ∑ i, (Fintype.card (ι i) : ℝ)`. Conclude with `hG.2.2.2.2.2.2.2.2.1` after adjusting the coercions. Establish `hs : D.s u0 = (∑ i, (Fintype.card (ι i) : ℝ) * (muDef (b i) (X i) (N i) - D.h u0 i)) / ∑ i, (Fintype.card (ι i) : ℝ)`.
+
+Unfold `Data.s wmean`. Simplify using `only [hd, hmuN]`. Establish `hle : ∀ i, muMaxDef (b i) (X i) (N i) - D.h u0 i ≤ Finset.univ.sup' Finset.univ_nonempty (fun u : W u0 => D.muMaxN u0 u - D.h u0 u)`. Introduce `i`. Use `Finset.le_sup' (fun u : W u0 => D.muMaxN u0 u - D.h u0 u) (Finset.mem_univ i)` as an intermediate fact.
+
+Rewrite using `[← hmuMax i]`. Conclude with `this`. Use `⟨?_, ?_, ?_, ?_, s7.le⟩` and prove the remaining obligations. Rewrite using `[hs, div_mul_cancel₀ _ hpos.ne']`. Unfold `Data.uF`.
+
+Rewrite using `[sub_nonneg, hs, div_le_iff₀ hpos, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm _ (Fintype.card (ι i) : ℝ)]`. Break down `Nat.eq_zero_or_pos (Fintype.card (ι i)) with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `h1` using `MatrixLatticeEstimates.slope_le_max_slope (b i) (X i) (hG.2.1 i) (N i) (hG.2.2.2.2.2.2.1 i) (hG.2.2.2.2.2.2.2.1 i) h0`. Establish `h2` using `hle i`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `i`. Establish `h2` using `hle i`. Unfold `Data.uF`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hmin]`.
+
+Conclude with `s6`.
+-/
 theorem lattice_numerics (u0 : U0) {K Wd κ κ₁ : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup Wd] [Module K Wd] [Module (𝓞 K) Wd] [IsScalarTower (𝓞 K) K Wd]
     [Fintype κ] [DecidableEq κ] [Fintype κ₁] [DecidableEq κ₁]
@@ -216,6 +282,11 @@ theorem lattice_numerics (u0 : U0) {K Wd κ κ₁ : Type} [Field K] [NumberField
     linarith
   · rw [← hmin]; exact s6
 
+/- English proof (translation)
+Introduce `u0 K Wd κ κ₁ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B v Y Y' Ball γ ιf _ _ Bf Vr Dstar sg η0 η1 e0 de hyp hSide`. Take `⟨hId, hG, hγ, hBV, hV, hD, hsg, hsg20, hR, h0, h0', h1, he0, hse, hde, hde4, hcor, hS, hη, he⟩` from `hyp`. Establish `hN` using `lattice_numerics D u0 b' X' cc b X N B v Y Y' Ball hId hG hSide`. Establish `h` using `MatrixLatticeEstimates.joint_a_ramified_holds K Wd κ κ₁ (W u0) V ι b' X' cc b X N B (D.h u0) v Y Y' Ball γ ιf Bf Vr (D.s u0) (D.uF u0) (D.HH u0) (D.del u0) Dstar sg η0 η1 e0 de hG hN hγ hBV hV hD hsg hsg20 hR h0 h0' h1 he0 hse hde hde4 hcor hS`. Unfold `ConclFAt`.
+
+Rewrite using `[hId.2.2.2.1, hη, he]`. Conclude with `(MatrixLatticeEstimates.transfer_conclusion_holds _ _ _ _ _ _ _ _).1 h`.
+-/
 theorem function_slope_transfer : BridgeFS D := by
   intro u0 K Wd κ κ₁ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B v Y Y' Ball γ ιf _ _
     Bf Vr Dstar sg η0 η1 e0 de hyp hSide
@@ -334,23 +405,43 @@ end Model
 
 namespace Model
 
+/- English proof (translation)
+The claim follows from `Finset.single_le_sum (f := fun u => |h u|) (fun _ _ => abs_nonneg _) (Finset.mem_univ u)`.
+-/
 theorem sum_abs_ge (h : Fin 20 → ℝ) (u : Fin 20) : |h u| ≤ ∑ u, |h u| :=
   Finset.single_le_sum (f := fun u => |h u|) (fun _ _ => abs_nonneg _) (Finset.mem_univ u)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem sum_abs_nonneg (h : Fin 20 → ℝ) : 0 ≤ ∑ u, |h u| :=
   Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+Use `sum_abs_nonneg h` as an intermediate fact. Unfold `LaV`. Check the signs of the components of the expression.
+-/
 theorem LaV_nonneg (μ0 μ1 : ℝ) (h : Fin 20 → ℝ) : 0 ≤ LaV μ0 μ1 h := by
   have := sum_abs_nonneg h
   unfold LaV; positivity
 
+/- English proof (translation)
+Unfold `HHV`. Check the signs of the components of the expression.
+-/
 theorem HHV_pos (μ0 μ2 : ℝ) (h : Fin 20 → ℝ) : 0 < HHV μ0 μ2 h := by
   unfold HHV; positivity
 
+/- English proof (translation)
+Use `⟨HHV_pos μ0 μ2 h, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, fun _ _ => hμ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals simp [D1, C2, Real.pi_pos]`.
+-/
 theorem setting (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) (hμ : μ0 ≤ μ1) : (D1 μ0 μ1 μ2 h).HidaSetting C2 := by
   refine ⟨HHV_pos μ0 μ2 h, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, fun _ _ => hμ, ?_, ?_, ?_, ?_, ?_⟩
   all_goals simp [D1, C2, Real.pi_pos]
 
+/- English proof (translation)
+Introduce `u0 u`. Establish `h1` using `le_abs_self μ0`. Establish `h2` using `(le_abs_self (h u)).trans (sum_abs_ge h u)`. Establish `h3` using `neg_abs_le FoV`. Establish `h4` using `LaV_nonneg μ0 μ1 h`.
+
+Establish `h5` using `abs_nonneg EeV`. Simplify using `[D1, C2, Data.nT, Data.logOm, ph, Real.pi_ne_zero, NcV]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem div' (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).DIV C2 := by
   intro u0 u
   have h1 := le_abs_self μ0
@@ -361,6 +452,11 @@ theorem div' (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).DIV C
   simp [D1, C2, Data.nT, Data.logOm, ph, Real.pi_ne_zero, NcV]
   linarith
 
+/- English proof (translation)
+Introduce `u0 u u'`. Establish `h1` using `sum_abs_ge h u`. Establish `h2` using `sum_abs_ge h u'`. Establish `h3 : |h u - h u'| ≤ |h u| + |h u'|` using `abs_sub _ _`. Establish `h5` using `abs_nonneg EeV`.
+
+Establish `h6` using `abs_nonneg (muMV μ0)`. Establish `h7` using `abs_nonneg (μ1 - SgV)`. Simplify using `[D1, C2, Data.nT, LaV]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hcomp (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).HComp C2 := by
   intro u0 u u'
   have h1 := sum_abs_ge h u
@@ -372,6 +468,11 @@ theorem hcomp (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).HCom
   simp [D1, C2, Data.nT, LaV]
   linarith
 
+/- English proof (translation)
+Introduce `u0 u`. Establish `h4` using `LaV_nonneg μ0 μ1 h`. Establish `h5 : 0 ≤ Real.log 211` using `Real.log_nonneg (by norm_num)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[D1, C2, Real.pi_ne_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[D1, C2]`. Introduce `u'`. Simplify using `[D1, C2]`.
+-/
 theorem count (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : Count5 (D1 μ0 μ1 μ2 h) C2 := by
   intro u0 u
   have h4 := LaV_nonneg μ0 μ1 h
@@ -383,6 +484,13 @@ theorem count (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : Count5 (D1 μ0 μ1 μ2 
   · intro u'
     simp [D1, C2]
 
+/- English proof (translation)
+Introduce `u0 u`. Establish `h1` using `sum_abs_nonneg h`. Establish `h6` using `neg_abs_le (muMV μ0)`. Establish `h6'` using `abs_nonneg (muMV μ0)`. Establish `h7` using `le_abs_self (μ1 - SgV)`.
+
+Establish `h7'` using `abs_nonneg (μ1 - SgV)`. Prove the components needed by the constructor for the conclusion. Simplify using `[D1, C2, Data.nT, LaV]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[D1, C2, Data.nT, LaV]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slopes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).Slopes C2 := by
   intro u0 u
   have h1 := sum_abs_nonneg h
@@ -396,6 +504,9 @@ theorem slopes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) : (D1 μ0 μ1 μ2 h).Slo
   · simp [D1, C2, Data.nT, LaV]
     linarith
 
+/- English proof (translation)
+Introduce `u0 u`. Use `⟨rfl, rfl, fun j => ?_⟩` and prove the remaining obligations. Establish `: j = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ident (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
     PlaceSumIdentities (D1 μ0 μ1 μ2 h) (toP (D1 μ0 μ1 μ2 h) (fun _ _ => Q0 μ0 μ1)) := by
   intro u0 u
@@ -404,6 +515,11 @@ theorem ident (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
   subst this
   rfl
 
+/- English proof (translation)
+Use `⟨le_refl _, by norm_num [C2], by simp [D1], by simp [D1], fun u0 u => ⟨le_refl _, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[D1, Q0, Data.nT]`. Evaluate the numerical expressions. Establish `h1` using `le_abs_self RdV`. Establish `h2` using `abs_nonneg RdV`.
+
+Use `show RdV ≤ 4 * |RdV|`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sizes (μ0 μ1 μ2 : ℝ) (h : Fin 20 → ℝ) :
     SizesPrim (D1 μ0 μ1 μ2 h) C2 |RdV| 1 (fun _ _ => Q0 μ0 μ1) := by
   refine ⟨le_refl _, by norm_num [C2], by simp [D1], by simp [D1], fun u0 u => ⟨le_refl _, ?_, ?_⟩⟩

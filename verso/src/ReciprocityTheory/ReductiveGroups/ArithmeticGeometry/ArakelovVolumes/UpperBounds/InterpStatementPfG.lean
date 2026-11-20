@@ -9,6 +9,11 @@ noncomputable section
 
 variable {n : ℕ} {U : Set (V n)}
 
+/- English proof (translation)
+Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce `x hx`. Take `⟨ρ, hρ, hsub⟩` from `Metric.isOpen_iff.1 hU x hx.1`. Use `⟨{y | y ∈ U ∧ g y = 0} ∩ ball x ρ, inter_mem_nhdsWithin _ (ball_mem_nhds x hρ), ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hgy⟩` from `hgn (ball x ρ) isOpen_ball hsub ⟨x, mem_ball_self hρ⟩`.
+
+Use `extNull n x ρ g (hg.mono hsub) ⟨y, hy, hgy⟩` as an intermediate fact. Conclude with `measure_mono_null (fun z (hz : z ∈ {y | y ∈ U ∧ g y = 0} ∩ ball x ρ) => (⟨hz.2, hz.1.2⟩ : z ∈ ball x ρ ∩ {y | g y = 0})) this`.
+-/
 theorem zeros_null (hU : IsOpen U) {g : V n → ℂ} (hg : DifferentiableOn ℂ g U)
     (hgn : ∀ W : Set (V n), IsOpen W → W ⊆ U → W.Nonempty → ∃ y ∈ W, g y ≠ 0) :
     volume {y | y ∈ U ∧ g y = 0} = 0 := by
@@ -23,26 +28,43 @@ theorem zeros_null (hU : IsOpen U) {g : V n → ℂ} (hg : DifferentiableOn ℂ 
 
 def nsq (s : Fin n → V n → ℂ) (y : V n) : ℝ := ∑ k, Complex.normSq (s k y)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun k _ => Complex.normSq_nonneg _`.
+-/
 theorem nsq_nonneg (s : Fin n → V n → ℂ) (y : V n) : 0 ≤ nsq s y :=
   Finset.sum_nonneg fun k _ => Complex.normSq_nonneg _
 
+/- English proof (translation)
+Unfold `nsq`. Conclude with `lt_of_lt_of_le (Complex.normSq_pos.2 h) (Finset.single_le_sum (f := fun j => Complex.normSq (s j y)) (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ k))`.
+-/
 theorem nsq_pos {s : Fin n → V n → ℂ} {y : V n} {k : Fin n} (h : s k y ≠ 0) : 0 < nsq s y := by
   unfold nsq
   exact lt_of_lt_of_le (Complex.normSq_pos.2 h)
     (Finset.single_le_sum (f := fun j => Complex.normSq (s j y)) (fun j _ => Complex.normSq_nonneg _)
       (Finset.mem_univ k))
 
+/- English proof (translation)
+Unfold `nsq`. Conclude with `ContDiffAt.sum fun k _ => normSq_contDiffAt (contDiffAt_of_punct hU (hs k) hy)`.
+-/
 theorem nsq_contDiffAt (hU : IsOpen U) {s : Fin n → V n → ℂ} (hs : ∀ k, DifferentiableOn ℂ (s k) U)
     {y : V n} (hy : y ∈ U) : ContDiffAt ℝ ∞ (nsq s) y := by
   unfold nsq
   exact ContDiffAt.sum fun k _ => normSq_contDiffAt (contDiffAt_of_punct hU (hs k) hy)
 
+/- English proof (translation)
+Introduce `y hy` and use `(nsq_contDiffAt hU hs hy).continuousAt.continuousWithinAt`.
+-/
 theorem nsq_continuousOn (hU : IsOpen U) {s : Fin n → V n → ℂ} (hs : ∀ k, DifferentiableOn ℂ (s k) U) :
     ContinuousOn (nsq s) U :=
   fun y hy => (nsq_contDiffAt hU hs hy).continuousAt.continuousWithinAt
 
 def wgt (ψ : V n → ℝ) (s : Fin n → V n → ℂ) (y : V n) : ℝ := ψ y + n * Real.log (nsq s y)
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨hyU, hy0⟩` from `hy`. Establish `hψy : ContDiffAt ℝ ∞ ψ y` using `hψ.contDiffAt (hU.mem_nhds hyU)`. Establish `hpos : 0 < nsq s y` using `nsq_pos hy0`. Establish `hl : ContDiffAt ℝ ∞ (fun w => Real.log (nsq s w)) y` using `(Real.contDiffAt_log.2 hpos.ne').comp y (nsq_contDiffAt hU hs hyU)`.
+
+Conclude with `(hψy.add (contDiffAt_const.mul hl)).contDiffWithinAt`.
+-/
 theorem wgt_smooth (hU : IsOpen U) {ψ : V n → ℝ} (hψ : ContDiffOn ℝ ∞ ψ U) {s : Fin n → V n → ℂ}
     (hs : ∀ k, DifferentiableOn ℂ (s k) U) (k0 : Fin n) :
     ContDiffOn ℝ ∞ (wgt ψ s) {y | y ∈ U ∧ s k0 y ≠ 0} := by
@@ -54,6 +76,11 @@ theorem wgt_smooth (hU : IsOpen U) {ψ : V n → ℝ} (hψ : ContDiffOn ℝ ∞ 
     (Real.contDiffAt_log.2 hpos.ne').comp y (nsq_contDiffAt hU hs hyU)
   exact (hψy.add (contDiffAt_const.mul hl)).contDiffWithinAt
 
+/- English proof (translation)
+Establish `hU'` using `isOpen_punct hU (hs k0)`. Establish `h1 : ContDiffAt ℝ 2 ψ y` using `(hψ.contDiffAt (hU.mem_nhds hy)).of_le two_le_inf`. Establish `h2 : ContDiffAt ℝ 2 (fun w => Real.log (nsq s w)) y` using `((nsq_contDiffAt hU hs hy).log (nsq_pos hy0).ne').of_le two_le_inf`. Establish `e1 : (fun w => (wgt ψ s w : ℂ)) = fun w => ((ψ w + (n : ℝ) * Real.log (nsq s w) : ℝ) : ℂ)` using `rfl`. Rewrite using `[e1, Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 (contDiffAt_const.mul h2), Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul (n : ℝ) h2]`.
+
+Establish `hlse : 0 ≤ (leviV n (fun w => (Real.log (nsq s w) : ℂ)) y ξ).re` using `lseV n n _ (fun k w => Complex.normSq (s k w)) hU' (fun k => Or.inr ⟨s k, ((contDiffOn_of_differentiableOn n (s k) U hU (hs k)).of_le two_le_inf).mono (fun w hw => hw.1), fun _ _ => rfl⟩) (fun w hw => nsq_pos hw.2) y ⟨hy, hy0⟩ ξ`. Rewrite using `[Complex.add_re, Complex.re_ofReal_mul]`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg n : (0 : ℝ) ≤ n) hlse]`.
+-/
 theorem wgt_levi (hU : IsOpen U) {ψ : V n → ℝ} (hψ : ContDiffOn ℝ ∞ ψ U) {s : Fin n → V n → ℂ}
     (hs : ∀ k, DifferentiableOn ℂ (s k) U) (k0 : Fin n) {y : V n} (hy : y ∈ U) (hy0 : s k0 y ≠ 0)
     (ξ : Fin n → ℂ) :
@@ -74,6 +101,9 @@ theorem wgt_levi (hU : IsOpen U) {ψ : V n → ℝ} (hψ : ContDiffOn ℝ ∞ ψ
 
 def ann (ε : ℝ) : Set (V n) := {y | ε ≤ ‖y‖ ∧ ‖y‖ ≤ 2 * ε}
 
+/- English proof (translation)
+Unfold `ann`. Use `first`. Consider the case `exact (isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`. Consider the case `(simp only [Set.setOf_and]`. Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const))`.
+-/
 theorem ann_closed (ε : ℝ) : IsClosed (ann (n := n) ε) := by
   unfold ann
   first
@@ -83,6 +113,9 @@ theorem ann_closed (ε : ℝ) : IsClosed (ann (n := n) ε) := by
      exact (isClosed_le continuous_const continuous_norm).inter
       (isClosed_le continuous_norm continuous_const))
 
+/- English proof (translation)
+Use `(isCompact_closedBall (0 : V n) (2 * ε)).of_isClosed_subset (ann_closed ε) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy' : ε ≤ ‖y‖ ∧ ‖y‖ ≤ 2 * ε` using `hy`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `hy'.2`.
+-/
 theorem ann_compact (ε : ℝ) : IsCompact (ann (n := n) ε) := by
   refine (isCompact_closedBall (0 : V n) (2 * ε)).of_isClosed_subset (ann_closed ε) ?_
   intro y hy
@@ -90,6 +123,11 @@ theorem ann_compact (ε : ℝ) : IsCompact (ann (n := n) ε) := by
   rw [Metric.mem_closedBall, dist_zero_right]
   exact hy'.2
 
+/- English proof (translation)
+Unfold `cut`. Establish `h0 : 0 ≤ (bumpE ε hε : V n → ℝ) y` using `(bumpE ε hε).nonneg`. Establish `h1 : (bumpE ε hε : V n → ℝ) y ≤ 1` using `(bumpE ε hε).le_one`. Use `first`. Consider the case `(rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg h0]; exact h1)`.
+
+Consider the case `(rw [Complex.norm_of_nonneg h0]; exact h1)`. Consider the case `simpa [abs_of_nonneg h0] using h1`.
+-/
 theorem cut_norm_le (ε : ℝ) (hε : 0 < ε) (y : V n) : ‖cut ε hε y‖ ≤ 1 := by
   unfold cut
   have h0 : 0 ≤ (bumpE ε hε : V n → ℝ) y := (bumpE ε hε).nonneg
@@ -99,6 +137,11 @@ theorem cut_norm_le (ε : ℝ) (hε : 0 < ε) (y : V n) : ‖cut ε hε y‖ ≤
   | (rw [Complex.norm_of_nonneg h0]; exact h1)
   | simpa [abs_of_nonneg h0] using h1
 
+/- English proof (translation)
+Establish `h1 : ‖b‖ ≤ ‖a‖ + ‖a - b‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 0 ≤ ‖b‖` using `norm_nonneg _`. Establish `h2 : ‖b‖ ^ 2 ≤ (‖a‖ + ‖a - b‖) ^ 2`. Use `mul_le_mul h1 h1 h0 (by positivity)` as an intermediate fact.
+
+Use polynomial arithmetic with `[this]`. Use polynomial arithmetic with `[h2, sq_nonneg (‖a‖ - ‖a - b‖)]`.
+-/
 theorem sq_le_two (a b : ℂ) : ‖b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖a - b‖ ^ 2 := by
   have h1 : ‖b‖ ≤ ‖a‖ + ‖a - b‖ := by
     calc ‖b‖ = ‖a - (a - b)‖ := by rw [sub_sub_cancel]
@@ -109,6 +152,51 @@ theorem sq_le_two (a b : ℂ) : ‖b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖a - b�
     nlinarith [this]
   nlinarith [h2, sq_nonneg (‖a‖ - ‖a - b‖)]
 
+/- English proof (translation)
+Use `set U' := {y | y ∈ U ∧ s k0 y ≠ 0} with hU'def`. Establish `hU' : IsOpen U'` using `isOpen_punct hU (hs k0)`. Take `⟨M, hM0, hM⟩` from `wdb_cut_bdd (n := n) ε hε`. Establish `hannpos : ∀ y ∈ ann (n` using `n) ε, 0 < nsq s y := by`. Introduce `y hy`.
+
+Establish `hy0 : y ≠ 0`. Introduce `h0`. Establish `h1` using `hy.1`. Rewrite `h1` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Assume the negation of the conclusion as `hle`. Establish `h0 : nsq s y = 0` using `le_antisymm (not_lt.1 hle) (nsq_nonneg s y)`. Apply `hy0` to reduce the goal to its premises. Use `hiso y (by simpa using hy.2) fun k => ?_` and prove the remaining obligations. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => Complex.normSq_nonneg (s k y))).1 h0 k (Finset.mem_univ _)` as an intermediate fact.
+
+Conclude with `Complex.normSq_eq_zero.1 this`. Establish `hannU : ann (n` using `n) ε ⊆ U := fun y hy => hball (by simpa using hy.2)`. Establish `hexpc : ContinuousOn (fun y => Real.exp (-wgt ψ s y)) (ann (n` using `n) ε) := by`. Use `Real.continuous_exp.comp_continuousOn (ContinuousOn.neg ?_)` and prove the remaining obligations. Conclude with `(hψ.continuousOn.mono hannU).add (continuousOn_const.mul (((nsq_continuousOn hU hs).mono hannU).log fun y hy => (hannpos y hy).ne'))`.
+
+Take `⟨B, hB⟩` from `(ann_compact (n := n) ε).exists_bound_of_continuousOn hexpc`. Use `set h : V n → ENNReal := (ann (n := n) ε).indicator fun _ => ENNReal.ofReal (M / c) with hdef`. Establish `hhm : Measurable h` using `measurable_const.indicator (ann_closed ε).measurableSet`. Establish `hb : ∀ y ∈ U', ∀ ξ : Fin n → ℂ, ENNReal.ofReal (‖∑ j, wdb n j (cut ε hε) y * (starRingEnd ℂ) (ξ j)‖ ^ 2) ≤ h y * ENNReal.ofReal (leviV n (fun w => (wgt ψ s w : ℂ)) y ξ).re`. Introduce `y hy ξ`.
+
+Distinguish the cases in `hya : y ∈ ann (n := n) ε`. Establish `hl` using `wgt_levi hU hψ hs k0 hy.1 hy.2 ξ`. Establish `hp` using `hpos y (by simpa using hya.2) ξ`. Establish `hcs` using `norm_pair_sq_le (fun j => wdb n j (cut ε hε) y) ξ`. Establish `hMy` using `hM y`.
+
+Rewrite using `[hdef, Set.indicator_of_mem hya, ← ENNReal.ofReal_mul (div_nonneg hM0 hc.le)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hξ : 0 ≤ ∑ j, ‖ξ j‖ ^ 2` using `Finset.sum_nonneg fun j _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : ∀ j, wdb n j (cut ε hε) y = 0`.
+
+Introduce `j`. Apply `wdb_cut_zero` to reduce the goal to its premises. Simplify using `only [ann, Set.mem_ofPred_eq, not_and_or, not_le] at hya`. Conclude with `hya`. Simplify using `[hz]`.
+
+Take `⟨G, hGd, hest⟩` from `hormander_open hU' (epunct e (s k0)) (epunct_smooth hU he (hs k0)) (epunct_levi hU he hel (hs k0)) (epunct_compact hU he hec he0 (hs k0)) (wgt ψ s) (wgt_smooth hU hψ hs k0) (fun y hy ξ => (hψl y hy.1 ξ).trans (wgt_levi hU hψ hs k0 hy.1 hy.2 ξ)) (cut ε hε) (cut_contDiff ε hε).cont …`. Establish `hRHS : ∫⁻ y in U', h y * ENNReal.ofReal (Real.exp (-wgt ψ s y)) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Use `(setLIntegral_le_lintegral _ _).trans (lintegral_mono fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hya : y ∈ ann (n := n) ε`.
+
+Rewrite using `[hdef, Set.indicator_of_mem hya, Set.indicator_of_mem hya]`. Use `hB y hya` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `mul_le_mul_of_nonneg_left (ENNReal.ofReal_le_ofReal this) zero_le`. Rewrite using `[hdef, Set.indicator_of_notMem hya, Set.indicator_of_notMem hya, zero_mul]`.
+
+Use `_ = ENNReal.ofReal (M / c) * ENNReal.ofReal B * volume (ann (n := n) ε) := lintegral_indicator_const (ann_closed ε).measurableSet _`. Use `_ < ⊤ := ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top) (ann_compact ε).measure_lt_top`. Establish `hL : ∀ p ∈ U, ∃ ρ > 0, ball p ρ ⊆ U ∧ ∫⁻ y in ball p ρ \ {y | s k0 y = 0}, ENNReal.ofReal (‖G y‖ ^ 2) < ⊤`. Introduce `p hp`. Take `⟨ρ', hρ', hsub'⟩` from `Metric.isOpen_iff.1 hU p hp`.
+
+Establish `hcb : closedBall p (ρ' / 2) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hsub'`. Use `⟨ρ' / 2, by positivity, ball_subset_closedBall.trans hcb, ?_⟩` and prove the remaining obligations. Establish `hKc : ContinuousOn (fun y => Real.exp (ψ y) * nsq s y ^ n) (closedBall p (ρ' / 2))` using `((Real.continuous_exp.comp_continuousOn hψ.continuousOn).mul ((nsq_continuousOn hU hs).pow n)).mono hcb`. Take `⟨K, hK⟩` from `(isCompact_closedBall p (ρ' / 2)).exists_bound_of_continuousOn hKc`. Establish `hSm : MeasurableSet (ball p (ρ' / 2) \ {y | s k0 y = 0})`.
+
+Use `((hs k0).continuousOn.mono (ball_subset_closedBall.trans hcb)).isOpen_inter_preimage isOpen_ball (isOpen_compl_singleton (x := (0 : ℂ)))` as an intermediate fact. Conclude with `this.measurableSet`. Establish `hSU : ball p (ρ' / 2) \ {y | s k0 y = 0} ⊆ U'` using `fun y hy => ⟨hcb (ball_subset_closedBall hy.1), hy.2⟩`. Establish `hpt : ∀ y ∈ ball p (ρ' / 2) \ {y | s k0 y = 0}, ENNReal.ofReal (‖G y‖ ^ 2) ≤ ENNReal.ofReal 2 + ENNReal.ofReal (2 * |K|) * ENNReal.ofReal (‖cut ε hε y - G y‖ ^ 2 * Real.exp (-wgt ψ s y))`. Introduce `y hy`.
+
+Establish `hNp` using `nsq_pos (hSU hy).2`. Establish `hKy` using `hK y (ball_subset_closedBall hy.1)`. Establish `hew : Real.exp (wgt ψ s y) = Real.exp (ψ y) * nsq s y ^ n`. Rewrite using `[wgt, Real.exp_add, ← Real.rpow_natCast, Real.rpow_def_of_pos hNp, mul_comm (Real.log _)]`. Establish `hK' : Real.exp (wgt ψ s y) ≤ |K|`.
+
+Rewrite using `[hew]; exact (le_abs_self _).trans (by rw [Real.norm_eq_abs] at hKy; exact hKy.trans (le_abs_self K))`. Establish `hA` using `sq_le_two (cut ε hε y) (G y)`. Establish `hc1` using `cut_norm_le ε hε y`. Use `set A := ‖cut ε hε y - G y‖ ^ 2`. Establish `hAe : 0 ≤ A * Real.exp (-wgt ψ s y)` using `by positivity`.
+
+Establish `hprod : A * Real.exp (-wgt ψ s y) * Real.exp (wgt ψ s y) = A`. Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Establish `h2 : A ≤ |K| * (A * Real.exp (-wgt ψ s y))`. Use `mul_le_mul_of_nonneg_left hK' hAe` as an intermediate fact. Rewrite `this` using `[hprod]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by norm_num) (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hc2 : ‖cut ε hε y‖ ^ 2 ≤ 1` using `by nlinarith [norm_nonneg (cut ε hε y)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_left measurable_const, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, setLIntegral_const]`. Use `_ < ⊤ := by`. Use `ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top ((measure_mono Set.diff_subset).trans_lt measure_ball_lt_top), ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_⟩` and prove the remaining obligations. Conclude with `((lintegral_mono_set hSU).trans hest).trans_lt hRHS`.
+
+Take `⟨F, hFd, hFeq⟩` from `ext_glue hU (s k0) G (hs k0) hgn hGd hL`. Use `⟨F, hFd, ?_⟩` and prove the remaining obligations. Establish `hnull` using `zeros_null hU (hs k0) hgn`. Establish `hUsplit : U ⊆ U' ∪ {y | y ∈ U ∧ s k0 y = 0}` using `fun y hy => by`. Distinguish the cases in `h0 : s k0 y = 0`.
+
+Conclude with `Or.inr ⟨hy, h0⟩`. Conclude with `Or.inl ⟨hy, h0⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_measure_zero _ _ hnull, add_zero]`. Use `setLIntegral_congr_fun hU'.measurableSet (fun y hy => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hFeq hy, Real.rpow_def_of_pos (nsq_pos hy.2), mul_assoc, ← Real.exp_add]`. Use `congr 3`. Simplify using `only [wgt]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := hest`.
+
+Use `_ < ⊤ := hRHS`.
+-/
 theorem interp_euclid (hU : IsOpen U) (e : V n → ℝ) (he : ContDiffOn ℝ ∞ e U)
     (hel : ∀ y ∈ U, ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun w => (e w : ℂ)) y ξ).re)
     (hec : ∀ a, IsCompact {y | y ∈ U ∧ e y ≤ a}) (he0 : ∀ y ∈ U, 0 ≤ e y)

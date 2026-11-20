@@ -10,6 +10,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `PI.UpqRep.blockW`. Use `split_ifs`. Conclude with `continuous_apply_apply _ _`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`. Conclude with `continuous_const`.
+-/
 theorem besType_continuous_blockW (k r : ℕ) : Continuous (PI.UpqRep.blockW k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   unfold PI.UpqRep.blockW
@@ -19,6 +24,21 @@ theorem besType_continuous_blockW (k r : ℕ) : Continuous (PI.UpqRep.blockW k r
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ z π u hz hT hπ`. Take `⟨g, hg, hin, honto⟩` from `GlobalTheory.T.exists_frame_conj_unitaryBlock_eq_unitaryComplement k r z hz hT`. Take `⟨hnt, ⟨h1, hmul⟩, hcont, hnorm, hirr, -⟩` from `hπ`. Establish `hgg : g * g⁻¹ = 1` using `PI.HwUniqW.mul_inv_UH hg.1`. Establish `hgg' : g⁻¹ * g = 1` using `PI.HwUniqW.inv_mul_UH' hg.1`.
+
+Establish `hc : Continuous (fun x : Matrix (Fin k) (Fin k) ℂ => g * PI.UpqRep.blockW k r x * g⁻¹)` using `(continuous_const.matrix_mul (besType_continuous_blockW k r)).matrix_mul continuous_const`. Use `haveI := hnt`. Take `⟨u₀, hu₀⟩` from `GlobalTheory.T.exists_highestWeight_irreducible_unitaryRep_U k Wp (fun x => π (g * PI.UpqRep.blockW k r x * g⁻¹)) (by`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show π (g * PI.UpqRep.blockW k r 1 * g⁻¹) = 1`.
+
+Rewrite using `[PI.HwUniqW.blockW_one, Matrix.mul_one, hgg]`. Conclude with `h1`. Introduce `x hx y hy`. Establish `e : g * PI.UpqRep.blockW k r (x * y) * g⁻¹ = g * PI.UpqRep.blockW k r x * g⁻¹ * (g * PI.UpqRep.blockW k r y * g⁻¹)`. Rewrite using `[← PI.HwUniqW.blockW_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgg', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Use `show π (g * PI.UpqRep.blockW k r (x * y) * g⁻¹) = _`.
+
+Rewrite using `[e]`. Conclude with `hmul _ (hin x hx) _ (hin y hy)`. Introduce `x hx v`. Conclude with `hnorm _ (hin x hx) v`. Introduce `v`.
+
+Establish `h2 : ContinuousOn (fun x : Matrix (Fin k) (Fin k) ℂ => π (g * PI.UpqRep.blockW k r x * g⁻¹)) (PI.UpqRep.UJset (PI.UpqRep.allPos k))` using `hcont.comp hc.continuousOn (fun x hx => hin x hx)`. Conclude with `h2.clm_apply continuousOn_const)`. Use the proof step `(by`. Introduce `S hS`. Use `hirr S ?_` and prove the remaining obligations.
+
+Introduce `h hh v hv`. Take `⟨x, hx, rfl⟩` from `honto h hh`. Conclude with `hS x hx v hv)`. Conclude with `⟨u₀, g, hg, hu₀⟩`.
+-/
 theorem besType_hcParam : ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → Q.IsType k r z π u → ∃ u₀, PI.UpqRep.IsHCTypeW k r z u₀ π := by
   intro k r Wp _ _ _ z π u hz hT hπ
   obtain ⟨g, hg, hin, honto⟩ := GlobalTheory.T.exists_frame_conj_unitaryBlock_eq_unitaryComplement k r z hz hT

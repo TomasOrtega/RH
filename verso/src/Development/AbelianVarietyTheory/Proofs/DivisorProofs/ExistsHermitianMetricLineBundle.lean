@@ -15,12 +15,22 @@ namespace GlobalTheory.MetricExists
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Establish `hB` using `h.isLB`. Take `⟨n, s, hs⟩` from `h`. Conclude with `⟨.fs p hB s hs (fun _ => 1) (fun _ => by simp) fun _ => ⟨1, one_mem _, by rw [mul_one, Matrix.map_one _ (map_zero _) (map_one _)]⟩, rfl⟩`.
+-/
 theorem exists_of_isGenerated {B : LB X} (h : IsGenerated B) : ∃ L : HermLB p, L.B = B := by
   have hB := h.isLB
   obtain ⟨n, s, hs⟩ := h
   exact ⟨.fs p hB s hs (fun _ => 1) (fun _ => by simp)
     fun _ => ⟨1, one_mem _, by rw [mul_one, Matrix.map_one _ (map_zero _) (map_one _)]⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨_, hN, χ, hc, hj⟩` from `N`. Take `rfl : _ = tens B M.B` from `h`. Establish `e (σ : k →+* ℂ) (a : B.ι) (b : M.B.ι) (y : CxPts p σ) (ha : y ∈ ptsIn p σ (B.U a)) (hb : y ∈ ptsIn p σ (M.B.U b)) : (Weight.cancel hB (χ σ) (M.φ σ)).φ a y = (χ σ).φ (a, b) y + -(M.φ σ).φ b y` using `(Weight.ofPairs_φ ha hb).trans (sub_eq_add_neg _ _)`. Use `⟨⟨B, hB, fun σ => Weight.cancel hB (χ σ) (M.φ σ), fun σ a y ha => ?_, fun σ σ' a y y' hy ha => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hb` using `mem_pick M.isLB y`.
+
+Establish `hab : y ∈ ptsIn p σ (B.U a ⊓ M.B.U (pick M.isLB y))` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Use `((hc σ (a, _) y hab).add (M.cInf σ _ y hb).neg).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hab] with z hz`. Conclude with `e σ a _ z (mem_ptsIn_inf.1 hz).1 (mem_ptsIn_inf.1 hz).2`. Establish `hb` using `mem_pick M.isLB y`.
+
+Establish `hab : y ∈ ptsIn p σ (B.U a ⊓ M.B.U (pick M.isLB y))` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Rewrite using `[e σ a _ y ha hb, e σ' a _ y' ((mem_ptsIn_iff_of_conj hy).2 ha) ((mem_ptsIn_iff_of_conj hy).2 hb)]`. Conclude with `congrArg₂ (· + -·) (hj σ σ' (a, _) y y' hy hab) (M.conj σ σ' _ y y' hy hb)`.
+-/
 theorem exists_of_tens {B : LB X} (hB : B.IsLB) (M N : HermLB p) (h : N.B = tens B M.B) :
     ∃ L : HermLB p, L.B = B := by
   obtain ⟨_, hN, χ, hc, hj⟩ := N
@@ -41,6 +51,13 @@ theorem exists_of_tens {B : LB X} (hB : B.IsLB) (M N : HermLB p) (h : N.B = tens
     rw [e σ a _ y ha hb, e σ' a _ y' ((mem_ptsIn_iff_of_conj hy).2 ha) ((mem_ptsIn_iff_of_conj hy).2 hb)]
     exact congrArg₂ (· + -·) (hj σ σ' (a, _) y y' hy hab) (M.conj σ σ' _ y y' hy hb)
 
+/- English proof (translation)
+Take `⟨N, j, hj, hjp⟩` from `hp`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hjp ▸ inferInstance`. Set `A : HermLB p` to `(ProjSpace.hermitianTwistingSheaf k N).pull j hjp`. Establish `hA : IsAmpleLB A.B` using `(isAmple_projective_O_one k N).pull_of_isAffineHom j`.
+
+Take `⟨t, ht⟩` from `(AmpleDominates.eventually_isGenerated p hA (isLB_dual hB)).exists`. Establish `hP` using `isLB_lbPow A.isLB t`. Establish `hT` using `isLB_tens hB hP`. Establish `hG : IsGenerated (tens B (lbPow A.B t))`. Use `ht.of_lbIso hT ((cls_eq_iff hT ht.isLB).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[cls_div hP (isLB_dual hB), cls_dual hB, cls_tens hB hP, sub_neg_eq_add, add_comm]`. Take `⟨L, hL⟩` from `exists_of_isGenerated (p := p) hG`. Conclude with `exists_of_tens hB (A.pow t) L hL`.
+-/
 theorem exists_of_isProjOver (hp : IsProjOver p) {B : LB X} (hB : B.IsLB) : ∃ L : HermLB p, L.B = B := by
   obtain ⟨N, j, hj, hjp⟩ := hp
   have := isProper_str k N
@@ -56,6 +73,9 @@ theorem exists_of_isProjOver (hp : IsProjOver p) {B : LB X} (hB : B.IsLB) : ∃ 
   obtain ⟨L, hL⟩ := exists_of_isGenerated (p := p) hG
   exact exists_of_tens hB (A.pow t) L hL
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ h _ hB` and use `exists_of_isProjOver h.isProjOver hB`.
+-/
 theorem exists_hermLB : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ B : LB X, B.IsLB → ∃ L : HermLB p, L.B = B :=
   fun _ _ _ _ _ h _ hB => exists_of_isProjOver h.isProjOver hB

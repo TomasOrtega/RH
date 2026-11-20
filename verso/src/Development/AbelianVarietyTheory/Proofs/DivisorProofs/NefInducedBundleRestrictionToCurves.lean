@@ -19,6 +19,9 @@ open Limits
 
 namespace GlobalTheory.NefDeRhamAt
 
+/- English proof (translation)
+Introduce `hX hP hH D O hO A T H hR B hB u s hu hs hdom hnef c M L k cf hI Z i _ _ q _ _ hq hd`. Take `⟨N, π, hπ, hsurj, hN⟩` from `GlobalTheory.T.nef_induced_model_dominant_weight hX hP hH D O hO A T H hR B hB u s hu hs hdom hnef c M L k cf hI q hq`. Conclude with `nefAt_of_pull _ M.X N.X M.p N.p M.ar.isProjOver N.ar.isProjOver π hπ hsurj L q hN Z i hd`.
+-/
 theorem nefAt_dR : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y), O.Reads A T H →
   ∀ (B : ℝ), 2 ≤ B → ∀ (u : Wt O.Y) (s : ℚ), IsRat O.Y u → 0 < s → WeightThresholdDefs.Dominant O.Y (A.sh u s) → NefCond O.Y B (A.sh u s) →
   ∀ (c : O.s.Comp) (M : TrueGeo.Model (O.var c)) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 D.what₂.LL) → ℝ),

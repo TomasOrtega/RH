@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
+/- English proof (translation)
+Establish `hu : IsUnit h` using `(Matrix.isUnit_iff_isUnit_det h).2 (isUnit_iff_ne_zero.2 hd)`. Establish `hH : (hᴴ * (1 : Matrix (Fin N) (Fin N) ℂ) * h).PosDef`. Rewrite using `[Matrix.mul_one]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self h (Matrix.mulVec_injective_of_isUnit hu)`. Establish `hq` using `SchurCalc.minor_pos hH I`.
+
+Rewrite `hq` using `[SchurCalc.minor_gram (G := 1) (fun k c hc hk => Matrix.one_apply_ne (fun e => hk (e ▸ hc))) hs]`. Introduce `e`. Simplify using `[e] at hq`.
+-/
 theorem minor_ne_zero_of_support {N : ℕ} {h : Matrix (Fin N) (Fin N) ℂ} (hd : h.det ≠ 0) {I : Finset (Fin N)}
     (hs : ∀ k c, c ∈ I → k ∉ I → h k c = 0) : minorIJ h I I ≠ 0 := by
   have hu : IsUnit h := (Matrix.isUnit_iff_isUnit_det h).2 (isUnit_iff_ne_zero.2 hd)
@@ -20,6 +25,9 @@ theorem minor_ne_zero_of_support {N : ℕ} {h : Matrix (Fin N) (Fin N) ℂ} (hd 
   intro e
   simp [e] at hq
 
+/- English proof (translation)
+Unfold `facOf`. Use `split_ifs`. Conclude with `minor_ne_zero_of_support hd (MinorCalc.support_wIdx hh)`. Conclude with `one_ne_zero`. Conclude with `minor_ne_zero_of_support hd (MinorCalc.support_omIdx hh)`.
+-/
 theorem facOf_ne_zero (N j : ℕ) (a i : Fin N) (h : Matrix (Fin N) (Fin N) ℂ) (hh : IsBlockDiag j h)
     (hd : h.det ≠ 0) : facOf N j a h i ≠ 0 := by
   unfold facOf

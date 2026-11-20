@@ -10,6 +10,11 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep.IntTerm
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 xb hxb`. Set `T` to `TFK (R := V) (AlgebraicClosure (FractionRing V))`. Take `⟨a, ha, -⟩` from `X₁.ρ.pt_bij (AlgebraicClosure (FractionRing V)) (T.hom ≫ spMap 𝔪.yK) (pushHom 𝔪.cart T xb) (by rw [← map_pow, hxb, map_one])`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1 : (T.hom ≫ spMap 𝔪.yK) ≫ (X₁.ρ.pt a).left = xb.left ≫ 𝔪.φ` using `congrArg (fun z => z.left) ha`.
+
+Rewrite using `[← h1]`. Use `congr 1`. Conclude with `(Spec.map_comp (CommRingCat.ofHom 𝔪.yK) (CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))))).symm`.
+-/
 theorem torsion_has_label : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (xb : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ 𝔪.A.A), xb ^ (X₁.S.r * X₁.S.N) = 1 → ∃ a : X₁.S.Gam, xb.left ≫ 𝔪.φ = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) ≫ (X₁.ρ.pt a).left := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 xb hxb
   let T := TFK (R := V) (AlgebraicClosure (FractionRing V))

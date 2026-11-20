@@ -28,6 +28,9 @@ noncomputable abbrev splitTorusAff (R : CommRingCat.{u}) (X : Type u) [AddCommGr
     Over (Spec R) :=
   (Spec (torusRing R X)).asOver (Spec R)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 noncomputable example (R : CommRingCat.{u}) (X : Type u) [AddCommGroup X] : GrpObj (splitTorusAff R X) :=
   inferInstance
 

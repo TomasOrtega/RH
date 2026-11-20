@@ -17,6 +17,9 @@ section
 
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show Formalism.MainNotions.S.dsig σ X (Formalism.MainNotions.S.dsigW σ w v) = PI.UpqRep.dsig σ X (PI.UpqRep.dsigW σ w v)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 lemma dsigW_eq (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H))
     (w : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (v : H) :
     Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v = PI.UpqRep.dsigW (k := k) (r := r) σ w v := by
@@ -26,6 +29,11 @@ lemma dsigW_eq (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → 
     show Formalism.MainNotions.S.dsig σ X (Formalism.MainNotions.S.dsigW σ w v) = PI.UpqRep.dsig σ X (PI.UpqRep.dsigW σ w v)
     rw [ih]; rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, C, Ws, h4, h5⟩` from `h`. Use `⟨fun v hv w hw => ?_, fun c v hv => ?_, fun g hg m hm v hv => ?_, ‖a‖ * C, Ws, h4, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [h1 v hv w hw, smul_add]`. Simplify using `only [h2 c v hv]`. Rewrite using `[smul_comm]`.
+
+Simplify using `only [h3 g hg m hm v hv, map_smul]`. Rewrite using `[smul_comm]`. Simplify using `only [dsigW_eq, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h5 v hv) (norm_nonneg _)`.
+-/
 lemma isBesselMapSm_smul {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {ψ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
@@ -40,6 +48,11 @@ lemma isBesselMapSm_smul {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp
   · simp only [dsigW_eq, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (h5 v hv) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `e : ∀ y : Wp, ((‖((Real.sqrt n : ℝ) : ℂ) • y‖₊ : ℝ≥0∞)) ^ 2 = (n : ℝ≥0∞) * (‖y‖₊ : ℝ≥0∞) ^ 2`. Introduce `y`. Establish `: ‖((Real.sqrt n : ℝ) : ℂ)‖₊ ^ 2 = (n : NNReal)`. Apply `NNReal.eq` to reduce the goal to its premises. Simplify using `[Real.sq_sqrt, abs_of_nonneg (Real.sqrt_nonneg _)]`.
+
+Rewrite using `[nnnorm_smul, ENNReal.coe_mul, mul_pow, ← ENNReal.coe_pow, this, ENNReal.coe_natCast]`. Unfold `l2SG at h ⊢`. Simplify using `only [e]`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.natCast_ne_top n), h, mul_comm c, ENNReal.ofReal_mul (Nat.cast_nonneg n), ENNReal.ofReal_natCast]`.
+-/
 lemma l2SG_sqrt_smul_eq_ofReal_mul {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] (ν : Measure (Formalism.QuantumDeterminants.Mt k r))
     (F : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Wp) (n : ℕ) (c : ℝ)
     (h : l2SG ν F = ENNReal.ofReal c) :
@@ -57,6 +70,11 @@ lemma l2SG_sqrt_smul_eq_ofReal_mul {Wp : Type} [NormedAddCommGroup Wp] [NormedSp
 
 end
 
+/- English proof (translation)
+Introduce `hH D τ w w' θ W lam R _ l l' dd _ _ hR hl hl' hdd hn hn'`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨P, hP, hD⟩` from `hR.2`. Establish `hD' : Formalism.MainNotions.S.IsDS (epsSH D.R) lam (fun g => R.σ (P⁻¹ * g * P))` using `hD`. Take `⟨d, hd⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS _ _ _ _ _ hD' _ (D.s.cdScale_pos _ (epsSH D.R))`.
+
+Take `⟨-, -, -, -, -, ⟨S, hS⟩, -⟩` from `hD'`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`. Establish `hvs : v ∈ R.sm` using `((GlobalTheory.CompactStable.kStable_smooth_and_stable hK _ _ _ lam R hR P hP S hS.1 hS.2.1).1 v hvS).2`. Use `⟨{ H := R.H, σ := R.σ, B := fun x => ((Real.sqrt (Module.finrank ℂ W.Wp : ℕ) : ℝ) : ℂ) • l x, B' := fun x => ((Real.sqrt (Module.finrank ℂ W.Wq : ℕ) : ℝ) : ℂ) • l' x, v0 := v, cN := ‖v‖ ^ 2 / dd, deg := d }, hR.1, hR.2, isBesselMapSm_smul hl _, isBesselMapSm_smul hl' _, hvs, hv0, …` and prove the remaining obligations. Conclude with `(le_sSup (s := {S | IsKTypeOf (epsSH D.R) (fun g => R.σ (P⁻¹ * g * P)) (Formalism.QuantumDeterminants.lowK (epsSH D.R) lam) S}) hS) hvS`.
+-/
 theorem exists_goodS : Hyps → ∀ (D : D7) τ w w' θ (W : LocW D.R.k D.R.rS) (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (R : Rep D.R.k D.R.rS) (h : ℝ) (l : R.H → W.Wp) (l' : R.H → W.Wq) (dd : ℝ), cdScaleTie D → GoodW D τ w w' θ W → R.IsDS (epsSH D.R) lam → PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z (psiS D W.z) R.σ W.π l → PI.BesselMapUniq.IsBesselMapSm (k := D.R.k) (r := D.R.rS) W.z' (psiS D W.z') R.σ W.π' l' → 0 < dd → (∀ v ∈ R.sm, l2SG W.νS (fun g => l (R.σ g v)) = ENNReal.ofReal (‖v‖ ^ 2 / dd)) → (∀ v ∈ R.sm, l2SG W.νS' (fun g => l' (R.σ g v)) = ENNReal.ofReal (‖v‖ ^ 2 / dd)) → ∃ A : LocS W, GoodS D lam A := by
   intro hH D τ w w' θ W lam R _ l l' dd _ _ hR hl hl' hdd hn hn'
   have hK : PI.KFinSmooth := hH.1.2.2.1

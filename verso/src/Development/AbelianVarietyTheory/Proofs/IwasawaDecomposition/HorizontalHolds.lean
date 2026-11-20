@@ -11,6 +11,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.HorizProof
 
+/- English proof (translation)
+Establish `hj : Function.Injective ((algebraMap T'.V T'.Fr).comp g)` using `(IsFractionRing.injective T'.V T'.Fr).comp hi`. Take `⟨f, hf⟩ : ∃ f : T.Fr →+* T'.Fr, ∀ v, f (algebraMap T.V T.Fr v) = algebraMap T'.V T'.Fr (g v)` from `⟨IsFractionRing.lift hj, IsFractionRing.lift_algebraMap hj⟩`. Conclude with `⟨f, RingHom.ext hf⟩`.
+-/
 theorem exists_frac_map {T T' : CDVR} (g : T.V →+* T'.V) (hi : Function.Injective g) :
     ∃ f : T.Fr →+* T'.Fr, f.comp (algebraMap T.V T.Fr) = (algebraMap T'.V T'.Fr).comp g := by
   have hj : Function.Injective ((algebraMap T'.V T'.Fr).comp g) := (IsFractionRing.injective T'.V T'.Fr).comp hi
@@ -18,10 +21,28 @@ theorem exists_frac_map {T T' : CDVR} (g : T.V →+* T'.V) (hi : Function.Inject
     ⟨IsFractionRing.lift hj, IsFractionRing.lift_algebraMap hj⟩
   exact ⟨f, RingHom.ext hf⟩
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.comp_apply _ _ _).trans (congrArg y (IsLocalRing.comap_closedPoint g))`.
+-/
 theorem closed_comp {T T' : CDVR} (g : T.V →+* T'.V) [IsLocalHom g] {X : Scheme.{0}} (y : Sp T.V ⟶ X) :
     (spMap g ≫ y) (closedPoint T'.V) = y (closedPoint T.V) :=
   (Scheme.Hom.comp_apply _ _ _).trans (congrArg y (IsLocalRing.comap_closedPoint g))
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z h4 x hx`. Take `⟨T, b, io, y, z, h1, h2, h3, h5, rfl⟩` from `GlobalTheory.T.exists_dvr_arc_outside_abelian_locus E H D l Xo c Z x hx`. Take `⟨T₁, g₁, t, m, P, hi₁, hl₁, hP⟩` from `GlobalTheory.T.dvr_arc_extension_unique E H D l Xo c _ _ Z T io b y z h1 h2 h3 h5`. Take `⟨f₁, hf₁⟩` from `exists_frac_map g₁ hi₁`. Establish `e₁ : spMap (algebraMap T₁.V T₁.Fr) ≫ spMap g₁ = spMap f₁ ≫ spMap (algebraMap T.V T.Fr)`.
+
+Rewrite using `[← spMap_comp, ← spMap_comp, hf₁]`. Establish `k₁ : (algebraMap T₁.V T₁.Fr).comp (g₁.comp b) = (f₁.comp io).comp (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[← RingHom.comp_assoc, ← hf₁, RingHom.comp_assoc, h1, RingHom.comp_assoc]`. Establish `k₂ : (spMap g₁ ≫ y) ≫ Z.s = spMap (g₁.comp b)`. Rewrite using `[Category.assoc, h2]`.
+
+Conclude with `(spMap_comp b g₁).symm`. Establish `k₃ : (spMap f₁ ≫ z) ≫ pullback.snd _ _ = spMap (f₁.comp io)`. Rewrite using `[Category.assoc, h3]`. Conclude with `(spMap_comp io f₁).symm`. Establish `k₅ : (spMap f₁ ≫ z) ≫ Z.j = spMap (algebraMap T₁.V T₁.Fr) ≫ spMap g₁ ≫ y`.
+
+Rewrite using `[Category.assoc, h5, ← Category.assoc, ← Category.assoc, e₁]`. Establish `hc₁ : (spMap g₁ ≫ y) (closedPoint T₁.V) ∉ abLocus Z.t.G`. Rewrite using `[closed_comp]`. Conclude with `hx`. Take `⟨T', g, ϖ, a, hi, hl, hϖ, hA⟩` from `GlobalTheory.T.dvr_arc_extension_of_mono E H D l Xo c _ _ Z (by have : Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)) := IsLocalization.epi (nonZeroDivisors (𝓞 c.F)) c.F; exact Scheme.Spec.map_mono (CommRingCat.ofHom _).op) T₁ (f₁.comp io) (g₁.comp b) (spMap g₁ ≫ y) (spMap f₁ ≫ …`.
+
+Take `⟨f, hf⟩` from `exists_frac_map g hi`. Establish `e₂ : spMap (algebraMap T'.V T'.Fr) ≫ spMap g = spMap f ≫ spMap (algebraMap T₁.V T₁.Fr)`. Rewrite using `[← spMap_comp, ← spMap_comp, hf]`. Establish `hr : Set.range (jK T'.V ≫ spMap g ≫ spMap g₁ ≫ y) ⊆ Set.range Z.j`. Establish `: jK T'.V ≫ spMap g ≫ spMap g₁ ≫ y = (spMap f ≫ spMap f₁ ≫ z) ≫ Z.j` using `by show spMap (algebraMap T'.V T'.Fr) ≫ spMap g ≫ spMap g₁ ≫ y = _`.
+
+Rewrite using `[← Category.assoc, e₂, Category.assoc, ← k₅]`. Simplify using `only [Category.assoc]`. Rewrite using `[this]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+
+Establish `hs : (spMap g ≫ spMap g₁ ≫ y) ≫ Z.s = spMap (g.comp (g₁.comp b))`. Rewrite using `[Category.assoc, k₂]`. Conclude with `(spMap_comp (g₁.comp b) g).symm`. Use `GlobalTheory.T.arc_data_closed_point E H D l Xo c Z h4 T' (g.comp (g₁.comp b)) ϖ a _ hϖ hs hr hA` as an intermediate fact. Rewrite `this` using `[closed_comp g, closed_comp g₁]`. Then use the resulting hypothesis.
+-/
 theorem horizSt : HorizSt := by
   intro E _ _ _ H D l Xo c Z h4 x hx
   obtain ⟨T, b, io, y, z, h1, h2, h3, h5, rfl⟩ := GlobalTheory.T.exists_dvr_arc_outside_abelian_locus E H D l Xo c Z x hx

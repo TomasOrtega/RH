@@ -6,15 +6,26 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevelCharOrder
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f IsOfFinOrder (fun _ _ ha hb => ha.mul hb) IsOfFinOrder.one h`.
+-/
 theorem prod_isOfFinOrder {ι M : Type} [CommMonoid M] (s : Finset ι) (f : ι → M) (h : ∀ i ∈ s, IsOfFinOrder (f i)) :
     IsOfFinOrder (∏ i ∈ s, f i) :=
   Finset.prod_induction f IsOfFinOrder (fun _ _ ha hb => ha.mul hb) IsOfFinOrder.one h
 
+/- English proof (translation)
+Establish `: Finite (Formalism.L2.DIV.kP PP)` using `Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`. Conclude with `χ.isOfFinOrder (isOfFinOrder_of_finite u)`.
+-/
 theorem residue_char_isOfFinOrder {E : Type} [Field E] [NumberField E] (PP : Formalism.L2.DIV.Pl E)
     (χ : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (u : (Formalism.L2.DIV.kP PP)ˣ) : IsOfFinOrder (χ u) := by
   have : Finite (Formalism.L2.DIV.kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
   exact χ.isOfFinOrder (isOfFinOrder_of_finite u)
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.DIV.ext1 (flag1L L).P.H (flag1L L).P.chi (Formalism.L2.DIV.rTup β (flag1L L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[h1]`. Use `(IsOfFinOrder.one.mul ?_).mul ?_` and prove the remaining obligations. Conclude with `prod_isOfFinOrder _ _ fun PP _ => prod_isOfFinOrder _ _ fun c _ => residue_char_isOfFinOrder PP _ _`.
+
+Conclude with `prod_isOfFinOrder _ _ fun PP _ => residue_char_isOfFinOrder PP _ _`.
+-/
 theorem levFn_flag1_isOfFinOrder {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (x : GL (Fin V.rank) (Lev.EAf D)) :
     IsOfFinOrder (Formalism.L2.DIV.levFn β (flag1L L) x) := by
@@ -26,6 +37,9 @@ theorem levFn_flag1_isOfFinOrder {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev
   · exact prod_isOfFinOrder _ _ fun PP _ => prod_isOfFinOrder _ _ fun c _ => residue_char_isOfFinOrder PP _ _
   · exact prod_isOfFinOrder _ _ fun PP _ => residue_char_isOfFinOrder PP _ _
 
+/- English proof (translation)
+Introduce `D V β L k`. Conclude with `levFn_flag1_isOfFinOrder V β L _`.
+-/
 theorem levEnv_chi_isOfFinOrder : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).J), IsOfFinOrder ((levEnv V β L).χ k) := by
   intro D V β L k

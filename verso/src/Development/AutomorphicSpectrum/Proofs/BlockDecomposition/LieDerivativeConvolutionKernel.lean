@@ -12,11 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.LieConv
 
+/- English proof (translation)
+Introduce `X` and use `⟨(fun i j => ((0, fun w => X i j w.1) : mixedEmbedding.mixedSpace E) : Matrix (Fin a) (Fin a) (mixedEmbedding.mixedSpace E)), rfl⟩`.
+-/
 theorem mMap_surjective (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     Function.Surjective (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a) := fun X =>
   ⟨(fun i j => ((0, fun w => X i j w.1) : mixedEmbedding.mixedSpace E) :
     Matrix (Fin a) (Fin a) (mixedEmbedding.mixedSpace E)), rfl⟩
 
+/- English proof (translation)
+Take `⟨D, hD, hDc, h⟩` from `GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv E a φ (GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E a φ) hφ ν 1 (fun _ => j)`. Use `⟨D, hD, hDc, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← h g, CuspidalSpectrum.uAction_uJ_succ]`. Establish `e` using `GlobalTheory.CompanionTheory.HCRep.smL_liB (E := E) (a := a) (CuspidalSpectrum.lieOf (CuspidalSpectrum.archBasis E a j)) φ`. Establish `e2` using `congrArg (fun ψ : AutomorphicForm.archSmooth E a => ψ.1 g) e`.
+
+Establish `e0 : ∀ ψ : AutomorphicForm.archSmooth E a, AutomorphicForm.uAction (CuspidalSpectrum.uJ (K` using `E) (n := a) 0 (Fin.tail fun _ => j)) ψ = ψ := fun ψ => by`. Rewrite using `[CuspidalSpectrum.uJ, map_one]`. Both sides reduce to the same expression. Rewrite using `[e0]`. Conclude with `e2`.
+-/
 theorem exists_kernel_basis (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)]
     (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure] (φ : Sm E a) (hφ : IsAutForm φ)
@@ -37,6 +45,11 @@ theorem exists_kernel_basis (E : Type) [Field E] [NumberField E] [IsTotallyCompl
   rw [e0]
   exact e2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `HasCompactSupport.zero`. Consider the case `insert j s hj ih`.
+
+Simplify using `only [Finset.sum_insert hj]`. Conclude with `((h j).mul_left (f := fun _ => c j)).add ih`.
+-/
 theorem hasCompactSupport_sum {G ι : Type*} [TopologicalSpace G] (s : Finset ι) (c : ι → ℂ) (D : ι → G → ℂ)
     (h : ∀ j, HasCompactSupport (D j)) : HasCompactSupport fun y => ∑ j ∈ s, c j * D j y := by
   classical
@@ -48,6 +61,15 @@ theorem hasCompactSupport_sum {G ι : Type*} [TopologicalSpace G] (s : Finset ι
     simp only [Finset.sum_insert hj]
     exact ((h j).mul_left (f := fun _ => c j)).add ih
 
+/- English proof (translation)
+Introduce `E _ _ _ a _ _ ν _ φ hφ X`. Take `⟨Y, rfl⟩` from `mMap_surjective E a X`. Use `choose D hD hDc hconv using exists_kernel_basis E a ν φ hφ`. Use `set b := CuspidalSpectrum.archBasis E a with hb`. Use `set c : Fin (CuspidalSpectrum.archDim E a) → ℂ := fun j => ((b.repr Y j : ℝ) : ℂ) with hc`.
+
+Use `⟨fun y => ∑ j, c j * D j y, continuous_finsetSum _ fun j _ => continuous_const.mul (hD j), hasCompactSupport_sum _ c D hDc, fun g => ?_⟩` and prove the remaining obligations. Establish `hf : Continuous fun y => φ.1 (g * AutomorphicForm.infEmb E a y)` using `IsExpLieAlgebra.continuous_of_isSmoothFun (GlobalTheory.CompanionTheory.ArchSmooth.sm_mem_archSmooth E a φ g)`. Establish `hint : ∀ j, Integrable (fun y => φ.1 (g * AutomorphicForm.infEmb E a y) * D j y) ν` using `fun j => (hf.mul (hD j)).integrable_of_hasCompactSupport ((hDc j).mul_left)`. Establish `hY : (lie E a (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a Y) φ).1 g = ∑ j, c j * (lie E a (GlobalTheory.CompanionTheory.ArchSmooth.mMap E a (b j)) φ).1 g` using `by conv_lhs => rw [← b.sum_repr Y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul_of_tower, Finset.sum_apply, Pi.smul_apply, Complex.real_smul, hc]`.
+
+Rewrite using `[hY]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[integral_finsetSum _ fun j _ => ?_]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hconv j g, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((hint j).const_mul (c j)).congr (Filter.Eventually.of_forall fun y => by ring)`.
+-/
 theorem lie_eq_conv : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) [MeasurableSpace (AutomorphicForm.archGroup E a)] [BorelSpace (AutomorphicForm.archGroup E a)] (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure] (φ : Sm E a), IsAutForm φ → ∀ X : Lie E a, ∃ D : AutomorphicForm.archGroup E a → ℂ, Continuous D ∧ HasCompactSupport D ∧ ∀ g : GA E a, (lie E a X φ).1 g = ∫ y, φ.1 (g * AutomorphicForm.infEmb E a y) * D y ∂ν := by
   intro E _ _ _ a _ _ ν _ φ hφ X
   obtain ⟨Y, rfl⟩ := mMap_surjective E a X

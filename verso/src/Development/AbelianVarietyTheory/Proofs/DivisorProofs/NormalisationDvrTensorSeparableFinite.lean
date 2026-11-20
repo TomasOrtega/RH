@@ -7,6 +7,23 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.NormFin
 
+/- English proof (translation)
+Introduce `S K L D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Set `K'` to `FractionRing D`. Use `haveI : IsScalarTower S D K' := inferInstance`. Establish `hSK' : Function.Injective (algebraMap S K')`. Rewrite using `[IsScalarTower.algebraMap_eq S D K']`.
+
+Conclude with `(IsFractionRing.injective D K').comp (FaithfulSMul.algebraMap_injective S D)`. Use `letI : Algebra K K' := (IsFractionRing.lift hSK' : K →+* K').toAlgebra`. Use `haveI : IsScalarTower S K K' := IsScalarTower.of_algebraMap_eq (fun x => (IsFractionRing.lift_algebraMap hSK' x).symm)`. Use `haveI : SMulCommClass K D K' := ⟨fun a b c => by simp only [Algebra.smul_def]; ring⟩`. Use `haveI : Algebra.FormallyUnramified K L := Algebra.FormallyUnramified.of_isSeparable K L`.
+
+Use `haveI : Algebra.FormallyUnramified K' (K' ⊗[K] L) := inferInstance`. Use `haveI : FiniteDimensional K' (K' ⊗[K] L) := inferInstance`. Use `haveI : IsScalarTower D K' (K' ⊗[K] L) := inferInstance`. Establish `hfinC : Module.Finite D (integralClosure D (K' ⊗[K] L))` using `GlobalTheory.AbhFin.finite_integralClosure_of_formallyUnramified D K' (K' ⊗[K] L)`. Use `haveI : Module.Flat S K := IsLocalization.flat K (nonZeroDivisors S)`.
+
+Use `haveI : Module.Flat S L := Module.Flat.trans S K L`. Set `f : D →ₐ[S] K'` to `IsScalarTower.toAlgHom S D K'`. Set `Φ : D ⊗[S] L →ₐ[S] K' ⊗[S] L` to `Algebra.TensorProduct.map f (AlgHom.id S L)`. Establish `hΦ : Function.Injective Φ`. Establish `h1 : Function.Injective (f.toLinearMap.rTensor L)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (IsFractionRing.injective D K')`.
+
+Establish `h2 : (Φ : D ⊗[S] L → K' ⊗[S] L) = f.toLinearMap.rTensor L`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h2]`. Conclude with `h1`. Set `ι : K' ⊗[S] L ≃ₐ[K] K' ⊗[K] L` to `(IsLocalization.algebraTensorEquiv (nonZeroDivisors S) K K' L).symm`. Establish `hι : ∀ (a : K') (b : L), ι (a ⊗ₜ[S] b) = a ⊗ₜ[K] b`.
+
+Introduce `a b`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Set `Ψ : D ⊗[S] L →ₐ[D] K' ⊗[K] L` to `{ (ι.toRingEquiv.toRingHom.comp Φ.toRingHom) with commutes' := fun d => by show ι (Φ (d ⊗ₜ[S] 1)) = (algebraMap D K' d) ⊗ₜ[K] 1`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+
+Conclude with `hι _ _ }`. Establish `hΨ : Function.Injective Ψ` using `ι.injective.comp hΦ`. Set `M` to `integralClosure D (D ⊗[S] L)`. Set `lin : M →ₗ[D] integralClosure D (K' ⊗[K] L)` to `{ toFun := fun x => ⟨Ψ (x : D ⊗[S] L), (show IsIntegral D (x : D ⊗[S] L) from x.2).map Ψ⟩ map_add' := fun x y => Subtype.ext (map_add Ψ (x : D ⊗[S] L) y) map_smul' := fun r x => Subtype.ext (map_smul Ψ r (x : D ⊗[S] L)) }`. Conclude with `Module.Finite.of_injective lin (fun x y h => Subtype.ext (hΨ (congrArg Subtype.val h)))`.
+-/
 theorem main : ∀ (S K L D : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] [CommRing D] [IsDomain D] [IsDiscreteValuationRing D]

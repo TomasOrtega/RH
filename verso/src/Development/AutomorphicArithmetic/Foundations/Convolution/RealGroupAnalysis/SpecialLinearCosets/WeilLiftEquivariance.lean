@@ -6,29 +6,57 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Simplify using `only [nu, map_mul]`.
+-/
 private theorem nu_mul' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h h' : GL (Fin 2) (A E)) : nu F (h * h') = nu F h * nu F h' := by
   simp only [nu, map_mul]
 
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.det (gl (nU b)) = 1`. Conclude with `Units.ext (nU b).2`. Simplify using `only [nu, h, map_one]`.
+-/
 private theorem nu_gl' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (b : A E) : nu F (gl (nU b)) = 1 := by
   have h : Matrix.GeneralLinearGroup.det (gl (nU b)) = 1 := by
     exact Units.ext (nU b).2
   simp only [nu, h, map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem dM_mul' {F : Type} [Field F] [NumberField F] (s t : (A F)ˣ) :
     dM (s * t) = dM s * dM t := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD]`.
+-/
 private theorem cD_one' {F : Type} [Field F] [NumberField F] (g : G1 F) : cD 1 g = g := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [cD]
 
+/- English proof (translation)
+Simplify using `only [Wf, mul_assoc]`.
+-/
 private theorem Wf_tr {F : Type} [Field F] [NumberField F] (f : GL (Fin 2) (A F) → ℂ)
     (x y : GL (Fin 2) (A F)) : Wf (fun g => f (g * x)) y = Wf f (y * x) := by
   simp only [Wf, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M f φ h`. Prove the components needed by the constructor for the conclusion. Introduce `h₀`. Establish `key : w1 W f φ (h * h₀) = w1 W (fun g => f (g * dM (nu F h₀))) (W.L h₀ φ) h`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [w1]`. Rewrite using `[Wf_tr, nu_mul', dM_mul', map_mul, Module.End.mul_apply, mul_assoc]`. Simplify using `only [W1, key]`. Introduce `u t`. Establish `hn` using `nu_gl' (F := F) (D.mkE u t)`.
+
+Establish `key : ∀ g, w1 W f φ (gl (nU (D.mkE u t)) * h) g = ψ (-(2 * u)) * w1 W f φ h g`. Introduce `g`. Establish `hc : W.Om g (W.L (gl (nU (D.mkE u t))) (W.L h φ)) = W.L (gl (nU (D.mkE u t))) (W.Om g (W.L h φ))`. Use `congrArg (fun T : Module.End ℂ (S4 F) => T (W.L h φ)) (W.comm (gl (nU (D.mkE u t))) g)` as an intermediate fact. Simplify using `only [Module.End.mul_apply, hn, cD_one'] at this`.
+
+Conclude with `this.symm`. Establish `hne` using `(hatSt F E D W).nE u t (W.Om g (W.L h φ)) 1 1 0`. Establish `hs : -(1 * (2 * (u * 1 - rt D.δ * (t * 0)))) = -(2 * u)`. Simplify using the standard rewrite rules. Rewrite `hne` using `[hs]`.
+
+Simplify using `only [w1]`. Rewrite using `[nu_mul', hn, one_mul, map_mul, Module.End.mul_apply, hc, hne]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [W1, Meas.I0, iw, key]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.weilLift_equivariance :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (f : GL (Fin 2) (A F) → ℂ) (φ : S4 F) (h : GL (Fin 2) (A E)),
       (∀ h₀, W1 W M f φ (h * h₀) = W1 W M (fun g => f (g * dM (nu F h₀))) (W.L h₀ φ) h) ∧

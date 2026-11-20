@@ -28,8 +28,14 @@ def Rt : GA E a →* (XB E a →L[ℂ] XB E a) where
   map_one' := by ext φ g; change φ (g * 1) = φ g; rw [mul_one]
   map_mul' h k := by ext φ g; change φ (g * (h * k)) = φ (g * h * k); rw [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Rt_apply (h g : GA E a) (φ : XB E a) : Rt E a h φ g = φ (g * h) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ (h : GA E a) (φ : XB E a), ‖Rt E a h φ‖ ≤ ‖φ‖` using `fun h φ => norm_compContinuous_le _ _`. Use `le_antisymm (key h φ) ?_` and prove the remaining obligations. Establish `e : Rt E a h⁻¹ (Rt E a h φ) = φ` using `by ext g; simp`. Simplify `key h⁻¹ (Rt E a h φ)` using `only [e]`.
+-/
 theorem norm_Rt (h : GA E a) (φ : XB E a) : ‖Rt E a h φ‖ = ‖φ‖ := by
   have key : ∀ (h : GA E a) (φ : XB E a), ‖Rt E a h φ‖ ≤ ‖φ‖ := fun h φ => norm_compContinuous_le _ _
   refine le_antisymm (key h φ) ?_
@@ -44,6 +50,9 @@ def cLoc (w : Pl E) : GA E a →* GL (Fin a) (w.adicCompletion E) :=
 def repW (a : ℕ) (w : Pl E) : Representation ℂ (GL (Fin a) (w.adicCompletion E)) (XB E a) :=
   (ContinuousLinearMap.toLinearMapRingHom.toMonoidHom.comp (Rt E a)).comp (fl a w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem repW_apply (w : Pl E) (u : GL (Fin a) (w.adicCompletion E)) (φ : XB E a) :
     repW a w u φ = Rt E a (fl a w u) φ := rfl
 

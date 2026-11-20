@@ -20,6 +20,9 @@ def hRed (h : 𝟙_ (Over (Sp R)) ⟶ G) (e : ℕ) : Sp (R ⧸ I ^ (e + 1)) ⟶ 
     rw [Category.assoc, Over.w h, Category.id_comp]
     exact Category.comp_id _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem hRed_fst (h : 𝟙_ (Over (Sp R)) ⟶ G) (e : ℕ) : hRed I h e ≫ fGl I G e = thick R I e ≫ h.left :=
   pullback.lift_fst _ _ _
 

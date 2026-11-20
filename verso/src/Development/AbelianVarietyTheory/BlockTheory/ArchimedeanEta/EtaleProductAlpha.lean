@@ -51,6 +51,9 @@ def EtArchAlphaSt : Prop :=
           Real.exp (-(i : ℝ) * (ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k)
             (ReciprocityTheory.ChartRestriction.G.I2.th (E := D.host.E) T.Q.l.M R0) x - tableLineDegreeTwo))
 
+/- English proof (translation)
+The claim follows from `H D T h j hj i η DF m r1 Nc nt R0 tableLineDegreeTwo hr hn hp he`.
+-/
 example (H : EtArchAlphaSt) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (i : ℕ)
     (η : (recB h.toLawsCore).Cusp j (wEt D j i)) (DF m r1 Nc nt : ℕ) (R0 tableLineDegreeTwo : ℝ) (hr : 2 ≤ r1)
     (hn : EtNum D.host.E D.R.r T.Q.l.M m r1 Nc nt tableLineDegreeTwo) (hp : EtParRun T j DF T.Q.l.M m R0)
@@ -58,6 +61,11 @@ example (H : EtArchAlphaSt) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (
     EtArch h (ReciprocityTheory.ChartRestriction.G.I2.th (E := D.host.E) T.Q.l.M R0) tableLineDegreeTwo j i η :=
   H D T h j hj i η DF m r1 Nc nt R0 tableLineDegreeTwo hr hn hp he
 
+/- English proof (translation)
+Take `⟨c, a, hc, ha, hle⟩` from `he σ hσ k x hu W Wu A L hL`. Take `⟨P, hq, hR, hm⟩` from `hp σ hσ k x.1 x.2 A`. Establish `hTr : A.T.r = D.R.r` using `torusAt_r A`. Establish `hph : P.ph = ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) (ReciprocityTheory.ChartRestriction.G.I2.th (E` using `D.host.E) T.Q.l.M R0) x.1 := by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.I2.Par.ph, hq, hR]`.
+
+Conclude with `(ReciprocityTheory.ChartRestriction.G.I2.TorusAtPf.torusAtLa1_holds _ _ _ x.1 x.2 A.T (ReciprocityTheory.ChartRestriction.G.I2.TorusAtDataPf.torusAtIs_holds _ _ _ x.1 A)).2 _`. Use `hle.trans ?_` and prove the remaining obligations. Establish `hb` using `etProd_bound A.T P r1 hr A.s A.s_mem A.s_ne c a hc ha (by rw [hTr, hq, hm]; exact hn)`. Rewrite `hb` using `[hph]`. Then use the resulting hypothesis.
+-/
 example (T : Top D) (h : LawsP T) (j i : ℕ)
     (η : (recB h.toLawsCore).Cusp j (wEt D j i)) (DF m r1 Nc nt : ℕ) (R0 tableLineDegreeTwo : ℝ) (hr : 2 ≤ r1)
     (hn : EtNum D.host.E D.R.r T.Q.l.M m r1 Nc nt tableLineDegreeTwo) (hp : EtParRun T j DF T.Q.l.M m R0)

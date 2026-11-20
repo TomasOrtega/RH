@@ -12,5 +12,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertIdx.indexSum_inert | exact GlobalTheory.InertIdx.indexSum_inert | (intros; apply GlobalTheory.InertIdx.indexSum_inert <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.inertPlace_latticeIndex_sum_bound : ∀ (D : D7) (W : HSp D) (n : ℕ), 2 * W.rank + 5 ≤ n → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (f : Formalism.L2.Theta.AE D), IsFinIdem D v f → (∃ w : HeightOneSpectrum (𝓞 D.host.E), Formalism.UG.IsInertAt D.host.F D.host.E v w) → ∀ C : Finset (GA D W), (∀ g ∈ C, SuppF W f g ∧ g ∉ KsphC W ∅) → (∀ g ∈ C, ∀ g' ∈ C, g⁻¹ * g' ∈ KsphC W ∅ → g = g') → ∑ g ∈ C, (latIndex W g : ℝ) ^ (-(n : ℝ) / 2) ≤ 8 * (Ideal.absNorm v.asIdeal : ℝ) ^ (-(4 : ℝ)) := by
   first | exact @GlobalTheory.InertIdx.indexSum_inert | exact GlobalTheory.InertIdx.indexSum_inert | (intros; apply GlobalTheory.InertIdx.indexSum_inert <;> assumption)

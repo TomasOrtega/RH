@@ -5,6 +5,11 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ X f h`. Take `⟨N, i, hi, -, e⟩` from `h`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Establish `: LocallyOfFiniteType f`. Rewrite using `[← e]`.
+
+Use `infer_instance`. Establish `: IsLocallyNoetherian (Sp R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of R)))`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian f`.
+-/
 theorem isLocallyNoetherian_of_isQProjOver_noeth :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (f : X ⟶ Sp R),
       IsQProjOver f → IsLocallyNoetherian X := by

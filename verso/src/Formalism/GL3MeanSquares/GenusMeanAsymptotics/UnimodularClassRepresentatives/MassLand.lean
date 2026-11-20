@@ -11,10 +11,19 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.L3
 
+/- English proof (translation)
+The claim follows from `Fact.out`.
+-/
 theorem hermRepUnram [Fact HermRepUnram] : HermRepUnram := Fact.out
 
+/- English proof (translation)
+The claim follows from `orthBasisPos_holds`.
+-/
 theorem orthBasisPos : OrthBasisPos := orthBasisPos_holds
 
+/- English proof (translation)
+The claim follows from `Fact.out`.
+-/
 theorem landherrUnram [Fact LandherrUnram] : LandherrUnram := Fact.out
 
 end Formalism.HermitianLattices.Ext.L3

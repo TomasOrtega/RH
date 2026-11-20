@@ -14,6 +14,9 @@ namespace GlobalTheory.HeckeEx.Dom
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `Data.nfac`. Simplify using `only [h.dmin_eq]`. Conclude with `(GlobalTheory.Dict.Pull.cast_wt h.psi rfl hl (castFr h.psi x)).symm`.
+-/
 theorem nfac_q {X X' : Data E r} {N : ℕ} {a : GL (Fin r) E} (h : QMatch X X' N a) {la : Wt X.Ψ r}
     {la' : Wt X'.Ψ r} (hl : ∀ (τ : X'.Ψ) i, la' τ i = la ⟨τ.1, h.mem τ⟩ i) (x : Frame X.Ψ r) :
     X'.nfac la' (lact a (castFr h.psi x)) = X.nfac la x := by
@@ -22,6 +25,13 @@ theorem nfac_q {X X' : Data E r} {N : ℕ} {a : GL (Fin r) E} (h : QMatch X X' N
   exact (GlobalTheory.Dict.Pull.cast_wt h.psi rfl hl (castFr h.psi x)).symm
 
 open ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hm : (a : Matrix (Fin r) (Fin r) E).map τ.1 * X.flowMat ξ ⟨τ.1, h.mem τ⟩ (s ⟨τ.1, h.mem τ⟩) = X'.flowMat ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) τ (s ⟨τ.1, h.mem τ⟩) * (a : Matrix (Fin r) (Fin r) E).map τ.1`. Establish `he : Data.emb τ.1 ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) = (a : Matrix (Fin r) (Fin r) E).map τ.1 *ᵥ Data.emb τ.1 ξ`. Use function extensionality and compare the values at `i`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct]`.
+
+Establish `hc : X'.c τ = X.c ⟨τ.1, h.mem τ⟩` using `by simp only [Data.c, h.xi]`. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, flowMat_mulVec, flowMat_mulVec, he, h.hermC_eq, hc, Matrix.mulVec_add, Matrix.mulVec_smul]`. Use `show (a : Matrix (Fin r) (Fin r) E).map τ.1 * (X.flowMat ξ ⟨τ.1, h.mem τ⟩ (s ⟨τ.1, h.mem τ⟩) * mat x ⟨τ.1, h.mem τ⟩) = X'.flowMat ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) τ (s ⟨τ.1, h.mem τ⟩) * ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩)`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hm]`.
+-/
 theorem lact_flow_q {X X' : Data E r} {N : ℕ} {a : GL (Fin r) E} (h : QMatch X X' N a)
     (ξ : Fin r → E) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) :
     lact a (castFr h.psi (X.flow ξ s x)) =
@@ -44,6 +54,9 @@ theorem lact_flow_q {X X' : Data E r} {N : ℕ} {a : GL (Fin r) E} (h : QMatch X
       ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩)
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hm]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Data.flowMat, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, map_mul, map_natCast, Complex.conj_natCast, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flowMat_nsmul (X : Data E r) (n : ℕ) (v : Fin r → E) (τ : X.Ψ) (z : ℂ) :
     X.flowMat ((n : E) • v) τ z = X.flowMat v τ ((n : ℂ) ^ 2 * z) := by
   ext a b
@@ -53,6 +66,11 @@ theorem flowMat_nsmul (X : Data E r) (n : ℕ) (v : Fin r → E) (τ : X.Ψ) (z 
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [Data.flow, flowMat_nsmul]`. Use `congr 2`. Establish `: (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem flow_nsmul (X : Data E r) {n : ℕ} (hn : 0 < n) (v : Fin r → E) (t : ℝ) (x : Frame X.Ψ r) :
     X.flow ((n : E) • v) (fun _ => Complex.I * ((t / (n : ℝ) ^ 2 : ℝ) : ℂ)) x =
       X.flow v (fun _ => Complex.I * (t : ℂ)) x := by
@@ -63,6 +81,9 @@ theorem flow_nsmul (X : Data E r) {n : ℕ} (hn : 0 < n) (v : Fin r → E) (t : 
   push_cast
   field_simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [lact, mat, Units.val_mul, Matrix.map_mul, Matrix.of_apply]`. Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem lact_mul_q {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r) :
     lact (a * b) x = lact a (lact b x) := by
   funext τ
@@ -70,6 +91,9 @@ theorem lact_mul_q {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame �
   rw [Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `X.χ_fin la`. Use `congrArg norm (h g hg)` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+-/
 theorem norm_chi (X : Data E r) (la : Wt X.Ψ r) {g : GL (Fin r) E} (hg : g ∈ X.Γ) : ‖X.χ la g‖ = 1 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin la
   have := congrArg norm (h g hg)
@@ -80,6 +104,31 @@ end GlobalTheory.HeckeEx.Dom
 
 open GlobalTheory.HeckeEx.Dom in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X I₀ _ X' la la' P Q N M hN hM hP hQ hl hdom`. Use `haveI : Fintype I₀ := Fintype.ofFinite I₀`. Use `choose C hC using fun j => (hQ j).1.2`. Establish `hbd : ∀ x ∈ X.dom, X.pnorm la P x ≤ M * ∑ j, |C j|` using `fun x hx => by`. Establish `hn` using `BoundedSectionAlgebra.nfac_pos X hx la`.
+
+Establish `h1` using `hdom x hx ((∑ j, |C j|) / X.nfac la x) (div_nonneg (Finset.sum_nonneg fun j _ => abs_nonneg _) hn.le) fun j a h => by`. Rewrite using `[le_div_iff₀ hn]`. Use `hC j _ (h.mem_dom hx)` as an intermediate fact. Rewrite `this` using `[BoundedSectionAlgebra.pnorm_eq, nfac_q h (hl j a h)]`. Conclude with `this.trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun j => |C j|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)))`.
+
+Rewrite using `[BoundedSectionAlgebra.pnorm_eq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : X.IsBddSec la P` using `⟨hP, _, hbd⟩`. Use `⟨hB, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Use `choose S hS hS' using fun j => GlobalTheory.T.finite_classes_rational_isometries_bounded_denominator E r X (X' j) N hN`.
+
+Take `⟨hmem, hlim⟩` from `GlobalTheory.T.boundedSection_tendsto_constantTerm_imaginary_flow E r X la P hB ξ hξ x hx`. Set `xt : ℝ → Frame X.Ψ r` to `fun t => X.flow ξ (fun _ => Complex.I * (t : ℂ)) x`. Set `Bt : ℝ → ℝ` to `fun t => ∑ j, ∑ s ∈ (S j).attach, ‖Q j (lact s.1 (castFr (hS j s.1 s.2).psi (xt t)))‖`. Establish `hdomt : ∀ t : ℝ, 0 ≤ t → ‖P (xt t)‖ ≤ M * Bt t` using `fun t ht => by`. Use `hdom _ (hmem t ht) _ (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun s _ => norm_nonneg _) fun j a h => ?_` and prove the remaining obligations.
+
+Take `⟨s, hs, b, hb, rfl⟩` from `hS' j a h`. Establish `hy` using `(hS j s hs).mem_dom (hmem t ht)`. Establish `e1 : ‖Q j (lact (b * s) (castFr h.psi (xt t)))‖ = ‖Q j (lact s (castFr (hS j s hs).psi (xt t)))‖`. Rewrite using `[lact_mul_q, (hQ j).1.1.2.2 b hb _ hy, norm_mul, norm_chi _ _ hb, _root_.one_mul]`. Rewrite using `[e1]`.
+
+Establish `e2 : ‖Q j (lact s (castFr (hS j s hs).psi (xt t)))‖ ≤ ∑ s' ∈ (S j).attach, ‖Q j (lact s'.1 (castFr (hS j s'.1 s'.2).psi (xt t)))‖` using `Finset.single_le_sum (f := fun s' : (S j) => ‖Q j (lact s'.1 (castFr (hS j s'.1 s'.2).psi (xt t)))‖) (a := ⟨s, hs⟩) (fun _ _ => norm_nonneg _) (Finset.mem_attach _ _)`. Conclude with `e2.trans (Finset.single_le_sum (f := fun j => ∑ s' ∈ (S j).attach, ‖Q j (lact s'.1 (castFr (hS j s'.1 s'.2).psi (xt t)))‖) (a := j) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ j))`. Establish `hBt : Filter.Tendsto Bt Filter.atTop (nhds 0)`. Establish `: (0 : ℝ) = ∑ j : I₀, ∑ s ∈ (S j).attach, (0 : ℝ)` using `by simp`. Rewrite using `[this]`.
+
+Use `tendsto_finset_sum _ fun j _ => tendsto_finset_sum _ fun s _ => ?_` and prove the remaining obligations. Establish `h` using `hS j s.1 s.2`. Set `v : Fin r → E` to `(N : E) • ((s.1 : Matrix (Fin r) (Fin r) E) *ᵥ ξ)`. Establish `hv : (X' j).IsIso v`. Use `⟨h.lat ξ hξ.1, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : herm (X' j).Gm v v = ((N : E) * cc (N : E)) * herm (X' j).Gm ((s.1 : Matrix (Fin r) (Fin r) E) *ᵥ ξ) ((s.1 : Matrix (Fin r) (Fin r) E) *ᵥ ξ)`. Simplify using `only [v, herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [cc, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, h.iso, hξ.2.1, MulZeroClass.mul_zero]`. Introduce `e`. Establish `hN0 : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hv0` using `(smul_eq_zero.1 e).resolve_left hN0`. Apply `hξ.2.2` to reduce the goal to its premises.
+
+Rewrite using `[← GlobalTheory.Dict.Pull.inv_mulVec s.1 ξ, hv0, Matrix.mulVec_zero]`. Establish `hy` using `h.mem_dom hx`. Take `⟨-, hl'⟩` from `GlobalTheory.T.boundedSection_tendsto_constantTerm_imaginary_flow E r (X' j) (la' j) (Q j) (hQ j).1 v hv _ hy`. Rewrite `hl'` using `[(hQ j).2 v hv _ hy]`. Establish `hdiv : Filter.Tendsto (fun t : ℝ => t / (N : ℝ) ^ 2) Filter.atTop Filter.atTop` using `Filter.tendsto_id.atTop_div_const (by positivity)`.
+
+Establish `key` using `(hl'.comp hdiv).norm`. Rewrite `key` using `[norm_zero]`. Use `key.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, xt, v]`. Rewrite using `[lact_flow_q h, flow_nsmul _ hN]`.
+
+Establish `hP0 : Filter.Tendsto (fun t : ℝ => P (xt t)) Filter.atTop (nhds 0)`. Establish `hMB : Filter.Tendsto (fun t => M * Bt t) Filter.atTop (nhds 0)`. Simplify using `using hBt.const_mul M`. Conclude with `squeeze_zero_norm' (Filter.eventually_atTop.2 ⟨0, fun t ht => hdomt t ht⟩) hMB`. Conclude with `tendsto_nhds_unique hlim hP0`.
+-/
 theorem GlobalTheory.HeckeEx.mem_SS_of_dom : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (I₀ : Type) [Finite I₀] (X' : I₀ → Data E r) (la : Wt X.Ψ r) (la' : ∀ j, Wt (X' j).Ψ r) (P : Frame X.Ψ r → ℂ) (Q : ∀ j, Frame (X' j).Ψ r → ℂ) (N : ℕ) (M : ℝ), 0 < N → 0 ≤ M → X.IsSec la P → (∀ j, Q j ∈ (X' j).SS (la' j)) → (∀ j a (h : QMatch X (X' j) N a) τ m, la' j τ m = la ⟨τ.1, h.mem τ⟩ m) → (∀ x ∈ X.dom, ∀ B : ℝ, 0 ≤ B → (∀ j a (h : QMatch X (X' j) N a), ‖Q j (lact a (castFr h.psi x))‖ ≤ B) → ‖P x‖ ≤ M * B) → P ∈ X.SS la := by
   intro E _ _ _ r X I₀ _ X' la la' P Q N M hN hM hP hQ hl hdom
   classical

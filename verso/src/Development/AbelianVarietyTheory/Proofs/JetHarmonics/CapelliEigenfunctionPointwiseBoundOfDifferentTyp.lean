@@ -14,6 +14,11 @@ open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.Four
 
 namespace GlobalTheory.capelliEigenfunction_pointwiseBound_of_differentTypes
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ r + 1` using `by linarith`. Establish `hn1 : (1 : ℝ) ≤ n` using `by linarith`. Establish `h2 : (r + 1) ^ 2 ≤ (r + 1) ^ 4` using `pow_le_pow_right₀ h1 (by norm_num)`. Establish `h3 : r * n + 1 ≤ N * n ^ 2 + n ^ 3`. Establish `a1 : r * n + 1 ≤ n ^ 2` using `by nlinarith`.
+
+Establish `a2 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `a3 : 0 ≤ N * n ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 0 ≤ r * n + 1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay_le (c₃ Cc r n N A e : ℝ) (hc : c₃ ≤ Cc) (h0 : 0 ≤ Cc) (hr : 0 ≤ r) (hn : r + 1 ≤ n) (hN : 0 ≤ N)
     (he : 0 ≤ e) (h : Cc * (r + 1) ^ 4 * (N * n ^ 2 + n ^ 3) ≤ A - e) :
     c₃ * (r + 1) ^ 2 * (r * n + 1) ≤ A := by
@@ -30,6 +35,25 @@ theorem decay_le (c₃ Cc r n N A e : ℝ) (hc : c₃ ≤ Cc) (h0 : 0 ≤ Cc) (h
     _ ≤ Cc * (r + 1) ^ 4 * (N * n ^ 2 + n ^ 3) := by gcongr
     _ ≤ A := by linarith
 
+/- English proof (translation)
+Introduce `hX hP5 hNF C C₃ C₀ hC hC₃ hC₀`. Take `⟨Cb, -, hsh⟩` from `GlobalTheory.WithRightAction.exists_place_other_right_type`. Take `⟨c₃, hA⟩` from `GlobalTheory.WigSh.amapsShExists`. Take `⟨C₄, Cc, hreg⟩` from `GlobalTheory.T.capelli_eigenfunction_bound_three_places hX hP5 hNF Cb C₃ (7 + C) C₀ hC₃ (by linarith) hC₀`. Use `⟨C₄, max (max Cc c₃) 0, ?_⟩` and prove the remaining obligations.
+
+Introduce `P Wp Wq _ _ _ _ _ _ p f b c A₀ n₀ p₀ lam lam' hS hcase hN hp₀ hE hdec hlam h92`. Take `⟨rfl, l, hl, hgap⟩` from `hcase`. Establish `hl'` using `Finset.mem_Icc.1 hl`. Take `⟨q, hq0, hz, hz', hπ, hπ', hν, hm, hD⟩` from `hsh P Wp Wq Wq p P.u P.u' p.T.base.π' l p.hP hl'.1 hl'.2`. Establish `hG` using `hS.1 l hl`.
+
+Establish `hc1 : 1 ≤ c` using `hG.1`. Establish `hcb : c + 2 ≤ b` using `hG.2.1`. Establish `hk : 2 ≤ P.k` using `p.hl.2.2`. Establish `hposition : 2 * ((0 : ℕ) : ℝ) + 1 ≤ P.u' 1 - P.u' (1 + 1)`. Establish `hg` using `p.hP.1.gap 1 (Finset.mem_Icc.2 ⟨le_rfl, by omega⟩)`.
+
+Unfold `M.Par.lo M.Par.hi at hg`. Establish `a1` using `le_max_right (P.u (1 + 1)) (P.u' (1 + 1))`. Establish `a2` using `min_le_right (P.u 1) (P.u' 1)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨Ap, Am, ApPt, AmPt, hAp, hAm, -, hmaps⟩` from `hA P Wp Wq Wq Wq P.u P.u' P.u P.u' p q q 1 0 b hz hz' hz hz' (fun h _ => congrFun hπ h) (fun h _ => congrFun hπ h) hν hm hν hm le_rfl (by omega) hposition (fun i hi => (hS.1 i hi).2.2.2.2.1) (by push_cast; linarith) (by linarith) (fun i _ => by simp) (fun i _ => by simp)`. Establish `hr0 : (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `hk0 : (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Establish `hm1` using `hmaps A₀ f (by`. Use `decay_le c₃ _ P.r (2 * (P.r : ℝ) + P.k + 1) _ A₀ _ ((le_max_right Cc c₃).trans (le_max_left _ 0)) (le_max_right _ _) hr0 (by linarith) (Nat.cast_nonneg _) (Nat.cast_nonneg _) hdec` as an intermediate fact.
+
+Use `push_cast`. Conclude with `this) (hE.2.1 1)`. Take `⟨hpos, hone, Y, hW, hL⟩` from `GlobalTheory.T.grids_at_place_longCut_normaliserPositive C b c (shP P P.u P.u') Wp Wq q lam hC (by subst hq0; exact hG) (by subst hq0; exact hgap)`. Use `hreg P Wp Wq Wq Wq P.u P.u' P.u P.u' p q q f Ap Am ApPt AmPt b (b ^ ((7 + C) * ((2 * P.r + 2 : ℕ) : ℝ))) A₀ 0 p₀ (0 * (P.r + 1)) (Pst lam c) (Pst lam c) Y Y 3 (3 * (P.r + 1)) (by linarith) hone le_rfl (Nat.zero_le _) hp₀ hz hz' hz hz' le_rfl (by omega) hpos hpos hD hD hE.1 hE.2.1 …` and prove the remaining obligations. Establish `hle : Cc ≤ max (max Cc c₃) 0` using `(le_max_left Cc c₃).trans (le_max_left _ 0)`.
+
+Use `le_trans ?_ (hdec.trans (le_of_eq ?_))` and prove the remaining obligations. Use `gcongr`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `s t hst`.
+
+Establish `hd` using `hG.2.2.2.2.2.2.1`. Break down `lt_or_gt_of_ne hst with h | h` into its components or cases. Use `hd s t h` as an intermediate fact. Conclude with `le_trans (by linarith) (le_abs_self _)`. Use `hd t s h` as an intermediate fact.
+
+Conclude with `le_trans (by linarith) (neg_le_abs _)`.
+-/
 theorem thmBp_eigen_different_types : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → NFTopDomAll → ∀ C C₃ C₀ : ℝ, 0 ≤ C → 0 ≤ C₃ → 0 ≤ C₀ → ∃ C₄ Cc : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b c A₀ : ℝ) (n₀ p₀ : ℕ) (lam lam' : Fin (2 * P.r + P.k + 1) → ℝ), StdNum C b c P lam → (n₀ = 0 ∧ ∃ l ∈ Finset.Icc 1 P.k, ((30 * (P.r + 1) ^ 2 + 6 : ℕ) : ℝ) ≤ |P.u l - P.u' l|) → 3 * (P.r + 1) ≤ 2 * p₀ → (p₀ : ℝ) ≤ C₀ * ((P.r : ℝ) + 1) ^ 2 → EigDec f A₀ lam' → Cc * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) → (∀ s, |lam' s - lam s| + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) ≤ c - 1) → TBB.RegularityBoundBigCell p f b C₃ (2 * p₀ + n₀) → TBB.ThmBpAt p f b C₄ n₀ p₀ := by
   intro hX hP5 hNF C C₃ C₀ hC hC₃ hC₀
   obtain ⟨Cb, -, hsh⟩ := GlobalTheory.WithRightAction.exists_place_other_right_type

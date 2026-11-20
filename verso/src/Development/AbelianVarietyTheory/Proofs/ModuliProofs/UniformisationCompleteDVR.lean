@@ -16,6 +16,9 @@ namespace GlobalTheory
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LN.uniformisation_dvr _root_.GlobalTheory.allSixLaws.1 _root_.GlobalTheory.allSixLaws.2.1 _root_.GlobalTheory.allSixLaws.2.2.1 _root_.GlobalTheory.allSixLaws.2.2.2.1 _root_.GlobalTheory.allSixLaws.2.2.2.2.1`.
+-/
 theorem _root_.GlobalTheory.uniformisation_dvr_unconditional : _root_.GlobalTheory.LN.USt :=
   _root_.GlobalTheory.LN.uniformisation_dvr _root_.GlobalTheory.allSixLaws.1
     _root_.GlobalTheory.allSixLaws.2.1 _root_.GlobalTheory.allSixLaws.2.2.1

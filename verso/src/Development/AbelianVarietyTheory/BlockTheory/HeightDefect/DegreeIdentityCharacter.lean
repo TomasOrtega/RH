@@ -20,11 +20,19 @@ def logOmega (H : Host E) : ℝ :=
   haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩
   (logOm E (hostChar H)).re
 
+/- English proof (translation)
+Use `haveI : Fact H.d.Prime := ⟨H.d_prime⟩`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym]`. Both sides reduce to the same expression.
+-/
 theorem hostChar_apply (H : Host E) (n : ℤ) : hostChar H (n : ZMod H.d) = (jacobiSym n H.d : ℂ) := by
   haveI : Fact H.d.Prime := ⟨H.d_prime⟩
   rw [← jacobiSym.legendreSym.to_jacobiSym]
   rfl
 
+/- English proof (translation)
+Use `haveI : Fact H.d.Prime := ⟨H.d_prime⟩`. Establish `h2 : ringChar (ZMod H.d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(MulChar.ringHomComp_ne_one_iff (f := Int.castRingHom ℂ) Int.cast_injective).2 (quadraticChar_ne_one h2)`.
+-/
 theorem hostChar_ne_one (H : Host E) : hostChar H ≠ 1 := by
   haveI : Fact H.d.Prime := ⟨H.d_prime⟩
   have h2 : ringChar (ZMod H.d) ≠ 2 := by
@@ -33,6 +41,9 @@ theorem hostChar_ne_one (H : Host E) : hostChar H ≠ 1 := by
     omega
   exact (MulChar.ringHomComp_ne_one_iff (f := Int.castRingHom ℂ) Int.cast_injective).2 (quadraticChar_ne_one h2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.d_prime.ne_zero⟩ (hostChar H).LFunction 1 ≠ 0 := haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩ DirichletCharacter.LFunction_apply_one_ne_zero (hostChar_ne_one H)`.
+-/
 theorem lFunction_one_ne_zero (H : Host E) :
     haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩
     (hostChar H).LFunction 1 ≠ 0 :=

@@ -20,9 +20,15 @@ section Bij
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q ↦ q.hom c) (X.presheaf.map_id (op U))`.
+-/
 theorem sec_res_self (s : X ⟶ Sp R) {U : X.Opens} (h : U ≤ U) (c : Sec s U) : Sec.res s h c = c :=
   congrArg (fun q ↦ q.hom c) (X.presheaf.map_id (op U))
 
+/- English proof (translation)
+Use `congrFun (congrFun (congrFun (LinearMap.mem_ker.1 g.2) (op U)) (op V)) (homOfLE (show V ≤ U from h)).op` as an intermediate fact. Rewrite `this` using `[amitsur_d0_apply]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem ker_res (s : X ⟶ Sp R) (g : LinearMap.ker (d0 (OAff s))) {U V : X.affineOpens}
     (h : V.1 ≤ U.1) : g.1 (op V) = Sec.res s h (g.1 (op U)) := by
   have := congrFun (congrFun (congrFun (LinearMap.mem_ker.1 g.2) (op U)) (op V))
@@ -32,6 +38,9 @@ theorem ker_res (s : X ⟶ Sp R) (g : LinearMap.ker (d0 (OAff s))) {U V : X.affi
 
 variable {κ : Type} [LinearOrder κ]
 
+/- English proof (translation)
+Establish `e` using `congrFun (congrFun (congrFun (LinearMap.mem_ker.1 g.2) (ne I hI)) (ne J hJ)) (homOf (a := ne I hI) (b := ne J hJ) h)`. Rewrite `e` using `[amitsur_d0_apply]`. Establish `e' : g.1 (ne J hJ) = Sec.res s (show (⨅ k ∈ J, D k) ≤ ⨅ k ∈ I, D k from biInf_mono fun _ hk ↦ h hk) (g.1 (ne I hI))` using `sub_eq_zero.1 e`. Rewrite using `[e']`. Conclude with `Sec.res_res s _ hU _`.
+-/
 theorem kerF_res (s : X ⟶ Sp R) (D : κ → X.Opens)
     (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i))
     (g : LinearMap.ker (d0 (covF s D hD))) {I J : Finset κ} (hI : I.Nonempty) (hJ : J.Nonempty)
@@ -47,6 +56,29 @@ theorem kerF_res (s : X ⟶ Sp R) (D : κ → X.Opens)
 
 end Bij
 
+/- English proof (translation)
+Introduce `hcov`. Establish `hle1 : ∀ i : κ, D i ≤ ⨅ k ∈ ({i} : Finset κ), D k` using `fun i ↦ le_iInf₂ fun k hk ↦ by rw [Finset.mem_singleton.1 hk]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`.
+
+Establish `h0 : ∀ i : κ, g.1 (op (cov D hD (OrderDual.toDual ⟨{i}, Finset.singleton_nonempty i⟩))) = 0` using `fun i ↦ congrFun (congrArg Subtype.val hg) (ne {i} (Finset.singleton_nonempty i))`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `V`. Use `show g.1 V = 0`. Set `Idx` to `{p : X.affineOpens × κ // p.1.1 ≤ V.unop.1 ⊓ D p.2}`.
+
+Use `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun j : Idx ↦ j.1.1.1) V.unop.1 (fun j ↦ homOfLE (j.2.trans inf_le_left)) ?_ _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∈ ⨆ i, D i` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Take `⟨W, hWB, hxW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show x ∈ V.unop.1 ⊓ D i from ⟨hx, hi⟩)`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨W, hWB⟩, i), hWle⟩, hxW⟩`. Introduce `j`. Establish `hW : j.1.1.1 ≤ V.unop.1` using `j.2.trans inf_le_left`. Establish `hWi : j.1.1.1 ≤ (cov D hD (OrderDual.toDual ⟨{j.1.2}, Finset.singleton_nonempty _⟩)).1` using `(j.2.trans inf_le_right).trans (hle1 j.1.2)`. Establish `e1` using `ker_res s g (U := V.unop) (V := j.1.1) hW`.
+
+Establish `e2` using `ker_res s g (V := j.1.1) hWi`. Rewrite `e2` using `[h0, map_zero]`. Use `show Sec.res s hW (g.1 V) = Sec.res s hW 0`. Rewrite using `[map_zero, ← e1, e2]`. Introduce `g'`.
+
+Set `sf : ∀ i : κ, Sec s (D i)` to `fun i ↦ Sec.res s (hle1 i) (g'.1 (ne {i} (Finset.singleton_nonempty i)))`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.sheaf.1 D sf`. Introduce `i j`. Use `show Sec.res s inf_le_left (sf i) = Sec.res s inf_le_right (sf j)`. Establish `hij : D i ⊓ D j ≤ ⨅ k ∈ ({i, j} : Finset κ), D k` using `le_iInf₂ fun k hk ↦ by`.
+
+Take `hk | hk` from `Finset.mem_insert.1 hk`. Rewrite using `[hk]`. Conclude with `inf_le_left`. Rewrite using `[Finset.mem_singleton.1 hk]`. Conclude with `inf_le_right`.
+
+Conclude with `(Sec.res_res s (hle1 i) inf_le_left _).symm.trans ((kerF_res s D hD g' (Finset.singleton_nonempty i) (Finset.insert_nonempty _ _) (by simp) hij (inf_le_left.trans (hle1 i))).trans ((kerF_res s D hD g' (Finset.singleton_nonempty j) (Finset.insert_nonempty _ _) (by simp) hij (inf_l …`. Take `⟨G, hG, -⟩` from `X.sheaf.existsUnique_gluing' D ⊤ (fun i ↦ homOfLE le_top) hcov.symm.le sf hcomp`. Set `g : LinearMap.ker (d0 (OAff s))` to `⟨fun V ↦ Sec.res s le_top (G : Γ(X, ⊤)), by`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `U U' φ`.
+
+Rewrite using `[amitsur_d0_apply]`. Use `show Sec.res s le_top (G : Γ(X, ⊤)) - Sec.res s _ (Sec.res s le_top (G : Γ(X, ⊤))) = 0`. Conclude with `sub_eq_zero.2 (Sec.res_res s _ _ _)⟩`. Use `⟨g, Subtype.ext (funext fun I ↦ ?_)⟩` and prove the remaining obligations. Use `show Sec.res s le_top (G : Γ(X, ⊤)) = g'.1 I`.
+
+Establish `hm` using `mn_mem I`. Establish `hi : (cov D hD I.unop).1 ≤ D (mn I)` using `iInf₂_le (mn I) hm`. Establish `hGi : Sec.res s (le_top : D (mn I) ≤ ⊤) (G : Γ(X, ⊤)) = sf (mn I)` using `hG (mn I)`. Use `(Sec.res_res s le_top hi _).trans ?_` and prove the remaining obligations. Rewrite using `[hGi]`.
+
+Conclude with `(Sec.res_res s (hle1 (mn I)) hi _).symm.trans ((kerF_res s D hD g' (Finset.singleton_nonempty (mn I)) (sub_nonempty I) (Finset.singleton_subset_iff.2 hm) le_rfl _).trans (sec_res_self s _ _))`.
+-/
 theorem restrictCompatibleFamilyToIntersections_bijective {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) {κ : Type}
     [LinearOrder κ] [Fintype κ] (D : κ → X.Opens)
     (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) :

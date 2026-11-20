@@ -12,6 +12,9 @@ open GlobalTheory.ZJ
 
 namespace GlobalTheory.ZJ.AddExt
 
+/- English proof (translation)
+Set `u : Over.mk r' ⟶ Over.mk r` to `Over.homMk g hg`. Establish `e₁ : c' = u ≫ c` using `Over.OverMorphism.ext hc`. Establish `e₂ : d' = u ≫ d` using `Over.OverMorphism.ext hd`. Rewrite using `[e₁, e₂, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem mul_left_comp {S T T' : Scheme.{0}} {H : Over S} [GrpObj H] {r : T ⟶ S} {r' : T' ⟶ S} (g : T' ⟶ T)
     (hg : g ≫ r = r') (c d : Over.mk r ⟶ H) (c' d' : Over.mk r' ⟶ H) (hc : c'.left = g ≫ c.left)
     (hd : d'.left = g ≫ d.left) : (c' * d').left = g ≫ (c * d).left := by
@@ -21,6 +24,11 @@ theorem mul_left_comp {S T T' : Scheme.{0}} {H : Over S} [GrpObj H] {r : T ⟶ S
   rw [e₁, e₂, ← MonObj.comp_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨z, hz, hz'⟩` from `Scheme.Pullback.exists_preimage_pullback s s' h`. Set `k` to `(pullback a a').residueField z`. Set `w : Sp (AlgebraicClosure k) ⟶ pullback a a'` to `spMap (algebraMap k (AlgebraicClosure k)) ≫ (pullback a a').fromSpecResidueField z`. Establish `hw : ∀ x, w x = z` using `fun x => by`. Rewrite using `[← Set.mem_singleton_iff, ← Scheme.range_fromSpecResidueField]`.
+
+Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Use `⟨AlgebraicClosure k, inferInstance, inferInstance, w ≫ pullback.fst _ _, w ≫ pullback.snd _ _, by rw [Category.assoc w, Category.assoc w, pullback.condition], fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hw, hz]`. Rewrite using `[Scheme.Hom.comp_apply, hw, hz']`.
+-/
 theorem exists_common_geometric_point {X S S' : Scheme.{0}} (a : S ⟶ X) (a' : S' ⟶ X) (s : S) (s' : S')
     (h : a s = a' s') : ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (u : Sp K ⟶ S) (u' : Sp K ⟶ S'),
       u ≫ a = u' ≫ a' ∧ (∀ x, u x = s) ∧ (∀ x, u' x = s') := by
@@ -36,6 +44,13 @@ theorem exists_common_geometric_point {X S S' : Scheme.{0}} (a : S ⟶ X) (a' : 
   · rw [Scheme.Hom.comp_apply, hw, hz]
   · rw [Scheme.Hom.comp_apply, hw, hz']
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩` from `Spec.map_surjective u`. Establish `h1 : (p : OO p) ∈ IsLocalRing.maximalIdeal (OO p)`. Rewrite using `[Valuation.mem_maximalIdeal_iff]`. Establish `: ((p : OO p) : PadicAlgCl p) = p` using `by simp`. Rewrite using `[this, PadicAlgCl.valuation_p, one_div]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Establish `h2` using `congrArg PrimeSpectrum.asIdeal (hu (⊥ : PrimeSpectrum K))`. Establish `h3 : (p : OO p) ∈ Ideal.comap φ.hom (⊥ : Ideal K)`. Establish `: Ideal.comap φ.hom (⊥ : Ideal K) = IsLocalRing.maximalIdeal (OO p)` using `h2`. Rewrite using `[this]`.
+
+Conclude with `h1`. Simplify using `using h3`.
+-/
 theorem natCast_eq_zero_of_closedPoint (p : ℕ) [Fact p.Prime] {K : Type} [Field K] (u : Sp K ⟶ Sp (OO p))
     (hu : ∀ x, u x = cPt p) : (p : K) = 0 := by
   obtain ⟨φ, rfl⟩ := Spec.map_surjective u
@@ -50,6 +65,9 @@ theorem natCast_eq_zero_of_closedPoint (p : ℕ) [Fact p.Prime] {K : Type} [Fiel
     rw [this]; exact h1
   simpa using h3
 
+/- English proof (translation)
+Establish `h1` using `natCast_eq_zero_of_closedPoint p u hu`. Establish `h2` using `natCast_eq_zero_of_closedPoint q u' hu'`. Use `(CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 h1` as an intermediate fact. Use `(CharP.charP_iff_prime_eq_zero (Fact.out : q.Prime)).2 h2` as an intermediate fact. Conclude with `CharP.eq K ‹CharP K p› ‹CharP K q›`.
+-/
 theorem prime_eq (p q : ℕ) [Fact p.Prime] [Fact q.Prime] {K : Type} [Field K] (u : Sp K ⟶ Sp (OO p))
     (u' : Sp K ⟶ Sp (OO q)) (hu : ∀ x, u x = cPt p) (hu' : ∀ x, u' x = cPt q) : p = q := by
   have h1 := natCast_eq_zero_of_closedPoint p u hu
@@ -58,6 +76,9 @@ theorem prime_eq (p q : ℕ) [Fact p.Prime] [Fact q.Prime] {K : Type} [Field K] 
   have := (CharP.charP_iff_prime_eq_zero (Fact.out : q.Prime)).2 h2
   exact CharP.eq K ‹CharP K p› ‹CharP K q›
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (OO p).subtype)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).mp (OO p).subtype_injective]`. Conclude with `bot_le`.
+-/
 theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
   refine ⟨?_⟩
   change DenseRange (PrimeSpectrum.comap (OO p).subtype)
@@ -65,6 +86,11 @@ theorem isDominant_gPt (p : ℕ) [Fact p.Prime] : IsDominant (gPt p) := by
     (RingHom.injective_iff_ker_eq_bot _).mp (OO p).subtype_injective]
   exact bot_le
 
+/- English proof (translation)
+Use `⟨⟨by simpa using C.cart.w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => C.cart.lift (s.fst ≫ C.G.ι) s.snd (by simpa using s.condition)) (fun s => ?_) (fun s => ?_) (fun s m h1 h2 => ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono C.G.ι, Category.assoc, IsPullback.lift_fst]`. Rewrite using `[IsPullback.lift_snd]`. Apply `C.cart.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc]`.
+
+Rewrite using `[IsPullback.lift_snd, h2]`.
+-/
 theorem isPullback_a (C : Core) : IsPullback C.a C.A.hom C.GG.hom C.U.ι := by
   refine ⟨⟨by simpa using C.cart.w⟩, ⟨PullbackCone.IsLimit.mk _
     (fun s => C.cart.lift (s.fst ≫ C.G.ι) s.snd (by simpa using s.condition)) (fun s => ?_) (fun s => ?_)
@@ -75,6 +101,27 @@ theorem isPullback_a (C : Core) : IsPullback C.a C.A.hom C.GG.hom C.U.ι := by
     · rw [IsPullback.lift_fst, ← h1, Category.assoc]
     · rw [IsPullback.lift_snd, h2]
 
+/- English proof (translation)
+Use `isDominant_gPt p` as an intermediate fact. Use `C.proper` as an intermediate fact. Establish `hA` using `isPullback_a C`. Establish `: IsOpenImmersion C.a` using `MorphismProperty.of_isPullback hA.flip inferInstance`. Establish `hinj : Function.Injective ((OO p).subtype.comp τ.j)` using `(OO p).subtype_injective.comp τ.j_inj`.
+
+Set `k : Sp (PadicAlgCl p) ⟶ Sp (FractionRing τ.V)` to `spMap (IsFractionRing.lift hinj)`. Establish `hk : k ≫ Out.jK τ.V = gPt p ≫ spMap τ.j`. Simplify using `only [k, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use `ext_of_isDominant_of_isSeparated C.P.hom ?_ (gPt p) ?_` and prove the remaining obligations. Establish `h1 : τ.f ≫ C.G.ι ≫ C.P.hom = τ.H.hom ≫ τ.y₀` using `τ.f_over`. Establish `h2 : (c * d).left ≫ τ.H.hom = spMap τ.j` using `Over.w _`. Rewrite using `[hb', Category.assoc, Category.assoc, h1, reassoc_of% h2, τ.fac]`.
+
+Establish `wc : c.left ≫ τ.H.hom = spMap τ.j` using `Over.w _`. Establish `wd : d.left ≫ τ.H.hom = spMap τ.j` using `Over.w _`. Set `c' : Over.mk k ⟶ (Over.pullback (Out.jK τ.V)).obj τ.H` to `Over.homMk (pullback.lift (gPt p ≫ c.left) k (by rw [hk, Category.assoc, wc])) (pullback.lift_snd _ _ _)`. Set `d' : Over.mk k ⟶ (Over.pullback (Out.jK τ.V)).obj τ.H` to `Over.homMk (pullback.lift (gPt p ≫ d.left) k (by rw [hk, Category.assoc, wd])) (pullback.lift_snd _ _ _)`. Establish `hc' : c'.left ≫ pullback.fst τ.H.hom (Out.jK τ.V) = gPt p ≫ c.left` using `pullback.lift_fst _ _ _`.
+
+Establish `hd' : d'.left ≫ pullback.fst τ.H.hom (Out.jK τ.V) = gPt p ≫ d.left` using `pullback.lift_fst _ _ _`. Set `c₁ : Over.mk (k ≫ Out.jK τ.V) ⟶ τ.H` to `Over.homMk (gPt p ≫ c.left) (by simp [hk, wc])`. Set `d₁ : Over.mk (k ≫ Out.jK τ.V) ⟶ τ.H` to `Over.homMk (gPt p ≫ d.left) (by simp [hk, wd])`. Establish `e₁ : (c₁ * d₁).left = (c' * d').left ≫ pullback.fst τ.H.hom (Out.jK τ.V)` using `(isGrpPullback_pullback τ.H (Out.jK τ.V)).2 (Over.mk k) c' d' c₁ d₁ hc'.symm hd'.symm`. Establish `e₂ : (c₁ * d₁).left = gPt p ≫ (c * d).left` using `mul_left_comp (gPt p) hk.symm c d c₁ d₁ rfl rfl`.
+
+Establish `wφ : τ.φ ≫ C.A.hom = pullback.snd τ.H.hom (Out.jK τ.V) ≫ τ.yK` using `τ.φ_cart.1.w`. Establish `wc' : c'.left ≫ pullback.snd τ.H.hom (Out.jK τ.V) = k` using `pullback.lift_snd _ _ _`. Establish `wd' : d'.left ≫ pullback.snd τ.H.hom (Out.jK τ.V) = k` using `pullback.lift_snd _ _ _`. Set `c₂ : Over.mk (k ≫ τ.yK) ⟶ C.A` to `Over.homMk (c'.left ≫ τ.φ) (by change (c'.left ≫ τ.φ) ≫ C.A.hom = k ≫ τ.yK; rw [Category.assoc, wφ, reassoc_of% wc'])`. Set `d₂ : Over.mk (k ≫ τ.yK) ⟶ C.A` to `Over.homMk (d'.left ≫ τ.φ) (by change (d'.left ≫ τ.φ) ≫ C.A.hom = k ≫ τ.yK; rw [Category.assoc, wφ, reassoc_of% wd'])`.
+
+Establish `e₃ : (c₂ * d₂).left = (c' * d').left ≫ τ.φ` using `τ.φ_cart.2 (Over.mk k) c' d' c₂ d₂ rfl rfl`. Establish `e₄ : (lift c₂ d₂).left = a₀`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h1 : (lift c₂ d₂).left ≫ (fst C.A C.A).left = c'.left ≫ τ.φ`. Rewrite using `[← Over.comp_left, lift_fst]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ ≫ (fst C.A C.A).left = _ ≫ (fst C.A C.A).left`. Rewrite using `[h1, ← cancel_mono C.a, Category.assoc, Category.assoc, hc, τ.φ_f, reassoc_of% hc']`. Establish `h1 : (lift c₂ d₂).left ≫ (snd C.A C.A).left = d'.left ≫ τ.φ`. Rewrite using `[← Over.comp_left, lift_snd]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ ≫ (snd C.A C.A).left = _ ≫ (snd C.A C.A).left`. Rewrite using `[h1, ← cancel_mono C.a, Category.assoc, Category.assoc, hd, τ.φ_f, reassoc_of% hd']`. Establish `e₅ : a₀ ≫ (μ[C.A]).left = (c' * d').left ≫ τ.φ`. Rewrite using `[← e₃, ← e₄, ← Over.comp_left]`.
+
+Both sides reduce to the same expression. Rewrite using `[hb, reassoc_of% e₅, reassoc_of% τ.φ_f, ← reassoc_of% e₂, e₁, Category.assoc]`.
+-/
 theorem eq_mul_of_generic (C : Core) {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y)
     (c d : Over.mk (spMap τ.j) ⟶ τ.H) (a₀ : Sp (PadicAlgCl p) ⟶ (C.A ⊗ C.A).left)
     (hc : a₀ ≫ (fst C.A C.A).left ≫ C.a = gPt p ≫ c.left ≫ τ.f)
@@ -131,6 +178,17 @@ theorem eq_mul_of_generic (C : Core) {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶
     rw [← e₃, ← e₄, ← Over.comp_left]; rfl
   rw [hb, reassoc_of% e₅, reassoc_of% τ.φ_f, ← reassoc_of% e₂, e₁, Category.assoc]
 
+/- English proof (translation)
+Establish `hA` using `isPullback_a C`. Establish `: IsOpenImmersion C.a` using `MorphismProperty.of_isPullback hA.flip inferInstance`. Establish `w₁ : (fst C.GG C.GG).left ≫ C.GG.hom = (C.GG ⊗ C.GG).hom` using `Over.w _`. Establish `w₂ : (snd C.GG C.GG).left ≫ C.GG.hom = (C.GG ⊗ C.GG).hom` using `Over.w _`. Establish `v₁ : (fst C.A C.A).left ≫ C.A.hom = (C.A ⊗ C.A).hom` using `Over.w _`.
+
+Establish `v₂ : (snd C.A C.A).left ≫ C.A.hom = (C.A ⊗ C.A).hom` using `Over.w _`. Establish `h₁` using `h.1`. Establish `h₂` using `h.2`. Use `⟨⟨by rw [← w₁, reassoc_of% h₁, hA.w, reassoc_of% v₁]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst C.GG C.GG).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd C.GG C.GG).left) s.snd (by rw [Category.assoc, w₂, s.condition …` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `_ ≫ (fst C.GG C.GG).left = _ ≫ (fst C.GG C.GG).left`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`. Conclude with `(congrArg (· ≫ C.a) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Express the relevant statement in the definitionally equal form `_ ≫ (snd C.GG C.GG).left = _ ≫ (snd C.GG C.GG).left`. Rewrite using `[Category.assoc, h₂, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ C.a) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`. Conclude with `(congrArg (· ≫ C.A.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ≫ (fst C.A C.A).left = _`. Rewrite using `[← cancel_mono C.a, IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd C.A C.A).left = _`. Rewrite using `[← cancel_mono C.a, IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`.
+-/
 theorem isPullback_square (C : Core) (φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left) (h : IsSquare C.a φ₂) :
     IsPullback φ₂ (C.A ⊗ C.A).hom (C.GG ⊗ C.GG).hom C.U.ι := by
   have hA := isPullback_a C
@@ -164,6 +222,17 @@ theorem isPullback_square (C : Core) (φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C
       change _ ≫ (snd C.A C.A).left = _
       rw [← cancel_mono C.a, IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]
 
+/- English proof (translation)
+Establish `hp` using `isPullback_square C φ₂ h`. Use `C.lft` as an intermediate fact. Establish `: Smooth (C.GG ⊗ C.GG).hom` using `inferInstanceAs (Smooth (pullback.fst C.GG.hom C.GG.hom ≫ C.GG.hom))`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (C.GG ⊗ C.GG).left` using `forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (C.GG ⊗ C.GG).hom C.normal`. Use `GlobalTheory.IsNormalScheme.of_pred hN` as an intermediate fact.
+
+Establish `: IsLocallyNoetherian C.Z` using `LocallyOfFiniteType.isLocallyNoetherian C.π`. Establish `: IsLocallyNoetherian (C.GG ⊗ C.GG).left` using `LocallyOfFiniteType.isLocallyNoetherian (C.GG ⊗ C.GG).hom`. Use `C.ab.smooth` as an intermediate fact. Use `C.ab.geomConnected` as an intermediate fact. Establish `: Nonempty C.U` using `⟨⟨_, C.ne.some_mem⟩⟩`.
+
+Establish `: ConnectedSpace C.A.left` using `GeometricallyConnected.connectedSpace C.A.hom C.A.hom.isOpenMap`. Establish `hc : ConnectedSpace (C.A ⊗ C.A).left` using `inferInstanceAs (ConnectedSpace ↥(pullback C.A.hom C.A.hom))`. Establish `hr : Set.range φ₂ = (C.GG ⊗ C.GG).hom ⁻¹' C.U`. Rewrite using `[← hp.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Function.Surjective.range_comp hp.isoPullback.hom.surjective, Scheme.Pullback.range_fst, Scheme.Opens.range_ι]`. Establish `hd : Dense (Set.range φ₂)`.
+
+Rewrite using `[hr]`. Conclude with `(C.U.isOpen.dense C.ne).preimage (C.GG ⊗ C.GG).hom.isOpenMap`. Establish `: ConnectedSpace (C.GG ⊗ C.GG).left`. Establish `h : _root_.IsConnected (closure (Set.range φ₂))` using `(isConnected_range φ₂.continuous).closure`. Rewrite `h` using `[hd.closure_eq]`.
+
+Conclude with `connectedSpace_iff_univ.mpr h`. Conclude with `⟨IsNormalScheme.isIntegral_of_connectedSpace _, hN, inferInstance⟩`.
+-/
 theorem isIntegral_and_normal (C : Core) [Smooth C.GG.hom] (φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left)
     (h : IsSquare C.a φ₂) : IsIntegral (C.GG ⊗ C.GG).left ∧
       ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (C.GG ⊗ C.GG).left ∧ Nonempty (C.A ⊗ C.A).left := by
@@ -193,6 +262,15 @@ theorem isIntegral_and_normal (C : Core) [Smooth C.GG.hom] (φ₂ : (C.A ⊗ C.A
     exact connectedSpace_iff_univ.mpr h
   exact ⟨IsNormalScheme.isIntegral_of_connectedSpace _, hN, inferInstance⟩
 
+/- English proof (translation)
+Establish `hp` using `isPullback_square C φ₂ h`. Establish `w₁ : (fst C.GG C.GG).left ≫ C.GG.hom = (C.GG ⊗ C.GG).hom` using `Over.w _`. Establish `w₂ : (snd C.GG C.GG).left ≫ C.GG.hom = (C.GG ⊗ C.GG).hom` using `Over.w _`. Establish `hcl : C.Cl (a ≫ (C.GG ⊗ C.GG).hom)`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[← reassoc_of% ha, hp.w, ← Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `Subtype.property _`. Take `⟨τ⟩` from `hT p _ hcl`. Establish `hτ` using `hC p _ τ`. Set `c : Over.mk (spMap τ.j) ⟶ τ.H` to `Over.homMk (hτ.lift (a ≫ (fst C.GG C.GG).left) (spMap τ.j) (by rw [Category.assoc, w₁, τ.fac])) (hτ.lift_snd _ _ _)`.
+
+Set `d : Over.mk (spMap τ.j) ⟶ τ.H` to `Over.homMk (hτ.lift (a ≫ (snd C.GG C.GG).left) (spMap τ.j) (by rw [Category.assoc, w₂, τ.fac])) (hτ.lift_snd _ _ _)`. Establish `hc : c.left ≫ τ.f = a ≫ (fst C.GG C.GG).left` using `hτ.lift_fst _ _ _`. Establish `hd : d.left ≫ τ.f = a ≫ (snd C.GG C.GG).left` using `hτ.lift_fst _ _ _`. Use `⟨τ, c, d, hc, hd, eq_mul_of_generic C τ c d a₀ ?_ ?_ b hb hb'⟩` and prove the remaining obligations. Rewrite using `[hc, ← reassoc_of% ha, h.1]`.
+
+Rewrite using `[hd, ← reassoc_of% ha, h.2]`.
+-/
 theorem exists_test (C : Core) (hT : C.HasTests) (hC : C.TestCart)
     (φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left) (h : IsSquare C.a φ₂) {p : ℕ} [Fact p.Prime]
     (a : Sp (OO p) ⟶ (C.GG ⊗ C.GG).left) (a₀ : Sp (PadicAlgCl p) ⟶ (C.A ⊗ C.A).left)
@@ -220,6 +298,11 @@ theorem exists_test (C : Core) (hT : C.HasTests) (hC : C.TestCart)
   · rw [hc, ← reassoc_of% ha, h.1]
   · rw [hd, ← reassoc_of% ha, h.2]
 
+/- English proof (translation)
+Use `τ.j_loc` as an intermediate fact. Establish `h : ∀ x, (u ≫ spMap τ.j) x = IsLocalRing.closedPoint τ.V` using `fun x => by`. Rewrite using `[Scheme.Hom.comp_apply, hu]`. Conclude with `IsLocalRing.comap_closedPoint τ.j`. Use extensionality with `z`.
+
+Conclude with `⟨fun ⟨x, hx⟩ => hx ▸ h x, fun hz => ⟨(⊥ : PrimeSpectrum K), (h _).trans hz.symm⟩⟩`.
+-/
 theorem range_comp_test {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y) {K : Type}
     [Field K] (u : Sp K ⟶ Sp (OO p)) (hu : ∀ x, u x = cPt p) :
     Set.range (u ≫ spMap τ.j) = {IsLocalRing.closedPoint τ.V} := by
@@ -230,6 +313,15 @@ theorem range_comp_test {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C
   ext z
   exact ⟨fun ⟨x, hx⟩ => hx ▸ h x, fun hz => ⟨(⊥ : PrimeSpectrum K), (h _).trans hz.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨K, _, _, u, u', hu, h1, h2⟩` from `exists_common_geometric_point a a' _ _ e`. Take `rfl` from `prime_eq p q u u' h1 h2`. Take `⟨τ, c, d, hc, hd, rfl⟩` from `exists_test C hT hC φ₂ h a a₀ ha b hb hb'`. Take `⟨τ', c', d', hc', hd', rfl⟩` from `exists_test C hT hC φ₂ h a' a₁ ha' b' hb₁ hb₁'`. Set `v : Over.mk (u ≫ spMap τ.j) ⟶ Over.mk (spMap τ.j)` to `Over.homMk u`.
+
+Set `v' : Over.mk (u' ≫ spMap τ'.j) ⟶ Over.mk (spMap τ'.j)` to `Over.homMk u'`. Establish `key` using `(hF p _ _ τ τ' K (u ≫ spMap τ.j) (u' ≫ spMap τ'.j) (range_comp_test τ u h1) (range_comp_test τ' u' h2) (by rw [Category.assoc, Category.assoc, τ.fac, τ'.fac, reassoc_of% hu]) (v ≫ c) (v ≫ d) (v' ≫ c') (v' ≫ d') (by`. Express the relevant statement in the definitionally equal form `(u ≫ c.left) ≫ _ = (u' ≫ c'.left) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hc, hc', reassoc_of% hu])`. Use the proof step `(by`.
+
+Express the relevant statement in the definitionally equal form `(u ≫ d.left) ≫ _ = (u' ≫ d'.left) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hd, hd', reassoc_of% hu])).1`. Rewrite `key` using `[← MonObj.comp_mul, ← MonObj.comp_mul]`. Establish `key' : u ≫ (c * d).left ≫ τ.f ≫ C.G.ι = u' ≫ (c' * d').left ≫ τ'.f ≫ C.G.ι`. Establish `: (u ≫ (c * d).left) ≫ τ.f = (u' ≫ (c' * d').left) ≫ τ'.f` using `key`.
+
+Simplify `congrArg (· ≫ C.G.ι) this` using `only [Category.assoc]`. Take `⟨x⟩ : Nonempty (Sp K)` from `inferInstance`. Use `congrArg (fun g : Sp K ⟶ C.P.left => g x) key'` as an intermediate fact. Use `beta_reduce at this`. Rewrite `this` using `[Scheme.Hom.comp_apply u, Scheme.Hom.comp_apply u', h1, h2]`. Then use the resulting hypothesis.
+-/
 theorem centre_eq (C : Core) (hT : C.HasTests) (hC : C.TestCart) (hF : C.FibLaw)
     (φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left) (h : IsSquare C.a φ₂) {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
     (a : Sp (OO p) ⟶ (C.GG ⊗ C.GG).left) (a₀ : Sp (PadicAlgCl p) ⟶ (C.A ⊗ C.A).left)
@@ -268,6 +360,23 @@ end GlobalTheory.ZJ.AddExt
 namespace GlobalTheory.ZJ
 open AddExt
 
+/- English proof (translation)
+Introduce `C hT hS hC hF`. Establish `hA` using `isPullback_a C`. Establish `: Smooth C.GG.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Set `φ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left` to `pullback.map C.A.hom C.A.hom C.GG.hom C.GG.hom C.a C.a C.U.ι hA.w.symm hA.w.symm`. Establish `hφ : IsSquare C.a φ` using `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+
+Establish `hp` using `isPullback_square C φ hφ`. Establish `: IsOpenImmersion φ` using `MorphismProperty.of_isPullback hp.flip inferInstance`. Take `⟨hI, hN, ⟨x₀⟩⟩` from `isIntegral_and_normal C φ hφ`. Use `C.lft` as an intermediate fact. Use `C.qc` as an intermediate fact.
+
+Use `C.flat` as an intermediate fact. Use `C.proper` as an intermediate fact. Establish `: IsLocallyNoetherian C.Z` using `LocallyOfFiniteType.isLocallyNoetherian C.π`. Establish `: IsLocallyNoetherian C.P.left` using `LocallyOfFiniteType.isLocallyNoetherian C.P.hom`. Establish `: QuasiCompact C.GG.hom` using `inferInstanceAs (QuasiCompact (C.G.ι ≫ C.P.hom))`.
+
+Establish `: Smooth (C.GG ⊗ C.GG).hom` using `inferInstanceAs (Smooth (pullback.fst C.GG.hom C.GG.hom ≫ C.GG.hom))`. Establish `: QuasiCompact (C.GG ⊗ C.GG).hom` using `inferInstanceAs (QuasiCompact (pullback.fst C.GG.hom C.GG.hom ≫ C.GG.hom))`. Establish `wμ : (μ[C.A]).left ≫ C.A.hom = (C.A ⊗ C.A).hom` using `Over.w _`. Take `⟨Φ, ⟨hΦ, hΦ'⟩, -⟩` from `existsUnique_extension_of_finite_specializations (C.GG ⊗ C.GG).left ((C.GG ⊗ C.GG).hom ≫ C.π) hN C.Z C.P.left (C.GG ⊗ C.GG).hom C.P.hom C.G φ.opensRange (φ.isoOpensRange.inv ≫ (μ[C.A]).left ≫ C.a ≫ C.G.ι) ⟨_, x₀, rfl⟩ (by`. Use `C.cart.w` as an intermediate fact.
+
+Rewrite using `[← φ.isoOpensRange_inv_comp]`. Simplify using `only [Category.assoc] at this ⊢`. Rewrite using `[this, reassoc_of% wμ, hp.w])`. Use the proof step `(fun σ _ => by`. Use `⟨{w | ∃ (p : ℕ) (_ : Fact p.Prime) (a : Sp (OO p) ⟶ (C.GG ⊗ C.GG).left) (a₀ : Sp (PadicAlgCl p) ⟶ (C.A ⊗ C.A).left) (b : Sp (OO p) ⟶ C.P.left), a (cPt p) = σ ∧ a₀ ≫ φ = gPt p ≫ a ∧ gPt p ≫ b = a₀ ≫ (μ[C.A]).left ≫ C.a ≫ C.G.ι ∧ b ≫ C.P.hom = a ≫ (C.GG ⊗ C.GG).hom ∧ b (cPt p) = w} …` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, _, a, a₀, b, h1, h2, h3, h4, rfl⟩ _ ⟨q, _, a', a₁, b', h1', h2', h3', h4', rfl⟩`. Conclude with `centre_eq C hT hC hF φ hφ a a₀ h2 b h3 h4 a' a₁ h2' b' h3' h4' (h1.trans h1'.symm)`. Introduce and unpack `_ ⟨p, _, a, a₀, b, h1, h2, h3, h4, rfl⟩`. Take `⟨τ, c, d, -, -, rfl⟩` from `exists_test C hT hC φ hφ a a₀ h2 b h3 h4`. Rewrite using `[← Category.assoc, Scheme.Hom.comp_apply]`.
+
+Conclude with `Subtype.property _`. Introduce `p _ a a₀ b h1 h2 h3 h4`. Use `⟨p, inferInstance, a, a₀ ≫ φ.isoOpensRange.inv, b, h1, ?_, ?_, h4, rfl⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, φ.isoOpensRange_inv_comp, h2]`. Rewrite using `[Category.assoc, h3])`.
+
+Use `⟨Over.homMk Φ hΦ', fun φ₂ h₂ => ?_⟩` and prove the remaining obligations. Take `rfl : φ₂ = φ` from `pullback.hom_ext (h₂.1.trans hφ.1.symm) (h₂.2.trans hφ.2.symm)`. Express the relevant statement in the definitionally equal form `φ ≫ Φ = _`. Rewrite using `[← cancel_mono C.G.ι, Category.assoc, Category.assoc, ← φ.isoOpensRange_hom_ι, Category.assoc, hΦ, Iso.hom_inv_id_assoc]`.
+-/
 theorem Core.exists_add_extension : ∀ C : Core, C.HasTests → SmoothOfRelativeDimension C.g C.GG.hom → C.TestCart → C.FibLaw → ∃ m : C.GG ⊗ C.GG ⟶ C.GG, ∀ φ₂ : (C.A ⊗ C.A).left ⟶ (C.GG ⊗ C.GG).left, IsSquare C.a φ₂ → φ₂ ≫ m.left = (μ[C.A]).left ≫ C.a := by
   intro C hT hS hC hF
   have hA := isPullback_a C

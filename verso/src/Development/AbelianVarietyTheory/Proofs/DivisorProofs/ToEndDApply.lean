@@ -16,6 +16,9 @@ def repD {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
   map_one' := by ext x; simp [LinearMap.restrict_apply]
   map_mul' := fun a b => by ext x; simp [LinearMap.restrict_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repD_apply {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : G →* Module.End ℂ V) (D : Submodule ℂ V) (K : Set G) (h1 : (1 : G) ∈ K)
     (hmul : ∀ k ∈ K, ∀ k' ∈ K, k * k' ∈ K) (hst : ∀ k ∈ K, ∀ x ∈ D, ρ k x ∈ D)
@@ -31,6 +34,9 @@ variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : G →* Module.End ℂ V) (D : Submodule ℂ V) (K : Set G) (h1 : (1 : G) ∈ K)
     (hmul : ∀ k ∈ K, ∀ k' ∈ K, k * k' ∈ K) (hst : ∀ k ∈ K, ∀ x ∈ D, ρ k x ∈ D)
 
+/- English proof (translation)
+Rewrite using `[Representation.asModuleEquiv_map_smul, Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply]`. Simplify using `[Finsupp.sum, repD_apply]`.
+-/
 theorem smul_val (a : MonoidAlgebra ℂ (subK K h1 hmul)) (u : (repD ρ D K h1 hmul hst).asModule) :
     (((repD ρ D K h1 hmul hst).asModuleEquiv (a • u) : D) : V) =
       ∑ κ ∈ a.coeff.support, a.coeff κ • ρ κ (((repD ρ D K h1 hmul hst).asModuleEquiv u : D) : V) := by
@@ -46,6 +52,9 @@ noncomputable def toEndD
     rw [Representation.asModuleEquiv_symm_map_smul, g.map_smul, Representation.asModuleEquiv_map_smul]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEndD_apply
     (g : (repD ρ D K h1 hmul hst).asModule →ₗ[MonoidAlgebra ℂ (subK K h1 hmul)]
       (repD ρ D K h1 hmul hst).asModule) (u : D) :

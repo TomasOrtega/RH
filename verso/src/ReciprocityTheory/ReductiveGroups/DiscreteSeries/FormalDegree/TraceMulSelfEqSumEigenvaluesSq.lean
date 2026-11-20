@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `pmat`. Use `split_ifs with h h'`. Conclude with `Or.inr h.2`. Conclude with `Or.inr (Ne.symm h'.2)`. Conclude with `Or.inl rfl`.
+-/
 lemma pmat_entry_cases {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
     pmat z a b = 0 ∨ ε a ≠ ε b := by
   unfold pmat
@@ -19,13 +22,26 @@ lemma pmat_entry_cases {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin 
   · exact Or.inr (Ne.symm h'.2)
   · exact Or.inl rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> cases y <;> simp at h ⊢`.
+-/
 lemma jsgn_ne {x y : Bool} (h : x ≠ y) :
     ((if y then 1 else -1 : ℂ)) = -(if x then 1 else -1) := by
   cases x <;> cases y <;> simp at h ⊢
 
+/- English proof (translation)
+Apply the tactic sequence `cases x <;> simp`.
+-/
 lemma jsgn_ne_zero (x : Bool) : ((if x then 1 else -1 : ℂ)) ≠ 0 := by
   cases x <;> simp
 
+/- English proof (translation)
+Establish `h2 : pmat z * Jm ε = -(Jm ε * pmat z)`. Use extensionality with `a b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply]`. Break down `pmat_entry_cases z a b with h | h` into its components or cases. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[jsgn_ne h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, h2⟩` and prove the remaining obligations. Unfold `inG`.
+
+Rewrite using `[(pmat_isHermitian z).eq, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem pmat_inP {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inP ε (pmat z) := by
   have h2 : pmat z * Jm ε = -(Jm ε * pmat z) := by
     ext a b
@@ -40,6 +56,23 @@ theorem pmat_inP {ε : Fin n → Bool} (z : PCoord ε → ℂ) : inP ε (pmat z)
   rw [(pmat_isHermitian z).eq, h2]
   simp
 
+/- English proof (translation)
+Take `⟨hG, hJ⟩` from `hX`. Unfold `inG at hG`. Establish `hent : ∀ a b, X a b * (if ε b then 1 else -1) = -((if ε a then 1 else -1) * X a b)`. Introduce `a b`. Establish `h` using `congrFun (congrFun hJ a) b`.
+
+Simplify `h` using `[Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hzero : ∀ a b, ε a = ε b → X a b = 0`. Introduce `a b hab`. Establish `h` using `hent a b`. Rewrite `h` using `[hab]`.
+
+Apply the tactic sequence `cases hb : ε b <;> simp [hb] at h <;> first`. Consider the case `exact h`. Consider the case `linear_combination h / 2`. Consider the case `linear_combination (-1 / 2 : ℂ) * h`. Establish `hJJ : Jm ε * Jm ε = 1`.
+
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `cases ε a <;> simp`.
+
+Establish `hH : Xᴴ = X`. Establish `h1 : Xᴴ * Jm ε = X * Jm ε`. Rewrite using `[hJ]`. Conclude with `eq_neg_of_add_eq_zero_left hG`. Combine the equalities or inequalities in the displayed calculation.
+
+Use extensionality with `a b`. Unfold `pmat`. Use `split_ifs with h h'`. Both sides reduce to the same expression. Establish `h3` using `congrFun (congrFun hH a) b`.
+
+Rewrite `h3` using `[Matrix.conjTranspose_apply]`. Conclude with `h3`. Apply `(hzero a b ?_).symm` to reduce the goal to its premises. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Assume the negation of the conclusion as `hne`.
+
+Conclude with `h' ⟨hab, Ne.symm hne⟩`. Rewrite using `[hab]`. Assume the negation of the conclusion as `hne`. Conclude with `h ⟨hab, hne⟩`.
+-/
 theorem pmat_coords {ε : Fin n → Bool} (X : Matrix (Fin n) (Fin n) ℂ) (hX : inP ε X) :
     pmat (fun ab : PCoord ε => X ab.1.1 ab.1.2) = X := by
   obtain ⟨hG, hJ⟩ := hX
@@ -88,6 +121,11 @@ theorem pmat_coords {ε : Fin n → Bool} (X : Matrix (Fin n) (Fin n) ℂ) (hX :
 def pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (ab : Fin n × Fin n) : ℝ :=
   if h : ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2 then ‖z ⟨ab, h⟩‖ ^ 2 else 0
 
+/- English proof (translation)
+Unfold `pmat pmatHalfSq`. Simplify using `only`. Distinguish the cases in `h1 : b < a ∧ ε a ≠ ε b`. Establish `h2 : ¬ (a < b ∧ ε b ≠ ε a)` using `fun h => lt_asymm h1.1 h.1`. Simplify using `only [dif_pos h1, dif_neg h2, add_zero]`.
+
+Distinguish the cases in `h2 : a < b ∧ ε b ≠ ε a`. Simplify using `only [dif_neg h1, dif_pos h2, norm_star, zero_add]`. Simplify using `only [dif_neg h1, dif_neg h2, norm_zero, add_zero]`. Evaluate the numerical expressions.
+-/
 lemma norm_pmat_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
     ‖pmat z a b‖ ^ 2 = pmatHalfSq z (a, b) + pmatHalfSq z (b, a) := by
   unfold pmat pmatHalfSq
@@ -100,6 +138,13 @@ lemma norm_pmat_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a b : Fin n) :
     · simp only [dif_neg h1, dif_neg h2, norm_zero, add_zero]
       norm_num
 
+/- English proof (translation)
+Establish `e1 : ∑ ab : Fin n × Fin n, pmatHalfSq z ab = ∑ ab ∈ univ.filter (fun ab : Fin n × Fin n => ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2), pmatHalfSq z ab`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Unfold `pmatHalfSq`. Rewrite using `[dif_neg h]`. Rewrite using `[e1, Finset.sum_subtype (p := fun ab : Fin n × Fin n => ab.2 < ab.1 ∧ ε ab.1 ≠ ε ab.2) _ (fun ab => by simp) (pmatHalfSq z)]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Unfold `pmatHalfSq`.
+
+Rewrite using `[dif_pos ab.2]`.
+-/
 lemma sum_pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
     ∑ ab : Fin n × Fin n, pmatHalfSq z ab = ∑ ab : PCoord ε, ‖z ab‖ ^ 2 := by
   classical
@@ -117,6 +162,11 @@ lemma sum_pmatHalfSq {ε : Fin n → Bool} (z : PCoord ε → ℂ) :
   unfold pmatHalfSq
   rw [dif_pos ab.2]
 
+/- English proof (translation)
+Unfold `S7.hs`. Establish `e : ∀ i j, ‖pmat z i j‖ ^ 2 = pmatHalfSq z (i, j) + pmatHalfSq z (j, i)` using `norm_pmat_sq z`. Simplify using `only [e, Finset.sum_add_distrib]`. Establish `hprod : ∑ i, ∑ j, pmatHalfSq z (i, j) = ∑ ab : Fin n × Fin n, pmatHalfSq z ab` using `(Fintype.sum_prod_type' (fun i j => pmatHalfSq z (i, j))).symm`. Establish `hswap : ∑ i, ∑ j, pmatHalfSq z (j, i) = ∑ i, ∑ j, pmatHalfSq z (i, j)` using `Finset.sum_comm`.
+
+Rewrite using `[hswap, hprod, sum_pmatHalfSq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : hs (pmat z) = 2 * ∑ ab, ‖z ab‖ ^ 2 := by
   unfold S7.hs
   have e : ∀ i j, ‖pmat z i j‖ ^ 2 = pmatHalfSq z (i, j) + pmatHalfSq z (j, i) := norm_pmat_sq z
@@ -127,9 +177,17 @@ theorem hs_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : hs (pmat z) = 2 
   rw [hswap, hprod, sum_pmatHalfSq]
   ring
 
+/- English proof (translation)
+Simplify using `[pmat]`.
+-/
 lemma pmat_diag_zero {ε : Fin n → Bool} (z : PCoord ε → ℂ) (a : Fin n) : pmat z a a = 0 := by
   simp [pmat]
 
+/- English proof (translation)
+Establish `h` using `(pmat_isHermitian z).trace_eq_sum_eigenvalues`. Establish `htr : (pmat z).trace = 0` using `by simp [Matrix.trace, pmat_diag_zero]`. Rewrite `h` using `[htr]`. Unfold `pev`. Establish `h2 : (((∑ i, (pmat_isHermitian z).eigenvalues i : ℝ)) : ℂ) = 0`.
+
+Rewrite using `[Complex.ofReal_sum]`. Conclude with `h.symm`. Establish `h3` using `Complex.ofReal_eq_zero.mp h2`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+-/
 theorem sum_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a = 0 := by
   have h := (pmat_isHermitian z).trace_eq_sum_eigenvalues
   have htr : (pmat z).trace = 0 := by simp [Matrix.trace, pmat_diag_zero]
@@ -141,6 +199,13 @@ theorem sum_pev {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a =
   have h3 := Complex.ofReal_eq_zero.mp h2
   convert h3 using 2
 
+/- English proof (translation)
+Use `set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Use `set D : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal (RCLike.ofReal ∘ hA.eigenvalues) with hD`. Establish `hUU : star U * U = 1` using `Unitary.coe_star_mul_self hA.eigenvectorUnitary`. Establish `hA' : A = U * D * star U` using `hA.spectral_theorem`. Establish `hsq : A * A = U * (D * D) * star U`.
+
+Rewrite using `[hA']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = U * (D * D) * star U := by rw [hUU, mul_one]; simp only [mul_assoc]`. Rewrite using `[hsq, Matrix.trace_mul_comm, ← mul_assoc, hUU, one_mul, hD, Matrix.diagonal_mul_diagonal, Matrix.trace_diagonal]`.
+
+Simplify using `[sq]`.
+-/
 lemma trace_mul_self_eq_sum_eigenvalues_sq {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (A * A).trace = ∑ i, ((hA.eigenvalues i : ℂ)) ^ 2 := by
   set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU
@@ -156,6 +221,13 @@ lemma trace_mul_self_eq_sum_eigenvalues_sq {A : Matrix (Fin n) (Fin n) ℂ} (hA 
     Matrix.trace_diagonal]
   simp [sq]
 
+/- English proof (translation)
+Unfold `S7.hs`. Rewrite using `[Matrix.trace]`. Simplify using `only [Matrix.diag, Matrix.mul_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `hji : A j i = star (A i j)`. Establish `h` using `congrFun (congrFun hA.eq j) i`. Rewrite `h` using `[Matrix.conjTranspose_apply]`. Conclude with `h.symm`. Rewrite using `[hji, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma trace_mul_self_eq_hs {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (A * A).trace = ((hs A : ℝ) : ℂ) := by
   unfold S7.hs
@@ -171,12 +243,32 @@ lemma trace_mul_self_eq_hs {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian)
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h1` using `trace_mul_self_eq_sum_eigenvalues_sq (pmat_isHermitian z)`. Rewrite `h1` using `[trace_mul_self_eq_hs (pmat_isHermitian z)]`. Unfold `pev`. Conclude with `h1.symm` after adjusting the coercions.
+-/
 theorem sum_pev_sq {ε : Fin n → Bool} (z : PCoord ε → ℂ) : ∑ a, pev z a ^ 2 = hs (pmat z) := by
   have h1 := trace_mul_self_eq_sum_eigenvalues_sq (pmat_isHermitian z)
   rw [trace_mul_self_eq_hs (pmat_isHermitian z)] at h1
   unfold pev
   exact_mod_cast h1.symm
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype, pOf, qOf, ← Finset.card_product]`. Use `Finset.card_nbij' (fun ab => if ε ab.1 then ab else (ab.2, ab.1)) (fun xy => (max xy.1 xy.2, min xy.1 xy.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ h`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at h`. Take `⟨hba, hne⟩` from `h`.
+
+Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all`. Introduce and unpack `⟨x, y⟩ h`. Simplify using `only [Finset.coe_product, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_prod, Set.mem_setOf_eq] at h`. Take `⟨hx, hy⟩` from `h`. Establish `hxy : x ≠ y`.
+
+Introduce `e`. Rewrite `hx` using `[e, hy]`. Conclude with `Bool.false_ne_true hx`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Break down `lt_or_gt_of_ne hxy with h | h` into its components or cases.
+
+Rewrite using `[max_eq_right h.le, min_eq_left h.le]`. Conclude with `⟨h, by rw [hx, hy]; decide⟩`. Rewrite using `[max_eq_left h.le, min_eq_right h.le]`. Conclude with `⟨h, by rw [hx, hy]; decide⟩`. Introduce and unpack `⟨a, b⟩ h`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at h`. Take `⟨hba, hne⟩` from `h`. Consider the cases of `ha : ε a`. Simplify using `only [ha, Bool.false_eq_true, if_false]`. Rewrite using `[max_eq_right hba.le, min_eq_left hba.le]`.
+
+Simplify using `only [ha, if_true]`. Rewrite using `[max_eq_left hba.le, min_eq_right hba.le]`. Introduce and unpack `⟨x, y⟩ h`. Simplify using `only [Finset.coe_product, Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_prod, Set.mem_setOf_eq] at h`. Take `⟨hx, hy⟩` from `h`.
+
+Establish `hxy : x ≠ y`. Introduce `e`. Rewrite `hx` using `[e, hy]`. Conclude with `Bool.false_ne_true hx`. Simplify using `only`.
+
+Break down `lt_or_gt_of_ne hxy with h | h` into its components or cases. Rewrite using `[max_eq_right h.le, min_eq_left h.le]`. Simplify using `[hy]`. Rewrite using `[max_eq_left h.le, min_eq_right h.le]`. Simplify using `[hx]`.
+-/
 theorem card_PCoord (ε : Fin n → Bool) : Fintype.card (PCoord ε) = pOf ε * qOf ε := by
   classical
   rw [Fintype.card_subtype, pOf, qOf, ← Finset.card_product]

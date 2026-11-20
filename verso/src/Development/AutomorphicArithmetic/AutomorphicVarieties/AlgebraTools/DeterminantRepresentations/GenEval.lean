@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ D B _ _ m y b`. Rewrite using `[← D.nat (MvPolynomial (Fin m) A) B (MvPolynomial.aeval b)]`. Use `congr 1`. Simplify using `only [GDet.gen, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use extensionality with `g`. Simplify using `[MonoidAlgebra.mapRingHom]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.genEval :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (B : Type) [CommRing B] [Algebra A B] (m : ℕ) (y : Fin m → MonoidAlgebra A G) (b : Fin m → B),
     D.D B (∑ j, b j • MonoidAlgebra.mapRingHom G (algebraMap A B) (y j)) =

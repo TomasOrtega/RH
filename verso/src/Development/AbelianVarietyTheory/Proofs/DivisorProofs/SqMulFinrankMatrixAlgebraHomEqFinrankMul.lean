@@ -14,6 +14,9 @@ section
 variable {X : Type} [AddCommGroup X] [Module k X]
   (ρ : Matrix (Fin (n+1)) (Fin (n+1)) k →ₐ[k] Module.End k X)
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[single_mul_single_same, mul_one]`. Rewrite using `[single_mul_single_of_ne (h := h), map_zero, LinearMap.zero_apply]`.
+-/
 theorem unit_mul (i j l p : Fin (n+1)) (x : X) :
     ρ (single i j 1) (ρ (single l p 1) x) = if j = l then ρ (single i p 1) x else 0 := by
   rw [← Module.End.mul_apply, ← map_mul]
@@ -21,15 +24,24 @@ theorem unit_mul (i j l p : Fin (n+1)) (x : X) :
   · subst h; rw [single_mul_single_same, mul_one]
   · rw [single_mul_single_of_ne (h := h), map_zero, LinearMap.zero_apply]
 
+/- English proof (translation)
+Simplify using `only [unit_mul, if_true]`. Rewrite using `[← LinearMap.sum_apply, ← map_sum, sum_single_one, map_one, Module.End.one_apply]`.
+-/
 theorem recon (x : X) : ∑ i, ρ (single i 0 1) (ρ (single 0 i 1) x) = x := by
   simp only [unit_mul, if_true]
   rw [← LinearMap.sum_apply, ← map_sum, sum_single_one, map_one, Module.End.one_apply]
 
 abbrev corner : Submodule k X := LinearMap.range (ρ (single 0 0 1))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ρ (single 0 i 1) x, by rw [unit_mul]; simp⟩`.
+-/
 theorem unit_mem_corner (i : Fin (n+1)) (x : X) : ρ (single 0 i 1) x ∈ corner ρ :=
   ⟨ρ (single 0 i 1) x, by rw [unit_mul]; simp⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `v.2`. Rewrite using `[← hy, unit_mul]`.
+-/
 theorem unit_corner (v : corner ρ) (i : Fin (n+1)) :
     ρ (single 0 i 1) (v : X) = if i = 0 then (v : X) else 0 := by
   obtain ⟨y, hy⟩ := v.2
@@ -38,14 +50,23 @@ theorem unit_corner (v : corner ρ) (i : Fin (n+1)) :
 def cut (i : Fin (n+1)) : X →ₗ[k] corner ρ :=
   (ρ (single 0 i 1)).codRestrict (corner ρ) (unit_mem_corner ρ i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cut_coe (i : Fin (n+1)) (x : X) : ((cut ρ i x : corner ρ) : X) = ρ (single 0 i 1) x := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cut_coe, unit_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cut_unit (i l p : Fin (n+1)) (x : X) :
     cut ρ i (ρ (single l p 1) x) = if i = l then cut ρ p x else 0 := by
   apply Subtype.ext
   rw [cut_coe, unit_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cut_coe, unit_corner]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cut_corner (i : Fin (n+1)) (v : corner ρ) : cut ρ i v = if i = 0 then v else 0 := by
   apply Subtype.ext
   rw [cut_coe, unit_corner]
@@ -65,6 +86,9 @@ def piEquiv : X ≃ₗ[k] (Fin (n+1) → corner ρ) :=
         cut_coe, Submodule.subtype_apply, LinearMap.proj_apply, LinearMap.id_apply]
       exact recon ρ x)
 
+/- English proof (translation)
+Rewrite using `[(piEquiv ρ).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_eq [FiniteDimensional k X] : finrank k X = (n+1) * finrank k (corner ρ) := by
   rw [(piEquiv ρ).finrank_eq, Module.finrank_pi_fintype]
   simp
@@ -75,10 +99,16 @@ variable {X Y : Type} [AddCommGroup X] [Module k X] [AddCommGroup Y] [Module k Y
   (ρX : Matrix (Fin (n+1)) (Fin (n+1)) k →ₐ[k] Module.End k X)
   (ρY : Matrix (Fin (n+1)) (Fin (n+1)) k →ₐ[k] Module.End k Y)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.HTRho.mem_homO _ _ T).1 hT a x`.
+-/
 theorem comm {T : X →ₗ[k] Y} (hT : T ∈ GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom) (a : Matrix (Fin (n+1)) (Fin (n+1)) k)
     (x : X) : T (ρX a x) = ρY a (T x) :=
   (GlobalTheory.HTRho.mem_homO _ _ T).1 hT a x
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨(T : X →ₗ[k] Y) y, (comm ρX ρY T.2 _ y).symm⟩`.
+-/
 theorem maps_corner (T : GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom) :
     ∀ x ∈ corner ρX, (T : X →ₗ[k] Y) x ∈ corner ρY := by
   rintro _ ⟨y, rfl⟩
@@ -89,16 +119,27 @@ def restr : GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom →ₗ[k] (corne
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restr_coe (T : GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom) (v : corner ρX) :
     ((restr ρX ρY T v : corner ρY) : Y) = (T : X →ₗ[k] Y) v := rfl
 
 def ext (S : corner ρX →ₗ[k] corner ρY) : X →ₗ[k] Y :=
   ∑ i, ρY (single i 0 1) ∘ₗ (corner ρY).subtype ∘ₗ S ∘ₗ cut ρX i
 
+/- English proof (translation)
+Simplify using `[ext, LinearMap.sum_apply]`.
+-/
 theorem ext_apply (S : corner ρX →ₗ[k] corner ρY) (x : X) :
     ext ρX ρY S x = ∑ i, ρY (single i 0 1) (S (cut ρX i x)) := by
   simp [ext, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[ext_apply, ext_apply, map_sum]`. Simplify using `only [cut_unit, unit_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single l (fun b _ hb => by rw [if_neg hb, map_zero, Submodule.coe_zero, map_zero]) (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ext_unit (S : corner ρX →ₗ[k] corner ρY) (l p : Fin (n+1)) (x : X) :
     ext ρX ρY S (ρX (single l p 1) x) = ρY (single l p 1) (ext ρX ρY S x) := by
   rw [ext_apply, ext_apply, map_sum]
@@ -109,6 +150,11 @@ theorem ext_unit (S : corner ρX →ₗ[k] corner ρY) (l p : Fin (n+1)) (x : X)
     (by simp)]
   simp
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HTRho.mem_homO]`. Introduce `a x`. Express the relevant statement in the definitionally equal form `ext ρX ρY S (ρX a x) = ρY a (ext ρX ρY S x)`. Establish `ha : a = ∑ l, ∑ p, a l p • single l p (1 : k)` using `by conv_lhs => rw [matrix_eq_sum_single a]`. Simplify using `only [smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[ha]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, ext_unit]`.
+-/
 theorem ext_mem (S : corner ρX →ₗ[k] corner ρY) :
     ext ρX ρY S ∈ GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom := by
   rw [GlobalTheory.HTRho.mem_homO]
@@ -120,6 +166,15 @@ theorem ext_mem (S : corner ρX →ₗ[k] corner ρY) :
   rw [ha]
   simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, ext_unit]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun T hT => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h0 : ∀ i, (T : X →ₗ[k] Y) (ρX (single 0 i 1) x) = 0` using `fun i => by`.
+
+Conclude with `(congrArg Subtype.val (LinearMap.congr_fun hT ⟨_, unit_mem_corner ρX i x⟩) :)`. Express the relevant statement in the definitionally equal form `(T : X →ₗ[k] Y) x = 0`. Rewrite using `[← recon ρX x, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[comm ρX ρY T.2, h0, map_zero]`.
+
+Introduce `S`. Use `⟨⟨ext ρX ρY S, ext_mem ρX ρY S⟩, LinearMap.ext fun v => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[restr_coe]`. Express the relevant statement in the definitionally equal form `ext ρX ρY S v = _`. Rewrite using `[ext_apply]`.
+
+Simplify using `only [cut_corner]`. Rewrite using `[Finset.sum_eq_single 0 (fun b _ hb => by rw [if_neg hb, map_zero, Submodule.coe_zero, map_zero]) (by simp)]`. Simplify using `[unit_corner]`.
+-/
 theorem restr_bij : Function.Bijective (restr ρX ρY) := by
   constructor
   · refine (injective_iff_map_eq_zero _).2 fun T hT => ?_
@@ -141,11 +196,23 @@ theorem restr_bij : Function.Bijective (restr ρX ρY) := by
       (by simp)]
     simp [unit_corner]
 
+/- English proof (translation)
+Rewrite using `[(LinearEquiv.ofBijective _ (restr_bij ρX ρY)).finrank_eq, Module.finrank_linearMap]`.
+-/
 theorem finrank_homO [FiniteDimensional k X] [FiniteDimensional k Y] :
     finrank k (GlobalTheory.HTRho.homO ρX.toRingHom ρY.toRingHom) = finrank k (corner ρX) * finrank k (corner ρY) := by
   rw [(LinearEquiv.ofBijective _ (restr_bij ρX ρY)).finrank_eq, Module.finrank_linearMap]
 end
 
+/- English proof (translation)
+Introduce `k _ m X Y _ _ _ _ _ _ ρX ρY`. Consider the cases of `m with`. Consider the case `zero`. Establish `hX : Subsingleton X`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `h : (1 : Module.End k X) = 0`. Rewrite using `[← map_one ρX, ← map_zero ρX]`. Use `congr 1`. Use extensionality with `i`. Conclude with `i.elim0`.
+
+Establish `ha` using `congrArg (fun f : Module.End k X => f a) h`. Establish `hb` using `congrArg (fun f : Module.End k X => f b) h`. Simplify using `only [Module.End.one_apply, LinearMap.zero_apply] at ha hb`. Rewrite using `[ha, hb]`. Simplify using `[finrank_zero_of_subsingleton]`.
+
+Consider the case `succ n`. Rewrite using `[finrank_homO, finrank_eq ρX, finrank_eq ρY]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count : ∀ (k : Type) [Field k] (m : ℕ) (X Y : Type) [AddCommGroup X] [Module k X] [FiniteDimensional k X]
     [AddCommGroup Y] [Module k Y] [FiniteDimensional k Y]
     (ρX : Matrix (Fin m) (Fin m) k →ₐ[k] Module.End k X) (ρY : Matrix (Fin m) (Fin m) k →ₐ[k] Module.End k Y),

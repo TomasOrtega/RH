@@ -17,23 +17,35 @@ def chg (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k
     (x : Matrix Y Y' k) : Matrix Z Z' k :=
   GT.γ * FT.β * x * (FS.γ * GS.β)
 
+/- English proof (translation)
+Simplify using `only [chg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, ← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul, ← Matrix.mul_assoc GS.β GS.γ, GS.βγ, Matrix.one_mul, FS.γβ, Matrix.mul_one]`.
+-/
 theorem chg_inv (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x : Matrix Y Y' k) : chg GS GT FS FT (chg FS FT GS GT x) = x := by
   simp only [chg, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, ← Matrix.mul_assoc FT.γ FT.β, FT.γβ, Matrix.one_mul,
     ← Matrix.mul_assoc GS.β GS.γ, GS.βγ, Matrix.one_mul, FS.γβ, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [chg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, GS.βγ, Matrix.mul_one]`.
+-/
 theorem frame_sandwich (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x : Matrix Y Y' k) : GT.β * chg FS FT GS GT x * GS.γ = FT.β * x * FS.γ := by
   simp only [chg, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc GT.β GT.γ, GT.βγ, Matrix.one_mul, GS.βγ, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [chg, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem chg_add (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z)
     (x y : Matrix Y Y' k) : chg FS FT GS GT (x + y) = chg FS FT GS GT x + chg FS FT GS GT y := by
   simp only [chg, Matrix.mul_add, Matrix.add_mul]
 
 variable [TopologicalSpace k] [IsTopologicalRing k]
 
+/- English proof (translation)
+Unfold `chg`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+-/
 theorem continuous_chg (FS : Frame k M Y') (FT : Frame k N Y) (GS : Frame k M Z') (GT : Frame k N Z) :
     Continuous (chg FS FT GS GT) := by
   unfold chg
@@ -65,6 +77,9 @@ open GlobalTheory.LocMod.FrameChange
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (p : Place D k)
 
+/- English proof (translation)
+Unfold `up`. Rewrite using `[frame_sandwich]`.
+-/
 theorem up_chg {Y Y' Z Z' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     [Fintype Z] [DecidableEq Z] [Fintype Z'] [DecidableEq Z'] {S T : HSp D}
     (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (GS : Frame k S.rank Z') (GT : Frame k T.rank Z)
@@ -72,6 +87,15 @@ theorem up_chg {Y Y' Z Z' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [Deci
   unfold up
   rw [frame_sandwich]
 
+/- English proof (translation)
+Introduce `Tm hTm`. Use `⟨Tm.comp (pull FS FT GS GT), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `Φ'`. Conclude with `hTm.theta _`. Introduce `x Φ' Φ'' h`.
+
+Use `hTm.trans (chg GS GT FS FT x) (pull FS FT GS GT Φ') (pull FS FT GS GT Φ'') (by` as an intermediate fact. Introduce `t`. Express the relevant statement in the definitionally equal form `Φ''.1 (chg FS FT GS GT t) = Φ'.1 (chg FS FT GS GT (t + chg GS GT FS FT x))`. Rewrite using `[h, chg_add, chg_inv])`. Simplify `this` using `[LinearMap.comp_apply, up_chg, chg_inv]`.
+
+Introduce `y hy Φ' Φ'' h`. Use `hTm.modul y hy (pull FS FT GS GT Φ') (pull FS FT GS GT Φ'') (by` as an intermediate fact. Introduce `t`. Express the relevant statement in the definitionally equal form `Φ''.1 (chg FS FT GS GT t) = ψ (symplO S T (p.up FS FT t) y) * Φ'.1 (chg FS FT GS GT t)`. Rewrite using `[h, up_chg])`.
+
+Simplify `this` using `[LinearMap.comp_apply]`. Introduce `Φ Φ' h`. Express the relevant statement in the definitionally equal form `Tm (pull FS FT GS GT Φ') = Tm Φ`. Use `congr 1`. Conclude with `Subtype.ext (funext fun x => (h x).symm)`.
+-/
 theorem exists_isModel_chg (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : Place D k) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Z Z' : Type) [Fintype Z]

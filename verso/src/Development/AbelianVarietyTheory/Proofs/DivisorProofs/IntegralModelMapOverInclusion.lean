@@ -15,6 +15,23 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw p _ _ l l' Xo Xo' c c' W Y r ν hle hOI _ yb yy P π ψ y hHT β hβ g e hB`. Establish `hPt : PtOn Y yb yy P π ψ` using `hHT.1`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.p_adic_point_pairing_compatible E H Dw p l' Xo' c' W Y yb yy P π ψ hPt`. Use `choose x hx using fun b => (h1 (e b) (hB.1 b)).exists`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Introduce `σ U hEig x' hx'`. Take `⟨u', hu'T, hu'X⟩` from `h2 x'`. Establish `hemb` using `GlobalTheory.FlatModel.htAt_embV_eq E H Dw l l' Xo Xo' c c' W Y r ν hle hOI p yb yy P π ψ y hHT β hβ σ`. Establish `hEG : IsEigG Y.t (β.comp (embV c' W σ)) u'`. Rewrite using `[hemb]`.
+
+Conclude with `(h4 _ x' u' hu'T hu'X).2 hx'`. Establish `hid : spMap (RingHom.id 𝓞_ℂ_[p]) ≫ yb = yb`. Rewrite using `[show spMap (RingHom.id 𝓞_ℂ_[p]) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Establish `hdual : (fun i => spMap (dualMap (RingHom.id 𝓞_ℂ_[p])) ≫ e i) = e`. Establish `: dualMap (RingHom.id 𝓞_ℂ_[p]) = RingHom.id _`.
+
+Apply the tactic sequence `ext s <;> simp [dualMap]`. Use function extensionality and compare the values at `i`. Rewrite using `[this, show spMap (RingHom.id (DualNumber 𝓞_ℂ_[p])) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Take `⟨w, hw, -⟩` from `hB.2 𝓞_ℂ_[p] (RingHom.id _) u' (by rw [hid]; exact hu'T)`. Rewrite `hw` using `[hid, hdual]`.
+
+Establish `hL` using `h3 g e x w u' x' hB.1 hx hw hu'X`. Establish `hmem` using `hEig.2 w u' hw hEG`. Take `⟨M, hM⟩` from `(Submodule.mem_span_range_iff_exists_fun 𝓞_ℂ_[p]).1 hmem`. Use `⟨M, ?_⟩` and prove the remaining obligations. Establish `hcoord : ∀ b, ((discr E : ℤ) : 𝓞_ℂ_[p]) * w b = ∑ k, M k * U k b`.
+
+Introduce `b`. Use `congrFun hM b` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Rewrite using `[hL, Finset.smul_sum]`.
+
+Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+
+Use `congrArg (fun z : 𝓞_ℂ_[p] => (z : ℂ_[p])) (hcoord b)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem htAt_discr_smul_eigen_mem_span_rows : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime]
     [StarRing (𝓞 E)] (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)
     (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c)

@@ -47,6 +47,11 @@ structure IsIo (X : GlobalTheory.KZ.Tower Ω ε) (A : ValuationSubring Ω) (T : 
 def IsNTr (ε : Ω →+* ℂ) (l n m : ℕ) [NeZero l] (F F' : Ω) : Prop :=
   1 ≤ m ∧ m ≤ n ∧ F ∈ IntermediateField.adjoin ℚ {zt ε l n} ∧ IsNT ε l n m F F'
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨D, hD, hF⟩` from `h`. Establish `hD0 : (D : Ω) ≠ 0`. Introduce and unpack `h0`. Conclude with `hD (by rw [Nat.cast_eq_zero.1 h0]; exact dvd_zero _)`.
+
+Establish `h1 : (D : Ω) * F ∈ IntermediateField.adjoin ℚ {zt ε l n}` using `(Subring.closure_le (t := (IntermediateField.adjoin ℚ {zt ε l n}).toSubring)).2 (IntermediateField.subset_adjoin ℚ _) hF`. Establish `h2` using `mul_mem (inv_mem (natCast_mem (IntermediateField.adjoin ℚ {zt ε l n}) D)) h1`. Rewrite `h2` using `[inv_mul_cancel_left₀ hD0]`. Then use the resulting hypothesis.
+-/
 theorem InZl.mem_adjoin {l n : ℕ} {F : Ω} (h : InZl ε l n F) : F ∈ IntermediateField.adjoin ℚ {zt ε l n} := by
   haveI : CharZero Ω := algebraRat.charZero Ω
   obtain ⟨D, hD, hF⟩ := h
@@ -59,10 +64,18 @@ theorem InZl.mem_adjoin {l n : ℕ} {F : Ω} (h : InZl ε l n F) : F ∈ Interme
   have h2 := mul_mem (inv_mem (natCast_mem (IntermediateField.adjoin ℚ {zt ε l n}) D)) h1
   rwa [inv_mul_cancel_left₀ hD0] at h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.2.2.2, fun h => ⟨hm, hmn, hF.mem_adjoin, h⟩⟩`.
+-/
 theorem IsNTr.iff_isNT {l n m : ℕ} [NeZero l] {F F' : Ω} (hm : 1 ≤ m) (hmn : m ≤ n) (hF : InZl ε l n F) :
     IsNTr ε l n m F F' ↔ IsNT ε l n m F F' :=
   ⟨fun h => h.2.2.2, fun h => ⟨hm, hmn, hF.mem_adjoin, h⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `hF using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.1 hx, h]`. Consider the case `algebraMap r => rw [AlgEquiv.commutes, AlgEquiv.commutes]`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `inv x _ hx => rw [map_inv₀, map_inv₀, hx]`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul, map_mul, hx, hy]`.
+-/
 theorem IsNTr.apply_eq_of_mem_adjoin {z F : Ω} (hF : F ∈ IntermediateField.adjoin ℚ {z}) {s t : Ω ≃ₐ[ℚ] Ω} (h : s z = t z) :
     s F = t F := by
   induction hF using IntermediateField.adjoin_induction with
@@ -72,6 +85,9 @@ theorem IsNTr.apply_eq_of_mem_adjoin {z F : Ω} (hF : F ∈ IntermediateField.ad
   | inv x _ hx => rw [map_inv₀, map_inv₀, hx]
   | mul x y _ _ hx hy => rw [map_mul, map_mul, hx, hy]
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨-, -, hF, τ, hτ, e⟩` from `h`. Take `⟨-, -, -, τ', hτ', e'⟩` from `h'`. Use `mul_left_cancel₀ (pow_ne_zero (n - m) (Nat.cast_ne_zero.2 (NeZero.ne l))) (e.trans (Eq.trans ?_ e'.symm))` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ => IsNTr.apply_eq_of_mem_adjoin hF ((hτ a).trans (hτ' a).symm)`.
+-/
 theorem IsNTr.unique {l n m : ℕ} [NeZero l] {F F' F'' : Ω} (h : IsNTr ε l n m F F') (h' : IsNTr ε l n m F F'') : F' = F'' := by
   haveI : CharZero Ω := algebraRat.charZero Ω
   obtain ⟨-, -, hF, τ, hτ, e⟩ := h
@@ -79,6 +95,11 @@ theorem IsNTr.unique {l n m : ℕ} [NeZero l] {F F' F'' : Ω} (h : IsNTr ε l n 
   refine mul_left_cancel₀ (pow_ne_zero (n - m) (Nat.cast_ne_zero.2 (NeZero.ne l))) (e.trans (Eq.trans ?_ e'.symm))
   exact Finset.sum_congr rfl fun a _ => IsNTr.apply_eq_of_mem_adjoin hF ((hτ a).trans (hτ' a).symm)
 
+/- English proof (translation)
+Take `⟨h1, h2, hF, τ, hτ, e⟩` from `h`. Take `⟨-, -, hG, τ', hτ', e'⟩` from `h'`. Use `⟨h1, h2, add_mem hF hG, τ, hτ, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, e, e', ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by`.
+
+Rewrite using `[map_add, IsNTr.apply_eq_of_mem_adjoin hG ((hτ a).trans (hτ' a).symm)]`.
+-/
 theorem IsNTr.add {l n m : ℕ} [NeZero l] {F F' G G' : Ω} (h : IsNTr ε l n m F F') (h' : IsNTr ε l n m G G') :
     IsNTr ε l n m (F + G) (F' + G') := by
   obtain ⟨h1, h2, hF, τ, hτ, e⟩ := h
@@ -88,11 +109,20 @@ theorem IsNTr.add {l n m : ℕ} [NeZero l] {F F' G G' : Ω} (h : IsNTr ε l n m 
   exact Finset.sum_congr rfl fun a _ => by
     rw [map_add, IsNTr.apply_eq_of_mem_adjoin hG ((hτ a).trans (hτ' a).symm)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by have := h.2.1; omega, fun h => by have := h.1; omega, fun h => by have := h.1; omega⟩`.
+-/
 example (l : ℕ) [NeZero l] (F F' : Ω) : ¬ IsNTr ε l 0 1 F F' ∧ ¬ IsNTr ε l 0 0 F F' ∧ ¬ IsNTr ε l 3 0 F F' :=
   ⟨fun h => by have := h.2.1; omega, fun h => by have := h.1; omega, fun h => by have := h.1; omega⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem KT.mem_def (X : GlobalTheory.KZ.Tower Ω ε) (L : ℕ) (f : X.K) : f ∈ KT X L ↔ X.sl (ofSL (ModularGroup.T ^ L)) f = f := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.j_inv _, (X.sl _).commutes c⟩`.
+-/
 example (X : GlobalTheory.KZ.Tower Ω ε) (L : ℕ) (c : Ω) : X.jK ∈ KT X L ∧ algebraMap Ω X.K c ∈ KT X L :=
   ⟨X.j_inv _, (X.sl _).commutes c⟩
 
@@ -101,13 +131,22 @@ structure IsPlaceIn (ε : Ω →+* ℂ) (A : ValuationSubring Ω) (T : GlobalThe
   alg : ∀ x, IsAlgZp p (j x)
   root : ∀ n, j (zt ε p n) = T.ζ n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.int, h.alg, h.root⟩`.
+-/
 theorem IsCusp.isPlaceIn {A : ValuationSubring Ω} {T : GlobalTheory.K5.Tower p Ωl} {j : Ω →+* Ωl} (h : IsCusp ε A T j) :
     IsPlaceIn ε A T j := ⟨h.int, h.alg, h.root⟩
 
+/- English proof (translation)
+The claim follows from `ValuationSubring.ext _ _ fun x => (h.int x).trans (h'.int x).symm`.
+-/
 theorem IsPlaceIn.unique {A A' : ValuationSubring Ω} {T T' : GlobalTheory.K5.Tower p Ωl} {j : Ω →+* Ωl} (h : IsPlaceIn ε A T j)
     (h' : IsPlaceIn ε A' T' j) : A = A' :=
   ValuationSubring.ext _ _ fun x => (h.int x).trans (h'.int x).symm
 
+/- English proof (translation)
+Use `haveI := Basic.charZero_of_isClo hc`. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`. Use `Or.inr fun hA => Basic.not_cong_one_zero hc 1 one_ne_zero ⟨_, (h.int _).1 hA, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : Ωl) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Rewrite using `[map_inv₀, map_natCast, pow_one, mul_inv_cancel₀ hp0, sub_zero]`.
+-/
 theorem IsPlaceIn.mem_nonunits (hc : IsClo p Ωl) {A : ValuationSubring Ω} {T : GlobalTheory.K5.Tower p Ωl} {j : Ω →+* Ωl}
     (h : IsPlaceIn ε A T j) : ((p : ℕ) : Ω) ∈ A.nonunits := by
   haveI := Basic.charZero_of_isClo hc
@@ -116,6 +155,9 @@ theorem IsPlaceIn.mem_nonunits (hc : IsClo p Ωl) {A : ValuationSubring Ω} {T :
   have hp0 : (p : Ωl) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero
   rw [map_inv₀, map_natCast, pow_one, mul_inv_cancel₀ hp0, sub_zero]
 
+/- English proof (translation)
+Introduce `x` and use `by rw [h.int, h.int, ← hs] exact ⟨fun hx => by simpa using Basic.isInt_gal g.symm hx, Basic.isInt_gal g⟩`.
+-/
 theorem IsPlaceIn.stab {A : ValuationSubring Ω} {T : GlobalTheory.K5.Tower p Ωl} {j : Ω →+* Ωl} (h : IsPlaceIn ε A T j)
     {g : Gal p Ωl} {s : Ω ≃ₐ[ℚ] Ω} (hs : ∀ x, g (j x) = j (s x)) : Stab A s := fun x => by
   rw [h.int, h.int, ← hs]
@@ -138,14 +180,28 @@ section
 variable {X : GlobalTheory.KZ.Tower Ω ε} {A : ValuationSubring Ω} {T : GlobalTheory.K5.Tower p Ωl} {j : Ω →+* Ωl} {n : ℕ} {ψ : O0 p →+* Ωl}
   {io : KT X (p ^ n) →+* Ωl}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hj, hψ, h.ev⟩`.
+-/
 theorem IsIo.isExpIn (h : IsIo X A T j n ψ io) (hj : IsPlaceIn ε A T j) (hψ : IsReb T n ψ) : IsExpIn X A T j n ψ io :=
   ⟨hj, hψ, h.ev⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ev, fun g s hq hs y y' hy => hg g s 0 (by rw [pow_zero, one_mul, hq]) hs y y' (by rw [pow_zero, map_one, X.sl_one, hy])⟩`.
+-/
 theorem IsExpIn.isIo (h : IsExpIn X A T j n ψ io) (hg : GalTr X T j n io) : IsIo X A T j n ψ io :=
   ⟨h.ev, fun g s hq hs y y' hy => hg g s 0 (by rw [pow_zero, one_mul, hq]) hs y y' (by rw [pow_zero, map_one, X.sl_one, hy])⟩
 
+/- English proof (translation)
+The claim follows from `h.rebase₂.par`.
+-/
 theorem IsExpIn.par (h : IsExpIn X A T j n ψ io) : ψ (qO p) = T.qq n := h.rebase₂.par
 
+/- English proof (translation)
+Establish `he : ∀ i k, ent (ofSL (ModularGroup.T ^ b)) i k = ((!![1, (b : ℤ); 0, 1] i k : ℤ) : ℚ)` using `fun i k => by`. Rewrite using `[← ModularGroup.coe_T_zpow, zpow_natCast]`. Both sides reduce to the same expression. Establish `h` using `X.exp_upper (ofSL (ModularGroup.T ^ b)) (by rw [he]; simp) (X.gal s y) r`. Rewrite `h` using `[he, he, he, X.gal_exp]`.
+
+Simplify using `using h`.
+-/
 theorem GalTr.coeff_sl_gal (X : GlobalTheory.KZ.Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (b : ℕ) (y : X.K) (r : ℚ) :
     (X.exp (X.sl (ofSL (ModularGroup.T ^ b)) (X.gal s y))).coeff r = eOm ε (r * b) * s ((X.exp y).coeff r) := by
   have he : ∀ i k, ent (ofSL (ModularGroup.T ^ b)) i k = ((!![1, (b : ℤ); 0, 1] i k : ℤ) : ℚ) := fun i k => by

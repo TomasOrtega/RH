@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SliceFinDim.slices_of_bounded | exact GlobalTheory.SliceFinDim.slices_of_bounded | (intros; apply GlobalTheory.SliceFinDim.slices_of_bounded <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_family_finite_dim_span : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : Type) (Ψ : T → (κ → AF F) → ℂ), (∀ t, Ψ t ∈ schA F κ) →
     (∀ l ∈ (adeleClass F).adm κ, ∃ C : ℝ, ∀ t, ‖l (Ψ t)‖ ≤ C) →
     ∃ W : Submodule ℂ ((κ → Af F) → ℂ), FiniteDimensional ℂ W ∧

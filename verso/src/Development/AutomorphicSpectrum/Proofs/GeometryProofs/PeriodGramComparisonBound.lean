@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeMetric
 
+/- English proof (translation)
+Break down `h0.eq_or_lt with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (pow_pos h 2), _root_.one_mul]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem logBound_term_nonneg {x : ℝ} (h0 : 0 ≤ x) (h1 : x < 1) : 0 ≤ Real.log (1 / x ^ 2) := by
   rcases h0.eq_or_lt with h | h
   · subst h
@@ -18,6 +23,9 @@ theorem logBound_term_nonneg {x : ℝ} (h0 : 0 ≤ x) (h1 : x < 1) : 0 ≤ Real.
     rw [le_div_iff₀ (pow_pos h 2), _root_.one_mul]
     nlinarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hρ' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Simplify using `only [uncentre, recentre, Pi.add_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Equiv.apply_symm_apply, add_sub_cancel_left]`. Rewrite using `[← _root_.mul_assoc, inv_mul_cancel₀ hρ', _root_.one_mul]`.
+-/
 theorem uncentre_recentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (u : Fin n → ℂ) :
     uncentre t₀ ρ π (recentre t₀ ρ π u) = u := by
   funext i
@@ -26,6 +34,11 @@ theorem uncentre_recentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 <
     Equiv.apply_symm_apply, add_sub_cancel_left]
   rw [← _root_.mul_assoc, inv_mul_cancel₀ hρ', _root_.one_mul]
 
+/- English proof (translation)
+Use `LipschitzWith.of_dist_le_mul fun t s => ?_` and prove the remaining obligations. Rewrite using `[Real.coe_toNNReal _ (inv_nonneg.mpr hρ.le)]`. Use `(dist_pi_le_iff (mul_nonneg (inv_nonneg.mpr hρ.le) dist_nonneg)).2 fun i => ?_` and prove the remaining obligations. Simplify using `only [uncentre, dist_eq_norm]`. Rewrite using `[← mul_sub, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ.le, sub_sub_sub_cancel_right]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (norm_le_pi_norm (t - s) (π.symm i)) (inv_nonneg.mpr hρ.le)`.
+-/
 theorem lipschitz_uncentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) :
     LipschitzWith (Real.toNNReal ρ⁻¹) (uncentre t₀ ρ π) := by
   refine LipschitzWith.of_dist_le_mul fun t s => ?_
@@ -36,6 +49,17 @@ theorem lipschitz_uncentre {n : ℕ} (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 
     sub_sub_sub_cancel_right]
   exact mul_le_mul_of_nonneg_left (norm_le_pi_norm (t - s) (π.symm i)) (inv_nonneg.mpr hρ.le)
 
+/- English proof (translation)
+Establish `hdu : Differentiable ℝ (uncentre t₀ ρ π)`. Unfold `uncentre`. Use `fun_prop`. Distinguish the cases in `hG : DifferentiableAt ℝ G (uncentre t₀ ρ π t)`. Rewrite using `[show (fun t' => G (uncentre t₀ ρ π t')) = G ∘ uncentre t₀ ρ π from rfl, fderiv_comp t hG (hdu t)]`.
+
+Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `h` using `norm_fderiv_le_of_lipschitz ℝ (x₀ := t) (lipschitz_uncentre t₀ hρ π)`. Rewrite `h` using `[Real.coe_toNNReal _ (inv_nonneg.mpr hρ.le)]`. Then use the resulting hypothesis. Establish `hnd : ¬ DifferentiableAt ℝ (fun t' => G (uncentre t₀ ρ π t')) t`.
+
+Introduce `h`. Apply `hG` to reduce the goal to its premises. Establish `hdr : Differentiable ℝ (recentre t₀ ρ π)`. Unfold `recentre`. Use `fun_prop`.
+
+Establish `h' : DifferentiableAt ℝ (fun t' => G (uncentre t₀ ρ π t')) (recentre t₀ ρ π (uncentre t₀ ρ π t))`. Rewrite using `[recentre_uncentre t₀ hρ π t]`. Conclude with `h`. Establish `h2` using `h'.comp (uncentre t₀ ρ π t) (hdr _)`. Establish `he : ((fun t' => G (uncentre t₀ ρ π t')) ∘ recentre t₀ ρ π) = G`.
+
+Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, uncentre_recentre t₀ hρ π u]`. Rewrite `h2` using `[he]`. Then use the resulting hypothesis. Rewrite using `[fderiv_zero_of_not_differentiableAt hnd, norm_zero]`. Conclude with `mul_nonneg (norm_nonneg _) (inv_nonneg.mpr hρ.le)`.
+-/
 theorem norm_fderiv_comp_uncentre {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (G : (Fin n → ℂ) → E) (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ) (π : Equiv.Perm (Fin n)) (t : Fin n → ℂ) :
     ‖fderiv ℝ (fun t' => G (uncentre t₀ ρ π t')) t‖ ≤ ‖fderiv ℝ G (uncentre t₀ ρ π t)‖ * ρ⁻¹ := by
@@ -66,6 +90,17 @@ theorem norm_fderiv_comp_uncentre {n : ℕ} {E : Type*} [NormedAddCommGroup E] [
     rw [fderiv_zero_of_not_differentiableAt hnd, norm_zero]
     exact mul_nonneg (norm_nonneg _) (inv_nonneg.mpr hρ.le)
 
+/- English proof (translation)
+Establish `hf : ∀ j : Fin n, 0 ≤ Real.log (1 / ‖t j‖ ^ 2)` using `fun j => logBound_term_nonneg (norm_nonneg _) (lt_of_le_of_lt (norm_le_pi_norm t j) ht)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`. Establish `hj` using `hπ i h1`.
+
+Establish `hne` using `hu i h1`. Establish `hx : ‖uncentre t₀ ρ π t i‖ = ρ⁻¹ * ‖t (π.symm i)‖`. Simplify using `only [uncentre, hj.2, sub_zero, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Establish `htpos : 0 < ‖t (π.symm i)‖`. Use `lt_of_le_of_ne (norm_nonneg _) (Ne.symm ?_)` and prove the remaining obligations.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero, hx, h0, mul_zero]`. Establish `hρi : 1 ≤ ρ⁻¹` using `(one_le_inv₀ hρ).mpr hρ1`. Rewrite using `[hx]`.
+
+Apply `Real.log_le_log (one_div_pos.mpr (pow_pos (mul_pos (inv_pos.mpr hρ) htpos) 2))` to reduce the goal to its premises. Apply `one_div_le_one_div_of_le (pow_pos htpos 2)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (le_mul_of_one_le_left (norm_nonneg _) hρi) 2`. Conclude with `absurd (hπ i h1).1 h2`. Conclude with `hf _`.
+
+Conclude with `le_rfl`. Use `_ = ∑ j : Fin n, if (j : ℕ) < a then Real.log (1 / ‖t j‖ ^ 2) else 0 := Equiv.sum_comp π.symm (fun j => if (j : ℕ) < a then Real.log (1 / ‖t j‖ ^ 2) else 0)`.
+-/
 theorem logBound_weight_le {n a₀ a : ℕ} {t₀ t : Fin n → ℂ} {π : Equiv.Perm (Fin n)} {ρ : ℝ} (hρ : 0 < ρ) (hρ1 : ρ ≤ 1)
     (hπ : ∀ i : Fin n, (i : ℕ) < a₀ → ((π.symm i : Fin n) : ℕ) < a ∧ t₀ (π.symm i) = 0) (ht : ‖t‖ < 1)
     (hu : ∀ i : Fin n, (i : ℕ) < a₀ → uncentre t₀ ρ π t i ≠ 0) :
@@ -98,6 +133,19 @@ theorem logBound_weight_le {n a₀ a : ℕ} {t₀ t : Fin n → ℂ} {π : Equiv
     _ = ∑ j : Fin n, if (j : ℕ) < a then Real.log (1 / ‖t j‖ ^ 2) else 0 :=
         Equiv.sum_comp π.symm (fun j => if (j : ℕ) < a then Real.log (1 / ‖t j‖ ^ 2) else 0)
 
+/- English proof (translation)
+Introduce `n a₀ g r a Λ _ L U t₀ π ρ hρ hρ1 hU hli hπ`. Take `⟨ρ', c, C', hρ', hc, hC', hb⟩` from `GlobalTheory.CompanionTheory.Ar.Cusp.logBound_subframe n a₀ g r Λ L U (periodGram L U) hU hli (fun z i j => rfl)`. Use `⟨min ρ (ρ * ρ'), c, C' / ρ, lt_min hρ (mul_pos hρ hρ'), min_le_left _ _, hc, div_pos hC' hρ, ?_⟩` and prove the remaining obligations. Introduce `t htε ht hpun`. Establish `hzb : uncentre t₀ ρ π t ∈ Flat.punct n a₀ ρ'`.
+
+Use `⟨?_, hpun.2⟩` and prove the remaining obligations. Establish `h1` using `(lipschitz_uncentre t₀ hρ π).dist_le_mul t t₀`. Rewrite `h1` using `[uncentre_self, Real.coe_toNNReal _ (inv_nonneg.mpr hρ.le), dist_eq_norm t t₀]`. Establish `h2 : ‖t - t₀‖ < ρ * ρ'` using `lt_of_lt_of_le htε (min_le_right _ _)`. Rewrite using `[Metric.mem_ball]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨b1, b2, b3⟩` from `hb _ hzb`. Establish `hle` using `logBound_weight_le hρ hρ1 hπ ht hpun.2`. Establish `hX'0 : 0 ≤ (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0)`. Use `add_nonneg (Real.exp_pos 1).le (Finset.sum_nonneg fun i _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `logBound_term_nonneg (norm_nonneg _) (lt_of_le_of_lt (norm_le_pi_norm t i) ht)`. Conclude with `le_rfl`. Establish `hS : (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a₀ then Real.log (1 / ‖uncentre t₀ ρ π t i‖ ^ 2) else 0) ≤ (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0)` using `by linarith`. Establish `hCρ : C' ≤ C' / ρ` using `le_div_self hC'.le hρ hρ1`.
+
+Establish `hCC : C' * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a₀ then Real.log (1 / ‖uncentre t₀ ρ π t i‖ ^ 2) else 0) ≤ C' / ρ * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0)` using `(mul_le_mul_of_nonneg_left hS hC'.le).trans (mul_le_mul_of_nonneg_right hCρ hX'0)`. Use `⟨b1, ?_, ?_⟩` and prove the remaining obligations. Establish `hd : 0 ≤ C' / ρ * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0) - C' * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a₀ then Real.log (1 / ‖uncentre t₀ ρ π t i‖ ^ 2) else 0)` using `by linarith`. Establish `hsplit : (((C' / ρ * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0) : ℝ)) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - (HodgeMetric.periodGram L U (HodgeMetric.uncentre t₀ ρ π t))⁻¹ = ((((C' * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a₀ then Real.log (1 …`. Rewrite using `[Complex.ofReal_sub, sub_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Conclude with `b2.add (Matrix.PosSemidef.one.smul (Complex.zero_le_real.mpr hd))`. Introduce `p q`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logBound_recentred : ∀ (n a₀ g r a : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a₀ g Λ) (U : Fin r → (Fin n → ℂ) → Fin g → ℂ) (t₀ : Fin n → ℂ) (π : Equiv.Perm (Fin n)) (ρ : ℝ), 0 < ρ → ρ ≤ 1 → (∀ k, DifferentiableOn ℂ (U k) (Metric.ball 0 1)) → LinearIndependent ℂ (fun k => U k 0) → (∀ i : Fin n, (i : ℕ) < a₀ → ((π.symm i : Fin n) : ℕ) < a ∧ t₀ (π.symm i) = 0) → ∃ ε c C : ℝ, 0 < ε ∧ ε ≤ ρ ∧ 0 < c ∧ 0 < C ∧ ∀ t : Fin n → ℂ, ‖t - t₀‖ < ε → ‖t‖ < 1 → HodgeMetric.uncentre t₀ ρ π t ∈ Flat.punct n a₀ 1 → ((HodgeMetric.periodGram L U (HodgeMetric.uncentre t₀ ρ π t))⁻¹ - (c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).PosSemidef ∧ (((C * (Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0) : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - (HodgeMetric.periodGram L U (HodgeMetric.uncentre t₀ ρ π t))⁻¹).PosSemidef ∧ ∀ p q, ‖fderiv ℝ (fun t' => HodgeMetric.periodGram L U (HodgeMetric.uncentre t₀ ρ π t') p q) t‖ ≤ C * Real.exp ((Real.exp 1 + ∑ i : Fin n, if (i : ℕ) < a then Real.log (1 / ‖t i‖ ^ 2) else 0) / 2) := by
   intro n a₀ g r a Λ _ L U t₀ π ρ hρ hρ1 hU hli hπ
   obtain ⟨ρ', c, C', hρ', hc, hC', hb⟩ :=

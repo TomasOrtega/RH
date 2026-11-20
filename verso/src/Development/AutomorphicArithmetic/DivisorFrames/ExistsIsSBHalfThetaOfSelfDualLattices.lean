@@ -31,17 +31,29 @@ open GlobalTheory.LatVac (liftV evFin_liftV at_liftV)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicU.evalV_singleFin_ne h a`.
+-/
 private theorem evFin_liftV_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (a : Fv F v) : evFin F w (liftV v a) = 0 :=
   GlobalTheory.AdelicU.evalV_singleFin_ne h a
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_smul, ← smul_eq_mul u, at_liftV v 1 u hu, zero_smul]`.
+-/
 private theorem at_liftV_smul {M : Type} [AddCommGroup M] [Module (AF F) M] (v : HeightOneSpectrum (𝓞 F)) (z : M) :
     At (evFin F v) (liftV v (1 : Fv F v) • z) := fun u hu => by
   rw [smul_smul, ← smul_eq_mul u, at_liftV v 1 u hu, zero_smul]
 
+/- English proof (translation)
+Introduce `u hu` and use `congrFun (congrFun (hx u hu) i) j`.
+-/
 private theorem at_entry {n d : ℕ} {v : HeightOneSpectrum (𝓞 F)} {x : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)}
     (hx : At (evFin F v) x) (i : Fin n) (j : Fin d) : At (evFin F v) (x i j) := fun u hu =>
   congrFun (congrFun (hx u hu) i) j
 
+/- English proof (translation)
+Take `⟨h1, h0⟩` from `GlobalTheory.LatSplit.piW_splitIdemAd hcm t`. Use `⟨liftV v (1 : Fv F v) • GlobalTheory.AdelicU.Supp.splitIdemAd hcm t, at_liftV_smul v _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatFill.piW_smul, h1, evFin_liftV, mul_one]`. Rewrite using `[GlobalTheory.LatFill.piW_smul, h0, mul_zero]`.
+-/
 private theorem exists_idem (hcm : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v) :
     ∃ a : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E, At (evFin F v) a ∧ piW t a = 1 ∧ piW (t.comp σ) a = 0 := by
   obtain ⟨h1, h0⟩ := GlobalTheory.LatSplit.piW_splitIdemAd hcm t
@@ -49,12 +61,18 @@ private theorem exists_idem (hcm : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 
   · rw [GlobalTheory.LatFill.piW_smul, h1, evFin_liftV, mul_one]
   · rw [GlobalTheory.LatFill.piW_smul, h0, mul_zero]
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.LatFill.piW_smul t (liftV w (1 : Fv F w)) z`. Rewrite `h1` using `[hz _ (evFin_liftV_ne h.symm 1), map_zero, evFin_liftV, one_mul]`. Conclude with `h1.symm`.
+-/
 private theorem piW_of_at_ne {v w : HeightOneSpectrum (𝓞 F)} (h : w ≠ v) (t : E →ₐ[F] Fv F w) {z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E}
     (hz : At (evFin F v) z) : piW t z = 0 := by
   have h1 := GlobalTheory.LatFill.piW_smul t (liftV w (1 : Fv F w)) z
   rw [hz _ (evFin_liftV_ne h.symm 1), map_zero, evFin_liftV, one_mul] at h1
   exact h1.symm
 
+/- English proof (translation)
+Use `⟨fun u hu => hz u (hu v v.2), fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Conclude with `h0`. Conclude with `piW_of_at_ne (fun e => h (Subtype.ext e)) _ hz`.
+-/
 private theorem halfEl_of_at {P : Finset (HeightOneSpectrum (𝓞 F))} (t : ∀ v : P, E →ₐ[F] Fv F v) (v : P)
     {z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E} (hz : At (evFin F v.1) z) (h0 : piW (t v) z = 0) : HalfEl P t z := by
   refine ⟨fun u hu => hz u (hu v v.2), fun w => ?_⟩
@@ -62,6 +80,9 @@ private theorem halfEl_of_at {P : Finset (HeightOneSpectrum (𝓞 F))} (t : ∀ 
   · subst h; exact h0
   · exact piW_of_at_ne (fun e => h (Subtype.ext e)) _ hz
 
+/- English proof (translation)
+Establish `h` using `hz.1 (1 - ∑ v : P, liftV v.1 (1 : Fv F v)) fun w hw => by`. Rewrite using `[map_sub, map_one, map_sum, Finset.sum_eq_single (⟨w, hw⟩ : P) (fun v _ hv => evFin_liftV_ne (fun e => hv (Subtype.ext e.symm)) 1) (fun h => absurd (Finset.mem_univ _) h), evFin_liftV, sub_self]`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero, Finset.sum_smul]`. Conclude with `h`.
+-/
 private theorem eq_sum_of_halfEl {P : Finset (HeightOneSpectrum (𝓞 F))} {t : ∀ v : P, E →ₐ[F] Fv F v}
     {z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E} (hz : HalfEl P t z) : z = ∑ v : P, liftV v.1 (1 : Fv F v) • z := by
   have h := hz.1 (1 - ∑ v : P, liftV v.1 (1 : Fv F v)) fun w hw => by
@@ -70,10 +91,22 @@ private theorem eq_sum_of_halfEl {P : Finset (HeightOneSpectrum (𝓞 F))} {t : 
   rw [sub_smul, one_smul, sub_eq_zero, Finset.sum_smul] at h
   exact h
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← smul_assoc, ha u hu, zero_smul]`.
+-/
 private theorem at_mul_smul {n d : ℕ} {v : HeightOneSpectrum (𝓞 F)} {a : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E} (ha : At (evFin F v) a)
     (x : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) : At (evFin F v) (a • x) := fun u hu => by
   rw [← smul_assoc, ha u hu, zero_smul]
 
+/- English proof (translation)
+Establish `key : ∀ k l, a * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (y k l) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (y k l)` using `fun k l => by`. Establish `hat : At (evFin F v) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (y k l))` using `fun c hc => by`. Apply the tactic sequence `rw [← map_smul, at_entry hy k l c hc, map_zero]`. Establish `h0 : piW (t.comp σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (y k l)) = 0`. Rewrite using `[GlobalTheory.VacIso.piW_cA, GlobalTheory.AdelicU.comp_conj_conj hcm]`.
+
+Conclude with `congrFun (congrFun hy1 k) l`. Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.VacIso.eq_zero_of_at_split hcm t (fun c hc => ?_) ?_ ?_` and prove the remaining obligations. Rewrite using `[smul_sub, ← mul_smul_comm, hat c hc, mul_zero, sub_zero]`. Rewrite using `[map_sub, map_mul, h1, one_mul, sub_self]`.
+
+Rewrite using `[map_sub, map_mul, h0, mul_zero, sub_zero]`. Unfold `GlobalTheory.WeilM.symp GlobalTheory.WeilM.hTens`. Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+
+Take the linear combination `(-(u i j * JA i k * JB j l)) * key k l`.
+-/
 private theorem symp_idem (hcm : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (t : E →ₐ[F] Fv F v)
     {a : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E} (h1 : piW t a = 1) {n d : ℕ} (ξ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)
     (JA : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (JB : Matrix (Fin d) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))
@@ -107,6 +140,11 @@ open GlobalTheory.LatVac (liftV evFin_liftV at_liftV)
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, map_zero]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, add_zero]`. Consider the case `tmul b x`. Rewrite using `[TensorProduct.smul_tmul']`.
+
+Express the relevant statement in the definitionally equal form `((0 : Ainf D.host.F) * b.1) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[zero_mul, TensorProduct.zero_tmul]`.
+-/
 private theorem infPart_liftV_smul (v : HeightOneSpectrum (𝓞 D.host.F)) (z : AE D) :
     infPart D (liftV v (1 : Fv D.host.F v) • z) = 0 := by
   induction z using TensorProduct.induction_on with
@@ -117,44 +155,75 @@ private theorem infPart_liftV_smul (v : HeightOneSpectrum (𝓞 D.host.F)) (z : 
     change ((0 : Ainf D.host.F) * b.1) ⊗ₜ[D.host.F] x = 0
     rw [zero_mul, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Rewrite using `[eq_sum_of_halfEl hz, map_sum]`. Conclude with `Finset.sum_eq_zero fun v _ => infPart_liftV_smul _ _`.
+-/
 private theorem infPart_halfEl {P : Finset (HeightOneSpectrum (𝓞 D.host.F))} {t : ∀ v : P, D.host.E →ₐ[D.host.F] Fv D.host.F v}
     {z : AE D} (hz : HalfEl P t z) : infPart D z = 0 := by
   rw [eq_sum_of_halfEl hz, map_sum]
   exact Finset.sum_eq_zero fun v _ => infPart_liftV_smul _ _
 
+/- English proof (translation)
+Unfold `ptO`. Rewrite using `[Matrix.smul_mul]`. Both sides reduce to the same expression.
+-/
 private theorem ptO_smul {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (e : Fin k ≃ Fin d) (a : AE D)
     (x : Matrix (Fin d) (Fin m) (AE D)) : ptO G e (a • x) = a • ptO G e x := by
   unfold ptO
   rw [Matrix.smul_mul]; rfl
 
+/- English proof (translation)
+Unfold `ptO`. Rewrite using `[Matrix.smul_mul]`. Both sides reduce to the same expression.
+-/
 private theorem ptO_smul' {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (e : Fin k ≃ Fin d) (a : AF D.host.F)
     (x : Matrix (Fin d) (Fin m) (AE D)) : ptO G e (a • x) = a • ptO G e x := by
   unfold ptO
   rw [Matrix.smul_mul]; rfl
 
+/- English proof (translation)
+Unfold `ptO`. Rewrite using `[Matrix.add_mul]`. Both sides reduce to the same expression.
+-/
 private theorem ptO_add {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (e : Fin k ≃ Fin d)
     (x y : Matrix (Fin d) (Fin m) (AE D)) : ptO G e (x + y) = ptO G e x + ptO G e y := by
   unfold ptO
   rw [Matrix.add_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.FockThetaOnto.crd G hG e).symm.bijective`.
+-/
 private theorem ptO_bij {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (hG : IsUnit G.det) (e : Fin k ≃ Fin d) :
     Function.Bijective (ptO (D := D) G e) := (GlobalTheory.FockThetaOnto.crd G hG e).symm.bijective
 
+/- English proof (translation)
+Establish `h : ∀ {p q : ℕ} (y : Matrix (Fin p) (Fin q) (AE D)), IsHalf a y ↔ a • y = y` using `fun y => ⟨fun h => Matrix.ext h, fun h i j => congrFun (congrFun h i) j⟩`. Rewrite using `[h, h, ← ptO_smul, (ptO_bij G hG e).1.eq_iff]`.
+-/
 private theorem isHalf_iff_ptO {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (hG : IsUnit G.det) (e : Fin k ≃ Fin d)
     (a : AE D) (x : Matrix (Fin d) (Fin m) (AE D)) : IsHalf a x ↔ IsHalf a (ptO G e x) := by
   have h : ∀ {p q : ℕ} (y : Matrix (Fin p) (Fin q) (AE D)), IsHalf a y ↔ a • y = y := fun y =>
     ⟨fun h => Matrix.ext h, fun h i j => congrFun (congrFun h i) j⟩
   rw [h, h, ← ptO_smul, (ptO_bij G hG e).1.eq_iff]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩`.
+-/
 private theorem sb_zero {m n : ℕ} (a : AE D) (Λ : AddSubgroup (Mx D m n)) : IsSBHalf a Λ 0 :=
   ⟨fun _ h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun _ h => absurd rfl h⟩
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `h`. Conclude with `⟨fun t ht => h1 t (right_ne_zero_of_mul ht), k, hk, fun u hu hu' t => congrArg (c * ·) (h2 u hu hu' t), fun t ht => h3 t (right_ne_zero_of_mul ht)⟩`.
+-/
 private theorem sb_smul {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {φ : Mx D m n → ℂ} (h : IsSBHalf a Λ φ) (c : ℂ) :
     IsSBHalf a Λ (c • φ) := by
   obtain ⟨h1, k, hk, h2, h3⟩ := h
   exact ⟨fun t ht => h1 t (right_ne_zero_of_mul ht), k, hk, fun u hu hu' t => congrArg (c * ·) (h2 u hu hu' t),
     fun t ht => h3 t (right_ne_zero_of_mul ht)⟩
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `h`. Take `⟨h1', k', hk', h2', h3'⟩` from `h'`. Establish `hor : ∀ t, (φ + φ') t ≠ 0 → φ t ≠ 0 ∨ φ' t ≠ 0` using `fun t ht => by by_contra! hc`. Conclude with `ht (by rw [Pi.add_apply, hc.1, hc.2, add_zero])`. Use `⟨fun t ht => (hor t ht).elim (h1 t) (h1' t), k * k', Nat.mul_pos hk hk', fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.add_apply, Pi.add_apply, mul_smul, h2 _ (nsmul_mem hu k') (GlobalTheory.BigDat.GraphHeis.isHalf_nsmul' hu' k'), smul_comm k k' u, h2' _ (nsmul_mem hu k) (GlobalTheory.BigDat.GraphHeis.isHalf_nsmul' hu' k)]`. Break down `hor t ht with h | h` into its components or cases. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (h3 t h) k'`. Rewrite using `[mul_smul]`.
+
+Conclude with `nsmul_mem (h3' t h) k`.
+-/
 private theorem sb_add {m n : ℕ} {a : AE D} {Λ : AddSubgroup (Mx D m n)} {φ φ' : Mx D m n → ℂ} (h : IsSBHalf a Λ φ)
     (h' : IsSBHalf a Λ φ') : IsSBHalf a Λ (φ + φ') := by
   obtain ⟨h1, k, hk, h2, h3⟩ := h
@@ -175,6 +244,47 @@ end UpperTheory.SgPlace
 
 open UpperTheory.SgPlace GlobalTheory.BigDat.GraphHeis in
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `D ψ ε S X d e Bs Vs Ws M hP ΛS ΛX hLat sdS sdX P t₁ t₀ ht eh h₀ h₁ b c ι hι hn φ hφ hφv g Φ f hΦ hth`. Take `⟨⟨T, hT⟩, hf⟩` from `hth`. Establish `hfT` using `hf T hT`. Take `⟨lsym, lrho, ladd, lsmul, -, -⟩` from `UpperTheory.thetaOperator_intertwines_heisenberg D ψ ε S X d e Bs Vs Ws M hP`. Take `⟨lat₁, lat₂⟩` from `UpperTheory.ptO_sgn_mem_latAtV_iff_mem_latO D ψ ε S X d e Bs Vs Ws M hP ΛS ΛX hLat`.
+
+Take `⟨hB, rfl, -, -, ⟨r, s, hV⟩, ⟨r', s', hW⟩, hM⟩` from `hP`. Establish `hcm` using `hB.cm`. Establish `hstd` using `hB.std`. Establish `hψ` using `GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D _ hstd`. Establish `ht' : ∀ v, t₀ v = (t₁ v).comp D.sp.cm.sig` using `fun v => AlgHom.ext (ht v)`.
+
+Use `choose z hz0 hz using fun v : P => UpperTheory.exists_ne_zero_linearModel_vacuum_eq_smul _ _ _ Bs _ _ Vs Ws M r s r' s' hB hV hW hM v.1 (t₁ v) (t₀ v) (ht v) (b v) (c v) (ι v) (hι v)`. Use `choose a ha ha1 ha0 using fun v : P => exists_idem hcm (t₁ v)`. Establish `hG : IsUnit (sgn ε S).gram.det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn ε S)`. Establish `hbij` using `ptO_bij (D := D) (sgn ε S).gram hG e`. Use `set Λ := latO (sgn ε S) X (ΛS : Set (Fin S.rank → D.host.E)) (ΛX : Set (Fin X.rank → D.host.E)) fun _ => True with hΛ`.
+
+Set `H : AddSubgroup (Matrix (Fin S.rank) (Fin d) (AE D))` to `{ carrier := {u | IsHalf eh u} zero_mem' := fun _ _ => mul_zero _ add_mem' := fun {x y} hx hy i j => by rw [Matrix.add_apply, mul_add, hx i j, hy i j] neg_mem' := fun {x} hx i j => by rw [Matrix.neg_apply, mul_neg, hx i j] }`. Establish `hH : ∀ x : WO (sgn ε S) X, ptO (sgn ε S).gram e x ∈ H ↔ IsHalf eh x` using `fun x => (isHalf_iff_ptO (sgn ε S).gram hG e eh x).symm`. Set `R : Submodule ℂ ((Matrix (Fin S.rank) (Fin d) (AE D) → ℂ) × ((Fin S.rank × Fin d → AF D.host.F) → ℂ))` to `{ carrier := {p | p.2 ∈ GlobalTheory.WeilM.schA D.host.F _ ∧ IsSBHalf eh Λ (fun x => p.1 (ptO (sgn ε S).gram e x)) ∧ T (fun x => p.1 (ptO (sgn ε S).gram e x)) = thO M Bs.ψ (sgn ε S).gram e p.2} zero_mem' := ⟨zero_mem _, sb_zero _ _, by`. Use `lsmul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`.
+
+Conclude with `(map_zero T).trans this.symm⟩`. Use the proof step `add_mem' := fun {p q} hp hq => ⟨add_mem hp.1 hq.1, sb_add hp.2.1 hq.2.1, by`. Rewrite using `[Prod.snd_add, ladd _ hp.1 _ hq.1, ← hp.2.2, ← hq.2.2, ← map_add]`. Use the proof step `rfl⟩`. Use the proof step `smul_mem' := fun a p hp => ⟨Submodule.smul_mem _ a hp.1, sb_smul hp.2.1 a, by`.
+
+Rewrite using `[Prod.smul_snd, lsmul, ← hp.2.2, ← map_smul]`. Use the proof step `rfl⟩ }`. Establish `hind : ∀ χ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (Fin S.rank × Fin d → Fv D.host.F v) → ℂ, ∀ x : WO (sgn ε S) X, Set.indicator (H : Set _) (fun u => ∏ v : P, ι v (χ v) ((b v).1 * u.map (piW (t₁ v)) * (c v).1)) (ptO (sgn ε S).gram e x) = if IsHalf eh x then ∏ v : P, ι v (χ v) (( …`. Introduce `χ x`. Distinguish the cases in `hx : IsHalf eh x`.
+
+Rewrite using `[if_pos hx, Set.indicator_of_mem ((hH x).2 hx)]`. Rewrite using `[if_neg hx, Set.indicator_of_notMem (mt (hH x).1 hx)]`. Establish `hbase : (fun x : WO (sgn ε S) X => Set.indicator (H : Set _) (fun u => ∏ v : P, ι v (M.vac v) ((b v).1 * u.map (piW (t₁ v)) * (c v).1)) (ptO (sgn ε S).gram e x)) = (∏ v, z v) • halfInd eh Λ`. Use function extensionality and compare the values at `x`. Rewrite using `[hind, Pi.smul_apply, smul_eq_mul, halfInd]`.
+
+Distinguish the cases in `hx : IsHalf eh x`. Establish `hu` using `(hH x).2 hx`. Establish `key : ∀ v : P, ι v (M.vac v) ((b v).1 * (ptO (sgn ε S).gram e x).map (piW (t₁ v)) * (c v).1) = if GlobalTheory.LatVac.liftV v.1 (1 : Fv D.host.F v) • ptO (sgn ε S).gram e x ∈ latAtV Vs Ws v then z v else 0` using `fun v => by`. Rewrite using `[← hz v _ (at_liftV_smul v.1 _) (Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, GlobalTheory.LatFill.piW_smul, ((h₀ _).1 (hu i j)).2 v, mul_zero]`.
+
+Use the proof step `rfl)]`. Use `congrArg (fun w => ι v (M.vac v) ((b v).1 * w * (c v).1)) (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.map_apply, Matrix.smul_apply, GlobalTheory.LatFill.piW_smul, GlobalTheory.LatVac.evFin_liftV, one_mul]`. Rewrite using `[if_pos hx, Finset.prod_congr rfl fun v _ => key v]`. Distinguish the cases in `hl : x ∈ Λ`.
+
+Rewrite using `[if_pos ⟨hl, hx⟩, mul_one]`. Conclude with `Finset.prod_congr rfl fun v _ => if_pos (lat₂ v _ (GlobalTheory.LatVac.at_liftV v.1 1) (by rw [GlobalTheory.LatVac.evFin_liftV]; exact one_mem _) x hl)`. Rewrite using `[if_neg fun h => hl h.1, mul_zero]`. Assume the negation of the conclusion as `hne`. Use `hl ?_` and prove the remaining obligations.
+
+Establish `hx' : x = ∑ v : P, GlobalTheory.LatVac.liftV v.1 (1 : Fv D.host.F v) • x` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.sum_apply]`. Conclude with `eq_sum_of_halfEl ((h₀ _).1 (hx i j))`. Rewrite using `[hx']`. Use `sum_mem fun v _ => lat₁ v _ ?_` and prove the remaining obligations.
+
+Rewrite using `[ptO_smul']`. Assume the negation of the conclusion as `hn`. Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ v) (if_neg hn))`. Rewrite using `[if_neg hx, if_neg fun h => hx h.2, mul_zero]`. Establish `hmm : ∀ (v : P) (t : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : AE D) (u : Matrix (Fin S.rank) (Fin d) (AE D)), (w • u).map (piW t) = piW t w • u.map (piW t)` using `fun v t w u => Matrix.ext fun i j => map_mul (piW t) w (u i j)`.
+
+Apply the tactic sequence `have hR := GlobalTheory.T.heisenbergStableRelation_of_vacua M Bs.ψ hstd hM (Finset.univ : Finset P) Subtype.val Subtype.val_injective.injOn (fun v => Matrix (Fin S.rank) (Fin d) (Fv D.host.F v)) (fun v => {u | At (evFin D.host.F v.1) u ∧ u.map (piW (t₀ v)) = 0}) (fun v => {u | At …`. Apply the tactic sequence `have : x.map (piW (t₁ v')) = 0 := Matrix.ext fun i j => piW_of_at_ne (fun e => hne (Subtype.ext e)) _ (at_entry hx.1 i j)`. Rewrite using `[Matrix.map_add _ (map_add _), this, add_zero])`. Use the proof step `(fun v _ u => ⟨a v • u, ⟨at_mul_smul (ha v) u, by rw [hmm, ht', ha0, zero_smul]⟩, by beta_reduce; rw [hmm, ha1, one_smul], fun y hy => symp_idem hcm (t₁ v) (ha1 v) _ _ _ u hy.1 hy.2⟩)`. Use the proof step `(fun v _ x hx p hp => by`.
+
+Take `⟨y, rfl⟩` from `hbij.2 x`. Apply the tactic sequence `have hy : IsHalf eh y := (hH y).1 fun i j => (h₀ _).2 (halfEl_of_at t₀ v (at_entry hx.1 i j) (congrFun (congrFun hx.2 i) j))`. Take `⟨k, hk, hky⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_latO (S := sgn ε S) (T := X) sdS.1 sdX.1 y (Matrix.ext fun i j => infPart_halfEl ((h₀ _).1 (hy i j)))`. Use `⟨GlobalTheory.HeisSchA.rho_mem_schA M _ hstd _ _ hp.1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← ptO_add]`.
+
+Conclude with `sb_trans hp.2.1 hy hk hky`. Simplify using `only [← ptO_add]`. Rewrite using `[lrho, ← hp.2.2]`. Conclude with `hT.trans _ hp.2.1 y hy)`. Use the proof step `(fun v _ x hx p hp => by`.
+
+Take `⟨y, rfl⟩` from `hbij.2 x`. Apply the tactic sequence `have hy : IsHalf (cA D eh) y := (isHalf_iff_ptO (sgn ε S).gram hG e _ y).2 fun i j => (h₁ _).2 (halfEl_of_at t₁ v (at_entry hx.1 i j) (congrFun (congrFun hx.2 i) j))`. Take `⟨k, hk, hky⟩` from `GlobalTheory.PlaceVec.exists_nsmul_mem_latO (S := sgn ε S) (T := X) sdS.1 sdX.1 y (Matrix.ext fun i j => infPart_halfEl ((h₁ _).1 (hy i j)))`. Use `⟨GlobalTheory.HeisSchA.rho_mem_schA M _ hstd _ _ hp.1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [lsym]`.
+
+Use `sb_modul hp.2.1 (fun t => Bs.ψ (symplO (sgn ε S) X t y)) (fun q q' => ?_) hk (fun u hu _ => ?_)` and prove the remaining obligations. Rewrite using `[symplO_add_left', AddChar.map_add_eq_mul]`. Rewrite using `[symplO_nsmul']`. Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hψ sdS sdX hu hky`. Simplify using `only [lsym]`.
+
+Rewrite using `[lrho, ← hp.2.2]`. Conclude with `hT.modul _ hp.2.1 y hy)`. Use the proof step `⟨(GlobalTheory.BigNZ.isFinPart_vac hM ∅).fam.mem hM _, by`. Rewrite using `[hbase]; exact sb_smul (GlobalTheory.isSBHalf_halfInd _ _) _, by`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure ((∏ v, z v) • g) M.vac = (∏ v, z v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g M.vac`.
+
+Use function extensionality and compare the values at `fun _ => mul_assoc _ _ _`. Rewrite using `[hbase, e1, lsmul, ← hT.vac, one_smul, map_smul]⟩`. Use `φ hφ fun v hv => hφv v fun hm => hv ⟨v, hm⟩ (Finset.mem_univ _) rfl`. Establish `hz1 : ∀ v : P, z v = 1` using `fun v => by`. Establish `h` using `hz v 0 (fun u _ => smul_zero u) (Matrix.map_zero _ (map_zero _))`.
+
+Rewrite `h` using `[Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul, hn v, if_pos (zero_mem _)]`. Conclude with `h.symm`. Establish `hg : (∏ v, z v) • g = g` using `by rw [Finset.prod_eq_one fun v _ => hz1 v, one_smul]`. Rewrite using `[hfT, ← hg, ← hR.2.2]`. Conclude with `congrArg T (funext fun x => (hΦ x).trans (hind φ x).symm)`.
+-/
 theorem UpperTheory.exists_isSBHalf_theta_of_selfDual_lattices :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (S X : HSp D) (d : ℕ) (e : Fin d ≃ Fin X.rank)
         (Bs : Base D.host.F D.host.E) (Vs : Spc D.host.F D.host.E S.rank) (Ws : Spc D.host.F D.host.E d)

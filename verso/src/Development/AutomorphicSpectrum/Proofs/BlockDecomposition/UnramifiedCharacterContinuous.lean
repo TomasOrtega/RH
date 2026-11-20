@@ -17,6 +17,25 @@ namespace GlobalTheory.CompanionTheory.LocalUnram
 
 open GroundTheory.LocalField.Abstract in
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ _ n _ χ hadd h1`. Take `⟨hcont, hsurj, -⟩` from `unramifiedDegree_spec (K := K) (Ω := Ω)`. Take `⟨N, rfl⟩ : ∃ N : ℕ+, (N : ℕ) = n` from `⟨⟨n, NeZero.pos n⟩, rfl⟩`. Establish `hone : χ 1 = 0`. Establish `h` using `hadd 1 1`.
+
+Rewrite `h` using `[mul_one]`. Conclude with `left_eq_add.mp h`. Establish `hinv : ∀ g, χ g⁻¹ = -χ g` using `fun g => by`. Establish `h` using `hadd g⁻¹ g`. Rewrite `h` using `[inv_mul_cancel, hone]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h.symm`. Establish `hpow : ∀ (g : Gal(Ω/K)) (k : ℕ), χ (g ^ k) = k • χ g` using `fun g k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hone`. Consider the case `succ k ih => rw [pow_succ, hadd, ih, succ_nsmul]`.
+
+Take `⟨f, hf⟩` from `hsurj (Multiplicative.ofAdd 1)`. Establish `hχf : χ f = 1` using `h1 f hf`. Establish `hker : ∀ g, unramifiedDegree K Ω g = 1 → χ g = 0` using `fun g hg => by`. Establish `h` using `h1 (g * f) (by rw [map_mul, hg, one_mul, hf])`. Rewrite `h` using `[hadd, hχf]`.
+
+Conclude with `add_eq_right.mp h`. Establish `key : ∀ g, χ g = ProfiniteInteger.proj N (Multiplicative.toAdd (unramifiedDegree K Ω g))`. Introduce `g`. Use `set x := Multiplicative.toAdd (unramifiedDegree K Ω g) with hx`. Use `set k : ℕ := (ProfiniteInteger.proj N x).val with hk`.
+
+Establish `hkc : ((k : ℕ) : ZMod (N : ℕ)) = ProfiniteInteger.proj N x` using `ZMod.natCast_zmod_val _`. Establish `hz : ProfiniteInteger.proj N (x - (k : ProfiniteInteger)) = 0`. Rewrite using `[map_sub, map_natCast, hkc, sub_self]`. Take `⟨w, hw⟩` from `ProfiniteInteger.exists_eq_nsmul_of_proj_eq_zero hz`. Take `⟨t, ht⟩` from `hsurj (Multiplicative.ofAdd w)`.
+
+Establish `hdeg : unramifiedDegree K Ω (g * (f ^ k)⁻¹ * (t ^ (N : ℕ))⁻¹) = 1`. Simplify using `only [_root_.map_mul, _root_.map_inv, _root_.map_pow, hf, ht]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_mul, toAdd_mul, toAdd_inv, toAdd_inv, toAdd_pow, toAdd_pow, toAdd_ofAdd, toAdd_ofAdd, toAdd_one, ← hx, ← hw, nsmul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0` using `hker _ hdeg`. Rewrite `h0` using `[hadd, hadd, hinv, hinv, hpow, hpow, hχf]`. Establish `hN : (N : ℕ) • χ t = 0` using `by simp`. Rewrite `h0` using `[hN, neg_zero, add_zero, nsmul_eq_mul, mul_one, hkc]`. Conclude with `add_neg_eq_zero.mp h0`.
+
+Establish `hχ : χ = fun g => ProfiniteInteger.proj N (Multiplicative.toAdd (unramifiedDegree K Ω g))`. Use function extensionality and compare the values at `key`. Rewrite using `[hχ]`. Conclude with `(ProfiniteInteger.continuous_proj N).comp (continuous_toAdd.comp hcont)`.
+-/
 theorem continuous_of_additive_of_frobenius_eq_one :
     ∀ (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
       [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (n : ℕ) [NeZero n] (χ : Gal(Ω/K) → ZMod n),

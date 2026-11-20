@@ -16,6 +16,11 @@ namespace GlobalTheory.LocInputs
 
 open TensorProduct in
 
+/- English proof (translation)
+Introduce `hduality heuler D HW F`. Use `⟨⟨fun l _ => (_root_.GlobalTheory.ThetaTie.nonempty_thetaL D l).some⟩, ?_⟩` and prove the remaining obligations. Use `⟨?_, hduality, _root_.GlobalTheory.TateTop.tate_h2_of_local_duality hduality D, heuler, _root_.GlobalTheory.TateFilQuot.tate_fil_quot D, _root_.GlobalTheory.FundCont.fundamentalExactSequence_continuity_all_theories D, _root_.GlobalTheory.Per.FontaineAll.fontaine_bounds D, _root_. …` and prove the remaining obligations. Use `_root_.GlobalTheory.FundSeq.surjective_half_of_onto (fun l _ => ?_) D` and prove the remaining obligations. Take `⟨C⟩` from `_root_.GlobalTheory.MemLoc.nonempty_core l`.
+
+Conclude with `_root_.GlobalTheory.FundSeq.ontoAt_of_core C (_root_.GlobalTheory.MemLoc.one_sub_phi_onto l C) (_root_.GlobalTheory.MemLoc.FundOnto.fundOnto l C)`. Introduce `l _ K s LL h`. Conclude with `⟨_root_.GlobalTheory.Cyc.FontW.main D HW F l K s LL h, _root_.GlobalTheory.Decompl.decompletion D HW F l K s LL h⟩`.
+-/
 theorem _root_.GlobalTheory.LocInputs.ties_and_inputs_of_duality_euler :
     _root_.Formalism.GaloisCohomology.LocalTateDualityK → _root_.Formalism.GaloisCohomology.LocalEulerCharK →
       ∀ (D : _root_.Formalism.BasicNotions.D7) (HW : _root_.Formalism.BasicNotions.HWOf D.loc) (F : _root_.Formalism.BasicNotions.FonOf D.loc D.locA HW),

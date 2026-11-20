@@ -14,6 +14,23 @@ open GlobalTheory.CompanionTheory.SmallSec
 
 namespace GlobalTheory.CompanionTheory.VolNe
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ`. Use `⟨fun k => ?_, fun n hn => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `ho : IsOpen (valBall F k : Set F)` using `isOpen_valBall k`. Establish `hc : IsCompact (valBall F k : Set F)` using `isCompact_valBall k`. Establish `hne : (valBall F k : Set F).Nonempty` using `⟨0, zero_mem _⟩`.
+
+Conclude with `(ENNReal.toReal_pos (ho.measure_pos _ hne).ne' hc.measure_lt_top.ne).ne'`. Use `set H : Set Fˣ := {h : Fˣ | (h : F) - 1 ∈ valBall F (n : ℤ)} with hH`. Establish `ho : IsOpen H` using `(isOpen_valBall (n : ℤ)).preimage (Units.continuous_val.sub continuous_const)`. Establish `hne : H.Nonempty` using `⟨1, by simp [hH, zero_mem]⟩`. Establish `himg : (Units.val '' H : Set F) = (fun x : F => 1 + x) '' (valBall F (n : ℤ) : Set F)`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨(h : F) - 1, hh, by ring⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Establish `hy : (1 + x : F) ≠ 0`. Introduce `h0`. Establish `hx1 : x = -1` using `by linear_combination h0`. Rewrite `hx` using `[hx1]`. Establish `h1 : normalizedValuation F (-1 : F) ≤ WithZero.exp (-(n : ℤ))` using `hx`.
+
+Rewrite `h1` using `[Valuation.map_neg, map_one]`. Establish `h2 : (WithZero.exp (0 : ℤ)) ≤ WithZero.exp (-(n : ℤ))`. Rewrite using `[WithZero.exp_zero]`. Conclude with `h1`. Establish `h3` using `WithZero.exp_le_exp.mp h2`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨Units.mk0 _ hy, ?_, rfl⟩` and prove the remaining obligations. Simplify `hx` using `[hH]`. Establish `hc : IsCompact H`. Rewrite using `[isOpenEmbedding_units_val.isEmbedding.isCompact_iff, himg]`.
+
+Conclude with `(isCompact_valBall (n : ℤ)).image (continuous_const.add continuous_id)`. Conclude with `(ENNReal.toReal_pos (ho.measure_pos _ hne).ne' hc.measure_lt_top.ne).ne'`. Use `haveI : (LFS.hG ψ).IsHaarMeasure := by unfold LFS.hG; infer_instance`. Establish `ho` using `GLnLocal.isOpen_congruenceSubgroup F 2 m`. Establish `hc` using `GLnLocal.isCompact_congruenceSubgroup F 2 m`.
+
+Establish `hne : (GLnLocal.congruenceSubgroup F 2 m : Set (GL (Fin 2) F)).Nonempty` using `⟨1, one_mem _⟩`. Conclude with `(ENNReal.toReal_pos (ho.measure_pos _ hne).ne' hc.measure_lt_top.ne).ne'`.
+-/
 theorem volumes_ne_zero : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),
   (∀ k : ℤ, (selfDualMeasure ψ).real (valBall F k : Set F) ≠ 0) ∧
   (∀ n : ℕ, 1 ≤ n → (multHaar F).real {h : Fˣ | (h : F) - 1 ∈ valBall F (n : ℤ)} ≠ 0) ∧

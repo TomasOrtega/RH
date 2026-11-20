@@ -23,6 +23,11 @@ namespace GlobalTheory.ArchRec.IoPhase
 
 open GlobalTheory.ConjLiftUnique
 
+/- English proof (translation)
+Take `⟨ε, h1, h2⟩` from `h`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `c : Formalism.REAL.Jm ε * (Bᴴ * G) * B = 1` using `by rw [Matrix.mul_assoc, h1, hJ]`. Establish `e : Formalism.REAL.Jm ε = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, by simp [h1, e], by simp⟩`.
+-/
 theorem isONBasis_of_adapted {n : ℕ} {G B : Mn n} (h : IsAdapted G 1 B) : IsONBasis G 1 B n := by
   obtain ⟨ε, h1, h2⟩ := h
   have hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
@@ -36,6 +41,15 @@ theorem isONBasis_of_adapted {n : ℕ} {G B : Mn n} (h : IsAdapted G 1 B) : IsON
       _ = 1 := by rw [Matrix.mul_assoc _ B, ← h2, Matrix.one_mul, c]
   exact ⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, by simp [h1, e], by simp⟩
 
+/- English proof (translation)
+Set `F : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W` to `io.compr₂ (pt.codRestrict _ ht)`. Set `F' : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] thetaSub ψ V W` to `io'.compr₂ (pt.codRestrict _ ht)`. Establish `f1 : ∀ x w, (F x w).1 = pt (io x w)` using `fun _ _ => rfl`. Establish `f2 : ∀ x w, (F' x w).1 = pt (io' x w)` using `fun _ _ => rfl`. Use `clear_value F F'`.
+
+Establish `hF : Eqv θ ω F` using `⟨fun u hu x w => by rw [f1, f1, hio.1 u hu], fun τ k hk v u hu w => by rw [f1, f1, hio.2.1 τ k hk v u hu]⟩`. Establish `hF' : Eqv θ ω F'` using `⟨fun u hu x w => by rw [f2, f2, hio'.1 u hu], fun τ k hk v u hu w => by rw [f2, f2, hio'.2.1 τ k hk v u hu]⟩`. Take `⟨v₀, w₀, n1, n2, e⟩` from `hio.2.2`. Take `⟨v₁, w₁, n1', n2', e'⟩` from `hio'.2.2`. Take `⟨b, hb⟩` from `exists_invForm hω`.
+
+Take `⟨c₁, k1⟩` from `exists_const_of_eqv h1 h2 hc hb hF hF w₀ n2`. Take `⟨c₂, k2⟩` from `exists_const_of_eqv h1 h2 hc hb hF' hF' w₀ n2`. Take `⟨c₃, k3⟩` from `exists_const_of_eqv h1 h2 hc hb hF hF' w₀ n2`. Take `⟨κ, hκ, hk⟩` from `exists_phase b hb.symm hb.pos hb.defin (fun v w => F (PiTensorProduct.tprod ℂ v) w) (fun v w => F' (PiTensorProduct.tprod ℂ v) w) k1 k2 k3 n1 n1' n2 n2' (l := 1) norm_one (Subtype.ext (by rw [one_smul, f1, f2, e, e']))`. Establish `hFF : F' = κ • F` using `PiTensorProduct.ext (MultilinearMap.ext fun v => LinearMap.ext (hk v))`.
+
+Use `⟨κ, hκ, LinearMap.ext fun x => LinearMap.ext fun w => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul, ← f1, ← f2, hFF]`. Both sides reduce to the same expression.
+-/
 theorem io_eq_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {S : D.what₂.Tau → SPar} {M : DSModel W S}
     (hω : IsWeilDatumO ψ V W χV χW ω) (h1 : Formalism.IndefR.FWT.LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) {c : CoefA V}
@@ -67,6 +81,11 @@ theorem io_eq_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V 
   rw [LinearMap.smul_apply, LinearMap.smul_apply, map_smul, ← f1, ← f2, hFF]
   rfl
 
+/- English proof (translation)
+Introduce `i M M' ψ θ χS χT ω hθ hω _ c hc _ BV f hf io io' hio hio'`. Choose the witnesses or unpack the hypotheses as in `⟨τ₀⟩ : Nonempty D.what₂.Tau := by`. Take `⟨σ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : ∃ ρ, tauE D ρ = σ`. Conclude with `⟨h.choose⟩`.
+
+Conclude with `⟨(not_not.1 fun h' => h ((GlobalTheory.PointAtPlace.tauE_cm σ).2 h')).choose⟩`. Establish `hlow` using `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ M' fun τ => GlobalTheory.LowSmooth.shape_at M' τ (D.hc τ) (Formalism.IndefR.FWT.rank_Wc i) (GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW (D := D) i τ) rfl`. Establish `hB` using `fun τ => isONBasis_of_adapted (hf τ).onS`. Conclude with `io_eq_smul hω hlow.1 hlow.2 hc _ (GlobalTheory.GalLift.Vec.theta_pureTensorO hω.std hθ (fun _ => 1) BV (cart M') (onb M') (hf τ₀).theta) (GlobalTheory.FockIndep.pureTensorO_injective D ψ θ _ _ _ M' BV f hω.std hθ (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hB τ)) hB (hf τ …`.
+-/
 theorem ioUniq (D : D7) : IoUniq D := by
   intro i M M' ψ θ χS χT ω hθ hω _ c hc _ BV f hf io io' hio hio'
   obtain ⟨τ₀⟩ : Nonempty D.what₂.Tau := by
@@ -82,6 +101,9 @@ theorem ioUniq (D : D7) : IoUniq D := by
     (GlobalTheory.FockIndep.pureTensorO_injective D ψ θ _ _ _ M' BV f hω.std hθ
       (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hB τ)) hB (hf τ₀).theta (hf τ₀).ne fun τ => (hf τ).vac) hio hio'
 
+/- English proof (translation)
+Introduce `_ _` and use `ioUniq`.
+-/
 theorem ioUniq_of_discreteSeriesCover : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, IoUniq D :=
   fun _ _ => ioUniq
 

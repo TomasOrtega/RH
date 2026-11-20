@@ -20,6 +20,11 @@ open Formalism.InvariantFactorPaths.G7 (lgF)
 open Formalism.DworkPowerSeriesWeights (Integral)
 open GlobalTheory.CurveDictionary (lgF_eq_logF cc_lgF')
 
+/- English proof (translation)
+Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => rw [PowerSeries.coeff_zero_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. Consider the case `succ n`. Rewrite using `[PowerSeries.coeff_succ_X_mul]`.
+
+Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk]`.
+-/
 theorem X_mul_lU {K : Type} [Field K] [CharZero K] (f : PowerSeries K) (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.X * Formalism.L2.Th1.B.lU f = f := by
   ext n
@@ -30,6 +35,9 @@ theorem X_mul_lU {K : Type} [Field K] [CharZero K] (f : PowerSeries K) (hf : Pow
     unfold Formalism.L2.Th1.B.lU
     rw [PowerSeries.coeff_mk]
 
+/- English proof (translation)
+Introduce `n`. Establish `e : n = Finsupp.single () (n ())` using `Finsupp.ext fun u => by rcases u with ⟨⟩; simp`. Rewrite using `[e]`. Conclude with `h (n ())`.
+-/
 theorem integral_ps {K : Type} [NormedField K] {f : PowerSeries K}
     (h : ∀ k, ‖PowerSeries.coeff k f‖ ≤ 1) : Integral (f : MvPowerSeries Unit K) := by
   intro n
@@ -37,6 +45,23 @@ theorem integral_ps {K : Type} [NormedField K] {f : PowerSeries K}
   rw [e]
   exact h (n ())
 
+/- English proof (translation)
+Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Use `set e := eLT hLT with he`. Establish `he1 : ‖e‖ = 1` using `Formalism.L2.G.Pend.norm_wToC_unit l _`. Establish `hene : e ≠ 0` using `by intro h; rw [h, norm_zero] at he1; exact zero_ne_one he1`.
+
+Use `set th0 := Formalism.L2.G.Pend.thOf hLT with hth0`. Establish `h00 : PowerSeries.constantCoeff th0 = 0` using `Formalism.L2.G.Pend.thOf_zero hLT`. Establish `hu : IsUnit (PowerSeries.coeff 1 th0)` using `Formalism.L2.G.Pend.thOf_unit hLT`. Use `set i0 := th0.substInvOfIsUnit hu with hi0`. Establish `hi00 : PowerSeries.constantCoeff i0 = 0` using `PowerSeries.constantCoeff_substInvOfIsUnit _ _`.
+
+Establish `hR : PowerSeries.subst i0 th0 = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_right _ h00 hu`. Use `set thC := PowerSeries.map (wToC l) th0 with hthC`. Use `set iC := PowerSeries.map (wToC l) i0 with hiC`. Establish `hthC0 : PowerSeries.constantCoeff thC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hthC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, h00, map_zero]`.
+
+Establish `hiC0 : PowerSeries.constantCoeff iC = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, hiC, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, hi00, map_zero]`. Establish `hRC : PowerSeries.subst iC thC = PowerSeries.X`. Establish `h` using `congrArg (MvPowerSeries.map (wToC l)) hR`. Rewrite `h` using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero' hi00)]`.
+
+Conclude with `h.trans (MvPowerSeries.map_X _ _)`. Establish `hv0 : PowerSeries.constantCoeff (PowerSeries.C e⁻¹ * lgF ℂ_[l] l) = 0`. Rewrite using `[map_mul, cc_lgF', mul_zero]`. Establish `hlog : PowerSeries.subst thC (lgF ℂ_[l] l) = PowerSeries.C e * g.l`. Establish `h` using `Formalism.L2.G.Pend.thOf_log hLT`.
+
+Rewrite `h` using `[lgF_eq_logF]`. Conclude with `h`. Establish `hVT : PowerSeries.subst thC (vLT hLT) = PowerSeries.X`. Unfold `vLT`. Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hv0) (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero' hthC0), PowerSeries.subst_C, hlog]`.
+
+Establish `e1 : (MvPowerSeries.C e⁻¹ : PowerSeries ℂ_[l]) * (PowerSeries.C e * g.l) = g.l`. Rewrite using `[← mul_assoc]`. Use `show PowerSeries.C e⁻¹ * PowerSeries.C e * g.l = g.l`. Rewrite using `[← map_mul, inv_mul_cancel₀ hene, map_one, one_mul]`. Rewrite using `[e1]`.
+
+Conclude with `Formalism.L2.G.Pend.ex_l g hex hinv`. Use `⟨i0, ?_⟩` and prove the remaining obligations. Use `show iC = vLT hLT`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_witt_series_inverse_formalGroup_iso {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso g) :
     ∃ w : PowerSeries (WW l), PowerSeries.map (wToC l) w = vLT hLT := by
   have hex := hOk.2.2.1
@@ -90,6 +115,9 @@ theorem exists_witt_series_inverse_formalGroup_iso {l : ℕ} [Fact l.Prime] {g :
     _ = PowerSeries.subst iC (PowerSeries.X : PowerSeries ℂ_[l]) := by rw [hVT]
     _ = iC := PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hiC0)
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_witt_series_inverse_formalGroup_iso hOk hLT`. Rewrite using `[← hw, PowerSeries.coeff_map]`. Use `Formalism.L2.G.Pend.norm_wToC_pow_mul l 0 (PowerSeries.coeff n w)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem v_integral {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso g) (n : ℕ) :
     ‖PowerSeries.coeff n (vLT hLT)‖ ≤ 1 := by
   obtain ⟨w, hw⟩ := exists_witt_series_inverse_formalGroup_iso hOk hLT
@@ -97,6 +125,45 @@ theorem v_integral {l : ℕ} [Fact l.Prime] {g : G1 l} (hOk : g.Ok) (hLT : LTIso
   have := Formalism.L2.G.Pend.norm_wToC_pow_mul l 0 (PowerSeries.coeff n w)
   simpa using this
 
+/- English proof (translation)
+Introduce `l _ g hLT hOk s2 hph`. Establish `hp : l.Prime` using `Fact.out`. Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Use `set e := eLT hLT with he`.
+
+Establish `he1 : ‖e‖ = 1` using `Formalism.L2.G.Pend.norm_wToC_unit l _`. Establish `hene : e ≠ 0` using `by intro h; rw [h, norm_zero] at he1; exact zero_ne_one he1`. Use `set Lc : PowerSeries ℂ_[l] := lgF ℂ_[l] l with hLc`. Establish `hL0 : PowerSeries.constantCoeff Lc = 0` using `cc_lgF' _ _`. Establish `hv0 : PowerSeries.constantCoeff (PowerSeries.C e⁻¹ * Lc) = 0`.
+
+Rewrite using `[map_mul, hL0, mul_zero]`. Use `set v := vLT hLT with hvdef`. Establish `hvcc : PowerSeries.constantCoeff v = 0` using `PowerSeries.constantCoeff_subst_eq_zero hv0 _ hex`. Establish `hvS : PowerSeries.HasSubst v` using `PowerSeries.HasSubst.of_constantCoeff_zero' hvcc`. Use `set lW := Formalism.L2.Th1.A.logSer g.W with hlWdef`.
+
+Establish `hgl : g.l = lW` using `Formalism.L2.KerInert.Dict.formal_logarithm_agree l g.W g.wq hOk.2.1`. Establish `hlW0 : PowerSeries.constantCoeff lW = 0` using `by rw [← hgl]; exact Formalism.MainNotions.J.cc_l g`. Establish `hlW1 : PowerSeries.coeff 1 lW = 1` using `(Formalism.L2.Th1.A.logSpec ℂ_[l] g.W).2.1`. Establish `hvl : PowerSeries.subst v lW = PowerSeries.C e⁻¹ * Lc`. Rewrite using `[← hgl]`.
+
+Conclude with `Formalism.L2.G.Pend.lg_pt g hex hinv hv0`. Use `set P := Formalism.L2.Th1.A.wpReg g.W with hPdef`. Establish `hP : Formalism.L2.Th1.A.wpReg (Formalism.L2.Th1.A.shortW (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g.W)) = P`. Rewrite using `[GlobalTheory.CurveDictionary.wpReg_eq, hPdef, GlobalTheory.CurveDictionary.wpReg_eq g.W, (Formalism.L2.Th1.A.shortInv ℂ_[l] _ _).2.1, (Formalism.L2.Th1.A.shortInv ℂ_[l] _ _).2.2.1]`. Establish `hneg : ∀ f : PowerSeries ℂ_[l], PowerSeries.subst v (-f) = -PowerSeries.subst v f` using `fun f => by`.
+
+Rewrite using `[← PowerSeries.coe_substAlgHom hvS, map_neg]`. Establish `hlU1 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.lU lW : MvPowerSeries Unit ℂ_[l]) = 1` using `by show PowerSeries.constantCoeff (Formalism.L2.Th1.B.lU lW) = 1`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk, zero_add, hlW1]`.
+
+Use `set U := PowerSeries.subst v (Formalism.L2.Th1.B.lU lW) with hU`. Establish `hψ : psiLT hLT = -PowerSeries.subst (PowerSeries.C e⁻¹ * Lc) (Formalism.L2.Th1.B.sigS P) + PowerSeries.C (s2 / 2) * (PowerSeries.C e⁻¹ * Lc) ^ 2 - Formalism.L2.Th1.B.fLog U`. Unfold `psiLT`. Rewrite using `[hph]`. Unfold `Formalism.L2.Th1.B.phW Formalism.L2.Th1.B.phO`.
+
+Rewrite using `[PowerSeries.subst_sub hvS, PowerSeries.subst_add hvS, hneg, PowerSeries.subst_mul hvS, PowerSeries.subst_pow hvS, PowerSeries.subst_C, hvl, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hlW0) hvS, hvl]`. Establish `hfl : PowerSeries.subst v (Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.lU lW)) = Formalism.L2.Th1.B.fLog U`. Rewrite using `[hU, PowerSeries.subst_def, PowerSeries.subst_def]`. Conclude with `Formalism.L2.Th1.B.subst_fLog (fun _ => hvcc) hlU1`. Rewrite using `[← hfl]`.
+
+Both sides reduce to the same expression. Establish `hFF : phFF l (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g.W) s2 e⁻¹ = -PowerSeries.subst (PowerSeries.C e⁻¹ * Lc) (Formalism.L2.Th1.B.sigS P) + PowerSeries.C (s2 / 2) * (PowerSeries.C e⁻¹ * Lc) ^ 2 - Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.lU Lc)`. Unfold `phFF`. Rewrite using `[hP]`. Establish `hvU : v * U = PowerSeries.C e⁻¹ * Lc`.
+
+Establish `h1 : PowerSeries.subst v (PowerSeries.X * Formalism.L2.Th1.B.lU lW) = v * U`. Rewrite using `[PowerSeries.subst_mul hvS, PowerSeries.subst_X hvS]`. Rewrite using `[← h1, X_mul_lU lW hlW0, hvl]`. Establish `hprod : Formalism.L2.Th1.B.lU Lc = (PowerSeries.C e * Formalism.L2.Th1.B.lU v) * U`. Apply `mul_left_cancel₀ (PowerSeries.X_ne_zero (R := ℂ_[l]))` to reduce the goal to its premises.
+
+Rewrite using `[X_mul_lU Lc hL0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hene, map_one, one_mul]`. Use `_ = PowerSeries.C e * (v * U) := by rw [hvU]`. Use `_ = PowerSeries.X * (PowerSeries.C e * Formalism.L2.Th1.B.lU v * U) := by`.
+
+Rewrite using `[show PowerSeries.C e * (v * U) = PowerSeries.C e * ((PowerSeries.X * Formalism.L2.Th1.B.lU v) * U) by`. Rewrite using `[X_mul_lU v hvcc]]`. Expand and normalize the polynomial expressions, which then agree. Establish `hex1 : PowerSeries.coeff 1 g.ex = 1`. Establish `h` using `congrArg (PowerSeries.coeff 1) hinv`.
+
+Rewrite `h` using `[Formalism.L2.G.Pend.coeff_one_subst _ _ hex, Formalism.L2.G.Pend.coeff_one_l g hOk.2.1, one_mul, PowerSeries.coeff_one_X]`. Conclude with `h`. Establish `hv1 : PowerSeries.coeff 1 v = e⁻¹`. Rewrite using `[hvdef]`. Unfold `vLT`.
+
+Rewrite using `[Formalism.L2.G.Pend.coeff_one_subst _ _ hv0, hex1, one_mul, PowerSeries.coeff_C_mul, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.coeff_one_lgF l hp.two_le, mul_one]`. Establish `hA : MvPowerSeries.constantCoeff (PowerSeries.C e * Formalism.L2.Th1.B.lU v : MvPowerSeries Unit ℂ_[l]) = 1` using `by show PowerSeries.constantCoeff (PowerSeries.C e * Formalism.L2.Th1.B.lU v) = 1`. Rewrite using `[map_mul, PowerSeries.constantCoeff_C, ← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk, zero_add, hv1, mul_inv_cancel₀ hene]`.
+
+Establish `hLU : PowerSeries.constantCoeff (Formalism.L2.Th1.B.lU Lc) = 1` using `Formalism.L2.Th1.E.Joints.cc_lU hp.two_le`. Establish `hUc : MvPowerSeries.constantCoeff (U : MvPowerSeries Unit ℂ_[l]) = 1`. Establish `h` using `congrArg PowerSeries.constantCoeff hprod`. Rewrite `h` using `[hLU, map_mul]`. Establish `hA' : PowerSeries.constantCoeff (PowerSeries.C e * Formalism.L2.Th1.B.lU v) = 1` using `hA`.
+
+Rewrite `h` using `[hA', one_mul]`. Conclude with `h.symm`. Establish `hdiff : (psiLT hLT : MvPowerSeries Unit ℂ_[l]) - phFF l (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g.W) s2 e⁻¹ = Formalism.L2.Th1.B.fLog (PowerSeries.C e * Formalism.L2.Th1.B.lU v : MvPowerSeries Unit ℂ_[l])`. Rewrite using `[hψ, hFF, hprod, Formalism.L2.Th1.B.ParO.fLog_mul hA hUc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdiff]`. Conclude with `Formalism.L2.Th1.B.constantCoeff_fLog hA`. Rewrite using `[hdiff] show Integral (Formalism.L2.Th1.B.fExp (Formalism.L2.Th1.B.fLog _))`. Rewrite using `[Formalism.L2.Th1.B.fExp_fLog hA]`.
+
+Apply `integral_ps` to reduce the goal to its premises. Introduce `k`. Rewrite using `[PowerSeries.coeff_C_mul, norm_mul, he1, one_mul]`. Unfold `Formalism.L2.Th1.B.lU`. Rewrite using `[PowerSeries.coeff_mk]`.
+
+Conclude with `v_integral hOk hLT (k + 1)`.
+-/
 theorem phTie : Formalism.L2.KerInert.BeCob.PhTie := by
   intro l _ g hLT hOk s2 hph
   have hp : l.Prime := Fact.out

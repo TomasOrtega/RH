@@ -16,19 +16,33 @@ def coB (σ : E →ₐ[F] E) (X : Spc F E n) (W : Spc F E d) (t : E →ₐ[F] Fv
     Matrix (Fin n) (Fin d) (Fv F v) :=
   -((1 : GL (Fin n) (Fv F v)).1ᵀ * X.J.map t * u.map (piW (t.comp σ)) * (W.J.map t)ᵀ * (1 : GL (Fin d) (Fv F v)).1)
 
+/- English proof (translation)
+Simplify using `[coB]`.
+-/
 theorem coB_eq (t : E →ₐ[F] Fv F v) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     coB σ X W t u = (-X.J.map t) * u.map (piW (t.comp σ)) * (W.J.map t)ᵀ := by simp [coB]
 
+/- English proof (translation)
+Establish `: (J.map t).det = t J.det` using `(RingHom.map_det (t : E →+* Fv F v) J).symm`. Rewrite using `[this]`. Conclude with `((map_ne_zero t).2 h).isUnit`.
+-/
 theorem unit_map (t : E →ₐ[F] Fv F v) {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (h : J.det ≠ 0) : IsUnit (J.map t).det := by
   have : (J.map t).det = t J.det := (RingHom.map_det (t : E →+* Fv F v) J).symm
   rw [this]
   exact ((map_ne_zero t).2 h).isUnit
 
+/- English proof (translation)
+Rewrite using `[coB_eq, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (by rw [Matrix.det_transpose]; exact unit_map t hW), Matrix.rank_mul_eq_right_of_isUnit_det _ _ (by rw [Matrix.det_neg]; exact (isUnit_one.neg.pow _).mul (unit_map t hX))]`.
+-/
 theorem rank_coB (t : E →ₐ[F] Fv F v) (hX : X.J.det ≠ 0) (hW : W.J.det ≠ 0) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     (coB σ X W t u).rank = (u.map (piW (t.comp σ))).rank := by
   rw [coB_eq, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (by rw [Matrix.det_transpose]; exact unit_map t hW),
     Matrix.rank_mul_eq_right_of_isUnit_det _ _ (by rw [Matrix.det_neg]; exact (isUnit_one.neg.pow _).mul (unit_map t hX))]
 
+/- English proof (translation)
+Set `y` to `(-X.J.map t)⁻¹ * Y * ((W.J.map t)ᵀ)⁻¹`. Use `choose z h1 h2 h3 using fun i j => exists_pair h t 0 (y i j)`. Use `⟨Matrix.of z, at_matrix.2 h1, Matrix.ext h2, ?_⟩` and prove the remaining obligations. Establish `e : (Matrix.of z).map (piW (t.comp σ)) = y` using `Matrix.ext h3`. Establish `u1 : IsUnit (-X.J.map t).det` using `by rw [Matrix.det_neg]; exact (isUnit_one.neg.pow _).mul (unit_map t hX)`.
+
+Establish `u2 : IsUnit ((W.J.map t)ᵀ).det` using `by rw [Matrix.det_transpose]; exact unit_map t hW`. Rewrite using `[coB_eq, e, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ u2, Matrix.mul_nonsing_inv_cancel_left _ _ u1]`.
+-/
 theorem exists_coB (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (hX : X.J.det ≠ 0) (hW : W.J.det ≠ 0)
     (Y : Matrix (Fin n) (Fin d) (Fv F v)) : ∃ x, At (evFin F v) x ∧ x.map (piW t) = 0 ∧ coB σ X W t x = Y := by
   let y := (-X.J.map t)⁻¹ * Y * ((W.J.map t)ᵀ)⁻¹
@@ -39,12 +53,38 @@ theorem exists_coB (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (hX : X.J.det �
   have u2 : IsUnit ((W.J.map t)ᵀ).det := by rw [Matrix.det_transpose]; exact unit_map t hW
   rw [coB_eq, e, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ u2, Matrix.mul_nonsing_inv_cancel_left _ _ u1]
 
+/- English proof (translation)
+The claim follows from `hι.mult u hu h1 φ hφ _ (locRho_mem M hψ u hφ) (fun r hr => rho_tens M ψ hu φ hr.1) x hx h0`.
+-/
 theorem mult' (hψ : IsStd ψ) {t : E →ₐ[F] Fv F v} {ι} (hι : M.IsLinBar ψ t 1 1 ι) {u x : Matrix (Fin n) (Fin d) (AE F E)}
     (hu : At (evFin F v) u) (h1 : u.map (piW (t.comp σ)) = 0) (hx : At (evFin F v) x) (h0 : x.map (piW t) = 0) {φ}
     (hφ : φ ∈ SB (Fin n × Fin d → Fv F v)) :
     ι (locRho M ψ v u φ) (coB σ X W t x) = ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x u) * ι φ (coB σ X W t x) :=
   hι.mult u hu h1 φ hφ _ (locRho_mem M hψ u hφ) (fun r hr => rho_tens M ψ hu φ hr.1) x hx h0
 
+/- English proof (translation)
+Use `choose xo a1 a2 a3 using exists_coB h t hX hW`. Establish `hb` using `hι.bij`. Establish `key` using `kill ((SB _ ⊓ LinearMap.ker l).map ι) (coB σ X W t x₁) (fun Y hY => ?_) _ (hb.1 hφ) hz`. Take `⟨φ', h', e⟩` from `key`. Rewrite using `[← hb.2.1 h'.1 hφ e]`.
+
+Conclude with `h'.2`. Take `⟨u, hu, h1, hne⟩` from `exists_sep M h hψ t (z := xo Y - x₁) (fun a ha => by rw [smul_sub, a1 Y a ha, hx a ha, sub_zero]) (by rw [Matrix.map_sub _ (map_sub _), a2, h0, sub_zero]) fun e => hY (by rw [← sub_eq_zero.1 e, a3])`. Set `m : Matrix (Fin n) (Fin d) (Fv F v) → ℂ` to `fun y => ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) (xo y) u)`. Establish `hm : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ι (locRho M ψ v u φ) = fun y => m y * ι φ y` using `fun φ hφ => funext fun y => by`. Use `mult' M hψ hι hu h1 (a1 y) (a2 y) hφ` as an intermediate fact.
+
+Rewrite `this` using `[a3]`. Then use the resulting hypothesis. Establish `hm1 : m (coB σ X W t x₁) = ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x₁ u)`. Establish `e : xo (coB σ X W t x₁) = x₁`. Establish `e1` using `a3 (coB σ X W t x₁)`. Establish `u1 : IsUnit (-X.J.map t).det` using `by rw [Matrix.det_neg]; exact (isUnit_one.neg.pow _).mul (unit_map t hX)`.
+
+Establish `u2 : IsUnit ((W.J.map t)ᵀ).det` using `by rw [Matrix.det_transpose]; exact unit_map t hW`. Rewrite `e1` using `[coB_eq t (xo _), coB_eq t x₁]`. Establish `e2` using `congrArg (fun A => (-X.J.map t)⁻¹ * (A * ((W.J.map t)ᵀ)⁻¹)) e1`. Simplify using `only [Matrix.mul_nonsing_inv_cancel_right _ _ u2, Matrix.nonsing_inv_mul_cancel_left _ _ u1] at e2`. Use `Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_at h t (fun a ha => ?_) ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_sub, at_matrix.1 (a1 _) i j a ha, at_matrix.1 hx i j a ha, sub_zero]`. Rewrite using `[map_sub, show piW t (x₁ i j) = 0 from congrFun (congrFun h0 i) j, sub_zero]`. Conclude with `congrFun (congrFun (a2 _) i) j`. Rewrite using `[map_sub, sub_eq_zero]`. Rewrite `e2` using `[← coB_eq]`.
+
+Conclude with `congrFun (congrFun e2 i) j`. Simplify using `only [m, e]`. Use `haveI : T2Space (Matrix (Fin n) (Fin d) (Fv F v)) := inferInstanceAs (T2Space (Fin n → Fin d → Fv F v))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin d) (Fv F v)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin d → Fv F v))`. Use `haveI : TotallyDisconnectedSpace (Matrix (Fin n) (Fin d) (Fv F v)) := inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin d → Fv F v))`.
+
+Use `⟨m, lc_of_mul m fun Φ hΦ => ?_, fun e => hne ?_, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨φ', h', rfl⟩` from `hb.2.2 hΦ`. Rewrite using `[← hm φ' h']`. Conclude with `hb.1 (locRho_mem M hψ u h')`. Rewrite `e` using `[hm1]`.
+
+Establish `h3` using `GlobalTheory.LatVacArith.symp_add_left σ (-1) (incM F X.J) (incM F W.J) (xo Y - x₁) x₁ u`. Rewrite `h3` using `[sub_add_cancel]`. Establish `h4 : m Y = _` using `congrArg ψ h3`. Rewrite `h4` using `[AddChar.map_add_eq_mul, e]`. Establish `h5 : ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x₁ u) ≠ 0` using `fun e0 => by`.
+
+Use `GlobalTheory.StdCharFromIsStd.norm_psi hψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x₁ u)` as an intermediate fact. Rewrite `this` using `[e0, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `(mul_eq_right₀ h5).1 h4.symm`. Take `⟨φ', h', rfl⟩` from `hb.2.2 hΦ`.
+
+Use `⟨locRho M ψ v u φ' - m (coB σ X W t x₁) • φ', ⟨sub_mem (locRho_mem M hψ u h') (Submodule.smul_mem _ _ h'), ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l _ = 0`. Rewrite using `[map_sub, map_smul, hl u hu h1 φ' h', hm1, smul_eq_mul, sub_self]`. Rewrite using `[map_sub, map_smul, hm φ' h']`. Use function extensionality and compare the values at `y`.
+
+Simplify using `[sub_mul]`.
+-/
 theorem eigen_kill (h : IsCMExt F E σ) (hψ : IsStd ψ) (hX : X.J.det ≠ 0) (hW : W.J.det ≠ 0) {t : E →ₐ[F] Fv F v} {ι}
     (hι : M.IsLinBar ψ t 1 1 ι) (l : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ) {x₁ : Matrix (Fin n) (Fin d) (AE F E)}
     (hx : At (evFin F v) x₁) (h0 : x₁.map (piW t) = 0)
@@ -106,6 +146,17 @@ theorem eigen_kill (h : IsCMExt F E σ) (hψ : IsStd ψ) (hX : X.J.det ≠ 0) (h
       funext y
       simp [sub_mul]
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `(Submodule.span ℂ (M.SoLoc ψ t)).exists_isCompl`. Set `A` to `(Submodule.span ℂ (M.SoLoc ψ t)).subtype ∘ₗ Submodule.linearProjOfIsCompl _ Q hQ`. Establish `hA : ∀ φ, A φ ∈ Submodule.span ℂ (M.SoLoc ψ t)` using `fun φ => Subtype.prop _`. Establish `e : opL v A Ψ = Ψ` using `funext fun x => by`. Express the relevant statement in the definitionally equal form `A (fun y => Ψ (repl v x y)) (piK v (finPart x)) = _`.
+
+Establish `: A (fun y => Ψ (repl v x y)) = fun y => Ψ (repl v x y)` using `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hQ ⟨_, Submodule.subset_span (hs x)⟩)`. Rewrite using `[this]`. Use `congrArg Ψ (funext fun i => Prod.ext rfl ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(finPart x - epsK v (piK v (finPart x)) + epsK v (piK v (finPart x))) i = finPart x i`. Rewrite using `[sub_add_cancel]`.
+
+Rewrite using `[← e]`. Use `schA_le ((M.So ψ t).comap (opL v A)) (fun f φ h1 h2 => ?_) hΨ` and prove the remaining obligations. Establish `h2' : ∀ᶠ w in cofinite, φ w = M.vac w` using `(h2.and hM.std).mono fun _ h => h.1.trans h.2.symm`. Establish `hU : ∀ ψ' ∈ SB (Fin n × Fin d → Fv F v), ∀ w, Function.update φ v ψ' w ∈ SB _` using `fun ψ' h' w => by`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `using h'`. Rewrite using `[Function.update_of_ne h]`. Conclude with `h1 w`. Establish `hC : ∀ ψ', ∀ᶠ w in cofinite, Function.update φ v ψ' w = M.vac w` using `fun ψ' => by filter_upwards [h2', Filter.eventually_cofinite_ne v] with w h h'`.
+
+Rewrite using `[Function.update_of_ne h', h]`. Rewrite using `[Submodule.mem_comap, opL_pure hM.std h2']`. Use `pure_update_mem hM.std h2' v f _ (S := M.SoLoc ψ t) (fun ψ' h' => Submodule.subset_span ?_) (hA _)` and prove the remaining obligations. Conclude with `⟨f, _, hU _ h'.1, hC _, by simpa using h', rfl⟩`.
+-/
 theorem mem_so (hM : M.IsGood ψ) (t : E →ₐ[F] Fv F v) {Ψ} (hΨ : Ψ ∈ schA F (Fin n × Fin d))
     (hs : ∀ z, (fun y => Ψ (repl v z y)) ∈ M.SoLoc ψ t) : Ψ ∈ M.So ψ t := by
   obtain ⟨Q, hQ⟩ := (Submodule.span ℂ (M.SoLoc ψ t)).exists_isCompl
@@ -135,6 +186,25 @@ theorem mem_so (hM : M.IsGood ψ) (t : E →ₐ[F] Fv F v) {Ψ} (hΨ : Ψ ∈ sc
   refine pure_update_mem hM.std h2' v f _ (S := M.SoLoc ψ t) (fun ψ' h' => Submodule.subset_span ?_) (hA _)
   exact ⟨f, _, hU _ h'.1, hC _, by simpa using h', rfl⟩
 
+/- English proof (translation)
+Use `fun Φ hΦ => (Submodule.span_le (p := (M.So ψ t).comap (om γ))).2 ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, ⟨hv, ι, hι, h3⟩, rfl⟩`. Take `⟨r, hr, er⟩` from `GlobalTheory.CompanionTheory.Ar.RT.Inj.pure_at M ψ hM φ h2 f v`. Establish `hsch : ∀ φ' ∈ SB (Fin n × Fin d → Fv F v), tens (evFin F v) φ' r ∈ schA F (Fin n × Fin d)` using `fun φ' h' => by`. Establish `e` using `er (Function.update φ v φ') fun w hw => Function.update_of_ne hw _ _`.
+
+Rewrite `e` using `[Function.update_self]`. Take `⟨g, hg, e'⟩` from `GlobalTheory.CompanionTheory.Ar.RT.Inj.pure_eq_pureA M ψ hM (Function.update φ v φ') (fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `using h'`.
+
+Rewrite using `[Function.update_of_ne hw]`. Conclude with `h1 w) (by`. Use `filter_upwards [h2, Filter.eventually_cofinite_ne v] with w h h'`. Rewrite using `[Function.update_of_ne h', h])`. Rewrite using `[← e, e' f]`.
+
+Conclude with `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, er φ fun _ _ => rfl]`. Establish `hp : ∀ φ' ∈ SB (Fin n × Fin d → Fv F v), om γ (tens (evFin F v) φ' r) ∈ schA F (Fin n × Fin d)` using `fun φ' h' => hS.pres γ _ (hsch φ' h')`. Use `mem_so M hM t (hp _ hv) fun z => ⟨slice_mem' (hp _ hv) z, ι, hι, fun Y hY => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, h0, rfl⟩` from `exists_coB (X := X) (W := W) h t hX hW Y`.
+
+Set `l : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun φ' => ι (fun y => om γ (tens (evFin F v) φ' r) (repl v z y)) (coB σ X W t x) map_add' := fun a b => by`. Establish `e : tens (evFin F v) (a + b) r = tens (evFin F v) a r + tens (evFin F v) b r` using `funext fun _ => add_mul _ _ _`. Rewrite using `[e, map_add]`. Conclude with `congrFun (map_add ι _ _) _`. Use the proof step `map_smul' := fun c a => by`.
+
+Establish `e : tens (evFin F v) (c • a) r = c • tens (evFin F v) a r` using `funext fun _ => mul_assoc _ _ _`. Rewrite using `[e, map_smul]`. Conclude with `congrFun (map_smul ι c _) _ }`. Establish `hz : ∀ (π : AE F E →+* Fv F v) (p : UA σ X.J × UA σ W.J) (u : Matrix (Fin n) (Fin d) (AE F E)), (actAB (cA σ) p u).map π = (mat p.1).map π * u.map π * ((mat p.2).map π)ᵀ` using `fun π p u => by`. Rewrite using `[actAB, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+
+Both sides reduce to the same expression. Establish `hback : actAB (cA σ) γ (actAB (cA σ) γ⁻¹ x) = x`. Simplify using `only [actAB, Prod.fst_inv, Prod.snd_inv, Subgroup.coe_inv, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.mul_one]`. Establish `hun : ∀ {m : ℕ} (g : GL (Fin m) (AE F E)), IsUnit ((g : Matrix (Fin m) (Fin m) (AE F E)).map (piW (t.comp σ))).det` using `fun g => (Matrix.isUnit_iff_isUnit_det _).1 (g.isUnit.map (piW (t.comp σ)).mapMatrix)`.
+
+Use `eigen_kill M h hψ hX hW hι l (x₁ := actAB (cA σ) γ⁻¹ x) (at_mul_mul hx _ _) (by rw [hz, h0]; simp) (fun u hu hu1 φ' h' => ?_) hv (h3 _ ?_)` and prove the remaining obligations. Establish `hu' : At (evFin F v) (actAB (cA σ) γ u)` using `at_mul_mul hu _ _`. Express the relevant statement in the definitionally equal form `ι (fun y => om γ (tens (evFin F v) (locRho M ψ v u φ') r) (repl v z y)) _ = _ * ι _ _`. Rewrite using `[← rho_tens M ψ hu φ' hr, hS.impl γ u _ (hsch φ' h'), slice_rho M ψ hu', mult' M hψ hι hu' (by rw [hz, hu1]; simp) hx h0 (slice_mem' (hp φ' h') z), ← symp_act (cA σ) _ _ _ γ _ u, hback]`. Rewrite `hY`, the goal using `[rank_coB t hX hW]`.
+
+Rewrite using `[hz, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (by rw [Matrix.det_transpose]; exact hun _), Matrix.rank_mul_eq_right_of_isUnit_det ((mat γ⁻¹.1).map (piW (t.comp σ))) _ (hun γ⁻¹.1.1)]` and apply the resulting hypothesis.
+-/
 theorem so_stable (h : IsCMExt F E σ) (hψ : IsStd ψ) (hX : X.J.det ≠ 0) (hW : W.J.det ≠ 0) (hM : M.IsGood ψ) {om : Rep σ X W}
     (hS : IsSplitting (adeleClass F) ψ M.co (actAB (cA σ)) om) (t : E →ₐ[F] Fv F v) (γ) :
     ∀ Φ ∈ M.So ψ t, om γ Φ ∈ M.So ψ t := by
@@ -188,6 +258,9 @@ theorem so_stable (h : IsCMExt F E σ) (hψ : IsStd ψ) (hX : X.J.det ≠ 0) (hW
     rwa [hz, Matrix.rank_mul_eq_left_of_isUnit_det _ _ (by rw [Matrix.det_transpose]; exact hun _),
       Matrix.rank_mul_eq_right_of_isUnit_det ((mat γ⁻¹.1).map (piW (t.comp σ))) _ (hun γ⁻¹.1.1)]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT γ`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hd : ∀ {m : ℕ} (J : Matrix (Fin m) (Fin m) E), (J.map (B.emb w).1).det ≠ 0 → J.det ≠ 0` using `fun J hJ h0 => hJ (((RingHom.map_det _ J).symm.trans (congrArg _ h0)).trans (map_zero _))`. Use `so_stable G.M' hT.base.cm hT.base.std (hd _ (GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hT.geo.hV'.sig w))) (hd _ fun h0 => ?_) hT.geo.hM' (IsUWeilPair.isUSplitting hT.weil').toIsSplitting B.τ₁ γ` and prove the remaining obligations. Conclude with `GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hT.geo.hW.sig w) (by rw [Matrix.det_smul, h0, mul_zero])`.
+-/
 theorem so_statement : SoSt := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT γ
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance

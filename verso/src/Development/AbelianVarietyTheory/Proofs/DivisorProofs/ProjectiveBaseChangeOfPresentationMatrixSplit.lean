@@ -3,6 +3,31 @@ open CategoryTheory Limits TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `φ : (Fin n → R) →ₗ[R] (Fin n → B)` to `∑ a, (LinearMap.proj a).smulRight (v a)`. Establish `hφ : ∀ x l, φ x l = ∑ a, algebraMap R B (x a) * v a l`. Introduce `x l`. Simplify using `[φ, Finset.sum_apply, Algebra.smul_def]`. Establish `hker : LinearMap.ker π ≤ LinearMap.ker φ`.
+
+Rewrite using `[← hr, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker]`. Use function extensionality and compare the values at `l`. Rewrite using `[hφ]`.
+
+Simplify using `using hv b l`. Set `ψ : M →ₗ[R] (Fin n → B)` to `(LinearMap.ker π).liftQ φ hker ∘ₗ (π.quotKerEquivOfSurjective hπ).symm.toLinearMap`. Establish `hψ : ∀ x, ψ (π x) = φ x`. Introduce `x`. Establish `: (π.quotKerEquivOfSurjective hπ).symm (π x) = Submodule.Quotient.mk x`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `[ψ, this]`. Set `i : B ⊗[R] M →ₗ[B] (Fin n → B)` to `ψ.liftBaseChange B`. Set `s : (Fin n → B) →ₗ[B] B ⊗[R] M` to `∑ l, (LinearMap.proj l).smulRight ((1 : B) ⊗ₜ[R] π (Pi.single l 1))`. Establish `hs : ∀ y, s y = ∑ l, y l • ((1 : B) ⊗ₜ[R] π (Pi.single l 1))`.
+
+Introduce `y`. Simplify using `[s]`. Establish `hsr : ∀ b, ∑ l, algebraMap R B (r b l) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = 0`. Introduce `b`. Establish `h0 : π (r b) = 0`.
+
+Rewrite using `[← LinearMap.mem_ker, ← hr]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Establish `: ∑ l, algebraMap R B (r b l) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = (1 : B) ⊗ₜ[R] π (r b)` using `by conv_rhs => rw [show r b = ∑ l, r b l • Pi.single l (1 : R) by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`.
+
+Simplify using `[map_sum, tmul_sum, algebraMap_smul, tmul_smul]`. Rewrite using `[this, h0, tmul_zero]`. Establish `hsv : ∀ a, s (v a) = (1 : B) ⊗ₜ[R] π (Pi.single a 1)`. Introduce `a`. Rewrite using `[hs]`.
+
+Repeatedly rewrite using `[hvw a, add_smul, Finset.sum_add_distrib, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ b, ∑ l, (w a b * algebraMap R B (r b l)) • ((1 : B) ⊗ₜ[R] π (Pi.single l 1)) = 0`. Introduce `b`. Repeatedly rewrite using `[mul_smul, ← Finset.smul_sum, hsr, smul_zero]`.
+
+Simplify using `[this, ite_smul]`. Establish `hsi : s ∘ₗ i = LinearMap.id`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x y`. Take `⟨z, rfl⟩` from `hπ y`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, i, LinearMap.liftBaseChange_tmul, map_smul]`. Establish `hz : φ z = ∑ a, z a • v a`. Use function extensionality and compare the values at `l`. Rewrite using `[hφ]`. Simplify using `[Finset.sum_apply, Algebra.smul_def]`.
+
+Rewrite using `[hψ, hz, map_sum]`. Repeatedly rewrite using `[LinearMap.map_smul_of_tower, hsv]`. Use `conv_rhs => rw [show z = ∑ a, z a • Pi.single a (1 : R) by`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`.
+
+Rewrite using `[map_sum, tmul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, TensorProduct.smul_tmul', smul_eq_mul, mul_one, map_smul, TensorProduct.tmul_smul]`. Conclude with `Module.Projective.of_split i s hsi`.
+-/
 theorem projective_baseChange_of_presentation_split
     (R B M : Type) [CommRing R] [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module R M] (n m : ℕ) (π : (Fin n → R) →ₗ[R] M) (hπ : Function.Surjective π)

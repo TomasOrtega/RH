@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.FlagOverField
 
+/- English proof (translation)
+Introduce `F _ Y ι _ r E e fl hE he y`. Use `haveI : ∀ a, (E a).IsQuasicoherent := fun a => (hE a).isQuasicoherent`. Establish `hy : ∀ a, ∃ W : Y.X.Opens, y ∈ W ∧ ∃ M : Matrix (Fin (r a)) (Fin (r a)) Γ(Y.X, W), Spans (fl a) W (pullCol Y.str (e a) le_top M)`. Introduce `a`. Take `⟨W, hW, u, -, hs⟩` from `GlobalTheory.FlagZ.Loc.exists_nested_frames (fl a) y (Fin.last (r a))`.
+
+Take `⟨M, hM⟩` from `exists_pullCol Y.str (he a) (le_top : W ≤ Y.str ⁻¹ᵁ ⊤) (fun j => ((fl a).ι (Fin.last _)).app W (u j))`. Use `⟨W, hW, M, ?_⟩` and prove the remaining obligations. Establish `hsp : Spans (fl a) W (fun j => ((fl a).ι (Fin.last _)).app W (u j))` using `fun l => hs l l.is_le`. Use `hsp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Conclude with `(hM j).symm`. Use `choose W hyW M hM using hy`. Use `⟨Finset.univ.inf W, fun a => ((M a).map (fnOf (W a) (gen_mem (hyW a)))).transpose, by rw [← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]; simpa using hyW, fun z hz a => ?_⟩` and prove the remaining obligations. Establish `hzW : z ∈ W a` using `(Finset.inf_le (Finset.mem_univ a) : Finset.univ.inf W ≤ W a) hz`. Conclude with `⟨W a, hzW, M a, hM a, rfl⟩`.
+-/
 theorem exists_adFrame_near : ∀ (F : Type) [Field F] (Y : Var F) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → (Sp F).Modules) (e : ∀ a, Fin (r a) → Γ(E a, ⊤)) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback Y.str).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → (∀ a, IsFrame (e a)) → ∀ y : Y.X, ∃ (U : Y.X.Opens) (A : Mat r Y.Fn), y ∈ U ∧ ∀ z ∈ U, AdFrame e fl z A := by
   intro F _ Y ι _ r E e fl hE he y
   haveI : ∀ a, (E a).IsQuasicoherent := fun a => (hE a).isQuasicoherent

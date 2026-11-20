@@ -46,6 +46,9 @@ instance nonempty [SmoothOfRelativeDimension D p] : Nonempty (AnRead p σ D) := 
 
 variable (R R' : AnRead p σ D) {S T : Set (CxPts p σ)}
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover _ (fun i => (R.chart i).e.open_source) fun y _ => mem_iUnion.2 (R.cover y)`. Conclude with `⟨s, fun y => by simpa using hs (mem_univ y)⟩`.
+-/
 theorem exists_finite [CompactSpace (CxPts p σ)] :
     ∃ s : Finset R.ι, ∀ y, ∃ i ∈ s, y ∈ (R.chart i).e.source := by
   obtain ⟨s, hs⟩ := isCompact_univ.elim_finite_subcover _ (fun i => (R.chart i).e.open_source)
@@ -59,11 +62,17 @@ def HoloOn (S : Set (CxPts p σ)) (f : CxPts p σ → ℂ) : Prop :=
 def SmoothOn (S : Set (CxPts p σ)) (f : CxPts p σ → ℝ) : Prop :=
   ∀ i, ContDiffOn ℝ ∞ (f ∘ (R.chart i).e.symm) ((R.chart i).e.target ∩ (R.chart i).e.symm ⁻¹' S)
 
+/- English proof (translation)
+Introduce `i` and use `(R.chart i).holo W f`.
+-/
 theorem holoOn_ev (W : Y.Opens) (f : Γ(Y, W)) : R.HoloOn (ptsIn p σ W) (ev p σ W f) :=
   fun i => (R.chart i).holo W f
 
 variable {R}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `R.cover (c.e.symm v)`. Conclude with `⟨i, hi, eventually_of_mem ((isOpen_over c.e (R.chart i).e.open_source).mem_nhds ⟨hv, hi⟩) fun w hw => (congrArg f ((R.chart i).e.left_inv hw.2)).symm⟩`.
+-/
 theorem exists_eventuallyEq (c : AlgChart p σ D) {v : V D} (hv : v ∈ c.e.target) {E : Type*}
     (f : CxPts p σ → E) : ∃ i, c.e.symm v ∈ (R.chart i).e.source ∧
       f ∘ c.e.symm =ᶠ[𝓝 v] (f ∘ (R.chart i).e.symm) ∘ (R.chart i).e ∘ c.e.symm := by
@@ -71,6 +80,9 @@ theorem exists_eventuallyEq (c : AlgChart p σ D) {v : V D} (hv : v ∈ c.e.targ
   exact ⟨i, hi, eventually_of_mem ((isOpen_over c.e (R.chart i).e.open_source).mem_nhds ⟨hv, hi⟩)
     fun w hw => (congrArg f ((R.chart i).e.left_inv hw.2)).symm⟩
 
+/- English proof (translation)
+Introduce `v hv` and use `by obtain ⟨i, hi, e⟩ := exists_eventuallyEq (R := R) c hv.1 f exact ((((h i).differentiableAt ((isOpen_over _ hS).mem_nhds (mem_over _ hi hv.2))).comp v ((c.holo_trans _).differentiableAt ((isOpen_over _ (R.chart i).e.open_source).mem_nhds ⟨hv.1, hi⟩))).congr_of_eventuallyEq e).d …`.
+-/
 theorem HoloOn.chart {f : CxPts p σ → ℂ} (h : R.HoloOn S f) (hS : IsOpen S) (c : AlgChart p σ D) :
     DifferentiableOn ℂ (f ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S) := fun v hv => by
   obtain ⟨i, hi, e⟩ := exists_eventuallyEq (R := R) c hv.1 f
@@ -78,6 +90,9 @@ theorem HoloOn.chart {f : CxPts p σ → ℂ} (h : R.HoloOn S f) (hS : IsOpen S)
     ((c.holo_trans _).differentiableAt ((isOpen_over _ (R.chart i).e.open_source).mem_nhds
       ⟨hv.1, hi⟩))).congr_of_eventuallyEq e).differentiableWithinAt
 
+/- English proof (translation)
+Introduce `v hv` and use `by obtain ⟨i, hi, e⟩ := exists_eventuallyEq (R := R) c hv.1 f have ho := isOpen_over c.e (R.chart i).e.open_source have ht : ContDiffOn ℝ ∞ ((R.chart i).e ∘ c.e.symm) _ := (contDiffOn_piLp 2).2 fun a => contDiffOn_real ho (differentiableOn_euclidean.1 (c.holo_trans _) a) exact (( …`.
+-/
 theorem SmoothOn.chart {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (hS : IsOpen S)
     (c : AlgChart p σ D) : ContDiffOn ℝ ∞ (f ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S) :=
   fun v hv => by
@@ -88,24 +103,45 @@ theorem SmoothOn.chart {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (hS : IsOpe
   exact ((((h i).contDiffAt ((isOpen_over _ hS).mem_nhds (mem_over _ hi hv.2))).comp v
     (ht.contDiffAt (ho.mem_nhds ⟨hv.1, hi⟩))).congr_of_eventuallyEq e).contDiffWithinAt
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ => h.chart hS _, fun h _ => h.chart hS _⟩`.
+-/
 theorem holoOn_iff (R R' : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℂ} :
     R.HoloOn S f ↔ R'.HoloOn S f := ⟨fun h _ => h.chart hS _, fun h _ => h.chart hS _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ => h.chart hS _, fun h _ => h.chart hS _⟩`.
+-/
 theorem smoothOn_iff (R R' : AnRead p σ D) (hS : IsOpen S) {f : CxPts p σ → ℝ} :
     R.SmoothOn S f ↔ R'.SmoothOn S f := ⟨fun h _ => h.chart hS _, fun h _ => h.chart hS _⟩
 
+/- English proof (translation)
+Introduce `i` and use `(h i).mono fun _ hv => ⟨hv.1, e hv.2⟩`.
+-/
 theorem HoloOn.mono {f : CxPts p σ → ℂ} (h : R.HoloOn S f) (e : T ⊆ S) : R.HoloOn T f :=
   fun i => (h i).mono fun _ hv => ⟨hv.1, e hv.2⟩
 
+/- English proof (translation)
+Introduce `i` and use `(h i).mono fun _ hv => ⟨hv.1, e hv.2⟩`.
+-/
 theorem SmoothOn.mono {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (e : T ⊆ S) : R.SmoothOn T f :=
   fun i => (h i).mono fun _ hv => ⟨hv.1, e hv.2⟩
 
+/- English proof (translation)
+Introduce `i` and use `(h i).congr fun _ hv => e _ hv.2`.
+-/
 theorem HoloOn.congr {f g : CxPts p σ → ℂ} (h : R.HoloOn S f) (e : ∀ y ∈ S, g y = f y) :
     R.HoloOn S g := fun i => (h i).congr fun _ hv => e _ hv.2
 
+/- English proof (translation)
+Introduce `i` and use `(h i).congr fun _ hv => e _ hv.2`.
+-/
 theorem SmoothOn.congr {f g : CxPts p σ → ℝ} (h : R.SmoothOn S f) (e : ∀ y ∈ S, g y = f y) :
     R.SmoothOn S g := fun i => (h i).congr fun _ hv => e _ hv.2
 
+/- English proof (translation)
+Introduce `y hy` and use `by obtain ⟨i, hi⟩ := R.cover y refine ((((h i).continuousAt ((isOpen_over _ hS).mem_nhds (mem_over _ hi hy))).comp ((R.chart i).e.continuousAt hi)).congr ?_).continuousWithinAt exact eventually_of_mem ((R.chart i).e.open_source.mem_nhds hi) fun z hz => congrArg f ((R.chart i).e.l …`.
+-/
 theorem continuousOn_of_charts {E : Type*} [TopologicalSpace E] {f : CxPts p σ → E} (hS : IsOpen S)
     (h : ∀ i, ContinuousOn (f ∘ (R.chart i).e.symm)
       ((R.chart i).e.target ∩ (R.chart i).e.symm ⁻¹' S)) : ContinuousOn f S := fun y hy => by
@@ -115,12 +151,21 @@ theorem continuousOn_of_charts {E : Type*} [TopologicalSpace E] {f : CxPts p σ 
   exact eventually_of_mem ((R.chart i).e.open_source.mem_nhds hi) fun z hz =>
     congrArg f ((R.chart i).e.left_inv hz)
 
+/- English proof (translation)
+The claim follows from `continuousOn_of_charts hS fun i => (h i).continuousOn`.
+-/
 theorem HoloOn.continuousOn {f : CxPts p σ → ℂ} (h : R.HoloOn S f) (hS : IsOpen S) :
     ContinuousOn f S := continuousOn_of_charts hS fun i => (h i).continuousOn
 
+/- English proof (translation)
+The claim follows from `continuousOn_of_charts hS fun i => (h i).continuousOn`.
+-/
 theorem SmoothOn.continuousOn {f : CxPts p σ → ℝ} (h : R.SmoothOn S f) (hS : IsOpen S) :
     ContinuousOn f S := continuousOn_of_charts hS fun i => (h i).continuousOn
 
+/- English proof (translation)
+Introduce `i` and use `contDiffOn_log_normSq (isOpen_over _ hS) (h i) fun _ hv => h0 _ hv.2`.
+-/
 theorem HoloOn.smoothOn_log {f : CxPts p σ → ℂ} (h : R.HoloOn S f) (hS : IsOpen S)
     (h0 : ∀ y ∈ S, f y ≠ 0) : R.SmoothOn S fun y => Real.log (‖f y‖ ^ 2) :=
   fun i => contDiffOn_log_normSq (isOpen_over _ hS) (h i) fun _ hv => h0 _ hv.2
@@ -133,12 +178,18 @@ namespace AnRead
 
 variable {R : AnRead p σ D} {A B : LB Y} {S : Set (CxPts p σ)}
 
+/- English proof (translation)
+Introduce `i` and use `(h.comp (((R.chart i).holo_trans c).mono fun _ hv => ⟨hv.1, hv.2.1⟩) fun _ hv => mem_over _ hv.2.1 hv.2.2).congr fun _ hv => congrArg f (c.e.left_inv hv.2.1).symm`.
+-/
 theorem holoOn_of_chart (c : AlgChart p σ D) {f : CxPts p σ → ℂ}
     (h : DifferentiableOn ℂ (f ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S)) :
     R.HoloOn (c.e.source ∩ S) f := fun i =>
   (h.comp (((R.chart i).holo_trans c).mono fun _ hv => ⟨hv.1, hv.2.1⟩)
     fun _ hv => mem_over _ hv.2.1 hv.2.2).congr fun _ hv => congrArg f (c.e.left_inv hv.2.1).symm
 
+/- English proof (translation)
+Introduce `i` and use `differentiableOn_of_locally_differentiableOn fun _ hv => by obtain ⟨j, hj⟩ := hc _ hv.2 exact ⟨_, isOpen_over (R.chart i).e (hT j), ⟨hv.1, hj⟩, (h j i).mono fun _ hw => ⟨hw.1.1, hw.1.2, hw.2.2⟩⟩`.
+-/
 theorem holoOn_of_cover {ι : Type*} {T : ι → Set (CxPts p σ)} (hT : ∀ j, IsOpen (T j))
     (hc : ∀ y ∈ S, ∃ j, y ∈ T j) {f : CxPts p σ → ℂ} (h : ∀ j, R.HoloOn (S ∩ T j) f) :
     R.HoloOn S f := fun i => differentiableOn_of_locally_differentiableOn fun _ hv => by
@@ -146,6 +197,9 @@ theorem holoOn_of_cover {ι : Type*} {T : ι → Set (CxPts p σ)} (hT : ∀ j, 
   exact ⟨_, isOpen_over (R.chart i).e (hT j), ⟨hv.1, hj⟩,
     (h j i).mono fun _ hw => ⟨hw.1.1, hw.1.2, hw.2.2⟩⟩
 
+/- English proof (translation)
+Introduce `i` and use `contDiffOn_of_locally_contDiffOn fun _ hv => by obtain ⟨j, hj⟩ := hc _ hv.2 exact ⟨_, isOpen_over (R.chart i).e (hT j), ⟨hv.1, hj⟩, (h j i).mono fun _ hw => ⟨hw.1.1, hw.1.2, hw.2.2⟩⟩`.
+-/
 theorem smoothOn_of_cover {ι : Type*} {T : ι → Set (CxPts p σ)} (hT : ∀ j, IsOpen (T j))
     (hc : ∀ y ∈ S, ∃ j, y ∈ T j) {f : CxPts p σ → ℝ} (h : ∀ j, R.SmoothOn (S ∩ T j) f) :
     R.SmoothOn S f := fun i => contDiffOn_of_locally_contDiffOn fun _ hv => by
@@ -153,15 +207,27 @@ theorem smoothOn_of_cover {ι : Type*} {T : ι → Set (CxPts p σ)} (hT : ∀ j
   exact ⟨_, isOpen_over (R.chart i).e (hT j), ⟨hv.1, hj⟩,
     (h j i).mono fun _ hw => ⟨hw.1.1, hw.1.2, hw.2.2⟩⟩
 
+/- English proof (translation)
+The claim follows from `(R.holoOn_ev W f).mono h`.
+-/
 theorem holoOn_ev_of_subset {W : Y.Opens} (f : Γ(Y, W)) (h : S ⊆ ptsIn p σ W) :
     R.HoloOn S (ev p σ W f) := (R.holoOn_ev W f).mono h
 
+/- English proof (translation)
+Introduce `i` and use `(hf i).mul (hg i)`.
+-/
 theorem HoloOn.mul {f g : CxPts p σ → ℂ} (hf : R.HoloOn S f) (hg : R.HoloOn S g) :
     R.HoloOn S fun y => f y * g y := fun i => (hf i).mul (hg i)
 
+/- English proof (translation)
+Introduce `i` and use `(hf i).zpow (Or.inl fun _ hv => h0 _ hv.2)`.
+-/
 theorem HoloOn.zpow {f : CxPts p σ → ℂ} (hf : R.HoloOn S f) (h0 : ∀ y ∈ S, f y ≠ 0) (n : ℤ) :
     R.HoloOn S fun y => f y ^ n := fun i => (hf i).zpow (Or.inl fun _ hv => h0 _ hv.2)
 
+/- English proof (translation)
+Introduce `i` and use `(hf i).inv fun _ hv => h0 _ hv.2`.
+-/
 theorem HoloOn.inv {f : CxPts p σ → ℂ} (hf : R.HoloOn S f) (h0 : ∀ y ∈ S, f y ≠ 0) :
     R.HoloOn S fun y => (f y)⁻¹ := fun i => (hf i).inv fun _ hv => h0 _ hv.2
 
@@ -173,12 +239,18 @@ def holSec : Submodule ℂ (B.ι → CxPts p σ → ℂ) where
   add_mem' hs ht := ⟨add_mem hs.1 ht.1, fun i j => (hs.2 i j).add (ht.2 i j)⟩
   smul_mem' c _ hs := ⟨Submodule.smul_mem _ c hs.1, fun i j => (hs.2 i j).const_smul c⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.ext fun _ => and_congr_right fun _ => forall_congr' fun _ => holoOn_iff R R' (isOpen_ptsIn _)`.
+-/
 theorem holSec_eq (R R' : AnRead p σ D) (B : LB Y) : R.holSec B = R'.holSec B :=
   Submodule.ext fun _ => and_congr_right fun _ =>
     forall_congr' fun _ => holoOn_iff R R' (isOpen_ptsIn _)
 
 variable (R) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨secVal_mem s, fun _ => R.holoOn_ev _ _⟩`.
+-/
 theorem secVal_mem_holSec (s : B.Sec) : secVal p σ s ∈ R.holSec B :=
   ⟨secVal_mem s, fun _ => R.holoOn_ev _ _⟩
 
@@ -187,8 +259,14 @@ variable (R B) in
 def valC : SecC p σ B →ₗ[ℂ] R.holSec B :=
   SecC.val.codRestrict _ (SecC.val_mem_of R.secVal_mem_holSec)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_valC (x : SecC p σ B) : (R.valC B x : B.ι → CxPts p σ → ℂ) = SecC.val x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨secTens_mem hs.1 ht.1, fun c => ((hs.2 c.1).mono (ptsIn_mono inf_le_left)).mul ((ht.2 c.2).mono (ptsIn_mono inf_le_right))⟩`.
+-/
 theorem secTens_mem_holSec {s : A.ι → CxPts p σ → ℂ} {t : B.ι → CxPts p σ → ℂ}
     (hs : s ∈ R.holSec A) (ht : t ∈ R.holSec B) : secTens s t ∈ R.holSec (tens A B) :=
   ⟨secTens_mem hs.1 ht.1, fun c => ((hs.2 c.1).mono (ptsIn_mono inf_le_left)).mul
@@ -213,40 +291,67 @@ def StrictPos (φ : Weight p σ B) (R : AnRead p σ D) : Prop :=
   ∀ (i : B.ι) (c : R.ι), ∀ y ∈ (R.chart c).e.source ∩ ptsIn p σ (B.U i), ∀ ξ : Fin D → ℂ, ξ ≠ 0 →
     0 < (ReciprocityTheory.L2DbarEstimates.leviV D (fun v => (φ.φ i ((R.chart c).e.symm v) : ℂ)) ((R.chart c).e y) ξ).re
 
+/- English proof (translation)
+Introduce `i` and use `(smoothOn_iff R R' (isOpen_ptsIn _)).1 (h i)`.
+-/
 theorem IsSmooth.of_anRead (h : φ.IsSmooth R) (R' : AnRead p σ D) : φ.IsSmooth R' :=
   fun i => (smoothOn_iff R R' (isOpen_ptsIn _)).1 (h i)
 
+/- English proof (translation)
+Introduce `i c` and use `(h i c).add (hu.mono (subset_univ _) c)`.
+-/
 theorem IsSmooth.addFn (h : φ.IsSmooth R) {u : CxPts p σ → ℝ} (hu : R.SmoothOn univ u) :
     (φ.addFn u).IsSmooth R := fun i c => (h i c).add (hu.mono (subset_univ _) c)
 
+/- English proof (translation)
+Introduce `i c` and use `((h' i.1).mono (ptsIn_mono inf_le_left) c).add ((h i.2).mono (ptsIn_mono inf_le_right) c)`.
+-/
 theorem IsSmooth.tens {ψ : Weight p σ A} (h' : ψ.IsSmooth R) (h : φ.IsSmooth R) :
     (ψ.tens φ).IsSmooth R := fun i c =>
   ((h' i.1).mono (ptsIn_mono inf_le_left) c).add ((h i.2).mono (ptsIn_mono inf_le_right) c)
 
+/- English proof (translation)
+Introduce `i c` and use `(h i c).neg`.
+-/
 theorem IsSmooth.dual (h : φ.IsSmooth R) : φ.dual.IsSmooth R := fun i c => (h i c).neg
 
+/- English proof (translation)
+Introduce `j` and use `SmoothOn.congr (f := fun y => n * φ.φ (j PUnit.unit) y) (fun c => contDiffOn_const.mul ((h _).mono (fun _ => mem_pow_iff.1) c)) fun y _ => φ.zpow_φ n j y`.
+-/
 theorem IsSmooth.zpow (h : φ.IsSmooth R) (n : ℤ) : (φ.zpow n).IsSmooth R := fun j =>
   SmoothOn.congr (f := fun y => n * φ.φ (j PUnit.unit) y)
     (fun c => contDiffOn_const.mul ((h _).mono (fun _ => mem_pow_iff.1) c))
     fun y _ => φ.zpow_φ n j y
 
+/- English proof (translation)
+Introduce `a` and use `smoothOn_of_cover (fun b => isOpen_ptsIn (B.U b)) (fun y _ => ⟨_, mem_pick hB y⟩) fun b => (hψ a b).congr fun _ hy => ofPairs_φ hy.1 hy.2`.
+-/
 theorem isSmooth_ofPairs {hA : A.IsLB} {hB : B.IsLB} {ψ : A.ι → B.ι → CxPts p σ → ℝ} {h}
     (hψ : ∀ a b, R.SmoothOn (ptsIn p σ (A.U a) ∩ ptsIn p σ (B.U b)) (ψ a b)) :
     (ofPairs hA hB ψ h).IsSmooth R := fun a =>
   smoothOn_of_cover (fun b => isOpen_ptsIn (B.U b)) (fun y _ => ⟨_, mem_pick hB y⟩)
     fun b => (hψ a b).congr fun _ hy => ofPairs_φ hy.1 hy.2
 
+/- English proof (translation)
+The claim follows from `isSmooth_ofPairs fun a b c => ((h' (a, b)).mono (fun _ => mem_ptsIn_inf.2) c).sub ((h b).mono inter_subset_right c)`.
+-/
 theorem IsSmooth.cancel (hA : A.IsLB) {χ : Weight p σ (CechPic.tens A B)} (h' : χ.IsSmooth R)
     (h : φ.IsSmooth R) : (cancel hA χ φ).IsSmooth R :=
   isSmooth_ofPairs fun a b c => ((h' (a, b)).mono (fun _ => mem_ptsIn_inf.2) c).sub
     ((h b).mono inter_subset_right c)
 
+/- English proof (translation)
+The claim follows from `isSmooth_ofPairs fun a b c => ((h b).mono inter_subset_right c).add ((holoOn_ev_of_subset (w.s (a, b)).val fun _ => mem_ptsIn_inf.2).smoothOn_log ((isOpen_ptsIn _).inter (isOpen_ptsIn _)) (fun _ hy => ev_iso_ne_zero w hy.2 hy.1) c)`.
+-/
 theorem IsSmooth.ofIso (h : φ.IsSmooth R) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) :
     (φ.ofIso hA w hw).IsSmooth R :=
   isSmooth_ofPairs fun a b c => ((h b).mono inter_subset_right c).add
     ((holoOn_ev_of_subset (w.s (a, b)).val fun _ => mem_ptsIn_inf.2).smoothOn_log
       ((isOpen_ptsIn _).inter (isOpen_ptsIn _)) (fun _ hy => ev_iso_ne_zero w hy.2 hy.1) c)
 
+/- English proof (translation)
+Introduce `i c` and use `(ContDiffOn.sum (f := fun a v => ‖e a i ((R.chart c).e.symm v)‖ ^ 2) fun a _ => (contDiffOn_real (isOpen_over _ (isOpen_ptsIn _)) ((he a).2 i c)).norm_sq ℂ).log fun _ hv => (h.sum_pos hv.2).ne'`.
+-/
 theorem isSmooth_fs {α : Type*} [Fintype α] {e : α → B.ι → CxPts p σ → ℂ} (hB : B.IsLB)
     (he : ∀ a, e a ∈ R.holSec B) (h : NoCommonZero e) :
     (fs hB e (fun a => (he a).1) h).IsSmooth R := fun i c =>
@@ -254,6 +359,9 @@ theorem isSmooth_fs {α : Type*} [Fintype α] {e : α → B.ι → CxPts p σ �
     (contDiffOn_real (isOpen_over _ (isOpen_ptsIn _)) ((he a).2 i c)).norm_sq ℂ).log
     fun _ hv => (h.sum_pos hv.2).ne'
 
+/- English proof (translation)
+The claim follows from `isSmooth_fs hB (fun a => combVal_eq (p := p) (σ := σ) b M a ▸ (R.valC B _).2) _`.
+-/
 theorem isSmooth_fsBasis {α : Type*} [Fintype α] [DecidableEq α] (hB : B.IsLB) (b : α → B.Sec)
     (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (M : Matrix α α ℂ) (hM : M.det ≠ 0) :
     (fsBasis p σ hB b hb M hM).IsSmooth R :=
@@ -265,9 +373,15 @@ def ofFun (u : CxPts p σ → ℝ) : Weight p σ (LB.triv Y) where
   trans _ _ _ hi _ := by
     rw [gv_self (LB.isLB_triv Y) hi, norm_one, one_pow, Real.log_one, sub_zero]
 
+/- English proof (translation)
+Introduce `_` and use `hu.mono (subset_univ _)`.
+-/
 theorem isSmooth_ofFun {u : CxPts p σ → ℝ} (hu : R.SmoothOn univ u) : (ofFun u).IsSmooth R :=
   fun _ => hu.mono (subset_univ _)
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun y => by have ho := (isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds (mem_pick φ.isLB y) refine ((((hs.2 _).continuousOn (isOpen_ptsIn _)).norm.pow 2).mul ((h _).continuousOn (isOpen_ptsIn _)).neg.rexp).continuousAt ho |>.congr ?_ exact eventually_of_m …`.
+-/
 theorem IsSmooth.continuous_nsq (h : φ.IsSmooth R) {s : B.ι → CxPts p σ → ℂ}
     (hs : s ∈ R.holSec B) : Continuous (φ.nsq s) := continuous_iff_continuousAt.2 fun y => by
   have ho := (isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds (mem_pick φ.isLB y)
@@ -289,6 +403,9 @@ variable (c c' : AlgChart p σ D) {y : CxPts p σ}
 def topCoeff (a : K.bundle.ι) (b : B.ι) (y : CxPts p σ) : ℂ :=
   rv σ c.isFrame (K.isFrame a) y * f (a, b) y
 
+/- English proof (translation)
+Establish `e : ev p σ _ (K.jacobian a inf_le_left fun i => resG Y (inf_le_right : _ ⊓ c.U ≤ _) (c.x i)) = rv σ (K.isFrame a) c.isFrame`. Rewrite using `[CanonLB.jacobian, ← resForm_dOn]`. Both sides reduce to the same expression. Rewrite using `[e, rv_mul _ _ _ hy ha hy]`. Conclude with `mul_left_cancel₀ (rv_ne_zero c.isFrame c.isFrame hy hy) ((rv_mul _ _ _ hy hy hy).trans (mul_one _).symm)`.
+-/
 theorem rv_mul_jacobian {a : K.bundle.ι} (hy : y ∈ ptsIn p σ c.U)
     (ha : y ∈ ptsIn p σ (K.bundle.U a)) : rv σ c.isFrame (K.isFrame a) y *
       ev p σ _ (K.jacobian a inf_le_left fun i => resG Y (inf_le_right : _ ⊓ c.U ≤ _) (c.x i)) y =
@@ -301,6 +418,9 @@ theorem rv_mul_jacobian {a : K.bundle.ι} (hy : y ∈ ptsIn p σ c.U)
   exact mul_left_cancel₀ (rv_ne_zero c.isFrame c.isFrame hy hy)
     ((rv_mul _ _ _ hy hy hy).trans (mul_one _).symm)
 
+/- English proof (translation)
+Establish `hy' : y ∈ ptsIn p σ (c.U ⊓ W)` using `mem_ptsIn_inf.2 ⟨c.source_subset hy, hW⟩`. Rewrite using `[← c.jacMat_res inf_le_right g hy hy', ← c.ev_coeff_dOn inf_le_left _ hy hy', c.isFrame.coeff_change (K.isFrame a) inf_le_left (inf_le_right.trans h), ev_mul, ← ev_res inf_le_right hy', K.resG_jacobian, rv, ← ev_res (inf_le_inf_left _ h) hy', IsFrame.resG_ratio]`. Both sides reduce to the same expression.
+-/
 theorem rv_mul_jacobian_eq_det {a : K.bundle.ι} {W : Y.Opens} (h : W ≤ K.bundle.U a)
     (g : Fin D → Γ(Y, W)) (hy : y ∈ c.e.source) (hW : y ∈ ptsIn p σ W) :
     rv σ c.isFrame (K.isFrame a) y * ev p σ W (K.jacobian a h g) y = (c.jacMat g y).det := by
@@ -317,6 +437,11 @@ def topDens (y : CxPts p σ) : ℝ :=
 
 variable {f} in
 
+/- English proof (translation)
+Establish `ha'` using `mem_pick K.isLB y`. Establish `hb'` using `mem_pick φ.isLB y`. Establish `e : y ∈ ptsIn p σ ((tens K.bundle B).U (a, b))` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Establish `e' : y ∈ ptsIn p σ ((tens K.bundle B).U (pick K.isLB y, pick φ.isLB y))` using `mem_ptsIn_inf.2 ⟨ha', hb'⟩`. Rewrite using `[topDens, ← normSq_mul_exp (gv_ne_zero hb hb'), φ.trans b _ y hb hb', sub_add_cancel, topCoeff, topCoeff, hf.1 _ _ y e e', gv_tens e e', gv_canon, ← rv_mul _ (K.isFrame a) _ (c.source_subset hy) ha ha']`.
+
+Use `congr 4`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem topDens_eq (hf : f ∈ fibSec p σ (tens K.bundle B)) (hy : y ∈ c.e.source) {a : K.bundle.ι}
     {b : B.ι} (ha : y ∈ ptsIn p σ (K.bundle.U a)) (hb : y ∈ ptsIn p σ (B.U b)) :
     c.topDens K φ f y = 2 ^ D * (‖c.topCoeff K f a b y‖ ^ 2 * Real.exp (-φ.φ b y)) := by
@@ -331,6 +456,9 @@ theorem topDens_eq (hf : f ∈ fibSec p σ (tens K.bundle B)) (hy : y ∈ c.e.so
   congr 4
   ring
 
+/- English proof (translation)
+Rewrite using `[topDens, topDens, topCoeff, topCoeff, ← rv_mul _ c'.isFrame _ (c.source_subset hy) (c'.source_subset hy') (mem_pick K.isLB y), rv_chart c c' hy hy', mul_assoc (transDet _ _ _), norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem topDens_trans (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     c.topDens K φ f y = ‖transDet c.e c'.e y‖ ^ 2 * c'.topDens K φ f y := by
   rw [topDens, topDens, topCoeff, topCoeff, ← rv_mul _ c'.isFrame _ (c.source_subset hy)
@@ -338,6 +466,9 @@ theorem topDens_trans (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     norm_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `chartMeas_eq _ _ (c.holo_trans c') hA h h' fun y hy => by rw [c.topDens_trans K φ f c' (h hy) (h' hy), ENNReal.ofReal_mul (sq_nonneg _)]`.
+-/
 theorem chartMeas_topDens {A : Set (CxPts p σ)} (hA : MeasurableSet A) (h : A ⊆ c.e.source)
     (h' : A ⊆ c'.e.source) : chartMeas c.e (fun y => ENNReal.ofReal (c.topDens K φ f y)) A =
       chartMeas c'.e (fun y => ENNReal.ofReal (c'.topDens K φ f y)) A :=
@@ -357,6 +488,11 @@ def topInt : ℝ≥0∞ := R.topMeasure K φ f univ
 
 variable [SecondCountableTopology (CxPts p σ)]
 
+/- English proof (translation)
+Establish `key : (R.topMeasure K φ f).restrict A = (chartMeas c.e fun y => ENNReal.ofReal (c.topDens K φ f y)).restrict A` using `ext_of_cover _ (fun i => (R.chart i).e.open_source) R.cover fun i T hT hi => by`. Rewrite using `[Measure.restrict_apply hT, Measure.restrict_apply hT, topMeasure, glueMeas_apply _ _ (fun i j => (R.chart i).holo_trans (R.chart j)) (fun i j y hi hj => by`. Rewrite using `[(R.chart i).topDens_trans K φ f _ hi hj, ENNReal.ofReal_mul (sq_nonneg _)])`. Use `i (hT.inter hA) (inter_subset_left.trans hi)]`. Conclude with `AlgChart.chartMeas_topDens K φ f _ c (hT.inter hA) (inter_subset_left.trans hi) (inter_subset_right.trans h)`.
+
+Rewrite using `[← chartMeas_apply_of_subset c.e (fun y => ENNReal.ofReal (c.topDens K φ f y)) hA h, ← Measure.restrict_apply_self, key, Measure.restrict_apply_self]`.
+-/
 theorem topMeasure_apply (c : AlgChart p σ D) {A : Set (CxPts p σ)} (hA : MeasurableSet A)
     (h : A ⊆ c.e.source) : R.topMeasure K φ f A =
       ∫⁻ v in c.e '' A, ENNReal.ofReal (c.topDens K φ f (c.e.symm v)) := by
@@ -372,15 +508,24 @@ theorem topMeasure_apply (c : AlgChart p σ D) {A : Set (CxPts p σ)} (hA : Meas
   rw [← chartMeas_apply_of_subset c.e (fun y => ENNReal.ofReal (c.topDens K φ f y)) hA h,
     ← Measure.restrict_apply_self, key, Measure.restrict_apply_self]
 
+/- English proof (translation)
+The claim follows from `ext_of_cover _ (fun i => (R.chart i).e.open_source) R.cover fun i _ hA h => (R.topMeasure_apply K φ f _ hA h).trans (R'.topMeasure_apply K φ f _ hA h).symm`.
+-/
 theorem topMeasure_eq (R' : AnRead p σ D) : R.topMeasure K φ f = R'.topMeasure K φ f :=
   ext_of_cover _ (fun i => (R.chart i).e.open_source) R.cover fun i _ hA h =>
     (R.topMeasure_apply K φ f _ hA h).trans (R'.topMeasure_apply K φ f _ hA h).symm
 
+/- English proof (translation)
+Rewrite using `[topInt, topInt, R.topMeasure_eq K φ f R']`.
+-/
 theorem topInt_eq (R' : AnRead p σ D) : R.topInt K φ f = R'.topInt K φ f := by
   rw [topInt, topInt, R.topMeasure_eq K φ f R']
 
 variable {R φ f} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => by obtain ⟨i, hi⟩ := R.cover y set c := R.chart i have ha := mem_pick K.isLB y have hb := mem_pick φ.isLB y let S := ptsIn p σ (c.U ⊓ K.bundle.U (pick K.isLB y)) ∩ ptsIn p σ (B.U (pick φ.isLB y)) have hS : IsOpen S := (isOpen_ptsIn _).inter (isOpen_ptsIn _) have hc : Co …`.
+-/
 theorem isLocallyFiniteMeasure_topMeasure (hφ : φ.IsSmooth R) (hf : f ∈ R.holSec (tens K.bundle B)) :
     IsLocallyFiniteMeasure (R.topMeasure K φ f) := ⟨fun y => by
   obtain ⟨i, hi⟩ := R.cover y
@@ -409,6 +554,9 @@ theorem isLocallyFiniteMeasure_topMeasure (hφ : φ.IsSmooth R) (hf : f ∈ R.ho
 
 variable {R φ f} in
 
+/- English proof (translation)
+The claim follows from `have := isLocallyFiniteMeasure_topMeasure K hφ hf isCompact_univ.measure_lt_top`.
+-/
 theorem topInt_lt_top [CompactSpace (CxPts p σ)] (hφ : φ.IsSmooth R)
     (hf : f ∈ R.holSec (tens K.bundle B)) : R.topInt K φ f < ⊤ :=
   have := isLocallyFiniteMeasure_topMeasure K hφ hf
@@ -456,11 +604,20 @@ def refine : AnRead p σ D where
 
 variable {F} {c c' : F.Idx} {y : CxPts p σ}
 
+/- English proof (translation)
+The claim follows from `(R.chart c.1).source_subset h.1`.
+-/
 theorem mem_U (h : y ∈ (F.refine.chart c).e.source) : y ∈ ptsIn p σ (R.chart c.1).U :=
   (R.chart c.1).source_subset h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem mem_K (h : y ∈ (F.refine.chart c).e.source) : y ∈ ptsIn p σ (F.K.bundle.U c.2.1) := h.2.1
 
+/- English proof (translation)
+The claim follows from `mem_iInter.1 h.2.2 a`.
+-/
 theorem mem_L (h : y ∈ (F.refine.chart c).e.source) (a : κ) :
     y ∈ ptsIn p σ ((F.L a).U (c.2.2 a)) := mem_iInter.1 h.2.2 a
 
@@ -524,36 +681,66 @@ def atlas : WeightedAtlas D (CxPts p σ) F.Idx (Option κ → ℤ) :=
 
 abbrev wt (a : κ) : Option κ → ℤ := Pi.single (some a) 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atlas_chart (c : F.Idx) : F.atlas.chart c = (F.refine.chart c).e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atlas_kap : F.atlas.kap = Pi.single none 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atlas_g (m : Option κ → ℤ) (c c' : F.Idx) (y : CxPts p σ) :
     F.atlas.g m c c' y = ∏ o, F.g₀ o c c' y ^ m o := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atlas_ph (m : Option κ → ℤ) (c : F.Idx) (y : CxPts p σ) :
     F.atlas.ph m c y = ∑ o, m o * F.ph₀ o c y := rfl
 
+/- English proof (translation)
+Rewrite using `[atlas_g, Fintype.prod_eq_single o fun a ha => by rw [Pi.single_eq_of_ne ha, zpow_zero], Pi.single_eq_same, zpow_one]`.
+-/
 theorem atlas_g_single (o : Option κ) (c c' : F.Idx) (y : CxPts p σ) :
     F.atlas.g (Pi.single o 1) c c' y = F.g₀ o c c' y := by
   rw [atlas_g, Fintype.prod_eq_single o fun a ha => by rw [Pi.single_eq_of_ne ha, zpow_zero],
     Pi.single_eq_same, zpow_one]
 
+/- English proof (translation)
+Simplify using `[atlas_ph, Pi.single_apply]`.
+-/
 theorem atlas_ph_single (o : Option κ) (c : F.Idx) (y : CxPts p σ) :
     F.atlas.ph (Pi.single o 1) c y = F.ph₀ o c y := by
   simp [atlas_ph, Pi.single_apply]
 
+/- English proof (translation)
+The claim follows from `F.atlas_g_single _ c c' y`.
+-/
 theorem atlas_g_wt (a : κ) (c c' : F.Idx) (y : CxPts p σ) :
     F.atlas.g (wt a) c c' y = gv p σ (F.L a) (c.2.2 a) (c'.2.2 a) y := F.atlas_g_single _ c c' y
 
+/- English proof (translation)
+The claim follows from `F.atlas_ph_single _ c y`.
+-/
 theorem atlas_ph_wt (a : κ) (c : F.Idx) (y : CxPts p σ) :
     F.atlas.ph (wt a) c y = (F.φ a).φ (c.2.2 a) y := F.atlas_ph_single _ c y
 
+/- English proof (translation)
+Introduce `c y hy ξ` and use `by simp only [WeightedAtlas.leviAt, atlas_ph_wt, add_zero] exact h _ c.1 y ⟨hy.1, mem_L hy a⟩ ξ`.
+-/
 theorem pos_wt {a : κ} (h : (F.φ a).SemiPos R) : F.atlas.Pos (wt a) fun _ => 0 :=
   fun c y hy ξ => by
   simp only [WeightedAtlas.leviAt, atlas_ph_wt, add_zero]
   exact h _ c.1 y ⟨hy.1, mem_L hy a⟩ ξ
 
+/- English proof (translation)
+The claim follows from `holoOn_iff R F.refine hS`.
+-/
 theorem holoOn_iff_atlas {S : Set (CxPts p σ)} (hS : IsOpen S) {f : CxPts p σ → ℂ} :
     R.HoloOn S f ↔ ∀ c, DifferentiableOn ℂ (f ∘ (F.atlas.chart c).symm)
       ((F.atlas.chart c).target ∩ (F.atlas.chart c).symm ⁻¹' S) := holoOn_iff R F.refine hS
@@ -581,10 +768,16 @@ def read : (B.ι → CxPts p σ → ℂ) →ₗ[ℂ] (F.Idx → CxPts p σ → �
   map_add' _ _ := funext₂ fun _ _ => mul_add _ _ _
   map_smul' _ _ := funext₂ fun _ _ => mul_left_comm _ _ _
 
+/- English proof (translation)
+The claim follows from `mul_left_cancel₀ (F.atlas.g_ne m c c y h h) ((F.atlas.g_cocycle m c c c y h h h).symm.trans (mul_one _).symm)`.
+-/
 theorem g_self (m : Option κ → ℤ) (h : y ∈ (F.atlas.chart c).source) : F.atlas.g m c c y = 1 :=
   mul_left_cancel₀ (F.atlas.g_ne m c c y h h)
     ((F.atlas.g_cocycle m c c c y h h h).symm.trans (mul_one _).symm)
 
+/- English proof (translation)
+Establish `e` using `r.compat c c i _ y h h hi (mem_pick r.isLB y)`. Rewrite `e` using `[g_self m h, one_mul]`. Rewrite using `[hs.1 i _ y hi (mem_pick r.isLB y), ← mul_assoc, ← e]`. Both sides reduce to the same expression.
+-/
 theorem read_eq (hs : s ∈ fibSec p σ B) (h : y ∈ (F.atlas.chart c).source) {i : B.ι}
     (hi : y ∈ ptsIn p σ (B.U i)) : r.read s c y = r.u c i y * s i y := by
   have e := r.compat c c i _ y h h hi (mem_pick r.isLB y)
@@ -592,6 +785,9 @@ theorem read_eq (hs : s ∈ fibSec p σ B) (h : y ∈ (F.atlas.chart c).source) 
   rw [hs.1 i _ y hi (mem_pick r.isLB y), ← mul_assoc, ← e]
   rfl
 
+/- English proof (translation)
+Use `⟨fun c => ?_, fun c c' y _ h h' => ?_⟩` and prove the remaining obligations. Establish `: R.HoloOn (F.atlas.chart c).source (r.read s c)` using `holoOn_of_cover (fun i => isOpen_ptsIn (B.U i)) (fun y _ => ⟨_, mem_pick r.isLB y⟩) fun i => ((r.holo c i).mul ((hs.2 i).mono inter_subset_right)).congr fun _ hy => r.read_eq hs.1 hy.1 hy.2`. Conclude with `(this.chart (F.atlas.chart c).open_source (F.refine.chart c)).mono fun _ hv => ⟨hv.1, (F.atlas.chart c).map_target hv.1⟩`. Establish `hi` using `mem_pick r.isLB y`. Rewrite using `[r.read_eq hs.1 h hi, r.read_eq hs.1 h' hi, ← mul_assoc, r.compat c c' _ _ y h h' hi hi, gv_self r.isLB hi, mul_one]`.
+-/
 theorem isSec_read (hs : s ∈ R.holSec B) : F.atlas.IsSec m (r.read s) := by
   refine ⟨fun c => ?_, fun c c' y _ h h' => ?_⟩
   · have : R.HoloOn (F.atlas.chart c).source (r.read s c) :=
@@ -604,12 +800,21 @@ theorem isSec_read (hs : s ∈ R.holSec B) : F.atlas.IsSec m (r.read s) := by
     rw [r.read_eq hs.1 h hi, r.read_eq hs.1 h' hi, ← mul_assoc, r.compat c c' _ _ y h h' hi hi,
       gv_self r.isLB hi, mul_one]
 
+/- English proof (translation)
+The claim follows from `r.isSec_read (R.secVal_mem_holSec s)`.
+-/
 theorem isSec_read_secVal (s : B.Sec) : F.atlas.IsSec m (r.read (secVal p σ s)) :=
   r.isSec_read (R.secVal_mem_holSec s)
 
+/- English proof (translation)
+The claim follows from `r.isSec_read (R.valC B x).2`.
+-/
 theorem isSec_read_val (x : SecC p σ B) : F.atlas.IsSec m (r.read (SecC.val x)) :=
   r.isSec_read (R.valC B x).2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i y`. Distinguish the cases in `hi : y ∈ ptsIn p σ (B.U i)`. Establish `hc` using `F.atlas.mem_pick y`. Conclude with `mul_left_cancel₀ (r.ne _ i y hc hi) ((r.read_eq hs hc hi).symm.trans ((h _ y hc).trans (r.read_eq ht hc hi)))`. Rewrite using `[hs.2 i y hi, ht.2 i y hi]`.
+-/
 theorem eq_of_read_eq (hs : s ∈ fibSec p σ B) (ht : t ∈ fibSec p σ B)
     (h : ∀ c, ∀ y ∈ (F.atlas.chart c).source, r.read s c y = r.read t c y) : s = t := by
   funext i y
@@ -619,6 +824,15 @@ theorem eq_of_read_eq (hs : s ∈ fibSec p σ B) (ht : t ∈ fibSec p σ B)
       ((r.read_eq hs hc hi).symm.trans ((h _ y hc).trans (r.read_eq ht hc hi)))
   · rw [hs.2 i y hi, ht.2 i y hi]
 
+/- English proof (translation)
+Set `s (i : B.ι) (y : CxPts p σ) : ℂ` to `if y ∈ ptsIn p σ (B.U i) then (r.u (F.atlas.pick y) i y)⁻¹ * G (F.atlas.pick y) y else 0`. Establish `key {c i j y} (h : y ∈ (F.atlas.chart c).source) (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B.U j)) : (r.u c i y)⁻¹ * G c y = gv p σ B i j y * s j y`. Establish `hc` using `F.atlas.mem_pick y`. Establish `e` using `r.compat c _ i j y h hc hi hj`. Establish `h₁` using `r.ne c i y h hi`.
+
+Establish `h₂` using `r.ne _ j y hc hj`. Rewrite using `[hG.2 c _ y trivial h hc, (eq_mul_inv_iff_mul_eq₀ h₂).2 e]`. Simplify using `only [s, if_pos hj]`. Clear the denominators using the available nonvanishing facts. Establish `key' {c i y} (h : y ∈ (F.atlas.chart c).source) (hi : y ∈ ptsIn p σ (B.U i)) : s i y = (r.u c i y)⁻¹ * G c y` using `by rw [key h hi hi, gv_self r.isLB hi, one_mul]`.
+
+Establish `hs : s ∈ fibSec p σ B` using `⟨fun i j y hi hj => (key' (F.atlas.mem_pick y) hi).trans (key (F.atlas.mem_pick y) hi hj), fun i y h => if_neg h⟩`. Use `⟨s, ⟨hs, fun i => holoOn_of_cover (fun c => (F.atlas.chart c).open_source) (fun y _ => ⟨_, F.atlas.mem_pick y⟩) fun c => ?_⟩, fun c y h => ?_⟩` and prove the remaining obligations. Rewrite using `[inter_comm]`. Conclude with `(((r.holo c i).inv fun y hy => r.ne c i y hy.1 hy.2).mul ((holoOn_of_chart (F.refine.chart c) (hG.1 c)).mono fun _ hy => ⟨hy.1, trivial⟩)).congr fun y hy => key' hy.1 hy.2`. Establish `hi` using `mem_pick r.isLB y`.
+
+Rewrite using `[r.read_eq hs h hi, key' h hi, mul_inv_cancel_left₀ (r.ne c _ y h hi)]`.
+-/
 theorem exists_read_eq {G : F.Idx → CxPts p σ → ℂ} (hG : F.atlas.IsSec m G) :
     ∃ s ∈ R.holSec B, ∀ c, ∀ y ∈ (F.atlas.chart c).source, r.read s c y = G c y := by
   classical
@@ -652,6 +866,9 @@ def Isometric (φ : Weight p σ B) : Prop :=
 
 variable {r} in
 
+/- English proof (translation)
+Establish `hc` using `F.atlas.mem_pick y`. Establish `hi` using `mem_pick r.isLB y`. Rewrite using `[WeightedAtlas.nsq, h _ _ y hc hi]`. Conclude with `normSq_mul_exp (r.ne _ _ y hc hi) _ _`.
+-/
 theorem Isometric.nsq_read {φ : Weight p σ B} (h : r.Isometric φ) (s : B.ι → CxPts p σ → ℂ)
     (y : CxPts p σ) : F.atlas.nsq m (r.read s) y = φ.nsq s y := by
   have hc := F.atlas.mem_pick y
@@ -670,10 +887,16 @@ def ofMem (a : κ) : F.Reading (F.L a) (wt a) where
     rw [atlas_g_wt, gv_mul (F.φ a).isLB (mem_L h a) (mem_L h' a) hi',
       gv_mul (F.φ a).isLB (mem_L h a) hi hi']
 
+/- English proof (translation)
+The claim follows from `(hs.1 _ _ y (mem_L h a) (mem_pick _ y)).symm`.
+-/
 theorem read_ofMem {a : κ} {s : (F.L a).ι → CxPts p σ → ℂ} (hs : s ∈ fibSec p σ (F.L a))
     (h : y ∈ (F.atlas.chart c).source) : (ofMem F a).read s c y = s (c.2.2 a) y :=
   (hs.1 _ _ y (mem_L h a) (mem_pick _ y)).symm
 
+/- English proof (translation)
+Introduce `c i y h hi` and use `by rw [atlas_ph_wt, (F.φ a).trans _ i y (mem_L h a) hi] exact (sub_add_cancel _ _).symm`.
+-/
 theorem isometric_ofMem (a : κ) : (ofMem F a).Isometric (F.φ a) := fun c i y h hi => by
   rw [atlas_ph_wt, (F.φ a).trans _ i y (mem_L h a) hi]
   exact (sub_add_cancel _ _).symm
@@ -689,6 +912,9 @@ def canon (K : CanonLB p D) : F.Reading K.bundle F.atlas.kap where
     rw [atlas_kap, atlas_g_single, gv_canon, rv_mul _ _ _ (mem_U h) hi hi']
     exact rv_mul _ _ _ (mem_U h) (mem_U h') hi'
 
+/- English proof (translation)
+Introduce `c i y h hi` and use `by have e := (log_normSq_mul (rv_ne_zero (R.chart c.1).isFrame (F.K.isFrame c.2.1) (mem_U h) (mem_K h)) (rv_ne_zero _ (F.K.isFrame i) (mem_K h) hi)).symm.trans (congrArg (fun z => Real.log (‖z‖ ^ 2)) (rv_mul _ _ _ (mem_U h) (mem_K h) hi)) refine (F.atlas_ph_single none c y).trans …`.
+-/
 theorem isometric_canon : (canon F F.K).Isometric F.φK := fun c i y h hi => by
   have e := (log_normSq_mul (rv_ne_zero (R.chart c.1).isFrame (F.K.isFrame c.2.1) (mem_U h) (mem_K h))
     (rv_ne_zero _ (F.K.isFrame i) (mem_K h) hi)).symm.trans
@@ -709,16 +935,25 @@ def triv : F.Reading (LB.triv Y) 0 where
     rw [gv_self (LB.isLB_triv Y) hi, atlas_g]
     simp
 
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `by simp [atlas_ph, triv, Weight.ofFun]`.
+-/
 theorem isometric_triv : (triv F).Isometric (Weight.ofFun fun _ => 0) := fun _ _ _ _ _ => by
   simp [atlas_ph, triv, Weight.ofFun]
 
 def cast (h : m = m') : F.Reading B m' :=
   ⟨r.isLB, r.u, r.holo, r.ne, h ▸ r.compat⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem read_cast (h : m = m') : (r.cast h).read = r.read := rfl
 
 variable {r} in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h`.
+-/
 theorem Isometric.cast {φ : Weight p σ B} (h : r.Isometric φ) (e : m = m') :
     (r.cast e).Isometric φ := by
   subst e
@@ -737,6 +972,9 @@ def tens (r' : F.Reading A m') (r : F.Reading B m) : F.Reading (tens A B) (m' + 
 
 variable {r} in
 
+/- English proof (translation)
+Introduce `c i y hc hi` and use `by have e := mem_ptsIn_inf.1 hi rw [F.atlas.ph_add _ _ _ _ hc, h' c _ y hc e.1, h c _ y hc e.2] simp only [Reading.tens, Weight.tens, log_normSq_mul (r'.ne c _ y hc e.1) (r.ne c _ y hc e.2)] ring`.
+-/
 theorem Isometric.tens {r' : F.Reading A m'} {ψ : Weight p σ A} {φ : Weight p σ B}
     (h' : r'.Isometric ψ) (h : r.Isometric φ) : (r'.tens r).Isometric (ψ.tens φ) :=
   fun c i y hc hi => by
@@ -745,6 +983,9 @@ theorem Isometric.tens {r' : F.Reading A m'} {ψ : Weight p σ A} {φ : Weight p
   simp only [Reading.tens, Weight.tens, log_normSq_mul (r'.ne c _ y hc e.1) (r.ne c _ y hc e.2)]
   ring
 
+/- English proof (translation)
+Establish `e` using `mem_ptsIn_inf.1 (mem_pick (r'.tens r).isLB y)`. Rewrite using `[r'.read_eq hs' h e.1, r.read_eq hs h e.2]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem read_tens (r' : F.Reading A m') {s' : A.ι → CxPts p σ → ℂ} (hs' : s' ∈ fibSec p σ A)
     (hs : s ∈ fibSec p σ B) (h : y ∈ (F.atlas.chart c).source) :
     (r'.tens r).read (secTens s' s) c y = r'.read s' c y * r.read s c y := by
@@ -768,6 +1009,9 @@ abbrev pow (n : ℕ) : F.Reading (lbPow B n) ((n : ℤ) • m) := r.zpow n
 
 variable {r} in
 
+/- English proof (translation)
+Introduce `c j y hc hj` and use `by have e := h c _ y hc (mem_pow_iff.1 hj) rw [φ.zpow_φ n j y, show (r.zpow n).u c j y = r.u c (j PUnit.unit) y ^ n from rfl, log_normSq_zpow, ← mul_add, ← e, atlas_ph, atlas_ph, Finset.mul_sum] simp only [Pi.smul_apply, smul_eq_mul, Int.cast_mul, mul_assoc]`.
+-/
 theorem Isometric.zpow {φ : Weight p σ B} (h : r.Isometric φ) (n : ℤ) :
     (r.zpow n).Isometric (φ.zpow n) := fun c j y hc hj => by
   have e := h c _ y hc (mem_pow_iff.1 hj)
@@ -775,6 +1019,9 @@ theorem Isometric.zpow {φ : Weight p σ B} (h : r.Isometric φ) (n : ℤ) :
     ← mul_add, ← e, atlas_ph, atlas_ph, Finset.mul_sum]
   simp only [Pi.smul_apply, smul_eq_mul, Int.cast_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `e` using `ev_iso_rel hw hb hb' ha ha'`. Establish `h₁` using `ev_iso_ne_zero w hb ha`. Establish `h₂` using `ev_iso_ne_zero w hb' ha'`. Rewrite using `[← mul_assoc, r.compat c c' b b' y h h' hb hb', ← (mul_inv_eq_iff_eq_mul₀ h₂).2 e]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem u_mul_inv_iso {w : LB.Iso B A} (hw : w.IsGen) (h : y ∈ (F.atlas.chart c).source)
     (h' : y ∈ (F.atlas.chart c').source) {a a' : A.ι} {b b' : B.ι} (ha : y ∈ ptsIn p σ (A.U a))
     (ha' : y ∈ ptsIn p σ (A.U a')) (hb : y ∈ ptsIn p σ (B.U b)) (hb' : y ∈ ptsIn p σ (B.U b')) :
@@ -801,6 +1048,9 @@ def ofIso (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) : F.Reading A m where
 
 variable {r} in
 
+/- English proof (translation)
+Introduce `c a y hc ha` and use `by have hb := mem_pick r.isLB y have e := log_normSq_mul (r.ne c _ y hc hb) (inv_ne_zero (ev_iso_ne_zero w hb ha)) rw [norm_inv, inv_pow, Real.log_inv] at e rw [h c _ y hc hb] exact Eq.symm ((congrArg (_ + ·) e).trans (by simp only [Weight.ofIso, Weight.ofPairs]; ring))`.
+-/
 theorem Isometric.ofIso {φ : Weight p σ B} (h : r.Isometric φ) (hA : A.IsLB) (w : LB.Iso B A)
     (hw : w.IsGen) : (r.ofIso hA w hw).Isometric (φ.ofIso hA w hw) := fun c a y hc ha => by
   have hb := mem_pick r.isLB y
@@ -811,6 +1061,9 @@ theorem Isometric.ofIso {φ : Weight p σ B} (h : r.Isometric φ) (hA : A.IsLB) 
 
 variable {r} in
 
+/- English proof (translation)
+Establish `ha` using `mem_pick K.isLB y`. Establish `hb` using `mem_pick φ.isLB y`. Rewrite using `[F.atlas.nsq_eq_chart (isSec_read _ hf) hy, read_eq _ hf.1 hy (i := (_, _)) (mem_ptsIn_inf.2 ⟨ha, hb⟩), F.atlas.ph_add _ _ _ _ hy, mul_assoc (_ ^ 2), ← Real.exp_add, neg_add_rev, neg_add_cancel_right, h c _ y hy hb, AlgChart.topDens, ← normSq_mul_exp (r.ne c _ y hy hb)]`. Use `congr 4`. Conclude with `(mul_assoc _ _ _).symm.trans (congrArg (· * _) (mul_comm _ _))`.
+-/
 theorem Isometric.topDens_eq {φ : Weight p σ B} (h : r.Isometric φ) (K : CanonLB p D)
     {f : (CechPic.tens K.bundle B).ι → CxPts p σ → ℂ} (hf : f ∈ R.holSec (CechPic.tens K.bundle B))
     (hy : y ∈ (F.atlas.chart c).source) : (F.refine.chart c).topDens K φ f y =
@@ -827,6 +1080,15 @@ theorem Isometric.topDens_eq {φ : Weight p σ B} (h : r.Isometric φ) (K : Cano
 
 variable {r} in
 
+/- English proof (translation)
+Use `ext_of_cover _ (fun c => (F.atlas.chart c).open_source) (fun y => ⟨_, F.atlas.mem_pick y⟩) fun c A hA hc => ?_` and prove the remaining obligations. Establish `hm` using `(ENNReal.continuous_ofReal.comp ((continuous_const (y := (2 : ℝ) ^ D)).mul (F.atlas.continuous_nsq (isSec_read ((canon F K).tens r) hf)))).measurable.indicator hA`. Establish `e` using `ap_lintegral_chart F.atlas c _ hm`. Rewrite `e` using `[lintegral_indicator hA, Measure.restrict_restrict hA, inter_eq_left.2 hc]`. Establish `hi` using `measurableSet_image (F.atlas.chart c) hA hc`.
+
+Rewrite using `[withDensity_apply _ hA, R.topMeasure_apply K φ f (F.refine.chart c) hA hc]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Establish `hsub : F.atlas.chart c '' A ⊆ (F.atlas.chart c).target` using `image_subset_iff.2 fun _ hz => (F.atlas.chart c).map_source (hc hz)`. Rewrite using `[← atlas_chart, ← inter_eq_left.2 hsub, ← Measure.restrict_restrict hi, ← lintegral_indicator hi]`. Use `setLIntegral_congr_fun (F.atlas.chart c).open_target.measurableSet fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hv'` using `(F.atlas.chart c).map_target hv`. Distinguish the cases in `hvA : (F.atlas.chart c).symm v ∈ A`. Rewrite using `[indicator_of_mem (show v ∈ _ '' A from ⟨_, hvA, (F.atlas.chart c).right_inv hv⟩)]`. Simplify using `only [indicator_of_mem hvA, Function.comp_apply, Pi.mul_apply]`. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (by positivity) (F.atlas.nsq_nonneg _ _ _)), mul_assoc]`.
+
+Conclude with `congrArg _ (h.topDens_eq K hf hv')`. Rewrite using `[indicator_of_notMem, indicator_of_notMem hvA, zero_mul]`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `hvA (((F.atlas.chart c).left_inv (hc hz)).symm ▸ hz)`.
+-/
 theorem Isometric.topMeasure_eq {φ : Weight p σ B} (h : r.Isometric φ) (K : CanonLB p D)
     {f : (CechPic.tens K.bundle B).ι → CxPts p σ → ℂ} (hf : f ∈ R.holSec (CechPic.tens K.bundle B)) :
     R.topMeasure K φ f = F.atlas.mu.withDensity fun y =>
@@ -856,6 +1118,9 @@ theorem Isometric.topMeasure_eq {φ : Weight p σ B} (h : r.Isometric φ) (K : C
 
 variable {r} in
 
+/- English proof (translation)
+Rewrite using `[topInt, h.topMeasure_eq K hf, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, ← lintegral_const_mul' _ _ (by simp)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow zero_le_two, ENNReal.ofReal_ofNat]`.
+-/
 theorem Isometric.topInt_eq {φ : Weight p σ B} (h : r.Isometric φ) (K : CanonLB p D)
     {f : (CechPic.tens K.bundle B).ι → CxPts p σ → ℂ} (hf : f ∈ R.holSec (CechPic.tens K.bundle B)) :
     R.topInt K φ f = 2 ^ D * ∫⁻ y, ENNReal.ofReal
@@ -873,11 +1138,17 @@ namespace CxPts
 
 variable (σ)
 
+/- English proof (translation)
+Take `⟨N, i, _, rfl⟩` from `h`. Use `isProper_str k N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem t2Space_cxPts_of_isProjOver (h : IsProjOver p) : T2Space (CxPts p σ) := by
   obtain ⟨N, i, _, rfl⟩ := h
   have := isProper_str k N
   infer_instance
 
+/- English proof (translation)
+Take `⟨N, i, _, rfl⟩` from `h`. Use `isProper_str k N` as an intermediate fact. Use `infer_instance`.
+-/
 theorem secondCountableTopology_of_isProjOver (h : IsProjOver p) :
     SecondCountableTopology (CxPts p σ) := by
   obtain ⟨N, i, _, rfl⟩ := h
@@ -902,6 +1173,9 @@ instance compact : CompactSpace (CxPts (PSpace.str k N) σ) := compactSpace_pSpa
 def fsO1 : Weight (PSpace.str k N) σ (O1 k N) :=
   Weight.fsBasis _ σ (O1_isLB k N) (coord k N) (iSup_nonzeroLocus_coord k N) 1 (by simp)
 
+/- English proof (translation)
+Use `(Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ (Finset.sum_congr rfl fun a _ => ?_))` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[div_eq_mul_inv, ← Ring.inverse_eq_inv, ← valR_pt_ratio σ v.1 v.2 hi.isUnit a]`. Both sides reduce to the same expression.
+-/
 theorem fubiniStudyWeight_projPoint (v : Unimodular ℂ N) (i : Fin (N + 1)) (hi : v.1 i ≠ 0) :
     (fsO1 k σ N).φ i (projPt σ v) = Real.log (∑ a, ‖v.1 a / v.1 i‖ ^ 2) := by
   refine (Weight.fsBasis_φ _ _ _ _ _ _ _).trans (congrArg _ (Finset.sum_congr rfl fun a _ => ?_))
@@ -912,6 +1186,9 @@ theorem fubiniStudyWeight_projPoint (v : Unimodular ℂ N) (i : Fin (N + 1)) (hi
 
 variable (K : CanonLB (PSpace.str k N) N)
 
+/- English proof (translation)
+Introduce `c _ h` and use `⟨(), ev_ne_zero h (isUnit_jacSec_coord k N K c)⟩`.
+-/
 theorem noCommonZero_jac : Weight.NoCommonZero fun _ : Unit =>
     secVal (PSpace.str k N) σ (K.jacSec (coord k N)) :=
   fun c _ h => ⟨(), ev_ne_zero h (isUnit_jacSec_coord k N K c)⟩
@@ -934,6 +1211,11 @@ def atlas : WeightedAtlas N (CxPts (PSpace.str k N) σ)
     (family k σ N (.all _ _) (.all _ σ N)).Idx (Option Unit → ℤ) :=
   (family k σ N (.all _ _) (.all _ σ N)).atlas
 
+/- English proof (translation)
+Introduce `F w`. Use `⟨fun a => WeightFamily.Reading.isSec_read_secVal _ _, ?_⟩` and prove the remaining obligations. Establish `e (a) : Weight.combVal (PSpace.str k N) σ (coord k N) 1 a = secVal _ σ (coord k N a)`. Simplify using `[Weight.combVal, Matrix.one_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun a _ => ?_) (Weight.sum_nsq_fs (hB := O1_isLB k N) (he := fun a => e a ▸ secVal_mem _) (h := Weight.noCommonZero_combVal (iSup_nonzeroLocus_coord k N) (M := 1) (by simp)) y)` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `(WeightFamily.Reading.isometric_ofMem (F := F) ()).nsq_read _ y`.
+-/
 example (R : AnRead (PSpace.str k N) σ N) (y : CxPts (PSpace.str k N) σ) :
     let F := family k σ N K R
     let w := fun a => (WeightFamily.Reading.ofMem F ()).read (secVal _ σ (coord k N a))
@@ -948,12 +1230,24 @@ example (R : AnRead (PSpace.str k N) σ N) (y : CxPts (PSpace.str k N) σ) :
   rw [e]
   exact (WeightFamily.Reading.isometric_ofMem (F := F) ()).nsq_read _ y
 
+/- English proof (translation)
+The claim follows from `AnRead.topInt_lt_top K ((Weight.isSmooth_fsBasis _ _ _ _ _).zpow _) (R.secVal_mem_holSec _)`.
+-/
 example (R : AnRead (PSpace.str k N) σ N) :
     R.topInt K ((fsO1 k σ N).pow (N + 1)) (secVal _ σ (K.jacSec (coord k N))) < ⊤ :=
   AnRead.topInt_lt_top K ((Weight.isSmooth_fsBasis _ _ _ _ _).zpow _) (R.secVal_mem_holSec _)
 
 end ProjAn
 
+/- English proof (translation)
+Establish `he : MvPolynomial.eval₂Hom (algX (CanonLB.affStr k D) ⊤) (fun a => CanonLB.polyFn (MvPolynomial.X a)) = CanonLB.polyFn` using `MvPolynomial.ringHom_ext (fun a => (MvPolynomial.eval₂Hom_C _ _ a).trans (RingHom.congr_fun (CanonLB.polyFn_comp k D) a).symm) fun a => MvPolynomial.eval₂Hom_X' _ _ a`. Establish `het : (MvPolynomial.eval₂Hom (algX (CanonLB.affStr k D) ⊤) (fun a => CanonLB.polyFn (MvPolynomial.X a))).Etale`. Rewrite using `[he]`. Conclude with `RingHom.Etale.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin D) k))).inv)`. Take `⟨⟨e, U, hU, x, hx, h₁, h₂, h₃⟩, hy, hU', hx'⟩` from `AlgChart.exists_of_etale (isAffineOpen_top _) _ het (mem_ptsIn_top (y := y))`.
+
+Simplify using `only at hU'`. Substitute `hU'` using the available equality. Simplify using `only at hx'`. Substitute `hx'` using the available equality. Establish `: Smooth (CanonLB.affStr k D)` using `SmoothOfRelativeDimension.smooth D _`.
+
+Use `⟨_, hy, h₂, fun A hA h => ?_⟩` and prove the remaining obligations. Rewrite using `[R.topMeasure_apply _ _ _ _ hA h, ← setLIntegral_const]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Establish `hr (z : CxPts (CanonLB.affStr k D) σ) : rv σ (CanonLB.isFrame_dX k D) (CanonLB.isFrame_dX k D) z = 1` using `(congrFun (gv_canon (CanonLB.affineSpace k D) PUnit.unit PUnit.unit) z).symm.trans (gv_self (CanonLB.affineSpace k D).isLB mem_ptsIn_top)`. Establish `: (2 : ℝ≥0∞) ^ D = ENNReal.ofReal (2 ^ D * (‖(1 : ℂ) * 1‖ ^ 2 * Real.exp (-0)))`.
+
+Simplify using `[ENNReal.ofReal_pow]`. Rewrite using `[this]`. Conclude with `congrArg (fun z : ℂ => ENNReal.ofReal (2 ^ D * (‖z * 1‖ ^ 2 * Real.exp (-0)))) (hr (e.symm v))`.
+-/
 example (R : AnRead (CanonLB.affStr k D) σ D) (y : CxPts (CanonLB.affStr k D) σ) :
     ∃ c : AlgChart (CanonLB.affStr k D) σ D, y ∈ c.e.source ∧
       (∀ z ∈ c.e.source, ∀ a, c.e z a = ev _ σ ⊤ (CanonLB.polyFn (MvPolynomial.X a)) z) ∧

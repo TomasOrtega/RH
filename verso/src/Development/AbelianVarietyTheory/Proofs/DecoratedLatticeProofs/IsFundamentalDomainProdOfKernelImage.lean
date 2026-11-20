@@ -12,6 +12,37 @@ open scoped Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N G _ _ _ _ _ _ ν μ _ _ _ _ Γ _ 𝓐 𝓑 hA hB`. Establish `hKc : Countable (Γ.comap (MonoidHom.inl N G))`. Use `Function.Injective.countable (f := fun k : Γ.comap (MonoidHom.inl N G) => (⟨MonoidHom.inl N G k, k.2⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg (fun x : Γ => (x : N × G).1) hab` as an intermediate fact. Simplify using `using this`. Establish `hHc : Countable (Γ.map (MonoidHom.snd N G))`. Use `Function.Surjective.countable (f := fun γ : Γ => (⟨(γ : N × G).2, Subgroup.mem_map_of_mem _ γ.2⟩ : Γ.map (MonoidHom.snd N G))) ?_` and prove the remaining obligations. Introduce and unpack `⟨h, x, hx, rfl⟩`.
+
+Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hlift : ∀ h : Γ.map (MonoidHom.snd N G), ∃ m : N, ((m, (h : G)) : N × G) ∈ Γ`. Introduce and unpack `⟨h, x, hx, rfl⟩`. Conclude with `⟨x.1, by simpa using hx⟩`. Use `choose mm hmm using hlift`.
+
+Establish `memS : ∀ (γ : Γ) (p : N × G), p ∈ γ • (𝓐 ×ˢ 𝓑) → ((γ : N × G).1⁻¹ * p.1 ∈ 𝓐 ∧ (γ : N × G).2⁻¹ * p.2 ∈ 𝓑)`. Introduce and unpack `γ p ⟨q, hq, rfl⟩`. Simplify `hq` using `[Subgroup.smul_def]`. Use `{ nullMeasurableSet := hA.nullMeasurableSet.prod hB.nullMeasurableSet ae_covers := ?_ aedisjoint := ?_ }` and prove the remaining obligations. Establish `h2 : ∀ᵐ g ∂μ, ∃ h : Γ.map (MonoidHom.snd N G), h • g ∈ 𝓑` using `hB.ae_covers`.
+
+Establish `h1 : ∀ᵐ n ∂ν, ∀ h : Γ.map (MonoidHom.snd N G), ∃ k : Γ.comap (MonoidHom.inl N G), k • (mm h * n) ∈ 𝓐`. Rewrite using `[ae_all_iff]`. Introduce `h`. Conclude with `(measurePreserving_mul_left ν (mm h)).quasiMeasurePreserving.ae hA.ae_covers`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae h1, Measure.quasiMeasurePreserving_snd.ae h2] with p hn hg`.
+
+Take `⟨h, hh⟩` from `hg`. Take `⟨k, hk⟩` from `hn h`. Establish `hk' : (((k : N), (1 : G)) : N × G) ∈ Γ` using `k.2`. Use `⟨⟨((k : N), (1 : G)) * (mm h, (h : G)), Γ.mul_mem hk' (hmm h)⟩, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `hk` using `[Subgroup.smul_def, mul_assoc]`. Simplify `hh` using `[Subgroup.smul_def]`. Introduce `γ γ' hne`. Express the relevant statement in the definitionally equal form `(ν.prod μ) ((γ • (𝓐 ×ˢ 𝓑)) ∩ (γ' • (𝓐 ×ˢ 𝓑))) = 0`. Distinguish the cases in `hh : (γ : N × G).2 = (γ' : N × G).2`.
+
+Establish `hkmem : MonoidHom.inl N G ((γ' : N × G).1⁻¹ * (γ : N × G).1) ∈ Γ`. Establish `e : MonoidHom.inl N G ((γ' : N × G).1⁻¹ * (γ : N × G).1) = ((γ'⁻¹ * γ : Γ) : N × G)`. Apply the tactic sequence `ext <;> simp [hh]`. Rewrite using `[e]`. Conclude with `(γ'⁻¹ * γ).2`.
+
+Set `k : Γ.comap (MonoidHom.inl N G)` to `⟨(γ' : N × G).1⁻¹ * (γ : N × G).1, hkmem⟩`. Establish `hk1 : (1 : Γ.comap (MonoidHom.inl N G)) ≠ k⁻¹`. Introduce `h1`. Apply `hne` to reduce the goal to its premises. Establish `h1' : (γ' : N × G).1⁻¹ * (γ : N × G).1 = 1`.
+
+Use `congrArg (fun x : Γ.comap (MonoidHom.inl N G) => ((x⁻¹ : Γ.comap (MonoidHom.inl N G)) : N)) h1` as an intermediate fact. Simplify `this.symm` using `[k]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext (inv_mul_eq_one.mp h1').symm hh`. Establish `hnull : ν (𝓐 ∩ k⁻¹ • 𝓐) = 0`.
+
+Use `hA.aedisjoint hk1` as an intermediate fact. Simplify `this` using `[Function.onFun, AEDisjoint]`. Use `measure_mono_null (t := Prod.fst ⁻¹' ((fun x => (γ : N × G).1⁻¹ * x) ⁻¹' (𝓐 ∩ k⁻¹ • 𝓐))) ?_ (Measure.quasiMeasurePreserving_fst.preimage_null ((measurePreserving_mul_left ν (γ : N × G).1⁻¹).quasiMeasurePreserving.preimage_null hnull))` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hp'⟩`. Take `⟨a1, -⟩` from `memS γ p hp`.
+
+Take `⟨a2, -⟩` from `memS γ' p hp'`. Use `⟨a1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, inv_inv, Subgroup.smul_def, smul_eq_mul]`. Use `show ((γ' : N × G).1⁻¹ * (γ : N × G).1) * ((γ : N × G).1⁻¹ * p.1) ∈ 𝓐`. Simplify `a2` using `[mul_assoc]`.
+
+Set `h : Γ.map (MonoidHom.snd N G)` to `⟨(γ : N × G).2, Subgroup.mem_map_of_mem _ γ.2⟩`. Set `h' : Γ.map (MonoidHom.snd N G)` to `⟨(γ' : N × G).2, Subgroup.mem_map_of_mem _ γ'.2⟩`. Establish `hne' : h ≠ h'` using `fun e => hh (congrArg Subtype.val e)`. Establish `hnull : μ ((h • 𝓑) ∩ (h' • 𝓑)) = 0` using `hB.aedisjoint hne'`. Use `measure_mono_null (t := Prod.snd ⁻¹' ((h • 𝓑) ∩ (h' • 𝓑))) ?_ (Measure.quasiMeasurePreserving_snd.preimage_null hnull)` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨hp, hp'⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul]`. Simplify `(memS γ p hp).2` using `[h]`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul]`.
+
+Simplify `(memS γ' p hp').2` using `[h']`.
+-/
 theorem isFundamentalDomain_prod_of_ker_image : ∀ (N G : Type) [Group N] [Group G] [MeasurableSpace N] [MeasurableSpace G] [MeasurableMul N] [MeasurableMul G] (ν : Measure N) (μ : Measure G) [SFinite ν] [SFinite μ] [ν.IsMulLeftInvariant] [μ.IsMulLeftInvariant] (Γ : Subgroup (N × G)) [Countable Γ] (𝓐 : Set N) (𝓑 : Set G), IsFundamentalDomain (Γ.comap (MonoidHom.inl N G)) 𝓐 ν → IsFundamentalDomain (Γ.map (MonoidHom.snd N G)) 𝓑 μ → IsFundamentalDomain Γ (𝓐 ×ˢ 𝓑) (ν.prod μ) := by
   intro N G _ _ _ _ _ _ ν μ _ _ _ _ Γ _ 𝓐 𝓑 hA hB
   classical

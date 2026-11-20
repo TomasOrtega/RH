@@ -51,6 +51,15 @@ def DensSplitDisplay : Prop :=
         (∏ i ∈ range c, (1 - ((q : ℝ) ^ (n - m - i))⁻¹)) =
       densProd q 1 n m c
 
+/- English proof (translation)
+Introduce `c`. Proceed by induction on `c with`. Consider the case `zero => intro N _`. Simplify using the standard rewrite rules. Consider the case `succ c ih`.
+
+Introduce `N hN`. Rewrite using `[prod_range_succ, ih N (by omega)]`. Establish `h1 : N + 1 - 2 * (c + 1) < N + 1` using `by omega`. Rewrite using `[prod_eq_prod_Ico_succ_bot h1]`. Establish `h2 : N + 1 - 2 * (c + 1) + 1 < N + 1` using `by omega`.
+
+Rewrite using `[prod_eq_prod_Ico_succ_bot h2]`. Establish `e1 : N + 1 - 2 * (c + 1) + 1 + 1 = N + 1 - 2 * c` using `by omega`. Establish `e3 : N + 1 - 2 * (c + 1) + 1 = N - 2 * c` using `by omega`. Establish `e2 : N + 1 - 2 * (c + 1) = N - 2 * c - 1` using `by omega`. Rewrite using `[e1, e3, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pairs (f : ℕ → ℝ) : ∀ (c N : ℕ), 2 * c ≤ N →
     ∏ i ∈ range c, (f (N - 2 * i) * f (N - 2 * i - 1)) = ∏ j ∈ Ico (N + 1 - 2 * c) (N + 1), f j := by
   intro c
@@ -69,6 +78,13 @@ theorem prod_pairs (f : ℕ → ℝ) : ∀ (c N : ℕ), 2 * c ≤ N →
     rw [e1, e3, e2]
     ring
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro N _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `N hN`. Rewrite using `[prod_range_succ, ih N (by omega)]`. Establish `h1 : N + 1 - (k + 1) < N + 1` using `by omega`. Rewrite using `[prod_eq_prod_Ico_succ_bot h1]`. Establish `e1 : N + 1 - (k + 1) + 1 = N + 1 - k` using `by omega`.
+
+Establish `e2 : N + 1 - (k + 1) = N - k` using `by omega`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem prod_range_sub_eq_prod_Ico (f : ℕ → ℝ) : ∀ (k N : ℕ), k ≤ N →
     ∏ i ∈ range k, f (N - i) = ∏ j ∈ Ico (N + 1 - k) (N + 1), f j := by
   intro k
@@ -84,6 +100,13 @@ private theorem prod_range_sub_eq_prod_Ico (f : ℕ → ℝ) : ∀ (k N : ℕ), 
     rw [e1, e2]
     ring
 
+/- English proof (translation)
+Introduce `q n m c _ hmc`. Establish `h1 : ∏ i ∈ range m, (1 - ((q : ℝ) ^ (n - i))⁻¹) = ∏ j ∈ Ico (n - m + 1) (n + 1), (1 - ((q : ℝ) ^ j)⁻¹)`. Rewrite using `[show n - m + 1 = n + 1 - m by omega]`. Conclude with `prod_range_sub_eq_prod_Ico (fun j => 1 - ((q : ℝ) ^ j)⁻¹) m n (by omega)`. Establish `h2 : ∏ i ∈ range c, (1 - ((q : ℝ) ^ (n - m - i))⁻¹) = ∏ j ∈ Ico (n - m + 1 - c) (n - m + 1), (1 - ((q : ℝ) ^ j)⁻¹)` using `prod_range_sub_eq_prod_Ico (fun j => 1 - ((q : ℝ) ^ j)⁻¹) c (n - m) (by omega)`.
+
+Establish `hD : densProd q 1 n m c = ∏ j ∈ Ico (n - m + 1 - c) (n + 1), (1 - ((q : ℝ) ^ j)⁻¹)`. Unfold `densProd`. Establish `hI : Icc (n + 1 - (m + c)) n = Ico (n - m + 1 - c) (n + 1)`. Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hI]`. Conclude with `prod_congr rfl (fun i _ => by simp)`. Rewrite using `[h1, h2, hD, ← prod_Ico_consecutive (fun j => 1 - ((q : ℝ) ^ j)⁻¹) (by omega : n - m + 1 - c ≤ n - m + 1) (by omega : n - m + 1 ≤ n + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem densSplitDisplay_holds : DensSplitDisplay := by
   intro q n m c _ hmc
   have h1 : ∏ i ∈ range m, (1 - ((q : ℝ) ^ (n - i))⁻¹) =
@@ -104,6 +127,17 @@ theorem densSplitDisplay_holds : DensSplitDisplay := by
     (by omega : n - m + 1 - c ≤ n - m + 1) (by omega : n - m + 1 ≤ n + 1)]
   ring
 
+/- English proof (translation)
+Introduce `q n m c _ hcm hmc`. Establish `hA : ∏ j ∈ Icc (n - m + c + 1) n, (1 - ((-(q : ℝ)) ^ j)⁻¹) = ∏ j ∈ Ico (n - m + c + 1) (n + 1), (1 - (-1 : ℝ) ^ j * ((q : ℝ) ^ j)⁻¹)`. Establish `hI : Icc (n - m + c + 1) n = Ico (n - m + c + 1) (n + 1)`. Use extensionality with `x`. Simplify using `only [mem_Icc, mem_Ico]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hI]`. Use `prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ j with h | h <;> simp [neg_pow, h]`. Establish `hB : ∏ i ∈ range c, ((1 - (-1 : ℝ) ^ (n - m + c - 2 * i) * ((q : ℝ) ^ (n - m + c - 2 * i))⁻¹) * (1 + (-1 : ℝ) ^ (n - m + c - 2 * i) * ((q : ℝ) ^ (n - m + c - 2 * i - 1))⁻¹)) = ∏ i ∈ range c, ((1 - (-1 : ℝ) ^ (n - m + c - 2 * i) * ((q : ℝ) ^ (n - m + c - 2 * i))⁻¹) * (1 - (-1 : ℝ) …`.
+
+Use `prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < c` using `mem_range.mp hi`. Take `⟨k, hk⟩ : ∃ k, n - m + c - 2 * i = k + 1` from `⟨n - m + c - 2 * i - 1, by omega⟩`. Rewrite using `[hk, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hC : ∏ i ∈ range c, ((1 - (-1 : ℝ) ^ (n - m + c - 2 * i) * ((q : ℝ) ^ (n - m + c - 2 * i))⁻¹) * (1 - (-1 : ℝ) ^ (n - m + c - 2 * i - 1) * ((q : ℝ) ^ (n - m + c - 2 * i - 1))⁻¹)) = ∏ j ∈ Ico (n - m + c + 1 - 2 * c) (n - m + c + 1), (1 - (-1 : ℝ) ^ j * ((q : ℝ) ^ j)⁻¹)` using `prod_pairs (fun j => 1 - (-1 : ℝ) ^ j * ((q : ℝ) ^ j)⁻¹) c (n - m + c) (by omega)`. Establish `hD : densProd q (-1) n m c = ∏ j ∈ Ico (n - m + c + 1 - 2 * c) (n + 1), (1 - (-1 : ℝ) ^ j * ((q : ℝ) ^ j)⁻¹)`. Unfold `densProd`. Establish `hI : Icc (n + 1 - (m + c)) n = Ico (n - m + c + 1 - 2 * c) (n + 1)`. Use extensionality with `x`.
+
+Simplify using `only [mem_Icc, mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI]`. Rewrite using `[hA, hB, hC, hD, ← prod_Ico_consecutive (fun j => 1 - (-1 : ℝ) ^ j * ((q : ℝ) ^ j)⁻¹) (by omega : n - m + c + 1 - 2 * c ≤ n - m + c + 1) (by omega : n - m + c + 1 ≤ n + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem densInertDisplay_holds : DensInertDisplay := by
   intro q n m c _ hcm hmc
   have hA : ∏ j ∈ Icc (n - m + c + 1) n, (1 - ((-(q : ℝ)) ^ j)⁻¹) =

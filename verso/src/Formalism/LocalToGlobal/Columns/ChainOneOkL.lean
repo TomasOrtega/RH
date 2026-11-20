@@ -19,18 +19,27 @@ def ookRed {n' n : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) :
     (Fin n' → 𝓞 E ⧸ P.asIdeal) →ₗ[𝓞 E ⧸ P.asIdeal] (Fin n → 𝓞 E ⧸ P.asIdeal) :=
   Matrix.toLin' (Matrix.of fun (l : Fin n) (s : Fin n') => redP P (Loc.atN (xj (Loc.eN E n' s.1)) l.1))
 
+/- English proof (translation)
+Introduce `l s hl hs`. Unfold `ookRed`. Rewrite using `[ocbS_atN_toLin' _ hl hs]`. Both sides reduce to the same expression.
+-/
 theorem ookRed_spec {n' n : ℕ} (xj : (Fin n' → E) →ₗ[E] (Fin n → E)) : ocbXRed P xj (ookRed P xj) := by
   intro l s hl hs
   unfold ookRed
   rw [ocbS_atN_toLin' _ hl hs]
   rfl
 
+/- English proof (translation)
+Unfold `Loc.atN`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[add_zero]`.
+-/
 theorem ookAtN_add {N : ℕ} (v w : Fin N → E) (l : ℕ) : Loc.atN (v + w) l = Loc.atN v l + Loc.atN w l := by
   unfold Loc.atN
   split_ifs
   · rfl
   · rw [add_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Conclude with `h (firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi vals wt xj hx)`.
+-/
 theorem xInt_of_firstUnfolding_ne_zero {n' c' n c : ℕ} (hc' : c' = c + 1) (Ψ : Loc.SF E K (n' + c') (n + c))
     (hsupp : ∀ y, Ψ y ≠ 0 → ∀ l s, l < n + c → s < n' + c' → IntAt P (ocbBEnt n' n q y l s))
     (psi : E → K) (vals : Finset E) (wt : K) (xj : (Fin n' → E) →ₗ[E] (Fin n → E))
@@ -38,6 +47,9 @@ theorem xInt_of_firstUnfolding_ne_zero {n' c' n c : ℕ} (hc' : c' = c + 1) (Ψ 
   by_contra hx
   exact h (firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi vals wt xj hx)
 
+/- English proof (translation)
+Distinguish the cases in `hx : ocbXInt P xj`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[firstUnfolding_reduction_eq hq hu hp hcard hc' σ Ψ Ψr hsupp hred psi ψ₀ hpsi hA' hB' xj (ookRed P xj) hx (ookRed_spec xj), firstUnfolding_reduction_eq hq hu hp hcard hc' σ Ψ Ψr hsupp hred psi ψ₀ hpsi hA hB xj (ookRed P xj) hx (ookRed_spec xj)]`. Rewrite using `[firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ xj hx, firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ xj hx]`.
+-/
 theorem firstUnfolding_reduction_independent (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     (hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = q) {n' c' n c : ℕ} (hc' : c' = c + 1) (σ : K →+* L)
     (Ψ : Loc.SF E K (n' + c') (n + c)) (Ψr : Loc.SF (𝓞 E ⧸ P.asIdeal) L (n' + (c + 1)) (n + c))
@@ -54,6 +66,15 @@ theorem firstUnfolding_reduction_independent (hq : ((q : ℕ) : 𝓞 E) ∈ P.as
       firstUnfolding_reduction_eq hq hu hp hcard hc' σ Ψ Ψr hsupp hred psi ψ₀ hpsi hA hB xj (ookRed P xj) hx (ookRed_spec xj)]
   · rw [firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ xj hx, firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ xj hx]
 
+/- English proof (translation)
+Establish `hq0 : (q : E) ≠ 0` using `ciQ_ne_zero hu`. Establish `hD : ∀ l s, l < n → s < n' → Loc.atN ((xj + z) (Loc.eN E n' s)) l = Loc.atN (xj (Loc.eN E n' s)) l + (q : E) * (Loc.atN (z (Loc.eN E n' s)) l / (q : E))`. Introduce `l s _ _`. Rewrite using `[LinearMap.add_apply, ookAtN_add, mul_div_cancel₀ _ hq0]`. Establish `hint : ocbXInt P (xj + z) ↔ ocbXInt P xj`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h l s hl hs`. Establish `h1` using `h l s hl hs`. Rewrite `h1` using `[hD l s hl hs]`. Conclude with `(ciIntAt_add_iff ((ciIntAt_q (q := q)).mul (hz l s hl hs))).1 h1`.
+
+Introduce `h l s hl hs`. Rewrite using `[hD l s hl hs]`. Conclude with `(ciIntAt_add_iff ((ciIntAt_q (q := q)).mul (hz l s hl hs))).2 (h l s hl hs)`. Distinguish the cases in `hx : ocbXInt P xj`. Establish `hred' : ocbXRed P (xj + z) (ookRed P xj)`.
+
+Introduce `l s hl hs`. Rewrite using `[ookRed_spec xj l s hl hs, hD l s hl hs, redP_add_natCast_mul hq (hz l s hl hs)]`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[firstUnfolding_reduction_eq hq hu hp hcard hc' σ Ψ Ψr hsupp hred psi ψ₀ hpsi hA hB (xj + z) (ookRed P xj) (hint.2 hx) hred', firstUnfolding_reduction_eq hq hu hp hcard hc' σ Ψ Ψr hsupp hred psi ψ₀ hpsi hA hB xj (ookRed P xj) hx (ookRed_spec xj)]`. Rewrite using `[firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ xj hx, firstUnfolding_eq_zero_of_not_integral hc' Ψ hsupp psi _ _ (xj + z) (fun h => hx (hint.1 h))]`.
+-/
 theorem firstUnfolding_add_eq_self_of_intAt_div (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (hp : q.Prime)
     (hcard : Nat.card (𝓞 E ⧸ P.asIdeal) = q) {n' c' n c : ℕ} (hc' : c' = c + 1) (σ : K →+* L)
     (Ψ : Loc.SF E K (n' + c') (n + c)) (Ψr : Loc.SF (𝓞 E ⧸ P.asIdeal) L (n' + (c + 1)) (n + c))
@@ -94,6 +115,15 @@ section Cong
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
+/- English proof (translation)
+Unfold `LocE.lamGvS`. Use `congr 1`. Use `congr 1`. Establish `hb1 : ∀ i ∈ Finset.range (k₀ - 1), i < a ∧ i + 1 < a` using `fun i hi => by simp at hi; omega`. Establish `hb2 : ∀ i ∈ Finset.range (r - k₀ - 1), k₀ + i < a ∧ k₀ + i + 1 < a` using `fun i hi => by simp at hi; omega`.
+
+Rewrite using `[reduction_add (ciIntAt_sum _ _ fun i hi => (h i (i + 1) (hb1 i hi).1 (hb1 i hi).2).2.1) (ciIntAt_sum _ _ fun i hi => (h (k₀ + i) (k₀ + i + 1) (hb2 i hi).1 (hb2 i hi).2).2.1), reduction_add (ciIntAt_sum _ _ fun i hi => (h i (i + 1) (hb1 i hi).1 (hb1 i hi).2).1) (ciIntAt_sum _ _ f …`. Conclude with `congrArg₂ (· + ·) (Finset.sum_congr rfl fun i hi => (h i (i + 1) (hb1 i hi).1 (hb1 i hi).2).2.2) (Finset.sum_congr rfl fun i hi => (h (k₀ + i) (k₀ + i + 1) (hb2 i hi).1 (hb2 i hi).2).2.2)`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < j` using `by simpa using hi`. Establish `hb : ∀ s : Fin t, r + i * t + s.1 < a` using `fun s => by`.
+
+Establish `h1` using `s.2`. Establish `h2 : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right _ hi'`. Use the polynomial consequences of the given equalities and inequalities. Apply `ciUnitV_congr` to reduce the goal to its premises. Rewrite using `[redP_det (Matrix.of fun s s' : Fin t => M' (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hb s) (hb s')).2.1), redP_det (Matrix.of fun s s' : Fin t => M (r + i * t + s.1) (r + i * t + s'.1)) (fun s s' => (h _ _ (hb s) (hb s')).1)]`.
+
+Use `congr 1`. Use extensionality with `s s'`. Conclude with `(h _ _ (hb s) (hb s')).2.2`.
+-/
 theorem ookLamGvS_congr (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ r t j a : ℕ} (M M' : ℕ → ℕ → E)
     (hkr : k₀ ≤ r) (hra : r ≤ a) (hja : r + j * t ≤ a)
     (h : ∀ p p', p < a → p' < a → IntAt P (M p p') ∧ IntAt P (M' p p') ∧ redP P (M' p p') = redP P (M p p')) :
@@ -128,6 +158,25 @@ theorem ookLamGvS_congr (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ →
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[phiGS_eq, phiGS_eq]`. Use `set M := LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x with hM`. Use `set M' := LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) x' with hM'`. Use `set a := r + (j - 1) * t with ha`. Establish `hra : r ≤ a` using `Nat.le_add_right _ _`.
+
+Establish `k1 : ∀ p p', p < n + c → p' < a → (IntAt P (M' p p') ↔ IntAt P (M p p'))`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he]`. Conclude with `ciIntAt_add_iff ((ciIntAt_q (q := q)).mul hd)`.
+
+Establish `k2 : ∀ p p', p < n + c → p' < a → (IntAt P (M' p p' / q) ↔ IntAt P (M p p' / q))`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he, add_div, mul_div_cancel_left₀ _ hq0]`. Conclude with `ciIntAt_add_iff hd`.
+
+Establish `k3 : ∀ p p', p < n + c → p' < a → redP P (M' p p') = redP P (M p p')`. Introduce `p p' hp hp'`. Take `⟨d, hd, he⟩` from `hD p p' hp hp'`. Rewrite using `[he]`. Conclude with `redP_add_natCast_mul hq hd`.
+
+Establish `hc : symPhiCond P q k₀ rS r t j c n M' ↔ symPhiCond P q k₀ rS r t j c n M`. Unfold `symPhiCond`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun p p' hp hp' => (k1 p p' hp hp').1 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp hp').1 (h2 p p' h0 hp hp'), fun p' hp' => ⟨?_, fun p hp hne hc => ?_⟩, fun p p' h0 hp' hp hpp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← k3 p' p' (by omega) (by omega)]; exact (h3 p' hp').1`. Rewrite using `[← k3 p p' (by omega) (by omega)]; exact (h3 p' hp').2 p hp hne hc`. Rewrite using `[← k3 p p' (by omega) hp']; exact h4 p p' h0 hp' hp hpp`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun p p' hp hp' => (k1 p p' hp hp').2 (h1 p p' hp hp'), fun p p' h0 hp hp' => (k2 p p' hp hp').2 (h2 p p' h0 hp hp'), fun p' hp' => ⟨?_, fun p hp hne hc => ?_⟩, fun p p' h0 hp' hp hpp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[k3 p' p' (by omega) (by omega)]; exact (h3 p' hp').1`. Rewrite using `[k3 p p' (by omega) (by omega)]; exact (h3 p' hp').2 p hp hne hc`. Rewrite using `[k3 p p' (by omega) hp']; exact h4 p p' h0 hp' hp hpp`. Distinguish the cases in `hC : symPhiCond P q k₀ rS r t j c n M`. Rewrite using `[if_pos (hc.2 hC), if_pos hC]`.
+
+Establish `htrip : ∀ p p', p < a → p' < a → IntAt P (M p p') ∧ IntAt P (M' p p') ∧ redP P (M' p p') = redP P (M p p')` using `fun p p' hp hp' => ⟨hC.1 p p' (by omega) hp', (hc.2 hC).1 p p' (by omega) hp', k3 p p' (by omega) hp'⟩`. Use `congr 1`. Conclude with `ookLamGvS_congr ψ₀ χ M M' hkr hra (le_refl _) htrip`. Use `congr 1`. Apply `ciUnitV_congr` to reduce the goal to its premises.
+
+Rewrite using `[redP_det (Matrix.of fun s s' : Fin a => M' s.1 s'.1) (fun s s' => (htrip s.1 s'.1 s.2 s'.2).2.1), redP_det (Matrix.of fun s s' : Fin a => M s.1 s'.1) (fun s s' => (htrip s.1 s'.1 s.2 s'.2).1)]`. Use `congr 1`. Use extensionality with `s s'`. Conclude with `(htrip s.1 s'.1 s.2 s'.2).2.2`. Rewrite using `[if_neg (fun h => hC (hc.1 h)), if_neg hC]`.
+-/
 theorem ookPhiGS_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ rS r t j c' n' c n : ℕ} (x x' : HomE E (n' + c') (n + c))
     (hkr : k₀ ≤ r) (han : r + (j - 1) * t ≤ n + c)
@@ -185,6 +234,15 @@ theorem ookPhiGS_congr (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) 
       exact (htrip s.1 s'.1 s.2 s'.2).2.2
   · rw [if_neg (fun h => hC (hc.1 h)), if_neg hC]
 
+/- English proof (translation)
+Substitute `hc' hc` using the available equality. Establish `f1 : LocE.fIdx k₀ 1 n' (LocE.fPos k₀ 1 n' s) = s` using `ocbPhi_fIdx_fPos hk (by omega)`. Establish `f2 : LocE.fIdx k₀ 0 n p = p` using `ciFIdx (Or.inl rfl) (by omega)`. Unfold `LocE.entB joinCol atNL`. Rewrite using `[f1, f2, ciScE_lt _ hp, ciScE_lt _ hs, dif_pos (show n' < n' + 1 by omega)]`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smulRight_apply, LinearMap.proj_apply]`. Rewrite using `[ciAtN_inX hp]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : (LinearMap.funLeft E E (Fin.castAdd 1)) (Loc.eN E (n' + 1) s) = (Pi.single ⟨s, hs⟩ 1 : Fin n' → E)`. Use function extensionality and compare the values at `i`.
+
+Use `show Loc.eN E (n' + 1) s (Fin.castAdd 1 i) = _`. Unfold `Loc.eN`. Simplify using `only [Fin.val_castAdd, Pi.single_apply, Fin.ext_iff]`. Establish `e2 : Loc.eN E (n' + 1) s ⟨n', by omega⟩ = 0`. Unfold `Loc.eN`.
+
+Rewrite using `[if_neg (by simp; omega)]`. Rewrite using `[e1, e2, zero_mul, add_zero, sub_zero, zpow_zero, mul_one]`.
+-/
 theorem ookEntB_joinX (q : ℕ) {k₀ n' c' n c : ℕ} (hc' : c' = 1) (hc : c = 0) (hk : k₀ ≤ n') (x₀ : HomE E n' n) (y' : Sp E n)
     {p s : ℕ} (hp : p < n) (hs : s < n') :
     LocE.entB q k₀ c' n' c n (fun i => i + 1) (fun i => i + 1) (joinCol (c' := c') (c := c) x₀ y') p (LocE.fPos k₀ c' n' s) =
@@ -207,11 +265,19 @@ theorem ookEntB_joinX (q : ℕ) {k₀ n' c' n c : ℕ} (hc' : c' = 1) (hc : c = 
     rw [if_neg (by simp; omega)]
   rw [e1, e2, zero_mul, add_zero, sub_zero, zpow_zero, mul_one]
 
+/- English proof (translation)
+Substitute `hc'` using the available equality. Apply the tactic sequence `exact ⟨by unfold LocE.fIdx; split_ifs <;> omega, symFPos_fIdx hk hp'⟩`.
+-/
 theorem ookFIdx_lt {k₀ c' n' p' : ℕ} (hc' : c' = 1) (hk : k₀ ≤ n') (hp' : p' < n' + c') (hne : p' ≠ k₀) :
     LocE.fIdx k₀ c' n' p' < n' ∧ LocE.fPos k₀ c' n' (LocE.fIdx k₀ c' n' p') = p' := by
   subst hc'
   exact ⟨by unfold LocE.fIdx; split_ifs <;> omega, symFPos_fIdx hk hp'⟩
 
+/- English proof (translation)
+Introduce and unpack `g ⟨ρ, hr, hg⟩ x`. Establish `hr' : ρ ∈ LocE.JGsym P q k₀ rS r t n c`. Use `hr.2` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`. Rewrite using `[← ciMem_lamY (P := P) (q := q) (c := c) (fun i => i + 1) (g x), ← hg]`.
+
+Conclude with `(hr'.1 _).trans (ciMem_lamY _ _)`.
+-/
 theorem ookPrX_le {k₀ rS r t n c : ℕ} :
     Loc.prX (Loc.Cbe (LocE.JGsym P q k₀ rS r t n c) 1) ≤ GLint E n P := by
   rintro g ⟨ρ, hr, hg⟩ x

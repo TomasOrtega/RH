@@ -15,6 +15,11 @@ section Group
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
   [LocallyCompactSpace G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Establish `hU : IsOpen {g : G | ‖(χ g : ℂ) - 1‖ < 1 / 2}` using `isOpen_lt (by fun_prop) continuous_const`. Establish `h1 : (1 : G) ∈ {g : G | ‖(χ g : ℂ) - 1‖ < 1 / 2}` using `by simp`. Take `⟨K, -, hKU⟩` from `exists_openSubgroup_isCompact_subset (hU.mem_nhds h1)`. Use `⟨K, fun k hk => PositivityTheory.RgUd.T2.eq_one_of_pow_near fun n => ?_⟩` and prove the remaining obligations. Establish `h2 : k ^ n ∈ K` using `pow_mem hk n`.
+
+Establish `h3` using `hKU h2`. Simplify using `only [Set.mem_setOf_eq, map_pow, Units.val_pow_eq_pow_val] at h3`. Conclude with `h3.le`.
+-/
 theorem exists_openSubgroup_char_eq_one (χ : G →* ℂˣ) (hχ : Continuous (fun g => (χ g : ℂ))) :
     ∃ K : OpenSubgroup G, ∀ k ∈ K, (χ k : ℂ) = 1 := by
   have hU : IsOpen {g : G | ‖(χ g : ℂ) - 1‖ < 1 / 2} :=
@@ -27,6 +32,11 @@ theorem exists_openSubgroup_char_eq_one (χ : G →* ℂˣ) (hχ : Continuous (f
   simp only [Set.mem_setOf_eq, map_pow, Units.val_pow_eq_pow_val] at h3
   exact h3.le
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `exists_openSubgroup_char_eq_one χ hχ`. Use `(IsLocallyConstant.iff_exists_open _).2 fun g => ?_` and prove the remaining obligations. Use `⟨g • (K : Set G), K.isOpen.smul g, Set.mem_smul_set.2 ⟨1, K.one_mem, mul_one g⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ hy`. Take `⟨k, hk, rfl⟩` from `Set.mem_smul_set.1 hy`.
+
+Simplify using `[hK k hk]`.
+-/
 theorem isLocallyConstant_char (χ : G →* ℂˣ) (hχ : Continuous (fun g => (χ g : ℂ))) :
     IsLocallyConstant (fun g => (χ g : ℂ)) := by
   obtain ⟨K, hK⟩ := exists_openSubgroup_char_eq_one χ hχ
@@ -49,6 +59,9 @@ def mulLC (ψ : G → ℂ) (hψ : IsLocallyConstant ψ) : SB G →ₗ[ℂ] SB G 
     ring
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulLC_apply (ψ : G → ℂ) (hψ : IsLocallyConstant ψ) (α : SB G) (x : G) :
     ((mulLC ψ hψ α : SB G) : G → ℂ) x = ψ x * (α : G → ℂ) x :=
   rfl
@@ -57,6 +70,15 @@ def ind (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) : SB G :=
   ⟨(K : Set G).indicator (fun _ => (1 : ℂ)),
     indicator_mem_locallyConstantCompactSupport (R := ℂ) hK K.isOpen 1⟩
 
+/- English proof (translation)
+Establish `hf : HasCompactSupport (f : G → ℂ)` using `f.2.2`. Use `set t := (finite_image_mk_tsupport K hf).toFinset with ht`. Establish `key : f = ∑ x ∈ t, ((f : G → ℂ) x.out) • transl x.out (ind K hKc)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Use `(eq_sum_indicator_coset K hf hK).trans (Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Use `show (x.out • (K : Set G)).indicator (fun _ => (f : G → ℂ) x.out) y = (f : G → ℂ) x.out * (K : Set G).indicator (fun _ => (1 : ℂ)) (x.out⁻¹ • y)`. Distinguish the cases in `hy : y ∈ x.out • (K : Set G)`. Establish `hy' : x.out⁻¹ • y ∈ (K : Set G)` using `Set.mem_smul_set_iff_inv_smul_mem.1 hy`.
+
+Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy', mul_one]`. Establish `hy' : x.out⁻¹ • y ∉ (K : Set G)` using `fun h => hy (Set.mem_smul_set_iff_inv_smul_mem.2 h)`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy', mul_zero]`. Use `⟨∑ x ∈ t, (f : G → ℂ) x.out, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [key]`.
+
+Rewrite using `[_root_.map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hΦ, smul_eq_mul]`.
+-/
 theorem exists_sum_eq (K : OpenSubgroup G) (hKc : IsCompact (K : Set G)) (f : SB G)
     (hK : ∀ g, ∀ k ∈ K, (f : G → ℂ) (g * k) = (f : G → ℂ) g) :
     ∃ s : ℂ, ∀ Φ : SB G →ₗ[ℂ] ℂ, (∀ (g : G) (α : SB G), Φ (transl g α) = Φ α) →
@@ -82,6 +104,17 @@ theorem exists_sum_eq (K : OpenSubgroup G) (hKc : IsCompact (K : Set G)) (f : SB
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [map_smul, hΦ, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨K₀, hK₀, -⟩` from `exists_openSubgroup_isCompact_subset (G := G) (Filter.univ_mem)`. Use `⟨Φ (ind K₀ hK₀) / Ψ (ind K₀ hK₀), fun α => ?_⟩` and prove the remaining obligations. Take `⟨K₁, -, hK₁⟩` from `exists_forall_mul_right (R := ℂ) (show (α : G → ℂ) ∈ locallyConstantCompactSupport G ℂ ℂ from α.2)`. Establish `hKc : IsCompact ((K₁ ⊓ K₀ : OpenSubgroup G) : Set G)` using `hK₀.of_isClosed_subset (K₁ ⊓ K₀).isClosed fun x hx => (OpenSubgroup.mem_inf.1 hx).2`. Take `⟨s, hs⟩` from `exists_sum_eq (K₁ ⊓ K₀) hKc α (fun g k hk => hK₁ g k (OpenSubgroup.mem_inf.1 hk).1)`.
+
+Take `⟨r, hr⟩` from `exists_sum_eq (K₁ ⊓ K₀) hKc (ind K₀ hK₀) (fun g k hk => by`. Establish `hk' : k ∈ K₀` using `(OpenSubgroup.mem_inf.1 hk).2`. Express the relevant statement in the definitionally equal form `(K₀ : Set G).indicator (fun _ => (1 : ℂ)) (g * k) = (K₀ : Set G).indicator (fun _ => (1 : ℂ)) g`. Distinguish the cases in `hg : g ∈ (K₀ : Set G)`. Establish `: g * k ∈ (K₀ : Set G)` using `K₀.mul_mem hg hk'`.
+
+Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem this]`. Establish `: g * k ∉ (K₀ : Set G)` using `fun h => hg (by`. Simplify using `using K₀.mul_mem h (K₀.inv_mem hk'))`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem this])`. Establish `a1` using `hs Φ hΦ`.
+
+Establish `a2` using `hs Ψ hΨ`. Establish `b1` using `hr Φ hΦ`. Establish `b2` using `hr Ψ hΨ`. Establish `hne` using `h0 _ hK₀`. Establish `hne'` using `h0 _ hKc`.
+
+Establish `hrne : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by simpa using b2)`. Rewrite using `[a1, a2, b1, b2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_eq_const_mul (Φ Ψ : SB G →ₗ[ℂ] ℂ)
     (hΦ : ∀ (g : G) (α : SB G), Φ (transl g α) = Φ α)
     (hΨ : ∀ (g : G) (α : SB G), Ψ (transl g α) = Ψ α)
@@ -125,14 +158,25 @@ def intLC (μ : Measure G) [μ.IsHaarMeasure] : SB G →ₗ[ℂ] ℂ where
     (β.2.1.continuous.integrable_of_hasCompactSupport β.2.2)
   map_smul' c α := integral_const_mul c _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intLC_apply (μ : Measure G) [μ.IsHaarMeasure] (α : SB G) :
     intLC μ α = ∫ x, (α : G → ℂ) x ∂μ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `integral_mul_left_eq_self (fun x => (α : G → ℂ) x) g⁻¹`.
+-/
 theorem intLC_transl (μ : Measure G) [μ.IsHaarMeasure] (g : G) (α : SB G) :
     intLC μ (transl g α) = intLC μ α :=
   integral_mul_left_eq_self (fun x => (α : G → ℂ) x) g⁻¹
 
+/- English proof (translation)
+Establish `hm : MeasurableSet (K : Set G)` using `K.isOpen.measurableSet`. Establish `hpos : 0 < μ (K : Set G)` using `K.isOpen.measure_pos μ ⟨1, K.one_mem⟩`. Establish `hfin : μ (K : Set G) ≠ ⊤` using `hK.measure_lt_top.ne`. Use `show ∫ x, (K : Set G).indicator (fun _ => (1 : ℂ)) x ∂μ ≠ 0`. Rewrite using `[integral_indicator_const _ hm]`.
+
+Simplify using `only [measureReal_def, Complex.real_smul, mul_one, ne_eq, Complex.ofReal_eq_zero]`. Conclude with `(ENNReal.toReal_pos hpos.ne' hfin).ne'`.
+-/
 theorem intLC_ind_ne_zero (μ : Measure G) [μ.IsHaarMeasure] (K : OpenSubgroup G)
     (hK : IsCompact (K : Set G)) : intLC μ (ind K hK) ≠ 0 := by
   have hm : MeasurableSet (K : Set G) := K.isOpen.measurableSet
@@ -145,6 +189,23 @@ theorem intLC_ind_ne_zero (μ : Measure G) [μ.IsHaarMeasure] (K : OpenSubgroup 
 
 end Group
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ _ μ _ χ hχ L hL`. Establish `hc : IsLocallyConstant (fun g => (χ g : ℂ))` using `isLocallyConstant_char χ hχ`. Establish `hci : IsLocallyConstant (fun g => ((χ g)⁻¹ : ℂˣ).val)`. Establish `hχ' : Continuous (fun g => ((χ⁻¹ g : ℂˣ) : ℂ))`. Establish `: (fun g => ((χ⁻¹ g : ℂˣ) : ℂ)) = fun g => (χ g : ℂ)⁻¹`.
+
+Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hχ.inv₀ fun g => (χ g).ne_zero`. Conclude with `isLocallyConstant_char χ⁻¹ hχ'`.
+
+Establish `hinv : ∀ x, ((χ x)⁻¹ : ℂˣ).val * (χ x : ℂ) = 1` using `fun x => by simp`. Set `T` to `mulLC _ hci`. Set `S` to `mulLC _ hc`. Establish `hTS : ∀ β : SB G, T (S β) = β` using `fun β => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `x`. Use `show ((χ x)⁻¹ : ℂˣ).val * ((χ x : ℂ) * (β : G → ℂ) x) = (β : G → ℂ) x`. Rewrite using `[← mul_assoc, hinv, one_mul]`. Establish `hM : ∀ (g : G) (α : SB G), (L ∘ₗ T) (transl g α) = (L ∘ₗ T) α`. Introduce `g α`.
+
+Establish `e : T (transl g α) = ((χ g)⁻¹ : ℂˣ).val • transl g (T α)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show ((χ x)⁻¹ : ℂˣ).val * (α : G → ℂ) (g⁻¹ • x) = ((χ g)⁻¹ : ℂˣ).val * (((χ (g⁻¹ • x))⁻¹ : ℂˣ).val * (α : G → ℂ) (g⁻¹ • x))`. Establish `e2 : (χ x)⁻¹ = (χ g)⁻¹ * (χ (g⁻¹ • x))⁻¹`.
+
+Rewrite using `[smul_eq_mul, map_mul, map_inv, mul_inv, inv_inv, inv_mul_cancel_left]`. Rewrite using `[e2, Units.val_mul, mul_assoc]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[e, map_smul, hL, smul_eq_mul, ← mul_assoc, hinv g, one_mul]`. Take `⟨c, hcM⟩` from `exists_eq_const_mul (L ∘ₗ T) (intLC μ) hM (intLC_transl μ) (intLC_ind_ne_zero μ)`.
+
+Use `⟨c, fun α => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcM (S α)`. Rewrite `h1` using `[LinearMap.comp_apply, hTS, intLC_apply]`. Rewrite using `[h1]`. Use `congr 1`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => mul_comm _ _)`.
+-/
 theorem eq_const_mul_integral_char :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
       [LocallyCompactSpace G] [TotallyDisconnectedSpace G] [SecondCountableTopology G]

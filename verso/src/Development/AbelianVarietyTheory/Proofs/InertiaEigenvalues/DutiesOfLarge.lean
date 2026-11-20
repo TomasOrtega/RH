@@ -11,6 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.CoefDuty
 
+/- English proof (translation)
+Introduce `hC D hL h41 hRho`. Take `⟨hO, hS, hT⟩` from `hL`. Conclude with `⟨hO, fun i r hr => GlobalTheory.abs_irreducible_distinct_constituents D h41 hS i r hr, GlobalTheory.T.designConditionAll_of_cheb_of_takenAll hC D hT, GlobalTheory.T.rowFiveOneTypePrime_of_coefRingTakenAtLive hC D hRho hT⟩`.
+-/
 theorem duties_of_large : GlobalTheory.TwSys.Cheb → ∀ D : D7, Large D → SumRepresentations.Conclusion41 D → AutomorphicSideWildInertia.ResidualIrreducibleGood D → Duties D := by
   intro hC D hL h41 hRho
   obtain ⟨hO, hS, hT⟩ := hL

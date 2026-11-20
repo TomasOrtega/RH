@@ -4,6 +4,9 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.Jmat.{u_1} :
     (R : Type u_1) → [CommRing R] → (m : ℕ) → Matrix (Fin m) (Fin m) R :=
     fun (R : Type u_1) [CommRing R] (m : ℕ) (i j : Fin m) ↦ if j = i.rev then (1 : R) else (0 : R)
 
+/- English proof (translation)
+Introduce `R _ m`. Use extensionality with `i j`. Simplify using `only [UpperTheory.Reformulated.B.SignActionTheta.Jmat, Matrix.mul_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.rev_rev, Matrix.one_apply]`. Simplify using `only [eq_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux2.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R] (m : ℕ),
       UpperTheory.Reformulated.B.SignActionTheta.Jmat R m * UpperTheory.Reformulated.B.SignActionTheta.Jmat R m = (1 : Matrix (Fin m) (Fin m) R) := by
@@ -19,12 +22,18 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.Jgl.{u_1} :
       { val := UpperTheory.Reformulated.B.SignActionTheta.Jmat R m, inv := UpperTheory.Reformulated.B.SignActionTheta.Jmat R m, val_inv := UpperTheory.Reformulated.B.SignActionTheta.aux2 m,
         inv_val := UpperTheory.Reformulated.B.SignActionTheta.aux2 m : (Matrix (Fin m) (Fin m) R)ˣ }
 
+/- English proof (translation)
+Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux4.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
       (↑g⁻¹ : Matrix n n R).transpose * (↑g : Matrix n n R).transpose = (1 : Matrix n n R) := by
   intro n _ _ R _ g
   rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]
 
+/- English proof (translation)
+Introduce `n _ _ R _ g`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux5.{u_1} :
     ∀ {n : Type} [inst : Fintype n] [inst_1 : DecidableEq n] {R : Type u_1} [inst_2 : CommRing R] (g : GL n R),
       (↑g : Matrix n n R).transpose * (↑g⁻¹ : Matrix n n R).transpose = (1 : Matrix n n R) := by
@@ -42,10 +51,16 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.theta.{u_1} :
     fun {m : ℕ} {R : Type u_1} [CommRing R] (g : GL (Fin m) R) ↦
       UpperTheory.Reformulated.B.SignActionTheta.Jgl R m * UpperTheory.Reformulated.B.SignActionTheta.trInv g * UpperTheory.Reformulated.B.SignActionTheta.Jgl R m
 
+/- English proof (translation)
+The claim follows from `Units.ext (UpperTheory.Reformulated.B.SignActionTheta.aux2 m)`.
+-/
 private theorem UpperTheory.Reformulated.B.SignActionTheta.J_mul_J {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.SignActionTheta.Jgl R m * UpperTheory.Reformulated.B.SignActionTheta.Jgl R m = 1 :=
   Units.ext (UpperTheory.Reformulated.B.SignActionTheta.aux2 m)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(↑(g * h)⁻¹ : Matrix n n R).transpose = (↑g⁻¹ : Matrix n n R).transpose * (↑h⁻¹ : Matrix n n R).transpose`. Rewrite using `[mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+-/
 private theorem UpperTheory.Reformulated.B.SignActionTheta.trInv_mul {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g h : GL n R) :
     UpperTheory.Reformulated.B.SignActionTheta.trInv (g * h) = UpperTheory.Reformulated.B.SignActionTheta.trInv g * UpperTheory.Reformulated.B.SignActionTheta.trInv h := by
@@ -54,10 +69,16 @@ private theorem UpperTheory.Reformulated.B.SignActionTheta.trInv_mul {n : Type} 
     (↑g⁻¹ : Matrix n n R).transpose * (↑h⁻¹ : Matrix n n R).transpose
   rw [mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.transpose_transpose (↑g : Matrix n n R))`.
+-/
 private theorem UpperTheory.Reformulated.B.SignActionTheta.trInv_trInv {n : Type} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     (g : GL n R) : UpperTheory.Reformulated.B.SignActionTheta.trInv (UpperTheory.Reformulated.B.SignActionTheta.trInv g) = g :=
   Units.ext (Matrix.transpose_transpose (↑g : Matrix n n R))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(UpperTheory.Reformulated.B.SignActionTheta.Jmat R m).transpose = UpperTheory.Reformulated.B.SignActionTheta.Jmat R m`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, UpperTheory.Reformulated.B.SignActionTheta.Jmat]`. Apply the tactic sequence `refine if_congr ⟨fun h => ?_, fun h => ?_⟩ rfl rfl <;> rw [h, Fin.rev_rev]`.
+-/
 private theorem UpperTheory.Reformulated.B.SignActionTheta.trInv_J {m : ℕ} {R : Type*} [CommRing R] :
     UpperTheory.Reformulated.B.SignActionTheta.trInv (UpperTheory.Reformulated.B.SignActionTheta.Jgl R m) = UpperTheory.Reformulated.B.SignActionTheta.Jgl R m := by
   apply Units.ext
@@ -66,6 +87,9 @@ private theorem UpperTheory.Reformulated.B.SignActionTheta.trInv_J {m : ℕ} {R 
   simp only [Matrix.transpose_apply, UpperTheory.Reformulated.B.SignActionTheta.Jmat]
   refine if_congr ⟨fun h => ?_, fun h => ?_⟩ rfl rfl <;> rw [h, Fin.rev_rev]
 
+/- English proof (translation)
+Introduce `m R _ g`. Unfold `UpperTheory.Reformulated.B.SignActionTheta.theta`. Rewrite using `[UpperTheory.Reformulated.B.SignActionTheta.trInv_mul, UpperTheory.Reformulated.B.SignActionTheta.trInv_mul, UpperTheory.Reformulated.B.SignActionTheta.trInv_trInv, UpperTheory.Reformulated.B.SignActionTheta.trInv_J]`. Simplify using `only [← mul_assoc]`. Rewrite using `[UpperTheory.Reformulated.B.SignActionTheta.J_mul_J, one_mul, mul_assoc, UpperTheory.Reformulated.B.SignActionTheta.J_mul_J, mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux8.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g : GL (Fin m) R), UpperTheory.Reformulated.B.SignActionTheta.theta (UpperTheory.Reformulated.B.SignActionTheta.theta g) = g := by
   intro m R _ g
@@ -75,6 +99,9 @@ theorem UpperTheory.Reformulated.B.SignActionTheta.aux8.{u_1} :
   simp only [← mul_assoc]
   rw [UpperTheory.Reformulated.B.SignActionTheta.J_mul_J, one_mul, mul_assoc, UpperTheory.Reformulated.B.SignActionTheta.J_mul_J, mul_one]
 
+/- English proof (translation)
+Introduce `m R _ g h`. Unfold `UpperTheory.Reformulated.B.SignActionTheta.theta`. Rewrite using `[UpperTheory.Reformulated.B.SignActionTheta.trInv_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (UpperTheory.Reformulated.B.SignActionTheta.Jgl R m) (UpperTheory.Reformulated.B.SignActionTheta.Jgl R m) (UpperTheory.Reformulated.B.SignActionTheta.trInv h * _), UpperTheory.Reformulated.B.SignActionTheta.J_mul_J, one_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux9.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (g h : GL (Fin m) R),
       UpperTheory.Reformulated.B.SignActionTheta.theta (g * h) = UpperTheory.Reformulated.B.SignActionTheta.theta g * UpperTheory.Reformulated.B.SignActionTheta.theta h := by
@@ -91,6 +118,9 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.thetaAut.{u_1} :
       { toFun := UpperTheory.Reformulated.B.SignActionTheta.theta, invFun := UpperTheory.Reformulated.B.SignActionTheta.theta, left_inv := UpperTheory.Reformulated.B.SignActionTheta.aux8,
         right_inv := UpperTheory.Reformulated.B.SignActionTheta.aux8, map_mul' := UpperTheory.Reformulated.B.SignActionTheta.aux9 : GL (Fin m) R ≃* GL (Fin m) R }
 
+/- English proof (translation)
+Introduce `m R _`. Conclude with `if_pos rfl`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux11.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R],
       (if (1 : ℤˣ) = (1 : ℤˣ) then (1 : MulAut (GL (Fin m) R)) else UpperTheory.Reformulated.B.SignActionTheta.thetaAut m R) =
@@ -98,6 +128,11 @@ theorem UpperTheory.Reformulated.B.SignActionTheta.aux11.{u_1} :
   intro m R _
   exact if_pos rfl
 
+/- English proof (translation)
+Introduce `m R _ s t`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_pos (by simp), if_neg hne] ext1 g`. Conclude with `(UpperTheory.Reformulated.B.SignActionTheta.aux8 g).symm`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.aux12.{u_1} :
     ∀ (m : ℕ) (R : Type u_1) [inst : CommRing R] (s t : ℤˣ),
       (if s * t = (1 : ℤˣ) then (1 : MulAut (GL (Fin m) R)) else UpperTheory.Reformulated.B.SignActionTheta.thetaAut m R) =
@@ -123,6 +158,11 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.sgnAct.{u_1} :
     ℕ → (R : Type u_1) → [CommRing R] → Type u_1 :=
     fun (m : ℕ) (R : Type u_1) [CommRing R] ↦ GL (Fin m) R ⋊[UpperTheory.Reformulated.B.SignActionTheta.sgnAct m R] ℤˣ
 
+/- English proof (translation)
+Establish `hJ : Matrix.GeneralLinearGroup.map f (UpperTheory.Reformulated.B.SignActionTheta.Jgl R m) = UpperTheory.Reformulated.B.SignActionTheta.Jgl S m`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `f (UpperTheory.Reformulated.B.SignActionTheta.Jmat R m i j) = UpperTheory.Reformulated.B.SignActionTheta.Jmat S m i j`. Unfold `UpperTheory.Reformulated.B.SignActionTheta.Jmat`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hT : Matrix.GeneralLinearGroup.map f (UpperTheory.Reformulated.B.SignActionTheta.trInv g) = UpperTheory.Reformulated.B.SignActionTheta.trInv (Matrix.GeneralLinearGroup.map f g)`. Use extensionality with `i j`. Both sides reduce to the same expression. Unfold `UpperTheory.Reformulated.B.SignActionTheta.theta`. Rewrite using `[map_mul, map_mul, hJ, hT]`.
+-/
 private theorem UpperTheory.Reformulated.B.SignActionTheta.map_theta {m : ℕ} {R S : Type*} [CommRing R] [CommRing S]
     (f : R →+* S) (g : GL (Fin m) R) :
     Matrix.GeneralLinearGroup.map f (UpperTheory.Reformulated.B.SignActionTheta.theta g) =
@@ -139,6 +179,11 @@ private theorem UpperTheory.Reformulated.B.SignActionTheta.map_theta {m : ℕ} {
   unfold UpperTheory.Reformulated.B.SignActionTheta.theta
   rw [map_mul, map_mul, hJ, hT]
 
+/- English proof (translation)
+Introduce `m R S _ _ f s`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Use `ext1 g`. Simplify using the standard rewrite rules.
+
+Establish `h1 : UpperTheory.Reformulated.B.SignActionTheta.sgnAct m R (-1) = UpperTheory.Reformulated.B.SignActionTheta.thetaAut m R` using `if_neg (t := (1 : MulAut (GL (Fin m) R))) hne`. Establish `h2 : UpperTheory.Reformulated.B.SignActionTheta.sgnAct m S (-1) = UpperTheory.Reformulated.B.SignActionTheta.thetaAut m S` using `if_neg (t := (1 : MulAut (GL (Fin m) S))) hne`. Rewrite using `[MonoidHom.id_apply, h1, h2]`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Conclude with `UpperTheory.Reformulated.B.SignActionTheta.map_theta f g`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.sign_action_map_comm.{u_1, u_2} :
     ∀ {m : ℕ} {R : Type u_1} {S : Type u_2} [inst : CommRing R] [inst_1 : CommRing S] (f : R →+* S) (s : ℤˣ),
       (Matrix.GeneralLinearGroup.map f).comp
@@ -182,6 +227,9 @@ noncomputable def UpperTheory.Reformulated.B.SignActionTheta.conjBy.{u_1, u_3} :
               ((UpperTheory.Reformulated.B.SignActionTheta.ofGL : GL (Fin m) R → UpperTheory.Reformulated.B.SignActionTheta.GG m R) h))).comp
         r
 
+/- English proof (translation)
+Introduce `G R S _ _ _ m f h r`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `hi : UpperTheory.Reformulated.B.SignActionTheta.map f (UpperTheory.Reformulated.B.SignActionTheta.ofGL h) = UpperTheory.Reformulated.B.SignActionTheta.ofGL (Matrix.GeneralLinearGroup.map f h)` using `SemidirectProduct.map_inl _ _ _ h`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.SignActionTheta.map f (UpperTheory.Reformulated.B.SignActionTheta.ofGL h * r x * (UpperTheory.Reformulated.B.SignActionTheta.ofGL h)⁻¹) = UpperTheory.Reformulated.B.SignActionTheta.ofGL (Matrix.GeneralLinearGroup.map f h) * UpperTheory.Reformulated.B.Si …`. Rewrite using `[map_mul, map_mul, map_inv, hi]`.
+-/
 theorem UpperTheory.Reformulated.B.SignActionTheta.map_conjBy :
     ∀ {G R S : Type} [inst : Group G] [inst_1 : CommRing R] [inst_2 : CommRing S] {m : ℕ} (f : R →+* S) (h : GL (Fin m) R)
       (r : G →* UpperTheory.Reformulated.B.SignActionTheta.GG m R),

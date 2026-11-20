@@ -15,6 +15,9 @@ variable {Q F LL : Type} [Field Q] [CharZero Q] [Field F] [Algebra Q F] [FiniteD
 def ev (τ : F →ₐ[Q] LL) : LL ⊗[Q] F →ₗ[LL] LL :=
   (Algebra.TensorProduct.lift (AlgHom.id LL LL) τ (fun _ _ => Commute.all _ _)).toLinearMap
 
+/- English proof (translation)
+Simplify using `[ev]`.
+-/
 @[simp] theorem ev_tmul (τ : F →ₐ[Q] LL) (a : LL) (c : F) : ev τ (a ⊗ₜ[Q] c) = a * τ c := by
   simp [ev]
 

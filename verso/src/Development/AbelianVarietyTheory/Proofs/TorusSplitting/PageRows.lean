@@ -10,6 +10,37 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.EtaAn
 
+/- English proof (translation)
+Introduce `D large₂ CA hA hS`. Establish `hm4` using `host_m_pow_four_le_f hS`. Rewrite `hm4` using `[hostSize_f]`. Establish `hm2` using `D.R.two_le_m`. Establish `h16 : 16 ≤ D.R.f`.
+
+Establish `: 2 ^ 4 ≤ D.R.m ^ 4` using `Nat.pow_le_pow_left hm2 4`. Use linear arithmetic over natural numbers and integers. Establish `hC : SizeCond large₂` using `hS.2.2.2.2.2.1`. Establish `hQ : SizeQD large₂` using `hS.2.2.2.2.2.2.1`. Establish `hrd1 : 1 ≤ D.host.rdE` using `hQ.2.2.2.2.2.2.1`.
+
+Establish `hrd2 : D.host.rdE ≤ (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d)` using `hQ.2.2.2.2.2.2.2`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `hqd : (1 : ℝ) ≤ (D.host.q : ℝ) * D.host.d`.
+
+Establish `h0 : D.host.q * D.host.d ≠ 0`. Introduce `h`. Establish `h' : (D.host.q : ℝ) * D.host.d = 0` using `by exact_mod_cast h`. Rewrite `hrd2` using `[h', Real.sqrt_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: 1 ≤ D.host.q * D.host.d` using `Nat.one_le_iff_ne_zero.mpr h0`. Conclude with `this` after adjusting the coercions. Establish `hsq : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d`. Rewrite using `[Real.sqrt_le_left (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hc : szCond large₂ = (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d)`. Unfold `szCond`. Expand and normalize the polynomial expressions, which then agree. Establish `hfn : (D.R.f : ℝ) = 2 * D.R.n` using `by unfold Ranks.f; push_cast; ring`. Establish `hfc : (D.R.f : ℝ) ≤ szCond large₂`.
+
+Establish `h4 : ((4 * D.R.n : ℕ) : ℝ) ≤ ((D.host.QS * D.host.q * D.host.d : ℕ) : ℝ)` using `Nat.cast_le.2 D.host.four_ord_le_condN`. Move the coercions through the operations in `at h4`. Rewrite using `[hc, hfn]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hrc : D.host.rdE ≤ szCond large₂`.
+
+Rewrite using `[hc]`. Establish `: (D.host.QS : ℝ) / 2 * Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.QS : ℝ) / 2 * ((D.host.q : ℝ) * D.host.d)` using `mul_le_mul_of_nonneg_left hsq (by positivity)`. Establish `h0 : 0 ≤ (D.host.QS : ℝ) * ((D.host.q : ℝ) * D.host.d)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by linarith`.
+
+Establish `hc1 : 1 ≤ szCond large₂` using `le_trans hf1 hfc`. Establish `hrt : D.R.r + 5 ≤ D.R.t` using `D.R.rank_add_five_le`. Establish `hr1 : 1 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht3 : (3 : ℝ) ≤ D.R.t`. Establish `: 3 ≤ D.R.t` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hrt' : (D.R.r : ℝ) ≤ D.R.t`.
+
+Establish `: D.R.r ≤ D.R.t` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hr1' : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast hr1`. Establish `hlt : 1 ≤ Real.log D.R.t`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`.
+
+Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlc : 0 ≤ Real.log (szCond large₂)` using `Real.log_nonneg hc1`. Establish `hmain : 36 * Real.log (szCond large₂) + 150 * Real.log D.R.t ≤ large₂.sc.L / 2`. Establish `h1 : Real.sqrt large₂.sc.b = Real.exp (large₂.sc.L / 2)`.
+
+Unfold `Scale.b`. Rewrite using `[Real.exp_half]`. Establish `h2 : szCond large₂ ^ 36 * (D.R.t : ℝ) ^ 150 ≤ Real.exp (large₂.sc.L / 2)` using `h1 ▸ hC`. Establish `hp : 0 < szCond large₂ ^ 36` using `by positivity`. Establish `hp' : 0 < (D.R.t : ℝ) ^ 150` using `by positivity`.
+
+Establish `h3` using `Real.log_le_log (mul_pos hp hp') h2`. Rewrite `h3` using `[Real.log_exp, Real.log_mul hp.ne' hp'.ne', Real.log_pow, Real.log_pow]`. Conclude with `h3` after adjusting the coercions. Establish `a1 : Real.log D.R.r ≤ Real.log D.R.t` using `Real.log_le_log (by linarith) hrt'`. Establish `a2 : Real.log D.host.rdE ≤ Real.log (szCond large₂)` using `Real.log_le_log (by linarith) hrc`.
+
+Establish `a3 : Real.log D.R.f ≤ Real.log (szCond large₂)` using `Real.log_le_log (by linarith) hfc`. Use `⟨by linarith, by linarith, by linarith, by linarith, hA.2.2.2.2.1, h16⟩` and prove the remaining obligations.
+-/
 theorem page_rows : ∀ (D : D7) (large₂ : SizeData₂ D) (CA : ℝ), WeightAlgebra.ParA large₂ CA → SizesAt large₂ → 2 ≤ large₂.sc.L ∧ Real.log D.R.r ≤ large₂.sc.L ∧ Real.log D.host.rdE ≤ 2 * large₂.sc.L ∧ Real.log D.R.f ≤ 2 * large₂.sc.L ∧ (∀ i, Real.log (D.host.g i) ≤ 9 * large₂.sc.L + 1) ∧ 16 ≤ D.R.f := by
   intro D large₂ CA hA hS
   have hm4 := host_m_pow_four_le_f hS

@@ -5,6 +5,11 @@ universe u_1
 
 namespace Bl.FirstLemmaG
 
+/- English proof (translation)
+Introduce `p _ σ F i hF n`. Use `show ‖MvPowerSeries.coeff n (MvPowerSeries.pderiv (PadicComplex p) i F)‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_pderiv, norm_mul]`. Establish `h1 : ‖MvPowerSeries.coeff (n + Finsupp.single i 1) F‖ ≤ 1` using `hF _`. Establish `h2 : ‖((n i : PadicComplex p) + 1)‖ ≤ 1`.
+
+Use `IsUltrametricDist.norm_natCast_le_one (PadicComplex p) (n i + 1)` as an intermediate fact. Rewrite `this` using `[Nat.cast_succ]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem goal1 :
   ∀ {p : Nat} [inst : Fact (Nat.Prime p)] {σ : Type u_1} {F : MvPowerSeries.{u_1, 0} σ (PadicComplex p)} (i : σ),
   PI.JetsPhW.IntegralMv.{u_1} F →

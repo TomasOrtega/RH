@@ -8,6 +8,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.FontaineFullyFaithful
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp [TensorProduct.smul_tmul', map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem map_algHom_smul {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (σ : R →ₐ[O] R) (g : M →ₗ[O] N) (r : R) (y : R ⊗[O] M) :
     TensorProduct.map σ.toLinearMap g (r • y) = σ r • TensorProduct.map σ.toLinearMap g y := by
@@ -16,6 +19,11 @@ theorem map_algHom_smul {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R]
   | tmul a m => simp [TensorProduct.smul_tmul', map_mul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span R (Set.range v)` using `by rw [hv]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `h i`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => simp only [map_add, hy, hz]`. Consider the case `smul r y _ hy => rw [hP, hQ, hy]`.
+-/
 theorem ext_span {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     {O : Type} [CommRing O] [Module O M] [Module O N] {ι : Type} (v : ι → M)
     (hv : Submodule.span R (Set.range v) = ⊤) (P Q : M →ₗ[O] N) (hP : ∀ (r : R) y, P (r • y) = r • P y)
@@ -27,6 +35,11 @@ theorem ext_span {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddC
   | add y z _ _ hy hz => simp only [map_add, hy, hz]
   | smul r y _ hy => rw [hP, hQ, hy]
 
+/- English proof (translation)
+Set `ι : N →ₗ[O] R ⊗[O] N` to `TensorProduct.mk O R N 1`. Establish `hι : Function.Injective ι` using `hinj`. Establish `hg' : ∀ m, g m ∈ LinearMap.range ι` using `fun m => by`. Take `⟨n, hn⟩` from `hg m`. Conclude with `⟨n, hn.symm⟩`.
+
+Use `⟨(LinearEquiv.ofInjective ι hι).symm.toLinearMap.comp (g.codRestrict _ hg'), fun m => ?_⟩` and prove the remaining obligations. Conclude with `LinearEquiv.ofInjective_symm_apply (h := hι) ι (g.codRestrict _ hg' m)`.
+-/
 theorem exists_fixed_lift {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] [AddCommGroup N] [Module O N] (g : M →ₗ[O] R ⊗[O] N)
     (hinj : Function.Injective (fun n : N => (1 : R) ⊗ₜ[O] n)) (hg : ∀ m, ∃ n, g m = (1 : R) ⊗ₜ[O] n) :
@@ -38,6 +51,9 @@ theorem exists_fixed_lift {O R M N : Type} [CommRing O] [CommRing R] [Algebra O 
   refine ⟨(LinearEquiv.ofInjective ι hι).symm.toLinearMap.comp (g.codRestrict _ hg'), fun m => ?_⟩
   exact LinearEquiv.ofInjective_symm_apply (h := hι) ι (g.codRestrict _ hg' m)
 
+/- English proof (translation)
+The claim follows from `exists_fixed_lift ((ft.restrictScalars O).comp (TensorProduct.mk O R M 1)) hinj hg`.
+-/
 theorem exists_fixed_lift' {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] [AddCommGroup N] [Module O N] (ft : R ⊗[O] M →ₗ[R] R ⊗[O] N)
     (hinj : Function.Injective (fun n : N => (1 : R) ⊗ₜ[O] n))
@@ -45,6 +61,11 @@ theorem exists_fixed_lift' {O R M N : Type} [CommRing O] [CommRing R] [Algebra O
     ∃ F0 : M →ₗ[O] N, ∀ m, (1 : R) ⊗ₜ[O] F0 m = ft ((1 : R) ⊗ₜ[O] m) :=
   exists_fixed_lift ((ft.restrictScalars O).comp (TensorProduct.mk O R M 1)) hinj hg
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[TensorProduct.map_tmul, LinearMap.id_apply, hg]`. Establish `e1 : a ⊗ₜ[O] (F0 m) = a • ((1 : R) ⊗ₜ[O] (F0 m))`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `e2 : a ⊗ₜ[O] m = a • ((1 : R) ⊗ₜ[O] m)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e1, e2, hF0, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensor_map_eq {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] [AddCommGroup N] [Module O N] (g F0 : M →ₗ[O] N) (ft : R ⊗[O] M →ₗ[R] R ⊗[O] N)
     (hF0 : ∀ m, (1 : R) ⊗ₜ[O] F0 m = ft ((1 : R) ⊗ₜ[O] m)) (hg : ∀ m, g m = F0 m) (y : R ⊗[O] M) :
@@ -60,6 +81,9 @@ theorem tensor_map_eq {O R M N : Type} [CommRing O] [CommRing R] [Algebra O R] [
     rw [e1, e2, hF0, map_smul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hsm : ∀ (k : M →ₗ[O] N) (r : R) (y : R ⊗[O] M), TensorProduct.map (LinearMap.id : R →ₗ[O] R) k (r • y) = r • TensorProduct.map (LinearMap.id : R →ₗ[O] R) k y` using `fun k r y => by`. Simplify using `using map_algHom_smul (AlgHom.id O R) k r y`. Use `ext_span v hv _ _ (hsm g) (hsm g') h ((1 : R) ⊗ₜ[O] m)` as an intermediate fact. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply] at this`. Conclude with `hinj this`.
+-/
 theorem uniq_of_span {O R M N ι : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup M]
     [Module O M] [AddCommGroup N] [Module O N] (v : ι → R ⊗[O] M)
     (hv : Submodule.span R (Set.range v) = ⊤) (g g' : M →ₗ[O] N)
@@ -75,6 +99,23 @@ theorem uniq_of_span {O R M N ι : Type} [CommRing O] [CommRing R] [Algebra O R]
 
 end GlobalTheory.FontaineFullyFaithful
 
+/- English proof (translation)
+Use `haveI := T.L.free`. Set `bT` to `Module.Free.chooseBasis O ↥T.L.T`. Set `v : Module.Free.ChooseBasisIndex O ↥T.L.T → T.V` to `fun i => (bT i : T.V)`. Establish `hliO : LinearIndependent O v` using `bT.linearIndependent.map' T.L.T.subtype (Submodule.ker_subtype _)`. Establish `hli : LinearIndependent LL v` using `(LinearIndependent.iff_fractionRing (R := O) (K := LL)).mp hliO`.
+
+Establish `hO : Submodule.span O (Set.range v) = T.L.T`. Rewrite using `[show Set.range v = T.L.T.subtype '' Set.range bT from Set.range_comp _ _, Submodule.span_image, bT.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hsp : ⊤ ≤ Submodule.span LL (Set.range v)`. Rewrite using `[← T.L.span, Submodule.span_le]`. Introduce `x hx`.
+
+Establish `hx1 : x ∈ Submodule.span O (Set.range v)` using `by rw [hO]; exact hx`. Conclude with `Submodule.span_le_restrictScalars O LL (Set.range v) hx1`. Choose the witnesses or unpack the hypotheses as in `⟨Ff, hFv⟩ : ∃ Ff : T.V →ₗ[LL] T'.V, ∀ i, Ff (v i) = ((F0 (bT i) : ↥T'.L.T) : T'.V) := by`. Use `⟨(Basis.mk hli hsp).constr LL (fun i => ((F0 (bT i) : ↥T'.L.T) : T'.V)), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[show v i = Basis.mk hli hsp i from (Basis.mk_apply hli hsp i).symm]`.
+
+Conclude with `(Basis.mk hli hsp).constr_basis LL _ i`. Establish `hFT : ∀ t : ↥T.L.T, Ff (t : T.V) = ((F0 t : ↥T'.L.T) : T'.V)`. Establish `: (Ff.restrictScalars O).comp T.L.T.subtype = T'.L.T.subtype.comp F0` using `bT.ext (fun i => hFv i)`. Introduce `t`. Conclude with `LinearMap.congr_fun this t`.
+
+Establish `hequiv : ∀ g x, Ff (T.ρ g x) = T'.ρ g (Ff x)`. Introduce `g`. Establish `: Ff.comp (T.ρ g) = (T'.ρ g).comp Ff` using `LinearMap.ext_on T.L.span (fun x hx => by`. Establish `h1` using `hFT (T.actT g ⟨x, hx⟩)`. Rewrite `h1` using `[hF0]`.
+
+Establish `h2 : Ff x = _` using `hFT ⟨x, hx⟩`. Use `show Ff (T.ρ g x) = T'.ρ g (Ff x)`. Rewrite using `[h2]`. Conclude with `h1)`. Introduce `x`.
+
+Conclude with `LinearMap.congr_fun this x`. Use `haveI : ContinuousSMul LL T'.V := IsModuleTopology.toContinuousSMul LL T'.V`. Use `⟨LatHom.mk Ff hequiv (IsModuleTopology.continuous_of_linearMap Ff) (fun x hx => ?_), hFT⟩` and prove the remaining obligations. Establish `h2 : Ff x = _` using `hFT ⟨x, hx⟩`. Rewrite using `[h2]`.
+
+Conclude with `(F0 ⟨x, hx⟩).2`.
+-/
 theorem GlobalTheory.FontaineFullyFaithful.exists_latHom {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsFractionRing O LL]
     (T T' : LocLat G Qp LL O) (F0 : ↥T.L.T →ₗ[O] ↥T'.L.T)
@@ -120,10 +161,28 @@ theorem GlobalTheory.FontaineFullyFaithful.exists_latHom {G : Type} [Group G] [T
   rw [h2]
   exact (F0 ⟨x, hx⟩).2
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1`.
+-/
 theorem GlobalTheory.FontaineFullyFaithful.isFractionRing_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) : IsFractionRing ↥(OL LL) ↥LL.1 :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Use `haveI := Module.subsingleton R P`. Conclude with `⟨0, fun x => Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial E := io.domain_nontrivial`. Use `haveI : Module.Finite E D := by`.
+
+Break down `Nat.eq_zero_or_pos (Module.finrank O M) with h0 | hp` into its components or cases. Use `haveI : Subsingleton M := (Module.finBasisOfFinrankEq O M h0).repr.injective.subsingleton haveI : Subsingleton D := hinj.subsingleton infer_instance`. Conclude with `Module.finite_of_finrank_pos (hr ▸ hp)`. Set `b` to `Module.finBasisOfFinrankEq E D hr`. Establish `hexp : ∀ {D₁ P₁ : Type} [AddCommGroup D₁] [Module E D₁] [AddCommGroup P₁] [Module R P₁] (k : D₁ →+ P₁) (_ : ∀ (e : E) x, k (e • x) = io e • k x) (g : D →ₗ[E] D₁) (x : D), k (g x) = ∑ i, io (b.repr x i) • k (g (b i))`.
+
+Introduce `D₁ P₁ _ _ _ _ k hk g x`. Use `conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, map_smul, hk]`. Establish `hsp' : ⊤ ≤ Submodule.span R (Set.range fun i => j (b i))`. Rewrite using `[← hsp, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Use `hexp j hj LinearMap.id x` as an intermediate fact. Simplify using `only [LinearMap.id_apply] at this`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hli : LinearIndependent R fun i => j (b i)`. Set `c` to `Algebra.TensorProduct.basis R (Module.finBasis O M)`. Establish `hs : Function.Surjective (Finsupp.linearCombination R fun i => j (b i))`. Rewrite using `[← LinearMap.range_eq_top, Finsupp.range_linearCombination]`. Conclude with `top_le_iff.mp hsp'`.
+
+Conclude with `OrzechProperty.injective_of_surjective_of_injective c.repr.symm.toLinearMap _ c.repr.symm.injective hs`. Use `⟨(Basis.mk hli hsp').constr R fun i => j' (f (b i)), fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hexp j hj LinearMap.id x`. Simplify using `only [LinearMap.id_apply] at h1`. Rewrite using `[h1, hexp j' hj' f x, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, show j (b i) = Basis.mk hli hsp' i from (Basis.mk_apply hli hsp' i).symm, Basis.constr_basis]`.
+-/
 theorem GlobalTheory.FontaineFullyFaithful.exists_extension {O E R D D' M P : Type} [CommRing O] [Nontrivial O] [CommRing E] [CommRing R]
     [Algebra O R] [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M]
     [AddCommGroup D] [Module E D] [Module.Free E D] [AddCommGroup D'] [Module E D'] [AddCommGroup P] [Module R P]
@@ -169,6 +228,9 @@ theorem GlobalTheory.FontaineFullyFaithful.exists_extension {O E R D D' M P : Ty
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, show j (b i) = Basis.mk hli hsp' i from (Basis.mk_apply hli hsp' i).symm, Basis.constr_basis]
 
+/- English proof (translation)
+Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := T.L.free`. Use `haveI : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.mpr T.L.fg`. Use `haveI := (W.DD_free T).1`. Conclude with `GlobalTheory.FontaineFullyFaithful.exists_extension (W.DD_free T).2 E.ioE.toRingHom (E.jD T).toAddMonoidHom (E.jD T').toAddMonoidHom (E.jD_smul T) (E.jD_smul T') (E.jD_inj T) (E.jD_span T) f`.
+-/
 theorem GlobalTheory.FontaineFullyFaithful.exists_extension_tie {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -188,6 +250,27 @@ theorem GlobalTheory.FontaineFullyFaithful.exists_extension_tie {G : Type} [Grou
     (E.jD T').toAddMonoidHom (E.jD_smul T) (E.jD_smul T') (E.jD_inj T) (E.jD_span T) f
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨ft, hft'⟩` from `GlobalTheory.FontaineFullyFaithful.exists_extension_tie E T T' f`. Establish `comm : ∀ (σ : R →ₐ[O] R) (A : TW R T →ₗ[O] TW R T) (A' : TW R T' →ₗ[O] TW R T'), (∀ (r : R) (y : TW R T), A (r • y) = σ r • A y) → (∀ (r : R) (y : TW R T'), A' (r • y) = σ r • A' y) → (∀ x, ft (A (E.jD T x)) = A' (ft (E.jD T x))) → ∀ y, ft (A y) = A' (ft y)`. Introduce `σ A A' hA hA' hx y`. Establish `hy : y ∈ Submodule.span R (Set.range (E.jD T))` using `by rw [E.jD_span T]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => obtain ⟨x, rfl⟩ := hy`. Conclude with `hx x`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp only [map_add, hy, hz]`. Consider the case `smul r y _ hy => rw [hA, map_smul, hy, map_smul, hA']`.
+
+Establish `hφt : ∀ y, ft (TWmap φR T y) = TWmap φR T' (ft y)` using `comm φR (TWmap φR T) (TWmap φR T') (fun r y => GlobalTheory.FontaineFullyFaithful.map_algHom_smul φR LinearMap.id r y) (fun r y => GlobalTheory.FontaineFullyFaithful.map_algHom_smul φR LinearMap.id r y) (fun x => (congrArg ft (E.jD_φ T x)).symm.trans ((hft' _).trans ((congrArg (E …`. Establish `hgt : ∀ (g : G) y, ft (TWact (gR g) T g y) = TWact (gR g) T' g (ft y)` using `fun g => comm (gR g) (TWact (gR g) T g) (TWact (gR g) T' g) (fun r y => GlobalTheory.FontaineFullyFaithful.map_algHom_smul (gR g) (T.actT g) r y) (fun r y => GlobalTheory.FontaineFullyFaithful.map_algHom_smul (gR g) (T'.actT g) r y) (fun x => by`. Establish `h1` using `E.jD_act T g x`. Establish `h2` using `E.jD_act T' g (f x)`. Conclude with `(congrArg ft h1).symm.trans ((hft' _).trans ((congrArg (E.jD T') (hγ _ x)).trans (h2.trans (congrArg (TWact (gR g) T' g) (hft' x).symm)))))`.
+
+Establish `hφ1 : ∀ (T₀ : LocLat G Qp LL O) (t₀ : ↥T₀.L.T), TWmap φR T₀ ((1 : R) ⊗ₜ[O] t₀) = (1 : R) ⊗ₜ[O] t₀`. Introduce `T₀ t₀`. Simplify using `only [TWmap, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply]`. Establish `hg0 : ∀ t : ↥T.L.T, ∃ t' : ↥T'.L.T, ft ((1 : R) ⊗ₜ[O] t) = (1 : R) ⊗ₜ[O] t'`. Introduce `t`.
+
+Establish `hb : TWmap φR T' (ft ((1 : R) ⊗ₜ[O] t)) = ft ((1 : R) ⊗ₜ[O] t)`. Rewrite using `[← hφt, hφ1]`. Conclude with `hfix _ hb`. Take `⟨F0, hF0⟩` from `GlobalTheory.FontaineFullyFaithful.exists_fixed_lift' ft hinj' hg0`. Establish `hact1 : ∀ (T₀ : LocLat G Qp LL O) (g : G) (t₀ : ↥T₀.L.T), TWact (gR g) T₀ g ((1 : R) ⊗ₜ[O] t₀) = (1 : R) ⊗ₜ[O] (T₀.actT g t₀)`.
+
+Introduce `T₀ g t₀`. Simplify using `only [TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one]`. Establish `heq : ∀ g t, F0 (T.actT g t) = T'.actT g (F0 t)`. Introduce `g t`. Conclude with `hinj' ((hF0 _).trans ((congrArg ft (hact1 T g t).symm).trans ((hgt g _).trans ((congrArg (TWact (gR g) T' g) (hF0 t).symm).trans (hact1 T' g (F0 t))))))`.
+
+Take `⟨Fl, hFl⟩` from `GlobalTheory.FontaineFullyFaithful.exists_latHom T T' F0 heq`. Establish `hFlmap : ∀ x, W.map Fl x = f x`. Introduce `x`. Apply `E.jD_inj T'` to reduce the goal to its premises. Use `(E.jD_map Fl x).trans ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.FontaineFullyFaithful.tensor_map_eq _ F0 ft hF0 (fun t => ?_) _).trans (hft' x)` and prove the remaining obligations. Conclude with `Subtype.ext (hFl t)`. Use `⟨Fl, hFlmap, ?_⟩` and prove the remaining obligations. Introduce `F' hF'`. Establish `hgg` using `GlobalTheory.FontaineFullyFaithful.uniq_of_span (E.jD T) (E.jD_span T) _ _ hinj' (fun x => (E.jD_map F' x).symm.trans ((congrArg (E.jD T') ((hF' x).trans (hFlmap x).symm)).trans (E.jD_map Fl x)))`.
+
+Establish `hv : ∀ t : ↥T.L.T, F'.f (t : T.V) = Fl.f (t : T.V)` using `fun t => congrArg Subtype.val (hgg t)`. Establish `hff : F'.f = Fl.f` using `LinearMap.ext_on T.L.span (fun v hv' => hv ⟨v, hv'⟩)`. Consider the cases of `F'`. Consider the cases of `Fl`. Simplify using `only at hff`.
+
+Substitute `hff` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem GlobalTheory.FontaineFullyFaithful.main_tie {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -271,6 +354,9 @@ private theorem GlobalTheory.FontaineFullyFaithful.main_tie {G : Type} [Group G]
 
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W T T' f hφ hγ`. Use `haveI := GlobalTheory.FontaineFullyFaithful.isFractionRing_OL l LL`. Conclude with `GlobalTheory.FontaineFullyFaithful.main_tie ((F l).E K s LL h).tie T T' f hφ hγ (fun y hy => ((GlobalTheory.WittTensorFixed.main l K LL T').2.1 y).1 hy) (GlobalTheory.WittTensorFixed.main l K LL T').2.2`.
+-/
 theorem GlobalTheory.FontaineFullyFaithful.main : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ (T T' : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (f : W.DD T →ₗ[W.EE] W.DD T'), (∀ x, f (W.φD T x) = W.φD T' (f x)) → (∀ g x, f (W.γD T g x) = W.γD T' g (f x)) → ∃! F : LatHom T.L T'.L, ∀ x, W.map F x = f x := by
   intro D HW F l _ K s LL h W T T' f hφ hγ
   haveI := GlobalTheory.FontaineFullyFaithful.isFractionRing_OL l LL

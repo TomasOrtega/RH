@@ -28,11 +28,21 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : 
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (DFunLike.coe_injective ((HeightOneSpectrum.denseRange_algebraMap E w).equalizer j.2 j'.2 (funext H)))`.
+-/
 theorem emb_ext {j j' : {j : w.adicCompletion E →+* Qbar l // Continuous j}}
     (H : ∀ x : E, j.1 (algebraMap E (w.adicCompletion E) x) = j'.1 (algebraMap E (w.adicCompletion E) x)) : j = j' :=
   Subtype.ext (DFunLike.coe_injective
     ((HeightOneSpectrum.denseRange_algebraMap E w).equalizer j.2 j'.2 (funext H)))
 
+/- English proof (translation)
+Set `σ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Qbar l` to `LL.1.val.comp τ'`. Establish `hσ : ∀ y : ↥Bw.Kw.1, ‖σ y‖ = ‖(y : Qbar l)‖` using `fun y => by`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, minpoly.algHom_eq σ σ.injective, ← minpoly.algHom_eq Bw.Kw.1.val Bw.Kw.1.val.injective]`. Both sides reduce to the same expression. Set `τ : E →+* Qbar l` to `σ.toRingHom.comp ((Bw.j.comp (algebraMap E Ω)).codRestrict Bw.Kw.1 fun x => Bw.j_E x)`.
+
+Establish `hτ : ∀ x : E, ‖τ x‖ = ‖Bw.j (algebraMap E Ω x)‖` using `fun x => hσ _`. Take `⟨v, hv⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding E l τ`. Choose the witnesses or unpack the hypotheses as in `rfl : v = w := by`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`.
+
+Rewrite using `[← h y, hj.valuation_lt_one_iff, ← hτ, ← hv, ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`. Take `⟨j, hc, e⟩` from `GlobalTheory.exists_continuous_extension_adicCompletion E l τ v hv`. Conclude with `⟨⟨j, hc⟩, fun x => DFunLike.congr_fun e x⟩`.
+-/
 theorem exists_emb (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : GlobalTheory.Pst.Induces Bw)
     {LL : FinExt l} (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL.1) :
     ∃ j : {j : w.adicCompletion E →+* Qbar l // Continuous j}, ∀ x : E, j.1 (algebraMap E (w.adicCompletion E) x) =
@@ -55,6 +65,9 @@ theorem exists_emb (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use `Bw.Kw.2` as an intermediate fact. Establish `hd : DenseRange fun x : E => (⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩ : ↥Bw.Kw.1)` using `fun y => by`. Rewrite using `[closure_subtype, ← Set.range_comp]`. Conclude with `Bw.j_dense y.2`. Conclude with `DFunLike.coe_injective (hd.equalizer τ.toLinearMap.continuous_of_finiteDimensional τ'.toLinearMap.continuous_of_finiteDimensional (funext H))`.
+-/
 theorem algHom_ext {Gw : Subgroup (Ω ≃ₐ[E] Ω)} (Bw : LocBridge l E Ω Gw O) {LL : FinExt l}
     {τ τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL.1}
     (H : ∀ x : E, τ ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩ = τ' ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩) : τ = τ' := by
@@ -73,6 +86,17 @@ variable (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 variable {E Ω l} in
 
+/- English proof (translation)
+Take `⟨c, hc, hcσ, -, -⟩` from `GlobalTheory.LTExt.exists_lubinTate_char E Ω w A h a ha π hπ`. Take `⟨LL, hL, -, hjL⟩` from `exists_big (E := E) L₁ 1 one_pos w`. Set `jL : w.adicCompletion E →+* ↥LL.1` to `j₀.1.codRestrict LL.1 (hjL j₀)`. Set `ψ : ↥(Dec (F` to `E) A) →* GL (Fin 1) ↥LL.1 := (Units.map ((Matrix.scalar (Fin 1) : ↥LL.1 →+* Matrix (Fin 1) (Fin 1) ↥LL.1).comp jL).toMonoidHom).comp c`. Establish `hψ : ∀ g, ent ψ g = j₀.1 (c g : (w.adicCompletion E)ˣ)` using `fun g => by`.
+
+Simplify using `[ent, ψ, jL]`. Establish `hW : ∀ σ : Weil h, ent ψ ⟨σ, Weil_le_Dec h σ.2⟩ = j₀.1 (((a σ : (w.adicCompletion E)ˣ) : w.adicCompletion E) * ((π : w.adicCompletion E) ^ deg σ))` using `fun σ => by`. Rewrite using `[hψ, hcσ, Units.val_mul, Units.val_zpow_eq_zpow_val]`. Use `⟨LL, ψ, hL, (j₀.2.comp hc).congr fun g => (hψ g).symm, hW, ?_⟩` and prove the remaining obligations. Establish `hv : Valued.v ((1 : w.adicCompletion E) + π) = 1`.
+
+Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Unfold `IsUnifAt at hπ`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `h0 : (1 : w.adicCompletion E) + π ≠ 0` using `fun h0 => by simp [h0] at hv`.
+
+Take `⟨σ, hσ⟩` from `ha.surj (Units.mk0 _ h0)`. Establish `hd : deg σ = 0`. Use `ha.ord_eq σ` as an intermediate fact. Rewrite `this` using `[hσ, GlobalTheory.SmGL.SphCompletion.ord_completion, Units.val_mk0, hv]`. Simplify using `using this.symm`.
+
+Use `⟨σ, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hW, hd, hσ]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_char {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω} (h : IsPlaceOver A w)
     (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (π : (w.adicCompletion E)ˣ) (hπ : IsUnifAt w π)
     (j₀ : {j : w.adicCompletion E →+* Qbar l // Continuous j}) (L₁ : FinExt l) :
@@ -127,6 +151,13 @@ def LTCrysEmb : Prop :=
         (∀ x : E, j.1 (algebraMap E (w.adicCompletion E) x) = ((τ' ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩ : ↥LL.1) : Qbar l)) →
         ∀ n : ℤ, Bw.multE P LL ψ τ' n = if n = (if j = j₀ then -1 else 0) then 1 else 0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ`. Take `⟨h1, h2, h3, h4⟩` from `H E Ω l P AI hT w A h O Bw hB a ha π hπ j₀ LL ψ hc hψ`. Use `⟨h1, h2, fun τ' j hj n => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : j = j₀`.
+
+Substitute `e` using the available equality. Simplify using `using h3 τ' hj n`. Simplify `h4 τ' (fun H' => e (emb_ext fun x => (hj x).trans (H' x).symm)) n` using `[e]`. Introduce `H E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ`. Take `⟨h1, h2, h3⟩` from `H E Ω l P AI hT w A h O Bw hB a ha π hπ j₀ LL ψ hc hψ`.
+
+Use `⟨h1, h2, fun τ' hτ n => by simpa using h3 τ' j₀ hτ n, fun τ' hτ n => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_emb Bw h hB τ'`. Establish `e : j ≠ j₀` using `fun e => hτ (e ▸ hj)`. Simplify `h3 τ' j hj n` using `[e]`.
+-/
 theorem ltCrys_iff_emb : LTCrys ↔ LTCrysEmb := by
   constructor
   · intro H E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ
@@ -147,19 +178,33 @@ section SlopeTestRemainingChoices
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Simplify using `[ent, Matrix.mul_apply]`.
+-/
 theorem ent_mul {G : Type} [Group G] {LL : FinExt l} (ψ : G →* GL (Fin 1) ↥LL.1) (g g' : G) :
     ent ψ (g * g') = ent ψ g * ent ψ g' := by
   simp [ent, Matrix.mul_apply]
 
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 theorem ent_one {G : Type} [Group G] {LL : FinExt l} (ψ : G →* GL (Fin 1) ↥LL.1) : ent ψ 1 = 1 := by
   simp [ent]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [ent_one]`. Consider the case `succ n ih => rw [pow_succ, ent_mul, ih, pow_succ]`.
+-/
 theorem ent_pow {G : Type} [Group G] {LL : FinExt l} (ψ : G →* GL (Fin 1) ↥LL.1) (g : G) (n : ℕ) :
     ent ψ (g ^ n) = ent ψ g ^ n := by
   induction n with
   | zero => simp [ent_one]
   | succ n ih => rw [pow_succ, ent_mul, ih, pow_succ]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨C, hC⟩` from `(isCompact_range hc).isBounded.exists_norm_le`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Use `hC _ ⟨g ^ n, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[ent_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_ent_le {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {LL : FinExt l}
     (ψ : G →* GL (Fin 1) ↥LL.1) (hc : Continuous (ent ψ)) (g : G) : ‖ent ψ g‖ ≤ 1 := by
   by_contra hlt
@@ -170,6 +215,9 @@ theorem norm_ent_le {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {
   rw [ent_pow, norm_pow] at this
   linarith
 
+/- English proof (translation)
+Establish `h1` using `norm_ent_le ψ hc g`. Establish `h2` using `norm_ent_le ψ hc g⁻¹`. Establish `h3 : ‖ent ψ g‖ * ‖ent ψ g⁻¹‖ = 1` using `by rw [← norm_mul, ← ent_mul, mul_inv_cancel, ent_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ent ψ g), norm_nonneg (ent ψ g⁻¹)]`.
+-/
 theorem norm_ent {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {LL : FinExt l}
     (ψ : G →* GL (Fin 1) ↥LL.1) (hc : Continuous (ent ψ)) (g : G) : ‖ent ψ g‖ = 1 := by
   have h1 := norm_ent_le ψ hc g
@@ -180,18 +228,27 @@ theorem norm_ent {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {LL 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
 open Classical in
+/- English proof (translation)
+Unfold `algChar`. Rewrite using `[finprod_eq_single _ j₀ (fun j hj => by simp [hj])]`. Simplify using the standard rewrite rules.
+-/
 theorem algChar_single (j₀ : {j : w.adicCompletion E →+* Qbar l // Continuous j}) (x : w.adicCompletion E) :
     algChar w (fun j => if j = j₀ then 1 else 0) x = (j₀.1 x)⁻¹ := by
   unfold algChar
   rw [finprod_eq_single _ j₀ (fun j hj => by simp [hj])]
   simp
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.SphCompletion.ord_completion]`. Unfold `IsUnitAt at hx`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_unit {x : (w.adicCompletion E)ˣ} (hx : IsUnitAt w x) : GlobalTheory.SmGL.ord (w.adicCompletion E) x = 0 := by
   rw [GlobalTheory.SmGL.SphCompletion.ord_completion]
   unfold IsUnitAt at hx
   rw [hx]
   simp
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.SphCompletion.ord_completion]`. Unfold `IsUnifAt at hx`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx, ← WithZero.exp_neg, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_unif_inv {x : (w.adicCompletion E)ˣ} (hx : IsUnifAt w x) :
     GlobalTheory.SmGL.ord (w.adicCompletion E) x⁻¹ = -1 := by
   rw [GlobalTheory.SmGL.SphCompletion.ord_completion]
@@ -203,6 +260,27 @@ end SlopeTestRemainingChoices
 
 open Classical in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ`. Establish `: CompactSpace (Dec (F` using `E) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Establish `hmem : ∀ g, ent ψ g ∈ LL.1` using `fun g => Subtype.property _`. Establish `hπ0 : (π : w.adicCompletion E) ≠ 0` using `π.ne_zero`. Establish `hv : Valued.v ((1 : w.adicCompletion E) + π) = 1`.
+
+Apply `Valuation.map_one_add_of_lt` to reduce the goal to its premises. Unfold `IsUnifAt at hπ`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hπL : j₀.1 (π : w.adicCompletion E) ∈ LL.1`.
+
+Establish `h0 : (1 : w.adicCompletion E) + π ≠ 0` using `fun h0 => by simp [h0] at hv`. Take `⟨σ, hσ⟩` from `ha.surj (Units.mk0 _ h0)`. Establish `hd : deg σ = 0`. Use `ha.ord_eq σ` as an intermediate fact. Rewrite `this` using `[hσ, ord_unit (x := Units.mk0 _ h0) hv]`.
+
+Use linear arithmetic over natural numbers and integers. Use `hmem ⟨σ, Weil_le_Dec h σ.2⟩` as an intermediate fact. Rewrite `this` using `[hψ, hd, hσ]`. Simplify using `only [zpow_zero, mul_one, Units.val_mk0, map_add, map_one] at this`. Simplify using `using LL.1.sub_mem this LL.1.one_mem`.
+
+Establish `hall : ∀ x : (w.adicCompletion E)ˣ, j₀.1 (x : w.adicCompletion E) ∈ LL.1` using `fun x => by`. Take `⟨σ, rfl⟩` from `ha.surj x`. Establish `h1` using `hmem ⟨σ, Weil_le_Dec h σ.2⟩`. Rewrite `h1` using `[hψ, map_mul, map_zpow₀]`. Establish `h2` using `LL.1.mul_mem h1 (LL.1.inv_mem (LL.1.toSubfield.zpow_mem hπL (deg σ)))`.
+
+Establish `h3 : j₀.1 (π : w.adicCompletion E) ^ deg σ ≠ 0` using `zpow_ne_zero _ (by simp)`. Rewrite `h2` using `[mul_inv_cancel_right₀ h3]`. Then use the resulting hypothesis. Take `⟨h1, h2, h3⟩` from `H E Ω l P AI hT w A h O Bw hB a ha LL ψ hc (norm_ent ψ hc) (fun j => if j = j₀ then 1 else 0) (fun x => by rw [algChar_single]; exact LL.1.inv_mem (hall x)) (fun σ hσ => by`. Establish `hd : deg σ = 0`. Use `ha.ord_eq σ` as an intermediate fact.
+
+Rewrite `this` using `[ord_unit hσ]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[algChar_single, hψ, hd]`. Use the proof step `simp)`. Use `⟨h1, fun x hx => ?_, fun τ' j hj n => ?_⟩` and prove the remaining obligations.
+
+Take `⟨σ, hσ⟩` from `ha.surj π⁻¹`. Establish `hd : deg σ = 1`. Use `ha.ord_eq σ` as an intermediate fact. Rewrite `this` using `[hσ, ord_unif_inv hπ]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨c, hc1, hc2⟩` from `h3 π σ hπ hσ x hx`. Use `⟨c, ?_, hc2⟩` and prove the remaining obligations. Rewrite using `[hc1, algChar_single, hψ, hd, hσ]`. Simplify using the standard rewrite rules. Rewrite using `[h2 τ' j hj n]`.
+
+Apply the tactic sequence `by_cases hjj : j = j₀ <;> simp [hjj]`.
+-/
 theorem emb_of_conrad (H : ConradLocalTied) : LTCrysEmb := by
   intro E Ω _ _ _ _ _ l _ P AI hT w A h O _ _ _ Bw hB a ha π hπ j₀ LL ψ hc hψ
   have : CompactSpace (Dec (F := E) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact
@@ -260,6 +338,13 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {l : ℕ}
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 ℚ)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `h1 : Ideal.absNorm w.asIdeal ∣ Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)})` using `map_dvd _ (Ideal.dvd_span_singleton.mpr hw)`. Establish `h2 : Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: ((l : ℕ) : 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ) (l : ℤ)` using `by simp`.
+
+Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Establish `h3 : Ideal.absNorm w.asIdeal = normV w`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Rewrite using `[← h3]`. Conclude with `(hl.eq_one_or_self_of_dvd _ h1).resolve_left fun e => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 e)`.
+-/
 theorem normV_rat (hw : w ∈ placesOver ℚ l) : normV w = l := by
   have hl : l.Prime := Fact.out
   have h1 : Ideal.absNorm w.asIdeal ∣ Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) :=
@@ -275,6 +360,9 @@ theorem normV_rat (hw : w ∈ placesOver ℚ l) : normV w = l := by
   rw [← h3]
   exact (hl.eq_one_or_self_of_dvd _ h1).resolve_left fun e => w.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 e)
 
+/- English proof (translation)
+Establish `h : Valued.v (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = v.valuation E (algebraMap (𝓞 E) E (M : 𝓞 E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Establish `e : (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) = ((M : ℕ) : v.adicCompletion E)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap E (v.adicCompletion E)) M`. Rewrite using `[← e, h, HeightOneSpectrum.valuation_of_algebraMap]`.
+-/
 theorem val_natCast {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 E)) (M : ℕ) :
     Valued.v ((M : ℕ) : v.adicCompletion E) = v.intValuation (M : 𝓞 E) := by
   have h : Valued.v (((algebraMap (𝓞 E) E (M : 𝓞 E) : E)) : v.adicCompletion E) =
@@ -285,6 +373,15 @@ theorem val_natCast {E : Type} [Field E] [NumberField E] (v : HeightOneSpectrum 
     exact map_natCast (algebraMap E (v.adicCompletion E)) M
   rw [← e, h, HeightOneSpectrum.valuation_of_algebraMap]
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl0 : ((l : ℕ) : 𝓞 ℚ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Take `⟨J, hJ⟩` from `Ideal.dvd_span_singleton.mpr hw`. Establish `h2 : Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 ℚ)}) = l`. Rewrite using `[Ideal.absNorm_span_singleton]`.
+
+Establish `: ((l : ℕ) : 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ) (l : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Establish `hN : Ideal.absNorm w.asIdeal = l`. Rewrite using `[← normV_rat hw]`.
+
+Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h2` using `[hJ, map_mul, hN, mul_eq_left₀ hl.ne_zero, Ideal.absNorm_eq_one_iff]`. Rewrite `hJ` using `[h2, Ideal.mul_top]`. Establish `h3 : Valued.v ((l : ℕ) : w.adicCompletion ℚ) = WithZero.exp (-1 : ℤ)`. Rewrite using `[val_natCast, HeightOneSpectrum.intValuation_singleton w hl0 hJ.symm]`.
+
+Establish `h0 : ((l : ℕ) : w.adicCompletion ℚ) ≠ 0` using `fun h0 => by`. Rewrite `h3` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero h3.symm`. Conclude with `⟨Units.mk0 _ h0, h3, rfl⟩`.
+-/
 theorem exists_unif_rat (hw : w ∈ placesOver ℚ l) :
     ∃ π : (w.adicCompletion ℚ)ˣ, IsUnifAt w π ∧ (π : w.adicCompletion ℚ) = l := by
   have hl : l.Prime := Fact.out
@@ -307,6 +404,19 @@ theorem exists_unif_rat (hw : w ∈ placesOver ℚ l) :
     exact WithZero.exp_ne_zero h3.symm
   exact ⟨Units.mk0 _ h0, h3, rfl⟩
 
+/- English proof (translation)
+Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds ℚ Ω`. Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨μ, hμ, hL⟩` from `hart.exists_isLAdicOf ι (GlobalTheory.Published.CharAboveModel.absPow_isAlgPos ℚ 1)`. Establish `hμ'` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow hart hμ hL`. Rewrite `hμ'` using `[pow_one]`.
+
+Rewrite using `[← hμ']`. Establish `hu` using `(Model.absPow_isAbsPow ℚ (1 : ℕ)).1 w`. Establish `hval` using `(Model.absPow_isAbsPow ℚ (1 : ℕ)).2.1 w`. Use `set χ := Model.absPow ℚ (1 : ℕ)`. Establish `e1 : ∀ x, χ.loc w x = χ.val w ^ GlobalTheory.SmGL.ord (w.adicCompletion ℚ) x` using `fun x => by`.
+
+Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion ℚ) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ GlobalTheory.SmGL.ord (w.adicCompletion ℚ) x)⁻¹)`. Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, GlobalTheory.SmGL.SphCompletion.ord_completion]`.
+
+Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`. Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`.
+
+Establish `hN : Ideal.absNorm w.asIdeal = l`. Rewrite using `[← normV_rat hw]`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hd` using `(GlobalTheory.LTExt.ext_profinite h (1 : Weil h →* Unit) continuous_const).1`. Establish `hμc : Continuous fun g : ↥(Dec (F` using `ℚ) A) => ((μ g : (Qbar l)ˣ) : Qbar l) := Units.continuous_val.comp (hμ.comp continuous_subtype_val)`.
+
+Use `congrFun (hd.equalizer hc hμc (funext fun σ => ?_)) g` and prove the remaining obligations. Use `(hψ σ).trans (Eq.trans ?_ (hL.loc (a σ) (σ : G ℚ Ω) (ha.glob art hart σ)).symm)` and prove the remaining obligations. Rewrite using `[e1, ha.ord_eq, Units.val_zpow_eq_zpow_val, hval, hN, locPow, finprod_eq_single _ j₀ fun j hj => (hj (emb_ext fun x => by simp)).elim, hπl]`. Simplify using `[Complex.cpow_neg, mul_comm]`.
+-/
 theorem eq_cyc (h : IsPlaceOver A w) (hw : w ∈ placesOver ℚ l) (a : Weil h →* (w.adicCompletion ℚ)ˣ)
     (ha : IsLocalArtin h a) (π : (w.adicCompletion ℚ)ˣ) (hπl : (π : w.adicCompletion ℚ) = l)
     (j₀ : {j : w.adicCompletion ℚ →+* Qbar l // Continuous j}) (LL : FinExt l)
@@ -347,6 +457,31 @@ theorem eq_cyc (h : IsPlaceOver A w) (hw : w ∈ placesOver ℚ l) (a : Weil h �
     finprod_eq_single _ j₀ fun j hj => (hj (emb_ext fun x => by simp)).elim, hπl]
   simp [Complex.cpow_neg, mul_comm]
 
+/- English proof (translation)
+Take `⟨T⟩` from `hT`. Establish `hw` using `hB.mem_placesOver h`. Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `hm : ∀ g : ↥(GK Bw.Kw), ((ψ (Bw.e.symm g) : GL (Fin 1) ↥LL.1) : Matrix (Fin 1) (Fin 1) ↥LL.1) 0 0 = algebraMap ℚ_[l] ↥LL.1 (P.χQ g : ℚ_[l])` using `fun g => Subtype.ext (by`. Establish `e` using `GlobalTheory.Survey.CrystallineCharacterRatio.chi_eq_cyc P Bw.j ((Bw.e.symm g : Dec (F := ℚ) A) : G ℚ Ω) (g : GQ l) (by simpa using Bw.e_comm (Bw.e.symm g))`.
+
+Use `(eq_cyc h hw a ha π hπl j₀ LL ψ hc hψ _).trans ?_` and prove the remaining obligations. Rewrite using `[e, cyc_eq_map_cycZ]`. Use the proof step `rfl)`. Establish `hrep : Bw.repE LL ψ = Formalism.MainNotions.N.matRep (GlobalTheory.HTW.Rec.Model.cycPowSum P Bw.Kw LL (fun _ : Fin 1 => -1))`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+
+Establish `e : ((ψ (Bw.e.symm g) : GL (Fin 1) ↥LL.1) : Matrix (Fin 1) (Fin 1) ↥LL.1) = GlobalTheory.HTW.Rec.Model.cycPowSum P Bw.Kw LL (fun _ : Fin 1 => -1) g`. Use extensionality with `b c : 2`. Rewrite using `[Subsingleton.elim b 0, Subsingleton.elim c 0, hm]`. Simplify using `[GlobalTheory.HTW.Rec.Model.cycPowSum, Formalism.MainNotions.N.cycLL, P.PD_χ]`. Use `show Matrix.toLinAlgEquiv' _ = Matrix.toLinAlgEquiv' _`.
+
+Conclude with `congrArg _ e`. Take `⟨hC, hM⟩` from `GlobalTheory.HTW.Rec.Model.cycPowSum_crys_mult T Bw.Kw LL (fun _ : Fin 1 => -1)`. Rewrite `hC`, `hM` using `[← hrep]`. Use `⟨hC, fun x hx => ?_, fun τ' _ n => ?_, fun τ' hτ => (hτ fun x => ?_).elim⟩` and prove the remaining obligations. Establish `hK : K0 Bw.Kw = ⊥`.
+
+Use `le_bot_iff.1 (inf_le_left.trans fun y hy => ?_)` and prove the remaining obligations. Use `closure_minimal ?_ (finExt_isClosed ⟨⊥, inferInstance⟩) (Bw.j_dense hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Simplify using `only [eq_ratCast, map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem _ q`.
+
+Establish `h1 : Module.finrank ↥LL.1 ↥(Dcris (P.PD Bw.Kw) (Bw.repE LL ψ)) = 1`. Establish `h2 : Module.finrank ℚ_[l] ↥(K0 Bw.Kw) = 1` using `by rw [hK, IntermediateField.finrank_bot]`. Rewrite using `[show Module.finrank ↥LL.1 ↥(Dcris (P.PD Bw.Kw) (Bw.repE LL ψ)) = _ from hC, h2]`. Simplify using the standard rewrite rules. Set `v0 : Fin 1 → ↥LL.1` to `fun _ => 1`.
+
+Establish `hρ : ∀ g, Bw.repE LL ψ g v0 = (P.χQ g : ℚ_[l]) • v0` using `fun g => by`. Use extensionality with `i : 1`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[LocBridge.repE, v0, Matrix.mulVec, dotProduct, hm, Algebra.smul_def]`. Establish `hmem : v0 ⊗ₜ[ℚ_[l]] tInv P ∈ Dcris (P.PD Bw.Kw) (Bw.repE LL ψ)`.
+
+Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `show (Bw.repE LL ψ g v0) ⊗ₜ[ℚ_[l]] ((P.PD Bw.Kw).actB g (tInv P)) = v0 ⊗ₜ[ℚ_[l]] tInv P`. Rewrite using `[hρ, P.PD_actB, smul_tmul, smul_actQ_tInv]`. Use `nontrivial_B P` as an intermediate fact.
+
+Establish `hx0 : (⟨_, hmem⟩ : ↥(Dcris (P.PD Bw.Kw) (Bw.repE LL ψ))) ≠ 0` using `fun h0 => by`. Establish `h1 : v0 ⊗ₜ[ℚ_[l]] tInv P = 0` using `congrArg Subtype.val h0`. Establish `h2 : Function.Injective (Algebra.TensorProduct.includeRight : P.R.B →ₐ[ℚ_[l]] ↥LL.1 ⊗[ℚ_[l]] P.R.B)` using `Algebra.TensorProduct.includeRight_injective (algebraMap ℚ_[l] ↥LL.1).injective`. Establish `h3` using `congrArg (LinearMap.rTensor P.R.B (LinearMap.proj (R := ℚ_[l]) (φ := fun _ : Fin 1 => ↥LL.1) 0)) h1`. Rewrite `h3` using `[LinearMap.rTensor_tmul, map_zero]`.
+
+Establish `h4 : tInv P = 0` using `h2 (by rw [map_zero]; exact h3)`. Simplify `tInv_mul P` using `[h4]`. Take `⟨d, hd⟩` from `(finrank_eq_one_iff_of_nonzero' (K := ↥LL.1) _ hx0).mp h1 ⟨x, hx⟩`. Take `rfl : d • (v0 ⊗ₜ[ℚ_[l]] tInv P) = x` from `congrArg Subtype.val hd`. Use `⟨algebraMap ℚ_[l] _ (l : ℚ_[l])⁻¹, by simp [hπl], ?_⟩` and prove the remaining obligations.
+
+Establish `hφ : P.φB (tInv P) = (l : ℚ_[l])⁻¹ • tInv P` using `by rw [eq_inv_smul_iff₀ hl, smul_phiB_tInv]`. Rewrite using `[resDeg, normV_rat hw, show Nat.log l l = 1 by simpa using Nat.log_pow (Fact.out : l.Prime).one_lt 1, pow_one, map_smul, smul_comm, algebraMap_smul, ← tmul_smul, ← hφ]`. Both sides reduce to the same expression. Rewrite using `[LocBridge.multE, hM]`. Distinguish the cases in `e : n = -1`.
+
+Simplify using `[e]`. Simplify using `[e, Ne.symm e]`. Establish `e : (⟨Bw.j (algebraMap ℚ Ω x), Bw.j_E x⟩ : ↥Bw.Kw.1) = (x : ↥Bw.Kw.1)` using `Subtype.ext (by simp)`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem holds_rat (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied l P AI)) (h : IsPlaceOver A w)
     (Bw : LocBridge l ℚ Ω (Dec (F := ℚ) A) O) (hB : GlobalTheory.Pst.Induces Bw) (a : Weil h →* (w.adicCompletion ℚ)ˣ)
     (ha : IsLocalArtin h a) (π : (w.adicCompletion ℚ)ˣ) (hπl : (π : w.adicCompletion ℚ) = l)

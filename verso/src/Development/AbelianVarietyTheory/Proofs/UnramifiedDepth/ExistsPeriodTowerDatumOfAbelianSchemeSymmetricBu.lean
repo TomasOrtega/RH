@@ -43,17 +43,32 @@ section SlopeTestRemainingChoices
 variable {R₀ : Type} [CommRing R₀] {G : Over (Spec (CommRingCat.of R₀))} [GrpObj G] {B : BX R₀}
   {e : ∀ R : LAlg R₀, B.G R → (sp (R₀ := R₀) (R : Type) ⟶ G)}
 
+/- English proof (translation)
+Establish `h` using `hm R 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+-/
 private theorem e_zero (hm : ∀ R x y, e R (x + y) = e R x * e R y) (R : LAlg R₀) : e R 0 = 1 := by
   have h := hm R 0 0
   rw [add_zero] at h
   exact left_eq_mul.1 h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, e_zero hm]`. Consider the case `succ n ih => rw [succ_nsmul, hm, ih, pow_succ]`.
+-/
 private theorem e_nsmul (hm : ∀ R x y, e R (x + y) = e R x * e R y) (R : LAlg R₀) (n : ℕ) (x : B.G R) :
     e R (n • x) = e R x ^ n := by
   induction n with
   | zero => rw [zero_smul, pow_zero, e_zero hm]
   | succ n ih => rw [succ_nsmul, hm, ih, pow_succ]
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `GlobalTheory.points_divisible_and_torsion_of_valuation_integers G O C v p hv hf hs`. Establish `tors : ∀ x : B.G O, p • x = 0 ↔ e O x ^ p = 1` using `fun x => by`. Rewrite using `[← e_nsmul hm, ← e_zero hm O]`. Conclude with `(hb O).1.eq_iff.symm`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `h₁ (e O x)`. Take `⟨y, rfl⟩` from `(hb O).2 y`. Conclude with `⟨y, (hb O).1 ((e_nsmul hm O p y).trans hy)⟩`. Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) ≫ e O x.1, ?_⟩) ⟨fun x y hxy => ?_, fun z => ?_⟩)` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, (tors _).1 x.2, MonObj.comp_one]`.
+
+Establish `hxy' : spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) ≫ e O x.1 = spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) ≫ e O y.1` using `congrArg Subtype.val hxy`. Establish `hz : (spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) ≫ e O y.1) ^ p = 1`. Rewrite using `[← MonObj.comp_pow, (tors _).1 y.2, MonObj.comp_one]`. Conclude with `Subtype.ext ((hb O).1 ((h₂ _ hz).unique ⟨(tors _).1 x.2, hxy'⟩ ⟨(tors _).1 y.2, rfl⟩))`. Take `⟨y, ⟨hy, hy'⟩, -⟩` from `h₂ z.1 z.2`.
+
+Take `⟨y, rfl⟩` from `(hb O).2 y`. Conclude with `⟨⟨y, (tors y).2 hy⟩, Subtype.ext hy'⟩`.
+-/
 private theorem divisible_and_card [IsCommMonObj G] (hb : ∀ R, Function.Bijective (e R))
     (hm : ∀ R x y, e R (x + y) = e R x * e R y) (O : LAlg R₀) (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) [Algebra (O : Type) C] [Algebra R₀ C] [IsScalarTower R₀ (O : Type) C] (p : ℕ)
@@ -80,6 +95,17 @@ private theorem divisible_and_card [IsCommMonObj G] (hb : ∀ R, Function.Biject
       obtain ⟨y, rfl⟩ := (hb O).2 y
       exact ⟨⟨y, (tors y).2 hy⟩, Subtype.ext hy'⟩
 
+/- English proof (translation)
+Use `choose E hE using fun (R : LAlg R₀) (s : LHom O R) => GlobalTheory.adjPoints gp _ _ (GlobalTheory.adjBase s)`. Establish `hl : ∀ R s x, ((E R s).symm (e R x)).left ≫ φ = (e R x).left` using `fun R s x => (hE R s _).symm.trans (congrArg (fun q => q.left) ((E R s).apply_symm_apply _))`. Establish `inj : ∀ R (x y : B.G R), (e R x).left = (e R y).left → x = y` using `fun R x y h => (hb R).1 (Over.OverMorphism.ext h)`. Use `⟨fun a => ?_, fun {R} s x => ⟨?_, fun a b => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Establish `h : ∀ {R : LAlg R₀} (s : LHom O R), (Ad a).ab.f s = (Ad (cj a)).a.f s` using `fun {R} s => AddMonoidHom.ext fun x => inj R _ _ ((hab a s x _ (hl R s x)).symm.trans (ha (cj a) s x _ (hl R s x)))`.
+
+Generalize the expression as in `(Ad a).ab = u at h`. Generalize the expression as in `(Ad (cj a)).a = w at h`. Take `⟨u, hu⟩` from `u`. Take `⟨w, hw⟩` from `w`. Take `rfl : @u = @w` from `funext fun R => funext fun s => h s`.
+
+Both sides reduce to the same expression. Use `inj R _ _ ((ha 1 s x _ (hl R s x)).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[ρ.map_one, Category.comp_id]`. Conclude with `hl R s x`. Use `inj R _ _ ((ha (a + b) s x _ (hl R s x)).symm.trans ?_)` and prove the remaining obligations.
+
+Establish `h₁ : e R ((Ad a).a.f s x) = E R s ((E R s).symm (e R x) ≫ ρ.act a)` using `Over.OverMorphism.ext ((ha a s x _ (hl R s x)).symm.trans (hE R s _).symm)`. Establish `h₂ : e R ((Ad b).a.f s x) = E R s ((E R s).symm (e R x) ≫ ρ.act b)` using `Over.OverMorphism.ext ((ha b s x _ (hl R s x)).symm.trans (hE R s _).symm)`. Establish `h₃ : (E R s).symm (e R x) ≫ ρ.act (a + b) = ((E R s).symm (e R x) ≫ ρ.act a) * ((E R s).symm (e R x) ≫ ρ.act b)`. Rewrite using `[ρ.map_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+
+Rewrite using `[hm, h₁, h₂, h₃]`. Conclude with `(hE R s _).symm.trans (congrArg (fun q => q.left) (map_mul (E R s) _ _))`. Use `inj R _ _ ((ha (a * b) s x _ (hl R s x)).symm.trans ?_)` and prove the remaining obligations. Rewrite using `[ρ.map_mul, ← Category.assoc]`. Conclude with `ha a s _ _ (ha b s x _ (hl R s x))`.
+-/
 private theorem ring_laws (hb : ∀ R, Function.Bijective (e R))
     (hm : ∀ R x y, e R (x + y) = e R x * e R y) (O : LAlg R₀)
     (G' : Over (Spec (CommRingCat.of (O : Type)))) [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left)
@@ -129,6 +155,13 @@ private theorem ring_laws (hb : ∀ R, Function.Bijective (e R))
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε g G _ _ P hA hsm hP hθ h1 h2 hsym hf hfl hsu _ _ _ hvi hnd hcard G' _ _ φ φ₂ hA' gp sq _ O₀ _ cj ρ hcj hros`. Use `haveI : IsLocalRing (Ainf.R0 p O ε) := GlobalTheory.WdAinf.ainf_thetaQuotRing_isLocalRing p O hv ε hε`. Take `⟨β⟩` from `GlobalTheory.nonempty_isBiext_of_cube_gen _ G hA P hP hθ h1 h2`. Take `⟨s, hs⟩` from `GlobalTheory.BiextSym.main GlobalTheory.globalFns_holds _ G hA P β hsym`. Take `⟨B, e, hb, hm, hn, b, J, hJ, ha1, ha2⟩` from `@GlobalTheory.BXOf.main (@GlobalTheory.GroupPointsBX.main (@GlobalTheory.NilCoord.nilpotent_coordinates) (@GlobalTheory.points_fibre_product)) (@GlobalTheory.exists_BX_of_factorSystems) _ _ G _ _ _ g hsm P β s hs`.
+
+Establish `hAd` using `fun a : O₀ => @GlobalTheory.exists_oAdj_of_rosatiAdjoint (@GlobalTheory.bx_frame_pairing_adj) GlobalTheory.biext_val_axioms GlobalTheory.globalFns_holds _ _ G _ _ P β B e b J hb hm hn hJ ha1 ha2 (Ainf.ainfTowerL p O hv ε hε).O G' _ _ φ φ₂ hA' gp sq (ρ.act a) (ρ.act (cj a)) (ρ.hom …`. Use `choose Ad ha hab using hAd`. Take `⟨hadj, hring⟩` from `ring_laws hb hm _ G' φ gp O₀ cj ρ Ad ha hab`. Take `⟨hdiv, hc⟩` from `divisible_and_card hb hm (Ainf.ainfTowerL p O hv ε hε).O C v p hvi hf hsu`. Establish `hsmooth : Smooth G.hom` using `SmoothOfRelativeDimension.smooth g G.hom`.
+
+Establish `hpair` using `@GlobalTheory.pairing_nondegenerate_integral_torsion (@GlobalTheory.bx_frame_pairing_adj) (GlobalTheory.biext_pairing_nondegenerate_geometric_fibre (GlobalTheory.invariantGenerator_descends_mulN GlobalTheory.torsion_invariant_descends_fibre) (GlobalTheory.TorsionGen.main GlobalTh …`. Conclude with `⟨B, e, Ad, hb, hm, hn, ha, GlobalTheory.PeriodDatum.main p O hv ε hε g G B e hb hm hn hsm hf hfl hdiv (hc.trans hcard) hpair O₀ cj Ad hadj hcj hring⟩`.
+-/
 theorem main : (∀ (p : ℕ) [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C NNReal} (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (hv : v.Integers O) (ε : PreTilt O p) (hε : IsPrimitiveRoot (((frobeniusEquiv (PreTilt O p) p).symm ε).untilt) p) (g : ℕ) (G : Over (Spec (CommRingCat.of (Ainf.R0 p O ε)))) [GrpObj G] [IsCommMonObj G] (P : ReciprocityTheory.ChartRestriction.G.Semi.LB (G ⊗ G).left), ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme G → SmoothOfRelativeDimension g G.hom → P.IsLB → (∃ θ : LB.Gen (Theta (G ⊗ G) P), θ.IsGen) → (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.LBIso P (P.pull (lift (snd G G) (fst G G)).left) → IsFinite ((𝟙 G) ^ p : G ⟶ G).left → Flat ((𝟙 G) ^ p : G ⟶ G).left → Surjective ((𝟙 G) ^ p : G ⟶ G).left → ∀ [Algebra ((Ainf.ainfTowerL p O hv ε hε).O : Type) C] [Algebra (Ainf.R0 p O ε) C] [IsScalarTower (Ainf.R0 p O ε) ((Ainf.ainfTowerL p O hv ε hε).O : Type) C], v.Integers ((Ainf.ainfTowerL p O hv ε hε).O : Type) → (∀ x : sp (R₀ := (Ainf.R0 p O ε)) C ⟶ G, (∃ t : (P.pull (lift (snd G (sp (R₀ := (Ainf.R0 p O ε)) C) ≫ x) (fst G (sp (R₀ := (Ainf.R0 p O ε)) C))).left).Gen, t.IsGen) → x = 1) → Nat.card {z : sp (R₀ := (Ainf.R0 p O ε)) C ⟶ G // z ^ p = 1} = p ^ (2 * g) → ∀ (G' : Over (Spec (CommRingCat.of ((Ainf.ainfTowerL p O hv ε hε).O : Type)))) [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left) (φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left), ReciprocityTheory.ChartRestriction.G.Semi.IsAbelianScheme G' → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom (algebraMap (Ainf.R0 p O ε) ((Ainf.ainfTowerL p O hv ε hε).O : Type)))) φ → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSquare φ φ₂ → ∀ [Algebra ℤ_[p] ((Ainf.ainfTowerL p O hv ε hε).O : Type)] (O₀ : Type) [CommRing O₀] (cj : O₀ ≃ₐ[ℤ] O₀) (ρ : ReciprocityTheory.ChartRestriction.G.Out.RingAct G' O₀), (∀ a, cj (cj a) = a) → (∀ a, (∃ t : ReciprocityTheory.ChartRestriction.G.Semi.LB.Gen (ReciprocityTheory.ChartRestriction.G.Semi.LB.LinComb P (K := Fin 2) ![(lift (fst G' G' ≫ ρ.act a) (snd G' G')).left ≫ φ₂, (lift (fst G' G') (snd G' G' ≫ ρ.act (cj a))).left ≫ φ₂] ![1, -1]), t.IsGen)) → ∃ (B : BX (Ainf.R0 p O ε)) (e : ∀ R : LAlg (Ainf.R0 p O ε), B.G R → (sp (R₀ := (Ainf.R0 p O ε)) (R : Type) ⟶ G)) (Ad : O₀ → OAdj B (Ainf.ainfTowerL p O hv ε hε).O), (∀ R, Function.Bijective (e R)) ∧ (∀ R x y, e R (x + y) = e R x * e R y) ∧ (∀ {R S : LAlg (Ainf.R0 p O ε)} (f : LHom R S) (x : B.G R), e S (B.map f x) = spMap f.1 ≫ e R x) ∧ (∀ a, (∀ {R : LAlg (Ainf.R0 p O ε)} (s : LHom (Ainf.ainfTowerL p O hv ε hε).O R) (x : B.G R) (x' : Over.mk (Spec.map (CommRingCat.ofHom s.1.toRingHom)) ⟶ G'), x'.left ≫ φ = (e R x).left → (x' ≫ ρ.act a).left ≫ φ = (e R ((Ad a).a.f s x)).left)) ∧ ∃ (Dt : DualTower (Ainf.ainfTowerL p O hv ε hε)) (D : Dat p g B (Ainf.ainfTowerL p O hv ε hε) Dt (ℤ_[p] ⊗[ℤ] O₀) (Algebra.TensorProduct.congr (AlgEquiv.refl : ℤ_[p] ≃ₐ[ℤ_[p]] ℤ_[p]) cj) (Ainf.ainfTowerL p O hv ε hε).c), D.H.P = 0 ∧ D.H.PL = 0 ∧ (∀ a {R S : LAlg (Ainf.R0 p O ε)} (s : LHom (Ainf.ainfTowerL p O hv ε hε).O R) (π : LHom R S) (hπ : π.SqZero) (l : Fin g) (i : π.ker) (m : Fin g → π.ker), (∀ k, (m k : (R : Type)) = s.1 (D.H.ρL (1 ⊗ₜ[ℤ] a) k l) * i) → (Ad a).a.f s (B.tg π hπ (D.ch.gb l ⊗ₜ[(Ainf.R0 p O ε)] i)) = B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[(Ainf.R0 p O ε)] m k)) ∧ ∀ a j n, (Ad a).a.f (LHom.id (Ainf.ainfTowerL p O hv ε hε).O) (D.L.τ j n) = ∑ k, (PadicInt.toZModPow (n + 1) (D.H.ρ (1 ⊗ₜ[ℤ] a) k j)).val • D.L.τ k n) := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε g G _ _ P hA hsm hP hθ h1 h2 hsym hf hfl hsu _ _ _ hvi hnd hcard
     G' _ _ φ φ₂ hA' gp sq _ O₀ _ cj ρ hcj hros

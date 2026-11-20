@@ -19,6 +19,19 @@ open Classical
 noncomputable section
 namespace GlobalTheory.ZH.GenFib
 
+/- English proof (translation)
+Introduce `X₁ Y U₀ EE O hO`. Establish `hcov` using `(top_le_preimage_iff _ _).1 (Y.top_le_preimage_pt hO.ne)`. Set `x : Sp X₁.Ω₁ ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι Y.pt (by rw [Scheme.Opens.range_ι]; exact hcov)`. Establish `hx : x ≫ U₀.ι = Y.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hxu : x ≫ O.u₀ = spMap X₁.S.R.val.toRingHom` using `O.u₀_gen x hx`.
+
+Establish `hc : pullback.fst O.G.hom Y.pt ≫ O.G.hom = (pullback.snd O.G.hom Y.pt ≫ x) ≫ U₀.ι`. Rewrite using `[pullback.condition, Category.assoc, hx]`. Set `κ : pullback O.G.hom Y.pt ⟶ pullback X₁.ρ.P.A.hom O.u₀` to `O.cart.1.lift _ _ hc`. Establish `hκ₁ : κ ≫ O.φ = pullback.fst O.G.hom Y.pt` using `O.cart.1.lift_fst _ _ hc`. Establish `hκ₂ : κ ≫ ((Over.pullback O.u₀).obj X₁.ρ.P.A).hom = ((Over.pullback Y.pt).obj O.G).hom ≫ x` using `O.cart.1.lift_snd _ _ hc`.
+
+Establish `n : IsGrpPullback ((Over.pullback Y.pt).obj O.G) O.G (x ≫ U₀.ι) (κ ≫ O.φ)` using `(isGrpPullback_pullback O.G Y.pt).congr hx.symm hκ₁.symm`. Establish `h₁ : IsGrpPullback ((Over.pullback Y.pt).obj O.G) ((Over.pullback O.u₀).obj X₁.ρ.P.A) x κ` using `O.cart.cancel n hκ₂`. Establish `hP : IsGrpPullback ((Over.pullback Y.pt).obj O.G) X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom) (κ ≫ pullback.fst X₁.ρ.P.A.hom O.u₀)` using `(h₁.comp (isGrpPullback_pullback X₁.ρ.P.A O.u₀)).congr hxu rfl`. Use `⟨κ ≫ pullback.fst X₁.ρ.P.A.hom O.u₀, hP, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.GenSpread.lbIso_pull_comp κ hκ₁.symm rfl ⟨O.w, O.w_gen⟩`.
+
+Introduce `f hf`. Take `⟨e, he, he'⟩` from `grpPullback_iso hP (isGrpPullback_pullback X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom))`. Set `f'` to `e.hom ≫ (Over.pullback (spMap X₁.S.R.val.toRingHom)).map f ≫ e.inv`. Establish `hf' : IsMonHom f'` using `by infer_instance`. Take `⟨F, ⟨hF, hFf⟩, -⟩` from `O.endo f' hf'`.
+
+Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[hFf]`. Use `show (e.hom ≫ (Over.pullback (spMap X₁.S.R.val.toRingHom)).map f ≫ e.inv).left ≫ (κ ≫ pullback.fst X₁.ρ.P.A.hom O.u₀) = _`. Establish `hie : e.inv.left ≫ e.hom.left = 𝟙 _` using `by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]`. Rewrite using `[← he']`.
+
+Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[reassoc_of% hie]`. Use `congr 1`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem genFib_pullback : ∀ (X₁ : GlobalTheory.GSep.GSet) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (O : ZHOut X₁.ρ Y U₀ EE), X₁.S.Over₀ Y U₀ → ∃ ψ : ((Over.pullback Y.pt).obj O.G).left ⟶ X₁.ρ.P.A.left, IsGrpPullback ((Over.pullback Y.pt).obj O.G) X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom) ψ ∧ LBIso (O.L.L.pull (pullback.fst O.G.hom Y.pt)) (X₁.ρ.P.L.pull ψ) ∧ ∀ f : X₁.ρ.P.A ⟶ X₁.ρ.P.A, IsMonHom f → ∃ F : O.G ⟶ O.G, IsMonHom F ∧ ((Over.pullback Y.pt).map F).left ≫ ψ = ψ ≫ f.left := by
   intro X₁ Y U₀ EE O hO
   have hcov := (top_le_preimage_iff _ _).1 (Y.top_le_preimage_pt hO.ne)

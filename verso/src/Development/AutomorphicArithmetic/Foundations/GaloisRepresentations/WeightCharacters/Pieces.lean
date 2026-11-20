@@ -8,6 +8,11 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 
 namespace UpperTheory.Gal.Wt
 
+/- English proof (translation)
+Proceed by induction on `P' using MvPolynomial.induction_on with`. Consider the case `C c => simp [pev]`. Consider the case `add p q hp hq`. Simplify using `only [pev, map_add] at hp hq ⊢`. Rewrite using `[hp, hq]`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [pev, map_mul, MvPolynomial.map_X, MvPolynomial.eval_X] at hp ⊢`. Rewrite using `[hp]`.
+-/
 private theorem pev_map {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ}
     (P' : MvPolynomial (Fin a × Fin a) (Qbar l)) (h : GL (Fin a) ℂ) :
     ι.symm (pev (MvPolynomial.map ι.toRingHom P') h) =
@@ -21,6 +26,29 @@ private theorem pev_map {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : �
     simp only [pev, map_mul, MvPolynomial.map_X, MvPolynomial.eval_X] at hp ⊢
     rw [hp]
 
+/- English proof (translation)
+Introduce `l _ ι a Γ _ _ _ _ φ hcont hint Γ' hΓ' hker ε hε`. Take `⟨H, hHo, hH⟩` from `hN l ι a Γ φ hcont hint ε hε`. Use `set K : Subgroup Γ := H ⊓ Γ' with hK`. Establish `hKo : IsOpen (K : Set Γ)`. Rewrite using `[hK, Subgroup.coe_inf]`.
+
+Conclude with `hHo.inter hΓ'`. Establish `hkerK : φ.ker ≤ K`. Introduce `g hg`. Use `Subgroup.mem_inf.mpr ⟨(hH g).2 ?_, hker hg⟩` and prove the remaining obligations. Introduce `i j`.
+
+Rewrite using `[MonoidHom.mem_ker.mp hg]`. Simplify using `using hε.le`. Use `haveI : Finite (Γ ⧸ K) := Subgroup.quotient_finite_of_isOpen K hKo`. Use `letI : Fintype (Γ ⧸ K) := Fintype.ofFinite _`. Set `c : Γ ⧸ K → Γ` to `fun q => q.out`.
+
+Set `v : Γ → (Fin a × Fin a → Qbar l)` to `fun g p => ι.symm ((φ g : Matrix (Fin a) (Fin a) ℂ) p.1 p.2)`. Establish `hv : Continuous v` using `continuous_pi fun p => hcont p.1 p.2`. Establish `hKc : IsClosed (K : Set Γ)` using `Subgroup.isClosed_of_isOpen K hKo`. Establish `hinj : ∀ g g', v g = v g' → g⁻¹ * g' ∈ K`. Introduce `g g' hgg`.
+
+Apply `hkerK` to reduce the goal to its premises. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`.
+
+Conclude with `ι.symm.injective (congrFun hgg (i, j))`. Establish `hsep : ∀ q : Γ ⧸ K, ∃ P' : MvPolynomial (Fin a × Fin a) (Qbar l), (∀ z ∈ v '' {g | (c q)⁻¹ * g ∈ K}, ‖MvPolynomial.eval z P' - 1‖ ≤ ε) ∧ (∀ z ∈ v '' {g | (c q)⁻¹ * g ∉ K}, ‖MvPolynomial.eval z P'‖ ≤ ε)`. Introduce `q`. Establish `hc1 : IsCompact (v '' {g | (c q)⁻¹ * g ∈ K})` using `(hKc.preimage (continuous_const.mul continuous_id)).isCompact.image hv`. Establish `hc2 : IsCompact (v '' {g | (c q)⁻¹ * g ∉ K})` using `(hKo.isClosed_compl.preimage (continuous_const.mul continuous_id)).isCompact.image hv`.
+
+Establish `hd : Disjoint (v '' {g | (c q)⁻¹ * g ∈ K}) (v '' {g | (c q)⁻¹ * g ∉ K})`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `z ⟨g, hg, rfl⟩ ⟨g', hg', hgg⟩`. Apply `hg'` to reduce the goal to its premises. Establish `hm` using `K.mul_mem hg (hinj g g' hgg.symm)`.
+
+Simplify `hm` using `[mul_assoc]`. Conclude with `hS (Qbar l) (Fin a × Fin a) _ _ hc1 hc2 hd ε hε`. Use `choose P' hP1 hP2 using hsep`. Use `⟨Γ ⧸ K, inferInstance, c, fun q => MvPolynomial.map ι.toRingHom (P' q), ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Establish `hmem : ∀ q : Γ ⧸ K, (c q)⁻¹ * g ∈ K ↔ q = (g : Γ ⧸ K)`. Introduce `q`. Rewrite using `[← QuotientGroup.eq]`. Simplify using `[c]`. Establish `h0 : (c (g : Γ ⧸ K))⁻¹ * g ∈ K` using `(hmem _).2 rfl`.
+
+Use `⟨(g : Γ ⧸ K), (Subgroup.mem_inf.mp h0).2, (hH _).1 (Subgroup.mem_inf.mp h0).1, ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_sub, map_one, pev_map]`. Conclude with `hP1 _ _ ⟨g, h0, rfl⟩`. Introduce `q hq beta_reduce`.
+
+Rewrite using `[pev_map]`. Conclude with `hP2 q _ ⟨g, fun h => hq ((hmem q).1 h), rfl⟩`.
+-/
 theorem pieces_of (hS : SepPoly) (hN : NearSub) : Pieces := by
   intro l _ ι a Γ _ _ _ _ φ hcont hint Γ' hΓ' hker ε hε
   obtain ⟨H, hHo, hH⟩ := hN l ι a Γ φ hcont hint ε hε

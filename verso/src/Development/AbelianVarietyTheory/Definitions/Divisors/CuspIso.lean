@@ -43,6 +43,9 @@ def BergLe (la : AllWt.Weight Dw) (β : ℝ) : Prop :=
   ∀ σ, GoodEmb c σ → ∀ y : FPt (U σ).X, (⟨y.1, y.2.1⟩ : Σ k, FD.Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z →
     bergOn (U σ) (V σ) (dict σ) Z (wtOf Dw la 0) y ≤ ENNReal.ofReal β
 
+/- English proof (translation)
+Introduce `τ k hk` and use `e.trans (h τ k hk)`.
+-/
 theorem GapGe.mono {g g' : ℤ} {la : AllWt.Weight Dw} (h : GapGe g la) (e : g' ≤ g) : GapGe g' la :=
   fun τ k hk => e.trans (h τ k hk)
 

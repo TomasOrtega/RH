@@ -45,6 +45,9 @@ def IsPairPull (G' : Over S') (G : Over S) [GrpObj G'] [GrpObj G] (L' : LB G'.le
     Prop :=
   L'.IsLB ∧ L.IsLB ∧ ∃ φ : G'.left ⟶ G.left, IsGrpPullback G' G f φ ∧ LBIso L' (L.pull φ)
 
+/- English proof (translation)
+Take `⟨a, b, φ', h₁, h₂⟩` from `h'`. Take `⟨-, c, φ, h₃, h₄⟩` from `h`. Conclude with `⟨a, c, φ' ≫ φ, (h₁.comp h₃).congr he rfl, LBIso.trans a (pull_isLB b _) (pull_isLB c _) h₂ (GenSpread.lbIso_pull_of_lbIso h₄ φ' rfl)⟩`.
+-/
 theorem IsPairPull.comp {f : S' ⟶ S} {g : S'' ⟶ S'} {e : S'' ⟶ S} (h' : IsPairPull G'' G' L'' L' g)
     (h : IsPairPull G' G L' L f) (he : g ≫ f = e) : IsPairPull G'' G L'' L e := by
   obtain ⟨a, b, φ', h₁, h₂⟩ := h'
@@ -58,6 +61,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 open IsLocalRing in
 
+/- English proof (translation)
+Take `⟨p, _, K₀, e, e₀, -, he⟩` from `completeDVR_eq_integralClosure_padicInt.1 V (FractionRing V) h`. Use `⟨p, inferInstance, (algebraMap K₀ (PadicAlgCl p)).comp e.toRingHom, fun x => ?_⟩` and prove the remaining obligations. Use `(mem_integralClosure_padicInt_iff K₀ (e x)).symm.trans ⟨fun hx => ⟨e₀.symm ⟨e x, hx⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, e₀.apply_symm_apply]`.
+
+Introduce and unpack `⟨v, rfl⟩`. Rewrite using `[he]`. Conclude with `(e₀ v).2`.
+-/
 theorem exists_padic_embedding (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V]
     [IsAdicComplete (maximalIdeal V) V] (h : Finite (ResidueField V)) :
     ∃ (p : ℕ) (_ : Fact p.Prime) (c : FractionRing V →+* PadicAlgCl p),

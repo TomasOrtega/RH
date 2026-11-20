@@ -37,22 +37,40 @@ def embO (w : InfinitePlace L) : 𝓞 L →+* ℂ := w.embedding.comp (algebraMa
 
 def mat (h : HS L N) (w : InfinitePlace L) : Matrix (Fin N) (Fin N) ℂ := Matrix.of (h.1 w)
 
+/- English proof (translation)
+The claim follows from `h.2 w`.
+-/
 theorem mat_herm (h : HS L N) (w : InfinitePlace L) : (mat h w).IsHermitian := h.2 w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_add (h k : HS L N) (w : InfinitePlace L) :
     mat (h + k) w = mat h w + mat k w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_smul (c : ℝ) (h : HS L N) (w : InfinitePlace L) :
     mat (c • h) w = c • mat h w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_zero (w : InfinitePlace L) : mat (0 : HS L N) w = 0 := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun w => e w)`.
+-/
 theorem HS_ext {h k : HS L N} (e : ∀ w, mat h w = mat k w) : h = k :=
   Subtype.ext (funext fun w => e w)
 
 def mkHS (A : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ) (hA : ∀ w, (A w).IsHermitian) :
     HS L N := ⟨fun w i j => A w i j, hA⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_mkHS (A : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ)
     (hA : ∀ w, (A w).IsHermitian) (w : InfinitePlace L) : mat (mkHS A hA) w = A w := rfl
 
@@ -71,7 +89,13 @@ def evR (z : VR L N) : HS L N →ₗ[ℝ] ℝ where
 
 def ev (y : Lat L N) : HS L N →ₗ[ℝ] ℝ := evR (toR y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evR_apply (z : VR L N) (h : HS L N) : evR z h = qR h z := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_apply (y : Lat L N) (h : HS L N) : ev y h = q h y := rfl
 
 variable (L N)
@@ -106,6 +130,9 @@ instance : PartialOrder (Cell L N) := Subtype.partialOrder _
 
 variable {L N}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem Cell.le_def {F F' : Cell L N} : F ≤ F' ↔ F.1 ⊆ F'.1 := Iff.rfl
 
 def carrier (h : HS L N) (hh : h ∈ WR L N) : Cell L N :=
@@ -122,6 +149,9 @@ instance : DistribMulAction (Gm L N) (Lat L N) where
   smul_zero g := mulVec_zero _
   smul_add g := mulVec_add _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_lat (g : Gm L N) (y : Lat L N) :
     g • y = (g : Matrix (Fin N) (Fin N) (𝓞 L)) *ᵥ y := rfl
 
@@ -131,19 +161,34 @@ def pull (A : Matrix (Fin N) (Fin N) (𝓞 L)) : HS L N →ₗ[ℝ] HS L N where
   map_add' h k := HS_ext fun w => by simp [Matrix.mul_add, Matrix.add_mul]
   map_smul' c h := HS_ext fun w => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_pull (A : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) (w : InfinitePlace L) :
     mat (pull A h) w = (A.map (embO w))ᴴ * mat h w * A.map (embO w) := rfl
 
+/- English proof (translation)
+The claim follows from `HS_ext fun w => by simp [mat_pull]`.
+-/
 theorem pull_one (h : HS L N) : pull 1 h = h := HS_ext fun w => by simp [mat_pull]
 
+/- English proof (translation)
+The claim follows from `HS_ext fun w => by simp [mat_pull, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem pull_mul (A B : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) :
     pull (A * B) h = pull B (pull A h) := HS_ext fun w => by
   simp [mat_pull, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[toR, mulVec, dotProduct]`.
+-/
 theorem toR_mulVec (A : Matrix (Fin N) (Fin N) (𝓞 L)) (y : Lat L N) (w : InfinitePlace L) :
     toR (A *ᵥ y) w = A.map (embO w) *ᵥ toR y w := by
   ext a; simp [toR, mulVec, dotProduct]
 
+/- English proof (translation)
+Simplify using `only [q, qR, mat_pull, toR_mulVec]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[star_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec]`.
+-/
 theorem q_pull (A : Matrix (Fin N) (Fin N) (𝓞 L)) (h : HS L N) (y : Lat L N) :
     q (pull A h) y = q h (A *ᵥ y) := by
   simp only [q, qR, mat_pull, toR_mulVec]
@@ -160,14 +205,27 @@ instance : DistribMulAction (Gm L N) (HS L N) where
   smul_zero g := map_zero (pull _)
   smul_add g := map_add (pull _)
 
+/- English proof (translation)
+The claim follows from `q_pull _ h y`.
+-/
 theorem q_smul (g : Gm L N) (h : HS L N) (y : Lat L N) : q (g • h) y = q h (g⁻¹ • y) :=
   q_pull _ h y
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[q_smul]`. Conclude with `hh _ (fun e => hy (by rw [← smul_inv_smul g y, e, smul_zero]))`.
+-/
 theorem smul_mem_Ry (g : Gm L N) {h : HS L N} (hh : h ∈ Ry L N) : g • h ∈ Ry L N := by
   intro y hy
   rw [q_smul]
   exact hh _ (fun e => hy (by rw [← smul_inv_smul g y, e, smul_zero]))
 
+/- English proof (translation)
+Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, ⟨hk, hM⟩, rfl⟩`. Use `⟨smul_mem_Ry g hk, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Use `hM hy` as an intermediate fact. Simplify `this` using `[minVec, q_smul]`. Introduce and unpack `⟨hk, hM⟩`. Use `⟨g⁻¹ • h, ⟨smul_mem_Ry _ hk, fun y hy => ?_⟩, by simp⟩` and prove the remaining obligations. Use `hM ⟨y, hy, rfl⟩` as an intermediate fact.
+
+Simplify `this` using `[minVec, q_smul]`.
+-/
 theorem image_face (g : Gm L N) (M : Set (Lat L N)) :
     (fun h => g • h) '' face M = face ((fun y => g • y) '' M) := by
   ext h
@@ -182,6 +240,13 @@ theorem image_face (g : Gm L N) (M : Set (Lat L N)) :
     have := hM ⟨y, hy, rfl⟩
     simpa [minVec, q_smul] using this
 
+/- English proof (translation)
+Set `f : Gm L N → (Fin N → L) →ₗ[L] (Fin N → L)` to `fun g => Matrix.mulVecLin ((g : Matrix (Fin N) (Fin N) (𝓞 L)).map (algebraMap (𝓞 L) L))`. Establish `hf : ∀ g y, f g (toL y) = toL (g • y)` using `fun g y => by`. Use extensionality with `a`. Simplify using `[f, toL, smul_lat, mulVec, dotProduct]`. Establish `hs : Function.Surjective (f g)` using `fun v => ⟨f g⁻¹ v, by`.
+
+Simplify using `only [f, mulVecLin_apply, mulVec_mulVec, ← Matrix.map_mul, ← Units.val_mul]`. Use the proof step `simp⟩`. Establish `e : toL '' ((fun y => g • y) '' M) = f g '' (toL '' M)`. Simplify using `only [Set.image_image, hf]`. Unfold `Spans spanL at *`.
+
+Rewrite using `[e, Submodule.span_image, hM, Submodule.map_top, LinearMap.range_eq_top.2 hs]`.
+-/
 theorem Spans.image (g : Gm L N) {M : Set (Lat L N)} (hM : Spans M) :
     Spans ((fun y => g • y) '' M) := by
   let f : Gm L N → (Fin N → L) →ₗ[L] (Fin N → L) := fun g =>
@@ -205,11 +270,20 @@ instance : MulAction (Gm L N) (Cell L N) where
     change (fun h => (g * k) • h) '' F.1 = (fun h => g • h) '' ((fun h => k • h) '' F.1)
     simp [Set.image_image, mul_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Cell.smul_val (g : Gm L N) (F : Cell L N) : (g • F).1 = (fun h => g • h) '' F.1 := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Set.image_mono h`.
+-/
 theorem Cell.smul_mono (g : Gm L N) : Monotone (fun F : Cell L N => g • F) :=
   fun _ _ h => Set.image_mono h
 
+/- English proof (translation)
+The claim follows from `(Cell.smul_mono g).strictMono_of_injective (MulAction.injective g)`.
+-/
 theorem Cell.smul_strictMono (g : Gm L N) : StrictMono (fun F : Cell L N => g • F) :=
   (Cell.smul_mono g).strictMono_of_injective (MulAction.injective g)
 
@@ -224,6 +298,9 @@ instance (p : ℕ) : MulAction (Gm L N) (Simp L N p) where
   one_smul s := Subtype.ext (funext fun i => one_smul _ (s.1 i))
   mul_smul g k s := Subtype.ext (funext fun i => mul_smul g k (s.1 i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Simp.smul_val {p : ℕ} (g : Gm L N) (s : Simp L N p) (i : Fin (p + 1)) :
     (g • s).1 i = g • s.1 i := rfl
 

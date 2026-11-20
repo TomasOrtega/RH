@@ -29,6 +29,9 @@ def EuclideanSections.Statement : Prop :=
             (II K ι (mCoordIdeal y) (D + 1) (fun _ => A) + ε) *
               ((n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ))
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [imageLattice, Submodule.mem_top, iff_true]`. Conclude with `⟨x, rfl⟩`.
+-/
 example : imageLattice (AddMonoidHom.id (EuclideanSpace ℝ (Fin 2))) = ⊤ := by
   ext x
   simp only [imageLattice, Submodule.mem_top, iff_true]

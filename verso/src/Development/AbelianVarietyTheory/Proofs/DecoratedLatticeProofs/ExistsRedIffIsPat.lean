@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevZero
 
+/- English proof (translation)
+Introduce `D c v G PP hidem g`. Take `⟨π', h1, h2, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP hidem`. Establish `hr : D.R.r = D.R.k + (G.s + 1)`. Use `G.hs` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hρ : D.R.rS = G.S.ρ`. Use `G.hs` as an intermediate fact. Use `G.S.odd` as an intermediate fact. Unfold `Ranks.rS`.
+
+Use linear arithmetic over natural numbers and integers. Set `π : 𝓞 D.host.E →+* G.k` to `(π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).comp (oToS D.host.F D.host.E)`. Establish `hπ : ∀ z : 𝓞 D.host.E, π z = (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)` using `fun z => h1 (incA D (z : D.host.E))`. Establish `h : GlobalTheory.FunObj.Comparison₂.IsRed (Ideal.Quotient.mk PP.asIdeal) π` using `⟨h2.field, fun z => h2.int _, fun z => (iff_of_eq (congrArg (· = 0) (resS_oToS (F := D.host.F) PP z).symm)).trans (h2.ker _)⟩`. Use `GlobalTheory.SymRes.exists_red_iff_isPat PP.asIdeal π h hr G.S g` as an intermediate fact.
+
+Simplify using `only [hπ] at this`. Rewrite using `[hρ]`. Conclude with `this`.
+-/
 theorem exists_red_iff_isPat : ∀ {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt G.q.e PP → ∀ g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP), (∃ x, GlobalTheory.LevZero.Red G PP x g) ↔ GlobalTheory.SymRes.IsPat D.R.rS D.R.k g := by
   intro D c v G PP hidem g
   obtain ⟨π', h1, h2, -⟩ := GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP hidem

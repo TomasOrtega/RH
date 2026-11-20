@@ -47,6 +47,9 @@ def actW (i : St.comp) (v : Fin G.P.nV) : St.Gam i →* GL (Fin N) ((X.pl v).1.a
       ((bc (inclE (F := F) ((X.pl v).1.adicCompletion F))).comp
         (gamMat sp.cm.sig St.J St.Up (St.rep i : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))))
 
+/- English proof (translation)
+Use `show (MulAut.conj (St.fr (X.pl v).1 (X.pl v).2)⁻¹) _ = _`. Rewrite using `[MulAut.conj_apply, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem actW_apply (i : St.comp) (v : Fin G.P.nV) (γ : St.Gam i) :
     St.actW i v γ = (St.fr (X.pl v).1 (X.pl v).2)⁻¹ * bc ((RingHom.fst _ _).comp (X.spl (X.pl v).1 (X.pl v).2).toRingHom)
       (bc (inclE (F := F) ((X.pl v).1.adicCompletion F)) ((γ : UJ (sp.cm.sig : E →+* E) St.J) : GL (Fin N) E)) *
@@ -78,6 +81,9 @@ variable (X : Formalism.L2.Herm.GLevTie L G) (Fl : Fills G) (M : ℕ) (Nj : ℕ 
     (hN : ∀ i, i < M → G.P.m + (i + 1) * (Fl.t + 1) + 1 = Nj i) (Ch : ∀ i, i < M → Type) [∀ i h, Finite (Ch i h)]
     (St : ∀ i (h : i < M), Ch i h → ChartG X (Nj i))
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => omega`. Consider the case `succ j => exact ⟨fun c => absurd c.1 (by omega)⟩`.
+-/
 theorem levelsG_empty (j : ℕ) (hj : M < j) : IsEmpty ((levelsG X Fl M Nj hN Ch St).comp j) := by
   cases j with
   | zero => omega
@@ -143,6 +149,9 @@ def levelsG_tie (i : ℕ) (hi : i < M) (β : Ch i hi) :
     rw [MulAut.conj_apply, inv_inv]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x x' h => by obtain ⟨b, a⟩ := x obtain ⟨b', a'⟩ := x' have h' : (⟨hi, b, a⟩ : (h : i < M) ×' Σ b : Ch i h, (St i h b).comp) = ⟨hi, b', a'⟩ := h simpa using h', fun c => ⟨c.2, rfl⟩⟩`.
+-/
 theorem levelsG_cover (i : ℕ) (hi : i < M) :
     ChartsCover (levelsG X Fl M Nj hN Ch St) i (fun (β : Ch i hi) (a : (St i hi β).comp) => ⟨hi, β, a⟩) :=
   ⟨fun x x' h => by

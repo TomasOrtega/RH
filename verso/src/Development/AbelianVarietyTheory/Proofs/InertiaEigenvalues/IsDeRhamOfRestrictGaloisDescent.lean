@@ -11,6 +11,39 @@ noncomputable section
 
 namespace GlobalTheory.DeRhamDescent
 
+/- English proof (translation)
+Establish `hc : Fintype.card (L ≃ₐ[K] L) = Module.finrank K L`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `IsGalois.card_aut_eq_finrank K L`. Set `b : Module.Basis (L ≃ₐ[K] L) K L` to `(Module.finBasis K L).reindex (Fintype.equivFinOfCardEq hc).symm`. Set `μ : Module.Basis (L ≃ₐ[K] L) K L` to `b.traceDual`.
+
+Set `Pm : Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L) L` to `Matrix.of fun σ i => σ (b i)`. Set `Qm : Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L) L` to `Matrix.of fun j σ => σ (μ j)`. Establish `hQP : Qm * Pm = 1`. Use extensionality with `j i`. Simplify using `only [Matrix.mul_apply, Pm, Qm, Matrix.of_apply, ← map_mul]`.
+
+Rewrite using `[← trace_eq_sum_automorphisms, Module.Basis.trace_traceDual_mul, Matrix.one_apply]`. Distinguish the cases in `h : j = i`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Establish `hPQ : Pm * Qm = 1` using `mul_eq_one_comm.1 hQP`.
+
+Establish `h1 : ∀ j i, ∑ σ : L ≃ₐ[K] L, σ (μ j) * σ (b i) = if j = i then 1 else 0` using `fun j i => by`. Use `congrFun (congrFun hQP j) i` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Pm, Qm, Matrix.of_apply, Matrix.one_apply]`. Establish `h2 : ∀ σ : L ≃ₐ[K] L, ∑ i, b i * σ (μ i) = if 1 = σ then 1 else 0` using `fun σ => by`. Use `congrFun (congrFun hPQ 1) σ` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.mul_apply, Pm, Qm, Matrix.of_apply, Matrix.one_apply, AlgEquiv.one_apply]`. Use `choose s hs' using hs`. Establish `hm : ∀ a, ∀ x ∈ D', m a x ∈ D'` using `fun a x hx => by`. Rewrite `hx`, the goal using `[hD']`. Introduce `g hg`.
+
+Rewrite using `[hε, hg, hx g hg, AlgEquiv.one_apply]`. Establish `hDD : D ≤ D'` using `fun x hx => (hD' x).2 fun g _ => (hD x).1 hx g`. Establish `hA : ∀ x ∈ D', ∀ g g', ε g = ε g' → A g x = A g' x` using `fun x hx g g' h => by`. Use `(hD' x).1 hx (g'⁻¹ * g) (by rw [map_mul, map_inv, h, inv_mul_cancel])` as an intermediate fact. Use `conv_rhs => rw [← this]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Set `Φ₀ : ((L ≃ₐ[K] L) → D) →ₗ[R] M` to `∑ i, (m (b i)) ∘ₗ D.subtype ∘ₗ LinearMap.proj i`. Establish `hΦ : ∀ x, Φ₀ x = ∑ i, m (b i) (x i)` using `fun x => by`. Simplify using `[Φ₀]`. Establish `hinj : Function.Injective Φ₀`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h3 : ∀ σ : L ≃ₐ[K] L, ∑ i, m (σ (b i)) (x i) = 0` using `fun σ => by`. Use `congrArg (A (s σ)) hx` as an intermediate fact. Rewrite `this` using `[hΦ, map_sum, map_zero]`.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hε, hs', (hD _).1 (x i).2]`. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h4 : ∑ σ : L ≃ₐ[K] L, m (σ (μ j)) (∑ i, m (σ (b i)) (x i)) = 0`. Simplify using `only [h3, map_zero, Finset.sum_const_zero]`. Simplify using `only [map_sum, ← Module.End.mul_apply, ← map_mul m] at h4`. Rewrite `h4` using `[Finset.sum_comm]`. Simplify using `only [← LinearMap.sum_apply, ← map_sum m, h1] at h4`.
+
+Rewrite `h4` using `[Finset.sum_eq_single j (fun i _ hi => by simp [Ne.symm hi]) (by simp)]`. Simplify using `using h4`. Establish `hr : LinearMap.range Φ₀ = D'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[hΦ]`. Conclude with `D'.sum_mem fun i _ => hm _ _ (hDD (x i).2)`. Introduce `x hx`. Use `⟨fun i => ⟨∑ σ, A (s σ) (m (μ i) x), (hD _).2 fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← Equiv.sum_comp (Equiv.mulLeft (ε g)) (fun σ => A (s σ) (m (μ i) x))]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hA _ (hm _ _ hx) _ _ (by simp [hs'])`. Rewrite using `[hΦ]`. Establish `hmm : ∀ a a' y, m a (m a' y) = m (a * a') y` using `fun a a' y => by`.
+
+Rewrite using `[map_mul, Module.End.mul_apply]`. Simplify using `only [hε, hs', map_sum, hmm]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← LinearMap.sum_apply, ← map_sum m, h2]`. Rewrite using `[Finset.sum_eq_single 1 (fun i _ hi => by simp [Ne.symm hi]) (by simp)]`.
+
+Simplify using `using (hD' x).1 hx _ (hs' 1)`. Rewrite using `[← hr, LinearMap.finrank_range_of_inj hinj]`. Distinguish the cases in `hf : Module.Finite R D`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, hc, smul_eq_mul]`. Rewrite using `[Module.finrank_of_not_finite hf, mul_zero, Module.finrank_of_not_finite]`.
+
+Introduce `h`. Conclude with `hf (Module.Finite.of_surjective (LinearMap.proj (R := R) (φ := fun _ : L ≃ₐ[K] L => D) (1 : L ≃ₐ[K] L)) (fun y => ⟨fun _ => y, rfl⟩))`.
+-/
 theorem finrank_fixed {R G M K L : Type} [Field R] [Group G] [AddCommGroup M] [Module R M]
     [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
     (A : G →* Module.End R M) (m : L →+* Module.End R M) (ε : G →* (L ≃ₐ[K] L))
@@ -104,6 +137,27 @@ theorem finrank_fixed {R G M K L : Type} [Field R] [Group G] [AddCommGroup M] [M
 
 open GlobalTheory.JumpDescent TensorProduct in
 
+/- English proof (translation)
+Introduce `l _ P K K' LL hle h hst V _ _ _ _ ρ hρ`. Unfold `IsDR at hρ ⊢`. Use `haveI : FiniteDimensional ℚ_[l] ↥K'.1 := K'.2`. Set `L : IntermediateField ↥K.1 (Om l)` to `IntermediateField.extendScalars h`. Use `haveI : FiniteDimensional ℚ_[l] ↥L := K'.2`.
+
+Use `haveI : FiniteDimensional ↥K.1 ↥L := Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`. Use `haveI : Normal ↥K.1 (Om l) := Normal.tower_top_of_normal ℚ_[l] _ _`. Set `e : ↥(GK K) ≃* (Om l ≃ₐ[↥K.1] Om l)` to `IntermediateField.fixingSubgroupEquiv K.1`. Establish `he : ∀ (g : ↥(GK K)) (x : Om l), e g x = (g : GQ l) x` using `fun _ _ => rfl`. Use `haveI : Normal ↥K.1 ↥L := IntermediateField.normal_iff_forall_map_le'.2 fun σ => by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨g, rfl⟩` from `e.surjective σ`. Conclude with `hst g.1 g.2 x hx`. Use `haveI : IsGalois ↥K.1 ↥L := {}`. Set `ε : ↥(GK K) →* (↥L ≃ₐ[↥K.1] ↥L)` to `(AlgEquiv.restrictNormalHom ↥L).comp e.toMonoidHom`.
+
+Establish `hεa : ∀ (g : ↥(GK K)) (x : ↥L), ((ε g x : ↥L) : Om l) = (g : GQ l) x` using `fun g x => AlgEquiv.restrictNormalHom_apply L (e g) x`. Set `A : ↥(GK K) →* Module.End ↥LL.1 (V ⊗[ℚ_[l]] P.R.BdR)` to `{ toFun := actVdR (P.PD K) ρ map_one' := by ext v b; simp [actVdR_tmul] map_mul' := fun g g' => by ext v b; simp [actVdR_tmul] }`. Set `m : ↥L →+* Module.End ↥LL.1 (V ⊗[ℚ_[l]] P.R.BdR)` to `{ toFun := fun c => mulOm P (c : Om l) map_one' := by ext v b; simp [mulOm_tmul] map_mul' := fun g g' => by ext v b; simp [mulOm_tmul, mul_assoc] map_zero' := by ext v b; simp [mulOm_tmul] map_add' := fun g g' => by ext v b; simp [mulOm_tmul, add_mul, tmul_add] }`. Establish `key` using `finrank_fixed A m ε ((AlgEquiv.restrictNormalHom_surjective (F := ↥K.1) (K₁ := ↥L) (Om l)).comp e.surjective) (fun g c x => by`. Express the relevant statement in the definitionally equal form `actVdR (P.PD K) ρ g (mulOm (LL := ↥LL.1) P (c : Om l) x) = mulOm (LL := ↥LL.1) P ((ε g c : ↥L) : Om l) (actVdR (P.PD K) ρ g x)`.
+
+Rewrite using `[hεa]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [mulOm_tmul, actVdR_tmul, P.actQdR_Om]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz])`.
+
+Use the proof step `(DdR (P.PD K) ρ) (DdR (P.PD K') (ρ.comp (Subgroup.inclusion hle)))`. Use the proof step `(fun x => mem_DdR P K ρ x)`. Use the proof step `(fun x => by`. Rewrite using `[mem_DdR]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx g hg`. Establish `hg' : g.1 ∈ GK K'` using `fun a => by`. Use `hεa g ⟨a.1, a.2⟩` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this.symm`.
+
+Use `hx ⟨g.1, hg'⟩` as an intermediate fact. Rewrite `this` using `[actVdR_comp P h]`. Conclude with `this`. Introduce `hx g`. Rewrite using `[actVdR_comp P h]`.
+
+Apply `hx` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[hεa]`. Conclude with `g.2 ⟨a.1, a.2⟩)`. Establish `hfin : Module.finrank ℚ_[l] ↥K'.1 = Module.finrank ℚ_[l] ↥K.1 * Module.finrank ↥K.1 ↥L` using `(Module.finrank_mul_finrank ℚ_[l] ↥K.1 ↥L).symm`.
+
+Establish `hpos : 0 < Module.finrank ↥K.1 ↥L` using `Module.finrank_pos`. Rewrite `hρ` using `[key, hfin]`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[hρ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDR_of_restrict : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l)
     (hle : GK K' ≤ GK K), K.1 ≤ K'.1 → (∀ g ∈ GK K, ∀ x ∈ K'.1, g x ∈ K'.1) →
     ∀ (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]

@@ -8,12 +8,20 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩`.
+-/
 private theorem relOf_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) :
     ∃ act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W, ∀ a, act (MvPolynomial.X a) = θ (t a) :=
   ⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp
     (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on generalizing m with`. Consider the case `C r`. Rewrite using `[MvPolynomial.eval₂Hom_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, RingHom.comp_apply, AlgHom.commutes]`. Simplify using `[hg]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, hp, hq]`.
+
+Consider the case `mul_X p a hp`. Rewrite using `[map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, MvPolynomial.eval₂Hom_X', h, hp]`.
+-/
 private theorem relOf_int {R W W' κ S : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module ℂ W']
     [CommRing S] [Algebra ℂ S] (c : R →+* ℂ) (v : κ → S)
     (act : MvPolynomial κ R →ₐ[R] Module.End R W) (act' : S →ₐ[ℂ] Module.End ℂ W') (g : W →+ W')
@@ -28,6 +36,11 @@ private theorem relOf_int {R W W' κ S : Type} [CommRing R] [AddCommGroup W] [Mo
   | mul_X p a hp =>
     rw [map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, MvPolynomial.eval₂Hom_X', h, hp]
 
+/- English proof (translation)
+Establish `h1` using `relOf_int c (Sum.elim (fun i => ((N : ℂ) ^ e i) • MvPolynomial.X (.inl i)) fun i => MvPolynomial.X (.inr i) - 1) (act.comp ψ) act' g hg (fun a m => by`. Rewrite using `[AlgHom.comp_apply]`. Break down `a with i | i` into its components or cases. Rewrite using `[Sum.elim_inl, hu, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, hg, map_pow, map_natCast, h]`. Establish `e` using `hy i`.
+
+Rewrite `e` using `[map_add, map_one]`. Rewrite using `[Sum.elim_inr, eq_sub_of_add_eq' e, map_sub, map_one, LinearMap.sub_apply, LinearMap.sub_apply, map_sub, h]`. Use the proof step `rfl) (F ^ k) m`. Rewrite `h1` using `[map_pow, h0, AlgHom.comp_apply, map_pow]`. Conclude with `h1.symm`.
+-/
 private theorem relOf_uy {R W W' ι S : Type} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module ℂ W']
     [CommRing S] [Algebra R S] (c : R →+* ℂ) (act : S →ₐ[R] Module.End R W)
     (act' : MvPolynomial (ι ⊕ ι) ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →+ W') (hg : ∀ r m, g (r • m) = c r • g m)

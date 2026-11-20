@@ -20,9 +20,15 @@ def stdChar : AddChar (AF E) ℂ := (GlobalTheory.StdCharUnique.existsUnique_isS
 
 variable (E) in
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.StdCharUnique.existsUnique_isStdChar E).exists.choose_spec`.
+-/
 theorem isStdChar_stdChar : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E (stdChar E) :=
   (GlobalTheory.StdCharUnique.existsUnique_isStdChar E).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.StdCharUnique.existsUnique_isStdChar E).unique h (isStdChar_stdChar E)`.
+-/
 theorem eq_stdChar {ψ : AddChar (AF E) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.IsStdChar E ψ) : ψ = stdChar E :=
   (GlobalTheory.StdCharUnique.existsUnique_isStdChar E).unique h (isStdChar_stdChar E)
 
@@ -53,9 +59,17 @@ instance finite_units_quot (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) : Finite (
   have : Finite (𝓞 E ⧸ w.asIdeal ^ a) := Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ w.ne_bot)
   infer_instance
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.psiV_add _ _ _ _ _`.
+-/
 theorem psiAt_add (w : HeightOneSpectrum (𝓞 E)) (x y : w.adicCompletion E) : psiAt w (x + y) = psiAt w x * psiAt w y :=
   GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.psiV_add _ _ _ _ _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.StdDual.mem_dualV_iff_valued (isStdChar_stdChar E) w t`. Establish `hD` using `coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)`. Establish `h2 : -FractionalIdeal.count E w (GlobalTheory.StdDual.codiff E) = (diffExp w : ℤ)`. Rewrite using `[← FractionalIdeal.count_inv, ← hD, FractionalIdeal.count_coe E w differentIdeal_ne_bot, diffExp, ← w.count_normalizedFactors_eq_multiplicity differentIdeal_ne_bot, Ideal.count_associates_factors_eq differentIdeal_ne_bot w.isPrime w.ne_bot]`. Rewrite using `[← h2]`.
+
+Conclude with `h`.
+-/
 theorem psiAt_conductor (w : HeightOneSpectrum (𝓞 E)) (t : w.adicCompletion E) :
     (∀ r ∈ w.adicCompletionIntegers E, psiAt w (t * r) = 1) ↔ Valued.v t ≤ WithZero.exp (diffExp w : ℤ) := by
   classical
@@ -68,10 +82,24 @@ theorem psiAt_conductor (w : HeightOneSpectrum (𝓞 E)) (t : w.adicCompletion E
   rw [← h2]
   exact h
 
+/- English proof (translation)
+Simplify using `using (psiAt_conductor w t).2 h 1 (one_mem _)`.
+-/
 theorem psiAt_eq_one {w : HeightOneSpectrum (𝓞 E)} {t : w.adicCompletion E} (h : Valued.v t ≤ WithZero.exp (diffExp w : ℤ)) :
     psiAt w t = 1 := by
   simpa using (psiAt_conductor w t).2 h 1 (one_mem _)
 
+/- English proof (translation)
+Establish `h0 : ∀ {z : E}, w.valuation E z = 1 → z ≠ 0` using `fun {z} hz h => by`. Rewrite `hz` using `[h, map_zero]`. Conclude with `zero_ne_one hz`. Establish `hval : ∀ x : E, Valued.v (algebraMap E (w.adicCompletion E) x) = w.valuation E x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w x`. Rewrite using `[gaussTerm, gaussTerm, dif_neg (h0 hy), dif_neg (h0 hy')]`.
+
+Use `congr 1`. Establish `h1 : χ.loc w (atFin w (Units.mk0 _ (h0 hy) * (Units.mk0 _ (h0 hy'))⁻¹)) = 1`. Establish `e : ((atFin w (Units.mk0 _ (h0 hy) * (Units.mk0 _ (h0 hy'))⁻¹) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (y / y')`. Simplify using `[atFin, div_eq_mul_inv]`. Use `hχ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[IsUnitAt, e, hval, map_div₀, hy, hy', div_one]`. Rewrite using `[e, ← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, hval, div_sub_one (h0 hy'), map_div₀, hy', div_one]`. Conclude with `hd`. Rewrite `h1` using `[map_mul, map_inv, map_mul, map_inv, mul_inv_eq_one]`. Conclude with `congrArg (fun u : ℂˣ => ((u⁻¹ : ℂˣ) : ℂ)) h1`.
+
+Establish `e : y / c = y' / c + (y - y') / c` using `by ring`. Rewrite using `[e, map_add, psiAt_add, psiAt_eq_one (t := algebraMap E _ ((y - y') / c)), mul_one]`. Rewrite using `[hval, map_div₀, hc, div_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), ← WithZero.exp_add]`. Use `hd using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussTerm_congr' {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : LevelLe χ w a) {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) {y y' : E} (hy : w.valuation E y = 1)
     (hy' : w.valuation E y' = 1) (hd : w.valuation E (y - y') ≤ WithZero.exp (-(a : ℤ))) :
@@ -100,18 +128,27 @@ theorem gaussTerm_congr' {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : �
     push_cast
     ring
 
+/- English proof (translation)
+Use `(w.intValuation_le_pow_iff_mem (y - y') a).2 h` as an intermediate fact. Rewrite `this` using `[← w.valuation_of_algebraMap (K := E)]`. Simplify using `using this`.
+-/
 theorem valuation_sub_le {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} {y y' : 𝓞 E} (h : y - y' ∈ w.asIdeal ^ a) :
     w.valuation E ((y : E) - y') ≤ WithZero.exp (-(a : ℤ)) := by
   have := (w.intValuation_le_pow_iff_mem (y - y') a).2 h
   rw [← w.valuation_of_algebraMap (K := E)] at this
   simpa using this
 
+/- English proof (translation)
+The claim follows from `gaussTerm_congr' hχ hc ((w.valuation_eq_one_iff_notMem (K := E)).2 hy) ((w.valuation_eq_one_iff_notMem (K := E)).2 hy') (valuation_sub_le h)`.
+-/
 theorem gaussTerm_congr {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (hχ : LevelLe χ w a) {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) {y y' : 𝓞 E} (hy : y ∉ w.asIdeal) (hy' : y' ∉ w.asIdeal)
     (h : y - y' ∈ w.asIdeal ^ a) : gaussTerm χ w c y = gaussTerm χ w c y' :=
   gaussTerm_congr' hχ hc ((w.valuation_eq_one_iff_notMem (K := E)).2 hy) ((w.valuation_eq_one_iff_notMem (K := E)).2 hy')
     (valuation_sub_le h)
 
+/- English proof (translation)
+Establish `h : w.valuation E ((unif w : Eˣ) : E) = WithZero.exp (-1 : ℤ)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).symm.trans (unif_spec w)`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, h, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem valuation_unif_pow (w : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
     w.valuation E ((unif w ^ k : Eˣ) : E) = WithZero.exp (-(k : ℤ)) := by
   have h : w.valuation E ((unif w : Eˣ) : E) = WithZero.exp (-1 : ℤ) :=
@@ -119,6 +156,9 @@ theorem valuation_unif_pow (w : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
   rw [Units.val_pow_eq_pow_val, map_pow, h, ← WithZero.exp_nsmul]
   simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(y.isUnit.map (Ideal.Quotient.factor (Ideal.pow_le_self ha : w.asIdeal ^ a ≤ w.asIdeal)))`. Rewrite `h1` using `[← Ideal.Quotient.mk_out (y : 𝓞 E ⧸ w.asIdeal ^ a), Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 h]`. Use `Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top` as an intermediate fact. Conclude with `not_isUnit_zero h1`.
+-/
 theorem out_notMem (w : HeightOneSpectrum (𝓞 E)) {a : ℕ} (ha : a ≠ 0) (y : (𝓞 E ⧸ w.asIdeal ^ a)ˣ) :
     (Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) ∉ w.asIdeal := by
   intro h
@@ -127,6 +167,25 @@ theorem out_notMem (w : HeightOneSpectrum (𝓞 E)) {a : ℕ} (ha : a ≠ 0) (y 
   have := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top
   exact not_isUnit_zero h1
 
+/- English proof (translation)
+Use `Fintype.ofFinite (𝓞 E ⧸ w.asIdeal ^ a)ˣ` as an intermediate fact. Use `w.isMaximal` as an intermediate fact. Establish `hu : w.valuation E ((c : E) / c') = 1` using `by rw [map_div₀, hc, hc', div_self WithZero.exp_ne_zero]`. Take `⟨r, hr⟩` from `w.exists_valuation_sub_lt_of_integer hu.le (Units.mk0 _ (WithZero.exp_ne_zero (a := -(a : ℤ))))`. Rewrite `hr` using `[Units.val_mk0]`.
+
+Establish `hr1 : w.valuation E (r : E) = 1`. Rewrite using `[← hu]`. Use `Valuation.map_eq_of_sub_lt _ (hr.trans_le ?_)` and prove the remaining obligations. Rewrite using `[hu, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨ρ, hρ⟩` from `Ideal.Quotient.isUnit_mk_pow_of_notMem w.asIdeal (n := a) ((w.valuation_eq_one_iff_notMem (K := E)).1 hr1)`. Rewrite using `[gaussSumAt, gaussSumAt, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight ρ) _ _ fun y => ?_` and prove the remaining obligations. Use `set z : 𝓞 E := Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a) with hz`. Establish `hz1 : w.valuation E (z : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 (out_notMem w ha y)`.
+
+Establish `hz0 : (z : E) ≠ 0` using `fun h => by`. Rewrite `hz1` using `[h, map_zero]`. Conclude with `zero_ne_one hz1`. Establish `hzc : (z : E) * (c / c') ≠ 0` using `mul_ne_zero hz0 (div_ne_zero c.ne_zero c'.ne_zero)`. Establish `h1 : gaussTerm χ w c ((Quotient.out ((Equiv.mulRight ρ y : (𝓞 E ⧸ w.asIdeal ^ a)ˣ) : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) : E) = gaussTerm χ w c (z * (c / c'))`.
+
+Establish `h2 : (Quotient.out ((Equiv.mulRight ρ y : (𝓞 E ⧸ w.asIdeal ^ a)ˣ) : 𝓞 E ⧸ w.asIdeal ^ a) : 𝓞 E) - z * r ∈ w.asIdeal ^ a`. Rewrite using `[← Ideal.Quotient.eq, Ideal.Quotient.mk_out, map_mul, hz, Ideal.Quotient.mk_out, ← hρ]`. Both sides reduce to the same expression. Establish `h3 : w.valuation E ((z * r : 𝓞 E) : E) = 1`. Use `push_cast`.
+
+Rewrite using `[map_mul, hz1, hr1, one_mul]`. Rewrite using `[gaussTerm_congr' hχ hc ((w.valuation_eq_one_iff_notMem (K := E)).2 (out_notMem w ha _)) h3 (valuation_sub_le h2)]`. Use `gaussTerm_congr' hχ hc h3 (by rw [map_mul, hz1, hu, one_mul]) ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← mul_sub, map_mul, hz1, one_mul]`.
+
+Conclude with `hr.le`. Establish `e1 : Units.mk0 _ hzc = Units.mk0 _ hz0 * c * c'⁻¹`. Use `ext`. Simplify using `[div_eq_mul_inv, mul_assoc]`. Establish `e2 : (z : E) * (c / c') / c = z / c'`.
+
+Use `c.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, gaussTerm, gaussTerm, dif_neg hz0, dif_neg hzc, e1, e2, map_mul, map_mul, map_inv]`. Simplify using `only [mul_inv, inv_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Use `(χ.locK w c).ne_zero` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem locK_mul_gaussSumAt_eq {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (ha : a ≠ 0) (hχ : LevelLe χ w a) {c c' : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ)))
     (hc' : w.valuation E (c' : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) :
@@ -174,6 +233,9 @@ theorem locK_mul_gaussSumAt_eq {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {
   have := (χ.locK w c).ne_zero
   field_simp
 
+/- English proof (translation)
+Rewrite using `[locEps, if_neg ha, locK_mul_gaussSumAt_eq ha hχ (valuation_unif_pow w _) hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locEps_of_ne_zero {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (ha : a ≠ 0) (hχ : LevelLe χ w a) {c : Eˣ}
     (hc : w.valuation E (c : E) = WithZero.exp (-((a + diffExp w : ℕ) : ℤ))) (s : ℂ) :
     locEps χ w a s = ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s * ((a + diffExp w : ℕ) : ℂ)) *
@@ -181,14 +243,23 @@ theorem locEps_of_ne_zero {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {a : �
   rw [locEps, if_neg ha, locK_mul_gaussSumAt_eq ha hχ (valuation_unif_pow w _) hc]
   ring
 
+/- English proof (translation)
+Simplify using `[locEps, Formalism.L2.Host.HChar.val]`.
+-/
 theorem locEps_zero (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     locEps χ w 0 s = ((val χ w : ℂˣ) : ℂ) ^ diffExp w * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s * (diffExp w : ℂ)) *
       ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ ((diffExp w : ℂ) / 2) := by
   simp [locEps, Formalism.L2.Host.HChar.val]
 
+/- English proof (translation)
+Simplify using `[locEps_zero, h]`.
+-/
 theorem locEps_eq_one (χ : HChar E) {w : HeightOneSpectrum (𝓞 E)} (h : diffExp w = 0) (s : ℂ) : locEps χ w 0 s = 1 := by
   simp [locEps_zero, h]
 
+/- English proof (translation)
+Use `((Ideal.finite_factors (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))).union a.support.finite_toSet).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Finset.mem_coe, Finsupp.mem_support_iff, not_or, not_not] at hn`. Conclude with `hw (by simp only [hn.2]; exact locEps_eq_one χ (multiplicity_eq_zero.2 hn.1) s)`.
+-/
 theorem finite_mulSupport_locEps (χ : HChar E) (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (s : ℂ) :
     (Function.mulSupport fun w => locEps χ w (a w) s).Finite := by
   refine ((Ideal.finite_factors (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))).union a.support.finite_toSet).subset fun w hw => ?_
@@ -196,12 +267,26 @@ theorem finite_mulSupport_locEps (χ : HChar E) (a : HeightOneSpectrum (𝓞 E) 
   simp only [Set.mem_union, Set.mem_setOf_eq, Finset.mem_coe, Finsupp.mem_support_iff, not_or, not_not] at hn
   exact hw (by simp only [hn.2]; exact locEps_eq_one χ (multiplicity_eq_zero.2 hn.1) s)
 
+/- English proof (translation)
+Use `Even.neg_pow (Finset.even_sum _ fun i _ => ?_) _` and prove the remaining obligations. Rewrite using `[Int.natAbs_mul]`. Conclude with `even_two_mul _`.
+-/
 theorem archEps_two_mul {I : Type} [Fintype I] (m : I → ℤ) :
     archEps (fun i => 2 * m i) = Complex.I ^ (∑ i, (2 * m i).natAbs) := by
   refine Even.neg_pow (Finset.even_sum _ fun i _ => ?_) _
   rw [Int.natAbs_mul]
   exact even_two_mul _
 
+/- English proof (translation)
+Establish `hπ : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Establish `hne : ∀ {s : ℂ}, (∀ (i : I) (k : ℕ), s + ((|n i| : ℤ) : ℂ) / 2 ≠ -k) → archFactor n s ≠ 0` using `fun hs => Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero (fun h0 => hπ ((Complex.cpow_eq_zero_iff _ _).1 h0).1)) (Complex.Gamma_ne_zero (hs i))`. Establish `hd : Differentiable ℂ fun s => (archFactor n s)⁻¹`. Establish `: (fun s => (archFactor n s)⁻¹) = fun s => ∏ i, (2⁻¹ * (2 * (Real.pi : ℂ)) ^ (s + ((|n i| : ℤ) : ℂ) / 2) * (Complex.Gamma (s + ((|n i| : ℤ) : ℂ) / 2))⁻¹)`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[archFactor, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_inv, mul_inv, Complex.cpow_neg, inv_inv]`. Rewrite using `[this]`. Use `Differentiable.fun_finset_prod fun i _ => Differentiable.mul (Differentiable.const_mul ?_ _) ?_` and prove the remaining obligations.
+
+Conclude with `(differentiable_id.add_const _).const_cpow (Or.inl hπ)`. Conclude with `Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)`. Establish `key : (fun s => (archFactor n s)⁻¹ * Λ s) = L`. Use `entire_eq_of_halfPlane (hd.mul h.1) hL.1 1 fun s hs => ?_` and prove the remaining obligations. Rewrite using `[h.eq_mul hL hs, inv_mul_cancel_left₀ (hne fun i k hk => ?_)]`.
+
+Establish `h1` using `congrArg Complex.re hk`. Establish `h2 : (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg _`. Establish `h3 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.intCast_re, Complex.neg_re, Complex.natCast_re] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[← key, mul_inv_cancel_left₀ (hne hs)]`.
+-/
 theorem completed_eq_mul {I : Type} [Fintype I] {χ : HChar E} {n : I → ℤ} {Λ L : ℂ → ℂ} (h : IsCompletedL χ n Λ)
     (hL : IsHeckeL χ L) {s : ℂ} (hs : ∀ (i : I) (k : ℕ), s + ((|n i| : ℤ) : ℂ) / 2 ≠ -k) : Λ s = archFactor n s * L s := by
   have hπ : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
@@ -239,6 +324,9 @@ def HeckeEntire : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (m : I → ℤ) (χ : HChar E),
     IsCMType φ → IsUnitary χ → HasInf χ φ m → (∃ i, m i ≠ 0) → ∃ Λ, IsHeckeL χ Λ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf`.
+-/
 theorem HeckeEntire_holds : HeckeEntire := GlobalTheory.ToricDistribution.exists_isHeckeL_of_hasInf
 
 def HeckeTateFunctionalEquation : Prop :=
@@ -255,6 +343,11 @@ def HeckeTateFunctionalEquationCM : Prop :=
         (∀ (i : I) (k : ℕ), s + ((|m i| : ℤ) : ℂ) ≠ -k) → (∀ (i : I) (k : ℕ), 1 - s + ((|m i| : ℤ) : ℂ) ≠ -k) →
           LInf m s * Λ s = Complex.I ^ (∑ i, (2 * m i).natAbs) * finEps χ a s * (LInf m (1 - s) * Λ' (1 - s))
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ m χ a L L' hφ hu hi ⟨i, hm⟩ ha hL hL' s hs hs'`. Take `⟨Λ, Λ', h1, h2, h3⟩` from `h E I φ hφ χ (fun i => 2 * m i) a hu hi ⟨i, mul_ne_zero two_ne_zero hm⟩ ha`. Establish `e : ∀ i, (((|2 * m i| : ℤ) : ℂ)) / 2 = ((|m i| : ℤ) : ℂ)` using `fun i => by`. Rewrite using `[abs_mul, abs_two]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e' : ∀ t, archFactor (fun i => -(2 * m i)) t = LInf m t` using `fun t => by`. Rewrite using `[← archFactor_two_mul]`. Simplify using `only [archFactor, abs_neg]`. Rewrite using `[← archFactor_two_mul, ← completed_eq_mul h1 hL (fun i k => by rw [e]; exact hs i k), h3, archEps_two_mul, completed_eq_mul h2 hL' (fun i k => by rw [abs_neg, e]; exact hs' i k), e']`.
+-/
 theorem HeckeTateFunctionalEquation.cm (h : HeckeTateFunctionalEquation) : HeckeTateFunctionalEquationCM := by
   intro E _ _ _ I _ φ m χ a L L' hφ hu hi ⟨i, hm⟩ ha hL hL' s hs hs'
   obtain ⟨Λ, Λ', h1, h2, h3⟩ := h E I φ hφ χ (fun i => 2 * m i) a hu hi ⟨i, mul_ne_zero two_ne_zero hm⟩ ha

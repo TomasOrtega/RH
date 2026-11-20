@@ -27,16 +27,27 @@ def omcEquiv {m : ℕ} (j : Fin m) : (Fin m → Fin n) ≃ Fin n × ({p // p ≠
     funext p
     simp [p.2]
 
+/- English proof (translation)
+Rewrite using `[← (omcEquiv (n := n) j).symm.sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem omc_sum {m : ℕ} {β : Type} [AddCommMonoid β] (j : Fin m) (h : (Fin m → Fin n) → β) :
     ∑ J, h J = ∑ b, ∑ R, h (omcGlue j b R) := by
   rw [← (omcEquiv (n := n) j).symm.sum_comp, Fintype.sum_prod_type]
   rfl
 
 omit [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Simplify using `[omcGlue]`.
+-/
 theorem omc_glue_j {m : ℕ} (j : Fin m) (b : Fin n) (R : {p // p ≠ j} → Fin n) : omcGlue j b R j = b := by
   simp [omcGlue]
 
 omit [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : p = j`. Substitute `hp` using the available equality. Simplify using `[omc_glue_j]`. Rewrite using `[Function.update_of_ne hp]`.
+
+Simplify using `[omcGlue, hp]`.
+-/
 theorem omc_update {m : ℕ} (j : Fin m) (a b : Fin n) (R : {p // p ≠ j} → Fin n) :
     Function.update (omcGlue j b R) j a = omcGlue j a R := by
   funext p
@@ -47,6 +58,9 @@ theorem omc_update {m : ℕ} (j : Fin m) (a b : Fin n) (R : {p // p ≠ j} → F
     simp [omcGlue, hp]
 
 omit [AddCommGroup M] [Module ℂ M] in
+/- English proof (translation)
+Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ j]`. Simplify using `only [omc_glue_j]`. Use `congr 1`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `[omcGlue, p.2]`.
+-/
 theorem omc_prod {m : ℕ} (j : Fin m) (F : Fin m → Fin n → ℂ) (b : Fin n) (R : {p // p ≠ j} → Fin n) :
     ∏ p, F p (omcGlue j b R p) = F j b * ∏ p : {p // p ≠ j}, F p.1 (R p) := by
   rw [Fintype.prod_eq_mul_prod_subtype_ne _ j]
@@ -55,6 +69,11 @@ theorem omc_prod {m : ℕ} (j : Fin m) (F : Fin m → Fin n → ℂ) (b : Fin n)
   refine Finset.prod_congr rfl fun p _ => ?_
   simp [omcGlue, p.2]
 
+/- English proof (translation)
+Simplify using `only [Om, lift, eAt, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Finset.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Finset.sum_eq_single (I j)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem Om_apply_eq_sum_update {m : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (j : Fin m)
     (g : TV n M (Fin m)) (I : Fin m → Fin n) :
     Om E j g I = ∑ a, E a (I j) (g (Function.update I j a)) := by
@@ -69,12 +88,26 @@ private theorem Om_apply_eq_sum_update {m : ℕ} (E : Fin n → Fin n → Module
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `only [actT, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+-/
 private theorem actT_const_apply_eq_sum_prod_smul {ι Γ : Type} {m : ℕ} (τ : ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (ρ : Γ → Module.End ℂ M) (γ : Γ) (g : TV n M (Fin m)) (I : Fin m → Fin n) :
     actT (fun _ : Fin m => τ) κ ρ γ g I = ∑ J, (∏ p, κ τ γ (I p) (J p)) • ρ γ (g J) := by
   simp only [actT, LinearMap.pi_apply, LinearMap.sum_apply,
     LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ a b, R0 (E a b (y a)) = ∑ c, ∑ d, (K c a * star (K d b)) • E c d (R0 (y a))`. Introduce `a b`. Establish `h` using `congrArg (fun T : Module.End ℂ M => T (y a)) (had a b)`. Simplify `h` using `[Module.End.mul_apply, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `h2 : ∀ d, ∑ b, K i b * star (K d b) = if i = d then 1 else 0`.
+
+Introduce `d`. Establish `h` using `congrFun (congrFun hu i) d`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify `h` using `[Matrix.conjTranspose_apply]`. Repeatedly rewrite using `[map_sum, h1, Finset.smul_sum, smul_smul]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h3 : ∀ d (v : M), ∑ b, (K i b * (K c a * star (K d b))) • v = (K c a * if i = d then 1 else 0) • v`. Introduce `d v`. Rewrite using `[← Finset.sum_smul, ← h2 d, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `b _`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h3]`. Simplify using `[mul_ite]`.
+-/
 private theorem sum_smul_R0_sum_E_eq_of_unitary_of_adjoint (K : Matrix (Fin n) (Fin n) ℂ) (E : Fin n → Fin n → Module.End ℂ M)
     (R0 : Module.End ℂ M) (hu : K * Kᴴ = 1)
     (had : ∀ a b, R0 * E a b = (∑ c, ∑ d, (K c a * star (K d b)) • E c d) * R0)
@@ -106,6 +139,23 @@ private theorem sum_smul_R0_sum_E_eq_of_unitary_of_adjoint (K : Matrix (Fin n) (
   simp_rw [h3]
   simp [mul_ite]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `I`. Rewrite using `[actT_const_apply_eq_sum_prod_smul, Om_apply_eq_sum_update]`. Repeatedly rewrite using `[Om_apply_eq_sum_update, actT_const_apply_eq_sum_prod_smul]`. Use `set K := κ τ γ with hK`. Establish `hP : ∀ b R, ∏ p, K (I p) (omcGlue j b R p) = K (I j) b * ∏ p : {p // p ≠ j}, K (I p.1) (R p)` using `fun b R => omc_prod j (fun p y => K (I p) y) b R`.
+
+Establish `hQ : ∀ a b R, ∏ p, K (Function.update I j a p) (omcGlue j b R p) = K a b * ∏ p : {p // p ≠ j}, K (I p.1) (R p)`. Introduce `a b R`. Rewrite using `[show ∏ p, K (Function.update I j a p) (omcGlue j b R p) = K (Function.update I j a j) b * ∏ p : {p // p ≠ j}, K (Function.update I j a p.1) (R p) from omc_prod j (fun p y => K (Function.update I j a p) y) b R]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `p _`. Rewrite using `[Function.update_of_ne p.2]`. Use `trans ∑ R : {p // p ≠ j} → Fin n, (∏ p : {p // p ≠ j}, K (I p.1) (R p)) • ∑ a, ∑ c, K c a • E c (I j) (ρ γ (f (omcGlue j a R)))`. Use `conv_lhs => rw [omc_sum j]`.
+
+Simplify using `only [omc_glue_j, omc_update, hP]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun R _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_smul_R0_sum_E_eq_of_unitary_of_adjoint K E (ρ γ) hu had (I j) (fun a => f (omcGlue j a R)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, mul_comm]`. Establish `hR : ∀ a, E a (I j) (∑ J, (∏ p, K (Function.update I j a p) (J p)) • ρ γ (f J)) = ∑ b, ∑ R, (K a b * ∏ p : {p // p ≠ j}, K (I p.1) (R p)) • E a (I j) (ρ γ (f (omcGlue j b R)))`. Introduce `a`. Rewrite using `[omc_sum j]`. Simplify using `only [hQ, map_sum, map_smul]`.
+
+Simplify using `only [hR]`. Use `symm`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => arg 2`. Use extensionality with `b`.
+
+Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun R _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+-/
 theorem actT_Om {ι Γ : Type} {m : ℕ} (τ : ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (E : Fin n → Fin n → Module.End ℂ M)
     (ρ : Γ → Module.End ℂ M) (γ : Γ) (hu : κ τ γ * (κ τ γ)ᴴ = 1)
     (had : ∀ a b, ρ γ * E a b = (∑ c, ∑ d, (κ τ γ c a * star (κ τ γ d b)) • E c d) * ρ γ) (j : Fin m)

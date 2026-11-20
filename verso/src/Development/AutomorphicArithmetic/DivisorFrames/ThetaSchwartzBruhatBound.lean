@@ -23,20 +23,35 @@ variable {F : Type} [Field F] [NumberField F]
 private def mkA (a : mixedEmbedding.mixedSpace F) (b : Af F) : AF F :=
   (Prod.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a) b : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+Simplify using `[evI, mkA]`.
+-/
 private theorem evI_mkA (a : mixedEmbedding.mixedSpace F) (b : Af F) : evI F (mkA a b) = a := by
   simp [evI, mkA]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_add]`.
+-/
 private theorem pureA_add {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (a b : (κ → Af F) → ℂ) :
     pureA F f (a + b) = pureA F f a + pureA F f b := by
   funext x; simp [pureA, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pureA_smul {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (c : ℂ) (a : (κ → Af F) → ℂ) :
     pureA F f (c • a) = c • pureA F f a := by
   funext x; simp [pureA]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+-/
 private theorem pureA_zero {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) : pureA F f (0 : (κ → Af F) → ℂ) = 0 := by
   funext x; simp [pureA]
 
+/- English proof (translation)
+Simplify using `only [pureA]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `evI_mkA (y i) (z i)`.
+-/
 private theorem pureA_mkA {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (a : (κ → Af F) → ℂ)
     (y : κ → mixedEmbedding.mixedSpace F) (z : κ → Af F) : pureA F f a (fun i => mkA (y i) (z i)) = f y * a z := by
   simp only [pureA]
@@ -45,6 +60,9 @@ private theorem pureA_mkA {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) 
   funext i
   exact evI_mkA (y i) (z i)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [thetaSum]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, thetaSum_add F (h a (Finset.mem_insert_self a s)) (Submodule.sum_mem _ fun i hi => h i (Finset.mem_insert_of_mem hi)), ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+-/
 private theorem thetaSum_finset_sum {κ ι : Type} [Fintype κ] (s : Finset ι) (Φ : ι → (κ → AF F) → ℂ)
     (h : ∀ i ∈ s, Φ i ∈ schA F κ) : thetaSum F (∑ i ∈ s, Φ i) = ∑ i ∈ s, thetaSum F (Φ i) := by
   induction s using Finset.induction_on with
@@ -59,6 +77,45 @@ end UpperTheory.SoBound
 end
 
 open GlobalTheory.ThKSoDecay UpperTheory.SoBound in
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair m φ hφ`. Establish `hU` using `soDecayUnif hP F E σ B n d X W M χX χW om r s r' s' hPair`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d)` using `hPair.weil.isUSplitting.pres`. Set `So` to `M.So B.ψ B.τ₁`. Set `T' : Submodule ℂ ((Fin n × Fin d → Af F) → ℂ)` to `{ carrier := {a | ∀ g : SInf F (Fin n × Fin d), pureA F g a ∈ So} add_mem' := fun ha hb g => by rw [pureA_add]; exact So.add_mem (ha g) (hb g) zero_mem' := fun g => by rw [pureA_zero]; exact So.zero_mem smul_mem' := fun c a ha g => by rw [pureA_smul]; exact So.smul_mem c (ha g) }`.
+
+Set `T` to `SB (Fin n × Fin d → Af F) ⊓ T'`. Establish `hslice : ∀ Φ ∈ So, ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, (fun z : Fin n × Fin d → Af F => Φ (fun i => mkA (y i) (z i))) ∈ T'`. Introduce `Φ hΦ y`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨g, ψ, h1, h2, h3, rfl⟩` from `hΦ`. Set `a : (Fin n × Fin d → Af F) → ℂ` to `fun z => ∏ᶠ v, ψ v fun i => evFin F v (mkA 0 (z i))`. Establish `e1 : (fun z : Fin n × Fin d → Af F => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g ψ (fun i => mkA (y i) (z i))) = g y • a`. Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, smul_eq_mul, a]`.
+
+Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `evI_mkA (y i) (z i)`. Establish `e2 : ∀ g' : SInf F (Fin n × Fin d), pureA F g' a = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g' ψ` using `fun g' => by`.
+
+Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `T'.smul_mem _ fun g' => ?_` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Conclude with `Submodule.subset_span ⟨g', ψ, h1, h2, h3, rfl⟩`. Consider the case `zero`. Establish `e0 : (fun z : Fin n × Fin d → Af F => (0 : (Fin n × Fin d → AF F) → ℂ) (fun i => mkA (y i) (z i))) = 0` using `rfl`. Rewrite using `[e0]`. Conclude with `T'.zero_mem`.
+
+Consider the case `add Φ Ψ _ _ hΦ hΨ => exact T'.add_mem hΦ hΨ`. Consider the case `smul c Φ _ hΦ => exact T'.smul_mem c hΦ`. Take `⟨Cm, hC⟩` from `Submodule.exists_isCompl T`. Establish `hdec : ∀ j, ∃ t ∈ T, ∃ c ∈ Cm, t + c = φ j` using `fun j => Submodule.mem_sup.1 (hC.sup_eq_top ▸ Submodule.mem_top)`. Use `choose t htT c hcC htc using hdec`.
+
+Establish `hcSB : ∀ j, c j ∈ SB (Fin n × Fin d → Af F)` using `fun j => by`. Establish `: c j = φ j - t j` using `by rw [← htc j]; abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (hφ j) (htT j).1`. Establish `hred : ∀ w : Fin m → SInf F (Fin n × Fin d), ∑ j, pureA F (w j) (φ j) ∈ So → ∑ j, pureA F (w j) (φ j) = ∑ j, pureA F (w j) (t j)`.
+
+Introduce `w hw`. Establish `e : ∑ j, pureA F (w j) (φ j) = ∑ j, pureA F (w j) (t j) + ∑ j, pureA F (w j) (c j)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← pureA_add, htc j]`. Establish `hΨ : ∑ j, pureA F (w j) (c j) ∈ So`.
+
+Establish `: ∑ j, pureA F (w j) (c j) = ∑ j, pureA F (w j) (φ j) - ∑ j, pureA F (w j) (t j)`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `So.sub_mem hw (So.sum_mem fun j _ => (htT j).2 (w j))`.
+
+Establish `h0 : ∀ y, ∑ j, w j y • c j = 0`. Introduce `y`. Establish `h1 : ∑ j, w j y • c j ∈ T`. Use `⟨SB _ |>.sum_mem fun j _ => (SB _).smul_mem _ (hcSB j), ?_⟩` and prove the remaining obligations. Use `hslice _ hΨ y` as an intermediate fact.
+
+Establish `e' : (fun z : Fin n × Fin d → Af F => (∑ j, pureA F (w j) (c j)) (fun i => mkA (y i) (z i))) = ∑ j, w j y • c j`. Use function extensionality and compare the values at `z`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, pureA_mkA]`. Rewrite `this` using `[e']`. Then use the resulting hypothesis. Establish `h2 : ∑ j, w j y • c j ∈ Cm` using `Cm.sum_mem fun j _ => Cm.smul_mem _ (hcC j)`.
+
+Use `hC.inf_eq_bot ▸ (Submodule.mem_inf.2 ⟨h1, h2⟩)` as an intermediate fact. Conclude with `(Submodule.mem_bot ℂ).1 this`. Rewrite using `[e, add_eq_left]`. Use function extensionality and compare the values at `x`. Use `congrFun (h0 fun i => evI F (x i)) (fun i => (x i).2)` as an intermediate fact.
+
+Simplify `this` using `[pureA, Finset.sum_apply, evI]`. Establish `hmem : ∀ (a : (Fin n × Fin d → Af F) → ℂ), a ∈ SB (Fin n × Fin d → Af F) → ∀ g : SInf F (Fin n × Fin d), pureA F g a ∈ schA F (Fin n × Fin d)` using `fun a ha g => Submodule.subset_span ⟨g, a, ha, rfl⟩`. Establish `hbd : ∀ j, ∃ (C0 : ℝ) (k0 : ℕ), 0 ≤ C0 ∧ ∀ (g : SInf F (Fin n × Fin d)) x h, ‖theta om (pureA F g (t j)) x h‖ ≤ C0 * semK (Fin n × Fin d) k0 g * (ht h : ℝ) ^ k0`. Introduce `j`. Take `⟨C0, k0, hC0⟩` from `hU (t j) (htT j).1 (htT j).2 0`.
+
+Use `⟨max C0 0, k0, le_max_right _ _, fun g x h => ?_⟩` and prove the remaining obligations. Establish `hh : (0 : ℝ) ≤ (ht h : ℝ) ^ k0` using `pow_nonneg (NNReal.coe_nonneg _) _`. Use `hC0 g x h` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Use `this.trans ?_` and prove the remaining obligations.
+
+Establish `hs : 0 ≤ semK (Fin n × Fin d) k0 g` using `apply_nonneg _ _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hs) hh`. Use `choose C k hC0 hCb using hbd`. Use `⟨∑ j, C j, Finset.univ.sup k, Finset.sum_nonneg fun j _ => hC0 j, fun w hw x h => ?_⟩` and prove the remaining obligations. Rewrite using `[hred w hw]`.
+
+Establish `e : theta om (∑ j, pureA F (w j) (t j)) x h = ∑ j, theta om (pureA F (w j) (t j)) x h`. Simplify using `only [theta]`. Rewrite using `[map_sum]`. Conclude with `thetaSum_finset_sum _ _ fun j _ => hpres _ _ (hmem _ (htT j).1 (w j))`. Rewrite using `[e, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => (hCb j (w j) x h).trans ?_)` and prove the remaining obligations. Establish `hk : k j ≤ Finset.univ.sup k` using `Finset.le_sup (f := k) (Finset.mem_univ j)`. Establish `hle' : semK (F` using `F) (Fin n × Fin d) (k j) ≤ semK (F := F) (Fin n × Fin d) (Finset.univ.sup k) := Finset.sup_mono (Finset.Iic_subset_Iic.2 (Prod.mk_le_mk.2 ⟨hk, hk⟩))`. Establish `hCj : C j ≤ ∑ i, C i` using `Finset.single_le_sum (fun i _ => hC0 i) (Finset.mem_univ j)`. Establish `hh : (1 : ℝ) ≤ (ht h : ℝ)` using `GlobalTheory.ThKSoSpan.one_le_ht h`.
+
+Establish `hS : 0 ≤ ∑ i, C i` using `(hC0 j).trans hCj`. Conclude with `mul_le_mul (mul_le_mul hCj (hle' (w j)) (apply_nonneg _ _) hS) (pow_le_pow_right₀ hh hk) (pow_nonneg (zero_le_one.trans hh) _) (mul_nonneg hS (apply_nonneg _ _))`.
+-/
 theorem UpperTheory.theta_schwartz_bruhat_bound :
     GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
                  (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

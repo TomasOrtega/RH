@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.MainTerm
 
+/- English proof (translation)
+Establish `h1 : ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, f c s * MvPowerSeries.coeff μ (T c ^ (l ^ s)) = ∑ s ∈ Finset.range (μ.degree + 1 + 1), ∑ c, f c s * MvPowerSeries.coeff μ (T c ^ (l ^ s))`. Rewrite using `[Finset.sum_range_succ _ (μ.degree + 1), Finset.sum_eq_zero (s := Finset.univ), add_zero]`. Introduce `c _`. Rewrite using `[(hT c).pow _ μ ((Nat.lt_succ_self _).trans (Nat.lt_pow_self (by omega))), mul_zero]`. Rewrite using `[h1, Finset.sum_range_succ', Finset.sum_range_succ', Finset.sum_eq_zero, zero_add, add_comm]`.
+
+Simplify using the standard rewrite rules. Introduce `s _`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[(hT c).pow _ μ (hμ.trans_le (Nat.pow_le_pow_right (by omega) (by omega))), mul_zero]`.
+-/
 theorem sum_pow_trunc_lt_sq {C : Type} [Field C] {I ι : Type} [Fintype I] {l : ℕ} (hl : 2 ≤ l)
     (T : I → MvPowerSeries ι C) (hT : ∀ c, OrdGE 1 (T c)) (f : I → ℕ → C) (μ : ι →₀ ℕ)
     (hμ : μ.degree < l ^ 2) :
@@ -29,6 +34,9 @@ theorem sum_pow_trunc_lt_sq {C : Type} [Field C] {I ι : Type} [Fintype I] {l : 
     refine Finset.sum_eq_zero fun c _ => ?_
     rw [(hT c).pow _ μ (hμ.trans_le (Nat.pow_le_pow_right (by omega) (by omega))), mul_zero]
 
+/- English proof (translation)
+Introduce `A hA`. Establish `: A = 0` using `(Finsupp.degree_eq_zero_iff A).1 (by omega)`. Substitute `this` using the available equality. Simplify using `using h`.
+-/
 theorem ordGE_one_of_constantCoeff {C : Type} [Field C] {ι : Type} {F : MvPowerSeries ι C}
     (h : MvPowerSeries.constantCoeff F = 0) : OrdGE 1 F := by
   intro A hA
@@ -36,6 +44,11 @@ theorem ordGE_one_of_constantCoeff {C : Type} [Field C] {ι : Type} {F : MvPower
   subst this
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map em)), Finset.sum_map]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `c _ hc`. Establish `h : ∀ δ, em δ ≠ c` using `fun δ h => hc (Finset.mem_map.2 ⟨δ, Finset.mem_univ _, h⟩)`.
+
+Simplify using `[h, hn]`.
+-/
 theorem sum_coeff_pow_ite {C : Type} [Field C] {I : Type} [Fintype I] {N : ℕ} (em : Fin N ↪ I)
     (g : I → C) {n : ℕ} (hn : n ≠ 0) (μ : Fin N →₀ ℕ) :
     ∑ c, g c * MvPowerSeries.coeff μ
@@ -48,6 +61,29 @@ theorem sum_coeff_pow_ite {C : Type} [Field C] {I : Type} [Fintype I] {N : ℕ} 
     have h : ∀ δ, em δ ≠ c := fun δ h => hc (Finset.mem_map.2 ⟨δ, Finset.mem_univ _, h⟩)
     simp [h, hn]
 
+/- English proof (translation)
+Introduce `C _ V d I J _ _ G S t ht N em hem`. Establish `hl : 2 ≤ V.l` using `V.l_prime.two_le`. Set `al : I → ℕ → I → C` to `fun c k b => if k = 0 then (if c = b then 1 else 0) else S.co (S.cur c k) b`. Take `⟨h0, h1, h2⟩` from `GlobalTheory.T.formalGroupCoordinates_pullback_linear_tangentBasis C V d I J G S t ht (Fin N) (fun δ => S.tan (em δ)) (fun b j => if em j = b then 1 else 0) al (by intro j x; simp) (by intro c b; simp [al]) (by`. Introduce `c k x hk`.
+
+Establish `hk' : k ≠ 0` using `by omega`. Simplify using `only [al, hk', if_false, Sys.al, S.cur_zero_inl]`. Conclude with `(S.co_spec (S.cur c k) x).symm)`. Use `set T : I → MvPowerSeries (Fin N) C := fun c => linPull (fun δ => S.tan (em δ)) (t c) with hTdef`. Use `set z : I → MvPowerSeries (Fin N) C := fun c => ∑ δ : Fin N, if em δ = c then (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) else 0 with hz`.
+
+Establish `hT : ∀ c, OrdGE 1 (T c)` using `fun c => ordGE_one_of_constantCoeff (h0 c)`. Establish `hz1 : ∀ c, OrdGE 1 (z c)` using `fun c => by`. Use `OrdGE.sum _ fun δ _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `OrdGE.X δ`.
+
+Conclude with `OrdGE.zero`. Establish `hal1 : ∀ δ b, al (em δ) 1 b = 0` using `fun δ b => by`. Establish `: ∀ x, S.cur (em δ) 1 (Sum.inl x) = 0` using `hem δ`. Simplify using `[al, Sys.co, this]`. Establish `key : ∀ D, D + 1 ≤ V.l ^ 2 → ∀ c, OrdGE (D + 1) (T c - z c)`.
+
+Introduce `D`. Proceed by induction on `D with`. Consider the case `zero => exact fun _ c => (hT c).sub (hz1 c)`. Consider the case `succ D ih`. Introduce `hD b A hA`.
+
+Establish `e` using `h1 b A`. Establish `e2` using `sum_pow_trunc_lt_sq hl T hT (fun c s => al c s b) A (by omega)`. Rewrite `e` using `[e2]`. Establish `e3 : ∀ c, MvPowerSeries.coeff A (T c ^ V.l) = MvPowerSeries.coeff A (z c ^ V.l)` using `fun c => by`. Use `OrdGE.pow_sub_pow (hT c) (hz1 c) (ih (by omega) c) (N := V.l) (by omega) A (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e4 : ∑ c, al c 1 b * MvPowerSeries.coeff A (T c ^ V.l) = 0`. Simplify using `only [e3, hz]`. Rewrite using `[sum_coeff_pow_ite em (fun c => al c 1 b) (by omega)]`. Simplify using `[hal1]`.
+
+Rewrite `e` using `[e4, add_zero]`. Rewrite using `[map_sub, sub_eq_zero]`. Establish `e5 : ∑ c, al c 0 b * MvPowerSeries.coeff A (T c) = MvPowerSeries.coeff A (T b)`. Simplify using `[al]`. Rewrite using `[← e5, e]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Introduce `μ hμ`. Use `⟨fun c => ?_, fun κ => ?_⟩` and prove the remaining obligations.
+
+Use `key μ.degree hμ c μ (Nat.lt_succ_self _)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e2` using `sum_pow_trunc_lt_sq hl T hT (fun c s => S.be c s κ) μ hμ`. Establish `e3 : ∀ c, MvPowerSeries.coeff μ (T c ^ V.l) = MvPowerSeries.coeff μ (z c ^ V.l)` using `fun c => by`. Use `OrdGE.pow_sub_pow (hT c) (hz1 c) (key μ.degree hμ c) (N := V.l) (by omega) μ (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[h2 κ μ, e2]`. Simplify using `only [e3, hz]`. Rewrite using `[sum_coeff_pow_ite em (fun c => S.be c 1 κ) (by omega)]`. Simplify using `[Sys.be, S.be_zero]`.
+-/
 theorem coeff_low_good : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) (I J : Type) [Fintype I] [Fintype J] (G : Cart V d I J) (S : Sys G) (t : I → MvPowerSeries I C), S.IsT t → ∀ (N : ℕ) (em : Fin N ↪ I), (∀ δ x, S.al (em δ) 1 x = 0) → ∀ μ : Fin N →₀ ℕ, μ.degree < V.l ^ 2 → (∀ c, MvPowerSeries.coeff μ (linPull (fun δ => S.tan (em δ)) (t c)) = MvPowerSeries.coeff μ (∑ δ : Fin N, if em δ = c then (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) else 0)) ∧ ∀ κ : J, MvPowerSeries.coeff μ (linPull (fun δ => S.tan (em δ)) (S.ze t κ)) = MvPowerSeries.coeff μ (-∑ δ : Fin N, S.be (em δ) 1 κ • (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) ^ V.l) := by
   intro C _ V d I J _ _ G S t ht N em hem
   have hl : 2 ≤ V.l := V.l_prime.two_le

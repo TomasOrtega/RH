@@ -30,6 +30,17 @@ namespace GlobalTheory.AmpTKGap
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ Wp`. Take `⟨μG, hG⟩` from `GlobalTheory.SnMass.Inhab.exists_isHaarOn k r`. Establish `hN` using `GlobalTheory.haarLie_isHaarOn_Nset k r L.κN hκ0 hκt.lt_top`. Take `⟨νq, hq⟩` from `GlobalTheory.exists_isQuotMeas_bessel_subgroup k r z μW L.μN μG hz hT hW hN hG`. Take `⟨U, hS⟩` from `GlobalTheory.AmpNormal.sideG_of hκt.lt_top hz hT hπ hW hG hq`.
+
+Take `⟨t, ht, htN, htz, -⟩` from `GlobalTheory.TorusScale.exists_torus_scale k r L.c hc`. Take `⟨-, htc, hψ⟩` from `htz z hz`. Establish `hR : Formalism.MainNotions.S.IsURepOn (GG k r) (GlobalTheory.AmpTK.rep L).σ` using `GlobalTheory.Amp.LocalInputs.urep_of_ds L.hσ`. Take `⟨hS', hB⟩` from `GlobalTheory.T.isBesselMap_conj_iff_and_besselFn_eq_rankOne hH k r Wp z π U L.c μW L.μN μG νq t ht htN htc hψ hS`. Take `⟨-, hbe⟩` from `hB (GlobalTheory.AmpTK.rep L) hR`.
+
+Establish `hDG : (GlobalTheory.AmpTK.rep L).IsDG L.ε L.lam` using `⟨L.hlam, L.hσ, h, hgap, hok⟩`. Take `⟨l₁, hl₁⟩` from `Gp91.GlobalTheory.T.bessel_gap_exists_functional hH.1 k r L.ε L.lam h (GlobalTheory.AmpTK.rep L) Wp z π U μW _ μG _ hDG hgap hok hS'`. Establish `hti` using `GlobalTheory.BesselMove.inv_mem ht`. Use `⟨fun v => l₁ ((GlobalTheory.AmpTK.rep L).σ t⁻¹ v), fun x hx v hv => hbe l₁ hl₁ x hx v hv, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv w hw show l₁ ((GlobalTheory.AmpTK.rep L).σ t⁻¹ (v + w)) = _`.
+
+Rewrite using `[map_add]`. Conclude with `hl₁.1.1 _ (GlobalTheory.BesselMove.sig_sm hR hti hv) _ (GlobalTheory.BesselMove.sig_sm hR hti hw)`. Introduce `a v hv show l₁ ((GlobalTheory.AmpTK.rep L).σ t⁻¹ (a • v)) = _`. Rewrite using `[map_smul]`. Conclude with `hl₁.1.2.1 _ _ (GlobalTheory.BesselMove.sig_sm hR hti hv)`.
+
+Conclude with `GlobalTheory.SmMapAct.cw_comp (GlobalTheory.BesselMove.smMap_sigma hR hti) hl₁.1.2.2.2`.
+-/
 theorem side_bessel (hH : GlobalTheory.GapIn.Hyp) (L : LocBessel k r) (h : ℝ) (hgap : GapAtLeast L.ε L.lam h)
     (hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h) (hc : L.c ≠ 0) (hκ0 : 0 < L.κN) (hκt : L.κN ≠ ⊤)
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
@@ -62,6 +73,9 @@ theorem side_bessel (hH : GlobalTheory.GapIn.Hyp) (L : LocBessel k r) (h : ℝ) 
     exact hl₁.1.2.1 _ _ (GlobalTheory.BesselMove.sig_sm hR hti hv)
   · exact GlobalTheory.SmMapAct.cw_comp (GlobalTheory.BesselMove.smMap_sigma hR hti) hl₁.1.2.2.2
 
+/- English proof (translation)
+Introduce `hH k r L h hgap hok hc hκ0 hκt`. Take `⟨l, hl, hsl⟩` from `side_bessel hH L h hgap hok hc hκ0 hκt L.z L.π L.u L.μW L.hz.1 L.hz.2 L.hπ L.hμW.1`. Take `⟨l', hl', hsl'⟩` from `side_bessel hH L h hgap hok hc hκ0 hκt L.z' L.π' L.u' L.μW' L.hz'.1 L.hz'.2 L.hπ' L.hμW'.1`. Conclude with `⟨l, l', ⟨hl, hl'⟩, hsl, hsl'⟩`.
+-/
 theorem exists_besselTK : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (L : Formalism.MainNotions.S.LocBessel k r) (h : ℝ),
     Formalism.QuantumDeterminants.GapAtLeast L.ε L.lam h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → L.c ≠ 0 → 0 < L.κN → L.κN ≠ ⊤ →
     ∃ (l : L.Hs → L.Wp) (l' : L.Hs → L.Wq), GlobalTheory.AmpTK.BeTK L l l' ∧ GlobalTheory.AmpTK.SmCW L l ∧ GlobalTheory.AmpTK.SmCW L l' := by

@@ -20,6 +20,9 @@ def StdAway : Prop := ∀ (n : ℕ) (A B : Type) [CommRing A] [CommRing B] [Alge
 
 def ChartAway : Prop := LateralTheory.E.LeafChartPf.LeafChartAway
 
+/- English proof (translation)
+Introduce `n A B _ _ _ g h`. Use `h` as an intermediate fact. Establish `: Algebra.IsStandardSmoothOfRelativeDimension 0 B (Localization.Away g)` using `Algebra.IsStandardSmoothOfRelativeDimension.localization_away (S := Localization.Away g) g`. Use `Algebra.IsStandardSmoothOfRelativeDimension.trans (n := n) (m := 0) (R := A) (S := B) (T := Localization.Away g)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem stdAway_pf : StdAway := by
   intro n A B _ _ _ g h
   have := h
@@ -28,6 +31,11 @@ theorem stdAway_pf : StdAway := by
   have := Algebra.IsStandardSmoothOfRelativeDimension.trans (n := n) (m := 0) (R := A) (S := B) (T := Localization.Away g)
   simpa using this
 
+/- English proof (translation)
+Introduce `X Z S p ι _ d e _ _ x hx W hxW`. Take `⟨A, B, _, _, _, I, h1, hloc, j, _, ⟨y0, rfl⟩, hjW, hj⟩` from `hG p ι d e x hx W hxW`. Establish `hI : I ≤ (show PrimeSpectrum B from y0).asIdeal` using `(hj y0).1 hx`. Take `⟨g, hg, h2⟩` from `hloc _ (show PrimeSpectrum B from y0).isPrime hI`. Take `⟨j', hj', hsub, hcov, hiff⟩` from `hW (Set.range ι) B j I g hj`.
+
+Conclude with `⟨A, Localization.Away g, inferInstance, inferInstance, inferInstance, I.map (algebraMap B _), stdAway_pf _ A B g h1, h2, j', hj', hcov y0 hg, hsub.trans hjW, hiff⟩`.
+-/
 theorem LeafChartAff_of (hG : ChartGeo) (hW : ChartAway) : LateralTheory.E.LeafChartPf.LeafChartAff := by
   intro X Z S p ι _ d e _ _ x hx W hxW
   obtain ⟨A, B, _, _, _, I, h1, hloc, j, _, ⟨y0, rfl⟩, hjW, hj⟩ := hG p ι d e x hx W hxW

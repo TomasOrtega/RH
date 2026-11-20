@@ -12,6 +12,17 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Act.CL
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Use `set B0 := incM F d.b.1 with hB0`. Use `set Bi := incM F (d.b⁻¹).1 with hBi`. Establish `e1 : B0 * Bi = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv d.b`. Establish `e2 : Bi * B0 = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_inv_mul d.b`. Establish `h' : ∀ c, M' c * M c = 1` using `fun c => mul_eq_one_comm.1 (h c)`.
+
+Set `U : X → GL (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => ⟨B0 * M c * Bi, B0 * M' c * Bi, by`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hU : ∀ c, U c ∈ UG (cA σ) (dbl (incM F d.Y.J))`. Introduce `c`.
+
+Take `⟨x, hx⟩` from `kunf.exists_of_frame (Y := d.Y) hε (M c) (M' c) (h c) (hu c)`. Establish `hx1 : x.1 = U c`. Apply `Units.ext` to reduce the goal to its premises. Use `show mat2 x = B0 * M c * Bi`. Rewrite using `[← hx]`.
+
+Use `show mat2 x = B0 * (Bi * mat2 x * B0) * Bi`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hx1 ▸ x.2`. Use `⟨fun c => ⟨U c, hU c⟩, ?_, fun c => ?_⟩` and prove the remaining obligations. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul hM).matrix_mul continuous_const`. Conclude with `(continuous_const.matrix_mul hM').matrix_mul continuous_const`. Use `show Bi * (B0 * M c * Bi) * B0 = M c`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ptEx'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     {X : Type} [TopologicalSpace X] (M M' : X → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))
     (hM : Continuous M) (hM' : Continuous M') (h : ∀ c, M c * M' c = 1)

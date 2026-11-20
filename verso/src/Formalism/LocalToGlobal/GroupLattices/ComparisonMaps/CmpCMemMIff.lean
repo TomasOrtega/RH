@@ -30,6 +30,9 @@ def ValIntAt (IntAt : V → cls → Prop) : Prop :=
 
 variable {S emb embLL G e A pos embV yc}
 
+/- English proof (translation)
+Establish `hL' : ∀ v, ∃ g : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v), IsUnit g.det ∧ L v = colSpan (G.P.W v) g` using `hL`. Use `choose g hg using hL'`. Use `⟨fun v => ((Matrix.isUnit_iff_isUnit_det (g v)).mpr (hg v).1).unit, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`. Conclude with `(hg v).2`.
+-/
 theorem exists_bases {L : G.P.Tup} (hL : G.P.IsLatTup L) :
     ∃ g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v),
       ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) := by
@@ -40,6 +43,13 @@ theorem exists_bases {L : G.P.Tup} (hL : G.P.IsLatTup L) :
   rw [IsUnit.unit_spec]
   exact (hg v).2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hM c`. Take `⟨i, g, γ, κ, hγ, hpt⟩` from `hall c`. Set `L : G.P.Tup` to `fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))`. Establish `hL : G.P.IsLatTup L` using `fun v => ⟨_, (Matrix.isUnit_iff_isUnit_det _).1 (g v).isUnit, rfl⟩`.
+
+Establish `hv : cmpC S emb embLL G e A pos embV yc x i L ∈ G.P.HtupW L` using `((mem_funMod_iff G G.P.HtupW _).1 hM i).1 L hL`. Conclude with `(hloc x i L c hL ⟨g, γ, κ, fun _ => rfl, hγ, hpt⟩).1 hv`. Introduce `hI`. Use `cmpC_mem_funMod tE htE hc hBs hA hex hpos hchi hi hp hU haw G.P.HtupW x fun i L hL => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_bases hL`.
+
+Take `⟨c, γ, κ, hγ, hpt⟩` from `hp i g`. Establish `h1` using `(hloc x i L c hL ⟨g, γ, κ, hg, hγ, hpt⟩).2 (hI c)`. Unfold `cmpC at h1`. Rewrite `h1` using `[if_pos hL]`. Then use the resulting hypothesis.
+-/
 theorem cmpC_mem_M_iff (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : A.ActB)
     (hex : ValEx S emb embLL G A pos embV yc)
@@ -96,6 +106,13 @@ def LocWBack (T : ∀ u : D.what₂.Word, Forms0 D u) : Prop :=
   ∀ u (w : D.what₂.places.Pl) (x : ((D.fm u).lat 0).V),
     (∀ c, IntAtW T u w x c) → x ∈ locW D.what₂.places w ((D.fm u).lat 0).L
 
+/- English proof (translation)
+Unfold `IntSpan at hP ⊢`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hr, hf, rfl⟩` from `hp`. Use `AddSubgroup.subset_closure ⟨a * r, f, mul_mem ha hr, hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_smul]`. Consider the case `zero`. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ hp hq`.
+
+Rewrite using `[smul_add]`. Conclude with `add_mem hp hq`. Consider the case `neg p _ hp`. Rewrite using `[smul_neg]`. Conclude with `neg_mem hp`.
+-/
 theorem intSpan_smul (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (a : D.what₂.LL)
     (ha : a ∈ intW D.what₂.places w) {P : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ} (hP : P ∈ IntSpan D w lam) :
     D.what₂.embLL a • P ∈ IntSpan D w lam := by
@@ -115,6 +132,19 @@ theorem intSpan_smul (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau �
     rw [smul_neg]
     exact neg_mem hp
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `B hB`. Conclude with `(((T u).val0).lat y).1 hy w c B hB`. Consider the case `zero`.
+
+Introduce `B _`. Use `⟨0, AddSubgroup.zero_mem _, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `add y z _ _ h1 h2`.
+
+Introduce `B hB`. Take `⟨P, hP, hPy⟩` from `h1 B hB`. Take `⟨Q, hQ, hQz⟩` from `h2 B hB`. Use `⟨P + Q, AddSubgroup.add_mem _ hP hQ, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`.
+
+Use `show (D.fm u).emb 0 y c t + (D.fm u).emb 0 z c t = _`. Rewrite using `[hPy t, hQz t]`. Both sides reduce to the same expression. Consider the case `smul a y _ h1`. Introduce `B hB`.
+
+Take `⟨P, hP, hPy⟩` from `h1 B hB`. Use `⟨D.what₂.embLL a.1 • P, intSpan_smul w _ a.1 a.2 hP, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, map_smul]`. Use `show D.what₂.embLL a.1 * (D.fm u).emb 0 y c t = _`. Rewrite using `[hPy t]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locW_intAtW (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (x : ((D.fm u).lat 0).V) (hx : x ∈ locW D.what₂.places w ((D.fm u).lat 0).L) (c : (D.mem u).C.cls 0) :
     IntAtW T u w x c := by
@@ -145,6 +175,9 @@ theorem locW_intAtW (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word
     rw [hPy t]
     rfl
 
+/- English proof (translation)
+Introduce `u w x` and use `⟨fun hx c => locW_intAtW T u w x hx c, h u w x⟩`.
+-/
 theorem locWCrit_of (T : ∀ u : D.what₂.Word, Forms0 D u) (h : LocWBack T) : LocWCrit T :=
   fun u w x => ⟨fun hx c => locW_intAtW T u w x hx c, h u w x⟩
 

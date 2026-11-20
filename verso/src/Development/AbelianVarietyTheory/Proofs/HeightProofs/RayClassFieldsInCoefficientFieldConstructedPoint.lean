@@ -4,6 +4,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlugPt
 
+/- English proof (translation)
+Introduce `K β h`. Take `⟨X, f, T, c, Y, hY, p, _, _, _, _, _, _, _, _, _⟩` from `β`. Express the relevant statement in the definitionally equal form `RayRec X.toD7 c.O.nch at h`. Rewrite `h` using `[← hY]`. Conclude with `h`.
+-/
 theorem rayClassFields_in_coefficients : ∀ (K : Ctx) (β : BPt K), β.Is RayPosition → RayRec β.D β.O.ex.nch := by
   intro K β h
   obtain ⟨X, f, T, c, Y, hY, p, _, _, _, _, _, _, _, _, _⟩ := β

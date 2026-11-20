@@ -14,6 +14,13 @@ namespace GlobalTheory.CoverOpCompat
 section
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Establish `hw : ((1 : Over.mk ρ ⟶ G').left ≫ φ) ≫ G.hom = (Over.mk (ρ ≫ f)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `u : Over.mk (ρ ≫ f) ⟶ G` to `Over.homMk _ hw`. Establish `huu : (u * u).left = ((1 : Over.mk ρ ⟶ G') * 1).left ≫ φ` using `h.2 (Over.mk ρ) 1 1 u u rfl rfl`.
+
+Rewrite `huu` using `[_root_.mul_one]`. Establish `hsq : u * u = u` using `Over.OverMorphism.ext huu`. Establish `hu : u = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hu]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma isGrpPullback_one_left (h : IsGrpPullback G' G f φ) {T : Scheme.{0}} (ρ : T ⟶ S') :
     (1 : Over.mk (ρ ≫ f) ⟶ G).left = (1 : Over.mk ρ ⟶ G').left ≫ φ := by
 
@@ -30,12 +37,22 @@ private lemma isGrpPullback_one_left (h : IsGrpPullback G' G f φ) {T : Scheme.{
   rw [← hu]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `h.2 (Over.mk ρ) p q x y hx hy`.
+-/
 theorem push_mul (h : IsGrpPullback G' G f φ) {T : Scheme.{0}} {ρ : T ⟶ S'} {r : T ⟶ S} (e : r = ρ ≫ f)
     (p q : Over.mk ρ ⟶ G') (x y : Over.mk r ⟶ G) (hx : x.left = p.left ≫ φ) (hy : y.left = q.left ≫ φ) :
     (x * y).left = (p * q).left ≫ φ := by
   subst e
   exact h.2 (Over.mk ρ) p q x y hx hy
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hw : ((p⁻¹).left ≫ φ) ≫ G.hom = (Over.mk (ρ ≫ f)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `z : Over.mk (ρ ≫ f) ⟶ G` to `Over.homMk _ hw`.
+
+Establish `hxz : (x * z).left = (p * p⁻¹).left ≫ φ` using `push_mul h rfl p p⁻¹ x z hx rfl`. Rewrite `hxz` using `[_root_.mul_inv_cancel, ← isGrpPullback_one_left h ρ]`. Establish `hxz' : x * z = 1` using `Over.OverMorphism.ext hxz`. Establish `hz : x⁻¹ = z` using `(_root_.eq_inv_of_mul_eq_one_right hxz').symm`. Rewrite using `[hz]`.
+
+Both sides reduce to the same expression.
+-/
 theorem push_inv (h : IsGrpPullback G' G f φ) {T : Scheme.{0}} {ρ : T ⟶ S'} {r : T ⟶ S} (e : r = ρ ≫ f)
     (p : Over.mk ρ ⟶ G') (x : Over.mk r ⟶ G) (hx : x.left = p.left ≫ φ) :
     (x⁻¹).left = (p⁻¹).left ≫ φ := by
@@ -52,6 +69,11 @@ theorem push_inv (h : IsGrpPullback G' G f φ) {T : Scheme.{0}} {ρ : T ⟶ S'} 
   rw [hz]
   rfl
 
+/- English proof (translation)
+Set `c : Over.mk ((Out.baseOver S').hom ≫ f) ⟶ Out.baseOver S` to `Over.homMk f (by simp [Out.baseOver])`. Establish `hc : c ≫ (1 : Out.baseOver S ⟶ G) = 1` using `MonObj.comp_one c`. Establish `hl : f ≫ (1 : Out.baseOver S ⟶ G).left = (1 : Over.mk ((Out.baseOver S').hom ≫ f) ⟶ G).left`. Rewrite using `[← hc]`. Both sides reduce to the same expression.
+
+Rewrite using `[hl]`. Conclude with `isGrpPullback_one_left h (Out.baseOver S').hom`.
+-/
 theorem push_one (h : IsGrpPullback G' G f φ) :
     f ≫ (1 : Out.baseOver S ⟶ G).left = (1 : Out.baseOver S' ⟶ G').left ≫ φ := by
 
@@ -66,6 +88,23 @@ theorem push_one (h : IsGrpPullback G' G f φ) :
 
 end
 
+/- English proof (translation)
+Introduce `S I U A G _ ψ B _ a b _ ha hb hsq`. Use `⟨fun i j T r r' x y x' y' hx hy => ?_, fun i j => ?_⟩` and prove the remaining obligations. Set `p : T ⟶ (B i j).left` to `(hsq i j).lift x.left x'.left hx`. Set `q : T ⟶ (B i j).left` to `(hsq i j).lift y.left y'.left hy`. Establish `hpa : p ≫ a i j = x.left` using `(hsq i j).lift_fst _ _ _`.
+
+Establish `hpb : p ≫ b i j = x'.left` using `(hsq i j).lift_snd _ _ _`. Establish `hqa : q ≫ a i j = y.left` using `(hsq i j).lift_fst _ _ _`. Establish `hqb : q ≫ b i j = y'.left` using `(hsq i j).lift_snd _ _ _`. Set `ρ : T ⟶ (U i ⊓ U j).toScheme` to `p ≫ (B i j).hom`. Establish `er : r = ρ ≫ S.homOfLE (inf_le_left : U i ⊓ U j ≤ U i)` using `by show r = (p ≫ (B i j).hom) ≫ _`.
+
+Rewrite using `[Category.assoc, ← (ha i j).1.w, ← Category.assoc, hpa]`. Conclude with `(Over.w x).symm`. Establish `er' : r' = ρ ≫ S.homOfLE (inf_le_right : U i ⊓ U j ≤ U j)` using `by show r' = (p ≫ (B i j).hom) ≫ _`. Rewrite using `[Category.assoc, ← (hb i j).1.w, ← Category.assoc, hpb]`. Conclude with `(Over.w x').symm`.
+
+Establish `eq : q ≫ (B i j).hom = ρ`. Apply `(cancel_mono (S.homOfLE (inf_le_left : U i ⊓ U j ≤ U i))).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← (ha i j).1.w, ← Category.assoc, hqa]`. Conclude with `(Over.w y).trans er`. Set `P : Over.mk ρ ⟶ B i j` to `Over.homMk p rfl`.
+
+Set `Q : Over.mk ρ ⟶ B i j` to `Over.homMk q eq`. Establish `m1` using `push_mul (ha i j) er P Q x y hpa.symm hqa.symm`. Establish `m2` using `push_mul (hb i j) er' P Q x' y' hpb.symm hqb.symm`. Establish `i1` using `push_inv (ha i j) er P x hpa.symm`. Establish `i2` using `push_inv (hb i j) er' P x' hpb.symm`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[m1, m2]`. Simplify using `only [Category.assoc]`. Rewrite using `[(hsq i j).w]`. Rewrite using `[i1, i2]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[(hsq i j).w]`. Establish `e1` using `congrArg (· ≫ ψ i) (push_one (ha i j))`. Establish `e2` using `congrArg (· ≫ ψ j) (push_one (hb i j))`. Simplify using `only [Category.assoc] at e1 e2`.
+
+Rewrite using `[e1, e2, (hsq i j).w]`.
+-/
 theorem opCompat : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left) (B : ∀ i j, Over (U i ⊓ U j).toScheme) [∀ i j, GrpObj (B i j)] (a : ∀ i j, (B i j).left ⟶ (G i).left) (b : ∀ i j, (B i j).left ⟶ (G j).left), (∀ i, IsPullback (ψ i) (G i).hom A.hom (U i).ι) → (∀ i j, IsGrpPullback (B i j) (G i) (S.homOfLE inf_le_left) (a i j)) → (∀ i j, IsGrpPullback (B i j) (G j) (S.homOfLE inf_le_right) (b i j)) → (∀ i j, IsPullback (a i j) (b i j) (ψ i) (ψ j)) → (∀ i j (T : Scheme.{0}) (r : T ⟶ (U i).toScheme) (r' : T ⟶ (U j).toScheme) (x y : Over.mk r ⟶ G i) (x' y' : Over.mk r' ⟶ G j), x.left ≫ ψ i = x'.left ≫ ψ j → y.left ≫ ψ i = y'.left ≫ ψ j → (x * y).left ≫ ψ i = (x' * y').left ≫ ψ j ∧ (x⁻¹).left ≫ ψ i = (x'⁻¹).left ≫ ψ j) ∧ ∀ i j, S.homOfLE (inf_le_left : U i ⊓ U j ≤ U i) ≫ (1 : Out.baseOver (U i).toScheme ⟶ G i).left ≫ ψ i = S.homOfLE (inf_le_right : U i ⊓ U j ≤ U j) ≫ (1 : Out.baseOver (U j).toScheme ⟶ G j).left ≫ ψ j := by
   intro S I U A G _ ψ B _ a b _ ha hb hsq
   refine ⟨fun i j T r r' x y x' y' hx hy => ?_, fun i j => ?_⟩

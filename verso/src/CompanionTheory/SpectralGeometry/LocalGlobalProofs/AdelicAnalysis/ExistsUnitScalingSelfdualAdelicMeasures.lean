@@ -59,6 +59,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R] in
 
+/- English proof (translation)
+Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `he : MeasurableEmbedding (cf (F` using `F) (E := E) R b) := hc.homeomorph.measurableEmbedding`. Use `he.comap_apply (Measure.pi fun _ : Fin d => lam) (cf R b ⁻¹' T)` as an intermediate fact. Rewrite `this` using `[Set.image_preimage_eq _ hc.surjective]`. Conclude with `this`.
+-/
 theorem coordK_preimage (hc : IsHomeomorph (cf (F := F) (E := E) R b)) (lam : Measure R)
     (T : Set (Fin d → R)) :
     coordK R b lam (cf R b ⁻¹' T) = Measure.pi (fun _ => lam) T := by
@@ -68,6 +71,17 @@ theorem coordK_preimage (hc : IsHomeomorph (cf (F := F) (E := E) R b)) (lam : Me
   rw [Set.image_preimage_eq _ hc.surjective] at this
   exact this
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -, -, -, hB, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4`.
+
+Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hB n M`. Use `haveI := (GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b lam hlam).1`. Establish `hm : Measurable (tupE hc n M)` using `(map_continuous (tupE hc n M)).measurable`. Use `symm`.
+
+Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `hpre : (tupE hc n M) ⁻¹' Set.univ.pi s = Set.univ.pi fun a : Fin n => Set.univ.pi fun i : Fin M => cf R b ⁻¹' (Set.univ.pi fun k : Fin d => s ((i, k), a))`. Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, forall_true_left, Prod.forall]`.
+
+Conclude with `⟨fun h a i k => h i k a, fun h i k a => h a i k⟩`. Rewrite using `[hpre]`. Unfold `coordW`. Rewrite using `[Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi, coordK_preimage hc, Measure.pi_pi]`.
+
+Rewrite using `[Fintype.prod_prod_type_right]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type]`.
+-/
 theorem map_coordW (hCM : IsCMExt F E σ) (hc : IsHomeomorph (cf (F := F) (E := E) R b))
     (lam : Measure R) (hlam : lam.IsAddHaarMeasure) (n M : ℕ) :
     (coordW R b lam n M).map (tupE hc n M) = Measure.pi fun _ : (Fin M × Fin d) × Fin n => lam := by
@@ -96,6 +110,15 @@ theorem map_coordW (hCM : IsCMExt F E σ) (hc : IsHomeomorph (cf (F := F) (E := 
 omit [NumberField F] [NumberField E] [IsTopologicalRing R] [LocallyCompactSpace R]
   [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.blockDiagonal_map _ _ (map_zero _)]`. Unfold `BR`. Repeatedly rewrite using `[hB]`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_prod_type_right (f := fun p : (Fin M × Fin d) × Fin n => _)]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Establish `hs : ∑ c : Fin n, ∑ q : Fin M × Fin d, Matrix.blockDiagonal (fun _ : Fin n => B.map (algebraMap F R)) (p, a) (q, c) * tupE hc n M Y (q, c) = ∑ q : Fin M × Fin d, B.map (algebraMap F R) p q * (Algebra.TensorProduct.basis R b).repr (Y a q.1) q.2`. Rewrite using `[Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.blockDiagonal_apply_eq]`. Both sides reduce to the same expression.
+
+Introduce `c _ hca`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.blockDiagonal_apply_ne _ _ _ (Ne.symm hca), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+
+Rewrite using `[hs]`. Both sides reduce to the same expression.
+-/
 theorem BR_eq (hc : IsHomeomorph (cf (F := F) (E := E) R b)) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F)
     (hB : ∀ x y : Fin M → R ⊗[F] E, Algebra.trace R (R ⊗[F] E) (hR R σ J x y) =
@@ -127,6 +150,19 @@ theorem BR_eq (hc : IsHomeomorph (cf (F := F) (E := E) R b)) {M n : ℕ}
   rw [hs]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -, -, hcc, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R`. Use `haveI := h1`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hBor n M`. Establish `hc : IsHomeomorph (cf (F` using `F) (E := E) R b) := hcc d b`.
+
+Use `set e := tupE hc n M with he`. Establish `hm : Measurable e` using `(map_continuous e).measurable`. Establish `hm' : Measurable e.symm` using `(map_continuous e.symm).measurable`. Establish `inj : ∀ ν : Measure (Fin n → Fin M → R ⊗[F] E), (ν.map e).map e.symm = ν`. Introduce `ν`.
+
+Rewrite using `[Measure.map_map hm' hm]`. Establish `: (e.symm ∘ e) = id` using `by funext X; exact e.symm_apply_apply X`. Rewrite using `[this, Measure.map_id]`. Establish `key` using `GlobalTheory.T.selfdual_measure_transport_equiv _ _ e μ (fun x y => ψR (x ⬝ᵥ ((Matrix.blockDiagonal fun _ : Fin n => B).map (algebraMap F R) *ᵥ y)))`. Establish `hform : SdW F E σ M J R ψR n μ ↔ SelfDual μ (fun X Y => ψR (e X ⬝ᵥ ((Matrix.blockDiagonal fun _ : Fin n => B).map (algebraMap F R) *ᵥ e Y)))`.
+
+Unfold `SdW`. Establish `: (fun X Y => ψR (BR R σ J X Y)) = (fun X Y : Fin n → Fin M → R ⊗[F] E => ψR (e X ⬝ᵥ ((Matrix.blockDiagonal fun _ : Fin n => B).map (algebraMap F R) *ᵥ e Y)))`. Use function extensionality and compare the values at `X Y`. Rewrite using `[BR_eq hc J B hB X Y]`. Rewrite using `[this]`.
+
+Rewrite using `[hform, key, hmain]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← inj μ, h, ← map_coordW hCM hc lam hlam n M, ← Measure.map_smul, inj]`. Introduce `h`.
+
+Rewrite using `[h, Measure.map_smul, map_coordW hCM hc lam hlam n M]`.
+-/
 theorem sdW_iff (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F)
     (hB : ∀ x y : Fin M → R ⊗[F] E, Algebra.trace R (R ⊗[F] E) (hR R σ J x y) =
@@ -172,6 +208,17 @@ theorem sdW_iff (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 end Meas
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ d b laminf lam hinf hv ψ hψ n`. Take `⟨B, hsym, hdet, -, hR'⟩` from `GlobalTheory.CompanionTheory.SW.TraceCoord.exists_trace_coord F E σ hCM M J hJ d b`. Establish `hsym' : (Matrix.blockDiagonal fun _ : Fin n => B).IsSymm`. Unfold `Matrix.IsSymm`. Rewrite using `[Matrix.blockDiagonal_transpose]`.
+
+Simplify using `only [hsym.eq]`. Establish `hdet' : (Matrix.blockDiagonal fun _ : Fin n => B).det ≠ 0`. Rewrite using `[Matrix.det_blockDiagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => hdet`. Take `⟨cinf, c, hU, h1, h2⟩` from `GlobalTheory.T.exists_unipotentInvariant_compactlySupported_weight F hCM.1 laminf lam hinf hv ψ hψ ((Fin M × Fin d) × Fin n) (Matrix.blockDiagonal fun _ : Fin n => B) hsym' hdet'`.
+
+Use `⟨cinf, c, hU, ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1 haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4 haveI : BorelSpace (Ainf F) := ⟨rfl⟩`.
+
+Conclude with `fun μ => sdW_iff hCM J B (hR' (Ainf F)).1 laminf hinf.1 (psiInf F ψ) n cinf h1 μ`. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := t1`. Use `haveI := t2`. Use `haveI := t3`. Use `haveI := t4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+
+Conclude with `fun μ => sdW_iff hCM J B (hR' (Fv F v)).1 (lam v) (hv v).1 (psiV F ψ v) n (c v) (h2 v) μ`.
+-/
 theorem sdW_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ ψ, IsCharAF F ψ → ∀ n : ℕ, ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ, SdW F E σ M J (Ainf F) (psiInf F ψ) n μ ↔ μ = cinf • coordW (Ainf F) b laminf n M) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ μ, SdW F E σ M J (Fv F v) (psiV F ψ v) n μ ↔ μ = c v • coordW (Fv F v) b (lam v) n M) := by
   intro F E _ _ _ _ _ σ hCM M J hJ d b laminf lam hinf hv ψ hψ n
   obtain ⟨B, hsym, hdet, -, hR'⟩ := GlobalTheory.CompanionTheory.SW.TraceCoord.exists_trace_coord F E σ hCM M J hJ d b

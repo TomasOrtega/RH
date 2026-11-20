@@ -2,6 +2,9 @@ import Mathlib
 
 namespace Bl.FirstBlockLemmaF
 
+/- English proof (translation)
+Introduce `p hp a b c ha hb`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max a (-b)).trans (max_le ha ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hb`.
+-/
 theorem goal1 :
   ∀ (p : Nat) [hp : Fact (Nat.Prime p)] {a b : PadicComplex p} {c : Real},
   LE.le.{0} (Norm.norm.{0} a) c → LE.le.{0} (Norm.norm.{0} b) c → LE.le.{0} (Norm.norm.{0} (HSub.hSub.{0, 0, 0} a b)) c := by

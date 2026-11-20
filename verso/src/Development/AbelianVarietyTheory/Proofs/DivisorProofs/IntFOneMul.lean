@@ -17,6 +17,11 @@ variable (F) in
 def intF (N : ℕ) : Set (AF F) :=
   {x | ∃ c : Af F, (∀ v, c v ∈ v.adicCompletionIntegers F) ∧ x.2 = N • c}
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `hx`. Take `⟨d, hd, e'⟩` from `hy`. Use `⟨c * d, fun v => mul_mem (hc v) (hd v), ?_⟩` and prove the remaining obligations. Rewrite `e`, `e'`, the goal using `[one_smul]`. Use `show x.2 * y.2 = c * d`.
+
+Rewrite using `[e, e']`.
+-/
 theorem intF_one_mul {x y : AF F} (hx : x ∈ intF F 1) (hy : y ∈ intF F 1) : x * y ∈ intF F 1 := by
   obtain ⟨c, hc, e⟩ := hx
   obtain ⟨d, hd, e'⟩ := hy
@@ -30,6 +35,11 @@ variable (F E) in
 def SE : AddSubgroup (AF F ⊗[F] E) :=
   AddSubgroup.closure {z | ∃ s ∈ intF F 1, ∃ o : 𝓞 E, z = algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o}
 
+/- English proof (translation)
+Take `⟨s, hs, o, rfl⟩` from `hx`. Take `⟨s', hs', o', rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨s * s', intF_one_mul hs hs', o * o', ?_⟩` and prove the remaining obligations. Establish `h : ((o * o' : 𝓞 E) : E) = (o : E) * o'` using `rfl`. Rewrite using `[map_mul, h, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gen_mul {x y : AF F ⊗[F] E}
     (hx : x ∈ {z | ∃ s ∈ intF F 1, ∃ o : 𝓞 E, z = algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o})
     (hy : y ∈ {z | ∃ s ∈ intF F 1, ∃ o : 𝓞 E, z = algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o}) :
@@ -41,6 +51,15 @@ theorem gen_mul {x y : AF F ⊗[F] E}
   rw [map_mul, h, map_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem g' hg' => exact gen_mul hg hg'`. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `neg_mem ha`.
+
+Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [neg_mul]`.
+
+Conclude with `neg_mem ha`.
+-/
 theorem SE_mul {x y : AF F ⊗[F] E} (hx : x ∈ SE F E) (hy : y ∈ SE F E) : x * y ∈ SE F E := by
   induction hx using AddSubgroup.closure_induction with
   | mem g hg =>
@@ -53,6 +72,9 @@ theorem SE_mul {x y : AF F ⊗[F] E} (hx : x ∈ SE F E) (hy : y ∈ SE F E) : x
   | add a b _ _ ha hb => rw [add_mul]; exact add_mem ha hb
   | neg a _ ha => rw [neg_mul]; exact neg_mem ha
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, ⟨1, fun v => one_mem _, by rw [one_smul]; rfl⟩, 1, by simp [Algebra.TensorProduct.one_def]⟩`.
+-/
 theorem one_mem_SE : (1 : AF F ⊗[F] E) ∈ SE F E :=
   AddSubgroup.subset_closure ⟨1, ⟨1, fun v => one_mem _, by rw [one_smul]; rfl⟩, 1, by simp [Algebra.TensorProduct.one_def]⟩
 
@@ -60,9 +82,17 @@ variable (F E) in
 
 def CE (N : ℕ) : AddSubgroup (AF F ⊗[F] E) := (SE F E).map (nsmulAddMonoidHom N)
 
+/- English proof (translation)
+Simplify using `[CE]`.
+-/
 theorem mem_CE {N : ℕ} {z : AF F ⊗[F] E} : z ∈ CE F E N ↔ ∃ s ∈ SE F E, N • s = z := by
   simp [CE]
 
+/- English proof (translation)
+Take `⟨a, ha, ea⟩` from `mem_CE.1 hx`. Take `⟨b, hb, eb⟩` from `mem_CE.1 hy`. Use `mem_CE.2 ⟨a + b + N • (a * b), add_mem (add_mem ha hb) (nsmul_mem (SE_mul ha hb) N), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_add_of_sub_eq ea.symm, eq_add_of_sub_eq eb.symm]`. Simplify using `only [nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem CE_step {N : ℕ} {x y : AF F ⊗[F] E} (hx : x - 1 ∈ CE F E N) (hy : y - 1 ∈ CE F E N) :
     x * y - 1 ∈ CE F E N := by
   obtain ⟨a, ha, ea⟩ := mem_CE.1 hx
@@ -81,12 +111,22 @@ def WE (N : ℕ) : Subgroup (AF F ⊗[F] E)ˣ where
     by rw [mul_inv_rev, Units.val_mul]; exact CE_step hy.2 hx.2⟩
   inv_mem' := fun {x} hx => ⟨hx.2, by rw [inv_inv]; exact hx.1⟩
 
+/- English proof (translation)
+Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+-/
 theorem cA_gen (σ : E →ₐ[F] E) (s : AF F) (o : 𝓞 E) :
     cA σ (algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E o) =
       algebraMap (AF F) (AF F ⊗[F] E) s * incAF F E (σ o) := by
   rw [map_mul, AlgHom.commutes]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨s, hs, o, rfl⟩` from `hg`. Rewrite using `[cA_gen]`. Establish `: IsIntegral ℤ (σ (o : E))` using `(o.2.map σ)`.
+
+Conclude with `AddSubgroup.subset_closure ⟨s, hs, ⟨σ o, this⟩, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+-/
 theorem cA_mem_SE (σ : E →ₐ[F] E) {z : AF F ⊗[F] E} (hz : z ∈ SE F E) : cA σ z ∈ SE F E := by
   induction hz using AddSubgroup.closure_induction with
   | mem g hg =>

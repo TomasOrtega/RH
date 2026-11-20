@@ -16,6 +16,13 @@ section Units
 
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ}
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `hu`. Take `⟨n, rfl | rfl⟩` from `n.eq_nat_or_neg`. Use `⟨zpow_ne_zero _ h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem h1 n`.
+
+Rewrite using `[zpow_natCast, ← inv_pow]`. Conclude with `pow_mem h2 n`. Use `⟨zpow_ne_zero _ h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem h2 n`.
+
+Rewrite using `[zpow_neg, zpow_natCast, inv_inv]`. Conclude with `pow_mem h1 n`.
+-/
 theorem unitAt.zpow {u : Ω} (hu : unitAt ξ p u) (n : ℤ) : unitAt ξ p (u ^ n) := by
   obtain ⟨h0, h1, h2⟩ := hu
   obtain ⟨n, rfl | rfl⟩ := n.eq_nat_or_neg
@@ -26,12 +33,20 @@ theorem unitAt.zpow {u : Ω} (hu : unitAt ξ p u) (n : ℤ) : unitAt ξ p (u ^ n
     · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact pow_mem h2 n
     · rw [zpow_neg, zpow_natCast, inv_inv]; exact pow_mem h1 n
 
+/- English proof (translation)
+Use `⟨Finset.prod_ne_zero_iff.2 fun k hk => (hu k hk).1, prod_mem fun k hk => (hu k hk).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `prod_mem fun k hk => (hu k hk).2.2`.
+-/
 theorem unitAt.prod {K : Type} (s : Finset K) {u : K → Ω} (hu : ∀ k ∈ s, unitAt ξ p (u k)) :
     unitAt ξ p (∏ k ∈ s, u k) := by
   refine ⟨Finset.prod_ne_zero_iff.2 fun k hk => (hu k hk).1, prod_mem fun k hk => (hu k hk).2.1, ?_⟩
   rw [← Finset.prod_inv_distrib]
   exact prod_mem fun k hk => (hu k hk).2.2
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `hu`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨⟨u, h1⟩, h.symm⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`.
+
+Use `⟨⟨u⁻¹, h2⟩, ?_⟩` and prove the remaining obligations. Use `show u⁻¹ • e' = e`. Rewrite using `[h, smul_smul, inv_mul_cancel₀ h0, one_smul]`.
+-/
 theorem span_singleton_eq_of_unitAt {u : Ω} (hu : unitAt ξ p u) {e e' : E} (h : e' = u • e) :
     Submodule.span (regAt ξ p) {e'} = Submodule.span (regAt ξ p) {e} := by
   obtain ⟨h0, h1, h2⟩ := hu
@@ -43,6 +58,9 @@ theorem span_singleton_eq_of_unitAt {u : Ω} (hu : unitAt ξ p u) {e e' : E} (h 
     show u⁻¹ • e' = e
     rw [h, smul_smul, inv_mul_cancel₀ h0, one_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨div_ne_zero h'.1 h.1, h.2 c', by rw [inv_div]; exact h'.2 c⟩`.
+-/
 theorem unitAt_div_of_inChart {κ : Type} {x : κ → Ω} {c c' : κ} (h : InChart ξ x c p) (h' : InChart ξ x c' p) :
     unitAt ξ p (x c' / x c) :=
   ⟨div_ne_zero h'.1 h.1, h.2 c', by rw [inv_div]; exact h'.2 c⟩
@@ -53,9 +71,25 @@ namespace Lat
 
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dual {L : Lat ξ E} {p : Cpt ξ} {w : Module.Dual Ω E} :
     w ∈ L.dual p ↔ ∀ e ∈ L p, w e ∈ regAt ξ p := Iff.rfl
 
+/- English proof (translation)
+Use `⟨b.dualBasis.linearIndependent, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hb : ∀ i, w (b i) ∈ regAt ξ p` using `fun i => mem_dual.1 hw (b i) (by rw [h.2]; exact Submodule.subset_span ⟨i, rfl⟩)`. Establish `hsum : w = ∑ i, w (b i) • b.dualBasis i`. Simplify `(b.sum_dual_apply_smul_coord w).symm` using `[Module.Basis.coe_dualBasis]`.
+
+Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨w (b i), hb i⟩ : regAt ξ p) (Submodule.subset_span ⟨i, rfl⟩ : b.dualBasis i ∈ Submodule.span (regAt ξ p) (Set.range b.dualBasis))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Use `mem_dual.2 fun e he => ?_` and prove the remaining obligations. Rewrite `he` using `[h.2]`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+
+Rewrite using `[Module.Basis.dualBasis_apply_self]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Consider the case `zero => simpa using zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: (b.dualBasis i) (a • x) = (a : Ω) * (b.dualBasis i) x`. Rewrite using `[show a • x = (a : Ω) • x from rfl, map_smul, smul_eq_mul]`. Rewrite using `[this]`.
+
+Conclude with `mul_mem a.2 hx`.
+-/
 theorem IsFrameAt.dual {L : Lat ξ E} {r : ℕ} (b : Module.Basis (Fin r) Ω E) {p : Cpt ξ}
     (h : L.IsFrameAt b p) : L.dual.IsFrameAt b.dualBasis p := by
   refine ⟨b.dualBasis.linearIndependent, le_antisymm ?_ ?_⟩
@@ -87,6 +121,11 @@ theorem IsFrameAt.dual {L : Lat ξ E} {r : ℕ} (b : Module.Basis (Fin r) Ω E) 
       rw [this]
       exact mul_mem a.2 hx
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨U, hU, b, hb, hq⟩` from `h p hp`. Establish `hli` using `(hq p hp hU).1`. Set `B : Module.Basis (Fin r) Ω E` to `Module.Basis.mk hli hb.ge`. Establish `hB : ⇑B = b` using `Module.Basis.coe_mk hli hb.ge`.
+
+Use `⟨U, hU, B.dualBasis, B.dualBasis.span_eq, fun q hqT hqU => ?_⟩` and prove the remaining obligations. Conclude with `IsFrameAt.dual B (by rw [hB]; exact hq q hqT hqU)`.
+-/
 theorem IsVBOn.dual {L : Lat ξ E} {T : Set (Cpt ξ)} {r : ℕ} (h : L.IsVBOn T r ⊤) : L.dual.IsVBOn T r ⊤ := by
   intro p hp
   obtain ⟨U, hU, b, hb, hq⟩ := h p hp
@@ -103,6 +142,11 @@ section Pull
 variable {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X} {i : Ω →+* Ω'}
 
+/- English proof (translation)
+Set `pt' : Spec (CommRingCat.of Ω')` to `IsLocalRing.closedPoint Ω'`. Set `pt : Spec (CommRingCat.of Ω)` to `IsLocalRing.closedPoint Ω`. Establish `h1 : (ξ' ≫ f) pt' = (Spec.map (CommRingCat.ofHom i) ≫ ξ) pt'` using `congrArg (fun g : Spec (CommRingCat.of Ω') ⟶ X => g pt') h`. Establish `h2 : (Spec.map (CommRingCat.ofHom i)) pt' = pt` using `(inferInstance : Subsingleton (PrimeSpectrum Ω)).elim _ _`. Rewrite `h1` using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, h2]`.
+
+Conclude with `h1`.
+-/
 theorem Dominates.map_genPt (h : Dominates ξ' ξ f i) : f (genPt ξ') = genPt ξ := by
   let pt' : Spec (CommRingCat.of Ω') := IsLocalRing.closedPoint Ω'
   let pt : Spec (CommRingCat.of Ω) := IsLocalRing.closedPoint Ω
@@ -113,10 +157,18 @@ theorem Dominates.map_genPt (h : Dominates ξ' ξ f i) : f (genPt ξ') = genPt �
   rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, h2] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[← h.map_genPt]`. Conclude with `p'.2.map f.continuous`.
+-/
 theorem Dominates.specializes (h : Dominates ξ' ξ f i) (p' : Cpt ξ') : genPt ξ ⤳ f p'.1 := by
   rw [← h.map_genPt]
   exact p'.2.map f.continuous
 
+/- English proof (translation)
+Use `show Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `e'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, e, he, rfl⟩`.
+
+Conclude with `⟨e, he, rfl⟩`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `⟨h.specializes p', e, he, rfl⟩`.
+-/
 theorem Lat.pull_apply {F : Type} [AddCommGroup F] [Module Ω' F] (L : Lat ξ E) (h : Dominates ξ' ξ f i)
     (j : E →+ F) (p' : Cpt ξ') :
     L.pull ξ' f j p' = Submodule.span (regAt ξ' p') (j '' (L ⟨f p'.1, h.specializes p'⟩ : Set E)) := by
@@ -135,12 +187,20 @@ namespace Lat
 
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun p => Submodule.span (regAt ξ p) {g (cov p).choose}, fun p c hc => hg p c _ hc (cov p).choose_spec⟩`.
+-/
 theorem exists_of_chart_generators {κ : Type} {x : κ → Ω} (cov : ∀ p : Cpt ξ, ∃ c, InChart ξ x c p) (g : κ → E)
     (hg : ∀ (p : Cpt ξ) (c c' : κ), InChart ξ x c p → InChart ξ x c' p →
       Submodule.span (regAt ξ p) {g c'} = Submodule.span (regAt ξ p) {g c}) :
     ∃ L : Lat ξ E, ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {g c} :=
   ⟨fun p => Submodule.span (regAt ξ p) {g (cov p).choose}, fun p c hc => hg p c _ hc (cov p).choose_spec⟩
 
+/- English proof (translation)
+Introduce `p _`. Take `⟨c, hc⟩` from `h.cover p`. Take `⟨U, -, hU⟩` from `h.affine c hc.1`. Use `⟨U, (hU p.1).2 ⟨p.2, hc⟩, fun _ => g c, ?_, fun q _ hq => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.range_const, hV c hc.1]`.
+
+Conclude with `LinearIndependent.of_subsingleton 0 (h0 c hc.1)`. Take `⟨hs, hq'⟩` from `(hU q.1).1 hq`. Rewrite using `[hL q c hq', Set.range_const]`.
+-/
 theorem isVB_one_of_chart_generators {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (h : CoordTie o ξ x) {L : Lat ξ E} {g : κ → E} {V : Submodule Ω E}
     (hL : ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {g c})
@@ -158,6 +218,13 @@ section Multi
 
 variable {K : Type} [Fintype K] {ι : K → Type} {y : (Σ k, ι k) → Ω}
 
+/- English proof (translation)
+Establish `h2` using `h.2 (Function.update c k i)`. Establish `e1 : ∏ k', y ⟨k', c k'⟩ = y ⟨k, c k⟩ * ∏ k' ∈ Finset.univ.erase k, y ⟨k', c k'⟩` using `(Finset.mul_prod_erase _ (fun k' => y ⟨k', c k'⟩) (Finset.mem_univ k)).symm`. Establish `e2 : ∏ k', y ⟨k', Function.update c k i k'⟩ = y ⟨k, i⟩ * ∏ k' ∈ Finset.univ.erase k, y ⟨k', c k'⟩`. Rewrite using `[← Finset.mul_prod_erase _ (fun k' => y ⟨k', Function.update c k i k'⟩) (Finset.mem_univ k)]`. Simplify using `only [Function.update_self]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k' hk' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hk')]`. Establish `hP : ∏ k' ∈ Finset.univ.erase k, y ⟨k', c k'⟩ ≠ 0`. Introduce `h0`.
+
+Conclude with `h.1 (by show ∏ k', y ⟨k', c k'⟩ = 0; rw [e1, h0, mul_zero])`. Simplify using `only [e1, e2] at h2`. Rewrite `h2` using `[mul_div_mul_right _ _ hP]`. Then use the resulting hypothesis.
+-/
 theorem block_ratio_mem {p : Cpt ξ} {c : (k : K) → ι k}
     (h : InChart ξ (fun c' : (k : K) → ι k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) (i : ι k) :
     y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ regAt ξ p := by
@@ -177,6 +244,9 @@ theorem block_ratio_mem {p : Cpt ξ} {c : (k : K) → ι k}
   simp only [e1, e2] at h2
   rwa [mul_div_mul_right _ _ hP] at h2
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.1 h.1 k (Finset.mem_univ k)`.
+-/
 theorem block_coord_ne_zero {p : Cpt ξ} {c : (k : K) → ι k}
     (h : InChart ξ (fun c' : (k : K) → ι k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) : y ⟨k, c k⟩ ≠ 0 :=
   Finset.prod_ne_zero_iff.1 h.1 k (Finset.mem_univ k)
@@ -187,12 +257,18 @@ section Single
 
 variable {κ : Type} {x : κ → Ω}
 
+/- English proof (translation)
+The claim follows from `exists_of_chart_generators h.cover (fun c => x c ^ d) fun _ c c' hc hc' => span_singleton_eq_of_unitAt ((unitAt_div_of_inChart hc hc').zpow (d : ℤ)) (by rw [zpow_natCast, div_pow, smul_eq_mul, div_mul_cancel₀ _ (pow_ne_zero _ hc.1)])`.
+-/
 theorem exists_line {o : Type} [CommRing o] [Algebra o Ω] (h : CoordTie o ξ x) (d : ℕ) :
     ∃ L : Lat ξ Ω, ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {x c ^ d} :=
   exists_of_chart_generators h.cover (fun c => x c ^ d) fun _ c c' hc hc' =>
     span_singleton_eq_of_unitAt ((unitAt_div_of_inChart hc hc').zpow (d : ℤ)) (by
       rw [zpow_natCast, div_pow, smul_eq_mul, div_mul_cancel₀ _ (pow_ne_zero _ hc.1)])
 
+/- English proof (translation)
+The claim follows from `isVB_one_of_chart_generators h hL (fun _ hc => pow_ne_zero _ hc) fun c hc => by refine eq_top_iff.2 fun z _ => Submodule.mem_span_singleton.2 ⟨z / x c ^ d, ?_⟩ rw [smul_eq_mul, div_mul_cancel₀ _ (pow_ne_zero _ hc)]`.
+-/
 theorem isVB_line {o : Type} [CommRing o] [Algebra o Ω] (h : CoordTie o ξ x) {d : ℕ} {L : Lat ξ Ω}
     (hL : ∀ (p : Cpt ξ) (c : κ), InChart ξ x c p → L p = Submodule.span (regAt ξ p) {x c ^ d}) :
     L.IsVB 1 ⊤ :=

@@ -7,6 +7,11 @@ open GlobalTheory.NeedB Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hex : ∃ j : ZMod N, g θ = ζ ^ j.val * θ` using `⟨i, hg⟩`. Unfold `kum`. Rewrite using `[dif_pos hex]`. Establish `h1` using `hex.choose_spec`.
+
+Establish `h2 : ζ ^ i.val = ζ ^ hex.choose.val` using `mul_right_cancel₀ hθ (hg.symm.trans h1)`. Establish `h3` using `(hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _)) h2`. Conclude with `(ZMod.val_injective N h3).symm`.
+-/
 theorem kum_eq_of_apply {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : ℕ} (hN : 0 < N) {ζ θ : Ω}
     (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0) (g : Ω ≃ₐ[K] Ω) (i : ZMod N) (hg : g θ = ζ ^ i.val * θ) :
     kum ζ θ g = i := by
@@ -19,6 +24,37 @@ theorem kum_eq_of_apply {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : �
   have h3 := (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _)) h2
   exact (ZMod.val_injective N h3).symm
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ N ζ hN hζ hfix a b α β ha hb hα hβ η hη hcob`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω`. Use `set E := IntermediateField.adjoin K ({α, β} : Set Ω) with hE`. Establish `hα0 : α ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hα` using `[zero_pow hN.ne']`. Conclude with `ha ((map_eq_zero _).mp hα.symm)`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hβ` using `[zero_pow hN.ne']`. Conclude with `hb ((map_eq_zero _).mp hβ.symm)`. Take `⟨-, hαapp, hαmul, hαker⟩` from `GlobalTheory.T.kummerExponentOfGaloisElement_isKummerCharacter K Ω N ζ α hN hζ hfix hα0 ⟨a, hα.symm⟩`. Take `⟨-, hβapp, hβmul, hβker⟩` from `GlobalTheory.T.kummerExponentOfGaloisElement_isKummerCharacter K Ω N ζ β hN hζ hfix hβ0 ⟨b, hβ.symm⟩`. Set `x : (Ω ≃ₐ[K] Ω) →* Multiplicative (ZMod N)` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (kum ζ α g)) (fun g h => by simp [hαmul, ofAdd_add])`.
+
+Set `y : (Ω ≃ₐ[K] Ω) →* Multiplicative (ZMod N)` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (kum ζ β g)) (fun g h => by simp [hβmul, ofAdd_add])`. Take `⟨-, hconj, hhom⟩` from `GlobalTheory.T.eta_one_conj_mul_of_cup_coboundary (Ω ≃ₐ[K] Ω) N x y η (fun g h => hcob g h)`. Establish `memH : ∀ g : Ω ≃ₐ[K] Ω, g ∈ E.fixingSubgroup ↔ g α = α ∧ g β = β`. Introduce `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨(IntermediateField.mem_fixingSubgroup_iff _ _).1 hg α (IntermediateField.subset_adjoin K _ (by simp)), (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg β (IntermediateField.subset_adjoin K _ (by simp))⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `z hz`.
+
+Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem w hw`. Break down `hw with rfl | rfl` into its components or cases. Conclude with `h1`. Conclude with `h2`.
+
+Consider the case `algebraMap r => exact g.commutes r`. Consider the case `add u v _ _ hu hv => rw [map_add, hu, hv]`. Consider the case `inv u _ hu => rw [map_inv₀, hu]`. Consider the case `mul u v _ _ hu hv => rw [map_mul, hu, hv]`. Establish `kα0 : ∀ g ∈ E.fixingSubgroup, kum (N` using `N) ζ α g = 0 := fun g hg => (hαker g).2 ((memH g).1 hg).1`.
+
+Establish `kβ0 : ∀ g ∈ E.fixingSubgroup, kum (N` using `N) ζ β g = 0 := fun g hg => (hβker g).2 ((memH g).1 hg).2`. Establish `hηhom : ∀ g ∈ E.fixingSubgroup, ∀ h ∈ E.fixingSubgroup, η (g * h) = η g + η h` using `fun g hg h _ => hhom g h (kα0 g hg)`. Take `⟨θ, hθ0, hθE, hθapp⟩` from `GlobalTheory.T.exists_kummer_generator_of_locallyConstant_hom K Ω N ζ hN hζ hfix E η hη hηhom`. Establish `hkθ : ∀ g ∈ E.fixingSubgroup, η g = kum ζ θ g` using `fun g hg => (kum_eq_of_apply hN hζ hθ0 g (η g) (hθapp g hg)).symm`. Use `⟨θ, hθ0, hθE, hkθ, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `hconjH : ∀ m ∈ E.fixingSubgroup, s⁻¹ * m * s ∈ E.fixingSubgroup ∧ η (s⁻¹ * m * s) = η m`. Introduce `m hm`. Take `⟨hmα, hmβ⟩` from `(memH m).1 hm`. Establish `hsα : m (s α) = s α`. Rewrite using `[hαapp s, map_mul, map_pow, hfix m, hmα]`.
+
+Establish `hsβ : m (s β) = s β`. Rewrite using `[hβapp s, map_mul, map_pow, hfix m, hmβ]`. Use `⟨(memH _).2 ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s⁻¹ (m (s α)) = α`. Rewrite using `[hsα]`.
+
+Conclude with `s.symm_apply_apply α`. Use `show s⁻¹ (m (s β)) = β`. Rewrite using `[hsβ]`. Conclude with `s.symm_apply_apply β`. Use `hconj s⁻¹ m` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Rewrite using `[this]`. Simplify using `[x, y, kα0 m hm, kβ0 m hm]`. Use `set u := s θ / θ with hu`. Establish `hsθ0 : s θ ≠ 0` using `by simpa using hθ0`.
+
+Establish `hu0 : u ≠ 0` using `div_ne_zero hsθ0 hθ0`. Use `⟨u, ?_, hu0, ?_⟩` and prove the remaining obligations. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup E, IntermediateField.mem_fixedField_iff]`. Introduce `m hm`. Take `⟨hmem, hηeq⟩` from `hconjH m hm`.
+
+Establish `h1 : m θ = ζ ^ (η m).val * θ` using `hθapp m hm`. Establish `h2 : (s⁻¹ * m * s) θ = ζ ^ (η m).val * θ` using `by rw [← hηeq]; exact hθapp _ hmem`. Establish `h3 : m (s θ) = ζ ^ (η m).val * s θ`. Establish `: s ((s⁻¹ * m * s) θ) = m (s θ)` using `by show s (s⁻¹ (m (s θ))) = m (s θ)`. Conclude with `s.apply_symm_apply _`.
+
+Rewrite using `[← this, h2, map_mul, map_pow, hfix s]`. Establish `hz : ζ ^ (η m).val ≠ 0` using `pow_ne_zero _ (hζ.ne_zero hN.ne')`. Rewrite using `[hu, map_div₀, h1, h3, mul_div_mul_left _ _ hz]`. Rewrite using `[map_pow, hu, div_pow, mul_div_cancel₀ _ (pow_ne_zero N hθ0)]`.
+-/
 theorem eta_kummer_galoisInvariant : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
     (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) → ∀ (a b : K) (α β : Ω), a ≠ 0 → b ≠ 0 →

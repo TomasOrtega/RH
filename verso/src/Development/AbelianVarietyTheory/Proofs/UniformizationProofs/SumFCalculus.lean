@@ -22,6 +22,17 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {R : Type} [CommRing R] {I : Ideal R} {E E' Ix : Type} [AddCommGroup E] [Module R E]
   [AddCommGroup E'] [Module R E'] in
 
+/- English proof (translation)
+Take `⟨N, hN, hs, -, hconv⟩` from `h`. Take `⟨N', hN', hs', -, hconv'⟩` from `h'`. Use `set M := N ⊔ N' with hM`. Establish `hMfg : M.FG` using `hN.sup hN'`. Use `haveI : Module.Finite R M := Module.Finite.iff_fg.mpr hMfg`.
+
+Establish `hmem : s - s' ∈ M` using `M.sub_mem (Submodule.mem_sup_left hs) (Submodule.mem_sup_right hs')`. Establish `hpow : ∀ n : ℕ, (⟨s - s', hmem⟩ : M) ∈ I ^ n • (⊤ : Submodule R M)`. Introduce `n`. Take `⟨S, hS⟩` from `hconv n`. Take `⟨S', hS'⟩` from `hconv' n`.
+
+Establish `h1` using `hS (S ∪ S') Finset.subset_union_left`. Establish `h2` using `hS' (S ∪ S') Finset.subset_union_right`. Establish `h3 : s - s' ∈ I ^ n • M`. Establish `e : s - s' = (s - ∑ i ∈ S ∪ S', x i) - (s' - ∑ i ∈ S ∪ S', x i)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.smul_mono le_rfl le_sup_left h1) (Submodule.smul_mono le_rfl le_sup_right h2)`. Rewrite `h3` using `[← Submodule.map_subtype_top M, ← Submodule.map_smul'']`. Take `⟨y, hy, hyeq⟩` from `h3`. Establish `hy' : y = ⟨s - s', hmem⟩` using `Subtype.ext hyeq`. Rewrite using `[← hy']` and apply the resulting hypothesis.
+
+Establish `h0 : (⟨s - s', hmem⟩ : M) = 0`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := M) I hI`. Rewrite using `[← Submodule.mem_bot R, ← hK, Submodule.mem_iInf]`. Conclude with `hpow`. Conclude with `sub_eq_zero.mp (congrArg Subtype.val h0)`.
+-/
 theorem _root_.GlobalTheory.AdicSum.sumI_unique [IsNoetherianRing R] (hI : I ≤ Ideal.jacobson ⊥)
     {x : Ix → E} {s s' : E}
     (h : _root_.GlobalTheory.UT.SumI I x s) (h' : _root_.GlobalTheory.UT.SumI I x s') : s = s' := by
@@ -59,6 +70,11 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {R : Type} [CommRing R] {I : Ideal R} {E E' Ix : Type} [AddCommGroup E] [Module R E]
   [AddCommGroup E'] [Module R E'] in
 
+/- English proof (translation)
+Take `⟨N, hN, hs, hx, hconv⟩` from `h`. Use `⟨N.map f, hN.map f, Submodule.mem_map_of_mem hs, fun i => Submodule.mem_map_of_mem (hx i), fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hconv n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.map_smul'', ← map_sum, ← map_sub]`.
+
+Conclude with `Submodule.mem_map_of_mem (hS T hT)`.
+-/
 theorem _root_.GlobalTheory.AdicSum.sumI_map (f : E →ₗ[R] E') {x : Ix → E} {s : E}
     (h : _root_.GlobalTheory.UT.SumI I x s) :
     _root_.GlobalTheory.UT.SumI I (fun i => f (x i)) (f s) := by
@@ -76,6 +92,13 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {R : Type} [CommRing R] {I : Ideal R} {E E' Ix : Type} [AddCommGroup E] [Module R E]
   [AddCommGroup E'] [Module R E'] in
 
+/- English proof (translation)
+Take `⟨N, hN, hs, hx, hconv⟩` from `h`. Take `⟨N', hN', hs', hx', hconv'⟩` from `h'`. Use `⟨N ⊔ N', hN.sup hN', Submodule.add_mem_sup hs hs', fun i => Submodule.add_mem_sup (hx i) (hx' i), fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hconv n`. Take `⟨S', hS'⟩` from `hconv' n`.
+
+Use `⟨S ∪ S', fun T hT => ?_⟩` and prove the remaining obligations. Establish `e : s + s' - ∑ i ∈ T, (x i + x' i) = (s - ∑ i ∈ T, x i) + (s' - ∑ i ∈ T, x' i)`. Rewrite using `[Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem _ (Submodule.smul_mono le_rfl le_sup_left (hS T (Finset.union_subset_left hT))) (Submodule.smul_mono le_rfl le_sup_right (hS' T (Finset.union_subset_right hT)))`.
+-/
 theorem _root_.GlobalTheory.AdicSum.sumI_add {x x' : Ix → E} {s s' : E}
     (h : _root_.GlobalTheory.UT.SumI I x s) (h' : _root_.GlobalTheory.UT.SumI I x' s') :
     _root_.GlobalTheory.UT.SumI I (fun i => x i + x' i) (s + s') := by
@@ -100,6 +123,17 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 variable {R : Type} [CommRing R] {I : Ideal R} {E E' Ix : Type} [AddCommGroup E] [Module R E]
   [AddCommGroup E'] [Module R E'] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, hN, hs, hx, hconv⟩`. Use `⟨N, hN, hs, fun i => ?_, fun n => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ Set.range e`. Take `⟨j, rfl⟩` from `hi`.
+
+Conclude with `hx j`. Rewrite using `[h0 i hi]`. Conclude with `N.zero_mem`. Take `⟨S, hS⟩` from `hconv n`. Use `⟨S.map ⟨e, he⟩, fun T hT => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_preimage e T he.injOn x (fun i _ hi => h0 i hi)]`. Use `hS _ fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_preimage]`. Conclude with `hT (Finset.mem_map_of_mem _ hj)`. Introduce and unpack `⟨N, hN, hs, hx, hconv⟩`.
+
+Use `⟨N, hN, hs, fun j => hx (e j), fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hconv n`. Use `⟨S.preimage e he.injOn, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hpre : (T.map ⟨e, he⟩ ∪ S).preimage e he.injOn = T`. Use extensionality with `j`.
+
+Simplify using `only [Finset.mem_preimage, Finset.mem_union, Finset.mem_map, Function.Embedding.coeFn_mk, he.eq_iff, exists_eq_right]`. Conclude with `⟨fun hj => hj.elim id fun hj => hT (Finset.mem_preimage.mpr hj), Or.inl⟩`. Establish `hsum` using `hS (T.map ⟨e, he⟩ ∪ S) Finset.subset_union_right`. Rewrite `hsum` using `[← Finset.sum_preimage e _ he.injOn x (fun i _ hi => h0 i hi), hpre]`. Conclude with `hsum`.
+-/
 theorem _root_.GlobalTheory.AdicSum.sumI_comp_iff {Jx : Type} {e : Jx → Ix}
     (he : Function.Injective e) {x : Ix → E}
     (h0 : ∀ i, i ∉ Set.range e → x i = 0) {s : E} :
@@ -138,6 +172,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `R _ _ I hadm F _ _ Ix x x' s s'`. Take `⟨hnoeth, -, -, hcomplete⟩` from `hadm`. Use `haveI := hnoeth`. Use `haveI := hcomplete`. Use `letI : Module R F := Module.compHom F (algebraMap R (FractionRing R))`.
+
+Use `⟨fun h h' => _root_.GlobalTheory.AdicSum.sumI_unique (IsAdicComplete.le_jacobson_bot I) h h', fun h h' c => ?_, fun Jx e he h0 => _root_.GlobalTheory.AdicSum.sumI_comp_iff he h0⟩` and prove the remaining obligations. Set `f : F →ₗ[R] F` to `{ toFun := fun y => c * y map_add' := mul_add c map_smul' := fun r y => by show c * (algebraMap R (FractionRing R) r • y) = algebraMap R (FractionRing R) r • (c * y)`. Conclude with `Algebra.mul_smul_comm _ _ _ }`. Conclude with `_root_.GlobalTheory.AdicSum.sumI_add (_root_.GlobalTheory.AdicSum.sumI_map f h) h'`.
+-/
 theorem _root_.GlobalTheory.AdicSum.sumF_calculus : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R),
     _root_.ReciprocityTheory.ChartRestriction.G.Out.AdmBase R I → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (Ix : Type)
     (x x' : Ix → F) (s s' : F),

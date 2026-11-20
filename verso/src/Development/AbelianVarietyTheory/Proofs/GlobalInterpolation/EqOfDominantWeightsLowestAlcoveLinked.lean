@@ -6,6 +6,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Establish `h' : n % p = m % p` using `(ZMod.natCast_eq_natCast_iff' n m p).1 h`. Apply the tactic sequence `rcases hn.eq_or_lt with rfl | hn' <;> rcases hm.eq_or_lt with rfl | hm'`. Conclude with `Or.inl rfl`. Rewrite `h'` using `[Nat.mod_self, Nat.mod_eq_of_lt hm']`. Conclude with `Or.inr (Or.inr ⟨rfl, h'.symm⟩)`.
+
+Rewrite `h'` using `[Nat.mod_self, Nat.mod_eq_of_lt hn']`. Conclude with `Or.inr (Or.inl ⟨h', rfl⟩)`. Rewrite `h'` using `[Nat.mod_eq_of_lt hn', Nat.mod_eq_of_lt hm']`. Conclude with `Or.inl h'`.
+-/
 theorem natCast_eq_le_prime {p n m : ℕ} (hp : 0 < p) (hn : n ≤ p) (hm : m ≤ p)
     (h : (n : ZMod p) = (m : ZMod p)) : n = m ∨ (n = 0 ∧ m = p) ∨ (n = p ∧ m = 0) := by
   have h' : n % p = m % p := (ZMod.natCast_eq_natCast_iff' n m p).1 h
@@ -18,6 +23,43 @@ theorem natCast_eq_le_prime {p n m : ℕ} (hp : 0 < p) (hn : n ≤ p) (hm : m �
   · rw [Nat.mod_eq_of_lt hn', Nat.mod_eq_of_lt hm'] at h'
     exact Or.inl h'
 
+/- English proof (translation)
+Introduce `p N hp ν μ hν hμ h hc`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use function extensionality and compare the values at `i`. Conclude with `i.elim0`. Take `⟨h1, h2, h3⟩` from `h hN`.
+
+Establish `hp0 : 0 < p` using `hp.pos`. Set `a : Fin N → ℕ` to `fun i => ν i + (N - 1 - i.val)`. Set `b : Fin N → ℕ` to `fun i => μ i + (N - 1 - i.val)`. Establish `hc' : ∀ x : ZMod p, (Finset.univ.filter fun i : Fin N => ((a i : ℕ) : ZMod p) = x).card = (Finset.univ.filter fun i : Fin N => ((b i : ℕ) : ZMod p) = x).card` using `hc`. Establish `ha : StrictAnti a`.
+
+Introduce `i j hij`. Establish `h4` using `hν hij.le`. Establish `h5 : i.val < j.val` using `hij`. Establish `h6` using `j.isLt`. Use `show ν j + (N - 1 - j.val) < ν i + (N - 1 - i.val)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hb : StrictAnti b`. Introduce `i j hij`. Establish `h4` using `hμ hij.le`. Establish `h5 : i.val < j.val` using `hij`.
+
+Establish `h6` using `j.isLt`. Use `show μ j + (N - 1 - j.val) < μ i + (N - 1 - i.val)`. Use linear arithmetic over natural numbers and integers. Set `z : Fin N` to `⟨0, hN⟩`. Set `l : Fin N` to `⟨N - 1, by omega⟩`.
+
+Establish `hal : a l = 0` using `by show ν ⟨N - 1, _⟩ + (N - 1 - (N - 1)) = 0`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Establish `haz : a z ≤ p` using `by show ν ⟨0, hN⟩ + (N - 1 - 0) ≤ p`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hbz : b z ≤ a z` using `by show μ ⟨0, hN⟩ + (N - 1 - 0) ≤ ν ⟨0, hN⟩ + (N - 1 - 0)`. Use linear arithmetic over natural numbers and integers. Establish `hzle : ∀ i : Fin N, z ≤ i` using `fun i => Nat.zero_le _`. Establish `hap : ∀ i, a i ≤ p` using `fun i => (ha.antitone (hzle i)).trans haz`. Establish `hbp : ∀ i, b i ≤ p` using `fun i => (hb.antitone (hzle i)).trans (hbz.trans haz)`.
+
+Establish `two : ∀ i, a i = p → (∃ j, b j = 0) ∧ (∃ j, b j = p)`. Introduce `i hi`. Establish `hne : i ≠ l`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1lt : 1 < (Finset.univ.filter fun i : Fin N => ((a i : ℕ) : ZMod p) = 0).card`. Use `Finset.one_lt_card.2 ⟨i, ?_, l, ?_, hne⟩` and prove the remaining obligations. Simplify using `[hi]`. Simplify using `[hal]`. Rewrite `h1lt` using `[hc' 0]`.
+
+Take `⟨j₁, hj₁, j₂, hj₂, hj⟩` from `Finset.one_lt_card.1 h1lt`. Establish `e₁ : ((b j₁ : ℕ) : ZMod p) = ((0 : ℕ) : ZMod p)` using `by simpa using hj₁`. Establish `e₂ : ((b j₂ : ℕ) : ZMod p) = ((0 : ℕ) : ZMod p)` using `by simpa using hj₂`. Establish `r₁` using `natCast_eq_le_prime hp0 (hbp j₁) hp0.le e₁`. Establish `r₂` using `natCast_eq_le_prime hp0 (hbp j₂) hp0.le e₂`.
+
+Establish `hbne : b j₁ ≠ b j₂` using `fun e => hj (hb.injective e)`. Establish `s₁ : b j₁ = 0 ∨ b j₁ = p` using `by omega`. Establish `s₂ : b j₂ = 0 ∨ b j₂ = p` using `by omega`. Apply the tactic sequence `rcases s₁ with s₁ | s₁ <;> rcases s₂ with s₂ | s₂`. Conclude with `absurd (s₁.trans s₂.symm) hbne`.
+
+Conclude with `⟨⟨j₁, s₁⟩, ⟨j₂, s₂⟩⟩`. Conclude with `⟨⟨j₂, s₂⟩, ⟨j₁, s₁⟩⟩`. Conclude with `absurd (s₁.trans s₂.symm) hbne`. Establish `sub : ∀ i, ∃ j, b j = a i`. Introduce `i`.
+
+Establish `hpos : 0 < (Finset.univ.filter fun k : Fin N => ((a k : ℕ) : ZMod p) = (a i : ZMod p)).card` using `Finset.card_pos.2 ⟨i, by simp⟩`. Rewrite `hpos` using `[hc' (a i : ZMod p)]`. Take `⟨j, hj⟩` from `Finset.card_pos.1 hpos`. Establish `ej : ((b j : ℕ) : ZMod p) = ((a i : ℕ) : ZMod p)` using `by simpa using hj`. Break down `natCast_eq_le_prime hp0 (hbp j) (hap i) ej with e | ⟨e₁, e₂⟩ | ⟨e₁, e₂⟩` into its components or cases.
+
+Conclude with `⟨j, e⟩`. Take `⟨k, hk⟩` from `(two i e₂).2`. Conclude with `⟨k, hk.trans e₂.symm⟩`. Establish `hbz' : b z = p` using `le_antisymm (hbp z) (e₁ ▸ hb.antitone (hzle j))`. Establish `haz' : a z = p` using `le_antisymm haz (hbz' ▸ hbz)`.
+
+Take `⟨k, hk⟩` from `(two z haz').1`. Conclude with `⟨k, hk.trans e₂.symm⟩`. Establish `himg : Finset.univ.image a = Finset.univ.image b`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `v hv`.
+
+Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Take `⟨j, hj⟩` from `sub i`. Conclude with `Finset.mem_image.2 ⟨j, Finset.mem_univ _, hj⟩`. Rewrite using `[Finset.card_image_of_injective _ ha.injective, Finset.card_image_of_injective _ hb.injective]`. Establish `hrange : Set.range b = Set.range a`.
+
+Use `congrArg (fun s : Finset ℕ => (s : Set ℕ)) himg` as an intermediate fact. Simplify using `using this.symm`. Establish `hab : b = a` using `(StrictAnti.range_inj hb ha).1 hrange`. Use function extensionality and compare the values at `i`. Establish `e : b i = a i` using `congrFun hab i`.
+
+Establish `e' : μ i + (N - 1 - i.val) = ν i + (N - 1 - i.val)` using `e`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_shifted_residues_eq :
     ∀ (p N : ℕ), p.Prime → ∀ (ν μ : Fin N → ℕ), Antitone ν → Antitone μ →
       (∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0 ∧ μ ⟨0, h⟩ ≤ ν ⟨0, h⟩ ∧ ν ⟨0, h⟩ + (N - 1) ≤ p) →

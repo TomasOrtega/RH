@@ -2,6 +2,45 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N r χ sg hN hr hr7 hrN hsg`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `haveI : NeZero r := ⟨hr.ne_zero⟩`. Establish `hrle : r ≤ N` using `Nat.le_of_dvd hN hrN`. Use `haveI : Fact (2 < N) := ⟨by omega⟩`.
+
+Establish `hm1 : (-1 : ZMod N) ≠ 1` using `ZMod.neg_one_ne_one`. Take `⟨θ₁, hθ₁⟩` from `DirichletCharacter.exists_apply_ne_one_of_hasEnoughRootsOfUnity ℂ hm1`. Establish `hsq : ∀ ψ : DirichletCharacter ℂ N, ψ (-1) * ψ (-1) = 1`. Introduce `ψ`. Rewrite using `[← map_mul, neg_one_mul, neg_neg, map_one]`.
+
+Establish `hθ₁' : θ₁ (-1) = -1`. Break down `mul_self_eq_one_iff.mp (hsq θ₁) with h | h` into its components or cases. Conclude with `absurd h hθ₁`. Conclude with `h`. Establish `h16 : (16 : ZMod r) ≠ 1`.
+
+Introduce `h`. Establish `h15 : ((15 : ℕ) : ZMod r) = 0`. Establish `: (16 : ZMod r) - 1 = 0` using `by rw [h]; ring`. Establish `e : ((15 : ℕ) : ZMod r) = (16 : ZMod r) - 1` using `by push_cast; ring`. Rewrite using `[e, this]`.
+
+Rewrite `h15` using `[ZMod.natCast_eq_zero_iff]`. Establish `h35 : r ∣ 3 * 5` using `by norm_num; exact h15`. Break down `(Nat.Prime.dvd_mul hr).mp h35 with h3 | h5` into its components or cases. Use `Nat.le_of_dvd (by norm_num) h3; omega` as an intermediate fact. Use `Nat.le_of_dvd (by norm_num) h5; omega` as an intermediate fact.
+
+Take `⟨κ, hκ⟩` from `DirichletCharacter.exists_apply_ne_one_of_hasEnoughRootsOfUnity ℂ h16`. Use `set ψ : DirichletCharacter ℂ N := DirichletCharacter.changeLevel hrN κ with hψ`. Establish `hη4 : ψ ^ 4 ≠ 1`. Introduce `h`. Establish `h' : DirichletCharacter.changeLevel hrN (κ ^ 4) = DirichletCharacter.changeLevel hrN 1`.
+
+Rewrite using `[map_pow, map_one]`. Conclude with `h`. Establish `hk` using `DirichletCharacter.changeLevel_injective hrN h'`. Apply `hκ` to reduce the goal to its premises. Establish `: (κ ^ 4) 2 = (1 : DirichletCharacter ℂ r) 2` using `by rw [hk]`.
+
+Establish `hu : IsUnit (2 : ZMod r)`. Establish `: (2 : ZMod r) = ((2 : ℕ) : ZMod r)` using `by norm_cast`. Rewrite using `[this, ZMod.isUnit_iff_coprime]`. Conclude with `(Nat.coprime_primes Nat.prime_two hr).mpr (by omega)`. Rewrite `this` using `[MulChar.one_apply hu, MulChar.pow_apply' _ (by norm_num)]`.
+
+Establish `e : (16 : ZMod r) = 2 ^ 4` using `by norm_num`. Rewrite using `[e, map_pow]`. Conclude with `this`. Use `set η : DirichletCharacter ℂ N := ψ ^ 2 with hηdef`. Establish `hηsq : η ^ 2 ≠ 1`.
+
+Rewrite using `[hηdef, ← pow_mul]`. Conclude with `hη4`. Establish `hη1 : η ≠ 1`. Introduce `h`. Apply `hηsq` to reduce the goal to its premises.
+
+Rewrite using `[h, one_pow]`. Establish `hη2 : η (-1) = 1`. Rewrite using `[hηdef, pow_two, MulChar.mul_apply, hsq]`. Establish `hη2' : (η ^ 2) (-1) = 1`. Rewrite using `[pow_two, MulChar.mul_apply, hη2, mul_one]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨θ₀, hθ₀⟩ : ∃ θ₀ : DirichletCharacter ℂ N, θ₀ (-1) = sg := by`. Break down `hsg with h | h` into its components or cases. Conclude with `⟨1, by rw [h]; exact MulChar.one_apply (isUnit_one.neg)⟩`. Conclude with `⟨θ₁, by rw [h, hθ₁']⟩`. Establish `hab : θ₀ ≠ θ₀ * η`.
+
+Introduce `h`. Apply `hη1` to reduce the goal to its premises. Conclude with `left_eq_mul.mp h`. Establish `hbc : θ₀ * η ≠ θ₀ * η ^ 2`. Introduce `h`.
+
+Apply `hη1` to reduce the goal to its premises. Establish `h'` using `mul_left_cancel h`. Rewrite `h'` using `[pow_two]`. Conclude with `left_eq_mul.mp h'`. Establish `hac : θ₀ ≠ θ₀ * η ^ 2`.
+
+Introduce `h`. Apply `hηsq` to reduce the goal to its premises. Conclude with `left_eq_mul.mp h`. Establish `key : ∀ θ : DirichletCharacter ℂ N, ¬ (θ * χ ≠ 1 ∧ θ * χ⁻¹ ≠ 1) → θ = χ⁻¹ ∨ θ = χ`. Introduce `θ h`.
+
+Distinguish the cases in `h1 : θ * χ = 1`. Conclude with `Or.inl (eq_inv_of_mul_eq_one_left h1)`. Establish `h2 : θ * χ⁻¹ = 1`. Assume the negation of the conclusion as `h2`. Conclude with `h ⟨h1, h2⟩`.
+
+Use `right`. Use `eq_inv_of_mul_eq_one_left h2` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Establish `ha` using `key θ₀ (fun h => by have := hno θ₀ hθ₀ h.1; exact h.2 this)`. Establish `hb` using `key (θ₀ * η) (fun h => by`. Use `hno (θ₀ * η) (by rw [MulChar.mul_apply, hθ₀, hη2, mul_one]) h.1; exact h.2 this)` as an intermediate fact. Establish `hc` using `key (θ₀ * η ^ 2) (fun h => by`. Use `hno (θ₀ * η ^ 2) (by rw [MulChar.mul_apply, hθ₀, hη2', mul_one]) h.1; exact h.2 this)` as an intermediate fact.
+
+Apply the tactic sequence `rcases ha with ha | ha <;> rcases hb with hb | hb <;> rcases hc with hc | hc <;> first`. Consider the case `exact hab (ha.trans hb.symm)`. Consider the case `exact hac (ha.trans hc.symm)`. Consider the case `exact hbc (hb.trans hc.symm)`.
+-/
 theorem exists_char_parity_mul_ne_one_mul_inv_ne_one : ∀ (N r : ℕ) (χ : DirichletCharacter ℂ N) (sg : ℂ), 0 < N → r.Prime → 7 ≤ r → r ∣ N → (sg = 1 ∨ sg = -1) → ∃ θ : DirichletCharacter ℂ N, θ (-1) = sg ∧ θ * χ ≠ 1 ∧ θ * χ⁻¹ ≠ 1 := by
   intro N r χ sg hN hr hr7 hrN hsg
   haveI : NeZero N := ⟨hN.ne'⟩

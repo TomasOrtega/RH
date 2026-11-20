@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.VsReg
 
+/- English proof (translation)
+Establish `hr0 : 0 < r` using `lt_of_lt_of_le one_pos hr`. Establish `hl : 0 ≤ Real.log r` using `Real.log_nonneg hr`. Establish `h1 : Real.log P ≤ A + (M : ℝ) * Real.log r` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_exp_mul_pow_of_log_le {P r A B : ℝ} {M : ℕ} (hP : 0 < P) (hr : 1 ≤ r) (hB : B ≤ M)
     (h : Real.log P ≤ A + B * Real.log r) : P ≤ Real.exp A * r ^ M := by
   have hr0 : 0 < r := lt_of_lt_of_le one_pos hr
@@ -25,6 +28,29 @@ theorem le_exp_mul_pow_of_log_le {P r A B : ℝ} {M : ℕ} (hP : 0 < P) (hr : 1 
     _ ≤ Real.exp (A + (M : ℝ) * Real.log r) := Real.exp_le_exp.2 h1
     _ = Real.exp A * r ^ M := by rw [Real.exp_add, Real.exp_nat_mul, Real.exp_log hr0]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or n w₀ hw₀`. Set `f : CMType H → Fin (Dw.p + Dw.q) → ℝ` to `fun τ i => -(n (τ, i) : ℝ)`. Set `cf : RootIx Dw → ℝ` to `fun r => GlobalTheory.CompanionTheory.Ar.Small.Fund.fundCo (f r.1) r.2`. Set `Bf : RootIx Dw → ℝ` to `fun r => |Real.log ((Or.Re.ref (some r)).h w₀)| + 1`. Set `T : Set ((Σ k, RM.ι k) → ℂ)` to `{z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`.
+
+Establish `hb : ∀ r : RootIx Dw, ∀ᶠ w in 𝓝[T] w₀, |Real.log ((Or.Re.ref (some r)).h w)| ≤ Bf r`. Introduce `r`. Establish `hc : ContinuousWithinAt (Or.Re.ref (some r)).h T w₀` using `(Or.Re.ref_smooth (some r)).continuousOn w₀ hw₀.1`. Establish `hc' : ContinuousWithinAt (fun w => |Real.log ((Or.Re.ref (some r)).h w)|) T w₀` using `(hc.log ((Or.Re.ref (some r)).pos w₀ hw₀.1).ne').abs`. Conclude with `(hc'.tendsto.eventually (Iio_mem_nhds (lt_add_one _))).mono fun _ h => le_of_lt h`.
+
+Establish `hall : ∀ᶠ w in 𝓝 w₀, w ∈ T → ∀ r : RootIx Dw, |Real.log ((Or.Re.ref (some r)).h w)| ≤ Bf r` using `eventually_nhdsWithin_iff.1 (Filter.eventually_all.2 hb)`. Set `A : ℝ` to `∑ r, |cf r| * Bf r`. Set `Bc : ℝ` to `∑ r, |cf r| * |Sys.C₅|`. Use `⟨Real.exp A, ⌈Bc⌉₊, (Real.exp_pos _).le, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hall] with w hw hwm x hso hop`.
+
+Establish `hwT : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `hwm.1`. Establish `hbd` using `hw hwT`. Establish `hsum : ∀ τ i, Real.log ((Or.Re.ref (some (τ, i))).h w) + Sys.ph (some (τ, i)) (Or.Re.π x) = -∑ k ∈ Finset.Iic i, Real.log ((Or.sing (τ, k)).h w)`. Introduce `τ i`. Establish `e` using `Or.fund_sing τ i x hop`.
+
+Establish `hdeg : (Or.Re.ref (some (τ, i))).a = -∑ k ∈ Finset.Iic i, (Or.sing (τ, k)).a`. Rewrite using `[Or.fund_deg τ i]`. Simplify using `only [Or.sing_deg]`. Establish `b` using `OrArch.log_add_sum_of_sameOrbit (Finset.Iic i) (fun k => Or.sing (τ, k)) hdeg hso hwT`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e2` using `GlobalTheory.CompanionTheory.Ar.Small.Fund.sum_neg_mul_eq_sum_fundCo f (fun r => Real.log ((Or.sing r).h w)) (fun r => Real.log ((Or.Re.ref (some r)).h w) + Sys.ph (some r) (Or.Re.π x)) hsum`. Establish `hlog : Real.log (∏ r, (Or.sing r).h w ^ n r) = ∑ r : RootIx Dw, -f r.1 r.2 * Real.log ((Or.sing r).h w)`. Rewrite using `[Real.log_prod fun r _ => zpow_ne_zero _ ((Or.sing r).pos _ hwT).ne']`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow]`.
+
+Simplify using `[f]`. Use `set L : ℝ := Real.log (ReciprocityTheory.AnForm.P.rW Sys.L Sys.s (Or.Re.π x)) with hL`. Establish `hre : Real.exp 1 ≤ ReciprocityTheory.AnForm.P.rW Sys.L Sys.s (Or.Re.π x)`. Use `Sys.norm_le (Or.Re.π x)` as an intermediate fact. Unfold `ReciprocityTheory.AnForm.P.rW`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr1 : 1 ≤ ReciprocityTheory.AnForm.P.rW Sys.L Sys.s (Or.Re.π x)` using `le_trans (Real.one_le_exp zero_le_one) hre`. Establish `hL1 : 1 ≤ L` using `(Real.le_log_iff_exp_le (lt_of_lt_of_le one_pos hr1)).2 hre`. Establish `hph : ∀ r : RootIx Dw, |Sys.ph (some r) (Or.Re.π x)| ≤ |Sys.C₅| * L`. Introduce `r`.
+
+Take `⟨h1, h2⟩` from `(Sys.sing (some r)).2.2.2 (Or.Re.π x) hop`. Establish `hC : Sys.C₅ ≤ |Sys.C₅|` using `le_abs_self _`. Establish `hC0 : 0 ≤ |Sys.C₅|` using `abs_nonneg _`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith`.
+
+Establish `hle : Real.log (∏ r, (Or.sing r).h w ^ n r) ≤ A + Bc * L`. Rewrite using `[hlog, e2]`. Establish `: A + Bc * L = ∑ r, |cf r| * (Bf r + |Sys.C₅| * L)`. Simplify using `only [A, Bc, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun r _ => by ring`.
+
+Rewrite using `[this]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Establish `h3 : |Real.log ((Or.Re.ref (some r)).h w) + Sys.ph (some r) (Or.Re.π x)| ≤ Bf r + |Sys.C₅| * L` using `(abs_add_le _ _).trans (add_le_add (hbd r) (hph r))`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_exp_mul_pow_of_log_le (Finset.prod_pos fun r _ => zpow_pos ((Or.sing r).pos _ hwT) _) hr1 (Nat.le_ceil _) hle`.
+-/
 theorem sing_prod_le_rW_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (n : RootIx Dw → ℤ), ∀ w₀ ∈ mcPts (mCoordIdeal RM.y), ∃ (C : ℝ) (M : ℕ), 0 ≤ C ∧ ∀ᶠ w in 𝓝 w₀, w ∈ mcPts (mCoordIdeal RM.y) → ∀ x : Or.Re.R.X, SameOrbit (Or.Re.R.lift x x) w → Or.Re.π x ∈ Sys.open' → ∏ r, (Or.sing r).h w ^ n r ≤ C * ReciprocityTheory.AnForm.P.rW Sys.L Sys.s (Or.Re.π x) ^ M := by
   intro E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or n w₀ hw₀
   let f : CMType H → Fin (Dw.p + Dw.q) → ℝ := fun τ i => -(n (τ, i) : ℝ)

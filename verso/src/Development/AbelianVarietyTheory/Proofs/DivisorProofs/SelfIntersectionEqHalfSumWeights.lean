@@ -20,6 +20,21 @@ noncomputable section
 
 namespace GlobalTheory.CurveSelf
 
+/- English proof (translation)
+Introduce `k _ k' _ _ _ hX c hc hcc a ⟨h, hh, ha⟩`. Substitute `ha` using the available equality. Use `hX.isLocallyNoetherian` as an intermediate fact. Establish `hr : IsRatSec ((fnB c hc hcc).restr (𝟙 (Sp k'))).B (fun _ => 1)` using `fun a b h => by`. Establish `hL` using `LB.isLB_pull (LB.isLB_triv (Sp k')) (𝟙 (Sp k'))`.
+
+Take `rfl : a = b` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Sp k', _)ˣ => fnOf _ h.1 u.val) (hL.g_self a)` as an intermediate fact. Simplify using `only [Units.val_one] at this`. Use `erw [map_one] at this`. Rewrite using `[Units.val_one, mul_one]`.
+
+Conclude with `(this.symm.trans (fnOf_resG _ h.1 _))`. Establish `e` using `hh.point (Sp k') (𝟙 _) hX.charZero (by rw [hX.dim_eq]; rfl) _ hr`. Rewrite `e` using `[HermLB.curveDeg]`. Establish `h₁ (z : Sp k') : (((fnB c hc hcc).restr (𝟙 (Sp k'))).div hr).mult z = 0`. Establish `⟨i, hi⟩` using `exists_chart ((fnB c hc hcc).restr (𝟙 (Sp k'))).isLB z`.
+
+Use the proof step `((presents_divOfRatSec _ hr).isEqn i z hi).mult_eq.trans (unitAt_one z).ord_eq_zero`. Establish `h₂ (σ : k →+* ℂ) (y : CxPts (𝟙 (Sp k') ≫ spMap (algebraMap k k')) σ) : logNorm (((fnB c hc hcc).restr (𝟙 (Sp k'))).φ σ) (fun _ => 1) y = -(1 / 2) * c σ (PtsOver.map (𝟙 (Sp k')) rfl _ y)`. Establish `e'` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`. Rewrite `e'` using `[map_one, ev_one mem_ptsIn_top]`. Rewrite using `[logNorm, Units.val_one, e', norm_one, Real.log_one]`.
+
+Use `erw [Weight.pull_φ]`. Express the relevant statement in the definitionally equal form `0 - c σ _ / 2 = _`. Expand and normalize the polynomial expressions, which then agree. Set `E (σ : k →+* ℂ) : CxPts (𝟙 (Sp k') ≫ spMap (algebraMap k k')) σ ≃ CxPts (spMap (algebraMap k k')) σ` to `{ toFun := PtsOver.map (𝟙 (Sp k')) rfl _ invFun := PtsOver.map (𝟙 (Sp k')) (Category.id_comp _) _ left_inv := fun y => Subtype.ext ((congrArg (· ≫ 𝟙 (Sp k')) (Category.comp_id y.1)).trans (Category.comp_id y.1)) right_inv := fun y => Subtype.ext ((congrArg (· ≫ 𝟙 (Sp k')) (Catego …`. Establish `h₃ (σ : k →+* ℂ) : ∑ᶠ y : CxPts (𝟙 (Sp k') ≫ spMap (algebraMap k k')) σ, logNorm (((fnB c hc hcc).restr (𝟙 (Sp k'))).φ σ) (fun _ => 1) y = -(1 / 2) * ∑ᶠ y, c σ y`.
+
+Simplify using `only [h₂]`. Rewrite using `[← mul_finsum]`. Conclude with `congrArg _ (finsum_comp_equiv (E σ))`. Simplify using `only [h₁, h₃, Int.cast_zero, zero_mul, finsum_zero] at e`. Rewrite `e` using `[← mul_finsum]`.
+
+Conclude with `e.trans (by ring)`.
+-/
 theorem isSelfInter_fnB_curve : ∀ (k : Type) [CommRing k] (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'],
     IsArithVar (spMap (algebraMap k k')) 0 → ∀ (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ)
     (hc : ∀ σ y, CxPts.CInfAt (c σ) y) (hcc : ∀ σ σ', (Weight.ofFun (c σ)).IsConj (Weight.ofFun (c σ'))) (a : ℝ),

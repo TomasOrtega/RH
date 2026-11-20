@@ -22,6 +22,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 omit [NumberField E] [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 E) ∈ w.asIdeal`. Use `⟨3, Nat.prime_three, fun h3 => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩` and prove the remaining obligations. Use `w.asIdeal.sub_mem h3 h2` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`.
+
+Conclude with `⟨2, Nat.prime_two, h2⟩`.
+-/
 theorem exists_prime_notMem (w : HeightOneSpectrum (𝓞 E)) : ∃ p : ℕ, p.Prime ∧ ((p : ℕ) : 𝓞 E) ∉ w.asIdeal := by
   by_cases h2 : ((2 : ℕ) : 𝓞 E) ∈ w.asIdeal
   · refine ⟨3, Nat.prime_three, fun h3 => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩
@@ -30,6 +35,11 @@ theorem exists_prime_notMem (w : HeightOneSpectrum (𝓞 E)) : ∃ p : ℕ, p.Pr
     exact this
   · exact ⟨2, Nat.prime_two, h2⟩
 
+/- English proof (translation)
+Take `rfl` from `eq_loc hξ`. Take `⟨p, hp, hw⟩` from `exists_prime_notMem w`. Use `Fact.mk hp` as an intermediate fact. Take `⟨ι⟩ : Nonempty (Qbar p ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex p`. Take `⟨r, -, hr⟩` from `hart.exists_isLAdicOf ι hn`.
+
+Use extensionality with `σ`. Establish `h1` using `hr.loc_away (Or.inl hw) _ _ (ha.glob art hart σ)`. Establish `h2` using `hr.loc_away (Or.inl hw) _ _ (ha'.glob art hart σ)`. Conclude with `ι.symm.injective (h1.symm.trans h2)`.
+-/
 theorem comp_eq {art : Ideles E →* Gab E Ω} (hart : IsGlobalArtin art) {χ : HChar E} {n : (E →+* ℂ) → ℤ}
     (hn : IsAlgPos χ n) {ξ : (w.adicCompletion E)ˣ →* ℂˣ} (hξ : GlobalTheory.NPin.IsComp χ w ξ)
     {a a' : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a) (ha' : IsLocalArtin h a') :
@@ -44,6 +54,11 @@ theorem comp_eq {art : Ideles E →* Gab E Ω} (hart : IsGlobalArtin art) {χ : 
   have h2 := hr.loc_away (Or.inl hw) _ _ (ha'.glob art hart σ)
   exact ι.symm.injective (h1.symm.trans h2)
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art hart χ n μ hn hμ hLa w A h O _ _ _ Bw hj ξ hξ a ha`. Take `⟨rc, hrc⟩` from `(hL.1 E Ω A w h).exists`. Take `⟨a', ha', hs, e⟩` from `rhs_eq h hξ hrc`. Rewrite using `[H E Ω l P AI hT ι art hart χ n μ hn hμ hLa w A h O Bw hj ξ hξ rc hrc, e]`. Take `rfl` from `eq_loc hξ`.
+
+Use `congr 1`. Conclude with `comp_eq hart hn hξ ha' ha`.
+-/
 theorem of_parameter (hL : LocalLanglandsGL) (H : HeckeLAdicParameterAbove) : AlgebraicCharacterWD := by
   intro E Ω _ _ _ _ _ l _ P AI hT ι art hart χ n μ hn hμ hLa w A h O _ _ _ Bw hj ξ hξ a ha
   obtain ⟨rc, hrc⟩ := (hL.1 E Ω A w h).exists
@@ -57,11 +72,23 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (ι : Om l
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
   (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : GlobalTheory.Pst.Induces Bw)
 
+/- English proof (translation)
+Use extensionality with `σ`. Use `congrArg (fun x => WD.eig x σ) e` as an intermediate fact. Simplify `this` using `only [eig_lpOfChar, Multiset.singleton_inj]`.
+-/
 theorem lpOfChar_inj {ξ ξ' : Weil h →* ℂˣ} {hξ hξ'} (e : WD.lpOfChar h ξ hξ = WD.lpOfChar h ξ' hξ') : ξ = ξ' := by
   ext σ
   have := congrArg (fun x => WD.eig x σ) e
   simpa only [eig_lpOfChar, Multiset.singleton_inj] using this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Rewrite `e` using `[wdAt_of_not_isPstAt ι Bw h hj hr]`. Use `hξ (MonoidHom.ext fun x => ?_)` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `ha.surj x`. Establish `h1` using `congrArg (fun x => WD.eig x σ) e`.
+
+Simplify using `only [eig_lpOfChar, trivWD] at h1`. Establish `h2 : (WDRep.diag h fun _ : Fin 1 => (1 : ℂˣ)).ρ σ = 1` using `by ext; simp [WDRep.diag]`. Rewrite `h1` using `[WD.eig_mk, h2]`. Establish `h3 : ((ξ.comp a σ : ℂˣ) : ℂ) ∈ (LinearMap.charpoly (1 : End ℂ (Fin 1 → ℂ))).roots`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules. Rewrite `h3` using `[mem_roots (LinearMap.charpoly_monic _).ne_zero, ← End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨u, hu⟩` from `h3.exists_hasEigenvector`. Establish `h4` using `hu.apply_eq_smul`. Rewrite `h4` using `[End.one_apply]`.
+
+Establish `h5 : ((ξ.comp a σ : ℂˣ) : ℂ) = 1` using `smul_left_injective ℂ hu.2 (h4.symm.trans (one_smul _ _).symm)`. Conclude with `Units.ext h5`.
+-/
 theorem isPstAt_of_eq {r : ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)} {ξ : (w.adicCompletion E)ˣ →* ℂˣ}
     {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a) {hs} (hξ : ξ ≠ 1)
     (e : wdAt P ι Bw h hj r = WD.lpOfChar h (ξ.comp a) hs) : IsPstAt P Bw r := by
@@ -83,6 +110,11 @@ theorem isPstAt_of_eq {r : ↥(Dec (F := E) A) →* GL (Fin 1) (Om l)} {ξ : (w.
   have h5 : ((ξ.comp a σ : ℂˣ) : ℂ) = 1 := smul_left_injective ℂ hu.2 (h4.symm.trans (one_smul _ _).symm)
   exact Units.ext h5
 
+/- English proof (translation)
+Take `⟨T⟩` from `hT`. Use `CharWDModel.holds_abs P ι Bw h hj hart hμ hL (hB.isPstAt T Bw _ ?_ (CharAboveModel.conclusion_absPow P AI ⟨T⟩ ι art hart 1 μ hμ hL A O Bw).1) hξ ha` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `: Continuous fun g : Dec (F` using `E) A => ((μ g : (Qbar l)ˣ) : Qbar l) := Units.continuous_val.comp (hμ.comp continuous_subtype_val)`. Use `fin_cases i`.
+
+Use `fin_cases j`. Simplify `this` using `[rk1]`.
+-/
 theorem holds_abs' (hB : DeRhamPotSemistable) (hT : Nonempty (LocTied l P AI))
     {art : Ideles E →* Gab E Ω} (hart : IsGlobalArtin art)
     {μ : G E Ω →* (Qbar l)ˣ} (hμ : Continuous μ)
@@ -99,6 +131,9 @@ theorem holds_abs' (hB : DeRhamPotSemistable) (hT : Nonempty (LocTied l P AI))
   fin_cases i; fin_cases j
   simpa [rk1] using this
 
+/- English proof (translation)
+Introduce `e'` and use `by have := lpOfChar_inj (e.symm.trans e') refine hξ (MonoidHom.ext fun y => ?_) obtain ⟨σ, rfl⟩ := ha.surj y exact DFunLike.congr_fun this σ`.
+-/
 theorem ne_inv {x : WD h} {ξ : (w.adicCompletion E)ˣ →* ℂˣ} {a : Weil h →* (w.adicCompletion E)ˣ}
     (ha : IsLocalArtin h a) {hs hs'} (e : x = WD.lpOfChar h (ξ.comp a) hs) (hξ : ξ ≠ ξ⁻¹) :
     x ≠ WD.lpOfChar h (ξ⁻¹.comp a) hs' := fun e' => by
@@ -109,6 +144,9 @@ theorem ne_inv {x : WD h} {ξ : (w.adicCompletion E)ˣ →* ℂˣ} {a : Weil h �
 
 omit [IsAlgClosure E Ω] in
 
+/- English proof (translation)
+Introduce `e` and use `by have hval := (Model.absPow_isAbsPow E (1 : ℕ)).2.1 w have h1 : (Model.absPow E (1 : ℕ)).val w = ((Model.absPow E (1 : ℕ)).val w)⁻¹ := DFunLike.congr_fun e (atFin w (unif w)) have h2 := congrArg (fun u : ℂˣ => (u : ℂ)) h1 simp only [Units.val_inv_eq_inv_val, hval] at h2 have hq …`.
+-/
 theorem abs_ne_inv : (Model.absPow E (1 : ℕ)).loc w ≠ ((Model.absPow E (1 : ℕ)).loc w)⁻¹ := fun e => by
   have hval := (Model.absPow_isAbsPow E (1 : ℕ)).2.1 w
   have h1 : (Model.absPow E (1 : ℕ)).val w = ((Model.absPow E (1 : ℕ)).val w)⁻¹ :=

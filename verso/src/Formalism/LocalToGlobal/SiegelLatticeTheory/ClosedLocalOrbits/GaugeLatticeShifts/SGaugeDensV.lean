@@ -9,9 +9,15 @@ namespace Formalism.MainNotions.S.Gauge
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(continuous_expG ε).comp (obG ε).repr.symm.continuous`.
+-/
 theorem continuous_expC (ε : Fin n → Bool) : Continuous (expC ε) :=
   (continuous_expG ε).comp (obG ε).repr.symm.continuous
 
+/- English proof (translation)
+Take `⟨ρ₀, hρ, hinj⟩` from `injOn_thetaExp ε`. Use `⟨ρ₀, hρ, fun a ha b hb e => hinj ha hb ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg uMat e`. Rewrite `e2` using `[uMat_expC, uMat_expC]`. Conclude with `Matrix.of.injective e2`.
+-/
 theorem expC_injOn (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (expC ε) (Metric.ball 0 ρ₀) := by
   obtain ⟨ρ₀, hρ, hinj⟩ := injOn_thetaExp ε
   refine ⟨ρ₀, hρ, fun a ha b hb e => hinj ha hb ?_⟩
@@ -19,12 +25,36 @@ theorem expC_injOn (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (expC ε) (M
   rw [uMat_expC, uMat_expC] at e2
   exact Matrix.of.injective e2
 
+/- English proof (translation)
+Establish `hm : MeasurableSet (expC ε ⁻¹' B)` using `(continuous_expC ε).measurable hB`. Rewrite using `[lamM, Measure.map_apply (continuous_expC ε).measurable hB, withDensity_apply _ hm, Measure.restrict_restrict hm]`.
+-/
 theorem lamM_apply (ε : Fin n → Bool) (s : ℝ) {B : Set (Formalism.REAL.UJ ε)} (hB : MeasurableSet B) :
     lamM ε s B = ∫⁻ t in expC ε ⁻¹' B ∩ Metric.ball 0 s, jd ε t := by
   have hm : MeasurableSet (expC ε ⁻¹' B) := (continuous_expC ε).measurable hB
   rw [lamM, Measure.map_apply (continuous_expC ε).measurable hB, withDensity_apply _ hm,
     Measure.restrict_restrict hm]
 
+/- English proof (translation)
+Introduce `hT hJ`. Take `⟨s₁, hs₁, hTs⟩` from `hT`. Take `⟨ρ₀, hρ₀, hinj⟩` from `expC_injOn ε`. Use `⟨min s₁ ρ₀, lt_min hs₁ hρ₀, fun s hs hss z A hA hAs hzA => ?_⟩` and prove the remaining obligations. Establish `hinjs : Set.InjOn (expC ε) (Metric.ball 0 s)` using `hinj.mono (Metric.ball_subset_ball (hss.trans (min_le_right _ _)))`.
+
+Take `⟨U, hU, φ, hφ, hΘ, hsub⟩` from `hTs s hs (hss.trans (min_le_left _ _)) z`. Establish `hexp : ∀ t ∈ U, expC ε (φ t) = z * expC ε t`. Introduce `t ht`. Apply `uMat_inj` to reduce the goal to its premises. Use `show _ = uMat z * uMat (expC ε t)`.
+
+Simplify using `only [uMat_expC]`. Conclude with `hΘ t ht`. Use `set T := expC ε ⁻¹' A ∩ Metric.ball 0 s with hTdef`. Establish `hTU : ∀ t ∈ T, t ∈ U ∧ φ t ∈ Metric.ball (0 : EL ε) s` using `fun t ht => hsub t ht.2 (hzA ⟨expC ε t, ht.1, rfl⟩)`. Establish `himage : φ '' T = expC ε ⁻¹' ((fun g => z * g) '' A) ∩ Metric.ball 0 s`.
+
+Use extensionality with `t'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨?_, (hTU t ht).2⟩` and prove the remaining obligations. Use `show expC ε (φ t) ∈ (fun g => z * g) '' A`.
+
+Rewrite using `[hexp t (hTU t ht).1]`. Conclude with `⟨expC ε t, ht.1, rfl⟩`. Introduce and unpack `⟨⟨a, ha, hza⟩, ht'⟩`. Take `⟨t, htb, rfl⟩` from `hAs ha`. Establish `htT : t ∈ T` using `⟨ha, htb⟩`.
+
+Use `⟨t, htT, hinjs (hTU t htT).2 ht' ?_⟩` and prove the remaining obligations. Rewrite using `[hexp t (hTU t htT).1]`. Conclude with `hza`. Establish `hinjT : Set.InjOn φ T`. Introduce `a ha b hb e`.
+
+Apply `hinjs ha.2 hb.2` to reduce the goal to its premises. Establish `e2` using `congrArg (expC ε) e`. Rewrite `e2` using `[hexp a (hTU a ha).1, hexp b (hTU b hb).1]`. Conclude with `mul_left_cancel e2`. Establish `hzAm : MeasurableSet ((fun g => z * g) '' A)`.
+
+Establish `: (fun g => z * g) '' A = (fun g => z⁻¹ * g) ⁻¹' A`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Simplify using `using ha`.
+
+Introduce `hg`. Conclude with `⟨z⁻¹ * g, hg, by simp⟩`. Rewrite using `[this]`. Conclude with `(continuous_const_mul z⁻¹).measurable hA`. Establish `hTm : MeasurableSet T` using `((continuous_expC ε).measurable hA).inter measurableSet_ball`.
+
+Rewrite using `[lamM_apply ε s hzAm, lamM_apply ε s hA, ← himage, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hTm (fun t ht => ((hφ.differentiableAt (hU.mem_nhds (hTU t ht).1)).hasFDerivAt).hasFDerivWithinAt) hinjT]`. Use `setLIntegral_congr_fun hTm (fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [jd]`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), mul_comm, hJ U φ (uMat z) hU hφ hΘ t (hTU t ht).1]`.
+-/
 theorem locInvOf (ε : Fin n → Bool) : LocInvOf ε := by
   intro hT hJ
   obtain ⟨s₁, hs₁, hTs⟩ := hT

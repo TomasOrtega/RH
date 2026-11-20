@@ -6,6 +6,27 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.DualLatDescent
 
+/- English proof (translation)
+Introduce `l _ P K LL _ _ O _ _ V _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ _ _ lam n e f h1 h2 h3 ρ ρ' L L' LZ LZ' hT hT' Pr PQ hPQ hP`. Take `⟨⟨hg, hl, hr, hrk⟩, hlat⟩` from `hP`. Establish `key : ∀ z : LL, (∀ a : LL, lam (a * z) = 0) → z = 0`. Introduce `z hz`. Rewrite using `[h3 z]`.
+
+Simplify using `[hz]`. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g x y`. Rewrite using `[hPQ, GlobalTheory.PstCoeff.resQ_apply, GlobalTheory.PstCoeff.resQ_apply, hg, hPQ]`. Establish `: ((cycLL (P.PD K) LL g : LLˣ) : LL) = algebraMap ℚ_[l] LL ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l])`.
+
+Simplify using `[cycLL]`. Rewrite using `[this, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Introduce `x hx`. Apply `hl` to reduce the goal to its premises. Introduce `y`.
+
+Apply `key` to reduce the goal to its premises. Introduce `a`. Rewrite using `[← smul_eq_mul, ← map_smul, ← hPQ]`. Conclude with `hx _`. Introduce `y hy`.
+
+Apply `hr` to reduce the goal to its premises. Introduce `x`. Apply `key` to reduce the goal to its premises. Introduce `a`. Rewrite using `[← smul_eq_mul, ← LinearMap.smul_apply, ← map_smul, ← hPQ]`.
+
+Conclude with `hy _`. Rewrite using `[← Module.finrank_mul_finrank ℚ_[l] LL V, ← Module.finrank_mul_finrank ℚ_[l] LL V', hrk]`. Introduce `y`. Rewrite using `[hT', hlat]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H x hx`. Take `⟨a, ha⟩` from `H x ((hT x).1 hx)`. Take `⟨z, hz⟩` from `h2 a`. Conclude with `⟨z, by rw [hPQ, ha, hz]; rfl⟩`. Introduce `H x hx`.
+
+Establish `hi : ∀ i, ∃ z : ℤ_[l], lam (algebraMap O LL (f i) * Pr x y) = (z : ℚ_[l])`. Introduce `i`. Establish `hm : f i • x ∈ L.T` using `L.T.smul_mem _ hx`. Take `⟨z, hz⟩` from `H _ ((hT _).2 hm)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hz` using `[hPQ, ← algebraMap_smul LL (f i) x, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hz]`. Both sides reduce to the same expression. Use `choose z hz using hi`. Establish `ho : ∀ i, ∃ o : O, algebraMap O LL o = algebraMap ℚ_[l] LL (z i : ℚ_[l])` using `fun i => h1 (z i)`.
+
+Use `choose o ho using ho`. Use `⟨∑ i, o i * e i, ?_⟩` and prove the remaining obligations. Rewrite using `[h3 (Pr x y), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hz i, map_mul, ho i, Algebra.smul_def]`.
+-/
 theorem dualLat_resQ : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL]
     (O : Type) [CommRing O] [Algebra O LL]
     (V : Type) [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]

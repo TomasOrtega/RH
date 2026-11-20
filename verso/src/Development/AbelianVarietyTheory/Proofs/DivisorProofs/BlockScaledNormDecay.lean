@@ -10,15 +10,27 @@ noncomputable section
 
 namespace GlobalTheory.ThKTorus.MajCompare
 
+/- English proof (translation)
+The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+-/
 theorem evI_add' (F : Type) [Field F] [NumberField F] (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
+/- English proof (translation)
+The claim follows from `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+-/
 theorem evI_mul' (F : Type) [Field F] [NumberField F] (a b : AF F) : evI F (a * b) = evI F a * evI F b :=
   map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
+/- English proof (translation)
+The claim follows from `map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+-/
 theorem evI_one' (F : Type) [Field F] [NumberField F] : evI F (1 : AF F) = 1 :=
   map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [evI_one']`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, evI_mul', ih]`.
+-/
 theorem evI_prod' (F : Type) [Field F] [NumberField F] {ι : Type} (s : Finset ι) (f : ι → AF F) :
     evI F (∏ i ∈ s, f i) = ∏ i ∈ s, evI F (f i) := by
   classical
@@ -26,16 +38,27 @@ theorem evI_prod' (F : Type) [Field F] [NumberField F] {ι : Type} (s : Finset �
   | empty => simp [evI_one']
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, evI_mul', ih]
 
+/- English proof (translation)
+Establish `h : evI F (realAd F (s - 1)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (s - 1)`. Simplify using `[evI, realAd]`. Rewrite using `[tAd, evI_add', evI_one', h, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evI_tAd (F : Type) [Field F] [NumberField F] (s : ℝ) :
     evI F (tAd F s) = algebraMap ℝ (mixedEmbedding.mixedSpace F) s := by
   have h : evI F (realAd F (s - 1)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (s - 1) := by
     simp [evI, realAd]
   rw [tAd, evI_add', evI_one', h, map_sub, map_one]; ring
 
+/- English proof (translation)
+Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem evI_algMap (F : Type) [Field F] [NumberField F] (x : F) :
     evI F (algebraMap F (AF F) x) = mixedEmbedding F x := by
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]; rfl
 
+/- English proof (translation)
+Simplify using `only [blkScale]`. Rewrite using `[evI_mul', evI_prod', evI_algMap, Algebra.smul_def, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[evI_tAd]`. Rewrite using `[evI_one', map_one]`.
+-/
 theorem evI_blkScale (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ}
     (blk : Fin q → Finset κ) (t : Fin q → ℝ) (ξ : κ → F) (j : κ) :
     evI F (blkScale blk t (fun j => algebraMap F (AF F) (ξ j)) j) =
@@ -52,6 +75,33 @@ end GlobalTheory.ThKTorus.MajCompare
 
 namespace GlobalTheory.ThKTorus.MajCompare
 
+/- English proof (translation)
+Introduce `F _ _ κ _ _ q blk hdis c hc N`. Use `set m : ℝ := min c 1 with hm_def`. Establish `hm0 : 0 < m` using `lt_min hc one_pos`. Use `⟨(m ^ N)⁻¹, inv_nonneg.2 (pow_nonneg hm0.le N), ?_⟩` and prove the remaining obligations. Introduce `t ht ξ`.
+
+Use `set r : κ → ℝ := fun j => ∏ i, if j ∈ blk i then t i else 1 with hr_def`. Use `set a : κ → ℝ := fun j => ∑ w : InfinitePlace F, w (ξ j) with ha_def`. Establish `ha0 : ∀ j, 0 ≤ a j` using `fun j => Finset.sum_nonneg fun w _ => apply_nonneg w _`. Establish `hrt : ∀ i, ∀ j ∈ blk i, r j = t i`. Introduce `i j hj`.
+
+Simplify using `only [hr_def]`. Rewrite using `[Finset.prod_eq_single i]`. Rewrite using `[if_pos hj]`. Introduce `i' _ hi'`. Rewrite using `[if_neg]`.
+
+Conclude with `fun hj' => Finset.disjoint_left.1 (hdis i' i hi') hj' hj`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hrm : ∀ j, m ≤ r j`. Introduce `j`.
+
+Distinguish the cases in `h : ∃ i, j ∈ blk i`. Take `⟨i, hi⟩` from `h`. Rewrite using `[hrt i j hi]`. Conclude with `(min_le_left c 1).trans (ht i)`. Use `push_neg at h`.
+
+Establish `: r j = 1`. Simplify using `only [hr_def]`. Conclude with `Finset.prod_eq_one fun i _ => if_neg (h i)`. Rewrite using `[this]`. Conclude with `min_le_right c 1`.
+
+Establish `hr0 : ∀ j, 0 < r j` using `fun j => hm0.trans_le (hrm j)`. Establish `hS : (1 + ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (blkScale blk t (fun j => algebraMap F (AF F) (ξ j)) j))) = 1 + ∑ j, r j * a j`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[evI_blkScale, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_smul, mixedEmbedding.normAtPlace_apply, abs_of_pos (hr0 j)]`. Rewrite using `[hS]`. Use `set S : ℝ := 1 + ∑ j, r j * a j with hS_def`. Establish `hS1 : 1 ≤ S` using `le_add_of_nonneg_right (Finset.sum_nonneg fun j _ => mul_nonneg (hr0 j).le (ha0 j))`.
+
+Establish `hS0 : 0 < S` using `one_pos.trans_le hS1`. Establish `hA : ∀ i, 1 + t i * ∑ j ∈ blk i, a j ≤ S`. Introduce `i`. Rewrite using `[hS_def, Finset.mul_sum]`. Use `add_le_add le_rfl ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA0 : ∀ i, 0 ≤ 1 + t i * ∑ j ∈ blk i, a j` using `fun i => add_nonneg zero_le_one (mul_nonneg (hc.le.trans (ht i)) (Finset.sum_nonneg fun j _ => ha0 j))`. Establish `hB : m * (1 + ∑ j, a j) ≤ S`. Rewrite using `[mul_add, mul_one, Finset.mul_sum, hS_def]`. Conclude with `add_le_add (min_le_right c 1) (Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_right (hrm j) (ha0 j))`.
+
+Establish `hB0 : 0 < 1 + ∑ j, a j` using `add_pos_of_pos_of_nonneg one_pos (Finset.sum_nonneg fun j _ => ha0 j)`. Establish `hP0 : 0 < (∏ i, (1 + t i * ∑ j ∈ blk i, a j) ^ N) * (1 + ∑ j, a j) ^ N`. Use `mul_pos (Finset.prod_pos fun i _ => pow_pos ?_ N) (pow_pos hB0 N)` and prove the remaining obligations. Conclude with `one_pos.trans_le (le_add_of_nonneg_right (mul_nonneg (hc.le.trans (ht i)) (Finset.sum_nonneg fun j _ => ha0 j)))`. Establish `key : m ^ N * ((∏ i, (1 + t i * ∑ j ∈ blk i, a j) ^ N) * (1 + ∑ j, a j) ^ N) ≤ S ^ ((q + 1) * N)`.
+
+Establish `h1 : ∏ i, (1 + t i * ∑ j ∈ blk i, a j) ^ N ≤ S ^ (q * N)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (m * (1 + ∑ j, a j)) ^ N ≤ S ^ N` using `pow_le_pow_left₀ (mul_nonneg hm0.le hB0.le) hB N`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_inv]`.
+
+Conclude with `inv_anti₀ (mul_pos (pow_pos hm0 N) hP0) key`.
+-/
 theorem weight_le_majorant : ∀ (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ] {q : ℕ} (blk : Fin q → Finset κ),
     (∀ i j, i ≠ j → Disjoint (blk i) (blk j)) → ∀ c : ℝ, 0 < c → ∀ N : ℕ, ∃ C : ℝ, 0 ≤ C ∧
     ∀ (t : Fin q → ℝ), (∀ i, c ≤ t i) → ∀ ξ : κ → F,

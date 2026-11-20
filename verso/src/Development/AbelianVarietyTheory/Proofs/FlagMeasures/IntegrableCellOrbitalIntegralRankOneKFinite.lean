@@ -14,6 +14,19 @@ namespace GlobalTheory.CellOrbIntG
 
 open GlobalTheory.CellOrbInt
 
+/- English proof (translation)
+Introduce `H k r L h μG γ μR νR ν hgap hok _ hC`. Take `⟨hγ, -, -, -, hR, hQ, -⟩` from `hC`. Establish `hae` using `ae_quot L hR hQ`. Use `⟨hae, fun b _ hb hint v v' hv hv' ξ ξ' => ?_⟩` and prove the remaining obligations. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`.
+
+Establish `hsm` using `H.1.1.2.2.1 k r L.ε L.lam L.Hs L.σ L.hlam hσ v' hv'`. Take `⟨C, Ws, -, hdec⟩` from `H.1.1.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hok v hv`. Establish `hd` using `hdec v' hsm`. Generalize the expression as in `C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) L.σ W v'‖).sum = A at hd`. Establish `hF : ContinuousOn (coefF L v v' ξ ξ') (UH (Hpk k r))`.
+
+Establish `e : coefF L v v' ξ ξ' = fun g => ⟪v, L.σ g v'⟫_ℂ • (innerSL ℂ ξ').smulRight ξ`. Use function extensionality and compare the values at `(coefF_eq L v v' ξ ξ')`. Rewrite using `[e]`. Conclude with `(ContinuousOn.inner (𝕜 := ℂ) continuousOn_const (Formalism.FourierDecayAlt.P.S3dx4.sigma_contOn hσ v')).smul continuousOn_const`. Use `haveI : BorelSpace (PairSp k r) := Prod.borelSpace`.
+
+Establish `hm : AEStronglyMeasurable (besselIntg L (coefF L v v' ξ ξ') γ) ν`. Use `(contOn_intg L hγ hF).aestronglyMeasurable (μ := ν) (meas_pairSet L)` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis. Use `(hint.const_mul (|A| * ‖(innerSL ℂ ξ').smulRight ξ‖)).mono' hm ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`.
+
+Use `(norm_intg_le L γ _ hp).trans ?_` and prove the remaining obligations. Establish `hx` using `point_mem L hγ hp`. Unfold `pairMaj`. Use `set x := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1`. Establish `h1 : 1 ≤ Formalism.FourierDecayAlt.B.gN x` using `PI.PolynomialProperness.GN.gN_ge_one hx`.
+
+Establish `h2 : Formalism.FourierDecayAlt.B.gN x ^ (1 - Formalism.FourierDecayAlt.ThreeDimData.aOf r h) ≤ Formalism.FourierDecayAlt.B.gN x ^ (-b)` using `Real.rpow_le_rpow_of_exponent_le h1 (by linarith)`. Establish `h3 : ‖⟪v, L.σ x v'⟫_ℂ‖ ≤ |A| * Formalism.FourierDecayAlt.B.gN x ^ (-b)` using `(hd x hx).trans ((mul_le_mul_of_nonneg_right (le_abs_self A) (by positivity)).trans (mul_le_mul_of_nonneg_left h2 (abs_nonneg A)))`. Rewrite using `[coefF_eq, norm_smul, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right h3 (norm_nonneg _)`.
+-/
 theorem orbInt_integrable : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (L : LocBessel k r) (h : ℝ) (μG : Measure (Mt k r)) (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR νR : Measure (Mt k r)) (ν : Measure (PairSp k r)), GapAtLeast L.ε L.lam h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → L.κN ≠ ⊤ → CellData L μG γ μR νR ν → (∀ᵐ p ∂ν, Matrix.of p.1.1 ∈ UWset k r L.z ∧ Matrix.of p.1.2 ∈ Nset k r ∧ Matrix.of p.2.1 ∈ UWset k r L.z' ∧ Matrix.of p.2.2 ∈ Nset k r) ∧ ∀ b : ℝ, 0 ≤ b → b ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 → Integrable (pairMaj γ b) ν → ∀ v v' : L.Hs, PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v → PI.UpqRep.IsKFinHpk (k := k) (r := r) L.σ v' → ∀ (ξ : L.Wp) (ξ' : L.Wq), Integrable (besselIntg L (coefF L v v' ξ ξ') γ) ν := by
   intro H k r L h μG γ μR νR ν hgap hok _ hC
   obtain ⟨hγ, -, -, -, hR, hQ, -⟩ := hC

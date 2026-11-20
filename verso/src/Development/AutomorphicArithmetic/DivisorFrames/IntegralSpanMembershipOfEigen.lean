@@ -10,6 +10,11 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Take `⟨k, s, i, -, -, hsi⟩` from `Module.Finite.exists_comp_eq_id_of_projective R La`. Set `f : La →+ La` to `{ toFun := fun t => s (fun l => (lam (i t l) : R)) map_zero' := by simp [← Pi.zero_def] map_add' := fun x y => by rw [← map_add s]; congr 1; ext l; simp }`. Use `⟨f.toIntLinearMap, fun t => ?_⟩` and prove the remaining obligations. Establish `h2 : s (i t) = t` using `LinearMap.congr_fun hsi t`. Use `conv_rhs => rw [← h2, ← map_nsmul]`.
+
+Express the relevant statement in the definitionally equal form `∑ j, a j • s (fun l => (lam (i (b j • t) l) : R)) = _`. Simplify using `only [← map_smul s, ← map_sum s]`. Use `congr 1`. Use extensionality with `l`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_smul, smul_eq_mul, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply, ← h1, zsmul_eq_mul, mul_comm]`.
+-/
 private theorem exists_higman_linear_map {R La : Type} [CommRing R] [AddCommGroup La] [Module R La] [Module.Finite R La]
     [Module.Projective R La] {n : ℕ} (a b : Fin n → R) (lam : R →+ ℤ) (m : ℕ)
     (h1 : ∀ x : R, ∑ j, lam (b j * x) • a j = (m : R) * x) :
@@ -29,6 +34,13 @@ private theorem exists_higman_linear_map {R La : Type} [CommRing R] [AddCommGrou
   simp only [Finset.sum_apply, Pi.smul_apply, map_smul, smul_eq_mul, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply, ← h1,
     zsmul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `: Module.IsTorsionFree (𝓞 E) La`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r x h => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r = 0`. Conclude with `.inl hr`. Use `right`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {r}))`. Establish `hN : ((Ideal.absNorm (Ideal.span {r}) : ℕ) : ℤ) ≠ 0`. Simplify `hr` using `[Ideal.absNorm_eq_zero_iff]`. Establish `h2 : ((Ideal.absNorm (Ideal.span {r}) : ℕ) : ℤ) • x = 0`. Rewrite using `[natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E), ← hc, mul_smul, h, smul_zero]`.
+
+Conclude with `(smul_eq_zero.1 h2).resolve_left hN`. Establish `: Module.FinitePresentation (𝓞 E) La` using `Module.finitePresentation_of_finite _ _`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 private theorem projective_of_torsion_free_finite (E : Type) [Field E] [NumberField E] (La : Type) [AddCommGroup La] [Module (𝓞 E) La]
     [Module.Finite (𝓞 E) La] [Module.IsTorsionFree ℤ La] : Module.Projective (𝓞 E) La := by
   have : Module.IsTorsionFree (𝓞 E) La := by
@@ -45,6 +57,37 @@ private theorem projective_of_torsion_free_finite (E : Type) [Field E] [NumberFi
   have : Module.FinitePresentation (𝓞 E) La := Module.finitePresentation_of_finite _ _
   exact Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Use `set L := Submodule.span O (Set.range fun a : La => (1 : K) ⊗ₜ[ℤ] a) with hL`. Use `set N := Submodule.span K {u : K ⊗[ℤ] La | ∃ (o : R) (u' : K ⊗[ℤ] La), u = ((LinearMap.lsmul R La o).restrictScalars ℤ).baseChange K u' - σ o • u'} with hN`. Take `⟨A, hA⟩ : ∃ A : R → (K ⊗[ℤ] La →ₗ[K] K ⊗[ℤ] La), A = fun o => ((LinearMap.lsmul R La o).restrictScalars ℤ).baseChange K` from `⟨_, rfl⟩`. Establish `hAt : ∀ o c t, A o (c ⊗ₜ t) = c ⊗ₜ (o • t)` using `fun o c t => by rw [hA]; rfl`. Establish `hyA : ∀ o, A o y = σ o • y` using `fun o => by rw [hA]; exact hy o`.
+
+Establish `hsm : ∀ c ∈ O, ∀ u ∈ L, c • u ∈ L` using `fun c hc u hu => L.smul_mem ⟨c, hc⟩ hu`. Establish `hbc : ∀ g : La →ₗ[ℤ] La, ∀ u ∈ L, g.baseChange K u ∈ L`. Introduce `g u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨t, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨g t, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Express the relevant statement in the definitionally equal form `g.baseChange K ((c : K) • x) ∈ L`. Rewrite using `[map_smul]`. Conclude with `hsm c c.2 _ hx`. Set `P : K ⊗[ℤ] La →ₗ[K] K ⊗[ℤ] La` to `∑ j, σ (b j) • A (a j)`.
+
+Establish `hP : ∀ u, P u = ∑ j, σ (b j) • A (a j) u` using `fun u => by`. Simplify using `only [P, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `hPy : P y = δ • y`. Rewrite using `[hP, ← h3, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hyA, smul_smul, mul_comm]`.
+
+Establish `hPA : ∀ o u, P (A o u) = σ o • P u`. Introduce `o u`. Take `⟨M, hMa, hMb⟩` from `h2 o`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul c t`. Rewrite using `[hP, hP, Finset.smul_sum]`. Simplify using `only [hAt, smul_smul, ← map_mul, hMb, mul_comm (a _) o, hMa, Finset.sum_smul, TensorProduct.tmul_sum, Finset.smul_sum, map_sum, map_zsmul, smul_assoc, TensorProduct.tmul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hF : ∀ u, ∑ j, A (a j) (f.baseChange K (A (b j) u)) = (m : K) • u`. Introduce `u`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, Finset.sum_add_distrib, hx, hy]`. Consider the case `tmul c t`. Simplify using `only [hAt, LinearMap.baseChange_tmul]`.
+
+Rewrite using `[← TensorProduct.tmul_sum, hf, Nat.cast_smul_eq_nsmul, ← natCast_zsmul, TensorProduct.tmul_smul, natCast_zsmul]`. Establish `hPF : P (f.baseChange K y) = (m : K) • y`. Rewrite using `[← hF, hP]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hyA, map_smul, map_smul]`. Establish `hPN : ∀ u, P u - δ • u ∈ N`.
+
+Introduce `u`. Rewrite using `[hP, ← h3, Finset.sum_smul, ← Finset.sum_sub_distrib]`. Use `N.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, ← smul_sub]`. Conclude with `N.smul_mem _ (Submodule.subset_span ⟨a j, u, by rw [hA]⟩)`.
+
+Use `⟨(m : K)⁻¹ • f.baseChange K (δ • y), hsm _ hm _ (hbc f _ hw), ?_⟩` and prove the remaining obligations. Establish `h4` using `N.smul_mem (m : K)⁻¹ (hPN (f.baseChange K y))`. Rewrite `h4` using `[hPF, smul_sub, smul_smul, inv_mul_cancel₀ hm0, one_smul, ← map_smul]`. Then use the resulting hypothesis. Introduce and unpack `⟨z, hz, hyz⟩`. Establish `hker : N ≤ LinearMap.ker P`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨o, u, rfl⟩`. Use `hPA o u` as an intermediate fact. Rewrite `this` using `[hA]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, this, sub_self]`.
+
+Establish `h4 : P y = P z`. Use `hker hyz` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[← hPy, h4, hP]`. Use `L.sum_mem fun j _ => hsm _ (hσ _) _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hA]`. Conclude with `hbc _ _ hz`.
+-/
 private theorem higman_trace_integrality {R K La : Type} [CommRing R] [Field K] (O : Subring K) [AddCommGroup La] [Module R La]
     (σ : R →+* K) (hσ : ∀ o, σ o ∈ O) {n : ℕ} (a b : Fin n → R) (m : ℕ) (hm0 : (m : K) ≠ 0) (hm : (m : K)⁻¹ ∈ O)
     (h2 : ∀ x : R, ∃ M : Fin n → Fin n → ℤ, (∀ j, x * a j = ∑ i, M i j • a i) ∧ ∀ i, x * b i = ∑ j, M i j • b j)
@@ -129,6 +172,9 @@ private theorem higman_trace_integrality {R K La : Type} [CommRing R] [Field K] 
     rw [hA]
     exact hbc _ _ hz
 
+/- English proof (translation)
+Set `v : Valuation K NNReal` to `NormedField.valuation`. Establish `hi : IsIntegral ℤ (σ o)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) o).map σ.toIntAlgHom`. Establish `hi2 : IsIntegral v.integer (σ o)` using `hi.tower_top`. Conclude with `(Valuation.integer.integers v).isIntegral_iff_v_le_one.1 hi2`.
+-/
 private theorem norm_integral_element_le_one {K R : Type} [NormedField K] [IsUltrametricDist K] [CommRing R] [Algebra.IsIntegral ℤ R]
     (σ : R →+* K) (o : R) : ‖σ o‖ ≤ 1 := by
   let v : Valuation K NNReal := NormedField.valuation
@@ -136,6 +182,19 @@ private theorem norm_integral_element_le_one {K R : Type} [NormedField K] [IsUlt
   have hi2 : IsIntegral v.integer (σ o) := hi.tower_top
   exact (Valuation.integer.integers v).isIntegral_iff_v_le_one.1 hi2
 
+/- English proof (translation)
+Introduce `E _ _ _ p hp σ`. Establish `hσi : Function.Injective σ`. Use `(injective_iff_map_eq_zero σ).2 fun r hr => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hr0`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {r}))`.
+
+Establish `hN : (Ideal.absNorm (Ideal.span {r}) : ℕ) ≠ 0`. Simplify `hr0` using `[Ideal.absNorm_eq_zero_iff]`. Establish `h2` using `congrArg σ hc`. Rewrite `h2` using `[map_mul, hr, mul_zero, map_natCast]`. Conclude with `hN (Nat.cast_eq_zero.1 h2.symm)`.
+
+Set `φ : E →+* ℂ_[p]` to `IsFractionRing.lift hσi`. Establish `hφ : ∀ x : 𝓞 E, φ (x : E) = σ x` using `fun x => IsFractionRing.lift_algebraMap hσi x`. Take `⟨d, m, hd, hd0, hpm, hm⟩` from `UpperTheory.WildB.localGen E p hp.out`. Take `⟨n, a, b, lam, h1, h2, h3⟩` from `UpperTheory.WildB.casimir E d m hd hd0 hm`. Establish `hδ : φ (d : E) ≠ 0` using `(map_ne_zero φ).2 (by simpa using hd0)`.
+
+Use `⟨φ (d : E), hδ, UpperTheory.WildB.normGen E p d m hd hpm hm φ, fun La _ _ _ _ y hy => ?_⟩` and prove the remaining obligations. Use `projective_of_torsion_free_finite E La` as an intermediate fact. Take `⟨f, hf⟩` from `exists_higman_linear_map (La := La) a b lam m h1`. Establish `hnm : ‖(m : ℂ_[p])‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) m, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`.
+
+Conclude with `(Nat.Prime.coprime_iff_not_dvd hp.out).2 hpm`. Use `higman_trace_integrality (intO ℂ_[p]) σ (fun o => ?_) a b m ?_ ?_ h2 _ hδ ?_ f hf y hy` and prove the remaining obligations. Conclude with `norm_integral_element_le_one σ o`. Introduce `h`. Rewrite `hnm` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one hnm`. Express the relevant statement in the definitionally equal form `‖(m : ℂ_[p])⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, hnm, inv_one]`. Simplify `h3 ℂ_[p] φ φ` using `only [hφ, if_true]`.
+-/
 theorem UpperTheory.integral_span_membership_of_eigen :
     ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (σ : 𝓞 E →+* ℂ_[p]), ∃ δ : ℂ_[p], δ ≠ 0 ∧ Real.log ‖δ‖ = -(vDiff E p * Real.log p) ∧ ∀ (La : Type) [AddCommGroup La] [Module (𝓞 E) La] [Module.Finite (𝓞 E) La] [Module.IsTorsionFree ℤ La] (y : ℂ_[p] ⊗[ℤ] La), (∀ o : 𝓞 E, ((LinearMap.lsmul (𝓞 E) La o).restrictScalars ℤ).baseChange ℂ_[p] y = σ o • y) → (δ • y ∈ Submodule.span ↥(intO ℂ_[p]) (Set.range fun a : La => (1 : ℂ_[p]) ⊗ₜ[ℤ] a) ↔ ∃ z ∈ Submodule.span ↥(intO ℂ_[p]) (Set.range fun a : La => (1 : ℂ_[p]) ⊗ₜ[ℤ] a), y - z ∈ Submodule.span ℂ_[p] {u : ℂ_[p] ⊗[ℤ] La | ∃ (o : 𝓞 E) (u' : ℂ_[p] ⊗[ℤ] La), u = ((LinearMap.lsmul (𝓞 E) La o).restrictScalars ℤ).baseChange ℂ_[p] u' - σ o • u'}) := by
   intro E _ _ _ p hp σ

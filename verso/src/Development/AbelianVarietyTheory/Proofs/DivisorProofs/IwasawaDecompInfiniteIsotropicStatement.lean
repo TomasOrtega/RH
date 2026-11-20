@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchIwasawaLine.arch_iwasawa_line | exact GlobalTheory.ArchIwasawaLine.arch_iwasawa_line | (intros; apply GlobalTheory.ArchIwasawaLine.arch_iwasawa_line <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_decomp_infinite_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n : ℕ} (W : Spc F E n) (r s : ℕ) (x : Fin n → E), IsCMExt F E σ → W.IsSkew σ B r s → x ≠ 0 →
     form σ W.J x x = 0 → ∀ g ∈ UAt σ W (evI F), ∃ (p : UA σ W.J) (t : (AE F E)ˣ), mat p *ᵥ incV F x = t.1 • incV F x ∧

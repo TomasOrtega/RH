@@ -13,6 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hH : Hpk k r *ᵥ x = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[← JfS.Sym.herm_bvec]`. Conclude with `h _`. Establish `h2` using `(hpkFacts k r).2.1`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem herm_nondeg (x : Fin (2 * r + k + 1) → ℂ) (h : ∀ u, herm (Hpk k r) x u = 0) : x = 0 := by
   have hH : Hpk k r *ᵥ x = 0 := by
     funext i
@@ -22,6 +27,9 @@ theorem herm_nondeg (x : Fin (2 * r + k + 1) → ℂ) (h : ∀ u, herm (Hpk k r)
   calc x = (Hpk k r * Hpk k r) *ᵥ x := by rw [h2, one_mulVec]
     _ = 0 := by rw [← mulVec_mulVec, hH, mulVec_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `LieSplitPf.clm_zero (k := k) (r := r) X (((ContinuousLinearMap.proj i).comp (LieSplitPf.mvL v)).restrictScalars ℝ) (v i) (fun t => by` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.proj_apply, LieSplitPf.mvL_apply]`. Rewrite using `[h t])`. Simplify `this` using `only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.proj_apply, LieSplitPf.mvL_apply, Pi.zero_apply]`.
+-/
 theorem lie_fix {X : B.Mat k r} {v : Fin (2 * r + k + 1) → ℂ}
     (h : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) *ᵥ v = v) : X *ᵥ v = 0 := by
   funext i
@@ -34,6 +42,11 @@ theorem lie_fix {X : B.Mat k r} {v : Fin (2 * r + k + 1) → ℂ}
   simpa only [ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.coe_comp', Function.comp_apply,
     ContinuousLinearMap.proj_apply, LieSplitPf.mvL_apply, Pi.zero_apply] using this
 
+/- English proof (translation)
+Use `⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `LieSplitPf.lieHpk_of (k := k) (r := r) (X := X) (fun t => (hX t).1)` as an intermediate fact. Conclude with `this`. Conclude with `lie_fix (fun t => ((hX t).2.1 a).1)`. Conclude with `lie_fix (fun t => ((hX t).2.1 a).2)`.
+
+Conclude with `lie_fix (fun t => (hX t).2.2)`.
+-/
 theorem lieW_facts {z : Fin (2 * r + k + 1) → ℂ} {X : B.Mat k r} (hX : X ∈ JfS.lieOf (UWset k r z)) :
     B.inLie k r X ∧ (∀ a : Fin r, X *ᵥ bvec (eI k r a) = 0 ∧ X *ᵥ bvec (esI k r a) = 0) ∧ X *ᵥ z = 0 := by
   refine ⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩
@@ -48,6 +61,11 @@ def psiW (k r : ℕ) : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] (Fin (k + 1) �
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Conclude with `hw i hi`. Establish `e : psiW k r w ⟨i.val - r, by omega⟩ = w i` using `by show w _ = w i`. Use `congr 1`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show r + (i.val - r) = i.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← e, h]`. Both sides reduce to the same expression.
+-/
 theorem psiW_inj {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) (h : psiW k r w = 0) : w = 0 := by
   funext i
   by_cases hi : i.val < r ∨ r + k < i.val
@@ -61,12 +79,38 @@ theorem psiW_inj {w : Fin (2 * r + k + 1) → ℂ} (hw : inWb k r w) (h : psiW k
     rw [← e, h]
     rfl
 
+/- English proof (translation)
+Introduce `p hp`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero (fun i hi => h i hi p hp)`.
+-/
 theorem inWb_sum {ι : Type*} (s : Finset ι) (f : ι → Fin (2 * r + k + 1) → ℂ) (h : ∀ i ∈ s, inWb k r (f i)) :
     inWb k r (∑ i ∈ s, f i) := by
   intro p hp
   rw [Finset.sum_apply]
   exact Finset.sum_eq_zero (fun i hi => h i hi p hp)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy0`. Establish `hyy : herm (Hpk k r) y y ≠ 0`. Introduce `h`. Conclude with `hy0 (JfS.Sym.wb_definite hz hT hy hyz (by rw [h]; simp))`. Establish `hzz` using `JfS.Sym.herm_self_ne_zero hT`.
+
+Establish `hBz : ∀ b, herm (Hpk k r) (Bs b) z = 0` using `fun b => hB.2.2 b z (List.mem_singleton_self z)`. Set `f : Option (Option (Fin k)) → Fin (2 * r + k + 1) → ℂ` to `fun o => match o with`. Consider the case `none => z`. Consider the case `some none => y`. Consider the case `some (some b) => Bs b`.
+
+Establish `hfW : ∀ o, inWb k r (f o)`. Introduce `o`. Break down `o with _ | _ | b` into its components or cases. Conclude with `hz`. Conclude with `hy`.
+
+Conclude with `hB.1 b`. Establish `hfo : ∀ o o', o ≠ o' → herm (Hpk k r) (f o) (f o') = 0`. Introduce `o o' hne`. Apply the tactic sequence `rcases o with _ | _ | b <;> rcases o' with _ | _ | b'`. Conclude with `absurd rfl hne`.
+
+Use `show herm _ z y = 0`. Rewrite using `[JfS.Sym.herm_swap, hyz, star_zero]`. Use `show herm _ z (Bs b') = 0`. Rewrite using `[JfS.Sym.herm_swap, hBz, star_zero]`. Conclude with `hyz`.
+
+Conclude with `absurd rfl hne`. Conclude with `hyB b'`. Conclude with `hBz b`. Use `show herm _ (Bs b) y = 0`. Rewrite using `[JfS.Sym.herm_swap, hyB, star_zero]`.
+
+Use `show herm _ (Bs b) (Bs b') = 0`. Rewrite using `[hB.2.1 b b', if_neg (fun e => hne (by rw [e]))]`. Establish `hfs : ∀ o, herm (Hpk k r) (f o) (f o) ≠ 0`. Introduce `o`. Break down `o with _ | _ | b` into its components or cases.
+
+Conclude with `hzz`. Conclude with `hyy`. Use `show herm _ (Bs b) (Bs b) ≠ 0`. Rewrite using `[hB.2.1 b b, if_pos rfl]`. Conclude with `one_ne_zero`.
+
+Establish `hli : LinearIndependent ℂ (fun o => psiW k r (f o))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg o`. Establish `hsum : (∑ o', g o' • f o') = 0`. Apply `psiW_inj (inWb_sum _ _ (fun o' _ => JfS.Sym.inWb_smul _ (hfW o')))` to reduce the goal to its premises.
+
+Rewrite using `[map_sum]`. Simplify `hg` using `only [map_smul]`. Use `congrArg (fun x => herm (Hpk k r) x (f o)) hsum` as an intermediate fact. Simplify using `only [JfS.Sym.herm_sum_left, JfS.Sym.herm_smul_left, JfS.Sym.herm_zero_left] at this`. Rewrite `this` using `[Finset.sum_eq_single o (fun o' _ hne => by rw [hfo o' o hne, mul_zero]) (fun h => absurd (Finset.mem_univ o) h)]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right (hfs o)`. Establish `hc` using `hli.fintype_card_le_finrank`. Simplify using `only [Fintype.card_option, Fintype.card_fin, Module.finrank_fin_fun] at hc`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem perp_zero {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {Bs : Fin k → Fin (2 * r + k + 1) → ℂ} (hB : Q.IsFrameOf k r [z] Bs)
     (y : Fin (2 * r + k + 1) → ℂ) (hy : inWb k r y) (hyz : herm (Hpk k r) y z = 0)
@@ -135,6 +179,17 @@ variable {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
   {X : B.Mat k r} (hX : X ∈ JfS.lieOf (UWset k r z))
 include hz hT hB hX
 
+/- English proof (translation)
+Take `⟨hL, hE, hXz⟩` from `lieW_facts hX`. Establish `hBz : ∀ b, herm (Hpk k r) (Bs b) z = 0` using `fun b => hB.2.2 b z (List.mem_singleton_self z)`. Establish `hXw : inWb k r (X *ᵥ w)`. Introduce `i hi`. Break down `hi with hi | hi` into its components or cases.
+
+Establish `e : i = eI k r ⟨i.val, hi⟩` using `Fin.ext rfl`. Rewrite using `[e, ← JfS.Sym.herm_es (X *ᵥ w) ⟨i.val, hi⟩, JfS.Sym.herm_skew hL, (hE _).2, JfS.Sym.herm_zero_right, neg_zero]`. Establish `e : i = esI k r ⟨2 * r + k - i.val, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [esI]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e, ← JfS.Sym.herm_e (X *ᵥ w) ⟨2 * r + k - i.val, by omega⟩, JfS.Sym.herm_skew hL, (hE _).1, JfS.Sym.herm_zero_right, neg_zero]`. Use `set q := X *ᵥ w - ∑ a, herm (Hpk k r) (X *ᵥ w) (Bs a) • Bs a with hq`. Establish `hqW : inWb k r q` using `JfS.Sym.inWb_sub hXw (inWb_sum _ _ (fun a _ => JfS.Sym.inWb_smul _ (hB.1 a)))`. Establish `h1 : herm (Hpk k r) (X *ᵥ w) z = 0`.
+
+Rewrite using `[JfS.Sym.herm_skew hL, hXz, JfS.Sym.herm_zero_right, neg_zero]`. Establish `hqz : herm (Hpk k r) q z = 0`. Rewrite using `[hq, JfS.Sym.herm_sub_left, h1, JfS.Sym.herm_sum_left]`. Simplify using `[JfS.Sym.herm_smul_left, hBz]`. Establish `hqB : ∀ b, herm (Hpk k r) q (Bs b) = 0`.
+
+Introduce `b`. Rewrite using `[hq, JfS.Sym.herm_sub_left, JfS.Sym.herm_sum_left]`. Simplify using `[JfS.Sym.herm_smul_left, hB.2.1]`. Conclude with `sub_eq_zero.1 (perp_zero hz hT hB q hqW hqz hqB)`.
+-/
 theorem col_in (w : Fin (2 * r + k + 1) → ℂ) :
     X *ᵥ w = ∑ a, herm (Hpk k r) (X *ᵥ w) (Bs a) • Bs a := by
   obtain ⟨hL, hE, hXz⟩ := lieW_facts hX
@@ -163,6 +218,15 @@ theorem col_in (w : Fin (2 * r + k + 1) → ℂ) :
     simp [JfS.Sym.herm_smul_left, hB.2.1]
   exact sub_eq_zero.1 (perp_zero hz hT hB q hqW hqz hqB)
 
+/- English proof (translation)
+Take `⟨hL, -, -⟩` from `lieW_facts hX`. Use `set y := v - ∑ b, herm (Hpk k r) v (Bs b) • Bs b with hy`. Establish `hyB : ∀ a, herm (Hpk k r) y (Bs a) = 0`. Introduce `a`. Rewrite using `[hy, JfS.Sym.herm_sub_left, JfS.Sym.herm_sum_left]`.
+
+Simplify using `[JfS.Sym.herm_smul_left, hB.2.1]`. Establish `hXy : X *ᵥ y = 0`. Apply `herm_nondeg` to reduce the goal to its premises. Introduce `u`. Rewrite using `[JfS.Sym.herm_skew hL, col_in hz hT hB hX u, JfS.Sym.herm_sum_right]`.
+
+Simplify using `[JfS.Sym.herm_smul_right, hyB]`. Establish `e : X *ᵥ v = X *ᵥ y + X *ᵥ (∑ b, herm (Hpk k r) v (Bs b) • Bs b)`. Rewrite using `[← mulVec_add, hy, sub_add_cancel]`. Rewrite using `[e, hXy, zero_add, JfS.Sym.mulVec_sum']`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[mulVec_smul]`.
+-/
 theorem row_in (v : Fin (2 * r + k + 1) → ℂ) :
     X *ᵥ v = ∑ b, herm (Hpk k r) v (Bs b) • (X *ᵥ Bs b) := by
   obtain ⟨hL, -, -⟩ := lieW_facts hX
@@ -184,17 +248,28 @@ theorem row_in (v : Fin (2 * r + k + 1) → ℂ) :
 
 end lieW
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, add_mulVec, ih]`.
+-/
 theorem sum_mulVec' {ι : Type*} (s : Finset ι) (M : ι → B.Mat k r) (v : Fin (2 * r + k + 1) → ℂ) :
     (∑ i ∈ s, M i) *ᵥ v = ∑ i ∈ s, M i *ᵥ v := by
   induction s using Finset.cons_induction with
   | empty => simp
   | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, add_mulVec, ih]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem smul_mulVec'' (c : ℂ) (M : B.Mat k r) (v : Fin (2 * r + k + 1) → ℂ) :
     (c • M) *ᵥ v = c • (M *ᵥ v) := by
   funext i
   simp only [mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hb : star (Hpk k r *ᵥ b) = star b ᵥ* Hpk k r`. Rewrite using `[star_mulVec, JfS.Sym.hpk_conjT]`. Rewrite using `[hb, herm, dotProduct_mulVec]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, vecMulVec_apply, dotProduct, mulVec]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_vmv (ξ : B.Mat k r) (a b : Fin (2 * r + k + 1) → ℂ) :
     Matrix.trace (ξ * vecMulVec a (star (Hpk k r *ᵥ b))) = herm (Hpk k r) (ξ *ᵥ a) b := by
   have hb : star (Hpk k r *ᵥ b) = star b ᵥ* Hpk k r := by
@@ -206,6 +281,11 @@ theorem trace_vmv (ξ : B.Mat k r) (a b : Fin (2 * r + k + 1) → ℂ) :
   refine Finset.sum_congr rfl (fun j _ => ?_)
   ring
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `only [Q.unitB, Matrix.of_apply, vecMulVec_apply]`. Use `congr 1`. Rewrite using `[JfS.Sym.herm_bvec_left]`. Simplify using `only [Pi.star_apply, mulVec, dotProduct, star_sum, star_mul', JfS.Sym.hpk_star]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[JfS.Sym.hpk_symm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unitB_eq (Bs : Fin k → Fin (2 * r + k + 1) → ℂ) (a b : Fin k) :
     Q.unitB (Hpk k r) Bs a b = vecMulVec (Bs a) (star (Hpk k r *ᵥ Bs b)) := by
   ext p q
@@ -217,11 +297,19 @@ theorem unitB_eq (Bs : Fin k → Fin (2 * r + k + 1) → ℂ) (a b : Fin k) :
   rw [JfS.Sym.hpk_symm]
   ring
 
+/- English proof (translation)
+Use `show Matrix.trace (Ξ * Q.unitB (Hpk k r) Bs a b) = _`. Rewrite using `[unitB_eq, trace_vmv]`.
+-/
 theorem cmp_eq (Ξ : B.Mat k r) (Bs : Fin k → Fin (2 * r + k + 1) → ℂ) (a b : Fin k) :
     cmp Ξ Bs a b = herm (Hpk k r) (Ξ *ᵥ Bs a) (Bs b) := by
   show Matrix.trace (Ξ * Q.unitB (Hpk k r) Bs a b) = _
   rw [unitB_eq, trace_vmv]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : 0 < 2 ^ n` using `by positivity`. Rewrite using `[pow_succ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
   induction n with
   | zero => simp
@@ -230,6 +318,13 @@ theorem le_two_pow (n : ℕ) : n ≤ 2 ^ n := by
     rw [pow_succ]
     omega
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, M ^ (2 ^ j) = 0 → M = 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro h`. Simplify using `using h`.
+
+Consider the case `succ j ih`. Introduce `h`. Apply `ih` to reduce the goal to its premises. Establish `hc : (M ^ 2 ^ j)ᴴ * M ^ 2 ^ j = 0`. Rewrite using `[Matrix.conjTranspose_pow, hs, neg_pow, mul_assoc, ← pow_add, ← two_mul, ← pow_succ', h, mul_zero]`.
+
+Conclude with `Matrix.conjTranspose_mul_self_eq_zero.1 hc`. Conclude with `key N (pow_eq_zero_of_le (le_two_pow N) hN)`.
+-/
 theorem skew_nil_zero {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (hs : Mᴴ = -M) (N : ℕ) (hN : M ^ N = 0) :
     M = 0 := by
   have key : ∀ j : ℕ, M ^ (2 ^ j) = 0 → M = 0 := by
@@ -244,6 +339,15 @@ theorem skew_nil_zero {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (hs : Mᴴ = -M
       exact Matrix.conjTranspose_mul_self_eq_zero.1 hc
   exact key N (pow_eq_zero_of_le (le_two_pow N) hN)
 
+/- English proof (translation)
+Establish `hdeg : M.charpoly.natDegree = m`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hcp : M.charpoly = Polynomial.X ^ m`. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_X_pow]`.
+
+Break down `lt_trichotomy n m with hn | hn | hn` into its components or cases. Rewrite using `[if_neg hn.ne]`. Use `h (m - n) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[show m - (m - n) = n by omega]`. Then use the resulting hypothesis. Rewrite using `[if_pos hn, hn]`.
+
+Use `M.charpoly_monic.leadingCoeff` as an intermediate fact. Rewrite `this` using `[Polynomial.leadingCoeff, hdeg]`. Then use the resulting hypothesis. Rewrite using `[if_neg hn.ne']`. Apply `Polynomial.coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Rewrite using `[hdeg]`.
+
+Conclude with `hn`. Use `Matrix.aeval_self_charpoly M` as an intermediate fact. Rewrite `this` using `[hcp, map_pow, Polynomial.aeval_X]`. Then use the resulting hypothesis.
+-/
 theorem cp_pow {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ)
     (h : ∀ j, 1 ≤ j → j ≤ m → M.charpoly.coeff (m - j) = 0) : M ^ m = 0 := by
   have hdeg : M.charpoly.natDegree = m := by
@@ -265,6 +369,19 @@ theorem cp_pow {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ)
   have := Matrix.aeval_self_charpoly M
   rwa [hcp, map_pow, Polynomial.aeval_X] at this
 
+/- English proof (translation)
+Introduce `k r z Bs hz hT hB Ξ hΞ hcp X hX`. Establish `hnil` using `cp_pow (cmp Ξ Bs) hcp`. Establish `hskew : (cmp Ξ Bs)ᴴ = -(cmp Ξ Bs)`. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.neg_apply, cmp_eq, cmp_eq, JfS.Sym.herm_skew hΞ (Bs a) (Bs b), JfS.Sym.herm_swap (Bs a), neg_neg]`.
+
+Establish `hzero` using `skew_nil_zero _ hskew k hnil`. Establish `hc : ∀ a b, herm (Hpk k r) (Ξ *ᵥ Bs a) (Bs b) = 0`. Introduce `a b`. Rewrite using `[← cmp_eq, hzero]`. Both sides reduce to the same expression.
+
+Use `set Y : B.Mat k r := ∑ a, ∑ b, herm (Hpk k r) (X *ᵥ Bs b) (Bs a) • vecMulVec (Bs a) (star (Hpk k r *ᵥ Bs b)) with hY`. Establish `hv : ∀ v, X *ᵥ v = Y *ᵥ v`. Introduce `v`. Rewrite using `[row_in hz hT hB hX v, hY]`. Simplify using `only [sum_mulVec', smul_mulVec'', JfS.Sym.vmv_mulVec, JfS.Sym.star_hpk_dot]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Use `conv_lhs => rw [col_in hz hT hB hX (Bs b)]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, smul_smul, mul_comm (herm (Hpk k r) v (Bs b))]`. Establish `hXY : X = Y`. Use extensionality with `i j`. Rewrite using `[JfS.Sym.mat_eq_mulVec_bvec X i j, JfS.Sym.mat_eq_mulVec_bvec Y i j, hv]`. Establish `htr : Matrix.trace (Ξ * X) = 0`.
+
+Rewrite using `[hXY, hY]`. Simplify using `only [Finset.mul_sum, Matrix.trace_sum, Matrix.mul_smul, Matrix.trace_smul, trace_vmv, hc, smul_zero, Finset.sum_const_zero]`. Rewrite using `[htr, Complex.zero_re]`.
+-/
 theorem compact_zero_holds : CmpZero := by
   intro k r z Bs hz hT hB Ξ hΞ hcp X hX
   have hnil := cp_pow (cmp Ξ Bs) hcp
@@ -304,6 +421,9 @@ end Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity.CmpZeroPf
 
 namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
+/- English proof (translation)
+The claim follows from `CmpZeroPf.compact_zero_holds`.
+-/
 theorem compact_zero_holds : CmpZero := CmpZeroPf.compact_zero_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity

@@ -20,6 +20,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.PositiveAmple
 
+/- English proof (translation)
+Use `(valAt'_units_prod x h _ _).trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Use `(valAt'_units_zpow x h _ _).trans (congrArg (· ^ ε k) ?_)` and prove the remaining obligations. Conclude with `(valAt'_map x _ _ h).trans (valAt'_comp x (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)).val)`.
+-/
 theorem valAt'_g_linComb {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (j j' : K → L.ι) (x : Sp ℂ ⟶ Y) (h : ⊤ ≤ x ⁻¹ᵁ ((LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j')) :
     valAt' x _ ((LB.LinComb L φ ε).g j j').val =
@@ -28,12 +31,18 @@ theorem valAt'_g_linComb {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (�
   refine (valAt'_units_zpow x h _ _).trans (congrArg (· ^ ε k) ?_)
   exact (valAt'_map x _ _ h).trans (valAt'_comp x (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)).val)
 
+/- English proof (translation)
+Simplify using `only [top_le_preimage_iff_mem]`. Conclude with `Set.mem_iInter`.
+-/
 theorem top_le_preimage_linComb {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (j : K → L.ι) (x : Sp ℂ ⟶ Y) :
     ⊤ ≤ x ⁻¹ᵁ (LB.LinComb L φ ε).U j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
   simp only [top_le_preimage_iff_mem]
   exact Set.mem_iInter
 
+/- English proof (translation)
+The claim follows from `eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom X inferInstance inferInstance U a b fun x hx => by obtain ⟨z, rfl⟩ := hex x exact h z hx`.
+-/
 theorem ext_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom]
     {Z : Type} (ex : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (hex : Function.Surjective ex) (U : X.left.Opens)
     (a b : Γ(X.left, U))
@@ -42,6 +51,9 @@ theorem ext_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteTyp
     obtain ⟨z, rfl⟩ := hex x
     exact h z hx
 
+/- English proof (translation)
+The claim follows from `ThetaAmple.opens_le_of_points X.hom fun x hx => by obtain ⟨z, hz⟩ := hex (Over.homMk x hx) have e : (ex z).left = x := by rw [hz]; rfl exact e ▸ H z`.
+-/
 theorem le_of_values {X : Over (Sp ℂ)} [LocallyOfFiniteType X.hom]
     {Z : Type} (ex : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (hex : Function.Surjective ex) (U V : X.left.Opens)
     (H : ∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ U → ⊤ ≤ (ex z).left ⁻¹ᵁ V) : U ≤ V :=
@@ -50,6 +62,13 @@ theorem le_of_values {X : Over (Sp ℂ)} [LocallyOfFiniteType X.hom]
     have e : (ex z).left = x := by rw [hz]; rfl
     exact e ▸ H z
 
+/- English proof (translation)
+Use `choose W φ hle hz hφ using fun z : {z // ⊤ ≤ (ex z).left ⁻¹ᵁ U} => hreg z.1 z.2`. Establish `cov : U ≤ iSup W` using `le_of_values ex hex _ _ fun z h => top_le_preimage_mono _ (le_iSup W ⟨z, h⟩) (hz ⟨z, h⟩)`. Take `⟨a, ha, -⟩` from `X.left.sheaf.existsUnique_gluing' W U (fun z => homOfLE (hle z)) cov φ (by`. Introduce `p q`. Use `ext_of_values ex hex _ _ _ fun z h => ?_` and prove the remaining obligations.
+
+Take `⟨hp, hq⟩` from `(top_le_preimage_inf (ex z).left _ _).1 h`. Use `(valAt'_map (ex z).left _ (φ p) h).trans (Eq.trans ?_ (valAt'_map (ex z).left _ (φ q) h).symm)` and prove the remaining obligations. Rewrite using `[hφ p z hp, hφ q z hq])`. Use `⟨a, fun z h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ ⟨z, h⟩ z (hz ⟨z, h⟩), ← ha ⟨z, h⟩]`.
+
+Conclude with `(valAt'_map (ex z).left _ a (hz ⟨z, h⟩)).symm`.
+-/
 theorem exists_fn_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom]
     {Z : Type} (ex : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (hex : Function.Surjective ex) (U : X.left.Opens) (v : Z → ℂ)
     (hreg : ∀ z₀, ⊤ ≤ (ex z₀).left ⁻¹ᵁ U → ∃ (W : X.left.Opens) (φ : Γ(X.left, W)), W ≤ U ∧
@@ -68,6 +87,9 @@ theorem exists_fn_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFin
   rw [← hφ ⟨z, h⟩ z (hz ⟨z, h⟩), ← ha ⟨z, h⟩]
   exact (valAt'_map (ex z).left _ a (hz ⟨z, h⟩)).symm
 
+/- English proof (translation)
+Use `choose a ha using fun i => exists_fn_of_values ex hex (M.U i) (v i) (hreg i)`. Use `⟨⟨a, fun i j => ext_of_values ex hex _ _ _ fun z h => ?_⟩, ha⟩` and prove the remaining obligations. Take `⟨hi, hj⟩` from `(top_le_preimage_inf _ _ _).1 h`. Rewrite using `[valAt'_mul, valAt'_map _ _ _ h, valAt'_map _ _ _ h, ha i z hi, ha j z hj]`. Conclude with `hv i j z h`.
+-/
 theorem exists_sec_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFiniteType X.hom] {M : LB X.left}
     {Z : Type} (ex : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (hex : Function.Surjective ex) (v : M.ι → Z → ℂ)
     (hv : ∀ i j z, ⊤ ≤ (ex z).left ⁻¹ᵁ (M.U i ⊓ M.U j) →
@@ -83,6 +105,25 @@ theorem exists_sec_of_values {X : Over (Sp ℂ)} [IsReduced X.left] [LocallyOfFi
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
+/- English proof (translation)
+Use `set M := LB.LinComb L (K := Fin 2) ![𝟙 A.left, f.left] ![(κ : ℤ), -1] with hM`. Establish `hFl : ∀ z, (u.ex z).left ≫ f.left = (u.ex (F z)).left` using `fun z => by rw [hF]; rfl`. Establish `ch : ∀ (J : (lbPow M N).ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow M N).U J ↔ ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U (J PUnit.unit 0) ∧ ⊤ ≤ (u.ex (F z)).left ⁻¹ᵁ L.U (J PUnit.unit 1)` using `fun J z => by`. Rewrite using `[Cartier.lbPow_U M N J, ← hFl]`. Conclude with `(top_le_preimage_linComb L _ _ _ _).trans Fin.forall_fin_two`.
+
+Take `⟨r, hr⟩` from `exists_sec_of_values (M := lbPow M N) u.ex u.ex_onto (fun J z => ψ z * (u.fr (J PUnit.unit 0) z ^ κ / u.fr (J PUnit.unit 1) (F z)) ^ N) (fun J J' z h => by`. Take `⟨h₁, h₂⟩` from `(top_le_preimage_inf _ _ _).1 h`. Establish `a₀` using `(top_le_preimage_inf _ _ _).2 ⟨((ch J z).1 h₁).1, ((ch J' z).1 h₂).1⟩`. Establish `a₁` using `(top_le_preimage_inf _ _ _).2 ⟨((ch J z).1 h₁).2, ((ch J' z).1 h₂).2⟩`. Establish `e` using `valAt'_g_linComb L ![𝟙 A.left, f.left] ![(κ : ℤ), -1] (J PUnit.unit) (J' PUnit.unit) (u.ex z).left ((top_le_preimage_inf _ _ _).2 ⟨Cartier.lbPow_U M N J ▸ h₁, Cartier.lbPow_U M N J' ▸ h₂⟩)`.
+
+Rewrite using `[valAt'_g_linComb M _ _ J J' _ h, Fintype.prod_unique, Category.comp_id]`. Use `erw [e]`. Rewrite using `[Fin.prod_univ_two, u.fr_compat _ _ _ a₀, u.fr_compat _ _ _ a₁]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, hFl, zpow_natCast, zpow_neg, zpow_one]`. Use the proof step `ring) (fun J z₀ h₀ => by`.
+
+Take `⟨i, hi⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u.ex (F z₀)).left _ hs`. Establish `l₀ : (lbPow M N).U J ≤ (lbPow L (κ * N)).U fun _ => J PUnit.unit 0`. Rewrite using `[Cartier.lbPow_U, Cartier.lbPow_U M N J]`. Conclude with `LB.wchart_le L ![𝟙 A.left, f.left] (J PUnit.unit) 0`. Establish `l₁ : (lbPow M N).U J ≤ f.left ⁻¹ᵁ (lbPow L N).U fun _ => J PUnit.unit 1`.
+
+Rewrite using `[Cartier.lbPow_U, Cartier.lbPow_U M N J]`. Conclude with `LB.wchart_le L ![𝟙 A.left, f.left] (J PUnit.unit) 1`. Establish `vb : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow M N).U J → valAt' (u.ex z).left _ ((f.left.appLE _ _ l₁).hom ((s i).f _)) = θ i (F z) * u.fr (J PUnit.unit 1) (F z) ^ N` using `fun z hz => by`. Rewrite using `[valAt'_appLE _ _ _ _ _ _ hz, hFl]`. Conclude with `hθ i _ _ (by rw [Cartier.lbPow_U]; exact ((ch J z).1 hz).2)`.
+
+Take `⟨φ, hφ⟩` from `ThetaQuotient.exists_div_basicOpen (resG _ l₀ ((t i).f _)) ((f.left.appLE _ _ l₁).hom ((s i).f _))`. Use `⟨_, φ, Scheme.basicOpen_le _ _, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[top_le_preimage_basicOpen_iff, vb z₀ h₀]`. Conclude with `mul_ne_zero ((LatticeHom.le_preimage_nonzeroLocus_iff u hL (hθ i) _).1 hi) (pow_ne_zero _ (u.fr_ne _ _ ((ch J z₀).1 h₀).2))`. Establish `hz'` using `top_le_preimage_mono _ (Scheme.basicOpen_le _ _) hz`.
+
+Establish `hb` using `(top_le_preimage_basicOpen_iff _ _ _).1 hz`. Rewrite `hb` using `[vb z hz']`. Rewrite using `[hφ _ hz, vb z hz', valAt'_res _ _ _ hz', ht i _ z (top_le_preimage_mono _ l₀ hz'), div_pow, ← pow_mul, _root_.mul_assoc, mul_div_mul_left _ _ (left_ne_zero_of_mul hb), mul_div_assoc])`. Use `⟨r, fun z => (ThetaAmple.top_le_preimage_iSup _ _).trans ⟨fun ⟨J, hJ⟩ => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(top_le_preimage_basicOpen_iff _ _ _).1 hJ`.
+
+Rewrite `h1` using `[hr J z (top_le_preimage_of_valAt'_ne_zero _ h1)]`. Conclude with `left_ne_zero_of_mul h1`. Take `⟨i, hi⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u.ex z).left _ hL.cover`. Take `⟨j, hj⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u.ex (F z)).left _ hL.cover`. Use `⟨fun _ => ![i, j], ?_⟩` and prove the remaining obligations.
+
+Use `(top_le_preimage_basicOpen_iff _ _ _).2 ((hr (fun _ => ![i, j]) z ((ch (fun _ => ![i, j]) z).2 ⟨hi, hj⟩)).trans_ne ?_)` and prove the remaining obligations. Conclude with `mul_ne_zero h (pow_ne_zero _ (div_ne_zero (pow_ne_zero _ (u.fr_ne _ _ hi)) (u.fr_ne _ _ hj)))`.
+-/
 theorem exists_sec_locus [IsReduced A.left] [LocallyOfFiniteType A.hom] (u : HolUnif A L g) (hL : L.IsLB)
     (f : A ⟶ A) (F : (Fin g → ℂ) → (Fin g → ℂ)) (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) (κ N : ℕ) {I : Type}
     (s : I → (lbPow L N).Sec) (hs : ⨆ i, Out.nonzeroLocus (s i) = ⊤) (θ : I → (Fin g → ℂ) → ℂ)
@@ -144,6 +185,33 @@ theorem exists_sec_locus [IsReduced A.left] [LocallyOfFiniteType A.hom] (u : Hol
 
 open Complex Matrix LatticeHom in
 
+/- English proof (translation)
+Take `⟨K, hK, hKF⟩` from `exists_hermForm_pull h.1 F`. Establish `hform : ∀ (c d : ℂ) z w, hermForm (c • Hm - d • K) z w = c * hermForm Hm z w - d * hermForm Hm (F z) (F w)` using `fun c d z w => by`. Rewrite using `[← hKF]`. Simplify using `only [hermForm, sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Establish `hre : ∀ z, (hermForm ((κ : ℂ) • Hm - (1 : ℂ) • K) z z).re = κ * (hermForm Hm z z).re - (hermForm Hm (F z) (F z)).re` using `fun z => by`.
+
+Rewrite using `[hform]`. Simplify using `only [sub_re, mul_re, natCast_re, natCast_im, zero_mul, sub_zero, _root_.one_mul]`. Establish `hp : ∀ z, z ≠ 0 → 0 < (hermForm ((κ : ℂ) • Hm - (1 : ℂ) • K) z z).re` using `fun z hz => by`. Rewrite using `[hre]`. Conclude with `sub_pos.2 (hpos z hz)`.
+
+Take `⟨ρ, hρ⟩` from `ThetaLarge.exists_theta_apply_ne_zero g u.Λ u.discrete u.full _ hp`. Take `⟨C, hC⟩` from `exists_le_mul_of_homogeneous _ _ (continuous_re_hermForm _) (continuous_re_hermForm Hm) hp (re_hermForm_real_smul _) (re_hermForm_real_smul Hm)`. Take `⟨N₀, hN₀⟩` from `exists_nat_ge (ρ + a * C)`. Set `φ : u.Λ → u.Λ` to `fun l => ⟨F l, hF l l.2⟩`. Establish `hφ : ∀ l m, φ (l + m) = φ l + φ m` using `fun l m => Subtype.ext (map_add F _ _)`.
+
+Establish `hχ : ∀ l, χ l ≠ 0` using `fun l h0 => by simpa [h0] using h.2.2.1 l`. Use `⟨N₀, fun N hN z₀ => ?_⟩` and prove the remaining obligations. Establish `hform' : ∀ z w, z ⬝ᵥ (((κ * N : ℕ) - a : ℂ) • Hm - (N : ℂ) • K).mulVec (star w) = ((κ * N : ℕ) - a : ℂ) * hermForm Hm z w - N * hermForm Hm (F z) (F w)` using `hform _ _`. Use `(hρ (((κ * N : ℕ) - a : ℂ) • Hm - (N : ℂ) • K) (fun l => χ l ^ (κ * N) / (χ l ^ a * χ (φ l) ^ N)) ((h.1.smul ((IsSelfAdjoint.natCast _).sub (IsSelfAdjoint.natCast _))).sub (hK.smul (IsSelfAdjoint.natCast N))) (fun z => ?_) (fun l => ?_) (fun l m => ?_) z₀).elim ?_` and prove the remaining obligations. Use `rotate_right`.
+
+Introduce and unpack `G ⟨hGd, hG0, hG⟩`. Use `⟨G, hG0, fun θ θ₁ hθ hθ₁ => ⟨?_, fun l z => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hθ.1.comp F.toContinuousLinearMap.differentiable).mul (hθ₁.1.mul hGd)`. Establish `h1` using `hθ.2 (φ l) (F z)`. Establish `h2` using `hχ (φ l)`.
+
+Establish `h3` using `hχ l`. Establish `he : cexp (Real.pi * hermForm Hm (F z) (F l) + Real.pi / 2 * hermForm Hm (F l) (F l)) ^ N * cexp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) ^ a * cexp (Real.pi * (((κ * N : ℕ) - a : ℂ) * hermForm Hm z l - N * hermForm Hm (F z) (F l)) + Real.pi / 2 * (((κ * N : ℕ) …`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `θ (F z + F l) = (_ * cexp (Real.pi * hermForm Hm (F z) (F l) + Real.pi / 2 * hermForm Hm (F l) (F l))) ^ N * _ at h1`. Express the relevant statement in the definitionally equal form `θ (F (z + l)) * (θ₁ (z + l) * G (z + l)) = _ * (θ (F z) * (θ₁ z * G z))`. Rewrite using `[map_add, h1, hθ₁.2, hG, hform', hform', mul_pow, mul_pow, mul_pow, ← he]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hform']`.
+
+Express the relevant statement in the definitionally equal form `ρ * (hermForm _ z z).re ≤ _`. Establish `h0 : 0 ≤ (hermForm ((κ : ℂ) • Hm - (1 : ℂ) • K) z z).re`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz, hermForm]`. Conclude with `(hp z hz).le`.
+
+Establish `h1` using `mul_le_mul_of_nonneg_left (hC z) (Nat.cast_nonneg (α := ℝ) a)`. Establish `h2` using `mul_le_mul_of_nonneg_right (hN₀.trans (Nat.cast_le.2 hN)) h0`. Simplify using `only [sub_re, mul_re, sub_im, natCast_re, natCast_im, zero_mul, sub_zero]`. Rewrite `h1`, `h2`, the goal using `[hre]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [norm_div, norm_mul, norm_pow, h.2.2.1, one_pow, div_one, _root_.mul_one]`. Establish `h2` using `hχ (φ l)`. Establish `h3` using `hχ (φ m)`. Establish `h4` using `hχ l`.
+
+Establish `h5` using `hχ m`. Establish `he : cexp (Real.pi * I * (hermForm Hm l m).im) ^ (κ * N) = cexp (Real.pi * I * (((κ * N : ℕ) - a : ℂ) * hermForm Hm l m - N * hermForm Hm (F l) (F m)).im) * cexp (Real.pi * I * (hermForm Hm l m).im) ^ a * cexp (Real.pi * I * (hermForm Hm (φ l) (φ m)).im) ^ N`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [φ, sub_im, sub_re, mul_im, natCast_re, natCast_im, zero_mul, add_zero, sub_zero]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `Complex.exp_ne_zero (Real.pi * I * (hermForm Hm (φ l) (φ m)).im)`. Establish `h7` using `Complex.exp_ne_zero (Real.pi * I * (hermForm Hm l m).im)`. Rewrite using `[hφ, semicharacter_add u hL h, semicharacter_add u hL h, hform']`.
+
+Simplify using `only [mul_pow]`. Rewrite using `[he]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_complementary (u : HolUnif A L g) (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hF : ∀ l ∈ u.Λ, F l ∈ u.Λ) (κ : ℕ)
     (hpos : ∀ z, z ≠ 0 → (hermForm Hm (F z) (F z)).re < κ * (hermForm Hm z z).re) (a : ℕ) :
@@ -226,6 +294,19 @@ theorem exists_complementary (u : HolUnif A L g) (hL : L.IsLB) {Hm : Matrix (Fin
     rw [he]
     field_simp
 
+/- English proof (translation)
+Establish `hsm` using `P.isAb.smooth`. Establish `: IsReduced P.A.left` using `isReduced_of_smooth_complex _ P.A.hom hsm`. Establish `hM` using `LB.isLB_linComb P.isLB (K := Fin 2) ![𝟙 P.A.left, f.left] ![(κ : ℤ), -1]`. Establish `hL` using `isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample`. Establish `hΛ : ∀ l ∈ u.Λ, F l ∈ u.Λ` using `fun l hl => by`.
+
+Rewrite using `[← u.ker, hF, (u.ker l).2 hl, ← (u.ker 0).2 u.Λ.zero_mem, ← hF, map_zero]`. Establish `le` using `le_of_values u.ex u.ex_onto`. Take `⟨a, ha, m, s, hs, haff⟩` from `hL.exists_cover`. Take `⟨N₀, hN₀⟩` from `exists_complementary u P.isLB h F hΛ κ hpos a`. Establish `hN : 1 ≤ a * (N₀ + 1)` using `Nat.mul_pos ha N₀.succ_pos`.
+
+Establish `hs' : ⨆ i, Out.nonzeroLocus (secPow (s i) (N₀ + 1)) = ⊤`. Simplify using `only [nonzeroLocus_secPow _ N₀.succ_pos, hs]`. Use `choose θ hθ hθs using fun i => hfn _ (secPow (s i) (N₀ + 1))`. Establish `key : ∀ z₀, ∃ r : (lbPow (LB.LinComb P.L (K` using `Fin 2) ![𝟙 P.A.left, f.left] ![(κ : ℤ), -1]) (a * (N₀ + 1))).Sec, ⊤ ≤ (u.ex z₀).left ⁻¹ᵁ Out.nonzeroLocus r ∧ IsAffineOpen (Out.nonzeroLocus r) := by`. Introduce `z₀`.
+
+Take `⟨i, hi⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u.ex z₀).left _ hs`. Take `⟨θ₁, hθ₁, hθ₁s⟩` from `hfn a (s i)`. Establish `hmem` using `LatticeHom.le_preimage_nonzeroLocus_iff u P.isLB hθ₁s`. Take `⟨G, hG0, hG⟩` from `hN₀ (a * (N₀ + 1)) (N₀.le_succ.trans (Nat.le_mul_of_pos_left _ ha)) z₀`. Use `choose t ht using fun j => hsec _ _ (hG _ _ (hθ j) hθ₁)`.
+
+Take `⟨r, hr⟩` from `exists_sec_locus u P.isLB f F hF κ _ _ hs' θ hθs (fun z => θ₁ z * G z) t ht`. Use `⟨r, (hr z₀).2 (mul_ne_zero ((hmem z₀).1 hi) hG0), ?_⟩` and prove the remaining obligations. Establish `hle` using `le _ _ fun z hz => (hmem z).2 (left_ne_zero_of_mul ((hr z).1 hz))`. Conclude with `inf_eq_left.2 hle ▸ isAffineOpen_nonzeroLocus_inf (isLB_lbPow hM _) r (haff i)`. Use `choose r hr hra using key`.
+
+Use `⟨hM, hL.compactSpace, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `TopologicalSpace.Opens.mem_iSup.1 (le ⊤ (⨆ z, Out.nonzeroLocus (r z)) (fun z _ => top_le_preimage_mono _ (le_iSup (fun z => Out.nonzeroLocus (r z)) z) (hr z)) (Set.mem_univ x))`. Conclude with `⟨_, hN, r z, hz, hra z⟩`.
+-/
 theorem isAmpleLB_of_theta (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ)
     (hsec : ∀ (k : ℕ) θ, u.IsThetaFn Hm χ k θ → ∃ s, u.IsFnPow k s θ)
@@ -270,6 +351,13 @@ namespace GlobalTheory
 
 open PositiveAmple in
 
+/- English proof (translation)
+Introduce `hL _ hT P u Hm χ f F κ hu _ hF hpos`. Use `P.isAb.proper` as an intermediate fact. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨v, H₀, χ₀, -, hv, -, -, -, -, hsec, -⟩` from `hT P rig hrig`. Take `⟨T, hTv⟩` from `LatticeHom.exists_linearEquiv_of_holUnif hL.mulN P u v`.
+
+Establish `hH` using `UnifCompare.hermForm_eq P.isLB u v hu hv T.toLinearMap hTv`. Use `(relAmple_iff_isAmpleLB_of_isAffine P.A (LB.isLB_linComb P.isLB _ _)).2 (isAmpleLB_of_theta P v hv (fun k θ h => ((hsec k).2 θ h).exists) (fun k s => ((hsec k).1 s).exists) f (T.toLinearMap ∘ₗ F ∘ₗ T.symm.toLinearMap) (fun z => ?_) κ fun z hz => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `T.surjective z`. Simplify using `[hTv, hF]`. Take `⟨z, rfl⟩` from `T.surjective z`.
+
+Simplify `hpos z (fun h0 => hz (by rw [h0, map_zero]))` using `[← hH]`.
+-/
 theorem relAmple_of_hermForm_pos : Out.Laws → Out.Laws2 → ThetaUnifAV → ∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (f : P.A ⟶ P.A) (F : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ)) (κ : ℕ), u.IsAH Hm χ → IsMonHom f → (∀ z, u.ex (F z) = u.ex z ≫ f) → (∀ z, z ≠ 0 → (hermForm Hm (F z) (F z)).re < κ * (hermForm Hm z z).re) → Out.RelAmple P.A (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, f.left] ![(κ : ℤ), -1]) := by
   intro hL _ hT P u Hm χ f F κ hu _ hF hpos
   have := P.isAb.proper

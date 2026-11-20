@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.HermitianPlaneS
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published GlobalTheory.CompanionTheory.PlaneSA Topology
 open scoped TensorProduct Quaternion
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | exact GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.strong_approx_closure_mul : ∀ {F : Type} [Field F] [NumberField F] (d β : F) (s : Pl F), ∀ x ∈ closure (SAQ d β s), ∀ y ∈ closure (SAQ d β s),
   x * y ∈ closure (SAQ d β s) := by
   first | exact @GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | exact GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul | (intros; apply GlobalTheory.CompanionTheory.PlaneSA.closure_SAQ_mul <;> assumption)

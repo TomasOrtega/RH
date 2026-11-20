@@ -18,6 +18,15 @@ namespace GlobalTheory.Mem.R3.Rw.LiftUnit
 
 open Formalism.DivisionValues Formalism.L2.Col
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : lam = lam'` from `funext fun τ => by`. Establish `: (lam τ).w = (lam' τ).w` using `funext fun i => hw τ i i rfl`. Use `revert this`. Consider the cases of `lam τ`.
+
+Consider the cases of `lam' τ`. Introduce and unpack `rfl`. Both sides reduce to the same expression. Use `⟨LinearEquiv.refl _ _, fun σ v => HEq.rfl, fun i j => ?_, fun _ _ => rfl, fun γ => ⟨γ, ⟨rfl, fun i j i' j' a b => ?_⟩, fun _ => rfl⟩, fun L L' hL => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.refl_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Fin.ext a, Fin.ext b]`. Take `rfl : L = L'` from `Submodule.ext hL`.
+
+Conclude with `Submodule.map_id _`.
+-/
 theorem exists_cast {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι]
     {a n : ℕ} (h : n = a) (emb : ι → E →+* K) (lam : ι → DomWeight a) (lam' : ι → DomWeight n)
     (hw : ∀ τ (i : Fin a) (i' : Fin n), (i : ℕ) = i' → (lam τ).w i = (lam' τ).w i') :
@@ -47,6 +56,13 @@ theorem exists_cast {E K : Type} [Field E] [NumberField E] [Field K] [NumberFiel
   · obtain rfl : L = L' := Submodule.ext hL
     exact Submodule.map_id _
 
+/- English proof (translation)
+Take `⟨e, a1, a2, a3, a4, -⟩` from `ht`. Establish `pos : ∀ x : S.V, x ≠ 0 → 0 < (D.what₂.embLL (S.pair x x)).re` using `fun x hx => by`. Establish `h1 : P.coef x ≠ 0` using `fun h => hx (GlobalTheory.PresBasic.coef_injective P (h.trans (map_zero _).symm))`. Establish `h2` using `P.coef_pair x x`. Conclude with `h2 ▸ (re_inner_self_pos (𝕜 := ℂ)).2 h1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, φ.1 (S.outSec.rep c) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hφ ((S.res hG.ok).map_eq_zero_iff.1 (Subtype.ext (funext h)))`. Take `⟨u, u1, u2, u3⟩` from `RowCoord.exists_unit S hG hR (fun x hx => by_contra fun h => (pos x h).ne' (by rw [hx, map_zero, Complex.zero_re])) _ (bVV _ lam) c0 hli _ e e0 c (d (P.y c)) μ (fun ψ => ((a2 _).symm.trans (GlobalTheory.PresBasic.ext_y P (S.res hG.ok ψ) c).symm).trans (H ψ _)) φ hc a1 er0 a3 pe0 …`.
+
+Take `⟨n, hn, h⟩` from `GlobalTheory.CoefUniq.pow_eq_one_of_cmMax u2 u3 (NumberField.RingOfIntegers.isIntegral_coe _)`. Conclude with `⟨_, n, hn, h, u1⟩`.
+-/
 theorem root_of_pres {D : D7} {V : HSp D} (C : Bridge.CoefDat D V) (S : GSD D.what₂.LL) (hG : S.Good 1) (hR : S.Rat) {J χ}
     (P : Bridge.ClassPres (Bridge.ratF V) (S.toCSD hG.ok) D.what₂.embLL C.ρ J χ) {lam : D.what₂.Tau → DomWeight V.rank}
     (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] C.W) (hli : LinearIndependent ℂ fun i => c0 (bVV _ lam i)) {pair nab del}
@@ -73,6 +89,11 @@ theorem root_of_pres {D : D7} {V : HSp D} (C : Bridge.CoefDat D V) (S : GSD D.wh
   obtain ⟨n, hn, h⟩ := GlobalTheory.CoefUniq.pow_eq_one_of_cmMax u2 u3 (NumberField.RingOfIntegers.isIntegral_coe _)
   exact ⟨_, n, hn, h, u1⟩
 
+/- English proof (translation)
+Take `⟨hs, -, -, -, -, hV⟩` from `hI.spaces`. Establish `h1` using `hV ((i : ℕ) + 1)`. Establish `hn : X.B.sp.Vneg ((i : ℕ) + 1) = false` using `X.B.V_pos _ (by omega) i.2`. Rewrite `h1` using `[hn]`. Express the relevant statement in the definitionally equal form `(X.B.sp.V ((i : ℕ) + 1)).gram = 1`.
+
+Rewrite using `[h1]`. Use `Matrix.ext fun a b => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ a b).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+-/
 theorem gram_eq_one (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok) (i : Fin X.toD7.R.m) :
     (Vc X.toD7 i).gram = 1 := by
   obtain ⟨hs, -, -, -, -, hV⟩ := hI.spaces
@@ -84,6 +105,9 @@ theorem gram_eq_one (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : 
   refine Matrix.ext fun a b => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ a b).trans ?_
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
+/- English proof (translation)
+Establish `hok` using `decorated_lattice_exists hc n ∅ S y.1 y.2`. Establish `e : (decoOf (F` using `X.F) (E := X.E) ∅ S y.1).1 = decoRaw ∅ S y.1 := congrArg Subtype.val (dif_pos hok)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem decoOf_lat {X : Formalism.L2.Col.Fields} (hc : CMData X.F X.E) (n : ℕ) [NeZero n] (S : Finset (Pl X.E)) (y : UAd hc n) :
     (decoOf (F := X.F) (E := X.E) ∅ S y.1).1.N = Formalism.UG.CS.globLat y.1 (Formalism.L2.Col.stdLat X.E n) := by
   have hok := decorated_lattice_exists hc n ∅ S y.1 y.2
@@ -93,6 +117,19 @@ theorem decoOf_lat {X : Formalism.L2.Col.Fields} (hc : CMData X.F X.E) (n : ℕ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨gram, c0R, hT⟩` from `hT`. Take `⟨c, hcI, hcR, -⟩` from `hS`. Establish `hG` using `gram_eq_one X I hI i`. Establish `hβ` using `hL.beta.1 i`. Establish `hr : (Vc X.toD7 i).rank = X.B.R.nV` using `(LiftBrg.rkEq X i).symm`.
+
+Take `⟨e0, k1, k2, k3, k4, k5⟩` from `exists_cast (K := X.toD7.what₂.LL) hr.symm (labLL X.toD7) (fun τ => Bridge.lamLdef (Vc X.toD7 i).rank ((i : ℕ) + 1) τ) (X.B.wts.lamV ((i : ℕ) + 1)) (fun τ a a' e => LiftWt.lamLdef_eq_lamV X _ (by omega) i.2 τ a a' e)`. Establish `hR : ∀ (ψ : (mtKGSD (Pr` using `X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).EqFun) (h : Bridge.Gf (Vc X.toD7 i)) (y : UAd X.toD7.sp.cm X.B.R.nV), MatEq (matIn (Vc X.toD7 i) 1 h) (y : GL (Fin X.B.R.nV) _) → R.B.jL i t ((mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).res (mtKOk _ _ _ …`. Use `(hcR X.toD7.sp.cm t (⟨mtKOk _ _ _ _ hX _⟩, ψ) h y (by rw [hβ]; exact hy)).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun d => c (ψ.1 d)) (decoPt_mk _ _ _ _ y)`. Set `c1 : Formalism.IndefR.FWT.VsV X.toD7 i X.toD7.what₂.LL →ₛₗ[X.toD7.what₂.embLL] (R.cV i).W` to `(show VV X.toD7.what₂.LL (X.B.wts.lamV ((i : ℕ) + 1)) →ₛₗ[X.toD7.what₂.embLL] (R.cV i).W from c).comp e0.symm.toLinearMap`.
+
+Establish `hc1 : ∀ v, c1 (e0 v) = c v` using `fun v => congrArg c (e0.symm_apply_apply v)`. Take `⟨μ, hμ⟩` from `RowCoord.exists_smul_eq (R.cV i) hc (hT.mapL i) c1 fun γ γE hγ v => by`. Take `⟨v, rfl⟩` from `e0.surjective v`. Take `⟨g, g1, g2⟩` from `k4 γE`. Rewrite using `[← g2, hc1, hc1]`.
+
+Conclude with `hcI γ γE g hγ g1 v`. Use `choose x hx using RowCoord.exists_matEq (D := X.toD7) (Vc X.toD7 i) hr hG`. Establish `hneg : X.toD7.sp.Vneg ((i : ℕ) + 1) = false` using `X.B.V_pos _ (by omega) i.2`. Establish `ht` using `hT.coefL i t`. Establish `hgr : (if X.toD7.sp.Vneg ((i : ℕ) + 1) then -(X.toD7.sp.V ((i : ℕ) + 1)).gram else (X.toD7.sp.V ((i : ℕ) + 1)).gram) = 1`.
+
+Rewrite using `[hneg, if_neg (by simp)]`. Conclude with `hG`. Rewrite `ht` using `[hgr]`. Establish `hΛ` using `hL.is.βV i`. Rewrite `hΛ` using `[hβ]`.
+
+Take `⟨u, n, hn, hu, u1⟩` from `root_of_pres (R.cV i).coef (mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)) (mtK_good _ _ _ _ hX _) (mtK_rat _ _ _ _ hX _) (R.B.L i t).pres (c0L i) (hT.mapL i).2.1 ht e0 k2 k3 (fun h => decoOf (F := X.B.fields.F) (E := X.B.fields.E) ∅ (rowSG (X.B.primes px) I.s …`. Use `⟨u, n, hn, hu, fun ψ h y hy => ⟨e0 _, k1 _ _, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[u1]`. Conclude with `(hR ψ h y hy).trans ((hc1 _).symm.trans (hμ _))`.
+-/
 theorem exists_root_reading (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks X.toD7.what₂.LL]
     (R : RealDat X.toD7 (famR X I hX U Xg tr).A Ks) (hI : I.Ok) (hL : LevOf X I U R.toLevCh) (i : Fin X.toD7.R.m)
@@ -148,6 +185,23 @@ theorem exists_root_reading (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px
   rw [u1]
   exact (hR ψ h y hy).trans ((hc1 _).symm.trans (hμ _))
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Take `⟨hpre, -, -, hrange⟩` from `hE`. Take `⟨ι, hι⟩` from `exists_iota_comp B.embLL B'.embLL hrange`. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`.
+
+Simplify using `only at hpre`. Substitute `hpre` using the available equality. Establish `ef : f' = f` using `eq_of_heq hf`. Establish `ep : w'.px = w.px` using `eq_of_heq hpx`. Establish `hv : ((baseOfColW w').primes w'.px).vGs = ((baseOfColW w).primes w.px).vGs`.
+
+Rewrite using `[ep]`. Both sides reduce to the same expression. Use `(liftRound_reidx (baseOfColW w).fields ι (baseOfColW w').tauLL ?_ _ ?_ _ _ ?_ (baseOfColW w).embLL (baseOfColW w').embLL hι).2 φ` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`.
+
+Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w') τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Rewrite using `[RingHom.comp_apply, hι]`.
+
+Conclude with `h1.trans h2.symm`. Conclude with `(rowLevelPrimes_colTuples_eq_vGs w' W').trans (hv.trans (rowLevelPrimes_colTuples_eq_vGs w W).symm)`. Use `glue_inv_coefMap_of_empty ι (twistRamifiedPrimes_empty_colTuples w W) (twistRamifiedPrimes_empty_colTuples w' W') _ _ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Use `levKV_coefMap_of ι p.1 (fun s => w.I.Ch.chi s p) (fun s => w'.I.Ch.chi s ⟨p.1, hp⟩) ?_ _ _ _ _` and prove the remaining obligations.
+
+Introduce `s c`. Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises. Rewrite using `[hι]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : 𝓞 (baseOfColW w).fields.E ⧸ p.1.asIdeal)`. Establish `hy0 : ((y : 𝓞 (baseOfColW w).fields.E) : (baseOfColW w).fields.E) ≠ 0`.
+
+Introduce `h0`. Establish `h0' : y = 0` using `RingOfIntegers.coe_injective (h0.trans (by simp))`. Rewrite `hy` using `[h0', map_zero]`. Conclude with `c.ne_zero hy.symm`. Establish `e1` using `ChiTr.embLL_chi w' s ⟨p.1, hp⟩ c y (Units.mk0 _ hy0) rfl hy.symm`.
+
+Establish `e2` using `ChiTr.embLL_chi w s p c y (Units.mk0 _ hy0) rfl hy.symm`. Establish `eC : w'.I.C = w.I.C` using `w'.C_eq.trans (ef.trans w.C_eq.symm)`. Rewrite `e1` using `[eC]`. Conclude with `e1.trans e2.symm`.
+-/
 theorem exists_form_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T)
     (w' : ColW B' f' T') (W : Set B.places.Pl) (W' : Set B'.places.Pl) (hE : Enl0 B B') (hf : HEq f' f) (hpx : HEq w'.px w.px)
     (j j' : ℕ) (hj : j = j')
@@ -196,11 +250,17 @@ theorem exists_form_enl {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : T
     rw [eC] at e1
     exact e1.trans e2.symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem heq_decoOf {X : Formalism.L2.Col.Fields} {n : ℕ} [NeZero n] {S S' : Finset (Pl X.E)} (h : S' = S) (y) :
     HEq (decoOf (F := X.F) (E := X.E) (n := n) ∅ S' y) (decoOf (F := X.F) (E := X.E) (n := n) ∅ S y) := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem heq_apply {α β β' : Type} {g : α → β} {g' : α → β'} (e : β' = β) (h : HEq g' g) (a : α) : HEq (g' a) (g a) := by
   subst e
   cases h
@@ -208,6 +268,23 @@ theorem heq_apply {α β β' : Type} {g : α → β} {g' : α → β'} (e : β' 
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hpx hstd Ks _ _ _ Xg tr R' cG' hP hL hB hRS i i' hii c0L hc c0L'' hc'' x hx`. Take `⟨φ, rfl⟩` from `((mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res (mtKOk _ _ _ _ hX _)).surjective x`. Establish `hφ : φ ≠ 0` using `fun h0 => hx (h0 ▸ map_zero _)`. Take `⟨h, hh⟩ : ∃ h, z.R.B.jL i (mu0F (X` from `B.fields) (tuOf w.I (usedOf w.I T Wt))) ((mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res (mtKOk _ _ _ _ hX _) φ) h ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Conclude with `hx (GlobalTheory.PresBasic.extL_injective (z.R.B.L i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt)))).pres ((funext hn).trans (map_zero _).symm))`. Take `⟨φ', hφφ⟩` from `exists_form_enl w w' Wt Wt' hE hf hpx ((i : ℕ) + 1) ((i' : ℕ) + 1) (by rw [hii]) φ`. Establish `hj` using `hRS.2.2.2.2.2.2.2.2.2.2.2.2.2 i i' hii (mtKOk _ _ _ _ hX _) (mtKOk _ _ _ _ hX' _) φ φ' hφφ`. Establish `hW` using `(hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hii).1`.
+
+Take `⟨u, n, hn, hu, H⟩` from `exists_root_reading (w.st Z) w.I hX _ z.Xg z.tr z.R.toRealDat w.ok z.lev i (z.pins.char.base.models.cV i) c0L hc (hstd.2 i) _ φ hφ`. Take `⟨y, hy⟩` from `RowCoord.exists_matEq (D := (w.st Z).toD7) (Vc (w.st Z).toD7 i) (LiftBrg.rkEq (w.st Z) i).symm (gram_eq_one (w.st Z) w.I w.ok i) h`. Take `⟨v, hv1, hv2⟩` from `H φ h y hy`. Establish `H'` using `exists_root_reading (w'.st Z') w'.I hX' _ Xg tr R'.toRealDat w'.ok hL i' (hP.char.base.models.cV i') c0L'' hc'' (hB.2 i') _ φ'`. Establish `hS` using `rowLevelPrimes_colTuples_eq_vGs w Wt`.
+
+Establish `hS'` using `rowLevelPrimes_colTuples_eq_vGs w' Wt'`. Use `clear H hRS hB hP hL hstd hc hc''`. Take `⟨hpre, -, -, -⟩` from `hE`. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`.
+
+Simplify using `only at hpre`. Substitute `hpre` using the available equality. Take `rfl : i' = i` from `Fin.ext hii.symm`. Establish `ep : w'.px = w.px` using `eq_of_heq hpx`. Establish `hvG : ((baseOfColW w').primes w'.px).vGs = ((baseOfColW w).primes w.px).vGs`.
+
+Rewrite using `[ep]`. Both sides reduce to the same expression. Establish `hjh` using `heq_apply (eq_of_heq hW) hj h`. Establish `hSS` using `hS'.trans (hvG.trans hS.symm)`. Establish `hd` using `hφφ _ _ (heq_decoOf (X := (baseOfColW w).fields) hSS y.1)`.
+
+Establish `h0 : c0L i' v ≠ 0` using `fun e => hh (hv2.trans ((congrArg _ e).trans (smul_zero (A := (z.R.cV i').W) _)))`. Establish `hφ' : φ' ≠ 0` using `fun e => hφ (Subtype.ext (funext fun d => Subtype.ext (by`. Establish `e1` using `eq_of_heq (hφφ d (cast (congrArg (DecoSet (baseOfColW w).fields.E (baseOfColW w).R.nV ∅) hSS.symm) d) (cast_heq _ _))`. Rewrite `e1` using `[e]`. Conclude with `MvPolynomial.map_injective _ (baseOfColW w).embLL.injective (e1.symm.trans ((map_zero _).trans (map_zero _).symm)))))`.
+
+Take `⟨u', n', hn', hu', H⟩` from `H' hφ'`. Take `⟨v', hv1', hv2'⟩` from `H φ' h y hy`. Conclude with `⟨v, v', u, u', n, n', hn, hu, hn', hu', hv1'.trans (hd.trans hv1.symm), h0, (heq_of_eq hv2'.symm).trans (hjh.trans (heq_of_eq hv2))⟩`.
+-/
 theorem exists_agree_root : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
   (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std →

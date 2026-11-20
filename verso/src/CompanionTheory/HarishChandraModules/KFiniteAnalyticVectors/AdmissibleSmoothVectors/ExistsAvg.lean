@@ -13,9 +13,17 @@ variable {K : Type} [Group K] [TopologicalSpace K] [CompactSpace K] [MeasurableS
   {μ : Measure K} [IsFiniteMeasure μ]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : K →* (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem integrable_cont {F : Type} [NormedAddCommGroup F] {f : K → F} (hf : Continuous f) : Integrable f μ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+Set `L : H →ₗ[ℂ] H` to `{ toFun := fun u => ∫ k, e k • σ k u ∂μ map_add' := fun u w => by`. Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (integrable_cont (he.smul (hc u))) (integrable_cont (he.smul (hc w)))`. Use the proof step `map_smul' := fun c u => by`. Simplify using `only [map_smul, RingHom.id_apply, smul_comm _ c]`.
+
+Conclude with `integral_smul _ _ }`. Use `⟨L.mkContinuous (∫ k, ‖e k‖ ∂μ) fun u => ?_, fun u => rfl⟩` and prove the remaining obligations. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_smul, hiso]`. Conclude with `integral_mul_const _ _`.
+-/
 theorem exists_avg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continuous fun x => σ x v) {e : K → ℂ}
     (he : Continuous e) : ∃ E : H →L[ℂ] H, ∀ u, E u = ∫ k, e k • σ k u ∂μ := by
   let L : H →ₗ[ℂ] H :=
@@ -33,6 +41,33 @@ theorem exists_avg (hiso : ∀ g v, ‖σ g v‖ = ‖v‖) (hc : ∀ v, Continu
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ _ _ μ _ _ H _ _ _ σ hiso hc S _ hS v hv`. Establish `hcoef : ∀ a b : H, Continuous fun x => ⟪σ x a, b⟫_ℂ` using `fun a b => (hc a).inner continuous_const`. Establish `hint : ∀ b : H, Integrable (fun x => ⟪σ x v, b⟫_ℂ • σ x v) μ` using `fun b => integrable_cont ((hcoef v b).smul (hc v))`. Establish `hScl : CompleteSpace S` using `FiniteDimensional.complete ℂ S`. Set `L : H →ₗ[ℂ] H` to `{ toFun := fun b => ∫ x, ⟪σ x v, b⟫_ℂ • σ x v ∂μ map_add' := fun a b => by`.
+
+Simplify using `only [inner_add_right, add_smul]`. Conclude with `integral_add (hint a) (hint b)`. Use the proof step `map_smul' := fun c b => by`. Simplify using `only [inner_smul_right, RingHom.id_apply, mul_smul]`. Conclude with `integral_smul _ _ }`.
+
+Establish `hinner : ∀ w b, ⟪w, L b⟫_ℂ = ∫ x, ⟪σ x v, b⟫_ℂ * ⟪w, σ x v⟫_ℂ ∂μ`. Introduce `w b`. Express the relevant statement in the definitionally equal form `⟪w, ∫ x, ⟪σ x v, b⟫_ℂ • σ x v ∂μ⟫_ℂ = _`. Rewrite using `[← integral_inner (hint b)]`. Simplify using `only [inner_smul_right]`.
+
+Establish `hLS : ∀ b, L b ∈ S`. Introduce `b`. Rewrite using `[← Submodule.orthogonal_orthogonal S, Submodule.mem_orthogonal]`. Introduce `w hw`. Rewrite using `[hinner]`.
+
+Establish `: ∀ x, ⟪w, σ x v⟫_ℂ = 0` using `fun x => Submodule.inner_left_of_mem_orthogonal (hS x v hv) hw`. Simplify using `[this]`. Establish `hzero : ∀ w, ⟪w, L w⟫_ℂ = 0 → ⟪w, v⟫_ℂ = 0`. Introduce `w hw`. Rewrite `hw` using `[hinner]`.
+
+Establish `e1 : ∀ x, ⟪σ x v, w⟫_ℂ * ⟪w, σ x v⟫_ℂ = ((‖⟪σ x v, w⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[← inner_conj_symm w, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [e1] at hw`. Rewrite `hw` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`.
+
+Establish `hcont : Continuous fun x => ‖⟪σ x v, w⟫_ℂ‖ ^ 2` using `(hcoef v w).norm.pow 2`. Establish `h1` using `(integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg _) (integrable_cont hcont)).1 hw`. Establish `h2 : ‖⟪σ 1 v, w⟫_ℂ‖ ^ 2 = 0` using `congrFun ((hcont.ae_eq_iff_eq μ continuous_const).1 h1) 1`. Simplify using `only [map_one, ContinuousLinearMap.one_apply, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff, norm_eq_zero] at h2`. Conclude with `inner_eq_zero_symm.1 h2`.
+
+Use `set R : Submodule ℂ H := S.map L with hR`. Establish `hRc : CompleteSpace R` using `FiniteDimensional.complete ℂ R`. Establish `hvR : v ∈ R` using `by set w := v - R.starProjection v with hw`. Establish `hwo : w ∈ Rᗮ` using `R.sub_starProjection_mem_orthogonal v`. Establish `hp : R.starProjection v ∈ R` using `R.starProjection_apply_mem v`.
+
+Establish `hRS : R ≤ S` using `by rintro _ ⟨b, -, rfl⟩; exact hLS b`. Establish `hwS : w ∈ S` using `S.sub_mem hv (hRS hp)`. Establish `h1 : ⟪w, v⟫_ℂ = 0` using `hzero w (Submodule.inner_left_of_mem_orthogonal (K := R) (Submodule.mem_map_of_mem hwS) hwo)`. Establish `h2 : ⟪w, R.starProjection v⟫_ℂ = 0` using `Submodule.inner_left_of_mem_orthogonal hp hwo`. Establish `h3 : ⟪w, w⟫_ℂ = 0` using `by conv_lhs => rw [hw, inner_sub_right, ← hw]`.
+
+Rewrite using `[h1, h2, sub_zero]`. Rewrite `h3` using `[inner_self_eq_zero, hw, sub_eq_zero]`. Rewrite using `[h3]`. Conclude with `hp`. Take `⟨b, -, hb⟩` from `hvR`.
+
+Take `⟨E, hE⟩` from `exists_avg (μ := μ) hiso hc (hcoef v b)`. Use `⟨fun x => ⟪σ x v, b⟫_ℂ, E, hcoef v b, ?_, hE, by rw [hE]; exact hb⟩` and prove the remaining obligations. Set `B` to `Module.finBasis ℂ S`. Use `⟨fun i x => ⟪σ x (B i), b⟫_ℂ, fun i => hcoef _ b, fun k => ?_⟩` and prove the remaining obligations. Use `⟨fun i => (starRingEnd ℂ) (B.repr ⟨σ k⁻¹ v, hS _ v hv⟩ i), fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : σ k⁻¹ v = ∑ i, B.repr ⟨σ k⁻¹ v, hS _ v hv⟩ i • (B i : H)`. Use `congrArg Subtype.val (B.sum_repr ⟨σ k⁻¹ v, hS _ v hv⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Use `show ⟪σ (x * k⁻¹) v, b⟫_ℂ = _`.
+
+Rewrite using `[map_mul, ContinuousLinearMap.mul_apply]`. Use `conv_lhs => rw [e1]`. Simplify using `only [map_sum, map_smul, sum_inner, inner_smul_left]`.
+-/
 theorem exists_averaging_operator : ExistsAvg := by
   intro K _ _ _ _ _ _ _ _ μ _ _ H _ _ _ σ hiso hc S _ hS v hv
   have hcoef : ∀ a b : H, Continuous fun x => ⟪σ x a, b⟫_ℂ := fun a b => (hc a).inner continuous_const

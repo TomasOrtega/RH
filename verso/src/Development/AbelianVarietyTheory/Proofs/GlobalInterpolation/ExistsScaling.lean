@@ -19,15 +19,26 @@ section Algebra
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `show sigR (Fv F v) σ (a ⊗ₜ[F] (1 : E)) = a ⊗ₜ[F] (1 : E)`. Simplify using `[sigR]`.
+-/
 theorem sigR_algebraMap (a : Fv F v) :
     sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) a) =
       algebraMap (Fv F v) (Fv F v ⊗[F] E) a := by
   show sigR (Fv F v) σ (a ⊗ₜ[F] (1 : E)) = a ⊗ₜ[F] (1 : E)
   simp [sigR]
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective _ _`.
+-/
 theorem algebraMap_inj : Function.Injective (algebraMap (Fv F v) (Fv F v ⊗[F] E)) :=
   FaithfulSMul.algebraMap_injective _ _
 
+/- English proof (translation)
+Rewrite using `[mem_integralClosure_iff, isIntegral_algebraMap_iff (algebraMap_inj v)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Introduce `h`. Conclude with `isIntegral_algebraMap (x := (⟨a, h⟩ : v.adicCompletionIntegers F))`.
+-/
 theorem algebraMap_mem_iff (a : Fv F v) :
     algebraMap (Fv F v) (Fv F v ⊗[F] E) a ∈ SelfDualLatticeActions.OEv E v ↔ a ∈ v.adicCompletionIntegers F := by
   rw [mem_integralClosure_iff, isIntegral_algebraMap_iff (algebraMap_inj v)]
@@ -39,11 +50,23 @@ theorem algebraMap_mem_iff (a : Fv F v) :
   · intro h
     exact isIntegral_algebraMap (x := (⟨a, h⟩ : v.adicCompletionIntegers F))
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_mem_iff (E := E), trace_tensor _ hσ]`. Conclude with `add_mem hz (SelfDualLatticeActions.sigR_mem v σ hz)`.
+-/
 theorem trace_mem (hσ : IsCMExt F E σ) {z : Fv F v ⊗[F] E} (hz : z ∈ SelfDualLatticeActions.OEv E v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) z ∈ v.adicCompletionIntegers F := by
   rw [← algebraMap_mem_iff (E := E), trace_tensor _ hσ]
   exact add_mem hz (SelfDualLatticeActions.sigR_mem v σ hz)
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `hD.exists_right_inv`. Establish `hd' : (w - sigR (Fv F v) σ w) ^ 2 * algebraMap (Fv F v) (Fv F v ⊗[F] E) d = 1`. Establish `h1` using `congrArg (fun x : v.adicCompletionIntegers F => algebraMap (Fv F v) (Fv F v ⊗[F] E) (x : Fv F v)) hd`. Move the coercions through the operations in `at h1`. Establish `h4 : ((4 : v.adicCompletionIntegers F) : Fv F v) = 4` using `rfl`.
+
+Simplify using `only [h4, map_ofNat, ← ht, ← hn] at h1`. Take the linear combination `h1`. Establish `hdm : algebraMap (Fv F v) (Fv F v ⊗[F] E) d ∈ SelfDualLatticeActions.OEv E v` using `(algebraMap_mem_iff v _).2 d.2`. Establish `hw'` using `SelfDualLatticeActions.sigR_mem v σ hw`. Use `⟨![-sigR (Fv F v) σ w * ((w - sigR (Fv F v) σ w) * algebraMap (Fv F v) _ d), (w - sigR (Fv F v) σ w) * algebraMap (Fv F v) _ d], ?_, fun z => ?_, fun a b => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨mul_mem (neg_mem hw') (mul_mem (sub_mem hw hw') hdm), mul_mem (sub_mem hw hw') hdm⟩`. Simplify using `only [trace_tensor _ hσ, Matrix.cons_val_zero, Matrix.cons_val_one, map_mul, map_neg, map_sub, sigR_sigR _ hσ, sigR_algebraMap]`. Take the linear combination `(-z) * hd'`. Apply `algebraMap_inj (E := E) v` to reduce the goal to its premises.
+
+Simplify using `only [trace_tensor _ hσ, Matrix.cons_val_zero, map_mul, map_neg, map_add, map_sub, sigR_sigR _ hσ, sigR_algebraMap]`. Take the linear combination `(algebraMap (Fv F v) (Fv F v ⊗[F] E) a) * hd'`. Apply `algebraMap_inj (E := E) v` to reduce the goal to its premises. Simplify using `only [trace_tensor _ hσ, Matrix.cons_val_zero, Matrix.cons_val_one, map_mul, map_add, map_sub, sigR_sigR _ hσ, sigR_algebraMap]`. Take the linear combination `(algebraMap (Fv F v) (Fv F v ⊗[F] E) b) * hd'`.
+-/
 theorem exists_dual (hσ : IsCMExt F E σ) {w : Fv F v ⊗[F] E} {t n : v.adicCompletionIntegers F}
     (hw : w ∈ SelfDualLatticeActions.OEv E v) (hD : IsUnit (t ^ 2 - 4 * n))
     (ht : w + sigR (Fv F v) σ w = algebraMap (Fv F v) (Fv F v ⊗[F] E) t)
@@ -85,16 +108,25 @@ theorem exists_dual (hσ : IsCMExt F E σ) {w : Fv F v ⊗[F] E} {t n : v.adicCo
 
 variable {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Rewrite using `[Matrix.toBilin'_apply]`. Both sides reduce to the same expression.
+-/
 theorem hR_eq (x y : Fin M → Fv F v ⊗[F] E) : hR (Fv F v) σ J x y =
     Matrix.toBilin' (JR (Fv F v) J) (fun i => sigR (Fv F v) σ (x i)) y := by
   rw [Matrix.toBilin'_apply]
   rfl
 
+/- English proof (translation)
+Simplify using `only [hR_eq, map_sum, map_smul, smul_eq_mul]`.
+-/
 theorem hR_sum_right (x : Fin M → Fv F v ⊗[F] E) (z : Fin M → Fv F v ⊗[F] E)
     (b : Fin M → Fin M → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (∑ i, z i • b i) = ∑ i, z i * hR (Fv F v) σ J x (b i) := by
   simp only [hR_eq, map_sum, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `: (fun j => sigR (Fv F v) σ ((∑ i, z i • b i) j)) = ∑ i, sigR (Fv F v) σ (z i) • fun j => sigR (Fv F v) σ (b i j)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply]`. Simplify using `only [hR_eq, this, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem hR_sum_left (y : Fin M → Fv F v ⊗[F] E) (z : Fin M → Fv F v ⊗[F] E)
     (b : Fin M → Fin M → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (∑ i, z i • b i) y = ∑ i, sigR (Fv F v) σ (z i) * hR (Fv F v) σ J (b i) y := by
@@ -104,15 +136,38 @@ theorem hR_sum_left (y : Fin M → Fv F v ⊗[F] E) (z : Fin M → Fv F v ⊗[F]
     simp [Finset.sum_apply]
   simp only [hR_eq, this, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hR_smul_left (x y : Fin M → Fv F v ⊗[F] E) (c : Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (c • x) y = sigR (Fv F v) σ c * hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hR_add_left (x x' y : Fin M → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (x + x') y = hR (Fv F v) σ J x y + hR (Fv F v) σ J x' y := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hb`. Establish `hon : ∀ i j, hR (Fv F v) σ J (e i) (e j) = if i = j then 1 else 0` using `fun i j => by`. Use `congrFun (congrFun he i) j` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply]`. Conclude with `this`.
+
+Establish `hco : ∀ (z : Fin M → Fv F v ⊗[F] E) i, hR (Fv F v) σ J (e i) (∑ j, z j • (e j : SelfDualLatticeActions.Wv E v M)) = z i` using `fun z i => by`. Simplify using `[hR_sum_right, hon]`. Set `f : (Fin M → Fv F v ⊗[F] E) →ₗ[Fv F v ⊗[F] E] (Fin M → Fv F v ⊗[F] E)` to `Fintype.linearCombination _ fun j => (e j : SelfDualLatticeActions.Wv E v M)`. Establish `hf : ∀ z, f z = ∑ j, z j • (e j : SelfDualLatticeActions.Wv E v M)` using `fun z => Fintype.linearCombination_apply _ _ _`. Establish `hLf : ∀ y ∈ L, ∃ z : Fin M → SelfDualLatticeActions.OEv E v, f (fun i => z i) = y` using `fun y hy => by`.
+
+Use `⟨fun i => e.repr ⟨y, hy⟩ i, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (e.sum_repr ⟨y, hy⟩)` as an intermediate fact. Rewrite using `[hf]`. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this`.
+
+Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `z z' h`. Use function extensionality and compare the values at `i`. Rewrite using `[← hco z i, ← hco z' i, ← hf, ← hf, h]`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hL.2.1, Submodule.span_le]`. Introduce `y hy`. Take `⟨z, hz⟩` from `hLf y hy`. Conclude with `⟨_, hz⟩`. Use `⟨(LinearEquiv.ofBijective f hbij).symm, fun y => ?_, fun x y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `(LinearEquiv.ofBijective f hbij).surjective y`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.ofBijective_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨z', hz'⟩` from `hLf _ h`.
+
+Rewrite using `[← hbij.1 hz']`. Conclude with `(z' i).2`. Introduce `h`. Rewrite using `[hf]`. Conclude with `L.sum_mem fun i _ => L.smul_mem (⟨z i, h i⟩ : SelfDualLatticeActions.OEv E v) (e i).2`.
+
+Take `⟨x, rfl⟩` from `(LinearEquiv.ofBijective f hbij).surjective x`. Take `⟨y, rfl⟩` from `(LinearEquiv.ofBijective f hbij).surjective y`. Simplify using `only [LinearEquiv.symm_apply_apply]`. Simplify using `only [LinearEquiv.ofBijective_apply, hf, hR_sum_left, hco]`.
+-/
 theorem exists_frame {L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)}
     (hL : SelfDualLatticeActions.IsSelfDualLat v σ J L) (hb : SelfDualLatticeActions.HasOrthonormalBasis v σ J L) :
     ∃ g : (Fin M → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin M → Fv F v ⊗[F] E),
@@ -161,6 +216,19 @@ theorem exists_frame {L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLa
     simp only [LinearEquiv.symm_apply_apply]
     simp only [LinearEquiv.ofBijective_apply, hf, hR_sum_left, hco]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `haveI := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v`. Set `c : SelfDualLatticeActions.OEv E v →+* SelfDualLatticeActions.OEv E v` to `(sigR (Fv F v) σ).restrict (SelfDualLatticeActions.OEv E v).toSubring (SelfDualLatticeActions.OEv E v).toSubring fun _ => SelfDualLatticeActions.sigR_mem v σ`. Establish `hc : ∀ x, (c x : Fv F v ⊗[F] E) = sigR (Fv F v) σ x` using `fun _ => rfl`. Take `⟨d, hd, h1, h2⟩` from `exists_dual v hσ hw hD ht hn`.
+
+Establish `hb : ∀ r, c (algebraMap (v.adicCompletionIntegers F) _ r) = algebraMap _ _ r` using `fun r => Subtype.ext (sigR_algebraMap v _)`. Set `u' : v.adicCompletionIntegers F` to `⟨u, hu.le⟩`. Establish `hu' : IsUnit u'` using `HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.2 hu`. Take `⟨x, hx⟩` from `GlobalTheory.UnramifiedHermitian.exists_norm_eq_of_henselian (R₀ := v.adicCompletionIntegers F) c (fun x => Subtype.ext (sigR_sigR _ hσ _)) hb (fun x hx => by`. Establish `hx' : sigR (Fv F v) σ x = x` using `congrArg Subtype.val hx`.
+
+Use `⟨⟨_, trace_mem v hσ (mul_mem (hd 0) x.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h3` using `trace_tensor (Fv F v) hσ (d 0 * x)`. Establish `h4` using `trace_tensor (Fv F v) hσ (d 0 * 1)`. Establish `h5` using `(h2 1 0).1`. Rewrite `h5` using `[map_zero, map_one, zero_mul, add_zero]`.
+
+Rewrite `h4` using `[h5, mul_one, map_one]`. Rewrite `h3` using `[map_mul (sigR (Fv F v) σ), hx', ← add_mul, ← h4, one_mul]`. Conclude with `h3)`. Use the proof step `⟨⟨w, hw⟩, isUnit_of_mul_isUnit_left (y := ⟨w, hw⟩ - c ⟨w, hw⟩) (by`. Use `hD.map (algebraMap _ (SelfDualLatticeActions.OEv E v))` and compare the differences between its conclusion and the goal.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Use `push_cast`. Express the relevant statement in the definitionally equal form `_ = algebraMap (Fv F v) (Fv F v ⊗[F] E) (t : Fv F v) ^ 2 - 4 * algebraMap (Fv F v) (Fv F v ⊗[F] E) (n : Fv F v)`. Rewrite using `[hc, ← ht, ← hn]`.
+
+Use the proof step `ring)⟩ (hb u') (hu'.map _)`. Conclude with `⟨x, x.2, congrArg Subtype.val hx⟩`.
+-/
 theorem exists_norm (hσ : IsCMExt F E σ) {w : Fv F v ⊗[F] E} {t n : v.adicCompletionIntegers F}
     (hw : w ∈ SelfDualLatticeActions.OEv E v) (hD : IsUnit (t ^ 2 - 4 * n))
     (ht : w + sigR (Fv F v) σ w = algebraMap (Fv F v) (Fv F v ⊗[F] E) t)
@@ -208,6 +276,35 @@ section Coordinates
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} (v : HeightOneSpectrum (𝓞 F)) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LocalDensityCompare.modTop (E := E) v`. Use `haveI := GlobalTheory.LocalDensityCompare.topRing (E := E) v`. Take `⟨c, hc, h1, h2⟩` from `exists_dual v hσ hw hD ht hn`. Take `⟨g, hg, hh⟩` from `exists_frame v hL hb`. Set `e : (Fin 1 → Fin M → Fv F v ⊗[F] E) ≃ₗ[Fv F v] (Fin M × Fin 2 → Fv F v)` to `{ toFun := fun X p => Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (c p.2 * g (X 0) p.1) invFun := fun x _ => g.symm fun i => algebraMap (Fv F v) _ (x (i, 0)) + algebraMap (Fv F v) _ (x (i, 1)) * w map_add' := fun X Y => by`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun a X => by`. Use function extensionality and compare the values at `p`. Establish `: g ((a • X) 0) = a • g (X 0)` using `(g.restrictScalars (Fv F v)).map_smul a (X 0)`.
+
+Express the relevant statement in the definitionally equal form `Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (c p.2 * g ((a • X) 0) p.1) = a • Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (c p.2 * g (X 0) p.1)`. Rewrite using `[this, Pi.smul_apply, mul_smul_comm, map_smul]`. Use `left_inv := fun X => by`. Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0, LinearEquiv.symm_apply_eq]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(h1 _).symm`. Use `right_inv := fun x => by`. Use function extensionality and compare the values at `⟨i, j⟩`. Simplify using `only [LinearEquiv.apply_symm_apply]`.
+
+Use `fin_cases j`. Conclude with `(h2 _ _).1`. Conclude with `(h2 _ _).2 }`. Establish `he : ∀ X p, e X p = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (c p.2 * g (X 0) p.1)` using `fun _ _ => rfl`. Establish `hg' : ∀ (X : Fin 1 → Fin M → Fv F v ⊗[F] E) i, g (X 0) i = algebraMap (Fv F v) _ (e X (i, 0)) + algebraMap (Fv F v) _ (e X (i, 1)) * w` using `fun X i => h1 _`.
+
+Use `⟨{ e with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }, fun X => ?_, fun X => ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `trace_mem v hσ (mul_mem (hc _) (h _))`.
+
+Introduce `h i`. Rewrite using `[hg']`. Conclude with `add_mem ((algebraMap_mem_iff v _).2 (h _)) (mul_mem ((algebraMap_mem_iff v _).2 (h _)) hw)`. Apply `algebraMap_inj (E := E) v` to reduce the goal to its premises. Rewrite using `[← hR_self _ hσ hJ, hh, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = algebraMap (Fv F v) _ (e X (i, 0) ^ 2 + t * e X (i, 0) * e X (i, 1) + n * e X (i, 1) ^ 2)`. Rewrite using `[hg']`. Simplify using `only [map_add, map_mul, map_pow, sigR_algebraMap, ← ht, ← hn]`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `(∀ i, Valued.v (e Y i) ≤ WithZero.exp m) ↔ _`. Establish `hB : ∀ X : Fin 1 → Fin M → Fv F v ⊗[F] E, BR (Fv F v) σ J X Y = ∑ i, Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (sigR (Fv F v) σ (g (X 0) i) * g (Y 0) i)`. Introduce `X`. Rewrite using `[BR, Fin.sum_univ_one, hh, map_sum]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h X hX`. Establish `hX'` using `fun i => SelfDualLatticeActions.sigR_mem v σ ((hg _).1 hX i)`. Establish `: Valued.v (BR (Fv F v) σ J X Y) ≤ WithZero.exp m`. Rewrite using `[hB]`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hg' Y, mul_add, ← mul_assoc, mul_comm _ (algebraMap (Fv F v) _ (e Y (i, 0))), mul_comm _ (algebraMap (Fv F v) _ (e Y (i, 1))), mul_assoc, ← Algebra.smul_def, ← Algebra.smul_def, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Use `Valuation.map_add_le _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_of_le_one (h _) (trace_mem v hσ (hX' i))`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_le_of_le_of_le_one (h _) (trace_mem v hσ (mul_mem (hX' i) hw))`. Simplify using `using (hm _).2 this 1 (one_mem _)`. Introduce `h ⟨i, j⟩`. Use `(hm _).1 fun s hs => ?_` and prove the remaining obligations. Use `h (fun _ => g.symm (Pi.single i (algebraMap (Fv F v) _ s * sigR (Fv F v) σ (c j)))) (by` as an intermediate fact.
+
+Rewrite using `[hg, LinearEquiv.apply_symm_apply]`. Introduce `k`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `mul_mem ((algebraMap_mem_iff v _).2 hs) (SelfDualLatticeActions.sigR_mem v σ (hc j))`.
+
+Conclude with `zero_mem _)`. Rewrite `this` using `[hB, LinearEquiv.apply_symm_apply, Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp), Pi.single_eq_same, map_mul (sigR (Fv F v) σ), sigR_algebraMap, sigR_sigR _ hσ, mul_assoc, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Conclude with `this`.
+-/
 theorem exists_coords (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     {w : Fv F v ⊗[F] E} {t n : v.adicCompletionIntegers F}
     (hw : w ∈ SelfDualLatticeActions.OEv E v) (hD : IsUnit (t ^ 2 - 4 * n))
@@ -310,6 +407,15 @@ theorem exists_coords (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
         map_smul, smul_eq_mul, mul_comm] at this
       exact this
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LocalDensityCompare.topRing (E := E) v`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`. Use `set b := sigR (Fv F v) σ a * algebraMap (Fv F v) (Fv F v ⊗[F] E) u⁻¹ with hb`.
+
+Establish `hab : a * b = 1`. Rewrite using `[hb, ← mul_assoc, hN, ← map_mul, mul_inv_cancel₀ hu0, map_one]`. Establish `hbm : b ∈ SelfDualLatticeActions.OEv E v` using `mul_mem (SelfDualLatticeActions.sigR_mem v σ ha) ((algebraMap_mem_iff v _).2 (show Valued.v u⁻¹ ≤ 1 by rw [map_inv₀, hu, inv_one]))`. Use `⟨{ toFun := fun X => a • X invFun := fun X => b • X left_inv := fun X => by simp only [smul_smul, mul_comm b, hab, one_smul] right_inv := fun X => by simp only [smul_smul, hab, one_smul] map_add' := smul_add a }, continuous_const_smul a, continuous_const_smul b, fun X => ⟨fun h = …` and prove the remaining obligations. Establish `h' : b • a • X 0 ∈ L` using `L.smul_mem ⟨b, hbm⟩ h`.
+
+Rewrite `h'` using `[smul_smul, mul_comm b, hab, one_smul]`. Then use the resulting hypothesis. Apply `algebraMap_inj (E := E) v` to reduce the goal to its premises. Rewrite using `[map_mul, ← hR_self _ hσ hJ, ← hR_self _ hσ hJ, ← hN]`. Express the relevant statement in the definitionally equal form `hR (Fv F v) σ J (a • X 0) (a • X 0) = _`. Rewrite using `[hR_smul_left, hR_smul_right]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_scaling (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (L : Submodule (SelfDualLatticeActions.OEv E v) (SelfDualLatticeActions.Wv E v M)) {u : Fv F v} (hu : Valued.v u = 1)
     {a : Fv F v ⊗[F] E} (ha : a ∈ SelfDualLatticeActions.OEv E v)

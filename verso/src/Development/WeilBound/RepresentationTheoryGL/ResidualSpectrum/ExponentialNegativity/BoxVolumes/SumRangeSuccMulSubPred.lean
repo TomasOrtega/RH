@@ -4,6 +4,11 @@ open Finset
 
 namespace PositivityTheory.Rg.Rs.boxvol
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[sum_range_succ, ih, sum_range_succ]`. Simplify using `only [Nat.add_sub_cancel]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_range_succ_mul_sub_pred (y : ℕ → ℝ) (n : ℕ) :
     ∑ r ∈ range (n + 1), (r : ℝ) * (y (r - 1) - y r) = ∑ i ∈ range n, y i - n * y n := by
   induction n with
@@ -14,6 +19,13 @@ theorem sum_range_succ_mul_sub_pred (y : ℕ → ℝ) (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : ∑ r ∈ range (n + 1), ((r : ℝ) * (((n + 1 : ℕ) : ℝ) - r)) * (y (r - 1) - y r) = ∑ r ∈ range (n + 1), ((r : ℝ) * ((n : ℝ) - r)) * (y (r - 1) - y r) + ∑ r ∈ range (n + 1), (r : ℝ) * (y (r - 1) - y r)`. Rewrite using `[← sum_add_distrib]`.
+
+Use `sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, sum_range_succ_mul_sub_pred, sum_range_succ, ih, sum_range_succ _ n]`. Simplify using `only [sum_sub_distrib, sum_const, card_range, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_range_pairs_sub (y : ℕ → ℝ) (n : ℕ) :
     ∑ j ∈ range n, ∑ i ∈ range j, (y i - y j)
       = ∑ r ∈ range n, ((r : ℝ) * ((n : ℝ) - r)) * (y (r - 1) - y r) := by
@@ -31,6 +43,17 @@ theorem sum_range_pairs_sub (y : ℕ → ℝ) (n : ℕ) :
     simp only [sum_sub_distrib, sum_const, card_range, nsmul_eq_mul]
     ring
 
+/- English proof (translation)
+Use `set y : ℕ → ℝ := fun k => if h : k < n then x ⟨k, h⟩ else 0 with hy`. Establish `hyx : ∀ i : Fin n, y i = x i` using `fun i => by simp [hy, i.2]`. Establish `hL : ∑ p : {p : Fin n × Fin n // p.1 < p.2}, (x p.1.1 - x p.1.2) = ∑ j ∈ range n, ∑ i ∈ range j, (y i - y j)`. Rewrite using `[← Finset.sum_subtype (univ.filter fun p : Fin n × Fin n => p.1 < p.2) (by simp) (fun p : Fin n × Fin n => x p.1 - x p.2), Finset.sum_filter, Fintype.sum_prod_type_right, ← Fin.sum_univ_eq_sum_range (fun j => ∑ i ∈ range j, (y i - y j)) n]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `hj : range (j : ℕ) = (range n).filter (· < (j : ℕ))`. Use extensionality with `i`. Simplify using `only [mem_range, mem_filter]`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hj, Finset.sum_filter, ← Fin.sum_univ_eq_sum_range (fun i => if i < (j : ℕ) then y i - y j else 0) n]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.lt_def, hyx]`. Rewrite using `[hL, sum_range_pairs_sub]`. Use `sum_congr rfl fun r hr => ?_` and prove the remaining obligations.
+
+Establish `hrn : r < n` using `mem_range.mp hr`. Break down `Nat.eq_zero_or_pos r with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Establish `h : 0 < r ∧ r < n` using `⟨h0, hrn⟩`. Establish `h1 : r - 1 < n` using `by omega`.
+
+Simplify using `[hy, h0, hrn, h1]`.
+-/
 theorem sum_pairs_sub (n : ℕ) (x : Fin n → ℝ) :
     ∑ p : {p : Fin n × Fin n // p.1 < p.2}, (x p.1.1 - x p.1.2)
       = ∑ r ∈ Finset.range n, ((r : ℝ) * ((n : ℝ) - r)) *

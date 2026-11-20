@@ -4,6 +4,31 @@ open IsLocalRing
 
 namespace GlobalTheory.CompleteDiscreteValuationRing
 
+/- English proof (translation)
+Use `set α := algebraMap A B a with hα`. Set `D : ℕ → Ideal A` to `fun n => (Ideal.span {α ^ n}).comap (algebraMap A B)`. Establish `hD : ∀ {m n : ℕ}, m ≤ n → D n ≤ D m` using `fun h => Ideal.comap_mono (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h))`. Set `E : ℕ →o (Submodule A (A ⧸ Ideal.span {a}))ᵒᵈ` to `⟨fun n => OrderDual.toDual (Submodule.map (Ideal.span {a}).mkQ (D n)), fun m n h => Submodule.map_mono (hD h)⟩`. Take `⟨l, hl⟩` from `IsArtinian.monotone_stabilizes E`.
+
+Establish `key : ∀ n, l ≤ n → ∀ r : A, α ^ n ∣ algebraMap A B r → ∃ (b : B) (s : A), algebraMap A B r = α ^ (n + 1) * b + α * algebraMap A B s`. Introduce `n hn r hr`. Establish `h1 : Submodule.map (Ideal.span {a}).mkQ (D n) = Submodule.map (Ideal.span {a}).mkQ (D (n + 1))` using `(hl n hn).symm.trans (hl (n + 1) (by omega))`. Establish `h2 : (Ideal.span {a}).mkQ r ∈ Submodule.map (Ideal.span {a}).mkQ (D n)` using `Submodule.mem_map_of_mem (Ideal.mem_comap.2 (Ideal.mem_span_singleton.2 hr))`. Rewrite `h2` using `[h1]`.
+
+Take `⟨r', hr', e⟩` from `h2`. Establish `h3 : r - r' ∈ Ideal.span {a}` using `(Submodule.Quotient.eq _).1 e.symm`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton.1 h3`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.1 (Ideal.mem_comap.1 hr')`. Use `⟨b, s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hb, hα, ← map_mul, ← hs, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `down : ∀ (x : B) (j : ℕ), (∃ (b : B) (r : A), α ^ (l + j) * x = α ^ (l + j + 1) * b + algebraMap A B r) → ∃ (b : B) (r : A), α ^ l * x = α ^ (l + 1) * b + algebraMap A B r`. Introduce `x j`.
+
+Proceed by induction on `j with`. Consider the case `zero => exact id`. Consider the case `succ j ih`. Introduce and unpack `⟨b, r, h⟩`. Apply `ih` to reduce the goal to its premises.
+
+Take `⟨b', s, hs⟩` from `key (l + (j + 1)) (by omega) r ⟨x - α * b, by rw [mul_sub, h]; ring⟩`. Use `⟨b + b', s, mul_left_cancel₀ ha ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hs]`. Take the linear combination `h`. Establish `claim : ∀ x : B, ∃ (b : B) (r : A), α ^ l * x = α ^ (l + 1) * b + algebraMap A B r`.
+
+Introduce `x`. Take `⟨n, r, h⟩` from `hden x`. Use `down x n ⟨0, a ^ l * r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ← hα, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `Q : Ideal B` to `Ideal.span {α ^ (l + 1)}`. Set `φ : B →ₗ[B] B ⧸ Q` to `Q.mkQ ∘ₗ LinearMap.mul B B (α ^ l)`. Use `Submodule.fg_of_fg_map_of_fg_inf_ker φ ?_ ?_` and prove the remaining obligations. Apply `Submodule.FG.of_restrictScalars A` to reduce the goal to its premises. Use `Submodule.FG.of_le (Submodule.fg_span_singleton (R := A) (1 : B ⧸ Q)) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, -, rfl⟩`. Take `⟨b, r, h⟩` from `claim x`. Use `Submodule.mem_span_singleton.2 ⟨r, ?_⟩` and prove the remaining obligations. Establish `: φ x = Ideal.Quotient.mk Q (α ^ l * x)` using `rfl`. Rewrite using `[this, h, map_add, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 (dvd_mul_right _ _)), zero_add, Algebra.smul_def, mul_one]`.
+
+Both sides reduce to the same expression. Establish `: (J : Submodule B B) ⊓ LinearMap.ker φ = Ideal.span {α}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨-, hx⟩`. Establish `h1 : Ideal.Quotient.mk Q (α ^ l * x) = 0` using `hx`.
+
+Establish `h2` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 h1)`. Rewrite `h2` using `[pow_succ]`. Conclude with `Ideal.mem_span_singleton.2 ((mul_dvd_mul_iff_left (pow_ne_zero l ha)).1 h2)`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `⟨hJ, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (α ^ l * α) = 0`. Rewrite using `[← pow_succ]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite using `[this]`. Conclude with `Submodule.fg_span_singleton _`.
+-/
 theorem fg_of_mem {A B : Type} [CommRing A] [IsNoetherianRing A] [CommRing B] [IsDomain B]
     [Algebra A B] (a : A) (ha : algebraMap A B a ≠ 0)
     (hart : IsArtinian A (A ⧸ Ideal.span {a}))
@@ -79,6 +104,33 @@ theorem fg_of_mem {A B : Type} [CommRing A] [IsNoetherianRing A] [CommRing B] [I
     rw [this]
     exact Submodule.fg_span_singleton _
 
+/- English proof (translation)
+Set `K` to `FractionRing O`. Take `⟨B, hB, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (algebraMap O K)`. Set `f : O →+* B` to `(algebraMap O K).codRestrict B.toSubring hB`. Establish `hf : ∀ x, ((f x : B) : K) = algebraMap O K x` using `fun _ => rfl`. Establish `finj : Function.Injective f` using `fun x y h => IsFractionRing.injective O K (by rw [← hf, ← hf, h])`.
+
+Establish `hft : ¬ IsUnit (f t)` using `fun h => ht (hloc.1 _ h)`. Establish `hpow : ∀ s : O, s ≠ 0 → ∃ n : ℕ, s ∣ t ^ n`. Introduce `s hs`. Establish `: t ∈ (Ideal.span {s}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`.
+
+Introduce and unpack `P ⟨hP, hP'⟩`. Establish `hne : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hs (by simpa using hP)`. Establish `hmax : Ideal.IsMaximal P` using `Ring.krullDimLE_one_iff_of_noZeroDivisors.1 inferInstance P hne hP'`.
+
+Rewrite using `[IsLocalRing.eq_maximalIdeal hmax]`. Conclude with `ht`. Take `⟨n, hn⟩` from `this`. Conclude with `⟨n, Ideal.mem_span_singleton.1 hn⟩`. Establish `hfrac : ∀ x : B, ∃ r s : O, s ≠ 0 ∧ f s * x = f r`.
+
+Introduce `x`. Take `⟨r, s, hs, e⟩` from `IsFractionRing.div_surjective (A := O) (x : K)`. Establish `hs0` using `nonZeroDivisors.ne_zero hs`. Use `⟨r, s, hs0, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: algebraMap O K s ≠ 0` using `fun h => hs0 (IsFractionRing.injective O K (by simpa using h))`.
+
+Express the relevant statement in the definitionally equal form `algebraMap O K s * (x : K) = algebraMap O K r`. Rewrite using `[← e]`. Conclude with `mul_div_cancel₀ _ this`. Use `letI : Algebra O B := f.toAlgebra`. Establish `hN : IsNoetherianRing B`.
+
+Rewrite using `[isNoetherianRing_iff_ideal_fg]`. Introduce `J`. Distinguish the cases in `hJ : J = ⊥`. Rewrite using `[hJ]`. Conclude with `Submodule.fg_bot`.
+
+Take `⟨x, hxJ, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hJ`. Take `⟨r, s, hs, e⟩` from `hfrac x`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `e` using `[map_zero]`.
+
+Conclude with `mul_ne_zero ((map_ne_zero_iff f finj).2 hs) hx0 e`. Take `⟨n, c, hc⟩` from `hpow r hr`. Establish `hne : t ^ (n + 1) ≠ 0` using `pow_ne_zero _ ht0`. Use `fg_of_mem (t ^ (n + 1)) ((map_ne_zero_iff f finj).2 hne) ?_ ?_ J ?_` and prove the remaining obligations. Conclude with `(isFiniteLength_iff_isNoetherian_isArtinian.1 (isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero hne))).2`.
+
+Introduce `y`. Take `⟨r', s', hs', e'⟩` from `hfrac y`. Take `⟨m, c', hc'⟩` from `hpow s' hs'`. Use `⟨m, r' * c' * t ^ (n * m), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f _ ^ m * y = f _`.
+
+Rewrite using `[map_mul, map_mul, ← e', ← map_pow, ← pow_mul, add_mul, one_mul, pow_add, hc', map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `f _ ∈ J`. Rewrite using `[pow_succ, hc, map_mul, map_mul, ← e]`. Conclude with `J.mul_mem_right _ (J.mul_mem_right _ (J.mul_mem_left _ hxJ))`.
+
+Establish `hP : IsPrincipalIdealRing B` using `IsPrincipalIdealRing.of_isNoetherianRing_of_isBezout`. Establish `hD : IsDiscreteValuationRing B` using `{ not_a_field' := fun h => by`. Establish `h1 : f t ∈ maximalIdeal B` using `hft`. Rewrite `h1` using `[h]`. Conclude with `ht0 ((map_eq_zero_iff f finj).1 h1) }`.
+
+Conclude with `⟨B, inferInstance, inferInstance, hD, f, finj, hft⟩`.
+-/
 theorem exists_dvr_of_dim_one (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O]
     [IsNoetherianRing O] [Ring.KrullDimLE 1 O] (t : O) (ht0 : t ≠ 0) (ht : ¬ IsUnit t) :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
@@ -148,6 +200,23 @@ theorem exists_dvr_of_dim_one (O : Type) [CommRing O] [IsDomain O] [IsLocalRing 
         exact ht0 ((map_eq_zero_iff f finj).1 h1) }
   exact ⟨B, inferInstance, inferInstance, hD, f, finj, hft⟩
 
+/- English proof (translation)
+Establish `hfac : ∀ x : S, x ≠ 0 → ∃ (n : ℕ) (u : S), IsUnit u ∧ x = p ^ n * u`. Introduce `x hx`. Establish `hex : ∃ n : ℕ, ¬ p ^ n ∣ x`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Apply `hx` to reduce the goal to its premises. Use `IsHausdorff.haus (I := maximalIdeal S) inferInstance x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, hp, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.mem_span_singleton.2 (h n)`. Establish `h1` using `Nat.find_spec hex`.
+
+Establish `h0 : Nat.find hex ≠ 0` using `fun h => by rw [h] at h1; simp at h1`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Establish `h2` using `Nat.find_min hex (m := n) (by omega)`. Use `push Not at h2`. Take `⟨u, hu⟩` from `h2`.
+
+Use `⟨n, u, ?_, hu⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Establish `: u ∈ maximalIdeal S` using `hnu`. Rewrite `this` using `[hp, Ideal.mem_span_singleton]`. Apply `h1` to reduce the goal to its premises.
+
+Rewrite using `[hn, hu, pow_succ]`. Conclude with `mul_dvd_mul_left _ this`. Establish `hreg' : ∀ x : S, x ≠ 0 → x ∈ nonZeroDivisors S`. Introduce `x hx`. Take `⟨n, u, hu, rfl⟩` from `hfac x hx`.
+
+Conclude with `mul_mem (pow_mem hreg n) hu.mem_nonZeroDivisors`. Establish `hnz : NoZeroDivisors S` using `⟨fun {x y} h => by`. Distinguish the cases in `hx : x = 0`. Conclude with `Or.inl hx`. Conclude with `Or.inr ((hreg' x hx).1 y h)⟩`.
+
+Establish `hdom : IsDomain S` using `NoZeroDivisors.to_isDomain S`. Establish `hp0 : p ≠ 0` using `nonZeroDivisors.ne_zero hreg`. Establish `hprime : Prime p`. Rewrite using `[← Ideal.span_singleton_prime hp0, ← hp]`. Use `infer_instance`.
+
+Use `⟨hdom, IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨p, hprime.irreducible, fun {x} hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨n, u, hu, rfl⟩` from `hfac x hx`. Conclude with `⟨n, hu.unit, rfl⟩`.
+-/
 theorem dvr_of_principal (S : Type) [CommRing S] [IsLocalRing S] (p : S)
     (hp : maximalIdeal S = Ideal.span {p}) (hreg : p ∈ nonZeroDivisors S)
     [IsHausdorff (maximalIdeal S) S] :
@@ -193,6 +262,17 @@ theorem dvr_of_principal (S : Type) [CommRing S] [IsLocalRing S] (p : S)
   obtain ⟨n, u, hu, rfl⟩ := hfac x hx
   exact ⟨n, hu.unit, rfl⟩
 
+/- English proof (translation)
+Set `W` to `AdicCompletion (maximalIdeal B) B`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible B`. Establish `h1 : maximalIdeal W = Ideal.span {algebraMap B W p}`. Establish `h0 : Ideal.map (algebraMap B W) (maximalIdeal B) = Ideal.span {algebraMap B W p}`. Generalize the expression as in `algebraMap B W = g`.
+
+Conclude with `(congrArg (Ideal.map g) hp.maximalIdeal_eq).trans (by rw [Ideal.map_span, Set.image_singleton])`. Conclude with `AdicCompletion.maximalIdeal_eq_map.trans h0`. Establish `hr : ∀ x : B, x ≠ 0 → algebraMap B W x ∈ nonZeroDivisors W`. Introduce `x hx`. Establish `h2 : IsSMulRegular W x` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hx)`.
+
+Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `y hy`. Apply `h2` to reduce the goal to its premises. Simplify using `only [smul_zero]`. Rewrite using `[Algebra.smul_def, hy]`.
+
+Take `⟨hd, hD⟩` from `dvr_of_principal W _ h1 (hr p hp.ne_zero)`. Use `⟨W, inferInstance, hd, hD, algebraMap B W, inferInstance, ?_, inferInstance⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h`.
+
+Conclude with `nonZeroDivisors.ne_zero (hr x h) hx`.
+-/
 theorem exists_complete (B : Type) [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
       (f : B →+* W), IsAdicComplete (maximalIdeal W) W ∧ Function.Injective f ∧ IsLocalHom f := by
@@ -220,6 +300,13 @@ theorem exists_complete (B : Type) [CommRing B] [IsDomain B] [IsDiscreteValuatio
   by_contra h
   exact nonZeroDivisors.ne_zero (hr x h) hx
 
+/- English proof (translation)
+Establish `hne : Ideal.span {t} ≠ ⊤` using `fun h => ht (Ideal.span_singleton_eq_top.1 h)`. Take `⟨P, hP⟩` from `Ideal.nonempty_minimalPrimes hne`. Establish `hPp : P.IsPrime` using `hP.1.1`. Establish `htP : t ∈ P` using `hP.1.2 (Ideal.mem_span_singleton_self t)`. Establish `hh : P.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ P hP`.
+
+Set `O` to `Localization.AtPrime P`. Establish `hdim : Ring.KrullDimLE 1 O`. Rewrite using `[Ring.krullDimLE_iff, IsLocalization.AtPrime.ringKrullDim_eq_height P O]`. Conclude with `hh` after adjusting the coercions. Establish `hinj : Function.Injective (algebraMap A O)` using `IsLocalization.injective O P.primeCompl_le_nonZeroDivisors`.
+
+Establish `hnu : ¬ IsUnit (algebraMap A O t)` using `fun h => (IsLocalization.AtPrime.isUnit_to_map_iff O P t).1 h htP`. Take `⟨B, _, _, _, f, hf, hft⟩` from `exists_dvr_of_dim_one O (algebraMap A O t) ((map_ne_zero_iff _ hinj).2 ht0) hnu`. Take `⟨W, _, _, hW, g, hc, hg, hl⟩` from `exists_complete B`. Conclude with `⟨W, inferInstance, inferInstance, hW, g.comp (f.comp (algebraMap A O)), hc, hg.comp (hf.comp hinj), fun h => hft (hl.1 _ h)⟩`.
+-/
 theorem exists_complete_dvr (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A]
     (t : A) (ht0 : t ≠ 0) (ht : ¬ IsUnit t) :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
@@ -244,6 +331,43 @@ theorem exists_complete_dvr (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRi
   exact ⟨W, inferInstance, inferInstance, hW, g.comp (f.comp (algebraMap A O)), hc,
     hg.comp (hf.comp hinj), fun h => hft (hl.1 _ h)⟩
 
+/- English proof (translation)
+Use `Fintype.ofFinite I` as an intermediate fact. Set `K` to `FractionRing V`. Set `ι : V →+* K` to `algebraMap V K`. Establish `hι : Function.Injective ι` using `IsFractionRing.injective V K`. Establish `hψa : ∀ i, ψ (a i) ≠ 0` using `fun i => (h i).ne_zero_iff.2 (pow_ne_zero _ hϖ.ne_zero)`.
+
+Establish `ha : ∀ i, a i ≠ 0` using `fun i e => hψa i (by rw [e, map_zero])`. Set `d : Polynomial R` to `Polynomial.X * Polynomial.C (∏ i, a i)`. Establish `hd : d ≠ 0` using `mul_ne_zero Polynomial.X_ne_zero (Polynomial.C_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => ha i))`. Establish `hle : Submonoid.powers d ≤ nonZeroDivisors (Polynomial R)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hd`. Set `C` to `Localization.Away d`.
+
+Establish `hCd : IsDomain C` using `IsLocalization.isDomain_localization hle`. Establish `hinj : Function.Injective (algebraMap (Polynomial R) C)` using `IsLocalization.injective C hle`. Set `e : Polynomial R →+* K` to `Polynomial.eval₂RingHom (ι.comp ψ) (ι ϖ)`. Establish `hϖK : ι ϖ ≠ 0` using `(map_ne_zero_iff ι hι).2 hϖ.ne_zero`. Establish `hed : IsUnit (e d)`.
+
+Use `Ne.isUnit ?_` and prove the remaining obligations. Simplify using `only [e, d, map_mul, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, Polynomial.eval₂_C, RingHom.comp_apply]`. Use `mul_ne_zero hϖK ((map_ne_zero_iff ι hι).2 ?_)` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hψa i`.
+
+Set `φ : C →+* K` to `IsLocalization.Away.lift d hed`. Set `τ : C` to `algebraMap (Polynomial R) C Polynomial.X`. Establish `hRC : ∀ r : R, algebraMap R C r = algebraMap (Polynomial R) C (Polynomial.C r)` using `fun r => by rw [IsScalarTower.algebraMap_apply R (Polynomial R) C]; rfl`. Establish `hφτ : φ τ = ι ϖ`. Simplify using `only [φ, τ, IsLocalization.Away.lift_eq, e, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X]`.
+
+Establish `hφr : ∀ r : R, φ (algebraMap R C r) = ι (ψ r)` using `fun r => by`. Simplify using `only [hRC, φ, IsLocalization.Away.lift_eq, e, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_C, RingHom.comp_apply]`. Establish `hud : IsUnit (algebraMap (Polynomial R) C d)` using `IsLocalization.Away.algebraMap_isUnit d`. Establish `huτ : IsUnit τ` using `isUnit_of_dvd_unit (map_dvd _ (dvd_mul_right _ _)) hud`. Establish `hua : ∀ i, IsUnit (algebraMap R C (a i))` using `fun i => by`.
+
+Rewrite using `[hRC]`. Use `isUnit_of_dvd_unit (map_dvd _ (Dvd.dvd.mul_left (map_dvd _ ?_) _)) hud` and prove the remaining obligations. Conclude with `Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Establish `hdiv : ∀ (x y : C) (x' y' : V), IsUnit y → φ x = ι x' → φ y = ι y' → y' ∣ x' → ∃ z : C, x = y * z ∧ φ z ∈ ι.range`. Introduce and unpack `x y _ y' hy hx' hy' ⟨c, rfl⟩`.
+
+Take `⟨z, rfl⟩` from `hy.dvd (a := x)`. Use `⟨z, rfl, c, mul_left_cancel₀ (hy.map φ).ne_zero ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hx', hy', map_mul]`. Establish `hτk : ∀ i, φ (τ ^ k i) = ι (ϖ ^ k i)` using `fun i => by rw [map_pow, map_pow, hφτ]`. Use `choose u hu hu' using fun i => hdiv (algebraMap R C (a i)) (τ ^ k i) _ _ (huτ.pow _) (hφr _) (hτk i) (h i).symm.dvd`.
+
+Use `choose w hw hw' using fun i => hdiv (τ ^ k i) (algebraMap R C (a i)) _ _ (hua i) (hτk i) (hφr _) (h i).dvd`. Take `⟨s, hs⟩` from `(maximalIdeal R).fg_of_isNoetherianRing`. Establish `hsd : ∀ y : s, ϖ ∣ ψ y` using `fun y => by`. Establish `h1 : (y : R) ∈ maximalIdeal R` using `hs ▸ Ideal.subset_span y.2`. Establish `h2 : ψ y ∈ maximalIdeal V` using `fun h => h1 (hψ.1 _ h)`.
+
+Rewrite `h2` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Use `choose z hz hz' using fun y : s => hdiv (algebraMap R C y) τ _ _ huτ (hφr _) hφτ (hsd y)`. Set `S : Set C` to `{τ} ∪ Set.range u ∪ Set.range w ∪ Set.range z`. Establish `hS : S.Finite` using `(((Set.finite_singleton _).union (Set.finite_range _)).union (Set.finite_range _)).union (Set.finite_range _)`. Set `A` to `Algebra.adjoin R S`.
+
+Establish `hft : Algebra.FiniteType R A`. Rewrite using `[← Subalgebra.fg_iff_finiteType]`. Conclude with `Subalgebra.fg_def.2 ⟨S, hS, rfl⟩`. Establish `hN : IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing R A`. Establish `hA : ∀ x ∈ A, φ x ∈ ι.range`.
+
+Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ((rfl | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩` into its components or cases. Use `exacts [⟨_, hφτ.symm⟩, hu' i, hw' i, hz' i]`.
+
+Consider the case `algebraMap r => exact ⟨_, (hφr r).symm⟩`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+
+Establish `mτ : τ ∈ A` using `Algebra.subset_adjoin (Or.inl (Or.inl (Or.inl rfl)))`. Establish `mu : ∀ i, u i ∈ A` using `fun i => Algebra.subset_adjoin (Or.inl (Or.inl (Or.inr ⟨i, rfl⟩)))`. Establish `mw : ∀ i, w i ∈ A` using `fun i => Algebra.subset_adjoin (Or.inl (Or.inr ⟨i, rfl⟩))`. Establish `mz : ∀ i, z i ∈ A` using `fun i => Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩)`. Use `⟨A, inferInstance, inferInstance, hN, algebraMap R A, ⟨τ, mτ⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y hxy`. Establish `h1 : algebraMap R C x = algebraMap R C y` using `congrArg Subtype.val hxy`. Rewrite `h1` using `[hRC, hRC]`. Conclude with `Polynomial.C_injective (hinj h1)`. Conclude with `fun h0 => huτ.ne_zero (congrArg Subtype.val h0)`.
+
+Introduce `h0`. Take `⟨x, hx⟩` from `isUnit_iff_exists_inv.1 h0`. Establish `h1 : τ * (x : C) = 1` using `congrArg Subtype.val hx`. Take `⟨v, hv⟩` from `hA x x.2`. Establish `h2` using `congrArg φ h1`.
+
+Rewrite `h2` using `[map_mul, map_one, hφτ, ← hv, ← map_mul, ← map_one ι]`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one _ (hι h2))`. Introduce `r hr`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.mem_comap]`. Rewrite `hr` using `[← hs]`.
+
+Use `Ideal.span_le.2 (fun y hy => ?_) hr` and prove the remaining obligations. Conclude with `Ideal.mem_comap.2 (Ideal.mem_span_singleton.2 ⟨⟨_, mz ⟨y, hy⟩⟩, Subtype.ext (hz ⟨y, hy⟩)⟩)`. Introduce `i`. Conclude with `associated_of_dvd_dvd ⟨⟨_, mw i⟩, Subtype.ext (hw i)⟩ ⟨⟨_, mu i⟩, Subtype.ext (hu i)⟩`.
+-/
 theorem exists_chart (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V)
     (hϖ : Irreducible ϖ) (ψ : R →+* V) (hψ : IsLocalHom ψ) (I : Type) [Finite I] (a : I → R)
@@ -352,6 +476,13 @@ theorem exists_chart (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoe
   · intro i
     exact associated_of_dvd_dvd ⟨⟨_, mw i⟩, Subtype.ext (hw i)⟩ ⟨⟨_, mu i⟩, Subtype.ext (hu i)⟩
 
+/- English proof (translation)
+Take `⟨A, _, _, _, g, t, hg, ht0, ht, hm, ha⟩` from `exists_chart R V ϖ hϖ ψ hψ I a k h`. Take `⟨W, _, _, hW, f, hc, hf, hft⟩` from `exists_complete_dvr A t ht0 ht`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ((map_ne_zero_iff f hf).2 ht0) hp`. Use `⟨W, inferInstance, inferInstance, hW, p, f.comp g, 1, n, fun i => n * k i, hc, hp, hf.comp hg, ⟨fun r hr => ?_⟩, le_rfl, ?_, fun i => ⟨?_, one_mul _⟩⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hnu`. Conclude with `hft (isUnit_of_dvd_unit (map_dvd f (hm r hnu)) hr)`. Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce and unpack `rfl`. Rewrite `hn` using `[pow_zero, associated_one_iff_isUnit]`.
+
+Conclude with `hft hn`. Establish `h1` using `(ha i).map f`. Rewrite `h1` using `[map_pow]`. Rewrite using `[pow_mul]`. Conclude with `h1.trans hn.pow_pow`.
+-/
 theorem main (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     [CharZero R] (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V)
     (hϖ : Irreducible ϖ) (ψ : R →+* V) (hψ : IsLocalHom ψ) (I : Type) [Finite I] (a : I → R)

@@ -12,6 +12,15 @@ namespace GlobalTheory.DualJump
 
 open GlobalTheory.DRFil GlobalTheory.DRDual
 
+/- English proof (translation)
+Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `(GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL V ρ).1` as an intermediate fact. Establish `hs` using `filSpans T K LL ρ h`. Set `ρ₀ : Representation ↥LL.1 ↥(GK K) V'` to `twistRep (cycLL (P.PD K) ↥LL.1 ^ (-j)) ρ'`.
+
+Establish `hρ₀ : ∀ g y, ρ₀ g y = ((cycLL (P.PD K) ↥LL.1 g ^ (-j) : (↥LL.1)ˣ) : ↥LL.1) • ρ' g y` using `fun g y => rfl`. Establish `hβ : ∀ g x y, m (ρ g x) (ρ₀ g y) = m x y` using `fun g x y => by`. Rewrite using `[hρ₀, map_smul, hg, smul_eq_mul, zpow_neg, Units.inv_mul_cancel_left]`. Establish `hβ' : Function.Bijective m.flip` using `(LinearEquiv.ofBijective m hm).flip.bijective`. Establish `ht : (GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR P K : P.R.BdR) = (P.PD K).ι (P.PD K).t` using `rfl`.
+
+Take `⟨-, h2⟩` from `twist_unit (P.PD K) ρ₀ ρ' (GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR P K ^ (-j)) (-j) (fun g => (P.PD K).χ g ^ (-j)) (tdR_zpow_mem T K _) (by rw [← zpow_neg]; exact tdR_zpow_mem T K _) (act_zpow _ _ ht _) (fun g => by rw [← zpow_neg, ← zpow_neg]; exact act_zpo …`. Rewrite using `[hρ₀, ← algebraMap_smul ↥LL.1]`. Use `congr 1`. Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap ℚ_[l] ↥LL.1 : ℚ_[l] →* ↥LL.1)) ((P.PD K).χ g) (-j)))`. Take `⟨n, d, k, had⟩` from `GlobalTheory.DRFil.exists_adapted (P.PD K) (isField_dR T) ρ hs τ`.
+
+Take `⟨d', had'⟩` from `had.dual ρ₀ m hβ hβ'`. Rewrite using `[show -a - j = -j + -a by ring, h2, had.multV_eq, had'.multV_eq]`. Simplify using `only [neg_inj]`.
+-/
 theorem multV_twisted_dual {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     (K LL : FinExt l) {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]
     [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
@@ -46,6 +55,11 @@ theorem multV_twisted_dual {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAi
   rw [show -a - j = -j + -a by ring, h2, had.multV_eq, had'.multV_eq]
   simp only [neg_inj]
 
+/- English proof (translation)
+Introduce `L AI hT l _ K LL A A' m hm h τ a`. Take `⟨T⟩` from `hT l`. Take `⟨hg, h1, -, hd⟩` from `hm`. Establish `hi : Function.Injective m` using `(injective_iff_map_eq_zero m).2 fun x hx => h1 x fun y => by rw [hx, LinearMap.zero_apply]`. Establish `hb : Function.Bijective m` using `⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (hd.trans (Subspace.dual_finrank_eq (K := ↥LL.1) (V := A'.V)).symm)).1 hi⟩`.
+
+Establish `key` using `multV_twisted_dual T K LL A.ρ A'.ρ m 1 hb (fun g x y => by rw [zpow_one]; exact hg g x y) h τ (-a - 1)`. Rewrite `key` using `[show -(-a - 1) - 1 = a by ring]`. Rewrite using `[(GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l (L l) (AI l) T K LL A'.V A'.ρ τ a).2.2, (GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l (L l) (AI l) T K LL A.V A.ρ τ (-a - 1)).2.2, key]`.
+-/
 theorem dualJumpL : ∀ (L : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (L l)), (∀ (l : ℕ) [Fact l.Prime], Nonempty (LocTied l (L l) (A l))) → DualJumpL L := by
   intro L AI hT l _ K LL A A' m hm h τ a
   obtain ⟨T⟩ := hT l

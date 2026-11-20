@@ -21,16 +21,25 @@ open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.Ph
 
 variable [IsDomain O] [NeZero n]
 
+/- English proof (translation)
+Take `⟨h3, h6⟩` from `Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR`. Conclude with `Formalism.MainNotions.UnusedSlot80.SatW.isUnit_EE_of_UPi W (Formalism.MainNotions.UnusedSlot80.SatW.UPi_qpow W h3 h6 s)`.
+-/
 theorem ps_unitE (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (s : ℕ) : IsUnit (algebraMap (LetA O n) W.EE (ps W s)) := by
   obtain ⟨h3, h6⟩ := Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR
   exact Formalism.MainNotions.UnusedSlot80.SatW.isUnit_EE_of_UPi W (Formalism.MainNotions.UnusedSlot80.SatW.UPi_qpow W h3 h6 s)
 
+/- English proof (translation)
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun s _ => by rw [map_pow]; exact (ps_unitE W hR s).pow _`.
+-/
 theorem prod_ps_unitE (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (e : ℕ) (E : ℕ → ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE (∏ s ∈ Finset.range e, ps W s ^ E s)) := by
   rw [map_prod]
   exact Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one
     fun s _ => by rw [map_pow]; exact (ps_unitE W hR s).pow _
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_range_succ', map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s _ => by rw [map_pow, ← ps_succ]`.
+-/
 theorem prod_succ_φ (e : ℕ) (E : ℕ → ℕ) :
     ∏ s ∈ Finset.range (e + 1), ps W s ^ E s =
       W.φA (∏ s ∈ Finset.range e, ps W s ^ E (s + 1)) * ps W 0 ^ E 0 := by
@@ -38,6 +47,27 @@ theorem prod_succ_φ (e : ℕ) (E : ℕ → ℕ) :
   congr 1
   exact Finset.prod_congr rfl fun s _ => by rw [map_pow, ← ps_succ]
 
+/- English proof (translation)
+Take `⟨u, hu, hgu⟩` from `hg`. Use `set num' : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (α (s + 1)).toNat with hnum'`. Use `set den' : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (-(α (s + 1))).toNat with hden'`. Establish `hnum` using `prod_succ_φ W e (fun s => (α s).toNat)`. Establish `hden` using `prod_succ_φ W e (fun s => (-(α s)).toNat)`.
+
+Take `⟨D, hD⟩` from `prod_ps_unitE W hR e (fun s => (-(α (s + 1))).toNat)`. Use `set ι : W.EE := ((D⁻¹ : W.EEˣ) : W.EE) with hιdef`. Establish `hι : ι * algebraMap (LetA O n) W.EE den' = 1` using `by rw [hden', ← hD]; exact Units.inv_mul D`. Establish `hp0Δ : ps W 0 ∈ W.AΔ` using `ps_mem_AΔ W hR.1 0`. Use `set E0 : ℕ := (-(α 0)).toNat with hE0`.
+
+Use `set F0 : ℕ := (α 0).toNat with hF0`. Use `⟨ps W 0 ^ (N + F0 - E0 - H) * s₁ * u, W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hp0Δ _) hs₁) hu, algebraMap (LetA O n) W.EE (letE a * num') * ι, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨Dd, hDd⟩` from `prod_ps_unitE W hR (e + 1) (fun s => (-(α s)).toNat)`. Establish `hcan : ∀ y z : W.EE, algebraMap (LetA O n) W.EE (∏ s ∈ Finset.range (e + 1), ps W s ^ (-(α s)).toNat) * y = algebraMap (LetA O n) W.EE (∏ s ∈ Finset.range (e + 1), ps W s ^ (-(α s)).toNat) * z → y = z`. Introduce `y z h`.
+
+Rewrite `h` using `[← hDd]`. Use `congrArg (fun w => ((Dd⁻¹ : W.EEˣ) : W.EE) * w) h` as an intermediate fact. Simplify `this` using `only [← mul_assoc, Units.inv_mul, one_mul]`. Apply `hcan` to reduce the goal to its premises. Establish `hφι : W.φE ι * algebraMap (LetA O n) W.EE (W.φA den') = 1`.
+
+Rewrite using `[← φE_alg, ← map_mul, hι, map_one]`. Establish `hl : W.φA (letE a : LetA O n) = letE (a + 1)`. Use `φA_letE W (a + 1); rwa [show a + 1 - 1 = a by ring] at this` as an intermediate fact. Establish `hexp : N + F0 = E0 + H + (N + F0 - E0 - H)` using `by omega`. Rewrite `hgu` using `[hnum, hden]`.
+
+Simplify using `only [map_mul, map_pow] at hgu`. Rewrite using `[hden]`. Simplify using `only [map_mul, map_pow, φE_alg, hl]`. Establish `e1 : algebraMap (LetA O n) W.EE (ps W 0) ^ N * algebraMap (LetA O n) W.EE (ps W 0) ^ F0 = algebraMap (LetA O n) W.EE (ps W 0) ^ E0 * algebraMap (LetA O n) W.EE (ps W 0) ^ H * algebraMap (LetA O n) W.EE (ps W 0) ^ (N + F0 - E0 - H)`. Rewrite using `[← pow_add, ← pow_add, ← pow_add, ← hexp]`.
+
+Rewrite `hφι` using `[hden']`. Rewrite `*` using `[hnum']`. Take the linear combination `(algebraMap (LetA O n) W.EE (ps W 0) ^ N * algebraMap (LetA O n) W.EE s₁) * hgu + (algebraMap (LetA O n) W.EE s₁ * algebraMap (LetA O n) W.EE u * algebraMap (LetA O n) W.EE (letE (a + 1)) * algebraMap (LetA O n) W.EE (W.φA (∏ s ∈ Finset.range e, ps W s ^ (α (s + 1)).toNat))) * e1 …`. Use `⟨1, W.AΔ.one_mem, ?_⟩` and prove the remaining obligations. Use `show algebraMap (LetA O n) W.EE den' * (algebraMap (LetA O n) W.EE (letE a * num') * ι) = algebraMap (LetA O n) W.EE (letE a * num' * 1)`.
+
+Rewrite using `[mul_one, mul_comm (algebraMap (LetA O n) W.EE (letE a * num')), ← mul_assoc, mul_comm (algebraMap (LetA O n) W.EE den'), hι, one_mul]`. Establish `hle : ∀ s ∈ Finset.range e, (-(α (s + 1))).toNat ≤ A.Hs a e s`. Introduce `s hs`. Use `hα s (Finset.mem_range.1 hs)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `set R : LetA O n := ∏ s ∈ Finset.range e, ps W s ^ (A.Hs a e s - (-(α (s + 1))).toNat) with hRdef`. Use `⟨R * num', W.AΔ.mul_mem (W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (ps_mem_AΔ W hR.1 s) _) (W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (ps_mem_AΔ W hR.1 s) _), ?_⟩` and prove the remaining obligations. Establish `hsplit : abelian₂ W A a e = den' * R`. Rewrite using `[hden', hRdef, abelian₂, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_add, Nat.add_sub_cancel' (hle s hs)]`. Rewrite using `[hsplit]`. Simplify using `only [map_mul, mul_one]`. Take the linear combination `(algebraMap (LetA O n) W.EE R * algebraMap (LetA O n) W.EE (letE a) * algebraMap (LetA O n) W.EE num') * hι`.
+-/
 theorem mono_lift (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (A : ArcP n) (a : ZMod n) (e : ℕ) (α : ℕ → ℤ)
     (g : W.EE) (hg : InId W (a + 1) (e + 1) α g)
     (hα : ∀ s, s < e → -(A.Hs a e s : ℤ) ≤ α (s + 1)) (N H : ℕ) (hN : H + (-(α 0)).toNat ≤ N)

@@ -32,16 +32,25 @@ noncomputable def comb {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x : (Fin g �
     Fin g → ℂ :=
   (fun i => (x.1 i : ℂ)) + τ.mulVec (fun i => (x.2 i : ℂ))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[comb, Matrix.mulVec, dotProduct]`.
+-/
 theorem re_comb {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x : (Fin g → ℝ) × (Fin g → ℝ)) :
     (fun i => (comb τ x i).re) = x.1 + (τ.map Complex.re).mulVec x.2 := by
   ext i
   simp [comb, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[comb, Matrix.mulVec, dotProduct]`.
+-/
 theorem im_comb {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x : (Fin g → ℝ) × (Fin g → ℝ)) :
     (fun i => (comb τ x i).im) = (τ.map Complex.im).mulVec x.2 := by
   ext i
   simp [comb, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Simplify using `only [coords, re_comb, im_comb, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h, Matrix.one_mulVec]`. Use `ext1`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem coords_comb {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.map Complex.im).det)
     (x : (Fin g → ℝ) × (Fin g → ℝ)) : coords τ (comb τ x) = x := by
   simp only [coords, re_comb, im_comb, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h,
@@ -50,6 +59,11 @@ theorem coords_comb {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.
   · simp
   · rfl
 
+/- English proof (translation)
+Establish `h1` using `re_comb τ (coords τ w)`. Establish `h2` using `im_comb τ (coords τ w)`. Simplify using `only [coords, sub_add_cancel] at h1`. Simplify using `only [coords, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h, Matrix.one_mulVec] at h2`. Use extensionality with `i`.
+
+Conclude with `Complex.ext (congrFun h1 i) (congrFun h2 i)`.
+-/
 theorem comb_coords {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.map Complex.im).det)
     (w : Fin g → ℂ) : comb τ (coords τ w) = w := by
   have h1 := re_comb τ (coords τ w)
@@ -59,6 +73,13 @@ theorem comb_coords {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (h : IsUnit (τ.
   ext i
   exact Complex.ext (congrFun h1 i) (congrFun h2 i)
 
+/- English proof (translation)
+Establish `him : Continuous fun q => (τ q).map Complex.im` using `hτ.matrix_map Complex.continuous_im`. Establish `hre : Continuous fun q => (τ q).map Complex.re` using `hτ.matrix_map Complex.continuous_re`. Establish `hinv : ContinuousAt (fun q => ((τ q).map Complex.im)⁻¹) p`. Use `ContinuousAt.comp (f := fun q => (τ q).map Complex.im) ?_ him.continuousAt` and prove the remaining obligations. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ h.ne_zero`. Establish `hmv : Continuous fun x : Matrix (Fin g) (Fin g) ℝ × (Fin g → ℝ) => x.1.mulVec x.2` using `continuous_fst.matrix_mulVec continuous_snd`. Establish `hwi : ContinuousAt (fun q i => (w q i).im) p` using `continuousAt_pi.2 fun i => Complex.continuous_im.continuousAt.comp (continuousAt_pi.1 hw i)`. Establish `hwr : ContinuousAt (fun q i => (w q i).re) p` using `continuousAt_pi.2 fun i => Complex.continuous_re.continuousAt.comp (continuousAt_pi.1 hw i)`.
+
+Establish `hb` using `hmv.continuousAt.comp (hinv.prodMk hwi)`. Conclude with `(hwr.sub (hmv.continuousAt.comp (hre.continuousAt.prodMk hb))).prodMk hb`.
+-/
 theorem continuousAt_coords {g : ℕ} {P : Type*} [TopologicalSpace P]
     {τ : P → Matrix (Fin g) (Fin g) ℂ} {w : P → Fin g → ℂ} {p : P} (hτ : Continuous τ)
     (hw : ContinuousAt w p) (h : IsUnit ((τ p).map Complex.im).det) :
@@ -79,6 +100,9 @@ theorem continuousAt_coords {g : ℕ} {P : Type*} [TopologicalSpace P]
   have hb := hmv.continuousAt.comp (hinv.prodMk hwi)
   exact (hwr.sub (hmv.continuousAt.comp (hre.continuousAt.prodMk hb))).prodMk hb
 
+/- English proof (translation)
+Unfold `comb`. Conclude with `(by fun_prop : Continuous fun q i => ((x q).1 i : ℂ)).add (hτ.matrix_mulVec (by fun_prop))`.
+-/
 theorem continuous_comb {g : ℕ} {P : Type*} [TopologicalSpace P]
     {τ : P → Matrix (Fin g) (Fin g) ℂ} {x : P → (Fin g → ℝ) × (Fin g → ℝ)} (hτ : Continuous τ)
     (hx : Continuous x) : Continuous fun q => comb (τ q) (x q) := by
@@ -86,6 +110,23 @@ theorem continuous_comb {g : ℕ} {P : Type*} [TopologicalSpace P]
   exact (by fun_prop : Continuous fun q i => ((x q).1 i : ℂ)).add
     (hτ.matrix_mulVec (by fun_prop))
 
+/- English proof (translation)
+Use `set f : P × (Fin g → ℂ) → Fin g → ℂ := fun q i => F i q.1 q.2 with hf`. Establish `cdf : ContDiffAt ℂ 1 f (p₀, z₀)` using `contDiffAt_pi.2 hF`. Establish `key : ∀ q : P × (Fin g → ℂ), DifferentiableAt ℂ f q → ∀ i v, fderiv ℂ (F i q.1) q.2 v = fderiv ℂ f q (0, v) i`. Introduce `q hq i v`. Establish `h1` using `HasFDerivAt.comp (f := fun y => (q.1, y)) q.2 (hasFDerivAt_pi'.1 hq.hasFDerivAt i) (hasFDerivAt_prodMk_right (𝕜 := ℂ) q.1 q.2)`.
+
+Establish `h2 : fderiv ℂ (F i q.1) q.2 = _` using `h1.fderiv`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hinv : (fderiv ℂ f (p₀, z₀) ∘L ContinuousLinearMap.inr ℂ P (Fin g → ℂ)).IsInvertible` using `by set L := fderiv ℂ f (p₀, z₀) ∘L ContinuousLinearMap.inr ℂ P (Fin g → ℂ) with hL`. Establish `hdet : L.det ≠ 0`.
+
+Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix' ]`. Use `hd using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i k`. Rewrite using `[Matrix.of_apply, key (p₀, z₀) (cdf.differentiableAt one_ne_zero)]`. Simplify using `[hL, LinearMap.toMatrix'_apply]`.
+
+Conclude with `⟨L.toContinuousLinearEquivOfDetNeZero hdet, rfl⟩`. Establish `hf0 : f (p₀, z₀) = 0` using `funext h0`. Establish `hz` using `cdf.contDiffAt_implicitFunction one_ne_zero hinv`. Establish `hz0` using `cdf.implicitFunction_apply_self one_ne_zero hinv`. Use `set z := cdf.implicitFunction one_ne_zero hinv with hzdef`.
+
+Use `⟨z, hz0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hz.eventually (by simp)).mono fun p hp => hp.differentiableAt one_ne_zero`. Use `filter_upwards [cdf.eventually_apply_implicitFunction one_ne_zero hinv] with p hp i`. Conclude with `congrFun (hp.trans hf0) i`. Establish `ht : Tendsto (fun p => (p, z p)) (𝓝 p₀) (𝓝 (p₀, z₀))`.
+
+Use `(continuousAt_id.prodMk hz.continuousAt).tendsto` as an intermediate fact. Simplify using `only [id] at this hz0`. Rewrite `this` using `[hz0]`. Then use the resulting hypothesis. Establish `hc : ContinuousAt (fderiv ℂ f) (p₀, z₀)` using `cdf.continuousAt_fderiv one_ne_zero`. Establish `hc2 : ContinuousAt (fun q => (Matrix.of fun i k => fderiv ℂ f q (0, Pi.single k 1) i).det) (p₀, z₀)`.
+
+Use `(continuous_id.matrix_det).continuousAt.comp (f := fun q => (Matrix.of fun i k => fderiv ℂ f q (0, Pi.single k 1) i)) ?_` and prove the remaining obligations. Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun k => ?_` and prove the remaining obligations. Conclude with `continuousAt_pi.1 (hc.clm_apply continuousAt_const) i`. Establish `hne : ∀ᶠ q in 𝓝 (p₀, z₀), (Matrix.of fun i k => fderiv ℂ f q (0, Pi.single k 1) i).det ≠ 0`. Use `hc2.eventually_ne ?_` and prove the remaining obligations.
+
+Simplify `hd` using `only [← key (p₀, z₀) (cdf.differentiableAt one_ne_zero)]`. Use `filter_upwards [ht.eventually hne, ht.eventually (cdf.eventually (by simp))] with p h1 h2`. Simplify `h1` using `only [← key (p, z p) (h2.differentiableAt one_ne_zero)]`. Use `filter_upwards [cdf.eventually_apply_eq_iff_implicitFunction one_ne_zero hinv] with q hq h`. Conclude with `hq.1 ((funext h).trans hf0.symm)`.
+-/
 theorem exists_implicit {g : ℕ} {P : Type*} [NormedAddCommGroup P] [NormedSpace ℂ P]
     [CompleteSpace P] (F : Fin g → P → (Fin g → ℂ) → ℂ) (p₀ : P) (z₀ : Fin g → ℂ)
     (hF : ∀ i, ContDiffAt ℂ 1 (fun q : P × (Fin g → ℂ) => F i q.1 q.2) (p₀, z₀))
@@ -142,22 +183,58 @@ theorem exists_implicit {g : ℕ} {P : Type*} [NormedAddCommGroup P] [NormedSpac
   · filter_upwards [cdf.eventually_apply_eq_iff_implicitFunction one_ne_zero hinv] with q hq h
     exact hq.1 ((funext h).trans hf0.symm)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[comb, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb_add {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (x y : (Fin g → ℝ) × (Fin g → ℝ)) :
     comb τ (x + y) = comb τ x + comb τ y := by
   ext i
   simp [comb, Matrix.mulVec, dotProduct, mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Simplify using `[comb]`.
+-/
 theorem comb_int {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (m m' : Fin g → ℤ) :
     comb τ (fun i => (m i : ℝ), fun i => (m' i : ℝ)) =
       (fun i => (m i : ℂ)) + τ.mulVec (fun i => (m' i : ℂ)) := by
   simp [comb]
 
+/- English proof (translation)
+Rewrite using `[h.2, mul_eq_zero, or_iff_right (pow_ne_zero _ (Complex.exp_ne_zero _))]`.
+-/
 theorem IsLevel.zero_iff {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {n : ℕ}
     {F : (Fin g → ℂ) → ℂ} (h : IsLevel τ a b n F) (m m' : Fin g → ℤ) (z : Fin g → ℂ) :
     F (z + ((fun i => (m i : ℂ)) + τ.mulVec (fun i => (m' i : ℂ)))) = 0 ↔ F z = 0 := by
   rw [h.2, mul_eq_zero, or_iff_right (pow_ne_zero _ (Complex.exp_ne_zero _))]
 
+/- English proof (translation)
+Introduce `g n d a b F p₀ z₀ hp₀ hF hL Good hG`. Take `⟨h0, hd, hdist, hex⟩` from `hG`. Establish `hdom : Key.phDom g ∈ 𝓝 p₀` using `(GlobalTheory.isOpen_phDom g).mem_nhds hp₀`. Establish `hcd : ∀ i y, ContDiffAt ℂ 1 (fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => F i q.1 q.2) (p₀, y)` using `fun i y => GlobalTheory.SCV.contDiffAt_of_differentiableOn (hF i) (prod_mem_nhds hdom univ_mem) 1`. Use `choose ζ hζ0 hζd hζz hζj hζu using fun e => exists_implicit F p₀ (z₀ e) (fun i => hcd i _) (h0 e) (hd e)`.
+
+Establish `hτ : Continuous fun p : Fin g → Fin g → ℂ => per p` using `GlobalTheory.differentiable_phSym_coords.continuous`. Establish `hun : ∀ p ∈ Key.phDom g, IsUnit ((per p).map Complex.im).det` using `fun p hp => (Matrix.isUnit_iff_isUnit_det _).1 hp.2.isUnit`. Establish `hS : IsClosed {x : (Fin g → ℝ) × (Fin g → ℝ) | ∀ i, x.1 i ∈ Set.range ((↑) : ℤ → ℝ) ∧ x.2 i ∈ Set.range ((↑) : ℤ → ℝ)}`. Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun i => IsClosed.inter ?_ ?_` and prove the remaining obligations.
+
+Conclude with `Int.isClosedEmbedding_coe_real.isClosed_range.preimage (f := fun x : (Fin g → ℝ) × (Fin g → ℝ) => x.1 i) (by fun_prop)`. Conclude with `Int.isClosedEmbedding_coe_real.isClosed_range.preimage (f := fun x : (Fin g → ℝ) × (Fin g → ℝ) => x.2 i) (by fun_prop)`. Establish `hD : ∀ e e', ∀ᶠ p in 𝓝 p₀, ∀ m m' : Fin g → ℤ, ζ e p = ζ e' p + ((fun i => (m i : ℂ)) + (per p).mulVec (fun i => (m' i : ℂ))) → e = e'`. Introduce `e e'`. Distinguish the cases in `hee : e = e'`.
+
+Conclude with `Eventually.of_forall fun _ _ _ _ => hee`. Establish `hc` using `continuousAt_coords (w := fun p => ζ e p - ζ e' p) hτ ((hζd e).self_of_nhds.continuousAt.sub (hζd e').self_of_nhds.continuousAt) (hun p₀ hp₀)`. Establish `hn : coords (per p₀) (ζ e p₀ - ζ e' p₀) ∈ {x : (Fin g → ℝ) × (Fin g → ℝ) | ∀ i, x.1 i ∈ Set.range ((↑) : ℤ → ℝ) ∧ x.2 i ∈ Set.range ((↑) : ℤ → ℝ)}ᶜ`. Introduce `h`. Use `choose m hm using fun i => (h i).1`.
+
+Use `choose m' hm' using fun i => (h i).2`. Use `hee (hdist e e' m m' ?_)` and prove the remaining obligations. Establish `h1 : coords (per p₀) (ζ e p₀ - ζ e' p₀) = (fun i => (m i : ℝ), fun i => (m' i : ℝ))` using `Prod.ext (funext fun i => (hm i).symm) (funext fun i => (hm' i).symm)`. Rewrite using `[← comb_int, ← h1, comb_coords (hun p₀ hp₀), hζ0, hζ0, add_sub_cancel]`. Use `filter_upwards [hc.eventually (hS.isOpen_compl.mem_nhds hn), hdom] with p hp hpd m m' h`.
+
+Use `absurd ?_ hp` and prove the remaining obligations. Rewrite using `[h, add_sub_cancel_left, ← comb_int, coords_comb (hun p hpd)]`. Conclude with `fun i => ⟨⟨m i, rfl⟩, ⟨m' i, rfl⟩⟩`. Establish `hK : IsCompact (Set.Icc (0 : (Fin g → ℝ) × (Fin g → ℝ)) 1)` using `isCompact_Icc`. Establish `hcc : Continuous fun q : (Fin g → Fin g → ℂ) × ((Fin g → ℝ) × (Fin g → ℝ)) => comb (per q.1) q.2` using `continuous_comb (hτ.comp continuous_fst) continuous_snd`.
+
+Establish `hE : ∀ᶠ p in 𝓝 p₀, ∀ x ∈ Set.Icc (0 : (Fin g → ℝ) × (Fin g → ℝ)) 1, (∀ i, F i p (comb (per p) x) = 0) → ∃ (e : Fin d) (m m' : Fin g → ℤ), comb (per p) x = ζ e p + ((fun i => (m i : ℂ)) + (per p).mulVec (fun i => (m' i : ℂ)))`. Use `hK.eventually_forall_of_forall_eventually fun x₀ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : ∀ i, F i p₀ (comb (per p₀) x₀) = 0`. Take `⟨e, m, m', he⟩` from `hex _ hz`. Establish `hc2 : Continuous fun q : (Fin g → Fin g → ℂ) × ((Fin g → ℝ) × (Fin g → ℝ)) => (q.1, comb (per q.1) q.2 - comb (per q.1) (fun i => (m i : ℝ), fun i => (m' i : ℝ)))` using `continuous_fst.prodMk (hcc.sub (continuous_comb (hτ.comp continuous_fst) continuous_const))`.
+
+Establish `ht` using `hc2.tendsto (p₀, x₀)`. Simplify using `only [comb_int, he, add_sub_cancel_right] at ht`. Use `filter_upwards [ht.eventually (hζu e), continuousAt_fst.eventually (show ∀ᶠ p in 𝓝 (p₀, x₀).1, p ∈ Key.phDom g from hdom)] with q hq hqd hq0`. Use `⟨e, m, m', ?_⟩` and prove the remaining obligations. Rewrite using `[hq fun i => ?_, sub_add_cancel]`.
+
+Rewrite using `[← IsLevel.zero_iff (hL i q.1 hqd) m m', sub_add_cancel]`. Conclude with `hq0 i`. Use `push Not at hz`. Take `⟨i, hi⟩` from `hz`. Establish `hc : ContinuousAt (fun q : (Fin g → Fin g → ℂ) × ((Fin g → ℝ) × (Fin g → ℝ)) => F i q.1 (comb (per q.1) q.2)) (p₀, x₀)` using `ContinuousAt.comp (f := fun q : (Fin g → Fin g → ℂ) × ((Fin g → ℝ) × (Fin g → ℝ)) => (q.1, comb (per q.1) q.2)) (x := (p₀, x₀)) (hcd i (comb (per p₀) x₀)).continuousAt (continuous_fst.prodMk hcc).continuousAt`.
+
+Use `filter_upwards [hc.eventually_ne hi] with q hq h`. Conclude with `absurd (h i) hq`. Establish `hall : ∀ᶠ p in 𝓝 p₀, p ∈ Key.phDom g ∧ DifferentiableAt ℂ (fun p e => ζ e p) p ∧ Good p (fun e => ζ e p)` using `by filter_upwards [hdom, eventually_all.2 hζd, eventually_all.2 hζz, eventually_all.2 hζj, eventually_all.2 fun e => eventually_all.2 (hD e), hE] with p hp h1 h2 h3 h4 h5`. Use `⟨hp, differentiableAt_pi.2 h1, h2, h3, h4, fun y hy => ?_⟩` and prove the remaining obligations. Use `set c := coords (per p) y with hc`.
+
+Set `x : (Fin g → ℝ) × (Fin g → ℝ)` to `(fun i => Int.fract (c.1 i), fun i => Int.fract (c.2 i))`. Establish `hy' : y = comb (per p) x + ((fun i => ((⌊c.1 i⌋ : ℤ) : ℂ)) + (per p).mulVec (fun i => ((⌊c.2 i⌋ : ℤ) : ℂ)))`. Rewrite using `[← comb_int, ← comb_add, ← comb_coords (hun p hp) y, ← hc]`. Use `congr 1`. Apply the tactic sequence `ext i <;> simp [x]`.
+
+Take `⟨e, m, m', he⟩` from `h5 x ⟨⟨fun i => Int.fract_nonneg _, fun i => Int.fract_nonneg _⟩, ⟨fun i => (Int.fract_lt_one _).le, fun i => (Int.fract_lt_one _).le⟩⟩ fun i => by`. Rewrite using `[← IsLevel.zero_iff (hL i p hp) (fun i => ⌊c.1 i⌋) (fun i => ⌊c.2 i⌋), ← hy']`. Conclude with `hy i`. Use `⟨e, fun i => m i + ⌊c.1 i⌋, fun i => m' i + ⌊c.2 i⌋, ?_⟩` and prove the remaining obligations. Rewrite using `[hy', he, add_assoc, ← comb_int, ← comb_int, ← comb_int, ← comb_add]`.
+
+Use `congr 2`. Apply the tactic sequence `ext i <;> simp`. Take `⟨W, hW, hWo, hW0⟩` from `eventually_nhds_iff.1 hall`. Conclude with `⟨W, fun p e => ζ e p, hWo, hW0, fun p hp => (hW p hp).1, funext hζ0, fun p hp => (hW p hp).2.1.differentiableWithinAt, fun p hp => (hW p hp).2.2⟩`.
+-/
 theorem simple_zeros_move_holomorphically :
     ∀ (g n d : ℕ) (a b : Fin g → ℂ) (F : Fin g → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ) (p₀ : (Fin g → Fin g → ℂ)) (z₀ : Fin d → Fin g → ℂ), p₀ ∈ Key.phDom g → (∀ i, HolFam (Key.phDom g) (F i)) → (∀ i, ∀ p ∈ Key.phDom g, IsLevel (per p) a b n (F i p)) → let Good : (Fin g → Fin g → ℂ) → (Fin d → Fin g → ℂ) → Prop := fun p z => (∀ e i, F i p (z e) = 0) ∧ (∀ e, (Matrix.of fun i k => fderiv ℂ (F i p) (z e) (Pi.single k 1)).det ≠ 0) ∧ (∀ e e' (m m' : Fin g → ℤ), z e = z e' + ((fun i => (m i : ℂ)) + (per p).mulVec (fun i => (m' i : ℂ))) → e = e') ∧ ∀ y, (∀ i, F i p y = 0) → ∃ (e : Fin d) (m m' : Fin g → ℤ), y = z e + ((fun i => (m i : ℂ)) + (per p).mulVec (fun i => (m' i : ℂ))); Good p₀ z₀ → ∃ (W : Set (Fin g → Fin g → ℂ)) (z : (Fin g → Fin g → ℂ) → Fin d → Fin g → ℂ), IsOpen W ∧ p₀ ∈ W ∧ W ⊆ Key.phDom g ∧ z p₀ = z₀ ∧ DifferentiableOn ℂ z W ∧ ∀ p ∈ W, Good p (z p) := by
   intro g n d a b F p₀ z₀ hp₀ hF hL Good hG

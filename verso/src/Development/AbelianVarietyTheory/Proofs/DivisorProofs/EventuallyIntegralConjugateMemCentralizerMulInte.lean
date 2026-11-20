@@ -13,11 +13,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT.GoodConj
 
+/- English proof (translation)
+The claim follows from `(algebraMap E (FiniteAdeleRing (𝓞 E) E) a).2`.
+-/
 theorem eventually_mem_integers {E : Type} [Field E] [NumberField E] (a : E) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite,
       algebraMap E (w.adicCompletion E) a ∈ w.adicCompletionIntegers E :=
   (algebraMap E (FiniteAdeleRing (𝓞 E) E) a).2
 
+/- English proof (translation)
+Set `O : Subring (w.adicCompletion E)` to `Ov E w`. Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => funext fun i => funext fun j => Subtype.ext (congrFun (congrFun h i) j)`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`.
+
+Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+-/
 theorem mem_KGL_of_entries {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Pl E) (g : GLw n w)
     (h1 : ∀ a b, g.val a b ∈ w.adicCompletionIntegers E)
     (h2 : ∀ a b, (g⁻¹).val a b ∈ w.adicCompletionIntegers E) : g ∈ GlobalTheory.LFun.KGL w n := by
@@ -32,6 +40,21 @@ theorem mem_KGL_of_entries {E : Type} [Field E] [NumberField E] {n : ℕ} (w : P
   · rw [map_mul, hA, hB, map_one, Units.mul_inv]
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n _ γ hsep`. Establish `hint : ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) ((γ.1 : GL (Fin n) E).val i j) ∈ w.adicCompletionIntegers E ∧ algebraMap E (w.adicCompletion E) (((γ.1 : GL (Fin n) E)⁻¹).val i j) ∈ w.adicCompletionIntegers E` using `eventually_all.2 fun i => eventually_all.2 fun j => (eventually_mem_integers _).and (eventually_mem_integers _)`. Use `filter_upwards [hint, GlobalTheory.T.eventually_integral_lift_coprime_derivative E _ hsep] with w hw hP`. Take `⟨P₀, hP₀, hcop⟩` from `hP`. Introduce `g hg`.
+
+Use `set y : GLw n w := Matrix.GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (γ.1 : GL (Fin n) E) with hy`. Distinguish the cases in `hmem : y ∈ UL n w`. Establish `hloc : ((locPt w γ : UL n w) : GLw n w) = y`. Simplify using `only [locPt, toSub]`. Rewrite using `[dif_pos hmem]`.
+
+Establish `hyK : y ∈ GlobalTheory.LFun.KGL w n`. Apply `mem_KGL_of_entries` to reduce the goal to its premises. Introduce `a b`. Conclude with `(hw a b).1`. Introduce `a b`.
+
+Rewrite using `[hy, ← map_inv]`. Conclude with `(hw a b).2`. Establish `hK : locPt w γ ∈ KL n w`. Rewrite using `[KL, Subgroup.mem_subgroupOf, hloc]`. Conclude with `hyK`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.localConjugation_involutive_valuation_preserving E w`. Establish `hcp : (locPt w γ).1.val.charpoly = P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))`. Rewrite using `[hloc, hP₀, hy]`. Conclude with `Matrix.charpoly_map _ _`. Take `⟨t, ht, k, hk, he⟩` from `GlobalTheory.T.integral_conj_set_localUnitary_eq_doubleCoset E n w h1 h2 P₀ hcop (locPt w γ) hcp 1 g (by simpa using hK) hg`.
+
+Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[he, mul_one, inv_mul_cancel_left]`. Conclude with `hk`. Establish `hloc : locPt w γ = 1`. Simplify using `only [locPt, toSub]`.
+
+Rewrite using `[dif_neg hmem]`. Use `⟨g, ?_, by rw [inv_mul_cancel]; exact one_mem _⟩` and prove the remaining obligations. Rewrite using `[hloc]`. Use `show g * 1 = 1 * (MonoidHom.id _) g`. Simplify using the standard rewrite rules.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ γ : UE E n,
     γ.1.val.charpoly.Separable → ∀ᶠ w in cofinite, ∀ g : UL n w, g⁻¹ * locPt w γ * g ∈ KL n w →
       ∃ t ∈ twCent (MonoidHom.id (UL n w)) (locPt w γ), t⁻¹ * g ∈ KL n w := by

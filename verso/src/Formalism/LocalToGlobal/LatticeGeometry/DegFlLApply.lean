@@ -29,25 +29,43 @@ def Indef : Prop := 1 ≤ w.j ∧ w.j < w.N
 
 def Defin : Prop := w.j = w.N
 
+/- English proof (translation)
+The claim follows from `w.j_le`.
+-/
 theorem j_le_N : w.j ≤ w.N := w.j_le
 
 end Dat
 
 def jcl (D : D7) (j : ℕ) : ℕ := max 1 (min j D.R.m)
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_jcl (D : D7) (j : ℕ) : 1 ≤ jcl D j := le_max_left _ _
 
+/- English proof (translation)
+Use `D.R.two_le_m` as an intermediate fact. Unfold `jcl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jcl_le (D : D7) (j : ℕ) : jcl D j ≤ D.R.m := by
   have := D.R.two_le_m
   unfold jcl; omega
 
+/- English proof (translation)
+Unfold `jcl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jcl_eq (D : D7) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : jcl D j = j := by
   unfold jcl; omega
 
+/- English proof (translation)
+Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sigW_sum (D : D7) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (D.R.sigW j).1 + (D.R.sigW j).2 = D.R.r := by
   have := D.R.m_add_three_le_k
   simp only [Ranks.sigW, Ranks.r]; omega
 
+/- English proof (translation)
+Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_r (D : D7) : 2 ≤ D.R.r := by
   have := D.R.m_add_three_le_k; have := D.R.two_le_m
   unfold Ranks.r; omega
@@ -70,10 +88,16 @@ def datW (D : D7) {Lev : Type} (κ : Lev) (j : ℕ) : Dat D Lev :=
       · rfl
       · simp only; omega }
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Conclude with `D.sp.W_rank _ (one_le_jcl D j) (jcl_le D j)`.
+-/
 theorem datW_N (D : D7) {Lev : Type} (κ : Lev) (j : ℕ) : (datW D κ j).N = D.R.r := by
   letI := D.host.cmStar
   exact D.sp.W_rank _ (one_le_jcl D j) (jcl_le D j)
 
+/- English proof (translation)
+Simplify using `only [datW, jcl_eq D h1 h2]`.
+-/
 theorem datW_j (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (datW D κ j).j = (D.R.sigW j).1 := by
   simp only [datW, jcl_eq D h1 h2]
@@ -82,6 +106,9 @@ def degFlL (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) : MvPolynomial (�
   ((-1 : ℝ) ^ Formalism.DegreeFormula.dimFl ι N) • ∑ σ : ι → Equiv.Perm (Fin N),
     (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) • MvPolynomial.lcoeff ℝ (Formalism.DegreeFormula.permExp σ)
 
+/- English proof (translation)
+Simplify using `[degFlL, Formalism.DegreeFormula.degFl, LinearMap.sum_apply, smul_eq_mul, Finset.mul_sum]`.
+-/
 theorem degFlL_apply (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (P : MvPolynomial (ι × Fin N) ℝ) :
     degFlL ι N P = Formalism.DegreeFormula.degFl ι N P := by
   simp [degFlL, Formalism.DegreeFormula.degFl, LinearMap.sum_apply, smul_eq_mul, Finset.mul_sum]
@@ -107,6 +134,11 @@ def finPl (D : D7) (p : ℕ) [hp : Fact p.Prime] : Fintype (PlL D p) :=
   Fintype.subtype (finite_places_over (K := D.what₂.LL) p hp.out).choose
     (finite_places_over (K := D.what₂.LL) p hp.out).choose_spec
 
+/- English proof (translation)
+Unfold `wtL lw`. Distinguish the cases in `h1 : Real.log (p : ℝ) = 0`. Simplify using `[h1]`. Establish `h2 : (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := D.what₂.LL)).ne'` after adjusting the coercions.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem wtL_eq (D : D7) (p : ℕ) (v : PlL D p) :
     wtL D p v = lw D.what₂.LL v.1 * (eWL D.what₂.LL v.1 : ℝ) / Real.log p := by
   unfold wtL lw
@@ -116,6 +148,11 @@ theorem wtL_eq (D : D7) (p : ℕ) (v : PlL D p) :
     exact_mod_cast (Module.finrank_pos (R := ℚ) (M := D.what₂.LL)).ne'
   field_simp
 
+/- English proof (translation)
+Use `letI := finPl D p`. Establish `hS` using `(finite_places_over (K := D.what₂.LL) p hp.out).choose_spec`. Establish `h` using `sum_lw_e (K := D.what₂.LL) p hp.out _ hS`. Establish `hlog : Real.log (p : ℝ) ≠ 0` using `(Real.log_pos (by exact_mod_cast hp.out.one_lt)).ne'`. Simplify using `only [wtL_eq]`.
+
+Rewrite using `[← Finset.sum_div]`. Establish `e : ∑ la : PlL D p, lw D.what₂.LL la.1 * (eWL D.what₂.LL la.1 : ℝ) = Real.log p`. Rewrite using `[← h]`. Conclude with `(Finset.sum_subtype _ hS (fun w => lw D.what₂.LL w * (eWL D.what₂.LL w : ℝ))).symm`. Rewrite using `[e, div_self hlog]`.
+-/
 theorem wtL_sum (D : D7) (p : ℕ) [hp : Fact p.Prime] : (letI := finPl D p; ∑ la, wtL D p la) = 1 := by
   letI := finPl D p
   have hS := (finite_places_over (K := D.what₂.LL) p hp.out).choose_spec
@@ -128,27 +165,48 @@ theorem wtL_sum (D : D7) (p : ℕ) [hp : Fact p.Prime] : (letI := finPl D p; ∑
     exact (Finset.sum_subtype _ hS (fun w => lw D.what₂.LL w * (eWL D.what₂.LL w : ℝ))).symm
   rw [e, div_self hlog]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`. Use `wtL_sum D p` as an intermediate fact. Simplify using `at this`.
+-/
 theorem plL_ne (D : D7) (p : ℕ) [hp : Fact p.Prime] : Nonempty (PlL D p) := by
   by_contra hne
   rw [not_nonempty_iff] at hne
   have := wtL_sum D p
   simp at this
 
+/- English proof (translation)
+Unfold `wtL`. Conclude with `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)) (mul_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _))`.
+-/
 theorem wtL_nonneg (D : D7) (p : ℕ) (la : PlL D p) : 0 ≤ wtL D p la := by
   unfold wtL
   exact div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _))
     (mul_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _))
 
+/- English proof (translation)
+Establish `hk` using `D.R.m_add_three_le_k`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[datW_j D κ h1 h2.le]`. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[datW_j D κ h1 h2.le, datW_N]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem datW_indef (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j < D.R.m) : (datW D κ j).Indef := by
   have hk := D.R.m_add_three_le_k
   refine ⟨?_, ?_⟩
   · rw [datW_j D κ h1 h2.le]; simp only [Ranks.sigW]; omega
   · rw [datW_j D κ h1 h2.le, datW_N]; simp only [Ranks.sigW, Ranks.r]; omega
 
+/- English proof (translation)
+Simplify using `only [datW, jcl_eq D h1 h2]`.
+-/
 theorem datW_S (D : D7) {Lev : Type} (κ : Lev) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (datW D κ j).S = (letI := D.host.cmStar; D.sp.W j) := by
   simp only [datW, jcl_eq D h1 h2]
 
+/- English proof (translation)
+Take `⟨S, κ, j, a, b, c, d⟩` from `w`. Take `⟨S', κ', j', a', b', c', d'⟩` from `w'`. Simplify using `only at hS hκ`. Substitute `hS` using the available equality. Substitute `hκ` using the available equality.
+
+Establish `: j = j'`. Establish `τ : D.what₂.Tau` using `D.eTau.symm 1`. Use `(d τ).symm.trans (d' τ)` as an intermediate fact. Conclude with `(Prod.mk.inj this).1`. Substitute `this` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem dat_ext (D : D7) {Lev : Type} (w w' : Dat D Lev) (hS : w.S = w'.S) (hκ : w.κ = w'.κ) : w = w' := by
   obtain ⟨S, κ, j, a, b, c, d⟩ := w
   obtain ⟨S', κ', j', a', b', c', d'⟩ := w'

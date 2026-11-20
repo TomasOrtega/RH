@@ -16,6 +16,9 @@ namespace GlobalTheory.PtExt
 
 variable {R : Type} [CommRing R] {A : Over (Sp R)}
 
+/- English proof (translation)
+The claim follows from `β.2 (trivMap φ x) rfl rfl`.
+-/
 theorem fv_form (β : Form (A.hom ≫ 𝟙 _)) {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (x : Pt A D) : fv β.1 D D' φ x = 0 :=
   β.2 (trivMap φ x) rfl rfl
@@ -30,6 +33,11 @@ def formDat (t : G.TorsionTower A) (β : Form (A.hom ≫ 𝟙 _)) (hβ : Form.cl
   h := 0
   res := fun n ↦ by simp [fv_form]
 
+/- English proof (translation)
+Introduce `R _ A _ p G t β hβ`. Use `⟨⟨(formDat t β hβ).om, fun n ↦ GlobalTheory.T.torsionTowerPresentation_cotangentPullback_res_rigidification R A p G t _ (formDat t β hβ) n⟩, fun n ↦ ?_, formDat t β hβ, 0, _, fun n ↦ ?_, fun _ ↦ rfl, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cotVal β.1 (t.y n) - dUnit R (0 : G.A n) = _`. Rewrite using `[dUnit, map_zero, sub_zero]`. Express the relevant statement in the definitionally equal form `(0 : _) = 0 - (fv β.1 _ _ _ _ - fv β.1 _ _ _ _ - fv β.1 _ _ _ _) - cobOne R (G.A n) 0`.
+
+Simplify using `[fv_form]`.
+-/
 theorem isCan_form : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (β : Form (A.hom ≫ 𝟙 _)) (hβ : Form.cl _ β ∈ primDR A),
     ∃ w : G.omega, (∀ n, w.1 n = cotVal β.1 (t.y n)) ∧ IsCan t ⟨_, hβ⟩ (G.rigOfOmega w) := by

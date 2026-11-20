@@ -16,12 +16,28 @@ noncomputable section
 
 namespace GlobalTheory.Dec.CuspAllKType
 
+/- English proof (translation)
+Simplify using `only [AutInst.Kg, AutInst.Kset, Set.mem_setOf_eq]`. Use `⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[AutInst.fmat]`.
+-/
 theorem one_mem_Kg (I : AutInst) (g : ℕ) : (1 : I.Gf) ∈ I.Kg g := by
   simp only [AutInst.Kg, AutInst.Kset, Set.mem_setOf_eq]
   refine ⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩
   · simp
   · simp [AutInst.fmat]
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨h1, hm, hn, -, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Take `⟨-, -, -, -, -, hbi, -⟩` from `B.e_adm`. Use `set π : B.I.Gf → (B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund) := fun a => B.R (1, a) with hπ`. Establish `hπ1 : π 1 = 1` using `h1`.
+
+Establish `hπm : ∀ a b, π (a * b) = π a * π b` using `fun a b => by`. Simplify using `only [hπ]`. Rewrite using `[← hm]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+
+Establish `hπn : ∀ a v, ‖π a v‖ = ‖v‖` using `fun a v => hn _ v`. Establish `hek : ∀ x, B.e (k * x) = B.e x` using `fun x => by`. Simplify using `using hbi x k hk 1 (one_mem_Kg B.I B.g)`. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `⟪x, π k (B.Re y)⟫_ℂ = _`. Rewrite using `[GlobalTheory.IdemProj.inner_rep π hπ1 hπm hπn k x (B.Re y), B.Re_spec.2 (π k⁻¹ x) y, B.Re_spec.2 x y]`. Establish `hinner : ∀ a, ⟪π k⁻¹ x, B.R (1, a) y⟫_ℂ = ⟪x, B.R (1, k * a) y⟫_ℂ` using `fun a => by`. Use `(GlobalTheory.IdemProj.inner_rep π hπ1 hπm hπn k x (π a y)).symm` as an intermediate fact. Express the relevant statement in the definitionally equal form `⟪π k⁻¹ x, π a y⟫_ℂ = ⟪x, π (k * a) y⟫_ℂ`.
+
+Rewrite using `[this, hπm, ContinuousLinearMap.mul_apply]`. Repeatedly rewrite using `[hinner]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `a`.
+
+Simplify using `only [hek]`. Use `_ = ∫ a, B.e a * ⟪x, B.R (1, a) y⟫_ℂ ∂B.μf := by`. Conclude with `integral_mul_left_eq_self (μ := B.μf) (fun b => B.e b * ⟪x, B.R (1, b) y⟫_ℂ) k`.
+-/
 theorem re_fixed (B : RowsAut) : ∀ k ∈ B.I.Kg B.g, (B.R (1, k)).comp B.Re = B.Re := by
   intro k hk
   obtain ⟨h1, hm, hn, -, -⟩ := GlobalTheory.RightRegFund.rightReg_unitary_continuous B
@@ -55,6 +71,15 @@ theorem re_fixed (B : RowsAut) : ∀ k ∈ B.I.Kg B.g, (B.R (1, k)).comp B.Re = 
     _ = ∫ a, B.e a * ⟪x, B.R (1, a) y⟫_ℂ ∂B.μf := by
         exact integral_mul_left_eq_self (μ := B.μf) (fun b => B.e b * ⟪x, B.R (1, b) y⟫_ℂ) k
 
+/- English proof (translation)
+Take `⟨hc, hle, hint⟩` from `GlobalTheory.Dec.PhMajProof.phMaj B d h hd hl`. Establish `hmaj` using `hint 0 le_rfl (fun v => by`. Distinguish the cases in `hq : rkR (B.I.ε v) = 0`. Conclude with `Or.inl hq`. Use `right`.
+
+Establish `hqn : rkR (B.I.ε v) ≤ B.I.n`. Unfold `rkR`. Conclude with `(min_le_left _ _).trans ((Finset.card_filter_le _ _).trans (by simp))`. Establish `hq1 : (1 : ℝ) ≤ (rkR (B.I.ε v) : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hq`. Establish `hqn' : (rkR (B.I.ε v) : ℝ) ≤ (B.I.n : ℝ)` using `by exact_mod_cast hqn`.
+
+Establish `hs : 0 < Real.sqrt (rkR (B.I.ε v) : ℝ)` using `Real.sqrt_pos.2 (by linarith)`. Establish `hn : 0 < (B.I.n : ℝ)` using `by linarith`. Establish `hns : 0 < (B.I.n : ℝ) * Real.sqrt (rkR (B.I.ε v) : ℝ)` using `mul_pos hn hs`. Establish `h1 : (B.I.n : ℝ) * Real.sqrt (rkR (B.I.ε v) : ℝ) * (rkR (B.I.ε v) : ℝ) ≤ (B.I.n : ℝ) * Real.sqrt (rkR (B.I.ε v) : ℝ) * (B.I.n : ℝ)` using `mul_le_mul_of_nonneg_left hqn' hns.le`. Establish `h2` using `hb v`.
+
+Use the proof step `nlinarith)`. Simplify using `only [zero_mul, Real.exp_zero, mul_one] at hmaj`. Conclude with `hmaj.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hle)`.
+-/
 theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d)
     (hl : LocDec B h) (hb : HBig B 40 h) : Integrable (ph B d) (muInf B.I) := by
   obtain ⟨hc, hle, hint⟩ := GlobalTheory.Dec.PhMajProof.phMaj B d h hd hl
@@ -79,6 +104,21 @@ theorem integrable_ph (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) 
   simp only [zero_mul, Real.exp_zero, mul_one] at hmaj
   exact hmaj.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hle)
 
+/- English proof (translation)
+Introduce `B d h hd hK hg hh hl hb A hA`. Take `⟨T0, hT0, hA'⟩` from `Submodule.mem_map.1 hA`. Establish `hAe : A = B.Re.comp T0` using `by rw [← hA']; rfl`. Substitute `hAe` using the available equality. Establish `hT0' : ∀ g : B.I.Ginf, T0.comp (B.σs g) = (B.R (g, 1)).comp T0` using `hT0`.
+
+Establish `hint` using `integrable_ph B d h hd hl hb`. Take `⟨-, hcomm, ⟨T, hT⟩, -⟩` from `GlobalTheory.GlobProj.globalProj_holds B d hd hint`. Establish `hHom : ∀ g : B.I.Ginf, (B.Re.comp T0).comp (B.σs g) = (B.R (g, 1)).comp (B.Re.comp T0)` using `fun g => by`. Rewrite using `[ContinuousLinearMap.comp_assoc, hT0' g, ← ContinuousLinearMap.comp_assoc, hcomm g, ContinuousLinearMap.comp_assoc]`. Use `⟨hHom, fun u => ?_⟩` and prove the remaining obligations.
+
+Take `⟨S, hSmem, hScl, hSinv, -⟩` from `GlobalTheory.CuspSubspace.cuspidal_closed_stable B`. Take `⟨-, hirr, -, hnorm, -⟩` from `GlobalTheory.Dec.tensorRep B d hd`. Establish `hw` using `GlobalTheory.T.countedVectors_are_cuspForms_singleLowestKType B d h hd hK hg hh hl hb T hT (B.Re.comp T0) hA`. Set `S' : Submodule ℂ B.Hs` to `S.comap ((B.Re.comp T0 : B.Hs →L[ℂ] B.I.L2 B.μf B.fund) : B.Hs →ₗ[ℂ] B.I.L2 B.μf B.fund)`. Establish `hS'cl : IsClosed (S' : Set B.Hs)` using `hScl.preimage (B.Re.comp T0).continuous`.
+
+Establish `hS'inv : ∀ g, ∀ v ∈ S', B.σs g v ∈ S'` using `fun g v hv => by`. Establish `hv' : (B.Re.comp T0) v ∈ S` using `hv`. Use `show (B.Re.comp T0) (B.σs g v) ∈ S`. Use `congrArg (fun F : B.Hs →L[ℂ] B.I.L2 B.μf B.fund => F v) (hHom g)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply] at this`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[this]`. Conclude with `hSinv _ _ hv'`. Establish `hwS : B.tens B.w ∈ S'` using `(hSmem _).2 hw`. Break down `hirr S' hS'cl hS'inv with h0 | htop` into its components or cases.
+
+It suffices to derive a contradiction. Rewrite `hwS` using `[h0, Submodule.mem_bot]`. Rewrite `hnorm` using `[hwS, norm_zero]`. Conclude with `zero_ne_one hnorm`. Establish `hu : u ∈ S'` using `htop ▸ Submodule.mem_top`.
+
+Use `⟨(hSmem _).1 hu, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ← ContinuousLinearMap.comp_apply (B.R (1, k)) B.Re, re_fixed B k hk]`.
+-/
 theorem cusp_all : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → (∀ v, Formalism.MainNotions.S.IsKTypeOf (B.I.ε v) (B.σ v) (Formalism.QuantumDeterminants.lowK (B.I.ε v) (B.lam v)) (Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v))) → 1 ≤ B.g → (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → LocDec B h → HBig B 40 h → ∀ A ∈ B.I.eHom B.σs B.μf B.fund B.R B.Re, A ∈ B.I.HomS B.σs B.μf B.fund B.R ∧ ∀ u, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (A u)) ∧ ∀ k ∈ B.I.Kg B.g, B.R (1, k) (A u) = A u := by
   intro B d h hd hK hg hh hl hb A hA
 

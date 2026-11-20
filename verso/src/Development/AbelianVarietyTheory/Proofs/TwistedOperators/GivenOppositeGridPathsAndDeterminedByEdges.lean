@@ -12,23 +12,38 @@ namespace GlobalTheory.FlipPaths
 
 variable {T : Type}
 
+/- English proof (translation)
+The claim follows from `| _, .nil => by simp [Path.comp, Path.arrows] | _, .snoc a q => by simp [Path.comp, Path.arrows, arrows_comp p q]`.
+-/
 theorem arrows_comp {X Y : Node} (p : Path T X Y) : ∀ {Z : Node} (q : Path T Y Z), (p.comp q).arrows = p.arrows ++ q.arrows
   | _, .nil => by simp [Path.comp, Path.arrows]
   | _, .snoc a q => by simp [Path.comp, Path.arrows, arrows_comp p q]
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [rowPath, Path.arrows] | n + 1 => by simp [rowPath, Path.arrows, rowPath_arrows j n, List.range_succ]`.
+-/
 theorem rowPath_arrows (j : ℕ) : ∀ n, (rowPath T j n).arrows = (List.range n).map fun i => Arrow.right i j
   | 0 => by simp [rowPath, Path.arrows]
   | n + 1 => by simp [rowPath, Path.arrows, rowPath_arrows j n, List.range_succ]
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [downPath, Path.arrows] | n + 1 => by simp [downPath, arrows_comp, Path.arrows, downPath_arrows t i n, List.range_succ]`.
+-/
 theorem downPath_arrows (t : T) (i : ℕ) : ∀ n, (downPath t i n).arrows = (List.range n).reverse.map fun j => Arrow.down t i j
   | 0 => by simp [downPath, Path.arrows]
   | n + 1 => by simp [downPath, arrows_comp, Path.arrows, downPath_arrows t i n, List.range_succ]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases ha with ⟨i, j, -, -, rfl⟩ | ⟨i, j, -, -, rfl⟩ <;> rcases hb with ⟨k, l, -, -, rfl⟩ | ⟨k, l, -, -, rfl⟩ <;>`. Simplify using `[GlobalTheory.FlipRun.edgeOf]`.
+-/
 theorem edgeOf_inj {m : ℕ} {t : T} {a b : Arrow T} (ha : GlobalTheory.FlipRun.IsGridArrow m t a) (hb : GlobalTheory.FlipRun.IsGridArrow m t b)
     (h : GlobalTheory.FlipRun.edgeOf a = GlobalTheory.FlipRun.edgeOf b) : a = b := by
   rcases ha with ⟨i, j, -, -, rfl⟩ | ⟨i, j, -, -, rfl⟩ <;> rcases hb with ⟨k, l, -, -, rfl⟩ | ⟨k, l, -, -, rfl⟩ <;>
     simp_all [GlobalTheory.FlipRun.edgeOf]
 
+/- English proof (translation)
+The claim follows from `| [], [], _, _, _ => rfl | [], _ :: _, _, _, h => by simp at h | _ :: _, [], _, _, h => by simp at h | a :: l₁, b :: l₂, h₁, h₂, h => by simp only [List.map_cons, List.cons.injEq] at h rw [edgeOf_inj (h₁ a (by simp)) (h₂ b (by simp)) h.1, map_edgeOf_inj l₁ l₂ (fun x hx => h₁ x (b …`.
+-/
 theorem map_edgeOf_inj {m : ℕ} {t : T} : ∀ (l₁ l₂ : List (Arrow T)), (∀ a ∈ l₁, GlobalTheory.FlipRun.IsGridArrow m t a) →
     (∀ a ∈ l₂, GlobalTheory.FlipRun.IsGridArrow m t a) → l₁.map GlobalTheory.FlipRun.edgeOf = l₂.map GlobalTheory.FlipRun.edgeOf → l₁ = l₂
   | [], [], _, _, _ => rfl
@@ -39,6 +54,15 @@ theorem map_edgeOf_inj {m : ℕ} {t : T} : ∀ (l₁ l₂ : List (Arrow T)), (�
     rw [edgeOf_inj (h₁ a (by simp)) (h₂ b (by simp)) h.1,
       map_edgeOf_inj l₁ l₂ (fun x hx => h₁ x (by simp [hx])) (fun x hx => h₂ x (by simp [hx])) h.2]
 
+/- English proof (translation)
+Introduce `Y p`. Proceed by induction on `p with`. Consider the case `nil`. Introduce `Y' q h`. Consider the cases of `q with`.
+
+Consider the case `nil => rfl`. Consider the case `snoc b q => simp [Path.arrows] at h`. Consider the case `snoc a p ih`. Introduce `Y' q h`. Consider the cases of `q with`.
+
+Consider the case `nil => simp [Path.arrows] at h`. Consider the case `snoc b q`. Simplify using `only [Path.arrows] at h`. Take `⟨h1, h2⟩` from `List.append_inj' h rfl`. Simplify using `only [List.cons.injEq, and_true] at h2`.
+
+Substitute `h2` using the available equality. Use `eq_of_heq (ih q h1)` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gridArrowPath_heq_of_arrows_eq {X : Node} : ∀ {Y : Node} (p : Path T X Y) {Y' : Node} (q : Path T X Y'),
     p.arrows = q.arrows → HEq p q := by
   intro Y p
@@ -61,17 +85,35 @@ theorem gridArrowPath_heq_of_arrows_eq {X : Node} : ∀ {Y : Node} (p : Path T X
       subst this
       rfl
 
+/- English proof (translation)
+The claim follows from `eq_of_heq (gridArrowPath_heq_of_arrows_eq p q h)`.
+-/
 theorem eq_of_arrows {X Y : Node} (p q : Path T X Y) (h : p.arrows = q.arrows) : p = q :=
   eq_of_heq (gridArrowPath_heq_of_arrows_eq p q h)
 
+/- English proof (translation)
+Simplify using `[givenPath, arrows_comp, rowPath_arrows, downPath_arrows]`.
+-/
 theorem givenPath_arrows (t : T) (m : ℕ) : (givenPath t m).arrows =
     (List.range m).reverse.map (fun j => Arrow.down t 0 j) ++ (List.range m).map fun i => Arrow.right i 0 := by
   simp [givenPath, arrows_comp, rowPath_arrows, downPath_arrows]
 
+/- English proof (translation)
+Simplify using `[oppPath, arrows_comp, rowPath_arrows, downPath_arrows]`.
+-/
 theorem oppPath_arrows (t : T) (m : ℕ) : (oppPath t m).arrows =
     (List.range m).map (fun i => Arrow.right i m) ++ (List.range m).reverse.map fun j => Arrow.down t m j := by
   simp [oppPath, arrows_comp, rowPath_arrows, downPath_arrows]
 
+/- English proof (translation)
+Introduce `T m t`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[givenPath_arrows]`. Simplify using `only [List.mem_append, List.mem_map, List.mem_reverse, List.mem_range] at ha`.
+
+Break down `ha with ⟨j, hj, rfl⟩ | ⟨i, hi, rfl⟩` into its components or cases. Conclude with `Or.inr ⟨0, j, Nat.zero_le _, hj, rfl⟩`. Conclude with `Or.inl ⟨i, 0, hi, Nat.zero_le _, rfl⟩`. Simplify using `[GlobalTheory.FlipRun.edges, givenPath_arrows, GlobalTheory.SplitFlip.givenPath, GlobalTheory.FlipRun.edgeOf, Function.comp_def]`. Introduce `a ha`.
+
+Rewrite `ha` using `[oppPath_arrows]`. Simplify using `only [List.mem_append, List.mem_map, List.mem_reverse, List.mem_range] at ha`. Break down `ha with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨i, m, hi, le_rfl, rfl⟩`. Conclude with `Or.inr ⟨m, j, le_rfl, hj, rfl⟩`.
+
+Simplify using `[GlobalTheory.FlipRun.edges, oppPath_arrows, GlobalTheory.SplitFlip.oppositePath, GlobalTheory.FlipRun.edgeOf, Function.comp_def]`. Introduce `X Y p q hp hq h`. Conclude with `eq_of_arrows p q (map_edgeOf_inj _ _ hp hq h)`.
+-/
 theorem given_opp_paths : ∀ {T : Type} (m : ℕ) (t : T), (GlobalTheory.FlipRun.OnGrid m t (GlobalTheory.FunObj.givenPath t m) ∧ GlobalTheory.FlipRun.edges (GlobalTheory.FunObj.givenPath t m) = GlobalTheory.SplitFlip.givenPath m) ∧ (GlobalTheory.FlipRun.OnGrid m t (GlobalTheory.FunObj.oppPath t m) ∧ GlobalTheory.FlipRun.edges (GlobalTheory.FunObj.oppPath t m) = GlobalTheory.SplitFlip.oppositePath m) ∧ ∀ {X Y : Node} (p q : Path T X Y), GlobalTheory.FlipRun.OnGrid m t p → GlobalTheory.FlipRun.OnGrid m t q → GlobalTheory.FlipRun.edges p = GlobalTheory.FlipRun.edges q → p = q := by
   intro T m t
   refine ⟨⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_⟩

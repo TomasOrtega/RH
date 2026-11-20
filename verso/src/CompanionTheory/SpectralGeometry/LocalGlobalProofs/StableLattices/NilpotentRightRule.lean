@@ -17,6 +17,11 @@ def RightOK (ε : Fin n → Bool) (X : GMod n) (c : X.V →ₗ[ℂ] (Matrix (Fin
     HasDerivAt (fun t : ℝ => c u (g * NormedSpace.exp ((t : ℂ) • Y))) (c (∑ a, ∑ b, Y a b • X.E a b u) g) 0
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Establish `e1 : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Y) i j) = fun t : ℝ => Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp (t • Y))`. Use function extensionality and compare the values at `t`. Establish `: (t : ℂ) • Y = t • Y` using `by ext a b; simp [Complex.real_smul]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `e2 : Y i j = Matrix.entryLinearMap ℝ ℂ i j (NormedSpace.exp ((0 : ℝ) • Y) * Y)`. Simplify using `[NormedSpace.exp_zero]`. Rewrite using `[e1, e2]`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0)`.
+-/
 theorem exp_entry (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Y) i j) (Y i j) 0 := by
   have e1 : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Y) i j) =
@@ -31,15 +36,24 @@ theorem exp_entry (Y : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).hasFDerivAt.comp_hasDerivAt
     (0 : ℝ) (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `exact HasDerivAt.fun_sum (u := Finset.univ) (A := fun l (t : ℝ) => g j l * NormedSpace.exp ((t : ℂ) • Y) l i) fun l _ => (exp_entry Y l i).const_mul (g j l)`.
+-/
 theorem mul_exp_entry (g Y : Matrix (Fin n) (Fin n) ℂ) (j i : Fin n) :
     HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • Y)) j i) ((g * Y) j i) 0 := by
   simp only [Matrix.mul_apply]
   exact HasDerivAt.fun_sum (u := Finset.univ) (A := fun l (t : ℝ) => g j l * NormedSpace.exp ((t : ℂ) • Y) l i)
     fun l _ => (exp_entry Y l i).const_mul (g j l)
 
+/- English proof (translation)
+Simplify using `[NormedSpace.exp_zero]`.
+-/
 theorem mul_exp_zero (g Y : Matrix (Fin n) (Fin n) ℂ) : g * NormedSpace.exp (((0 : ℝ) : ℂ) • Y) = g := by
   simp [NormedSpace.exp_zero]
 
+/- English proof (translation)
+Use `show (∑ a, ∑ b, (Y a b • tensE X a b u : Fin n → X.V)) i = _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, tensE_apply, smul_add, sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single i (fun a _ ha => by simp [Ne.symm ha]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem tens_action (X : GMod n) (Y : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → X.V) (i : Fin n) :
     (∑ a, ∑ b, Y a b • (tens X).E a b u) i = (∑ a, ∑ b, Y a b • X.E a b (u i)) + ∑ b, Y i b • u b := by
   show (∑ a, ∑ b, (Y a b • tensE X a b u : Fin n → X.V)) i = _
@@ -48,6 +62,15 @@ theorem tens_action (X : GMod n) (Y : Matrix (Fin n) (Fin n) ℂ) (u : Fin n →
   rw [Finset.sum_eq_single i (fun a _ ha => by simp [Ne.symm ha]) (by simp)]
   simp
 
+/- English proof (translation)
+Introduce `u Y hY g hg`. Establish `h1 : ∀ i, HasDerivAt (fun t : ℝ => (g * NormedSpace.exp ((t : ℂ) • Y)) j i * c (u i) (g * NormedSpace.exp ((t : ℂ) • Y))) ((g * Y) j i * c (u i) g + g j i * c (∑ a, ∑ b, Y a b • X.E a b (u i)) g) 0`. Introduce `i`. Apply the tactic sequence `refine ((mul_exp_entry g Y j i).fun_mul (h (u i) Y hY g hg)).congr_deriv ?_`. Simplify using `only [mul_exp_zero]`.
+
+Establish `h2` using `HasDerivAt.fun_sum (u := Finset.univ) (A := fun i (t : ℝ) => (g * NormedSpace.exp ((t : ℂ) • Y)) j i * c (u i) (g * NormedSpace.exp ((t : ℂ) • Y))) fun i _ => h1 i`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Establish `e : ∀ i, c ((∑ a, ∑ b, Y a b • (tens X).E a b u) i) g = c (∑ a, ∑ b, Y a b • X.E a b (u i)) g + ∑ b, Y i b * c (u b) g`. Introduce `i`. Use `(congrArg (fun v => c v g) (tens_action X Y u i)).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [map_add, Pi.add_apply, map_sum, Finset.sum_apply, map_smul, Pi.smul_apply, smul_eq_mul]`. Use `show _ = ∑ i, g j i * c ((∑ a, ∑ b, Y a b • (tens X).E a b u) i) g`. Use `Eq.trans ?_ (sum_congr rfl fun i _ => congrArg (g j i * ·) (e i).symm)` and prove the remaining obligations. Simplify using `only [mul_add, sum_add_distrib, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[add_comm]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring`.
+-/
 theorem tens_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     (h : RightOK ε X c) (j : Fin n) : RightOK ε (tens X) (tensCoef X c j) := by
   intro u Y hY g hg
@@ -74,6 +97,11 @@ theorem tens_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix 
   rw [Finset.sum_comm]
   exact sum_congr rfl fun _ _ => sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `u Y hY g hg`. Set `S : (step X z).V →ₗ[ℂ] (tens X).V` to `(stepSub X z).subtype`. Establish `hS : ∀ a b w, S ((step X z).E a b w) = (tens X).E a b (S w)` using `fun _ _ _ => rfl`. Establish `e : S (∑ a, ∑ b, Y a b • (step X z).E a b u) = ∑ a, ∑ b, Y a b • (tens X).E a b (S u)`. Simplify using `only [map_sum, map_smul, hS]`.
+
+Establish `h1` using `tens_ok h j (S u) Y hY g hg`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Use `show tensCoef X c j _ g = tensCoef X c j (S _) g`. Rewrite using `[e]`.
+-/
 theorem step_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     (h : RightOK ε X c) (z : ℂ) (j : Fin n) : RightOK ε (step X z) (stepCoef X z c j) := by
   intro u Y hY g hg
@@ -86,6 +114,9 @@ theorem step_ok {ε : Fin n → Bool} {X : GMod n} {c : X.V →ₗ[ℂ] (Matrix 
   show tensCoef X c j _ g = tensCoef X c j (S _) g
   rw [e]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _, h => h | s :: ss, X, c, χ, js, h => path_ok ss (step X (χ s)) (stepCoef X (χ s) c (js.headD s)) (χ + Pi.single s 1) js.tail (step_ok h _ _)`.
+-/
 theorem path_ok {ε : Fin n → Bool} : ∀ (ss : List (Fin n)) (X : GMod n)
     (c : X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (χ : Fin n → ℂ) (js : List (Fin n)),
     RightOK ε X c → RightOK ε (path X χ ss) (pathCoef X c χ ss js)
@@ -93,6 +124,13 @@ theorem path_ok {ε : Fin n → Bool} : ∀ (ss : List (Fin n)) (X : GMod n)
   | s :: ss, X, c, χ, js, h => path_ok ss (step X (χ s)) (stepCoef X (χ s) c (js.headD s)) (χ + Pi.single s 1) js.tail
       (step_ok h _ _)
 
+/- English proof (translation)
+Introduce `u Y hY g hg`. Set `L : H →L[ℝ] ℂ` to `((innerSL ℂ ξ).comp (σ g)).restrictScalars ℝ`. Establish `h1` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hK.real Y hY u)`. Establish `e : (fun t : ℝ => baseCoef σ D ξ u (g * NormedSpace.exp ((t : ℂ) • Y))) = L ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H)`. Use function extensionality and compare the values at `t`.
+
+Use `show ⟪ξ, σ (g * NormedSpace.exp ((t : ℂ) • Y)) (u : H)⟫_ℂ = ⟪ξ, σ g (σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H))⟫_ℂ`. Rewrite using `[hσ.1.2 g hg _ (Formalism.REAL.exp_indefinite_unitary_holds n ε Y hY t)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `h1.congr_deriv ?_` and prove the remaining obligations.
+
+Use `show ⟪ξ, σ g (∑ a, ∑ b, Y a b • (E a b u : H))⟫_ℂ = ⟪ξ, σ g ((∑ a, ∑ b, Y a b • E a b u : D) : H)⟫_ℂ`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`.
+-/
 theorem base_ok {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (ξ : H) :
@@ -111,6 +149,9 @@ theorem base_ok {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerPr
   show ⟪ξ, σ g (∑ a, ∑ b, Y a b • (E a b u : H))⟫_ℂ = ⟪ξ, σ g ((∑ a, ∑ b, Y a b • E a b u : D) : H)⟫_ℂ
   simp only [Submodule.coe_sum, Submodule.coe_smul]
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ D E hK χ ss hσ i u X hX g hg`. Conclude with `path_ok ss ⟨D, E, hK.gl⟩ (baseCoef σ D (i.1 : H)) χ i.2 (base_ok hK hσ _) u X hX g hg`.
+-/
 theorem rightRule : CompanionTheory.RgExh.Dec.N.RightRule := by
   intro n ε H _ _ _ σ D E hK χ ss hσ i u X hX g hg
   exact path_ok ss ⟨D, E, hK.gl⟩ (baseCoef σ D (i.1 : H)) χ i.2 (base_ok hK hσ _) u X hX g hg

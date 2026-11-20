@@ -12,6 +12,11 @@ namespace GlobalTheory.HSNef
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `k _ X _ p D _ L hL`. Unfold `gdeg chInt`. Use `finsum_nonneg fun σ => ?_` and prove the remaining obligations. Rewrite using `[Weight.chernInt, Weight.chernPart_neg_eq_zero (L.cInf σ) (hL σ)]`. Simplify using `only [Measure.restrict_zero, integral_zero_measure, sub_zero]`.
+
+Conclude with `integral_nonneg fun _ => zero_le_one`.
+-/
 theorem gdeg_nonneg_of_semiPos : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ L : HermLB p, L.SemiPos D → 0 ≤ gdeg L D := by
   intro k _ X _ p D _ L hL

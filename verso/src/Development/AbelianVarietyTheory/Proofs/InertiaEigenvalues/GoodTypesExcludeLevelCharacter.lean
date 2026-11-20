@@ -32,6 +32,13 @@ namespace GlobalTheory.GoodTypeNoChi
 
 open GlobalTheory.GLq GlobalTheory.MirAvg Polynomial
 
+/- English proof (translation)
+Introduce `D V β L hL G _ _ eG c c' F hF`. Establish `hm : ∀ y z : G, actL V β L (eG y) (actL V β L (eG z) F) = actL V β L (eG (y * z)) F` using `fun y z => by`. Rewrite using `[map_mul]`. Conclude with `Formalism.IndefR.Eqv.Act.levelGroupAction_mul_of_lifts hL (eG y) (eG z) hF`. Establish `lhs : gaL V β L eG c (gaL V β L eG c' F) = ∑ y : G, ∑ z : G, (c y * c' z) • actL V β L (eG (y * z)) F`.
+
+Simplify using `only [gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hm, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `rhs : gaL V β L eG (fun x => ∑ y, c y * c' (y⁻¹ * x)) F = ∑ y : G, ∑ x : G, (c y * c' (y⁻¹ * x)) • actL V β L (eG x) F`.
+
+Simplify using `only [gaL, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[lhs, rhs]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (Equiv.mulLeft y) _ _ fun z => by simp`.
+-/
 theorem p_comp : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank),
     LiftsExist V β L → ∀ {G : Type} [Group G] [Fintype G] (eG : G ≃* Formalism.L2.DIV.G0 L.Pg L.r) (c c' : G → ℂ) (F : GA D V → ℂ),
     HasType V β (flag1L L) F →
@@ -54,6 +61,11 @@ theorem p_comp : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Formalism.Indef
   refine Finset.sum_congr rfl fun y _ => ?_
   exact Fintype.sum_equiv (Equiv.mulLeft y) _ _ fun z => by simp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R h i t`. Take `⟨c, hc⟩` from `h.βV i`. Use `GlobalTheory.T.parahoricLevel_liftsExist _ _ _ _ _ hc (fun PP hP PP' hP' => ?_) (GlobalTheory.LevelRamif.ramif_at_levels D T R.toLevCh A.μ0 h t i).1` and prove the remaining obligations. Take `⟨k, hk⟩` from `(h.Pg PP).1 hP`. Break down `hP' with hP' | hP'` into its components or cases.
+
+Take `⟨k', hk'⟩` from `(h.Pg PP').1 hP'`. Conclude with `GlobalTheory.ProjectedLift.not_isConjPl R.C.P hk hk'`. Introduce `hc`. Take `⟨q, hq, hm, hne⟩` from `GlobalTheory.LevelRamif.exists_prime_mem (h.Q_pl t) hP'`. Conclude with `GlobalTheory.LevelRamif.not_two_primes PP' hq (D.host.g_prime k) (hne k) hm (GlobalTheory.LevelRamif.natCast_mem_conj hc (GlobalTheory.LevelRamif.typePrime_mem hk))`.
+-/
 theorem p_lifts : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type)
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 →
     ∀ (i : Fin D.R.m) (t : T), LiftsExist (Vc D i) (R.βV i) (R.datVt i t) := by
@@ -70,12 +82,20 @@ theorem p_lifts : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (
     exact GlobalTheory.LevelRamif.not_two_primes PP' hq (D.host.g_prime k) (hne k) hm
       (GlobalTheory.LevelRamif.natCast_mem_conj hc (GlobalTheory.LevelRamif.typePrime_mem hk))
 
+/- English proof (translation)
+Take `⟨V, -, hV⟩` from `h`. Introduce `x y`. Rewrite using `[← hV, ← hV]`. Conclude with `FDRep.char_conj V x y`.
+-/
 theorem isClass_irr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsClass χ := by
   obtain ⟨V, -, hV⟩ := h
   intro x y
   rw [← hV, ← hV]
   exact FDRep.char_conj V x y
 
+/- English proof (translation)
+Take `⟨hc, hv⟩` from `h`. Use `⟨inv_ne_zero hc, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e1 : ((θ⁻¹ u : ℂˣ) : ℂ) = ((θ u : ℂˣ) : ℂ)⁻¹` using `by simp`. Establish `hx : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective]` and apply the resulting hypothesis.
+
+Establish `e2 : L.teich (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c⁻¹) = (L.teich (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) c))⁻¹`. Rewrite using `[map_inv₀]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_mul, inv_mul_cancel₀ hx, map_one]`. Rewrite using `[e1, hv u hu, e2]`.
+-/
 theorem charLab_inv {g : ℕ} [Fact g.Prime] {L : LabelDatum g} {θ : (ZMod g)ˣ →* ℂˣ} {c : ZMod g}
     (h : GlobalTheory.GLp.IsCharLab L θ c) : GlobalTheory.GLp.IsCharLab L θ⁻¹ c⁻¹ := by
   obtain ⟨hc, hv⟩ := h
@@ -89,6 +109,17 @@ theorem charLab_inv {g : ℕ} [Fact g.Prime] {L : LabelDatum g} {θ : (ZMod g)ˣ
     rw [← map_mul, inv_mul_cancel₀ hx, map_one]
   rw [e1, hv u hu, e2]
 
+/- English proof (translation)
+Introduce `g _ L r f θ c hc hf hf' a b ha`. Choose the witnesses or unpack the hypotheses as in `⟨n, rfl⟩ : ∃ n, r = n + 1 := by`. Consider the cases of `r with`. Consider the case `zero => exact absurd (_root_.funext fun i : Fin 0 => Fin.elim0 i) ha`. Consider the case `succ n => exact ⟨n, rfl⟩`.
+
+Take `⟨hfin, -⟩` from `irr_finite_and_finsum_zOf_eq_one (Gn g (n + 1))`. Rewrite using `[eSerC_eq_sum L (n + 1) hfin f, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun ψ hψ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hψ`. Take `⟨hirr, hlab⟩` from `hψ`.
+
+Apply `GlobalTheory.T.centralIdempotent_mul_mirabolicDetAverage_eq_zero g (n + 1) ψ hirr θ a b` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.trace_mirabolicDetCharacterAverage_vector_indep g n ψ (isClass_irr hirr) θ a ha b]`. Establish `hinv` using `charLab_inv hc`. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false]`.
+
+Rewrite using `[(GlobalTheory.T.trace_mirabolicDetAverage_eq_harishChandraRestriction g n ψ θ).1]`. Assume the negation of the conclusion as `hne`. Take `⟨σ, hσ, hip⟩` from `(GlobalTheory.T.exists_irr_harishChandraInduction_thetaInv_det g n ψ hirr θ).1 (right_ne_zero_of_mul hne)`. Conclude with `hf' ((GlobalTheory.T.detCharacterLabel_root_of_harishChandraConstituent g L n ψ f hirr hlab σ hσ θ⁻¹ c⁻¹ hinv).1 hip)`. Simplify using `only [if_true]`.
+
+Rewrite using `[(GlobalTheory.T.trace_mirabolicDetAverage_eq_harishChandraRestriction g n ψ θ).2]`. Assume the negation of the conclusion as `hne`. Take `⟨σ, hσ, hip⟩` from `(GlobalTheory.T.exists_irr_harishChandraInduction_thetaInv_det g n ψ hirr θ).2 (right_ne_zero_of_mul hne)`. Conclude with `hf' ((GlobalTheory.T.detCharacterLabel_root_of_harishChandraConstituent g L n ψ f hirr hlab σ hσ θ⁻¹ c⁻¹ hinv).2 hip)`.
+-/
 theorem seriesKillsAvg : SeriesKillsAvg := by
   intro g _ L r f θ c hc hf hf' a b ha
   obtain ⟨n, rfl⟩ : ∃ n, r = n + 1 := by
@@ -115,6 +146,13 @@ theorem seriesKillsAvg : SeriesKillsAvg := by
     obtain ⟨σ, hσ, hip⟩ := (GlobalTheory.T.exists_irr_harishChandraInduction_thetaInv_det g n ψ hirr θ).2 (right_ne_zero_of_mul hne)
     exact hf' ((GlobalTheory.T.detCharacterLabel_root_of_harishChandraConstituent g L n ψ f hirr hlab σ hσ θ⁻¹ c⁻¹ hinv).2 hip)
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t`. Establish `hc : GlobalTheory.Hk3.Core R F` using `hG.core`. Establish `hl : R.toLevCh.Is A.μ0` using `hc.lev`. Establish `hL : LiftsExist (Vc D i) (R.βV i) (R.datVt i t)` using `p_lifts D G Pl0 T A Ks R hl i t`. Introduce `y hy PP a ha b ε hε l`.
+
+Establish `hT : HasType (Vc D i) (R.βV i) (flag1L (R.datVt i t)) (fun h => l (R.extV i t y h))` using `GlobalTheory.T.definiteSpace_forms_functional_principalType D G Pl0 T A Ks R F hc i t y l`. Establish `hy'` using `hy l`. Establish `e1` using `p_comp _ _ _ hL R.eG (mirC R i PP a b ε) (RealDat.eC (A := A) (sg0 D A)) _ hT`. Establish `e0` using `congrArg (gaL (Vc D i) (R.βV i) (R.datVt i t) R.eG (mirC R i PP a b ε)) hy'`. Establish `h0 : (fun x => ∑ y, mirC R i PP a b ε y * RealDat.eC (A` using `A) (sg0 D A) (y⁻¹ * x)) = fun _ => 0 :=`.
+
+Use function extensionality and compare the values at `(GlobalTheory.T.goodProjector_conv_mirabolicAvg_eq_zero seriesKillsAvg D G Pl0 T A Ks R F hG i PP a ha b ε hε)`. Establish `e2` using `congrArg (fun c => gaL (Vc D i) (R.βV i) (R.datVt i t) R.eG c (fun h => l (R.extV i t y h))) h0`. Establish `e3 : gaL (Vc D i) (R.βV i) (R.datVt i t) R.eG (fun _ : G => (0 : ℂ)) (fun h => l (R.extV i t y h)) = 0`. Simplify using `only [gaL, zero_smul, Finset.sum_const_zero, LinearMap.zero_apply]`. Conclude with `e0.symm.trans (e1.trans (e2.trans e3))`.
+-/
 theorem goodNoChi : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, GoodNoChi R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t
   have hc : GlobalTheory.Hk3.Core R F := hG.core

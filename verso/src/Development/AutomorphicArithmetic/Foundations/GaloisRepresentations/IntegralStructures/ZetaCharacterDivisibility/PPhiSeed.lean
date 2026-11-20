@@ -17,6 +17,21 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `hSub hConj hRoot hAlg E Ω _ _ _ _ _ _ l _ ι a dd U ψ hψ r ρ hc hs hin hdet w hw B hB hgen hk`. Use `⟨fun P AI hT A hA O _ _ _ Bw hj => ?_, fun P AI hT A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Conclude with `((hSub E Ω l a dd r ρ hs hin ι w P AI hT A hA O Bw hj).1 (hk P AI hT A hA O Bw hj).1).1`. Take `⟨hρc, g, hg, m, hdiv⟩` from `hk P AI hT A h O Bw hj`. Take `⟨hrc, hdvd⟩` from `(hSub E Ω l a dd r ρ hs hin ι w P AI hT A h O Bw hj).1 hρc`.
+
+Establish `hpol : (GlobalTheory.RoadU.satWD h a B).charPol g = rootPol (algSat a (normV w) B)`. Rewrite using `[UpperTheory.Gal.TP.Sub.satPol_holds E Ω A w h a B g, hg]`. Simplify using `[unrPol, rootPol]`. Establish `hcd : ∀ x, Matrix.GeneralLinearGroup.det (((rk1 ψ).comp (Dec (F` using `E) A).subtype) x) = Matrix.GeneralLinearGroup.det ((r.comp (Dec (F := E) A).subtype) x) := by`. Introduce `x`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[rk1, Matrix.det_fin_one, hdet]`. Take `⟨J, hCl⟩` from `hψ.2 w hw B hB`. Take `⟨hcC, -, -, hcP⟩` from `hCl.2 P AI hT A h O Bw hj`. Establish `hcPst` using `((hConj l P AI hT E Ω A O Bw 1 ((rk1 ψ).comp (Dec (F := E) A).subtype) ((rk1 ψ).comp (Dec (F := E) A).subtype)).1 hcC).2`.
+
+Establish `hprod` using `UpperTheory.Gal.crystallineComparison.detWD_holds l P AI hT ι E Ω A w h O Bw hj a (r.comp (Dec (F := E) A).subtype) ((rk1 ψ).comp (Dec (F := E) A).subtype) hcd hrc hcPst g hg`. Establish `heig : (wdAt P ι Bw h hj ((rk1 ψ).comp (Dec (F` using `E) A).subtype)).eig g = {(algSat a (normV w) B).prod} := by`. Rewrite using `[WD.eig, hcP g, hg]`. Simplify using `[unrPol]`. Rewrite `hprod` using `[heig, Multiset.prod_singleton, WD.eig]`.
+
+Establish `hq : normV w ≠ 0` using `GlobalTheory.LFun.qV_ne_zero w`. Establish `hcard : (algSat a (normV w) B).card = a`. Take `⟨σ, -, hσ⟩` from `hB`. Simplify `GlobalTheory.LFun.HasSatGL.card hσ` using `[algSat]`. Establish `hx : (wdAt P ι Bw h hj (r.comp (Dec (F` using `E) A).subtype)).charPol g = rootPol (algSat a (normV w) B) := by`.
+
+Use `hRoot _ _ m (WD.charPol_monic _ g) ?_ ?_ hprod (hAlg a _ B hq hgen)` and prove the remaining obligations. Rewrite using `[WD.charPol_natDegree, GlobalTheory.PstLaws.lpDim_wdAt, hcard]`. Rewrite using `[← hpol]`. Conclude with `(hdvd g).trans hdiv`. Establish `hxu` using `(GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ ((hConj l P AI hT E Ω A O Bw a (r.comp (Dec (F := E) A).subtype) (r.comp (Dec (F := E) A).subtype)).1 hrc).2).2 hrc`.
+
+Establish `hsu` using `(UpperTheory.Gal.crystallineComparison.satGeom_of E Ω A w h a B).1`. Introduce `g'`. Rewrite using `[UpperTheory.Gal.crystallineComparison.unrGeom_of E Ω A w h _ _ hxu hsu g hg (hx.trans hpol.symm)]`.
+-/
 theorem UpperTheory.Gal.Int.Div.phiSeed_of :
     SubLoc → LocConj → RootPin → AlgGen → PhiSeed := by
   intro hSub hConj hRoot hAlg E Ω _ _ _ _ _ _ l _ ι a dd U ψ hψ r ρ hc hs hin hdet w hw B hB hgen hk

@@ -21,6 +21,11 @@ def clsOm (Y : Full X) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS 
     (b : Set (Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS)) : ℝ :=
   if h : ∃ t : GTu Y u, t.lam = Λ ∧ frCls Λ t = b then omT h.choose else 0
 
+/- English proof (translation)
+Establish `hE` using `(GlobalTheory.DegAsm.frEqv_invariants D.host.E (VS D).V (HV D) hK D.R.rS (F0 X u) (dI D) Λ).1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: Ft t' ∈ frCls Λ t` using `by rw [h]; exact hE.refl _`. Conclude with `this`.
+
+Introduce `h`. Use extensionality with `G`. Conclude with `⟨fun hG => hE.trans (hE.symm h) hG, fun hG => hE.trans h hG⟩`.
+-/
 theorem frCls_eq_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E) {Y : Full X} {u : D.what₂.Word}
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (t t' : GTu Y u) :
     frCls Λ t = frCls Λ t' ↔ GlobalTheory.DegAsm.FrEqv (F0 X u) Λ (Ft t) (Ft t') := by
@@ -33,6 +38,9 @@ theorem frCls_eq_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E)
     ext G
     exact ⟨fun hG => hE.trans (hE.symm h) hG, fun hG => hE.trans h hG⟩
 
+/- English proof (translation)
+Unfold `clsOm`. Use `split_ifs with h`. Conclude with `((GlobalTheory.DegAsm.WeightInf.main D.host.E (VS D).V (HV D) hK D.R.rS).2 _ _ _ _).1`. Conclude with `le_rfl`.
+-/
 theorem clsOm_nonneg (Y : Full X) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E) (b : Set (Formalism.HermitianLatticeCounting.S6.FlagD (HV D) D.R.rS)) : 0 ≤ clsOm Y u Λ b := by
   unfold clsOm
@@ -40,6 +48,11 @@ theorem clsOm_nonneg (Y : Full X) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.h
   · exact ((GlobalTheory.DegAsm.WeightInf.main D.host.E (VS D).V (HV D) hK D.R.rS).2 _ _ _ _).1
   · exact le_rfl
 
+/- English proof (translation)
+Establish `hex : ∃ s : GTu Y u, s.lam = Λ ∧ frCls Λ s = frCls Λ t` using `⟨t, ht, rfl⟩`. Unfold `clsOm`. Rewrite using `[dif_pos hex]`. Take `⟨h1, h2⟩` from `hex.choose_spec`. Establish `hq` using `(frCls_eq_iff hK Λ _ _).1 h2`.
+
+Use `((GlobalTheory.DegAsm.frEqv_invariants D.host.E (VS D).V (HV D) hK D.R.rS (F0 X u) (dI D) Λ).2 _ _ hq).1` as an intermediate fact. Unfold `omT`. Rewrite using `[h1, ht]`. Conclude with `this`.
+-/
 theorem clsOm_frCls (hK : Formalism.HermitianLatticesTheory.IsCMUnram D.host.E) {Y : Full X} {u : D.what₂.Word}
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (t : GTu Y u) (ht : t.lam = Λ) : clsOm Y u Λ (frCls Λ t) = omT t := by
   have hex : ∃ s : GTu Y u, s.lam = Λ ∧ frCls Λ s = frCls Λ t := ⟨t, ht, rfl⟩

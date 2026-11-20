@@ -25,9 +25,15 @@ structure SelectionServed (𝒞 : FamClass) (sel : _root_.Formalism.L2.TwistSele
         OrbitPlaces.ThetaKernelShapeAtD (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) ((sel Fm hc).2 x hx h0 i).T.ker.ent ep be sg) (Fm.X x i) ∧
         OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i)
           (OrbitPlaces.ofKer (nuRowOK (Fm.D x i)) ((sel Fm hc).2 x hx h0 i).T.ker.ent ep be sg))
+/- English proof (translation)
+The claim follows from `h.twU pdv := closed_imp_class h.pdv fun Fm _ hc hp => ⟨(sel Fm hc).1, fun x hx0 hx i => ⟨_, hp hc x hx hx0 i⟩⟩`.
+-/
 theorem sumOverPrimesService_of_servT {𝒞 : FamClass} (sel : _root_.Formalism.L2.TwistSelection 𝒞) (h : _root_.Formalism.L2.G.ServT.SelectionServed 𝒞 sel) : SumOverPrimesHypotheses 𝒞 where
   twU := h.twU
   pdv := closed_imp_class h.pdv fun Fm _ hc hp => ⟨(sel Fm hc).1, fun x hx0 hx i => ⟨_, hp hc x hx hx0 i⟩⟩
+/- English proof (translation)
+The claim follows from `sum_over_primes_service 𝒞 hD (_root_.Formalism.L2.G.ServT.sumOverPrimesService_of_servT sel h)`.
+-/
 theorem closed_servF_of_servT_of_dGamSize {𝒞 : FamClass} (sel : _root_.Formalism.L2.TwistSelection 𝒞) (hD : Closed 𝒞 fun Fm _ => DGamSize Fm) (h : _root_.Formalism.L2.G.ServT.SelectionServed 𝒞 sel) :
     Closed 𝒞 fun Fm _ => WeilJacquetShalikaLaw.ServF Fm :=
   sum_over_primes_service 𝒞 hD (_root_.Formalism.L2.G.ServT.sumOverPrimesService_of_servT sel h)

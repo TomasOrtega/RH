@@ -11,10 +11,16 @@ noncomputable section
 
 namespace GlobalTheory.DualCon
 
+/- English proof (translation)
+Rewrite using `[Category.comp_id, evc, lift_fst_snd, Over.id_left, pull_id]`.
+-/
 theorem cls_eq_evc_id {S : Scheme.{0}} {A T : Over S} {M : LB (A ⊗ T).left} (hM : M.IsLB) :
     cls M hM = evc hM (fst A T) (snd A T ≫ 𝟙 T) := by
   rw [Category.comp_id, evc, lift_fst_snd, Over.id_left, pull_id]
 
+/- English proof (translation)
+Use `(cls_eq_iff hP (pull_isLB hQ _)).1 ?_` and prove the remaining obligations. Rewrite using `[(cls_eq_iff hP (pull_isLB hP' _)).2 hx, cls_ev hP', cls_ev hQ, evc, (cls_eq_iff hP' (pull_isLB hQ _)).2 hy, cls_ev hQ, pull_evc, lift_fst, lift_snd_assoc, Category.assoc]`.
+-/
 theorem cls_trans {S : Scheme.{0}} {A B B' B'' : Over S} {P : LB (A ⊗ B).left} {P' : LB (A ⊗ B').left}
     {Q : LB (A ⊗ B'').left} (hP : P.IsLB) (hP' : P'.IsLB) (hQ : Q.IsLB) (x : B ⟶ B') (y : B' ⟶ B'')
     (hx : LBIso P (ev P' (fst A B) (snd A B ≫ x))) (hy : LBIso P' (ev Q (fst A B') (snd A B' ≫ y))) :
@@ -23,6 +29,11 @@ theorem cls_trans {S : Scheme.{0}} {A B B' B'' : Over S} {P : LB (A ⊗ B).left}
   rw [(cls_eq_iff hP (pull_isLB hP' _)).2 hx, cls_ev hP', cls_ev hQ, evc,
     (cls_eq_iff hP' (pull_isLB hQ _)).2 hy, cls_ev hQ, pull_evc, lift_fst, lift_snd_assoc, Category.assoc]
 
+/- English proof (translation)
+Establish `hP` using `h.fam.isLB`. Establish `hP'` using `h'.fam.isLB`. Take `⟨x, ⟨hxb, hxP⟩, -⟩` from `h'.univ B b P h.fam`. Take `⟨y, ⟨hyb, hyP⟩, -⟩` from `h.univ B' b' P' h'.fam`. Establish `idB : LBIso P (ev P (fst A B) (snd A B ≫ 𝟙 B))` using `(cls_eq_iff hP (pull_isLB hP _)).1 (cls_eq_evc_id hP)`.
+
+Establish `idB' : LBIso P' (ev P' (fst A B') (snd A B' ≫ 𝟙 B'))` using `(cls_eq_iff hP' (pull_isLB hP' _)).1 (cls_eq_evc_id hP')`. Establish `hxy : x ≫ y = 𝟙 B` using `(h.univ B b P h.fam).unique ⟨by rw [Category.assoc, hyb, hxb], cls_trans hP hP' hP x y hxP hyP⟩ ⟨Category.id_comp _, idB⟩`. Establish `hyx : y ≫ x = 𝟙 B'` using `(h'.univ B' b' P' h'.fam).unique ⟨by rw [Category.assoc, hxb, hyb], cls_trans hP' hP hP' y x hyP hxP⟩ ⟨Category.id_comp _, idB'⟩`. Conclude with `⟨⟨x, y, hxy, hyx⟩, hxb, (same_id_iff hP hP' x).2 hxP⟩`.
+-/
 theorem rep_unique (S : Scheme.{0}) (A B B' S' : Over S) [GrpObj A] (b : B ⟶ S') (P : LB (A ⊗ B).left)
     (b' : B' ⟶ S') (P' : LB (A ⊗ B').left) (h : Rep A b P) (h' : Rep A b' P') :
     ∃ e : B ≅ B', e.hom ≫ b' = b ∧ Same A P P' (𝟙 B) e.hom := by

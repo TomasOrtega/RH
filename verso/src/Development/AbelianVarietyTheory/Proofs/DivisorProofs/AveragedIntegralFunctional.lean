@@ -17,10 +17,16 @@ def zs {n n₁ d : ℕ} (H : Plane E n n₁) (u : Fin d → AE F E) : Matrix (Fi
 
 variable {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F} {d : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, mul_add]`.
+-/
 theorem rho_add (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (w : V) (Φ Ψ : (κ → AF F) → ℂ) :
     dd.rho ψ w (Φ + Ψ) = dd.rho ψ w Φ + dd.rho ψ w Ψ := by
   funext x; simp [Darboux.rho, schr, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_smul (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (w : V) (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     dd.rho ψ w (c • Φ) = c • dd.rho ψ w Φ := by
   funext x; simp [Darboux.rho, schr]; ring
@@ -29,11 +35,17 @@ def avgFun (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E
     (Φ : (κ → AF F) → ℂ) : (Fin d → AE F E) → ℂ :=
   fun u => lam (dd.rho ψ (z u) Φ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Simplify using `[avgFun, rho_add]`.
+-/
 theorem avgFun_add (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (Φ Ψ : (κ → AF F) → ℂ) :
     avgFun dd ψ z lam (Φ + Ψ) = avgFun dd ψ z lam Φ + avgFun dd ψ z lam Ψ := by
   funext u; simp [avgFun, rho_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Simplify using `[avgFun, rho_smul]`.
+-/
 theorem avgFun_smul (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     avgFun dd ψ z lam (c • Φ) = c • avgFun dd ψ z lam Φ := by
@@ -69,6 +81,9 @@ def avgL (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) 
     (μ : @Measure (Fin d → AE F E) (borel _)) : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ :=
   (LinearMap.exists_extend (averagedIntegralIntegrable dd ψ z lam μ)).choose
 
+/- English proof (translation)
+Use `congrArg (fun f => f ⟨Φ, h⟩) (LinearMap.exists_extend (averagedIntegralIntegrable dd ψ z lam μ)).choose_spec` as an intermediate fact. Conclude with `this`.
+-/
 theorem avgL_apply (dd : Darboux Bf κ) (ψ : AddChar (AF F) ℂ) (z : (Fin d → AE F E) → V)
     (lam : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (μ : @Measure (Fin d → AE F E) (borel _)) (Φ : (κ → AF F) → ℂ)
     (h : Integrable (avgFun dd ψ z lam Φ) μ) : avgL dd ψ z lam μ Φ = ∫ u, avgFun dd ψ z lam Φ u ∂μ := by

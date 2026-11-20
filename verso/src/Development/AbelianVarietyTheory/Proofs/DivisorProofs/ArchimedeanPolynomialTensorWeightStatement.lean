@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.RealLift Formalism.BasicNotions.TH
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockKStab.kstab | exact GlobalTheory.FockKStab.kstab | (intros; apply GlobalTheory.FockKStab.kstab <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_polynomial_tensor_weight : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.LineEx →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d P Q R S : ℕ) (X : Spc F E n) (W : Spc F E d) (om : Rep σ X W)

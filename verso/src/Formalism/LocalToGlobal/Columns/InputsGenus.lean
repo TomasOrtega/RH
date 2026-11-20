@@ -9,11 +9,20 @@ namespace Formalism.L2.Col
 
 open NumberField
 
+/- English proof (translation)
+The claim follows from `unimodular_genus_unique`.
+-/
 theorem unimodGenusLocAll_holds : UnimodGenusLocAll := unimodular_genus_unique
 
+/- English proof (translation)
+The claim follows from `unimodGenusLocAll_holds E n`.
+-/
 theorem unimodGenusLoc_holds (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) : UnimodGenusLoc E n :=
   unimodGenusLocAll_holds E n
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.GenusGluing.Gen.unimodGenus_iff hc n).1 (unimodGenusLoc_holds E n)`.
+-/
 theorem unimodGenus_holds {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] : UnimodGenus hc n :=
   (Formalism.L2.GenusGluing.Gen.unimodGenus_iff hc n).1 (unimodGenusLoc_holds E n)

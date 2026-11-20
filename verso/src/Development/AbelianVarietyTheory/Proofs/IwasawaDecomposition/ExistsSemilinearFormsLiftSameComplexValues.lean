@@ -27,6 +27,21 @@ namespace GlobalTheory.Mem.R3.DefLatBC.LiftExt
 open Formalism.L2.Col in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `lam₂` using the available equality. Substitute `SG₂` using the available equality. Establish `hΛ' : Λ₂ = Λ₁.coefMap ι` using `funext fun w => hΛ w w.2`. Substitute `hΛ'` using the available equality. Establish `hmem : ∀ ψ : (formGSD (roundPk X lam₁ fun d : DecoSet X.E n ∅ SG₁ => d.1.N) Λ₁).EqFun, (fun d => hfsJ ι lam₁ (ψ.1 d)) ∈ (formGSD (X` using `({F := X.F, E := X.E, K := L, Tau := X.Tau, emb := e} : Fields)) (roundPk ({F := X.F, E := X.E, K := L, Tau := X.Tau, emb := e} : Fields) lam₁ fun d : DecoSet X.E n ∅ SG₁ => d.1.N) (Λ₁.coefMap ι)).EqFun := by`.
+
+Introduce `ψ`. Take `⟨φ₂, h⟩` from `GlobalTheory.Mem.R3.Tr.levelFamily_coefficientChange_liftRound X ι e he lam₁ Λ₁ (Λ₁.coefMap ι) (fun w => rfl) (fun w h₁ h₂ hh => by`. Establish `: h₁ = h₂` using `Subtype.ext hh`. Substitute `this` using the available equality. Use the proof step `rfl) ψ`.
+
+Establish `: (fun d => hfsJ ι lam₁ (ψ.1 d)) = φ₂.1` using `funext fun d => Subtype.ext (h d).symm`. Rewrite using `[this]`. Conclude with `φ₂.2`. Use `⟨{ toFun := fun ψ => ⟨fun d => hfsJ ι lam₁ (ψ.1 d), hmem ψ⟩, map_zero' := ?_, map_add' := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `d`. Conclude with `map_zero _`. Introduce `ψ χ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`.
+
+Conclude with `map_add _ _ _`. Introduce `a ψ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d`. Conclude with `hfsJ_smul ι lam₁ a (ψ.1 d)`.
+
+Introduce `ψ d₁ d₂ hd`. Consider the cases of `hd`. Apply `heq_of_eq` to reduce the goal to its premises. Use `show MvPolynomial.map c₂ (MvPolynomial.map ι (ψ.1 d₁).1) = _`. Rewrite using `[MvPolynomial.map_map]`.
+
+Establish `hc' : c₂.comp ι = c₁` using `RingHom.ext hc`. Rewrite using `[hc']`.
+-/
 private theorem liftHom_reidx (X : Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (e : X.Tau → X.E →+* L) (he : ∀ τ, ι.comp (X.emb τ) = e τ) {n : ℕ} (lam₁ lam₂ : X.Tau → DomWeight n)
     (hl : lam₂ = lam₁) {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (hS : SG₂ = SG₁)
@@ -78,6 +93,9 @@ private theorem liftHom_reidx (X : Fields) {L : Type} [Field L] [NumberField L] 
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Use `⟨(S₂.res h₂).toLinearMap.toAddMonoidHom.comp (Lf.comp (S₁.res h₁).symm.toLinearMap.toAddMonoidHom), fun a f => ?_, fun f => ?_⟩` and prove the remaining obligations. Use `show S₂.res h₂ (Lf ((S₁.res h₁).symm (a • f))) = ι a • S₂.res h₂ (Lf ((S₁.res h₁).symm f))`. Rewrite using `[map_smul, hLf, map_smul]`. Use `show (S₂.res h₂).symm (S₂.res h₂ (Lf ((S₁.res h₁).symm f))) = _`. Conclude with `LinearEquiv.symm_apply_apply _ _`.
+-/
 private theorem formsLift_of_eqFunLift {K₁ K₂ : Type} [Field K₁] [NumberField K₁] [StarRing K₁] [Field K₂] [NumberField K₂] [StarRing K₂]
     (ι : K₁ →+* K₂) (S₁ : GSD K₁) (S₂ : GSD K₂) (h₁ : S₁.Ok) (h₂ : S₂.Ok) (Lf : S₁.EqFun →+ S₂.EqFun)
     (hLf : ∀ (a : K₁) ψ, Lf (a • ψ) = ι a • Lf ψ) :
@@ -92,6 +110,23 @@ private theorem formsLift_of_eqFunLift {K₁ K₂ : Type} [Field K₁] [NumberFi
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality.
+
+Establish `ef : f' = f` using `eq_of_heq hf`. Establish `ep : w'.px = w.px` using `eq_of_heq hpx`. Establish `hv : ((baseOfColW w').primes w'.px).vGs = ((baseOfColW w).primes w.px).vGs`. Rewrite using `[ep]`. Both sides reduce to the same expression.
+
+Establish `hι' : ∀ x, (baseOfColW w').embLL (ι x) = (baseOfColW w).embLL x` using `hι`. Use `liftHom_reidx (baseOfColW w).fields ι (baseOfColW w').tauLL ?_ _ _ rfl ?_ _ _ ?_ (baseOfColW w).embLL (baseOfColW w').embLL hι` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`. Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w') τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Conclude with `(hι' _).trans (h1.trans h2.symm)`. Conclude with `(rowLevelPrimes_colTuples_eq_vGs w' W').trans (hv.trans (rowLevelPrimes_colTuples_eq_vGs w W).symm)`.
+
+Use `glue_inv_coefMap_of_empty ι (twistRamifiedPrimes_empty_colTuples w W) (twistRamifiedPrimes_empty_colTuples w' W') _ _ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Use `levKV_coefMap_of ι p.1 (fun s => w.I.Ch.chi s p) (fun s => w'.I.Ch.chi s ⟨p.1, hp⟩) ?_ _ _ _ _` and prove the remaining obligations. Introduce `s c`. Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises.
+
+Use `Eq.trans ?_ (hι' _).symm` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : 𝓞 (baseOfColW w).fields.E ⧸ p.1.asIdeal)`. Establish `hy0 : ((y : 𝓞 (baseOfColW w).fields.E) : (baseOfColW w).fields.E) ≠ 0`. Introduce `h0`. Establish `h0' : y = 0` using `RingOfIntegers.coe_injective (h0.trans (by simp))`.
+
+Rewrite `hy` using `[h0', map_zero]`. Conclude with `c.ne_zero hy.symm`. Establish `e1` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w' s ⟨p.1, hp⟩ c y (Units.mk0 _ hy0) rfl hy.symm`. Establish `e2` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w s p c y (Units.mk0 _ hy0) rfl hy.symm`. Establish `eC : w'.I.C = w.I.C` using `w'.C_eq.trans (ef.trans w.C_eq.symm)`.
+
+Rewrite `e1` using `[eC]`. Conclude with `e1.trans e2.symm`.
+-/
 private theorem eqFun_lift {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T)
     (w' : ColW B' f' T') (W : Set B.places.Pl) (W' : Set B'.places.Pl) (hpre : B'.toPre = B.toPre) (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (j j' : ℕ) (hj : j = j') (ι : B.fields.K →+* B'.fields.K) (hι : ∀ x, B'.embLL (ι x) = B.embLL x) :
@@ -140,6 +175,9 @@ private theorem eqFun_lift {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨Lf, hs, hc⟩` from `eqFun_lift w w' W W' hpre hf hpx j j' hj ι hι`. Take `⟨L, hL, hr⟩` from `formsLift_of_eqFunLift ι _ _ h₁ h₂ Lf hs`. Use `⟨L, hL, fun ψ d d' hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `hc _ d d' hd`.
+-/
 private theorem forms_lift {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T)
     (w' : ColW B' f' T') (W : Set B.places.Pl) (W' : Set B'.places.Pl) (hpre : B'.toPre = B.toPre) (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (j j' : ℕ) (hj : j = j') (ι : B.fields.K →+* B'.fields.K) (hι : ∀ x, B'.embLL (ι x) = B.embLL x)
@@ -157,6 +195,9 @@ private theorem forms_lift {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T 
 end GlobalTheory.Mem.R3.DefLatBC.LiftExt
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hp Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' hj φ hφ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.Mem.R3.DefLatBC.LiftExt.forms_lift w w' Wt {v | B'.places.resChar v ∈ T'.pl} hE.1 hf hp ((j : ℕ) + 1) ((j' : ℕ) + 1) (by rw [hj]) φ hφ (Formalism.L2.Col.mtKOk (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 hX ((j : ℕ) …`.
+-/
 theorem _root_.GlobalTheory.T.exists_semilinearFormsLift_sameComplexValues : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

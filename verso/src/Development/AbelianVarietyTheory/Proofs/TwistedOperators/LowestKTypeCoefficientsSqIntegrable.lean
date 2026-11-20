@@ -53,19 +53,31 @@ def unitsConj (L : Matrix (Fin n) (Fin p ⊕ Fin q) ℂ) (B : Matrix (Fin p ⊕ 
 def frameInv (ε : Fin n → Bool) (B : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) : Matrix (Fin n) (Fin p ⊕ Fin q) ℂ :=
   Formalism.REAL.Jm ε * Bᴴ * Formalism.UG.Jpq p q
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem Jpq_conjTranspose : (Formalism.UG.Jpq p q)ᴴ = Formalism.UG.Jpq p q := by
   simp [Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose]
 
 variable {ε : Fin n → Bool} {B : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ}
 
+/- English proof (translation)
+Simplify using `only [frameInv, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Bᴴ, hB, Formalism.REAL.Jm_mul_self]`.
+-/
 theorem frameInv_mul (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) : frameInv ε B * B = 1 := by
   simp only [frameInv, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc Bᴴ, hB, Formalism.REAL.Jm_mul_self]
 
+/- English proof (translation)
+Establish `e : Fin n ≃ Fin p ⊕ Fin q` using `(finCongr hn.symm).trans finSumFinEquiv.symm`. Conclude with `(Matrix.mul_eq_one_comm_of_equiv e).1 (frameInv_mul hB)`.
+-/
 theorem mul_frameInv (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n) : B * frameInv ε B = 1 := by
   have e : Fin n ≃ Fin p ⊕ Fin q := (finCongr hn.symm).trans finSumFinEquiv.symm
   exact (Matrix.mul_eq_one_comm_of_equiv e).1 (frameInv_mul hB)
 
+/- English proof (translation)
+Establish `h1` using `mul_frameInv hB hn`. Establish `: (frameInv ε B)ᴴ * Formalism.REAL.Jm ε * frameInv ε B = Formalism.UG.Jpq p q * (B * frameInv ε B)`. Simplify using `only [frameInv, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jpq_conjTranspose, Formalism.REAL.Jm_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, Matrix.one_mul]`. Rewrite using `[this, h1, Matrix.mul_one]`.
+-/
 theorem frameInv_herm (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n) :
     (frameInv ε B)ᴴ * Formalism.REAL.Jm ε * frameInv ε B = Formalism.UG.Jpq p q := by
   have h1 := mul_frameInv hB hn
@@ -76,6 +88,9 @@ theorem frameInv_herm (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm 
     rw [← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, Matrix.one_mul]
   rw [this, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Use `show (frameInv ε B * g * B)ᴴ * Formalism.REAL.Jm ε * (frameInv ε B * g * B) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [frameInv_herm hB hn, hg, hB]`.
+-/
 theorem inUJ_conj (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n)
     {g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hg : gᴴ * Formalism.UG.Jpq p q * g = Formalism.UG.Jpq p q) :
     Formalism.REAL.inUJ ε (frameInv ε B * g * B) := by
@@ -85,6 +100,9 @@ theorem inUJ_conj (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [frameInv_herm hB hn, hg, hB]
 
+/- English proof (translation)
+Establish `hy' : yᴴ * Formalism.REAL.Jm ε * y = Formalism.REAL.Jm ε` using `hy`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.UG.Jpq p q := by rw [hB, hy', frameInv_herm hB hn]`.
+-/
 theorem upq_conj (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n)
     {y : Matrix (Fin n) (Fin n) ℂ} (hy : Formalism.REAL.inUJ ε y) :
     (B * y * frameInv ε B)ᴴ * Formalism.UG.Jpq p q * (B * y * frameInv ε B) = Formalism.UG.Jpq p q := by
@@ -106,6 +124,9 @@ def frameEquiv (B : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ) (hB : Bᴴ * Formalism
   continuous_toFun := ((unitsConj _ _ _ _).continuous.comp continuous_subtype_val).subtype_mk _
   continuous_invFun := ((unitsConj _ _ _ _).symm.continuous.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umat_frameEquiv (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε) (hn : p + q = n) (b : UpqT p q) :
     umat (frameEquiv B hB hn b) = frameInv ε B * UpqT.mat b * B := rfl
 
@@ -115,6 +136,15 @@ section Haar
 
 variable {p q n : ℕ} {ε : Fin n → Bool} {B B' : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ}
 
+/- English proof (translation)
+Establish `hu : Formalism.REAL.inUJ ε (frameInv ε B' * B)` using `by show (frameInv ε B' * B)ᴴ * Formalism.REAL.Jm ε * (frameInv ε B' * B) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [frameInv_herm hB' hn, hB]`. Establish `hw : Formalism.REAL.inUJ ε (frameInv ε B * B')` using `by show (frameInv ε B * B')ᴴ * Formalism.REAL.Jm ε * (frameInv ε B * B') = Formalism.REAL.Jm ε`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [frameInv_herm hB hn, hB']`. Establish `huw : Formalism.REAL.indefiniteUnitaryMk ε _ hu * Formalism.REAL.indefiniteUnitaryMk ε _ hw = 1`. Apply `Formalism.REAL.indefinite_unitary_ext` to reduce the goal to its premises.
+
+Rewrite using `[Subgroup.coe_mul, Units.val_mul, Formalism.REAL.indefiniteUnitaryMk_val, Formalism.REAL.indefiniteUnitaryMk_val, Subgroup.coe_one, Units.val_one]`. Rewrite using `[show frameInv ε B' * B * (frameInv ε B * B') = frameInv ε B' * (B * frameInv ε B) * B' by`. Simplify using `only [Matrix.mul_assoc], mul_frameInv hB hn, Matrix.mul_one, frameInv_mul hB']`. Use `⟨Formalism.REAL.indefiniteUnitaryMk ε _ hu, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right huw]`.
+
+Apply `Formalism.REAL.indefinite_unitary_ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Units.val_mul, Subgroup.coe_mul, Units.val_mul, Formalism.REAL.indefiniteUnitaryMk_val, Formalism.REAL.indefiniteUnitaryMk_val]`. Express the relevant statement in the definitionally equal form `frameInv ε B' * UpqT.mat b * B' = frameInv ε B' * B * (frameInv ε B * UpqT.mat b * B) * (frameInv ε B * B')`. Rewrite using `[show frameInv ε B' * B * (frameInv ε B * UpqT.mat b * B) * (frameInv ε B * B') = frameInv ε B' * (B * frameInv ε B) * UpqT.mat b * (B * frameInv ε B) * B' by simp only [Matrix.mul_assoc], mul_frameInv hB hn, Matrix.mul_one, Matrix.mul_one]`.
+-/
 theorem frameEquiv_conj (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε)
     (hB' : B'ᴴ * Formalism.UG.Jpq p q * B' = Formalism.REAL.Jm ε) (hn : p + q = n) :
     ∃ u : Formalism.REAL.UJ ε, ∀ b, frameEquiv B' hB' hn b = u * frameEquiv B hB hn b * u⁻¹ := by
@@ -146,6 +176,11 @@ theorem frameEquiv_conj (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.J
       frameInv ε B' * (B * frameInv ε B) * UpqT.mat b * (B * frameInv ε B) * B' by simp only [Matrix.mul_assoc],
     mul_frameInv hB hn, Matrix.mul_one, Matrix.mul_one]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (UpqT p q) := ⟨rfl⟩`. Take `⟨u, hu⟩` from `frameEquiv_conj hB hB' hn`. Establish `hm : Measurable (frameEquiv B hB hn)` using `(frameEquiv B hB hn).continuous.measurable`. Establish `e : (frameEquiv B' hB' hn : UpqT p q → Formalism.REAL.UJ ε) = (fun g => g * u⁻¹) ∘ (fun g => u * g) ∘ frameEquiv B hB hn` using `funext fun b => by`. Simplify using `only [Function.comp_apply, hu]`.
+
+Rewrite using `[e, ← Measure.map_map (measurable_mul_const _) ((measurable_const_mul _).comp hm), ← Measure.map_map (measurable_const_mul _) hm, hc, Measure.map_smul, Measure.map_smul, map_mul_left_eq_self, Formalism.REAL.indefinite_unitary_unimodular n ε u⁻¹]`.
+-/
 theorem map_frameEquiv (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm ε)
     (hB' : B'ᴴ * Formalism.UG.Jpq p q * B' = Formalism.REAL.Jm ε) (hn : p + q = n) (ν : Measure (UpqT p q)) (c : NNReal)
     (hc : ν.map (frameEquiv B hB hn) = (c : ENNReal) • Formalism.REAL.muG ε) :
@@ -160,6 +195,13 @@ theorem map_frameEquiv (hB : Bᴴ * Formalism.UG.Jpq p q * B = Formalism.REAL.Jm
     ← Measure.map_map (measurable_const_mul _) hm, hc, Measure.map_smul, Measure.map_smul,
     map_mul_left_eq_self, Formalism.REAL.indefinite_unitary_unimodular n ε u⁻¹]
 
+/- English proof (translation)
+Take `⟨-, h⟩` from `h`. Take `⟨h1, h2⟩` from `h v v v v`. Establish `e1 : (fun g : Formalism.REAL.UJ ε => coefOn σ v v g * star (coefOn σ v v g)) = fun g => (((‖coefOn σ v v g‖ ^ 2 : ℝ)) : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Rewrite `h1`, `h2` using `[e1]`. Use `⟨by have h3 := h1.re; simp only [RCLike.re_to_complex, Complex.ofReal_re] at h3; exact h3, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K, hv]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sq_of_isFdeg {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {μ : Measure (Formalism.REAL.UJ ε)}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ} (h : IsFdeg μ σ d) (v : H) (hv : ‖v‖ = 1) :
     Integrable (fun g => ‖coefOn σ v v g‖ ^ 2) μ ∧ ∫ g, ‖coefOn σ v v g‖ ^ 2 ∂μ = 1 / d := by
@@ -185,6 +227,11 @@ open GlobalTheory.AdelicScalar
 
 variable {D : D7} {W : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr ρ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((M.fr ρ)⁻¹)ᴴ * ((M.fr ρ)ᴴ * Formalism.REAL.Jm (M.ε ρ) * M.fr ρ) * (M.fr ρ)⁻¹ := by rw [hFr ρ, M.fr_gram ρ]`. Use `_ = (M.fr ρ * (M.fr ρ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε ρ) * (M.fr ρ * (M.fr ρ)⁻¹) := by`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (M.ε ρ) := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+-/
 theorem frame_herm (M : DSModel W S) {Fr : Frames W} (hFr : IsFrames W Fr) (ρ : D.what₂.Tau) :
     (Fr ρ * (M.fr ρ)⁻¹)ᴴ * Formalism.UG.Jpq (W.sig (tauE D ρ)).1 (W.sig (tauE D ρ)).2 * (Fr ρ * (M.fr ρ)⁻¹) =
       Formalism.REAL.Jm (M.ε ρ) := by
@@ -197,6 +244,15 @@ theorem frame_herm (M : DSModel W S) {Fr : Frames W} (hFr : IsFrames W Fr) (ρ :
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm (M.ε ρ) := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
+/- English proof (translation)
+Rewrite using `[umat_frameEquiv]`. Unfold `DSModel.rep realMat conjFrame frameInv`. Use `congr 1`. Establish `hd : IsUnit (M.fr ρ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Establish `hG : (gramAt D W ρ)⁻¹ = (M.fr ρ)⁻¹ * Formalism.REAL.Jm (M.ε ρ) * ((M.fr ρ)⁻¹)ᴴ`.
+
+Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← M.fr_gram ρ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M.fr ρ)ᴴ * (Formalism.REAL.Jm (M.ε ρ) * Formalism.REAL.Jm (M.ε ρ)) * ((M.fr ρ)⁻¹)ᴴ := by`.
+
+Rewrite using `[Matrix.mul_nonsing_inv _ hd]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = ((M.fr ρ)⁻¹ * M.fr ρ)ᴴ := by rw [Formalism.REAL.Jm_mul_self, Matrix.mul_one, Matrix.conjTranspose_mul]`. Use `_ = 1 := by rw [Matrix.nonsing_inv_mul _ hd, Matrix.conjTranspose_one]`. Rewrite using `[hG, Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (M.fr ρ) ((M.fr ρ)⁻¹), Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`.
+-/
 theorem rep_realMat (M : DSModel W S) {Fr : Frames W} (hFr : IsFrames W Fr) (ρ : D.what₂.Tau)
     (hn : (W.sig (tauE D ρ)).1 + (W.sig (tauE D ρ)).2 = W.rank) (b : Upq W ρ) :
     M.rep ρ (realMat W Fr ρ b) = M.σ ρ (umat (frameEquiv (Fr ρ * (M.fr ρ)⁻¹) (frame_herm M hFr ρ) hn b)) := by
@@ -218,6 +274,17 @@ theorem rep_realMat (M : DSModel W S) {Fr : Frames W} (hFr : IsFrames W Fr) (ρ 
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (M.fr ρ) ((M.fr ρ)⁻¹), Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]
 
+/- English proof (translation)
+Use `haveI := (GlobalTheory.UpqTopology.upq_lcsc (W.sig (tauE D ρ)).1 (W.sig (tauE D ρ)).2).1`. Use `haveI : BorelSpace (Upq W ρ) := ⟨rfl⟩`. Distinguish the cases in `h0 : ∃ Fr : Frames W, IsFrames W Fr ∧ ∃ mR : Measure (Upq W ρ), Lev.IsMinf mR`. Use `swap`. Conclude with `⟨1, one_pos, fun Fr hFr mR hmR => absurd ⟨Fr, hFr, mR, hmR⟩ h0⟩`.
+
+Take `⟨Fr₀, hFr₀, mR₀, hmR₀⟩` from `h0`. Use `haveI := hmR₀.1`. Use `haveI : (mR₀.map (frameEquiv _ (frame_herm M hFr₀ ρ) hn)).IsHaarMeasure := (frameEquiv _ (frame_herm M hFr₀ ρ) hn).isHaarMeasure_map mR₀`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (mR₀.map (frameEquiv _ (frame_herm M hFr₀ ρ) hn)) (Formalism.REAL.muG (M.ε ρ))`. Establish `hcpos` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (mR₀.map (frameEquiv _ (frame_herm M hFr₀ ρ) hn)) (Formalism.REAL.muG (M.ε ρ))`.
+
+Take `⟨d, hd⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS _ (M.ε ρ) (M.lam ρ) (M.H ρ) (M.σ ρ) (M.ds ρ) _ hcpos`. Use `⟨1 / d, one_div_pos.2 hd.1, fun Fr hFr mR hmR v hv => ?_⟩` and prove the remaining obligations. Take `rfl : mR = mR₀` from `GlobalTheory.LevelMeasure.isMinf_unique hmR₀ hmR`. Establish `e2` using `map_frameEquiv (frame_herm M hFr₀ ρ) (frame_herm M hFr ρ) hn mR _ hc`. Use `set Φ := frameEquiv _ (frame_herm M hFr ρ) hn`.
+
+Establish `hme : MeasurableEmbedding Φ` using `Φ.toHomeomorph.measurableEmbedding`. Establish `hk : (fun b => ‖⟪v, M.rep ρ (realMat W Fr ρ b) v⟫_ℂ‖ ^ 2) = (fun g => ‖coefOn (ε` using `M.ε ρ) (M.σ ρ) v v g‖ ^ 2) ∘ Φ := funext fun b => by`. Simplify using `only [Function.comp_apply, rep_realMat M hFr ρ hn b]`. Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `sq_of_isFdeg hd v hv`.
+
+Rewrite `h1`, `h2` using `[← e2]`. Rewrite using `[hk]`. Conclude with `⟨hme.integrable_map_iff.1 h1, by rw [← h2, hme.integral_map]; rfl⟩`.
+-/
 theorem exists_coef_sq (M : DSModel W S) (ρ : D.what₂.Tau)
     (hn : (W.sig (tauE D ρ)).1 + (W.sig (tauE D ρ)).2 = W.rank) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ Fr : Frames W, IsFrames W Fr → ∀ mR : Measure (Upq W ρ), Lev.IsMinf mR →
@@ -255,6 +322,9 @@ theorem exists_coef_sq (M : DSModel W S) (ρ : D.what₂.Tau)
 
 end Model
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ i σ ρ`. Establish `hn : ((Wc D i).sig (tauE D ρ)).1 + ((Wc D i).sig (tauE D ρ)).2 = (Wc D i).rank` using `(GlobalTheory.AdelicScalar.sig_add i ρ).trans (Formalism.IndefR.FWT.rank_Wc i).symm`. Take `⟨δ, hδ, h⟩` from `exists_coef_sq (R.MW i σ) ρ hn`. Conclude with `⟨δ, hδ, fun Fr hFr mR hmR e he => h Fr hFr mR hmR _ he⟩`.
+-/
 theorem lowestKType_coefficients_sq_integrable : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
     GlobalTheory.Hk3.Core R F → RealLowestKTypeCoeffSquareIntegrable R := by

@@ -8,6 +8,21 @@ namespace PI.UnitaryGroupMassFormula.CntFormula
 open Formalism.MainNotions.S
 open ValuativeRel
 
+/- English proof (translation)
+Establish `hinj` using `fl_inj L`. Rewrite using `[Ideal.isMaximal_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Rewrite `h1` using `[Ideal.mem_span_singleton']`.
+
+Take `⟨z, hz⟩` from `h1`. Establish `hz' : (z : E) * algebraMap F E ϖ = 1`. Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[piO]`. Establish `hϖ0 : (ϖ : F) ≠ 0`.
+
+Introduce `h`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Establish `hzF : (z : E) = algebraMap F E (ϖ : F)⁻¹`. Establish `h2 : algebraMap F E (ϖ : F) * algebraMap F E (ϖ : F)⁻¹ = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : (ϖ : F)⁻¹ ∈ 𝒪[F]` using `fl_mem_int L hinj (hzF ▸ z.2)`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Establish `h3 : ϖ * ⟨_, hmem⟩ = 1` using `Subtype.ext (by show (ϖ : F) * (ϖ : F)⁻¹ = 1`.
+
+Conclude with `mul_inv_cancel₀ hϖ0)`. Conclude with `⟨⟨ϖ, ⟨_, hmem⟩, h3, by rw [mul_comm]; exact h3⟩, rfl⟩`. Introduce `J x hIJ hx hxJ`. Establish `hnd : ¬ ∃ z ∈ L.O, (x : E) = algebraMap F E ϖ * z`. Introduce and unpack `⟨z, hz, hxz⟩`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨⟨z, hz⟩, Subtype.ext (by simp [piO, hxz, mul_comm])⟩`. Take `⟨y, hy, hxy⟩` from `fl_local L hl hE hinj ϖ hϖ x x.2 hnd`. Establish `: (1 : L.O) = x * ⟨y, hy⟩` using `Subtype.ext (by simp [hxy])`.
+
+Rewrite using `[this]`. Conclude with `J.mul_mem_right _ hxJ`.
+-/
 theorem fr_max {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hl : IsNonarchimedeanLocalField F)
     (hE : ∀ x : E, x ≠ 0 → IsUnit x) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) :

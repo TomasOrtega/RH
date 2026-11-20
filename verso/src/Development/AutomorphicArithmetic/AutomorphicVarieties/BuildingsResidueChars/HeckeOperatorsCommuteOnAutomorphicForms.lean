@@ -8,10 +8,20 @@ section SlopeTestRemainingChoices
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem finite_translation_mul (g h : GL (Fin a) (Af F)) (φ : TR.Sm F a) :
     TR.finRep F a (g * h) φ = TR.finRep F a g (TR.finRep F a h φ) := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Establish `key : TR.Zalg F a ≤ Subalgebra.centralizer ℂ {TR.finRep F a g}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, u, rfl⟩`. Establish `hE : ∀ i j, TR.Eop v i j ∈ Subalgebra.centralizer ℂ {TR.finRep F a g}`. Introduce `i j`.
+
+Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Conclude with `(TR.lie_rt_fin _ g).symm`. Use `Subalgebra.sum_mem _ fun σ _ => Subalgebra.mul_mem _ (intCast_mem _ _) (Subalgebra.list_prod_mem _ fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`.
+
+Use `Subalgebra.add_mem _ ?_ (hE _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Subalgebra.zero_mem _`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 (key hz) _ rfl`.
+-/
 private theorem center_algebra_translation_comm (g : GL (Fin a) (Af F)) {z : Module.End ℂ (TR.Sm F a)} (hz : z ∈ TR.Zalg F a) :
     TR.finRep F a g * z = z * TR.finRep F a g := by
   have key : TR.Zalg F a ≤ Subalgebra.centralizer ℂ {TR.finRep F a g} := by
@@ -31,6 +41,9 @@ private theorem center_algebra_translation_comm (g : GL (Fin a) (Af F)) {z : Mod
     · exact Subalgebra.zero_mem _
   exact (Subalgebra.mem_centralizer_iff ℂ).1 (key hz) _ rfl
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (x * TR.infGL F a (Unitary.toUnits k) * finGL F a g) = φ.1 (x * finGL F a g * TR.infGL F a (Unitary.toUnits k))`. Rewrite using `[mul_assoc, mul_assoc, TR.infGL_comm]`.
+-/
 private theorem compact_finite_translation_comm (g : GL (Fin a) (Af F)) (k : TR.Kinf F a) (φ : TR.Sm F a) :
     TR.cptRep F a k (TR.finRep F a g φ) = TR.finRep F a g (TR.cptRep F a k φ) := by
   refine Subtype.ext (funext fun x => ?_)
@@ -38,6 +51,19 @@ private theorem compact_finite_translation_comm (g : GL (Fin a) (Af F)) (k : TR.
     φ.1 (x * finGL F a g * TR.infGL F a (Unitary.toUnits k))
   rw [mul_assoc, mul_assoc, TR.infGL_comm]
 
+/- English proof (translation)
+Use `⟨fun γ x => ?_, ?_, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL F a γ * x * finGL F a g) = φ.1 (x * finGL F a g)`. Rewrite using `[mul_assoc, h.left]`. Establish `e : {k | TR.finRep F a k (TR.finRep F a g φ) = TR.finRep F a g φ} = (fun k => g⁻¹ * k * g) ⁻¹' {k | TR.finRep F a k φ = φ}`. Use extensionality with `k`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Rewrite using `[finite_translation_mul, finite_translation_mul, hk, ← finite_translation_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+
+Introduce `hk`. Use `congrArg (TR.finRep F a g) hk` as an intermediate fact. Rewrite `this` using `[← finite_translation_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, finite_translation_mul]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `h.level.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+
+Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => TR.cptRep F a k φ)).map (TR.finRep F a g)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, (compact_finite_translation_comm g k φ).symm⟩`. Use `h.zfin` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm F a) => z φ) '' TR.Zalg F a)).map (TR.finRep F a g)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨z, hz, rfl⟩, LinearMap.congr_fun (center_algebra_translation_comm g hz) φ⟩`. Take `⟨C, N, hC⟩` from `h.growth (x * finGL F a g)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `‖φ.1 (x * TR.infGL F a y * finGL F a g)‖ ≤ _`. Rewrite using `[mul_assoc, TR.infGL_comm, ← mul_assoc]`. Conclude with `hC y`.
+-/
 private theorem automorphic_form_translate (φ : TR.Sm F a) (g : GL (Fin a) (Af F)) (h : TR.IsAutForm φ) :
     TR.IsAutForm (TR.finRep F a g φ) := by
   refine ⟨fun γ x => ?_, ?_, ?_, ?_, fun x => ?_⟩
@@ -73,6 +99,25 @@ private theorem automorphic_form_translate (φ : TR.Sm F a) (g : GL (Fin a) (Af 
     rw [mul_assoc, TR.infGL_comm, ← mul_assoc]
     exact hC y
 
+/- English proof (translation)
+Use `⟨fun γ x => ?_, ?_, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 _ + c * ψ.1 _ = φ.1 _ + c * ψ.1 _`. Rewrite using `[h.left, h'.left]`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `k₀ hk₀`.
+
+Establish `hO : IsOpen ((fun k => k₀⁻¹ * k) ⁻¹' ({k | TR.finRep F a k φ = φ} ∩ {k | TR.finRep F a k ψ = ψ}))` using `(h.level.inter h'.level).preimage (continuous_const.mul continuous_id)`. Use `Filter.mem_of_superset (hO.mem_nhds ?_) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `k ⟨h1, h2⟩`. Establish `h1' : TR.finRep F a (k₀⁻¹ * k) φ = φ` using `h1`.
+
+Establish `h2' : TR.finRep F a (k₀⁻¹ * k) ψ = ψ` using `h2`. Establish `h3 : TR.finRep F a (k₀⁻¹ * k) (φ + c • ψ) = φ + c • ψ` using `by rw [map_add, map_smul, h1', h2']`. Establish `h4 : TR.finRep F a k₀ (φ + c • ψ) = φ + c • ψ` using `hk₀`. Express the relevant statement in the definitionally equal form `TR.finRep F a k (φ + c • ψ) = φ + c • ψ`. Rewrite using `[← mul_inv_cancel_left k₀ k, finite_translation_mul, h3, h4]`.
+
+Use `h.kfin` as an intermediate fact. Use `h'.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => TR.cptRep F a k φ) ⊔ Submodule.span ℂ (Set.range fun k => TR.cptRep F a k ψ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [map_add, map_smul]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨k, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩))`. Use `h.zfin` as an intermediate fact. Use `h'.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm F a) => z φ) '' TR.Zalg F a) ⊔ Submodule.span ℂ ((fun z : Module.End ℂ (TR.Sm F a) => z ψ) '' TR.Zalg F a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Simplify using `only [map_add, map_smul]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨z, hz, rfl⟩))`. Take `⟨C, N, hC⟩` from `h.growth x`. Take `⟨D, M, hD⟩` from `h'.growth x`. Use `⟨|C| + ‖c‖ * |D|, N + M, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : 1 ≤ TR.height y`. Unfold `TR.height`. Use `norm_nonneg (TR.toL y.val)` as an intermediate fact. Use `norm_nonneg (TR.toL (y⁻¹).val)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `bound : ∀ (B : ℝ) (n : ℕ), n ≤ N + M → B * TR.height y ^ n ≤ |B| * TR.height y ^ (N + M)` using `fun B n hn => mul_le_mul (le_abs_self B) (pow_le_pow_right₀ h1 hn) (pow_nonneg (zero_le_one.trans h1) n) (abs_nonneg B)`. Establish `b1` using `(hC y).trans (bound C N (Nat.le_add_right _ _))`. Establish `b2` using `(hD y).trans (bound D M (Nat.le_add_left _ _))`. Express the relevant statement in the definitionally equal form `‖φ.1 _ + c * ψ.1 _‖ ≤ _`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, add_mul, mul_assoc]`. Conclude with `add_le_add b1 (mul_le_mul_of_nonneg_left b2 (norm_nonneg c))`.
+-/
 private theorem automorphic_form_linear_combination (φ ψ : TR.Sm F a) (c : ℂ) (h : TR.IsAutForm φ) (h' : TR.IsAutForm ψ) :
     TR.IsAutForm (φ + c • ψ) := by
   refine ⟨fun γ x => ?_, ?_, ?_, ?_, fun x => ?_⟩
@@ -128,6 +173,9 @@ private theorem automorphic_form_linear_combination (φ ψ : TR.Sm F a) (c : ℂ
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F _ _ _ a`. Conclude with `⟨TR.isAutForm_const (Submodule.zero_mem _), automorphic_form_translate, automorphic_form_linear_combination⟩`.
+-/
 theorem UpperTheory.hecke_operators_commute_on_automorphic_forms :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), TR.IsAutForm (0 : TR.Sm F a) ∧ (∀ (φ : TR.Sm F a) (g : GL (Fin a) (Af F)), TR.IsAutForm φ → TR.IsAutForm (TR.finRep F a g φ)) ∧ ∀ (φ ψ : TR.Sm F a) (z : ℂ), TR.IsAutForm φ → TR.IsAutForm ψ → TR.IsAutForm (φ + z • ψ) := by
   intro F _ _ _ a

@@ -10,19 +10,69 @@ section GlobalTheory
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero (KK O)] {N r : ℕ} [NeZero r]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨yjt_mono' _ _ h hy.1, hy.2⟩`.
+-/
 theorem yjtZ_mono (LL : ChainLetters N) {q : ℕ} (J : Fin q → ℕ) {thr thr' : Fin q → WithTop ℤ} (h : ∀ k, thr k ≤ thr' k)
     {y : MvPolynomial (Fin N × Fin r) (KK O)} (hy : y ∈ YjtZ O (r := r) LL J thr) : y ∈ YjtZ O (r := r) LL J thr' :=
   ⟨yjt_mono' _ _ h hy.1, hy.2⟩
 
+/- English proof (translation)
+The claim follows from `le_add_of_nonneg_right (by exact_mod_cast Int.natCast_nonneg b)`.
+-/
 theorem le_add_nat (x : WithTop ℤ) (b : ℕ) : x ≤ x + ((b : ℤ) : WithTop ℤ) :=
   le_add_of_nonneg_right (by exact_mod_cast Int.natCast_nonneg b)
 
+/- English proof (translation)
+Unfold `otherE`. Conclude with `freeV_of_vars (nv_prod _ fun i' hi' => nv_pow (h i' (Finset.ne_of_mem_erase hi')) _)`.
+-/
 theorem otherE_free {D : BlockData N} (hT : TieOK D) (j : Fin D.T.t → ℕ) (i : Fin D.T.t) {v : BVar N r D.T.t}
     (h : ∀ i', i' ≠ i → v ∉ (D.Ehat O (r := r) i').vars) : FreeV v (otherE O r D j i) := by
   classical
   unfold otherE
   exact freeV_of_vars (nv_prod _ fun i' hi' => nv_pow (h i' (Finset.ne_of_mem_erase hi')) _)
 
+/- English proof (translation)
+Establish `hXX : ∀ i c, IsMult O r D.LL.vec D.T.J (tieW hT i) (tieE hT i) (X (tieW hT i, c) * X (tieE hT i, c))` using `fun i c => isMult_XX D7 D.LL.vec D.T.J _ _ (tieW_ne_tieE hT i i) (hT.vecE i _) c c`. Establish `hPP : ∀ i, IsMult O r D.LL.vec D.T.J (tieW hT i) (tieE hT i) (-(pairP O r hT i))` using `fun i => (IsMult.sum _ fun c _ => hXX i c).neg`. Break down `v with ⟨a, c⟩ | ⟨l, s⟩` into its components or cases. Take `⟨ha1, ha2⟩` from `hv`. Take `⟨a0, rfl⟩ : ∃ a0 : Fin N, a = Fin.castSucc a0` from `⟨a.castPred ha2, (Fin.castSucc_castPred a ha2).symm⟩`.
+
+Establish `ha0 : a0 ≠ D.uPos` using `fun h => ha1 (by rw [h])`. Establish `hv' : (Sum.inl (Fin.castSucc a0, c) : BVar N r D.T.t) = chainEmb N r D.T.t (a0, c)` using `rfl`. Rewrite using `[hv']`. Establish `Hc : ∀ b, b ≤ n → ∃ (cb : ℕ) (yb : MvPolynomial (Fin N × Fin r) (KK O)), yb ∈ YjtZ O (r` using `r) (D.lettersAt j jp) D.T.J (fun k => thr k + ((b : ℤ) : WithTop ℤ)) ∧ cth (chainEmb N r D.T.t (a0, c)) b (tailP O r D jp y g) = cb • tailP O r D jp yb g := fun b _ => ⟨1, cth (a0, c) b y, yjtZ_cth D7 _ _ b (fun _ => le_rfl) _ hy, by rw [tail_chain D jp a0 ha0 c b y hg, one_smul] …`. Establish `hZS : ∀ i', chainEmb N r D.T.t (a0, c) ≠ scalZ N r D.T.t (Fin.castSucc i') ∧ chainEmb N r D.T.t (a0, c) ≠ scalS N r D.T.t (Fin.castSucc i')` using `fun i' => by`.
+
+Apply the tactic sequence `constructor <;> simp [chainEmb, scalZ, scalS]`. Establish `hemb : ∀ {x x' : Fin N × Fin r}, x ≠ x' → chainEmb N r D.T.t x ≠ chainEmb N r D.T.t x'` using `fun h h' => h (chainEmb_inj N r D.T.t h')`. Distinguish the cases in `hW : ∃ i, a0 = tieW hT i`. Take `⟨i, rfl⟩` from `hW`. Use `tie_mem hT n hthr hL i _ (m' := X (chainEmb N r D.T.t (tieE hT i, c))) (E' := X (scalZ N r D.T.t (Fin.castSucc i)) * X (scalS N r D.T.t (Fin.castSucc i)) + ∑ c' ∈ Finset.univ.erase c, X (chainEmb N r D.T.t (tieW hT i, c')) * X (chainEmb N r D.T.t (tieE hT i, c'))) ?_ ?_ ?_ (hXX i …` and prove the remaining obligations.
+
+Rewrite using `[Ehat_eq hT, ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ c)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `freeV_of_vars (nv_X (hemb fun h => tieW_ne_tieE hT i i (congrArg Prod.fst h)))`. Use `freeV_of_vars (nv_add (nv_mul (nv_X (hZS i).1) (nv_X (hZS i).2)) (nv_sum _ fun c' hc' => nv_mul (nv_X (hemb fun h => Finset.ne_of_mem_erase hc' (congrArg Prod.snd h).symm)) (nv_X (hemb fun h => tieW_ne_tieE hT i i (congrArg Prod.fst h)))))` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, if_false, zero_add, map_mul, rename_X]`.
+
+Use `otherE_free hT j i fun i' hi' => nv_Ehat hT i' (hZS i').1 (hZS i').2 (fun c' => hemb fun h => hi' (hT.inj _ _ (congrArg Fin.val (congrArg Prod.fst h)).symm)) (fun c' => hemb fun h => tieW_ne_tieE hT i i' (congrArg Prod.fst h))` and prove the remaining obligations. Distinguish the cases in `hE : ∃ i, a0 = tieE hT i`. Take `⟨i, rfl⟩` from `hE`. Use `tie_mem hT n hthr hL i _ (m' := X (chainEmb N r D.T.t (tieW hT i, c))) (E' := X (scalZ N r D.T.t (Fin.castSucc i)) * X (scalS N r D.T.t (Fin.castSucc i)) + ∑ c' ∈ Finset.univ.erase c, X (chainEmb N r D.T.t (tieW hT i, c')) * X (chainEmb N r D.T.t (tieE hT i, c'))) ?_ ?_ ?_ (hXX i …` and prove the remaining obligations. Rewrite using `[Ehat_eq hT, ← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ c)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `freeV_of_vars (nv_X (hemb fun h => tieW_ne_tieE hT i i (congrArg Prod.fst h).symm))`. Use `freeV_of_vars (nv_add (nv_mul (nv_X (hZS i).1) (nv_X (hZS i).2)) (nv_sum _ fun c' hc' => nv_mul (nv_X (hemb fun h => tieW_ne_tieE hT i i (congrArg Prod.fst h).symm)) (nv_X (hemb fun h => Finset.ne_of_mem_erase hc' (congrArg Prod.snd h).symm))))` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, if_false, zero_add, map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `otherE_free hT j i fun i' hi' => nv_Ehat hT i' (hZS i').1 (hZS i').2 (fun c' => hemb fun h => tieW_ne_tieE hT i' i (congrArg Prod.fst h).symm) (fun c' => hemb fun h => hi' (hT.inj _ _ (by` and prove the remaining obligations. Use `congrArg Fin.val (congrArg Prod.fst h)` as an intermediate fact. Simplify using `only [tieE] at this`. Use the proof step `omega)))`. Use `push_neg at hW hE`.
+
+Establish `hfree : FreeV (chainEmb N r D.T.t (a0, c)) (∏ i, D.Ehat O (r` using `r) i ^ j i) := freeV_of_vars (nv_prod _ fun i' _ => nv_pow (nv_Ehat hT i' (hZS i').1 (hZS i').2 (fun c' => hemb fun h => hW i' (congrArg Prod.fst h)) (fun c' => hemb fun h => hE i' (congrArg Prod.fst h))) _)`. Rewrite using `[cth_mul_free _ _ hfree, tail_chain D jp a0 ha0 c n y hg]`. Conclude with `gen_mem D thr' hL (yjtZ_cth D7 _ _ n hthr _ hy) hg`. Establish `hl : l ≠ Fin.last D.T.t` using `hv`. Take `⟨i, rfl⟩ : ∃ i : Fin D.T.t, l = Fin.castSucc i` from `⟨l.castPred hl, (Fin.castSucc_castPred l hl).symm⟩`.
+
+Establish `hch : ∀ x, chainEmb N r D.T.t x ≠ (Sum.inr (Fin.castSucc i, s) : BVar N r D.T.t)` using `fun x => by`. Simplify using `[chainEmb]`. Establish `hoth : FreeV (Sum.inr (Fin.castSucc i, s) : BVar N r D.T.t) (otherE O r D j i)`. Use `otherE_free hT j i fun i' hi' => nv_Ehat hT i' ?_ ?_ (fun c' => (hch _).symm) (fun c' => (hch _).symm)` and prove the remaining obligations. Simplify using `only [scalZ, ne_eq, Sum.inr.injEq, Prod.mk.injEq, Fin.castSucc_inj, not_and]`.
+
+Conclude with `fun h => absurd h.symm hi'`. Simplify using `only [scalS, ne_eq, Sum.inr.injEq, Prod.mk.injEq, Fin.castSucc_inj, not_and]`. Conclude with `fun h => absurd h.symm hi'`. Establish `hrest : ∀ (F : MvPolynomial (BVar N r D.T.t) (KK O)), (Sum.inr (Fin.castSucc i, s) : BVar N r D.T.t) ∉ F.vars → (Sum.inr (Fin.castSucc i, s) : BVar N r D.T.t) ∉ (D.Eplus O (r` using `r) ^ jp * F * X (scalZ N r D.T.t (Fin.last D.T.t)) ^ D.zPlus * rename (chainEmb N r D.T.t) y * g).vars := by`. Introduce `F hF`.
+
+Use `nv_mul (nv_mul (nv_mul (nv_mul (nv_pow (nv_Eplus D ?_ ?_ ?_ ?_) _) hF) (nv_pow (nv_X ?_) _)) (nv_rename _ hch y)) (nv_xi ?_ hg)` and prove the remaining obligations. Simplify using `only [scalZ, ne_eq, Sum.inr.injEq, Prod.mk.injEq, not_and]`. Conclude with `fun h => absurd h (Fin.castSucc_lt_last i).ne`. Simplify using `only [scalS, ne_eq, Sum.inr.injEq, Prod.mk.injEq, not_and]`. Conclude with `fun h => absurd h (Fin.castSucc_lt_last i).ne`.
+
+Introduce `c'`. Simplify using the standard rewrite rules. Introduce `c'`. Simplify using `[xiVar]`. Simplify using `only [scalZ, ne_eq, Sum.inr.injEq, Prod.mk.injEq, not_and]`.
+
+Conclude with `fun h => absurd h (Fin.castSucc_lt_last i).ne`. Introduce `c'`. Simplify using `[xiVar]`. Establish `hpair : (Sum.inr (Fin.castSucc i, s) : BVar N r D.T.t) ∉ (rename (chainEmb N r D.T.t) (pairP O r hT i)).vars` using `nv_rename _ hch _`. Consider the cases of `s with`.
+
+Consider the case `false`. Use `tie_mem hT n hthr hL i _ (m' := X (scalS N r D.T.t (Fin.castSucc i))) (E' := rename (chainEmb N r D.T.t) (pairP O r hT i)) (Ehat_eq' hT i) ?_ (freeV_of_vars hpair) (hPP i) true ?_ hoth hg ?_` and prove the remaining obligations. Conclude with `freeV_of_vars (nv_X (by simp [scalS, scalZ]))`. Simplify using `only [if_true]`. Rewrite using `[Ehat_eq' hT i, map_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `b _`. Use `⟨(D.T.z i).choose b, y, yjtZ_mono _ _ (fun k => le_add_nat _ b) hy, ?_⟩` and prove the remaining obligations. Establish `e : tailP O r D jp y g = (D.Eplus O (r` using `r) ^ jp * (∏ i' ∈ Finset.univ.erase i, X (scalZ N r D.T.t (Fin.castSucc i')) ^ D.T.z i') * X (scalZ N r D.T.t (Fin.last D.T.t)) ^ D.zPlus * rename (chainEmb N r D.T.t) y * g) * X (scalZ N r D.T.t (Fin.castSucc i)) ^ D.T.z i := by`. Unfold `tailP`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun i' => (X (scalZ N r D.T.t (Fin.castSucc i')) : MvPolynomial (BVar N r D.T.t) (KK O)) ^ D.T.z i') (Finset.mem_univ i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfr` using `freeV_of_vars (hrest (∏ i' ∈ Finset.univ.erase i, X (scalZ N r D.T.t (Fin.castSucc i')) ^ D.T.z i') (nv_prod _ fun i' hi' => nv_pow (nv_X (by`. Simplify using `only [scalZ, ne_eq, Sum.inr.injEq, Prod.mk.injEq, Fin.castSucc_inj, and_true]`. Conclude with `fun h => Finset.ne_of_mem_erase hi' h.symm)) _))`.
+
+Establish `hfr' : FreeV (scalZ N r D.T.t (Fin.castSucc i)) _` using `hfr`. Rewrite using `[e, cth_mul_free _ _ hfr', cth_X_pow, mul_smul_comm]`. Consider the case `true`. Use `tie_mem hT n hthr hL i _ (m' := X (scalZ N r D.T.t (Fin.castSucc i))) (E' := rename (chainEmb N r D.T.t) (pairP O r hT i)) ?_ ?_ (freeV_of_vars hpair) (hPP i) true ?_ hoth hg ?_` and prove the remaining obligations. Rewrite using `[Ehat_eq' hT i]`.
+
+Unfold `scalS`. Expand and normalize the polynomial expressions, which then agree. Conclude with `freeV_of_vars (nv_X (by simp [scalZ]))`. Simplify using `only [if_true]`. Rewrite using `[Ehat_eq' hT i, map_neg]`.
+
+Unfold `scalS`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _`. Establish `hfr : FreeV (Sum.inr (Fin.castSucc i, true) : BVar N r D.T.t) (tailP O r D jp y g)`. Unfold `tailP`.
+
+Conclude with `freeV_of_vars (hrest _ (nv_prod _ fun i' _ => nv_pow (nv_X (by simp [scalZ])) _))`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Conclude with `⟨1, y, yjtZ_mono _ _ (fun k => le_add_nat _ 0) hy, by rw [cth_zero, one_smul]⟩`. Conclude with `⟨0, y, yjtZ_mono _ _ (fun k => le_add_nat _ b) hy, by rw [cth_free _ hfr hb, zero_smul]⟩`.
+-/
 theorem cth_gen (D7 : Formalism.BasicNotions.D7) {D : BlockData N} (hT : TieOK D) {thr thr' : Fin D.T.q → WithTop ℤ} (n : ℕ)
     (hthr : ∀ k, thr k + ((n : ℤ) : WithTop ℤ) ≤ thr' k) (v : BVar N r D.T.t) (hv : OddV D v)
     {j : Fin D.T.t → ℕ} {jp : ℕ} (hL : D.LevelOK j jp)
@@ -169,6 +219,13 @@ theorem cth_gen (D7 : Formalism.BasicNotions.D7) {D : BlockData N} (hT : TieOK D
           exact ⟨1, y, yjtZ_mono _ _ (fun k => le_add_nat _ 0) hy, by rw [cth_zero, one_smul]⟩
         · exact ⟨0, y, yjtZ_mono _ _ (fun k => le_add_nat _ b) hy, by rw [cth_free _ hfr hb, zero_smul]⟩
 
+/- English proof (translation)
+Establish `hle : SSt O r D thr ≤ (SSt O r D thr').comap ((cthL v n).restrictScalars O)`. Unfold `SSt BlockData.SSZ`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`.
+
+Take `⟨j, jp, hL, y, hy, g, hg, rfl⟩` from `hx`. Establish `h` using `cth_gen D7 hT n hthr v hv hL hy hg`. Unfold `tailP at h`. Simplify using `only [← mul_assoc] at h`. Conclude with `h`.
+
+Conclude with `hle hu`.
+-/
 theorem cth_SSt (D7 : Formalism.BasicNotions.D7) {D : BlockData N} (hT : TieOK D) {thr thr' : Fin D.T.q → WithTop ℤ} (n : ℕ)
     (hthr : ∀ k, thr k + ((n : ℤ) : WithTop ℤ) ≤ thr' k) (v : BVar N r D.T.t) (hv : OddV D v)
     {u : MvPolynomial (BVar N r D.T.t) (KK O)} (hu : u ∈ SSt O r D thr) : cth v n u ∈ SSt O r D thr' := by

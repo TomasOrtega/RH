@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.HeightCounting.JumpsSt
 
+/- English proof (translation)
+Substitute `hx hQ` using the available equality. Conclude with `h`.
+-/
 theorem mtInput_of {D : D7} {cf : CharFrame D} {M : MtFam D} {ch : NChoice D} (tp : TupTied D cf ch)
     {xi : D.what₂.Tup → HChar D.host.E} {Q : D.what₂.places.Pl → Finset (PlE D.host)}
     (h : MtInput D M (fun μ j => cf.mu0 j * xi μ) Q) (hx : tp.xi = xi) (hQ : ch.Q = Q) : MtInput D M tp.tup ch.Q := by
@@ -16,6 +19,11 @@ theorem mtInput_of {D : D7} {cf : CharFrame D} {M : MtFam D} {ch : NChoice D} (t
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hL _ hH`. Use `StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `P x l`. Use `⟨fun _ => ∅, fun L hB _ => ?_⟩` and prove the remaining obligations. Take `⟨Sp, ⟨Au⟩, hs⟩` from `hB`.
+
+Set `b : NBuilt hL (withLoc L)` to `{ D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row, low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs, M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch …`. Conclude with `JumpsAt.jumpsCard_of_built hH b l.a.fr l.a.pht`.
+-/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → GlobalTheory.HeightCounting.HtCard → AllSt fun _ _ _ _ _ _ x =>
     ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → JumpsCard D'.nd D'.naut := by
   intro hL _ hH

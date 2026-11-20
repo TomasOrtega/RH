@@ -7,6 +7,13 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Break down `lt_or_eq_of_le hn with hlt | heq` into its components or cases. Establish `h2 : w (z * d - 1) < w 1` using `by rw [map_one]; exact h1.trans_lt hlt`. Establish `h3 : w (z * d) = 1`. Establish `e : z * d = (z * d - 1) + 1` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right w h2, map_one]`.
+
+Establish `h4 : 1 ≤ w z`. Rewrite `h3` using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[heq]`.
+
+Conclude with `hc`.
+-/
 private theorem loc_dv {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) {c d z n : K}
     (hc : w c ≤ 1) (hd : w d ≤ 1) (hn : w n ≤ 1) (h0 : w (z * c) ≤ w n) (h1 : w (z * d - 1) ≤ w n) : w c ≤ w n := by
   rcases lt_or_eq_of_le hn with hlt | heq
@@ -26,10 +33,22 @@ private theorem loc_dv {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero �
   · rw [heq]
     exact hc
 
+/- English proof (translation)
+Establish `h : (N : H.Kv v) ∈ v.adicCompletionIntegers ℚ` using `natCast_mem _ N`. Conclude with `h`.
+-/
 private theorem nat_le_one (v : H.P ℚ) (N : ℕ) : Valued.v (N : H.Kv v) ≤ 1 := by
   have h : (N : H.Kv v) ∈ v.adicCompletionIntegers ℚ := natCast_mem _ N
   exact h
 
+/- English proof (translation)
+Introduce `N _ p s k hk hkS`. Establish `hz : ∀ z : IdeleGroup ℚ, (PhiN N p fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j) = 0`. Introduce `z`. Unfold `PhiN`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Apply `hkS` to reduce the goal to its premises. Introduce `v`. Take `⟨h0, h1⟩` from `h v`. Establish `hint : ∀ i j, Valued.v (H.cp v (k i j)) ≤ 1` using `fun i j => hk.2 v i j`.
+
+Establish `e0 : H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 0) = H.cp v ((z : (A ℚ)ˣ) : A ℚ) * H.cp v (k 1 0)` using `map_mul _ _ _`. Establish `e1 : H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 1 - 1) = H.cp v ((z : (A ℚ)ˣ) : A ℚ) * H.cp v (k 1 1) - 1`. Rewrite using `[map_sub, map_one]`. Conclude with `congrArg (· - 1) (map_mul _ _ _)`. Establish `h0' : Valued.v (H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 0)) ≤ Valued.v (N : H.Kv v)` using `h0`.
+
+Establish `h1' : Valued.v (H.cp v (((z : (A ℚ)ˣ) : A ℚ) * row k 1 - 1)) ≤ Valued.v (N : H.Kv v)` using `h1`. Rewrite `h0'` using `[e0]`. Rewrite `h1'` using `[e1]`. Conclude with `loc_dv Valued.v (hint 1 0) (hint 1 1) (nat_le_one v N) h0' h1'`. Simplify using `only [Zr, hz, zero_mul, MeasureTheory.integral_zero]`.
+-/
 theorem UpperTheory.zeta_integral_eq_zero_of_mem_maximal_compact_not_mem_level :
     ∀ (N : ℕ), 0 < N → ∀ (p : MvPolynomial (Fin 2) ℂ) (s : ℂ), ∀ k ∈ KK ℚ, k ∉ SS N → Zr N p s k = 0 := by
   intro N _ p s k hk hkS

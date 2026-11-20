@@ -27,14 +27,23 @@ variable {Y Y' Z : Scheme.{0}}
 def genPull {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) (t : LB.Gen A) : LB.Gen A' :=
   ⟨fun i => res (a.le i) (pullU h _ (t.s (a.idx i)))⟩
 
+/- English proof (translation)
+The claim follows from `(gm_res r z le hz _).trans (gm_pull r h z U (le hz) a)`.
+-/
 theorem gm_res_pullU (r : Z ⟶ Y') (h : Y' ⟶ Y) (z : Z) {U : Y.Opens} {V : Y'.Opens} (le : V ≤ h ⁻¹ᵁ U)
     (hz : r z ∈ V) (a : Γ(Y, U)ˣ) : gm r z V (res le (pullU h U a)) = gm (r ≫ h) z U a :=
   (gm_res r z le hz _).trans (gm_pull r h z U (le hz) a)
 
+/- English proof (translation)
+The claim follows from `(gm_res_pullU (𝟙 Y') h z le hz a).trans (by rw [Category.id_comp])`.
+-/
 theorem gm_res_pullU' (h : Y' ⟶ Y) (z : Y') {U : Y.Opens} {V : Y'.Opens} (le : V ≤ h ⁻¹ᵁ U)
     (hz : z ∈ V) (a : Γ(Y, U)ˣ) : gm (𝟙 Y') z V (res le (pullU h U a)) = gm h z U a :=
   (gm_res_pullU (𝟙 Y') h z le hz a).trans (by rw [Category.id_comp])
 
+/- English proof (translation)
+Introduce `p q` and use `unit_ext fun y hy => by have hm : h y ∈ A.U (a.idx p) ⊓ A.U (a.idx q) := ⟨a.le _ hy.1, a.le _ hy.2⟩ have e := congrArg (gm h y (A.U (a.idx p) ⊓ A.U (a.idx q))) (ht (a.idx p) (a.idx q)) rw [map_mul, gm_res h y _ hm, gm_res h y _ hm] at e rw [map_mul, gm_res (𝟙 Y') y _ hy, gm_res ( …`.
+-/
 theorem genPull_isGen {A' : LB Y'} {A : LB Y} {h : Y' ⟶ Y} (a : ChartPull A' A h) {t : LB.Gen A}
     (ht : t.IsGen) : (genPull a t).IsGen := fun p q => unit_ext fun y hy => by
   have hm : h y ∈ A.U (a.idx p) ⊓ A.U (a.idx q) := ⟨a.le _ hy.1, a.le _ hy.2⟩
@@ -54,6 +63,9 @@ def chartPullDiv {A' B' : LB Y'} {A B : LB Y} {h : Y' ⟶ Y} (b : ChartPull B' B
         ⟨⟨b.le _ hp.1, a.le _ hp.2⟩, b.le _ hq.1, a.le _ hq.2⟩).symm)
     rw [a.g y _ _ hp.2 hq.2, b.g y _ _ hp.1 hq.1]
 
+/- English proof (translation)
+Use `⟨⟨fun p => A.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res (𝟙 Y) y _ hy _).trans (Eq.symm ?_)` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A A (𝟙 Y) y p q hy) (gm_res (𝟙 Y) y _ hy _))).trans ?_` and prove the remaining obligations. Establish `e` using `(gm_cocycle hA (𝟙 Y) y hy.1.1 hy.2.1 hy.2.2).trans (gm_cocycle hA (𝟙 Y) y hy.1.1 hy.1.2 hy.2.2).symm`. Conclude with `(mul_right_comm _ _ _).trans (mul_inv_eq_of_eq_mul e)`.
+-/
 theorem lbIso_refl {A : LB Y} (hA : A.IsLB) : LBIso A A := by
   refine ⟨⟨fun p => A.g p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩
   refine (gm_res (𝟙 Y) y _ hy _).trans (Eq.symm ?_)
@@ -67,6 +79,11 @@ section Ext
 
 variable {S S' : Scheme.{0}} (f : S' ⟶ S)
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback G f`. Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ (Over.pullback f).obj G) = η[(Over.pullback f).obj G]`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+
+Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using `[eSec]`.
+-/
 theorem eSec_fst (G : Over S) [GrpObj G] :
     eSec ((Over.pullback f).obj G) ≫ pullback.fst G.hom f =
       (f : (𝟙_ (Over S')).left ⟶ (𝟙_ (Over S)).left) ≫ eSec G := by
@@ -90,6 +107,9 @@ def rigBC (B : Over S) [GrpObj B] (L : RigLB B) : RigLB ((Over.pullback f).obj B
   isLB := pull_isLB L.isLB _
   rigGen := genPull_isGen _ L.rigGen
 
+/- English proof (translation)
+Establish `: IsCommMonObj ((Over.pullback f).obj B)` using `Functor.isCommMonObj_obj`. Establish `h` using `isGrpPullback_pullback B f`. Set `U` to `lift (pushPt h.1.w (fst ((Over.pullback f).obj B) ((Over.pullback f).obj B))) (pushPt h.1.w (snd ((Over.pullback f).obj B) ((Over.pullback f).obj B)))`. Use `⟨U.left, ⟨chartPullLinComb L _ _ _ _ U.left fun I => psum_push h (x2 _) (x2 B) U (fun i => ?_) I.down⟩⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [U, x2]`.
+-/
 theorem exists_lamChart (B : Over S) [GrpObj B] [IsCommMonObj B] (L : LB B.left) :
     ∃ U, Nonempty (ChartPull (abelian₂ ((Over.pullback f).obj B) (L.pull (pullback.fst B.hom f))) (abelian₂ B L) U) := by
   have : IsCommMonObj ((Over.pullback f).obj B) := Functor.isCommMonObj_obj
@@ -126,6 +146,9 @@ def HasWeight (i : splitTorus S X ⟶ G) (U : G.left.Opens) (u : Γ(G.left, U)ˣ
   ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left), g.left z ∈ U →
     gm ((t ≫ i) * g).left z U u = gm t.left z ⊤ (charUnit S X χ) * gm g.left z U u
 
+/- English proof (translation)
+Establish `hiq : (t ≫ i) ≫ q = 1`. Rewrite using `[Category.assoc, hk.w, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Rewrite using `[MonObj.mul_comp, hiq, _root_.one_mul]`.
+-/
 theorem translate_comp (q : G ⟶ B) (i : splitTorus S X ⟶ G) [IsMonHom q]
     (hk : IsPullback i (toUnit _) q η[B]) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) :
     ((t ≫ i) * g) ≫ q = g ≫ q := by
@@ -135,6 +158,9 @@ theorem translate_comp (q : G ⟶ B) (i : splitTorus S X ⟶ G) [IsMonHom q]
     exact toUnit_unique _ _
   rw [MonObj.mul_comp, hiq, _root_.one_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(((t ≫ i) * g) ≫ q).left z ∈ W`. Rewrite using `[translate_comp q i hk]`. Conclude with `hz`.
+-/
 theorem translate_mem (q : G ⟶ B) (i : splitTorus S X ⟶ G) [IsMonHom q]
     (hk : IsPullback i (toUnit _) q η[B]) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G)
     (W : B.left.Opens) (z : Z.left) (hz : g.left z ∈ q.left ⁻¹ᵁ W) :
@@ -143,6 +169,15 @@ theorem translate_mem (q : G ⟶ B) (i : splitTorus S X ⟶ G) [IsMonHom q]
   rw [translate_comp q i hk]
   exact hz
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res_pullU' _ y hle hy, gm_res_pullU' _ y _ hy, gm_pull (𝟙 _) _ y U hy, Category.id_comp]`. Conclude with `h _ _ _ y hy`.
+
+Introduce `h Z t g z hz`. Establish `e₁ : (lift t g).left ≫ (fst (splitTorus S X) G).left = t.left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `e₂ : (lift t g).left ≫ (snd (splitTorus S X) G).left = g.left`. Rewrite using `[← Over.comp_left, lift_snd]`.
+
+Establish `e₃ : (lift t g).left ≫ (lift (fst (splitTorus S X) G ≫ i) (snd (splitTorus S X) G) ≫ μ[G]).left = ((t ≫ i) * g).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_lift, lift_fst_assoc, lift_snd, Hom.mul_def]`. Establish `hm : (lift t g).left z ∈ (snd (splitTorus S X) G).left ⁻¹ᵁ U`. Express the relevant statement in the definitionally equal form `((lift t g).left ≫ (snd (splitTorus S X) G).left) z ∈ U`. Rewrite using `[e₂]`.
+
+Conclude with `hz`. Establish `e` using `congrArg (gm (lift t g).left z _) h`. Rewrite `e` using `[map_mul, gm_res_pullU _ _ z hle hm, gm_res_pullU _ _ z _ hm, gm_pull _ _ z U hm, e₁, e₂, e₃]`. Then use the resulting hypothesis.
+-/
 theorem hasWeight_iff (i : splitTorus S X ⟶ G) (U : G.left.Opens) (u : Γ(G.left, U)ˣ) (χ : X)
     (hle : (snd (splitTorus S X) G).left ⁻¹ᵁ U ≤
       (lift (fst (splitTorus S X) G ≫ i) (snd (splitTorus S X) G) ≫ μ[G]).left ⁻¹ᵁ U)
@@ -170,6 +205,17 @@ theorem hasWeight_iff (i : splitTorus S X ⟶ G) (U : G.left.Opens) (u : Γ(G.le
     have e := congrArg (gm (lift t g).left z _) h
     rwa [map_mul, gm_res_pullU _ _ z hle hm, gm_res_pullU _ _ z _ hm, gm_pull _ _ z U hm, e₁, e₂, e₃] at e
 
+/- English proof (translation)
+Use `(isAffineOpen_and_bijective_of_weight_units S X G B q i hq hi hf hs inferInstance hk V hV _ ?_).2` and prove the remaining obligations. Introduce `χ Z t g h₁ h₂`. Use `set v := AddMonoidHom.toMultiplicativeLeft (b.constr ℤ (fun k => Additive.ofMul (res (Scheme.Hom.preimage_mono q.left h) (u k)))).toAddMonoidHom with hv`. Set `A : Multiplicative X →* Γ(Z.left, ⊤)ˣ` to `((res h₁).comp (pullU ((t ≫ i) * g).left _)).comp v`. Set `C : Multiplicative X →* Γ(Z.left, ⊤)ˣ` to `splitTorusPointsEquiv S X Z t * ((res h₂).comp (pullU g.left _)).comp v`.
+
+Establish `hAC : (MonoidHom.toAdditiveRight A).toIntLinearMap = (MonoidHom.toAdditiveRight C).toIntLinearMap`. Use `b.ext fun k => ?_` and prove the remaining obligations. Establish `hvk : v (Multiplicative.ofAdd (b k)) = res (Scheme.Hom.preimage_mono q.left h) (u k)`. Simplify using `[hv]`. Establish `hT : (⊤ : Z.left.Opens) ≤ t.left ⁻¹ᵁ ⊤` using `fun _ _ => trivial`.
+
+Establish `hc : splitTorusPointsEquiv S X Z t (Multiplicative.ofAdd (b k)) = res hT (pullU t.left ⊤ (charUnit S X (b k)))`. Use `Units.ext ((splitTorusPointsEquiv_val S X Z t (b k)).trans ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Use `congrArg Additive.ofMul ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `res h₁ (pullU _ _ (v (Multiplicative.ofAdd (b k)))) = splitTorusPointsEquiv S X Z t (Multiplicative.ofAdd (b k)) * res h₂ (pullU _ _ (v (Multiplicative.ofAdd (b k))))`. Rewrite using `[hvk, hc]`. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res_pullU' _ z h₁ hz, gm_res_pullU' _ z h₂ hz, gm_res ((t ≫ i) * g).left z _ (h₁ hz), gm_res g.left z _ (h₂ hz), hu k Z t g z (h (h₂ hz)), gm_res_pullU' _ z hT hz]`. Use `congrArg (fun φ => (Additive.toMul (φ χ)).val) hAC` as an intermediate fact.
+
+Rewrite using `[← splitTorusPointsEquiv_val]`. Conclude with `this`.
+-/
 theorem coord_of_hasWeight {K : Type} (b : Module.Basis K ℤ X) (q : G ⟶ B) (i : splitTorus S X ⟶ G)
     [hq : IsMonHom q] [hi : IsMonHom i] (hf : Flat q.left) (hs : Surjective q.left) (ha : IsAffineHom q.left)
     (hk : IsPullback i (toUnit _) q η[B]) (W : B.left.Opens) (u : K → Γ(G.left, q.left ⁻¹ᵁ W)ˣ)
@@ -216,6 +262,13 @@ section Datum
 
 variable {S S' : Scheme.{0}} (f : S' ⟶ S)
 
+/- English proof (translation)
+Introduce `Z t g z hz`. Establish `h` using `isGrpPullback_pullback G f`. Establish `e` using `hu _ (pushPt hτ t) (pushPt h.1.w g) z (le hz)`. Establish `e₁` using `h.2 Z (t ≫ i') g (pushPt hτ t ≫ i) (pushPt h.1.w g) (by`. Express the relevant statement in the definitionally equal form `(t.left ≫ τ) ≫ i.left = (t.left ≫ i'.left) ≫ _`.
+
+Rewrite using `[Category.assoc, Category.assoc, hi]) rfl`. Rewrite `e` using `[e₁]`. Establish `e₂ : charUnit S' X χ = pullU τ ⊤ (charUnit S X χ)` using `Units.ext hc.symm`. Use `(gm_res_pullU _ _ z le (hU' Z t g z hz) u).trans (e.trans (congrArg₂ (· * ·) ?_ (gm_res_pullU _ _ z le hz u).symm))` and prove the remaining obligations. Rewrite using `[e₂]`.
+
+Conclude with `(gm_pull t.left τ z ⊤ trivial _).symm`.
+-/
 theorem HasWeight.baseChange {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G] {i : splitTorus S X ⟶ G}
     {U : G.left.Opens} {u : Γ(G.left, U)ˣ} {χ : X} (hu : HasWeight i U u χ)
     (i' : splitTorus S' X ⟶ (Over.pullback f).obj G) (τ : (splitTorus S' X).left ⟶ (splitTorus S X).left)
@@ -239,6 +292,9 @@ theorem HasWeight.baseChange {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G]
   rw [e₂]
   exact (gm_pull t.left τ z ⊤ trivial _).symm
 
+/- English proof (translation)
+Introduce `y hy`. Express the relevant statement in the definitionally equal form `pullback.fst E.B.hom f y ∈ ((⨅ k, (E.O (E.basis k)).L.U (j k PUnit.unit) : E.B.left.Opens) : Set E.B.left)`. Rewrite using `[TopologicalSpace.Opens.coe_iInf, Set.mem_iInter]`. Conclude with `fun k => mem_pull.1 ((extBC f E).chart_le j k hy)`.
+-/
 theorem chart_le_preimage (E : SplitExt S) (j : (extBC f E).ChartIdx) :
     (extBC f E).chart j ≤ pullback.fst E.B.hom f ⁻¹ᵁ E.chart (fun k => j k PUnit.unit) := by
   intro y hy
@@ -247,6 +303,23 @@ theorem chart_le_preimage (E : SplitExt S) (j : (extBC f E).ChartIdx) :
   rw [TopologicalSpace.Opens.coe_iInf, Set.mem_iInter]
   exact fun k => mem_pull.1 ((extBC f E).chart_le j k hy)
 
+/- English proof (translation)
+Use `d.q_hom` as an intermediate fact. Use `d.i_hom` as an intermediate fact. Establish `: IsMonHom (Iso.refl ((Over.pullback f).obj G)).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`. Establish `: IsMonHom (Iso.refl ((Over.pullback f).obj E.B)).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`. Take `⟨eT, mT, hT⟩` from `splitTorus_baseChange S S' f E.X`.
+
+Take `⟨q, i, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `TorusExtBaseChange.exists_extension f eT (Iso.refl ((Over.pullback f).obj G)) (Iso.refl ((Over.pullback f).obj E.B)) d.i d.q d.q_flat d.q_surjective d.q_affine d.isKernel`. Establish `hq : q.left ≫ pullback.fst E.B.hom f = pullback.fst G.hom f ≫ d.q.left` using `by simpa using h7`. Establish `hi : i.left ≫ pullback.fst G.hom f = (eT.hom.left ≫ pullback.fst _ f) ≫ d.i.left` using `by simpa using h8`. Establish `le : ∀ j : (extBC f E).ChartIdx, q.left ⁻¹ᵁ (extBC f E).chart j ≤ pullback.fst G.hom f ⁻¹ᵁ (d.q.left ⁻¹ᵁ E.chart (fun k => j k PUnit.unit))` using `fun j y hy => by`. Express the relevant statement in the definitionally equal form `(pullback.fst G.hom f ≫ d.q.left) y ∈ E.chart (fun k => j k PUnit.unit)`.
+
+Rewrite using `[← hq]`. Conclude with `chart_le_preimage f E j hy`. Set `u : ∀ (j : (extBC f E).ChartIdx) (_ : Module.Free.ChooseBasisIndex ℤ E.X), Γ(((Over.pullback f).obj G).left, q.left ⁻¹ᵁ (extBC f E).chart j)ˣ` to `fun j k => res (le j) (pullU (pullback.fst G.hom f) _ (d.u (fun k => j k PUnit.unit) k))`. Establish `hw : ∀ j k, HasWeight i _ (u j k) (E.basis k)` using `fun j k => HasWeight.baseChange f ((hasWeight_iff d.i _ _ _ (d.act_le _) _).2 (d.equiv _ k)) i _ (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ f) (Over.w eT.hom)) hi (hT _) (le j)`. Use `fun Z t g z hz => translate_mem q i h6 t g _ z hz`. Use `⟨ { q := q i := i q_hom := h1 i_hom := h5 q_flat := h2 q_surjective := h3 q_affine := h4 isKernel := h6 u := u coord := fun j V hV h => coord_of_hasWeight E.basis q i h2 h3 h4 h6 _ (u j) (hw j) V hV h trans := fun j j' k => unit_ext fun y hy => ?_ act_le := fun j y hy => translat …` and prove the remaining obligations. Establish `hm : pullback.fst G.hom f y ∈ d.q.left ⁻¹ᵁ (E.chart (fun k => j k PUnit.unit) ⊓ E.chart (fun k => j' k PUnit.unit))` using `⟨le j hy.1, le j' hy.2⟩`. Establish `e` using `congrArg (gm (pullback.fst G.hom f) y _) (d.trans (fun k => j k PUnit.unit) (fun k => j' k PUnit.unit) k)`.
+
+Establish `e'` using `(gm_res _ y _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_pull _ d.q.left y _ hm _).trans (gm_res (pullback.fst G.hom f ≫ d.q.left) y _ hm _)) (gm_res _ y _ hm _))))`. Use `((gm_res (𝟙 _) y _ hy _).trans (gm_res_pullU' _ y (le j') hy.2 _)).trans (e'.trans (Eq.symm ?_))` and prove the remaining obligations. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ((gm_res (𝟙 _) y _ hy _).trans (gm_res_pullU' _ y (le j) hy.1 _)))` and prove the remaining obligations. Use `((gm_pull (𝟙 _) q.left y _ hy _).trans (gm_res (𝟙 _ ≫ q.left) y _ hy _)).trans ?_` and prove the remaining obligations. Use `(gm_pull_g (E.O (E.basis k)).L (pullback.fst E.B.hom f) (𝟙 _ ≫ q.left) y (j k) (j' k) ((extBC f E).chart_le j k hy.1) ((extBC f E).chart_le j' k hy.2)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, hq]`. Establish `hs` using `eSec_fst f G`. Establish `h₁ : (eSec ((Over.pullback f).obj G) ≫ pullback.fst G.hom f) y ∈ d.q.left ⁻¹ᵁ E.chart (fun k => j k PUnit.unit)` using `le j hy.1`. Rewrite `h₁` using `[hs]`. Establish `h₂` using `(rigChart f E.B (E.O (E.basis k)).L).le (fun _ => j k) hy.2`.
+
+Set `f' : (𝟙_ (Over S')).left ⟶ (𝟙_ (Over S)).left` to `f`. Establish `hm : f' y ∈ eSec G ⁻¹ᵁ (d.q.left ⁻¹ᵁ E.chart (fun k => j k PUnit.unit)) ⊓ ((E.O (E.basis k)).L.pull (eSec E.B)).U (fun _ => j k PUnit.unit)` using `⟨h₁, h₂⟩`. Establish `e` using `congrArg (gm f' y _) (d.unit_norm (fun k => j k PUnit.unit) k)`. Establish `e'` using `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res_pullU f' _ y _ hm _) (gm_res f' y _ hm _))).symm.trans (e.trans (map_one _))`. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)).trans (e'.trans (map_one _).symm)` and prove the remaining obligations.
+
+Use `(gm_res_pullU' _ y _ hy _).trans ((gm_res_pullU _ _ y (le j) hy.1 _).trans ?_)` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `(gm_res (𝟙 _) y _ hy _).trans (gm_res_pullU' f' y ((rigChart f E.B (E.O (E.basis k)).L).le (fun _ => j k)) hy.2 _)`.
+-/
 theorem isGt_extBC (E : SplitExt S) (G : Over S) [GrpObj G] (d : E.GtDatum G) :
     (extBC f E).IsGt ((Over.pullback f).obj G) := by
   have := d.q_hom
@@ -324,6 +397,9 @@ end GtBaseChange
 
 open GtBaseChange in
 
+/- English proof (translation)
+Introduce and unpack `S S' f E G _ ⟨d⟩`. Use `⟨extBC f E, AddEquiv.refl _, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _)), fun χ => ?_, isGt_extBC f E G d⟩` and prove the remaining obligations. Conclude with `LBIso.chartPull (chartPullPull (E.O χ).L _ _ (Category.id_comp _).symm) (chartPullPull _ _ _ rfl) (lbIso_refl (E.O χ).isLB)`.
+-/
 theorem gtBaseChange : GtBaseChangeSt := by
   rintro S S' f E G _ ⟨d⟩
   refine ⟨extBC f E, AddEquiv.refl _, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 _)), fun χ => ?_,

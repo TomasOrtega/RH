@@ -7,6 +7,13 @@ open GlobalTheory.CompanionTheory.MirPair
 
 namespace GlobalTheory.CompanionTheory.MirPair
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Establish `hinv : ((g⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) * (g : Matrix (Fin m) (Fin m) k) = 1` using `Units.inv_mul g`. Establish `hinv' : (g : Matrix (Fin m) (Fin m) k) * ((g⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) = 1` using `Units.mul_inv g`. Set `e : (Fin m → k) ≃ᵐ (Fin m → k)` to `{ toFun := fun x => (g : Matrix (Fin m) (Fin m) k) *ᵥ x invFun := fun x => ((g⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) *ᵥ x left_inv := fun x => by simp only [mulVec_mulVec, hinv, one_mulVec] right_inv := fun x => by simp only [mulVec_mulVec, hinv', one_mulVec] measurable_t …`.
+
+Establish `he : MeasurableEmbedding (Matrix.mulVec (g : Matrix (Fin m) (Fin m) k))` using `e.measurableEmbedding`. Establish `hμ` using `GlobalTheory.UnipChange.smul_map_mulVec_pi ν (g : Matrix (Fin m) (Fin m) k) (Matrix.GeneralLinearGroup.det g) (Matrix.GeneralLinearGroup.val_det_apply g)`. Unfold `GlobalTheory.CompanionTheory.MirPair.piHaar GlobalTheory.SplitWeil.nabs`. Use `conv_lhs => rw [← hμ]`. Rewrite using `[Measure.restrict_smul, integral_smul_measure, ENNReal.coe_toReal, Complex.real_smul, he.restrict_map, he.integral_map]`.
+
+Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [mulVec_mulVec, hinv, one_mulVec]`.
+-/
 theorem setIntegral_inv_mulVec {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
     [ν.IsAddHaarMeasure] (m : ℕ) (g : GL (Fin m) k) (M : Set (Fin m → k))

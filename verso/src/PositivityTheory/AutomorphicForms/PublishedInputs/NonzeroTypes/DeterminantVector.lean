@@ -13,6 +13,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Simplify using `using h ⟨g, hg⟩`. Introduce `h g`. Simplify using `using h g g.2`.
+-/
 theorem mem_fixed_iff {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (K : Subgroup (GL (Fin N) k)) (v : V) :
     v ∈ fixed ρ K ↔ ∀ g ∈ K, ρ g v = v := by
@@ -24,6 +27,9 @@ theorem mem_fixed_iff {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `⟨v, hv0, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[twist_apply, detChar_apply, (mem_fixed_iff ρ _ v).1 hv g hg]`.
+-/
 theorem hasDetVec_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (η : kˣ →* ℂˣ) (h : IsSpherical ρ) :
     HasDetVec (twist ρ (detChar (Fin N) η)) η := by
@@ -33,6 +39,9 @@ theorem hasDetVec_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨v, hv0, hv⟩` from `h`. Use `(Submodule.ne_bot_iff _).2 ⟨v, ?_, hv0⟩` and prove the remaining obligations. Use `(mem_fixed_iff _ _ v).2 fun g hg => ?_` and prove the remaining obligations. Rewrite using `[twist_apply, detChar_apply, hv g hg, smul_smul, MonoidHom.inv_apply, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+-/
 theorem isSpherical_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (η : kˣ →* ℂˣ) (h : HasDetVec ρ η) :
     IsSpherical (twist ρ (detChar (Fin N) η⁻¹)) := by
@@ -44,6 +53,9 @@ theorem isSpherical_twist {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 end DeterminantVector
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ ρ η`. Conclude with `⟨DeterminantVector.hasDetVec_twist ρ η, DeterminantVector.isSpherical_twist ρ η⟩`.
+-/
 theorem step_detVec : DeterminantVectorProp := by
   intro k _ _ _ _ N V _ _ ρ η
   exact ⟨DeterminantVector.hasDetVec_twist ρ η, DeterminantVector.isSpherical_twist ρ η⟩

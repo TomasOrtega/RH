@@ -7,6 +7,23 @@ open Classical
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S M U₀ hO z p _ y y₀ τ hC hA`. Establish `hw : Set.range (gPt p ≫ y) = {(gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p))}` using `RatModel.range_eq_singleton (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p))`. Establish `hξ : (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)) ∈ (U₀ : Set M.Z)` using `hC.2 ⟨_, rfl⟩`. Establish `hsp` using `RatModel.specializes_of_range_eq hw`. Establish `hthO : ∀ j, S.th j ∈ M.O ((gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)))` using `fun j => RatModel.ringOn_le_O hξ (hO.le (S.th_mem j))`.
+
+Establish `hinvO : ∀ j, S.th j ≠ 0 → (S.th j)⁻¹ ∈ M.O ((gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)))` using `fun j hj => RatModel.ringOn_le_O hξ (hO.th_unit j hj)`. Establish `hmul : ∀ i j, S.th i ≠ 0 → M.val (gPt p ≫ y) (S.th j) = M.val (gPt p ≫ y) (S.th j / S.th i) * M.val (gPt p ≫ y) (S.th i)`. Introduce `i j hi`. Establish `hq : S.th j / S.th i ∈ M.O ((gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)))`. Rewrite using `[div_eq_mul_inv]`.
+
+Conclude with `mul_mem (hthO j) (hinvO i hi)`. Rewrite using `[← RatModel.val_mul hsp hq (hthO i), div_mul_cancel₀ _ hi]`. Establish `hval : ∀ x, ‖y₀ ⟨S.th x, S.th_mem x⟩‖ = ‖M.val (gPt p ≫ y) (S.th x)‖` using `fun x => by rw [hA]`. Establish `hmax : IsGreatest (Set.range fun x => ‖M.val (gPt p ≫ y) (S.th x)‖) τ.δ`. Simplify `τ.δ_max` using `only [hval]`.
+
+Establish `fwd : ∀ x, M.Div S.th x z → ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ`. Introduce `x hx`. Apply `le_antisymm (hmax.2 ⟨x, rfl⟩)` to reduce the goal to its premises. Take `⟨j, hj⟩` from `hmax.1`. Rewrite using `[← hj]`.
+
+Simplify using `only`. Rewrite using `[hmul x j hx.1, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.Cen.norm_val_le_one hC (hx.2 j))`. Establish `key : ∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ`. Introduce `x`.
+
+Use `⟨fun h => fwd x h, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hO.div z`. Establish `h1 : ‖M.val (gPt p ≫ y) (S.th x / S.th i)‖ = 1`. Rewrite `hx` using `[hmul i x hi.1, norm_mul, fwd i hi]`. Establish `h2 : ‖M.val (gPt p ≫ y) (S.th x / S.th i)‖ * τ.δ = 1 * τ.δ` using `by rw [_root_.one_mul]; exact hx`.
+
+Conclude with `(mul_left_inj' τ.δ_pos.ne').mp h2`. Use `show M.Div S.th x z`. Conclude with `(RatModel.Div.div_iff_isUnit hi x).mpr ((RatModel.norm_val_eq_one_iff hC.1 (hi.2 x)).mp h1)`. Use `⟨key, ?_⟩` and prove the remaining obligations. Rewrite using `[← τ.supp]`.
+
+Use `show AddSubgroup.closure (S.supI M z) = _`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[key x, Set.mem_ofPred_eq, hval]`.
+-/
 theorem ThetaSys.mem_supI_iff_and_HH_eq_ker :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens), S.Over₀ M U₀ → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → (∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ) ∧ S.HH M z = τ.yy.ker) := by
   intro o Ω _ _ _ _ S M U₀ hO z p _ y y₀ τ hC hA

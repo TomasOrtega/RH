@@ -16,6 +16,13 @@ namespace GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Establish `h1 : ∀ i : Fin n, (mhlDiag n π d i)⁻¹ = (fun j : ℕ => if j < d then (mhlA π)⁻¹ else 1) i.1`. Introduce `i`. Unfold `mhlDiag`. Apply the tactic sequence `by_cases h : i.1 < d <;> simp [h]`. Rewrite using `[Finset.prod_congr rfl fun i _ => h1 i, Fin.prod_univ_eq_prod_range (fun j : ℕ => if j < d then (mhlA π)⁻¹ else 1) n, Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`.
+
+Use `congr 1`. Establish `: (Finset.range n).filter (fun j => j < d) = Finset.range d`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this, Finset.card_range]`.
+-/
 theorem prod_diag_inv {E : Type} [Field E] [NumberField E] [StarRing E] (n : ℕ) (π : 𝓞 E) (d : ℕ) (hd : d ≤ n) :
     ∏ i : Fin n, (mhlDiag n π d i)⁻¹ = (mhlA π)⁻¹ ^ d := by
   have h1 : ∀ i : Fin n, (mhlDiag n π d i)⁻¹ = (fun j : ℕ => if j < d then (mhlA π)⁻¹ else 1) i.1 := by
@@ -31,6 +38,9 @@ theorem prod_diag_inv {E : Type} [Field E] [NumberField E] [StarRing E] (n : ℕ
     omega
   rw [this, Finset.card_range]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[pow_succ, pow_succ, ← mul_assoc, ih]`. Rewrite using `[show e * x ^ d * (e * x) = (e * e) * (x ^ d * x) by ring, hee]`.
+-/
 theorem idem_mul_pow {R : Type} [CommRing R] {e : R} (hee : e * e = e) (x : R) (d : ℕ) : e * (e * x) ^ d = e * x ^ d := by
   induction d with
   | zero => simp
@@ -38,39 +48,63 @@ theorem idem_mul_pow {R : Type} [CommRing R] {e : R} (hee : e * e = e) (x : R) (
     rw [pow_succ, pow_succ, ← mul_assoc, ih]
     rw [show e * x ^ d * (e * x) = (e * e) * (x ^ d * x) by ring, hee]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => rw [pow_zero]`. Conclude with `GlobalTheory.HeckeConj.one_mem_intAE D`. Consider the case `succ d ih => rw [pow_succ]`. Conclude with `GlobalTheory.HeckeConj.mul_mem_intAE D ih hx`.
+-/
 theorem pow_mem_int {D : D7} {x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (d : ℕ) :
     x ^ d ∈ intAE D := by
   induction d with
   | zero => rw [pow_zero]; exact GlobalTheory.HeckeConj.one_mem_intAE D
   | succ d ih => rw [pow_succ]; exact GlobalTheory.HeckeConj.mul_mem_intAE D ih hx
 
+/- English proof (translation)
+Establish `he : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hee])`. Rewrite using `[← idem_mul_pow hee a d, RingHom.map_add, RingHom.map_sub, RingHom.map_one, RingHom.map_mul, RingHom.map_pow]`. Conclude with `add_mem (GlobalTheory.HeckeConj.mul_mem_intAE D he (pow_mem_int ha d)) (sub_mem (GlobalTheory.HeckeConj.one_mem_intAE D) he)`.
+-/
 theorem unit_mem {D : D7} {e a : Formalism.L2.Theta.AE D} (hee : e * e = e) (ha : finPart D (e * a) ∈ intAE D) (d : ℕ) :
     finPart D (e * a ^ d + (1 - e)) ∈ intAE D := by
   have he : finPart D e ∈ intAE D := GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hee])
   rw [← idem_mul_pow hee a d, RingHom.map_add, RingHom.map_sub, RingHom.map_one, RingHom.map_mul, RingHom.map_pow]
   exact add_mem (GlobalTheory.HeckeConj.mul_mem_intAE D he (pow_mem_int ha d)) (sub_mem (GlobalTheory.HeckeConj.one_mem_intAE D) he)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, castGL, Matrix.det_reindex_self]`.
+-/
 theorem det_castGL {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (g : GL (Fin m) R) :
     Matrix.GeneralLinearGroup.det (castGL h g) = Matrix.GeneralLinearGroup.det g := by
   ext
   simp [Matrix.GeneralLinearGroup.val_det_apply, castGL, Matrix.det_reindex_self]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_fin {D : D7} (V : HSp D) (α : GA D V) : finPart D (Formalism.L2.Theta.mt V α).det = (finHom V α).val.det := by
   rw [RingHom.map_det]; rfl
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_swap {D : D7} {m : ℕ} (g : GL (Fin m) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) :
     swapAE D g.val.det = (Formalism.UG.bc (swapAE D) g).val.det := by
   rw [RingHom.map_det]; rfl
 
+/- English proof (translation)
+Use `congrArg Units.val (det_castGL h g)` as an intermediate fact. Simplify `this` using `only [Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem det_cast {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (g : GL (Fin m) R) : (castGL h g).val.det = g.val.det := by
   have := congrArg Units.val (det_castGL h g)
   simpa only [Matrix.GeneralLinearGroup.val_det_apply] using this
 
+/- English proof (translation)
+Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.GeneralLinearGroup.val_det_apply]`. Use `congr 1`. Rewrite using `[map_inv, map_inv, map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]`.
+-/
 theorem det_conj_inv {R : Type} [CommRing R] {n : ℕ} (C η : GL (Fin n) R) : ((C * η * C⁻¹)⁻¹).val.det = (η⁻¹).val.det := by
   rw [← Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.GeneralLinearGroup.val_det_apply]
   congr 1
   rw [map_inv, map_inv, map_mul, map_mul, map_inv, mul_right_comm, mul_inv_cancel, one_mul]
 
+/- English proof (translation)
+Rewrite using `[map_inv (finHom V) α, map_inv (Formalism.UG.bc (swapAE D)), map_inv (castGL h.symm)]`.
+-/
 theorem cast_inv {D : D7} (V : HSp D) {n : ℕ} (h : n = V.rank) (α : GA D V) :
     castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α⁻¹)) = (castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α)))⁻¹ := by
   rw [map_inv (finHom V) α, map_inv (Formalism.UG.bc (swapAE D)), map_inv (castGL h.symm)]
@@ -79,6 +113,9 @@ end GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
 namespace GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
+/- English proof (translation)
+Establish `hg : castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α⁻¹)) = (C * η * C⁻¹)⁻¹`. Rewrite using `[cast_inv V h α, hC]`. Rewrite using `[det_fin V α⁻¹, det_swap (finHom V α⁻¹), ← det_cast h.symm (Formalism.UG.bc (swapAE D) (finHom V α⁻¹)), hg, det_conj_inv C η]`.
+-/
 theorem det_transport {D : D7} (V : HSp D) {n : ℕ} (h : n = V.rank) (α : GA D V) (C η : GL (Fin n) (Formalism.IndefR.Lev.EAf D))
     (hC : castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α)) = C * η * C⁻¹) :
     swapAE D (finPart D (Formalism.L2.Theta.mt V α⁻¹).det) = (η⁻¹).val.det := by
@@ -87,6 +124,11 @@ theorem det_transport {D : D7} (V : HSp D) {n : ℕ} (h : n = V.rank) (α : GA D
   rw [det_fin V α⁻¹, det_swap (finHom V α⁻¹), ← det_cast h.symm (Formalism.UG.bc (swapAE D) (finHom V α⁻¹)), hg,
     det_conj_inv C η]
 
+/- English proof (translation)
+Establish `hdiag : ∀ i j : Fin n, Formalism.UG.prV v ((((Formalism.L2.Col.mhlEta D.sp.cm n v hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D))⁻¹).val i j) = Formalism.UG.prV v ((Matrix.diagonal fun k => Formalism.L2.Col.iA D.host.F D.host.E (Formalism.L2.Col …`. Introduce `i j`. Rewrite using `[Formalism.L2.Col.mhl_prV_eta_inv, Matrix.diagonal_apply]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`. Establish `hm : (Formalism.UG.prV v).mapMatrix (((Formalism.L2.Col.mhlEta D.sp.cm n v hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D))⁻¹).val = (Formalism.UG.prV v).mapMatrix (Matrix.diagonal fun k => Formalism.L2.Col.iA D.host.F D.host.E (Formalism.L2.Col. …` using `Matrix.ext hdiag`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_det, hm, ← RingHom.map_det, Matrix.det_diagonal, map_prod (Formalism.L2.Col.iA D.host.F D.host.E), sub_self]`.
+-/
 theorem prV_det_eta {D : D7} (n : ℕ) [NeZero n] (v : HeightOneSpectrum (𝓞 D.host.F)) {π : 𝓞 D.host.E} (hπ0 : π ≠ 0)
     (d : ℕ) :
     Formalism.UG.prV v ((((Formalism.L2.Col.mhlEta D.sp.cm n v hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) :
@@ -109,18 +151,30 @@ end GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
 namespace GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
+/- English proof (translation)
+Rewrite using `[map_pow, map_mul, mul_pow]`.
+-/
 theorem hom_mul_pow {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a b : R) (d : ℕ) :
     f ((a * b) ^ d) = f a ^ d * f b ^ d := by
   rw [map_pow, map_mul, mul_pow]
 
+/- English proof (translation)
+Take the linear combination `key + e * hc + (W - W * X) * hee`.
+-/
 theorem final_alg {R : Type} [CommRing R] {e Δ c X W : R} (hee : e * e = e) (key : e * Δ = e * c) (hc : c = X * W) :
     e * Δ = e * W * (e * X + (1 - e)) := by
   linear_combination key + e * hc + (W - W * X) * hee
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective h`.
+-/
 theorem swap_inj {D : D7} {x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (h : swapAE D x = swapAE D y) :
     x = y :=
   (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective h
 
+/- English proof (translation)
+Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [RingHom.map_mul, GlobalTheory.SplitScalar.infPart_splitIdem he, zero_mul]`. Apply `swap_inj` to reduce the goal to its premises. Rewrite using `[RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul]`. Conclude with `h`.
+-/
 theorem idem_eq_of_swap {D : D7} {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {x c : Formalism.L2.Theta.AE D}
     (h : swapAE D (finPart D e) * swapAE D (finPart D x) = swapAE D (finPart D e) * swapAE D (finPart D c)) :
     e * x = e * c := by
@@ -134,6 +188,15 @@ end GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
 namespace GlobalTheory.Mem.R3.LiftBrg.EtaDet
 
+/- English proof (translation)
+Introduce `D V n _ h v Pb Ut d e C α hd he hε hα hC`. Establish `hπ0 : ((Ut.π : 𝓞 D.host.E) : D.host.E) ≠ 0` using `Formalism.L2.Col.mhl_alg_ne Ut.hπ0`. Establish `hee : e * e = e` using `he.1.1`. Establish `hfe : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hee])`. Establish `hinv : finPart D (e * incA D ((Ut.π : D.host.E))⁻¹) ∈ intAE D`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `Ut.hπP ((he.2 Ut.π Ut.hπ0).2 hc)`. Establish `hpi : finPart D (e * incA D (Ut.π : D.host.E)) ∈ intAE D`. Rewrite using `[RingHom.map_mul]`. Conclude with `GlobalTheory.HeckeConj.mul_mem_intAE D hfe (AddSubgroup.subset_closure ⟨1, fun v => one_mem _, Ut.π, rfl⟩)`.
+
+Establish `hXY : incA D ((Ut.π : D.host.E))⁻¹ ^ d * incA D (Ut.π : D.host.E) ^ d = 1`. Rewrite using `[← mul_pow, ← RingHom.map_mul, inv_mul_cancel₀ hπ0, RingHom.map_one, one_pow]`. Use `⟨e * incA D ((Ut.π : D.host.E))⁻¹ ^ d + (1 - e), e * incA D (Ut.π : D.host.E) ^ d + (1 - e), unit_mem hee hinv d, unit_mem hee hpi d, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `e * hXY + ((e + 1) * (incA D ((Ut.π : D.host.E))⁻¹ ^ d * incA D (Ut.π : D.host.E) ^ d) - e * (incA D ((Ut.π : D.host.E))⁻¹ ^ d + incA D (Ut.π : D.host.E) ^ d) + (e - 1)) * hee`. Establish `hdet` using `det_transport V h α C _ hC`.
+
+Establish `hε'` using `hε _ (prV_det_eta (D := D) n v Ut.hπ0 d)`. Rewrite `hε'` using `[mul_sub, sub_eq_zero, prod_diag_inv n Ut.π d hd, Formalism.L2.Col.mhlA_inv Ut, ← hdet]`. Establish `key : e * (Formalism.L2.Theta.mt V α⁻¹).det = e * incA D ((((Ut.π : D.host.E))⁻¹ * ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E)) ^ d)` using `idem_eq_of_swap he.1 hε'`. Establish `hc : incA D ((((Ut.π : D.host.E))⁻¹ * ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E)) ^ d) = incA D ((Ut.π : D.host.E))⁻¹ ^ d * incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E) ^ d` using `hom_mul_pow (incA D) _ _ d`. Conclude with `final_alg hee key hc`.
+-/
 theorem det_clause : ∀ {D : D7} (V : HSp D) (n : ℕ) [NeZero n] (h : n = V.rank) (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (Ut : Formalism.L2.Col.MhlUnif Pb) (d : ℕ) (e : Formalism.L2.Theta.AE D) (C : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) (α : GA D V), d ≤ n → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → (∀ z : Formalism.IndefR.Lev.EAf D, Formalism.UG.prV v z = 0 → swapAE D (finPart D e) * z = 0) → α ∈ GfC V → castGL h.symm (Formalism.UG.bc (swapAE D) (finHom V α)) = C * ((Formalism.L2.Col.mhlEta D.sp.cm n v Ut.hπ0 d : Formalism.L2.Col.UAd D.sp.cm n) : GL (Fin n) (Formalism.IndefR.Lev.EAf D)) * C⁻¹ →
     ∃ u u' : Formalism.L2.Theta.AE D, finPart D u ∈ intAE D ∧ finPart D u' ∈ intAE D ∧ e * u * u' = e ∧
       e * (mt V α⁻¹).det = e * incA D ((Formalism.L2.Col.cO D.host.E Ut.π : 𝓞 D.host.E) : D.host.E) ^ d * u := by

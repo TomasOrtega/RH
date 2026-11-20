@@ -16,6 +16,11 @@ namespace GlobalTheory.SumSig
 section Change
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Use extensionality with `k l`. Establish `hk` using `S.frame.sum_repr (v k)`. Establish `hl` using `S.frame.sum_repr (v l)`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, HSpace.gram]`. Use `conv_lhs => rw [← hk, ← hl]`.
+
+Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.sum_mul, Finset.mul_sum, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_family (S : HSpace E) {ι : Type} [Fintype ι] (v : ι → S.V) :
     (Matrix.of fun k l => S.hT (v k) (v l)) =
       (Matrix.of fun i k => S.frame.repr (v k) i)ᴴ * S.gram * Matrix.of fun i k => S.frame.repr (v k) i := by

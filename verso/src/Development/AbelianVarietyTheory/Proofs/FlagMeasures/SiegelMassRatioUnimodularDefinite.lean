@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.BinaryHermitianRepre
 
 namespace GlobalTheory.Mass
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLattices.Ext.L3.siegelMassRatio_of_LI binary_hermitian_represents Formalism.HermitianLattices.Ext.L3.liStat`.
+-/
 theorem siegelMassRatio_holds : Formalism.HermitianLatticesTheory.SiegelMassRatio :=
   Formalism.HermitianLattices.Ext.L3.siegelMassRatio_of_LI binary_hermitian_represents Formalism.HermitianLattices.Ext.L3.liStat
 

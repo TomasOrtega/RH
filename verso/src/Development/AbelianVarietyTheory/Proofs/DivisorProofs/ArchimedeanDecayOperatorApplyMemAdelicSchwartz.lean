@@ -15,6 +15,11 @@ namespace GlobalTheory.ArchDecay.SchAStab
 
 variable (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Unfold `pureA`. Use `congr 2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • v i)) = evI F (x i) + t • v i`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Conclude with `add_zero (x i).2`.
+-/
 theorem pureA_line (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (x : κ → AF F) (v : κ → mixedEmbedding.mixedSpace F) (t : ℝ) :
     pureA F f g (x + fun i => infAd F (t • v i)) = f (arch F x + t • v) * g (fun i => (x i).2) := by
@@ -28,6 +33,9 @@ theorem pureA_line (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ �
   · funext i
     exact add_zero (x i).2
 
+/- English proof (translation)
+Simplify using `only [pureA_line]`. Establish `h1 : HasDerivAt (fun t : ℝ => arch F x + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add (arch F x)`. Establish `h2 : HasDerivAt (fun t : ℝ => f (arch F x + t • v)) (fderiv ℝ f (arch F x) v) 0` using `(f.differentiableAt (x := arch F x)).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp)`. Conclude with `h2.mul_const _`.
+-/
 theorem hasDerivAt_line (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (x : κ → AF F) (v : κ → mixedEmbedding.mixedSpace F) :
     HasDerivAt (fun t : ℝ => pureA F f g (x + fun i => infAd F (t • v i)))
@@ -39,6 +47,9 @@ theorem hasDerivAt_line (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) �
     (f.differentiableAt (x := arch F x)).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp)
   exact h2.mul_const _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[dD, (hasDerivAt_line F f g x v).deriv]`. Use `show _ = (∂_{v} f : SchwartzMap _ ℂ) (arch F x) * _`. Rewrite using `[SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+-/
 theorem dD_pureA (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (v : κ → mixedEmbedding.mixedSpace F) : dD F v (pureA F f g) = pureA F (∂_{v} f : SchwartzMap _ ℂ) g := by
   funext x
@@ -50,17 +61,32 @@ def mulL (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) (f : SchwartzM
     SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ :=
   SchwartzMap.smulLeftCLM ℂ (⇑l) f
 
+/- English proof (translation)
+Rewrite using `[mulL, SchwartzMap.smulLeftCLM_apply_apply l.hasTemperateGrowth, Complex.real_smul]`.
+-/
 theorem mulL_apply (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (y : κ → mixedEmbedding.mixedSpace F) :
     mulL F l f y = (l y : ℂ) * f y := by
   rw [mulL, SchwartzMap.smulLeftCLM_apply_apply l.hasTemperateGrowth, Complex.real_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [mM, pureA, mulL_apply, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem mM_pureA (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) : mM F l (pureA F f g) = pureA F (mulL F l f) g := by
   funext x
   simp only [mM, pureA, mulL_apply, mul_assoc]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Rewrite using `[mM_pureA]`. Conclude with `Submodule.subset_span ⟨mulL F l f, g, hg, rfl⟩`.
+
+Consider the case `zero`. Establish `: mM F l (0 : (κ → AF F) → ℂ) = 0` using `by funext x; simp [mM]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2`.
+
+Establish `: mM F l (Φ + Ψ) = mM F l Φ + mM F l Ψ` using `by funext x; simp [mM, mul_add]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a Φ _ h`. Establish `: mM F l (a • Φ) = a • mM F l Φ` using `by funext x; simp [mM]; ring`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a h`.
+-/
 theorem mem_schA_mM (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     mM F l Φ ∈ schA F κ := by
   induction hΦ using Submodule.span_induction with
@@ -78,6 +104,19 @@ theorem mem_schA_mM (l : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ) {Φ
     have : mM F l (a • Φ) = a • mM F l Φ := by funext x; simp [mM]; ring
     rw [this]; exact Submodule.smul_mem _ a h
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `⟨fun x => (hasDerivAt_line F f g x v).differentiableAt, ?_⟩` and prove the remaining obligations. Rewrite using `[dD_pureA]`.
+
+Conclude with `Submodule.subset_span ⟨_, g, hg, rfl⟩`. Consider the case `zero`. Use `⟨fun x => differentiableAt_const _, ?_⟩` and prove the remaining obligations. Establish `: dD F v (0 : (κ → AF F) → ℂ) = 0` using `by funext x; simp [dD]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2`. Use `⟨fun x => (h1.1 x).add (h2.1 x), ?_⟩` and prove the remaining obligations. Establish `: dD F v (Φ + Ψ) = dD F v Φ + dD F v Ψ`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [dD, Pi.add_apply]`. Conclude with `deriv_add (h1.1 x) (h2.1 x)`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h1.2 h2.2`. Consider the case `smul a Φ _ h`.
+
+Use `⟨fun x => (h.1 x).const_mul a, ?_⟩` and prove the remaining obligations. Establish `: dD F v (a • Φ) = a • dD F v Φ`. Use function extensionality and compare the values at `x`. Simplify using `only [dD, Pi.smul_apply, smul_eq_mul]`. Conclude with `deriv_const_mul a (h.1 x)`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a h.2`.
+-/
 theorem archimedeanDirectionalDerivative_mem_adelicSchwartz (v : κ → mixedEmbedding.mixedSpace F) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     (∀ x : κ → AF F, DifferentiableAt ℝ (fun t : ℝ => Φ (x + fun i => infAd F (t • v i))) 0) ∧
       dD F v Φ ∈ schA F κ := by
@@ -106,6 +145,9 @@ theorem archimedeanDirectionalDerivative_mem_adelicSchwartz (v : κ → mixedEmb
       exact deriv_const_mul a (h.1 x)
     rw [this]; exact Submodule.smul_mem _ a h.2
 
+/- English proof (translation)
+Introduce `F _ _ κ _ o f hf`. Break down `o with v | l` into its components or cases. Conclude with `(archimedeanDirectionalDerivative_mem_adelicSchwartz F v hf).2`. Conclude with `mem_schA_mM F l hf`.
+-/
 theorem app_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (o : Op F κ),
     ∀ f ∈ schA F κ, app F o f ∈ schA F κ := by
   intro F _ _ κ _ o f hf

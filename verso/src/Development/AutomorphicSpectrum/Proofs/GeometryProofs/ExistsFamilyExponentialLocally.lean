@@ -20,6 +20,13 @@ section Hol
 
 variable {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
+/- English proof (translation)
+Introduce `U f`. Establish `hset : {w ∈ W | ⊤ ≤ y (φ w) ⁻¹ᵁ U} = W ∩ φ ⁻¹' {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, hm h1, h2⟩`. Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`. Establish `hopen : IsOpen {w ∈ W | ⊤ ≤ y (φ w) ⁻¹ᵁ U}`. Rewrite using `[hset]`.
+
+Conclude with `hφ.continuousOn.isOpen_inter_preimage hW (hy U f).1`. Use `⟨hopen, ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.comp (g := fun b => valAt' (y b) U f) (t := {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}) (hy U f).2 (hφ.mono fun w hw => hw.1) ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `⟨hm hw.1, hw.2⟩`.
+-/
 theorem isHolTo_precomp {X : Scheme.{0}} {B : Set E} {y : E → (Sp ℂ ⟶ X)} (hy : IsHolTo B y)
     {W : Set E'} (hW : IsOpen W) {φ : E' → E} (hφ : DifferentiableOn ℂ φ W) (hm : Set.MapsTo φ W B) :
     IsHolTo W (fun w => y (φ w)) := by
@@ -40,6 +47,13 @@ theorem isHolTo_precomp {X : Scheme.{0}} {B : Set E} {y : E → (Sp ℂ ⟶ X)} 
   intro w hw
   exact ⟨hm hw.1, hw.2⟩
 
+/- English proof (translation)
+Introduce `U f`. Establish `hset : {b ∈ B | ⊤ ≤ y' b ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, by rwa [← h b h1]⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, by rwa [h b h1]⟩`. Rewrite using `[hset]`. Use `⟨(hy U f).1, (hy U f).2.congr fun b hb => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [h b hb.1]`.
+-/
 theorem isHolTo_congr {X : Scheme.{0}} {B : Set E} {y y' : E → (Sp ℂ ⟶ X)} (hy : IsHolTo B y)
     (h : ∀ b ∈ B, y' b = y b) : IsHolTo B y' := by
   intro U f
@@ -54,12 +68,20 @@ theorem isHolTo_congr {X : Scheme.{0}} {B : Set E} {y y' : E → (Sp ℂ ⟶ X)}
   refine ⟨(hy U f).1, (hy U f).2.congr fun b hb => ?_⟩
   simp only [h b hb.1]
 
+/- English proof (translation)
+The claim follows from `isHolTo_precomp hy hB' differentiableOn_id h`.
+-/
 theorem isHolTo_mono {X : Scheme.{0}} {B B' : Set E} {y : E → (Sp ℂ ⟶ X)} (hy : IsHolTo B y)
     (hB' : IsOpen B') (h : B' ⊆ B) : IsHolTo B' y :=
   isHolTo_precomp hy hB' differentiableOn_id h
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
+/- English proof (translation)
+Establish `hpb : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback G.hom G.hom`. Establish `hl : IsHolTo W fun w => (lift (x w) (y w)).left`. Use `HolPullback.isHolTo_of_components E W _ _ _ _ (fst G G).left (snd G G).left G.hom G.hom (fun w => (lift (x w) (y w)).left) hpb hW ?_ ?_` and prove the remaining obligations. Use `isHolTo_congr hx fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`.
+
+Use `isHolTo_congr hy fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd]`. Use `isHolTo_congr (ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hl (μ[G]).left) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Hom.mul_def, Over.comp_left]`.
+-/
 theorem isHolTo_mul {W : Set E} (hW : IsOpen W) (ψ : E → (R →+* ℂ))
     (x y : ∀ w, Over.mk (spMap (ψ w)) ⟶ G) (hx : IsHolTo W fun w => (x w).left)
     (hy : IsHolTo W fun w => (y w).left) : IsHolTo W fun w => (x w * y w).left := by
@@ -75,6 +97,9 @@ theorem isHolTo_mul {W : Set E} (hW : IsOpen W) (ψ : E → (R →+* ℂ))
   refine isHolTo_congr (ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hl (μ[G]).left) fun w _ => ?_
   rw [Hom.mul_def, Over.comp_left]
 
+/- English proof (translation)
+Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => simpa using hx`. Consider the case `succ k hk ih`. Simplify using `only [pow_succ]`. Conclude with `isHolTo_mul hW ψ _ _ ih hx`.
+-/
 theorem isHolTo_pow {W : Set E} (hW : IsOpen W) (ψ : E → (R →+* ℂ))
     (x : ∀ w, Over.mk (spMap (ψ w)) ⟶ G) (hx : IsHolTo W fun w => (x w).left) (k : ℕ) (hk : 0 < k) :
     IsHolTo W fun w => (x w ^ k).left := by
@@ -92,6 +117,29 @@ open scoped ContDiff
 
 variable {n g : ℕ}
 
+/- English proof (translation)
+Use `set a : (Fin n → ℂ) × (Fin g → ℂ) := (b₀, 0) with ha`. Take `⟨hL0, hLd⟩` from `h0.self_of_nhds`. Use `set Φ : (Fin n → ℂ) × (Fin g → ℂ) → (Fin n → ℂ) × (Fin g → ℂ) := fun p => (p.1, L p) with hΦ`. Establish `hΦa : Φ a = a` using `by simp only [hΦ, ha, hL0]`. Establish `hΦan : AnalyticAt ℂ Φ a` using `analyticAt_fst.prod hL`.
+
+Use `set L' := fderiv ℂ L a with hL'`. Establish `hLfd : HasFDerivAt L L' a` using `hL.differentiableAt.hasFDerivAt`. Establish `hinr : ∀ v : Fin g → ℂ, L' (0, v) = v`. Introduce `v`. Establish `h1 : HasFDerivAt (fun s : Fin g → ℂ => ((b₀, s) : (Fin n → ℂ) × (Fin g → ℂ))) (ContinuousLinearMap.inr ℂ (Fin n → ℂ) (Fin g → ℂ)) 0` using `hasFDerivAt_prodMk_right b₀ 0`.
+
+Establish `h2` using `HasFDerivAt.comp (0 : Fin g → ℂ) (g := L) (f := fun s => ((b₀, s) : (Fin n → ℂ) × (Fin g → ℂ))) hLfd h1`. Establish `h3` using `h2.unique hLd`. Use `congrArg (fun T : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ) => T v) h3` as an intermediate fact. Simplify using `using this`. Establish `hsplit : ∀ u v, L' (u, v) = L' (u, 0) + v`.
+
+Introduce `u v`. Establish `: ((u, v) : (Fin n → ℂ) × (Fin g → ℂ)) = (u, 0) + (0, v)` using `by simp`. Rewrite using `[this, map_add, hinr]`. Set `D : ((Fin n → ℂ) × (Fin g → ℂ)) →L[ℂ] ((Fin n → ℂ) × (Fin g → ℂ))` to `(ContinuousLinearMap.fst ℂ _ _).prod L'`. Set `Di : ((Fin n → ℂ) × (Fin g → ℂ)) →L[ℂ] ((Fin n → ℂ) × (Fin g → ℂ))` to `(ContinuousLinearMap.fst ℂ _ _).prod (ContinuousLinearMap.snd ℂ _ _ - L' ∘L (ContinuousLinearMap.inl ℂ _ _) ∘L (ContinuousLinearMap.fst ℂ _ _))`.
+
+Set `e : ((Fin n → ℂ) × (Fin g → ℂ)) ≃L[ℂ] ((Fin n → ℂ) × (Fin g → ℂ))` to `ContinuousLinearEquiv.equivOfInverse D Di (by`. Introduce and unpack `⟨u, v⟩`. Simplify using `[D, Di, hsplit u v])`. Use the proof step `(by`. Introduce and unpack `⟨u, v⟩`.
+
+Express the relevant statement in the definitionally equal form `((u, L' (u, v - L' (u, 0))) : (Fin n → ℂ) × (Fin g → ℂ)) = (u, v)`. Rewrite using `[hsplit u]`. Use the proof step `simp)`. Establish `hΦd : HasFDerivAt Φ (e : _ →L[ℂ] _) a`. Use `(hasFDerivAt_fst (𝕜 := ℂ) (p := a)).prodMk hLfd` as an intermediate fact.
+
+Conclude with `this`. Establish `hc : ContDiffAt ℂ ω Φ a` using `hΦan.contDiffAt`. Establish `hn : (ω : WithTop ℕ∞) ≠ 0` using `by simp`. Establish `hs` using `hc.hasStrictFDerivAt' hΦd hn`. Use `set F := hc.localInverse hΦd hn with hF`.
+
+Establish `hFan : AnalyticAt ℂ F (Φ a)`. Use `hc.to_localInverse hΦd hn` as an intermediate fact. Conclude with `this.analyticAt`. Establish `hr : ∀ᶠ y in 𝓝 (Φ a), Φ (F y) = y` using `hs.eventually_right_inverse`. Establish `hl : ∀ᶠ x in 𝓝 a, F (Φ x) = x` using `hs.eventually_left_inverse`.
+
+Rewrite `hr`, `hFan` using `[hΦa]`. Use `⟨fun p => (F p).2, analyticAt_snd.comp hFan, ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hr] with y hy`. Establish `h1 : (F y).1 = y.1`. Use `congrArg Prod.fst hy` as an intermediate fact.
+
+Conclude with `this`. Establish `h2 : L (F y) = y.2`. Use `congrArg Prod.snd hy` as an intermediate fact. Conclude with `this`. Establish `h3 : ((y.1, (F y).2) : (Fin n → ℂ) × (Fin g → ℂ)) = F y` using `by rw [← h1]`.
+
+Rewrite using `[h3, h2]`. Use `filter_upwards [hl] with x hx`. Use `congrArg Prod.snd hx` as an intermediate fact. Conclude with `this`.
+-/
 theorem exists_family_inverse (b₀ : Fin n → ℂ) (L : (Fin n → ℂ) × (Fin g → ℂ) → (Fin g → ℂ))
     (hL : AnalyticAt ℂ L (b₀, 0))
     (h0 : ∀ᶠ b in 𝓝 b₀, L (b, 0) = 0 ∧
@@ -161,6 +209,13 @@ theorem exists_family_inverse (b₀ : Fin n → ℂ) (L : (Fin n → ℂ) × (Fi
     have := congrArg Prod.snd hx
     exact this
 
+/- English proof (translation)
+Establish `ht : Tendsto (fun b : Fin n → ℂ => ((b, 0) : (Fin n → ℂ) × (Fin g → ℂ))) (𝓝 b₀) (𝓝 (b₀, 0))` using `(Continuous.prodMk continuous_id continuous_const).tendsto b₀`. Establish `hΛev : ∀ᶠ p in 𝓝 ((b₀, 0) : (Fin n → ℂ) × (Fin g → ℂ)), AnalyticAt ℂ Λ p` using `hΛ.eventually_analyticAt`. Use `filter_upwards [h0, ht.eventually h2, ht.eventually hΛev, ht.eventually h1.eventually_nhds] with b hb hb2 hbA hb1`. Establish `hz : Λ (b, 0) = 0`. Establish `: Λ (b, L (b, 0)) = 0` using `hb2`.
+
+Rewrite `this` using `[hb.1]`. Then use the resulting hypothesis. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousAt (fun z => Λ (b, z)) 0` using `ContinuousAt.comp (f := fun z : Fin g → ℂ => ((b, z) : (Fin n → ℂ) × (Fin g → ℂ))) hbA.continuousAt (Continuous.prodMk continuous_const continuous_id).continuousAt`. Establish `hd : HasFDerivAt (fun s => L (b, s)) ((ContinuousLinearEquiv.refl ℂ (Fin g → ℂ) : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)) : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)) ((fun z => Λ (b, z)) 0)`. Simplify using `only [hz]`.
+
+Conclude with `hb.2`. Establish `hev : ∀ᶠ y in 𝓝 (0 : Fin g → ℂ), L (b, Λ (b, y)) = y`. Establish `hc2 : Tendsto (fun z : Fin g → ℂ => ((b, z) : (Fin n → ℂ) × (Fin g → ℂ))) (𝓝 0) (𝓝 (b, 0))` using `(Continuous.prodMk continuous_const continuous_id).tendsto 0`. Conclude with `hc2.eventually hb1`. Conclude with `HasFDerivAt.of_local_left_inverse hcont hd hev`.
+-/
 theorem family_inverse_slices (b₀ : Fin n → ℂ) (L Λ : (Fin n → ℂ) × (Fin g → ℂ) → (Fin g → ℂ))
     (hΛ : AnalyticAt ℂ Λ (b₀, 0))
     (h0 : ∀ᶠ b in 𝓝 b₀, L (b, 0) = 0 ∧
@@ -209,6 +264,31 @@ def chartMul (V : G.left.Opens) (t : Fin g → Γ(G.left, V))
     (w : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)) : Fin g → ℂ :=
   coord V t (Ψ w.1 w.2.1 * Ψ w.1 w.2.2)
 
+/- English proof (translation)
+Establish `hb₀ : b₀ ∈ ball b₀ ε` using `mem_ball_self hε`. Establish `h0ε : (0 : Fin g → ℂ) ∈ ball (0 : Fin g → ℂ) ε` using `mem_ball_self hε`. Use `set W : Set ((Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)) := ball b₀ ε ×ˢ (ball (0 : Fin g → ℂ) ε ×ˢ ball (0 : Fin g → ℂ) ε) with hWdef`. Establish `hWo : IsOpen W` using `isOpen_ball.prod (isOpen_ball.prod isOpen_ball)`. Establish `hx : IsHolTo W (fun w => (Ψ w.1 w.2.1).left)` using `isHolTo_precomp hΨ hWo (φ := fun w => (w.1, w.2.1)) (by fun_prop) fun w hw => ⟨hw.1, hw.2.1⟩`.
+
+Establish `hy : IsHolTo W (fun w => (Ψ w.1 w.2.2).left)` using `isHolTo_precomp hΨ hWo (φ := fun w => (w.1, w.2.2)) (by fun_prop) fun w hw => ⟨hw.1, hw.2.2⟩`. Establish `hQ : IsHolTo W (fun w => (Ψ w.1 w.2.1 * Ψ w.1 w.2.2).left)` using `isHolTo_mul hWo (fun w => ψ w.1) (fun w => Ψ w.1 w.2.1) (fun w => Ψ w.1 w.2.2) hx hy`. Establish `hq0 : Ψ b₀ 0 * Ψ b₀ 0 = Ψ b₀ 0` using `by rw [hone b₀ hb₀, _root_.one_mul]`. Use `set w₀ : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) := (b₀, 0, 0) with hw₀`. Establish `hw₀W : w₀ ∈ W` using `⟨hb₀, h0ε, h0ε⟩`.
+
+Use `set O := {w ∈ W | ⊤ ≤ (Ψ w.1 w.2.1 * Ψ w.1 w.2.2).left ⁻¹ᵁ V} with hOdef`. Establish `hOo : IsOpen O` using `(hQ V 0).1`. Establish `hw₀O : w₀ ∈ O`. Use `⟨hw₀W, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⊤ ≤ (Ψ b₀ 0 * Ψ b₀ 0).left ⁻¹ᵁ V`.
+
+Rewrite using `[hq0]`. Conclude with `hV b₀ hb₀ 0 h0ε`. Establish `hON : O ∈ 𝓝 w₀` using `hOo.mem_nhds hw₀O`. Establish `hmd : DifferentiableOn ℂ (chartMul V t Ψ) O` using `differentiableOn_pi.2 fun a => (hQ V (t a)).2`. Establish `hm0 : chartMul V t Ψ w₀ = 0`.
+
+Express the relevant statement in the definitionally equal form `coord V t (Ψ b₀ 0 * Ψ b₀ 0) = 0`. Rewrite using `[hq0]`. Conclude with `ht b₀ hb₀ 0 h0ε`. Establish `hK : ∀ᶠ w in 𝓝 w₀, Ψ w.1 w.2.1 * Ψ w.1 w.2.2 = Ψ w.1 (chartMul V t Ψ w)`. Establish `hb : ∀ᶠ w in 𝓝 w₀, w.1 ∈ ball b₀ δ` using `(continuous_fst.tendsto w₀).eventually (ball_mem_nhds b₀ hδ)`.
+
+Establish `hj : ∀ᶠ w in 𝓝 w₀, ∀ j, ‖valAt' (Ψ w.1 w.2.1 * Ψ w.1 w.2.2).left V (f j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ`. Use `eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun w : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => valAt' (Ψ w.1 w.2.1 * Ψ w.1 w.2.2).left V (f j)) w₀` using `((hQ V (f j)).2.differentiableAt hON).continuousAt`. Establish `hval : valAt' (Ψ w₀.1 w₀.2.1 * Ψ w₀.1 w₀.2.2).left V (f j) = valAt' (Ψ b₀ 0).left V (f j)`. Express the relevant statement in the definitionally equal form `valAt' (Ψ b₀ 0 * Ψ b₀ 0).left V (f j) = _`.
+
+Rewrite using `[hq0]`. Use `hc.tendsto` as an intermediate fact. Rewrite `this` using `[hval]`. Establish `h2` using `(Metric.tendsto_nhds.1 this) δ hδ`. Use `filter_upwards [h2] with w hw`.
+
+Simplify `hw` using `[dist_eq_norm]`. Use `filter_upwards [hON, hb, hj] with w hw1 hw2 hw3`. Conclude with `(hret w.1 hw2 _ hw1.2 hw3).2`. Establish `hWN : W ∈ 𝓝 w₀` using `hWo.mem_nhds hw₀W`. Use `⟨GlobalTheory.SCV.analyticAt_of_differentiableOn hmd hON, hm0, hK, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hn : ball b₀ ε ×ˢ ball (0 : Fin g → ℂ) ε ∈ 𝓝 ((b₀, 0) : (Fin n → ℂ) × (Fin g → ℂ))` using `(isOpen_ball.prod isOpen_ball).mem_nhds ⟨hb₀, h0ε⟩ filter_upwards [hn] with p hp`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `coord V t (Ψ p.1 p.2 * Ψ p.1 0) = p.2`. Rewrite using `[hone p.1 hp.1, _root_.mul_one]`. Conclude with `ht _ hp.1 _ hp.2`.
+
+Express the relevant statement in the definitionally equal form `coord V t (Ψ p.1 0 * Ψ p.1 p.2) = p.2`. Rewrite using `[hone p.1 hp.1, _root_.one_mul]`. Conclude with `ht _ hp.1 _ hp.2`. Use `Eventually.of_forall fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coord V t (Ψ p.1 p.2.1 * Ψ p.1 p.2.2) = coord V t (Ψ p.1 p.2.2 * Ψ p.1 p.2.1)`.
+
+Rewrite using `[mul_comm]`. Establish `t1 : Tendsto (fun p : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((p.1, p.2.1, p.2.2.1) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ))) (𝓝 (b₀, 0, 0, 0)) (𝓝 w₀)` using `(by fun_prop : Continuous (fun p : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((p.1, p.2.1, p.2.2.1) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)))).tendsto (b₀, 0, 0, 0)`. Establish `t2 : Tendsto (fun p : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((p.1, p.2.2.1, p.2.2.2) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ))) (𝓝 (b₀, 0, 0, 0)) (𝓝 w₀)` using `(by fun_prop : Continuous (fun p : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((p.1, p.2.2.1, p.2.2.2) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)))).tendsto (b₀, 0, 0, 0)`. Use `filter_upwards [t1.eventually hK, t2.eventually hK] with p h1 h2`. Establish `h1' : Ψ p.1 p.2.1 * Ψ p.1 p.2.2.1 = Ψ p.1 (chartMul V t Ψ (p.1, p.2.1, p.2.2.1))` using `h1`.
+
+Establish `h2' : Ψ p.1 p.2.2.1 * Ψ p.1 p.2.2.2 = Ψ p.1 (chartMul V t Ψ (p.1, p.2.2.1, p.2.2.2))` using `h2`. Express the relevant statement in the definitionally equal form `coord V t (Ψ p.1 (chartMul V t Ψ (p.1, p.2.1, p.2.2.1)) * Ψ p.1 p.2.2.2) = coord V t (Ψ p.1 p.2.1 * Ψ p.1 (chartMul V t Ψ (p.1, p.2.2.1, p.2.2.2)))`. Rewrite using `[← h1', ← h2', _root_.mul_assoc]`.
+-/
 theorem chartMul_law (hε : 0 < ε) (hδ : 0 < δ)
     (hΨ : IsHolTo (ball b₀ ε ×ˢ ball (0 : Fin g → ℂ) ε) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (Ψ bz.1 bz.2).left))
     (hone : ∀ b ∈ ball b₀ ε, Ψ b 0 = 1)
@@ -308,6 +388,11 @@ end Law
 
 section Family
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `h0` using `he 0 0`. Rewrite `h0` using `[add_zero]`. Simplify using `using h0`.
+
+Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, _root_.one_smul, he, ih, pow_succ]`.
+-/
 theorem pow_of_add {g : ℕ} {A : Type} [CommGroup A] (e : (Fin g → ℂ) → A) (he : ∀ z w, e (z + w) = e z * e w)
     (y : Fin g → ℂ) (k : ℕ) : e ((k : ℂ) • y) = e y ^ k := by
   induction k with
@@ -317,6 +402,13 @@ theorem pow_of_add {g : ℕ} {A : Type} [CommGroup A] (e : (Fin g → ℂ) → A
     simpa using h0
   | succ k ih => rw [Nat.cast_succ, add_smul, _root_.one_smul, he, ih, pow_succ]
 
+/- English proof (translation)
+Use `⟨by rw [hev.self_of_nhds, hl0]; exact hd.1, fun U h f => ?_⟩` and prove the remaining obligations. Establish `hU : ⊤ ≤ e 0 ⁻¹ᵁ U`. Rewrite using `[← hd.1, Scheme.Hom.comp_preimage]`. Conclude with `fun p _ => h (Set.mem_univ _)`. Rewrite using `[hd.2 U h f]`.
+
+Establish `hcongr : (fun z => valAt' (e' z) U f) =ᶠ[𝓝 0] (fun z => valAt' (e z) U f) ∘ l` using `by filter_upwards [hev] with z hz`. Simplify using `only [Function.comp, hz]`. Rewrite using `[hcongr.fderiv_eq]`. Establish `hh : HasFDerivAt (fun z => valAt' (e z) U f) (fderiv ℂ (fun z => valAt' (e z) U f) 0) (l 0)`. Rewrite using `[hl0]`.
+
+Conclude with `(hhol U f hU).hasFDerivAt`. Rewrite using `[(hh.comp 0 hl).fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem isDerivAt0_of_reparam {g : ℕ} {X : Scheme.{0}} {e e' : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {l : (Fin g → ℂ) → (Fin g → ℂ)}
     {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X} (hd : IsDerivAt0 e w v)
     (hl : HasFDerivAt l (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) (hl0 : l 0 = 0)
@@ -341,6 +433,15 @@ theorem isDerivAt0_of_reparam {g : ℕ} {X : Scheme.{0}} {e e' : (Fin g → ℂ)
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {g n : ℕ}
   {ψ : (Fin n → ℂ) → (R →+* ℂ)} {b₀ : Fin n → ℂ}
 
+/- English proof (translation)
+Establish `hM : ∀ M : ℕ, 0 < M → IsHolTo (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) (M * ρ)) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (ex bz.1 bz.2).left)`. Introduce `M hM`. Establish `hMr : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `hMc : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `hWo : IsOpen (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) (M * ρ))` using `isOpen_ball.prod isOpen_ball`.
+
+Establish `h1 : IsHolTo (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) (M * ρ)) (fun p : (Fin n → ℂ) × (Fin g → ℂ) => (ex p.1 ((M : ℂ)⁻¹ • p.2)).left)`. Use `isHolTo_precomp hbase hWo (φ := fun p => (p.1, (M : ℂ)⁻¹ • p.2)) (by fun_prop) fun p hp => ⟨hp.1, ?_⟩` and prove the remaining obligations. Establish `h2 : ‖p.2‖ < M * ρ` using `mem_ball_zero_iff.1 hp.2`. Use `mem_ball_zero_iff.2 ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast, inv_mul_lt_iff₀ hMr]`.
+
+Conclude with `h2`. Establish `h2` using `isHolTo_pow hWo (fun p => ψ p.1) (fun p => ex p.1 ((M : ℂ)⁻¹ • p.2)) h1 M hM`. Use `isHolTo_congr h2 fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← pow_of_add (ex p.1) (hadd p.1 hp.1), smul_inv_smul₀ hMc]`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_of_local fun U f p hp hU => ?_` and prove the remaining obligations.
+
+Take `⟨M, hM0, hMz⟩` from `localHom_exists_nat hρ ‖p.2‖`. Establish `hh` using `hM M hM0 U f`. Conclude with `⟨_, hh.1.mem_nhds ⟨⟨hp.1, mem_ball_zero_iff.2 hMz⟩, hU⟩, fun q hq => ⟨⟨hq.1.1, trivial⟩, hq.2⟩, hh.2⟩`.
+-/
 theorem family_isHolTo {ρ : ℝ} (hρ : 0 < ρ) (ex : ∀ b : Fin n → ℂ, (Fin g → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G))
     (hadd : ∀ b ∈ ball b₀ ρ, ∀ z w, ex b (z + w) = ex b z * ex b w)
     (hbase : IsHolTo (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ)
@@ -370,6 +471,43 @@ theorem family_isHolTo {ρ : ℝ} (hρ : 0 < ρ) (ex : ∀ b : Fin n → ℂ, (F
 variable {V : G.left.Opens} {t : Fin g → Γ(G.left, V)} {N : ℕ} {f : Fin N → Γ(G.left, V)} {ε δ ρ : ℝ}
   {Ψ : ∀ b : Fin n → ℂ, (Fin g → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)}
 
+/- English proof (translation)
+Establish `hε : 0 < ε` using `hρ.trans_le hρε`. Establish `h0ε : (0 : Fin g → ℂ) ∈ ball (0 : Fin g → ℂ) ε` using `mem_ball_self hε`. Establish `h0ρ : (0 : Fin g → ℂ) ∈ ball (0 : Fin g → ℂ) ρ` using `mem_ball_self hρ`. Establish `hext` using `fun (b : Fin n → ℂ) (hb : b ∈ ball b₀ ρ) => existsUnique_extension_of_ball g (Over.mk (spMap (ψ b)) ⟶ G) ρ hρ (fun z => Ψ b (Λ (b, z))) (fun z hz w hw hzw => hC b hb z hz w hw hzw)`. Set `ex : ∀ b : Fin n → ℂ, (Fin g → ℂ) → (Over.mk (spMap (ψ b)) ⟶ G)` to `fun b => if hb : b ∈ ball b₀ ρ then (hext b hb).choose else fun _ => 1`.
+
+Establish `hexa : ∀ b ∈ ball b₀ ρ, (∀ z w, ex b (z + w) = ex b z * ex b w) ∧ ∀ z ∈ ball (0 : Fin g → ℂ) ρ, ex b z = Ψ b (Λ (b, z))`. Introduce `b hb`. Simplify using `only [ex, dif_pos hb]`. Conclude with `(hext b hb).choose_spec.1`. Establish `hBo : IsOpen (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ)` using `isOpen_ball.prod isOpen_ball`.
+
+Establish `hΛd : DifferentiableOn ℂ Λ (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ)` using `fun p hp => (hA p.1 hp.1 p.2 hp.2).2.2.2.1.differentiableAt.differentiableWithinAt`. Establish `hbase : IsHolTo (ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (ex bz.1 bz.2).left)`. Use `isHolTo_congr (isHolTo_precomp hΨ hBo (φ := fun p => (p.1, Λ p)) (differentiableOn_fst.prodMk hΛd) fun p hp => ⟨ball_subset_ball hρε hp.1, ?_⟩) fun p hp => ?_` and prove the remaining obligations. Conclude with `(hA p.1 hp.1 p.2 hp.2).1`. Rewrite using `[(hexa p.1 hp.1).2 p.2 hp.2]`.
+
+Use `⟨{ ex := ex, add := fun b hb z w => (hexa b hb).1 z w, hol := family_isHolTo hρ ex (fun b hb => (hexa b hb).1) hbase, diff := ?_, log := ?_ }⟩` and prove the remaining obligations. Introduce `b hb a`. Establish `hb'` using `ball_subset_ball hρε hb`. Use `isDerivAt0_of_reparam (hder b hb' a) (hB b hb).2.2.1 (hB b hb).2.1 ?_ ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds (0 : Fin g → ℂ) hρ] with z hz`.
+
+Rewrite using `[(hexa b hb).2 z hz]`. Introduce `U f' hU`. Establish `hs : IsHolTo (ball (0 : Fin g → ℂ) ε) (fun z => (Ψ b z).left)` using `isHolTo_precomp hΨ isOpen_ball (φ := fun z => (b, z)) (by fun_prop) fun z hz => ⟨hb', hz⟩`. Conclude with `(hs U f').2.differentiableAt ((hs U f').1.mem_nhds ⟨h0ε, hU⟩)`. Introduce `b₁ hb₁`.
+
+Establish `hb₁'` using `ball_subset_ball hρε hb₁`. Establish `hex0 : ex b₁ 0 = Ψ b₁ 0` using `by rw [(hexa _ hb₁).2 0 h0ρ, (hB _ hb₁).2.1]`. Set `πL : ((Fin n → ℂ) × (Fin (g + N) → ℂ)) →L[ℂ] ((Fin n → ℂ) × (Fin g → ℂ))` to `(ContinuousLinearMap.fst ℂ _ _).prod ((ContinuousLinearMap.pi fun a : Fin g => ContinuousLinearMap.proj (Fin.castAdd N a)) ∘L (ContinuousLinearMap.snd ℂ _ _))`. Use `set y₁ : Fin (g + N) → ℂ := fun j => valAt' (ex b₁ 0).left V (Fin.append t f j) with hy₁`. Establish `hy1 : (fun a => y₁ (Fin.castAdd N a)) = 0`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [hy₁, Fin.append_left, hex0]`. Conclude with `congrFun (ht _ hb₁' 0 h0ε) a`. Establish `hy2 : ∀ j, y₁ (Fin.natAdd g j) = valAt' (Ψ b₁ 0).left V (f j)`. Introduce `j`.
+
+Simplify using `only [hy₁, Fin.append_right, hex0]`. Establish `hπ : πL (b₁, y₁) = (b₁, 0)`. Express the relevant statement in the definitionally equal form `((b₁, fun a => y₁ (Fin.castAdd N a)) : (Fin n → ℂ) × (Fin g → ℂ)) = (b₁, 0)`. Rewrite using `[hy1]`. Establish `hLan : AnalyticAt ℂ L (b₁, 0)` using `(hA b₁ hb₁ 0 h0ρ).2.2.2.2`.
+
+Establish `hn : ball b₀ ρ ×ˢ ball (0 : Fin g → ℂ) ρ ∈ 𝓝 ((b₁, 0) : (Fin n → ℂ) × (Fin g → ℂ))` using `hBo.mem_nhds ⟨hb₁, h0ρ⟩`. Use `⟨V, g + N, Fin.append t f, fun p => L (p.1, fun a => p.2 (Fin.castAdd N a)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hex0]`. Conclude with `hV b₁ hb₁' 0 h0ε`. Establish `h1 : AnalyticAt ℂ L (πL (b₁, y₁))` using `by rw [hπ]; exact hLan`.
+
+Conclude with `AnalyticAt.comp h1 (πL.analyticAt _)`. Use `filter_upwards [hn] with bz hbz`. Establish `hs` using `hA bz.1 hbz.1 bz.2 hbz.2`. Establish `e1` using `(hexa _ hbz.1).2 _ hbz.2`. Establish `e2 : (fun a => valAt' (ex bz.1 bz.2).left V (Fin.append t f (Fin.castAdd N a))) = Λ (bz.1, bz.2)`.
+
+Simplify using `only [Fin.append_left, e1]`. Conclude with `ht _ (ball_subset_ball hρε hbz.1) _ hs.1`. Express the relevant statement in the definitionally equal form `L (bz.1, fun a => valAt' (ex bz.1 bz.2).left V (Fin.append t f (Fin.castAdd N a))) = bz.2`. Rewrite using `[e2]`. Conclude with `hs.2.1`.
+
+Establish `hev1 : ∀ᶠ q in 𝓝 ((b₁, 0) : (Fin n → ℂ) × (Fin g → ℂ)), q.1 ∈ ball b₀ ρ ∧ q.2 ∈ ball (0 : Fin g → ℂ) ρ ∧ L q ∈ ball (0 : Fin g → ℂ) ρ`. Establish `hc` using `hLan.continuousAt.tendsto`. Rewrite `hc` using `[(hB b₁ hb₁).1]`. Use `filter_upwards [hn, hc.eventually (ball_mem_nhds (0 : Fin g → ℂ) hρ)] with q h1 h2`. Conclude with `⟨h1.1, h1.2, h2⟩`.
+
+Establish `hπt : Tendsto πL (𝓝 (b₁, y₁)) (𝓝 (b₁, 0))`. Use `πL.continuous.tendsto (b₁, y₁)` as an intermediate fact. Rewrite `this` using `[hπ]`. Then use the resulting hypothesis. Establish `hev2 : ∀ᶠ p : (Fin n → ℂ) × (Fin (g + N) → ℂ) in 𝓝 (b₁, y₁), ∀ j, ‖p.2 (Fin.natAdd g j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ`. Use `eventually_all.2 fun j => ?_` and prove the remaining obligations.
+
+Establish `hcont : Continuous (fun p : (Fin n → ℂ) × (Fin (g + N) → ℂ) => ‖p.2 (Fin.natAdd g j) - valAt' (Ψ b₀ 0).left V (f j)‖)` using `by fun_prop`. Establish `hlt : ‖y₁ (Fin.natAdd g j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ`. Rewrite using `[hy2]`. Conclude with `(hB b₁ hb₁).2.2.2 j`. Conclude with `(hcont.tendsto (b₁, y₁)).eventually (Iio_mem_nhds hlt)`.
+
+Use `filter_upwards [hπt.eventually hev1, hev2] with p h1 h2 x hxV hxf`. Take `⟨hpb, hps, hpL⟩` from `h1`. Establish `hpb' : p.1 ∈ ball b₀ ρ` using `hpb`. Establish `hps' : (fun a => p.2 (Fin.castAdd N a)) ∈ ball (0 : Fin g → ℂ) ρ` using `hps`. Establish `hpL' : L (p.1, fun a => p.2 (Fin.castAdd N a)) ∈ ball (0 : Fin g → ℂ) ρ` using `hpL`.
+
+Establish `hT : coord V t x = fun a => p.2 (Fin.castAdd N a)`. Use function extensionality and compare the values at `a`. Use `hxf (Fin.castAdd N a)` as an intermediate fact. Rewrite `this` using `[Fin.append_left]`. Conclude with `this`.
+
+Establish `hf : ∀ j, valAt' x.left V (f j) = p.2 (Fin.natAdd g j)`. Introduce `j`. Use `hxf (Fin.natAdd g j)` as an intermediate fact. Rewrite `this` using `[Fin.append_right]`. Conclude with `this`.
+
+Establish `hx` using `(hret p.1 (ball_subset_ball hρδ hpb') x hxV (fun j => by rw [hf]; exact h2 j)).2`. Rewrite `hx` using `[hT]`. Use `hx.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ψ p.1 (fun a => p.2 (Fin.castAdd N a)) = ex p.1 (L (p.1, fun a => p.2 (Fin.castAdd N a)))`. Rewrite using `[(hexa p.1 hpb').2 _ hpL', (hA p.1 hpb' _ hps').2.2.1]`.
+-/
 theorem famExp_of_inverse (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (hρ : 0 < ρ) (hρε : ρ ≤ ε) (hρδ : ρ ≤ δ)
     (hΨ : IsHolTo (ball b₀ ε ×ˢ ball (0 : Fin g → ℂ) ε) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (Ψ bz.1 bz.2).left))
     (hder : ∀ b ∈ ball b₀ ε, ∀ a : Fin g, IsDerivAt0 (fun z => (Ψ b z).left) (Pi.single a 1)
@@ -504,6 +642,35 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open ExpLoc in
 
+/- English proof (translation)
+Introduce `R _ G _ _ g n M B ψ hsm hψ b₀ hb₀`. Take `⟨V, t, N, f, ε, Ψ, hε, hsub, hΨ, hfib, δ, hδ, hret⟩` from `GlobalTheory.T.local_holomorphic_exponential_chart R G g n M B ψ hsm hψ b₀ hb₀`. Establish `hone : ∀ b ∈ ball b₀ ε, Ψ b 0 = 1` using `fun b hb => (hfib b hb).1`. Establish `hder` using `fun b hb => (hfib b hb).2.1`. Establish `hV : ∀ b ∈ ball b₀ ε, ∀ z ∈ ball (0 : Fin g → ℂ) ε, ⊤ ≤ (Ψ b z).left ⁻¹ᵁ V` using `fun b hb z hz => ((hfib b hb).2.2 z hz).1`.
+
+Establish `ht : ∀ b ∈ ball b₀ ε, ∀ z ∈ ball (0 : Fin g → ℂ) ε, coord V t (Ψ b z) = z` using `fun b hb z hz => funext ((hfib b hb).2.2 z hz).2`. Establish `hret' : ∀ b ∈ ball b₀ δ, ∀ x : Over.mk (spMap (ψ b)) ⟶ G, ⊤ ≤ x.left ⁻¹ᵁ V → (∀ j, ‖valAt' x.left V (f j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ) → coord V t x ∈ ball (0 : Fin g → ℂ) ε ∧ x = Ψ b (coord V t x)` using `hret`. Take `⟨hman, hm0, hK, hunit, hcomm, hassoc⟩` from `chartMul_law (f := f) hε hδ hΨ hone hV ht hret'`. Take `⟨L, hLan, hL0, hLadd⟩` from `GlobalTheory.T.holomorphic_group_law_germ n g b₀ (chartMul V t Ψ) hman hunit hcomm hassoc`. Take `⟨Λ, hΛan, hLΛ, hΛL⟩` from `exists_family_inverse b₀ L hLan hL0`.
+
+Establish `hsl` using `family_inverse_slices b₀ L Λ hΛan hL0 hLΛ hΛL`. Establish `hΛ0 : Λ (b₀, 0) = 0` using `hsl.self_of_nhds.1`. Establish `hmc : Tendsto (fun w : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((w.1, chartMul V t Ψ w) : (Fin n → ℂ) × (Fin g → ℂ))) (𝓝 (b₀, 0, 0)) (𝓝 (b₀, 0))`. Establish `h1 : ContinuousAt (fun w : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) => ((w.1, chartMul V t Ψ w) : (Fin n → ℂ) × (Fin g → ℂ))) (b₀, 0, 0)` using `continuousAt_fst.prodMk hman.continuousAt`. Establish `h2` using `h1.tendsto`.
+
+Simplify using `only [hm0] at h2`. Conclude with `h2`. Establish `hF : ∀ᶠ w in 𝓝 ((b₀, 0, 0) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)), Ψ w.1 w.2.1 * Ψ w.1 w.2.2 = Ψ w.1 (chartMul V t Ψ w) ∧ L (w.1, chartMul V t Ψ w) = L (w.1, w.2.1) + L (w.1, w.2.2) ∧ Λ (w.1, L (w.1, chartMul V t Ψ w)) = chartMul V t Ψ w` using `by filter_upwards [hK, hLadd, hmc.eventually hΛL] with w h1 h2 h3`. Conclude with `⟨h1, h2, h3⟩`. Take `⟨r₁, hr₁, hF'⟩` from `Metric.eventually_nhds_iff_ball.1 hF`.
+
+Establish `hclose : ∀ᶠ b in 𝓝 b₀, ∀ j, ‖valAt' (Ψ b 0).left V (f j) - valAt' (Ψ b₀ 0).left V (f j)‖ < δ`. Establish `hs : IsHolTo (ball b₀ ε) (fun b => (Ψ b 0).left)` using `isHolTo_precomp hΨ isOpen_ball (φ := fun b => (b, 0)) (by fun_prop) fun b hb => ⟨hb, mem_ball_self hε⟩`. Use `eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun b => valAt' (Ψ b 0).left V (f j)) b₀` using `((hs V (f j)).2.differentiableAt ((hs V (f j)).1.mem_nhds ⟨mem_ball_self hε, hV b₀ (mem_ball_self hε) 0 (mem_ball_self hε)⟩)).continuousAt`. Establish `h2` using `(Metric.tendsto_nhds.1 hc.tendsto) δ hδ`.
+
+Use `filter_upwards [h2] with b hb`. Simplify `hb` using `[dist_eq_norm]`. Establish `hfst : Tendsto (fun p : (Fin n → ℂ) × (Fin g → ℂ) => p.1) (𝓝 (b₀, 0)) (𝓝 b₀)` using `continuous_fst.tendsto (b₀, 0)`. Establish `hΛt : Tendsto Λ (𝓝 (b₀, 0)) (𝓝 0)`. Use `hΛan.continuousAt.tendsto` as an intermediate fact.
+
+Rewrite `this` using `[hΛ0]`. Then use the resulting hypothesis. Establish `hE : ∀ᶠ p in 𝓝 ((b₀, 0) : (Fin n → ℂ) × (Fin g → ℂ)), Λ p ∈ ball (0 : Fin g → ℂ) ε ∧ Λ p ∈ ball (0 : Fin g → ℂ) r₁ ∧ L (p.1, Λ p) = p.2 ∧ Λ (p.1, L p) = p.2 ∧ AnalyticAt ℂ Λ p ∧ AnalyticAt ℂ L p ∧ p.1 ∈ ball b₀ r₁ ∧ (L (p.1, 0) = 0 ∧ Λ (p.1, 0) = 0 ∧ HasFDerivAt (fun z => Λ (p.1, …` using `by filter_upwards [hΛt.eventually (ball_mem_nhds _ hε), hΛt.eventually (ball_mem_nhds _ hr₁), hLΛ, hΛL, hΛan.eventually_analyticAt, hLan.eventually_analyticAt, hfst.eventually (ball_mem_nhds _ hr₁), hfst.eventually hL0, hfst.eventually hsl, hfst.eventually hclose] with p h1 h2 h3 …`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8.1, h9.1, h9.2, h10⟩`. Take `⟨ρ₀, hρ₀, hE'⟩` from `Metric.eventually_nhds_iff_ball.1 hE`. Establish `hmem : ∀ (ρ : ℝ), ρ ≤ ρ₀ → ∀ b ∈ ball b₀ ρ, ∀ z ∈ ball (0 : Fin g → ℂ) ρ, ((b, z) : (Fin n → ℂ) × (Fin g → ℂ)) ∈ ball ((b₀, 0) : (Fin n → ℂ) × (Fin g → ℂ)) ρ₀`.
+
+Introduce `ρ hρ b hb z hz`. Rewrite using `[← ball_prod_same]`. Conclude with `⟨ball_subset_ball hρ hb, ball_subset_ball hρ hz⟩`. Use `set ρ : ℝ := min ρ₀ (min ε δ) with hρdef`. Establish `hρ : 0 < ρ` using `lt_min hρ₀ (lt_min hε hδ)`.
+
+Establish `hρ₀' : ρ ≤ ρ₀` using `min_le_left _ _`. Establish `hρε : ρ ≤ ε` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `hρδ : ρ ≤ δ` using `(min_le_right _ _).trans (min_le_right _ _)`. Use `⟨ρ, hρ, (ball_subset_ball hρε).trans hsub, ?_⟩` and prove the remaining obligations. Use `famExp_of_inverse (f := f) M hρ hρε hρδ hΨ hder hV ht hret' L Λ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `b hb z hz`. Take `⟨h1, -, h3, h4, h5, h6, -⟩` from `hE' _ (hmem ρ hρ₀' b hb z hz)`. Conclude with `⟨h1, h3, h4, h5, h6⟩`. Introduce `b hb`. Conclude with `(hE' _ (hmem ρ hρ₀' b hb 0 (mem_ball_self hρ))).2.2.2.2.2.2.2`.
+
+Introduce `b hb z hz w hw hzw`. Take `⟨-, hs, hs1, -, -, -, hbr, -⟩` from `hE' _ (hmem ρ hρ₀' b hb z hz)`. Take `⟨-, hs', hs1', -, -, -, -, -⟩` from `hE' _ (hmem ρ hρ₀' b hb w hw)`. Establish `hin : ((b, Λ (b, z), Λ (b, w)) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)) ∈ ball ((b₀, 0, 0) : (Fin n → ℂ) × (Fin g → ℂ) × (Fin g → ℂ)) r₁`. Rewrite using `[← ball_prod_same, ← ball_prod_same]`.
+
+Conclude with `⟨hbr, hs, hs'⟩`. Take `⟨h1, h2, h3⟩` from `hF' _ hin`. Establish `h1' : Ψ b (Λ (b, z)) * Ψ b (Λ (b, w)) = Ψ b (chartMul V t Ψ (b, Λ (b, z), Λ (b, w)))` using `h1`. Establish `h2' : L (b, chartMul V t Ψ (b, Λ (b, z), Λ (b, w))) = z + w`. Establish `e1 : L (b, Λ (b, z)) = z` using `hs1`.
+
+Establish `e2 : L (b, Λ (b, w)) = w` using `hs1'`. Use `h2` as an intermediate fact. Simplify using `only [e1, e2] at this`. Conclude with `this`. Establish `h3' : Λ (b, L (b, chartMul V t Ψ (b, Λ (b, z), Λ (b, w)))) = chartMul V t Ψ (b, Λ (b, z), Λ (b, w))` using `h3`.
+
+Rewrite `h3'` using `[h2']`. Rewrite using `[h3', h1']`.
+-/
 theorem exists_famExp_near : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)), Smooth G.hom → IsHolPts B ψ → ∀ b₀ ∈ B, ∃ ε : ℝ, 0 < ε ∧ ball b₀ ε ⊆ B ∧ Nonempty (FamExp G M (ball b₀ ε) ψ) := by
   intro R _ G _ _ g n M B ψ hsm hψ b₀ hb₀
   obtain ⟨V, t, N, f, ε, Ψ, hε, hsub, hΨ, hfib, δ, hδ, hret⟩ := GlobalTheory.T.local_holomorphic_exponential_chart R G g n M B ψ hsm hψ b₀ hb₀

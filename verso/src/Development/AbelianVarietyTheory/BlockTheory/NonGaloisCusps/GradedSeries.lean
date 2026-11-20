@@ -19,6 +19,11 @@ def serMul (f : PowerSeries L) (u : ℤ → M) : ℤ → M :=
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hu`. Use `(Set.finite_Iic (k - m).toNat).subset ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Set.mem_Iic]`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hj (by rw [hm _ (by omega), smul_zero])`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_finite (f : PowerSeries L) {u : ℤ → M}
     (hu : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.IsLaurent u) (k : ℤ) :
     (Function.support fun j : ℕ => PowerSeries.coeff j f • u (k - (j : ℤ))).Finite := by
@@ -34,6 +39,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_finit
 open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul`. Rewrite using `[finsum_eq_single _ 0 (fun j hj => by simp [PowerSeries.coeff_one, hj])]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_one (u : ℤ → M) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul (1 : PowerSeries L) u = u := by
   funext k
@@ -58,6 +66,9 @@ def shiftSer (a : ℤ) (F : Submodule L M) : Submodule L (ℤ → M) where
 
 def gradedSer (F : ℤ → Submodule L M) : Submodule L (ℤ → M) := ⨆ a : ℤ, shiftSer a (F a)
 
+/- English proof (translation)
+Use `⟨fun k hk => Pi.single_eq_of_ne (ne_of_lt hk) _, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k = -a`. Substitute `h` using the available equality. Simplify using `using hd`. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 example (a : ℤ) (F : Submodule L M) (d : M) (hd : d ∈ F) :
     (Pi.single (-a) d : ℤ → M) ∈ shiftSer a F := by
   refine ⟨fun k hk => Pi.single_eq_of_ne (ne_of_lt hk) _, fun k => ?_⟩
@@ -114,6 +125,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨1, W.levN T i ζ x, ⟨x, rfl⟩, ?_, (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_one _).symm⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `W.levN_supp T i ζ x`. Conclude with `⟨m, hm⟩`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.levN_mem_Nlev (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) :
     W.levN T i ζ x ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.Nlev W T i ζ := by
   refine Submodule.subset_span ⟨1, W.levN T i ζ x, ⟨x, rfl⟩, ?_,

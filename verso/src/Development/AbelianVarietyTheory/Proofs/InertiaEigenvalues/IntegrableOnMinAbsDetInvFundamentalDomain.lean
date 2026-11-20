@@ -15,6 +15,17 @@ open GlobalTheory.UnitaryBC
 
 namespace GlobalTheory.FinVolGL
 
+/- English proof (translation)
+Establish `hT0 : 0 < T` using `one_pos.trans hT`. Establish `hq0 : 0 ≤ T⁻¹` using `inv_nonneg.2 hT0.le`. Establish `hq : T⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hT`. Establish `hsum : Summable fun k : ℤ => T * T⁻¹ ^ k.natAbs` using `(Summable.of_nat_of_neg (by simpa using summable_geometric_of_lt_one hq0 hq) (by simpa using summable_geometric_of_lt_one hq0 hq)).mul_left T`. Use `⟨∑' k : ℤ, ENNReal.ofReal (T * T⁻¹ ^ k.natAbs), hsum.tsum_ofReal_ne_top, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, h1, h2⟩` from `exists_mem_Ico_zpow hu hT`. Rewrite using `[← (Equiv.subRight m).tsum_eq]`. Use `ENNReal.tsum_le_tsum fun k => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[Equiv.subRight_apply]`. Establish `hp : 0 < T ^ (k - m)` using `zpow_pos hT0 _`.
+
+Establish `e1 : T ^ (k - m) * T ^ m = T ^ k` using `by rw [← zpow_add₀ hT0.ne', sub_add_cancel]`. Establish `e2 : T ^ (k - m) * T ^ (m + 1) = T ^ (k + 1)`. Rewrite using `[← zpow_add₀ hT0.ne']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv1 : T ^ k ≤ T ^ (k - m) * u` using `e1 ▸ mul_le_mul_of_nonneg_left h1 hp.le`. Establish `hv2 : T ^ (k - m) * u < T ^ (k + 1)` using `e2 ▸ mul_lt_mul_of_pos_left h2 hp`. Take `⟨j, rfl | rfl⟩` from `Int.eq_nat_or_neg k`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Establish `h3` using `inv_anti₀ (zpow_pos hT0 _) hv1`.
+
+Rewrite `h3` using `[zpow_natCast, ← inv_pow]`. Rewrite using `[Int.natAbs_natCast]`. Conclude with `h3.trans (le_mul_of_one_le_left (pow_nonneg hq0 _) hT.le)`. Use `(min_le_left _ _).trans (hv2.le.trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[zpow_add_one₀ hT0.ne', _root_.zpow_neg, zpow_natCast, Int.natAbs_neg, Int.natAbs_natCast, inv_pow, mul_comm]`.
+-/
 theorem exists_tsum_min_le {T : ℝ} (hT : 1 < T) : ∃ B : ℝ≥0∞, B ≠ ⊤ ∧ ∀ u : ℝ, 0 < u →
     ∑' n : ℤ, ENNReal.ofReal (min (T ^ n * u) (T ^ n * u)⁻¹) ≤ B := by
   have hT0 : 0 < T := one_pos.trans hT
@@ -43,6 +54,23 @@ theorem exists_tsum_min_le {T : ℝ} (hT : 1 < T) : ∃ B : ℝ≥0∞, B ≠ �
   · refine (min_le_left _ _).trans (hv2.le.trans (le_of_eq ?_))
     rw [zpow_add_one₀ hT0.ne', _root_.zpow_neg, zpow_natCast, Int.natAbs_neg, Int.natAbs_natCast, inv_pow, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha μ _ 𝓕 h𝓕`. Use `set δ : GA E a → ℝ := fun g => (GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδ`. Establish `hδc : Continuous δ` using `GlobalTheory.RSTheta.continuous_absDet`. Establish `hδ0 : ∀ g, 0 < δ g` using `fun g => (GroundTheory.Global.IdeleGroup.ideleModule E _).2`. Establish `hδr : ∀ γ g, δ (ratGL E a γ * g) = δ g` using `fun γ g => by`.
+
+Simplify using `only [hδ, map_mul, GlobalTheory.ShortVecDecay.ideleModule_det_rat, one_mul]`. Use `set T : ℝ := Real.exp 1 ^ (a * Module.finrank ℚ E) with hT`. Establish `hT1 : 1 < T` using `one_lt_pow₀ (Real.one_lt_exp_iff.2 one_pos) (Nat.mul_pos ha Module.finrank_pos).ne'`. Establish `hδz : ∀ (n : ℤ) g, δ (splitCentre E a 1 ^ n * g) = T ^ n * δ g` using `GlobalTheory.RSTheta.absDet_zpow_mul`. Establish `hc : Continuous fun g => min (δ g) (δ g)⁻¹` using `hδc.min (hδc.inv₀ fun g => (hδ0 g).ne')`.
+
+Use `⟨hc.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (.of_forall fun g => le_min (hδ0 g).le (inv_nonneg.2 (hδ0 g).le))).2 ?_⟩` and prove the remaining obligations. Set `φ : (ratGL E a).range × ℤ → latticeGL E a` to `fun p => ⟨p.1 * splitCentre E a 1 ^ p.2, mul_mem (Subgroup.mem_sup_left p.1.2) (zpow_mem_latticeGL _)⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, γ, rfl⟩, n⟩ ⟨⟨_, γ', rfl⟩, n'⟩ h`.
+
+Establish `h1 : ratGL E a γ * splitCentre E a 1 ^ n = ratGL E a γ' * splitCentre E a 1 ^ n'` using `congrArg Subtype.val h`. Establish `h2` using `congrArg (fun x => δ (x * 1)) h1`. Simplify using `only [mul_assoc, hδr, hδz] at h2`. Take `rfl : n = n'` from `zpow_right_injective₀ (one_pos.trans hT1) hT1.ne' (mul_right_cancel₀ (hδ0 1).ne' h2)`. Conclude with `Prod.ext (Subtype.ext (mul_right_cancel h1)) rfl`.
+
+Introduce and unpack `⟨g, hg⟩`. Take `⟨γ, n, rfl⟩` from `mem_latticeGL_iff.1 hg`. Conclude with `⟨⟨⟨_, γ, rfl⟩, n⟩, rfl⟩`. Use `haveI : Countable (latticeGL E a) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hd` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom (latticeGL E a) μ`.
+
+Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `h1 : μ (GlobalTheory.AutomorphicL2Unitary.stdDom (latticeGL E a)) ≠ ⊤`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hd]`. Conclude with `measure_ne_top _ _`. Rewrite using `[← GlobalTheory.ThetaUnfold.lintegral_unfold μ (latticeGL E a) (ratGL E a).range (fun n : ℤ => splitCentre E a 1 ^ n) (Equiv.ofBijective φ hφ) (fun _ => rfl) hd h𝓕 (fun g => ENNReal.ofReal (min (δ g) (δ g)⁻¹)) (by rintro _ ⟨γ, rfl⟩ g; simp only [hδr]) hc.measurable.ennreal_ofReal …`.
+
+Take `⟨B, hB, h⟩` from `exists_tsum_min_le hT1`. Use `(lintegral_mono (g := fun _ => B) fun g => ?_).trans_lt ?_` and prove the remaining obligations. Use `le_of_eq_of_le (tsum_congr fun n => ?_) (h _ (hδ0 g))` and prove the remaining obligations. Simplify using `only [hδz]`. Rewrite using `[setLIntegral_const]`.
+
+Conclude with `ENNReal.mul_lt_top hB.lt_top h1.lt_top`.
+-/
 theorem integrableOn_min_absDet : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ), 0 < m →
     ∀ (μ : Measure (GA E m)) [μ.IsHaarMeasure] (𝓕 : Set (GA E m)),
       IsFundamentalDomain (ratGL E m).range 𝓕 μ →
@@ -89,6 +117,9 @@ theorem integrableOn_min_absDet : ∀ (E : Type) [Field E] [NumberField E] [IsTo
   · rw [setLIntegral_const]
     exact ENNReal.mul_lt_top hB.lt_top h1.lt_top
 
+/- English proof (translation)
+The claim follows from `integrableOn_min_absDet`.
+-/
 example : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ), 0 < m →
     ∀ (μ : Measure (GA E m)) [μ.IsHaarMeasure] (𝓕 : Set (GA E m)),
       IsFundamentalDomain (ratGL E m).range 𝓕 μ →

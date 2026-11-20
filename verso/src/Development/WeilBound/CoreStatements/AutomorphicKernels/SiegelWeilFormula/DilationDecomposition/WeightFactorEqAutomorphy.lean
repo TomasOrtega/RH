@@ -28,12 +28,30 @@ def GfBound : Prop := ∀ (m n : ℕ) (e : ℤ) (p q : ℕ) (t : ℝ) (X : Fin n
     ∀ p' ∈ N, p'.2 ∈ strip X → ∀ u : Fin m → Fin n → ℂ,
       ‖Gf e p q t X p'.1 p'.2 u‖ ≤ C * Real.exp (-(δ * ∑ a, ∑ j, ‖u a j‖ ^ 2))
 
+/- English proof (translation)
+Simplify using `only [F0, f0, jF, u1, u2, Matrix.mul_smul, Matrix.mul_one, conjTranspose_smul, conjTranspose_one, Complex.star_def, Complex.conj_I, neg_smul, Matrix.mul_neg, mul_assoc]`.
+-/
 theorem weight_factor_eq_automorphy (p q : ℕ) (e : ℤ) (y : GR n) : F0 p q e y = jF e p q y (Complex.I • 1) := by
   simp only [F0, f0, jF, u1, u2, Matrix.mul_smul, Matrix.mul_one, conjTranspose_smul, conjTranspose_one, Complex.star_def,
     Complex.conj_I, neg_smul, Matrix.mul_neg, mul_assoc]
 
 open PositivityTheory.Rg.Sw.Glob.DRealH in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Rewrite using `[weight_factor_eq_automorphy]`. Establish `hg : InG (mR (y * a s))` using `(y * a s).2`. Establish `hM : mR (y * a s) = mR y * aC X s`. Establish `h1 : mR (y * a s) = mR y * mR (a s)` using `rfl`.
+
+Rewrite using `[h1, ha s]`. Unfold `aC`. Establish `e1 : (fun j => ((Real.exp (s * X j) : ℝ) : ℂ)) = fun j => Complex.exp ((s : ℂ) * X j)`. Use function extensionality and compare the values at `j`. Rewrite using `[Complex.ofReal_exp]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Establish `e2 : (fun j => ((Real.exp (-(s * X j)) : ℝ) : ℂ)) = fun j => Complex.exp (-((s : ℂ) * X j))`. Use function extensionality and compare the values at `j`. Rewrite using `[Complex.ofReal_exp]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e1, e2]`. Take `⟨h1, h2, h3, h4⟩` from `blocks_of_inG hg`. Establish `hI : star Complex.I ≠ Complex.I`.
+
+Rewrite using `[Complex.star_def, Complex.conj_I]`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hconj` using `conj_frac h1 h2 h3 h4 Complex.I hI`.
+
+Establish `hsI : star Complex.I = -Complex.I` using `by rw [Complex.star_def, Complex.conj_I]`. Rewrite `hconj` using `[hsI]`. Simplify using `only [Gf, jC, gC, jF, gZf, actZ, ptZ]`. Rewrite using `[← hM]`. Simplify using `only [Matrix.mul_smul, Matrix.mul_one, smul_one_conj, hsI]`.
+
+Rewrite using `[hconj]`.
+-/
 theorem gf_real (e : ℤ) (p q : ℕ) (t : ℝ) {m : ℕ} (X : Fin n → ℝ) (a : ℝ → GR n)
     (ha : ∀ s, IsDil X s (a s)) (y : GR n) (s : ℝ) :
     Gf e p q t (m := m) X y s = fun u => F0 p q e (y * a s) *
@@ -66,6 +84,9 @@ theorem gf_real (e : ℤ) (p q : ℕ) (t : ℝ) {m : ℕ} (X : Fin n → ℝ) (a
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h, abs_of_pos Real.pi_pos]`.
+-/
 theorem abs_tw {d : SD σ} (R : RD d) (w : InfinitePlace F) : |2 * Real.pi * ((R.sg w : ℤ) : ℝ)| = 2 * Real.pi := by
   rcases Int.units_eq_one_or (R.sg w) with h | h <;> simp [h, abs_of_pos Real.pi_pos]
 

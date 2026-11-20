@@ -6,16 +6,25 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.RepTensor
 
+/- English proof (translation)
+The claim follows from `TensorProduct.ext' fun a b => by simp [extTensor_tmul]`.
+-/
 theorem extTensor_left {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (k : G) :
     extTensor ρ σ (k, 1) = TensorProduct.map (ρ k) LinearMap.id :=
   TensorProduct.ext' fun a b => by simp [extTensor_tmul]
 
+/- English proof (translation)
+The claim follows from `TensorProduct.ext' fun a b => by simp [extTensor_tmul]`.
+-/
 theorem extTensor_right {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (h : H) :
     extTensor ρ σ (1, h) = TensorProduct.map LinearMap.id (σ h) :=
   TensorProduct.ext' fun a b => by simp [extTensor_tmul]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x w => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem contr_left {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (A : Module.End ℂ V) (l : Module.Dual ℂ W) (v : V ⊗[ℂ] W) :
     A (TensorProduct.rid ℂ V (LinearMap.lTensor V l v)) =
@@ -25,6 +34,9 @@ theorem contr_left {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
   | tmul x w => simp
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x w => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem contr_right {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (B : Module.End ℂ W) (l : Module.Dual ℂ V) (v : V ⊗[ℂ] W) :
     B (TensorProduct.lid ℂ W (LinearMap.rTensor W l v)) =
@@ -34,6 +46,11 @@ theorem contr_right {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W
   | tmul x w => simp
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Use `h ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Introduce `h k`.
+
+Use `h k k.2` as an intermediate fact. Use `show ρ (k : G) v = ((1 : K →* ℂˣ) k : ℂ) • v`. Simplify using `using this`.
+-/
 theorem mem_fixed_iff' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -46,6 +63,11 @@ theorem mem_fixed_iff' {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     show ρ (k : G) v = ((1 : K →* ℂˣ) k : ℂ) • v
     simpa using this
 
+/- English proof (translation)
+Introduce `G H V W _ _ _ _ _ _ ρ σ K L v hv`. Establish `hv'` using `mem_fixed_iff'.1 hv`. Use `⟨fun l => mem_fixed_iff'.2 fun k hk => ?_, fun l => mem_fixed_iff'.2 fun h hh => ?_⟩` and prove the remaining obligations. Establish `h1` using `hv' (k, 1) ⟨hk, L.one_mem⟩`. Rewrite `h1` using `[extTensor_left]`.
+
+Rewrite using `[contr_left, h1]`. Establish `h1` using `hv' (1, h) ⟨K.one_mem, hh⟩`. Rewrite `h1` using `[extTensor_right]`. Rewrite using `[contr_right, h1]`.
+-/
 theorem contrFix : PositivityTheory.Rg.BcB.F.Tail.PExp.ContrFix := by
   intro G H V W _ _ _ _ _ _ ρ σ K L v hv
   have hv' := mem_fixed_iff'.1 hv

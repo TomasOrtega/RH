@@ -10,6 +10,15 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.CompanionTheory.Geo
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hE`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Establish `hg' : g ∈ grK K N (e • 1)` using `by simpa using hg`.
+
+Use `⟨e, hg', fun j => ?_⟩` and prove the remaining obligations. Establish `hy : HomogeneousLocalization.Away.mk (grK K N) (xv_mem K N j) e g hg' = HomogeneousLocalization.Away.isLocalizationElem (xv_mem K N j) hg`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[HomogeneousLocalization.Away.isLocalizationElem, HomogeneousLocalization.Away.val_mk]`. Rewrite using `[hy, ← basicOpen_eq_bot_iff]`.
+
+Establish `hb` using `GroundTheory.Arith.SchemeCoh.ProjHom.basicOpen_awayToSection_isLocalizationElem (grK K N) (xv_mem K N j) one_pos hg he`. Establish `h2 : X.basicOpen (evV i (MvPolynomial.X j) (i ⁻¹ᵁ Proj.basicOpen (grK K N) (MvPolynomial.X j)) le_rfl (HomogeneousLocalization.Away.isLocalizationElem (xv_mem K N j) hg)) = i ⁻¹ᵁ (PSpace K N).basicOpen (Proj.awayToSection (grK K N) (MvPolynomial.X j) (HomogeneousLocalization.Away …`. Rewrite using `[Scheme.preimage_basicOpen]`. Simplify using `only [evV, Scheme.Hom.appLE_eq_app]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2, hb, eq_bot_iff]`. Introduce `x hx`. Conclude with `hE ⟨x, hx.2⟩`.
+-/
 theorem preimage_basicOpen_nonempty_of_mk_ne_zero {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ}
     (i : X ⟶ PSpace K N) (hX : IsIntegral X) {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ} (he : 0 < e)
     (hg : g ∈ grK K N e) (hne : Ideal.Quotient.mk (homIdeal i) g ≠ 0) :

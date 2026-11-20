@@ -20,6 +20,17 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {S I C : Submodule K V}
 
 omit [NumberField K] [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Take `⟨W, hW⟩` from `Submodule.exists_isCompl S`. Establish `hc : IsCompl (C ⊔ W) I`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxJ hxI`.
+
+Take `⟨c, hc, w, hw, rfl⟩` from `Submodule.mem_sup.1 hxJ`. Establish `hcS : c ∈ S` using `hS ▸ Submodule.mem_sup_left hc`. Establish `hxS : c + w ∈ S` using `hS ▸ Submodule.mem_sup_right hxI`. Establish `hwS : w ∈ S` using `by simpa using S.sub_mem hxS hcS`. Establish `hw0 : w = 0` using `(Submodule.disjoint_def.1 hW.disjoint) w hwS hw`.
+
+Substitute `hw0` using the available equality. Rewrite `hxI`, the goal using `[add_zero]`. Establish `hcCI : c ∈ C ⊓ I` using `Submodule.mem_inf.2 ⟨hc, hxI⟩`. Rewrite `hcCI` using `[hd]`. Conclude with `hcCI`.
+
+Rewrite using `[codisjoint_iff, sup_right_comm, ← hS]`. Conclude with `hW.sup_eq_top`. Establish `hI0 : ∀ x ∈ I, (C ⊔ W).projection I hc x = 0` using `fun x hx => Submodule.projection_apply_of_mem_right hc hx`. Establish `hC1 : ∀ x ∈ C, (C ⊔ W).projection I hc x = x` using `fun x hx => Submodule.projection_apply_of_mem_left hc (Submodule.mem_sup_left hx)`. Use `⟨(C ⊔ W).projection I hc, ?_, fun x => Submodule.sub_projection_mem hc x, hI0, hC1⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite `hx` using `[hS]`. Take `⟨c, hc', i, hi, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add, hC1 c hc', hI0 i hi, add_zero]`. Conclude with `hc'`.
+-/
 theorem exists_proj (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) : ∃ p : V →ₗ[K] V, (∀ x ∈ S, p x ∈ C) ∧
     (∀ x, x - p x ∈ I) ∧ (∀ x ∈ I, p x = 0) ∧ ∀ x ∈ C, p x = x := by
   obtain ⟨W, hW⟩ := Submodule.exists_isCompl S
@@ -50,6 +61,27 @@ theorem exists_proj (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) : ∃ p : V →ₗ[K
   rw [map_add, hC1 c hc', hI0 i hi, add_zero]
   exact hc'
 
+/- English proof (translation)
+Take `⟨p, hpC, hpI, -, hpC1⟩` from `exists_proj hS hd`. Unfold `GenBy at h ⊢`. Take `⟨t, ht, rfl⟩` from `h`. Establish `hBA : B ≤ B ⊔ Submodule.span (𝓞 K) (t : Set V)` using `le_sup_left`. Establish `htA : Submodule.span (𝓞 K) (t : Set V) ≤ B ⊔ Submodule.span (𝓞 K) (t : Set V)` using `le_sup_right`.
+
+Establish `hpB : ∀ x ∈ B, p x ∈ B` using `fun x hx => by`. Establish `h1 : x - p x ∈ B` using `hB (hpI x)`. Simplify using `using B.sub_mem hx h1`. Establish `hpA : ∀ x ∈ B ⊔ Submodule.span (𝓞 K) (t : Set V), p x ∈ B ⊔ Submodule.span (𝓞 K) (t : Set V)` using `fun x hx => by`. Establish `h1 : x - p x ∈ B ⊔ Submodule.span (𝓞 K) (t : Set V)` using `hBA (hB (hpI x))`.
+
+Simplify using `using (B ⊔ Submodule.span (𝓞 K) (t : Set V)).sub_mem hx h1`. Use `⟨(t.image p).subtype (· ∈ C), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_subtype]`. Conclude with `(Finset.card_filter_le _ _).trans (Finset.card_image_le.trans ht)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `y hy`. Express the relevant statement in the definitionally equal form `(y : V) ∈ B ⊔ Submodule.span (𝓞 K) (t : Set V) at hy`. Take `⟨b, hb, s, hs, hbs⟩` from `Submodule.mem_sup.1 hy`. Establish `hbS : b ∈ S` using `hA (hBA hb)`. Establish `key : p s ∈ (Submodule.span (𝓞 K) (((t.image p).subtype (· ∈ C) : Finset C) : Set C)).map (C.subtype.restrictScalars (𝓞 K))`.
+
+Establish `hmap : p s ∈ (Submodule.span (𝓞 K) (t : Set V)).map (p.restrictScalars (𝓞 K))` using `⟨s, hs, rfl⟩`. Rewrite `hmap` using `[Submodule.map_span]`. Use `(Submodule.span_le.2 ?_) hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hvC : p v ∈ C` using `hpC v (hA (htA (Submodule.subset_span hv)))`.
+
+Use `⟨⟨p v, hvC⟩, Submodule.subset_span ?_, rfl⟩` and prove the remaining obligations. Conclude with `Finset.mem_subtype.2 (Finset.mem_image_of_mem p hv)`. Take `⟨z, hz, hzs⟩` from `key`. Establish `hpbC : p b ∈ C` using `hpC b hbS`. Establish `hpb : (⟨p b, hpbC⟩ : C) ∈ latIn C B` using `hpB b hb`.
+
+Establish `hy' : y = ⟨p b, hpbC⟩ + z`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add]`. Use `show (y : V) = p b + (C.subtype.restrictScalars (𝓞 K)) z`. Rewrite using `[hzs, ← map_add, hbs, hpC1 y y.2]`.
+
+Rewrite using `[hy']`. Conclude with `Submodule.add_mem_sup hpb hz`. Rewrite using `[sup_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`.
+
+Conclude with `Submodule.mem_sup_left hx`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Establish `hz' : (z : V) ∈ t.image p` using `Finset.mem_subtype.1 hz`. Take `⟨v, hv, hvz⟩` from `Finset.mem_image.1 hz'`.
+
+Use `show (z : V) ∈ B ⊔ Submodule.span (𝓞 K) (t : Set V)`. Rewrite using `[← hvz]`. Conclude with `hpA v (htA (Submodule.subset_span hv))`.
+-/
 theorem genBy_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) {A B : Submodule (𝓞 K) V} {e : ℕ}
     (hB : rs (𝓞 K) I ≤ B) (hA : A ≤ rs (𝓞 K) S) (h : GenBy A B e) : GenBy (latIn C A) (latIn C B) e := by
   obtain ⟨p, hpC, hpI, -, hpC1⟩ := exists_proj hS hd
@@ -104,6 +136,9 @@ theorem genBy_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) {A B : Submodule (�
       exact hpA v (htA (Submodule.subset_span hv))
 
 omit [StarRing K] in
+/- English proof (translation)
+Introduce `x hx`. Establish `hg0 : (g : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `⟨(g : K)⁻¹ • x, hL (I.smul_mem _ hx), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K, smul_smul, mul_inv_cancel₀ hg0, one_smul]`.
+-/
 theorem le_smulLat {g : ℕ} (hg : 1 ≤ g) {L : Submodule (𝓞 K) V} (hL : rs (𝓞 K) I ≤ L) :
     rs (𝓞 K) I ≤ smulLat (g : 𝓞 K) L := by
   intro x hx
@@ -113,6 +148,15 @@ theorem le_smulLat {g : ℕ} (hg : 1 ≤ g) {L : Submodule (𝓞 K) V} (hL : rs 
     smul_smul, mul_inv_cancel₀ hg0, one_smul]
 
 omit [StarRing K] in
+/- English proof (translation)
+Establish `hg0 : (g : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨(z : V), hz, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, hxy⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hxy`. Establish `hxC : x ∈ C`. Establish `hx' : x = (g : K)⁻¹ • (y : V)`.
+
+Rewrite using `[← hxy, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ hg0, one_smul]`. Rewrite using `[hx']`. Conclude with `C.smul_mem _ y.2`. Use `⟨⟨x, hxC⟩, hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `Eq.trans ?_ hxy` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem mem_smulLat_latIn {g : ℕ} (hg : 1 ≤ g) {L : Submodule (𝓞 K) V} (y : C) :
     y ∈ smulLat (g : 𝓞 K) (latIn C L) ↔ (y : V) ∈ smulLat (g : 𝓞 K) L := by
   have hg0 : (g : K) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
@@ -134,6 +178,21 @@ theorem mem_smulLat_latIn {g : ℕ} (hg : 1 ≤ g) {L : Submodule (𝓞 K) V} (y
     refine Eq.trans ?_ hxy
     rfl
 
+/- English proof (translation)
+Unfold `IsModIso at h ⊢`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `h`. Establish `hIL : rs (𝓞 K) I ≤ smulLat (g : 𝓞 K) L` using `le_smulLat hg a`. Establish `hIL' : rs (𝓞 K) I ≤ smulLat (g : 𝓞 K) L'` using `le_smulLat hg a'`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y', y⟩ hp`. Conclude with `h1 hp`. Introduce and unpack `⟨y', y⟩ ⟨hy', hy⟩`. Conclude with `h2 ⟨(mem_smulLat_latIn hg y').1 hy', (mem_smulLat_latIn hg y).1 hy⟩`. Introduce `y' hy'`.
+
+Take `⟨y, hy⟩` from `h3 (y' : V) hy'`. Establish `hyS : y ∈ S` using `b (Submodule.mem_prod.1 (h1 hy)).2`. Rewrite `hyS` using `[hS]`. Take `⟨c, hc, i, hi, rfl⟩` from `Submodule.mem_sup.1 hyS`. Use `⟨⟨c, hc⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h0i : ((0 : V), i) ∈ Γ` using `h2 (Submodule.mem_prod.2 ⟨Submodule.zero_mem _, hIL hi⟩)`. Use `show ((y' : V), c) ∈ Γ`. Simplify using `using Γ.sub_mem hy h0i`. Introduce `y hy`. Take `⟨y', hy'⟩` from `h4 (y : V) hy`.
+
+Establish `hyS : y' ∈ S` using `b' (Submodule.mem_prod.1 (h1 hy')).1`. Rewrite `hyS` using `[hS]`. Take `⟨c, hc, i, hi, rfl⟩` from `Submodule.mem_sup.1 hyS`. Use `⟨⟨c, hc⟩, ?_⟩` and prove the remaining obligations. Establish `hi0 : (i, (0 : V)) ∈ Γ` using `h2 (Submodule.mem_prod.2 ⟨hIL' hi, Submodule.zero_mem _⟩)`.
+
+Use `show (c, (y : V)) ∈ Γ`. Simplify using `using Γ.sub_mem hy' hi0`. Introduce `y hy`. Conclude with `(mem_smulLat_latIn hg y).2 (h5 (y : V) hy)`. Introduce `y hy`.
+
+Conclude with `(mem_smulLat_latIn hg y).2 (h6 (y : V) hy)`. Introduce and unpack `⟨p1, p2⟩ hp ⟨q1, q2⟩ hq`. Take `⟨t, ht⟩` from `h7 _ hp _ hq`. Conclude with `⟨t, by simpa [hH] using ht⟩`.
+-/
 theorem isModIso_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K C)
     (hH : ∀ x y, H'.B x y = H.B x y) {g : ℕ} (hg : 1 ≤ g) {L' L : Submodule (𝓞 K) V}
     {Γ : Submodule (𝓞 K) (V × V)} (a' : rs (𝓞 K) I ≤ L') (b' : L' ≤ rs (𝓞 K) S) (a : rs (𝓞 K) I ≤ L)
@@ -175,6 +234,23 @@ theorem isModIso_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K 
     obtain ⟨t, ht⟩ := h7 _ hp _ hq
     exact ⟨t, by simpa [hH] using ht⟩
 
+/- English proof (translation)
+Take `⟨⟨N, -, hMN⟩, hspan⟩` from `hM`. Establish `hIM : rs (𝓞 K) I ≤ M` using `hMN ▸ le_sup_right`. Establish `hMS : ∀ x ∈ M, x ∈ S` using `fun x hx => hspan ▸ Submodule.subset_span hx`. Establish `hCS : C ≤ S` using `hS ▸ le_sup_left`. Establish `hIS : I ≤ S` using `hS ▸ le_sup_right`.
+
+Establish `memD : ∀ x, x ∈ dual H M ↔ x ∈ S ∧ ∀ y ∈ M, H.B x y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `x`. Rewrite using `[GlobalTheory.HermLat.mem_dual_iff, hspan]`. Establish `memR : ∀ y : C, y ∈ Formalism.HermitianLatticesTheory.dual H'.B.flip (latIn C M) ↔ ∀ z : C, z ∈ latIn C M → H'.B y z ∈ (1 : Submodule (𝓞 K) K)`. Introduce `y`.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.flip_apply]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[memD]`. Use `⟨hIS hi, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hiy : H.B i y = 0` using `by rw [← H.herm, ho y (hMS y hy) i hi, star_zero]`. Rewrite using `[hiy]`. Conclude with `Submodule.zero_mem _`. Introduce `x hx`. Conclude with `((memD x).1 hx).1`.
+
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `(y : V) ∈ dual H M ↔ _`. Rewrite using `[memD, memR]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hy⟩ z hz`.
+
+Rewrite using `[hH]`. Conclude with `hy _ hz`. Introduce `hy`. Use `⟨hCS y.2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxS` using `hMS x hx`.
+
+Rewrite `hxS` using `[hS]`. Take `⟨c, hc, i, hi, rfl⟩` from `Submodule.mem_sup.1 hxS`. Establish `hcM : c ∈ M` using `by simpa using M.sub_mem hx (hIM hi)`. Establish `h1` using `hy ⟨c, hc⟩ hcM`. Rewrite `h1` using `[hH]`.
+
+Rewrite using `[map_add, ho _ (hCS y.2) i hi, add_zero]`. Conclude with `h1`.
+-/
 theorem dual_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K C)
     (hH : ∀ x y, H'.B x y = H.B x y) (ho : ∀ y ∈ S, ∀ i ∈ I, H.B y i = 0) {M : Submodule (𝓞 K) V}
     (hM : IsLatMod M S I) : rs (𝓞 K) I ≤ dual H M ∧ dual H M ≤ rs (𝓞 K) S ∧
@@ -219,6 +295,15 @@ theorem dual_latIn (hS : S = C ⊔ I) (H : HermSpace K V) (H' : HermSpace K C)
       rw [map_add, ho _ (hCS y.2) i hi, add_zero]
       exact h1
 
+/- English proof (translation)
+Take `⟨p, hpC, hpI, hpI0, hpC1⟩` from `exists_proj hS hd`. Establish `hCS : C ≤ S` using `hS ▸ le_sup_left`. Take `⟨hID, hDS, hDeq⟩` from `dual_latIn hS H H' hH ho hM`. Take `⟨hIM, hMS⟩` from `le_of_latMod hM`. Establish `hMD : M ≤ dual H M`.
+
+Introduce `x hx`. Rewrite using `[GlobalTheory.HermLat.mem_dual_iff, hM.2]`. Conclude with `⟨hM.2 ▸ Submodule.subset_span hx, fun y hy => hi x hx y hy⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Mass.IsIntLat`.
+
+Use `⟨latIn_isLattice p hCS hpC hpI hpI0 hpC1 hM, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[LinearMap.flip_apply, hH]`. Conclude with `hi _ hy _ hx`. Establish `h1 : GlobalTheory.HermLat.idx M (dual H M) = 1` using `by show (dual H M).toAddSubgroup.relIndex M.toAddSubgroup = 1`.
+
+Conclude with `AddSubgroup.relIndex_eq_one.2 ((Submodule.toAddSubgroup_le _ _).2 hMD)`. Unfold `GlobalTheory.Mass.discN`. Rewrite using `[← hDeq, ← idx_eq, idx_latIn p hpC hpI hID hDS hIM]`. Unfold `GlobalTheory.HermLat.del GlobalTheory.HermLat.gidx`. Rewrite using `[h1, Nat.cast_one, div_one, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+-/
 theorem intLat_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) (H : HermSpace K V) (H' : HermSpace K C)
     (hH : ∀ x y, H'.B x y = H.B x y) (ho : ∀ y ∈ S, ∀ i ∈ I, H.B y i = 0) {M : Submodule (𝓞 K) V}
     (hM : IsLatMod M S I) (hi : ∀ x ∈ M, ∀ y ∈ M, H.B x y ∈ (1 : Submodule (𝓞 K) K)) :
@@ -246,6 +331,11 @@ theorem intLat_latIn (hS : S = C ⊔ I) (hd : C ⊓ I = ⊥) (H : HermSpace K V)
     rw [h1, Nat.cast_one, div_one, Real.sq_sqrt (Nat.cast_nonneg _)]
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Use `⟨⟨H.B.domRestrict₁₂ C C, fun x y => H.herm x y, fun x hx => ?_⟩, fun x y => rfl, fun τ x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `h1` using `hpd τ x hne`. Establish `h2 : (hRes H.B.flip C) x x = 0`.
+
+Simplify `hx x` using `[hRes, LinearMap.domRestrict₁₂_apply, LinearMap.flip_apply]`. Rewrite `h1` using `[h2, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ h1`. Simplify `hpd τ x hx` using `[hRes, LinearMap.domRestrict₁₂_apply, LinearMap.flip_apply]`.
+-/
 theorem exists_res (H : HermSpace K V) (hpd : PD (hRes H.B.flip C)) :
     ∃ H' : HermSpace K C, (∀ x y, H'.B x y = H.B x y) ∧ PD H'.B.flip := by
   refine ⟨⟨H.B.domRestrict₁₂ C C, fun x y => H.herm x y, fun x hx => ?_⟩, fun x y => rfl, fun τ x hx => ?_⟩
@@ -259,11 +349,21 @@ theorem exists_res (H : HermSpace K V) (hpd : PD (hRes H.B.flip C)) :
   · simpa [hRes, LinearMap.domRestrict₁₂_apply, LinearMap.flip_apply] using hpd τ x hx
 
 omit [NumberField K] [StarRing K] in
+/- English proof (translation)
+Use extensionality with `y`. Conclude with `Iff.rfl`.
+-/
 theorem fixLat_comap (Γ : Submodule (𝓞 K) (V × V)) :
     fixLat (Γ.comap ((C.subtype.prodMap C.subtype).restrictScalars (𝓞 K))) = latIn C (fixLat Γ) := by
   ext y
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `hgen : ∀ a : Fin r, F.X ≤ LinearMap.ker (H.B (F.e a.castSucc))`. Introduce `a`. Unfold `FlagD.X FlagD.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+
+Simplify using `using F.iso a b`. Introduce `x hx y hy`. Establish `hXy : F.X ≤ LinearMap.ker (H.B.flip y)`. Unfold `FlagD.X FlagD.Xa`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, -, rfl⟩`. Simplify using `using hgen a hy`. Simplify using `using hXy hx`.
+-/
 private theorem flag_X_isotropic {H : HermSpace K V} {r : ℕ} (F : FlagD H r) :
     ∀ x ∈ F.X, ∀ y ∈ F.X, H.B x y = 0 := by
   have hgen : ∀ a : Fin r, F.X ≤ LinearMap.ker (H.B (F.e a.castSucc)) := by
@@ -280,6 +380,15 @@ private theorem flag_X_isotropic {H : HermSpace K V} {r : ℕ} (F : FlagD H r) :
     simpa using hgen a hy
   simpa using hXy hx
 
+/- English proof (translation)
+Introduce `x hx y hy`. Establish `hx1` using `Submodule.mem_inf.1 (Submodule.mem_inf.1 hx).1`. Establish `hy1` using `Submodule.mem_inf.1 (Submodule.mem_inf.1 hy).1`. Establish `hxp : ∀ w ∈ F.X ⊔ F'.X, H.B x w = 0` using `(GlobalTheory.HermLat.mem_perp_iff H (F.X ⊔ F'.X) x).1 hx1.1`. Establish `hyp : ∀ w ∈ F.X ⊔ F'.X, H.B y w = 0` using `(GlobalTheory.HermLat.mem_perp_iff H (F.X ⊔ F'.X) y).1 hy1.1`.
+
+Take `⟨l, hl, u, hu, rfl⟩` from `Submodule.mem_sup.1 hx1.2`. Take `⟨m, hm, v, hv, rfl⟩` from `Submodule.mem_sup.1 hy1.2`. Establish `huX : u ∈ F.X ⊔ F'.X` using `Submodule.mem_sup_left hu`. Establish `hvX : v ∈ F.X ⊔ F'.X` using `Submodule.mem_sup_left hv`. Establish `a1 : H.B (l + u) v = 0` using `hxp v hvX`.
+
+Establish `a2 : H.B u (m + v) = 0` using `by rw [← H.herm, hyp u huX, star_zero]`. Establish `a3 : H.B u v = 0` using `flag_X_isotropic F u hu v hv`. Establish `a4 : H.B u m = 0`. Establish `h'` using `a2`. Rewrite `h'` using `[map_add (H.B u) m v, a3, add_zero]`.
+
+Conclude with `h'`. Rewrite using `[map_add (H.B (l + u)) m v, a1, add_zero, map_add H.B l u, LinearMap.add_apply, a4, add_zero]`. Conclude with `hΛ l hl m hm`.
+-/
 private theorem apply_mem_one_of_mem_flagPairDefinitePartLattice {H : HermSpace K V} {r : ℕ} (F F' : FlagD H r) {Λ : Submodule (𝓞 K) V}
     (hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)) :
     ∀ x ∈ flagPairDefinitePartLattice F F' Λ, ∀ y ∈ flagPairDefinitePartLattice F F' Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K) := by
@@ -302,6 +411,23 @@ private theorem apply_mem_one_of_mem_flagPairDefinitePartLattice {H : HermSpace 
   rw [map_add (H.B (l + u)) m v, a1, add_zero, map_add H.B l u, LinearMap.add_apply, a4, add_zero]
   exact hΛ l hl m hm
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hT`. Take `⟨-, hLift, -, -, -, -, hwS, -, hPD, -, -, -⟩` from `GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N`. Take `⟨hdel, hdel', hgen, hM, hM', -⟩` from `GlobalTheory.T.flagPairDefinitePartLattice_discriminant_eq_quotient K V H hK r N g Λ hg hT`. Establish `hiso` using `GlobalTheory.T.isHermIsometryGraphModScalar_flagPairIota K V H hK r N g Λ hg hT`. Take `⟨hThLa, -, -, -, -, hgenLa, -, hTh⟩` from `GlobalTheory.T.flagPairDefiniteThetaLattice_le_fixed_index_bound K V H hK r N g Λ hg hT`.
+
+Take `⟨H', hH, hPD'⟩` from `exists_res H hPD`. Establish `hd : N.Wt ⊓ II N.F N.F' = ⊥` using `hLift.2.1`. Establish `ho : ∀ y ∈ wSp N.F N.F', ∀ i ∈ II N.F N.F', H.B y i = 0` using `fun y hy i hi => (GlobalTheory.HermLat.mem_perp_iff H (V0 N.F N.F') y).1 hy i (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_inf.1 hi).1))`. Establish `hΛ : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `x hx y hy`.
+
+Establish `hdu : dual H Λ = Λ` using `hT.1.1.2`. Rewrite `hx` using `[← hdu]`. Conclude with `((GlobalTheory.HermLat.mem_dual_iff H _ x).1 hx).2 y (hdu.symm ▸ hy)`. Take `⟨p, hpC, hpI, -, -⟩` from `exists_proj hwS hd`. Take `⟨hIM, hMS⟩` from `le_of_latMod hM`.
+
+Take `⟨hIM', hMS'⟩` from `le_of_latMod hM'`. Take `⟨hInt, hdisc⟩` from `intLat_latIn hwS hd H H' hH ho hM (apply_mem_one_of_mem_flagPairDefinitePartLattice N.F N.F' hΛ)`. Take `⟨hInt', hdisc'⟩` from `intLat_latIn hwS hd H H' hH ho hM' (apply_mem_one_of_mem_flagPairDefinitePartLattice N.F' N.F hΛ)`. Take `⟨-, hDS, hDeq⟩` from `dual_latIn hwS H H' hH ho hM`. Establish `hILa : rs (𝓞 K) (II N.F N.F') ≤ latLa N.F N.F' Λ (g : 𝓞 K)` using `(le_of_latMod hTh).1.trans hThLa`.
+
+Establish `hfix` using `fixLat_comap (C := N.Wt) (iotaGraph N.F N.F' Λ (g : 𝓞 K))`. Use `⟨H', hH, hPD', hInt, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdisc, hdel]`. Rewrite using `[← hDeq]`. Conclude with `genBy_latIn hwS hd hIM hDS hgen`.
+
+Unfold `IsDat dsimp only`. Use `⟨hInt', ?_, isModIso_latIn hwS H H' hH hg hIM' hMS' hIM hMS hiso, ?_, ?_⟩` and prove the remaining obligations. Establish `hr : (GlobalTheory.Mass.discN H'.B.flip (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F' N.F Λ)) : ℝ) = GlobalTheory.Mass.discN H'.B.flip (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ))`. Rewrite using `[hdisc', hdisc, hdel, hdel']`. Conclude with `hr` after adjusting the coercions.
+
+Rewrite using `[hfix]`. Express the relevant statement in the definitionally equal form `GlobalTheory.HermLat.idx (latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ)) (latIn N.Wt (latLa N.F N.F' Λ (g : 𝓞 K))) = _`. Rewrite using `[idx_latIn p hpC hpI hIM hMS hILa]`. Both sides reduce to the same expression. Rewrite using `[hfix]`.
+
+Conclude with `genBy_latIn hwS hd hILa hMS hgenLa`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∃ H' : HermSpace K N.Wt, (∀ x y, H'.B x y = H.B x y) ∧ GlobalTheory.Mass.PD H'.B.flip ∧ GlobalTheory.Mass.IsIntLat H'.B.flip (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ)) ∧ (GlobalTheory.Mass.discN H'.B.flip (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ)) : ℝ) = N.NT ^ 2 ∧ GenBy (Formalism.HermitianLatticesTheory.dual H'.B.flip (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ))) (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ)) 1 ∧ IsDat H' g (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F N.F' Λ)) N.j (N.gI g Λ) (GlobalTheory.Mass.latIn N.Wt (flagPairDefinitePartLattice N.F' N.F Λ), (iotaGraph N.F N.F' Λ (g : 𝓞 K)).comap ((N.Wt.subtype.prodMap N.Wt.subtype).restrictScalars (𝓞 K))) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hT
   obtain ⟨-, hLift, -, -, -, -, hwS, -, hPD, -, -, -⟩ := GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N

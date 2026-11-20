@@ -28,6 +28,9 @@ def tensorL (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Φ : WO S T → �
     simp only [tensorAt, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorL_apply (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Φ : WO S T → ℂ) (Ψ : SB (Matrix Y Y' k)) :
     p.tensorL FS FT Φ Ψ = p.tensorAt FS FT Φ Ψ.1 := rfl
 
@@ -41,6 +44,9 @@ def tensorOne (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) : (WO S T → ℂ
     simp only [tensorAt, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorOne_apply (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (Φ : WO S T → ℂ) :
     p.tensorOne FS FT Φ = p.tensorAt FS FT Φ (intInd Y Y') := rfl
 

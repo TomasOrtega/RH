@@ -12,6 +12,11 @@ namespace GlobalTheory.AtG
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Fc GlobalTheory.Mem.Top GlobalTheory.AtG
 
+/- English proof (translation)
+Introduce `hJ Bd Q Lk hE`. Use `⟨_, hE, fun 𝒜 σ s => ?_⟩` and prove the remaining obligations. Use `⟨1 / 100, by norm_num, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨xs, hxs⟩` from `GlobalTheory.T.kernelDegrees_small_against_typePrimes eps he (by linarith)`. Use `⟨⟨0, fun _ => 0, fun _ => 2, fun _ => 0⟩, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : (2 : ℝ) ≤ Fm.cX.err.g` using `hL.2.2.1 Fm.cX.err.g (by simp [FamP.cMid])`. Take `⟨κ, -, -, t⟩` from `s Fm (w3_a hc)`. Use `⟨1, ⟨xs, fun x hx hx0 i => ?_⟩, Formalism.MainNotions.J.family_type_prime_loss Fm zero_le_one (by linarith)⟩` and prove the remaining obligations. Use `GlobalTheory.T.propositionCOneUsedTuples_one_of_tiesAt_sizeAt hJ (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX (Fm.X x i) (t x hx i).2 ?_` and prove the remaining obligations. Conclude with `hxs (Fm.D x i) (Fm.L x i) (Fm.params x hx i) (Fm.sizes x hx i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact hx0)`.
+-/
 theorem row_atG_of_jetSplitAmb : JetSplitAmb → ∀ {Bd : BdT} (Q : V4.Slot) (Lk : LkT Bd),
     RowE Q Lk (fun _ D O _ _ => ∀ μ, (μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) → TiesAt D O.ex.errX O.X μ) →
     Row Q Lk fun 𝒜 _ => Closed (W3 𝒜) fun Fm _ => ∃ C1, (∃ x0, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i,

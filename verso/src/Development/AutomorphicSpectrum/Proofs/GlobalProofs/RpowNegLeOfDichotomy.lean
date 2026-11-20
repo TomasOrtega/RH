@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.Volume
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `key : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2`. Introduce `z`. Establish `h : star z * z = ((Complex.normSq z : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Unfold `wt Formalism.REAL.hs`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum, key]`. Conclude with `Finset.sum_comm`.
+-/
 theorem wt_eq_hs {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) : wt M = Formalism.REAL.hs M := by
   have key : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2 := by
     intro z
@@ -20,6 +25,15 @@ theorem wt_eq_hs {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) : wt M = Formalism.R
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum, key]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `set a : Fin n := ⟨0, hn⟩ with ha`. Establish `hs1 : ∀ k : Fin n, ‖(if ε k = true then (1 : ℂ) else -1)‖ = 1`. Apply the tactic sequence `intro k; split_ifs <;> simp`. Establish `e : ∑ k, star (g k a) * (if ε k = true then (1 : ℂ) else -1) * g k a = (if ε a = true then (1 : ℂ) else -1)`. Establish `h2` using `congrFun (congrFun h a) a`.
+
+Simplify `h2` using `[Formalism.REAL.Jm, Matrix.mul_apply, Matrix.mul_diagonal, Matrix.diagonal_apply]`. Establish `h3 : (1 : ℝ) ≤ ∑ k, ‖g k a‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, hs1]`. Use `_ ≤ ∑ k, ‖star (g k a) * (if ε k = true then (1 : ℂ) else -1) * g k a‖ := norm_sum_le _ _`.
+
+Use `_ = ∑ k, ‖g k a‖ ^ 2 := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hs1, norm_star]`. Expand and normalize the polynomial expressions, which then agree. Use `h3.trans ?_` and prove the remaining obligations.
+
+Unfold `Formalism.REAL.hs`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ‖g k j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ a)`.
+-/
 theorem one_le_hs_of_inUJ {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ)
     (h : Formalism.REAL.inUJ ε g) : 1 ≤ Formalism.REAL.hs g := by
   set a : Fin n := ⟨0, hn⟩ with ha
@@ -41,6 +55,15 @@ theorem one_le_hs_of_inUJ {n : ℕ} (hn : 0 < n) (ε : Fin n → Bool) (g : Matr
   refine Finset.sum_le_sum fun k _ => ?_
   exact Finset.single_le_sum (f := fun j => ‖g k j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ a)
 
+/- English proof (translation)
+Establish `hb0 : 0 ≤ b'` using `(Nat.cast_nonneg s).trans hb`. Establish `h2 : (0 : ℝ) < (2 : ℝ) ^ b'` using `Real.rpow_pos_of_pos (by norm_num) _`. Break down `hw with rfl | hw` into its components or cases. Establish `h1 : (0 : ℝ) ^ (-b') ≤ 1` using `Real.zero_rpow_le_one _`. Simplify using `only [add_zero, inv_one, one_pow, mul_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0 : 0 < w` using `by linarith`. Establish `hu0 : 0 < (1 + w)⁻¹` using `by positivity`. Establish `hu1 : (1 + w)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith)`. Establish `hwi : w⁻¹ ≤ 2 * (1 + w)⁻¹`.
+
+Rewrite using `[inv_le_comm₀ hw0 (by positivity), mul_inv, inv_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.rpow_le_rpow_of_exponent_ge hu0 hu1 hb`. Use `_ = (2 : ℝ) ^ b' * ((1 + w)⁻¹) ^ s := by rw [Real.rpow_natCast]`.
+
+Use `_ ≤ _ := by`. Establish `: 0 ≤ ((1 + w)⁻¹) ^ s` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rpow_neg_le_of_dichotomy {w b' : ℝ} {s : ℕ} (hw : w = 0 ∨ 1 ≤ w) (hb : (s : ℝ) ≤ b') :
     w ^ (-b') ≤ ((2 : ℝ) ^ b' + 1) * ((1 + w)⁻¹) ^ s := by
   have hb0 : 0 ≤ b' := (Nat.cast_nonneg s).trans hb
@@ -66,6 +89,19 @@ theorem rpow_neg_le_of_dichotomy {w b' : ℝ} {s : ℕ} (hw : w = 0 ∨ 1 ≤ w)
           have : 0 ≤ ((1 + w)⁻¹) ^ s := by positivity
           nlinarith
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.CompanionTheory.HolPQ.one_add_hs_inv_pow_lintegral_lt_top n ε`. Establish `hfin : ∫⁻ g : UJ ε, ENNReal.ofReal (((1 + Formalism.REAL.hs (uMat g))⁻¹) ^ s) ∂(Formalism.REAL.muG ε) < ⊤` using `hs s le_rfl`. Use `⟨s, Nat.cast_nonneg s, fun b' hb' => ?_⟩` and prove the remaining obligations. Establish `hinv : (Formalism.REAL.muG ε).inv = Formalism.REAL.muG ε` using `Formalism.REAL.invInvariant n ε`. Rewrite using `[hinv]`.
+
+Establish `hc : Continuous fun g : UJ ε => Formalism.REAL.hs (uMat g)` using `GlobalTheory.CompanionTheory.HolPQ.continuous_hs_umat ε`. Establish `hnn : ∀ g : UJ ε, 0 ≤ Formalism.REAL.hs (uMat g)` using `fun g => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity`. Establish `hI : Integrable (fun g : UJ ε => ((1 + Formalism.REAL.hs (uMat g))⁻¹) ^ s) (Formalism.REAL.muG ε)`. Use `⟨((measurable_const.add hc.measurable).inv.pow_const s).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun g => by`.
+
+Use `hnn g` as an intermediate fact. Use the proof step `positivity)]`. Conclude with `hfin`. Establish `hw : ∀ g : UJ ε, wt (uMat g) = Formalism.REAL.hs (uMat g)` using `fun g => wt_eq_hs _`. Establish `hmeas : Measurable fun g : UJ ε => wt (uMat g) ^ (-b')`.
+
+Simplify using `only [hw]`. Conclude with `hc.measurable.pow_const _`. Use `(hI.const_mul ((2 : ℝ) ^ b' + 1)).mono' hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `hdich : Formalism.REAL.hs (uMat g) = 0 ∨ 1 ≤ Formalism.REAL.hs (uMat g)`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Use `left`. Simplify using `[Formalism.REAL.hs]`. Use `right`. Conclude with `one_le_hs_of_inUJ hn ε _ g.2`. Rewrite using `[hw, Real.norm_of_nonneg (Real.rpow_nonneg (hnn g) _)]`.
+
+Conclude with `rpow_neg_le_of_dichotomy hdich hb'`.
+-/
 theorem integrable_wt_rpow_neg {n : ℕ} (ε : Fin n → Bool) :
     ∃ b : ℝ, 0 ≤ b ∧ ∀ b' : ℝ, b ≤ b' →
       MeasureTheory.Integrable (fun g : UJ ε => wt (uMat g) ^ (-b')) (Formalism.REAL.muG ε).inv := by

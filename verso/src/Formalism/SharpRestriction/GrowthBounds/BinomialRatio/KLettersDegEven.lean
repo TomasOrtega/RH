@@ -6,6 +6,15 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G Function
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations. Simplify using `using h1`. Simplify using `using h.1 c`.
+
+Introduce `i j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Introduce `hij`. Simplify using `at hij`. Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations.
+
+Introduce `hij`. Simplify using `only [Fin.cons_succ, Fin.cons_zero]`. Conclude with `h2 j' (by simpa using hij.symm)`. Introduce `hij`. Simplify using `only [Fin.cons_succ]`.
+
+Conclude with `h.2.1 c j' (by simpa using hij)`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Use `h.2.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem strip_cons {r : ℕ} {nu mu : Fin r → ℤ} {g e : ℕ} (h : Strip nu mu g) {f f' : ℤ} (h1 : f ≤ f')
     (h2 : ∀ c : Fin r, c.val = 0 → nu c ≤ f) (he : f' - f + g = e) :
     Strip (Fin.cons f' nu : Fin (r + 1) → ℤ) (Fin.cons f mu) e := by
@@ -33,6 +42,9 @@ def fstOf {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (
   if n % 2 = 1 then cp ((n - 1) / 2) else
     if h : (n - 2) / 2 < s then cp ((n - 2) / 2) + A ⟨(n - 2) / 2, h⟩ - LLv.deg ⟨2 * ((n - 2) / 2), by omega⟩ else 0
 
+/- English proof (translation)
+Unfold `fstOf`. Rewrite using `[if_pos (by omega)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fstOf_odd {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (2 * s + 1)) (i : ℕ) :
     fstOf A cp LLv (2 * i + 1) = cp i := by
   unfold fstOf
@@ -40,6 +52,11 @@ theorem fstOf_odd {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainL
   congr 1
   omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `fstOf`. Rewrite using `[if_neg (by omega)]`. Establish `hk : (2 * i.val + 2 - 2) / 2 = i.val` using `by omega`. Rewrite using `[dif_pos (by omega)]`.
+
+Simplify using `only [hk]`.
+-/
 theorem fstOf_even {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : ChainLetters (2 * s + 1)) (i : Fin s) :
     fstOf A cp LLv (2 * i.val + 2) = cp i + A i - LLv.deg ⟨2 * i.val, by omega⟩ := by
   have hi := i.isLt
@@ -52,6 +69,9 @@ theorem fstOf_even {s : ℕ} (A : Fin s → ℕ) (cp : ℕ → ℤ) (LLv : Chain
 def muOf {s r : ℕ} (fst : ℕ → ℤ) (ka : Fin (2 * s + 1 + 1) → Fin r → ℤ) : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ :=
   fun l => if l.val = 0 then 0 else Fin.cons (fst l.val) (ka ⟨l.val - 1, by omega⟩)
 
+/- English proof (translation)
+Simplify using `[muOf]`.
+-/
 theorem muOf_succ {s r : ℕ} (fst : ℕ → ℤ) (ka : Fin (2 * s + 1 + 1) → Fin r → ℤ) (n : ℕ) (h : n + 1 < 2 * s + 1 + 1) :
     muOf fst ka ⟨n + 1, h⟩ = Fin.cons (fst (n + 1)) (ka ⟨n, by omega⟩) := by
   simp [muOf]
@@ -69,6 +89,11 @@ structure LevFacts {s r : ℕ} (A0 : ℤ) (A C : Fin s → ℕ) (cp : ℕ → �
   hd : ∀ (i : Fin s) (c : Fin r), c.val = 0 → ka ⟨2 * i.val + 1, by omega⟩ c ≤ cp (i.val + 1)
   hf : ∀ c : Fin r, c.val = 0 → ka (Fin.last _) c ≤ cp s
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `h0 : ¬ (2 * i.val + 1 = 0)` using `by omega`. Establish `h1 : (2 * i.val + 1 - 1) / 2 < s` using `by omega`. Establish `h2 : (2 * i.val + 1) % 2 = 1` using `by omega`. Simplify using `only [kLetters, Fin.val_mk]`.
+
+Rewrite using `[if_neg h0, dif_pos h1, if_pos h2]`. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kLetters_deg_odd {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) :
     (kLetters A0 A C).deg ⟨2 * i.val + 1, by omega⟩ = A i := by
   have hi := i.isLt
@@ -82,6 +107,11 @@ theorem kLetters_deg_odd {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) 
   simp only
   omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `h0 : ¬ (2 * i.val + 2 = 0)` using `by omega`. Establish `h1 : (2 * i.val + 2 - 1) / 2 < s` using `by omega`. Establish `h2 : ¬ ((2 * i.val + 2) % 2 = 1)` using `by omega`. Simplify using `only [kLetters, Fin.val_mk]`.
+
+Rewrite using `[if_neg h0, dif_pos h1, if_neg h2]`. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem kLetters_deg_even {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s) :
     (kLetters A0 A C).deg ⟨2 * i.val + 2, by omega⟩ = C i := by
   have hi := i.isLt
@@ -95,6 +125,43 @@ theorem kLetters_deg_even {s : ℕ} (A0 : ℕ) (A C : Fin s → ℕ) (i : Fin s)
   simp only
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `⟨by unfold muOf; simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Break down `Nat.eq_zero_or_pos a with rfl | hpos` into its components or cases. Establish `hv : (kLetters A0.toNat A C).vec ⟨0, ha⟩ = true` using `by simp [kLetters]`.
+
+Rewrite using `[if_pos hv]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨0, ha⟩) = 0` using `by unfold muOf; simp`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨0, ha⟩) = Fin.cons A0 0`. Unfold `muOf`. Simplify using `only [Fin.succ_mk, Nat.zero_add]`.
+
+Rewrite using `[if_neg (by omega)]`. Use `fstOf_odd A cp LLv 0` as an intermediate fact. Simplify using `only [Nat.mul_zero, Nat.zero_add] at this`. Rewrite using `[this, hF.c0]`. Use `congr 1`.
+
+Conclude with `hch.1`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨0, ha⟩ = A0.toNat` using `by simp [kLetters]`. Rewrite using `[e0, e1, hdeg]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Use `Fin.cases ?_ (fun c => ?_) i` and prove the remaining obligations. Simplify using `using hF.A0nn`. Simplify using the standard rewrite rules. Introduce `i j`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations.
+
+Introduce `hij`. Simplify using `at hij`. Introduce `_`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `[Int.toNat_of_nonneg hF.A0nn]`. Break down `Nat.even_or_odd' a with ⟨i, rfl | rfl⟩` into its components or cases. Take `⟨i', rfl⟩ : ∃ i', i = i' + 1` from `⟨i - 1, by omega⟩`. Establish `hi : i' < s` using `by omega`. Establish `hv : (kLetters A0.toNat A C).vec ⟨2 * (i' + 1), ha⟩ = false`.
+
+Simplify using `[kLetters]`. Rewrite using `[if_neg (by rw [hv]; simp)]`. Establish `hst` using `hch.2 ⟨2 * i' + 1, by omega⟩`. Rewrite `hst` using `[if_neg (by rw [hF.vecv]; simp)]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨2 * (i' + 1), ha⟩) = Fin.cons (cp i' + A ⟨i', hi⟩ - LLv.deg ⟨2 * i', by omega⟩) (ka (Fin.castSucc ⟨2 * i' + 1, by omega⟩))`.
+
+Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i' + 1) (by omega)`. Rewrite `h` using `[show fstOf A cp LLv (2 * i' + 1 + 1) = _ from fstOf_even A cp LLv ⟨i', hi⟩]`. Conclude with `h`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨2 * (i' + 1), ha⟩) = Fin.cons (cp (i' + 1)) (ka (Fin.succ ⟨2 * i' + 1, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * (i' + 1)) (by omega)`.
+
+Rewrite `h` using `[fstOf_odd A cp LLv (i' + 1)]`. Conclude with `h`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨2 * (i' + 1), ha⟩ = C ⟨i', hi⟩` using `kLetters_deg_even A0.toNat A C ⟨i', hi⟩`. Rewrite using `[e0, e1, hdeg]`. Conclude with `strip_cons hst (hF.hc ⟨i', hi⟩) (fun c hc => hF.hd ⟨i', hi⟩ c hc) (hF.he ⟨i', hi⟩)`.
+
+Establish `hi : i < s` using `by omega`. Establish `hv : (kLetters A0.toNat A C).vec ⟨2 * i + 1, ha⟩ = true`. Simplify using `[kLetters]`. Rewrite using `[if_pos hv]`. Establish `hst` using `hch.2 ⟨2 * i, by omega⟩`.
+
+Rewrite `hst` using `[if_pos (by rw [hF.vecv]; simp)]`. Establish `e0 : muOf (fstOf A cp LLv) ka (Fin.castSucc ⟨2 * i + 1, ha⟩) = Fin.cons (cp i) (ka (Fin.castSucc ⟨2 * i, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i) (by omega)`. Rewrite `h` using `[fstOf_odd A cp LLv i]`. Conclude with `h`.
+
+Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.succ ⟨2 * i + 1, ha⟩) = Fin.cons (cp i + A ⟨i, hi⟩ - LLv.deg ⟨2 * i, by omega⟩) (ka (Fin.succ ⟨2 * i, by omega⟩))`. Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * i + 1) (by omega)`. Rewrite `h` using `[show fstOf A cp LLv (2 * i + 1 + 1) = _ from fstOf_even A cp LLv ⟨i, hi⟩]`. Conclude with `h`. Establish `hdeg : (kLetters A0.toNat A C).deg ⟨2 * i + 1, ha⟩ = A ⟨i, hi⟩` using `kLetters_deg_odd A0.toNat A C ⟨i, hi⟩`.
+
+Rewrite using `[e0, e1, hdeg]`. Use `strip_cons hst (by have := hF.hw ⟨i, hi⟩; linarith) (fun c hc => hF.hb ⟨i, hi⟩ c hc) (by ring)` and prove the remaining obligations. Establish `hst` using `hch.2 (Fin.last (2 * s))`. Rewrite `hst` using `[if_pos (by rw [hF.vecv]; simp)]`. Establish `e1 : muOf (fstOf A cp LLv) ka (Fin.last (2 * s + 1)) = Fin.cons (cp s) (ka (Fin.castSucc (Fin.last (2 * s))))`.
+
+Establish `h` using `muOf_succ (fstOf A cp LLv) ka (2 * s) (by omega)`. Rewrite `h` using `[fstOf_odd A cp LLv s]`. Conclude with `h`. Rewrite `hst` using `[Fin.succ_last]`. Rewrite using `[e1]`.
+
+Introduce `i`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Fin.cons_succ]`. Conclude with `hst.1 i`. Break down `Nat.eq_zero_or_pos i.val with h0 | hp` into its components or cases.
+
+Establish `: i.castSucc = 0` using `Fin.ext (by simp [h0])`. Rewrite using `[this, Fin.cons_zero]`. Conclude with `hF.hf i h0`. Establish `: i.castSucc = Fin.succ ⟨i.val - 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[this, Fin.cons_succ]`.
+
+Conclude with `hst.2.1 ⟨i.val - 1, by omega⟩ i (by simp; omega)`.
+-/
 theorem chain_of_facts {s r : ℕ} {A0 : ℤ} {A C : Fin s → ℕ} {cp : ℕ → ℤ} {LLv : ChainLetters (2 * s + 1)}
     {ka : Fin (2 * s + 1 + 1) → Fin r → ℤ} (hF : LevFacts A0 A C cp LLv ka) (hch : IsChain LLv ka) :
     IsChain (kLetters A0.toNat A C) (muOf (fstOf A cp LLv) ka) ∧
@@ -212,6 +279,11 @@ def SrcInjAt : Prop :=
     (rz ry : Fin (segS X.TT j) → Fin (X.m + 1) → ℕ) (z z' : FinalTheorems (segS X.TT j) X.m (X.seg C0 CE1 CE2 j).t),
     SrcOK C0 CE1 CE2 X j m rz ry z → SrcOK C0 CE1 CE2 X j m rz ry z' → z.2.2 = z'.2.2 → z.2.1.2 = z'.2.1.2 → z = z'
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Distinguish the cases in `hlt : l.val + 1 < 2 * s + 1 + 1`. Establish `e` using `congrFun h ⟨l.val + 1, hlt⟩`. Rewrite `e` using `[muOf_succ, muOf_succ]`. Use function extensionality and compare the values at `c`.
+
+Establish `e2` using `congrFun e c.succ`. Simplify `e2` using `only [Fin.cons_succ]`. Establish `hl' : l = Fin.last _` using `Fin.ext (by simp only [Fin.val_last]; omega)`. Rewrite using `[hl']`. Conclude with `hl`.
+-/
 theorem muOf_inj {s r : ℕ} {fst fst' : ℕ → ℤ} {ka ka' : Fin (2 * s + 1 + 1) → Fin r → ℤ}
     (h : muOf fst ka = muOf fst' ka') (hl : ka (Fin.last _) = ka' (Fin.last _)) : ka = ka' := by
   funext l
@@ -225,6 +297,11 @@ theorem muOf_inj {s r : ℕ} {fst fst' : ℕ → ℤ} {ka ka' : Fin (2 * s + 1 +
     rw [hl']
     exact hl
 
+/- English proof (translation)
+Introduce `X _ hD hH hc j m hm rz ry hd`. Use `⟨fun z => (muOf (fstOf (fun i => coarseA X.p (X.seg C0 CE1 CE2 j) (digitBlock rz ry) i) (fun l => cap X.p (X.seg C0 CE1 CE2 j) z.1 l) ((BD C0 CE1 CE2 X j m z.1).lettersAt z.2.1.1 z.2.1.2)) z.2.2, z.2.2 (Fin.last _), z.2.1.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz z' hz' h`. Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg (fun t => t.2.1) h`.
+
+Establish `h3` using `congrArg (fun t => t.2.2) h`. Conclude with `hI C0 CE1 CE2 X j m rz ry z z' hz hz' (muOf_inj h1 h2) h3`. Introduce `z hz`. Establish `h` using `chain_of_facts (hF X hD hH hc j m hm rz ry hd z hz) hz.2.2.1`. Conclude with `⟨h.1, h.2, rfl, rfl⟩`.
+-/
 theorem matchUp_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : LevFactsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
     (hI : SrcInjAt) : MatchUpAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ hD hH hc j m hm rz ry hd

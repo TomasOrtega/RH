@@ -73,6 +73,9 @@ open ProjSpace ProjCoh
 variable {k : Type} [Field k] {C C' : Scheme.{0}} [Algebra k Γ(C, ⊤)] [IsIntegral C]
   [Algebra k Γ(C', ⊤)] [IsIntegral C']
 
+/- English proof (translation)
+Take `⟨G, i, hi, rfl⟩` from `hP.exists_isCohSub`. Take `⟨h₁, h₂⟩` from `(h E r hE).2 G i hi`. Rewrite using `[← h₂]`. Conclude with `hP'.2 h₁.deg_mem`.
+-/
 theorem ScalesDeg.mul_le {π : C' ⟶ C} {m : ℕ} (h : ScalesDeg k π m) {E : C.Modules} {r : ℕ}
     (hE : IsVB E r) {P P' : ℤ} (hP : IsMaxSubDeg k E P)
     (hP' : IsMaxSubDeg k ((Scheme.Modules.pullback π).obj E) P') : m * P ≤ P' := by
@@ -81,6 +84,9 @@ theorem ScalesDeg.mul_le {π : C' ⟶ C} {m : ℕ} (h : ScalesDeg k π m) {E : C
   rw [← h₂]
   exact hP'.2 h₁.deg_mem
 
+/- English proof (translation)
+The claim follows from `isSmoothProjCurve_line _`.
+-/
 example [Fact (Nat.Prime 3)] : IsSmoothProjCurve (AlgebraicClosure (ZMod 3))
     (PSpace (AlgebraicClosure (ZMod 3)) 1) := isSmoothProjCurve_line _
 

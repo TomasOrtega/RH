@@ -55,9 +55,17 @@ section ThetaAlg
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T' : HSp D}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_add' (u : WO S T') (f g : WO S T' → ℂ) : heisO ψ S T' u (f + g) = heisO ψ S T' u f + heisO ψ S T' u g := by
   funext w; simp only [heisO, Pi.add_apply]; ring
 
+/- English proof (translation)
+Simplify using `only [Pi.add_apply]; rw [hf.quasi, hg.quasi]; ring level := by`. Take `⟨U, hUo, hU⟩` from `hf.level`. Take `⟨U', hUo', hU'⟩` from `hg.level`. Use `⟨U ⊓ U', hUo.inter hUo', fun u hu hi => ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_add', hU u hu.1 hi, hU' u hu.2 hi]`.
+
+Use `cont := hf.cont.add hg.cont`. Use `smooth k L hL hfin w := (hf.smooth k L hL hfin w).add (hg.smooth k L hL hfin w)`.
+-/
 theorem theta_add {f g : WO S T' → ℂ} (hf : IsThetaFunO ψ S T' f) (hg : IsThetaFunO ψ S T' g) :
     IsThetaFunO ψ S T' (f + g) where
   quasi γ w := by simp only [Pi.add_apply]; rw [hf.quasi, hg.quasi]; ring
@@ -69,6 +77,11 @@ theorem theta_add {f g : WO S T' → ℂ} (hf : IsThetaFunO ψ S T' f) (hg : IsT
   cont := hf.cont.add hg.cont
   smooth k L hL hfin w := (hf.smooth k L hL hfin w).add (hg.smooth k L hL hfin w)
 
+/- English proof (translation)
+Simplify using `only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring level := by`. Take `⟨U, hUo, hU⟩` from `hf.level`. Use `⟨U, hUo, fun u hu hi => ?_⟩` and prove the remaining obligations. Establish `e : heisO ψ S T' u (c • f) = c • heisO ψ S T' u f`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hU u hu hi]`. Use `cont := continuous_const.mul hf.cont`. Use `smooth k L hL hfin w := contDiff_const.mul (hf.smooth k L hL hfin w)`.
+-/
 theorem theta_smul (c : ℂ) {f : WO S T' → ℂ} (hf : IsThetaFunO ψ S T' f) : IsThetaFunO ψ S T' (c • f) where
   quasi γ w := by simp only [Pi.smul_apply, smul_eq_mul]; rw [hf.quasi]; ring
   level := by
@@ -80,12 +93,20 @@ theorem theta_smul (c : ℂ) {f : WO S T' → ℂ} (hf : IsThetaFunO ψ S T' f) 
   cont := continuous_const.mul hf.cont
   smooth k L hL hfin w := contDiff_const.mul (hf.smooth k L hL hfin w)
 
+/- English proof (translation)
+Establish `e : f - g = f + (-1 : ℂ) • g` using `by funext w; simp [sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `theta_add hf (theta_smul (-1) hg)`.
+-/
 theorem theta_sub {f g : WO S T' → ℂ} (hf : IsThetaFunO ψ S T' f) (hg : IsThetaFunO ψ S T' g) :
     IsThetaFunO ψ S T' (f - g) := by
   have e : f - g = f + (-1 : ℂ) • g := by funext w; simp [sub_eq_add_neg]
   rw [e]
   exact theta_add hf (theta_smul (-1) hg)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `theta_smul (0 : ℂ) h₀` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha]`. Conclude with `theta_add (hu a (Finset.mem_insert_self _ _)) (ih fun k hk => hu k (Finset.mem_insert_of_mem hk))`.
+-/
 theorem theta_sum {ι : Type} (s : Finset ι) (u : ι → WO S T' → ℂ)
     (f₀ : WO S T' → ℂ) (h₀ : IsThetaFunO ψ S T' f₀) (hu : ∀ k ∈ s, IsThetaFunO ψ S T' (u k)) :
     IsThetaFunO ψ S T' (∑ k ∈ s, u k) := by

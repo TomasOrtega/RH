@@ -16,6 +16,9 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Conclude with `d.h_ind' hd h hI2be`.
+-/
 theorem h_ind (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) :
     (∀ (G : WT) (ta ta' : ∀ c, A c),
       G ∈ ({d.wL, d.n1 • d.wde, (2 : ℕ) • d.G1, d.wF, d.G2} : Set WT) →
@@ -31,6 +34,9 @@ theorem h_ind (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimat
       d.Hgt h d.wF ta' + d.Hgt h d.G2 d.ta2 = (d.D + 4) * d.Hgt h d.wL (d.wx x)) := by
   exact d.h_ind' hd h hI2be
 
+/- English proof (translation)
+Conclude with `d.h_four' hd h G ta hta hord hbdd hint`.
+-/
 theorem h_four (hd : d.AxH 𝒜) (h : d.S1) (G : WT) (ta : ∀ c, A c)
     (hta : ∀ c, ta c ∈ 𝒜 c G ∧ ta c ≠ 0)
     (hord : ∀ c (v : AddValuation (Ω c) (WithTop ℤ)), d.admitted c v → 0 ≤ d.ord c v G (ta c))

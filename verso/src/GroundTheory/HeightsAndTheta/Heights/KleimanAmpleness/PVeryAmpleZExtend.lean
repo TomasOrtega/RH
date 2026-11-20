@@ -16,6 +16,11 @@ namespace VeryAmpleZExtend
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω} {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.card_empty]`. Conclude with `one_mem_twistMod_zero I`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha, mul_comm]`.
+
+Establish `h1 : h a ∈ (H.pow 1).sub I`. Rewrite using `[SubSystem.pow_sub, pow_one]`. Conclude with `(Submodule.restrictScalars_mem _ _ _).mp ((Submodule.mem_iInf _).mp (hh a) I)`. Conclude with `AmpleTwistLocal.mul_mem_pow H I ih 1 h1`.
+-/
 theorem prod_mem_pow {r : ℕ} (H : SubSystem S x Ω) {h : Fin (r + 1) → Ω} (hh : ∀ l, h l ∈ H.secs)
     (I : Chart x) (T : Finset (Fin (r + 1))) : ∏ l ∈ T, h l ∈ (H.pow T.card).sub I := by
   classical
@@ -30,6 +35,13 @@ theorem prod_mem_pow {r : ℕ} (H : SubSystem S x Ω) {h : Fin (r + 1) → Ω} (
 
 omit [Module S E] [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Use `Submodule.span_induction (p := fun z _ => w • z ∈ (F.twist (H.pow (a + b))).sub I) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Use `Submodule.subset_span ⟨q * w, AmpleTwistLocal.mul_mem_pow H I hq b hw, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+
+Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `z z' _ _ hz hz'`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hz hz'`.
+
+Introduce `t z _ hz`. Establish `e : w • (t • z) = t • (w • z)`. Rewrite using `[Subalgebra.smul_def, Subalgebra.smul_def, smul_smul, smul_smul, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ t hz`.
+-/
 theorem smul_mem_twist_pow (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Chart x) {a b : ℕ} {z : E}
     {w : Ω} (hz : z ∈ (F.twist (H.pow a)).sub I) (hw : w ∈ (H.pow b).sub I) :
     w • z ∈ (F.twist (H.pow (a + b))).sub I := by
@@ -48,6 +60,13 @@ theorem smul_mem_twist_pow (F : SubSystem S x E) (H : SubSystem S x Ω) (I : Cha
 
 omit [Module S E] [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hy`. Establish `hJ : xProd J = h j * ∏ l ∈ J.1.erase j, h l` using `(Finset.mul_prod_erase J.1 h hj).symm`. Establish `hcard : (J.1.erase j).card + 1 = J.1.card` using `Finset.card_erase_add_one hj`. Establish `hw` using `AmpleTwistLocal.mul_mem_pow H I hc _ (AmpleTwistLocal.pow_mem_pow H I (prod_mem_pow H hh I (J.1.erase j)) a)`. Use `⟨m + a, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : xProd J ^ (m + a) • (c • y) = (c * h j ^ a * (∏ l ∈ J.1.erase j, h l) ^ a) • (xProd J ^ m • y)`. Rewrite using `[smul_smul, smul_smul, hJ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : J.1.card * (m + a) = J.1.card * m + (a + (J.1.erase j).card * a)`.
+
+Rewrite using `[← hcard]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Conclude with `smul_mem_twist_pow F H I hm hw`.
+-/
 theorem gen_smul {r : ℕ} (F : SubSystem S x E) (H : SubSystem S x Ω) {h : Fin (r + 1) → Ω}
     (hh : ∀ l, h l ∈ H.secs) (I : Chart x) (J : Chart h) {j : Fin (r + 1)} (hj : j ∈ J.1) {c : Ω} {a : ℕ}
     (hc : c * h j ^ a ∈ (H.pow a).sub I) {y : E}
@@ -70,6 +89,29 @@ theorem gen_smul {r : ℕ} (F : SubSystem S x E) (H : SubSystem S x Ω) {h : Fin
   rw [e1, e2]
   exact smul_mem_twist_pow F H I hm hw
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x E _ _ _ _ F H r h hh J j hj c hc K hK f hf`. Establish `key : ∀ I : Chart x, ∀ᶠ M in atTop, c ^ M • f ∈ secsOnZChart F.toSubSystem H h I J`. Introduce `I`. Take `⟨a, ha⟩` from `Set.mem_iInter.mp hc I`. Rewrite `ha` using `[one_mul]`.
+
+Take `⟨e, n, hn⟩` from `hK I`. Rewrite `hn` using `[one_mul]`. Express the relevant statement in the definitionally equal form `c ^ e * AmpleAffineGen.chartRatio K I * h j ^ n ∈ (H.pow n).sub I at hn`. Establish `hfU` using `F.mono K (AmpleAffineGen.unionChart I K) (AmpleAffineGen.subset_unionChart_right I K) f hf`. Take `⟨t, ht, htf⟩` from `(F.mem_iff I (AmpleAffineGen.unionChart I K) (AmpleAffineGen.subset_unionChart_left I K) f).mp hfU`.
+
+Take `⟨v, hv⟩` from `ht.exists_left_inv`. Take `⟨D, hD⟩` from `AmpleAffineGen.exists_pow_mul_mem I K v.2`. Establish `hv' : (v : Ω) * (t : Ω) = 1` using `congrArg Subtype.val hv`. Establish `hρf : AmpleAffineGen.chartRatio I K ^ D • f ∈ F.sub I`. Establish `e1 : AmpleAffineGen.chartRatio I K ^ D • f = (⟨_, hD⟩ : chartRing S x I) • ((t : Ω) • f)`.
+
+Rewrite using `[Subalgebra.smul_def, smul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = AmpleAffineGen.chartRatio I K ^ D * (v : Ω) * (t : Ω)`. Rewrite using `[mul_assoc, hv', mul_one]`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.smul_mem _ _ htf`. Establish `hP` using `prod_mem_pow H hh I (J.1.erase j)`. Establish `hcard : (J.1.erase j).card + 1 = J.1.card` using `Finset.card_erase_add_one hj`. Establish `hJ : xProd J = h j * ∏ l ∈ J.1.erase j, h l` using `(Finset.mul_prod_erase J.1 h hj).symm`. Establish `hz : (c ^ e * AmpleAffineGen.chartRatio K I * h j ^ n) ^ D • (AmpleAffineGen.chartRatio I K ^ D • f) ∈ (F.toSubSystem.twist (H.pow (n * D))).sub I` using `Submodule.subset_span ⟨_, AmpleTwistLocal.pow_mem_pow H I hn D, _, hρf, rfl⟩`.
+
+Establish `hz2` using `smul_mem_twist_pow F.toSubSystem H I hz (AmpleTwistLocal.pow_mem_pow H I hP (n * D))`. Establish `h0 : ∃ m : ℕ, xProd J ^ m • (c ^ (e * D) • f) ∈ (F.toSubSystem.twist (H.pow (J.1.card * m))).sub I`. Use `⟨n * D, ?_⟩` and prove the remaining obligations. Establish `e1 : xProd J ^ (n * D) • (c ^ (e * D) • f) = (∏ l ∈ J.1.erase j, h l) ^ (n * D) • ((c ^ e * AmpleAffineGen.chartRatio K I * h j ^ n) ^ D • (AmpleAffineGen.chartRatio I K ^ D • f))`. Rewrite using `[smul_smul, smul_smul, smul_smul, hJ]`.
+
+Use `congr 1`. Establish `hr` using `AmpleAffineGen.chartRatio_mul_chartRatio I K`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr, one_pow, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by ring`. Establish `e2 : J.1.card * (n * D) = n * D + (J.1.erase j).card * (n * D)`. Rewrite using `[← hcard]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+
+Conclude with `hz2`. Establish `hstep : ∀ q : ℕ, ∃ m : ℕ, xProd J ^ m • (c ^ (e * D + q) • f) ∈ (F.toSubSystem.twist (H.pow (J.1.card * m))).sub I`. Introduce `q`. Proceed by induction on `q with`. Consider the case `zero => exact h0`.
+
+Consider the case `succ q ih`. Rewrite using `[← Nat.add_assoc, pow_succ', ← smul_smul]`. Conclude with `gen_smul F.toSubSystem H hh I J hj ha ih`. Use `eventually_atTop.mpr ⟨e * D, fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hM`.
+
+Conclude with `Submodule.subset_span (hstep q)`. Conclude with `(eventually_all.mpr key).mono fun M hM => (Submodule.mem_iInf _).mpr hM`.
+-/
 theorem proof : VeryAmpleZExtend.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ F H r h hh J j hj c hc K hK f hf
   classical

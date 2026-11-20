@@ -35,6 +35,9 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.HSApp
 
+/- English proof (translation)
+Introduce `τ k hk`. Simplify using `only [gap, dif_pos hk, GlobalTheory.CompHt.stdWt]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem gapGe_stdWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) :
     GapGe 1 (GlobalTheory.CompHt.stdWt (Psi H) (Dw.p + Dw.q) : AllWt.Weight Dw) := by
   intro τ k hk
@@ -42,6 +45,11 @@ theorem gapGe_stdWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   push_cast
   omega
 
+/- English proof (translation)
+Introduce `τ k hk`. Establish `h1` using `h τ k hk`. Simplify using `only [gap, dif_pos hk, Pi.sub_apply, Pi.smul_apply, GlobalTheory.CompHt.stdWt] at h1 ⊢`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gapGe_sub_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     (m : ℕ) (b : AllWt.Weight Dw) (h : GapGe (m : ℤ) b) :
     GapGe 0 (b - m • (GlobalTheory.CompHt.stdWt (Psi H) (Dw.p + Dw.q) : AllWt.Weight Dw)) := by
@@ -52,6 +60,11 @@ theorem gapGe_sub_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   push_cast
   linarith
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `cls_common_add C 0 0`. Simplify using `only [add_zero] at h`. Simplify using `only [zero_nsmul]`.
+
+Conclude with `left_eq_add.1 h`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, cls_common_add C, ih, succ_nsmul]`.
+-/
 theorem cls_common_nsmul {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (n : ℕ) (a : Λ) :
     cls (B (n • a)) (C.isLB (n • a)) = n • cls (B a) (C.isLB a) := by
   induction n with
@@ -63,6 +76,17 @@ theorem cls_common_nsmul {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ 
   | succ n ih =>
     rw [succ_nsmul, cls_common_add C, ih, succ_nsmul]
 
+/- English proof (translation)
+Introduce `hP hN hNa hS hT hL E _ _ _ H Dw l Xo c TF Z hF hD hV la hg`. Use `letI := hV.1`. Introduce `y hy`. Use `set std : AllWt.Weight Dw := GlobalTheory.CompHt.stdWt (Psi H) (Dw.p + Dw.q) with hstd_def`. Use `set m : ℕ := (dimFlag Dw + 1).choose 2 + 1 with hm_def`.
+
+Establish `hstd : GapGe 1 std` using `gapGe_stdWt Dw`. Establish `hmu : GapGe 0 (la - FlagTan.kap Dw - m • std)` using `gapGe_sub_smul m _ hg`. Use `letI := algebraΓOfHom (str₀ TF.X Z)`. Establish `nef : ∀ w : AllWt.Weight Dw, GapGe 0 w → IsNef c.F (L₀ TF.X Z w)` using `fun w hw => GlobalTheory.T.nef_line_bundle_weight_gap hP hN hL E H Dw l Xo c TF Z hF w hw`. Take `⟨mu, hmu0, m', hm', hA⟩` from `GlobalTheory.T.ample_line_bundle_weight_gap hP hN hS hT E H Dw l Xo c TF Z hF std hstd y hy`.
+
+Establish `C` using `common₀ TF.X Z`. Establish `e₁ : m' • cls (L₀ TF.X Z std) (isLB_L₀ TF.X Z std) = cls (L₀ TF.X Z (m' • std - mu)) (isLB_L₀ TF.X Z _) + cls (L₀ TF.X Z mu) (isLB_L₀ TF.X Z mu)`. Establish `h` using `cls_common_add (common₀ TF.X Z) (m' • std - mu) mu`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[← h]`.
+
+Conclude with `(cls_common_nsmul (common₀ TF.X Z) m' std).symm`. Establish `e₂ : cls (L₀ TF.X Z (la - FlagTan.kap Dw)) (isLB_L₀ TF.X Z _) = m • cls (L₀ TF.X Z std) (isLB_L₀ TF.X Z std) + cls (L₀ TF.X Z (la - FlagTan.kap Dw - m • std)) (isLB_L₀ TF.X Z _)`. Establish `h` using `cls_common_add (common₀ TF.X Z) (m • std) (la - FlagTan.kap Dw - m • std)`. Rewrite `h` using `[add_sub_cancel]`. Rewrite using `[h]`.
+
+Conclude with `congrArg (· + _) (cls_common_nsmul (common₀ TF.X Z) m std)`. Take `⟨s, hs⟩` from `GlobalTheory.T.effective_generation_canonical_nef_numberField hNa hN c.F (Y₀ TF.X Z) (str₀ TF.X Z) (dimFlag Dw) hV.2.1 hV.2.2 hD (CanonLB.all _ _) (L₀ TF.X Z std) (L₀ TF.X Z (la - FlagTan.kap Dw - m • std)) (L₀ TF.X Z (la - FlagTan.kap Dw)) (isLB_L₀ TF.X Z _) (isLB_L₀ TF.X Z _) ( …`. Use `⟨H0.ofSec _ ⊤ s, ?_⟩` and prove the remaining obligations. Rewrite using `[show toSec (H0.ofSec (str₀ TF.X Z) ⊤ s) = s from H0.bijective_ofSec_top.1 (ofSec_toSec _)]` and apply the resulting hypothesis.
+-/
 theorem exists_canSec_ne_zero_at : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → 1 ≤ dimFlag Dw → ∀ (hV : IsVariety₀ TF.X Z) (la : AllWt.Weight Dw), GapGe (((dimFlag Dw + 1).choose 2 + 1 : ℕ) : ℤ) (la - FlagTan.kap Dw) → letI := hV.1; ∀ y ∈ U₀ TF.X Z, ∃ g : H0 (str₀ TF.X Z) (tens (CanonLB.all (str₀ TF.X Z) (dimFlag Dw)).bundle (L₀ TF.X Z (la - FlagTan.kap Dw))) ⊤, y ∈ nonzeroLocus (toSec g) := by
   intro hP hN hNa hS hT hL E _ _ _ H Dw l Xo c TF Z hF hD hV la hg
   letI := hV.1
@@ -95,6 +119,17 @@ theorem exists_canSec_ne_zero_at : GlobalTheory.CovTop.Hypotheses₂ → GlobalT
   refine ⟨H0.ofSec _ ⊤ s, ?_⟩
   rwa [show toSec (H0.ofSec (str₀ TF.X Z) ⊤ s) = s from H0.bijective_ofSec_top.1 (ofSec_toSec _)]
 
+/- English proof (translation)
+Introduce `hP hG hQ hNa hPr hS hT hL E _ _ _ H Dw l Xo c TF Z r U hF hD la hg hC`. Establish `hV` using `@GlobalTheory.VarFlag.isVariety₀_flag E _ _ _ H Dw l Xo c TF Z hF`. Establish `hpq : 1 ≤ Dw.p + Dw.q`. Assume the negation of the conclusion as `h`. Establish `h0 : Dw.p + Dw.q = 0` using `by omega`.
+
+Establish `: dimFlag Dw = 0`. Unfold `GlobalTheory.FlagTan.dimFlag`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Set `M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)` to `Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)`. Take `⟨ω⟩` from `GlobalTheory.CompHS.canId_nonempty hP.p5 E H Dw l Xo c TF.Y TF.X Z M (fun K _ _ y => GlobalTheory.T.kodaira_spencer_iso_flag_tangent hP hG E H Dw l Xo c K y hpq)`. Introduce `y hy`. Rewrite using `[mem_support_baseIdeal]`. Use `push_neg`.
+
+Take `⟨g, hgy⟩` from `exists_canSec_ne_zero_at hP hQ.nef hNa hS hT hL E H Dw l Xo c TF Z hF hD hV la hg y hy`. Use `haveI := hV.1`. Use `haveI : SmoothOfRelativeDimension (dimFlag Dw) (𝟙 (Y₀ TF.X Z) ≫ str₀ TF.X Z) := M.smooth`. Take `⟨g', hg'⟩` from `GlobalTheory.ModifRefl.exists_sec_canon_tens_pull_id c.F (Y₀ TF.X Z) (str₀ TF.X Z) (dimFlag Dw) _ (isLB_L₀ TF.X Z _) g y hgy`. Establish `hyM : (y : M.X) ∈ M.off`.
+
+Rewrite using `[M.off_eq]`. Conclude with `hy`. Take `⟨s, hs, hsy⟩` from `GlobalTheory.T.canonical_section_modification_weight hP hG E H Dw l Xo c TF Z hF M ω la g' y hyM hg'`. Conclude with `⟨s, hC.2 hs, hsy⟩`.
+-/
 theorem freeOnOpen_of_gapGe : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.NadelVanishingAndNonKltDivisor → GlobalTheory.Published.Principalisation → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), FnAlgClosed Xo c → 1 ≤ dimFlag Dw → ∀ la : AllWt.Weight Dw, GapGe (((dimFlag Dw + 1).choose 2 + 1 : ℕ) : ℤ) (la - FlagTan.kap Dw) → CuspIso TF.X Z U la → FreeOnOpen TF.X Z U la := by
   intro hP hG hQ hNa hPr hS hT hL E _ _ _ H Dw l Xo c TF Z r U hF hD la hg hC
   have hV := @GlobalTheory.VarFlag.isVariety₀_flag E _ _ _ H Dw l Xo c TF Z hF

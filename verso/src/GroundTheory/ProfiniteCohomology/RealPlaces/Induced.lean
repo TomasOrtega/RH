@@ -39,6 +39,9 @@ noncomputable def subsingletonCoindIso (M : Rep.{u} k K) : M ≅ discreteCoind k
       change f 1 = f x
       rw [Subsingleton.elim x 1]))
 
+/- English proof (translation)
+The claim follows from `(isZero_cohomology_discreteCoind k K M n).of_iso { hom := cohomologyMap (subsingletonCoindIso M).hom (n + 1) inv := cohomologyMap (subsingletonCoindIso M).inv (n + 1) hom_inv_id := by rw [← cohomologyMap_comp, Iso.hom_inv_id, cohomologyMap_id] inv_hom_id := by rw [← cohomologyMap …`.
+-/
 theorem isZero_cohomology_succ_of_subsingleton (M : Rep.{u} k K) [IsDiscreteRep M] (n : ℕ) :
     IsZero (cohomology M (n + 1)) :=
   (isZero_cohomology_discreteCoind k K M n).of_iso
@@ -56,10 +59,20 @@ variable {k G H : Type u} [CommRing k] [Group G] [Group H] (U : Subgroup G) (ι 
 def InOutCoset (y : G) : Prop :=
   ∃ u : U, y = (u : G) * (DoubleCoset.mk U ι.range y).out
 
+/- English proof (translation)
+Simplify using `using doubleCosetMk_mul_mul U ι y u 1`.
+-/
 theorem doubleCosetMk_mul_left (u : U) (y : G) :
     DoubleCoset.mk U ι.range ((u : G) * y) = DoubleCoset.mk U ι.range y := by
   simpa using doubleCosetMk_mul_mul U ι y u 1
 
+/- English proof (translation)
+Unfold `InOutCoset`. Rewrite using `[doubleCosetMk_mul_left]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u', hu'⟩`. Use `⟨u⁻¹ * u', ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc]`. Introduce and unpack `⟨u', hu'⟩`. Use `⟨u * u', ?_⟩` and prove the remaining obligations. Use `nth_rewrite 1 [hu']`.
+
+Rewrite using `[Subgroup.coe_mul, mul_assoc]`.
+-/
 theorem inOutCoset_mul_left_iff (u : U) (y : G) : InOutCoset U ι ((u : G) * y) ↔ InOutCoset U ι y := by
   unfold InOutCoset
   rw [doubleCosetMk_mul_left]
@@ -77,6 +90,23 @@ theorem inOutCoset_mul_left_iff (u : U) (y : G) : InOutCoset U ι ((u : G) * y) 
 
 variable [Fintype H] (N : Rep.{u} k U)
 
+/- English proof (translation)
+Establish `hmem : (fun y => if InOutCoset U ι y then f.1 y else 0) ∈ Representation.coindV U.subtype N.ρ`. Introduce `u y`. Express the relevant statement in the definitionally equal form `(if InOutCoset U ι ((u : G) * y) then f.1 ((u : G) * y) else 0) = N.ρ u (if InOutCoset U ι y then f.1 y else 0)`. Distinguish the cases in `hy : InOutCoset U ι y`. Rewrite using `[if_pos ((inOutCoset_mul_left_iff U ι u y).2 hy), if_pos hy]`.
+
+Conclude with `f.2 u y`. Rewrite using `[if_neg (mt (inOutCoset_mul_left_iff U ι u y).1 hy), if_neg hy, map_zero]`. Use `⟨⟨_, hmem⟩, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations. Establish `hnorm : ((Rep.res ι (Rep.coind U.subtype N)).ρ.norm ⟨_, hmem⟩).1 y = ∑ h : H, (if InOutCoset U ι (y * ι h) then f.1 (y * ι h) else 0)`. Rewrite using `[Representation.norm, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[hnorm]`. Take `⟨u₀, h₀, e₀⟩` from `exists_eq_mul_out_mul U ι y`. Use `set x := (DoubleCoset.mk U ι.range y).out with hx`. Establish `hD : ∀ h : H, DoubleCoset.mk U ι.range (y * ι h) = DoubleCoset.mk U ι.range y` using `fun h => by`.
+
+Use `doubleCosetMk_mul_mul U ι y 1 h` as an intermediate fact. Simplify using `using this`. Establish `hinv : ∀ h : H, f.1 (y * ι h) = f.1 y` using `fun h => congrArg (fun g : Rep.res ι (Rep.coind U.subtype N) => g.1 y) (hf h)`. Rewrite using `[Finset.sum_eq_single h₀⁻¹]`. Rewrite using `[if_pos, hinv]`.
+
+Use `⟨u₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, ← hx, e₀, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Introduce `h _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨u, hu⟩`.
+
+Rewrite `hu` using `[hD, ← hx]`. Apply `hne` to reduce the goal to its premises. Establish `key : x * ι (h₀ * h) * x⁻¹ = ((u₀⁻¹ * u : U) : G)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+
+Use `group`. Use `_ = (u₀ : G)⁻¹ * (y * ι h) * x⁻¹ := by rw [← e₀]`. Use `_ = (u₀ : G)⁻¹ * ((u : G) * x) * x⁻¹ := by rw [hu]`. Use `_ = ((u₀⁻¹ * u : U) : G) := by rw [Subgroup.coe_mul, Subgroup.coe_inv]; group`. Conclude with `eq_inv_of_mul_eq_one_right (hfree x _ (key ▸ (u₀⁻¹ * u).2))`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem exists_norm_eq_res_coind (hfree : ∀ (x : G) (h : H), x * ι h * x⁻¹ ∈ U → h = 1)
     (f : Rep.res ι (Rep.coind U.subtype N))
     (hf : f ∈ (Rep.res ι (Rep.coind U.subtype N)).ρ.invariants) :
@@ -170,6 +200,11 @@ def FreeOnCosets (U : Subgroup G) : Prop :=
 
 variable (U : OpenSubgroup G) (N : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep N]
 
+/- English proof (translation)
+Establish `hb` using `mackeyCohomology_bijective U (ψ w) N (n + 1)`. Establish `hsub : ∀ d : MackeyDoubleCoset (U : Subgroup G) (ψ w).toMonoidHom, Subsingleton (cohomology (mackeyRep (U : Subgroup G) (ψ w).toMonoidHom N d.out) (n + 1))` using `fun d => by`. Establish `: Subsingleton (mackeySubgroup (U : Subgroup G) (ψ w).toMonoidHom d.out)` using `⟨fun a b => Subtype.ext ((hU w d.out a ((mem_mackeySubgroup _ _ _ _).1 a.2)).trans (hU w d.out b ((mem_mackeySubgroup _ _ _ _).1 b.2)).symm)⟩`. Conclude with `ModuleCat.isZero_iff_subsingleton.1 (isZero_cohomology_succ_of_subsingleton _ n)`. Establish `: Subsingleton (cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N)) (n + 1))` using `⟨fun c c' => hb.1 (funext fun d => Subsingleton.elim _ _)⟩`.
+
+Conclude with `ModuleCat.isZero_of_subsingleton _`.
+-/
 theorem isZero_cohomology_res_coind (hU : FreeOnCosets ψ (U : Subgroup G)) (w : κ) (n : ℕ) :
     IsZero (cohomology (Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N)) (n + 1)) := by
   have hb := mackeyCohomology_bijective U (ψ w) N (n + 1)
@@ -187,6 +222,9 @@ theorem isZero_cohomology_res_coind (hU : FreeOnCosets ψ (U : Subgroup G)) (w :
 
 omit [IsTopologicalGroup G] [CompactSpace G] [∀ w, IsTopologicalGroup (F w)] [IsDiscreteRep N] in
 
+/- English proof (translation)
+The claim follows from `exists_norm_eq_res_coind (U : Subgroup G) (ψ w).toMonoidHom N (hU w) f hf`.
+-/
 theorem exists_norm_eq_res_coind' (hU : FreeOnCosets ψ (U : Subgroup G)) (w : κ)
     (f : Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N))
     (hf : f ∈ (Rep.res (ψ w).toMonoidHom (Rep.coind (U : Subgroup G).subtype N)).ρ.invariants) :
@@ -200,6 +238,9 @@ noncomputable def tateCoindIso (hU : FreeOnCosets ψ (U : Subgroup G)) (n : ℕ)
       (fun w f hf => exists_norm_eq_res_coind' ψ U N hU w f hf) n ≪≫
     mackeyCompactCohomologyIso U φ N (n + 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateCoindIso_hom (hU : FreeOnCosets ψ (U : Subgroup G)) (n : ℕ) :
     (tateCoindIso φ ψ U N hU n).hom =
       tateForget φ ψ _ _ _ _ _ (n + 1) ≫ (mackeyCompactCohomologyIso U φ N (n + 1)).hom :=

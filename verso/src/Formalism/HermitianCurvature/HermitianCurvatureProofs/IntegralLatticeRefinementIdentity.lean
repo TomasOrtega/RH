@@ -7,6 +7,17 @@ open Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6 Formalism.Fourier
 
 namespace Formalism.FourierDecayAlt.P.A6x3
 
+/- English proof (translation)
+Rewrite using `[finsum_comp_equiv e (f := fun p => G p.1)]`. Establish `hs : Function.support (fun p : Y × Z => G p.1) = Function.support G ×ˢ Set.univ`. Use extensionality with `p`. Simplify using the standard rewrite rules. Distinguish the cases in `hf : (Function.support G).Finite`.
+
+Rewrite using `[finsum_curry _ (by show (Function.support (fun p : Y × Z => G p.1)).Finite`. Rewrite using `[hs]`. Conclude with `hf.prod Set.finite_univ), mul_finsum]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `Fintype.ofFinite Z` as an intermediate fact.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Use `show ∑ _i : Z, G a = _`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card, nsmul_eq_mul]`. Rewrite using `[finsum_of_infinite_support hf, finsum_of_infinite_support, mul_zero]`. Rewrite using `[hs]`.
+
+Introduce `h`. Apply `hf` to reduce the goal to its premises. Use `h.image Prod.fst` as an intermediate fact. Use `this.subset ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨z⟩` from `(inferInstance : Nonempty Z)`. Conclude with `⟨(y, z), ⟨hy, Set.mem_univ _⟩, rfl⟩`.
+-/
 theorem finsum_fst {X Y Z : Type} [Finite Z] [Nonempty Z] (e : X ≃ Y × Z) (G : Y → ℂ) :
     ∑ᶠ x, G (e x).1 = (Nat.card Z : ℂ) * ∑ᶠ y, G y := by
   rw [finsum_comp_equiv e (f := fun p => G p.1)]
@@ -35,8 +46,16 @@ section Lat
 
 variable {K : Type} [CommRing K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem volL_eq (R : Subring K) (L : AddSubgroup K) : volL R L = gi L R.toAddSubgroup := rfl
 
+/- English proof (translation)
+Establish `h1 : (AddSubgroup.quotientEquivProdOfLE h y).1 = ((Quotient.out y : K) : K ⧸ Λ)` using `by conv_lhs => rw [← QuotientAddGroup.out_eq' y]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Take `⟨l, hl⟩` from `QuotientAddGroup.mk_out_eq_add Λ (Quotient.out y : K)`. Rewrite using `[hl]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem out_sub_mem {Λ' Λ : AddSubgroup K} (h : Λ' ≤ Λ) (y : K ⧸ Λ') :
     (Quotient.out (AddSubgroup.quotientEquivProdOfLE h y).1 : K) - (Quotient.out y : K) ∈ Λ := by
   have h1 : (AddSubgroup.quotientEquivProdOfLE h y).1 = ((Quotient.out y : K) : K ⧸ Λ) := by
@@ -47,15 +66,24 @@ theorem out_sub_mem {Λ' Λ : AddSubgroup K} (h : Λ' ≤ Λ) (y : K ⧸ Λ') :
   rw [hl]
   simp
 
+/- English proof (translation)
+Introduce `x y hxy`. Conclude with `b.isUnit.mul_left_cancel hxy`.
+-/
 theorem mulLeft_injective (b : Kˣ) : Function.Injective (AddMonoidHom.mulLeft (b : K)) := by
   intro x y hxy
   exact b.isUnit.mul_left_cancel hxy
 
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.op, h.cp⟩⟩`.
+-/
 theorem lat_iff {L : AddSubgroup K} : IsLat L ↔ Lat L :=
   ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.op, h.cp⟩⟩
 
+/- English proof (translation)
+Rewrite using `[volL_eq, volL_eq, ← gi_trans hΛ hΛ' hR]`. Use `congr 1`. Rewrite using `[gi, AddSubgroup.relIndex_eq_one.2 h]`. Simplify using the standard rewrite rules.
+-/
 theorem volL_refine {R : Subring K} (hR : Lat R.toAddSubgroup) {Λ' Λ : AddSubgroup K}
     (hΛ' : Lat Λ') (hΛ : Lat Λ) (h : Λ' ≤ Λ) :
     volL R Λ = (Λ'.relIndex Λ : ℝ) * volL R Λ' := by
@@ -64,6 +92,13 @@ theorem volL_refine {R : Subring K} (hR : Lat R.toAddSubgroup) {Λ' Λ : AddSubg
   rw [gi, AddSubgroup.relIndex_eq_one.2 h]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `: ((mulLat (b : K) L : AddSubgroup K) : Set K) = (fun v => ((b⁻¹ : Kˣ) : K) * v) ⁻¹' (L : Set K)`. Use extensionality with `v`. Simplify using `only [mulLat, AddSubgroup.coe_map, Set.mem_image, Set.mem_preimage, SetLike.mem_coe, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Introduce `hv; exact ⟨_, hv, by simp⟩`. Rewrite using `[this]`. Conclude with `hL.op.preimage (continuous_const.mul continuous_id)`.
+
+Rewrite using `[mulLat, AddSubgroup.coe_map]`. Conclude with `IsCompact.image hL.cp (continuous_const.mul continuous_id)`.
+-/
 theorem lat_mulLat (b : Kˣ) {L : AddSubgroup K} (hL : Lat L) : Lat (mulLat (b : K) L) := by
   constructor
   · have : ((mulLat (b : K) L : AddSubgroup K) : Set K) =
@@ -78,6 +113,9 @@ theorem lat_mulLat (b : Kˣ) {L : AddSubgroup K} (hL : Lat L) : Lat (mulLat (b :
   · rw [mulLat, AddSubgroup.coe_map]
     exact IsCompact.image hL.cp (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Establish `hbR : Lat (mulR R (b : K))` using `lat_mulLat b hR`. Rewrite using `[volL_eq, volL_eq, modK_eq, ← gi_trans (lat_mulLat b hL) hbR hR, mul_comm]`. Use `congr 1`. Conclude with `gi_map (mulLeft_injective b) L R.toAddSubgroup`.
+-/
 theorem volL_mulLat {R : Subring K} (hR : Lat R.toAddSubgroup) (b : Kˣ) {L : AddSubgroup K}
     (hL : Lat L) : volL R (mulLat (b : K) L) = modK R (b : K) * volL R L := by
   have hbR : Lat (mulR R (b : K)) := lat_mulLat b hR
@@ -91,16 +129,28 @@ section Perp
 
 variable {K : Type} [CommRing K] {ψ : AddChar K ℂ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_perp {L : AddSubgroup K} {a : K} : a ∈ perp ψ L ↔ ∀ l ∈ L, ψ (a * l) = 1 := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ ha l hl` and use `ha l (h hl)`.
+-/
 theorem perp_anti {L M : AddSubgroup K} (h : L ≤ M) : perp ψ M ≤ perp ψ L :=
   fun _ ha l hl => ha l (h hl)
 
+/- English proof (translation)
+Introduce `l hl a ha`. Rewrite using `[mul_comm]`. Conclude with `ha l hl`.
+-/
 theorem le_perp_perp (L : AddSubgroup K) : L ≤ perp ψ (perp ψ L) := by
   intro l hl a ha
   rw [mul_comm]
   exact ha l hl
 
+/- English proof (translation)
+Simplify using `only [mulLat, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Simplify using `using hw`. Introduce `hv; exact ⟨_, hv, by simp⟩`.
+-/
 theorem mem_mulLat (b : Kˣ) {L : AddSubgroup K} {x : K} :
     x ∈ mulLat (b : K) L ↔ ((b⁻¹ : Kˣ) : K) * x ∈ L := by
   simp only [mulLat, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft]
@@ -108,12 +158,22 @@ theorem mem_mulLat (b : Kˣ) {L : AddSubgroup K} {x : K} :
   · rintro ⟨w, hw, rfl⟩; simpa using hw
   · intro hv; exact ⟨_, hv, by simp⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_mulLat, mem_mulLat, inv_inv]`. Simplify using the standard rewrite rules.
+-/
 theorem mulLat_inv_mulLat (b : Kˣ) (L : AddSubgroup K) :
     mulLat ((b⁻¹ : Kˣ) : K) (mulLat (b : K) L) = L := by
   ext x
   rw [mem_mulLat, mem_mulLat, inv_inv]
   simp
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[mem_mulLat, inv_inv, mem_perp, mem_perp]`. Prove the components needed by the constructor for the conclusion. Introduce `h l hl`. Use `h ((b : K) * l) ⟨l, hl, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[show a * ((b : K) * l) = (b : K) * a * l by ring]`. Then use the resulting hypothesis. Introduce and unpack `h _ ⟨l, hl, rfl⟩`. Use `h l hl` as an intermediate fact. Rewrite using `[show (b : K) * a * l = a * (AddMonoidHom.mulLeft (b : K) l) by` and apply the resulting hypothesis. Simplify using `only [AddMonoidHom.coe_mulLeft]`.
+
+Use the proof step `ring] at this`.
+-/
 theorem perp_mulLat (b : Kˣ) (L : AddSubgroup K) :
     perp ψ (mulLat (b : K) L) = mulLat ((b⁻¹ : Kˣ) : K) (perp ψ L) := by
   ext a
@@ -127,6 +187,9 @@ theorem perp_mulLat (b : Kˣ) (L : AddSubgroup K) :
     rwa [show (b : K) * a * l = a * (AddMonoidHom.mulLeft (b : K) l) by
       simp only [AddMonoidHom.coe_mulLeft]; ring] at this
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `QuotientAddGroup.mk_out_eq_add (L.addSubgroupOf A) r`. Rewrite using `[hl, AddSubgroup.coe_add, mul_add, AddChar.map_add_eq_mul]`. Establish `: ((l : A) : K) ∈ L` using `AddSubgroup.mem_addSubgroupOf.1 l.2`. Rewrite using `[hz _ this, mul_one]`.
+-/
 theorem psi_out {A L : AddSubgroup K} {z : K} (hz : z ∈ perp ψ L) (r : A) :
     ψ (z * ((Quotient.out (r : A ⧸ L.addSubgroupOf A) : A) : K)) = ψ (z * (r : K)) := by
   obtain ⟨l, hl⟩ := QuotientAddGroup.mk_out_eq_add (L.addSubgroupOf A) r
@@ -149,9 +212,19 @@ def charOf (A : AddSubgroup K) {L : AddSubgroup K} {z : K} (hz : z ∈ perp ψ L
         rw [← QuotientAddGroup.mk_add, psi_out hz, psi_out hz, psi_out hz, AddSubgroup.coe_add,
           mul_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+The claim follows from `psi_out hz r`.
+-/
 theorem charOf_mk (A : AddSubgroup K) {L : AddSubgroup K} {z : K} (hz : z ∈ perp ψ L) (r : A) :
     charOf A hz (r : A ⧸ L.addSubgroupOf A) = ψ (z * (r : K)) := psi_out hz r
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h r hr`. Use `DFunLike.congr_fun h ((⟨r, hr⟩ : A) : A ⧸ L.addSubgroupOf A)` as an intermediate fact. Rewrite `this` using `[charOf_mk, charOf_mk]`. Rewrite using `[sub_mul, AddChar.map_sub_eq_div, this]`.
+
+Conclude with `div_self (AddChar.val_isUnit _ _).ne_zero`. Introduce `h`. Use extensionality with `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H r`.
+
+Rewrite using `[charOf_mk, charOf_mk]`. Use `h r r.2` as an intermediate fact. Rewrite `this` using `[sub_mul, AddChar.map_sub_eq_div, div_eq_one_iff_eq (AddChar.val_isUnit _ _).ne_zero]`. Conclude with `this`.
+-/
 theorem charOf_eq_iff (A : AddSubgroup K) {L : AddSubgroup K} {z z' : K} (hz : z ∈ perp ψ L)
     (hz' : z' ∈ perp ψ L) : charOf A hz = charOf A hz' ↔ z - z' ∈ perp ψ A := by
   constructor
@@ -172,6 +245,11 @@ theorem charOf_eq_iff (A : AddSubgroup K) {L : AddSubgroup K} {z z' : K} (hz : z
 def dualMap (ψ : AddChar K ℂ) (A L : AddSubgroup K) (q : perp ψ L ⧸ A.addSubgroupOf (perp ψ L)) :
     AddChar (A ⧸ L.addSubgroupOf A) ℂ := charOf A (Quotient.out q : perp ψ L).2
 
+/- English proof (translation)
+Introduce `q q' h`. Establish `h1` using `(charOf_eq_iff A _ _).1 h`. Rewrite `h1` using `[hA]`. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `A.neg_mem h1` as an intermediate fact.
+
+Simplify `this` using `[sub_eq_add_neg, add_comm]`.
+-/
 theorem dualMap_injective {A : AddSubgroup K} (hA : perp ψ A = A) (L : AddSubgroup K) :
     Function.Injective (dualMap ψ A L) := by
   intro q q' h
@@ -182,6 +260,9 @@ theorem dualMap_injective {A : AddSubgroup K} (hA : perp ψ A = A) (L : AddSubgr
   have := A.neg_mem h1
   simpa [sub_eq_add_neg, add_comm] using this
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `QuotientAddGroup.mk_out_eq_add (A.addSubgroupOf (perp ψ L)) (⟨z, hz⟩ : perp ψ L)`. Rewrite using `[dualMap, charOf_eq_iff, hA, hl]`. Establish `: ((l : perp ψ L) : K) ∈ A` using `AddSubgroup.mem_addSubgroupOf.1 l.2`. Simplify using `using this`.
+-/
 theorem dualMap_mk {A : AddSubgroup K} (hA : perp ψ A = A) {L : AddSubgroup K} {z : K}
     (hz : z ∈ perp ψ L) :
     dualMap ψ A L ((⟨z, hz⟩ : perp ψ L) : perp ψ L ⧸ A.addSubgroupOf (perp ψ L)) = charOf A hz := by
@@ -190,11 +271,19 @@ theorem dualMap_mk {A : AddSubgroup K} (hA : perp ψ A = A) {L : AddSubgroup K} 
   have : ((l : perp ψ L) : K) ∈ A := AddSubgroup.mem_addSubgroupOf.1 l.2
   simpa using this
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Conclude with `Nat.card_eq_fintype_card.trans (AddChar.card_eq.trans Nat.card_eq_fintype_card.symm)`.
+-/
 theorem card_addChar (G : Type) [AddCommGroup G] [Finite G] : Nat.card (AddChar G ℂ) = Nat.card G := by
   classical
   have := Fintype.ofFinite G
   exact Nat.card_eq_fintype_card.trans (AddChar.card_eq.trans Nat.card_eq_fintype_card.symm)
 
+/- English proof (translation)
+Establish `: Finite (A ⧸ (mulLat (b : K) A).addSubgroupOf A)` using `Nat.finite_of_card_ne_zero hfin`. Use `(dualMap_injective hA _).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[card_addChar]`. Apply `le_of_eq` to reduce the goal to its premises. Use `show (mulLat (b : K) A).relIndex A = A.relIndex (perp ψ (mulLat (b : K) A))`.
+
+Rewrite using `[perp_mulLat, hA]`. Establish `h` using `AddSubgroup.relIndex_map_map_of_injective (mulLat (b : K) A) A (mulLeft_injective (b⁻¹ : Kˣ))`. Establish `h2 : (mulLat (b : K) A).map (AddMonoidHom.mulLeft ((b⁻¹ : Kˣ) : K)) = A` using `mulLat_inv_mulLat b A`. Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+-/
 theorem dualMap_bijective_mul {A : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
     (hfin : (mulLat (b : K) A).relIndex A ≠ 0) :
     Function.Bijective (dualMap ψ A (mulLat (b : K) A)) := by
@@ -211,6 +300,17 @@ theorem dualMap_bijective_mul {A : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
   rw [h2] at h
   exact h.symm
 
+/- English proof (translation)
+Set `π : A ⧸ (mulLat (b : K) A).addSubgroupOf A →+ A ⧸ L.addSubgroupOf A` to `QuotientAddGroup.map _ _ (AddMonoidHom.id A) (by`. Introduce `x hx`. Conclude with `hbL hx)`. Take `⟨q, hq⟩` from `(dualMap_bijective_mul hA b hfin).2 (χ.compAddMonoidHom π)`. Establish `hr : ∀ r : A, χ (r : A ⧸ L.addSubgroupOf A) = ψ (((Quotient.out q : perp ψ _) : K) * r)`.
+
+Introduce `r`. Use `DFunLike.congr_fun hq (r : A ⧸ (mulLat (b : K) A).addSubgroupOf A)` as an intermediate fact. Rewrite `this` using `[dualMap, charOf_mk]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hz : ((Quotient.out q : perp ψ _) : K) ∈ perp ψ L`. Introduce `l hl`. Rewrite using `[← hr ⟨l, hLA hl⟩]`. Establish `: ((⟨l, hLA hl⟩ : A) : A ⧸ L.addSubgroupOf A) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`.
+
+Conclude with `hl`. Rewrite using `[this, AddChar.map_zero_eq_one]`. Use `⟨_, hz, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+
+Consider the case `H r => rw [hr, charOf_mk]`.
+-/
 theorem exists_charOf {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
     (hfin : (mulLat (b : K) A).relIndex A ≠ 0) (hbL : mulLat (b : K) A ≤ L) (hLA : L ≤ A)
     (χ : AddChar (A ⧸ L.addSubgroupOf A) ℂ) : ∃ (z : K) (hz : z ∈ perp ψ L), χ = charOf A hz := by
@@ -237,6 +337,9 @@ theorem exists_charOf {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
   induction x using QuotientAddGroup.induction_on with
   | H r => rw [hr, charOf_mk]
 
+/- English proof (translation)
+Use `⟨dualMap_injective hA L, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `exists_charOf hA b hfin hbL hLA χ`. Conclude with `⟨_, dualMap_mk hA hz⟩`.
+-/
 theorem dualMap_bijective {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
     (hfin : (mulLat (b : K) A).relIndex A ≠ 0) (hbL : mulLat (b : K) A ≤ L) (hLA : L ≤ A) :
     Function.Bijective (dualMap ψ A L) := by
@@ -244,6 +347,11 @@ theorem dualMap_bijective {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
   obtain ⟨z, hz, rfl⟩ := exists_charOf hA b hfin hbL hLA χ
   exact ⟨_, dualMap_mk hA hz⟩
 
+/- English proof (translation)
+Establish `hfin' : L.relIndex A ≠ 0`. Introduce `h`. Apply `hfin` to reduce the goal to its premises. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ hbL hLA, h, mul_zero]`. Establish `: Finite (A ⧸ L.addSubgroupOf A)` using `Nat.finite_of_card_ne_zero hfin'`.
+
+Establish `h` using `Nat.card_eq_of_bijective _ (dualMap_bijective hA b hfin hbL hLA)`. Rewrite `h` using `[card_addChar]`. Conclude with `h`.
+-/
 theorem relIndex_perp {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
     (hfin : (mulLat (b : K) A).relIndex A ≠ 0) (hbL : mulLat (b : K) A ≤ L) (hLA : L ≤ A) :
     A.relIndex (perp ψ L) = L.relIndex A := by
@@ -256,6 +364,15 @@ theorem relIndex_perp {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
   rw [card_addChar] at h
   exact h
 
+/- English proof (translation)
+Use `le_antisymm ?_ (le_perp_perp L)` and prove the remaining obligations. Introduce `x hx`. Establish `hfin' : L.relIndex A ≠ 0`. Introduce `h`. Apply `hfin` to reduce the goal to its premises.
+
+Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ hbL hLA, h, mul_zero]`. Establish `: Finite (A ⧸ L.addSubgroupOf A)` using `Nat.finite_of_card_ne_zero hfin'`. Establish `hxA : x ∈ A`. Rewrite using `[← hA]`. Conclude with `perp_anti (by rw [← hA]; exact perp_anti hLA) hx`.
+
+Assume the negation of the conclusion as `hxL`. Establish `hne : ((⟨x, hxA⟩ : A) : A ⧸ L.addSubgroupOf A) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff]`. Conclude with `hxL`. Take `⟨χ, hχ⟩` from `AddChar.exists_apply_ne_zero.2 hne`.
+
+Take `⟨z, hz, rfl⟩` from `exists_charOf hA b hfin hbL hLA χ`. Apply `hχ` to reduce the goal to its premises. Rewrite using `[charOf_mk, mul_comm]`. Conclude with `hx z hz`.
+-/
 theorem perp_perp {A L : AddSubgroup K} (hA : perp ψ A = A) (b : Kˣ)
     (hfin : (mulLat (b : K) A).relIndex A ≠ 0) (hbL : mulLat (b : K) A ≤ L) (hLA : L ≤ A) :
     perp ψ (perp ψ L) = L := by
@@ -286,16 +403,31 @@ section PerpTop
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
   {ψ : AddChar K ℂ}
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `hd.selfDual a`.
+-/
 theorem perp_R (hd : LocalDatum K R ψ) : perp ψ R.toAddSubgroup = R.toAddSubgroup := by
   ext a
   exact hd.selfDual a
 
+/- English proof (translation)
+Use `AddSubgroup.nsmul_index_mem (L.addSubgroupOf A) (⟨x, hx⟩ : A)` as an intermediate fact. Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify `this` using `[nsmul_eq_mul, AddSubgroup.relIndex]`.
+-/
 theorem nat_mul_mem {A L : AddSubgroup K} {x : K} (hx : x ∈ A) :
     ((L.relIndex A : ℕ) : K) * x ∈ L := by
   have := AddSubgroup.nsmul_index_mem (L.addSubgroupOf A) (⟨x, hx⟩ : A)
   rw [AddSubgroup.mem_addSubgroupOf] at this
   simpa [nsmul_eq_mul, AddSubgroup.relIndex] using this
 
+/- English proof (translation)
+Establish `hR` using `lat_R hd.isOpen hd.isCompact`. Establish `hA` using `perp_R hd`. Establish `hne : L.relIndex R.toAddSubgroup ≠ 0` using `relIndex_ne_zero hL.op hR.cp`. Take `⟨b, hb⟩` from `hn _ hne`. Establish `hbL : mulLat (b : K) R.toAddSubgroup ≤ L`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[AddMonoidHom.coe_mulLeft, hb]`. Conclude with `nat_mul_mem hx`. Establish `hfin : (mulLat (b : K) R.toAddSubgroup).relIndex R.toAddSubgroup ≠ 0` using `relIndex_ne_zero (lat_mulLat b hR).op hR.cp`. Establish `hRP : R.toAddSubgroup ≤ perp ψ L` using `by conv_lhs => rw [← hA]`.
+
+Conclude with `perp_anti hLR`. Establish `hop : IsOpen ((perp ψ L : AddSubgroup K) : Set K)` using `AddSubgroup.isOpen_mono hRP hR.op`. Use `⟨⟨hop, ?_⟩, perp_perp hA b hfin hbL hLR, ?_⟩` and prove the remaining obligations. Establish `hle : perp ψ L ≤ mulLat ((b⁻¹ : Kˣ) : K) R.toAddSubgroup`. Use `perp_anti (ψ := ψ) hbL` as an intermediate fact.
+
+Rewrite `this` using `[perp_mulLat, hA]`. Then use the resulting hypothesis. Conclude with `(lat_mulLat b⁻¹ hR).cp.of_isClosed_subset (AddSubgroup.isClosed_of_isOpen _ hop) hle`. Rewrite using `[volL_eq, volL_eq, gi, gi, relIndex_perp hA b hfin hbL hLR, AddSubgroup.relIndex_eq_one.2 hLR, AddSubgroup.relIndex_eq_one.2 hRP]`. Establish `: (L.relIndex R.toAddSubgroup : ℝ) ≠ 0` using `by exact_mod_cast hne`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem perp_small (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     {L : AddSubgroup K} (hL : Lat L) (hLR : L ≤ R.toAddSubgroup) :
     Lat (perp ψ L) ∧ perp ψ (perp ψ L) = L ∧ volL R L * volL R (perp ψ L) = 1 := by
@@ -323,6 +455,15 @@ theorem perp_small (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUni
     have : (L.relIndex R.toAddSubgroup : ℝ) ≠ 0 := by exact_mod_cast hne
     field_simp
 
+/- English proof (translation)
+Establish `hR` using `lat_R hd.isOpen hd.isCompact`. Establish `hne : R.toAddSubgroup.relIndex L ≠ 0` using `relIndex_ne_zero hR.op hL.cp`. Take `⟨c, hc⟩` from `hn _ hne`. Establish `hcL : mulLat (c : K) L ≤ R.toAddSubgroup`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Rewrite using `[AddMonoidHom.coe_mulLeft, hc]`. Conclude with `nat_mul_mem hx`. Establish `hL'` using `lat_mulLat c hL`. Take `⟨h1, h2, h3⟩` from `perp_small hd hn hL' hcL`. Establish `e1 : perp ψ L = mulLat (c : K) (perp ψ (mulLat (c : K) L))`.
+
+Use `perp_mulLat (ψ := ψ) c⁻¹ (mulLat (c : K) L)` as an intermediate fact. Rewrite `this` using `[mulLat_inv_mulLat, inv_inv]`. Then use the resulting hypothesis. Use `⟨e1 ▸ lat_mulLat c h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, perp_mulLat, h2, mulLat_inv_mulLat]`. Rewrite using `[e1, volL_mulLat hR c h1]`.
+
+Rewrite `h3` using `[volL_mulLat hR c hL]`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem perp_lat (hd : LocalDatum K R ψ) (hn : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K))
     {L : AddSubgroup K} (hL : Lat L) :
     Lat (perp ψ L) ∧ perp ψ (perp ψ L) = L ∧ volL R L * volL R (perp ψ L) = 1 := by
@@ -353,15 +494,36 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.A6x3
 
+/- English proof (translation)
+Introduce `K _ _ _ L M hL hM`. Conclude with `relIndex_ne_zero hM.1 hL.2`.
+-/
 theorem lattice_family_finite : Formalism.FourierDecayAlt.A6.LatFinite := by
   intro K _ _ _ L M hL hM
   exact relIndex_ne_zero hM.1 hL.2
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hd b L hL`. Conclude with `⟨lat_iff.2 (lat_mulLat b (lat_iff.1 hL)), volL_mulLat (lat_R hd.isOpen hd.isCompact) b (lat_iff.1 hL)⟩`.
+-/
 theorem volume_scaling_identity : Formalism.FourierDecayAlt.A6.VolScale := by
   intro K _ _ _ R ψ hd b L hL
   exact ⟨lat_iff.2 (lat_mulLat b (lat_iff.1 hL)),
     volL_mulLat (lat_R hd.isOpen hd.isCompact) b (lat_iff.1 hL)⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hd Λ Λ' Om f hΛ hΛ' hle _ hOm hf`. Establish `hR` using `lat_R hd.isOpen hd.isCompact`. Use `set F : K → ℂ := fun z => if z ∈ Om then f z else 0 with hFdef`. Establish `hF : ∀ z, ∀ l ∈ Λ, F (z + l) = F z`. Introduce `z l hl`.
+
+Distinguish the cases in `hz : z ∈ Om`. Simplify using `only [hFdef, hz, hOm z hz l hl, if_true]`. Conclude with `hf z hz l hl`. Establish `: z + l ∉ Om`. Introduce `h`.
+
+Apply `hz` to reduce the goal to its premises. Use `hOm _ h (-l) (Λ.neg_mem hl)` as an intermediate fact. Simplify using `using this`. Simplify using `only [hFdef, hz, this, if_false]`. Establish `hne : Λ'.relIndex Λ ≠ 0` using `relIndex_ne_zero hΛ'.1 hΛ.2`.
+
+Establish `: Finite (Λ ⧸ Λ'.addSubgroupOf Λ)` using `Nat.finite_of_card_ne_zero hne`. Establish `key : ∑ᶠ y : K ⧸ Λ', F (Quotient.out y) = (Λ'.relIndex Λ : ℂ) * ∑ᶠ y : K ⧸ Λ, F (Quotient.out y)`. Rewrite using `[← show Nat.card (Λ ⧸ Λ'.addSubgroupOf Λ) = Λ'.relIndex Λ from rfl, ← finsum_fst (AddSubgroup.quotientEquivProdOfLE hle) (fun y : K ⧸ Λ => F (Quotient.out y))]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations. Use `hF (Quotient.out y) _ (out_sub_mem hle y)` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : intLat R Λ' Om f = (volL R Λ' : ℂ) * ∑ᶠ y : K ⧸ Λ', F (Quotient.out y)`. Unfold `intLat`.
+
+Use `congr 1`. Establish `e2 : intLat R Λ Om f = (volL R Λ : ℂ) * ∑ᶠ y : K ⧸ Λ, F (Quotient.out y)`. Unfold `intLat`. Use `congr 1`. Rewrite using `[e1, e2, key, volL_refine hR (lat_iff.1 hΛ') (lat_iff.1 hΛ) hle]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_lattice_refinement_identity : Formalism.FourierDecayAlt.A6.IntLatRefine := by
   classical
   intro K _ _ _ R ψ hd Λ Λ' Om f hΛ hΛ' hle _ hOm hf
@@ -399,6 +561,15 @@ theorem integral_lattice_refinement_identity : Formalism.FourierDecayAlt.A6.IntL
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hd Λ Λ' L d f hΛ hΛ' _ hle _ hf`. Establish `hR` using `lat_R hd.isOpen hd.isCompact`. Establish `hne : Λ'.relIndex Λ ≠ 0` using `relIndex_ne_zero hΛ'.1 hΛ.2`. Establish `: Finite (Λ ⧸ Λ'.addSubgroupOf Λ)` using `Nat.finite_of_card_ne_zero hne`. Set `e : (Fin d → K ⧸ Λ') ≃ (Fin d → K ⧸ Λ) × (Fin d → Λ ⧸ Λ'.addSubgroupOf Λ)` to `(Equiv.piCongrRight fun _ => AddSubgroup.quotientEquivProdOfLE hle).trans (Equiv.arrowProdEquivProdArrow _ _ _)`.
+
+Establish `key : ∑ᶠ y : Fin d → K ⧸ Λ', f (fun i => Quotient.out (y i)) = ((Λ'.relIndex Λ : ℂ)) ^ d * ∑ᶠ y : Fin d → K ⧸ Λ, f (fun i => Quotient.out (y i))`. Establish `hc : (Nat.card (Fin d → Λ ⧸ Λ'.addSubgroupOf Λ) : ℂ) = ((Λ'.relIndex Λ : ℂ)) ^ d`. Rewrite using `[Nat.card_fun]`. Simplify using `[AddSubgroup.relIndex, AddSubgroup.index]`. Rewrite using `[← hc, ← finsum_fst e (fun y : Fin d → K ⧸ Λ => f (fun i => Quotient.out (y i)))]`.
+
+Use `finsum_congr fun y => ?_` and prove the remaining obligations. Use `hf (fun i => Quotient.out (y i)) (fun i => (Quotient.out (AddSubgroup.quotientEquivProdOfLE hle (y i)).1 : K) - (Quotient.out (y i) : K)) (fun i => out_sub_mem hle (y i))` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[e]`. Unfold `intK`. Rewrite using `[key, volL_refine hR (lat_iff.1 hΛ') (lat_iff.1 hΛ) hle]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_field_refinement : Formalism.FourierDecayAlt.A6.IntKRefine := by
   intro K _ _ _ R ψ hd Λ Λ' L d f hΛ hΛ' _ hle _ hf
   have hR := lat_R hd.isOpen hd.isCompact
@@ -432,6 +603,9 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.A6x3
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hd hn L hL`. Take `⟨h1, h2, h3⟩` from `perp_lat hd hn (lat_iff.1 hL)`. Conclude with `⟨lat_iff.2 h1, h2, h3⟩`.
+-/
 theorem orthogonal_lattice_properties : Formalism.FourierDecayAlt.A6.PerpLat := by
   intro K _ _ _ R ψ hd hn L hL
   obtain ⟨h1, h2, h3⟩ := perp_lat hd hn (lat_iff.1 hL)

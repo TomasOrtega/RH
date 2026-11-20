@@ -16,6 +16,13 @@ namespace Formalism.L2.SG.RealObj.EnergyIntLoc
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+Establish `h1` using `Formalism.L2.SG.Pf.WuBL.cS_ne D`. Unfold `Formalism.L2.SG.Pf.WuBL.cS at h1`. Establish `hka : D.host.ka ≠ 0` using `by rintro h; apply h1; simp [h]`. Establish `hg : ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) ≠ 0` using `by intro h; apply h1; simp [h]`. Establish `hg0 : (D.host.g 0 : ℂ) ≠ 0`.
+
+Use `(mul_ne_zero_iff.1 hg).1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hg1 : (D.host.g 1 : ℂ) ≠ 0`. Use `(mul_ne_zero_iff.1 hg).2` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `hka' : (D.host.ka : ℂ) ≠ 0` using `by exact_mod_cast hka`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Unfold `Formalism.L2.SG.Pf.WuBL.cS muT cfS frS Formalism.QuantumDeterminants.cStd`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scale_eq (D : D7) : Formalism.L2.SG.Pf.WuBL.cS D * muT D = Formalism.QuantumDeterminants.cStd := by
   have h1 := Formalism.L2.SG.Pf.WuBL.cS_ne D
   unfold Formalism.L2.SG.Pf.WuBL.cS at h1
@@ -31,10 +38,18 @@ theorem scale_eq (D : D7) : Formalism.L2.SG.Pf.WuBL.cS D * muT D = Formalism.Qua
   push_cast
   field_simp
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.torTie X _ _ _ (C.isT τ)`.
+-/
 theorem transpC' (C : Choice X θ) (τ : D.what₂.Tau) :
     IsTranspC X (vOf X τ) (cfS D) D.R.k D.R.rS (Qcs C τ) (Qics C τ) :=
   Formalism.L2.SG.Pf.torTie X _ _ _ (C.isT τ)
 
+/- English proof (translation)
+Establish `hw` using `(Formalism.L2.SG.Pf.zTr C u τ).1`. Unfold `Qics`. Rewrite using `[← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `torS (muT D)⁻¹ D.R.k D.R.rS *ᵥ zB X (C.Qi τ) u τ = zB X (C.Qi τ) u τ`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [torS, Matrix.mulVec_diagonal]`. Use `split_ifs with h1 h2`. Rewrite using `[hw i (Or.inl h1), mul_zero]`. Rewrite using `[hw i (Or.inr h2), mul_zero]`. Rewrite using `[one_mul]`.
+-/
 theorem zc_eq (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Qics C τ *ᵥ rv X.B.I (vOf X τ) (X.zR u) = zB X (C.Qi τ) u τ := by
   have hw := (Formalism.L2.SG.Pf.zTr C u τ).1
@@ -48,12 +63,18 @@ theorem zc_eq (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
   · rw [hw i (Or.inr h2), mul_zero]
   · rw [one_mul]
 
+/- English proof (translation)
+Unfold `sigB Qcs Qics`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem sigC_eq (C : Choice X θ) (τ : D.what₂.Tau) (m : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) :
     sigB X (Qcs C τ) (Qics C τ) τ m =
       sigB X (C.Q τ) (C.Qi τ) τ (torS (muT D) D.R.k D.R.rS * m * torS (muT D)⁻¹ D.R.k D.R.rS) := by
   unfold sigB Qcs Qics
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `piB Qcs Qics`. Establish `e : C.Q τ * torS (muT D) D.R.k D.R.rS * h * (torS (muT D)⁻¹ D.R.k D.R.rS * C.Qi τ) = C.Q τ * (torS (muT D) D.R.k D.R.rS * h * torS (muT D)⁻¹ D.R.k D.R.rS) * C.Qi τ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, tor_conj_uw (Formalism.L2.SG.Pf.muT_ne D) hh]`.
+-/
 theorem piC_eq (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau)
     {h : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (hh : h ∈ Formalism.QuantumDeterminants.UWset D.R.k D.R.rS (zB X (C.Qi τ) u τ)) :
@@ -64,6 +85,13 @@ theorem piC_eq (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau)
     simp only [Matrix.mul_assoc]
   rw [e, tor_conj_uw (Formalism.L2.SG.Pf.muT_ne D) hh]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -⟩` from `hQ`. Unfold `Formalism.REAL.inUJ`. Establish `hm' : mᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * m = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hm`. Establish `hJ : Formalism.REAL.Jm (X.B.I.ε v) = Qiᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * Qi`. Rewrite using `[← h3]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Use `_ = Qiᴴ * (Qᴴ * Formalism.REAL.Jm (X.B.I.ε v) * Q) * Qi := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [h3, hm', hJ]`.
+-/
 theorem inUJ_tr {v : InfinitePlace X.B.I.F} {lam : ℂ} {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (hQ : IsTranspC X v lam D.R.k D.R.rS Q Qi)
     {m : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
@@ -82,6 +110,11 @@ theorem inUJ_tr {v : InfinitePlace X.B.I.F} {lam : ℂ} {Q : Matrix (Fin X.B.I.n
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [h3, hm', hJ]
 
+/- English proof (translation)
+Establish `hμ` using `Formalism.L2.SG.Pf.muT_ne D`. Establish `g1` using `Formalism.L2.SG.Pf.Choice.torS_gram (k := D.R.k) (r := D.R.rS) (muT D)⁻¹ (inv_ne_zero hμ)`. Establish `g2` using `Formalism.L2.SG.Pf.Choice.torS_gram (k := D.R.k) (r := D.R.rS) (muT D) hμ`. Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * a = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `ha`. Use `show (torS (muT D) D.R.k D.R.rS * a * torS (muT D)⁻¹ D.R.k D.R.rS)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (torS (muT D) D.R.k D.R.rS * a * torS (muT D)⁻¹ D.R.k D.R.rS) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by rw [g2, ha', g1]`.
+-/
 private theorem conj_mem_lemma (D : D7)
     {a : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
@@ -96,6 +129,11 @@ private theorem conj_mem_lemma (D : D7)
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by rw [g2, ha', g1]
 
+/- English proof (translation)
+Rewrite using `[sigC_eq, sigC_eq, sigC_eq]`. Establish `hrep` using `(Formalism.L2.SG.Pf.WuBL.sigB_rep C τ).1.2 _ (conj_mem_lemma D ha) _ (conj_mem_lemma D hb)`. Establish `hi` using `Formalism.L2.SG.Pf.Choice.torS_inv_mul (k := D.R.k) (r := D.R.rS) (muT D) (Formalism.L2.SG.Pf.muT_ne D)`. Establish `e : torS (muT D) D.R.k D.R.rS * (a * b) * torS (muT D)⁻¹ D.R.k D.R.rS = (torS (muT D) D.R.k D.R.rS * a * torS (muT D)⁻¹ D.R.k D.R.rS) * (torS (muT D) D.R.k D.R.rS * b * torS (muT D)⁻¹ D.R.k D.R.rS)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hi, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (torS (muT D) D.R.k D.R.rS * a * torS (muT D)⁻¹ D.R.k D.R.rS) * (torS (muT D) D.R.k D.R.rS * b * torS (muT D)⁻¹ D.R.k D.R.rS) := by simp only [Matrix.mul_assoc]`. Rewrite using `[e, hrep]`. Both sides reduce to the same expression.
+-/
 theorem sigC_mul (C : Choice X θ) (τ : D.what₂.Tau)
     {a b : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS))
@@ -112,6 +150,9 @@ theorem sigC_mul (C : Choice X θ) (τ : D.what₂.Tau)
   rw [e, hrep]
   rfl
 
+/- English proof (translation)
+Rewrite using `[sigC_eq]`. Conclude with `(Formalism.L2.SG.Pf.WuBL.sigB_rep C τ).2 _ (conj_mem_lemma D ha) x`.
+-/
 theorem sigC_norm (C : Choice X θ) (τ : D.what₂.Tau)
     {a : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) (x : X.B.H (vOf X τ)) :
@@ -119,6 +160,11 @@ theorem sigC_norm (C : Choice X θ) (τ : D.what₂.Tau)
   rw [sigC_eq]
   exact (Formalism.L2.SG.Pf.WuBL.sigB_rep C τ).2 _ (conj_mem_lemma D ha) x
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * a = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `ha`. Establish `hb' : bᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * b = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hb`. Use `show (a * b)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (a * b) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by rw [ha', hb']`.
+-/
 private theorem mul_mem_UH_Hpk' (D : D7) {a b : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) (hb : b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
     a * b ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
@@ -129,6 +175,13 @@ private theorem mul_mem_UH_Hpk' (D : D7) {a b : Matrix (Fin (2 * D.R.rS + D.R.k 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `hy` using `C.y_mem τ`. Take `⟨hyi, -, hyy⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hy`. Establish `hrep` using `Formalism.L2.SG.Pf.WuBL.sigB_rep C τ`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.DDsp`. Apply `Submodule.span_le.2` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `beta_reduce`. Rewrite using `[sigC_mul C τ hg hyc, sigC_eq]`. Establish `hg'm : torS (muT D) D.R.k D.R.rS * (g * yc) * torS (muT D)⁻¹ D.R.k D.R.rS ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `conj_mem_lemma D (mul_mem_UH_Hpk' D hg hyc)`. Establish `e : sigB X (C.Q τ) (C.Qi τ) τ (torS (muT D) D.R.k D.R.rS * (g * yc) * torS (muT D)⁻¹ D.R.k D.R.rS * (C.y τ)⁻¹) (v0Of C τ) = sigB X (C.Q τ) (C.Qi τ) τ (torS (muT D) D.R.k D.R.rS * (g * yc) * torS (muT D)⁻¹ D.R.k D.R.rS) (X.B.w (vOf X τ))`.
+
+Unfold `v0Of`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.1.2 _ (mul_mem_UH_Hpk' D hg'm hyi) _ hy, Matrix.mul_assoc, hyy, Matrix.mul_one]`. Rewrite using `[← e]`. Conclude with `Submodule.subset_span ⟨_, mul_mem_UH_Hpk' D hg'm hyi, rfl⟩`.
+-/
 theorem dd_sub (C : Choice X θ) (τ : D.what₂.Tau)
     {yc : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     (hyc : yc ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :

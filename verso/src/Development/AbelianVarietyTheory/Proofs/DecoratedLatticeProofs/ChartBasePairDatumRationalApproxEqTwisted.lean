@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.AdForm.TwResid
 
+/- English proof (translation)
+Use `⟨∏ P ∈ (B.primes X).vT u, Ideal.absNorm P.asIdeal, Finset.prod_pos fun P _ => Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 P.ne_bot), fun M₀ hM x x₀ h => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Transport.LevelDatum.phiT_eq B.fields.K (B.R.N_pos i) (B.R.N_pos (i + 1)) hp hpN hp' hpN' hq hq' x x₀ fun P hP r s => lt_of_le_of_lt (h P hP r s) (GlobalTheory.Transport.LevelDatum.val_natCast_lt hM hP)`.
+-/
 theorem phiT_tw {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.ι) (i : ℕ)
     (p q : PtAt B.R I.sel (I.tup a) (I.cst a) u i) (p' q' : PtAt B.R I.sel (I.tup a) (I.cst a) u (i + 1))
     (k y : TC.GA B (B.R.N i)) (k' y' : TC.GA B (B.R.N (i + 1)))
@@ -34,6 +37,25 @@ theorem phiT_tw {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.�
   exact GlobalTheory.Transport.LevelDatum.phiT_eq B.fields.K (B.R.N_pos i) (B.R.N_pos (i + 1)) hp hpN hp' hpN' hq hq' x x₀
     fun P hP r s => lt_of_le_of_lt (h P hP r s) (GlobalTheory.Transport.LevelDatum.val_natCast_lt hM hP)
 
+/- English proof (translation)
+Introduce `B X I l hok u a i hi b b' p q p' q' k y k' y' hk hN hk' hN' hq hq' hc hc'`. Take `⟨M1, hM1, H1⟩` from `phiT_tw I u a i p q p' q' k y k' y' hk hN hk' hN' hq hq'`. Establish `Hent` using `GlobalTheory.T.entryDatum_transport_badPrime_anyTuple I hok l u a`. Establish `Hcp` using `GlobalTheory.T.beforeLastStep_datum_transport_badPrime I hok l u a`. Establish `Hlast` using `GlobalTheory.T.lastStep_datum_transport_badPrime I l hok u a`.
+
+Establish `hrowT : ∀ (M₀ : ℕ) (x x₀ : Formalism.L2.Col.HomE B.fields.E (B.R.N i) (B.R.N (i + 1))), (∀ P ∈ Formalism.L2.Col.Sall (Pr` using `B.primes X) I.sel (I.tup a) u, GlobalTheory.Transport.CongAt B P M₀ y y' x x₀) → (∀ P ∈ (B.primes X).vT u, GlobalTheory.Transport.CongAt B P M₀ y y' x x₀) ∧ ∀ P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup a), GlobalTheory.Transport.CongAt B P.1 M₀ y y' x x₀ := fun M₀ x x₀ …`. Distinguish the cases in `h2 : i + 2 < B.R.m`. Establish `hlt : i < B.R.m` using `by omega`. Establish `hlt' : i + 1 < B.R.m` using `by omega`. Use `choose Mf hMf Hf using fun P => Hent i h2 (b.get hlt) (b'.get hlt') P p q p' q' k y k' y' hk hN hk' hN' hq hq'`.
+
+Use `⟨M1 * ∏ P, Mf P, Nat.mul_pos hM1 (Finset.prod_pos fun P _ => hMf P), ?_⟩` and prove the remaining obligations. Introduce `x x₀ hx`. Take `⟨hvT, hrow⟩` from `hrowT _ x x₀ hx`. Unfold `xiAt`. Rewrite using `[dif_pos h2, dif_pos h2]`.
+
+Unfold `Formalism.L2.Col.XiEntry`. Rewrite using `[H1 _ (dvd_mul_right _ _) x x₀ hvT]`. Use `congrArg (HMul.hMul _) (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Conclude with `Hf P _ (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) x x₀ (hrow P)`. Distinguish the cases in `h3 : i + 2 = B.R.m`.
+
+Establish `hlt : i < B.R.m` using `by omega choose Mf hMf Hf using fun P => Hcp i h3 (b.get hlt) P p q p' q' k y k' y' hk hN hk' hN' hq hq' hc'`. Use `⟨M1 * ∏ P, Mf P, Nat.mul_pos hM1 (Finset.prod_pos fun P _ => hMf P), ?_⟩` and prove the remaining obligations. Introduce `x x₀ hx`. Take `⟨hvT, hrow⟩` from `hrowT _ x x₀ hx`. Unfold `xiAt`.
+
+Rewrite using `[dif_neg h2, dif_neg h2, dif_pos h3, dif_pos h3]`. Unfold `Formalism.L2.Col.XiCpl1`. Rewrite using `[H1 _ (dvd_mul_right _ _) x x₀ hvT]`. Use `congrArg (HMul.hMul _) (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Conclude with `Hf P _ (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) x x₀ (hrow P)`.
+
+Establish `h4 : i + 1 = B.R.m` using `by omega`. Establish `h2m` using `B.R.two_le_m`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Use `choose Mf hMf Hf using fun P => Hlast n h4 P p q p' q' k y k' y' hk hN hk' hN' hq hq' hc`. Use `⟨M1 * ∏ P, Mf P, Nat.mul_pos hM1 (Finset.prod_pos fun P _ => hMf P), ?_⟩` and prove the remaining obligations.
+
+Introduce `x x₀ hx`. Take `⟨hvT, hrow⟩` from `hrowT _ x x₀ hx`. Rewrite using `[xiAt_last _ _ _ _ _ h4, xiAt_last _ _ _ _ _ h4]`. Unfold `xiOver`. Rewrite using `[H1 _ (dvd_mul_right _ _) x x₀ hvT]`.
+
+Use `congrArg (HMul.hMul _) (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Conclude with `Hf P _ (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) x x₀ (hrow P)`.
+-/
 theorem xiAt_transport_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (hok : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ)
     (hi : i + 1 ≤ B.R.m)
     (b : Idx I.sel (I.tup a) (I.idx a) i) (b' : Idx I.sel (I.tup a) (I.idx a) (i + 1))
@@ -100,6 +122,15 @@ theorem xiAt_transport_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : 
     refine congrArg (HMul.hMul _) (Finset.prod_congr rfl fun P _ => ?_)
     exact Hf P _ (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) _) x x₀ (hrow P)
 
+/- English proof (translation)
+Introduce `B X I hok hpins l Z u a Ch A hA i hi c c' g g' hg hg' hy hy'`. Establish `hi0` using `Nat.le_of_succ_le hi`. Take `⟨d, hd, h1⟩` from `GlobalTheory.AdForm.CongAtIdem.cong_at_idem ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) (rankN (I.rec7 l Z) i hi0) (rankN (I.rec7 l Z) (i + 1) hi) A.e _ hA.idem`. Establish `hd0` using `GlobalTheory.Mem.Df.disjoint_vGs_Q I hok l a`. Establish `hQ` using `GlobalTheory.Mem.Col2.ColIn.Q_subset_SQ I a`.
+
+Establish `hb` using `hA.base i hi0 (A.chOf i c)`. Establish `hb'` using `hA.base (i + 1) hi (A.chOf (i + 1) c')`. Establish `hr` using `hA.rep i hi0 c`. Establish `hr'` using `hA.rep (i + 1) hi c'`. Establish `hq` using `(hA.reads i hi0).pt c`.
+
+Establish `hq'` using `(hA.reads (i + 1) hi).pt c'`. Take `⟨M₀, hM₀, h2⟩` from `xiAt_transport_tw I l hok u a i hi (A.b0 i (A.chOf i c)) (A.b0 (i + 1) (A.chOf (i + 1) c')) (A.p0 i (A.chOf i c)) ((I.stp u a i).rep c) (A.p0 (i + 1) (A.chOf (i + 1) c')) ((I.stp u a (i + 1)).rep c') (A.kb i (A.chOf i c)) (((A.K i hi0 (A.chOf i c)).y ⟨c, rfl⟩).1) (A.kb (i + 1) (A …`. Use `⟨d * M₀, Nat.mul_pos hd hM₀, fun γ γ₀ v hv _ hγ => ?_⟩` and prove the remaining obligations. Establish `hc` using `h1 g g' _ _ hy hy' M₀ γ γ₀ v hv hγ`. Use `congrArg B.embLL ((h2 _ _ hc).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hr.1, ← hr'.1]`. Both sides reduce to the same expression.
+-/
 theorem tw_resid_datum : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) (c : (I.stp u a i).Cl) (c' : (I.stp u a (i + 1)).Cl) g g', g ∈ GfC _ → g' ∈ GfC _ → finM _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) g = ((A.K i (Nat.le_of_succ_le hi) (A.chOf i c)).y ⟨c, rfl⟩).1.1 → finM _ (rankN (I.rec7 l Z) (i + 1) hi) g' = ((A.K (i + 1) hi (A.chOf (i + 1) c')).y ⟨c', rfl⟩).1.1 → ∃ M : ℕ, 0 < M ∧ ∀ (γ γ₀ : Matrix (Fin ((I.rec7 l Z).sp.X (i + 1)).rank) (Fin ((I.rec7 l Z).sp.X i).rank) (I.rec7 l Z).host.E) (v : WO ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))), v ∈ stdHom _ _ → IsHalf A.e v → γ₀.map (fun r => A.e * incA (I.rec7 l Z) r) = actO _ _ g⁻¹ g'⁻¹ (γ.map fun r => A.e * incA (I.rec7 l Z) r) + M • v → A.xi i hi (A.chOf i c) (A.chOf (i + 1) c') γ₀ = B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c') (toHom _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) γ)) := by
   intro B X I hok hpins l Z u a Ch A hA i hi c c' g g' hg hg' hy hy'
   have hi0 := Nat.le_of_succ_le hi

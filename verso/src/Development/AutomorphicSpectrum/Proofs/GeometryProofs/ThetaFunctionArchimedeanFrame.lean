@@ -39,6 +39,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameEx
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t z t' m hP hA`. Establish `hab : IsAbelianScheme t'.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ t'.G hab`. Take `⟨u₀, hc⟩` from `GlobalTheory.T.exists_exp_chart_coordinates t'.G t'.PP.L g hab hA hg`. Take `⟨u, Hm, χ, hex, hH, hχ, hlaw⟩` from `GlobalTheory.T.theta_multiplier_normal_form t'.G t'.PP t'.cub g u₀`.
+
+Take `⟨N, J, Θ, hN, hd, hq, hne, hsep⟩` from `GlobalTheory.T.exists_theta_basis_of_factor t'.G t'.PP.L g u Hm χ t'.PP.isLB hab hA hlaw`. Establish `hpos` using `GlobalTheory.T.theta_functions_finite_dim g u.Λ u.discrete u.full Hm χ N J Θ hH hχ hN hd hq hne hsep`. Establish `hAH : u.IsAH Hm χ` using `⟨hH, hpos, hχ, hlaw⟩`. Take `⟨ht₁, ht₂⟩` from `@GlobalTheory.TangentOrigin.tangent_bijection_of_values @GlobalTheory.valAt'_rules t'.G _ t'.PP.L g u (by simpa only [hex] using hc)`. Take `⟨w₀, hw₀, -⟩` from `m.lin`.
+
+Establish `hL` using `t'.PP.isLB`. Establish `hM` using `pull_isLB t.PP.isLB m.φ`. Conclude with `⟨hab, g, GlobalTheory.ArchMetricCompare.carry u hL hM hw₀, Hm, χ, GlobalTheory.ArchMetricCompare.carry_isAH hL hM hw₀ hAH, ht₁, ht₂⟩`.
+-/
 theorem exists_goodUnif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X)
     (z : Sp ℂ ⟶ X) (t' : SAB H (Sp ℂ)) (m : SABMap t' t z), IsProper t'.G.hom → Out.RelAmple t'.G t'.PP.L →
     IsAbelianScheme t'.G ∧ ∃ (g : ℕ) (u : HolUnif t'.G (t.PP.L.pull m.φ) g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),
@@ -62,6 +69,13 @@ end GlobalTheory.CompanionTheory.Ar.Sl.FrameEx
 
 open GlobalTheory.CompanionTheory.Ar.Sl.FrameEx in
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D σ`. Take `⟨t', m, hP, hA⟩` from `GlobalTheory.T.complex_abelian_fibre_ample E H L D σ`. Take `⟨hab, g, u, Hm, χ, hAH, d₁, d₂⟩` from `exists_goodUnif E H _ D.t (emb σ) t' m hP hA`. Establish `hcart : IsGrpPullback t'.G D.t.G (emb σ) m.φ` using `m.cart`. Establish `hg : D.g = g` using `GlobalTheory.T.uniformization_dim_eq_pp_dim E H L D σ t'.G m.φ _ g u hcart d₁ d₂`.
+
+Substitute `hg` using the available equality. Use `⟨GlobalTheory.T.exists_archimedean_frame _ D.t.G D.t.PP (emb σ) t'.G m.φ D.g u Hm χ hcart hAH, fun a => ?_⟩` and prove the remaining obligations. Take `⟨e, hmon, -⟩` from `grpPullback_iso a.cart hcart`. Use `haveI := hmon`. Take `⟨a₁, a₂⟩` from `GlobalTheory.T.uniformization_iso_transfer t'.G a.A _ _ D.g u a.u e hab d₁ d₂`.
+
+Use `⟨fun n s => GlobalTheory.T.theta_function_unique _ D.t.G D.t.PP (emb σ) D.g a n s, fun n s θ h => ⟨GlobalTheory.T.theta_function_differentiable _ D.t.G D.t.PP (emb σ) D.g a n s θ h, GlobalTheory.T.theta_add_lattice_eq_of_isFn _ D.t.G D.t.PP (emb σ) D.g a n s θ h⟩, fun x => ⟨Globa …` and prove the remaining obligations. Establish `hl` using `GlobalTheory.T.archimedean_frame_of_pullback E H L D σ t'.G m.φ D.g u Hm χ hab hcart d₁ d₂ hAH a x c hc`. Conclude with `⟨hl, GlobalTheory.T.nonzero_coords_of_nonzero_vector E H L D σ a x c hl⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Sl.frames_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ), Nonempty (D.Frame σ) ∧ ∀ a : D.Frame σ, (∀ (n : ℕ) (s : Out.H0 D.t.PP.L n), ∃! θ, a.IsFn s θ) ∧ (∀ (n : ℕ) (s : Out.H0 D.t.PP.L n) θ, a.IsFn s θ → a.IsTheta n θ) ∧ ∀ x : D.B.carrier, (∃! c, D.IsVec a x c) ∧ ∀ c, D.IsVec a x c → D.len σ x ^ 2 = Real.pi * (a.herm c c).re ∧ (x ≠ 0 → c ≠ 0) := by
   intro E _ _ _ H L _ _ D σ
   obtain ⟨t', m, hP, hA⟩ := GlobalTheory.T.complex_abelian_fibre_ample E H L D σ

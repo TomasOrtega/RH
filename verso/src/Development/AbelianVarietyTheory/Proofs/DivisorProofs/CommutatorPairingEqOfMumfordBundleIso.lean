@@ -21,6 +21,21 @@ namespace GlobalTheory.Mum.Two.WeilCmp
 
 variable {S : Scheme.{0}} (P₀ P₁ P₂ : PolAV S)
 
+/- English proof (translation)
+Establish `first : ∀ n : ℕ, v (x ^ n) y * cubN θ₁ n 1 (x ≫ f₁) (y ≫ g₁) = v 1 y * (cubN θ₂ n 1 (x ≫ f₂) (y ≫ g₂) * v x y ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Establish `a` using `a₁ (x ^ n) x y`.
+
+Rewrite `a` using `[MonObj.pow_comp, MonObj.pow_comp]`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul] at ih ⊢`. Rewrite using `[pow_succ, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a'` using `congrArg Additive.ofMul a`.
+
+Establish `ih'` using `congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul] at a' ih' ⊢`. Take the linear combination `(norm := abel) a' + ih'`. Establish `second : ∀ n : ℕ, v x (y ^ n) * cubN θ₁ n 1 (y ≫ g₁) (x ≫ f₁) = v x 1 * (cubN θ₂ n 1 (y ≫ g₂) (x ≫ f₂) * v x y ^ n)` using `fun n => by`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Establish `a` using `a₂ x (y ^ n) y`. Rewrite `a` using `[MonObj.pow_comp, MonObj.pow_comp, h₁.s01 (x ≫ f₁), h₁.s12 _ (x ≫ f₁), h₂.s01 (x ≫ f₂), h₂.s12 _ (x ≫ f₂)]`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul] at ih ⊢`.
+
+Rewrite using `[pow_succ, pow_succ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a'` using `congrArg Additive.ofMul a`. Establish `ih'` using `congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul] at a' ih' ⊢`.
+
+Take the linear combination `(norm := abel) a' + ih'`. Establish `a` using `first k`. Establish `b` using `second k`. Rewrite `a` using `[hx]`. Rewrite `b` using `[hy]`.
+
+Conclude with `⟨mul_left_cancel a, mul_left_cancel b⟩`.
+-/
 theorem cubN_cmp {T : Over S} (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂]
     [IsMonHom g₂] {U : Type} [CommGroup U] (v : (T ⟶ P₀.A) → (T ⟶ P₀.A) → U)
     {θ₁ : (T ⟶ P₁.A) → (T ⟶ P₁.A) → (T ⟶ P₁.A) → U} {θ₂ : (T ⟶ P₂.A) → (T ⟶ P₂.A) → (T ⟶ P₂.A) → U}
@@ -67,6 +82,13 @@ theorem cubN_cmp {T : Over S} (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.
   rw [hy] at b
   exact ⟨mul_left_cancel a, mul_left_cancel b⟩
 
+/- English proof (translation)
+Introduce `T' ρ z J₂ hJ₂`. Take `⟨J₁, hJ₁, -⟩` from `exists_good P₁.L P₁.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨J, hJ, e₁, e₂⟩` from `exists_good_join P₁.isLB P₂.isLB hJ₁ hJ₂`. Establish `hx' : (ρ ≫ x) ^ k = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Establish `hy' : (ρ ≫ y) ^ k = 1` using `by rw [← MonObj.comp_pow, hy, MonObj.comp_one]`.
+
+Establish `q₁ : Good P₁.L z (rl J)` using `(isPart_inl P₁.L P₂.L).good hJ`. Establish `q₂ : Good P₂.L z (rr J)` using `(isPart_inr P₁.L P₂.L).good hJ`. Take `⟨a, b⟩` from `cubN_cmp P₀ P₁ P₂ f₁ g₁ f₂ g₂ (fun a b => val u (lift a b).left z J) (isCub_cubV c₁ q₁) (isCub_cubV c₂ q₂) (fun x x' y => GlobalTheory.T.weilComparisonGenerator_additive_first_variable hG S P₀ P₁ P₂ f₁ g₁ f₂ g₂ _ _ c₁ _ _ c₂ u hu hn T' z J hJ x x' y) (fun x y y' => GlobalTheory.T …`. Rewrite `a`, `b` using `[e₁, e₂]`. Simplify using `only [Category.assoc] at a b`.
+
+Establish `h` using `he T' ρ z J₁ hJ₁`. Rewrite `h` using `[a, b, ← _root_.mul_assoc]`. Conclude with `mul_right_cancel h`.
+-/
 theorem isRatio_cmp (hG : GlobalFnsSt) [Nonempty P₁.A.left] [Nonempty P₂.A.left] (f₁ g₁ : P₀.A ⟶ P₁.A)
     (f₂ g₂ : P₀.A ⟶ P₂.A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂] [IsMonHom g₂]
     {r₁ : LB.Gen (P₁.L.pull (eSec P₁.A))} {hr₁ : r₁.IsGen} (c₁ : CubicalStr P₁.A ⟨P₁.L, r₁, P₁.isLB, hr₁⟩)
@@ -96,6 +118,13 @@ end GlobalTheory.Mum.Two.WeilCmp
 
 open GlobalTheory.Mum.Two.WeilCmp in
 
+/- English proof (translation)
+Introduce `S _ P₀ P₁ P₂ f₁ g₁ f₂ g₂ _ _ _ _ hw F _ p k x y hx hy c`. Establish `hL` using `GlobalTheory.allSixLaws.1`. Use `haveI : Nonempty P₁.A.left := ⟨(x ≫ f₁).left (⊥ : PrimeSpectrum F)⟩`. Use `haveI : Nonempty P₂.A.left := ⟨(x ≫ f₂).left (⊥ : PrimeSpectrum F)⟩`. Take `⟨r₁, hr₁, ⟨c₁⟩⟩` from `PolAV_exists_cubical hL.cube P₁`.
+
+Take `⟨r₂, hr₂, ⟨c₂⟩⟩` from `PolAV_exists_cubical hL.cube P₂`. Take `⟨u₀, hu₀⟩` from `GlobalTheory.T.exists_weilComparisonGenerator_of_lambdaBundleIso S P₀ P₁ P₂ f₁ g₁ f₂ g₂ hw`. Take `⟨u, hu, hn⟩` from `GlobalTheory.T.exists_weilComparisonGenerator_normalised_zeroSection S P₀ P₁ P₂ f₁ g₁ f₂ g₂ u₀ hu₀`. Establish `hx₁ : (x ≫ f₁) ^ k = 1` using `by rw [← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hy₁ : (y ≫ g₁) ^ k = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`.
+
+Establish `hx₂ : (x ≫ f₂) ^ k = 1` using `by rw [← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hy₂ : (y ≫ g₂) ^ k = 1` using `by rw [← MonObj.pow_comp, hy, MonObj.one_comp]`. Take `⟨e₀, he₀⟩` from `WeilCube.exists_isRatio c₁ k (x ≫ f₁) (y ≫ g₁) hx₁ hy₁`. Establish `he₂` using `isRatio_cmp P₀ P₁ P₂ hL.globalFns f₁ g₁ f₂ g₂ c₁ c₂ u hu hn hx hy he₀`. Conclude with `(WeilCube.weilIs_iff c₁ hL.globalFns P₁.isAb hx₁ hy₁ he₀ c).trans (WeilCube.weilIs_iff c₂ hL.globalFns P₂.isAb hx₂ hy₂ he₂ c).symm`.
+-/
 theorem GlobalTheory.Mum.Two.weilIs_iff_of_lbIso : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P₀ P₁ P₂ : PolAV S) (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A), IsMonHom f₁ → IsMonHom g₁ → IsMonHom f₂ → IsMonHom g₂ → LBIso (cubeLB P₁.A ![fst P₀.A P₀.A ≫ f₁, snd P₀.A P₀.A ≫ g₁] P₁.L) (cubeLB P₂.A ![fst P₀.A P₀.A ≫ f₂, snd P₀.A P₀.A ≫ g₂] P₂.L) → ∀ (F : Type) [Field F] (p : Sp F ⟶ S) (k : ℕ) (x y : Over.mk p ⟶ P₀.A), x ^ k = 1 → y ^ k = 1 → ∀ c, WeilIs P₁.A P₁.L k (x ≫ f₁) (y ≫ g₁) c ↔ WeilIs P₂.A P₂.L k (x ≫ f₂) (y ≫ g₂) c := by
   intro S _ P₀ P₁ P₂ f₁ g₁ f₂ g₂ _ _ _ _ hw F _ p k x y hx hy c
   have hL := GlobalTheory.allSixLaws.1

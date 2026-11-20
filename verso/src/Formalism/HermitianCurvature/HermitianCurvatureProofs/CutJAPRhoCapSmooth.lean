@@ -29,6 +29,9 @@ def ecL (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (h
   map_add' Z Z' := (elementary_lie_elements Wp k r z π hπ Z.1 Z'.1 Z.2 Z'.2).1.2
   map_smul' c Z := ((elementary_lie_elements Wp k r z π hπ Z.1 Z.1 Z.2 Z.2).2.1 c).2
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons T l ih`. Simplify using `only [List.map_cons, List.foldr_cons, ContinuousLinearMap.comp_apply, ih]`.
+-/
 theorem foldr_apply (l : List (Wp →L[ℂ] Wp)) (v : Wp) :
     List.foldr (fun (T : Wp → Wp) h => T h) v (List.map (fun T : Wp →L[ℂ] Wp => (⇑T : Wp → Wp)) l) =
       (l.foldr (fun (T acc : Wp →L[ℂ] Wp) => T.comp acc) 1) v := by
@@ -37,6 +40,11 @@ theorem foldr_apply (l : List (Wp →L[ℂ] Wp)) (v : Wp) :
   | cons T l ih =>
     simp only [List.map_cons, List.foldr_cons, ContinuousLinearMap.comp_apply, ih]
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : (Wp →L[ℂ] Wp) × (Wp →L[ℂ] Wp) => p.1.comp p.2)` using `(isBoundedBilinearMap_comp (𝕜 := ℂ) (E := Wp) (F := Wp) (G := Wp)).contDiff.restrict_scalars ℝ`. Proceed by induction on `l with`. Consider the case `nil => simpa using contDiff_const`. Consider the case `cons f l ih`. Establish `hf` using `h f (List.mem_cons_self ..)`.
+
+Establish `hl` using `ih fun g hg => h g (List.mem_cons_of_mem _ hg)`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `hc.comp (hf.prodMk hl)`.
+-/
 theorem foldr_contDiff {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] (l : List (X → (Wp →L[ℂ] Wp)))
     (h : ∀ f ∈ l, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (l.map fun f => f x).foldr (fun (T acc : Wp →L[ℂ] Wp) => T.comp acc) 1) := by
@@ -51,6 +59,9 @@ theorem foldr_contDiff {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] (l
     simp only [List.map_cons, List.foldr_cons]
     exact hc.comp (hf.prodMk hl)
 
+/- English proof (translation)
+Unfold `unitB`. Use `contDiff_pi.2 fun p => contDiff_pi.2 fun q => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, herm, dotProduct, Pi.star_apply]`. Use `ContDiff.mul (contDiff_apply_apply ℝ ℂ a p) (ContDiff.sum fun i _ => ?_)` and prove the remaining obligations. Conclude with `(Complex.conjCLE.contDiff.comp (contDiff_apply_apply ℝ ℂ b i)).mul contDiff_const`.
+-/
 theorem unitB_contDiff {m : ℕ} (a b : Fin m) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Bs : Fin m → Fin (2 * r + k + 1) → ℂ => unitB (Hpk k r) Bs a b) := by
   unfold unitB
@@ -62,6 +73,21 @@ theorem unitB_contDiff {m : ℕ} (a b : Fin m) :
 end CapSm
 
 open CapSm in
+/- English proof (translation)
+Introduce `Wp _ _ _ k r m z π hπ w`. Take `⟨G', hG'⟩` from `Submodule.exists_isCompl (glW k r z π hπ)`. Set `Lext : Mx k r →ₗ[ℂ] (Wp →L[ℂ] Wp)` to `(ecL z π hπ).comp (Submodule.linearProjOfIsCompl _ _ hG')`. Establish `hLext : ∀ Z (hZ : Qr.InGlW k r z Z), Lext Z = QrD.ecOp π Z`. Introduce `Z hZ`.
+
+Establish `hmem : Z ∈ glW k r z π hπ` using `hZ`. Establish `e` using `Submodule.linearProjOfIsCompl_apply_left hG' ⟨Z, hmem⟩`. Use `show ecL z π hπ (Submodule.linearProjOfIsCompl _ _ hG' Z) = _`. Use `erw [e]`. Both sides reduce to the same expression.
+
+Set `Lc : Mx k r →L[ℂ] (Wp →L[ℂ] Wp)` to `LinearMap.toContinuousLinearMap Lext`. Establish `hLc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Z : Mx k r => Lc Z)` using `(Lc.restrictScalars ℝ).contDiff`. Set `T : Equiv.Perm (Fin m) → Fin m → (Fin m → Fin (2 * r + k + 1) → ℂ) → (Wp →L[ℂ] Wp)` to `fun σ t Bs => (if σ t = t then (w - ((t : ℕ) : ℂ)) • (1 : Wp →L[ℂ] Wp) else 0) + Lc (unitB (Hpk k r) Bs (σ t) t)`. Use `⟨fun Bs => ∑ σ : Equiv.Perm (Fin m), (((Equiv.Perm.sign σ : ℤ) : ℂ)) • ((List.ofFn fun t => T σ t).map fun f => f Bs).foldr (fun (T acc : Wp →L[ℂ] Wp) => T.comp acc) 1, ?_, ?_⟩` and prove the remaining obligations. Use `ContDiff.sum fun σ _ => ContDiff.const_smul _ ?_` and prove the remaining obligations.
+
+Use `foldr_contDiff _ fun f hf => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `contDiff_const.add (hLc.comp (unitB_contDiff _ _))`. Introduce `Bs hB v`. Unfold `capRep qmF`.
+
+Rewrite using `[ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ← foldr_apply]`. Use `congr 2`. Simplify using `only [List.map_ofFn]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t y`. Establish `hl` using `QrD.frame_lie hB (σ t) t`. Establish `hgl : Qr.InGlW k r z (unitB (Hpk k r) Bs (σ t) t)` using `hl`. Simplify using `only [Function.comp_apply, T, id]`.
+
+Rewrite using `[ContinuousLinearMap.add_apply, QrD.ecRep_eq hπ.1 hπ.2 hl.1 hl.2 (k := k) (r := r), ← hLext _ hgl]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem capacity_smoothness_holds : CapSmooth := by
   intro Wp _ _ _ k r m z π hπ w
   obtain ⟨G', hG'⟩ := Submodule.exists_isCompl (glW k r z π hπ)

@@ -67,6 +67,9 @@ def LamInputsClaim : Prop :=
       WeightFamilies.PP0v D large₂ C A * (1 + Real.log (n * wL.size)) ≤ P →
       LamInputs h j hG fn yP large₂ C A P wL (fun k => (w k).1) n
 
+/- English proof (translation)
+Take `⟨F', -, ⟨h1, -⟩, h2⟩` from `H F hF Z hZ`. Use `lt_of_lt_of_le (lt_of_le_of_ne ((recB h).supN_nonneg j ka σ F') fun h0 => hZ ?_) (h2 σ)` and prove the remaining obligations. Establish `: F' = 0` using `((recB h).supN_eq_zero j ka σ F').1 h0.symm`. Rewrite using `[← h1, this]`. Conclude with `evalAt_zero _ _ _`.
+-/
 theorem RestrDensity.genSup_pos {h : LawsCore T} {j : ℕ} {hG : GenFrEx (T.Q.Xo j) T.Q.c} {fn : FrameNorms T j}
     {yP : GenericFrames T j} {ka : WeightFamilies.Wt D j} (H : RestrDensity h j hG fn yP ka) (F : (recB h).Cusp j ka)
     (hF : F ∈ (recB h).Mlat j ka) (Z : Comp (T.Q.Xo j) T.Q.c) (hZ : evC hG Z F.1 ≠ 0) (σ : T.Q.c.F →+* ℂ) :

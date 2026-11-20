@@ -4,6 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
+/- English proof (translation)
+Introduce `R eta Ct X Exc heta hle hX hcard`. Establish `hCt : 0 < Ct` using `lt_of_lt_of_le heta hle`. Establish `hX0 : 0 < X` using `by linarith`. Establish `hB : 1 ≤ Ct / eta` using `(one_le_div heta).mpr hle`. Take `⟨y, hy1, hy2, hy3⟩` from `UpperTheory.V.Win.window1 R (Ct / eta) (Real.log X) (Exc.image fun e : ℕ => Real.log (e : ℝ) / Ct) hB (Real.log_pos hX) (le_trans Finset.card_image_le hcard)`.
+
+Establish `hsq : Real.exp y ^ (2 : ℝ) = Real.exp (2 * y)`. Rewrite using `[← Real.exp_mul, mul_comm]`. Use `⟨Real.exp y, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos hX0, Real.exp_le_exp, mul_one_div]`. Conclude with `hy1`.
+
+Rewrite using `[hsq, ← Real.le_log_iff_exp_le hX0]`. Conclude with `hy2`. Introduce `x hx1 hx2 e he hex`. Establish `hx0 : 0 < x` using `lt_of_lt_of_le (Real.exp_pos y) hx1`. Break down `Nat.eq_zero_or_pos e with h0 | hpos` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using `using (Real.rpow_pos_of_pos hx0 eta).le`. Establish `he0 : (0 : ℝ) < e` using `by exact_mod_cast hpos`. Establish `hu1 : y ≤ Real.log x` using `(Real.le_log_iff_exp_le hx0).mpr hx1`. Establish `hu2 : Real.log x ≤ 2 * y`.
+
+Rewrite using `[Real.log_le_iff_le_exp hx0, ← hsq]`. Conclude with `hx2`. Establish `hu3 : Real.log (e : ℝ) / Ct ≤ Real.log x`. Rewrite using `[div_le_iff₀ hCt, mul_comm, ← Real.log_rpow hx0]`. Conclude with `Real.log_le_log he0 hex`.
+
+Establish `h` using `hy3 _ (Finset.mem_image_of_mem _ he) (Real.log x) hu1 hu2 hu3`. Establish `h' : Ct / eta * (Real.log (e : ℝ) / Ct) = Real.log (e : ℝ) / eta`. Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[h', div_le_iff₀ heta]`. Rewrite using `[Real.rpow_def_of_pos hx0, ← Real.log_le_iff_le_exp he0]`.
+
+Conclude with `h`.
+-/
 theorem UpperTheory.V.Win.window :
     ∀ (R : ℕ) (eta Ct X : ℝ) (Exc : Finset ℕ), 0 < eta → eta ≤ Ct → 1 < X → Exc.card ≤ R →
       ∃ Y : ℝ, InRange (2 ^ (R + 2) * (Ct / eta) ^ R) X Y ∧ ∀ x : ℝ, Y ≤ x → x ≤ Y ^ (2 : ℝ) → Good eta Ct Exc x := by

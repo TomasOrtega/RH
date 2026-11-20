@@ -8,6 +8,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ModifGeomConn
 
+/- English proof (translation)
+Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Establish `: IrreducibleSpace ↥(Limits.pullback f x)` using `GeometricallyIrreducible.geometrically_irreducibleSpace _ _ _ (.of_hasPullback _ _)`. Use `infer_instance`.
+-/
 theorem geometricallyConnected_of_geometricallyIrreducible {X Y : Scheme.{0}} (f : X ⟶ Y)
     [GeometricallyIrreducible f] : GeometricallyConnected f := by
   refine ⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩
@@ -15,6 +18,13 @@ theorem geometricallyConnected_of_geometricallyIrreducible {X Y : Scheme.{0}} (f
     GeometricallyIrreducible.geometrically_irreducibleSpace _ _ _ (.of_hasPullback _ _)
   infer_instance
 
+/- English proof (translation)
+Introduce `F _ X _ sX n _ U M _ _ hU`. Establish `: Smooth sX` using `SmoothOfRelativeDimension.smooth n sX`. Establish `: GeometricallyIntegral sX` using `GlobalTheory.geometricallyIntegral_of_smooth sX`. Take `⟨x, hx⟩` from `hU`. Establish `: Surjective (U.ι ≫ sX)` using `⟨fun s => ⟨⟨x, hx⟩, Subsingleton.elim _ _⟩⟩`.
+
+Establish `h2 : GeometricallyConnected (U.ι ≫ sX)` using `geometricallyConnected_of_geometricallyIrreducible _`. Use `M.iso` as an intermediate fact. Establish `h3 : GeometricallyConnected (M.opn.ι ≫ M.str)`. Establish `e : M.opn.ι ≫ M.str = (M.σ ∣_ U) ≫ (U.ι ≫ sX)`. Rewrite using `[Modif.str, ← Category.assoc, ← Category.assoc, morphismRestrict_ι]`.
+
+Rewrite using `[e]`. Rewrite `h2`, the goal using `[GeometricallyConnected.eq_geometrically]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso _ _ _).2 h2`. Conclude with `GlobalTheory.CompactVar.geometricallyConnected_of_denseRange M.opn.ι M.str (by rw [Scheme.Opens.range_ι]; exact M.dense)`.
+-/
 theorem geometricallyConnected_modif : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] (sX : X ⟶ Sp F) (n : ℕ) [SmoothOfRelativeDimension n sX] (U : X.Opens) (M : Modif sX U n) [IsIntegral M.X] [GeometricallyConnected sX], (U : Set X).Nonempty → GeometricallyConnected M.str := by
   intro F _ X _ sX n _ U M _ _ hU
   have : Smooth sX := SmoothOfRelativeDimension.smooth n sX

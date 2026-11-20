@@ -3,6 +3,9 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n r u ψ hψ X g`. Establish `h : ∀ y, ψ.1 (unipGL X * y) = ψ.1 y` using `hψ X`. Establish `e : sliceL (unipGL X * g) ψ = sliceL g ψ` using `Subtype.ext (funext fun x => by simp only [coe_sliceL, archSlice_apply, mul_assoc, h])`. Simplify using `only [coe_uAction, uActFun, e]`.
+-/
 theorem UpperTheory.uAction_mem_unipotentInvariant :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (u : UEnv K n), ∀ ψ ∈ NInv K n r, uAction u ψ ∈ NInv K n r := by
   intro K _ _ n r u ψ hψ X g

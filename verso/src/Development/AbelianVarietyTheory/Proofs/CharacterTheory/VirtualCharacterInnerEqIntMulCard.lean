@@ -8,6 +8,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(_root_.GlobalTheory.BI.pair_add_nat_pos_symm ℂ ℂ G).2.1 x y hx hy`. Unfold `_root_.GlobalTheory.BI.pair at hn`. Rewrite `hn` using `[finsum_eq_sum_of_fintype]`. Establish `hc : (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn, inv_mul_eq_div, div_mul_cancel₀ _ hc]`.
+-/
 private lemma exists_nat_sum_mul_apply_inv_eq_mul_card (G : Type) [Group G] [Fintype G] (x y : G → ℂ)
     (hx : _root_.GlobalTheory.BI.IsChar ℂ ℂ x) (hy : _root_.GlobalTheory.BI.IsChar ℂ ℂ y) :
     ∃ n : ℕ, ∑ g, x g * y g⁻¹ = n * (Nat.card G : ℂ) := by
@@ -20,6 +25,13 @@ private lemma exists_nat_sum_mul_apply_inv_eq_mul_card (G : Type) [Group G] [Fin
 
 open Polynomial in
 
+/- English proof (translation)
+Introduce `G _ _ a b ha hb`. Use `haveI := Fintype.ofFinite G`. Establish `hstar : ∀ g, star (b g) = b g⁻¹` using `_root_.GlobalTheory.CuspGL.star_virt_eq_inv G b hb`. Rewrite using `[finsum_eq_sum_of_fintype]`. Repeatedly rewrite using `[hstar]`.
+
+Take `⟨a₁, a₂, ha₁, ha₂, rfl⟩` from `(_root_.GlobalTheory.BI.mem_virt_iff_sub ℂ ℂ G a).mp ha`. Take `⟨b₁, b₂, hb₁, hb₂, rfl⟩` from `(_root_.GlobalTheory.BI.mem_virt_iff_sub ℂ ℂ G b).mp hb`. Take `⟨n₁₁, h₁₁⟩` from `exists_nat_sum_mul_apply_inv_eq_mul_card G a₁ b₁ ha₁ hb₁`. Take `⟨n₁₂, h₁₂⟩` from `exists_nat_sum_mul_apply_inv_eq_mul_card G a₁ b₂ ha₁ hb₂`. Take `⟨n₂₁, h₂₁⟩` from `exists_nat_sum_mul_apply_inv_eq_mul_card G a₂ b₁ ha₂ hb₁`.
+
+Take `⟨n₂₂, h₂₂⟩` from `exists_nat_sum_mul_apply_inv_eq_mul_card G a₂ b₂ ha₂ hb₂`. Use `⟨n₁₁ - n₁₂ - n₂₁ + n₂₂, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, sub_mul, mul_sub, Finset.sum_sub_distrib, h₁₁, h₁₂, h₂₁, h₂₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.BI.finsum_mul_star_virt_int : ∀ (G : Type) [Group G] [Finite G] (a b : G → ℂ),
     a ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G → b ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G →
     ∃ m : ℤ, ∑ᶠ g, a g * star (b g) = m * (Nat.card G : ℂ) := by

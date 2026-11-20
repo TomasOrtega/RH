@@ -17,10 +17,16 @@ namespace GlobalTheory.RescaleBimult
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+-/
 theorem pt_add (D : DegPre R) (a b : D.X) :
     toUnit (TK R) ≫ D.c (a + b) = (toUnit (TK R) ≫ D.c a) * (toUnit (TK R) ≫ D.c b) := by
   rw [D.c_add]; exact MonObj.comp_mul _ _ _
 
+/- English proof (translation)
+Establish `hs : Subsingleton (TK R).left` using `(inferInstance : Subsingleton (PrimeSpectrum (FractionRing R)))`. Establish `e : unitOn u = unitOn v` using `unit_ext fun x _ => by rw [Subsingleton.elim x z]; exact h`. Conclude with `Units.map_injective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).1 e`.
+-/
 theorem gm_unitOn_inj {u v : (FractionRing R)ˣ} (z : (TK R).left)
     (h : gm (𝟙 (TK R).left) z ⊤ (unitOn u) = gm (𝟙 (TK R).left) z ⊤ (unitOn v)) : u = v := by
   have hs : Subsingleton (TK R).left := (inferInstance : Subsingleton (PrimeSpectrum (FractionRing R)))
@@ -28,18 +34,35 @@ theorem gm_unitOn_inj {u v : (FractionRing R)ˣ} (z : (TK R).left)
   exact Units.map_injective (ConcreteCategory.bijective_of_isIso
     (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv).1 e
 
+/- English proof (translation)
+The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`.
+-/
 theorem val_tau (D : DegPre R) (a b : D.X) {z : (TK R).left} {J} (hJ : Good D.P.L z J) :
     val (D.tau a b) (𝟙 _) z J = val (D.psi (a + b)) (𝟙 _) z J * (val (D.psi a) (𝟙 _) z J)⁻¹ *
       (val (D.psi b) (𝟙 _) z J)⁻¹ * (val D.rigK (𝟙 _) z J)⁻¹ :=
   (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·)
     ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
 
+/- English proof (translation)
+Use `(val_cub D.cub (𝟙 (TK R)) hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`.
+-/
 theorem val_cub3 (D : DegPre R) (a a' b : D.X) {z : (TK R).left} {J} (hJ : Good D.P.L z J) :
     val (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 a a' b)) (𝟙 _) z J =
       cubV D.cub z J (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c a') (toUnit (TK R) ≫ D.c b) := by
   refine (val_cub D.cub (𝟙 (TK R)) hJ _ _ _).trans ?_
   rw [Category.id_comp, Category.id_comp, Category.id_comp]
 
+/- English proof (translation)
+Set `t` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (D.psi (a + a' + b)) (D.psi a)) (D.psi a')) (D.psi b)) D.rigK) (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (D.pt3 a a' b))`. Establish `ht : t.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (D.psi_gen _)) (D.psi_gen _)) (D.psi_gen _)) (DVR.pullGen_isGen _ _ _ _ D.rig_gen _)) (DVR.pullGen_isGen _ …`. Set `t'` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (D.psi (a + a')) (D.psi (a + b))) (D.psi (a' + b))`. Establish `ht' : t'.IsGen` using `DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen _) (D.psi_gen _)) (D.psi_gen _)`. Take `⟨c, hc, H⟩` from `DVR.TWM.exists_ratio (F := FractionRing R) D.P.isLB t ht t' ht' (fun U _ h => by`.
+
+Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) rfl (prod_cub (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c a') (toUnit (TK R) ≫ D.c b) h))).trans ?_` and prove the remaining obligations. Rewrite using `[← pt_add, ← pt_add, ← pt_add, ← pt_add]`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, zpow_neg, zpow_one]`. Establish `e : (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TK R ⟶ D.P.A).left` using `rfl`. Use `erw [e]`.
+
+Simplify using `only [ptK]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use `⟨Units.mk0 c hc, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `H _ (𝟙 _) z J hJ`. Establish `e₁ : val t (𝟙 _) z J = val (D.psi (a + a' + b)) (𝟙 _) z J * val (D.psi a) (𝟙 _) z J * val (D.psi a') (𝟙 _) z J * val (D.psi b) (𝟙 _) z J * val D.rigK (𝟙 _) z J * cubV D.cub z J (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c a') (toUnit (TK R) ≫ D.c b)` using `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_mul hJ _ _ _) rfl)) rfl)) rfl)) (val_cub3 D a a' b hJ))`. Establish `e₂ : val t' (𝟙 _) z J = val (D.psi (a + a')) (𝟙 _) z J * val (D.psi (a + b)) (𝟙 _) z J * val (D.psi (a' + b)) (𝟙 _) z J` using `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_mul hJ _ _ _) rfl)`. Rewrite using `[← e₁, ← e₂]`. Use `Units.ext (e.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, ← gs_unit _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem exists_defect (D : DegPre R) (a a' b : D.X) : ∃ k : (FractionRing R)ˣ, ∀ (z : (TK R).left) J, Good D.P.L z J →
     val (D.psi (a + a' + b)) (𝟙 _) z J * val (D.psi a) (𝟙 _) z J * val (D.psi a') (𝟙 _) z J * val (D.psi b) (𝟙 _) z J *
       val D.rigK (𝟙 _) z J *
@@ -82,6 +105,25 @@ theorem exists_defect (D : DegPre R) (a a' b : D.X) : ∃ k : (FractionRing R)ˣ
   rw [Units.val_mul, ← gs_unit _ z ⊤ trivial]
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ D`. Use `choose F hF using exists_defect D`. Set `z₀ : (TK R).left` to `(⊥ : PrimeSpectrum (FractionRing R))`. Take `⟨J₀, hJ₀⟩` from `GlobalTheory.UU.exists_good_pt D.P.isLB z₀`. Establish `C` using `isCub_cubV D.cub hJ₀`.
+
+Establish `um : ∀ u v : (FractionRing R)ˣ, unitOn (u * v) = unitOn u * unitOn v` using `fun u v => map_mul _ _ _`. Establish `ui : ∀ u : (FractionRing R)ˣ, unitOn u⁻¹ = (unitOn u)⁻¹` using `fun u => map_inv _ _`. Establish `E` using `fun {z : (TK R).left} {p q : ((TK R).left.presheaf.stalk z)ˣ} (e : p = q) => congrArg Additive.ofMul e`. Take `⟨g, hg⟩` from `GlobalTheory.symm_cubical_cocycle_isThirdDifference D.X (FractionRing R)ˣ F (fun a b c => gm_unitOn_inj z₀ (by`. Establish `h₁` using `E (hF a b c z₀ J₀ hJ₀)`.
+
+Establish `h₂` using `E (hF b a c z₀ J₀ hJ₀)`. Rewrite `h₂` using `[add_comm b a, C.s01]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at h₁ h₂`. Take the linear combination `(norm := abel) h₂ - h₁))`.
+
+Use the proof step `(fun a b c => gm_unitOn_inj z₀ (by`. Establish `h₁` using `E (hF a b c z₀ J₀ hJ₀)`. Establish `h₂` using `E (hF a c b z₀ J₀ hJ₀)`. Rewrite `h₂` using `[add_comm c b, add_right_comm a c b, C.s12]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul] at h₁ h₂`. Take the linear combination `(norm := abel) h₂ - h₁))`. Use the proof step `(fun x x' x'' y => gm_unitOn_inj z₀ (by`. Establish `h₁` using `E (hF (x + x') x'' y z₀ J₀ hJ₀)`. Establish `h₂` using `E (hF x x' y z₀ J₀ hJ₀)`.
+
+Establish `h₃` using `E (hF x (x' + x'') y z₀ J₀ hJ₀)`. Establish `h₄` using `E (hF x' x'' y z₀ J₀ hJ₀)`. Establish `h₅` using `E (C.coc (toUnit (TK R) ≫ D.c x) (toUnit (TK R) ≫ D.c x') (toUnit (TK R) ≫ D.c x'') (toUnit (TK R) ≫ D.c y))`. Rewrite `h₅` using `[← pt_add, ← pt_add]`. Rewrite `h₃` using `[← add_assoc x x' x'']`.
+
+Rewrite using `[um, um, map_mul, map_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at h₁ h₂ h₃ h₄ h₅ ⊢`. Take the linear combination `(norm := abel) h₃ + h₄ - h₁ - h₂ + h₅))`. Use `⟨fun x => (g x)⁻¹, fun (a a' b : D.X) => corr_of_val D.P.isLB fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `hp : ∀ x : D.X, val ((GlobalTheory.PolDeg.rescale D fun x => (g x)⁻¹).psi x) (𝟙 _) z J = (gm (𝟙 (TK R).left) z ⊤ (unitOn (g x)))⁻¹ * val (D.psi x) (𝟙 _) z J` using `fun x => (GlobalTheory.UU.val_scaleGen _ _ _ hJ).trans (by rw [ui, map_inv]; rfl)`. Establish `ht : ∀ x y : D.X, val ((GlobalTheory.PolDeg.rescale D fun x => (g x)⁻¹).tau x y) (𝟙 _) z J = (gm (𝟙 (TK R).left) z ⊤ (unitOn (g (x + y))))⁻¹ * val (D.psi (x + y)) (𝟙 _) z J * ((gm (𝟙 (TK R).left) z ⊤ (unitOn (g x)))⁻¹ * val (D.psi x) (𝟙 _) z J)⁻¹ * ((gm (𝟙 (TK R).left) z ⊤ (unitO …` using `fun x y => (val_tau (GlobalTheory.PolDeg.rescale D fun x => (g x)⁻¹) x y hJ).trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (hp (x + y)) (congrArg (·⁻¹) (hp x))) (congrArg (·⁻¹) (hp y))) rfl)`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (ht (a + a') b) (val_cub3 D a a' b hJ))).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (ht a b) (ht a' b))).symm)` and prove the remaining obligations. Establish `h₁` using `E (hF a a' b z J hJ)`. Establish `h₂` using `congrArg (fun u => gm (𝟙 (TK R).left) z ⊤ (unitOn u)) (hg a a' b)`.
+
+Simplify using `only [um, map_mul] at h₂`. Establish `h₃` using `E h₂`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at h₁ h₃ ⊢`. Take the linear combination `(norm := abel) h₁ + h₃`.
+-/
 theorem exists_rescale_tauBimult : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R),
     ∃ g : D.X → (FractionRing R)ˣ, (GlobalTheory.PolDeg.rescale D g).TauBimult := by
   intro R _ _ D

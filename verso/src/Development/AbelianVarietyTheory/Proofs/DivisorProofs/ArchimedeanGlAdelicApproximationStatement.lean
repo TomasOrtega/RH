@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.adelic_gl_prescribed_infinite | exact GlobalTheory.adelic_gl_prescribed_infinite | (intros; apply GlobalTheory.adelic_gl_prescribed_infinite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_gl_adelic_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m : ℕ)
     (g : ∀ w : InfinitePlace F, GL (Fin m) (w.Completion ⊗[F] E)),
     ∃ a₀ : GL (Fin m) (AF F ⊗[F] E), ∀ w, Formalism.UG.bc (compInf F E w) a₀ = g w := by

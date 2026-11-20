@@ -15,6 +15,9 @@ namespace P_lamMul
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hxy : x * y ≠ 0` using `mul_ne_zero hx hy`. Unfold `chk`. Rewrite using `[dif_neg hxy, dif_neg hx, dif_neg hy]`. Establish `e : Units.mk0 (x * y) hxy = Units.mk0 x hx * Units.mk0 y hy` using `Units.ext rfl`. Rewrite using `[e, map_mul, Units.val_mul]`.
+-/
 theorem chk_mul (ψ : kˣ →* ℂˣ) {x y : k} (hx : x ≠ 0) (hy : y ≠ 0) :
     chk ψ (x * y) = chk ψ x * chk ψ y := by
   have hxy : x * y ≠ 0 := mul_ne_zero hx hy
@@ -23,9 +26,15 @@ theorem chk_mul (ψ : kˣ →* ℂˣ) {x y : k} (hx : x ≠ 0) (hy : y ≠ 0) :
   have e : Units.mk0 (x * y) hxy = Units.mk0 x hx * Units.mk0 y hy := Units.ext rfl
   rw [e, map_mul, Units.val_mul]
 
+/- English proof (translation)
+The claim follows from `(u.isUnit.map (algebraMap 𝒪[k] k)).ne_zero`.
+-/
 theorem algebraMap_unit_ne_zero (u : 𝒪[k]ˣ) : algebraMap 𝒪[k] k (u : 𝒪[k]) ≠ 0 :=
   (u.isUnit.map (algebraMap 𝒪[k] k)).ne_zero
 
+/- English proof (translation)
+Unfold `chk`. Rewrite using `[dif_neg (algebraMap_unit_ne_zero u)]`. Establish `e : Units.mk0 (algebraMap 𝒪[k] k (u : 𝒪[k])) (algebraMap_unit_ne_zero u) = unitIncl k u` using `Units.ext rfl`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem chk_unit (ψ : kˣ →* ℂˣ) (u : 𝒪[k]ˣ) :
     chk ψ (algebraMap 𝒪[k] k (u : 𝒪[k])) = ((res ψ u : ℂˣ) : ℂ) := by
   unfold chk
@@ -37,12 +46,20 @@ theorem chk_unit (ψ : kˣ →* ℂˣ) (u : 𝒪[k]ˣ) :
 
 variable {n : ℕ} (G : Grp k n)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hU hB g hg a`. Rewrite using `[hu]`. Conclude with `algebraMap_unit_ne_zero u`.
+-/
 theorem Δ_ne_zero (hU : ModulusOnUnitsProp G) (hB : CompactConductorBoundProp G) {g : GL (Fin n) k} (hg : g ∈ G.JSet)
     (a : Fin G.s) : G.Δ a g ≠ 0 := by
   obtain ⟨u, hu⟩ := hU hB g hg a
   rw [hu]
   exact algebraMap_unit_ne_zero u
 
+/- English proof (translation)
+Establish `hall : ∀ i : Fin n, G.bl i ≤ a`. Introduce `i`. Use `(G.bl i).isLt` as an intermediate fact. Rewrite using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Δ`. Conclude with `Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv hall) _`.
+-/
 theorem Δ_last (a : Fin G.s) (ha : ¬ (a : ℕ) + 1 < G.s) (g : GL (Fin n) k) :
     G.Δ a g = (g : Matrix (Fin n) (Fin n) k).det := by
   have hall : ∀ i : Fin n, G.bl i ≤ a := by
@@ -53,6 +70,13 @@ theorem Δ_last (a : Fin G.s) (ha : ¬ (a : ℕ) + 1 < G.s) (g : GL (Fin n) k) :
   unfold Δ
   exact Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv hall) _
 
+/- English proof (translation)
+Establish `hgz` using `Δ_ne_zero G hU hB hg a`. Establish `hhz` using `Δ_ne_zero G hU hB hh a`. Distinguish the cases in `ha : (a : ℕ) + 1 < G.s`. Take `⟨u, hu1, hu⟩` from `hM hC hB g hg h hh a ha`. Establish `hn : G.μnext a = G.μ ⟨a + 1, ha⟩` using `by unfold μnext; rw [dif_pos ha]`.
+
+Establish `hres : ((res (G.μ a / G.μnext a) u : ℂˣ) : ℂ) = 1`. Rewrite using `[hn, hB.2.2.2 a ⟨a + 1, ha⟩ u hu1, Units.val_one]`. Rewrite using `[hu, chk_mul _ (mul_ne_zero hgz hhz) (algebraMap_unit_ne_zero u), chk_unit, hres, mul_one, chk_mul _ hgz hhz]`. Rewrite using `[Δ_last G a ha, Δ_last G a ha, Δ_last G a ha, Units.val_mul, Matrix.det_mul]`. Rewrite using `[← Δ_last G a ha g, ← Δ_last G a ha h]`.
+
+Conclude with `chk_mul _ hgz hhz`.
+-/
 theorem factor_mul (hC : CompactConductorBasicProp (k := k)) (hU : ModulusOnUnitsProp G) (hM : ModulusMultiplicativeProp G) (hB : CompactConductorBoundProp G)
     {g h : GL (Fin n) k} (hg : g ∈ G.JSet) (hh : h ∈ G.JSet) (a : Fin G.s) :
     chk (G.μ a / G.μnext a) (G.Δ a (g * h)) =
@@ -70,6 +94,9 @@ theorem factor_mul (hC : CompactConductorBasicProp (k := k)) (hU : ModulusOnUnit
     rw [← Δ_last G a ha g, ← Δ_last G a ha h]
     exact chk_mul _ hgz hhz
 
+/- English proof (translation)
+Unfold `lam`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun a _ => factor_mul G hC hU hM hB hg hh a`.
+-/
 theorem lam_mul_of (hC : CompactConductorBasicProp (k := k)) (hU : ModulusOnUnitsProp G) (hM : ModulusMultiplicativeProp G) (hB : CompactConductorBoundProp G)
     {g h : GL (Fin n) k} (hg : g ∈ G.JSet) (hh : h ∈ G.JSet) : G.lam (g * h) = G.lam g * G.lam h := by
   unfold lam
@@ -78,6 +105,9 @@ theorem lam_mul_of (hC : CompactConductorBasicProp (k := k)) (hU : ModulusOnUnit
 
 end P_lamMul
 
+/- English proof (translation)
+Introduce `hC hU hM hB g hg h hh`. Conclude with `P_lamMul.lam_mul_of G hC hU hM hB hg hh`.
+-/
 theorem step_lamMul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : LambdaMultiplicativeProp G := by
   intro hC hU hM hB g hg h hh

@@ -8,6 +8,17 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.IwConstBox
 
+/- English proof (translation)
+Take `⟨A, hA, hON, hspan, rfl⟩` from `h`. Take `⟨hσ, hcpt, -, r₀, hr₀, hlim⟩` from `GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε A d E hA hON hspan μ hμ`. Use `⟨hσ, Real.sqrt r₀, Real.sqrt_pos.2 hr₀, fun t ht htt => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `isFiniteMeasure_restrict.2 (ne_of_lt ?_)` and prove the remaining obligations. Use `lt_of_le_of_lt (measure_mono ?_) (isCompact_hsBall ε t).measure_lt_top` and prove the remaining obligations.
+
+Introduce `g hg`. Conclude with `(show nrm (uMat g - 1) < t from hg).le`. Introduce `φ hφ hsupp`. Establish `hset : {g : Formalism.REAL.UJ ε | nrm (uMat g - 1) < t} = {g | Formalism.REAL.hs (uMat g - 1) < t ^ 2}`. Use extensionality with `g`.
+
+Conclude with `Real.sqrt_lt' ht`. Establish `h1 : 0 < t ^ 2` using `by positivity`. Establish `h2 : t ^ 2 ≤ r₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hset]`.
+
+Use `(hlim (t ^ 2) h1 h2 φ hφ hsupp).congr (fun r => ?_)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `g`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [crd, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]`.
+-/
 theorem local_vag {n d : ℕ} {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ ε)} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
     (h : IsCut ε S E) (μ : Measure (Formalism.REAL.UJ ε)) (hμ : IsGaugeSub S d μ) :
     SigmaFinite μ ∧ ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
@@ -39,6 +50,17 @@ theorem local_vag {n d : ℕ} {ε : Fin n → Bool} {S : Set (Formalism.REAL.UJ 
     funext i
     simp only [crd, Pi.smul_apply, smul_eq_mul, div_eq_inv_mul]
 
+/- English proof (translation)
+Introduce `n ε SN SM MainNotions dN dM dK dL EN EM EK EL hN hM hK hgau μN μM μK hμN hμM hμK`. Take `⟨hσN, tN, htN, hN'⟩` from `local_vag hN μN hμN`. Take `⟨hσM, tM, htM, hM'⟩` from `local_vag hM μM hμM`. Take `⟨hσK, tK, htK, hK'⟩` from `local_vag hK μK hμK`. Use `⟨min tN (min tM tK), lt_min htN (lt_min htM htK), fun t ht htt => ?_⟩` and prove the remaining obligations.
+
+Take `⟨fN, vN⟩` from `hN' t ht (htt.trans (min_le_left _ _))`. Take `⟨fM, vM⟩` from `hM' t ht (htt.trans ((min_le_right _ _).trans (min_le_left _ _)))`. Take `⟨fK, vK⟩` from `hK' t ht (htt.trans ((min_le_right _ _).trans (min_le_right _ _)))`. Use `set s : Set (Formalism.REAL.UJ ε) := {g | nrm (uMat g - 1) < t} with hs`. Establish `hsm : MeasurableSet s` using `(continuous_nrm_uMat ε).measurable measurableSet_Iio`.
+
+Establish `mc : ∀ {e : ℕ} (E : Fin e → Matrix (Fin n) (Fin n) ℂ), Measurable fun g : Formalism.REAL.UJ ε => crd E (uMat g - 1)` using `fun E => (continuous_crd_uMat ε E).measurable`. Establish `vMK` using `GlobalTheory.T.vague_limit_rescaled_measures_prod _ _ _ _ (μM.restrict s) (μK.restrict s) (fun g => crd EM (uMat g - 1)) (fun g => crd EK (uMat g - 1)) volume volume dM dK (mc EM) (mc EK) vM vK`. Establish `vNMK` using `GlobalTheory.T.vague_limit_rescaled_measures_prod _ _ _ _ (μN.restrict s) ((μM.restrict s).prod (μK.restrict s)) (fun g => crd EN (uMat g - 1)) (Prod.map (fun g => crd EM (uMat g - 1)) (fun g => crd EK (uMat g - 1))) volume (volume.prod volume) dN (dM + dK) (mc EN) (Measurable.pr …`. Establish `h2 : (volume.prod volume : Measure ((Fin dM → ℝ) × (Fin dK → ℝ))).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `h3 : (volume.prod (volume.prod volume) : Measure ((Fin dN → ℝ) × (Fin dM → ℝ) × (Fin dK → ℝ))).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`.
+
+Establish `key` using `GlobalTheory.T.tendsto_rescaled_measure_gauge_unit_body _ _ ((μN.restrict s).prod ((μM.restrict s).prod (μK.restrict s))) (Prod.map (fun g => crd EN (uMat g - 1)) (Prod.map (fun g => crd EM (uMat g - 1)) (fun g => crd EK (uMat g - 1)))) (volume.prod (volume.prod volume)) (dN + (d …`. Use `key.congr (fun r => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Measure.prod_restrict, Measure.prod_restrict, Measure.restrict_apply' (hsm.prod (hsm.prod hsm))]`. Use `congr 1`.
+
+Use extensionality with `⟨a, b, c⟩`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_prod, Prod.map_apply, hs]`. The claim follows by propositional logic.
+-/
 theorem prod_gauge_body : ∀ (n : ℕ) (ε : Fin n → Bool) (SN SM MainNotions : Set (Formalism.REAL.UJ ε)), ∀ (dN dM dK dL : ℕ) (EN : Fin dN → Matrix (Fin n) (Fin n) ℂ) (EM : Fin dM → Matrix (Fin n) (Fin n) ℂ) (EK : Fin dK → Matrix (Fin n) (Fin n) ℂ) (EL : Fin dL → Matrix (Fin n) (Fin n) ℂ), IsCut ε SN EN → IsCut ε SM EM → IsCut ε MainNotions EK → (∀ v, gau EN EM EK EL v = 0 → v = 0) → ∀ μN μM μK : Measure (Formalism.REAL.UJ ε), IsGaugeSub SN dN μN → IsGaugeSub SM dM μM → IsGaugeSub MainNotions dK μK → ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ → Filter.Tendsto (fun r : ℝ => (μN.prod (μM.prod μK)) {x | (nrm (uMat x.1 - 1) < t ∧ nrm (uMat x.2.1 - 1) < t ∧ nrm (uMat x.2.2 - 1) < t) ∧ gau EN EM EK EL (crd EN (uMat x.1 - 1), crd EM (uMat x.2.1 - 1), crd EK (uMat x.2.2 - 1)) ≤ r} / ENNReal.ofReal (r ^ (dN + (dM + dK)))) (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds (volume {v | gau EN EM EK EL v ≤ 1})) := by
   intro n ε SN SM MainNotions dN dM dK dL EN EM EK EL hN hM hK hgau μN μM μK hμN hμM hμK
   obtain ⟨hσN, tN, htN, hN'⟩ := local_vag hN μN hμN

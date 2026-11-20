@@ -6,9 +6,19 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [Formalism.HC.Frame.cc, c0]`.
+-/
 theorem cc_mul_self (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 := by
   ext <;> simp [Formalism.HC.Frame.cc, c0]
 
+/- English proof (translation)
+Introduce `D ρ g h`. Establish `hm : ((D.eTau ρ : D.R.Psi) : D.R.GG).1.2 = 1` using `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau ρ).2`. Establish `hp : plc g = ((D.eTau ρ : D.R.Psi) : D.R.GG)`. Break down `h with rfl | rfl` into its components or cases. Simplify using `[plc, hm]`.
+
+Unfold `plc`. Establish `h2 : (((D.eTau ρ : D.R.Psi) : D.R.GG) * D.R.cc).1.2 ≠ 1`. Simplify using `[Formalism.HC.Frame.cc, c0, hm]`. Rewrite using `[if_neg h2, mul_comm, mul_assoc, cc_mul_self, mul_one]`. Unfold `hcAt`.
+
+Establish `: (⟨plc g, plc_mem g⟩ : D.R.Psi) = D.eTau ρ` using `Subtype.ext hp`. Rewrite using `[this, Equiv.symm_apply_apply]`.
+-/
 theorem hcAt_eq_hc : ∀ (D : D7) (ρ : D.what₂.Tau) (g : D.R.GG), (((D.eTau ρ : D.R.Psi) : D.R.GG) = g ∨ ((D.eTau ρ : D.R.Psi) : D.R.GG) * D.R.cc = g) → hcAt D g = D.hc ρ := by
   intro D ρ g h
   have hm : ((D.eTau ρ : D.R.Psi) : D.R.GG).1.2 = 1 := (Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau ρ).2

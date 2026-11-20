@@ -25,20 +25,46 @@ def Kc (p q : ℕ) : Set (UpqT p q) := {k | IsKC (UpqT.mat k)}
 def eP (B : Fin p → Fin q → ℂ) : UpqT p q :=
   GlobalTheory.CompactDualExists.expU ⟨pY B, (pY_mem B).1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_eP (B : Fin p → Fin q → ℂ) : UpqT.mat (eP B) = NormedSpace.exp (pY B) := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompactDualExists.continuous_expU.comp (continuous_pY.subtype_mk _)`.
+-/
 theorem continuous_eP : Continuous (eP : (Fin p → Fin q → ℂ) → UpqT p q) :=
   GlobalTheory.CompactDualExists.continuous_expU.comp (continuous_pY.subtype_mk _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul (x y : UpqT p q) : UpqT.mat (x * y) = UpqT.mat x * UpqT.mat y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one : UpqT.mat (1 : UpqT p q) = 1 := rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock]`.
+-/
 theorem isKC_fromBlocks (U : Matrix (Fin p) (Fin p) ℂ) (V : Matrix (Fin q) (Fin q) ℂ) :
     IsKC (Matrix.fromBlocks U 0 0 V : Mat p q) := by
   intro a b hab
   cases a <;> cases b <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hk`. Establish `hk' : IsKC (UpqT.mat k)` using `hk`. Establish `h : UpqT.mat k = Matrix.fromBlocks (UpqT.mat k).toBlocks₁₁ 0 0 (UpqT.mat k).toBlocks₂₂`. Use extensionality with `a b`.
+
+Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Both sides reduce to the same expression. Conclude with `hk' _ _ (by simp [sameBlock])`. Conclude with `hk' _ _ (by simp [sameBlock])`. Both sides reduce to the same expression.
+
+Establish `hJ` using `GlobalTheory.UpqTopology.mat_unitary k`. Rewrite `hJ` using `[h]`. Simplify using `only [Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at hJ`. Use `⟨_, ?_, _, ?_, h⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`.
+
+Simplify `hJ.1` using `[star_eq_conjTranspose]`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Simplify `hJ.2.2.2` using `[star_eq_conjTranspose]`. Introduce and unpack `⟨U, -, V, -, h⟩ show IsKC (UpqT.mat k)`. Rewrite using `[h]`.
+
+Conclude with `isKC_fromBlocks U V`.
+-/
 theorem mem_Kc_iff (k : UpqT p q) : k ∈ Kc p q ↔
     ∃ U ∈ Matrix.unitaryGroup (Fin p) ℂ, ∃ V ∈ Matrix.unitaryGroup (Fin q) ℂ,
       UpqT.mat k = Matrix.fromBlocks U 0 0 V := by
@@ -63,12 +89,18 @@ theorem mem_Kc_iff (k : UpqT p q) : k ∈ Kc p q ↔
     show IsKC (UpqT.mat k)
     rw [h]; exact isKC_fromBlocks U V
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, h⟩` from `(mem_Kc_iff k).1 hk`. Rewrite `hU`, `hV` using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose]`. Rewrite using `[h]`. Simplify using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hU, hV]`.
+-/
 theorem star_mul_of_mem_Kc {k : UpqT p q} (hk : k ∈ Kc p q) : (UpqT.mat k)ᴴ * UpqT.mat k = 1 := by
   obtain ⟨U, hU, V, hV, h⟩ := (mem_Kc_iff k).1 hk
   rw [Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose] at hU hV
   rw [h]
   simp [Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hU, hV]
 
+/- English proof (translation)
+Establish `h1 : UpqT.mat k * UpqT.mat k⁻¹ = 1` using `by rw [← mat_mul, mul_inv_cancel, mat_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[star_mul_of_mem_Kc hk, one_mul]`. Use `_ = (UpqT.mat k)ᴴ := by rw [mul_assoc, h1, mul_one]`.
+-/
 theorem mat_inv_of_mem_Kc {k : UpqT p q} (hk : k ∈ Kc p q) : UpqT.mat k⁻¹ = (UpqT.mat k)ᴴ := by
   have h1 : UpqT.mat k * UpqT.mat k⁻¹ = 1 := by rw [← mat_mul, mul_inv_cancel, mat_one]
   calc UpqT.mat k⁻¹ = ((UpqT.mat k)ᴴ * UpqT.mat k) * UpqT.mat k⁻¹ := by
@@ -95,6 +127,11 @@ def Ksg (p q : ℕ) : Subgroup (UpqT p q) where
     have : ¬ sameBlock b a := by cases a <;> cases b <;> simp_all [sameBlock]
     simp [hx' b a this]
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, h⟩` from `isCartan_cartanB g`. Use `⟨g * (eP fun i j => cartanB g i j)⁻¹, (mem_Kc_iff _).2 ⟨U, hU, V, hV, ?_⟩, _, (inv_mul_cancel_right _ _).symm⟩` and prove the remaining obligations. Establish `h1 : UpqT.mat (eP fun i j => cartanB g i j) * UpqT.mat (eP fun i j => cartanB g i j)⁻¹ = 1`. Rewrite using `[← mat_mul, mul_inv_cancel, mat_one]`. Rewrite using `[mat_mul, h, Matrix.mul_assoc]`.
+
+Conclude with `(congrArg _ h1).trans (Matrix.mul_one _)`.
+-/
 theorem exists_cartan (g : UpqT p q) : ∃ k ∈ Kc p q, ∃ B, g = k * eP B := by
   obtain ⟨U, hU, V, hV, h⟩ := isCartan_cartanB g
   refine ⟨g * (eP fun i j => cartanB g i j)⁻¹, (mem_Kc_iff _).2 ⟨U, hU, V, hV, ?_⟩, _,
@@ -104,11 +141,23 @@ theorem exists_cartan (g : UpqT p q) : ∃ k ∈ Kc p q, ∃ B, g = k * eP B := 
   rw [mat_mul, h, Matrix.mul_assoc]
   exact (congrArg _ h1).trans (Matrix.mul_one _)
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, h⟩` from `(mem_Kc_iff k).1 hk`. Conclude with `cartanB_eq ⟨U, hU, V, hV, by rw [mat_mul, h]; rfl⟩`.
+-/
 theorem cartanB_mul_eP {k : UpqT p q} (hk : k ∈ Kc p q) (B : Fin p → Fin q → ℂ) :
     cartanB (k * eP B) = Matrix.of B := by
   obtain ⟨U, hU, V, hV, h⟩ := (mem_Kc_iff k).1 hk
   exact cartanB_eq ⟨U, hU, V, hV, by rw [mat_mul, h]; rfl⟩
 
+/- English proof (translation)
+Use `set S := (sinhcAd (aOf p q h)).submatrix (Subtype.val : PIx p q → Ix p q × Ix p q) Subtype.val with hS`. Use `set P : Matrix (PIx p q) (PIx p q) ℂ := Matrix.of fun (cd ab : PIx p q) => eigP ab.1 cd.1 with hP`. Establish `key : S * P = P * Matrix.diagonal fun ab : PIx p q => ((shc (rootP h ab.1) : ℝ) : ℂ)`. Use extensionality with `cd ab`. Establish `h1` using `congrFun (sinhcAd_mulVec_of_sq_eigen p q _ _ _ (adMat_sq_mulVec_eigP p q h ab)) cd.1`.
+
+Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[← Fintype.sum_subtype_add_sum_subtype (fun x : Ix p q × Ix p q => ¬ sameBlock x.1 x.2)]`. Rewrite `h1` using `[Finset.sum_eq_zero (s := Finset.univ) (f := fun i : {x : Ix p q × Ix p q // ¬ ¬ sameBlock x.1 x.2} => sinhcAd (aOf p q h) cd.1 i.1 * eigP ab.1 i.1) (fun i _ => by rw [eigenvectorMatrix_eq_zero_of_sameBlock ab i.1 (not_not.1 i.2), mul_zero]), add_zero]`. Simplify using `only [hS, hP, Matrix.submatrix_apply, Matrix.of_apply]`.
+
+Rewrite using `[mul_comm (eigP _ _)]`. Conclude with `h1`. Establish `h2` using `congrArg Matrix.det key`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, mul_comm]`. Establish `h3` using `mul_left_cancel₀ (det_eigenvectorMatrix_ne_zero p q) h2`.
+
+Unfold `polJ`. Rewrite using `[← hS, h3, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+-/
 theorem polJ_aOf (p q : ℕ) (h : ℕ → ℝ) :
     polJ (aOf p q h) = ∏ ab : PIx p q, shc (rootP h ab.1) := by
   set S := (sinhcAd (aOf p q h)).submatrix (Subtype.val : PIx p q → Ix p q × Ix p q) Subtype.val with hS
@@ -131,6 +180,11 @@ theorem polJ_aOf (p q : ℕ) (h : ℕ → ℝ) :
   unfold polJ
   rw [← hS, h3, ← Complex.ofReal_prod, Complex.ofReal_re]
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, hB⟩` from `GlobalTheory.RectSVD.exists_svd_singularValues p q B`. Establish `e : pOf B = Matrix.fromBlocks U 0 0 V * aOf p q (singVal B) * Matrix.fromBlocks Uᴴ 0 0 Vᴴ` using `by conv_lhs => rw [hB]`. Simplify using `[aOf, pOf, singVal, Matrix.fromBlocks_multiply, Matrix.mul_assoc]`. Establish `h1 : U * Uᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hU`. Establish `h2 : V * Vᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hV`.
+
+Rewrite using `[e, Conj.polJ_conj p q _ _ _ (by simp [Matrix.fromBlocks_multiply, h1, h2]) (isKC_fromBlocks _ _) (isKC_fromBlocks _ _), polJ_aOf, RootProd.prod_shc_rootP]`.
+-/
 theorem polJ_pOf (B : Matrix (Fin p) (Fin q) ℂ) : polJ (pOf B) =
     (∏ i ∈ Finset.range (min p q), shc (2 * singVal B i) * shc (singVal B i) ^ (2 * (max p q - min p q))) *
     ∏ i ∈ Finset.range (min p q), ∏ j ∈ Finset.range (min p q),
@@ -144,6 +198,11 @@ theorem polJ_pOf (B : Matrix (Fin p) (Fin q) ℂ) : polJ (pOf B) =
   rw [e, Conj.polJ_conj p q _ _ _ (by simp [Matrix.fromBlocks_multiply, h1, h2]) (isKC_fromBlocks _ _)
     (isKC_fromBlocks _ _), polJ_aOf, RootProd.prod_shc_rootP]
 
+/- English proof (translation)
+Unfold `shc`. Use `split_ifs with hx`. Conclude with `le_rfl`. Break down `lt_or_gt_of_ne hx with h | h` into its components or cases. Rewrite using `[le_div_iff_of_neg h, one_mul]`.
+
+Conclude with `Real.sinh_le_self_iff.2 h.le`. Rewrite using `[le_div_iff₀ h, one_mul]`. Conclude with `Real.self_le_sinh_iff.2 h.le`.
+-/
 theorem one_le_shc (x : ℝ) : 1 ≤ shc x := by
   unfold shc
   split_ifs with hx
@@ -152,10 +211,18 @@ theorem one_le_shc (x : ℝ) : 1 ≤ shc x := by
     · rw [le_div_iff_of_neg h, one_mul]; exact Real.sinh_le_self_iff.2 h.le
     · rw [le_div_iff₀ h, one_mul]; exact Real.self_le_sinh_iff.2 h.le
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (fun x => 1 ≤ x) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl h`.
+-/
 theorem one_le_prod_real {ι : Type} {s : Finset ι} {f : ι → ℝ} (h : ∀ i ∈ s, 1 ≤ f i) :
     1 ≤ ∏ i ∈ s, f i :=
   Finset.prod_induction f (fun x => 1 ≤ x) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl h
 
+/- English proof (translation)
+Rewrite using `[polJ_pOf]`. Use `one_le_mul_of_one_le_of_one_le (one_le_prod_real fun i _ => ?_) (one_le_prod_real fun i _ => one_le_prod_real fun j _ => ?_)` and prove the remaining obligations. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_shc _) (one_le_pow₀ (one_le_shc _))`. Use `split_ifs`. Conclude with `one_le_pow₀ (one_le_mul_of_one_le_of_one_le (one_le_shc _) (one_le_shc _))`.
+
+Conclude with `le_rfl`.
+-/
 theorem one_le_polJ (B : Matrix (Fin p) (Fin q) ℂ) : 1 ≤ polJ (pOf B) := by
   rw [polJ_pOf]
   refine one_le_mul_of_one_le_of_one_le (one_le_prod_real fun i _ => ?_)
@@ -165,6 +232,15 @@ theorem one_le_polJ (B : Matrix (Fin p) (Fin q) ℂ) : 1 ≤ polJ (pOf B) := by
     · exact one_le_pow₀ (one_le_mul_of_one_le_of_one_le (one_le_shc _) (one_le_shc _))
     · exact le_rfl
 
+/- English proof (translation)
+Establish `key : ∀ y : ℝ, 0 < y → Real.sinh y / y ≤ Real.exp y`. Introduce `y hy`. Rewrite using `[div_le_iff₀ hy, Real.sinh_eq, div_le_iff₀ two_pos]`. Establish `h1 : Real.exp (-y) = Real.exp y * Real.exp (-(2 * y))` using `by rw [← Real.exp_add]; ring_nf`. Establish `h2` using `Real.add_one_le_exp (-(2 * y))`.
+
+Establish `h3` using `Real.exp_pos y`. Rewrite using `[h1]`. Use the polynomial consequences of the given equalities and inequalities. Unfold `shc`. Use `split_ifs with hx`.
+
+Conclude with `Real.one_le_exp (abs_nonneg x)`. Break down `lt_or_gt_of_ne hx with h | h` into its components or cases. Use `key (-x) (neg_pos.2 h)` as an intermediate fact. Rewrite `this` using `[Real.sinh_neg, neg_div_neg_eq, ← abs_of_neg h]`. Then use the resulting hypothesis. Rewrite using `[abs_of_pos h]`.
+
+Conclude with `key x h`.
+-/
 theorem shc_le_exp (x : ℝ) : shc x ≤ Real.exp |x| := by
   have key : ∀ y : ℝ, 0 < y → Real.sinh y / y ≤ Real.exp y := by
     intro y hy
@@ -181,9 +257,17 @@ theorem shc_le_exp (x : ℝ) : shc x ≤ Real.exp |x| := by
       rwa [Real.sinh_neg, neg_div_neg_eq, ← abs_of_neg h] at this
     · rw [abs_of_pos h]; exact key x h
 
+/- English proof (translation)
+The claim follows from `LinearMap.singularValues_nonneg _ _`.
+-/
 theorem singVal_nonneg (B : Matrix (Fin p) (Fin q) ℂ) (i : ℕ) : 0 ≤ singVal B i :=
   LinearMap.singularValues_nonneg _ _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero (s := Finset.range (m + 1)) (fun j hj => if_neg (by have := Finset.mem_range.1 hj; omega)), add_zero]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_add_distrib, ih]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_range.1 hi)), Finset.sum_add_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_sum_ite_lt (m : ℕ) (s : ℕ → ℝ) :
     ∑ i ∈ Finset.range m, ∑ j ∈ Finset.range m, (if i < j then s i + s j else 0) =
       ((m : ℝ) - 1) * ∑ i ∈ Finset.range m, s i := by
@@ -197,6 +281,19 @@ theorem sum_sum_ite_lt (m : ℕ) (s : ℕ → ℝ) :
     simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
     push_cast; ring
 
+/- English proof (translation)
+Establish `h0` using `singVal_nonneg B`. Establish `hs : ∀ x, 0 ≤ shc x` using `fun x => zero_le_one.trans (one_le_shc x)`. Rewrite using `[polJ_pOf]`. Use `set s := singVal B`. Use `set m := min p q with hm`.
+
+Use `set D := max p q - min p q with hD`. Establish `hA : ∏ i ∈ Finset.range m, shc (2 * s i) * shc (s i) ^ (2 * D) ≤ Real.exp ((2 + 2 * (D : ℝ)) * ∑ i ∈ Finset.range m, s i)`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_le_prod (fun i _ => mul_nonneg (hs _) (pow_nonneg (hs _) _)) fun i _ => ?_` and prove the remaining obligations. Establish `a1` using `shc_le_exp (2 * s i)`.
+
+Establish `a2` using `shc_le_exp (s i)`. Rewrite `a1`, `a2` using `[abs_of_nonneg (by linarith [h0 i])]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : (∏ i ∈ Finset.range m, ∏ j ∈ Finset.range m, if i < j then (shc (s i - s j) * shc (s i + s j)) ^ 2 else 1) ≤ Real.exp (4 * (((m : ℝ) - 1) * ∑ i ∈ Finset.range m, s i))`. Rewrite using `[← sum_sum_ite_lt, Finset.mul_sum, Real.exp_sum]`.
+
+Apply the tactic sequence `refine Finset.prod_le_prod (fun i _ => Finset.prod_nonneg fun j _ => by split_ifs <;> positivity) fun i _ => ?_`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Apply the tactic sequence `refine Finset.prod_le_prod (fun j _ => by split_ifs <;> positivity) fun j _ => ?_`. Use `split_ifs`. Establish `a1` using `(shc_le_exp (s i - s j)).trans (Real.exp_le_exp.2 (show |s i - s j| ≤ s i + s j from abs_le.2 ⟨by linarith [h0 i], by linarith [h0 j]⟩))`.
+
+Establish `a2` using `shc_le_exp (s i + s j)`. Rewrite `a2` using `[abs_of_nonneg (by linarith [h0 i, h0 j])]`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Apply the tactic sequence `refine (mul_le_mul hA hB (Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun j _ => by split_ifs <;> positivity) (Real.exp_pos _).le).trans (le_of_eq ?_)`.
+
+Establish `e : ((p + q : ℕ) : ℝ) = D + 2 * m`. Establish `: p + q = D + 2 * m` using `by omega`. Conclude with `this` after adjusting the coercions. Rewrite using `[← Real.exp_add, e]`. Put the polynomial expressions in normal form.
+-/
 theorem polJ_le_exp (B : Matrix (Fin p) (Fin q) ℂ) : polJ (pOf B) ≤
     Real.exp (2 * (((p + q : ℕ) : ℝ) - 1) * ∑ i ∈ Finset.range (min p q), singVal B i) := by
   have h0 := singVal_nonneg B

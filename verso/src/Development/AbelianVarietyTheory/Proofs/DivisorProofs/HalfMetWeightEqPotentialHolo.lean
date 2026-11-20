@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Dblock.HalfWeight
 
+/- English proof (translation)
+Introduce `F _ _ C Y σ D A hA Δ m hm Q hQ x c hx`. Take `⟨f, hf⟩` from `hQ x`. Establish `hxc : under x ∈ c.1.1` using `mem_ptsIn.1 hx`. Establish `hu : UnitAt (under x) (f * (c.1.2 : Y.Fn))` using `(c.2.2 _ hxc).generatesAt_iff.1 (hf x (Q.mem_U x)).1`. Take `⟨U, hU, a, ea⟩` from `hu.regAt.exists_fnOf`.
+
+Establish `hxU : x ∈ ptsIn Y.str σ U` using `mem_ptsIn.2 hU`. Establish `hv : ∀ z ∈ ptsIn Y.str σ U, ev Y.str σ U a z = ratVal (f * (c.1.2 : Y.Fn)) z` using `fun z hz => by`. Rewrite using `[← ea, ratVal_fnOf hz]`. Establish `hS : IsOpen (ptsIn Y.str σ U ∩ (Q.U x ∩ ptsIn Y.str σ ((toLB Δ).U c)))` using `(isOpen_ptsIn _).inter ((Q.isOpen_U x).inter (isOpen_ptsIn _))`. Establish `hH : hA.anRead.HoloOn (ptsIn Y.str σ U ∩ (Q.U x ∩ ptsIn Y.str σ ((toLB Δ).U c))) (ev Y.str σ U a)` using `fun j => (hA.anRead.holoOn_ev U a j).mono fun v hv => ⟨hv.1, hv.2.1⟩`.
+
+Take `⟨W, hW, hxW, hs, G, hG, e⟩` from `AnRead.HoloOn.exists_log hH hS ⟨hxU, Q.mem_U x, hx⟩ (by rw [hv x hxU]; exact ratVal_ne_zero hu)`. Use `⟨W, hW, hxW, G, (hA.holoOn_iff hA.anRead hW).2 hG, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨hzU, hzQ, hzc⟩` from `hs hz`. Establish `hzc' : under z ∈ c.1.1` using `mem_ptsIn.1 hzc`. Establish `he` using `c.2.2 _ hzc'`.
+
+Take `⟨hgen, -, hφ⟩` from `hf z hzQ`. Establish `hgen' : Δ.GeneratesAt (under z) f` using `hgen`. Establish `huz : UnitAt (under z) (f * (c.1.2 : Y.Fn))` using `he.generatesAt_iff.1 hgen'`. Establish `hgi` using `CartierDiv.isEqn_iff_generatesAt_inv.1 he`. Establish `hp` using `pn_pos_of_generatesAt (C := C) hgi (hm z)`.
+
+Establish `hr : 0 < ‖ratVal (f * (c.1.2 : Y.Fn)) z‖` using `norm_pos_iff.2 (ratVal_ne_zero huz)`. Establish `e1 : f = (f * (c.1.2 : Y.Fn)) * ((c.1.2 : Y.Fn))⁻¹`. Rewrite using `[mul_assoc, mul_inv_cancel₀ (Units.ne_zero _), mul_one]`. Establish `e2 : C.pn Y σ Δ m (C.cx Y σ f) z = ‖ratVal (f * (c.1.2 : Y.Fn)) z‖ ^ 2 * C.pn Y σ Δ m (C.cx Y σ ((c.1.2 : Y.Fn))⁻¹) z`. Rewrite using `[← C.pn_mul Y σ Δ m _ _ z huz.regAt hgi.regularAt, ← e1]`.
+
+Establish `e3 : Q.φ x z = -(Real.log (C.pn Y σ Δ m (C.cx Y σ f) z) / 2)` using `hφ`. Establish `e4 : (G z).re = Real.log ‖ratVal (f * (c.1.2 : Y.Fn)) z‖` using `by rw [e z hz, hv z hzU]`. Rewrite using `[metWeight_φ, e4, e3, e2, Real.log_mul (pow_pos hr 2).ne' hp.ne', Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_metWeight_eq : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (D : ℕ) (A : FinHolAtlas D (Pts Y σ)), IsAlgAtlas A → ∀ (Δ : Y.Dv) (m : C.Met Y σ Δ) (hm : ∀ y, PosAt m y) (Q : LocPot (Pts Y σ)), IsPot id m Q → ∀ (x : Pts Y σ) (c : (toLB Δ).ι), x ∈ ptsIn Y.str σ ((toLB Δ).U c) → ∃ W : Set (Pts Y σ), IsOpen W ∧ x ∈ W ∧ ∃ G : Pts Y σ → ℂ, A.HoloOn W G ∧ ∀ z ∈ W, (metWeight Δ m hm).φ c z / 2 = Q.φ x z + (G z).re := by
   intro F _ _ C Y σ D A hA Δ m hm Q hQ x c hx
   obtain ⟨f, hf⟩ := hQ x
@@ -59,6 +72,9 @@ end HalfMetricWeight
 section
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CxPts GlobalTheory.Mean4O.CombForm
+/- English proof (translation)
+Apply the tactic sequence `first | exact @HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq | exact HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq | (intros; apply HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeig …`.
+-/
 theorem _root_.GlobalTheory.Adopt.half_metWeight_eq_potential_holo : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (D : ℕ) (A : FinHolAtlas D (Pts Y σ)), IsAlgAtlas A → ∀ (Δ : Y.Dv) (m : C.Met Y σ Δ) (hm : ∀ y, PosAt m y) (Q : LocPot (Pts Y σ)), IsPot id m Q → ∀ (x : Pts Y σ) (c : (toLB Δ).ι), x ∈ ptsIn Y.str σ ((toLB Δ).U c) → ∃ W : Set (Pts Y σ), IsOpen W ∧ x ∈ W ∧ ∃ G : Pts Y σ → ℂ, A.HoloOn W G ∧ ∀ z ∈ W, (metWeight Δ m hm).φ c z / 2 = Q.φ x z + (G z).re := by
   first | exact @HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq | exact HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq | (intros; apply HalfMetricWeight.GlobalTheory.CompanionTheory.Dblock.HalfWeight.half_metWeight_eq <;> assumption)
 

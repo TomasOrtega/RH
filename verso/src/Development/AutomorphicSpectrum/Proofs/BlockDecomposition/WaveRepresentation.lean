@@ -20,6 +20,41 @@ section Main
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hbp` using `fun N => Bn_props μ hL hR hCp E hf hcf N`. Establish `hbS : ∀ N, Sob μ (Bn f N)` using `fun N => (hCp n μ E.V hL hR _ (hbp N).1.1 (hbp N).2).1`. Establish `hbE : ∀ N, IsSec E (Bn f N)` using `fun N => (hbp N).1.2`. Establish `hC0 : ∀ N j t, j + 2 ≤ 4 * N → (Continuous (wv c N j t) ∧ Tendsto (wv c N j t) (cocompact ℝ) (𝓝 0))` using `fun N j t hj => (hFc c N j hj t).1`. Establish `hstep : ∀ N j t, j + 2 ≤ 4 * N → F.Φ (toC0 (wv c (N + 1) j t)) (cls μ (Bn f (N + 1))) = F.Φ (toC0 (wv c N j t)) (cls μ (Bn f N))`.
+
+Introduce `N j t hj`. Rewrite using `[wv_step hW F (hC0 N j t hj) (hC0 (N + 1) j t (by omega)), ContinuousLinearMap.mul_apply]`. Conclude with `congrArg _ (T_B hC hO hL hU hR hΩ hT (hbS N))`. Establish `hpres` using `fun g (N : ℕ) => pres hC hO hL hU hR hSG hP F hrep hΩ g (hbS N)`. Establish `hex : ∀ (j : ℕ) (t : ℝ), ∃ u, Sob μ u ∧ IsSec E u ∧ cls μ u = F.Φ (toC0 (wv c (j + 2) j t)) (cls μ (Bn f (j + 2))) ∧ ∀ w, cls μ (Rw w u) = F.Φ (toC0 (wv c (j + 2) j t)) (cls μ (Rw w (Bn f (j + 2))))`.
+
+Introduce `j t`. Take `⟨u, h1, h2, h3⟩` from `hpres (toC0 (wv c (j + 2) j t)) (j + 2)`. Conclude with `⟨u, h1, sec_pres E hC hO hL hU hR F hrep hΩ _ (hbS _) (hbE _) h1 h2, h2, h3⟩`. Use `choose U hUS hUE hUc hUw using hex`. Establish `hd : ∀ j w t, HasDerivAt (fun s => cls μ (Rw w (U j s))) (cls μ (Rw w (U (j + 1) t))) t`.
+
+Introduce `j w t`. Establish `e : (fun s => cls μ (Rw w (U j s))) = fun s => F.Φ (toC0 (wv c (j + 2) j s)) (cls μ (Rw w (Bn f (j + 2))))` using `funext fun s => hUw j s w`. Rewrite using `[e]`. Establish `hd` using `curve_deriv hFc F c (N := j + 2) (j := j) (by omega) t (cls μ (Rw w (Bn f (j + 2))))`. Take `⟨f'', hf'', hc'', hw''⟩` from `hpres (toC0 (wv c (j + 2) (j + 1) t)) (j + 2)`.
+
+Establish `e2 : cls μ (Rw w (U (j + 1) t)) = F.Φ (toC0 (wv c (j + 2) (j + 1) t)) (cls μ (Rw w (Bn f (j + 2))))`. Rewrite using `[← hw'' w]`. Use `cls_congr hC hU (Rw_congr w (cls_eq_of_sob hC hU (hUS (j + 1) t) hf'' ?_))` and prove the remaining obligations. Rewrite using `[hUc, hc'']`. Conclude with `hstep (j + 2) (j + 1) t (by omega)`.
+
+Rewrite using `[e2]`. Conclude with `hd`. Take `⟨hjoint, hder⟩` from `hCJ n μ E.V U hL hR hSG hUS hd`. Establish `hT2 : (T ^ 2) (cls μ (Bn f 2)) = cls μ f`. Rewrite using `[pow_two, ContinuousLinearMap.mul_apply]`.
+
+Establish `a1 : T (cls μ (Bn f 2)) = cls μ (Bn f 1)` using `T_B hC hO hL hU hR hΩ hT (hbS 1)`. Establish `a2 : T (cls μ (Bn f 1)) = cls μ (Bn f 0)` using `T_B hC hO hL hU hR hΩ hT (hbS 0)`. Rewrite using `[a1, a2]`. Both sides reduce to the same expression. Use `⟨2, cls μ (Bn f 2), U 0, by norm_num, hT2, ⟨hjoint, fun t => ⟨(hUS 0 t).1, hUE 0 t⟩, ?_, ?_⟩, ?_, fun t => ⟨hUS 0 t, hUc 0 t⟩⟩` and prove the remaining obligations.
+
+Introduce `t g hg`. Establish `d1 : deriv (fun s => U 0 s g) = fun s => U 1 s g` using `funext fun s => (hder 0 s g hg).deriv`. Establish `d2 : iteratedDeriv 2 (fun s => U 0 s g) t = U 2 t g`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_one, d1]`. Conclude with `(hder 1 t g hg).deriv`.
+
+Rewrite using `[d2]`. Establish `hOmS` using `(hO n μ E.V hL hU hR _ (hUS 0 t)).1`. Establish `h0 : cls μ (U 0 t) = F.Φ (toC0 (wv c 4 0 t)) (cls μ (Bn f 4))`. Rewrite using `[hUc, hstep 3 0 t (by omega), hstep 2 0 t (by omega)]`. Establish `hom` using `F.omega (toC0 (wv c 4 0 t)) (toC0 (wv c 4 2 t)) (fun y => by`.
+
+Rewrite using `[coe_toC0 (hC0 4 0 t (by omega)), coe_toC0 (hC0 4 2 t (by omega))]`. Conclude with `(hW c 4 t y).1)`. Use the proof step `(cls μ (Bn f 4)) ⟨cls μ (U 0 t), cls_mem μ (hUS 0 t)⟩ h0`. Rewrite `hom` using `[hΩ _ _ (hUS 0 t)]`. Conclude with `cls_eq_of_sob hC hU (hUS 2 t) hOmS ((hUc 2 t).trans hom.symm) g hg`.
+
+Introduce `g hg`. Rewrite using `[(hder 0 0 g hg).deriv]`. Establish `hz : toC0 (wv c 3 1 0) = 0`. Use extensionality with `y`. Rewrite using `[coe_toC0 (hC0 3 1 0 (by omega))]`.
+
+Conclude with `(hW c 3 0 y).2.1`. Establish `h1 : cls μ (U 1 0) = cls μ (0 : Mat n → E.V)`. Rewrite using `[hUc, cls_zero]`. Use `show F.Φ (toC0 (wv c 3 1 0)) _ = 0`. Rewrite using `[hz, map_zero]`.
+
+Both sides reduce to the same expression. Conclude with `(hC n μ E.V hU).1 _ 0 (sob_cont (hUS 1 0)) continuousOn_const (sob_memLp (hUS 1 0)) MemLp.zero h1 g hg`. Establish `hcut : F.Φ (toC0 rf * toC0 rf - toC0 (wv c 2 0 0)) (cls μ (Bn f 2)) = 0`. Use `hAC (Lp E.V 2 μ) (Msob μ E.V) Ω T F c _ (fun g => ?_) _ (fun y hy => ?_)` and prove the remaining obligations. Take `⟨u, h1, h2, -⟩` from `hpres g 2`.
+
+Use `⟨⟨cls μ u, cls_mem μ h1⟩, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hΩ _ _ h1]`. Conclude with `hc u h1 (sec_pres E hC hO hL hU hR F hrep hΩ _ (hbS _) (hbE _) h1 h2)`. Establish `e1` using `(hW c 2 0 y).2.2.1`. Rewrite `e1` using `[cut_eq_one hy]`.
+
+Establish `e2 : (toC0 rf * toC0 rf - toC0 (wv c 2 0 0)) y = rf y * rf y - wv c 2 0 0 y`. Rewrite using `[ZeroAtInftyContinuousMap.sub_apply, ZeroAtInftyContinuousMap.mul_apply, coe_toC0 resolvent_function_vanishes_at_infinity, coe_toC0 (hC0 2 0 0 (by omega))]`. Rewrite using `[e2, e1, rf, ← Complex.ofReal_mul, sub_eq_zero]`. Use `congr 1`. Rewrite using `[one_mul, pow_two (1 + y ^ 2), mul_inv]`.
+
+Establish `hr : F.Φ (toC0 rf * toC0 rf) (cls μ (Bn f 2)) = cls μ f`. Rewrite using `[F.map_mul, F.res (toC0 rf) (fun y => by rw [coe_toC0 resolvent_function_vanishes_at_infinity]; rfl), ContinuousLinearMap.mul_apply]`. Establish `a1 : T (cls μ (Bn f 2)) = cls μ (Bn f 1)` using `T_B hC hO hL hU hR hΩ hT (hbS 1)`. Establish `a2 : T (cls μ (Bn f 1)) = cls μ (Bn f 0)` using `T_B hC hO hL hU hR hΩ hT (hbS 0)`. Rewrite using `[a1, a2]`.
+
+Both sides reduce to the same expression. Establish `hw : F.Φ (toC0 (wv c 2 0 0)) (cls μ (Bn f 2)) = cls μ f`. Rewrite `hcut` using `[map_sub, ContinuousLinearMap.sub_apply, hr, sub_eq_zero]`. Conclude with `hcut.symm`. Conclude with `cls_eq_of_sob hC hU (hUS 0 0) (hbS 0) ((hUc 0 0).trans hw)`.
+-/
 theorem coreRep (E : KMod n) [CompleteSpace E.V] {Ω : Msob μ E.V →ₗ[ℂ] Msob μ E.V} {T : Lp E.V 2 μ →L[ℂ] Lp E.V 2 μ}
     (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hSG : SobG)
     (hAC : AbsCut) (hFc : Fcurve) (hW : WvAlg) (hC : ClsFacts) (hO : SobOps) (hCp : CptSob) (hP : PresSob)
@@ -127,6 +162,9 @@ theorem coreRep (E : KMod n) [CompleteSpace E.V] {Ω : Msob μ E.V →ₗ[ℂ] M
 
 end Main
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E _ Ω T F c hStd f hf hcf`. Take `⟨hL, hU, hR, hSG, -, -, -, hCS, -, -, hrep, -, -, hT, hΩ, hc⟩` from `hStd`. Take `⟨-, hAC, hFc, hW, hC, hO, hCp, -, hP, -, hCJ, -, -, -, -⟩` from `hCS`. Conclude with `coreRep E hL hU hR hSG hAC hFc hW hC hO hCp hP hCJ F hrep hΩ hT c hc hf hcf`.
+-/
 theorem waveRep : WaveRep := by
   intro n _ _ μ _ E _ Ω T F c hStd f hf hcf
   obtain ⟨hL, hU, hR, hSG, -, -, -, hCS, -, -, hrep, -, -, hT, hΩ, hc⟩ := hStd

@@ -33,6 +33,11 @@ def IsWeightAt (Or : CptOrigin Y S₀ Dc Hd) (z : Sp ℂ ⟶ Or.𝔐.X) (x : ℝ
   ∃ (g : ℕ) (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (R : RiemLat E g Λ) (σ : CMType H → (𝓞 E →+* ℂ)),
     FibreLat Or.𝔐.t z R ∧ Or.𝔐.LabVal z Or.sm σ ∧ x = R.cuspW σ
 
+/- English proof (translation)
+Take `⟨g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩` from `h`. Take `⟨g', Λ', i₃, i₄, R', σ', hF', hL', rfl⟩` from `h'`. Establish `hσ : σ' = σ` using `funext fun τ => RingHom.ext fun a => valAt_eq Or.𝔐.tie.gen (Or.𝔐.all _) (hL' τ a) (hL τ a)`. Substitute `hσ` using the available equality. Take `⟨φ, h1, h2, h3, -⟩` from `GlobalTheory.CompanionTheory.Ar.Cusp.FibreUnique.exists_linearEquiv_of_fibreLatVec E H Or.𝔐.X Or.𝔐.t z g' g Λ' Λ R' R Empty _ _ _ hF' hF`.
+
+Apply the tactic sequence `exact (GlobalTheory.T.cusp_weight_invariant_under_isometry E g' Λ' (CMType H) R' σ' g Λ R φ (isCMFam_of_labVal Or hL) h1 h2 h3).1.symm ▸ rfl`.
+-/
 theorem IsWeightAt.unique {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X} {x x' : ℝ} (h : IsWeightAt Or z x)
     (h' : IsWeightAt Or z x') : x = x' := by
   obtain ⟨g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩ := h
@@ -43,10 +48,18 @@ theorem IsWeightAt.unique {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.
   obtain ⟨φ, h1, h2, h3, -⟩ := GlobalTheory.CompanionTheory.Ar.Cusp.FibreUnique.exists_linearEquiv_of_fibreLatVec E H Or.𝔐.X Or.𝔐.t z g' g Λ' Λ R' R Empty _ _ _ hF' hF
   exact (GlobalTheory.T.cusp_weight_invariant_under_isometry E g' Λ' (CMType H) R' σ' g Λ R φ (isCMFam_of_labVal Or hL) h1 h2 h3).1.symm ▸ rfl
 
+/- English proof (translation)
+Take `⟨g, Λ, i₁, i₂, R, σ, -, -, rfl⟩` from `h`. Conclude with `le_max_left _ _`.
+-/
 theorem IsWeightAt.nonneg {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X} {x : ℝ} (h : IsWeightAt Or z x) : 0 ≤ x := by
   obtain ⟨g, Λ, i₁, i₂, R, σ, -, -, rfl⟩ := h
   exact le_max_left _ _
 
+/- English proof (translation)
+Establish `hpq : 1 ≤ D.p + D.q`. Use `Dc.two_le_N` as an intermediate fact. Rewrite `this` using `[Or.N_eq]`. Use linear arithmetic over natural numbers and integers. Take `⟨g, Λ, i₁, i₂, R, x, hF, -, -⟩` from `GlobalTheory.CompanionTheory.Ar.Cusp.FibreEx.exists_riemLat_of_interior hG.2.2.2.2.1 E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 z hpq hz hG Empty (fun i => i.elim) (fun i => i.elim)`.
+
+Take `⟨σ₀, h0, -⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 ℂ z`. Establish `hx : x = fun i => i.elim` using `funext fun i => i.elim`. Substitute `hx` using the available equality. Conclude with `⟨_, g, Λ, i₁, i₂, R, fun τ => σ₀ (Or.sm τ), hF, fun τ a => h0 (Or.sm τ) a, rfl⟩`.
+-/
 theorem exists_isWeightAt (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {z : Sp ℂ ⟶ Or.𝔐.X} (hz : Or.𝔐.Interior z) :
     ∃ x, IsWeightAt Or z x := by
   have hpq : 1 ≤ D.p + D.q := by
@@ -60,6 +73,9 @@ theorem exists_isWeightAt (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {z : Sp
   subst hx
   exact ⟨_, g, Λ, i₁, i₂, R, fun τ => σ₀ (Or.sm τ), hF, fun τ a => h0 (Or.sm τ) a, rfl⟩
 
+/- English proof (translation)
+Take `⟨g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩` from `h`. Take `⟨-, R', hP, hH, hB, hW⟩` from `GlobalTheory.T.cusp_weight_invariant_under_conjugation E g Λ (CMType H) R σ (isCMFam_of_labVal Or hL)`. Establish `hF' : FibreLat Or.𝔐.t (spMap (starRingEnd ℂ) ≫ z) R'` using `(GlobalTheory.CompanionTheory.Ar.Cusp.FibreMove.fibreLat_move E H Or.𝔐.X Or.𝔐.X Or.𝔐.t Or.𝔐.t (𝟙 _) g Λ R R' z).2 hP hH (fun a x => by simpa using hB a (star x)) hF`. Conclude with `⟨g, Λ, i₁, i₂, R', fun τ => (starRingEnd ℂ).comp (σ τ), hF', fun τ a => GlobalTheory.CompanionTheory.Ar.HodgeLine.valAt_conj (hL τ a), hW.symm⟩`.
+-/
 theorem IsWeightAt.conj {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X} {x : ℝ} (h : IsWeightAt Or z x) :
     IsWeightAt Or (spMap (starRingEnd ℂ) ≫ z) x := by
   obtain ⟨g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩ := h
@@ -73,6 +89,9 @@ theorem IsWeightAt.conj {Or : CptOrigin Y S₀ Dc Hd} {z : Sp ℂ ⟶ Or.𝔐.X}
 def HasWeight (Or : CptOrigin Y S₀ Dc Hd) (w : (Σ k, J k) → ℂ) (x : ℝ) : Prop :=
   ∃ z : Sp ℂ ⟶ Or.𝔐.X, CoordsAt Or.𝔐.ξ Dc.y z w ∧ Or.𝔐.Interior z ∧ IsWeightAt Or z x
 
+/- English proof (translation)
+Take `⟨z, hz, -, hx⟩` from `h`. Take `⟨z', hz', -, hx'⟩` from `h'`. Establish `e` using `GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.point_eq_of_coordsAt _ _ _ K J Dc.y Or.𝔐.tie Or.𝔐.normal Or.𝔐.all z z' w hz hz'`. Substitute `e` using the available equality. Conclude with `hx.unique hx'`.
+-/
 theorem HasWeight.unique {Or : CptOrigin Y S₀ Dc Hd} {w : (Σ k, J k) → ℂ} {x x' : ℝ} (h : HasWeight Or w x)
     (h' : HasWeight Or w x') : x = x' := by
   obtain ⟨z, hz, -, hx⟩ := h
@@ -81,11 +100,19 @@ theorem HasWeight.unique {Or : CptOrigin Y S₀ Dc Hd} {w : (Σ k, J k) → ℂ}
   subst e
   exact hx.unique hx'
 
+/- English proof (translation)
+Take `⟨z, hz, hi, hx⟩` from `h`. Conclude with `⟨z, coordsAt_torusSmul Or.𝔐.ξ hz ha, hi, hx⟩`.
+-/
 theorem HasWeight.torus {Or : CptOrigin Y S₀ Dc Hd} {w : (Σ k, J k) → ℂ} {x : ℝ} (h : HasWeight Or w x) {a : K → ℂ}
     (ha : ∀ k, a k ≠ 0) : HasWeight Or (torusSmul a w) x := by
   obtain ⟨z, hz, hi, hx⟩ := h
   exact ⟨z, coordsAt_torusSmul Or.𝔐.ξ hz ha, hi, hx⟩
 
+/- English proof (translation)
+Take `⟨z, hz, hi, hx⟩` from `h`. Establish `hc` using `GlobalTheory.CompanionTheory.Ar.CoordConj.centre_and_coords_conj Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y z w`. Use `⟨_, hc.2 hz, ?_, hx.conj⟩` and prove the remaining obligations. Use `show centre _ ∈ _`. Rewrite using `[hc.1]`.
+
+Conclude with `hi`.
+-/
 theorem HasWeight.conj {Or : CptOrigin Y S₀ Dc Hd} {w : (Σ k, J k) → ℂ} {x : ℝ} (h : HasWeight Or w x) :
     HasWeight Or (conjVec w) x := by
   obtain ⟨z, hz, hi, hx⟩ := h
@@ -95,6 +122,27 @@ theorem HasWeight.conj {Or : CptOrigin Y S₀ Dc Hd} {w : (Σ k, J k) → ℂ} {
   rw [hc.1]
   exact hi
 
+/- English proof (translation)
+Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or`. Set `U : ((Σ k, J k) → ℂ) → ℝ` to `fun w => if h : ∃ x, HasWeight Or w x then h.choose else 0`. Establish `hU : ∀ {w x}, HasWeight Or w x → U w = x` using `fun {w x} h => by`. Establish `hex : ∃ x, HasWeight Or w x` using `⟨x, h⟩`. Simplify using `only [U, dif_pos hex]`.
+
+Conclude with `hex.choose_spec.unique h`. Establish `hU0 : ∀ {w}, (¬ ∃ x, HasWeight Or w x) → U w = 0` using `fun {w} h => by`. Simplify using `only [U, dif_neg h]`. Establish `hw : ∀ {z : Sp ℂ ⟶ Or.𝔐.X} {w} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) {σ : CMType H → (𝓞 E →+* ℂ)}, CoordsAt Or.𝔐.ξ Dc.y z w → Or.𝔐.Interior z → FibreLat Or.𝔐.t z R → Or.𝔐.LabVal z Or.sm σ → HasWeight Or w (R.cuspW σ)`. Introduce `z w g Λ i₁ i₂ R σ hz hi hF hL`.
+
+Conclude with `⟨z, hz, hi, g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩`. Use `⟨U, fun z w hz hi => ?_, fun w => ?_, fun w a ha => ?_, fun w => ?_, fun U' hU' w hX => ?_⟩` and prove the remaining obligations. Take `⟨x, g, Λ, i₁, i₂, R, σ, hF, hL, rfl⟩` from `exists_isWeightAt hG Or hi`. Conclude with `⟨g, Λ, i₁, i₂, R, σ, hF, hL, hU (hw R hz hi hF hL)⟩`. Distinguish the cases in `h : ∃ x, HasWeight Or w x`.
+
+Take `⟨x, hx⟩` from `h`. Rewrite using `[hU hx]`. Take `⟨z, -, -, hz⟩` from `hx`. Conclude with `hz.nonneg`. Rewrite using `[hU0 h]`.
+
+Distinguish the cases in `h : ∃ x, HasWeight Or w x`. Take `⟨x, hx⟩` from `h`. Rewrite using `[hU hx, hU (hx.torus ha)]`. Establish `h' : ¬ ∃ x, HasWeight Or (torusSmul a w) x` using `fun ⟨x, hx⟩ => h ⟨x, by`. Establish `e : torusSmul (fun k => (a k)⁻¹) (torusSmul a w) = w`.
+
+Use function extensionality and compare the values at `q`. Use `show (a q.1)⁻¹ * (a q.1 * w q) = w q`. Rewrite using `[inv_mul_cancel_left₀ (ha q.1)]`. Use `hx.torus (a := fun k => (a k)⁻¹) fun k => inv_ne_zero (ha k)` as an intermediate fact. Rewrite using `[e] at this⟩` and apply the resulting hypothesis.
+
+Rewrite using `[hU0 h, hU0 h']`. Distinguish the cases in `h : ∃ x, HasWeight Or w x`. Take `⟨x, hx⟩` from `h`. Rewrite using `[hU hx, hU hx.conj]`. Establish `h' : ¬ ∃ x, HasWeight Or (conjVec w) x` using `fun ⟨x, hx⟩ => h ⟨x, by`.
+
+Establish `e : conjVec (conjVec w) = w`. Use function extensionality and compare the values at `q`. Conclude with `Complex.conj_conj (w q)`. Use `hx.conj` as an intermediate fact. Rewrite using `[e] at this⟩` and apply the resulting hypothesis.
+
+Rewrite using `[hU0 h, hU0 h']`. Take `⟨z, -, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie w).1 hX.1`. Establish `hi : Or.𝔐.Interior z`. Assume the negation of the conclusion as `hn`. Conclude with `hX.2 ((Or.bd z w hz).2 hn)`.
+
+Take `⟨g, Λ, i₁, i₂, R, σ, hF, hL, he⟩` from `hU' z w hz hi`. Rewrite using `[he, hU (hw R hz hi hF hL)]`.
+-/
 theorem exists_cuspWeight : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd), ∃ U : ((Σ k, J k) → ℂ) → ℝ, Or.𝔐.IsCuspWeight Or.sm U ∧ (∀ w, 0 ≤ U w) ∧ (∀ w (a : K → ℂ), (∀ k, a k ≠ 0) → U (torusSmul a w) = U w) ∧ (∀ w, U (conjVec w) = U w) ∧ ∀ U', Or.𝔐.IsCuspWeight Or.sm U' → ∀ w ∈ Dc.Xo, U' w = U w := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or
   classical

@@ -148,21 +148,44 @@ section API
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitIdl {a : Ideles L} :
     a ∈ unitIdl L ↔ ∀ v, Valued.v ((a : AdeleRing (𝓞 L) L).2 v) = 1 := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPartI_fst (a : Ideles L) : (finPartI L a : AdeleRing (𝓞 L) L).1 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPartI_snd (a : Ideles L) : (finPartI L a : AdeleRing (𝓞 L) L).2 = (a : AdeleRing (𝓞 L) L).2 := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem finPartI_idem (a : Ideles L) : finPartI L (finPartI L a) = finPartI L a := Units.ext rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (Prod.ext (funext fun w => (h w).symm) rfl)`.
+-/
 theorem finPartI_eq_self {a : Ideles L} (h : ∀ w : InfinitePlace L, (a : AdeleRing (𝓞 L) L).1 w = 1) :
     finPartI L a = a :=
   Units.ext (Prod.ext (funext fun w => (h w).symm) rfl)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem finPartI_mem_unitIdl {a : Ideles L} : finPartI L a ∈ unitIdl L ↔ a ∈ unitIdl L := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `x`. Establish `h1 : v'.valuation L (algebraMap (𝓞 L) L x) = v.valuation L (algebraMap (𝓞 L) L x)` using `h _`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := L), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := L), h1]`.
+
+Introduce and unpack `rfl x`. Both sides reduce to the same expression.
+-/
 theorem conjPl_refl_iff (v v' : HeightOneSpectrum (𝓞 L)) : ConjPl (RingEquiv.refl L) v v' ↔ v = v' := by
   constructor
   · intro h
@@ -172,6 +195,9 @@ theorem conjPl_refl_iff (v v' : HeightOneSpectrum (𝓞 L)) : ConjPl (RingEquiv.
   · rintro rfl x
     rfl
 
+/- English proof (translation)
+The claim follows from `continuous_id diag _ := rfl inf _ _ := rfl infRange _ y := ⟨y, rfl⟩ loc v v' h k := by obtain rfl := (conjPl_refl_iff v v').1 h rfl locRange v v' h x := by obtain rfl := (conjPl_refl_iff v v').1 h exact ⟨x, rfl⟩ val v v' h a := by obtain rfl := (conjPl_refl_iff v v').1 h exact ⟨r …`.
+-/
 theorem isConjI_refl : IsConjI (RingEquiv.refl L) (MonoidHom.id (Ideles L)) where
   cont := continuous_id
   diag _ := rfl
@@ -187,25 +213,45 @@ theorem isConjI_refl : IsConjI (RingEquiv.refl L) (MonoidHom.id (Ideles L)) wher
     obtain rfl := (conjPl_refl_iff v v').1 h
     exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => by simp, fun _ _ _ => rfl⟩`.
+-/
 theorem tameLoc_one (v : HeightOneSpectrum (𝓞 L)) : TameLoc v 1 :=
   ⟨fun _ => by simp, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => hu _, fun x hx hx' => ht x hx (by simpa using hx')⟩`.
+-/
 theorem tameLoc_loc {χ : HChar L} (hu : χ.IsUnitary) {v : HeightOneSpectrum (𝓞 L)} (ht : χ.TameAt v) :
     TameLoc v (χ.loc v) :=
   ⟨fun _ => hu _, fun x hx hx' => ht x hx (by simpa using hx')⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem det_mem_detSub {N : ℕ} {M : Submodule (𝓞 L) (Fin N → L)} (x : Fin N → Fin N → L) (hx : ∀ i, x i ∈ M) :
     (Matrix.of x).det ∈ detSub M :=
   Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨x, hx, e⟩ => ⟨x, fun i => h (hx i), e⟩`.
+-/
 theorem detSub_mono {N : ℕ} {M M' : Submodule (𝓞 L) (Fin N → L)} (h : M ≤ M') : detSub M ≤ detSub M' :=
   Submodule.span_mono fun _ ⟨x, hx, e⟩ => ⟨x, fun i => h (hx i), e⟩
 
+/- English proof (translation)
+Establish `h : Valued.v (((unif w : Lˣ) : L) : w.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Rewrite `h` using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Simplify using `[ordF, h]`.
+-/
 theorem ordF_unif_self (w : HeightOneSpectrum (𝓞 L)) : ordF w (unif w) = 1 := by
   have h : Valued.v (((unif w : Lˣ) : L) : w.adicCompletion L) = WithZero.exp (-1 : ℤ) := unif_spec w
   rw [HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at h
   simp [ordF, h]
 
+/- English proof (translation)
+Use `IsLeast.csInf_eq ⟨⟨u, Submodule.mem_span_singleton_self _, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `n ⟨k, hk, rfl⟩`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hk`. Establish `hk0 : w.valuation L (k : L) ≠ 0` using `by simp`. Establish `hu0 : w.valuation L (u : L) ≠ 0` using `by simp`.
+
+Establish `hle : w.valuation L (k : L) ≤ w.valuation L (u : L)`. Rewrite using `[← ha, Algebra.smul_def, map_mul]`. Conclude with `mul_le_of_le_one_left' (w.valuation_le_one a)`. Unfold `ordF`. Conclude with `neg_le_neg ((WithZero.log_le_log hk0 hu0).2 hle)`.
+-/
 theorem ordSub_span_singleton (w : HeightOneSpectrum (𝓞 L)) (u : Lˣ) :
     ordSub w (Submodule.span (𝓞 L) {(u : L)}) = ordF w u := by
   refine IsLeast.csInf_eq ⟨⟨u, Submodule.mem_span_singleton_self _, rfl⟩, ?_⟩
@@ -219,6 +265,9 @@ theorem ordSub_span_singleton (w : HeightOneSpectrum (𝓞 L)) (u : Lˣ) :
   unfold ordF
   exact neg_le_neg ((WithZero.log_le_log hk0 hu0).2 hle)
 
+/- English proof (translation)
+Rewrite using `[ordSub_span_singleton, ordF_unif_self]`.
+-/
 example (w : HeightOneSpectrum (𝓞 L)) : ordSub w (Submodule.span (𝓞 L) {((unif w : Lˣ) : L)}) = 1 := by
   rw [ordSub_span_singleton, ordF_unif_self]
 
@@ -237,6 +286,25 @@ def negTwoConj : NegTwoField ≃ₐ[ℚ] NegTwoField :=
     show star (algebraMap ℚ NegTwoField x) = _
     ext <;> simp
 
+/- English proof (translation)
+Take `⟨m, hm, hx⟩` from `h`. Establish `hi : IsIntegral ℤ x` using `IsIntegral.of_pow hm (by rw [hx]; exact isIntegral_one)`. Establish `hi' : IsIntegral ℤ (star x)` using `IsIntegral.of_pow hm (by rw [← star_pow, hx, star_one]; exact isIntegral_one)`. Establish `ht : IsIntegral ℤ (QuadraticAlgebra.trace x)`. Use `hi.add hi'` as an intermediate fact.
+
+Rewrite `this` using `[← QuadraticAlgebra.algebraMap_trace_eq_add_star]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap ℚ NegTwoField).injective).1 this`. Take `⟨t, ht⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ht`. Rewrite `ht` using `[QuadraticAlgebra.trace_def, eq_intCast]`. Establish `hn : QuadraticAlgebra.norm x = 1`.
+
+Establish `h0 : 0 ≤ QuadraticAlgebra.norm x`. Rewrite using `[QuadraticAlgebra.norm_def]`. Use polynomial arithmetic with `[sq_nonneg x.re, sq_nonneg x.im]`. Conclude with `(pow_eq_one_iff_of_nonneg h0 hm.ne').1 (by rw [← map_pow, hx, map_one])`. Rewrite `hn` using `[QuadraticAlgebra.norm_def]`.
+
+Establish `h1 : (t : ℚ) ^ 2 + 8 * x.im ^ 2 = 4` using `by rw [ht]; linear_combination 4 * hn`. Establish `h2 : t ^ 2 ≤ 4`. Establish `: (t : ℚ) ^ 2 ≤ 4` using `by nlinarith [sq_nonneg x.im]`. Conclude with `this` after adjusting the coercions. Establish `h3 : -2 ≤ t` using `by nlinarith`.
+
+Establish `h4 : t ≤ 2` using `by nlinarith`. Establish `n2 : ¬ IsSquare (2 : ℚ)` using `by norm_num`. Establish `n6 : ¬ IsSquare (6 : ℚ)` using `by norm_num`. Use `interval_cases t`. Use `right`.
+
+Move the coercions through the operations in `at h1 ht`. Establish `: x.im = 0` using `by nlinarith [sq_nonneg x.im]`. Use `ext`. Use `show x.re = -1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `show x.im = -0`. Simplify using `using this`. Move the coercions through the operations in `at h1`. Conclude with `absurd ⟨4 * x.im, by linear_combination (-2) * h1⟩ n6`. Move the coercions through the operations in `at h1`.
+
+Conclude with `absurd ⟨2 * x.im, by linear_combination (-1 / 2) * h1⟩ n2`. Move the coercions through the operations in `at h1`. Conclude with `absurd ⟨4 * x.im, by linear_combination (-2) * h1⟩ n6`. Use `left`. Move the coercions through the operations in `at h1 ht`.
+
+Establish `: x.im = 0` using `by nlinarith [sq_nonneg x.im]`. Use `ext`. Use `show x.re = 1`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this`.
+-/
 theorem negTwo_roots (x : NegTwoField) (h : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : x = 1 ∨ x = -1 := by
   obtain ⟨m, hm, hx⟩ := h
   have hi : IsIntegral ℤ x := IsIntegral.of_pow hm (by rw [hx]; exact isIntegral_one)
@@ -284,6 +352,9 @@ theorem negTwo_roots (x : NegTwoField) (h : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : 
       linarith
     · exact this
 
+/- English proof (translation)
+The claim follows from `inferInstance cplx := by refine ⟨fun w => ?_⟩ rw [← InfinitePlace.not_isReal_iff_isComplex] intro hw have h0 : (QuadraticAlgebra.omega : NegTwoField) ^ 2 = -2 := by ext <;> simp [pow_two, QuadraticAlgebra.re_ofNat, QuadraticAlgebra.im_ofNat] have h := congrArg (InfinitePlace.embe …`.
+-/
 theorem cmData_negTwo : CMData ℚ negTwoConj (fun w : InfinitePlace NegTwoField => w.embedding) where
   real := inferInstance
   cplx := by
@@ -308,40 +379,67 @@ theorem cmData_negTwo : CMData ℚ negTwoConj (fun w : InfinitePlace NegTwoField
 
 end Inhabitant
 
+/- English proof (translation)
+The claim follows from `Subgroup.subset_closure (Or.inl h)`.
+-/
 theorem mem_KD_of_congG {a : Ideles H.E} (h : a ∈ congG H) : a ∈ KD H :=
   Subgroup.subset_closure (Or.inl h)
 
+/- English proof (translation)
+The claim follows from `Subgroup.subset_closure (Or.inr ⟨v, k, rfl⟩)`.
+-/
 theorem locF_mem_KD (v : HeightOneSpectrum (𝓞 H.F)) (k : (H.F)ˣ) : locF H.F v k ∈ KD H :=
   Subgroup.subset_closure (Or.inr ⟨v, k, rfl⟩)
 
+/- English proof (translation)
+Unfold `tildeD`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem tildeD_mk {χ : HChar H.E} (h : KD H ≤ (χ.1.comp (finPartI H.E)).ker) (a : Ideles H.E) :
     tildeD H χ (QuotientGroup.mk a) = χ.1 (finPartI H.E a) := by
   unfold tildeD
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Unfold `muTilT`. Rewrite using `[dif_pos ⟨Nat.le_add_left 1 j.1, j.2⟩]`. Both sides reduce to the same expression.
+-/
 theorem muTilT_succ (mu : Fin R.m → HChar H.E) (j : Fin R.m) : muTilT H mu (j.1 + 1) = tildeD H (mu j) := by
   unfold muTilT
   rw [dif_pos ⟨Nat.le_add_left 1 j.1, j.2⟩]
   rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_UOT {x : DtT H} : x ∈ UOT H ↔ ∃ a : Ideles H.E,
     (∀ v, Valued.v ((a : AdeleRing (𝓞 H.E) H.E).2 v) = 1) ∧ QuotientGroup.mk a = x := Iff.rfl
 
+/- English proof (translation)
+Unfold `e1T`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isRationalUnitaryDeterminantMap_rationalUnitaryToDeterminants (h : ∃ f, IsRationalUnitaryDeterminantMap H f) : IsRationalUnitaryDeterminantMap H (e1T H) := by
   unfold e1T
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Unfold `relDetT`. Simplify using the standard rewrite rules.
+-/
 theorem relDetT_self (N : ℕ) (M : Submodule (𝓞 H.E) (Fin N → H.E)) : relDetT H N M M = 1 := by
   unfold relDetT
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨1, one_pos, one_pow 1⟩, isClsF_one.triv, fun _ _ _ _ => rfl, fun v hv => absurd (isClsF_one.unr v) hv⟩`.
+-/
 theorem isTwist_one (S : Set ℕ) : IsTwist H S 1 :=
   ⟨⟨1, one_pos, one_pow 1⟩, isClsF_one.triv, fun _ _ _ _ => rfl, fun v hv => absurd (isClsF_one.unr v) hv⟩
 
 attribute [local instance] DtPack.instDt in
 
+/- English proof (translation)
+Use `letI := H.cmStar`. Rewrite using `[X.rest_detCharacter_on_unitary_eq]`. Establish `e : ((-1 : unitary H.E) : H.E) = -1` using `rfl`. Simplify using `[e]`.
+-/
 example (X : DtPack H) : letI := H.cmStar;
     ((X.chiD (X.e1Dt (-1)) : ℂˣ) : ℂ) = (-1) ^ Fintype.card (R.Psi) := by
   letI := H.cmStar

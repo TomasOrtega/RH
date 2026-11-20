@@ -20,6 +20,9 @@ def DiscreteBranchingUpq : Prop :=
         ∃ (s : Equiv.Perm (Fin n)) (mu : Fin n → ℝ), IsHCParam mu ∧ Interlaced ε lam (ε' ∘ s) mu ∧
           IsDS (ε' ∘ s) mu (fun h => σ (h.submatrix s.symm s.symm)))
 
+/- English proof (translation)
+Introduce `n e ε lam ε' mu hn hs hl hm hI H H' _ _ _ _ π σ hp hσ` and use `((h n e ε lam ε' hn hs hl H H' π σ hp).1 mu hm hσ).1 hI`.
+-/
 theorem DiscreteBranchingUpq.occ (h : DiscreteBranchingUpq) :
     ∀ (n : ℕ) (e : Option (Fin n) ≃ Fin (n + 1)) (ε : Fin (n + 1) → Bool) (lam : Fin (n + 1) → ℝ) (ε' : Fin n → Bool) (mu : Fin n → ℝ),
     1 ≤ n → Signs e ε ε' → IsHCParam lam → IsHCParam mu → Interlaced ε lam ε' mu →

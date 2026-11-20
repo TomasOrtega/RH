@@ -15,12 +15,18 @@ open Module TopologicalSpace
 
 namespace GlobalTheory.FlagPts
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype, ← Finset.sum_range_id, Finset.card_filter, ← Finset.univ_product_univ, Finset.sum_product, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.card_filter, Finset.filter_gt_eq_Iio, Fin.card_Iio]`.
+-/
 theorem card_lowerPairs (d : ℕ) : Fintype.card {p : Fin d × Fin d // p.2 < p.1} = d * (d - 1) / 2 := by
   rw [Fintype.card_subtype, ← Finset.sum_range_id, Finset.card_filter, ← Finset.univ_product_univ,
     Finset.sum_product, ← Fin.sum_univ_eq_sum_range]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [← Finset.card_filter, Finset.filter_gt_eq_Iio, Fin.card_Iio]
 
+/- English proof (translation)
+Establish `h1 : Fintype.card (CellIdx k V) = ∑ i, Fintype.card {p : Fin (finrank k (V i)) × Fin (finrank k (V i)) // p.2 < p.1}`. Unfold `CellIdx`. Use `Fintype.card_sigma (α := fun i => {p : Fin (finrank k (V i)) × Fin (finrank k (V i)) // p.2 < p.1})` and compare the differences between its conclusion and the goal. Rewrite using `[h1]`. Simplify using `only [card_lowerPairs, hn, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+-/
 theorem card_cellIdx {k : Type} [Field k] {ι : Type} [Fintype ι] {V : ι → Type} [∀ i, AddCommGroup (V i)]
     [∀ i, Module k (V i)] {n : ℕ} (hn : ∀ i, finrank k (V i) = n) :
     Fintype.card (CellIdx k V) = Fintype.card ι * (n * (n - 1) / 2) := by
@@ -31,11 +37,19 @@ theorem card_cellIdx {k : Type} [Field k] {ι : Type} [Fintype ι] {V : ι → T
   rw [h1]
   simp only [card_lowerPairs, hn, Finset.sum_const, Finset.card_univ, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `.of_continuous_injective_isOpenMap (GlobalTheory.T.continuous_cellMap' k ι V b) (GlobalTheory.T.injective_cellMap k ι V b) (GlobalTheory.T.isOpenMap_cellMap' k ι V b)`.
+-/
 theorem isOpenEmbedding_cellMap {k : Type} [Field k] {ι : Type} [Fintype ι] {V : ι → Type} [∀ i, AddCommGroup (V i)]
     [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (b : Frames k V) :
     Topology.IsOpenEmbedding (cellMap b) :=
   .of_continuous_injective_isOpenMap (GlobalTheory.T.continuous_cellMap' k ι V b) (GlobalTheory.T.injective_cellMap k ι V b) (GlobalTheory.T.isOpenMap_cellMap' k ι V b)
 
+/- English proof (translation)
+Establish `hU : topologicalKrullDim (Set.univ : Set (Flags k V)) = topologicalKrullDim (Flags k V)` using `(Homeomorph.Set.univ (Flags k V)).isHomeomorph.topologicalKrullDim_eq`. Rewrite using `[← hU, ← card_cellIdx (k := k) (V := V) hn, ← GlobalTheory.T.topologicalKrullDim_affine_points k (CellIdx k V)]`. Use `GlobalTheory.topologicalKrullDim_eq_of_forall_exists_isOpen Set.univ_nonempty fun F _ => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `flags_surjective F`. Establish `he` using `isOpenEmbedding_cellMap b`.
+
+Use `⟨Set.range (cellMap b), he.isOpen_range, ⟨0, cellMap_zero b⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.inter_univ]`. Conclude with `GlobalTheory.topologicalKrullDim_eq_of_isEmbedding he.isEmbedding rfl`.
+-/
 theorem topologicalKrullDim_flags (k : Type) [Field k] [IsAlgClosed k] (ι : Type) [Fintype ι] (V : ι → Type)
     [∀ i, AddCommGroup (V i)] [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (n : ℕ)
     (hn : ∀ i, finrank k (V i) = n) :
@@ -50,6 +64,9 @@ theorem topologicalKrullDim_flags (k : Type) [Field k] [IsAlgClosed k] (ι : Typ
   rw [Set.inter_univ]
   exact GlobalTheory.topologicalKrullDim_eq_of_isEmbedding he.isEmbedding rfl
 
+/- English proof (translation)
+The claim follows from `topologicalKrullDim_flags`.
+-/
 example : ∀ (k : Type) [Field k] [IsAlgClosed k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (n : ℕ), (∀ i, finrank k (V i) = n) →
     topologicalKrullDim (Flags k V) = (Fintype.card ι * (n * (n - 1) / 2) : ℕ) :=

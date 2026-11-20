@@ -8,20 +8,38 @@ namespace Formalism.WachCohomologyFacts.LaurentOrder
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Introduce `i _` and use `by simp`.
+-/
 theorem ord_zero (j : ℤ) : Ord j (0 : LaurentSeries k) := fun i _ => by simp
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [HahnSeries.coeff_add, hx i hi, hy i hi, add_zero]`.
+-/
 theorem ord_add {j : ℤ} {x y : LaurentSeries k} (hx : Ord j x) (hy : Ord j y) : Ord j (x + y) :=
   fun i hi => by rw [HahnSeries.coeff_add, hx i hi, hy i hi, add_zero]
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [HahnSeries.coeff_sub, hx i hi, hy i hi, sub_zero]`.
+-/
 theorem ord_sub {j : ℤ} {x y : LaurentSeries k} (hx : Ord j x) (hy : Ord j y) : Ord j (x - y) :=
   fun i hi => by rw [HahnSeries.coeff_sub, hx i hi, hy i hi, sub_zero]
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [HahnSeries.coeff_smul, hx i hi, smul_zero]`.
+-/
 theorem ord_smul {j : ℤ} (r : k) {x : LaurentSeries k} (hx : Ord j x) : Ord j (r • x) :=
   fun i hi => by rw [HahnSeries.coeff_smul, hx i hi, smul_zero]
 
+/- English proof (translation)
+Introduce `t ht` and use `hx t (lt_of_lt_of_le ht h)`.
+-/
 theorem ord_mono {i j : ℤ} {x : LaurentSeries k} (hx : Ord j x) (h : i ≤ j) : Ord i x :=
   fun t ht => hx t (lt_of_lt_of_le ht h)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ord_zero j`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `ord_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem ord_sum {ι : Type} (s : Finset ι) {j : ℤ} (f : ι → LaurentSeries k)
     (h : ∀ i ∈ s, Ord j (f i)) : Ord j (∑ i ∈ s, f i) := by
   classical
@@ -31,20 +49,36 @@ theorem ord_sum {ι : Type} (s : Finset ι) {j : ℤ} (f : ι → LaurentSeries 
     rw [Finset.sum_insert ha]
     exact ord_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `i hi`. Break down `lt_or_eq_of_le (Int.lt_add_one_iff.mp hi) with h | h` into its components or cases. Conclude with `hx i h`. Rewrite using `[h]`. Conclude with `h0`.
+-/
 theorem ord_succ {j : ℤ} {x : LaurentSeries k} (hx : Ord j x) (h0 : x.coeff j = 0) : Ord (j + 1) x := by
   intro i hi
   rcases lt_or_eq_of_le (Int.lt_add_one_iff.mp hi) with h | h
   · exact hx i h
   · rw [h]; exact h0
 
+/- English proof (translation)
+Use extensionality with `i; exact h (i + 1) i (by omega)`.
+-/
 theorem eq_zero_of_ord_all {x : LaurentSeries k} (h : ∀ j, Ord j x) : x = 0 := by
   ext i; exact h (i + 1) i (by omega)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hx0 (HahnSeries.coeff_order_eq_zero.mp (hx _ h))`.
+-/
 theorem le_order_of_ord {j : ℤ} {x : LaurentSeries k} (hx0 : x ≠ 0) (hx : Ord j x) : j ≤ x.order := by
   by_contra h
   push Not at h
   exact hx0 (HahnSeries.coeff_order_eq_zero.mp (hx _ h))
 
+/- English proof (translation)
+Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Simplify using `using ord_zero (i + j)`. Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality.
+
+Simplify using `using ord_zero (i + j)`. Introduce `t ht`. Apply `HahnSeries.coeff_eq_zero_of_lt_order` to reduce the goal to its premises. Rewrite using `[HahnSeries.order_mul_of_ne_zero (mul_ne_zero (HahnSeries.leadingCoeff_ne_zero.mpr hx0) (HahnSeries.leadingCoeff_ne_zero.mpr hy0))]`. Use `le_order_of_ord hx0 hx` as an intermediate fact.
+
+Use `le_order_of_ord hy0 hy` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_mul {i j : ℤ} {x y : LaurentSeries k} (hx : Ord i x) (hy : Ord j y) : Ord (i + j) (x * y) := by
   by_cases hx0 : x = 0
   · subst hx0; simpa using ord_zero (i + j)
@@ -58,6 +92,13 @@ theorem ord_mul {i j : ℤ} {x y : LaurentSeries k} (hx : Ord i x) (hy : Ord j y
   have := le_order_of_ord hy0 hy
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hxi : x.coeff i = 0`. Rewrite using `[hxi, zero_mul]`. Conclude with `ord_mul (ord_succ hx hxi) hy (i + j) (by omega)`. Distinguish the cases in `hyj : y.coeff j = 0`. Rewrite using `[hyj, mul_zero]`.
+
+Conclude with `ord_mul hx (ord_succ hy hyj) (i + j) (by omega)`. Establish `hx0 : x ≠ 0` using `HahnSeries.ne_zero_of_coeff_ne_zero hxi`. Establish `hy0 : y ≠ 0` using `HahnSeries.ne_zero_of_coeff_ne_zero hyj`. Establish `ex : x.order = i` using `le_antisymm (HahnSeries.order_le_of_coeff_ne_zero hxi) (le_order_of_ord hx0 hx)`. Establish `ey : y.order = j` using `le_antisymm (HahnSeries.order_le_of_coeff_ne_zero hyj) (le_order_of_ord hy0 hy)`.
+
+Use `HahnSeries.coeff_mul_order_add_order x y` as an intermediate fact. Rewrite `this` using `[ex, ey]`. Rewrite using `[this, HahnSeries.leadingCoeff_eq, HahnSeries.leadingCoeff_eq, ex, ey]`.
+-/
 theorem coeff_mul_ord {i j : ℤ} {x y : LaurentSeries k} (hx : Ord i x) (hy : Ord j y) :
     (x * y).coeff (i + j) = x.coeff i * y.coeff j := by
   by_cases hxi : x.coeff i = 0
@@ -76,26 +117,50 @@ theorem coeff_mul_ord {i j : ℤ} {x y : LaurentSeries k} (hx : Ord i x) (hy : O
 
 def V (k : Type) [Field k] (m : ℤ) : LaurentSeries k := HahnSeries.single m 1
 
+/- English proof (translation)
+Introduce `i hi` and use `HahnSeries.coeff_single_of_ne (by omega)`.
+-/
 theorem ord_V (m : ℤ) : Ord m (V k m) := fun i hi => HahnSeries.coeff_single_of_ne (by omega)
 
+/- English proof (translation)
+The claim follows from `HahnSeries.coeff_single_same _ _`.
+-/
 theorem coeff_V (m : ℤ) : (V k m).coeff m = 1 := HahnSeries.coeff_single_same _ _
 
+/- English proof (translation)
+Simplify using `[V, HahnSeries.single_mul_single]`.
+-/
 theorem V_mul (m n : ℤ) : V k m * V k n = V k (m + n) := by
   simp [V, HahnSeries.single_mul_single]
 
+/- English proof (translation)
+Rewrite using `[V_mul, add_neg_cancel]`. Both sides reduce to the same expression.
+-/
 theorem V_mul_neg (m : ℤ) : V k m * V k (-m) = 1 := by
   rw [V_mul, add_neg_cancel]; rfl
 
+/- English proof (translation)
+The claim follows from `HahnSeries.single_ne_zero one_ne_zero`.
+-/
 theorem V_ne_zero (m : ℤ) : V k m ≠ 0 := HahnSeries.single_ne_zero one_ne_zero
 
+/- English proof (translation)
+Rewrite using `[vv, HahnSeries.coeff_single_mul_add, one_mul]`.
+-/
 theorem coeff_vv_mul (j : ℤ) (x : LaurentSeries k) : (vv k * x).coeff (j + 1) = x.coeff j := by
   rw [vv, HahnSeries.coeff_single_mul_add, one_mul]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(rw [LaurentSeries.algebraMap_apply]; rfl)`.
+-/
 theorem algebraMap_eq (r : k) : algebraMap k (LaurentSeries k) r = HahnSeries.single 0 r := by
   first
   | rfl
   | (rw [LaurentSeries.algebraMap_apply]; rfl)
 
+/- English proof (translation)
+Use extensionality with `i`. Use `HahnSeries.coeff_single_mul_add (r := r) (x := x) (a := i) (b := (0 : ℤ))` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[HahnSeries.coeff_smul, this, smul_eq_mul]`.
+-/
 theorem smul_eq_single (r : k) (x : LaurentSeries k) : r • x = HahnSeries.single 0 r * x := by
   ext i
   have := HahnSeries.coeff_single_mul_add (r := r) (x := x) (a := i) (b := (0 : ℤ))
@@ -106,21 +171,36 @@ section Psi
 
 variable {ℓ : ℕ} (P : PsiData k ℓ)
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_eq]`. Conclude with `P.φ.commutes r`.
+-/
 theorem φ_single0 (r : k) : P.φ (HahnSeries.single 0 r) = HahnSeries.single 0 r := by
   rw [← algebraMap_eq]; exact P.φ.commutes r
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_eq]`. Conclude with `P.γ.commutes r`.
+-/
 theorem γ_single0 (r : k) : P.γ (HahnSeries.single 0 r) = HahnSeries.single 0 r := by
   rw [← algebraMap_eq]; exact P.γ.commutes r
 
+/- English proof (translation)
+Rewrite using `[smul_eq_single, ← φ_single0 P, P.ψ_φ, ← smul_eq_single]`.
+-/
 theorem ψ_smul (r : k) (x : LaurentSeries k) : P.ψ (r • x) = r • P.ψ x := by
   rw [smul_eq_single, ← φ_single0 P, P.ψ_φ, ← smul_eq_single]
 
+/- English proof (translation)
+Establish `: P.ψ x ∈ P.ψ '' {x | Ord c x}` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[P.ψ_low c h1 h2]`. Conclude with `this`.
+-/
 theorem psi_order_zero_of_order {c : ℤ} (h1 : 2 - (ℓ : ℤ) ≤ c) (h2 : c ≤ 1) {x : LaurentSeries k} (hx : Ord c x) :
     Ord 0 (P.ψ x) := by
   have : P.ψ x ∈ P.ψ '' {x | Ord c x} := ⟨x, hx, rfl⟩
   rw [P.ψ_low c h1 h2] at this
   exact this
 
+/- English proof (translation)
+Establish `: y ∈ ({x | Ord 0 x} : Set (LaurentSeries k))` using `hy`. Rewrite `this` using `[← P.ψ_low c h1 h2]`. Take `⟨z, hz, e⟩` from `this`. Conclude with `⟨z, hz, e⟩`.
+-/
 theorem ψ_surj {c : ℤ} (h1 : 2 - (ℓ : ℤ) ≤ c) (h2 : c ≤ 1) {y : LaurentSeries k} (hy : Ord 0 y) :
     ∃ z, Ord c z ∧ P.ψ z = y := by
   have : y ∈ ({x | Ord 0 x} : Set (LaurentSeries k)) := hy
@@ -128,6 +208,9 @@ theorem ψ_surj {c : ℤ} (h1 : 2 - (ℓ : ℤ) ≤ c) (h2 : c ≤ 1) {y : Laure
   obtain ⟨z, hz, e⟩ := this
   exact ⟨z, hz, e⟩
 
+/- English proof (translation)
+Establish `: P.ψ x ∈ P.ψ '' {x | Ord 2 x}` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[P.ψ_high 2 le_rfl (by omega)]`. Conclude with `this`.
+-/
 theorem psi_order_one_of_order_two (hℓ : 1 ≤ ℓ) {x : LaurentSeries k} (hx : Ord 2 x) : Ord 1 (P.ψ x) := by
   have : P.ψ x ∈ P.ψ '' {x | Ord 2 x} := ⟨x, hx, rfl⟩
   rw [P.ψ_high 2 le_rfl (by omega)] at this
@@ -135,9 +218,21 @@ theorem psi_order_one_of_order_two (hℓ : 1 ≤ ℓ) {x : LaurentSeries k} (hx 
 
 def ψ₁ : k := (P.ψ (vv k)).coeff 0
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [HahnSeries.coeff_one, if_neg (by omega)]`.
+-/
 theorem ord_one : Ord 0 (1 : LaurentSeries k) := fun i hi => by
   rw [HahnSeries.coeff_one, if_neg (by omega)]
 
+/- English proof (translation)
+Use `set r := z - z.coeff 0 • (1 : LaurentSeries k) - z.coeff 1 • vv k with hrdef`. Establish `hr : Ord 2 r`. Introduce `i hi`. Simplify using `only [r, HahnSeries.coeff_sub, HahnSeries.coeff_smul, HahnSeries.coeff_one, vv, HahnSeries.coeff_single, smul_eq_mul]`. Break down `(by omega : i < 0 ∨ i = 0 ∨ i = 1) with h | h | h` into its components or cases.
+
+Rewrite using `[hz i h, if_neg (by omega), if_neg (by omega)]; ring`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hz' : z = z.coeff 0 • (1 : LaurentSeries k) + z.coeff 1 • vv k + r`. Rewrite using `[hrdef]`. Normalize the expressions using the abelian group laws. Rewrite using `[hz', map_add, map_add, ψ_smul, ψ_smul, P.ψ_one, HahnSeries.coeff_add, HahnSeries.coeff_add, HahnSeries.coeff_smul, HahnSeries.coeff_smul, psi_order_one_of_order_two P hℓ hr 0 (by norm_num)]`. Establish `e1 : (z.coeff 0 • (1 : LaurentSeries k) + z.coeff 1 • vv k + r).coeff 0 = z.coeff 0`.
+
+Rewrite using `[← hz']`. Establish `e2 : (z.coeff 0 • (1 : LaurentSeries k) + z.coeff 1 • vv k + r).coeff 1 = z.coeff 1`. Rewrite using `[← hz']`. Rewrite using `[e1, e2, HahnSeries.coeff_one, if_pos rfl, ψ₁, smul_eq_mul, smul_eq_mul, mul_one, add_zero]`.
+-/
 theorem ψ_coeff0 (hℓ : 1 ≤ ℓ) {z : LaurentSeries k} (hz : Ord 0 z) :
     (P.ψ z).coeff 0 = z.coeff 0 + z.coeff 1 * ψ₁ P := by
   set r := z - z.coeff 0 • (1 : LaurentSeries k) - z.coeff 1 • vv k with hrdef
@@ -159,6 +254,11 @@ theorem ψ_coeff0 (hℓ : 1 ≤ ℓ) {z : LaurentSeries k} (hz : Ord 0 z) :
     rw [← hz']
   rw [e1, e2, HahnSeries.coeff_one, if_pos rfl, ψ₁, smul_eq_mul, smul_eq_mul, mul_one, add_zero]
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `ψ_surj P (c := 1) (by omega) le_rfl (ord_one (k := k))`. Use `ψ_coeff0 P hℓ (ord_mono hy (by norm_num))` as an intermediate fact. Rewrite `this` using `[e, hy 0 (by norm_num), zero_add, HahnSeries.coeff_one, if_pos rfl]`. Introduce `h`. Rewrite `this` using `[h, mul_zero]`.
+
+Conclude with `one_ne_zero this`.
+-/
 theorem ψ₁_ne (hℓ : 1 ≤ ℓ) : ψ₁ P ≠ 0 := by
   obtain ⟨y, hy, e⟩ := ψ_surj P (c := 1) (by omega) le_rfl (ord_one (k := k))
   have := ψ_coeff0 P hℓ (ord_mono hy (by norm_num))
@@ -169,16 +269,31 @@ theorem ψ₁_ne (hℓ : 1 ≤ ℓ) : ψ₁ P ≠ 0 := by
 
 def Φ (m : ℤ) : LaurentSeries k := P.φ (V k m)
 
+/- English proof (translation)
+Rewrite using `[Φ, Φ, ← map_mul, V_mul_neg, map_one]`.
+-/
 theorem Φ_mul_neg (m : ℤ) : Φ P m * Φ P (-m) = 1 := by
   rw [Φ, Φ, ← map_mul, V_mul_neg, map_one]
 
+/- English proof (translation)
+The claim follows from `P.φ_ord m _ (ord_V m)`.
+-/
 theorem ord_Φ (m : ℤ) : Ord ((ℓ : ℤ) * m) (Φ P m) := P.φ_ord m _ (ord_V m)
 
+/- English proof (translation)
+The claim follows from `P.ψ_φ _ _`.
+-/
 theorem ψ_Φ (m : ℤ) (y : LaurentSeries k) : P.ψ (Φ P m * y) = V k m * P.ψ y := P.ψ_φ _ _
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, Φ_mul_neg, one_mul]`.
+-/
 theorem Φ_decomp (m : ℤ) (x : LaurentSeries k) : x = Φ P m * (Φ P (-m) * x) := by
   rw [← mul_assoc, Φ_mul_neg, one_mul]
 
+/- English proof (translation)
+Use `ord_mul (ord_Φ P (-m)) hx` as an intermediate fact. Establish `e : (ℓ : ℤ) * -m + b = b - ℓ * m` using `by ring`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem ord_Φneg {b : ℤ} (m : ℤ) {x : LaurentSeries k} (hx : Ord b x) :
     Ord (b - ℓ * m) (Φ P (-m) * x) := by
   have := ord_mul (ord_Φ P (-m)) hx
@@ -186,10 +301,16 @@ theorem ord_Φneg {b : ℤ} (m : ℤ) {x : LaurentSeries k} (hx : Ord b x) :
   rw [e] at this
   exact this
 
+/- English proof (translation)
+Use `conv_lhs => rw [Φ_decomp P m x]`. Conclude with `ψ_Φ P m _`.
+-/
 theorem ψ_decomp (m : ℤ) (x : LaurentSeries k) : P.ψ x = V k m * P.ψ (Φ P (-m) * x) := by
   conv_lhs => rw [Φ_decomp P m x]
   exact ψ_Φ P m _
 
+/- English proof (translation)
+Establish `hpos : (0 : ℤ) < ℓ` using `by exact_mod_cast hℓ`. Establish `h1` using `Int.mul_ediv_add_emod (b + ℓ - 2) ℓ`. Establish `h2` using `Int.emod_nonneg (b + ℓ - 2) hpos.ne'`. Establish `h3` using `Int.emod_lt_of_pos (b + ℓ - 2) hpos`. Apply the tactic sequence `refine ⟨(b + ℓ - 2) / ℓ, b - ℓ * ((b + ℓ - 2) / ℓ), by ring, ?_, ?_⟩ <;> linarith`.
+-/
 theorem level_exists (hℓ : 1 ≤ ℓ) (b : ℤ) :
     ∃ m c : ℤ, b = ℓ * m + c ∧ 2 - (ℓ : ℤ) ≤ c ∧ c ≤ 1 := by
   have hpos : (0 : ℤ) < ℓ := by exact_mod_cast hℓ
@@ -198,6 +319,15 @@ theorem level_exists (hℓ : 1 ≤ ℓ) (b : ℤ) :
   have h3 := Int.emod_lt_of_pos (b + ℓ - 2) hpos
   refine ⟨(b + ℓ - 2) / ℓ, b - ℓ * ((b + ℓ - 2) / ℓ), by ring, ?_, ?_⟩ <;> linarith
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h; subst h; exact ⟨m, by rw [hb]; ring⟩`. Introduce `h`. Establish `hd : (ℓ : ℤ) ∣ c - 1`. Establish `: c - 1 = (b - 1) - ℓ * m` using `by rw [hb]; ring`.
+
+Rewrite using `[this]`. Conclude with `dvd_sub h (dvd_mul_right _ _)`. Take `⟨t, ht⟩` from `hd`. Establish `hpos : (0 : ℤ) < ℓ` using `by exact_mod_cast hℓ`. Break down `lt_trichotomy t 0 with ht0 | ht0 | ht0` into its components or cases.
+
+Establish `: (ℓ : ℤ) * t ≤ -ℓ` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Substitute `ht0` using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (ℓ : ℤ) * t ≥ ℓ` using `by nlinarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem level_one_iff (hℓ : 1 ≤ ℓ) {b m c : ℤ} (hb : b = ℓ * m + c) (h1 : 2 - (ℓ : ℤ) ≤ c) (h2 : c ≤ 1) :
     c = 1 ↔ (ℓ : ℤ) ∣ b - 1 := by
   constructor
@@ -215,6 +345,9 @@ theorem level_one_iff (hℓ : 1 ≤ ℓ) {b m c : ℤ} (hb : b = ℓ * m + c) (h
     · have : (ℓ : ℤ) * t ≥ ℓ := by nlinarith
       linarith
 
+/- English proof (translation)
+Rewrite using `[ψ_decomp P N x]`. Establish `hw` using `ord_Φneg P N hx`. Rewrite `hw` using `[sub_self]`. Use `ord_mul (ord_V (k := k) N) (psi_order_zero_of_order P (c := 0) (by omega) (by norm_num) hw)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem ψ_cont (hℓ : 2 ≤ ℓ) (N : ℤ) {x : LaurentSeries k} (hx : Ord (ℓ * N) x) : Ord N (P.ψ x) := by
   rw [ψ_decomp P N x]
   have hw := ord_Φneg P N hx
@@ -222,6 +355,15 @@ theorem ψ_cont (hℓ : 2 ≤ ℓ) (N : ℤ) {x : LaurentSeries k} (hx : Ord (�
   have := ord_mul (ord_V (k := k) N) (psi_order_zero_of_order P (c := 0) (by omega) (by norm_num) hw)
   rwa [add_zero] at this
 
+/- English proof (translation)
+Take `⟨m, c, hb, h1, h2⟩` from `level_exists hℓ b`. Establish `hc : c = 1` using `(level_one_iff hℓ hb h1 h2).mpr hd`. Establish `hw : Ord 1 (Φ P (-m) * x)`. Use `ord_Φneg P m hx` as an intermediate fact. Establish `e : b - ℓ * m = 1` using `by rw [hb, hc]; ring`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hψw : P.ψ (Φ P (-m) * x) = 0`. Use `ψ_decomp P m x` as an intermediate fact. Rewrite `this` using `[hψ]`. Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases.
+
+Conclude with `absurd h (V_ne_zero m)`. Conclude with `h`. Establish `hc0` using `ψ_coeff0 P hℓ (ord_mono hw (by norm_num))`. Rewrite `hc0` using `[hψw, hw 0 (by norm_num), zero_add, HahnSeries.coeff_zero]`. Establish `hw1 : (Φ P (-m) * x).coeff 1 = 0`.
+
+Break down `mul_eq_zero.mp hc0.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (ψ₁_ne P hℓ)`. Rewrite using `[Φ_decomp P m x, hb, hc, coeff_mul_ord (ord_Φ P m) hw, hw1, mul_zero]`.
+-/
 theorem ψ_level1 (hℓ : 1 ≤ ℓ) {b : ℤ} (hd : (ℓ : ℤ) ∣ b - 1) {x : LaurentSeries k} (hx : Ord b x)
     (hψ : P.ψ x = 0) : x.coeff b = 0 := by
   obtain ⟨m, c, hb, h1, h2⟩ := level_exists hℓ b
@@ -244,6 +386,17 @@ theorem ψ_level1 (hℓ : 1 ≤ ℓ) {b : ℤ} (hd : (ℓ : ℤ) ∣ b - 1) {x :
     · exact absurd h (ψ₁_ne P hℓ)
   rw [Φ_decomp P m x, hb, hc, coeff_mul_ord (ord_Φ P m) hw, hw1, mul_zero]
 
+/- English proof (translation)
+Take `⟨m, c, hb, h1, h2⟩` from `level_exists hℓ b`. Establish `hc : c ≤ 0`. Break down `lt_or_eq_of_le h2 with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `absurd ((level_one_iff hℓ hb h1 h2).mp h) hd`.
+
+Use `set y : LaurentSeries k := α • V k b`. Establish `hy : Ord b y` using `ord_smul α (ord_V b)`. Establish `hw : Ord c (Φ P (-m) * y)`. Use `ord_Φneg P m hy` as an intermediate fact. Establish `e : b - ℓ * m = c` using `by rw [hb]; ring`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨z, hz, hze⟩` from `ψ_surj P (c := c + 1) (by omega) (by omega) (psi_order_zero_of_order P h1 h2 hw)`. Use `⟨y - Φ P m * z, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `ord_mul (ord_Φ P m) hz` as an intermediate fact. Establish `e : (ℓ : ℤ) * m + (c + 1) = b + 1` using `by rw [hb]; ring`.
+
+Rewrite `this` using `[e]`. Conclude with `ord_sub hy (ord_mono this (by omega))`. Rewrite using `[map_sub, ψ_Φ, hze, ← ψ_decomp, sub_self]`. Use `ord_mul (ord_Φ P m) hz` as an intermediate fact. Establish `e : (ℓ : ℤ) * m + (c + 1) = b + 1` using `by rw [hb]; ring`.
+
+Rewrite `this` using `[e]`. Rewrite using `[HahnSeries.coeff_sub, this b (by omega), sub_zero, HahnSeries.coeff_smul, coeff_V, smul_eq_mul, mul_one]`.
+-/
 theorem ψ_lift (hℓ : 1 ≤ ℓ) {b : ℤ} (hd : ¬ (ℓ : ℤ) ∣ b - 1) (α : k) :
     ∃ x : LaurentSeries k, Ord b x ∧ P.ψ x = 0 ∧ x.coeff b = α := by
   obtain ⟨m, c, hb, h1, h2⟩ := level_exists hℓ b
@@ -276,19 +429,31 @@ section Gam
 
 variable {ℓ : ℕ} (P : PsiData k ℓ)
 
+/- English proof (translation)
+The claim follows from `(P.γ_lead j x hx).1`.
+-/
 theorem T_ord {j : ℤ} {x : LaurentSeries k} (hx : Ord j x) : Ord (j + 1) (P.γ x - x) :=
   (P.γ_lead j x hx).1
 
+/- English proof (translation)
+Establish `h` using `(P.γ_lead j x hx).2 (j + 1) (by omega)`. Rewrite `h` using `[HahnSeries.coeff_sub, HahnSeries.coeff_smul, coeff_vv_mul, smul_eq_mul, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem T_coeff {j : ℤ} {x : LaurentSeries k} (hx : Ord j x) :
     (P.γ x - x).coeff (j + 1) = (j : k) * P.c₀ * x.coeff j := by
   have h := (P.γ_lead j x hx).2 (j + 1) (by omega)
   rw [HahnSeries.coeff_sub, HahnSeries.coeff_smul, coeff_vv_mul, smul_eq_mul, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Use `ord_add (ord_mono (T_ord P hx) (by omega)) hx` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem γ_ord {j : ℤ} {x : LaurentSeries k} (hx : Ord j x) : Ord j (P.γ x) := by
   have := ord_add (ord_mono (T_ord P hx) (by omega)) hx
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Rewrite using `[map_sub, P.ψ_γ, h, map_zero, sub_zero]`.
+-/
 theorem ψT {x : LaurentSeries k} (h : P.ψ x = 0) : P.ψ (P.γ x - x) = 0 := by
   rw [map_sub, P.ψ_γ, h, map_zero, sub_zero]
 
@@ -296,8 +461,34 @@ def κ (b : ℤ) : k := if (ℓ : ℤ) ∣ b then -(P.c₀ / ψ₁ P) else (b : 
 
 def cb (ℓ : ℕ) (b : ℤ) : ℤ := if (ℓ : ℤ) ∣ b then b + 2 else b + 1
 
+/- English proof (translation)
+Apply the tactic sequence `unfold cb; split_ifs <;> omega`.
+-/
 theorem cb_le (ℓ : ℕ) (b : ℤ) : cb ℓ b ≤ b + 2 := by unfold cb; split_ifs <;> omega
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hd`. Establish `hz : Ord 0 (Φ P (-m) * x)`. Use `ord_Φneg P m hx` as an intermediate fact. Rewrite `this` using `[sub_self]`. Then use the resulting hypothesis. Establish `hψz : P.ψ (Φ P (-m) * x) = 0`.
+
+Use `ψ_decomp P m x` as an intermediate fact. Rewrite `this` using `[hψ]`. Break down `mul_eq_zero.mp this.symm with h | h` into its components or cases. Conclude with `absurd h (V_ne_zero m)`. Conclude with `h`.
+
+Establish `hxz : x = Φ P m * (Φ P (-m) * x)` using `Φ_decomp P m x`. Generalize the expression as in `Φ P (-m) * x = z at hz hψz hxz`. Establish `hz01 : z.coeff 0 + z.coeff 1 * ψ₁ P = 0`. Rewrite using `[← ψ_coeff0 P (by omega) hz, hψz, HahnSeries.coeff_zero]`. Establish `hdd : Ord (m + 1) (P.γ (V k m) - V k m)` using `T_ord P (ord_V m)`.
+
+Establish `hγΦ : P.γ (Φ P m) = Φ P m + P.φ (P.γ (V k m) - V k m)`. Rewrite using `[Φ, P.γ_φ, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : P.γ x - x = Φ P m * (P.γ z - z) + P.φ (P.γ (V k m) - V k m) * P.γ z`. Rewrite using `[hxz, map_mul, hγΦ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set y := z - HahnSeries.single 0 (z.coeff 0) with hydef`. Establish `hyz : P.γ z - z = P.γ y - y`. Rewrite using `[hydef, map_sub, γ_single0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy : Ord 1 y`. Introduce `i hi`. Rewrite using `[hydef, HahnSeries.coeff_sub, HahnSeries.coeff_single]`. Break down `(by omega : i < 0 ∨ i = 0) with h | h` into its components or cases. Rewrite using `[hz i h, if_neg (by omega), sub_zero]`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `hy1 : y.coeff 1 = z.coeff 1`. Rewrite using `[hydef, HahnSeries.coeff_sub, HahnSeries.coeff_single_of_ne (by norm_num), sub_zero]`. Establish `hT2 : Ord 2 (P.γ y - y)`.
+
+Use `T_ord P hy; rwa [show (1 : ℤ) + 1 = 2 by norm_num] at this` as an intermediate fact. Establish `hTc : (P.γ y - y).coeff 2 = P.c₀ * z.coeff 1`. Use `T_coeff P hy` as an intermediate fact. Rewrite `this` using `[show (1 : ℤ) + 1 = 2 by norm_num, Int.cast_one, one_mul, hy1]`. Conclude with `this`.
+
+Establish `h1` using `ord_mul (ord_Φ P m) hT2`. Establish `h2` using `ord_mul (P.φ_ord (m + 1) _ hdd) (γ_ord P hz)`. Establish `e2 : (ℓ : ℤ) * (m + 1) + 0 = ℓ * m + ℓ` using `by ring`. Rewrite `h2` using `[e2]`. Rewrite `*` using `[key, ← hyz]`.
+
+Use `⟨ord_add h1 (ord_mono h2 (by omega)), ?_⟩` and prove the remaining obligations. Rewrite using `[HahnSeries.coeff_add, coeff_mul_ord (ord_Φ P m) hT2, h2 _ (by omega), add_zero, hyz, hTc]`. Use `conv_rhs => rw [hxz]`. Establish `e0` using `coeff_mul_ord (ord_Φ P m) hz`. Rewrite `e0` using `[add_zero]`.
+
+Rewrite using `[e0]`. Establish `hz0 : z.coeff 0 = -(z.coeff 1 * ψ₁ P)` using `eq_neg_of_add_eq_zero_left hz01`. Rewrite using `[hz0]`. Use `ψ₁_ne P (by omega)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem T_zero (hℓ : 3 ≤ ℓ) {b : ℤ} (hd : (ℓ : ℤ) ∣ b) {x : LaurentSeries k} (hx : Ord b x)
     (hψ : P.ψ x = 0) :
     Ord (b + 2) (P.γ x - x) ∧ (P.γ x - x).coeff (b + 2) = -(P.c₀ / ψ₁ P) * x.coeff b := by
@@ -352,6 +543,9 @@ theorem T_zero (hℓ : 3 ≤ ℓ) {b : ℤ} (hd : (ℓ : ℤ) ∣ b) {x : Lauren
   have := ψ₁_ne P (by omega)
   field_simp
 
+/- English proof (translation)
+Unfold `cb κ`. Use `split_ifs with h`. Conclude with `T_zero P hℓ h hx hψ`. Conclude with `⟨T_ord P hx, T_coeff P hx⟩`.
+-/
 theorem T_lead (hℓ : 3 ≤ ℓ) {b : ℤ} {x : LaurentSeries k} (hx : Ord b x) (hψ : P.ψ x = 0) :
     Ord (cb ℓ b) (P.γ x - x) ∧ (P.γ x - x).coeff (cb ℓ b) = κ P b * x.coeff b := by
   unfold cb κ
@@ -359,6 +553,11 @@ theorem T_lead (hℓ : 3 ≤ ℓ) {b : ℤ} {x : LaurentSeries k} (hx : Ord b x)
   · exact T_zero P hℓ h hx hψ
   · exact ⟨T_ord P hx, T_coeff P hx⟩
 
+/- English proof (translation)
+Unfold `κ`. Use `split_ifs with h`. Conclude with `neg_ne_zero.mpr (div_ne_zero P.hc₀ (ψ₁_ne P (by omega)))`. Use `mul_ne_zero ?_ P.hc₀` and prove the remaining obligations. Rewrite using `[Ne, CharP.intCast_eq_zero_iff k ℓ b]`.
+
+Conclude with `h`.
+-/
 theorem κ_ne [CharP k ℓ] (hℓ : 2 ≤ ℓ) (b : ℤ) : κ P b ≠ 0 := by
   unfold κ
   split_ifs with h
@@ -375,16 +574,25 @@ def Gam (x : Fin n → LaurentSeries k) : Fin n → LaurentSeries k :=
 def Eg (x : Fin n → LaurentSeries k) (m : Fin n) : LaurentSeries k :=
   ∑ j, P.γ (x j) * P.φ (g j m - if j = m then 1 else 0)
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem φ_sub_δ (j m : Fin n) :
     P.φ (g j m - if j = m then 1 else 0) = P.φ (g j m) - if j = m then 1 else 0 := by
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [Gam, Eg, Pi.sub_apply, φ_sub_δ, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Gam_sub_eq (x : Fin n → LaurentSeries k) (m : Fin n) :
     (Gam P g x - x) m = (P.γ (x m) - x m) + Eg P g x m := by
   simp only [Gam, Eg, Pi.sub_apply, φ_sub_δ, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one,
     mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Apply `ord_sum` to reduce the goal to its premises. Introduce `j _`. Use `ord_mul (γ_ord P (hx j)) (P.φ_ord 1 _ (hg j m))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem Eg_ord (hg : ∀ i j, Ord 1 (g i j - if i = j then 1 else 0)) {b : ℤ}
     {x : Fin n → LaurentSeries k} (hx : ∀ j, Ord b (x j)) (m : Fin n) :
     Ord (b + ℓ) (Eg P g x m) := by
@@ -393,6 +601,9 @@ theorem Eg_ord (hg : ∀ i j, Ord 1 (g i j - if i = j then 1 else 0)) {b : ℤ}
   have := ord_mul (γ_ord P (hx j)) (P.φ_ord 1 _ (hg j m))
   rwa [mul_one] at this
 
+/- English proof (translation)
+Rewrite using `[Pi.sub_apply, map_sub, hx m, sub_zero, Gam, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[mul_comm, P.ψ_φ, P.ψ_γ, hx j, map_zero, mul_zero]`.
+-/
 theorem Gam_ψ {x : Fin n → LaurentSeries k} (hx : ∀ j, P.ψ (x j) = 0) (m : Fin n) :
     P.ψ ((Gam P g x - x) m) = 0 := by
   rw [Pi.sub_apply, map_sub, hx m, sub_zero, Gam, map_sum]
@@ -400,14 +611,23 @@ theorem Gam_ψ {x : Fin n → LaurentSeries k} (hx : ∀ j, P.ψ (x j) = 0) (m :
   intro j _
   rw [mul_comm, P.ψ_φ, P.ψ_γ, hx j, map_zero, mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `[Gam, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem Gam_add (x y : Fin n → LaurentSeries k) : Gam P g (x + y) = Gam P g x + Gam P g y := by
   funext m
   simp [Gam, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `[Gam, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem Gam_sub (x y : Fin n → LaurentSeries k) : Gam P g (x - y) = Gam P g x - Gam P g y := by
   funext m
   simp [Gam, map_sub, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `[Gam]`.
+-/
 theorem Gam_zero : Gam P g (0 : Fin n → LaurentSeries k) = 0 := by
   funext m
   simp [Gam]
@@ -420,24 +640,41 @@ variable {ℓ : ℕ} (P : PsiData k ℓ) {n : ℕ} (g : Fin n → Fin n → Laur
 
 def XS (b : ℤ) (x : Fin n → LaurentSeries k) : Prop := ∀ j, Ord b (x j) ∧ P.ψ (x j) = 0
 
+/- English proof (translation)
+Introduce `j` and use `⟨ord_zero b, by simp⟩`.
+-/
 theorem XS_zero (b : ℤ) : XS P b (0 : Fin n → LaurentSeries k) :=
   fun j => ⟨ord_zero b, by simp⟩
 
+/- English proof (translation)
+Introduce `j` and use `⟨ord_add (hx j).1 (hy j).1, by rw [Pi.add_apply, map_add, (hx j).2, (hy j).2, add_zero]⟩`.
+-/
 theorem XS_add {b : ℤ} {x y : Fin n → LaurentSeries k} (hx : XS P b x) (hy : XS P b y) :
     XS P b (x + y) := fun j =>
   ⟨ord_add (hx j).1 (hy j).1, by rw [Pi.add_apply, map_add, (hx j).2, (hy j).2, add_zero]⟩
 
+/- English proof (translation)
+Introduce `j` and use `⟨ord_mono (hx j).1 h, (hx j).2⟩`.
+-/
 theorem XS_mono {b c : ℤ} {x : Fin n → LaurentSeries k} (hx : XS P b x) (h : c ≤ b) : XS P c x :=
   fun j => ⟨ord_mono (hx j).1 h, (hx j).2⟩
 
 variable (hg : ∀ i j, Ord 1 (g i j - if i = j then 1 else 0))
 include hg
 
+/- English proof (translation)
+Rewrite using `[Gam_sub_eq]`. Conclude with `ord_add (ord_mono (T_ord P (hx m)) (by omega)) (ord_mono (Eg_ord P g hg hx m) (by omega))`.
+-/
 theorem Gam_pres (hℓ : 1 ≤ ℓ) {b : ℤ} {x : Fin n → LaurentSeries k} (hx : ∀ j, Ord b (x j))
     (m : Fin n) : Ord b ((Gam P g x - x) m) := by
   rw [Gam_sub_eq]
   exact ord_add (ord_mono (T_ord P (hx m)) (by omega)) (ord_mono (Eg_ord P g hg hx m) (by omega))
 
+/- English proof (translation)
+Rewrite using `[Gam_sub_eq]`. Take `⟨h1, h2⟩` from `T_lead P hℓ (hx m).1 (hx m).2`. Establish `hE` using `Eg_ord P g hg (fun j => (hx j).1) m`. Establish `hle` using `cb_le ℓ b`. Use `⟨ord_add h1 (ord_mono hE (by omega)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[HahnSeries.coeff_add, h2, hE _ (by omega), add_zero]`.
+-/
 theorem Gam_lead (hℓ : 3 ≤ ℓ) {b : ℤ} {x : Fin n → LaurentSeries k} (hx : XS P b x) (m : Fin n) :
     Ord (cb ℓ b) ((Gam P g x - x) m) ∧
       ((Gam P g x - x) m).coeff (cb ℓ b) = κ P b * (x m).coeff b := by
@@ -449,10 +686,22 @@ theorem Gam_lead (hℓ : 3 ≤ ℓ) {b : ℤ} {x : Fin n → LaurentSeries k} (h
   rw [HahnSeries.coeff_add, h2, hE _ (by omega), add_zero]
 
 omit hg in
+/- English proof (translation)
+Introduce `j` and use `⟨ord_succ (hx j).1 (ψ_level1 P hℓ hd (hx j).1 (hx j).2), (hx j).2⟩`.
+-/
 theorem level1_X (hℓ : 1 ≤ ℓ) {b : ℤ} (hd : (ℓ : ℤ) ∣ b - 1) {x : Fin n → LaurentSeries k}
     (hx : XS P b x) : XS P (b + 1) x :=
   fun j => ⟨ord_succ (hx j).1 (ψ_level1 P hℓ hd (hx j).1 (hx j).2), (hx j).2⟩
 
+/- English proof (translation)
+Establish `hall : ∀ N : ℕ, XS P (a + N) x`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simpa using hx`. Consider the case `succ N ih`.
+
+Rewrite using `[Nat.cast_succ, ← add_assoc]`. Distinguish the cases in `hd : (ℓ : ℤ) ∣ a + N - 1`. Conclude with `level1_X P (by omega) hd ih`. Introduce `j`. Use `⟨ord_succ (ih j).1 ?_, (ih j).2⟩` and prove the remaining obligations.
+
+Take `⟨_, h2⟩` from `Gam_lead P g hg hℓ ih j`. Rewrite `h2` using `[hfix, sub_self, Pi.zero_apply, HahnSeries.coeff_zero]`. Break down `mul_eq_zero.mp h2.symm with h | h` into its components or cases. Conclude with `absurd h (κ_ne P (by omega) _)`. Conclude with `h`.
+
+Use function extensionality and compare the values at `j`. Apply `eq_zero_of_ord_all` to reduce the goal to its premises. Introduce `t`. Conclude with `ord_mono (hall (Int.toNat (t - a)) j).1 (by omega)`.
+-/
 theorem inj [CharP k ℓ] (hℓ : 3 ≤ ℓ) {a : ℤ} {x : Fin n → LaurentSeries k} (hx : XS P a x)
     (hfix : Gam P g x = x) : x = 0 := by
   have hall : ∀ N : ℕ, XS P (a + N) x := by
@@ -475,6 +724,21 @@ theorem inj [CharP k ℓ] (hℓ : 3 ≤ ℓ) {a : ℤ} {x : Fin n → LaurentSer
   intro t
   exact ord_mono (hall (Int.toNat (t - a)) j).1 (by omega)
 
+/- English proof (translation)
+Distinguish the cases in `hc1 : (ℓ : ℤ) ∣ c - 1`. Use `⟨0, XS_zero P a, fun j => ord_zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[Gam_zero, sub_zero, sub_zero]`. Conclude with `level1_X P (by omega) hc1 hr`. Choose the witnesses or unpack the hypotheses as in `⟨b, hbc, hb1, hba, hb2⟩ : ∃ b : ℤ, cb ℓ b = c ∧ ¬ (ℓ : ℤ) ∣ b - 1 ∧ a ≤ b ∧ c - 2 ≤ b := by`.
+
+Distinguish the cases in `hc2 : (ℓ : ℤ) ∣ c - 2`. Use `⟨c - 2, ?_, ?_, ?_, le_rfl⟩` and prove the remaining obligations. Unfold `cb`. Rewrite using `[if_pos hc2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `h`. Establish `: (ℓ : ℤ) ∣ 1`. Use `dvd_sub hc2 h` as an intermediate fact. Rewrite `this` using `[show c - 2 - (c - 2 - 1) = 1 by ring]`. Then use the resulting hypothesis. Use `Int.le_of_dvd one_pos this` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hlt`. Establish `: c = a + 1` using `by omega`. Substitute `this` using the available equality. Conclude with `ha (by rwa [show a + 1 - 2 = a - 1 by ring] at hc2)`.
+
+Use `⟨c - 1, ?_, ?_, by omega, by omega⟩` and prove the remaining obligations. Unfold `cb; rw [if_neg (by rwa [show c - 1 = c - 1 by rfl])]; ring`. Rewrite using `[show c - 1 - 1 = c - 2 by ring]` and apply the resulting hypothesis. Establish `hκ` using `κ_ne P (by omega) b`. Establish `hlift : ∀ j, ∃ x : LaurentSeries k, Ord b x ∧ P.ψ x = 0 ∧ x.coeff b = (r j).coeff c / κ P b` using `fun j => ψ_lift P (by omega) hb1 _`.
+
+Use `choose D hD1 hD2 hD3 using hlift`. Establish `hDX : XS P b D` using `fun j => ⟨hD1 j, hD2 j⟩`. Use `⟨D, XS_mono P hDX hba, fun j => ord_mono (hD1 j) hb2, ?_⟩` and prove the remaining obligations. Introduce `j`. Take `⟨l1, l2⟩` from `Gam_lead P g hg (by omega) hDX j`.
+
+Rewrite `l1`, `l2` using `[hbc]`. Use `⟨ord_succ (ord_sub (hr j).1 l1) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, HahnSeries.coeff_sub, l2, hD3 j, mul_div_cancel₀ _ hκ, sub_self]`. Rewrite using `[Pi.sub_apply, map_sub, (hr j).2, Gam_ψ P g (fun j => (hD2 j)) j, sub_zero]`.
+-/
 theorem surj_step [CharP k ℓ] (hℓ : 5 ≤ ℓ) {a : ℤ} (ha : ¬ (ℓ : ℤ) ∣ a - 1) {c : ℤ} (hc : a + 1 ≤ c)
     {r : Fin n → LaurentSeries k} (hr : XS P c r) :
     ∃ D : Fin n → LaurentSeries k, XS P a D ∧ (∀ j, Ord (c - 2) (D j)) ∧
@@ -514,6 +778,37 @@ theorem surj_step [CharP k ℓ] (hℓ : 5 ≤ ℓ) {a : ℤ} (ha : ¬ (ℓ : ℤ
   · rw [Pi.sub_apply, HahnSeries.coeff_sub, l2, hD3 j, mul_div_cancel₀ _ hκ, sub_self]
   · rw [Pi.sub_apply, map_sub, (hr j).2, Gam_ψ P g (fun j => (hD2 j)) j, sub_zero]
 
+/- English proof (translation)
+Establish `step : ∀ (N : ℕ) (S : Fin n → LaurentSeries k), (XS P a S ∧ XS P (a + 1 + N) (y - (Gam P g S - S))) → ∃ D : Fin n → LaurentSeries k, (∀ j, Ord (a + N - 1) (D j)) ∧ (XS P a (S + D) ∧ XS P (a + 1 + (N + 1 : ℕ)) (y - (Gam P g (S + D) - (S + D))))`. Introduce `N S ⟨hS1, hS2⟩`. Take `⟨D, hD1, hD2, hD3⟩` from `surj_step P g hg hℓ ha (c := a + 1 + N) (by omega) hS2`. Use `⟨D, fun j => ?_, XS_add P hS1 hD1, ?_⟩` and prove the remaining obligations. Use `hD2 j; rwa [show a + 1 + (N : ℤ) - 2 = a + N - 1 by ring] at this` as an intermediate fact.
+
+Establish `e : y - (Gam P g (S + D) - (S + D)) = y - (Gam P g S - S) - (Gam P g D - D)`. Rewrite using `[Gam_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Nat.cast_succ, ← add_assoc]`. Conclude with `hD3`.
+
+Use `choose! Dn hDn1 hDn2 using step`. Set `seq : ℕ → Fin n → LaurentSeries k` to `fun N => Nat.rec 0 (fun N S => S + Dn N S) N`. Establish `seq_succ : ∀ N, seq (N + 1) = seq N + Dn N (seq N)` using `fun N => rfl`. Establish `inv : ∀ N, XS P a (seq N) ∧ XS P (a + 1 + N) (y - (Gam P g (seq N) - seq N))`. Introduce `N`.
+
+Proceed by induction on `N with`. Consider the case `zero`. Use `⟨XS_zero P a, ?_⟩` and prove the remaining obligations. Use `show XS P (a + 1 + ((0 : ℕ) : ℤ)) (y - (Gam P g 0 - 0))`. Rewrite using `[Gam_zero, sub_zero, sub_zero, Nat.cast_zero, add_zero]`.
+
+Conclude with `hy`. Consider the case `succ N ih => rw [seq_succ]`. Conclude with `hDn2 N _ ih`. Establish `diff : ∀ N M : ℕ, N ≤ M → ∀ j, Ord (a + N - 1) ((seq M - seq N) j)`. Introduce `N M hNM`.
+
+Proceed by induction on `M, hNM using Nat.le_induction with`. Consider the case `base => intro j`. Rewrite using `[sub_self]`. Conclude with `ord_zero _`. Consider the case `succ M hNM ih`.
+
+Introduce `j`. Rewrite using `[seq_succ, show seq M + Dn M (seq M) - seq N = (seq M - seq N) + Dn M (seq M) by abel, Pi.add_apply]`. Conclude with `ord_add (ih j) (ord_mono (hDn1 M _ (inv M) j) (by omega))`. Establish `agree : ∀ N M : ℕ, ∀ j, ∀ i : ℤ, i < a + N - 1 → i < a + M - 1 → (seq M j).coeff i = (seq N j).coeff i`. Introduce `N M j i hN hM`.
+
+Break down `le_total N M with h | h` into its components or cases. Use `diff N M h j i hN` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, HahnSeries.coeff_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `diff M N h j i hM` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, HahnSeries.coeff_sub, sub_eq_zero]`.
+
+Conclude with `this.symm`. Set `f : Fin n → ℤ → k` to `fun j i => (seq (Int.toNat (i - a + 2)) j).coeff i`. Establish `hf0 : ∀ j i, i < a → f j i = 0` using `fun j i hi => ((inv _).1 j).1 i hi`. Establish `hbdd : ∀ j, BddBelow (Function.support (f j))`. Introduce `j`.
+
+Use `⟨a, fun i hi => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (hf0 j i (by omega))`. Set `xl : Fin n → LaurentSeries k` to `fun j => HahnSeries.ofSuppBddBelow (f j) (hbdd j)`. Establish `close : ∀ (N : ℕ) j, Ord (a + N - 1) ((xl - seq N) j)`.
+
+Introduce `N j i hi`. Rewrite using `[Pi.sub_apply, HahnSeries.coeff_sub, sub_eq_zero]`. Use `show f j i = _`. Conclude with `agree N _ j i hi (by omega)`. Establish `hxl : XS P a xl`.
+
+Introduce `j`. Use `⟨fun i hi => hf0 j i hi, ?_⟩` and prove the remaining obligations. Apply `eq_zero_of_ord_all` to reduce the goal to its premises. Introduce `t`. Establish `hc` using `close (Int.toNat (ℓ * t - a + 1)) j`.
+
+Establish `hψ` using `ψ_cont P (by omega) t (ord_mono hc (by omega))`. Rewrite `hψ` using `[Pi.sub_apply, map_sub, ((inv _).1 j).2, sub_zero]`. Conclude with `hψ`. Use `⟨xl, hxl, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_ord_all` to reduce the goal to its premises. Introduce `t`. Use `set N := Int.toNat (t - a + 1)`. Establish `e : (Gam P g xl - xl) m - y m = (Gam P g (xl - seq N) - (xl - seq N)) m - (y - (Gam P g (seq N) - seq N)) m`.
+
+Rewrite using `[Gam_sub]`. Simplify using `only [Pi.sub_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `ord_mono (ord_sub (Gam_pres P g hg (by omega) (close N) m) (ord_mono ((inv N).2 m).1 (by omega))) (by omega)` and prove the remaining obligations.
+-/
 theorem surj [CharP k ℓ] (hℓ : 5 ≤ ℓ) {a : ℤ} (ha : ¬ (ℓ : ℤ) ∣ a - 1) {y : Fin n → LaurentSeries k}
     (hy : XS P (a + 1) y) : ∃ x, XS P a x ∧ Gam P g x - x = y := by
   have step : ∀ (N : ℕ) (S : Fin n → LaurentSeries k),

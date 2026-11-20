@@ -18,6 +18,9 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.MixedAbsGrowth
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hu i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h ⊢`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, (infPart D).map_mul, h, mul_zero]`.
+-/
 theorem map_infPart_nsmul {D : D7} {m r : ℕ} (n : ℕ) (u : Mx D m r) (hu : u.map (infPart D) = 0) :
     (n • u).map (infPart D) = 0 := by
   ext i j
@@ -25,16 +28,37 @@ theorem map_infPart_nsmul {D : D7} {m r : ℕ} (n : ℕ) (u : Mx D m r) (hu : u.
   simp only [Matrix.map_apply, Matrix.zero_apply] at h ⊢
   rw [Matrix.smul_apply, nsmul_eq_mul, (infPart D).map_mul, h, mul_zero]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hu, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem map_infPart_actO {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (u : WO S T)
     (hu : u.map (infPart D) = 0) : (actO S T g h u).map (infPart D) = 0 := by
   unfold actO
   rw [Matrix.map_mul, Matrix.map_mul, hu, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Use `GlobalTheory.WeilVacMove.actO_inv_actO g⁻¹ h⁻¹ x` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem actO_actO_inv {D : D7} {S T : HSp D} (g : GA D S) (h : GA D T) (x : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ x) = x := by
   have := GlobalTheory.WeilVacMove.actO_inv_actO g⁻¹ h⁻¹ x
   rwa [inv_inv, inv_inv] at this
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW S₀ ρ d v f hf`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨U, hUo, hU⟩` from `hf.level`. Take `⟨K₀, hK₀, -, m, hm⟩` from `GlobalTheory.KernelSeminorm.exists_level_multiple hUo`. Take `⟨k, hk⟩` from `GlobalTheory.T.mixedCoordinate_tsum_le_of_theta_level_multiple D ψ hW.std θ hθ S S₀ T ρ d v`.
+
+Take `⟨C, hC⟩` from `hk K₀ hK₀`. Take `⟨A, hA⟩` from `GlobalTheory.WeilWordGrowth.sup_words_growth D ψ S T χS χT om hW θ hθ k`. Take `⟨c, hc⟩` from `hA f hf`. Use `⟨(C : ℝ) * (m : ℝ) ^ k * max c 0, A + k, fun g h w => ?_⟩` and prove the remaining obligations. Take `⟨n, hn0, hnm, hnU⟩` from `hm g h`.
+
+Establish `hF` using `hW.om_pres (g, h) f hf`. Establish `hlev : ∀ u ∈ K₀, u.map (infPart D) = 0 → heisO ψ S T (n • u) (om (g, h) f) = om (g, h) f`. Introduce `u hu hinf`. Establish `h1` using `hU _ (hnU u hu hinf) (map_infPart_actO _ _ _ (map_infPart_nsmul n u hinf))`. Establish `h2` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ (n • u)) f hf`.
+
+Rewrite `h2` using `[h1, actO_actO_inv]`. Conclude with `h2.symm`. Establish `h1` using `hC n hn0 (om (g, h) f) hF hlev w`. Establish `h2 : supSob ψ θ k (om (g, h) f) ≤ ENNReal.ofReal (c * (height S g * height T h) ^ A)` using `hc g h`. Use `set H : ℝ := height S g * height T h with hH`.
+
+Establish `H0 : 0 ≤ H` using `mul_nonneg (height_pos S g).le (height_pos T h).le`. Use `h1.trans ?_` and prove the remaining obligations. Establish `e1 : ((C : ℝ≥0∞) * (n : ℝ≥0∞) ^ k) = ENNReal.ofReal ((C : ℝ) * (n : ℝ) ^ k)`. Rewrite using `[ENNReal.ofReal_mul C.coe_nonneg, ENNReal.ofReal_coe_nnreal, ENNReal.ofReal_pow (Nat.cast_nonneg n), ENNReal.ofReal_natCast]`. Rewrite using `[e1]`.
+
+Use `(mul_le_mul' le_rfl (h2.trans (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left c 0) (pow_nonneg H0 A))))).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hn : (n : ℝ) ^ k ≤ ((m : ℝ) * H) ^ k` using `pow_le_pow_left₀ (Nat.cast_nonneg n) hnm k`. Establish `hc0 : 0 ≤ max c 0` using `le_max_right c 0`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mixed_abs_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ g h (w : WO S₀ T), (∑' x : ratMx D T.rank ρ, ‖d.mixS T ψ v.μ v.𝓕 (om (g, h) f) x w‖ₑ) ≤ ENNReal.ofReal (C * (height S g * height T h) ^ A) := by
   intro D ψ S T χS χT om hW S₀ ρ d v f hf
   obtain ⟨θ, hθ⟩ := GlobalTheory.AdelicU.exists_isInfFam D

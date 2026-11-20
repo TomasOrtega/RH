@@ -9,16 +9,35 @@ open Matrix
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem latA_single_mem {ι : Type} [DecidableEq ι] (j i : ι) : (Pi.single j (1 : L) : ι → L) i ∈ Formalism.UG.intL L := by
   rw [Pi.single_apply]
   split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+The claim follows from `sum_mem fun i _ => mul_mem (hu i) (hw i)`.
+-/
 theorem latA_dot_mem {ι : Type} [Fintype ι] {u w : ι → L} (hu : ∀ i, u i ∈ Formalism.UG.intL L)
     (hw : ∀ i, w i ∈ Formalism.UG.intL L) : u ⬝ᵥ w ∈ Formalism.UG.intL L :=
   sum_mem fun i _ => mul_mem (hu i) (hw i)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `GlobalTheory.T.exists_square_matrix_span_columns_integral L n (Fin n ⊕ Fin m) (Matrix.fromCols c y)`. Establish `key : ∀ v : Fin n → L, (∃ u : Fin n → L, ∃ w : Fin m → L, (∀ i, u i ∈ Formalism.UG.intL L) ∧ (∀ i, w i ∈ Formalism.UG.intL L) ∧ v = c *ᵥ u + y *ᵥ w) ↔ ∃ t : Fin n → L, (∀ i, t i ∈ Formalism.UG.intL L) ∧ v = b *ᵥ t`. Introduce `v`. Rewrite using `[← hb v]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, w, hu, hw, rfl⟩`. Use `⟨Sum.elim u w, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `hu i`. Conclude with `hw i`.
+
+Rewrite using `[Matrix.fromCols_mulVec_sumElim]`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨u ∘ Sum.inl, u ∘ Sum.inr, fun i => hu _, fun i => hu _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.fromCols_mulVec_sumElim, Sum.elim_comp_inl_inr]`. Establish `hcol : ∀ j : Fin n, ∃ t : Fin n → L, c *ᵥ Pi.single j 1 = b *ᵥ t`.
+
+Introduce `j`. Take `⟨t, -, ht⟩` from `(key (c *ᵥ Pi.single j 1)).1 ⟨Pi.single j 1, 0, latA_single_mem j, fun _ => zero_mem _, by simp⟩`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hcol`. Establish `hT : b * (Matrix.of t)ᵀ = c`.
+
+Use extensionality with `i j`. Use `congrFun (ht j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply] at this`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hdet : b.det ≠ 0`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hT, Matrix.det_mul, h, zero_mul]`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero b hdet, key⟩`.
+-/
 theorem latA_sum {n m : ℕ} (c : Matrix (Fin n) (Fin n) L) (hc : c.det ≠ 0) (y : Matrix (Fin n) (Fin m) L) :
     ∃ a : GL (Fin n) L, ∀ v : Fin n → L,
       (∃ u : Fin n → L, ∃ w : Fin m → L, (∀ i, u i ∈ Formalism.UG.intL L) ∧ (∀ i, w i ∈ Formalism.UG.intL L) ∧
@@ -60,6 +79,27 @@ theorem latA_sum {n m : ℕ} (c : Matrix (Fin n) (Fin n) L) (hc : c.det ≠ 0) (
     rw [← hT, Matrix.det_mul, h, zero_mul]
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero b hdet, key⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `latA_sum (1 : Matrix (Fin n) (Fin n) L) (by simp) xᵀ`. Establish `hN : ∀ u : Fin n → L, ((∀ i, u i ∈ Formalism.UG.intL L) ∧ (∀ i, (x *ᵥ u) i ∈ Formalism.UG.intL L)) ↔ ∀ j, ((b : Matrix (Fin n) (Fin n) L)ᵀ *ᵥ u) j ∈ Formalism.UG.intL L`. Introduce `u`. Establish `dual : ∀ {k : ℕ} (M : Matrix (Fin n) (Fin k) L) (t : Fin k → L), (M *ᵥ t) ⬝ᵥ u = t ⬝ᵥ (Mᵀ *ᵥ u)`. Introduce `k M t`.
+
+Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ j`. Take `⟨l, w, hl, hw, e⟩` from `(hb ((b : Matrix (Fin n) (Fin n) L) *ᵥ Pi.single j 1)).2 ⟨_, latA_single_mem j, rfl⟩`. Establish `e2` using `dual (b : Matrix (Fin n) (Fin n) L) (Pi.single j 1)`.
+
+Rewrite `e2` using `[single_one_dotProduct, e, add_dotProduct, dual xᵀ, Matrix.one_mulVec, Matrix.transpose_transpose]`. Rewrite using `[← e2]`. Conclude with `add_mem (latA_dot_mem hl h1) (latA_dot_mem hw h2)`. Introduce `h`. Use `⟨fun i => ?_, fun k => ?_⟩` and prove the remaining obligations.
+
+Take `⟨t, ht, e⟩` from `(hb (Pi.single i 1)).1 ⟨Pi.single i 1, 0, latA_single_mem i, fun _ => zero_mem _, by`. Rewrite using `[Matrix.one_mulVec, Matrix.mulVec_zero, add_zero]⟩`. Establish `e2` using `dual (b : Matrix (Fin n) (Fin n) L) t`. Rewrite `e2` using `[← e, single_one_dotProduct]`. Rewrite using `[e2]`.
+
+Conclude with `latA_dot_mem ht h`. Take `⟨t, ht, e⟩` from `(hb (xᵀ *ᵥ Pi.single k 1)).1 ⟨0, Pi.single k 1, fun _ => zero_mem _, latA_single_mem k, by simp⟩`. Establish `e2` using `dual (b : Matrix (Fin n) (Fin n) L) t`. Rewrite `e2` using `[← e, dual xᵀ, Matrix.transpose_transpose, single_one_dotProduct]`. Rewrite using `[e2]`.
+
+Conclude with `latA_dot_mem ht h`. Establish `hmul : (b : Matrix (Fin n) (Fin n) L)ᵀ * ((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Establish `hmul' : ((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)ᵀ * (b : Matrix (Fin n) (Fin n) L)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`.
+
+Establish `hdet : (((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)ᵀ).det ≠ 0`. Introduce `h`. Use `congrArg Matrix.det hmul` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+
+Take `⟨a, ha⟩` from `latA_sum _ hdet y`. Use `⟨a, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha v]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, w, h1, h2, hw, rfl⟩`.
+
+Use `⟨(b : Matrix (Fin n) (Fin n) L)ᵀ *ᵥ u, w, (hN u).1 ⟨h1, h2⟩, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hmul', Matrix.one_mulVec]`. Introduce and unpack `⟨u, w, hu, hw, rfl⟩`. Use `(hN (((b⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)ᵀ *ᵥ u)).2 (by` as an intermediate fact. Rewrite using `[Matrix.mulVec_mulVec, hmul, Matrix.one_mulVec]`.
+
+Conclude with `hu)`. Conclude with `⟨_, w, this.1, this.2, hw, rfl⟩`.
+-/
 theorem latA_basis (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n n' : ℕ)
     (x : Matrix (Fin n') (Fin n) L) (y : Matrix (Fin n) (Fin n') L) :
     ∃ a : GL (Fin n) L, ∀ v : Fin n → L,

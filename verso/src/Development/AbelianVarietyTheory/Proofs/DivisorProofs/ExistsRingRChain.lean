@@ -73,9 +73,15 @@ structure RChain.Map (C : RChain p A h o π γ Lie Om) (C' : RChain p A' h o π'
     C.κ n (Submodule.Quotient.mk x) = Submodule.Quotient.mk y →
       C'.κ n (Submodule.Quotient.mk x') = Submodule.Quotient.mk (l y)
 
+/- English proof (translation)
+Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem mv_id (x : Fin h → A) : mv (RingHom.id A) 1 x = x := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]; rfl
 
+/- English proof (translation)
+Rewrite using `[mv_id] j y x x' e k := by rw [mv_id] at e; rw [Subtype.ext e]; exact k ρ y x x' e k := by rw [mv_id] at e; rw [Subtype.ext e]; exact k ψ n _ x x' y y' e e' k := by rw [mv_id] at e e'; rw [Subtype.ext e, Subtype.ext e']; exact k κ n _ x x' y e k := by rw [mv_id] at e; rw [Subtype …` and apply the resulting hypothesis.
+-/
 theorem RChain.Map.refl (C : RChain p A h o π γ Lie Om) : C.Map C (RingHom.id A) 1 id id where
   mem n x hx := by rwa [mv_id]
   j y x x' e k := by rw [mv_id] at e; rw [Subtype.ext e]; exact k
@@ -105,6 +111,29 @@ namespace Examples₂
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Distinguish the cases in `hf : ∃ f : A →+* A ⧸ Ideal.span {(p : A)}, ∀ a, f a = Ideal.Quotient.mk _ (a ^ q)`. Use `swap`. Conclude with `⟨0, fun f h => absurd ⟨f, h⟩ hf⟩`. Take `⟨f, hf⟩` from `hf`. Set `g : (A ⧸ Ideal.span {(p : A)}) →+* A ⧸ Ideal.span {d}` to `Ideal.Quotient.factor (Ideal.span_singleton_le_span_singleton.2 hp)`.
+
+Establish `hg : ∀ r, g (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk _ r` using `fun _ => rfl`. Set `F : (A ⧸ Ideal.span {a}) →+* A ⧸ Ideal.span {d}` to `Ideal.Quotient.lift _ (g.comp f) fun x hx => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.1 hx`. Rewrite using `[RingHom.comp_apply, hf, hg, Ideal.Quotient.eq_zero_iff_mem, mul_pow, Ideal.mem_span_singleton]`. Conclude with `hd.symm.dvd.mul_right _`.
+
+Establish `hF : ∀ r, F (Ideal.Quotient.mk _ r) = g (f r)` using `fun _ => rfl`. Use `⟨eN.toLinearMap.toAddMonoidHom.comp (F.toAddMonoidHom.comp eM.toLinearMap.toAddMonoidHom), fun f' hf' => ?_⟩` and prove the remaining obligations. Take `rfl : f' = f` from `RingHom.ext fun a => (hf' a).trans (hf a).symm`. Set `X : ModuleCat A` to `(ModuleCat.restrictScalars f').obj (ModuleCat.of _ (A ⧸ Ideal.span {(p : A)}))`. Set `k : A → X` to `fun r => (Ideal.Quotient.mk _ r : A ⧸ Ideal.span {(p : A)})`.
+
+Establish `hs : ∀ r s : A, r • k s = k (r ^ q * s)` using `fun r s => by`. Express the relevant statement in the definitionally equal form `f' r * Ideal.Quotient.mk _ s = Ideal.Quotient.mk _ _`. Rewrite using `[hf, map_mul]`. Set `g' : X →+ A ⧸ Ideal.span {d}` to `g.toAddMonoidHom`. Set `u : X ⊗[A] M →+ A ⧸ Ideal.span {d}` to `TensorProduct.liftAddHom (AddMonoidHom.mk' (fun b => (AddMonoidHom.mulLeft (g' b)).comp (F.toAddMonoidHom.comp eM.toLinearMap.toAddMonoidHom)) fun b b' => AddMonoidHom.ext fun x => by simp [add_mul]) fun r b x => by`.
+
+Take `⟨s, rfl⟩ : ∃ s, k s = b` from `Ideal.Quotient.mk_surjective (I := Ideal.span {(p : A)}) b`. Rewrite using `[hs]`. Express the relevant statement in the definitionally equal form `g (Ideal.Quotient.mk _ _) * F (eM x) = g (Ideal.Quotient.mk _ _) * F (eM (r • x))`. Rewrite using `[map_smul, Algebra.smul_def, map_mul, map_mul, map_mul, Ideal.Quotient.algebraMap_eq, hF, hf]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hu : ∀ b x, u (k b ⊗ₜ x) = Ideal.Quotient.mk _ b * F (eM x)` using `fun _ _ => rfl`. Establish `gen : ∀ t : X ⊗[A] M, ∃ r : A, t = k r ⊗ₜ eM.symm 1` using `fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (TensorProduct.zero_tmul _ _).symm⟩`. Consider the case `add s t hs ht`.
+
+Take `⟨r, rfl⟩` from `hs`. Take `⟨r', rfl⟩` from `ht`. Conclude with `⟨r + r', (TensorProduct.add_tmul _ _ _).symm⟩`. Consider the case `tmul b x`. Take `⟨s, hs'⟩` from `Ideal.Quotient.mk_surjective (eM x)`.
+
+Take `⟨r, rfl⟩ : ∃ s, k s = b` from `Ideal.Quotient.mk_surjective (I := Ideal.span {(p : A)}) b`. Establish `hx : x = s • eM.symm 1`. Rewrite using `[← map_smul, LinearEquiv.eq_symm_apply, ← hs', Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Conclude with `⟨s ^ q * r, by rw [hx, ← TensorProduct.smul_tmul, hs]⟩`.
+
+Establish `bij : Function.Bijective u`. Use `⟨(injective_iff_map_eq_zero _).2 fun t ht => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `gen t`. Rewrite `ht` using `[hu, LinearEquiv.apply_symm_apply, map_one, mul_one, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hd.dvd.trans ht`.
+
+Establish `h0 : a • eM.symm 1 = 0`. Rewrite using `[← map_smul, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self a), map_zero]`. Rewrite using `[← hs, TensorProduct.smul_tmul, h0, TensorProduct.tmul_zero]`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨k r ⊗ₜ eM.symm 1, by rw [hu, LinearEquiv.apply_symm_apply, map_one, mul_one]⟩`.
+
+Use `⟨(AddEquiv.ofBijective u bij).trans eN.toAddEquiv, fun r x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eN (g (Ideal.Quotient.mk _ r) * F (eM x)) = r • eN (F (eM x))`. Rewrite using `[← map_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem exists_isFrobLin (p q : ℕ) {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N] (a d : A)
     (hd : Associated (a ^ q) d) (eM : M ≃ₗ[A] A ⧸ Ideal.span {a}) (eN : (A ⧸ Ideal.span {d}) ≃ₗ[A] N) (hp : d ∣ (p : A)) :
     ∃ ψ : M →+ N, IsFrobLin A p q ψ := by
@@ -170,6 +199,9 @@ theorem exists_isFrobLin (p q : ℕ) {M N : Type} [AddCommGroup M] [Module A M] 
 
 abbrev line (u : A) : Submodule A (Fin 1 → A) := baseOf u 1
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨y, _, h⟩ => ⟨y 0, (congrFun h 0).symm⟩, fun ⟨c, h⟩ => ⟨fun _ => c, trivial, funext fun i => by`. Rewrite using `[Subsingleton.elim i 0, h]`. Use the proof step `rfl⟩⟩`.
+-/
 theorem mem_line (u : A) (x : Fin 1 → A) : x ∈ line u ↔ u ∣ x 0 := by
   rw [Submodule.mem_smul_pointwise_iff_exists]
   exact ⟨fun ⟨y, _, h⟩ => ⟨y 0, (congrFun h 0).symm⟩, fun ⟨c, h⟩ => ⟨fun _ => c, trivial, funext fun i => by
@@ -191,6 +223,11 @@ def qtEquiv [IsDomain A] {u : A} (hu : u ≠ 0) (d v : A) (h : v = u * d) :
     change (lineEquiv hu).symm (lineEquiv hu r) ∈ Ideal.span {d} ↔ u * d ∣ r * u
     rw [LinearEquiv.symm_apply_apply, Ideal.mem_span_singleton, mul_comm r, mul_dvd_mul_iff_left hu])
 
+/- English proof (translation)
+Use `Module.Projective.of_equiv ((LinearEquiv.ofBijective (LinearMap.toSpanSingleton (A ⧸ Ideal.span {d}) ((A ⧸ Ideal.span {d}) ⊗[A] (A ⧸ Ideal.span {d})) (1 ⊗ₜ 1)) ⟨fun r s h => ?_, fun t => ?_⟩).trans (TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl _ _) e))` and prove the remaining obligations. Simplify `congrArg (Algebra.TensorProduct.lmul' A) h` using `[TensorProduct.smul_tmul']`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add s t hs ht => exact hs.elim fun a ha => ht.elim fun b hb => ⟨a + b, by rw [map_add, ha, hb]⟩`.
+
+Consider the case `tmul b x`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨s • b, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem projective_tensor {M : Type} [AddCommGroup M] [Module A M] (d : A) (e : (A ⧸ Ideal.span {d}) ≃ₗ[A] M) :
     Module.Projective (A ⧸ Ideal.span {d}) ((A ⧸ Ideal.span {d}) ⊗[A] M) := by
   refine Module.Projective.of_equiv ((LinearEquiv.ofBijective (LinearMap.toSpanSingleton (A ⧸ Ideal.span {d})
@@ -207,6 +244,27 @@ theorem projective_tensor {M : Type} [AddCommGroup M] [Module A M] (d : A) (e : 
         Algebra.smul_def, mul_one]
       rfl
 
+/- English proof (translation)
+Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hn : ∀ k, ϖ ^ k ≠ 0` using `fun k => pow_ne_zero _ h0`. Establish `hle : ∀ n, p ^ (o + 1 - n) ≤ p ^ (o + 1)` using `fun n => Nat.pow_le_pow_right (by omega) (by omega)`. Establish `ln : ∀ {a b : ℕ}, a ≤ b → line (ϖ ^ b) ≤ line (ϖ ^ a)` using `fun h x hx => (mem_line _ _).2 ((pow_dvd_pow ϖ h).trans ((mem_line _ _).1 hx))`. Establish `sm : ∀ {a b c : ℕ}, c ≤ a + b → ϖ ^ a • line (ϖ ^ b) ≤ line (ϖ ^ c)` using `fun h x hx => by`.
+
+Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Conclude with `(mem_line _ _).2 ((pow_dvd_pow ϖ h).trans (by`. Rewrite using `[pow_add]`. Conclude with `mul_dvd_mul_left _ ((mem_line _ _).1 hy)))`. Establish `st : ∀ n < o, p ^ (o + 1 - n) = p ^ (o - n) * (p - 1) + p ^ (o + 1 - (n + 1))` using `fun n h => by`.
+
+Rewrite using `[show o + 1 - (n + 1) = o - n by omega, show o + 1 - n = o - n + 1 by omega, pow_succ]`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by omega⟩`. Simplify using `[mul_add]`. Establish `eQ : ∀ n, (A ⧸ Ideal.span {ϖ ^ p ^ (o + 1 - n)}) ≃ₗ[A] Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - n)))) (baseOf (ϖ ^ p ^ (o + 1)) 1)` using `fun n => qtEquiv (hn _) _ _ (by rw [← pow_add, Nat.sub_add_cancel (hle n)])`. Establish `eL : ∀ n < o, (A ⧸ Ideal.span {ϖ ^ (p ^ (o - n) * (p - 1))}) ≃ₗ[A] Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - n)))) (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - (n + 1)))))` using `fun n h => qtEquiv (hn _) _ _ (by`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use `st n h` as an intermediate fact. Use `hle n` as an intermediate fact. Use the proof step `omega)`.
+
+Establish `eP : (A ⧸ Ideal.span {(p : A)}) ≃ₗ[A] A ⧸ (p : A) • (⊤ : Submodule A A)` using `Submodule.quotEquivOfEq _ _ (by`. Use extensionality with `x`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, Ideal.mem_span_singleton]`. Conclude with `⟨fun ⟨c, h⟩ => ⟨c, trivial, h.symm⟩, fun ⟨c, _, h⟩ => ⟨c, h.symm⟩⟩)`. Establish `hψ : ∀ n, ∃ ψ : Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - (n + 1))))) (baseOf (ϖ ^ p ^ (o + 1)) 1) →+ Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - n)))) (baseOf (ϖ ^ p ^ (o + 1)) 1), n < o → IsFrobLin A p p ψ` using `fun n => by`.
+
+Distinguish the cases in `h : n < o`. Use `(exists_isFrobLin p p _ _ (Associated.of_eq ?_) (eQ (n + 1)).symm (eQ n) ((pow_dvd_pow ϖ ((hle n).trans (Nat.le_mul_of_pos_right _ (by omega)))).trans hu.dvd)).imp fun _ k _ => k` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨0, fun h' => absurd h' h⟩`. Establish `hκ : ∀ n, ∃ κ : Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - n)))) (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - (n + 1))))) →+ A ⧸ (p : A) • (⊤ : Submodule A A), n < o → IsFrobLin A p (p ^ (n + 1)) κ` using `fun n => by`. Distinguish the cases in `h : n < o`. Use `(exists_isFrobLin p _ _ _ ?_ (eL n h).symm eP dvd_rfl).imp fun _ k _ => k` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_right_comm, ← pow_add, show o - n + (n + 1) = o + 1 by omega]`.
+
+Conclude with `hu`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose ψ hψ using hψ`. Use `choose κ hκ using hκ`. Set `j : A →ₗ[A] Qt (line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - 0)))) (baseOf (ϖ ^ p ^ (o + 1)) 1)` to `(eQ 0).toLinearMap ∘ₗ Submodule.mkQ _`.
+
+Establish `hj : LinearMap.range j = ⊤` using `LinearMap.range_eq_top.2 ((eQ 0).surjective.comp (Submodule.mkQ_surjective _))`. Use `⟨{ L := fun n => line (ϖ ^ (p ^ (o + 1) - p ^ (o + 1 - n))) finite := fun n => Module.Finite.equiv (lineEquiv (hn _)) projective := fun n => Module.Projective.of_equiv (lineEquiv (hn _)) base_le := fun n => ln (Nat.sub_le _ _) succ_le := fun n => ln (Nat.sub_le_sub_left (Nat.pow_ …` and prove the remaining obligations. Conclude with `Subsingleton.elim _ _⟩`. Use `ψ := ψ, ψ_lin := hψ, κ := κ, κ_lin := hκ }, fun _ => rfl⟩`. Establish `h1 : p ^ (o + 1 - (n + 1)) ≤ p ^ (o - 0) * (p - 1)` using `(Nat.pow_le_pow_right (by omega) (by omega)).trans (Nat.le_mul_of_pos_right _ (by omega))`.
+
+Use linear arithmetic over natural numbers and integers. Use `st n h` as an intermediate fact. Use `hle n` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_rChain [IsDomain A] (p : ℕ) [Fact p.Prime] (o : ℕ) (ϖ : A) (h0 : ϖ ≠ 0)
     (hu : Associated (ϖ ^ (p ^ (o + 1) * (p - 1))) (p : A)) :
     ∃ C : RChain p A 1 o (ϖ ^ p ^ (o + 1)) (fun n => ϖ ^ (p ^ (o - n) * (p - 1))) A PUnit,
@@ -274,6 +332,17 @@ theorem exists_rChain [IsDomain A] (p : ℕ) [Fact p.Prime] (o : ℕ) (ϖ : A) (
     omega
   · have := st n h; have := hle n; omega
 
+/- English proof (translation)
+Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hpos : 0 < p ^ (o + 1) * (p - 1)` using `Nat.mul_pos (pow_pos (by omega) _) (by omega)`. Take `⟨O, _, _, _, _, _, ϖ, h⟩` from `GlobalTheory.RootDVR.exists_dvr_pow_eq_prime p (p ^ (o + 1) * (p - 1)) hpos`. Establish `h0 : ϖ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `h` using `[zero_pow hpos.ne', eq_comm]`. Conclude with `GlobalTheory.Vert.natCast_ne_zero O p h`. Establish `hnu : ¬ IsUnit ϖ` using `fun k => (IsLocalRing.mem_maximalIdeal _).1 (GlobalTheory.Vert.natCast_mem_maximalIdeal O p) (h ▸ k.pow _)`. Take `⟨C, hC⟩` from `exists_rChain p o ϖ h0 (Associated.of_eq h)`. Establish `key : ∀ a b : ℕ, line (ϖ ^ a) = line (ϖ ^ b) → a ≤ b` using `fun a b e => (pow_dvd_pow_iff h0 hnu).1 ((mem_line _ _).1 (e ▸ (mem_line (ϖ ^ b) fun _ => ϖ ^ b).2 dvd_rfl))`.
+
+Establish `hle : ∀ n, p ^ (o + 1 - n) ≤ p ^ (o + 1)` using `fun n => Nat.pow_le_pow_right (by omega) (by omega)`. Use `⟨O, _, _, _, C, fun n hn e => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[hC, hC]`. Establish `h1` using `key _ _ e`. Establish `h2 : p ^ (o + 1 - (n + 1)) < p ^ (o + 1 - n)` using `Nat.pow_lt_pow_right (by omega) (by omega)`.
+
+Use `hle n` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[hC]`. Establish `h1` using `key _ _ e.symm`. Establish `h2 : 0 < p ^ (o + 1 - o)` using `pow_pos (by omega) _`.
+
+Use `hle o` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ring_rChain (p : ℕ) [Fact p.Prime] (o : ℕ) : ∃ (A : Type) (_ : CommRing A) (π : A) (γ : ℕ → A)
     (C : RChain p A 1 o π γ A PUnit), (∀ n < o, C.L (n + 1) ≠ C.L n) ∧ C.L o ≠ baseOf π 1 := by
   have hp2 : 2 ≤ p := (Fact.out : p.Prime).two_le

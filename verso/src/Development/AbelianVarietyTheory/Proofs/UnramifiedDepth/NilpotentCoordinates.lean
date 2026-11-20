@@ -14,6 +14,17 @@ section Alg
 
 variable {R : Type} [CommRing R] {n : ℕ} {B : Type} [CommRing B] [Algebra R B]
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin n) R) B := π.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) R) B := hπ`. Set `ρ : MvPolynomial (Fin n) R →ₐ[R] A` to `φ₁.comp π`. Establish `hρ2 : φ₂.comp π = ρ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `j`. Conclude with `(hs j).symm`. Use `letI : Algebra (MvPolynomial (Fin n) R) A := ρ.toRingHom.toAlgebra`. Set `ψ₁ : B →ₐ[MvPolynomial (Fin n) R] A` to `{ φ₁.toRingHom with commutes' := fun p => rfl }`. Set `ψ₂ : B →ₐ[MvPolynomial (Fin n) R] A` to `{ φ₂.toRingHom with commutes' := fun p => AlgHom.congr_fun hρ2 p }`.
+
+Take `⟨s, hsg⟩` from `(inferInstance : Algebra.FiniteType (MvPolynomial (Fin n) R) B).out`. Set `J : Ideal A` to `Ideal.span ((fun b => φ₁ b - φ₂ b) '' (s : Set B))`. Establish `hJ : IsNilpotent J`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (Submodule.fg_span (s.finite_toSet.image _)), Ideal.span_le]`. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+
+Conclude with `h b`. Establish `: ψ₁ = ψ₂`. Apply `Algebra.FormallyUnramified.lift_unique J hJ` to reduce the goal to its premises. Apply `AlgHom.ext_of_adjoin_eq_top hsg` to reduce the goal to its premises. Introduce `b hb`.
+
+Simplify using `only [AlgHom.coe_comp, Function.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span ⟨b, hb, rfl⟩`. Use extensionality with `x`. Conclude with `AlgHom.congr_fun this x`.
+-/
 theorem ext_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRingHom.Etale)
     {A : Type} [CommRing A] [Algebra R A] (φ₁ φ₂ : B →ₐ[R] A)
     (h : ∀ b, IsNilpotent (φ₁ b - φ₂ b))
@@ -47,6 +58,23 @@ theorem ext_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRingHom
   ext x
   exact AlgHom.congr_fun this x
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin n) R) B := π.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) R) B := hπ`. Set `ρ : MvPolynomial (Fin n) R →ₐ[R] A` to `MvPolynomial.aeval (fun j => e (π (MvPolynomial.X j)) + a j)`. Use `letI : Algebra (MvPolynomial (Fin n) R) A := ρ.toRingHom.toAlgebra`. Set `J : Ideal A` to `Ideal.span (Set.range a)`.
+
+Establish `hJ : IsNilpotent J`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (Submodule.fg_span (Set.finite_range _)), Ideal.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `ha b`. Set `mk : A →ₐ[MvPolynomial (Fin n) R] A ⧸ J` to `Ideal.Quotient.mkₐ _ J`.
+
+Establish `hf₀ : ((Ideal.Quotient.mkₐ R J).comp e).comp π = (Ideal.Quotient.mkₐ R J).comp ρ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [AlgHom.coe_comp, Function.comp_apply, Ideal.Quotient.mkₐ_eq_mk, ρ, MvPolynomial.aeval_X]`. Rewrite using `[eq_comm, Ideal.Quotient.eq, add_sub_cancel_left]`.
+
+Conclude with `Ideal.subset_span ⟨j, rfl⟩`. Set `f₀ : B →ₐ[MvPolynomial (Fin n) R] A ⧸ J` to `{ ((Ideal.Quotient.mkₐ R J).comp e).toRingHom with commutes' := fun p => AlgHom.congr_fun hf₀ p }`. Establish `hmk : Function.Surjective mk` using `Ideal.Quotient.mk_surjective`. Establish `hker : IsNilpotent (RingHom.ker (mk : A →+* A ⧸ J))`. Establish `: RingHom.ker (mk : A →+* A ⧸ J) = J` using `Ideal.mk_ker`.
+
+Rewrite using `[this]`. Conclude with `hJ`. Set `φ'` to `Algebra.FormallySmooth.liftOfSurjective f₀ mk hmk hker`. Establish `hφ' : mk.comp φ' = f₀` using `Algebra.FormallySmooth.comp_liftOfSurjective f₀ mk hmk hker`. Establish `hc : ∀ p, φ' (π p) = ρ p` using `fun p => φ'.commutes p`.
+
+Use `⟨{ φ'.toRingHom with commutes' := fun r => ?_ }, fun b => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `show φ' (algebraMap R B r) = _`. Rewrite using `[← π.commutes, hc, ρ.commutes]`. Establish `e1 : Ideal.Quotient.mk J (φ' b) = Ideal.Quotient.mk J (e b)` using `AlgHom.congr_fun hφ' b`. Rewrite `e1` using `[Ideal.Quotient.eq]`.
+
+Take `⟨N, hN⟩` from `hJ`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow e1 N` as an intermediate fact. Rewrite `this` using `[hN, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `this`.
+
+Use `show φ' (π _) = _`. Rewrite using `[hc]`. Conclude with `MvPolynomial.aeval_X _ j`.
+-/
 theorem exists_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRingHom.Etale)
     {A : Type} [CommRing A] [Algebra R A] (e : B →ₐ[R] A) (a : Fin n → A)
     (ha : ∀ j, IsNilpotent (a j)) :
@@ -98,6 +126,15 @@ theorem exists_of_nil (π : MvPolynomial (Fin n) R →ₐ[R] B) (hπ : π.toRing
 
 end Alg
 
+/- English proof (translation)
+Set `e0 : Spec (CommRingCat.of R₀) ⟶ G.left` to `(η[G]).left`. Take `⟨U, hU, V, hV, hx, e, h⟩` from `hG.exists_isStandardSmoothOfRelativeDimension (e0 (IsLocalRing.closedPoint R₀))`. Establish `hsp : ∀ p : PrimeSpectrum R₀, p ⤳ IsLocalRing.closedPoint R₀` using `fun p => (PrimeSpectrum.le_iff_specializes _ _).mp (IsLocalRing.le_maximalIdeal (p : PrimeSpectrum R₀).isPrime.ne_top)`. Establish `hw : e0 ≫ G.hom = 𝟙 _` using `Over.w (η[G])`. Establish `hU' : U = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `p _`. Use `(hsp p).mem_open U.isOpen ?_` and prove the remaining obligations. Establish `h1 : (e0 ≫ G.hom) (IsLocalRing.closedPoint R₀) ∈ U`. Conclude with `(Scheme.Hom.comp_apply e0 G.hom (IsLocalRing.closedPoint R₀)).symm ▸ e hx`.
+
+Rewrite `h1` using `[hw]`. Conclude with `h1`. Substitute `hU'` using the available equality. Set `C : Chart G` to `⟨V, hV, fun p _ => (hsp p).mem_open (e0 ⁻¹ᵁ V).isOpen hx⟩`. Establish `h2 : RingHom.IsStandardSmoothOfRelativeDimension g (alg0 C)` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of R₀)).symm.commRingCatIsoToRingEquiv h`.
+
+Take `⟨π, hπ1, hπ2⟩` from `h2.exists_etale_mvPolynomial`. Use `clear_value C`. Conclude with `⟨C, { π with commutes' := fun r => RingHom.congr_fun hπ1 r }, hπ2⟩`.
+-/
 theorem exists_etale_chart {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G]
     [IsLocalRing R₀] (g : ℕ) (hG : SmoothOfRelativeDimension g G.hom) :
     ∃ (C : Chart G) (π : MvPolynomial (Fin g) R₀ →ₐ[R₀] Γ(G.left, C.U)), π.toRingHom.Etale := by
@@ -125,6 +162,25 @@ theorem exists_etale_chart {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRi
   clear_value C
   exact ⟨C, { π with commutes' := fun r => RingHom.congr_fun hπ1 r }, hπ2⟩
 
+/- English proof (translation)
+Introduce `R₀ _ G _ _ _ g hG`. Take `⟨C, π, hπ⟩` from `exists_etale_chart G g hG`. Establish `key : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a : Fin g → S), ∃ φ : Γ(G.left, C.U) →ₐ[R₀] S, (∀ i, IsNilpotent (a i)) → (∀ b, IsNilpotent (φ b - algebraMap R₀ S (eps C b))) ∧ ∀ j, φ (π (MvPolynomial.X j)) = algebraMap R₀ S (eps C (π (MvPolynomial.X j))) + a j`. Introduce `S _ _ a`. Distinguish the cases in `ha : ∀ i, IsNilpotent (a i)`.
+
+Take `⟨φ, h⟩` from `exists_of_nil π hπ ((Algebra.ofId R₀ S).comp (eps C)) a ha`. Conclude with `⟨φ, fun _ => h⟩`. Conclude with `⟨(Algebra.ofId R₀ S).comp (eps C), fun h => absurd h ha⟩`. Use `choose F hF using key`. Establish `uniq : ∀ (S : Type) [CommRing S] [Algebra R₀ S] (a : Fin g → S) (φ : Γ(G.left, C.U) →ₐ[R₀] S), (∀ i, IsNilpotent (a i)) → (∀ b, IsNilpotent (φ b - algebraMap R₀ S (eps C b))) → (∀ j, φ (π (MvPolynomial.X j)) = algebraMap R₀ S (eps C (π (MvPolynomial.X j))) + a j) → φ = F S a`.
+
+Introduce `S _ _ a φ ha h1 h2`. Use `ext_of_nil π hπ _ _ (fun b => ?_) (fun j => ?_)` and prove the remaining obligations. Use `(Commute.all _ _).isNilpotent_sub (h1 b) ((hF S a ha).1 b)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[h2, (hF S a ha).2]`.
+
+Use `⟨fun S _ _ a => pt C (F S a), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S _ _ show pt C (F S 0) = 1`. Rewrite using `[← uniq S 0 ((Algebra.ofId R₀ S).comp (eps C)) (fun _ => IsNilpotent.zero) (fun b => by simp [Algebra.ofId_apply]) (fun j => by simp [Algebra.ofId_apply]), pt_eps]`. Introduce `S _ _ S' _ _ φ a ha show spMap φ ≫ pt C (F S a) = pt C (F S' _)`. Rewrite using `[spMap_pt]`.
+
+Use `congr 1`. Use `uniq S' _ _ (fun i => (ha i).map φ) (fun b => ?_) (fun j => ?_)` and prove the remaining obligations. Use `((hF S a ha).1 b).map φ` as an intermediate fact. Rewrite `this` using `[map_sub, AlgHom.commutes]`. Then use the resulting hypothesis. Rewrite using `[AlgHom.comp_apply, (hF S a ha).2, map_add, AlgHom.commutes]`.
+
+Introduce `S _ _ a b ha hb h`. Establish `h1 : F S a = F S b` using `pt_injective C h`. Use function extensionality and compare the values at `j`. Establish `h2` using `(hF S a ha).2 j`. Rewrite `h2` using `[h1, (hF S b hb).2 j]`.
+
+Conclude with `(add_left_cancel h2).symm`. Introduce `S _ _ S' _ _ ρ hρ hn z hz`. Rewrite `hz` using `[← pt_eps C S']`. Take `⟨φ, rfl⟩` from `exists_pt C z (le_preimage_of_nil C ρ hρ hn z _ hz)`. Rewrite `hz` using `[spMap_pt]`.
+
+Establish `h1` using `pt_injective C hz`. Establish `h2 : ∀ b, φ b - algebraMap R₀ S (eps C b) ∈ RingHom.ker ρ`. Introduce `b`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `AlgHom.congr_fun h1 b`.
+
+Use `⟨fun j => φ (π (MvPolynomial.X j)) - algebraMap R₀ S (eps C (π (MvPolynomial.X j))), fun j => h2 _, ?_⟩` and prove the remaining obligations. Use `show pt C φ = pt C (F S _)`. Use `congr 1`. Conclude with `uniq S _ φ (fun j => hn _ (h2 _)) (fun b => hn _ (h2 b)) (fun j => by rw [add_sub_cancel])`.
+-/
 theorem nilpotent_coordinates :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] [IsLocalRing R₀] (g : ℕ), SmoothOfRelativeDimension g G.hom →
     ∃ x : ∀ (S : Type) [CommRing S] [Algebra R₀ S], (Fin g → S) → (sp (R₀ := R₀) S ⟶ G),

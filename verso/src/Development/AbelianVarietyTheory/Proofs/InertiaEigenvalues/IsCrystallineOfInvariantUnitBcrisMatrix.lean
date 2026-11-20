@@ -11,6 +11,31 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim
 
+/- English proof (translation)
+Introduce `l _ K P AI T d ρ U hU hinv`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := (P.PD K).finK₀`. Use `haveI : Nontrivial P.R.B := by`. Use `⟨⟨(P.PD K).t, 0, fun h => (P.PD K).not_mem_filtration_two ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hU' : IsUnit (U.map T.eB.symm)`. Use `hU.map (T.eB.symm.mapMatrix (m := Fin d))` as an intermediate fact. Simplify using `using this`. Set `Q : GL (Fin d) P.R.B` to `hU'.unit`.
+
+Establish `hQ : (Q : Matrix (Fin d) (Fin d) P.R.B) = U.map T.eB.symm` using `hU'.unit_spec`. Set `b` to `Pi.basisFun ℚ_[l] (Fin d)`. Establish `hmat : ∀ g : ↥(GK K), LinearMap.toMatrix b b (qRep ρ g) = (ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])`. Introduce `g`. Rewrite using `[LinearMap.toMatrix_eq_toMatrix']`.
+
+Use extensionality with `i j`. Simplify using `[qRep, LinearMap.toMatrix'_apply, Matrix.toLinAlgEquiv'_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`. Take `⟨e, -, -, he⟩` from `GlobalTheory.tensorBasisCoords ℚ_[l] P.R.B (Fin d → ℚ_[l]) (Fin d) b`. Establish `key` using `GlobalTheory.InertiaEigenvalues.finrank_invariants_eq_of_period_matrix ℚ_[l] ↥(K0 K) P.R.B ↥(GK K) (fun g => ((P.PD K).actB g).toRingEquiv.toRingHom) (Fin d) (fun g => (LinearMap.toMatrix b b (qRep ρ g)).map (algebraMap ℚ_[l] P.R.B)) (fun x => ⟨fun h => (P.PD K).invB x h, by`. Introduce and unpack `⟨c, rfl⟩ g`.
+
+Conclude with `((P.PD K).actB g).commutes c⟩) Q`. Use the proof step `(fun g => by`. Apply `(T.eB.mapMatrix (m := Fin d)).injective` to reduce the goal to its premises. Rewrite using `[map_mul, hmat g, hQ]`. Establish `hA : T.eB.mapMatrix (((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])).map (algebraMap ℚ_[l] P.R.B)) = (ρ g).val.map (Per.zB l)`.
+
+Use extensionality with `i j`. Simplify using `only [RingEquiv.mapMatrix_apply, Matrix.map_apply]`. Conclude with `T.zB _`. Establish `hB : T.eB.mapMatrix ((U.map T.eB.symm).map (((P.PD K).actB g).toRingEquiv.toRingHom)) = U.map (Per.σB (g : GQ l))`. Use extensionality with `i j`.
+
+Simplify using `only [RingEquiv.mapMatrix_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `T.eB ((P.PD K).actB g (T.eB.symm (U i j))) = _`. Rewrite using `[P.PD_actB, T.actB, RingEquiv.apply_symm_apply]`. Establish `hC : T.eB.mapMatrix (U.map T.eB.symm) = U`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hA, hB, hC]`. Conclude with `hinv g)`. Use the proof step `((Dcris (P.PD K) (qRep ρ)).map (e : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.B →ₗ[ℚ_[l]] (Fin d → P.R.B)))`. Use the proof step `(fun x => by`.
+
+Take `⟨y, rfl⟩` from `e.surjective x`. Establish `h1 : e y ∈ (Dcris (P.PD K) (qRep ρ)).map (e : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.B →ₗ[ℚ_[l]] (Fin d → P.R.B)) ↔ y ∈ Dcris (P.PD K) (qRep ρ)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `: z = y` using `e.injective hzy`.
+
+Conclude with `this ▸ hz`. Conclude with `fun h => ⟨y, h, rfl⟩`. Rewrite using `[h1]`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations.
+
+Establish `h2` using `he (qRep ρ g) (((((P.PD K).actB g).toAlgHom.toLinearMap).restrictScalars ℚ_[l])) y`. Establish `h3 : actVB (P.PD K) (qRep ρ) g y = TensorProduct.map (qRep ρ g) ((((P.PD K).actB g).toAlgHom.toLinearMap).restrictScalars ℚ_[l]) y` using `rfl`. Rewrite using `[h3, ← e.injective.eq_iff, h2]`. Use the proof step `rfl)`. Rewrite `key` using `[LinearEquiv.finrank_map_eq, Fintype.card_fin]`.
+
+Rewrite using `[IsCrys, key, Module.finrank_fin_fun]`.
+-/
 theorem isCrys_of_bcris_matrix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (U : Matrix (Fin d) (Fin d) (Per.Bcris l)), IsUnit U → (∀ g : ↥(GK K), (ρ g).val.map (Per.zB l) * U.map (Per.σB (g : GQ l)) = U) → IsCrys (P.PD K) (qRep ρ) := by
   intro l _ K P AI T d ρ U hU hinv
   haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := (P.PD K).finK₀

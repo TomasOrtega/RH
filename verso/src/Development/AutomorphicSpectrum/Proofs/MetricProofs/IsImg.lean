@@ -18,6 +18,9 @@ def IsImg {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M'
     ∀ h, M'.IsFlagOf F' z₁ h → ∃ z₀, SameOrbit z₀ w ∧ SameOrbit (basePart M.blk z₀) (basePart M'.blk z₁ ∘ Cv.v) ∧
       M.IsFlagOf F z₀ fun τ => Cv.trans F' F (basePart M'.blk z₁) τ * h τ
 
+/- English proof (translation)
+Introduce `z₂ h2 F' F hF' hF hg' hg hh hfl`. Take `⟨z₀, a, b, c⟩` from `h z₂ (Cj.sameOrbit_trans h2 hz) F' F hF' hF hg' hg hh hfl`. Conclude with `⟨z₀, Cj.sameOrbit_trans a (Cj.sameOrbit_symm hw), b, c⟩`.
+-/
 theorem IsImg.orbit {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} {Cv : FlagCover M' M}
     {z z₁ : (Σ k, ι' k) → ℂ} {w w₁ : (Σ k, ι k) → ℂ} (h : IsImg Cv z w) (hz : SameOrbit z₁ z)
     (hw : SameOrbit w₁ w) : IsImg Cv z₁ w₁ := by

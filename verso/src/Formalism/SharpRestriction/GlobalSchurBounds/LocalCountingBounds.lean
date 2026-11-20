@@ -201,6 +201,9 @@ def CMThirdClauseAtData (D : D7) : Prop := AtD D SWc3
 def CMClauses (D : D7) : Prop :=
   CMFirstClauseA D ∧ CMFirstClauseB D ∧ CMSecondClauseA D ∧ CMSecondClauseB D ∧ CMThirdClauseA D ∧ CMThirdClauseB D ∧ CMThirdClauseAtData D
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Conclude with `⟨D.sp.cm.totReal, D.sp.cm.cmUnram.1, D.sp.cm.deg2, fun τ x => D.sp.cm.cmUnram.2.1 τ x⟩`.
+-/
 theorem isCMExt_D (D : D7) :
     letI := D.host.cmStar; IsCMExt D.host.F D.host.E D.sp.cm.sig := by
   let _ := D.host.cmStar

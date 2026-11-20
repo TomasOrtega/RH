@@ -10,6 +10,11 @@ section Abstract
 
 variable {R E B : Type} [CommRing R] [CommRing E] [CommRing B] {p : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro x _ _; exact ⟨x, by ring⟩`. Consider the case `succ k ih`. Introduce `x y h`. Take `⟨x', rfl⟩` from `hs x ((p : R) ^ k * y) (by rw [h]; ring)`.
+
+Rewrite `h` using `[map_mul, map_natCast]`. Take `⟨x'', rfl⟩` from `ih x' y (sub_eq_zero.mp (htf _ (by linear_combination h)))`. Conclude with `⟨x'', by ring⟩`.
+-/
 theorem sat_pow (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
     (hs : ∀ (x : E) (y : R), j x = (p : R) * y → ∃ x', x = (p : E) * x')
     (k : ℕ) : ∀ (x : E) (y : R), j x = (p : R) ^ k * y → ∃ x', x = (p : E) ^ k * x' := by
@@ -22,6 +27,9 @@ theorem sat_pow (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
     obtain ⟨x'', rfl⟩ := ih x' y (sub_eq_zero.mp (htf _ (by linear_combination h)))
     exact ⟨x'', by ring⟩
 
+/- English proof (translation)
+Take `⟨e', rfl⟩` from `hs e x he.symm`. Use `⟨e', sub_eq_zero.mp (htf _ ?_)⟩` and prove the remaining obligations. Rewrite `he` using `[map_mul, map_natCast]`. Take the linear combination `he`.
+-/
 theorem sat_range (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
     (hs : ∀ (x : E) (y : R), j x = (p : R) * y → ∃ x', x = (p : E) * x')
     (x : R) (e : E) (he : (p : R) * x = j e) : ∃ e', x = j e' := by
@@ -30,11 +38,21 @@ theorem sat_range (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
   rw [map_mul, map_natCast] at he
   linear_combination he
 
+/- English proof (translation)
+Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `Iff.rfl`.
+-/
 private theorem pow_top_lemma (m : ℕ) (z : E) :
     z ∈ (Ideal.span {(p : E)} ^ m • ⊤ : Submodule E E) ↔ ∃ c, z = (p : E) ^ m * c := by
   rw [Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
   exact Iff.rfl
 
+/- English proof (translation)
+Use `choose e r hr using hx`. Establish `hcs : ∀ {m n : ℕ}, m ≤ n → e m ≡ e n [SMOD (Ideal.span {(p : E)} ^ m • ⊤ : Submodule E E)]`. Introduce `m n hmn`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[SModEq.sub_mem, pow_top_lemma]`.
+
+Conclude with `sat_pow j htf hs m _ (r (m + k) * (p : R) ^ k - r m) (by rw [map_sub]; linear_combination hr (m + k) - hr m)`. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec hcs`. Use `⟨L, sub_eq_zero.mp (hsep _ fun k => ?_)⟩` and prove the remaining obligations. Establish `hk` using `hL k`. Rewrite `hk` using `[SModEq.sub_mem, pow_top_lemma]`.
+
+Take `⟨c, hc'⟩` from `hk`. Establish `hjc` using `congrArg j hc'`. Rewrite `hjc` using `[map_sub, map_mul, map_pow, map_natCast]`. Conclude with `⟨r k + j c, by linear_combination hr k + hjc⟩`.
+-/
 theorem padic_closed (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
     (hsep : ∀ x : R, (∀ k : ℕ, ∃ r, x = (p : R) ^ k * r) → x = 0)
     (hs : ∀ (x : E) (y : R), j x = (p : R) * y → ∃ x', x = (p : E) * x')
@@ -57,11 +75,35 @@ theorem padic_closed (j : E →+* R) (htf : ∀ x : R, (p : R) * x = 0 → x = 0
   rw [map_sub, map_mul, map_pow, map_natCast] at hjc
   exact ⟨r k + j c, by linear_combination hr k + hjc⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact pow_one ε`. Consider the case `succ n ih => rw [pow_succ, ih, h]`.
+-/
 theorem idem_pow {ε : R} (h : ε * ε = ε) (n : ℕ) : ε ^ (n + 1) = ε := by
   induction n with
   | zero => exact pow_one ε
   | succ n ih => rw [pow_succ, ih, h]
 
+/- English proof (translation)
+Take `⟨u, hu'⟩` from `hu`. Establish `hinv : (↑u⁻¹ : R) * ι τ = 1` using `by rw [← hu', Units.inv_mul]`. Establish `hinv2 : ι τ * (↑u⁻¹ : R) = 1` using `by rw [← hu', Units.mul_inv]`. Take `⟨a, r, har⟩` from `h`. Take `⟨r0, hr0⟩` from `hsat (c * ε - τ * a) r (by rw [map_sub, har, map_mul]; ring)`.
+
+Establish `h1 : c * ε = τ * a + (p : B) * r0` using `hinj (by`. Rewrite using `[har]`. Simplify using `only [map_add, map_mul, map_natCast, hr0]`. Use the proof step `ring)`. Establish `h2 : (p : B) * ε = τ * (d * a) + (p : B) * (d * r0)`.
+
+Take the linear combination `d * h1 + ε * hcd`. Establish `h3` using `congrArg ι h2`. Simplify using `only [map_add, map_mul, map_natCast] at h3`. Take `⟨s, hs⟩` from `hsat (d * a) (↑u⁻¹ * (ι ε - ι d * ι r0)) (by`. Rewrite using `[map_mul]`.
+
+Take the linear combination `(-(↑u⁻¹ : R)) * h3 - ι d * ι a * hinv)`. Establish `h5 : ε = d * r0 + τ * s`. Establish `h4 : ι ε = ι (d * r0 + τ * s)`. Rewrite using `[map_add, map_mul, map_mul, hs]`. Take the linear combination `-(ι ε - ι d * ι r0) * hinv2`.
+
+Conclude with `hinj h4`. Take `⟨k, hk⟩` from `sub_dvd_pow_sub_pow (d * r0 + τ * s) (d * r0) (N + 1)`. Rewrite `hk` using `[← h5]`. Establish `e1` using `idem_pow hε N`. Establish `h6 : ε = τ * (s * k) + (p : B) * (w * r0 ^ (N + 1))`.
+
+Take the linear combination `-e1 + hk + r0 ^ (N + 1) * hd + k * h5`. Establish `hN : ∀ m, Near ι p (ι τ) m (ι ε)`. Introduce `m`. Take `⟨k2, hk2⟩` from `sub_dvd_pow_sub_pow (τ * (s * k) + (p : B) * (w * r0 ^ (N + 1))) (τ * (s * k)) (m + 1)`. Rewrite `hk2` using `[← h6]`.
+
+Establish `e2` using `idem_pow hε m`. Establish `e3 : ε = τ ^ m * (τ * (s * k) ^ (m + 1)) + (p : B) * (w * r0 ^ (N + 1) * k2)`. Take the linear combination `-e2 + hk2 + k2 * h6`. Use `⟨τ * (s * k) ^ (m + 1), ι (w * r0 ^ (N + 1) * k2), ?_⟩` and prove the remaining obligations. Establish `e4` using `congrArg ι e3`.
+
+Simplify `e4` using `only [map_add, map_mul, map_pow, map_natCast]`. Take `⟨r1, hr1⟩` from `hnear (ι ε) hN`. Take `⟨e5, he5⟩` from `hsat ε r1 hr1`. Establish `h7 : ε = (p : B) * e5` using `hinj (by rw [map_mul, map_natCast, he5, hr1])`. Establish `h8 : ∀ k : ℕ, ε = (p : B) ^ k * (e5 ^ k * ε)`.
+
+Introduce `k`. Establish `e6` using `idem_pow hε k`. Rewrite `e6` using `[pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `h9 : ι ε = 0` using `hsep (ι ε) fun k => ⟨ι (e5 ^ k * ε), by conv_lhs => rw [h8 k]`.
+
+Simplify using `only [map_mul, map_pow, map_natCast]⟩`. Conclude with `hinj (h9.trans (map_zero ι).symm)`.
+-/
 theorem idem_eq_zero (ι : B →+* R) (τ : B) (hu : IsUnit (ι τ)) (hinj : Function.Injective ι)
     (htf : ∀ x : R, (p : R) * x = 0 → x = 0)
     (hsep : ∀ x : R, (∀ k : ℕ, ∃ r, x = (p : R) ^ k * r) → x = 0)
@@ -121,6 +163,11 @@ theorem idem_eq_zero (ι : B →+* R) (τ : B) (hu : IsUnit (ι τ)) (hinj : Fun
     simp only [map_mul, map_pow, map_natCast]⟩
   exact hinj (h9.trans (map_zero ι).symm)
 
+/- English proof (translation)
+Rewrite using `[map_sum, map_sum]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_range] at hk ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `k _ hk`. Simplify using `only [Finset.mem_range, not_lt] at hk`. Rewrite using `[PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+-/
 private theorem coeff_tail_lemma {O : Type} [CommRing O] (f : ℕ → PowerSeries O) (j M : ℕ) (h : j < M) :
     PowerSeries.coeff j (∑ k ∈ Finset.range M, PowerSeries.X ^ k * f k) =
       PowerSeries.coeff j (∑ k ∈ Finset.range (j + 1), PowerSeries.X ^ k * f k) := by
@@ -136,6 +183,11 @@ private theorem coeff_tail_lemma {O : Type} [CommRing O] (f : ℕ → PowerSerie
 
 variable {O : Type} [CommRing O] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i => PowerSeries.mk fun j => PowerSeries.coeff j (∑ k ∈ Finset.range (j + 1), PowerSeries.X ^ k * b k i), fun m => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ i, (PowerSeries.X : PowerSeries O) ^ m ∣ (PowerSeries.mk fun j => PowerSeries.coeff j (∑ k ∈ Finset.range (j + 1), PowerSeries.X ^ k * b k i)) - ∑ k ∈ Finset.range m, PowerSeries.X ^ k * b k i`. Introduce `i`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `j hj`.
+
+Rewrite using `[map_sub, PowerSeries.coeff_mk, coeff_tail_lemma (fun k => b k i) j m hj, sub_self]`. Use `choose t ht using hd`. Use `⟨t, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply]`. Conclude with `ht i`.
+-/
 theorem exists_tail (b : ℕ → LetA O n) : ∃ σ : LetA O n, ∀ m, ∃ t,
     σ - ∑ k ∈ Finset.range m, letπ ^ k * b k = letπ ^ m * t := by
   refine ⟨fun i => PowerSeries.mk fun j => PowerSeries.coeff j
@@ -152,11 +204,27 @@ theorem exists_tail (b : ℕ → LetA O n) : ∃ σ : LetA O n, ∀ m, ∃ t,
   simp only [Pi.sub_apply, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply]
   exact ht i
 
+/- English proof (translation)
+Take `⟨a, r, hx⟩` from `h`. Conclude with `⟨τ * a, r, by rw [hx, map_mul, pow_succ]; ring⟩`.
+-/
 private theorem near_mono_lemma {A : Type} [CommRing A] (ι : A →+* R) (τ : A) {m : ℕ} {x : R}
     (h : Near ι p (ι τ) (m + 1) x) : Near ι p (ι τ) m x := by
   obtain ⟨a, r, hx⟩ := h
   exact ⟨τ * a, r, by rw [hx, map_mul, pow_succ]; ring⟩
 
+/- English proof (translation)
+Take `⟨u, hu'⟩` from `hu`. Proceed by induction on `m with`. Consider the case `zero => intro a _; exact ⟨a, 0, by ring⟩`. Consider the case `succ m ih`. Introduce `a ha`.
+
+Take `⟨a1, a2, h12⟩` from `ih a (near_mono_lemma ι (io letπ) ha)`. Take `⟨b, r, hb⟩` from `ha`. Take `⟨c, hc⟩ : ∃ c : ZMod n → O, c = fun i => PowerSeries.constantCoeff (a1 i)` from `⟨_, rfl⟩`. Take `⟨s, hs⟩ : ∃ s : LetA O n, a1 = letπ * s + (fun i => PowerSeries.C (c i) : LetA O n)` from `⟨fun i => PowerSeries.mk fun j => PowerSeries.coeff (j + 1) (a1 i), funext fun i => by`. Rewrite using `[hc]`.
+
+Conclude with `PowerSeries.eq_X_mul_shift_add_const (a1 i)⟩`. Establish `h12' : a = letπ ^ m * (letπ * s + (fun i => PowerSeries.C (c i) : LetA O n)) + (p : LetA O n) * a2`. Rewrite using `[← hs]`. Conclude with `h12`. Establish `E2` using `congrArg (fun z => ι (io z)) h12'`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_natCast] at E2`. Establish `hVm : (↑u⁻¹ : R) ^ m * ι (io letπ) ^ m = 1`. Rewrite using `[← mul_pow, ← hu', Units.inv_mul, one_pow]`. Establish `hnear1 : Near ι p (ι (io letπ)) 1 (ι (io fun i => PowerSeries.C (c i)))`. Use `⟨b - io s, ↑u⁻¹ ^ m * (r - ι (io a2)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub]`. Take the linear combination `(↑u⁻¹ : R) ^ m * hb - (↑u⁻¹ : R) ^ m * E2 - (ι (io fun i => PowerSeries.C (c i)) - ι (io letπ) * ι b + ι (io letπ) * ι (io s)) * hVm`. Use `choose c' hc' using h0 c hnear1`. Establish `hC : (fun i => PowerSeries.C (c i) : LetA O n) = (p : LetA O n) * (fun i => PowerSeries.C (c' i) : LetA O n)` using `funext fun i => by show PowerSeries.C (c i) = (p : PowerSeries O) * PowerSeries.C (c' i)`. Rewrite using `[hc' i, map_mul, map_natCast]`.
+
+Use `⟨s, letπ ^ m * (fun i => PowerSeries.C (c' i) : LetA O n) + a2, ?_⟩` and prove the remaining obligations. Take the linear combination `h12 + letπ ^ m * hs + letπ ^ m * hC`.
+-/
 theorem near_series (ι : B →+* R) (io : LetA O n →+* B) (hu : IsUnit (ι (io letπ)))
     (h0 : ∀ c : ZMod n → O, Near ι p (ι (io letπ)) 1 (ι (io fun i => PowerSeries.C (c i))) →
       ∀ i, (p : O) ∣ c i) (m : ℕ) :
@@ -194,11 +262,33 @@ theorem near_series (ι : B →+* R) (io : LetA O n →+* B) (hu : IsUnit (ι (i
     refine ⟨s, letπ ^ m * (fun i => PowerSeries.C (c' i) : LetA O n) + a2, ?_⟩
     linear_combination h12 + letπ ^ m * hs + letπ ^ m * hC
 
+/- English proof (translation)
+Take `⟨a, r, hx⟩` from `h`. Conclude with `⟨τ * a, r, by rw [hx, map_mul, pow_succ]; ring⟩`.
+-/
 private theorem near_mono_lemma_2 {A : Type} [CommRing A] (ι : A →+* R) (τ : A) {m : ℕ} {x : R}
     (h : Near ι p (ι τ) (m + 1) x) : Near ι p (ι τ) m x := by
   obtain ⟨a, r, hx⟩ := h
   exact ⟨τ * a, r, by rw [hx, map_mul, pow_succ]; ring⟩
 
+/- English proof (translation)
+Take `⟨u, hu'⟩` from `hu`. Establish `key : ∀ (e : E) (m : ℕ), Near ι p (ι (io letπ)) m (j e) → ∃ a1 r, j e = ι (io (letπ ^ m * a1)) + (p : R) * r`. Introduce `e m hm`. Take `⟨a, k, r, her⟩` from `hd e`. Take `⟨b, r2, hb⟩` from `hm`.
+
+Establish `E1 : j e * ι (io letπ) ^ k = ι (io a) + (p : R) * j r`. Establish `h1` using `congrArg j her`. Simplify using `only [map_sub, map_mul, map_natCast, hj, map_pow] at h1`. Take the linear combination `h1`. Take `⟨a1, a2, ha⟩` from `near_series ι io ⟨u, hu'⟩ h0 (m + k) a ⟨b, r2 * ι (io letπ) ^ k - j r, by linear_combination -E1 + ι (io letπ) ^ k * hb⟩`.
+
+Establish `E2` using `congrArg (fun z => ι (io z)) ha`. Simplify using `only [map_add, map_mul, map_pow, map_natCast] at E2`. Establish `hV : (↑u⁻¹ : R) ^ k * ι (io letπ) ^ k = 1`. Rewrite using `[← mul_pow, ← hu', Units.inv_mul, one_pow]`. Use `⟨a1, ↑u⁻¹ ^ k * (ι (io a2) + j r), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_pow]`. Take the linear combination `(↑u⁻¹ : R) ^ k * E1 + (↑u⁻¹ : R) ^ k * E2 - j e * hV + ι (io letπ) ^ m * ι (io a1) * hV`. Use `choose e he using hx`. Establish `hstep : ∀ m, ∃ b r, j (e (m + 1) - e m) = ι (io (letπ ^ m * b)) + (p : R) * r`. Introduce `m`.
+
+Apply `key` to reduce the goal to its premises. Establish `h2 : j (e (m + 1) - e m) = (x - j (e m)) + -(x - j (e (m + 1)))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+
+Conclude with `Near.add (he m) (Near.neg (near_mono_lemma_2 ι (io letπ) (he (m + 1))))`. Use `choose b r hbr using hstep`. Take `⟨σ, hσ⟩` from `exists_tail b`. Take `⟨r0, hr0⟩` from `hnear (x - j (e 0) - ι (io σ)) fun M => by`. Take `⟨tM, htM⟩` from `hσ M`.
+
+Establish `S0 : ∑ k ∈ Finset.range M, (j (e (k + 1)) - j (e k)) = j (e M) - j (e 0)` using `Finset.sum_range_sub (fun k => j (e k)) M`. Establish `S1 : j (e M) - j (e 0) = ι (io (∑ k ∈ Finset.range M, letπ ^ k * b k)) + (p : R) * ∑ k ∈ Finset.range M, r k`. Rewrite using `[← S0, map_sum, map_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← map_sub]; exact hbr k`. Establish `H` using `congrArg (fun z => ι (io z)) htM`.
+
+Simplify using `only [map_sub, map_mul, map_pow] at H`. Establish `hy : x - j (e 0) - ι (io σ) = (x - j (e M)) + (ι (io letπ) ^ M * ι (io (-tM)) + (p : R) * ∑ k ∈ Finset.range M, r k)`. Rewrite using `[map_neg, map_neg]`. Take the linear combination `S1 - H`. Rewrite using `[hy]`.
+
+Conclude with `Near.add (he M) ⟨io (-tM), _, rfl⟩`. Use `⟨e 0 + al σ, r0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hj]`. Take the linear combination `hr0`.
+-/
 theorem near_closed (ι : B →+* R) (io : LetA O n →+* B) (al : LetA O n →+* E) (j : E →+* R)
     (hj : ∀ a, j (al a) = ι (io a)) (hu : IsUnit (ι (io letπ)))
     (hd : ∀ e, ∃ a m r, e * al (letπ ^ m) - al a = (p : E) * r)
@@ -275,6 +365,11 @@ def perf (j : E →+* R) (φ : R →+* R) (hφ : ∀ e, ∃ e', φ (j e) = j e')
     exact ⟨max n m, e * e', j e * r' + r * (j e' + p * r'), by
       rw [iterate_map_mul, h, h', map_mul]; ring⟩
 
+/- English proof (translation)
+Establish `key : A.map j * U.map φ * C.map j = U + (Y * C).map j`. Rewrite using `[h, Matrix.add_mul, Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, hC, Matrix.map_one _ (map_zero j) (map_one j), Matrix.mul_one]`. Establish `e2 : ∑ q, ∑ k, j (A (σ x).1 k * C q (σ x).2) * φ (U k q) = (A.map j * U.map φ * C.map j) (σ x).1 (σ x).2`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Finset.sum_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun k _ => by ring`.
+
+Rewrite `e2` using `[key, Matrix.add_apply, Matrix.map_apply]`. Rewrite using `[Equiv.sum_comp σ (fun z : Fin a × Fin b => j (A (σ x).1 z.1 * C z.2 (σ x).2) * φ (U z.1 z.2)), Fintype.sum_prod_type, Finset.sum_comm]`. Take the linear combination `e2`.
+-/
 theorem matrix_eq (j : E →+* R) (φ : R →+* R) {a b : ℕ} (A : Matrix (Fin a) (Fin a) E)
     (A' C : Matrix (Fin b) (Fin b) E) (Y : Matrix (Fin a) (Fin b) E) (U : Matrix (Fin a) (Fin b) R)
     (hC : A' * C = 1) (h : A.map j * U.map φ = U * A'.map j + Y.map j) {D : Type} [Fintype D]

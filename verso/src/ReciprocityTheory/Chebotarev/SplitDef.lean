@@ -10,6 +10,9 @@ noncomputable def under {E E' : Type} [Field E] [NumberField E] [Field E'] [Numb
   isPrime := Ideal.IsPrime.under _ _
   ne_bot := Ideal.under_ne_bot (𝓞 E) P.ne_bot
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem under_asIdeal {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E']
     (P : Prm E') : (under (E := E) P).asIdeal = P.asIdeal.under (𝓞 E) := rfl
 

@@ -5,6 +5,9 @@ noncomputable section
 
 namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH
 
+/- English proof (translation)
+The claim follows from `KrullDimensionPrincipalIdeal.dimPIT'`.
+-/
 theorem dimPIT : DimPITStatement := KrullDimensionPrincipalIdeal.dimPIT'
 
 end ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH

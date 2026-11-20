@@ -14,6 +14,17 @@ namespace PositivityTheory.SiegelWeilFormula.Ldexa
 open PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {m n : ℕ}
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis bs`. Establish `hσ : ∀ a, σ (σ a) = a`. Take `⟨-, -, -, h⟩` from `hB.cm`. Introduce `a`.
+
+Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hsym, hεu, hJ⟩ : ∃ u : ℤ, (∀ i j, σ (A.J j i) = (u : E) * A.J i j) ∧ (ε : ℤ) * u = -1 ∧ A.J.det ≠ 0 := by`. Break down `hsg with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases.
+
+Use `⟨1, fun i j => by simp [hA.herm], ?_, GlobalTheory.ThetaRatPair.det_ne_of_sig B A.J hA.sig⟩` and prove the remaining obligations. Rewrite using `[eps_eq hσ Y.J (-1) (fun i j => by simp [hY]) b ε hε hn]`. Evaluate the numerical expressions. Use `⟨-1, fun i j => by simp [hA.skew], ?_, GlobalTheory.ThetaRatPair.det_ne_of_sig' B A.J hA.sig⟩` and prove the remaining obligations. Rewrite using `[eps_eq hσ Y.J 1 (fun i j => by simp [hY]) b ε hε hn]`.
+
+Evaluate the numerical expressions. Establish `hP` using `Pm_unit (n := n) σ hσ A.J hJ bs`. Set `dd : Darboux (symp (R` to `AF F) (cA σ) (-1) (incM F A.J) (dbl (incM F Y.J))) (Fin m × Fin n × Fin 2) := ⟨eD σ A.J bs b hP, eD_form σ A.J bs Y.J b ε hε u (fun X Z => Bf_symm hσ A.J u hsym X Z) hεu hP⟩`. Establish `hd : IsAdapted bs A Y b dd` using `fun Z X => eD_frame σ A.J bs b hP Z X`. Use `⟨dd, hd, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `e_rat bs A Y b dd hd x`. Conclude with `⟨_, c, hc⟩`.
+-/
 theorem sDarb_k : _root_.PositivityTheory.SiegelWeilFormula.Ald.SDarb_k := by
   intro F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε
   haveI : FiniteDimensional F E := Module.Finite.of_basis bs

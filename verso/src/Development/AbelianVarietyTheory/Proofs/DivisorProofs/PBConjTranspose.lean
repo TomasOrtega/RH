@@ -11,16 +11,27 @@ namespace GlobalTheory.PsCo.Pc3
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [pB, ha, hb]`.
+-/
 theorem pB_conjTranspose (ε : Fin n → Bool) (B : Mode ε → ℂ) : (pB ε B)ᴴ = pB ε B := by
   ext a b
   simp only [Matrix.conjTranspose_apply]
   cases ha : ε a <;> cases hb : ε b <;> simp [pB, ha, hb]
 
+/- English proof (translation)
+Simplify using `only [pB]`. Rewrite using `[dif_neg (by rintro ⟨h1, h2⟩; rw [h, h2] at h1; simp at h1), dif_neg (by rintro ⟨h1, h2⟩; rw [← h, h2] at h1; simp at h1)]`.
+-/
 theorem pB_ne (ε : Fin n → Bool) (B : Mode ε → ℂ) (a b : Fin n) (h : ε a = ε b) : pB ε B a b = 0 := by
   simp only [pB]
   rw [dif_neg (by rintro ⟨h1, h2⟩; rw [h, h2] at h1; simp at h1),
     dif_neg (by rintro ⟨h1, h2⟩; rw [← h, h2] at h1; simp at h1)]
 
+/- English proof (translation)
+Unfold `inG`. Rewrite using `[pB_conjTranspose]`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.zero_apply, Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : ε a = ε b`.
+
+Rewrite using `[pB_ne ε B a b h]`. Simplify using the standard rewrite rules. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all`.
+-/
 theorem pB_inG (ε : Fin n → Bool) (B : Mode ε → ℂ) : inG ε (pB ε B) := by
   unfold inG
   rw [pB_conjTranspose]
@@ -30,6 +41,11 @@ theorem pB_inG (ε : Fin n → Bool) (B : Mode ε → ℂ) : inG ε (pB ε B) :=
   · rw [pB_ne ε B a b h]; simp
   · cases ha : ε a <;> cases hb : ε b <;> simp_all
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [pB]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `(continuous_apply _).star`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_pB (ε : Fin n → Bool) : Continuous (pB ε) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
   simp only [pB]
@@ -38,16 +54,34 @@ theorem continuous_pB (ε : Fin n → Bool) : Continuous (pB ε) := by
   · exact (continuous_apply _).star
   · exact continuous_const
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b; simp only [pB]; split_ifs <;> simp`.
+-/
 theorem pB_zero (ε : Fin n → Bool) : pB ε 0 = 0 := by
   ext a b; simp only [pB]; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[eB, Formalism.REAL.toM_expG ε _ 1 (pB_inG ε B)]`. Simplify using the standard rewrite rules.
+-/
 theorem toM_eB (ε : Fin n → Bool) (B : Mode ε → ℂ) : toM (eB ε B) = NormedSpace.exp (pB ε B) := by
   rw [eB, Formalism.REAL.toM_expG ε _ 1 (pB_inG ε B)]; simp
 
+/- English proof (translation)
+Use `show (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Rewrite using `[Matrix.coe_units_inv]`.
+-/
 theorem toM_inv (ε : Fin n → Bool) (g : UJ ε) : toM g⁻¹ = (toM g)⁻¹ := by
   show (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _
   rw [Matrix.coe_units_inv]
 
+/- English proof (translation)
+Introduce `n ε`. Use `⟨?_, ?_, fun B => ⟨toM_eB ε B, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.continuous_iff]`. Express the relevant statement in the definitionally equal form `Continuous fun B => toM (eB ε B)`. Repeatedly rewrite using `[toM_eB]`.
+
+Establish `hc : Continuous (NormedSpace.exp : Mat n → Mat n)`. Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := Fin n) (R := ℚ) (α := ℂ)`. Conclude with `@NormedSpace.exp_continuous (Matrix (Fin n) (Fin n) ℂ) _ _ (inferInstanceAs (CompleteSpace (Fin n → Fin n → ℂ)))`. Conclude with `hc.comp (continuous_pB ε)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toM (eB ε 0) = 1`. Rewrite using `[toM_eB, pB_zero, NormedSpace.exp_zero]`. Rewrite using `[toM_inv, toM_eB]`.
+
+Rewrite using `[Matrix.exp_neg]`.
+-/
 theorem stEB : StEB := by
   intro n ε
   refine ⟨?_, ?_, fun B => ⟨toM_eB ε B, ?_⟩⟩

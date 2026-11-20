@@ -15,6 +15,9 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.HSAmpDet
 
+/- English proof (translation)
+Simplify using `only [chInt, SmFn.smul, Weight.chernInt_const_mul, mul_finsum]`.
+-/
 theorem chInt_smul {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L : HermLB p) (D : ℕ) (c : ℝ) (u : SmFn p) :
     chInt L D (u.smul c).u = c * chInt L D u.u := by
   simp only [chInt, SmFn.smul, Weight.chernInt_const_mul, mul_finsum]
@@ -22,17 +25,26 @@ theorem chInt_smul {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (L 
 section
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `σ y i`. Conclude with `((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P (u.smul t) a b).2.2 σ y (g i)).1`.
+-/
 theorem vals_smul (P : Pair p) (u : SmFn p) (t : ℝ) (a b : ℤ) {ι : Type} (g : ι → X.functionField) :
     vals (upperParabolic P (u.smul t)) a b g = fun σ y i => vals P a b g σ y i * (Real.exp (-(a * (t * u.u σ y)) / 2) : ℝ) := by
   funext σ y i
   exact ((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P (u.smul t) a b).2.2 σ y (g i)).1
 
+/- English proof (translation)
+Rewrite using `[vals_smul]`. Use function extensionality and compare the values at `σ y i`. Simplify using the standard rewrite rules.
+-/
 theorem vals_zero (P : Pair p) (u : SmFn p) (a b : ℤ) {ι : Type} (g : ι → X.functionField) :
     vals (upperParabolic P (u.smul 0)) a b g = vals P a b g := by
   rw [vals_smul]
   funext σ y i
   simp
 
+/- English proof (translation)
+Rewrite using `[vals_smul]`. Use function extensionality and compare the values at `σ y i`. Rewrite using `[one_mul]`. Conclude with `((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u a b).2.2 σ y (g i)).1.symm`.
+-/
 theorem vals_one (P : Pair p) (u : SmFn p) (a b : ℤ) {ι : Type} (g : ι → X.functionField) :
     vals (upperParabolic P (u.smul 1)) a b g = vals (upperParabolic P u) a b g := by
   rw [vals_smul]
@@ -40,6 +52,9 @@ theorem vals_one (P : Pair p) (u : SmFn p) (a b : ℤ) {ι : Type} (g : ι → X
   rw [one_mul]
   exact ((GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P u a b).2.2 σ y (g i)).1.symm
 
+/- English proof (translation)
+Rewrite using `[vals_smul, vals_smul, vals_smul]`. Use function extensionality and compare the values at `σ y i`. Rewrite using `[mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vals_two (P : Pair p) (u : SmFn p) (t t' : ℝ) (a b : ℤ) {ι : Type} (g : ι → X.functionField) :
     vals (upperParabolic (upperParabolic P (u.smul t)) (u.smul (t' - t))) a b g = vals (upperParabolic P (u.smul t')) a b g := by
   rw [vals_smul, vals_smul, vals_smul]
@@ -50,6 +65,23 @@ theorem vals_two (P : Pair p) (u : SmFn p) (t t' : ℝ) (a b : ℤ) {ι : Type} 
 
 end
 
+/- English proof (translation)
+Introduce `hA k _ X _ p D hX hG P hP ω r f hf hli hr u a a' hsp ha ha'`. Take `⟨s, hs0, hs1, hsd⟩` from `GlobalTheory.T.self_intersection_metric_segment_polynomial hA k X p D hX P.L u a a' ha ha'`. Use `set c : ℝ := 2 / ((D + 1).factorial : ℝ) with hc`. Set `ℓ : ℚ → ℕ → ℝ` to `fun t m => Real.log (gram (fun σ => (ω σ).meas) (vals (upperParabolic P (u.smul (t : ℝ))) m 1 (f m))).det.re / (m : ℝ) ^ (D + 1)`. Establish `hR` using `GlobalTheory.T.tendsto_sub_of_one_sided_increment_bound_derivative (Polynomial.C c * s) ℓ ?_`.
+
+Establish `hfun : (fun m => ℓ 0 m - ℓ 1 m) = fun m : ℕ => (Real.log (gram (fun σ => (ω σ).meas) (vals P m 1 (f m))).det.re - Real.log (gram (fun σ => (ω σ).meas) (vals (upperParabolic P u) m 1 (f m))).det.re) / (m : ℝ) ^ (D + 1)`. Use function extensionality and compare the values at `m`. Simplify using `only [ℓ, Rat.cast_zero, Rat.cast_one, vals_zero, vals_one, sub_div]`. Establish `hval : (Polynomial.C c * s).eval 1 - (Polynomial.C c * s).eval 0 = 2 * (a' - a) / (D + 1).factorial`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, hs0, hs1, hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hR` using `[hfun, hval]`. Conclude with `hR`. Introduce `t t' ht0 ht1 ht0' ht1' ε hε`. Establish `hsemi : (upperParabolic P (u.smul (t : ℝ))).L.SemiPos D` using `GlobalTheory.T.semiPos_raiseWeight_segment_smul k X p D P.L u t (by exact_mod_cast ht0) (by exact_mod_cast ht1) hP hsp`.
+
+Establish `hH : ∀ (m : ℕ) i, f m i ∈ (upperParabolic P (u.smul (t : ℝ))).H m 1` using `fun m i => by`. Rewrite using `[(GlobalTheory.T.raiseFirstWeight_sections_loci_values_norms k X p P (u.smul (t : ℝ)) m 1).1]`. Conclude with `hf m i`. Establish `hrk : Tendsto (fun m : ℕ => (r m : ℝ) / (m : ℝ) ^ D) atTop (𝓝 (gdeg (upperParabolic P (u.smul (t : ℝ))).L D / D.factorial))`. Rewrite using `[show (upperParabolic P (u.smul (t : ℝ))).L = up P.L (u.smul (t : ℝ)) from rfl, GlobalTheory.T.hermLineBundleGeometricDegree_raiseWeight hA k X p D hX P.L (u.smul (t : ℝ))]`.
+
+Conclude with `hr`. Establish `hstep` using `GlobalTheory.T.gramDeterminant_weightShift_asymptotic_le k X p D hX hG (upperParabolic P (u.smul (t : ℝ))) hsemi ω r f hH hli hrk (u.smul ((t' : ℝ) - t)) ε hε`. Establish `hch : chInt (upperParabolic P (u.smul (t : ℝ))).L D (u.smul ((t' : ℝ) - t)).u / D.factorial = ((t' : ℝ) - t) * (Polynomial.C c * s).derivative.eval (t : ℝ)`. Rewrite using `[chInt_smul, Polynomial.derivative_C_mul, Polynomial.eval_mul, Polynomial.eval_C, ← hsd t, hc, Nat.factorial_succ]`. Establish `hf0 : (D.factorial : ℝ) ≠ 0` using `by positivity`.
+
+Use `show ((t' : ℝ) - t) * chInt (up P.L (u.smul (t : ℝ))) D u.u / D.factorial = _`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [hstep, eventually_ge_atTop 1] with m hm hm1`. Establish `hpos : (0 : ℝ) < (m : ℝ) ^ (D + 1)`.
+
+Establish `: (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`. Check the signs of the components of the expression. Rewrite `hm` using `[vals_two, hch]`. Simplify using `only [ℓ]`. Rewrite using `[← sub_div, div_le_iff₀ hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_logDet_gram_sub : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (P : Pair p), P.L.SemiPos D → ∀ (ω : ∀ σ, VolDens p σ D) (r : ℕ → ℕ) (f : ∀ m, Fin (r m) → X.functionField), (∀ (m : ℕ) i, f m i ∈ P.H m 1) → (∀ m, LinearIndependent ℤ (f m)) → Tendsto (fun m : ℕ => (r m : ℝ) / (m : ℝ) ^ D) atTop (𝓝 (gdeg P.L D / D.factorial)) → ∀ (u : SmFn p) (a a' : ℝ), (up P.L u).SemiPos D → P.L.IsSelfInter a → (up P.L u).IsSelfInter a' → Tendsto (fun m : ℕ => (Real.log (gram (fun σ => (ω σ).meas) (vals P m 1 (f m))).det.re - Real.log (gram (fun σ => (ω σ).meas) (vals (upperParabolic P u) m 1 (f m))).det.re) / (m : ℝ) ^ (D + 1)) atTop (𝓝 (2 * (a' - a) / (D + 1).factorial)) := by
   intro hA k _ X _ p D hX hG P hP ω r f hf hli hr u a a' hsp ha ha'
   obtain ⟨s, hs0, hs1, hsd⟩ := GlobalTheory.T.self_intersection_metric_segment_polynomial hA k X p D hX P.L u a a' ha ha'

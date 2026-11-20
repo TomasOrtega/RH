@@ -9,6 +9,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hmem : y ^ n ∈ φ.ker` using `by rw [MonoidHom.mem_ker, map_pow, hy]`. Establish `h1 : IsOfFinOrder (y ^ n)` using `φ.ker.subtype.isOfFinOrder (isOfFinOrder_of_finite (⟨y ^ n, hmem⟩ : φ.ker))`. Establish `h2 : IsOfFinOrder y` using `h1.of_pow hn.ne_zero`. Establish `h3 : ¬ n ∣ orderOf y`. Introduce and unpack `⟨m, hm⟩`.
+
+Establish `h4 : y ^ m = 1` using `h _ (by rw [← pow_mul, mul_comm, ← hm, pow_orderOf_eq_one])`. Establish `h5` using `orderOf_dvd_of_pow_eq_one h4`. Establish `h6` using `h2.orderOf_pos`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp [hm] at h6)`. Establish `h7` using `Nat.le_of_dvd hm0 h5`.
+
+Establish `h8` using `hn.two_le`. Use the polynomial consequences of the given equalities and inequalities. Establish `h9 : orderOf (φ y) ∣ Nat.gcd n (orderOf y)` using `Nat.dvd_gcd (orderOf_dvd_of_pow_eq_one hy) (orderOf_map_dvd φ y)`. Rewrite `h9` using `[(hn.coprime_iff_not_dvd.2 h3).gcd_eq_one]`. Conclude with `orderOf_eq_one_iff.1 (Nat.dvd_one.1 h9)`.
+-/
 theorem map_eq_one_of_pow_eq_one_of_finite_ker {H B : Type*} [Group H] [Group B] (φ : H →* B)
     [Finite φ.ker] {n : ℕ} (hn : n.Prime) (h : ∀ x : H, x ^ n = 1 → x = 1) (y : H)
     (hy : φ y ^ n = 1) : φ y = 1 := by
@@ -32,6 +39,21 @@ theorem map_eq_one_of_pow_eq_one_of_finite_ker {H B : Type*} [Group H] [Group B]
 
 open RationalPoint in
 
+/- English proof (translation)
+Introduce `hab k _ _ G _ _ n _ _ ⟨E⟩ hp hn C Z hZ hC htors`. Use `letI := E.addCommGroup`. Use `letI := E.free`. Use `letI := E.finite`. Use `letI := E.grpB`.
+
+Use `haveI := E.q_hom`. Use `haveI := E.i_hom`. Use `haveI := E.isAbelian.proper`. Set `φ : (𝟙_ (Over (Sp k)) ⟶ G) →* (𝟙_ (Over (Sp k)) ⟶ E.B)` to `MonoidHom.mk' (fun x => x ≫ E.q) fun x y => MonObj.mul_comp x y E.q`. Set `j : (𝟙_ (Over (Sp k)) ⟶ splitTorus (Sp k) E.X) →* (𝟙_ (Over (Sp k)) ⟶ G)` to `MonoidHom.mk' (fun x => x ≫ E.i) fun x y => MonObj.mul_comp x y E.i`.
+
+Establish `hj : Function.Injective j` using `fun x y hxy => E.isKernel.hom_ext hxy (toUnit_unique _ _)`. Establish `hker : ∀ x, φ x = 1 → ∃ t, j t = x` using `fun x hx => ⟨E.isKernel.lift x (toUnit _) hx, E.isKernel.lift_fst _ _ _⟩`. Establish `hT : Finite (C.comap j)`. Use `finite_of_isClosed_splitTorus_of_pow_eq_one k E.X n hp hn _ (E.i.left ⁻¹' Z) (hZ.preimage E.i.left.continuous) (fun x => ?_) fun x hx h1 => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, hC, range_left_subset_iff, range_left_subset_iff]`.
+
+Both sides reduce to the same expression. Conclude with `hj (by rw [map_one]; exact htors _ hx (by rw [← map_pow, h1, map_one]))`. Set `ψ : C →* (𝟙_ (Over (Sp k)) ⟶ E.B)` to `φ.comp C.subtype`. Establish `hK : Finite ψ.ker` using `by choose s hs using fun x : ψ.ker => hker x.1.1 x.2`. Use `Finite.of_injective (fun x : ψ.ker => (⟨s x, by rw [Subgroup.mem_comap, hs]; exact x.1.2⟩ : C.comap j)) fun x y hxy => ?_` and prove the remaining obligations.
+
+Use `congrArg (fun t : C.comap j => j t.1) hxy` as an intermediate fact. Simplify using `only [hs] at this`. Conclude with `Subtype.ext (Subtype.ext this)`. Take `⟨Z', hZ', h'⟩` from `exists_isClosed_image_of_isClosed_subgroup k G E.B E.q inferInstance inferInstance inferInstance inferInstance inferInstance C Z hZ hC`. Establish `hR : Finite ψ.range`.
+
+Use `hab k E.B n E.isAbelian hp hn _ Z' hZ' (fun y => ?_) ?_` and prove the remaining obligations. Rewrite using `[← h']`. Conclude with `⟨fun ⟨x, hx⟩ => ⟨x.1, x.2, hx⟩, fun ⟨x, hx, hy⟩ => ⟨⟨x, hx⟩, hy⟩⟩`. Introduce and unpack `_ ⟨y, rfl⟩ hy`. Conclude with `map_eq_one_of_pow_eq_one_of_finite_ker ψ hp (fun x hx => Subtype.ext (htors x.1 x.2 (congrArg Subtype.val hx))) y hy`.
+
+Conclude with `(MonoidHom.finite_iff_finite_ker_range ψ).2 ⟨hK, hR⟩`.
+-/
 theorem finite_of_isClosed_torusExtension_of_pow_eq_one :
     (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (n : ℕ), IsAbelianScheme B → n.Prime → (n : k) ≠ 0 → ∀ (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ B)) (Z : Set B.left), IsClosed Z → (∀ x, x ∈ C ↔ Set.range x.left ⊆ Z) → (∀ x ∈ C, x ^ n = 1 → x = 1) → Finite C) → ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] (n : ℕ), LocallyOfFiniteType G.hom → QuasiCompact G.hom → Nonempty (TorusExtension G) → n.Prime → (n : k) ≠ 0 → ∀ (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ G)) (Z : Set G.left), IsClosed Z → (∀ x, x ∈ C ↔ Set.range x.left ⊆ Z) → (∀ x ∈ C, x ^ n = 1 → x = 1) → Finite C := by
   intro hab k _ _ G _ _ n _ _ ⟨E⟩ hp hn C Z hZ hC htors

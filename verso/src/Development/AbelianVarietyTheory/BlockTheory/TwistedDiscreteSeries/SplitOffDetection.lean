@@ -53,6 +53,11 @@ def KeepsCusp (P : Ideal (𝓞 E)) (p i : ℕ) (cq : c.F) (a : (E →+* ℂ) × 
 
 variable {Xo c U} {P : Ideal (𝓞 E)} {p i : ℕ} {cq : c.F} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Conclude with `⟨_, h hE hD hF ⟨f, hf.1⟩ hf, hkOp_spec hE hD hF ⟨f, hf.1⟩⟩`. Introduce `h hE' hD' hF' f hf`. Take `⟨g, hg, hr⟩` from `h f hf`.
+
+Establish `e` using `hkRel_unique hD' (hkOp hE' hD' hF' f).2 hg.1 (hkOp_spec hE' hD' hF' f) hr`. Use `show (hkOp hE' hD' hF' f).1 ∈ cusp Xo c U a n`. Rewrite using `[e]`. Conclude with `hg`.
+-/
 theorem keepsCusp_iff_exists (hE : HasTransform Xo c P p i cq a n) (hD : Detects Xo c a n)
     (hF : FinKer Xo c P p i) : KeepsCusp Xo c U P p i cq a n ↔
       ∀ f ∈ cusp Xo c U a n, ∃ g ∈ cusp Xo c U a n, IsTransform Xo c P p i cq n f g := by
@@ -66,6 +71,9 @@ theorem keepsCusp_iff_exists (hE : HasTransform Xo c P p i cq a n) (hD : Detects
     rw [e]
     exact hg
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Introduce and unpack `rfl`. Conclude with `h.prime.ne_zero (by exact_mod_cast Ideal.mem_bot.1 h.under)`.
+-/
 theorem IsSplitOff.absNorm_ne_zero (h : IsSplitOff l P p) : (Ideal.absNorm P : c.F) ≠ 0 := by
   rw [Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]
   rintro rfl

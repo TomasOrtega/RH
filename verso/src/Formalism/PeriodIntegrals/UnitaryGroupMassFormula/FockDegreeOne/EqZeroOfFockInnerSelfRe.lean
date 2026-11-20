@@ -18,26 +18,46 @@ variable {σ : Type*}
 
 def wtN (α : σ →₀ ℕ) : ℕ := α.prod (fun _ k => k.factorial)
 
+/- English proof (translation)
+Unfold `wtN Finsupp.prod`. Conclude with `Finset.prod_pos fun i _ ↦ Nat.factorial_pos _`.
+-/
 theorem wtN_pos (α : σ →₀ ℕ) : 0 < wtN α := by
   unfold wtN Finsupp.prod
   exact Finset.prod_pos fun i _ ↦ Nat.factorial_pos _
 
+/- English proof (translation)
+Simplify using `only [wt, wtN, Finsupp.prod, Nat.cast_prod]`.
+-/
 theorem wt_eq_wtN (α : σ →₀ ℕ) : wt α = (wtN α : ℂ) := by
   simp only [wt, wtN, Finsupp.prod, Nat.cast_prod]
 
+/- English proof (translation)
+Rewrite using `[fockInner_eq_support, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun α _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, Complex.ofReal_natCast, wt_eq_wtN]`.
+-/
 theorem fockInner_self_eq (F : MvPolynomial σ ℂ) :
     fockInner F F = ((∑ α ∈ F.support, Complex.normSq (coeff α F) * (wtN α : ℝ) : ℝ) : ℂ) := by
   rw [fockInner_eq_support, Complex.ofReal_sum]
   refine Finset.sum_congr rfl fun α _ ↦ ?_
   rw [Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self, Complex.ofReal_natCast, wt_eq_wtN]
 
+/- English proof (translation)
+Rewrite using `[fockInner_self_eq, Complex.ofReal_re]`. Conclude with `Finset.sum_nonneg fun α _ ↦ mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem fockInner_self_re_nonneg (F : MvPolynomial σ ℂ) : 0 ≤ (fockInner F F).re := by
   rw [fockInner_self_eq, Complex.ofReal_re]
   exact Finset.sum_nonneg fun α _ ↦ mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[fockInner_self_eq, Complex.ofReal_im]`.
+-/
 theorem fockInner_self_im (F : MvPolynomial σ ℂ) : (fockInner F F).im = 0 := by
   rw [fockInner_self_eq, Complex.ofReal_im]
 
+/- English proof (translation)
+Rewrite `h` using `[fockInner_self_eq, Complex.ofReal_re]`. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg (fun α _ ↦ mul_nonneg (Complex.normSq_nonneg (coeff α F)) (Nat.cast_nonneg (wtN α)))).1 h`. Assume the negation of the conclusion as `hF`. Take `⟨α, hα⟩` from `Finset.nonempty_of_ne_empty (mt MvPolynomial.support_eq_empty.1 hF)`. Establish `hc : coeff α F ≠ 0` using `MvPolynomial.mem_support_iff.1 hα`.
+
+Establish `hne : Complex.normSq (coeff α F) * (wtN α : ℝ) ≠ 0` using `mul_ne_zero (Complex.normSq_pos.2 hc).ne' (by exact_mod_cast (wtN_pos α).ne')`. Conclude with `hne (hall α hα)`.
+-/
 theorem eq_zero_of_fockInner_self_re (F : MvPolynomial σ ℂ) (h : (fockInner F F).re = 0) :
     F = 0 := by
   rw [fockInner_self_eq, Complex.ofReal_re] at h
@@ -57,6 +77,9 @@ end PI.FockOneDegW.Inner
 namespace PI.FockOneDegW
 
 open PI.FockOneDegW.Inner in
+/- English proof (translation)
+Introduce `σ P Q Q' c`. Use `⟨fockInner_add_right _ _ _, fockInner_smul_right _ _ _, fockInner_swap _ _, ⟨fockInner_self_im _, fockInner_self_re_nonneg _⟩, fun h ↦ ?_, fun l ↦ fockInner_X_mul l P Q⟩` and prove the remaining obligations. Conclude with `eq_zero_of_fockInner_self_re P (by rw [h]; simp)`.
+-/
 theorem fock_inner_facts : InnerFacts := by
   intro σ P Q Q' c
   refine ⟨fockInner_add_right _ _ _, fockInner_smul_right _ _ _, fockInner_swap _ _,

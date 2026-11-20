@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Establish `hsub : ∀ h : Z → ℝ, Function.support (fun w => c w * h (f w)) ⊆ ↑hc.toFinset` using `fun h w hw => by`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hw`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsub g)]`. Establish `e : ∀ x : Z, ∑ᶠ w, c w * Set.indicator {x} 1 (f w) = ∑ w ∈ hc.toFinset, c w * Set.indicator {x} 1 (f w)` using `fun x => finsum_eq_sum_of_support_subset _ (hsub (Set.indicator {x} 1))`.
+
+Repeatedly rewrite using `[e, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hwF : f w ∈ F` using `hF ⟨w, (Set.Finite.mem_toFinset hc).1 hw, rfl⟩`. Simplify using `only [Set.indicator_apply, Set.mem_singleton_iff, Pi.one_apply, mul_ite, mul_one, mul_zero]`.
+
+Rewrite using `[Finset.sum_ite_eq F (f w) (fun x => g x * c w), if_pos hwF, mul_comm]`.
+-/
 theorem finsum_mul_comp_eq_sum_indicator {W Z : Type*} (c : W → ℝ) (hc : (Function.support c).Finite) (f : W → Z)
     (F : Finset Z) (hF : f '' Function.support c ⊆ ↑F) (g : Z → ℝ) :
     ∑ᶠ w, c w * g (f w) = ∑ x ∈ F, g x * ∑ᶠ w, c w * Set.indicator {x} 1 (f w) := by
@@ -28,6 +35,11 @@ theorem finsum_mul_comp_eq_sum_indicator {W Z : Type*} (c : W → ℝ) (hc : (Fu
   simp only [Set.indicator_apply, Set.mem_singleton_iff, Pi.one_apply, mul_ite, mul_one, mul_zero]
   rw [Finset.sum_ite_eq F (f w) (fun x => g x * c w), if_pos hwF, mul_comm]
 
+/- English proof (translation)
+Distinguish the cases in `h : genericPoint (clo z) ∈ nonzeroLocus (secPull t (cloι z))`. Establish `: IsNoetherian (clo z)` using `(hq.sub (cloι z)).isNoetherian set D := divOfSec (LB.isLB_pull hB (cloι z)) _ h`. Establish `hc : (Function.support fun w => (D.mult w : ℝ)).Finite` using `D.finite_support_mult.subset fun w hw h0 => hw (by simp [h0])`. Use `⟨(hc.image fun w => cloι z w).toFinset, fun F' hF' g => ?_⟩` and prove the remaining obligations. Simplify using `only [resCyc, dif_pos h]`.
+
+Use `finsum_mul_comp_eq_sum_indicator _ hc _ F' ?_ g` and prove the remaining obligations. Introduce `y hy`. Conclude with `hF' ((Set.Finite.mem_toFinset _).2 hy)`. Use `⟨∅, fun F' _ g => ?_⟩` and prove the remaining obligations. Simplify using `[resCyc, dif_neg h]`.
+-/
 theorem exists_finset_resCyc {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y]
     {q : Y ⟶ Sp k} (hq : IsAmb q) {B : LB Y} (hB : B.IsLB) (t : B.Sec) (z : Y) :
     ∃ F : Finset Y, ∀ F' : Finset Y, F ⊆ F' → ∀ g : Y → ℝ,
@@ -50,6 +62,19 @@ end GlobalTheory.MixHt
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Introduce `k _ Y _ _ q hq A B hA hB s t hs ht hst g`. Establish `: IsNoetherian Y` using `hq.isNoetherian`. Use `choose Ft hFt using exists_finset_resCyc hq hB t`. Use `choose Fs hFs using exists_finset_resCyc hq hA s`. Establish `hms : (Function.support fun z => ((divOfSec hA s hs).mult z : ℝ)).Finite` using `(divOfSec hA s hs).finite_support_mult.subset fun w hw h0 => hw (by simp [h0])`.
+
+Establish `hmt : (Function.support fun z => ((divOfSec hB t ht).mult z : ℝ)).Finite` using `(divOfSec hB t ht).finite_support_mult.subset fun w hw h0 => hw (by simp [h0])`. Use `set F := hms.toFinset.biUnion Ft ∪ hmt.toFinset.biUnion Fs`. Establish `Ls : ∀ h : Y → ℝ, ∑ᶠ z, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t h z = ∑ z ∈ hms.toFinset, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t h z` using `fun h => finsum_eq_sum_of_support_subset _ fun z hz => by`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hz`.
+
+Establish `Lt : ∀ h : Y → ℝ, ∑ᶠ z, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s h z = ∑ z ∈ hmt.toFinset, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s h z` using `fun h => finsum_eq_sum_of_support_subset _ fun z hz => by`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hz`. Establish `Es : ∑ z ∈ hms.toFinset, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t g z = ∑ x ∈ F, g x * ∑ z ∈ hms.toFinset, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t (Set.indicator {x} 1) z`. Rewrite using `[Finset.sum_congr rfl fun z hz => by`.
+
+Rewrite using `[hFt z F (Finset.subset_union_left.trans' (Finset.subset_biUnion_of_mem Ft hz)) g]]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `Et : ∑ z ∈ hmt.toFinset, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s g z = ∑ x ∈ F, g x * ∑ z ∈ hmt.toFinset, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s (Set.indicator {x} 1) z`.
+
+Rewrite using `[Finset.sum_congr rfl fun z hz => by`. Rewrite using `[hFs z F (Finset.subset_union_right.trans' (Finset.subset_biUnion_of_mem Fs hz)) g]]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Rewrite using `[Ls, Lt, Es, Et]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Ls, ← Lt, GlobalTheory.T.finsum_mult_resCyc_indicator_symm' k Y q hq A B hA hB s t hs ht hst x]`.
+-/
 theorem iterDiv_symm : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsAmb q → ∀ (A B : LB Y) (hA : A.IsLB) (hB : B.IsLB) (s : A.Sec) (t : B.Sec) (hs : genericPoint Y ∈ nonzeroLocus s) (ht : genericPoint Y ∈ nonzeroLocus t), (∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → ∀ g : Y → ℝ, ∑ᶠ z, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t g z = ∑ᶠ z, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s g z := by
   intro k _ Y _ _ q hq A B hA hB s t hs ht hst g
   classical

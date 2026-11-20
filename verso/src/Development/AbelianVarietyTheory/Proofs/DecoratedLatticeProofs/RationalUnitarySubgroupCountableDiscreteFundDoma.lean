@@ -13,6 +13,13 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.RationalSubgroupFund
 
+/- English proof (translation)
+Introduce `D W Γ hΓ`. Take `⟨_, h2, _, h4, h5, h6, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Use `haveI := h2`. Use `haveI := h4`. Use `haveI := h5`.
+
+Use `haveI := h6`. Use `haveI hdisc : DiscreteTopology Γ := DiscreteTopology.of_continuous_injective (f := fun x : Γ => (⟨(x : GA D W), hΓ x.2⟩ : GQ W)) (continuous_subtype_val.subtype_mk _) (fun x y hxy => Subtype.ext (by simpa using congrArg Subtype.val hxy))`. Take `⟨hc, 𝓓, h𝓓m, h𝓓⟩` from `GlobalTheory.discreteSubgroup_countable_and_exists_strict_fundamentalDomain Γ`. Use `haveI := hc`. Use `⟨hc, hdisc, fun μ _ => ⟨𝓓, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `IsFundamentalDomain.mk' h𝓓m.nullMeasurableSet (fun g => h𝓓 g)`.
+-/
 theorem countable_discrete_exists_fundamentalDomain : ∀ (D : D7) (W : HSp D) (Γ : Subgroup (GA D W)), Γ ≤ GQ W → Countable Γ ∧ DiscreteTopology Γ ∧ ∀ μ : Measure (GA D W), μ.IsHaarMeasure → ∃ 𝓑 : Set (GA D W), IsFundamentalDomain Γ 𝓑 μ := by
   intro D W Γ hΓ
   obtain ⟨_, h2, _, h4, h5, h6, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W

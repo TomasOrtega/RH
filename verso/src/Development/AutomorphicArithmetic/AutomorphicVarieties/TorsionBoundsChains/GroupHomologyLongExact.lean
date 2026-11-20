@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 
 open CategoryTheory UpperTheory.V.KH
 
+/- English proof (translation)
+Establish `h0 : f ≫ g = 0`. Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Conclude with `hfg.apply_apply_eq_zero x`. Set `X : ShortComplex (Rep k G)` to `ShortComplex.mk f g h0`. Establish `hex : X.Exact`. Rewrite using `[← ShortComplex.exact_map_iff_of_faithful X (forget₂ (Rep k G) (ModuleCat k))]`. Conclude with `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).2 hfg`.
+
+Establish `hX : X.ShortExact` using `ShortComplex.ShortExact.mk' hex ((Rep.mono_iff_injective f).2 hf) ((Rep.epi_iff_surjective g).2 hg)`. Establish `h2` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (groupHomology.mapShortComplex₂_exact hX j)`. Establish `h3` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (groupHomology.mapShortComplex₃_exact hX (i := j + 1) (j := j) rfl)`. Conclude with `⟨⟨(groupHomology.mapShortComplex₂ X j).f.hom.toAddMonoidHom, (groupHomology.mapShortComplex₂ X j).g.hom.toAddMonoidHom, h2⟩, ⟨(groupHomology.mapShortComplex₃ hX (i := j + 1) (j := j) rfl).f.hom.toAddMonoidHom, (groupHomology.mapShortComplex₃ hX (i := j + 1) (j := j) rfl).g.hom.to …`.
+-/
 private theorem group_homology_long_exact (k G : Type) [CommRing k] [Group G] (A B C : Rep k G)
     (f : A ⟶ B) (g : B ⟶ C) (hf : Function.Injective f.hom) (hfg : Function.Exact f.hom g.hom)
     (hg : Function.Surjective g.hom) (j : ℕ) :
@@ -31,6 +38,9 @@ private theorem group_homology_long_exact (k G : Type) [CommRing k] [Group G] (A
     ⟨(groupHomology.mapShortComplex₃ hX (i := j + 1) (j := j) rfl).f.hom.toAddMonoidHom,
       (groupHomology.mapShortComplex₃ hX (i := j + 1) (j := j) rfl).g.hom.toAddMonoidHom, h3⟩⟩
 
+/- English proof (translation)
+Introduce `G _ A B C f g hf hfg hg j`. Conclude with `group_homology_long_exact ℤ G A B C f g hf hfg hg j`.
+-/
 theorem UpperTheory.V.KH.les :
     ∀ (G : Type) [Group G] (A B C : Rep ℤ G) (f : A ⟶ B) (g : B ⟶ C),
       Function.Injective f.hom → Function.Exact f.hom g.hom → Function.Surjective g.hom → ∀ j : ℕ,

@@ -18,14 +18,23 @@ section
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `⟨ContDiffOn.log hB fun z hz => (B.pos z hz).ne', fun c z hc => ?_⟩` and prove the remaining obligations. Simplify using `only [B.smul c z hc, h0, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]`.
+-/
 theorem isDegZeroSmooth_log {B : HermLine ι} (hB : IsSmoothHerm B) (h0 : B.a = 0) :
     IsDegZeroSmooth (fun z => Real.log (B.h z)) := by
   refine ⟨ContDiffOn.log hB fun z hz => (B.pos z hz).ne', fun c z hc => ?_⟩
   simp only [B.smul c z hc, h0, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem isDegZeroSmooth_const (a : ℝ) : IsDegZeroSmooth (ι := ι) (fun _ => a) :=
   ⟨contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hu.1.mul hv.1, fun c z hc => by simp only [hu.2 c z hc, hv.2 c z hc]⟩`.
+-/
 theorem IsDegZeroSmooth.mul {u v : ((Σ k, ι k) → ℂ) → ℝ} (hu : IsDegZeroSmooth u)
     (hv : IsDegZeroSmooth v) : IsDegZeroSmooth (fun z => u z * v z) :=
   ⟨hu.1.mul hv.1, fun c z hc => by simp only [hu.2 c z hc, hv.2 c z hc]⟩

@@ -13,6 +13,9 @@ variable {D : D7} {L : SizeData₂ D}
 noncomputable def topConst (D : D7) (c : ℝ) (τ : D.what₂.Tau) : ℝ :=
   ∑ t : D.host.TT, if (D.eTau τ : D.R.GG) = D.R.tau1 t then c else 0
 
+/- English proof (translation)
+Unfold `topConst`. Rewrite using `[Finset.sum_eq_single t, if_pos h]`. Introduce `s _ hs`. Conclude with `if_neg fun h' => hs (Subtype.ext (tau1_injective (h'.symm.trans h)))`. Simplify using the standard rewrite rules.
+-/
 theorem topConst_top (c : ℝ) {τ : D.what₂.Tau} {t : D.host.TT}
     (h : (D.eTau τ : D.R.GG) = D.R.tau1 t) : topConst D c τ = c := by
   unfold topConst
@@ -21,6 +24,9 @@ theorem topConst_top (c : ℝ) {τ : D.what₂.Tau} {t : D.host.TT}
     exact if_neg fun h' => hs (Subtype.ext (tau1_injective (h'.symm.trans h)))
   · simp
 
+/- English proof (translation)
+Unfold `topConst`. Use `Finset.sum_nonneg fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hc`. Conclude with `le_rfl`.
+-/
 theorem topConst_nonneg {c : ℝ} (hc : 0 ≤ c) (τ : D.what₂.Tau) : 0 ≤ topConst D c τ := by
   unfold topConst
   refine Finset.sum_nonneg fun t _ => ?_
@@ -28,6 +34,13 @@ theorem topConst_nonneg {c : ℝ} (hc : 0 ≤ c) (τ : D.what₂.Tau) : 0 ≤ to
   · exact hc
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `topConst`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ t ∈ (Finset.univ : Finset D.host.TT), (∑ τ : D.what₂.Tau, if (D.eTau τ : D.R.GG) = D.R.tau1 t then c else 0) = c`. Introduce `t _`. Rewrite using `[Finset.sum_eq_single (D.eTau.symm ⟨D.R.tau1 t, (Formalism.HC.Frame.mem_Psi_iff _).2 rfl⟩)]`.
+
+Simplify using the standard rewrite rules. Introduce `τ _ hτ`. Use `if_neg fun h' => hτ ?_` and prove the remaining obligations. Rewrite using `[Equiv.eq_symm_apply]`. Conclude with `Subtype.ext h'`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl this]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_topConst (c : ℝ) : ∑ τ, topConst D c τ = (D.host.TT.card : ℝ) * c := by
   unfold topConst
   rw [Finset.sum_comm]
@@ -47,15 +60,24 @@ theorem sum_topConst (c : ℝ) : ∑ τ, topConst D c τ = (D.host.TT.card : ℝ
 noncomputable def offWt (D : D7) (j : ℕ) (τ : D.what₂.Tau) : ℝ :=
   if τ ∉ topsOf D.host D.eTau then wj D j τ else 0
 
+/- English proof (translation)
+Unfold `topsOf`. Simplify using the standard rewrite rules.
+-/
 theorem mem_topsOf (τ : D.what₂.Tau) :
     τ ∈ topsOf D.host D.eTau ↔ (D.eTau τ : D.R.GG) ∈ D.host.topPlaces := by
   unfold topsOf
   simp
 
+/- English proof (translation)
+Unfold `offWt sizeOffTops`. Rewrite using `[Finset.sum_filter]`.
+-/
 theorem sum_offWt (j : ℕ) : ∑ τ, offWt D j τ = sizeOffTops D j := by
   unfold offWt sizeOffTops
   rw [Finset.sum_filter]
 
+/- English proof (translation)
+The claim follows from `|nuRow D u (i + 1) τ 0 + nuRow D u (i + 1) τ (D.R.k - 1) - wj D (i + 1) τ - (topWt L τ + offWt D (i + 1) τ)| ≤ 4 * L.Sc + 2 * D.R.N D.R.m + 1 + L.etaSz + topConst D (L.sc.b' / L.sc.x) τ := by have hk : 5 ≤ D.R.k := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega have …`.
+-/
 theorem end_rows (P : ParameterChoice' D L) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
     |nuRow D u (i + 1) τ 0 + nuRow D u (i + 1) τ (D.R.k - 1) - wj D (i + 1) τ -
         (topWt L τ + offWt D (i + 1) τ)| ≤
@@ -91,6 +113,9 @@ theorem end_rows (P : ParameterChoice' D L) (u : D.what₂.Word) (i : ℕ) (hi :
     push_cast at h1 b1 b2
     constructor <;> linarith [h2.1, h2.2, h4.1, h4.2]
 
+/- English proof (translation)
+The claim follows from `|nuAbs D u (i + 1) τ - ((D.R.k : ℝ) - 1) * wj D (i + 1) τ - (topWt L τ + offWt D (i + 1) τ)| ≤ D.R.k * (L.Sc + D.R.N D.R.m) + D.R.m * ((D.R.t : ℝ) + 1) * (2 * L.etaSz) + (4 * L.Sc + 2 * D.R.N D.R.m + 1 + L.etaSz + topConst D (L.sc.b' / L.sc.x) τ) := by obtain ⟨n, hn⟩ : ∃ n, D.R.k …`.
+-/
 theorem nuAbs_place_fine (P : ParameterChoice' D L) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (τ : D.what₂.Tau) :
     |nuAbs D u (i + 1) τ - ((D.R.k : ℝ) - 1) * wj D (i + 1) τ - (topWt L τ + offWt D (i + 1) τ)| ≤
       D.R.k * (L.Sc + D.R.N D.R.m) + D.R.m * ((D.R.t : ℝ) + 1) * (2 * L.etaSz) +
@@ -121,6 +146,11 @@ theorem nuAbs_place_fine (P : ParameterChoice' D L) (u : D.what₂.Word) (i : �
   rw [hkn, abs_le]
   constructor <;> linarith [s0.1, s0.2, s1.1, s1.2, s2.1, s2.2]
 
+/- English proof (translation)
+Establish `h1 : S ≤ k * S` using `le_mul_of_one_le_left hS hk`. Establish `h2 : k * N ≤ N * N` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h3 : m * N ≤ N * N` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h4 : N ≤ N * N` using `le_mul_of_one_le_left (by linarith) (by linarith)`. Establish `h5 : η ≤ m * η` using `le_mul_of_one_le_left hη hm`.
+
+Establish `h6 : m * η ≤ t * (m * η)` using `le_mul_of_one_le_left (by linarith) ht`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem arith (k m t N S η : ℝ) (hm : 1 ≤ m) (hk : 1 ≤ k) (hkm : k + m ≤ N) (ht : 1 ≤ t) (hS : 0 ≤ S) (hη : 0 ≤ η) :
     k * (S + N) + m * (t + 1) * (2 * η) + (4 * S + 2 * N + 1 + η) + (k * (S + 2 * N) + 2 * m * (η + 2 * N)) ≤
       20 * (k * S + N ^ 2 + m * t * η) := by
@@ -132,6 +162,15 @@ theorem arith (k m t N S η : ℝ) (hm : 1 ≤ m) (hk : 1 ≤ k) (hkm : k + m �
   have h6 : m * η ≤ t * (m * η) := le_mul_of_one_le_left (by linarith) ht
   nlinarith
 
+/- English proof (translation)
+Introduce `D L h P hK hx u j hj`. Take `⟨j1, j2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hc : 0 ≤ L.sc.b' / L.sc.x` using `div_nonneg (GlobalTheory.HCEntries.b'_pos L).le (by linarith [L.sc.one_lt_alt])`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`.
+
+Establish `har` using `arith D.R.k D.R.m D.R.t (D.R.N D.R.m) L.Sc L.etaSz hm (GlobalTheory.HCEntries.one_le_k D) (ranks_le D).1 L.t_win.1 L.Sc_pos.le L.etaSz_pos.le`. Unfold `degPi fockDeg topSum degErr Nm`. Rewrite using `[← sum_topWt, ← sum_offWt, Int.cast_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum (g := fun τ => 20 * ((D.R.k : ℝ) * L.Sc + (D.R.N D.R.m : ℝ) ^ 2 + (D.R.m : ℝ) * (D.R.t : ℝ) * L.etaSz) + topConst D (L.sc.b' / L.sc.x) τ) fun τ _ => ?_).trans ?_` and prove the remaining obligations.
+
+Take `⟨w0, -⟩` from `GlobalTheory.HCEntries.wj_bounds h hx (i + 1) j1 j2 τ`. Establish `a` using `abs_le.1 (nuAbs_place_fine P u i j2 τ)`. Establish `b` using `abs_le.1 (letters_place L hK i j2 τ w0)`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [a.1, a.2, b.1, b.2]`.
+
+Rewrite using `[Finset.sum_add_distrib, sum_topConst, Finset.sum_const, Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul, mul_div_assoc]`. Establish `: 0 ≤ (D.host.TT.card : ℝ) * (L.sc.b' / L.sc.x)` using `mul_nonneg (Nat.cast_nonneg _) hc`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degree_fine : ∀ {D : D7} (L : SizeData₂ D), SizesAt L → ParameterChoice' D L → KapDef D → 2 ≤ L.sc.x → ∀ (u : D.what₂.Word), ∀ j ∈ SizeData₂.lifts D, |degPi D u j - (fockDeg D j : ℝ) - (topSum L + sizeOffTops D j)| ≤ 20 * degErr L := by
   intro D L h P hK hx u j hj
   obtain ⟨j1, j2⟩ := Finset.mem_Icc.1 hj

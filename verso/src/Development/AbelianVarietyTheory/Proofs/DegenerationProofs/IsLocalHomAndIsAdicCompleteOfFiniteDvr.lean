@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExistsComple
 namespace GlobalTheory
 
 open IsLocalRing in
+/- English proof (translation)
+Take `⟨ϖ', hϖ'⟩` from `IsDiscreteValuationRing.exists_irreducible V'`. Establish `h0 : algebraMap V V' ϖ ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap V V')]`. Conclude with `fun h => hϖ.ne_zero (hinj h)`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ'`.
+
+Establish `hnu : ¬ IsUnit (algebraMap V V' ϖ)` using `fun h => hϖ.not_isUnit (isUnit_of_map_unit _ _ h)`. Use `⟨e, Nat.pos_of_ne_zero fun he => hnu ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, he, pow_zero, mul_one]`. Conclude with `u.isUnit`. Rewrite using `[hϖ'.maximalIdeal_eq, Ideal.span_singleton_pow, hu, mul_pow, ← pow_mul, ← Units.val_pow_eq_pow_val, Ideal.span_singleton_mul_left_unit (u ^ n).isUnit]`.
+-/
 private lemma exists_pow_maximalIdeal_eq_span {V V' : Type} [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V']
     [Algebra V V'] [IsLocalHom (algebraMap V V')] (hinj : Function.Injective (algebraMap V V'))
@@ -21,6 +26,13 @@ private lemma exists_pow_maximalIdeal_eq_span {V V' : Type} [CommRing V] [IsDoma
       ← Units.val_pow_eq_pow_val, Ideal.span_singleton_mul_left_unit (u ^ n).isUnit]
 
 open IsLocalRing in
+/- English proof (translation)
+Simplify using `only [Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i`. Use `⟨b.repr y i, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`.
+
+Introduce `h choose c hc using h`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, ← Algebra.smul_def, Finset.smul_sum]`. Use `conv_rhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hc i, smul_smul, mul_comm (ϖ ^ j)]`.
+-/
 private lemma mem_span_pow_iff_repr {V V' : Type} [CommRing V] [CommRing V'] [Algebra V V']
     {ι : Type} [Fintype ι] (b : Module.Basis ι V V') (ϖ : V) (j : ℕ) (x : V') :
     x ∈ Ideal.span {algebraMap V V' ϖ ^ j} ↔ ∀ i, b.repr x i ∈ Ideal.span {ϖ ^ j} := by
@@ -40,6 +52,23 @@ private lemma mem_span_pow_iff_repr {V V' : Type} [CommRing V] [CommRing V'] [Al
 
 open IsLocalRing in
 
+/- English proof (translation)
+Introduce `V V' _ _ _ _ _ _ _ _ hfin hinj`. Establish `hloc : IsLocalHom (algebraMap V V')` using `RingHom.IsIntegral.isLocalHom (fun x => Algebra.IsIntegral.isIntegral x) hinj`. Use `⟨hloc, ?_⟩` and prove the remaining obligations. Use `haveI : FaithfulSMul V V' := (faithfulSMul_iff_algebraMap_injective V V').2 hinj`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+
+Take `⟨e, he, hpow⟩` from `exists_pow_maximalIdeal_eq_span hinj hϖ`. Set `b` to `Module.Free.chooseBasis V V'`. Establish `hV : ∀ j, (maximalIdeal V ^ j • ⊤ : Submodule V V) = Ideal.span {ϖ ^ j}`. Introduce `j`. Rewrite using `[smul_eq_mul, Ideal.mul_top, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`.
+
+Establish `hV' : ∀ n, (maximalIdeal V' ^ n • ⊤ : Submodule V' V') = maximalIdeal V' ^ n`. Introduce `n`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Use `haveI hH : IsHausdorff (maximalIdeal V') V' := IsHausdorff.of_isLocalRing (maximalIdeal V') V' (IsLocalRing.maximalIdeal.isMaximal V').ne_top`. Establish `hP : IsPrecomplete (maximalIdeal V') V'`.
+
+Rewrite using `[isPrecomplete_iff]`. Introduce `f hf`. Establish `hcoord : ∀ i : Module.Free.ChooseBasisIndex V V', ∀ {m n : ℕ}, m ≤ n → b.repr (f (e * m)) i ≡ b.repr (f (e * n)) i [SMOD maximalIdeal V ^ m • (⊤ : Submodule V V)]`. Introduce `i m n hmn`. Establish `h` using `hf (Nat.mul_le_mul_left e hmn)`.
+
+Rewrite `h` using `[hV', SModEq.sub_mem, hpow, mem_span_pow_iff_repr b]`. Rewrite using `[hV, SModEq.sub_mem, ← Finsupp.sub_apply, ← map_sub]`. Conclude with `h i`. Use `choose L hL using fun i => (isPrecomplete_iff.1 (inferInstance : IsPrecomplete (maximalIdeal V) V)) _ (hcoord i)`. Use `⟨b.equivFun.symm L, fun n => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : f n ≡ f (e * n) [SMOD maximalIdeal V' ^ n • (⊤ : Submodule V' V')]` using `hf (Nat.le_mul_of_pos_left n he)`. Establish `h2 : f (e * n) ≡ b.equivFun.symm L [SMOD maximalIdeal V' ^ n • (⊤ : Submodule V' V')]`. Rewrite using `[hV', SModEq.sub_mem]`. Use `Ideal.pow_le_pow_right (Nat.le_mul_of_pos_left n he) ?_` and prove the remaining obligations. Rewrite using `[hpow, mem_span_pow_iff_repr b]`.
+
+Introduce `i`. Establish `hi` using `hL i n`. Rewrite `hi` using `[hV, SModEq.sub_mem]`. Rewrite using `[map_sub, Finsupp.sub_apply, ← b.equivFun_apply (b.equivFun.symm L), LinearEquiv.apply_symm_apply]`. Conclude with `hi`.
+
+Conclude with `h1.trans h2`. Conclude with `{ toIsHausdorff := hH, toIsPrecomplete := hP }`.
+-/
 theorem _root_.GlobalTheory.isLocalHom_and_isAdicComplete_of_finite_dvr :
     ∀ (V V' : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
       [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [CommRing V'] [IsDomain V']

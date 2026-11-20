@@ -10,6 +10,19 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.FibreFinite
 
+/- English proof (translation)
+Introduce `S S' T q h L hq hh hA t ⟨m, hm, hc⟩`. Set `F` to `q.fiber t`. Set `ι : F ⟶ S` to `q.fiberι t`. Set `a : F ⟶ Sp (T.residueField t)` to `q.fiberToSpecResidueField t`. Establish `hpb : IsPullback ι a q (T.fromSpecResidueField t)` using `IsPullback.of_hasPullback _ _`.
+
+Establish `hy` using `GlobalTheory.AmpleFibre.isAffineHom_of_field (T.fromSpecResidueField t)`. Establish `: IsAffineHom ι` using `MorphismProperty.of_isPullback hpb.flip hy`. Establish `: IsProper a` using `MorphismProperty.of_isPullback hpb inferInstance`. Establish `: IsAffineHom (ι ≫ h)` using `inferInstance`. Establish `hA'` using `hA.pull_of_isAffineHom (ι ≫ h)`.
+
+Establish `hL' : (L.pull (ι ≫ h)).IsLB` using `hA'.isLB`. Establish `hP : (lbPow (L.pull (ι ≫ h)) m).IsLB` using `isLB_lbPow hL' m`. Establish `h0 : CechPic.cls _ hP = 0`. Rewrite using `[CechPic.cls_lbPow hL' m hP, CechPic.cls_pull hA.isLB _ hL', ← map_nsmul]`. Conclude with `hc`.
+
+Take `⟨g, hg⟩` from `(CechPic.cls_eq_zero_iff hP).1 h0`. Establish `hI : LBIso (LB.triv F) (lbPow (L.pull (ι ≫ h)) m)` using `(CechPic.iso_triv_iff _).2 ⟨g, hg⟩`. Establish `hAm` using `(isAmpleLB_pow_iff hL' hm).2 hA'`. Establish `hT : IsAmpleLB (LB.triv F)` using `hAm.of_lbIso (LB.isLB_triv F) hI`. Establish `: F.IsQuasiAffine` using `isAmpleLB_triv_iff.1 hT`.
+
+Establish `: IsAffine F` using `GlobalTheory.AmpleStabFinite.isAffine_of_quasiAffine a`. Establish `: IsFinite a` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Establish `hfin : (Set.univ : Set F).Finite`. Use `a.finite_preimage_singleton (IsLocalRing.closedPoint (T.residueField t))` as an intermediate fact. Conclude with `this.subset fun x _ => Subsingleton.elim _ _`.
+
+Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `hfin.image _`.
+-/
 theorem finite_preimage : ∀ {S S' T : Scheme.{0}} (q : S ⟶ T) (h : S ⟶ S') (L : LB S'), IsProper q → IsAffineHom h →
     ∀ hA : GlobalTheory.IsAmpleLB L, ∀ t : T,
     (∃ m : ℕ, 0 < m ∧ GlobalTheory.CechPic.pull (q.fiberι t ≫ h) (m • GlobalTheory.CechPic.cls L hA.isLB) = 0) → (q ⁻¹' {t}).Finite := by

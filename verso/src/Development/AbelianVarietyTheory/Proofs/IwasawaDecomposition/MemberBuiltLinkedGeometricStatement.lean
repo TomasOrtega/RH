@@ -6,5 +6,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 | exact GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 | (intros; apply GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.member_built_linked_geometric : HypA → HypE → HypH → ExistsUnlocalizedSaturatedState → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, HypN hL → ∀ cDep : ℝ, MultQ (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)) → MemberE (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)).s ∧ GlobalTheory.Fc.ExBL KPx (IsBuiltE (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)).s) (IsGoodE (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry)).s) (IsLinked (prmR (NEo hL cDep) SExt.none (geoCl anyGeometry))) := by
   first | exact @GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 | exact GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 | (intros; apply GlobalTheory.Mem.Top.Bl.memberE_exBL_prm1 <;> assumption)

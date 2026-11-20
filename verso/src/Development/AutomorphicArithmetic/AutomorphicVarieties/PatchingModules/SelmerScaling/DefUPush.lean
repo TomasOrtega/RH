@@ -26,11 +26,19 @@ private def RM (c : Fin e → Fin g → X) (U : Matrix (Fin n) (Fin n) (DD X e))
 
 variable {c : Fin e → Fin g → X}
 
+/- English proof (translation)
+Use `ext1 i j`. Conclude with `(relSub X e g c).2.2.1 _ _ _ (h i j) (h' i j) (congrArg (fun M => (M i j).ep) hT)`.
+-/
 private theorem RM_uniq {U : Matrix (Fin n) (Fin n) (DD X e)} {V V' : Matrix (Fin n) (Fin n) (DD X g)}
     (h : RM c U V) (h' : RM c U V') (hT : (TT X g).mapMatrix V = (TT X g).mapMatrix V') : V = V' := by
   ext1 i j
   exact (relSub X e g c).2.2.1 _ _ _ (h i j) (h' i j) (congrArg (fun M => (M i j).ep) hT)
 
+/- English proof (translation)
+Use `(relSub X e g c).2.2.2 n [(U, V), (U', V')] (by` as an intermediate fact. Introduce `p hp`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hp`. Break down `hp with rfl | rfl` into its components or cases. Use `exacts [h, h'])`.
+
+Simplify `this` using `[RM]`.
+-/
 private theorem RM_mul {U U' : Matrix (Fin n) (Fin n) (DD X e)} {V V' : Matrix (Fin n) (Fin n) (DD X g)}
     (h : RM c U V) (h' : RM c U' V') : RM c (U * U') (V * V') := by
   have := (relSub X e g c).2.2.2 n [(U, V), (U', V')] (by
@@ -40,11 +48,17 @@ private theorem RM_mul {U U' : Matrix (Fin n) (Fin n) (DD X e)} {V V' : Matrix (
     exacts [h, h'])
   simpa [RM] using this
 
+/- English proof (translation)
+Introduce `i j`. Use `(relSub X e g c).1 0` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem RM_zero : RM c (0 : Matrix (Fin n) (Fin n) (DD X e)) 0 := by
   intro i j
   have := (relSub X e g c).1 0
   simpa using this
 
+/- English proof (translation)
+Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using h`. Simplify `RM_zero (c := c) i j` using `[hij]`.
+-/
 private theorem RM_smul {u : DD X e} {v : DD X g} (h : DD.Rel c u v) :
     RM c (u • (1 : Matrix (Fin n) (Fin n) (DD X e))) (v • 1) := by
   intro i j
@@ -52,10 +66,18 @@ private theorem RM_smul {u : DD X e} {v : DD X g} (h : DD.Rel c u v) :
   · subst hij; simpa using h
   · simpa [hij] using RM_zero (c := c) i j
 
+/- English proof (translation)
+Use `RM_smul (n := n) ((relSub X e g c).1 1)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem RM_one : RM c (1 : Matrix (Fin n) (Fin n) (DD X e)) 1 := by
   have := RM_smul (n := n) ((relSub X e g c).1 1)
   simpa using this
 
+/- English proof (translation)
+Use `(relSub X e g c).2.2.2 n (List.ofFn fun k => (U k, V k)) (by` as an intermediate fact. Introduce `p hp`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hp`. Conclude with `h k)`. Rewrite `this` using `[List.map_ofFn, List.map_ofFn]`.
+
+Conclude with `this`.
+-/
 private theorem RM_prod {U : Fin n → Matrix (Fin n) (Fin n) (DD X e)} {V : Fin n → Matrix (Fin n) (Fin n) (DD X g)}
     (h : ∀ k, RM c (U k) (V k)) : RM c (List.ofFn U).prod (List.ofFn V).prod := by
   have := (relSub X e g c).2.2.2 n (List.ofFn fun k => (U k, V k)) (by
@@ -65,6 +87,15 @@ private theorem RM_prod {U : Fin n → Matrix (Fin n) (Fin n) (DD X e)} {V : Fin
   rw [List.map_ofFn, List.map_ofFn] at this
   exact this
 
+/- English proof (translation)
+Establish `h0` using `tri_prod_zero (fun k => wi * M k * w - d k • 1) (fun k i j hij => by`. Rewrite using `[Matrix.sub_apply, h1 k i j hij, Matrix.smul_apply, Matrix.one_apply_ne hij.ne', smul_zero, sub_zero])`. Use the proof step `(fun k => by rw [Matrix.sub_apply, h2 k, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, sub_self])`. Establish `e1 : ∀ Z, wi * (w * Z) = Z` using `fun Z => by rw [← mul_assoc, hw', one_mul]`. Establish `e2 : ∀ Z, w * (wi * Z) = Z` using `fun Z => by rw [← mul_assoc, hw, one_mul]`.
+
+Set `φ : Matrix (Fin n) (Fin n) R →* Matrix (Fin n) (Fin n) R` to `{ toFun := fun Z => w * Z * wi map_one' := by rw [mul_one, hw] map_mul' := fun Y Z => by simp only [mul_assoc, e1] }`. Establish `h3` using `congrArg φ h0`. Rewrite `h3` using `[map_list_prod, List.map_ofFn]`. Establish `h4 : φ 0 = 0` using `by simp [φ]`. Rewrite `h3` using `[h4]`.
+
+Rewrite using `[← h3]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `_ = w * (_ - _) * wi`. Rewrite using `[mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_one, hw]`.
+
+Simplify using `only [mul_assoc, e2, hw, mul_one]`.
+-/
 private theorem conj_prod {R : Type} [CommRing R] (w wi : Matrix (Fin n) (Fin n) R) (hw : w * wi = 1) (hw' : wi * w = 1)
     (M : Fin n → Matrix (Fin n) (Fin n) R)
     (d : Fin n → R) (h1 : ∀ k i j, j < i → (wi * M k * w) i j = 0) (h2 : ∀ k, (wi * M k * w) k k = d k) :
@@ -90,12 +121,21 @@ private theorem conj_prod {R : Type} [CommRing R] (w wi : Matrix (Fin n) (Fin n)
   rw [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_one, hw]
   simp only [mul_assoc, e2, hw, mul_one]
 
+/- English proof (translation)
+The claim follows from `map_sum (DD.aug X g) f s`.
+-/
 private theorem sum_a {ι : Type} (s : Finset ι) (f : ι → DD X g) : (∑ i ∈ s, f i).a = ∑ i ∈ s, (f i).a :=
   map_sum (DD.aug X g) f s
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun u : DD X g => u.ep j) fun _ _ => rfl) f s`.
+-/
 private theorem sum_ep {ι : Type} (s : Finset ι) (f : ι → DD X g) (j) : (∑ i ∈ s, f i).ep j = ∑ i ∈ s, (f i).ep j :=
   map_sum (AddMonoidHom.mk' (fun u : DD X g => u.ep j) fun _ _ => rfl) f s
 
+/- English proof (translation)
+Rewrite using `[add_mul, one_mul]`. Use `⟨fun i j => ?_, fun k i j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, sum_a, DD.epM]`. Simplify using `[Matrix.mul_apply, sum_ep, DD.epM]`.
+-/
 private theorem eps_mul (Z : Fin g → Matrix (Fin n) (Fin n) X) (M : Matrix (Fin n) (Fin n) X) :
     (∀ i j, (((1 + DD.epM Z) * M.map DD.C : Matrix (Fin n) (Fin n) (DD X g)) i j).a = M i j) ∧
       ∀ k i j, (((1 + DD.epM Z) * M.map DD.C : Matrix (Fin n) (Fin n) (DD X g)) i j).ep k = (Z k * M) i j := by
@@ -114,11 +154,63 @@ private noncomputable def pushU {H : Type} [Group H] (c : Fin e → Fin g → X)
         rw [map_mul]
         ext <;> simp [PP, hψ, mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, mul_assoc, mul_left_comm] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pushU_val {H : Type} [Group H] (c : Fin e → Fin g → X) (ψ : H →* (DD X e)ˣ)
     (hψ : ∀ t, (ψ t : DD X e).ep = 0) (t : H) : (pushU c ψ hψ t : DD X g) = PP c (ψ t) 0 := rfl
 
 end Gen
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k e u ψ c hu hc`. Take `⟨r1, r2, r3, r4, r5, r6⟩` from `rho1Tri l L G G0 h n x k x.Fr`. Take `⟨-, -, p3, p4, p5, p6⟩` from `homBasic l L G G0 h`. Take `⟨b1, -, b3⟩` from `bndRho l L G G0 h n x k`. Take `⟨o1, o2, o3, -⟩` from `bndOps x.K G.G₀`.
+
+Establish `hρmul : ∀ g g', x.ρX x.Fr (g * g') = x.ρX x.Fr g * x.ρX x.Fr g'` using `fun g g' => by`. Simplify using `[NP.ρX, mat, Matrix.map_mul]`. Establish `hρ1 : x.ρX x.Fr 1 = 1` using `by simp [NP.ρX, mat]`. Establish `hinv : ∀ γ : G.G₀, x.ρX x.Fr (h.p₀ γ⁻¹) * x.ρX x.Fr (h.p₀ γ) = 1` using `fun γ => by`. Rewrite using `[← hρmul, ← map_mul, inv_mul_cancel, map_one, hρ1]`.
+
+Establish `hinv' : ∀ γ : G.G₀, x.ρX x.Fr (h.p₀ γ) * x.ρX x.Fr (h.p₀ γ⁻¹) = 1` using `fun γ => by`. Rewrite using `[← hρmul, ← map_mul, mul_inv_cancel, map_one, hρ1]`. Establish `ha : ∀ γ : G.G₀, (∀ i j, (k.ρ1 x.Fr (h.p₀ γ) i j).a = x.ρX x.Fr (h.p₀ γ) i j) ∧ ∀ m i j, (k.ρ1 x.Fr (h.p₀ γ) i j).ep m = (kapF h k m γ * x.ρX x.Fr (h.p₀ γ)) i j` using `fun γ => eps_mul (fun m => kapF h k m γ) (x.ρX x.Fr (h.p₀ γ))`. Establish `hE : ∀ γ a i j, (u γ i j).ep a = ∑ m, c a m * (k.ρ1 x.Fr (h.p₀ γ) i j).ep m`. Introduce `γ a i j`.
+
+Establish `h1 : (u γ).map (fun z => z.ep a) = (∑ m, c a m • kapF h k m γ) * x.ρX x.Fr (h.p₀ γ)`. Establish `h2` using `congrFun (hc a) γ`. Rewrite `h2` using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply] at h2`. Rewrite using `[← h2, epC, mul_assoc, hinv, mul_one]`.
+
+Establish `h3` using `congrFun (congrFun h1 i) j`. Rewrite `h3` using `[Finset.sum_mul, Matrix.sum_apply, Matrix.map_apply]`. Rewrite using `[h3]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[(ha γ).2, smul_mul_assoc, Matrix.smul_apply, smul_eq_mul]`.
+
+Establish `hψ0 : ∀ v i t, (ψ v i t : DD x.Fr e).ep = 0` using `fun v i t => (hu.ψ_even v i t).2.1 rfl`. Take `⟨u', hu'⟩ : ∃ u' : G.G₀ → Matrix (Fin n) (Fin n) (DD x.Fr k.g), ∀ γ i j, u' γ i j = PP c (u γ i j) (k.ρ1 x.Fr (h.p₀ γ) i j)` from `⟨fun γ => Matrix.of fun i j => PP c (u γ i j) (k.ρ1 x.Fr (h.p₀ γ) i j), fun _ _ _ => rfl⟩`. Establish `hR : ∀ γ, RM c (u γ) (u' γ)` using `fun γ i j => by`. Rewrite using `[hu']`. Conclude with `⟨rfl, rfl, fun a => hE γ a i j, fun _ => rfl⟩`.
+
+Establish `hT : ∀ γ, (TT x.Fr k.g).mapMatrix (u' γ) = (TT x.Fr k.g).mapMatrix (k.ρ1 x.Fr (h.p₀ γ))` using `fun γ => by ext1 i j`. Express the relevant statement in the definitionally equal form `TT _ _ (u' γ i j) = TT _ _ (k.ρ1 x.Fr (h.p₀ γ) i j)`. Rewrite using `[hu']`. Use `DD.ext ?_ rfl rfl rfl` and prove the remaining obligations. Conclude with `(congrFun (congrFun (hu.red γ) i) j).trans ((ha γ).1 i j).symm`.
+
+Establish `hRψ : ∀ v i t, DD.Rel c (ψ v i t : DD x.Fr e) (pushU c (ψ v i) (hψ0 v i) t : DD x.Fr k.g)` using `fun v i t => by`. Rewrite using `[pushU_val]`. Conclude with `⟨rfl, rfl, fun a => by simp [PP, hψ0], fun _ => rfl⟩`. Use `⟨u', fun v i => pushU c (ψ v i) (hψ0 v i), ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `RM_uniq (hR 1) (hu.one ▸ RM_one) ?_` and prove the remaining obligations.
+
+Rewrite using `[hT, map_one h.p₀, r2]`. Introduce `γ γ'`. Use `RM_uniq (hR _) (hu.mul γ γ' ▸ RM_mul (hR γ) (hR γ')) ?_` and prove the remaining obligations. Rewrite using `[map_mul, hT, hT, hT, map_mul h.p₀, r1, map_mul]`. Introduce `γ`.
+
+Rewrite using `[← hu.red γ]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, hu']`. Both sides reduce to the same expression. Introduce `γ i j`.
+
+Rewrite using `[hu']`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, a4⟩` from `(hu.even γ i j).1 hij`. Take `⟨-, a2, -, -⟩` from `(r5 (h.p₀ γ) i j).1 hij`. Conclude with `⟨nofun, fun _ => a2 rfl, nofun, fun _ => a4 rfl⟩`.
+
+Take `⟨a1, -, a3, -⟩` from `(hu.even γ i j).2 hij`. Use `⟨fun _ => a1 rfl, nofun, fun _ => ?_, nofun⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Simplify using `[PP, a3 rfl]`. Introduce `γ`.
+
+Establish `h1 : RM c ((u γ)ᵀ * u (G.frame.conj γ)) ((u' γ)ᵀ * u' (G.frame.conj γ))` using `RM_mul (fun i j => hR γ j i) (hR _)`. Rewrite `h1` using `[hu.form]`. Use `RM_uniq h1 (RM_smul ((relSub x.Fr e k.g c).1 _)) ?_` and prove the remaining obligations. Establish `h2 : (TT x.Fr k.g).mapMatrix (u' γ)ᵀ = (TT x.Fr k.g).mapMatrix (k.ρ1 x.Fr (h.p₀ γ))ᵀ` using `congrArg Matrix.transpose (hT γ)`. Rewrite using `[map_mul, h2, hT, ← map_mul, p3, r3, p6]`.
+
+Introduce `w γ hγ`. Use `RM_uniq (hR γ) ((hu.ine w γ hγ).symm ▸ RM_one) ?_` and prove the remaining obligations. Rewrite using `[hT, r4 w _ (p5 w γ hγ)]`. Introduce `v i t`. Conclude with `hu.ψ_red v i t`.
+
+Introduce `v i t`. Rewrite using `[pushU_val]`. Conclude with `⟨nofun, fun _ => rfl, nofun, fun _ => (hu.ψ_even v i t).2.2.2 rfl⟩`. Introduce `v i t ht ext1`. Rewrite using `[pushU_val, hu.ψ_mu v i t ht]`.
+
+Apply the tactic sequence `ext <;> simp [PP]`. Introduce `v t`. Establish `h1` using `RM_prod (c := c) (U := fun i => u (G.φ v (t i)) - algebraMap _ _ (ψ v i (t i) : DD x.Fr e)) (V := fun i => u' (G.φ v (t i)) - algebraMap _ _ (pushU c (ψ v i) (hψ0 v i) (t i) : DD x.Fr k.g)) (fun m i j => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Conclude with `((relSub x.Fr e k.g c).2.1 _ _ _ _ (hR _ i j) (RM_smul (hRψ v m (t m)) i j)).2.1)`.
+
+Rewrite `h1` using `[hu.ord]`. Use `RM_uniq h1 RM_zero ?_` and prove the remaining obligations. Take `⟨w1, w2, w3⟩` from `r6 v`. Rewrite using `[← conj_prod _ _ w1 w2 (fun m => k.ρ1 x.Fr (G0.φ v (t m))) (fun m => algebraMap x.A _ (x.ψ v m (t m) : x.A)) (fun m => (w3 (t m)).1) (fun m => (w3 (t m)).2 m), map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp_apply]`. Rewrite using `[map_sub, map_sub, hT, p4, Algebra.algebraMap_eq_smul_one]`. Use `congr 1`. Use `ext1 i j`.
+
+Express the relevant statement in the definitionally equal form `TT _ _ (_ * _) = TT _ _ (_ * _)`. Rewrite using `[map_mul, map_mul]`. Use `congr 1`. Conclude with `DD.ext (hu.ψ_red v m (t m)) rfl rfl rfl`. Introduce `i j`.
+
+Take `⟨a1, -, a3, a4⟩` from `hu.bnd i j`. Simplify using `only [hu']`. Use `⟨a1, fun m => ?_, fun m => ?_, a4⟩` and prove the remaining obligations. Establish `: (fun γ => (PP c (u γ i j) (k.ρ1 x.Fr (h.p₀ γ) i j)).ep m) = fun γ => ∑ s, kapF h k m γ i s * x.ρX x.Fr (h.p₀ γ) s j` using `funext fun γ => (ha γ).2 m i j`. Rewrite using `[this]`.
+
+Conclude with `o3 _ _ _ fun s _ => (o2 _ _ (b3 m i s) (b1 s j)).2.1`. Conclude with `o3 _ Finset.univ (fun a γ => c a m * (u γ i j).ep' a) fun a _ => (o2 _ _ (o1 _) (a3 a)).2.1`. Introduce `m`. Use function extensionality and compare the values at `γ`. Establish `: (u' γ).map (fun z => z.ep m) = kapF h k m γ * x.ρX x.Fr (h.p₀ γ)`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hu']`. Conclude with `(ha γ).2 m i j`. Rewrite using `[epC, this, mul_assoc, hinv', mul_one]`. Introduce `m`.
+
+Use function extensionality and compare the values at `γ`. Establish `: (u' γ).map (fun z => z.ep' m) = ∑ a, c a m • (u γ).map (fun z => z.ep' a)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hu', Matrix.sum_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[epC', this, Finset.sum_mul, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pa.defUPush :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), ∀ (e : ℕ) (u : G.G₀ → Matrix (Fin n) (Fin n) (DD x.Fr e)) (ψ : ∀ v, Fin n → L.Gv v →* (DD x.Fr e)ˣ) (c : Fin e → Fin k.g → x.Fr), DefU h x u ψ → (∀ a, epC h x u a = ∑ j, c a j • kapF h k j) → ∃ (u' : G.G₀ → Matrix (Fin n) (Fin n) (DD x.Fr k.g)) (ψ' : ∀ v, Fin n → L.Gv v →* (DD x.Fr k.g)ˣ), DefU h x u' ψ' ∧ (∀ j, epC h x u' j = kapF h k j) ∧ ∀ j, epC' h x u' j = ∑ a, c a j • epC' h x u a := by
   intro l _ L G G0 h n x k e u ψ c hu hc

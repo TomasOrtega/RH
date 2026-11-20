@@ -17,6 +17,9 @@ section GF
 
 variable {D : D7} (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T T' : D.host.E}
 
+/- English proof (translation)
+Rewrite using `[Set.Sum.elim_range, Set.Sum.elim_range, Submodule.span_union, Submodule.span_union, span_frameAct_inv _ ξ h1 h2]`.
+-/
 theorem span_sum_elim_frameAct (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) :
@@ -25,22 +28,108 @@ theorem span_sum_elim_frameAct (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.
   rw [Set.Sum.elim_range, Set.Sum.elim_range, Submodule.span_union, Submodule.span_union,
     span_frameAct_inv _ ξ h1 h2]
 
+/- English proof (translation)
+Rewrite using `[PI.PairCorankPos.W.Dl_top, GDl_top']`. Both sides reduce to the same expression.
+-/
 theorem Dl_eq_GDl_top (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Dl F.fl F'.fl (D.R.rS + 1) = GDl F.fl.fvec F'.fl.fvec (D.R.rS + 1) := by
   rw [PI.PairCorankPos.W.Dl_top, GDl_top']
   rfl
 
+/- English proof (translation)
+Rewrite using `[PI.PairCorankPos.W.Dl_r, GDl_r']`. Both sides reduce to the same expression.
+-/
 theorem Dl_eq_GDl_r (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Dl F.fl F'.fl D.R.rS = GDl F.fl.fvec F'.fl.fvec D.R.rS := by
   rw [PI.PairCorankPos.W.Dl_r, GDl_r']
   rfl
 
+/- English proof (translation)
+Use `show Gflag F.fl F'.fl = _`. Rewrite using `[Gflag, Dl_eq_GDl_top, Dl_eq_GDl_r]`.
+-/
 theorem Gval_eq (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') :
     Gval F F' = GDl F.fl.fvec F'.fl.fvec (D.R.rS + 1) * star (GDl F.fl.fvec F'.fl.fvec (D.R.rS + 1)) -
       T * T' * (GDl F.fl.fvec F'.fl.fvec D.R.rS * star (GDl F.fl.fvec F'.fl.fvec D.R.rS)) := by
   show Gflag F.fl F'.fl = _
   rw [Gflag, Dl_eq_GDl_top, Dl_eq_GDl_r]
 
+/- English proof (translation)
+Take `⟨hlat, -, hlF, hcF⟩` from `hF`. Establish `hξ1` using `admissibility_witness_unitriangular Λ F F'`. Establish `hξ2` using `admissibility_witness_unitriangular Λ F F''`. Establish `hη1` using `inv_unitri _ hξ1.1 hξ1.2`. Establish `hη2` using `inv_unitri _ hξ2.1 hξ2.2`.
+
+Establish `hXF` using `X_le_spanE_of_conv Λ F _ hcF`. Establish `hXF'` using `X_le_spanE_of_conv Λ F' _ hc'`. Establish `hXF''` using `X_le_spanE_of_conv Λ F'' _ hc''`. Establish `hU1` using `PI.ScalarPairDr.W.UUE_eq Λ F F' hlF.2 hl'.2 hXF hXF'`. Establish `hU2` using `PI.ScalarPairDr.W.UUE_eq Λ F F'' hlF.2 hl''.2 hXF hXF''`.
+
+Establish `hGN1` using `PI.UnitaryGroupMassFormula.BetaLUniq.gram_matrix_nondegenerate (VS D) Λ F F' hlat hlF hl' hG'`. Establish `hGN2` using `PI.UnitaryGroupMassFormula.BetaLUniq.gram_matrix_nondegenerate (VS D) Λ F F'' hlat hlF hl'' hG''`. Establish `hn` using `PI.UnitaryGroupMassFormula.BetaLUniq.finrank_hS D`. Take `⟨hTh, hTh''⟩` from `theta_eq Λ D.R.k F F' F'' β hn hGN1.1 hGN2.1 hU1 hG' hs`. Establish `hXg1 : Xs (S` using `VS D) (frameAct (frame F') (admXi D Λ F F')⁻¹) = Xsp F' := (Xs_frameAct_inv _ _ hξ1.1 hξ1.2).trans (Xs_fvec F'.fl)`.
+
+Establish `hXg2 : Xs (S` using `VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) = Xsp F'' := (Xs_frameAct_inv _ _ hξ2.1 hξ2.2).trans (Xs_fvec F''.fl)`. Establish `hsp1 : Submodule.span D.host.E (Set.range (Sum.elim (frame F) (frameAct (frame F') (admXi D Λ F F')⁻¹))) = UUE Λ F F'` using `(span_sum_elim_frameAct F F' _ hξ1.1 hξ1.2).trans hU1.symm`. Establish `hsp2 : Submodule.span D.host.E (Set.range (Sum.elim (frame F) (frameAct (frame F'') (admXi D Λ F F'')⁻¹))) = UUE Λ F F''` using `(span_sum_elim_frameAct F F'' _ hξ2.1 hξ2.2).trans hU2.symm`. Establish `hPX : (Xsp F').map (β : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp F''`. Rewrite using `[← Xflag_top, ← Xflag_top]`.
+
+Conclude with `hP.2.1 D.R.rS`. Establish `hβX : ∀ x ∈ Xsp F', β x ∈ Xsp F''` using `fun x hx => hPX ▸ Submodule.mem_map_of_mem hx`. Establish `hβX' : ∀ x ∈ Xsp F'', β.symm x ∈ Xsp F'`. Introduce `x hx`. Rewrite `hx` using `[← hPX]`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Conclude with `hy`. Establish `hiso : ∀ x y, (VS D).hT (β x) (β y) = (VS D).hT x y` using `fun x y => hP.1.1 x y`. Establish `hβz : β F'.fl.z = F''.fl.z` using `hP.2.2.1`.
+
+Rewrite using `[show (frame F) = F.fl.fvec from rfl]`. Establish `rT1` using `GDl_frameAct_top F.fl.fvec F'.fl.fvec _ hη1.1 hη1.2`. Establish `rT2` using `GDl_frameAct_top F.fl.fvec F''.fl.fvec _ hη2.1 hη2.2`. Establish `rR1` using `GDl_frameAct_r F.fl.fvec F'.fl.fvec _ hη1.1 hη1.2`. Establish `rR2` using `GDl_frameAct_r F.fl.fvec F''.fl.fvec _ hη2.1 hη2.2`.
+
+Establish `rO'1` using `Gom'_frameAct F.fl.fvec F'.fl.fvec _ hη1.1 hη1.2`. Establish `rO'2` using `Gom'_frameAct F.fl.fvec F''.fl.fvec _ hη2.1 hη2.2`. Establish `rO1` using `Gom_frameAct F.fl.fvec F'.fl.fvec _ hη1.1 hη1.2`. Establish `rO2` using `Gom_frameAct F.fl.fvec F''.fl.fvec _ hη2.1 hη2.2`. Establish `hind' : LinearIndependent D.host.E F'.fl.fvec`.
+
+Use `(PI.PairCorankPos.W.linIndep F.fl F'.fl hG').comp Sum.inr Sum.inr_injective` as an intermediate fact. Rewrite `this` using `[Sum.elim_comp_inr]`. Then use the resulting hypothesis. Establish `hind'' : LinearIndependent D.host.E F''.fl.fvec`. Use `(PI.PairCorankPos.W.linIndep F.fl F''.fl hG'').comp Sum.inr Sum.inr_injective` as an intermediate fact. Rewrite `this` using `[Sum.elim_comp_inr]`. Then use the resulting hypothesis.
+
+Establish `key1` using `fun h => scal_dir Λ F F' F'' hlF.2 hl'.2 hl''.2 hT0 hU2 (fun y hy hyo => ylift_tr Λ F F' F'' β hTh hy hyo) (fun y hy1 hy2 α α' h => (hsc y hy1 y hy2 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) (by rw [sub_self]; exact Submodule.zero_mem _) (by rw [map_zero, sub_zero]; exact …`. Establish `key2` using `fun h => scal_dir Λ F F'' F' hlF.2 hl''.2 hl'.2 hT0 hU1 (fun y hy hyo => ylift_tr' Λ F F' F'' β hTh'' hy hyo) (fun y hy1 hy2 α α' h => (hsc y hy2 y hy1 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) (by rw [sub_self]; exact Submodule.zero_mem _) (by rw [map_zero, sub_zero]; ex …`. Establish `keyom` using `fun h => scal_om Λ F F' F'' β hlF.2 hl'.2 hl''.2 hT0' hiso hβX' hβz hU1 (fun y hy hyo => ylift_beta Λ F F' F'' β hiso hβX' hTh'' hy hyo) (fun y' hy1 hy2 α α' h => (hsc 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) y' hy1 (β y') hy2 (by rw [sub_self]; exact Submodule.zero_mem …`. Establish `hG'e` using `Gval_eq F F'`. Establish `hG''e` using `Gval_eq F F''`.
+
+Use `set D1 := GDl F.fl.fvec F'.fl.fvec (D.R.rS + 1) with hD1`. Use `set D2 := GDl F.fl.fvec F''.fl.fvec (D.R.rS + 1) with hD2`. Use `set R1 := GDl F.fl.fvec F'.fl.fvec D.R.rS with hR1`. Use `set R2 := GDl F.fl.fvec F''.fl.fvec D.R.rS with hR2`. Establish `hrel : R1 * D2 = R2 * D1 ∧ D2 • Gom' F.fl.fvec F'.fl.fvec - D1 • Gom' F.fl.fvec F''.fl.fvec ∈ Xsp F ∧ star D2 • β (Gom F.fl.fvec F'.fl.fvec) - star D1 • Gom F.fl.fvec F''.fl.fvec ∈ Xsp F''`.
+
+Distinguish the cases in `h1 : D1 = 0`. Distinguish the cases in `h2 : D2 = 0`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
+
+Establish `k` using `(key2 h2).2`. Rewrite `k` using `[h1, zero_mul, mul_eq_zero]`. Break down `k with k | k` into its components or cases. Conclude with `h2 k`. Apply `hG'` to reduce the goal to its premises.
+
+Rewrite using `[hG'e, h1, k]`. Simplify using the standard rewrite rules. Take `⟨⟨x, hx, hxe⟩, k⟩` from `key1 h1`. Establish `h2 : D2 ≠ 0`. Introduce `h2`.
+
+Rewrite `k` using `[h2, zero_mul, mul_eq_zero]`. Break down `k with k | k` into its components or cases. Conclude with `h1 k`. Apply `hG''` to reduce the goal to its premises. Rewrite using `[hG''e, h2, k]`.
+
+Simplify using the standard rewrite rules. Use `⟨by linear_combination (-1 : D.host.E) * k, ?_, keyom h2⟩` and prove the remaining obligations. Establish `e : D2 • Gom' F.fl.fvec F'.fl.fvec - D1 • Gom' F.fl.fvec F''.fl.fvec = -(D1 • x)`. Rewrite using `[hxe, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ (Submodule.smul_mem _ _ hx)`. Use `⟨hiso, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[← hP.1.2]`.
+
+Conclude with `⟨v, hv, rfl⟩`. Introduce `v hv`. Rewrite `hv` using `[← hP.1.2]`. Take `⟨w, hw, rfl⟩` from `hv`. Use `show β.symm (β w) ∈ Λ`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply]`. Conclude with `hw`. Introduce `a show _ ∈ Xs (S := VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹)`. Rewrite using `[hXg2]`. Conclude with `hβX _ (hXg1 ▸ Submodule.subset_span ⟨a, rfl⟩)`.
+
+Introduce `a show _ ∈ Xs (S := VS D) (frameAct (frame F') (admXi D Λ F F')⁻¹)`. Rewrite using `[hXg1]`. Conclude with `hβX' _ (hXg2 ▸ Submodule.subset_span ⟨a, rfl⟩)`. Establish `h1` using `frameAct_last_sub (frame F') _ (hη1.2 (Fin.last _))`. Establish `h2` using `frameAct_last_sub (frame F'') _ (hη2.2 (Fin.last _))`.
+
+Rewrite `h1`, `h2` using `[Xs_fvec]`. Use `show _ ∈ Xs (S := VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹)`. Rewrite using `[hXg2]`. Establish `e : β (frameAct (frame F') (admXi D Λ F F')⁻¹ (Fin.last _)) - frameAct (frame F'') (admXi D Λ F F'')⁻¹ (Fin.last _) = β (frameAct (frame F') (admXi D Λ F F')⁻¹ (Fin.last _) - frame F' (Fin.last _)) - (frameAct (frame F'') (admXi D Λ F F'')⁻¹ (Fin.last _) - frame F'' (Fin.last _))`. Rewrite using `[map_sub, show frame F' (Fin.last _) = F'.fl.z from fvec_last _, show frame F'' (Fin.last _) = F''.fl.z from fvec_last _, hβz]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (hβX _ h1) h2`. Introduce `a b show (VS D).hT (F.fl.fvec a.castSucc) (F.fl.fvec b.castSucc) = 0`. Rewrite using `[fvec_castSucc, fvec_castSucc]`.
+
+Conclude with `F.fl.e_iso a b`. Introduce `a b`. Establish `ha : frameAct (frame F'') (admXi D Λ F F'')⁻¹ a.castSucc ∈ F''.fl.X`. Establish `h : frameAct (frame F'') (admXi D Λ F F'')⁻¹ a.castSucc ∈ Xs (S` using `VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) := Submodule.subset_span ⟨a, rfl⟩`. Rewrite `h` using `[hXg2]`.
+
+Conclude with `h`. Establish `hb : frameAct (frame F'') (admXi D Λ F F'')⁻¹ b.castSucc ∈ F''.fl.X`. Establish `h : frameAct (frame F'') (admXi D Λ F F'')⁻¹ b.castSucc ∈ Xs (S` using `VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹) := Submodule.subset_span ⟨b, rfl⟩`. Rewrite `h` using `[hXg2]`. Conclude with `h`.
+
+Conclude with `hT_X_X F''.fl ha hb`. Introduce `y`. Establish `hsup : UUE Λ F F' ⊔ orth (VS D) (UUE Λ F F') = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (UUE Λ F F') (orth (VS D) (UUE Λ F F'))`.
+
+Rewrite `h1` using `[hGN1.2, finrank_bot]`. Establish `h2` using `finrank_orth (VS D) (UUE Λ F F')`. Use linear arithmetic over natural numbers and integers. Establish `hy : y ∈ UUE Λ F F' ⊔ orth (VS D) (UUE Λ F F')` using `by rw [hsup]; exact Submodule.mem_top`. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 hy`.
+
+Use `⟨u, hsp1 ▸ hu, fun i => ?_⟩` and prove the remaining obligations. Establish `e : y - u = w` using `by rw [← huw]; abel`. Rewrite using `[e]`. Conclude with `(mem_orth (VS D)).1 hw _ (hsp1 ▸ Submodule.subset_span ⟨i, rfl⟩)`. Introduce `h`.
+
+Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Use `set v := Sum.elim F.fl.fvec (frameAct (frame F') (admXi D Λ F F')⁻¹) with hv`. Use `set u := ∑ k, star (c k) • v k with hu`. Establish `hpair : ∀ i, (VS D).hT u (v i) = 0`. Introduce `i`.
+
+Use `congrFun hc i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, brS, Pi.zero_apply] at this`. Rewrite using `[hu, map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `huU : u ∈ UUE Λ F F'`. Rewrite using `[← hsp1]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `huO : u ∈ orth (VS D) (UUE Λ F F')`.
+
+Rewrite using `[← hsp1, mem_orth_span]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[hT_swap, hpair i, star_zero]`. Establish `hu0 : u = 0`. Use `Submodule.mem_inf.2 ⟨huU, huO⟩` as an intermediate fact.
+
+Rewrite `this` using `[hGN1.2]`. Conclude with `(Submodule.mem_bot _).1 this`. Establish `hind : LinearIndependent D.host.E v`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, hsp1, hGN1.1, Fintype.card_sum, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `Fintype.linearIndependent_iff.1 hind (fun k => star (c k)) (by rw [← hu]; exact hu0) k` as an intermediate fact. Simplify using `using this`. Introduce `x1 hx1`.
+
+Establish `hx1H : x1 ∈ Hp Λ F F'`. Rewrite using `[Hp, ← hsp1, mem_orth_span]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hx1 i`. Rewrite `hx1H` using `[← hTh]`.
+
+Take `⟨p, hp, rfl⟩` from `hx1H`. Establish `hm` using `(mem_ThPairs Λ F F' F'' β p).1 hp`. Use `⟨p.2, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hm.2.1`. Rewrite `h` using `[Hp, ← hsp2, mem_orth_span]`.
+
+Conclude with `h _ ⟨i, rfl⟩`. Use `show p.1 - p.2 ∈ Xs (S := VS D) F.fl.fvec`. Rewrite using `[Xs_fvec]`. Conclude with `hm.2.2.1`. Use `show _ ∈ Xs (S := VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹)`.
+
+Rewrite using `[hXg2]`. Conclude with `hm.2.2.2`. Rewrite using `[rR1, rR2, rT1, rT2]`. Conclude with `hrel.1`. Rewrite using `[rT1, rT2, rO'1, rO'2] show _ ∈ Xs (S := VS D) F.fl.fvec`.
+
+Rewrite using `[Xs_fvec]`. Conclude with `hrel.2.1`. Use `show _ ∈ Xs (S := VS D) (frameAct (frame F'') (admXi D Λ F F'')⁻¹)`. Rewrite using `[rT1, rT2, rO1, rO2, hXg2]`. Conclude with `hrel.2.2`.
+-/
 theorem gfacts_of (F : LFlag (VS D) D.R.rS T) (F' F'' : LFlag (VS D) D.R.rS T')
     (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hF : FixedHyp D Λ F) (hl' : IsLift Λ F') (hl'' : IsLift Λ F'') (hc' : IsFixedConv Λ (gS D) F')

@@ -8,6 +8,11 @@ open Formalism.L2.DIV MvPolynomial
 
 namespace GlobalTheory.RowRat
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K' ℂ) (LinearMap.ker_eq_bot.2 (FaithfulSMul.algebraMap_injective K' ℂ))`. Use `⟨(Algebra.linearMap K' ℂ).comp g, fun x => ?_, fun x => (g x).2⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f => f x) hg`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Use `show algebraMap K' ℂ (g (Algebra.linearMap K' ℂ x)) = algebraMap K' ℂ x`.
+
+Rewrite using `[h]`.
+-/
 theorem exists_proj (K' : Subfield ℂ) : ∃ φ : ℂ →ₗ[K'] ℂ, (∀ x : K', φ x = x) ∧ ∀ x, φ x ∈ K' := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K' ℂ)
     (LinearMap.ker_eq_bot.2 (FaithfulSMul.algebraMap_injective K' ℂ))
@@ -17,12 +22,20 @@ theorem exists_proj (K' : Subfield ℂ) : ∃ φ : ℂ →ₗ[K'] ℂ, (∀ x : 
   show algebraMap K' ℂ (g (Algebra.linearMap K' ℂ x)) = algebraMap K' ℂ x
   rw [h]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bVV ℂ lam).sum_repr v]`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, bVV_coe]`.
+-/
 theorem val_eq_sum_repr {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → Formalism.BasicNotions.DomWeight n) (v : VV ℂ lam) :
     v.1 = ∑ a, (bVV ℂ lam).repr v a • bVVfun ℂ lam a := by
   conv_lhs => rw [← (bVV ℂ lam).sum_repr v]
   rw [Submodule.coe_sum]
   simp only [Submodule.coe_smul, bVV_coe]
 
+/- English proof (translation)
+Rewrite using `[val_eq_sum_repr, coeff_sum, ← RingHom.coe_fieldRange]`. Use `Subfield.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Take `⟨P, hP⟩` from `bVVfun_int ℂ lam a`. Rewrite using `[coeff_smul, hP, coeff_map, smul_eq_mul]`. Take `⟨x, hx⟩` from `h a`.
+
+Conclude with `⟨x * P.coeff m, by simp [hx]⟩`.
+-/
 theorem coeff_mem_of_repr {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → Formalism.BasicNotions.DomWeight n) {L : Type} [Field L]
     (κ : L →+* ℂ) (v : VV ℂ lam) (h : ∀ a, (bVV ℂ lam).repr v a ∈ Set.range κ) (m : ι × Fin n × Fin n →₀ ℕ) :
     coeff m v.1 ∈ Set.range κ := by
@@ -38,6 +51,19 @@ end GlobalTheory.RowRat
 namespace GlobalTheory.RowRat
 open Formalism.L2.DIV MvPolynomial
 
+/- English proof (translation)
+Use `set K' := κ.fieldRange`. Take `⟨φ, hφ1, hφ2⟩` from `exists_proj K'`. Use `set c := fun a => (bVV ℂ lam).repr v a`. Establish `hK : ∀ a m, coeff m (bVVfun ℂ lam a) ∈ K'` using `fun a m => by`. Take `⟨P, hP⟩` from `bVVfun_int ℂ lam a`.
+
+Rewrite using `[hP, coeff_map]`. Conclude with `⟨((coeff m P : ℤ) : L), by simp⟩`. Establish `key : ∑ b, (c b - φ (c b)) • bVVfun ℂ lam b = 0`. Use extensionality with `m`. Establish `e1 : coeff m v.1 = ∑ b, c b * coeff m (bVVfun ℂ lam b)`.
+
+Rewrite using `[val_eq_sum_repr, coeff_sum]`. Simplify using `[c]`. Establish `e2 : φ (coeff m v.1) = coeff m v.1` using `hφ1 ⟨_, RingHom.mem_fieldRange.2 (h m)⟩`. Establish `e3 : φ (coeff m v.1) = ∑ b, φ (c b) * coeff m (bVVfun ℂ lam b)`. Rewrite using `[e1, map_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: c b * coeff m (bVVfun ℂ lam b) = (⟨_, hK b m⟩ : K') • c b`. Rewrite using `[Subfield.smul_def, smul_eq_mul, mul_comm]`. Rewrite using `[this, map_smul, Subfield.smul_def, smul_eq_mul, mul_comm]`. Rewrite using `[coeff_sum, coeff_zero]`.
+
+Simplify using `only [coeff_smul, smul_eq_mul, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← e1, ← e3, e2, sub_self]`. Establish `hz` using `Fintype.linearIndependent_iff.1 (bVVfun_spec ℂ lam).1 _ key a`. Rewrite `hz` using `[sub_eq_zero]`. Establish `hc : c a ∈ K'` using `by rw [hz]; exact hφ2 _`.
+
+Conclude with `RingHom.mem_fieldRange.1 hc`.
+-/
 theorem repr_mem_of_coeff {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → Formalism.BasicNotions.DomWeight n) {L : Type} [Field L]
     (κ : L →+* ℂ) (v : VV ℂ lam) (h : ∀ m, coeff m v.1 ∈ Set.range κ) (a : VVIdx lam) :
     (bVV ℂ lam).repr v a ∈ Set.range κ := by
@@ -72,6 +98,11 @@ end GlobalTheory.RowRat
 namespace GlobalTheory.RowRat
 open Formalism.L2.DIV MvPolynomial
 
+/- English proof (translation)
+Use `coeff_mem_of_repr σ' κ _ (fun a => ?_) m` and prove the remaining obligations. Establish `e : f v = ∑ b, (bVV ℂ σ).repr v b • f (bVV ℂ σ b)` using `by conv_lhs => rw [← (bVV ℂ σ).sum_repr v]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[e]`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← RingHom.coe_fieldRange]`. Use `Subfield.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Conclude with `Subfield.mul_mem _ (RingHom.mem_fieldRange.2 (repr_mem_of_coeff σ κ v hv b)) (RingHom.mem_fieldRange.2 (hf a b))`.
+-/
 theorem coeff_map_mem {ι : Type} [Fintype ι] {n n' : ℕ} {σ : ι → Formalism.BasicNotions.DomWeight n} {σ' : ι → Formalism.BasicNotions.DomWeight n'} {L : Type} [Field L] (κ : L →+* ℂ)
     (f : VV ℂ σ →ₗ[ℂ] VV ℂ σ') (hf : ∀ a b, (bVV ℂ σ').repr (f (bVV ℂ σ b)) a ∈ Set.range κ) (v : VV ℂ σ)
     (hv : ∀ m, coeff m v.1 ∈ Set.range κ) (m : ι × Fin n' × Fin n' →₀ ℕ) : coeff m (f v).1 ∈ Set.range κ := by

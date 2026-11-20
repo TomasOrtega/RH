@@ -12,6 +12,23 @@ noncomputable section
 
 namespace GlobalTheory.NL.CompD
 
+/- English proof (translation)
+Set `Ψ : L ⊗[F] K →ₐ[F] Module.End F M` to `Algebra.TensorProduct.lift α β hc`. Establish `hΨ : ∀ a c, Ψ (a ⊗ₜ c) = α a * β c` using `fun a c => Algebra.TensorProduct.lift_tmul _ _ _ _ _`. Establish `hb` using `GlobalTheory.DeRhamSplit.evalEmb_bijective hcard`. Set `Φ` to `AlgEquiv.ofBijective _ hb`. Set `e : (K →ₐ[F] L) → L ⊗[F] K` to `fun τ => Φ.symm (Pi.single τ 1)`.
+
+Establish `he : ∀ τ, GlobalTheory.DeRhamSplit.evalEmb F K L (e τ) = Pi.single τ 1` using `fun τ => Φ.apply_symm_apply _`. Establish `hsum : ∑ τ, e τ = 1`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Simplify using `only [he]`.
+
+Conclude with `Finset.univ_sum_single (fun _ => (1 : L))`. Establish `hmul : ∀ τ c, (1 ⊗ₜ c) * e τ = (τ c ⊗ₜ 1) * e τ`. Introduce `τ c`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, he]`.
+
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.DeRhamSplit.evalEmb_tmul]`. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Establish `h1 : ∀ c, β c = Ψ (1 ⊗ₜ c)` using `fun c => by rw [hΨ, map_one, one_mul]`. Establish `h2 : ∀ a, α a = Ψ (a ⊗ₜ 1)` using `fun c => by rw [hΨ, map_one, mul_one]`. Use `⟨fun σ => Ψ (e σ), fun x => ?_, fun σ c x => ?_, fun σ c x => ?_, fun σ c x => ?_, fun N hα hβ σ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.sum_apply, ← map_sum, hsum, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, h2, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, hmul]`. Rewrite using `[h1, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Rewrite using `[h2, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `Ψ (e σ) x ∈ N`. Generalize the expression as in `e σ = z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => rw [hΨ]`. Conclude with `hα _ _ (hβ _ _ hx)`. Consider the case `add y z hy hz => rw [map_add]`.
+
+Conclude with `N.add_mem hy hz`.
+-/
 theorem exists_proj {F K L M : Type} [Field F] [Field K] [Field L] [Algebra F K] [Algebra F L]
     [FiniteDimensional F K] [AddCommGroup M] [Module F M]
     (hcard : Fintype.card (K →ₐ[F] L) = finrank F K) (α : L →ₐ[F] Module.End F M)
@@ -56,6 +73,15 @@ theorem exists_proj {F K L M : Type} [Field F] [Field K] [Field L] [Algebra F K]
     | tmul a c => rw [hΨ]; exact hα _ _ (hβ _ _ hx)
     | add y z hy hz => rw [map_add]; exact N.add_mem hy hz
 
+/- English proof (translation)
+Set `Bs` to `Basis.extend hd.linearIndepOn_id`. Use `haveI : Fintype (hd.linearIndepOn_id.extend (Set.subset_univ _)) := FiniteDimensional.fintypeBasisIndex Bs`. Establish `hcard` using `(finrank_eq_card_basis Bs).symm.trans hn`. Set `q` to `Fintype.equivFinOfCardEq hcard`. Establish `hsurj : Function.Surjective (Fintype.linearCombination R fun s => A (Bs s))`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨fun s => ι (Bs.repr x s), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Bs.sum_repr x]`. Simplify using `only [Fintype.linearCombination_apply, map_sum, hA]`.
+
+Establish `hinj` using `OrzechProperty.injective_of_surjective_of_injective (LinearEquiv.funCongrLeft R R q.symm).toLinearMap _ (LinearEquiv.injective _) hsurj`. Establish `hli : LinearIndependent R fun s => A (Bs s)` using `linearIndependent_iff_injective_fintypeLinearCombination.2 hinj`. Use `hli.comp (fun a => ⟨d a, hd.linearIndepOn_id.subset_extend _ ⟨a, rfl⟩⟩) (fun a b hab => hd.injective (congrArg Subtype.val hab))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Bs]`.
+-/
 theorem indep_of_span {L R D : Type} [Field L] [CommRing R] (ι : L → R) [AddCommGroup D] [Module L D]
     [FiniteDimensional L D] {n : ℕ} (hn : finrank L D = n) (A : D →+ (Fin n → R))
     (hA : ∀ c x, A (c • x) = ι c • A x) (hspan : Submodule.span R (Set.range A) = ⊤)
@@ -90,6 +116,9 @@ variable (Qp LL V) in
 def mu (b : R) : V ⊗[Qp] R →ₗ[LL] V ⊗[Qp] R :=
   AlgebraTensorModule.map LinearMap.id (LinearMap.mulLeft Qp b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mu_tmul (b c : R) (v : V) : mu Qp LL V b (v ⊗ₜ c) = v ⊗ₜ (b * c) := rfl
 
 variable (Qp V R) in
@@ -98,21 +127,38 @@ def muHom : R →ₐ[Qp] Module.End Qp (V ⊗[Qp] R) :=
   (Module.End.lTensorAlgHom Qp R V).comp (Algebra.lmul Qp R)
 
 variable (LL) in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => rfl`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+-/
 theorem muHom_apply (b : R) (x : V ⊗[Qp] R) : muHom Qp V R b x = mu Qp LL V b x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul v c => rfl
   | add y z hy hz => rw [map_add, map_add, hy, hz]
 
+/- English proof (translation)
+Simplify using `only [← muHom_apply, map_mul, Module.End.mul_apply]`.
+-/
 theorem mu_mu (b c : R) (x : V ⊗[Qp] R) : mu Qp LL V b (mu Qp LL V c x) = mu Qp LL V (b * c) x := by
   simp only [← muHom_apply, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Simplify using `only [← muHom_apply, map_one, Module.End.one_apply]`.
+-/
 theorem mu_one (x : V ⊗[Qp] R) : mu Qp LL V (1 : R) x = x := by
   simp only [← muHom_apply, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Simplify using `only [← muHom_apply, map_sub, LinearMap.sub_apply]`.
+-/
 theorem mu_sub (b c : R) (x : V ⊗[Qp] R) : mu Qp LL V (b - c) x = mu Qp LL V b x - mu Qp LL V c x := by
   simp only [← muHom_apply, map_sub, LinearMap.sub_apply]
 
+/- English proof (translation)
+Take `⟨e, h1, h2, -, -, h5⟩` from `exists_proj hcard (Algebra.lsmul Qp Qp (V ⊗[Qp] R) : LL →ₐ[Qp] _) ((muHom Qp V R).comp (IsScalarTower.toAlgHom Qp K R)) (fun a c => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[muHom_apply LL])`. Use `⟨fun σ => e σ x, h1 x, fun σ => ⟨h5 N.toAddSubgroup (fun a x hx => N.smul_mem a hx) (fun c x hx => ?_) σ x hx, fun c => ?_⟩⟩` and prove the remaining obligations. Simplify `hN c x hx` using `[muHom_apply LL]`.
+
+Simplify `h2 σ c x` using `[muHom_apply LL]`.
+-/
 theorem exists_sum {K : Type} [Field K] [Algebra Qp K] [Algebra K R] [IsScalarTower Qp K R]
     [FiniteDimensional Qp K] (hcard : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K)
     (N : Submodule LL (V ⊗[Qp] R)) (hN : ∀ c : K, ∀ x ∈ N, mu Qp LL V (algebraMap K R c) x ∈ N)
@@ -131,9 +177,15 @@ def coords {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) : V ⊗[Qp]
   LinearMap.pi fun j => TensorProduct.lift
     ((LinearMap.mul Qp R) ∘ₗ ι.toLinearMap ∘ₗ (v.coord j).restrictScalars Qp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coords_tmul {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) (x : V) (b : R) (j : Fin n) :
     coords v ι (x ⊗ₜ b) j = ι (v.repr x j) * b := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => funext j`. Simplify using `[smul_tmul', coords_tmul, mul_assoc]`. Consider the case `add y z hy hz => rw [smul_add, map_add, map_add, hy, hz, smul_add]`.
+-/
 theorem coords_smul {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) (c : LL) (x : V ⊗[Qp] R) :
     coords v ι (c • x) = ι c • coords v ι x := by
   induction x using TensorProduct.induction_on with
@@ -141,6 +193,9 @@ theorem coords_smul {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) (c
   | tmul v c => funext j; simp [smul_tmul', coords_tmul, mul_assoc]
   | add y z hy hz => rw [smul_add, map_add, map_add, hy, hz, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => funext j`. Simplify using `[mu_tmul, coords_tmul, mul_left_comm]`. Consider the case `add y z hy hz => rw [map_add, map_add, map_add, hy, hz, smul_add]`.
+-/
 theorem coords_mu {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) (c : R) (x : V ⊗[Qp] R) :
     coords v ι (mu Qp LL V c x) = c • coords v ι x := by
   induction x using TensorProduct.induction_on with
@@ -148,6 +203,11 @@ theorem coords_mu {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) (c :
   | tmul v c => funext j; simp [mu_tmul, coords_tmul, mul_left_comm]
   | add y z hy hz => rw [map_add, map_add, map_add, hy, hz, smul_add]
 
+/- English proof (translation)
+Introduce `f`. Use `⟨∑ j, v j ⊗ₜ f j, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `[coords_tmul]`.
+
+Introduce `k _ hk`. Simplify using `[coords_tmul, Finsupp.single_apply, hk]`. Simplify using the standard rewrite rules.
+-/
 theorem coords_surj {n : ℕ} (v : Basis (Fin n) LL V) (ι : LL →ₐ[Qp] R) :
     Function.Surjective (coords v ι) := by
   intro f
@@ -171,20 +231,37 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (PD : PeriodData G Qp K₀ K B BdR) {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_Dcris (x : T.V ⊗[Qp] B) : x ∈ Dcris PD T.ρ ↔ ∀ g, actVB PD T.ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[DdR, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_DdR (x : T.V ⊗[Qp] BdR) : x ∈ DdR PD T.ρ ↔ ∀ g, actVdR PD T.ρ g x = x := by
   simp [DdR, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[DcrisL, Submodule.mem_iInf, sub_eq_zero, mulVB, mu]`.
+-/
 theorem mem_DcrisL (τ : K₀ →ₐ[Qp] LL) (x : T.V ⊗[Qp] B) : x ∈ DcrisL PD T.ρ τ ↔
     x ∈ Dcris PD T.ρ ∧ ∀ c, mu Qp LL T.V (algebraMap K₀ B c) x = τ c • x := by
   simp [DcrisL, Submodule.mem_iInf, sub_eq_zero, mulVB, mu]
 
+/- English proof (translation)
+Simplify using `[DdRE, Submodule.mem_iInf, sub_eq_zero, mulVdR, mu]`.
+-/
 theorem mem_DdRE (τ : K →ₐ[Qp] LL) (x : T.V ⊗[Qp] BdR) : x ∈ DdRE PD T.ρ τ ↔
     x ∈ DdR PD T.ρ ∧ ∀ c, mu Qp LL T.V (algebraMap K BdR c) x = τ c • x := by
   simp [DdRE, Submodule.mem_iInf, sub_eq_zero, mulVdR, mu]
 
+/- English proof (translation)
+Rewrite using `[mem_DdR]`. Introduce `g`. Use `conv_rhs => rw [← (mem_Dcris PD T x).1 hx g]`. Use `clear hx`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v c => simp [ιV, actVdR, actVB, PD.ι_comm]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem iota_mem (x : T.V ⊗[Qp] B) (hx : x ∈ Dcris PD T.ρ) :
     ιV PD (LL := LL) (V := T.V) x ∈ DdR PD T.ρ := by
   rw [mem_DdR]
@@ -196,6 +273,9 @@ theorem iota_mem (x : T.V ⊗[Qp] B) (hx : x ∈ Dcris PD T.ρ) :
   | tmul v c => simp [ιV, actVdR, actVB, PD.ι_comm]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [ιV, mu_tmul]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem iota_mu (c : K₀) (x : T.V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := T.V) (mu Qp LL T.V (algebraMap K₀ B c) x) =
       mu Qp LL T.V (algebraMap K BdR (algebraMap K₀ K c)) (ιV PD (LL := LL) (V := T.V) x) := by
@@ -205,6 +285,11 @@ theorem iota_mu (c : K₀) (x : T.V ⊗[Qp] B) :
   | tmul v c => simp [ιV, mu_tmul]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Rewrite using `[mem_Dcris]`. Introduce `g`. Use `conv_rhs => rw [← (mem_Dcris PD T x).1 hx g]`. Use `clear hx`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v c => simp [actVB, mu_tmul]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem mu_mem_Dcris (c : K₀) (x : T.V ⊗[Qp] B) (hx : x ∈ Dcris PD T.ρ) :
     mu Qp LL T.V (algebraMap K₀ B c) x ∈ Dcris PD T.ρ := by
   rw [mem_Dcris]
@@ -219,6 +304,11 @@ theorem mu_mem_Dcris (c : K₀) (x : T.V ⊗[Qp] B) (hx : x ∈ Dcris PD T.ρ) :
 abbrev others (τ : K →ₐ[Qp] LL) : Submodule LL (T.V ⊗[Qp] BdR) :=
   ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ'
 
+/- English proof (translation)
+Use `iSup₂_le fun τ' hτ' y hy => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, τ c - τ' c ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hτ' (AlgHom.ext fun c => (sub_eq_zero.1 (h c)).symm)`.
+
+Rewrite using `[← Submodule.smul_mem_iff _ hc, sub_smul, ← ((mem_DdRE PD T τ' y).1 hy).2 c, ← hι]`. Conclude with `Submodule.subset_span ⟨τ c, y, rfl⟩`.
+-/
 theorem others_le_compKer (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR)
     (hι : ∀ c, ι (τ c) = algebraMap K BdR c) : others PD T τ ≤ compKer T ι := by
   refine iSup₂_le fun τ' hτ' y hy => ?_
@@ -229,6 +319,9 @@ theorem others_le_compKer (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR)
   rw [← Submodule.smul_mem_iff _ hc, sub_smul, ← ((mem_DdRE PD T τ' y).1 hy).2 c, ← hι]
   exact Submodule.subset_span ⟨τ c, y, rfl⟩
 
+/- English proof (translation)
+Establish `: others PD T τ ≤ (others PD T τ).comap (mu Qp LL T.V (algebraMap K BdR c))`. Use `iSup₂_le fun τ' hτ' y hy => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, ((mem_DdRE PD T τ' y).1 hy).2 c]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem τ' (Submodule.mem_iSup_of_mem hτ' hy))`. Conclude with `this`.
+-/
 theorem mu_mem_others (τ : K →ₐ[Qp] LL) (c : K) :
     ∀ y ∈ others PD T τ, mu Qp LL T.V (algebraMap K BdR c) y ∈ others PD T τ := by
   have : others PD T τ ≤ (others PD T τ).comap (mu Qp LL T.V (algebraMap K BdR c)) := by
@@ -237,6 +330,9 @@ theorem mu_mem_others (τ : K →ₐ[Qp] LL) (c : K) :
     exact Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem τ' (Submodule.mem_iSup_of_mem hτ' hy))
   exact this
 
+/- English proof (translation)
+Take `⟨y, h1, h2⟩` from `exists_sum hc N hN x hx`. Establish `h3 : ∀ σ, y σ ∈ DdRE PD T.ρ σ` using `fun σ => (mem_DdRE PD T σ _).2 ⟨hle (h2 σ).1, (h2 σ).2⟩`. Use `⟨y τ, (h2 τ).1, h3 τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, ← Finset.sum_erase_eq_sub (Finset.mem_univ τ)]`. Conclude with `Submodule.sum_mem _ fun σ hσ => Submodule.mem_iSup_of_mem σ (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase hσ) (h3 σ))`.
+-/
 theorem exists_part [FiniteDimensional Qp K] (hc : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K) (τ : K →ₐ[Qp] LL)
     (N : Submodule LL (T.V ⊗[Qp] BdR)) (hle : N ≤ DdR PD T.ρ)
     (hN : ∀ c : K, ∀ x ∈ N, mu Qp LL T.V (algebraMap K BdR c) x ∈ N)
@@ -250,6 +346,19 @@ theorem exists_part [FiniteDimensional Qp K] (hc : Fintype.card (K →ₐ[Qp] LL
   exact Submodule.sum_mem _ fun σ hσ => Submodule.mem_iSup_of_mem σ
     (Submodule.mem_iSup_of_mem (Finset.ne_of_mem_erase hσ) (h3 σ))
 
+/- English proof (translation)
+Take `⟨y, h1, h2⟩` from `exists_sum hc0 _ (mu_mem_Dcris PD T) d hd`. Rewrite using `[← h1, map_sum, map_sum]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Set `N : Submodule LL (T.V ⊗[Qp] BdR)` to `DdR PD T.ρ ⊓ ⨅ c : K₀, LinearMap.ker (mu Qp LL T.V (algebraMap K BdR (algebraMap K₀ K c)) - σ c • LinearMap.id)`. Establish `hN : ∀ x, x ∈ N ↔ x ∈ DdR PD T.ρ ∧ ∀ c, mu Qp LL T.V (algebraMap K BdR (algebraMap K₀ K c)) x = σ c • x`.
+
+Simplify using `[N, Submodule.mem_iInf, sub_eq_zero]`. Take `⟨z, hz1, hz2, hz3⟩` from `exists_part PD T hc τ N inf_le_left (fun c x hx => by`. Rewrite `hx`, the goal using `[hN]`. Use `⟨GlobalTheory.DeRhamSplit.mul_mem_DdR PD T.ρ c x hx.1, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[mu_mu, mul_comm, ← mu_mu, hx.2, map_smul])`.
+
+Use the proof step `(ιV PD (LL := LL) (V := T.V) (y σ)) (by`. Rewrite using `[hN]`. Conclude with `⟨iota_mem PD T _ (h2 σ).1, fun c => by rw [← iota_mu, (h2 σ).2, map_smul]⟩)`. Distinguish the cases in `hσ : σ = τ.comp (IsScalarTower.toAlgHom Qp K₀ K)`. Establish `e : mu Qp LL T.V (algebraMap K BdR k) (ιV PD (LL` using `LL) (V := T.V) (y σ)) = τ k • ιV PD (LL := LL) (V := T.V) (y σ) + (mu Qp LL T.V (algebraMap K BdR k) (ιV PD (LL := LL) (V := T.V) (y σ) - z) - τ k • (ιV PD (LL := LL) (V := T.V) (y σ) - z)) := by`.
+
+Rewrite using `[map_sub, ((mem_DdRE PD T τ z).1 hz2).2 k, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `Submodule.add_mem_sup (Submodule.smul_mem _ _ (Submodule.mem_map_of_mem ?_)) (Submodule.sub_mem _ (mu_mem_others PD T τ k _ hz3) (Submodule.smul_mem _ _ hz3))` and prove the remaining obligations. Rewrite using `[← hσ, mem_DcrisL]`.
+
+Conclude with `h2 σ`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, σ c - τ (algebraMap K₀ K c) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hσ (AlgHom.ext fun c => sub_eq_zero.1 (h c))`.
+
+Establish `hz : z = 0`. Rewrite using `[← smul_eq_zero_iff_right hc, sub_smul, ← ((hN z).1 hz1).2 c, ((mem_DdRE PD T τ z).1 hz2).2, sub_self]`. Rewrite `hz3` using `[hz, sub_zero]`. Conclude with `Submodule.mem_sup_right (mu_mem_others PD T τ k _ hz3)`.
+-/
 theorem mu_iota_mem [FiniteDimensional Qp K] [FiniteDimensional Qp K₀]
     (hc : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K) (hc0 : Fintype.card (K₀ →ₐ[Qp] LL) = finrank Qp K₀)
     (τ : K →ₐ[Qp] LL) (k : K) (d : T.V ⊗[Qp] B) (hd : d ∈ Dcris PD T.ρ) :
@@ -292,6 +401,11 @@ theorem mu_iota_mem [FiniteDimensional Qp K] [FiniteDimensional Qp K₀]
     rw [hz, sub_zero] at hz3
     exact Submodule.mem_sup_right (mu_mem_others PD T τ k _ hz3)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, y, rfl⟩` from `hx`. Rewrite using `[map_sub, coords_smul]`. Conclude with `sub_eq_zero.2 (coords_mu v ι (ι c) y).symm`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [coords_smul, hx, smul_zero]`.
+-/
 theorem coords_ker {n : ℕ} (v : Basis (Fin n) LL T.V) (ι : LL →ₐ[Qp] BdR) (x : T.V ⊗[Qp] BdR)
     (hx : x ∈ compKer T ι) : coords v ι x = 0 := by
   induction hx using Submodule.span_induction with
@@ -303,6 +417,17 @@ theorem coords_ker {n : ℕ} (v : Basis (Fin n) LL T.V) (ι : LL →ₐ[Qp] BdR)
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul c x _ hx => rw [coords_smul, hx, smul_zero]
 
+/- English proof (translation)
+Set `v` to `Module.finBasis LL T.V`. Set `A : D →+ (Fin (finrank LL T.V) → BdR)` to `(coords v ι).toAddMonoidHom.comp ((ιV PD (LL := LL) (V := T.V)) ∘ₗ D.subtype).toAddMonoidHom`. Establish `hA : ∀ x : D, A x = coords v ι (ιV PD (LL` using `LL) (V := T.V) x) := fun _ => rfl`. Establish `hl` using `indep_of_span ι hD A (fun c x => by rw [hA, hA, Submodule.coe_smul, map_smul, coords_smul]) (by`. Rewrite using `[eq_top_iff]`.
+
+Introduce `f _`. Take `⟨y, rfl⟩` from `coords_surj v ι f`. Take `⟨m, b, w, hw, rfl⟩` from `hspan y`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coords_mu]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨_, ⟨x, hx, rfl⟩, u, hu, e⟩` from `Submodule.mem_sup.1 (hle (hw i))`. Rewrite using `[← e, map_add, coords_ker T v ι u (others_le_compKer PD T τ ι hι hu), add_zero]`. Conclude with `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩)`.
+
+Use the proof step `(fun a => ⟨d a, hd a⟩) (LinearIndependent.of_comp D.subtype hli)`. Use `Fintype.linearIndependent_iff.1 hl b ?_ a` and prove the remaining obligations. Use `coords_ker T v ι _ h` as an intermediate fact. Rewrite `this` using `[map_sum]`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => (coords_mu v ι _ _).symm`.
+-/
 theorem indep (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR) (hι : ∀ c, ι (τ c) = algebraMap K BdR c)
     (D : Submodule LL (T.V ⊗[Qp] B)) [FiniteDimensional LL D] (hD : finrank LL D = finrank LL T.V)
     (hle : DdR PD T.ρ ≤ D.map (ιV PD (LL := LL) (V := T.V)) ⊔ others PD T τ)
@@ -335,6 +460,13 @@ theorem indep (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR) (hι : ∀ c, ι (
   rw [← this]
   exact Finset.sum_congr rfl fun a _ => (coords_mu v ι _ _).symm
 
+/- English proof (translation)
+Establish `: compKer T ι ≤ (compKer T ι').comap (actVdR PD T.ρ g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, y, rfl⟩`. Use `Submodule.subset_span ⟨c, actVdR PD T.ρ g y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul]`.
+
+Use `congr 1`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVdR, mulVR, h]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Conclude with `this hx`.
+-/
 theorem act_compKer (g : G) (ι ι' : LL →ₐ[Qp] BdR) (h : ∀ c, PD.actdR g (ι c) = ι' c)
     (x : T.V ⊗[Qp] BdR) (hx : x ∈ compKer T ι) : actVdR PD T.ρ g x ∈ compKer T ι' := by
   have : compKer T ι ≤ (compKer T ι').comap (actVdR PD T.ρ g) := by
@@ -349,6 +481,11 @@ theorem act_compKer (g : G) (ι ι' : LL →ₐ[Qp] BdR) (h : ∀ c, PD.actdR g 
     | add y z hy hz => simp only [map_add, hy, hz]
   exact this hx
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨T.ρ g v ⊗ₜ ⟨PD.actdR g b.1, PD.Fil_G g a _ b.2⟩, rfl⟩`. Consider the case `add y z hy hz => rw [map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem act_FilV (g : G) (a : ℤ) (x : T.V ⊗[Qp] BdR) (hx : x ∈ FilV PD (LL := LL) (V := T.V) a) :
     actVdR PD T.ρ g x ∈ FilV PD (LL := LL) (V := T.V) a := by
   obtain ⟨y, rfl⟩ := hx
@@ -357,6 +494,11 @@ theorem act_FilV (g : G) (a : ℤ) (x : T.V ⊗[Qp] BdR) (hx : x ∈ FilV PD (LL
   | tmul v b => exact ⟨T.ρ g v ⊗ₜ ⟨PD.actdR g b.1, PD.Fil_G g a _ b.2⟩, rfl⟩
   | add y z hy hz => rw [map_add, map_add]; exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨v ⊗ₜ ⟨c * b.1, hc _ b.2⟩, rfl⟩`. Consider the case `add y z hy hz => rw [map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem mu_FilV (a : ℤ) (c : BdR) (hc : ∀ b ∈ PD.Fil a, c * b ∈ PD.Fil a) (x : T.V ⊗[Qp] BdR)
     (hx : x ∈ FilV PD (LL := LL) (V := T.V) a) :
     mu Qp LL T.V c x ∈ FilV PD (LL := LL) (V := T.V) a := by
@@ -366,6 +508,21 @@ theorem mu_FilV (a : ℤ) (c : BdR) (hc : ∀ b ∈ PD.Fil a, c * b ∈ PD.Fil a
   | tmul v b => exact ⟨v ⊗ₜ ⟨c * b.1, hc _ b.2⟩, rfl⟩
   | add y z hy hz => rw [map_add, map_add]; exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Take `⟨e, h1, h2, h3, h4, h5⟩` from `exists_proj hE ((muHom Qp T.V BdR).comp (IsScalarTower.toAlgHom Qp E BdR)) (Algebra.lsmul Qp Qp (T.V ⊗[Qp] BdR) : LL →ₐ[Qp] _) (fun a c => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[muHom_apply LL])`. Simplify using `only [AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, muHom_apply LL, Algebra.lsmul_apply] at h2 h3 h4 h5`. Take `⟨hy1, hy2⟩` from `(mem_DdRE PD T τ y).1 hy`.
+
+Rewrite using `[← h1 y]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hσ : ∀ k, σ (τ k) = algebraMap K E k`. Take `⟨g, hg⟩` from `htr σ hσ`. Take `⟨u, hu, w, hw, e1⟩` from `Submodule.mem_sup.1 h`.
+
+Establish `hu'` using `act_compKer PD T g ι ((IsScalarTower.toAlgHom Qp E BdR).comp σ) hg u hu`. Establish `hk : ∀ x ∈ compKer T ((IsScalarTower.toAlgHom Qp E BdR).comp σ), e σ x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, y, rfl⟩` from `hx`. Rewrite using `[map_sub, h3, h2]`. Conclude with `sub_eq_zero.2 (h4 σ (σ c) y).symm`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+
+Consider the case `smul c x _ hx => rw [h3, hx, smul_zero]`. Rewrite using `[← (mem_DdR PD T y).1 hy1 g, ← e1, map_add, map_add, hk _ hu', zero_add]`. Conclude with `h5 (FilV PD (LL := LL) (V := T.V) a).toAddSubgroup (fun c x hx => mu_FilV PD T a _ (hFil c) x hx) (fun c x hx => Submodule.smul_mem _ c hx) σ _ (act_FilV PD T g a w hw)`. Use `push Not at hσ`. Take `⟨k, hk⟩` from `hσ`.
+
+Establish `h6 : mu Qp LL T.V (algebraMap E BdR (σ (τ k) - algebraMap K E k)) (e σ y) = 0`. Rewrite using `[map_sub, mu_sub, ← h2, ← h4, ← IsScalarTower.algebraMap_apply, hy2, h3, sub_self]`. Establish `h7 : e σ y = 0`. Rewrite using `[← mu_one (LL := LL) (e σ y), ← map_one (algebraMap E BdR), ← inv_mul_cancel₀ (sub_ne_zero.2 hk), map_mul, ← mu_mu, h6, map_zero]`. Rewrite using `[h7]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem mem_FilV_of_comp {E : Type} [Field E] [Algebra Qp E] [Algebra K E] [Algebra E BdR]
     [IsScalarTower Qp E BdR] [IsScalarTower K E BdR] [FiniteDimensional Qp LL]
     (hE : Fintype.card (LL →ₐ[Qp] E) = finrank Qp LL) (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR) (a : ℤ)
@@ -411,6 +568,11 @@ theorem mem_FilV_of_comp {E : Type} [Field E] [Algebra Qp E] [Algebra K E] [Alge
     rw [h7]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `⟨fun hf => ?_, fun hf => ?_⟩` and prove the remaining obligations. Conclude with `(sup_le (le_sup_of_le_right inf_le_right) (le_sup_of_le_left (others_le_compKer _ T τ ι hι)) : FilAt _ T τ a ≤ _) hf`. Take `⟨y, -, hy1, hy2⟩` from `exists_part PD T hc τ _ le_rfl (GlobalTheory.DeRhamSplit.mul_mem_DdR _ T.ρ) _ (iota_mem _ T d hd.1)`. Establish `hy3` using `hkey y hy1 (by`. Rewrite using `[← sub_sub_cancel (ιV PD (LL := LL) (V := T.V) d) y]`.
+
+Conclude with `Submodule.sub_mem _ hf (Submodule.mem_sup_left (others_le_compKer _ T τ ι hι hy2)))`. Rewrite using `[← add_sub_cancel y (ιV PD (LL := LL) (V := T.V) d)]`. Conclude with `Submodule.add_mem_sup ⟨hy1, hy3⟩ hy2`.
+-/
 theorem filAt_iff [FiniteDimensional Qp K] (hc : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K)
     (τ : K →ₐ[Qp] LL) (ι : LL →ₐ[Qp] BdR) (hι : ∀ c, ι (τ c) = algebraMap K BdR c) (a : ℤ)
     (hkey : ∀ y ∈ DdRE PD T.ρ τ, y ∈ compKer T ι ⊔ FilV PD (LL := LL) (V := T.V) a →
@@ -428,6 +590,9 @@ theorem filAt_iff [FiniteDimensional Qp K] (hc : Fintype.card (K →ₐ[Qp] LL) 
     rw [← add_sub_cancel y (ιV PD (LL := LL) (V := T.V) d)]
     exact Submodule.add_mem_sup ⟨hy1, hy3⟩ hy2
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨_, ⟨d, hd, rfl⟩, u, hu, e⟩` from `Submodule.mem_sup.1 (hle hw.1)`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, sub_add_cancel_left]`. Conclude with `Submodule.neg_mem _ hu`.
+-/
 theorem exists_lift (τ : K →ₐ[Qp] LL) (D : Submodule LL (T.V ⊗[Qp] B))
     (hle : DdR PD T.ρ ≤ D.map (ιV PD (LL := LL) (V := T.V)) ⊔ others PD T τ) :
     ∀ w ∈ DdRE PD T.ρ τ, ∃ d ∈ D, ιV PD (LL := LL) (V := T.V) d - w ∈ others PD T τ := by
@@ -438,6 +603,9 @@ theorem exists_lift (τ : K →ₐ[Qp] LL) (D : Submodule LL (T.V ⊗[Qp] B))
   exact Submodule.neg_mem _ hu
 
 omit [TopologicalSpace G] in
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.Per.LetterDim.finite_Dcris PD ρ h Submodule.finiteDimensional_of_le (S₂ := Dcris PD ρ) inf_le_left`.
+-/
 theorem finite_DcrisL {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [FiniteDimensional LL V] (ρ : Representation LL G V) (h : IsCrys PD ρ) (τ₀ : K₀ →ₐ[Qp] LL) :
     FiniteDimensional LL ↥(DcrisL PD ρ τ₀) :=
@@ -446,6 +614,11 @@ theorem finite_DcrisL {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [I
 
 end Period
 
+/- English proof (translation)
+Take `⟨e, h1, h2, -⟩` from `exists_proj hE ((Algebra.lmul F R).comp (IsScalarTower.toAlgHom F E R)) ((Algebra.lmul F R).comp ι) (fun a c => (Commute.all (algebraMap E R a) (ι c)).map (Algebra.lmul F R))`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ, e σ 1 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `h1 1` as an intermediate fact.
+
+Simplify using `[h] at this`. Conclude with `⟨σ, fun c => mul_right_cancel₀ hσ (by simpa using h2 σ c 1)⟩`.
+-/
 theorem exists_factor {F L E R : Type} [Field F] [Field L] [Field E] [Algebra F L] [Algebra F E]
     [FiniteDimensional F L] [CommRing R] [IsDomain R] [Algebra F R] [Algebra E R] [IsScalarTower F E R]
     (hE : Fintype.card (L →ₐ[F] E) = finrank F L) (ι : L →ₐ[F] R) :
@@ -463,6 +636,11 @@ section Local
 
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
+/- English proof (translation)
+Take `⟨K', hK'⟩ : ∃ K' : FinExt l, c ∈ K'.1` from `⟨⟨IntermediateField.adjoin ℚ_[l] {c}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral c)⟩, IntermediateField.mem_adjoin_simple_self _ c⟩`. Establish `h1 : b ∈ (P.PD K').Fil a`. Rewrite using `[← SetLike.mem_coe, P.PD_Fil K' K]`. Conclude with `hb`. Establish `h2` using `((P.PD K').Fil a).smul_mem ⟨c, hK'⟩ h1`.
+
+Rewrite `h2` using `[← SetLike.mem_coe, P.PD_Fil K' K, Algebra.smul_def]`. Conclude with `h2`.
+-/
 theorem om_mul_mem_Fil (K : FinExt l) (a : ℤ) (c : Om l) (b : P.R.BdR) (hb : b ∈ (P.PD K).Fil a) :
     algebraMap (Om l) P.R.BdR c * b ∈ (P.PD K).Fil a := by
   obtain ⟨K', hK'⟩ : ∃ K' : FinExt l, c ∈ K'.1 := ⟨⟨IntermediateField.adjoin ℚ_[l] {c},
@@ -474,6 +652,11 @@ theorem om_mul_mem_Fil (K : FinExt l) (a : ℤ) (c : Om l) (b : P.R.BdR) (hb : b
   rw [← SetLike.mem_coe, P.PD_Fil K' K, Algebra.smul_def] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨g₀, hg₀⟩` from `Points.exists_aut LL.1 σ₀`. Take `⟨g, hg⟩` from `Points.exists_aut LL.1 σ`. Establish `key : ∀ c, (g₀.symm.trans g) (σ₀ c) = σ c` using `fun c => by`. Rewrite using `[AlgEquiv.trans_apply, ← hg₀, AlgEquiv.symm_apply_apply, hg]`. Use `⟨⟨g₀.symm.trans g, fun k => ?_⟩, key⟩` and prove the remaining obligations.
+
+Use `key (τ k)` as an intermediate fact. Rewrite `this` using `[h₀, h]`. Conclude with `this`.
+-/
 theorem exists_conj (K LL : FinExt l) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (σ₀ σ : ↥LL.1 →ₐ[ℚ_[l]] Om l)
     (h₀ : ∀ k, σ₀ (τ k) = (k : Om l)) (h : ∀ k, σ (τ k) = (k : Om l)) :
     ∃ g : ↥(GK K), ∀ c, (g : GQ l) (σ₀ c) = σ c := by
@@ -486,6 +669,11 @@ theorem exists_conj (K LL : FinExt l) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (σ�
   rw [h₀, h] at this
   exact this
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `hE` using `AlgHom.card ℚ_[l] ↥LL.1 (Om l)`. Take `⟨σ₀, hσ₀⟩` from `exists_factor hE ι`. Use `mem_FilV_of_comp (P.PD K) T hE τ ι a (om_mul_mem_Fil _ K a) (fun σ hσ => ?_) y hy h` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_conj K LL τ σ₀ σ (fun k => (algebraMap (Om l) P.R.BdR).injective (by rw [← hσ₀, hι]; rfl)) hσ`.
+
+Conclude with `⟨g, fun c => by rw [P.PD_actdR, hσ₀, P.actQdR_Om, hg]⟩`.
+-/
 theorem mem_FilV_local [IsDomain P.R.BdR] (K LL : FinExt l) (T : Lt K LL) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1)
     (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR) (hι : ∀ c, ι (τ c) = algebraMap ↥K.1 P.R.BdR c) (a : ℤ)
     (y : T.V ⊗[ℚ_[l]] P.R.BdR) (hy : y ∈ DdRE (P.PD K) T.ρ τ)
@@ -501,6 +689,11 @@ theorem mem_FilV_local [IsDomain P.R.BdR] (K LL : FinExt l) (T : Lt K LL) (τ : 
 
 variable {P} in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := (P.PD K).finK₀`. Rewrite `hc`, `hc0` using `[Nat.card_eq_fintype_card]`. Introduce `y hy`. Take `⟨m, c, d, hd, rfl⟩` from `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l _ _ ht K LL T.V T.ρ hT).2 y hy`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => mu_iota_mem (P.PD K) T hc hc0 τ (c j) (d j) (hd j)`.
+-/
 theorem ddR_le {AI : LocAinf l P} (ht : LocTied l P AI) (K LL : FinExt l) (T : Lt K LL)
     (hc : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1)
     (hc0 : Nat.card (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥(K0 K)) (hT : IsCrys (P.PD K) T.ρ)
@@ -516,6 +709,11 @@ theorem ddR_le {AI : LocAinf l P} (ht : LocTied l P AI) (K LL : FinExt l) (T : L
 
 variable {P} in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Establish `hdim` using `(GlobalTheory.Per.LetterDim.tied_letter_component_finrank l _ _ ht K LL T.V T.ρ).1 hc0 hT τ₀`. Establish `hle` using `ddR_le ht K LL T hc hc0 hT τ`. Rewrite `hle` using `[hτ]`. Rewrite `hc` using `[Nat.card_eq_fintype_card]`.
+
+Establish `hspan` using `GlobalTheory.Per.DeRhamSpan.tied_deRham_span l _ _ ht K LL T.V T.ρ (GlobalTheory.Per.CrisDR.isDR_of_isCrys l _ _ ht K LL T.V T.ρ hT).1`. Use `haveI := finite_DcrisL (P.PD K) T.ρ hT τ₀`. Use `haveI : IsDomain P.R.BdR := (GlobalTheory.RegularRing.isField_of_tied ht).isDomain`. Conclude with `⟨indep (P.PD K) T τ ι hι _ hdim hle hspan, fun d hd a => filAt_iff (P.PD K) T hc τ ι hι a (mem_FilV_local P K LL T τ ι hι a) τ₀ d hd, exists_lift (P.PD K) T τ _ hle, hdim⟩`.
+-/
 theorem component_tied {AI : LocAinf l P} (ht : LocTied l P AI) (K LL : FinExt l) (T : Lt K LL)
     (hc : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1)
     (hc0 : Nat.card (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥(K0 K)) (hT : IsCrys (P.PD K) T.ρ)
@@ -548,6 +746,9 @@ end Local
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D HW l _ K s LL h W T hT i ζ τ ι hC hτ`. Take `⟨-, -, -, hc, hc0⟩` from `Points.points D HW l K s LL h`. Conclude with `component_tied (D.locT l) K LL T hc hc0 hT τ ι hC.2.2 _ hτ`.
+-/
 theorem component : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (i : Let K) (ζ : ↥LL.1) τ ι, Comp (HW l) h i ζ τ ι → τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = W.emb i → (∀ (r : ℕ) (d : Fin r → T.V ⊗[ℚ_[l]] (D.loc l).R.B) (b : Fin r → (D.loc l).R.BdR), (∀ a, d a ∈ Di (HW l) h T i) → LinearIndependent ↥LL.1 d → ∑ a, mulVR T (b a) (ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) (d a)) ∈ compKer T ι → ∀ a, b a = 0) ∧ (∀ d ∈ Di (HW l) h T i, ∀ a : ℤ, ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) d ∈ FilAt ((D.loc l).PD K) T τ a ↔ ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) d ∈ compKer T ι ⊔ FilV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) a) ∧ (∀ w ∈ DdRE ((D.loc l).PD K) T.ρ τ, ∃ d ∈ Di (HW l) h T i, ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) d - w ∈ ⨆ (τ' : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (_ : τ' ≠ τ), DdRE ((D.loc l).PD K) T.ρ τ') ∧ Module.finrank ↥LL.1 ↥(Di (HW l) h T i) = Module.finrank ↥LL.1 T.V := by
   intro D HW l _ K s LL h W T hT i ζ τ ι hC hτ
   obtain ⟨-, -, -, hc, hc0⟩ := Points.points D HW l K s LL h

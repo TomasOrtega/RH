@@ -15,6 +15,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [Submodule.IsLattice E L] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ stabLoc σ J L v`. Simplify using `[unitLoc, hx, mul_mem (inv_mem hx) hy]`. Simplify using `[unitLoc, hx]`.
+-/
 theorem unitLoc_mul_translate {v : HeightOneSpectrum (𝓞 F)} {y : GLoc σ J v} (hy : y ∈ stabLoc σ J L v) :
     (fun x => unitLoc σ J L v x * unitLoc σ J L v (x⁻¹ * y)) = unitLoc σ J L v := by
   funext x
@@ -22,6 +25,13 @@ theorem unitLoc_mul_translate {v : HeightOneSpectrum (𝓞 F)} {y : GLoc σ J v}
   · simp [unitLoc, hx, mul_mem (inv_mem hx) hy]
   · simp [unitLoc, hx]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ stabLoc σ J L v`. Rewrite using `[conv, unitLoc_mul_translate hy, unitLoc]`. Use `(integral_indicator_const _ (isOpen_stabLoc σ J L v).measurableSet).trans ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, indicator_of_mem hy, Complex.real_smul]`.
+
+Both sides reduce to the same expression. Establish `: ∀ x, unitLoc σ J L v x * unitLoc σ J L v (x⁻¹ * y) = 0` using `fun x => by`. Distinguish the cases in `hx : x ∈ stabLoc σ J L v`. Simplify using `[unitLoc, hy, Subgroup.mul_mem_cancel_left _ (inv_mem hx)]`. Simplify using `[unitLoc, hx]`.
+
+Rewrite using `[conv]`. Simplify using `only [this, integral_zero]`. Simplify using `[unitLoc, hy]`.
+-/
 theorem conv_unitLoc {v : HeightOneSpectrum (𝓞 F)} (ν : Measure (GLoc σ J v)) :
     conv ν (unitLoc σ J L v) (unitLoc σ J L v) = (ν.real (stabLoc σ J L v) : ℂ) • unitLoc σ J L v := by
   funext y
@@ -38,6 +48,9 @@ theorem conv_unitLoc {v : HeightOneSpectrum (𝓞 F)} (ν : Measure (GLoc σ J v
     simp only [this, integral_zero]
     simp [unitLoc, hy]
 
+/- English proof (translation)
+Use `⟨fun v => conv_mem_SB (hf.1 v) (hf'.1 v), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf.2, hf'.2, h1] with v e e' e1`. Rewrite using `[e, e', conv_unitLoc, Measure.real, e1]`. Simplify using the standard rewrite rules.
+-/
 theorem IsFinFamily.conv (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L ff')
     (h1 : ∀ᶠ v in cofinite, μf v (stabLoc σ J L v) = 1) : IsFinFamily σ J L fun v => conv (μf v) (ff v) (ff' v) := by
   refine ⟨fun v => conv_mem_SB (hf.1 v) (hf'.1 v), ?_⟩
@@ -45,12 +58,20 @@ theorem IsFinFamily.conv (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L 
   rw [e, e', conv_unitLoc, Measure.real, e1]
   simp
 
+/- English proof (translation)
+Use `⟨fun v => ⟨(hf.1 v).1.mul ((hf'.1 v).1.comp_continuous (by fun_prop)), (hf.1 v).2.mul_right⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf.2, hf'.2, eventually_proj_mem_stabLoc σ J L y] with v e e' hy`. Rewrite using `[e, e', unitLoc_mul_translate hy]`.
+-/
 theorem IsFinFamily.mul_translate (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L ff') (y : GAd σ J) :
     IsFinFamily σ J L fun v x => ff v x * ff' v (x⁻¹ * proj σ J v y) := by
   refine ⟨fun v => ⟨(hf.1 v).1.mul ((hf'.1 v).1.comp_continuous (by fun_prop)), (hf.1 v).2.mul_right⟩, ?_⟩
   filter_upwards [hf.2, hf'.2, eventually_proj_mem_stabLoc σ J L y] with v e e' hy
   rw [e, e', unitLoc_mul_translate hy]
 
+/- English proof (translation)
+Use `hμ.haar_loc` as an intermediate fact. Set `S` to `(eventually_cofinite.1 (hf.2.and hμ.eventually_eq_one)).toFinset`. Establish `hS : ∀ v ∉ S, ff v = unitLoc σ J L v ∧ μf v (stabLoc σ J L v) = 1` using `fun v hv => by`. Simplify `hv` using `only [S, Finite.mem_toFinset, mem_setOf_eq, not_not]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S) _ fun v hv => by_contra fun h => hv (by`.
+
+Rewrite using `[(hS v h).1, unitLoc]`. Use `(integral_indicator_const _ (isOpen_stabLoc σ J L v).measurableSet).trans ?_` and prove the remaining obligations. Rewrite using `[Measure.real, (hS v h).2, ENNReal.toReal_one, one_smul]`. Use the proof step `rfl)]`. Conclude with `((hμ.euler_product S fun v hv => (hS v hv).2).1 fa ff ha).2.1 (fun v hv => (hS v hv).1) fun v _ => (hf.1 v).1.continuous.integrable_of_hasCompactSupport (hf.1 v).2`.
+-/
 theorem integral_tensor_of_integrable (hμ : IsRestrictedProd σ J L μa μf μ) (ha : ∀ w, Integrable (fa w) (μa w))
     (hf : IsFinFamily σ J L ff) :
     Integrable (tensor σ J fa ff) μ ∧
@@ -66,6 +87,11 @@ theorem integral_tensor_of_integrable (hμ : IsRestrictedProd σ J L μa μf μ)
   exact ((hμ.euler_product S fun v hv => (hS v hv).2).1 fa ff ha).2.1
     (fun v hv => (hS v hv).1) fun v _ => (hf.1 v).1.continuous.integrable_of_hasCompactSupport (hf.1 v).2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h1` using `hf.finite_mulSupport (projFin σ J x)`. Establish `h2` using `hf'.finite_mulSupport (projFin σ J (x⁻¹ * y))`. Simplify using `only [projFinLoc_projFin] at h1 h2`. Simplify using `only [map_mul, map_inv] at h2`.
+
+Simplify using `only [tensor, map_mul, map_inv]`. Rewrite using `[finprod_mul_distrib h1 h2, Finset.prod_mul_distrib, mul_mul_mul_comm]`.
+-/
 theorem tensor_mul_translate (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L ff') (y : GAd σ J) :
     (fun x => tensor σ J fa ff x * tensor σ J fa' ff' (x⁻¹ * y)) =
       tensor σ J (fun w x => fa w x * fa' w (x⁻¹ * projArch σ J w y))
@@ -78,6 +104,11 @@ theorem tensor_mul_translate (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ 
   simp only [tensor, map_mul, map_inv]
   rw [finprod_mul_distrib h1 h2, Finset.prod_mul_distrib, mul_mul_mul_comm]
 
+/- English proof (translation)
+Use `hμ.haar_arch` as an intermediate fact. Establish `key` using `fun y => integral_tensor_of_integrable hμ (fa := fun w x => fa w x * fa' w (x⁻¹ * projArch σ J w y)) (fun w => ((ha w).mul ((ha' w).comp (by fun_prop))).integrable_of_hasCompactSupport (hc w).mul_right) (hf.mul_translate hf' y)`. Use `⟨fun y => ?_, hf.conv hf' hμ.eventually_eq_one, funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[tensor_mul_translate hf hf']`. Conclude with `(key y).1`.
+
+Rewrite using `[conv, tensor_mul_translate hf hf', (key y).2]`. Both sides reduce to the same expression.
+-/
 theorem conv_tensor_of_continuous (hμ : IsRestrictedProd σ J L μa μf μ) (ha : ∀ w, Continuous (fa w))
     (hc : ∀ w, HasCompactSupport (fa w)) (ha' : ∀ w, Continuous (fa' w))
     (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L ff') :
@@ -96,6 +127,9 @@ theorem conv_tensor_of_continuous (hμ : IsRestrictedProd σ J L μa μf μ) (ha
   · rw [conv, tensor_mul_translate hf hf', (key y).2]
     rfl
 
+/- English proof (translation)
+The claim follows from `(conv_tensor_of_continuous hμ (fun w => continuous_of_mem_ccSmooth (continuous_archCoord σ J w) (ha w)) (fun w => (ha w).1) (fun w => continuous_of_mem_ccSmooth (continuous_archCoord σ J w) (ha' w)) hf hf').2`.
+-/
 theorem conv_tensor (hμ : IsRestrictedProd σ J L μa μf μ) (ha : ∀ w, fa w ∈ CcArch σ J w)
     (ha' : ∀ w, fa' w ∈ CcArch σ J w) (hf : IsFinFamily σ J L ff) (hf' : IsFinFamily σ J L ff') :
     IsFinFamily σ J L (fun v => conv (μf v) (ff v) (ff' v)) ∧

@@ -12,41 +12,71 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mR_one : mR (1 : GR n) = 1 := rfl
 
+/- English proof (translation)
+Unfold `mR`. Use `fun_prop`.
+-/
 theorem continuous_mR : Continuous (fun g : GR n => mR g) := by
   unfold mR; fun_prop
 
+/- English proof (translation)
+The claim follows from `IsUnit.ne_zero ((Matrix.isUnit_iff_isUnit_det _).1 g.1.isUnit)`.
+-/
 theorem det_mR_ne (g : GR n) : (mR g).det ≠ 0 :=
   IsUnit.ne_zero ((Matrix.isUnit_iff_isUnit_det _).1 g.1.isUnit)
 
+/- English proof (translation)
+Establish `: (fun M : M2 n => M.toBlocks₂₁) = fun M => M.submatrix Sum.inr Sum.inl` using `by funext M; rfl`. Rewrite using `[this]`. Conclude with `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_group_lower_left_block : Continuous (fun M : M2 n => M.toBlocks₂₁) := by
   have : (fun M : M2 n => M.toBlocks₂₁) = fun M => M.submatrix Sum.inr Sum.inl := by funext M; rfl
   rw [this]; exact continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Establish `: (fun M : M2 n => M.toBlocks₂₂) = fun M => M.submatrix Sum.inr Sum.inr` using `by funext M; rfl`. Rewrite using `[this]`. Conclude with `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_group_lower_right_block : Continuous (fun M : M2 n => M.toBlocks₂₂) := by
   have : (fun M : M2 n => M.toBlocks₂₂) = fun M => M.submatrix Sum.inr Sum.inr := by funext M; rfl
   rw [this]; exact continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+Unfold `u1`. Conclude with `((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_group_lower_left_block).add continuous_group_lower_right_block`.
+-/
 theorem continuous_first_cayley_block_map : Continuous (fun M : M2 n => u1 M) := by
   unfold u1
   exact ((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_group_lower_left_block).add continuous_group_lower_right_block
 
+/- English proof (translation)
+Unfold `u2`. Conclude with `((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_group_lower_left_block).neg.add continuous_group_lower_right_block`.
+-/
 theorem continuous_second_cayley_block_map : Continuous (fun M : M2 n => u2 M) := by
   unfold u2
   exact ((continuous_const : Continuous fun _ : M2 n => Complex.I).smul continuous_group_lower_left_block).neg.add continuous_group_lower_right_block
 
+/- English proof (translation)
+Unfold `F0 f0`. Use `Continuous.mul ((continuous_mR.matrix_det).zpow₀ e fun g => Or.inl (det_mR_ne g)) (Continuous.mul ?_ ?_)` and prove the remaining obligations. Conclude with `((continuous_first_cayley_block_map.comp continuous_mR).matrix_det).zpow₀ _ fun g => Or.inl (hD n g).1`. Conclude with `((continuous_second_cayley_block_map.comp continuous_mR).matrix_det).zpow₀ _ fun g => Or.inl (hD n g).2`.
+-/
 theorem continuous_weight_factor (hD : CayleyBlocksInvertible) (p q : ℕ) (e : ℤ) : Continuous (F0 (n := n) p q e) := by
   unfold F0 f0
   refine Continuous.mul ((continuous_mR.matrix_det).zpow₀ e fun g => Or.inl (det_mR_ne g)) (Continuous.mul ?_ ?_)
   · exact ((continuous_first_cayley_block_map.comp continuous_mR).matrix_det).zpow₀ _ fun g => Or.inl (hD n g).1
   · exact ((continuous_second_cayley_block_map.comp continuous_mR).matrix_det).zpow₀ _ fun g => Or.inl (hD n g).2
 
+/- English proof (translation)
+Unfold `hLoc`. Establish `: (u1 (mR g)).det ≠ 0` using `(hD n g).1`. Check the signs of the components of the expression.
+-/
 theorem hLoc_pos (hD : CayleyBlocksInvertible) (g : GR n) : 0 < hLoc g := by
   unfold hLoc
   have : (u1 (mR g)).det ≠ 0 := (hD n g).1
   positivity
 
+/- English proof (translation)
+Unfold `hLoc`. Use `Continuous.inv₀ ?_ fun g => ?_` and prove the remaining obligations. Conclude with `(((continuous_first_cayley_block_map.comp continuous_mR).matrix_det).norm).pow 2`. Establish `: (u1 (mR g)).det ≠ 0` using `(hD n g).1`. Check the signs of the components of the expression.
+-/
 theorem continuous_hLoc (hD : CayleyBlocksInvertible) : Continuous (hLoc (n := n)) := by
   unfold hLoc
   refine Continuous.inv₀ ?_ fun g => ?_
@@ -54,12 +84,18 @@ theorem continuous_hLoc (hD : CayleyBlocksInvertible) : Continuous (hLoc (n := n
   · have : (u1 (mR g)).det ≠ 0 := (hD n g).1
     positivity
 
+/- English proof (translation)
+Establish `h1 : u1 (1 : M2 n) = 1`. Use extensionality with `i j`. Simplify using `[u1, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]`. Simplify using `[hLoc, mR_one, h1]`.
+-/
 theorem hLoc_one : hLoc (1 : GR n) = 1 := by
   have h1 : u1 (1 : M2 n) = 1 := by
     ext i j
     simp [u1, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.one_apply]
   simp [hLoc, mR_one, h1]
 
+/- English proof (translation)
+Use `((hM n 0 0 0).1 1 k hk).2` as an intermediate fact. Rewrite `this` using `[one_mul, hLoc_one]`. Conclude with `this`.
+-/
 theorem hLoc_K (hM : Mult) (k : GR n) (hk : k ∈ KR n) : hLoc k = 1 := by
   have := ((hM n 0 0 0).1 1 k hk).2
   rw [one_mul, hLoc_one] at this
@@ -67,6 +103,11 @@ theorem hLoc_K (hM : Mult) (k : GR n) (hk : k ∈ KR n) : hLoc k = 1 := by
 
 def uSet (n : ℕ) : Set (M2 n) := {u | uᴴ * u = 1 ∧ InG u}
 
+/- English proof (translation)
+Establish `hbox : IsCompact (Set.pi univ fun _ : Fin n ⊕ Fin n => Set.pi univ fun _ : Fin n ⊕ Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hbox.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+
+Introduce `u hu`. Establish `hU : u ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ` using `Matrix.mem_unitaryGroup_iff'.2 hu.1`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]`. Introduce `i j`. Conclude with `entry_norm_bound_of_unitary hU i j`.
+-/
 theorem isCompact_uSet (n : ℕ) : IsCompact (uSet n) := by
   have hbox : IsCompact (Set.pi univ fun _ : Fin n ⊕ Fin n => Set.pi univ fun _ : Fin n ⊕ Fin n =>
       Metric.closedBall (0 : ℂ) 1) :=
@@ -85,6 +126,9 @@ theorem isCompact_uSet (n : ℕ) : IsCompact (uSet n) := by
 def toK (u : uSet n) : KR n :=
   ⟨⟨⟨u.1, u.1ᴴ, mul_eq_one_comm.1 u.2.1, u.2.1⟩, u.2.2⟩, ⟨u.2.2, u.2.1⟩⟩
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨continuous_subtype_val, continuous_subtype_val.matrix_conjTranspose⟩`.
+-/
 theorem continuous_toK : Continuous (toK (n := n)) := by
   refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
   rw [Units.continuous_iff]
@@ -101,6 +145,19 @@ instance compactKR (n : ℕ) : CompactSpace (KR n) := by
   rw [this]
   exact isCompact_univ.image continuous_toK
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro f _; exact ⟨Fin.elim0, by simp⟩`. Consider the case `succ N ih`. Introduce `f hf`.
+
+Take `⟨x', hx'⟩` from `ih (fun j => f (Fin.castSucc j)) (hf.comp _ (Fin.castSucc_injective N))`. Set `c : Fin (N + 1) → ℂ` to `fun i => (-1) ^ ((i : ℕ) + N) * (Matrix.of fun a b => f (i.succAbove a) (x' b)).det`. Establish `hdet : ∀ y : X, (Matrix.of fun j l => f j (Fin.lastCases (motive` using `fun _ => X) y x' l)).det = ∑ i, c i * f i y := by`. Introduce `y`. Rewrite using `[Matrix.det_succ_column _ (Fin.last N)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : (Matrix.of fun j l => f j (Fin.lastCases (motive` using `fun _ => X) y x' l)).submatrix i.succAbove (Fin.last N).succAbove = Matrix.of fun a b => f (i.succAbove a) (x' b) := by`. Use extensionality with `a b`. Simplify using `[Fin.succAbove_last]`. Rewrite using `[hs]`.
+
+Simplify using `only [c, Matrix.of_apply, Fin.lastCases_last, Fin.val_last]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∑ i, c i • f i = 0`.
+
+Use function extensionality and compare the values at `y`. Establish `h` using `hcon (Fin.lastCases (motive := fun _ => X) y x')`. Rewrite `h` using `[hdet y]`. Simplify `h` using `[Finset.sum_apply]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hf c key (Fin.last N)`.
+
+Establish `hc : c (Fin.last N) ≠ 0`. Simplify using `only [c, Fin.val_last, Fin.succAbove_last]`. Use `mul_ne_zero (pow_ne_zero _ (by norm_num)) ?_` and prove the remaining obligations. Simplify using `using hx'`. Conclude with `hc h0`.
+-/
 theorem exists_pts {X : Type*} : ∀ (N : ℕ) (f : Fin N → X → ℂ), LinearIndependent ℂ f →
     ∃ x : Fin N → X, (Matrix.of fun j l => f j (x l)).det ≠ 0 := by
   intro N

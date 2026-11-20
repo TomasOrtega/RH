@@ -5,6 +5,13 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hco hwd l _ P ι K LL a ρ S _ _ π h1 h2`. Take `⟨f1, f2, f3, -, -⟩` from `hco ℚ_[l] ↥LL.1 (Bst P) a`. Use `Exists.elim (hwd l P ι K LL (Fin a → ↥LL.1) ρ (Fin a → S) (fun x i => π (co (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P) i)) ?_ ?_ ?_) fun j hj => ⟨j, fun x i => by rw [hj]⟩` and prove the remaining obligations. Introduce `x y`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Submodule.coe_add, f1, Pi.add_apply, Pi.add_apply, map_add]`. Introduce `c x`. Use function extensionality and compare the values at `i`. Rewrite using `[Submodule.coe_smul, f2, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, h1, Algebra.smul_def]`. Introduce `c x`.
+
+Use function extensionality and compare the values at `i`. Establish `e : co (mulV P ↥LL.1 (Fin a → ↥LL.1) c (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P)) = _` using `f3 (algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c) (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P)`. Use `show π (co (mulV P ↥LL.1 (Fin a → ↥LL.1) c (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P)) i) = ι (c : Om l) • π (co (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P) i)`. Rewrite using `[e, Pi.smul_apply, smul_eq_mul, RingHom.map_mul π, h2, Algebra.smul_def]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.detCoLift_of :
     CoFacts → WdLift → CoLift := by
   intro hco hwd l _ P ι K LL a ρ S _ _ π h1 h2

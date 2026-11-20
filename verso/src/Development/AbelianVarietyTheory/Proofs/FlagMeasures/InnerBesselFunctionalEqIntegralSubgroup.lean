@@ -9,6 +9,21 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv ξ x hx`. Establish `hσ : IsURepOn (GG k r) σ` using `hStd.2.1`. Establish `hDec : Decay σ (DD σ w) a` using `hStd.2.2.2.2.2.2.2.1`. Establish `hzb : inWb k r z` using `hSide.1`. Establish `hTz : 0 < Tz k r z` using `hSide.2.1`.
+
+Establish `hπ : IsURepOn (UWset k r z) π` using `hSide.2.2.1`. Establish `hμS : IsHaarOn (Sset k r z) μS` using `hSide.2.2.2.1`. Establish `hstab` using `(GlobalTheory.T.smooth_vectors_dense_invariant k r σ w hσ).1`. Establish `hSsub : Sset k r z ⊆ GG k r` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hzb hTz).2.2.2.1.1`. Establish `hD1` using `GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSide (DD σ w) hstab hDec`.
+
+Establish `hxu : σ (Matrix.of x) u ∈ DD σ w` using `hstab _ hx u hu`. Establish `hxu₁ : σ (Matrix.of x) u₁ ∈ DD σ w` using `hstab _ hx u₁ hu₁`. Take `⟨hint, -, -, -⟩` from `hD1 _ hxu v hv`. Take `⟨-, heq₁, -, -⟩` from `hD1 _ hxu₁ v hv`. Establish `hPi` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hzb hTz hπ`.
+
+Establish `hae : ∀ᵐ s ∂μS, Matrix.of s ∈ Sset k r z` using `by rw [ae_iff]; exact hμS.2.2.1`. Use `show ⟪Afun (psiGen k r z c) π μS σ u₁ v ξ (Matrix.of x), be (psiGen k r z c) π μS σ (σ (Matrix.of x) u) v ξ⟫_ℂ = _`. Rewrite using `[be, ContinuousLinearMap.integral_apply hint, ← integral_inner (hint.apply_continuousLinearMap ξ)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with s hs`.
+
+Establish `hsG : Matrix.of s ∈ GG k r` using `hSsub hs`. Establish `hmul : σ (Matrix.of s * Matrix.of x) = (σ (Matrix.of s)).comp (σ (Matrix.of x))` using `hσ.1.2 _ hsG _ hx`. Establish `hcoef : coef σ (σ (Matrix.of x) u) v (Matrix.of s) = coef σ u v (Matrix.of (lmulM (Matrix.of s) x))` using `by show ⟪v, σ (Matrix.of s) (σ (Matrix.of x) u)⟫_ℂ = ⟪v, σ (Matrix.of s * Matrix.of x) u⟫_ℂ`. Rewrite using `[hmul]`. Both sides reduce to the same expression.
+
+Establish `hadj` using `((hPi.2.2.1) _ hs).2`. Rewrite using `[ContinuousLinearMap.smul_apply, inner_smul_right, hcoef]`. Use `congr 1`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_right]`. Use `congr 1`.
+
+Use `show PiS (psiGen k r z c) π (Matrix.of s) (be (psiGen k r z c) π μS σ (σ (Matrix.of x) u₁) v ξ) = be (psiGen k r z c) π μS σ (σ (Matrix.of s * Matrix.of x) u₁) v ξ`. Rewrite using `[hmul, ContinuousLinearMap.comp_apply, (heq₁ _ hs).1]`. Both sides reduce to the same expression.
+-/
 theorem afun_inner_eq_integral : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ u ∈ DD σ w, ∀ u₁ ∈ DD σ w, ∀ v ∈ DD σ w, ∀ ξ : Wp, ∀ x : Mt k r, Matrix.of x ∈ GG k r → ⟪Afun (psiGen k r z c) π μS σ u₁ v ξ (Matrix.of x), Afun (psiGen k r z c) π μS σ u v ξ (Matrix.of x)⟫_ℂ = ∫ s, coef σ u v (Matrix.of (lmulM (Matrix.of s) x)) * ⟪Afun (psiGen k r z c) π μS σ u₁ v ξ (Matrix.of (lmulM (Matrix.of s) x)), ξ⟫_ℂ ∂μS := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv ξ x hx
   have hσ : IsURepOn (GG k r) σ := hStd.2.1

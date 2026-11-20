@@ -30,8 +30,18 @@ variable {σ : Type}
 
 def fct (α : σ →₀ ℕ) : ℕ := α.prod fun _ k => k.factorial
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun _ _ => Nat.factorial_pos _`.
+-/
 theorem fct_pos (α : σ →₀ ℕ) : 0 < fct α := Finset.prod_pos fun _ _ => Nat.factorial_pos _
 
+/- English proof (translation)
+Establish `hs : (α + Finsupp.single v 1).support ⊆ insert v α.support`. Introduce `u hu`. Rewrite `hu` using `[Finsupp.mem_support_iff, Finsupp.add_apply, Finsupp.single_apply]`. Rewrite using `[Finset.mem_insert, Finsupp.mem_support_iff]`. Distinguish the cases in `h : v = u`.
+
+Conclude with `Or.inl h.symm`. Use `right`. Simplify `hu` using `[h]`. Unfold `fct`. Rewrite using `[Finsupp.prod_of_support_subset _ hs _ (fun _ _ => Nat.factorial_zero), Finsupp.prod_of_support_subset α (Finset.subset_insert v α.support) _ (fun _ _ => Nat.factorial_zero), ← Finset.mul_prod_erase _ _ (Finset.mem_insert_self v α.support), ← Finset.mul_prod_erase _ _ (Finset.mem …`.
+
+Establish `: ∀ u ∈ (insert v α.support).erase v, ((α + Finsupp.single v 1 : σ →₀ ℕ) u).factorial = (α u).factorial`. Introduce `u hu`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Finset.ne_of_mem_erase hu).symm, add_zero]`. Rewrite using `[Finset.prod_congr rfl this, Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fct_add_single (α : σ →₀ ℕ) (v : σ) : fct (α + Finsupp.single v 1) = (α v + 1) * fct α := by
   classical
   have hs : (α + Finsupp.single v 1).support ⊆ insert v α.support := by
@@ -56,6 +66,9 @@ theorem fct_add_single (α : σ →₀ ℕ) (v : σ) : fct (α + Finsupp.single 
 def form0 (P Q : MvPolynomial σ ℂ) : ℂ :=
   ∑ α ∈ Q.support, (fct α : ℂ) * (star (coeff α P) * coeff α Q)
 
+/- English proof (translation)
+Unfold `form0`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `α _ hα`. Rewrite using `[notMem_support_iff.mp hα]`. Simplify using the standard rewrite rules.
+-/
 theorem fischerSumSupport_eq_sum_factorial_coeff (P Q : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (h : Q.support ⊆ s) :
     form0 P Q = ∑ α ∈ s, (fct α : ℂ) * (star (coeff α P) * coeff α Q) := by
   unfold form0
@@ -88,9 +101,15 @@ def form : MvPolynomial σ ℂ →ₗ⋆[ℂ] MvPolynomial σ ℂ →ₗ[ℂ] �
       refine Finset.sum_congr rfl fun α _ => ?_
       simp only [coeff_smul, smul_eq_mul, RingHom.id_apply]; ring)
 
+/- English proof (translation)
+The claim follows from `fischerSumSupport_eq_sum_factorial_coeff P Q s h`.
+-/
 theorem form_eq (P Q : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)) (h : Q.support ⊆ s) :
     form P Q = ∑ α ∈ s, (fct α : ℂ) * (star (coeff α P) * coeff α Q) := fischerSumSupport_eq_sum_factorial_coeff P Q s h
 
+/- English proof (translation)
+Rewrite using `[form_eq P Q (P.support ∪ Q.support) Finset.subset_union_right, form_eq Q P (P.support ∪ Q.support) Finset.subset_union_left, star_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `[star_mul', mul_comm]`.
+-/
 theorem form_symm (P Q : MvPolynomial σ ℂ) : form P Q = star (form Q P) := by
   classical
   rw [form_eq P Q (P.support ∪ Q.support) Finset.subset_union_right,
@@ -98,6 +117,9 @@ theorem form_symm (P Q : MvPolynomial σ ℂ) : form P Q = star (form Q P) := by
   refine Finset.sum_congr rfl fun α _ => ?_
   simp [star_mul', mul_comm]
 
+/- English proof (translation)
+Rewrite using `[form_eq P P P.support subset_rfl]`. Use `push_cast`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+-/
 theorem form_self (P : MvPolynomial σ ℂ) :
     form P P = ((∑ α ∈ P.support, (fct α : ℝ) * Complex.normSq (coeff α P) : ℝ) : ℂ) := by
   rw [form_eq P P P.support subset_rfl]
@@ -105,10 +127,18 @@ theorem form_self (P : MvPolynomial σ ℂ) :
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [Complex.normSq_eq_conj_mul_self]; rfl
 
+/- English proof (translation)
+Rewrite using `[form_self, Complex.ofReal_im, Complex.ofReal_re]`. Conclude with `⟨rfl, Finset.sum_nonneg fun α _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)⟩`.
+-/
 theorem form_self_nonneg (P : MvPolynomial σ ℂ) : (form P P).im = 0 ∧ 0 ≤ (form P P).re := by
   rw [form_self, Complex.ofReal_im, Complex.ofReal_re]
   exact ⟨rfl, Finset.sum_nonneg fun α _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)⟩
 
+/- English proof (translation)
+Rewrite `h` using `[form_self, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg (fun α _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _))]`. Use extensionality with `α`. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hne`. Use `h α (mem_support_iff.mpr hne)` as an intermediate fact.
+
+Break down `mul_eq_zero.mp this with h1 | h1` into its components or cases. Conclude with `(Nat.cast_ne_zero.mpr (fct_pos α).ne') h1`. Conclude with `hne (Complex.normSq_eq_zero.mp h1)`.
+-/
 theorem form_self_eq_zero (P : MvPolynomial σ ℂ) (h : form P P = 0) : P = 0 := by
   rw [form_self, Complex.ofReal_eq_zero,
     Finset.sum_eq_zero_iff_of_nonneg (fun α _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _))] at h
@@ -132,12 +162,26 @@ open MvPolynomial
 
 variable {σ : Type} [DecidableEq σ]
 
+/- English proof (translation)
+Rewrite using `[form_eq _ _ {δ} support_monomial_subset, Finset.sum_singleton, coeff_monomial, coeff_monomial, if_pos rfl]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem form_monomial (γ δ : σ →₀ ℕ) (c d : ℂ) :
     form (monomial γ c) (monomial δ d) = if γ = δ then (fct δ : ℂ) * (star c * d) else 0 := by
   rw [form_eq _ _ {δ} support_monomial_subset, Finset.sum_singleton, coeff_monomial, coeff_monomial,
     if_pos rfl]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial γ c`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial δ d`. Rewrite using `[X, monomial_mul, pderiv_monomial, form_monomial, form_monomial, one_mul]`.
+
+Distinguish the cases in `hv : δ v = 0`. Rewrite using `[hv, if_neg]`. Simplify using the standard rewrite rules. Introduce `h`. Use `congrArg (fun f : σ →₀ ℕ => f v) h` as an intermediate fact.
+
+Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨α, rfl⟩ : ∃ α, δ = α + Finsupp.single v 1` from `⟨δ - Finsupp.single v 1, (tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hv))).symm⟩`. Rewrite using `[add_tsub_cancel_right, add_comm (Finsupp.single v 1) γ]`. Simplify using `only [add_left_inj]`.
+
+Rewrite using `[fct_add_single, Finsupp.add_apply, Finsupp.single_eq_same]`. Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+
+Consider the case `add Q Q' hQ hQ' => rw [map_add, map_add, map_add, hQ, hQ']`. Consider the case `add P P' hP hP'`. Rewrite using `[mul_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hP, hP']`.
+-/
 theorem form_X_mul (v : σ) (P Q : MvPolynomial σ ℂ) : form (X v * P) Q = form P (pderiv v Q) := by
   induction P using MvPolynomial.induction_on' with
   | monomial γ c =>
@@ -164,6 +208,9 @@ theorem form_X_mul (v : σ) (P Q : MvPolynomial σ ℂ) : form (X v * P) Q = for
   | add P P' hP hP' =>
     rw [mul_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hP, hP']
 
+/- English proof (translation)
+Rewrite using `[form_symm, ← form_X_mul, ← form_symm]`.
+-/
 theorem form_pderiv (v : σ) (P Q : MvPolynomial σ ℂ) : form (pderiv v P) Q = form P (X v * Q) := by
   rw [form_symm, ← form_X_mul, ← form_symm]
 
@@ -183,29 +230,52 @@ variable {D : D7} {n m : ℕ}
 
 def FAdj (T S : Module.End ℂ (PolF D m n)) : Prop := ∀ P Q, form (T P) Q = form P (S Q)
 
+/- English proof (translation)
+Introduce `P Q`. Simplify using `only [LinearMap.add_apply, map_add, h P Q, h' P Q]`.
+-/
 theorem fadj_add {T S T' S' : Module.End ℂ (PolF D m n)} (h : FAdj T S) (h' : FAdj T' S') :
     FAdj (T + T') (S + S') := by
   intro P Q; simp only [LinearMap.add_apply, map_add, h P Q, h' P Q]
 
+/- English proof (translation)
+Introduce `P Q`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h, h']`.
+-/
 theorem fadj_mul {T S T' S' : Module.End ℂ (PolF D m n)} (h : FAdj T S) (h' : FAdj T' S') :
     FAdj (T * T') (S' * S) := by
   intro P Q; rw [Module.End.mul_apply, Module.End.mul_apply, h, h']
 
+/- English proof (translation)
+Introduce `P Q`. Simplify using `only [LinearMap.neg_apply, map_neg, h P Q]`.
+-/
 theorem fadj_neg {T S : Module.End ℂ (PolF D m n)} (h : FAdj T S) : FAdj (-T) (-S) := by
   intro P Q; simp only [LinearMap.neg_apply, map_neg, h P Q]
 
+/- English proof (translation)
+Introduce `P Q`. Rewrite using `[LinearMap.sum_apply, map_sum, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i hi => h i hi P Q`.
+-/
 theorem fadj_sum {ι : Type} (s : Finset ι) (T S : ι → Module.End ℂ (PolF D m n))
     (h : ∀ i ∈ s, FAdj (T i) (S i)) : FAdj (∑ i ∈ s, T i) (∑ i ∈ s, S i) := by
   intro P Q
   rw [LinearMap.sum_apply, map_sum, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]
   exact Finset.sum_congr rfl fun i hi => h i hi P Q
 
+/- English proof (translation)
+Introduce `P Q` and use `form_X_mul v P Q`.
+-/
 theorem fadj_X {_ : DecidableEq (FVar D m n)} (v : FVar D m n) :
     FAdj (LinearMap.mulLeft ℂ (X v)) (pderiv v).toLinearMap := fun P Q => form_X_mul v P Q
 
+/- English proof (translation)
+Introduce `P Q` and use `form_pderiv v P Q`.
+-/
 theorem fadj_d {_ : DecidableEq (FVar D m n)} (v : FVar D m n) :
     FAdj (pderiv v).toLinearMap (LinearMap.mulLeft ℂ (X v)) := fun P Q => form_pderiv v P Q
 
+/- English proof (translation)
+Unfold `kop fockT`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules.
+-/
 theorem kop_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m) :
     kop w τ a b = ∑ j, (raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) a j *
       lowO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) b j +
@@ -218,6 +288,13 @@ theorem kop_eq (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (
   · intro k _ hk; simp [Matrix.single_apply, Ne.symm hk]
   · simp
 
+/- English proof (translation)
+Unfold `Cpt at h`. Unfold `raiO lowO sgn`. Distinguish the cases in `ha : (a : ℕ) < w.p τ`. Establish `hb` using `h.mp ha`. Simplify using `[ha, hb]`.
+
+Establish `h1` using `@fadj_X D n m (fun a b => Classical.propDecidable (a = b)) (τ, a, j)`. Establish `h2` using `@fadj_d D n m (fun a b => Classical.propDecidable (a = b)) (τ, b, j)`. Conclude with `fadj_mul h1 h2`. Establish `hb : ¬ (b : ℕ) < w.p τ` using `fun hb => ha (h.mpr hb)`. Simplify using `[ha, hb]`.
+
+Establish `h1` using `@fadj_d D n m (fun a b => Classical.propDecidable (a = b)) (τ, a, j)`. Establish `h2` using `@fadj_X D n m (fun a b => Classical.propDecidable (a = b)) (τ, b, j)`. Conclude with `fadj_neg (fadj_mul h1 h2)`.
+-/
 theorem fadj_term (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m) (j : Fin n) (h : Cpt w τ a b) :
     FAdj (raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) a j *
       lowO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < w.p τ)) b j)
@@ -238,6 +315,11 @@ theorem fadj_term (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau
     have h2 := @fadj_X D n m (fun a b => Classical.propDecidable (a = b)) (τ, b, j)
     exact fadj_neg (fadj_mul h1 h2)
 
+/- English proof (translation)
+Introduce `P Q`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [if_true, LinearMap.smul_apply, Module.End.one_apply, LinearMap.map_smulₛₗ₂, map_smul]`. Simplify using `[Complex.conj_ofReal, map_ofNat]`.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem fadj_half (a b : Fin m) :
     FAdj (D := D) (n := n) (m := m) (if a = b then (1 / 2 : ℂ) • 1 else 0) (if b = a then (1 / 2 : ℂ) • 1 else 0) := by
   intro P Q
@@ -247,6 +329,9 @@ theorem fadj_half (a b : Fin m) :
     simp [Complex.conj_ofReal, map_ofNat]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Introduce `D n m`. Use `⟨form, form_self_nonneg, form_self_eq_zero, fun w τ a b h P Q => ?_⟩` and prove the remaining obligations. Rewrite using `[kop_eq, kop_eq]`. Conclude with `fadj_sum _ _ _ (fun j _ => fadj_add (fadj_term w τ a b j h) (fadj_half a b)) P Q`.
+-/
 theorem fockForm_kop_adjoint : ∀ (D : D7) (n m : ℕ), ∃ B : PolF D m n →ₗ⋆[ℂ] PolF D m n →ₗ[ℂ] ℂ,
     (∀ P, (B P P).im = 0 ∧ 0 ≤ (B P P).re) ∧ (∀ P, B P P = 0 → P = 0) ∧
       ∀ (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m), GlobalTheory.LowestKType.Cpt w τ a b →

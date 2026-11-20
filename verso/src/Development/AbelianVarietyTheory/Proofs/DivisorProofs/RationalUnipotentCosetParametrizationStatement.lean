@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.IsoCoset.coset | exact GlobalTheory.ThK.IsoCoset.coset | (intros; apply GlobalTheory.ThK.IsoCoset.coset <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rational_unipotent_coset_parametrization : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (x₀ : Fin n → E), form σ J x₀ x₀ = 0 → x₀ ≠ 0 →
     ∀ γ : {x : Fin n → E // x ≠ 0 ∧ form σ J x x = 0} → UA σ J, (∀ x, γ x ∈ ratU σ J ∧ mat (γ x) *ᵥ incV F x.1 = incV F x₀) →

@@ -55,6 +55,9 @@ def UnitConstEquivariant : Prop :=
         EquivariantFiniteGroup (T.V j σ) σ ((rdU (T.U j σ)).comp (T.cuspA j a n).subtype) (T.dict j σ)
           (muPin (T.V j σ) (T.dict j σ) (T.mu j σ) c') ρ chi ℓ
 
+/- English proof (translation)
+Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[gLat]`.
+-/
 example (V : HSp D) : (1 : GA D V) ∈ GfC V ∧
     gLat V 1 = (latHat V : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) := by
   refine ⟨one_mem _, ?_⟩

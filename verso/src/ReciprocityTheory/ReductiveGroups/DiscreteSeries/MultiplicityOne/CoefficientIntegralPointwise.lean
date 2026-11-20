@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2 HilbertSchmidtFunctionals
 
+/- English proof (translation)
+Rewrite using `[stCut1 h k r Wp D X hD d hd f x y a₂ b₂ X₀ hf p hp, character_at_one_eq_product D hD.z_eq, hilbertSchmidt_functional_apply]`. Simplify using `only [beInt, map_smulₛₗ, adjoint_representation_inv D hCW hp.1, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_smul, hilbertSchmidt_inner_smul_left, starRingEnd_apply, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefficient_integral_pointwise (h : UnitaryGroupStructuralFacts) {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (D : RealPlaceData k r Wp Wp) (X : SigData k r) (hD : IsDiag D)
     (hCW : IsClosedSubgroup (UWset k r D.z)) (d : ℝ) (hd : IsFdegG D X d) (f : Mat k r → ℂ) (x y a₂ b₂ : X.Hs)
@@ -21,6 +24,15 @@ theorem coefficient_integral_pointwise (h : UnitaryGroupStructuralFacts) {k r : 
     ContinuousLinearMap.comp_smul, smul_smul, hilbertSchmidt_inner_smul_left, starRingEnd_apply, star_mul', star_star]
   ring
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ D X hD d hd f x y a₂ b₂ X₀ hf hU hV`. Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `h'` using `h`. Take `⟨hB2, -⟩` from `h'`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hCW, -⟩` from `hB2`.
+
+Use `sigmaFinite_of_haar_on D.haarW` as an intermediate fact. Use `sigmaFinite_of_haar_on D.haarN` as an intermediate fact. Establish `hμ : D.μSS = (D.μW.prod D.μN).prod (D.μW.prod D.μN)` using `by show (D.μW.prod D.μN).prod (D.μW'.prod D.μN) = _`. Rewrite using `[hD.μW_eq]`. Establish `hΦi : Integrable (fun q : SS k r => hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (beInt D X y b₂ q.1)).comp (beInt D X x a₂ q.2))) D.μSS`.
+
+Rewrite using `[hμ]`. Conclude with `integrable_hilbertSchmidt_pairing X₀ hV hU`. Establish `hpt : ∀ᵐ p ∂D.μSS, xiTau D (1, 1) p * Ph D (scalF Wp f) (fun g => mc X a₂ b₂ g • X₀) p = hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (beInt D X y b₂ p.1)).comp (beInt D X x a₂ p.2)) / (d : ℂ)` using `(ae_mem_big_cell D).mono fun p hp => coefficient_integral_pointwise h D X hD (hCW k r D.z) d hd f x y a₂ b₂ X₀ hf p hp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hg : Integrable (fun p => star (xiTau D (1, 1) p) * (hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (beInt D X y b₂ p.1)).comp (beInt D X x a₂ p.2)) / (d : ℂ))) D.μSS` using `(hΦi.div_const (d : ℂ)).norm.mono' ((character_continuous D (1, 1)).star.aestronglyMeasurable.mul (hΦi.div_const _).aestronglyMeasurable) (ae_of_all _ fun p => by rw [norm_mul, norm_star, norm_character_eq_one, one_mul])`.
+
+Use `hg.congr (hpt.mono fun p hp => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hp, ← mul_assoc, star_character_mul_self, one_mul]`. Rewrite using `[integral_congr_ae hpt, integral_div, hμ, integral_hilbertSchmidt_pairing X₀ hV hU, hilbertSchmidt_functional_apply]`. Both sides reduce to the same expression.
+-/
 theorem stCut2 (h : UnitaryGroupStructuralFacts) : StCut2 := by
   intro k r Wp _ _ _ D X hD d hd f x y a₂ b₂ X₀ hf hU hV
   have : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp

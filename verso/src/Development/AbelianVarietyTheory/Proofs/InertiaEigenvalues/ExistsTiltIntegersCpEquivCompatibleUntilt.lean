@@ -10,6 +10,9 @@ open GroundTheory.PAdicHodge
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_normInteger, ← GlobalTheory.RingBasics.mem_OC]`. Both sides reduce to the same expression.
+-/
 theorem oc_eq_normInteger : (𝓞_ℂ_[l]).toSubring = normInteger ℂ_[l] := by
   ext x
   rw [mem_normInteger, ← GlobalTheory.RingBasics.mem_OC]
@@ -17,8 +20,14 @@ theorem oc_eq_normInteger : (𝓞_ℂ_[l]).toSubring = normInteger ℂ_[l] := by
 
 noncomputable def ocEquiv : OC l ≃+* normInteger ℂ_[l] := RingEquiv.subringCongr (oc_eq_normInteger l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_ocEquiv (x : OC l) : ((ocEquiv l x : normInteger ℂ_[l]) : ℂ_[l]) = (x : ℂ_[l]) := rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+-/
 theorem span_map_ocEquiv :
     Ideal.span {(l : normInteger ℂ_[l])} = (Ideal.span {(l : OC l)}).map ((ocEquiv l : OC l →+* normInteger ℂ_[l])) := by
   rw [Ideal.map_span, Set.image_singleton]; simp
@@ -32,9 +41,15 @@ noncomputable def flTo : Fl l →+* PreTilt (normInteger ℂ_[l]) l :=
 noncomputable def flFrom : PreTilt (normInteger ℂ_[l]) l →+* Fl l :=
   Perfection.map l ((modEquiv l).symm : ModP (normInteger ℂ_[l]) l →+* ModP (OC l) l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_flTo (x : Fl l) (n : ℕ) :
     Perfection.coeff _ l n (flTo l x) = modEquiv l (Perfection.coeff _ l n x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_flFrom (x : PreTilt (normInteger ℂ_[l]) l) (n : ℕ) :
     Perfection.coeff _ l n (flFrom l x) = (modEquiv l).symm (Perfection.coeff _ l n x) := rfl
 
@@ -47,8 +62,16 @@ noncomputable def flEquiv : Fl l ≃+* PreTilt (normInteger ℂ_[l]) l :=
       change Perfection.coeff _ l n (flFrom l (flTo l x)) = Perfection.coeff _ l n x
       rw [coeff_flFrom, coeff_flTo, RingEquiv.symm_apply_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flEquiv_apply (x : Fl l) : flEquiv l x = flTo l x := rfl
 
+/- English proof (translation)
+Use `Perfection.teichmuller_spec (I := Ideal.span {(l : normInteger ℂ_[l])}) fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (Perfection.coeff _ l n x)`. Use `⟨ocEquiv l y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_flTo, ← hy]`. Both sides reduce to the same expression.
+
+Use `(Perfection.teichmuller_sModEq hy).symm` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, GlobalTheory.RingBasics.mem_span_pow_OC]`. Establish `hl : ((l : normInteger ℂ_[l]) : ℂ_[l]) = (l : ℂ_[l])` using `by simp`. Rewrite using `[SModEq.sub_mem, mem_span_singleton_pow_iff, ← map_pow, ← map_sub, coe_ocEquiv, hl]`. Conclude with `this`.
+-/
 theorem untilt_flTo (x : Fl l) : (flTo l x).untilt = ocEquiv l x.untilt := by
   refine Perfection.teichmuller_spec (I := Ideal.span {(l : normInteger ℂ_[l])}) fun n => ?_
   obtain ⟨y, hy⟩ := Ideal.Quotient.mk_surjective (Perfection.coeff _ l n x)
@@ -61,6 +84,9 @@ theorem untilt_flTo (x : Fl l) : (flTo l x).untilt = ocEquiv l x.untilt := by
     rw [SModEq.sub_mem, mem_span_singleton_pow_iff, ← map_pow, ← map_sub, coe_ocEquiv, hl]
     exact this
 
+/- English proof (translation)
+Introduce `l _`. Use `⟨flEquiv l, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[flEquiv_apply, untilt_flTo, coe_ocEquiv]`. Both sides reduce to the same expression.
+-/
 theorem exists_flEquiv_untilt : ∀ (l : ℕ) [Fact l.Prime], ∃ e : Fl l ≃+* PreTilt (GroundTheory.PAdicHodge.normInteger ℂ_[l]) l,
     ∀ x : Fl l, ((PreTilt.untilt (e x) : GroundTheory.PAdicHodge.normInteger ℂ_[l]) : ℂ_[l]) = sh x := by
   intro l _

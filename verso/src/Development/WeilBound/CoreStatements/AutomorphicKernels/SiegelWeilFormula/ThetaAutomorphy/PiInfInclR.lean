@@ -18,27 +18,57 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open PositivityTheory.SiegelWeilFormula.kfour PositivityTheory.SiegelWeilFormula.Place
 
+/- English proof (translation)
+Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_inclR (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
   show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
+/- English proof (translation)
+Rewrite using `[show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, GlobalTheory.RealLift.KLineProof.piInf_tmul, map_one, map_one, one_mul]`.
+-/
 theorem piInf_inclR' {w : InfinitePlace F} (τ : EmbOver E w) (e : E) : piInf τ (inclR (F := F) (AF F) e) = τ.1 e := by
   rw [show inclR (F := F) (AF F) e = (1 : AF F) ⊗ₜ[F] e from rfl, GlobalTheory.RealLift.KLineProof.piInf_tmul, map_one, map_one,
     one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, Matrix.mul_apply, map_sum]`.
+-/
 theorem incM_mul'' {α β γ : Type} [Fintype β] (X : Matrix α β E) (Z : Matrix β γ E) :
     incM F (X * Z) = incM F X * incM F Z := by
   ext i j
   simp [incM, Matrix.mul_apply, map_sum]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, cA_inclR']`.
+-/
 theorem incM_map {α β : Type} (X : Matrix α β E) : incM F (X.map σ) = (incM F X).map (cA σ) := by
   ext i j
   simp [incM, cA_inclR']
 
+/- English proof (translation)
+Simplify using `[incM, Matrix.trace, map_sum]`.
+-/
 theorem trace_incM {k : ℕ} (X : Matrix (Fin k) (Fin k) E) : (incM F X).trace = inclR (F := F) (AF F) X.trace := by
   simp [incM, Matrix.trace, map_sum]
 
+/- English proof (translation)
+Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Use `⟨ε, hε, ?_⟩` and prove the remaining obligations. Establish `key : ∀ e : E, e * e = 1 → (∀ i j, σ (d.Y.J j i) = e * d.Y.J i j) → ((ε : ℤ) : E) = e`. Introduce `e he hY`.
+
+Establish `hY' : ∀ i j, d.Y.J j i = e * σ (d.Y.J i j)` using `fun i j => by`. Rewrite using `[hY j i, ← mul_assoc, he, one_mul]`. Establish `hD : (dbl d.Y.J)ᵀ = e • (dbl d.Y.J).map σ`. Use extensionality with `(i | i) (j | j)`. Simplify using `[dbl, hY' i j]`.
+
+Simplify using `[dbl]`. Simplify using `[dbl]`. Simplify using `[dbl, hY' i j]`. Establish `hM : (d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ)ᵀ = e • (d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ).map σ`. Establish `e1 : (d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ).map σ = (d.b.1.map σ)ᵀ * (dbl d.Y.J).map σ * d.b.1`.
+
+Establish `h1 : ∀ {p q r : Type} [Fintype q] (P : Matrix p q E) (Q : Matrix q r E), (P * Q).map σ = P.map σ * Q.map σ` using `fun P Q => Matrix.map_mul (f := σ.toRingHom)`. Establish `h2 : (d.b.1.map σ).map σ = d.b.1`. Rewrite using `[Matrix.map_map]`. Conclude with `Matrix.ext fun i j => hσ _`. Rewrite using `[h1, h1, h2, Matrix.transpose_map]`.
+
+Rewrite using `[e1, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hD, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Rewrite `hM` using `[hε]`. Establish `hn : 0 < d.n` using `d.ok.hn`. Use `congrFun (congrFun hM (Sum.inl ⟨0, hn⟩)) (Sum.inr ⟨0, hn⟩)` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks]`.
+
+Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Establish `e` using `key (-1) (by ring) fun i j => by rw [hY i j]; ring`. Introduce `i j`. Rewrite using `[e, neg_neg, one_mul]`. Conclude with `(hA.herm j i).symm`.
+
+Establish `e` using `key 1 (by ring) fun i j => by rw [hY i j, one_mul]`. Introduce `i j`. Rewrite using `[e, hA.skew j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_sign (d : SD σ) : ∃ ε : ℤˣ, FrameEq σ d.Y d.b ε ∧
     ∀ i j, d.A.J j i = -(((ε : ℤ) : E)) * σ (d.A.J i j) := by
   obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
@@ -78,6 +108,13 @@ theorem frame_sign (d : SD σ) : ∃ ε : ℤˣ, FrameEq σ d.Y d.b ε ∧
     rw [e, hA.skew j i]
     ring
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Establish `hJ : (incM F d.A.J)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F d.A.J).map (cA σ))`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, incM, Matrix.map_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, cA_inclR']`. Rewrite using `[hε i j, map_mul, map_neg, inclR_int, neg_mul]`.
+
+Use `show (Xᵀ * incM F d.A.J * X.map (cA σ))ᵀ = -((((ε : ℤ) : AE F E)) • (Xᵀ * incM F d.A.J * X.map (cA σ)).map (cA σ))`. Establish `h1 : ∀ {p q r : Type} [Fintype q] (P : Matrix p q (AE F E)) (Q : Matrix q r (AE F E)), (P * Q).map (cA σ) = P.map (cA σ) * Q.map (cA σ)` using `fun P Q => Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `h2 : (X.map (cA σ)).map (cA σ) = X`. Rewrite using `[Matrix.map_map]`. Conclude with `Matrix.ext fun i j => cA_cA' σ hσ _`.
+
+Rewrite using `[h1, h1, h2, Matrix.transpose_map, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hJ, Matrix.neg_mul, Matrix.mul_neg, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`.
+-/
 theorem gram_cond (d : SD σ) (ε : ℤˣ) (hε : ∀ i j, d.A.J j i = -(((ε : ℤ) : E)) * σ (d.A.J i j))
     (X : Matrix (Fin d.m) (Fin d.n) (AE F E)) : d.gram X X ∈ nCond σ d.n ε := by
   have hσ := sigma_sigma_of_good d.ok.good
@@ -95,6 +132,11 @@ theorem gram_cond (d : SD σ) (ε : ℤˣ) (hε : ∀ i j, d.A.J j i = -(((ε : 
   rw [h1, h1, h2, Matrix.transpose_map, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, hJ,
     Matrix.neg_mul, Matrix.mul_neg, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hG' : Gᵀ = -((((ε : ℤ) : AE F E)) • G.map (cA σ))` using `hG`. Use `show (c • G)ᵀ = -((((ε : ℤ) : AE F E)) • (c • G).map (cA σ))`. Establish `e : (c • G).map (cA σ) = c • G.map (cA σ)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, map_smul]`.
+
+Rewrite using `[Matrix.transpose_smul, hG', e, smul_neg, smul_comm]`.
+-/
 theorem smul_cond {n : ℕ} (ε : ℤˣ) (c : AF F) {G : Matrix (Fin n) (Fin n) (AE F E)} (hG : G ∈ nCond σ n ε) :
     c • G ∈ nCond σ n ε := by
   have hG' : Gᵀ = -((((ε : ℤ) : AE F E)) • G.map (cA σ)) := hG
@@ -104,6 +146,11 @@ theorem smul_cond {n : ℕ} (ε : ℤˣ) (c : AF F) {G : Matrix (Fin n) (Fin n) 
     simp only [Matrix.map_apply, Matrix.smul_apply, map_smul]
   rw [Matrix.transpose_smul, hG', e, smul_neg, smul_comm]
 
+/- English proof (translation)
+Establish `h1` using `half_two (F := F) (E := E)`. Establish `h2 : algebraMap (AF F) (AE F E) (⅟(2 : AF F)) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap (AF F) (AE F E)) 2, ← map_mul, invOf_mul_self, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm 2, h2, mul_one]`.
+
+Use `_ = _ := by rw [← mul_assoc, h1, one_mul]`.
+-/
 theorem half_eq : inclR (F := F) (AF F) (2⁻¹ : E) = algebraMap (AF F) (AE F E) (⅟(2 : AF F)) := by
   have h1 := half_two (F := F) (E := E)
   have h2 : algebraMap (AF F) (AE F E) (⅟(2 : AF F)) * 2 = 1 := by
@@ -112,12 +159,20 @@ theorem half_eq : inclR (F := F) (AF F) (2⁻¹ : E) = algebraMap (AF F) (AE F E
         rw [mul_comm 2, h2, mul_one]
     _ = _ := by rw [← mul_assoc, h1, one_mul]
 
+/- English proof (translation)
+Use `show (incM F X)ᵀ * incM F d.A.J * (incM F X).map (cA σ) = _`. Rewrite using `[incM_mul'', incM_mul'', incM_map]`. Both sides reduce to the same expression.
+-/
 theorem gram_incM (d : SD σ) (X : Matrix (Fin d.m) (Fin d.n) E) :
     d.gram (incM F X) (incM F X) = incM F (Xᵀ * d.A.J * X.map σ) := by
   show (incM F X)ᵀ * incM F d.A.J * (incM F X).map (cA σ) = _
   rw [incM_mul'', incM_mul'', incM_map]
   rfl
 
+/- English proof (translation)
+Take `⟨ε, hb, hε⟩` from `frame_sign d`. Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Take `⟨T₀, hT₀⟩` from `(mem_nF_iff T.1).1 T.2`. Use `⟨(mem_nA_iff hσ hb _).2 (add_mem (smul_cond ε _ (gram_cond d ε hε _)) ((mem_nA_iff hσ hb _).1 T.1.2)), (2⁻¹ : E) • (Xᵀ * d.A.J * X.map σ) + T₀, ?_⟩` and prove the remaining obligations. Rewrite using `[gram_incM, hT₀]`.
+
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_add, map_mul]`. Rewrite using `[Algebra.smul_def, ← half_eq]`.
+-/
 theorem gram_mem (d : SD σ) (X : Matrix (Fin d.m) (Fin d.n) E) (T : nF σ d.Y d.b) :
     ⅟(2 : AF F) • d.gram (incM F X) (incM F X) + T.1.1 ∈ nA σ d.Y d.b ∧
       ∃ S₀ : Matrix (Fin d.n) (Fin d.n) E, ⅟(2 : AF F) • d.gram (incM F X) (incM F X) + T.1.1 = incM F S₀ := by
@@ -131,6 +186,37 @@ theorem gram_mem (d : SD σ) (X : Matrix (Fin d.m) (Fin d.n) E) (T : nF σ d.Y d
   simp only [incM, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_add, map_mul]
   rw [Algebra.smul_def, ← half_eq]
 
+/- English proof (translation)
+Establish `hcm` using `d.cm`. Establish `hS' : (incM F S₀)ᵀ = -((((ε : ℤ) : AE F E)) • (incM F S₀).map (cA σ))` using `hS`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, j₀, hij⟩ : ∃ i j, S₀ i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `h0 (Matrix.ext fun i j => by_contra fun hne => h ⟨i, j, hne⟩)`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set τ := d.B.emb`. Use `set Sw : Matrix (Fin d.n) (Fin d.n) ℂ := (incM F S₀).map (piInf (τ w)) with hSw`. Establish `hSwT : ∀ i j, Sw j i = -(((ε : ℤ) : ℂ)) * star (Sw i j)` using `fun i j => by`. Use `congrArg (fun M => (M.map (piInf (τ w))) i j) hS'` as an intermediate fact.
+
+Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, map_neg, map_mul, map_intCast, piInf_cA hcm] at this`. Simplify `this` using `[hSw]`. Use `set q : ℂ := piInf (τ w) ((incM F S₀ * incM F S₀).trace) with hq`. Establish `hqe : q = -(((ε : ℤ) : ℂ)) * ∑ i, ∑ j, ((Complex.normSq (Sw i j) : ℝ) : ℂ)`. Rewrite using `[hq, Matrix.trace, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `Sw i j * Sw j i = _`.
+
+Rewrite using `[hSwT i j, Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : 0 < ∑ i, ∑ j, Complex.normSq (Sw i j)`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq (Sw i j)) (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ i₀))` and prove the remaining obligations. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (f := fun j => Complex.normSq (Sw i₀ j)) (fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ j₀))` and prove the remaining obligations.
+
+Use `Complex.normSq_pos.2 ?_` and prove the remaining obligations. Simplify using `only [hSw, Matrix.map_apply, incM, piInf_inclR']`. Conclude with `(map_ne_zero _).2 hij`. Establish `hε1 : (((ε : ℤ) : ℝ)) ≠ 0`. Apply the tactic sequence `rcases Int.units_eq_one_or ε with h | h <;> simp [h]`.
+
+Establish `hqre : q.re = -(((ε : ℤ) : ℝ)) * ∑ i, ∑ j, Complex.normSq (Sw i j)`. Rewrite using `[hqe]`. Simplify using `[Complex.mul_re, ← Complex.ofReal_sum]`. Establish `hqre0 : q.re ≠ 0`. Rewrite using `[hqre]`.
+
+Conclude with `mul_ne_zero (neg_ne_zero.2 hε1) hN.ne'`. Use `set r : ℝ := -1 / (4 * q.re) with hr`. Take `⟨s, -, hs1, hs2, -, hs4⟩` from `exists_sec hcm τ`. Use `set x : InfinitePlace F → ℂ := fun u => if u = w then (r : ℂ) else 0 with hx`. Use `set c : AE F E := s x with hc`.
+
+Establish `hcc : cA σ c = c`. Use `ad_ext hcm τ (fun u => ?_) ?_` and prove the remaining obligations. Rewrite using `[piInf_cA hcm, hc, hs1]`. Apply the tactic sequence `by_cases hu : u = w <;> simp [hx, hu]`. Rewrite using `[← map_smul, hc, hs2, map_zero]`.
+
+Use `⟨c • incM F S₀, ?_, ?_⟩` and prove the remaining obligations. Use `show (c • incM F S₀)ᵀ = -((((ε : ℤ) : AE F E)) • (c • incM F S₀).map (cA σ))`. Establish `e : (c • incM F S₀).map (cA σ) = c • (incM F S₀).map (cA σ)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hcc]`.
+
+Rewrite using `[Matrix.transpose_smul, hS', e, smul_neg, smul_comm]`. Use `set z : AE F E := -(c * (incM F S₀ * incM F S₀).trace) with hz`. Establish `e1 : -(d.tt (incM F S₀ * (c • incM F S₀))) = Algebra.trace (AF F) (AE F E) z`. Rewrite using `[hz, map_neg, SD.tt, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Establish `hf : finOne F • z = 0`.
+
+Rewrite using `[hz, smul_neg, ← smul_mul_assoc, hc, hs2, zero_mul, neg_zero]`. Establish `hw : ∀ u, u ≠ w → piInf (τ u) z = 0` using `fun u hu => by`. Rewrite using `[hz, map_neg, map_mul, hc, hs1]`. Simplify using `[hx, hu]`. Rewrite using `[e1, psi_trace_at d.std hcm τ w z hf hw]`.
+
+Establish `hzw : (piInf (τ w) z).re = 1 / 4`. Rewrite using `[hz, map_neg, map_mul, hc, hs1, ← hq]`. Simplify using `only [hx, if_pos rfl, Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Rewrite using `[hr]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hzw]`. Introduce `h`. Establish `h2 : Complex.exp (-(2 * Real.pi * Complex.I) * (((2 * (1 / 4 : ℝ)) : ℝ) : ℂ)) = -1`. Rewrite using `[show (2 * (1 / 4 : ℝ)) = 1 / 2 by norm_num]`. Rewrite using `[show -(2 * Real.pi * Complex.I) * (((1 / 2 : ℝ)) : ℂ) = -(Real.pi * Complex.I) by push_cast; ring]`.
+
+Rewrite using `[Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions. Rewrite `h` using `[h2]`. Evaluate the numerical expressions using `at h`.
+-/
 theorem exists_twist (d : SD σ) (ε : ℤˣ) (S₀ : Matrix (Fin d.n) (Fin d.n) E) (hS : incM F S₀ ∈ nCond σ d.n ε)
     (h0 : S₀ ≠ 0) : ∃ β₀ ∈ nCond σ d.n ε, d.B.ψ (-(d.tt (incM F S₀ * β₀))) ≠ 1 := by
   have hcm := d.cm
@@ -211,6 +297,17 @@ theorem exists_twist (d : SD σ) (ε : ℤˣ) (S₀ : Matrix (Fin d.n) (Fin d.n)
     rw [h2] at h
     norm_num at h
 
+/- English proof (translation)
+Take `⟨ε, hb, -⟩` from `frame_sign d`. Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Take `⟨-, hH, hfd, h1⟩` from `hc`. Use `haveI := hH`. Use `haveI : BorelSpace (nA σ d.Y d.b) := (nA_top hσ d.ok.frame).2.2.2`.
+
+Take `⟨S₀, rfl⟩` from `hr`. Use `split_ifs with h0`. Establish `hone : ∀ β : nA σ d.Y d.b, d.B.ψ (-(d.tt (incM F S₀ * β.1))) = 1` using `fun β => by`. Rewrite using `[h0, Matrix.zero_mul, SD.tt, Matrix.trace_zero, map_zero, neg_zero, AddChar.map_zero_eq_one]`. Repeatedly rewrite using `[hone]`.
+
+Rewrite using `[setIntegral_const]`. Simplify using `[Measure.real, h1]`. Establish `hS0 : S₀ ≠ 0` using `fun h => h0 (by rw [h]; ext i j; simp [incM])`. Take `⟨β₀, hβ₀, hne⟩` from `exists_twist d ε S₀ ((mem_nA_iff hσ hb _).1 hS) hS0`. Set `h : nA σ d.Y d.b → ℂ` to `fun β => d.B.ψ (-(d.tt (incM F S₀ * β.1)))`.
+
+Establish `hadd : ∀ β β' : nA σ d.Y d.b, h (β + β') = h β * h β'` using `fun β β' => by`. Simplify using `only [h, AddSubgroup.coe_add, Matrix.mul_add, SD.tt, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul]`. Establish `hper : ∀ g ∈ nF σ d.Y d.b, ∀ y, h (g + y) = h y` using `fun g hg y => by`. Take `⟨T₀, hT₀⟩` from `(mem_nF_iff g).1 hg`. Rewrite using `[hadd]`.
+
+Establish `hg1 : h g = 1`. Simplify using `only [h, hT₀, ← incM_mul'', SD.tt, trace_incM, trace_inclR, ← map_neg]`. Conclude with `d.std.2.1 _`. Rewrite using `[hg1, one_mul]`. Conclude with `GlobalTheory.ThetaParsevalInner.setIntegral_eq_zero_of_twist lam (nF σ d.Y d.b) hfd hper (c := ⟨β₀, (mem_nA_iff hσ hb _).2 hβ₀⟩) (fun y => hadd _ y) hne`.
+-/
 theorem orth (d : SD σ) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (S : Matrix (Fin d.n) (Fin d.n) (AE F E))
     (hS : S ∈ nA σ d.Y d.b) (hr : ∃ S₀ : Matrix (Fin d.n) (Fin d.n) E, S = incM F S₀) :

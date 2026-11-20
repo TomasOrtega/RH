@@ -26,6 +26,11 @@ def AmpValLowerC : Prop :=
           ‖Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf s.toTerm))‖) ≤
         ‖Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s)‖
 
+/- English proof (translation)
+Establish `h` using `PiLp.norm_apply_le ((Y.tO u u').vec s) (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩)`. Establish `e : ((Y.tO u u').vec s) (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩) = ((Formalism.L2.SG.TermOp.wt s : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s)`. Express the relevant statement in the definitionally equal form `(Formalism.L2.SG.TermOp.vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s) (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩) = _`. Simplify using `[Formalism.L2.SG.TermOp.vec]`. Rewrite `h` using `[e, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (show 0 ≤ Formalism.L2.SG.TermOp.wt s from Real.sqrt_nonneg _)]`.
+
+Conclude with `h`.
+-/
 theorem vec_norm_ge (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
     Formalism.L2.SG.TermOp.wt s * ‖Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s)‖ ≤
       ‖(Y.tO u u').vec s‖ := by
@@ -39,6 +44,27 @@ theorem vec_norm_ge (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') 
     abs_of_nonneg (show 0 ≤ Formalism.L2.SG.TermOp.wt s from Real.sqrt_nonneg _)] at h
   exact h
 
+/- English proof (translation)
+Take `⟨c, hc, hA⟩` from `hA`. Establish `hv : Summable (fun s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') => ‖(Y.tO u u').vec s‖)` using `hAC.2.1`. Introduce `ρ`. Use `Formalism.L2.SG.RowsAbsX.summable_of_fibre_bound (fun (t : ClassT X Y u u' κ ρ) (s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) => s.toTerm = t.1) (fun p p' s hp hp' => Subtype.ext (hp.symm.trans hp')) (fun s => c⁻¹ * ‖(Y.tO u u').vec s‖) (fu …` and prove the remaining obligations. Introduce `t`.
+
+Rewrite using `[tsum_mul_left]`. Use `set A : ℝ := ‖Formalism.L2.SG.PairVal.cTerm vR t.1‖ * ‖Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf t.1))‖ with hAdef`. Establish `hA0 : 0 ≤ A` using `mul_nonneg (norm_nonneg _) (norm_nonneg _)`. Establish `hF : ‖(((Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u) t.1.lam) : ℝ) : ℂ) * Formalism.L2.SG.PairVal.cTerm vR t.1) • Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf t.1))‖ = Real. …`. Rewrite using `[norm_smul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), hAdef, mul_assoc]`.
+
+Rewrite using `[hF]`. Establish `hw0 : ∀ s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t.1}, 0 ≤ Formalism.MainNotions.S.wRow D (X.Fu u') s.1.lam'` using `fun s => inv_nonneg.2 (Nat.cast_nonneg _)`. Establish `hsum` using `hM t.1 t.2.1`. Establish `hws : Summable (fun s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t.1} => Formalism.MainNotions.S.wRow D (X.Fu u') s.1.lam')`. Assume the negation of the conclusion as `hns`.
+
+Rewrite `hsum` using `[tsum_eq_zero_of_not_summable hns]`. Conclude with `zero_ne_one hsum`. Establish `hw1 : ∀ s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t.1}, Formalism.MainNotions.S.wRow D (X.Fu u') s.1.lam' ≤ 1`. Introduce `s`. Rewrite using `[← hsum]`.
+
+Conclude with `hws.le_tsum s (fun j _ => hw0 j)`. Establish `hvf : Summable (fun s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t.1} => ‖(Y.tO u u').vec s.1‖)` using `hv.subtype _`. Establish `key : ∀ s : {s : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u') // s.toTerm = t.1}, c * (Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u) t.1.lam) * A) * Formalism.MainNotions.S.wRow D (X.Fu u') s.1.lam' ≤ ‖(Y.tO u u').vec s.1‖`. Introduce `s`. Take `⟨s, hs⟩` from `s`.
+
+Establish `hgen : s.toTerm.generic` using `hs ▸ t.2.1.1`. Establish `hG : s.toTerm.G ≠ 0` using `hs ▸ t.2.1.2`. Establish `h1` using `hA s hgen hG`. Rewrite `h1` using `[hs]`. Establish `hlam : s.lam = t.1.lam` using `congrArg Term.lam hs`.
+
+Establish `h2` using `vec_norm_ge X Y u u' s`. Establish `hwt : Formalism.L2.SG.TermOp.wt s = Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u) t.1.lam) * Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u') s.lam')`. Unfold `Formalism.L2.SG.TermOp.wt`. Rewrite using `[← hlam]`. Conclude with `Real.sqrt_mul (inv_nonneg.2 (Nat.cast_nonneg _)) _`.
+
+Establish `hsq : Formalism.MainNotions.S.wRow D (X.Fu u') s.lam' ≤ Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u') s.lam')`. Establish `h0 : 0 ≤ Formalism.MainNotions.S.wRow D (X.Fu u') s.lam'` using `inv_nonneg.2 (Nat.cast_nonneg _)`. Establish `h1' : Formalism.MainNotions.S.wRow D (X.Fu u') s.lam' ≤ 1` using `hw1 ⟨s, hs⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[hwt]`.
+
+Establish `hS0 : 0 ≤ Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u) t.1.lam)` using `Real.sqrt_nonneg _`. Establish `hS1 : 0 ≤ Real.sqrt (Formalism.MainNotions.S.wRow D (X.Fu u') s.lam')` using `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `hle` using `Summable.tsum_le_tsum key (hws.mul_left _) hvf`. Rewrite `hle` using `[tsum_mul_left, hsum, mul_one]`.
+
+Rewrite using `[le_inv_mul_iff₀ hc]`. Conclude with `hle`.
+-/
 theorem classAbsC_of
     (hAC : Formalism.L2.SG.TermOp.AbsConvT (X.Fu u) (X.Fu u') Y.TR (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u'))
     (hA : AmpValLowerC X Y u u' vR i0 i0' νq) (hM : LiftMassC X Y u u') :

@@ -25,16 +25,28 @@ def oddRoots : Finset (ℤ × ℤ) := {wAl, -wAl, wBe, -wBe, wTh, -wTh}
 
 def wts : Finset (ℤ × ℤ) := oddRoots ∪ {wPs, -wPs, 0}
 
+/- English proof (translation)
+Use `revert i j`. Evaluate the decidable proposition.
+-/
 theorem wt_mem (i j : Fin 4) : wt i j ∈ wts := by revert i j; decide
 
+/- English proof (translation)
+Use `revert i j`. Evaluate the decidable proposition.
+-/
 theorem wt_rev (i j : Fin 4) : wt j.rev i.rev = wt i j := by revert i j; decide
 
+/- English proof (translation)
+Use `revert i j`. Evaluate the decidable proposition.
+-/
 theorem wt_eq_zero (i j : Fin 4) : wt i j = 0 ↔ i = j := by revert i j; decide
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 def adj (X : M4 R) : M4 R := Matrix.of fun i j => (sgn i * sgn j) • X j.rev i.rev
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adj_apply (X : M4 R) (i j : Fin 4) : adj X i j = (sgn i * sgn j) • X j.rev i.rev := rfl
 
 def IsGSp (ν : R) (g : M4 R) : Prop := adj g * g = ν • (1 : M4 R)
@@ -75,6 +87,9 @@ variable {H : Type} [Group H]
 def mapRep {n : Type} [Fintype n] [DecidableEq n] (f : R →+* R') (r : H →* Matrix n n R) : H →* Matrix n n R' :=
   (f.mapMatrix : Matrix n n R →+* Matrix n n R').toMonoidHom.comp r
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mapRep_apply {n : Type} [Fintype n] [DecidableEq n] (f : R →+* R') (r : H →* Matrix n n R) (g : H) (i j : n) :
     mapRep f r g i j = f (r g i j) := rfl
 
@@ -103,10 +118,16 @@ structure Ord (I : Subgroup H) (ps : Fin 4 → H → R) (s₀ : H) (r : H →* M
 
 end Rep
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]`.
+-/
 example : IsGSp (1 : R) 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]
 
+/- English proof (translation)
+Use `show adj _ = -_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Xm, Fin.rev, Matrix.single_apply]`.
+-/
 example : Xm R ∈ sp4 R := by
   show adj _ = -_
   ext i j

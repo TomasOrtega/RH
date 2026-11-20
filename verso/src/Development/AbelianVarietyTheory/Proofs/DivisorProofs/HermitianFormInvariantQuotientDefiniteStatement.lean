@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeSocleOverOfSimple
 open scoped Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary | exact GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary | (intros; apply GlobalTheory.UnitaryRep.exists_isSimpleOver_of_unitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_form_invariant_quotient_definite : ∀ {V G : Type} [AddCommGroup V] [Module ℂ V] [Group G] (ρ : G →* Module.End ℂ V)
     (𝒦 : Set (Subgroup G)) (B : V → V → ℂ) (D N : Submodule ℂ V)
     (hD : ∀ g, ∀ x ∈ D, ρ g x ∈ D) (hND : N ≤ D) (hne : N ≠ D) (hN : ∀ g, ∀ x ∈ N, ρ g x ∈ N)

@@ -10,6 +10,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Establish `hfin : Module.Finite ℤ H` using `Module.Finite.iff_addGroup_fg.2 ((AddGroup.fg_iff_addSubgroup_fg H).2 hH)`. Break down `CharP.char_is_prime_or_zero K (ringChar K) with hq | h0` into its components or cases. Use `left`. Establish `htor : Module.IsTorsion ℤ H`. Introduce `x`.
+
+Use `⟨⟨(ringChar K : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hq.ne_zero)⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[ringChar.Nat.cast_ringChar]`. Establish `: Finite H` using `Module.finite_of_fg_torsion H htor`. Conclude with `Set.toFinite _`.
+
+Use `right haveI : CharP K 0 := h0 ▸ ringChar.charP K haveI : CharZero K := CharP.charP_to_charZero K haveI : NoZeroSMulDivisors ℤ H := inferInstance haveI : Module.Free ℤ H := Module.free_of_finite_type_torsion_free'`. Set `bs` to `Module.finBasis ℤ H`. Use `⟨_, fun j => (bs j : K), fun j => (bs j).2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `bs.linearIndependent.map' H.subtype.toIntLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Introduce `x hx`.
+
+Use `⟨bs.repr ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (bs.sum_repr ⟨x, hx⟩)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [AddSubgroup.val_finset_sum, AddSubgroup.coe_zsmul]`.
+-/
 theorem fg_addSubgroup_field_finite_or_basis {K : Type} [Field K] (H : AddSubgroup K) (hH : H.FG) :
     (H : Set K).Finite ∨ ∃ (r : ℕ) (f : Fin r → K), (∀ j, f j ∈ H) ∧ LinearIndependent ℤ f ∧
       ∀ x ∈ H, ∃ c : Fin r → ℤ, x = ∑ j, c j • f j := by
@@ -41,6 +50,15 @@ theorem fg_addSubgroup_field_finite_or_basis {K : Type} [Field K] (H : AddSubgro
         _ = ∑ j, bs.repr ⟨x, hx⟩ j • (bs j : K) := by
           simp only [AddSubgroup.val_finset_sum, AddSubgroup.coe_zsmul]
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P a b R`. Break down `fg_addSubgroup_field_finite_or_basis (P.H a b) (GlobalTheory.T.pairSections_fg_of_projArithVariety k X p D hX P a b) with hfin | ⟨r, f, hf, hli, hspan⟩` into its components or cases. Conclude with `hfin.subset (fun x hx => hx.1)`. Take `⟨C, -, hC⟩` from `GlobalTheory.T.exists_coeff_bound_of_linearIndependent_sections k X p D hX P a b r f hf hli`. Establish `hS : {c : Fin r → ℤ | ∀ j, |(c j : ℝ)| ≤ C * R}.Finite`.
+
+Use `(Set.Finite.pi (t := fun _ : Fin r => Set.Icc (-⌈C * R⌉) ⌈C * R⌉) (fun _ => Set.finite_Icc _ _)).subset ?_` and prove the remaining obligations. Introduce `c hc j _`. Establish `h` using `abs_le.1 (hc j)`. Establish `hc1` using `Int.le_ceil (C * R)`. Establish `h1 : (c j : ℝ) ≤ (⌈C * R⌉ : ℝ)` using `h.2.trans hc1`.
+
+Establish `h2 : -((⌈C * R⌉ : ℤ) : ℝ) ≤ c j` using `by linarith`. Conclude with `⟨by exact_mod_cast h2, by exact_mod_cast h1⟩`. Use `(hS.image (fun c => ∑ j, c j • f j)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨c, rfl⟩` from `hspan x hx.1`.
+
+Conclude with `⟨c, fun j => hC c R hx j, rfl⟩`.
+-/
 theorem bl_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p) (a b : ℤ) (R : ℝ), (P.Bl a b R).Finite := by
   intro k _ X _ p D hX P a b R

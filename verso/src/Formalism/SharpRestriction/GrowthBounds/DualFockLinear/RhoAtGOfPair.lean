@@ -38,6 +38,17 @@ def PairAt (c0 : ℕ) (bK : ℝ) (e : Edge W Qq (m + 1)) (Θ : ↥((Pol (KK O) (
 
 end At
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `Formalism.L2.G.Model.hlSpans p n' W Qq O Kf ι σ j w h m X hd L hL`. Establish `hc : ∀ i, x.coord i ∈ dualLat O Kf (HL (O` using `O) ι σ X L) := by`. Introduce `i v hv`. Rewrite `hv` using `[← hx]`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨k, rfl⟩` from `hv`. Distinguish the cases in `hik : k = i`. Conclude with `⟨1, by simp [hik]⟩`. Conclude with `⟨0, by simp [Finsupp.single_apply, hik]⟩`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', ha'⟩` from `ha`. Take `⟨b', hb'⟩` from `hb`. Conclude with `⟨a' + b', by rw [map_add, map_add, ha', hb']⟩`.
+
+Consider the case `smul t a _ ha`. Take `⟨a', ha'⟩` from `ha`. Conclude with `⟨t * a', by rw [LinearMap.map_smul_of_tower, ← ha', map_mul, Algebra.smul_def]⟩`. Rewrite using `[← hx, ← x.sum_repr y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hy _ (hc i)`. Rewrite `ha` using `[Module.Basis.coord_apply]`. Rewrite using `[← ha, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem HL_refl {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (h : HidaSetting p n' W Qq O Kf ι σ j w) {m : ℕ}
@@ -71,6 +82,57 @@ theorem HL_refl {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDis
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨κ0, κf, Ψ0, Ψf, hκ, a1, a2, a3, b1, b2, b3, hon, hop⟩` from `hP`. Establish `hw` using `w_ne_zero h`. Establish `hp0 : (p : Kf) ≠ 0` using `by rw [Formalism.L2.G.Model.p_eq h]; exact pow_ne_zero _ hw`. Establish `hfd : IsDominant (flW (m` using `m) d) := flW_dom _`. Establish `hdl : IsDominant lam` using `by rw [hlam]; exact isDominant_add hfd hdr`.
+
+Establish `hAr : Ar r lam = Ar r (flW (m` using `m) d) + Ar r rest := by rw [hlam]; exact Ar_add r _ _`. Establish `hM` using `Formalism.L2.G.Model.products_sections_integral D`. Use `set cw : Kf := algebraMap O Kf w with hcw`. Establish `bpl` using `fun e' (he' : IsEdge p n' r e') => Formalism.L2.G.Model.bePerfect p n' W Qq O Kf ι σ j w h m r lam hdl e' he'`. Establish `bpf` using `fun e' (he' : IsEdge p n' r e') => Formalism.L2.G.Model.bePerfect p n' W Qq O Kf ι σ j w h m r (flW (m := m) d) hfd e' he'`.
+
+Take `⟨xb, -⟩` from `Formalism.L2.G.Model.hlSpans p n' W Qq O Kf ι σ j w h m (flW (m := m) d) hfd e.tgt he.2.1`. Establish `: Module.Finite Kf (Vsp Kf (flW (m` using `m) d)) := Module.Finite.of_basis xb`. Set `mulR : Vsp Kf rest → (Vsp Kf (flW (m` to `m) d) →ₗ[Kf] Vsp Kf lam) := fun β => (LinearMap.mulRight Kf (β : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)).restrict (fun x hx => V_mul Kf hlam hfd hdr hx β.2)`. Establish `hmulR : ∀ β y, ((mulR β y : Vsp Kf lam) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = (y : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * (β : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf)` using `fun β y => rfl`. Set `Λ : Vsp Kf rest → (Module.Dual Kf (Vsp Kf (flW (m` to `m) d)) →ₗ[Kf] Module.Dual Kf (Vsp Kf lam)) := fun β => ((p : Kf) ^ κ0) • (Ψ0.symm.toLinearMap ∘ₗ mulR β ∘ₗ Ψf.toLinearMap)`.
+
+Establish `hΛ : ∀ β T, Λ β T = Ψ0.symm ((p : Kf) ^ κ0 • mulR β (Ψf T))`. Introduce `β T`. Simplify using `only [Λ, LinearMap.smul_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, map_smul]`. Establish `hΛs : ∀ (c : Kf) β T, Λ (c • β) T = c • Λ β T`. Introduce `c β T`.
+
+Establish `e : mulR (c • β) (Ψf T) = c • mulR β (Ψf T)` using `Subtype.ext (by`. Rewrite using `[hmulR, Submodule.coe_smul, Submodule.coe_smul, hmulR, mul_smul_comm])`. Rewrite using `[hΛ, hΛ, e, smul_comm ((p : Kf) ^ κ0) c, map_smul]`. Set `ρ : Vsp Kf rest → (Vsp Kf lam →ₗ[Kf] Vsp Kf (flW (m` to `m) d)) := fun β => (Module.evalEquiv Kf (Vsp Kf (flW (m := m) d))).symm.toLinearMap ∘ₗ (((p : Kf) ^ Ar r rest) • Λ β).dualMap ∘ₗ Module.Dual.eval Kf (Vsp Kf lam)`. Establish `hρ : ∀ β T u, T (ρ β u) = (p : Kf) ^ Ar r rest * Λ β T u`.
+
+Introduce `β T u`. Simplify using `only [ρ, LinearMap.comp_apply, LinearEquiv.coe_coe, Module.apply_evalEquiv_symm_apply, LinearMap.dualMap_apply, Module.Dual.eval_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `hI : ∀ β u T, be p r (flW d) (ρ β u) T = be p r lam u (Λ β T)`. Introduce `β u T`. Unfold `be`.
+
+Rewrite using `[map_smul, map_smul, hρ, smul_eq_mul, smul_eq_mul, hAr, zpow_add₀ hp0, mul_assoc]`. Establish `hmem : ∀ e' : Edge W Qq (m + 1), IsEdge p n' r e' → e'.tgt = e.tgt → ∀ β ∈ Re p ι σ w r rest e'.dual, ∀ T ∈ Re' p ι σ w r (flW d) e', Λ β T ∈ Re' p ι σ w r lam e'`. Introduce `e' he' htg β hβ T hT`. Rewrite using `[hΛ]`. Conclude with `b2 e' he' htg _ (edge_lattice_mul_of_weight_sum D hM p ι σ w hw r hlam hfd hdr e'.dual (hmulR β _) (a2 e' he' htg T hT) hβ)`.
+
+Establish `hed` using `fun e' (he' : IsEdge p n' r e') => (Formalism.L2.G.Model.dual_edge h m r e' he').1`. Establish `hβH : ∀ β ∈ Re p ι σ w r rest e.dual, ∃ β' ∈ HL (O` using `O) ι σ rest (latDual e.tgt), cw ^ (-(loss : ℤ)) • β' = β := fun β hβ => mem_scale.1 (Re_le_scale_HL h m r rest hdr e.dual (hed e he) loss hord hβ)`. Use `⟨κ0 + κf, hκ, {β : Vsp Kf rest // β ∈ Re p ι σ w r rest e.dual}, fun β => ρ β.1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `β u hu`. Rewrite using `[(bpf e he).2]`.
+
+Introduce `T hT`. Rewrite using `[hI]`. Conclude with `((bpl e he).1 _).1 (hmem e he rfl β.1 β.2 T hT) u hu`. Introduce `β e' he' htg u hu`. Take `⟨β', hβ', hβe⟩` from `hβH β.1 β.2`.
+
+Establish `hβ'' : β' ∈ Re p ι σ w r rest e'.dual` using `(Formalism.L2.G.Model.dualInclusionLattices p n' W Qq O Kf ι σ j w h m r rest hdr e'.dual (hed e' he')).1 (by show β' ∈ HL (O := O) ι σ rest (latDual e'.tgt)`. Rewrite using `[htg]`. Conclude with `hβ')`. Use `mem_scale.2 ⟨cw ^ (loss : ℤ) • ρ β.1 u, ?_, by` and prove the remaining obligations. Rewrite using `[smul_smul, ← zpow_add₀ hw]`.
+
+Use the proof step `simp⟩`. Rewrite using `[(bpf e' he').2]`. Introduce `T hT`. Rewrite using `[be_smulK_left, hI, ← hβe, hΛs, be_smulK_right, ← mul_assoc, ← zpow_add₀ hw]`. Simplify using `only [add_neg_cancel, zpow_zero, one_mul]`.
+
+Conclude with `((bpl e' he').1 _).1 (hmem e' he' htg β' hβ'' T hT) u hu`. Introduce `β u hu`. Take `⟨β', hβ', hβe⟩` from `hβH β.1 β.2`. Use `mem_scale.2 ⟨((p : Kf) ^ Ar r rest * cw ^ (-(loss : ℤ)))⁻¹ • ρ β.1 u, ?_, by` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ (mul_ne_zero (zpow_ne_zero _ hp0) (zpow_ne_zero _ hw)), one_smul]⟩`.
+
+Apply `HL_refl h _ hfd e.tgt he.2.1` to reduce the goal to its premises. Introduce `T hT`. Rewrite using `[map_smul, hρ, ← hβe, hΛs, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `e1 : ((p : Kf) ^ Ar r rest * cw ^ (-(loss : ℤ)))⁻¹ * ((p : Kf) ^ Ar r rest * (cw ^ (-(loss : ℤ)) * Λ β' T u)) = Λ β' T u`. Establish `h1` using `zpow_ne_zero (Ar r rest) hp0`.
+
+Establish `h2` using `zpow_ne_zero (-(loss : ℤ)) hw`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, hΛ]`. Establish `h3 : mulR β' (Ψf T) ∈ HL (O` using `O) ι σ lam (latDual e.tgt) := by`. Use `HL_mul D hM ι σ hlam hfd hdr (latDual e.tgt) cw hw 0 0 (hmulR β' (Ψf T)) (mem_scale.2 ⟨_, a1 T hT, by simp⟩) (mem_scale.2 ⟨_, hβ', by simp⟩)` as an intermediate fact.
+
+Take `⟨z, hz, hze⟩` from `mem_scale.1 this`. Rewrite using `[← hze]`. Simplify using `using hz`. Conclude with `b1 _ h3 u hu`. Introduce `β F s u hu`.
+
+Take `⟨F', hF', hT⟩` from `hop β.1 F s u hu`. Use `⟨F', hF', ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff Kf]`. Introduce `T`. Rewrite using `[map_sub, sub_eq_zero, hρ, hΛ, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Conclude with `hT T _ (hmulR β.1 (Ψf T))`. Introduce `u hu hall`. Use `mem_scale.2 ⟨cw ^ (-(1 : ℤ)) • u, ?_, by rw [smul_smul, ← zpow_add₀ hw]; simp⟩` and prove the remaining obligations. Rewrite using `[(bpl e he).2]`. Introduce `G hG`.
+
+Establish `key : ∀ z ∈ Submodule.span O {z : Vsp Kf lam | ∃ y ∈ Re p ι σ w r (flW d) e.dual, ∃ β ∈ Re p ι σ w r rest e.dual, (z : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) = (y : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * (β : MvPolynomial (Fin n' × (Fin (m + 1) …`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, β, hβ, hzy⟩` from `hz`.
+
+Establish `hT` using `a3 y hy`. Take `⟨z', hz', hz'e⟩` from `mem_scale.1 (hall ⟨β, hβ⟩)`. Take `⟨a, ha⟩` from `((bpf e he).1 _).1 hT z' hz'`. Establish `e1 : Λ β (Ψf.symm ((p : Kf) ^ κf • y)) = ((p : Kf) ^ κ0 * (p : Kf) ^ κf) • Ψ0.symm z`. Rewrite using `[hΛ, Ψf.apply_symm_apply, map_smul, map_smul, map_smul, smul_smul]`.
+
+Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hmulR, hzy]`. Establish `e2` using `hI β u (Ψf.symm ((p : Kf) ^ κf • y))`. Rewrite `e2` using `[e1, be_smulK_right]`.
+
+Establish `e2' : be p r (flW d) (ρ β u) (Ψf.symm ((p : Kf) ^ κf • y)) = cw ^ ((2 * (κ0 + κf) + 1 : ℕ) : ℤ) * algebraMap O Kf a`. Rewrite using `[← hz'e, be_smulK_left, ha]`. Rewrite `e2` using `[e2']`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[be_smulK_left]`.
+
+Establish `e3 : (p : Kf) ^ κ0 * (p : Kf) ^ κf = cw ^ ((2 * (κ0 + κf) : ℕ) : ℤ)`. Rewrite using `[← pow_add, Formalism.L2.G.Model.p_eq h, ← pow_mul, zpow_natCast]`. Rewrite `e2` using `[e3]`. Establish `e4 : cw ^ ((2 * (κ0 + κf) + 1 : ℕ) : ℤ) = cw ^ ((2 * (κ0 + κf) : ℕ) : ℤ) * cw`. Rewrite using `[zpow_natCast, zpow_natCast, pow_succ]`.
+
+Rewrite `e2` using `[e4, mul_assoc]`. Establish `e5` using `mul_left_cancel₀ (zpow_ne_zero _ hw) e2`. Rewrite using `[← e5, ← mul_assoc, zpow_neg, zpow_one, inv_mul_cancel₀ hw, one_mul]`. Consider the case `zero => exact ⟨0, by simp [be]⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨a', ha'⟩` from `ha`. Take `⟨b', hb'⟩` from `hb`. Conclude with `⟨a' + b', by rw [map_add, map_add, be_add_right, ha', hb']⟩`. Consider the case `smul t a _ ha`. Take `⟨a', ha'⟩` from `ha`.
+
+Conclude with `⟨t * a', by rw [← algebraMap_smul Kf t a, map_smul, be_smulK_right, ← ha', map_mul]⟩`. Use `key _ (hon (b3 G hG))` as an intermediate fact. Rewrite `this` using `[Ψ0.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem rhoAtG_of_pair (D : Formalism.BasicNotions.D7) {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf]
     [Algebra O Kf] {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (h : HidaSetting p n' W Qq O Kf ι σ j w) {m : ℕ}

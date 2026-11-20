@@ -8,6 +8,21 @@ namespace GlobalTheory
 open Set MeasureTheory
 open scoped Topology
 
+/- English proof (translation)
+Establish `hli : ∀ a b : ℝ, a • w₁ + b • w₂ = 0 → a = 0 ∧ b = 0`. Introduce `a b hab`. Establish `h1` using `congrArg Complex.re hab`. Establish `h2` using `congrArg Complex.im hab`. Simplify using `at h1 h2 h`.
+
+Establish `h' : w₁.re * w₂.im - w₁.im * w₂.re ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
+
+Apply `mul_right_cancel₀ h'` to reduce the goal to its premises. Take the linear combination `w₂.im * h1 - w₂.re * h2`. Apply `mul_right_cancel₀ h'` to reduce the goal to its premises. Take the linear combination `w₁.re * h2 - w₁.im * h1`. Set `L : PeriodPair` to `⟨w₁, w₂, LinearIndependent.pair_iff.mpr hli⟩`.
+
+Establish `hs` using `ZLattice.summable_norm_sub_rpow L.lattice (-(2 * σ)) (by simp; linarith) (-x₀)`. Set `φ : ℤ × ℤ → L.lattice` to `fun p => ⟨p.1 * w₁ + p.2 * w₂, PeriodPair.mem_lattice.mpr ⟨p.1, p.2, rfl⟩⟩`. Establish `hφ : Function.Injective φ`. Introduce `p q hpq`. Establish `e : (p.1 * w₁ + p.2 * w₂ : ℂ) = q.1 * w₁ + q.2 * w₂` using `congrArg Subtype.val hpq`.
+
+Use `hli (p.1 - q.1) (p.2 - q.2) (by simp; linear_combination e)` as an intermediate fact. Simplify using `only [sub_eq_zero, Int.cast_inj] at this`. Conclude with `Prod.ext this.1 this.2`. Use `(hs.comp_injective hφ).congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, φ]`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem summable_shiftedLattice_normSq_rpow (w₁ w₂ x₀ : ℂ)
     (h : (starRingEnd ℂ w₁ * w₂).im ≠ 0) {σ : ℝ} (hσ : 1 < σ) :
     Summable fun p : ℤ × ℤ => (‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2 : ℝ) ^ (-σ) := by
@@ -40,6 +55,13 @@ theorem summable_shiftedLattice_normSq_rpow (w₁ w₂ x₀ : ℂ)
   · congr 1; ring
   · push_cast; ring
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun i => (Real.exp_pos _).le) (fun i => ?_) (hs.mul_left (2 / (Real.pi * t) ^ 2))` and prove the remaining obligations. Establish `hx : 0 < Real.pi * t * q i` using `by have := hq i; positivity`. Establish `h1` using `Real.pow_div_factorial_le_exp _ hx.le 2`. Establish `h2 : -Real.pi * t * q i = -(Real.pi * t * q i)` using `by ring`. Establish `h3 : (2 / (Real.pi * t) ^ 2) * q i ^ (-(2 : ℝ)) = ((Real.pi * t * q i) ^ 2 / (Nat.factorial 2 : ℕ))⁻¹`.
+
+Use `hq i` as an intermediate fact. Rewrite using `[Real.rpow_neg (hq i).le, Real.rpow_two]`. Simplify using `only [Nat.factorial_two, Nat.cast_ofNat]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2, h3, Real.exp_neg]`.
+
+Conclude with `inv_anti₀ (by positivity) h1`.
+-/
 theorem summable_exp_neg_pi_mul_of_summable_rpow {ι : Type*} {q : ι → ℝ} (hq : ∀ i, 0 < q i)
     (hs : Summable fun i => q i ^ (-(2 : ℝ))) {t : ℝ} (ht : 0 < t) :
     Summable fun i => Real.exp (-Real.pi * t * q i) := by
@@ -57,6 +79,11 @@ theorem summable_exp_neg_pi_mul_of_summable_rpow {ι : Type*} {q : ι → ℝ} (
   rw [h2, h3, Real.exp_neg]
   exact inv_anti₀ (by positivity) h1
 
+/- English proof (translation)
+Introduce `t ht`. Establish `ht' : 0 < t / 2` using `half_pos ht`. Establish `: ContinuousOn (fun t : ℝ => ∑' i, Real.exp (-Real.pi * t * q i)) (Ioi (t / 2))`. Use `continuousOn_tsum (fun i => by fun_prop) (summable_exp_neg_pi_mul_of_summable_rpow hq hs ht') fun i x hx => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, Real.abs_exp]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1 : t / 2 < x` using `hx`. Use `mul_pos (mul_pos Real.pi_pos (sub_pos.mpr h1)) (hq i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(this.continuousAt (Ioi_mem_nhds (half_lt_self ht))).continuousWithinAt`.
+-/
 theorem continuousOn_tsum_exp_neg_pi_mul {ι : Type*} {q : ι → ℝ} (hq : ∀ i, 0 < q i)
     (hs : Summable fun i => q i ^ (-(2 : ℝ))) :
     ContinuousOn (fun t : ℝ => ∑' i, Real.exp (-Real.pi * t * q i)) (Ioi 0) := by
@@ -72,6 +99,9 @@ theorem continuousOn_tsum_exp_neg_pi_mul {ι : Type*} {q : ι → ℝ} (hq : ∀
     linarith
   exact (this.continuousAt (Ioi_mem_nhds (half_lt_self ht))).continuousWithinAt
 
+/- English proof (translation)
+Use `((isLittleO_exp_neg_mul_rpow_atTop hc b).isBigO.comp_tendsto tendsto_inv_nhdsGT_zero).congr' (.of_forall fun t => ?_) (eventually_mem_nhdsWithin.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`. Simplify using `only [Function.comp]`. Rewrite using `[Real.inv_rpow (le_of_lt ht), Real.rpow_neg (le_of_lt ht)]`.
+-/
 theorem isBigO_exp_neg_div_rpow {c : ℝ} (hc : 0 < c) (b : ℝ) :
     (fun t : ℝ => Real.exp (-c / t)) =O[𝓝[>] 0] (fun t : ℝ => t ^ (-b)) := by
   refine ((isLittleO_exp_neg_mul_rpow_atTop hc b).isBigO.comp_tendsto
@@ -81,6 +111,35 @@ theorem isBigO_exp_neg_div_rpow {c : ℝ} (hc : 0 < c) (b : ℝ) :
   · simp only [Function.comp]
     rw [Real.inv_rpow (le_of_lt ht), Real.rpow_neg (le_of_lt ht)]
 
+/- English proof (translation)
+Use `set θ : ℝ → ℝ := fun t => ∑' i, Real.exp (-Real.pi * t * q i) with hθ`. Establish `hθc : ContinuousOn θ (Ioi 0)` using `continuousOn_tsum_exp_neg_pi_mul hq (hs 2 one_lt_two)`. Set `g : ℝ → ℂ` to `indicator (Ioc 0 1) (fun t => (t : ℂ) ^ (-1 : ℂ))`. Set `A : ℂ` to `(V : ℂ)⁻¹`. Set `f : ℝ → ℂ` to `fun t => (θ t : ℂ) - A • g t`.
+
+Establish `hfc : LocallyIntegrableOn f (Ioi 0)`. Use `LocallyIntegrableOn.sub ((continuous_ofReal.comp_continuousOn hθc).locallyIntegrableOn measurableSet_Ioi) (LocallyIntegrableOn.smul ?_ A)` and prove the remaining obligations. Establish `h0 : LocallyIntegrableOn (fun t : ℝ => (t : ℂ) ^ (-1 : ℂ)) (Ioi 0)` using `ContinuousOn.locallyIntegrableOn (continuousOn_of_forall_continuousAt fun t ht => continuousAt_ofReal_cpow_const _ _ (Or.inr <| ne_of_gt ht)) measurableSet_Ioi`. Introduce `x hx`. Take `⟨u, hu, hu'⟩` from `h0 x hx`.
+
+Conclude with `⟨u, hu, hu'.indicator measurableSet_Ioc⟩`. Establish `hftop : f =O[atTop] fun t => Real.exp (-c * t)`. Use `(isBigO_ofReal_left.mpr htop).congr' ?_ EventuallyEq.rfl` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 1] with t ht`. Simplify using `[f, g, indicator_of_notMem (fun h : t ∈ Ioc (0:ℝ) 1 => h.2.not_gt ht)]`.
+
+Establish `hfbot : ∀ b : ℝ, f =O[𝓝[>] 0] fun t => t ^ (-b)`. Introduce `b`. Use `((isBigO_ofReal_left.mpr hbot).congr' ?_ EventuallyEq.rfl).trans (isBigO_exp_neg_div_rpow hc b)` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT (zero_lt_one' ℝ)] with t ht`. Simplify using `only [f, g, A, indicator_of_mem ht, cpow_neg_one, smul_eq_mul, θ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiff : Differentiable ℂ (mellin f)` using `fun s => mellin_differentiableAt_of_isBigO_rpow_exp hc hfc hftop (hfbot (s.re - 1)) (sub_one_lt _)`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `ofReal_ne_zero.mpr Real.pi_ne_zero`. Use `⟨fun s => (Real.pi : ℂ) ^ s * (Gamma s)⁻¹ * ((s - 1) * mellin f s + A), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Differentiable.mul (differentiable_id.const_cpow (Or.inl hpi)) differentiable_one_div_Gamma).mul ?_` and prove the remaining obligations. Conclude with `((differentiable_id.sub_const 1).mul hdiff).add_const A`. Simplify using `[A, div_eq_mul_inv]`. Establish `: Gamma (-1) = 0` using `by simpa using Gamma_neg_nat_eq_zero 1`. Simplify using `[this]`.
+
+Introduce `s hs1`. Establish `hs0 : 0 < s.re` using `by linarith`. Establish `hsum : HasSum (fun i => (Real.pi : ℂ) ^ (-s) * Gamma s * (1 : ℂ) / (q i : ℂ) ^ s) (mellin (fun t => (θ t : ℂ)) s)`. Use `hasSum_mellin_pi_mul (a := fun _ => 1) (fun i => Or.inr (hq i)) hs0 (fun t ht => ?_) ?_` and prove the remaining obligations. Use `(summable_exp_neg_pi_mul_of_summable_rpow hq (hs 2 one_lt_two) ht).hasSum` as an intermediate fact.
+
+Rewrite `this` using `[← hasSum_ofReal]`. Use `this using 3 with i` and compare the differences between its conclusion and the goal. Rewrite using `[one_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `(hs s.re hs1).congr fun i => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (hq i).le, norm_one, one_div]`. Establish `hg` using `hasMellin_cpow_Ioc (-1) (s := s) (by simp; linarith)`. Establish `hgA` using `hasMellin_const_smul hg.1 A`. Establish `hfm : MellinConvergent f s` using `mellinConvergent_of_isBigO_rpow_exp hc hfc hftop (hfbot 0) hs0`.
+
+Establish `hadd` using `(hasMellin_add hfm hgA.1).2`. Establish `e1 : (fun t => f t + A • g t) = fun t => (θ t : ℂ)`. Use function extensionality and compare the values at `t`. Simplify using `[f]`. Rewrite `hadd` using `[hgA.2, hg.2]`.
+
+Establish `hadd' : mellin (fun t => (θ t : ℂ)) s = mellin f s + A • (1 / (s + -1))`. Rewrite using `[← e1]`. Conclude with `hadd`. Establish `hG : Gamma s ≠ 0` using `Gamma_ne_zero_of_re_pos hs0`. Establish `hp : (Real.pi : ℂ) ^ s ≠ 0` using `by simp [cpow_eq_zero_iff]`.
+
+Establish `hs1' : s - 1 ≠ 0`. Introduce `h0`. Rewrite `hs1` using `[sub_eq_zero.mp h0]`. Simplify using `at hs1`. Establish `hsum2 : HasSum (fun i => ((q i : ℝ) : ℂ) ^ (-s)) ((Real.pi : ℂ) ^ s * (Gamma s)⁻¹ * mellin (fun t => (θ t : ℂ)) s)`.
+
+Use `HasSum.congr_fun (hsum.mul_left ((Real.pi : ℂ) ^ s * (Gamma s)⁻¹)) fun i => ?_` and prove the remaining obligations. Rewrite using `[cpow_neg, cpow_neg]`. Clear the denominators using the available nonvanishing facts. Use `⟨hsum2.summable, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum2.tsum_eq, hadd', ← sub_eq_add_neg, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_entire_dirichlet_of_theta {ι : Type*} [Countable ι] {q : ι → ℝ}
     (hq : ∀ i, 0 < q i) (hs : ∀ σ : ℝ, 1 < σ → Summable fun i => q i ^ (-σ)) {V c : ℝ}
     (hc : 0 < c)
@@ -163,6 +222,9 @@ theorem exists_entire_dirichlet_of_theta {ι : Type*} [Countable ι] {q : ι →
     rw [hsum2.tsum_eq, hadd', ← sub_eq_add_neg, smul_eq_mul]
     field_simp
 
+/- English proof (translation)
+Introduce `w₁ w₂ x₀ h hx`. Take `⟨c, hc, htop, hbot⟩` from `GlobalTheory.T.lattice_theta_asymptotics w₁ w₂ x₀ h hx`. Conclude with `exists_entire_dirichlet_of_theta (q := fun p : ℤ × ℤ => ‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2) (fun p => pow_pos (norm_pos_iff.mpr (hx p.1 p.2)) 2) (fun σ hσ => summable_shiftedLattice_normSq_rpow w₁ w₂ x₀ h hσ) hc htop hbot`.
+-/
 theorem epsteinZeta_shifted_continuation : ∀ (w₁ w₂ x₀ : ℂ), (starRingEnd ℂ w₁ * w₂).im ≠ 0 → (∀ m n : ℤ, x₀ + m * w₁ + n * w₂ ≠ 0) → ∃ Z : ℂ → ℂ, Differentiable ℂ Z ∧ Z 1 = (Real.pi / |(starRingEnd ℂ w₁ * w₂).im| : ℝ) ∧ Z (-1) = 0 ∧ ∀ s : ℂ, 1 < s.re → Summable (fun p : ℤ × ℤ => ((‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2 : ℝ) : ℂ) ^ (-s)) ∧ Z s = (s - 1) * ∑' p : ℤ × ℤ, ((‖x₀ + p.1 * w₁ + p.2 * w₂‖ ^ 2 : ℝ) : ℂ) ^ (-s) := by
   intro w₁ w₂ x₀ h hx
   obtain ⟨c, hc, htop, hbot⟩ := GlobalTheory.T.lattice_theta_asymptotics w₁ w₂ x₀ h hx

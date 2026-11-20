@@ -34,6 +34,23 @@ open GroundTheory.Automorphic.GJMatrix GlobalTheory.CuspRep.CuspidalL2GL GlobalT
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Take `⟨h1, h2⟩` from `(mem_finiteSchwartzBruhatPi E).mp hg`. Take `⟨B, hB⟩` from `h1.continuous.bounded_above_of_compact_support h2`.
+
+Use `set S := (toMixedPi E a).symm`. Use `set C := ‖(S : (Fin a → mixedEmbedding.mixedSpace E) →L[ℝ] (Fin a → Cinf E))‖`. Establish `hC : 0 ≤ C` using `norm_nonneg _`. Take `⟨A₀, -, hA₀⟩` from `φ.decay 0 0`. Take `⟨A₁, -, hA₁⟩` from `φ.decay M 0`.
+
+Use `⟨(1 + C) ^ M * 2 ^ M * (A₀ + A₁) * B, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SchwartzBruhatMoments.pInfPi_eq, schwartzBruhatTensorPi, norm_mul]`. Establish `hBy` using `hB (finPartPi y)`. Generalize the expression as in `finPartPi y = z at hBy`. Generalize the expression as in `infPartPi y = u`.
+
+Establish `a0` using `hA₀ u`. Establish `a1` using `hA₁ u`. Rewrite `a0`, `a1` using `[norm_iteratedFDeriv_zero]`. Rewrite `a0` using `[pow_zero, one_mul]`. Establish `h1 : ‖S u‖ ≤ C * ‖u‖` using `(S : (Fin a → mixedEmbedding.mixedSpace E) →L[ℝ] (Fin a → Cinf E)).le_opNorm u`.
+
+Establish `h2 : 1 + ‖S u‖ ≤ (1 + C) * (1 + ‖u‖)` using `by nlinarith [norm_nonneg u, norm_nonneg (S u)]`. Establish `h3 : (1 + ‖S u‖) ^ M ≤ (1 + C) ^ M * (2 ^ M * (1 + ‖u‖ ^ M))`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : ‖φ u‖ * (1 + ‖S u‖) ^ M ≤ (1 + C) ^ M * 2 ^ M * (A₀ + A₁)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, fun y => by simp⟩`. Consider the case `add G H _ _ hG hH`. Take `⟨B₁, h1⟩` from `hG`. Take `⟨B₂, h2⟩` from `hH`.
+
+Use `⟨B₁ + B₂, fun y => le_trans ?_ (add_le_add (h1 y) (h2 y))⟩` and prove the remaining obligations. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)`. Consider the case `smul c G _ hG`. Take `⟨B, h⟩` from `hG`.
+
+Use `⟨‖c‖ * B, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)`.
+-/
 theorem exists_norm_mul_pow_le {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwartzBruhatPi E (Fin a)) (M : ℕ) :
     ∃ B : ℝ, ∀ y, ‖G y‖ * (1 + ‖fun i => pInf E (y i)‖) ^ M ≤ B := by
   classical
@@ -83,6 +100,15 @@ theorem exists_norm_mul_pow_le {G : (Fin a → Ad E) → ℂ} (hG : G ∈ schwar
     rw [Pi.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨L, hL, hs⟩` from `(GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments E a G hG).1`. Use `⟨⟨L, hL, fun g y hy => hs y (right_ne_zero_of_mul hy)⟩, fun L hL N M => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h L hL {1} isCompact_singleton N`. Take `⟨C', hC'⟩` from `h L hL {1} isCompact_singleton 0`. Take `⟨B, hB⟩` from `exists_norm_mul_pow_le hG M`.
+
+Use `⟨|C| * |C'| * |B|, fun g ξ hξ hm y => ?_⟩` and prove the remaining obligations. Establish `hΔ : 0 < (GroundTheory.Global.IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det g) : ℝ)` using `(GroundTheory.Global.IdeleGroup.ideleModule E _).2`. Establish `h1` using `(hC g 1 rfl ξ hξ hm).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Establish `h2` using `(hC' g 1 rfl ξ hξ hm).trans (mul_le_mul_of_nonneg_right (le_abs_self C') (by positivity))`. Rewrite `h1`, `h2` using `[mul_one]`.
+
+Establish `h3 : ‖G y‖ ≤ |B| * (1 + ‖fun i => pInf E (y i)‖) ^ (-(M : ℝ))`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Conclude with `(hB y).trans (le_abs_self B)`. Use `beta_reduce`. Rewrite using `[norm_mul, sq, norm_mul]`.
+
+Use `(mul_le_mul (mul_le_mul h1 h2 (norm_nonneg _) (by positivity)) h3 (norm_nonneg _) (by positivity)).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isSmallKernel_sq_mul {φ : GA E a → ℂ} (h : Decays φ) {G : (Fin a → Ad E) → ℂ}
     (hG : G ∈ schwartzBruhatPi E (Fin a)) : IsSmallKernel fun g y => φ g ^ 2 * G y := by
   obtain ⟨L, hL, hs⟩ := (GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments E a G hG).1
@@ -104,6 +130,13 @@ theorem isSmallKernel_sq_mul {φ : GA E a → ℂ} (h : Decays φ) {G : (Fin a �
   refine (mul_le_mul (mul_le_mul h1 h2 (norm_nonneg _) (by positivity)) h3 (norm_nonneg _) (by positivity)).trans_eq ?_
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ m π' hπ' φ' hφ' G hG μ _ 𝓕 h𝓕 x`. Establish `hd : Decays φ'` using `GlobalTheory.MSpanDecay.Good.decays (GlobalTheory.MSpanDecay.mspanR_le_goodSub hπ' hφ')`. Take `⟨C, hC⟩` from `(isSmallKernel_sq_mul hd hG).tsum_le (N := ⌈x⌉₊ + 1) (by omega)`. Establish `hI` using `((integrableOn_absDet_rpow_neg (Nat.succ_pos m) μ h𝓕 (s := (⌈x⌉₊ + 1 : ℕ) - x) (by push_cast; linarith [Nat.le_ceil x])).const_mul C).lintegral_lt_top`. Use `ne_top_of_le_ne_top hI.ne (lintegral_mono fun g => ?_)` and prove the remaining obligations.
+
+Take `⟨hs, hle⟩` from `hC g`. Establish `h0` using `GlobalTheory.RSnm.detAbs_pos g`. Express the relevant statement in the definitionally equal form `_ ≤ C * GlobalTheory.RSnm.detAbs g ^ _ at hle`. Express the relevant statement in the definitionally equal form `_ ≤ ENNReal.ofReal (C * GlobalTheory.RSnm.detAbs g ^ _)`. Rewrite using `[← ENNReal.tsum_mul_left]`.
+
+Simplify using `only [← enorm_pow, ← enorm_mul]`. Simplify using `only [← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs, ← ENNReal.ofReal_mul (tsum_nonneg fun _ => norm_nonneg _), neg_sub, sub_eq_neg_add, Real.rpow_add h0, ← mul_assoc]`. Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right hle (by positivity))`.
+-/
 theorem lintegral_theta_upper_ne_top : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π' : CuspSub E (m + 1)), π'.IsUnitary →
     ∀ φ' ∈ GlobalTheory.JSW.mspanR π', ∀ G ∈ GroundTheory.Automorphic.GJMatrix.schwartzBruhatPi E (Fin (m + 1)),
     ∀ (μ : Measure (GA E (m + 1))) [μ.IsHaarMeasure] (𝓕 : Set (GA E (m + 1))),

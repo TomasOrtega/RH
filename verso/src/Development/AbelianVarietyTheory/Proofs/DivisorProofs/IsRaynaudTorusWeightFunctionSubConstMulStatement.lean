@@ -18,5 +18,8 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheo
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeatMod.isWt_sub_const_mul | exact GlobalTheory.HeatMod.isWt_sub_const_mul | (intros; apply GlobalTheory.HeatMod.isWt_sub_const_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isRaynaudTorusWeightFunction_sub_const_mul : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (Ω : Type) [CommRing Ω] [StarRing Ω] [Module Ω Q.X] (oa : Q.OAct Ω) (Y : Ray oa), ∀ (α : Q.X) (W : Y.H.left.Opens) (f g : Γ(Y.H.left, W)) (r : R), IsWt Y α W f → IsWt Y α W g → IsWt Y α W (f - constFn Y.H.hom W r * g) := by
   first | exact @GlobalTheory.HeatMod.isWt_sub_const_mul | exact GlobalTheory.HeatMod.isWt_sub_const_mul | (intros; apply GlobalTheory.HeatMod.isWt_sub_const_mul <;> assumption)

@@ -23,14 +23,27 @@ def conjEnd (g : ℕ) : Module.End ℂ (Fin g → ℂ) →+* Module.End ℂ (Fin
   map_zero' := by ext x; simp
   map_add' f f' := by ext x; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjEnd_apply {g : ℕ} (f : Module.End ℂ (Fin g → ℂ)) (x : Fin g → ℂ) :
     conjEnd g f x = star (f (star x)) := rfl
 
+/- English proof (translation)
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eigSp_iff {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Module.End ℂ (Fin g → ℂ)) (σ : O →+* ℂ)
     (x : Fin g → ℂ) : x ∈ eigSp ρ σ ↔ ∀ a, ρ a x = σ a • x := by
   simp only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ x, x ∈ eigSp ((conjEnd g).comp ρ) σ → star x ∈ eigSp ρ ((starRingEnd ℂ).comp σ)`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_eigSp_iff]`. Introduce `a`. Use `congrArg star (hx a)` as an intermediate fact.
+
+Simplify `this` using `[conjEnd_apply, star_smul]`. Establish `h2 : ∀ y, y ∈ eigSp ρ ((starRingEnd ℂ).comp σ) → star y ∈ eigSp ((conjEnd g).comp ρ) σ`. Introduce `y hy`. Rewrite `hy`, the goal using `[mem_eigSp_iff]`. Introduce `a`.
+
+Simplify using `[conjEnd_apply, hy a, star_smul]`. Set `j : eigSp ((conjEnd g).comp ρ) σ ≃+ eigSp ρ ((starRingEnd ℂ).comp σ)` to `{ toFun := fun x => ⟨star x.1, h1 _ x.2⟩ invFun := fun y => ⟨star y.1, h2 _ y.2⟩ left_inv := fun x => Subtype.ext (star_star _) right_inv := fun y => Subtype.ext (star_star _) map_add' := fun x y => Subtype.ext (star_add _ _) }`. Establish `hr` using `rank_eq_of_equiv_equiv (R := ℂ) (R' := ℂ) (starRingEnd ℂ) j (Function.Involutive.bijective (f := starRingEnd ℂ) (fun z => by simp)) (fun r m => Subtype.ext (by simp [j, star_smul]))`. Conclude with `congrArg Cardinal.toNat hr`.
+-/
 theorem finrank_eigSp_conj {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Module.End ℂ (Fin g → ℂ)) (σ : O →+* ℂ) :
     Module.finrank ℂ (eigSp ((conjEnd g).comp ρ) σ) = Module.finrank ℂ (eigSp ρ ((starRingEnd ℂ).comp σ)) := by
   have h1 : ∀ x, x ∈ eigSp ((conjEnd g).comp ρ) σ → star x ∈ eigSp ρ ((starRingEnd ℂ).comp σ) := by
@@ -54,6 +67,9 @@ theorem finrank_eigSp_conj {g : ℕ} {O : Type} [CommRing O] (ρ : O →+* Modul
     (Function.Involutive.bijective (f := starRingEnd ℂ) (fun z => by simp)) (fun r m => Subtype.ext (by simp [j, star_smul]))
   exact congrArg Cardinal.toNat hr
 
+/- English proof (translation)
+Simplify using `[dotProduct, mulVec, star_sum]`.
+-/
 theorem star_herm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     star z ⬝ᵥ Hm.map (starRingEnd ℂ) *ᵥ star (star w) = star (z ⬝ᵥ Hm *ᵥ star w) := by
   simp [dotProduct, mulVec, star_sum]
@@ -98,6 +114,23 @@ def conjLat {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : Ri
   B := (conjEnd g).comp R.B
   act a x := by simp [conjEnd_apply, R.act]
 
+/- English proof (translation)
+Establish `hdpos : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h2 : s (H.rt : E) ^ 2 = -(H.d : ℂ)`. Establish `h` using `congrArg (fun a : 𝓞 E => s (a : E)) H.rt_sq`. Simplify using `using h`. Establish `h0` using `H.sqrt_neg_disc_sq`.
+
+Establish `hre : H.rt0.re = 0`. Establish `hi` using `congrArg Complex.im h0`. Establish `hr` using `congrArg Complex.re h0`. Simplify using `[pow_two] at hi hr`. Break down `(by` into its components or cases.
+
+Establish `: H.rt0.re * H.rt0.im = 0` using `by nlinarith`. Conclude with `mul_eq_zero.1 this) with h | h`. Conclude with `h`. It suffices to derive a contradiction. Rewrite `hr` using `[h]`.
+
+Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Establish `hconj : starRingEnd ℂ H.rt0 = -H.rt0`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Establish `hne : H.rt0 ≠ 0`. Introduce `h`.
+
+Rewrite `h0` using `[h]`. Simplify using `at h0`. Conclude with `H.d_prime.ne_zero h0`. Establish `hpm : s (H.rt : E) = H.rt0 ∨ s (H.rt : E) = -H.rt0`. Establish `: (s (H.rt : E) - H.rt0) * (s (H.rt : E) + H.rt0) = 0`.
+
+Take the linear combination `h2 - h0`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`. Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h)`. Establish `hneg : -H.rt0 ≠ H.rt0`.
+
+Introduce `h`. Conclude with `hne (by linear_combination -(1 / 2 : ℂ) * h)`. Break down `hpm with h | h` into its components or cases. Simplify using `only [RingHom.comp_apply, h, hconj]`. Simplify using `using hneg`.
+
+Simplify using `only [RingHom.comp_apply, h, map_neg, hconj, neg_neg]`. Simplify using `using hneg`.
+-/
 theorem conj_rt_iff (H : Host E) (s : E →+* ℂ) :
     ((starRingEnd ℂ).comp s) (H.rt : E) = H.rt0 ↔ ¬ s (H.rt : E) = H.rt0 := by
   have hdpos : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
@@ -142,6 +175,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx
 
 open PeriodConj
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ g ty FU i P hty hP`. Establish `hty' : IsTypeFn H (FU.Di i).p (FU.Di i).q ty`. Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Conclude with `hty`. Take `⟨R, hRP, hRf, -, hrk⟩` from `GlobalTheory.T.exists_riemann_lattice_of_period E H (FU.Di i) g ty P hty' hP`.
+
+Establish `hF : FibreLat Xo.univ.t (FU.u i P) R` using `GlobalTheory.T.family_period_riemann_lattice E H D l Xo σ g ty FU i R P 1 hP hRf (by simp) (fun x => by simp [hRP]) Empty (fun e => e.elim) (fun e => e.elim) (fun e => e.elim)`. Use `⟨⟨R, hRf, hF, fun s => ?_⟩, ⟨conjLat R, ?_, ?_, fun s => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hrk s, (FU.sig i).1, (FU.sig i).2]`. Use `show -R.form = _`. Rewrite using `[hRf]`.
+
+Conclude with `(GlobalTheory.T.fibre_lattice_base_change_conj E H Xo.X Xo.X Xo.univ.t Xo.univ.t (𝟙 _) g _ R (conjLat R) (FU.u i P)).2 (fun _ => rfl) rfl (fun _ _ => rfl) hF`. Establish `h1 : Module.finrank ℂ (eigSp (conjLat R).B (s.comp (algebraMap (𝓞 E) E))) = Module.finrank ℂ (eigSp R.B (((starRingEnd ℂ).comp s).comp (algebraMap (𝓞 E) E)))` using `finrank_eigSp_conj R.B (s.comp (algebraMap (𝓞 E) E))`. Rewrite using `[h1, hrk, (FU.sig i).1, (FU.sig i).2]`. Distinguish the cases in `h : s (H.rt : E) = H.rt0`. Rewrite using `[if_pos h, if_neg (fun h' => (conj_rt_iff H s).1 h' h)]`.
+
+Rewrite using `[if_neg h, if_pos ((conj_rt_iff H s).2 h)]`.
+-/
 theorem period_lattice_fibre_and_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)), IsTypeFn H D.p D.q ty → IsPeriod (FU.Di i) ty P → (∃ R : RiemLat E g (FU.Di i).La, R.form = (FU.Di i).EF ∧ FibreLat Xo.univ.t (FU.u i P) R ∧ ∀ s : E →+* ℂ, Module.finrank ℂ (eigSp R.B (s.comp (algebraMap (𝓞 E) E))) = if s (H.rt : E) = H.rt0 then D.p else D.q) ∧ (∃ R : RiemLat E g (FU.Di i).La, R.form = -(FU.Di i).EF ∧ FibreLat Xo.univ.t (spMap (starRingEnd ℂ) ≫ FU.u i P) R ∧ ∀ s : E →+* ℂ, Module.finrank ℂ (eigSp R.B (s.comp (algebraMap (𝓞 E) E))) = if s (H.rt : E) = H.rt0 then D.q else D.p) := by
   intro E _ _ _ H D l Xo σ g ty FU i P hty hP
   have hty' : IsTypeFn H (FU.Di i).p (FU.Di i).q ty := by

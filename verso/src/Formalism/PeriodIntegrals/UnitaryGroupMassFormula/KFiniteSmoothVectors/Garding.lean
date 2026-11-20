@@ -18,11 +18,17 @@ def mMeas (n : ℕ) : MeasurableSpace (Matrix (Fin n) (Fin n) ℂ) := borel _
 
 attribute [local instance] mMeas
 
+/- English proof (translation)
+Conclude with `⟨rfl⟩`.
+-/
 lemma mBorel (n : ℕ) : BorelSpace (Matrix (Fin n) (Fin n) ℂ) := by
   exact ⟨rfl⟩
 
 attribute [local instance] mBorel
 
+/- English proof (translation)
+Conclude with `⟨rfl⟩`.
+-/
 lemma mBorelN (n : ℕ) : @BorelSpace (Matrix (Fin n) (Fin n) ℂ)
     (@UniformSpace.toTopologicalSpace _ (@PseudoMetricSpace.toUniformSpace _
       (@SeminormedAddCommGroup.toPseudoMetricSpace _
@@ -31,6 +37,9 @@ lemma mBorelN (n : ℕ) : @BorelSpace (Matrix (Fin n) (Fin n) ℂ)
 
 attribute [local instance] mBorelN
 
+/- English proof (translation)
+Conclude with `inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`.
+-/
 lemma mLocCpt (n : ℕ) : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := by
   exact inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))
 
@@ -40,10 +49,16 @@ section Calc
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {n : ℕ} {N : WithTop ℕ∞}
 
+/- English proof (translation)
+Conclude with `contDiff_pi.trans (forall_congr' fun i => contDiff_pi)`.
+-/
 lemma contDiff_mat_iff {f : E → Matrix (Fin n) (Fin n) ℂ} :
     ContDiff ℝ N f ↔ ∀ i j, ContDiff ℝ N (fun x => f x i j) := by
   exact contDiff_pi.trans (forall_congr' fun i => contDiff_pi)
 
+/- English proof (translation)
+Rewrite `hf`, `hg`, the goal using `[contDiff_mat_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiff.sum fun k _ => (hf i k).mul (hg k j)`.
+-/
 lemma contDiff_mat_mul {f g : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff ℝ N f)
     (hg : ContDiff ℝ N g) : ContDiff ℝ N (fun x => f x * g x) := by
   rw [contDiff_mat_iff] at hf hg ⊢
@@ -51,6 +66,9 @@ lemma contDiff_mat_mul {f g : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff �
   simp only [Matrix.mul_apply]
   exact ContDiff.sum fun k _ => (hf i k).mul (hg k j)
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[contDiff_mat_iff]`. Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `Complex.conjCLE.contDiff.comp (hf j i)`.
+-/
 lemma contDiff_mat_conjT {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiff ℝ N f) :
     ContDiff ℝ N (fun x => (f x)ᴴ) := by
   rw [contDiff_mat_iff] at hf ⊢
@@ -63,32 +81,58 @@ end Calc
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H]
 
+/- English proof (translation)
+Conclude with `⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, (range_coeMatrix ε) ▸ isClosed_pseudoUnitary ε⟩`.
+-/
 lemma umat_closedEmb (ε : Fin n → Bool) :
     IsClosedEmbedding (umat : UJ ε → Matrix (Fin n) (Fin n) ℂ) := by
   exact ⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, (range_coeMatrix ε) ▸ isClosed_pseudoUnitary ε⟩
 
+/- English proof (translation)
+Conclude with `(umat_closedEmb ε).measurableEmbedding`.
+-/
 lemma umat_measEmb (ε : Fin n → Bool) :
     MeasurableEmbedding (umat : UJ ε → Matrix (Fin n) (Fin n) ℂ) := by
   exact (umat_closedEmb ε).measurableEmbedding
 
+/- English proof (translation)
+Conclude with `h.2`.
+-/
 lemma umat_mem (h : UJ ε) : umat h ∈ UJset ε := by
   exact h.2
 
+/- English proof (translation)
+Conclude with `coeMatrix_inv_eq ε γ`.
+-/
 lemma umat_inv (γ : UJ ε) : umat γ⁻¹ = Jm ε * (umat γ)ᴴ * Jm ε := by
   exact coeMatrix_inv_eq ε γ
 
+/- English proof (translation)
+Conclude with `Units.mul_inv (γ : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+-/
 lemma umat_mul_inv (γ : UJ ε) : umat γ * umat γ⁻¹ = 1 := by
   exact Units.mul_inv (γ : (Matrix (Fin n) (Fin n) ℂ)ˣ)
 
+/- English proof (translation)
+Conclude with `(hτ.2.2 x).comp_continuous (continuous_coeMatrix ε) (fun h => umat_mem h)`.
+-/
 lemma cont_orbit {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ) (x : H) :
     Continuous (fun h : UJ ε => τ (umat h) x) := by
   exact (hτ.2.2 x).comp_continuous (continuous_coeMatrix ε) (fun h => umat_mem h)
 
+/- English proof (translation)
+Conclude with `(hΨ.smul (cont_orbit hτ x)).integrable_of_hasCompactSupport hΨc.smul_right`.
+-/
 lemma integrable_orbit {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     (Ψ : UJ ε → ℂ) (hΨ : Continuous Ψ) (hΨc : HasCompactSupport Ψ) (x : H) :
     Integrable (fun h => Ψ h • τ (umat h) x) (muG ε) := by
   exact (hΨ.smul (cont_orbit hτ x)).integrable_of_hasCompactSupport hΨc.smul_right
 
+/- English proof (translation)
+Establish `hint` using `integrable_orbit hτ (fun h => Φ (umat h)) (hΦ.comp (continuous_coeMatrix ε)) (hΦc.comp_isClosedEmbedding (umat_closedEmb ε)) x`. Rewrite using `[gv, ← (τ (umat γ)).integral_comp_comm hint]`. Establish `key` using `integral_mul_left_eq_self (μ := muG ε) (fun h' => Φ (Jm ε * (umat γ)ᴴ * Jm ε * umat h') • τ (umat h') x) γ`. Use `beta_reduce at key`. Rewrite using `[← key]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[show umat (γ * h) = umat γ * umat h from rfl, ← Matrix.mul_assoc, coeMatrix_left_inv ε _ (umat_mem γ), Matrix.one_mul, hτ.1.2 _ (umat_mem γ) _ (umat_mem h), map_smul]`. Both sides reduce to the same expression.
+-/
 lemma tau_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ)
     (Φ : Matrix (Fin n) (Fin n) ℂ → ℂ) (hΦ : Continuous Φ) (hΦc : HasCompactSupport Φ) (x : H)
     (γ : UJ ε) :
@@ -110,8 +154,14 @@ lemma tau_gv {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURep
 def Lsm (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] : H →L[ℝ] ℂ →L[ℝ] H :=
   (ContinuousLinearMap.lsmul ℝ ℂ : ℂ →L[ℝ] H →L[ℝ] H).flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma Lsm_apply (v : H) (c : ℂ) : Lsm H v c = c • v := rfl
 
+/- English proof (translation)
+Rewrite using `[MeasureTheory.locallyIntegrable_iff]`. Introduce `K hK`. Rewrite using `[(umat_measEmb ε).integrableOn_map_iff]`. Conclude with `(cont_orbit hτ x).continuousOn.integrableOn_compact ((umat_closedEmb ε).isCompact_preimage hK)`.
+-/
 lemma locInt {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURepOn (UJset ε) τ) (x : H) :
     LocallyIntegrable (fun t => τ t x) (Measure.map umat (muG ε)) := by
   rw [MeasureTheory.locallyIntegrable_iff]
@@ -119,6 +169,11 @@ lemma locInt {τ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hτ : IsURep
   rw [(umat_measEmb ε).integrableOn_map_iff]
   exact (cont_orbit hτ x).continuousOn.integrableOn_compact ((umat_closedEmb ε).isCompact_preimage hK)
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ (m : ℝ) * ‖A‖ * ‖B‖` using `by positivity`. Rewrite using `[Matrix.norm_le_iff h0]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (Matrix.norm_entry_le_entrywise_sup_norm A) (Matrix.norm_entry_le_entrywise_sup_norm B) (norm_nonneg _) (norm_nonneg _)`. Use `_ = m * ‖A‖ * ‖B‖ := by simp [mul_assoc]`.
+-/
 private theorem matrix_norm_mul_le_card_mul {m : ℕ} (A B : Matrix (Fin m) (Fin m) ℂ) :
     ‖A * B‖ ≤ m * ‖A‖ * ‖B‖ := by
   have h0 : 0 ≤ (m : ℝ) * ‖A‖ * ‖B‖ := by positivity
@@ -132,6 +187,33 @@ private theorem matrix_norm_mul_le_card_mul {m : ℕ} (A B : Matrix (Fin m) (Fin
           (Matrix.norm_entry_le_entrywise_sup_norm B) (norm_nonneg _) (norm_nonneg _)
     _ = m * ‖A‖ * ‖B‖ := by simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ τ hτ Φ hΦ hΦc x`. Unfold `SmoothJ SmoothOnH`. Introduce `g₀ hg₀`. Establish `hl : (Jm ε * g₀ᴴ * Jm ε) * g₀ = 1` using `coeMatrix_left_inv ε g₀ hg₀`. Establish `hr : g₀ * (Jm ε * g₀ᴴ * Jm ε) = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hl`.
+
+Use `set A : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ := fun p => Jm ε * pᴴ * Jm ε with hA`. Establish `hAc : ContDiff ℝ ∞ A` using `contDiff_mat_mul (contDiff_mat_mul contDiff_const (contDiff_mat_conjT contDiff_id)) contDiff_const`. Choose the witnesses or unpack the hypotheses as in `⟨R, hR0, hR⟩ : ∃ R : ℝ, 0 < R ∧ tsupport Φ ⊆ Metric.closedBall 0 R := by`. Take `⟨R, hR⟩` from `hΦc.isCompact.isBounded.subset_closedBall 0`. Conclude with `⟨max R 1, by positivity, hR.trans (Metric.closedBall_subset_closedBall (le_max_left _ _))⟩`.
+
+Use `set c : ℝ := (n : ℝ) * ‖g₀‖ with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Use `set U : Set (Matrix (Fin n) (Fin n) ℂ) := {p | (n : ℝ) * c * ‖A p - A g₀‖ < 1 / 2} with hU`. Establish `hUo : IsOpen U` using `isOpen_lt (continuous_const.mul ((hAc.continuous.sub continuous_const).norm)) continuous_const`. Establish `hg₀U : g₀ ∈ U` using `by show (n : ℝ) * c * ‖A g₀ - A g₀‖ < 1 / 2`.
+
+Simplify using the standard rewrite rules. Establish `hk : ∀ p ∈ U, ∀ y, Φ (A p * (-y)) ≠ 0 → ‖y‖ ≤ 2 * c * R`. Introduce `p hp y hy`. Establish `hp' : (n : ℝ) * c * ‖A p - A g₀‖ < 1 / 2` using `hp`. Establish `hz : ‖A p * (-y)‖ ≤ R`.
+
+Establish `h0` using `hR (subset_tsupport _ hy)`. Simplify using `using h0`. Establish `h1 : -y = g₀ * (A g₀ * (-y))`. Rewrite using `[← Matrix.mul_assoc, hr, Matrix.one_mul]`. Establish `h2 : A g₀ * (-y) = A p * (-y) - (A p - A g₀) * (-y)`.
+
+Rewrite using `[Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Establish `e1` using `matrix_norm_mul_le_card_mul g₀ (A g₀ * (-y))`. Establish `e2` using `matrix_norm_mul_le_card_mul (A p - A g₀) (-y)`. Rewrite `e1` using `[← h1, norm_neg]`.
+
+Rewrite `e2` using `[norm_neg]`. Establish `e3 : ‖A g₀ * (-y)‖ ≤ ‖A p * (-y)‖ + ‖(A p - A g₀) * (-y)‖`. Rewrite using `[h2]`. Conclude with `norm_sub_le _ _`. Establish `e4 : ‖A g₀ * (-y)‖ ≤ R + n * ‖A p - A g₀‖ * ‖y‖` using `by linarith`.
+
+Establish `e5 : ‖y‖ ≤ c * (R + n * ‖A p - A g₀‖ * ‖y‖)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc]`. Conclude with `mul_le_mul_of_nonneg_left e4 (by positivity)`. Establish `e6 : c * (n * ‖A p - A g₀‖ * ‖y‖) ≤ 1 / 2 * ‖y‖`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_right hp'.le (norm_nonneg y)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgs : ∀ (p y : Matrix (Fin n) (Fin n) ℂ), p ∈ U → y ∉ Metric.closedBall 0 (2 * c * R) → Φ (A p * (-y)) = 0`. Introduce `p y hp hy`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy (mem_closedBall_zero_iff.mpr (hk p hp y h))`. Establish `hGs : ContDiff ℝ ∞ (fun q : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => Φ (A q.1 * (-q.2)))` using `hΦ.comp (contDiff_mat_mul (hAc.comp contDiff_fst) contDiff_snd.neg)`. Establish `hconv` using `MeasureTheory.contDiffOn_convolution_right_with_param (𝕜 := ℝ) (μ := Measure.map umat (muG ε)) (f := fun t => τ t x) (n := ⊤) (Lsm H) (g := fun p y => Φ (A p * (-y))) hUo (isCompact_closedBall 0 (2 * c * R)) hgs (locInt hτ x) hGs.contDiffOn`. Use `⟨U, fun p => MeasureTheory.convolution (fun t => τ t x) (fun y => Φ (A p * (-y))) (Lsm H) (Measure.map umat (muG ε)) 0, hUo, hg₀U, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : ContDiffOn ℝ ∞ (fun p : Matrix (Fin n) (Fin n) ℂ => (p, (0 : Matrix (Fin n) (Fin n) ℂ))) U` using `contDiffOn_id.prodMk contDiffOn_const`. Establish `h4 : Set.MapsTo (fun p : Matrix (Fin n) (Fin n) ℂ => (p, (0 : Matrix (Fin n) (Fin n) ℂ))) U (U ×ˢ Set.univ)` using `fun p hp => ⟨hp, Set.mem_univ _⟩`. Establish `h5` using `ContDiffOn.comp hconv h2 h4`. Conclude with `h5`. Introduce `g _ hg`.
+
+Establish `hgl : (Jm ε * gᴴ * Jm ε) * g = 1` using `coeMatrix_left_inv ε g hg`. Establish `hgr : g * (Jm ε * gᴴ * Jm ε) = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hgl`. Set `u : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨g, Jm ε * gᴴ * Jm ε, hgr, hgl⟩`. Set `γ : UJ ε` to `⟨u, hg⟩`. Establish `hγ : umat γ = g` using `rfl`.
+
+Use `beta_reduce`. Rewrite using `[← hγ, tau_gv hτ Φ hΦ.continuous hΦc x γ, hγ, MeasureTheory.convolution_def, (umat_measEmb ε).integral_map]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[Lsm_apply, zero_sub, neg_neg]`.
+-/
 theorem stepGarding_main : StepGarding := by
   intro n ε H _ _ _ τ hτ Φ hΦ hΦc x
   unfold SmoothJ SmoothOnH
@@ -218,6 +300,9 @@ theorem stepGarding_main : StepGarding := by
 
 end Gard
 
+/- English proof (translation)
+Conclude with `Gard.stepGarding_main`.
+-/
 theorem garding_vectors_smooth : StepGarding := by
   exact Gard.stepGarding_main
 

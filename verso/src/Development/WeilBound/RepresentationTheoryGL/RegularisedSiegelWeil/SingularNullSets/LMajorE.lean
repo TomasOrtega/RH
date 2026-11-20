@@ -16,15 +16,26 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 
 variable {D : D7} {a b : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem row_smul (i : Fin a) (c : AE D) (x : Mx D a b) : row i (c • x) = c • row i x := by
   rfl
 
+/- English proof (translation)
+Introduce `v hv i' j`. Use `show cv D v (sF D * x i j) ∈ _`. Rewrite using `[cv_sF]`. Conclude with `hx v hv i j`.
+-/
 theorem intOff_row {S : Finset (Pl D)} {x : Mx D a b} (hx : IntOff S x) (i : Fin a) : IntOff S (row i (sF D • x)) := by
   intro v hv i' j
   show cv D v (sF D * x i j) ∈ _
   rw [cv_sF]
   exact hx v hv i j
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hx` to reduce the goal to its premises. Introduce `v hv i j`. Establish `e` using `hcon i v hv 0 j`.
+
+Establish `e' : cv D v (sF D * x i j) ∈ GlobalTheory.AdelicU.intLoc (↥D.host.F) D.host.E v` using `e`. Rewrite `e'` using `[cv_sF]`. Then use the resulting hypothesis.
+-/
 theorem not_intOff_row {S : Finset (Pl D)} {x : Mx D a b} (hx : ¬ IntOff S x) :
     ∃ i, ¬ IntOff S (row i (sF D • x)) := by
   by_contra hcon
@@ -38,6 +49,25 @@ theorem not_intOff_row {S : Finset (Pl D)} {x : Mx D a b} (hx : ¬ IntOff S x) :
 set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hCint : ∀ y ∈ (fun k => sF D • (e • k)) '' K, IntOff S y`. Introduce and unpack `_ ⟨k, -, rfl⟩ v hv i j`. Use `show cv D v (sF D * (e * k i j)) ∈ _`. Rewrite using `[cv_sF, map_mul, he.2 v, if_neg hv, zero_mul]`. Conclude with `(GlobalTheory.AdelicU.intLoc _ _ v).zero_mem`.
+
+Take `⟨η, hη⟩` from `hB D θ hθ a b S e he _ (hK.image ((continuous_const_smul (sF D)).comp (continuous_const_smul e))) hCint`. Establish `hG : ∀ i, ∃ G ∈ GlobalTheory.WeilM.SB (Fin 1 → Fin b → TensorProduct (↥D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af ↥D.host.F) D.host.E), ∀ y : Mx D 1 b, η i (sF D • y) = G fun i' j => finPart D (y i' j)` using `fun i => rowSB θ (sF D) infPart_sF finPart_sF (η i) (hη i).1`. Use `choose G hGSB hGeq using hG`. Use `set Ψ : Mx D a b → ℂ := fun x => ∏ i, η i (sF D • row i x) with hΨ`. Establish `hΨG : ∀ x, Ψ x = (fun z => ∏ i, G i fun _ j => z i j) (fun i j => finPart D (x i j))`.
+
+Introduce `x`. Conclude with `Finset.prod_congr rfl fun i _ => hGeq i (row i x)`. Establish `hΨgood : Good S e Ψ`. Introduce `x`. Distinguish the cases in `hx : IntOff S x`.
+
+Rewrite using `[if_pos hx]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← row_smul, (hη i).2.2.1, if_pos (intOff_row hx i), ← row_smul, ← row_smul, smul_comm e (sF D) x]`. Rewrite using `[if_neg hx]`. Take `⟨i, hi⟩` from `not_intOff_row hx`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Rewrite using `[← row_smul, (hη i).2.2.1, if_neg hi]`. Use `⟨fun x => F₀ (cA θ x) * Ψ x, ?_, good_mul θ he hΨgood (fun z => F₀ z), ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨F₀, fun z => ∏ i, G i fun _ j => z i j, prodSB G hGSB, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hΨG x]`. Introduce `x`. Conclude with `re_im_mul (hF₀ _) (re_im_prod _ _ fun i => ⟨((hη i).2.2.2.1 _).1, ((hη i).2.2.2.1 _).2.2⟩)`. Introduce and unpack `x hx ⟨k, hk, hxk⟩`.
+
+Establish `hfin : ∀ i j, finPart D (x i j) = finPart D (k i j)`. Introduce `i j`. Establish `h0` using `congrFun (congrFun hxk i) j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub, Matrix.zero_apply] at h0`. Conclude with `sub_eq_zero.mp h0`.
+
+It suffices to establish `h1 : Ψ x = 1 by show F₀ (cA θ x) * Ψ x = F₀ (cA θ x)`. Rewrite using `[h1, mul_one]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← row_smul, (hη i).2.2.1, if_pos (intOff_row hx i), ← row_smul, smul_comm e (sF D) x, row_smul, hGeq i]`. Establish `hfun : (fun i' j => finPart D ((row i (e • x)) i' j)) = (fun i' j => finPart D ((row i (e • k)) i' j))`.
+
+Use function extensionality and compare the values at `i' j`. Use `show finPart D (e * x i j) = finPart D (e * k i j)`. Rewrite using `[map_mul, map_mul, hfin]`. Rewrite using `[hfun, ← hGeq i, ← row_smul]`. Conclude with `(hη i).2.2.2.2 _ ⟨k, hk, rfl⟩`.
+-/
 theorem bumpMaj (hB : BumpEx) (θ : InfFam D) (hθ : IsInfFam θ) {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e)
     (K : Set (Mx D a b)) (hK : IsCompact K) (F₀ : SchwartzMap (D.what₂.Tau → Fin a → Fin b → ℂ) ℂ)
     (hF₀ : ∀ y, 0 ≤ (F₀ y).re ∧ (F₀ y).im = 0) :

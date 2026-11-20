@@ -4,6 +4,11 @@ open Polynomial
 
 namespace GlobalTheory.SimpleCharIndep
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.OrthogonalProjectionOnto.main`. Consider the case `exact _root_.GlobalTheory.OrthogonalProjectionOnto.main`. Consider the case `(apply _root_.GlobalTheory.OrthogonalProjectionOnto.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.OrthogonalProjectionOnto.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.OrthogonalProjectionOnto.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.OrthogonalProjectionOnto.main ..)`.
+-/
 theorem exists_smul_eq_ite {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (M : ι → Type*) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] [∀ i, IsSimpleModule R (M i)]
     (h : ∀ i j, i ≠ j → ∀ f : M i →ₗ[R] M j, f = 0) (i₀ : ι) (s : ∀ i, Finset (M i)) :
@@ -16,6 +21,17 @@ theorem exists_smul_eq_ite {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [Decid
   | (intros; apply @_root_.GlobalTheory.OrthogonalProjectionOnto.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.OrthogonalProjectionOnto.main ..)
 
+/- English proof (translation)
+Introduce `A _ _ ι _ M _ _ _ _ _ hs hne`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i₀`. Establish `hzero : ∀ i j, i ≠ j → ∀ f : M i →ₗ[A] M j, f = 0` using `fun i j hij f => (f.bijective_or_eq_zero).resolve_left fun hb => hij (hne i j ⟨LinearEquiv.ofBijective f hb⟩)`. Set `b : ∀ i, Module.Basis (Fin (Module.finrank ℂ (M i))) ℂ (M i)` to `fun i => Module.finBasis ℂ _`.
+
+Take `⟨x, hx⟩` from `exists_smul_eq_ite (R := A) M hzero i₀ (fun i => Finset.univ.image (b i))`. Establish `hQ : ∀ i, (Algebra.lsmul ℂ ℂ (M i) x : Module.End ℂ (M i)) = if i = i₀ then LinearMap.id else 0`. Introduce `i`. Use `(b i).ext fun k => ?_` and prove the remaining obligations. Establish `h1` using `hx i _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`.
+
+Distinguish the cases in `hi : i = i₀`. Simplify `h1` using `[hi]`. Simplify `h1` using `[hi]`. Establish `h` using `congr_fun hg x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`.
+
+Rewrite `h` using `[Finset.sum_eq_single i₀ (fun i _ hi => by rw [hQ i, if_neg hi, map_zero, mul_zero]) (by simp)]`. Rewrite `h` using `[hQ i₀, if_pos rfl, LinearMap.trace_id]`. Use `haveI := IsSimpleModule.nontrivial A (M i₀)`. Establish `hpos : 0 < Module.finrank ℂ (M i₀)` using `Module.finrank_pos`. Establish `hne0 : (Module.finrank ℂ (M i₀) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+
+Conclude with `(mul_eq_zero.1 h).resolve_right hne0`.
+-/
 theorem linearIndependent_trace : ∀ (A : Type) [Ring A] [Algebra ℂ A] (ι : Type) [Fintype ι] (M : ι → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] [∀ i, Module A (M i)] [∀ i, IsScalarTower ℂ A (M i)] [∀ i, Module.Finite ℂ (M i)], (∀ i, IsSimpleModule A (M i)) → (∀ i j, Nonempty (M i ≃ₗ[A] M j) → i = j) → LinearIndependent ℂ fun (i : ι) (a : A) => LinearMap.trace ℂ (M i) (Algebra.lsmul ℂ ℂ (M i) a) := by
   intro A _ _ ι _ M _ _ _ _ _ hs hne
   classical

@@ -15,10 +15,18 @@ section lat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYhc9.main h x`.
+-/
 theorem exists_smul_mem {Λ : Submodule (𝓞 E) (Fin N → E)} (h : IsLat Λ) (x : Fin N → E) :
     ∃ m : ℕ, m ≠ 0 ∧ (m : E) • x ∈ Λ :=
   _root_.UpperTheory.Reformulated.B.DYhc9.main h x
 
+/- English proof (translation)
+Use `⟨Submodule.FG.smul (IsNoetherian.noetherian 𝔞) h.1, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Rewrite using `[eq_top_iff, ← h.2, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : a • x ∈ Submodule.span E ((𝔞 • Λ : Submodule (𝓞 E) (Fin N → E)) : Set (Fin N → E))` using `Submodule.subset_span (Submodule.smul_mem_smul ha hx)`.
+
+Establish `h2` using `Submodule.smul_mem _ ((a : E)⁻¹) h1`. Rewrite `h2` using `[show a • x = (a : E) • x from rfl, smul_smul, inv_mul_cancel₀ (by exact_mod_cast ha0), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isLat_smul {Λ : Submodule (𝓞 E) (Fin N → E)} (h : IsLat Λ) {𝔞 : Ideal (𝓞 E)} (h𝔞 : 𝔞 ≠ ⊥) :
     IsLat (𝔞 • Λ) := by
   refine ⟨Submodule.FG.smul (IsNoetherian.noetherian 𝔞) h.1, ?_⟩
@@ -30,13 +38,26 @@ theorem isLat_smul {Λ : Submodule (𝓞 E) (Fin N → E)} (h : IsLat Λ) {𝔞 
   have h2 := Submodule.smul_mem _ ((a : E)⁻¹) h1
   rwa [show a • x = (a : E) • x from rfl, smul_smul, inv_mul_cancel₀ (by exact_mod_cast ha0), one_smul] at h2
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩`.
+-/
 theorem tmul_mem_hat {Λ : AddSubgroup (Fin N → E)} {a : FiniteAdeleRing (𝓞 F) F}
     (ha : ∀ v : HeightOneSpectrum (𝓞 F), a v ∈ v.adicCompletionIntegers F) {x : Fin N → E} (hx : x ∈ Λ) :
     (fun i => a ⊗ₜ[F] x i) ∈ hatLat F Λ := AddSubgroup.subset_closure ⟨a, ha, x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `tmul_mem_hat (fun _ => one_mem _) hx`.
+-/
 theorem incl_mem_hat {Λ : AddSubgroup (Fin N → E)} {x : Fin N → E} (hx : x ∈ Λ) :
     (fun i => inclAd F E (x i)) ∈ hatLat F Λ := tmul_mem_hat (fun _ => one_mem _) hx
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, x, hx, rfl⟩` from `hy`. Use `tmul_mem_hat hb (show a • x ∈ (𝔞 • Λ).toAddSubgroup from Submodule.smul_mem_smul ha hx) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Use `show (1 ⊗ₜ[F] (a : E)) * (b ⊗ₜ[F] x i) = b ⊗ₜ[F] ((a : E) * x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_hat_mem {Λ : Submodule (𝓞 E) (Fin N → E)} {𝔞 : Ideal (𝓞 E)} {a : 𝓞 E} (ha : a ∈ 𝔞)
     {y : Fin N → Adf F E} (hy : y ∈ hatLat F Λ.toAddSubgroup) :
     inclAd F E a • y ∈ hatLat F (𝔞 • Λ).toAddSubgroup := by
@@ -51,6 +72,17 @@ theorem smul_hat_mem {Λ : Submodule (𝓞 E) (Fin N → E)} {𝔞 : Ideal (𝓞
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, x, hx, rfl⟩` from `hy`. Establish `hx' : x ∈ 𝔞 • Λ` using `hx`.
+
+Use `Submodule.smul_induction_on (p := fun x : Fin N → E => g *ᵥ (fun i => (b ⊗ₜ[F] x i : Adf F E)) ∈ hatLat F (𝔞 • Λ').toAddSubgroup) hx' (fun a ha x hx => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Establish `e : (fun i => b ⊗ₜ[F] (a • x) i) = inclAd F E a • fun i => b ⊗ₜ[F] x i`. Use function extensionality and compare the values at `i`. Use `show b ⊗ₜ[F] ((a : E) * x i) = (1 ⊗ₜ[F] (a : E)) * (b ⊗ₜ[F] x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Rewrite using `[e, mulVec_smul]`. Conclude with `smul_hat_mem ha (hg _ (tmul_mem_hat hb hx))`. Establish `e : (fun i => b ⊗ₜ[F] (x + y) i) = (fun i => b ⊗ₜ[F] x i) + fun i => b ⊗ₜ[F] y i`. Use function extensionality and compare the values at `i`. Conclude with `TensorProduct.tmul_add _ _ _`.
+
+Rewrite using `[e, mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [mulVec_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem mulVec_hat_smul {Λ Λ' : Submodule (𝓞 E) (Fin N → E)} (𝔞 : Ideal (𝓞 E))
     {g : Matrix (Fin N) (Fin N) (Adf F E)}
     (hg : ∀ x ∈ hatLat F Λ.toAddSubgroup, g *ᵥ x ∈ hatLat F Λ'.toAddSubgroup) :
@@ -78,6 +110,9 @@ theorem mulVec_hat_smul {Λ Λ' : Submodule (𝓞 E) (Fin N → E)} (𝔞 : Idea
   | add x y _ _ hx hy => rw [mulVec_add]; exact add_mem hx hy
   | neg x _ hx => rw [mulVec_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, TensorProduct.tmul_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show (1 ⊗ₜ[F] γ i j) * (b ⊗ₜ[F] x j) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem diag_mulVec_tmul (γ : Matrix (Fin N) (Fin N) E) (b : FiniteAdeleRing (𝓞 F) F) (x : Fin N → E) :
     γ.map (inclAd F E) *ᵥ (fun i => b ⊗ₜ[F] x i) = fun i => b ⊗ₜ[F] (γ *ᵥ x) i := by
   funext i
@@ -86,6 +121,13 @@ theorem diag_mulVec_tmul (γ : Matrix (Fin N) (Fin N) E) (b : FiniteAdeleRing (�
   show (1 ⊗ₜ[F] γ i j) * (b ⊗ₜ[F] x j) = _
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, x, hx, rfl⟩` from `hy`. Rewrite using `[diag_mulVec_tmul]`.
+
+Conclude with `tmul_mem_hat hb (h x hx)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mulVec_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem map_mulVec_hat {Λ Λ' : AddSubgroup (Fin N → E)} {γ : Matrix (Fin N) (Fin N) E} (h : ∀ x ∈ Λ, γ *ᵥ x ∈ Λ') :
     ∀ y ∈ hatLat F Λ, γ.map (inclAd F E) *ᵥ y ∈ hatLat F Λ' := by
   intro y hy
@@ -100,6 +142,13 @@ theorem map_mulVec_hat {Λ Λ' : AddSubgroup (Fin N → E)} {γ : Matrix (Fin N)
 
 end lat
 
+/- English proof (translation)
+Establish `e : ∀ x, (g : Matrix (Fin N) (Fin N) R) *ᵥ (((g⁻¹ * k * g : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) *ᵥ x) = (k : Matrix (Fin N) (Fin N) R) *ᵥ ((g : Matrix (Fin N) (Fin N) R) *ᵥ x)` using `fun x => by`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]`. Establish `hs : ∀ y, ∃ x, (g : Matrix (Fin N) (Fin N) R) *ᵥ x = y` using `fun y => ⟨((g⁻¹ : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) *ᵥ y, by rw [mulVec_mulVec, Units.mul_inv, one_mulVec]⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b⟩`.
+
+Apply the tactic sequence `refine ⟨fun y => ?_, fun y hy => ?_⟩ <;> obtain ⟨x, rfl⟩ := hs y`. Rewrite using `[← h1, a, h1, e]`. Use `(h2 _).1 (b x ((h1 x).2 hy))` as an intermediate fact. Rewrite `this` using `[mulVec_sub, e]`. Then use the resulting hypothesis. Introduce and unpack `⟨a, b⟩`.
+
+Use `⟨fun x => by rw [h1, a, h1, e], fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, mulVec_sub, e]`. Conclude with `b _ ((h1 x).1 hx)`.
+-/
 theorem conj_congGrp {R : Type} [CommRing R] {N : ℕ} {A A' B B' : AddSubgroup (Fin N → R)} (g : GL (Fin N) R)
     (h1 : ∀ x, x ∈ A ↔ (g : Matrix (Fin N) (Fin N) R) *ᵥ x ∈ B)
     (h2 : ∀ x, x ∈ A' ↔ (g : Matrix (Fin N) (Fin N) R) *ᵥ x ∈ B') (k : GL (Fin N) R) :
@@ -121,6 +170,11 @@ theorem conj_congGrp {R : Type} [CommRing R] {N : ℕ} {A A' B B' : AddSubgroup 
     rw [h2, mulVec_sub, e]
     exact b _ ((h1 x).1 hx)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N c J Λ Λ' 𝔞 g hg h`. Establish `hinv : ∀ x, ((g⁻¹ : GL (Fin N) (Adf F E)) : Matrix (Fin N) (Fin N) (Adf F E)) *ᵥ ((g : Matrix (Fin N) (Fin N) (Adf F E)) *ᵥ x) = x` using `fun x => by rw [mulVec_mulVec, Units.inv_mul, one_mulVec]`. Establish `h2 : ∀ x, x ∈ hatLat F (𝔞 • Λ).toAddSubgroup ↔ (g : Matrix (Fin N) (Fin N) (Adf F E)) *ᵥ x ∈ hatLat F (𝔞 • Λ').toAddSubgroup` using `fun x => ⟨mulVec_hat_smul 𝔞 (fun y => (h y).1) x, fun hx => hinv x ▸ mulVec_hat_smul 𝔞 (fun y hy => (h _).2 (by`. Rewrite using `[mulVec_mulVec, Units.mul_inv, one_mulVec])) _ hx⟩` and apply the resulting hypothesis. Use extensionality with `k`.
+
+Rewrite using `[mem_conjBy]`. Conclude with `and_congr (conj_mem_su hg) (conj_congGrp g h h2 k)`.
+-/
 theorem levelConj : LevelConj := by
   intro F E _ _ _ _ _ N c J Λ Λ' 𝔞 g hg h
   have hinv : ∀ x, ((g⁻¹ : GL (Fin N) (Adf F E)) : Matrix (Fin N) (Fin N) (Adf F E)) *ᵥ
@@ -133,6 +187,19 @@ theorem levelConj : LevelConj := by
   rw [mem_conjBy]
   exact and_congr (conj_mem_su hg) (conj_congGrp g h h2 k)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N c J Λ 𝔞 hΛ h𝔞 hJ hN`. Establish `hΛ'` using `isLat_smul hΛ h𝔞`. Establish `e : ∀ (γ : Matrix (Fin N) (Fin N) E) (x : Fin N → E), γ.map (inclAd F E) *ᵥ (fun i => inclAd F E (x i)) = fun i => inclAd F E ((γ *ᵥ x) i)` using `fun γ x => diag_mulVec_tmul γ 1 x`. Use extensionality with `γ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨((diagGL_mem_su c J γ).1 h1).1, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `h2 fun i => inclAd F E (x i)` as an intermediate fact. Rewrite `this` using `[diagGL_val, e, hH F E N Λ hΛ, hH F E N Λ hΛ]`. Then use the resulting hypothesis. Use `h3 _ (incl_mem_hat hx)` as an intermediate fact.
+
+Rewrite `this` using `[diagGL_val, e]`. Use `(hH F E N _ hΛ' _).1 ?_` and prove the remaining obligations. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨(diagGL_mem_su c J γ).2 ⟨h1, ?_⟩, fun y => ⟨map_mulVec_hat (fun x => (h2 x).1) y, fun hy => ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hd⟩` from `GlobalTheory.CompanionTheory.Ar.Cmp.DetMod.main (𝓞 E) E N Λ 𝔞 γ hΛ.1 hΛ.2 h3`. Establish `h4` using `det_mul_conj hJ h1`. Establish `h5` using `hN (1 + a) (by rw [hd] at h4; exact h4) (by simpa using ha)`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Use `show (γ : Matrix (Fin N) (Fin N) E).det = 1`. Rewrite using `[hd]`. Conclude with `congrArg (algebraMap (𝓞 E) E) h5`. Use `map_mulVec_hat (F := F) (γ := ((γ⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E)) (Λ := Λ.toAddSubgroup) (Λ' := Λ.toAddSubgroup) (fun x hx => (h2 _).2 (by rwa [mulVec_mulVec, Units.mul_inv, one_mulVec])) _ hy` as an intermediate fact.
+
+Rewrite `this` using `[diagGL_val, mulVec_mulVec, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec]`. Then use the resulting hypothesis. Use `map_mulVec_hat (F := F) (γ := (γ : Matrix (Fin N) (Fin N) E) - 1) (Λ := Λ.toAddSubgroup) (Λ' := (𝔞 • Λ).toAddSubgroup) (fun x hx => by rw [sub_mulVec, one_mulVec]; exact h3 x hx) y hy` as an intermediate fact. Rewrite `this` using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), sub_mulVec, one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem levelRat (hH : HatRat) : LevelRat := by
   intro F E _ _ _ _ _ N c J Λ 𝔞 hΛ h𝔞 hJ hN
   have hΛ' := isLat_smul hΛ h𝔞
@@ -170,6 +237,15 @@ theorem levelRat (hH : HatRat) : LevelRat := by
         (Λ' := (𝔞 • Λ).toAddSubgroup) (fun x hx => by rw [sub_mulVec, one_mulVec]; exact h3 x hx) y hy
       rwa [Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), sub_mulVec, one_mulVec] at this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N c J Λ 𝔞 hΛ h𝔞`. Take `⟨h1, h2, h3⟩` from `topRing F E`. Use `choose m hm hm' using fun i : Fin N => exists_smul_mem hΛ (Pi.single i 1)`. Establish `hM : ((∏ i, m i : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => hm i)`. Take `⟨hc, ho⟩` from `congCompactOpen (Adf F E) N _ _ (hH F E N Λ hΛ).1 (hH F E N Λ hΛ).2 (hH F E N _ (isLat_smul hΛ h𝔞)).2 ⟨Units.map (inclAd F E).toMonoidHom (Units.mk0 _ hM), fun i => by`.
+
+Use `incl_mem_hat (F := F) (Λ := Λ.toAddSubgroup) (Λ.smul_of_tower_mem (∏ j ∈ Finset.univ.erase i, m j) (hm' i))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `show (Pi.single i (inclAd F E ((∏ i, m i : ℕ) : E)) : Fin N → Adf F E) j = _`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]⟩`. Establish `hcl : IsClosed (SUA c J : Set (GL (Fin N) (Adf F E)))`.
+
+Use `IsClosed.inter (isClosed_eq ?_ continuous_const) (s₂ := {g : GL (Fin N) (Adf F E) | Matrix.GeneralLinearGroup.det g = 1}) ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_transpose.matrix_mul continuous_const).matrix_mul (Units.continuous_val.matrix_map (h3 c))`. Simplify using `only [Units.ext_iff]`. Conclude with `isClosed_eq Units.continuous_val.matrix_det continuous_const`. Conclude with `⟨inf_le_left, hc.inter_left hcl, _, ho, Set.inter_comm _ _⟩`.
+-/
 theorem levelCO (hH : HatCompactOpen) : LevelCO := by
   intro F E _ _ _ _ _ N c J Λ 𝔞 hΛ h𝔞
   obtain ⟨h1, h2, h3⟩ := topRing F E

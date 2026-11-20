@@ -7,6 +7,17 @@ namespace GlobalTheory.CharFamily
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Use `set S := 2 ^ (k + m) * ((Finset.Iic (k + m, n)).sup fun p => SchwartzMap.seminorm ℂ p.1 p.2) h with hS`. Establish `hS0 : 0 ≤ S` using `mul_nonneg (by positivity) (apply_nonneg _ _)`. Use `SchwartzMap.seminorm_le_bound ℂ k n g (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hg' : (⇑g) = fun x => c x * h x` using `funext hg`. Rewrite using `[hg']`.
+
+Establish `hmul` using `norm_iteratedFDeriv_mul_le (N := ((⊤ : ℕ∞) : WithTop ℕ∞)) hc (h.smooth ⊤) x (n := n) (by exact_mod_cast le_top)`. Establish `hx0 : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `hterm : ∀ i ∈ Finset.range (n + 1), ‖x‖ ^ k * ((n.choose i : ℝ) * ‖iteratedFDeriv ℝ i c x‖ * ‖iteratedFDeriv ℝ (n - i) h x‖) ≤ (n.choose i : ℝ) * (M * S)`. Introduce `i hi`. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+
+Establish `h1` using `hcb i hi' x`. Establish `h2 : (1 + ‖x‖) ^ (k + m) * ‖iteratedFDeriv ℝ (n - i) h x‖ ≤ S` using `SchwartzMap.one_add_le_sup_seminorm_apply (m := (k + m, n)) le_rfl (Nat.sub_le n i) h x`. Establish `h5 : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k` using `by gcongr; linarith`. Establish `hc0 : (0 : ℝ) ≤ n.choose i` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (n.choose i : ℝ) * (M * S) := by gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`. Establish `: (∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ)) = 2 ^ n`.
+
+Conclude with `Nat.sum_range_choose n` after adjusting the coercions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seminorm_mul_le (c : E → ℂ) (hc : ContDiff ℝ (⊤ : ℕ∞) c) (h g : SchwartzMap E ℂ)
     (hg : ∀ x, g x = c x * h x) (k n m : ℕ) (M : ℝ) (hM : 0 ≤ M)
     (hcb : ∀ i ≤ n, ∀ x, ‖iteratedFDeriv ℝ i c x‖ ≤ M * (1 + ‖x‖) ^ m) :
@@ -51,12 +62,22 @@ theorem seminorm_mul_le (c : E → ℂ) (hc : ContDiff ℝ (⊤ : ℕ∞) c) (h 
           exact_mod_cast Nat.sum_range_choose n
         rw [this]; ring
 
+/- English proof (translation)
+Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (I * (y : ℂ)))` using `by fun_prop`. Conclude with `hc.comp L.contDiff`.
+-/
 theorem contDiff_char (L : E →L[ℝ] ℝ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun x : E => Complex.exp (I * (L x : ℂ))) := by
   have ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ)) := Complex.ofRealCLM.contDiff
   have hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => Complex.exp (I * (y : ℂ))) := by fun_prop
   exact hc.comp L.contDiff
 
+/- English proof (translation)
+Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (1 : ℂ) * Complex.exp (I * (y : ℂ)))` using `by fun_prop`. Establish `e : (fun x : E => Complex.exp (I * (L x : ℂ))) = (fun y : ℝ => (1 : ℂ) * Complex.exp (I * (y : ℂ))) ∘ ⇑L`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, L.iteratedFDeriv_comp_right hc x (i := i) (by exact_mod_cast le_top)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, GlobalTheory.CharFormDeriv.iteratedDeriv_const_mul_cexp]`. Establish `hexp : I * ((L x : ℝ) : ℂ) = ((L x : ℝ) : ℂ) * I` using `by ring`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Rewrite using `[norm_mul, hexp, Complex.norm_exp_ofReal_mul_I, norm_mul, norm_pow, Complex.norm_I]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_iteratedFDeriv_char_le (L : E →L[ℝ] ℝ) (i : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ i (fun x : E => Complex.exp (I * (L x : ℂ))) x‖ ≤ ‖L‖ ^ i := by
   have ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ)) := Complex.ofRealCLM.contDiff
@@ -76,6 +97,19 @@ theorem norm_iteratedFDeriv_char_le (L : E →L[ℝ] ℝ) (i : ℕ) (x : E) :
         rw [norm_mul, hexp, Complex.norm_exp_ofReal_mul_I, norm_mul, norm_pow, Complex.norm_I]
         simp
 
+/- English proof (translation)
+Establish `hL0 : 0 ≤ ‖L‖` using `norm_nonneg L`. Establish `hx0 : 0 ≤ ‖x‖` using `norm_nonneg x`. Establish `ho : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (y : ℂ))` using `Complex.ofRealCLM.contDiff`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun y : ℝ => (1 : ℂ) * Complex.exp (I * y) + 0 * y + (-1))` using `by fun_prop`. Establish `e : (fun x : E => Complex.exp (I * (L x : ℂ)) - 1) = (fun y : ℝ => (1 : ℂ) * Complex.exp (I * y) + 0 * y + (-1)) ∘ ⇑L`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, L.iteratedFDeriv_comp_right hc x (i := i) (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Consider the cases of `i with`. Consider the case `zero`. Rewrite using `[iteratedDeriv_zero, pow_zero, mul_one]`.
+
+Establish `h0 : (1 : ℂ) * Complex.exp (I * ((L x : ℝ) : ℂ)) + 0 * ((L x : ℝ) : ℂ) + (-1) = Complex.exp (((L x : ℝ) : ℂ) * I) - 1` using `by ring_nf`. Simplify using `only [h0]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `succ j`. Rewrite using `[iteratedDeriv_succ', GlobalTheory.CharFormDeriv.deriv_affine_cexp]`.
+
+Establish `hd : (fun y : ℝ => (1 : ℂ) * I * Complex.exp (I * y) + 0) = fun y : ℝ => I * Complex.exp (I * y)` using `by funext y; ring`. Rewrite using `[hd, GlobalTheory.CharFormDeriv.iteratedDeriv_const_mul_cexp]`. Establish `hexp : I * ((L x : ℝ) : ℂ) = ((L x : ℝ) : ℂ) * I` using `by ring`. Rewrite using `[norm_mul, norm_mul, hexp, Complex.norm_exp_ofReal_mul_I, norm_pow, Complex.norm_I]`. Simplify using `only [one_pow, mul_one, one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_char_sub_one_le (L : E →L[ℝ] ℝ) (hL : ‖L‖ ≤ 1) (i : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ i (fun x : E => Complex.exp (I * (L x : ℂ)) - 1) x‖
       ≤ 2 * ‖L‖ * (1 + ‖x‖) ^ 1 := by
@@ -111,6 +145,11 @@ theorem norm_iteratedFDeriv_char_sub_one_le (L : E →L[ℝ] ℝ) (hL : ‖L‖ 
     calc ‖L‖ ^ (j + 1) ≤ ‖L‖ ^ 1 := pow_le_pow_of_le_one hL0 hL (by omega)
       _ ≤ 2 * ‖L‖ * (1 + ‖x‖) ^ 1 := by nlinarith
 
+/- English proof (translation)
+Establish `han : 0 ≤ a ^ n` using `pow_nonneg ha n`. Break down `le_total a 1 with h | h` into its components or cases. Establish `: (1 + a) ^ n ≤ 2 ^ n` using `by gcongr; linarith`. Use polynomial arithmetic with `[pow_nonneg (show (0:ℝ) ≤ 2 by norm_num) n]`. Establish `: (1 + a) ^ n ≤ (2 * a) ^ n` using `by gcongr; linarith`.
+
+Rewrite `this` using `[mul_pow]`. Use polynomial arithmetic with `[pow_nonneg (show (0:ℝ) ≤ 2 by norm_num) n]`.
+-/
 theorem one_add_pow_le (a : ℝ) (ha : 0 ≤ a) (n : ℕ) : (1 + a) ^ n ≤ 2 ^ n * (1 + a ^ n) := by
   have han : 0 ≤ a ^ n := pow_nonneg ha n
   rcases le_total a 1 with h | h
@@ -120,6 +159,29 @@ theorem one_add_pow_le (a : ℝ) (ha : 0 ≤ a) (n : ℕ) : (1 + a) ^ n ≤ 2 ^ 
     rw [mul_pow] at this
     nlinarith [pow_nonneg (show (0:ℝ) ≤ 2 by norm_num) n]
 
+/- English proof (translation)
+Introduce `E P _ _ _ _ A f`. Establish `htg : ∀ L : E →L[ℝ] ℝ, Function.HasTemperateGrowth (fun x : E => Complex.exp (I * (L x : ℂ)))` using `fun L => by`. Simplify using `using GlobalTheory.CharFormDeriv.hasTemperateGrowth_char L 1`. Set `Φ : P → SchwartzMap E ℂ` to `fun ξ => SchwartzMap.smulLeftCLM ℂ (fun x : E => Complex.exp (I * (A ξ x : ℂ))) f`. Establish `hΦ : ∀ ξ x, Φ ξ x = Complex.exp (Complex.I * (A ξ x : ℂ)) * f x` using `fun ξ x => by`.
+
+Simplify using `only [Φ, SchwartzMap.smulLeftCLM_apply_apply (htg (A ξ)), smul_eq_mul]`. Use `⟨Φ, hΦ, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun ζ => ?_` and prove the remaining obligations. Unfold `ContinuousAt`. Rewrite using `[(schwartz_withSeminorms ℂ E ℂ).tendsto_nhds Φ (Φ ζ)]`.
+
+Introduce and unpack `⟨k, n⟩ ε hε`. Use `set K := 2 * 2 ^ n * (2 ^ (k + 1) * ((Finset.Iic (k + 1, n)).sup fun p => SchwartzMap.seminorm ℂ p.1 p.2) (Φ ζ)) with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg (by positivity) (mul_nonneg (by positivity) (apply_nonneg _ _))`. Establish `hA0 : 0 ≤ ‖A‖` using `norm_nonneg A`. Use `set m := min 1 (ε / (K + 1)) with hm`.
+
+Establish `hm0 : 0 < m` using `lt_min one_pos (div_pos hε (by linarith))`. Establish `hδ : 0 < m / (‖A‖ + 1)` using `div_pos hm0 (by linarith)`. Use `filter_upwards [Metric.ball_mem_nhds ζ hδ] with η hη`. Rewrite `hη` using `[Metric.mem_ball, dist_eq_norm]`. Use `show SchwartzMap.seminorm ℂ k n (Φ η - Φ ζ) < ε`.
+
+Use `set L := A (η - ζ) with hLdef`. Establish `hLle : ‖L‖ ≤ ‖A‖ * ‖η - ζ‖` using `A.le_opNorm _`. Establish `hLm : ‖L‖ < m`. Combine the equalities or inequalities in the displayed calculation. Establish `hL1 : ‖L‖ ≤ 1` using `(lt_of_lt_of_le hLm (min_le_left _ _)).le`.
+
+Establish `hLε : ‖L‖ < ε / (K + 1)` using `lt_of_lt_of_le hLm (min_le_right _ _)`. Establish `hpt : ∀ x, (Φ η - Φ ζ) x = (Complex.exp (I * (L x : ℂ)) - 1) * Φ ζ x` using `fun x => by`. Establish `hs : A η x = L x + A ζ x` using `by simp [hLdef, map_sub]`. Rewrite using `[SchwartzMap.sub_apply, hΦ, hΦ, hs]`. Use `push_cast`.
+
+Rewrite using `[mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb` using `seminorm_mul_le (fun x : E => Complex.exp (I * (L x : ℂ)) - 1) ((contDiff_char L).sub contDiff_const) (Φ ζ) (Φ η - Φ ζ) hpt k n 1 (2 * ‖L‖) (by positivity) (fun i _ x => norm_iteratedFDeriv_char_sub_one_le L hL1 i x)`. Combine the equalities or inequalities in the displayed calculation. Introduce `k n set S := 2 ^ (k + 0) * ((Finset.Iic (k + 0, n)).sup fun p => SchwartzMap.seminorm ℂ p.1 p.2) f with hS`.
+
+Establish `hS0 : 0 ≤ S` using `mul_nonneg (by positivity) (apply_nonneg _ _)`. Use `⟨2 ^ n * ((1 + ‖A‖) ^ n * 2 ^ n) * S, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hA0 : 0 ≤ ‖A‖` using `norm_nonneg A`. Establish `hξ0 : 0 ≤ ‖ξ‖` using `norm_nonneg ξ`. Use `set L := A ξ with hLdef`.
+
+Establish `hL0 : 0 ≤ ‖L‖` using `norm_nonneg L`. Establish `hb` using `seminorm_mul_le (fun x : E => Complex.exp (I * (L x : ℂ))) (contDiff_char L) f (Φ ξ) (hΦ ξ) k n 0 ((1 + ‖L‖) ^ n) (by positivity) (fun i hi x => by`. Rewrite using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 + ‖L‖) ^ n ≤ (1 + ‖A‖) ^ n * (2 ^ n * (1 + ‖ξ‖ ^ n))`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `A.le_opNorm ξ` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `_ = (1 + ‖A‖) ^ n * (1 + ‖ξ‖) ^ n := mul_pow _ _ _`. Use `_ ≤ (1 + ‖A‖) ^ n * (2 ^ n * (1 + ‖ξ‖ ^ n)) := by gcongr; exact one_add_pow_le _ hξ0 n`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem charMul_family : ∀ (E P : Type) [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup P] [NormedSpace ℝ P]
     (A : P →L[ℝ] E →L[ℝ] ℝ) (f : SchwartzMap E ℂ), ∃ Φ : P → SchwartzMap E ℂ,

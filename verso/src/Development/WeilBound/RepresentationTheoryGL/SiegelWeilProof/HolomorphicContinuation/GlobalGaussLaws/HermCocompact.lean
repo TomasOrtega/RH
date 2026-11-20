@@ -24,6 +24,23 @@ def CharFacts : Prop :=
 def HermCocompact : Prop :=
   ∀ (D : D7) (r : ℕ), ∃ K : Set (hermA D r), IsCompact K ∧ ∀ x, ∃ l ∈ ratHerm D r, x - l ∈ K
 
+/- English proof (translation)
+Introduce `D n ψ hψ L hL`. Take `⟨nb, lam, 𝓖, β, g, ⟨hnb, hlam, hfd, hvol⟩, -, rfl⟩` from `hL`. Take `⟨hcont, hadd, hrat⟩` from `hNb D n nb hnb`. Take `⟨hχc, hχn⟩` from `hCh D n ψ hψ β`. Take `⟨K, hK, hKc⟩` from `hCo D n`.
+
+Establish `: BorelSpace (Mx D n n)` using `⟨rfl⟩`. Use `set χ : hermA D n → ℂ := fun b => ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) with hχ`. Establish `hfin : lam 𝓖 < ⊤` using `by rw [hvol]; exact ENNReal.one_lt_top`. Establish `hcm : Continuous fun b : hermA D n => nb b * g` using `hcont.mul continuous_const`. Establish `hper : ∀ (F : G D n → ℂ), (∀ γ ∈ GF D n, ∀ x, F (γ * x) = F x) → ∀ b, ∃ k ∈ K, F (nb b * g) = F (nb k * g)`.
+
+Introduce `F hF b`. Take `⟨l, hl, hbl⟩` from `hKc b`. Use `⟨b - l, hbl, ?_⟩` and prove the remaining obligations. Establish `e : nb b = nb l * nb (b - l)` using `by rw [← hadd, add_sub_cancel]`. Rewrite using `[e, mul_assoc, hF _ (hrat l hl)]`.
+
+Establish `hbd : ∀ (F : G D n → ℂ) (M : ℝ), (∀ γ ∈ GF D n, ∀ x, F (γ * x) = F x) → (∀ x ∈ (fun b => nb b * g) '' K, ‖F x‖ ≤ M) → ∀ b, ‖F (nb b * g) * χ b‖ ≤ M`. Introduce `F M hF hM b`. Take `⟨k, hk, e⟩` from `hper F hF b`. Rewrite using `[norm_mul, hχn b, mul_one, e]`. Conclude with `hM _ ⟨k, hk, rfl⟩`.
+
+Establish `hint : ∀ (F : G D n → ℂ), Continuous F → (∀ γ ∈ GF D n, ∀ x, F (γ * x) = F x) → IntegrableOn (fun b => F (nb b * g) * χ b) 𝓖 lam`. Introduce `F hFc hF`. Take `⟨M, hM⟩` from `(hK.image hcm).exists_bound_of_continuousOn hFc.continuousOn`. Use `Measure.integrableOn_of_bounded (M := M) hfin.ne ?_ ?_` and prove the remaining obligations. Conclude with `((hFc.comp hcm).mul hχc).aestronglyMeasurable`.
+
+Conclude with `Filter.Eventually.of_forall fun b => hbd F M hF hM b`. Use `⟨fun a F F' hFc hF'c hF hF' => ?_, ⟨(fun b => nb b * g) '' K, hK.image hcm, fun F M hFc hF hM => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [PositivityTheory.PfSWUS.fc]`. Establish `e : (fun b : hermA D n => (a • F + F') (nb b * g) * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n)))) = fun b => a * (F (nb b * g) * χ b) + F' (nb b * g) * χ b`. Use function extensionality and compare the values at `b`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hχ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add ((hint F hFc hF).const_mul a) (hint F' hF'c hF'), integral_const_mul]`. Use `show ‖∫ b in 𝓖, F (nb b * g) * χ b ∂lam‖ ≤ M`. Establish `h1` using `norm_setIntegral_le_of_norm_le_const hfin (fun b _ => hbd F M hF hM b)`.
+
+Establish `hr : lam.real 𝓖 = 1` using `by simp [Measure.real, hvol]`. Rewrite `h1` using `[hr, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem gLamBd_of (hNb : NbFacts) (hCh : CharFacts) (hCo : HermCocompact) : GLamBd := by
   intro D n ψ hψ L hL
   obtain ⟨nb, lam, 𝓖, β, g, ⟨hnb, hlam, hfd, hvol⟩, -, rfl⟩ := hL

@@ -14,11 +14,20 @@ variable {n : ℕ} (ε : Fin n → Bool)
 def pt (k : KG ε) : ((Fin n × Fin n) ⊕ (Fin n × Fin n)) → ℂ :=
   Sum.elim (fun x => toMK k x.1 x.2) (fun x => star (toMK k x.1 x.2))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_eq (k : KG ε) (P : Poly n) : ev (toMK k) P = eval (pt ε k) P := rfl
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`.
+-/
 theorem continuous_toMK : Continuous fun k : KG ε => toMK k :=
   Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
 
+/- English proof (translation)
+Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v with x | x` into its components or cases. Conclude with `(continuous_apply x.2).comp ((continuous_apply x.1).comp (continuous_toMK ε))`. Conclude with `continuous_star.comp ((continuous_apply x.2).comp ((continuous_apply x.1).comp (continuous_toMK ε)))`.
+-/
 theorem continuous_pt : Continuous (pt ε) := by
   refine continuous_pi fun v => ?_
   rcases v with x | x
@@ -30,6 +39,9 @@ def evL : Poly n →ₗ[ℂ] (KG ε → ℂ) where
   map_add' P Q := by ext k; simp
   map_smul' c P := by ext k; simp [MvPolynomial.smul_eval]
 
+/- English proof (translation)
+The claim follows from `(MvPolynomial.continuous_eval P).comp (continuous_pt ε)`.
+-/
 theorem continuous_evL (P : Poly n) : Continuous (evL ε P) :=
   (MvPolynomial.continuous_eval P).comp (continuous_pt ε)
 
@@ -38,13 +50,24 @@ def Fd (d : ℕ) : Submodule ℂ (KG ε → ℂ) := (restrictTotalDegree _ ℂ d
 instance (d : ℕ) : FiniteDimensional ℂ (Fd ε d) := by
   unfold Fd; infer_instance
 
+/- English proof (translation)
+Take `⟨P, -, rfl⟩` from `Submodule.mem_map.1 hf`. Conclude with `continuous_evL ε P`.
+-/
 theorem continuous_of_mem {d : ℕ} {f : KG ε → ℂ} (hf : f ∈ Fd ε d) : Continuous f := by
   obtain ⟨P, -, rfl⟩ := Submodule.mem_map.1 hf
   exact continuous_evL ε P
 
+/- English proof (translation)
+The claim follows from `integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+-/
 theorem integrable_of_cont {f : KG ε → ℂ} (hf : Continuous f) : Integrable f (muK ε) :=
   integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)
 
+/- English proof (translation)
+Use `⟨rename Sum.swap (map (starRingEnd ℂ) P), ?_, fun k => ?_⟩` and prove the remaining obligations. Conclude with `(totalDegree_rename_le _ _).trans (Finset.sup_mono (support_map_subset _ _))`. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (eval (pt ε k) P) = eval (pt ε k) (rename Sum.swap (map (starRingEnd ℂ) P))`. Rewrite using `[eval_rename, eval_map, ← coe_eval₂Hom]`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, hp, eval_X, coe_eval₂Hom, eval₂_X]`. Apply the tactic sequence `rcases v with x | x <;> simp [pt]`.
+-/
 theorem star_evL (P : Poly n) : ∃ Q : Poly n, Q.totalDegree ≤ P.totalDegree ∧
     ∀ k, star (evL ε P k) = evL ε Q k := by
   refine ⟨rename Sum.swap (map (starRingEnd ℂ) P), ?_, fun k => ?_⟩
@@ -75,6 +98,17 @@ def gram (d : ℕ) : Fd ε d →ₗ[ℂ] Module.Dual ℂ (Fd ε d) :=
       simp only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]
       exact integral_const_mul c _)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Take `⟨P, hP, hgP⟩` from `Submodule.mem_map.1 g.2`. Take `⟨Q, hQ, hQk⟩` from `star_evL ε P`. Establish `hQm : evL ε Q ∈ Fd ε d` using `Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ _).2 (hQ.trans ((mem_restrictTotalDegree _ _ _).1 hP)))`.
+
+Establish `h0` using `LinearMap.congr_fun hg ⟨evL ε Q, hQm⟩`. Simplify using `only [gram, LinearMap.mk₂_apply, LinearMap.zero_apply] at h0`. Establish `hc : Continuous (g : KG ε → ℂ)` using `continuous_of_mem ε g.2`. Establish `e1 : ∀ k, (g : KG ε → ℂ) k * evL ε Q k = ((‖(g : KG ε → ℂ) k‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`.
+
+Rewrite using `[← hQk, ← hgP, Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[e1, integral_complex_ofReal, Complex.ofReal_eq_zero]`. Establish `hnn : 0 ≤ᵐ[muK ε] fun k => ‖(g : KG ε → ℂ) k‖ ^ 2` using `Filter.Eventually.of_forall fun k => by positivity`.
+
+Establish `hc2 : Continuous fun k => ‖(g : KG ε → ℂ) k‖ ^ 2` using `hc.norm.pow 2`. Establish `hint : Integrable (fun k => ‖(g : KG ε → ℂ) k‖ ^ 2) (muK ε)` using `integrableOn_univ.1 (hc2.continuousOn.integrableOn_compact isCompact_univ)`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg_ae hnn hint).1 h0`. Establish `hfun` using `(hc2.ae_eq_iff_eq (muK ε) continuous_const).1 hae`. Use extensionality with `k`.
+
+Establish `h1 : ‖(g : KG ε → ℂ) k‖ ^ 2 = 0` using `congrFun hfun k`. Establish `h2 : (g : KG ε → ℂ) k = 0` using `by simpa using h1`. Simplify using `using h2`.
+-/
 theorem gram_injective (d : ℕ) : Function.Injective (gram ε d) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro g hg
@@ -103,6 +137,13 @@ theorem gram_injective (d : ℕ) : Function.Injective (gram ε d) := by
   have h2 : (g : KG ε → ℂ) k = 0 := by simpa using h1
   simpa using h2
 
+/- English proof (translation)
+Introduce `n ε d`. Establish `hfin : Module.finrank ℂ (Fd ε d) = Module.finrank ℂ (Module.Dual ℂ (Fd ε d))` using `(Subspace.dual_finrank_eq).symm`. Establish `hs` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfin).1 (gram_injective ε d)`. Set `Λ : Module.Dual ℂ (Fd ε d)` to `(LinearMap.proj (R := ℂ) (φ := fun _ : KG ε => ℂ) 1).comp (Fd ε d).subtype`. Take `⟨g, hg⟩` from `hs Λ`.
+
+Take `⟨Q, hQ, hgQ⟩` from `Submodule.mem_map.1 g.2`. Use `⟨Q, (mem_restrictTotalDegree _ _ _).1 hQ, fun P hP => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hg ⟨evL ε P, Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ _).2 hP)⟩`. Simplify using `only [gram, LinearMap.mk₂_apply, Λ, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.proj_apply] at h`. Rewrite `h` using `[← hgQ]`.
+
+Conclude with `h.symm`.
+-/
 theorem fock_reproducing_formula : Repro := by
   intro n ε d
   have hfin : Module.finrank ℂ (Fd ε d) = Module.finrank ℂ (Module.Dual ℂ (Fd ε d)) :=
@@ -122,6 +163,9 @@ end GlobalTheory.PsCo.Pc3.ReproPf
 
 namespace GlobalTheory.PsCo.Pc3
 
+/- English proof (translation)
+The claim follows from `ReproPf.fock_reproducing_formula`.
+-/
 theorem fock_reproducing_formula : Repro := ReproPf.fock_reproducing_formula
 
 end GlobalTheory.PsCo.Pc3

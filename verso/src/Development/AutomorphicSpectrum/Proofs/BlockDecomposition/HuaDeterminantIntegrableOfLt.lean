@@ -14,16 +14,39 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 open MeasureTheory Matrix
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 
+/- English proof (translation)
+Unfold `detW`. Conclude with `Complex.continuous_re.comp (Continuous.matrix_det (by fun_prop))`.
+-/
 theorem continuous_detW (n : ℕ) : Continuous (fun b : Matrix (Fin n) (Fin n) ℂ => detW b) := by
   unfold detW
   exact Complex.continuous_re.comp (Continuous.matrix_det (by fun_prop))
 
+/- English proof (translation)
+Establish `h : Continuous (fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ))` using `(continuous_detW n).comp continuous_subtype_val`. Conclude with `(h.measurable.pow_const _).ennreal_ofReal`.
+-/
 theorem measurable_term (n : ℕ) (s : ℝ) :
     Measurable (fun b : hermC n => ENNReal.ofReal (detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s))) := by
   have h : Continuous (fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ)) :=
     (continuous_detW n).comp continuous_subtype_val
   exact (h.measurable.pow_const _).ennreal_ofReal
 
+/- English proof (translation)
+Establish `hn : (0:ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨C, hC, hD⟩` from `GlobalTheory.T.lintegral_power_line_scaling s (by linarith)`. Establish `hL` using `GlobalTheory.T.lintegral_complex_power_finite n (2 * s - 1) (by linarith)`. Use `set L := ∫⁻ v : Fin n → ℂ, ENNReal.ofReal ((1 + ∑ i, Complex.normSq (v i)) ^ (-(2 * s - 1))) with hLdef`. Use `⟨C * L, ENNReal.mul_ne_top hC hL, fun b' => ?_⟩` and prove the remaining obligations.
+
+Establish `hB : (b' : Matrix (Fin n) (Fin n) ℂ).IsHermitian` using `mem_hermC.1 b'.2`. Establish `hw1` using `GlobalTheory.T.one_le_detW_of_isHermitian n _ hB`. Establish `hwA` using `GlobalTheory.T.detW_eq_normSq_det_one_add_I n _ hB`. Establish `hdet : Matrix.det (1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) ≠ 0`. Introduce `h0`.
+
+Rewrite `hwA` using `[h0]`. Simplify using `at hwA`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgm : Measurable (fun u : Fin n → ℂ => ∫⁻ d : ℝ, ENNReal.ofReal (detW (blk b' u d : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)))`. Apply `Measurable.lintegral_prod_right' (f := fun p : (Fin n → ℂ) × ℝ => ENNReal.ofReal (detW (blk b' p.1 p.2 : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)))` to reduce the goal to its premises.
+
+Establish `hc : Continuous (fun p : (Fin n → ℂ) × ℝ => detW (blk b' p.1 p.2 : Matrix (Fin (n+1)) (Fin (n+1)) ℂ))` using `(continuous_detW _).comp (continuous_blkM.comp (by fun_prop : Continuous fun p : (Fin n → ℂ) × ℝ => ((b' : Matrix (Fin n) (Fin n) ℂ), p.1, p.2)))`. Conclude with `(hc.measurable.pow_const _).ennreal_ofReal`. Rewrite using `[GlobalTheory.T.lintegral_linear_change_variables_complex n _ hdet _ hgm, ← hwA]`. Establish `hv : ∀ v : Fin n → ℂ, ∫⁻ d : ℝ, ENNReal.ofReal (detW (blk b' ((1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) *ᵥ v) d : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)) = ENNReal.ofReal (detW (b' : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) * (C * ENNReal.ofReal ((1 + ∑ i, Complex.normSq (v i) …`. Introduce `v`.
+
+Establish `hr : 0 ≤ ∑ i, Complex.normSq (v i)` using `Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _`. Establish `hterm : ∀ d : ℝ, ENNReal.ofReal (detW (blk b' ((1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) *ᵥ v) d : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)) = ENNReal.ofReal (detW (b' : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) * ENNReal.ofReal (((1 + ∑ i, Complex.normSq (v i)) ^ 2 + (d - (star …`. Introduce `d`. Establish `hh` using `mem_hermC.1 (blk b' ((1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) *ᵥ v) d).2`. Rewrite using `[GlobalTheory.T.detW_eq_normSq_det_one_add_I _ _ hh]`.
+
+Establish `e : ((blk b' ((1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) *ᵥ v) d : hermC (n+1)) : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) = blkM (b' : Matrix (Fin n) (Fin n) ℂ) ((1 + Complex.I • (b' : Matrix (Fin n) (Fin n) ℂ)) *ᵥ v) d` using `rfl`. Rewrite using `[e, GlobalTheory.T.detW_block_matrix_formula n _ hB hdet v d, ← hwA, Real.mul_rpow (by linarith) (by positivity), ENNReal.ofReal_mul (Real.rpow_nonneg (by linarith) _)]`. Simplify using `only [hterm]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hD (1 + ∑ i, Complex.normSq (v i)) (by linarith)]`. Use `congr 3`.
+
+Put the polynomial expressions in normal form. Simplify using `only [hv]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ hC]`. Establish `e2 : ENNReal.ofReal (detW (b' : Matrix (Fin n) (Fin n) ℂ) ^ (-(s - 1))) = ENNReal.ofReal (detW (b' : Matrix (Fin n) (Fin n) ℂ)) * ENNReal.ofReal (detW (b' : Matrix (Fin n) (Fin n) ℂ) ^ (-s))`. Rewrite using `[← ENNReal.ofReal_mul (by linarith)]`.
+
+Use `congr 1`. Rewrite using `[show -(s - 1) = 1 + -s by ring, Real.rpow_add (by linarith), Real.rpow_one]`. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_eq (n : ℕ) (s : ℝ) (hs : (n : ℝ) + 1 / 2 < s) : ∃ K : ENNReal, K ≠ ⊤ ∧
     ∀ b' : hermC n, ∫⁻ u : Fin n → ℂ, ∫⁻ d : ℝ,
       ENNReal.ofReal (detW (blk b' u d : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)) =
@@ -81,6 +104,19 @@ theorem inner_eq (n : ℕ) (s : ℝ) (hs : (n : ℝ) + 1 / 2 < s) : ∃ K : ENNR
   rw [e2]
   ring
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `s _ ν hν`. Establish `: IsFiniteMeasure ν` using `by haveI : Finite (hermC 0) := by haveI : Subsingleton (Matrix (Fin 0) (Fin 0) ℂ) := inferInstance`.
+
+Conclude with `Finite.of_subsingleton`. Use `haveI : CompactSpace (hermC 0) := Finite.compactSpace`. Conclude with `⟨isCompact_univ.measure_lt_top⟩`. Establish `h1 : ∀ b : hermC 0, detW (b : Matrix (Fin 0) (Fin 0) ℂ) ^ (-s) = 1`. Introduce `b`.
+
+Simplify using `[detW]`. Simplify using `only [h1]`. Conclude with `integrable_const _`. Consider the case `succ n ih`. Introduce `s hs ν hν`.
+
+Establish `hs' : (n : ℝ) + 1 / 2 < s` using `by push_cast at hs; linarith`. Establish `hpos : ∀ b : hermC (n + 1), 0 ≤ detW (b : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s)` using `fun b => Real.rpow_nonneg (by linarith [GlobalTheory.T.one_le_detW_of_isHermitian _ _ (mem_hermC.1 b.2)]) _`. Establish `hmeas` using `measurable_term (n + 1) s`. Establish `hm2 : Measurable (fun b : hermC (n + 1) => detW (b : Matrix (Fin (n+1)) (Fin (n+1)) ℂ) ^ (-s))` using `(((continuous_detW (n + 1)).comp continuous_subtype_val).measurable.pow_const _)`. Use `⟨hm2.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hpos)]`. Take `⟨c, hc, hF⟩` from `GlobalTheory.T.hermitian_haar_block_decomposition n ν (Measure.addHaar) hν inferInstance`. Take `⟨K, hK, hI⟩` from `inner_eq n s hs'`. Rewrite using `[hF _ hmeas]`. Simplify using `only [hI]`.
+
+Rewrite using `[lintegral_const_mul _ (measurable_term n (s - 1))]`. Establish `h3` using `ih (s - 1) (by linarith) Measure.addHaar inferInstance`. Establish `hp3 : ∀ b : hermC n, 0 ≤ detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-(s - 1))` using `fun b => Real.rpow_nonneg (by linarith [GlobalTheory.T.one_le_detW_of_isHermitian _ _ (mem_hermC.1 b.2)]) _`. Establish `h4` using `(hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hp3)).1 h3.2`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hc) (ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hK) h4)`.
+-/
 theorem hua_integrable : ∀ (n : ℕ) (s : ℝ), (n : ℝ) - 1 / 2 < s → ∀ ν : Measure (hermC n), ν.IsAddHaarMeasure →
     Integrable (fun b : hermC n => detW (b : Matrix (Fin n) (Fin n) ℂ) ^ (-s)) ν := by
   intro n

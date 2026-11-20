@@ -7,15 +7,34 @@ noncomputable section
 namespace GlobalTheory.PhiGam
 open scoped LaurentSeries PowerSeries
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (k⸨X⸩) a x, LaurentSeries.coe_algebraMap]`.
+-/
 private theorem coe_powerSeries_smul_eq_smul {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V]
     [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] (a : k⟦X⟧) (x : V) : (a : k⸨X⸩) • x = a • x := by
   rw [← algebraMap_smul (k⸨X⸩) a x, LaurentSeries.coe_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[coe_powerSeries_smul_eq_smul]`. Conclude with `N.smul_mem a hx`.
+-/
 private theorem powerSeries_smul_mem_of_mem {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V]
     [Module k⟦X⟧ V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] (N : Submodule k⟦X⟧ V) {x : V} (hx : x ∈ N)
     (a : k⟦X⟧) : (a : k⸨X⸩) • x ∈ N := by
   rw [coe_powerSeries_smul_eq_smul]; exact N.smul_mem a hx
 
+/- English proof (translation)
+Use `set E : Submodule k U := P ⊓ ⨆ m : ℕ, Q.comap ((T - algebraMap k (Module.End k U) x) ^ m) with hE`. Establish `hyE : y ∈ E`. Use `Submodule.mem_inf.mpr ⟨hy, Submodule.mem_iSup_of_mem 1 ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, pow_one]`. Conclude with `hT`.
+
+Set `f : E →ₗ[k] U ⧸ Q` to `Q.mkQ ∘ₗ E.subtype`. Set `W : Submodule k (U ⧸ Q)` to `(Submodule.span k s).map Q.mkQ`. Establish `hWfg : W.FG` using `(Submodule.fg_span hs).map _`. Establish `: Module.Finite k W` using `Module.Finite.iff_fg.mpr hWfg`. Establish `hrange : ∀ z : E, f z ∈ W`.
+
+Introduce `z`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.mp (hP z.2.1)`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use `show Q.mkQ a = Q.mkQ (z : U)`. Establish `hc0 : Q.mkQ c = 0` using `(Submodule.Quotient.mk_eq_zero Q).mpr hc`.
+
+Rewrite using `[← hac, map_add, hc0, add_zero]`. Establish `hker : LinearMap.ker f = Q.submoduleOf E`. Use extensionality with `z`. Simplify using `only [LinearMap.mem_ker, f, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.subtype_apply, Submodule.Quotient.mk_eq_zero, Submodule.submoduleOf, Submodule.mem_comap]`. Establish `hker' : LinearMap.ker (f.codRestrict W hrange) = Q.submoduleOf E`.
+
+Rewrite using `[LinearMap.ker_codRestrict, hker]`. Set `g` to `(Q.submoduleOf E).liftQ (f.codRestrict W hrange) hker'.ge`. Establish `hg : LinearMap.ker g = ⊥` using `Submodule.ker_liftQ_eq_bot _ _ _ hker'.le`. Establish `: IsNoetherian k W` using `IsNoetherian.iff_fg.mpr inferInstance`. Establish `: Module.Finite k (E ⧸ Q.submoduleOf E)` using `Module.Finite.of_injective g (LinearMap.ker_eq_bot.mp hg)`.
+
+Establish `hq : Module.finrank k (E ⧸ Q.submoduleOf E) = 0` using `h0`. Use `Module.finrank_zero_iff.mp hq` as an intermediate fact. Establish `h1 : (Submodule.Quotient.mk (⟨y, hyE⟩ : E) : E ⧸ Q.submoduleOf E) = 0` using `Subsingleton.elim _ _`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+-/
 private theorem mem_of_gmult_eq_zero_of_sub_mem {k U : Type} [Field k] [AddCommGroup U] [Module k U]
     (T : Module.End k U) (P Q : Submodule k U) (x : k) (s : Set U) (hs : s.Finite)
     (hP : P ≤ Submodule.span k s ⊔ Q) (h0 : gmult T P Q x = 0) (y : U) (hy : y ∈ P)
@@ -51,6 +70,17 @@ private theorem mem_of_gmult_eq_zero_of_sub_mem {k U : Type} [Field k] [AddCommG
   rw [Submodule.Quotient.mk_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hN.1`. Use `⟨↑t, t.finite_toSet, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Submodule.restrictScalars_mem, ← ht]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.mem_sup_left (Submodule.subset_span hy)`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y hy0 hy`. Establish `hyN : y ∈ N` using `by rw [ht] at hy0; exact hy0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a', ha'⟩ : PowerSeries.X ∣ a - PowerSeries.C (PowerSeries.constantCoeff a) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `hsplit : a = PowerSeries.C (PowerSeries.constantCoeff a) + PowerSeries.X * a'`. Rewrite using `[← ha']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, add_smul, mul_smul]`. Use `add_mem ?_ (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Establish `hc : (PowerSeries.C (PowerSeries.constantCoeff a) : k⟦X⟧) • y = (PowerSeries.constantCoeff a) • y`. Rewrite using `[← algebraMap_smul (k⟦X⟧) (PowerSeries.constantCoeff a) y]`.
+
+Both sides reduce to the same expression. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ hy`. Rewrite using `[Submodule.restrictScalars_mem, mem_sh_iff_exists]`. Conclude with `⟨a' • y, N.smul_mem a' hyN, by rw [zpow_one, vv_eq_coe_X, coe_powerSeries_smul_eq_smul]⟩`.
+-/
 private theorem exists_finite_span_sup_shift_of_isLat {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V]
     [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V]
     [IsScalarTower k k⟦X⟧ V] (N : Submodule k⟦X⟧ V) (hN : IsLat N) :
@@ -77,6 +107,29 @@ private theorem exists_finite_span_sup_shift_of_isLat {k : Type} [Field k] {V : 
     · rw [Submodule.restrictScalars_mem, mem_sh_iff_exists]
       exact ⟨a' • y, N.smul_mem a' hyN, by rw [zpow_one, vv_eq_coe_X, coe_powerSeries_smul_eq_smul]⟩
 
+/- English proof (translation)
+Establish `hv : vv k ≠ 0` using `vv_ne_zero k`. Take `⟨κ, hκ0, hκ⟩` from `R.γ_v`. Choose the witnesses or unpack the hypotheses as in `⟨κ₁, hκ₁⟩ : PowerSeries.X ∣ κ - 1 := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using `[hκ0]`.
+
+Establish `hE : ∀ t : ℕ, ∃ e : k⟦X⟧, (1 - κ * PowerSeries.X) ^ t - 1 + (t : k⟦X⟧) * PowerSeries.X = PowerSeries.X ^ 2 * e`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ t ih`.
+
+Take `⟨c, hc⟩` from `ih`. Use `⟨c * (1 - κ * PowerSeries.X) - κ₁ + (t : k⟦X⟧) * κ, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(1 - κ * PowerSeries.X) * hc - PowerSeries.X * hκ₁`. Take `⟨e, he⟩` from `hE (s + 1)`.
+
+Establish `he' : (1 - (κ : k⸨X⸩) * vv k) ^ (s + 1) - 1 + ((s + 1 : ℕ) : k⸨X⸩) * vv k = vv k ^ 2 * (e : k⸨X⸩)`. Establish `h` using `congrArg (HahnSeries.ofPowerSeries ℤ k) he`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_one, map_natCast] at h`. Rewrite `h` using `[← vv_eq_coe_X]`. Conclude with `h`.
+
+Establish `hw' : (vv k)⁻¹ • (g b - b) ∈ N`. Establish `h` using `(mem_sh_iff_smul_mem (a := 1)).mp hw`. Rewrite `h` using `[zpow_neg_one]`. Then use the resulting hypothesis. Establish `hgy : g (vv k ^ (s + 1) • b) = (vv k * (1 - (κ : k⸨X⸩) * vv k)) ^ (s + 1) • g b`. Rewrite using `[show g (vv k ^ (s + 1) • b) = R.γ (vv k ^ (s + 1)) • g b from hg _ _, map_pow, hκ]`.
+
+Establish `hz : nab g (vv k ^ (s + 1) • b) + ((s + 1 : ℕ) : k) • (vv k ^ (s + 1) • b) ∈ sh 1 N`. Rewrite using `[mem_sh_iff_smul_mem]`. Establish `hid : vv k ^ (-(1 : ℤ)) • (nab g (vv k ^ (s + 1) • b) + ((s + 1 : ℕ) : k) • (vv k ^ (s + 1) • b)) = (e : k⸨X⸩) • (vv k ^ (s + 1) • b) + (((1 - κ * PowerSeries.X) ^ (s + 1) * PowerSeries.X ^ s : k⟦X⟧) : k⸨X⸩) • ((vv k)⁻¹ • (g b - b))`. Rewrite using `[nab_apply_eq, hgy, Nat.cast_smul_eq_nsmul k, ← Nat.cast_smul_eq_nsmul k⸨X⸩]`. Simplify using `only [map_mul, map_pow, map_sub, map_one]`.
+
+Rewrite using `[← vv_eq_coe_X, zpow_neg_one]`. Establish `hvi : vv k * (vv k)⁻¹ = 1` using `mul_inv_cancel₀ hv`. Use `set vi := (vv k)⁻¹`. Generalize the expression as in `((s + 1 : ℕ) : k⸨X⸩) = c' at he' ⊢`. Generalize the expression as in `(e : k⸨X⸩) = E at he' ⊢`.
+
+Establish `hA : vi * (vi * (vv k * (1 - (κ : k⸨X⸩) * vv k)) ^ (s + 1)) = (1 - (κ : k⸨X⸩) * vv k) ^ (s + 1) * vv k ^ s * vi`. Rewrite using `[mul_pow]`. Take the linear combination `(vi * (1 - (κ : k⸨X⸩) * vv k) ^ (s + 1) * vv k ^ s) * hvi`. Establish `hB : E * vv k ^ (s + 1) = -(vi * (vi * vv k ^ (s + 1))) + vi * (c' * vv k ^ (s + 1)) + (1 - (κ : k⸨X⸩) * vv k) ^ (s + 1) * vv k ^ s * vi`. Take the linear combination `(-(vv k ^ s * vi)) * he' - (E * vv k ^ (s + 1) - vi * vv k ^ s) * hvi`.
+
+Simplify using `only [smul_add, smul_sub, smul_smul]`. Rewrite using `[hA, hB]`. Simplify using `only [add_smul, neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hid]`.
+
+Conclude with `add_mem (powerSeries_smul_mem_of_mem N hb _) (powerSeries_smul_mem_of_mem N hw' _)`. Establish `hkey : vv k ^ (s + 1) • b ∈ sh 1 N`. Take `⟨t, ht, hsp⟩` from `exists_finite_span_sup_shift_of_isLat N hN`. Conclude with `mem_of_gmult_eq_zero_of_sub_mem (nab g) (N.restrictScalars k) ((sh 1 N).restrictScalars k) (-((s + 1 : ℕ) : k)) t ht hsp hsen _ hb (by`. Rewrite using `[LinearMap.sub_apply, Module.algebraMap_end_apply, neg_smul, sub_neg_eq_add]`.
+
+Conclude with `hz)`. Establish `h` using `(mem_sh_iff_smul_mem (a := 1)).mp hkey`. Rewrite `h` using `[smul_smul, zpow_neg_one, pow_succ', inv_mul_cancel_left₀ hv]`. Conclude with `h`.
+-/
 private theorem vv_pow_smul_mem_of_sen_eq_zero {k : Type} [Field k] {l : ℕ} (R : RingPG k l) {V : Type} [AddCommGroup V]
     [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V]
     [IsScalarTower k k⟦X⟧ V] (g : V →ₗ[k] V) (hg : Semi R.γ g) (N : Submodule k⟦X⟧ V) (hN : IsLat N)
@@ -141,6 +194,23 @@ private theorem vv_pow_smul_mem_of_sen_eq_zero {k : Type} [Field k] {l : ℕ} (R
   rw [smul_smul, zpow_neg_one, pow_succ', inv_mul_cancel_left₀ hv] at h
   exact h
 
+/- English proof (translation)
+Introduce `k _ l _ _ R n _ V _ _ _ _ _ _ _ _ D N J hlat hC hφ hsen b g hcoc hg hb`. Establish `hsub : ∀ i, sh 1 (N i) ≤ N i`. Introduce `i`. Establish `h` using `sh_le_sh_of_le (a := 1) (b := 0) (by norm_num) (N i)`. Rewrite `h` using `[sh_zero_eq]`. Then use the resulting hypothesis.
+
+Establish `hφ' : ∀ i, ∀ x ∈ N (i - 1), D.φ i x ∈ sh 1 (N i)` using `fun i x hx => hφ i (Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `hw : ∀ i, D.γ i (b i) - b i ∈ sh 1 (N i)`. Introduce `i`. Rewrite using `[hcoc i]`. Conclude with `sub_mem (hφ' i _ (hsub (i - 1) (hg (i - 1)))) (hg i)`.
+
+Establish `hbN : ∀ i, b i ∈ N i`. Introduce `i`. Establish `key : ∀ d, d ≤ J i → vv k ^ (J i - d) • b i ∈ N i`. Introduce `d`. Proceed by induction on `d with`.
+
+Consider the case `zero => intro _`. Simplify using `using (mem_sh_iff_smul_mem).mp (hb i)`. Consider the case `succ d ih`. Introduce `hd`. Establish `e : J i - d = (J i - (d + 1)) + 1` using `by omega`.
+
+Establish `h1` using `ih (by omega)`. Rewrite `h1` using `[e]`. Establish `h2` using `hsen i (J i - d) (by omega) (by omega)`. Rewrite `h2` using `[e]`. Conclude with `vv_pow_smul_mem_of_sen_eq_zero R (D.γ i) (D.γ_semi i) (N i) (hlat i) _ h2 (b i) h1 (hw i)`.
+
+Simplify using `using key (J i) le_rfl`. Take `⟨m, hmN, hm⟩` from `(one_sub_frob_bij R D N hlat hφ').1 b hbN`. Establish `hhN : ∀ i, D.γ i (m i) - m i - g i ∈ N i` using `fun i => sub_mem (hsub i (hC i (m i) (hmN i))) (hsub i (hg i))`. Establish `hhφ : ∀ i, D.φ i (D.γ (i - 1) (m (i - 1)) - m (i - 1) - g (i - 1)) = D.γ i (m i) - m i - g i`. Introduce `i`.
+
+Establish `e1 : D.φ i (m (i - 1)) = b i + m i` using `by rw [← hm i]; abel`. Establish `e2 : D.φ i (g (i - 1)) = D.γ i (b i) - b i + g i` using `by rw [hcoc i]; abel`. Rewrite using `[map_sub, map_sub, D.comm, e1, e2, map_add]`. Normalize the expressions using the abelian group laws. Establish `h0` using `(one_sub_frob_bij R D N hlat hφ').2 (fun i => D.γ i (m i) - m i - g i) hhN hhφ`.
+
+Use `⟨m, hmN, fun i => ⟨(hm i).symm, ?_⟩⟩` and prove the remaining obligations. Establish `h3` using `congrFun h0 i`. Simplify using `only [Pi.zero_apply] at h3`. Conclude with `(sub_eq_zero.mp h3).symm`.
+-/
 theorem cocycle_split_of_contracting : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (D : ModPG R n V), ∀ (N : ZMod n → Submodule k⟦X⟧ V) (J : ZMod n → ℕ), (∀ i, IsLat (N i)) → (∀ i, CondC (D.γ i) (N i)) → (∀ i, pull (D.φ i) (N (i - 1)) ≤ sh 1 (N i)) → (∀ i (j : ℕ), 1 ≤ j → j ≤ J i → sen (D.γ i) (N i) (-(j : k)) = 0) → ∀ b g : ZMod n → V, (∀ i, D.γ i (b i) - b i = D.φ i (g (i - 1)) - g i) → (∀ i, g i ∈ sh 1 (N i)) → (∀ i, b i ∈ sh (-(J i)) (N i)) → ∃ m : ZMod n → V, (∀ i, m i ∈ N i) ∧ ∀ i, b i = D.φ i (m (i - 1)) - m i ∧ g i = D.γ i (m i) - m i := by
   intro k _ l _ _ R n _ V _ _ _ _ _ _ _ _ D N J hlat hC hφ hsen b g hcoc hg hb
   have hsub : ∀ i, sh 1 (N i) ≤ N i := by

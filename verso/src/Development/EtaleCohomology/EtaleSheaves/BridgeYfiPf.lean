@@ -49,6 +49,9 @@ def Pack : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (p : 
     ∀ (j : J) (f : j0 ⟶ j), (T.Rm.map f).hom x0 = 0 →
       ∃ (U' : B.Etale) (a : U' ⟶ U), u ∈ Set.range a.left ∧ rY q i p ι a m z = 0
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y toK ι _ p hp U m z u`. Take `⟨S⟩` from `hG hH q k hq i toK ι p hp U m u`. Conclude with `hP q i p ι U m u S z`.
+-/
 theorem Bridge_of_geo_pack (hG : Geo) (hP : Pack) : Bridge := by
   intro hH q _ k _ hq i B W Y toK ι _ p hp U m z u
   obtain ⟨S⟩ := hG hH q k hq i toK ι p hp U m u

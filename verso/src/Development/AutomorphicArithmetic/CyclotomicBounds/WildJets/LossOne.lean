@@ -16,6 +16,11 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨g1, g2, g3, g4⟩` from `h'`. Use `⟨fun l hl => (Finset.mem_union.1 hl).elim (h1 l) (g1 l), fun l => add_nonneg (h2 l) (g2 l), fun l hl => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hl`, `dsimp`, `only` using `[Finset.mem_union, not_or]`. Rewrite using `[h3 l hl.1, g3 l hl.2, add_zero]`.
+
+Simplify using `only [add_mul, Finset.sum_add_distrib]`. Rewrite using `[← Finset.sum_subset (Finset.subset_union_left (s₁ := S) (s₂ := S')) (fun l _ hl => by rw [h3 l hl, zero_mul]), ← Finset.sum_subset (Finset.subset_union_right (s₁ := S) (s₂ := S')) (fun l _ hl => by rw [g3 l hl, zero_mul])]`. Conclude with `add_le_add h4 g4`.
+-/
 private theorem expAdd {S S' : Finset ℕ} {f g : ℕ → ℝ} {a b : ℝ} (h : GlobalTheory.NormSum.Exponents S f a)
     (h' : GlobalTheory.NormSum.Exponents S' g b) : GlobalTheory.NormSum.Exponents (S ∪ S') (fun l => f l + g l) (a + b) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -29,6 +34,11 @@ private theorem expAdd {S S' : Finset ℕ} {f g : ℕ → ℝ} {a b : ℝ} (h : 
       ← Finset.sum_subset (Finset.subset_union_right (s₁ := S) (s₂ := S')) (fun l _ hl => by rw [g3 l hl, zero_mul])]
     exact add_le_add h4 g4
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1, fun l => mul_nonneg hc (h2 l), fun l hl => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h3 l hl, mul_zero]`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h4 hc`.
+-/
 private theorem expMul {S : Finset ℕ} {f : ℕ → ℝ} {a c : ℝ} (hc : 0 ≤ c) (h : GlobalTheory.NormSum.Exponents S f a) :
     GlobalTheory.NormSum.Exponents S (fun l => c * f l) (c * a) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -38,9 +48,15 @@ private theorem expMul {S : Finset ℕ} {f : ℕ → ℝ} {a c : ℝ} (hc : 0 �
   · simp only [mul_assoc, ← Finset.mul_sum]
     exact mul_le_mul_of_nonneg_left h4 hc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.trans hab⟩`.
+-/
 private theorem expMono {S : Finset ℕ} {f : ℕ → ℝ} {a b : ℝ} (h : GlobalTheory.NormSum.Exponents S f a) (hab : a ≤ b) :
     GlobalTheory.NormSum.Exponents S f b := ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.trans hab⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun l hl => (Finset.mem_filter.1 hl).2, fun l => by dsimp only; split_ifs <;> norm_num, fun l hl => ?_, ?_⟩`. Conclude with `if_neg fun h => hl (Finset.mem_filter.2 ⟨Finset.mem_singleton.2 h.2, h.1⟩)`. Rewrite using `[Finset.filter_singleton] split_ifs with h`. Simplify using `[h]`. Simplify using `using Real.log_natCast_nonneg d`.
+-/
 private theorem expOne (d : ℕ) : GlobalTheory.NormSum.Exponents (({d} : Finset ℕ).filter Nat.Prime)
     (fun l => if l.Prime ∧ l = d then 1 else 0) (Real.log d) := by
   refine ⟨fun l hl => (Finset.mem_filter.1 hl).2, fun l => by dsimp only; split_ifs <;> norm_num, fun l hl => ?_, ?_⟩
@@ -50,6 +66,13 @@ private theorem expOne (d : ℕ) : GlobalTheory.NormSum.Exponents (({d} : Finset
     · simp [h]
     · simpa using Real.log_natCast_nonneg d
 
+/- English proof (translation)
+Establish `hm : ∀ l : ℕ, l ∈ (Finset.range (⌊y⌋₊ + 1)).filter Nat.Prime ↔ l.Prime ∧ (l : ℝ) ≤ y` using `fun l => by`. Rewrite using `[Finset.mem_filter, Finset.mem_range, Nat.lt_succ_iff, Nat.le_floor_iff hy, and_comm]`. Use `⟨fun l hl => (Finset.mem_filter.1 hl).2, fun l => ?_, fun l hl => if_neg fun h => hl ((hm l).2 h), ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs with h`. Conclude with `Real.logb_nonneg (by exact_mod_cast h.1.one_lt) (le_trans (by exact_mod_cast h.1.one_lt.le) h.2)`.
+
+Conclude with `le_rfl`. Simplify using `only`. Rewrite using `[Finset.sum_congr (g := fun l : ℕ => Real.logb l y * Real.log l) rfl fun l hl => by rw [if_pos ((hm l).1 hl)]]`. Break down `le_or_gt 1 y with h | h` into its components or cases. Conclude with `(UpperTheory.WildA.logSum y h).trans (mul_le_mul_of_nonneg_left hyc hy)`.
+
+Rewrite using `[Nat.floor_eq_zero.2 h]`. Establish `e : (Finset.range (0 + 1)).filter Nat.Prime = ∅` using `by decide`. Rewrite using `[e, Finset.sum_empty]`. Conclude with `mul_nonneg hy hc`.
+-/
 private theorem expLog {y c : ℝ} (hy : 0 ≤ y) (hc : 0 ≤ c) (hyc : Real.log y ≤ c) :
     GlobalTheory.NormSum.Exponents ((Finset.range (⌊y⌋₊ + 1)).filter Nat.Prime)
     (fun l => if l.Prime ∧ (l : ℝ) ≤ y then Real.logb l y else 0) (y * c) := by
@@ -69,6 +92,27 @@ private theorem expLog {y c : ℝ} (hy : 0 ≤ y) (hc : 0 ≤ c) (hyc : Real.log
       rw [e, Finset.sum_empty]
       exact mul_nonneg hy hc
 
+/- English proof (translation)
+Introduce `C1 hC1`. Use `⟨C1 * (26 + C1 * (|Real.log C1| + 1)), by positivity, ?_⟩` and prove the remaining obligations. Introduce `D T L sc G large₂ hS hH hc S δ hδ`. Take `⟨-, -, hN, hf, hm, -, hrd, h12⟩` from `GlobalTheory.SizesOfRows.sizes_of_sizeRows large₂ hS`. Establish `hNR : (1 : ℝ) ≤ bigN D` using `by exact_mod_cast hN`.
+
+Establish `hfR : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hmR : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hL : 1 ≤ Real.log large₂.sc.b`. Rewrite using `[Real.le_log_iff_exp_le hb0]`.
+
+Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hd : Real.log D.host.d ≤ Real.log large₂.sc.b`. Establish `hb` using `hS.2.2.2.2.2.1`. Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hN1 : 1 ≤ D.R.N D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.N]; omega`.
+
+Establish `hN1R : (1 : ℝ) ≤ D.R.N D.R.m` using `by exact_mod_cast hN1`. Establish `h1 : (1 : ℝ) ≤ (D.R.m : ℝ) * D.R.f * (D.R.N D.R.m : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by linarith) hfR) (one_le_pow₀ hN1R)`. Establish `h2 : (D.host.d : ℝ) ≤ large₂.sc.b` using `(le_mul_of_one_le_left (Nat.cast_nonneg _) h1).trans hb`. Break down `Nat.eq_zero_or_pos D.host.d with h | h` into its components or cases. Rewrite using `[h, Nat.cast_zero, Real.log_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.log_le_log (by exact_mod_cast h) h2`. Establish `hsig : 0 ≤ sig G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hy : Real.log (C1 * large₂.sc.b) ≤ (|Real.log C1| + 1) * Real.log large₂.sc.b`. Rewrite using `[Real.log_mul hC1.ne' hb0.ne']`.
+
+Use polynomial arithmetic with `[le_abs_self (Real.log C1), abs_nonneg (Real.log C1)]`. Take `⟨S2, h2⟩` from `UpperTheory.WildA.depSum (G := G)`. Establish `h0 : GlobalTheory.NormSum.Exponents S δ (Real.log D.host.rdE)` using `⟨hδ.1, hδ.2.1, hδ.2.2.1, hδ.2.2.2.1⟩`. Establish `h3` using `expLog (y := C1 * large₂.sc.b) (by positivity) (by positivity) hy`. Establish `h4` using `expMul hC1.le (expAdd (expMul (c := 13 * D.R.f * bigN D * large₂.sc.b) (by positivity) (expAdd (expAdd h0 (expOne D.host.d)) h2)) (expMul (c := (D.R.f : ℝ) * (bigN D : ℝ) ^ 2) (by positivity) h3))`.
+
+Use `⟨_, _, expMono h4 ?_, fun p hp l hl => ?_⟩` and prove the remaining obligations. Use `set Lb := Real.log large₂.sc.b set K := |Real.log C1| + 1 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `e1 : (13 * D.R.f * bigN D * large₂.sc.b : ℝ) * (Real.log D.host.rdE + Real.log D.host.d + sig G) ≤ (13 * D.R.f * (bigN D : ℝ) ^ 2 * large₂.sc.b) * (2 * (Lb + sig G))`. Use `(mul_le_mul_of_nonneg_left (b := _) (c := 2 * (Lb + sig G)) (by linarith) (by positivity)).trans ?_` and prove the remaining obligations.
+
+Establish `: (bigN D : ℝ) ≤ (bigN D : ℝ) ^ 2` using `by nlinarith`. Use `gcongr`. Establish `e2 : (D.R.f : ℝ) * (bigN D : ℝ) ^ 2 * (C1 * large₂.sc.b * (K * Lb)) ≤ (D.R.f : ℝ) * (bigN D : ℝ) ^ 2 * (C1 * large₂.sc.b * (K * (Lb + sig G)))` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(mul_le_mul_of_nonneg_left (add_le_add e1 e2) hC1.le).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `mul_le_mul_of_nonneg_left ?_ hC1.le` and prove the remaining obligations. Unfold `GlobalTheory.SumSize.TopInt.kerLoss`. Simplify using `only [hl, true_and, if_true]`. Use `add_le_add (mul_le_mul_of_nonneg_right (UpperTheory.WildA.kerLe (G := G) large₂ hS hH hc p hp) ?_) le_rfl` and prove the remaining obligations.
+
+Use `hδ.2.1 l` as an intermediate fact. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem UpperTheory.WildA.lossOne :
     ∀ C1 : ℝ, 0 < C1 → ∃ C0 : ℝ, 0 < C0 ∧ ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → HostHyp D → sc.cGap = 1 →
       ∀ (S : Finset ℕ) (δ : ℕ → ℝ), GlobalTheory.NormSum.Letters D S δ → ∃ (S' : Finset ℕ) (h : ℕ → ℝ),

@@ -3,6 +3,17 @@ open scoped NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ A _ hA x y h`. Establish `hpow : ∀ (k : ℕ) (a : A), ((l : ℕ) : A) ^ k * a = 0 → a = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a ha`.
+
+Simplify using `using ha`. Consider the case `succ k ih`. Introduce `a ha`. Apply `hA` to reduce the goal to its premises. Apply `ih` to reduce the goal to its premises.
+
+Rewrite using `[← mul_assoc, ← pow_succ]`. Conclude with `ha`. Apply `_root_.WittVector.ext` to reduce the goal to its premises. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+
+Consider the case `_ n ih`. Establish `hn` using `h n`. Rewrite `hn` using `[_root_.WittVector.ghostComponent_apply, _root_.WittVector.ghostComponent_apply, wittPolynomial_eq_sum_C_mul_X_pow]`. Simplify using `only [map_sum, map_mul, map_pow, MvPolynomial.aeval_C, MvPolynomial.aeval_X, eq_intCast, Int.cast_natCast, map_natCast] at hn`. Rewrite `hn` using `[Finset.sum_range_succ, Finset.sum_range_succ]`.
+
+Establish `hs : ∑ i ∈ Finset.range n, ((l : ℕ) : A) ^ i * x.coeff i ^ l ^ (n - i) = ∑ i ∈ Finset.range n, ((l : ℕ) : A) ^ i * y.coeff i ^ l ^ (n - i)` using `Finset.sum_congr rfl (fun i hi => by rw [ih i (Finset.mem_range.1 hi)])`. Rewrite `hn` using `[hs, add_left_cancel_iff, Nat.sub_self, pow_zero, pow_one, pow_one]`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `hpow n` to reduce the goal to its premises. Rewrite using `[mul_sub, hn, sub_self]`.
+-/
 theorem WittVector.ghostComponent_injective_of_noTorsion :
     ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A], (∀ a : A, ((l : ℕ) : A) * a = 0 → a = 0) →
       ∀ x y : WittVector l A, (∀ n, WittVector.ghostComponent n x = WittVector.ghostComponent n y) → x = y := by

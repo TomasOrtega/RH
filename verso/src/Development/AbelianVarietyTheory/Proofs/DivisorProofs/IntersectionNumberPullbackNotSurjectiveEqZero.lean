@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `h`. Apply `hns` to reduce the goal to its premises. Establish `: IsProper A.X.hom` using `A.ab.proper`. Establish `: IsProper B.X.hom` using `B.ab.proper`. Establish `hw : f.hom.left ≫ B.X.hom = A.X.hom` using `Over.w f.hom`.
+
+Establish `: IsProper (f.hom.left ≫ B.X.hom)` using `by rw [hw]; infer_instance`. Establish `: IsProper f.hom.left` using `IsProper.of_comp _ B.X.hom`. Establish `hcl : IsClosed (Set.range f.hom.left)`. Rewrite using `[← Set.image_univ]`. Conclude with `f.hom.left.isClosedMap _ isClosed_univ`.
+
+Establish `hsub : closure ({genericPoint B.X.left} : Set B.X.left) ⊆ Set.range f.hom.left` using `hcl.closure_subset_iff.2 (Set.singleton_subset_iff.2 ⟨_, h⟩)`. Rewrite `hsub` using `[(genericPoint_spec B.X.left).def]`. Conclude with `⟨fun y => hsub (Set.mem_univ y)⟩`.
+-/
 theorem hom_genericPoint_ne {K : Type} [Field K] {A B : AbVar K} (f : A ⟶ B) [IsIntegral A.X.left]
     [IsIntegral B.X.left] (hns : ¬ Surjective f.hom.left) :
     f.hom.left (genericPoint A.X.left) ≠ genericPoint B.X.left := by
@@ -33,6 +40,19 @@ theorem hom_genericPoint_ne {K : Type} [Field K] {A B : AbVar K} (f : A ⟶ B) [
   rw [(genericPoint_spec B.X.left).def] at hsub
   exact ⟨fun y => hsub (Set.mem_univ y)⟩
 
+/- English proof (translation)
+Introduce `K _ A B f hdim hns J _ hJ c`. Use `haveI := (GlobalTheory.AV.AbVar.isIntegral_isLocallyNoetherian_compactSpace K A).1`. Use `haveI := (GlobalTheory.AV.AbVar.isIntegral_isLocallyNoetherian_compactSpace K B).1`. Use `letI := A.algΓ`. Take `⟨hs, hp⟩` from `GlobalTheory.AV.AbVarProj.strHom_eq_and_isProjOver K A`.
+
+Use `choose L hL hc using fun j => cls_surj (c j)`. Establish `hne` using `hom_genericPoint_ne f hns`. Establish `hη : genericPoint B.X.left ∈ (closure ({f.hom.left (genericPoint A.X.left)} : Set B.X.left))ᶜ` using `fun h => hne (((specializes_iff_mem_closure.2 h).antisymm (genericPoint_specializes _)).eq)`. Establish `h1` using `GlobalTheory.PullVanish.dim_closure_add_one_le (genericPoint_specializes (f.hom.left (genericPoint A.X.left))) isClosed_closure.isOpen_compl hη (fun h => h (subset_closure rfl))`. Establish `h2 : topologicalKrullDim (closure ({genericPoint B.X.left} : Set B.X.left)) = topologicalKrullDim B.X.left`.
+
+Rewrite using `[(genericPoint_spec B.X.left).def]`. Conclude with `(Homeomorph.Set.univ B.X.left).isHomeomorph.topologicalKrullDim_eq`. Establish `hB : topologicalKrullDim B.X.left ≤ (A.dim : ℕ)`. Rewrite using `[GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K B, hdim]`. Establish `h3` using `GlobalTheory.PullVanish.withBot_lt_of_add_one_le_nat (h1.trans (h2.trans_le hB))`.
+
+Establish `hA : topologicalKrullDim A.X.left ≤ ((0 + A.dim : ℕ) : WithBot ℕ∞)`. Rewrite using `[Nat.zero_add, GlobalTheory.AV.AbVar.topologicalKrullDim_eq_dim K A]`. Set `e : Fin 0 ⊕ Fin A.dim ≃ J` to `(Equiv.emptySum (Fin 0) (Fin A.dim)).trans (Fintype.equivFinOfCardEq hJ).symm`. Establish `h` using `GlobalTheory.PullVanish.interNum_pull_eq_zero K 0 A.dim A.X.left B.X.left (hs ▸ hp) hA f.hom.left h3 (fun i => i.elim0) (fun i => i.elim0) (fun a => L (e (.inr a))) (fun a => hL _)`. Establish `hL' : ∀ j, ((L j).pull f.hom.left).IsLB` using `fun j => pull_isLB (hL j) _`.
+
+Establish `hcl : (fun j => CechPic.pull f.hom.left (c j)) = fun j => cls ((L j).pull f.hom.left) (hL' j)`. Use function extensionality and compare the values at `j`. Rewrite using `[← hc j]`. Both sides reduce to the same expression. Rewrite using `[inter, hcl, ← interNum_eq_multiDiff K _ hL', ← interNum_comp_equiv K _ hL' e, ← h]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Break down `x with i | a` into its components or cases. Conclude with `i.elim0`. Both sides reduce to the same expression.
+-/
 theorem inter_pull_eq_zero_of_not_surjective : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), A.dim = B.dim → ¬ Surjective f.hom.left → ∀ (J : Type) [Fintype J], Fintype.card J = A.dim → ∀ c : J → Pic B.X.left, inter A (fun j => CechPic.pull f.hom.left (c j)) = 0 := by
   intro K _ A B f hdim hns J _ hJ c
   haveI := (GlobalTheory.AV.AbVar.isIntegral_isLocallyNoetherian_compactSpace K A).1

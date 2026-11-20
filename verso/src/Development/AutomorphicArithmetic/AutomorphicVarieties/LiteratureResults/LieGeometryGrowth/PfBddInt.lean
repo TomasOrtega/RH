@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EqZeroOfMemWeakIn
 open UpperTheory.V.Lit.Geo
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ F hF ⟨C, hC⟩`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `h` using `GlobalTheory.CuspQuot.memL2_of_bound (μ := μ) hF.cont (GlobalTheory.CuspRep.CuspidalL2GL.leftInv_latticeGL hF.left hF.centre) hC`. Conclude with `⟨h.2.integrable one_le_two, h⟩`.
+-/
 theorem UpperTheory.V.Lit.Geo.Pf.bddInt :
     UpperTheory.V.Lit.Geo.Pf.BddInt := by
   intro E _ _ _ a μ _ F hF ⟨C, hC⟩

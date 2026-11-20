@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.CovTop
 
+/- English proof (translation)
+Introduce `D O c R Gm hmet w hw σ y t g h`. Establish `hmem` using `FlagCpt.prodPow_mem (GlobalTheory.ShFam.Pad.expo O.S.Dw w) (fun τ i => h.mem_eqnSet τ i)`. Establish `k1` using `FlagCpt.met_h (Gm (embOf O.κ.e σ)) (GlobalTheory.ShFam.Pad.expo O.S.Dw w) h`. Establish `hm : (adlOf (O.Φ.C c) (O.met.hm c) w).m σ = (O.Φ.C c).met (Gm (embOf O.κ.e σ)) (GlobalTheory.ShFam.Pad.expo O.S.Dw w)`. Rewrite using `[← hmet, ← hw]`.
+
+Both sides reduce to the same expression. Establish `hc : (adlOf (O.Φ.C c) (O.met.hm c) w).ci (InfinitePlace.mk σ) = 0` using `rfl`. Rewrite using `[hm, hc, mul_zero, neg_zero, Real.exp_zero, one_mul, pow_one]`. Use `(Var.pn_eq hmem).trans ?_` and prove the remaining obligations. Rewrite using `[k1]`.
+
+Simplify using `only [prodPow, Pi.one_apply, one_zpow, Finset.prod_const_one, Units.val_one, norm_one, one_pow, div_one]`. Use `congr 3`. Conclude with `(congrArg (Var.val y) (map_mul (Var.cx (O.var c) σ) _ _).symm).trans (Var.val_cx _ _)`.
+-/
 theorem pn_adlOf_genAt_of_adapted : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (R : ℝ) (Gm : ∀ σ', EigMet O.s.T.Z σ')
     (hmet : ∀ σ n, O.met.hm c (some R) σ n = (O.Φ.C c).met (Gm (embOf O.κ.e σ)) n)
     (w : GlobalTheory.ShFam.Pad.Sym D.host.E →₀ ℤ), GlobalTheory.ShFam.Pad.parOf w = some R → ∀ (σ : D.what₂.LL →+* ℂ) (y : Pts (O.var c) σ)

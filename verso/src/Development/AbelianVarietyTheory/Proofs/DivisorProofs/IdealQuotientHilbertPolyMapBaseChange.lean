@@ -18,6 +18,9 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem homogeneousComponent_map_algebraMap {σ K L : Type} [Field K] [Field L] [Algebra K L] (n : ℕ) (p : MvPolynomial σ K) :
     homogeneousComponent n (MvPolynomial.map (algebraMap K L) p) =
       MvPolynomial.map (algebraMap K L) (homogeneousComponent n p) := by
@@ -29,6 +32,11 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, hq, rfl⟩` from `hy`. Rewrite using `[homogeneousComponent_map_algebraMap]`. Conclude with `Submodule.subset_span ⟨_, ⟨hP q hq n, homogeneousComponent_mem n q⟩, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 private theorem homogeneousComponent_mem_span_map_homogeneous {σ K L : Type} [Field K] [Field L] [Algebra K L]
     (P : Ideal (MvPolynomial σ K)) (hP : ∀ g ∈ P, ∀ n : ℕ, homogeneousComponent n g ∈ P)
     {g : MvPolynomial σ L}
@@ -50,6 +58,21 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Take `⟨M, hM⟩ : ∃ M : Submodule L (MvPolynomial σ L), M = Submodule.span L ((MvPolynomial.map (algebraMap K L)) '' (P : Set (MvPolynomial σ K)))` from `⟨_, rfl⟩`. Rewrite using `[← hM]`. Establish `hX : ∀ (i : σ) (x : MvPolynomial σ L), x ∈ M → X i * x ∈ M`. Introduce `i x hx`. Rewrite `hx`, the goal using `[hM]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨q, hq, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨X i * q, P.mul_mem_left _ hq, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`.
+
+Establish `hmul : ∀ (a x : MvPolynomial σ L), x ∈ M → a * x ∈ M`. Introduce `a x hx`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.C_mul']`. Conclude with `M.smul_mem c hx`.
+
+Consider the case `add p q hp hq => rw [add_mul]`. Conclude with `M.add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[show p * X i * x = X i * (p * x) by ring]`. Conclude with `hX i _ hp`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy => rw [hM]`. Conclude with `Submodule.subset_span hy`. Consider the case `zero => exact M.zero_mem`. Consider the case `add y z _ _ hy hz => exact M.add_mem hy hz`.
+
+Consider the case `smul a y _ hy => exact hmul a y hy`.
+-/
 private theorem mem_span_image_of_mem_ideal_map {σ K L : Type} [Field K] [Field L] [Algebra K L]
     (P : Ideal (MvPolynomial σ K)) {g : MvPolynomial σ L}
     (hg : g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial σ K →+* MvPolynomial σ L)) :
@@ -87,6 +110,13 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Use `letI := MvPolynomial.gradedAlgebra (σ := σ) (R := L)`. Use `conv_lhs => rw [← sum_homogeneousComponent g]`. Rewrite using `[DirectSum.decompose_sum, DirectSum.sum_apply, Submodule.coe_sum]`. Distinguish the cases in `hn : n ∈ Finset.range (g.totalDegree + 1)`. Rewrite using `[Finset.sum_eq_single n]`.
+
+Conclude with `DirectSum.decompose_of_mem_same _ (homogeneousComponent_mem n g)`. Introduce `i _ hi`. Conclude with `DirectSum.decompose_of_mem_ne _ (homogeneousComponent_mem i g) hi`. Introduce `h`. Conclude with `absurd hn h`.
+
+Rewrite using `[homogeneousComponent_eq_zero]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Conclude with `DirectSum.decompose_of_mem_ne _ (homogeneousComponent_mem i g) (by rintro rfl; exact hn hi)`. Simplify using `at hn`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem decompose_coe_eq_homogeneousComponent {σ L : Type} [Field L]
     (g : MvPolynomial σ L) (n : ℕ) :
     letI := MvPolynomial.gradedAlgebra (σ := σ) (R := L)
@@ -110,6 +140,11 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Establish `h` using `Module.Flat.linearIndependent_one_tmul (S := L) hv`. Establish `h2` using `h.map' (algebraTensorAlgEquiv K L).toLinearEquiv.toLinearMap (algebraTensorAlgEquiv K L).toLinearEquiv.ker`. Establish `he : (fun i => MvPolynomial.map (algebraMap K L) (v i)) = (algebraTensorAlgEquiv K L).toLinearEquiv.toLinearMap ∘ fun i => (1 : L) ⊗ₜ[K] v i`. Use function extensionality and compare the values at `i`. Simplify using `[algebraTensorAlgEquiv_tmul]`.
+
+Rewrite using `[he]`. Conclude with `h2`.
+-/
 private theorem linearIndependent_map_algebraMap {σ K L : Type} [Field K] [Field L] [Algebra K L] {ι : Type} {v : ι → MvPolynomial σ K}
     (hv : LinearIndependent K v) :
     LinearIndependent L (fun i => MvPolynomial.map (algebraMap K L) (v i)) := by
@@ -127,6 +162,19 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Set `b` to `Module.finBasis K W`. Set `v : Fin (Module.finrank K W) → MvPolynomial σ L` to `fun i => MvPolynomial.map (algebraMap K L) (b i : MvPolynomial σ K)`. Establish `hli : LinearIndependent L v` using `linearIndependent_map_algebraMap (b.linearIndependent.map' W.subtype (Submodule.ker_subtype W))`. Establish `hspan : Submodule.span L (Set.range v) = Submodule.span L ((MvPolynomial.map (algebraMap K L)) '' (W : Set (MvPolynomial σ K)))`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, (b i).2, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+
+Establish `hw' : (⟨w, hw⟩ : W) ∈ Submodule.span K (Set.range b)` using `by rw [b.span_eq]; trivial`. Establish `key : ∀ x : W, x ∈ Submodule.span K (Set.range b) → MvPolynomial.map (algebraMap K L) (x : MvPolynomial σ K) ∈ (Submodule.span L (Set.range v)).restrictScalars K`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simpa using Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`.
+
+Establish `: MvPolynomial.map (algebraMap K L) ((c • y : W) : MvPolynomial σ K) = c • MvPolynomial.map (algebraMap K L) (y : MvPolynomial σ K)`. Simplify using `[MvPolynomial.smul_eq_C_mul, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c hy`. Conclude with `key _ hw'`.
+
+Rewrite using `[← hspan, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 private theorem finrank_span_map_algebraMap_eq {σ K L : Type} [Field K] [Field L] [Algebra K L]
     (W : Submodule K (MvPolynomial σ K)) [FiniteDimensional K W] :
     Module.finrank L (Submodule.span L ((MvPolynomial.map (algebraMap K L)) '' (W : Set (MvPolynomial σ K)))) =
@@ -169,6 +217,23 @@ open scoped ENNReal in
 open Module TensorProduct in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Introduce `K L _ _ _ N P hP`. Establish `hW : ∀ n : ℕ, (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)).restrictScalars L ⊓ homogeneousSubmodule (Fin N) L n = Submodule.span L ((MvPolynomial.map (algebraMap K L)) '' ((P.restrictScalars K ⊓ homogeneousSubmodule (Fin N) K n : …`. Introduce `n`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `g ⟨hg1, hg2⟩`.
+
+Use `homogeneousComponent_mem_span_map_homogeneous P hP (mem_span_image_of_mem_ideal_map P hg1) n` as an intermediate fact. Rewrite `this` using `[homogeneousComponent_of_mem hg2, if_pos rfl]`. Then use the resulting hypothesis. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, ⟨hw1, hw2⟩, rfl⟩`. Conclude with `⟨Ideal.mem_map_of_mem _ hw1, (mem_homogeneousSubmodule _ _).2 (((mem_homogeneousSubmodule _ _).1 hw2).map _)⟩`.
+
+Establish `hA : ∀ g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L), ∀ n : ℕ, homogeneousComponent n g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)`. Introduce `g hg n`. Establish `h` using `homogeneousComponent_mem_span_map_homogeneous P hP (mem_span_image_of_mem_ideal_map P hg) n`. Rewrite `h` using `[← hW n]`. Conclude with `h.1`.
+
+Use `⟨hA, ?_⟩` and prove the remaining obligations. Establish `hhomP : Ideal.IsHomogeneous (homogeneousSubmodule (Fin N) K) P`. Introduce `i r hr`. Rewrite using `[decompose_coe_eq_homogeneousComponent]`. Conclude with `hP r hr i`.
+
+Establish `hhomQ : Ideal.IsHomogeneous (homogeneousSubmodule (Fin N) L) (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L))`. Introduce `i r hr`. Rewrite using `[decompose_coe_eq_homogeneousComponent]`. Conclude with `hA r hr i`. Establish `hdim : ∀ n : ℕ, Module.finrank L (_root_.GlobalTheory.quotPiece (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)) (n : ℤ)) = Module.finrank K (_root_.GlobalTheory.quotPiece P (n : ℤ))`.
+
+Introduce `n`. Establish `h1` using `_root_.GlobalTheory.finrank_quotPiece_add (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)) n`. Establish `h2` using `_root_.GlobalTheory.finrank_quotPiece_add P n`. Rewrite `h1` using `[hW n, finrank_span_map_algebraMap_eq, _root_.GlobalTheory.ProjCut.finrank_homogeneousSubmodule]`. Rewrite `h2` using `[_root_.GlobalTheory.ProjCut.finrank_homogeneousSubmodule]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨n₀, hn₀⟩` from `((_root_.GlobalTheory.eventually_finrank_quotPiece hhomQ).and (_root_.GlobalTheory.eventually_finrank_quotPiece hhomP)).exists_forall_of_atTop`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun m : ℕ => ((m + n₀ : ℕ) : ℚ)) ?_ ?_` and prove the remaining obligations. Introduce `a b h`.
+
+Simplify using `using h`. Introduce `m`. Take `⟨h1, h2⟩` from `hn₀ (m + n₀) (by omega)`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[← h1, ← h2, hdim]`.
+-/
 theorem _root_.GlobalTheory.HilbBaseChange.idealHilbertPoly_map : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (N : ℕ) (P : Ideal (MvPolynomial (Fin N) K)), (∀ g ∈ P, ∀ n : ℕ, homogeneousComponent n g ∈ P) → (∀ g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L), ∀ n : ℕ, homogeneousComponent n g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)) ∧ _root_.GlobalTheory.idealHilbertPoly (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L)) = _root_.GlobalTheory.idealHilbertPoly P := by
   intro K L _ _ _ N P hP
   have hW : ∀ n : ℕ,

@@ -20,18 +20,30 @@ namespace GlobalTheory.RealMult.Elliptic
 
 abbrev toInt : 𝓞 ℚ ≃+* ℤ := Rat.ringOfIntegersEquiv
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff (𝓞 ℚ)⁰).1 c.2`. Conclude with `⟨toInt a, by rw [Rat.ringOfIntegersEquiv_apply_coe]; exact ha⟩`.
+-/
 theorem exists_int (c : (1 : FracId ℚ).elt) : ∃ n : ℤ, (n : ℚ) = c := by
   obtain ⟨a, ha⟩ := (FractionalIdeal.mem_one_iff (𝓞 ℚ)⁰).1 c.2
   exact ⟨toInt a, by rw [Rat.ringOfIntegersEquiv_apply_coe]; exact ha⟩
 
 def eltInt (c : (1 : FracId ℚ).elt) : ℤ := (exists_int c).choose
 
+/- English proof (translation)
+The claim follows from `(exists_int c).choose_spec`.
+-/
 theorem eltInt_spec (c : (1 : FracId ℚ).elt) : (eltInt c : ℚ) = c := (exists_int c).choose_spec
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, eltInt_spec, eltInt_spec, eltInt_spec, Submodule.coe_add]`.
+-/
 theorem eltInt_add (c c' : (1 : FracId ℚ).elt) : eltInt (c + c') = eltInt c + eltInt c' := by
   apply Int.cast_injective (α := ℚ)
   rw [Int.cast_add, eltInt_spec, eltInt_spec, eltInt_spec, Submodule.coe_add]
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_mul, eltInt_spec, eltInt_spec, Submodule.coe_smul, Algebra.smul_def, Rat.ringOfIntegersEquiv_apply_coe]`.
+-/
 theorem eltInt_smul (a : 𝓞 ℚ) (c : (1 : FracId ℚ).elt) : eltInt (a • c) = toInt a * eltInt c := by
   apply Int.cast_injective (α := ℚ)
   rw [Int.cast_mul, eltInt_spec, eltInt_spec, Submodule.coe_smul, Algebra.smul_def,
@@ -39,6 +51,9 @@ theorem eltInt_smul (a : 𝓞 ℚ) (c : (1 : FracId ℚ).elt) : eltInt (a • c)
 
 def oneElt : (1 : FracId ℚ).elt := ⟨1, (FractionalIdeal.mem_one_iff (𝓞 ℚ)⁰).2 ⟨1, map_one _⟩⟩
 
+/- English proof (translation)
+Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[eltInt_spec, Int.cast_one]`. Both sides reduce to the same expression.
+-/
 theorem eltInt_one : eltInt oneElt = 1 := by
   apply Int.cast_injective (α := ℚ)
   rw [eltInt_spec, Int.cast_one]
@@ -57,11 +72,19 @@ def ratAct : OAct (𝓞 ℚ) A where
 
 variable {A}
 
+/- English proof (translation)
+Use `show x ≫ (Serre.intAct A).act (toInt a) = _`. Unfold `Serre.intAct`. Rewrite using `[GrpObj.comp_zpow, Category.comp_id]`.
+-/
 theorem comp_ratAct {T : Over S} (x : T ⟶ A) (a : 𝓞 ℚ) : x ≫ (ratAct A).act a = x ^ toInt a := by
   show x ≫ (Serre.intAct A).act (toInt a) = _
   unfold Serre.intAct
   rw [GrpObj.comp_zpow, Category.comp_id]
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, lam (cls L hL) (x ^ (m : ℤ)) y = (m : ℤ) • lam (cls L hL) x y` using `fun m ↦ by`. Rewrite using `[zpow_natCast, lam_pow_left hL hΘ, natCast_zsmul]`. Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Conclude with `key m`. Establish `h` using `lam_mul_left hL hΘ (x ^ (-(m : ℤ))) (x ^ (m : ℤ)) y`.
+
+Rewrite `h` using `[← zpow_add, neg_add_cancel, zpow_zero, lam_one_left, key]`. Rewrite using `[neg_smul, eq_neg_iff_add_eq_zero, ← h]`.
+-/
 theorem lam_zpow_left {L : LB A.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen) {T : Over S}
     (x y : T ⟶ A) (n : ℤ) : lam (cls L hL) (x ^ n) y = n • lam (cls L hL) x y := by
   have key : ∀ m : ℕ, lam (cls L hL) (x ^ (m : ℤ)) y = (m : ℤ) • lam (cls L hL) x y := fun m ↦ by
@@ -72,23 +95,38 @@ theorem lam_zpow_left {L : LB A.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta
     rw [← zpow_add, neg_add_cancel, zpow_zero, lam_one_left, key] at h
     rw [neg_smul, eq_neg_iff_add_eq_zero, ← h]
 
+/- English proof (translation)
+Rewrite using `[lam_comm, lam_zpow_left hL hΘ, lam_comm]`.
+-/
 theorem lam_zpow_right {L : LB A.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen) {T : Over S}
     (x y : T ⟶ A) (n : ℤ) : lam (cls L hL) x (y ^ n) = n • lam (cls L hL) x y := by
   rw [lam_comm, lam_zpow_left hL hΘ, lam_comm]
 
 def mulLam (L : LB A.left) (n : ℤ) : LB (G2 A).left := cubeLB A ![fst A A, snd A A ^ n] L
 
+/- English proof (translation)
+The claim follows from `LB.isLB_linComb hL _ _`.
+-/
 theorem isLB_mulLam {L : LB A.left} (hL : L.IsLB) (n : ℤ) : (mulLam L n).IsLB := LB.isLB_linComb hL _ _
 
+/- English proof (translation)
+The claim follows from `(cls_cube_two hL (fst A A) (snd A A ^ n) (isLB_mulLam hL n)).trans (lam_zpow_right hL hΘ _ _ n)`.
+-/
 theorem cls_mulLam {L : LB A.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen) (n : ℤ) :
     cls _ (isLB_mulLam hL n) = n • lam (cls L hL) (fst A A) (snd A A) :=
   (cls_cube_two hL (fst A A) (snd A A ^ n) (isLB_mulLam hL n)).trans (lam_zpow_right hL hΘ _ _ n)
 
+/- English proof (translation)
+Rewrite using `[cls_pull (isLB_mulLam hL n), cls_mulLam hL hΘ, map_zsmul, pull_lam, lift_fst, lift_snd]`.
+-/
 theorem cls_pull_mulLam {L : LB A.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (Theta A L), t.IsGen) (n : ℤ)
     {T : Over S} (x y : T ⟶ A) :
     cls _ (pull_isLB (isLB_mulLam hL n) (lift x y).left) = n • lam (cls L hL) x y := by
   rw [cls_pull (isLB_mulLam hL n), cls_mulLam hL hΘ, map_zsmul, pull_lam, lift_fst, lift_snd]
 
+/- English proof (translation)
+Rewrite using `[cls_pull (L := abelian₂ A L) (LB.isLB_linComb hL _ _) _ h]`. Use `erw [cls_cube_two hL (fst A A) (snd A A)]`. Rewrite using `[pull_lam, lift_fst, lift_snd]`.
+-/
 theorem cls_pull_lam {L : LB A.left} (hL : L.IsLB) {T : Over S} (x y : T ⟶ A)
     (h : ((abelian₂ A L).pull (lift x y).left).IsLB) : cls _ h = lam (cls L hL) x y := by
   rw [cls_pull (L := abelian₂ A L) (LB.isLB_linComb hL _ _) _ h]

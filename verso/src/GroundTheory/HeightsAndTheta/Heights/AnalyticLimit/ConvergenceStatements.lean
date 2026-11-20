@@ -48,6 +48,9 @@ section Potentials
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => ReciprocityTheory.AnForm.M.isPotential_ofFun A _ fun _ => contDiffOn_const | m + 1, c, P, hP => ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (ReciprocityTheory.AnForm.M.isPotentialRsmul A (c 0) (P 0) (hP 0)) (isPotential_lincomb m _ _ fun i => hP i.succ)`.
+-/
 theorem isPotential_lincomb : ∀ (m : ℕ) (c : Fin m → ℝ) (P : Fin m → LocPot X),
     (∀ i, IsPotential A (P i)) → IsPotential A (lincomb m c P)
   | 0, _, _, _ => ReciprocityTheory.AnForm.M.isPotential_ofFun A _ fun _ => contDiffOn_const
@@ -55,6 +58,9 @@ theorem isPotential_lincomb : ∀ (m : ℕ) (c : Fin m → ℝ) (P : Fin m → L
       (ReciprocityTheory.AnForm.M.isPotentialRsmul A (c 0) (P 0) (hP 0))
       (isPotential_lincomb m _ _ fun i => hP i.succ)
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (isPotential_lincomb _ _ _ fun i => ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (F.R i).θ_pot (ReciprocityTheory.AnForm.M.isPotential_ofFun A _ ((F.sys i).smooth t ht.1 (ht.2 i)))) (ReciprocityTheory.AnForm.M.isPotentialRsmul A …`.
+-/
 theorem Family.coefForm_isPotential (F : Family A) {a : LocPot X} (ha : IsPotential A a)
     (x : Option (Fin F.m) → ℝ) {t : ℝ} (ht : F.Admissible t) : IsPotential A (F.coefForm a x t) :=
   ReciprocityTheory.AnForm.M.isPotentialAdd A _ _
@@ -62,6 +68,9 @@ theorem Family.coefForm_isPotential (F : Family A) {a : LocPot X} (ha : IsPotent
       (ReciprocityTheory.AnForm.M.isPotential_ofFun A _ ((F.sys i).smooth t ht.1 (ht.2 i))))
     (ReciprocityTheory.AnForm.M.isPotentialRsmul A _ a ha)
 
+/- English proof (translation)
+Unfold `Family.mixedProduct`. Use `split_ifs`. Conclude with `F.coefForm_isPotential ha x ht`. Conclude with `F.coefForm_isPotential ha x ht'`.
+-/
 theorem Family.mixedProduct_isPotential (F : Family A) {a : LocPot X} (ha : IsPotential A a)
     (x : Option (Fin F.m) → ℝ) {t t' : ℝ} (ht : F.Admissible t) (ht' : F.Admissible t') (k : ℕ)
     (i : Fin D) : IsPotential A (F.mixedProduct a x t t' k i) := by

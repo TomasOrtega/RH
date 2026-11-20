@@ -93,6 +93,9 @@ def StepExactNS (D : D7) : Prop := ForStepQ D fun c w k s s' p => ∀ ipD ip, Is
       s'.pet (p.up φ (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v))) (p.up φ (PiLocalization₂.val u₂ (PiTensorProduct.tprod ℂ v))) =
         conj ((GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ s'.V s'.ν : ℂ) * (l / dS (c.S : Set _) s s') * locQ c w k * ∫ g, zReal p m X φ v g ∂mR) * ip u₁ u₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (t : T) : (comR R t).μ = R.toLevCh.mu t := rfl
 
 end GlobalTheory.ChainTw

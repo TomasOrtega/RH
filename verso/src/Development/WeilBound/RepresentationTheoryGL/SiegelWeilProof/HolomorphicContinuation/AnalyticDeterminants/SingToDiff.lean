@@ -20,16 +20,28 @@ def ell (β : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ]
   LinearMap.toContinuousLinearMap
     ((2 * Real.pi * Complex.I) • ((Matrix.traceLinearMap (Fin n) ℂ ℂ).comp (LinearMap.mulLeft ℂ β)))
 
+/- English proof (translation)
+Simplify using `[ell]`.
+-/
 theorem ell_apply (β H : Matrix (Fin n) (Fin n) ℂ) : ell β H = 2 * Real.pi * Complex.I * (β * H).trace := by
   simp [ell]
 
+/- English proof (translation)
+Simplify using `[eTr, ell_apply]`.
+-/
 theorem eTr_eq (β : Matrix (Fin n) (Fin n) ℂ) (x : Vr n) : eTr β x = Complex.exp (ell β (herm x)) := by
   simp [eTr, ell_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and]`.
+-/
 theorem trace_mul_single' (β : Matrix (Fin n) (Fin n) ℂ) (r c : Fin n) :
     (β * Matrix.single r c 1).trace = β c r := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and]
 
+/- English proof (translation)
+The claim follows from `| [], c, x => by simp [dList] | a :: l, c, x => by have h : dList l (fun y => c * Complex.exp (ell β (herm y))) = fun y => (c * (l.map fun a => ell β (Matrix.single a.1 a.2 1)).prod) * Complex.exp (ell β (herm y)) := by funext y; rw [dList_exp β l c y] simp only [dList] rw [h] se …`.
+-/
 theorem dList_exp (β : Matrix (Fin n) (Fin n) ℂ) :
     ∀ (l : List (Fin n × Fin n)) (c : ℂ) (x : Vr n),
       dList l (fun y => c * Complex.exp (ell β (herm y))) x =
@@ -52,6 +64,11 @@ theorem dList_exp (β : Matrix (Fin n) (Fin n) ℂ) :
 def ml (σ : Equiv.Perm (Fin n)) : Fin (Fintype.card (Fin n)) → Fin n × Fin n :=
   fun i => ((Fintype.equivFin (Fin n)).symm i, σ ((Fintype.equivFin (Fin n)).symm i))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Simplify using `only [Function.comp_apply, ml, ell_apply, trace_mul_single', Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[show (∏ i : Fin (Fintype.card (Fin n)), β (σ ((Fintype.equivFin (Fin n)).symm i)) ((Fintype.equivFin (Fin n)).symm i)) = ∏ a : Fin n, β (σ a) a from Fintype.prod_equiv (Fintype.equivFin (Fin n)).symm _ _ (fun _ => rfl)]`.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_sign_prod_ell (β : Matrix (Fin n) (Fin n) ℂ) :
     ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) *
       ((List.ofFn (ml σ)).map fun a => ell β (Matrix.single a.1 a.2 1)).prod =
@@ -68,6 +85,19 @@ theorem sum_sign_prod_ell (β : Matrix (Fin n) (Fin n) ℂ) :
   push_cast
   ring
 
+/- English proof (translation)
+Use `set E : Vr n → ℂ := fun y => 1 * Complex.exp (ell β (herm y)) with hE`. Establish `hEs : ContDiffOn ℝ ∞ E Set.univ`. Use `(contDiff_const.mul ?_).contDiffOn` and prove the remaining obligations. Conclude with `Complex.contDiff_exp.comp (((ell β).restrictScalars ℝ).contDiff.comp (hermL n).contDiff)`. Establish `hT : ∀ σ : Equiv.Perm (Fin n), IsT Set.univ (dList (List.ofFn (ml σ)).reverse φ)` using `fun σ => isT_dList hφ _`.
+
+Establish `hint : ∀ σ : Equiv.Perm (Fin n), Integrable (fun x => E x * dList (List.ofFn (ml σ)).reverse φ x)` using `fun σ => integrable_mul_of_contOn isOpen_univ hEs.continuousOn (hT σ).smooth.continuous (hT σ).cpt (Set.subset_univ _)`. Establish `h1 : (fun x => (∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * dList (List.ofFn (ml σ)).reverse φ x) * eTr β x) = fun x => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * (E x * dList (List.ofFn (ml σ)).reverse φ x)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[eTr_eq]`. Simplify using `only [E]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, integral_finsetSum _ (fun σ _ => (hint σ).const_mul _)]`. Establish `h2 : ∀ σ : Equiv.Perm (Fin n), ∫ x, (Equiv.Perm.sign σ : ℂ) * (E x * dList (List.ofFn (ml σ)).reverse φ x) = (Equiv.Perm.sign σ : ℂ) * ((-1) ^ Fintype.card (Fin n) * (((List.ofFn (ml σ)).map fun a => ell β (Matrix.single a.1 a.2 1)).prod * ∫ x, Complex.exp (ell β (herm x)) * φ x) …`.
+
+Introduce `σ`. Rewrite using `[integral_const_mul, ibp_dList isOpen_univ _ hEs hφ, List.reverse_reverse, List.length_reverse, List.length_ofFn]`. Use `congr 2`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [E]`. Rewrite using `[dList_exp β _ 1 x]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun σ _ => h2 σ)]`. Establish `h3 : ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * ((-1) ^ Fintype.card (Fin n) * (((List.ofFn (ml σ)).map fun a => ell β (Matrix.single a.1 a.2 1)).prod * ∫ x, Complex.exp (ell β (herm x)) * φ x)) = (-1) ^ Fintype.card (Fin n) * (∫ x, Complex.exp (ell β (herm x)) * φ x) * …`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, sum_sign_prod_ell, hdet]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_test (β : Matrix (Fin n) (Fin n) ℂ) (hdet : β.det = 0) {φ : Vr n → ℂ} (hφ : IsT Set.univ φ) :
     ∫ x, (∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * dList (List.ofFn (ml σ)).reverse φ x) * eTr β x = 0 := by
   set E : Vr n → ℂ := fun y => 1 * Complex.exp (ell β (herm y)) with hE
@@ -110,6 +140,51 @@ theorem fourier_test (β : Matrix (Fin n) (Fin n) ℂ) (hdet : β.det = 0) {φ :
 end STD
 
 open STD in
+/- English proof (translation)
+Introduce `n G r hr hG hyp`. Use `set U : Set (Vr n) := (hermL n) ⁻¹' Metric.ball 0 r with hUdef`. Establish `hU : IsOpen U` using `Metric.isOpen_ball.preimage (hermL n).continuous`. Establish `h0U : (0 : Vr n) ∈ U` using `by simp [U, hermL_apply, herm_zero, hr]`. Use `set F : Vr n → ℂ := fun y => G (herm y) with hFdef`.
+
+Establish `hF : ContDiffOn ℝ ∞ F U` using `(hG.restrict_scalars ℝ).comp (hermL n).contDiff.contDiffOn (fun y hy => hy)`. Set `H : Vr n → ℂ` to `fun x => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * dList (List.ofFn (ml σ)) F x`. Establish `hHU : ContinuousOn H U`. Use `continuousOn_finsetSum _ fun σ _ => continuousOn_const.mul ?_` and prove the remaining obligations. Conclude with `(contDiffOn_dList hU hF _).continuousOn`.
+
+Establish `hH0 : H 0 = detD G`. Simplify using `only [H, detD]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[dList_ofFn hG _ (ml σ) 0 (by simpa [herm_zero] using hr), herm_zero]`. Both sides reduce to the same expression.
+
+Take `⟨ε0, hε0, hball⟩` from `Metric.isOpen_iff.1 hU 0 h0U`. Establish `key : ∀ ε : ℝ, 0 < ε → ε < ε0 → ∀ b : ContDiffBump (0 : Vr n), b.rOut = ε → ∫ x, H x * ((b.normed volume x : ℝ) : ℂ) = 0`. Introduce `ε hε hεε b hb`. Use `set φ : Vr n → ℂ := fun x => ((b.normed volume x : ℝ) : ℂ) with hφdef`. Establish `hφsup : tsupport φ ⊆ Metric.closedBall 0 ε`.
+
+Use `closure_minimal (fun x hx => ?_) Metric.isClosed_closedBall` and prove the remaining obligations. Establish `h1 : b.normed volume x ≠ 0` using `fun h0 => hx (by simp [φ, h0])`. Establish `hx' : x ∈ Function.support (b.normed volume)` using `h1`. Rewrite `hx'` using `[b.support_normed_eq, hb]`. Conclude with `Metric.ball_subset_closedBall hx'`.
+
+Establish `hφ : IsT U φ`. Use `⟨Complex.ofRealCLM.contDiff.comp b.contDiff_normed, ?_, ?_⟩` and prove the remaining obligations. Conclude with `b.hasCompactSupport_normed.comp_left Complex.ofReal_zero`. Conclude with `hφsup.trans ((Metric.closedBall_subset_ball hεε).trans hball)`. Establish `hφu : IsT Set.univ φ` using `⟨hφ.smooth, hφ.cpt, Set.subset_univ _⟩`.
+
+Use `set ψ : Vr n → ℂ := fun x => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * dList (List.ofFn (ml σ)).reverse φ x with hψdef`. Establish `hψT : ∀ σ : Equiv.Perm (Fin n), IsT U (dList (List.ofFn (ml σ)).reverse φ)` using `fun σ => isT_dList hφ _`. Establish `hψ0 : ∀ x, x ∉ tsupport φ → ψ x = 0`. Introduce `x hx`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport (fun h => hx (tsupport_dList_subset φ _ h)), mul_zero]`. Establish `hSing : IsSingTest ψ`. Use `⟨continuous_finsetSum _ fun σ _ => continuous_const.mul (hψT σ).smooth.continuous, HasCompactSupport.intro hφ.cpt hψ0, ?_⟩` and prove the remaining obligations. Introduce `β _ hdet`. Conclude with `fourier_test β hdet hφu`.
+
+Establish `h1` using `hyp ψ hSing`. Establish `hint : ∀ σ : Equiv.Perm (Fin n), Integrable (fun x => F x * dList (List.ofFn (ml σ)).reverse φ x)` using `fun σ => integrable_mul_of_contOn hU hF.continuousOn (hψT σ).smooth.continuous (hψT σ).cpt (hψT σ).sub`. Establish `h2 : ∫ x, G (herm x) * ψ x = (-1) ^ Fintype.card (Fin n) * ∫ x, H x * φ x`. Establish `e1 : (fun x => G (herm x) * ψ x) = fun x => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * (F x * dList (List.ofFn (ml σ)).reverse φ x)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [ψ, F, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hintH : ∀ σ : Equiv.Perm (Fin n), Integrable (fun x => dList (List.ofFn (ml σ)) F x * φ x)` using `fun σ => integrable_mul_of_contOn hU (contDiffOn_dList hU hF _).continuousOn hφ.smooth.continuous hφ.cpt hφ.sub`. Establish `e2 : (fun x => H x * φ x) = fun x => ∑ σ : Equiv.Perm (Fin n), (Equiv.Perm.sign σ : ℂ) * (dList (List.ofFn (ml σ)) F x * φ x)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [H, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, integral_finsetSum _ (fun σ _ => (hint σ).const_mul _), integral_finsetSum _ (fun σ _ => (hintH σ).const_mul _), Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, ibp_dList hU _ hF hφ, List.reverse_reverse, List.length_reverse, List.length_ofFn]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Establish `hne : ((-1 : ℂ)) ^ Fintype.card (Fin n) ≠ 0` using `pow_ne_zero _ (by norm_num)`.
+
+Conclude with `(mul_eq_zero.1 h1).resolve_left hne`. Rewrite using `[← hH0]`. Assume the negation of the conclusion as `hne`. Establish `hδ : 0 < ‖H 0‖ / 2` using `by positivity`. Take `⟨ε1, hε1, hcont⟩` from `Metric.continuousAt_iff.1 (hHU.continuousAt (hU.mem_nhds h0U)) _ hδ`.
+
+Use `set ε := min (ε0 / 2) (ε1 / 2) with hεdef`. Establish `hε : 0 < ε` using `lt_min (half_pos hε0) (half_pos hε1)`. Establish `hεε0 : ε < ε0` using `(min_le_left _ _).trans_lt (half_lt_self hε0)`. Establish `hεε1 : ε < ε1` using `(min_le_right _ _).trans_lt (half_lt_self hε1)`. Set `b : ContDiffBump (0 : Vr n)` to `⟨ε / 2, ε, half_pos hε, half_lt_self hε⟩`.
+
+Establish `hk` using `key ε hε hεε0 b rfl`. Use `set φr : Vr n → ℝ := b.normed volume`. Establish `hφr1 : ∫ x, φr x = 1` using `b.integral_normed`. Establish `hφint : Integrable φr` using `b.integrable_normed`. Establish `hcpt : HasCompactSupport (fun x => ((φr x : ℝ) : ℂ))` using `b.hasCompactSupport_normed.comp_left Complex.ofReal_zero`.
+
+Establish `hφc : Continuous (fun x => ((φr x : ℝ) : ℂ))` using `Complex.continuous_ofReal.comp b.continuous_normed`. Establish `hsub : tsupport (fun x => ((φr x : ℝ) : ℂ)) ⊆ U`. Use `(closure_minimal (fun x hx => ?_) Metric.isClosed_closedBall).trans ((Metric.closedBall_subset_ball hεε0).trans hball)` and prove the remaining obligations. Establish `h1 : φr x ≠ 0` using `fun h0 => hx (by simp [h0])`. Establish `hx' : x ∈ Function.support φr` using `h1`.
+
+Rewrite `hx'` using `[b.support_normed_eq]`. Conclude with `Metric.ball_subset_closedBall hx'`. Establish `hi1 : Integrable (fun x => H x * ((φr x : ℝ) : ℂ))` using `integrable_mul_of_contOn hU hHU hφc hcpt hsub`. Establish `hi2 : Integrable (fun x => (H 0 - H x) * ((φr x : ℝ) : ℂ))` using `integrable_mul_of_contOn hU (continuousOn_const.sub hHU) hφc hcpt hsub`. Establish `hrep : H 0 = ∫ x, (H 0 - H x) * ((φr x : ℝ) : ℂ)`.
+
+Establish `: ∫ x, (H 0 - H x) * ((φr x : ℝ) : ℂ) = H 0 * (∫ x, ((φr x : ℝ) : ℂ)) - ∫ x, H x * ((φr x : ℝ) : ℂ)`. Establish `hA : Integrable (fun x => H 0 * ((φr x : ℝ) : ℂ))` using `integrable_mul_of_contOn hU continuousOn_const hφc hcpt hsub`. Establish `e : (fun x => (H 0 - H x) * ((φr x : ℝ) : ℂ)) = fun x => H 0 * ((φr x : ℝ) : ℂ) - H x * ((φr x : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, integral_sub hA hi1, integral_const_mul]`. Rewrite using `[this, hk, integral_complex_ofReal, hφr1]`. Simplify using the standard rewrite rules. Establish `hbound : ‖∫ x, (H 0 - H x) * ((φr x : ℝ) : ℂ)‖ ≤ ∫ x, ‖H 0‖ / 2 * φr x`. Use `norm_integral_le_of_norm_le (hφint.const_mul _) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hx : φr x = 0`. Simplify using `[hx]`. Establish `hx' : x ∈ Function.support φr` using `hx`. Rewrite `hx'` using `[b.support_normed_eq]`. Establish `hd : dist x 0 < ε1` using `(Metric.mem_ball.1 hx').trans hεε1`.
+
+Use `hcont hd` as an intermediate fact. Rewrite `this` using `[dist_eq_norm, norm_sub_rev]`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (b.nonneg_normed x)]`. Conclude with `mul_le_mul_of_nonneg_right this.le (b.nonneg_normed x)`. Rewrite `hbound` using `[integral_const_mul, hφr1, mul_one, ← hrep]`.
+
+Establish `: ‖H 0‖ ≤ 0` using `by linarith`. Conclude with `hne (norm_le_zero_iff.1 this)`.
+-/
 theorem singToDiff : SingToDiff := by
   intro n G r hr hG hyp
   classical

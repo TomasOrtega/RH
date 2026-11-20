@@ -23,10 +23,18 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 
 section Level
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ hX => ⟨hX.aut, hX.cusp, fun v k hk g => (h k hk).2 ▸ hX.lev v k (h k hk).1 g, hX.equiv, hX.cont⟩`.
+-/
 theorem mult_anti {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ}
     (h : ∀ k ∈ J', k ∈ J ∧ χ k = χ' k) : Mult θ M J χ ≤ Mult θ M J' χ' :=
   Submodule.span_mono fun _ hX => ⟨hX.aut, hX.cusp, fun v k hk g => (h k hk).2 ▸ hX.lev v k (h k hk).1 g, hX.equiv, hX.cont⟩
 
+/- English proof (translation)
+Establish `h1 : rTup β L (finE V k) = 1` using `Subgroup.mem_bot.1 hk.2.2`. Establish `h2 : rTup β L (finE V k) ∈ P.H` using `h1 ▸ P.H.one_mem`. Use `⟨⟨hk.1, hk.2.1, h2⟩, ?_⟩` and prove the remaining obligations. Unfold `levChi`. Rewrite using `[levFn_withP, levFn_flag1, h1, extendOne_of_mem _ P.H.one_mem]`.
+
+Conclude with `congrArg Units.val ((congrArg (· * _) (map_one P.chi)).trans (one_mul _))`.
+-/
 theorem principal_le_level {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (P : LevelP L.Pg L.r ℂ)
     (k : GA D V) (hk : k ∈ levS V β (flag1L L)) :
     k ∈ levS V β (withP L P) ∧ levChi V β (withP L P) k = levChi V β (flag1L L) k := by
@@ -53,12 +61,23 @@ def topLift (t : T) : (R.HX t).H →ₗ[ℂ] R.CC t (D.R.m - 1) := R.ioX t ∘�
 
 def botLift (t : T) : R.CC t 1 →ₗ[ℂ] MMap (R.MY 0) := postOn (R.MY 0) R.e0 ∘ₗ toMM R t 0 ∘ₗ R.ioY t 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMM_apply (t : T) (j : ℕ) (U : R.CC t j) (v : (R.MY j).Vec) :
     toMM R t j U v = (U : SmT (R.MY j) →ₗ[ℂ] (GA D (Yc D j) → ℂ)) (PiTensorProduct.tprod ℂ v) := rfl
 
+/- English proof (translation)
+The claim follows from `(PiTensorProduct.lift.symm : (SmT (R.MY j) →ₗ[ℂ] (GA D (Yc D j) → ℂ)) ≃ₗ[ℂ] MMap (R.MY j)).injective.comp Subtype.val_injective`.
+-/
 theorem toMM_injective (t : T) (j : ℕ) : Function.Injective (toMM R t j) :=
   (PiTensorProduct.lift.symm : (SmT (R.MY j) →ₗ[ℂ] (GA D (Yc D j) → ℂ)) ≃ₗ[ℂ] MMap (R.MY j)).injective.comp Subtype.val_injective
 
+/- English proof (translation)
+Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, rfl⟩`. Conclude with `(mem_multT R.θ (R.MY j) _ _ _).1 U.2`. Introduce `hX`.
+
+Conclude with `⟨⟨PiTensorProduct.lift X, Submodule.mem_map_of_mem hX⟩, PiTensorProduct.lift.symm_apply_apply X⟩`.
+-/
 theorem range_toMM (t : T) (j : ℕ) : LinearMap.range (toMM R t j) = multAt R R.triv t j := by
   ext X
   constructor
@@ -67,12 +86,23 @@ theorem range_toMM (t : T) (j : ℕ) : LinearMap.range (toMM R t j) = multAt R R
   · intro hX
     exact ⟨⟨PiTensorProduct.lift X, Submodule.mem_map_of_mem hX⟩, PiTensorProduct.lift.symm_apply_apply X⟩
 
+/- English proof (translation)
+The claim follows from `mult_anti _ _ (principal_le_level (R.βY j) (R.datYt t j R.triv) P)`.
+-/
 theorem multAt_le (P : LevelP R.Pg D.R.r ℂ) (t : T) (j : ℕ) : multAt R P t j ≤ multAt R R.triv t j :=
   mult_anti _ _ (principal_le_level (R.βY j) (R.datYt t j R.triv) P)
 
+/- English proof (translation)
+The claim follows from `Submodule.map_comap_eq_of_le (by rw [range_toMM]; exact multAt_le R P t j)`.
+-/
 theorem map_lvlPart (P : LevelP R.Pg D.R.r ℂ) (t : T) (j : ℕ) : (lvlPart R P t j).map (toMM R t j) = multAt R P t j :=
   Submodule.map_comap_eq_of_le (by rw [range_toMM]; exact multAt_le R P t j)
 
+/- English proof (translation)
+Establish `hr : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Ranks.rankY]`. Establish `e` using `GlobalTheory.levG_twist_trivial_of_rank_eq (Yc D 0) (R.βY 0) D.R.r D.R.t (r_le_Y 0) hr R.Pg (R.Q t) P R.chi (R.xiR t)`. Establish `e1 : levG (Yc D 0) (R.βY 0) (R.datYt t 0 P) = levG (Yc D 0) (R.βY 0) (R.dat0 P)` using `e.1`.
+
+Establish `e2 : ∀ k ∈ levG (Yc D 0) (R.βY 0) (R.datYt t 0 P), levChi (Yc D 0) (R.βY 0) (R.datYt t 0 P) k = levChi (Yc D 0) (R.βY 0) (R.dat0 P) k` using `e.2`. Conclude with `le_antisymm (mult_anti _ _ fun k hk => ⟨e1.ge hk, e2 k (e1.ge hk)⟩) (mult_anti _ _ fun k hk => ⟨e1.le hk, (e2 k hk).symm⟩)`.
+-/
 theorem multAt_zero (P : LevelP R.Pg D.R.r ℂ) (t : T) :
     multAt R P t 0 = Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) := by
   have hr : (Yc D 0).rank = D.R.r := by
@@ -84,12 +114,21 @@ theorem multAt_zero (P : LevelP R.Pg D.R.r ℂ) (t : T) :
       levChi (Yc D 0) (R.βY 0) (R.datYt t 0 P) k = levChi (Yc D 0) (R.βY 0) (R.dat0 P) k := e.2
   exact le_antisymm (mult_anti _ _ fun k hk => ⟨e1.ge hk, e2 k (e1.ge hk)⟩) (mult_anti _ _ fun k hk => ⟨e1.le hk, (e2 k hk).symm⟩)
 
+/- English proof (translation)
+Rewrite using `[multAt_zero]`. Conclude with `goodPart_le _ _ _ _ _`.
+-/
 theorem EEat_le (P : LevelP R.Pg D.R.r ℂ) (t : T) : R.EEat P ≤ multAt R P t 0 := by
   rw [multAt_zero]; exact goodPart_le _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `inf_le_inf_right _ (mult_anti _ _ (principal_le_level (R.βY 0) (R.dat0 R.triv) P))`.
+-/
 theorem EEat_le_triv (P : LevelP R.Pg D.R.r ℂ) : R.EEat P ≤ R.EEat R.triv :=
   inf_le_inf_right _ (mult_anti _ _ (principal_le_level (R.βY 0) (R.dat0 R.triv) P))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMM_dnFrom_topLift (t : T) (y : (R.HX t).H) :
     toMM R t 0 (Lift.dnFrom (R.CC t) (R.ioY t) (D.R.m - 1) (topLift R t y)) = PiTensorProduct.lift.symm (R.thDn t y) := rfl
 
@@ -99,6 +138,9 @@ section Side
 
 variable {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (S : RowSide D EE)
 
+/- English proof (translation)
+Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pred_m_add_one (D : D7) : D.R.m - 1 + 1 = D.R.m := by have := D.R.two_le_m; omega
 
 def famCast (Sp : ℕ → Type) [∀ j, NormedAddCommGroup (Sp j)] [∀ j, InnerProductSpace ℂ (Sp j)] {i j : ℕ} (h : i = j) :
@@ -109,9 +151,15 @@ def multCast (μ : D.what₂.Tup) {i j : ℕ} (h : i = j) : S.Mult μ i ≃ₗ�
 
 def topEquiv (μ : D.what₂.Tup) : S.Mult μ (D.R.m - 1 + 1) ≃ₗᵢ[ℂ] S.Amb μ := (multCast S μ (pred_m_add_one D)).trans (S.multTop μ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem downTo_multCast (μ : D.what₂.Tup) {i j : ℕ} (h : i = j) (x : S.Mult μ i) : S.downTo μ j (multCast S μ h x) = S.downTo μ i x := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `h : (S.multTop μ).symm (topEquiv S μ x) = multCast S μ (pred_m_add_one D) x` using `(S.multTop μ).symm_apply_apply _`. Use `show S.multZero μ (S.downTo μ D.R.m ((S.multTop μ).symm (topEquiv S μ x))) = _`. Rewrite using `[h, downTo_multCast]`. Both sides reduce to the same expression.
+-/
 theorem iota_topEquiv (μ : D.what₂.Tup) (x : S.Mult μ (D.R.m - 1 + 1)) :
     S.iota μ (topEquiv S μ x) = S.multZero μ (S.downTo μ (D.R.m - 1) (S.io μ (D.R.m - 1) x)) := by
   have h : (S.multTop μ).symm (topEquiv S μ x) = multCast S μ (pred_m_add_one D) x := (S.multTop μ).symm_apply_apply _
@@ -119,6 +167,11 @@ theorem iota_topEquiv (μ : D.what₂.Tup) (x : S.Mult μ (D.R.m - 1 + 1)) :
   rw [h, downTo_multCast]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => omega`. Consider the case `succ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Conclude with `h0 x`.
+
+Conclude with `(ih h (by omega) (S.io μ n x)).trans (congrArg (fun U => postOn (R.MY 0) R.e0 (toMM R t 0 (Lift.dnFrom (R.CC t) (R.ioY t) n U))) (h1 n h hm x))`.
+-/
 theorem toMM_downTo (R : RealDat D A Ks) (μ : D.what₂.Tup) (t : T) (e : ∀ j, S.Mult μ j →ₗ[ℂ] R.CC t j)
     (h0 : ∀ x, toMM R t 0 (e 0 (S.io μ 0 x)) = botLift R t (e 1 x))
     (h1 : ∀ j, 0 < j → j + 1 < D.R.m → ∀ x, e j (S.io μ j x) = R.ioY t j (e (j + 1) x)) (n : ℕ) (hn : 0 < n) (hm : n < D.R.m)
@@ -132,6 +185,11 @@ theorem toMM_downTo (R : RealDat D A Ks) (μ : D.what₂.Tup) (t : T) (e : ∀ j
     · exact (ih h (by omega) (S.io μ n x)).trans
         (congrArg (fun U => postOn (R.MY 0) R.e0 (toMM R t 0 (Lift.dnFrom (R.CC t) (R.ioY t) n U))) (h1 n h hm x))
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `hx : topEquiv S μ ((topEquiv S μ).symm a) = a` using `(topEquiv S μ).apply_symm_apply a`. Establish `a1 : (S.multZero μ).symm (S.iota μ a) = S.downTo μ (D.R.m - 1) (S.io μ (D.R.m - 1) ((topEquiv S μ).symm a))` using `(congrArg (fun w => (S.multZero μ).symm (S.iota μ w)) hx.symm).trans ((congrArg (S.multZero μ).symm (iota_topEquiv S μ _)).trans ((S.multZero μ).symm_apply_apply _))`. Establish `a2` using `toMM_downTo S R μ t e h0 h1 (D.R.m - 1) (by omega) (by omega) (S.io μ (D.R.m - 1) ((topEquiv S μ).symm a))`. Establish `a3 : e (D.R.m - 1) (S.io μ (D.R.m - 1) ((topEquiv S μ).symm a)) = topLift R t (eA a)` using `(h2 _).trans (congrArg (fun w => topLift R t (eA w)) hx)`.
+
+Use `(congrArg (fun w => toMM R t 0 (e 0 w)) a1).trans (a2.trans (congrArg (postOn (R.MY 0) R.e0) ?_))` and prove the remaining obligations. Conclude with `(congrArg (fun U => toMM R t 0 (Lift.dnFrom (R.CC t) (R.ioY t) (D.R.m - 1) U)) a3).trans (toMM_dnFrom_topLift R t _)`.
+-/
 theorem toMM_iota (R : RealDat D A Ks) (μ : D.what₂.Tup) (t : T) (e : ∀ j, S.Mult μ j →ₗ[ℂ] R.CC t j)
     (eA : S.Amb μ →ₗ[ℂ] (R.HX t).H) (h0 : ∀ x, toMM R t 0 (e 0 (S.io μ 0 x)) = botLift R t (e 1 x))
     (h1 : ∀ j, 0 < j → j + 1 < D.R.m → ∀ x, e j (S.io μ j x) = R.ioY t j (e (j + 1) x))
@@ -180,15 +238,24 @@ def KeepsLevel (R : RealDat D A Ks) (F : Face D A) (b : Bool) : Prop := ∀ t,
   ∀ f ∈ lvlForms (A.MtildeCSD t) (A.leftGroupActionRight t) (F.lvl b).P (F.lvl b).ψ,
     topLift R t (R.jX t f) ∈ lvlPart R (R.levR F b) t (D.R.m - 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(LinearEquiv.ofInjective g hg).symm.toLinearMap ∘ₗ f.codRestrict _ hf, fun x => congrArg Subtype.val ((LinearEquiv.ofInjective g hg).apply_symm_apply ⟨f x, hf x⟩)⟩`.
+-/
 theorem exists_factor {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Z] [Module ℂ Z]
     (g : Y →ₗ[ℂ] Z) (hg : Function.Injective g) (f : X →ₗ[ℂ] Z) (hf : ∀ x, f x ∈ LinearMap.range g) :
     ∃ h : X →ₗ[ℂ] Y, ∀ x, g (h x) = f x :=
   ⟨(LinearEquiv.ofInjective g hg).symm.toLinearMap ∘ₗ f.codRestrict _ hf, fun x =>
     congrArg Subtype.val ((LinearEquiv.ofInjective g hg).apply_symm_apply ⟨f x, hf x⟩)⟩
 
+/- English proof (translation)
+Rewrite using `[h, ← mul_assoc, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hn.ne'), one_mul]`.
+-/
 theorem eq_mul_of_eq_inv_mul {n : ℝ} (hn : 0 < n) {a c : ℂ} (h : a = ((n⁻¹ : ℝ) : ℂ) * c) : c = (n : ℂ) * a := by
   rw [h, ← mul_assoc, Complex.ofReal_inv, mul_inv_cancel₀ (Complex.ofReal_ne_zero.2 hn.ne'), one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `h1 : j + 1 < D.R.m`. Conclude with `⟨(hY t j h1).1.1, (hY t j h1).2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Conclude with `⟨(hY' t).1.1, (hY' t).2⟩`.
+-/
 theorem haar_chain (hY : R.models_νY) (hY' : R.models_νY') (t : T) (j : ℕ) (hj : j < D.R.m) :
     (R.νY t j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j) := by
   by_cases h1 : j + 1 < D.R.m
@@ -196,6 +263,11 @@ theorem haar_chain (hY : R.models_νY) (hY' : R.models_νY') (t : T) (j : ℕ) (
   · obtain rfl : j = D.R.m - 1 := by omega
     exact ⟨(hY' t).1.1, (hY' t).2⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hJ⟩` from `GlobalTheory.DefiniteEnd.exists_open_level (Yc D j) (R.βY j) (R.datYt t j R.triv)`. Establish `: FiniteDimensional ℂ (multAt R R.triv t j)` using `GlobalTheory.MultFinite.hcFinite hF hi ⟨U, hU, fun k hk hk' => by`. Take `⟨h1, h2⟩` from `hJ k hk`. Conclude with `⟨⟨hk', h1⟩, congrArg Units.val h2⟩⟩`. Rewrite `this` using `[← range_toMM]`.
+
+Conclude with `(LinearEquiv.ofInjective _ (toMM_injective R t j)).symm.finiteDimensional`.
+-/
 theorem finiteDimensional_CC (hF : GlobalTheory.Published.HarishChandraFinite) (hi : R.models_inf) (t : T) (j : ℕ) :
     FiniteDimensional ℂ (R.CC t j) := by
   obtain ⟨U, hU, hJ⟩ := GlobalTheory.DefiniteEnd.exists_open_level (Yc D j) (R.βY j) (R.datYt t j R.triv)
@@ -205,6 +277,13 @@ theorem finiteDimensional_CC (hF : GlobalTheory.Published.HarishChandraFinite) (
   rw [← range_toMM] at this
   exact (LinearEquiv.ofInjective _ (toMM_injective R t j)).symm.finiteDimensional
 
+/- English proof (translation)
+Use `finiteDimensional_CC hF hi t j` as an intermediate fact. Take `⟨hν, hf⟩` from `haar_chain hY hY' t j hj`. Take `⟨h1, h2⟩` from `GlobalTheory.SchurConst.ipM_posDef D R.θ _ _ (R.MY j) (levS _ (R.βY j) (R.datYt t j P)) (levChi _ (R.βY j) (R.datYt t j P)) (R.νY t j) (R.fdY t j) hi hν hf (GlobalTheory.MultFinite.schurMult hD _ _) (GlobalTheory.GardingVec.sm_ne_bot D _ _ _)`. Use `GlobalTheory.HilbertModel.exists_hmod _ _ _ inferInstance (fun x hx y hy z hz a => ?_) fun x hx h0 => ?_` and prove the remaining obligations. Take `⟨k1, k2⟩` from `h1 _ hx _ hy _ hz a`.
+
+Unfold `ipCC`. Rewrite using `[map_add, map_smul, k1, k2]`. Conclude with `⟨by ring, by simp⟩`. Use `h2 _ hx fun h => h0 (toMM_injective R t j (h.trans (map_zero _).symm))` as an intermediate fact. Rewrite using `[Complex.re_ofReal_mul]`.
+
+Conclude with `mul_pos hc this`.
+-/
 theorem exists_lvlModel (hF : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay) (hi : R.models_inf)
     (hY : R.models_νY) (hY' : R.models_νY') (P : LevelP R.Pg D.R.r ℂ) (c : ℝ) (hc : 0 < c) (t : T) (j : ℕ) (hj : j < D.R.m) :
     ∃ H : HMod (R.CC t j), H.Is (lvlPart R P t j) fun U U' => (c : ℂ) * ipCC R t j U U' := by
@@ -259,17 +338,26 @@ noncomputable def HChain.down {m : ℕ} {E B : Type} [NormedAddCommGroup E] [Inn
   | 0 => LinearMap.id
   | j + 1 => (c.down j).comp (c.io j)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => exact congrArg (fun f : (c μ).Sp j →ₗ[ℂ] (c μ).Sp 0 => f.comp ((c μ).io j)) ih`.
+-/
 theorem downTo_withChain (S : RowSide D EE) (c : ∀ μ, HChain D.R.m EE (S.Amb μ)) (μ : D.what₂.Tup) (j : ℕ) :
     (withChain S c).downTo μ j = (c μ).down j := by
   induction j with
   | zero => rfl
   | succ j ih => exact congrArg (fun f : (c μ).Sp j →ₗ[ℂ] (c μ).Sp 0 => f.comp ((c μ).io j)) ih
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => exact congrArg (fun f : S.Mult μ j →ₗ[ℂ] S.Mult μ 0 => f.comp (S.io μ j)) ih`.
+-/
 theorem down_chainOf (S : RowSide D EE) (μ : D.what₂.Tup) (j : ℕ) : (chainOf S μ).down j = S.downTo μ j := by
   induction j with
   | zero => rfl
   | succ j ih => exact congrArg (fun f : S.Mult μ j →ₗ[ℂ] S.Mult μ 0 => f.comp (S.io μ j)) ih
 
+/- English proof (translation)
+Establish `e : (withChain S c).iota μ = (c μ).bot.toLinearEquiv.toLinearMap ∘ₗ (c μ).down D.R.m ∘ₗ (c μ).top.symm.toLinearEquiv.toLinearMap`. Rewrite using `[← downTo_withChain]`. Both sides reduce to the same expression. Rewrite using `[e, h, down_chainOf]`. Both sides reduce to the same expression.
+-/
 theorem iota_withChain (S : RowSide D EE) (c : ∀ μ, HChain D.R.m EE (S.Amb μ)) (μ : D.what₂.Tup) (h : c μ = chainOf S μ) :
     (withChain S c).iota μ = S.iota μ := by
   have e : (withChain S c).iota μ = (c μ).bot.toLinearEquiv.toLinearMap ∘ₗ (c μ).down D.R.m ∘ₗ
@@ -285,11 +373,33 @@ def IsAdelicChain (Y : SideTie R F tup b S) (t : T) (c : HChain D.R.m EE (S.Amb 
     (∀ j, 0 < j → j + 1 < D.R.m → ∀ x, e j (c.io j x) = R.ioY t j (e (j + 1) x)) ∧
     ∀ x, e (D.R.m - 1) (c.io (D.R.m - 1) x) = topLift R t (Y.eA t (c.top (famCast c.Sp (pred_m_add_one D) x)))
 
+/- English proof (translation)
+The claim follows from `Y.eE_range.le (LinearMap.mem_range_self _ x)`.
+-/
 theorem e_eE_mem (Y : SideTie R F tup b S) (x : EE) : R.HE.e (Y.eE x) ∈ R.EEat (R.levR F b) :=
   Y.eE_range.le (LinearMap.mem_range_self _ x)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Take `⟨k0, k1, k2⟩` from `hK t`. Establish `key : ∀ j, ∃ H : HMod (R.CC t j), (0 < j → j < D.R.m → H.Is (lvlPart R (R.levR F b) t j) fun U U' => (((RealDat.nP F b)⁻¹ : ℝ) : ℂ) * ipCC R t j U U') ∧ (D.R.m ≤ j → Nonempty (H.H ≃ₗᵢ[ℂ] S.Amb (tup t))) ∧ (j = 0 → ∃ z : H.H ≃ₗᵢ[ℂ] EE, ∀ x, HEq (toMM R t j (H.e x)) (R.HE.e (Y.eE ( …` using `fun j => by`. Break down `Nat.eq_zero_or_pos j with rfl | h0` into its components or cases. Take `⟨e, he⟩` from `exists_factor (toMM R t 0) (toMM_injective R t 0) (R.HE.e ∘ₗ Y.eE) fun x => by`.
+
+Rewrite using `[range_toMM]`. Conclude with `multAt_le R _ t 0 (EEat_le R _ t (e_eE_mem Y x))`. Conclude with `⟨⟨EE, e⟩, fun h => absurd h (lt_irrefl _), fun h => by omega, fun _ => ⟨LinearIsometryEquiv.refl ℂ EE, fun x => heq_of_eq (he x)⟩⟩`. Distinguish the cases in `hj : j < D.R.m`. Take `⟨H, h⟩` from `hH j hj`.
+
+Conclude with `⟨H, fun _ _ => h, fun h => by omega, fun h => by omega⟩`. Conclude with `⟨⟨S.Amb (tup t), 0⟩, fun _ h => absurd h hj, fun _ => ⟨LinearIsometryEquiv.refl ℂ _⟩, fun h => by omega⟩`. Use `choose H h1 h2 h3 using key`. Take `⟨top⟩` from `h2 D.R.m le_rfl`. Take `⟨z, hz⟩` from `h3 0 rfl`.
+
+Establish `hz' : ∀ x, toMM R t 0 ((H 0).e x) = R.HE.e (Y.eE (z x))` using `fun x => eq_of_heq (hz x)`. Establish `mem : ∀ j, 0 < j → j < D.R.m → ∀ x, (H j).e x ∈ lvlPart R (R.levR F b) t j` using `fun j a c x => (h1 j a c).2.1.le (LinearMap.mem_range_self _ x)`. Take `⟨f0, hf0⟩` from `exists_factor (R.HE.e ∘ₗ Y.eE) (hE.1.comp Y.eE_injective) (botLift R t ∘ₗ (H 1).e) fun x => by`. Establish `a` using `k0 _ (mem 1 one_pos (by omega) x)`. Take `⟨y, hy⟩` from `hE.2.1.ge (EEat_le_triv R _ a)`.
+
+Take `⟨w, hw⟩` from `Y.eE_range.ge (show y ∈ (R.EEat (R.levR F b)).comap R.HE.e from (congrArg (· ∈ R.EEat (R.levR F b)) hy).mpr a)`. Conclude with `⟨w, (congrArg R.HE.e hw).trans hy⟩`. Take `⟨f1, hf1⟩` from `exists_factor (H (D.R.m - 1)).e (h1 _ (by omega) (by omega)).1 (topLift R t ∘ₗ Y.eA t ∘ₗ top.toLinearEquiv.toLinearMap ∘ₗ (famCast (fun j => (H j).H) (pred_m_add_one D)).toLinearEquiv.toLinearMap) fun x => by`. Establish `a : LinearMap.range (Y.eA t) ≤ (lvlPart R (R.levR F b) t (D.R.m - 1)).comap (topLift R t)`. Use `(Y.eA_range t).le.trans (Submodule.span_le.2 fun y hy => hy.elim fun f hf => ?_)` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun w => topLift R t w ∈ lvlPart R (R.levR F b) t (D.R.m - 1)) hf.2).mp (k2 f hf.1)`. Conclude with `(h1 _ (by omega) (by omega)).2.1.ge (a (LinearMap.mem_range_self _ _))`. Establish `key2 : ∀ j, ∃ f : (H (j + 1)).H →ₗ[ℂ] (H j).H, (j = 0 → HEq f (z.symm.toLinearEquiv.toLinearMap ∘ₗ f0)) ∧ (0 < j → j + 1 < D.R.m → ∀ x, (H j).e (f x) = R.ioY t j ((H (j + 1)).e x)) ∧ (j = D.R.m - 1 → HEq f f1)` using `fun j => by`. Break down `Nat.eq_zero_or_pos j with rfl | h0` into its components or cases. Conclude with `⟨_, fun _ => HEq.rfl, fun h => absurd h (lt_irrefl _), fun h => by omega⟩`.
+
+Distinguish the cases in `hj : j + 1 < D.R.m`. Take `⟨f, hf⟩` from `exists_factor (H j).e (h1 j h0 (by omega)).1 (R.ioY t j ∘ₗ (H (j + 1)).e) fun x => by`. Conclude with `(h1 j h0 (by omega)).2.1.ge (k1 j h0 hj _ (mem _ (by omega) hj x))`. Conclude with `⟨f, fun h => by omega, fun _ _ => hf, fun h => by omega⟩`. Distinguish the cases in `hj' : j = D.R.m - 1`.
+
+Substitute `hj'` using the available equality. Conclude with `⟨f1, fun h => by omega, fun _ h => absurd h hj, fun _ => HEq.rfl⟩`. Conclude with `⟨0, fun h => by omega, fun _ h => absurd h hj, fun h => absurd h hj'⟩`. Use `choose io i0 i1 i2 using key2`. Use `⟨{ Sp := fun j => (H j).H, bot := z, top := top, io := io }, fun j => (H j).e, hz', fun j a c => (h1 j a c).2.1, fun j a c x y => ?_, fun x => ?_, i1, fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `eq_mul_of_eq_inv_mul (RealDat.nP_pos (F := F) b) ((h1 j a c).2.2 x y)`. Use `(hz' _).trans (Eq.trans ?_ (hf0 x))` and prove the remaining obligations. Conclude with `congrArg (fun w => R.HE.e (Y.eE w)) ((congrArg z (LinearMap.congr_fun (eq_of_heq (i0 0 rfl)) x)).trans (z.apply_symm_apply _))`. Conclude with `(congrArg (H (D.R.m - 1)).e (LinearMap.congr_fun (eq_of_heq (i2 _ rfl)) x)).trans (hf1 x)`.
+-/
 theorem exists_isAdelicChain (Y : SideTie R F tup b S) (hE : R.models_HE) (hK : KeepsLevel R F b) (t : T)
     (hH : ∀ j, j < D.R.m → ∃ H : HMod (R.CC t j), H.Is (lvlPart R (R.levR F b) t j)
       fun U U' => (((RealDat.nP F b)⁻¹ : ℝ) : ℂ) * ipCC R t j U U') :
@@ -348,9 +458,15 @@ theorem exists_isAdelicChain (Y : SideTie R F tup b S) (hE : R.models_HE) (hK : 
       ((congrArg z (LinearMap.congr_fun (eq_of_heq (i0 0 rfl)) x)).trans (z.apply_symm_apply _))
   · exact (congrArg (H (D.R.m - 1)).e (LinearMap.congr_fun (eq_of_heq (i2 _ rfl)) x)).trans (hf1 x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem topEquiv_withChain (S : RowSide D EE) (c : ∀ μ, HChain D.R.m EE (S.Amb μ)) (μ : D.what₂.Tup)
     (x : (c μ).Sp (D.R.m - 1 + 1)) : topEquiv (withChain S c) μ x = (c μ).top (famCast (c μ).Sp (pred_m_add_one D) x) := rfl
 
+/- English proof (translation)
+Use `Exists.elim hc fun e h => ?_` and prove the remaining obligations. Establish `a` using `toMM_iota (withChain S c) R (tup t) t e (Y.eA t) h.2.2.2.1 h.2.2.2.2.1 (fun y => (h.2.2.2.2.2 y).trans (congrArg (fun w => topLift R t (Y.eA t w)) (topEquiv_withChain S c _ y).symm)) x`. Use `hE.1 (Eq.trans ?_ (a.trans (hT t _).symm))` and prove the remaining obligations. Conclude with `((h.1 _).trans (congrArg (fun w => R.HE.e (Y.eE w)) ((c (tup t)).bot.apply_symm_apply _))).symm`.
+-/
 theorem iota_tie_withChain (Y : SideTie R F tup b S) (hE : R.models_HE) (hT : R.chain_Th) (c : ∀ μ, HChain D.R.m EE (S.Amb μ))
     (t : T) (hc : IsAdelicChain Y t (c (tup t))) (x : S.Amb (tup t)) :
     Y.eE ((withChain S c).iota (tup t) x) = R.Th t (Y.eA t x) := by
@@ -383,6 +499,13 @@ def multTieOfChain (Y : SideTie R F tup b S) (hE : R.models_HE) (hT : R.chain_Th
   io_top t y := ((hc t).choose_spec.2.2.2.2.2 y).trans
     (congrArg (fun w => topLift R t (Y.eA t w)) (topEquiv_withChain S c _ y).symm)
 
+/- English proof (translation)
+Establish `key : ∀ μ, ∃ c : HChain D.R.m EE (S.Amb μ), (∀ t (h : tup t = μ), IsAdelicChain Y t (h ▸ c)) ∧ ((∀ t, tup t ≠ μ) → c = chainOf S μ)` using `fun μ => by`. Distinguish the cases in `h : ∃ t, tup t = μ`. Take `⟨t, rfl⟩` from `h`. Take `⟨c, hc⟩` from `exists_isAdelicChain Y hM.HE hK t fun j hj => exists_lvlModel hF hD hM.inf hM.νY hM.νY' _ _ (inv_pos.2 (RealDat.nP_pos (F := F) b)) t j hj`. Use `⟨c, fun t' h => ?_, fun h => absurd rfl (h t)⟩` and prove the remaining obligations.
+
+Take `rfl` from `hinj h`. Conclude with `hc`. Conclude with `⟨chainOf S μ, fun t ht => absurd ⟨t, ht⟩ h, fun _ => rfl⟩`. Use `choose c h1 h2 using key`. Establish `hc : ∀ t, IsAdelicChain Y t (c (tup t))` using `fun t => h1 _ t rfl`.
+
+Use `⟨c, sideOfChain Y hM.HE hT c hc, rfl, rfl, fun μ => ?_, ⟨multTieOfChain Y hM.HE hT c hc⟩⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ t, tup t = μ`. Take `⟨t, rfl⟩` from `h`. Conclude with `LinearMap.ext fun x => Y.eE_injective (((sideOfChain Y hM.HE hT c hc).iota_tie t x).trans (Y.iota_tie t x).symm)`. Conclude with `iota_withChain S c μ (h2 μ fun t ht => h ⟨t, ht⟩)`.
+-/
 theorem exists_multTie (hF : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay) (hM : R.IsModels) (hT : R.chain_Th)
     (hK : KeepsLevel R F b) (hinj : Function.Injective tup) (Y : SideTie R F tup b S) :
     ∃ (c : ∀ μ, HChain D.R.m EE (S.Amb μ)) (Y' : SideTie R F tup b (withChain S c)),
@@ -409,6 +532,17 @@ end Inhabitant
 
 def MultTied {X0 : BaseLevelRowSide D} (Y : RowsTie R F X0) : Prop := Function.Surjective Y.tup ∧ Nonempty (MultTie Y.sharp)
 
+/- English proof (translation)
+Establish `key : ∀ x y : H, ⟪x, y⟫_ℂ ≠ 0 → IsMultIP M μ 𝓕 (e x) (e y) (d * ⟪x, y⟫_ℂ)` using `fun x y hxy => by`. Rewrite using `[← h]`. Use `ipM_spec M μ 𝓕 _ _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `mul_ne_zero hd hxy ((h x y).symm.trans (by rw [ipM, dif_neg hn]))`.
+
+Distinguish the cases in `hxy : ⟪x, y⟫_ℂ = 0`. Use `swap`. Conclude with `key x y hxy`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+
+Introduce `v v'`. Simplify using the standard rewrite rules. Establish `hxx : ⟪x, x⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hx`. Establish `h₁` using `key x x hxx`. Establish `h₂` using `key x (x + y) (by rwa [inner_add_right, hxy, add_zero])`.
+
+Introduce `v v'`. Establish `hf : (fun g => star (e x v g) * e y v' g) = fun g => star (e x v g) * e (x + y) v' g - star (e x v g) * e x v' g`. Use function extensionality and compare the values at `g`. Simplify using `only [map_add, add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hf]`. Use `⟨(h₂ v v').1.sub (h₁ v v').1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_sub (h₂ v v').1 (h₁ v v').1, (h₂ v v').2, (h₁ v v').2, inner_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isMultiplicityInner_mul_inner {V : HSp D} {Sp : D.what₂.Tau → SPar} {M : DSModel V Sp} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (e : H →ₗ[ℂ] MMap M) {d : ℂ} (hd : d ≠ 0)
     (h : ∀ x y, ipM M μ 𝓕 (e x) (e y) = d * ⟪x, y⟫_ℂ) (x y : H) : IsMultIP M μ 𝓕 (e x) (e y) (d * ⟪x, y⟫_ℂ) := by
@@ -443,11 +577,17 @@ variable {Y : SideTie R F tup b S} (M : MultTie Y)
 
 def row (t : T) (j : ℕ) : S.Mult (tup t) j →ₗ[ℂ] MMap (R.MY j) := toMM R t j ∘ₗ M.eM t j
 
+/- English proof (translation)
+Rewrite using `[row, LinearMap.range_comp, M.eM_range t j h0 hj, map_lvlPart]`.
+-/
 theorem range_row (t : T) {j : ℕ} (h0 : 0 < j) (hj : j < D.R.m) : LinearMap.range (M.row t j) = multAt R (R.levR F b) t j := by
   rw [row, LinearMap.range_comp, M.eM_range t j h0 hj, map_lvlPart]
 
 include M in
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `(M.eM_range t (j + 1) (by omega) hj).ge hU`. Conclude with `(M.eM_range t j h0 (by omega)).le ⟨_, M.io_mid t j h0 hj x⟩`.
+-/
 theorem ioY_mem (t : T) {j : ℕ} (h0 : 0 < j) (hj : j + 1 < D.R.m) {U : R.CC t (j + 1)}
     (hU : U ∈ lvlPart R (R.levR F b) t (j + 1)) : R.ioY t j U ∈ lvlPart R (R.levR F b) t j := by
   obtain ⟨x, rfl⟩ := (M.eM_range t (j + 1) (by omega) hj).ge hU
@@ -461,18 +601,30 @@ variable {X0 : BaseLevelRowSide D} {Y : RowsTie R F X0}
 
 end MultTied
 
+/- English proof (translation)
+Rewrite using `[lvlPart, ← range_toMM, LinearMap.range_eq_map, Submodule.comap_map_eq_of_injective (toMM_injective R t j)]`.
+-/
 example (t : T) (j : ℕ) : lvlPart R R.triv t j = ⊤ := by
   rw [lvlPart, ← range_toMM, LinearMap.range_eq_map, Submodule.comap_map_eq_of_injective (toMM_injective R t j)]
 
+/- English proof (translation)
+The claim follows from `M.io_mid t j h0 hj x`.
+-/
 example {X0 : BaseLevelRowSide D} {Y : RowsTie R F X0} (M : MultTie Y.sharp) (t : T) (j : ℕ) (h0 : 0 < j) (hj : j + 1 < D.R.m)
     (x : D.what₂.Mult (Y.tup t) (j + 1)) : M.eM t j (D.what₂.io (Y.tup t) j x) = R.ioY t j (M.eM t (j + 1) x) :=
   M.io_mid t j h0 hj x
 
+/- English proof (translation)
+Rewrite using `[M.eM_inner t 1 one_pos D.R.two_le_m, inner_self_eq_norm_sq_to_K, hx, RealDat.nP, h]`. Simplify using the standard rewrite rules.
+-/
 example {Y : SideTie R F tup b S} (M : MultTie Y) (h : Nat.card (F.lvl b).P = 6) (t : T) (x : S.Mult (tup t) 1) (hx : ‖x‖ = 1) :
     ipCC R t 1 (M.eM t 1 x) (M.eM t 1 x) = 6 := by
   rw [M.eM_inner t 1 one_pos D.R.two_le_m, inner_self_eq_norm_sq_to_K, hx, RealDat.nP, h]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun M => h (by rw [← M.range_row t one_pos D.R.two_le_m, LinearMap.range_eq_bot] exact LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero])⟩`.
+-/
 example {Y : SideTie R F tup b S} (t : T) [Subsingleton (S.Mult (tup t) 1)] (h : multAt R (R.levR F b) t 1 ≠ ⊥) :
     IsEmpty (MultTie Y) := ⟨fun M => h (by
   rw [← M.range_row t one_pos D.R.two_le_m, LinearMap.range_eq_bot]

@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueFixe
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `hX : ∀ i : σ, (AlgHom.id O (MvPowerSeries σ O)) (MvPowerSeries.X i) ∈ maximalIdeal (MvPowerSeries σ O)`. Introduce `i`. Rewrite using `[AlgHom.id_apply, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules. Establish `key` using `GlobalTheory.algHom_sub_aeval_truncTotal_mem (AlgHom.id O (MvPowerSeries σ O)) hX n a`.
+
+Simplify using `only [AlgHom.id_apply] at key`. Use `⟨_, ?_, key⟩` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨_, rfl⟩`.
+-/
 private theorem derLam_dense {O : Type} [CommRing O] [IsLocalRing O] {σ : Type} [Finite σ] (n : ℕ)
     (a : MvPowerSeries σ O) :
     ∃ b ∈ Algebra.adjoin O (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)),
@@ -21,6 +26,21 @@ private theorem derLam_dense {O : Type} [CommRing O] [IsLocalRing O] {σ : Type}
   rw [Algebra.adjoin_range_eq_range_aeval]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `hmul : ∀ f g, D (f * g) = x f • D g + x g • D f` using `hD`. Establish `h1 : D 1 = 0`. Establish `h` using `hmul 1 1`. Simplify using `only [mul_one, map_one, one_smul] at h`. Take the linear combination `(-1 : PadicAlgCl l) * h`.
+
+Set `y : MvPowerSeries (Fin N) c.O →ₐ[c.O] DualNumber (PadicAlgCl l)` to `{ toFun := fun f => TrivSqZeroExt.inl (x f) + TrivSqZeroExt.inr (D f) map_one' := by`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [h1]`. Use the proof step `map_mul' := by`. Introduce `f g`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `only [TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, add_zero, zero_add, hmul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_zero' := by`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp`.
+
+Use the proof step `map_add' := by`. Introduce `f g`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp <;> ring`. Use the proof step `commutes' := by`. Introduce `r`.
+
+Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, AlgHom.commutes]`. Rewrite using `[Algebra.algebraMap_eq_smul_one r, Algebra.algebraMap_eq_smul_one r]`. Both sides reduce to the same expression. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one r, Algebra.algebraMap_eq_smul_one r, map_smul, h1, smul_zero]`. Use `show (0 : PadicAlgCl l) = r • (0 : PadicAlgCl l)`. Rewrite using `[smul_zero] }`. Use `haveI := co_mvps c.O c.O (Fin N)`. Establish `key` using `derZero c (MvPowerSeries (Fin N) c.O) y (Set.range MvPowerSeries.X) (fun n b => derLam_dense n b) (by rintro _ ⟨i, rfl⟩; simp [y, h0]) a`.
+
+Simplify `key` using `[y]`.
+-/
 private theorem ptDer_eq_zero_of_vanish_on_X {l : ℕ} [Fact l.Prime] (c : Coef l) (N : ℕ)
     (x : MvPowerSeries (Fin N) c.O →ₐ[c.O] PadicAlgCl l)
     (D : MvPowerSeries (Fin N) c.O →ₗ[c.O] PadicAlgCl l) (hD : D ∈ PtDer x (PadicAlgCl l))
@@ -64,6 +84,13 @@ private theorem ptDer_eq_zero_of_vanish_on_X {l : ℕ} [Fact l.Prime] (c : Coef 
     (fun n b => derLam_dense n b) (by rintro _ ⟨i, rfl⟩; simp [y, h0]) a
   simpa [y] using key
 
+/- English proof (translation)
+Introduce `l _ c N x`. Set `Φ : PtDer x (PadicAlgCl l) →ₗ[PadicAlgCl l] (Fin N → PadicAlgCl l)` to `{ toFun := fun D i => (D : MvPowerSeries (Fin N) c.O →ₗ[c.O] PadicAlgCl l) (MvPowerSeries.X i) map_add' := by`. Introduce `D D'`. Both sides reduce to the same expression. Use the proof step `map_smul' := by`.
+
+Introduce `k D`. Use `rfl }`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `D hD`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `ptDer_eq_zero_of_vanish_on_X c N x D D.2 (fun i => congrFun hD i) a`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Ws.Eb.derLam :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (N : ℕ) (x : MvPowerSeries (Fin N) c.O →ₐ[c.O] PadicAlgCl l), Module.rank (PadicAlgCl l) (PtDer x (PadicAlgCl l)) ≤ N := by
   intro l _ c N x

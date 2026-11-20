@@ -8,6 +8,11 @@ namespace PositivityTheory.CW
 
 namespace WeightedEigenSum
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hx : x + (m : ℂ) • x = (((1 + m : ℝ)) : ℂ) • x`. Use `push_cast`.
+
+Rewrite using `[add_smul, one_smul]`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.add_apply, Module.End.one_apply, h, hx, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_eig {V : Type} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V) (m : ℝ) (x : V)
     (h : T x = (m : ℂ) • x) (s : ℕ) : ((1 + T) ^ s) x = (((1 + m) ^ s : ℝ) : ℂ) • x := by
   induction s with
@@ -22,6 +27,17 @@ theorem pow_eig {V : Type} [AddCommGroup V] [Module ℂ V] (T : Module.End ℂ V
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨R0, hR0⟩ : ∃ R0 : ℝ, ∀ i ∈ T, μ i < R0` from `⟨∑ i ∈ T, μ i + 1, fun i hi => by`. Use `Finset.single_le_sum (fun j _ => hnn j) hi` as an intermediate fact. Use the proof step `linarith⟩`. Establish `key : ∀ R : ℝ, R0 ≤ R → ∑ i ∈ T, ((1 + μ i) ^ s)⁻¹ * a i - ((1 + R) ^ s)⁻¹ * ∑ i ∈ T, a i ≤ K ^ 2`. Introduce `R hR`.
+
+Establish `hSmem : ∀ i, i ∈ (hfin R).toFinset.filter (fun i => μ i < R) ↔ μ i < R`. Introduce `i`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]`. Conclude with `⟨fun h => h.2, fun h => ⟨h.le, h⟩⟩`. Establish `hTS : T ⊆ (hfin R).toFinset.filter (fun i => μ i < R)` using `fun i hi => (hSmem i).mpr (lt_of_lt_of_le (hR0 i hi) hR)`.
+
+Establish `h1` using `hS R _ hSmem`. Establish `h2 : ∑ i ∈ T, phiR s R (μ i) * a i ≤ ∑ i ∈ (hfin R).toFinset.filter (fun i => μ i < R), phiR s R (μ i) * a i` using `Finset.sum_le_sum_of_subset_of_nonneg hTS (fun i _ _ => mul_nonneg (le_max_right _ _) (ha i))`. Establish `h3 : ∑ i ∈ T, phiR s R (μ i) * a i = ∑ i ∈ T, ((1 + μ i) ^ s)⁻¹ * a i - ((1 + R) ^ s)⁻¹ * ∑ i ∈ T, a i`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hlt : ((1 + R) ^ s)⁻¹ ≤ ((1 + μ i) ^ s)⁻¹`. Apply `inv_anti₀ (pow_pos (by linarith [hnn i]) s)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ (by linarith [hnn i]) (by linarith [hR0 i hi]) s`. Rewrite using `[phiR, max_eq_left (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : Filter.Tendsto (fun R : ℝ => (1 + R) ^ s) Filter.atTop Filter.atTop` using `(Filter.tendsto_pow_atTop (by omega : s ≠ 0)).comp (Filter.tendsto_atTop_add_const_left _ 1 Filter.tendsto_id)`. Establish `ht : Filter.Tendsto (fun R : ℝ => ∑ i ∈ T, ((1 + μ i) ^ s)⁻¹ * a i - ((1 + R) ^ s)⁻¹ * ∑ i ∈ T, a i) Filter.atTop (nhds (∑ i ∈ T, ((1 + μ i) ^ s)⁻¹ * a i - 0 * ∑ i ∈ T, a i))` using `tendsto_const_nhds.sub ((tendsto_inv_atTop_zero.comp hpow).mul_const _)`. Establish `hlim` using `le_of_tendsto ht (Filter.eventually_atTop.mpr ⟨R0, key⟩)`. Simplify using `using hlim`.
+-/
 theorem wsum_le {ι : Type} (μ : ι → ℝ) (hnn : ∀ i, 0 ≤ μ i) (hfin : ∀ R : ℝ, {i | μ i ≤ R}.Finite)
     (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i) (s : ℕ) (hs : 1 ≤ s) (K : ℝ)
     (hS : ∀ (R : ℝ) (S : Finset ι), (∀ i, i ∈ S ↔ μ i < R) → ∑ i ∈ S, phiR s R (μ i) * a i ≤ K ^ 2)
@@ -65,6 +81,21 @@ theorem wsum_le {ι : Type} (μ : ι → ℝ) (hnn : ∀ i, 0 ≤ μ i) (hfin : 
 
 end WeightedEigenSum
 
+/- English proof (translation)
+Introduce `_ _ n ε V _ _ E _ ι b μ hb f s K hK hS hs v`. Establish `hv : v = ∑ i ∈ (b.repr v).support, b.repr v i • b i` using `by conv_lhs => rw [← b.linearCombination_repr v]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Establish `hpos : ∀ i, 0 < (1 + μ i) ^ s` using `fun i => pow_pos (by linarith [hb.nonneg i]) s`. Establish `heig : ∀ i, ((1 + casimirK ε E) ^ s) (b i) = (((1 + μ i) ^ s : ℝ) : ℂ) • b i` using `fun i => WeightedEigenSum.pow_eig _ (μ i) (b i) (hb.eig i) s`.
+
+Establish `hw : ((1 + casimirK ε E) ^ s) v = ∑ i ∈ (b.repr v).support, (b.repr v i * (((1 + μ i) ^ s : ℝ) : ℂ)) • b i` using `by conv_lhs => rw [hv]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, heig, smul_smul]`. Establish `hfv : f v = inner ℂ (∑ i ∈ (b.repr v).support, (starRingEnd ℂ (f (b i)) * ((((1 + μ i) ^ s)⁻¹ : ℝ) : ℂ)) • b i) (((1 + casimirK ε E) ^ s) v)`.
+
+Rewrite using `[hw, hb.on.inner_sum]`. Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
+
+Establish `h1 : ((((1 + μ i) ^ s)⁻¹ : ℝ) : ℂ) * (((1 + μ i) ^ s : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ (hpos i).ne', Complex.ofReal_one]`. Take the linear combination `(-(b.repr v i * f (b i))) * h1`. Establish `hu2 : ‖∑ i ∈ (b.repr v).support, (starRingEnd ℂ (f (b i)) * ((((1 + μ i) ^ s)⁻¹ : ℝ) : ℂ)) • b i‖ ^ 2 ≤ K ^ 2`. Establish `e : ‖∑ i ∈ (b.repr v).support, (starRingEnd ℂ (f (b i)) * ((((1 + μ i) ^ s)⁻¹ : ℝ) : ℂ)) • b i‖ ^ 2 = ∑ i ∈ (b.repr v).support, ‖f (b i)‖ ^ 2 * (((1 + μ i) ^ s)⁻¹) ^ 2`.
+
+Rewrite using `[@norm_sq_eq_re_inner ℂ, hb.on.inner_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hr : 0 ≤ ((1 + μ i) ^ s)⁻¹` using `(inv_pos.mpr (hpos i)).le`. Rewrite using `[RCLike.conj_mul, ← RCLike.ofReal_pow, RCLike.ofReal_re, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hr, Complex.norm_conj, mul_pow]`. Establish `e2 : ∑ i ∈ (b.repr v).support, ‖f (b i)‖ ^ 2 * (((1 + μ i) ^ s)⁻¹) ^ 2 ≤ ∑ i ∈ (b.repr v).support, ((1 + μ i) ^ s)⁻¹ * ‖f (b i)‖ ^ 2`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ((1 + μ i) ^ s)⁻¹` using `(inv_pos.mpr (hpos i)).le`. Establish `h1 : ((1 + μ i) ^ s)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith [hb.nonneg i]))`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (sq_nonneg ‖f (b i)‖) h0) (sub_nonneg.mpr h1)]`. Establish `e3 : ∑ i ∈ (b.repr v).support, ((1 + μ i) ^ s)⁻¹ * ‖f (b i)‖ ^ 2 ≤ K ^ 2` using `WeightedEigenSum.wsum_le μ hb.nonneg hb.fin (fun i => ‖f (b i)‖ ^ 2) (fun i => sq_nonneg _) s hs K hS _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu` using `(pow_le_pow_iff_left₀ (norm_nonneg _) hK two_ne_zero).mp hu2`. Rewrite using `[hfv]`. Conclude with `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_right hu (norm_nonneg _))`.
+-/
 theorem eigen_weighted_sum_bound : A0 → FunctionalCalculusLaws → B5 := by
   intro _ _ n ε V _ _ E _ ι b μ hb f s K hK hS hs v
   have hv : v = ∑ i ∈ (b.repr v).support, b.repr v i • b i := by

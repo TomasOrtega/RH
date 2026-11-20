@@ -14,6 +14,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.CoverNZ
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ n hn`. Use `⟨0, ⟨fun _ => antitone_const, hn⟩, fun k => ?_⟩` and prove the remaining obligations. Establish `hU : IsUnf (T.U j σ)` using `hT.unf j hj σ hσ`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Take `⟨x, hx⟩ : ((T.U j σ).X k).dom.Nonempty` from `GlobalTheory.OrbitScalar.exists_mem_dom _`.
+
+Take `⟨x₀, hx₀, -⟩` from `(GlobalTheory.FrameNorm.exists_unitFr_frBor _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hσ hU).1 k ⟨x, hx⟩`. Take `⟨f, hf, h0⟩` from `GlobalTheory.DictLevel.exists_sec_rdU_ne_zero (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hσ hU hr k n hn x₀ hx₀`. Conclude with `⟨f, hf, x₀.1, x₀.2, h0⟩`.
+-/
 theorem exists_sec_ne_zero_each_comp : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ n : ℕ, Even n → ∃ a : (D.host.E →+* ℂ) × ℕ → ℕ, Dom a n ∧ ∀ k : (T.U j σ).Comp, ∃ f ∈ sec (T.Q.Xo j) T.Q.c a n, ∃ x ∈ ((T.U j σ).X k).dom, rdU (T.U j σ) f k x ≠ 0 := by
   intro D T hT j hj σ hσ n hn
   refine ⟨0, ⟨fun _ => antitone_const, hn⟩, fun k => ?_⟩

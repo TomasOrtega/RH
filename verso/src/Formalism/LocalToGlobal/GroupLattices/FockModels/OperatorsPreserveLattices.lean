@@ -14,6 +14,9 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 
 def Wc {r n : ℕ} (c : Fin r) : Fin r × Fin n → ℤ := fun v => ((lgraded_wa (n := n) c v : ℕ) : ℤ)
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Wc, lgraded_wa, rowW, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`.
+-/
 theorem weight_wc {r n : ℕ} (c : Fin r) (d : Fin r × Fin n →₀ ℕ) :
     Finsupp.weight (Wc c) d = ((Finsupp.weight (rowW r n) d c : ℕ) : ℤ) := by
   rw [Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply,
@@ -22,6 +25,13 @@ theorem weight_wc {r n : ℕ} (c : Fin r) (d : Fin r × Fin n →₀ ℕ) :
   simp only [Wc, lgraded_wa, rowW, Pi.smul_apply, Pi.single_apply, smul_eq_mul]
   split_ifs with h1 h2 h2 <;> simp_all
 
+/- English proof (translation)
+Use `set δ : Fin r → ℤ := fun c => ((if a = c then 1 else 0 : ℕ) : ℤ) - ((if b = c then 1 else 0 : ℕ) : ℤ) with hδ`. Establish `hc : ∀ c : Fin r, IsWeightedHomogeneous (Wc c) y (μ c : ℤ)`. Introduce `c d hd`. Rewrite using `[weight_wc, hy hd]`. Establish `hs : ∀ c : Fin r, ∀ s : Fin n, Wc c (a, s) = Wc c (b, s) + δ c`.
+
+Introduce `c s`. Simplify using `only [hδ, Wc, lgraded_wa]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun c => ((μ c : ℤ) + (k : ℤ) * δ c).toNat, ?_⟩` and prove the remaining obligations. Introduce `d hd`.
+
+Use function extensionality and compare the values at `c`. Establish `h1` using `lehw_rowDiv_shift R (Wc c) (δ c) a b (hs c) (μ c) k y (hc c) hd`. Rewrite `h1` using `[weight_wc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rowDiv_hom (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ) (μ : Fin r → ℕ)
     (y : MvPolynomial (Fin r × Fin n) R) (hy : IsWeightedHomogeneous (rowW r n) y μ) :
     ∃ μ', IsWeightedHomogeneous (rowW r n) (rowDiv R a b k y) μ' := by
@@ -42,6 +52,11 @@ theorem rowDiv_hom (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ) (
   rw [weight_wc] at h1
   omega
 
+/- English proof (translation)
+Establish `hwhom : ∃ μ0, IsWeightedHomogeneous (rowW r n) (hw R hn ν) μ0` using `⟨_, IsWeightedHomogeneous.prod _ _ _ fun s _ => (lpMinor_rowHom R (s.val + 1) _ _).pow _⟩`. Proceed by induction on `wd with`. Consider the case `nil => exact hwhom`. Consider the case `cons x wd ih`. Take `⟨μ, hμ⟩` from `ih`.
+
+Conclude with `rowDiv_hom R x.1 x.2.1 x.2.2 μ _ hμ`.
+-/
 theorem applyWord_hom (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν)
     (wd : List (Fin r × Fin r × ℕ)) : ∃ μ, IsWeightedHomogeneous (rowW r n) (applyWord R wd (hw R hn ν)) μ := by
   have hwhom : ∃ μ0, IsWeightedHomogeneous (rowW r n) (hw R hn ν) μ0 :=
@@ -52,6 +67,11 @@ theorem applyWord_hom (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : F
     obtain ⟨μ, hμ⟩ := ih
     exact rowDiv_hom R x.1 x.2.1 x.2.2 μ _ hμ
 
+/- English proof (translation)
+Take `⟨b, hb, h2⟩` from `sSBasis R k n ν`. Rewrite using `[← hb.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨-, -, K, sz, hsz, I, hshape, -, hbm⟩` from `h2 i`. Rewrite using `[SetLike.mem_coe, mem_restrictSupport_iff]`.
+
+Introduce `m hm`. Establish `h3` using `(bidetDominance R k n K sz hsz I m (by rw [← hbm]; exact hm)).1 r`. Rewrite `h3` using `[hshape]`. Conclude with `h3`.
+-/
 theorem dom_support (R : Type) [CommRing R] [IsDomain R] (k n : ℕ) (ν : Fin n → ℕ) (r : ℕ) :
     dualWeyl R k n ν ≤ restrictSupport R
       {m | (∑ a : Fin k with a.val < r, rowDeg m a) ≤ ∑ t : Fin n with t.val < r, ν t} := by
@@ -65,6 +85,9 @@ theorem dom_support (R : Type) [CommRing R] [IsDomain R] (k n : ℕ) (ν : Fin n
   rw [hshape] at h3
   exact h3
 
+/- English proof (translation)
+Introduce `d hd`. Apply `h` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_map, h0, map_zero]`.
+-/
 theorem hom_map {R S σ M : Type} [CommRing R] [CommRing S] [AddCommMonoid M] (φ : R →+* S) (wt : σ → M)
     (f : MvPolynomial σ R) (μ : M) (h : IsWeightedHomogeneous wt f μ) : IsWeightedHomogeneous wt (map φ f) μ := by
   intro d hd
@@ -73,6 +96,25 @@ theorem hom_map {R S σ M : Type} [CommRing R] [CommRing S] [AddCommMonoid M] (�
   apply hd
   rw [MvPolynomial.coeff_map, h0, map_zero]
 
+/- English proof (translation)
+Use `set c : Kf := algebraMap O Kf w with hc`. Use `set N : ℕ := ∑ t : Fin k with t.val < r, ν t with hN`. Set `T : MvPolynomial (Fin k × Fin k) O →ₗ[O] MvPolynomial (Fin k × Fin k) Kf` to `((LinearMap.lsmul Kf _ (c ^ N)).restrictScalars O) ∘ₗ ((rowAct Kf (n := k) (lb_D k r c)).toLinearMap.restrictScalars O) ∘ₗ (mapAlgHom (Algebra.ofId O Kf)).toLinearMap`. Establish `hT : ∀ x, T x = c ^ N • rowAct Kf (lb_D k r c) (map (algebraMap O Kf) x)` using `fun x => rfl`. Establish `key : weyl O k k le_rfl ν ≤ (Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O k k le_rfl ν)).comap T`.
+
+Unfold `weyl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨wd, rfl⟩`. Use `set f := applyWord O wd (hw O le_rfl ν) with hf`. Establish `hfW : f ∈ weyl O k k le_rfl ν` using `Submodule.subset_span ⟨wd, rfl⟩`.
+
+Use `show T f ∈ Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O k k le_rfl ν)`. Distinguish the cases in `h0 : f = 0`. Rewrite using `[h0, map_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨μ, hμ⟩` from `applyWord_hom O le_rfl ν hν wd`.
+
+Take `⟨d0, hd0⟩` from `MvPolynomial.support_nonempty.mpr h0`. Establish `hdom` using `((mem_restrictSupport_iff O).1 (dom_support O k k ν r (weylLeDual O k k le_rfl ν hν hfW))) hd0`. Establish `hwt : ∀ a, rowDeg d0 a = μ a`. Introduce `a`. Rewrite using `[← lehw_weight_rowW, hμ (mem_support_iff.mp hd0)]`.
+
+Use `set π' : ℕ := ∑ a : Fin k with a.val < r, μ a with hπ`. Establish `hle : π' ≤ N`. Establish `h1 : (∑ a : Fin k with a.val < r, rowDeg d0 a) = π'` using `Finset.sum_congr rfl fun a _ => hwt a`. Rewrite using `[← h1]`. Conclude with `hdom`.
+
+Use `⟨w ^ (N - π') • f, Submodule.smul_mem _ _ hfW, ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Unfold `lb_D`. Rewrite using `[rowActDiagWeight Kf k k _ μ _ (hom_map _ _ _ _ hμ), smul_smul]`. Establish `h2 : ∏ a : Fin k, (if a.val < r then c⁻¹ else 1) ^ μ a = (c⁻¹) ^ π'`.
+
+Rewrite using `[hπ, ← Finset.prod_pow_eq_pow_sum, Finset.prod_filter]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h2]`.
+
+Establish `h4 : c ^ N * (c⁻¹) ^ π' = c ^ (N - π')`. Rewrite using `[inv_pow, pow_sub₀ c hw0 hle]`. Rewrite using `[h4]`. Use `show map (algebraMap O Kf) (w ^ (N - π') • f) = _`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, map_pow, ← smul_eq_C_mul]`.
+
+Conclude with `fun f hf => key hf`.
+-/
 theorem weyl_scale (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf] (k r : ℕ) (ν : Fin k → ℕ)
     (hν : Antitone ν) (w : O) (hw0 : algebraMap O Kf w ≠ 0) :
     ∀ f ∈ weyl O k k le_rfl ν,
@@ -125,6 +167,21 @@ theorem weyl_scale (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O
     rw [smul_eq_C_mul, map_mul, map_C, map_pow, ← smul_eq_C_mul]
   exact fun f hf => key hf
 
+/- English proof (translation)
+Use `set c : Kf := algebraMap O Kf w with hc`. Use `set e : ℤ := lam (Fin.last m) with he`. Use `set A : ℤ := ∑ i : Fin (m + 1) with i.val < r, lam i with hA`. Use `set N : ℕ := ∑ t : Fin (m + 1) with t.val < r, nuOf lam t with hN`. Take `⟨F0, hF0, rfl⟩` from `hF`.
+
+Take `⟨f, hf, hfe⟩` from `hF0`. Establish `hfe' : map (algebraMap O Kf) f = rowAct Kf g F0` using `hfe`. Use `⟨c ^ N • F0, ?_, ?_⟩` and prove the remaining obligations. Use `show rowAct Kf (g * lb_D (m + 1) r c) (c ^ N • F0) ∈ Submodule.map (mapAlgHom (Algebra.ofId O Kf)).toLinearMap (weyl O (m + 1) (m + 1) le_rfl (nuOf lam))`. Establish `h1` using `rowActMul Kf (m + 1) (m + 1) (lb_D (m + 1) r c) g`.
+
+Rewrite using `[← h1, map_smul, AlgHom.comp_apply, ← hfe']`. Conclude with `weyl_scale O Kf (m + 1) r (nuOf lam) (kp_nuOf_antitone lam hlam) w hw f hf`. Use `show (g * lb_D (m + 1) r c).det ^ (-e) • (c ^ N • F0) = c ^ A • (g.det ^ (-e) • F0)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`.
+
+Use `set ρ : ℕ := (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card with hρ`. Establish `h1 : (g * lb_D (m + 1) r c).det = g.det * (c⁻¹) ^ ρ`. Rewrite using `[Matrix.det_mul, lb_D, Matrix.det_diagonal, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`. Establish `h3 : A = (N : ℤ) + ρ * e`. Rewrite using `[hA, hN, hρ]`.
+
+Use `push_cast`. Rewrite using `[Finset.card_eq_sum_ones]`. Use `push_cast`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `a _`. Establish `: 0 ≤ lam a - lam (Fin.last m)` using `sub_nonneg.2 (hlam (Fin.le_last a))`. Simplify using `only [nuOf, Int.toNat_of_nonneg this, he]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : ((c⁻¹) ^ ρ) ^ (-e) = c ^ ((ρ : ℤ) * e)`.
+
+Rewrite using `[inv_pow, inv_zpow, zpow_neg, inv_inv, ← zpow_natCast c ρ, ← zpow_mul]`. Rewrite using `[h1, h3, mul_zpow, h5, zpow_add₀ hw, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dl_P (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (m r : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
     (w : O) (hw : algebraMap O Kf w ≠ 0) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf)
@@ -168,6 +225,25 @@ theorem dl_P (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     rw [h1, h3, mul_zpow, h5, zpow_add₀ hw, zpow_natCast]
     ring
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `la_factor g h heq.ge`. Take `⟨U2, hU2⟩` from `la_factor h g heq.le`. Establish `hUU : U * U2 = 1`. Establish `h1 : g * (U * U2).map (algebraMap O Kf) = g * 1`. Rewrite using `[Matrix.mul_one, Matrix.map_mul, ← Matrix.mul_assoc, ← hU, ← hU2]`.
+
+Establish `hgu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).2 hg`. Establish `h2 : (U * U2).map (algebraMap O Kf) = 1` using `hgu.mul_left_cancel h1`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules. Establish `hdet : U.det * U2.det = 1` using `by rw [← Matrix.det_mul, hUU, Matrix.det_one]`. Set `u : Oˣ` to `⟨U.det, U2.det, hdet, by rw [mul_comm]; exact hdet⟩`. Set `γ : GL (Fin (m + 1)) O` to `⟨U2, U, mul_eq_one_comm.1 hUU, hUU⟩`. Establish `hdU : (U.map (algebraMap O Kf)).det = algebraMap O Kf U.det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `hc : algebraMap O Kf U.det ≠ 0`. Introduce `h0`. Use `congrArg (algebraMap O Kf) hdet` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Establish `hz : ∀ e : ℤ, algebraMap O Kf ((u ^ e : Oˣ) : O) = (algebraMap O Kf U.det) ^ e`. Introduce `e`. Establish `h1 : ((Units.map (algebraMap O Kf : O →* Kf) u ^ e : Kfˣ) : Kf) = (algebraMap O Kf U.det) ^ e`.
+
+Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Rewrite using `[← h1, ← map_zpow]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+
+Establish `hFh : F ∈ deltaL O Kf (m + 1) (nuOf lam) h`. Take `⟨f, hf, hfe⟩` from `hF`. Establish `hst : rowAct O U f ∈ weyl O (m + 1) (m + 1) le_rfl (nuOf lam)` using `Formalism.UG.P.weyl_module_GL_stable O (m + 1) (m + 1) le_rfl (nuOf lam) γ f hf`. Use `⟨rowAct O U f, hst, ?_⟩` and prove the remaining obligations. Establish `h3 : rowAct Kf (n` using `m + 1) h = (rowAct Kf (U.map (algebraMap O Kf))).comp (rowAct Kf g) := by`.
+
+Rewrite using `[rowActMul, hU]`. Express the relevant statement in the definitionally equal form `map (algebraMap O Kf) (rowAct O U f) = rowAct Kf h F`. Rewrite using `[h3, AlgHom.comp_apply, ← la_rowAct_map]`. Use `congr 1`. Use `⟨((u ^ (lam (Fin.last m)) : Oˣ) : O) • F, Submodule.smul_mem _ _ hFh, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `h.det ^ (-(lam (Fin.last m))) • (((u ^ (lam (Fin.last m)) : Oˣ) : O) • F) = g.det ^ (-(lam (Fin.last m))) • F`. Rewrite using `[← algebraMap_smul Kf (((u ^ (lam (Fin.last m)) : Oˣ) : O)) F, hz, smul_smul, hU, Matrix.det_mul, hdU, mul_zpow, mul_assoc, ← zpow_add₀ hc, neg_add_cancel, zpow_zero, mul_one]`.
+-/
 theorem dl_indep {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m : ℕ) (lam : Fin (m + 1) → ℤ)
     (g h : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det) (heq : colSpan O g = colSpan O h) :
@@ -216,6 +292,11 @@ theorem dl_indep {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf]
   rw [← algebraMap_smul Kf (((u ^ (lam (Fin.last m)) : Oˣ) : O)) F, hz, smul_smul, hU, Matrix.det_mul, hdU,
     mul_zpow, mul_assoc, ← zpow_add₀ hc, neg_add_cancel, zpow_zero, mul_one]
 
+/- English proof (translation)
+Establish `hgD : IsUnit (g * lb_D (m + 1) r (algebraMap O Kf w)).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hg.mul (lb_D_det _ _ _ hw)`. Unfold `Dl0 at hF ⊢`. Rewrite `hF`, the goal using `[if_pos hlam]`.
+
+Establish `h1 : F ∈ deltaLTw O Kf m lam g` using `(iInf₂_le g ⟨hg, rfl⟩ : _ ≤ deltaLTw O Kf m lam g) hF`. Establish `h2` using `dl_P O Kf m r lam hlam w hw g F h1`. Conclude with `(le_iInf₂ fun h hh => dl_indep hinj m lam _ h hgD hh.2 : deltaLTw O Kf m lam (g * lb_D (m + 1) r (algebraMap O Kf w)) ≤ _) h2`.
+-/
 theorem dl_pos (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (m r : ℕ) (lam : Fin (m + 1) → ℤ) (hlam : Antitone lam)
     (w : O) (hw : algebraMap O Kf w ≠ 0) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hg : IsUnit g.det)
@@ -233,6 +314,17 @@ theorem dl_pos (O Kf : Type) [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
 
 variable {p : ℕ}
 
+/- English proof (translation)
+Take `⟨gs, hgs, h1, -, h3⟩` from `lb_edgeLat_of_basis G v (restEdgeBasis G v) e he`. Establish `hw` using `ch_w_ne_zero G v`. Use `set c : G.Kf := algebraMap G.O G.Kf G.P.w with hc`. Establish `hgD : ∀ s, IsUnit (gs s * lb_D (G.P.m + 1) G.P.r c).det`. Introduce `s`.
+
+Rewrite using `[Matrix.det_mul]`. Conclude with `(hgs s).mul (lb_D_det _ _ _ hw)`. Establish `hA : ∏ s : Fin (G.P.n' v), (c ^ (∑ i : Fin (G.P.m + 1) with i.val < G.P.r, lamAt (G.P.lam0 v) s i) * c ^ (∑ i : Fin (G.P.m + 1) with i.val < G.P.r, lamAt (G.P.lam0 v) s i)) = (p : G.Kf) ^ G.P.ArV v`. Rewrite using `[Finset.prod_mul_distrib, lb_zpow_sum _ hw, nt_p_eq G v, ← hc]`. Unfold `Places.ArV Ar`.
+
+Rewrite using `[← zpow_natCast c 2, ← zpow_mul, ← zpow_add₀ hw]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `P hP`. Rewrite using `[← hA]`.
+
+Use `lb_tensor G.O G.Kf _ _ _ (fun s F hF => ?_) P hP` and prove the remaining obligations. Use `beta_reduce at hF ⊢`. Rewrite `hF` using `[h1]`. Rewrite using `[h3, mul_smul]`. Establish `hl` using `kp_lamAt_antitone _ (G.P.dom v) s`.
+
+Conclude with `hΦ _ hl _ (hgD _) _ (hΦ _ hl _ (hgs _) F hF)`.
+-/
 theorem steps_gen (G : GAtP p) (v : Fin G.P.nV)
     (Φ : (Fin (G.P.m + 1) → ℤ) → Submodule G.O (Fin (G.P.m + 1) → G.Kf) →
       Submodule G.O (MvPolynomial (Fin (G.P.m + 1) × Fin (G.P.m + 1)) G.Kf))
@@ -267,6 +359,27 @@ theorem steps_gen (G : GAtP p) (v : Fin G.P.nV)
   have hl := kp_lamAt_antitone _ (G.P.dom v) s
   exact hΦ _ hl _ (hgD _) _ (hΦ _ hl _ (hgs _) F hF)
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `GAtP.funMod at hx ⊢`. Rewrite `hx`, the goal using `[Submodule.mem_pi]`. Introduce `i hi`. Establish `h0` using `hx i hi`.
+
+Unfold `Level.funMod at h0 ⊢`. Rewrite `h0`, the goal using `[Submodule.mem_inf, Submodule.mem_inf]`. Take `⟨⟨hA, hB⟩, hC⟩` from `h0`. Establish `hA'` using `fun L hL => (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hA L) hL`. Establish `hB' : ∀ L : G.P.Tup, ¬ G.P.IsLatTup L → x i L = 0` using `fun L hL => (Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hB L) hL`.
+
+Establish `hne : ∀ (L : G.P.Tup) (L'' : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v)) (u : Fin G.P.nV), u ≠ v → Function.update (β` using `fun v => Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v)) L v L'' u = L u := fun L L'' u hu => Function.update_of_ne hu L'' L`. Establish `hself : ∀ (L : G.P.Tup) (L'' : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v)), Function.update (β` using `fun v => Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v)) L v L'' v = L'' := fun L L'' => Function.update_self v L'' L`. Use `⟨⟨?_, ?_⟩, nt_equiv G v i _ hC⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun L => (Submodule.mem_iInf _).2 fun hL => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Level.yv (P := G.P) v (x i) L ∈ G.P.sys Φ L`.
+
+Rewrite using `[ef_yv_eq, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun L'' hL'' => ?_` and prove the remaining obligations. Establish `hE : IsEdge p (G.P.n' v) G.P.r ⟨L'', L v⟩` using `(Set.Finite.mem_toFinset (ef_places_finite G.P v (L v))).1 hL''`. Establish `hlat : G.P.IsLatTup (Function.update (β` using `fun v => Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v)) L v L'') := by`. Introduce `u`.
+
+Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Rewrite using `[hself]`. Conclude with `hE.1`. Rewrite using `[hne L L'' u huv]`.
+
+Conclude with `hL u`. Establish `hval` using `hA' _ hlat`. Use `nt_tenV_smulK G v _ _ _ ?_ ?_ _ hval` and prove the remaining obligations. Introduce `z hz`. Rewrite `hz` using `[hself]`.
+
+Conclude with `hloc ⟨L'', L v⟩ hE z hz`. Introduce `u hu`. Rewrite using `[hne L L'' u hu]`. Use `(Submodule.mem_iInf _).2 fun L => (Submodule.mem_iInf _).2 fun hL => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Level.yv (P := G.P) v (x i) L = 0`.
+
+Rewrite using `[ef_yv_eq, Finset.sum_eq_zero, smul_zero]`. Introduce `L'' hL''`. Establish `hE : IsEdge p (G.P.n' v) G.P.r ⟨L'', L v⟩` using `(Set.Finite.mem_toFinset (ef_places_finite G.P v (L v))).1 hL''`. Apply `hB'` to reduce the goal to its premises. Introduce `hlat`.
+
+Apply `hL` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Conclude with `hE.2.1`.
+
+Use `hlat u` as an intermediate fact. Rewrite `this` using `[hne L L'' u huv]`. Conclude with `this`.
+-/
 theorem yv_pres (G : GAtP p) (v : Fin G.P.nV)
     (Φ : ∀ u, Submodule (G.P.W u) (Fin (G.P.m + 1) → G.P.Qq u) →
       Submodule G.O (MvPolynomial (Fin (G.P.n' u) × (Fin (G.P.m + 1) × Fin (G.P.m + 1))) G.Kf))
@@ -331,6 +444,9 @@ theorem yv_pres (G : GAtP p) (v : Fin G.P.nV)
       rw [hne L L'' u huv] at this
       exact this
 
+/- English proof (translation)
+Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `yv_pres G v (fun u Lu => Hten G.O (G.P.lam0 u) fun s => extO G.O (G.P.ι u) (G.P.σ u) s.val Lu) (fun e he => steps_gen G v (fun lam Λ => H0 G.O G.P.m lam Λ) (fun lam hl g hg F hF => lb_pos G.O G.Kf (lb_inj G v) G.P.m G.P.r lam hl G.P.w (ch_w_ne_zero G v) g hg F hF) e he)`. Conclude with `yv_pres G v (fun u Lu => HtenW G.O (G.P.lam0 u) fun s => extO G.O (G.P.ι u) (G.P.σ u) s.val Lu) (fun e he => steps_gen G v (fun lam Λ => Dl0 G.O G.P.m lam Λ) (fun lam hl g hg F hF => dl_pos G.O G.Kf (lb_inj G v) G.P.m G.P.r lam hl G.P.w (ch_w_ne_zero G v) g hg F hF) e he)`.
+-/
 theorem operators_preserve_lattices (D : Formalism.BasicNotions.D7) (G : GAtP p) : Formalism.MainNotions.FormalGroupSystem.adm12 D G := by
   refine ⟨fun v => ?_, fun v => ?_⟩
   · exact yv_pres G v (fun u Lu => Hten G.O (G.P.lam0 u) fun s => extO G.O (G.P.ι u) (G.P.σ u) s.val Lu)

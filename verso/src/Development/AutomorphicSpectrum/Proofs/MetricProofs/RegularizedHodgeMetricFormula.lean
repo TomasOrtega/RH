@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Mix
 
+/- English proof (translation)
+Establish `h0 : (torusSetoid (ι` using `ι)).r (orbitRep z) z := Quotient.mk_out (s := torusSetoid) z`. Take `⟨c, hc, hcz⟩` from `h0`. Establish `ho : orbitRep z = torusSmul (fun k => (c k)⁻¹) z`. Use function extensionality and compare the values at `p`. Use `conv_rhs => rw [hcz]`.
+
+Simplify using `only [torusSmul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hc p.1), one_mul]`. Establish `hc' : ∀ k, (c k)⁻¹ ≠ 0` using `fun k => inv_ne_zero (hc k)`. Establish `hpc : 0 < ∏ k, ‖(c k)⁻¹‖ ^ a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hc' k)) _`. Establish `hr` using `refNorm_pos a hz`.
+
+Use `show refNorm a z * Real.exp (Real.log (F (orbitRep z) / refNorm a (orbitRep z))) = F z`. Rewrite using `[ho, hF _ hc', refNorm_smul, mul_div_mul_left _ _ hpc.ne', Real.exp_log (div_pos hpos hr)]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem hermOfFun_h_eq_of_homogeneous_of_pos {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (a : K → ℤ) (F : ((Σ k, ι k) → ℂ) → ℝ) (z : (Σ k, ι k) → ℂ)
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
@@ -33,6 +40,9 @@ private theorem hermOfFun_h_eq_of_homogeneous_of_pos {K : Type} [Fintype K] {ι 
   rw [ho, hF _ hc', refNorm_smul, mul_div_mul_left _ _ hpc.ne', Real.exp_log (div_pos hpos hr)]
   field_simp
 
+/- English proof (translation)
+Unfold `smoothRep`. Use `split_ifs with h`. Conclude with `h.choose_spec.2.2 z hz`. Both sides reduce to the same expression.
+-/
 private theorem smoothRep_h_eq_of_mem_mcPts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (P : Ideal (MRing ι)) (A : HermLine ι) (z : (Σ k, ι k) → ℂ) (hz : z ∈ mcPts P) :
     (smoothRep P A).h z = A.h z := by
@@ -41,6 +51,11 @@ private theorem smoothRep_h_eq_of_mem_mcPts {K : Type} [Fintype K] {ι : K → T
   · exact h.choose_spec.2.2 z hz
   · rfl
 
+/- English proof (translation)
+Establish `h : (eval (torusSmul c z)).comp (map (Int.castRingHom ℂ)) = (MvPolynomial.eval c).comp (mConeMap z).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using the standard rewrite rules. Introduce `q`.
+
+Simplify using `[mConeMap, torusSmul, mul_comm]`. Conclude with `RingHom.congr_fun h f`.
+-/
 private theorem eval_torusSmul_map_eq_eval_mConeMap {K : Type} {ι : K → Type} (c : K → ℂ) (z : (Σ k, ι k) → ℂ)
     (f : MRing ι) :
     eval (torusSmul c z) (map (Int.castRingHom ℂ) f) = MvPolynomial.eval c (mConeMap z f) := by
@@ -53,6 +68,9 @@ private theorem eval_torusSmul_map_eq_eval_mConeMap {K : Type} {ι : K → Type}
       simp [mConeMap, torusSmul, mul_comm]
   exact RingHom.congr_fun h f
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Establish `hf' : f ∈ mCoordIdeal z` using `VertFactorPos.mCoordIdeal_le hz hf`. Rewrite using `[eval_torusSmul_map_eq_eval_mConeMap, RingHom.mem_ker.1 hf', map_zero]`.
+-/
 private theorem torusSmul_mem_mcPts_mCoordIdeal {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) :
@@ -63,6 +81,17 @@ private theorem torusSmul_mem_mcPts_mCoordIdeal {K : Type} [Fintype K] {ι : K �
   · have hf' : f ∈ mCoordIdeal z := VertFactorPos.mCoordIdeal_le hz hf
     rw [eval_torusSmul_map_eq_eval_mConeMap, RingHom.mem_ker.1 hf', map_zero]
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B t z hz`. Establish `hz' : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0` using `hz.1`. Establish `hpos` using `VertFactorPos.proof II Ψ K ι Ω E D`. Establish `hsm` using `VertFactorSmooth.proof VertFactorPos.proof II Ψ K ι Ω E D`. Establish `hproj : ∀ c : K → ℂ, (∀ k, c k ≠ 0) → X.M.proj (torusSmul c z) = X.M.proj z` using `fun c hc => ((X.M.fibre z hz (torusSmul c z) (torusSmul_mem_mcPts_mCoordIdeal D.y hz hc)).2 ⟨c, hc, rfl⟩).symm`.
+
+Establish `hreg : (X.S.regLine t).h z = X.S.ref.h z * Real.exp (X.S.regWeight t (X.M.proj z))`. Use `hermOfFun_h_eq_of_homogeneous_of_pos (muLine X.H).a (fun w => X.S.ref.h w * Real.exp (X.S.regWeight t (X.M.proj w))) z hz' ?_ (mul_pos (X.S.ref.pos z hz') (Real.exp_pos _))` and prove the remaining obligations. Introduce `c hc`. Use `show X.S.ref.h (torusSmul c z) * Real.exp (X.S.regWeight t (X.M.proj (torusSmul c z))) = (∏ k, ‖c k‖ ^ (muLine X.H).a k) * (X.S.ref.h z * Real.exp (X.S.regWeight t (X.M.proj z)))`. Establish `hs : X.S.ref.h (torusSmul c z) = (∏ k, ‖c k‖ ^ (muLine X.H).a k) * X.S.ref.h z`.
+
+Rewrite using `[← X.S.ref_deg]`. Conclude with `X.S.ref.smul c z hc`. Rewrite using `[hproj c hc, hs, mul_assoc]`. Rewrite using `[muReg, smoothRep_h_eq_of_mem_mcPts _ _ z hz]`. Use `(hermOfFun_h_eq_of_homogeneous_of_pos (muTwDeg X.H B) (fun w => (X.S.regLine t).h w * ∏ p ∈ D.SB B, D.vertFactor p w) z hz' ?_ ?_).trans ?_` and prove the remaining obligations.
+
+Introduce `c hc show (X.S.regLine t).h (torusSmul c z) * ∏ p ∈ D.SB B, D.vertFactor p (torusSmul c z) = (∏ k, ‖c k‖ ^ muTwDeg X.H B k) * ((X.S.regLine t).h z * ∏ p ∈ D.SB B, D.vertFactor p z)`. Establish `h1 : (X.S.regLine t).h (torusSmul c z) = (∏ k, ‖c k‖ ^ X.H.aMu k) * (X.S.regLine t).h z` using `(X.S.regLine t).smul c z hc`. Establish `h2 : ∀ p ∈ D.SB B, D.vertFactor p (torusSmul c z) = (∏ k, ‖c k‖ ^ D.vdeg p k) * D.vertFactor p z` using `fun p hp => (hsm p (Finset.mem_filter.1 hp).1).1 z hz c hc`. Rewrite using `[h1, Finset.prod_congr rfl h2, Finset.prod_mul_distrib, muTwDeg, MuRegSmooth.prod_norm_zpow_add_sum hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `mul_pos ((X.S.regLine t).pos z hz') (Finset.prod_pos fun p hp => hpos p (Finset.mem_filter.1 hp).1 z hz)`. Use `show (X.S.regLine t).h z * ∏ p ∈ D.SB B, D.vertFactor p z = _`. Rewrite using `[hreg]`.
+-/
 theorem muReg_h_eq_of_mem_mcPts : ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (O Lt : Type) [CommRing O] [AddCommGroup Lt] [Module O Lt] (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ), ∀ z ∈ mcPts (mCoordIdeal D.y), (muReg X.H X.S B t).h z = X.S.ref.h z * Real.exp (X.S.regWeight t (X.M.proj z)) * ∏ p ∈ D.SB B, D.vertFactor p z := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B t z hz
   have hz' : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0 := hz.1

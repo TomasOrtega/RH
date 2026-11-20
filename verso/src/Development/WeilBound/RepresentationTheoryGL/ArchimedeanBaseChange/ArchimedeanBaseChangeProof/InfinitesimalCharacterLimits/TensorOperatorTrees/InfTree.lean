@@ -10,12 +10,18 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Trees
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hW` using `GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi h (GlobalTheory.CuspRep.Model.absC E z)`. Rewrite `hW` using `[GlobalTheory.CuspRep.Model.expo_absC]`. Conclude with `hW`.
+-/
 theorem hasInfCharGL_tw {N : ℕ} {V : Submodule ℂ (Sm E N)} {τ : E →+* ℂ} {m : Multiset ℂ}
     (h : HasInfCharGL V τ m) (z : ℂ) : HasInfCharGL (tw V z) τ (m.map (· + z)) := by
   have hW := GlobalTheory.NormIndCap.hasInfCharGL_map_mulChi h (GlobalTheory.CuspRep.Model.absC E z)
   rw [GlobalTheory.CuspRep.Model.expo_absC] at hW
   exact hW
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_add, Multiset.prod_add, Multiset.map_map, Multiset.map_map]`. Use `congr 2`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`. Conclude with `Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`.
+-/
 theorem prod_cancel (m₁ m₂ : Multiset ℂ) (u : ℂ) (r s : ℕ) :
     ((m₁.map (· + (s : ℂ) / 2)).map (u - (s : ℂ) / 2 + ·)).prod *
         ((m₂.map (· + -(r : ℂ) / 2)).map (u + (r : ℂ) / 2 + ·)).prod = ((m₁ + m₂).map (u + ·)).prod := by
@@ -24,6 +30,11 @@ theorem prod_cancel (m₁ m₂ : Multiset ℂ) (u : ℂ) (r s : ℕ) :
   · exact Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring
   · exact Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring
 
+/- English proof (translation)
+Use `⟨by rw [Multiset.card_add, h₁.1, h₂.1], fun u φ hφ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem F hF`. Establish `hc : cap τ u F = (((m₁.map (· + (s : ℂ) / 2)).map (u - (s : ℂ) / 2 + ·)).prod * ((m₂.map (· + -(r : ℂ) / 2)).map (u + (r : ℂ) / 2 + ·)).prod) • F` using `PositivityTheory.Rg.Rs.PInfInd2A.casimir_on_parabolic_induction (n := ![r, s]) (tw U₁ ((s : ℂ) / 2)) (tw U₂ (-(r : ℂ) / 2)) τ _ _ (hasInfCharGL_tw h₁ _) (hasInfCharGL_tw h₂ _) u F hF.1`. Rewrite using `[hc, prod_cancel]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul a x _ hx => rw [map_smul, hx, smul_comm]`.
+-/
 theorem hasInfCharGL_node {r s : ℕ} {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {τ : E →+* ℂ}
     {m₁ m₂ : Multiset ℂ} (h₁ : HasInfCharGL U₁ τ m₁) (h₂ : HasInfCharGL U₂ τ m₂) :
     HasInfCharGL (Submodule.span ℂ {φ | MemInd2 (tw U₁ ((s : ℂ) / 2)) (tw U₂ (-(r : ℂ) / 2)) φ ∧
@@ -40,6 +51,11 @@ theorem hasInfCharGL_node {r s : ℕ} {U₁ : Submodule ℂ (Sm E r)} {U₂ : Su
   | add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]
   | smul a x _ hx => rw [map_smul, hx, smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `t generalizing m with`. Consider the case `leaf V z`. Take `⟨m₀, h₀, rfl⟩` from `h`. Conclude with `hasInfCharGL_tw h₀ z`. Consider the case `node t₁ t₂ ih₁ ih₂`.
+
+Take `⟨m₁, m₂, h₁, h₂, rfl⟩` from `h`. Conclude with `hasInfCharGL_node (ih₁ m₁ h₁) (ih₂ m₂ h₂)`.
+-/
 theorem hasInfCharGL_space {N : ℕ} (t : Tr E N) (τ : E →+* ℂ) (m : Multiset ℂ) (h : t.InfOf τ m) :
     HasInfCharGL t.space τ m := by
   induction t generalizing m with
@@ -50,6 +66,9 @@ theorem hasInfCharGL_space {N : ℕ} (t : Tr E N) (τ : E →+* ℂ) (m : Multis
     obtain ⟨m₁, m₂, h₁, h₂, rfl⟩ := h
     exact hasInfCharGL_node (ih₁ m₁ h₁) (ih₂ m₂ h₂)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ t τ m h` and use `hasInfCharGL_space t τ m h`.
+-/
 theorem infTree : InfTree := fun _ _ _ _ _ t τ m h => hasInfCharGL_space t τ m h
 
 end PositivityTheory.Rg.BcB.SpectralAccumulation.Trees

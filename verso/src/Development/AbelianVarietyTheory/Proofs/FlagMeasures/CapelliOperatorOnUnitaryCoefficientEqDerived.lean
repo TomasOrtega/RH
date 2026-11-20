@@ -10,6 +10,9 @@ namespace GlobalTheory.CapelliCoef
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Unfold `EabV EcV`. Rewrite using `[map_add, map_smul, (rdVPair_of vector_right_derivative_extends n ε E E' L f _ g hf h1 hg).2, (rdVPair_of vector_right_derivative_extends n ε E E' L f _ g hf h2 hg).2]`.
+-/
 lemma eabV_pair {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E']
     (L : E →L[ℂ] E') {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : SmoothOnGV ε f) (a b : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
@@ -22,6 +25,9 @@ lemma eabV_pair {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Normed
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Simplify using `only [PI.DSInfCharCap.dsigC, PI.DSInfCharCap.unitM, PI.DSInfCharCap.thetaJ, PI.PhMeasCore.dsig, EabV, EcV, RdV, cpart1, cpart2, Matrix.one_mul, sub_neg_eq_add, ← sub_eq_add_neg]`.
+-/
 lemma dsigC_unitM (ab : Fin n × Fin n) (v : H) :
     PI.DSInfCharCap.dsigC ε σ (PI.DSInfCharCap.unitM ab) v = EabV ε ab.1 ab.2 (fun x => σ x v) 1 := by
   simp only [PI.DSInfCharCap.dsigC, PI.DSInfCharCap.unitM, PI.DSInfCharCap.thetaJ, PI.PhMeasCore.dsig,
@@ -31,6 +37,9 @@ def freeAct (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJs
     FreeAlgebra ℂ (Fin n × Fin n) →ₐ[ℂ] Module.End ℂ (smoothVec ε σ) :=
   FreeAlgebra.lift ℂ fun ab => unitAct hσ ab.1 ab.2
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons ab w ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply, PI.DSInfCharCap.dsigCW]`. Rewrite using `[ih, dsigC_unitM, unitAct_coe]`.
+-/
 lemma dsigCW_eq (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (w : List (Fin n × Fin n)) (v : smoothVec ε σ) :
     PI.DSInfCharCap.dsigCW ε σ (w.map PI.DSInfCharCap.unitM) v =
       ((w.map fun ab => unitAct hσ ab.1 ab.2).prod v : smoothVec ε σ) := by
@@ -40,6 +49,11 @@ lemma dsigCW_eq (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S
     simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, PI.DSInfCharCap.dsigCW]
     rw [ih, dsigC_unitM, unitAct_coe]
 
+/- English proof (translation)
+Establish `e : freeAct hσ = (MonoidAlgebra.lift ℂ _ _ (FreeMonoid.lift fun ab => unitAct hσ ab.1 ab.2)).comp (FreeAlgebra.equivMonoidAlgebraFreeMonoid (R` using `ℂ) (X := Fin n × Fin n)).toAlgHom := by ext1`. Use function extensionality and compare the values at `ab`. Simplify using `[freeAct, FreeAlgebra.equivMonoidAlgebraFreeMonoid]`. Rewrite using `[e]`. Simplify using `only [AlgHom.comp_apply, MonoidAlgebra.lift_apply, PI.DSInfCharCap.actU, dsigCW_eq hσ, Finsupp.sum, LinearMap.sum_apply, Submodule.coe_sum, LinearMap.smul_apply, Submodule.coe_smul, FreeMonoid.lift_apply]`.
+
+Both sides reduce to the same expression.
+-/
 lemma actU_eq (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (p : FreeAlgebra ℂ (Fin n × Fin n))
     (v : smoothVec ε σ) : PI.DSInfCharCap.actU ε σ p v = (freeAct hσ p v : smoothVec ε σ) := by
   have e : freeAct hσ = (MonoidAlgebra.lift ℂ _ _ (FreeMonoid.lift fun ab => unitAct hσ ab.1 ab.2)).comp
@@ -59,12 +73,18 @@ def IsCoef (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[�
     (B : Wq →ₗ[ℂ] smoothVec ε σ) (f : Matrix (Fin n) (Fin n) ℂ → (Wq →L[ℂ] Wp)) : Prop :=
   ∀ g, inUJ ε g → ∀ w, f g w = P (σ g (B w))
 
+/- English proof (translation)
+The claim follows from `smooth_congr (PI.UnitaryGroupMassFormula.CapelliEig.coef_smoothOnGV ε σ P (LinearMap.toContinuousLinearMap ((smoothVec ε σ).subtype ∘ₗ B)) fun w => (B w).2) fun g hg => ContinuousLinearMap.ext fun w => h g hg w`.
+-/
 lemma IsCoef.smooth {P : H →L[ℂ] Wp} {B : Wq →ₗ[ℂ] smoothVec ε σ}
     {f : Matrix (Fin n) (Fin n) ℂ → (Wq →L[ℂ] Wp)} (h : IsCoef ε σ P B f) : SmoothOnGV ε f :=
   smooth_congr (PI.UnitaryGroupMassFormula.CapelliEig.coef_smoothOnGV ε σ P
     (LinearMap.toContinuousLinearMap ((smoothVec ε σ).subtype ∘ₗ B)) fun w => (B w).2)
     fun g hg => ContinuousLinearMap.ext fun w => h g hg w
 
+/- English proof (translation)
+Introduce `g hg w`. Establish `e1` using `eabV_pair (ContinuousLinearMap.apply ℂ Wp w) h.smooth a b hg`. Simplify using `only [ContinuousLinearMap.apply_apply] at e1`. Rewrite using `[e1, eabV_congr (fun x hx => h x hx w) a b hg, ← eabV_pair P (B w).2 a b hg, LinearMap.comp_apply, unitAct_coe, rep_eabV hσ (B w).2 a b hg]`.
+-/
 lemma IsCoef.eab (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {P : H →L[ℂ] Wp} {B : Wq →ₗ[ℂ] smoothVec ε σ}
     {f : Matrix (Fin n) (Fin n) ℂ → (Wq →L[ℂ] Wp)} (h : IsCoef ε σ P B f) (a b : Fin n) :
     IsCoef ε σ P (unitAct hσ a b ∘ₗ B) (EabV ε a b f) := by
@@ -74,6 +94,11 @@ lemma IsCoef.eab (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.
   rw [e1, eabV_congr (fun x hx => h x hx w) a b hg, ← eabV_pair P (B w).2 a b hg, LinearMap.comp_apply,
     unitAct_coe, rep_eabV hσ (B w).2 a b hg]
 
+/- English proof (translation)
+Introduce `g hg w`. Establish `e` using `h.eab hσ a b g hg w`. Establish `e'` using `h g hg w`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[Formalism.QuantumDeterminants.Top, Tm, PI.DSInfCharCap.Egl, freeAct, Module.algebraMap_end_apply, e', e]`. Simplify using `[Formalism.QuantumDeterminants.Top, Tm, hab, PI.DSInfCharCap.Egl, freeAct, e]`.
+-/
 lemma IsCoef.top (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {P : H →L[ℂ] Wp} {B : Wq →ₗ[ℂ] smoothVec ε σ}
     {f : Matrix (Fin n) (Fin n) ℂ → (Wq →L[ℂ] Wp)} (h : IsCoef ε σ P B f) (u : ℂ) (a b : Fin n) :
     IsCoef ε σ P (freeAct hσ (Tm (PI.DSInfCharCap.Egl n) u a b) ∘ₗ B) (Top (EabV ε) u a b f) := by
@@ -85,6 +110,9 @@ lemma IsCoef.top (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.
     simp [Formalism.QuantumDeterminants.Top, Tm, PI.DSInfCharCap.Egl, freeAct, Module.algebraMap_end_apply, e', e]
   · simp [Formalism.QuantumDeterminants.Top, Tm, hab, PI.DSInfCharCap.Egl, freeAct, e]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa [Module.End.one_eq_id] using h`. Consider the case `cons q l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.foldr_cons, map_mul, Module.End.mul_eq_comp, LinearMap.comp_assoc]`. Conclude with `ih.top hσ _ _ _`.
+-/
 lemma IsCoef.word (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {P : H →L[ℂ] Wp} {B : Wq →ₗ[ℂ] smoothVec ε σ}
     {f : Matrix (Fin n) (Fin n) ℂ → (Wq →L[ℂ] Wp)} (h : IsCoef ε σ P B f) (l : List (ℂ × Fin n × Fin n)) :
     IsCoef ε σ P (freeAct hσ (l.map fun q => Tm (PI.DSInfCharCap.Egl n) q.1 q.2.1 q.2.2).prod ∘ₗ B)
@@ -96,6 +124,13 @@ lemma IsCoef.word (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions
       LinearMap.comp_assoc]
     exact ih.top hσ _ _ _
 
+/- English proof (translation)
+Introduce `n ε lam Hs _ _ _ σ Wp Wq _ _ _ _ _ _ hds P Q hQ u g hg w`. Establish `hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ` using `hds.2.2.1`. Set `B : Wq →ₗ[ℂ] smoothVec ε σ` to `(Q : Wq →ₗ[ℂ] Hs).codRestrict _ hQ`. Establish `h0 : IsCoef ε σ P B (fun x => P.comp ((σ x).comp Q))` using `fun _ _ _ => rfl`. Establish `e : Q w = (B w : Hs)` using `rfl`.
+
+Rewrite using `[e, actU_eq hσ]`. Simplify using `only [capelli, qdetOp, qminorOp, qdet, qminor, map_sum, map_mul, map_intCast, Finset.sum_apply, _root_.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, Pi.smul_apply, _root_.smul_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `h0.word hσ (List.ofFn fun k : Fin n => (u - ((k : ℕ) : ℂ), τ k, k)) g hg w`. Simplify using `only [List.map_ofFn, Function.comp_def] at h`.
+
+Simplify using `only [id]`. Rewrite using `[h]`. Simplify using `[Module.End.intCast_apply, ← Int.cast_smul_eq_zsmul ℂ]`.
+-/
 theorem capelli_coef : PI.UnitaryGroupMassFormula.CapelliEig.FunAct := by
   intro n ε lam Hs _ _ _ σ Wp Wq _ _ _ _ _ _ hds P Q hQ u g hg w
   have hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ := hds.2.2.1

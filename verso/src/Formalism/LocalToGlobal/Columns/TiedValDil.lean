@@ -15,6 +15,21 @@ section Law
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable {n : ℕ} [NeZero n] (ST SG : Finset (Pl E))
 
+/- English proof (translation)
+Take `⟨y, hyk, hyr⟩` from `St_one_int hk`. Establish `hN` using `globLat_mul_St n x hk`. Establish `hval : ∀ (P : Pl E) (v : Fin n → E), v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.UG.CS.globLat x (stdLat E n)) → ∀ i, redA P (pullV (x * k⁻¹) v i) = ∑ j, resS F P (y i j) * redA P (pullV x v j)`. Introduce `P v hv i`. Take `⟨s, hs, hsu⟩` from `pullV_den hv`.
+
+Rewrite using `[pullV_mul_inv, mulVec_int_apply hyk]`. Conclude with `redA_sum P hs _ hsu _`. Use `ext1`. Conclude with `hN`. Use function extensionality and compare the values at `P v show (open Classical in if v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat (x * k⁻¹) (stdLat E n)) then redA P.1 (pullV (x * k⁻¹) v (lastIdx n)) else 0) = (c P).1 * (open Classical in if v ∈ Formalism.HermitianLatticesTheory.localizati …`.
+
+Rewrite using `[hN]`. Distinguish the cases in `hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat x (stdLat E n))`. Rewrite using `[if_pos hv, if_pos hv, hval P.1 v hv]`. Establish `hr : ∀ j, resS F P.1 (y (lastIdx n) j) = if j = lastIdx n then (c P).1 else 0`. Introduce `j`.
+
+Rewrite using `[← hyr P.1]`. Conclude with `hrow P j`. Simplify using `only [hr, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[if_neg hv, if_neg hv, mul_zero]`. Use function extensionality and compare the values at `w v show (open Classical in if v ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal (Formalism.UG.CS.globLat (x * k⁻¹) (stdLat E n)) then fun i => redA w.1 (pullV (x * k⁻¹) v i) else 0) = (open Classical in if v ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asI …`.
+
+Rewrite using `[hN]`. Distinguish the cases in `hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal (Formalism.UG.CS.globLat x (stdLat E n))`. Rewrite using `[if_pos hv, if_pos hv]`. Use function extensionality and compare the values at `i`. Rewrite using `[hval w.1 v hv i]`.
+
+Establish `hr : ∀ j, resS F w.1 (y i j) = if j = i then 1 else 0`. Introduce `j`. Rewrite using `[← hyr w.1, hSG w]`. Use `show (1 : Matrix (Fin n) (Fin n) (kP w.1)) i j = _`. Rewrite using `[Matrix.one_apply]`.
+
+Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Simplify using `only [hr, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[if_neg hv, if_neg hv]`.
+-/
 theorem vdil_decoRaw_mul (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (hk : k ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (c : DiaG E ST)
     (hrow : ∀ (P : ST) (j : Fin n), ((redAt (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) P.1 ⟨k, hk⟩ : GL (Fin n) (kP P.1)) :
@@ -64,6 +79,13 @@ theorem vdil_decoRaw_mul (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {k :
       simp only [hr, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
     · rw [if_neg hv, if_neg hv]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `afsplit_inj` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Establish `e : bc (prV (E` using `E) w) x = bc (prV (E := E) w) (rll_put n v (bc (prV (E := E) v) x)) := by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[rll_put_self]`.
+
+Rewrite using `[h w hw, rll_put_ne n v w hw]`. Conclude with `congrArg (fun g : GL (Fin n) (E ⊗[F] w.adicCompletion F) => (g : Matrix (Fin n) (Fin n) (E ⊗[F] w.adicCompletion F)) i j) e`.
+-/
 theorem vdil_eq_put (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (h : ∀ v', v' ≠ v → bc (prV (E := E) v') x = 1) : x = rll_put n v (bc (prV (E := E) v) x) := by
   apply Units.ext
@@ -94,6 +116,19 @@ local notation "pE" => algebraMap (𝓞 E) E π
 variable (h : BasePi ST π)
 include h
 
+/- English proof (translation)
+Introduce `i j`. Distinguish the cases in `hi : i = lastIdx n`. Substitute `hi` using the available equality. Establish `hz : (Pi.single j (ιv pE) : Fin n → Rv) ∈ Formalism.L2.Herm.locL v (rll_dLat n pE⁻¹)`. Rewrite using `[rll_mem_loc_dLat n v _ (inv_ne_zero h.coe_ne_zero)]`.
+
+Use `⟨fun i _ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `rll_incl_int v π`.
+
+Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `zero_mem _`. Distinguish the cases in `hj : lastIdx n = j`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same, ← map_mul, inv_mul_cancel₀ h.coe_ne_zero, map_one]`.
+
+Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hj, mul_zero]`. Conclude with `zero_mem _`. Establish `h1` using `H1 _ hz`. Rewrite `h1` using `[rll_mem_loc_dLat n v _ (inv_ne_zero h.coe_ne_zero)]`.
+
+Establish `h2` using `h1.2`. Rewrite `h2` using `[rll_mulVec_single, mul_comm _ (ιv pE), rll_pinv_mul v h]`. Then use the resulting hypothesis. Establish `h1` using `H2 _ (rll_single_mem_Sh n v h j)`. Rewrite `h1` using `[rll_mem_loc_dLat n v _ h.star_ne_zero]`. Establish `h2` using `h1.1 i hi`.
+
+Rewrite `h2` using `[rll_mulVec_single, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem vdil_int {g : GL (Fin n) Rv}
     (H1 : ∀ z ∈ Formalism.L2.Herm.locL v (rll_dLat n pE⁻¹), (g : Matrix (Fin n) (Fin n) Rv) *ᵥ z ∈ Formalism.L2.Herm.locL v (rll_dLat n pE⁻¹))
     (H2 : ∀ z ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE)),
@@ -121,6 +156,15 @@ theorem vdil_int {g : GL (Fin n) Rv}
     have h2 := h1.1 i hi
     rwa [rll_mulVec_single, mul_one] at h2
 
+/- English proof (translation)
+Introduce `j`. Take `⟨a, b, hab⟩` from `h.cop`. Establish `hab' : ιv (algebraMap (𝓞 E) E a) * ιv pE + ιv (algebraMap (𝓞 E) E b) * ιv (star pE) = 1`. Rewrite using `[← algebraMap_cO, ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← map_add, ← map_add, hab, map_one, map_one]`. Establish `h1` using `H3 _ (rll_single_mem_Sh n v h j)`.
+
+Rewrite `h1` using `[rll_mem_loc_dLat n v _ (div_ne_zero h.star_ne_zero h.coe_ne_zero)]`. Establish `h2` using `h1.2`. Rewrite `h2` using `[Pi.sub_apply, rll_mulVec_single, mul_one, Pi.smul_apply, zsmul_eq_mul]`. Establish `e0 : (Pi.single j 1 : Fin n → Rv) (lastIdx n) = (1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j`. Rewrite using `[Matrix.one_apply, Pi.single_apply]`.
+
+Rewrite `h2` using `[e0]`. Use `set d := (g : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j - (k : Rv) * (1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j with hd`. Establish `hdi : d ∈ 𝒪v` using `sub_mem (hint _ _) (mul_mem (intCast_mem _ k) (afsplit_one_mem _ _ _))`. Establish `e1 : ιv (star pE) * d = ιv pE * (ιv (star pE / pE) * d)`. Rewrite using `[mul_left_comm, rll_cp_mul v h]`.
+
+Use `⟨ιv (algebraMap (𝓞 E) E a) * d + ιv (algebraMap (𝓞 E) E b) * (ιv (star pE / pE) * d), add_mem (mul_mem (rll_incl_int v a) hdi) (mul_mem (rll_incl_int v b) h2), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem vdil_row {g : GL (Fin n) Rv} (hint : ∀ i j, (g : Matrix (Fin n) (Fin n) Rv) i j ∈ 𝒪v) (k : ℤ)
     (H3 : ∀ z ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE)),
       (g : Matrix (Fin n) (Fin n) Rv) *ᵥ z - k • z ∈ Formalism.L2.Herm.locL v (rll_dLat n (star pE / pE))) :
@@ -148,6 +192,15 @@ theorem vdil_row {g : GL (Fin n) Rv} (hint : ∀ i j, (g : Matrix (Fin n) (Fin n
     _ = _ := by rw [e1]; ring
 
 omit h in
+/- English proof (translation)
+Distinguish the cases in `hj : j = lastIdx n`. Substitute `hj` using the available equality. Rewrite using `[if_pos rfl]`. Establish `h1` using `rll_rho_one (E := E) v hov`. Establish `e : (⟨afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) (lastIdx n)), hm⟩ : Formalism.L2.Herm.intAf F E) = ⟨afsplitIE v ((1 : 𝒪v) : Rv), afsplit_IE_int v _ (1 : 𝒪v).2⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) (lastIdx n)) = afsplitIE v ((1 : 𝒪v) : Rv)`. Rewrite using `[Matrix.one_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `h1`. Rewrite using `[if_neg hj]`. Establish `e : (⟨afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j), hm⟩ : Formalism.L2.Herm.intAf F E) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j) = 0`.
+
+Rewrite using `[Matrix.one_apply_ne (Ne.symm hj), map_zero]`. Rewrite using `[e, map_zero]`.
+-/
 theorem vdil_res_one {P : Pl E} (hov : IsOver v P) (j : Fin n)
     (hm : afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j) ∈ Formalism.L2.Herm.intAf F E) :
     resS F P ⟨afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j), hm⟩ = if j = lastIdx n then 1 else 0 := by
@@ -170,6 +223,19 @@ theorem vdil_res_one {P : Pl E} (hov : IsOver v P) (j : Fin n)
       rw [Matrix.one_apply_ne (Ne.symm hj), map_zero]
     rw [e, map_zero]
 
+/- English proof (translation)
+Establish `hgS : g ∈ stabGL (Formalism.L2.Herm.locL v (stdLat E n))`. Rewrite using `[rll_locL_std]`. Conclude with `(afsplit_stab_iff _ g).2 ⟨hi, hi'⟩`. Establish `hS` using `rll_put_mem_St n v hgS`. Use `⟨hS, fun P hP hov j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, hr⟩` from `St_one_int hS`. Rewrite using `[hr P]`. Take `⟨s, hs, e⟩` from `hrow j`. Apply the tactic sequence `have e1 := rll_put_entry n v g (lastIdx n) j`. Establish `e2 : (g : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j - (1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j = ιv (algebraMap (𝓞 E) E ((k - 1 : ℤ) : 𝓞 E)) * (1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j + ιv pE * s`.
+
+Rewrite using `[← e, map_intCast, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1m : (1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j ∈ 𝒪v` using `afsplit_one_mem _ _ _`. Rewrite `e1` using `[e2, map_add, rll_IE_incl_mul, rll_IE_incl_mul, hy]`.
+
+Establish `e3 : y (lastIdx n) j - (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) (lastIdx n) j = Formalism.L2.DIV.oToS F E ((k - 1 : ℤ) : 𝓞 E) * (⟨afsplitIE v ((1 : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j), afsplit_IE_int v _ h1m⟩ : Formalism.L2.Herm.intAf F E) + Formalism.L2.D …`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroupClass.coe_sub, Formalism.L2.DIV.lc_one_coe]`. Conclude with `e1`. Establish `e4` using `congrArg (resS F P) e3`.
+
+Rewrite `e4` using `[map_sub, map_add, map_mul, map_mul, Formalism.L2.DIV.resS_oToS, Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 (h.mem hP), zero_mul, add_zero, rll_resS_one, vdil_res_one n v hov, map_intCast]`. Distinguish the cases in `hj : j = lastIdx n`. Rewrite `e4`, the goal using `[if_pos hj]`. Rewrite `e4` using `[mul_one, sub_eq_iff_eq_add]`. Rewrite using `[e4]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e4`, the goal using `[if_neg hj]`. Rewrite `e4` using `[mul_zero, sub_zero]`. Conclude with `e4`.
+-/
 theorem vdil_put {g : GL (Fin n) Rv} (hi : ∀ i j, (g : Matrix (Fin n) (Fin n) Rv) i j ∈ 𝒪v)
     (hi' : ∀ i j, ((g⁻¹ : GL (Fin n) Rv) : Matrix (Fin n) (Fin n) Rv) i j ∈ 𝒪v) (k : ℤ)
     (hrow : ∀ j, ∃ s ∈ 𝒪v, (g : Matrix (Fin n) (Fin n) Rv) (lastIdx n) j -
@@ -222,6 +288,23 @@ variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : 
 
 include h in
 
+/- English proof (translation)
+Use `set g := bc (prV (E := E) v) (δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hg`. Establish `hLi : g⁻¹ ∈ stabGL (Formalism.L2.Herm.locL v (baseLb E n ST))` using `Subgroup.inv_mem _ hL`. Establish `hDi : g⁻¹ ∈ stabGL (baseDualV hc n ST v)` using `Subgroup.inv_mem _ hD`. Establish `hi` using `vdil_int n v h (g := g) (by rw [← rll_baseLb_eq n h]; exact fun z hz => (hL z).1 hz) (by rw [← rll_dualV_eq hc n v h]; exact fun z hz => (hD z).1 hz)`. Establish `hi'` using `vdil_int n v h (g := g⁻¹) (by rw [← rll_baseLb_eq n h]; exact fun z hz => (hLi z).1 hz) (by rw [← rll_dualV_eq hc n v h]; exact fun z hz => (hDi z).1 hz)`.
+
+Establish `hrow` using `vdil_row n v h (g := g⁻¹) hi' k (by`. Rewrite using `[← rll_dualV_eq hc n v h, ← rll_baseKer_eq n h]`. Introduce `z hz`. Establish `h2` using `hf ⟨(g⁻¹).1 *ᵥ z, (hDi z).1 hz⟩`. Establish `e : (⟨g.1 *ᵥ ((g⁻¹).1 *ᵥ z), (hD _).1 ((hDi z).1 hz)⟩ : baseDualV hc n ST v) = ⟨z, hz⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show g.1 *ᵥ ((g⁻¹).1 *ᵥ z) = z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite `h2` using `[e, ← map_zsmul, eq_comm, ← sub_eq_zero, ← map_sub, rll_fLoc_eq_zero]`. Conclude with `h2)`.
+
+Take `⟨hS, hred⟩` from `vdil_put n v h (g := g⁻¹) hi' (by rw [inv_inv]; exact hi) k hrow`. Establish `hδ : (δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ = rll_put n v g⁻¹`. Use `vdil_eq_put v (δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ (fun v' hv' => by rw [map_inv, h1 v' hv', inv_one])` as an intermediate fact. Rewrite `this` using `[map_inv]`. Then use the resulting hypothesis. Establish `key` using `vdil_decoRaw_mul ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) hS c (by`.
+
+Introduce `P' j`. Distinguish the cases in `hP' : IsOver v P'.1`. Establish `e : P' = P` using `Subtype.ext (h.over_unique hc P.2 hov P'.1 P'.2 hP')`. Substitute `e` using the available equality. Rewrite using `[hred P'.1 P'.2 hP' j, hcP]`.
+
+Rewrite using `[rll_put_red n v _ hS P'.1 hP', hcne P' (fun e => hP' (e ▸ hov))] show (1 : Matrix (Fin n) (Fin n) (kP P'.1)) (lastIdx n) j = _`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `hj : j = lastIdx n`. Rewrite using `[if_pos hj.symm, if_pos hj]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg (Ne.symm hj), if_neg hj])`. Use the proof step `(fun w => rll_put_red n v _ hS w.1 (fun hw => hG ⟨w.1, w.2, hw⟩))`. Rewrite `key` using `[← hδ, inv_inv]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rlc_decoOf_val hc n ST SG (x * δ).2]`.
+
+Use `show _ = (decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).1.dia c`. Rewrite using `[rlc_decoOf_val hc n ST SG x.2]`. Conclude with `key`.
+-/
 theorem decoOf_mul_dia (P : ST) (hov : IsOver v P.1) (hG : v ∉ plUnder F SG) (k : ℤ) (c : DiaG E ST)
     (hcP : ((c P : (𝓞 E ⧸ P.1.asIdeal)ˣ) : 𝓞 E ⧸ P.1.asIdeal) = (k : 𝓞 E ⧸ P.1.asIdeal)) (hcne : ∀ P' : ST, P' ≠ P → c P' = 1)
     (x δ : UAd hc n)
@@ -276,11 +359,17 @@ theorem decoOf_mul_dia (P : ST) (hov : IsOver v P.1) (hG : v ∉ plUnder F SG) (
 
 variable (H : Subgroup (GLG E n SG))
 
+/- English proof (translation)
+Rewrite using `[← DecoSet.dia_mul, ← DecoSet.dia_mul, mul_comm]`.
+-/
 theorem vdil_dia_comm (c c' : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).dia c' = (d.dia c').dia c := by
   rw [← DecoSet.dia_mul, ← DecoSet.dia_mul, mul_comm]
 
 include h in
 
+/- English proof (translation)
+Apply `rlc_rel_of_orbit hc n ST SG H g₀` to reduce the goal to its premises. Rewrite using `[decoOf_mul_dia hc n ST SG h v P hov hG k c hcP hcne _ δ h1 hL hD hf]`. Unfold `ptOfD`. Rewrite using `[decoOf_ptOf hc n ST SG hS, decoOf_ptOf hc n ST SG hS, vdil_dia_comm, ← hg₀]`. Conclude with `rla_dia_smulH n ST SG H c₀⁻¹ g₀ d'`.
+-/
 theorem vdil_move (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (P : ST) (hov : IsOver v P.1) (hG : v ∉ plUnder F SG) (k : ℤ)
     (c : DiaG E ST) (hcP : ((c P : (𝓞 E ⧸ P.1.asIdeal)ˣ) : 𝓞 E ⧸ P.1.asIdeal) = (k : 𝓞 E ⧸ P.1.asIdeal))
     (hcne : ∀ P' : ST, P' ≠ P → c P' = 1) (d d' : DecoSet E n ST SG) (g₀ : UF E n × H) (hg₀ : g₀ • d' = d.dia c) (δ : UAd hc n)
@@ -301,12 +390,18 @@ theorem vdil_move (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (P : ST) (hov 
 
 end Dia
 
+/- English proof (translation)
+Use `show (toGLm E n) (glEquiv (γ : GL (Fin n) E)) = _`. Unfold `toGLm glEquiv`. Simplify using the standard rewrite rules.
+-/
 theorem vdil_ufGL_ratHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (n : ℕ) (γ : URat hc n) : ufGL E n (ratHom hc n γ) = (γ : GL (Fin n) E) := by
   show (toGLm E n) (glEquiv (γ : GL (Fin n) E)) = _
   unfold toGLm glEquiv
   simp
 
+/- English proof (translation)
+Introduce `τ`. Use `congrArg (fun w : FrS X σ₀ n => w.1 τ) (frMul_mul σ₀ γ γ⁻¹ z)` as an intermediate fact. Simplify using `only [mul_inv_cancel, frMul_one] at this`. Conclude with `this`.
+-/
 theorem vdil_isTr {X : Fields} {n : ℕ} (σ₀ : X.K →+* ℂ) (γ : GL (Fin n) X.E) (z : FrS X σ₀ n) :
     IsTr (atInf (embAt σ₀ X.emb) γ.1) (frMul σ₀ γ⁻¹ z) z := by
   intro τ
@@ -314,6 +409,9 @@ theorem vdil_isTr {X : Fields} {n : ℕ} (σ₀ : X.K →+* ℂ) (γ : GL (Fin n
   simp only [mul_inv_cancel, frMul_one] at this
   exact this
 
+/- English proof (translation)
+Unfold `levTyp levChr`. Rewrite using `[MonoidHom.inv_apply, map_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem vdil_typ_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {hc : CMData F E} {n : ℕ} [NeZero n] {ST SG : Finset (Pl E)} {H : Subgroup (GLG E n SG)} {M : Type} [CommGroup M]
     (lam : H →* M) (κ : levU hc n ST SG H) : levTyp lam κ⁻¹ = lam (levRed hc n ST SG H κ) := by
@@ -331,6 +429,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
 
 include heV in
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `v a k hk c δ hδ`. Take `⟨h1, hLv, hD, hf⟩` from `hδ`. Establish `hmv` using `(stepGSD W Λ u i).outSec.mv_smul ((repD (colVal W u i (Pr.vT u) Pr.vGs) (Λ i) c).dia1 v a)`. Unfold `DecoSet.dia1 at hmv`.
+
+Take `⟨γ, κ, -, -, e⟩` from `vdil_move hc (R.N i) (Pr.vT u) Pr.vGs (basePi_of_ok hX hPr u) (eV v).1 (Λ i).grp hS c₀ v (heV v) (rls_T_notUnder hPr u (eV v).1 (eV v).2) k _ (by rw [Pi.mulSingle_eq_same]; exact hk.symm) (by intro P' h; exact Pi.mulSingle_eq_of_ne h _) _ _ _ hmv δ h1 hLv.2 hD hf`. Conclude with `rlc_mk_eq hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp γ κ e`.
+-/
 theorem Val.dil (Q : ValCrd W Λ σ₀ u i) : Val.Dil W Λ hc hX hPr σ₀ u i c₀ hS eV Q := by
   classical
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
@@ -345,6 +448,13 @@ theorem Val.dil (Q : ValCrd W Λ σ₀ u i) : Val.Dil W Λ hc hX hPr σ₀ u i c
 
 include heV in
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `v a k hk c δ hδ g hg`. Take `⟨h1, hLv, hD, hf⟩` from `hδ`. Establish `hmv` using `(stepGSD W Λ u i).outSec.mv_smul ((repD (colVal W u i (Pr.vT u) Pr.vGs) (Λ i) c).dia1 v a)`. Unfold `DecoSet.dia1 at hmv`.
+
+Take `⟨γ, κ, hγ, hκ, e⟩` from `vdil_move hc (R.N i) (Pr.vT u) Pr.vGs (basePi_of_ok hX hPr u) (eV v).1 (Λ i).grp hS c₀ v (heV v) (rls_T_notUnder hPr u (eV v).1 (eV v).2) k _ (by rw [Pi.mulSingle_eq_same]; exact hk.symm) (by intro P' h; exact Pi.mulSingle_eq_of_ne h _) _ _ _ hmv δ h1 hLv.2 hD hf`. Use function extensionality and compare the values at `z`. Establish `h2` using `hg γ.1 γ.2 _ _ (κ⁻¹ : levU hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp) e z (frMul σ₀ γ.1⁻¹ z) (vdil_isTr σ₀ γ.1 z)`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Establish `h3 : ((levTyp ((Units.map σ₀.toMonoidHom).comp (Λ i).chr) (κ⁻¹ : levU hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp) : ℂˣ) : ℂ) = σ₀ (((Λ i).chr (levRed hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp κ) : X.Kˣ) : X.K)`.
+
+Rewrite using `[vdil_typ_inv]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (congrArg (· * _) h3.symm)` and prove the remaining obligations. Rewrite using `[hκ, ← vdil_ufGL_ratHom hc (R.N i) γ, hγ]`. Both sides reduce to the same expression.
+-/
 theorem Val.dilT (Q : ValCrd W Λ σ₀ u i) : Val.DilT W Λ hc hX hPr σ₀ hσ u i c₀ hS eV Q := by
   classical
   obtain ⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩ := Q
@@ -376,6 +486,9 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 
 include heV in
 
+/- English proof (translation)
+The claim follows from `Val.dil (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u i _ (hP u i) eV heV _`.
+-/
 theorem valDil_rec :
     Val.Dil (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) eV
       (valCrd a hS hH u i hi) :=
@@ -383,6 +496,9 @@ theorem valDil_rec :
 
 include heV in
 
+/- English proof (translation)
+The claim follows from `Val.dilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i _ (hP u i) eV heV _`.
+-/
 theorem valDilT_rec :
     Val.DilT (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) eV
       (valCrd a hS hH u i hi) :=

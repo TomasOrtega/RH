@@ -14,6 +14,11 @@ namespace InvertibleIndexMultiplicative
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Take `⟨a, haI, ha⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Take `⟨c, hc, q, hq⟩` from `OrderIdealIndexExtensionAlt.exists_int_eq_mul ha`. Use `OrderIdealIndexExtensionAlt.index_ne_zero_of_zsmul_mem _ hc fun x => ?_` and prove the remaining obligations. Establish `e : c • x = a * (q * x)` using `by rw [zsmul_eq_mul, hq, mul_assoc]`. Rewrite using `[Submodule.mem_toAddSubgroup, e]`.
+
+Conclude with `I.mul_mem_right _ haI`.
+-/
 theorem index_ne_zero [CharZero Ω] {B : Subring Ω} [Module.Finite ℤ B] {I : Ideal B} (hI : I ≠ ⊥) :
     I.toAddSubgroup.index ≠ 0 := by
   obtain ⟨a, haI, ha⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hI
@@ -23,11 +28,21 @@ theorem index_ne_zero [CharZero Ω] {B : Subring Ω} [Module.Finite ℤ B] {I : 
   rw [Submodule.mem_toAddSubgroup, e]
   exact I.mul_mem_right _ haI
 
+/- English proof (translation)
+Rewrite using `[map_mul_eq, relIndex_map_subtype]`. Conclude with `index_ne_zero (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hβ)`.
+-/
 theorem relIndex_mulBy_ne_zero [CharZero Ω] {B : Subring Ω} [Module.Finite ℤ B] {β : B} (hβ : β ≠ 0) :
     (B.toAddSubgroup.map (mulBy (β : Ω))).relIndex B.toAddSubgroup ≠ 0 := by
   rw [map_mul_eq, relIndex_map_subtype]
   exact index_ne_zero (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hβ)
 
+/- English proof (translation)
+Establish `e : B.toAddSubgroup.map (mulBy (x * y)) = (B.toAddSubgroup.map (mulBy y)).map (mulBy x)`. Rewrite using `[AddSubgroup.map_map]`. Use `congr 1`. Use extensionality with `z`. Simplify using `[mul_assoc]`.
+
+Establish `h1 : B.toAddSubgroup.map (mulBy y) ≤ B.toAddSubgroup`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `B.mul_mem hyB hz`. Establish `h2 : B.toAddSubgroup.map (mulBy x) ≤ B.toAddSubgroup`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `B.mul_mem hxB hz`. Rewrite using `[e, ← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono h1) h2, AddSubgroup.relIndex_map_map_of_injective (f := mulBy x) _ _ (mulBy_injective hx), mul_comm]`.
+-/
 theorem relIndex_mulBy_mul {B : Subring Ω} {x y : Ω} (hx : x ≠ 0) (hxB : x ∈ B) (hyB : y ∈ B) :
     (B.toAddSubgroup.map (mulBy (x * y))).relIndex B.toAddSubgroup =
       (B.toAddSubgroup.map (mulBy x)).relIndex B.toAddSubgroup *
@@ -44,6 +59,11 @@ theorem relIndex_mulBy_mul {B : Subring Ω} {x y : Ω} (hx : x ≠ 0) (hxB : x �
   rw [e, ← AddSubgroup.relIndex_mul_relIndex _ _ _ (AddSubgroup.map_mono h1) h2,
     AddSubgroup.relIndex_map_map_of_injective (f := mulBy x) _ _ (mulBy_injective hx), mul_comm]
 
+/- English proof (translation)
+Introduce `hI`. Take `⟨⟨x, hxX⟩, hx0⟩` from `AddSubgroup.ne_bot_iff_exists_ne_zero.mp hX0`. Take `⟨y, hy, hxy⟩` from `(hX x).1 hxX`. Rewrite `hy` using `[hI, Ideal.mem_bot]`. Substitute `hy` using the available equality.
+
+Establish `hx : x ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hβL : (β : Ω) ≠ 0` using `fun h => hβ (Subtype.ext h)`. Simplify using `[hβL, hx] at hxy`.
+-/
 theorem ne_bot_of_rep {B : Subring Ω} {X : AddSubgroup Ω} {β δ : B} {I : Ideal B} (hβ : β ≠ 0)
     (hX0 : X ≠ ⊥) (hX : ∀ x, x ∈ X ↔ ∃ y ∈ I, (β : Ω) * x = δ * y) : I ≠ ⊥ := by
   intro hI
@@ -55,6 +75,13 @@ theorem ne_bot_of_rep {B : Subring Ω} {X : AddSubgroup Ω} {β δ : B} {I : Ide
   have hβL : (β : Ω) ≠ 0 := fun h => hβ (Subtype.ext h)
   simp [hβL, hx] at hxy
 
+/- English proof (translation)
+Establish `hβL : (β : Ω) ≠ 0` using `fun h => hβ (Subtype.ext h)`. Establish `hδL : (δ : Ω) ≠ 0` using `fun h => hδ (Subtype.ext h)`. Establish `g` using `genIndex_eq (X := B.toAddSubgroup) (J := I.toAddSubgroup.map B.subtype.toAddMonoidHom) (M := X) hβL hδL (by rintro _ ⟨y, _, rfl⟩; exact y.2) (by rintro _ ⟨y, hy, rfl⟩; exact B.mul_mem β.2 hy) (by rintro _ ⟨y, hy, rfl⟩; exact B.mul_mem δ.2 hy) (by rintro _ ⟨_, ⟨y, hy, rfl⟩, rfl⟩; …`. Introduce `x`. Rewrite using `[hX x]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨y, ⟨y, hy, rfl⟩, h⟩`. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, h⟩`. Conclude with `⟨y, hy, h⟩)`.
+
+Use the proof step `(by rw [relIndex_map_subtype]; exact index_ne_zero hI)`. Use the proof step `(relIndex_mulBy_ne_zero hδ)`. Rewrite `g` using `[relIndex_map_subtype]`. Then use the resulting hypothesis.
+-/
 theorem genIndex_rep [CharZero Ω] {B : Subring Ω} [Module.Finite ℤ B] {X : AddSubgroup Ω} {β δ : B}
     {I : Ideal B} (hβ : β ≠ 0) (hδ : δ ≠ 0) (hI : I ≠ ⊥)
     (hX : ∀ x, x ∈ X ↔ ∃ y ∈ I, (β : Ω) * x = δ * y) :
@@ -84,6 +111,23 @@ end InvertibleIndexMultiplicative
 
 open InvertibleIndexMultiplicative in
 
+/- English proof (translation)
+Introduce `Ω _ B M N P η _ g h hB hM hN hP hg0 hh0 hgc hhc hloc`. Establish `hlocM : ∀ m : Ideal B, m.IsMaximal → ∃ i, LocalGen B M m (g i)` using `fun m hm => (hloc m hm).imp fun _ hi => hi.1`. Establish `hlocN : ∀ m : Ideal B, m.IsMaximal → ∃ i, LocalGen B N m (h i)` using `fun m hm => (hloc m hm).imp fun _ hi => hi.2.1`. Distinguish the cases in `hc : ringChar Ω ≠ 0`. Rewrite using `[h4 Ω B M η g hc hB hM hg0 hlocM, h4 Ω B N η h hc hB hN hh0 hlocN, h4 Ω B P η (fun i => g i * h i) hc hB hP (fun i => mul_ne_zero (hg0 i) (hh0 i)) (fun m hm => (hloc m hm).imp fun _ hi => hi.2.2)]`.
+
+Evaluate the numerical expressions. Use `push Not at hc`. Establish `: CharP Ω 0` using `ringChar.eq_iff.mp hc`. Establish `: CharZero Ω` using `CharP.charP_to_charZero Ω`. Use `hB` as an intermediate fact.
+
+Take `⟨hM0, ιM, _, aM, haM, hdM, hlM⟩` from `h1 Ω B M η g hB hM hg0 hgc hlocM`. Take `⟨β, δ, I, hβ, hδ, -, hMI⟩` from `h2 Ω B M ιM aM hB hM haM hdM hlM hM0 1 one_ne_zero`. Establish `hI0` using `ne_bot_of_rep hβ hM0 hMI`. Take `⟨t, htI, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI0`. Take `⟨hN0, ιN, _, aN, haN, hdN, hlN⟩` from `h1 Ω B N η h hB hN hh0 hhc hlocN`.
+
+Take `⟨β', δ', J, hβ', hδ', hJt, hNJ⟩` from `h2 Ω B N ιN aN hB hN haN hdN hlN hN0 t ht0`. Establish `hJ0` using `ne_bot_of_rep hβ' hN0 hNJ`. Establish `hIJ : I ⊔ J = ⊤`. Rewrite using `[eq_top_iff, ← hJt, sup_comm I J]`. Conclude with `sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr htI) _`.
+
+Establish `hPr` using `h3 Ω B M N P η g h β δ β' δ' I J hβ hδ hβ' hδ' hMI hNJ hP hloc`. Establish `hIJ0 : I * J ≠ ⊥`. Rewrite using `[Ne, Ideal.mul_eq_bot]`. The claim follows by propositional logic. Establish `hidx : (I * J).toAddSubgroup.index = I.toAddSubgroup.index * J.toAddSubgroup.index` using `cardQuot_mul_of_coprime (Ideal.isCoprime_iff_sup_eq.mpr hIJ)`.
+
+Establish `hβL : (β : Ω) ≠ 0` using `fun e => hβ (Subtype.ext e)`. Establish `hδL : (δ : Ω) ≠ 0` using `fun e => hδ (Subtype.ext e)`. Rewrite using `[genIndex_rep hβ hδ hI0 hMI, genIndex_rep hβ' hδ' hJ0 hNJ, genIndex_rep (mul_ne_zero hβ hβ') (mul_ne_zero hδ hδ') hIJ0 hPr, hidx, Subring.coe_mul, Subring.coe_mul, relIndex_mulBy_mul hβL β.2 β'.2, relIndex_mulBy_mul hδL δ.2 δ'.2]`. Establish `p1` using `Nat.pos_of_ne_zero (relIndex_mulBy_ne_zero hβ)`. Establish `p2` using `Nat.pos_of_ne_zero (relIndex_mulBy_ne_zero hδ)`.
+
+Establish `p3` using `Nat.pos_of_ne_zero (relIndex_mulBy_ne_zero hβ')`. Establish `p4` using `Nat.pos_of_ne_zero (relIndex_mulBy_ne_zero hδ')`. Establish `p5` using `Nat.pos_of_ne_zero (index_ne_zero hI0)`. Establish `p6` using `Nat.pos_of_ne_zero (index_ne_zero hJ0)`. Use `⟨by positivity, by positivity, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem InvertibleIndexMul.proof (h1 : LocalGenFamily.Statement) (h2 : LocallyPrincipalCoprimeField.Statement)
     (h3 : InvertibleProductRep.Statement) (h4 : InvertibleIndexCharP.Statement) :
     InvertibleIndexMul.Statement := by

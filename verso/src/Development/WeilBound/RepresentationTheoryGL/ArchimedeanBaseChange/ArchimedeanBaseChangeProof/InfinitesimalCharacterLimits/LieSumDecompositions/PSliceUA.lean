@@ -10,6 +10,31 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.LieSumUnipotentSlice
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
+/- English proof (translation)
+Establish `hAφ` using `hVa φ hφ`. Establish `hN : ∀ (x : BlockIx (r + s) r → Ad E) (g : GA E (r + s)), (T φ).1 (unip x * g) = (T φ).1 g`. Introduce `x g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `aT_mul_unip (r + s) r t x`. Rewrite using `[← mul_assoc, hy, mul_assoc, ctn_unip hAφ]`. Establish `hM : ∀ (γ : GL (Fin r) E × GL (Fin s) E) (g : GA E (r + s)), (T φ).1 (lev (Ad E) r s (ratGL E r γ.1, ratGL E s γ.2) * g) = (T φ).1 g`. Introduce `γ g`. Rewrite using `[hTval φ hφ, hTval φ hφ]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, aT_comm_lev, mul_assoc, ctn_lev_rat hAφ]`. Set `L` to `GlobalTheory.DiscClosure.stabSub φ`. Establish `hLo : IsOpen (L : Set (GL (Fin (r + s)) (Af E)))` using `hAφ.level`. Establish `hLv : ∀ h ∈ L, finRep E (r + s) h (T φ) = T φ` using `fun h hh => by`.
+
+Establish `e` using `hequiv (.fin h) φ hφ`. Establish `hh' : finRep E (r + s) h φ = φ` using `hh`. Express the relevant statement in the definitionally equal form `T (finRep E (r + s) h φ) = finRep E (r + s) h (T φ) at e`. Rewrite using `[← e, hh']`. Set `S` to `GlobalTheory.CuspRep.LocEx.orbSpan (T φ)`.
+
+Use `haveI : FiniteDimensional ℂ S := by haveI := hAφ.kfin`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun κ => cptRep E (r + s) κ φ)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨κ, rfl⟩, hequiv (.cpt κ) φ hφ⟩`. Set `ρ` to `GlobalTheory.PRep.sub (cptRep E (r + s)) S (GlobalTheory.CuspRep.LocEx.orbSpan_stable (T φ))`.
+
+Establish `hρ : GlobalTheory.Published.AutFin.IsContRep ρ` using `GlobalTheory.CuspRep.LocEx.isContRep_sub S _`. Establish `hC : ∀ g : GA E (r + s), (fun κ : Kinf E (r + s) => (cptRep E (r + s) κ (T φ)).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ` using `fun g => GlobalTheory.Published.AutFinGL.type_of_map ρ S.subtype (fun _ _ => rfl) ⟨T φ, Submodule.subset_span ⟨1, by simp⟩⟩ g`. Establish `hG : ∀ g₀ : GA E (r + s), ∃ (C : ℝ) (n : ℕ), ∀ y, ‖(T φ).1 (g₀ * infGL E (r + s) y)‖ ≤ C * height y ^ n`. Introduce `g₀`. Use `choose C n hCn using fun t => ctn_growth hAφ r (aT E (r + s) r t * g₀)`.
+
+Use `⟨∑ t ∈ τs, ‖a t‖ * |C t|, ∑ t ∈ τs, n t, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hTval φ hφ, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun t ht => ?_)` and prove the remaining obligations. Establish `hy` using `one_le_height y`. Establish `e1 : height y ^ n t ≤ height y ^ (∑ t ∈ τs, n t)` using `pow_le_pow_right₀ hy (Finset.single_le_sum (fun _ _ => Nat.zero_le _) ht)`.
+
+Establish `hp : (0 : ℝ) ≤ height y ^ n t` using `pow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Use `choose cc hcc using hsc`. Set `J : Set (Module.End ℂ (Sm E (r + s)))` to `{z | ∃ (τ : E →+* ℂ) (u : ℂ), z = Polynomial.aeval (cap (a := r + s) τ u) (Polynomial.X - Polynomial.C (cc τ u))}`. Establish `hJZ : J ⊆ Zalg E (r + s)`.
+
+Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `aeval_mem_Zalg (cap_mem_Zalg τ u) _`. Establish `hJ : Cofin J` using `GlobalTheory.CompanionTheory.CTFin.MonicCofin.cofin_of_monic E (r + s) J hJZ fun τ u => ⟨_, Polynomial.monic_X_sub_C _, τ, u, rfl⟩`. Establish `hZ : ∀ z ∈ J, z (T φ) = 0`. Introduce and unpack `_ ⟨τ, u, rfl⟩`.
+
+Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Rewrite using `[← GlobalTheory.SpehInfChar.cap_comm_quot (fun X ψ hψ => hVs (.lie X) ψ hψ) T hequiv τ u φ hφ, hcc τ u φ hφ, map_smul, sub_self]`. Establish `hgood : T φ ∈ goodCT L ρ J` using `⟨hN, hM, hLv, hC, hG, hZ⟩`. Take `⟨J₁, J₂, c₁, c₂, k₁, k₂⟩` from `centre J hJ`. Establish `e : ∀ m : GA E r × GA E s, lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g) = lev (Ad E) r s m * finGL E (r + s) g * infGL E (r + s) (Unitary.toUnits k)`.
+
+Introduce `m`. Rewrite using `[infGL_comm, mul_assoc]`. Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨L₁, ρ₁, -, -, h⟩` from `Slice1.slice_mem_genSpace E r s L hLo S ρ hρ J hJ J₁ c₁ k₁ g k`. Take `⟨G, hG, hG'⟩` from `h (T φ) hgood m₂`.
+
+Conclude with `⟨G, hG.1, fun m₁ => by rw [hG', e]⟩`. Take `⟨L₂, ρ₂, -, -, h⟩` from `Slice2.slice2 E r s L hLo S ρ hρ J hJ J₂ c₂ k₂ g k`. Take `⟨G, hG, hG'⟩` from `h (T φ) hgood m₁`. Conclude with `⟨G, hG.1, fun m₂ => by rw [hG', e]⟩`.
+-/
 theorem F_slicesU (V : Submodule ℂ (Sm E (r + s))) (hVs : IsStable V) (hVa : ∀ φ ∈ V, IsAutForm φ)
     (hsc : ∀ (τ : E →+* ℂ) (u : ℂ), ∃ c : ℂ, ∀ ψ ∈ V, cap τ u ψ = c • ψ) (T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s))
     (hequiv : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)) (τs : Finset ℝ) (a : ℝ → ℂ)

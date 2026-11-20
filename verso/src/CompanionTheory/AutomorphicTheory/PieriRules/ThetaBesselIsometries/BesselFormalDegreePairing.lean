@@ -19,6 +19,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.hsInner`. Rewrite using `[← inner_add_right]`. Use `congr 1`.
+-/
 private theorem hsInner_add_left_theta_bessel_isometries {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A A' C : Wq →L[ℂ] Wp) :
     B.hsInner (A + A') C = B.hsInner A C + B.hsInner A' C := by
@@ -26,6 +29,9 @@ private theorem hsInner_add_left_theta_bessel_isometries {Wp Wq : Type} [NormedA
   rw [← inner_add_right]
   congr 1
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.hsInner`. Rewrite using `[← inner_smul_right]`. Use `congr 1`.
+-/
 private theorem hsInner_smul_lemma_2 {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℂ) (A C : Wq →L[ℂ] Wp) :
     B.hsInner (c • A) C = c * B.hsInner A C := by
@@ -33,6 +39,11 @@ private theorem hsInner_smul_lemma_2 {Wp Wq : Type} [NormedAddCommGroup Wp] [Inn
   rw [← inner_smul_right]
   congr 1
 
+/- English proof (translation)
+Set `f : (Wp →L[ℂ] Wp) →ₗ[ℂ] (Wq →L[ℂ] Wq) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun P Q => B.hsInner (P.comp (X.comp Q)) X') (fun P₁ P₂ Q => by rw [ContinuousLinearMap.add_comp, hsInner_add_left_theta_bessel_isometries]) (fun c P Q => by rw [ContinuousLinearMap.smul_comp, hsInner_smul_lemma_2, smul_eq_mul]) (fun P Q₁ Q₂ => by`. Rewrite using `[ContinuousLinearMap.comp_add, ContinuousLinearMap.comp_add, hsInner_add_left_theta_bessel_isometries])`. Use the proof step `(fun c P Q => by`. Rewrite using `[ContinuousLinearMap.comp_smul, ContinuousLinearMap.comp_smul, hsInner_smul_lemma_2, smul_eq_mul])`. Set `g : (Wp →L[ℂ] Wp) →ₗ[ℂ] (Wq →L[ℂ] Wq) →L[ℂ] ℂ` to `(LinearMap.toContinuousLinearMap : ((Wq →L[ℂ] Wq) →ₗ[ℂ] ℂ) ≃ₗ[ℂ] _).toLinearMap ∘ₗ f`.
+
+Conclude with `⟨LinearMap.toContinuousLinearMap g, fun P Q => rfl⟩`.
+-/
 theorem besPhInt_bilin {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (X X' : Wq →L[ℂ] Wp) :
     ∃ T : (Wp →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wq) →L[ℂ] ℂ, ∀ P Q, T P Q = B.hsInner (P.comp (X.comp Q)) X' := by
@@ -49,6 +60,11 @@ theorem besPhInt_bilin {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace
     (LinearMap.toContinuousLinearMap : ((Wq →L[ℂ] Wq) →ₗ[ℂ] ℂ) ≃ₗ[ℂ] _).toLinearMap ∘ₗ f
   exact ⟨LinearMap.toContinuousLinearMap g, fun P Q => rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ i, ⟪X' (stdOrthonormalBasis ℂ Wq i), (((innerSL ℂ a).smulRight a').comp (X.comp ((innerSL ℂ b').smulRight b))) (stdOrthonormalBasis ℂ Wq i)⟫_ℂ = ⟪a, X b⟫_ℂ * (⟪b', stdOrthonormalBasis ℂ Wq i⟫_ℂ * ⟪stdOrthonormalBasis ℂ Wq i, (ContinuousLinearMap.adjoint X') a'⟫_ℂ)`. Introduce `i`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul, inner_smul_right, ContinuousLinearMap.adjoint_inner_right, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.FourierDecayAlt.B.hsInner Formalism.FourierDecayAlt.B.hsVec`.
+
+Simplify using `only [PiLp.inner_apply, PiLp.toLp_apply, key]`. Rewrite using `[← Finset.mul_sum, OrthonormalBasis.sum_inner_mul_inner, ContinuousLinearMap.adjoint_inner_right]`. Use `congr 1`. Conclude with `(inner_conj_symm (X' b') a').symm`.
+-/
 theorem besPhInt_rank {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (X X' : Wq →L[ℂ] Wp)
     (a a' : Wp) (b b' : Wq) :
@@ -69,6 +85,11 @@ theorem besPhInt_rank {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   congr 1
   exact (inner_conj_symm (X' b') a').symm
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.xiTau Formalism.FourierDecayAlt.B.lam Formalism.QuantumDeterminants.psi`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem besPhInt_xi {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (p : B.SS k r) :
     B.xiTau D (1, 1) p = Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of p.1.2) *
@@ -80,6 +101,11 @@ theorem besPhInt_xi {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPro
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.ell`. Use `continuous_finsetSum _ (fun a _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : (a : ℕ) + 1 < r`. Simplify using `only [dif_pos h, Matrix.of_apply] fun_prop`. Simplify using `only [dif_neg h, Matrix.mulVec, dotProduct, Matrix.of_apply]`.
+
+Conclude with `continuous_finsetSum _ (fun j _ => by fun_prop)`.
+-/
 private theorem continuous_ell_matrix_of {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) :
     Continuous (fun q : Formalism.QuantumDeterminants.Mt k r => Formalism.QuantumDeterminants.ell k r z (Matrix.of q)) := by
   unfold Formalism.QuantumDeterminants.ell
@@ -90,6 +116,9 @@ private theorem continuous_ell_matrix_of {k r : ℕ} (z : Fin (2 * r + k + 1) �
   · simp only [dif_neg h, Matrix.mulVec, dotProduct, Matrix.of_apply]
     exact continuous_finsetSum _ (fun j _ => by fun_prop)
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun p : B.SS k r => Formalism.QuantumDeterminants.ell k r D.z (Matrix.of p.1.2))` using `(continuous_ell_matrix_of D.z).comp (continuous_snd.comp continuous_fst)`. Establish `h2 : Continuous (fun p : B.SS k r => Formalism.QuantumDeterminants.ell k r D.z' (Matrix.of p.2.2))` using `(continuous_ell_matrix_of D.z').comp (continuous_snd.comp continuous_snd)`. Unfold `Formalism.FourierDecayAlt.B.xiTau Formalism.FourierDecayAlt.B.lam`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ((continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h1))).sub (continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h2))))))`.
+-/
 theorem besPhInt_xi_cont {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) :
     Continuous (B.xiTau D (1, 1)) := by
@@ -102,6 +131,11 @@ theorem besPhInt_xi_cont {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Inn
     ((continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h1))).sub
       (continuous_const.mul (Complex.continuous_re.comp (continuous_const.mul h2))))))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Rewrite `hg'` using `[Matrix.nonsing_inv_apply_not_isUnit g hu]`. Establish `h0 : Formalism.QuantumDeterminants.Hpk k r = 0`. Establish `h1` using `hg'`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Matrix.conjTranspose_zero, Matrix.zero_mul] at h1`.
+
+Conclude with `h1.symm`. Establish `hr : r < 2 * r + k + 1` using `by omega`. Establish `hk0 : k ≠ 0` using `by omega`. Establish `h2` using `congrFun (congrFun h0 ⟨r, hr⟩) ⟨r, hr⟩`. Simplify using `[Formalism.QuantumDeterminants.Hpk, hk0] at h2`.
+-/
 private theorem isUnit_det_of_mem_UH_Hpk_of_inv_mem {k r : ℕ} (hk : 1 ≤ k)
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (hg' : g⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
@@ -117,6 +151,13 @@ private theorem isUnit_det_of_mem_UH_Hpk_of_inv_mem {k r : ℕ} (hk : 1 ≤ k)
   have h2 := congrFun (congrFun h0 ⟨r, hr⟩) ⟨r, hr⟩
   simp [Formalism.QuantumDeterminants.Hpk, hk0] at h2
 
+/- English proof (translation)
+Establish `hint : Integrable (fun p : α × β => T (u p.1) (v p.2)) (μ.prod ν)`. Use `Integrable.mono' ((MeasureTheory.Integrable.mul_prod hu.norm hv.norm).const_mul ‖T‖) ?_ ?_` and prove the remaining obligations. Conclude with `T.continuous₂.comp_aestronglyMeasurable₂ hu.aestronglyMeasurable.comp_fst hv.aestronglyMeasurable.comp_snd`. Conclude with `Filter.Eventually.of_forall (fun p => by`. Establish `h1` using `T.le_opNorm₂ (u p.1) (v p.2)`.
+
+Simplify `h1)` using `[mul_assoc]`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_prod _ hint]`. Establish `h1 : ∀ a, ∫ b, T (u a) (v b) ∂ν = T (u a) (∫ b, v b ∂ν)` using `fun a => (T (u a)).integral_comp_comm hv`. Repeatedly rewrite using `[h1]`.
+
+Establish `h2` using `(T.flip (∫ b, v b ∂ν)).integral_comp_comm hu`. Simplify using `using h2`.
+-/
 private theorem integrable_and_integral_prod_bilin_eq_apply_integrals {α β E F G : Type*} [MeasurableSpace α] [MeasurableSpace β]
     {μ : Measure α} {ν : Measure β} [SFinite μ] [SFinite ν]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
@@ -139,6 +180,47 @@ private theorem integrable_and_integral_prod_bilin_eq_apply_integrals {α β E F
   have h2 := (T.flip (∫ b, v b ∂ν)).integral_comp_comm hu
   simpa using h2
 
+/- English proof (translation)
+Introduce `hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' dd hDG _ _ hl hl' hdd x hx y hy x' hx' y' hy' X X'`. Establish `hrep` using `rep_basic_of_isDS hH.1.2.2.1 k r ε mu R hDG`. Establish `hmul` using `hrep.1`. Establish `hone` using `hrep.2.1`. Establish `hunit` using `hrep.2.2.1`.
+
+Establish `hTKsm` using `hrep.2.2.2.2.1`. Establish `hWpi : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r D.z) D.μW` using `((_root_.GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μW).2.2 D.z D.z_mem D.T_pos D.k_pos).2 D.haarW`. Establish `hNpi : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) D.μN` using `(_root_.GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μN).2.1.2 D.haarN`. Establish `hW'pi : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r D.z') D.μW'` using `((_root_.GlobalTheory.T.isHaarOn_iff_groups_unitary_unipotent k r D.μW').2.2 D.z' D.z'_mem D.T'_pos D.k_pos).2 D.haarW'`. Use `haveI : SigmaFinite D.μW := hWpi.1`.
+
+Use `haveI : SigmaFinite D.μN := hNpi.1`. Use `haveI : SigmaFinite D.μW' := hW'pi.1`. Establish `h55` using `_root_.GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z D.μW D.μN D.k_pos D.z_mem D.T_pos hWpi hNpi`. Establish `h55'` using `_root_.GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r D.z' D.μW' D.μN D.k_pos D.z'_mem D.T'_pos hW'pi hNpi`. Establish `h54` using `_root_.GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z Formalism.QuantumDeterminants.cStd D.z_mem`.
+
+Establish `h54'` using `_root_.GlobalTheory.T.besselCharacter_unipotentRadical_properties k r D.z' Formalism.QuantumDeterminants.cStd D.z'_mem`. Take `⟨Φ, hΦ, hΦd⟩ : ∃ Φ : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, MeasurePreserving Φ (D.μW.prod D.μN) (D.μW.prod D.μN) ∧ ∀ q, Φ q = ((fun i j => (Matrix.of q.1)⁻¹ i j), …` from `⟨_, h55.2.2.2.2.1, fun q => rfl⟩`. Take `⟨Ψ, hΨ, hΨd⟩ : ∃ Ψ : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, MeasurePreserving Ψ (D.μW'.prod D.μN) (D.μW'.prod D.μN) ∧ ∀ q, Ψ q = ((fun i j => Matrix.of q.1 i j), (f …` from `⟨_, h55'.2.2.2.1, fun q => rfl⟩`. Take `⟨U, hUd⟩ : ∃ U : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Wp →L[ℂ] Wp, ∀ q, U q = (Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of q.2) * ⟪(R.σ (Matrix.of q.2 * Matrix.of q.1)) x, x'⟫_ℂ) • D.π (Matrix.of …` from `⟨_, fun q => rfl⟩`. Take `⟨V, hVd⟩ : ∃ V : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Wq →L[ℂ] Wq, ∀ q, V q = (star (Formalism.QuantumDeterminants.psi k r D.z' Formalism.QuantumDeterminants.cStd (Matrix.of q.2)) * ⟪y', (R.σ (Matrix.of q.2 * Matrix.of q.1)) y⟫_ℂ) • D.π' ( …` from `⟨_, fun q => rfl⟩`.
+
+Establish `hUeq : ∀ q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, Matrix.of q.1 ∈ Formalism.QuantumDeterminants.UWset k r D.z → Matrix.of q.2 ∈ Formalism.QuantumDeterminants.Nset k r → Formalism.FourierDecayAlt.ThreeDimData.beInt D.z Formalism.QuantumDeter …`. Introduce `q hH hN`. Take `⟨hNinv, hψinv⟩` from `h54.2.2.1 _ hN`. Establish `hHinv` using `(h54.2.2.2.2.1 _ hH _ hH).2.1`. Establish `hHG` using `(h54.2.2.2.2.1 _ hH _ hH).2.2`.
+
+Establish `hHinvG` using `(h54.2.2.2.2.1 _ hHinv _ hHinv).2.2`. Establish `hNG` using `h54.2.2.2.2.2 _ hN`. Establish `hNinvG` using `h54.2.2.2.2.2 _ hNinv`. Establish `huH` using `isUnit_det_of_mem_UH_Hpk_of_inv_mem D.k_pos hH.1 hHinv.1`. Establish `huN` using `isUnit_det_of_mem_UH_Hpk_of_inv_mem D.k_pos hN.1 hNinv.1`.
+
+Establish `hin : ⟪x, (R.σ ((Matrix.of q.1)⁻¹ * (Matrix.of q.2)⁻¹)) x'⟫_ℂ = ⟪(R.σ (Matrix.of q.2 * Matrix.of q.1)) x, x'⟫_ℂ`. Rewrite using `[hmul _ hNG _ hHG, hmul _ hHinvG _ hNinvG]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hmul _ hHG _ hHinvG, Matrix.mul_nonsing_inv _ huH, hone]`. Use `_ = ⟪(R.σ (Matrix.of q.2)) ((R.σ (Matrix.of q.1)) x), (R.σ (Matrix.of q.2)) ((R.σ (Matrix.of q.2)⁻¹) x')⟫_ℂ := (hunit _ hNG _ _).symm`.
+
+Use `_ = ⟪(R.σ (Matrix.of q.2)) ((R.σ (Matrix.of q.1)) x), x'⟫_ℂ := by`. Rewrite using `[← hmul _ hNG _ hNinvG, Matrix.mul_nonsing_inv _ huN, hone]`. Rewrite using `[hΦd, hUd]`. Use `show (⟪x, (R.σ ((Matrix.of q.1)⁻¹ * (Matrix.of q.2)⁻¹)) x'⟫_ℂ * star (Formalism.QuantumDeterminants.psi k r D.z Formalism.QuantumDeterminants.cStd (Matrix.of q.2)⁻¹)) • D.π ((Matrix.of q.1)⁻¹)⁻¹ = _`. Rewrite using `[hψinv, star_star, Matrix.nonsing_inv_nonsing_inv _ huH, hin]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hVeq : ∀ q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, Matrix.of q.1 ∈ Formalism.QuantumDeterminants.UWset k r D.z' → Matrix.of q.2 ∈ Formalism.QuantumDeterminants.Nset k r → Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' Formalism.QuantumDet …`. Introduce `q hH hN`. Establish `hHinv` using `(h54'.2.2.2.2.1 _ hH _ hH).2.1`.
+
+Establish `huH` using `isUnit_det_of_mem_UH_Hpk_of_inv_mem D.k_pos hH.1 hHinv.1`. Establish `hψc` using `(h54'.2.2.2.1 _ hH _ hN).2.2.2`. Establish `hm : Matrix.of q.1 * ((Matrix.of q.1)⁻¹ * Matrix.of q.2 * Matrix.of q.1) = Matrix.of q.2 * Matrix.of q.1`. Rewrite using `[← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ huH, one_mul]`. Rewrite using `[hΨd, hVd]`.
+
+Use `show (⟪y', (R.σ (Matrix.of q.1 * ((Matrix.of q.1)⁻¹ * Matrix.of q.2 * Matrix.of q.1))) y⟫_ℂ * star (Formalism.QuantumDeterminants.psi k r D.z' Formalism.QuantumDeterminants.cStd ((Matrix.of q.1)⁻¹ * Matrix.of q.2 * Matrix.of q.1))) • D.π' (Matrix.of q.1)⁻¹ = _`. Rewrite using `[hm, hψc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hbe` using `hl.2 x' (hTKsm x' hx') x hx`.
+
+Establish `hbe'` using `hl'.2 y (hTKsm y hy) y' hy'`. Establish `hUi : Integrable U (D.μW.prod D.μN) ∧ ∫ q, U q ∂(D.μW.prod D.μN) = (innerSL ℂ (l x)).smulRight (l x')`. Establish `hcomp : (fun q => Formalism.FourierDecayAlt.ThreeDimData.beInt D.z Formalism.QuantumDeterminants.cStd D.π R.σ x' x (Φ q)) =ᵐ[D.μW.prod D.μN] U` using `h55.2.2.2.2.2.mono (fun q hq => hUeq q hq.1 hq.2)`. Establish `hint1 : Integrable (fun q => Formalism.FourierDecayAlt.ThreeDimData.beInt D.z Formalism.QuantumDeterminants.cStd D.π R.σ x' x (Φ q)) (D.μW.prod D.μN)` using `(hΦ.integrable_comp hbe.1.aestronglyMeasurable).mpr hbe.1`. Use `⟨hint1.congr hcomp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← integral_congr_ae hcomp, ← integral_map hΦ.measurable.aemeasurable (by rw [hΦ.map_eq]; exact hbe.1.aestronglyMeasurable), hΦ.map_eq]`. Conclude with `hbe.2`. Establish `hVi : Integrable V (D.μW'.prod D.μN) ∧ ∫ q, V q ∂(D.μW'.prod D.μN) = (innerSL ℂ (l' y')).smulRight (l' y)`. Establish `hcomp : (fun q => Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' Formalism.QuantumDeterminants.cStd D.π' R.σ y y' (Ψ q)) =ᵐ[D.μW'.prod D.μN] V` using `h55'.2.2.2.2.2.mono (fun q hq => hVeq q hq.1 hq.2)`. Establish `hint1 : Integrable (fun q => Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' Formalism.QuantumDeterminants.cStd D.π' R.σ y y' (Ψ q)) (D.μW'.prod D.μN)` using `(hΨ.integrable_comp hbe'.1.aestronglyMeasurable).mpr hbe'.1`.
+
+Use `⟨hint1.congr hcomp, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae hcomp, ← integral_map hΨ.measurable.aemeasurable (by rw [hΨ.map_eq]; exact hbe'.1.aestronglyMeasurable), hΨ.map_eq]`. Conclude with `hbe'.2`. Establish `haeSS : ∀ᵐ p ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), D.inSS p`. Establish `h1` using `(Measure.quasiMeasurePreserving_fst (μ := D.μW.prod D.μN) (ν := D.μW'.prod D.μN)).ae h55.2.2.2.2.2`.
+
+Establish `h2` using `(Measure.quasiMeasurePreserving_snd (μ := D.μW.prod D.μN) (ν := D.μW'.prod D.μN)).ae h55'.2.2.2.2.2`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Conclude with `⟨hp1.1, hp1.2, hp2.1, hp2.2⟩`. Take `⟨T, hT⟩` from `besPhInt_bilin X X'`. Establish `hFub` using `integrable_and_integral_prod_bilin_eq_apply_integrals T hUi.1 hVi.1`.
+
+Establish `hpt : ∀ p : B.SS k r, D.inSS p → B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p = (1 / (dd : ℂ)) * T (U p.1) (V p.2)`. Introduce `p hp`. Rewrite using `[(Gp91.GlobalTheory.T.bessel_formal_degree_identity hH k r ε mu R Wp Wq D dd hDG hdd x y x' y' X X' p hp).2, besPhInt_xi, hT, hUd, hVd, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hsInner_smul_lemma_2, hsInner_smul_lemma_2]`. Simplify using `only [Formalism.FourierDecayAlt.JF.sL, Formalism.FourierDecayAlt.JF.sR]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hae : (fun p => B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p) =ᵐ[D.μSS] fun p => (1 / (dd : ℂ)) * T (U p.1) (V p.2)` using `haeSS.mono (fun p hp => hpt p hp)`. Establish `hF1 : Integrable (fun p => T (U p.1) (V p.2)) D.μSS` using `hFub.1`. Establish `hF2 : ∫ p, T (U p.1) (V p.2) ∂D.μSS = T (∫ q, U q ∂(D.μW.prod D.μN)) (∫ q, V q ∂(D.μW'.prod D.μN))` using `hFub.2`. Establish `hint2 : Integrable (fun p => B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p) D.μSS` using `(hF1.const_mul (1 / (dd : ℂ))).congr hae.symm`. Establish `hxi` using `besPhInt_xi_cont D`.
+
+Establish `hnorm : ∀ p, ‖B.xiTau D (1, 1) p‖ = 1`. Introduce `p`. Unfold `Formalism.FourierDecayAlt.B.xiTau`. Conclude with `Complex.norm_exp_I_mul_ofReal _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hint3 : Integrable (fun p => star (B.xiTau D (1, 1) p) * (B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p)) D.μSS` using `hint2.congr' ((hxi.star.aestronglyMeasurable).mul hint2.aestronglyMeasurable) (Filter.Eventually.of_forall (fun p => by simp [hnorm]))`. Use `hint3.congr (Filter.Eventually.of_forall (fun p => ?_))` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← mul_assoc, Complex.star_def, Complex.conj_mul', hnorm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[integral_congr_ae hae, integral_const_mul, hF2, hUi.2, hVi.2, hT, besPhInt_rank X X' (l x) (l x') (l' y) (l' y')]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_xi_mul_Ph : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (l : R.H → Wp) (l' : R.H → Wq) (dd : ℝ), R.IsDG ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → IsBeL R D.z D.π D.μW D.μN l → IsBeL R D.z' D.π' D.μW' D.μN l' → (∀ w, w ≠ 0 → PI.BesselPeriodGGP.fdegH D.μG R.σ w = dd) → ∀ x ∈ R.TK, ∀ y ∈ R.TK, ∀ x' ∈ R.TK, ∀ y' ∈ R.TK, ∀ X X' : Wq →L[ℂ] Wp, Integrable (B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X')) D.μSS ∧ ∫ p, B.xiTau D (1, 1) p * B.Ph D (fun g => ⟪x, R.σ g y⟫_ℂ • X) (fun g => ⟪x', R.σ g y'⟫_ℂ • X') p ∂D.μSS = ⟪l x, X (l' y)⟫_ℂ * star ⟪l x', X' (l' y')⟫_ℂ / (dd : ℂ) := by
   intro hH k r ε mu h R Wp _ _ _ _ Wq _ _ _ _ D l l' dd hDG _ _ hl hl' hdd x hx y hy x' hx' y' hy' X X'
   classical

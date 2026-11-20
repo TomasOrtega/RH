@@ -14,6 +14,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TorusBound
 
+/- English proof (translation)
+Introduce `D θ hθ V n r X Y hXY c hc Q hQ Φ`. Establish `hSB` using `GlobalTheory.T.isSchwartzBruhatAdelicMatrix_of_mem_adelicSchwartz D θ hθ V.rank n Φ.1 Φ.2`. Take `⟨-, K, hK, hmaj⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ V.rank n Φ.1 hSB`. Take `⟨K', hK', hmul⟩` from `GlobalTheory.T.adelicMatrixSchwartzMajorant_inv_mul_le D θ hθ V n Q hQ K hK`. Take `⟨N, C₁, hC₁, hframe⟩` from `GlobalTheory.T.siegelTorus_tsum_majorant_translatedRationalPoints_le D θ hθ V n r X Y hXY c hc K' hK'`.
+
+Take `⟨C₀, hC₀⟩` from `hmaj N`. Take `⟨C₂, hC₂, hmul'⟩` from `hmul N`. Use `set A : ℝ := max C₀ 0 * C₂ with hA`. Establish `hA0 : 0 ≤ A` using `mul_nonneg (le_max_right _ _) hC₂`. Use `⟨A * C₁, mul_nonneg hA0 hC₁, ?_⟩` and prove the remaining obligations.
+
+Introduce `t ht a ha y hy`. Establish `hpt : ∀ ξ : Matrix (Fin V.rank) (Fin n) D.host.E, GlobalTheory.SiegelFormula.invPt V (a * y) ξ = (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) (GlobalTheory.SiegelFormula.invPt V a ξ) : Mx D V.rank n)`. Introduce `ξ`. Establish `h2 : Formalism.L2.Theta.mt V (a * y)⁻¹ = Formalism.L2.Theta.mt V y⁻¹ * Formalism.L2.Theta.mt V a⁻¹`. Rewrite using `[mul_inv_rev]`.
+
+Both sides reduce to the same expression. Simplify using `only [GlobalTheory.SiegelFormula.invPt, h2, Matrix.mul_assoc]`. Establish `hterm : ∀ ξ : Matrix (Fin V.rank) (Fin n) D.host.E, ‖Φ.1 (GlobalTheory.SiegelFormula.invPt V (a * y) ξ)‖ₑ ≤ ENNReal.ofReal A * ENNReal.ofReal (GlobalTheory.Unf.maj θ K' N (GlobalTheory.SiegelFormula.invPt V a ξ))`. Introduce `ξ`. Rewrite using `[← ENNReal.ofReal_mul hA0, ← ofReal_norm_eq_enorm]`.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hpt ξ]`. Use `set x := GlobalTheory.SiegelFormula.invPt V a ξ`. Establish `h1` using `hC₀ (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x : Mx D V.rank n)`. Establish `h2` using `hmul' y hy x`.
+
+Establish `hm0` using `GlobalTheory.Unf.maj_nonneg θ K N (HMul.hMul (Formalism.L2.Theta.mt V y⁻¹) x : Mx D V.rank n)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul hA0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem absTheta_le_torus : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ c : ℝ, 0 < c → ∀ Q : Set (GA D V), IsCompact Q → ∀ Φ : schwartzA θ V.rank n, ∃ C : ℝ, 0 ≤ C ∧ ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a : GA D V, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram X Y t a → ∀ y ∈ Q, GlobalTheory.SiegelFormula.absTheta V Φ.1 (a * y) ≤ ENNReal.ofReal (C * ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) := by
   intro D θ hθ V n r X Y hXY c hc Q hQ Φ
   have hSB := GlobalTheory.T.isSchwartzBruhatAdelicMatrix_of_mem_adelicSchwartz D θ hθ V.rank n Φ.1 Φ.2

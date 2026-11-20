@@ -14,12 +14,22 @@ section Split
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E)
 
+/- English proof (translation)
+Take `⟨s, hs, hns⟩` from `exists_mem_notMem (Ne.symm hP)`. Conclude with `⟨s, hs, fun h => hns ((mem_conjP P s).2 h)⟩`.
+-/
 theorem qsp_exists_pi (P : Pl E) (hP : conjPrime₂ P ≠ P) : ∃ ϖ : 𝓞 E, ϖ ∈ P.asIdeal ∧ cO E ϖ ∉ P.asIdeal := by
   obtain ⟨s, hs, hns⟩ := exists_mem_notMem (Ne.symm hP)
   exact ⟨s, hs, fun h => hns ((mem_conjP P s).2 h)⟩
 
 include hc in
 
+/- English proof (translation)
+Establish `h1 : star (algebraMap (𝓞 E) E (a * cO E a)) = algebraMap (𝓞 E) E (a * cO E a)`. Rewrite using `[map_mul, algebraMap_cO, star_mul', star_star, mul_comm]`. Take `⟨x, hx⟩` from `(hc.fixed _).1 h1`. Establish `hi : IsIntegral ℤ x`. Establish `h2 : IsIntegral ℤ (algebraMap F E x)` using `by rw [hx]; exact RingOfIntegers.isIntegral_coe _`.
+
+Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h2`. Take `⟨b, hb⟩ : ∃ b : 𝓞 F, algebraMap (𝓞 F) F b = x` from `⟨⟨x, hi⟩, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) b) = algebraMap (𝓞 E) E (a * cO E a)`.
+
+Rewrite using `[← hx, ← hb, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem qsp_norm_mem (a : 𝓞 E) : ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) b = a * cO E a := by
   have h1 : star (algebraMap (𝓞 E) E (a * cO E a)) = algebraMap (𝓞 E) E (a * cO E a) := by
     rw [map_mul, algebraMap_cO, star_mul', star_star, mul_comm]
@@ -33,10 +43,26 @@ theorem qsp_norm_mem (a : 𝓞 E) : ∃ b : 𝓞 F, algebraMap (𝓞 F) (𝓞 E)
   change algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) b) = algebraMap (𝓞 E) E (a * cO E a)
   rw [← hx, ← hb, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qsp_isOver (P : Pl E) : IsOver (underPl F P) P := rfl
 
 include hc in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ, hcϖ⟩` from `qsp_exists_pi P hP`. Take `⟨t, ht⟩` from `gls_trace_mem hc ϖ`. Take `⟨N, hN⟩` from `qsp_norm_mem hc ϖ`. Establish `hsig : ∀ x : E, hc.sig x = star x` using `fun _ => rfl`. Establish `hsig0 : hc.sig (ϖ : E) = ((cO E ϖ : 𝓞 E) : E)` using `by rw [hsig]; exact (algebraMap_cO ϖ).symm`.
+
+Establish `hN' : algebraMap F E (N : F) = (ϖ : E) * hc.sig (ϖ : E)`. Use `congrArg (algebraMap (𝓞 E) E) hN` as an intermediate fact. Rewrite `this` using `[map_mul, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Rewrite using `[hsig0]`. Conclude with `this`.
+
+Establish `ht' : algebraMap F E (t : F) = (ϖ : E) + hc.sig (ϖ : E)`. Use `congrArg (algebraMap (𝓞 E) E) ht` as an intermediate fact. Rewrite `this` using `[map_add, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Rewrite using `[hsig0]`. Conclude with `this`.
+
+Establish `hNv : N ∈ (underPl F P).asIdeal` using `by show algebraMap (𝓞 F) (𝓞 E) N ∈ P.asIdeal`. Rewrite using `[hN]`. Conclude with `Ideal.mul_mem_right _ _ hϖ`. Establish `htv : t ∉ (underPl F P).asIdeal`. Introduce `h`.
+
+Establish `h1 : algebraMap (𝓞 F) (𝓞 E) t ∈ P.asIdeal` using `h`. Rewrite `h1` using `[ht]`. Conclude with `hcϖ (by simpa using P.asIdeal.sub_mem h1 hϖ)`. Take `⟨s⟩` from `Formalism.MainNotions.Gaps.LG.sc_core hc.sig (fun x => by rw [hsig, hsig, star_star]) (fun x hx => (hc.fixed x).1 hx) hc.deg2 (underPl F P) ϖ t N ht' hN' hNv htv`. Establish `hN2 : ((cO E ϖ : 𝓞 E) : E) * hc.sig ((cO E ϖ : 𝓞 E) : E) = algebraMap F E (N : F)`.
+
+Rewrite using `[hN', ← hsig0, mul_comm, hsig, hsig, star_star]`. Take `⟨sa⟩` from `Formalism.MainNotions.Gaps.LG.sc_orient s (cO E ϖ) N hNv hN2`. Establish `e : hc.sig ((cO E ϖ : 𝓞 E) : E) = (ϖ : E)` using `by rw [← hsig0, hsig, hsig, star_star]`. Conclude with `⟨ϖ, hϖ, hcϖ, ⟨e ▸ sa⟩⟩`.
+-/
 theorem qsp_exists (P : Pl E) (hP : conjPrime₂ P ≠ P) :
     ∃ ϖ : 𝓞 E, ϖ ∈ P.asIdeal ∧ cO E ϖ ∉ P.asIdeal ∧ Nonempty (Formalism.MainNotions.Gaps.LG.SplitAt hc.sig (underPl F P) (ϖ : E)) := by
   obtain ⟨ϖ, hϖ, hcϖ⟩ := qsp_exists_pi P hP

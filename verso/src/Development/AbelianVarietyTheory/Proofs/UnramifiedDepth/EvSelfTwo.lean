@@ -10,15 +10,26 @@ open GlobalTheory.GaugeAdjoint
 
 variable {R : Type} [CommRing R] {d m n : ℕ}
 
+/- English proof (translation)
+The claim follows from `subst_mul (hasSubst_pts ha) f g`.
+-/
 theorem ev_mul {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (f g : PS R m d) :
     ev a (f * g) = ev a f * ev a g :=
   subst_mul (hasSubst_pts ha) f g
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← coe_substAlgHom (hasSubst_pts ha), map_sum]`.
+-/
 theorem ev_sum {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) {ι : Type}
     (t : Finset ι) (f : ι → PS R m d) : ev a (∑ i ∈ t, f i) = ∑ i ∈ t, ev a (f i) := by
   unfold ev
   rw [← coe_substAlgHom (hasSubst_pts ha), map_sum]
 
+/- English proof (translation)
+Establish `e : (fun q : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 1 d) q.1 q.2) = X`. Use function extensionality and compare the values at `q`. Take `⟨j, i⟩` from `q`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Rewrite using `[ev, e, subst_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_self_one (f : PS R 1 d) : ev (n := 1) ![pt R d 0] f = f := by
   have e : (fun q : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 1 d) q.1 q.2) = X := by
     funext q
@@ -28,6 +39,11 @@ theorem ev_self_one (f : PS R 1 d) : ev (n := 1) ![pt R d 0] f = f := by
   rw [ev, e, subst_self]
   rfl
 
+/- English proof (translation)
+Establish `e : (fun q : Fin 2 × Fin d => (![pt R d 0, pt R d 1] : Fin 2 → Pt R 2 d) q.1 q.2) = X`. Use function extensionality and compare the values at `q`. Take `⟨j, i⟩` from `q`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[ev, e, subst_self]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_self_two (f : PS R 2 d) : ev (n := 2) ![pt R d 0, pt R d 1] f = f := by
   have e : (fun q : Fin 2 × Fin d => (![pt R d 0, pt R d 1] : Fin 2 → Pt R 2 d) q.1 q.2) = X := by
     funext q
@@ -36,6 +52,9 @@ theorem ev_self_two (f : PS R 2 d) : ev (n := 2) ![pt R d 0, pt R d 1] f = f := 
   rw [ev, e, subst_self]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[← G.comm i, ev_ev_two (const_pt 1) (const_pt 0) const_axis, axis_pt_zero, axis_pt_one, G.unit i]`. Both sides reduce to the same expression.
+-/
 theorem axis_law (G : FGLaw R d) :
     (fun i => ev (n := 1) ![pt R d 0, 0] (G.F i)) = pt R d 0 := by
   funext i
@@ -43,6 +62,13 @@ theorem axis_law (G : FGLaw R d) :
     G.unit i]
   rfl
 
+/- English proof (translation)
+Establish `hadd : G.add (pt R (n` using `2) d 0) (pt R d 1) = G.F := funext fun j => ev_self_two _`. Rewrite `h` using `[hadd]`. Establish `h0 : pderiv R ((1 : Fin 2), i) (ev (n` using `2) ![pt R d 0] s) = 0 := by`. Rewrite using `[pderiv_ev (const_one (const_pt 0))]`. Simplify using `[pderiv_pt]`.
+
+Establish `h1 : pderiv R ((1 : Fin 2), i) (ev (n` using `2) ![pt R d 1] s) = ev (n := 2) ![pt R d 1] (pderiv R ((0 : Fin 1), i) s) := by`. Rewrite using `[pderiv_ev (const_one (const_pt 1))]`. Simplify using `[pderiv_pt]`. Establish `hd` using `congrArg (fun f => ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), i) f)) h`. Use `beta_reduce at hd`.
+
+Rewrite `hd` using `[Derivation.leibniz, h0, h1, smul_zero, add_zero, smul_eq_mul, ev_mul const_axis, axis_pderiv, ev_ev_one (const_pt 0) const_axis, axis_pt_zero, ev_self_one, pderiv_ev (const_one G.const), Fin.sum_univ_one, ev_sum const_axis]`. Rewrite using `[mul_comm, ← hd]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ev_mul const_axis, ev_ev_one G.const const_axis, axis_law, ev_self_one, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem partial_eq (G : FGLaw R d) (s : PS R 1 d)
     (h : ev (n := 2) ![G.add (pt R d 0) (pt R d 1)] s =
       ev (n := 2) ![pt R d 0] s * ev (n := 2) ![pt R d 1] s) (i : Fin d) :
@@ -68,6 +94,11 @@ theorem partial_eq (G : FGLaw R d) (s : PS R 1 d)
   rw [ev_mul const_axis, ev_ev_one G.const const_axis, axis_law, ev_self_one, mul_comm]
   rfl
 
+/- English proof (translation)
+Introduce `R _ d G s h u`. Rewrite using `[Dof, map_sum, Finset.sum_mul]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_assoc, ← partial_eq G s h i, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_assoc _ _ _`.
+-/
 theorem main :
   (∀ (R : Type) [CommRing R] (d : ℕ) (G : FGLaw R d) (s : PS R 1 d),
     ev (n := 2) ![G.add (pt R d 0) (pt R d 1)] s = ev (n := 2) ![pt R d 0] s * ev (n := 2) ![pt R d 1] s →

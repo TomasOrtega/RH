@@ -16,6 +16,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.SncGenericPoints
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal]`. Introduce `q hq`. Assume the negation of the conclusion as `hsq`. Establish `hp : q ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen s`. Rewrite using `[U.2.fromSpec_preimage_basicOpen]`.
+
+Conclude with `hsq`. Establish `hq' : U.2.fromSpec q ∈ closure ({x} : Set X)` using `hq`. Establish `hsp : x ⤳ U.2.fromSpec q` using `specializes_iff_mem_closure.2 hq'`. Establish `hxs : x ∈ X.basicOpen s` using `hsp.mem_open (X.basicOpen s).isOpen hp`. Conclude with `hs ((X.mem_basicOpen s x hx).1 hxs)`.
+-/
 theorem mem_vanishingIdeal_closure {X : Scheme.{0}} (x : X) (U : X.affineOpens) (hx : x ∈ U.1)
     (s : Γ(X, U.1)) (hs : ¬ IsUnit (X.presheaf.germ U.1 x hx s)) :
     s ∈ (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})).ideal U := by
@@ -29,6 +34,13 @@ theorem mem_vanishingIdeal_closure {X : Scheme.{0}} (x : X) (U : X.affineOpens) 
   have hxs : x ∈ X.basicOpen s := hsp.mem_open (X.basicOpen s).isOpen hp
   exact hs ((X.mem_basicOpen s x hx).1 hxs)
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨V, hxV, f, rfl⟩` from `X.presheaf.exists_germ_eq a`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxV V.isOpen`. Establish `hle : W ≤ V` using `hWV`. Establish `e : X.presheaf.germ W x hxW (X.presheaf.map (homOfLE hle).op f) = X.presheaf.germ V x hxV f` using `X.presheaf.germ_res_apply (homOfLE hle) x hxW f`.
+
+Rewrite `ha`, the goal using `[← e]`. Generalize the expression as in `X.presheaf.map (homOfLE hle).op f = g at ha ⊢`. Establish `hu : ¬ IsUnit (X.presheaf.germ W x hxW g)` using `mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal _).1 ha)`. Establish `hm` using `mem_vanishingIdeal_closure x ⟨W, hW⟩ hxW g hu`. Establish `h1 : Ideal.map (X.presheaf.germ W x hxW).hom ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})).ideal ⟨W, hW⟩) ≤ FinalTheorems.stalkId (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})) x` using `le_iSup₂_of_le (f := fun (U : X.affineOpens) (hx : x ∈ U.1) => Ideal.map (X.presheaf.germ U.1 x hx).hom ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})).ideal U)) ⟨W, hW⟩ hxW le_rfl`.
+
+Conclude with `h1 (Ideal.mem_map_of_mem _ hm)`.
+-/
 theorem maximalIdeal_le_stalkId {X : Scheme.{0}} (x : X) :
     IsLocalRing.maximalIdeal (X.presheaf.stalk x) ≤
       FinalTheorems.stalkId (Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})) x := by
@@ -52,6 +64,15 @@ theorem maximalIdeal_le_stalkId {X : Scheme.{0}} (x : X) :
         ((Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {x})).ideal U)) ⟨W, hW⟩ hxW le_rfl
   exact h1 (Ideal.mem_map_of_mem _ hm)
 
+/- English proof (translation)
+Take `⟨hreg, n, t, e, ht, hI⟩` from `h`. Establish `ha : z a ∈ (Closeds.closure {z a} : Closeds X)` using `subset_closure (Set.mem_singleton _)`. Establish `hn : 1 ≤ n` using `(e ⟨a, ha⟩).pos`. Establish `hm : IsLocalRing.maximalIdeal (X.presheaf.stalk (z a)) = Ideal.span {t (e ⟨a, ha⟩)}`. Use `le_antisymm ((maximalIdeal_le_stalkId (z a)).trans (hI ⟨a, ha⟩).le) ?_` and prove the remaining obligations.
+
+Rewrite using `[← ht.1]`. Conclude with `Ideal.span_mono (Set.singleton_subset_iff.2 ⟨_, rfl⟩)`. Establish `hmin : IsLocalRing.maximalIdeal (X.presheaf.stalk (z a)) ∈ (Ideal.span {t (e ⟨a, ha⟩)}).minimalPrimes`. Rewrite using `[← hm, Ideal.minimalPrimes_eq_subsingleton_self]`. Both sides reduce to the same expression.
+
+Establish `hle` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin`. Establish `h1` using `IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := X.presheaf.stalk (z a))`. Establish `h2` using `ringKrullDim_stalk_eq_coheight (z a)`. Establish `h3 : (IsLocalRing.maximalIdeal (X.presheaf.stalk (z a))).height = Order.coheight (z a)` using `WithBot.coe_eq_coe.1 (h1.trans h2)`. Establish `h4 : ((n : ℕ∞)) = Order.coheight (z a)` using `WithBot.coe_eq_coe.1 (ht.2.trans h2)`.
+
+Use `le_antisymm (h3 ▸ hle) ?_` and prove the remaining obligations. Rewrite using `[← h4]`. Conclude with `hn` after adjusting the coercions.
+-/
 theorem coheight_eq_one_of_lSncAt {X : Scheme.{0}} {r : ℕ} (z : Fin r → X) (a : Fin r)
     (h : FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) (z a)) : Order.coheight (z a) = 1 := by
   obtain ⟨hreg, n, t, e, ht, hI⟩ := h
@@ -75,6 +96,21 @@ theorem coheight_eq_one_of_lSncAt {X : Scheme.{0}} {r : ℕ} (z : Fin r → X) (
   rw [← h4]
   exact_mod_cast hn
 
+/- English proof (translation)
+Introduce `F _ X _ p D hp hs T hT`. Use `haveI : QuasiCompact p := by`. Take `⟨N, i, hi, rfl⟩` from `hp`. Use `haveI : IsProper (PSpace.str F N) := isProper_str F N`. Use `infer_instance`.
+
+Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth D p`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p`. Use `haveI : IsNoetherian X := {}`. Take `⟨m, C, hC, -⟩` from `GlobalTheory.SncComponents.exists_compList_effCartier F X p D T hT`.
+
+Establish `hL` using `GlobalTheory.SncLocal.lSncAt_of_snc' X T m C hT hC`. Establish `hz : ∀ a, ∃ z : X, closure {z} = (C a : Set X)` using `fun a => QuasiSober.sober (hC.1 a) (C a).isClosed`. Use `choose z hz using hz`. Establish `hCz : (fun a => (Closeds.closure {z a} : Closeds X)) = C`. Use function extensionality and compare the values at `fun a => SetLike.coe_injective (hz a)`.
+
+Establish `hL' : ∀ x : X, FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) x`. Rewrite using `[hCz]`. Conclude with `hL`. Establish `hco : ∀ a, Order.coheight (z a) = 1` using `fun a => coheight_eq_one_of_lSncAt z a (hL' _)`. Establish `hU : (T : Set X) = ⋃ a, closure {z a}`.
+
+Rewrite using `[← hC.2.1]`. Simplify using `only [hz]`. Use `⟨m, z, fun a b hab => hC.2.2 a b ?_, hco, hU, fun w hw hw1 => ?_, hL'⟩` and prove the remaining obligations. Rewrite using `[← hz, ← hz, hab]`. Establish `hw' : w ∈ (T : Set X)` using `hw`.
+
+Rewrite `hw'` using `[hU]`. Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hw'`. Establish `hsp : z a ⤳ w` using `specializes_iff_mem_closure.2 ha`. Use `⟨a, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : w < z a` using `lt_of_le_not_ge hsp fun h => hne ((show w ⤳ z a from h).antisymm hsp).eq`. Use `Order.coheight_strictAnti hlt (by rw [hco a]; exact ENat.natCast_lt_top 1)` as an intermediate fact. Rewrite `this` using `[hco a, hw1]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem exists_genericPoints : ∀ (F : Type) [Field F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F) (D : ℕ), IsProjOver p → SmoothOfRelativeDimension D p → ∀ T : Closeds X, FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal T) → ∃ (r : ℕ) (z : Fin r → X), Function.Injective z ∧ (∀ a, Order.coheight (z a) = 1) ∧ (T : Set X) = ⋃ a, closure {z a} ∧ (∀ w : X, w ∈ T → Order.coheight w = 1 → ∃ a, w = z a) ∧ ∀ x : X, FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) x := by
   intro F _ X _ p D hp hs T hT
   haveI : QuasiCompact p := by

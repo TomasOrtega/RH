@@ -12,6 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
+/- English proof (translation)
+The claim follows from `ldEx_of_leaves yFrame jEx kStd hgtPull modelEx`.
+-/
 theorem ldEx_of : TAll → AuxiliaryPrimeFunction → LDEx := ldEx_of_leaves yFrame jEx kStd hgtPull modelEx
 
 end PositivityTheory.SiegelWeilFormula.Ald

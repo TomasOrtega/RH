@@ -22,6 +22,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Take `⟨-, A', B', -, -, h1⟩` from `hex`. Use `choose k hk using hT`. Use `set u : Fin d → O := ∑ i, (Aᵀ *ᵥ f) i • s (k i) with hu`. Establish `huS : u ∈ Submodule.span O (Set.range s)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k i, rfl⟩)`. Establish `hAu : Aᵀ *ᵥ u = Aᵀ *ᵥ f`.
+
+Rewrite using `[hu, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hk]`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h0 : Aᵀ *ᵥ (f - u) = 0` using `by rw [Matrix.mulVec_sub, hAu, sub_self]`.
+
+Establish `h2 : A'ᵀ * Aᵀ + Bᵀ * B'ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.transpose_add, h1, Matrix.transpose_one]`. Establish `h3 : f - u = Bᵀ *ᵥ (B'ᵀ *ᵥ (f - u))`. Use `congrArg (fun M => M *ᵥ (f - u)) h2` as an intermediate fact. Simplify using `only [Matrix.add_mulVec, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero, zero_add, Matrix.one_mulVec] at this`.
+
+Conclude with `this.symm`. Take `⟨t, ht⟩` from `hsurj (B'ᵀ *ᵥ (f - u))`. Establish `h4 : cp • (f - u) = Bᵀ *ᵥ (Ht *ᵥ t)` using `by rw [ht, Matrix.mulVec_smul, ← h3]`. Establish `h5 : Ht *ᵥ t = ∑ i, t i • (fun l => Ht l i)`. Use extensionality with `l`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `h6 : cp • (f - u) ∈ Submodule.span O (Set.range s)`. Rewrite using `[h4, h5, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`.
+
+Take `⟨j, hj⟩` from `hB i`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj⟩)`. Establish `h7 : cp • f = cp • (f - u) + cp • u` using `by rw [← smul_add, sub_add_cancel]`. Rewrite using `[h7]`. Conclude with `Submodule.add_mem _ h6 (Submodule.smul_mem _ _ huS)`.
+-/
 private lemma smul_mem_span_of_split {O κ : Type} [CommRing O] [Fintype κ] [DecidableEq κ] {g d r m : ℕ}
     (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (Ht : Matrix (Fin g) κ O)
     (s : Fin m → Fin d → O) (cp : O) (hex : SplitEx A B)
@@ -61,6 +74,11 @@ private lemma smul_mem_span_of_split {O κ : Type} [CommRing O] [Fintype κ] [De
   rw [h7]
   exact Submodule.add_mem _ h6 (Submodule.smul_mem _ _ huS)
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H d r m A B ρG N s hL c hc f`. Use `htd_domain hS` as an intermediate fact. Take `⟨hEt, hdiag, hdet⟩` from `htd_E H`. Establish `hsurj` using `ht_cp_surj H.Ht H.Bt _ cp hEt hdiag hdet (htd_cp_ne hS) H.form_eq_alt`. Establish `hle : v (algebraMap O C c) ≤ v (algebraMap O C cp)`.
+
+Rewrite `hc` using `[← hS.cp_val]`. Conclude with `le_of_pow_le_pow_left₀ (by have := (Fact.out : p.Prime).two_le; omega) zero_le hc`. Take `⟨e, rfl⟩` from `hv.dvd_of_le hle`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (smul_mem_span_of_split A B H.Ht s cp hL.exact hL.fromB hL.fromT hsurj f)`.
+-/
 theorem linDat_hodgeTate_inclusion : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (cp : O), HodgeTateSetting p v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp → ∀ (g : ℕ) (H : HodgeTateDatum p g v O (ℤ_[p] ⊗[ℤ] OE) (sigE p OE) cp) (d r m : ℕ) (A : Matrix (Fin d) (Fin r) O) (B : Matrix (Fin g) (Fin d) O) (ρG : OE →+* Matrix (Fin d) (Fin d) O) (N : OE →+* Matrix (Fin r) (Fin r) ℤ) (s : Fin m → Fin d → O), LinDat H A B ρG N s → ∀ c : O, v (algebraMap O C c) ^ (p - 1) ≤ v (algebraMap O C (p : O)) → ∀ f : Fin d → O, c • f ∈ Submodule.span O (Set.range s) := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ cp hS g H d r m A B ρG N s hL c hc f
   have := htd_domain hS

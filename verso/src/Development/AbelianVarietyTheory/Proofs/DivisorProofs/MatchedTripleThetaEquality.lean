@@ -18,10 +18,18 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Model.I, theta, map_smul, thetaSum_smul]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem I_smul (c : ℂ) (Φ : Fn F n d) (h : UA σ W.J) : M.I om (c • Φ) h = c * M.I om Φ h := by
   simp only [Model.I, theta, map_smul, thetaSum_smul]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Establish `hs` using `hp.weil.isUSplitting.pres`. Establish `e : ∀ g, theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h` using `fun g => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hs _ _ hΦ) (hs _ _ hΨ)`. Simplify using `only [Model.I, e]`.
+
+Conclude with `integral_add (cΦ h) (cΨ h)`.
+-/
 theorem I_add (hp : IsPair B M χX χW om r s r' s') {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F (Fin n × Fin d))
     (hΨ : Ψ ∈ schA F (Fin n × Fin d)) (cΦ : M.Conv om Φ) (cΨ : M.Conv om Ψ) (h : UA σ W.J) :
     M.I om (Φ + Ψ) h = M.I om Φ h + M.I om Ψ h := by
@@ -32,6 +40,31 @@ theorem I_add (hp : IsPair B M χX χW om r s r' s') {Φ Ψ : Fn F n d} (hΦ : �
   simp only [Model.I, e]
   exact integral_add (cΦ h) (cΨ h)
 
+/- English proof (translation)
+Take `⟨hconv, hcont⟩` from `GlobalTheory.T.weil_convergence_of_kernel hK F E σ B n d X W M χX χW om r s r' s' hp hw`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hx`. Take `⟨f, φ, hφ, rfl⟩` from `hx`. Establish `hmem : ∀ u : SInf F (Fin n × Fin d), pureA F u φ ∈ schA F (Fin n × Fin d)` using `fun u => Submodule.subset_span ⟨u, φ, hφ, rfl⟩`.
+
+Set `ρ : (Fin n × Fin d → AF F) → ℂ` to `fun x => φ fun i => (x i).2`. Establish `htens : ∀ u : SInf F (Fin n × Fin d), tens (evI F) u ρ = pureA F u φ` using `fun u => rfl`. Establish `hrest : Rest (evI F) f ρ`. Use `⟨fun x z hz => ?_, hmem f⟩` and prove the remaining obligations. Establish `h0 : evI F ((0, 1) : AF F) = 0` using `map_zero _`.
+
+Establish `hz2 : ∀ i, (z i).2 = 0` using `fun i => by`. Use `congrArg (fun y : Fin n × Fin d → AF F => (y i).2) (hz _ h0)` as an intermediate fact. Conclude with `(one_mul _).symm.trans this`. Use `show φ (fun i => (x i).2 + (z i).2) = φ fun i => (x i).2`. Simplify using `only [hz2, add_zero]`.
+
+Take `⟨c, g, hc, hlim⟩` from `GlobalTheory.T.weil_line_good_model_polynomial hK.base M B.ψ χX χW om hp.base.std hp.good hp.weil γ hγ f ρ hrest`. Simplify using `only [htens] at hc`. Establish `hq : ∀ t : ℝ, pureA F ⇑(t⁻¹ • (c t - c 0)) φ = ((t⁻¹ : ℝ) : ℂ) • (pureA F (c t) φ + (-1 : ℂ) • pureA F (c 0) φ)` using `fun t => by`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, SchwartzMap.smul_apply, SchwartzMap.sub_apply, Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨pureA F g φ, hmem g, fun x => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [hc]`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Set `y : Fin n × Fin d → mixedEmbedding.mixedSpace F` to `fun i => evI F (x i)`.
+
+Establish `hev : Continuous fun u : SInf F (Fin n × Fin d) => pureA F u φ x` using `by classical`. Establish `h1 : Continuous fun u : SInf F (Fin n × Fin d) => u y` using `(BoundedContinuousFunction.evalCLM ℂ y).continuous.comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ).continuous`. Conclude with `h1.mul continuous_const`. Use `((hev.tendsto g).comp hlim).congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hq, slope_def_module, sub_zero, Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∀ t : ℝ, M.I om (pureA F (c t) φ) h = M.I om (pureA F f φ) h` using `fun t => by`. Rewrite using `[← hc t, GlobalTheory.ThetaIntegralInv.integral_translate hK.base hp _ _ (hmem f)]`. Establish `h0 : ∀ t : ℝ, M.I om (pureA F ⇑(t⁻¹ • (c t - c 0)) φ) h = 0` using `fun t => by`. Establish `hm` using `Submodule.smul_mem _ (-1 : ℂ) (hmem (c 0))`.
+
+Rewrite using `[hq, I_smul, I_add hp (hmem _) hm (hconv _ (hmem _)).1 (hconv _ hm).1, I_smul, hI, hI]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `((hcont φ hφ h).tendsto g).comp hlim`. Establish `h2 : Tendsto (fun _ : ℝ => (0 : ℂ)) (𝓝[≠] 0) (𝓝 (M.I om (pureA F g φ) h))` using `h1.congr h0`. Conclude with `tendsto_nhds_unique h2 tendsto_const_nhds`.
+
+Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, fun x => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `only [map_zero, Pi.zero_apply]`. Simplify using `using I_smul (M := M) (om := om) 0 0 h`. Consider the case `add Φ Φ' _ _ ih ih'`.
+
+Take `⟨Ψ, hΨ, hd, hI⟩` from `ih`. Take `⟨Ψ', hΨ', hd', hI'⟩` from `ih'`. Use `⟨Ψ + Ψ', Submodule.add_mem _ hΨ hΨ', fun x => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Simplify `(hd x).fun_add (hd' x)` using `only [map_add, Pi.add_apply]`. Rewrite using `[I_add hp hΨ hΨ' (hconv _ hΨ).1 (hconv _ hΨ').1, hI, hI']`.
+
+Simplify using the standard rewrite rules. Consider the case `smul a Φ _ ih`. Take `⟨Ψ, hΨ, hd, hI⟩` from `ih`. Use `⟨a • Ψ, Submodule.smul_mem _ a hΨ, fun x => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Simplify `(hd x).const_mul a` using `only [map_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[I_smul, hI]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_deriv_I_eq_zero (hK : KP) (hp : IsPair B M χX χW om r s r' s')
     (hw : d + 2 * min r s < 2 * n ∨ min r s = 0) {γ : Multiplicative ℝ →* UA σ X.J} (hγ : γ ∈ Lines σ X)
     {Φ : Fn F n d} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
@@ -101,6 +134,13 @@ theorem exists_deriv_I_eq_zero (hK : KP) (hp : IsPair B M χX χW om r s r' s')
     · rw [I_smul, hI]
       simp
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hm γ hγ Φ hΦ Φ₁ _ hd`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV hm.triple`. Establish `hPol : PolData B G.M ≤ schA F (Fin a × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`.
+
+Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hp.good.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hw : a + a' + 2 * min (a - G.p) G.p < 2 * a`. Establish `h1` using `hm.triple.geo.eBig`. Establish `h2` using `min_le_right (a - G.p) G.p`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨Ψ, -, hΨ, hI⟩` from `exists_deriv_I_eq_zero hK hp (Or.inl hw) hγ (hPol hΦ)`. Rewrite using `[show Φ₁ = Ψ from funext fun x => (hd x).unique (hΨ x), hI]`.
+-/
 theorem thetaIntegral_lie_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines σ G.V, ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∀ Φ₁ ∈ GlobalTheory.ThK.PolData B G.M, (∀ x, HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) Φ x) (Φ₁ x) 0) → G.M.I om Φ₁ = 0 := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hm γ hγ Φ hΦ Φ₁ _ hd
   have hp := GlobalTheory.ThK.Inhab.pairV hm.triple

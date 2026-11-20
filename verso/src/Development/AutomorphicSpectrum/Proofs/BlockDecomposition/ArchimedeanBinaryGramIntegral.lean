@@ -22,6 +22,35 @@ open scoped TensorProduct ENNReal NNReal
 noncomputable section
 namespace GlobalTheory.CompanionTheory.BinaryDil
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM d b lam hlam m hm e he s t ht`. Establish `hloc : GlobalTheory.CompanionTheory.SW.IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hσ.1`. Take `⟨i1, i2, i3, i4, i5, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Ainf F ⊗[F] E) := ⟨rfl⟩`.
+
+Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Ainf F) d b lam hlam`. Establish `hd : d = 2`. Rewrite using `[← hσ.2.2.1, Module.finrank_eq_card_basis b, Fintype.card_fin]`. Substitute `hd` using the available equality. Use `set N : ℝ≥0 := ∏ w, ‖e t w‖₊ with hN`.
+
+Establish `hN0 : N ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun w _ => ?_` and prove the remaining obligations. Establish `: IsUnit (e t)` using `ht.map e`. Conclude with `nnnorm_ne_zero_iff.2 (Pi.isUnit_iff.1 this w).ne_zero`. Establish `hN2 : ∏ w, ‖e (t ^ 2) w‖₊ = N ^ 2`.
+
+Rewrite using `[hN, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[map_pow]`. Establish `hs1` using `GlobalTheory.T.archimedean_haar_scaling_norm F e he lam hlam t ht`. Establish `hs2` using `GlobalTheory.T.archimedean_haar_scaling_norm F e he lam hlam (t ^ 2) (ht.pow 2)`.
+
+Rewrite `hs2` using `[hN2]`. Establish `hk` using `GlobalTheory.T.coordinate_measure_scaling_tensor F E σ hσ M 2 b lam hlam t ht _ hs1`. Set `g : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)` to `Matrix.of fun _ _ => algebraMap (Ainf F) (Ainf F ⊗[F] E) t`. Establish `hg : IsUnit g.det`. Rewrite using `[Matrix.det_fin_one]`.
+
+Conclude with `ht.map (algebraMap (Ainf F) (Ainf F ⊗[F] E))`. Establish `hrm : (fun X : Fin 1 → Fin M → Ainf F ⊗[F] E => GlobalTheory.CompanionTheory.SW.rmul (Ainf F) X g) = fun X p i => algebraMap (Ainf F) (Ainf F ⊗[F] E) t * X p i`. Use function extensionality and compare the values at `X p i`. Simplify using `only [GlobalTheory.CompanionTheory.SW.rmul, Fin.sum_univ_one, g, Matrix.of_apply]`. Rewrite using `[Subsingleton.elim p 0, mul_comm]`.
+
+Establish `hsig : sigR (Ainf F) σ (algebraMap (Ainf F) (Ainf F ⊗[F] E) t) = algebraMap (Ainf F) (Ainf F ⊗[F] E) t`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Set `τ : HermR (Ainf F) σ 1 → HermR (Ainf F) σ 1` to `fun S => ⟨fun i j => algebraMap (Ainf F) (Ainf F ⊗[F] E) (t ^ 2) * (S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) i j, by`. Introduce `i j`. Use `S.2 i j` as an intermediate fact.
+
+Use `show sigR (Ainf F) σ (_ * _) = _ * _`. Rewrite using `[map_mul, this, map_pow, map_pow, hsig]⟩`. Establish `hτe : ∀ S i j, (τ S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) i j = algebraMap (Ainf F) (Ainf F ⊗[F] E) (t ^ 2) * (S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) i j` using `fun _ _ _ => rfl`. Establish `hτm : Measurable τ` using `by haveI : BorelSpace (HermR (Ainf F) σ 1) := ⟨rfl⟩`. Establish `: Continuous τ`.
+
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp continuous_subtype_val))`. Conclude with `this.measurable`. Establish `hc` using `GlobalTheory.T.hermitian_measure_scaling_transform F E σ hσ 2 b lam hlam (t ^ 2) (ht.pow 2) _ hs2 τ hτm hτe`.
+
+Establish `hτ : ∀ S, (τ S : Matrix (Fin 1) (Fin 1) (Ainf F ⊗[F] E)) = HeckeCharacterZeroLocus.SiegelWeilU.cT (sigR (Ainf F) σ) g * S * g`. Introduce `S`. Use extensionality with `i j`. Rewrite using `[hτe, map_pow, GlobalTheory.CompanionTheory.SW.Dil.cT_scalar _ _ hsig]`. Establish `key` using `GlobalTheory.T.gram_fiber_measures_rmul_equivariant F E σ hσ M J hJ (Ainf F) hloc 1 (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b lam 1 M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam 1) m (hW 1 M) (hH 1) hm g hg τ hτ _ _ (by rw [hrm]; exact hk) hc (GlobalTheo …`.
+
+Establish `hτs : τ (GlobalTheory.CompanionTheory.SW.hermScal (Ainf F) σ s) = GlobalTheory.CompanionTheory.SW.hermScal (Ainf F) σ (t ^ 2 * s)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `algebraMap (Ainf F) (Ainf F ⊗[F] E) (t ^ 2) * (s ⊗ₜ[F] (1 : E)) = (t ^ 2 * s) ⊗ₜ[F] (1 : E)`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Rewrite `key` using `[hτs, hrm]`. Establish `e1 : (N ^ (2 * M)) * (N⁻¹ ^ (2 * M)) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hN0, one_pow]`. Establish `e2 : (N ^ (2 * M)) * (N ^ 2)⁻¹ = N ^ (2 * M - 2)`. Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩`.
+
+Establish `: 2 * (k + 1) = 2 * k + 2` using `by ring`. Rewrite using `[this, pow_add, mul_assoc, mul_inv_cancel₀ (pow_ne_zero 2 hN0), mul_one]`. Simplify using the standard rewrite rules. Establish `key2` using `congrArg (fun μ' => (N ^ (2 * M)) • μ') key`. Simplify using `only [smul_smul] at key2`.
+
+Rewrite `key2` using `[e1, e2, one_smul]`. Conclude with `key2`.
+-/
 theorem fibre_unit_dilation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 0 < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)), laminf.IsAddHaarMeasure → ∀ (minf : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)), GlobalTheory.CompanionTheory.SW.IsGramFib (Ainf F) σ J 1 (GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf 1 M) (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf 1) minf → ∀ (e : Ainf F ≃+* (InfinitePlace F → ℝ)), IsHomeomorph e → ∀ s t : Ainf F, IsUnit t → minf (GlobalTheory.CompanionTheory.SW.hermScal (Ainf F) σ (t ^ 2 * s)) = ((∏ w, ‖e t w‖₊) ^ (2 * M - 2)) • (minf (GlobalTheory.CompanionTheory.SW.hermScal (Ainf F) σ s)).map (fun X p i => algebraMap (Ainf F) (Ainf F ⊗[F] E) t * X p i) := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM d b lam hlam m hm e he s t ht
   have hloc : GlobalTheory.CompanionTheory.SW.IsLocR (Ainf F) := GlobalTheory.T.infinite_adeles_local_ring_totally_real F hσ.1
@@ -97,6 +126,21 @@ theorem fibre_unit_dilation : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   rw [e1, e2, one_smul] at key2
   exact key2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ J hJ d b li hli mi hm θ hθ ε hε s φ hφ`. Take `⟨-, e, -, he, -, habs, -⟩` from `GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hσ.1`. Take `⟨i1, i2, i3, i4, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Ainf F)`. Use `haveI : BorelSpace (Fin 1 → Fin 2 → Ainf F ⊗[F] E) := hB 1 2`. Use `set t : Ainf F := θ ε with ht_def`.
+
+Establish `ht : IsUnit t` using `(isUnit_iff_ne_zero.2 hε.ne').map θ`. Establish `key` using `fibre_unit_dilation F E σ hσ 2 J hJ (by norm_num) d b li hli.1 mi hm e he s t ht`. Use `set n := Module.finrank ℚ F with hn`. Establish `hw : ∀ w, ‖e t w‖₊ = ε.toNNReal`. Introduce `w`.
+
+Establish `h1` using `(PositivityTheory.PlacePermOperatorBicommutantSpan.theta_real F hσ.1).2 θ hθ ε w`. Establish `h2` using `habs t w`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[coe_nnnorm, Real.norm_eq_abs, h2, Real.coe_toNNReal _ hε.le]`. Rewrite using `[show ‖t w‖ = ‖θ ε w‖ from rfl, h1, abs_of_pos hε]`.
+
+Establish `hN : ∏ w, ‖e t w‖₊ = ε.toNNReal ^ n`. Establish `hc : Fintype.card (InfinitePlace F) = n`. Use `hσ.1` as an intermediate fact. Rewrite using `[hn, IsTotallyReal.finrank F, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`. Rewrite using `[Finset.prod_congr rfl fun w _ => hw w, Finset.prod_const, Finset.card_univ, hc]`.
+
+Establish `hs : θ (ε ^ 2) * s = t ^ 2 * s` using `by rw [map_pow]`. Establish `hD : Continuous (fun (X : Fin 1 → Fin 2 → Ainf F ⊗[F] E) p i => algebraMap (Ainf F) (Ainf F ⊗[F] E) t * X p i)` using `continuous_pi fun p => continuous_pi fun i => continuous_const.mul ((continuous_apply i).comp (continuous_apply p))`. Establish `hf : Measurable (fun X => ENNReal.ofReal (φ X))` using `hφ.measurable.ennreal_ofReal`. Rewrite using `[hs, key, lintegral_smul_measure, lintegral_map hf hD.measurable, hN]`. Establish `hdil : ∀ X, PositivityTheory.Rg.Mass.dil θ ε X = fun p i => algebraMap (Ainf F) (Ainf F ⊗[F] E) t * X p i`.
+
+Introduce `X`. Use function extensionality and compare the values at `p i`. Simplify using `[PositivityTheory.Rg.Mass.dil, Algebra.TensorProduct.algebraMap_apply, ht_def]`. Simplify using `only [hdil]`. Rewrite using `[ENNReal.smul_def, smul_eq_mul, ← mul_assoc]`.
+
+Use `congr 1`. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Simplify using `only [NNReal.coe_pow, Real.coe_toNNReal _ hε.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dilation_inf_binary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
   ∀ (J : Matrix (Fin 2) (Fin 2) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (li : Measure (Ainf F)), IsStdInf li →
   ∀ (mi : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin 2 → Ainf F ⊗[F] E)),

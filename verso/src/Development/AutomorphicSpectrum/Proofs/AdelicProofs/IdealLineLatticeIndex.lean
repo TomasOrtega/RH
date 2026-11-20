@@ -12,16 +12,36 @@ section aux
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Algebra.smul_def c y`.
+-/
 theorem smul_field (c : 𝓞 K) (y : K) : c • y = (c : K) * y := Algebra.smul_def c y
 
+/- English proof (translation)
+The claim follows from `smul_field c (x i)`.
+-/
 theorem smul_coord (c : 𝓞 K) (x : Fin n → K) (i : Fin n) : (c • x) i = (c : K) * x i :=
   smul_field c (x i)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r03a.GlobalTheory.CompanionTheory.Adelic.SatLine.exists_smul_mem M hx`.
+-/
 theorem exists_smul_mem (M : Submodule (𝓞 K) (Fin n → K)) {x : Fin n → K}
     (hx : x ∈ Submodule.span K (M : Set (Fin n → K))) :
     ∃ c : 𝓞 K, c ≠ 0 ∧ c • x ∈ M :=
   _root_.UpperTheory.Reformulated.B.P6.r03a.GlobalTheory.CompanionTheory.Adelic.SatLine.exists_smul_mem M hx
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hM`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (𝓞 K)⁰ (S.image fun x : Fin n → K => a * x j)`. Use `⟨b, nonZeroDivisors.ne_zero b.2, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x h`. Take `⟨t, ht⟩` from `hb _ (Finset.mem_image_of_mem _ (Finset.mem_coe.mp h))`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (𝓞 K) K t = (b : 𝓞 K) • (a * x j)` using `ht`. Rewrite `h1` using `[Algebra.smul_def]`.
+
+Conclude with `h1.symm`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨t, ht⟩` from `hy`.
+
+Use `⟨s + t, ?_⟩` and prove the remaining obligations. Establish `: ((s + t : 𝓞 K) : K) = (s : K) + (t : K)` using `rfl`. Rewrite using `[this, ← hs, ← ht, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`.
+
+Take `⟨s, hs⟩` from `hx`. Use `⟨r * s, ?_⟩` and prove the remaining obligations. Establish `: ((r * s : 𝓞 K) : K) = (r : K) * (s : K)` using `rfl`. Rewrite using `[this, ← hs, smul_coord]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_denominator {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG) (j : Fin n) (a : K) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ ∀ x ∈ M, ∃ t : 𝓞 K, (d : K) * (a * x j) = t := by
   classical
@@ -54,6 +74,9 @@ theorem exists_denominator {M : Submodule (𝓞 K) (Fin n → K)} (hM : M.FG) (j
 
 end aux
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ (d : K) : ℚ) : ℝ)| / (I.absNorm : ℝ) := by intro K _ _ n M hM hspan v hv obtain ⟨j, hj⟩ : ∃ j, v j ≠ 0 := Function.ne_iff.mp hv obtain ⟨d, hd, hden⟩ := exists_denominator hM j (v j)⁻¹ have hdK : (d : K) ≠ 0 := fun h => hd (RingOfIntegers.ext h) let g : 𝓞 K →ₗ[𝓞 …`.
+-/
 theorem saturatedLine_eq_ideal_div :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (M : Submodule (𝓞 K) (Fin n → K)), M.FG →
       Submodule.span K (M : Set (Fin n → K)) = ⊤ → ∀ v : Fin n → K, v ≠ 0 →

@@ -20,11 +20,17 @@ namespace GlobalTheory.ThetaRR
 
 variable {k : Type} [CommRing k] {X B : Scheme.{0}} {p : X ⟶ Sp k} {q : B ⟶ Sp k}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `HermLB.Isometric.refl _`.
+-/
 theorem isometric_pull_of_eq (N : HermLB q) {a b : X ⟶ B} (ha : a ≫ q = p) (hb : b ≫ q = p) (e : a = b) :
     (N.pull a ha).Isometric (N.pull b hb) := by
   subst e
   exact HermLB.Isometric.refl _
 
+/- English proof (translation)
+Establish `h : (f ≫ π) ≫ q = p` using `by rw [hfπ, hπ]`. Establish `R` using `N.refines_pull_pull π hπ f hf h`. Conclude with `(HermLB.isometric_of_chart _ R.le (fun x => R.g X (𝟙 X) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm).trans (isometric_pull_of_eq N h hπ hfπ)`.
+-/
 theorem isometric_pull_pull_self (N : HermLB q) (π : X ⟶ B) (hπ : π ≫ q = p) (f : X ⟶ X) (hf : f ≫ p = p)
     (hfπ : f ≫ π = π) : ((N.pull π hπ).pull f hf).Isometric (N.pull π hπ) := by
   have h : (f ≫ π) ≫ q = p := by rw [hfπ, hπ]
@@ -36,6 +42,9 @@ end GlobalTheory.ThetaRR
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Establish `hne : (4 : ℝ) ^ g ≠ 4 ^ m` using `fun e => hm ((pow_right_injective₀ (by norm_num : (0 : ℝ) < 4) (by norm_num)) e).symm`. Establish `: ((4 : ℝ) ^ g - 4 ^ m) * x = 0` using `by rw [sub_mul, h, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+-/
 theorem eq_zero_of_four_pow_mul (g m : ℕ) (x : ℝ) (hm : m ≠ g) (h : (4 : ℝ) ^ g * x = 4 ^ m * x) : x = 0 := by
   have hne : (4 : ℝ) ^ g ≠ 4 ^ m := fun e =>
     hm ((pow_right_injective₀ (by norm_num : (0 : ℝ) < 4) (by norm_num)) e).symm
@@ -48,15 +57,39 @@ namespace GlobalTheory.ThetaRR
 
 def quartExp : Fin 3 → Fin 3 → ℤ := fun j i => if i = j then ![4, 1, 1] j else 0
 
+/- English proof (translation)
+Simplify using `[lin, quartExp, Fin.sum_univ_three]`.
+-/
 theorem lin_quartExp_zero : lin (fun i => ((quartExp 0 i : ℤ) : ℝ)) = MvPolynomial.C 4 * MvPolynomial.X 0 := by
   simp [lin, quartExp, Fin.sum_univ_three]
 
+/- English proof (translation)
+Simplify using `[lin, quartExp, Fin.sum_univ_three]`.
+-/
 theorem lin_quartExp_one : lin (fun i => ((quartExp 1 i : ℤ) : ℝ)) = MvPolynomial.X 1 := by
   simp [lin, quartExp, Fin.sum_univ_three]
 
+/- English proof (translation)
+Simplify using `[lin, quartExp, Fin.sum_univ_three]`.
+-/
 theorem lin_quartExp_two : lin (fun i => ((quartExp 2 i : ℤ) : ℝ)) = MvPolynomial.X 2 := by
   simp [lin, quartExp, Fin.sum_univ_three]
 
+/- English proof (translation)
+Introduce `hC k _ X B _ p q π hπ g hX f hf hfπ hgen hdeg L N N' hL Φ hΦ`. Use `set F : Fin 3 → HermLB p := ![L, N.pull π hπ, N'.pull π hπ] with hF`. Use `set P : Fin 3 → HermLB p := fun i => (F i).pull f hf with hP`. Establish `h4 : f.residueDegree (genericPoint X) ≠ 0` using `by rw [hdeg]; positivity`. Establish `h1 : IsArFun P (g + 1) (((4 ^ g : ℕ) : ℝ) • Φ)`.
+
+Use `(hC.arProj k X X p p (g + 1) hX hX f hf hgen h4).2 (Fin 3) F Φ hΦ` as an intermediate fact. Rewrite `this` using `[hdeg]`. Then use the resulting hypothesis. Establish `hA : ∀ j, (comb F (quartExp j)).Isometric (P j)`. Introduce `j`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[icls_comb, Fin.sum_univ_three]`. Use `fin_cases j`. Simplify using `only [quartExp, hP, hF]`. Simplify using the standard rewrite rules. Rewrite using `[HermLB.icls_eq_iff.2 hL, HermLB.icls_pow]`.
+
+Use `norm_cast`. Simplify using `only [quartExp, hP, hF]`. Simplify using the standard rewrite rules. Conclude with `HermLB.icls_eq_iff.2 (isometric_pull_pull_self N π hπ f hf hfπ).symm`. Simplify using `only [quartExp, hP, hF]`.
+
+Simplify using the standard rewrite rules. Conclude with `HermLB.icls_eq_iff.2 (isometric_pull_pull_self N' π hπ f hf hfπ).symm`. Establish `h2` using `((hC.arIso k X p (g + 1) hX).2 (Fin 3) F Φ hΦ).2.2 (Fin 3) P quartExp hA`. Establish `e` using `GlobalTheory.ArInt.Model.isArFun_unique hX h1 h2`. Establish `ev : ∀ m : MvPolynomial (Fin 3) ℝ, (4 : ℝ) ^ g * Φ m = Φ (MvPolynomial.aeval (fun j => lin fun i => ((quartExp j i : ℤ) : ℝ)) m)`.
+
+Introduce `m`. Use `LinearMap.congr_fun e m` as an intermediate fact. Simplify using `using this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `eq_zero_of_four_pow_mul g (g + 1) _ (by omega) ?_` and prove the remaining obligations.
+
+Rewrite using `[ev, map_mul, map_pow, MvPolynomial.aeval_X, MvPolynomial.aeval_X, lin_quartExp_zero, lin_quartExp_two, mul_pow, ← MvPolynomial.C_pow, mul_assoc, MvPolynomial.C_mul', map_smul, smul_eq_mul]`. Use `eq_zero_of_four_pow_mul g (g + 2) _ (by omega) ?_` and prove the remaining obligations. Rewrite using `[ev, map_pow, MvPolynomial.aeval_X, lin_quartExp_zero, mul_pow, ← MvPolynomial.C_pow, MvPolynomial.C_mul', map_smul, smul_eq_mul]`. Use `eq_zero_of_four_pow_mul g (g + 1) _ (by omega) ?_` and prove the remaining obligations. Rewrite using `[ev, map_mul, map_pow, MvPolynomial.aeval_X, MvPolynomial.aeval_X, lin_quartExp_zero, lin_quartExp_one, mul_pow, ← MvPolynomial.C_pow, mul_assoc, MvPolynomial.C_mul', map_smul, smul_eq_mul]`.
+-/
 theorem arFun_vanish_of_quartic : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X B : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (q : B ⟶ Sp k) (π : X ⟶ B) (hπ : π ≫ q = p) (g : ℕ), IsArithVar p (g + 1) → ∀ (f : X ⟶ X) (hf : f ≫ p = p), f ≫ π = π → f (genericPoint X) = genericPoint X → f.residueDegree (genericPoint X) = 4 ^ g → ∀ (L : HermLB p) (N N' : HermLB q), (L.pull f hf).Isometric (L.pow 4) → ∀ Φ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ, IsArFun ![L, N.pull π hπ, N'.pull π hπ] (g + 1) Φ → Φ (MvPolynomial.X 0 ^ (g + 1) * MvPolynomial.X 2) = 0 ∧ Φ (MvPolynomial.X 0 ^ (g + 2)) = 0 ∧ Φ (MvPolynomial.X 0 ^ (g + 1) * MvPolynomial.X 1) = 0 := by
   intro hC k _ X B _ p q π hπ g hX f hf hfπ hgen hdeg L N N' hL Φ hΦ
   set F : Fin 3 → HermLB p := ![L, N.pull π hπ, N'.pull π hπ] with hF

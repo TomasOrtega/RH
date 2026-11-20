@@ -10,6 +10,17 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw _ l Xo c C X₁ Y U₀ EE out πY hAdm _ hHom x A _ _ _ _ hcomp θ hθ _`. Use `haveI : CharZero X₁.Ω₁ := X₁.ar.char`. Take `⟨T, f, γ, hfi, hfl, -, hpt, hy⟩` from `GlobalTheory.UPoinc.exists_uTrait_of_stalk_dvr E H Dw l Xo c X₁.o₁ X₁.Ω₁ Y X₁.uΩ x A hcomp θ hθ`. Establish `hsub : Set.range Y.pt ⊆ Set.range U₀.ι`. Rewrite using `[Y.gen, Scheme.Opens.range_ι, Set.singleton_subset_iff]`.
+
+Conclude with `(genericPoint_spec Y.Z).mem_open_set_iff U₀.isOpen |>.2 (by simpa using hAdm.1.ne)`. Set `ξg : Sp X₁.Ω₁ ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι Y.pt hsub`. Establish `hξg : ξg ≫ U₀.ι = Y.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hu : ξg ≫ out.u₀ = spMap X₁.S.R.val.toRingHom` using `out.u₀_gen ξg hξg`. Establish `hHom' : Y.pt ≫ πY = X₁.M.pt`.
+
+Rewrite using `[hHom]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id X₁.Ω₁)) ≫ _ = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Use `⟨T, f, hfi, hfl, ⟨spMap γ ≫ ξg, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hpt, Category.assoc, hξg]`.
+
+Use `⟨spMap γ ≫ spMap (ratHull X₁.S.R).val.toRingHom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, spMap_val_toRat, Category.assoc, hu]`. Rewrite using `[hy, Category.assoc]`. Rewrite using `[hy]`. Simplify using `only [Category.assoc] at hpt ⊢`.
+
+Rewrite using `[reassoc_of% hpt, reassoc_of% hHom', X₁.comp]`.
+-/
 theorem GlobalTheory.UPoinc.exists_uTrait_through_open_of_stalk_dvr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE) (πY : Y.Z ⟶ X₁.M.Z), X₁.S.admitted Y U₀ → X₁.S.IsEE Y U₀ EE → X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY → ∀ (x : Y.Z) (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CharZero A], IsAdicComplete (maximalIdeal A) A → ∀ θ : Y.Z.presheaf.stalk x →+* A, Function.Injective θ → IsLocalHom θ → ∃ (T : UTrait Xo c) (f : A →+* T.V), Function.Injective f ∧ IsLocalHom f ∧ (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ (spMap (f.comp θ) ≫ Y.Z.fromSpecStalk x) ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) ∧ T.y ≫ C.i = jK T.V ≫ (spMap (f.comp θ) ≫ Y.Z.fromSpecStalk x) ≫ πY ≫ X₁.π := by
   intro E _ _ _ H Dw _ l Xo c C X₁ Y U₀ EE out πY hAdm _ hHom x A _ _ _ _ hcomp θ hθ _
   haveI : CharZero X₁.Ω₁ := X₁.ar.char

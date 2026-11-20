@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GoodProjLift
 
+/- English proof (translation)
+Use `⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ f.codRestrict _ hf, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `(LinearEquiv.ofInjective e he).apply_symm_apply (f.codRestrict _ hf x)`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem exists_factor {U H X : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup H] [Module ℂ H]
     [AddCommGroup X] [Module ℂ X] (e : H →ₗ[ℂ] X) (he : Function.Injective e) (f : U →ₗ[ℂ] X)
     (hf : ∀ x, f x ∈ LinearMap.range e) : ∃ g : U →ₗ[ℂ] H, ∀ x, e (g x) = f x := by
@@ -15,12 +18,18 @@ theorem exists_factor {U H X : Type} [AddCommGroup U] [Module ℂ U] [AddCommGro
   have h := (LinearEquiv.ofInjective e he).apply_symm_apply (f.codRestrict _ hf x)
   exact congrArg Subtype.val h
 
+/- English proof (translation)
+Use extensionality with `v h`. Simplify using `[postOn_apply, LinearMap.sum_apply]`.
+-/
 theorem postOn_sum_smul {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {G : Type} [Fintype G]
     (c : G → ℂ) (L : G → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (T : MMap M) :
     postOn M (∑ g, c g • L g) T = ∑ g, c g • postOn M (L g) T := by
   ext v h
   simp [postOn_apply, LinearMap.sum_apply]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hT`. Use `⟨∑ g, c g • a g y, ?_⟩` and prove the remaining obligations. Rewrite using `[postOn_sum_smul, map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, ha]`.
+-/
 theorem postOn_sum_mem_range {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {G : Type} [Fintype G]
     {H : Type} [AddCommGroup H] [Module ℂ H] (e : H →ₗ[ℂ] MMap M)
     (c : G → ℂ) (L : G → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)) (a : G → H →ₗ[ℂ] H)
@@ -31,12 +40,21 @@ theorem postOn_sum_mem_range {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (
   rw [postOn_sum_smul, map_sum]
   exact Finset.sum_congr rfl fun g _ => by rw [map_smul, ha]
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem is_inj {X : Type} [AddCommGroup X] [Module ℂ X] {M : HMod X} {V : Submodule ℂ X} {ip : X → X → ℂ}
     (h : M.Is V ip) : Function.Injective M.e := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem is_range {X : Type} [AddCommGroup X] [Module ℂ X] {M : HMod X} {V : Submodule ℂ X} {ip : X → X → ℂ}
     (h : M.Is V ip) : LinearMap.range M.e = V := h.2.1
 
+/- English proof (translation)
+The claim follows from `exists_factor _ (is_inj hH) (postOn M (∑ g, c g • L g) ∘ₗ f) fun x => postOn_sum_mem_range M H.e c L a ha (by rw [is_range hH]; exact hf x)`.
+-/
 theorem exists_factor_hmod {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {G : Type} [Fintype G]
     {U : Type} [AddCommGroup U] [Module ℂ U] {H : HMod (MMap M)} {W : Submodule ℂ (MMap M)}
     {ip : MMap M → MMap M → ℂ} (hH : H.Is W ip)
@@ -48,6 +66,9 @@ theorem exists_factor_hmod {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R _ _ hM hF`. Establish `key : ∀ i t, ∃ th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H, ∀ x, (R.HW i (sg0 D A)).e (th x) = postOn _ (R.eWf i (sg0 D A)) (R.thF i t x)` using `fun i t => exists_factor_hmod (hM.HW i (sg0 D A)) (RealDat.eC (A := A) (sg0 D A)) (hM.gW i (sg0 D A)) (R.thF i t) (hF i t)`. Use `choose th hth using key`. Conclude with `⟨th, hth⟩`.
+-/
 theorem exists_thG : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → R.thP_thF_mem → ∃ th, ({ R with thG := th } : RealDat D A Ks).thP_thG := by
   intro D G _ _ Pl0 T A Ks _ _ _ R _ _ hM hF
   have key : ∀ i t, ∃ th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H,

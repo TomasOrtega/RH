@@ -7,6 +7,9 @@ namespace GlobalTheory.CNorm
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
+/- English proof (translation)
+Rewrite using `[AddMonoid.End.coe_pow]`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, hψ]`.
+-/
 private lemma pow_apply_ofMul_eq_iterate {M : Type} [CommGroup M] (ψ : AddMonoid.End (Additive M))
     (φ : M →* M) (hψ : ∀ a, ψ (Additive.ofMul a) = Additive.ofMul (φ a)) (n : ℕ) (a : M) :
     (ψ ^ n) (Additive.ofMul a) = Additive.ofMul ((⇑φ)^[n] a) := by
@@ -17,6 +20,19 @@ private lemma pow_apply_ofMul_eq_iterate {M : Type} [CommGroup M] (ψ : AddMonoi
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hE` using `cyclotomic_comp_X_add_one_isEisensteinAt p`. Establish `hm : ((cyclotomic p ℤ).comp (X + 1)).Monic` using `(cyclotomic.monic p ℤ).comp_X_add_C 1`. Establish `hd : ((cyclotomic p ℤ).comp (X + 1)).natDegree = p - 1`. Rewrite using `[natDegree_comp, natDegree_cyclotomic, Nat.totient_prime hp, ← C_1, natDegree_X_add_C, mul_one]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : C (p : ℤ) ∣ (cyclotomic p ℤ).comp (X + 1) - X ^ (p - 1) := by`. Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `i`. Rewrite using `[coeff_sub, coeff_X_pow]`. Break down `lt_trichotomy i (p - 1) with h | h | h` into its components or cases.
+
+Rewrite using `[if_neg h.ne, sub_zero]`. Conclude with `Ideal.mem_span_singleton.1 (hE.mem (by rwa [hd]))`. Rewrite using `[if_pos h, h, ← hd, hm.coeff_natDegree, sub_self]`. Conclude with `dvd_zero _`. Rewrite using `[if_neg h.ne', sub_zero, coeff_eq_zero_of_natDegree_lt (by rwa [hd])]`.
+
+Conclude with `dvd_zero _`. Establish `h0 : G.coeff 0 = 1`. Establish `h : ((cyclotomic p ℤ).comp (X + 1) - X ^ (p - 1)).coeff 0 = (C (p : ℤ) * G).coeff 0`. Rewrite using `[hG]`. Establish `hp1 : (0 : ℕ) ≠ p - 1` using `(Nat.sub_pos_of_lt hp.one_lt).ne`.
+
+Rewrite `h` using `[coeff_sub, coeff_X_pow, if_neg hp1, sub_zero, coeff_C_mul, coeff_zero_eq_eval_zero, eval_comp]`. Simplify using `only [eval_add, eval_X, eval_one, zero_add, eval_one_cyclotomic_prime] at h`. Establish `hpz : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Conclude with `(mul_right_eq_self₀.1 h.symm).resolve_right hpz`. Choose the witnesses or unpack the hypotheses as in `⟨H, hH⟩ : X ∣ G - 1 := by`.
+
+Rewrite using `[X_dvd_iff, coeff_sub, coeff_one_zero, h0, sub_self]`. Use `⟨H, ?_⟩` and prove the remaining obligations. Rewrite using `[← hH, ← C_eq_natCast]`. Take the linear combination `hG`.
+-/
 private lemma cyclotomic_comp_X_add_one_eq (p : ℕ) [Fact p.Prime] :
     ∃ H : ℤ[X], (cyclotomic p ℤ).comp (X + 1) = X ^ (p - 1) + (p : ℤ[X]) * (1 + X * H) := by
   have hp : p.Prime := Fact.out
@@ -52,6 +68,15 @@ private lemma cyclotomic_comp_X_add_one_eq (p : ℕ) [Fact p.Prime] :
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
+/- English proof (translation)
+Take `⟨H, hf⟩` from `cyclotomic_comp_X_add_one_eq p`. Establish `hg` using `mul_neg_geom_sum (-(X * H)) (p - 1)`. Establish `h2 : (-(X * H)) ^ (p - 1) = X ^ (p - 1) * (-H) ^ (p - 1)` using `by rw [← mul_pow, mul_neg]`. Establish `e1 : X ^ (p - 1) = (p : ℤ[X]) * (-(1 + X * H)) + (cyclotomic p ℤ).comp (X + 1)`. Take the linear combination `-hf`.
+
+Establish `e2 : X ^ (p - 1) = (-(1 + X * H)) * (p : ℤ[X]) + (cyclotomic p ℤ).comp (X + 1)`. Take the linear combination `-hf`. Establish `e3 : (p : ℤ[X]) = X ^ (p - 1) * ((p : ℤ[X]) * (-H) ^ (p - 1) - ∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i) + (cyclotomic p ℤ).comp (X + 1) * ∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i`. Take the linear combination `(-(∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i)) * hf + (-(p : ℤ[X])) * hg + (p : ℤ[X]) * h2`. Establish `e4 : (p : ℤ[X]) = ((p : ℤ[X]) * (-H) ^ (p - 1) - ∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i) * X ^ (p - 1) + (∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i) * (cyclotomic p ℤ).comp (X + 1)`.
+
+Take the linear combination `e3`. Use `⟨aeval (R := ℤ) y (-(1 + X * H) : ℤ[X]), aeval (R := ℤ) y ((p : ℤ[X]) * (-H) ^ (p - 1) - ∑ i ∈ Finset.range (p - 1), (-(X * H)) ^ i), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (aeval y) e1`. Rewrite `h` using `[map_add, map_mul, map_natCast, hy, add_zero, map_pow, aeval_X]`. Then use the resulting hypothesis. Establish `h` using `congrArg (aeval y) e2`.
+
+Rewrite `h` using `[map_add, map_mul, map_natCast, hy, add_zero, map_pow, aeval_X]`. Then use the resulting hypothesis. Establish `h` using `congrArg (aeval y) e3`. Rewrite `h` using `[map_add, map_mul, map_mul, map_natCast, hy, zero_mul, add_zero, map_pow, aeval_X]`. Then use the resulting hypothesis. Establish `h` using `congrArg (aeval y) e4`. Rewrite `h` using `[map_add, map_mul, map_mul, map_natCast, hy, mul_zero, add_zero, map_pow, aeval_X]`. Then use the resulting hypothesis.
+-/
 private lemma exists_pow_factor_of_aeval_cyclotomic {S : Type*} [Ring S] (p : ℕ) [Fact p.Prime]
     (y : S) (hy : aeval y ((cyclotomic p ℤ).comp (X + 1)) = 0) :
     ∃ W V : S, y ^ (p - 1) = (p : S) * W ∧ y ^ (p - 1) = W * p ∧
@@ -87,6 +112,29 @@ private lemma exists_pow_factor_of_aeval_cyclotomic {S : Type*} [Ring S] (p : �
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
+/- English proof (translation)
+Introduce `p M _ τ lam hp hlam hN`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Set `T : AddMonoid.End (Additive M)` to `MonoidHom.toAdditive τ`. Set `Y : AddMonoid.End (Additive M)` to `MonoidHom.toAdditive (lam : M →* M)`. Establish `hYT : Y + 1 = T`.
+
+Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, Additive.ofMul a = x` from `⟨_, ofMul_toMul x⟩`. Use `show Additive.ofMul (lam a) + Additive.ofMul a = Additive.ofMul (τ a)`. Rewrite using `[hlam, ← ofMul_mul, div_mul_cancel]`. Establish `hT : aeval T (cyclotomic p ℤ) = 0`.
+
+Rewrite using `[cyclotomic_prime, map_sum]`. Simplify using `only [map_pow, aeval_X]`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, Additive.ofMul a = x` from `⟨_, ofMul_toMul x⟩`. Establish `hs` using `map_sum (AddMonoidHom.mk' (fun g : AddMonoid.End (Additive M) => g (Additive.ofMul a)) (fun _ _ => rfl)) (fun i => T ^ i) (Finset.range p)`.
+
+Express the relevant statement in the definitionally equal form `(∑ i ∈ Finset.range p, T ^ i) (Additive.ofMul a) = ∑ i ∈ Finset.range p, (T ^ i) (Additive.ofMul a) at hs`. Rewrite using `[hs, Finset.sum_congr rfl fun i _ => pow_apply_ofMul_eq_iterate T τ (fun _ => rfl) i a]`. Rewrite using `[← ofMul_prod, ← _root_.GlobalTheory.CNorm.nrm_apply, hN, ofMul_one]`. Both sides reduce to the same expression. Establish `hy : aeval Y ((cyclotomic p ℤ).comp (X + 1)) = 0`.
+
+Rewrite using `[aeval_comp, map_add, aeval_X, map_one, hYT, hT]`. Take `⟨W, V, h1, h2, h3, h4⟩` from `exists_pow_factor_of_aeval_cyclotomic p Y hy`. Establish `hL : ∀ a, Additive.ofMul ((lam ^ (p - 1) : Monoid.End M) a) = (Y ^ (p - 1)) (Additive.ofMul a)` using `fun a => by`. Rewrite using `[Monoid.End.coe_pow]`. Conclude with `(pow_apply_ofMul_eq_iterate Y lam (fun _ => rfl) _ _).symm`.
+
+Establish `hP : ∀ a : M, ((p : AddMonoid.End (Additive M))) (Additive.ofMul a) = Additive.ofMul (a ^ p)` using `fun a => by`. Rewrite using `[AddMonoid.End.natCast_apply, ofMul_pow]`. Establish `K1 : ∀ a, (lam ^ (p - 1) : Monoid.End M) a = (Additive.toMul (W (Additive.ofMul a))) ^ p` using `fun a => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hL, h1, ofMul_pow, ofMul_toMul, ← AddMonoid.End.natCast_apply]`.
+
+Both sides reduce to the same expression. Establish `K2 : ∀ a, (lam ^ (p - 1) : Monoid.End M) a = Additive.toMul (W (Additive.ofMul (a ^ p)))` using `fun a => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hL, h2, ofMul_toMul, ← hP]`. Both sides reduce to the same expression.
+
+Establish `K3 : ∀ a : M, a ^ p = (lam ^ (p - 1) : Monoid.End M) (Additive.toMul (V (Additive.ofMul a)))` using `fun a => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hL, ofMul_toMul, ← hP, h3]`. Both sides reduce to the same expression. Establish `K4 : ∀ a : M, a ^ p = Additive.toMul (V (Additive.ofMul ((lam ^ (p - 1) : Monoid.End M) a)))` using `fun a => by`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hL, ofMul_toMul, ← hP, h4]`. Both sides reduce to the same expression. Use `⟨?_, fun a => ⟨fun ha => ?_, fun ha => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Simplify using `only [_root_.GlobalTheory.CNorm.pows, Subgroup.mem_map, Subgroup.mem_top, true_and, powMonoidHom_apply, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (K3 y).symm⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨_, (K1 y).symm⟩`. Rewrite using `[K2, ha, ofMul_one, map_zero, toMul_zero]`. Rewrite using `[K4, ha, ofMul_one, map_zero, toMul_zero]`.
+-/
 theorem _root_.GlobalTheory.CNorm.pows_eq_range_dif_pow : ∀ (p : ℕ) (M : Type) [CommGroup M] (τ : M →* M)
     (lam : Monoid.End M), p.Prime → (∀ a, lam a = τ a / a) →
     (∀ a, _root_.GlobalTheory.CNorm.nrm τ p a = 1) →

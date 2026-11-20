@@ -18,6 +18,9 @@ namespace GlobalTheory.FlatPairing
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hA i j) (hB j i)`.
+-/
 theorem trace_mul_int {D : D7} {a b : ℕ} (A : Matrix (Fin a) (Fin b) (EAf D)) (B : Matrix (Fin b) (Fin a) (EAf D))
     (hA : IsIntM A) (hB : IsIntM B) :
     Matrix.trace (A * B) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -26,6 +29,11 @@ theorem trace_mul_int {D : D7} {a b : ℕ} (A : Matrix (Fin a) (Fin b) (EAf D)) 
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h1 : (⟨Matrix.trace (A * B), h⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ∑ i, ∑ j, (⟨A i j, hA i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) * ⟨B j i, hB j i⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul]`. Rewrite using `[h1]`. Simplify using `only [map_sum, map_mul, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [redM, dif_pos (hA i j), dif_pos (hB j i)]`.
+-/
 theorem resS_trace_mul {D : D7} (PP : Pl D.host.E) {a b : ℕ} (A : Matrix (Fin a) (Fin b) (EAf D))
     (B : Matrix (Fin b) (Fin a) (EAf D)) (hA : IsIntM A) (hB : IsIntM B)
     (h : Matrix.trace (A * B) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
@@ -40,6 +48,9 @@ theorem resS_trace_mul {D : D7} (PP : Pl D.host.E) {a b : ℕ} (A : Matrix (Fin 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   simp only [redM, dif_pos (hA i j), dif_pos (hB j i)]
 
+/- English proof (translation)
+Introduce `a ha h1`. Apply `h (neg_ne_zero.mpr ha)` to reduce the goal to its premises. Use extensionality with `x`. Use `DFunLike.congr_fun h1 x` as an intermediate fact. Simplify `this` using `[AddChar.mulShift_apply, AddChar.inv_apply]`.
+-/
 theorem inv_isPrimitive {R : Type} [CommRing R] (χ : AddChar R ℂ) (h : χ.IsPrimitive) : (χ⁻¹).IsPrimitive := by
   intro a ha h1
   apply h (neg_ne_zero.mpr ha)
@@ -47,6 +58,9 @@ theorem inv_isPrimitive {R : Type} [CommRing R] (χ : AddChar R ℂ) (h : χ.IsP
   have := DFunLike.congr_fun h1 x
   simpa [AddChar.mulShift_apply, AddChar.inv_apply] using this
 
+/- English proof (translation)
+Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Use `haveI : Finite (𝓞 E ⧸ PP.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Use `letI : Field (𝓞 E ⧸ PP.asIdeal) := Ideal.Quotient.field _`. Use `letI : Fintype (𝓞 E ⧸ PP.asIdeal) := Fintype.ofFinite _`. Conclude with `⟨_, AddChar.FiniteField.primitiveChar_to_Complex_isPrimitive (𝓞 E ⧸ PP.asIdeal)⟩`.
+-/
 theorem exists_primitive {E : Type} [Field E] [NumberField E] (PP : Pl E) :
     ∃ χ : AddChar (kP PP) ℂ, χ.IsPrimitive := by
   haveI : PP.asIdeal.IsMaximal := PP.isMaximal
@@ -58,6 +72,25 @@ theorem exists_primitive {E : Type} [Field E] [NumberField E] (PP : Pl E) :
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT βS βT hψ hS hT hβS hβT Q e he hQ ϖ hϖ hϖQ`. Distinguish the cases in `h0 : S.rank = 0 ∨ T.rank = 0`. Use `⟨fun PP => (exists_primitive PP).choose, fun PP _ => (exists_primitive PP).choose_spec, ?_⟩` and prove the remaining obligations. Introduce `x _ _ u _ _`. Establish `hz : hO S T x u = 0`.
+
+Unfold `hO`. Break down `h0 with h0 | h0` into its components or cases. Use `haveI : IsEmpty (Fin S.rank) := by rw [h0]; infer_instance`. Conclude with `Finset.sum_of_isEmpty _`. Use `haveI : IsEmpty (Fin T.rank) := by rw [h0]; infer_instance`.
+
+Conclude with `Finset.sum_eq_zero fun _ _ => Finset.sum_eq_zero fun _ _ => Finset.sum_of_isEmpty _`. Rewrite using `[symplO, hz, mul_zero, map_zero, AddChar.map_zero_eq_one]`. Use `symm`. Use `Finset.prod_eq_one fun PP _ => ?_` and prove the remaining obligations. Establish `: ∀ (A : Matrix (Fin T.rank) (Fin S.rank) (kP PP.1)) (B : Matrix (Fin S.rank) (Fin T.rank) (kP PP.1)), Matrix.trace (A * B) = 0`.
+
+Introduce `A B`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`. Break down `h0 with h0 | h0` into its components or cases. Use `haveI : IsEmpty (Fin S.rank) := by rw [h0]; infer_instance`. Conclude with `Finset.sum_eq_zero fun _ _ => Finset.sum_of_isEmpty _`.
+
+Use `haveI : IsEmpty (Fin T.rank) := by rw [h0]; infer_instance`. Conclude with `Finset.sum_of_isEmpty _`. Rewrite using `[this, AddChar.map_zero_eq_one]`. Rewrite `h0` using `[not_or]`. Take `⟨χ, hχ, hform⟩` from `GlobalTheory.T.adelicCharacter_factor_primitive_on_idempotentSum D ψ Q e he ϖ hϖ hϖQ (GlobalTheory.T.integral_iff_selfDual_traceCharacter_splitPlaces D ψ S T ΛS ΛT βS βT hψ hS hT hβS hβT (Nat.pos_of_ne_zero h0.1) (Nat.pos_of_ne_zero h0.2) Q e he hQ)`.
+
+Use `⟨fun PP => (χ PP)⁻¹, fun PP hPP => inv_isPrimitive _ (hχ PP hPP), ?_⟩` and prove the remaining obligations. Introduce `x _ hx u hu hux`. Establish `heu : e • u = u`. Use function extensionality and compare the values at `i j`. Conclude with `hu i j`.
+
+Establish `hsm : (u.map fun w => incA D (ϖ : D.host.E) * w : WO S T) = incA D (ϖ : D.host.E) • u` using `rfl`. Establish `hZ : e * (-hO S T u x) = -hO S T u x`. Rewrite using `[mul_neg, ← GlobalTheory.PlaceModel.hO_smul_left, heu]`. Establish `htr : toEAf D (incA D (ϖ : D.host.E) * (-hO S T u x)) = -Matrix.trace (frMapAdj S T βS βT x * frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w))`. Rewrite using `[mul_neg, map_neg, ← GlobalTheory.PlaceModel.hO_smul_left, ← hsm, GlobalTheory.TraceFrames.toEAf_hO_eq_trace_frames S T βS βT]`.
+
+Establish `hint` using `trace_mul_int _ _ hx hux`. Establish `hint' : toEAf D (incA D (ϖ : D.host.E) * (-hO S T u x)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[htr]`. Conclude with `Subring.neg_mem _ hint`. Establish `hs : symplO S T x u = Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (-hO S T u x))`.
+
+Rewrite using `[GlobalTheory.PlaceModel.symplO_skew S T u x, symplO, mul_neg, map_neg]`. Rewrite using `[hs, hform _ hZ hint']`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `h2 : (⟨_, hint'⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = -⟨_, hint⟩` using `Subtype.ext htr`. Rewrite using `[h2, map_neg, resS_trace_mul PP.1 _ _ hx hux, AddChar.inv_apply, Matrix.trace_mul_comm]`.
+-/
 theorem pairing_eq_prod : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Q : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Q → (∀ PP ∈ Q, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∃ ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, (∀ PP ∈ Q, (ψP PP).IsPrimitive) ∧ ∀ x : WO S T, IsHalf (cA D e) x → IsIntM (frMapAdj S T βS βT x) → ∀ u : WO S T, IsHalf e u → IsIntM (frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)) → ψ (symplO S T x u) = ∏ PP ∈ Q.attach, ψP PP.1 (Matrix.trace (redM PP.1 (frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)) * redM PP.1 (frMapAdj S T βS βT x))) := by
   intro D ψ S T ΛS ΛT βS βT hψ hS hT hβS hβT Q e he hQ ϖ hϖ hϖQ
   by_cases h0 : S.rank = 0 ∨ T.rank = 0

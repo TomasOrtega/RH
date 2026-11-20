@@ -20,6 +20,11 @@ set_option linter.unusedSectionVars false
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `h : ∀ x, pInf E (GlobalTheory.CuspRep.sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Rewrite using `[GlobalTheory.CuspBoundSiegel.posIdele_congr hr (Real.exp_pos _) (Real.exp_log hr).symm, GlobalTheory.CuspBoundSiegel.posIdele_exp]`. Express the relevant statement in the definitionally equal form `pInf E (1 - GlobalTheory.CuspRep.sInf E 1 + GlobalTheory.CuspRep.sInf E _) = _`. Simplify using `only [map_add, map_sub, map_one, h, sub_self, zero_add]`. Use function extensionality and compare the values at `w`.
+
+Simplify using `[expU]`. Rewrite using `[← Complex.ofReal_exp, Real.exp_log hr]`.
+-/
 theorem pInf_posIdele (r : ℝ) (hr : 0 < r) :
     pInf E ((posIdele (K := E) r hr : GroundTheory.Global.IdeleGroup E) : Ad E) = fun _ => (r : ℂ) := by
   have h : ∀ x, pInf E (GlobalTheory.CuspRep.sInf E x) = x := fun x => (infEq E).symm_apply_apply x
@@ -31,16 +36,25 @@ theorem pInf_posIdele (r : ℝ) (hr : 0 < r) :
   simp [expU]
   rw [← Complex.ofReal_exp, Real.exp_log hr]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((posIdele r hr : GroundTheory.Global.IdeleGroup E) : AdeleRing (𝓞 E) E).2 = (1 : Af E)`. Conclude with `IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by rw [posIdele_finite]; rfl`.
+-/
 theorem pFin_posIdele (r : ℝ) (hr : 0 < r) :
     pFin E ((posIdele (K := E) r hr : GroundTheory.Global.IdeleGroup E) : Ad E) = 1 := by
   change ((posIdele r hr : GroundTheory.Global.IdeleGroup E) : AdeleRing (𝓞 E) E).2 = (1 : Af E)
   exact IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by rw [posIdele_finite]; rfl
 
+/- English proof (translation)
+Rewrite using `[pInf_posIdele]`. Conclude with `(pi_norm_le_iff_of_nonneg hr.le).2 fun _ => by simp [abs_of_pos hr]`.
+-/
 theorem norm_pInf_posIdele (r : ℝ) (hr : 0 < r) :
     ‖pInf E ((posIdele (K := E) r hr : GroundTheory.Global.IdeleGroup E) : Ad E)‖ ≤ r := by
   rw [pInf_posIdele]
   exact (pi_norm_le_iff_of_nonneg hr.le).2 fun _ => by simp [abs_of_pos hr]
 
+/- English proof (translation)
+Rewrite using `[map_units_inv (pInf E), pInf_posIdele]`. Conclude with `(pi_norm_le_iff_of_nonneg (inv_nonneg.2 hr.le)).2 fun _ => by simp [abs_of_pos hr]`.
+-/
 theorem norm_pInf_posIdele_inv (r : ℝ) (hr : 0 < r) :
     ‖pInf E (((posIdele (K := E) r hr)⁻¹ : GroundTheory.Global.IdeleGroup E) : Ad E)‖ ≤ r⁻¹ := by
   rw [map_units_inv (pInf E), pInf_posIdele]
@@ -48,6 +62,11 @@ theorem norm_pInf_posIdele_inv (r : ℝ) (hr : 0 < r) :
 
 variable {a : ℕ}
 
+/- English proof (translation)
+Use `ga_ext (by rw [pInf_infGL]) ?_` and prove the remaining obligations. Rewrite using `[pFin_infGL]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pFin E (((diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) i j) = (1 : Matrix (Fin a) (Fin a) (Af E)) i j`. Rewrite using `[coe_diagUnits, Matrix.diagonal_apply, Matrix.one_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `pFin_posIdele _ _`. Conclude with `map_zero _`.
+-/
 theorem diag_eq_infGL (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
     (diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) : GA E a) =
       infGL E a (GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) : GA E a)) := by
@@ -61,6 +80,11 @@ theorem diag_eq_infGL (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) :
   · subst h; exact pFin_posIdele _ _
   · exact map_zero _
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg hR).2 fun i => (pi_norm_le_iff_of_nonneg hR).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖pInf E (((diagUnits a u : GA E a) : Matrix (Fin a) (Fin a) (Ad E)) i j)‖ ≤ R`. Rewrite using `[coe_diagUnits, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `hu i`. Rewrite using `[map_zero, norm_zero]`. Conclude with `hR`.
+-/
 theorem norm_diag_le (u : Fin a → GroundTheory.Global.IdeleGroup E) (R : ℝ) (hR : 0 ≤ R)
     (hu : ∀ i, ‖pInf E (u i : Ad E)‖ ≤ R) :
     ‖(Matrix.of.symm (GeneralLinearGroup.map (pInf E) (diagUnits a u : GA E a)).val : LieI (InfinitePlace E) a)‖ ≤ R := by
@@ -71,15 +95,24 @@ theorem norm_diag_le (u : Fin a → GroundTheory.Global.IdeleGroup E) (R : ℝ) 
   · subst h; exact hu i
   · rw [map_zero, norm_zero]; exact hR
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_invT : Continuous (invT : GA E a → GA E a) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use `show ((((diagUnits a u : GA E a)⁻¹ : GA E a)) : Matrix (Fin a) (Fin a) (Ad E))ᵀ = _`. Rewrite using `[← map_inv, coe_diagUnits, Matrix.diagonal_transpose]`.
+-/
 theorem invT_diag (u : Fin a → GroundTheory.Global.IdeleGroup E) :
     invT (diagUnits a u : GA E a) = (diagUnits a u : GA E a)⁻¹ := by
   refine Units.ext ?_
   show ((((diagUnits a u : GA E a)⁻¹ : GA E a)) : Matrix (Fin a) (Fin a) (Ad E))ᵀ = _
   rw [← map_inv, coe_diagUnits, Matrix.diagonal_transpose]
 
+/- English proof (translation)
+Use `⟨⟨(γ⁻¹.val)ᵀ, (γ.val)ᵀ, by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one], by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩, Units.ext ?_⟩` and prove the remaining obligations. Use `show ((((ratGL E a γ)⁻¹ : GA E a)) : Matrix (Fin a) (Fin a) (Ad E))ᵀ = _`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem invT_ratGL (γ : GL (Fin a) E) : ∃ γ' : GL (Fin a) E, invT (ratGL E a γ) = ratGL E a γ' := by
   refine ⟨⟨(γ⁻¹.val)ᵀ, (γ.val)ᵀ, by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one],
     by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩, Units.ext ?_⟩
@@ -87,6 +120,9 @@ theorem invT_ratGL (γ : GL (Fin a) E) : ∃ γ' : GL (Fin a) E, invT (ratGL E a
   rw [← map_inv]
   rfl
 
+/- English proof (translation)
+Introduce `h`. Apply `hξ` to reduce the goal to its premises. Use `congrArg (fun v => v ᵥ* γ⁻¹.val) h` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul]`.
+-/
 theorem vecMul_ne_zero (γ : GL (Fin a) E) {ξ : Fin a → E} (hξ : ξ ≠ 0) : ξ ᵥ* γ.val ≠ 0 := by
   intro h
   apply hξ
@@ -105,6 +141,13 @@ set_option linter.unusedSectionVars false
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨hpos, -, -, hcpt, -, ⟨B0, N, hB0, h6⟩, -⟩` from `hH E a`. Take `⟨B1, hB1⟩` from `hcpt C1 h1`. Take `⟨B2, hB2⟩` from `hcpt C2 h2`. Use `⟨max B2 0 * B0 * max B1 0, N, by positivity, fun p hp q hq y g ξ hξ => ?_⟩` and prove the remaining obligations. Establish `e1 : ht (g * p * infGL E a y * q) ξ ≤ max B2 0 * ht (g * p * infGL E a y) ξ` using `(hB2 q hq _ ξ hξ).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hpos _ ξ hξ).le)`.
+
+Establish `e2` using `h6 y⁻¹ (g * p * infGL E a y) ξ hξ`. Rewrite `e2` using `[inv_inv, mul_assoc (g * p), ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `e3 : ht (g * p) ξ ≤ max B1 0 * ht g ξ` using `(hB1 p hp _ ξ hξ).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hpos _ ξ hξ).le)`. Establish `hS : 1 + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) a)‖ + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) a)‖ = 1 + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) a)‖ + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) a)‖` using `by ring`. Rewrite `e2` using `[hS]`.
+
+Establish `hP : 0 ≤ (1 + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) a)‖ + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) a)‖) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem low (hH : H0) {C1 C2 : Set (GA E a)} (h1 : IsCompact C1) (h2 : IsCompact C2) :
     ∃ B : ℝ, ∃ N : ℕ, 0 ≤ B ∧ ∀ p ∈ C1, ∀ q ∈ C2, ∀ (y : GL (Fin a) (Cinf E)) (g : GA E a) ξ, ξ ≠ 0 →
       ht (g * p * infGL E a y * q) ξ ≤ B * (1 + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) a)‖ +
@@ -133,6 +176,19 @@ theorem low (hH : H0) {C1 C2 : Set (GA E a)} (h1 : IsCompact C1) (h2 : IsCompact
         mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left e3 (mul_nonneg hB0 hP)) (le_max_right _ _)
     _ = _ := by ring
 
+/- English proof (translation)
+Use `set T := max 1 t⁻¹ with hT`. Establish `hT1 : 1 ≤ T` using `le_max_left _ _`. Establish `hTa : 1 ≤ T ^ a` using `one_le_pow₀ hT1`. Establish `h1 : ∀ i, r i ≤ T ^ a * r ⟨0, ha⟩` using `fun i => by`. Use `CuspidalSpectrum.le_pow_mul_of_siegel ht hr hs (i : ℕ) ⟨0, ha⟩ i (by simp)` as an intermediate fact.
+
+Conclude with `this.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hT1 i.2.le) (hr _).le)`. Establish `h2 : ∀ i, r ⟨a - 1, by omega⟩ ≤ T ^ a * r i` using `fun i => by`. Use `CuspidalSpectrum.le_pow_mul_of_siegel ht hr hs (a - 1 - i) i ⟨a - 1, by omega⟩ (by simp; omega)` as an intermediate fact. Conclude with `this.trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hT1 (by omega)) (hr _).le)`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc push_neg at hc`. Establish `hlt : ∏ i, r i < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[hp]`. Conclude with `lt_irrefl _ hlt`.
+
+Assume the negation of the conclusion as `hc push_neg at hc`. Establish `hT0 : 0 < T ^ a` using `by positivity`. Establish `hlt : 1 < ∏ i, r i`. Establish `h3 : ∀ i, r ⟨a - 1, by omega⟩ / T ^ a ≤ r i` using `fun i => by`. Rewrite using `[div_le_iff₀ hT0, mul_comm]`.
+
+Conclude with `h2 i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ ∏ i, r i := Finset.prod_le_prod (fun i _ => by have := hr ⟨a - 1, by omega⟩; positivity) fun i _ => h3 i`. Rewrite `hlt` using `[hp]`.
+
+Conclude with `lt_irrefl _ hlt`.
+-/
 theorem chain {t : ℝ} (ht : 0 < t) (ha : 0 < a) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i)
     (hs : ∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) (hp : ∏ i, r i = 1) :
     (∀ i, r i ≤ (max 1 t⁻¹) ^ a * r ⟨0, ha⟩) ∧ (∀ i, r ⟨a - 1, by omega⟩ ≤ (max 1 t⁻¹) ^ a * r i) ∧
@@ -171,6 +227,9 @@ theorem chain {t : ℝ} (ht : 0 < t) (ha : 0 < a) (r : Fin a → ℝ) (hr : ∀ 
     rw [hp] at hlt
     exact lt_irrefl _ hlt
 
+/- English proof (translation)
+Establish `hK : 0 ≤ K` using `le_trans (by positivity) hPQ`. Establish `h1 : Q ^ N ≤ K ^ N * B * H`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem combine {C B K P Q H v : ℝ} {N M : ℕ} (hC : 0 ≤ C) (hB : 0 ≤ B) (hP : 0 < P) (hQ : 0 < Q)
     (hH : 0 ≤ H) (hPQ : P * Q ≤ K) (hlow : 1 ≤ B * P ^ N * H) (hv : v ≤ C * Q ^ (N * M)) :
     v ≤ C * (K ^ N * B) ^ M * H ^ M := by
@@ -195,6 +254,27 @@ namespace CuspDecayShortRow
 set_option linter.unusedSectionVars false
 
 open GroundTheory.Global in
+/- English proof (translation)
+Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := E) a`. Use `set d : ℕ := Module.finrank ℚ E with hd`. Establish `hd0 : 0 < d` using `Module.finrank_pos`. Establish `had : a * d ≠ 0` using `(Nat.mul_pos ha hd0).ne'`. Use `set m : AdelicGLn.AdelicGL E a → ℝ := fun b => (IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) : ℝ) with hm`.
+
+Establish `hmpos : ∀ b, 0 < m b` using `fun b => (IdeleGroup.ideleModule E _).2`. Use `set s : AdelicGLn.AdelicGL E a → ℝ := fun b => m b ^ (((a * d : ℕ) : ℝ)⁻¹) with hs`. Establish `hspos : ∀ b, 0 < s b` using `fun b => Real.rpow_pos_of_pos (hmpos b) _`. Establish `hspow : ∀ b, s b ^ (a * d) = m b` using `fun b => Real.rpow_inv_natCast_pow (hmpos b).le had`. Use `set f : AdelicGLn.AdelicGL E a → AdelicGLn.AdelicGL E a := fun b => b * (diagUnits a (fun _ : Fin a => posIdele (K := E) (s b) (hspos b)))⁻¹ with hf`.
+
+Establish `hmc : Continuous m` using `continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule.comp (AdelicGLn.continuous_det E a))`. Establish `hsc' : Continuous fun b => (⟨s b, hspos b⟩ : {r : ℝ // 0 < r})` using `Continuous.subtype_mk (hmc.rpow_const fun b => Or.inl (hmpos b).ne') _`. Establish `hfc : Continuous f` using `continuous_id.mul ((continuous_diagUnits a).comp (continuous_pi fun _ => GlobalTheory.CuspBoundSiegel.continuous_posIdele_pos.comp hsc')).inv`. Establish `hω'c : IsCompact (f '' ω)` using `hω.image hfc`. Establish `hω'B : f '' ω ⊆ (adelicBorel (K` using `E) (n := a) : Set (AdelicGLn.AdelicGL E a)) := by`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `mul_mem (hωB hb) (inv_mem (diagUnits_mem_adelicBorel a _))`. Establish `hω'1 : ∀ b ∈ f '' ω, (IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) : ℝ) = 1`. Introduce and unpack `_ ⟨b, -, rfl⟩`. Establish `e : IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det (diagUnits a (fun _ : Fin a => posIdele (K` using `E) (s b) (hspos b)))) = IdeleGroup.ideleModule E (Matrix.GeneralLinearGroup.det b) := Subtype.ext (by rw [GlobalTheory.CuspBoundSiegel.ideleModule_det_diagUnits_posIdele, hspow])`.
+
+Simplify using `only [hf, map_mul, map_inv, e, mul_inv_cancel]`. Both sides reduce to the same expression. Use `⟨f '' ω, hω'c, hω'B, hω'1, t, ht, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, hb, _, ⟨r, hr, hrat, rfl⟩, k, hk, e⟩` from `hsieg g`. Establish `hprod : 0 < ∏ i, r i` using `Finset.prod_pos fun i _ => hr i`.
+
+Use `set ρ := (∏ i, r i) ^ ((a : ℝ)⁻¹) with hρ`. Establish `hρpos : 0 < ρ` using `Real.rpow_pos_of_pos hprod _`. Establish `hρa : ρ ^ a = ∏ i, r i` using `Real.rpow_inv_natCast_pow hprod.le ha.ne'`. Use `set r' : Fin a → ℝ := fun i => r i / ρ with hr'`. Establish `hr'pos : ∀ i, 0 < r' i` using `fun i => div_pos (hr i) hρpos`.
+
+Establish `hD : diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) = diagUnits a (fun _ : Fin a => posIdele (K := E) ρ hρpos) * diagUnits a (fun i => posIdele (K := E) (r' i) (hr'pos i)) := by`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, ← GlobalTheory.CuspBoundSiegel.posIdele_mul]`.
+
+Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (by simp only [hr']; field_simp)`. Use `set D' := diagUnits a (fun i => posIdele (K := E) (r' i) (hr'pos i)) with hD'`. Establish `key : ratGL E a γ * g = splitCentre E a (Real.log (s b) + Real.log ρ) * (f b * D' * k)`. Express the relevant statement in the definitionally equal form `AdelicGLn.diagonal E a γ * g = _`. Rewrite using `[e, hD, GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a hρpos, hsc]`.
+
+Simplify using `only [hf, GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a (hspos b)]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `⟨γ, Real.log (s b) + Real.log ρ, f b, r', hr'pos, k, ⟨b, hb, rfl⟩, fun i j hij => ?_, ?_, hk, key⟩` and prove the remaining obligations. Simplify using `only [hr']`.
+
+Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (hrat i j hij) hρpos.le`. Simplify using `only [hr']`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hρa, div_self hprod.ne']`.
+-/
 theorem siegel {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ha : 0 < a)
     (hsc : ∀ s t, splitCentre E a (s + t) = splitCentre E a s * splitCentre E a t)
     (hcomm : ∀ t (g : GA E a), splitCentre E a t * g = g * splitCentre E a t) :
@@ -288,6 +368,9 @@ set_option linter.unusedSectionVars false
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Pi.add_apply]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => Real.rpow_add (hr i) _ _), Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_eq_single (⟨a - 1, by omega⟩ : Fin a) (fun b _ hb => by rw [Pi.single_eq_of_ne hb, Real.rpow_zero]) (by simp), Finset.prod_eq_single (⟨0, ha⟩ : Fin a) (fun b _ hb => by rw [Pi.single_eq_of_ne hb, Real.rpow_zero]) (by simp)]`. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, Real.rpow_neg (hr _).le, Real.rpow_natCast, Real.rpow_natCast, div_pow, div_eq_mul_inv]`.
+-/
 theorem lam_prod (ha : 0 < a) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (L : ℕ) :
     ∏ i, r i ^ ((Pi.single (⟨a - 1, by omega⟩ : Fin a) (L : ℝ) + Pi.single (⟨0, ha⟩ : Fin a) (-(L : ℝ)) : Fin a → ℝ) i) =
       (r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩) ^ L := by
@@ -300,6 +383,11 @@ theorem lam_prod (ha : 0 < a) (r : Fin a → ℝ) (hr : ∀ i, 0 < r i) (L : ℕ
   rw [Pi.single_eq_same, Pi.single_eq_same, Real.rpow_neg (hr _).le, Real.rpow_natCast, Real.rpow_natCast,
     div_pow, div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `h0 : splitCentre E a 0 = 1`. Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (mul_one _).symm)`. Establish `e : splitCentre E a c = diagUnits a (fun _ : Fin a => posIdele (K` using `E) (Real.exp c) (Real.exp_pos c)) := by`.
+
+Rewrite using `[GlobalTheory.CuspBoundSiegel.diagUnits_posIdele a (Real.exp_pos c), Real.log_exp]`. Rewrite using `[e, invT_diag, ← e]`. Use `symm`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← hadd, add_neg_cancel, h0]`.
+-/
 theorem invT_split (hadd : ∀ s t, splitCentre E a (s + t) = splitCentre E a s * splitCentre E a t) (c : ℝ) :
     invT (splitCentre E a c) = splitCentre E a (-c) := by
   have h0 : splitCentre E a 0 = 1 := by
@@ -313,6 +401,27 @@ theorem invT_split (hadd : ∀ s t, splitCentre E a (s + t) = splitCentre E a s 
   apply eq_inv_of_mul_eq_one_right
   rw [← hadd, add_neg_cancel, h0]
 
+/- English proof (translation)
+Introduce `M`. Take `⟨B, N, hB, hlow⟩` from `low hH h1 h2`. Establish `hpos` using `(hH E a).1`. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.CuspFinGL.cuspRapidDecaySiegelGL E a φ hφ ω hω hωB hω1 t ht0 (Pi.single (⟨a - 1, by omega⟩ : Fin a) ((N * M : ℕ) : ℝ) + Pi.single (⟨0, ha⟩ : Fin a) (-((N * M : ℕ) : ℝ)))`. Use `set T := (max 1 t⁻¹) ^ a with hT`.
+
+Establish `hT1 : 1 ≤ T` using `one_le_pow₀ (le_max_left _ _)`. Establish `hT0 : 0 ≤ T` using `le_trans zero_le_one hT1`. Use `⟨max C 0 * ((T + 2 * T ^ 2) ^ N * B) ^ M, fun g ξ hξ => ?_⟩` and prove the remaining obligations. Take `⟨b, r, hr, kk, xh, η, p, q, y, hb, hs, hprod, hk, hF, hη, hht, hp, hq, hone', hy⟩` from `hdec g ξ hξ`. Take `⟨c1, c2, c3, c4⟩` from `chain ht0 ha r hr hs hprod`.
+
+Rewrite `c1`, `c2`, `c3`, `c4` using `[← hT]`. Establish `hr0 : 0 < r ⟨0, ha⟩` using `hr _`. Establish `hrl : 0 < r ⟨a - 1, by omega⟩` using `hr _`. Establish `n1 : ‖(Matrix.of.symm (GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) : GA E a)).val : LieI (InfinitePlace E) a)‖ ≤ T * r ⟨0, ha⟩ := norm_diag_le _ _ (by positivity) fun i => (norm_pInf_posIdele _ _).trans (c1 i)`. Establish `n2 : ‖(Matrix.of.symm (GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) : GA E a))⁻¹.val : LieI (InfinitePlace E) a)‖ ≤ T / r ⟨a - 1, by omega⟩ := by`.
+
+Establish `e : (GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) : GA E a))⁻¹ = GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => (posIdele (K := E) (r i) (hr i))⁻¹) : GA E a) := by`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `norm_diag_le _ _ (by positivity) fun i => (norm_pInf_posIdele_inv _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ hrl, inv_mul_le_iff₀ (hr i), mul_comm]`. Conclude with `c2 i`. Establish `hyP : 1 + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) a)‖ + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) a)‖ ≤ 1 + T * r ⟨0, ha⟩ + T / r ⟨a - 1, by omega⟩`. Break down `hy with rfl | rfl` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[inv_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP0 : 0 < 1 + T * r ⟨0, ha⟩ + T / r ⟨a - 1, by omega⟩` using `by positivity`. Establish `hH0 : 0 ≤ ht g ξ` using `(hpos g ξ hξ).le`. Establish `hlowb : 1 ≤ B * (1 + T * r ⟨0, ha⟩ + T / r ⟨a - 1, by omega⟩) ^ N * ht g ξ`.
+
+Establish `h` using `hlow p hp q hq y xh η hη`. Rewrite `h` using `[hone', ← hht]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPQ : (1 + T * r ⟨0, ha⟩ + T / r ⟨a - 1, by omega⟩) * (r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩) ≤ T + 2 * T ^ 2`. Establish `d1 : r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩ ≤ T` using `by rw [div_le_iff₀ hr0]; exact c1 _`.
+
+Establish `d2 : T * r ⟨a - 1, by omega⟩ ≤ T * T` using `mul_le_mul_of_nonneg_left c4 hT0`. Establish `d3 : T / r ⟨0, ha⟩ ≤ T * T` using `by rw [div_le_iff₀ hr0]; nlinarith`. Establish `e : (1 + T * r ⟨0, ha⟩ + T / r ⟨a - 1, by omega⟩) * (r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩) = r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩ + T * r ⟨a - 1, by omega⟩ + T / r ⟨0, ha⟩`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hv : ‖F g‖ ≤ max C 0 * (r ⟨a - 1, by omega⟩ / r ⟨0, ha⟩) ^ (N * M)`. Rewrite using `[hF]`. Use `hC b hb r hr hs hprod kk hk` as an intermediate fact. Rewrite `this` using `[lam_prod ha r hr]`.
+
+Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Conclude with `combine (le_max_right _ _) hB hP0 (div_pos hrl hr0) hH0 hPQ hlowb hv`.
+-/
 theorem core_gen (hH : H0) (ha : 0 < a) (φ : Sm E a) (hφ : IsCuspForm φ)
     (hone : ∀ η : Fin a → E, η ≠ 0 → 1 ≤ ht (1 : GA E a) η)
     {ω : Set (GA E a)} (hω : IsCompact ω)
@@ -387,6 +496,23 @@ theorem core_gen (hH : H0) (ha : 0 < a) (φ : Sm E a) (hφ : IsCuspForm φ)
     exact this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))
   exact combine (le_max_right _ _) hB hP0 (div_pos hrl hr0) hH0 hPQ hlowb hv
 
+/- English proof (translation)
+Take `⟨-, -, -, hrat, -, -, -, hcomm, hadd, -, -⟩` from `hD E a`. Take `⟨-, hhrat, hhcen, -, -, -, hinvT⟩` from `hH E a`. Take `⟨ω, hω, hωB, hω1, t, ht0, hsieg⟩` from `siegel a ha hadd hcomm`. Establish `hmc : IsCompact (maxCompact (K` using `E) (n := a) : Set (GA E a)) := isCompact_maxCompact`. Establish `hDt1 : Dt (1 : GA E a) = 1` using `by have := hrat 1; rwa [map_one] at this`.
+
+Establish `hone : ∀ η : Fin a → E, η ≠ 0 → 1 ≤ ht (1 : GA E a) η` using `fun η hη => by`. Unfold `ht`. Rewrite using `[hDt1, Real.one_rpow, div_one]`. Conclude with `one_le_height_one hη`. Prove the components needed by the constructor for the conclusion.
+
+Use `core_gen hH ha φ hφ hone hω hωB hω1 ht0 (hmc.image continuous_inv) (hω.image continuous_inv) _ fun g ξ hξ => ?_` and prove the remaining obligations. Take `⟨γ, c, b, r, hr, kk, hb, hs, hp, hk, he⟩` from `hsieg g`. Establish `hη` using `vecMul_ne_zero γ⁻¹ hξ`. Use `⟨b, r, hr, kk, b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * kk, ξ ᵥ* (γ⁻¹).val, kk⁻¹, b⁻¹, (GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) : GA E a))⁻¹, hb, hs, hp, hk, ?_, hη, ?_, ⟨kk, hk, rfl⟩, ⟨b, hb, rfl⟩, ?_, Or.inr rfl⟩` and prove the remaining obligations. Rewrite using `[← hA c (b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * kk), ← he, hφ.1.left]`.
+
+Establish `e1 : g = ratGL E a γ⁻¹ * (splitCentre E a c * (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * kk)) := by`. Rewrite using `[← he, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Use `conv_lhs => rw [e1]`. Rewrite using `[hhrat, hhcen _ _ _ hη]`. Rewrite using `[map_inv, ← diag_eq_infGL]`.
+
+Use `group`. Use `core_gen hH ha φ hφ hone hω hωB hω1 ht0 (hmc.image continuous_invT.inv) (hω.image continuous_invT.inv) _ fun g ξ hξ => ?_` and prove the remaining obligations. Take `⟨γ, c, b, r, hr, kk, hb, hs, hp, hk, he⟩` from `hsieg (invT g)`. Take `⟨γ', hγ'⟩` from `invT_ratGL γ⁻¹`. Establish `hη` using `vecMul_ne_zero γ' hξ`.
+
+Use `⟨b, r, hr, kk, invT (b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * kk), ξ ᵥ* γ'.val, (invT kk)⁻¹, (invT b)⁻¹, GeneralLinearGroup.map (pInf E) (diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) : GA E a), hb, hs, hp, hk, ?_, hη, ?_, ⟨kk, hk, rfl⟩, ⟨b, hb, rfl⟩, ? …` and prove the remaining obligations. Use `show φ.1 (invT g) = _`. Rewrite using `[← hA c (b * diagUnits a (fun i => posIdele (K := E) (r i) (hr i)) * kk), ← he, hφ.1.left]`. Establish `e1 : invT g = ratGL E a γ⁻¹ * (splitCentre E a c * (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * kk)) := by`. Rewrite using `[← he, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`.
+
+Establish `e2 : g = ratGL E a γ' * (splitCentre E a (-c) * invT (b * diagUnits a (fun i => posIdele (K` using `E) (r i) (hr i)) * kk)) := by`. Establish `e3` using `congrArg invT e1`. Rewrite `e3` using `[(hinvT g g).2, (hinvT _ _).1, (hinvT (splitCentre E a c) _).1, hγ', invT_split hadd]`. Conclude with `e3`. Use `conv_lhs => rw [e2]`.
+
+Rewrite using `[hhrat, hhcen _ _ _ hη]`. Rewrite using `[(hinvT _ _).1, (hinvT _ _).1, invT_diag, ← diag_eq_infGL]`. Use `group`.
+-/
 theorem core (hD : D0) (hH : H0) (ha : 0 < a) (φ : Sm E a) (hφ : IsCuspForm φ)
     (hA : ∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) :
     Dec φ.1 ∧ Dec fun g => φ.1 (invT g) := by
@@ -434,6 +560,11 @@ theorem core (hD : D0) (hH : H0) (ha : 0 < a) (φ : Sm E a) (hφ : IsCuspForm φ
       rw [hhrat, hhcen _ _ _ hη]
     · rw [(hinvT _ _).1, (hinvT _ _).1, invT_diag, ← diag_eq_infGL]; group
 
+/- English proof (translation)
+Take `⟨hpos, -, -, hcpt, -⟩` from `hH E a`. Take `⟨B, hB⟩` from `hcpt {h} isCompact_singleton`. Introduce `M`. Take `⟨C, hC⟩` from `hF M`. Use `⟨max C 0 * (max B 0) ^ M, fun g ξ hξ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ht (g * h) ξ ≤ max B 0 * ht g ξ` using `(hB h rfl g ξ hξ).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hpos g ξ hξ).le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dec_mul (hH : H0) {F : GA E a → ℂ} (hF : Dec F) (h : GA E a) : Dec fun g => F (g * h) := by
   obtain ⟨hpos, -, -, hcpt, -⟩ := hH E a
   obtain ⟨B, hB⟩ := hcpt {h} isCompact_singleton
@@ -451,6 +582,11 @@ theorem dec_mul (hH : H0) {F : GA E a → ℂ} (hF : Dec F) (h : GA E a) : Dec f
 
 end CuspDecayShortRow
 
+/- English proof (translation)
+Introduce `hD hH E _ _ _ k hk π hπ φ hφ h`. Take `⟨-, -, -, -, -, -, hinvT⟩` from `hH E k`. Take `⟨h1, h2⟩` from `CuspDecayShortRow.core hD hH hk φ (π.cusp φ hφ) (hπ φ hφ)`. Use `⟨CuspDecayShortRow.dec_mul hH h1 h, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => φ.1 (invT g * h)) = fun g => (fun g => φ.1 (invT g)) (g * invT h)`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [(hinvT g (invT h)).1, (hinvT h h).2]`. Rewrite using `[e]`. Conclude with `CuspDecayShortRow.dec_mul hH h2 (invT h)`.
+-/
 theorem cusp_decay_short_row_of : D0 → H0 → CuspDecayShortRowColumn := by
   intro hD hH E _ _ _ k hk π hπ φ hφ h
   obtain ⟨-, -, -, -, -, -, hinvT⟩ := hH E k

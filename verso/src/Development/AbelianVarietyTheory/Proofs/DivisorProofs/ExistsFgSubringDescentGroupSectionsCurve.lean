@@ -20,6 +20,75 @@ namespace GlobalTheory.SpreadCurve
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `k _ G _ hG g hg m hm hmk s hs P hP u a b hu hab`. Take `⟨hc, h1, h2, h3, h5⟩` from `hG`. Take `⟨R₀, G₀, i₀, ic₀, φ, -, hR₀, s₁, s₂, s₃, hφ⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring k G ∅ h1 h2 h3`. Use `haveI := s₁`. Use `haveI := s₂`.
+
+Use `haveI := s₃`. Use `set L := Localization.Away P with hL`. Establish `hu₀ : (u ≫ φ) ≫ G₀.hom = spMap (algebraMap R₀ L)`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, hu]`. Conclude with `ModelDescent.spMap_comp_eq (RingHom.ext fun r => (IsScalarTower.algebraMap_apply R₀ k L r).symm)`.
+
+Take `⟨S, yS, hSfg, -, hyS⟩` from `Spread.exists_fg_points G₀.hom (fun _ : Unit => u ≫ φ) (fun _ => hu₀) ⊥ Subalgebra.fg_bot`. Take `⟨T, hT⟩` from `hSfg`. Take `⟨Fc, hFc⟩` from `GlobalTheory.T.exists_finset_away_lift_descent k P T`. Use `set X' : L := algebraMap (Polynomial k) L X with hX'`. Establish `haev : ∀ (c : L →ₐ[k] k) (q : Polynomial k), c (algebraMap (Polynomial k) L q) = q.eval (c X')`.
+
+Introduce `c q`. Establish `: (c : L →+* k).comp (algebraMap (Polynomial k) L) = Polynomial.evalRingHom (c X')`. Use `Polynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Simplify using `only [RingHom.coe_comp, Function.comp_apply, coe_evalRingHom, eval_C]`. Establish `e : algebraMap (Polynomial k) L (C r) = algebraMap k L r`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply k (Polynomial k) L, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[e]`. Conclude with `c.commutes r`. Simplify using `[hX']`. Conclude with `congrArg (fun f : Polynomial k →+* k => f q) this`.
+
+Establish `hne : ∀ c : L →ₐ[k] k, P.eval (c X') ≠ 0`. Introduce `c`. Rewrite using `[← haev]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit P).map c).ne_zero`. Set `F : Finset k` to `Fc ∪ P.coeffs ∪ {(m : k)⁻¹, a X', b X', (P.eval (a X'))⁻¹, (P.eval (b X'))⁻¹}`.
+
+Establish `hx₀ : ∀ i : s, (i.1.left ≫ φ) ≫ G₀.hom = spMap (algebraMap R₀ k)`. Introduce `i`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w i.1]`. Conclude with `Category.id_comp _`. Take `⟨R, y, hRfg, hR₁R, hy⟩` from `Spread.exists_fg_points G₀.hom (fun i : s => i.1.left ≫ φ) hx₀ (Algebra.adjoin R₀ (F : Set k)) (Subalgebra.fg_adjoin_finset F)`.
+
+Set `R' : Subring k` to `R.toSubring`. Establish `hFR : (F : Set k) ⊆ R'` using `fun x hx => hR₁R (Algebra.subset_adjoin hx)`. Establish `hR₀R : R₀ ≤ R'` using `fun r hr => R.algebraMap_mem ⟨r, hr⟩`. Set `jn : R₀ →+* R'` to `Subring.inclusion hR₀R`. Establish `hjn : R'.subtype.comp jn = R₀.subtype` using `rfl`.
+
+Establish `hjnsp : spMap R'.subtype ≫ spMap jn = spMap R₀.subtype` using `ModelDescent.spMap_comp_eq hjn`. Set `G₁ : Over (Sp R')` to `(Over.pullback (spMap jn)).obj G₀`. Use `letI : GrpObj G₁ := Functor.grpObjObj`. Establish `hG₁c : IsCommMonObj G₁` using `Functor.isCommMonObj_obj`. Establish `hψ` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor (spMap jn) (spMap R'.subtype) (hφ.congr hjnsp.symm rfl)`.
+
+Use `set ψ := pullback.lift φ (G.hom ≫ spMap R'.subtype) (by rw [hφ.1.w, Category.assoc, hjnsp]) with hψdef`. Establish `hψ₁ : ψ ≫ pullback.fst G₀.hom (spMap jn) = φ` using `pullback.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ pullback.snd G₀.hom (spMap jn) = G.hom ≫ spMap R'.subtype` using `pullback.lift_snd _ _ _`. Establish `hyR : ∀ i : s, (y i : Sp R' ⟶ G₀.left) ≫ G₀.hom = spMap jn` using `fun i => (hy i).1`. Establish `hyk : ∀ i : s, spMap R'.subtype ≫ (y i : Sp R' ⟶ G₀.left) = i.1.left ≫ φ` using `fun i => (hy i).2`.
+
+Establish `hsq : IsPullback hψ.1.isoPullback.inv (pullback.snd G₁.hom (spMap R'.subtype)) G.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id, IsPullback.isoPullback_inv_snd]⟩`. Establish `hgc : GeometricallyConnected (pullback.snd G₁.hom (spMap R'.subtype))` using `MorphismProperty.of_isPullback (P := @GeometricallyConnected) hsq h5`. Establish `hgd : SmoothOfRelativeDimension g (pullback.snd G₁.hom (spMap R'.subtype))` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hsq hg`. Establish `hunit : IsUnit (m : R')`. Use `IsUnit.of_mul_eq_one (a := (m : R')) ⟨(m : k)⁻¹, hFR (by simp [F])⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+
+Simplify using `[mul_inv_cancel₀ hmk]`. Set `sec : s → (𝟙_ (Over (Sp R')) ⟶ G₁)` to `fun i => Over.homMk (pullback.lift (y i : Sp R' ⟶ G₀.left) (𝟙 _) (by rw [hyR i, Category.id_comp])) (pullback.lift_snd _ _ _)`. Establish `hsec₁ : ∀ i : s, (sec i).left ≫ pullback.fst G₀.hom (spMap jn) = y i` using `fun i => pullback.lift_fst _ _ _`. Establish `hkey : ∀ i : s, i.1.left ≫ ψ = spMap R'.subtype ≫ (sec i).left`. Introduce `i`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁, Category.assoc, hsec₁, hyk]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w i.1, Category.assoc] erw [pullback.lift_snd]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hdist : ∀ i j : s, spMap R'.subtype ≫ (sec i).left = spMap R'.subtype ≫ (sec j).left → i = j`.
+
+Introduce `i j e`. Establish `e' : i.1.left ≫ φ = j.1.left ≫ φ`. Rewrite using `[← hψ₁, ← Category.assoc, ← Category.assoc, hkey, hkey, e]`. Use `Subtype.ext (Over.OverMorphism.ext (hφ.1.hom_ext e' ?_))` and prove the remaining obligations. Rewrite using `[Over.w i.1, Over.w j.1]`.
+
+Establish `hsec_inj : Function.Injective sec` using `fun i j e => hdist i j (by rw [e])`. Use `haveI hsep₁ : IsSeparated G₁.hom := show IsSeparated (pullback.snd _ _) from inferInstance`. Establish `hpow : ∀ i : s, sec i ^ m = 1`. Introduce `i`. Establish `A` using `GlobalTheory.FrameMove.pow_comm hψ (hkey i) m`.
+
+Establish `B` using `GlobalTheory.FrameMove.pow_comm hψ (hkey i) 0`. Rewrite `A` using `[hs i.1 i.2]`. Rewrite `B` using `[pow_zero, pow_zero]`. Use `Over.OverMorphism.ext (Spread.point_ext R'.subtype Subtype.val_injective G₁.hom ?_ (A.symm.trans B))` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`.
+
+Establish `hPl : P ∈ Polynomial.lifts R'.subtype`. Use `(Polynomial.lifts_iff_coeff_lifts P).2 fun n => ?_` and prove the remaining obligations. Distinguish the cases in `hn : P.coeff n = 0`. Conclude with `⟨0, by simp [hn]⟩`. Conclude with `⟨⟨P.coeff n, hFR (by simp [F, Polynomial.coeff_mem_coeffs hn])⟩, rfl⟩`.
+
+Take `⟨P₁, hP₁⟩` from `Polynomial.mem_lifts P |>.1 hPl`. Establish `hP₁0 : P₁ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hP (by rw [← hP₁, Polynomial.map_zero])`. Establish `hPu : IsUnit (((algebraMap (Polynomial k) L).comp (Polynomial.mapRingHom R'.subtype)) P₁)`.
+
+Rewrite using `[RingHom.comp_apply, Polynomial.coe_mapRingHom, hP₁]`. Conclude with `IsLocalization.Away.algebraMap_isUnit P`. Use `set Lm := IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hPu with hLm`. Establish `hinj : Function.Injective Lm` using `GlobalTheory.T.localizationAway_polynomial_subring_lift_injective k P hP R' P₁ hPu hP₁`. Establish `hrange : ∀ t ∈ T, t ∈ Lm.range` using `hFc R' (fun x hx => hFR (by simp [F, hx])) P₁ hPu hP₁`.
+
+Establish `hLmC : ∀ r : R', Lm (algebraMap R' (Localization.Away P₁) r) = algebraMap k L r`. Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply R' (Polynomial R') (Localization.Away P₁), hLm, IsLocalization.Away.lift_eq]`. Simplify using `[Polynomial.algebraMap_apply, IsScalarTower.algebraMap_apply k (Polynomial k) L]`. Establish `hcl : Subring.closure (Set.range (algebraMap R₀ L) ∪ (T : Set L)) ≤ Lm.range`.
+
+Rewrite using `[Subring.closure_le]`. Introduce and unpack `z (⟨r, rfl⟩ | hz)`. Use `⟨algebraMap R' (Localization.Away P₁) (jn r), ?_⟩` and prove the remaining obligations. Rewrite using `[hLmC]`. Conclude with `(IsScalarTower.algebraMap_apply R₀ k L r).symm`.
+
+Conclude with `hrange z hz`. Establish `hSr : ∀ z : S, S.val.toRingHom z ∈ Lm.range`. Introduce `z`. Apply `hcl` to reduce the goal to its premises. Rewrite using `[← Algebra.adjoin_eq_ring_closure, hT]`.
+
+Conclude with `z.2`. Take `⟨gS, hgS⟩` from `ModelDescent.exists_factor S.val.toRingHom Lm hinj hSr`. Establish `hcomp : gS.comp (algebraMap R₀ S) = (algebraMap R' (Localization.Away P₁)).comp jn`. Use `RingHom.ext fun r => hinj ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Lm (gS (algebraMap R₀ S r)) = Lm (algebraMap R' _ (jn r))`.
+
+Rewrite using `[← RingHom.comp_apply Lm gS, hgS, hLmC]`. Express the relevant statement in the definitionally equal form `(algebraMap R₀ L r) = _`. Conclude with `IsScalarTower.algebraMap_apply R₀ k L r`. Set `u₁' : Sp (Localization.Away P₁) ⟶ G₀.left` to `spMap gS ≫ yS ()`. Establish `hu₁' : u₁' ≫ G₀.hom = spMap (algebraMap R' (Localization.Away P₁)) ≫ spMap jn`.
+
+Rewrite using `[Category.assoc, (hyS ()).1, ModelDescent.spMap_comp_eq hcomp]`. Conclude with `(ModelDescent.spMap_comp_eq rfl).symm`. Set `u₁ : Sp (Localization.Away P₁) ⟶ G₁.left` to `pullback.lift u₁' (spMap (algebraMap R' (Localization.Away P₁))) hu₁'`. Establish `hu₁f : u₁ ≫ pullback.fst G₀.hom (spMap jn) = u₁'` using `pullback.lift_fst _ _ _`. Establish `hu₁s : u₁ ≫ G₁.hom = spMap (algebraMap R' (Localization.Away P₁))` using `pullback.lift_snd _ _ _`.
+
+Establish `hpt : ∀ c : L →ₐ[k] k, c X' ∈ R' → (P.eval (c X'))⁻¹ ∈ R' → ∃ (w0 : R') (hw0 : IsUnit (Polynomial.evalRingHom w0 P₁)), R'.subtype.comp (IsLocalization.Away.lift (S` using `Localization.Away P₁) P₁ hw0) = c.toRingHom.comp Lm := by`. Introduce `c hc hci`. Establish `hev : ((Polynomial.eval (⟨c X', hc⟩ : R') P₁ : R') : k) = P.eval (c X')`. Use `Eq.trans ?_ (congrArg (Polynomial.eval (c X')) hP₁)` and prove the remaining obligations. Rewrite using `[Polynomial.eval_map]`.
+
+Conclude with `(Polynomial.eval₂_at_apply R'.subtype _).symm`. Establish `hw0 : IsUnit (Polynomial.evalRingHom (⟨c X', hc⟩ : R') P₁)`. Use `IsUnit.of_mul_eq_one (b := ⟨(P.eval (c X'))⁻¹, hci⟩) (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, Polynomial.coe_evalRingHom, hev]`. Conclude with `mul_inv_cancel₀ (hne c)`.
+
+Use `⟨⟨c X', hc⟩, hw0, IsLocalization.ringHom_ext (Submonoid.powers P₁) ?_⟩` and prove the remaining obligations. Use `Polynomial.ringHom_ext (fun r => ?_) ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, IsLocalization.Away.lift_eq, hLm, Polynomial.coe_evalRingHom, Polynomial.eval_C, Polynomial.coe_mapRingHom, Polynomial.map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, haev]`. Simplify using `only [RingHom.comp_apply, IsLocalization.Away.lift_eq, hLm, Polynomial.coe_evalRingHom, Polynomial.eval_X, Polynomial.coe_mapRingHom, Polynomial.map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Both sides reduce to the same expression.
+
+Take `⟨α, hα, hαe⟩` from `hpt a (hFR (by simp [F])) (hFR (by simp [F]))`. Take `⟨β, hβ, hβe⟩` from `hpt b (hFR (by simp [F])) (hFR (by simp [F]))`. Establish `key : ∀ (c : L →ₐ[k] k) (w0 : R') (hw0 : IsUnit (Polynomial.evalRingHom w0 P₁)), R'.subtype.comp (IsLocalization.Away.lift (S` using `Localization.Away P₁) P₁ hw0) = c.toRingHom.comp Lm → (spMap R'.subtype ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hw0) ≫ u₁) ≫ pullback.fst G₀.hom (spMap jn) = spMap c.toRingHom ≫ u ≫ φ := by`. Introduce `c w0 hw0 hce`. Rewrite using `[Category.assoc, Category.assoc, hu₁f, ← Category.assoc, ModelDescent.spMap_comp_eq hce, ← ModelDescent.spMap_comp_eq (f := Lm) (g := c.toRingHom) rfl, Category.assoc, ← Category.assoc (spMap Lm), ModelDescent.spMap_comp_eq hgS, (hyS ()).2]`.
+
+Establish `hcG : ∀ c : L →ₐ[k] k, spMap c.toRingHom ≫ u ≫ G.hom = 𝟙 _`. Introduce `c`. Rewrite using `[hu, ModelDescent.spMap_comp_eq (h := RingHom.id k) (RingHom.ext c.commutes)]`. Simplify using `[spMap]`. Establish `hdistc : spMap R'.subtype ≫ spMap (IsLocalization.Away.lift (S` using `Localization.Away P₁) P₁ hα) ≫ u₁ ≠ spMap R'.subtype ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hβ) ≫ u₁ := by`.
+
+Introduce `e`. Apply `hab` to reduce the goal to its premises. Establish `ea` using `key a α hα hαe`. Establish `eb` using `key b β hβ hβe`. Rewrite `ea` using `[e]`.
+
+Establish `e2 : spMap a.toRingHom ≫ u ≫ φ = spMap b.toRingHom ≫ u ≫ φ` using `ea.symm.trans eb`. Use `hφ.1.hom_ext (by simpa only [Category.assoc] using e2) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hcG, Category.assoc, hcG]`. Use `⟨R', G₁, inferInstance, SpreadGroup.finiteType_of_fg hR₀ hRfg, hunit, hG₁c, show Smooth (pullback.snd _ _) from inferInstance, hsep₁, show QuasiCompact (pullback.snd _ _) from inferInstance, hgc, hgd, ⟨s.attach.image sec, ?_, ?_, ?_⟩, P₁, hP₁0, u₁, α, β, hα, hβ, hu₁s, hdistc⟩` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ hsec_inj, Finset.card_attach]`.
+
+Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hpow i`. Introduce `x hx z hz hxz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `fun e => hxz (by rw [hdist i j e])`.
+-/
 theorem group_sections_curve_descend : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G], GlobalTheory.SS.SmConn G → ∀ g : ℕ, SmoothOfRelativeDimension g G.hom → ∀ m : ℕ, 1 ≤ m → (m : k) ≠ 0 → ∀ s : Finset (𝟙_ (Over (Sp k)) ⟶ G), (∀ x ∈ s, x ^ m = 1) → ∀ (P : Polynomial k), P ≠ 0 → ∀ (u : Sp (Localization.Away P) ⟶ G.left) (a b : Localization.Away P →ₐ[k] k), u ≫ G.hom = spMap (algebraMap k (Localization.Away P)) → spMap a.toRingHom ≫ u ≠ spMap b.toRingHom ≫ u → ∃ (R : Subring k) (G₁ : Over (Sp R)) (_ : GrpObj G₁), Algebra.FiniteType ℤ R ∧ IsUnit (m : R) ∧ IsCommMonObj G₁ ∧ Smooth G₁.hom ∧ IsSeparated G₁.hom ∧ QuasiCompact G₁.hom ∧ GeometricallyConnected (pullback.snd G₁.hom (spMap R.subtype)) ∧ SmoothOfRelativeDimension g (pullback.snd G₁.hom (spMap R.subtype)) ∧ (∃ s₁ : Finset (𝟙_ (Over (Sp R)) ⟶ G₁), s₁.card = s.card ∧ (∀ x ∈ s₁, x ^ m = 1) ∧ ∀ x ∈ s₁, ∀ y ∈ s₁, x ≠ y → spMap R.subtype ≫ x.left ≠ spMap R.subtype ≫ y.left) ∧ ∃ (P₁ : Polynomial R) (_ : P₁ ≠ 0) (u₁ : Sp (Localization.Away P₁) ⟶ G₁.left) (α β : R) (hα : IsUnit (Polynomial.evalRingHom α P₁)) (hβ : IsUnit (Polynomial.evalRingHom β P₁)), u₁ ≫ G₁.hom = spMap (algebraMap R (Localization.Away P₁)) ∧ spMap R.subtype ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hα) ≫ u₁ ≠ spMap R.subtype ≫ spMap (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ hβ) ≫ u₁ := by
   intro k _ G _ hG g hg m hm hmk s hs P hP u a b hu hab
   classical

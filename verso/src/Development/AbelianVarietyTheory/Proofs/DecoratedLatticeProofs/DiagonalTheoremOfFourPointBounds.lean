@@ -21,6 +21,13 @@ noncomputable section
 namespace GlobalTheory.Core.Diag
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h2 : Real.exp (-x / 2) ≤ Real.exp (-1)` using `Real.exp_le_exp.2 (by linarith)`. Establish `h1 : Real.exp (-1) < 2 / 5`. Rewrite using `[Real.exp_neg]`. Use `Real.exp_one_gt_d9` as an intermediate fact. Rewrite using `[inv_lt_comm₀ (Real.exp_pos 1) (by norm_num)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : Real.exp (-x) = Real.exp (-x / 2) * Real.exp (-x / 2)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Real.exp_pos _).le`.
+-/
 theorem exp_neg_le_two_fifths {x : ℝ} (hx : 2 ≤ x) : Real.exp (-x) ≤ 2 / 5 * Real.exp (-x / 2) := by
   have h2 : Real.exp (-x / 2) ≤ Real.exp (-1) := Real.exp_le_exp.2 (by linarith)
   have h1 : Real.exp (-1) < 2 / 5 := by
@@ -33,6 +40,11 @@ theorem exp_neg_le_two_fifths {x : ℝ} (hx : 2 ≤ x) : Real.exp (-x) ≤ 2 / 5
   rw [e]
   exact mul_le_mul_of_nonneg_right (by linarith) (Real.exp_pos _).le
 
+/- English proof (translation)
+Establish `hS : 0 ≤ s * dd + E₂ * d + Γ₁ * dd + Γ₂ * dd` using `by positivity`. Establish `p1 : 2 * P * (s * dd + E₂ * d + Γ₁ * dd + Γ₂ * dd) ≤ 2 * (6 / 5) * (s * dd + E₂ * d + Γ₁ * dd + Γ₂ * dd)` using `mul_le_mul_of_nonneg_right (by linarith) hS`. Establish `p2 : s * dd ≤ dd` using `mul_le_of_le_one_left hdd hs1`. Establish `p3 : (Γ₁ + Γ₂) * dd ≤ Γ * dd` using `mul_le_mul_of_nonneg_right hΓ hdd`. Establish `p4 : d * E ≤ d * (2 / 5 * E₂)` using `mul_le_mul_of_nonneg_left hE hd`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem diag_arith {H N₁ N₂ P s dd d E₂ E Γ₁ Γ₂ Γ : ℝ} (hH : H ≤ 3 / 2 * N₁ + 3 * N₂)
     (h₁ : N₁ ≤ 2 * P * (s * dd + E₂ * d + Γ₁ * dd + Γ₂ * dd)) (h₂ : N₂ ≤ d * E) (hP : P ≤ 6 / 5)
     (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hdd : 0 ≤ dd) (hd : 0 ≤ d) (hE₂ : 0 ≤ E₂) (hE : E ≤ 2 / 5 * E₂)
@@ -46,6 +58,27 @@ theorem diag_arith {H N₁ N₂ P s dd d E₂ E Γ₁ Γ₂ Γ : ℝ} (hH : H �
   have p4 : d * E ≤ d * (2 / 5 * E₂) := mul_le_mul_of_nonneg_left hE hd
   nlinarith
 
+/- English proof (translation)
+Introduce `D c large₂ C' Cl Cg cb Cu cT CT C0 Γ₁ Γ₂ Γ u hC' hCl h0 hg1 hg2 hg hG0 hColl hgen hng`. Take `⟨hExp, hAbs⟩` from `GlobalTheory.T.kernel_expansion_absolute_convergence_equal_words`. Establish `hT` using `c.tie`. Establish `hA : (c.Y.tO u u).AbsConv` using `hAbs D c.X c.Y u u hT`. Establish `hK2` using `Formalism.MainNotions.NonGenericAndKTwoTheorems.Hyp_of D large₂ C' Cl Cg cb Cu cT CT C0 h0.2.1 h0.1 h0.2.2 (by linarith)`.
+
+Establish `hPg : PgC c.Y ≤ 6 / 5` using `GlobalTheory.T.equalIdentificationPairPrice_le_six_fifths C' Cl Cg cb Cu cT CT C0 D large₂ c.X c.Y hK2`. Establish `hPg0 : 0 ≤ PgC c.Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hGB : (c.Y.tO u u).GGBound (PgC c.Y)` using `Formalism.L2.SG.TermOp.ggBound c.Y.TR (c.Y.cs u) (c.Y.cs u) (c.Y.FN u) (c.Y.FN u) Formalism.L2.SG.Closed.TermsGGBound_holds c.Y.psi_ne (fun v => card_ge_three hK2.2 c.Y.TR v)`. Establish `hNE` using `normExpSatTied_holds D c.X c.Y u u hT`. Establish `hK0` using `GlobalTheory.T.abstractDiagonalBound_collisions_counted_once _ _ _ _ _ (c.Y.tO u u) (oneC c.X c.Y u) (PgC c.Y) _ _ _ hPg0 hA hNE.1 hNE.2 hGB (Formalism.L2.SG.TermOp.rowOrth c.Y.TR (c.Y.cs u) (c.Y.cs u) (c.Y.FN u) (c.Y.FN u)) (Formalism.L2.SG.KappaOffDiagonal.corankPosC_holds D c. …`.
+
+Establish `hsplit` using `GlobalTheory.T.gramPoincareHilbertSchmidtDeviation_le_split D u`. Rewrite `hsplit` using `[Formalism.L2.SG.ThmSOwn.hsNormSq_diag c.hI (hExp D c.X c.Y u u hT) hA (Formalism.L2.SG.Pf.SatGram.idDegenerate_tO c.Y u u), Formalism.L2.SG.ThmSOwn.hsNormSq_Kpp c.hI hA]`. Establish `hdd : 0 ≤ ddC c.X c.Y u u` using `dd_nonneg hT u u`. Establish `hdu : duC c.X c.Y u = (D.duS u : ℝ)` using `hT.2.2.1 u`. Establish `hddE : ddC c.X c.Y u u = (D.duS u : ℝ) ^ 2 / D.what₂.Dstar`.
+
+Unfold `ddC`. Rewrite using `[hdu, hT.2.2.2.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd0 : (0 : ℝ) ≤ duC c.X c.Y u` using `Nat.cast_nonneg _`. Establish `hk5 : 5 ≤ D.R.k` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; omega`.
+
+Establish `hf1 : 1 ≤ D.R.f`. Establish `h4 : D.R.m ^ 4 ≤ D.R.f` using `h0.1.2.2.1`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by have := D.R.two_le_m; omega)`. Use linear arithmetic over natural numbers and integers. Establish `hkR : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`.
+
+Establish `hfR : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `hlog : 1 ≤ Real.log D.R.k`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hx2 : 2 ≤ (D.R.k : ℝ) * D.R.f * Real.log D.R.k`. Establish `: (5 : ℝ) * 1 * 1 ≤ (D.R.k : ℝ) * D.R.f * Real.log D.R.k` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE` using `exp_neg_le_two_fifths hx2`. Establish `g0 : (1 : ℝ) ≤ (D.host.g 0 : ℝ)` using `by exact_mod_cast (D.host.g_prime 0).one_lt.le`.
+
+Establish `g1 : (1 : ℝ) ≤ (D.host.g 1 : ℝ)` using `by exact_mod_cast (D.host.g_prime 1).one_lt.le`. Establish `hq : 1 ≤ Real.sqrt ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))` using `Real.one_le_sqrt.2 (one_le_mul_of_one_le_of_one_le g0 g1)`. Establish `hi0 : 0 ≤ (Real.sqrt ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)))⁻¹` using `inv_nonneg.2 (Real.sqrt_nonneg _)`. Establish `key` using `diag_arith hsplit hK0 hG0.2 hPg (pow_nonneg hi0 _) (pow_le_one₀ hi0 (inv_le_one_of_one_le₀ hq)) hdd hd0 (Real.exp_pos _).le hE hg1 hg2 hg`. Establish `e1 : Real.exp (-((D.R.k : ℝ) * D.R.f * Real.log D.R.k) / 2) = Real.exp (-((1 / 2 : ℝ) * D.R.k * D.R.f * Real.log D.R.k))`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `SDiagAt`. Unfold `epsK at key`. Rewrite `key` using `[hddE, hdu, e1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sDiagAt_of_points : ∀ (D : D7) (c : Formalism.L2.SG.ThmSOwn.ConcK D) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Γ₁ Γ₂ Γ : ℝ)
     (u : D.what₂.Word), 29 ≤ C' → 29 ≤ Cl → Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 → 0 ≤ Γ₁ → 0 ≤ Γ₂ → Γ₁ + Γ₂ ≤ Γ →
     VanishingGramTermsBound c.Y u → CollS c.Y u →

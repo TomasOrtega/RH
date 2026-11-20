@@ -13,12 +13,18 @@ namespace GlobalTheory.Hk3.HoweDuality.Square
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+-/
 theorem mul_int {a b c : ℕ} {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b) (Fin c) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (hB : ∀ i j, B i j ∈ Formalism.UG.intL L) (i : Fin a) (j : Fin c) :
     (A * B) i j ∈ Formalism.UG.intL L := by
   rw [Matrix.mul_apply]
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
+/- English proof (translation)
+Establish `h` using `hA j i`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `Valued.v (σ (A j i)) ≤ 1`. Rewrite using `[hv]`. Conclude with `h`.
+-/
 theorem star_int {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {a b : ℕ} {A : Matrix (Fin a) (Fin b) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (i : Fin b) (j : Fin a) :
     (Matrix.transpose (A.map σ)) i j ∈ Formalism.UG.intL L := by
@@ -27,6 +33,25 @@ theorem star_int {σ : L →+* L} (hv : ∀ x, Valued.v (σ x) = Valued.v x) {a 
   change Valued.v (σ (A j i)) ≤ 1
   rw [hv]; exact h
 
+/- English proof (translation)
+Establish `hσ : ∀ x, σ (σ x) = x` using `hU.1`. Establish `hv : ∀ x, Valued.v (σ x) = Valued.v x` using `hU.2.1`. Take `⟨P, P', Q, Q', a, hP, hP', hPP', hQ, hQ', hQQ', hE⟩` from `GlobalTheory.T.smith_normal_form_integral_matrix L ϖ hU.2.2.2.1 n n' x`. Establish `hQ'Q : Q' * Q = 1` using `mul_eq_one_comm.mp hQQ'`. Establish `hP'P : P' * P = 1` using `mul_eq_one_comm.mp hPP'`.
+
+Establish `hA'i : ∀ i j, (Q' * A * Matrix.transpose (Q'.map σ)) i j ∈ Formalism.UG.intL L` using `mul_int (mul_int hQ' hA) (star_int hv hQ')`. Establish `hB'i : ∀ i j, (Matrix.transpose (Q.map σ) * B * Q) i j ∈ Formalism.UG.intL L` using `mul_int (mul_int (star_int hv hQ) hB) hQ`. Establish `h1 : Matrix.transpose (Q'.map σ) * Matrix.transpose (Q.map σ) = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hQQ', Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`. Establish `hA'B' : (Q' * A * Matrix.transpose (Q'.map σ)) * (Matrix.transpose (Q.map σ) * B * Q) = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, Matrix.mul_assoc Q' A B, hAB, Matrix.mul_one, hQ'Q]`. Establish `hAm : A.map σ = Matrix.transpose A` using `by ext i j; simp [hAh]`. Establish `hQm : (Q'.map σ).map σ = Q'` using `by ext i j; simp [hσ]`.
+
+Establish `hA'h : ∀ i j, σ ((Q' * A * Matrix.transpose (Q'.map σ)) i j) = (Q' * A * Matrix.transpose (Q'.map σ)) j i`. Establish `hm : (Q' * A * Matrix.transpose (Q'.map σ)).map σ = Matrix.transpose (Q' * A * Matrix.transpose (Q'.map σ))`. Establish `hQt : (Matrix.transpose (Q'.map σ)).map σ = Matrix.transpose Q'` using `by ext i j; simp [hσ]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hAm, hQt]`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+
+Introduce `i j`. Use `congrFun (congrFun hm i) j` as an intermediate fact. Simplify using `using this`. Establish `hy` using `GlobalTheory.T.phaseCondition_integral_basisChange L σ δ n n' A ψ P Q Q' hσ hv hP hQ' hQQ' x hx`. Establish `hD` using `GlobalTheory.T.phaseCondition_sub_integral_matrix L ϖ σ q δ n n' _ ψ hU hq hA'i hδ.1 hδ.2 hpi (P * x * Q) _ hE hy`.
+
+Rewrite `hD` using `[sub_sub_cancel]`. Take `⟨l', hl', hG⟩` from `GlobalTheory.T.completeSquare_diagonalNegPowUniformizer L ϖ σ q δ n n' _ _ ψ hU hq hA'i hB'i hA'B' hA'h hδ hpi hne a hD`. Use `⟨P' * ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0))) + l') * Q', ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `mul_int (mul_int hP' (fun i j => add_mem (hE i j) (hl' i j))) hQ' i j`.
+
+Establish `hxe : x - P' * ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0))) + l') * Q' = P' * ((Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0)) - l') * Q'`. Establish `hx0 : x = P' * (P * x * Q) * Q'`. Simplify using `only [Matrix.mul_assoc, hQQ', Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, hP'P, Matrix.one_mul]`. Rewrite using `[show x - P' * ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0))) + l') * Q' = P' * (P * x * Q) * Q' - P' * ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else …`.
+
+Establish `hab : P * x * Q - ((P * x * Q - (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0))) + l') = (Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0)) - l'` using `by abel`. Rewrite using `[← Matrix.sub_mul, ← Matrix.mul_sub, hab]`. Rewrite using `[hxe]`. Establish `hg : (P' * ((Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0)) - l') * Q') * A * Matrix.transpose ((P' * ((Matrix.of (fun (i : Fin n') (j : Fin n) => if (i : ℕ) = (j : ℕ) ∧ 0 < a i then ϖ⁻¹ ^ a i else 0)) - l') * Q').map σ) = P' * ( …`. Simplify using `only [Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[hg]`. Conclude with `mul_int (mul_int hP' hG) (star_int hv hP')`.
+-/
 theorem gen {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ : L} {σ : L →+* L} {q : ℕ} {δ : L}
     {n n' : ℕ} {A B : Matrix (Fin n) (Fin n) L} {ψ : AddChar L ℂ}
     (hU : Formalism.UG.IsUnramInv ϖ σ q) (hq : Odd q) (hA : ∀ i j, A i j ∈ Formalism.UG.intL L)
@@ -87,6 +112,19 @@ theorem gen {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {ϖ 
 
 end GlobalTheory.Hk3.HoweDuality.Square
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q δ n n' JS ψ hU hq hJS hJh hδ hpi hne x hx`. Establish `hσ : ∀ x, σ (σ x) = x` using `hU.1`. Apply the tactic sequence `have glint_entry : ∀ {g : GL (Fin n) L}, g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → ∀ i j, (g : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L := by`. Introduce `g hg i j`. Take `⟨k, rfl⟩` from `MonoidHom.mem_range.mp hg`.
+
+Conclude with `(k.val i j).2`. Establish `hJi : (JS⁻¹ : GL (Fin n) L) ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)` using `Subgroup.inv_mem _ hJS`. Use `set P : Matrix (Fin n) (Fin n) L := ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hPdef`. Establish `hSm : (JS : Matrix (Fin n) (Fin n) L).map σ = Matrix.transpose (JS : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`.
+
+Simplify using `[hJh]`. Establish `hPJ : P * (JS : Matrix (Fin n) (Fin n) L) = 1` using `by rw [hPdef]; exact JS.inv_mul`. Establish `hJP : (JS : Matrix (Fin n) (Fin n) L) * P = 1` using `by rw [hPdef]; exact JS.mul_inv`. Establish `e1 : P.map σ * Matrix.transpose (JS : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← hSm, ← Matrix.map_mul, hPJ]`.
+
+Conclude with `Matrix.map_one σ (map_zero σ) (map_one σ)`. Establish `e2 : (JS : Matrix (Fin n) (Fin n) L) * Matrix.transpose (P.map σ) = 1`. Use `congrArg Matrix.transpose e1` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Establish `e3 : Matrix.transpose (P.map σ) = P`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPJ, Matrix.one_mul]`. Use `_ = P := by rw [Matrix.mul_assoc, e2, Matrix.mul_one]`. Establish `hPh : ∀ i j, σ (P i j) = P j i`. Introduce `i j`.
+
+Use `congrFun (congrFun e3 j) i` as an intermediate fact. Simplify using `using this`. Apply the tactic sequence `exact GlobalTheory.Hk3.HoweDuality.Square.gen hU hq (glint_entry hJi) (glint_entry hJS) hPJ hPh hδ hpi hne x hx`.
+-/
 theorem GlobalTheory.Hk3.HoweDuality.exists_int_gram_of_phases : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (ψ : AddChar L ℂ),
     Formalism.UG.IsUnramInv ϖ σ q → Odd q → JS ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) →

@@ -42,6 +42,9 @@ def WinAt (π : CuspSub K n) (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) : Prop :
 
 def AllWin (π : CuspSub K n) : Prop := ∃ t, ∀ v, WinAt π t v
 
+/- English proof (translation)
+Introduce `v` and use `(h.choose_spec v).1`.
+-/
 theorem AllWin.tor {π : CuspSub K n} (h : AllWin π) : AllTor π := fun v => (h.choose_spec v).1
 
 def PolFacts : Prop :=

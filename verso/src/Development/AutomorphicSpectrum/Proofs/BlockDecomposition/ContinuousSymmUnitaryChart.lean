@@ -37,16 +37,27 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 
 namespace GlobalTheory.CompanionTheory.ChartSymm
 
+/- English proof (translation)
+Unfold `GlobalTheory.StdUnn.mat`. Conclude with `Continuous.comp' Units.continuous_val continuous_induced_dom`.
+-/
 theorem continuous_mat {D : D7} {n : ℕ} : Continuous (mat : G D n → Mx D (n + n) (n + n)) := by
   unfold GlobalTheory.StdUnn.mat
   exact Continuous.comp' Units.continuous_val continuous_induced_dom
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Formalism.BasicNotions.HSpace.gram]`. Conclude with `S.herm.eq (S.frame j) (S.frame i)`.
+-/
 private theorem gram_conjTranspose_eq_self {D : D7} (S : HSp D) :
     (Formalism.BasicNotions.HSpace.gram S).conjTranspose = Formalism.BasicNotions.HSpace.gram S := by
   ext i j
   simp only [Matrix.conjTranspose_apply, Formalism.BasicNotions.HSpace.gram]
   exact S.herm.eq (S.frame j) (S.frame i)
 
+/- English proof (translation)
+Establish `h1 : d.e'.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e = 1` using `d.e'e`. Establish `h0 : d.e.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e = 0` using `d.ee`. Establish `h0' : d.e'.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e' = 0` using `d.e'e'`. Establish `h2 : d.e.conjTranspose * Formalism.BasicNotions.HSpace.gram S * d.e' = 1`. Establish `h` using `congrArg Matrix.conjTranspose h1`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose_eq_self, Matrix.conjTranspose_one] at h`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `h`. Rewrite using `[Matrix.fromRows_mul_fromCols]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, h1, h0, h0', h2, smul_zero, smul_smul, inv_mul_cancel₀ hμ, mul_inv_cancel₀ hμ, one_smul, Matrix.fromBlocks_one]`.
+-/
 private theorem fromRows_gram_mul_fromCols_eq_one_of_hypDec {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (μ : D.host.E)
     (hμ : μ ≠ 0) :
     Matrix.fromRows (d.e'.conjTranspose * Formalism.BasicNotions.HSpace.gram S)
@@ -65,6 +76,21 @@ private theorem fromRows_gram_mul_fromCols_eq_one_of_hypDec {D : D7} {S S₀ : H
   simp only [Matrix.mul_smul, Matrix.smul_mul, h1, h0, h0', h2, smul_zero, smul_smul,
     inv_mul_cancel₀ hμ, mul_inv_cancel₀ hμ, one_smul, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Introduce `D A μ hμ κ hκ`. Establish `hL : ((Matrix.fromRows ((dblDec A).e'.conjTranspose * Formalism.BasicNotions.HSpace.gram (dblSp A)) (μ⁻¹ • ((dblDec A).e.conjTranspose * Formalism.BasicNotions.HSpace.gram (dblSp A)))).submatrix finSumFinEquiv.symm id) * Tm A μ = 1` using `by show _ * (Matrix.fromCols (dblDec A).e (μ • (dblDec A).e')).submatrix id finSumFinEquiv.symm = 1`. Rewrite using `[← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, fromRows_gram_mul_fromCols_eq_one_of_hypDec _ μ hμ.1, Matrix.submatrix_one_equiv]`. Establish `hR` using `mul_eq_one_comm.mp hL`. Use `set L := (Matrix.fromRows ((dblDec A).e'.conjTranspose * Formalism.BasicNotions.HSpace.gram (dblSp A)) (μ⁻¹ • ((dblDec A).e.conjTranspose * Formalism.BasicNotions.HSpace.gram (dblSp A)))).submatrix finSumFinEquiv.symm id with hLdef`.
+
+Establish `hTP : rat (Tm A μ) * rat L = (1 : Mx D (A.rank + A.rank) (A.rank + A.rank))` using `by show (incA D).mapMatrix (Tm A μ) * (incA D).mapMatrix L = 1`. Rewrite using `[← map_mul, hR, map_one]`. Establish `key : ∀ h : G D A.rank, mt (dblSp A) (κ.symm h) = rat (Tm A μ) * mat h * rat L`. Introduce `h`. Establish `e` using `hκ (κ.symm h)`.
+
+Rewrite `e` using `[MulEquiv.apply_symm_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hTP, Matrix.mul_one]`. Use `_ = (mt (dblSp A) (κ.symm h) * rat (Tm A μ)) * rat L := by rw [Matrix.mul_assoc]`. Use `_ = rat (Tm A μ) * mat h * rat L := by rw [← e]`.
+
+Establish `hind : Topology.IsInducing (fun g : GA D (dblSp A) => matHom (dblSp A) g)` using `⟨rfl⟩`. Establish `hmi : Continuous (fun h : G D A.rank => mat h⁻¹)`. Unfold `GlobalTheory.StdUnn.mat`. Simplify using `only [map_inv]`. Conclude with `Units.continuous_coe_inv.comp continuous_induced_dom`.
+
+Rewrite using `[hind.continuous_iff, Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Establish `hf : (Units.val ∘ (fun g : GA D (dblSp A) => matHom (dblSp A) g) ∘ κ.symm) = fun h => rat (Tm A μ) * mat h * rat L`. Use function extensionality and compare the values at `h`. Conclude with `key h`.
+
+Rewrite using `[hf]`. Conclude with `(continuous_const.matrix_mul continuous_mat).matrix_mul continuous_const`. Establish `hf : (fun h : G D A.rank => (((fun g : GA D (dblSp A) => matHom (dblSp A) g) ∘ κ.symm) h)⁻¹.val) = fun h => rat (Tm A μ) * mat h⁻¹ * rat L`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[← map_inv (matHom (dblSp A)), ← map_inv κ.symm]`. Conclude with `key h⁻¹`. Rewrite using `[hf]`. Conclude with `(continuous_const.matrix_mul hmi).matrix_mul continuous_const`.
+-/
 theorem continuous_symm : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ (κ : GA D (dblSp A) ≃* G D A.rank), IsChart A μ κ →
     Continuous κ.symm := by
   intro D A μ hμ κ hκ

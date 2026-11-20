@@ -12,6 +12,17 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A C`. Take `⟨K', hK'0, hK'⟩` from `GlobalTheory.T.dbar_energy_glued_section_le n Y ι La A C`. Use `⟨max (C.m : ℝ) K', le_max_of_le_right hK'0, ?_⟩` and prove the remaining obligations. Introduce `la t ht hcurv F0 hF0`. Establish `hball : ∀ a : Fin C.m, ∃ F : V n → ℂ, DifferentiableOn ℂ F (ball (C.c a) (C.r a)) ∧ ∫⁻ v in ball (C.c a) (C.r a), ENNReal.ofReal (‖F0 (C.idx a) ((A.chart (C.idx a)).symm v) - F v‖ ^ 2 * Real.exp (-A.ph la (C.idx a) ((A.chart (C.idx a)).symm v))) ≤ ENNReal.ofReal t⁻¹ * ∫⁻ v in bal …`.
+
+Introduce `a`. Establish `hsub : ball (C.c a) (C.r a) ⊆ (A.chart (C.idx a)).target` using `ball_subset_closedBall.trans (C.sub a)`. Use `GlobalTheory.T.hormander_estimate_on_ball_const_levi_bound n (C.c a) (C.r a) t (fun w => A.ph la (C.idx a) ((A.chart (C.idx a)).symm w)) (F0 (C.idx a) ∘ (A.chart (C.idx a)).symm) ht ((A.smooth_ph la (C.idx a)).mono hsub) ((hF0.1 (C.idx a)).mono hsub) ?_` and prove the remaining obligations. Introduce `v hv ξ`. Establish `h` using `hcurv a v hv ξ`.
+
+Unfold `WeightedAtlas.leviAt at h`. Rewrite `h` using `[(A.chart (C.idx a)).right_inv (hsub hv)]`. Then use the resulting hypothesis. Use `choose u hu hE using hball`. Establish `hsum` using `Finset.sum_le_sum (fun a (_ : a ∈ Finset.univ) => hE a)`. Rewrite `hsum` using `[← Finset.mul_sum]`.
+
+Establish `hK : ENNReal.ofReal (max (C.m : ℝ) K' / t) = ENNReal.ofReal (max (C.m : ℝ) K') * ENNReal.ofReal t⁻¹`. Rewrite using `[div_eq_mul_inv, ENNReal.ofReal_mul (le_max_of_le_right hK'0)]`. Use `⟨glue C la u, GlobalTheory.T.isSSec_glueSectionByPartition_of_holo n Y ι La A C la u hu, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : (C.m : ℝ≥0∞) ≤ ENNReal.ofReal (max (C.m : ℝ) K')`. Rewrite using `[← ENNReal.ofReal_natCast]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hormander_step : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ C : Cover A, ∃ K : ℝ, 0 ≤ K ∧ ∀ (la : La) (t : ℝ), 0 < t → CurvGe C la t → ∀ F0 : ι → Y → ℂ, A.IsSSec (A.kap + la) F0 → ∃ F1 : ι → Y → ℂ, A.IsSSec (A.kap + la) F1 ∧ n0 A la (F0 - F1) ≤ ENNReal.ofReal (K / t) * n1 C la F0 ∧ n1 C la F1 ≤ ENNReal.ofReal (K / t) * n1 C la F0 := by
   intro n Y _ _ _ _ _ ι La _ A C
   obtain ⟨K', hK'0, hK'⟩ := GlobalTheory.T.dbar_energy_glued_section_le n Y ι La A C

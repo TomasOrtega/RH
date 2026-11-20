@@ -3,21 +3,35 @@ import Development.AutomorphicArithmetic.PrimitiveCosets.ToEBij
 
 open UpperTheory.Comparison₂ Formalism Formalism.HC Formalism.D5 Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.LHost NumberField Ideal
 
+/- English proof (translation)
+Rewrite using `[← ZMod.natCast_val, ZMod.natCast_eq_natCast_iff]`.
+-/
 private theorem UpperTheory.GL.df_modEq_iff {N M : ℕ} [NeZero N] (x : ZMod N) (a : ℕ) :
     x.val ≡ a [MOD M] ↔ (x.cast : ZMod M) = (a : ZMod M) := by
   rw [← ZMod.natCast_val, ZMod.natCast_eq_natCast_iff]
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.GL.df_modEq_iff, Nat.cast_one, Formalism.LFunctionChainParameters.LHost.localUnits, MonoidHom.mem_ker, Units.ext_iff, ZMod.unitsMap_val, Units.val_one]`.
+-/
 private theorem UpperTheory.GL.df_mem_local {N : ℕ} [NeZero N] (p : ℕ) (u : (ZMod N)ˣ) :
     u ∈ Formalism.LFunctionChainParameters.LHost.localUnits N p ↔ (u : ZMod N).val ≡ 1 [MOD ordCompl[p] N] := by
   rw [UpperTheory.GL.df_modEq_iff, Nat.cast_one, Formalism.LFunctionChainParameters.LHost.localUnits, MonoidHom.mem_ker, Units.ext_iff,
     ZMod.unitsMap_val, Units.val_one]
 
+/- English proof (translation)
+Establish `hw` using `(frobenius_unit_spec N p (NeZero.ne N) hp).1.1`. Rewrite using `[UpperTheory.GL.df_modEq_iff, Formalism.LFunctionChainParameters.LHost.localUnits, MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one, Units.ext_iff, ZMod.unitsMap_val, ZMod.unitsMap_val, hw]`.
+-/
 private theorem UpperTheory.GL.df_mem_frob {N : ℕ} [NeZero N] (p : ℕ) (hp : p.Prime) (u : (ZMod N)ˣ) :
     u * (frobUnit N p)⁻¹ ∈ Formalism.LFunctionChainParameters.LHost.localUnits N p ↔ (u : ZMod N).val ≡ p [MOD ordCompl[p] N] := by
   have hw := (frobenius_unit_spec N p (NeZero.ne N) hp).1.1
   rw [UpperTheory.GL.df_modEq_iff, Formalism.LFunctionChainParameters.LHost.localUnits, MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one,
     Units.ext_iff, ZMod.unitsMap_val, ZMod.unitsMap_val, hw]
 
+/- English proof (translation)
+Use `show Multiplicative.ofAdd (toE φ g).toAdd ∈ Subgroup.map (recH H) (Formalism.LFunctionChainParameters.LHost.localUnits H.condN p) ↔ _`. Rewrite using `[Subgroup.mem_map]`. Establish `hinj` using `((UpperTheory.Comparison₂.toE_bij φ).1).1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`.
+
+Use `⟨u, hu, hinj ?_⟩` and prove the remaining obligations. Conclude with `h.symm`. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u, hu, rfl⟩`.
+-/
 private theorem UpperTheory.GL.df_inertia {φ : Frame} (H : HostRaw φ) (p : ℕ) (g : φ.GG) :
     (toE φ g).toAdd ∈ (arith H).inertia p ↔ ∃ u ∈ Formalism.LFunctionChainParameters.LHost.localUnits H.condN p, g = H.art u := by
   show Multiplicative.ofAdd (toE φ g).toAdd ∈ Subgroup.map (recH H) (Formalism.LFunctionChainParameters.LHost.localUnits H.condN p) ↔ _
@@ -30,6 +44,13 @@ private theorem UpperTheory.GL.df_inertia {φ : Frame} (H : HostRaw φ) (p : ℕ
   · rintro ⟨u, hu, rfl⟩
     exact ⟨u, hu, rfl⟩
 
+/- English proof (translation)
+Introduce `φ H p _ P _ _ σ`. Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero H.condN := ⟨(Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos).ne'⟩`. Prove the components needed by the constructor for the conclusion. Rewrite using `[H.der.inertia p P σ, UpperTheory.GL.df_inertia]`.
+
+Simplify using `only [UpperTheory.GL.df_mem_local]`. Establish `hfr : (arith H.toHostRaw).frob p = (toE φ (H.art (Formalism.LFunctionChainParameters.LHost.frobUnit H.condN p))).toAdd` using `rfl`. Rewrite using `[hfr, ← toAdd_div, ← map_div, UpperTheory.GL.df_inertia, H.der.frob_any p P σ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, he⟩`.
+
+Use `⟨u * (Formalism.LFunctionChainParameters.LHost.frobUnit H.condN p)⁻¹, (UpperTheory.GL.df_mem_frob p hp u).2 hu, ?_⟩` and prove the remaining obligations. Rewrite using `[he, map_mul, map_inv, div_eq_mul_inv]`. Introduce and unpack `⟨v, hv, he⟩`. Use `⟨v * Formalism.LFunctionChainParameters.LHost.frobUnit H.condN p, (UpperTheory.GL.df_mem_frob p hp _).1 (by rwa [mul_inv_cancel_right]), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← he, div_mul_cancel]`.
+-/
 theorem UpperTheory.GL.dataField :
     ∀ {φ : Frame} (H : HostAx φ) (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E),
       ((∀ x : 𝓞 H.E, σ • x - x ∈ P) ↔ (toE φ (H.gal σ)).toAdd ∈ (arith H.toHostRaw).inertia p) ∧

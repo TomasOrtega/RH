@@ -11,12 +11,34 @@ namespace MinimumGrowthBounds
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Apply `Real.sInf_nonneg` to reduce the goal to its premises. Introduce and unpack `t ⟨v, _, _, rfl⟩`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (TwoSidedBoostBounds.c_pos (X := X) τ).le (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)`.
+-/
 theorem minimumSq_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) : 0 ≤ X.firstMinimumSq x := by
   apply Real.sInf_nonneg
   rintro t ⟨v, _, _, rfl⟩
   exact Finset.sum_nonneg fun τ _ =>
     mul_nonneg (TwoSidedBoostBounds.c_pos (X := X) τ).le (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)
 
+/- English proof (translation)
+Establish `hc : ∀ τ, 0 ≤ X.c τ` using `fun τ => (TwoSidedBoostBounds.c_pos (X := X) τ).le`. Establish `e : ∀ g' : (Fin r → E) → ℝ, (¬ ∃ v ∈ X.Λ, v ≠ 0) → {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g' v} = ∅`. Introduce `g' hne`. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce and unpack `⟨v, hv, hv', _⟩`. Conclude with `hne ⟨v, hv, hv'⟩`. Establish `key1 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 ≤ a → (∀ v, 0 ≤ g v) → (∀ v, a * g v ≤ h v) → a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v}`. Introduce `g h a ha hg hgh`. Distinguish the cases in `hne : ∃ v ∈ X.Λ, v ≠ 0`.
+
+Take `⟨v0, hv0, hv0'⟩` from `hne`. Use `le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨v, hv, hv', rfl⟩`. Establish `hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v}` using `⟨0, by`. Introduce and unpack `s ⟨w, _, _, rfl⟩`.
+
+Conclude with `hg w⟩`. Conclude with `(mul_le_mul_of_nonneg_left (csInf_le hb ⟨v, hv, hv', rfl⟩) ha).trans (hgh v)`. Rewrite using `[e g hne, e h hne, Real.sInf_empty, mul_zero]`. Establish `key2 : ∀ (g h : (Fin r → E) → ℝ) (a : ℝ), 0 < a → (∀ v, 0 ≤ g v) → (∀ v, g v ≤ a * h v) → sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v} ≤ a * sInf {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = h v}`. Introduce `g h a ha hg hgh`.
+
+Distinguish the cases in `hne : ∃ v ∈ X.Λ, v ≠ 0`. Take `⟨v0, hv0, hv0'⟩` from `hne`. Rewrite using `[← div_le_iff₀' ha]`. Use `le_csInf ⟨_, v0, hv0, hv0', rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨v, hv, hv', rfl⟩`.
+
+Rewrite using `[div_le_iff₀' ha]`. Establish `hb : BddBelow {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = g v}` using `⟨0, by`. Introduce and unpack `s ⟨w, _, _, rfl⟩`. Conclude with `hg w⟩`. Conclude with `(csInf_le hb ⟨v, hv, hv', rfl⟩).trans (hgh v)`.
+
+Rewrite using `[e g hne, e h hne, Real.sInf_empty, mul_zero]`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.firstMinimumSq`. Use `⟨key1 _ _ k1 hk1 ?_ ?_, key2 _ _ k2 hk2 ?_ ?_⟩` and prove the remaining obligations. Introduce `v`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hx τ _)`.
+
+Introduce `v`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => (mul_left_comm _ _ _).trans_le (mul_le_mul_of_nonneg_left (hlow τ _) (hc τ))`. Introduce `v`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (X := X) hy τ _)`.
+
+Introduce `v`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => (mul_le_mul_of_nonneg_left (hup τ _) (hc τ)).trans_eq (mul_left_comm _ _ _)`.
+-/
 theorem minimumSq_two_sided_bounds {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ}
     (hk1 : 0 ≤ k1) (hk2 : 0 < k2) (hlow : ∀ τ w, k1 * X.maj x τ w ≤ X.maj y τ w)
     (hup : ∀ τ w, X.maj y τ w ≤ k2 * X.maj x τ w) :
@@ -69,6 +91,19 @@ theorem minimumSq_two_sided_bounds {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy :
     exact Finset.sum_le_sum fun τ _ =>
       (mul_le_mul_of_nonneg_left (hup τ _) (hc τ)).trans_eq (mul_left_comm _ _ _)
 
+/- English proof (translation)
+Break down `hL.eq_or_lt with hL0 | hLpos` into its components or cases. Substitute `hL0` using the available equality. Establish `hLy : Ly = 0` using `le_antisymm (by linarith) (by linarith)`. Substitute `hLy` using the available equality. Simplify using `only [Real.sqrt_zero]`.
+
+Distinguish the cases in `hA : A = 0`. Substitute `hA` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Real.zero_rpow (neg_ne_zero.mpr hA), mul_zero]`. Establish `hs : ∀ z : ℝ, 0 ≤ z → Real.sqrt z ^ (-A) = z ^ (-A / 2)`.
+
+Introduce `z hz`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_mul hz]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hLy : 0 < Ly` using `lt_of_lt_of_le (mul_pos hk1 hLpos) h1`.
+
+Rewrite using `[hs Ly hLy.le, hs L hL]`. Establish `hLy_eq : Ly = Ly / L * L` using `(div_mul_cancel₀ Ly hLpos.ne').symm`. Establish `hs1 : k1 ≤ Ly / L`. Rewrite using `[le_div_iff₀ hLpos]`. Conclude with `h1`.
+
+Establish `hs2 : Ly / L ≤ k2`. Rewrite using `[div_le_iff₀ hLpos]`. Conclude with `h2`. Establish `hspos : 0 < Ly / L` using `lt_of_lt_of_le hk1 hs1`. Rewrite using `[hLy_eq, Real.mul_rpow hspos.le hL]`.
+
+Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hL _)` to reduce the goal to its premises. Break down `le_total 0 (-A / 2) with hp | hp` into its components or cases. Conclude with `(Real.rpow_le_rpow hspos.le hs2 hp).trans (le_max_right _ _)`. Conclude with `(Real.rpow_le_rpow_of_nonpos hk1 hs1 hp).trans (le_max_left _ _)`.
+-/
 theorem sqrt_rpow_le (A : ℝ) {k1 k2 L Ly : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2) (hL : 0 ≤ L)
     (h1 : k1 * L ≤ Ly) (h2 : Ly ≤ k2 * L) :
     Real.sqrt Ly ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * Real.sqrt L ^ (-A) := by
@@ -102,6 +137,11 @@ theorem sqrt_rpow_le (A : ℝ) {k1 k2 L Ly : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ 
     · exact (Real.rpow_le_rpow hspos.le hs2 hp).trans (le_max_right _ _)
     · exact (Real.rpow_le_rpow_of_nonpos hk1 hs1 hp).trans (le_max_left _ _)
 
+/- English proof (translation)
+Establish `hd : ∀ τ i, dmin X.Gm y τ i ≠ 0`. Introduce `τ i h0`. Establish `h1` using `(hy τ).2 i`. Rewrite `h1` using `[h0]`. Simplify using `at h1`.
+
+Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.nfac`. Conclude with `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _`.
+-/
 theorem nfac_pos (la : Wt X.Ψ r) {y : Frame X.Ψ r} (hy : y ∈ X.dom) : 0 < X.nfac la y := by
   have hd : ∀ τ i, dmin X.Gm y τ i ≠ 0 := by
     intro τ i h0
@@ -112,6 +152,15 @@ theorem nfac_pos (la : Wt X.Ψ r) {y : Frame X.Ψ r} (hy : y ∈ X.dom) : 0 < X.
   exact Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ =>
     Real.rpow_pos_of_pos (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _))) _
 
+/- English proof (translation)
+Establish `hny` using `nfac_pos X la hy`. Establish `hnx` using `nfac_pos X la hx`. Take `⟨b1, b2⟩` from `minimumSq_two_sided_bounds X hx hy hk1.le (lt_of_lt_of_le hk1 hk12) hlow hup`. Establish `hla : X.la1 y ^ (-A) ≤ max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A)` using `sqrt_rpow_le A hk1 hk12 (minimumSq_nonneg X hx) b1 b2`. Establish `hq0 : 0 ≤ X.nfac la x / X.nfac la y` using `div_nonneg hnx.le hny.le`.
+
+Establish `hR0 : 0 ≤ R` using `le_trans hq0 hR`. Establish `hC0 : 0 ≤ max C 0` using `le_max_right _ _`. Establish `hly : 0 ≤ X.la1 y ^ (-A)` using `Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Establish `hPy : ‖P y‖ * X.nfac la y ≤ max C 0 * X.la1 y ^ (-A)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hny'` using `hny.ne'`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (max C 0 * X.la1 y ^ (-A)) * R := mul_le_mul hPy hR hq0 (mul_nonneg hC0 hly)`. Use `_ ≤ (max C 0 * (max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * X.la1 x ^ (-A))) * R := by gcongr`.
+
+Use `_ = max C 0 * max (k1 ^ (-A / 2)) (k2 ^ (-A / 2)) * R * X.la1 x ^ (-A) := by ring`.
+-/
 theorem growth (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (C A : ℝ)
     (hmod : ∀ z ∈ X.dom, X.pnorm la P z ≤ C * X.la1 z ^ (-A)) {x y : Frame X.Ψ r}
     (hx : x ∈ X.dom) (hy : y ∈ X.dom) {k1 k2 : ℝ} (hk1 : 0 < k1) (hk12 : k1 ≤ k2)

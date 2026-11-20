@@ -9,12 +9,24 @@ open MvPolynomial IsLocalRing
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `h hh` and use `by show h ∈ RingHom.ker (MvPolynomial.eval z : MvPolynomial (Σ k, ι k) ℂ →+* ℂ) exact RingHom.mem_ker.2 (hz h hh)`.
+-/
 theorem chartIdeal_le_ptIdealOf {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {p : (k : K) → ι k}
     {z : (Σ k, ι k) → ℂ} (hz : ∀ h ∈ chartIdeal P p, eval z h = 0) :
     chartIdeal P p ≤ ptIdealOf z := fun h hh => by
   show h ∈ RingHom.ker (MvPolynomial.eval z : MvPolynomial (Σ k, ι k) ℂ →+* ℂ)
   exact RingHom.mem_ker.2 (hz h hh)
 
+/- English proof (translation)
+Establish `hle` using `chartIdeal_le_ptIdealOf hz`. Rewrite using `[ringKrullDim_locAt _ z hle]`. Establish `: ((ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hle)`. Use `(Ideal.height_le_ringKrullDim_of_isPrime).trans ?_` and prove the remaining obligations. Use `ringKrullDim_le_of_forall_quotient _ fun 𝔓 h𝔓 => ?_` and prove the remaining obligations.
+
+Establish `: (𝔓.comap (Ideal.Quotient.mk (chartIdeal P p))).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hI : chartIdeal P p ≤ 𝔓.comap (Ideal.Quotient.mk (chartIdeal P p))` using `fun x hx => by`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Conclude with `𝔓.zero_mem`. Use `le_trans ?_ (ringKrullDim_quotient_le_of_chartIdeal_le hP e hdim p _ hI)` and prove the remaining obligations.
+
+Set `g : MvPolynomial (Σ k, ι k) ℂ ⧸ 𝔓.comap (Ideal.Quotient.mk (chartIdeal P p)) →+* (MvPolynomial (Σ k, ι k) ℂ ⧸ chartIdeal P p) ⧸ 𝔓` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk 𝔓).comp (Ideal.Quotient.mk _)) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr ha)`. Use `ringKrullDim_le_of_surjective g ?_` and prove the remaining obligations. Introduce `x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+
+Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`.
+-/
 theorem ringKrullDim_locAt_chart_le {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     (hP : IsMultiHomogIdeal P) (e : ℕ)
     (hdim : ∀ Q ∈ P.minimalPrimes,
@@ -44,6 +56,35 @@ theorem ringKrullDim_locAt_chart_le {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
 
 set_option maxHeartbeats 600000 in
 
+/- English proof (translation)
+Establish `hIm : chartIdeal P p ≤ ptIdealOf z` using `chartIdeal_le_ptIdealOf hz`. Establish `hPm : P ≤ ptIdealOf z` using `le_sup_left.trans hIm`. Use `ptIdealOf_isMaximal z` as an intermediate fact. Take `⟨Q, hQmin, hQm⟩` from `Ideal.exists_minimalPrimes_le hPm`. Establish `hQp : Q.IsPrime` using `hQmin.1.1`.
+
+Establish `hPQ : P ≤ Q` using `hQmin.1.2`. Establish `: IsDomain (MvPolynomial (Σ k, ι k) ℂ ⧸ Q)` using `Ideal.Quotient.isDomain Q`. Establish `: Algebra.FiniteType ℂ (MvPolynomial (Σ k, ι k) ℂ ⧸ Q)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ Q) (Ideal.Quotient.mkₐ_surjective ℂ Q)`. Take `⟨s, hsd, hst⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℂ) (A := MvPolynomial (Σ k, ι k) ℂ ⧸ Q)`. Establish `hs : s = e + Fintype.card K`.
+
+Establish `h` using `hdim Q hQmin`. Rewrite `h` using `[hsd]`. Conclude with `h` after adjusting the coercions. Establish `hmQ : ((ptIdealOf z).map (Ideal.Quotient.mk Q)).IsMaximal`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk Q) Ideal.Quotient.mk_surjective (ptIdealOf_isMaximal z) with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h1 : Ideal.Quotient.mk Q 1 ∈ (ptIdealOf z).map (Ideal.Quotient.mk Q)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Conclude with `(ptIdealOf_isMaximal z).ne_top ((Ideal.eq_top_iff_one _).mpr ((Ideal.mem_quotient_iff_mem hQm).mp h1))`.
+
+Conclude with `h`. Establish `hhtQ : ((ptIdealOf z).map (Ideal.Quotient.mk Q)).height = ((e + Fintype.card K : ℕ) : ℕ∞)`. Rewrite using `[← hs]`. Conclude with `ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field (K := ℂ) s hst _`. Establish `hdQ : ringKrullDim (locAt Q z) = (((e + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞)`.
+
+Rewrite using `[ringKrullDim_locAt Q z hQm, hhtQ]`. Establish `hPQd : ringKrullDim (locAt Q z) ≤ ringKrullDim (locAt P z)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor (Ideal.map_mono hPQ)) (Ideal.Quotient.factor_surjective _)`. Set `J : Ideal (MvPolynomial (Σ k, ι k) ℂ)` to `Ideal.span (Set.range fun k => (X ⟨k, p k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ))`. Take `⟨sset, hsset⟩ : ∃ s : Set (MvPolynomial (Σ k, ι k) ℂ ⧸ P), s = Ideal.Quotient.mk P '' Set.range (fun k => (X ⟨k, p k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ))` from `⟨_, rfl⟩`. Establish `hmP : ((ptIdealOf z).map (Ideal.Quotient.mk P)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPm)`.
+
+Establish `hsub : sset ⊆ (ptIdealOf z).map (Ideal.Quotient.mk P)`. Rewrite using `[hsset]`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (hIm (Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)))`. Establish `hH` using `Ideal.height_le_height_add_encard_of_subset sset hsub`.
+
+Establish `hspan : Ideal.span sset = J.map (Ideal.Quotient.mk P)`. Rewrite using `[hsset, Ideal.map_span]`. Set `eq2 : (MvPolynomial (Σ k, ι k) ℂ ⧸ P) ⧸ Ideal.span sset ≃+* MvPolynomial (Σ k, ι k) ℂ ⧸ chartIdeal P p` to `(Ideal.quotEquivOfEq hspan).trans (DoubleQuot.quotQuotEquivQuotSup P J)`. Establish `hcomp : (eq2 : _ →+* _).comp ((Ideal.Quotient.mk (Ideal.span sset)).comp (Ideal.Quotient.mk P)) = Ideal.Quotient.mk (chartIdeal P p)`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, eq2, RingEquiv.coe_toRingHom]`. Conclude with `DoubleQuot.quotQuotEquivQuotSup_quotQuotMk P J a`. Establish `hht : ((ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))).height = (((ptIdealOf z).map (Ideal.Quotient.mk P)).map (Ideal.Quotient.mk (Ideal.span sset))).height`. Establish `hmap : (((ptIdealOf z).map (Ideal.Quotient.mk P)).map (Ideal.Quotient.mk (Ideal.span sset))).map eq2 = (ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))`. Establish `h : (((ptIdealOf z).map (Ideal.Quotient.mk P)).map (Ideal.Quotient.mk (Ideal.span sset))).map (eq2 : _ →+* _) = (ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))`.
+
+Rewrite using `[Ideal.map_map, Ideal.map_map, RingHom.comp_assoc, hcomp]`. Conclude with `h`. Rewrite using `[← hmap, RingEquiv.height_map]`. Establish `henc : sset.encard ≤ Fintype.card K`. Rewrite using `[hsset]`.
+
+Use `(Set.encard_image_le (Ideal.Quotient.mk P) _).trans ?_` and prove the remaining obligations. Rewrite using `[← Set.image_univ]`. Use `(Set.encard_image_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_fintype_card]`. Establish `h1 : ((e + Fintype.card K : ℕ) : ℕ∞) ≤ ((ptIdealOf z).map (Ideal.Quotient.mk P)).height`.
+
+Establish `h` using `hPQd`. Rewrite `h` using `[hdQ, ringKrullDim_locAt P z hPm]`. Conclude with `h` after adjusting the coercions. Establish `h2 : ((ptIdealOf z).map (Ideal.Quotient.mk P)).height ≤ ((ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))).height + Fintype.card K`. Rewrite using `[hht]`.
+
+Conclude with `hH.trans (by gcongr)`. Establish `h3 : (e : ℕ∞) ≤ ((ptIdealOf z).map (Ideal.Quotient.mk (chartIdeal P p))).height`. Establish `h4` using `h1.trans h2`. Rewrite `h4` using `[Nat.cast_add, add_comm, add_comm _ (Fintype.card K : ℕ∞)]`. Conclude with `ENat.addLECancellable_of_ne_top (ENat.natCast_ne_top _) h4`.
+
+Rewrite using `[ringKrullDim_locAt _ z hIm]`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem le_ringKrullDim_locAt_chart {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (e : ℕ)
     (hdim : ∀ Q ∈ P.minimalPrimes,
       ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ Q) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞))
@@ -134,6 +175,9 @@ theorem le_ringKrullDim_locAt_chart {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} 
   rw [ringKrullDim_locAt _ z hIm]
   exact_mod_cast h3
 
+/- English proof (translation)
+The claim follows from `le_antisymm (ringKrullDim_locAt_chart_le hP e hdim p z hz) (le_ringKrullDim_locAt_chart e hdim p z hz)`.
+-/
 theorem ringKrullDim_locAt_chart (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (hP : IsMultiHomogIdeal P)
     (e : ℕ) (hdim : ∀ Q ∈ P.minimalPrimes,
       ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ Q) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞))
@@ -143,6 +187,37 @@ theorem ringKrullDim_locAt_chart (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (hP
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hP : IsMultiHomogIdeal P` using `⟨Set.range G, by rintro _ ⟨i, rfl⟩; exact hG i, hspan.symm⟩`. Establish `hGP : ∀ i, G i ∈ P` using `fun i => hspan ▸ Ideal.subset_span ⟨i, rfl⟩`. Establish `hGI : ∀ i, G i ∈ chartIdeal P p` using `fun i => Ideal.mem_sup_left (hGP i)`. Establish `hXI : ∀ k, (X ⟨k, p k⟩ - 1 : MvPolynomial (Σ k, ι k) ℂ) ∈ chartIdeal P p` using `fun k => Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩)`. Establish `hz1 : ∀ k, z ⟨k, p k⟩ = 1` using `fun k => by`.
+
+Establish `h` using `hz _ (hXI k)`. Simplify `h` using `[sub_eq_zero]`. Take `⟨hloc, hnoeth⟩` from `locAt_isLocalRing_isNoetherian (chartIdeal P p) z hz`. Establish `hcot` using `finrank_cotangentSpace_locAt (chartIdeal P p) z`. Establish `hd` using `ringKrullDim_locAt_chart P hP e hdim p z hz`.
+
+Set `grad : MvPolynomial (Σ k, ι k) ℂ → (Σ k, ι k) → ℂ` to `fun h j => eval z (pderiv j h)`. Set `v : Fin (Fintype.card (Σ k, ι k) - (e + Fintype.card K)) ⊕ K → (Σ k, ι k) → ℂ` to `Sum.elim (fun i => grad (G (a i))) (fun k => grad (X ⟨k, p k⟩ - 1))`. Set `lam : K → ((Σ k, ι k) → ℂ) →ₗ[ℂ] ℂ` to `fun k => { toFun := fun w => ∑ q, (blockWt k q : ℂ) * (z q * w q) map_add' := fun w w' => by`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c w => by`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring }`. Establish `hlam : ∀ k w, lam k w = ∑ q, (blockWt k q : ℂ) * (z q * w q)` using `fun _ _ => rfl`. Establish `hlamG : ∀ k i, lam k (grad (G i)) = 0`. Introduce `k i`.
+
+Take `⟨dg, hdg⟩` from `hG i`. Rewrite using `[hlam]`. Conclude with `(sum_blockWt_eval hdg k z).trans (by rw [hz _ (hGI i), mul_zero])`. Establish `hlamX : ∀ k k', lam k (grad (X ⟨k', p k'⟩ - 1)) = if k' = k then 1 else 0`. Introduce `k k'`.
+
+Rewrite using `[hlam, Finset.sum_eq_single ⟨k', p k'⟩]`. Simplify using `[grad, blockWt, hz1]`. Introduce `q _ hq`. Simplify using `[grad, Ne.symm hq]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hv : LinearIndependent ℂ v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fintype.sum_sum_type]`.
+
+Establish `hK : ∀ k, g (Sum.inr k) = 0`. Introduce `k`. Establish `h` using `congrArg (lam k) hg`. Simplify using `only [map_add, map_sum, map_smul, map_zero, smul_eq_mul, v, Sum.elim_inl, Sum.elim_inr, hlamG, hlamX, mul_zero, Finset.sum_const_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Conclude with `h`.
+
+Establish `hg2 : ∑ i, g (Sum.inl i) • grad (G (a i)) = 0`. Simplify `hg` using `only [v, Sum.elim_inl, Sum.elim_inr, hK, zero_smul, Finset.sum_const_zero, add_zero]`. Set `M : Matrix (Fin (Fintype.card (Σ k, ι k) - (e + Fintype.card K))) (Fin (Fintype.card (Σ k, ι k) - (e + Fintype.card K))) ℂ` to `Matrix.of fun i j => eval z (pderiv (b j) (G (a i)))`. Establish `hM : M.det ≠ 0`. Rewrite `hab` using `[RingHom.map_det]`.
+
+Use `hab using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[M, RingHom.mapMatrix_apply]`. Establish `hvec : Matrix.vecMul (fun i => g (Sum.inl i)) M = 0`. Use function extensionality and compare the values at `j`.
+
+Establish `h` using `congrFun hg2 (b j)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, grad] at h`. Simplify `h` using `only [Matrix.vecMul, dotProduct, M, Matrix.of_apply, Pi.zero_apply]`. Establish `hFin : ∀ i, g (Sum.inl i) = 0`. Introduce `i`.
+
+Assume the negation of the conclusion as `hi`. Conclude with `hM (Matrix.exists_vecMul_eq_zero_iff.mp ⟨fun i => g (Sum.inl i), fun h => hi (congrFun h i), hvec⟩)`. Introduce and unpack `(i | k)`. Conclude with `hFin i`. Conclude with `hK k`.
+
+Establish `hmem : ∀ x, v x ∈ jacSpanAt (chartIdeal P p) z`. Introduce and unpack `(i | k)`. Conclude with `Submodule.subset_span ⟨G (a i), hGI (a i), rfl⟩`. Conclude with `Submodule.subset_span ⟨_, hXI k, rfl⟩`. Establish `hrank : (Fintype.card (Σ k, ι k) - (e + Fintype.card K)) + Fintype.card K ≤ Module.finrank ℂ (jacSpanAt (chartIdeal P p) z)`.
+
+Set `v' : Fin (Fintype.card (Σ k, ι k) - (e + Fintype.card K)) ⊕ K → jacSpanAt (chartIdeal P p) z` to `fun x => ⟨v x, hmem x⟩`. Establish `hv' : LinearIndependent ℂ v'` using `LinearIndependent.of_comp (jacSpanAt _ _).subtype hv`. Simplify using `using hv'.fintype_card_le_finrank`. Establish `hcotle : Module.finrank (ResidueField (locAt (chartIdeal P p) z)) (CotangentSpace (locAt (chartIdeal P p) z)) ≤ e`. Use linear arithmetic over natural numbers and integers.
+
+Use `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le _ ?_` and prove the remaining obligations. Rewrite using `[spanFinrank_maximalIdeal_eq_finrank_cotangentSpace, hd]`. Conclude with `hcotle` after adjusting the coercions.
+-/
 theorem isRegularLocalRing_locAt_chart (P : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (e : ℕ)
     (hdim : ∀ Q ∈ P.minimalPrimes,
       ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ Q) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞))

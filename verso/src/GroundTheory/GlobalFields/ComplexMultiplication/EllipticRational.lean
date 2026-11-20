@@ -12,25 +12,45 @@ namespace Elliptic
 
 variable {L : PeriodPair}
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [eval_add]`. Use `fun_prop`. Consider the case `monomial n a => simp only [eval_monomial]`. Use `fun_prop`.
+-/
 lemma meromorphicAt_eval {g : ℂ → ℂ} {x : ℂ} (hg : MeromorphicAt g x) (P : ℂ[X]) :
     MeromorphicAt (fun z ↦ P.eval (g z)) x := by
   induction P using Polynomial.induction_on' with
   | add p q hp hq => simp only [eval_add]; fun_prop
   | monomial n a => simp only [eval_monomial]; fun_prop
 
+/- English proof (translation)
+Simplify using `using hg.aeval_polynomial P`.
+-/
 lemma analyticAt_eval {g : ℂ → ℂ} {x : ℂ} (hg : AnalyticAt ℂ g x) (P : ℂ[X]) :
     AnalyticAt ℂ (fun z ↦ P.eval (g z)) x := by
   simpa using hg.aeval_polynomial P
 
+/- English proof (translation)
+The claim follows from `fun z l hl ↦ L.weierstrassP_add_coe z ⟨l, hl⟩`.
+-/
 lemma isPeriodic_weierstrassP : IsPeriodic L ℘[L] := fun z l hl ↦
   L.weierstrassP_add_coe z ⟨l, hl⟩
 
+/- English proof (translation)
+The claim follows from `fun z l hl ↦ L.derivWeierstrassP_add_coe z ⟨l, hl⟩`.
+-/
 lemma isPeriodic_derivWeierstrassP : IsPeriodic L ℘'[L] := fun z l hl ↦
   L.derivWeierstrassP_add_coe z ⟨l, hl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨L.meromorphic_weierstrassP, isPeriodic_weierstrassP⟩`.
+-/
 lemma isEllipticFunction_weierstrassP : IsEllipticFunction L ℘[L] :=
   ⟨L.meromorphic_weierstrassP, isPeriodic_weierstrassP⟩
 
+/- English proof (translation)
+Establish `h` using `L.ite_eq_one_sub_sq_mul_weierstrassP 0 L.lattice.zero_mem z`. Rewrite `h` using `[if_neg hz]`. Establish `h' : z ^ 2 * ℘[L] z = z ^ 2 * L.weierstrassPExcept 0 z + 1`. Simplify using `using h`. Establish `h2 : z ^ (-2 : ℤ) * z ^ 2 = 1`.
+
+Rewrite using `[zpow_neg, zpow_ofNat, inv_mul_cancel₀ (pow_ne_zero 2 hz)]`. Rewrite using `[← h', ← mul_assoc, h2, one_mul]`.
+-/
 lemma weierstrassP_eq_zpow_mul {z : ℂ} (hz : z ≠ 0) :
     ℘[L] z = z ^ (-2 : ℤ) * (z ^ 2 * L.weierstrassPExcept 0 z + 1) := by
   have h := L.ite_eq_one_sub_sq_mul_weierstrassP 0 L.lattice.zero_mem z
@@ -41,11 +61,25 @@ lemma weierstrassP_eq_zpow_mul {z : ℂ} (hz : z ≠ 0) :
     rw [zpow_neg, zpow_ofNat, inv_mul_cancel₀ (pow_ne_zero 2 hz)]
   rw [← h', ← mul_assoc, h2, one_mul]
 
+/- English proof (translation)
+Use `L.analyticAt_weierstrassPExcept 0` as an intermediate fact. Use `fun_prop`.
+-/
 lemma analyticAt_weierstrassP_laurent :
     AnalyticAt ℂ (fun z ↦ z ^ 2 * L.weierstrassPExcept 0 z + 1) 0 := by
   have := L.analyticAt_weierstrassPExcept 0
   fun_prop
 
+/- English proof (translation)
+Establish `e : (fun z ↦ (z - x) ^ n * w z) = (fun z ↦ z - x) ^ n * w` using `rfl`. Establish `hm : MeromorphicAt ((fun z ↦ z - x) ^ n) x` using `((analyticAt_id.sub analyticAt_const).meromorphicAt (x := x)).zpow n`. Rewrite using `[meromorphicOrderAt_congr h, e, meromorphicOrderAt_mul hm hw.meromorphicAt, meromorphicOrderAt_zpow_id_sub_const]`. Establish `hpos : (1 : WithTop ℤ) ≤ meromorphicOrderAt w x`. Rewrite using `[hw.meromorphicOrderAt_eq]`.
+
+Establish `h1 : analyticOrderAt w x ≠ 0`. Rewrite using `[Ne, hw.analyticOrderAt_eq_zero]`. Simplify using `using hw0`. Consider the cases of `h : analyticOrderAt w x with`. Consider the case `top => simp`.
+
+Consider the case `coe m`. Rewrite `h1` using `[h]`. Establish `: 1 ≤ m` using `Nat.one_le_iff_ne_zero.2 (by exact_mod_cast h1)`. Simplify using `only [ENat.map_natCast]`. Conclude with `this` after adjusting the coercions.
+
+Consider the cases of `ho : meromorphicOrderAt w x with`. Consider the case `top => simp`. Consider the case `coe m`. Rewrite `hpos` using `[ho]`. Establish `: (1 : ℤ) ≤ m` using `by exact_mod_cast hpos`.
+
+Conclude with `(by omega : n < n + m)` after adjusting the coercions.
+-/
 lemma lt_meromorphicOrderAt_of_eventuallyEq {f w : ℂ → ℂ} {x : ℂ} {n : ℤ}
     (hw : AnalyticAt ℂ w x) (hw0 : w x = 0)
     (h : f =ᶠ[𝓝[≠] x] fun z ↦ (z - x) ^ n * w z) :
@@ -74,6 +108,9 @@ lemma lt_meromorphicOrderAt_of_eventuallyEq {f w : ℂ → ℂ} {x : ℂ} {n : �
     have : (1 : ℤ) ≤ m := by exact_mod_cast hpos
     exact_mod_cast (by omega : n < n + m)
 
+/- English proof (translation)
+Consider the cases of `x with`. Consider the case `top => exact le_top`. Consider the case `coe m`. Establish `: o < m` using `by exact_mod_cast h`. Conclude with `(by omega : o + 1 ≤ m)` after adjusting the coercions.
+-/
 private lemma coe_add_one_le_of_lt {o : ℤ} {x : WithTop ℤ} (h : (o : WithTop ℤ) < x) :
     ((o + 1 : ℤ) : WithTop ℤ) ≤ x := by
   cases x with
@@ -82,6 +119,19 @@ private lemma coe_add_one_le_of_lt {o : ℤ} {x : WithTop ℤ} (h : (o : WithTop
     have : o < m := by exact_mod_cast h
     exact_mod_cast (by omega : o + 1 ≤ m)
 
+/- English proof (translation)
+Take `⟨u, hu, hu0, e⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 hn`. Establish `hneg : Tendsto (fun z : ℂ ↦ -z) (𝓝[≠] 0) (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Simplify using `using ((continuous_neg.tendsto (0 : ℂ)).mono_left nhdsWithin_le_nhds)`. Use `filter_upwards [self_mem_nhdsWithin] with z hz`.
+
+Simplify using `using hz`. Establish `e'` using `hneg.eventually e`. Establish `key : ∀ᶠ z in 𝓝[≠] (0 : ℂ), (-1 : ℂ) ^ n * u (-z) = u z` using `by filter_upwards [e, e', self_mem_nhdsWithin] with z h1 h2 hz`. Establish `hz' : z ≠ 0` using `hz`. Rewrite `h2` using `[he z, h1]`.
+
+Simplify using `only [sub_zero, smul_eq_mul] at h2`. Establish `h3 : z ^ n * u z = z ^ n * ((-1 : ℂ) ^ n * u (-z))`. Rewrite using `[h2, show -z = (-1 : ℂ) * z by ring, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_left_cancel₀ (zpow_ne_zero n hz') h3).symm`.
+
+Establish `hc : ContinuousAt (fun z ↦ (-1 : ℂ) ^ n * u (-z)) 0`. Establish `: ContinuousAt u (-0)` using `by simpa using hu.continuousAt`. Conclude with `continuousAt_const.mul (this.comp continuous_neg.continuousAt)`. Establish `t1 : Tendsto u (𝓝[≠] 0) (𝓝 (u 0))` using `hu.continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Establish `t2` using `(hc.tendsto.mono_left nhdsWithin_le_nhds).congr' key`.
+
+Establish `heq : (-1 : ℂ) ^ n * u (-0) = u 0` using `tendsto_nhds_unique t2 t1`. Rewrite `heq` using `[neg_zero]`. Break down `Int.even_or_odd n with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Rewrite `heq` using `[h.neg_one_zpow]`. Apply `hu0` to reduce the goal to its premises. Take the linear combination `-heq / 2`.
+-/
 lemma even_of_meromorphicOrderAt_eq {f : ℂ → ℂ} (hf : MeromorphicAt f 0)
     (he : ∀ z, f (-z) = f z) {n : ℤ} (hn : meromorphicOrderAt f 0 = n) : Even n := by
   obtain ⟨u, hu, hu0, e⟩ := (meromorphicOrderAt_eq_int_iff hf).1 hn
@@ -114,6 +164,11 @@ lemma even_of_meromorphicOrderAt_eq {f : ℂ → ℂ} (hf : MeromorphicAt f 0)
     apply hu0
     linear_combination -heq / 2
 
+/- English proof (translation)
+Use `exists_eventuallyEq_const_of_meromorphicOrderAt_nonneg L hg hp fun z ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ L.lattice`. Use `hp.meromorphicOrderAt_add hz 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Conclude with `(han z hz).meromorphicOrderAt_nonneg`.
+-/
 lemma exists_eventuallyEq_const_of_analyticAt_off_lattice {g : ℂ → ℂ} (hg : Meromorphic g)
     (hp : IsPeriodic L g) (han : ∀ z ∉ L.lattice, AnalyticAt ℂ g z)
     (h0 : 0 ≤ meromorphicOrderAt g 0) : ∃ c : ℂ, g =ᶠ[codiscrete ℂ] fun _ ↦ c := by
@@ -124,6 +179,23 @@ lemma exists_eventuallyEq_const_of_analyticAt_off_lattice {g : ℂ → ℂ} (hg 
     rwa [this]
   · exact (han z hz).meromorphicOrderAt_nonneg
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on generalizing g with`. Consider the case `_ n ih`. Distinguish the cases in `h0 : 0 ≤ meromorphicOrderAt g 0`. Take `⟨c, hc⟩` from `exists_eventuallyEq_const_of_analyticAt_off_lattice hg hp han h0`. Conclude with `⟨C c, by simpa using hc⟩`.
+
+Use `push Not at h0`. Choose the witnesses or unpack the hypotheses as in `⟨o, ho⟩ : ∃ o : ℤ, meromorphicOrderAt g 0 = o := by`. Consider the cases of `h : meromorphicOrderAt g 0 with`. Consider the case `top => rw [h] at h0`. Conclude with `absurd h0 (not_lt.2 le_top)`.
+
+Consider the case `coe o => exact ⟨o, rfl⟩`. Rewrite `h0`, `hn` using `[ho]`. Establish `ho0 : o < 0` using `by exact_mod_cast h0`. Establish `hno : -(n : ℤ) ≤ o` using `by exact_mod_cast hn`. Take `⟨r, hr⟩` from `even_of_meromorphicOrderAt_eq (hg 0) he ho`.
+
+Take `⟨k, hk⟩ : ∃ k : ℕ, o = -2 * k` from `⟨(-r).toNat, by omega⟩`. Establish `hk1 : 1 ≤ k` using `by omega`. Take `⟨u, hu, hu0, hgu⟩` from `(meromorphicOrderAt_eq_int_iff (hg 0)).1 ho`. Establish `hv` using `analyticAt_weierstrassP_laurent (L := L)`. Establish `hdiff : (fun z ↦ g z - u 0 * ℘[L] z ^ k) =ᶠ[𝓝[≠] 0] fun z ↦ (z - 0) ^ o * (u z - u 0 * (z ^ 2 * L.weierstrassPExcept 0 z + 1) ^ k)` using `by filter_upwards [hgu, self_mem_nhdsWithin] with z h1 h2`.
+
+Establish `h2' : z ≠ 0` using `h2`. Rewrite using `[h1, weierstrassP_eq_zpow_mul h2', mul_pow, ← zpow_natCast (z ^ (-2 : ℤ)), ← zpow_mul, hk, sub_zero, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlt` using `lt_meromorphicOrderAt_of_eventuallyEq (hu.sub (analyticAt_const.mul (hv.pow k))) (by simp) hdiff`. Take `⟨P, hP⟩` from `ih (2 * k - 1) (by omega) (g := fun z ↦ g z - u 0 * ℘[L] z ^ k) (fun z ↦ by have := hg z; have := L.meromorphic_weierstrassP z; fun_prop) (fun z l hl ↦ by simp only [hp z l hl, isPeriodic_weierstrassP z l hl]) (fun z ↦ by simp only [he, L.weierstrassP_neg]) (fun z hz ↦ by`.
+
+Use `han z hz` as an intermediate fact. Use `L.analyticOnNhd_weierstrassP z hz` as an intermediate fact. Use the proof step `fun_prop)`. Use the proof step `(by`. Establish `e : ((-((2 * k - 1 : ℕ) : ℤ) : ℤ) : WithTop ℤ) = ((o + 1 : ℤ) : WithTop ℤ)`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `coe_add_one_le_of_lt hlt)`. Use `⟨P + C (u 0) * X ^ k, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hP] with z hz`. Simplify using `only [eval_add, eval_mul, eval_C, eval_pow, eval_X]`. Rewrite using `[← hz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_polynomial_of_even_of_analyticAt_off_lattice (n : ℕ) {g : ℂ → ℂ}
     (hg : Meromorphic g) (hp : IsPeriodic L g) (he : ∀ z, g (-z) = g z)
     (han : ∀ z ∉ L.lattice, AnalyticAt ℂ g z)
@@ -175,6 +247,25 @@ theorem exists_polynomial_of_even_of_analyticAt_off_lattice (n : ℕ) {g : ℂ �
   rw [← hz]
   ring
 
+/- English proof (translation)
+Establish `hT` using `finite_image_singularSet L hf hp`. Set `rep : Torus L → ℂ` to `Function.surjInv (Torus.mk_surjective L)`. Establish `hrep : ∀ t, Torus.mk L (rep t) = t` using `Function.surjInv_eq _`. Set `n : Torus L → ℕ` to `fun t ↦ (hf (rep t)).choose`. Establish `hn : ∀ t, AnalyticAt ℂ (fun z ↦ (z - rep t) ^ n t • f z) (rep t)` using `fun t ↦ (hf (rep t)).choose_spec`.
+
+Set `N` to `hT.toFinset.sup n`. Use `⟨∏ t ∈ hT.toFinset, (X - C (℘[L] (rep t))) ^ N, ?_, fun z hz ↦ ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun t _ ↦ pow_ne_zero _ (X_sub_C_ne_zero _)`. Establish `h℘ : AnalyticAt ℂ ℘[L] z` using `L.analyticOnNhd_weierstrassP z hz`. Distinguish the cases in `hfz : AnalyticAt ℂ f z`.
+
+Conclude with `(analyticAt_eval h℘ _).mul hfz`. Establish `ht : Torus.mk L z ∈ hT.toFinset` using `hT.mem_toFinset.2 ⟨z, hfz, rfl⟩`. Establish `hza : z - rep (Torus.mk L z) ∈ L.lattice` using `(Torus.mk_eq_mk_iff L).1 (hrep _).symm`. Establish `h℘a : ℘[L] (rep (Torus.mk L z)) = ℘[L] z` using `isPeriodic_weierstrassP.eq_of_mk_eq (hrep _)`. Establish `hφ : AnalyticAt ℂ (fun w ↦ ℘[L] w - ℘[L] z) z` using `h℘.sub analyticAt_const`.
+
+Establish `hdφ : AnalyticAt ℂ (dslope (fun w ↦ ℘[L] w - ℘[L] z) z) z`. Take `⟨p, hp'⟩` from `hφ`. Conclude with `⟨_, hp'.has_fpower_series_dslope_fslope⟩`. Establish `hφeq : ∀ w, ℘[L] w - ℘[L] z = (w - z) * dslope (fun w ↦ ℘[L] w - ℘[L] z) z w`. Introduce `w`.
+
+Use `sub_smul_dslope_of_zero (f := fun w ↦ ℘[L] w - ℘[L] z) (sub_self _) w` as an intermediate fact. Simplify using `only [smul_eq_mul] at this`. Conclude with `this.symm`. Establish `hnN : n (Torus.mk L z) ≤ N` using `Finset.le_sup ht`. Establish `h1 : AnalyticAt ℂ (fun w ↦ (w - z) ^ n (Torus.mk L z) * f w) z` using `by set a := rep (Torus.mk L z)`.
+
+Establish `hF : AnalyticAt ℂ (fun u ↦ (u - a) ^ n (Torus.mk L z) • f u) (z - (z - a))`. Rewrite using `[sub_sub_cancel]`. Conclude with `hn _`. Use `hF.comp (f := fun w ↦ w - (z - a)) (by fun_prop)` as an intermediate fact. Use `this.congr (Eventually.of_forall fun w ↦ ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, smul_eq_mul]`. Rewrite using `[show w - (z - a) - a = w - z by ring, hp.sub w hza]`. Establish `hfN : AnalyticAt ℂ (fun w ↦ (w - z) ^ N * f w) z`. Establish `e : (fun w ↦ (w - z) ^ N * f w) = fun w ↦ (w - z) ^ (N - n (Torus.mk L z)) * ((w - z) ^ n (Torus.mk L z) * f w)`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hnN]`. Rewrite using `[e]`. Use `fun_prop`. Generalize the expression as in `dslope (fun w ↦ ℘[L] w - ℘[L] z) z = D at hdφ hφeq`. Use `(((hdφ.pow N).mul (analyticAt_eval h℘ (∏ s ∈ hT.toFinset.erase (Torus.mk L z), (X - C (℘[L] (rep s))) ^ N))).mul hfN).congr (Eventually.of_forall fun w ↦ ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.mul_apply, Pi.pow_apply]`. Rewrite using `[← Finset.mul_prod_erase hT.toFinset (fun s ↦ (X - C (℘[L] (rep s))) ^ N) ht]`. Simplify using `only [eval_mul, eval_pow, eval_sub, eval_X, eval_C, h℘a]`. Rewrite using `[hφeq w, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_polynomial_mul_analyticAt_off_lattice {f : ℂ → ℂ} (hf : Meromorphic f)
     (hp : IsPeriodic L f) :
     ∃ Q : ℂ[X], Q ≠ 0 ∧ ∀ z ∉ L.lattice, AnalyticAt ℂ (fun w ↦ Q.eval (℘[L] w) * f w) z := by
@@ -229,6 +320,11 @@ theorem exists_polynomial_mul_analyticAt_off_lattice {f : ℂ → ℂ} (hf : Mer
   rw [hφeq w, mul_pow]
   ring
 
+/- English proof (translation)
+Establish `hcob : Tendsto ℘[L] (𝓝[≠] 0) (Bornology.cobounded ℂ)`. Apply `tendsto_cobounded_of_meromorphicOrderAt_neg` to reduce the goal to its premises. Rewrite using `[L.order_weierstrassP 0 L.lattice.zero_mem]`. Evaluate the decidable proposition. Establish `hb : Bornology.IsBounded {w : ℂ | Q.IsRoot w}` using `(Polynomial.finite_setOfPred_isRoot hQ).isBounded`.
+
+Use `filter_upwards [hcob.eventually hb] with z hz`. Conclude with `hz`.
+-/
 lemma eventually_nhdsNE_zero_eval_weierstrassP_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
     ∀ᶠ z in 𝓝[≠] (0 : ℂ), Q.eval (℘[L] z) ≠ 0 := by
   have hcob : Tendsto ℘[L] (𝓝[≠] 0) (Bornology.cobounded ℂ) := by
@@ -240,6 +336,9 @@ lemma eventually_nhdsNE_zero_eval_weierstrassP_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 
   filter_upwards [hcob.eventually hb] with z hz
   exact hz
 
+/- English proof (translation)
+Establish `h0 : meromorphicOrderAt F 0 ≠ ⊤` using `(meromorphicOrderAt_ne_top_iff_eventually_ne_zero (hF 0)).2 h`. Establish `hall : ∀ u ∈ (univ : Set ℂ), meromorphicOrderAt F u ≠ ⊤` using `fun u _ ↦ (hF.meromorphicOn (s := univ)).meromorphicOrderAt_ne_top_of_isPreconnected isPreconnected_univ (mem_univ 0) (mem_univ u) h0`. Conclude with `MeromorphicAt.MeromorphicOn.codiscreteWithin_setOfPred_ne_zero (hF.meromorphicOn (s := univ)) hall`.
+-/
 lemma eventually_codiscrete_ne_zero_of_nhdsNE {F : ℂ → ℂ} (hF : Meromorphic F)
     (h : ∀ᶠ z in 𝓝[≠] (0 : ℂ), F z ≠ 0) : ∀ᶠ z in codiscrete ℂ, F z ≠ 0 := by
   have h0 : meromorphicOrderAt F 0 ≠ ⊤ :=
@@ -250,11 +349,21 @@ lemma eventually_codiscrete_ne_zero_of_nhdsNE {F : ℂ → ℂ} (hF : Meromorphi
   exact MeromorphicAt.MeromorphicOn.codiscreteWithin_setOfPred_ne_zero
     (hF.meromorphicOn (s := univ)) hall
 
+/- English proof (translation)
+The claim follows from `eventually_codiscrete_ne_zero_of_nhdsNE (fun z ↦ meromorphicAt_eval (L.meromorphic_weierstrassP z) Q) (eventually_nhdsNE_zero_eval_weierstrassP_ne_zero hQ)`.
+-/
 lemma eventually_codiscrete_eval_weierstrassP_ne_zero {Q : ℂ[X]} (hQ : Q ≠ 0) :
     ∀ᶠ z in codiscrete ℂ, Q.eval (℘[L] z) ≠ 0 :=
   eventually_codiscrete_ne_zero_of_nhdsNE (fun z ↦ meromorphicAt_eval
     (L.meromorphic_weierstrassP z) Q) (eventually_nhdsNE_zero_eval_weierstrassP_ne_zero hQ)
 
+/- English proof (translation)
+Apply `eventually_codiscrete_ne_zero_of_nhdsNE L.meromorphic_derivWeierstrassP` to reduce the goal to its premises. Establish `hR : (C 4 * X ^ 3 - C L.g₂ * X - C L.g₃ : ℂ[X]) ≠ 0`. Introduce `h`. Use `congrArg (fun p : ℂ[X] ↦ p.coeff 3) h` as an intermediate fact. Evaluate the numerical expressions using `[coeff_X, coeff_C] at this`.
+
+Use `filter_upwards [eventually_nhdsNE_zero_eval_weierstrassP_ne_zero hR, mem_nhdsWithin_of_mem_nhds (L.compl_lattice_sdiff_singleton_mem_nhds 0), self_mem_nhdsWithin] with z hz hzl hz0`. Introduce `h`. Establish `hzL : z ∉ L.lattice` using `fun hm ↦ hzl ⟨hm, hz0⟩`. Use `L.derivWeierstrassP_sq z hzL` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Apply `hz` to reduce the goal to its premises. Simplify using `only [eval_sub, eval_mul, eval_C, eval_pow, eval_X]`. Take the linear combination `-this`.
+-/
 lemma eventually_codiscrete_derivWeierstrassP_ne_zero :
     ∀ᶠ z in codiscrete ℂ, ℘'[L] z ≠ 0 := by
   apply eventually_codiscrete_ne_zero_of_nhdsNE L.meromorphic_derivWeierstrassP
@@ -273,6 +382,13 @@ lemma eventually_codiscrete_derivWeierstrassP_ne_zero :
   simp only [eval_sub, eval_mul, eval_C, eval_pow, eval_X]
   linear_combination -this
 
+/- English proof (translation)
+Take `⟨Q, hQ, hQa⟩` from `exists_polynomial_mul_analyticAt_off_lattice hf.1 hf.2`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ((-(n : ℤ) : ℤ) : WithTop ℤ) ≤ meromorphicOrderAt (fun w ↦ Q.eval (℘[L] w) * f w) 0 := by`. Consider the cases of `h : meromorphicOrderAt (fun w ↦ Q.eval (℘[L] w) * f w) 0 with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe o => exact ⟨o.natAbs, by exact_mod_cast (by omega : -(o.natAbs : ℤ) ≤ o)⟩`.
+
+Take `⟨P, hP⟩` from `exists_polynomial_of_even_of_analyticAt_off_lattice n (g := fun w ↦ Q.eval (℘[L] w) * f w) (fun z ↦ by`. Use `hf.1 z` as an intermediate fact. Use `meromorphicAt_eval (L.meromorphic_weierstrassP z) Q` as an intermediate fact. Use the proof step `fun_prop)`. Use the proof step `(fun z l hl ↦ by simp only [hf.2 z l hl, isPeriodic_weierstrassP z l hl])`.
+
+Use the proof step `(fun z ↦ by simp only [he, L.weierstrassP_neg]) hQa hn`. Use `⟨P, Q, hQ, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hP, eventually_codiscrete_eval_weierstrassP_ne_zero hQ] with z hz hQz`. Rewrite using `[← hz, mul_div_cancel_left₀ _ hQz]`.
+-/
 theorem exists_polynomial_div_of_even {f : ℂ → ℂ} (hf : IsEllipticFunction L f)
     (he : ∀ z, f (-z) = f z) :
     ∃ P Q : ℂ[X], Q ≠ 0 ∧ f =ᶠ[codiscrete ℂ] fun z ↦ P.eval (℘[L] z) / Q.eval (℘[L] z) := by
@@ -294,6 +410,13 @@ theorem exists_polynomial_div_of_even {f : ℂ → ℂ} (hf : IsEllipticFunction
   filter_upwards [hP, eventually_codiscrete_eval_weierstrassP_ne_zero hQ] with z hz hQz
   rw [← hz, mul_div_cancel_left₀ _ hQz]
 
+/- English proof (translation)
+Establish `hneg : Meromorphic fun z ↦ f (-z)` using `fun z ↦ by`. Establish `: MeromorphicAt f (-z)` using `hf.1 (-z)`. Conclude with `this.comp_analyticAt (g := fun z ↦ -z) (by fun_prop)`. Establish `hpneg : IsPeriodic L fun z ↦ f (-z)` using `fun z l hl ↦ by`. Simplify using `only [neg_add, ← sub_eq_add_neg]`.
+
+Conclude with `hf.2.sub (-z) hl`. Take `⟨P, Q, hQ, h1⟩` from `exists_polynomial_div_of_even (L := L) (f := fun z ↦ (f z + f (-z)) / 2) ⟨fun z ↦ ((hf.1 z).add (hneg z)).div analyticAt_const.meromorphicAt, fun z l hl ↦ by simp only [hf.2 z l hl, hpneg z l hl]⟩ (fun z ↦ by simp only [neg_neg]; ring)`. Take `⟨R, S, hS, h2⟩` from `exists_polynomial_div_of_even (L := L) (f := fun z ↦ (f z - f (-z)) / 2 / ℘'[L] z) ⟨fun z ↦ (((hf.1 z).sub (hneg z)).div analyticAt_const.meromorphicAt).div (L.meromorphic_derivWeierstrassP z), fun z l hl ↦ by simp only [hf.2 z l hl, hpneg z l hl, isPeriodic_derivWeierstrassP z l …`. Use `⟨P, Q, R, S, hQ, hS, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1, h2, eventually_codiscrete_derivWeierstrassP_ne_zero (L := L)] with z e1 e2 e3`.
+
+Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_rational_weierstrassP {f : ℂ → ℂ} (hf : IsEllipticFunction L f) :
     ∃ P Q R S : ℂ[X], Q ≠ 0 ∧ S ≠ 0 ∧ f =ᶠ[codiscrete ℂ] fun z ↦
       P.eval (℘[L] z) / Q.eval (℘[L] z) + ℘'[L] z * (R.eval (℘[L] z) / S.eval (℘[L] z)) := by

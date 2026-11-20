@@ -16,10 +16,18 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ResW
 
+/- English proof (translation)
+Introduce `x`. Simplify using `[nu, GlobalTheory.HeckeGal.Model.absPow, GlobalTheory.Mem.Chr.CharModel.absHom_val]`.
+-/
 theorem nu_zero_isUnitary (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] : (nu E 0).IsUnitary := by
   intro x
   simp [nu, GlobalTheory.HeckeGal.Model.absPow, GlobalTheory.Mem.Chr.CharModel.absHom_val]
 
+/- English proof (translation)
+Take `⟨B, h1, h2, h3⟩` from `h`. Use `⟨B, h1, h2, fun g v w => ?_⟩` and prove the remaining obligations. Establish `e` using `h3 g v w`. Simplify using `only [twRep_apply, map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul] at e`. Establish `hc : ((χ g : ℂˣ) : ℂ) * starRingEnd ℂ ((χ g : ℂˣ) : ℂ) = 1`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hχ g]`. Simplify using the standard rewrite rules. Rewrite using `[← e]`. Take the linear combination `(-(B (ρ g v) (ρ g w))) * hc`.
+-/
 theorem isUnitarisable_of_twRep {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ G X}
     {χ : G →* ℂˣ} (hχ : ∀ g, ‖((χ g : ℂˣ) : ℂ)‖ = 1) (h : GlobalTheory.SmGL.IsUnitarisable (twRep ρ χ)) :
     GlobalTheory.SmGL.IsUnitarisable ρ := by
@@ -32,6 +40,23 @@ theorem isUnitarisable_of_twRep {G X : Type} [Group G] [AddCommGroup X] [Module 
   rw [← e]
   linear_combination (-(B (ρ g v) (ρ g w))) * hc
 
+/- English proof (translation)
+Introduce `E _ _ _ a x ha hu w σ hσ`. Establish `hcex` using `(GlobalTheory.T.cuspidalLetter_centralExponent_properties E ⟨a, x⟩).1`. Establish `hr : rexp (⟨a, x⟩ : Letter E) = 0` using `((GlobalTheory.T.cuspidalLetterRealExponent_eq_zero_iff_isUnitary E ⟨a, x⟩ ha).1).2 hu`. Establish `hd : (0 : ℝ) < (a : ℝ) * Module.finrank ℚ E`. Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact.
+
+Establish `: (1 : ℝ) ≤ a` using `by exact_mod_cast ha`. Check the signs of the components of the expression. Establish `hre : (cex (⟨a, x⟩ : Letter E)).re = 0`. Establish `h` using `hr`. Unfold `rexp at h`.
+
+Break down `div_eq_zero_iff.1 h with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hd.ne'`. Establish `hdc : ((a : ℂ) * (Module.finrank ℚ E : ℂ)) = (((a : ℝ) * Module.finrank ℚ E : ℝ) : ℂ)` using `by push_cast; ring`. Take `⟨χ, hz, -, hn, -⟩` from `GlobalTheory.T.exists_idelic_absValue_cpow_character E (-(cex (⟨a, x⟩ : Letter E)) / ((a : ℂ) * (Module.finrank ℚ E : ℂ)))`.
+
+Establish `hzre : (-(cex (⟨a, x⟩ : Letter E)) / ((a : ℂ) * (Module.finrank ℚ E : ℂ))).re = 0`. Rewrite using `[hdc, Complex.div_ofReal_re, Complex.neg_re, hre]`. Simplify using the standard rewrite rules. Establish `hχu : χ.IsUnitary` using `fun y => by rw [hn y, hzre]; exact nu_zero_isUnitary E y`. Establish `hnorm : IsNormalised (x.twist χ)`.
+
+Establish `h4` using `GlobalTheory.T.cuspidalLetter_centralExponent_properties E ⟨a, x.twist χ⟩`. Use `h4.2.2.2.1.1 (h4.2.2.2.2 0 ?_)` and prove the remaining obligations. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 x.ne_bot`. Use `⟨mulChi a χ φ, ⟨φ, hφ, rfl⟩, fun h => h0 ((mulChi a χ).map_eq_zero_iff.1 h), ?_⟩` and prove the remaining obligations. Establish `e1 : zc E a φ = cex (⟨a, x⟩ : Letter E) • φ` using `hcex φ hφ`.
+
+Establish `e2 : cex (⟨a, x⟩ : Letter E) + (a : ℂ) * (Module.finrank ℚ E : ℂ) * (-(cex (⟨a, x⟩ : Letter E)) / ((a : ℂ) * (Module.finrank ℚ E : ℂ))) = 0`. Establish `: ((a : ℂ) * (Module.finrank ℚ E : ℂ)) ≠ 0`. Rewrite using `[hdc]`. Conclude with `hd.ne'` after adjusting the coercions. Rewrite using `[mul_div_cancel₀ _ this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `zc E a (mulChi a χ φ) = (0 : ℂ) • mulChi a χ φ`. Rewrite using `[hz, e1, ← add_smul, e2, zero_smul, map_zero, zero_smul]`. Establish `hdisc` using `(GlobalTheory.T.cuspForm_sqIntegrable_and_isDiscrete_splitCentre E a).2 _ hnorm`. Take `⟨f, h0, hf⟩` from `hσ.twist χ`.
+
+Establish `hgl : IsLocCompGL (x.twist χ).V w (σ.twist (CuspSub.locDet a χ w) (CuspSub.isOpen_ker_locDet χ w))` using `⟨(x.twist χ).V.subtype ∘ₗ f, fun h => h0 (LinearMap.ext fun v => Subtype.ext (LinearMap.congr_fun h v)), fun v => (f v).2, fun g v => congrArg Subtype.val (hf g v)⟩`. Establish `hU` using `GlobalTheory.DiscreteUnit.isUnitarisable_of_isLocCompGL E a _ hdisc w _ hgl`. Conclude with `isUnitarisable_of_twRep (χ := CuspSub.locDet a χ w) (fun g => hχu _) hU`.
+-/
 theorem isUnitarisable_of_isLocComp_cusp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (x : CuspSub E a), 1 ≤ a → x.IsUnitary → ∀ (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), x.IsLocComp w σ → GlobalTheory.SmGL.IsUnitarisable σ.ρ := by

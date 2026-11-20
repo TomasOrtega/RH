@@ -4,6 +4,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S Q _ _ ξ hξ`. Establish `hkey : ∀ ζ : S.A →+* Q, S.FPt ζ → ∀ (b : S.B) (c : O), b - algebraMap O S.B c ∈ S.mB → ζ (S.inc b) = algebraMap (ResidueField O) Q (residue O c)`. Introduce `ζ hζ b c hbc`. Establish `h1 : S.inc (b - algebraMap O S.B c) ∈ S.x0` using `Ideal.mem_map_of_mem _ hbc`. Establish `h2` using `hζ.x0 h1`.
+
+Rewrite `h2` using `[RingHom.mem_ker, map_sub, AlgHom.commutes, map_sub, sub_eq_zero]`. Rewrite using `[h2, hζ.alg]`. Establish `hres : ∀ (b : S.B) (y : ResidueField O), res O S.R b.val = y → ∀ ζ : S.A →+* Q, S.FPt ζ → ζ (S.inc b) = algebraMap (ResidueField O) Q y`. Introduce `b y hb ζ hζ`. Take `⟨c, rfl⟩` from `IsLocalRing.residue_surjective y`.
+
+Apply `hkey ζ hζ b c` to reduce the goal to its premises. Use `show (b - algebraMap O S.B c).val ∈ maximalIdeal S.R`. Rewrite using `[← res_eq_zero_iff O S.R]`. Simplify using `[hb]`. Use `⟨⟨fun g i => ?_, fun v i g => ?_⟩, fun i j => ?_, fun ξ' hξ' hag => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `S.lift.2.1.1 g i`. Conclude with `hres (S.aB g i) _ (by simpa [NRep.map, Space.aB] using h) ξ hξ`. Establish `h` using `S.lift.2.1.2 v i g`. Conclude with `hres (S.ψB v i g) _ (by simpa [NRep.map, Space.ψB] using h) ξ hξ`. Establish `hc` using `((cont_u hF hn S).1.1 i j) 1`.
+
+Set `f` to `Ideal.Quotient.lift (S.x0 ^ 1) ξ (fun a ha => hξ.x0 (by rwa [pow_one] at ha))`. Use `hc.comp f using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Apply `RingHom.ext` to reduce the goal to its premises.
+
+Introduce and unpack `⟨x, hx⟩`. Use `Algebra.adjoin_induction (p := fun x hx => ξ' ⟨x, hx⟩ = ξ ⟨x, hx⟩) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `x (hxB | ⟨g, i, j, rfl⟩)`. Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) x`. Establish `hc' : (⟨x, hxB⟩ : S.B) - algebraMap O S.B c ∈ S.mB` using `hc`.
+
+Use `show ξ' (S.inc ⟨x, hxB⟩) = ξ (S.inc ⟨x, hxB⟩)`. Rewrite using `[hkey ξ' hξ' _ c hc', hkey ξ hξ _ c hc']`. Conclude with `hag g i j`. Introduce `r show ξ' (algebraMap O S.A r) = ξ (algebraMap O S.A r)`. Rewrite using `[hξ'.alg, hξ.alg]`.
+
+Introduce `x y hx hy h1 h2 show ξ' ((⟨x, hx⟩ : S.A) + ⟨y, hy⟩) = ξ ((⟨x, hx⟩ : S.A) + ⟨y, hy⟩)`. Rewrite using `[map_add, map_add, h1, h2]`. Introduce `x y hx hy h1 h2 show ξ' ((⟨x, hx⟩ : S.A) * ⟨y, hy⟩) = ξ ((⟨x, hx⟩ : S.A) * ⟨y, hy⟩)`. Rewrite using `[map_mul, map_mul, h1, h2]`.
+-/
 theorem UpperTheory.smoothCharacter_extends_to_open_subgroup :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (S : Space O F n) (Q : Type) [CommRing Q] [Algebra (ResidueField O) Q] (ξ : S.A →+* Q), S.FPt ξ → (S.u.map ξ).IsBar (algebraMap (ResidueField O) Q) ∧ (∀ i j, IsLocallyConstant fun g => (S.u.map ξ).r g i j) ∧ ∀ ξ' : S.A →+* Q, S.FPt ξ' → (∀ g i j, ξ' (S.u.r g i j) = ξ (S.u.r g i j)) → ξ' = ξ := by
   intro l _ O _ _ _ _ F C₀ n hF hn S Q _ _ ξ hξ

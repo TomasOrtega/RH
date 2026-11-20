@@ -9,6 +9,13 @@ namespace GlobalTheory
 
 open Complex in
 
+/- English proof (translation)
+Introduce `g E _ _ _ U h hU hh n`. Establish `hopen : IsOpen (cov U g)` using `hU.prod isOpen_univ`. Establish `hcx : Continuous (fun x : Fin g → ℝ => fun i => (x i : ℂ))` using `by fun_prop`. Establish `key` using `differentiableOn_setIntegral_of_holomorphic_of_continuousOn (μ := volume) (V := ℂ) (F := fun (x : Fin g → ℝ) (b : E) => h (b, fun i => (x i : ℂ)) * cexp (-(2 * π * I) * ∑ i, (n i : ℂ) * (x i : ℂ))) hU (S := Set.Icc (0 : Fin g → ℝ) 1) (K := Set.Icc (0 : Fin g → ℝ) 1) isCompact_Icc …`. Conclude with `key.1`.
+
+Establish `h1 : ContinuousOn (fun p : (Fin g → ℝ) × E => h (p.2, fun i => (p.1 i : ℂ))) (Set.Icc (0 : Fin g → ℝ) 1 ×ˢ U)`. Use `hh.continuousOn.comp (f := fun p : (Fin g → ℝ) × E => (p.2, fun i => (p.1 i : ℂ))) (by fun_prop) ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `⟨hp.2, Set.mem_univ _⟩`. Establish `h2 : Continuous (fun p : (Fin g → ℝ) × E => cexp (-(2 * π * I) * ∑ i, (n i : ℂ) * (p.1 i : ℂ)))` using `by fun_prop`.
+
+Conclude with `h1.mul h2.continuousOn`. Introduce `x _`. Establish `hm : DifferentiableOn ℂ (fun b : E => (b, fun i => (x i : ℂ))) U` using `(differentiable_id.prodMk (differentiable_const _)).differentiableOn`. Conclude with `(hh.comp hm (fun b hb => ⟨hb, Set.mem_univ _⟩)).mul_const _`.
+-/
 theorem differentiableOn_coef_of_holomorphic :
     ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
       {U : Set E} (h : Pt E g → ℂ), IsOpen U → DifferentiableOn ℂ h (cov U g) →

@@ -3,6 +3,33 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.Letter
 open GlobalTheory.KZ
 open scoped Topology
 
+/- English proof (translation)
+Establish `step : ∀ k (b : B k), ∃ b' : B (k + 1), P k (F (k + 1) (k + 1) + d (k + 1) b') - (F k k + d k b) ∈ N k k`. Introduce `k b`. Take `⟨b1, hb1⟩` from `h1 (k + 1) k`. Take `⟨b2, hb2⟩` from `h2 k k`. Take `⟨b', hb'⟩` from `hp k (b - b2 - p k b1)`.
+
+Use `⟨b', ?_⟩` and prove the remaining obligations. Use `(N k k).add_mem (hP _ _ _ hb1) hb2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_sub, hd, hb']`. Normalize the expressions using the abelian group laws.
+
+Use `choose st hst using step`. Set `b : ∀ k, B k` to `fun k => Nat.rec (motive := B) 0 st k`. Establish `hb : ∀ k, b (k + 1) = st k (b k)` using `fun k => rfl`. Set `Q : ℕ → ∀ r, C r` to `fun j => Nat.rec (motive := fun _ => ∀ r, C r) (fun r => F r r + d r (b r)) (fun _ q r => P r (q (r + 1))) j`. Establish `hQ0 : ∀ r, Q 0 r = F r r + d r (b r)` using `fun r => rfl`.
+
+Establish `hQs : ∀ j r, Q (j + 1) r = P r (Q j (r + 1))` using `fun j r => rfl`. Establish `hA : ∀ j r, Q (j + 1) r - Q j r ∈ N r (r + j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro r`.
+
+Rewrite using `[hQs, hQ0, hQ0, hb]`. Conclude with `hst r (b r)`. Consider the case `succ j ih`. Introduce `r`. Rewrite using `[hQs (j + 1), hQs j r, ← map_sub]`.
+
+Conclude with `hN r _ _ (by omega) (hP _ _ _ (ih (r + 1)))`. Establish `hF : ∀ r n m, n ≤ m → ∃ a, F r m - (F r n + d r a) ∈ N r n`. Introduce `r n m hm`. Proceed by induction on `m, hm using Nat.le_induction with`. Consider the case `base => exact ⟨0, by simp⟩`.
+
+Consider the case `succ m hm ih`. Take `⟨a, ha⟩` from `ih`. Take `⟨a', ha'⟩` from `h1 r m`. Use `⟨a + a', ?_⟩` and prove the remaining obligations. Use `(N r n).add_mem (hN r _ _ hm ha') ha using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_add]`. Normalize the expressions using the abelian group laws. Establish `hB : ∀ n j r, n ≤ r + j → ∃ a, Q j r - (F r n + d r a) ∈ N r n`. Introduce `n j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Introduce `r hr`. Take `⟨a, ha⟩` from `hF r n r hr`. Use `⟨a + b r, ?_⟩` and prove the remaining obligations. Use `ha using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_add, hQ0]`. Normalize the expressions using the abelian group laws. Consider the case `succ j ih`. Introduce `r hr`. Take `⟨a, ha⟩` from `ih (r + 1) (by omega)`.
+
+Take `⟨a', ha'⟩` from `h2 r n`. Use `⟨a' + p r a, ?_⟩` and prove the remaining obligations. Use `(N r n).add_mem (hP _ _ _ ha) ha' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_sub, hQs, hd]`. Normalize the expressions using the abelian group laws.
+
+Use `choose β hβ using fun r n => hB n n r (by omega)`. Use `⟨β, fun r n => ?_, fun r n => ?_⟩` and prove the remaining obligations. Use `(N r n).sub_mem ((N r n).add_mem (hN r n _ (by omega) (hA n r)) (hβ r n)) (hN r n _ (by omega) (hβ r (n + 1))) using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `(N r n).sub_mem ((N r n).add_mem (hN r n _ (by omega) (hA n r)) (hβ r n)) (hP _ _ _ (hβ (r + 1) n)) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hQs, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem UpperTheory.Kd.K4.mittagLeffler_algebraic (C B : ℕ → Type) [∀ r, AddCommGroup (C r)] [∀ r, AddCommGroup (B r)]
     (P : ∀ r, C (r + 1) →+ C r) (p : ∀ r, B (r + 1) →+ B r) (d : ∀ r, B r →+ C r) (N : ∀ r, ℕ → AddSubgroup (C r))
     (F : ∀ r, ℕ → C r) (hp : ∀ r, Function.Surjective (p r)) (hd : ∀ r b, P r (d (r + 1) b) = d r (p r b))
@@ -76,6 +103,11 @@ private theorem UpperTheory.Kd.K4.mittagLeffler_algebraic (C B : ℕ → Type) [
     rw [hQs, map_sub]
     abel
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, -, h⟩`. Conclude with `⟨d, h.symm⟩`. Introduce and unpack `⟨d, h⟩`.
+
+Conclude with `⟨d, trivial, h.symm⟩`.
+-/
 private theorem UpperTheory.Kd.K4.mem_adicPower_iff (l : ℕ) [Fact l.Prime] {B : Type} [AddCommGroup B] [Module ℤ_[l] B] (n : ℕ) (y : B) :
     y ∈ ((idl l) ^ n • ⊤ : Submodule ℤ_[l] B) ↔ ∃ d, y = (l : ℤ_[l]) ^ n • d := by
   rw [Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
@@ -85,6 +117,13 @@ private theorem UpperTheory.Kd.K4.mem_adicPower_iff (l : ℕ) [Fact l.Prime] {B 
   · rintro ⟨d, h⟩
     exact ⟨d, trivial, h.symm⟩
 
+/- English proof (translation)
+Establish `hm : ∀ m n, m ≤ n → u n - u m ∈ ((idl l) ^ m • ⊤ : Submodule ℤ_[l] B)`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`.
+
+Establish `e : u (n + 1) - u m = (u (n + 1) - u n) + (u n - u m)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mono_left (Ideal.pow_le_pow_right hn) (h n)) ih`. Take `⟨L, hL⟩` from `(IsAdicComplete.toIsPrecomplete : IsPrecomplete (idl l) B).prec (f := u) (fun {m n} hmn => SModEq.symm (SModEq.sub_mem.2 (hm m n hmn)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations.
+
+Conclude with `SModEq.sub_mem.1 (hL n).symm`.
+-/
 private theorem UpperTheory.Kd.K4.exists_adic_limit_of_sub_mem_pow_smul (l : ℕ) [Fact l.Prime] {B : Type} [AddCommGroup B] [Module ℤ_[l] B]
     [IsAdicComplete (idl l) B] (u : ℕ → B) (h : ∀ n, u (n + 1) - u n ∈ ((idl l) ^ n • ⊤ : Submodule ℤ_[l] B)) :
     ∃ y, ∀ n, y - u n ∈ ((idl l) ^ n • ⊤ : Submodule ℤ_[l] B) := by
@@ -101,10 +140,16 @@ private theorem UpperTheory.Kd.K4.exists_adic_limit_of_sub_mem_pow_smul (l : ℕ
   refine ⟨L, fun n => ?_⟩
   exact SModEq.sub_mem.1 (hL n).symm
 
+/- English proof (translation)
+The claim follows from `(IsAdicComplete.toIsHausdorff : IsHausdorff (idl l) B).haus a fun n => SModEq.zero.2 (h n)`.
+-/
 private theorem UpperTheory.Kd.K4.adic_eq_zero_of_mem_all (l : ℕ) [Fact l.Prime] {B : Type} [AddCommGroup B] [Module ℤ_[l] B]
     [IsAdicComplete (idl l) B] (a : B) (h : ∀ n, a ∈ ((idl l) ^ n • ⊤ : Submodule ℤ_[l] B)) : a = 0 :=
   (IsAdicComplete.toIsHausdorff : IsHausdorff (idl l) B).haus a fun n => SModEq.zero.2 (h n)
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_sub_distrib, map_sum]`. Use `congr 1`. Use `Finset.sum_equiv (Equiv.mulRight g) (fun y => ?_) (fun y _ => rfl)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Kd.K4.fiberSum_push_hecke {X X' : Type} [Group X] [Group X'] [Fintype X'] [DecidableEq X]
     {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (π : X' →* X) (g : X') (T : Module.End R M) (b : X' → M) (x : X) :
     ∑ x' ∈ Finset.univ.filter (fun x' => π x' = x), (T (b (x' * g)) - b x') =
@@ -115,6 +160,37 @@ private theorem UpperTheory.Kd.K4.fiberSum_push_hecke {X X' : Type} [Group X] [G
   refine Finset.sum_equiv (Equiv.mulRight g) (fun y => ?_) (fun y _ => rfl)
   simp
 
+/- English proof (translation)
+Introduce `l _ B _ _ _ Γ _ _ A _ _ _ π κ σ F hπ hκ hlc hσc hFc hFz h1 h2`. Set `D : ℕ → Submodule ℤ_[l] B` to `fun n => (idl l) ^ n • ⊤`. Establish `hDmono : ∀ {m n}, m ≤ n → D n ≤ D m` using `fun h => Submodule.smul_mono_left (Ideal.pow_le_pow_right h)`. Establish `hDσ : ∀ s n y, y ∈ D n → σ s y ∈ D n`. Introduce `s n y hy`.
+
+Take `⟨e, rfl⟩` from `(UpperTheory.Kd.K4.mem_adicPower_iff l n y).1 hy`. Conclude with `(UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 ⟨σ s e, map_smul _ _ _⟩`. Set `N : ∀ r, ℕ → AddSubgroup (Γ → A r → B)` to `fun r n => { carrier := {f | ∀ s x, f s x ∈ D n} add_mem' := fun ha hb s x => (D n).add_mem (ha s x) (hb s x) zero_mem' := fun _ _ => (D n).zero_mem neg_mem' := fun ha s x => (D n).neg_mem (ha s x) }`. Set `P : ∀ r, (Γ → A (r + 1) → B) →+ (Γ → A r → B)` to `fun r => { toFun := GlobalTheory.KA.push (π r) map_zero' := by funext s x; simp [GlobalTheory.KA.push] map_add' := fun a b => by funext s x; simp [GlobalTheory.KA.push, Finset.sum_add_distrib] }`. Set `p : ∀ r, (A (r + 1) → B) →+ (A r → B)` to `fun r => { toFun := fun b x => ∑ x' ∈ Finset.univ.filter (fun x' => π r x' = x), b x' map_zero' := by funext x; simp map_add' := fun a b => by funext x; simp [Finset.sum_add_distrib] }`.
+
+Set `d : ∀ r, (A r → B) →+ (Γ → A r → B)` to `fun r => { toFun := fun b s x => σ s (b (x * κ r s)) - b x map_zero' := by funext s x; simp map_add' := fun a b => by`. Use function extensionality and compare the values at `s x`. Simplify using `only [Pi.add_apply, map_add]`. Use `abel }`. Establish `hp : ∀ r, Function.Surjective (p r)`.
+
+Introduce `r b`. Use `choose τ hτ using hπ r`. Use `⟨fun y => if τ (π r y) = y then b (π r y) else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `∑ x' ∈ Finset.univ.filter (fun x' => π r x' = x), (if τ (π r x') = x' then b (π r x') else 0) = b x`.
+
+Rewrite using `[Finset.sum_eq_single (τ x)]`. Simplify using `[hτ]`. Introduce `y hy hne`. Rewrite using `[(Finset.mem_filter.1 hy).2, if_neg (Ne.symm hne)]`. Introduce `h`.
+
+Conclude with `absurd (by simp [hτ]) h`. Establish `hd : ∀ r b, P r (d (r + 1) b) = d r (p r b)`. Introduce `r b`. Use function extensionality and compare the values at `s x`. Use `UpperTheory.Kd.K4.fiberSum_push_hecke (π r) (κ (r + 1) s) (σ s) b x` as an intermediate fact.
+
+Rewrite `this` using `[hκ]`. Conclude with `this`. Establish `hN : ∀ r m n, m ≤ n → N r n ≤ N r m` using `fun r m n h f hf s x => hDmono h (hf s x)`. Establish `hP : ∀ r n a, a ∈ N (r + 1) n → P r a ∈ N r n`. Introduce `r n a ha s x`.
+
+Express the relevant statement in the definitionally equal form `∑ x' ∈ Finset.univ.filter (fun x' => π r x' = x), a s x' ∈ D n`. Conclude with `Submodule.sum_mem _ fun y _ => ha s y`. Take `⟨β, hβ1, hβ2⟩` from `UpperTheory.Kd.K4.mittagLeffler_algebraic (fun r => Γ → A r → B) (fun r => A r → B) P p d N F hp hd hN hP (fun r n => by`. Take `⟨b, h⟩` from `h1 r n`. Conclude with `⟨b, fun s x => (UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 (h s x)⟩)`.
+
+Use the proof step `(fun r n => by`. Take `⟨b, h⟩` from `h2 r n`. Conclude with `⟨b, fun s x => (UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 (h s x)⟩)`. Use `choose Y hY using fun r s x => UpperTheory.Kd.K4.exists_adic_limit_of_sub_mem_pow_smul l (fun n => (F r n + d r (β r n)) s x) (fun n => hβ1 r n s x)`. Establish `hYN : ∀ r n, Y r - (F r n + d r (β r n)) ∈ N r n` using `fun r n s x => hY r s x n`.
+
+Use `⟨Y, fun r s t x => ?_, fun r n s x => ?_, fun r => ?_, fun r n => ⟨β r n, fun s x => (UpperTheory.Kd.K4.mem_adicPower_iff l n _).1 (hY r s x n)⟩⟩` and prove the remaining obligations. Use `sub_eq_zero.1 (UpperTheory.Kd.K4.adic_eq_zero_of_mem_all l _ fun n => ?_)` and prove the remaining obligations. Establish `e : Y r (s * t) x - (Y r s x + σ s (Y r t (x * κ r s))) = (F r n (s * t) x - (F r n s x + σ s (F r n t (x * κ r s)))) + ((Y r - (F r n + d r (β r n))) (s * t) x - (Y r - (F r n + d r (β r n))) s x - σ s ((Y r - (F r n + d r (β r n))) t (x * κ r s)))`. Establish `hdv : ∀ s x, d r (β r n) s x = σ s (β r n (x * κ r s)) - β r n x` using `fun _ _ => rfl`. Simplify using `only [Pi.sub_apply, Pi.add_apply, hdv, map_sub, map_add, map_mul, mul_assoc, Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(D n).add_mem ((UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 (hFz r n s t x)) ((D n).sub_mem ((D n).sub_mem (hYN r n _ _) (hYN r n _ _)) (hDσ s n _ (hYN r n _ _)))`. Establish `hk : ∀ᶠ t in 𝓝 s, κ r t = κ r s` using `(hlc r).eventually_eq s filter_upwards [hFc r n s x, hσc n (β r n (x * κ r s)) s, hk] with t ht1 ht2 ht3`. Use `(UpperTheory.Kd.K4.mem_adicPower_iff l n _).1 ?_` and prove the remaining obligations.
+
+Establish `hdt : d r (β r n) t x = σ t (β r n (x * κ r s)) - β r n x`. Express the relevant statement in the definitionally equal form `σ t (β r n (x * κ r t)) - β r n x = _`. Rewrite using `[ht3]`. Establish `hds : d r (β r n) s x = σ s (β r n (x * κ r s)) - β r n x` using `rfl`. Establish `e : Y r t x - Y r s x = ((Y r - (F r n + d r (β r n))) t x - (Y r - (F r n + d r (β r n))) s x) + ((F r n t x - F r n s x) + (σ t (β r n (x * κ r s)) - σ s (β r n (x * κ r s))))`.
+
+Simplify using `only [Pi.sub_apply, Pi.add_apply, hdt, hds]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `(D n).add_mem ((D n).sub_mem (hYN r n _ _) (hYN r n _ _)) ((D n).add_mem ((UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 ht1) ((UpperTheory.Kd.K4.mem_adicPower_iff l n _).2 ht2))`. Use function extensionality and compare the values at `s x`.
+
+Use `sub_eq_zero.1 (UpperTheory.Kd.K4.adic_eq_zero_of_mem_all l _ fun n => ?_)` and prove the remaining obligations. Establish `h : Y r - P r (Y (r + 1)) ∈ N r n`. Use `(N r n).sub_mem ((N r n).sub_mem (hYN r n) (hβ2 r n)) (hP r n _ (hYN (r + 1) n)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `h s x`.
+-/
 theorem UpperTheory.Kd.K4.ml3 :
     ∀ (l : ℕ) [Fact l.Prime] (B : Type) [AddCommGroup B] [Module ℤ_[l] B] [IsAdicComplete (idl l) B] (Γ : Type) [Group Γ] [TopologicalSpace Γ]
       (A : ℕ → Type) [∀ r, Group (A r)] [∀ r, Fintype (A r)] [∀ r, DecidableEq (A r)] (π : ∀ r, A (r + 1) →* A r) (κ : ∀ r, Γ →* A r)

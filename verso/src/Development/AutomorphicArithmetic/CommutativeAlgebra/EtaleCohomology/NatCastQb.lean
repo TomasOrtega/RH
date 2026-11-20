@@ -12,6 +12,9 @@ open PAlg
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {A.s (pFlat l)})), A.natCast_l, map_zero]`.
+-/
 private theorem natCast_qb (A : PAlg l) : (l : Qb A) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk (Ideal.span {A.s (pFlat l)})), A.natCast_l, map_zero]
 
@@ -28,6 +31,9 @@ private def pw (A : PAlg l) : ℕ → (Qb A →+* Qb A)
   | 0 => RingHom.id _
   | m + 1 => (frQ A).comp (pw A m)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [pw]`. Consider the case `succ m ih`. Express the relevant statement in the definitionally equal form `(pw A m x) ^ l = _`. Rewrite using `[ih, ← pow_mul, pow_succ]`.
+-/
 private theorem pw_apply (A : PAlg l) (m : ℕ) (x : Qb A) : pw A m x = x ^ l ^ m := by
   induction m with
   | zero => simp [pw]
@@ -35,10 +41,18 @@ private theorem pw_apply (A : PAlg l) (m : ℕ) (x : Qb A) : pw A m x = x ^ l ^ 
     change (pw A m x) ^ l = _
     rw [ih, ← pow_mul, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[pw_apply, pw_apply, map_pow]`.
+-/
 private theorem mapQ_pw {A B : PAlg l} (f : A ⟶ B) (m : ℕ) (x : Qb A) :
     PAlg.mapQ f (pFlat l) (pw A m x) = pw B m (PAlg.mapQ f (pFlat l) x) := by
   rw [pw_apply, pw_apply, map_pow]
 
+/- English proof (translation)
+Establish `h : (xi0 l).coeff 0 = - pFlat l`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (xi0 l) = _`. Rewrite using `[xi0, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(WittVector.map A.s (xi0 l)).coeff 0 = _`.
+
+Rewrite using `[WittVector.map_coeff, h, map_neg]`.
+-/
 private theorem coeff_xi (A : PAlg l) : A.xi.coeff 0 = - A.s (pFlat l) := by
   have h : (xi0 l).coeff 0 = - pFlat l := by
     change WittVector.constantCoeff (xi0 l) = _
@@ -57,16 +71,25 @@ private def rd (A : PAlg l) (m : ℕ) : A.U →+* Qb A :=
       exact neg_mem (Ideal.mem_span_singleton_self _)
     simp only [RingHom.comp_apply, map_mul, h0, mul_zero, map_zero]
 
+/- English proof (translation)
+The claim follows from `pw_apply A m _`.
+-/
 private theorem rd_th (A : PAlg l) (m : ℕ) (x : A.W) :
     rd A m (A.th x) = Ideal.Quotient.mk _ (x.coeff 0) ^ l ^ m :=
   pw_apply A m _
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x exact (h y).trans (rd_th A m y).symm`.
+-/
 private theorem rd_ext (A : PAlg l) (m : ℕ) (ψ : A.U →+* Qb A)
     (h : ∀ x : A.W, ψ (A.th x) = Ideal.Quotient.mk _ (x.coeff 0) ^ l ^ m) : ψ = rd A m :=
   RingHom.ext fun x => by
     obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
     exact (h y).trans (rd_th A m y).symm
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `rd B m (B.th (mapW f y)) = PAlg.mapQ f (pFlat l) (rd A m (A.th y))`. Rewrite using `[rd_th, rd_th, map_pow]`. Use `congr 1`.
+-/
 private theorem rd_mapU {A B : PAlg l} (f : A ⟶ B) (m : ℕ) (x : A.U) :
     rd B m (mapU f x) = PAlg.mapQ f (pFlat l) (rd A m x) := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -114,6 +137,9 @@ private def rdT (m : ℕ) {κ : O →+* OC l} {g : O →+* Qo l}
     congr 3
     exact RingHom.ext fun x => (rd_mapU φ m x)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `congrArg (Submodule.Quotient.mk (p := ((CH.cx F').B j).submoduleOf ((CH.cx F').Z j))) (Subtype.ext (h c.1))`.
+-/
 private theorem pull_sq {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R} {σ : R →+* R} (a : CH.Mor F F σ) (a' : CH.Mor F' F' σ)
     (b : CH.Mor F F' (RingHom.id R)) (j : ℕ)
@@ -122,6 +148,9 @@ private theorem pull_sq {R : Type} [CommRing R] {C C' : Type 1} [Category.{0} C]
   obtain ⟨c, rfl⟩ := Submodule.mkQ_surjective _ x
   exact congrArg (Submodule.Quotient.mk (p := ((CH.cx F').B j).submoduleOf ((CH.cx F').Z j))) (Subtype.ext (h c.1))
 
+/- English proof (translation)
+The claim follows from `pull_sq (phiMor P' n) (phiMor P n) (pullMor u n) j (fun c => funext fun s => rfl) x`.
+-/
 private theorem phi_pull {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (n j : ℕ) (x : MH P' n j) :
     phiH P n j (pullH u n j x) = pullH u n j (phiH P' n j x) :=
   pull_sq (phiMor P' n) (phiMor P n) (pullMor u n) j (fun c => funext fun s => rfl) x
@@ -129,6 +158,11 @@ private theorem phi_pull {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (n j : ℕ) (x 
 end UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Ru.crystallineComparison in
+/- English proof (translation)
+Introduce `l _ O _ X q κ g m f hg`. Use `⟨⟨frT f hg, fun A φ hφ y => ?_⟩, fun h => ⟨rdT m h, fun A ψ hψ y => ?_⟩, fun P P' u n j x => phi_pull u n j x⟩` and prove the remaining obligations. Establish `e : φ = pw A f` using `RingHom.ext fun x => (hφ x).trans (pw_apply A f x).symm`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Rewrite using `[rd_ext A m ψ hψ]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Ru.crystallineComparison.frEx :
     UpperTheory.Ru.crystallineComparison.FrEx := by
   intro l _ O _ X q κ g m f hg

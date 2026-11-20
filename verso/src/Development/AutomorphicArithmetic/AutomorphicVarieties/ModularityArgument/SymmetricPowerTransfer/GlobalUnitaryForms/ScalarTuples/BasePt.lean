@@ -16,6 +16,9 @@ open NumberField IsDedekindDomain QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheo
 
 namespace UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hs'`. Establish `hr : r ≠ 0` using `fun h => hd (by simp [h])`. Unfold `hs`. Rewrite using `[if_pos]`. Conclude with `⟨(x + 1) / 2, (x - 1) / (2 * r), by field_simp; ring⟩`.
+-/
 private theorem hs_sq {K : Type} [Field K] (h2 : (2 : K) ≠ 0) {d : K} (hd : d ≠ 0) (hs' : IsSquare d) (x : K) : hs d x = 1 := by
   obtain ⟨r, rfl⟩ := hs'
   have hr : r ≠ 0 := fun h => hd (by simp [h])
@@ -23,25 +26,40 @@ private theorem hs_sq {K : Type} [Field K] (h2 : (2 : K) ≠ 0) {d : K} (hd : d 
   rw [if_pos]
   exact ⟨(x + 1) / 2, (x - 1) / (2 * r), by field_simp; ring⟩
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[if_pos]`. Conclude with `⟨Real.sqrt x, 0, by rw [Real.sq_sqrt hx.le]; ring⟩`.
+-/
 private theorem hs_pos (d x : ℝ) (hx : 0 < x) : hs d x = 1 := by
   unfold hs
   rw [if_pos]
   exact ⟨Real.sqrt x, 0, by rw [Real.sq_sqrt hx.le]; ring⟩
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[if_neg]`. Introduce and unpack `⟨a, b, h⟩`. Use polynomial arithmetic with `[sq_nonneg a, sq_nonneg b]`.
+-/
 private theorem hs_neg (d x : ℝ) (hd : d < 0) (hx : x < 0) : hs d x = -1 := by
   unfold hs
   rw [if_neg]
   rintro ⟨a, b, h⟩
   nlinarith [sq_nonneg a, sq_nonneg b]
 
+/- English proof (translation)
+Simplify using `[QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem normL {K : Type} [Field K] (Δ : K) (x : Lsq K Δ) : QuadraticAlgebra.norm x = x.re ^ 2 - Δ * x.im ^ 2 := by
   simp [QuadraticAlgebra.norm_def]; ring
 
+/- English proof (translation)
+Introduce and unpack `⟨lam, hl⟩`. Unfold `hs`. Rewrite using `[if_pos ⟨lam.re, lam.im, by rw [← normL, hl]⟩]`.
+-/
 private theorem hs_iff {K : Type} [Field K] (Δ x : K) : (∃ lam : Lsq K Δ, QuadraticAlgebra.norm lam = x) → hs Δ x = 1 := by
   rintro ⟨lam, hl⟩
   unfold hs
   rw [if_pos ⟨lam.re, lam.im, by rw [← normL, hl]⟩]
 
+/- English proof (translation)
+Unfold `hs at h`. Use `split_ifs at h with h'`. Take `⟨a, b, e⟩` from `h'`. Conclude with `⟨⟨a, b⟩, by rw [normL]; exact e⟩`. Evaluate the numerical expressions using `at h`.
+-/
 private theorem hs_iff' {K : Type} [Field K] (Δ x : K) (h : hs Δ x = 1) : ∃ lam : Lsq K Δ, QuadraticAlgebra.norm lam = x := by
   unfold hs at h
   split_ifs at h with h'
@@ -49,10 +67,16 @@ private theorem hs_iff' {K : Type} [Field K] (Δ x : K) (h : hs Δ x = 1) : ∃ 
     exact ⟨⟨a, b⟩, by rw [normL]; exact e⟩
   · norm_num at h
 
+/- English proof (translation)
+Introduce `e` and use `h (by have : τ = -2 := by linear_combination e rw [this]; ring)`.
+-/
 private theorem two_add_ne {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) : 2 + τ ≠ 0 := fun e =>
   h (by have : τ = -2 := by linear_combination e
         rw [this]; ring)
 
+/- English proof (translation)
+Establish `h'` using `two_add_ne h`. Establish `: IsUnit (1 + ω : Etau K τ)`. Use `IsUnit.of_mul_eq_one (⟨(1 + τ) / (2 + τ), -1 / (2 + τ)⟩ : Etau K τ) ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Simplify using `[toUnit, this]`.
+-/
 private theorem unit_one_add {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) :
     ((toUnit (1 + ω : Etau K τ) : (Etau K τ)ˣ) : Etau K τ) = 1 + ω := by
   have h' := two_add_ne h
@@ -61,6 +85,11 @@ private theorem unit_one_add {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0
     ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring
   simp [toUnit, this]
 
+/- English proof (translation)
+Establish `hu : IsUnit (ω : Etau K τ)`. Rewrite using `[QuadraticAlgebra.isUnit_iff_norm_isUnit, isUnit_iff_ne_zero]`. Establish `e : QuadraticAlgebra.norm (ω : Etau K τ) = 1`. Rewrite using `[QuadraticAlgebra.norm_def]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `one_ne_zero`. Unfold `toUnit`. Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression.
+-/
 private theorem unit_om {K : Type} [Field K] (τ : K) :
     ((toUnit (ω : Etau K τ) : (Etau K τ)ˣ) : Etau K τ) = ω := by
   have hu : IsUnit (ω : Etau K τ) := by
@@ -74,9 +103,15 @@ private theorem unit_om {K : Type} [Field K] (τ : K) :
   rw [dif_pos hu]
   rfl
 
+/- English proof (translation)
+Simplify using `[jstd, Matrix.trace, Fin.sum_univ_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]`.
+-/
 private theorem jstd_tr {K : Type} [Field K] (τ : K) : (jstd τ ω).trace = τ := by
   simp [jstd, Matrix.trace, Fin.sum_univ_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]
 
+/- English proof (translation)
+Establish `h'` using `two_add_ne h`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hz]`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`.
+-/
 private theorem inv_val {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) (z : (Etau K τ)ˣ) (hz : (z : Etau K τ) = 1 + ω) :
     ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = ⟨(1 + τ) / (2 + τ), -1 / (2 + τ)⟩ := by
   have h' := two_add_ne h
@@ -84,6 +119,9 @@ private theorem inv_val {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) (z 
   rw [hz]
   ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring
 
+/- English proof (translation)
+Establish `hi` using `inv_val h z hz`. Establish `hi'` using `inv_val h' z' hz'`. Unfold `dLam`. Rewrite using `[hi, hi']`. Apply the tactic sequence `ext <;> simp [elmap, ofE, lmap, map_div₀, map_add, map_mul, map_neg, map_one, map_ofNat]`.
+-/
 private theorem elmap_dLam {K K' : Type} [Field K] [Field K'] (f : K →+* K') {Δ τ : K} (h : τ ^ 2 - 4 ≠ 0) (h' : f τ ^ 2 - 4 ≠ 0) (lam : Lsq K Δ)
     (z : (Etau K τ)ˣ) (hz : (z : Etau K τ) = 1 + ω) (z' : (Etau K' (f τ))ˣ) (hz' : (z' : Etau K' (f τ)) = 1 + ω) :
     elmap f (dLam lam z) = dLam (lmap f Δ lam) z' := by
@@ -93,12 +131,42 @@ private theorem elmap_dLam {K K' : Type} [Field K] [Field K'] (f : K →+* K') {
   rw [hi, hi']
   ext <;> simp [elmap, ofE, lmap, map_div₀, map_add, map_mul, map_neg, map_one, map_ofNat]
 
+/- English proof (translation)
+Use `show (⟨lmap f Δ (1 : EL Δ τ).re, lmap f Δ (1 : EL Δ τ).im⟩ : EL (f Δ) (f τ)) = 1`. Rewrite using `[QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, map_one, map_zero]`. Both sides reduce to the same expression.
+-/
 private theorem elmap_one {K K' : Type} [Field K] [Field K'] (f : K →+* K') {Δ τ : K} :
     elmap f (1 : EL Δ τ) = 1 := by
   show (⟨lmap f Δ (1 : EL Δ τ).re, lmap f Δ (1 : EL Δ τ).im⟩ : EL (f Δ) (f τ)) = 1
   rw [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, map_one, map_zero]
   rfl
 
+/- English proof (translation)
+Introduce `x hx σ`. Establish `key : (herm 1 (1 : EL Δ τ) x x).re = (x.1.re ^ 2 - Δ * x.1.im ^ 2) + 2 * (x.2.re.re ^ 2 - Δ * x.2.re.im ^ 2) + 2 * (x.2.im.re ^ 2 - Δ * x.2.im.im ^ 2) + 2 * τ * (x.2.re.re * x.2.im.re - Δ * x.2.re.im * x.2.im.im)`. Simplify using `[herm, sigL, QuadraticAlgebra.trace_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Establish `hD` using `hΔ σ`. Establish `hT : σ τ ^ 2 < 4`. Establish `h'` using `hτ σ`. Rewrite `h'` using `[map_sub, map_pow, map_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat]`. Use `set D := σ Δ`. Use `set T := σ τ`. Use `set a1 := σ x.1.re with ha1`. Use `set b1 := σ x.1.im with hb1`.
+
+Use `set p1 := σ x.2.re.re with hp1`. Use `set p2 := σ x.2.re.im with hp2`. Use `set q1 := σ x.2.im.re with hq1`. Use `set q2 := σ x.2.im.im with hq2`. Assume the negation of the conclusion as `hle`.
+
+Use `push_neg at hle`. Establish `t1` using `sq_nonneg a1`. Establish `t2 : 0 ≤ (-D) * b1 ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Establish `t3 : 0 ≤ (2 * p1 + T * q1) ^ 2` using `sq_nonneg _`. Establish `t4 : 0 ≤ (4 - T ^ 2) * q1 ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`.
+
+Establish `t5 : 0 ≤ (-D) * (2 * p2 + T * q2) ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Establish `t6 : 0 ≤ (-D) * ((4 - T ^ 2) * q2 ^ 2)` using `mul_nonneg (by linarith) (mul_nonneg (by linarith) (sq_nonneg _))`. Establish `hE : (a1 ^ 2 - D * b1 ^ 2) + 2 * (p1 ^ 2 - D * p2 ^ 2) + 2 * (q1 ^ 2 - D * q2 ^ 2) + 2 * T * (p1 * q1 - D * p2 * q2) = a1 ^ 2 + (-D) * b1 ^ 2 + (2 * p1 + T * q1) ^ 2 / 2 + (4 - T ^ 2) * q1 ^ 2 / 2 + (-D) * (2 * p2 + T * q2) ^ 2 / 2 + (-D) * ((4 - T ^ 2) * q2 ^ 2) / 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hle` using `[hE]`.
+
+Establish `hDn : -D ≠ 0` using `by linarith`. Establish `hTn : 4 - T ^ 2 ≠ 0` using `by linarith`. Establish `e1 : a1 = 0` using `pow_eq_zero_iff two_ne_zero |>.mp (by linarith)`. Establish `e2 : b1 = 0`. Establish `: (-D) * b1 ^ 2 = 0` using `by linarith`.
+
+Conclude with `pow_eq_zero_iff two_ne_zero |>.mp ((mul_eq_zero.mp this).resolve_left hDn)`. Establish `e3 : q1 = 0`. Establish `: (4 - T ^ 2) * q1 ^ 2 = 0` using `by linarith`. Conclude with `pow_eq_zero_iff two_ne_zero |>.mp ((mul_eq_zero.mp this).resolve_left hTn)`. Establish `e4 : p1 = 0`.
+
+Establish `: (2 * p1 + T * q1) ^ 2 = 0` using `by linarith`. Use `pow_eq_zero_iff two_ne_zero |>.mp this` as an intermediate fact. Rewrite `this` using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e5 : q2 = 0`.
+
+Establish `: (-D) * ((4 - T ^ 2) * q2 ^ 2) = 0` using `by linarith`. Use `(mul_eq_zero.mp this).resolve_left hDn` as an intermediate fact. Conclude with `pow_eq_zero_iff two_ne_zero |>.mp ((mul_eq_zero.mp this).resolve_left hTn)`. Establish `e6 : p2 = 0`. Establish `: (-D) * (2 * p2 + T * q2) ^ 2 = 0` using `by linarith`.
+
+Use `pow_eq_zero_iff two_ne_zero |>.mp ((mul_eq_zero.mp this).resolve_left hDn)` as an intermediate fact. Rewrite `this` using `[e5]`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `hx` to reduce the goal to its premises. Rewrite `e1` using `[ha1, map_eq_zero]`.
+
+Rewrite `e2` using `[hb1, map_eq_zero]`. Rewrite `e4` using `[hp1, map_eq_zero]`. Rewrite `e6` using `[hp2, map_eq_zero]`. Rewrite `e3` using `[hq1, map_eq_zero]`. Rewrite `e5` using `[hq2, map_eq_zero]`.
+
+Conclude with `Prod.ext (QuadraticAlgebra.ext e1 e2) (QuadraticAlgebra.ext (QuadraticAlgebra.ext e4 e6) (QuadraticAlgebra.ext e3 e5))`.
+-/
 private theorem posF_one {F : Type} [Field F] [NumberField F] {Δ τ : F} (hΔ : ∀ σ : F →+* ℝ, σ Δ < 0) (hτ : IsCM τ) :
     PosF (1 : F) (1 : EL Δ τ) := by
   intro x hx σ
@@ -168,6 +236,13 @@ private theorem posF_one {F : Type} [Field F] [NumberField F] {Δ τ : F} (hΔ :
   exact Prod.ext (QuadraticAlgebra.ext e1 e2)
     (QuadraticAlgebra.ext (QuadraticAlgebra.ext e4 e6) (QuadraticAlgebra.ext e3 e5))
 
+/- English proof (translation)
+Establish `integ : ∀ y : F, ∀ᶠ v : Pl F in Filter.cofinite, cv v y ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Introduce `y`. Simplify using `only [Filter.eventually_cofinite, HeightOneSpectrum.mem_adicCompletionIntegers, not_le]`. Use `(HeightOneSpectrum.Support.finite (𝓞 F) y).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hv`.
+
+Use `show 1 < v.valuation F y`. Establish `e : Valued.v (cv v y) = v.valuation F y` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v y`. Rewrite using `[← e]`. Conclude with `hv`. Use `filter_upwards [integ x, integ x⁻¹] with v h1 h2`.
+
+Use `⟨⟨⟨cv v x, h1⟩, ⟨cv v x⁻¹, h2⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext show cv v x * cv v x⁻¹ = 1` to reduce the goal to its premises. Rewrite using `[← map_mul, mul_inv_cancel₀ hx, map_one]`. Apply `Subtype.ext show cv v x⁻¹ * cv v x = 1` to reduce the goal to its premises. Rewrite using `[← map_mul, inv_mul_cancel₀ hx, map_one]`.
+-/
 private theorem ae_unit {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠ 0) :
     ∀ᶠ v : Pl F in Filter.cofinite, ∃ u : (Ov v)ˣ, algebraMap (Ov v) (Kv v) u = cv v x := by
   have integ : ∀ y : F, ∀ᶠ v : Pl F in Filter.cofinite,
@@ -190,6 +265,15 @@ private theorem ae_unit {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠
     show cv v x⁻¹ * cv v x = 1
     rw [← map_mul, inv_mul_cancel₀ hx, map_one]
 
+/- English proof (translation)
+Establish `sub : Function.mulSupport (Set.mulIndicator {v | v ∉ S} g) ⊆ Function.mulSupport g`. Rewrite using `[Set.mulSupport_mulIndicator]`. Conclude with `Set.inter_subset_right`. Establish `hG : (Function.mulSupport (Set.mulIndicator {v | v ∉ S} g)).Finite` using `(Filter.eventually_cofinite.mp hg).subset sub`. Establish `hpt : ∀ v, Set.mulIndicator {v | v ∉ S} k v = a v * b v * c v * Set.mulIndicator {v | v ∉ S} g v`.
+
+Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[Set.mulIndicator_of_notMem (by simpa using hv), Set.mulIndicator_of_notMem (by simpa using hv)]`. Take `⟨h1, h2, h3⟩` from `hS v hv`. Rewrite using `[h1, h2, h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.mulIndicator_of_mem (show v ∈ {v | v ∉ S} from hv), Set.mulIndicator_of_mem (show v ∈ {v | v ∉ S} from hv)]`. Conclude with `hk v hv`. Express the relevant statement in the definitionally equal form `∏ᶠ (v : I) (_ : v ∈ {v | v ∉ S}), k v = (∏ᶠ v, a v) * (∏ᶠ v, b v) * (∏ᶠ v, c v) * ∏ᶠ (v : I) (_ : v ∈ {v | v ∉ S}), g v`. Rewrite using `[finprod_mem_def, finprod_mem_def, finprod_congr hpt]`.
+
+Establish `hab : (Function.mulSupport fun v => a v * b v).Finite` using `(ha.union hb).subset (Function.mulSupport_mul a b)`. Establish `habc : (Function.mulSupport fun v => a v * b v * c v).Finite` using `(hab.union hc).subset (Function.mulSupport_mul _ c)`. Rewrite using `[finprod_mul_distrib habc hG, finprod_mul_distrib hab hc, finprod_mul_distrib ha hb]`.
+-/
 private theorem fp_mul {I : Type} (S : Finset I) (a b c g k : I → ℂ) (ha : {v | a v ≠ 1}.Finite) (hb : {v | b v ≠ 1}.Finite)
     (hc : {v | c v ≠ 1}.Finite) (hg : ∀ᶠ v in Filter.cofinite, g v = 1) (hS : ∀ v ∈ S, a v = 1 ∧ b v = 1 ∧ c v = 1)
     (hk : ∀ v ∉ S, k v = a v * b v * c v * g v) :
@@ -218,6 +302,11 @@ private theorem fp_mul {I : Type} (S : Finset I) (a b c g k : I → ℂ) (ha : {
     (hab.union hc).subset (Function.mulSupport_mul _ c)
   rw [finprod_mul_distrib habc hG, finprod_mul_distrib hab hc, finprod_mul_distrib ha hb]
 
+/- English proof (translation)
+Establish `hfin : (Function.mulSupport g).Finite` using `Filter.eventually_cofinite.mp hg`. Express the relevant statement in the definitionally equal form `∏ᶠ (v : I) (_ : v ∈ {v | v ∉ S}), g v = 0`. Rewrite using `[finprod_mem_def]`. Apply `finprod_eq_zero _ v₀` to reduce the goal to its premises. Rewrite using `[Set.mulIndicator_of_mem (show v₀ ∈ {v | v ∉ S} from h₀)]`.
+
+Conclude with `h`. Use `hfin.subset ?_` and prove the remaining obligations. Rewrite using `[Set.mulSupport_mulIndicator]`. Conclude with `Set.inter_subset_right`.
+-/
 private theorem fp_zero {I : Type} (S : Finset I) (g : I → ℂ) (hg : ∀ᶠ v in Filter.cofinite, g v = 1) (v₀ : I) (h₀ : v₀ ∉ S)
     (h : g v₀ = 0) : (∏ᶠ (v : I) (_ : v ∉ S), g v) = 0 := by
   have hfin : (Function.mulSupport g).Finite := Filter.eventually_cofinite.mp hg
@@ -230,10 +319,16 @@ private theorem fp_zero {I : Type} (S : Finset I) (g : I → ℂ) (hg : ∀ᶠ v
     rw [Set.mulSupport_mulIndicator]
     exact Set.inter_subset_right
 
+/- English proof (translation)
+Establish `h' : cv v (τ ^ 2 - 4) ≠ 0` using `(map_ne_zero _).mpr h`. Rewrite `h'` using `[map_sub, map_pow, map_ofNat]`. Then use the resulting hypothesis.
+-/
 private theorem loc_ne {F : Type} [Field F] [NumberField F] {τ : F} (h : τ ^ 2 - 4 ≠ 0) (v : Pl F) : cv v τ ^ 2 - 4 ≠ 0 := by
   have h' : cv v (τ ^ 2 - 4) ≠ 0 := (map_ne_zero _).mpr h
   rwa [map_sub, map_pow, map_ofNat] at h'
 
+/- English proof (translation)
+Use `filter_upwards [ae_unit (two_add_ne h), ae_unit h, D.Sg.finite_toSet.eventually_cofinite_notMem] with v hu1 hu2 hvS`. Take `⟨u1, e1⟩` from `hu1`. Take `⟨u2, e2⟩` from `hu2`. Establish `g` using `gVals (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v hvS) (loc_ne h v) (hi v hvS) (jstd (cv v τ)) (D.χ v) (jstd_tr _) (hD.chi v).1 (toUnit ω) (unit_om _) (toUnit (1 + ω)) (unit_one_add (loc_ne h v))`. Rewrite using `[g.1 ⟨u1, by rw [e1, map_add, map_ofNat]⟩, g.2.1 ⟨u2, by rw [e2, map_sub, map_pow, map_ofNat]⟩]`.
+-/
 private theorem ae_g {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (hD : D.Ok) {τ : F} (h : τ ^ 2 - 4 ≠ 0)
     (hi : ∀ v ∉ D.Sg, cv v τ ∈ (algebraMap (Ov v) (Kv v)).range) :
     ∀ᶠ v : Pl F in Filter.cofinite, gOrb (Ov v) (jstd (cv v τ)) (D.χ v) (toUnit (1 + ω)) = 1 := by
@@ -246,6 +341,13 @@ private theorem ae_g {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) 
     (unit_one_add (loc_ne h v))
   rw [g.1 ⟨u1, by rw [e1, map_add, map_ofNat]⟩, g.2.1 ⟨u2, by rw [e2, map_sub, map_pow, map_ofNat]⟩]
 
+/- English proof (translation)
+Unfold `kapSum`. Rewrite using `[finsum_eq_single _ (1 : Kˣ ⧸ NE τ)]`. Rewrite using `[H]`. Establish `hmem : Quotient.out (1 : Kˣ ⧸ NE τ) ∈ NE τ`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.out_eq']`.
+
+Rewrite using `[(hsNE O K Δ τ L h _).mp hmem]`. Simplify using `[one, hmem]`. Introduce `t ht`. Rewrite using `[H]`. Establish `hnm : Quotient.out t ∉ NE τ`.
+
+Introduce `hm`. Apply `ht` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' t]`. Conclude with `(QuotientGroup.eq_one_iff _).mpr hm`. Simplify using `[one, hnm]`.
+-/
 private theorem kap_one (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K) (L : IsLoc O Δ)
     (h : τ ^ 2 - 4 ≠ 0) (c : K) (d m : EL Δ τ) (H : ∀ t : Kˣ, lcount O c d ((t : K) • m) = one (t ∈ NE τ)) : kapSum O c d m = 1 := by
   unfold kapSum
@@ -264,6 +366,9 @@ private theorem kap_one (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuat
       exact (QuotientGroup.eq_one_iff _).mpr hm
     simp [one, hnm]
 
+/- English proof (translation)
+Use `filter_upwards [genPl F Δ D hD τ c d m h, D.Sg.eventually_cofinite_notMem] with v h1 h3`. Conclude with `kap_one _ _ _ _ (hD.off v h3) (loc_ne h.reg v) _ _ _ h1`.
+-/
 private theorem ae_k {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (hD : D.Ok) {τ c : F} {d m : EL Δ τ} (h : IsDat c d m) :
     ∀ᶠ v : Pl F in Filter.cofinite, kapSum (Ov v) (cv v c) (elmap (cv v) d) (elmap (cv v) m) = 1 := by
   filter_upwards [genPl F Δ D hD τ c d m h, D.Sg.eventually_cofinite_notMem] with v h1 h3
@@ -271,6 +376,57 @@ private theorem ae_k {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) 
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD`. Use `haveI := hD.real`. Use `⟨(-1 : ℝ) ^ Fintype.card (F →+* ℝ), ?_⟩` and prove the remaining obligations. Introduce `τ hτ hspl hi`. Take `⟨w⟩ : Nonempty (NumberField.InfinitePlace F)` from `inferInstance`.
+
+Set `σ₀ : F →+* ℝ` to `NumberField.InfinitePlace.embedding_of_isReal (NumberField.IsTotallyReal.isReal w)`. Establish `hreg : τ ^ 2 - 4 ≠ 0`. Introduce `h0`. Establish `h'` using `hτ σ₀`. Rewrite `h'` using `[h0, map_zero]`.
+
+Conclude with `lt_irrefl _ h'`. Establish `hΔ0 : Δ ≠ 0`. Introduce `h0`. Establish `h'` using `hD.neg σ₀`. Rewrite `h'` using `[h0, map_zero]`.
+
+Conclude with `lt_irrefl _ h'`. Establish `h2τ : 2 + τ ≠ 0` using `two_add_ne hreg`. Establish `two_ne : ∀ v : Pl F, (2 : Kv v) ≠ 0` using `fun v => by`. Establish `h' : cv v (2 : F) ≠ 0` using `(map_ne_zero _).mpr two_ne_zero`. Rewrite `h'` using `[map_ofNat]`. Then use the resulting hypothesis.
+
+Establish `hTb : ∀ σ : F →+* ℝ, σ τ ^ 2 < 4` using `fun σ => by`. Establish `h'` using `hτ σ`. Rewrite `h'` using `[map_sub, map_pow, map_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hglob : ∃ lam : Lsq F Δ, QuadraticAlgebra.norm lam = 2 + τ`.
+
+Take `⟨lam0, hl0⟩` from `hglob`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hl, htr⟩ : ∃ lam : Lsq F Δ, QuadraticAlgebra.norm lam = 2 + τ ∧ 2 + τ + QuadraticAlgebra.trace lam ≠ 0 := by`. Distinguish the cases in `h0 : 2 + τ + QuadraticAlgebra.trace lam0 = 0`. Use `⟨-lam0, by rw [QuadraticAlgebra.norm_neg, hl0], ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg]`.
+
+Introduce `h1`. Apply `h2τ` to reduce the goal to its premises. Take the linear combination `(h0 + h1) / 2`. Conclude with `⟨lam0, hl0, h0⟩`. Use `⟨dLam lam (toUnit (1 + ω)), 1, datLam F Δ τ 1 hreg one_ne_zero lam hl _ (unit_one_add hreg), posF_one hD.neg hτ, ?_⟩` and prove the remaining obligations.
+
+Introduce `c hc hev`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `h'` using `hc σ₀`. Rewrite `h'` using `[h0, map_zero]`.
+
+Conclude with `lt_irrefl _ h'`. Establish `hk : ∀ v ∉ D.Sg, kapSum (Ov v) (cv v c) (elmap (cv v) (dLam lam (toUnit (1 + ω)))) (elmap (cv v) (1 : EL Δ τ)) = hs (cv v (τ ^ 2 - 4)) (cv v (2 + τ + QuadraticAlgebra.trace lam)) * hs (cv v Δ) (cv v (2 + τ + QuadraticAlgebra.trace lam)) * hs (cv v (τ ^ 2 - 4)) (cv v (-c)) * gOrb …`. Introduce `v hv`. Establish `hl'` using `loc_ne hreg v`. Rewrite using `[elmap_dLam (cv v) hreg hl' lam _ (unit_one_add hreg) _ (unit_one_add hl'), elmap_one]`.
+
+Establish `hnorm : QuadraticAlgebra.norm (lmap (cv v) Δ lam) = 2 + cv v τ`. Establish `e : QuadraticAlgebra.norm (lmap (cv v) Δ lam) = cv v (QuadraticAlgebra.norm lam)`. Simplify using `[QuadraticAlgebra.norm_def, lmap]`. Rewrite using `[e, hl, map_add, map_ofNat]`. Establish `htr' : QuadraticAlgebra.trace (lmap (cv v) Δ lam) = cv v (QuadraticAlgebra.trace lam)`.
+
+Simplify using `[QuadraticAlgebra.trace_def, lmap]`. Use `left`. Conclude with `(map_ofNat (cv v) 2).symm`. Establish `e2 : cv v (2 + τ + QuadraticAlgebra.trace lam) = 2 + cv v τ + QuadraticAlgebra.trace (lmap (cv v) Δ lam)`. Rewrite using `[htr', map_add, map_add, map_ofNat]`.
+
+Establish `hX : 2 + cv v τ + QuadraticAlgebra.trace (lmap (cv v) Δ lam) ≠ 0`. Rewrite using `[← e2]`. Conclude with `(map_ne_zero _).mpr htr`. Establish `hev' : EvenVal (Ov v) (cv v c * (2 - cv v τ))`. Establish `h'` using `hev v hv`.
+
+Rewrite `h'` using `[map_mul, map_sub, map_ofNat]`. Then use the resulting hypothesis. Rewrite using `[kappa (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v hv) hl' (cv v c) hev' (lmap (cv v) Δ lam) hnorm hX _ (unit_one_add hl') (jstd (cv v τ)) (D.χ v) (jstd_tr _) (fun x x₀ hx => chiVal F Δ D hD v x x₀ hx)]`. Rewrite using `[e2, map_neg, map_sub, map_pow, map_ofNat]`. Establish `hS : ∀ v ∈ D.Sg, hs (cv v (τ ^ 2 - 4)) (cv v (2 + τ + QuadraticAlgebra.trace lam)) = 1 ∧ hs (cv v Δ) (cv v (2 + τ + QuadraticAlgebra.trace lam)) = 1 ∧ hs (cv v (τ ^ 2 - 4)) (cv v (-c)) = 1`. Introduce `v hv`.
+
+Establish `sq : IsSquare (cv v (τ ^ 2 - 4))`. Rewrite using `[map_sub, map_pow, map_ofNat]`. Conclude with `hspl v hv`. Establish `n1 : cv v (τ ^ 2 - 4) ≠ 0` using `(map_ne_zero _).mpr hreg`. Establish `n2 : cv v Δ ≠ 0` using `(map_ne_zero _).mpr hΔ0`.
+
+Conclude with `⟨hs_sq (two_ne v) n1 sq _, hs_sq (two_ne v) n2 (hD.split v hv) _, hs_sq (two_ne v) n1 sq _⟩`. Establish `rA` using `recip F (τ ^ 2 - 4) (2 + τ + QuadraticAlgebra.trace lam) hreg htr`. Establish `rB` using `recip F Δ (2 + τ + QuadraticAlgebra.trace lam) hΔ0 htr`. Establish `rC` using `recip F (τ ^ 2 - 4) (-c) hreg (neg_ne_zero.mpr hc0)`. Rewrite using `[fp_mul D.Sg (fun v => hs (cv v (τ ^ 2 - 4)) (cv v (2 + τ + QuadraticAlgebra.trace lam))) (fun v => hs (cv v Δ) (cv v (2 + τ + QuadraticAlgebra.trace lam))) (fun v => hs (cv v (τ ^ 2 - 4)) (cv v (-c))) (fun v => gOrb (Ov v) (jstd (cv v τ)) (D.χ v) (toUnit (1 + ω))) (fun v => kapS …`.
+
+Rewrite using `[rA.2, rB.2, rC.2, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Establish `hloc : ∀ σ : F →+* ℝ, hs (σ (τ ^ 2 - 4)) (σ (2 + τ + QuadraticAlgebra.trace lam)) * hs (σ Δ) (σ (2 + τ + QuadraticAlgebra.trace lam)) * hs (σ (τ ^ 2 - 4)) (σ (-c)) = -1`. Introduce `σ`. Establish `hn1` using `hτ σ`. Establish `hn2` using `hD.neg σ`.
+
+Establish `hcn : σ (-c) < 0`. Rewrite using `[map_neg]`. Conclude with `neg_neg_of_pos (hc σ)`. Establish `hXn : σ (2 + τ + QuadraticAlgebra.trace lam) ≠ 0` using `(map_ne_zero _).mpr htr`. Rewrite using `[hs_neg _ _ hn1 hcn]`.
+
+Break down `lt_or_gt_of_ne hXn with hlt | hgt` into its components or cases. Rewrite using `[hs_neg _ _ hn1 hlt, hs_neg _ _ hn2 hlt]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs_pos _ _ hgt, hs_pos _ _ hgt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.prod_congr rfl fun σ _ => hloc σ, Finset.prod_const, Finset.card_univ]`. Unfold `Dat.nK`. Use `push_cast`. Both sides reduce to the same expression. Establish `hnot : hs Δ (2 + τ) ≠ 1` using `fun h1 => hglob (hs_iff' Δ (2 + τ) h1)`.
+
+Establish `hreal : ∀ σ : F →+* ℝ, hs (σ Δ) (σ (2 + τ)) = 1` using `fun σ => by`. Apply `hs_pos` to reduce the goal to its premises. Rewrite using `[map_add, map_ofNat]`. Use polynomial arithmetic with `[hTb σ]`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Pl F, hs (cv v Δ) (cv v (2 + τ)) ≠ 1 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hnot (hsHasse F Δ (2 + τ) hΔ0 h2τ hreal hcon)`. Establish `hvS : v ∉ D.Sg` using `fun hvS => hv (hs_sq (two_ne v) ((map_ne_zero _).mpr hΔ0) (hD.split v hvS) _)`. Establish `hnl : ¬ ∃ lam : Lsq (Kv v) (cv v Δ), QuadraticAlgebra.norm lam = 2 + cv v τ`.
+
+Introduce `hex`. Apply `hv` to reduce the goal to its premises. Rewrite using `[map_add, map_ofNat]`. Conclude with `hs_iff _ _ hex`. Take `⟨d, m, hdm, hpos⟩` from `datEx F Δ D hD τ hτ hi`.
+
+Use `⟨d, m, hdm, hpos, ?_⟩` and prove the remaining obligations. Introduce `c hc hev`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `h'` using `hc σ₀`.
+
+Rewrite `h'` using `[h0, map_zero]`. Conclude with `lt_irrefl _ h'`. Establish `hdmc : IsDat c d m` using `⟨hdm.reg, hc0, hdm.d_norm, hdm.m_unit, hdm.m_star, hdm.m_sig⟩`. Establish `hloc` using `(modelMap F (Kv v) (cv v) Δ τ c d m hdmc).1`. Establish `kz` using `kappaZero (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v hvS) (cv v c) _ _ hloc hnl`.
+
+Establish `lhs : (∏ᶠ (u : Pl F) (_ : u ∉ D.Sg), kapSum (Ov u) (cv u c) (elmap (cv u) d) (elmap (cv u) m)) = 0` using `fp_zero D.Sg (fun u => kapSum (Ov u) (cv u c) (elmap (cv u) d) (elmap (cv u) m)) (ae_k D hD hdmc) v hvS kz.1`. Establish `rhs : D.nK τ = 0` using `fp_zero D.Sg (fun u => gOrb (Ov u) (jstd (cv u τ)) (D.χ u) (toUnit (1 + ω))) (ae_g D hD hreg hi) v hvS (kz.2 (jstd (cv v τ)) (jstd_tr _) (D.χ v) (toUnit (1 + ω)) (unit_one_add (loc_ne hreg v)))`. Rewrite using `[lhs, rhs, mul_zero]`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.basePt :
     UpperTheory.V.Z.Sym.Glob.BasePt := by
   intro F _ _ Δ D hD

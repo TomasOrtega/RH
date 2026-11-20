@@ -17,6 +17,15 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.QLevAt
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT t J hJ row col F h hχ hQ`. Take `⟨χ, r, Q, eqv⟩` from `F`. Simplify using `only at h hχ hQ ⊢`. Substitute `hχ` using the available equality. Take `rfl : Q = fun i => (J.E (Fin.cast h i)).toAt` from `funext fun i => eq_of_heq (hQ i)`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨Equiv.ofBijective (fun i => ⟨J.pl (Fin.cast h i), J.mem _⟩) ⟨?_, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Introduce `i i' e`. Establish `e'` using `hJ.inj (congrArg Subtype.val e)`. Conclude with `Fin.ext (by simpa using congrArg Fin.val e')`.
+
+Introduce and unpack `⟨PP, hPP⟩`. Take `⟨i, hi⟩` from `hJ.surj PP hPP`. Conclude with `⟨Fin.cast h.symm i, Subtype.ext (by simp [hi])⟩`. Take `⟨ε, hε, h3⟩` from `(J.G (Fin.cast h i)).q.above`. Conclude with `⟨(J.G (Fin.cast h i)).idem, (GlobalTheory.IdemUnder.under_eq_of_isIdemAt _ _ _ _ ε (J.G (Fin.cast h i)).idem hε h3).symm⟩`.
+
+Introduce `i j d hd hj x hx`. Conclude with `_root_.GlobalTheory.T.true_geometry_twist_value_alt W hW u a ha haT t (J.pl (Fin.cast h i)) (J.mem _) (J.E (Fin.cast h i)) (hJ.res _) j d hd hj x hx`. Introduce `i x hx g hg`. Conclude with `_root_.GlobalTheory.T.true_geometry_twist_scalar_alt W hW u a ha haT t (J.pl (Fin.cast h i)) (J.mem _) (J.E (Fin.cast h i)) x hx g hg`.
+-/
 theorem qLev_of_reads_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ row col (F : QFam a.v ((a.fam row col).t t)) (h : F.r = J.r), F.χ = _root_.GlobalTheory.Fam.chrK_alt W t → (∀ i, HEq (F.Q i) (J.E (Fin.cast h i)).toAt) → _root_.GlobalTheory.Fam.QLevAlt (a.fam row col) F := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT t J hJ row col F h hχ hQ
   obtain ⟨χ, r, Q, eqv⟩ := F

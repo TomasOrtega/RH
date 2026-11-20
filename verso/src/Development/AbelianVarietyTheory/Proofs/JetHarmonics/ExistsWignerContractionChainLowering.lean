@@ -14,6 +14,37 @@ namespace GlobalTheory.WigSh
 
 open Matrix in
 
+/- English proof (translation)
+Introduce `V _ _ _ n r z π u β L B l n₀`. Proceed by induction on `n₀ with`. Consider the case `zero`. Introduce `hz hT hType hL hrel hB hgap`. Use `⟨V, inferInstance, inferInstance, inferInstance, π, fun _ => ContinuousLinearMap.id ℂ V, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hType`. Conclude with `_root_.GlobalTheory.WigSh.wigMap_zero_of_contraction V V (n + 1) r z π π (ContinuousLinearMap.id ℂ V) (fun v => le_rfl) (fun h _ v => rfl)`. Introduce `M v _`. Simplify using `only [Finset.prod_range_zero, Complex.ofReal_one, one_smul, ContinuousLinearMap.id_apply]`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.id_apply]`. Consider the case `succ m ih`. Introduce `hz hT hType hL hrel hB hgap`. Establish `hm : (0 : ℤ) ≤ m` using `Nat.cast_nonneg m`. Establish `hgap' : ∀ j, j > l → L j < L l - (m : ℤ)` using `fun j hj => by`.
+
+Use `hgap j hj` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨V₁, i₁, i₂, i₃, π₁, A₁, hType₁, hA₁, hprod₁⟩` from `ih hz hT hType hL hrel hB hgap'`. Use `set L₁ := Function.update L l (L l - m) with hL₁def`.
+
+Use `set u₁ := Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) - m) with hu₁def`. Establish `hL₁ : StrictAnti L₁`. Introduce `a b hab`. Distinguish the cases in `ha : a = l`. Substitute `ha` using the available equality.
+
+Establish `hb : b ≠ a` using `ne_of_gt hab`. Rewrite using `[hL₁def, Function.update_self, Function.update_of_ne hb]`. Use `hgap b hab` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Distinguish the cases in `hb : b = l`. Substitute `hb` using the available equality. Rewrite using `[hL₁def, Function.update_self, Function.update_of_ne ha]`. Use `hL hab` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hL₁def, Function.update_of_ne ha, Function.update_of_ne hb]`. Conclude with `hL hab`. Establish `hne₁ : ∀ j : Fin (n + 1), L₁ j ≠ L₁ l - 1`. Introduce `j`. Distinguish the cases in `hj : j = l`.
+
+Substitute `hj` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[hL₁def, Function.update_self, Function.update_of_ne hj]`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Use `hL h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hgap j h` as an intermediate fact. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Establish `hrel₁ : ∀ j : Fin (n + 1), (u₁ ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L₁ j : ℂ)`.
+
+Introduce `j`. Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Rewrite using `[hu₁def, hL₁def, Function.update_self, Function.update_self]`. Use `hrel j` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`. Establish `hj' : (j : ℕ) + 1 ≠ (l : ℕ) + 1` using `fun h => hj (Fin.ext (by omega))`. Rewrite using `[hu₁def, hL₁def, Function.update_of_ne hj, Function.update_of_ne hj']`. Conclude with `hrel j`.
+
+Take `⟨V₂, j₁, j₂, j₃, π₂, A₂, hType₂, hA₂, hprod₂⟩` from `_root_.GlobalTheory.WignerStepLower.wigner_step_lowering V₁ n r z π₁ u₁ β L₁ B l hz hT hType₁ hL₁ hrel₁ hB hne₁`. Use `⟨V₂, j₁, j₂, j₃, π₂, fun ω => (A₁ ω).comp (A₂ ω), ?_, _root_.GlobalTheory.WigSh.wigMap_comp V V₁ V₂ (n + 1) r z π π₁ π₂ m 1 A₁ A₂ hA₁ hA₂, ?_⟩` and prove the remaining obligations. Establish `key : Function.update u₁ ((l : ℕ) + 1) (u₁ ((l : ℕ) + 1) - 1) = Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) - ((m + 1 : ℕ) : ℝ))`. Rewrite using `[hu₁def, Function.update_idem, Function.update_self]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← key]`. Conclude with `hType₂`. Introduce `M v hv`.
+
+Establish `hadj` using `_root_.GlobalTheory.adjoint_mem_CapSp_subA V V₁ n r z π π₁ B (A₁ (B (Fin.last n))) (_root_.Formalism.FourierDecayAlt.Qr.shf β M) ⟨hType.2.1, hType.2.2.1⟩ ⟨hType₁.2.1, hType₁.2.2.1⟩ hType.2.2.2.1 hType₁.2.2.2.1 hB (fun h hh hfix => by`. Use `hA₁.2.1 h hh (B (Fin.last n))` as an intermediate fact. Rewrite using `[hfix] at this) v hv` and apply the resulting hypothesis. Simplify using `only [ContinuousLinearMap.adjoint_comp, ContinuousLinearMap.comp_apply]`. Rewrite using `[hprod₂ M _ hadj, map_smul, hprod₁ M v hv, Finset.prod_range_succ, Complex.ofReal_mul, mul_comm, mul_smul]`.
+-/
 theorem _root_.GlobalTheory.WigSh.exists_wigMap_chain_lowering : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n r : ℕ) (z : (Fin (2 * r + (n + 1) + 1) → ℂ)) (π : _root_.Formalism.FourierDecayAlt.Q.Mx (n + 1) r → (V →L[ℂ] V)) (u : ℕ → ℝ) (β : ℂ) (L : Fin (n + 1) → ℤ) (B : Fin (n + 1) → (Fin (2 * r + (n + 1) + 1) → ℂ)) (l : Fin (n + 1)) (n₀ : ℕ), _root_.Formalism.QuantumDeterminants.inWb (n + 1) r z → 0 < _root_.Formalism.QuantumDeterminants.Tz (n + 1) r z → _root_.Formalism.FourierDecayAlt.Q.IsType (n + 1) r z π u → StrictAnti L → (∀ j : Fin (n + 1), (u ((j : ℕ) + 1) : ℂ) - ((n + 1 : ℕ) : ℂ) / 2 + 1 / 2 = β + (L j : ℂ)) → _root_.Formalism.FourierDecayAlt.Q.IsFrameOf (n + 1) r [z] B → (∀ j, j > l → L j < L l - (n₀ : ℤ)) → ∃ (V₂ : Type) (_ : NormedAddCommGroup V₂) (_ : InnerProductSpace ℂ V₂) (_ : FiniteDimensional ℂ V₂) (π₂ : _root_.Formalism.FourierDecayAlt.Q.Mx (n + 1) r → (V₂ →L[ℂ] V₂)) (A : (Fin (2 * r + (n + 1) + 1) → ℂ) → (V₂ →L[ℂ] V)), _root_.Formalism.FourierDecayAlt.Q.IsType (n + 1) r z π₂ (Function.update u ((l : ℕ) + 1) (u ((l : ℕ) + 1) - (n₀ : ℝ))) ∧ _root_.GlobalTheory.WigSh.WigMap (n + 1) r z π₂ π n₀ A ∧ ∀ (M : Fin n → ℤ) (v : V), v ∈ _root_.Formalism.FourierDecayAlt.Qr.CapSp (_root_.Formalism.FourierDecayAlt.Qr.subA (_root_.Formalism.FourierDecayAlt.Qr.EB π B)) (_root_.Formalism.FourierDecayAlt.Qr.shf β M) → A (B (Fin.last n)) (ContinuousLinearMap.adjoint (A (B (Fin.last n))) v) = ((∏ j ∈ Finset.range n₀, _root_.GlobalTheory.WigSh.wM (Function.update L l (L l - (j : ℤ))) M l : ℝ) : ℂ) • v := by
   intro V _ _ _ n r z π u β L B l n₀
   induction n₀ with

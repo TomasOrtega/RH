@@ -287,6 +287,9 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.Formalism.UG.cT]`.
+-/
 theorem _root_.GlobalTheory.RegSS.cT_add (σ : A →+* A) (a b : Matrix n n A) :
     _root_.Formalism.UG.cT σ (a + b) = _root_.Formalism.UG.cT σ a + _root_.Formalism.UG.cT σ b := by
   ext i j
@@ -295,17 +298,26 @@ theorem _root_.GlobalTheory.RegSS.cT_add (σ : A →+* A) (a b : Matrix n n A) :
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[_root_.Formalism.UG.cT]`.
+-/
 theorem _root_.GlobalTheory.RegSS.cT_smul (σ : A →+* A) (c : A) (a : Matrix n n A) :
     _root_.Formalism.UG.cT σ (c • a) = σ c • _root_.Formalism.UG.cT σ a := by
   ext i j
   simp [_root_.Formalism.UG.cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 theorem cT_cT (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (a : Matrix n n A) : cT σ (cT σ a) = a := by
   ext i j; simp [cT, hσ]
 
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.GlobalTheory.RegSS.cT_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_add (σ : A →+* A) (J a b : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (a + b) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J a + _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J b := by
   simp only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.GlobalTheory.RegSS.cT_add, Matrix.mul_add, Matrix.add_mul]
@@ -313,6 +325,9 @@ theorem _root_.GlobalTheory.RegSS.adj_add (σ : A →+* A) (J a b : Matrix n n A
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.GlobalTheory.RegSS.cT_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_smul (σ : A →+* A) (J : Matrix n n A) (c : A) (a : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (c • a) = σ c • _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J a := by
   simp only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.GlobalTheory.RegSS.cT_smul, Matrix.mul_smul,
@@ -321,6 +336,9 @@ theorem _root_.GlobalTheory.RegSS.adj_smul (σ : A →+* A) (J : Matrix n n A) (
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `h : _root_.Formalism.UG.cT σ (0 : Matrix n n A) = 0`. Use extensionality with `i j`. Simplify using `[_root_.Formalism.UG.cT]`. Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, h]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_zero (σ : A →+* A) (J : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J 0 = 0 := by
   have h : _root_.Formalism.UG.cT σ (0 : Matrix n n A) = 0 := by
@@ -331,6 +349,9 @@ theorem _root_.GlobalTheory.RegSS.adj_zero (σ : A →+* A) (J : Matrix n n A) :
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.Formalism.UG.cT_one, Matrix.nonsing_inv_mul _ hJ]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_one (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J 1 = 1 := by
   simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.Formalism.UG.cT_one, Matrix.nonsing_inv_mul _ hJ]
@@ -338,6 +359,9 @@ theorem _root_.GlobalTheory.RegSS.adj_one (σ : A →+* A) {J : Matrix n n A} (h
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.Formalism.UG.cT_mul]`. Rewrite using `[show J⁻¹ * _root_.Formalism.UG.cT σ b * J * (J⁻¹ * _root_.Formalism.UG.cT σ a * J) = J⁻¹ * _root_.Formalism.UG.cT σ b * (J * J⁻¹) * _root_.Formalism.UG.cT σ a * J by simp only [Matrix.mul_assoc], Matrix.mul_nonsing_inv _ hJ, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_mul (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det)
     (a b : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (a * b) =
@@ -351,6 +375,13 @@ theorem _root_.GlobalTheory.RegSS.adj_mul (σ : A →+* A) {J : Matrix n n A} (h
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `hc : ∀ M : Matrix n n A, _root_.Formalism.UG.cT σ (_root_.Formalism.UG.cT σ M) = M`. Introduce `M`. Use extensionality with `i j`. Simplify using `[_root_.Formalism.UG.cT, hσ]`. Establish `hH' : _root_.Formalism.UG.cT σ J = J` using `hH`.
+
+Establish `hJi : _root_.Formalism.UG.cT σ J⁻¹ = J⁻¹`. Establish `hl : _root_.Formalism.UG.cT σ J⁻¹ * J = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Matrix.inv_eq_left_inv hl).symm`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, _root_.Formalism.UG.cT_mul, hc, hJi, hH']`.
+
+Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hJ, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.mul_one]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_adj (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x)
     {J : Matrix n n A} (hH : _root_.Formalism.UG.IsHerm σ J) (hJ : IsUnit J.det) (a : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J a) = a := by
@@ -372,6 +403,9 @@ theorem _root_.GlobalTheory.RegSS.adj_adj (σ : A →+* A) (hσ : ∀ x, σ (σ 
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, _root_.GlobalTheory.RegSS.adj_smul, _root_.GlobalTheory.RegSS.adj_one σ hJ]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_algebraMap (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det)
     (e : A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (algebraMap A (Matrix n n A) e) =
@@ -382,6 +416,9 @@ theorem _root_.GlobalTheory.RegSS.adj_algebraMap (σ : A →+* A) {J : Matrix n 
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hJ.map f`.
+-/
 theorem _root_.GlobalTheory.RegSS.isUnit_det_map {B : Type} [CommRing B] (f : A →+* B)
     {J : Matrix n n A} (hJ : IsUnit J.det) : IsUnit (J.map f).det := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
@@ -390,6 +427,11 @@ theorem _root_.GlobalTheory.RegSS.isUnit_det_map {B : Type} [CommRing B] (f : A 
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `hcT : _root_.Formalism.UG.cT τ (a.map f) = (_root_.Formalism.UG.cT σ a).map f`. Use extensionality with `i j`. Simplify using `[_root_.Formalism.UG.cT, hf]`. Establish `hinv : (J.map f)⁻¹ = J⁻¹.map f`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hJ, Matrix.map_one f f.map_zero f.map_one]`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, hcT, hinv, Matrix.map_mul]`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_map {B : Type} [CommRing B] (σ : A →+* A) (τ : B →+* B)
     (f : A →+* B) (hf : ∀ x, f (σ x) = τ (f x)) {J : Matrix n n A} (hJ : IsUnit J.det)
     (a : Matrix n n A) :
@@ -402,6 +444,11 @@ theorem _root_.GlobalTheory.RegSS.adj_map {B : Type} [CommRing B] (σ : A →+* 
     rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ hJ, Matrix.map_one f f.map_zero f.map_one]
   simp only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj, hcT, hinv, Matrix.map_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J ↔ _`. Rewrite using `[(adj_eq_iff σ hJ (g : Matrix n n A) _).1 rfl, Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `((Matrix.isUnit_iff_isUnit_det J).2 hJ).mul_left_cancel (by rw [h, mul_one])`.
+
+Introduce `h`. Rewrite using `[h, Matrix.mul_one]`.
+-/
 theorem mem_UJ_iff_adj_mul (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det) (g : GL n A) :
     g ∈ UJ σ J ↔ adj σ J (g : Matrix n n A) * (g : Matrix n n A) = 1 := by
   change cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J ↔ _
@@ -414,6 +461,13 @@ theorem mem_UJ_iff_adj_mul (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.de
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_root_.Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J ↔ _`. Rewrite using `[mul_eq_one_comm]`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Rewrite using `[show J⁻¹ * _root_.Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J⁻¹ * (_root_.Formalism.UG.cT σ (g : Matrix n n A) * J * (g : Matrix n n A)) by`. Simplify using `only [Matrix.mul_assoc], hg, Matrix.nonsing_inv_mul _ hJ]`. Introduce `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hJ]`. Use `_ = J := by rw [hg, Matrix.mul_one]`.
+-/
 theorem _root_.GlobalTheory.RegSS.mem_UJ_iff_mul_adj (σ : A →+* A) {J : Matrix n n A}
     (hJ : IsUnit J.det) (g : GL n A) :
     g ∈ _root_.Formalism.UG.UJ σ J ↔ (g : Matrix n n A) * _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (g : Matrix n n A) = 1 := by
@@ -435,6 +489,9 @@ theorem _root_.GlobalTheory.RegSS.mem_UJ_iff_mul_adj (σ : A →+* A) {J : Matri
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+The claim follows from `(Units.inv_eq_of_mul_eq_one_right ((_root_.GlobalTheory.RegSS.mem_UJ_iff_mul_adj σ hJ g).1 hg)).symm`.
+-/
 theorem _root_.GlobalTheory.RegSS.adj_eq_inv (σ : A →+* A) {J : Matrix n n A}
     (hJ : IsUnit J.det) {g : GL n A} (hg : g ∈ _root_.Formalism.UG.UJ σ J) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J (g : Matrix n n A) = ((g⁻¹ : GL n A) : Matrix n n A) :=
@@ -444,6 +501,9 @@ theorem _root_.GlobalTheory.RegSS.adj_eq_inv (σ : A →+* A) {J : Matrix n n A}
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg at hl`. Conclude with `(Algebra.commute_of_mem_adjoin_singleton_of_commute hl h).eq`.
+-/
 theorem _root_.GlobalTheory.RegSS.commute_of_mem_genAlg {M N l : Matrix n n A} (h : N * M = M * N)
     (hl : l ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg M) : N * l = l * N := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg at hl
@@ -453,6 +513,13 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `hv.2 (N *ᵥ v)`. Establish `hlM : (l : Matrix n n A) * M = M * l` using `(_root_.GlobalTheory.RegSS.commute_of_mem_genAlg (M := M) (N := M) rfl l.2).symm`. Establish `key : N = l`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+
+Take `⟨l', rfl⟩` from `hv.2 w`. Establish `hll' : (l : Matrix n n A) * l' = l' * l` using `_root_.GlobalTheory.RegSS.commute_of_mem_genAlg hlM l'.2`. Establish `hNl' : N * (l' : Matrix n n A) = l' * N` using `_root_.GlobalTheory.RegSS.commute_of_mem_genAlg h l'.2`. Simplify using `only [Matrix.toLin'_apply]`. Simplify using `only at hl`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hNl', ← Matrix.mulVec_mulVec, ← hl, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hll']`. Conclude with `key ▸ l.2`.
+-/
 theorem _root_.GlobalTheory.RegSS.mem_genAlg_of_commute {M N : Matrix n n A} {v : n → A}
     (hv : Function.Bijective (fun l : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg M => (l : Matrix n n A) *ᵥ v))
     (h : N * M = M * N) : N ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg M := by
@@ -482,6 +549,9 @@ variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E}
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
+/- English proof (translation)
+The claim follows from `Module.finite_of_finrank_pos (by rw [h.finrank_eq]; norm_num)`.
+-/
 theorem _root_.GlobalTheory.RegSS.quad_finite
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsQuadInvol F E σ) : Module.Finite F E :=
   Module.finite_of_finrank_pos (by rw [h.finrank_eq]; norm_num)
@@ -489,6 +559,9 @@ theorem _root_.GlobalTheory.RegSS.quad_finite
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
+/- English proof (translation)
+The claim follows from `Module.nontrivial_of_finrank_pos (R := F) (by rw [h.finrank_eq]; norm_num)`.
+-/
 theorem _root_.GlobalTheory.RegSS.quad_nontrivial
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsQuadInvol F E σ) : Nontrivial E :=
   Module.nontrivial_of_finrank_pos (R := F) (by rw [h.finrank_eq]; norm_num)
@@ -497,6 +570,27 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 
+/- English proof (translation)
+Establish `hfr` using `h.finrank_eq`. Use `haveI : Nontrivial E := Module.nontrivial_of_finrank_pos (R := F) (by rw [hfr]; norm_num)`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hfr]; norm_num)`. Use `haveI := h.etale`. Use `haveI : IsReduced E := Algebra.FormallyUnramified.isReduced_of_field F E`.
+
+Take `⟨e, he⟩` from `h.ne_id`. Use `set w := e - σ e with hw`. Establish `hσw : σ w = -w` using `by simp [w, h.invol]`. Establish `hw0 : w ≠ 0` using `fun h0 => he (sub_eq_zero.mp h0).symm`. Establish `two : (2 : F) ≠ 0` using `two_ne_zero`.
+
+Establish `hkill : ∀ t : F, t • w = -(t • w) → t = 0`. Introduce `t ht`. Establish `h2 : (2 : F) • (t • w) = 0` using `by rw [two_smul]; nth_rewrite 1 [ht]; exact neg_add_cancel _`. Break down `smul_eq_zero.mp h2 with h2 | h2` into its components or cases. Conclude with `absurd h2 two`.
+
+Conclude with `(smul_eq_zero.mp h2).resolve_right hw0`. Establish `hli : LinearIndependent F ![(1 : E), w]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `hσst` using `congrArg σ hst`.
+
+Simplify using `only [map_add, map_smul, map_one, hσw, map_zero, smul_neg] at hσst`. Establish `ht : t • w = -(t • w)`. Use `hst.trans hσst.symm` as an intermediate fact. Conclude with `add_left_cancel this`. Establish `ht0` using `hkill t ht`.
+
+Substitute `ht0` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite `hst` using `[Algebra.smul_def, mul_one]`. Conclude with `(algebraMap F E).injective (by rw [hst, map_zero])`.
+
+Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hfr])`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = w` using `by simp [b]`. Establish `hsum : w * w = b.repr (w * w) 0 • (1 : E) + b.repr (w * w) 1 • w`. Use `b.sum_repr (w * w)` as an intermediate fact.
+
+Rewrite `this` using `[Fin.sum_univ_two, hb0, hb1]`. Conclude with `this.symm`. Establish `hσ2 : σ (w * w) = w * w` using `by rw [map_mul, hσw, neg_mul_neg]`. Establish `hc1 : b.repr (w * w) 1 = 0`. Apply `hkill` to reduce the goal to its premises.
+
+Use `congrArg σ hsum` as an intermediate fact. Rewrite `this` using `[hσ2]`. Simplify using `only [map_add, map_smul, map_one, hσw, smul_neg] at this`. Use `hsum.symm.trans this` as an intermediate fact. Conclude with `add_left_cancel this`.
+
+Use `⟨b, b.repr (w * w) 0, hb0, by rw [hb1, hσw], ?_, ?_⟩` and prove the remaining obligations. Introduce `hd`. Rewrite `hsum` using `[hc1, hd, zero_smul, zero_smul, add_zero]`. Conclude with `hw0 (IsReduced.eq_zero w ⟨2, by rw [pow_two, hsum]⟩)`. Rewrite using `[hb1] conv_lhs => rw [hsum, hc1, zero_smul, add_zero, Algebra.smul_def, mul_one]`.
+-/
 theorem _root_.GlobalTheory.RegSS.quad_exists_basis [CharZero F]
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsQuadInvol F E σ) :
     ∃ (b : Module.Basis (Fin 2) F E) (d : F), b 0 = 1 ∧ σ (b 1) = - b 1 ∧ d ≠ 0 ∧
@@ -556,6 +650,9 @@ theorem _root_.GlobalTheory.RegSS.quad_exists_basis [CharZero F]
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
+/- English proof (translation)
+Simplify using `[_root_.Formalism.UG.inclE, _root_.Formalism.UG.sigR]`.
+-/
 theorem _root_.GlobalTheory.RegSS.inclE_conj (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R]
     (x : E) : _root_.Formalism.UG.inclE (F := F) R (σ x) = _root_.Formalism.UG.sigR σ R (_root_.Formalism.UG.inclE (F := F) R x) := by
   simp [_root_.Formalism.UG.inclE, _root_.Formalism.UG.sigR]
@@ -563,6 +660,9 @@ theorem _root_.GlobalTheory.RegSS.inclE_conj (σ : E →ₐ[F] E) (R : Type) [Co
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e r => simp [_root_.Formalism.UG.sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem _root_.GlobalTheory.RegSS.sigR_sigR (hσ : ∀ x, σ (σ x) = x) (R : Type) [CommRing R]
     [Algebra F R] (x : E ⊗[F] R) : _root_.Formalism.UG.sigR σ R (_root_.Formalism.UG.sigR σ R x) = x := by
   induction x using TensorProduct.induction_on with
@@ -574,6 +674,15 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 
+/- English proof (translation)
+Use `letI := Algebra.TensorProduct.rightAlgebra (R := F) (A := B) (B := R)`. Use `letI := Algebra.TensorProduct.rightAlgebra (R := F) (A := B') (B := R)`. Use `letI : TopologicalSpace (B ⊗[F] R) := moduleTopology R (B ⊗[F] R)`. Use `letI : TopologicalSpace (B' ⊗[F] R) := moduleTopology R (B' ⊗[F] R)`. Use `haveI : IsModuleTopology R (B ⊗[F] R) := ⟨rfl⟩`.
+
+Use `haveI : IsModuleTopology R (B' ⊗[F] R) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (B' ⊗[F] R) := IsModuleTopology.toContinuousAdd R _`. Use `haveI : ContinuousSMul R (B' ⊗[F] R) := IsModuleTopology.toContinuousSMul R _`. Set `g : B ⊗[F] R →ₗ[R] B' ⊗[F] R` to `{ toFun := LinearMap.rTensor R f map_add' := map_add _ map_smul' := by`. Introduce `r x`.
+
+Simplify using `only [Algebra.smul_def, RingHom.id_apply]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b s => show LinearMap.rTensor R f (((1 : B) ⊗ₜ[F] r) * b ⊗ₜ[F] s) = ((1 : B') ⊗ₜ[F] r) * f b ⊗ₜ[F] s`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy] }`. Conclude with `IsModuleTopology.continuous_of_linearMap g`.
+-/
 theorem _root_.GlobalTheory.RegSS.continuous_rTensor {B B' : Type} [CommRing B] [Algebra F B]
     [CommRing B'] [Algebra F B'] (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
     (f : B →ₗ[F] B') :
@@ -605,6 +714,11 @@ theorem _root_.GlobalTheory.RegSS.continuous_rTensor {B B' : Type} [CommRing B] 
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
+/- English proof (translation)
+Establish `hσR : (_root_.Formalism.UG.sigR σ R : E ⊗[F] R → E ⊗[F] R) = LinearMap.rTensor R σ.toLinearMap`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e r => simp [_root_.Formalism.UG.sigR]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[hσR]`. Conclude with `_root_.GlobalTheory.RegSS.continuous_rTensor R _`.
+-/
 theorem _root_.GlobalTheory.RegSS.continuous_sigR (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] :
     @Continuous _ _ (_root_.Formalism.BasicNotions.tensTopL (F := F) (E := E) R) (_root_.Formalism.BasicNotions.tensTopL (F := F) (E := E) R)
@@ -622,6 +736,9 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 
+/- English proof (translation)
+Establish `: IsArtinianRing B` using `IsArtinianRing.of_finite F B`. Rewrite using `[Algebra.Etale.iff_exists_algEquiv_prod]`. Use `letI : ∀ I : MaximalSpectrum B, Field (B ⧸ I.asIdeal) := fun I => Ideal.Quotient.field I.asIdeal`. Conclude with `⟨MaximalSpectrum B, inferInstance, fun I => B ⧸ I.asIdeal, inferInstance, inferInstance, (IsArtinianRing.equivPi B).restrictScalars F, fun I => ⟨inferInstance, inferInstance⟩⟩`.
+-/
 theorem _root_.GlobalTheory.RegSS.etale_of_isReduced [CharZero F] (B : Type) [CommRing B]
     [Algebra F B] [Module.Finite F B] [IsReduced B] : Algebra.Etale F B := by
   have : IsArtinianRing B := IsArtinianRing.of_finite F B
@@ -637,6 +754,9 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 variable {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n E} {γ : GL n E} in
+/- English proof (translation)
+Use `h.quad.etale` as an intermediate fact. Use `hA.2.1` as an intermediate fact. Establish `: Algebra.Etale F (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E))` using `Algebra.Etale.comp F E _`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field F _`.
+-/
 theorem _root_.GlobalTheory.RegSS.genAlg_isReduced
     (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular σ J γ) (hA : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClauseAlg σ J γ) :
     IsReduced (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)) := by
@@ -651,6 +771,23 @@ open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 variable {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n E} {γ : GL n E} in
 
+/- English proof (translation)
+Establish `hJ` using `h.nondeg`. Establish `hH` using `h.herm`. Establish `hσ` using `h.quad.invol`. Establish `hpres` using `hA.2.2.2.2.1`. Set `f : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E) → _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)` to `fun l => ⟨_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj (σ : E →+* E) J l, hpres l l.2⟩`.
+
+Establish `hf : ∀ l, (f l : Matrix n n E) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj (σ : E →+* E) J l` using `fun _ => rfl`. Set `τ0 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E) →ₐ[F] _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)` to `{ toFun := f map_one' := Subtype.ext (by rw [hf]; exact _root_.GlobalTheory.RegSS.adj_one _ hJ) map_mul' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc` using `congrArg Subtype.val (mul_comm (f b) (f a))`. Simplify using `only [MulMemClass.coe_mul, hf] at hc ⊢`.
+
+Rewrite using `[_root_.GlobalTheory.RegSS.adj_mul _ hJ, hc]`. Use the proof step `map_zero' := Subtype.ext (by rw [hf]; exact _root_.GlobalTheory.RegSS.adj_zero _ _)`. Use the proof step `map_add' := fun a b => Subtype.ext (by`. Simplify using `only [AddMemClass.coe_add, hf]`. Conclude with `_root_.GlobalTheory.RegSS.adj_add _ _ _ _)`.
+
+Use the proof step `commutes' := fun c => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hf, IsScalarTower.algebraMap_apply F E (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)) c]`. Simplify using `only [Subalgebra.coe_algebraMap]`. Rewrite using `[_root_.GlobalTheory.RegSS.adj_algebraMap _ hJ]`.
+
+Simplify using `}`. Establish `hτ0 : ∀ l, τ0 (τ0 l) = l` using `fun l => Subtype.ext (_root_.GlobalTheory.RegSS.adj_adj _ (fun x => hσ x) hH hJ l)`. Use `⟨AlgEquiv.ofAlgHom τ0 τ0 (AlgHom.ext hτ0) (AlgHom.ext hτ0), fun l => rfl, hτ0, ?_, ?_⟩` and prove the remaining obligations. Introduce `e`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj (σ : E →+* E) J ((algebraMap E (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)) e : Matrix n n E)) = _`. Simplify using `only [Subalgebra.coe_algebraMap]`. Conclude with `_root_.GlobalTheory.RegSS.adj_algebraMap _ hJ e`. Introduce `l`. Rewrite using `[Subtype.ext_iff]`.
+
+Express the relevant statement in the definitionally equal form `_root_.Formalism.UG.cT (σ : E →+* E) (l : Matrix n n E) * J = J * l ↔ J⁻¹ * _root_.Formalism.UG.cT (σ : E →+* E) (l : Matrix n n E) * J = l`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Rewrite using `[Matrix.mul_assoc, hl, Matrix.nonsing_inv_mul_cancel_left _ _ hJ]`. Introduce `hl`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hJ]`. Use `_ = J * l := by rw [hl]`.
+-/
 theorem _root_.GlobalTheory.RegSS.exists_adjEquiv (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular σ J γ)
     (hA : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ClauseAlg σ J γ) :
     ∃ τ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E) ≃ₐ[F]
@@ -713,6 +850,13 @@ open scoped TensorProduct in
 variable {F E : Type} [Field F] [CommRing E] [Algebra F E] {σ : E →ₐ[F] E} in
 variable {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n E} {γ : GL n E} in
 
+/- English proof (translation)
+Establish `hJ` using `h.nondeg`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [_root_.GlobalTheory.RegSS.adj_zero]`. Consider the case `tmul p e`. Establish `hp : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj (σ : E →+* E) J (((p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E))) : Matrix n n E) = ((p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.Centraliz …`.
+
+Establish `hp0 : _root_.Formalism.UG.cT (σ : E →+* E) (((p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E))) : Matrix n n E) * J = J * ((p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg (γ : Matrix n n E)) : M …` using `p.2`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj]`. Rewrite using `[Matrix.mul_assoc, hp0, Matrix.nonsing_inv_mul_cancel_left _ _ hJ]`. Simplify using `only [_root_.GlobalTheory.RegSS.tConj, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusTensor, Algebra.TensorProduct.productMap_apply_tmul, Subalgebra.coe_val, IsScalarTower.coe_toAlgHom', MulMemClass.coe_ …`. Rewrite using `[_root_.GlobalTheory.RegSS.adj_mul _ hJ, _root_.GlobalTheory.RegSS.adj_algebraMap _ hJ, hp, Algebra.commutes]`.
+
+Both sides reduce to the same expression. Consider the case `add x y hx hy`. Simplify using `only [map_add, AddMemClass.coe_add, _root_.GlobalTheory.RegSS.adj_add, hx, hy]`.
+-/
 theorem _root_.GlobalTheory.RegSS.plusTensor_tConj (h : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.IsRegular σ J γ)
     (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusAlg σ J (γ : Matrix n n E) ⊗[F] E) :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusTensor σ J (γ : Matrix n n E)

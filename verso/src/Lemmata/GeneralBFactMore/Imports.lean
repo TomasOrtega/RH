@@ -4,6 +4,9 @@ universe u_2 u_3
 
 namespace Bl.general_b_fact_more
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Polynomial.coeff_pow_of_natDegree_le (m := m) h`. Simplify `h2` using `only [Nat.mul_one]`.
+-/
 private lemma aux {R : Type u_2} [CommRing R] (q : Polynomial R) (m : ℕ) (h : q.natDegree ≤ 1) :
     (q ^ m).natDegree ≤ m ∧ (q ^ m).coeff m = q.coeff 1 ^ m := by
   constructor
@@ -13,6 +16,11 @@ private lemma aux {R : Type u_2} [CommRing R] (q : Polynomial R) (m : ℕ) (h : 
   · have h2 := Polynomial.coeff_pow_of_natDegree_le (m := m) h
     simpa only [Nat.mul_one] using h2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.prod_insert ha]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Polynomial.natDegree_mul_le.trans (Nat.add_le_add (h a) ih.1)`. Rewrite using `[Polynomial.coeff_mul_add_eq_of_natDegree_le (h a) ih.1, ih.2]`.
+-/
 private lemma aux2 {R : Type u_2} {ι : Type u_3} [CommRing R] (s : Finset ι) (q : ι → Polynomial R)
     (e : ι → ℕ) (h : ∀ i, (q i).natDegree ≤ e i) :
     (s.prod q).natDegree ≤ s.sum e ∧
@@ -26,6 +34,9 @@ private lemma aux2 {R : Type u_2} {ι : Type u_3} [CommRing R] (s : Finset ι) (
     · exact Polynomial.natDegree_mul_le.trans (Nat.add_le_add (h a) ih.1)
     · rw [Polynomial.coeff_mul_add_eq_of_natDegree_le (h a) ih.1, ih.2]
 
+/- English proof (translation)
+Introduce `R ι _ s p e hp`. Establish `h` using `aux2 s (fun i => p i ^ e i) e (fun i => (aux (p i) (e i) (hp i)).1)`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2]`. Conclude with `Finset.prod_congr rfl (fun i _ => (aux (p i) (e i) (hp i)).2)`.
+-/
 theorem goal1 :
   ∀ {R : Type u_2} {ι : Type u_3} [inst : CommRing.{u_2} R] (s : Finset.{u_3} ι) (p : ι → Polynomial.{u_2} R)
   (e : ι → Nat),

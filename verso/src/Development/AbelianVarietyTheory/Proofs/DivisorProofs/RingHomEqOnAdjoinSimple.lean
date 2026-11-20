@@ -11,6 +11,11 @@ namespace GlobalTheory.GalLift
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.1 hy]`. Conclude with `h`. Consider the case `algebraMap q => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb]`.
+
+Consider the case `inv a _ ha => rw [map_inv₀, map_inv₀, ha]`. Consider the case `mul a b _ _ ha hb => rw [map_mul, map_mul, ha, hb]`.
+-/
 theorem ringHom_eq_on_adjoin_simple {E : Type} [Field E] [Algebra ℚ E] (f g : E →+* ℂ) (s : E) (h : f s = g s) (x : E)
     (hx : x ∈ IntermediateField.adjoin ℚ ({s} : Set E)) : f x = g x := by
   induction hx using IntermediateField.adjoin_induction with
@@ -20,11 +25,19 @@ theorem ringHom_eq_on_adjoin_simple {E : Type} [Field E] [Algebra ℚ E] (f g : 
   | inv a _ ha => rw [map_inv₀, map_inv₀, ha]
   | mul a b _ _ ha hb => rw [map_mul, map_mul, ha, hb]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h _ (IntermediateField.mem_adjoin_simple_self ℚ D.host.sqrtMinusD), fun h x hx => ringHom_eq_on_adjoin_simple (σ.comp D.embE) (D.what₂.embLL.comp D.embE) D.host.sqrtMinusD h x hx⟩`.
+-/
 theorem overK_iff_sqrt {D : D7} (σ : D.what₂.LL →+* ℂ) :
     OverK σ ↔ σ (D.embE D.host.sqrtMinusD) = D.what₂.embLL (D.embE D.host.sqrtMinusD) :=
   ⟨fun h => h _ (IntermediateField.mem_adjoin_simple_self ℚ D.host.sqrtMinusD),
     fun h x hx => ringHom_eq_on_adjoin_simple (σ.comp D.embE) (D.what₂.embLL.comp D.embE) D.host.sqrtMinusD h x hx⟩
 
+/- English proof (translation)
+Establish `e0` using `res_embLL T ha hp.2.2.1`. Establish `h1 : D.what₂.embLL (D.embE D.host.sqrtMinusD) = T.Q.H.rt0` using `(RingHom.congr_fun D.embE_φ₀ D.host.sqrtMinusD).trans hp.1.2.2.1.symm`. Establish `h2 : GoodEmb T.Q.c (res T D.what₂.embLL)` using `e0 ▸ T.toCore.good_σ₀`. Establish `hx : D.embE D.host.sqrtMinusD = algebraMap T.Q.c.F D.what₂.LL (IntermediateField.inclusion T.Q.c.le (ReciprocityTheory.ChartRestriction.G.Geo.Tor.baseKA T.Q.l).ρ)` using `D.what₂.embLL.injective (h1.trans (Eq.symm h2))`. Use `(overK_iff_sqrt σ).trans ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg σ hx).symm.trans (h.trans h1)`. Conclude with `(congrArg σ hx).trans (Eq.trans h h1.symm)`.
+-/
 theorem overK_iff_good_of_pins {D : D7} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (ha : AlgTie T) (hp : T.Q.Pins)
     (σ : D.what₂.LL →+* ℂ) : OverK σ ↔ GoodEmb T.Q.c (res T σ) := by
   have e0 := res_embLL T ha hp.2.2.1
@@ -38,6 +51,9 @@ theorem overK_iff_good_of_pins {D : D7} (T : CoreJ D) [Algebra T.Q.c.F D.what₂
   · exact (congrArg σ hx).symm.trans (h.trans h1)
   · exact (congrArg σ hx).trans (Eq.trans h h1.symm)
 
+/- English proof (translation)
+Introduce `T _ _ _ _ _ _ fw _ σ` and use `overK_iff_good_of_pins T fw.alg_eq fw.laws.pins σ`.
+-/
 theorem overK_iff_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → ∀ (fw : FWTie T R κw v₀) (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), OverK σ ↔ GoodEmb T.Q.c (res T σ) :=
   fun T _ _ _ _ _ _ fw _ σ => overK_iff_good_of_pins T fw.alg_eq fw.laws.pins σ
 

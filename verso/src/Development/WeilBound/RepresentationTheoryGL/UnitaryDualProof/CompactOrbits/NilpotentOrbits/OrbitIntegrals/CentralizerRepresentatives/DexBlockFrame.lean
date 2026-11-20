@@ -8,6 +8,29 @@ open Module
 
 variable {k : Type} [Field k] {R : Type} [CommRing R] [Algebra k R]
 
+/- English proof (translation)
+Use `letI : Field (R ⧸ I) := Ideal.Quotient.field I`. Establish `hT : Module.IsTorsionBySet R W I` using `fun y z => hW z z.2 y`. Use `letI : Module (R ⧸ I) W := hT.module`. Establish `hmk : ∀ (z : R) (y : W), (Ideal.Quotient.mk I z) • y = z • y` using `fun z y => rfl`. Use `haveI : IsScalarTower k (R ⧸ I) W := ⟨fun c e y => by`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective e`. Establish `: c • Ideal.Quotient.mk I z = Ideal.Quotient.mk I (c • z)` using `(map_smul (Ideal.Quotient.mkₐ k I) c z).symm`. Rewrite using `[this, hmk, hmk, smul_assoc]⟩`. Use `haveI : FiniteDimensional (R ⧸ I) W := Module.Finite.of_restrictScalars_finite k (R ⧸ I) W`. Set `toE : (W →ₗ[R] W) → (W →ₗ[R ⧸ I] W)` to `fun f => { toFun := f map_add' := f.map_add map_smul' := fun c y => by`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Simplify using `only [RingHom.id_apply, hmk]`. Conclude with `f.map_smul z y }`. Establish `htoE : ∀ f y, toE f y = f y` using `fun f y => rfl`. Establish `hNE : IsNilpotent (toE N)`.
+
+Take `⟨m, hm⟩` from `hN`. Use `⟨m, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Establish `: ((toE N) ^ m) y = (N ^ m) y`. Rewrite using `[Module.End.pow_apply, Module.End.pow_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, hm]`. Both sides reduce to the same expression. Take `⟨ι, _, l, s, B, hB, hl, hs, hv, hA⟩` from `exists_normal (toE N) hNE v`. Use `⟨ι, inferInstance, l, s, b.smulTower B, hl, hs, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z p j`.
+
+Rewrite using `[Basis.smulTower_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Basis.smulTower_apply, smul_assoc]`.
+
+Introduce `p a i`. Rewrite using `[Basis.smulTower_apply]`. Establish `h1 : N (b p • B ⟨a, i⟩) = b p • (toE N) (B ⟨a, i⟩)` using `(toE N).map_smul (b p) (B ⟨a, i⟩)`. Rewrite using `[h1, hB a i]`. Use `split_ifs with h`.
+
+Rewrite using `[Basis.smulTower_apply]`. Rewrite using `[smul_zero]`. Rewrite using `[Finset.sum_comm] conv_lhs => rw [hv]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : s a < l a`.
+
+Simplify using `only [h, dif_pos, Basis.smulTower_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`.
+
+Simplify using `only [h, dif_neg, not_false_eq_true, Finset.sum_const_zero]`. Introduce `A hAN p a i hi`. Establish `hc : toE A ∘ₗ toE N = toE N ∘ₗ toE A`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun hAN y`.
+
+Rewrite using `[Basis.smulTower_repr]`. Use `hA (toE A) hc a i hi` as an intermediate fact. Rewrite `this` using `[htoE]`. Rewrite using `[this, map_zero, Finsupp.zero_apply]`.
+-/
 theorem dex_block_frame (I : Ideal R) [I.IsMaximal] {L : Type} [Fintype L] (b : Basis L k (R ⧸ I))
     {W : Type} [AddCommGroup W] [Module R W] [Module k W] [IsScalarTower k R W] [FiniteDimensional k W]
     (hW : ∀ z ∈ I, ∀ y : W, z • y = 0) (N : W →ₗ[R] W) (hN : IsNilpotent N) (v : W) :

@@ -12,36 +12,66 @@ section Num
 
 variable {ε : Fin n → Bool}
 
+/- English proof (translation)
+Simplify using `only [dot, Pi.add_apply, add_mul, sum_add_distrib]`.
+-/
 private theorem dot_add_l (u v w : Fin n → ℝ) : dot (u + v) w = dot u w + dot v w := by
   simp only [dot, Pi.add_apply, add_mul, sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [dot, Pi.add_apply, mul_add, sum_add_distrib]`.
+-/
 private theorem dot_add_r (u v w : Fin n → ℝ) : dot u (v + w) = dot u v + dot u w := by
   simp only [dot, Pi.add_apply, mul_add, sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [dot, mul_comm]`.
+-/
 private theorem dot_comm' (u v : Fin n → ℝ) : dot u v = dot v u := by
   simp only [dot, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [dot, Pi.neg_apply, mul_neg, sum_neg_distrib]`.
+-/
 private theorem dot_neg_r (u v : Fin n → ℝ) : dot u (-v) = - dot u v := by
   simp only [dot, Pi.neg_apply, mul_neg, sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [dot, Finset.sum_apply, mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem dot_sum_r {k : ℕ} (u : Fin n → ℝ) (f : Fin k → Fin n → ℝ) :
     dot u (∑ i, f i) = ∑ i, dot u (f i) := by
   simp only [dot, Finset.sum_apply, mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[dot, root, Pi.single_apply, mul_sub, sum_sub_distrib]`.
+-/
 private theorem dot_root_r (u : Fin n → ℝ) (a b : Fin n) : dot u (root a b) = u a - u b := by
   simp [dot, root, Pi.single_apply, mul_sub, sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[root]`.
+-/
 private theorem root_swap (a b : Fin n) : root b a = - root a b := by
   simp [root]
 
+/- English proof (translation)
+Unfold `nsq dot`. Conclude with `sum_nonneg fun i _ => mul_self_nonneg (u i)`.
+-/
 private theorem nsq_nonneg'' (u : Fin n → ℝ) : 0 ≤ nsq u := by
   unfold nsq dot
   exact sum_nonneg fun i _ => mul_self_nonneg (u i)
 
+/- English proof (translation)
+Simplify using `only [nsq, dot_add_l, dot_add_r, dot_comm' v u]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem nsq_add'' (u v : Fin n → ℝ) : nsq (u + v) = nsq u + 2 * dot u v + nsq v := by
   simp only [nsq, dot_add_l, dot_add_r, dot_comm' v u]; ring
 
+/- English proof (translation)
+Rewrite using `[← Real.sqrt_mul (nsq_nonneg'' u)]`. Use `le_trans (le_abs_self _) ?_` and prove the remaining obligations. Rewrite using `[← Real.sqrt_sq_eq_abs]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Simplify `Finset.sum_mul_sq_le_sq_mul_sq univ u v` using `[dot, nsq, sq]`.
+-/
 private theorem dot_le_sqrt (u v : Fin n → ℝ) : dot u v ≤ √(nsq u) * √(nsq v) := by
   rw [← Real.sqrt_mul (nsq_nonneg'' u)]
   refine le_trans (le_abs_self _) ?_
@@ -49,6 +79,9 @@ private theorem dot_le_sqrt (u v : Fin n → ℝ) : dot u v ≤ √(nsq u) * √
   apply Real.sqrt_le_sqrt
   simpa [dot, nsq, sq] using Finset.sum_mul_sq_le_sq_mul_sq univ u v
 
+/- English proof (translation)
+Establish `h1 : nsq (u + v) ≤ (√(nsq u) + √(nsq v)) ^ 2`. Rewrite using `[nsq_add'', add_sq, Real.sq_sqrt (nsq_nonneg'' u), Real.sq_sqrt (nsq_nonneg'' v)]`. Use polynomial arithmetic with `[dot_le_sqrt u v]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sqrt_nsq_add_le (u v : Fin n → ℝ) : √(nsq (u + v)) ≤ √(nsq u) + √(nsq v) := by
   have h1 : nsq (u + v) ≤ (√(nsq u) + √(nsq v)) ^ 2 := by
     rw [nsq_add'', add_sq, Real.sq_sqrt (nsq_nonneg'' u), Real.sq_sqrt (nsq_nonneg'' v)]
@@ -56,6 +89,9 @@ private theorem sqrt_nsq_add_le (u v : Fin n → ℝ) : √(nsq (u + v)) ≤ √
   calc √(nsq (u + v)) ≤ √((√(nsq u) + √(nsq v)) ^ 2) := Real.sqrt_le_sqrt h1
     _ = _ := Real.sqrt_sq (by positivity)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [nsq, dot]`. Consider the case `insert a s ha ih`. Rewrite using `[sum_insert ha, sum_insert ha]`. Conclude with `(sqrt_nsq_add_le _ _).trans (by linarith)`.
+-/
 private theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n → ℝ) :
     √(nsq (∑ i ∈ s, f i)) ≤ ∑ i ∈ s, √(nsq (f i)) := by
   classical
@@ -65,6 +101,15 @@ private theorem sqrt_nsq_sum_le {ι : Type*} (s : Finset ι) (f : ι → Fin n �
     rw [sum_insert ha, sum_insert ha]
     exact (sqrt_nsq_add_le _ _).trans (by linarith)
 
+/- English proof (translation)
+Establish `hsum : pOf ε + qOf ε = n`. Unfold `pOf qOf`. Use `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)` as an intermediate fact. Simplify using `using this`. Establish `hp : ∃ c, ε c = true`.
+
+Consider the cases of `ha : ε a`. Apply the tactic sequence `exact ⟨b, by cases hb : ε b <;> simp_all⟩`. Conclude with `⟨a, ha⟩`. Establish `hq : ∃ c, ε c = false`. Consider the cases of `ha : ε a`.
+
+Conclude with `⟨a, ha⟩`. Apply the tactic sequence `exact ⟨b, by cases hb : ε b <;> simp_all⟩`. Take `⟨c, hc⟩` from `hp`. Take `⟨d, hd⟩` from `hq`. Establish `h1 : 1 ≤ pOf ε` using `Finset.card_pos.mpr ⟨c, by simp [hc]⟩`.
+
+Establish `h2 : 1 ≤ qOf ε` using `Finset.card_pos.mpr ⟨d, by simp [hd]⟩`. Use `⟨by exact_mod_cast h1, by exact_mod_cast h2, by exact_mod_cast hsum⟩` and prove the remaining obligations.
+-/
 private theorem pq_facts {a b : Fin n} (hε : ε a ≠ ε b) :
     1 ≤ (pOf ε : ℝ) ∧ 1 ≤ (qOf ε : ℝ) ∧ (pOf ε : ℝ) + (qOf ε : ℝ) = n := by
   have hsum : pOf ε + qOf ε = n := by
@@ -86,6 +131,11 @@ private theorem pq_facts {a b : Fin n} (hε : ε a ≠ ε b) :
   have h2 : 1 ≤ qOf ε := Finset.card_pos.mpr ⟨d, by simp [hd]⟩
   refine ⟨by exact_mod_cast h1, by exact_mod_cast h2, by exact_mod_cast hsum⟩
 
+/- English proof (translation)
+Take `⟨hp, hq, hn⟩` from `pq_facts hε`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hm` using `mul_nonneg (sub_nonneg.2 hp) (sub_nonneg.2 hq)`. Establish `key : (n : ℝ) * ((n : ℝ) - 1) ≤ (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)`. Use polynomial arithmetic with `[mul_nonneg hn0 hm]`.
+
+Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[sq_nonneg ((n : ℝ) - 2)]`. Use polynomial arithmetic with `[sq_nonneg ((n : ℝ) - 1)]`.
+-/
 theorem gap_gt {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ}
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h) :
     2 * (n : ℝ) - 3 < h ∧ (n : ℝ) - 1 < h := by
@@ -98,6 +148,11 @@ theorem gap_gt {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ}
   · nlinarith [sq_nonneg ((n : ℝ) - 2)]
   · nlinarith [sq_nonneg ((n : ℝ) - 1)]
 
+/- English proof (translation)
+Take `⟨hanti, h, hg, hbig⟩` from `hgap`. Establish `h1` using `hg a b hε`. Establish `hlt : lam b < lam a` using `hanti hab`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 hlt)]`. Rewrite using `[dot_root_r]`.
+
+Combine the linear relations using `[two_dot_rhoC_rhoN_le ε]`.
+-/
 theorem sch_gap {lam : Fin n → ℝ} (hgap : StdGap ε lam) {a b : Fin n} (hab : a < b)
     (hε : ε a ≠ ε b) : 1 + 2 * dot (rhoC ε) (rhoN ε) < dot lam (root a b) := by
   obtain ⟨hanti, h, hg, hbig⟩ := hgap
@@ -107,6 +162,9 @@ theorem sch_gap {lam : Fin n → ℝ} (hgap : StdGap ε lam) {a b : Fin n} (hab 
   rw [dot_root_r]
   linarith [two_dot_rhoC_rhoN_le ε]
 
+/- English proof (translation)
+Rewrite using `[casValK_add, lowK_add_rhoC, nsq_root (ne_of_lt hab), dot_add_l, dot_root_r lam]`. Establish `h1` using `hh a b hε`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hmono hab))]`. Establish `h2` using `dot_rhoN_root_ge hab hε`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem crossVal_pos {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
     (hh : GapAtLeast ε lam h) {a b : Fin n} (hab : a < b) (hε : ε a ≠ ε b) :
     2 * (h - n + 1) ≤
@@ -117,6 +175,9 @@ theorem crossVal_pos {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
   have h2 := dot_rhoN_root_ge hab hε
   linarith
 
+/- English proof (translation)
+Rewrite using `[casValK_add, lowK_add_rhoC, nsq_root (ne_of_gt hab), dot_add_l, dot_root_r lam, root_swap a b, dot_neg_r]`. Establish `h1` using `hh a b hε`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hmono hab))]`. Establish `h2` using `dot_rhoN_root_ge hab hε`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem crossVal_neg {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
     (hh : GapAtLeast ε lam h) {a b : Fin n} (hab : a < b) (hε : ε a ≠ ε b) :
     casValK ε (lowK ε lam + root b a) - n - casValK ε (lowK ε lam) ≤ -2 * h - 2 := by
@@ -127,6 +188,9 @@ theorem crossVal_neg {lam : Fin n → ℝ} (hmono : StrictAnti lam) {h : ℝ}
   have h2 := dot_rhoN_root_ge hab hε
   linarith
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, -, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Conclude with `⟨Fin.elim0, fun i => i.elim0, by simp⟩`.
+-/
 theorem isNCSum_zero {ν : Fin n → ℝ} : IsNCSum ε 0 ν ↔ ν = 0 := by
   constructor
   · rintro ⟨γ, -, rfl⟩
@@ -134,11 +198,23 @@ theorem isNCSum_zero {ν : Fin n → ℝ} : IsNCSum ε 0 ν ↔ ν = 0 := by
   · rintro rfl
     exact ⟨Fin.elim0, fun i => i.elim0, by simp⟩
 
+/- English proof (translation)
+Take `⟨γ, hγ, -⟩` from `hν`. Conclude with `⟨_, _, hγ 0⟩`.
+-/
 theorem isNCSum_succ_exists {k : ℕ} {ν : Fin n → ℝ} (hν : IsNCSum ε (k + 1) ν) :
     ∃ a b : Fin n, ε a ≠ ε b := by
   obtain ⟨γ, hγ, -⟩ := hν
   exact ⟨_, _, hγ 0⟩
 
+/- English proof (translation)
+Take `⟨γ, hγ, rfl⟩` from `hν`. Take `⟨hg1, hg2⟩` from `gap_gt (hγ ⟨0, hj⟩) hbig`. Establish `hρ : -((j : ℝ) * (((n : ℝ) - 2) / 2)) ≤ dot (rhoC ε) (∑ i, root (γ i).1 (γ i).2)`. Rewrite using `[dot_sum_r]`. Establish `: ∑ _i : Fin j, -(((n : ℝ) - 2) / 2) ≤ ∑ i, dot (rhoC ε) (root (γ i).1 (γ i).2)`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Use `abs_dot_root_rhoC_le (ε := ε) (hγ i)` as an intermediate fact. Rewrite `this` using `[dot_comm']`. Combine the linear relations using `[neg_abs_le (dot (rhoC ε) (root (γ i).1 (γ i).2))]`.
+
+Simplify `this` using `[sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul, mul_neg]`. Rewrite `hc` using `[casValK_add]`. Establish `e2 : Λ + (2 : ℝ) • rhoC ε = (Λ + rhoC ε) + rhoC ε` using `by rw [two_smul]; abel`. Establish `e3 : Λ + (∑ i, root (γ i).1 (γ i).2) + (2 : ℝ) • rhoC ε = ((Λ + rhoC ε) + rhoC ε) + ∑ i, root (γ i).1 (γ i).2` using `by rw [two_smul]; abel`. Rewrite using `[e2, e3, nsq_add'' ((Λ + rhoC ε) + rhoC ε), dot_add_l]`.
+
+Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hpos : 0 ≤ 2 * h - 3 * (n : ℝ) + 4` using `by linarith`. Use polynomial arithmetic with `[mul_nonneg hj0 hpos]`.
+-/
 theorem vogan_num {Λ ν : Fin n → ℝ} {j : ℕ} (hj : 1 ≤ j) (hν : IsNCSum ε j ν) {h : ℝ}
     (hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h)
     (hc : casValK ε Λ + 2 * (j : ℝ) * (h - n + 1) ≤ casValK ε (Λ + ν)) :
@@ -163,6 +239,15 @@ theorem vogan_num {Λ ν : Fin n → ℝ} {j : ℕ} (hj : 1 ≤ j) (hν : IsNCSu
   have hpos : 0 ≤ 2 * h - 3 * (n : ℝ) + 4 := by linarith
   nlinarith [mul_nonneg hj0 hpos]
 
+/- English proof (translation)
+Take `⟨γ, hγ, rfl⟩` from `hν`. Establish `hs : √(nsq (∑ i, root (γ i).1 (γ i).2)) ≤ √2 * k`. Use `(sqrt_nsq_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `: ∀ i, √(nsq (root (γ i).1 (γ i).2)) = √2` using `fun i => by`. Rewrite using `[nsq_root (fun e => hγ i (by rw [e]))]`.
+
+Simplify using `only [this, sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (by exact_mod_cast hjk) (Real.sqrt_nonneg 2)`. Unfold `casValK`. Establish `e : Λ + (∑ i, root (γ i).1 (γ i).2) + rhoC ε = (Λ + rhoC ε) + ∑ i, root (γ i).1 (γ i).2`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Establish `h1` using `(sqrt_nsq_add_le (Λ + rhoC ε) (∑ i, root (γ i).1 (γ i).2)).trans (by linarith [hs] : √(nsq (Λ + rhoC ε)) + √(nsq (∑ i, root (γ i).1 (γ i).2)) ≤ √(nsq (Λ + rhoC ε)) + √2 * k)`. Establish `h2` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) h1 2`. Rewrite `h2` using `[Real.sq_sqrt (nsq_nonneg'' _)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degree_num {Λ ν : Fin n → ℝ} {j k : ℕ} (hjk : j ≤ k) (hν : IsNCSum ε j ν) :
     casValK ε (Λ + ν) ≤ (√(nsq (Λ + rhoC ε)) + √2 * k) ^ 2 - nsq (rhoC ε) := by
   obtain ⟨γ, hγ, rfl⟩ := hν

@@ -26,8 +26,16 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {M M' : Type*} 
 
 def bcSub : R' ⊗[R] P →ₗ[R'] M' := liftSemi (f.comp P.subtype)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcSub_tmul (x : R') (y : P) : bcSub f P (x ⊗ₜ y) = x • f y := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [LinearMap.comp_apply, LinearMap.baseChange_tmul, bcSub_tmul, liftSemi_tmul]`. Both sides reduce to the same expression.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem bcSub_eq : bcSub f P = liftSemi f ∘ₗ P.subtype.baseChange R' := by
   refine LinearMap.ext fun z => ?_
   induction z using TensorProduct.induction_on with
@@ -37,6 +45,9 @@ theorem bcSub_eq : bcSub f P = liftSemi f ∘ₗ P.subtype.baseChange R' := by
 
 variable {f P}
 
+/- English proof (translation)
+Rewrite using `[bcSub_eq]`. Use `hf.1.comp fun a b hab => ?_` and prove the remaining obligations. Establish `hid : Submodule.linearProjOfIsCompl P N h ∘ₗ P.subtype = LinearMap.id` using `LinearMap.ext fun x => Submodule.linearProjOfIsCompl_apply_left h x`. Use `congrArg ((Submodule.linearProjOfIsCompl P N h).baseChange R') hab` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hid, LinearMap.baseChange_id, LinearMap.id_apply, LinearMap.id_apply]`. Then use the resulting hypothesis.
+-/
 theorem bcSub_injective (hf : Function.Bijective (liftSemi f)) {N : Submodule R M} (h : IsCompl P N) :
     Function.Injective (bcSub f P) := by
   rw [bcSub_eq]
@@ -49,6 +60,13 @@ theorem bcSub_injective (hf : Function.Bijective (liftSemi f)) {N : Submodule R 
 
 variable (f P)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`.
+
+Rewrite using `[bcSub_tmul]`. Conclude with `(Submodule.span R' _).smul_mem x (Submodule.subset_span ⟨y, y.2, rfl⟩)`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨1 ⊗ₜ ⟨y, hy⟩, by rw [bcSub_tmul, one_smul]⟩`.
+-/
 theorem range_bcSub : LinearMap.range (bcSub f P) = Submodule.span R' (f '' P) := by
   apply le_antisymm
   · rintro _ ⟨z, rfl⟩
@@ -68,6 +86,9 @@ def bcSubEquiv (hf : Function.Bijective (liftSemi f)) {N : Submodule R M} (h : I
     R' ⊗[R] P ≃ₗ[R'] Submodule.span R' (f '' P) :=
   (LinearEquiv.ofInjective _ (bcSub_injective hf h)).trans (LinearEquiv.ofEq _ _ (range_bcSub f P))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcSubEquiv_apply (hf : Function.Bijective (liftSemi f)) {N : Submodule R M} (h : IsCompl P N)
     (z : R' ⊗[R] P) : (bcSubEquiv hf h z : M') = bcSub f P z := rfl
 
@@ -75,6 +96,9 @@ end Algebra
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Establish `m''` using `(frobMor p R hR A (cast_left p R hR A)).comp (bcMor h)`. Establish `e : ∀ r, frobR p R' hR' (algebraMap R R' r) = ((algebraMap R R').comp (frobR p R hR)) r` using `fun r => by rw [RingHom.comp_apply, frobR_apply, frobR_apply, map_pow]`. Establish `e' : GlobalTheory.VB.frob A'.left p (cast_left p R' hR' A') ≫ φ = φ ≫ GlobalTheory.VB.frob A.left p (cast_left p R hR A)` using `GlobalTheory.VB.frob_naturality p (cast_left p R hR A) φ (cast_left p R' hR' A')`. Conclude with `(GrpMor.pull_pull _ _ m'' (fun _ => rfl) rfl x).trans (GrpMor.pull_pull (bcMor h) (frobMor p R' hR' A' (cast_left p R' hR' A')) m'' e e' x).symm`.
+-/
 theorem pull_frobDR {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (hR : (p : R) = 0)
     (hR' : (p : R') = 0) {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A']
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) (x : primDR A) :
@@ -87,6 +111,17 @@ theorem pull_frobDR {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (hR 
   exact (GrpMor.pull_pull _ _ m'' (fun _ => rfl) rfl x).trans
     (GrpMor.pull_pull (bcMor h) (frobMor p R' hR' A' (cast_left p R' hR' A')) m'' e e' x).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[conjDR, Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨t, rfl⟩` from `hbc.2 z`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul x y`. Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, ← pull_frobDR p hR hR' h]`. Conclude with `(Submodule.span R' _).smul_mem _ (Submodule.subset_span ⟨_, Submodule.subset_span ⟨y, rfl⟩, rfl⟩)`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add]`. Conclude with `add_mem ha hb`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Proceed by induction on `hc using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[pull_frobDR p hR hR' h]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem conjDR_bc {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (hR : (p : R) = 0)
     (hR' : (p : R') = 0) {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A']
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ)
@@ -113,6 +148,9 @@ theorem conjDR_bc {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (hR : 
     | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
     | smul a x _ hx => rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+The claim follows from `have h := hCF p R hR A g hA hg (cast_left p R hR A) (frobMor p R hR A (cast_left p R hR A)) ⟨h.2.1, h.2.2.1⟩`.
+-/
 theorem conjDR_summand (hCF : GlobalTheory.Published.ConjugateFiltration) {R : Type} [CommRing R]
     (hR : (p : R) = 0) (A : Over (Sp R)) [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) :
@@ -141,11 +179,27 @@ def secEquiv (W : T.Opens) (hW : IsAffineOpen W) :
       ⟨C.mkSec _ hy, Subtype.ext ((congrArg (E W hW) (C.incl_app_mkSec _ hy)).trans
         ((E W hW).apply_symm_apply _))⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secEquiv_apply (W : T.Opens) (hW : IsAffineOpen W) (s : Γ(C.toMod, W)) :
     (secEquiv hT A E C hC W hW s : primDR (onAff A hW)) = E W hW (C.incl.app W s) := rfl
 
 include hC in
 
+/- English proof (translation)
+Use `GlobalTheory.VB.isFrame_of_forall_exists fun V h y hy => ?_` and prove the remaining obligations. Take `⟨W, hW, hyW, hle⟩` from `GlobalTheory.QCoh.exists_affine_mem_le y hy`. Use `⟨W, hle, hyW, ?_⟩` and prove the remaining obligations. Use `letI := resAlg (hle.trans h)`. Take `⟨φ, hφ, hφ'⟩` from `GlobalTheory.DeRhamSheaf.VB.exists_transition A hD hW (hle.trans h)`.
+
+Establish `hbc : (bcMor hφ).IsBC` using `(hBC _ (onAff A hD) g (GlobalTheory.DeRhamSheaf.VB.isAbelianScheme_onAff A hA hD) (GlobalTheory.DeRhamSheaf.VB.smooth_onAff A hg hD) _ (onAff A hW) φ hφ).1`. Take `⟨N, hN⟩` from `(conjDR_summand p hCF (GlobalTheory.SS.FrobField.cast_zero hT D) (onAff A hD) (GlobalTheory.DeRhamSheaf.VB.isAbelianScheme_onAff A hA hD) (GlobalTheory.DeRhamSheaf.VB.smooth_onAff A hg hD)).1`. Establish `hspan` using `conjDR_bc p (GlobalTheory.SS.FrobField.cast_zero hT D) (GlobalTheory.SS.FrobField.cast_zero hT W) hφ hbc`. Set `b0` to `(Algebra.TensorProduct.basis Γ(T, W) c).map (bcSubEquiv hbc hN)`. Set `d` to `(b0.map (LinearEquiv.ofEq _ _ hspan.symm)).map (secEquiv hT A E C hC W hW).symm`.
+
+Establish `hd (i : Fin g) : d i = GlobalTheory.Twist.resM C.toMod (hle.trans h) (σ i)`. Apply `(secEquiv hT A E C hC W hW).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [d, Module.Basis.map_apply, LinearEquiv.apply_symm_apply]`. Establish `e1 : C.incl.app W (GlobalTheory.Twist.resM C.toMod (hle.trans h) (σ i)) = GlobalTheory.Twist.resM H (hle.trans h) ((E D hD).symm (c i))` using `(GlobalTheory.Twist.app_resM C.incl (hle.trans h) (σ i)).trans (congrArg _ (hσ i))`.
+
+Establish `e2 : E W hW (GlobalTheory.Twist.resM H (hle.trans h) ((E D hD).symm (c i))) = (bcMor hφ).pull (c i)` using `(hE D W hD hW (hle.trans h) φ hφ hφ' _).trans (congrArg _ (LinearEquiv.apply_symm_apply _ _))`. Establish `e3 : ((b0 i : Submodule.span Γ(T, W) ((bcMor hφ).pull '' (conjDR p Γ(T, D) (GlobalTheory.SS.FrobField.cast_zero hT D) (onAff A hD)))) : primDR (onAff A hW)) = (bcMor hφ).pull (c i)`. Simplify using `only [b0, Module.Basis.map_apply, Algebra.TensorProduct.basis_apply]`. Use `(bcSubEquiv_apply hbc hN _).trans ?_` and prove the remaining obligations. Conclude with `(bcSub_tmul _ _ 1 (c i)).trans (one_smul _ _)`.
+
+Conclude with `(LinearEquiv.coe_ofEq_apply hspan.symm (b0 i)).trans (e3.trans (e2.symm.trans ((congrArg (E W hW) e1.symm).trans (secEquiv_apply hT A E C hC W hW _).symm)))`. Establish `hl : Fintype.linearCombination Γ(T, W) (fun i => GlobalTheory.Twist.resM C.toMod (hle.trans h) (σ i)) = d.equivFun.symm.toLinearMap`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply, LinearEquiv.coe_coe, Module.Basis.equivFun_symm_apply]`. Simplify using `only [hd]`.
+
+Rewrite using `[hl]`. Conclude with `d.equivFun.symm.bijective`.
+-/
 theorem isFrame (hCF : GlobalTheory.Published.ConjugateFiltration) (hBC : GlobalTheory.Published.AbelianDeRham.BaseChange)
     {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (hE : IsDRIso A H E)
     {D : T.Opens} (hD : IsAffineOpen D)
@@ -199,6 +253,19 @@ open GlobalTheory.Published.AbelianDeRham (bcMor)
 open GlobalTheory.DeRhamSheaf.VB (exists_transition isAbelianScheme_onAff smooth_onAff)
 open RankConj
 
+/- English proof (translation)
+Introduce `hCF hP2 p _ T _ A _ g hA hg H E hE C hC x`. Establish `hT : (p : Γ(T, ⊤)) = 0` using `GlobalTheory.VB.natCast_eq_zero T p (ZMod p)`. Establish `hBC` using `hP2.p5.2.2.1`. Take `⟨V, hV, hxV, -⟩` from `GlobalTheory.QCoh.exists_affine_mem_le (U := ⊤) x trivial`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim hP2.p5.1 (isAbelianScheme_onAff A hA hV) (smooth_onAff A hg hV)`.
+
+Take `⟨⟨N, hN⟩, hrk⟩` from `conjDR_summand p hCF (GlobalTheory.SS.FrobField.cast_zero hT V) (onAff A hV) (isAbelianScheme_onAff A hA hV) (smooth_onAff A hg hV)`. Use `set P := conjDR p Γ(T, V) (GlobalTheory.SS.FrobField.cast_zero hT V) (onAff A hV) with hPdef`. Use `haveI : Module.Finite Γ(T, V) P := Module.Finite.of_surjective (Submodule.linearProjOfIsCompl P N hN) fun y => ⟨y, Submodule.linearProjOfIsCompl_apply_left hN y⟩`. Use `haveI : Module.Projective Γ(T, V) P := Module.Projective.of_split P.subtype (Submodule.linearProjOfIsCompl P N hN) (LinearMap.ext fun y => Submodule.linearProjOfIsCompl_apply_left hN y)`. Use `haveI : Module.FinitePresentation Γ(T, V) P := Module.finitePresentation_of_projective _ _`.
+
+Take `⟨y, rfl⟩ : ∃ y : V, y.1 = x` from `⟨⟨x, hxV⟩, rfl⟩`. Use `set q := hV.primeIdealOf y`. Use `haveI : Module.Free (Localization.AtPrime q.asIdeal) (LocalizedModule q.asIdeal.primeCompl P) := Module.mem_freeLocus.1 (by rw [Module.freeLocus_eq_univ]; trivial)`. Establish `hr : Module.finrank (Localization.AtPrime q.asIdeal) (LocalizedModule q.asIdeal.primeCompl P) = g` using `hrk q`. Take `⟨r, hr', b', -⟩` from `Module.FinitePresentation.exists_basis_localizedModule_powers q.asIdeal.primeCompl (LocalizedModule.mkLinearMap q.asIdeal.primeCompl P) (Localization.AtPrime q.asIdeal) (Module.finBasisOfFinrankEq _ _ hr)`.
+
+Establish `hD` using `hV.basicOpen r`. Use `letI := resAlg (T.basicOpen_le r)`. Take `⟨φ, hφ, -⟩` from `exists_transition A hV hD (T.basicOpen_le r)`. Establish `hbc : (bcMor hφ).IsBC` using `(hBC _ (onAff A hV) g (isAbelianScheme_onAff A hA hV) (smooth_onAff A hg hV) _ (onAff A hD) φ hφ).1`. Use `haveI := hV.isLocalization_basicOpen r`.
+
+Use `haveI : IsLocalizedModule (Submonoid.powers r) (TensorProduct.mk Γ(T, V) Γ(T, T.basicOpen r) P 1) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers r) Γ(T, T.basicOpen r) _).2 (TensorProduct.isBaseChange _ _ _)`. Take `⟨c0⟩` from `GlobalTheory.VB.nonempty_basis_of_localizedModule Γ(T, T.basicOpen r) (.powers r) (TensorProduct.mk Γ(T, V) Γ(T, T.basicOpen r) P 1) b'`. Establish `hspan` using `conjDR_bc p (GlobalTheory.SS.FrobField.cast_zero hT V) (GlobalTheory.SS.FrobField.cast_zero hT (T.basicOpen r)) hφ hbc`. Set `c` to `(c0.map (bcSubEquiv hbc hN)).map (LinearEquiv.ofEq _ _ hspan.symm)`. Set `σ : Fin g → Γ(C.toMod, T.basicOpen r)` to `fun i => (secEquiv hT A E C hC _ hD).symm (c i)`.
+
+Use `⟨T.basicOpen r, σ, (GlobalTheory.QCoh.mem_primeCompl_primeIdealOf_iff hV y r).1 hr', isFrame hT A E C hC hCF hBC hA hg hE hD c σ fun i => ?_⟩` and prove the remaining obligations. Apply `(E _ hD).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, ← secEquiv_apply hT A E C hC, LinearEquiv.apply_symm_apply]`.
+-/
 theorem isVB_conj : GlobalTheory.Published.ConjugateFiltration → GlobalTheory.CovTop.Hypotheses2 → ∀ (p : ℕ) [Fact p.Prime]
     {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

@@ -21,6 +21,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.TripleAssembly.EqFin
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.PureLift.exists_pureLift σ Y Z M ψ hM P pr N pv s hs`. Unfold `GlobalTheory.TripleAssembly.liftPure`. Rewrite using `[dif_pos H]`. Conclude with `H.choose_spec f φ hφ hφv`.
+-/
 theorem liftPure_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z)
     (ψ : AddChar (AF F) ℂ) (hM : M.IsGood ψ) {P : Type} [AddCommGroup P] [Module ℂ P]
@@ -37,6 +40,15 @@ theorem liftPure_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [dif_pos H]
   exact H.choose_spec f φ hφ hφv
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hφ, hφv, rfl⟩` from `hx`. Take `⟨φ₁, h1, h1v, hO, hT⟩` from `hgen f φ hφ hφv`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hO]`. Conclude with `Submodule.subset_span ⟨f, φ₁, hf, h1, h1v, rfl⟩`. Rewrite using `[hO, liftPure_pure M ψ hM pr pv s hs f φ₁ h1 h1v, liftPure_pure M ψ hM pr pv s hs f φ hφ hφv, LinearMap.lTensor_tmul, hT]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx.1 hy.1`. Simplify using `only [map_add, hx.2, hy.2]`.
+
+Consider the case `smul c x _ hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx.1`. Simplify using `only [map_smul, hx.2]`.
+-/
 theorem darbAlg_stable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z)
     (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver (E := E) w) (hM : M.IsGood ψ)
@@ -78,6 +90,35 @@ namespace GlobalTheory.TripleAssembly.EqFin
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Take `⟨oA, -⟩` from `GlobalTheory.T.algF_map_mapA_and_mapB_eq_top hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Take `⟨⟨dA, rA⟩, ⟨dB, rB⟩⟩` from `GlobalTheory.T.seesaw_weil_zeta_residue hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h hTA hTB R Rf hM`. Establish `gM : Γ.M.IsGood Bs.ψ` using `hM.triple.geo.hM`. Establish `gM' : Γ.M'.IsGood Bs.ψ` using `hM.triple.geo.hM'`.
+
+Establish `c1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 h.JW 1 = 1` using `Subtype.ext ((congrArg _ (map_one (matHom W))).trans (map_one _))`. Establish `c1' : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁ 1 = 1` using `Subtype.ext ((congrArg _ (map_one (matHom W₁))).trans (map_one _))`. Establish `hsA : ∀ᶠ v in Filter.cofinite, Rf.p v (Γ.M.vac v) = GlobalTheory.TripleAssembly.vacIm Γ Rf v` using `Filter.Eventually.of_forall fun v => rfl`. Establish `hsB : ∀ᶠ v in Filter.cofinite, Rf.p' v (Γ.M'.vac v) = GlobalTheory.TripleAssembly.vacIm Γ Rf v`. Use `Filter.eventually_cofinite.2 ((Xc.T.finite_toSet).subset fun v hv => ?_)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hv (hM.fin.sph v hn).1.symm`. Establish `key : ∀ g ∈ GfC X, ∃ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), (∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)) ∧ ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly. …`. Introduce `g hg`. Take `⟨hv, hvU, fA, fB⟩` from `GlobalTheory.T.matched_maps_doubling_frame hP D W W₁ X e Bs Γ Xc om om' R Rf hM h.JX g hg`.
+
+Use `choose a ha using fun v => GlobalTheory.T.exists_localOperator_thetaQuotient_finitePlace D.sp.cm.sig W.rank W₁.rank Bs Γ Xc om om' R Rf hM v (hv v) (hvU v)`. Take `⟨T₀, hT₀⟩` from `GlobalTheory.TripleAssembly.exists_rtensOp (GlobalTheory.TripleAssembly.vacIm Γ Rf) a`. Use `⟨LinearMap.lTensor R.Pi T₀, ?_, ?_⟩` and prove the remaining obligations. Establish `st` using `GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M Bs.ψ Bs.emb gM R.p Rf.p (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsA (om (1, GlobalTheory.TripleRead.toUX X e h.JX g)) T₀ (fun f φ hφ hφv => by`. Take `⟨φ₁, h1, h1v, hAct, hO⟩` from `fA f φ hφ hφv`.
+
+Use `⟨φ₁, h1, h1v, hO, ?_⟩` and prove the remaining obligations. Rewrite using `[hT₀ _ (Filter.eventually_cofinite.1 ((hφv.and hsA).mono fun v hv' => by rw [hv'.1, hv'.2]))]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(ha v).1 (φ v) (hφ v) (φ₁ v) (h1 v) (hAct v))`.
+
+Introduce `Φ hΦ`. Take `⟨Ψ, hΨ, rfl⟩` from `rA Φ hΦ`. Establish `hs` using `GlobalTheory.TripleAssembly.darbAlg_le_schA D.sp.cm.sig Γ.V Γ.W Γ.M Bs.ψ Bs.emb gM hΨ`. Establish `e1` using `hTA Ψ hs 1 g`. Rewrite `e1` using `[c1]`.
+
+Establish `s1` using `(st Ψ hΨ).1`. Establish `s2` using `(st Ψ hΨ).2`. Establish `d1` using `dA _ s1`. Establish `d2` using `dA Ψ hΨ`. Establish `x1` using `congrArg (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf) e1.symm`.
+
+Establish `x2` using `congrArg (LinearMap.lTensor R.Pi T₀) d2.symm`. Conclude with `x1.trans (d1.trans (s2.trans x2))`. Establish `st` using `GlobalTheory.TripleAssembly.EqFin.darbAlg_stable Γ.M' Bs.ψ Bs.emb gM' R.p' Rf.p' (GlobalTheory.TripleAssembly.vacIm Γ Rf) hsB (om' (1, GlobalTheory.TripleRead.toUX X e h.JX g)) T₀ (fun f φ hφ hφv => by`. Take `⟨φ₁, h1, h1v, hAct, hO⟩` from `fB f φ hφ hφv`. Use `⟨φ₁, h1, h1v, hO, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT₀ _ (Filter.eventually_cofinite.1 ((hφv.and hsB).mono fun v hv' => by rw [hv'.1, hv'.2]))]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(ha v).2 (φ v) (hφ v) (φ₁ v) (h1 v) (hAct v))`. Introduce `Φ hΦ`.
+
+Take `⟨Ψ, hΨ, rfl⟩` from `rB Φ hΦ`. Establish `hs` using `GlobalTheory.TripleAssembly.darbAlg_le_schA D.sp.cm.sig Γ.V' Γ.W Γ.M' Bs.ψ Bs.emb gM' hΨ`. Establish `e1` using `hTB Ψ hs 1 g`. Rewrite `e1` using `[c1']`. Conclude with `(congrArg (GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf) e1.symm).trans ((dB _ (st Ψ hΨ).1).trans (((st Ψ hΨ).2).trans (congrArg (LinearMap.lTensor R.Pi T₀) (dB Ψ hΨ).symm)))`.
+
+Establish `opEq : ∀ g, ∀ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), (∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)) → GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (Glob …`. Introduce `g T hTg`. Establish `H : ∃ T : Module.End ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf), ∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (1, g) Φ) = T (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ)` using `⟨T, hTg⟩`. Unfold `GlobalTheory.TripleAssembly.opFin`. Rewrite using `[dif_pos H]`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Establish `hy : y ∈ (algF ψ θ true A B).map (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)` using `by rw [oA]; trivial`. Take `⟨Φ, hΦ, rfl⟩` from `hy`. Rewrite using `[← H.choose_spec Φ hΦ, hTg Φ hΦ]`.
+
+Use `⟨fun g hg Φ hΦ => ?_, fun g hg Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨T, h1, -⟩` from `key g hg`. Rewrite using `[opEq g T h1]`. Conclude with `h1 Φ hΦ`. Take `⟨T, h1, h2⟩` from `key g hg`.
+
+Rewrite using `[opEq g T h1]`. Conclude with `h2 Φ hΦ`.
+-/
 theorem mapA_mapB_equivariant_fin : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

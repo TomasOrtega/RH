@@ -14,6 +14,17 @@ open Ad3 Ad3.R
 
 namespace GlobalTheory.CompanionTheory.RankinSelbergHeckeProjection
 
+/- English proof (translation)
+Establish `hm : ∀ k ∈ K, P (k * t₀) h = P t₀ h` using `fun k hk => by`. Use `hI k t₀ h` as an intermediate fact. Rewrite `this` using `[hcd k hk, one_mul, hcomm k hk, hR2 k hk]`. Then use the resulting hypothesis. Establish `hn : ∀ k ∈ K, P 1 (k * (h * t')) = P 1 (h * t')` using `fun k hk => by`. Use `hI k 1 (h * t')` as an intermediate fact.
+
+Rewrite `this` using `[hcd k hk, one_mul, mul_one]`. Establish `h2` using `hR1 k hk 1 (k * (h * t'))`. Rewrite `h2` using `[one_mul]`. Rewrite using `[← h2, this]`. Establish `e1 : ∀ b ∈ B, P (t b) h = P t₀ h` using `fun b hb => by rw [ht b hb, hm _ (hκ b hb)]`.
+
+Establish `e2 : P t' h = P t₀ h` using `by rw [ht', hR1 _ (K.inv_mem hw), hm _ hw]`. Establish `e3 : ∀ b ∈ B, P 1 (h * t b) = P 1 (h * t')` using `fun b hb => by`. Establish `hk : κ b * w⁻¹ ∈ K` using `K.mul_mem (hκ b hb) (K.inv_mem hw)`. Establish `: h * t b = (κ b * w⁻¹) * (h * t') * w`. Rewrite using `[ht b hb, ← mul_assoc (κ b * w⁻¹), hcomm _ hk, ht']`.
+
+Use `group`. Rewrite using `[this, hR2 _ hw, hn _ hk]`. Establish `e4` using `hI t₀⁻¹ t₀ h`. Rewrite `e4` using `[inv_mul_cancel, hz]`. Rewrite `hs1` using `[Finset.sum_congr rfl e1, e2, Finset.sum_const, nsmul_eq_mul]`.
+
+Rewrite `hs2` using `[Finset.sum_congr rfl e3, Finset.sum_const, nsmul_eq_mul]`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[← hs1, ← e4, mul_assoc (cd t₀⁻¹ * e), ← hs2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core {G : Type*} [Group G] (P : G → G → ℂ) (cd : G → ℂ) (K : Subgroup G) (h : G)
     (hI : ∀ t u u', cd t * P (t * u) (t * u') = P u u')
     (hR1 : ∀ κ ∈ K, ∀ u u', P (u * κ) u' = P u u')
@@ -52,28 +63,49 @@ theorem core {G : Type*} [Group G] (P : G → G → ℂ) (cd : G → ℂ) (K : S
   rw [← hs1, ← e4, mul_assoc (cd t₀⁻¹ * e), ← hs2]
   ring
 
+/- English proof (translation)
+Simplify using `[cdet, map_mul]`.
+-/
 theorem cdet_mul (c : HeckeCharacter ℚ) (g h : G2) : cdet c (g * h) = cdet c g * cdet c h := by
   simp [cdet, map_mul]
 
+/- English proof (translation)
+Conclude with `Circle.norm_coe _`.
+-/
 theorem norm_cdet (c : HeckeCharacter ℚ) (g : G2) : ‖cdet c g‖ = 1 := by
   exact Circle.norm_coe _
 
+/- English proof (translation)
+The claim follows from `continuous_induced_dom.comp (c.continuous_toIdele.comp GeneralLinearGroup.continuous_det)`.
+-/
 theorem continuous_cdet (c : HeckeCharacter ℚ) : Continuous (cdet c) :=
   continuous_induced_dom.comp (c.continuous_toIdele.comp GeneralLinearGroup.continuous_det)
 
+/- English proof (translation)
+Establish `: GeneralLinearGroup.det (dia2 γ) = IdeleGroup.diagonal ℚ (GeneralLinearGroup.det γ)` using `by ext1`. Conclude with `(RingHom.map_det (algebraMap ℚ 𝔸[ℚ]) (γ : Matrix (Fin 2) (Fin 2) ℚ)).symm`. Simplify using `[cdet, this]`.
+-/
 theorem cdet_dia (c : HeckeCharacter ℚ) (γ : GL (Fin 2) ℚ) : cdet c (dia2 γ) = 1 := by
   have : GeneralLinearGroup.det (dia2 γ) = IdeleGroup.diagonal ℚ (GeneralLinearGroup.det γ) := by
     ext1
     exact (RingHom.map_det (algebraMap ℚ 𝔸[ℚ]) (γ : Matrix (Fin 2) (Fin 2) ℚ)).symm
   simp [cdet, this]
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[dg2, Matrix.det_fin_two]`.
+-/
 theorem det_diagonal_two (z : Jd) : GeneralLinearGroup.det (dg2 z z : G2) = z * z := by
   ext1
   simp [dg2, Matrix.det_fin_two]
 
+/- English proof (translation)
+Simplify using `[cdet, det_diagonal_two, map_mul]`.
+-/
 theorem cdet_scal (c : HeckeCharacter ℚ) (z : Jd) : cdet c (dg2 z z) = (c.toIdele z : ℂ) * c.toIdele z := by
   simp [cdet, det_diagonal_two, map_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+-/
 theorem central_diagonal_commute (z : Jd) (g : G2) : dg2 z z * g = g * dg2 z z := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
@@ -83,12 +115,18 @@ def Fn (φ : G2 → ℂ) (c : HeckeCharacter ℚ) (u u' g : G2) : ℂ := φ (g *
 def Pr (μ : Measure G2) (𝓕 : Set G2) (φ : G2 → ℂ) (c : HeckeCharacter ℚ) (u u' : G2) : ℂ :=
   ∫ g in 𝓕 ∩ band, Fn φ c u u' g ∂μ
 
+/- English proof (translation)
+Unfold `Fn`. Conclude with `((hc.comp (continuous_mul_const u)).mul (Complex.continuous_conj.comp (hc.comp (continuous_mul_const u')))).mul (continuous_cdet c)`.
+-/
 theorem continuous_Fn {φ : G2 → ℂ} (hc : Continuous φ) (c : HeckeCharacter ℚ) (u u' : G2) :
     Continuous (Fn φ c u u') := by
   unfold Fn
   exact ((hc.comp (continuous_mul_const u)).mul
     (Complex.continuous_conj.comp (hc.comp (continuous_mul_const u')))).mul (continuous_cdet c)
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ C` using `(norm_nonneg _).trans (hb 1)`. Unfold `Fn`. Rewrite using `[norm_mul, norm_mul, norm_cdet, mul_one, RCLike.norm_conj]`. Conclude with `mul_le_mul (hb _) (hb _) (norm_nonneg _) h0`.
+-/
 theorem norm_Fn_le {φ : G2 → ℂ} {C : ℝ} (hb : ∀ g, ‖φ g‖ ≤ C) (c : HeckeCharacter ℚ) (u u' g : G2) :
     ‖Fn φ c u u' g‖ ≤ C * C := by
   have h0 : 0 ≤ C := (norm_nonneg _).trans (hb 1)
@@ -96,12 +134,18 @@ theorem norm_Fn_le {φ : G2 → ℂ} {C : ℝ} (hb : ∀ g, ‖φ g‖ ≤ C) (c
   rw [norm_mul, norm_mul, norm_cdet, mul_one, RCLike.norm_conj]
   exact mul_le_mul (hb _) (hb _) (norm_nonneg _) h0
 
+/- English proof (translation)
+The claim follows from `Measure.integrableOn_of_bounded hs.ne (continuous_Fn hc c u u').aestronglyMeasurable (Eventually.of_forall (norm_Fn_le hb c u u'))`.
+-/
 theorem integrable_Fn {φ : G2 → ℂ} {C : ℝ} (hc : Continuous φ) (hb : ∀ g, ‖φ g‖ ≤ C)
     {μ : Measure G2} {s : Set G2} (hs : μ s < ∞) (c : HeckeCharacter ℚ) (u u' : G2) :
     IntegrableOn (Fn φ c u u') s μ :=
   Measure.integrableOn_of_bounded hs.ne (continuous_Fn hc c u u').aestronglyMeasurable
     (Eventually.of_forall (norm_Fn_le hb c u u'))
 
+/- English proof (translation)
+Simplify using `only [Fn, cdet_mul, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Fn_translate (φ : G2 → ℂ) (c : HeckeCharacter ℚ) (t u u' g : G2) :
     Fn φ c u u' (g * t) = cdet c t * Fn φ c (t * u) (t * u') g := by
   simp only [Fn, cdet_mul, mul_assoc]
@@ -111,35 +155,61 @@ section Pair
 
 variable {φ : G2 → ℂ} {ω c : HeckeCharacter ℚ}
 
+/- English proof (translation)
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem circle_mul_conj (w : Circle) : (w : ℂ) * conj (w : ℂ) = 1 := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]; simp
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun d : HeckeCharacter ℚ => d.toIdele z) hc2`. Establish `h2 : c.toIdele z * c.toIdele z = 1` using `h`. Rewrite using `[← Circle.coe_mul, h2, Circle.coe_one]`.
+-/
 theorem toIdele_sq (hc2 : c * c = 1) (z : Jd) : (c.toIdele z : ℂ) * c.toIdele z = 1 := by
   have h := congrArg (fun d : HeckeCharacter ℚ => d.toIdele z) hc2
   have h2 : c.toIdele z * c.toIdele z = 1 := h
   rw [← Circle.coe_mul, h2, Circle.coe_one]
 
+/- English proof (translation)
+Introduce `γ g` and use `by simp only [Fn, cdet_mul, cdet_dia, one_mul, mul_assoc (dia2 γ), hl γ]`.
+-/
 theorem Fn_left (hl : LInv φ) (u u' : G2) : LInv (Fn φ c u u') := fun γ g => by
   simp only [Fn, cdet_mul, cdet_dia, one_mul, mul_assoc (dia2 γ), hl γ]
 
+/- English proof (translation)
+Simplify using `only [Fn, cdet_mul, cdet_scal, mul_assoc (dg2 z z), hcen, map_mul]`. Use `circle_mul_conj (ω.toIdele z)` as an intermediate fact. Take the linear combination `(φ (g * u) * conj (φ (g * u')) * ((c.toIdele z : ℂ) * c.toIdele z) * cdet c g) * this`.
+-/
 theorem Fn_scal (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (u u' : G2) (z : Jd) (g : G2) :
     Fn φ c u u' (dg2 z z * g) = (c.toIdele z : ℂ) * c.toIdele z * Fn φ c u u' g := by
   simp only [Fn, cdet_mul, cdet_scal, mul_assoc (dg2 z z), hcen, map_mul]
   have := circle_mul_conj (ω.toIdele z)
   linear_combination (φ (g * u) * conj (φ (g * u')) * ((c.toIdele z : ℂ) * c.toIdele z) * cdet c g) * this
 
+/- English proof (translation)
+Introduce `z g` and use `by rw [Fn_scal hcen, toIdele_sq hc2, one_mul]`.
+-/
 theorem Fn_cinv (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (hc2 : c * c = 1) (u u' : G2) :
     CInv (Fn φ c u u') := fun z g => by
   rw [Fn_scal hcen, toIdele_sq hc2, one_mul]
 
 variable {μ : Measure G2} {𝓕 : Set G2}
 
+/- English proof (translation)
+Simplify using `only [Pr, Fn, ← mul_assoc, hκ]`.
+-/
 theorem Pr_right1 {κ : G2} (hκ : ∀ g, φ (g * κ) = φ g) (u u' : G2) : Pr μ 𝓕 φ c (u * κ) u' = Pr μ 𝓕 φ c u u' := by
   simp only [Pr, Fn, ← mul_assoc, hκ]
 
+/- English proof (translation)
+Simplify using `only [Pr, Fn, ← mul_assoc, hκ]`.
+-/
 theorem Pr_right2 {κ : G2} (hκ : ∀ g, φ (g * κ) = φ g) (u u' : G2) : Pr μ 𝓕 φ c u (u' * κ) = Pr μ 𝓕 φ c u u' := by
   simp only [Pr, Fn, ← mul_assoc, hκ]
 
+/- English proof (translation)
+Unfold `Pr`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Fn]`. Establish `e : g * (dg2 z z * u') = dg2 z z * (g * u')` using `by rw [← mul_assoc, ← central_diagonal_commute, mul_assoc]`.
+
+Rewrite using `[e, hcen, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Pr_scal (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (z : Jd) (u u' : G2) :
     Pr μ 𝓕 φ c u (dg2 z z * u') = conj (ω.toIdele z : ℂ) * Pr μ 𝓕 φ c u u' := by
   unfold Pr
@@ -150,6 +220,9 @@ theorem Pr_scal (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) 
   rw [e, hcen, map_mul]
   ring
 
+/- English proof (translation)
+Unfold `Pr`. Rewrite using `[← integral_finsetSum _ (fun b _ => integrable_Fn hc hb hs c _ _), ← integral_add (integrable_finsetSum _ fun b _ => integrable_Fn hc hb hs c _ _) (integrable_Fn hc hb hs c _ _), ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Fn, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul, ← add_mul, ← add_mul, hT]`.
+-/
 theorem hecke_projection_sum_left {C : ℝ} (hc : Continuous φ) (hb : ∀ g, ‖φ g‖ ≤ C) (hs : μ (𝓕 ∩ band) < ∞)
     {ι : Type*} (B : Finset ι) (t : ι → G2) (t' : G2) (lam : ℂ)
     (hT : ∀ y, ∑ b ∈ B, φ (y * t b) + φ (y * t') = lam * φ y) (u u' : G2) :
@@ -162,6 +235,11 @@ theorem hecke_projection_sum_left {C : ℝ} (hc : Continuous φ) (hb : ∀ g, �
   simp only [Fn, ← mul_assoc]
   rw [← Finset.sum_mul, ← Finset.sum_mul, ← add_mul, ← add_mul, hT]
 
+/- English proof (translation)
+Unfold `Pr`. Rewrite using `[← integral_finsetSum _ (fun b _ => integrable_Fn hc hb hs c _ _), ← integral_add (integrable_finsetSum _ fun b _ => integrable_Fn hc hb hs c _ _) (integrable_Fn hc hb hs c _ _), ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Fn, ← mul_assoc]`. Establish `h2` using `congrArg conj (hT (g * u'))`.
+
+Simplify using `only [map_add, map_sum, map_mul] at h2`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, ← add_mul, ← mul_add, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hecke_projection_sum_right {C : ℝ} (hc : Continuous φ) (hb : ∀ g, ‖φ g‖ ≤ C) (hs : μ (𝓕 ∩ band) < ∞)
     {ι : Type*} (B : Finset ι) (t : ι → G2) (t' : G2) (lam : ℂ)
     (hT : ∀ y, ∑ b ∈ B, φ (y * t b) + φ (y * t') = lam * φ y) (u u' : G2) :
@@ -177,6 +255,9 @@ theorem hecke_projection_sum_right {C : ℝ} (hc : Continuous φ) (hb : ∀ g, �
   rw [← Finset.sum_mul, ← Finset.mul_sum, ← add_mul, ← mul_add, h2]
   ring
 
+/- English proof (translation)
+Use `hG (Fn φ c u u') (continuous_Fn hc c u u') ⟨_, norm_Fn_le hb c u u'⟩ (Fn_left hl u u') (Fn_cinv hcen hc2 u u') t` as an intermediate fact. Simplify using `only [Fn_translate] at this`. Rewrite `this` using `[integral_const_mul]`. Conclude with `this`.
+-/
 theorem Pr_translate {C : ℝ} (hc : Continuous φ) (hb : ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (hc2 : c * c = 1)
     (hG : ∀ F : G2 → ℂ, Continuous F → (∃ C, ∀ g, ‖F g‖ ≤ C) → LInv F → CInv F →
@@ -192,11 +273,17 @@ end Pair
 section Local
 
 open GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [finAt_mul, hx.1, hy.1], fun v' hv' => by rw [finAt_mul, hx.2.1 v' hv', hy.2.1 v' hv', one_mul], fun w => by rw [infAt_mul, hx.2.2 w, hy.2.2 w, one_mul]⟩`.
+-/
 theorem isLoc2_mul {v : Pl} {x y : GL (Fin 2) (Qv v)} {h h' : G2} (hx : IsLoc2 v x h) (hy : IsLoc2 v y h') :
     IsLoc2 v (x * y) (h * h') :=
   ⟨by rw [finAt_mul, hx.1, hy.1], fun v' hv' => by rw [finAt_mul, hx.2.1 v' hv', hy.2.1 v' hv', one_mul],
     fun w => by rw [infAt_mul, hx.2.2 w, hy.2.2 w, one_mul]⟩
 
+/- English proof (translation)
+Use `hext _ _ (fun v' => ?_) (fun w => by rw [hx.2.2 w, hy.2.2 w])` and prove the remaining obligations. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[hx.1, hy.1]`. Rewrite using `[hx.2.1 v' e, hy.2.1 v' e]`.
+-/
 theorem isLoc2_unique {v : Pl} {x : GL (Fin 2) (Qv v)} {h h' : G2}
     (hext : ∀ g g' : G2, (∀ v, finAt v g = finAt v g') → (∀ w, infAt w g = infAt w g') → g = g')
     (hx : IsLoc2 v x h) (hy : IsLoc2 v x h') : h = h' := by
@@ -206,6 +293,11 @@ theorem isLoc2_unique {v : Pl} {x : GL (Fin 2) (Qv v)} {h h' : G2}
   · rw [hx.2.1 v' e, hy.2.1 v' e]
 
 open GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Use `hext _ _ (fun v' => ?_) (fun w => by simp [infAt_mul, hx.2.2 w])` and prove the remaining obligations. Rewrite using `[finAt_mul, finAt_mul]`. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[hv, mul_one, one_mul]`.
+
+Rewrite using `[hx.2.1 v' e, one_mul, mul_one]`.
+-/
 theorem isLoc2_comm {v : Pl} {x : GL (Fin 2) (Qv v)} {k h : G2}
     (hext : ∀ g g' : G2, (∀ v, finAt v g = finAt v g') → (∀ w, infAt w g = infAt w g') → g = g')
     (hx : IsLoc2 v x k) (hv : finAt v h = 1) : k * h = h * k := by
@@ -217,6 +309,11 @@ theorem isLoc2_comm {v : Pl} {x : GL (Fin 2) (Qv v)} {k h : G2}
 
 open GroundTheory.Automorphic.Reduction in
 
+/- English proof (translation)
+Establish `e1 : ∀ (v : Pl) (g : G2), ((GeneralLinearGroup.det g : (𝔸[ℚ])ˣ) : 𝔸[ℚ]).2 v = ((GeneralLinearGroup.det (finAt v g) : (Qv v)ˣ) : Qv v)` using `fun v g => RingHom.map_det (finEval v) (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Establish `e2 : ∀ (w : InfinitePlace ℚ) (g : G2), ((GeneralLinearGroup.det g : (𝔸[ℚ])ˣ) : 𝔸[ℚ]).1 w = ((GeneralLinearGroup.det (infAt w g) : (w.Completion)ˣ) : w.Completion)` using `fun w g => RingHom.map_det (infEval w) (g : Matrix (Fin 2) (Fin 2) 𝔸[ℚ])`. Apply `Units.ext` to reduce the goal to its premises. Use `Prod.ext (funext fun w => ?_) (Subtype.ext (funext fun v => ?_))` and prove the remaining obligations. Rewrite using `[e2, e2, hi]`.
+
+Conclude with `(e1 v h).trans ((congrArg _ (hf v)).trans (e1 v h').symm)`.
+-/
 theorem det_eq_of_comps {h h' : G2}
     (hf : ∀ v : Pl, GeneralLinearGroup.det (finAt v h) = GeneralLinearGroup.det (finAt v h'))
     (hi : ∀ w, GeneralLinearGroup.det (infAt w h) = GeneralLinearGroup.det (infAt w h')) :
@@ -234,6 +331,19 @@ theorem det_eq_of_comps {h h' : G2}
 
 end Local
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((a p) ^ 2 - 4 * (χ p * (p : ℂ) ^ (k - 1))) (n := 2) (by norm_num)`. Use `set α : ℂ := (a p + z) / 2 with hα`. Use `set β : ℂ := (a p - z) / 2 with hβ`. Establish `hs : α + β = a p` using `by rw [hα, hβ]; ring`. Establish `hm : α * β = χ p * (p : ℂ) ^ (k - 1)`.
+
+Rewrite using `[hα, hβ]`. Take the linear combination `(-1 / 4 : ℂ) * hz`. Establish `hn` using `hp p pp hN α β hs hm`. Establish `hQ0 : ((p : ℂ) ^ (k - 1)) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast pp.ne_zero)`. Establish `hnorm : ‖α‖ * ‖β‖ = (p : ℝ) ^ (k - 1)`.
+
+Rewrite using `[← norm_mul, hm, norm_mul, hχ, one_mul, norm_pow, Complex.norm_natCast]`. Establish `hA : α * conj α = (p : ℂ) ^ (k - 1)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_two]`. Use `nth_rewrite 2 [hn]`. Rewrite using `[hnorm]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hB : β * conj β = (p : ℂ) ^ (k - 1)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_two]`. Use `nth_rewrite 1 [← hn]`.
+
+Rewrite using `[hnorm]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e1 : β = χ p * conj α`. Apply `mul_left_cancel₀ hQ0` to reduce the goal to its premises.
+
+Take the linear combination `(-β) * hA + conj α * hm`. Establish `e2 : α = χ p * conj β`. Apply `mul_left_cancel₀ hQ0` to reduce the goal to its premises. Take the linear combination `(-α) * hB + conj β * hm`. Rewrite using `[← hs, map_add, mul_add, ← e1, ← e2, add_comm]`.
+-/
 theorem pure_conj {k N : ℕ} {χ : DirichletCharacter ℂ N} {a : ℕ → ℂ} (hp : Pure k N χ a) {p : ℕ} (pp : p.Prime)
     (hN : ¬ p ∣ N) (hχ : ‖χ p‖ = 1) : χ p * conj (a p) = a p := by
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_pow_nat_eq ((a p) ^ 2 - 4 * (χ p * (p : ℂ) ^ (k - 1))) (n := 2) (by norm_num)
@@ -264,21 +374,33 @@ theorem pure_conj {k N : ℕ} {χ : DirichletCharacter ℂ N} {a : ℕ → ℂ} 
 
 section Key
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[dg2, Matrix.det_fin_two]`.
+-/
 theorem det_diag_adelic_GL2 {R : Type*} [CommRing R] (a d : Rˣ) : GeneralLinearGroup.det (dg2 a d) = a * d := by
   ext1
   simp [dg2, Matrix.det_fin_two]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diagonal_mul_diagonal_alt {R : Type*} [CommRing R] (a b c d : Rˣ) :
     (dg2 a b * dg2 c d : GL (Fin 2) R) = dg2 (a * c) (b * d) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+-/
 theorem scalar_diagonal_one_one {R : Type*} [CommRing R] : (dg2 1 1 : GL (Fin 2) R) = 1 := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2]
 
+/- English proof (translation)
+Rewrite using `[eq_mul_inv_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, w0, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem antidiagonal_torus_weyl_conjugate {R : Type*} [CommRing R] (a : Rˣ) :
     (dg2 1 a : GL (Fin 2) R) = w0 * dg2 a 1 * w0⁻¹ := by
   rw [eq_mul_inv_iff_mul_eq]
@@ -288,18 +410,27 @@ theorem antidiagonal_torus_weyl_conjugate {R : Type*} [CommRing R] (a : Rˣ) :
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `hn : -y ∈ 𝒪[F]` using `neg_mem hy`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, hy, hn, zero_mem, one_mem]`.
+-/
 theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : uni2 y ∈ integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
   have hn : -y ∈ 𝒪[F] := neg_mem hy
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>
     simp [uni2, hy, hn, zero_mem, one_mem]
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `hn : (-1 : F) ∈ 𝒪[F]` using `neg_mem (one_mem _)`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>`. Simplify using `[w0, hn, zero_mem, one_mem]`.
+-/
 theorem cmHalfIntegralGenerator_mem_algebraicClosure : (w0 : GL (Fin 2) F) ∈ integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
   have hn : (-1 : F) ∈ 𝒪[F] := neg_mem (one_mem _)
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>
     simp [w0, hn, zero_mem, one_mem]
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Automorphic.GodementJacquet.ordDet_of_mem_integralGL hx`.
+-/
 theorem ord_det_of_mem {x : GL (Fin 2) F} (hx : x ∈ integralGL F 2) :
     ord ((GeneralLinearGroup.det x : Fˣ) : F) = 0 :=
   GroundTheory.Automorphic.GodementJacquet.ordDet_of_mem_integralGL hx
@@ -308,6 +439,33 @@ end Key
 
 open GroundTheory.Automorphic.Reduction in
 
+/- English proof (translation)
+Use `choose L hL using hloc`. Establish `hLm : ∀ x y, L (x * y) = L x * L y` using `fun x y => isLoc2_unique hext (hL _) (isLoc2_mul (hL x) (hL y))`. Establish `hL1 : L 1 = 1` using `isLoc2_unique hext (hL 1) ⟨finAt_one v, fun v' _ => finAt_one v', fun w => infAt_one w⟩`. Set `Lh : GL (Fin 2) (Qv v) →* G2` to `{ toFun := L, map_one' := hL1, map_mul' := hLm }`. Establish `hLh : ∀ x, Lh x = L x` using `fun _ => rfl`.
+
+Establish `hLinv : ∀ x, L x⁻¹ = (L x)⁻¹` using `fun x => map_inv Lh x`. Establish `hTT : ∀ g, TypeT lam (fun x => φ (g * L x))` using `fun g => hT g _ fun x h' hx => by`. Rewrite using `[isLoc2_unique hext hx (hL x)]`. Establish `hsph : ∀ x ∈ integralGL (Qv v) 2, ∀ g, φ (g * L x) = φ g` using `fun x hx g => by`. Use `(hTT g).1 x hx 1` as an intermediate fact.
+
+Simplify `this` using `[hL1]`. Establish `hTs : ∀ y, ∑ b ∈ B, φ (y * L (upm ϖ b)) + φ (y * L (dg2 1 ϖ)) = lam * φ y` using `fun y => by`. Use `(hTT y).2 ϖ B hR 1` as an intermediate fact. Simplify `this` using `[hL1]`. Establish `hcL : ∀ x, cdet c (L x) = localChar c v (GeneralLinearGroup.det x)` using `fun x => by`.
+
+Take `⟨_, a', d', -, hd, -, -, hch⟩` from `hlast 0 (GeneralLinearGroup.det x) 1`. Establish `e : GeneralLinearGroup.det (L x) = GeneralLinearGroup.det (dg2 a' d' : G2)`. Use `det_eq_of_comps (fun v' => ?_) (fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality.
+
+Rewrite using `[(hL x).1, hd.1, det_diag_adelic_GL2, mul_one]`. Rewrite using `[(hL x).2.1 v' e, hd.2.1 v' e]`. Rewrite using `[(hL x).2.2 w, hd.2.2 w]`. Establish `h2` using `(hch c).2`. Rewrite `h2` using `[map_one, Units.val_one]`.
+
+Rewrite using `[cdet, e, det_diag_adelic_GL2, map_mul, Circle.coe_mul, (hch c).1, h2, mul_one]`. Set `K : Subgroup G2` to `(integralGL (Qv v) 2).map Lh`. Establish `hKs : ∀ κ ∈ K, ∀ g, φ (g * κ) = φ g`. Introduce and unpack `_ ⟨x, hx, rfl⟩ g`. Conclude with `hsph x hx g`.
+
+Establish `hI` using `fun t u u' => Pr_translate (μ := μ) (𝓕 := 𝓕) hc hb hl hcen hc2 hG t u u'`. Establish `hmain` using `core (Pr μ 𝓕 φ c) (cdet c) K h hI (fun κ hκ u u' => Pr_right1 (hKs κ hκ) u u') (fun κ hκ u u' => Pr_right2 (hKs κ hκ) u u') (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hLh, hcL, isUnramifiedChar_iff.1 hcu _ (ord_det_of_mem hx), Units.val_one])`. Use the proof step `(by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `isLoc2_comm hext (hL x) hv)`. Use `B (fun b => L (upm ϖ b)) (L (dg2 ϖ 1)) (L (dg2 1 ϖ)) (L w0) (fun b => L (uni2 b))`. Use the proof step `(fun b hb => ⟨uni2 b, unipotent_integral_mem_compact (hR.2.1 b hb), rfl⟩)`. Use the proof step `(fun b _ => by rw [upm, hLm])`.
+
+Use the proof step `⟨w0, cmHalfIntegralGenerator_mem_algebraicClosure, rfl⟩`. Use the proof step `(by rw [antidiagonal_torus_weyl_conjugate, hLm, hLm, hLinv])`. Use `lam (conj lam) (conj (((localChar ω v ϖ⁻¹ : ℂˣ) : ℂ)))`. Use the proof step `(by`. Use `hecke_projection_sum_left (c := c) (μ := μ) (𝓕 := 𝓕) hc hb hs B (fun b => L (upm ϖ b)) (L (dg2 1 ϖ)) lam hTs 1 h` as an intermediate fact.
+
+Simplify using `using this)`. Use the proof step `(hecke_projection_sum_right (c := c) (μ := μ) (𝓕 := 𝓕) hc hb hs B (fun b => L (upm ϖ b)) (L (dg2 1 ϖ)) lam hTs 1 h)`. Use the proof step `(by`. Take `⟨_, z, z', -, hd, -, hzz, hch⟩` from `hlast 0 ϖ⁻¹ ϖ⁻¹`. Take `rfl` from `hzz rfl`.
+
+Establish `e1 : dg2 ϖ⁻¹ ϖ⁻¹ * dg2 1 ϖ = (dg2 ϖ 1)⁻¹`. Rewrite using `[eq_inv_iff_mul_eq_one]`. Simplify using `only [diagonal_mul_diagonal_alt, mul_one, inv_mul_cancel, scalar_diagonal_one_one]`. Establish `e2 : (L (dg2 ϖ 1))⁻¹ * h = dg2 z z * (h * L (dg2 1 ϖ))`. Rewrite using `[← hLinv, ← e1, hLm, isLoc2_unique hext (hL _) hd, mul_assoc, isLoc2_comm hext (hL _) hv]`.
+
+Rewrite using `[e2, Pr_scal hcen, (hch ω).1])`. Use `h0`. Establish `e3 : cdet c (L (dg2 ϖ 1))⁻¹ = ((localChar c v ϖ⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[← hLinv, hcL, map_inv, det_diag_adelic_GL2, mul_one, map_inv]`. Establish `e4 : conj ((localChar ω v ϖ⁻¹ : ℂˣ) : ℂ) = ((localChar ω v ϖ : ℂˣ) : ℂ)`.
+
+Rewrite using `[GroundTheory.Automorphic.GodementSection.coe_localChar, GroundTheory.Automorphic.GodementSection.coe_localChar, map_inv, Circle.coe_inv_eq_conj, Complex.conj_conj]`. Rewrite `hmain` using `[e3, e4]`. Conclude with `hmain`.
+-/
 theorem eig_relation {φ : G2 → ℂ} {ω c : HeckeCharacter ℚ} {μ : Measure G2} {𝓕 : Set G2} {C : ℝ}
     (hc : Continuous φ) (hb : ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hcen : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (hc2 : c * c = 1)
@@ -390,9 +548,35 @@ theorem eig_relation {φ : G2 → ℂ} {ω c : HeckeCharacter ℚ} {μ : Measure
   rw [e3, e4] at hmain
   exact hmain
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toIdele_mul (c d : HeckeCharacter ℚ) (z : Jd) :
     (((c * d).toIdele z : Circle) : ℂ) = (c.toIdele z : ℂ) * d.toIdele z := rfl
 
+/- English proof (translation)
+Introduce `hB hC hG hF0b hF1 hF3 hF5`. Introduce `k N _ hk χ hχ f a hf ha ω φ hOm hLift hPure μ 𝓕 mK 𝓓 hSet S hS c hcf hc1 hcu x h hUn hne`. Take `⟨hBv, -, -, hext, -, -, -, hlast⟩` from `hB`. Take `⟨hsign, -⟩` from `hF1 k N χ f a hf ha.2.1 ω hOm`. Establish `hOL` using `hF0b k N χ hχ hsign ω hOm`.
+
+Take `⟨⟨C, hC'⟩, -⟩` from `hF5 k N hk χ hχ f a hf ha ω φ hOm hLift`. Establish `hH : Hk k N a ω φ` using `hF3 k N hk χ hχ f a hf ha ω φ hOm hLift`. Establish `hc` using `hLift.cont`. Establish `hl` using `hLift.left`. Establish `hcen` using `hLift.cen`.
+
+Establish `h1` using `hG μ 𝓕 mK 𝓓 hSet`. Establish `hP0 : Pr μ 𝓕 φ c 1 h ≠ 0` using `by simpa [Pr, Fn] using hne`. Establish `hc2 : c * c = 1`. Assume the negation of the conclusion as `hne2`. Apply `hP0` to reduce the goal to its premises.
+
+Use `(h1 (Fn φ c 1 h) (continuous_Fn hc c 1 h) ⟨_, norm_Fn_le hC' c 1 h⟩ (Fn_left hl 1 h)).2.1 (c * c) (by rw [← pow_two]; exact hcf.pow) (fun z g => ?_) hne2` and prove the remaining obligations. Rewrite using `[Fn_scal hcen, toIdele_mul]`. Establish `hG' : ∀ F : G2 → ℂ, Continuous F → (∃ C, ∀ g, ‖F g‖ ≤ C) → LInv F → CInv F → ∀ h, ∫ g in 𝓕 ∩ band, F (g * h) ∂μ = ∫ g in 𝓕 ∩ band, F g ∂μ` using `fun F a1 a2 a3 a4 h' => (h1 F a1 a2 a3).1 a4 h'`. Use `⟨c, hc1, by rw [pow_two, hc2], ?_⟩` and prove the remaining obligations. Use `filter_upwards [S.finite_toSet.eventually_cofinite_notMem] with v hv`.
+
+Establish `hvS : v ∉ S` using `fun e => hv e`. Establish `hvN : ¬ pOf v ∣ N` using `fun e => hvS (hS v e)`. Use `⟨hcu v hvS, ?_⟩` and prove the remaining obligations. Take `⟨hstd, -, hpr, -, -, hloc, -⟩` from `hBv v`. Take `⟨ϖ, B, hR⟩` from `(hC (Qv v) (localAdelicChar ℚ v) hstd).1`.
+
+Establish `hrel` using `eig_relation hc hC' hl hcen hc2 hG' hSet.vol hloc hext (hlast v) (hcu v hvS) (hH.good v hvN) hR (hUn.2.1 v hvS) hP0`. Take `⟨hωu, hωχ⟩` from `hOL.good v hvN`. Establish `e1 : localChar ω v ϖ = localChar ω v (unifUnit (Qv v))` using `quasiChar_apply_eq_of_isUnramified hωu hR.1`. Establish `e2 : localChar c v ϖ = localChar c v (unifUnit (Qv v))` using `quasiChar_apply_eq_of_isUnramified (hcu v hvS) hR.1`. Establish `hχn : ‖χ (pOf v)‖ = 1`.
+
+Rewrite using `[← hωχ, GroundTheory.Automorphic.GodementSection.coe_localChar]`. Conclude with `Circle.norm_coe _`. Establish `hconj` using `pure_conj hPure hpr hvN hχn`. Rewrite `hrel` using `[e1, hωχ]`. Distinguish the cases in `ha0 : a (pOf v) = 0`.
+
+Conclude with `Or.inr ha0`. Use `left`. Use `set r : ℝ := (pOf v : ℝ) ^ (1 - (k : ℝ) / 2) with hr`. Establish `hr0 : (r : ℂ) ≠ 0`. Establish `: r ≠ 0` using `(Real.rpow_pos_of_pos (by exact_mod_cast hpr.pos) _).ne'`.
+
+Conclude with `this` after adjusting the coercions. Establish `e3 : ((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) = 1`. Establish `e4 : lamOf k a v = a (pOf v) * (r : ℂ)` using `rfl`. Rewrite `hrel` using `[e4, map_mul, Complex.conj_ofReal]`. Establish `e5 : a (pOf v) * (r : ℂ) * (((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) - 1) = 0`.
+
+Take the linear combination `(-1 : ℂ) * hrel + ((localChar c v ϖ⁻¹ : ℂˣ) : ℂ) * (r : ℂ) * hconj * (-1 : ℂ)`. Break down `mul_eq_zero.1 e5 with e6 | e6` into its components or cases. Conclude with `absurd e6 (mul_ne_zero ha0 hr0)`. Conclude with `sub_eq_zero.1 e6`. Rewrite using `[← e2]`.
+
+Establish `e7 : localChar c v ϖ⁻¹ = 1` using `Units.ext e3`. Rewrite `e7` using `[map_inv]`. Conclude with `inv_eq_one.1 e7`.
+-/
 theorem g6 : Ad3.R.B0 → Ad3.R.C1 → Ad3.R.G1 → Ad3.R.F0b → Ad3.R.F1 → Ad3.R.F3 → Ad3.R.F5 → Ad3.R.G6 := by
   intro hB hC hG hF0b hF1 hF3 hF5
   intro k N _ hk χ hχ f a hf ha ω φ hOm hLift hPure μ 𝓕 mK 𝓓 hSet S hS c hcf hc1 hcu x h hUn hne

@@ -14,12 +14,18 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GenericAmpleDvr
 
+/- English proof (translation)
+The claim follows from `CubeNoeth.triv_of_faces allSixLaws.1.globalFns hA hL (thφ A (x3 A)) thε (fun r i b h => AbLaw.CubeGen.trivAt_of_formal hL r (AbLaw.CubeGen.prod_face r i b h)) (fun r b h => AbLaw.CubeGen.prod_face r 0 b h)`.
+-/
 theorem triv_theta {S : Scheme.{0}} [IsLocallyNoetherian S] {A : Over S} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) : AbLaw.Triv (Theta A L) :=
   CubeNoeth.triv_of_faces allSixLaws.1.globalFns hA hL (thφ A (x3 A)) thε
     (fun r i b h => AbLaw.CubeGen.trivAt_of_formal hL r (AbLaw.CubeGen.prod_face r i b h))
     (fun r b h => AbLaw.CubeGen.prod_face r 0 b h)
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ G _ A _ φ L LA ψ hG _ hL hLA h hψ ha hk`. Use `hG.comm` as an intermediate fact. Establish `hr : Rigidified G L` using `DVR.exists_gen_of_isLB_local (V := V) _ (pull_isLB hL _)`. Take `⟨M, rfl, ⟨c⟩⟩` from `Moduli.cubicalStr_of_triv_theta allSixLaws.1 _ G hG L hL hr (triv_theta hG hL)`. Conclude with `GoodPol.relAmple_of_generic allSixLaws.1 hG c h hLA ⟨ψ, hψ⟩ ha hk`.
+-/
 theorem relAmple_of_generic_principal : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (G : Over (Sp V)) [GrpObj G] (A : Over (Sp (FractionRing V))) [GrpObj A] (φ : A.left ⟶ G.left) (L : LB G.left) (LA : LB A.left) (ψ : LB.Iso LA (L.pull φ)), IsAbelianScheme G → IsAbelianScheme A → L.IsLB → LA.IsLB → IsGrpPullback A G (jK V) φ → ψ.IsGen → RelAmple A LA → KTriv A LA → RelAmple G L := by
   intro V _ _ _ _ _ G _ A _ φ L LA ψ hG _ hL hLA h hψ ha hk
   have := hG.comm

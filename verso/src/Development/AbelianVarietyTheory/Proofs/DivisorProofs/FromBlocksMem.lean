@@ -31,6 +31,9 @@ def NabD (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Set (UD σ 
   {n | n ∈ KAtD σ W v ∧ matD n * antiCols d = antiCols d ∧
     ∃ b : Matrix (Fin d) (Fin d) (AE F E), matD n * diagCols (Fin d) = diagCols (Fin d) + antiCols d * b}
 
+/- English proof (translation)
+Establish `hk : (mat k)ᵀ * incM F W.J * (mat k).map (cA σ) = incM F W.J` using `k.2`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, dbl, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hk, Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ))]`.
+-/
 theorem fromBlocks_mem {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} (k : UA σ W.J) :
     ((Matrix.fromBlocks (mat k) 0 0 1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)))ᵀ * dbl (incM F W.J) *
       (Matrix.fromBlocks (mat k) 0 0 1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)).map (cA σ) = dbl (incM F W.J) := by
@@ -52,6 +55,9 @@ def inlD (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) : UA σ W.J →* UD σ W
     show Matrix.fromBlocks (mat (a * b)) 0 0 1 = Matrix.fromBlocks (mat a) 0 0 1 * Matrix.fromBlocks (mat b) 0 0 1
     rw [Matrix.fromBlocks_multiply]; simp [mat]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matD_inlD (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (k : UA σ W.J) :
     matD (inlD σ W k) = Matrix.fromBlocks (mat k) 0 0 1 := rfl
 

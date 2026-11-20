@@ -12,6 +12,9 @@ variable {I : Type} [Fintype I]
 def term (n : I → ℤ) (s : ℂ) (v : I → ℂ) (y : I → ℝ) : ℂ :=
   GlobalTheory.HeckeTheta.gauss n (GlobalTheory.HeckeTheta.dil y v) * Complex.exp (s * ((∑ i, y i : ℝ) : ℂ))
 
+/- English proof (translation)
+Establish `: GlobalTheory.HeckeTheta.dil y (0 : I → ℂ) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.HeckeTheta.dil]`. Rewrite using `[term, this, GlobalTheory.HeckeTheta.gauss_zero hn, zero_mul]`.
+-/
 theorem term_zero {n : I → ℤ} (hn : ∃ i, n i ≠ 0) (s : ℂ) (y : I → ℝ) : term n s 0 y = 0 := by
   have : GlobalTheory.HeckeTheta.dil y (0 : I → ℂ) = 0 := by
     funext i; simp [GlobalTheory.HeckeTheta.dil]

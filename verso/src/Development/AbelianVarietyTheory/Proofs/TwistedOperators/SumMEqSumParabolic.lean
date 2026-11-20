@@ -13,16 +13,30 @@ namespace GlobalTheory.Chamber.FourierIdGeneric
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Establish `: IsEmpty ↥(∅ : Finset (SV k))` using `⟨fun x => Finset.notMem_empty _ x.2⟩`. Rewrite using `[epsOf, Matrix.det_isEmpty]`. Simplify using the standard rewrite rules.
+-/
 theorem epsOf_empty (b : SV k → A0 k) (l : A0 k) : epsOf ∅ b l = 1 := by
   have : IsEmpty ↥(∅ : Finset (SV k)) := ⟨fun x => Finset.notMem_empty _ x.2⟩
   rw [epsOf, Matrix.det_isEmpty]; simp
 
+/- English proof (translation)
+Simplify using `only [eps, sdiff_self, bot_eq_empty, epsOf_empty]`.
+-/
 theorem eps_self (S : Finset (SV k)) (l : A0 k) : eps S S l = 1 := by
   simp only [eps, sdiff_self, bot_eq_empty, epsOf_empty]
 
+/- English proof (translation)
+Simplify using `only [epsHat, sdiff_self, bot_eq_empty, epsOf_empty]`.
+-/
 theorem epsHat_self (S : Finset (SV k)) (l : A0 k) : epsHat S S l = 1 := by
   simp only [epsHat, sdiff_self, bot_eq_empty, epsOf_empty]
 
+/- English proof (translation)
+Use `Finset.sum_comm' fun P R => ?_` and prove the remaining obligations. Simplify using `only [mem_parP, mem_parF, between, mem_filter, mem_powerset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hP, ha, -⟩, hRP, hQR⟩`. Conclude with `⟨⟨hP, ha, hRP⟩, hP.mono hRP, ha ▸ vecSpan_mono hRP, hQR⟩`.
+
+Introduce and unpack `⟨⟨hP, ha, hRP⟩, -, -, hQR⟩`. Conclude with `⟨⟨hP, ha, hQR.trans hRP⟩, hRP, hQR⟩`.
+-/
 theorem sum_swap (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) (g : Finset (SV k) → Finset (SV k) → ℂ) :
     ∑ P ∈ parP 𝔞 Q, ∑ R ∈ between P Q, g P R = ∑ R ∈ parF 𝔞 Q, ∑ P ∈ parP 𝔞 R, g P R := by
   refine Finset.sum_comm' fun P R => ?_
@@ -33,6 +47,13 @@ theorem sum_swap (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) (g : Finset (
   · rintro ⟨⟨hP, ha, hRP⟩, -, -, hQR⟩
     exact ⟨⟨hP, ha, hQR.trans hRP⟩, hRP, hQR⟩
 
+/- English proof (translation)
+Use extensionality with `P`. Rewrite using `[mem_parP, mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, ha, hSP⟩`. Use `Subset.antisymm (fun u hu => ?_) hSP` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hu'`. Use `hP.vec_notMem hu (vecSpan_mono (fun v hv => mem_erase.2 ⟨fun e => hu' (by subst e; exact hv), hSP hv⟩) ?_)` and prove the remaining obligations. Rewrite using `[h, ← ha]`. Conclude with `Submodule.subset_span ⟨u, hu, rfl⟩`. Introduce and unpack `rfl`.
+
+Conclude with `⟨hS, h, subset_rfl⟩`.
+-/
 theorem parP_self {𝔞 : Submodule ℝ (A0 k)} {S : Finset (SV k)} (hS : IsPar S) (h : aP S = 𝔞) :
     parP 𝔞 S = {S} := by
   ext P
@@ -46,6 +67,11 @@ theorem parP_self {𝔞 : Submodule ℝ (A0 k)} {S : Finset (SV k)} (hS : IsPar 
     exact Submodule.subset_span ⟨u, hu, rfl⟩
   · rintro rfl; exact ⟨hS, h, subset_rfl⟩
 
+/- English proof (translation)
+Use extensionality with `R`. Simplify using `only [mem_filter, mem_parF, mem_parP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, -, c⟩, d⟩`. Conclude with `⟨a, d, c⟩`.
+
+Introduce and unpack `⟨a, d, c⟩`. Conclude with `⟨⟨a, d.le, c⟩, d⟩`.
+-/
 theorem filter_parF (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) :
     (parF 𝔞 Q).filter (fun R => aP R = 𝔞) = parP 𝔞 Q := by
   ext R
@@ -57,10 +83,28 @@ theorem filter_parF (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) :
 def coefA (𝔞 : Submodule ℝ (A0 k)) (S : Finset (SV k)) (l : A0 k) : ℂ :=
   ∑ P ∈ parP 𝔞 S, (-1 : ℂ) ^ (P \ S).card * epsHat P S l
 
+/- English proof (translation)
+Rewrite using `[coefA, parP_self hS h, sum_singleton, sdiff_self, bot_eq_empty, card_empty, pow_zero, one_mul, epsHat_self]`.
+-/
 theorem coefA_of_eq {𝔞 : Submodule ℝ (A0 k)} {S : Finset (SV k)} (hS : IsPar S) (h : aP S = 𝔞) (l : A0 k) :
     coefA 𝔞 S l = 1 := by
   rw [coefA, parP_self hS h, sum_singleton, sdiff_self, bot_eq_empty, card_empty, pow_zero, one_mul, epsHat_self]
 
+/- English proof (translation)
+It suffices to establish `H : ∀ n, ∀ S, Fintype.card (SV k) - S.card = n → S ∈ parF 𝔞 ∅ → aP S ≠ 𝔞 → coefA 𝔞 S l = 0 from fun S hS ha => H _ S rfl hS ha`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `S hn hS ha`.
+
+Establish `hS'` using `mem_parF.1 hS`. Establish `h0 : ∑ R ∈ parF 𝔞 S, coefA 𝔞 R l * eps R S l = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_swap 𝔞 S (fun P R => (-1 : ℂ) ^ (P \ R).card * epsHat P R l * eps R S l)]`. Simplify using `only [coefA, sum_mul]`.
+
+Use `_ = 0 := by`. Use `sum_eq_zero fun P hP => ?_` and prove the remaining obligations. Take `⟨hP1, hP2, hP3⟩` from `mem_parP.1 hP`. Conclude with `GlobalTheory.T.epsilon_alternating_sum_zero k P S hP1 hP3 (by rintro rfl; exact ha hP2) l hl`. Rewrite `h0` using `[← sum_filter_add_sum_filter_not (parF 𝔞 S) (fun R => aP R = 𝔞)]`.
+
+Establish `h2 : ∑ R ∈ (parF 𝔞 S).filter (fun R => aP R = 𝔞), coefA 𝔞 R l * eps R S l = 0`. Rewrite using `[filter_parF, ← GlobalTheory.T.epsilon_sum_levi_zero k 𝔞 S h𝔞 hS ha l hl]`. Use `sum_congr rfl fun R hR => ?_` and prove the remaining obligations. Take `⟨a, d, -⟩` from `mem_parP.1 hR`. Rewrite using `[coefA_of_eq a d, one_mul]`.
+
+Establish `h3 : ∑ R ∈ (parF 𝔞 S).filter (fun R => ¬ aP R = 𝔞), coefA 𝔞 R l * eps R S l = coefA 𝔞 S l`. Rewrite using `[sum_eq_single S]`. Rewrite using `[eps_self, mul_one]`. Introduce `R hR hne`. Take `⟨hR1, hR2⟩` from `mem_filter.1 hR`.
+
+Take `⟨a, b, c⟩` from `mem_parF.1 hR1`. Establish `hss : S ⊂ R` using `ssubset_of_subset_of_ne c (Ne.symm hne)`. Establish `h4` using `card_lt_card hss`. Establish `h5` using `card_le_univ R`. Rewrite using `[ih (Fintype.card (SV k) - R.card) (by omega) R rfl (mem_parF.2 ⟨a, b, empty_subset _⟩) hR2, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (mem_filter.2 ⟨mem_parF.2 ⟨hS'.1, hS'.2.1, subset_rfl⟩, ha⟩) h`. Rewrite `h0` using `[h2, h3, zero_add]`. Conclude with `h0`.
+-/
 theorem coefA_eq_zero {𝔞 : Submodule ℝ (A0 k)} (h𝔞 : IsLevi 𝔞) {l : A0 k} (hl : l ∈ generic k) :
     ∀ S ∈ parF 𝔞 ∅, aP S ≠ 𝔞 → coefA 𝔞 S l = 0 := by
   suffices H : ∀ n, ∀ S, Fintype.card (SV k) - S.card = n → S ∈ parF 𝔞 ∅ → aP S ≠ 𝔞 → coefA 𝔞 S l = 0 from
@@ -104,6 +148,13 @@ end GlobalTheory.Chamber.FourierIdGeneric
 
 open GlobalTheory.Chamber.FourierIdGeneric in
 
+/- English proof (translation)
+Introduce `k 𝔞 Q h𝔞 hQ c l hl`. Establish `e1 : ∑ P ∈ parP 𝔞 Q, sumP P Q c l = ∑ S ∈ parF 𝔞 Q, coefA 𝔞 S l * (eps S Q l * c S l)`. Simplify using `only [sumP]`. Rewrite using `[sum_swap 𝔞 Q (fun P S => (-1 : ℂ) ^ (P \ S).card * epsHat P S l * eps S Q l * c S l)]`. Simplify using `only [coefA, sum_mul]`.
+
+Use `sum_congr rfl fun S _ => sum_congr rfl fun P _ => by ring` and prove the remaining obligations. Establish `e2 : ∑ S ∈ (parF 𝔞 Q).filter (fun S => ¬ aP S = 𝔞), coefA 𝔞 S l * (eps S Q l * c S l) = 0`. Use `sum_eq_zero fun S hS => ?_` and prove the remaining obligations. Take `⟨hS1, hS2⟩` from `mem_filter.1 hS`. Take `⟨a, b, -⟩` from `mem_parF.1 hS1`.
+
+Rewrite using `[coefA_eq_zero h𝔞 hl S (mem_parF.2 ⟨a, b, empty_subset _⟩) hS2, zero_mul]`. Rewrite using `[e1, ← sum_filter_add_sum_filter_not (parF 𝔞 Q) (fun S => aP S = 𝔞), e2, add_zero, filter_parF, sumM]`. Use `sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Take `⟨a, d, -⟩` from `mem_parP.1 hS`. Rewrite using `[coefA_of_eq a d, one_mul]`.
+-/
 theorem GlobalTheory.Chamber.sumM_eq_sum_sumP : ∀ (k : ℕ) (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)), IsLevi 𝔞 →
     Q ∈ parF 𝔞 ∅ → ∀ (c : Finset (SV k) → A0 k → ℂ), ∀ l ∈ generic k,
     sumM 𝔞 Q c l = ∑ P ∈ parP 𝔞 Q, sumP P Q c l := by
@@ -123,4 +174,7 @@ theorem GlobalTheory.Chamber.sumM_eq_sum_sumP : ∀ (k : ℕ) (𝔞 : Submodule 
   obtain ⟨a, d, -⟩ := mem_parP.1 hS
   rw [coefA_of_eq a d, one_mul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Chamber.sumM_eq_sum_sumP`.
+-/
 example : ∀ (k : ℕ) (𝔞 : Submodule ℝ (GlobalTheory.Chamber.A0 k)) (Q : Finset (GlobalTheory.Chamber.SV k)), IsLevi 𝔞 → Q ∈ parF 𝔞 ∅ → ∀ (c : Finset (SV k) → A0 k → ℂ), ∀ l ∈ generic k, sumM 𝔞 Q c l = ∑ P ∈ parP 𝔞 Q, sumP P Q c l := GlobalTheory.Chamber.sumM_eq_sum_sumP

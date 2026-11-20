@@ -21,9 +21,15 @@ def relUnipD (f : ∀ i, (Σ j, c i j) ≃ m i) : Subgroup (Levi k m) :=
 def relEmbD (f : ∀ i, (Σ j, c i j) ≃ m i) : (∀ i, Levi k (c i)) →* Levi k m :=
   MonoidHom.pi fun i => (leviEmb k (f i)).comp (Pi.evalMonoidHom (fun i => Levi k (c i)) i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem relEmbD_apply (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i)) (i : α) :
     relEmbD k f g i = leviEmb k (f i) (g i) := rfl
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun i _ => Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k (f i) (g i)) (u i)`.
+-/
 theorem relEmbD_mem_normalizer (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i)) :
     relEmbD k f g ∈ Subgroup.normalizer (relUnipD k f : Set (Levi k m)) :=
   Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun i _ =>
@@ -33,6 +39,9 @@ def relDeltaHalfD (c : ∀ i, β i → Type) [∀ i j, Fintype (c i j)] [∀ i j
     (∀ i, Levi k (c i)) →* ℂˣ :=
   ∏ i, (deltaHalf k (c i)).comp (Pi.evalMonoidHom (fun i => Levi k (c i)) i)
 
+/- English proof (translation)
+Simplify using `[relDeltaHalfD, MonoidHom.finsetProd_apply]`.
+-/
 theorem relDeltaHalfD_apply (g : ∀ i, Levi k (c i)) :
     relDeltaHalfD k c g = ∏ i, deltaHalf k (c i) (g i) := by
   simp [relDeltaHalfD, MonoidHom.finsetProd_apply]
@@ -43,6 +52,9 @@ def relJacD (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (Levi k 
     Representation ℂ (∀ i, Levi k (c i)) (Jacquet ρ (relUnipD k f)) :=
   twist (jacquet ρ (relUnipD k f) (relEmbD k f) (relEmbD_mem_normalizer k f)) (relDeltaHalfD k c)⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem relJacD_mk (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (Levi k m) W)
     (g : ∀ i, Levi k (c i)) (v : W) :
     relJacD f ρ g (Submodule.Quotient.mk v) =
@@ -60,6 +72,9 @@ def refinePlace {n : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n) 
   (Equiv.sigmaCongrLeft (β := fun p : Σ a, Fin (t a) => Fin (d' p.1 p.2)) finSigmaFinEquiv.symm).trans
     ((Equiv.sigmaAssoc fun a b => Fin (d' a b)).trans ((Equiv.sigmaCongrRight e').trans e))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem refinePlace_apply {n : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n) {d' : ∀ a, Fin (t a) → ℕ}
     (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a)) (c : Fin (∑ a, t a))
     (i : Fin (d' (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2)) :
@@ -72,10 +87,16 @@ def flatHom (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)] :
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flatHom_apply (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)] (g : ∀ a b, Γ a b)
     (c : Fin (∑ a, t a)) :
     flatHom Γ g c = g (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2 := rfl
 
+/- English proof (translation)
+Establish `h : ⇑(flatHom Γ) = (Equiv.piCongrLeft' (fun p : Σ a, Fin (t a) => Γ p.1 p.2) finSigmaFinEquiv) ∘ (Equiv.piCurry fun a b => Γ a b).symm` using `rfl`. Rewrite using `[h]`. Conclude with `(Equiv.surjective _).comp (Equiv.surjective _)`.
+-/
 theorem flatHom_surjective (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)] :
     Function.Surjective (flatHom Γ) := by
   have h : ⇑(flatHom Γ) = (Equiv.piCongrLeft' (fun p : Σ a, Fin (t a) => Γ p.1 p.2) finSigmaFinEquiv) ∘
@@ -89,6 +110,11 @@ section Pull
 
 variable {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Use `⟨⟨S.toSubmodule, fun g v hv => ?_⟩, ⟨f.toLinearMap, fun g => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hψ g`. Conclude with `S.apply_mem_toSubmodule g' hv`. Take `⟨g', rfl⟩` from `hψ g`.
+
+Conclude with `f.isIntertwining' g'`.
+-/
 theorem isSubquotient_of_comp {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (ψ : G' →* G)
     (hψ : Function.Surjective ψ) (h : IsSubquotient (σ.comp ψ) (ρ.comp ψ)) : IsSubquotient σ ρ := by
   obtain ⟨S, f, hf⟩ := h
@@ -98,6 +124,9 @@ theorem isSubquotient_of_comp {σ : Representation ℂ G W} {ρ : Representation
   · obtain ⟨g', rfl⟩ := hψ g
     exact f.isIntertwining' g'
 
+/- English proof (translation)
+The claim follows from `.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective`.
+-/
 theorem isSubquotient_of_equiv {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (φ : σ.Equiv ρ) :
     IsSubquotient σ ρ :=
   .of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective

@@ -21,6 +21,17 @@ namespace PositivityTheory.Rg.Rsw.L.LThBdd
 variable {D : D7} {n : ℕ} {W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
   {μ : Measure (Mx D W.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ W.rank n)}
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p => ?_` and prove the remaining obligations. Take `⟨Qg, hQg, hpg⟩` from `exists_compact_mem_nhds p.1`. Take `⟨Qh, hQh, hph⟩` from `exists_compact_mem_nhds p.2`. Take `⟨M, hM, hMb⟩` from `hmaj Qg hQg`. Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ W.rank n`.
+
+Take `⟨-, K, hK, hC⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ W.rank n M (GlobalTheory.T.isSchwartzBruhatAdelicMatrix_of_mem_adelicSchwartz D θ hθ W.rank n M hM)`. Take `⟨K', hK', hmul⟩` from `GlobalTheory.T.adelicMatrixSchwartzMajorant_inv_mul_le D θ hθ W n Qh hQh K hK`. Take `⟨C, hC⟩` from `hC N`. Take `⟨C₂, hC₂, hmul'⟩` from `hmul N`. Take `⟨b, hb, hb'⟩` from `hN K' {0} hK' isCompact_singleton`.
+
+Establish `hterm : ∀ ξ : Matrix (Fin W.rank) (Fin n) D.host.E, Continuous fun u : G D n × GA D W => (ω u.1 Φ).1 (mt W u.2⁻¹ ⬝ (rat ξ : Mx D W.rank n))` using `fun ξ => hcont.comp (continuous_fst.prodMk (((GlobalTheory.LatNhds.continuous_mt_inv W).comp continuous_snd).matrix_mul continuous_const))`. Establish `hon : ContinuousOn (fun u : G D n × GA D W => ∑' ξ : Matrix (Fin W.rank) (Fin n) D.host.E, (ω u.1 Φ).1 (mt W u.2⁻¹ ⬝ (rat ξ : Mx D W.rank n))) (Qg ×ˢ Qh)`. Use `continuousOn_tsum (fun ξ => (hterm ξ).continuousOn) (hb.mul_left (|C| * C₂)) fun ξ u hu => ?_` and prove the remaining obligations. Establish `h1` using `hMb u.1 hu.1 (mt W u.2⁻¹ ⬝ (rat ξ : Mx D W.rank n))`. Establish `h2` using `hC (mt W u.2⁻¹ ⬝ (rat ξ : Mx D W.rank n))`.
+
+Establish `h3` using `hmul' u.2 hu.2 (rat ξ : Mx D W.rank n)`. Establish `h4` using `hb' 0 rfl ξ`. Rewrite `h4` using `[zero_add]`. Establish `hm0` using `GlobalTheory.Unf.maj_nonneg θ K N (mt W u.2⁻¹ ⬝ (rat ξ : Mx D W.rank n))`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hon.continuousAt (prod_mem_nhds hpg hph)`.
+-/
 theorem theta_cont (hθ : IsInfFam θ) (Φ : schwartzA θ W.rank n)
     (hcont : Continuous fun u : G D n × Mx D W.rank n => (ω u.1 Φ).1 u.2)
     (hmaj : ∀ C : Set (G D n), IsCompact C → ∃ M ∈ schwartzA θ W.rank n, ∀ g ∈ C, ∀ x, ‖(ω g Φ).1 x‖ ≤ ‖M x‖) :
@@ -57,6 +68,11 @@ theorem theta_cont (hθ : IsInfFam θ) (Φ : schwartzA θ W.rank n)
       _ = |C| * C₂ * b ξ := by ring
   exact hon.continuousAt (prod_mem_nhds hpg hph)
 
+/- English proof (translation)
+Unfold `theta`. Establish `hsupp : Function.support (fun ξ : Matrix (Fin W.rank) (Fin n) D.host.E => (ω g Ψ').1 (mm (mt W h⁻¹) (rat ξ))) ⊆ {y : Matrix (Fin W.rank) (Fin n) D.host.E | y.rank = W.rank}`. Introduce `ξ hξ`. Assume the negation of the conclusion as `hr`. Conclude with `hξ (term_zero hω hnb C hC Ψ Ψ' hΨ hΨ' hg h ξ hr)`.
+
+Conclude with `(tsum_subtype_eq_of_support_subset hsupp).symm`.
+-/
 theorem theta_full (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (C : Cut D n v) (hC : C.Kills ψ W.rank) (Ψ Ψ' : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ)
     (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) {g : G D n}
@@ -71,6 +87,13 @@ theorem theta_full (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n}
     exact hξ (term_zero hω hnb C hC Ψ Ψ' hΨ hΨ' hg h ξ hr)
   exact (tsum_subtype_eq_of_support_subset hsupp).symm
 
+/- English proof (translation)
+Take `⟨M, hM, hMb⟩` from `hmaj Q hQ`. Take `⟨B, hB⟩` from `hLB D θ hθ W n M hM`. Use `⟨B, fun g hg hgv h => ?_⟩` and prove the remaining obligations. Rewrite using `[theta_full hω hnb C hC Ψ Ψ' hΨ hΨ' hgv h]`. Establish `e : ‖∑' y : {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank}, (ω g Ψ').1 (mm (mt W h⁻¹) (rat y.1))‖ₑ ≤ B` using `(enorm_tsum_le_tsum_enorm).trans ((ENNReal.tsum_le_tsum fun y => by`.
+
+Use `hMb g hg (mm (mt W h⁻¹) (rat y.1))` as an intermediate fact. Rewrite using `[← ofReal_norm, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal this).trans (hB h))`. Establish `e2 : ENNReal.ofReal ‖∑' y : {y : Matrix (Fin W.rank) (Fin n) D.host.E // y.rank = W.rank}, (ω g Ψ').1 (mm (mt W h⁻¹) (rat y.1))‖ ≤ ENNReal.ofReal B`. Rewrite using `[ofReal_norm, ENNReal.ofReal_coe_nnreal]`.
+
+Conclude with `e`. Conclude with `(ENNReal.ofReal_le_ofReal_iff B.2).1 e2`.
+-/
 theorem bound_triv (hω : IsWeilSch ψ χ θ W μ ω) {nb : hermA D n → G D n} (hnb : IsNMap nb) {v : Pl D}
     (C : Cut D n v) (hC : C.Kills ψ W.rank) (Ψ Ψ' : schwartzA θ W.rank n) (hΨ : ∀ k ∈ KAt D n v, ω k Ψ = Ψ)
     (hΨ' : Ψ' = ∑ x ∈ C.s, C.co x • ω (nb x) Ψ) (hLB : LatBound) (hθ : IsInfFam θ)

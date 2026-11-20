@@ -9,6 +9,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RStabFin
 
+/- English proof (translation)
+Introduce `G _ _ _ K K' f δ hK hK' _ hf x`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hopen : IsOpen ((K'.subgroupOf K : Subgroup K) : Set K)` using `hK'.preimage continuous_subtype_val`. Establish `hfin : Finite (K ⧸ K'.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `h0 : (K'.subgroupOf K).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`.
+
+Establish `hle : K'.subgroupOf K ≤ rStab fun k : K => f ((x * k)⁻¹ * δ * (x * k))`. Introduce `k hk y`. Establish `hk' : ((k : K) : G) ∈ K'` using `hk`. Use `show f ((x * ((y * k : K) : G))⁻¹ * δ * (x * ((y * k : K) : G))) = f ((x * (y : G))⁻¹ * δ * (x * (y : G)))`. Establish `e : (x * ((y * k : K) : G))⁻¹ * δ * (x * ((y * k : K) : G)) = ((k : G))⁻¹ * ((x * (y : G))⁻¹ * δ * (x * (y : G)) * (k : G))`.
+
+Simplify using `only [Subgroup.coe_mul, _root_.mul_inv_rev]`. Use `group`. Rewrite using `[e, (hf _ (inv_mem hk') _).1, (hf _ hk' _).2]`. Conclude with `fun h => h0 (Nat.eq_zero_of_zero_dvd (h ▸ Subgroup.index_dvd_of_le hle))`.
+-/
 theorem rStab_conj_index_ne_zero : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K K' : Subgroup G)
     (f : G → ℂ) (δ : G), IsCompact (K : Set G) → IsOpen (K' : Set G) → K' ≤ K →
     (∀ k ∈ K', ∀ x, f (k * x) = f x ∧ f (x * k) = f x) → ∀ x : G,

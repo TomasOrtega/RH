@@ -24,6 +24,15 @@ noncomputable section
 
 namespace GlobalTheory.CMAdjoint
 
+/- English proof (translation)
+Take `⟨ε, hP⟩` from `hP`. Take `⟨P, hspan, -, -, hnat, hform⟩` from `hP A g hA hg L hL u`. Establish `key : ∀ (δ : A ⟶ A) [IsMonHom δ] (n : Fin g → ℂ), (∀ w, u.ex (fun j ↦ n j * w j) = u.ex w ≫ δ) → ∀ z : u.Λ, ∃ z' : u.Λ, (z' : Fin g → ℂ) = (fun j ↦ n j * z.1 j) ∧ push (dp0 ℂ) (𝟙 _) δ (P z) = P z'`. Introduce `δ _ n hδ z`. Establish `hz : (fun j ↦ n j * z.1 j) ∈ u.Λ`.
+
+Rewrite using `[← u.ker, hδ, (u.ker _).2 z.2, MonObj.one_comp]`. Conclude with `⟨⟨_, hz⟩, rfl, hnat δ (LinearMap.mulLeft ℂ n) hδ z _ rfl⟩`. Establish `e : ψ ∘ₗ push (dp0 ℂ) (𝟙 _) α = ψ.compl₂ (push (dp0 ℂ) (𝟙 _) β)`. Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Use `LinearMap.ext_on hspan ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨z', hz', ez⟩` from `key α m hα z`. Take `⟨w', hw', ew⟩` from `key β m' hβ w`. Rewrite using `[LinearMap.comp_apply, LinearMap.compl₂_apply, ez, ew, hform _ χ ψ hah hψ, hform _ χ ψ hah hψ, hz', hw']`.
+
+Use `congr 3`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, hm, RCLike.star_def, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring`. Conclude with `LinearMap.congr_fun₂ e x y`.
+-/
 theorem adjoint_of_holUnif (hP : GlobalTheory.Published.PeriodComparison) {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left} (hL : L.IsLB) (u : HolUnif A L g) (h : Fin g → ℝ)
     {χ : u.Λ → ℂ} (hah : u.IsAH (Matrix.diagonal fun j ↦ (h j : ℂ)) χ) {ψ : LinearMap.BilinForm ℂ (HdR A)}
@@ -52,6 +61,13 @@ theorem adjoint_of_holUnif (hP : GlobalTheory.Published.PeriodComparison) {A : O
     exact Finset.sum_congr rfl fun j _ ↦ by ring
   exact LinearMap.congr_fun₂ e x y
 
+/- English proof (translation)
+Take `⟨ψ', ⟨n, a, b, hch, he⟩, h'⟩` from `IsPolForm.pull_comp m (X.isLB c) (π := (lift (𝟙 X.A) (𝟙 X.A)).left) (L := X.P c) hψ`. Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`.
+
+Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules.
+
+Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`. Conclude with `⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩`.
+-/
 theorem exists_polForm_pull {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {p : X'.A.left ⟶ X.A.left}
     (hX : X'.IsPullBy X (spMap σ) p) (m : GrpMor (dp0 R) (𝟙 _) X.A (dp0 R') (𝟙 _) X'.A σ (spMap σ) p) (c : 𝔠.elt)
@@ -76,11 +92,17 @@ theorem exists_polForm_pull {F : Type} [Field F] [NumberField F] {𝔠 : FracId 
   exact ⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _)
     (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Simplify using `using h (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v))`.
+-/
 theorem ne_zero_of_isTotPos {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {x : F} (h : IsTotPos x) : x ≠ 0 := by
   rintro rfl
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance
   simpa using h (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v))
 
+/- English proof (translation)
+Establish `e` using `adj x (ρ t z)`. Rewrite `e` using `[← Module.End.mul_apply (ρ b), ← map_mul, mul_comm b, map_mul, Module.End.mul_apply, ← ht, ← ht]`. Establish `e2` using `mul_left_cancel₀ (Nat.cast_ne_zero.2 hn) e`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at e2`. Conclude with `mul_left_cancel₀ two_ne_zero e2`.
+-/
 theorem adjoint_of_scale {R O M : Type*} [CommRing R] [IsDomain R] [CharZero R] [CommRing O] [AddCommGroup M] [Module R M]
     (ρ : O →+* Module.End R M) {ψ ψ₀ : LinearMap.BilinForm R M} {n : ℕ} (hn : n ≠ 0) {t a b : O}
     (ht : ∀ x z, (n : R) * ((2 : R) • ψ₀) x z = ψ x (ρ t z)) (adj : ∀ x z, ψ (ρ a x) z = ψ x (ρ b z)) (x z : M) :
@@ -91,6 +113,17 @@ theorem adjoint_of_scale {R O M : Type*} [CommRing R] [IsDomain R] [CharZero R] 
   simp only [LinearMap.smul_apply, smul_eq_mul] at e2
   exact mul_left_cancel₀ two_ne_zero e2
 
+/- English proof (translation)
+Introduce `hP hD _ E _ _ _ _ I _ d φ _ 𝔣 _ l _ Q _ _ y _ lam 𝔠 R _ _ X₀ X U p cm hX hF hcm _ _ _ _ c₀ ψ₀ _ hψ₀ a b hab h h'`. Take `⟨ψ, hψ⟩` from `GlobalTheory.PureLift.exists_isPolForm hD.1 X₀.ab X₀.dim (L := X₀.diag U.c) (pull_isLB (X₀.isLB U.c) _)`. Use `letI : Algebra R ℂ := R.subtype.toAlgebra`. Establish `m` using `GlobalTheory.Published.AbelianDeRham.bcMor (R := R) (R' := ℂ) hX.grp`. Establish `hBC : m.IsBC` using `(hD.2.2.1 R X₀.A _ X₀.ab X₀.dim ℂ X.A p hX.grp).1`.
+
+Take `⟨ψ', hψ', hc⟩` from `exists_polForm_pull R.subtype hX m U.c hψ`. Take `⟨χ, hχ⟩` from `U.ah`. Take `⟨α, _, eα, hα⟩` from `hcm a`. Take `⟨β, _, eβ, hβ⟩` from `hcm b`. Use `haveI := cm.hom`.
+
+Establish `adj : ∀ x z : HdR X₀.A, ψ (act (dp0 R) (𝟙 _) cm a x) z = ψ x (act (dp0 R) (𝟙 _) cm b z)`. Introduce `x z`. Take `⟨x', hx⟩` from `hBC.exists x`. Take `⟨z', hz⟩` from `hBC.exists z`. Use `R.subtype_injective ?_` and prove the remaining obligations.
+
+Rewrite using `[act_apply, act_apply, ← hc _ _ _ _ (hx.push m (cm.act a) α eα.symm) hz, ← hc _ _ _ _ hx (hz.push m (cm.act b) β eβ.symm)]`. Conclude with `adjoint_of_holUnif hP X.ab X.dim (pull_isLB (X.isLB U.c) _) U.u (fun j ↦ U.h (U.e j)) hχ hψ' α β _ _ (fun j ↦ by rw [hab, IsCMField.complexEmbedding_complexConj]) hα hβ x' z'`. Take `⟨n, t, hn, ht⟩` from `GlobalTheory.T.polarization_forms_commensurable hD _ 𝔠 R X₀ c₀ U.c (ne_zero_of_isTotPos U.pos) _ ψ hψ₀ hψ`. Establish `et : act (dp0 R) (𝟙 _) X₀.rm t = act (dp0 R) (𝟙 _) cm (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.ofF (condQ 𝔣 Q) t)` using `by haveI := X₀.rm.hom`. Rewrite using `[act_apply, act_apply]`.
+
+Conclude with `push_congr _ _ (hF t).symm`. Conclude with `adjoint_of_scale (act (dp0 R) (𝟙 _) cm) hn (fun x z ↦ (ht x z).trans (congrArg (fun T ↦ ψ x (T z)) et)) adj h h'`.
+-/
 theorem half_form_adjoint : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

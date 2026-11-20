@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.ClozelLie
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `e1 : atEmb (ComplexEmbedding.conjugate τ) 1 = atEmb τ 1` using `by rw [atEmb_conj, map_one]`. Establish `e2 : atEmb (ComplexEmbedding.conjugate τ) Complex.I = -atEmb τ Complex.I`. Rewrite using `[atEmb_conj, Complex.conj_I, atEmb_eq, atEmb_eq τ Complex.I]`. Simplify using the standard rewrite rules. Simplify using `only [Eop, e1, e2, map_neg]`.
+
+Use `module`.
+-/
 theorem Eop_add_conjugate (τ : E →+* ℂ) (i : Fin a) :
     Eop τ i i + Eop (ComplexEmbedding.conjugate τ) i i = lieS E a i i (atEmb τ 1) := by
   have e1 : atEmb (ComplexEmbedding.conjugate τ) 1 = atEmb τ 1 := by rw [atEmb_conj, map_one]
@@ -26,6 +31,11 @@ theorem Eop_add_conjugate (τ : E →+* ℂ) (i : Fin a) :
   simp only [Eop, e1, e2, map_neg]
   module
 
+/- English proof (translation)
+Establish `e : ∀ τ : E →+* ℂ, atEmb τ 1 = Pi.single (InfinitePlace.mk τ) (1 : ℂ)` using `fun τ => by`. Unfold `atEmb`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `w`. Simplify using `only [e, Finset.sum_apply, Pi.single_apply, Pi.add_apply, Pi.one_apply]`.
+
+Simplify using `only [eq_comm (a := w)]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, InfinitePlace.card_filter_mk_eq, IsTotallyComplex.mult_eq]`. Evaluate the numerical expressions.
+-/
 theorem sum_atEmb_one : ∑ τ : E →+* ℂ, atEmb τ 1 = (1 + 1 : Cinf E) := by
   classical
   have e : ∀ τ : E →+* ℂ, atEmb τ 1 = Pi.single (InfinitePlace.mk τ) (1 : ℂ) := fun τ => by
@@ -38,6 +48,11 @@ theorem sum_atEmb_one : ∑ τ : E →+* ℂ, atEmb τ 1 = (1 + 1 : Cinf E) := b
     IsTotallyComplex.mult_eq]
   norm_num
 
+/- English proof (translation)
+Establish `hs : ∑ τ : E →+* ℂ, Eop (ComplexEmbedding.conjugate τ) i i = ∑ τ : E →+* ℂ, Eop τ i i` using `Equiv.sum_comp (Function.Involutive.toPerm _ (fun τ : E →+* ℂ => star_star τ)) (fun τ => Eop τ i i)`. Establish `h : (∑ τ : E →+* ℂ, Eop τ i i) + ∑ τ : E →+* ℂ, Eop τ i i = lieS E a i i 1 + lieS E a i i 1` using `by nth_rw 2 [← hs]`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_congr rfl fun τ _ => Eop_add_conjugate τ i, ← map_sum, sum_atEmb_one, map_add]`. Establish `h2 : (2 : ℂ) • (∑ τ : E →+* ℂ, Eop τ i i) = (2 : ℂ) • lieS E a i i 1`. Rewrite using `[two_smul, two_smul, h]`.
+
+Conclude with `smul_right_injective _ (two_ne_zero (α := ℂ)) h2`.
+-/
 theorem sum_Eop_diag (i : Fin a) : ∑ τ : E →+* ℂ, Eop τ i i = lieS E a i i 1 := by
   have hs : ∑ τ : E →+* ℂ, Eop (ComplexEmbedding.conjugate τ) i i = ∑ τ : E →+* ℂ, Eop τ i i :=
     Equiv.sum_comp (Function.Involutive.toPerm _ (fun τ : E →+* ℂ => star_star τ))
@@ -50,6 +65,15 @@ theorem sum_Eop_diag (i : Fin a) : ∑ τ : E →+* ℂ, Eop τ i i = lieS E a i
     rw [two_smul, two_smul, h]
   exact smul_right_injective _ (two_ne_zero (α := ℂ)) h2
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun i _ => sum_Eop_diag i]`. Simplify using `only [lieS_apply]`. Rewrite using `[← map_sum]`. Establish `hm : ∑ i : Fin a, Matrix.single i i (1 : Cinf E) = 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.sum_apply, Matrix.one_apply]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`. Rewrite using `[if_neg h]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`. Use `congr 1`.
+
+Conclude with `(congrArg Matrix.of.symm hm).symm`.
+-/
 theorem lie_oneL_eq_sum_Eop (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     lie E a (oneL E a) = ∑ τ : E →+* ℂ, ∑ i : Fin a, Eop τ i i := by
   rw [Finset.sum_comm, Finset.sum_congr rfl fun i _ => sum_Eop_diag i]

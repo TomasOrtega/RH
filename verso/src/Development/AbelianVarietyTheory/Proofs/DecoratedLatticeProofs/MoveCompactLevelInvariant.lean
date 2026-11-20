@@ -21,6 +21,11 @@ variable {D : D7}
 
 def IntG (V : HSp D) (g : GA D V) : Prop := ∀ i j, finPart D (Formalism.L2.Theta.mt V g i j) ∈ intAE D
 
+/- English proof (translation)
+Establish `e : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D)` using `g.2`. Rewrite `e` using `[hV, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `e2 : Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V g⁻¹ = 1`. Rewrite using `[← GlobalTheory.AdelicLatMove.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one]`. Establish `e3 : Formalism.L2.Theta.mt V g⁻¹ = ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ`.
+
+Rewrite using `[← Matrix.one_mul (Formalism.L2.Theta.mt V g⁻¹), ← e, Matrix.mul_assoc, e2, Matrix.mul_one]`. Introduce `i j`. Rewrite using `[e3, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.MovedIdem.finPart_cA]`. Conclude with `GlobalTheory.MovedIdem.sigR_mem_intAE (h j i)`.
+-/
 theorem IntG.inv {V : HSp D} (hV : V.gram = 1) {g : GA D V} (h : IntG V g) : IntG V g⁻¹ := by
   have e : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D) := g.2
   rw [hV, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at e
@@ -32,6 +37,15 @@ theorem IntG.inv {V : HSp D} (hV : V.gram = 1) {g : GA D V} (h : IntG V g) : Int
   rw [e3, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.MovedIdem.finPart_cA]
   exact GlobalTheory.MovedIdem.sigR_mem_intAE (h j i)
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Introduce `i j`. Establish `h1` using `(h (Pi.single j 1)).1 (fun a _ => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `Submodule.one_le.1 le_rfl`. Conclude with `zero_mem _) i`. Use `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf ?_` and prove the remaining obligations. Establish `e : (fun a => eToEAf D ((Pi.single j 1 : Fin V.rank → D.host.E) a)) = Pi.single j 1`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`. Rewrite `h1` using `[e, Matrix.mulVec_single_one]`.
+
+Conclude with `h1`.
+-/
 theorem intG_of_moves {V : HSp D} {n : ℕ} (hn : V.rank = n) {k : GA D V}
     (h : GlobalTheory.AdForm.Moves V hn k (Formalism.L2.Col.stdLat D.host.E n)) : IntG V k⁻¹ := by
   subst hn
@@ -51,6 +65,21 @@ theorem intG_of_moves {V : HSp D} {n : ℕ} (hn : V.rank = n) {k : GA D V}
   rw [e, Matrix.mulVec_single_one] at h1
   exact h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu i`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a, ha, ⟨x i, (GlobalTheory.SW.Base.mem_stdL x).1 hx i⟩, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `neg y _ hy => exact neg_mem hy`. Introduce `hu`.
+
+Rewrite using `[← Finset.univ_sum_single u]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `key : ∀ z ∈ intAE D, (Pi.single i z : Fin n → GlobalTheory.Ker.AfE D) ∈ GlobalTheory.Ker.hatV (GlobalTheory.SW.stdL D.host.E n)`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, Pi.single i (x : D.host.E), (GlobalTheory.SW.Base.mem_stdL _).2 fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `x.2`.
+
+Conclude with `isIntegral_zero`. Use function extensionality and compare the values at `b`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[TensorProduct.tmul_zero]`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Pi.single_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `neg y _ hy => rw [Pi.single_neg]`. Conclude with `neg_mem hy`. Conclude with `key _ (hu i)`.
+-/
 theorem mem_hatV_iff {n : ℕ} (u : Fin n → GlobalTheory.Ker.AfE D) :
     u ∈ GlobalTheory.Ker.hatV (GlobalTheory.SW.stdL D.host.E n) ↔ ∀ i, u i ∈ intAE D := by
   constructor
@@ -85,6 +114,11 @@ theorem mem_hatV_iff {n : ℕ} (u : Fin n → GlobalTheory.Ker.AfE D) :
       | neg y _ hy => rw [Pi.single_neg]; exact neg_mem hy
     exact key _ (hu i)
 
+/- English proof (translation)
+Establish `key : ∀ g, IntG V g → ∀ u ∈ GlobalTheory.Ker.hatV (GlobalTheory.SW.stdL D.host.E V.rank), GlobalTheory.Ker.fmt V g *ᵥ u ∈ GlobalTheory.Ker.hatV (GlobalTheory.SW.stdL D.host.E V.rank)` using `fun g hg u hu => (mem_hatV_iff _).2 fun i => sum_mem (t := Finset.univ) fun j _ => GlobalTheory.GeoActCompare.TameConj.mul_mem_intAE (hg i j) ((mem_hatV_iff _).1 hu j)`. Introduce `u`. Use `⟨fun hu => ⟨_, key _ h' u hu, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, GlobalTheory.Ker.fmt, GlobalTheory.Ker.fmt, ← Matrix.map_mul, ← GlobalTheory.AdelicLatMove.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Introduce and unpack `⟨u₀, h0, rfl⟩`.
+
+Conclude with `key _ h u₀ h0`.
+-/
 theorem isMov_of_intG {V : HSp D} {k : GA D V} (h : IntG V k) (h' : IntG V k⁻¹) :
     GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt V k) (GlobalTheory.SW.stdL D.host.E V.rank) (GlobalTheory.SW.stdL D.host.E V.rank) := by
   have key : ∀ g, IntG V g → ∀ u ∈ GlobalTheory.Ker.hatV (GlobalTheory.SW.stdL D.host.E V.rank),
@@ -97,11 +131,19 @@ theorem isMov_of_intG {V : HSp D} {k : GA D V} (h : IntG V k) (h' : IntG V k⁻�
   · rintro ⟨u₀, h0, rfl⟩
     exact key _ h u₀ h0
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt V (g * h)).map (toEAf D) = (Formalism.L2.Theta.mt V g).map (toEAf D) * (Formalism.L2.Theta.mt V h).map (toEAf D)`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_mul, Matrix.map_mul]`.
+-/
 theorem finM_mul (V : HSp D) {n : ℕ} (hn : V.rank = n) (g h : GA D V) : finM V hn (g * h) = finM V hn g * finM V hn h := by
   subst hn
   change (Formalism.L2.Theta.mt V (g * h)).map (toEAf D) = (Formalism.L2.Theta.mt V g).map (toEAf D) * (Formalism.L2.Theta.mt V h).map (toEAf D)
   rw [GlobalTheory.AdelicLatMove.mt_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `key : ∀ a, IntG V a → ∀ u : Fin n → EF D, (∀ i, u i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → ∀ i, (finM V hn a *ᵥ u) i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun a ha u hu i => sum_mem (t := Finset.univ) fun j _ => mul_mem (GlobalTheory.IdemIntegral.toEAf_mem_of_finPart (ha ((finCongr hn).symm i) ((finCongr hn).symm j))) (hu j)`. Introduce `x`. Rewrite using `[hN x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `key k h _ hx` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← finM_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `hx`. Use `key _ h' _ hx` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← finM_mul, ← _root_.mul_inv_rev]`. Then use the resulting hypothesis.
+-/
 theorem moves_of_mul {V : HSp D} {n : ℕ} (hn : V.rank = n) {g k : GA D V} (h : IntG V k) (h' : IntG V k⁻¹) {N}
     (hN : GlobalTheory.AdForm.Moves V hn (g * k) N) : GlobalTheory.AdForm.Moves V hn g N := by
   have key : ∀ a, IntG V a → ∀ u : Fin n → EF D, (∀ i, u i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) →
@@ -118,6 +160,9 @@ theorem moves_of_mul {V : HSp D} {n : ℕ} (hn : V.rank = n) {g k : GA D V} (h :
     have := key _ h' _ hx
     rwa [Matrix.mulVec_mulVec, ← finM_mul, ← _root_.mul_inv_rev] at this
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.1 g x x' hx hx'`. Take `⟨⟨η, hη⟩, h2⟩` from `h`. Take `⟨m, rfl⟩` from `hn`. Rewrite using `[map_mul, h2 η hη a, pow_add, ← mul_pow, GlobalTheory.VolHeckeCompare.IsEta_mul_self hη, one_pow, mul_one]`.
+-/
 theorem root_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (hn : Even n) {g : GA D V} {x x' : (AE D)ˣ}
     (hx : IsDetRoot V g x) (hx' : IsDetRoot V g x') : χ x' = χ x := by
   obtain ⟨a, rfl⟩ := (GlobalTheory.Member.isDetRoot_laws D V).2.1 g x x' hx hx'
@@ -125,6 +170,9 @@ theorem root_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D 
   obtain ⟨m, rfl⟩ := hn
   rw [map_mul, h2 η hη a, pow_add, ← mul_pow, GlobalTheory.VolHeckeCompare.IsEta_mul_self hη, one_pow, mul_one]
 
+/- English proof (translation)
+Use `GlobalTheory.UnramOver.unramAt_of_unrAt D c χ hc v ε hv.1 fun P hP => hu P fun k hk => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `GlobalTheory.ChoiceAdm.exists_idem (GlobalTheory.Mem.Chr.splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.1`. Conclude with `GlobalTheory.AdTh.RecPair.under_ne he hv hP`.
+-/
 theorem unramAt_of_chrEq {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (hc : ChrEq c χ)
     (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (∀ k : Fin 2, ¬ Formalism.L2.Host.OverP D.host (D.host.g k) P) → χ.UnrAt P)
     {v ε} (hv : GlobalTheory.WeilParts.NonSplitAt D v ε) : GlobalTheory.WeilParts.UnramAt ε c := by
@@ -133,9 +181,19 @@ theorem unramAt_of_chrEq {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HCha
     (GlobalTheory.Mem.Chr.splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) P hk).2.2.1
   exact GlobalTheory.AdTh.RecPair.under_ne he hv hP
 
+/- English proof (translation)
+The claim follows from `Set.ext fun x => GlobalTheory.SW.Base.mem_stdL x`.
+-/
 theorem coe_stdL (n : ℕ) : (GlobalTheory.SW.stdL D.host.E n : Set (Fin n → D.host.E)) = intVec D n :=
   Set.ext fun x => GlobalTheory.SW.Base.mem_stdL x
 
+/- English proof (translation)
+Establish `m` using `isMov_of_intG a (a.inv hP.gS)`. Establish `m'` using `isMov_of_intG a' (a'.inv hP.gT)`. Establish `sS` using `GlobalTheory.Ker.Base.selfDualC_stdL hP.gS`. Establish `sT` using `GlobalTheory.Ker.Base.selfDualC_stdL hP.gT`. Take `⟨x, hx, rx⟩` from `GlobalTheory.LatticeUnitRoot.exists_finUnit_isDetRoot D S _ sS k hk m`.
+
+Take `⟨y, hy, ry⟩` from `GlobalTheory.LatticeUnitRoot.exists_finUnit_isDetRoot D T _ sT k' hk' m'`. Establish `hc : ∀ V : HSp D, V.gram = 1 → ∀ τ, IsCartanInv (gramAt D V τ) 1` using `fun V hV τ => by`. Establish `: gramAt D V τ = 1`. Unfold `gramAt`. Rewrite using `[hV]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `GlobalTheory.AdTh.isCartanInv_one_splitStab _`. Use `⟨x, y, rx, ry, GlobalTheory.FinVac.om_vacuum_finite D S T ψ θ hP.inf hP.sigS hP.sigT μ μ om hW (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) (fun v ε hv => ⟨hu v ε hv, hu v ε hv⟩) (fun _ => 1) (fun _ => 1) (hc S hP.gS) (hc T hP.gT) _ _ sS sT f ?_ k hk k' hk' m m' x y hx …` and prove the remaining obligations. Rewrite using `[coe_stdL, coe_stdL]` and apply the resulting hypothesis.
+-/
 theorem om_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {δ : ℂ} {sc : ℝ} (hP : StdPair θ S T δ sc ψ)
     {μ : (AE D)ˣ →* Circle} {om : Om S T} (hW : IsWeilDatumO ψ S T μ μ om)
     (hu : ∀ v ε, GlobalTheory.WeilParts.NonSplitAt D v ε → GlobalTheory.WeilParts.UnramAt ε μ) {f : WO S T → ℂ}
@@ -160,12 +218,26 @@ theorem om_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {�
     (hc S hP.gS) (hc T hP.gT) _ _ sS sT f ?_ k hk k' hk' m m' x y hx hy rx ry⟩
   rwa [coe_stdL, coe_stdL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [xiN, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiN_smul (θ : InfFam D) (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ) (c : ℂ)
     (f : WO S T → ℂ) : xiN θ S T hS hT δ sc (c • f) = fun z => c * xiN θ S T hS hT δ sc f z := by
   funext z
   simp only [xiN, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `B X I l Z w u A ψ θ hA i hi c₀ g h hg hh hM k hk k' hk' mk mk' N N' hN hN' x y hx hy`. Establish `hP` using `(GlobalTheory.AdForm.StdSteps.stdPair_steps I l Z w u A ψ θ hA i hi).1`. Establish `hW` using `hA.om i hi`. Establish `b` using `intG_of_moves _ mk`. Establish `b'` using `intG_of_moves _ mk'`.
+
+Establish `a` using `b.inv hP.gS`. Establish `a'` using `b'.inv hP.gT`. Rewrite `a`, `a'` using `[inv_inv]`. Take `⟨x₁, y₁, rx, ry, e⟩` from `om_vac hP hW (fun v ε hv => unramAt_of_chrEq (hA.chr ⟨i, hi⟩) (I.C.isMu0 ⟨i, hi⟩).unr hv) (hA.vac i hi) hk hk' a a'`. Take `⟨x₀, sx⟩` from `(GlobalTheory.Member.isDetRoot_laws _ _).1 g`.
+
+Take `⟨y₀, sy⟩` from `(GlobalTheory.Member.isDetRoot_laws _ _).1 h`. Establish `e0` using `hM N N' (moves_of_mul _ a b hN) (moves_of_mul _ a' b' hN') x₀ y₀ sx sy`. Establish `ex` using `root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sx rx) hx`. Establish `ey` using `root_eq hW.resS hP.rk.2.2.1 ((GlobalTheory.Member.isDetRoot_laws _ _).2.2.2 _ _ _ _ sy ry) hy`. Rewrite using `[← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, e, map_smul, ex, ey]`.
+
+Use `(xiN_smul _ _ _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `e1` using `congrFun e0 z`. Simplify using `only [ColDat.xiS] at e1`. Rewrite using `[e1]`.
+
+Simplify using `only [map_mul, Circle.coe_mul, Circle.coe_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem moveAt_mul_stab : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ k ∈ GfC _, ∀ k' ∈ GfC _, Moves _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) k (Formalism.L2.Col.stdLat B.fields.E _) → Moves _ (rankN (I.rec7 l Z) (i + 1) hi) k' (Formalism.L2.Col.stdLat B.fields.E _) → A.MoveAt θ i hi c₀ (g * k) (h * k') := by
   intro B X I l Z w u A ψ θ hA i hi c₀ g h hg hh hM k hk k' hk' mk mk' N N' hN hN' x y hx hy
   have hP := (GlobalTheory.AdForm.StdSteps.stdPair_steps I l Z w u A ψ θ hA i hi).1

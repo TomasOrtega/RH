@@ -6,6 +6,11 @@ namespace GlobalTheory.Capelli
 
 variable {K σ : Type*} [CommRing K]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, pderiv_X, Pi.single_apply, hp]`.
+
+Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem pderiv_swap (u v : σ) (P : MvPolynomial σ K) :
     pderiv u (pderiv v P) = pderiv v (pderiv u P) := by
   classical
@@ -16,6 +21,9 @@ theorem pderiv_swap (u v : σ) (P : MvPolynomial σ K) :
     simp only [Derivation.leibniz, map_add, smul_eq_mul, pderiv_X, Pi.single_apply, hp]
     split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Simplify using `only [Derivation.leibniz, smul_eq_mul, pderiv_X, Pi.single_apply]`. Distinguish the cases in `h : v = w`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem pderiv_X_mul' [DecidableEq σ] (v w : σ) (Q : MvPolynomial σ K) :
     pderiv v (X w * Q) = X w * pderiv v Q + (if v = w then Q else 0) := by
   simp only [Derivation.leibniz, smul_eq_mul, pderiv_X, Pi.single_apply]
@@ -26,9 +34,15 @@ theorem pderiv_X_mul' [DecidableEq σ] (v w : σ) (Q : MvPolynomial σ K) :
 noncomputable def polar (K : Type*) [CommRing K] (u v : σ) : Module.End K (MvPolynomial σ K) :=
   (LinearMap.mulLeft K (X u : MvPolynomial σ K)) ∘ₗ (pderiv v).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem polar_apply (u v : σ) (P : MvPolynomial σ K) :
     polar K u v P = X u * pderiv v P := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, polar_apply, pderiv_X_mul', pderiv_swap v s]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem polar_lie [DecidableEq σ] (u v w s : σ) :
     polar K u v * polar K w s - polar K w s * polar K u v =
       (if v = w then polar K u s else 0) - (if s = u then polar K w v else 0) := by
@@ -53,23 +67,40 @@ noncomputable def mixedOp (K : Type*) [CommRing K] [Fintype I] [Fintype I'] (z :
     (y : I' × J → σ) (k l : J) : Module.End K (MvPolynomial σ K) :=
   colOp K z k l - colOp K y l k
 
+/- English proof (translation)
+Simplify using `[colOp, LinearMap.sum_apply]`.
+-/
 theorem colOp_apply [Fintype I] (z : I × J → σ) (k l : J) (P : MvPolynomial σ K) :
     colOp K z k l P = ∑ a, X (z (a, k)) * pderiv (z (a, l)) P := by
   simp [colOp, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[rowOp, LinearMap.sum_apply]`.
+-/
 theorem rowOp_apply [Fintype J] (z : I × J → σ) (a b : I) (P : MvPolynomial σ K) :
     rowOp K z a b P = ∑ k, X (z (a, k)) * pderiv (z (b, k)) P := by
   simp [rowOp, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[mixedOp, colOp_apply]`.
+-/
 theorem mixedOp_apply [Fintype I] [Fintype I'] (z : I × J → σ) (y : I' × J → σ) (k l : J)
     (P : MvPolynomial σ K) :
     mixedOp K z y k l P = ∑ a, X (z (a, k)) * pderiv (z (a, l)) P -
       ∑ b, X (y (b, l)) * pderiv (y (b, k)) P := by
   simp [mixedOp, colOp_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowOp_eq_colOp [Fintype J] (z : I × J → σ) (a b : I) :
     rowOp K z a b = colOp K (fun w : J × I => z w.swap) a b := rfl
 
+/- English proof (translation)
+Establish `h : colOp K z i j * colOp K z k l - colOp K z k l * colOp K z i j = ∑ a, ∑ b, (polar K (z (a, i)) (z (a, j)) * polar K (z (b, k)) (z (b, l)) - polar K (z (b, k)) (z (b, l)) * polar K (z (a, i)) (z (a, j)))`. Simplify using `only [colOp, Finset.sum_mul_sum, Finset.sum_sub_distrib]`. Conclude with `congrArg₂ (· - ·) rfl Finset.sum_comm`. Rewrite using `[h]`. Simplify using `only [polar_lie, hz.eq_iff, Prod.mk.injEq, Finset.sum_sub_distrib]`.
+
+Use `congrArg₂ (· - ·) ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hjk : j = k <;> simp [hjk, colOp]`. Apply the tactic sequence `by_cases hli : l = i <;> simp [hli, colOp]`.
+-/
 theorem colOp_lie [Fintype I] [DecidableEq J] (z : I × J → σ) (hz : Function.Injective z)
     (i j k l : J) :
     colOp K z i j * colOp K z k l - colOp K z k l * colOp K z i j =
@@ -86,12 +117,18 @@ theorem colOp_lie [Fintype I] [DecidableEq J] (z : I × J → σ) (hz : Function
   · by_cases hjk : j = k <;> simp [hjk, colOp]
   · by_cases hli : l = i <;> simp [hli, colOp]
 
+/- English proof (translation)
+The claim follows from `colOp_lie (fun w : J × I => z w.swap) (hz.comp Prod.swap_injective) i j k l`.
+-/
 theorem rowOp_lie [Fintype J] [DecidableEq I] (z : I × J → σ) (hz : Function.Injective z)
     (i j k l : I) :
     rowOp K z i j * rowOp K z k l - rowOp K z k l * rowOp K z i j =
       (if j = k then rowOp K z i l else 0) - (if l = i then rowOp K z k j else 0) :=
   colOp_lie (fun w : J × I => z w.swap) (hz.comp Prod.swap_injective) i j k l
 
+/- English proof (translation)
+Use `polar_lie (K := K) u v w s` as an intermediate fact. Rewrite `this` using `[if_neg h₁, if_neg h₂, sub_zero]`. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem commute_polar {u v w s : σ} (h₁ : v ≠ w) (h₂ : s ≠ u) :
     Commute (polar K u v) (polar K w s) := by
   classical
@@ -99,24 +136,38 @@ theorem commute_polar {u v w s : σ} (h₁ : v ≠ w) (h₂ : s ≠ u) :
   rw [if_neg h₁, if_neg h₂, sub_zero] at this
   exact sub_eq_zero.mp this
 
+/- English proof (translation)
+The claim follows from `Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ => commute_polar (hzy _ _) (hzy _ _).symm`.
+-/
 theorem commute_colOp_colOp [Fintype I] [Fintype I'] (z : I × J → σ) (y : I' × J' → σ)
     (hzy : ∀ u w, z u ≠ y w) (i j : J) (k l : J') :
     Commute (colOp K z i j) (colOp K y k l) :=
   Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ =>
     commute_polar (hzy _ _) (hzy _ _).symm
 
+/- English proof (translation)
+The claim follows from `Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ => commute_polar (hzy _ _) (hzy _ _).symm`.
+-/
 theorem commute_rowOp_rowOp [Fintype J] [Fintype J'] (z : I × J → σ) (y : I' × J' → σ)
     (hzy : ∀ u w, z u ≠ y w) (a b : I) (c d : I') :
     Commute (rowOp K z a b) (rowOp K y c d) :=
   Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ =>
     commute_polar (hzy _ _) (hzy _ _).symm
 
+/- English proof (translation)
+The claim follows from `Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ => commute_polar (hzy _ _) (hzy _ _).symm`.
+-/
 theorem commute_rowOp_colOp [Fintype J] [Fintype I'] (z : I × J → σ) (y : I' × J' → σ)
     (hzy : ∀ u w, z u ≠ y w) (a b : I) (k l : J') :
     Commute (rowOp K z a b) (colOp K y k l) :=
   Commute.sum_left _ _ _ fun _ _ => Commute.sum_right _ _ _ fun _ _ =>
     commute_polar (hzy _ _) (hzy _ _).symm
 
+/- English proof (translation)
+Establish `h : rowOp K z a b * colOp K z k l - colOp K z k l * rowOp K z a b = ∑ m, ∑ c, (polar K (z (a, m)) (z (b, m)) * polar K (z (c, k)) (z (c, l)) - polar K (z (c, k)) (z (c, l)) * polar K (z (a, m)) (z (b, m)))`. Simplify using `only [colOp, rowOp, Finset.sum_mul_sum, Finset.sum_sub_distrib]`. Conclude with `congrArg₂ (· - ·) rfl Finset.sum_comm`. Use `sub_eq_zero.mp ?_` and prove the remaining obligations. Rewrite using `[h]`.
+
+Simplify using `[polar_lie, hz.eq_iff, ite_and]`.
+-/
 theorem commute_rowOp_colOp_self [Fintype I] [Fintype J] (z : I × J → σ)
     (hz : Function.Injective z) (a b : I) (k l : J) :
     Commute (rowOp K z a b) (colOp K z k l) := by
@@ -130,6 +181,11 @@ theorem commute_rowOp_colOp_self [Fintype I] [Fintype J] (z : I × J → σ)
   rw [h]
   simp [polar_lie, hz.eq_iff, ite_and]
 
+/- English proof (translation)
+Establish `h₁` using `colOp_lie (K := K) z hz i j k l`. Establish `h₂` using `colOp_lie (K := K) y hy l k j i`. Establish `h₃` using `(commute_colOp_colOp (K := K) z y hzy i j l k).eq`. Establish `h₄` using `(commute_colOp_colOp (K := K) z y hzy k l j i).eq`. Establish `h : mixedOp K z y i j * mixedOp K z y k l - mixedOp K z y k l * mixedOp K z y i j = (colOp K z i j * colOp K z k l - colOp K z k l * colOp K z i j) - (colOp K y l k * colOp K y j i - colOp K y j i * colOp K y l k)`.
+
+Simplify using `only [mixedOp, sub_mul, mul_sub, h₃, h₄]`. Normalize the expressions using the abelian group laws. Rewrite using `[h, h₁, h₂]`. Simplify using `only [mixedOp, eq_comm (a := k) (b := j), eq_comm (a := i) (b := l)]`. Apply the tactic sequence `split_ifs <;> abel`.
+-/
 theorem mixedOp_lie [Fintype I] [Fintype I'] [DecidableEq J] (z : I × J → σ)
     (hz : Function.Injective z) (y : I' × J → σ) (hy : Function.Injective y)
     (hzy : ∀ u w, z u ≠ y w) (i j k l : J) :
@@ -148,6 +204,9 @@ theorem mixedOp_lie [Fintype I] [Fintype I'] [DecidableEq J] (z : I × J → σ)
   simp only [mixedOp, eq_comm (a := k) (b := j), eq_comm (a := i) (b := l)]
   split_ifs <;> abel
 
+/- English proof (translation)
+The claim follows from `Commute.sub_left (Commute.sub_right (commute_colOp_colOp z z' hzz _ _ _ _) (commute_colOp_colOp z y' hzy _ _ _ _)) (Commute.sub_right (commute_colOp_colOp y z' hyz _ _ _ _) (commute_colOp_colOp y y' hyy _ _ _ _))`.
+-/
 theorem commute_mixedOp_mixedOp {I₁ I₂ I₃ I₄ : Type*} [Fintype I₁] [Fintype I₂] [Fintype I₃]
     [Fintype I₄] (z : I₁ × J → σ) (y : I₂ × J → σ) (z' : I₃ × J' → σ) (y' : I₄ × J' → σ)
     (hzz : ∀ u w, z u ≠ z' w) (hzy : ∀ u w, z u ≠ y' w) (hyz : ∀ u w, y u ≠ z' w)
@@ -157,11 +216,17 @@ theorem commute_mixedOp_mixedOp {I₁ I₂ I₃ I₄ : Type*} [Fintype I₁] [Fi
     (Commute.sub_right (commute_colOp_colOp z z' hzz _ _ _ _) (commute_colOp_colOp z y' hzy _ _ _ _))
     (Commute.sub_right (commute_colOp_colOp y z' hyz _ _ _ _) (commute_colOp_colOp y y' hyy _ _ _ _))
 
+/- English proof (translation)
+The claim follows from `Commute.sub_right (commute_rowOp_colOp_self z hz _ _ _ _) (commute_rowOp_colOp z y hzy _ _ _ _)`.
+-/
 theorem commute_rowOp_left_mixedOp [Fintype I] [Fintype I'] [Fintype J] (z : I × J → σ)
     (hz : Function.Injective z) (y : I' × J → σ) (hzy : ∀ u w, z u ≠ y w) (a b : I) (k l : J) :
     Commute (rowOp K z a b) (mixedOp K z y k l) :=
   Commute.sub_right (commute_rowOp_colOp_self z hz _ _ _ _) (commute_rowOp_colOp z y hzy _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `Commute.sub_right (commute_rowOp_colOp y z (fun u w => (hzy w u).symm) _ _ _ _) (commute_rowOp_colOp_self y hy _ _ _ _)`.
+-/
 theorem commute_rowOp_right_mixedOp [Fintype I] [Fintype I'] [Fintype J] (z : I × J → σ)
     (y : I' × J → σ) (hy : Function.Injective y) (hzy : ∀ u w, z u ≠ y w) (a b : I') (k l : J) :
     Commute (rowOp K y a b) (mixedOp K z y k l) :=
@@ -170,6 +235,13 @@ theorem commute_rowOp_right_mixedOp [Fintype I] [Fintype I'] [Fintype J] (z : I 
 
 end Ops
 
+/- English proof (translation)
+Simplify using `only [map_sum, pderiv_X_mul', if_neg (hzy _ _), add_zero, Finset.mul_sum, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+
+Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem cross_term {K σ : Type*} [CommRing K] {p q n : ℕ} (z : Fin p × Fin n → σ)
     (y : Fin q × Fin n → σ) (hzy : ∀ u w, z u ≠ y w) (P : MvPolynomial σ K) :
     (∑ k, ∑ l, ∑ a, X (z (a, k)) * pderiv (z (a, l))
@@ -191,6 +263,9 @@ theorem cross_term {K σ : Type*} [CommRing K] {p q n : ℕ} (z : Fin p × Fin n
         rw [Finset.sum_comm]
         simp only [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[cross_term y z (fun u w => (hzy w u).symm), Finset.sum_comm]`. Simplify using `only [mul_comm (X (y _) : MvPolynomial σ K), pderiv_swap (y _) (z _)]`.
+-/
 theorem cross_term' {K σ : Type*} [CommRing K] {p q n : ℕ} (z : Fin p × Fin n → σ)
     (y : Fin q × Fin n → σ) (hzy : ∀ u w, z u ≠ y w) (P : MvPolynomial σ K) :
     (∑ k, ∑ l, ∑ b, X (y (b, k)) * pderiv (y (b, l))
@@ -206,6 +281,17 @@ namespace GlobalTheory
 
 open Capelli
 
+/- English proof (translation)
+Use `set E : MvPolynomial σ K := ∑ w : Fin p × Fin n, X (z w) * pderiv (z w) P with hE`. Use `set S : MvPolynomial σ K := ∑ a, ∑ b, ∑ k, ∑ l, X (z (a, k)) * (X (z (b, l)) * pderiv (z (a, l)) (pderiv (z (b, k)) P)) with hS`. Establish `h₁ : (∑ k, ∑ l, ∑ a, X (z (a, k)) * pderiv (z (a, l)) (∑ b, X (z (b, l)) * pderiv (z (b, k)) P)) = S + (n : K) • E`. Simplify using `only [map_sum, pderiv_X_mul', hz.eq_iff, Prod.mk.injEq, and_true, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_add, Finset.mul_sum]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Use `_ = _ := by`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`. Rewrite using `[hE, Fintype.sum_prod_type_right, Finset.smul_sum]`. Simplify using `[Nat.cast_smul_eq_nsmul]`. Establish `h₂ : (∑ a, ∑ b, ∑ k, X (z (a, k)) * pderiv (z (b, k)) (∑ l, X (z (b, l)) * pderiv (z (a, l)) P)) = S + (p : K) • E`.
+
+Simplify using `only [map_sum, pderiv_X_mul', hz.eq_iff, Prod.mk.injEq, true_and, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_add, Finset.mul_sum]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[hS]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_swap]`.
+
+Rewrite using `[hE, Fintype.sum_prod_type, Finset.smul_sum]`. Simplify using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[h₁, h₂, sub_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem capelli_casimir {K σ : Type*} [CommRing K] [DecidableEq σ] {p n : ℕ} (z : Fin p × Fin n → σ) (hz : Function.Injective z) (P : MvPolynomial σ K) :
     (∑ k, ∑ l, ∑ a, X (z (a, k)) * pderiv (z (a, l)) (∑ b, X (z (b, l)) * pderiv (z (b, k)) P)) =
     (∑ a, ∑ b, ∑ k, X (z (a, k)) * pderiv (z (b, k)) (∑ l, X (z (b, l)) * pderiv (z (a, l)) P)) +
@@ -248,6 +334,9 @@ namespace Capelli
 
 variable {K σ : Type*} [CommRing K] {p q n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [colOp_apply, rowOp_apply]`. Rewrite using `[capelli_casimir z hz P, Fintype.sum_prod_type]`.
+-/
 theorem casimir_colOp (z : Fin p × Fin n → σ) (hz : Function.Injective z)
     (P : MvPolynomial σ K) :
     ∑ k, ∑ l, colOp K z k l (colOp K z l k P) =
@@ -257,6 +346,11 @@ theorem casimir_colOp (z : Fin p × Fin n → σ) (hz : Function.Injective z)
   simp only [colOp_apply, rowOp_apply]
   rw [capelli_casimir z hz P, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Establish `c₁` using `cross_term z y hzy P`. Establish `c₂` using `cross_term' z y hzy P`. Simplify using `only [← colOp_apply] at c₁ c₂`. Rewrite `c₂` using `[Finset.sum_comm]`. Rewrite using `[← casimir_colOp z hz, ← casimir_colOp y hy, two_smul, Finset.sum_comm (f := fun k l => colOp K y k l (colOp K y l k P))]`.
+
+Simplify using `only [mixedOp, LinearMap.sub_apply, map_sub, Finset.sum_sub_distrib]`. Rewrite using `[c₁, c₂]`. Normalize the expressions using the abelian group laws.
+-/
 theorem casimir_mixedOp (z : Fin p × Fin n → σ) (hz : Function.Injective z)
     (y : Fin q × Fin n → σ) (hy : Function.Injective y) (hzy : ∀ u w, z u ≠ y w)
     (P : MvPolynomial σ K) :

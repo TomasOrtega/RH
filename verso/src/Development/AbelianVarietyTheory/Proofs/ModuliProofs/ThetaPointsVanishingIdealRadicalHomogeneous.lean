@@ -11,6 +11,13 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.ThIdeal
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, k1, k2, k3, k4, k5, k6, k7, k8⟩` from `h3 p`. Establish `hu : IsUnit (V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c))` using `(hc.map _).map _`. Take `⟨u', hu'⟩ : ∃ u' : Γ((Out.overRes (T` from `Over.mk x) V).left, ⊤)ˣ, u'.val = V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) := hu`.
+
+Use `⟨V, hV, th, s1, α, τ, U, s2, w, u' * u, k1, k2, k3, k4, k5, k6, k7, fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `k8 i`. Establish `e1 : V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (c * v i)) = V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (v i))`. Rewrite using `[map_mul]`. Conclude with `map_mul _ _ _`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, _root_.mul_assoc, hu']`. Conclude with `congrArg (fun y => V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * y) e`.
+-/
 theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
     {S : Scheme.{0}} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {R : Type} [CommRing R]
     {x : Sp R ⟶ S} {v : Ix g (N' ^ 2) → R} (h : t.HasTh x v) (c : R) (hc : IsUnit c) :
@@ -33,6 +40,11 @@ theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBas
   rw [Units.val_mul, _root_.mul_assoc, hu']
   exact congrArg (fun y => V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) * y) e
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial d c`. Establish `hm : MvPolynomial.monomial d c ∈ MvPolynomial.homogeneousSubmodule σ R d.degree` using `MvPolynomial.isHomogeneous_monomial c rfl`. Rewrite using `[MvPolynomial.homogeneousComponent_of_mem hm]`. Establish `: MvPolynomial.eval₂Hom ((Polynomial.C : R' →+* Polynomial R').comp β) (fun i => Polynomial.X * Polynomial.C (w i)) (MvPolynomial.monomial d c) = Polynomial.C (MvPolynomial.eval₂Hom β w (MvPolynomial.monomial d c)) * Polynomial.X ^ d.degree`.
+
+Simplify using `only [MvPolynomial.eval₂Hom_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_mul, map_prod, map_pow, RingHom.comp_apply, Finsupp.degree_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Polynomial.coeff_C_mul_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]`.
+-/
 theorem coeff_scale {R R' σ : Type} [CommRing R] [CommRing R'] (β : R →+* R') (w : σ → R')
     (F : MvPolynomial σ R) (e : ℕ) :
     (MvPolynomial.eval₂Hom ((Polynomial.C : R' →+* Polynomial R').comp β)
@@ -53,6 +65,13 @@ theorem coeff_scale {R R' σ : Type} [CommRing R] [CommRing R'] (β : R →+* R'
     split_ifs <;> simp
   | add p q hp hq => simp only [map_add, Polynomial.coeff_add, hp, hq]
 
+/- English proof (translation)
+Rewrite using `[← coeff_scale]`. Establish `: MvPolynomial.eval₂Hom ((Polynomial.C : ℂ →+* Polynomial ℂ).comp β) (fun i => Polynomial.X * Polynomial.C (w i)) F = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (s := {0}ᶜ) (fun c hc => ?_) (Set.finite_singleton (0 : ℂ)).infinite_compl` and prove the remaining obligations. Establish `h1` using `MvPolynomial.map_eval₂Hom ((Polynomial.C : ℂ →+* Polynomial ℂ).comp β) (fun i => Polynomial.X * Polynomial.C (w i)) (Polynomial.evalRingHom c) F`.
+
+Rewrite using `[Set.mem_ofPred_eq, Polynomial.IsRoot.def, ← Polynomial.coe_evalRingHom, h1, ← h c hc]`. Use `congr 2`. Use extensionality with `r`. Simplify using the standard rewrite rules. Use extensionality with `i`.
+
+Simplify using `[_root_.mul_comm c]`. Rewrite using `[this, Polynomial.coeff_zero]`.
+-/
 theorem component_eq_zero {R σ : Type} [CommRing R] (β : R →+* ℂ) (w : σ → ℂ)
     (F : MvPolynomial σ R) (e : ℕ)
     (h : ∀ c : ℂ, c ≠ 0 → MvPolynomial.eval₂Hom β (fun i => c * w i) F = 0) :
@@ -70,11 +89,23 @@ theorem component_eq_zero {R σ : Type} [CommRing R] (β : R →+* ℂ) (w : σ 
     · ext i; simp [_root_.mul_comm c]
   rw [this, Polynomial.coeff_zero]
 
+/- English proof (translation)
+Simplify using `only [thIdeal, Ideal.mem_iInf, RingHom.mem_ker, and_imp]`.
+-/
 theorem mem_thIdeal {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)} (em : o →+* ℂ)
     (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (F : MvPolynomial (Ix g (N' ^ 2)) o) :
     F ∈ thIdeal em C ↔ ∀ t v, C t → t.HasTh (𝟙 _) v → MvPolynomial.eval₂Hom em v F = 0 := by
   simp only [thIdeal, Ideal.mem_iInf, RingHom.mem_ker, and_imp]
 
+/- English proof (translation)
+Introduce `o _ g N' J b em C hem`. Use `⟨fun F hF => ?_, fun F hF e => ?_, fun c F hc hF => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hF`. Rewrite `hn`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`.
+
+Use `hn t v ht hv` as an intermediate fact. Rewrite `this` using `[map_pow]`. Conclude with `pow_eq_zero_iff'.mp this |>.1`. Rewrite `hF`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`.
+
+Conclude with `component_eq_zero em v F e fun c hc => hF t _ ht (hasTh_unit_mul hv c hc.isUnit)`. Rewrite `hF`, the goal using `[mem_thIdeal]`. Introduce `t v ht hv`. Use `hF t v ht hv` as an intermediate fact. Rewrite `this` using `[map_mul, MvPolynomial.eval₂Hom_C]`.
+
+Conclude with `(mul_eq_zero.mp this).resolve_left ((map_ne_zero_iff em hem).mpr hc)`.
+-/
 theorem thIdeal_radical_homogeneous_torsionFree :
     ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop), Function.Injective em → (thIdeal em C).IsRadical ∧ (∀ F ∈ thIdeal em C, ∀ e, MvPolynomial.homogeneousComponent e F ∈ thIdeal em C) ∧ ∀ (c : o) F, c ≠ 0 → MvPolynomial.C c * F ∈ thIdeal em C → F ∈ thIdeal em C := by
   intro o _ g N' J b em C hem

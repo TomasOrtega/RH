@@ -17,6 +17,9 @@ open GlobalTheory.ThetaDens
 
 namespace GlobalTheory.ThetaDens
 
+/- English proof (translation)
+Establish `h1 : Filter.Tendsto (fun j => (C : ℝ≥0∞) * s j) Filter.atTop (nhds 0)`. Simplify using `using ENNReal.Tendsto.const_mul (a := (C : ℝ≥0∞)) hs (Or.inr ENNReal.coe_ne_top)`. Establish `h2 : Filter.Tendsto (fun j => edist (v j) a) Filter.atTop (nhds 0)` using `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds h1 (fun _ => zero_le) (fun j => by simpa [edist_eq_enorm_sub] using h j)`. Conclude with `(continuous_enorm.tendsto a).comp (tendsto_iff_edist_tendsto_0.2 h2)`.
+-/
 theorem tendsto_enorm_of_le {v : ℕ → ℂ} {a : ℂ} {s : ℕ → ℝ≥0∞} (C : ℝ≥0) (hs : Filter.Tendsto s Filter.atTop (nhds 0))
     (h : ∀ j, ‖v j - a‖ₑ ≤ C * s j) : Filter.Tendsto (fun j => ‖v j‖ₑ) Filter.atTop (nhds ‖a‖ₑ) := by
   have h1 : Filter.Tendsto (fun j => (C : ℝ≥0∞) * s j) Filter.atTop (nhds 0) := by
@@ -26,6 +29,25 @@ theorem tendsto_enorm_of_le {v : ℕ → ℂ} {a : ℂ} {s : ℕ → ℝ≥0∞}
       (fun j => by simpa [edist_eq_enorm_sub] using h j)
   exact (continuous_enorm.tendsto a).comp (tendsto_iff_edist_tendsto_0.2 h2)
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom θ hθ μ 𝓕 hc m _ Z hadd hsm hZ hcomm hint U hU K hK`. Take `⟨U', hU', hl, hb⟩` from `GlobalTheory.T.exists_common_level_sobolev_bound_weil_compact D ψ S T χS χT om hom θ hθ μ 𝓕 hc (K ×ˢ {1}) (hK.prod isCompact_singleton) U hU`. Establish `pt : ∀ h : GA D T, ∃ (d : ℕ) (C : ℝ≥0), ∀ g ∈ thetaLevel ψ S T U', ‖thetaKO om 1 h (Z g)‖ₑ ≤ C * sobO ψ θ μ 𝓕 d g`. Introduce `h`. Take `⟨U₁, hU₁, hl₁, hb₁⟩` from `hZ U' hU'`.
+
+Take `⟨U₂, hU₂, hl₂, hb₂⟩` from `GlobalTheory.T.exists_common_level_sobolev_bound_weil_compact D ψ S T χS χT om hom θ hθ μ 𝓕 hc {(1, h)} isCompact_singleton U₁ hU₁`. Take `⟨d₃, C₃, hb₃⟩` from `GlobalTheory.T.exists_sobolev_bound_theta_pointwise D ψ hom.std θ hθ S T μ 𝓕 hc U₂ hU₂`. Take `⟨d₂, C₂, hb₂⟩` from `hb₂ d₃`. Take `⟨d₁, C₁, hb₁⟩` from `hb₁ d₂`. Use `⟨d₁, C₃ * (C₂ * C₁), fun g hg => ?_⟩` and prove the remaining obligations.
+
+Use `(hb₃ _ (hl₂ _ (hl₁ g hg) _ rfl) 0).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.coe_mul, ENNReal.coe_mul, mul_assoc, mul_assoc]`. Use `gcongr`. Use `(hb₂ _ (hl₁ g hg) _ rfl).trans ?_` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `hb₁ g hg`. Take `⟨d, C, hN⟩` from `GlobalTheory.T.lsc_seminorm_thetaFunctionsLevel_le_sobolev D ψ hom.std θ hθ S T μ 𝓕 hc U' hU' (fun f => ∫⁻ q, ‖descend (GQ T) (fun h => thetaKO om 1 h (Z f)) q‖ₑ ∂autMeasure T m) (fun f hf g hg => by`. Rewrite using `[← lintegral_add_left' (hint f hf.1).1.enorm]`. Use `lintegral_mono fun q => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thetaKO, hadd f g hf.1 hg.1, map_add, Pi.add_apply]`.
+
+Conclude with `enorm_add_le _ _)`. Use the proof step `(fun c f hf => by`. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thetaKO, hsm c f hf.1, map_smul, Pi.smul_apply, enorm_smul])`.
+
+Use the proof step `(fun f hf => (hint f hf.1).2.ne)`. Use the proof step `(fun u hu f hf ht => by`. Use `le_trans (lintegral_mono fun q => ?_) (lintegral_liminf_le' fun j => (hint _ (hu j).1).1.enorm)` and prove the remaining obligations. Take `⟨d, C, hp⟩` from `pt (Quotient.out q)`. Use `(tendsto_enorm_of_le C (ht d) fun j => ?_).liminf_eq.ge` and prove the remaining obligations.
+
+Use `le_of_eq_of_le ?_ (hp _ (sub_mem (hu j) hf))` and prove the remaining obligations. Establish `e : u j - f = u j + (-1 : ℂ) • f` using `by rw [neg_one_smul, sub_eq_add_neg]`. Establish `hf' : (-1 : ℂ) • f ∈ thetaLevel ψ S T U'` using `Submodule.smul_mem _ _ hf`. Rewrite using `[e, hadd _ _ (hu j).1 hf'.1, hsm _ _ hf.1]`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thetaKO, map_add, Pi.add_apply, neg_one_smul, sub_eq_add_neg, map_neg, Pi.neg_apply])`.
+
+Take `⟨d', C', hb⟩` from `hb d`. Use `⟨d', C * C', fun f hf x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ((x, 1) : GA D S × GA D T) ∈ K ×ˢ {1}` using `⟨hx, rfl⟩`. Use `le_of_eq_of_le ?_ ((hN _ (hl f hf _ hx')).trans ?_)` and prove the remaining obligations. Use `lintegral_congr fun q => ?_` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thetaKO]`. Rewrite using `[← hcomm f hf.1 x, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`. Rewrite using `[ENNReal.coe_mul, mul_assoc] gcongr`. Conclude with `hb f hf _ hx'`.
+-/
 theorem sobBdd_absThetaInt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ m : Measure (GA D T), m.IsHaarMeasure → ∀ Z : (WO S T → ℂ) → WO S T → ℂ, (∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → Z (f + f') = Z f + Z f') → (∀ (c : ℂ) f, IsThetaFunO ψ S T f → Z (c • f) = c • Z f) → Sobolev₂ ψ θ μ 𝓕 μ 𝓕 Z → (∀ f, IsThetaFunO ψ S T f → ∀ x, om (x, 1) (Z f) = Z (om (x, 1) f)) → (∀ f, IsThetaFunO ψ S T f → Integrable (descend (GQ T) fun h => thetaKO om 1 h (Z f)) (autMeasure T m)) → SobBdd ψ θ μ 𝓕 fun f x => ∫⁻ q, ‖descend (GQ T) (fun h => thetaKO om x h (Z f)) q‖ₑ ∂autMeasure T m := by
   intro D ψ S T χS χT om hom θ hθ μ 𝓕 hc m _ Z hadd hsm hZ hcomm hint U hU K hK
   obtain ⟨U', hU', hl, hb⟩ := GlobalTheory.T.exists_common_level_sobolev_bound_weil_compact D ψ S T χS χT om hom θ hθ μ 𝓕 hc (K ×ˢ {1})

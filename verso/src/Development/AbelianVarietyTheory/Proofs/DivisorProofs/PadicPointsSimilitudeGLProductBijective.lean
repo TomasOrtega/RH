@@ -12,6 +12,9 @@ namespace GlobalTheory.LKTrip.HTGroup.LocPBij
 
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => rw [starT_tmul, starT_tmul, G.star_star]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+-/
 theorem starT_starT (x : ℚ_[p] ⊗[ℚ] G.C) :
     (starT G.star ℚ_[p] (starT G.star ℚ_[p] x).unop).unop = x := by
   induction x using TensorProduct.induction_on with
@@ -19,11 +22,17 @@ theorem starT_starT (x : ℚ_[p] ⊗[ℚ] G.C) :
   | tmul a c => rw [starT_tmul, starT_tmul, G.star_star]
   | add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, starT_tmul, map_one, MulOpposite.unop_one]`.
+-/
 theorem starT_algebraMap (a : ℚ_[p]) :
     (starT G.star ℚ_[p] (algebraMap ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) a)).unop = algebraMap ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) a := by
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, starT_tmul, map_one,
     MulOpposite.unop_one]
 
+/- English proof (translation)
+Rewrite using `[map_mul, MulOpposite.unop_mul]`.
+-/
 theorem starT_mul (x y : ℚ_[p] ⊗[ℚ] G.C) :
     (starT G.star ℚ_[p] (x * y)).unop = (starT G.star ℚ_[p] y).unop * (starT G.star ℚ_[p] x).unop := by
   rw [map_mul, MulOpposite.unop_mul]
@@ -40,12 +49,18 @@ def psiL : ℚ_[p] ⊗[ℚ] G.C →ₗ[ℚ_[p]]
   LinearMap.prod (LinearMap.pi fun i => (G.locW i).toLinearMap)
     ((LinearMap.pi fun i => (G.locW i).toLinearMap).comp (starL G))
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Conclude with `GlobalTheory.HTGroupLocInj.locW_inj G x (fun i => congrFun (congrArg Prod.fst hx) i) (fun i => congrFun (congrArg Prod.snd hx) i)`.
+-/
 theorem psiL_injective : Function.Injective (psiL G) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro x hx
   exact GlobalTheory.HTGroupLocInj.locW_inj G x (fun i => congrFun (congrArg Prod.fst hx) i)
     (fun i => congrFun (congrArg Prod.snd hx) i)
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_baseChange, ← Module.finrank_mul_finrank ℚ G.F G.C, G.rankC, Module.finrank_prod, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_matrix, Fintype.card_fin]`. Rewrite using `[← HTGroup.two_mul_sum_finrank_Fw p G, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_eq : Module.finrank ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) = Module.finrank ℚ_[p]
     (((i : Fin G.m) → Matrix (Fin G.n) (Fin G.n) (G.Fw i)) × ((i : Fin G.m) → Matrix (Fin G.n) (Fin G.n) (G.Fw i))) := by
   rw [Module.finrank_baseChange, ← Module.finrank_mul_finrank ℚ G.F G.C, G.rankC, Module.finrank_prod,
@@ -54,6 +69,9 @@ theorem finrank_eq : Module.finrank ℚ_[p] (ℚ_[p] ⊗[ℚ] G.C) = Module.finr
   rw [← HTGroup.two_mul_sum_finrank_Fw p G, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Use `haveI : ∀ i, FiniteDimensional ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) := fun i => inferInstance`. Conclude with `⟨psiL_injective G, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (finrank_eq G)).1 (psiL_injective G)⟩`.
+-/
 theorem psiL_bijective : Function.Bijective (psiL G) := by
   haveI : ∀ i, FiniteDimensional ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) := fun i => inferInstance
   exact ⟨psiL_injective G,
@@ -61,6 +79,25 @@ theorem psiL_bijective : Function.Bijective (psiL G) := by
 
 end GlobalTheory.LKTrip.HTGroup.LocPBij
 
+/- English proof (translation)
+Introduce `p _ G`. Establish `key : ∀ d : ℚ_[p] ⊗[ℚ] G.C, (starT G.star ℚ_[p] d).unop = d → (∀ i, G.locW i d = 0) → d = 0` using `fun d hd h0 => GlobalTheory.HTGroupLocInj.locW_inj G d h0 (fun i => by rw [hd]; exact h0 i)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, c⟩, hx⟩ ⟨⟨y, d⟩, hy⟩ h`. Establish `hx' : (x : ℚ_[p] ⊗[ℚ] G.C) * (starT G.star ℚ_[p] x).unop = algebraMap ℚ_[p] _ (c : ℚ_[p])` using `hx`.
+
+Establish `hy' : (y : ℚ_[p] ⊗[ℚ] G.C) * (starT G.star ℚ_[p] y).unop = algebraMap ℚ_[p] _ (d : ℚ_[p])` using `hy`. Establish `hc : c = d` using `congrArg Prod.fst h`. Substitute `hc` using the available equality. Establish `hu` using `fun i => congrFun (congrArg Prod.snd h) i`. Establish `sx : (starT G.star ℚ_[p] x).unop = ((x⁻¹ : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C) * algebraMap ℚ_[p] _ (c : ℚ_[p])`.
+
+Rewrite using `[← hx', ← mul_assoc, Units.inv_mul, one_mul]`. Establish `sy : (starT G.star ℚ_[p] y).unop = ((y⁻¹ : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C) * algebraMap ℚ_[p] _ (c : ℚ_[p])`. Rewrite using `[← hy', ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hw : ∀ i, G.locW i x = G.locW i y` using `fun i => congrArg Units.val (hu i)`. Establish `hwi : ∀ i, G.locW i ((x⁻¹ : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C) = G.locW i ((y⁻¹ : (ℚ_[p] ⊗[ℚ] G.C)ˣ) : ℚ_[p] ⊗[ℚ] G.C)`.
+
+Introduce `i`. Use `congrArg (fun u => ((u⁻¹ : (Matrix (Fin G.n) (Fin G.n) (G.Fw i))ˣ) : Matrix (Fin G.n) (Fin G.n) (G.Fw i))) (hu i)` as an intermediate fact. Conclude with `this`. Establish `hxy : x = y`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `GlobalTheory.LKTrip.HTGroup.LocPBij.psiL_injective G` to reduce the goal to its premises. Use `Prod.ext (funext hw) (funext fun i => ?_)` and prove the remaining obligations. Use `show G.locW i (starT G.star ℚ_[p] x).unop = G.locW i (starT G.star ℚ_[p] y).unop`. Rewrite using `[sx, sy, map_mul, map_mul, hwi]`. Substitute `hxy` using the available equality.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨c, a⟩`. Take `⟨x, hx⟩` from `(GlobalTheory.LKTrip.HTGroup.LocPBij.psiL_bijective G).2 (fun i => ((a i : GL (Fin G.n) (G.Fw i)) : Matrix (Fin G.n) (Fin G.n) (G.Fw i)), fun i => algebraMap ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) (c : ℚ_[p]) * (((a i)⁻¹ : GL (Fin G.n) (G.Fw i)) : Matrix (Fin G.n) (Fin G.n) …`. Establish `h1 : ∀ i, G.locW i x = a i` using `fun i => congrFun (congrArg Prod.fst hx) i`. Establish `h2 : ∀ i, G.locW i (starT G.star ℚ_[p] x).unop = algebraMap ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw i)) (c : ℚ_[p]) * (((a i)⁻¹ : GL (Fin G.n) (G.Fw i)) : Matrix (Fin G.n) (Fin G.n) (G.Fw i))` using `fun i => congrFun (congrArg Prod.snd hx) i`.
+
+Establish `hyy` using `GlobalTheory.LKTrip.HTGroup.LocPBij.starT_starT G x`. Establish `hxy : x * (starT G.star ℚ_[p] x).unop = algebraMap ℚ_[p] _ (c : ℚ_[p])`. Rewrite using `[← sub_eq_zero]`. Apply `key` to reduce the goal to its premises. Rewrite using `[map_sub, MulOpposite.unop_sub, GlobalTheory.LKTrip.HTGroup.LocPBij.starT_mul, hyy, GlobalTheory.LKTrip.HTGroup.LocPBij.starT_algebraMap]`.
+
+Introduce `i`. Rewrite using `[map_sub, map_mul, h1, h2, AlgHom.commutes, Algebra.left_comm, Units.mul_inv, mul_one, sub_self]`. Establish `hyx : (starT G.star ℚ_[p] x).unop * x = algebraMap ℚ_[p] _ (c : ℚ_[p])`. Rewrite using `[← sub_eq_zero]`. Apply `key` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, MulOpposite.unop_sub, GlobalTheory.LKTrip.HTGroup.LocPBij.starT_mul, hyy, GlobalTheory.LKTrip.HTGroup.LocPBij.starT_algebraMap]`. Introduce `i`. Rewrite using `[map_sub, map_mul, h1, h2, AlgHom.commutes, mul_assoc, Units.inv_mul, mul_one, sub_self]`. Set `u : (ℚ_[p] ⊗[ℚ] G.C)ˣ` to `⟨x, algebraMap ℚ_[p] _ ((c⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) * (starT G.star ℚ_[p] x).unop, by rw [Algebra.left_comm, hxy, ← map_mul, Units.inv_mul, map_one], by rw [mul_assoc, hyx, ← map_mul, Units.inv_mul, map_one]⟩`. Use `⟨⟨(u, c), hxy⟩, Prod.ext rfl (funext fun i => Units.ext (h1 i))⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.LKTrip.HTGroup.bijective_locP : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), Function.Bijective G.localization₂ := by
   intro p _ G
   have key : ∀ d : ℚ_[p] ⊗[ℚ] G.C, (starT G.star ℚ_[p] d).unop = d → (∀ i, G.locW i d = 0) → d = 0 :=

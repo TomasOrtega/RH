@@ -8,6 +8,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.KeyOriginNoeth
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ D _ _ _ s`. Use `letI : Algebra R D := (baseHom A R D).toAlgebra`. Use `haveI : IsScalarTower R (GlobalTheory.LocAcyc.GenFib A R) D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `key : ∀ d : D, ∃ a : A, a ≠ 0 ∧ IsIntegral R (baseHom A R D (algebraMap A R a) * d)`. Introduce `d`.
+
+Establish `hd : IsIntegral (GlobalTheory.LocAcyc.GenFib A R) d` using `Algebra.IsIntegral.isIntegral d`. Take `⟨⟨m, hm⟩, hmi⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) (Rₘ := GlobalTheory.LocAcyc.GenFib A R) d hd`. Take `⟨a, ha, rfl⟩` from `hm`. Use `⟨a, nonZeroDivisors.ne_zero ha, ?_⟩` and prove the remaining obligations. Conclude with `hmi`.
+
+Establish `hmem : ∀ x : D, IsIntegral R x → x ∈ closure A R D` using `fun x hx => hx`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert d s hds ih`. Take `⟨a₂, ha₂, h₂⟩` from `ih`.
+
+Take `⟨a₁, ha₁, h₁⟩` from `key d`. Use `⟨a₁ * a₂, mul_ne_zero ha₁ ha₂, ?_⟩` and prove the remaining obligations. Introduce `e he`. Apply `hmem` to reduce the goal to its premises. Rewrite `he` using `[Finset.mem_insert]`.
+
+Break down `he with rfl | he` into its components or cases. Establish `: baseHom A R D (algebraMap A R (a₁ * a₂)) * e = algebraMap R D (algebraMap A R a₂) * (baseHom A R D (algebraMap A R a₁) * e)`. Simplify using `only [map_mul]`. Use `show _ = baseHom A R D _ * _`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `isIntegral_algebraMap.mul h₁`. Establish `: baseHom A R D (algebraMap A R (a₁ * a₂)) * e = algebraMap R D (algebraMap A R a₁) * (baseHom A R D (algebraMap A R a₂) * e)`. Simplify using `only [map_mul]`. Use `show _ = baseHom A R D _ * _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap.mul (h₂ e he)`.
+-/
 theorem exists_common_multiple_mem_closure :
     ∀ (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     (D : Type) [CommRing D] [Algebra (GlobalTheory.LocAcyc.GenFib A R) D]

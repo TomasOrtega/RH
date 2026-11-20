@@ -15,6 +15,35 @@ namespace GlobalTheory
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `E _ _`. Take `⟨α, -, -, hN⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.exists_sepElt (E := E) (F := ℂ) (RingHom.id ℂ) (fun τ => τ.comp (algebraMap (𝓞 E) E)) (fun _ _ => rfl)`. Set `g : ℤ[X]` to `minpoly ℤ α`. Establish `hgα : aeval α g = 0` using `minpoly.aeval ℤ α`. Establish `hroot : (g.map (algebraMap ℤ (𝓞 E))).IsRoot α`.
+
+Rewrite using `[IsRoot, Polynomial.eval_map, ← aeval_def, hgα]`. Set `q` to `(g.map (algebraMap ℤ (𝓞 E))) /ₘ (X - C α)`. Establish `hq : (X - C α) * q = g.map (algebraMap ℤ (𝓞 E))` using `mul_divByMonic_eq_iff_isRoot.2 hroot`. Set `iL : 𝓞 E →+* 𝓞 E ⊗[ℤ] 𝓞 E` to `Algebra.TensorProduct.includeLeftRingHom`. Set `iR : 𝓞 E →+* 𝓞 E ⊗[ℤ] 𝓞 E` to `(Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] _).toRingHom`.
+
+Establish `hiL : ∀ x, iL x = x ⊗ₜ[ℤ] 1` using `fun _ => rfl`. Establish `hiR : ∀ x, iR x = 1 ⊗ₜ[ℤ] x` using `fun _ => rfl`. Set `T : 𝓞 E ⊗[ℤ] 𝓞 E` to `q.eval₂ iL (iR α)`. Establish `hT : T = ∑ j : Fin (q.natDegree + 1), q.coeff j ⊗ₜ[ℤ] (α ^ (j : ℕ))` using `by show q.eval₂ iL (iR α) = _`. Rewrite using `[eval₂_eq_sum_range, ← Fin.sum_univ_eq_sum_range (fun n => iL (q.coeff n) * (iR α) ^ n)]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hiL, hiR, Algebra.TensorProduct.tmul_pow, one_pow, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Establish `hαT : iR α * T = iL α * T`. Establish `h1 : ((X - C α) * q).eval₂ iL (iR α) = 0`. Rewrite using `[hq, eval₂_map]`.
+
+Establish `: iL.comp (algebraMap ℤ (𝓞 E)) = iR.comp (algebraMap ℤ (𝓞 E))` using `RingHom.ext_int _ _`. Rewrite using `[this, ← hom_eval₂, ← aeval_def, hgα, map_zero]`. Rewrite `h1` using `[eval₂_mul, eval₂_sub, eval₂_X, eval₂_C]`. Conclude with `sub_eq_zero.1 (by rw [← sub_mul]; exact h1)`. Set `I : Ideal (𝓞 E ⊗[ℤ] 𝓞 E)` to `(Submodule.span (𝓞 E ⊗[ℤ] 𝓞 E) {T}).annihilator`.
+
+Establish `hmemI : ∀ r, r ∈ I ↔ r * T = 0` using `fun r => by`. Rewrite using `[Submodule.mem_annihilator_span_singleton, smul_eq_mul]`. Set `π` to `Ideal.Quotient.mk I`. Establish `hπα : (π.comp iR).toIntAlgHom α = (π.comp iL).toIntAlgHom α` using `by show π (iR α) = π (iL α)`. Rewrite using `[Ideal.Quotient.eq, hmemI, sub_mul, hαT, sub_self]`.
+
+Establish `key : ∀ p : ℤ[X], π (iR (aeval α p)) = π (iL (aeval α p))` using `fun p => by`. Establish `h1` using `aeval_algHom_apply (π.comp iR).toIntAlgHom α p`. Establish `h2` using `aeval_algHom_apply (π.comp iL).toIntAlgHom α p`. Rewrite `h1` using `[hπα]`. Conclude with `h1.symm.trans h2`.
+
+Use `haveI : Module.Free ℤ (𝓞 E) := inferInstance`. Use `haveI : Module.Free ℤ (𝓞 E ⊗[ℤ] 𝓞 E) := Module.Free.of_basis ((Module.Free.chooseBasis ℤ (𝓞 E)).tensorProduct (Module.Free.chooseBasis ℤ (𝓞 E)))`. Use `haveI : Module.IsTorsionFree ℤ (𝓞 E ⊗[ℤ] 𝓞 E) := inferInstance`. Establish `hall : ∀ o : 𝓞 E, iR o * T = iL o * T`. Introduce `o`.
+
+Take `⟨N, p, hN0, hNp⟩` from `hN o`. Establish `h` using `key p`. Rewrite `h` using `[← hNp, Ideal.Quotient.eq, hmemI, map_mul, map_mul, map_intCast, map_intCast, ← mul_sub, _root_.mul_assoc, ← zsmul_eq_mul]`. Rewrite using `[← sub_eq_zero, ← sub_mul]`. Conclude with `(smul_eq_zero.1 h).resolve_left hN0`.
+
+Use `⟨q.natDegree + 1, fun j => q.coeff j, fun j => α ^ (j : ℕ), fun o => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hall o`. Rewrite `h` using `[hT, Finset.mul_sum, Finset.mul_sum]`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[hiR, Algebra.TensorProduct.tmul_mul_tmul, _root_.one_mul]`.
+
+Rewrite using `[hiL, Algebra.TensorProduct.tmul_mul_tmul, _root_.one_mul]`. Establish `hsum : ∑ j : Fin (q.natDegree + 1), q.coeff j * α ^ (j : ℕ) = q.eval α`. Rewrite using `[eval_eq_sum_range, ← Fin.sum_univ_eq_sum_range (fun n => q.coeff n * α ^ n)]`. Rewrite using `[hsum]`. Establish `hd` using `congrArg derivative hq`.
+
+Rewrite `hd` using `[derivative_mul, derivative_sub, derivative_X, derivative_C, sub_zero, _root_.one_mul, derivative_map]`. Establish `he` using `congrArg (eval α) hd`. Rewrite `he` using `[eval_add, eval_mul, eval_sub, eval_X, eval_C, sub_self, zero_mul, add_zero, Polynomial.eval_map, ← aeval_def]`. Rewrite using `[he]`. Introduce `h0`.
+
+Establish `hE : aeval (α : E) (derivative g) = 0`. Rewrite using `[Polynomial.aeval_algebraMap_apply, h0, map_zero]`. Establish `hint : IsIntegral ℤ (α : E)` using `RingOfIntegers.isIntegral_coe α`. Establish `hmin : minpoly ℚ (α : E) = g.map (algebraMap ℤ ℚ)`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hint, NumberField.RingOfIntegers.minpoly_coe]`.
+
+Establish `hsep` using `(Algebra.IsSeparable.isSeparable ℚ (α : E)).aeval_derivative_ne_zero (minpoly.aeval ℚ (α : E))`. Rewrite `hsep` using `[hmin, derivative_map, aeval_map_algebraMap]`. Conclude with `hsep hE`.
+-/
 theorem intCasimir_exists : ∀ (E : Type) [Field E] [NumberField E], ∃ (d : ℕ) (c θ : Fin d → 𝓞 E),
     (∀ o : 𝓞 E, ∑ j, c j ⊗ₜ[ℤ] (o * θ j) = ∑ j, (o * c j) ⊗ₜ[ℤ] θ j) ∧ ∑ j, c j * θ j ≠ 0 := by
   intro E _ _

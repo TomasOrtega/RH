@@ -42,10 +42,16 @@ def SelfDualOneOrbit : Prop :=
       ∃ g : (Fin n → E) ≃ₗ[E] (Fin n → E), IsIsometry L G g ∧
         g '' (Λ : Set (Fin n → E)) = (Λ' : Set (Fin n → E)))
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[L.O_def]`. Conclude with `hx.map (L.cj.toAlgHom.restrictScalars 𝒪[F])`.
+-/
 theorem cj_mem (L : LocE F E) {x : E} (hx : x ∈ L.O) : L.cj x ∈ L.O := by
   rw [L.O_def] at hx ⊢
   exact hx.map (L.cj.toAlgHom.restrictScalars 𝒪[F])
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`.
+-/
 theorem isHermND_one (L : LocE F E) (n : ℕ) :
     IsHermND L (1 : Matrix (Fin n) (Fin n) E) := by
   refine ⟨fun i j => ?_, by simp⟩

@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Subgr
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨s, hs, hgen⟩` from `h`. Rewrite `hgen` using `[topGen_iff]`. Establish `: Finite s` using `hs.to_subtype`. Set `f : {φ : G →* Z // IsOpen (φ.ker : Set G)} → (s → Z)` to `fun φ x => φ.1 x`. Apply `Finite.of_injective f` to reduce the goal to its premises.
+
+Introduce `φ ψ hφψ`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hK : IsOpen ((φ.1.ker ⊓ ψ.1.ker : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `φ.2.inter ψ.2`.
+
+Establish `hle : φ.1.ker ⊓ ψ.1.ker ≤ MonoidHom.eqLocus φ.1 ψ.1`. Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`. Use `show φ.1 g = ψ.1 g`. Rewrite using `[hg.1, hg.2]`.
+
+Establish `hopen` using `Subgroup.isOpen_mono hle hK`. Establish `hcl` using `Subgroup.isClosed_of_isOpen _ hopen`. Establish `hs' : Subgroup.closure (s : Set G) ≤ MonoidHom.eqLocus φ.1 ψ.1`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`.
+
+Conclude with `congrFun hφψ ⟨x, hx⟩`. Establish `htop` using `Subgroup.topologicalClosure_minimal _ hs' hcl`. Rewrite `htop` using `[hgen]`. Use extensionality with `g`. Conclude with `htop (Subgroup.mem_top g)`.
+-/
 private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (h : TopFG G)
     (Z : Type) [Group Z] [Finite Z] : Finite {φ : G →* Z // IsOpen (φ.ker : Set G)} := by
   obtain ⟨s, hs, hgen⟩ := h
@@ -32,6 +43,11 @@ private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [Topologic
   ext g
   exact htop (Subgroup.mem_top g)
 
+/- English proof (translation)
+Introduce `l _ F hF`. Take `⟨s, hs⟩` from `hF`. Establish `hΓ : TopFG F.Γ` using `⟨(s : Set F.Γ), s.finite_toSet, (topGen_iff _).mpr hs⟩`. Establish `hopen : IsOpen ((F.η.ker : Subgroup F.Γ) : Set F.Γ)` using `F.η_open`. Establish `hG : TopFG F.G₀` using `((TopFG.subgroup_quot F.Γ hΓ).1 _ hopen)`.
+
+Establish `: CompactSpace F.G₀` using `isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ hopen).isCompact`. Introduce `H hH`. Establish `hH' : TopFG H` using `(TopFG.subgroup_quot F.G₀ hG).1 H hH`. Establish `: NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Conclude with `finite_open_homs_to_finite_group H hH' (Multiplicative (ZMod l))`.
+-/
 theorem UpperTheory.V.Pa.phi_fg :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l), (∃ s : Finset F.Γ, (Subgroup.closure (s : Set F.Γ)).topologicalClosure = ⊤) → PhiCond F.G₀ l := by
   intro l _ F hF

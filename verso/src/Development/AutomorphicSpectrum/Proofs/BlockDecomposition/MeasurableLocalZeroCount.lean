@@ -12,6 +12,9 @@ open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.FSCrofton.Chart
 
+/- English proof (translation)
+Take `⟨K, hK, rfl⟩` from `hA`. Conclude with `MeasurableSet.iUnion fun n => (hK n).measurableSet`.
+-/
 theorem measurableSet_of_isSigmaCompact {X : Type*} [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [OpensMeasurableSpace X] {A : Set X} (hA : IsSigmaCompact A) :
     MeasurableSet A := by
@@ -24,6 +27,15 @@ noncomputable def chartVal {n : ℕ} (b : Fin n → L.Sec) (c : AlgChart Y.str (
     (i : L.ι) (j : Fin n) (v : ReciprocityTheory.L2DbarEstimates.V Y.dim) : ℂ :=
   secVal Y.str (RingHom.id ℂ) (b j) i (c.e.symm v)
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn c.e {y : CxPts Y.str (RingHom.id ℂ) | y ∈ A ∧ ∀ (k : Fin Y.dim) (i' : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i') → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i' y = 0}` using `c.e.injOn.mono fun y hy => hAc hy.1`. Establish `himg : c.e '' {y : CxPts Y.str (RingHom.id ℂ) | y ∈ A ∧ ∀ (k : Fin Y.dim) (i' : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i') → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i' y = 0} = {z ∈ c.e '' A | ∀ k, ∑ j, C k j * chartVal b c i j z = 0}`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hyA, hy⟩, rfl⟩`.
+
+Use `⟨⟨y, hyA, rfl⟩, fun k => ?_⟩` and prove the remaining obligations. Simplify `hy k i (hAi hyA)` using `only [chartVal, c.e.left_inv (hAc hyA)]`. Introduce and unpack `⟨⟨y, hyA, rfl⟩, hy⟩`. Use `⟨y, ⟨hyA, fun k i' hi' => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h0 : ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i y = 0`.
+
+Simplify `hy k` using `only [chartVal, c.e.left_inv (hAc hyA)]`. Establish `e : ∀ j, secVal Y.str (RingHom.id ℂ) (b j) i' y = gv Y.str (RingHom.id ℂ) L i' i y * secVal Y.str (RingHom.id ℂ) (b j) i y` using `fun j => (secVal_mem (b j)).1 i' i y hi' (hAi hyA)`. Simplify using `only [e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [h0, mul_zero]`. Rewrite using `[zeroCnt, ← himg, hinj.encard_image]`.
+-/
 theorem encard_eq_zeroCnt {n : ℕ} (b : Fin n → L.Sec) (c : AlgChart Y.str (RingHom.id ℂ) Y.dim)
     (i : L.ι) (A : Set (CxPts Y.str (RingHom.id ℂ))) (hAc : A ⊆ c.e.source)
     (hAi : A ⊆ ptsIn Y.str (RingHom.id ℂ) (L.U i)) (C : Fin Y.dim → Fin n → ℂ) :
@@ -60,6 +72,9 @@ theorem encard_eq_zeroCnt {n : ℕ} (b : Fin n → L.Sec) (c : AlgChart Y.str (R
         _ = 0 := by rw [h0, mul_zero]
   rw [zeroCnt, ← himg, hinj.encard_image]
 
+/- English proof (translation)
+Rewrite using `[Weight.fsBasis_φ]`. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+-/
 theorem fsBasis_φ_chart (hL : L.IsLB) {n : ℕ} (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤)
     (c : AlgChart Y.str (RingHom.id ℂ) Y.dim) (i : L.ι) (v : ReciprocityTheory.L2DbarEstimates.V Y.dim) :
     (Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp)).φ i (c.e.symm v) =
@@ -69,6 +84,11 @@ theorem fsBasis_φ_chart (hL : L.IsLB) {n : ℕ} (b : Fin n → L.Sec) (hb : ⨆
     if_true]
   rfl
 
+/- English proof (translation)
+Use `haveI := CxPts.secondCountableTopology_of_isProjOver (σ := RingHom.id ℂ) Y.isProjOver`. Establish `hC` using `Weight.isCInf_fsBasis (p := Y.str) (σ := RingHom.id ℂ) hL b hb 1 (by simp)`. Rewrite using `[Weight.chernPart_apply hC 1 c hAm hAc]`. Use `setLIntegral_congr_fun hBm fun v hv => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hv`.
+
+Establish `hys` using `c.e.left_inv (hAc hy)`. Simplify using `only [hys]`. Rewrite using `[c.chernDens_eq hC (hAc hy) (hAi hy), AlgChart.hess]`. Simplify using `only [fsBasis_φ_chart hL b hb c i, Units.val_one, Int.cast_one, one_mul]`.
+-/
 theorem chernPart_eq_lintegral (hL : L.IsLB) {n : ℕ} (b : Fin n → L.Sec)
     (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (c : AlgChart Y.str (RingHom.id ℂ) Y.dim) (i : L.ι)
     (A : Set (CxPts Y.str (RingHom.id ℂ))) (hAm : MeasurableSet A) (hAc : A ⊆ c.e.source)
@@ -91,6 +111,17 @@ end GlobalTheory.CompanionTheory.FSCrofton.Chart
 
 open GlobalTheory.CompanionTheory.FSCrofton.Chart in
 
+/- English proof (translation)
+Introduce `Y L hL n b hb c i j₀ A hAc hAi hA0 hAs`. Establish `hAm : MeasurableSet A` using `measurableSet_of_isSigmaCompact hAs`. Establish `hBs : IsSigmaCompact (c.e '' A)` using `hAs.image_of_continuousOn (c.e.continuousOn.mono hAc)`. Establish `hBm : MeasurableSet (c.e '' A)` using `measurableSet_of_isSigmaCompact hBs`. Establish `hcnt` using `encard_eq_zeroCnt b c i A hAc hAi`.
+
+Use `set W : Y.X.Opens := L.U i ⊓ nonzeroLocus (b j₀) with hW`. Use `set U : Set (ReciprocityTheory.L2DbarEstimates.V Y.dim) := c.e.target ∩ c.e.symm ⁻¹' ptsIn Y.str (RingHom.id ℂ) W with hU`. Establish `hUo : IsOpen U` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn W)`. Establish `hUi : ∀ v ∈ U, c.e.symm v ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i)` using `fun v hv => (mem_ptsIn_inf.1 hv.2).1`. Establish `hd : ∀ j, DifferentiableOn ℂ (chartVal b c i j) U` using `fun j => (c.holo (L.U i) ((b j).f i)).mono fun v hv => ⟨hv.1, hUi v hv⟩`.
+
+Establish `h0 : ∀ z ∈ U, chartVal b c i j₀ z ≠ 0` using `fun z hz => (secVal_ne_zero_iff (b j₀) (hUi z hz)).2 (mem_ptsIn_inf.1 hz.2).2`. Establish `hBU : c.e '' A ⊆ U`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨c.e.map_source (hAc hy), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.e.symm (c.e y) ∈ ptsIn Y.str (RingHom.id ℂ) W`.
+
+Rewrite using `[c.e.left_inv (hAc hy)]`. Conclude with `mem_ptsIn_inf.2 ⟨hAi hy, (secVal_ne_zero_iff (b j₀) (hAi hy)).1 (hA0 y hy)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hcnt]`. Conclude with `GlobalTheory.T.measurable_zero_count Y.dim (Fin n) U (c.e '' A) (chartVal b c i) (fun j => (hd j).continuousOn) hBU hBs`.
+
+Simplify using `only [hcnt]`. Establish `key` using `GlobalTheory.T.random_section_zero_count Y.dim (Fin n) j₀ U (c.e '' A) (chartVal b c i) hUo hd h0 hBU hBs`. Rewrite using `[key, Fintype.card_fin, chernPart_eq_lintegral hL b hb c i A hAm hAc hAi hBm]`.
+-/
 theorem GlobalTheory.CompanionTheory.FSCrofton.crofton_chart : ∀ (Y : Var ℂ) (L : LB Y.X) (hL : L.IsLB) (n : ℕ) (b : Fin n → L.Sec) (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (c : AlgChart Y.str (RingHom.id ℂ) Y.dim) (i : L.ι) (j₀ : Fin n) (A : Set (CxPts Y.str (RingHom.id ℂ))), A ⊆ c.e.source → A ⊆ ptsIn Y.str (RingHom.id ℂ) (L.U i) → (∀ y ∈ A, secVal Y.str (RingHom.id ℂ) (b j₀) i y ≠ 0) → IsSigmaCompact A → Measurable (fun C : Fin Y.dim → Fin n → ℂ => (({y : CxPts Y.str (RingHom.id ℂ) | y ∈ A ∧ ∀ (k : Fin Y.dim) (i' : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i') → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i' y = 0}.encard : ℕ∞) : ℝ≥0∞)) ∧ ∫⁻ C : Fin Y.dim → Fin n → ℂ, gW Y.dim (Fin n) C * (({y : CxPts Y.str (RingHom.id ℂ) | y ∈ A ∧ ∀ (k : Fin Y.dim) (i' : L.ι), y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i') → ∑ j, C k j * secVal Y.str (RingHom.id ℂ) (b j) i' y = 0}.encard : ℕ∞) : ℝ≥0∞) = ENNReal.ofReal (Real.pi ^ (Y.dim * n)) * (Weight.fsBasis Y.str (RingHom.id ℂ) hL b hb 1 (by simp)).chernPart Y.dim 1 A := by
   intro Y L hL n b hb c i j₀ A hAc hAi hA0 hAs
   have hAm : MeasurableSet A := measurableSet_of_isSigmaCompact hAs

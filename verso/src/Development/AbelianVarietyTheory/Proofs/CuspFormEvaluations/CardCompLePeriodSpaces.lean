@@ -23,6 +23,13 @@ open scoped Matrix ComplexOrder
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `choose P hP0 hP using X.signature`. Use `⟨fun τ => P τ, fun τ => ⟨hP0 τ, fun i => ?_⟩⟩` and prove the remaining obligations. Apply `GlobalTheory.PeriodOnto.lminor_sign` to reduce the goal to its premises. Establish `h1 : GlobalTheory.PeriodOnto.sgnMat r X.p0 * gram τ.1 X.Gm (mat (fun τ => P τ) τ) = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.PeriodOnto.sgnMat r X.p0 * gram τ.1 X.Gm (P τ) = 1`.
+
+Rewrite using `[hP, GlobalTheory.PeriodOnto.sgnMat, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[h1]`. Conclude with `Matrix.PosDef.one`.
+-/
 theorem dom_nonempty {r : ℕ} (X : Data E r) : ∃ x, x ∈ X.dom := by
   choose P hP0 hP using X.signature
   refine ⟨fun τ => P τ, fun τ => ⟨hP0 τ, fun i => ?_⟩⟩
@@ -37,6 +44,15 @@ theorem dom_nonempty {r : ℕ} (X : Data E r) : ∃ x, x ∈ X.dom := by
   rw [h1]
   exact Matrix.PosDef.one
 
+/- English proof (translation)
+Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `by rw [hspan]; trivial`. Establish `hz' : z' ∈ Submodule.span ℝ (Set.range P)` using `by rw [hspan]; trivial`. Unfold `hermForm at *`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨x, rfl⟩` from `hz`. Proceed by induction on `hz' using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, rfl⟩` from `hz`. Conclude with `h x y`.
+
+Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2`. Simplify using `only [star_add, Matrix.mulVec_add, dotProduct_add, Complex.add_im, h1, h2]`. Consider the case `smul c _ _ h1`. Simplify using `only [star_smul, star_trivial, Matrix.mulVec_smul, dotProduct_smul, Complex.smul_im, h1]`.
+
+Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2 => simp only [add_dotProduct, Complex.add_im, h1, h2]`. Consider the case `smul c _ _ h1 => simp only [smul_dotProduct, Complex.smul_im, h1]`.
+-/
 theorem im_eq_of_span {g : ℕ} {Λ : Type} (P : Λ → Fin g → ℂ) (hspan : Submodule.span ℝ (Set.range P) = ⊤)
     (A B : Matrix (Fin g) (Fin g) ℂ) (h : ∀ x y, (hermForm A (P x) (P y)).im = (hermForm B (P x) (P y)).im)
     (z z' : Fin g → ℂ) : (hermForm A z z').im = (hermForm B z z').im := by
@@ -59,6 +75,23 @@ theorem im_eq_of_span {g : ℕ} {Λ : Type} (P : Λ → Fin g → ℂ) (hspan : 
   | add _ _ _ _ h1 h2 => simp only [add_dotProduct, Complex.add_im, h1, h2]
   | smul c _ _ h1 => simp only [smul_dotProduct, Complex.smul_im, h1]
 
+/- English proof (translation)
+Take `⟨-, -, -, hspan, Hm, -, hpos, hIm⟩` from `hper`. Use `choose Hl hH hp hI using fun τ : Ψ => (GlobalTheory.FramePeriod.exists_loc τ.1 Gm hG q (mat x τ) (hx τ).1 (hx τ).2).2`. Establish `hblk : ∀ v (τ : Ψ), (fun a => P v (idx.symm (τ, a))) = GlobalTheory.FramePeriod.locPer τ.1 Gm q (mat x τ) (Data.emb τ.1 (φ v))`. Introduce `v τ`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hP, idx.apply_symm_apply]`. Establish `key` using `im_eq_of_span P hspan Hm (Matrix.of fun k l => if (idx k).1 = (idx l).1 then ((2 * ((idx k).1.1 ξ).im : ℝ) : ℂ) * Hl (idx k).1 (idx k).2 (idx l).2 else 0) (by`. Introduce `v w`. Rewrite using `[GlobalTheory.FramePeriod.hermForm_block idx (fun τ : Ψ => 2 * (τ.1 ξ).im) Hl, Complex.im_sum, hIm]`. Establish `h1 : ((D.EF v w : ℤ) : ℝ) = ((Algebra.trace ℚ E (ξ * herm Gm (φ v) (φ w)) : ℚ) : ℝ)`.
+
+Rewrite using `[← hEF]`. Simplify using the standard rewrite rules. Rewrite using `[h1, GlobalTheory.FramePeriod.trace_re Ψ hcm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hblk, hblk, Complex.im_ofReal_mul, hI, map_mul, ← hermC_emb]`.
+
+Establish `h2 : (τ.1 ξ).re = 0`. Establish `h3` using `congrArg Complex.re (emb_cc τ.1 ξ)`. Rewrite `h3` using `[hξ, map_neg, Complex.neg_re, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Complex.mul_re, h2]`.
+
+Use the proof step `ring)`. Establish `hI' : ∀ (A : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ), (hermForm A (Complex.I • z) z).im = (hermForm A z z).re`. Introduce `A z`. Simplify using `[hermForm]`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ Ψ := by`. Distinguish the cases in `h : ComplexEmbedding.conjugate σ ∈ Ψ`. Conclude with `⟨_, h⟩`. Conclude with `⟨σ, (hcm σ).2 h⟩`. Establish `hz : (fun _ => 1 : Fin g → ℂ) ≠ 0` using `fun h => by`.
+
+Simplify using `using congrFun h (idx.symm (⟨τ, hτ⟩, ⟨0, hr⟩))`. Establish `h1` using `key (Complex.I • fun _ => 1) (fun _ => 1)`. Rewrite `h1` using `[hI', hI', GlobalTheory.FramePeriod.hermForm_block idx (fun τ : Ψ => 2 * (τ.1 ξ).im) Hl, Complex.re_sum]`. Establish `h2` using `hpos _ hz`. Rewrite `h2` using `[h1]`.
+
+Use `absurd h2 (not_lt.2 (Finset.sum_nonpos fun t _ => ?_))` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul]`. Establish `h3` using `hp t (fun _ => 1) (fun h => by simpa using congrFun h ⟨0, hr⟩)`. Establish `h4` using `hneg t.1 t.2`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem not_im_neg (H : Host E) (D : Datum H) {r : ℕ} (hr : 1 ≤ r) (ξ : E) (Gm : Matrix (Fin r) (Fin r) E)
     (φ : D.La → (Fin r → E)) (Ψ : Finset (E →+* ℂ))
     (hcm : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) {g : ℕ} (idx : Fin g ≃ Ψ × Fin r)
@@ -114,6 +147,17 @@ theorem not_im_neg (H : Host E) (D : Datum H) {r : ℕ} (hr : 1 ≤ r) (ξ : E) 
 
 variable {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv X.Ψ X.cmType Dw.p Dw.q r hr (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin g ≃ X.Ψ × Fin r, ∀ j, (relab c σ (e j).1 ∈ X.Ψ ∧ (idx j).1.1 = relab c σ (e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (e j).2) ∨ (relab c σ (e j).1 ∉ X.Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (relab c σ (e j).1) ∧ ((idx j).2 : ℕ) = Dw.q - 1 - (e j).2 ∧ ((e j).2 …` from `⟨e.trans f, fun j => hf (e j)⟩`. Use `⟨idx, fun j => ?_, fun x v j => ?_⟩` and prove the remaining obligations.
+
+Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), b]`. Rewrite using `[if_pos (by omega), b, hcc]`. Establish `h` using `hi j`. Generalize the expression as in `idx j = t at h ⊢`.
+
+Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`. Rewrite `h`, the goal using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`.
+
+Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (e j).1) ∈ X.Ψ from hτ), dif_pos hn]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_idx {c : Coeff l} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {r g : ℕ} (hr : r = Dw.p + Dw.q)
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (X : Data E r) (hp0 : X.p0 = Dw.q)
     (hty : ∀ τ : E →+* ℂ, τ ∈ X.Ψ ↔ τ (H.rt : E) = H.rt0) :
@@ -150,6 +194,21 @@ theorem exists_idx {c : Coeff l} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {r g 
       rw [dif_neg a, dif_pos (show conjEmb (relab c σ (e j).1) ∈ X.Ψ from hτ), dif_pos hn]
       rfl
 
+/- English proof (translation)
+Take `⟨idx, hi, hper'⟩` from `exists_idx hσ hr e X hp0 hty`. Establish `hξ : cc (-X.ξ0) = -(-X.ξ0)`. Establish `h` using `X.ξ0_im`. Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`.
+
+Establish `hpos : ∀ τ ∈ X.Ψ, 0 < (τ (-X.ξ0)).im`. Break down `X.κ0_xi with h | h` into its components or cases. Introduce `τ hτ`. Use `X.κ0_sign ⟨τ, hτ⟩` as an intermediate fact. Rewrite `this` using `[h, map_mul, map_ofNat]`.
+
+Rewrite using `[map_neg, Complex.neg_im]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. It suffices to derive a contradiction. Use `not_im_neg H D h1 (-X.ξ0) X.Gm (fun a => (φ a : Fin r → E)) X.Ψ X.cmType idx _ Dw.q hξ X.Gm_herm hEF x₀ (hp0 ▸ hx₀) P₀ (fun v k => by rw [hP₀, hper']; rfl) hper₀ fun τ hτ => ?_` and prove the remaining obligations.
+
+Use `X.κ0_sign ⟨τ, hτ⟩` as an intermediate fact. Rewrite `this` using `[h, map_neg, map_mul, map_ofNat]`. Rewrite using `[map_neg, Complex.neg_im]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `ψ : D.La →ₗ[𝓞 E] (Fin r → E)` to `X.Λ.subtype ∘ₗ φ.toLinearMap`. Establish `hψ : Set.range ψ = (X.Λ : Set (Fin r → E))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `(φ a).2`. Introduce `hy`. Conclude with `⟨φ.symm ⟨y, hy⟩, by simp [ψ]⟩`. Take `⟨x, hx, hPx⟩` from `GlobalTheory.exists_frame_of_isPeriod E H D r (-X.ξ0) X.Gm ψ X.Ψ hty g idx _ (by rw [hq]; exact hi) hξ hpos ⟨fun a b hab => φ.injective (Subtype.ext hab), by rw [hψ]; exact X.Λ_span, X.Gm_herm, X.Gm_det, hEF⟩ (by rw [hp, hq]; exact hr) P hper`. Use `⟨x, by rw [hq, ← hp0] at hx; exact hx, fun a j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hper', hPx, hq]`. Both sides reduce to the same expression.
+-/
 theorem exists_frame {c : Coeff l} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {r g : ℕ} (h1 : 1 ≤ r)
     (hr : r = Dw.p + Dw.q) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (X : Data E r) (hp0 : X.p0 = Dw.q)
     (hty : ∀ τ : E →+* ℂ, τ ∈ X.Ψ ↔ τ (H.rt : E) = H.rt0) (D : Datum H) (hp : D.p = Dw.p) (hq : D.q = Dw.q)
@@ -197,6 +256,11 @@ theorem exists_frame {c : Coeff l} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {r 
   rw [hper', hPx, hq]
   rfl
 
+/- English proof (translation)
+Take `⟨g, a, h⟩` from `Model.exists_frChg y y' hx`. Establish `ha` using `Model.FrChg.isUnit h`. Use `⟨fun k => Option.elim k ha.unit (fun _ => 1), (Model.frBor_iff _ _ _).2 ⟨fun _ => 1, fun τ i => ?_, fun τ i j hij => Matrix.one_apply_ne hij.ne, hx, fun τ i => ?_, h.2.2⟩⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_eq i`. Rewrite using `[hu]`.
+
+Conclude with `(GlobalTheory.Reg.BorelGroupoid.chg_refl y).2.1 τ i`.
+-/
 theorem frBor_of_eq {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
     (y y' : FrPt Xo c S) (hx : y'.x = y.x) (hu : ∀ τ i, y'.u τ i = y.u τ i) :
     ∃ t : Ix Dw → Sˣ, FrBor t y y' := by
@@ -214,6 +278,17 @@ namespace GlobalTheory
 
 open CompInj
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H D l Xo c σ r U h1 hσ hU`. Take `⟨hr, hX, -, hfib, -, g, e, F, ik, φ, hEF, hP⟩` from `hU`. Use `⟨g, _, F, (GlobalTheory.Relab.relab_good E H l c σ hσ).2.2.2 D g e, ?_⟩` and prove the remaining obligations. It suffices to establish `hinj : Function.Injective ik by simpa using Fintype.card_le_of_injective ik hinj`. Introduce `k k' hk`.
+
+Take `⟨x, hx⟩` from `dom_nonempty (U.X k)`. Take `⟨x₀, hx₀⟩` from `dom_nonempty (U.X k')`. Take `⟨P, -, hper, hpt, hder, -⟩` from `hP k ⟨x, hx⟩`. Take `⟨P₀, hP₀, hper₀, -⟩` from `hP k' ⟨x₀, hx₀⟩`. Establish `hP'` using `fun y => (hP k' y).imp fun _ h => (⟨h.1, h.2.2.1, h.2.2.2.1⟩ : _ ∧ _ ∧ _)`.
+
+Establish `hEF'` using `hEF k'`. Generalize the expression as in `φ k' = ψ at hP₀ hP' hEF'`. Use `clear hP hEF φ`. Generalize the expression as in `ik k' = n at *`. Substitute `hk` using the available equality.
+
+Take `⟨x', hx', hPx⟩` from `exists_frame hσ h1 hr e (U.X k') (hX k').1 (hX k').2 _ (F.sig _).1 (F.sig _).2 ψ hEF' x₀ hx₀ P₀ hP₀ hper₀ P hper`. Take `⟨P', hP', hpt', hder'⟩` from `hP' ⟨x', hx'⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : P = P' := by`. Use extensionality with `a j`. Rewrite using `[hPx, hP']`.
+
+Establish `hbor` using `frBor_of_eq (U.un k ⟨x, hx⟩) (U.un k' ⟨x', hx'⟩) (hpt'.trans hpt.symm) fun τ i => ((GlobalTheory.isDerivAt0_ex_isTanAt E H D l Xo _ g _ F _ P hper).2.1 _).unique (hder' τ i) (hder τ i)`. Take `⟨γ, -, b, -, h⟩` from `(hfib k k' _ _).1 hbor`. Conclude with `(congrArg Sigma.fst h).symm`.
+-/
 theorem card_comp_le_periodSpaces : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), 1 ≤ r → Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty ∧ Fintype.card U.Comp ≤ F.n := by
   intro _ E _ _ _ H D l Xo c σ r U h1 hσ hU
   obtain ⟨hr, hX, -, hfib, -, g, e, F, ik, φ, hEF, hP⟩ := hU

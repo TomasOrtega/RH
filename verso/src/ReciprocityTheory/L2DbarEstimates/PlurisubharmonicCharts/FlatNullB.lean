@@ -14,6 +14,23 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
   (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ}
   {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ}
 
+/- English proof (translation)
+Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce `x _`. Establish `hxs : x ∈ (A.chart (A.pick x)).source` using `A.mem_pick x`. Establish `hxt : (A.chart (A.pick x)) x ∈ (A.chart (A.pick x)).target` using `(A.chart (A.pick x)).map_source hxs`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 (A.chart (A.pick x)).open_target _ hxt`.
+
+Establish `hGd : DifferentiableOn ℂ (fnG A w0 s De (A.pick x)) (Metric.ball ((A.chart (A.pick x)) x) r)` using `(fn_diffG A hD (A.pick x)).mono hball`. Establish `hO1 : IsOpen ((A.chart (A.pick x)).source ∩ (A.chart (A.pick x)) ⁻¹' Metric.ball ((A.chart (A.pick x)) x) r)` using `(A.chart (A.pick x)).continuousOn.isOpen_inter_preimage (A.chart (A.pick x)).open_source Metric.isOpen_ball`. Establish `hB2 : IsOpen (Metric.ball ((A.chart (A.pick x)) x) r ∩ fnG A w0 s De (A.pick x) ⁻¹' {0}ᶜ)` using `hGd.continuousOn.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hO2 : IsOpen ((A.chart (A.pick x)).source ∩ (A.chart (A.pick x)) ⁻¹' (Metric.ball ((A.chart (A.pick x)) x) r ∩ fnG A w0 s De (A.pick x) ⁻¹' {0}ᶜ))` using `(A.chart (A.pick x)).continuousOn.isOpen_inter_preimage (A.chart (A.pick x)).open_source hB2`. Establish `hne : ∃ y ∈ Metric.ball ((A.chart (A.pick x)) x) r, fnG A w0 s De (A.pick x) y ≠ 0`.
+
+Take `⟨y, ⟨hys, hyB⟩, hyM⟩` from `(fn_dense A hD hF).inter_open_nonempty _ hO1 ⟨x, hxs, Metric.mem_ball_self hr⟩`. Use `⟨(A.chart (A.pick x)) y, hyB, ?_⟩` and prove the remaining obligations. Rewrite using `[fn_G_ne_iff A hD ((A.chart (A.pick x)).map_source hys), (A.chart (A.pick x)).left_inv hys]`. Conclude with `hyM`. Establish `hZ : volume (Metric.ball ((A.chart (A.pick x)) x) r ∩ {v | fnG A w0 s De (A.pick x) v = 0}) = 0` using `hN _ _ _ hGd hne`.
+
+Use `set T := ((A.chart (A.pick x)).source ∩ (A.chart (A.pick x)) ⁻¹' Metric.ball ((A.chart (A.pick x)) x) r) \ ((A.chart (A.pick x)).source ∩ (A.chart (A.pick x)) ⁻¹' (Metric.ball ((A.chart (A.pick x)) x) r ∩ fnG A w0 s De (A.pick x) ⁻¹' {0}ᶜ)) with hTdef`. Establish `hTm : MeasurableSet T` using `hO1.measurableSet.diff hO2.measurableSet`. Establish `hvol : volume ((A.chart (A.pick x)) '' T) = 0`. Use `measure_mono_null ?_ hZ` and prove the remaining obligations. Introduce and unpack `v ⟨y, hyT, rfl⟩`.
+
+Use `⟨hyT.1.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hG`. Conclude with `hyT.2 ⟨hyT.1.1, hyT.1.2, hG⟩`. Establish `hTnull : A.mu T = 0`. Rewrite using `[A.mu_chart (A.pick x) T hTm (fun y hy => hy.1.1)]`.
+
+Use `first`. Consider the case `exact setLIntegral_measure_zero _ _ hvol`. Consider the case `simp [Measure.restrict_eq_zero.2 hvol]`. Use `⟨(A.Mset w0 s De)ᶜ ∩ ((A.chart (A.pick x)).source ∩ (A.chart (A.pick x)) ⁻¹' Metric.ball ((A.chart (A.pick x)) x) r), inter_mem_nhdsWithin _ (hO1.mem_nhds ⟨hxs, Metric.mem_ball_self hr⟩), ?_⟩` and prove the remaining obligations. Use `measure_mono_null ?_ hTnull` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨hyM, hys, hyB⟩`. Use `⟨⟨hys, hyB⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, _, hG⟩`. Apply `hyM` to reduce the goal to its premises. Use `(fn_G_ne_iff A hD ((A.chart (A.pick x)).map_source hys)).1 hG` as an intermediate fact.
+
+Rewrite `this` using `[(A.chart (A.pick x)).left_inv hys]`. Then use the resulting hypothesis.
+-/
 theorem fn_mu_compl (hN : EXTNullStatement n) (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) :
     A.mu (A.Mset w0 s De)ᶜ = 0 := by
   apply measure_null_of_locally_null
@@ -68,16 +85,25 @@ theorem fn_mu_compl (hN : EXTNullStatement n) (hD : A.D0 L w w0 s) (hF : A.Flat 
 
 def fnRho (i : ι) (v : V n) : ℝ≥0∞ := ENNReal.ofReal (Real.exp (A.ph A.kap i ((A.chart i).symm v)))
 
+/- English proof (translation)
+The claim follows from `(A.chart i).continuousOn_symm.aemeasurable (A.chart i).open_target.measurableSet`.
+-/
 theorem fn_symm_aemeas (i : ι) :
     AEMeasurable (A.chart i).symm (volume.restrict (A.chart i).target) :=
   (A.chart i).continuousOn_symm.aemeasurable (A.chart i).open_target.measurableSet
 
+/- English proof (translation)
+Establish `h : ContinuousOn (fnRho A i) (A.chart i).target` using `ENNReal.continuous_ofReal.comp_continuousOn (Real.continuous_exp.comp_continuousOn (A.smooth_ph A.kap i).continuousOn)`. Conclude with `h.aemeasurable (A.chart i).open_target.measurableSet`.
+-/
 theorem fn_rho_aemeas (i : ι) : AEMeasurable (fnRho A i) (volume.restrict (A.chart i).target) := by
   have h : ContinuousOn (fnRho A i) (A.chart i).target :=
     ENNReal.continuous_ofReal.comp_continuousOn
       (Real.continuous_exp.comp_continuousOn (A.smooth_ph A.kap i).continuousOn)
   exact h.aemeasurable (A.chart i).open_target.measurableSet
 
+/- English proof (translation)
+Establish `hsymm : AEMeasurable (A.chart i).symm ((volume.restrict (A.chart i).target).withDensity (fnRho A i))` using `(fn_symm_aemeas A i).mono_ac (withDensity_absolutelyContinuous _ _)`. Use `Measure.ext fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply_of_aemeasurable hsymm ht, withDensity_apply' _ _, Measure.restrict_restrict' (A.chart i).open_target.measurableSet, Measure.restrict_apply ht, A.mu_chart i _ (ht.inter (A.chart i).open_source.measurableSet) Set.inter_subset_right, Set.inter_comm t (A.chart i).s …`. Both sides reduce to the same expression.
+-/
 theorem fn_map (i : ι) :
     Measure.map (A.chart i).symm ((volume.restrict (A.chart i).target).withDensity (fnRho A i)) =
       A.mu.restrict (A.chart i).source := by
@@ -91,6 +117,9 @@ theorem fn_map (i : ι) :
     Set.inter_comm t (A.chart i).source, (A.chart i).image_source_inter_eq', Set.inter_comm]
   rfl
 
+/- English proof (translation)
+Establish `hsymm : AEMeasurable (A.chart i).symm ((volume.restrict (A.chart i).target).withDensity (fnRho A i))` using `(fn_symm_aemeas A i).mono_ac (withDensity_absolutelyContinuous _ _)`. Rewrite using `[← fn_map A i, lintegral_map' hφ.aemeasurable hsymm]`. Conclude with `lintegral_withDensity_eq_lintegral_mul₀ (fn_rho_aemeas A i) (hφ.comp_aemeasurable (fn_symm_aemeas A i))`.
+-/
 theorem fn_lint (i : ι) {φ : Y → ℝ≥0∞} (hφ : Measurable φ) :
     ∫⁻ x in (A.chart i).source, φ x ∂A.mu =
       ∫⁻ v in (A.chart i).target, fnRho A i v * φ ((A.chart i).symm v) := by
@@ -100,6 +129,9 @@ theorem fn_lint (i : ι) {φ : Y → ℝ≥0∞} (hφ : Measurable φ) :
   rw [← fn_map A i, lintegral_map' hφ.aemeasurable hsymm]
   exact lintegral_withDensity_eq_lintegral_mul₀ (fn_rho_aemeas A i)
     (hφ.comp_aemeasurable (fn_symm_aemeas A i))
+/- English proof (translation)
+Establish `h` using `(hFs.1 i).continuousOn.comp ((A.chart i).continuousOn.mono Set.inter_subset_left) (fun x hx => ⟨(A.chart i).map_source hx.1, by show (A.chart i).symm ((A.chart i) x) ∈ U`. Rewrite using `[(A.chart i).left_inv hx.1]`. Conclude with `hx.2⟩)`. Use `h.congr fun x hx => ?_` and prove the remaining obligations. Simplify using `[Function.comp, (A.chart i).left_inv hx.1]`.
+-/
 theorem fn_contOn_sec {la : La} {U : Set Y} {F : ι → Y → ℂ} (hFs : A.IsSecOn la U F) (i : ι) :
     ContinuousOn (F i) ((A.chart i).source ∩ U) := by
   have h := (hFs.1 i).continuousOn.comp ((A.chart i).continuousOn.mono Set.inter_subset_left)
@@ -110,12 +142,18 @@ theorem fn_contOn_sec {la : La} {U : Set Y} {F : ι → Y → ℂ} (hFs : A.IsSe
   refine h.congr fun x hx => ?_
   simp [Function.comp, (A.chart i).left_inv hx.1]
 
+/- English proof (translation)
+Establish `h` using `(A.smooth_ph la i).continuousOn.comp (A.chart i).continuousOn (fun x hx => (A.chart i).map_source hx)`. Use `h.congr fun x hx => ?_` and prove the remaining obligations. Simplify using `[Function.comp, (A.chart i).left_inv hx]`.
+-/
 theorem fn_contOn_ph (la : La) (i : ι) : ContinuousOn (A.ph la i) (A.chart i).source := by
   have h := (A.smooth_ph la i).continuousOn.comp (A.chart i).continuousOn
     (fun x hx => (A.chart i).map_source hx)
   refine h.congr fun x hx => ?_
   simp [Function.comp, (A.chart i).left_inv hx]
 
+/- English proof (translation)
+Unfold `WeightedAtlas.nsq`. Establish `hj : x ∈ (A.chart (A.pick x)).source` using `A.mem_pick x`. Establish `hg : 0 < ‖A.g la i (A.pick x) x‖ ^ 2` using `pow_pos (norm_pos_iff.2 (A.g_ne la i (A.pick x) x hxs hj)) 2`. Rewrite using `[hFs.2 i (A.pick x) x hxU hxs hj, A.ph_trans la i (A.pick x) x hxs hj, show -(A.ph la i x - Real.log (‖A.g la i (A.pick x) x‖ ^ 2)) = Real.log (‖A.g la i (A.pick x) x‖ ^ 2) + -A.ph la i x by ring, Real.exp_add, Real.exp_log hg, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fn_nsq_eq {la : La} {U : Set Y} {F : ι → Y → ℂ} (hFs : A.IsSecOn la U F) {i : ι} {x : Y}
     (hxs : x ∈ (A.chart i).source) (hxU : x ∈ U) :
     ‖F i x‖ ^ 2 * Real.exp (-A.ph la i x) = A.nsq la F x := by
@@ -129,6 +167,35 @@ theorem fn_nsq_eq {la : La} {U : Set Y} {F : ι → Y → ℂ} (hFs : A.IsSecOn 
     Real.exp_add, Real.exp_log hg, norm_mul]
   ring
 
+/- English proof (translation)
+Take `⟨U, hU, hfin⟩` from `hloc ((A.chart i).symm v)`. Establish `hc1 : ContinuousAt (A.ph A.kap i ∘ (A.chart i).symm) v` using `(A.smooth_ph A.kap i).continuousOn.continuousAt ((A.chart i).open_target.mem_nhds hv)`. Establish `hc2 : ContinuousAt (A.ph la i ∘ (A.chart i).symm) v` using `(A.smooth_ph la i).continuousOn.continuousAt ((A.chart i).open_target.mem_nhds hv)`. Establish `he1 : ∀ᶠ u in 𝓝 v, u ∈ (A.chart i).target` using `(A.chart i).open_target.mem_nhds hv`. Establish `he2 : ∀ᶠ u in 𝓝 v, (A.chart i).symm u ∈ U` using `((A.chart i).continuousAt_symm hv).preimage_mem_nhds hU`.
+
+Establish `hev` using `he1.and (he2.and ((hc1.eventually (Metric.ball_mem_nhds _ one_pos)).and (hc2.eventually (Metric.ball_mem_nhds _ one_pos))))`. Take `⟨r, hr, hrP⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hball : Metric.ball v r ⊆ (A.chart i).target` using `fun u hu => (hrP u hu).1`. Use `⟨r, hr, hball, ?_⟩` and prove the remaining obligations. Establish `hGc : ContinuousOn (fnG A w0 s De i) (Metric.ball v r)` using `((fn_diffG A hD i).mono hball).continuousOn`.
+
+Establish `hSo : IsOpen (Metric.ball v r \ {u | fnG A w0 s De i u = 0})` using `hGc.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hSM : ∀ u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}, u ∈ (A.chart i).target ∧ (A.chart i).symm u ∈ A.Mset w0 s De` using `fun u hu => ⟨hball hu.1, (fn_G_ne_iff A hD (hball hu.1)).1 hu.2⟩`. Establish `hFS : ContinuousOn (F i ∘ (A.chart i).symm) (Metric.ball v r \ {u | fnG A w0 s De i u = 0})` using `(hFs.1 i).continuousOn.mono fun u hu => hSM u hu`. Use `set W := (A.chart i).source ∩ (A.chart i) ⁻¹' (Metric.ball v r \ {u | fnG A w0 s De i u = 0}) with hWdef`. Establish `hWo : IsOpen W` using `(A.chart i).continuousOn.isOpen_inter_preimage (A.chart i).open_source hSo`.
+
+Establish `hWM : ∀ y ∈ W, y ∈ A.Mset w0 s De ∧ y ∈ U`. Introduce `y hy`. Establish `h` using `(hSM _ hy.2)`. Rewrite `h` using `[(A.chart i).left_inv hy.1]`. Establish `h2` using `(hrP _ hy.2.1).2.1`.
+
+Rewrite `h2` using `[(A.chart i).left_inv hy.1]`. Conclude with `⟨h.2, h2⟩`. Establish `hFW : ContinuousOn (F i) W`. Use `(hFS.comp ((A.chart i).continuousOn.mono (fun y hy => hy.1)) (fun y hy => hy.2)).congr ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Simplify using `[Function.comp, (A.chart i).left_inv hy.1]`. Establish `hphW : ContinuousOn (A.ph la i) W` using `(fn_contOn_ph A la i).mono fun y hy => hy.1`. Establish `hgc : ContinuousOn (fun y => ENNReal.ofReal (‖F i y‖ ^ 2 * Real.exp (-A.ph la i y))) W` using `ENNReal.continuous_ofReal.comp_continuousOn (((continuous_norm.comp_continuousOn hFW).pow 2).mul (Real.continuous_exp.comp_continuousOn hphW.neg))`. Establish `hφm : Measurable (W.indicator fun y => ENNReal.ofReal (‖F i y‖ ^ 2 * Real.exp (-A.ph la i y)))`. Rewrite using `[← Set.piecewise_eq_indicator]`.
+
+Conclude with `hgc.measurable_piecewise continuousOn_const hWo.measurableSet`. Establish `hlint` using `fn_lint A i hφm`. Establish `hY : ∫⁻ x in (A.chart i).source, W.indicator (fun y => ENNReal.ofReal (‖F i y‖ ^ 2 * Real.exp (-A.ph la i y))) x ∂A.mu < ⊤`. Use `lt_of_le_of_lt ?_ hfin` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `setLIntegral_mono' hWo.measurableSet fun x hx => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[fn_nsq_eq A hFs hx.1 (hWM x hx).1]`. Use `_ ≤ ∫⁻ x in U ∩ A.Mset w0 s De, ENNReal.ofReal (A.nsq la F x) ∂A.mu := lintegral_mono_set fun x hx => ⟨(hWM x hx).2, (hWM x hx).1⟩`. Rewrite `hY` using `[hlint]`. Use `set a := Real.exp (-(A.ph la i ((A.chart i).symm v)) - 1) with ha`.
+
+Use `set b := Real.exp (A.ph A.kap i ((A.chart i).symm v) - 1) with hb`. Establish `ha0 : 0 < a` using `Real.exp_pos _`. Establish `hb0 : 0 < b` using `Real.exp_pos _`. Establish `hpt : ∀ u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}, ENNReal.ofReal (‖F i ((A.chart i).symm u)‖ ^ 2) ≤ ENNReal.ofReal (1 / (a * b)) * (fnRho A i u * W.indicator (fun y => ENNReal.ofReal (‖F i y‖ ^ 2 * Real.exp (-A.ph la i y))) ((A.chart i).symm u))`. Introduce `u hu`.
+
+Establish `huW : (A.chart i).symm u ∈ W` using `⟨(A.chart i).map_target (hball hu.1), by rw [Set.mem_preimage, (A.chart i).right_inv (hball hu.1)]; exact hu⟩`. Rewrite using `[Set.indicator_of_mem huW]`. Establish `h3` using `(hrP u hu.1).2.2.1`. Establish `h4` using `(hrP u hu.1).2.2.2`. Rewrite `h3`, `h4` using `[Real.dist_eq]`.
+
+Establish `h3'` using `abs_lt.1 h3`. Establish `h4'` using `abs_lt.1 h4`. Simplify using `only [Function.comp] at h3' h4'`. Establish `hA : a ≤ Real.exp (-A.ph la i ((A.chart i).symm u))` using `Real.exp_le_exp.2 (by linarith)`. Establish `hB : b ≤ Real.exp (A.ph A.kap i ((A.chart i).symm u))` using `Real.exp_le_exp.2 (by linarith)`.
+
+Establish `hX : 0 ≤ ‖F i ((A.chart i).symm u)‖ ^ 2` using `by positivity`. Use `show ENNReal.ofReal (‖F i ((A.chart i).symm u)‖ ^ 2) ≤ ENNReal.ofReal (1 / (a * b)) * (ENNReal.ofReal (Real.exp (A.ph A.kap i ((A.chart i).symm u))) * ENNReal.ofReal (‖F i ((A.chart i).symm u)‖ ^ 2 * Real.exp (-A.ph la i ((A.chart i).symm u))))`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hab : a * b ≤ Real.exp (-A.ph la i ((A.chart i).symm u)) * Real.exp (A.ph A.kap i ((A.chart i).symm u))` using `mul_le_mul hA hB hb0.le (Real.exp_pos _).le`.
+
+Establish `key : ‖F i ((A.chart i).symm u)‖ ^ 2 * (a * b) ≤ ‖F i ((A.chart i).symm u)‖ ^ 2 * (Real.exp (-A.ph la i ((A.chart i).symm u)) * Real.exp (A.ph A.kap i ((A.chart i).symm u)))` using `mul_le_mul_of_nonneg_left hab hX`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact fun u (hu : u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}) => hball hu.1`. Consider the case `exact Measure.restrict_mono (fun u (hu : u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}) => hball hu.1) le_rfl`.
+
+Consider the case `exact lintegral_mono_set fun u (hu : u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}) => hball hu.1`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hY`.
+-/
 theorem fn_loc (hD : A.D0 L w w0 s) {la : La} {F : ι → Y → ℂ}
     (hFs : A.IsSecOn la (A.Mset w0 s De) F)
     (hloc : ∀ y, ∃ U ∈ 𝓝 y, ∫⁻ x in U ∩ A.Mset w0 s De, ENNReal.ofReal (A.nsq la F x) ∂A.mu < ⊤)
@@ -248,6 +315,13 @@ theorem fn_loc (hD : A.D0 L w w0 s) {la : La} {F : ι → Y → ℂ}
             | exact Measure.restrict_mono (fun u (hu : u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}) => hball hu.1) le_rfl
             | exact lintegral_mono_set fun u (hu : u ∈ Metric.ball v r \ {u | fnG A w0 s De i u = 0}) => hball hu.1
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hY
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[mem_closure_iff]`. Introduce `W hW huW`. Establish `hWO : IsOpen ((A.chart i).source ∩ (A.chart i) ⁻¹' (W ∩ O))` using `(A.chart i).continuousOn.isOpen_inter_preimage (A.chart i).open_source (hW.inter hO)`. Establish `hut : u ∈ (A.chart i).target` using `hOt hu`.
+
+Take `⟨y, ⟨hys, hyWO⟩, hyM⟩` from `(fn_dense A hD hF).inter_open_nonempty _ hWO ⟨(A.chart i).symm u, (A.chart i).map_target hut, by`. Rewrite using `[Set.mem_preimage, (A.chart i).right_inv hut]`. Conclude with `⟨huW, hu⟩⟩`. Use `⟨(A.chart i) y, hyWO.1, hyWO.2, ?_⟩` and prove the remaining obligations. Use `show fnG A w0 s De i ((A.chart i) y) ≠ 0`.
+
+Rewrite using `[fn_G_ne_iff A hD ((A.chart i).map_source hys), (A.chart i).left_inv hys]`. Conclude with `hyM`.
+-/
 theorem fn_sub_closure (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (i : ι) {O : Set (V n)}
     (hO : IsOpen O) (hOt : O ⊆ (A.chart i).target) :
     O ⊆ closure (O ∩ {u | fnG A w0 s De i u ≠ 0}) := by
@@ -265,6 +339,27 @@ theorem fn_sub_closure (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De) (i : ι) {O : 
   rw [fn_G_ne_iff A hD ((A.chart i).map_source hys), (A.chart i).left_inv hys]
   exact hyM
 
+/- English proof (translation)
+Establish `hext : ∀ i, ∃ g : V n → ℂ, DifferentiableOn ℂ g (A.chart i).target ∧ ∀ u ∈ (A.chart i).target, fnG A w0 s De i u ≠ 0 → g u = F i ((A.chart i).symm u)`. Introduce `i`. Establish `hloc' : ∀ u ∈ (A.chart i).target, ∃ r > 0, Metric.ball u r ⊆ (A.chart i).target ∧ ∃ U : V n → ℂ, DifferentiableOn ℂ U (Metric.ball u r) ∧ Set.EqOn U (F i ∘ (A.chart i).symm) (Metric.ball u r \ {y | fnG A w0 s De i y = 0})`. Introduce `u hu`. Take `⟨r, hr, hball, hint⟩` from `fn_loc A hD hFs hloc i hu`.
+
+Establish `hd1 : DifferentiableOn ℂ (fnG A w0 s De i) (Metric.ball u r)` using `(fn_diffG A hD i).mono hball`. Establish `hd2 : DifferentiableOn ℂ (F i ∘ (A.chart i).symm) (Metric.ball u r \ {y | fnG A w0 s De i y = 0})` using `(hFs.1 i).mono fun y hy => ⟨hball hy.1, (fn_G_ne_iff A hD (hball hy.1)).1 hy.2⟩`. Take `⟨U, hU1, hU2⟩` from `hE u r (fnG A w0 s De i) (F i ∘ (A.chart i).symm) hd1 hd2 hint`. Conclude with `⟨r, hr, hball, U, hU1, hU2⟩`. Use `choose! r hr hball U hU1 hU2 using hloc'`.
+
+Establish `hagree : ∀ u₀ ∈ (A.chart i).target, ∀ u ∈ (A.chart i).target, ∀ w ∈ Metric.ball u (r u) ∩ Metric.ball u₀ (r u₀), U u w = U u₀ w`. Introduce `u₀ hu₀ u hu w hw`. Establish `hO : IsOpen (Metric.ball u (r u) ∩ Metric.ball u₀ (r u₀))` using `Metric.isOpen_ball.inter Metric.isOpen_ball`. Establish `hOt : Metric.ball u (r u) ∩ Metric.ball u₀ (r u₀) ⊆ (A.chart i).target` using `fun x hx => hball u hu hx.1`. Establish `hcl` using `fn_sub_closure A hD hF i hO hOt`.
+
+Use `Set.EqOn.of_subset_closure ?_ ((hU1 u hu).continuousOn.mono fun x hx => hx.1) ((hU1 u₀ hu₀).continuousOn.mono fun x hx => hx.2) Set.inter_subset_left hcl hw` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hU2 u hu ⟨hx.1.1, hx.2⟩, hU2 u₀ hu₀ ⟨hx.1.2, hx.2⟩]`. Use `⟨fun u => U u u, ?_, ?_⟩` and prove the remaining obligations. Introduce `u₀ hu₀`.
+
+Establish `hd : DifferentiableAt ℂ (U u₀) u₀` using `(hU1 u₀ hu₀).differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self (hr u₀ hu₀)))`. Use `(hd.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self (hr u₀ hu₀))] with u hu`. Establish `hut : u ∈ (A.chart i).target` using `hball u₀ hu₀ hu`. Conclude with `hagree u₀ hu₀ u hut u ⟨Metric.mem_ball_self (hr u hut), hu⟩`.
+
+Introduce `u hu hG`. Conclude with `hU2 u hu ⟨Metric.mem_ball_self (hr u hu), hG⟩`. Use `choose g hg1 hg2 using hext`. Establish `hGF : ∀ i y, y ∈ A.Mset w0 s De → y ∈ (A.chart i).source → g i ((A.chart i) y) = F i y`. Introduce `i y hyM hys`.
+
+Establish `ht` using `(A.chart i).map_source hys`. Rewrite using `[hg2 i _ ht (by rw [fn_G_ne_iff A hD ht, (A.chart i).left_inv hys]; exact hyM), (A.chart i).left_inv hys]`. Establish `hGc : ∀ i, ContinuousOn (fun y => g i ((A.chart i) y)) (A.chart i).source` using `fun i => (hg1 i).continuousOn.comp (A.chart i).continuousOn fun y hy => (A.chart i).map_source hy`. Use `⟨fun i y => g i ((A.chart i) y), ⟨fun i => ?_, fun i j y _ hyi hyj => ?_⟩, hGF⟩` and prove the remaining obligations. Use `((hg1 i).mono Set.inter_subset_left).congr ?_` and prove the remaining obligations.
+
+Introduce `u hu`. Simplify using `[Function.comp, (A.chart i).right_inv hu.1]`. Establish `hVo : IsOpen ((A.chart i).source ∩ (A.chart j).source)` using `(A.chart i).open_source.inter (A.chart j).open_source`. Establish `hgc : ContinuousOn (A.g la i j) ((A.chart i).source ∩ (A.chart j).source)`. Use `((A.holo_g la i j).continuousOn.comp ((A.chart i).continuousOn.mono Set.inter_subset_left) ?_).congr ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `⟨(A.chart i).map_source hx.1, by rw [Set.mem_preimage, (A.chart i).left_inv hx.1]; exact hx.2⟩`. Introduce `x hx`. Simplify using `[Function.comp, (A.chart i).left_inv hx.1]`. Establish `hcl` using `(fn_dense A hD hF).open_subset_closure_inter hVo`.
+
+Use `Set.EqOn.of_subset_closure (f := fun y => g i ((A.chart i) y)) (g := fun y => A.g la i j y * g j ((A.chart j) y)) ?_ ((hGc i).mono Set.inter_subset_left) (hgc.mul ((hGc j).mono Set.inter_subset_right)) Set.inter_subset_left hcl ⟨hyi, hyj⟩` and prove the remaining obligations. Introduce `x hx`. Simplify using `only`. Rewrite using `[hGF i x hx.2 hx.1.1, hGF j x hx.2 hx.1.2]`. Conclude with `hFs.2 i j x hx.2 hx.1.1 hx.1.2`.
+-/
 theorem fn_ext (hE : EXTStatement n) (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (la : La) (F : ι → Y → ℂ) (hFs : A.IsSecOn la (A.Mset w0 s De) F)
     (hloc : ∀ y, ∃ U ∈ 𝓝 y, ∫⁻ x in U ∩ A.Mset w0 s De, ENNReal.ofReal (A.nsq la F x) ∂A.mu < ⊤) :

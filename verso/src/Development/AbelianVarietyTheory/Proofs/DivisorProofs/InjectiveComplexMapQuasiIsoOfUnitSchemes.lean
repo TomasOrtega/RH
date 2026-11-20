@@ -12,6 +12,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.DiscSupp
 
+/- English proof (translation)
+Introduce `R _ ι _ L C d ψ m₀ hL hLi`. Use `choose L' g hb hi he using fun j => GlobalTheory.T.cocycle_eq_chainMap_shift_compat_classes R (L j) C (d j) (ψ j)`. Use `choose e he using he`. Establish `hm : ∀ j, (L' j).IsStrictlyGE (m₀ - ∑ k, |d k|)` using `fun j => by haveI := hb j m₀ (hL j)`. Use `isStrictlyGE_of_ge (L' j) _ (m₀ + d j) ?_` and prove the remaining obligations.
+
+Establish `h1 : |d j| ≤ ∑ k, |d k|` using `Finset.single_le_sum (f := fun k => |d k|) (fun k _ => abs_nonneg (d k)) (Finset.mem_univ j)`. Establish `h2` using `neg_abs_le (d j)`. Use linear arithmetic over natural numbers and integers. Take `⟨D, f, hD, hDi, hs⟩` from `GlobalTheory.T.exists_biproduct_chainMap_of_injective_family R L' C g (m₀ - ∑ k, |d k|) hm (fun j => hi j (hLi j))`. Use `⟨D, f, _, hD, hDi, fun K n => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e', he'⟩` from `hs K n`. Use `⟨(Equiv.piCongrRight fun j => e j K n).trans e', fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.piCongrRight_apply, he']`. Conclude with `Finset.sum_congr rfl fun j _ => he j K n (a j)`.
+-/
 theorem assemble : ∀ (R : Type) [CommRing R] {ι : Type} [Fintype ι] (L : ι → Cx R) (C : Cx R) (d : ι → ℤ) (ψ : ∀ j, Cocycle (L j) C (d j)) (m₀ : ℤ), (∀ j, (L j).IsStrictlyGE m₀) → (∀ j n, CategoryTheory.Injective ((L j).X n)) → ∃ (D : Cx R) (f : D ⟶ C) (m : ℤ), D.IsStrictlyGE m ∧ (∀ n, CategoryTheory.Injective (D.X n)) ∧ ∀ (K : Cx R) (n : ℤ), ∃ e : (∀ j, CohomologyClass K (L j) (n - d j)) ≃ CohomologyClass K D n, ∀ a, cpush K f n (e a) = ∑ j, cpost K (ψ j) (n - d j) n (by omega) (a j) := by
   intro R _ ι _ L C d ψ m₀ hL hLi
   choose L' g hb hi he using fun j => GlobalTheory.T.cocycle_eq_chainMap_shift_compat_classes R (L j) C (d j) (ψ j)
@@ -29,6 +36,13 @@ theorem assemble : ∀ (R : Type) [CommRing R] {ι : Type} [Fintype ι] (L : ι 
   simp only [Equiv.trans_apply, Equiv.piCongrRight_apply, he']
   exact Finset.sum_congr rfl fun j _ => he j K n (a j)
 
+/- English proof (translation)
+Introduce `q _ ι _ L C d ψ m₀ hL hC hLi hCi hU F hF`. Take `⟨D, f, m, hD, hDi, he⟩` from `assemble (ZMod q) L C d ψ m₀ hL hLi`. Establish `hD' : D.IsStrictlyGE (min m m₀)` using `isStrictlyGE_of_ge D _ _ (min_le_left _ _)`. Establish `hC' : C.IsStrictlyGE (min m m₀)` using `isStrictlyGE_of_ge C _ _ (min_le_right _ _)`. Take `⟨hKI, hcone⟩` from `GlobalTheory.T.mappingCone_isKInjective_bijective_hypercohomology_iff (ZMod q) f (min m m₀) hD' hC' hDi hCi`.
+
+Establish `key : ∀ K : Cx (ZMod q), (∀ n : ℤ, Function.Bijective fun a : ∀ j, CohomologyClass K (L j) (n - d j) => ∑ j, cpost K (ψ j) (n - d j) n (by omega) (a j)) ↔ ∀ n, Subsingleton (CohomologyClass K (mappingCone f) n)`. Introduce `K`. Rewrite using `[← hcone K]`. Use `forall_congr' fun n => ?_` and prove the remaining obligations. Take `⟨e, he'⟩` from `he K n`.
+
+Establish `: (fun a : ∀ j, CohomologyClass K (L j) (n - d j) => ∑ j, cpost K (ψ j) (n - d j) n (by omega) (a j)) = (cpush K f n) ∘ e` using `funext fun a => (he' a).symm`. Rewrite using `[this]`. Conclude with `Function.Bijective.of_comp_iff _ e.bijective`. Use `(key _).mpr ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.subsingleton_hypercohomology_of_locallyExact_on_support (ZMod q) (disc.obj F) (mappingCone f) (fun U hU' n b hb => GlobalTheory.T.sectionsComplex_exact_etaleLocally_of_no_classes (ZMod q) (mappingCone f) U ((key _).mp (hU U (hF U hU'))) n b hb)`.
+-/
 theorem bijective_disc : ∀ (q : ℕ) [NeZero q] {ι : Type} [Fintype ι] (L : ι → Cx (ZMod q)) (C : Cx (ZMod q)) (d : ι → ℤ) (ψ : ∀ j, Cocycle (L j) C (d j)) (m₀ : ℤ), (∀ j, (L j).IsStrictlyGE m₀) → C.IsStrictlyGE m₀ → (∀ j n, CategoryTheory.Injective ((L j).X n)) → (∀ n, CategoryTheory.Injective (C.X n)) → (∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → ∀ n : ℤ, Function.Bijective fun a : ∀ j, CohomologyClass ((chains (ZMod q)).obj (sch.obj U)) (L j) (n - d j) => ∑ j, cpost _ (ψ j) (n - d j) n (by omega) (a j)) → ∀ F : PSh, Inv q (disc.obj F) → ∀ n : ℤ, Function.Bijective fun a : ∀ j, CohomologyClass ((chains (ZMod q)).obj (disc.obj F)) (L j) (n - d j) => ∑ j, cpost _ (ψ j) (n - d j) n (by omega) (a j) := by
   intro q _ ι _ L C d ψ m₀ hL hC hLi hCi hU F hF
   obtain ⟨D, f, m, hD, hDi, he⟩ := assemble (ZMod q) L C d ψ m₀ hL hLi

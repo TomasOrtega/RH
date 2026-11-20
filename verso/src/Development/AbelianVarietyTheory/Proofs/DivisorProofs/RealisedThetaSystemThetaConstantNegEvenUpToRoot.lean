@@ -22,6 +22,9 @@ open GlobalTheory.Poinc.Sep
 noncomputable section
 namespace GlobalTheory.ThetaParity
 
+/- English proof (translation)
+The claim follows from `P.isAb.comm ∃ w : LB.Iso P.L (P.L.pull (ι[P.A]).left), GlobalTheory.OneBasis.RigPull P.A P.A (𝟙 S) (ι[P.A]).left w rig rig := by haveI := P.isAb.comm obtain ⟨u, hu⟩ := GlobalTheory.exists_gen_neg_of_sym GlobalTheory.globalFns_holds P.isAb P.isLB P.sym obtain ⟨s, hs, hr⟩ := Global …`.
+-/
 theorem exists_rigPull_inv {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A))) (hrig : rig.IsGen) :
     haveI := P.isAb.comm
     ∃ w : LB.Iso P.L (P.L.pull (ι[P.A]).left), GlobalTheory.OneBasis.RigPull P.A P.A (𝟙 S) (ι[P.A]).left w rig rig := by
@@ -36,6 +39,11 @@ theorem exists_rigPull_inv {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pul
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Establish `h0 : ρ.pt 0 = 1`. Establish `h` using `ρ.pt_add 0 0`. Rewrite `h` using `[add_zero]`. Establish `h' : ρ.pt 0 * ρ.pt 0 = ρ.pt 0 * 1` using `by rw [_root_.mul_one]; exact h.symm`. Conclude with `mul_left_cancel h'`.
+
+Establish `h` using `ρ.pt_add (-a) a`. Rewrite `h` using `[neg_add_cancel, h0]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem pt_neg {S : ThetaSys o Ω} (ρ : S.Real) (a : S.Gam) : ρ.pt (-a) = (ρ.pt a)⁻¹ := by
   have h0 : ρ.pt 0 = 1 := by
     have h := ρ.pt_add 0 0
@@ -46,6 +54,9 @@ theorem pt_neg {S : ThetaSys o Ω} (ρ : S.Real) (a : S.Gam) : ρ.pt (-a) = (ρ.
   rw [neg_add_cancel, h0] at h
   exact eq_inv_of_mul_eq_one_left h.symm
 
+/- English proof (translation)
+The claim follows from `ρ.P.isAb.comm (ρ.pt (-a)).left ≫ (ι[ρ.P.A]).left = 𝟙 _ ≫ (ρ.pt a).left := by rw [pt_neg, Category.id_comp, ← Over.comp_left] congr 1 simp [Hom.inv_def]`.
+-/
 theorem pt_neg_left {S : ThetaSys o Ω} (ρ : S.Real) (a : S.Gam) :
     haveI := ρ.P.isAb.comm
     (ρ.pt (-a)).left ≫ (ι[ρ.P.A]).left = 𝟙 _ ≫ (ρ.pt a).left := by
@@ -53,6 +64,27 @@ theorem pt_neg_left {S : ThetaSys o Ω} (ρ : S.Real) (a : S.Gam) :
   congr 1
   simp [Hom.inv_def]
 
+/- English proof (translation)
+Use `haveI := ρ.P.isAb.comm`. Take `⟨w, R⟩` from `exists_rigPull_inv ρ.P ρ.rig ρ.rig_gen`. Establish `hφ : (ι[ρ.P.A]).left ≫ ρ.P.A.hom = ρ.P.A.hom ≫ 𝟙 _` using `by rw [Over.w, Category.comp_id]`. Take `⟨s', hs', -⟩` from `GlobalTheory.OneBasis.Calc.existsUnique_thru (k := 1) (T := baseOver (Sp S.R)) (T' := baseOver (Sp S.R)) hφ R.2.1 ρ.P.isLB ρ.P.isLB (h := 𝟙 _) (by simp) ρ.th₁`. Take `⟨c, hc, -⟩` from `ρ.th₁_basis s'`.
+
+Use `⟨c 0, fun a => ?_⟩` and prove the remaining obligations. Take `⟨e', he', He⟩` from `GlobalTheory.OneBasis.TabMap.frame_move R (h := 𝟙 _) (pt_neg_left ρ a) (ρ.fr_tors a)`. Establish `v₁` using `He 1 ρ.th₁ s' (fn (⟨S.th a, S.th_mem a⟩ : S.R)) hs' (fun z J hJ => by`. Use `GlobalTheory.FrameMove.sval_valueAt (ρ.th_val a) (𝟙 _) hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+
+Rewrite using `[GlobalTheory.FrameMove.val_powFrame]`. Simplify using `using this)`. Establish `v₂` using `(GlobalTheory.OneBasis.Calc.cmb_iff ρ.P.isLB (k := 1) (fun _ => ρ.th₁) c s').1 hc`. Take `⟨d, hd⟩` from `GlobalTheory.AbPackage.exists_unit_ratio ρ.P.isLB he'.2.1 (ρ.fr_tors (-a)).2.1`. Take `⟨α, hα⟩` from `GlobalTheory.EmbLocal.exists_mulPull GlobalTheory.globalFns_holds ρ.P (S.r * S.N) (baseOver (Sp S.R))`.
+
+Use `⟨(d : Γ((baseOver (Sp S.R)).left, ⊤)), ?_, ?_⟩` and prove the remaining obligations. Establish `hu : d ^ ((S.r * S.N) ^ 2) = 1`. Apply `Units.ext` to reduce the goal to its premises. Apply `fn_ext` to reduce the goal to its premises. Introduce `z _`.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' ρ.P.isLB z`. Establish `t₁` using `GlobalTheory.ThetaCompare.torsFrame_pow GlobalTheory.globalFns_holds ρ.P hα he' hJ`. Establish `t₂` using `GlobalTheory.ThetaCompare.torsFrame_pow GlobalTheory.globalFns_holds ρ.P hα (ρ.fr_tors (-a)) hJ`. Establish `e` using `hd _ (𝟙 _) z J hJ`. Rewrite `t₁` using `[e, mul_pow, ← t₂, _root_.mul_assoc]`.
+
+Establish `g` using `mul_eq_right.1 t₁`. Rewrite using `[gs_unit (𝟙 _) z ⊤ trivial, gs_unit (𝟙 _) z ⊤ trivial, map_pow, g, map_one]`. Rewrite using `[← Units.val_pow_eq_pow_val, hu, Units.val_one]`. Apply `fn_ext` to reduce the goal to its premises. Introduce `z _`.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' ρ.P.isLB z`. Establish `a₁` using `v₁ z J hJ`. Establish `a₂` using `v₂ _ (ptSecT ρ.P.A (ρ.pt (-a))).left z J hJ`. Establish `a₃` using `GlobalTheory.FrameMove.sval_valueAt (ρ.th_val (-a)) (𝟙 _) hJ`. Establish `a₄` using `hd _ (𝟙 _) z J hJ`.
+
+Rewrite `a₃` using `[Category.id_comp]`. Rewrite using `[gs_mul _ z ⊤ trivial, gs_mul _ z ⊤ trivial]`. Simplify using `only [GlobalTheory.FrameGen.sv, Fin.sum_univ_one] at a₂`. Establish `f₁ : (ptSecT ρ.P.A (ρ.pt (-a))).left ≫ (fst (baseOver (Sp S.R)) ρ.P.A).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ptSecT, lift_fst, Over.id_left]`.
+
+Rewrite `a₂` using `[f₁, ← GlobalTheory.FrameGen.gs_top, a₃]`. Establish `hp : ∀ u : ((baseOver (Sp S.R)).left.presheaf.stalk z)ˣ, u ^ ((1 : ℕ) : ℤ) = u` using `fun u => by simp`. Rewrite `a₁` using `[GlobalTheory.FrameMove.val_powFrame, hp, a₄, Units.val_mul]`. Establish `e` using `a₂.symm.trans a₁`. Rewrite `e` using `[← gs_unit (𝟙 _) z ⊤ trivial d]`.
+
+Use `(Units.mul_left_inj (Geo.Tor.val (ρ.fr (-a)) (𝟙 _) z J)).1 ?_` and prove the remaining obligations. Take the linear combination `e`.
+-/
 theorem key_fn (S : ThetaSys o Ω) (ρ : S.Real) :
     ∃ c₀ : Γ((baseOver (Sp S.R)).left, ⊤), ∀ a, ∃ d : Γ((baseOver (Sp S.R)).left, ⊤),
       d ^ ((S.r * S.N) ^ 2) = 1 ∧ c₀ * fn (⟨S.th (-a), S.th_mem (-a)⟩ : S.R) = d * fn (⟨S.th a, S.th_mem a⟩ : S.R) := by
@@ -107,6 +139,11 @@ theorem key_fn (S : ThetaSys o Ω) (ρ : S.Real) :
     refine (Units.mul_left_inj (Geo.Tor.val (ρ.fr (-a)) (𝟙 _) z J)).1 ?_
     linear_combination e
 
+/- English proof (translation)
+Take `⟨c₀, h⟩` from `key_fn S ρ`. Set `φ : Γ((baseOver (Sp S.R)).left, ⊤) →+* Ω` to `S.R.val.toRingHom.comp (Scheme.ΓSpecIso (CommRingCat.of S.R)).hom.hom`. Establish `hφ : ∀ x : S.R, φ (fn x) = x` using `fun x => by simp [φ, fn]`. Use `⟨φ c₀, fun a => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, e⟩` from `h a`.
+
+Use `⟨φ d, by rw [← map_pow, hd, map_one], ?_⟩` and prove the remaining obligations. Use `congrArg φ e` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hφ, hφ]`. Then use the resulting hypothesis.
+-/
 theorem key (S : ThetaSys o Ω) (ρ : S.Real) :
     ∃ C : Ω, ∀ a, ∃ D : Ω, D ^ ((S.r * S.N) ^ 2) = 1 ∧ C * S.th (-a) = D * S.th a := by
   obtain ⟨c₀, h⟩ := key_fn S ρ
@@ -119,6 +156,9 @@ theorem key (S : ThetaSys o Ω) (ρ : S.Real) :
   have := congrArg φ e
   rwa [map_mul, map_mul, hφ, hφ] at this
 
+/- English proof (translation)
+Take `⟨j, -, hj⟩` from `ρ.r_eq`. Rewrite using `[hj, ρ.N_eq]`. Conclude with `((ρ.n_odd.pow).mul ((ρ.n_odd.pow).pow)).pow`.
+-/
 theorem odd_rN (S : ThetaSys o Ω) (ρ : S.Real) : Odd ((S.r * S.N) ^ 2) := by
   obtain ⟨j, -, hj⟩ := ρ.r_eq
   rw [hj, ρ.N_eq]
@@ -128,6 +168,21 @@ end GlobalTheory.ThetaParity
 
 namespace GlobalTheory.ThetaParity
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ a`. Take `⟨C, hC⟩` from `key S ρ`. Establish `hodd` using `odd_rN S ρ`. Use `set m := (S.r * S.N) ^ 2 with hm`. Take `⟨x, hx⟩` from `S.th_ne`.
+
+Take `⟨D₁, hD₁, e₁⟩` from `hC x`. Take `⟨D₂, hD₂, e₂⟩` from `hC (-x)`. Rewrite `e₂` using `[neg_neg]`. Establish `hm0 : m ≠ 0` using `hodd.pos.ne'`. Establish `nz : ∀ D : Ω, D ^ m = 1 → D ≠ 0` using `fun D h h0 => by`.
+
+Rewrite `h` using `[h0, zero_pow hm0]`. Conclude with `zero_ne_one h`. Establish `hx' : S.th (-x) ≠ 0`. Introduce `h0`. Rewrite `e₁` using `[h0, mul_zero]`.
+
+Conclude with `(mul_ne_zero (nz _ hD₁) hx) e₁.symm`. Establish `hC0 : C ≠ 0`. Introduce `h0`. Rewrite `e₁` using `[h0, zero_mul]`. Conclude with `(mul_ne_zero (nz _ hD₁) hx) e₁.symm`.
+
+Establish `hC2 : C ^ 2 = D₁ * D₂`. Establish `h2 : C ^ 2 * (S.th (-x) * S.th x) = D₁ * D₂ * (S.th (-x) * S.th x)`. Take the linear combination `(C * S.th x) * e₁ + (D₁ * S.th x) * e₂`. Conclude with `mul_right_cancel₀ (mul_ne_zero hx' hx) h2`. Establish `hCi : C⁻¹ ^ (2 * m) = 1`.
+
+Rewrite using `[inv_pow, pow_mul, hC2, mul_pow, hD₁, hD₂, _root_.one_mul, inv_one]`. Take `⟨D, hD, e⟩` from `hC a`. Take `⟨k, hk⟩` from `hodd`. Use `⟨C⁻¹ ^ m, C⁻¹ ^ (m + 1) * D, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, hCi]`.
+
+Rewrite using `[mul_pow, hD, _root_.mul_one, ← pow_mul, show (m + 1) * m = 2 * m * (k + 1) by rw [hk]; ring, pow_mul, hCi, one_pow]`. Establish `e' : S.th (-a) = C⁻¹ * D * S.th a`. Rewrite using `[_root_.mul_assoc, ← e, ← _root_.mul_assoc, inv_mul_cancel₀ hC0, _root_.one_mul]`. Rewrite using `[e', ← _root_.mul_assoc, ← pow_add, show m + (m + 1) = 2 * m + 1 by ring, pow_succ, hCi, _root_.one_mul]`.
+-/
 theorem theta_neg : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω)
     (ρ : S.Real) (a : S.Gam), ∃ c ε : Ω, c ^ 2 = 1 ∧ ε ^ ((S.r * S.N) ^ 2) = 1 ∧ S.th (-a) = c * ε * S.th a := by
   intro o Ω _ _ _ _ S ρ a

@@ -22,6 +22,9 @@ local notation "fr" Q:max h:max =>
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+-/
 theorem fr_ne_zero (Q : Ideal (MRing ι F)) [Q.IsPrime] {h : MRing ι F} (hh : h ∉ Q) :
     fr Q h ≠ 0 := by
   rwa [Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
@@ -30,6 +33,9 @@ variable {P W : Ideal (MRing ι F)} [P.IsPrime] [W.IsPrime]
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Rewrite `h` using `[div_eq_div_iff (fr_ne_zero P fun h => hg (hPW h)) (fr_ne_zero P fun h => hg' (hPW h)), ← map_mul, ← map_mul, ← map_mul, ← map_mul]`. Rewrite using `[div_eq_div_iff (fr_ne_zero W hg) (fr_ne_zero W hg'), ← map_mul, ← map_mul, ← map_mul, ← map_mul, Ideal.Quotient.eq.mpr (hPW (Ideal.Quotient.eq.mp (IsFractionRing.injective _ _ h)))]`.
+-/
 theorem residue_eq (hPW : P ≤ W) {f g f' g' : MRing ι F} (hg : g ∉ W) (hg' : g' ∉ W)
     (h : fr P f / fr P g = fr P f' / fr P g') : fr W f / fr W g = fr W f' / fr W g' := by
   rw [div_eq_div_iff (fr_ne_zero P fun h => hg (hPW h)) (fr_ne_zero P fun h => hg' (hPW h)),
@@ -46,12 +52,18 @@ def res (x : FractionRing (MRing ι F ⧸ P)) : FractionRing (MRing ι F ⧸ W) 
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Establish `h : ∃ fg : MRing ι F × MRing ι F, fg.2 ∉ W ∧ x = fr P fg.1 / fr P fg.2` using `⟨(f, g), hg, hx⟩`. Rewrite using `[res, dif_pos h]`. Conclude with `residue_eq hPW h.choose_spec.1 hg (h.choose_spec.2.symm.trans hx)`.
+-/
 theorem res_eq (hPW : P ≤ W) {x : FractionRing (MRing ι F ⧸ P)} {f g : MRing ι F} (hg : g ∉ W)
     (hx : x = fr P f / fr P g) : res P W x = fr W f / fr W g := by
   have h : ∃ fg : MRing ι F × MRing ι F, fg.2 ∉ W ∧ x = fr P fg.1 / fr P fg.2 := ⟨(f, g), hg, hx⟩
   rw [res, dif_pos h]
   exact residue_eq hPW h.choose_spec.1 hg (h.choose_spec.2.symm.trans hx)
 
+/- English proof (translation)
+Take `⟨b, f, g, hf, hg, -, hgW, hx⟩` from `DegZeroLocQuot.proof F K ι P {W} (by rintro _ rfl; infer_instance) x x.2`. Conclude with `⟨b, f, g, hf, hg, hgW W rfl, hx⟩`.
+-/
 theorem exists_rep (x : degZeroLoc P {W}) : ∃ (b : K → ℕ) (f g : MRing ι F), IsMultiHomog f b ∧
     IsMultiHomog g b ∧ g ∉ W ∧ (x : FractionRing (MRing ι F ⧸ P)) = fr P f / fr P g := by
   obtain ⟨b, f, g, hf, hg, -, hgW, hx⟩ := DegZeroLocQuot.proof F K ι P {W}
@@ -83,12 +95,35 @@ def ρ (hPW : P ≤ W) : degZeroLoc P {W} →+* FractionRing (MRing ι F ⧸ W) 
       div_add_div _ _ (fr_ne_zero W hg) (fr_ne_zero W hg')]
     simp only [map_add, map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ρ_apply (hPW : P ≤ W) (x : degZeroLoc P {W}) : ρ hPW x = res P W x := rfl
 
+/- English proof (translation)
+The claim follows from `div_mem_degZeroLoc P {W} hg hf (fun h => hfW (hPW h)) (by rintro _ rfl; exact hfW)`.
+-/
 theorem inv_mem (hPW : P ≤ W) {b : K → ℕ} {f g : MRing ι F} (hf : IsMultiHomog f b)
     (hg : IsMultiHomog g b) (hfW : f ∉ W) : fr P g / fr P f ∈ degZeroLoc P {W} :=
   div_mem_degZeroLoc P {W} hg hf (fun h => hfW (hPW h)) (by rintro _ rfl; exact hfW)
 
+/- English proof (translation)
+Introduce `F _ K _ ι P _ W _ hPW`. Use `⟨ρ hPW, fun x b f g _ _ hg hx => res_eq hPW hg hx, fun x => ⟨?_, ?_⟩, fun z => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `h0 ⟨y, hy, hxy⟩`. Establish `h1 : ρ hPW (x * ⟨y, hy⟩) = 1` using `by rw [show x * ⟨y, hy⟩ = 1 from Subtype.ext hxy, map_one]`. Rewrite `h1` using `[map_mul, h0, zero_mul]`.
+
+Conclude with `zero_ne_one h1`. Introduce `hn`. Assume the negation of the conclusion as `h0`. Take `⟨b, f, g, hf, hg, hgW, hx⟩` from `exists_rep x`. Rewrite `h0` using `[ρ_apply, res_eq hPW hgW hx]`.
+
+Establish `hfW : f ∉ W` using `fun h => h0 (by rw [Ideal.Quotient.eq_zero_iff_mem.mpr h, map_zero, zero_div])`. Use `hn ⟨_, inv_mem hPW hf hg hfW, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, div_mul_div_comm, mul_comm (fr P f), div_self (mul_ne_zero (fr_ne_zero P fun h => hgW (hPW h)) (fr_ne_zero P fun h => hfW (hPW h)))]`. Introduce `hz`. Set `E : IntermediateField F (FractionRing (MRing ι F ⧸ W))` to `{ carrier := Set.range (ρ hPW) mul_mem' := by rintro _ _ ⟨x, rfl⟩ ⟨y, rfl⟩; exact ⟨x * y, map_mul _ _ _⟩ add_mem' := by rintro _ _ ⟨x, rfl⟩ ⟨y, rfl⟩; exact ⟨x + y, map_add _ _ _⟩ one_mem' := ⟨1, map_one _⟩ zero_mem' := ⟨0, map_zero _⟩ algebraMap_mem' := fun c => ⟨algebraMap F _ c …`.
+
+Rewrite using `[ρ_apply, res_eq hPW (f := C c) (g := 1) ((Ideal.ne_top_iff_one W).mp Ideal.IsPrime.ne_top') (by show algebraMap F (FractionRing (MRing ι F ⧸ P)) c = _`. Rewrite using `[map_one, map_one, div_one, IsScalarTower.algebraMap_apply F (MRing ι F ⧸ P), ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq])]`. Rewrite using `[map_one, map_one, div_one, IsScalarTower.algebraMap_apply F (MRing ι F ⧸ W), ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Distinguish the cases in `h0 : ρ hPW x = 0`. Rewrite using `[h0, inv_zero]`. Conclude with `⟨0, map_zero _⟩`. Take `⟨b, f, g, hf, hg, hgW, hx⟩` from `exists_rep x`. Rewrite `h0`, the goal using `[ρ_apply, res_eq hPW hgW hx]`.
+
+Establish `hfW : f ∉ W` using `fun h => h0 (by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr h, map_zero, zero_div])`. Conclude with `⟨⟨_, inv_mem hPW hf hg hfW⟩, by rw [ρ_apply, res_eq hPW hfW rfl, inv_div]⟩ }`. Establish `hle : homFracDegZero W ≤ E`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨b, f, g, hf, hg, hgW, rfl⟩`. Conclude with `⟨⟨_, div_mem_degZeroLoc P {W} hf hg (fun h => hgW (hPW h)) (by rintro _ rfl; exact hgW)⟩, res_eq hPW hgW rfl⟩`. Conclude with `hle hz`. Introduce and unpack `⟨x, rfl⟩`. Take `⟨b, f, g, hf, hg, hgW, hx⟩` from `exists_rep x`.
+
+Rewrite using `[ρ_apply, res_eq hPW hgW hx]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨b, f, g, hf, hg, hgW, rfl⟩`.
+-/
 theorem proof : DegZeroLocResidue.Statement := by
   intro F _ K _ ι P _ W _ hPW
   refine ⟨ρ hPW, fun x b f g _ _ hg hx => res_eq hPW hg hx, fun x => ⟨?_, ?_⟩, fun z => ⟨?_, ?_⟩⟩

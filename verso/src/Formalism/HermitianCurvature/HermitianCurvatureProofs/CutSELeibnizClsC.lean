@@ -11,6 +11,13 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P5.HerA Formalism.FourierDecayAlt.P5.HerB Formalism.FourierDecayAlt.P5.HerC
   Formalism.FourierDecayAlt.P5.HerD
 
+/- English proof (translation)
+Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `hle : ClsE S P z z' π π' X L st l0 D l ≤ sgSub (X` using `X) (μ := μ) (l := l) (c := c) hμ := by`. Use `opClos_le X l ?_ ?_` and prove the remaining obligations. Use `le_trans (base0_le_waveJc (S := S) P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl) ?_` and prove the remaining obligations. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce `Ψ hΨ`. Conclude with `hJ Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc Ψ hΨ`. Introduce `j Ψ hΨ`. Establish `h' : SliceGood X μ l c Ψ` using `hΨ`. Conclude with `sliceGood_op (h := h') (j := j)`.
+
+Conclude with `hle hΦ`.
+-/
 theorem clsE_sliceGood_ofC (hJ : JSliceGenC) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (S : Type) [Fintype S] [DecidableEq S]
@@ -33,6 +40,9 @@ theorem clsE_sliceGood_ofC (hJ : JSliceGenC) {Wp Wq : Type} [NormedAddCommGroup 
       exact sliceGood_op (h := h') (j := j)
   exact hle hΦ
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc t ht`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Establish `hsu : ∀ b, SliceGood X μ l c (u b)` using `fun b => clsE_sliceGood_ofC hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (u b) (hu b)`. Establish `hsv : ∀ b, SliceGood X μ l c (v b)` using `fun b => clsE_sliceGood_ofC hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (v b) (hv b)`. Conclude with `wirt_of_hasFDerivAt (hO P.k P.r z z' Wp Wq π π' X μ hμ l S u v c hc hsu hsv t ht)`.
+-/
 theorem leibnizCls_ofC (hO : OuterLeib) (hJ : JSliceGenC) : LeibnizCls := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc t ht
   have hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ := hD.2.1
@@ -42,6 +52,11 @@ theorem leibnizCls_ofC (hO : OuterLeib) (hJ : JSliceGenC) : LeibnizCls := by
     clsE_sliceGood_ofC hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (v b) (hv b)
   exact wirt_of_hasFDerivAt (hO P.k P.r z z' Wp Wq π π' X μ hμ l S u v c hc hsu hsv t ht)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc`. Establish `hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ` using `hD.2.1`. Use `haveI : SFinite μ := Formalism.FourierDecayAlt.P5.sfinite_of_isHaarOn _ μ hμ`. Establish `hsu : ∀ b, SliceGood X μ l c (u b)` using `fun b => clsE_sliceGood_ofC hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (u b) (hu b)`. Establish `hsv : ∀ b, SliceGood X μ l c (v b)` using `fun b => clsE_sliceGood_ofC hJ S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl c hc (v b) (hv b)`.
+
+Use `⟨fun n => ?_, fun t ht b => ⟨levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsu b) ht, levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsv b) ht⟩⟩` and prove the remaining obligations. Conclude with `(contDiffOn_inverse_norm_sq n).mul (form_contDiffOn hO X μ hμ l S c hc n u v hsu hsv)`.
+-/
 theorem densSmoothCls_ofC (hO : OuterLeib) (hJ : JSliceGenC) : DensSmoothCls := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc
   have hμ : B.IsHaarOn (Glev P.k P.r (Fin.last P.r)) μ := hD.2.1
@@ -53,9 +68,15 @@ theorem densSmoothCls_ofC (hO : OuterLeib) (hJ : JSliceGenC) : DensSmoothCls := 
   refine ⟨fun n => ?_, fun t ht b => ⟨levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsu b) ht, levelSquareIntegrable_succ_update_of_sliceGood X μ l c (hsv b) ht⟩⟩
   exact (contDiffOn_inverse_norm_sq n).mul (form_contDiffOn hO X μ hμ l S c hc n u v hsu hsv)
 
+/- English proof (translation)
+The claim follows from `leibnizCls_ofC (outerLeib_of pairing_derivative_formula) hJ`.
+-/
 theorem leibnizCls_of_jSliceC (hJ : JSliceGenC) : LeibnizCls :=
   leibnizCls_ofC (outerLeib_of pairing_derivative_formula) hJ
 
+/- English proof (translation)
+The claim follows from `densSmoothCls_ofC (outerLeib_of pairing_derivative_formula) hJ`.
+-/
 theorem densSmoothCls_of_jSliceC (hJ : JSliceGenC) : DensSmoothCls :=
   densSmoothCls_ofC (outerLeib_of pairing_derivative_formula) hJ
 

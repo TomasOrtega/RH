@@ -8,5 +8,8 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SepPer.ratPt_mulVec_ratV | exact GlobalTheory.SepPer.ratPt_mulVec_ratV | (intros; apply GlobalTheory.SepPer.ratPt_mulVec_ratV <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_rational_image_rationalPoint_mulVec : ∀ (D : D7) (V : HSp D) (γ : GA D V), γ ∈ GQ V → ∀ y : Fin V.rank → D.host.E, ∃ z : Fin V.rank → D.host.E, mt V γ *ᵥ ratV y = ratV z := by
   first | exact @GlobalTheory.SepPer.ratPt_mulVec_ratV | exact GlobalTheory.SepPer.ratPt_mulVec_ratV | (intros; apply GlobalTheory.SepPer.ratPt_mulVec_ratV <;> assumption)

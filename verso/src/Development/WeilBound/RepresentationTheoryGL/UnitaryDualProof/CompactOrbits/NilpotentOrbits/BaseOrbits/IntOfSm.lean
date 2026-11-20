@@ -31,6 +31,9 @@ def Gs (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n)
     calc g⁻¹.val * (1 - e) = g⁻¹.val * (g.val * (1 - e)) := by rw [hg']
       _ = 1 - e := by rw [← mul_assoc, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem Gs_mem {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {e : Matrix (Fin n) (Fin n) k} (g : Gs Z e) :
     (g : GL (Fin n) k) ∈ Gz Z ∧ (g : GL (Fin n) k).val * e = e * (g : GL (Fin n) k).val ∧
       (g : GL (Fin n) k).val * (1 - e) = 1 - e := g.2
@@ -45,9 +48,19 @@ instance (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin 
     show ((g * h : Gs Z e) : GL (Fin n) k).val *ᵥ w.1 = (g : GL (Fin n) k).val *ᵥ ((h : GL (Fin n) k).val *ᵥ w.1)
     simp [mulVec_mulVec])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_val (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n) k) (g : Gs Z e)
     (w : Wt e) : (g • w).1 = (g : GL (Fin n) k).val *ᵥ w.1 := rfl
 
+/- English proof (translation)
+Establish `hsub : Z ≤ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))` using `fun a ha => (Subalgebra.mem_centralizer_iff k).mpr (fun b hb => hZ.1 b hb a ha)`. Establish `hle : Module.finrank k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) ≤ Module.finrank k Z`. Establish `h0'` using `h0`. Unfold `dB0 at h0'`. Use linear arithmetic over natural numbers and integers.
+
+Establish `heq : Subalgebra.toSubmodule Z = Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))` using `Submodule.eq_of_le_of_finrank_le hsub hle`. Establish `hmem : ∀ x : Gs Z e, ((x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Z`. Introduce `x`. Establish `hc : ((x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))` using `(Subalgebra.mem_centralizer_iff k).mpr (fun a ha => (Gs_mem x).1 a ha)`. Rewrite `hc` using `[← heq]`.
+
+Conclude with `hc`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Conclude with `hZ.1 _ (hmem g) _ (hmem h)`.
+-/
 theorem Gs_comm (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0)
     (e : Matrix (Fin n) (Fin n) k) (g h : Gs Z e) : g * h = h * g := by
   have hsub : Z ≤ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)) := fun a ha =>
@@ -75,6 +88,11 @@ theorem Gs_comm (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : 
 def sm (γ : (ValueGroupWithZero k)ˣ) (A : Matrix (Fin n) (Fin n) k) : Prop :=
   ∀ i j, valuation k (A i j) < γ ∧ valuation k (A i j) < 1
 
+/- English proof (translation)
+Simplify using `only [Matrix.add_apply, Matrix.mul_apply]`. Use `(valuation k).map_add_lt ((valuation k).map_add_lt ?_ (ha i j)) (hb i j)` and prove the remaining obligations. Use `(valuation k).map_sum_lt hc (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hb1 l j`. Use `_ = valuation k (a i l) := mul_one _`. Use `_ < c := ha i l`.
+-/
 theorem ent_lt (c : ValueGroupWithZero k) (hc : c ≠ 0) (a b : Matrix (Fin n) (Fin n) k)
     (ha : ∀ i j, valuation k (a i j) < c) (hb : ∀ i j, valuation k (b i j) < c)
     (hb1 : ∀ i j, valuation k (b i j) ≤ 1) (i j : Fin n) : valuation k ((a * b + a + b) i j) < c := by
@@ -88,6 +106,9 @@ theorem ent_lt (c : ValueGroupWithZero k) (hc : c ≠ 0) (a b : Matrix (Fin n) (
     _ = valuation k (a i l) := mul_one _
     _ < c := ha i l
 
+/- English proof (translation)
+Establish `e : A * B - 1 = (A - 1) * (B - 1) + (A - 1) + (B - 1)` using `by noncomm_ring`. Unfold `sm at *`. Introduce `i j`. Rewrite using `[e]`. Conclude with `⟨ent_lt _ γ.ne_zero _ _ (fun i j => (hA i j).1) (fun i j => (hB i j).1) (fun i j => (hB i j).2.le) i j, ent_lt _ one_ne_zero _ _ (fun i j => (hA i j).2) (fun i j => (hB i j).2) (fun i j => (hB i j).2.le) i j⟩`.
+-/
 theorem sm_mul (γ : (ValueGroupWithZero k)ˣ) (A B : Matrix (Fin n) (Fin n) k) (hA : sm γ (A - 1))
     (hB : sm γ (B - 1)) : sm γ (A * B - 1) := by
   have e : A * B - 1 = (A - 1) * (B - 1) + (A - 1) + (B - 1) := by noncomm_ring
@@ -97,6 +118,9 @@ theorem sm_mul (γ : (ValueGroupWithZero k)ˣ) (A B : Matrix (Fin n) (Fin n) k) 
   exact ⟨ent_lt _ γ.ne_zero _ _ (fun i j => (hA i j).1) (fun i j => (hB i j).1) (fun i j => (hB i j).2.le) i j,
     ent_lt _ one_ne_zero _ _ (fun i j => (hA i j).2) (fun i j => (hB i j).2) (fun i j => (hB i j).2.le) i j⟩
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.zero_apply, map_zero]`. Conclude with `⟨zero_lt_iff.mpr γ.ne_zero, zero_lt_one⟩`.
+-/
 theorem sm_zero (γ : (ValueGroupWithZero k)ˣ) : sm γ (0 : Matrix (Fin n) (Fin n) k) := by
   intro i j
   simp only [Matrix.zero_apply, map_zero]
@@ -119,6 +143,9 @@ def Ks (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n)
     · simpa using hg'
     · simpa using hg
 
+/- English proof (translation)
+Establish `h1 : A i j = (A - 1) i j + (1 : Matrix (Fin n) (Fin n) k) i j` using `by simp`. Rewrite using `[h1]`. Use `((valuation k).map_add _ _).trans (max_le (hA i j).2.le ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem int_of_sm {γ : (ValueGroupWithZero k)ˣ} {A : Matrix (Fin n) (Fin n) k} (hA : sm γ (A - 1)) (i j : Fin n) :
     valuation k (A i j) ≤ 1 := by
   have h1 : A i j = (A - 1) i j + (1 : Matrix (Fin n) (Fin n) k) i j := by simp

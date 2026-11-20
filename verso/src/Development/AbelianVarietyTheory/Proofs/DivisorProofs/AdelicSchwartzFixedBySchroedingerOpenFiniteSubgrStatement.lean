@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped Matrix Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilLevel.schA_level | exact GlobalTheory.WeilLevel.schA_level | (intros; apply GlobalTheory.WeilLevel.schA_level <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelicSchwartz_fixed_by_schroedinger_open_finite_subgroup : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) [Invertible (2 : AF F)] (ψ : AddChar (AF F) ℂ), IsTotallyReal F → IsCharAF F ψ → ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin N), ∃ U : AddSubgroup (VA F N), IsOpen (U : Set (VA F N)) ∧ ∀ u ∈ U, inf u.1 = 0 → inf u.2 = 0 → GlobalTheory.WeilM.schr ψ u Φ = Φ := by
   first | exact @GlobalTheory.WeilLevel.schA_level | exact GlobalTheory.WeilLevel.schA_level | (intros; apply GlobalTheory.WeilLevel.schA_level <;> assumption)

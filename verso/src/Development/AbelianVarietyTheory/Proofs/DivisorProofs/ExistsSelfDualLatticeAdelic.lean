@@ -7,26 +7,41 @@ open Formalism.UG
 
 variable {A : Type} [CommRing A] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_left (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y z : Fin n → A) :
     hform σ J (x + y) z = hform σ J x z + hform σ J y z := by
   simp only [hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_right (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y z : Fin n → A) :
     hform σ J x (y + z) = hform σ J x y + hform σ J x z := by
   simp only [hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_left (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (c : A) (x y : Fin n → A) :
     hform σ J (c • x) y = σ c * hform σ J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_right (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (c : A) (x y : Fin n → A) :
     hform σ J x (c • y) = c * hform σ J x y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hform, map_sum, map_mul, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_swap (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fin n) (Fin n) A)
     (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → A) :
     hform σ J y x = σ (hform σ J x y) := by
@@ -36,10 +51,16 @@ theorem hform_swap (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fi
   rw [hJ]
   ring
 
+/- English proof (translation)
+Simplify using `[hform, Pi.single_apply, apply_ite σ, Matrix.mulVec, dotProduct]`.
+-/
 theorem hform_single (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (i : Fin n) (v : Fin n → A) :
     hform σ J (Pi.single i 1) v = (J *ᵥ v) i := by
   simp [hform, Pi.single_apply, apply_ite σ, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[hform_add_left, hform_add_right, hform_add_right, hform_smul_left, hform_smul_left, hform_smul_right, hform_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_expand (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (l l' x : Fin n → A) (c c' : A) :
     hform σ J (l + c • x) (l' + c' • x) = hform σ J l l' + c' * hform σ J l x
       + σ c * hform σ J x l' + σ c * (c' * hform σ J x x) := by
@@ -56,6 +77,67 @@ def IsEven {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n
     (R : Subring A) (L : Submodule R (Fin n → A)) : Prop :=
   (∀ u ∈ L, ∀ v ∈ L, hform σ J u v ∈ R) ∧ (∀ u ∈ L, ∃ b ∈ R, hform σ J u u = b + σ b)
 
+/- English proof (translation)
+Introduce `A _ _ _ _ σ hσ R hRc hRo hσR hden hunit n J hJ hdet`. Take `⟨N₀, hN₀, hNJ⟩ : ∃ N₀ : ℕ, N₀ ≠ 0 ∧ ∀ i j, (N₀ : A) * J i j ∈ R` from `by choose f hf0 hf using fun p : Fin n × Fin n => hden (J p.1 p.2)`. Use `⟨∏ p, f p, Finset.prod_ne_zero_iff.mpr fun p _ => hf0 p, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, j)), Nat.cast_mul, mul_assoc]`. Conclude with `R.mul_mem (natCast_mem R _) (hf (i, j))`.
+
+Establish `hN : 2 * N₀ ≠ 0` using `by omega`. Take `⟨u, hu⟩` from `hunit _ hN`. Establish `hσN : σ ((2 * N₀ : ℕ) : A) = ((2 * N₀ : ℕ) : A)` using `map_natCast σ _`. Establish `hRform : ∀ a b : Fin n → A, (∀ i, a i ∈ R) → (∀ j, b j ∈ R) → (N₀ : A) * hform σ J a b ∈ R`. Introduce `a b ha hb`.
+
+Rewrite using `[hform, Finset.mul_sum]`. Use `R.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Establish `: (N₀ : A) * (σ (a i) * J i j * b j) = σ (a i) * ((N₀ : A) * J i j) * b j` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `R.mul_mem (R.mul_mem (hσR _ (ha i)) (hNJ i j)) (hb j)`. Establish `hfix : ∀ a : Fin n → A, σ (hform σ J a a) = hform σ J a a` using `fun a => (hform_swap σ hσ J hJ a a).symm`. Use `set L₀ : Submodule R (Fin n → A) := Submodule.span R (Set.range fun i : Fin n => Pi.single i ((2 * N₀ : ℕ) : A)) with hL₀`. Establish `hsmulR : ∀ (r : R) (v : Fin n → A), r • v = (r : A) • v` using `fun r v => rfl`.
+
+Establish `hL0sub : ∀ v ∈ L₀, ∀ i, (↑u⁻¹ : A) * v i ∈ R`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`.
+
+Introduce `i`. Simplify using `only`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Rewrite using `[← hu, Units.inv_mul]`.
+
+Conclude with `R.one_mem`. Rewrite using `[mul_zero]`. Conclude with `R.zero_mem`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `R.add_mem (hx i) (hy i)`. Consider the case `smul r x _ hx`. Introduce `i`.
+
+Rewrite using `[hsmulR, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `R.mul_mem r.2 (hx i)`. Establish `hL0sup : ∀ v : Fin n → A, (∀ i, (↑u⁻¹ : A) * v i ∈ R) → v ∈ L₀`. Introduce `v hv`. Establish `: v = ∑ i, (⟨(↑u⁻¹ : A) * v i, hv i⟩ : R) • Pi.single i ((2 * N₀ : ℕ) : A)`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [hsmulR, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← hu, mul_comm _ (u : A), Units.mul_inv_cancel_left]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hdecomp : ∀ v ∈ L₀, ∃ a : Fin n → A, (∀ i, a i ∈ R) ∧ v = ((2 * N₀ : ℕ) : A) • a`. Introduce `v hv`. Use `⟨fun i => (↑u⁻¹ : A) * v i, hL0sub v hv, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← hu, Units.mul_inv_cancel_left]`. Establish `hNN : ∀ c : A, ((2 * N₀ : ℕ) : A) * (((2 * N₀ : ℕ) : A) * c) = ((4 * N₀ : ℕ) : A) * ((N₀ : A) * c)`. Introduce `c`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hL0even : IsEven σ J R L₀`. Prove the components needed by the constructor for the conclusion. Introduce `v hv w hw`. Take `⟨a, ha, rfl⟩` from `hdecomp v hv`. Take `⟨b, hb, rfl⟩` from `hdecomp w hw`.
+
+Rewrite using `[hform_smul_left, hform_smul_right, hσN, hNN]`. Conclude with `R.mul_mem (natCast_mem R _) (hRform a b ha hb)`. Introduce `v hv`. Take `⟨a, ha, rfl⟩` from `hdecomp v hv`. Use `⟨((2 * N₀ : ℕ) : A) * ((N₀ : A) * hform σ J a a), R.mul_mem (natCast_mem R _) (hRform a a ha ha), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hform_smul_left, hform_smul_right, hσN, hNN, map_mul, map_mul, map_natCast, map_natCast, hfix]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hL0open : IsOpen (L₀ : Set (Fin n → A))`. Establish `hU : IsOpen {v : Fin n → A | ∀ i, (↑u⁻¹ : A) * v i ∈ R}`.
+
+Establish `: {v : Fin n → A | ∀ i, (↑u⁻¹ : A) * v i ∈ R} = (fun v : Fin n → A => fun i => (↑u⁻¹ : A) * v i) ⁻¹' Set.univ.pi fun _ => (R : Set A)`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hRo).preimage (continuous_pi fun i => continuous_const.mul (continuous_apply i))`.
+
+Use `AddSubgroup.isOpen_of_mem_nhds L₀.toAddSubgroup (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (hU.mem_nhds (by simp)) fun v hv => hL0sup v hv` and prove the remaining obligations. Take `⟨L, hL0L, hLmax⟩` from `zorn_le_nonempty₀ {L : Submodule R (Fin n → A) | IsEven σ J R L} (fun c hcs hc y hy => by`. Use `⟨sSup c, ?_, fun z hz => le_sSup hz⟩` and prove the remaining obligations. Establish `hdir : DirectedOn (· ≤ ·) c` using `hc.directedOn`.
+
+Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `two : ∀ v w, v ∈ sSup c → w ∈ sSup c → ∃ M ∈ c, v ∈ M ∧ w ∈ M`. Introduce `v w hv hw`. Take `⟨M₁, hM₁, hv₁⟩` from `(Submodule.mem_sSup_of_directed hne hdir).mp hv`. Take `⟨M₂, hM₂, hw₂⟩` from `(Submodule.mem_sSup_of_directed hne hdir).mp hw`.
+
+Break down `hc.total hM₁ hM₂ with h | h` into its components or cases. Conclude with `⟨M₂, hM₂, h hv₁, hw₂⟩`. Conclude with `⟨M₁, hM₁, hv₁, h hw₂⟩`. Prove the components needed by the constructor for the conclusion. Introduce `v hv w hw`.
+
+Take `⟨M, hM, hvM, hwM⟩` from `two v w hv hw`. Conclude with `(hcs hM).1 v hvM w hwM`. Introduce `v hv`. Take `⟨M, hM, hvM, -⟩` from `two v v hv hv`. Conclude with `(hcs hM).2 v hvM) L₀ hL0even`.
+
+Establish `hLeven : IsEven σ J R L` using `hLmax.1`. Establish `hLopen : IsOpen (L : Set (Fin n → A))` using `AddSubgroup.isOpen_mono (H₁ := L₀.toAddSubgroup) (H₂ := L.toAddSubgroup) hL0L hL0open`. Establish `hLclosed : IsClosed (L : Set (Fin n → A))` using `AddSubgroup.isClosed_of_isOpen L.toAddSubgroup hLopen`. Establish `hK : IsCompact ((fun w : Fin n → A => J⁻¹ *ᵥ ((↑u⁻¹ : A) • w)) '' Set.univ.pi fun _ => (R : Set A))` using `(isCompact_univ_pi fun _ => hRc).image (Continuous.matrix_mulVec continuous_const (continuous_const_smul _))`. Establish `hLK : (L : Set (Fin n → A)) ⊆ (fun w : Fin n → A => J⁻¹ *ᵥ ((↑u⁻¹ : A) • w)) '' Set.univ.pi fun _ => (R : Set A)`.
+
+Introduce `v hv`. Use `⟨((2 * N₀ : ℕ) : A) • (J *ᵥ v), fun i _ => ?_, ?_⟩` and prove the remaining obligations. Establish `hsing : Pi.single i ((2 * N₀ : ℕ) : A) ∈ L` using `hL0L (Submodule.subset_span ⟨i, rfl⟩)`. Use `hLeven.1 _ hsing v hv` as an intermediate fact. Establish `heq : (Pi.single i ((2 * N₀ : ℕ) : A) : Fin n → A) = ((2 * N₀ : ℕ) : A) • Pi.single i 1`.
+
+Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [Pi.single_apply, h]`. Rewrite `this` using `[heq, hform_smul_left, hσN, hform_single]`. Simplify using `using this`. Simplify using `only`. Rewrite using `[smul_smul, ← hu, Units.inv_mul, one_smul, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul J hdet, Matrix.one_mulVec]`.
+
+Establish `hLcomp : IsCompact (L : Set (Fin n → A))` using `hK.of_isClosed_subset hLclosed hLK`. Establish `hLfg : L.FG`. Take `⟨t, ht, hcov⟩` from `hLcomp.elim_nhds_subcover (fun x => {y | y - x ∈ L₀}) (fun x _ => (hL0open.preimage (continuous_id.sub continuous_const)).mem_nhds (by simp [L₀.zero_mem]))`. Establish `heq : L = Submodule.span R (t : Set (Fin n → A)) ⊔ L₀`. Use `le_antisymm (fun y hy => ?_) (sup_le (Submodule.span_le.mpr fun x hx => ht x hx) hL0L)` and prove the remaining obligations.
+
+Use `hcov hy` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq] at this`. Take `⟨x, hx, hyx⟩` from `this`. Establish `: y = x + (y - x)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span hx) hyx`. Rewrite using `[heq]`. Conclude with `(Submodule.fg_span t.finite_toSet).sup (Submodule.fg_span (Set.finite_range _))`. Use `⟨L, hLfg, hLopen, hLcomp, hLeven.1, hLeven.2, ?_⟩` and prove the remaining obligations. Introduce `x hxx hxL`.
+
+Establish `hL' : IsEven σ J R (L ⊔ Submodule.span R {x})`. Establish `hdesc : ∀ y ∈ L ⊔ Submodule.span R {x}, ∃ l ∈ L, ∃ a : R, y = l + (a : A) • x`. Introduce `y hy`. Take `⟨l, hl, z, hz, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hz`.
+
+Conclude with `⟨l, hl, a, by rw [hsmulR]⟩`. Prove the components needed by the constructor for the conclusion. Introduce `y hy y' hy'`. Take `⟨l, hl, a, rfl⟩` from `hdesc y hy`. Take `⟨l', hl', a', rfl⟩` from `hdesc y' hy'`.
+
+Rewrite using `[hform_expand, hxx, mul_zero, mul_zero, add_zero, hform_swap σ hσ J hJ x l]`. Conclude with `R.add_mem (R.add_mem (hLeven.1 l hl l' hl') (R.mul_mem a'.2 (hσR _ (hxL l hl)))) (R.mul_mem (hσR _ a.2) (hxL l' hl'))`. Introduce `y hy`. Take `⟨l, hl, a, rfl⟩` from `hdesc y hy`. Take `⟨b, hb, hbeq⟩` from `hLeven.2 l hl`.
+
+Use `⟨b + σ a * hform σ J x l, R.add_mem hb (R.mul_mem (hσR _ a.2) (hxL l hl)), ?_⟩` and prove the remaining obligations. Rewrite using `[hform_expand, hxx, mul_zero, mul_zero, add_zero, hform_swap σ hσ J hJ x l, hbeq, map_add, map_mul, hσ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hLmax.2 hL' le_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x))`.
+-/
 theorem exists_maximal_even_lattice : ∀ (A : Type) [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] (σ : A →+* A), (∀ a, σ (σ a) = a) →
     ∀ R : Subring A, IsCompact (R : Set A) → IsOpen (R : Set A) → (∀ a ∈ R, σ a ∈ R) → (∀ a : A, ∃ N : ℕ, N ≠ 0 ∧ (N : A) * a ∈ R) →
     (∀ N : ℕ, N ≠ 0 → IsUnit (N : A)) →

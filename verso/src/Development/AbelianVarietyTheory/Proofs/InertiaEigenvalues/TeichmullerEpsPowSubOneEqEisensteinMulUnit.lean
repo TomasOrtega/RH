@@ -9,6 +9,25 @@ noncomputable section
 
 namespace GlobalTheory.GalStep
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ε c hε hc`. Establish `hd : ED K t ϖ = toOD l O ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O)`. Rewrite using `[ED, PiSys.iD, glue_const, Ehat, PiSys.iHat_ofAl]`. Conclude with `(ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E a O K))`. Use `set δ : OCb l := (frobeniusEquiv (OCb l) l).symm ε with hδdef`.
+
+Establish `hδ : δ ^ l = ε` using `frobeniusEquiv_symm_pow_p (OCb l) l ε`. Take `⟨⟨ξ, hξ, hμ⟩, -, hθδ, -⟩` from `(GlobalTheory.MuOfEps.main l).2 ε δ hε hδ`. Take `⟨v, hv⟩` from `Ideal.span_singleton_eq_span_singleton.1 ((ϖ.span_ev_eis a).trans hξ.symm)`. Use `set G : Ainf l := ∑ i ∈ Finset.range c, WittVector.teichmuller l ε ^ i with hG`. Use `set w : Ainf l := (v : Ainf l) * (muOf δ * G) with hwdef`.
+
+Establish `hkey : WittVector.teichmuller l ε ^ c - 1 = ϖ.ev a (eis l a e) * w`. Establish `h1 : WittVector.teichmuller l ε ^ c - 1 = muOf ε * G`. Rewrite using `[muOf, hG, mul_comm, geom_sum_mul]`. Rewrite using `[h1, hμ, ← hv, hwdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hθG : ((Per.θ l G : Per.OC l) : ℂ_[l]) = (c : ℂ_[l])`. Rewrite using `[hG, map_sum]`. Simplify using `only [map_pow, WittVector.fontaineTheta_teichmuller, hε.1, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hθw : ((Per.θ l w : Per.OC l) : ℂ_[l]) ≠ 0`. Establish `h1 : ((Per.θ l (v : Ainf l) : Per.OC l) : ℂ_[l]) ≠ 0` using `fun h => (v.isUnit.map (Per.θ l)).ne_zero (Subtype.ext (h.trans rfl))`. Establish `h2 : ((Per.θ l (muOf δ) : Per.OC l) : ℂ_[l]) ≠ 0` using `fun h => hθδ (Subtype.ext (h.trans rfl))`. Establish `h3 : (c : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hc`. Establish `h4 : ((Per.θ l w : Per.OC l) : ℂ_[l]) = ((Per.θ l (v : Ainf l) : Per.OC l) : ℂ_[l]) * (((Per.θ l (muOf δ) : Per.OC l) : ℂ_[l]) * ((Per.θ l G : Per.OC l) : ℂ_[l]))`.
+
+Rewrite using `[hwdef, map_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[h4, hθG]`. Conclude with `mul_ne_zero h1 (mul_ne_zero h2 h3)`. Establish `hwu : IsUnit (ainfToBdRp l w)` using `(GlobalTheory.MemLoc.thetaD_props l).2.2.1 _ (by`.
+
+Express the relevant statement in the definitionally equal form `Per.θD l (GlobalTheory.MemLoc.aDp l w) ≠ 0`. Rewrite using `[(GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]`. Conclude with `hθw)`. Use `⟨toOD l O ((1 : O) ⊗ₜ[ℤ_[l]] w : OA l O), ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : toOD l O ((1 : O) ⊗ₜ[ℤ_[l]] w : OA l O) = (Algebra.TensorProduct.includeRight : Per.BdRp l →ₐ[ℤ_[l]] OD l O) (ainfToBdRp l w)`.
+
+Simplify using `[toOD]`. Rewrite using `[h2]`. Conclude with `hwu.map _`. Establish `h3 : ((1 : O) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l ε : OA l O) ^ c - 1 = ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) * ((1 : O) ⊗ₜ[ℤ_[l]] w)`. Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hkey, Algebra.TensorProduct.one_def, TensorProduct.tmul_sub]`.
+
+Rewrite using `[hd, ← map_mul, ← h3, map_sub, map_pow, map_one]`.
+-/
 theorem teich_pow_sub_one_eq_ED_mul : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ε : OCb l) (c : ℕ), IsEps ε → c ≠ 0 → ∃ u : OD l O, IsUnit u ∧ toOD l O (1 ⊗ₜ WittVector.teichmuller l ε) ^ c - 1 = GlobalTheory.GalStep.ED K t ϖ * u := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ε c hε hc
   have hd : ED K t ϖ = toOD l O ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) := by

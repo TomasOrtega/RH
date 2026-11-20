@@ -25,11 +25,17 @@ def rdx {K : Type} [Zero K] [One K] {m n : ℕ} (h : m = n) : Matrix (Fin m) (Fi
 def rdi {K : Type} [Zero K] [One K] {m n : ℕ} (h : m = n) : Matrix (Fin n) (Fin m) K :=
   (1 : Matrix (Fin m) (Fin m) K).submatrix (finCongr h).symm id
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[rdx, rdi, Matrix.one_apply]`.
+-/
 theorem rdx_rdi {K : Type} [CommRing K] {m n : ℕ} (h : m = n) : rdx (K := K) h * rdi (K := K) h = 1 := by
   subst h
   ext i j
   simp [rdx, rdi, Matrix.one_apply]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `i j`. Simplify using `[rdx, rdi, Matrix.one_apply]`.
+-/
 theorem rdi_rdx {K : Type} [CommRing K] {m n : ℕ} (h : m = n) : rdi (K := K) h * rdx (K := K) h = 1 := by
   subst h
   ext i j
@@ -62,9 +68,15 @@ def fP (I : IsoMat S S') : Matrix (Fin S'.rank) (Fin S.rank) (Lev.EAf D) := I.P.
 
 def fQ (I : IsoMat S S') : Matrix (Fin S.rank) (Fin S'.rank) (Lev.EAf D) := I.Q.map (eToEAf D)
 
+/- English proof (translation)
+Rewrite using `[fP, fQ, ← Matrix.map_mul, I.PQ, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fP_fQ (I : IsoMat S S') : fP I * fQ I = 1 := by
   rw [fP, fQ, ← Matrix.map_mul, I.PQ, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[fP, fQ, ← Matrix.map_mul, I.QP, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fQ_fP (I : IsoMat S S') : fQ I * fP I = 1 := by
   rw [fP, fQ, ← Matrix.map_mul, I.QP, Matrix.map_one _ (map_zero _) (map_one _)]
 
@@ -102,6 +114,9 @@ def homMap (IS : IsoMat S S') (IT : IsoMat T T') : WO S T ≃+ WO S' T' where
     show HMul.hMul (HMul.hMul IT.aP (x + y)) IS.aQ = HMul.hMul (HMul.hMul IT.aP x) IS.aQ + HMul.hMul (HMul.hMul IT.aP y) IS.aQ
     rw [Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homMap_apply (IS : IsoMat S S') (IT : IsoMat T T') (x : WO S T) :
     homMap IS IT x = HMul.hMul (HMul.hMul IT.aP x) IS.aQ := rfl
 
@@ -114,6 +129,9 @@ def omH (IS : IsoMat S S') (IT : IsoMat T T') (om : GA D S × GA D T →* Module
     GA D S' × GA D T' →* Module.End ℂ (WO S' T' → ℂ) :=
   (trLE IS IT).conjRingEquiv.toMulEquiv.toMonoidHom.comp (om.comp (IS.kap.symm.toMonoidHom.prodMap IT.kap.symm.toMonoidHom))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omH_apply (IS : IsoMat S S') (IT : IsoMat T T') (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))
     (g : GA D S') (h : GA D T') (f : WO S' T' → ℂ) :
     omH IS IT om (g, h) f = trH IS IT (om (IS.kap.symm g, IT.kap.symm h) (trH IS.symm IT.symm f)) := rfl

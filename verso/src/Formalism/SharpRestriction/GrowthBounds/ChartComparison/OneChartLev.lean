@@ -18,6 +18,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {Tau : Type} [Fintype Tau]
 
+/- English proof (translation)
+Unfold `FiC`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, h⟩`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Take `⟨a', rfl⟩` from `hr a`. Conclude with `congrFun h a'`. Introduce and unpack `⟨g, hg, h⟩`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Conclude with `congrFun h (r a)`.
+-/
 theorem FiC_comp (S : StepLevel F E σ J T f bad) (emb : Tau → E →+* ℂ) (lam : Tau → DomWeight n) {c c' : Type}
     (yc : c → UPts σ J (FiniteAdeleRing (𝓞 F) F)) (r : c' → c) (hr : Function.Surjective r)
     (ψ : c → Frames (gramC J emb) → ℂ) :
@@ -45,6 +52,19 @@ def IntAtI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.fm u).la
       ∀ z, (D.fm u).emb i x c z =
         fnOf _ (shiftOf (lamT u i)) (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N i)) D.host.E).1) P (V.eY z)
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `B hB`. Conclude with `(V.lat y).1 hy w c B hB`. Consider the case `zero`.
+
+Introduce `B _`. Use `⟨0, AddSubgroup.zero_mem _, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `add y z _ _ h1 h2`.
+
+Introduce `B hB`. Take `⟨P, hP, hPy⟩` from `h1 B hB`. Take `⟨Q, hQ, hQz⟩` from `h2 B hB`. Use `⟨P + Q, AddSubgroup.add_mem _ hP hQ, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`.
+
+Use `show (D.fm u).emb i y c t + (D.fm u).emb i z c t = _`. Rewrite using `[hPy t, hQz t]`. Both sides reduce to the same expression. Consider the case `smul a y _ h1`. Introduce `B hB`.
+
+Take `⟨P, hP, hPy⟩` from `h1 B hB`. Use `⟨D.what₂.embLL a.1 • P, intSpan_smul w _ a.1 a.2 hP, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, map_smul]`. Use `show D.what₂.embLL a.1 * (D.fm u).emb i y c t = _`. Rewrite using `[hPy t]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locW_intAtI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.fm u).lat i).V)
     (hx : x ∈ Formalism.BasicNotions.locW D.what₂.places w ((D.fm u).lat i).L) (c : (D.mem u).C.cls i) : IntAtI V w x c := by
   induction hx using Submodule.span_induction with
@@ -74,10 +94,32 @@ theorem locW_intAtI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D
     rw [hPy t]
     rfl
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsIdealDenominator.exists_denI u i x`.
+-/
 theorem exists_denI (u : D.what₂.Word) (i : ℕ) (x : ((D.fm u).lat i).V) :
     ∃ d : 𝓞 D.what₂.LL, d ≠ 0 ∧ d • x ∈ ((D.fm u).lat i).L :=
   _root_.UpperTheory.Reformulated.B.ExistsIdealDenominator.exists_denI u i x
 
+/- English proof (translation)
+Establish `key : ∀ (r : 𝓞 D.what₂.LL) (v : ((D.fm u).lat i).V), r • v = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) • v` using `fun r v => (algebraMap_smul D.what₂.LL r v).symm`. Take `⟨d, hd0, hdL⟩` from `exists_denI u i x`. Take `⟨s, hsP, hsv⟩` from `exists_prime_to_le (D.plEq w) d hd0`. Establish `hs0 : s ≠ 0` using `fun h => hsP (h ▸ Submodule.zero_mem _)`. Establish `hsL : s • x ∈ ((D.fm u).lat i).L`.
+
+Use `(V.lat (s • x)).2 ?_` and prove the remaining obligations. Introduce `w' c B hB`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Establish `hsint : algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ∈ Formalism.BasicNotions.intW D.what₂.places w'` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w' _`.
+
+Rewrite using `[Formalism.L2.G.val_nonneg_iff, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(D.plEq w').intValuation_le_one s`. Take `⟨P, hP, hPx⟩` from `hx c B hB`. Use `⟨D.what₂.embLL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s) • P, intSpan_smul w' _ _ hsint hP, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[key, LinearMap.map_smulₛₗ, LinearMap.map_smul]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hPx t]`. Establish `hne : D.plEq w' ≠ D.plEq w` using `fun h => hw (D.plEq.injective h)`. Establish `hdne : algebraMap (𝓞 D.what₂.LL) D.what₂.LL d ≠ 0`. Simplify using `using hd0`.
+
+Use `set q : D.what₂.LL := algebraMap (𝓞 D.what₂.LL) D.what₂.LL s / algebraMap (𝓞 D.what₂.LL) D.what₂.LL d with hq`. Establish `hqint : q ∈ Formalism.BasicNotions.intW D.what₂.places w'` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w' _`. Rewrite using `[Formalism.L2.G.val_nonneg_iff, hq, map_div₀, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Establish `hdv : (D.plEq w').intValuation d ≠ 0` using `(D.plEq w').intValuation_ne_zero d hd0`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hdv)]`.
+
+Conclude with `hsv _ hne`. Establish `hsx : s • x = q • (d • x)`. Rewrite using `[key, key, smul_smul, hq, div_mul_cancel₀ _ hdne]`. Take `⟨P, hP, hPx⟩` from `(V.lat (d • x)).1 hdL w' c B hB`. Use `⟨D.what₂.embLL q • P, intSpan_smul w' _ q hqint hP, fun t => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsx, LinearMap.map_smulₛₗ, LinearMap.map_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hPx t]`. Establish `hsu : (D.plEq w).intValuation s = 1`. Apply `le_antisymm ((D.plEq w).intValuation_le_one s)` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hsP (((D.plEq w).intValuation_lt_one_iff_mem s).1 (lt_of_not_ge hlt))`. Establish `hsne : algebraMap (𝓞 D.what₂.LL) D.what₂.LL s ≠ 0` using `by simpa using hs0`. Establish `htint : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL s)⁻¹ ∈ Formalism.BasicNotions.intW D.what₂.places w` using `by show (0 : WithTop ℤ) ≤ D.what₂.places.val w _`. Rewrite using `[Formalism.L2.G.val_nonneg_iff, map_inv₀, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, hsu, inv_one]`.
+
+Establish `hx' : x = (⟨_, htint⟩ : Formalism.BasicNotions.intW D.what₂.places w) • (s • x)`. Rewrite using `[Subring.smul_def, key, smul_smul, inv_mul_cancel₀ hsne, one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsL)`.
+-/
 theorem locWBackI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.fm u).lat i).V) (hx : ∀ c, IntAtI V w x c) :
     x ∈ Formalism.BasicNotions.locW D.what₂.places w ((D.fm u).lat i).L := by
   have key : ∀ (r : 𝓞 D.what₂.LL) (v : ((D.fm u).lat i).V), r • v = (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) • v :=
@@ -130,6 +172,9 @@ theorem locWBackI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.f
   rw [hx']
   exact Submodule.smul_mem _ _ (Submodule.subset_span hsL)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hx c => locW_intAtI V w x hx c, locWBackI V w x⟩`.
+-/
 theorem locWCritI (V : ValTied u eV i hi K) (w : D.what₂.places.Pl) (x : ((D.fm u).lat i).V) :
     x ∈ Formalism.BasicNotions.locW D.what₂.places w ((D.fm u).lat i).L ↔ ∀ c, IntAtI V w x c :=
   ⟨fun hx c => locW_intAtI V w x hx c, locWBackI V w x⟩
@@ -149,10 +194,16 @@ def oneChart (K : ClsTied u i hi) (β : Unit) :
   stabI_inj := fun c => K.stabI_inj c.1
   stabI_range := fun c => K.stabI_range c.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem oneChart_lev (K : ClsTied u i hi) (β : Unit) : (oneChart K β).lev = K.lev := rfl
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `φ` and use `by rw [V.Fi φ] constructor · intro h β exact (FiC_comp K.lev (embT D) (lamT u i) K.y (fun c : {c // chU u i c = β} => c.1) (fun c => ⟨⟨c, Subsingleton.elim _ _⟩, rfl⟩) (fun c z => φ c (V.eY.symm z))).2 h · intro h exact (FiC_comp K.lev (embT D) (lamT u i) K.y (fun c : {c // chU u …`.
+-/
 theorem valTied_toG (V : ValTied u eV i hi K) :
     ValuationCompatibleChart (D.fm u) V.eY (fun _ => True) (chU u i) (lat := clsCrd D u i hi) (oneChart K) where
   Fi := fun φ => by

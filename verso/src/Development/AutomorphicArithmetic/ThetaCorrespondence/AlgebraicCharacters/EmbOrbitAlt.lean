@@ -9,6 +9,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual UpperTheory.V.W
 
 variable {F : Type} [Field F] [NumberField F] {l : ℕ} [Fact l.Prime] {w : Plc F}
 
+/- English proof (translation)
+Establish `h1 : ‖algebraMap F (w.adicCompletion F) (x : F)‖ < 1`. Use `(NumberField.FinitePlace.norm_lt_one_iff_mem (K := F) (v := w) x).2 hx` as an intermediate fact. Conclude with `this`. Establish `h2` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1`. Establish `h3` using `((j.2.tendsto 0).comp h2)`.
+
+Rewrite `h3` using `[map_zero]`. Establish `h4 : Filter.Tendsto (fun n : ℕ => ‖j.1 (algebraMap F _ (x : F))‖ ^ n) Filter.atTop (nhds 0)`. Use `h3.norm` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_pow, norm_pow]`. Use `tendsto_pow_atTop_nhds_zero_iff.1 h4` as an intermediate fact.
+
+Simplify `this` using `[abs_of_nonneg (norm_nonneg _)]`.
+-/
 private theorem eo_lt (j : Emb l w) (x : 𝓞 F) (hx : x ∈ w.asIdeal) : ‖j.1 (algebraMap F _ (x : F))‖ < 1 := by
   have h1 : ‖algebraMap F (w.adicCompletion F) (x : F)‖ < 1 := by
     have := (NumberField.FinitePlace.norm_lt_one_iff_mem (K := F) (v := w) x).2 hx
@@ -22,6 +29,13 @@ private theorem eo_lt (j : Emb l w) (x : 𝓞 F) (hx : x ∈ w.asIdeal) : ‖j.1
   have := tendsto_pow_atTop_nhds_zero_iff.1 h4
   simpa [abs_of_nonneg (norm_nonneg _)] using this
 
+/- English proof (translation)
+Establish `hmax : (w.asIdeal.under ℤ).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal w.asIdeal`. Establish `hle : w.asIdeal.under ℤ ≤ Ideal.span {(l : ℤ)}`. Introduce `n hn`. Rewrite using `[Ideal.mem_span_singleton]`. Establish `hmem : (algebraMap ℤ (𝓞 F) n) ∈ w.asIdeal` using `hn`.
+
+Establish `h` using `eo_lt j _ hmem`. Establish `e : j.1 (algebraMap F _ ((algebraMap ℤ (𝓞 F) n : 𝓞 F) : F)) = ((n : ℚ_[l]) : PadicAlgCl l)`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, PadicAlgCl.norm_extends]`. Rewrite using `[← PadicInt.norm_int_lt_one_iff_dvd]`.
+
+Simplify `h` using `[PadicInt.norm_def]`. Establish `hne : Ideal.span {(l : ℤ)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `fun hu => (Fact.out : l.Prime).ne_one (by simpa using Int.isUnit_iff_natAbs_eq.1 hu)`. Conclude with `⟨(hmax.eq_of_le hne hle).symm⟩`.
+-/
 private theorem eo_over (j : Emb l w) : w.asIdeal.LiesOver (Ideal.span {(l : ℤ)}) := by
   have hmax : (w.asIdeal.under ℤ).IsMaximal :=
     Ideal.isMaximal_comap_of_isIntegral_of_isMaximal w.asIdeal
@@ -40,6 +54,11 @@ private theorem eo_over (j : Emb l w) : w.asIdeal.LiesOver (Ideal.span {(l : ℤ
     exact fun hu => (Fact.out : l.Prime).ne_one (by simpa using Int.isUnit_iff_natAbs_eq.1 hu)
   exact ⟨(hmax.eq_of_le hne hle).symm⟩
 
+/- English proof (translation)
+Establish `h1 : Continuous fun y : ℚ_[l] => j.1 (φ y)` using `j.2.comp hφ`. Establish `h2 : Continuous (algebraMap ℚ_[l] (Qbar l))` using `continuous_algebraMap ℚ_[l] (Qbar l)`. Establish `key : (fun y => j.1 (φ y)) = algebraMap ℚ_[l] (Qbar l)`. Use `(Padic.denseRange_ratCast l).equalizer h1 h2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `q`.
+
+Simplify using the standard rewrite rules. Conclude with `congrFun key x`.
+-/
 private theorem eo_comp (j : Emb l w) (φ : ℚ_[l] →+* w.adicCompletion F) (hφ : Continuous φ) (x : ℚ_[l]) :
     j.1 (φ x) = algebraMap ℚ_[l] (Qbar l) x := by
   have h1 : Continuous fun y : ℚ_[l] => j.1 (φ y) := j.2.comp hφ
@@ -50,6 +69,17 @@ private theorem eo_comp (j : Emb l w) (φ : ℚ_[l] →+* w.adicCompletion F) (h
     simp
   exact congrFun key x
 
+/- English proof (translation)
+Use `haveI : CharZero k := (algebraMap k K).charZero`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k`. Use `haveI : Algebra.IsAlgebraic k Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Normal k Ω := inferInstance`. Use `haveI : IsGalois k Ω := inferInstance`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `τ`. Use `letI : Algebra K Ω := τ₀.toRingHom.toAlgebra`. Use `haveI : IsScalarTower k K Ω := IsScalarTower.of_algebraMap_eq (fun r => (τ₀.commutes r).symm)`. Set `g` to `τ.liftNormal Ω`.
+
+Use `⟨AlgEquiv.ofBijective g (Algebra.IsAlgebraic.algHom_bijective g), fun x => ?_⟩` and prove the remaining obligations. Use `τ.liftNormal_commutes Ω x` as an intermediate fact. Conclude with `this.symm`. Introduce `y hy`. Establish `hmem : y ∈ IntermediateField.fixedField τ₀.fieldRange.fixingSubgroup`.
+
+Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Rewrite `hf` using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `(hy f (fun x => (hf _ ⟨x, rfl⟩).symm)).symm`. Rewrite `hmem` using `[InfiniteGalois.fixedField_fixingSubgroup, AlgHom.mem_fieldRange]`.
+
+Take `⟨u, hu⟩` from `hmem`. Conclude with `⟨u, hu.symm⟩`.
+-/
 private theorem eo_abs {k K Ω : Type} [Field k] [Field K] [Field Ω] [CharZero K] [Algebra k K] [Algebra k Ω]
     [IsAlgClosure k Ω] (τ₀ : K →ₐ[k] Ω) :
     (∀ τ : K →ₐ[k] Ω, ∃ s : Ω ≃ₐ[k] Ω, ∀ x, τ x = s (τ₀ x)) ∧
@@ -79,6 +109,15 @@ private theorem eo_abs {k K Ω : Type} [Field k] [Field K] [Field Ω] [CharZero 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F _ _ l _ w c hc hne`. Take `⟨τ₀⟩` from `hne`. Use `haveI := eo_over τ₀`. Take `⟨f, φ, -, hφc, -, -, -⟩` from `KStar.Ram.existsUnique_padic_hom w l`. Use `letI : Algebra ℚ_[l] (IsDedekindDomain.HeightOneSpectrum.adicCompletion F w) := φ.toAlgebra`.
+
+Establish `toAlg : ∀ τ : UpperTheory.V.W.Emb l w, ∃ t : IsDedekindDomain.HeightOneSpectrum.adicCompletion F w →ₐ[ℚ_[l]] Formalism.ConjugateSelfDual.Qbar l, ∀ x, t x = τ.1 x` using `fun τ => ⟨AlgHom.mk τ.1 (fun r => eo_comp τ φ hφc r), fun _ => rfl⟩`. Use `haveI : CharZero (IsDedekindDomain.HeightOneSpectrum.adicCompletion F w) := charZero_of_injective_algebraMap (algebraMap F (IsDedekindDomain.HeightOneSpectrum.adicCompletion F w)).injective`. Take `⟨t₀, ht₀⟩` from `toAlg τ₀`. Take `⟨hext, hfix⟩` from `eo_abs t₀`. Take `⟨u, hu⟩` from `hfix (c τ₀) (fun s hs => hc s τ₀ τ₀ (fun x => by`.
+
+Establish `h` using `hs x`. Rewrite using `[ht₀] at h))` and apply the resulting hypothesis. Use `⟨u, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `toAlg τ`. Take `⟨s, hs⟩` from `hext t`.
+
+Establish `h` using `hc s τ₀ τ (fun x => by`. Establish `h'` using `hs x`. Rewrite using `[ht, ht₀] at h')` and apply the resulting hypothesis. Rewrite using `[h, hu, ← hs u, ht]`.
+-/
 theorem UpperTheory.Lit.CharWD.embOrbit :
     EmbOrbit := by
   intro F _ _ l _ w c hc hne

@@ -16,6 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RealZetaSmoothHi
 
+/- English proof (translation)
+Introduce `h D V S M τ`. Take `⟨hC, hN, hU, hI, -, ⟨K, hK⟩, -⟩` from `M.ds τ`. Use `haveI := hC`. Take `⟨v, hv, hv0, hw⟩` from `hK.2.2.2.1`. Establish `hwS : ((‖v‖⁻¹ : ℝ) : ℂ) • v ∈ K` using `K.smul_mem _ hv`.
+
+Establish `hKf : IsKFin (M.ε τ) (M.σ τ) (((‖v‖⁻¹ : ℝ) : ℂ) • v)` using `⟨K, hK.1, hwS, hK.2.1⟩`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `h.smoothVec hU hI hKf (M.fr_unit τ) (M.fr_gram τ)`. Conclude with `Submodule.subset_span hKf`.
+
+Rewrite using `[norm_smul, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.2 hv0)`. Conclude with `(le_sSup hK : K ≤ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)) hwS`. Introduce `θ hθ`. Rewrite using `[map_smul, hw θ hθ, smul_comm]`.
+-/
 theorem exists_smooth_highestUnit : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau), ∃ w : M.H τ, w ∈ M.sm τ ∧ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ ∧ IsHighestUnit (M.ε τ) (M.lam τ) (M.σ τ) w := by
   intro h D V S M τ
   obtain ⟨hC, hN, hU, hI, -, ⟨K, hK⟩, -⟩ := M.ds τ

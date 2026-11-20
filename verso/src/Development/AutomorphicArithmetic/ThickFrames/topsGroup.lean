@@ -9,6 +9,15 @@ import Development.AutomorphicArithmetic.ThickFrames.NotGoodLe
 open Finset UpperTheory.BernoulliSumsFrobeniusOrbits Formalism.G0
 open Classical
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hδ : 0 < δ` using `by rw [hδe]; positivity`. Establish `hN0 : 0 < N` using `lt_of_lt_of_le (by positivity) hN`. Establish `ho0 : 0 < o` using `by linarith`. Establish `hn0 : n0 = N / o` using `by rw [← hn]; field_simp`.
+
+Establish `h1 : x ^ 2 * x ^ eps ≤ δ * x ^ (2 + 8 * eps)`. Rewrite using `[hδe, ← Real.rpow_add hx0, ← Real.rpow_two, ← Real.rpow_add hx0]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx (by linarith)`. Establish `h2 : o ^ 4 ≤ Co ^ 4` using `pow_le_pow_left₀ ho0.le ho 4`. Establish `h3 : 32 * o ^ 4 * x ^ 2 ≤ δ * N`.
+
+Establish `a1` using `mul_le_mul_of_nonneg_left hN hδ.le`. Establish `a2 : x ^ 2 * (64 * o ^ 4) ≤ x ^ 2 * x ^ eps` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : Real.sqrt (2 * δ * N) ≤ δ * N / (4 * o ^ 2 * x)`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_pow, le_div_iff₀ (by positivity)]`. Use `mul_le_mul_of_nonneg_left h3 (by positivity : 0 ≤ δ * N)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem tg_num (x eps Co δ N o n0 : ℝ) (he : 0 < eps) (hx : 1 ≤ x) (hbig : 64 * Co ^ 4 ≤ x ^ eps)
     (hδe : δ = x ^ (-(eps / 8))) (hN : x ^ (2 + 8 * eps) / 2 ≤ N) (ho1 : 1 ≤ o) (ho : o ≤ Co) (hn : o * n0 = N) :
     4 * o * Real.sqrt (2 * δ * N) ≤ x⁻¹ * (δ * n0) := by
@@ -37,6 +46,13 @@ private theorem tg_num (x eps Co δ N o n0 : ℝ) (he : 0 < eps) (hx : 1 ≤ x) 
         mul_le_mul_of_nonneg_left h4 (by positivity)
     _ = _ := by rw [hn0]; field_simp
 
+/- English proof (translation)
+Establish `hc : (univ.filter (fun a : A => a - γ ∈ A0)).card = Nat.card A0`. Establish `e : {a : A // a - γ ∈ A0} ≃ A0` using `{ toFun := fun a => ⟨a.1 - γ, a.2⟩ invFun := fun b => ⟨b.1 + γ, by simp⟩ left_inv := fun a => by ext; simp right_inv := fun b => by ext; simp }`. Rewrite using `[← Nat.card_congr e, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => if γ ∈ A0 then u else v), Finset.sum_const, nsmul_eq_mul, hc, mul_comm]`. Introduce `a ha`.
+
+Rewrite `ha` using `[Finset.mem_filter]`. Establish `hiff : a ∈ A0 ↔ γ ∈ A0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `A0.sub_mem h ha.2` as an intermediate fact.
+
+Simplify using `using this`. Introduce `h`. Use `A0.add_mem ha.2 h` as an intermediate fact. Simplify using `using this`. Simplify using `only [hiff]`.
+-/
 private theorem tg_class_sum (A : Type) [Fintype A] [DecidableEq A] [AddCommGroup A] (A0 : AddSubgroup A)
     (u v : ℝ) (γ : A) :
     ∑ a ∈ univ.filter (fun a : A => a - γ ∈ A0), (if a ∈ A0 then u else v) =
@@ -61,6 +77,25 @@ private theorem tg_class_sum (A : Type) [Fintype A] [DecidableEq A] [AddCommGrou
       simpa using this
   simp only [hiff]
 
+/- English proof (translation)
+Introduce `eps Co Lb he`. Take `⟨Cb, x₀, hCb, hnum⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.orbit_terms eps Co Lb he`. Take `⟨x₁, hx₁⟩` from `Filter.eventually_atTop.1 ((tendsto_rpow_atTop he).eventually_ge_atTop (64 * Co ^ 4))`. Use `⟨Cb, max x₀ (max x₁ 1), hCb, ?_⟩` and prove the remaining obligations. Introduce `x hx A _ _ _ A0 L₂ hlo hhi hidx hL bs hbs PP hp ω hω hPP`.
+
+Establish `hx1 : 1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Establish `hxx1 : x₁ ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hxx0 : x₀ ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hδ : 0 < dE eps x` using `Real.rpow_pos_of_pos hx0 _`.
+
+Establish `hδ1 : dE eps x ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by linarith)`. Establish `hN0 : (0 : ℝ) < Fintype.card A` using `by exact_mod_cast Fintype.card_pos`. Establish `hβ : 0 ≤ Cb * x ^ (-2 : ℝ)` using `by positivity`. Establish `hp1 : ∀ a : A, 3 / 4 * dE eps x ≤ (if a ∈ A0 then dE eps x else 3 / 4 * dE eps x) ∧ (if a ∈ A0 then dE eps x else 3 / 4 * dE eps x) ≤ dE eps x`. Introduce `a`.
+
+Apply the tactic sequence `split_ifs <;> constructor <;> linarith`. Establish `hD : 0 < Real.sqrt (2 * dE eps x * Fintype.card A)` using `Real.sqrt_pos.2 (by positivity)`. Take `⟨T, hT1, hT2⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.select A (A ⧸ A0) ℕ (fun a => (a : A ⧸ A0)) (fun a => if a ∈ A0 then dE eps x else 3 / 4 * dE eps x) (dE eps x) (Cb * x ^ (-2 : ℝ)) (Real.sqrt (2 * dE eps x * Fintype.card A)) PP ω (fun p t T => ¬ Formalism.MainNotions.G.IsGoodOrbit (addOr …`. Introduce `p hpp t`. Establish `hn : ((addOrderOf (hp p) : ℕ) : ℝ) ≤ Co * x ^ hE eps` using `le_trans (Nat.cast_le.mpr addOrderOf_le_card_univ) hhi`.
+
+Take `⟨h1, h2⟩` from `hnum x hxx0 (addOrderOf (hp p)) L₂ (hPP p hpp) hn hL`. Take `⟨i₀, _, _, hsum⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.orbit_sum A (fun a => if a ∈ A0 then dE eps x else 3 / 4 * dE eps x) (bs (hp p) t) (hp p) t (hbs _ _) (fun T => ¬ GoodOrbitIntervalTileCondition (addOrderOf (hp p)) T L₂ (KE eps) (rE eps) (Formalism.MainNotions.G.goodU (dE eps x)) (Formali …`. Establish `hu : 1 ≤ Formalism.MainNotions.G.goodU (dE eps x)` using `Nat.ceil_pos.mpr (by positivity)`. Establish `h3` using `UpperTheory.BernoulliSumsFrobeniusOrbits.not_good_le (fun i => if bs (hp p) t + i • hp p ∈ A0 then dE eps x else 3 / 4 * dE eps x) (dE eps x) (addOrderOf (hp p)) L₂ (KE eps) (rE eps) (Formalism.MainNotions.G.goodU (dE eps x)) (Formalism.MainNotions.G.orbitSmallMultiplicity (rE ep …`. Use `le_trans (le_of_eq hsum) ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm (Cb * x ^ (-2 : ℝ))]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (h3.trans h2) (le_trans (by positivity) (hp1 t).1)) (mul_le_mul_of_nonneg_right (hp1 t).2 hβ))`. Establish `hidx1 : (1 : ℝ) ≤ A0.index`. Conclude with `Nat.one_le_iff_ne_zero.2 AddSubgroup.index_ne_zero_of_finite` after adjusting the coercions. Establish `hmul : (A0.index : ℝ) * Nat.card A0 = Fintype.card A`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `A0.index_mul_card` after adjusting the coercions. Establish `hnumD` using `tg_num x eps Co (dE eps x) (Fintype.card A) A0.index (Nat.card A0) he hx1 (hx₁ x hxx1) rfl hlo hidx1 hidx hmul`. Take `⟨hS1, hS2, hS3⟩` from `UpperTheory.BernoulliSumsFrobeniusOrbits.shares_of_counts A A0 T (dE eps x) x⁻¹ (Real.sqrt (2 * dE eps x * Fintype.card A)) hδ (inv_le_one_of_one_le₀ hx1) hD.le hnumD (by`. Introduce `γ`.
+
+Establish `hc : ∀ a : A, ((a : A ⧸ A0) = (γ : A ⧸ A0)) ↔ a - γ ∈ A0` using `fun a => QuotientAddGroup.eq_iff_sub_mem`. Use `hT1 (γ : A ⧸ A0)` as an intermediate fact. Simplify using `only [hc] at this`. Rewrite using `[← tg_class_sum A A0 (dE eps x) (3 / 4 * dE eps x) γ]`. Use `this)` and compare the differences between its conclusion and the goal.
+
+Use `⟨T, hS1, hS2, fun γ => le_trans (hS3 γ) ?_, hT2⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Rewrite using `[← Real.rpow_neg_one]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith)`.
+-/
 theorem UpperTheory.BernoulliSumsFrobeniusOrbits.topsGroup :
     ∀ eps Co Lb : ℝ, 0 < eps → ∃ Cb x₀ : ℝ, 0 < Cb ∧ ∀ x ≥ x₀,
       ∀ (A : Type) [Fintype A] [DecidableEq A] [AddCommGroup A] (A0 : AddSubgroup A) (L₂ : ℕ),

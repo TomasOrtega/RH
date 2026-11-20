@@ -15,6 +15,11 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.SobClass
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _ Φ hΦ`. Conclude with `hΦ`. Consider the case `cons w l ih`.
+
+Introduce `hl Φ hΦ`. Rewrite using `[wordH_cons]`. Conclude with `GlobalTheory.T.heisenberg_derivative_preserves_schwartz F κ ψ hψ w (hl w (by simp)) _ (ih (fun v hv => hl v (by simp [hv])) Φ hΦ)`.
+-/
 theorem wordH_mem_sch {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) :
     ∀ l : List ((κ → AF F) × (κ → AF F)), (∀ w ∈ l, IsArch w) → ∀ Φ ∈ schA F κ, wordH ψ l Φ ∈ schA F κ := by
   intro l
@@ -25,6 +30,9 @@ theorem wordH_mem_sch {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype 
     rw [wordH_cons]
     exact GlobalTheory.T.heisenberg_derivative_preserves_schwartz F κ ψ hψ w (hl w (by simp)) _ (ih (fun v hv => hl v (by simp [hv])) Φ hΦ)
 
+/- English proof (translation)
+Establish `h1 : M * B ≤ (M * (1 + B)) ^ 2` using `by nlinarith [mul_nonneg (sub_nonneg.2 hM) hB]`. Establish `h2 : t ≤ √(Q * (M * B))` using `Real.le_sqrt_of_sq_le h`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sqrt_bound (Q M B t : ℝ) (hQ : 0 ≤ Q) (hM : 1 ≤ M) (hB : 0 ≤ B) (ht : 0 ≤ t) (h : t ^ 2 ≤ Q * (M * B)) :
     t ≤ √Q * (M * (1 + B)) := by
   have h1 : M * B ≤ (M * (1 + B)) ^ 2 := by nlinarith [mul_nonneg (sub_nonneg.2 hM) hB]
@@ -36,6 +44,25 @@ theorem sqrt_bound (Q M B t : ℝ) (hQ : 0 ≤ Q) (hM : 1 ≤ M) (hB : 0 ≤ B) 
         calc √(M * B) ≤ √((M * (1 + B)) ^ 2) := Real.sqrt_le_sqrt h1
           _ = M * (1 + B) := Real.sqrt_sq (by nlinarith)
 
+/- English proof (translation)
+Introduce `F _ _ κ _ N ψ hψ`. Take `⟨μ, hμ, a, Cb, hB⟩` from `GlobalTheory.T.measurable_periodic_arch_restriction F κ`. Take `⟨Lw, K, hLw, hW⟩` from `GlobalTheory.T.schwartz_polynomial_decay_words F κ ψ hψ N`. Take `⟨L, D, Cs, hL, hS⟩` from `GlobalTheory.T.sobolev_pointwise_bound_words F κ ψ hψ`. Use `⟨μ, hμ, D + N, a, max K 0 * Lw.card * √(max Cs 0 * L.card * max Cb 0), fun Ψ hΨ m hm hper B hB0 hwords x => ?_⟩` and prove the remaining obligations.
+
+Establish `hm1 : (1 : ℝ) ≤ (m : ℝ) ^ a` using `one_le_pow₀ (by exact_mod_cast hm)`. Establish `hQ : 0 ≤ max Cs 0 * L.card * max Cb 0` using `by positivity`. Establish `hterm : ∀ l ∈ Lw, ‖wordH ψ l Ψ x‖ ≤ √(max Cs 0 * L.card * max Cb 0) * ((m : ℝ) ^ a * (1 + B))`. Introduce `l hl`. Establish `hmem : wordH ψ l Ψ ∈ schA F κ` using `wordH_mem_sch ψ hψ l (fun w hw => ((hLw l hl).2 w hw).1) Ψ hΨ`.
+
+Establish `h2 : ∀ l' ∈ L, ∫⁻ y : κ → mixedEmbedding.mixedSpace F, ‖wordH ψ l' (wordH ψ l Ψ) (x + archInc F y)‖ₑ ^ 2 ≤ ENNReal.ofReal (max Cb 0 * (m : ℝ) ^ a * B)`. Introduce `l' hl'`. Rewrite using `[← wordH_append]`. Establish `hu : ∀ w ∈ l' ++ l, IsArchUnit w`. Introduce `w hw`.
+
+Break down `List.mem_append.1 hw with hw | hw` into its components or cases. Conclude with `(hL l' hl').2 w hw`. Conclude with `(hLw l hl).2 w hw`. Establish `hmem' : wordH ψ (l' ++ l) Ψ ∈ schA F κ` using `wordH_mem_sch ψ hψ _ (fun w hw => (hu w hw).1) Ψ hΨ`. Establish `hper' : PerM F m (wordH ψ (l' ++ l) Ψ)` using `wordH_perM ψ hper _ (fun w hw => (hu w hw).1)`.
+
+Establish `hmeas : Measurable fun y : κ → mixedEmbedding.mixedSpace F => ‖wordH ψ (l' ++ l) Ψ (x + archInc F y)‖ₑ ^ 2` using `(continuous_slice hmem' x).measurable.enorm.pow_const 2`. Establish `h5` using `hB m hm (fun z => ‖wordH ψ (l' ++ l) Ψ z‖ₑ ^ 2) (fun z a' ha => by rw [hper' z a' ha]) x hmeas`. Establish `hw` using `hwords (l' ++ l) (by rw [List.length_append]; have := (hL l' hl').1; have := (hLw l hl).1; omega) hu`. Use `h5.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `le_max_left _ _`. Use `_ = ENNReal.ofReal (max Cb 0 * (m : ℝ) ^ a * B) := (ENNReal.ofReal_mul (by positivity)).symm`. Establish `h3 : ‖wordH ψ l Ψ x‖ₑ ^ 2 ≤ ENNReal.ofReal (max Cs 0 * L.card * max Cb 0 * ((m : ℝ) ^ a * B))`. Use `(hS _ hmem x).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `le_max_left _ _`. Conclude with `h2 l' hl'`. Use `_ = ENNReal.ofReal (max Cs 0 * L.card * max Cb 0 * ((m : ℝ) ^ a * B)) := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ‖wordH ψ l Ψ x‖ ^ 2 ≤ max Cs 0 * L.card * max Cb 0 * ((m : ℝ) ^ a * B)`. Rewrite `h3` using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h3`. Conclude with `sqrt_bound _ _ _ _ hQ hm1 hB0 (norm_nonneg _) (by simpa [mul_assoc] using h4)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sob_class : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (N : ℕ) (ψ : AddChar (AF F) ℂ), IsStd ψ → ∃ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ ∧ ∃ (ℓ a : ℕ) (C : ℝ), ∀ Ψ ∈ schA F κ, ∀ m : ℕ, 1 ≤ m → (∀ x a' : κ → AF F, (∀ i, evI F (a' i) = 0 ∧ ∀ v, evFin F v (a' i) ∈ v.adicCompletionIntegers F) → Ψ (x + (m : AF F) • a') = Ψ x) → ∀ B : ℝ, 0 ≤ B → (∀ l : List ((κ → AF F) × (κ → AF F)), l.length ≤ ℓ → (∀ w ∈ l, IsArchUnit w) → ∫⁻ x, ‖wordH ψ l Ψ x‖ₑ ^ 2 ∂μ ≤ ENNReal.ofReal B) → ∀ x : κ → AF F, ‖Ψ x‖ * (1 + ∑ i, ‖evI F (x i)‖) ^ N ≤ C * (m : ℝ) ^ a * (1 + B) := by
   intro F _ _ κ _ N ψ hψ
   obtain ⟨μ, hμ, a, Cb, hB⟩ := GlobalTheory.T.measurable_periodic_arch_restriction F κ

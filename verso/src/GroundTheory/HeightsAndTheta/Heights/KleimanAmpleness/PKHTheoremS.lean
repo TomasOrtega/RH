@@ -21,21 +21,39 @@ def FinVanAt (S : Type) [CommRing S] (K : Type) [Fintype K] [LinearOrder K] (ι 
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type}
   [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)]
 
+/- English proof (translation)
+The claim follows from `Module.finite_def.2 (by rw [Subsingleton.elim (⊤ : Submodule S X) ⊥]; exact Submodule.fg_bot)`.
+-/
 theorem finite_of_subsingleton (X : Type) [AddCommGroup X] [Module S X] (h : Subsingleton X) :
     Module.Finite S X :=
   Module.finite_def.2 (by rw [Subsingleton.elim (⊤ : Submodule S X) ⊥]; exact Submodule.fg_bot)
 
+/- English proof (translation)
+Establish `h1 : |e k| ≤ ∑ l, |e l|` using `Finset.single_le_sum (fun l _ => abs_nonneg (e l)) (Finset.mem_univ k)`. Establish `h2` using `neg_abs_le (e k)`. Establish `h3` using `h k`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_nonneg_of_le (e c : K → ℤ) (h : ∀ k, ∑ l, |e l| ≤ c k) (k : K) : 0 ≤ c k + e k := by
   have h1 : |e k| ≤ ∑ l, |e l| := Finset.single_le_sum (fun l _ => abs_nonneg (e l)) (Finset.mem_univ k)
   have h2 := neg_abs_le (e k)
   have h3 := h k
   linarith
 
+/- English proof (translation)
+Introduce `N _ _ _ _ 𝓝 _ _`. Establish `h` using `fun c => KHCechTop.full S K ι N 𝓝 c n hn`. Conclude with `⟨fun c => finite_of_subsingleton _ (h c), fun _ => ⟨0, fun c _ => h c⟩⟩`.
+-/
 theorem finVanAt_top (n : ℕ) (hn : ∑ k, (Fintype.card (ι k) - 1) < n) : FinVanAt S K ι n := by
   intro N _ _ _ _ 𝓝 _ _
   have h := fun c => KHCechTop.full S K ι N 𝓝 c n hn
   exact ⟨fun c => finite_of_subsingleton _ (h c), fun _ => ⟨0, fun c _ => h c⟩⟩
 
+/- English proof (translation)
+Introduce `N _ _ _ _ 𝓝 hfin hgr`. Use `devissage hPF hS (fun (N : Type) [AddCommGroup N] [Module (MRingOver S ι) N] [Module S N] [IsScalarTower S (MRingOver S ι) N] (𝓝 : (K → ℤ) → Submodule S N) => (∀ c : K → ℤ, Module.Finite S (KH.cechHc ι 𝓝 c n)) ∧ (1 ≤ n → ∃ c₀ : ℤ, ∀ c : K → ℤ, (∀ k, c₀ ≤ c k) → Subsingleton (KH.c …` and prove the remaining obligations. Introduce `M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h hg' hg hg'' hgg hhg hinj hsurj hex ⟨f', v'⟩ ⟨f'', v''⟩`. Establish `hs` using `hSES S K ι M' M M'' 𝓜' 𝓜 𝓜'' g h hg' hg hg'' hgg hhg hinj hsurj hex`. Use `⟨fun c => (hs c n).2.2.1 hS (f' c) (f'' c), fun hn => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c₁, h₁⟩` from `v' hn`. Take `⟨c₂, h₂⟩` from `v'' hn`. Conclude with `⟨max c₁ c₂, fun c hc => (hs c n).1 (h₁ c fun k => le_of_max_le_left (hc k)) (h₂ c fun k => le_of_max_le_right (hc k))⟩`. Introduce `𝔭 _ hhom e`. Take `⟨hgN, hgF, hgQ, hgi, hgq, hinj, hsurj, hex⟩` from `quotSES 𝔭 hhom e`.
+
+Establish `hs` using `hSES S K ι (idealSub 𝔭) (MRingOver S ι ⧸ (⊥ : Ideal (MRingOver S ι))) (MRingOver S ι ⧸ 𝔭) _ (fun d => KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (d + e)) (fun d => KH.quotPart S 𝔭 (d + e)) (idealSub 𝔭).subtype (quotMap 𝔭) hgN hgF hgQ hgi hgq hinj hsurj hex`. Take `⟨fN, vN⟩` from `ih (idealSub 𝔭) _ (idealSub_finite hS 𝔭) hgN`. Use `⟨fun c => (hs c n).2.2.2.1 hS ((hFree S K ι e).1 c n) (fN c), fun hn => ?_⟩` and prove the remaining obligations. Take `⟨c₁, h₁⟩` from `vN (Nat.le_succ_of_le hn)`. Use `⟨max c₁ (∑ l, |e l|), fun c hc => (hs c n).2.1 ?_ (h₁ c fun k => le_of_max_le_left (hc k))⟩` and prove the remaining obligations.
+
+Conclude with `(hFree S K ι e).2.1 c n hn (add_nonneg_of_le e c fun k => le_of_max_le_right (hc k))`.
+-/
 theorem finVanAt_step (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatement)
     (hPF : KH.PrimeFiltStatement) (hS : IsNoetherianRing S) (n : ℕ) (ih : FinVanAt S K ι (n + 1)) :
     FinVanAt S K ι n := by
@@ -63,6 +81,11 @@ theorem finVanAt_step (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESState
     exact (hFree S K ι e).2.1 c n hn
       (add_nonneg_of_le e c fun k => le_of_max_le_right (hc k))
 
+/- English proof (translation)
+Establish `key : ∀ t n : ℕ, ∑ k, (Fintype.card (ι k) - 1) < n + t → FinVanAt S K ι n`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact fun n h => finVanAt_top n h`. Consider the case `succ t ih => exact fun n h => finVanAt_step hFree hSES hPF hS n (ih (n + 1) (by omega))`.
+
+Conclude with `key (∑ k, (Fintype.card (ι k) - 1) + 1) n (by omega)`.
+-/
 theorem finVanAt_all (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatement)
     (hPF : KH.PrimeFiltStatement) (hS : IsNoetherianRing S) (n : ℕ) : FinVanAt S K ι n := by
   have key : ∀ t n : ℕ, ∑ k, (Fintype.card (ι k) - 1) < n + t → FinVanAt S K ι n := by
@@ -72,6 +95,21 @@ theorem finVanAt_all (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatem
     | succ t ih => exact fun n h => finVanAt_step hFree hSES hPF hS n (ih (n + 1) (by omega))
   exact key (∑ k, (Fintype.card (ι k) - 1) + 1) n (by omega)
 
+/- English proof (translation)
+Use `devissage hPF hS (fun (N : Type) [AddCommGroup N] [Module (MRingOver S ι) N] [Module S N] [IsScalarTower S (MRingOver S ι) N] (𝓝 : (K → ℤ) → Submodule S N) => ∃ c₀ : ℤ, ∀ c : K → ℤ, (∀ k, c₀ ≤ c k) → ∀ z ∈ KH.cechZc ι 𝓝 c 0, ∃ m ∈ 𝓝 c, ∀ I, z I = LocalizedModule.mk m 1) ⟨0, fun _ …` and prove the remaining obligations. Introduce `M' _ _ _ _ M _ _ _ _ M'' _ _ _ _ 𝓜' 𝓜 𝓜'' g h hg' hg hg'' hgg hhg hinj hsurj hex ⟨a, ha⟩ ⟨b, hb⟩`. Establish `hs` using `hSES S K ι M' M M'' 𝓜' 𝓜 𝓜'' g h hg' hg hg'' hgg hhg hinj hsurj hex`. Use `⟨max a b, fun c hc z hz => ?_⟩` and prove the remaining obligations. Take `⟨m'', hm'', hz''⟩` from `hb c (fun k => le_of_max_le_right (hc k)) _ (cechMap_mem_cechZc hhg hz)`.
+
+Take `⟨m, hm, rfl⟩` from `exists_mem_of_surjective hg hg'' hhg hsurj hm''`. Establish `hw : z - (fun _ => LocalizedModule.mk m 1) ∈ KH.cechZc ι 𝓜 c 0` using `sub_mem hz (const_mem_cechZc hm)`. Establish `hw0 : KH.cechMap S ι h 0 (z - fun _ => LocalizedModule.mk m 1) = 0`. Use function extensionality and compare the values at `I`. Rewrite using `[map_sub, Pi.sub_apply, hz'' I]`.
+
+Use `show LocalizedModule.mk (h m) 1 - lmap (KH.cellMon S I.1) h (LocalizedModule.mk m 1) = 0`. Rewrite using `[lmap_mk, sub_self]`. Take `⟨z', hz', hgz'⟩` from `(hs c 0).2.2.2.2.2 _ hw hw0`. Take `⟨m', hm', hz'I⟩` from `ha c (fun k => le_of_max_le_left (hc k)) z' hz'`. Use `⟨g m' + m, add_mem (hgg c m' hm') hm, fun I => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : z I - LocalizedModule.mk m 1 = LocalizedModule.mk (g m') 1`. Use `congrFun hgz' I` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply]`. Rewrite using `[← this]`. Use `show lmap (KH.cellMon S I.1) g (z' I) = _`.
+
+Rewrite using `[hz'I I, lmap_mk]`. Combine the equalities or inequalities in the displayed calculation. Introduce `𝔭 _ hhom e`. Take `⟨hgN, hgF, hgQ, hgi, hgq, hinj, hsurj, hex⟩` from `quotSES 𝔭 hhom e`. Establish `hs` using `hSES S K ι (idealSub 𝔭) (MRingOver S ι ⧸ (⊥ : Ideal (MRingOver S ι))) (MRingOver S ι ⧸ 𝔭) _ (fun d => KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (d + e)) (fun d => KH.quotPart S 𝔭 (d + e)) (idealSub 𝔭).subtype (quotMap 𝔭) hgN hgF hgQ hgi hgq hinj hsurj hex`.
+
+Take `⟨c₁, h₁⟩` from `(finVanAt_all hFree hSES hPF hS 1 (idealSub 𝔭) _ (idealSub_finite hS 𝔭) hgN).2 le_rfl`. Use `⟨max c₁ (∑ l, |e l|), fun c hc z hz => ?_⟩` and prove the remaining obligations. Take `⟨zF, hzF, rfl⟩` from `(hs c 0).2.2.2.2.1 (h₁ c fun k => le_of_max_le_left (hc k)) z hz`. Take `⟨f, hf, hfI⟩` from `(hFree S K ι e).2.2 c (add_nonneg_of_le e c fun k => le_of_max_le_right (hc k)) zF hzF`. Conclude with `⟨quotMap 𝔭 f, hgq c f hf, fun I => by show lmap (KH.cellMon S I.1) (quotMap 𝔭) (zF I) = _`.
+
+Rewrite using `[hfI I, lmap_mk]⟩`.
+-/
 theorem onto (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatement)
     (hPF : KH.PrimeFiltStatement) (hS : IsNoetherianRing S)
     (M : Type) [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M] [IsScalarTower S (MRingOver S ι) M]
@@ -120,6 +158,31 @@ theorem onto (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatement)
 
 end KHTheoremS
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ M _ _ _ _ 𝓜 hS hfin hgr`. Establish `hFV` using `fun n => KHTheoremS.finVanAt_all (ι := ι) hFree hSES hPF hS n M 𝓜 hfin hgr`. Take `⟨c₃, h₃⟩` from `KHTheoremS.onto hFree hSES hPF hS M 𝓜 hfin hgr`. Use `⟨fun c n => (hFV n).1 c, ?_, ⟨c₃, h₃⟩, ?_⟩` and prove the remaining obligations. Establish `hb : ∀ B : ℕ, ∃ c₀ : ℤ, ∀ (c : K → ℤ) (n : ℕ), 1 ≤ n → n ≤ B → (∀ k, c₀ ≤ c k) → Subsingleton (KH.cechHc ι 𝓜 c n)`.
+
+Introduce `B`. Proceed by induction on `B with`. Consider the case `zero => exact ⟨0, fun c n h1 h2 _ => absurd h2 (by omega)⟩`. Consider the case `succ B ih`. Take `⟨c₀, h₀⟩` from `ih`.
+
+Take `⟨c₁, h₁⟩` from `(hFV (B + 1)).2 (by omega)`. Use `⟨max c₀ c₁, fun c n h1 h2 hc => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge n (B + 1) with h | h` into its components or cases. Conclude with `h₀ c n h1 (by omega) fun k => le_of_max_le_left (hc k)`. Rewrite using `[show n = B + 1 by omega]`.
+
+Conclude with `h₁ c fun k => le_of_max_le_right (hc k)`. Take `⟨c₀, h₀⟩` from `hb (∑ k, (Fintype.card (ι k) - 1))`. Use `⟨c₀, fun c n h1 hc => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge (∑ k, (Fintype.card (ι k) - 1)) n with h | h` into its components or cases. Conclude with `KHCechTop.full S K ι M 𝓜 c n h`.
+
+Conclude with `h₀ c n h1 h hc`. Introduce `d`. Establish `: IsNoetherianRing (MRingOver S ι)` using `inferInstance`. Set `c₁ : ℕ` to `(c₃ + ∑ k, |d k|).toNat`. Set `diag : M →ₗ[MRingOver S ι] KH.CechC S ι M 0` to `LinearMap.pi fun I => LocalizedModule.mkLinearMap (KH.cellMon S I.1) M`.
+
+Set `Z : ℕ → Submodule S (KH.CechC S ι M 0)` to `fun c => KH.cechZc ι 𝓜 (d + fun _ => (c : ℤ)) 0`. Establish `hZfg : ∀ c, (Submodule.span (MRingOver S ι) (Z c : Set (KH.CechC S ι M 0))).FG`. Introduce `c`. Establish `h0 : (KH.cechBc ι 𝓜 (d + fun _ => (c : ℤ)) 0).comap (Z c).subtype = ⊥` using `by show (⊥ : Submodule S _).comap (Z c).subtype = ⊥`. Rewrite using `[Submodule.comap_bot, Submodule.ker_subtype]`.
+
+Establish `hfinZ : Module.Finite S (Z c)`. Use `(hFV 0).1 (d + fun _ => (c : ℤ))` as an intermediate fact. Conclude with `Module.Finite.equiv (Submodule.quotEquivOfEqBot _ h0)`. Take `⟨s, hs⟩` from `Module.Finite.iff_fg.mp hfinZ`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hs, Submodule.span_span_of_tower]`. Establish `hle : Submodule.span (MRingOver S ι) (⋃ c : ℕ, (Z c : Set (KH.CechC S ι M 0))) ≤ (⨆ c : Fin c₁, Submodule.span (MRingOver S ι) (Z c : Set (KH.CechC S ι M 0))) ⊔ LinearMap.range diag`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Take `⟨c, hzc⟩` from `Set.mem_iUnion.mp hz`.
+
+Break down `Nat.lt_or_ge c c₁ with h | h` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.mem_iSup_of_mem (⟨c, h⟩ : Fin c₁) (Submodule.subset_span hzc))`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Establish `hc : ∀ k, c₃ ≤ d k + (c : ℤ)`. Introduce `k`.
+
+Establish `h1 : |d k| ≤ ∑ l, |d l|` using `Finset.single_le_sum (fun l _ => abs_nonneg (d l)) (Finset.mem_univ k)`. Establish `h2` using `neg_abs_le (d k)`. Establish `h3 : c₃ + ∑ l, |d l| ≤ (c : ℤ)`. Use `Int.self_le_toNat (c₃ + ∑ l, |d l|)` as an intermediate fact. Establish `h4 : ((c₁ : ℕ) : ℤ) ≤ (c : ℤ)` using `by exact_mod_cast h`.
+
+Simplify using `only [c₁] at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, -, hm⟩` from `h₃ _ (fun k => hc k) z hzc`. Conclude with `⟨m, funext fun I => (hm I).symm⟩`.
+
+Use `Submodule.FG.of_le (Submodule.FG.sup (Submodule.fg_iSup (fun c : Fin c₁ => Submodule.span (MRingOver S ι) (Z c : Set (KH.CechC S ι M 0))) fun c => hZfg c) ?_) hle` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map diag`.
+-/
 theorem KHTheoremS.proof (hFree : KH.TheoremSFreeStatement) (hSES : KH.CechSESStatement)
     (hPF : KH.PrimeFiltStatement) : KH.TheoremSStatement := by
   intro S _ K _ _ ι _ _ M _ _ _ _ 𝓜 hS hfin hgr

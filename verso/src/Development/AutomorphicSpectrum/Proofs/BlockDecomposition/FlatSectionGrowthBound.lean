@@ -9,6 +9,17 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.CompanionTheory.EisTerm
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hf.cont.continuousOn`. Use `⟨C, fun s x => ?_⟩` and prove the remaining obligations. Take `⟨p, t, hp, k, hk, rfl⟩` from `hH.iwa x`. Establish `hpos` using `ha (p * k)`. Establish `hval` using `hH.val p t hp k hk`.
+
+Establish `hlaw` using `hf.law p t k hp`. Establish `hfk : ‖f (p * k)‖ = a (p * k) ^ (s₁.re + (n : ℝ) / 2) * ‖f k‖`. Establish `h1 : ‖(χ (Matrix.GeneralLinearGroup.det t) : ℂ)‖ = 1` using `by first`. Consider the case `exact Circle.norm_coe _`. Consider the case `exact Circle.abs_coe _`.
+
+Consider the case `simp`. Consider the case `exact mem_sphere_zero_iff_norm.mp (χ (Matrix.GeneralLinearGroup.det t)).2`. Rewrite using `[hlaw, ← hval, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos, h1, one_mul]`. Use `congr 2`. Simplify using the standard rewrite rules.
+
+Establish `e1 : a (p * k) ^ (s.re + (n : ℝ) / 2) = a (p * k) ^ ((s - s₁).re) * a (p * k) ^ (s₁.re + (n : ℝ) / 2)`. Rewrite using `[← Real.rpow_add hpos]`. Use `congr 1`. Rewrite using `[Complex.sub_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show ‖((a (p * k) : ℝ) : ℂ) ^ (s - s₁) * f (p * k)‖ ≤ _`. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hpos, hfk, e1]`. Establish `h0 : 0 ≤ a (p * k) ^ ((s - s₁).re) * a (p * k) ^ (s₁.re + (n : ℝ) / 2)` using `mul_nonneg (Real.rpow_nonneg hpos.le _) (Real.rpow_nonneg hpos.le _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem flat_norm_le_height_rpow {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n} (K : Subgroup (G2 σ Y))
     (a : G2 σ Y → ℝ) (hK : IsCompact (K : Set (G2 σ Y))) (hH : IsHgt K a) (ha : ∀ x, 0 < a x)

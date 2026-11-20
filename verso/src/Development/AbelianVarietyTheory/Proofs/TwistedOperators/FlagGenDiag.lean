@@ -18,6 +18,9 @@ section Rescale
 
 variable {S S₀ : HSp D} {ρ : ℕ}
 
+/- English proof (translation)
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem sandwich {m n : ℕ} (A : Matrix (Fin S.rank) (Fin m) D.host.E) (B : Matrix (Fin S.rank) (Fin n) D.host.E)
     (P : Matrix (Fin m) (Fin m) D.host.E) (Q : Matrix (Fin n) (Fin n) D.host.E) :
     (A * P)ᴴ * S.gram * (B * Q) = Pᴴ * (Aᴴ * S.gram * B) * Q := by
@@ -40,6 +43,11 @@ def diagDec (d : HypDec S S₀ ρ) (l : Fin ρ → D.host.E) (hl : ∀ a, l a �
   i₀e' := by rw [← Matrix.mul_assoc, d.i₀e', Matrix.zero_mul]
   rank_add := d.rank_add
 
+/- English proof (translation)
+Rewrite `hx` using `[conjTranspose_mul, diagonal_conjTranspose, Matrix.mul_assoc, ← mulVec_mulVec]`. Use function extensionality and compare the values at `j`. Use `congrFun hx j` as an intermediate fact. Rewrite `this` using `[mulVec_diagonal]`. Simplify using `only [Pi.zero_apply, Pi.star_apply, mul_eq_zero, star_eq_zero] at this`.
+
+Break down `this with h | h` into its components or cases. Conclude with `absurd h (hl j)`. Conclude with `h`.
+-/
 theorem perp_diag {e : Matrix (Fin S.rank) (Fin ρ) D.host.E} (l : Fin ρ → D.host.E) (hl : ∀ a, l a ≠ 0)
     (x : Fin S.rank → D.host.E) (hx : ((e * diagonal l)ᴴ * S.gram).mulVec x = 0) : (eᴴ * S.gram).mulVec x = 0 := by
   rw [conjTranspose_mul, diagonal_conjTranspose, Matrix.mul_assoc, ← mulVec_mulVec] at hx
@@ -51,6 +59,17 @@ theorem perp_diag {e : Matrix (Fin S.rank) (Fin ρ) D.host.E} (l : Fin ρ → D.
   · exact absurd h (hl j)
   · exact h
 
+/- English proof (translation)
+Establish `hmv : ∀ a : Fin ρ → AE D, ((e * diagonal l).map (incA D)).mulVec (fun j => incA D (l j)⁻¹ * a j) = (e.map (incA D)).mulVec a` using `fun a => by`. Use function extensionality and compare the values at `k`. Simplify using `only [mulVec, dotProduct, Matrix.map_apply, mul_diagonal]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, ← mul_assoc (incA D (l j)), ← map_mul, mul_inv_cancel₀ (hl j), map_one, one_mul]`.
+
+Use `⟨fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha0, ha⟩` from `hg.1 i`. Use `⟨fun j => incA D (l j)⁻¹ * (incA D (l i) * a j), fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `show incA D (l j)⁻¹ * (incA D (l i) * a j) = 0`. Rewrite using `[ha0 j hj, mul_zero, mul_zero]`.
+
+Establish `hcol : (ratV fun k => (e * diagonal l) k i) = incA D (l i) • ratV fun k => e k i`. Use function extensionality and compare the values at `k`. Use `show incA D ((e * diagonal l) k i) = incA D (l i) * incA D (e k i)`. Rewrite using `[mul_diagonal, map_mul, mul_comm]`. Rewrite using `[hcol, mulVec_smul, ha, ← mulVec_smul, ← hmv]`.
+
+Both sides reduce to the same expression. Establish `h1 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (e * diagonal l) = (e * diagonal l)ᴴ` using `rfl`. Establish `h2 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) e = eᴴ` using `rfl`. Rewrite `hx` using `[h1]`. Take `⟨a, ha⟩` from `hg.2 x (by rw [h2]; exact perp_diag l hl x hx)`.
+
+Conclude with `⟨_, ha.trans (hmv a).symm⟩`.
+-/
 theorem flagGen_diag {e : Matrix (Fin S.rank) (Fin ρ) D.host.E} (l : Fin ρ → D.host.E) (hl : ∀ a, l a ≠ 0) (g : GA D S)
     (hg : (∀ i : Fin ρ, ∃ a : Fin ρ → AE D, (∀ j, i ≤ j → a j = 0) ∧
       (subOne S g).mulVec (ratV fun k => e k i) = (e.map (incA D)).mulVec a) ∧
@@ -84,6 +103,13 @@ theorem flagGen_diag {e : Matrix (Fin S.rank) (Fin ρ) D.host.E} (l : Fin ρ →
     obtain ⟨a, ha⟩ := hg.2 x (by rw [h2]; exact perp_diag l hl x hx)
     exact ⟨_, ha.trans (hmv a).symm⟩
 
+/- English proof (translation)
+Establish `hl' : ∀ a, (l a)⁻¹ ≠ 0` using `fun a => inv_ne_zero (hl a)`. Establish `e0 : diagonal l * diagonal (fun a => (l a)⁻¹) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Conclude with `mul_inv_cancel₀ (hl a)`. Establish `e1 : e * diagonal l * diagonal (fun a => (l a)⁻¹) = e`. Rewrite using `[Matrix.mul_assoc, e0, Matrix.mul_one]`. Unfold `NFlag`. Use `congr 1`.
+
+Use extensionality with `g`. Use `⟨fun h => ?_, fun h => flagGen_diag l hl g h⟩` and prove the remaining obligations. Use `flagGen_diag (e := e * diagonal l) (fun a => (l a)⁻¹) hl' g h` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis.
+-/
 theorem nFlag_diag (e : Matrix (Fin S.rank) (Fin ρ) D.host.E) (l : Fin ρ → D.host.E) (hl : ∀ a, l a ≠ 0) :
     NFlag S (e * diagonal l) = NFlag S e := by
   have hl' : ∀ a, (l a)⁻¹ ≠ 0 := fun a => inv_ne_zero (hl a)
@@ -105,6 +131,9 @@ def trMeas {S : HSp D} {N N' : Subgroup (GA D S)} (h : N = N') (ν : Measure N) 
 
 def trSet {S : HSp D} {N N' : Subgroup (GA D S)} (h : N = N') (𝓝 : Set N) : Set N' := h ▸ 𝓝
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hu`.
+-/
 theorem isUnit_trans {S : HSp D} {N N' : Subgroup (GA D S)} (h : N = N') (ν : Measure N) (𝓝 : Set N)
     (hu : ν.IsHaarMeasure ∧ IsFundamentalDomain ((GQ S).subgroupOf N) 𝓝 ν ∧ ν 𝓝 = 1) :
     (trMeas h ν).IsHaarMeasure ∧ IsFundamentalDomain ((GQ S).subgroupOf N') (trSet h 𝓝) (trMeas h ν) ∧
@@ -131,6 +160,9 @@ noncomputable def splitFam {S : Arrow T → Type} {X Y : Node} {p : Path T X Y} 
   | _, .nil, d => (d, ())
   | _, .snoc _ q, d => ((splitFam q d.1).1, ((splitFam q d.1).2, d.2))
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, h => ⟨h, trivial⟩ | _, .snoc _ q, d, h => ⟨(all_splitFam P q d.1 h.1).1, (all_splitFam P q d.1 h.1).2, h.2⟩`.
+-/
 theorem all_splitFam {S : Arrow T → Type} (P : ∀ a, S a → Prop) {X Y : Node} {p : Path T X Y} :
     ∀ {Z : Node} (q : Path T Y Z) (d : (p.comp q).Fam S), Path.Fam.All P d →
       Path.Fam.All P (splitFam q d).1 ∧ Path.Fam.All P (splitFam q d).2
@@ -143,6 +175,9 @@ noncomputable def getD {S : Arrow T → Type} (t : T) (i : ℕ) : ∀ (n : ℕ),
     if hj : j < n then getD t i n (splitFam (p := Path.one (.down t i n)) (downPath t i n) d).2 j hj
     else (show n = j by omega) ▸ (splitFam (p := Path.one (.down t i n)) (downPath t i n) d).1.2
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, h => absurd h (Nat.not_lt_zero _) | n + 1, d, hd, j, h => by have hs := all_splitFam P (p := Path.one (.down t i n)) (downPath t i n) d hd unfold getD split_ifs with hj · exact getD_all P t i n _ hs.2 j hj · obtain rfl : n = j := by omega exact hs.1.2`.
+-/
 theorem getD_all {S : Arrow T → Type} (P : ∀ a, S a → Prop) (t : T) (i : ℕ) :
     ∀ (n : ℕ) (d : (downPath t i n).Fam S), Path.Fam.All P d → ∀ j (h : j < n), P (.down t i j) (getD t i n d j h)
   | 0, _, _, _, h => absurd h (Nat.not_lt_zero _)

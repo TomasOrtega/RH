@@ -3,11 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype]`. Use `Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem card_lt' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 < p.2} = n.choose 2 := by
   rw [Fintype.card_subtype]
   have := Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← card_lt' n]`. Establish `e : {p : Fin n × Fin n // p.1 ≤ p.2} ≃ Fin n ⊕ {p : Fin n × Fin n // p.1 < p.2}` using `{ toFun := fun p => if h : p.1.1 < p.1.2 then .inr ⟨p.1, h⟩ else .inl p.1.1 invFun := Sum.elim (fun i => ⟨(i, i), le_rfl⟩) fun p => ⟨p.1, p.2.le⟩ left_inv := fun p => by`. Distinguish the cases in `h : p.1.1 < p.1.2`. Simplify using `[h]`. Simplify using `only [h, dite_false, Sum.elim_inl]`.
+
+Conclude with `Subtype.ext (Prod.ext rfl (le_antisymm p.2 (not_lt.1 h)))`. Use `right_inv := by`. Introduce and unpack `(i | p)`. Simplify using the standard rewrite rules. Simplify using `[p.2] }`.
+
+Rewrite using `[Fintype.card_congr e, Fintype.card_sum, Fintype.card_fin]`.
+-/
 private theorem card_le' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 ≤ p.2} = n + n.choose 2 := by
   rw [← card_lt' n]
   have e : {p : Fin n × Fin n // p.1 ≤ p.2} ≃ Fin n ⊕ {p : Fin n × Fin n // p.1 < p.2} :=
@@ -24,12 +34,23 @@ private theorem card_le' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 ≤
         · simp [p.2] }
   rw [Fintype.card_congr e, Fintype.card_sum, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 private theorem red_mul {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A * B) = red m A * red m B := Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private theorem red_one {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) : red m (1 : Matrix (Fin n) (Fin n) O) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[← card_le', ← Nat.card_eq_fintype_card, ← Nat.card_fun]`. Conclude with `Nat.card_congr { toFun := fun Z p => Z.1 p.1.1 p.1.2 invFun := fun f => ⟨Matrix.of fun i j => if h : i ≤ j then f ⟨(i, j), h⟩ else 0, fun i j h => by simp [not_le.2 h]⟩ left_inv := fun Z => Subtype.ext (Matrix.ext fun i j => by`. Distinguish the cases in `h : i ≤ j`. Simplify using `[h]`. Simplify using `[h, Z.2 i j (not_le.1 h)])`.
+
+Use `right_inv := fun f => funext fun p => by simp [p.2] }`.
+-/
 private theorem card_up (X : Type) [Zero X] (n : ℕ) :
     Nat.card {Z : Matrix (Fin n) (Fin n) X // ∀ i j, j < i → Z i j = 0} = Nat.card X ^ (n + n.choose 2) := by
   rw [← card_le', ← Nat.card_eq_fintype_card, ← Nat.card_fun]
@@ -42,6 +63,15 @@ private theorem card_up (X : Type) [Zero X] (n : ℕ) :
         · simp [h, Z.2 i j (not_le.1 h)])
       right_inv := fun f => funext fun p => by simp [p.2] }
 
+/- English proof (translation)
+Introduce `l _ L G0 O _ _ _ _ _ n y m v`. Establish `i1 : red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * red m (y.w v : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← red_mul, Units.inv_mul, red_one]`. Establish `i2 : red m (y.w v : Matrix (Fin n) (Fin n) O) * red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1`. Rewrite using `[← red_mul, Units.mul_inv, red_one]`.
+
+Rewrite using `[pow_mul, ← ((omFacts l O).2 m).2.1, ← card_up]`. Generalize the expression as in `hw : red m (y.w v : Matrix (Fin n) (Fin n) O) = w at i1 i2`. Generalize the expression as in `hwi : red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = wi at i1 i2`. Establish `hm : ∀ Z, Z ∈ bor y m v ↔ ∀ i j, j < i → (wi * Z * w) i j = 0` using `fun Z => by rw [← hw, ← hwi]; rfl`. Conclude with `Nat.card_congr { toFun := fun Z => ⟨wi * Z.1 * w, (hm _).1 Z.2⟩ invFun := fun U => ⟨w * U.1 * wi, (hm _).2 (by`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, i1, one_mul, mul_assoc, i1, mul_one]`. Conclude with `U.2)⟩`. Use `left_inv := fun Z => Subtype.ext (by show w * (wi * Z.1 * w) * wi = Z.1`. Rewrite using `[← mul_assoc, ← mul_assoc, i2, one_mul, mul_assoc, i2, mul_one])`. Use `right_inv := fun U => Subtype.ext (by show wi * (w * U.1 * wi) * w = U.1`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, i1, one_mul, mul_assoc, i1, mul_one]) }`.
+-/
 theorem UpperTheory.V.Th.borCard :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ) (v : L.Vl), Nat.card (bor y m v) = Nat.card (ResidueField O) ^ (m * (n + n.choose 2)) := by
   intro l _ L G0 O _ _ _ _ _ n y m v

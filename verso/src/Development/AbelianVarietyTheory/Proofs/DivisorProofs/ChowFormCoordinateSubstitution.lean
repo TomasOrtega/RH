@@ -11,6 +11,19 @@ open MvPolynomial GlobalTheory.ChowHt GlobalTheory.CompHt
 
 variable {K : Type} [Field K] {N n : ℕ}
 
+/- English proof (translation)
+Use `⟨HeightUnique.linSubst_homog M hf.homog, hirr, fun u => ?_⟩` and prove the remaining obligations. Establish `e : aeval u (linSubst M f) = aeval (fun p : Fin (D + 1) × Fin N => ∑ k, algebraMap K _ (M p.2 k) * u (p.1, k)) f`. Rewrite using `[linSubst, ← AlgHom.comp_apply]`. Use `congr 1`. Conclude with `MvPolynomial.algHom_ext fun k => by simp`.
+
+Establish `pair : ∀ (y : Fin N → AlgebraicClosure K) (i : Fin (D + 1)), ∑ j, (∑ k, algebraMap K _ (M j k) * u (i, k)) * y j = ∑ k, u (i, k) * ∑ j, algebraMap K _ (M j k) * y j` using `fun y i => by`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[e, hf.zero_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h1, h2⟩`. Use `⟨fun k => ∑ j, algebraMap K _ (M j k) * y j, fun h0 => hy (funext fun j => ?_), fun g hg => ?_, fun i => (pair y i).symm.trans (h2 i)⟩` and prove the remaining obligations. Rewrite using `[← sum_sum_eq h y j]`. Conclude with `Finset.sum_eq_zero fun k _ => mul_eq_zero_of_right _ (congrFun h0 k)`.
+
+Rewrite using `[← aeval_coordSubst]`. Conclude with `h1 _ ((hI g).1 hg)`. Introduce and unpack `⟨y, hy, h1, h2⟩`. Establish `back : ∀ k, ∑ j, algebraMap K _ (M j k) * ∑ i, algebraMap K _ (P i j) * y i = y k` using `fun k => by`. Establish `hm : X k - coordSubst P (coordSubst M (X k)) ∈ I'` using `(hI _).2 (by rw [map_sub, coordSubst_coordSubst h, sub_self]; exact I.zero_mem)`.
+
+Use `h1 _ hm` as an intermediate fact. Rewrite `this` using `[map_sub, aeval_coordSubst, aeval_coordSubst, aeval_X, aeval_X, sub_eq_zero]`. Conclude with `this.symm`. Use `⟨fun j => ∑ k, algebraMap K _ (P k j) * y k, fun h0 => hy (funext fun k => ?_), fun g hg => ?_, fun i => (pair _ i).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← back k]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => mul_eq_zero_of_right _ (congrFun h0 j)`. Rewrite using `[← aeval_coordSubst]`. Conclude with `h1 _ ((hI _).2 (by rwa [coordSubst_coordSubst h]))`. Simplify using `only [back]`. Conclude with `h2 i`.
+-/
 theorem isChowFormInt_linSubst_of_irreducible {M : Matrix (Fin N) (Fin n) K} {P : Matrix (Fin n) (Fin N) K}
     (h : M * P = 1) {I : Ideal (MvPolynomial (Fin N) K)} {I' : Ideal (MvPolynomial (Fin n) K)}
     (hI : ∀ g, g ∈ I' ↔ coordSubst M g ∈ I) {D δ : ℕ} {f : MvPolynomial (Fin (D + 1) × Fin N) K}
@@ -50,6 +63,13 @@ theorem isChowFormInt_linSubst_of_irreducible {M : Matrix (Fin N) (Fin n) K} {P 
       exact h1 _ ((hI _).2 (by rwa [coordSubst_coordSubst h]))
     · simp only [back]; exact h2 i
 
+/- English proof (translation)
+Unfold `GlobalTheory.ChowHt.linSubst`. Establish `hfun : (fun p : Fin B × Fin N => ∑ k : Fin n, C ((Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) p.2 k) * X (p.1, k)) = fun p => X (p.1, Fin.castLE h p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[Fintype.sum_eq_single (Fin.castLE h p.2)]`. Simplify using the standard rewrite rules.
+
+Introduce `k hk`. Establish `hne : (p.2 : ℕ) ≠ (k : ℕ)` using `fun he => hk (Fin.ext he.symm)`. Simplify using `[Matrix.of_apply, hne]`. Rewrite using `[hfun]`. Establish `hal : (aeval fun p : Fin B × Fin N => (X (p.1, Fin.castLE h p.2) : MvPolynomial (Fin B × Fin n) K)) = rename (fun p : Fin B × Fin N => (p.1, Fin.castLE h p.2))` using `MvPolynomial.algHom_ext fun p => by simp`.
+
+Rewrite using `[hal]`.
+-/
 theorem linSubst_incl_eq_rename {B : ℕ} (h : N ≤ n) (f : MvPolynomial (Fin B × Fin N) K) :
     linSubst (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) f =
       rename (fun p : Fin B × Fin N => (p.1, Fin.castLE h p.2)) f := by
@@ -69,6 +89,11 @@ theorem linSubst_incl_eq_rename {B : ℕ} (h : N ≤ n) (f : MvPolynomial (Fin B
     MvPolynomial.algHom_ext fun p => by simp
   rw [hal]
 
+/- English proof (translation)
+Establish `hp : Prime f` using `hf.prime`. Set `e'` to `Equiv.ofInjective _ he`. Establish `h1 : Prime (rename e' f)` using `(MulEquiv.prime_iff (renameEquiv K e').toMulEquiv).2 hp`. Establish `h2 : Prime (rename ((↑) : Set.range e → τ) (rename e' f))` using `(prime_rename_iff _).2 h1`. Rewrite `h2` using `[rename_rename]`.
+
+Establish `h3 : ((↑) : Set.range e → τ) ∘ e' = e`. Use function extensionality and compare the values at `p`. Simplify using `[e']`. Rewrite `h2` using `[h3]`. Conclude with `h2.irreducible`.
+-/
 theorem irreducible_rename_of_injective {σ τ : Type} {e : σ → τ} (he : Function.Injective e)
     {f : MvPolynomial σ K} (hf : Irreducible f) : Irreducible (rename e f) := by
   classical
@@ -82,6 +107,11 @@ theorem irreducible_rename_of_injective {σ τ : Type} {e : σ → τ} (he : Fun
   rw [h3] at h2
   exact h2.irreducible
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_single (Fin.castLE h i)]`. Simplify using `[Matrix.one_apply, Fin.ext_iff, eq_comm]`. Introduce `k hk`. Establish `hne : (i : ℕ) ≠ (k : ℕ)` using `fun he => hk (Fin.ext he.symm)`.
+
+Simplify using `[hne]`.
+-/
 theorem incl_mul_transpose (h : N ≤ n) :
     (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) *
       (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0).transpose = 1 := by
@@ -92,6 +122,9 @@ theorem incl_mul_transpose (h : N ≤ n) :
     have hne : (i : ℕ) ≠ (k : ℕ) := fun he => hk (Fin.ext he.symm)
     simp [hne]
 
+/- English proof (translation)
+Use `isChowFormInt_linSubst_of_irreducible (incl_mul_transpose h) hI hf ?_` and prove the remaining obligations. Rewrite using `[linSubst_incl_eq_rename h]`. Use `irreducible_rename_of_injective (fun p q hpq => ?_) hf.irred` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq] at hpq`. Conclude with `Prod.ext hpq.1 (Fin.castLE_injective h hpq.2)`.
+-/
 theorem isChowFormInt_incl (K : Type) [Field K] (N n D δ : ℕ) (I : Ideal (MvPolynomial (Fin N) K))
     (I' : Ideal (MvPolynomial (Fin n) K)) (f : MvPolynomial (Fin (D + 1) × Fin N) K) (h : N ≤ n)
     (hI : ∀ q, q ∈ I' ↔ coordSubst

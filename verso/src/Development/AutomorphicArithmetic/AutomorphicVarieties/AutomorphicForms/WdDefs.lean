@@ -15,8 +15,14 @@ def IsTri {k W ι : Type} [Field k] [AddCommGroup W] [Module k W] {n : ℕ} (T :
 
 def ops {Γ R : Type} (N : R) (ρ : Γ → R) : Option Γ → R := fun a => a.elim N ρ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ops_none {Γ R : Type} (N : R) (ρ : Γ → R) : ops N ρ none = N := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ops_some {Γ R : Type} (N : R) (ρ : Γ → R) (a : Γ) : ops N ρ (some a) = ρ a := rfl
 
 def cycL {l : ℕ} [Fact l.Prime] (L : FinExt l) : GQ l →* (↥L.1)ˣ :=
@@ -25,9 +31,15 @@ def cycL {l : ℕ} [Fact l.Prime] (L : FinExt l) : GQ l →* (↥L.1)ˣ :=
 def FrobPow {l : ℕ} [Fact l.Prime] (g : GQ l) (k : ℕ) : Prop :=
   ∀ c : ↥(MaximalUnramifiedExtension l), g (c : Om l) = (((frobUr l ^ k) c : ↥(MaximalUnramifiedExtension l)) : Om l)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Pi.basisFun ℚ _, fun _ => ⟨fun i j h => by simp [Matrix.one_apply, h.ne'], fun i => by simp⟩⟩`.
+-/
 example : IsTri (fun _ : Unit => (1 : End ℚ (Fin 2 → ℚ))) (fun _ (_ : Fin 2) => 1) :=
   ⟨Pi.basisFun ℚ _, fun _ => ⟨fun i j h => by simp [Matrix.one_apply, h.ne'], fun i => by simp⟩⟩
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example {l : ℕ} [Fact l.Prime] : FrobPow (1 : GQ l) 0 := fun _ => rfl
 
 def TriSnoc : Prop :=

@@ -6,6 +6,27 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F _ _ _ w`. Establish `hp : ∀ (w' : InfinitePlace F) (t : ℝ), TR.pInf F (at1 w' t) = Pi.single w' t` using `fun _ t => (TR.infEq F).symm_apply_apply _`. Establish `h2 : ∀ (w' : InfinitePlace F) (t : ℝ), (at1 w' t).2 = 0` using `fun _ t => rfl`. Establish `hfin : ∀ x y : A F, (x + y).2 = x.2 + y.2` using `fun _ _ => rfl`. Establish `hmul : ∀ x y : A F, (x * y).2 = x.2 * y.2` using `fun _ _ => rfl`.
+
+Use `⟨fun t => ?_, h2 w, hp w, fun s t => ?_, ?_, fun t a => ?_, fun a ha => ?_, fun t i => ?_⟩` and prove the remaining obligations. Rewrite using `[(UpperTheory.ConvolutionTheory.R2.C.splitA F).2 (at1 w t), hp, h2, AddChar.map_zero_eq_one, Circle.coe_one, mul_one, Finset.prod_eq_single w]`. Simplify using `[cc]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`. Use `TR.ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_add, hp, hp, hp, Pi.single_add]`. Express the relevant statement in the definitionally equal form `(at1 w (s + t)).2 = (at1 w s + at1 w t).2`.
+
+Rewrite using `[hfin, h2, h2, h2, add_zero]`. Use `TR.ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hp, map_zero, Pi.single_zero]`. Express the relevant statement in the definitionally equal form `(at1 w 0).2 = (0 : A F).2`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Use `TR.ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, hp, hp]`. Use extensionality with `w'`. Distinguish the cases in `h : w' = w`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Express the relevant statement in the definitionally equal form `(at1 w t * a).2 = (at1 w (t * TR.pInf F a w)).2`. Rewrite using `[h2, hmul, h2, zero_mul]`.
+
+Use `TR.ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hp]`. Use extensionality with `w'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Express the relevant statement in the definitionally equal form `a.2 = (∑ w', at1 w' (TR.pInf F a w')).2`. Rewrite using `[ha]`. Establish `: ∀ s : Finset (InfinitePlace F), (∑ w' ∈ s, at1 w' (TR.pInf F a w')).2 = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => rfl`. Consider the case `insert b s hb ih => rw [Finset.sum_insert hb, hfin, h2, ih, add_zero]`. Conclude with `(this _).symm`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using `[finPartPi, h2]`. Simplify using `[finPartPi, Pi.single_eq_of_ne h]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.atLaws :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (w : InfinitePlace F), (∀ t : ℝ, ψ (at1 w t) = Complex.exp (cc * t)) ∧ (∀ t, (at1 w t).2 = 0) ∧ (∀ t, TR.pInf F (at1 w t) = Pi.single w t) ∧
     (∀ s t, at1 w (s + t) = at1 w s + at1 w t) ∧ at1 w 0 = 0 ∧ (∀ t a, at1 w t * a = at1 w (t * TR.pInf F a w)) ∧

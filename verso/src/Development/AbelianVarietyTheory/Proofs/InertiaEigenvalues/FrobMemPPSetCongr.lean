@@ -27,16 +27,28 @@ variable {l : ℕ} [hl : Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : 
   [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
   (t : Wq l a →ₐ[ℤ_[l]] O)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (C : R⟦X⟧ →+* R⟦X⟧⟦X⟧), coeff_C_mul, ← map_natCast (C : R →+* R⟦X⟧), coeff_C_mul]`.
+-/
 theorem coeff_natCast_mul_double {R : Type} [CommRing R] (m : ℕ) (G : R⟦X⟧⟦X⟧) (i n : ℕ) :
     coeff n (coeff i ((m : R⟦X⟧⟦X⟧) * G)) = (m : R) * coeff n (coeff i G) := by
   rw [← map_natCast (C : R⟦X⟧ →+* R⟦X⟧⟦X⟧), coeff_C_mul, ← map_natCast (C : R →+* R⟦X⟧), coeff_C_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Simplify using `[coeff_ofW, add_div]`.
+-/
 theorem ofW_add (w w' : ℕ × ℕ → Wq l a) : ofW t K e (w + w') = ofW t K e w + ofW t K e w' := by
   funext τ; ext i n; simp [coeff_ofW, add_div]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Simplify using `[coeff_ofW]`.
+-/
 theorem ofW_zero : ofW t K e (0 : ℕ × ℕ → Wq l a) = 0 := by
   funext τ; ext i n; simp [coeff_ofW]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Simplify using `[coeff_ofW, neg_div]`.
+-/
 theorem ofW_neg (w : ℕ × ℕ → Wq l a) : ofW t K e (-w) = -ofW t K e w := by
   funext τ; ext i n; simp [coeff_ofW, neg_div]
 
@@ -47,37 +59,66 @@ def ofWHom : (ℕ × ℕ → Wq l a) →+ (ZMod a → K⟦X⟧⟦X⟧) where
   map_zero' := ofW_zero t
   map_add' := ofW_add t
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Take `⟨w', rfl⟩` from `hy`. Conclude with `⟨w + w', ofW_add t w w'⟩`.
+-/
 theorem Q_add {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ QSet t K e) (hy : y ∈ QSet t K e) : x + y ∈ QSet t K e := by
   obtain ⟨w, rfl⟩ := hx; obtain ⟨w', rfl⟩ := hy; exact ⟨w + w', ofW_add t w w'⟩
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Conclude with `⟨-w, ofW_neg t w⟩`.
+-/
 theorem Q_neg {x : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ QSet t K e) : -x ∈ QSet t K e := by
   obtain ⟨w, rfl⟩ := hx; exact ⟨-w, ofW_neg t w⟩
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `Q_add t hx (Q_neg t hy)`.
+-/
 theorem Q_sub {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ QSet t K e) (hy : y ∈ QSet t K e) : x - y ∈ QSet t K e := by
   rw [sub_eq_add_neg]; exact Q_add t hx (Q_neg t hy)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, ofW_zero t⟩`.
+-/
 theorem Q_zero : (0 : ZMod a → K⟦X⟧⟦X⟧) ∈ QSet t K e := ⟨0, ofW_zero t⟩
 
+/- English proof (translation)
+Use `⟨Pi.single (0, 0) (m : Wq l a), funext fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `i n`. Rewrite using `[coeff_ofW, Pi.natCast_apply, ← mul_one ((m : K⟦X⟧⟦X⟧)), coeff_natCast_mul_double]`. Apply the tactic sequence `rcases i with _ | i <;> rcases n with _ | n <;> simp [dpDen, Pi.single_apply, coeff_one]`.
+-/
 theorem Q_natCast (m : ℕ) : (m : ZMod a → K⟦X⟧⟦X⟧) ∈ QSet t K e := by
   refine ⟨Pi.single (0, 0) (m : Wq l a), funext fun τ => ?_⟩
   ext i n
   rw [coeff_ofW, Pi.natCast_apply, ← mul_one ((m : K⟦X⟧⟦X⟧)), coeff_natCast_mul_double]
   rcases i with _ | i <;> rcases n with _ | n <;> simp [dpDen, Pi.single_apply, coeff_one]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mul_mem_crystallinePrismDividedPowerFamilies l a e O K t x hx y hy`.
+-/
 theorem Q_mul {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ QSet t K e) (hy : y ∈ QSet t K e) : x * y ∈ QSet t K e :=
   GlobalTheory.T.mul_mem_crystallinePrismDividedPowerFamilies l a e O K t x hx y hy
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using Q_natCast t (K := K) (e := e) 1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `Q_mul t ih hx`.
+-/
 theorem Q_pow {x : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ QSet t K e) (k : ℕ) : x ^ k ∈ QSet t K e := by
   induction k with
   | zero => simpa using Q_natCast t (K := K) (e := e) 1
   | succ k ih => rw [pow_succ]; exact Q_mul t ih hx
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (· ∈ QSet t K e) (fun _ _ => Q_add t) (Q_zero t) h`.
+-/
 theorem Q_sum {ι : Type} (s : Finset ι) (f : ι → ZMod a → K⟦X⟧⟦X⟧) (h : ∀ i ∈ s, f i ∈ QSet t K e) :
     ∑ i ∈ s, f i ∈ QSet t K e :=
   Finset.sum_induction f (· ∈ QSet t K e) (fun _ _ => Q_add t) (Q_zero t) h
 
 variable {φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧}
 
+/- English proof (translation)
+Take `⟨hxQ, hfxQ, A, hA, hxA⟩` from `hx`. Take `⟨hyQ, hfyQ, B, hB, hyB⟩` from `hy`. Use `⟨Q_add t hxQ hyQ, by rw [map_add]; exact Q_add t hfxQ hfyQ, A + B - x * y * ∑ k ∈ Finset.Ioo 0 l, x ^ (k - 1) * y ^ (l - k - 1) * ((l.choose k / l : ℕ) : ZMod a → K⟦X⟧⟦X⟧), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Q_sub t (Q_add t hA hB) (Q_mul t (Q_mul t hxQ hyQ) (Q_sum t _ _ fun k _ => Q_mul t (Q_mul t (Q_pow t hxQ _) (Q_pow t hyQ _)) (Q_natCast t _)))`. Rewrite using `[map_add, hxA, hyB, add_pow_prime_eq hl.out]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem good_add {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ GoodSet t e φ₂) (hy : y ∈ GoodSet t e φ₂) :
     x + y ∈ GoodSet t e φ₂ := by
   obtain ⟨hxQ, hfxQ, A, hA, hxA⟩ := hx
@@ -89,6 +130,11 @@ theorem good_add {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ GoodSet t e φ�
       Q_mul t (Q_mul t (Q_pow t hxQ _) (Q_pow t hyQ _)) (Q_natCast t _)))
   · rw [map_add, hxA, hyB, add_pow_prime_eq hl.out]; ring
 
+/- English proof (translation)
+Take `⟨hxQ, hfxQ, A, hA, hxA⟩` from `hx`. Take `⟨hyQ, hfyQ, B, hB, hyB⟩` from `hy`. Use `⟨Q_mul t hxQ hyQ, by rw [map_mul]; exact Q_mul t hfxQ hfyQ, A * y ^ l + B * x ^ l + (l : ZMod a → K⟦X⟧⟦X⟧) * A * B, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Q_add t (Q_add t (Q_mul t hA (Q_pow t hyQ _)) (Q_mul t hB (Q_pow t hxQ _))) (Q_mul t (Q_mul t (Q_natCast t _) hA) hB)`. Rewrite using `[map_mul, hxA, hyB]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem good_mul {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ GoodSet t e φ₂) (hy : y ∈ GoodSet t e φ₂) :
     x * y ∈ GoodSet t e φ₂ := by
   obtain ⟨hxQ, hfxQ, A, hA, hxA⟩ := hx
@@ -99,18 +145,34 @@ theorem good_mul {x y : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ GoodSet t e φ�
       (Q_mul t (Q_mul t (Q_natCast t _) hA) hB)
   · rw [map_mul, hxA, hyB]; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Q_zero t, by rw [map_zero]; exact Q_zero t, 0, Q_zero t, by simp [zero_pow hl.out.ne_zero]⟩`.
+-/
 theorem good_zero : (0 : ZMod a → K⟦X⟧⟦X⟧) ∈ GoodSet t e φ₂ :=
   ⟨Q_zero t, by rw [map_zero]; exact Q_zero t, 0, Q_zero t, by simp [zero_pow hl.out.ne_zero]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simpa using Q_natCast t (K := K) (e := e) 1, by rw [map_one]; simpa using Q_natCast t (K := K) (e := e) 1, 0, Q_zero t, by simp⟩`.
+-/
 theorem good_one : (1 : ZMod a → K⟦X⟧⟦X⟧) ∈ GoodSet t e φ₂ :=
   ⟨by simpa using Q_natCast t (K := K) (e := e) 1, by rw [map_one]; simpa using Q_natCast t (K := K) (e := e) 1,
     0, Q_zero t, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `good_one t`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `good_mul t ih hx`.
+-/
 theorem good_pow {x : ZMod a → K⟦X⟧⟦X⟧} (hx : x ∈ GoodSet t e φ₂) (k : ℕ) : x ^ k ∈ GoodSet t e φ₂ := by
   induction k with
   | zero => rw [pow_zero]; exact good_one t
   | succ k ih => rw [pow_succ]; exact good_mul t ih hx
 
+/- English proof (translation)
+Establish `h : (fun p => if p ∈ s then w p else 0) = ∑ p ∈ s, Pi.single p (w p)`. Use function extensionality and compare the values at `q`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Pi.single_apply, Finset.sum_ite_eq']`. Establish `h2 : ofW t K e (fun p => if p ∈ s then w p else 0) = ∑ p ∈ s, ofW t K e (Pi.single p (w p))`.
+
+Rewrite using `[h]`. Conclude with `map_sum (ofWHom (K := K) (e := e) t) _ s`. Rewrite using `[h2]`. Use `Finset.sum_induction _ (· ∈ GoodSet t e φ₂) (fun _ _ => good_add t) (good_zero t) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.dividedPowerFamily_single_eq_mul l a e O K t p.1 p.2 (w p)]`.
+
+Conclude with `good_mul t (good_mul t (good_mul t (GlobalTheory.T.constantCoeffFamily_frobenius_congr_pow l a e O K t φ₂ hφC hφX _) (good_pow t (GlobalTheory.T.uniformizerFamily_frobenius_congr_pow l a e O K t φ₂ hφC hφX) _)) (GlobalTheory.T.dividedUniformizerPower_frobenius_congr_pow l a e O K …`.
+-/
 theorem good_fin (hφC : ∀ f : K⟦X⟧, φ₂ (C f) = C (frob K l f)) (hφX : φ₂ X = (C X + X) ^ l - C (X ^ l))
     (w : ℕ × ℕ → Wq l a) (s : Finset (ℕ × ℕ)) :
     ofW t K e (fun p => if p ∈ s then w p else 0) ∈ GoodSet t e φ₂ := by
@@ -125,6 +187,9 @@ theorem good_fin (hφC : ∀ f : K⟦X⟧, φ₂ (C f) = C (frob K l f)) (hφX :
     (good_pow t (GlobalTheory.T.uniformizerFamily_frobenius_congr_pow l a e O K t φ₂ hφC hφX) _)) (GlobalTheory.T.dividedUniformizerPower_frobenius_congr_pow l a e O K t φ₂ hφC hφX _))
     (GlobalTheory.T.dividedVariablePower_frobenius_congr_pow l a e O K t φ₂ hφC hφX (fun x hx y hy => Q_mul t hx hy) _)
 
+/- English proof (translation)
+Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Use `⟨w, hw, fun τ i n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_ofW]`. Establish `: ((i.factorial * (n / e).factorial : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (dpDen_pos e i n).ne'`. Conclude with `mul_div_cancel₀ _ this`.
+-/
 theorem ofW_mem_PPSet {w : ℕ × ℕ → Wq l a} (hw : LTo0 l w) : ofW t K e w ∈ PPSet t K e := by
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective
   refine ⟨w, hw, fun τ i n => ?_⟩
@@ -134,6 +199,15 @@ theorem ofW_mem_PPSet {w : ℕ × ℕ → Wq l a} (hw : LTo0 l w) : ofW t K e w 
 
 end Main
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t sh hsh φ₂ hφC hφsh F hF`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hφX : φ₂ X = (C X + X) ^ l - C (X ^ l)`. Establish `h : (X : K⟦X⟧⟦X⟧) = sh X - C X` using `by rw [sh_X sh hsh]; ring`. Establish `h2 : φ₂ X = sh (X ^ l) - C (X ^ l)` using `by rw [h, map_sub, hφsh, hφC, frob_X]`.
+
+Rewrite using `[h2, map_pow, sh_X sh hsh]`. Take `⟨w, hw, hFw⟩` from `hF`. Establish `hF' : F = ofW t K e w` using `funext fun τ => by`. Use extensionality with `i n`. Establish `h0 : ((dpDen e i n : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (dpDen_pos e i n).ne'`.
+
+Rewrite using `[coeff_ofW, eq_div_iff h0, mul_comm]`. Conclude with `hFw τ i n`. Establish `hQ` using `GlobalTheory.T.frobenius_congr_of_finite_of_local_dividedPower l a e O K t φ₂ (good_fin t hφC hφX) (GlobalTheory.T.coeff_frobeniusDoublePowerSeries_congr_box l K φ₂ hφC hφX) (fun i n G H => GlobalTheory.T.coeff_coeff_pow_eq_of_coeff_coeff_eq_le K l i n G H)`. Take `⟨-, ⟨v, hv⟩, B, ⟨b, rfl⟩, hB⟩` from `hQ F ⟨w, hF'.symm⟩`. Rewrite `hv`, `hB`, the goal using `[hF']`.
+
+Take `⟨hv0, hb0⟩` from `GlobalTheory.T.frobenius_preserves_ladic_decay_dividedPower l a e O K t φ₂ (GlobalTheory.T.unramifiedWittEmbeddingTwisted_algebraMap_injective l a e O K t) (fun x hx y hy => Q_mul t hx hy) hQ (GlobalTheory.T.frobenius_pow_mem_finiteSupportDoublePowerSeries l a e O K t φ₂ hφC hφX) …`. Conclude with `⟨hv ▸ ofW_mem_PPSet t hv0, ofW t K e b, ofW_mem_PPSet t hb0, hB⟩`.
+-/
 theorem frob_mem_PPSet_congr : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ (sh : K⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ (f : K⟦X⟧) (i : ℕ), (i.factorial : K⟦X⟧) * coeff i (sh f) = (PowerSeries.derivative K)^[i] f) → ∀ (φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ f : K⟦X⟧, φ₂ (PowerSeries.C f) = PowerSeries.C (frob K l f)) → (∀ f : K⟦X⟧, φ₂ (sh f) = sh (frob K l f)) → ∀ F ∈ PPSet t K e, frob2 φ₂ F ∈ PPSet t K e ∧ ∃ B ∈ PPSet t K e, frob2 φ₂ F = F ^ l + (l : ZMod a → K⟦X⟧⟦X⟧) * B := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t sh hsh φ₂ hφC hφsh F hF
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective

@@ -25,14 +25,23 @@ def conjSch {D : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] :
       rw [h, LinearIsometryEquiv.norm_iteratedFDeriv_comp_left, Finset.sup_singleton, one_mul]
       exact SchwartzMap.le_seminorm ℂ n.1 n.2 f x⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjSch_apply {D : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] (f : SchwartzMap D ℂ) (x : D) :
     conjSch f x = star (f x) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hg.1.comp star, hg.2.comp_left (g := star) (star_zero ℂ)⟩`.
+-/
 theorem star_mem_SB {X : Type} [TopologicalSpace X] {g : X → ℂ} (hg : g ∈ SB X) : star g ∈ SB X :=
   ⟨hg.1.comp star, hg.2.comp_left (g := star) (star_zero ℂ)⟩
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, conjSch_apply, star_mul', Pi.star_apply]`.
+-/
 theorem star_pureA {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     star (pureA F (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) g) = pureA F (conjSch f : _ → ℂ) (star g) := by
@@ -43,6 +52,11 @@ end GlobalTheory.DoublingEv.ConjTame
 
 open GlobalTheory.DoublingEv.ConjTame in
 
+/- English proof (translation)
+Introduce `F _ _ κ κ' _ _ T hT g hg`. Take `⟨ι, _, P, g', hg', hP⟩` from `hT (star g) (star_mem_SB hg)`. Set `Q : ι → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] SchwartzMap (κ' → mixedEmbedding.mixedSpace F) ℂ` to `fun j => (conjSch.comp (P j)).comp conjSch`. Use `⟨ι, inferInstance, Q, fun j => star (g' j), fun j => star_mem_SB (hg' j), fun f => ?_⟩` and prove the remaining obligations. Establish `hs : star (pureA F (f : _ → ℂ) g) = pureA F (conjSch f : _ → ℂ) (star g)`.
+
+Rewrite using `[star_pureA]`. Rewrite using `[conjMap_apply, hs, hP, star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_pureA]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.DoublingEv.isTame_conjMap : ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ']
     (T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)), IsTame F T → IsTame F (conjMap T) := by
   intro F _ _ κ κ' _ _ T hT g hg

@@ -7,6 +7,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Nat.mul_succ, add_comm (e * m), Multiset.range_add, Multiset.map_add, Multiset.map_map, succ_nsmul', ← ih]`. Use `congr 1`.
+
+Conclude with `Multiset.map_congr rfl fun i _ => hg i`.
+-/
 theorem map_range_mul_of_periodic {β : Type} (g : ℕ → β) (e : ℕ) (hg : ∀ i, g (e + i) = g i) (m : ℕ) :
     (Multiset.range (e * m)).map g = m • (Multiset.range e).map g := by
   induction m with
@@ -17,6 +22,11 @@ theorem map_range_mul_of_periodic {β : Type} (g : ℕ → β) (e : ℕ) (hg : �
     congr 1
     exact Multiset.map_congr rfl fun i _ => hg i
 
+/- English proof (translation)
+Rewrite `hα`, the goal using `[Polynomial.map_pow, roots_pow]`. Establish `h1` using `Multiset.mem_of_mem_nsmul hα`. Establish `h2 : aeval α f = 0`. Rewrite using `[← eval_map_algebraMap]`. Conclude with `(mem_roots'.1 h1).2`.
+
+Establish `h3 : f = minpoly F α` using `minpoly.eq_of_irreducible_of_monic hi h2 hf`. Establish `hper` using `(minpoly_natDegree_dvd_iff_pow α _).1 dvd_rfl`. Rewrite using `[natDegree_pow, mul_comm, h3, roots_minpoly_eq_map_range, map_range_mul_of_periodic]`. Introduce `i`. Simplify using `only [pow_add, pow_mul, hper]`.
+-/
 theorem roots_pow_eq_map_range {F : Type} [Field F] [Finite F] (f : F[X]) (m : ℕ) (hf : f.Monic)
     (hi : Irreducible f) (α : AlgebraicClosure F)
     (hα : α ∈ ((f ^ m).map (algebraMap F (AlgebraicClosure F))).roots) :
@@ -33,6 +43,15 @@ theorem roots_pow_eq_map_range {F : Type} [Field F] [Finite F] (f : F[X]) (m : �
   intro i
   simp only [pow_add, pow_mul, hper]
 
+/- English proof (translation)
+Introduce `F _ _ θ f m k s hf hi`. Use `set R := ((f ^ m).map (algebraMap F (AlgebraicClosure F))).roots with hR`. Establish `hcard : R.card = (f ^ m).natDegree`. Rewrite using `[hR, IsAlgClosed.card_roots_eq_natDegree, natDegree_map]`. Establish `key : ∀ α ∈ R, (R.map fun α => θ α ^ k).esymm s = ∑ I ∈ (Finset.range (f ^ m).natDegree).powersetCard s, θ α ^ (k * ∑ i ∈ I, Nat.card F ^ i)`.
+
+Introduce `α hα`. Establish `h` using `roots_pow_eq_map_range f m hf hi α hα`. Rewrite `h` using `[← hR]`. Use `conv_lhs => rw [h]`. Rewrite using `[Multiset.map_map, ← Finset.range_val, Finset.esymm_map_val]`.
+
+Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, map_pow, ← pow_mul, mul_comm]`. Establish `h2 : (R.map fun _ => (R.map fun α => θ α ^ k).esymm s).sum = (R.map fun α => ∑ I ∈ (Finset.range (f ^ m).natDegree).powersetCard s, θ α ^ (k * ∑ i ∈ I, Nat.card F ^ i)).sum`.
+
+Rewrite using `[Multiset.map_congr rfl key]`. Rewrite `h2` using `[Multiset.map_const', Multiset.sum_replicate, hcard, nsmul_eq_mul]`. Rewrite using `[h2, Multiset.sum_map_sum]`. Both sides reduce to the same expression.
+-/
 theorem natDegree_mul_esymm_roots_pow : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (f : F[X]) (m k s : ℕ), f.Monic → Irreducible f → ((f ^ m).natDegree : ℂ) * (((f ^ m).map (algebraMap F (AlgebraicClosure F))).roots.map fun α => θ α ^ k).esymm s = ∑ I ∈ (Finset.range (f ^ m).natDegree).powersetCard s, rootSum θ (k * ∑ i ∈ I, Nat.card F ^ i) (f ^ m) := by
   intro F _ _ θ f m k s hf hi
   set R := ((f ^ m).map (algebraMap F (AlgebraicClosure F))).roots with hR

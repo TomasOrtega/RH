@@ -7,6 +7,9 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Use `⟨hc.1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `hc.2 a`. Take `⟨k, rfl⟩` from `hd`. Use `⟨k • w, AddSubgroup.nsmul_mem _ hw k, ?_⟩` and prove the remaining obligations. Rewrite using `[hw', smul_smul]`.
+-/
 private theorem coordA_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
     {x : (AfP p ⊗[ℚ] G.C)ˣ} {N N' : ℕ} (hd : N ∣ N') {D' : PLat D.O D.inv} {t : D.La → D'.La}
     {j : D'.La →+ VQ D} {h₁ : G.GAf} (hc : IsCoordA L x N' D' t j h₁) : IsCoordA L x N D' t j h₁ := by
@@ -16,11 +19,19 @@ private theorem coordA_of_dvd {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGrou
   refine ⟨k • w, AddSubgroup.nsmul_mem _ hw k, ?_⟩
   rw [hw', smul_smul]
 
+/- English proof (translation)
+Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm`. Rewrite `h` using `[← Nat.cast_smul_eq_nsmul ℂ m a, ← Nat.cast_smul_eq_nsmul ℂ m b]`. Conclude with `smul_right_injective _ hm' h`.
+-/
 private theorem eq_of_nsmul_eq_of_ne_zero {g m : ℕ} (hm : m ≠ 0) {a b : Fin g → ℂ} (h : m • a = m • b) : a = b := by
   have hm' : (m : ℂ) ≠ 0 := by exact_mod_cast hm
   rw [← Nat.cast_smul_eq_nsmul ℂ m a, ← Nat.cast_smul_eq_nsmul ℂ m b] at h
   exact smul_right_injective _ hm' h
 
+/- English proof (translation)
+Use `⟨LinearMap.toMatrix' (hh : (Fin D.g → ℂ) →ₗ[ℂ] (Fin D.g → ℂ)), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `show Q (actY L y w) = hh (Q w)`. Take `⟨m, u, hm, hmu⟩` from `hdiv w`. Apply `eq_of_nsmul_eq_of_ne_zero hm` to reduce the goal to its premises.
+
+Establish `e1 : m • Q (actY L y w) = Q (actY L y (j u))`. Rewrite using `[← hmu, map_nsmul, map_nsmul]`. Establish `e2 : m • hh (Q w) = hh (Q (j u))`. Rewrite using `[← hmu, map_nsmul, map_nsmul]`. Rewrite using `[e1, e2, hl]`.
+-/
 private theorem fix_line_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
     {β : G.Cˣ} (y : GlobalTheory.LKCx.grp G β) {D' : PLat D.O D.inv} {j : D'.La →+ VQ D}
     (hdiv : ∀ w, ∃ (m : ℕ) (u : D'.La), m ≠ 0 ∧ m • w = j u)
@@ -38,6 +49,23 @@ private theorem fix_line_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup
     rw [← hmu, map_nsmul, map_nsmul]
   rw [e1, e2, hl]
 
+/- English proof (translation)
+Introduce `hHecke hOne hForm hIso hFix _hAct p _ D G L gb N N' h hLev X X' c₁ c₂ hX hL hX' hL' ρ hFine v t₀ B PD RD D' t hCls' P j a hC x e hU hx`. Establish `hN : 0 < N`. Use `hLev.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨hPl, hCA', hLoc, Q, hPerQ, hQP, hrel⟩` from `hC`.
+
+Take `⟨e₁, hU₁, -⟩` from `hOne p D G L gb N N' h hLev X X' c₁ hX hL hX' hL' ρ hFine B PD D' t hCls' j a.1 hPl hCA' hLoc P x e hU`. Take `⟨D'', t'', P'', e'', inc, j'', hCls'', hU'', hPinc, -, hdivinc, hjinc, hPl'', hCA'', hLoc''⟩` from `hHecke p D G L gb N N' h hLev X X' c₂ hX hL hX' hL' ρ hFine D' t P x e hU B j a.1.1 (PD.lat a.1.2) hPl hCA' hLoc`. Establish `hx' : (x ≫ c₁.q : Sp ℂ ⟶ (gfam X.univ hX hL).X) = x ≫ c₂.q` using `hx`. Use `revert e₁`. Rewrite using `[hx']`.
+
+Introduce `e₁ hU₁`. Apply the tactic sequence `obtain ⟨w, hh, hmk, hPw, -⟩ := GlobalTheory.T.complexUniformisations_same_point_differ_by_isometry D.O D.inv D.g ρ _ _ _ _ N D' D'' t t'' P P'' _ _ _ hN hU₁ hU''`. Take `⟨y, s, hs, hys, hyj⟩` from `hForm p D G L B.β B.β D'' D' j'' j hPl'' hPl (w : D'.La →ₗ[D.O] D''.La) 1 one_pos (fun u u' => by`. Rewrite using `[_root_.one_mul]`. Conclude with `hmk.1 u u')`.
+
+Set `Y : GlobalTheory.LKCx.grp G B.β` to `⟨(y, s), hys, hs⟩`. Establish `hQ'' : ∀ u'', Q (j'' u'') = P'' u''`. Introduce `u''`. Take `⟨d, u, hd0, hdu⟩` from `hdivinc u''`. Establish `e1 : d • Q (j'' u'') = Q (j u)`.
+
+Rewrite using `[← map_nsmul, ← map_nsmul, ← hdu, hjinc]`. Establish `e2 : d • P'' u'' = P u`. Rewrite using `[← map_nsmul, ← hdu, hPinc]`. Apply `eq_of_nsmul_eq_of_ne_zero hd0` to reduce the goal to its premises. Rewrite using `[e1, e2, hQP]`.
+
+Establish `hl : ∀ u, Q (actY L Y (j u)) = hh (Q (j u))`. Introduce `u`. Rewrite using `[hQP, ← hPw, ← hQ'']`. Use `congr 1`. Conclude with `(hyj u).symm`.
+
+Take `⟨H, hH⟩` from `fix_line_ext L Y hPl.2.2.1 Q hh hl`. Establish `hfixL` using `((hFix p D G L v t₀ ρ B.β RD Q a.2 hPerQ hrel Y).1).2 ⟨H, hH⟩`. Establish `hmem` using `(hIso p D G L B PD N hN hLev.2.1 D'' t'' D' t j'' j (a.1.1 * h⁻¹, a.1.2) a.1 N N' t'' t hCls'' hCls' hPl'' hPl hCA'' (coordA_of_dvd L hLev.2.2.2.2.1 hCA') hLoc'' hLoc Y).2 ⟨w, hmk, fun u => hyj u⟩`. Use `⟨Y, hfixL, ?_, by simpa using hmem.2⟩` and prove the remaining obligations. Establish `h1` using `hmem.1`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Simplify `h1` using `[mul_inv_rev, _root_.mul_assoc]`.
+-/
 theorem UpperTheory.Gal.W2.fixFwd_of :
     UpperTheory.Gal.W2.HeckeCoord → UpperTheory.Gal.W2.OneAt → UpperTheory.Gal.W2.LatForm → UpperTheory.Gal.W2.LatIso → UpperTheory.Gal.W2.FixLine → UpperTheory.Gal.W2.ActY → UpperTheory.Gal.W2.FixFwd := by
   intro hHecke hOne hForm hIso hFix _hAct p _ D G L gb N N' h hLev X X' c₁ c₂ hX hL hX' hL' ρ hFine v t₀ B PD RD D' t hCls' P j a hC x e hU hx

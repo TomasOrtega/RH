@@ -7,6 +7,15 @@ open scoped Classical
 
 namespace PI.NGStepBBW
 
+/- English proof (translation)
+Establish `hHK : (Ideal.span {a * b}).toAddSubgroup ≤ (Ideal.span {a}).toAddSubgroup` using `fun x hx => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨c * b, by ring⟩`. Establish `h1 : Nat.card (R ⧸ Ideal.span {a * b}) = (Ideal.span {a * b}).toAddSubgroup.index` using `rfl`. Establish `h2 : Nat.card (R ⧸ Ideal.span {a}) = (Ideal.span {a}).toAddSubgroup.index` using `rfl`.
+
+Establish `h3 : Nat.card (R ⧸ Ideal.span {b}) = (Ideal.span {b}).toAddSubgroup.index` using `rfl`. Rewrite using `[h1, h2, h3, ← AddSubgroup.relIndex_mul_index hHK, mul_comm]`. Use `congr 1`. Set `f : R →+ (Ideal.span {a}).toAddSubgroup` to `{ toFun := fun x => ⟨a * x, Ideal.mem_span_singleton'.mpr ⟨x, mul_comm _ _⟩⟩ map_zero' := by ext; simp map_add' := by intro x y; ext; simp [mul_add] }`. Establish `hf : Function.Surjective f`.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Conclude with `⟨c, by ext; simp [f, mul_comm]⟩`. Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hf]`. Use `congr 1`.
+
+Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf]`. Use `show a * x ∈ Ideal.span {a * b} ↔ x ∈ Ideal.span {b}`. Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton]`. Conclude with `mul_dvd_mul_iff_left ha`.
+-/
 theorem card_quot_span_mul {R : Type} [CommRing R] [IsDomain R] {a : R} (ha : a ≠ 0) (b : R) :
     Nat.card (R ⧸ Ideal.span {a * b}) = Nat.card (R ⧸ Ideal.span {a}) * Nat.card (R ⧸ Ideal.span {b}) := by
   have hHK : (Ideal.span {a * b}).toAddSubgroup ≤ (Ideal.span {a}).toAddSubgroup := fun x hx => by
@@ -33,6 +42,11 @@ theorem card_quot_span_mul {R : Type} [CommRing R] [IsDomain R] {a : R} (ha : a 
   rw [Ideal.mem_span_singleton, Ideal.mem_span_singleton]
   exact mul_dvd_mul_iff_left ha
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.prod_empty, Ideal.span_singleton_one]`. Use `haveI : Subsingleton (R ⧸ (⊤ : Ideal R)) := Ideal.Quotient.subsingleton_iff.mpr rfl`. Conclude with `Nat.card_of_subsingleton (0 : R ⧸ ⊤)`.
+
+Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, card_quot_span_mul (hd i (Finset.mem_insert_self i s)), ih (fun j hj => hd j (Finset.mem_insert_of_mem hj))]`.
+-/
 theorem card_quot_prod {R : Type} [CommRing R] [IsDomain R] {ι : Type} (s : Finset ι) (d : ι → R)
     (hd : ∀ i ∈ s, d i ≠ 0) :
     Nat.card (R ⧸ Ideal.span {∏ i ∈ s, d i}) = ∏ i ∈ s, Nat.card (R ⧸ Ideal.span {d i}) := by
@@ -47,6 +61,21 @@ theorem card_quot_prod {R : Type} [CommRing R] [IsDomain R] {ι : Type} (s : Fin
       card_quot_span_mul (hd i (Finset.mem_insert_self i s)),
       ih (fun j hj => hd j (Finset.mem_insert_of_mem hj))]
 
+/- English proof (translation)
+Take `⟨U, V, d, hU, hV, hD⟩` from `smith_diagonal_entries R n A`. Establish `hUd : IsUnit U.det` using `(Matrix.isUnit_iff_isUnit_det U).mp hU`. Establish `hVd : IsUnit V.det` using `(Matrix.isUnit_iff_isUnit_det V).mp hV`. Establish `hprod : ∏ i, d i = U.det * A.det * V.det`. Rewrite using `[← Matrix.det_diagonal, ← hD, Matrix.det_mul, Matrix.det_mul]`.
+
+Establish `hne : ∀ i ∈ (Finset.univ : Finset (Fin n)), d i ≠ 0`. Establish `h0 : ∏ i, d i ≠ 0`. Rewrite using `[hprod]`. Conclude with `mul_ne_zero (mul_ne_zero hUd.ne_zero hA) hVd.ne_zero`. Conclude with `fun i _ => (Finset.prod_ne_zero_iff.mp h0) i (Finset.mem_univ i)`.
+
+Use `letI := hU.invertible`. Set `Ue : (Fin n → R) ≃ₗ[R] (Fin n → R)` to `Matrix.toLinearEquiv' U inferInstance`. Establish `hVs : LinearMap.range V.mulVecLin = ⊤`. Use `letI := hV.invertible`. Rewrite using `[LinearMap.range_eq_top]`.
+
+Introduce `y`. Conclude with `⟨Matrix.mulVec (⅟V) y, by simp [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]⟩`. Establish `hrange : (LinearMap.range A.mulVecLin).map (Ue : (Fin n → R) →ₗ[R] (Fin n → R)) = LinearMap.range (Matrix.diagonal d).mulVecLin`. Rewrite using `[← hD, Matrix.mulVecLin_mul, LinearMap.range_comp_of_range_eq_top _ hVs, Matrix.mulVecLin_mul, LinearMap.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hA1 : Nat.card ((Fin n → R) ⧸ LinearMap.range A.mulVecLin) = Nat.card ((Fin n → R) ⧸ LinearMap.range (Matrix.diagonal d).mulVecLin)` using `Nat.card_congr (Submodule.Quotient.equiv _ _ Ue hrange).toEquiv`. Establish `hrd : LinearMap.range (Matrix.diagonal d).mulVecLin = Submodule.pi Set.univ (fun i => Ideal.span {d i})`. Use extensionality with `v`. Simplify using `only [LinearMap.mem_range, Submodule.mem_pi, Set.mem_univ, true_implies, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, rfl⟩ i`. Conclude with `⟨w i, by simp [Matrix.mulVecLin_apply, Matrix.mulVec_diagonal, mul_comm]⟩`. Introduce `h choose w hw using h`. Conclude with `⟨w, funext fun i => by simp only [Matrix.mulVecLin_apply, Matrix.mulVec_diagonal]; rw [mul_comm]; exact hw i⟩`. Establish `hspan : Ideal.span {U.det * A.det * V.det} = Ideal.span {A.det}` using `Ideal.span_singleton_eq_span_singleton.mpr (Associated.symm ⟨hUd.unit * hVd.unit, by simp only [Units.val_mul, IsUnit.unit_spec]; ring⟩)`.
+
+Rewrite using `[hA1, hrd, Nat.card_congr (Submodule.quotientPi _).toEquiv, Nat.card_pi, ← card_quot_prod Finset.univ d hne, hprod, hspan]`.
+-/
 theorem card_coker_matrix {R : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] (n : ℕ)
     (A : Matrix (Fin n) (Fin n) R) (hA : A.det ≠ 0) :
     Nat.card ((Fin n → R) ⧸ LinearMap.range A.mulVecLin) = Nat.card (R ⧸ Ideal.span {A.det}) := by
@@ -91,6 +120,11 @@ theorem card_coker_matrix {R : Type} [CommRing R] [IsDomain R] [IsPrincipalIdeal
   rw [hA1, hrd, Nat.card_congr (Submodule.quotientPi _).toEquiv, Nat.card_pi, ← card_quot_prod Finset.univ d hne,
     hprod, hspan]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis R N`. Establish `hdet : (LinearMap.toMatrix b b ψ).det = LinearMap.det ψ` using `LinearMap.det_toMatrix b ψ`. Establish `hsq : (b.equivFun : N →ₗ[R] (Fin (Module.finrank R N) → R)) ∘ₗ ψ = (LinearMap.toMatrix b b ψ).mulVecLin ∘ₗ (b.equivFun : N →ₗ[R] (Fin (Module.finrank R N) → R))`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.equivFun_apply, Matrix.mulVecLin_apply]`.
+
+Conclude with `(LinearMap.toMatrix_mulVec_repr b b ψ x).symm`. Establish `hmap : (LinearMap.range ψ).map (b.equivFun : N →ₗ[R] (Fin (Module.finrank R N) → R)) = LinearMap.range (LinearMap.toMatrix b b ψ).mulVecLin`. Rewrite using `[← LinearMap.range_comp, hsq, LinearMap.range_comp_of_range_eq_top _ (LinearEquiv.range _)]`. Rewrite using `[Nat.card_congr (Submodule.Quotient.equiv _ _ b.equivFun hmap).toEquiv, card_coker_matrix _ (LinearMap.toMatrix b b ψ) (by rw [hdet]; exact hψ), hdet]`.
+-/
 theorem card_coker_endo {R N : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [AddCommGroup N] [Module R N] [Module.Free R N] [Module.Finite R N]
     (ψ : N →ₗ[R] N) (hψ : LinearMap.det ψ ≠ 0) :

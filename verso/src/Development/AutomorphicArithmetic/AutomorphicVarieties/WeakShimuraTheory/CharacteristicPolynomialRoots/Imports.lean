@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Formalism.MainNotions.N ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `hA Ω _ _ _ l _ c D T c' h K X B φ y hD hφ hW`. Establish `he` using `hD.two_le`. Use `auArith hA D T c' h K X B φ hφ y (Link.pt φ y) (fun b => rfl) (fun v i => Pt.psi_cont _ v i) (fun i => (D.wts4 i : ℤ)) ?_ hW` and prove the remaining obligations. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [Raw.wts4] <;> omega`.
+-/
 theorem UpperTheory.V.Ws.Pu.arith :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (φ : B.B →ₐ[c'.O] X.B) (y : X.A →ₐ[c'.O] PadicAlgCl l), D.Good → K.IsPhi X 0 B φ →
       T.Wts (fun i => 2 * D.wts4 i) (X.P.map (y : X.A →+* PadicAlgCl l)) → ∃ w : K.s.Wt 4, (Link.pt φ y).Arith w := by

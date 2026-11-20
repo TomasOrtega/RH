@@ -14,6 +14,11 @@ namespace GlobalTheory.Chamber.ConstEps
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Establish `hli : LinearIndepOn ℝ (vec (k` using `k)) (P : Set (SV k)) := by`. Rewrite using `[linearIndepOn_iff_notMem_span]`. Introduce `u hu`. Use `h.vec_notMem (mem_coe.1 hu)` as an intermediate fact. Rewrite `this` using `[aP, coe_erase]`. Then use the resulting hypothesis.
+
+Use `finrank_span_eq_card (R := ℝ) hli` as an intermediate fact. Rewrite using `[aP, Set.image_eq_range, this]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_aP {P : Finset (SV k)} (h : IsPar P) : Module.finrank ℝ (aP P) = P.card := by
   have hli : LinearIndepOn ℝ (vec (k := k)) (P : Set (SV k)) := by
     rw [linearIndepOn_iff_notMem_span]
@@ -24,6 +29,13 @@ theorem finrank_aP {P : Finset (SV k)} (h : IsPar P) : Module.finrank ℝ (aP P)
   rw [aP, Set.image_eq_range, this]
   simp
 
+/- English proof (translation)
+Establish `hc : IsGMFam 𝔞 (fun _ _ => (1 : ℂ))` using `fun P _ => ⟨contDiff_const, fun _ _ _ => rfl⟩`. Establish `hP : ∀ P ∈ parP 𝔞 Q, IsPar P` using `fun P hP => (mem_parP.1 hP).1`. Establish `hmem : ∀ P : Finset (SV k), ∀ u ∈ P \ Q, u ∈ P \ P.erase u` using `fun P u hu => by`. Simplify using `[(Finset.mem_sdiff.1 hu).1]`. Take `⟨F, hF, hE⟩` from `GlobalTheory.T.residue_sum_hyperplane_zero (parP 𝔞 Q) (fun P => P \ Q) (fun P => rt P) (fun P _ => ((√(Matrix.gram ℝ fun v : ↥(P \ Q) => rt P v).det : ℝ) : ℂ) * (∏ _v ∈ P \ Q, Complex.I)⁻¹ * 1) (fun P h => contDiff_const) (fun P h u hu => (hP P h).wt_ne_zero (Finset.erase_subset …`.
+
+Use `⟨F, hF.continuous, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hE x fun P h u hu => hx P (hP P h) _ (Finset.erase_subset u P) u (hmem P u hu)]`. Simplify using `only [eps, epsOf]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Simplify using `only [mul_inv, Finset.prod_mul_distrib, Finset.prod_inv_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ext (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) (hQ : Q ∈ parF 𝔞 ∅) :
     ∃ F : A0 k → ℂ, Continuous F ∧ ∀ x ∈ generic k, F x = ∑ P ∈ parP 𝔞 Q, eps P Q x := by
   have hc : IsGMFam 𝔞 (fun _ _ => (1 : ℂ)) := fun P _ => ⟨contDiff_const, fun _ _ _ => rfl⟩
@@ -44,6 +56,11 @@ theorem exists_ext (𝔞 : Submodule ℝ (A0 k)) (Q : Finset (SV k)) (hQ : Q ∈
   simp only [mul_inv, Finset.prod_mul_distrib, Finset.prod_inv_distrib]
   ring
 
+/- English proof (translation)
+Establish `ht' : (t : ℂ) ≠ 0` using `by exact_mod_cast ht`. Simplify using `only [epsOf, real_inner_smul_left]`. Rewrite using `[mul_left_comm, ← prod_const, ← prod_mul_distrib]`. Use `congr 1`. Use `prod_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite using `[mul_left_comm Complex.I, mul_inv, ← mul_assoc, mul_inv_cancel₀ ht', one_mul]`.
+-/
 theorem epsOf_smul (s : Finset (SV k)) (b : SV k → A0 k) (l : A0 k) {t : ℝ} (ht : t ≠ 0) :
     (t : ℂ) ^ s.card * epsOf s b (t • l) = epsOf s b l := by
   have ht' : (t : ℂ) ≠ 0 := by exact_mod_cast ht
@@ -54,6 +71,9 @@ theorem epsOf_smul (s : Finset (SV k)) (b : SV k → A0 k) (l : A0 k) {t : ℝ} 
   push_cast
   rw [mul_left_comm Complex.I, mul_inv, ← mul_assoc, mul_inv_cancel₀ ht', one_mul]
 
+/- English proof (translation)
+Introduce `P hP Q hQ u hu` and use `by rw [real_inner_smul_left] exact mul_ne_zero ht (hl P hP Q hQ u hu)`.
+-/
 theorem smul_mem_generic {l : A0 k} (hl : l ∈ generic k) {t : ℝ} (ht : t ≠ 0) : t • l ∈ generic k :=
   fun P hP Q hQ u hu => by
     rw [real_inner_smul_left]
@@ -63,6 +83,17 @@ end GlobalTheory.Chamber.ConstEps
 
 open GlobalTheory.Chamber.ConstEps in
 
+/- English proof (translation)
+Introduce `k 𝔞 S _ hS hne l hl`. Take `⟨F, hF, hE⟩` from `exists_ext 𝔞 S hS`. Take `⟨hS1, hS2, -⟩` from `mem_parF.1 hS`. Use `set d := Module.finrank ℝ 𝔞 - S.card with hd`. Establish `hd0 : d ≠ 0`.
+
+Use `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hS2 hne)` as an intermediate fact. Rewrite `this` using `[finrank_aP hS1]`. Use linear arithmetic over natural numbers and integers. Establish `hcard : ∀ P ∈ parP 𝔞 S, (P \ S).card = d` using `fun P hP => by`. Take `⟨h1, h2, h3⟩` from `mem_parP.1 hP`.
+
+Rewrite using `[card_sdiff_of_subset h3, ← finrank_aP h1, h2]`. Establish `key : ∀ t : ℝ, t ≠ 0 → (t : ℂ) ^ d * F (t • l) = ∑ P ∈ parP 𝔞 S, eps P S l` using `fun t ht => by`. Rewrite using `[hE _ (smul_mem_generic hl ht), mul_sum]`. Use `sum_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[← hcard P hP]`.
+
+Conclude with `epsOf_smul _ _ l ht`. Establish `hc : Continuous fun t : ℝ => (t : ℂ) ^ d * F (t • l)` using `by fun_prop`. Establish `h1 : Tendsto (fun t : ℝ => (t : ℂ) ^ d * F (t • l)) (𝓝[≠] 0) (𝓝 0)`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))` as an intermediate fact. Simplify `this` using `[hd0]`.
+
+Establish `h2 : Tendsto (fun t : ℝ => (t : ℂ) ^ d * F (t • l)) (𝓝[≠] 0) (𝓝 (∑ P ∈ parP 𝔞 S, eps P S l))` using `tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun t ht => (key t ht).symm)`. Conclude with `tendsto_nhds_unique h2 h1`.
+-/
 theorem GlobalTheory.Chamber.sum_eps_eq_zero : ∀ (k : ℕ) (𝔞 : Submodule ℝ (A0 k)) (S : Finset (SV k)), IsLevi 𝔞 →
     S ∈ parF 𝔞 ∅ → aP S ≠ 𝔞 → ∀ l ∈ generic k, ∑ P ∈ parP 𝔞 S, eps P S l = 0 := by
   intro k 𝔞 S _ hS hne l hl

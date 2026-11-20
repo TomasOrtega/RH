@@ -4,6 +4,9 @@ import Mathlib
     Type → ℕ → Type :=
     fun (C : Type) (N : ℕ) ↦ Matrix (Fin N) (Fin N) C
 
+/- English proof (translation)
+Introduce `C _ N y l w h m`. Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, pow_zero, one_smul, Matrix.one_mulVec]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`.
+-/
 theorem UpperTheory.Reformulated.B.Qp8.pow_eig :
     ∀ {C : Type} [inst : Field C] {N : ℕ} (y : UpperTheory.Reformulated.B.Qp8.Mat C N) (l : C) (w : Fin N → C),
       Matrix.mulVec y w = l • w → ∀ (m : ℕ), Matrix.mulVec (y ^ m) w = l ^ m • w := by

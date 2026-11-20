@@ -27,6 +27,13 @@ namespace GlobalTheory.ThetaValueCont
 
 open GlobalTheory.LocLift GlobalTheory.TangentOrigin
 
+/- English proof (translation)
+Introduce `U f`. Establish `key : ∀ b₀ ∈ B, ⊤ ≤ spMap (ev b₀) ⁻¹ᵁ U → (∀ᶠ b in 𝓝 b₀, b ∈ B ∧ ⊤ ≤ spMap (ev b) ⁻¹ᵁ U) ∧ DifferentiableAt ℂ (fun b => valAt' (spMap (ev b)) U f) b₀`. Introduce `b₀ hb₀ h₀`. Take `⟨r, a, hr, H⟩` from `HolLieFrame.exists_fraction (𝟙 (Sp A)) U f (ev b₀) (by rwa [Category.comp_id])`. Establish `d` using `fun a => (h a).differentiableAt (hB.mem_nhds hb₀)`.
+
+Establish `hev : ∀ᶠ b in 𝓝 b₀, ⊤ ≤ spMap (ev b) ⁻¹ᵁ U ∧ valAt' (spMap (ev b)) U f = ev b a * (ev b r)⁻¹` using `by filter_upwards [(d r).continuousAt.eventually_ne hr] with b hb`. Take `⟨h₁, h₂⟩` from `H ℂ (ev b) hb.isUnit`. Rewrite `h₂` using `[← valAt'_eq_evalPt]`. Rewrite `h₁`, `h₂` using `[Category.comp_id]`. Conclude with `⟨h₁, (eq_mul_inv_iff_mul_eq₀ hb).2 h₂⟩`.
+
+Conclude with `⟨(hev.mono fun b hb => hb.1).and (hB.mem_nhds hb₀) |>.mono fun b hb => ⟨hb.2, hb.1⟩, ((d a).mul ((d r).inv hr)).congr_of_eventuallyEq (hev.mono fun b hb => hb.2)⟩`. Conclude with `⟨isOpen_iff_mem_nhds.2 fun b hb => (key b hb.1 hb.2).1, fun b hb => (key b hb.1 hb.2).2.differentiableWithinAt⟩`.
+-/
 theorem isHolTo_spMap {V A : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CommRing A] {B : Set V} (hB : IsOpen B)
     (ev : V → (A →+* ℂ)) (h : ∀ a, DifferentiableOn ℂ (fun b => ev b a) B) : IsHolTo B fun b => spMap (ev b) := by
   intro U f
@@ -46,6 +53,13 @@ theorem isHolTo_spMap {V A : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [C
   exact ⟨isOpen_iff_mem_nhds.2 fun b hb => (key b hb.1 hb.2).1,
     fun b hb => (key b hb.1 hb.2).2.differentiableWithinAt⟩
 
+/- English proof (translation)
+Establish `hb₀` using `mem_of_mem_nhds hB`. Use `HolLieFrame.differentiableAt_of_forms _ b₀ fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ (O : G.left.Opens) (f : Γ(G.left, O)), ⊤ ≤ (e b₀ 0).left ⁻¹ᵁ O → fderiv ℂ (fun z => valAt' (e b₀ z).left O f) 0 w = 0`. Introduce `O f hO`. Use `hw (fun b => fderiv ℂ (fun z => valAt' (e b z).left O f) 0) (HolLieFrame.differentiableAt_fderiv (e := fun b z => (e b z).left) hol hb₀ O f hO) ?_` and prove the remaining obligations.
+
+Take `⟨F, hF, hF'⟩` from `HolLieFrame.exists_hol_snd ψ ev b₀ hev O f ((top_le_preimage_iff _ O).2 (by rw [(hW b₀ hb₀).1]; exact hO))`. Use `hF.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hF', hB] with b ⟨h, e⟩ hb`. Conclude with `((hW b hb).2 O h f).symm.trans e`. Establish `d₁` using `LocalLift.isDerivAt0_const (fun z => (e b₀ z).left) w hw'`.
+
+Establish `d₀` using `LocalLift.isDerivAt0_const (fun z => (e b₀ z).left) 0 fun _ _ _ => map_zero _`. Set `v₀ : epsPt (spMap (ev b₀)) ⟶ G` to `Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (e b₀ 0).left) ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w (e b₀ 0))))`. Conclude with `(he.2.2.2.2 v₀ d₁.1).unique d₁ d₀`.
+-/
 theorem differentiableAt_tangent {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g m : ℕ}
     {B : Set (Fin m → ℂ)} {b₀ : Fin m → ℂ} (hB : B ∈ 𝓝 b₀) (ev : (Fin m → ℂ) → (R →+* ℂ))
     (hev : ∀ c, DifferentiableAt ℂ (fun b => ev b c) b₀) {e : ∀ b, (Fin g → ℂ) → (Over.mk (spMap (ev b)) ⟶ G)}
@@ -72,6 +86,15 @@ theorem differentiableAt_tangent {R : Type} [CommRing R] {G : Over (Sp R)} [GrpO
       ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w (e b₀ 0))))
   exact (he.2.2.2.2 v₀ d₁.1).unique d₁ d₀
 
+/- English proof (translation)
+Take `⟨φ, -, w, hg, -, hφ, hw, -⟩` from `hx`. Take `⟨⟨A, isAb, g, sm, L, isLB, rigid, sym, ample, ktriv⟩, gp, rig, rg, th, tn, v, vb⟩` from `y`. Take `rfl : x.P.g = g` from `hg`. Take `⟨Φ, hΦ, hΦW⟩` from `exists_push_iff _ x.P hφ ⟨w, hw⟩`. Take `⟨u, Hm, χ, Ef, hAH, -, h₁, h₂, -, -, hE, hbij, hW⟩` from `hT x.P x.rig x.rig_gen`.
+
+Use `u.discrete` as an intermediate fact. Establish `: IsZLattice ℝ u.Λ` using `⟨u.full⟩`. Establish `halt : Ef.IsAlt` using `fun l => by`. Establish `h1` using `congrArg Complex.im (SiegelNormalForm.form_conj hAH.1 (l : Fin x.P.g → ℂ) l)`. Establish `h2` using `hE l l`.
+
+Simplify using `only [Complex.star_def, Complex.conj_im] at h1`. Rewrite `h2` using `[hermForm]`. Establish `: (Ef l l : ℝ) = 0` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hrank : Module.finrank ℤ u.Λ = 2 * x.P.g`.
+
+Rewrite using `[ZLattice.rank ℝ u.Λ, Module.finrank_pi_fintype]`. Simplify using `[mul_comm]`. Take `⟨bs, hbs⟩` from `exists_isSymplecticBasis_of_finrank (B := -Ef) halt.neg (bijective_neg_bilinForm hbij) hrank`. Conclude with `⟨fun z => Φ (u.ex z), u.Λ, Ef, bs, PointUnif.isExp_push hφ u h₁ h₂ Φ hΦ, hbs, u.full, fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z), fun k a a₂ c hk hc => (hΦW _ _ _ _).1 (hW k a a₂ c hk hc)⟩`.
+-/
 theorem exists_exp_fibre (hT : ThetaUnifAV) {S : Type} [CommRing S] (y : KeyIn S) (f : S →+* ℂ) (x : KeyIn ℂ)
     (hx : KeyPB x y f) : ∃ (e : (Fin y.P.g → ℂ) → (Over.mk (spMap f) ⟶ y.P.A)) (Λ : Submodule ℤ (Fin y.P.g → ℂ))
       (EF : LinearMap.BilinForm ℤ Λ) (bs : Module.Basis (Fin y.P.g ⊕ Fin y.P.g) ℤ Λ), IsExp (spMap f) e ∧
@@ -101,6 +124,21 @@ theorem exists_exp_fibre (hT : ThetaUnifAV) {S : Type} [CommRing S] (y : KeyIn S
   exact ⟨fun z => Φ (u.ex z), u.Λ, Ef, bs, PointUnif.isExp_push hφ u h₁ h₂ Φ hΦ, hbs, u.full,
     fun z => (map_eq_one_iff Φ Φ.injective).trans (u.ker z), fun k a a₂ c hk hc => (hΦW _ _ _ _).1 (hW k a a₂ c hk hc)⟩
 
+/- English proof (translation)
+Establish `half : ∀ {a : Fin g → ℝ}, (∀ i, a i = 0 ∨ a i = 1 / 2) → ∀ i, (a i : ℂ) = 0 ∨ (a i : ℂ) = 1 / 2` using `fun ha i => (ha i).imp (fun h => by simp [h]) (fun h => by simp [h])`. Establish `fin : (Set.pi Set.univ fun _ : Fin g => ({0, 1 / 2} : Set ℝ)).Finite` using `Set.Finite.pi fun _ => Set.toFinite _`. Establish `hK : {k : (Fin g → ℝ) × (Fin g → ℝ) | (∀ i, k.1 i = 0 ∨ k.1 i = 1 / 2) ∧ ∀ i, k.2 i = 0 ∨ k.2 i = 1 / 2}.Finite` using `(fin.prod fin).subset fun k hk => ⟨fun i _ => hk.1 i, fun i _ => hk.2 i⟩`. Take `⟨θ, hθ⟩ : ∃ θ : (Fin g → ℝ) × (Fin g → ℝ) → (Fin m → ℂ) × (Fin g → ℂ) → ℂ, ∀ k, θ k = fun bz => thetaChar (τ bz.1) (fun i => (k.1 i : ℂ)) (fun i => (k.2 i : ℂ)) (h bz.1 *ᵥ bz.2)` from `⟨_, fun _ => rfl⟩`. Establish `th` using `fun (k : (Fin g → ℝ) × (Fin g → ℝ)) (h₁ : ∀ i, k.1 i = 0 ∨ k.1 i = 1 / 2) (h₂ : ∀ i, k.2 i = 0 ∨ k.2 i = 1 / 2) => ThetaFamily.thetaChar_family hp hq f₂ (half h₁) (half h₂)`.
+
+Use `continuousAt_constant (B := C) hK (κ := κ) (θ := θ) (W := fun j => {bz ∈ C ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ e bz.1 bz.2 ⁻¹ᵁ L.U j}) (f := fun j bz => valAt' (e bz.1 bz.2) (L.U j) (sec.f j)) (r := fun j b => valAt' (pt b) ((L.pull (eSec G)).U fun _ => j) (rig.s fun _ => j).va …` and prove the remaining obligations. Rewrite using `[hθ]`. Conclude with `(th k hk.1 hk.2).1.mono fun w hw => hw.1`. Rewrite using `[hθ]`. Conclude with `(th k hk.1 hk.2).2`.
+
+Rewrite using `[hθ]`. Conclude with `f₅ b hz.1.1 j z hz.2`. Take `⟨j, hj⟩` from `exists_chart hL (e b₀ z (default : PrimeSpectrum ℂ))`. Conclude with `⟨j, ⟨hC₀, trivial⟩, (top_le_preimage_iff_mem _ _).2 hj⟩`. Establish `hinv : h b₀ * Matrix.of (fun i k => p k b₀ i) = 1`.
+
+Use extensionality with `i k`. Use `congrFun ((f₂ b₀ hC₀).2 k).1 i` as an intermediate fact. Rewrite using `[Matrix.one_apply, ← Pi.single_apply k (1 : ℂ) i, ← this]`. Both sides reduce to the same expression. Generalize the expression as in `Matrix.of (fun i k => p k b₀ i) = N at hinv`.
+
+Establish `dl : Differentiable ℂ (fun w : Fin g → ℂ => N *ᵥ w)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin N)).differentiable`. Take `⟨e₁, e₂⟩` from `ThetaPoint.half_char_unique f₁ (f₂ b₀ hC₀).1 (f₃ b₀ hC₀).1 (f₃ b₀ hC₀).2 hk.1 hk.2 (h1.comp dl) (fun z => h2 _) fun z => by`. Use `h3 (N *ᵥ z)` as an intermediate fact. Simplify using `only [hθ, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, CanTh.thetaChar_eq_theta] at this`. Conclude with `this.symm`.
+
+Conclude with `Prod.ext e₁ e₂`. Establish `h0 : ⊤ ≤ pt b₀ ⁻¹ᵁ (L.pull (eSec G)).U fun _ => j`. Establish `: ⊤ ≤ e b₀ 0 ⁻¹ᵁ L.U j` using `hj.2`. Rewrite `this` using `[e0]`. Conclude with `fun p hp => mem_pull.2 (this hp)`.
+
+Conclude with `⟨(LocalLift.hol_differentiableAt hy hC₀ h0 _).continuousAt, valAt'_unit_ne_zero _ h0 _⟩`.
+-/
 theorem continuousAt_frame_constant {X : Scheme.{0}} {G : Over X} [GrpObj G] {L : LB G.left} (hL : L.IsLB)
     (rig : LB.Gen (L.pull (eSec G))) (sec : L.Sec) {g m : ℕ} {C : Set (Fin m → ℂ)} (hCo : IsOpen C) {b₀ : Fin m → ℂ}
     (hC₀ : b₀ ∈ C) {pt : (Fin m → ℂ) → (Sp ℂ ⟶ X)} (hy : IsHolTo C pt)
@@ -162,6 +200,27 @@ theorem continuousAt_frame_constant {X : Scheme.{0}} {G : Over X} [GrpObj G] {L 
       exact fun p hp => mem_pull.2 (this hp)
     exact ⟨(LocalLift.hol_differentiableAt hy hC₀ h0 _).continuousAt, valAt'_unit_ne_zero _ h0 _⟩
 
+/- English proof (translation)
+Introduce `hL hT hI S _ _ _ y m B s t hB hs ht b₀ hb₀`. Use `choose x hx hv using ht`. Set `ev : (Fin m → ℂ) → (S →+* ℂ)` to `fun b => (s b).toRingHom`. Set `pt : (Fin m → ℂ) → (Sp ℂ ⟶ Sp S)` to `fun b => spMap (ev b)`. Establish `hy : IsHolTo B pt` using `isHolTo_spMap hB ev hs`.
+
+Take `⟨e₀, Λ, EF, bs, he₀, hbs, hfull, k₀, w₀⟩` from `exists_exp_fibre hT y _ _ (hx b₀ hb₀)`. Establish `hft : LocallyOfFiniteType (spMap (algebraMap ℂ S))` using `HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Establish `: IsNoetherianRing S` using `Algebra.FiniteType.isNoetherianRing ℂ S`. Use `y.P.isAb.proper` as an intermediate fact. Take `⟨B₁, e, r, hB₁, hb₁, hB₁B, rfl, hr, hol, he, hl⟩` from `RelExp.exists_relative_exp ℂ (RingHom.id ℂ) (Sp S) (spMap (algebraMap ℂ S)) y.P.A y.P.g m B pt b₀ e₀ hft y.P.isAb y.P.smoothDim hB hb₀ (fun b _ => by`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun a => (s b).commutes a) hy he₀`. Express the relevant statement in the definitionally equal form `HasLifts B₁ pt e at hl`. Express the relevant statement in the definitionally equal form `∀ b ∈ B₁, IsExp (pt b) (e b) ∧ _ at he`.
+
+Use `Module.Free.of_basis bs` as an intermediate fact. Use `Module.Finite.of_basis bs` as an intermediate fact. Take `⟨P, hP₀, hP⟩` from `exists_periods latContinuation hB₁ hb₁ (isHolTo_mono hy hB₁ hB₁B) hr hol he hl Λ.subtype.toAddMonoidHom Subtype.val_injective (by rw [← hfull]; congr 1; exact Subtype.range_val) (fun z => (k₀ z).trans ⟨fun h => ⟨⟨z, h⟩, rfl⟩, fun ⟨l, h⟩ => h ▸ l.2⟩)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hP.and (hB₁.mem_nhds hb₁))`. Use `set C := Metric.ball b₀ ε`.
+
+Establish `hCo : IsOpen C` using `Metric.isOpen_ball`. Establish `hCc : IsPreconnected C` using `(convex_ball b₀ ε).isPreconnected`. Establish `hC₀ : b₀ ∈ C` using `Metric.mem_ball_self hε`. Establish `hCn` using `hCo.mem_nhds hC₀`. Establish `hC₁ : C ⊆ B₁` using `fun b hb => (hball b hb).2`.
+
+Establish `hCB : C ⊆ B` using `hC₁.trans hB₁B`. Establish `hPd : ∀ x, DifferentiableOn ℂ (fun b => P b x) C` using `fun x b hb => ((hball b hb).1.1 x).differentiableWithinAt`. Establish `hk1 : ∀ b ∈ C, ∀ x, e b (P b x) = 1` using `fun b hb x => ((hball b hb).1.2.1 _).2 ⟨x, rfl⟩`. Establish `htor : ∀ (k : ℕ) x, IsHolTo C (fun b => (e b ((k : ℂ)⁻¹ • P b x)).left)` using `fun k x => isHolTo_comp (β := fun b => (b, (k : ℂ)⁻¹ • P b x)) hol hCo (differentiableOn_id.prodMk ((hPd x).fun_const_smul _)) fun b hb => ⟨hC₁ hb, trivial⟩`. Establish `hpow : ∀ (k : ℕ), 0 < k → ∀ x, ∀ b ∈ C, e b ((k : ℂ)⁻¹ • P b x) ^ k = 1` using `fun k hk x b hb => by`.
+
+Rewrite using `[← hom_nsmul (he b (hC₁ hb)).1.1, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hk.ne'), hk1 b hb]`. Establish `hwe : ∀ b ∈ C, ∀ (k : ℕ) (a a₂ : Λ) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (EF a a₂ : ℂ) / k) → Out.WeilIs y.P.A y.P.L k (e b ((k : ℂ)⁻¹ • P b a)) (e b ((k : ℂ)⁻¹ • P b a₂)) (unitOn c)` using `fun b hb k a a₂ c hk hc => (torsion_eq_and_weilIs_of_isHolTo hL (Sp S) y.P m k C pt (fun b => e b ((k : ℂ)⁻¹ • P b a)) (fun b => e b ((k : ℂ)⁻¹ • P b a₂)) c b₀ hk (isUnit_natCast_of_over (spMap (algebraMap ℂ S)) hk) hCo hCc hC₀ (htor k a) (htor k a₂) fun b hb => ⟨hpow k hk a b hb …`. Establish `fib` using `fun b (hb : b ∈ C) => exists_normal_fibre hT hL.mulN y (ev b) _ (hx b (hCB hb)) (e b) (he b (hC₁ hb)).1.1 (he b (hC₁ hb)).1.2.1 (he b (hC₁ hb)).1.2.2.1 EF bs hbs (P b) (hball b hb).1.2.1 (hwe b hb)`. Use `choose! h τ κ c W f₁ f₂ f₃ f₄ f₅ f₆ f₇ using fib`. Establish `ht : ∀ b ∈ C, t b = (Matrix.of fun i => (2 * Real.pi * Complex.I : ℂ) • h b *ᵥ W b i).det ^ 4 / c b ^ 8` using `fun b hb => _root_.GlobalTheory.NormalUnique.thetaFrame_value_unique hT hI _ _ _ (hv b (hCB hb)) (f₇ b hb)`.
+
+Establish `hinv : ∀ b ∈ C, h b * Matrix.of (fun i k => P b (bs (.inl k)) i) = 1` using `fun b hb => by`. Use extensionality with `i k`. Use `congrFun ((f₂ b hb).2 k).1 i` as an intermediate fact. Rewrite using `[Matrix.one_apply, ← Pi.single_apply k (1 : ℂ) i, ← this]`. Both sides reduce to the same expression.
+
+Establish `dh : ∀ i j, DifferentiableOn ℂ (fun b => h b i j) C` using `ThetaFamily.differentiableOn_left_inverse (fun i k => differentiableOn_pi.1 (hPd _) i) hinv`. Establish `holC` using `isHolTo_mono hol (hCo.prod isOpen_univ) (Set.prod_mono hC₁ le_rfl)`. Establish `cc : ContinuousAt c b₀` using `continuousAt_frame_constant y.P.isLB y.rig y.th hCo hC₀ (isHolTo_mono hy hCo hCB) (e := fun b z => (e b z).left) ((congrArg (·.left) (hom_zero (he b₀ hb₁).1.1)).trans (one_left _)) holC (p := fun k b => P b (bs (.inl k))) (q := fun k b => P b (bs (.inr k))) (fun k => hPd _) (fun …`. Establish `cW : ∀ i, ContinuousAt (fun b => W b i) b₀` using `fun i => (differentiableAt_tangent hCn ev (fun a => (hs a).differentiableAt (hB.mem_nhds hb₀)) holC (he b₀ hb₁).1 (y.v i).left fun b hb => f₆ b hb i).continuousAt`. Establish `cM : ContinuousAt (fun b => Matrix.of fun i => (2 * Real.pi * Complex.I : ℂ) • h b *ᵥ W b i) b₀`.
+
+Use `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct]`. Conclude with `continuousAt_const.mul (tendsto_finset_sum _ fun l _ => ((dh j l).differentiableAt hCn).continuousAt.mul (continuousAt_pi.1 (cW i) l))`. Use `ContinuousAt.continuousWithinAt (ContinuousAt.congr ?_ (Filter.eventuallyEq_of_mem hCn ht).symm)` and prove the remaining obligations. Conclude with `((continuous_id.matrix_det.continuousAt.comp cM).pow 4).div (cc.pow 8) (pow_ne_zero _ (f₄ b₀ hC₀))`.
+-/
 theorem continuousOn_value : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → ∀ (S : Type) [CommRing S] [Algebra ℂ S] [Algebra.FiniteType ℂ S] (y : KeyIn S) (m : ℕ) (B : Set (Fin m → ℂ)) (s : (Fin m → ℂ) → (S →ₐ[ℂ] ℂ)) (t : (Fin m → ℂ) → ℂ), IsOpen B → (∀ a : S, DifferentiableOn ℂ (fun p => s p a) B) → (∀ p ∈ B, ∃ x : KeyIn ℂ, KeyPB x y (s p).toRingHom ∧ (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t p = M.det ^ 4 / c ^ 8)) → ContinuousOn t B := by
   intro hL hT hI S _ _ _ y m B s t hB hs ht b₀ hb₀
   choose x hx hv using ht

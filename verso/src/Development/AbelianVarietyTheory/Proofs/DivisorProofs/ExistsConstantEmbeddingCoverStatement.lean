@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConstLat.exists_const_fn | exact GlobalTheory.ConstLat.exists_const_fn | (intros; apply GlobalTheory.ConstLat.exists_const_fn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_constant_embedding_cover : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y), ∃ κ : F →+* V.X.functionField,
     ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (f : F), valAt (z ≫ V.j) (κ f) = valAt z (V.φ (algebraMap F Y.Fn f)) := by
   first | exact @GlobalTheory.ConstLat.exists_const_fn | exact GlobalTheory.ConstLat.exists_const_fn | (intros; apply GlobalTheory.ConstLat.exists_const_fn <;> assumption)

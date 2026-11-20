@@ -530,10 +530,16 @@ def GlobalFact (D : D7) : Prop :=
 def Statement (D : D7) : Prop :=
   SuppFirst D ∧ SuppSecond D ∧ GoodFact ∧ LevelFact ∧ GlueFact ∧ RamFact ∧ GlobalFact D
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example {c : Comm D} {𝒯 : Type} (T : 𝒯 → Tup c) : ValX T ↔ ∀ j σ h, ValAt T j σ h fun s => (T s).cV j := Iff.rfl
 
 end Global
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r s => by rw [Matrix.one_apply] split_ifs exacts [one_mem _, zero_mem _], by simp, fun r s _ => by simp⟩`.
+-/
 example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p κ t j c : ℕ) :
     InPat p (1 : Matrix (XI κ t j ⊕ Fin c) (XI κ t j ⊕ Fin c) k) :=
   ⟨fun r s => by

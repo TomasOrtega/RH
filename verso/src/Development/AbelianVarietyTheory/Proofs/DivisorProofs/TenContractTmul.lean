@@ -27,9 +27,17 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam
 def Charts.Obj.tenContract (ℓ : D →ₗ[ℂ] ℂ) (T : K.Obj) : T.ten D →ₗ[ℂ] T.C :=
   (TensorProduct.lid ℂ T.C).toLinearMap ∘ₗ LinearMap.rTensor T.C ℓ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Charts.Obj.tenContract_tmul (ℓ : D →ₗ[ℂ] ℂ) (T : K.Obj) (d : D) (c : T.C) :
     T.tenContract ℓ (d ⊗ₜ c) = ℓ d • c := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul d c`. Rewrite using `[Charts.Hom.ten_tmul, Charts.Obj.tenContract_tmul, Charts.Obj.tenContract_tmul]`.
+
+Conclude with `(map_smul (Charts.Hom.φc f) (ℓ d) c).symm`.
+-/
 theorem Charts.Hom.tenContract_ten (ℓ : D →ₗ[ℂ] ℂ) {T T' : K.Obj} (f : T ⟶ T') (x : T.ten D) :
     T'.tenContract ℓ (Charts.Hom.ten D f x) = f.φ (T.tenContract ℓ x) := by
   induction x using TensorProduct.induction_on with
@@ -39,6 +47,15 @@ theorem Charts.Hom.tenContract_ten (ℓ : D →ₗ[ℂ] ℂ) {T T' : K.Obj} (f :
     rw [Charts.Hom.ten_tmul, Charts.Obj.tenContract_tmul, Charts.Obj.tenContract_tmul]
     exact (map_smul (Charts.Hom.φc f) (ℓ d) c).symm
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hz`. Take `⟨G, hG⟩` from `H1.mk_eq_zero.1 h`. Use `AddMonoidHom.ext fun l ↦ (Module.forall_dual_apply_eq_zero_iff ℂ (p l)).1 fun ℓ ↦ ?_` and prove the remaining obligations. Set `q : Λ →+ Hol F.V` to `((algebraMap ℂ (Hol F.V)).toAddMonoidHom.comp ℓ.toAddMonoidHom).comp p`. Establish `h0 : K.perZ 0 = 0` using `Subtype.ext (by`.
+
+Use function extensionality and compare the values at `T T' f`. Conclude with `map_zero (algebraMap (Hol F.V) T'.C))`. Establish `hq : K.perCl q = K.perCl 0`. Unfold `Charts.perCl`. Rewrite using `[h0, map_zero]`.
+
+Use `H1.mk_eq_zero.2 ⟨fun T ↦ T.tenContract ℓ (G T), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' f`. Establish `e : G T' - Charts.Hom.ten D f (G T) = (p f.deg ⊗ₜ[ℂ] (1 : T'.C) : T'.ten D)` using `congrFun (congrFun (congrFun hG T) T') f`. Establish `e'` using `congrArg (T'.tenContract ℓ) e`. Rewrite `e'` using `[map_sub, Charts.Hom.tenContract_ten, Charts.Obj.tenContract_tmul, ← Algebra.algebraMap_eq_smul_one]`.
+
+Conclude with `e'`. Establish `h1 : algebraMap ℂ (Hol F.V) (ℓ (p l)) = 0` using `DFunLike.congr_fun (GlobalTheory.T.periodClass_injective_of_rich_charts K hK q 0 hq) l`. Establish `h2` using `congrArg (Hol.ev z hz) h1`. Rewrite `h2` using `[AlgHom.commutes, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem Charts.tenZ_eq_zero (K : Charts F) (hK : K.Rich) (hz : ∃ z, z ∈ F.V) {D : Type} [CommRing D] [Algebra ℂ D]
     (p : Λ →+ D) (h : H1.mk _ (K.tenZ p) = 0) : p = 0 := by
   obtain ⟨z, hz⟩ := hz

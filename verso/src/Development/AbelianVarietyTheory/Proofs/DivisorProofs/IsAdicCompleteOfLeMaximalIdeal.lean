@@ -5,6 +5,9 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ _ hm I hI`. Conclude with `isAdicComplete_of_le_of_isNoetherianRing R I (maximalIdeal R) hI hm`.
+-/
 theorem isAdicComplete_of_le_maximalIdeal :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R],
       IsAdicComplete (maximalIdeal R) R → ∀ (I : Ideal R), I ≤ maximalIdeal R →

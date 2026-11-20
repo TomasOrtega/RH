@@ -16,6 +16,15 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 
 namespace GlobalTheory.CompanionTheory.Clozel
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha π hm`. Use `choose m hm using hm`. Establish `hN : (Fintype.card (E →+* ℂ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `ha' : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `⟨-(∑ τ, (m τ).sum) / (a * Fintype.card (E →+* ℂ)), ?_⟩` and prove the remaining obligations.
+
+Use `set s : ℂ := -(∑ τ, (m τ).sum) / (a * Fintype.card (E →+* ℂ)) with hs`. Introduce `φ hφ t g`. Establish `hsum : ∀ τ : E →+* ℂ, (∑ i : Fin a, Eop τ i i) φ = ((m τ).sum + a * s) • φ` using `fun τ => by`. Establish `h1` using `(hm τ).twist (GlobalTheory.CuspRep.Model.absC E s)`. Rewrite `h1` using `[GlobalTheory.CuspRep.Model.expo_absC]`.
+
+Rewrite using `[GlobalTheory.T.trace_operator_eigenvalue_sum E a _ τ _ h1 φ hφ, Multiset.sum_map_add]`. Simplify using `[(hm τ).1]`. Establish `hc : ∑ τ : E →+* ℂ, ((m τ).sum + a * s) = 0`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hs]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlie : lie E a (oneL E a) φ = (0 : ℂ) • φ`. Rewrite using `[GlobalTheory.T.lie_central_element_trace E a, LinearMap.sum_apply, Finset.sum_congr rfl fun τ _ => hsum τ, ← Finset.sum_smul, hc]`. Simplify using `using GlobalTheory.T.central_eigen_exponential E a φ 0 hlie t g`.
+-/
 theorem exists_twist_isNormalised : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a →
     ∀ π : CuspSub E a, (∀ τ : E →+* ℂ, ∃ m, π.HasInfChar τ m) →
     ∃ s : ℂ, GlobalTheory.DiscSpec.IsNormalised (π.twist (GlobalTheory.CuspRep.Model.absC E s)) := by

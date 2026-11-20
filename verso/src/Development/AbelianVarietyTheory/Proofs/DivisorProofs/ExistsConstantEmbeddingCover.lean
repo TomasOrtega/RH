@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.ConstLat
 
+/- English proof (translation)
+Introduce `F _ _ Y V`. Use `haveI := CoverHt.isPreimmersion_j V`. Establish `hη` using `GlobalTheory.HtGen.Crit.j_gen_specializes V`. Set `ρ : V.X.functionField ≃+* V.G.functionField` to `RingEquiv.ofBijective (SmallSec.fnMap V.j hη) ⟨(SmallSec.fnMap V.j hη).injective, SmallSec.fnMap_surjective V.j hη⟩`. Use `⟨(ρ.symm : V.G.functionField →+* V.X.functionField).comp (V.φ.comp (algebraMap F Y.Fn)), fun z f => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `valAt (z ≫ V.j) (ρ.symm (V.φ (algebraMap F Y.Fn f))) = _`. Rewrite using `[ModelFn.valAt_comp V.j hη z]`. Conclude with `congrArg (valAt z) (ρ.apply_symm_apply _)`.
+-/
 theorem exists_const_fn : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y), ∃ κ : F →+* V.X.functionField,
     ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (f : F), valAt (z ≫ V.j) (κ f) = valAt z (V.φ (algebraMap F Y.Fn f)) := by
   intro F _ _ Y V

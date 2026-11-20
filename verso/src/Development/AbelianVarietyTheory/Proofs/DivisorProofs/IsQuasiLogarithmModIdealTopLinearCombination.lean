@@ -9,6 +9,21 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog
 
+/- English proof (translation)
+Introduce `B O Q _ _ _ _ θ d μ hμ ι _ e he w`. Establish `hc : ∀ i, constantCoeff (up Q μ i) = 0`. Introduce `i`. Simplify using `[up, hμ.const i]`. Establish `hzero : QL μ ⊤ (0 : MvPowerSeries (Fin d) Q)`.
+
+Use `⟨by simp, fun i => ⟨0, Submodule.mem_top, by simp [lin]⟩, fun α => ⟨0, Submodule.mem_top, ?_⟩⟩` and prove the remaining obligations. Use `formalCoboundary_smul hc (0 : Q) 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Establish `hadd : ∀ f g : MvPowerSeries (Fin d) Q, QL μ ⊤ f → QL μ ⊤ g → QL μ ⊤ (f + g)`. Introduce and unpack `f g ⟨hf0, hf1, hf2⟩ ⟨hg0, hg1, hg2⟩`. Use `⟨by simp [hf0, hg0], fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `hf1 i`. Take `⟨b, -, hb⟩` from `hg1 i`.
+
+Conclude with `⟨a + b, Submodule.mem_top, by simp only [lin, map_add] at ha hb ⊢; rw [ha, hb]⟩`. Take `⟨a, -, ha⟩` from `hf2 α`. Take `⟨b, -, hb⟩` from `hg2 α`. Conclude with `⟨a + b, Submodule.mem_top, by rw [formalCoboundary_add hc, map_add, ha, hb, map_add]⟩`. Establish `hsmul : ∀ (c : B) (f : MvPowerSeries (Fin d) Q), QL μ ⊤ f → QL μ ⊤ (algebraMap B Q c • f)`.
+
+Introduce and unpack `c f ⟨hf0, hf1, hf2⟩`. Use `⟨by simp [hf0], fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `hf1 i`. Use `⟨c * a, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Simplify using `only [lin, map_smul, smul_eq_mul] at ha ⊢`.
+
+Rewrite using `[ha, map_mul]`. Take `⟨a, -, ha⟩` from `hf2 α`. Use `⟨c * a, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_smul hc, map_smul, smul_eq_mul, ha, map_mul]`. Unfold `comb`.
+
+Conclude with `Finset.sum_induction _ (QL μ ⊤) hadd hzero fun i _ => hsmul (w i) (e i) (he i)`.
+-/
 theorem ql_comb_top : ∀ (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O) (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ (ι : Type) [Fintype ι] (e : ι → MvPowerSeries (Fin d) Q), (∀ i, QL μ ⊤ (e i)) → ∀ w : ι → B, QL μ ⊤ (comb w e) := by
   intro B O Q _ _ _ _ θ d μ hμ ι _ e he w
   have hc : ∀ i, constantCoeff (up Q μ i) = 0 := by

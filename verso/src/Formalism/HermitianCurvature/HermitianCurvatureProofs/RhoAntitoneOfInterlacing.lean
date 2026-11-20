@@ -4,6 +4,15 @@ open Formalism.FourierDecayAlt Finset
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Unfold `C7.LamSide C7.LamInterlaces`. Introduce and unpack `k r u u' lam l Y hl hlk ⟨hA, hL⟩ ⟨-, hL'⟩ - i`. Prove the components needed by the constructor for the conclusion. Introduce `hli`. Take `⟨j, hj⟩ : ∃ j : Fin (k + 2 * r + 1), (j : ℕ) = l - 1` from `⟨⟨l - 1, by omega⟩, rfl⟩`.
+
+Establish `hji : j ≤ i` using `Fin.le_iff_val_le_val.2 (by omega)`. Establish `hi1 : lam i ≤ lam j` using `hA.antitone hji`. Establish `h1` using `(hL j).1 (by omega)`. Establish `h2` using `(hL' j).1 (by omega)`. Rewrite `h1`, `h2` using `[show (j : ℕ) + 1 = l by omega]`.
+
+Conclude with `lt_min (lt_of_le_of_lt hi1 h1) (lt_of_le_of_lt hi1 h2)`. Introduce `hil`. Take `⟨j, hj⟩ : ∃ j : Fin (k + 2 * r + 1), (j : ℕ) = l - 2` from `⟨⟨l - 2, by omega⟩, rfl⟩`. Establish `hij : i ≤ j` using `Fin.le_iff_val_le_val.2 (by omega)`. Establish `hi1 : lam j ≤ lam i` using `hA.antitone hij`.
+
+Establish `h1` using `(hL j).2 (by omega)`. Establish `h2` using `(hL' j).2 (by omega)`. Rewrite `h1`, `h2` using `[show (j : ℕ) + 2 = l by omega]`. Conclude with `max_lt (lt_of_lt_of_le h1 hi1) (lt_of_lt_of_le h2 hi1)`.
+-/
 theorem lambda_side_inequality : C7.LamSide := by
   unfold C7.LamSide C7.LamInterlaces
   rintro k r u u' lam l Y hl hlk ⟨hA, hL⟩ ⟨-, hL'⟩ - i
@@ -25,6 +34,11 @@ theorem lambda_side_inequality : C7.LamSide := by
     rw [show (j : ℕ) + 2 = l by omega] at h1 h2
     exact max_lt (lt_of_lt_of_le h1 hi1) (lt_of_lt_of_le h2 hi1)
 
+/- English proof (translation)
+Introduce `i j hi hij hj`. Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n hin ih`. Establish `h1` using `h n (by simp only [Finset.mem_Icc, Set.mem_Icc]; omega)`.
+
+Establish `h2` using `h (n + 1) (by simp only [Finset.mem_Icc, Set.mem_Icc]; omega)`. Establish `h3` using `ih (by omega)`. Combine the linear relations using `[h1.2.2.1, h2.1]`.
+-/
 theorem rho_antitone_of_interlacing {k : ℕ} {u u' ρ : ℕ → ℝ} (h : I.Interlaces k u u' ρ) :
     ∀ i j, 1 ≤ i → i ≤ j → j ≤ k - 1 → ρ j ≤ ρ i := by
   intro i j hi hij hj
@@ -36,6 +50,17 @@ theorem rho_antitone_of_interlacing {k : ℕ} {u u' ρ : ℕ → ℝ} (h : I.Int
     have h3 := ih (by omega)
     linarith [h1.2.2.1, h2.1]
 
+/- English proof (translation)
+Unfold `C7.RhoSide C7.Between`. Introduce `k u u' ρ l Y hl hlk hI hB i hi`. Establish `hi' : 1 ≤ i ∧ i ≤ k - 1` using `by simpa using hi`. Take `⟨hB1, hB2⟩` from `hB`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hli`. Establish `h1` using `hI l (by simp only [Finset.mem_Icc, Set.mem_Icc]; omega)`. Establish `h2` using `rho_antitone_of_interlacing hI l i hl hli hi'.2`. Establish `h3 : ρ l + 1 / 2 ≤ min (u l) (u' l)` using `le_min h1.1 h1.2.1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `hil`. Establish `h1` using `hI (l - 1) (by simp only [Finset.mem_Icc, Set.mem_Icc]; omega)`. Establish `h2` using `rho_antitone_of_interlacing hI i (l - 1) hi'.1 (by omega) (by omega)`. Rewrite `h1` using `[show l - 1 + 1 = l by omega]`. Establish `h3 : max (u l) (u' l) + 1 / 2 ≤ ρ (l - 1)`.
+
+Break down `le_total (u l) (u' l) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `h1.2.2.2`. Rewrite using `[max_eq_left h]`. Conclude with `h1.2.2.1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rho_side_inequality : C7.RhoSide := by
   unfold C7.RhoSide C7.Between
   intro k u u' ρ l Y hl hlk hI hB i hi
@@ -57,6 +82,13 @@ theorem rho_side_inequality : C7.RhoSide := by
       · rw [max_eq_left h]; exact h1.2.2.1
     linarith
 
+/- English proof (translation)
+Unfold `C7.SignCount`. Introduce `ι _ f S hS hne`. Rewrite using `[← Finset.prod_mul_prod_compl S f, ← mul_assoc]`. Establish `h1 : (-1 : ℝ) ^ S.card * ∏ i ∈ S, f i = ∏ i ∈ S, (-f i)`. Rewrite using `[Finset.prod_neg]`.
+
+Rewrite using `[h1]`. Apply `mul_pos` to reduce the goal to its premises. Conclude with `Finset.prod_pos fun i hi => by linarith [(hS i).1 hi]`. Use `Finset.prod_pos fun i hi => ?_` and prove the remaining obligations. Establish `h2 : ¬ f i < 0` using `fun h => (Finset.mem_compl.1 hi) ((hS i).2 h)`.
+
+Conclude with `lt_of_le_of_ne (not_lt.1 h2) (hne i).symm`.
+-/
 theorem sign_change_count : C7.SignCount := by
   unfold C7.SignCount
   intro ι _ f S hS hne
@@ -71,6 +103,13 @@ theorem sign_change_count : C7.SignCount := by
     have h2 : ¬ f i < 0 := fun h => (Finset.mem_compl.1 hi) ((hS i).2 h)
     exact lt_of_le_of_ne (not_lt.1 h2) (hne i).symm
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Establish `ih'` using `ih (fun j hj => hpos j (Finset.mem_insert_of_mem hj)) (fun j hj => hneg j (Finset.mem_insert_of_mem hj))`. Rewrite using `[Finset.prod_insert ha, Finset.filter_insert]`.
+
+Distinguish the cases in `hma : m ≤ a`. Rewrite using `[if_pos hma, Finset.card_insert_of_notMem (fun h => ha (Finset.mem_filter.1 h).1), pow_succ]`. Use `hneg a (Finset.mem_insert_self a s) hma` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_neg hma]`.
+
+Use `hpos a (Finset.mem_insert_self a s) (by omega)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sign_prod_of_split_at_index (s : Finset ℕ) (g : ℕ → ℝ) (m : ℕ) (hpos : ∀ j ∈ s, j < m → 0 < g j)
     (hneg : ∀ j ∈ s, m ≤ j → g j < 0) : 0 < (-1 : ℝ) ^ (s.filter (m ≤ ·)).card * ∏ j ∈ s, g j := by
   induction s using Finset.induction_on with
@@ -87,6 +126,25 @@ theorem sign_prod_of_split_at_index (s : Finset ℕ) (g : ℕ → ℝ) (m : ℕ)
       have := hpos a (Finset.mem_insert_self a s) (by omega)
       nlinarith
 
+/- English proof (translation)
+Unfold `C7.PSign`. Introduce `k r u u' ρ lam l Y hl hlk hL hL' hI hB`. Establish `hside` using `lambda_side_inequality k r u u' lam l Y hl hlk hL hL' hB`. Establish `hrho` using `rho_side_inequality k u u' ρ l Y hl hlk hI hB`. Establish `hB'` using `hB`.
+
+Unfold `C7.Between at hB'`. Establish `hA : 0 < (-1 : ℝ) ^ (k - l) * ∏ s, (Y + lam s)`. Establish `hprod : ∏ s, (Y + lam s) = ∏ j ∈ Finset.range (k + 2 * r + 1), (fun j => if h : j < k + 2 * r + 1 then Y + lam ⟨j, h⟩ else 1) j`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [dif_pos s.isLt, Fin.eta]`. Establish `key` using `sign_prod_of_split_at_index (Finset.range (k + 2 * r + 1)) (fun j => if h : j < k + 2 * r + 1 then Y + lam ⟨j, h⟩ else 1) (l - 1) (fun j hj hjm => by`. Establish `hj' : j < k + 2 * r + 1` using `Finset.mem_range.1 hj`. Simplify using `only [dif_pos hj']`. Use `(hside ⟨j, hj'⟩).2 (show j + 1 < l by omega)` as an intermediate fact.
+
+Combine the linear relations using `[hB'.2])`. Use the proof step `(fun j hj hjm => by`. Establish `hj' : j < k + 2 * r + 1` using `Finset.mem_range.1 hj`. Simplify using `only [dif_pos hj']`. Use `(hside ⟨j, hj'⟩).1 (show l ≤ j + 1 by omega)` as an intermediate fact.
+
+Combine the linear relations using `[hB'.1])`. Establish `hcard : ((Finset.range (k + 2 * r + 1)).filter (l - 1 ≤ ·)).card = (k - l) + 2 * (r + 1)`. Rewrite using `[(show (Finset.range (k + 2 * r + 1)).filter (l - 1 ≤ ·) = Finset.Ico (l - 1) (k + 2 * r + 1) by`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`.
+
+Use the proof step `omega), Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite `key` using `[hcard, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`. Rewrite using `[hprod]`. Conclude with `key`.
+
+Establish `hB2 : 0 < (-1 : ℝ) ^ (k - l) * I.xpoly k ρ Y`. Unfold `I.xpoly`. Establish `key` using `sign_prod_of_split_at_index (Finset.Icc 1 (k - 1)) (fun i => Y + ρ i) l (fun i hi hil => show 0 < Y + ρ i by linarith [(hrho i hi).2 hil]) (fun i hi hli => show Y + ρ i < 0 by linarith [(hrho i hi).1 hli])`. Establish `hcard : ((Finset.Icc 1 (k - 1)).filter (l ≤ ·)).card = k - l`. Rewrite using `[(show (Finset.Icc 1 (k - 1)).filter (l ≤ ·) = Finset.Icc l (k - 1) by`.
+
+Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Use the proof step `omega), Nat.card_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite `key` using `[hcard]`.
+
+Conclude with `key`. Use `⟨hA, hB2, ?_⟩` and prove the remaining obligations. Establish `h` using `abs_of_pos hA`. Rewrite `h` using `[abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul]`. Conclude with `h`.
+-/
 theorem polynomial_sign : C7.PSign := by
   unfold C7.PSign
   intro k r u u' ρ lam l Y hl hlk hL hL' hI hB
@@ -135,8 +193,18 @@ theorem polynomial_sign : C7.PSign := by
   rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul] at h
   exact h
 
+/- English proof (translation)
+Introduce `_ _ _` and use `polynomial_sign`.
+-/
 theorem polynomial_sign_of_parts : C7.PSignOfParts := fun _ _ _ => polynomial_sign
 
+/- English proof (translation)
+Unfold `C7.RootsOutJoint LE.Sys.RootsOut`. Introduce `S u u' l hl hlk hI hI' hB s hs`. Establish `hb` using `hB _ hs`. Establish `key` using `lambda_side_inequality S.k S.r u u' S.lam l (-S.lam s) hl hlk hI hI' hb s`. Unfold `C7.Between at hb`.
+
+Rewrite `hb` using `[neg_neg]`. Distinguish the cases in `h : l ≤ s.val + 1`. Use `key.1 h` as an intermediate fact. Combine the linear relations using `[hb.1]`. Use `key.2 (by omega)` as an intermediate fact.
+
+Combine the linear relations using `[hb.2]`.
+-/
 theorem roots_outside_jointly : C7.RootsOutJoint := by
   unfold C7.RootsOutJoint LE.Sys.RootsOut
   intro S u u' l hl hlk hI hI' hB s hs
@@ -150,8 +218,14 @@ theorem roots_outside_jointly : C7.RootsOutJoint := by
   · have := key.2 (by omega)
     linarith [hb.2]
 
+/- English proof (translation)
+Introduce `_` and use `roots_outside_jointly`.
+-/
 theorem roots_outside_of_parts : C7.RootsOutOfParts := fun _ => roots_outside_jointly
 
+/- English proof (translation)
+Unfold `C7.LemmaEInterlacingOfParts C7.LemmaEInterlacing LE.LemmaE`. Introduce `hE hR CR Cd CP h1 h2 h3 C₂ hC₂ C₆ hC₆ S u u' l hl hlk hI hI' hB hN hL hβ`. Conclude with `hE CR Cd CP h1 h2 h3 C₂ hC₂ C₆ hC₆ S hN hL hβ (hR S u u' l hl hlk hI hI' hB)`.
+-/
 theorem interlacing_of_parts : C7.LemmaEInterlacingOfParts := by
   unfold C7.LemmaEInterlacingOfParts C7.LemmaEInterlacing LE.LemmaE
   intro hE hR CR Cd CP h1 h2 h3 C₂ hC₂ C₆ hC₆ S u u' l hl hlk hI hI' hB hN hL hβ

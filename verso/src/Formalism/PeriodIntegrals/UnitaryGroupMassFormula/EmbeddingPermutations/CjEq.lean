@@ -3,10 +3,30 @@ import Formalism.PeriodIntegrals.EmbPerm
 
 namespace PI.EmbPermWork
 
+/- English proof (translation)
+Simplify using `only [PI.EmbPermDefs.cj, PI.EmbPermDefs.liftM, dif_pos hx]`.
+-/
 theorem cj_eq (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (x : ℂ) (hx : x ∈ M) :
     PI.EmbPermDefs.cj M ρ x = ρ ⟨x, hx⟩ := by
   simp only [PI.EmbPermDefs.cj, PI.EmbPermDefs.liftM, dif_pos hx]
 
+/- English proof (translation)
+Introduce `E _ _ K φ₀ S _ emb hinj hagree hcard M ρ hK hM`. Set `_ : Algebra K ℂ` to `(φ₀.comp (algebraMap K E)).toAlgebra`. Establish `_ : FiniteDimensional K E` using `FiniteDimensional.right ℚ K E`. Set `f : S → (E →ₐ[K] ℂ)` to `fun s => { (emb s) with commutes' := fun a => hagree s a }`. Establish `hf : Function.Injective f`.
+
+Introduce `s t h`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `congrArg (fun g : E →ₐ[K] ℂ => g x) h`. Establish `hbij : Function.Bijective f`.
+
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[hcard, AlgHom.card]`. Set `g : S → (E →+* ℂ)` to `fun s => (ρ : M →+* ℂ).comp ((emb s).codRestrict M (hM s))`. Establish `hg : ∀ s x, g s x = PI.EmbPermDefs.cj M ρ (emb s x)`.
+
+Introduce `s x`. Rewrite using `[cj_eq M ρ _ (hM s x)]`. Both sides reduce to the same expression. Establish `hgK : ∀ s (a : K), g s (a : E) = φ₀ (a : E)`. Introduce `s a`.
+
+Rewrite using `[hg, hagree s a]`. Conclude with `(hK a).2`. Set `G : S → (E →ₐ[K] ℂ)` to `fun s => { (g s) with commutes' := fun a => hgK s a }`. Establish `hex : ∀ s, ∃ t, f t = G s` using `fun s => hbij.2 (G s)`. Use `choose p hp using hex`.
+
+Establish `hpx : ∀ s x, emb (p s) x = PI.EmbPermDefs.cj M ρ (emb s x)`. Introduce `s x`. Rewrite using `[← hg]`. Conclude with `congrArg (fun h : E →ₐ[K] ℂ => h x) (hp s)`. Establish `hpinj : Function.Injective p`.
+
+Introduce `s t hst`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1 : g s x = g t x` using `by rw [hg, hg, ← hpx, ← hpx, hst]`. Establish `h2 : ((emb s).codRestrict M (hM s)) x = ((emb t).codRestrict M (hM t)) x` using `(ρ : M →+* ℂ).injective h1`.
+
+Conclude with `congrArg Subtype.val h2`. Establish `hpbij : Function.Bijective p` using `Finite.injective_iff_bijective.mp hpinj`. Conclude with `⟨Equiv.ofBijective p hpbij, fun s x => (hpx s x).symm⟩`.
+-/
 theorem main : PI.EmbPerm := by
   intro E _ _ K φ₀ S _ emb hinj hagree hcard M ρ hK hM
   let _ : Algebra K ℂ := (φ₀.comp (algebraMap K E)).toAlgebra

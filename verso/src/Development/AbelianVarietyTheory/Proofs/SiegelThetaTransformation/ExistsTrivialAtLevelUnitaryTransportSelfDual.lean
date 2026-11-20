@@ -22,6 +22,9 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[glue, fm, sg]`. Simplify using `[glue, fm, sg, Matrix.one_apply_ne h]`.
+-/
 theorem glue_map (c : E ≃ₐ[F] E) (e : FiniteAdeleRing (𝓞 F) F) (γ : Matrix (Fin n) (Fin n) E) :
     (glue e γ).map (sg (FiniteAdeleRing (𝓞 F) F) c) = glue e (γ.map c) := by
   ext i j
@@ -30,6 +33,9 @@ theorem glue_map (c : E ≃ₐ[F] E) (e : FiniteAdeleRing (𝓞 F) F) (γ : Matr
     simp [glue, fm, sg]
   · simp [glue, fm, sg, Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Establish `h0 : (α ⊗ₜ[F] (1 : E) : RA F E) * (e ⊗ₜ[F] (1 : E)) = 0`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, h, TensorProduct.zero_tmul]`. Simplify using `only [glue, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(fm F γ i j - (1 : Matrix (Fin n) (Fin n) (RA F E)) i j) * h0`.
+-/
 theorem mul_glue_sub_one {e α : FiniteAdeleRing (𝓞 F) F} (h : α * e = 0) (γ : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     (α ⊗ₜ[F] (1 : E) : RA F E) * (glue e γ - 1) i j = 0 := by
   have h0 : (α ⊗ₜ[F] (1 : E) : RA F E) * (e ⊗ₜ[F] (1 : E)) = 0 := by
@@ -37,6 +43,11 @@ theorem mul_glue_sub_one {e α : FiniteAdeleRing (𝓞 F) F} (h : α * e = 0) (�
   simp only [glue, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   linear_combination (fm F γ i j - (1 : Matrix (Fin n) (Fin n) (RA F E)) i j) * h0
 
+/- English proof (translation)
+Use `DFunLike.ext _ _ fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α w * idem F k w = 0`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[idem_apply, if_neg, mul_zero]`.
+
+Introduce `hk'`. Take `⟨a, b, hab⟩ : IsCoprime (k : 𝓞 F) (M : 𝓞 F)` from `Nat.Coprime.cast hk`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (w.asIdeal.mul_mem_left a hk') (w.asIdeal.mul_mem_left b hv)))`. Rewrite using `[hα w h, zero_mul]`.
+-/
 theorem mul_idem_eq_zero {k M : ℕ} (hk : k.Coprime M) {v : HeightOneSpectrum (𝓞 F)} (hv : (M : 𝓞 F) ∈ v.asIdeal)
     {α : FiniteAdeleRing (𝓞 F) F} (hα : ∀ v', v' ≠ v → α v' = 0) : α * idem F k = 0 := by
   refine DFunLike.ext _ _ fun w => ?_
@@ -52,12 +63,44 @@ theorem mul_idem_eq_zero {k M : ℕ} (hk : k.Coprime M) {v : HeightOneSpectrum (
 
 end General
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.UnitarySplit.map_sig (sndA D.host.F) D.sp.cm.sig x`.
+-/
 theorem finPart_cA (D : D7) (x : AE D) :
     finPart D (cA D x) = sg (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (GlobalTheory.Member.cF D) (finPart D x) :=
   GlobalTheory.UnitarySplit.map_sig (sndA D.host.F) D.sp.cm.sig x
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce and unpack `D S T C M - Λ ⟨-, hU', k, hk0, hkM, h1, h2⟩`. Establish `hU : (⟨Λ⟩ : GenLat D.host.E S.rank).Unimod` using `(GlobalTheory.Dict.GenLatCmp.unimod_iff Λ).2 hU'`. Establish `h₁ : ∀ x ∈ Λ, k • x ∈ stdL D.host.E S.rank` using `fun x hx => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E]`. Conclude with `h1 x hx`.
+
+Establish `h₂ : ∀ x ∈ stdL D.host.E S.rank, k • x ∈ Λ` using `fun x hx => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E]`. Conclude with `h2 x hx`. Take `⟨k', γ, hk', hγ, h₃, h₄⟩` from `GlobalTheory.AdaptUnitary.exists_unitary_adapted D.host.E (hostOfRecord D) S.rank ⟨Λ⟩ k hU hk0 (by rw [GlobalTheory.Dict.GenLatCmp.std_eq, span_smul_le_iff]; exact h₂) k hk0`. Rewrite `h₃`, `h₄` using `[GlobalTheory.Dict.GenLatCmp.std_eq]`.
+
+Use `set c := GlobalTheory.Member.cF D with hc`. Establish `c2 : ∀ x, c (c x) = x` using `fun x => star_star x`. Use `set δ : Matrix (Fin S.rank) (Fin S.rank) D.host.E := (γ.map c)ᵀ with hδ`. Establish `hδγ : δ * γ = 1`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← hγ i j]`. Both sides reduce to the same expression. Establish `hγδ : γ * δ = 1` using `mul_eq_one_comm.1 hδγ`. Establish `hδc : γᵀ.map c = δ` using `rfl`. Establish `h₅ : ∀ x ∈ stdL D.host.E S.rank, k' • δ *ᵥ x ∈ Λ` using `fun x hx => by`.
+
+Take `⟨w, hw, e⟩` from `h₄ x hx`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E, ← Matrix.mulVec_smul, e, Matrix.mulVec_mulVec, hδγ, Matrix.one_mulVec]` and apply the resulting hypothesis. Establish `h₆ : ∀ x ∈ Λ, k' • γ *ᵥ x ∈ stdL D.host.E S.rank` using `fun x hx => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.E]`. Conclude with `h₃ x hx`.
+
+Establish `he` using `idem_mul (F := D.host.F) k`. Establish `t1 : γᵀ * δᵀ = 1` using `by rw [← Matrix.transpose_mul, hδγ, Matrix.transpose_one]`. Establish `t2 : δᵀ * γᵀ = 1` using `by rw [← Matrix.transpose_mul, hγδ, Matrix.transpose_one]`. Take `⟨-, -, -, lift, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D S`. Take `⟨h, hh, eh⟩` from `lift ⟨glue (idem _ k) γᵀ, glue (idem _ k) δᵀ, glue_mul he t1, glue_mul he t2⟩ (by`.
+
+Rewrite using `[C.m.gS, Matrix.transpose_one]`. Use `isUnA_of c ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((glue (idem _ k) γᵀ).map _)ᵀ * glue (idem _ k) γᵀ = 1`. Rewrite using `[glue_map_sg, hδc]`. Conclude with `glue_mul he t2)`.
+
+Establish `e1 : fmt S h = glue (idem _ k) γᵀ` using `congrArg Units.val eh`. Establish `e2 : fmtC S h = glue (idem _ k) δ`. Rewrite using `[← hδc, ← glue_map, ← e1]`. Use extensionality with `i j`. Conclude with `finPart_cA D _`.
+
+Use `⟨h, hh, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `v hv ε ⟨α, rfl, -, hα⟩ i j`. Establish `hM : (M : 𝓞 D.host.F) ∈ v.asIdeal` using `hv (Ideal.mem_span_singleton_self _)`. Apply `GlobalTheory.UnitarySplit.parts_inj D` to reduce the goal to its premises. Rewrite using `[map_mul, map_zero]`.
+
+Establish `: infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`. Express the relevant statement in the definitionally equal form `((0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[this, zero_mul]`. Rewrite using `[map_mul, map_zero]`.
+
+Establish `: finPart D ((mt S h - 1) i j) = (fmt S h - 1) i j`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, (finPart D).map_sub]`. Use `congr 1`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, (finPart D).map_one]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, (finPart D).map_zero]`. Rewrite using `[this, e1]`. Conclude with `mul_glue_sub_one (mul_idem_eq_zero hkM hM hα) _ i j`. Rewrite using `[e2]`.
+
+Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `⟨_, glue_mem_hat (F := D.host.F) hk' h₆ h₁ u hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, glue_mul he hδγ, Matrix.one_mulVec]`.
+
+Introduce and unpack `⟨z, hz, ez⟩`. Rewrite using `[ez]`. Conclude with `glue_mem_hat (F := D.host.F) hk' h₅ h₂ z hz`.
+-/
 theorem exists_trivAt_isMov : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ M : ℕ, 0 < M → ∀ Λ ∈ Vset D.host.E S.rank M, ∃ h ∈ GfC S, TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h ∧ IsMov (fmtC S h) (stdL D.host.E S.rank) Λ := by
   rintro D S T C M - Λ ⟨-, hU', k, hk0, hkM, h1, h2⟩
   have hU : (⟨Λ⟩ : GenLat D.host.E S.rank).Unimod := (GlobalTheory.Dict.GenLatCmp.unimod_iff Λ).2 hU'

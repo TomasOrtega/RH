@@ -46,6 +46,9 @@ def Thresholds (k r : ℕ) (a : ℝ) : Prop :=
 
 def mulP {k r : ℕ} (p : Mt k r × Mt k r) : Mt k r := fun i j => (Matrix.of p.1 * Matrix.of p.2) i j
 
+/- English proof (translation)
+Unfold `mulP`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun l _ => ?_` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem measurable_mulP {k r : ℕ} : Measurable (mulP (k := k) (r := r)) := by
   unfold mulP
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
@@ -121,14 +124,23 @@ def DecSmooth : Prop :=
         ∀ w ∈ smoothVecs (k := k) (r := r) σ, ∀ x ∈ UH (Hpk k r),
           ‖⟪v₀, σ x w⟫_ℂ‖ ≤ C * wordSeminorm σ Ws w * gN x ^ (1 - a)
 
+/- English proof (translation)
+Unfold `decExp`. Rewrite using `[show (2 * (((1 : ℕ) : ℝ) + 1)) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`. Evaluate the numerical expressions.
+-/
 example : decExp 1 16 = 1 := by
   unfold decExp
   rw [show (2 * (((1 : ℕ) : ℝ) + 1)) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [thrSS, thrS, thrG, dimN, dimV, propExp]`. Evaluate the numerical expressions.
+-/
 example : dimN 1 1 = 5 ∧ thrG 1 1 = 16 ∧ thrS 1 1 = 15 ∧ thrSS 1 1 = 181 := by
   simp only [thrSS, thrS, thrG, dimN, dimV, propExp]; norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨max _ _, le_max_left _ _, le_max_right _ _⟩`.
+-/
 example (k r : ℕ) : ∃ h, Size k r h :=
   ⟨max _ _, le_max_left _ _, le_max_right _ _⟩
 

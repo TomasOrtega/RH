@@ -13,11 +13,17 @@ abbrev E (M : ℤ) := ComplexShape.embeddingUpIntGE M
 section
 variable {C : Type u} [Category.{v} C] [Preadditive C] [HasZeroObject C] (K : CochainComplex C ℤ) (M : ℤ)
 
+/- English proof (translation)
+Take `rfl : i = j` from `(E M).injective_f (hi.trans hj.symm)`. Both sides reduce to the same expression.
+-/
 lemma xiso_indep {i j : ℕ} {p : ℤ} (hi : (E M).f i = p) (hj : (E M).f j = p) :
     K.stupidTruncXIso (E M) hi = K.stupidTruncXIso (E M) hj := by
   obtain rfl : i = j := (E M).injective_f (hi.trans hj.symm)
   rfl
 
+/- English proof (translation)
+Simplify using `[HomologicalComplex.stupidTrunc, HomologicalComplex.stupidTruncXIso, HomologicalComplex.extend_d_eq _ _ rfl rfl, HomologicalComplex.restriction]`. Use `erw [eqToIso_refl, eqToIso_refl]`. Simplify using the standard rewrite rules.
+-/
 lemma trd (i j : ℕ) :
     (K.stupidTrunc (E M)).d ((E M).f i) ((E M).f j) ≫ (K.stupidTruncXIso (E M) (i := j) rfl).hom =
       (K.stupidTruncXIso (E M) (i := i) rfl).hom ≫ K.d ((E M).f i) ((E M).f j) := by
@@ -30,13 +36,22 @@ open Classical in
 def iotaf (p : ℤ) : (K.stupidTrunc (E M)).X p ⟶ K.X p :=
   if h : ∃ i, (E M).f i = p then (K.stupidTruncXIso (E M) h.choose_spec).hom else 0
 
+/- English proof (translation)
+Establish `h : ∃ j, (E M).f j = (E M).f i` using `⟨i, rfl⟩`. Rewrite using `[iotaf, dif_pos h, xiso_indep K M h.choose_spec rfl]`.
+-/
 lemma iotaf_eq (i : ℕ) : iotaf K M ((E M).f i) = (K.stupidTruncXIso (E M) (i := i) rfl).hom := by
   have h : ∃ j, (E M).f j = (E M).f i := ⟨i, rfl⟩
   rw [iotaf, dif_pos h, xiso_indep K M h.choose_spec rfl]
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.isZero_stupidTrunc_X _ _ _ (fun i h => by simp [E] at h; omega)`.
+-/
 lemma stupidTruncation_GE_isZero_below_bound (p : ℤ) (hp : p < M) : IsZero ((K.stupidTrunc (E M)).X p) :=
   HomologicalComplex.isZero_stupidTrunc_X _ _ _ (fun i h => by simp [E] at h; omega)
 
+/- English proof (translation)
+Simplify using `[E]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma mem (p : ℤ) (hp : M ≤ p) : (E M).f (p - M).toNat = p := by simp [E]; omega
 
 def iota : K.stupidTrunc (E M) ⟶ K where
@@ -50,11 +65,19 @@ def iota : K.stupidTrunc (E M) ⟶ K where
       exact (trd K M i j).symm
     · exact (stupidTruncation_GE_isZero_below_bound K M p (by omega)).eq_of_src _ _
 
+/- English proof (translation)
+Take `⟨i, rfl⟩ : ∃ i : ℕ, (E M).f i = p` from `⟨_, mem M p hp⟩`. Use `show IsIso (iotaf K M _)`. Rewrite using `[iotaf_eq]`. Use `infer_instance`.
+-/
 lemma iota_iso (p : ℤ) (hp : M ≤ p) : IsIso ((iota K M).f p) := by
   obtain ⟨i, rfl⟩ : ∃ i : ℕ, (E M).f i = p := ⟨_, mem M p hp⟩
   show IsIso (iotaf K M _)
   rw [iotaf_eq]; infer_instance
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `only [HomologicalComplex.comp_f]`. Distinguish the cases in `hp : M ≤ p`. Take `⟨i, rfl⟩ : ∃ i : ℕ, (E M).f i = p` from `⟨_, mem M p hp⟩ show _ ≫ iotaf L M _ = iotaf K M _ ≫ _`. Rewrite using `[iotaf_eq, iotaf_eq]`.
+
+Conclude with `HomologicalComplex.stupidTruncMap_stupidTruncXIso_hom _ _ rfl`. Conclude with `(stupidTruncation_GE_isZero_below_bound K M p (by omega)).eq_of_src _ _`.
+-/
 lemma iota_nat {K L : CochainComplex C ℤ} (g : K ⟶ L) :
     HomologicalComplex.stupidTruncMap g (E M) ≫ iota L M = iota K M ≫ g := by
   ext p
@@ -73,6 +96,11 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] [HasZeroObject C]
 
 def P (m : ℤ) (c : Cochain B I m) : Cochain A I m := (Cochain.ofHom φ).comp c (zero_add m)
 
+/- English proof (translation)
+Introduce `c c' h`. Use extensionality with `p q hpq`. Distinguish the cases in `hp : M ≤ p`. Use `hiso p hp` as an intermediate fact. Establish `h'` using `congrArg (fun x : Cochain A I m => x.v p q hpq) h`.
+
+Simplify using `only [P, Cochain.zero_cochain_comp_v, Cochain.ofHom_v] at h'`. Conclude with `(cancel_epi _).1 h'`. Conclude with `(I.isZero_of_isStrictlyGE 0 q (by omega)).eq_of_tgt _ _`.
+-/
 lemma precomp_injective [I.IsStrictlyGE 0] (hiso : ∀ p, M ≤ p → IsIso (φ.f p)) (m : ℤ) (hm : m + M ≤ 0) :
     Function.Injective (P (I := I) φ m) := by
   intro c c' h
@@ -84,6 +112,11 @@ lemma precomp_injective [I.IsStrictlyGE 0] (hiso : ∀ p, M ≤ p → IsIso (φ.
     exact (cancel_epi _).1 h'
   · exact (I.isZero_of_isStrictlyGE 0 q (by omega)).eq_of_tgt _ _
 
+/- English proof (translation)
+Introduce `d`. Use `⟨Cochain.mk (fun p q hpq => if h : M ≤ p then (haveI := hiso p h; inv (φ.f p)) ≫ d.v p q hpq else 0), ?_⟩` and prove the remaining obligations. Use extensionality with `p q hpq`. Simplify using `only [P, Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.mk_v]`. Distinguish the cases in `hp : M ≤ p`.
+
+Rewrite using `[dif_pos hp]`. Simplify using the standard rewrite rules. Conclude with `(hz p (by omega)).eq_of_src _ _`.
+-/
 lemma precomp_surjective₂ (hiso : ∀ p, M ≤ p → IsIso (φ.f p)) (hz : ∀ p, p < M → IsZero (A.X p)) (m : ℤ) :
     Function.Surjective (P (I := I) φ m) := by
   intro d
@@ -98,12 +131,26 @@ end
 section
 variable {R : Type} [CommRing R] {A B I : Cx R} (φ : A ⟶ B)
 
+/- English proof (translation)
+Simplify using `only [cpull, cpre, CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.mk'_apply]`. Use `congr 1`.
+-/
 lemma cpull_mk (n : ℤ) (z : Cocycle B I n) :
     cpull φ I n (CohomologyClass.mk z) = CohomologyClass.mk (Cocycle.mk (P φ n z) (n + 1) rfl
       (by simp [P, Cocycle.δ_eq_zero])) := by
   simp only [cpull, cpre, CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.mk'_apply]
   congr 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Rewrite `hx` using `[cpull_mk, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+
+Take `⟨β, hβ⟩` from `hx`. Take `⟨β', rfl⟩` from `precomp_surjective₂ φ M hiso hz (n - 1) β`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨β', precomp_injective φ M hiso n (by omega) ?_⟩` and prove the remaining obligations. Rewrite `hβ` using `[Cocycle.mk_coe]`.
+
+Rewrite using `[← hβ, P, P, δ_ofHom_comp]`. Introduce `x`. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Take `⟨c, hc⟩` from `precomp_surjective₂ φ M hiso hz n (z : Cochain A I n)`. Establish `hδ : δ n (n + 1) c = 0`.
+
+Apply `precomp_injective φ M hiso (n + 1) (by omega)` to reduce the goal to its premises. Establish `: P φ (n + 1) (δ n (n + 1) c) = δ n (n + 1) (P φ n c)` using `by simp [P]`. Rewrite using `[this, hc, Cocycle.δ_eq_zero]`. Simplify using `[P]`. Use `⟨CohomologyClass.mk (Cocycle.mk c (n + 1) rfl hδ), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cpull_mk]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `only [Cocycle.mk_coe]`. Conclude with `hc`.
+-/
 lemma cpull_bij [I.IsStrictlyGE 0] (M : ℤ) (hiso : ∀ p, M ≤ p → IsIso (φ.f p))
     (hz : ∀ p, p < M → IsZero (A.X p)) (n : ℤ) (hn : n + 1 + M ≤ 0) :
     Function.Bijective (cpull φ I n) := by
@@ -133,6 +180,9 @@ lemma cpull_bij [I.IsStrictlyGE 0] (M : ℤ) (hiso : ∀ p, M ≤ p → IsIso (�
     exact hc
 end
 
+/- English proof (translation)
+Introduce `R _ I _ K L g N`. Use `⟨iota K (-(N : ℤ)), iota L (-(N : ℤ)), iota_nat _ g, fun n hn => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `cpull_bij _ (-(N : ℤ)) (iota_iso K _) (stupidTruncation_GE_isZero_below_bound K _) n (by omega)`. Conclude with `cpull_bij _ (-(N : ℤ)) (iota_iso L _) (stupidTruncation_GE_isZero_below_bound L _) n (by omega)`.
+-/
 theorem incl_of : LateralTheory.E.stupidPf.incl := by
   intro R _ I _ K L g N
   refine ⟨iota K (-(N : ℤ)), iota L (-(N : ℤ)), iota_nat _ g, fun n hn => ⟨?_, ?_⟩⟩

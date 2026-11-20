@@ -15,6 +15,13 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D m n d`. Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm (fun v : FVar D m n => d v.1))).subset ?_` and prove the remaining obligations. Introduce `α hα`. Simplify using `only [Set.mem_setOf_eq] at hα`. Rewrite using `[Set.mem_Iic, Finsupp.le_def]`.
+
+Introduce `v`. Rewrite using `[Finsupp.coe_equivFunOnFinite_symm]`. Distinguish the cases in `hv : v ∈ α.support`. Rewrite using `[← hα v.1]`. Conclude with `Finset.single_le_sum (f := fun w => α w) (fun _ _ => Nat.zero_le _) (Finset.mem_filter.2 ⟨hv, rfl⟩)`.
+
+Rewrite using `[Finsupp.notMem_support_iff.1 hv]`. Conclude with `Nat.zero_le _`.
+-/
 theorem finite_monomials_of_placeDegree : ∀ (D : D7) (m n : ℕ) (d : D.what₂.Tau → ℕ), {α : FVar D m n →₀ ℕ | ∀ τ, (∑ v ∈ α.support with v.1 = τ, α v) = d τ}.Finite := by
   intro D m n d
   classical

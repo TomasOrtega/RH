@@ -27,6 +27,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.WeilBridge
 open GlobalTheory.WeilSchrodinger
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hGv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hv` to reduce the goal to its premises. Apply `h.2 v` to reduce the goal to its premises. Introduce `x`.
+
+Establish `e : ∀ i, ∑ j, G i j * v j = 0` using `fun i => by`. Use `congrFun hGv i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Simplify using `only [sesq, Matrix.toLinearMapₛₗ₂'_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [smul_eq_mul, RingHom.id_apply, ← Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun j _ => mul_comm (v j) (G i j), e i, mul_zero]`.
+-/
 theorem det_ne_zero_of_nondeg (D : D7) {k : ℕ} (G : Matrix (Fin k) (Fin k) D.host.E)
     (h : (sesq D G).Nondegenerate) : G.det ≠ 0 := by
   intro h0
@@ -42,6 +49,17 @@ theorem det_ne_zero_of_nondeg (D : D7) {k : ℕ} (G : Matrix (Fin k) (Fin k) D.h
   simp only [smul_eq_mul, RingHom.id_apply, ← Finset.mul_sum]
   rw [Finset.sum_congr rfl fun j _ => mul_comm (v j) (G i j), e i, mul_zero]
 
+/- English proof (translation)
+Establish `hψ : IsStdChar D B.ψ (-1)` using `GlobalTheory.T.isStdChar_neg_one_of_standardTraceAdelicAddChar D B.ψ hB.std`. Establish `rS` using `GlobalTheory.T.restrictsToQuadraticSignPow_idelic_restriction D χW S.rank rW`. Establish `rT` using `GlobalTheory.T.restrictsToQuadraticSignPow_idelic_restriction D χX T.rank rX`. Take `⟨ω, hω⟩` from `GlobalTheory.weilRepresentationUnitaryPair D B.ψ S T χW χX hψ hcW hcX rS rT`. Take `⟨om₀, hom₀⟩` from `GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTransform D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB (Fin T.rank × Fin S.rank) Mo.co hMo.rat ω hω`.
+
+Establish `h2` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`. Establish `h3` using `GlobalTheory.T.transportedWeilDatum_keeps_admissible_forms D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`. Establish `h4` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`. Establish `h5` using `GlobalTheory.T.continuous_transported_weilDatum_adelicSchwartz D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`. Establish `h6` using `GlobalTheory.T.exists_doubledWeil_blockEmbedding_acts_on_first_boxFactor D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`.
+
+Establish `h7` using `GlobalTheory.T.exists_doubled_schrodingerModel_transposed_siegelRule D B.ψ hψ S T χW χX hcW hcX rS rT X.J Y.J (-1) eA eB _ Mo.co hMo.rat ω hω om₀ hom₀`. Establish `hsp : GlobalTheory.WeilM.IsUSplitting (GlobalTheory.WeilM.adeleClass D.host.F) B.ψ Mo.co (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig)) om₀` using `⟨⟨h2.1, h2.2, h3⟩, h4, h5⟩`. Establish `hw₀ : Mo.IsWeil B.ψ χX χW om₀` using `⟨⟨isUSplitting_inr hsp, h6⟩, ⟨transD _ Mo.co, transD_e Mo.co, isUSplitting_inl hsp, h7⟩, h5⟩`. Take `⟨h1X, h2X, -⟩` from `GlobalTheory.T.hermitianSelfDualLatticeSpace_form_hermitian_nondeg_unimodular D B hB T.rank X r s hX`. Take `⟨hdY, -⟩` from `GlobalTheory.T.skewHermitian_neg_traceZero_inv_hermitian_unimodular D B hB S.rank Y r' s' hY`.
+
+Establish `hdX : X.J.det ≠ 0`. Use `det_ne_zero_of_nondeg D X.Jᵀ h2X` as an intermediate fact. Rewrite `this` using `[Matrix.det_transpose]`. Then use the resulting hypothesis. Establish `huniq` using `GlobalTheory.T.adelicWeilRep_schrodingerModel_unique D.host.F D.host.E D.sp.cm.sig hB.cm T.rank S.rank X Y Mo B.ψ χX χW hB.std hX.herm hdX hY.skew hdY.ne_zero om om₀ hom hw₀`. Use `⟨ω, hω, fun a b g h ha hb Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[huniq (a, b) Φ hΦ]`. Conclude with `hom₀ a b g h ha hb Φ hΦ`.
+-/
 theorem exists_isTransport (D : D7) (B : Base D.host.F D.host.E) (hB : B.IsGood D.sp.cm.sig)
     (S T : HSp D) (X : Spc D.host.F D.host.E T.rank) (Y : Spc D.host.F D.host.E S.rank) (r s r' s' : ℕ)
     (hX : X.IsHerm D.sp.cm.sig B r s) (hY : Y.IsSkew D.sp.cm.sig B r' s')
@@ -81,6 +99,9 @@ theorem exists_isTransport (D : D7) (B : Base D.host.F D.host.E) (hB : B.IsGood 
   rw [huniq (a, b) Φ hΦ]
   exact hom₀ a b g h ha hb Φ hΦ
 
+/- English proof (translation)
+Establish `: GlobalTheory.WeilM.schr ψ (0 : (κ → AF D.host.F) × (κ → AF D.host.F)) Φ = Φ`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr]`. Simplify using `[thetaTr, GlobalTheory.WeilM.Darboux.rho, this]`.
+-/
 theorem thetaTr_zero (D : D7) {W : Type} [AddCommGroup W] [Module (AF D.host.F) W] {Bf : W → W → AF D.host.F}
     {κ : Type} [Fintype κ] (d : GlobalTheory.WeilM.Darboux Bf κ) (ψ : AddChar (AF D.host.F) ℂ) (Φ : (κ → AF D.host.F) → ℂ) :
     thetaTr D.host.F d ψ Φ 0 = GlobalTheory.WeilM.thetaSum D.host.F Φ := by
@@ -89,6 +110,9 @@ theorem thetaTr_zero (D : D7) {W : Type} [AddCommGroup W] [Module (AF D.host.F) 
     simp [GlobalTheory.WeilM.schr]
   simp [thetaTr, GlobalTheory.WeilM.Darboux.rho, this]
 
+/- English proof (translation)
+Take `⟨ω, hω, htr⟩` from `exists_isTransport D B hB S T X Y r s r' s' hX hY eA eB Mo hMo χX χW hcX hcW rX rW om hom`. Use `⟨ω, hω, htr, fun a b g h ha hb Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (htr a b g h ha hb Φ hΦ).2, thetaTr_zero]`. Both sides reduce to the same expression.
+-/
 theorem exists_theta_eq (D : D7) (B : Base D.host.F D.host.E) (hB : B.IsGood D.sp.cm.sig)
     (S T : HSp D) (X : Spc D.host.F D.host.E T.rank) (Y : Spc D.host.F D.host.E S.rank) (r s r' s' : ℕ)
     (hX : X.IsHerm D.sp.cm.sig B r s) (hY : Y.IsSkew D.sp.cm.sig B r' s')

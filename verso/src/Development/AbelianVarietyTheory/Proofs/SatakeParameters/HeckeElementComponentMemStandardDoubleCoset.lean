@@ -12,6 +12,17 @@ namespace GlobalTheory.SplitHecke.HeckeComp
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+
+Introduce `x _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+
+Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`.
+
+Rewrite using `[neg_mul]`. Conclude with `neg_mem h`. Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem mul_mem_intAE {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ intAE D) :
     x * y ∈ intAE D := by
   refine AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy
@@ -26,6 +37,17 @@ theorem mul_mem_intAE {x y : Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ int
   · intro x y _ _ h; rw [neg_mul]; exact neg_mem h
   · intro x y _ _ h; rw [mul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, u, rfl⟩` from `hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨b, hb, w, hw, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a * b, fun v => ?_, (u : E) • w, hL u w hw, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (hb v)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [smul_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`. Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`.
+
+Consider the case `add y z _ _ h1 h2 => rw [add_smul]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h => rw [neg_smul]`. Conclude with `neg_mem h`.
+-/
 theorem smul_mem_latHat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n : ℕ}
     (L : Set (Fin n → E)) (hL : ∀ u : 𝓞 E, ∀ w ∈ L, (u : E) • w ∈ L) {x : Af F ⊗[F] E} {y : Fin n → Af F ⊗[F] E}
     (hx : x ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)})
@@ -48,6 +70,11 @@ theorem smul_mem_latHat {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
   | add y z _ _ h1 h2 => rw [add_smul]; exact add_mem h1 h2
   | neg y _ h => rw [neg_smul]; exact neg_mem h
 
+/- English proof (translation)
+Use `smul_mem_latHat _ (fun u w hw => ?_) hx hy` and prove the remaining obligations. Establish `h1 : ∑ i, ((u : D.host.E) • w) i • V.frame i = (u : D.host.E) • ∑ i, w i • V.frame i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_assoc]`.
+
+Express the relevant statement in the definitionally equal form `∑ i, ((u : D.host.E) • w) i • V.frame i ∈ V.L0`. Rewrite using `[h1]`. Establish `h2` using `V.L0.smul_mem u hw`. Rewrite `h2` using `[← algebraMap_smul D.host.E u]`. Conclude with `h2`.
+-/
 theorem smul_mem_LamHat (V : HSp D) {x : Af D.host.F ⊗[D.host.F] D.host.E}
     {y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hx : x ∈ intAE D) (hy : y ∈ LamHat V) :
     x • y ∈ LamHat V := by
@@ -62,6 +89,13 @@ theorem smul_mem_LamHat (V : HSp D) {x : Af D.host.F ⊗[D.host.F] D.host.E}
   rw [← algebraMap_smul D.host.E u] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hu`. Take `⟨b, hb⟩` from `hu'`. Establish `hab : a * b = 1`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `congrArg π huu`.
+
+Rewrite `h` using `[map_mul, map_mul, he1, one_mul]`. Rewrite using `[map_mul, ha, hb, h, map_one]`. Use `⟨Units.mkOfMulEqOne a b hab, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg π hdet`. Rewrite `h` using `[map_mul, map_mul, map_mul, he1, one_mul, one_mul, map_pow, RingHom.map_det]`.
+
+Rewrite using `[det_mul, det_mul, mul_right_comm, ← det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, det_one, one_mul, Units.val_mkOfMulEqOne, map_mul, map_pow, hp, ha]`. Conclude with `h`.
+-/
 theorem det_unit {A O K : Type} [CommRing A] [CommRing O] [Field K] [Algebra O K]
     (hinj : Function.Injective (algebraMap O K)) (π : A →+* K) {n : ℕ} (β : GL (Fin n) K)
     (M : Matrix (Fin n) (Fin n) A) {e u u' w : A} (p : O) (k : ℕ) (he1 : π e = 1) (hp : algebraMap O K p = π w)
@@ -81,12 +115,24 @@ theorem det_unit {A O K : Type} [CommRing A] [CommRing O] [Field K] [Algebra O K
     one_mul, Units.val_mkOfMulEqOne, map_mul, map_pow, hp, ha]
   exact h
 
+/- English proof (translation)
+Establish `h : finPart D (e * u) = finPart D e * finPart D u` using `RingHom.map_mul _ e u`. Rewrite using `[h]`. Conclude with `mul_mem_intAE he hu`.
+-/
 theorem fin_mul_mem {e u : AE D} (he : finPart D e ∈ intAE D) (hu : finPart D u ∈ intAE D) :
     finPart D (e * u) ∈ intAE D := by
   have h : finPart D (e * u) = finPart D e * finPart D u := RingHom.map_mul _ e u
   rw [h]
   exact mul_mem_intAE he hu
 
+/- English proof (translation)
+Introduce `i j`. Use `choose y hy using fun k => hπ (β.1 k j)`. Establish `h0 : (fun k => π (y k)) = β.1 *ᵥ Pi.single j 1`. Use function extensionality and compare the values at `k`. Rewrite using `[hy, mulVec_single_one]`.
+
+Both sides reduce to the same expression. Establish `h1 : (fun i => finPart D (e * y i)) ∈ LamHat V`. Use `(hβ y).2 fun l => ?_` and prove the remaining obligations. Rewrite using `[h0, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, mulVec_single_one]`. Conclude with `intM_one l j`.
+
+Establish `h2` using `(hβ _).1 (hM y h1) i`. Establish `h3 : (fun k => π ((M *ᵥ y) k)) = M.map π *ᵥ (fun k => π (y k))`. Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec π M y k`. Rewrite `h2` using `[h3, h0, mulVec_mulVec, mulVec_mulVec, mulVec_single_one]`.
+
+Conclude with `h2`.
+-/
 theorem intM_of_stable {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
     (hπ : Function.Surjective π) (V : HSp D) (β : GL (Fin V.rank) (Fv D.host.F v)) (hβ : Frame V e π β)
     (M : Matrix (Fin V.rank) (Fin V.rank) (AE D))
@@ -110,6 +156,9 @@ theorem intM_of_stable {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : 
   rw [h3, h0, mulVec_mulVec, mulVec_mulVec, mulVec_single_one] at h2
   exact h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h : (fun i => φ (e * y i)) = φ ∘ (e • y)` using `rfl`. Rewrite using `[h, ← RingHom.map_mulVec, mulVec_smul]`. Both sides reduce to the same expression.
+-/
 theorem fin_mulVec {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} (e : A)
     (M : Matrix (Fin n) (Fin n) A) (y : Fin n → A) :
     (fun i => φ (e * (M *ᵥ y) i)) = M.map φ *ᵥ (fun i => φ (e * y i)) := by
@@ -118,12 +167,20 @@ theorem fin_mulVec {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : 
   rw [h, ← RingHom.map_mulVec, mulVec_smul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[← fin_mulVec, ← map_mul, ← mul_assoc, he]`.
+-/
 theorem clause_in {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} {e : A} (he : e * e = e)
     (M : Matrix (Fin n) (Fin n) A) (y : Fin n → A) :
     (fun i => φ e * (M.map φ *ᵥ (fun i => φ (e * y i))) i) = fun i => φ (e * (M *ᵥ y) i) := by
   funext i
   rw [← fin_mulVec, ← map_mul, ← mul_assoc, he]
 
+/- English proof (translation)
+Establish `h1 : (fun i => φ (e * (w • y) i)) = φ e • (M.map φ *ᵥ z)`. Use function extensionality and compare the values at `a`. Establish `h2 : φ e * (φ w * φ (e * y a)) = φ (e * (w • y) a)`. Rewrite using `[← map_mul, ← map_mul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`.
+
+Take the linear combination `(w * y a) * he`. Rewrite using `[← h2]`. Conclude with `congrFun h a`. Rewrite using `[smul_mulVec, ← mulVec_smul, fin_mulVec, h1, mulVec_smul, mulVec_mulVec, ← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero φ) (map_one φ), one_mulVec]`.
+-/
 theorem clause_out {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} {e : A} (he : e * e = e) (w : A)
     (M N : Matrix (Fin n) (Fin n) A) (hNM : N * M = 1) (y : Fin n → A) (z : Fin n → B)
     (h : (fun a => φ e * (φ w * φ (e * y a))) = fun a => φ e * (M.map φ *ᵥ z) a) :
@@ -141,6 +198,21 @@ theorem clause_out {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D e v π he hc V β hβ ϖ p k α hp hα`. Take `⟨-, -, hin, hout, u, u', hu, hu', huu, hdet⟩` from `hα`. Take `⟨hs, hker, -, hint⟩` from `hc`. Establish `hee : e * e = e` using `he.1`. Establish `hei : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hee])`.
+
+Establish `he1 : π e = 1`. Establish `h` using `(hker (1 - e)).2 (by rw [mul_sub, mul_one, hee, sub_self])`. Rewrite `h` using `[RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Conclude with `h.symm`. Establish `hinv : Formalism.L2.Theta.mt V α⁻¹ * Formalism.L2.Theta.mt V α = 1`.
+
+Express the relevant statement in the definitionally equal form `(matHom V α⁻¹).1 * (matHom V α).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rho_val]`. Use `intM_of_stable hs V β hβ _ fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[← clause_in (finPart D) hee]`. Conclude with `hin _ hy`. Establish `h1 : algebraMap (Ov D v) (Fv D.host.F v) p • ((rho V π β α)⁻¹).1 = (β⁻¹).1 * (incA D ϖ • Formalism.L2.Theta.mt V α⁻¹).map π * β.1`. Establish `h2 : (incA D ϖ • Formalism.L2.Theta.mt V α⁻¹).map π = π (incA D ϖ) • (Formalism.L2.Theta.mt V α⁻¹).map π`. Conclude with `Matrix.ext fun i j => RingHom.map_mul π _ _`.
+
+Rewrite using `[← map_inv, rho_val, h2, hp, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[h1]`. Use `intM_of_stable hs V β hβ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨z, hz, h⟩` from `hout _ hy`. Rewrite using `[clause_out (finPart D) hee (incA D ϖ) _ _ hinv y z h]`.
+
+Conclude with `smul_mem_LamHat V hei hz`. Rewrite using `[rho_val]`. Establish `hinj : Function.Injective (algebraMap (Ov D v) (Fv D.host.F v))` using `Subtype.val_injective`. Establish `h1` using `(hint u).1 (fin_mul_mem hei hu)`. Establish `h2` using `(hint u').1 (fin_mul_mem hei hu')`.
+
+Conclude with `det_unit hinj π β (Formalism.L2.Theta.mt V α) p k he1 hp h1 h2 huu hdet`.
+-/
 theorem hk_of_isHeckeElt : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsSplitIdem D e → Chart e v π → ∀ (V : HSp D) (β : GL (Fin V.rank) (Fv D.host.F v)), Frame V e π β → ∀ (ϖ : D.host.E) (p : Ov D v) (k : ℕ) (α : GA D V), algebraMap (Ov D v) (Fv D.host.F v) p = π (incA D ϖ) → IsHeckeElt V e ϖ k α → Hk (Ov D v) p k (rho V π β α) := by
   intro D e v π he hc V β hβ ϖ p k α hp hα
   obtain ⟨-, -, hin, hout, u, u', hu, hu', huu, hdet⟩ := hα

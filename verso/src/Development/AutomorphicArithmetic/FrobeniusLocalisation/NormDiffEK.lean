@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.FrobeniusLocalisation.LogRdSum
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `e : (𝓞 K ⧸ I) ≃+* (𝓞 K ⧸ (σ • I))` using `Ideal.quotientEquiv I (σ • I) (MulSemiringAction.toRingEquiv (K ≃ₐ[ℚ] K) (𝓞 K) σ) rfl`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr e.toEquiv).symm`.
+-/
 private theorem absNorm_smul_gal {K : Type} [Field K] [NumberField K] (σ : K ≃ₐ[ℚ] K) (I : Ideal (𝓞 K)) :
     Ideal.absNorm (σ • I) = Ideal.absNorm I := by
   have e : (𝓞 K ⧸ I) ≃+* (𝓞 K ⧸ (σ • I)) :=
@@ -12,6 +15,21 @@ private theorem absNorm_smul_gal {K : Type} [Field K] [NumberField K] (σ : K �
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]
   exact (Nat.card_congr e.toEquiv).symm
 
+/- English proof (translation)
+Introduce `φ H`. Establish `h1 : absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E)) * H.d ^ (2 * φ.ord) = (discr H.E).natAbs`. Establish `h` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow H.K (𝓞 H.K) H.E (𝓞 H.E)`. Rewrite `h` using `[H.finrank_EK, (UpperTheory.HF.discr_K H).1]`. Conclude with `h.symm`.
+
+Establish `hd : discr H.E ≠ 0` using `discr_ne_zero H.E`. Establish `hd' : (discr H.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 hd`. Establish `habs : |(discr H.E : ℝ)| = ((discr H.E).natAbs : ℝ)`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Establish `hpos : 0 < |(discr H.E : ℝ)|` using `abs_pos.2 (Int.cast_ne_zero.2 hd)`.
+
+Establish `hn : absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E)) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `hd' h1.symm`. Establish `hord : (φ.ord : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 φ.ord_pos.ne'`.
+
+Establish `hrd : Real.log ((discr H.E).natAbs : ℝ) = 4 * φ.ord * Real.log H.rd`. Unfold `HostRaw.rd`. Rewrite using `[Real.log_rpow hpos, habs, H.finrank_cmField]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : Real.log (absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E))) = 2 * (2 * φ.ord) * (Real.log H.rd - 1 / 2 * Real.log H.d)`. Rewrite `hrd` using `[← h1, Nat.cast_mul, Nat.cast_pow, Real.log_mul (Nat.cast_ne_zero.2 hn) (pow_ne_zero _ (Nat.cast_ne_zero.2 H.d_prime.ne_zero)), Real.log_pow]`. Move the coercions through the operations in `at hrd`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨h1, h2, fun 𝔟 h𝔟 => ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : absNorm 𝔟 ^ 2 = absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E))`. Rewrite using `[h𝔟, map_mul, absNorm_smul_gal, sq]`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[← h3, Nat.cast_pow, Real.log_pow]`. Move the coercions through the operations in `at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.HF.norm_diff_EK :
     ∀ {φ : Frame} (H : HostAx φ), absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E)) * H.d ^ (2 * φ.ord) = (discr H.E).natAbs ∧ Real.log (absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E))) = 2 * (2 * φ.ord) * (Real.log H.rd - 1 / 2 * Real.log H.d) ∧ ∀ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞 H.E) = 𝔟 * (H.conj • 𝔟) → absNorm 𝔟 ^ 2 = absNorm (differentIdeal (𝓞 H.K) (𝓞 H.E)) ∧ Real.log (absNorm 𝔟) = (2 * φ.ord) * (Real.log H.rd - 1 / 2 * Real.log H.d) := by
   intro φ H

@@ -27,6 +27,15 @@ section Quot
 variable {Ω : Type} [Field Ω] {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ] {E : Type} [AddCommGroup E]
   [Module Ω E] {Φ : Type} [Field Φ] [Algebra Ω Φ]
 
+/- English proof (translation)
+Establish `key : ∀ b : Fin 2 → Φ, (MvPolynomial.map (aeval b : MvPolynomial (Fin 2) Ω →ₐ[Ω] Φ).toRingHom) (DiagonalOrder.polyConeMap x δ e φ g * ∏ k, X k ^ T.wwDeg (n + 3) 0 k - C (X 1 - X 0) * DiagonalOrder.polyConeMap x δ e φ h * ∏ k, X k ^ T.wwDeg n 1 k) = C (aeval (T.wwCoord x δ e φ (b …`. Introduce `b`. Establish `e1` using `DiagRAux.multiConeMap_of_homog (T.wwCoord x δ e φ (b 0) (b 1)) g _ hg`. Establish `e2` using `DiagRAux.multiConeMap_of_homog (T.wwCoord x δ e φ (b 0) (b 1)) h _ hh`. Rewrite `e1`, `e2` using `[DiagonalOrder.multiConeMap_eq, RingHom.comp_apply]`.
+
+Rewrite using `[map_sub, map_mul, map_mul, map_mul, e1, e2]`. Simplify using `only [map_prod, map_pow, map_X, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_sub, map_mul, aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Establish `hZ : DiagonalOrder.polyConeMap x δ e φ g * ∏ k, X k ^ T.wwDeg (n + 3) 0 k - C (X 1 - X 0) * DiagonalOrder.polyConeMap x δ e φ h * ∏ k, X k ^ T.wwDeg n 1 k = 0`. Apply `MvPolynomial.map_injective _ (algebraicIndependent_iff_injective_aeval.mp ha)` to reduce the goal to its premises.
+
+Rewrite using `[key a, hq, T.diagSec, sub_self, C_0, zero_mul, map_zero]`. Establish `h0` using `key (fun _ => a 0)`. Rewrite `h0` using `[hZ, map_zero, sub_self, zero_mul, sub_zero]`. Establish `hm : ((∏ k, (X k : MvPolynomial T.WBlk Φ) ^ T.wwDeg n 1 k) * ∏ k, X k ^ T.wwDeg (n + 3) 0 k) ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k))`. Establish `hv : aeval (T.wwCoord x δ e φ (a 0) (a 0)) g = 0` using `C_eq_zero.1 ((mul_eq_zero.1 h0.symm).resolve_right hm)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `(DiagRAux.not_mem_ker_iff_aeval_ne _ g _ hg).1 hn hv`.
+-/
 theorem DiagFormDiv.mem_diag_of_quot (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E) (φ : κ → E →ₗ[Ω] Ω)
     (a : Fin 2 → Φ) (ha : AlgebraicIndependent Ω a) {n : ℕ} {g h : MRing (T.wwIdx ι ν κ)}
     (hg : IsMultiHomog g (T.wwDeg n 1)) (hh : IsMultiHomog h (T.wwDeg (n + 3) 0))

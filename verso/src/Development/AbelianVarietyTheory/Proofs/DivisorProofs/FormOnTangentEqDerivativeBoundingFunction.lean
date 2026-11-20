@@ -19,6 +19,39 @@ namespace GlobalTheory.AnPer.LieVal
 
 open GlobalTheory.CatCoh
 
+/- English proof (translation)
+Introduce `A I _ g Λ _ F K r k p hp w ρ hρ v hv f per q hq`. Set `e : Hol (K.W k) →+* DualNumber ℂ` to `(TrivSqZeroExt.inlHom ℂ ℂ).comp (Hol.ev p hp).toRingHom`. Set `T : K.Obj` to `{ k := k, C := DualNumber ℂ, alg := (e.comp (K.cst k)).toAlgebra J := RingHom.ker ((SqExt.dual ℂ).π : DualNumber ℂ →+* ℂ) nil := ⟨2, (SqExt.dual ℂ).sq⟩, ρ := e, ρ_cst := fun _ ↦ rfl }`. Establish `hder : ∀ h : Hol (K.W k), fderiv ℂ h.fn p (0, w) = ∑ a, (dw a h).fn p * w a` using `fun h ↦ by`. Establish `: ((0, w) : Tot I g) = ∑ a, w a • ((0, Pi.single a 1) : Tot I g)`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum]`. Simplify using `only [Prod.snd_sum, Prod.smul_snd]`. Conclude with `pi_eq_sum_univ' w`. Rewrite using `[this, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Conclude with `congrArg (· * w a) (Hol.fn_der _ h hp).symm`. Establish `hexp : ∀ h : Hol (K.W k), ρ h = e h + ∑ a, e (dw a h) * TrivSqZeroExt.inr (w a)` using `fun h ↦ by`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[(hρ h).1]`. Simplify using `[e, TrivSqZeroExt.fst_sum, Hol.ev_apply]`. Rewrite using `[(hρ h).2, hder]`. Simplify using `[e, TrivSqZeroExt.snd_sum, Hol.ev_apply, mul_comm]`. Set `a : K.triv k ⟶ T` to `Charts.ptHom T (K.le_refl k)`.
+
+Set `b : K.triv k ⟶ T` to `Charts.fromTriv T (K.le_refl k) ρ.toRingHom (fun c ↦ by`. Express the relevant statement in the definitionally equal form `ρ (K.cst k c) = e (K.cst k c)`. Rewrite using `[hexp]`. Simplify using `[Charts.dw_cst])`. Use the proof step `(Relation.ReflTransGen.single ⟨fun a ↦ TrivSqZeroExt.inr (w a), fun _ ↦ rfl, fun a b ↦ TrivSqZeroExt.inr_mul_inr _ _ _, fun h ↦ by`.
+
+Simplify using `only [RingHom.comp_apply, Charts.sh_refl]`. Conclude with `hexp h⟩)`. Establish `ea` using `congrFun (congrFun (congrFun hq _) _) a`. Establish `eb` using `congrFun (congrFun (congrFun hq _) _) b`. Express the relevant statement in the definitionally equal form `((show DualNumber ℂ from q T) - e (Charts.sh (K.le_refl k) (q (K.triv k))) : DualNumber ℂ) = (show DualNumber ℂ from ev f.1 (r.functor.map a)) - e (K.cst k (per 0)) at ea`.
+
+Express the relevant statement in the definitionally equal form `((show DualNumber ℂ from q T) - ρ (q (K.triv k)) : DualNumber ℂ) = (show DualNumber ℂ from ev f.1 (r.functor.map b)) - e (K.cst k (per 0)) at eb`. Rewrite `ea` using `[Charts.sh_refl]`. Set `E` to `SqExt.dual ℂ`. Establish `hfst : (E.π : E.C →+* E.B).comp ρ.toRingHom = (Hol.ev p hp).toRingHom` using `RingHom.ext fun h ↦ (hρ h).1.trans (Hol.ev_apply p hp h).symm`. Establish `halg : ∀ c : ℂ, e (K.cst k (algebraMap ℂ (Hol F.V) c)) = algebraMap ℂ (DualNumber ℂ) c` using `fun c ↦ by`.
+
+Establish `: K.cst k (algebraMap ℂ (Hol F.V) c) = algebraMap ℂ (Hol (K.W k)) c` using `rfl`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl (Hol.ev p hp (algebraMap ℂ _ c)) = _`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+
+Set `Φ : E.thick _ (E.red_w (pt_w v)) ⟶ r.obj T` to `{ φ := { RingHom.id (DualNumber ℂ) with commutes' := fun c ↦ (halg c).symm } φ₀ := (Ideal.Quotient.mk T.J).comp (TrivSqZeroExt.inlHom ℂ ℂ) comm := fun c ↦ Ideal.Quotient.eq.2 (by`. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (TrivSqZeroExt.fst (R := ℂ) (M := ℂ) c) - (show TrivSqZeroExt ℂ ℂ from c)).fst = 0`. Rewrite using `[TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_inl, sub_self])`. Use `dp := isDPMorphism_of_rat (C' := DualNumber ℂ) _ _ _ fun c hc ↦ hc`. Use `pt := by`.
+
+Establish `h0 : spMap ((Ideal.Quotient.mk T.J).comp (TrivSqZeroExt.inlHom ℂ ℂ)) ≫ spMap (E.π : E.C →+* E.B) ≫ v.left = spMap ((Ideal.Quotient.mk T.J).comp e) ≫ r.x k`. Rewrite using `[hv, ← Category.assoc (spMap (E.π : E.C →+* E.B)), ← Cris.spMap_comp, hfst, ← Category.assoc, ← Cris.spMap_comp]`. Conclude with `h0 }`. Establish `mkHom : ∀ (C : Type) [CommRing C] [Algebra ℂ C] (ψ : Hol (K.W k) →ₐ[ℂ] C) (y : Sp C ⟶ A.left) (hy : y ≫ A.hom ≫ 𝟙 _ = spMap (algebraMap ℂ C)), y = spMap ψ.toRingHom ≫ r.x k → ∃ m : r.obj (K.triv k) ⟶ Thick.triv C y hy, ∀ c, m.φ c = ψ c` using `fun C _ _ ψ y hy e' ↦ ⟨{ φ := { ψ.toRingHom with commutes' := fun c ↦ ψ.commutes c } φ₀ := Ideal.Quotient.lift ⊥ ψ.toRingHom fun c hc ↦ by rw [Ideal.mem_bot.1 hc, map_zero] comm := fun _ ↦ rfl dp := isDPMorphism_of_eq_bot _ rfl _ _ pt := by`. Use `Eq.trans ?_ e'.symm` and prove the remaining obligations.
+
+Use `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ r.x k) ?_)` and prove the remaining obligations. Conclude with `(Cris.spMap_comp _ _).symm }, fun _ ↦ rfl⟩`. Take `⟨a', ha'⟩` from `mkHom ℂ (Hol.ev p hp) _ (E.red_w (pt_w v)) (by`. Rewrite using `[hv, ← Category.assoc, ← Cris.spMap_comp, hfst])`. Take `⟨b', hb'⟩` from `mkHom (DualNumber ℂ) ρ v.left (pt_w v) hv`.
+
+Establish `e1 : r.functor.map a = a' ≫ E.secHom (E.red_w (pt_w v)) E.i E.π_i ≫ Φ` using `Thick.hom_ext fun c ↦ by`. Express the relevant statement in the definitionally equal form `e (Charts.sh (K.le_refl k) c) = TrivSqZeroExt.inl (a'.φ c)`. Conclude with `(congrArg e (Charts.sh_refl _ c)).trans (congrArg TrivSqZeroExt.inl (ha' c).symm)`. Establish `e2 : r.functor.map b = b' ≫ E.idHom (pt_w v) ≫ Φ` using `Thick.hom_ext fun c ↦ (hb' c).symm`. Establish `z1 : ev f.1 a' = 0` using `f.2 a' rfl rfl`.
+
+Establish `z2 : ev f.1 b' = 0` using `f.2 b' rfl rfl`. Establish `g1 : ev f.1 (r.functor.map a) = Φ.φ (ev f.1 (E.secHom (E.red_w (pt_w v)) E.i E.π_i)) + ev f.1 Φ`. Rewrite using `[e1]`. Use `(ev_comp f.1 a' _).trans ?_` and prove the remaining obligations. Rewrite using `[z1, map_zero, zero_add]`.
+
+Conclude with `ev_comp f.1 _ Φ`. Establish `g2 : ev f.1 (r.functor.map b) = Φ.φ (ev f.1 (E.idHom (pt_w v))) + ev f.1 Φ`. Rewrite using `[e2]`. Use `(ev_comp f.1 b' _).trans ?_` and prove the remaining obligations. Rewrite using `[z2, map_zero, zero_add]`.
+
+Conclude with `ev_comp f.1 _ Φ`. Rewrite `ea` using `[g1]`. Rewrite `eb` using `[g2]`. Establish `key : (E.val v.left (pt_w v) f.1 : DualNumber ℂ) = ρ (q (K.triv k)) - e (q (K.triv k))`. Rewrite using `[SqExt.val_apply]`.
+
+Establish `aux : ∀ x y z u s t c : DualNumber ℂ, x - y = s + u - c → x - z = t + u - c → s - t = z - y` using `fun x y z u s t c h1 h2 ↦ by linear_combination h2 - h1`. Conclude with `aux _ _ _ _ _ _ _ ea eb`. Rewrite using `[tanVal_apply, key, TrivSqZeroExt.snd_sub, (hρ _).2]`. Conclude with `sub_zero _`.
+-/
 theorem main : ∀ {A : Over (Sp ℂ)} {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F) (r : Real K (A.hom ≫ 𝟙 _) (algebraMap ℂ (Hol F.V))) (k : K.K) (p : Tot I g), p ∈ K.W k → ∀ (w : Fin g → ℂ) (ρ : Hol (K.W k) →ₐ[ℂ] DualNumber ℂ), (∀ h, (ρ h).fst = h.fn p ∧ (ρ h).snd = fderiv ℂ h.fn p (0, w)) → ∀ (v : epsR ℂ ⟶ A), v.left = spMap ρ.toRingHom ≫ r.x k → ∀ (f : Form (A.hom ≫ 𝟙 _)) (per : Λ →+ Hol F.V) (q : GlobalTheory.CatCoh.C0 K.Oc), GlobalTheory.CatCoh.d0 K.Oc q = (r.coef.pullbackOneCocycle f.1).1 - (K.perZ per).1 → tanVal v f = fderiv ℂ (Hol.fn (W := K.W k) (q (K.triv k))) p (0, w) := by
   intro A I _ g Λ _ F K r k p hp w ρ hρ v hv f per q hq
   let e : Hol (K.W k) →+* DualNumber ℂ := (TrivSqZeroExt.inlHom ℂ ℂ).comp (Hol.ev p hp).toRingHom

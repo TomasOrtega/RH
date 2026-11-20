@@ -179,6 +179,11 @@ def HCharExt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E),
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ x, χ.loc w x = 1) → χ = 1
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι n hO hT U hU lam hl`. Use `⟨?_, fun r hr w hw B hB => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `h2 E`. Take `⟨r, hr, -⟩` from `h1 E Ω l ι n hO hT U hU lam hl w hw`. Conclude with `⟨r, hr⟩`.
+
+Take `⟨s, hs, hc⟩` from `h1 E Ω l ι n hO hT U hU lam hl w hw`. Conclude with `h4 E Ω l ι n s r hs.1 (h3 E Ω l ι n U hU s r hs hr) w _ _ (hc B hB)`.
+-/
 theorem subtract_of (h1 : AtPlace) (h2 : SplitEx) (h3 : WeakIso) (h4 : ClConj) : Subtract := by
   intro E Ω _ _ _ _ _ _ l _ ι n hO hT U hU lam hl
   refine ⟨?_, fun r hr w hw B hB => ?_⟩

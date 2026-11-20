@@ -7,6 +7,9 @@ open Finset MvPolynomial
 
 namespace UpperTheory.Gal.Schur
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ i), ← Finset.mul_prod_erase univ g (mem_univ i)]`. Establish `h : ∏ k ∈ univ.erase i, scaleOff y i g k = ∏ k ∈ univ.erase i, (y * g k)` using `Finset.prod_congr rfl (fun k hk => by simp [scaleOff, (mem_erase.1 hk).1])`. Rewrite using `[h, prod_mul_distrib, prod_const, card_erase_of_mem (mem_univ i), card_univ, Fintype.card_fin]`. Simplify using `only [scaleOff, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma prod_scaleOff {R : Type} [CommRing R] {n : ℕ} (y : R) (i : Fin n) (g : Fin n → R) :
     ∏ k, scaleOff y i g k = y ^ (n - 1) * ∏ k, g k := by
   rw [← Finset.mul_prod_erase univ _ (mem_univ i), ← Finset.mul_prod_erase univ g (mem_univ i)]
@@ -17,6 +20,21 @@ private lemma prod_scaleOff {R : Type} [CommRing R] {n : ℕ} (y : R) (i : Fin n
   simp only [scaleOff, if_true]
   ring
 
+/- English proof (translation)
+Introduce `hY hH hD R ι _ _ _ _ n t₀ t₁ h01 ε lam m hm g y hu`. Establish `hconst : ∀ h : Fin n → R, sch (lam t₁) h = (∏ k, h k) ^ m`. Introduce `h`. Establish `e` using `(hD R n h).2 (fun _ => 0) m`. Simplify using `only [zero_add, (hD R n h).1, mul_one] at e`.
+
+Establish `hl : lam t₁ = fun _ => m` using `funext hm`. Rewrite using `[hl, e]`. Establish `h10 : t₁ ≠ t₀` using `fun h => h01 h.symm`. Establish `h1mem : t₁ ∈ univ.erase t₀` using `mem_erase.mpr ⟨h10, mem_univ _⟩`. Establish `hrest : ∀ i, ∏ t ∈ (univ.erase t₀).erase t₁, sch (lam t) (twist t₀ t₁ ε y i g t) = y ^ (∑ t ∈ (univ.erase t₀).erase t₁, ε t * ∑ k, lam t k) * ∏ t ∈ (univ.erase t₀).erase t₁, sch (lam t) (g t)`.
+
+Introduce `i`. Rewrite using `[← prod_pow_eq_pow_sum, ← prod_mul_distrib]`. Apply `prod_congr rfl` to reduce the goal to its premises. Introduce `t ht`. Establish `ht1 : t ≠ t₁` using `(mem_erase.mp ht).1`.
+
+Establish `ht0 : t ≠ t₀` using `(mem_erase.mp (mem_erase.mp ht).2).1`. Simplify using `only [twist, if_neg ht0, if_neg ht1]`. Rewrite using `[hH R n (lam t) (g t) (y ^ ε t), ← pow_mul]`. Establish `hi : ∀ i, ∏ t, sch (lam t) (twist t₀ t₁ ε y i g t) = sch (lam t₀) (scaleAt y i (g t₀)) * (y ^ ((n - 1) * m + ∑ t ∈ (univ.erase t₀).erase t₁, ε t * ∑ k, lam t k) * ∏ t ∈ univ.erase t₀, sch (lam t) (g t))`. Introduce `i`.
+
+Rewrite using `[← mul_prod_erase univ _ (mem_univ t₀), ← mul_prod_erase (univ.erase t₀) _ h1mem, ← mul_prod_erase (univ.erase t₀) (fun t => sch (lam t) (g t)) h1mem, hrest i]`. Simplify using `only [twist, eq_self_iff_true, ↓reduceIte, h10]`. Rewrite using `[hconst, hconst, prod_scaleOff, mul_pow, ← pow_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_sum]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[hi i]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by`. Rewrite using `[hY R n (lam t₀) (g t₀) y hu, ← mul_prod_erase univ (fun t => sch (lam t) (g t)) (mem_univ t₀)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fibre_of : SchurY → SchurHomog → SchurDet → Fibre := by
   intro hY hH hD R ι _ _ _ _ n t₀ t₁ h01 ε lam m hm g y hu
   have hconst : ∀ h : Fin n → R, sch (lam t₁) h = (∏ k, h k) ^ m := by

@@ -16,11 +16,23 @@ namespace GlobalTheory.SWLit.WittStd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `((IsAlgClosed.lift : E →ₐ[ℚ] ℂ) : E →+* ℂ)`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sigma_sigma {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := ((IsAlgClosed.lift : E →ₐ[ℚ] ℂ) : E →+* ℂ)
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Use `set Z : Matrix (Fin n) (Fin n) E := ((l / 2) • J⁻¹).map σ with hZ`. Establish `hZσ : Z.map σ = (l / 2) • J⁻¹`. Use extensionality with `i j`. Simplify using `[hZ, sigma_sigma h]`. Establish `hJu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hJ`.
+
+Establish `hrel : (2 : E) • (J * Z.map σ) = l • (1 : Matrix (Fin n) (Fin n) E)`. Rewrite using `[hZσ, Matrix.mul_smul, Matrix.mul_nonsing_inv J hJu, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hZdet : Z.det ≠ 0`.
+
+Introduce `h0`. Use `(σ : E →+* E).map_det ((l / 2) • J⁻¹)` as an intermediate fact. Rewrite `this` using `[show (σ : E →+* E).mapMatrix ((l / 2) • J⁻¹) = Z from rfl, h0, map_eq_zero]`. Simplify using `[Matrix.det_smul, Matrix.det_nonsing_inv, hl, hJ] at this`. Establish `hM : (blk 1 Z 1 (-Z)).det ≠ 0`.
+
+Rewrite using `[blk, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_one₁₁, Matrix.one_mul, show -Z - Z = (-2 : E) • Z by rw [neg_smul, two_smul]; abel, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) hZdet`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hM, Z, hrel, rfl⟩`.
+-/
 theorem exists_isWittBasis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {n : ℕ} (l : E) (J : Matrix (Fin n) (Fin n) E)
     (hl : l ≠ 0) (hJ : J.det ≠ 0) : ∃ T : GL (Fin (n + n)) E, IsWittBasis σ J l T := by
   set Z : Matrix (Fin n) (Fin n) E := ((l / 2) • J⁻¹).map σ with hZ
@@ -43,20 +55,37 @@ theorem exists_isWittBasis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {n : ℕ} (
     exact mul_ne_zero (pow_ne_zero _ (by norm_num)) hZdet
   exact ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hM, Z, hrel, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem incM_mul {m : ℕ} (A B : Matrix (Fin m) (Fin m) E) : incM F (A * B) = incM F A * incM F B :=
   Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one {m : ℕ} : incM F (1 : Matrix (Fin m) (Fin m) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 variable (σ : E →ₐ[F] E) {n : ℕ} {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E} (T : GL (Fin (n + n)) E)
 
+/- English proof (translation)
+Rewrite using `[← incM_mul, Units.inv_mul, incM_one]`.
+-/
 theorem incM_inv_mul : incM F (T⁻¹).1 * incM F T.1 = 1 := by
   rw [← incM_mul, Units.inv_mul, incM_one]
 
+/- English proof (translation)
+Rewrite using `[← incM_mul, Units.mul_inv, incM_one]`.
+-/
 theorem incM_mul_inv : incM F T.1 * incM F (T⁻¹).1 = 1 := by
   rw [← incM_mul, Units.mul_inv, incM_one]
 
+/- English proof (translation)
+Simplify using `only [inBasis]`. Rewrite using `[show mat (g * h) = mat g * mat h from rfl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[incM_mul_inv, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem inBasis_mul (g h : UA σ J₂) : inBasis σ T (g * h) = inBasis σ T g * inBasis σ T h := by
   simp only [inBasis]
   rw [show mat (g * h) = mat g * mat h from rfl]
@@ -65,10 +94,16 @@ theorem inBasis_mul (g h : UA σ J₂) : inBasis σ T (g * h) = inBasis σ T g *
         rw [incM_mul_inv, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [inBasis]`. Rewrite using `[show mat (1 : UA σ J₂) = 1 from rfl, Matrix.mul_one, incM_inv_mul]`.
+-/
 theorem inBasis_one : inBasis σ T (1 : UA σ J₂) = 1 := by
   simp only [inBasis]
   rw [show mat (1 : UA σ J₂) = 1 from rfl, Matrix.mul_one, incM_inv_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, map_sum]`. Conclude with `Subring.sum_mem _ fun k _ => by rw [map_mul]; exact Subring.mul_mem _ (hA i k) (hB k j)`.
+-/
 theorem entry_mul_mem (v : HeightOneSpectrum (𝓞 F)) {A B : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)}
     (hA : ∀ i j, compFin F E v (A i j) ∈ intLoc F E v) (hB : ∀ i j, compFin F E v (B i j) ∈ intLoc F E v) (i j) :
     compFin F E v ((A * B) i j) ∈ intLoc F E v := by
@@ -111,15 +146,26 @@ def stdK : Subgroup (UA σ J₂) where
     rw [hV, Matrix.mem_unitaryGroup_iff, star_star]
     exact Matrix.mem_unitaryGroup_iff'.1 hU
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stdK_iff (g : UA σ J₂) : g ∈ stdK σ T ↔
     (∀ v i j, compFin F E v (inBasis σ T g i j) ∈ intLoc F E v ∧ compFin F E v (inBasis σ T g⁻¹ i j) ∈ intLoc F E v) ∧
     ∀ (w : InfinitePlace F) (τ : EmbOver E w), (inBasis σ T g).map (piInf τ) ∈ Matrix.unitaryGroup (Fin (n + n)) ℂ :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `g` and use `mem_stdK_iff σ T g`.
+-/
 theorem isStdK_stdK : IsStdK σ T (stdK σ T : Subgroup (UA σ J₂)) := fun g => mem_stdK_iff σ T g
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `h1 : opNorm (star U * U) ≤ 1`. Rewrite using `[Matrix.mem_unitaryGroup_iff'.1 hU]`. Conclude with `opNorm_one_le`. Unfold `opNorm at h1 ⊢`. Rewrite `h1` using `[map_mul, map_star, CStarRing.nnnorm_star_mul_self, ← sq]`.
+
+Conclude with `(pow_le_one_iff_of_nonneg zero_le two_ne_zero).1 h1`.
+-/
 theorem opNorm_le_one {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin m) ℂ) :
     opNorm U ≤ 1 := by
   have h1 : opNorm (star U * U) ≤ 1 := by
@@ -128,6 +174,11 @@ theorem opNorm_le_one {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ Mat
   rw [map_mul, map_star, CStarRing.nnnorm_star_mul_self, ← sq] at h1
   exact (pow_le_one_iff_of_nonneg zero_le two_ne_zero).1 h1
 
+/- English proof (translation)
+Set `L : AE F E →+ ℂ` to `(piInf τ).toAddMonoidHom`. Use `IsModuleTopology.continuous_of_distribMulActionHomₑ (R := AF F) (σ := (piInf τ).toMonoidHom.comp (algebraMap (AF F) (AE F E)).toMonoidHom) ?_ { L with map_smul' := fun r x => by simp [L, Algebra.smul_def] }` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst) |>.congr fun a => by`. Express the relevant statement in the definitionally equal form `_ = infEmb τ (_ ⊗ₜ[F] (1 : E))`. Rewrite using `[infEmb_tmul, map_one, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ : AE F E → ℂ) := by
   let L : AE F E →+ ℂ := (piInf τ).toAddMonoidHom
   refine IsModuleTopology.continuous_of_distribMulActionHomₑ (R := AF F)
@@ -139,23 +190,44 @@ theorem continuous_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (
       rw [infEmb_tmul, map_one, mul_one]; rfl
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_val {A B : Type} [CommRing A] [CommRing B] {m : Type} [Fintype m] [DecidableEq m] (f : A →+* B)
     (x : GL m A) : ((Formalism.UG.bc f x : GL m B) : Matrix m m B) = (x : Matrix m m A).map f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piInf_eq {w : InfinitePlace F} (τ : EmbOver E w) : ⇑(piInf τ) = ⇑(infEmb τ) ∘ ⇑(compInf F E w) := rfl
 
 def basGL : GL (Fin (n + n)) (AE F E) := Formalism.UG.bc (inclR (F := F) (AF F)) T
 
 def conjB (g : UA σ J₂) : GL (Fin (n + n)) (AE F E) := (basGL T)⁻¹ * g.1 * basGL T
 
+/- English proof (translation)
+Rewrite using `[conjB, Units.val_mul, Units.val_mul, basGL, ← map_inv, bc_val, bc_val]`. Both sides reduce to the same expression.
+-/
 theorem conjB_val (g : UA σ J₂) :
     ((conjB σ T g : GL (Fin (n + n)) (AE F E)) : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E)) = inBasis σ T g := by
   rw [conjB, Units.val_mul, Units.val_mul, basGL, ← map_inv, bc_val, bc_val]
   rfl
 
+/- English proof (translation)
+Simplify using `only [conjB, Subgroup.coe_inv, mul_inv_rev, inv_inv, mul_assoc]`.
+-/
 theorem conjB_inv (g : UA σ J₂) : (conjB σ T g)⁻¹ = conjB σ T g⁻¹ := by
   simp only [conjB, Subgroup.coe_inv, mul_inv_rev, inv_inv, mul_assoc]
 
+/- English proof (translation)
+Establish `hg' : g⁻¹ ∈ stdK σ T` using `inv_mem hg`. Use `le_of_eq ((heightGL_eq_one_iff F).2 ⟨fun w => ?_, fun v => ?_⟩)` and prove the remaining obligations. Establish `e1 : ((Formalism.UG.bc (compInf F E w)) (conjB σ T g))⁻¹ = Formalism.UG.bc (compInf F E w) (conjB σ T g⁻¹)`. Rewrite using `[← map_inv, conjB_inv]`. Use `htOf_eq_one.2 ⟨(normInf_le_iff F w).2 fun τ => ?_, (normInf_le_iff F w).2 fun τ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[bc_val, Matrix.map_map, conjB_val, ← piInf_eq]`. Conclude with `opNorm_le_one (hg.2 w τ)`. Rewrite using `[e1, bc_val, Matrix.map_map, conjB_val, ← piInf_eq]`. Conclude with `opNorm_le_one (hg'.2 w τ)`. Establish `e1 : ((Formalism.UG.bc (compFin F E v)) (conjB σ T g))⁻¹ = Formalism.UG.bc (compFin F E v) (conjB σ T g⁻¹)`.
+
+Rewrite using `[← map_inv, conjB_inv]`. Use `htOf_eq_one.2 ⟨(normFin_le_iff F v).2 fun i j => ?_, (normFin_le_iff F v).2 fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[bc_val, Matrix.map_apply, conjB_val]`. Conclude with `absFin_le_one_of_mem_intLoc (hg.1 v i j).1`. Rewrite using `[e1, bc_val, Matrix.map_apply, conjB_val]`.
+
+Conclude with `absFin_le_one_of_mem_intLoc (hg'.1 v i j).1`.
+-/
 theorem height_conjB_le {g : UA σ J₂} (hg : g ∈ stdK σ T) : heightGL F (conjB σ T g) ≤ 1 := by
   have hg' : g⁻¹ ∈ stdK σ T := inv_mem hg
   refine le_of_eq ((heightGL_eq_one_iff F).2 ⟨fun w => ?_, fun v => ?_⟩)
@@ -174,6 +246,17 @@ theorem height_conjB_le {g : UA σ J₂} (hg : g ∈ stdK σ T) : heightGL F (co
     · rw [e1, bc_val, Matrix.map_apply, conjB_val]
       exact absFin_le_one_of_mem_intLoc (hg'.1 v i j).1
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+
+Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Establish `hcl : IsClosed (UG (cA σ) (incM F J₂) : Set (GL (Fin (n + n)) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin (n + n)) (AE F E) => (g : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E))` using `Units.continuous_val`. Establish `hc : Continuous (cA σ : AE F E → AE F E)` using `(GlobalTheory.AdelicUnitaryTop.continuous_sigR (F := F) (E := E) (AF F) σ).congr fun z => (GlobalTheory.IwLine.cA_eq_sigR σ z).symm`. Conclude with `isClosed_eq ((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hc)) continuous_const`.
+
+Establish `hemb : Topology.IsClosedEmbedding (conjB σ T (J₂` using `J₂)) := ((Homeomorph.mulLeft (basGL T)⁻¹).trans (Homeomorph.mulRight (basGL T))).isClosedEmbedding.comp hcl.isClosedEmbedding_subtypeVal`. Establish `hcont : Continuous fun g : UA σ J₂ => inBasis σ T g` using `(Units.continuous_val.comp hemb.continuous).congr (conjB_val σ T)`. Establish `hcont' : Continuous fun g : UA σ J₂ => inBasis σ T g⁻¹` using `hcont.comp continuous_inv`. Establish `hOc : ∀ v : HeightOneSpectrum (𝓞 F), IsClosed (intLoc F E v : Set (Fv F v ⊗[F] E))` using `fun v => by haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩ haveI : IsTopologicalAddGroup (Fv F v ⊗[F] E) := IsModuleTopology.topologicalAddGroup (Fv F v) _`. Conclude with `AddSubgroup.isClosed_of_isOpen (intLoc F E v).toAddSubgroup (GlobalTheory.ThK.isCompact_isOpen_intLoc v).2`.
+
+Establish `hKc : IsClosed ((stdK σ T : Subgroup (UA σ J₂)) : Set (UA σ J₂))`. Establish `e0 : ((stdK σ T : Subgroup (UA σ J₂)) : Set (UA σ J₂)) = (⋂ v, ⋂ i, ⋂ j, ((fun g : UA σ J₂ => compFin F E v (inBasis σ T g i j)) ⁻¹' (intLoc F E v : Set _) ∩ (fun g : UA σ J₂ => compFin F E v (inBasis σ T g⁻¹ i j)) ⁻¹' (intLoc F E v : Set _))) ∩ ⋂ w, ⋂ τ : EmbOver E w, (fun g : U …`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_stdK_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[e0]`.
+
+Use `IsClosed.inter (isClosed_iInter fun v => isClosed_iInter fun i => isClosed_iInter fun j => IsClosed.inter ?_ ?_) (isClosed_iInter fun w => isClosed_iInter fun τ => ?_)` and prove the remaining obligations. Conclude with `(hOc v).preimage ((GlobalTheory.ThK.LemF.QuotInv.continuous_compFinV v).comp ((continuous_apply j).comp ((continuous_apply i).comp hcont)))`. Conclude with `(hOc v).preimage ((GlobalTheory.ThK.LemF.QuotInv.continuous_compFinV v).comp ((continuous_apply j).comp ((continuous_apply i).comp hcont')))`. Conclude with `isClosed_unitary.preimage (hcont.matrix_map (continuous_piInf τ))`. Conclude with `(hemb.isCompact_preimage (isCompact_heightGL_le F 1)).of_isClosed_subset hKc fun g hg => height_conjB_le σ T hg`.
+-/
 theorem isCompact_stdK (h : IsCMExt F E σ) : IsCompact ((stdK σ T : Subgroup (UA σ J₂)) : Set (UA σ J₂)) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
@@ -217,6 +300,9 @@ theorem isCompact_stdK (h : IsCMExt F E σ) : IsCompact ((stdK σ T : Subgroup (
   exact (hemb.isCompact_preimage (isCompact_heightGL_le F 1)).of_isClosed_subset hKc
     fun g hg => height_conjB_le σ T hg
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n l J J₂ hl hJ _`. Take `⟨T, hT⟩` from `exists_isWittBasis σ h l J hl hJ`. Conclude with `⟨T, stdK σ T, hT, isStdK_stdK σ T, isCompact_stdK σ T h⟩`.
+-/
 theorem exists_wittBasis_stdK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (l : E) (J : Matrix (Fin n) (Fin n) E)
     (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E), l ≠ 0 → J.det ≠ 0 → J₂ = dblGram finSumFinEquiv J →

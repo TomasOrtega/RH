@@ -22,6 +22,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.StripPlaces
 
+/- English proof (translation)
+Introduce `_ _ _ _ _`. Take `⟨CF0, hA⟩` from `GlobalTheory.T.exists_lattice_for_matched_frames ‹_› ‹_› ‹_› ‹_› ‹_›`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hA⟩` from `hA ε CF hCF`. Use `⟨x₀, fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩` and prove the remaining obligations.
+
+Introduce `G W hW B ρ hρ t i j Θ Θ' hM g g₁ z`. Take `⟨L, S, hLfg, hLsp, hinv⟩` from `hA D large₂ hε hx Γ Pl0 T A Ks R F hS G W hW B ρ hρ t i j Θ Θ' hM g g₁`. Use `choose b' P hP hK using fun b => GlobalTheory.T.exists_finiteSupport_mul_latticeStabilizer (G.V (.grid i j)) L hLfg hLsp S b`. Use `set f := kerSmall W Θ' g g₁ with hf`. Establish `key : ∀ b u, f (u * b' b) = f (u * b)` using `fun b u => by`.
+
+Use `hinv _ (hK b) (u * b' b)` as an intermediate fact. Rewrite using `[← this, mul_assoc, mul_inv_cancel_left]`. Use `⟨z.mapDomain b', z.support.biUnion P, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Simplify using `only [translates]`.
+
+Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Conclude with `Finsupp.sum_congr fun b _ => by rw [key]`. Simplify using `only [zdeg]`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => rfl) (fun _ _ _ => rfl)]`. Introduce `c hc v hv`.
+
+Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hc)`. Conclude with `hP b v fun h => hv (Finset.mem_biUnion.2 ⟨b, hb, h⟩)`.
+-/
 theorem exists_comb_trivial_off : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → BigR fun {D} _ _ _ _ T _ _ _ _ _ R sc => ∀ (G : GridData R.toLevCh sc) (W : G.Weil), W.Over R → ∀ (B : Frames G)
   (ρ : RealMatch W), ρ.Over R → ∀ (t : T) (i j : Fin D.R.m) Θ Θ', IsMatched B t ρ i j Θ Θ' → ∀ g g₁ (z : GA D (G.V (.grid i j)) →₀ ℂ),
   ∃ (z' : GA D (G.V (.grid i j)) →₀ ℂ) (P : Finset (HeightOneSpectrum (𝓞 D.host.F))),

@@ -12,11 +12,17 @@ namespace Formalism.L2.SG.Pf.OrthogonalComplementGenusMass
 
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.Cnt Formalism.L2.SG.Pf.G9
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cJof_cast {F : Type} [Field F] {n n' : ℕ} (e : n' = n) (𝔭 : Ideal (𝓞 F)) (a : Fin n → 𝓞 F) :
     cJof 𝔭 (fun i : Fin n' => a (Fin.cast e i)) = cJof 𝔭 a := by
   subst e
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem vJof_cast {F : Type} [Field F] {n n' : ℕ} (e : n' = n) (𝔭 : Ideal (𝓞 F)) (a : Fin n → 𝓞 F) :
     vJof 𝔭 (fun i : Fin n' => a (Fin.cast e i)) = vJof 𝔭 a := by
   subst e
@@ -26,10 +32,26 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V] {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V}
 
+/- English proof (translation)
+Introduce `x hx φ` and use `hpos x x.2 (fun e => hx (Subtype.ext e)) φ`.
+-/
 theorem isTotPosDef_formOn (hpos : PosDefOn h (orthK h U)) :
     IsTotPosDef (formOn h (orthK h U)) :=
   fun x hx φ => hpos x x.2 (fun e => hx (Subtype.ext e)) φ
 
+/- English proof (translation)
+Establish `hWs` using `formOn_isSymm hs (orthK h U)`. Establish `hWd` using `isTotPosDef_formOn hpos`. Establish `hex : ∀ b a, IsJordanIn h (orthK h U) (push _ T) 𝔭 b a → vJof 𝔭 a = vd (formOn h (orthK h U)) T 𝔭 ∧ alphaL (formOn h (orthK h U)) T 𝔭 = (discAut h (orthK h U) (push _ T) 𝔭 : ℝ) * alphaStd K 𝔭 (finrank K ↥(orthK h U) - cJof 𝔭 a)`. Introduce `b a hb`. Establish `hb'` using `isJordanIn_top h𝔭.isPrime hb`.
+
+Establish `e1` using `(h1 K F ↥(orthK h U) hK hF (formOn h (orthK h U)) hWs).2 T hT 𝔭 h𝔭 _ _ hb'`. Establish `e2` using `h5 K F ↥(orthK h U) hK hF (formOn h (orthK h U)) hWs hWd T hT hTi 𝔭 h𝔭 _ _ hb'`. Rewrite `e1` using `[vJof_cast]`. Rewrite `e2` using `[cJof_cast, ← discAut_push h𝔭.isPrime]`. Conclude with `⟨e1.symm, e2⟩`.
+
+Take `⟨b, a, hb⟩` from `(h1 K F V hK hF h hs).1 (orthK h U) (push _ T) (nondegenerate_on_orth_compl hs hnd hc) ((isLatIn_push_iff_isLattice T).2 hT) ((isIntegralLat_push T).2 hTi) 𝔭 h𝔭`. Establish `hvJ : vJ h (orthK h U) (push _ T) 𝔭 = vd (formOn h (orthK h U)) T 𝔭`. Unfold `vJ`. Take `⟨b', a', hb', e⟩` from `Nat.sInf_mem (⟨_, b, a, hb, rfl⟩ : Set.Nonempty {v | ∃ b a, IsJordanIn h (orthK h U) (push _ T) 𝔭 b a ∧ v = vJof 𝔭 a})`. Rewrite using `[e]`.
+
+Conclude with `(hex b' a' hb').1`. Take `⟨b₀, a₀, hb₀, e₀⟩` from `Nat.sInf_mem (⟨_, b, a, hb, rfl⟩ : Set.Nonempty {c | ∃ b a, IsJordanIn h (orthK h U) (push _ T) 𝔭 b a ∧ c = cJof 𝔭 a})`. Establish `hcJ : cJ h (orthK h U) (push _ T) 𝔭 = cJof 𝔭 a₀` using `e₀`. Use `⟨hvJ, by rw [hcJ]; exact (hex b₀ a₀ hb₀).2, fun hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hcJ]`.
+
+Establish `h0` using `(hex b₀ a₀ hb₀).1`. Rewrite `h0` using `[hv]`. Unfold `vJof at h0`. Unfold `cJof`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+
+Introduce `i _ hi`. Conclude with `hi ((Finset.sum_eq_zero_iff.mp h0) i (Finset.mem_univ _))`.
+-/
 theorem jordan_data (h1 : JordanExists) (h5 : AlphaDisc) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     (hs : h.IsSymm) (hnd : Nondeg h) (hc : IsCompl U (orthK h U)) (hpos : PosDefOn h (orthK h U))
     (T : Submodule (𝓞 K) ↥(orthK h U)) (hT : Submodule.IsLattice K T)
@@ -72,9 +94,47 @@ theorem jordan_data (h1 : JordanExists) (h5 : AlphaDisc) (hK : Formalism.Hermiti
   intro i _ hi
   exact hi ((Finset.sum_eq_zero_iff.mp h0) i (Finset.mem_univ _))
 
+/- English proof (translation)
+Introduce `_ hv` and use `hT.2 ▸ Submodule.subset_span hv`.
+-/
 theorem mem_of_isLatIn {X : Submodule K V} {T : Submodule (𝓞 K) V} (hT : IsLatIn X T) :
     ∀ v ∈ T, v ∈ X := fun _ hv => hT.2 ▸ Submodule.subset_span hv
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hc hpos T₀ hT₀ hT₀i c hmc`. Take `⟨T', rfl⟩ : ∃ T', push (orthK h U) T' = T₀` from `⟨_, push_pull (mem_of_isLatIn hT₀)⟩`. Establish `hT' : Submodule.IsLattice K T'` using `(isLatIn_push_iff_isLattice T').1 hT₀`. Establish `hT'i` using `(isIntegralLat_push T').1 hT₀i`. Establish `hWs` using `formOn_isSymm hs (orthK h U)`.
+
+Establish `hWd` using `isTotPosDef_formOn hpos`. Establish `hMB` using `Formalism.HermitianLatticesTheory.massBasic K ↥(orthK h U) (formOn h (orthK h U)) hWs (StabilizerLattices.trace_pos hWd) T' hT'`. Take `⟨s', hs'⟩` from `hMB.1`. Establish `hmass` using `hMB.2.1 s' hs'`. Establish `hMpos` using `hMB.2.2`.
+
+Establish `hMC` using `hmc ↥(orthK h U) (formOn h (orthK h U)) T' hWs hWd rfl hT' hT'i`. Use `⟨s'.image (push (orthK h U)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hT`. Take `⟨N, hN, rfl⟩` from `Finset.mem_image.mp hT`. Establish `hg` using `hs'.1 N hN`.
+
+Conclude with `⟨(isLatIn_push_iff_isLattice N).2 hg.1, (sameGenusFix_push_iff hK hF hs hc T' N).2 hg.2⟩`. Introduce `T hT hgen`. Take `⟨N, rfl⟩ : ∃ N, push (orthK h U) N = T` from `⟨_, push_pull (mem_of_isLatIn hT)⟩`. Establish `hN : N ∈ Formalism.HermitianLatticesTheory.genus (formOn h (orthK h U)) T'` using `⟨(isLatIn_push_iff_isLattice N).1 hT, (sameGenusFix_push_iff hK hF hs hc T' N).1 hgen⟩`. Take `⟨N₁, ⟨hN₁, g, hg, hgN⟩, huniq⟩` from `hs'.2 N hN`.
+
+Use `⟨push _ N₁, ⟨Finset.mem_image_of_mem _ hN₁, extId hc g, extId_mem hs hc hg, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_extId_push hs hc hg, hgN]`. Introduce and unpack `T₂ ⟨hT₂, g₂, hg₂, e₂⟩`. Take `⟨N₂, hN₂, rfl⟩` from `Finset.mem_image.mp hT₂`. Establish `e : N₂ = N₁` using `huniq N₂ ⟨hN₂, restr hg₂, restr_mem hg₂, push_injective _ (by rw [← gmap_push hg₂, e₂])⟩`.
+
+Rewrite using `[e]`. Introduce `T hT _`. Take `⟨N, rfl⟩ : ∃ N, push (orthK h U) N = T` from `⟨_, push_pull (mem_of_isLatIn hT)⟩`. Establish `hfin` using `Formalism.HermitianLatticesTheory.autFinite K ↥(orthK h U) (formOn h (orthK h U)) hWs (StabilizerLattices.trace_pos hWd) N ((isLatIn_push_iff_isLattice N).1 hT)`. Establish `: Finite ↥(Formalism.ThetaLiftIndependence.autL (formOn h (orthK h U)) N)` using `hfin.to_subtype`.
+
+Conclude with `Set.finite_coe_iff.mp (Finite.of_equiv _ (stabEquivW hs hc N).symm)`. Rewrite using `[Finset.sum_image (fun x _ y _ e => push_injective _ e)]`. Repeatedly rewrite using `[card_stab_push hs hc]`. Rewrite using `[← hmass, hMC]`. Establish `hZ` using `finite_vd_ne_zero hK hF hWs hWd hT' hT'i`.
+
+Use `set Z := hZ.toFinset with hZdef`. Establish `hout : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 𝔭 ∉ Z → vd (formOn h (orthK h U)) T' 𝔭.1 = 0` using `fun 𝔭 h𝔭 => by`. Rewrite `h𝔭` using `[hZdef, Set.Finite.mem_toFinset]`. Conclude with `not_not.mp h𝔭`. Establish `hjd` using `fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => jordan_data h1 h5 hK hF hs hnd hc hpos T' hT' hT'i 𝔭.1 𝔭.2`.
+
+Establish `hlam : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, lamP (formOn h (orthK h U)) T' 𝔭.1 = alphaStd K 𝔭.1 (finrank K ↥(orthK h U)) * (Ideal.absNorm 𝔭.1 : ℝ) ^ (finrank K ↥(orthK h U) * vd (formOn h (orthK h U)) T' 𝔭.1) / ((discAut h (orthK h U) (push _ T') 𝔭.1 : ℝ) * alphaStd K 𝔭.1 (fin …`. Introduce `𝔭`. Unfold `lamP`. Rewrite using `[(hjd 𝔭).2.1]`. Establish `hD1 : ∀ 𝔭 ∉ Z, discAut h (orthK h U) (push _ T') 𝔭.1 = 1`.
+
+Introduce `𝔭 h𝔭`. Establish `hv` using `hout 𝔭 h𝔭`. Establish `hl` using `localMassFactor_of_valuation_eq_zero hK hF hWs hWd hT' hT'i 𝔭.2 hv`. Rewrite `hl` using `[hlam 𝔭, hv, (hjd 𝔭).2.2 hv, Nat.sub_zero, mul_zero, pow_zero, mul_one]`. Establish `hA` using `(alphaStd_pos hK hF 𝔭.2 (finrank K ↥(orthK h U))).ne'`.
+
+Establish `hDA : (discAut h (orthK h U) (push _ T') 𝔭.1 : ℝ) * alphaStd K 𝔭.1 (finrank K ↥(orthK h U)) ≠ 0` using `fun e => by`. Rewrite `hl` using `[e, div_zero]`. Conclude with `zero_ne_one hl`. Establish `e` using `(div_eq_one_iff_eq hDA).mp hl`. Establish `e' : (discAut h (orthK h U) (push _ T') 𝔭.1 : ℝ) = 1` using `mul_right_cancel₀ hA (by rw [one_mul]; exact e.symm)`.
+
+Conclude with `e'` after adjusting the coercions. Establish `e1 : ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, discAut h (orthK h U) (push _ T') 𝔭.1 = ∏ 𝔭 ∈ Z, discAut h (orthK h U) (push _ T') 𝔭.1` using `tprod_eq_prod hD1`. Establish `e2 : lamG F (formOn h (orthK h U)) T' = ∏ 𝔭 ∈ Z, lamP (formOn h (orthK h U)) T' 𝔭.1`. Unfold `lamG`. Conclude with `tprod_eq_prod fun 𝔭 h𝔭 => localMassFactor_of_valuation_eq_zero hK hF hWs hWd hT' hT'i 𝔭.2 (hout 𝔭 h𝔭)`.
+
+Establish `e3 : nM F h (orthK h U) (push _ T') = ∏ 𝔭 ∈ Z, (Ideal.absNorm 𝔭.1 : ℝ) ^ vd (formOn h (orthK h U)) T' 𝔭.1`. Unfold `nM`. Repeatedly rewrite using `[fun 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} => (hjd 𝔭).1]`. Conclude with `tprod_eq_prod fun 𝔭 h𝔭 => by rw [hout 𝔭 h𝔭, pow_zero]`. Establish `e4 : ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, alphaStd K 𝔭.1 (finrank K ↥(orthK h U)) / alphaStd K 𝔭.1 (finrank K ↥(orthK h U) - cJ h (orthK h U) (push _ T') 𝔭.1) = ∏ 𝔭 ∈ Z, alphaStd K 𝔭.1 (finrank K ↥(orthK h U)) / alphaStd K 𝔭.1 (finrank K ↥(orthK h U) - cJ h (orthK h U) (push …` using `tprod_eq_prod fun 𝔭 h𝔭 => by`.
+
+Rewrite using `[(hjd 𝔭).2.2 (hout 𝔭 h𝔭), Nat.sub_zero, div_self (alphaStd_pos hK hF 𝔭.2 (finrank K ↥(orthK h U))).ne']`. Establish `hDne : ∀ 𝔭 ∈ Z, (discAut h (orthK h U) (push _ T') 𝔭.1 : ℝ) ≠ 0`. Introduce `𝔭 h𝔭 e`. Establish `h0 : lamP (formOn h (orthK h U)) T' 𝔭.1 = 0` using `by rw [hlam 𝔭, e, zero_mul, div_zero]`. Establish `: Formalism.HermitianLatticesTheory.mass (formOn h (orthK h U)) T' = 0`.
+
+Rewrite using `[hMC, e2, Finset.prod_eq_zero h𝔭 h0, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ 𝔭 ∈ Z, (discAut h (orthK h U) (push _ T') 𝔭.1 : ℝ) * lamP (formOn h (orthK h U)) T' 𝔭.1 = ((Ideal.absNorm 𝔭.1 : ℝ) ^ vd (formOn h (orthK h U)) T' 𝔭.1) ^ finrank K ↥(orthK h U) * (alphaStd K 𝔭.1 (finrank K ↥(orthK h U)) / alphaStd K 𝔭.1 (finrank K ↥(orthK h U) - cJ h (orth …`. Introduce `𝔭 h𝔭`. Establish `hB` using `(alphaStd_pos hK hF 𝔭.2 (finrank K ↥(orthK h U) - cJ h (orthK h U) (push _ T') 𝔭.1)).ne'`.
+
+Rewrite using `[hlam 𝔭, ← pow_mul, mul_comm (vd _ _ _) (finrank K _)]`. Clear denominators, using `[hDne 𝔭 h𝔭, hB]` for the nonvanishing conditions. Rewrite using `[e1, e2, e3, e4, Nat.cast_prod, ← Finset.prod_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[Finset.prod_congr rfl key, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genusMassW_of (h1 : JordanExists) (h5 : AlphaDisc) : GenusMassW := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hc hpos T₀ hT₀ hT₀i c hmc
   obtain ⟨T', rfl⟩ : ∃ T', push (orthK h U) T' = T₀ := ⟨_, push_pull (mem_of_isLatIn hT₀)⟩
@@ -191,9 +251,15 @@ end Formalism.L2.SG.Pf.OrthogonalComplementGenusMass
 
 namespace Formalism.L2.SG.Pf.Cnt
 
+/- English proof (translation)
+The claim follows from `OrthogonalComplementGenusMass.genusMassW_of h1 h5`.
+-/
 theorem genusMassW_of (h1 : JordanExists) (h5 : AlphaDisc) : GenusMassW :=
   OrthogonalComplementGenusMass.genusMassW_of h1 h5
 
+/- English proof (translation)
+The claim follows from `glueMass_of h1 h2 h6 h8 (OrthogonalComplementGenusMass.genusMassW_of h1 h5)`.
+-/
 theorem glueMass_of' (h1 : JordanExists) (h2 : JordanInv) (h5 : AlphaDisc) (h6 : GlueLoc)
     (h8 : GlueProd) : GlueMass :=
   glueMass_of h1 h2 h6 h8 (OrthogonalComplementGenusMass.genusMassW_of h1 h5)

@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.Lev UpperTheory.V.AlgebraTools UpperTheory.V.Th
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `haveI : Finite (Γ ⧸ K) := Subgroup.quotient_finite_of_isOpen K hK`. Use `haveI : K.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hc : IsClosed (K.normalCore : Set Γ)` using `Subgroup.normalCore_isClosed K (K.isClosed_of_isOpen hK)`. Establish `ho : IsOpen (K.normalCore : Set Γ)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ hc`. Conclude with `⟨{ toSubgroup := K.normalCore, isOpen' := ho, isNormal' := inferInstance }, Subgroup.normal_le_normalCore.2 hP, K.normalCore_le⟩`.
+-/
 private theorem core_ex {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (K P : Subgroup Γ) [P.Normal] (hK : IsOpen (K : Set Γ)) (hP : P ≤ K) :
     ∃ U : OpenNormalSubgroup Γ, P ≤ U.toSubgroup ∧ U.toSubgroup ≤ K := by
@@ -12,6 +15,9 @@ private theorem core_ex {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact ⟨{ toSubgroup := K.normalCore, isOpen' := ho, isNormal' := inferInstance },
     Subgroup.normal_le_normalCore.2 hP, K.normalCore_le⟩
 
+/- English proof (translation)
+Use `⟨fun a ha g => ?_⟩` and prove the remaining obligations. Simplify using `only [PL, Subgroup.mem_iInf] at ha ⊢`. Introduce `U hU`. Conclude with `U.isNormal'.conj_mem a (ha U hU) g`.
+-/
 private theorem pl_normal (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (H : Subgroup Γ) :
     (PL l H).Normal := by
   refine ⟨fun a ha g => ?_⟩
@@ -19,12 +25,26 @@ private theorem pl_normal (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ]
   intro U hU
   exact U.isNormal'.conj_mem a (ha U hU) g
 
+/- English proof (translation)
+Introduce `a ha`. Simplify using `only [PL, Subgroup.mem_iInf] at ha`. Conclude with `ha H fun h hh => ⟨0, by rw [pow_zero, pow_one]; exact hh⟩`.
+-/
 private theorem pl_le (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (H : OpenNormalSubgroup Γ) :
     PL l H.toSubgroup ≤ H.toSubgroup := by
   intro a ha
   simp only [PL, Subgroup.mem_iInf] at ha
   exact ha H fun h hh => ⟨0, by rw [pow_zero, pow_one]; exact hh⟩
 
+/- English proof (translation)
+Introduce `l _ L G0 T n O _ _ _ y hPL K`. Use `haveI := pl_normal l T.H.toSubgroup`. Establish `hle` using `pl_le l T.H`. Set `R : G0.G₀ →* Matrix (Fin n) (Fin n) (O ⧸ maximalIdeal O ^ K)` to `(Ideal.Quotient.mk (maximalIdeal O ^ K)).mapMatrix.toMonoidHom.comp (mat y.ρ)`. Establish `hR : ∀ g i j, R g i j = Ideal.Quotient.mk (maximalIdeal O ^ K) (mat y.ρ g i j)` using `fun _ _ _ => rfl`.
+
+Establish `h0 : IsLocallyConstant fun g : G0.G₀ => R g`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, R g i j = R g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (y.cont i j K).eventually_eq g0`. Use `filter_upwards [this] with g hg`.
+
+Conclude with `Matrix.ext hg`. Establish `ho : IsOpen ((R.ker.map G0.η.ker.subtype : Subgroup G0.Γ) : Set G0.Γ)` using `G0.η_open.isOpenMap_subtype_val _ (h0.isOpen_fiber 1)`. Establish `h1R : ∀ g, y.ρ g = 1 → R g = 1` using `fun g h => by show (Ideal.Quotient.mk (maximalIdeal O ^ K)).mapMatrix (Units.coeHom _ (y.ρ g)) = 1`. Rewrite using `[h, map_one, map_one]`. Take `⟨V, h1, h2⟩` from `core_ex _ (PL l T.H.toSubgroup) ho fun g hg => ⟨⟨g, T.H_η g (hle hg)⟩, h1R _ (hPL _ hg), rfl⟩`.
+
+Use `filter_upwards [Filter.eventually_all.2 fun j => T.ph_lim V j h1] with N hN j a b`. Take `⟨u, hu, e1⟩` from `h2 (hN j)`. Establish `e2 : (T.h N).p₀ (T.ph N j) = u * T.sg j` using `Subtype.ext (by show (T.h N).p (T.ph N j) = (u : G0.Γ) * T.sg j`. Rewrite using `[show (u : G0.Γ) = _ from e1, inv_mul_cancel_right])`. Establish `e3 : R ((T.h N).p₀ (T.ph N j)) = R (T.sg j)`.
+
+Rewrite using `[e2, map_mul, show R u = 1 from hu, one_mul]`. Rewrite using `[← Ideal.Quotient.eq, ← hR, ← hR, e3]`.
+-/
 theorem UpperTheory.V.Th.Sp.close :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (y : Pt G0.frame O n), (∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → y.ρ g = 1) → ∀ K : ℕ, ∀ᶠ N in atTop, ∀ j a b, mat y.ρ ((T.h N).p₀ (T.ph N j)) a b - mat y.ρ (T.sg j) a b ∈ maximalIdeal O ^ K := by
   intro l _ L G0 T n O _ _ _ y hPL K

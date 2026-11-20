@@ -26,6 +26,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
 def mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P.T →ₗ[ℤ_[p]] P'.T :=
   Tate.map p (IndepPoint.ptsHom α _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (t : P.T) (n : ℕ) :
     (mapT P P' α t).lev n = t.lev n ≫ α := rfl
 
@@ -37,11 +40,17 @@ variable [IsAlgClosed C] [CharZero C]
 def adjT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P'.T →ₗ[ℤ_[p]] P.T :=
   (LinearEquiv.ofBijective _ P.pairT_bijective).symm.toLinearMap ∘ₗ (mapT P P' α).dualMap ∘ₗ pairT P'.A P'.eps
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun ((LinearEquiv.ofBijective _ P.pairT_bijective).apply_symm_apply ((mapT P P' α).dualMap (pairT P'.A P'.eps t))) s`.
+-/
 theorem pairT_adjT_left (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (t : P'.T) (s : P.T) :
     pairT P.A P.eps (adjT P P' α t) s = pairT P'.A P'.eps t (mapT P P' α s) :=
   LinearMap.congr_fun ((LinearEquiv.ofBijective _ P.pairT_bijective).apply_symm_apply
     ((mapT P P' α).dualMap (pairT P'.A P'.eps t))) s
 
+/- English proof (translation)
+Rewrite using `[← (isAlt_pairT P'.A P'.eps).neg_eq t, ← pairT_adjT_left, (isAlt_pairT P.A P.eps).neg_eq]`.
+-/
 theorem pairT_mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (s : P.T) (t : P'.T) :
     pairT P'.A P'.eps (mapT P P' α s) t = pairT P.A P.eps s (adjT P P' α t) := by
   rw [← (isAlt_pairT P'.A P'.eps).neg_eq t, ← pairT_adjT_left, (isAlt_pairT P.A P.eps).neg_eq]
@@ -49,6 +58,9 @@ theorem pairT_mapT (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (s : P.T) (t : P'.T) :
 def adjV [Algebra ℤ_[p] C] (α : P.A.A ⟶ P'.A.A) [IsMonHom α] : P'.V →ₗ[C] P.V :=
   (adjT P P' α).baseChange C
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adjV_tmul [Algebra ℤ_[p] C] (α : P.A.A ⟶ P'.A.A) [IsMonHom α] (c : C) (t : P'.T) :
     adjV P P' α (c ⊗ₜ t) = c ⊗ₜ adjT P P' α t := rfl
 
@@ -61,12 +73,18 @@ variable {Λ : Type} [CommRing Λ] [StarRing Λ]
 def pullAct {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Out.PolAV S) (o : B.OAct Λ) :
     (StrictPull.polPull B f).OAct Λ := (exists_oAct_polPull f B o).choose
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (pullback.hom_ext (h.trans (pullback.lift_fst _ _ _).symm) ((Over.w b).trans (Over.w ((Over.pullback f).map a)).symm))`.
+-/
 theorem eq_map_of_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y : Over S} (a : X ⟶ Y)
     (b : (Over.pullback f).obj X ⟶ (Over.pullback f).obj Y)
     (h : b.left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left) : b = (Over.pullback f).map a :=
   Over.OverMorphism.ext (pullback.hom_ext (h.trans (pullback.lift_fst _ _ _).symm)
     ((Over.w b).trans (Over.w ((Over.pullback f).map a)).symm))
 
+/- English proof (translation)
+The claim follows from `eq_map_of_fst f _ _ ((exists_oAct_polPull f B o).choose_spec a)`.
+-/
 theorem pullAct_act {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Out.PolAV S) (o : B.OAct Λ) (a : Λ) :
     (pullAct f B o).act a = (Over.pullback f).map (o.act a) :=
   eq_map_of_fst f _ _ ((exists_oAct_polPull f B o).choose_spec a)
@@ -79,9 +97,15 @@ def goodPoint (B : Out.PolAV (Sp R)) (o : B.OAct Λ) : Point p v O Λ :=
 
 variable {B B' : Out.PolAV (Sp R)} (o : B.OAct Λ) (o' : B'.OAct Λ)
 
+/- English proof (translation)
+The claim follows from `pullAct_act _ B o a`.
+-/
 theorem goodPoint_oGt (a : Λ) : (goodPoint hv ε j B o).oGt.act a = (Over.pullback (spMap j)).map (o.act a) :=
   pullAct_act _ B o a
 
+/- English proof (translation)
+The claim follows from `(pullAct_act _ _ (pullAct (spMap j) B o) a).trans (congrArg _ (pullAct_act _ B o a))`.
+-/
 theorem goodPoint_oA (a : Λ) : (goodPoint hv ε j B o).oA.act a =
     (Over.pullback (spMap (algebraMap O C))).map ((Over.pullback (spMap j)).map (o.act a)) :=
   (pullAct_act _ _ (pullAct (spMap j) B o) a).trans (congrArg _ (pullAct_act _ B o a))
@@ -108,6 +132,9 @@ def homV [Algebra ℤ_[p] C] (f : B.A ⟶ B'.A) [IsMonHom f] :
 def homLie (f : B.A ⟶ B'.A) [IsMonHom f] (x : LieG (goodPoint hv ε j B o).Gt) : LieG (goodPoint hv ε j B' o').Gt :=
   TorusTateLie.lieMap (homO hv ε j o o' f) x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_homT (f : B.A ⟶ B'.A) [IsMonHom f] (t : (goodPoint hv ε j B o).T) (n : ℕ) :
     (homT hv ε j o o' f t).lev n = t.lev n ≫ homC hv ε j o o' f := rfl
 

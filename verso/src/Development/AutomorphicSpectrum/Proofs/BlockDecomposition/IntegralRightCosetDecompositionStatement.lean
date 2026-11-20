@@ -8,6 +8,9 @@ open GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.Iwasawa GroundT
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.LFUDom
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LFUDom.integral_eq_measure_mul_sum_cosets | exact GlobalTheory.CompanionTheory.LFUDom.integral_eq_measure_mul_sum_cosets | (intros; apply GlobalTheory.CompanionTheory.LFUDom.integral_eq_measure_mul_sum_cosets <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_right_coset_decomposition : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   (μ : Measure G) [μ.IsMulRightInvariant] [IsFiniteMeasureOnCompacts μ] (K : Subgroup G),
   IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ (ι : Type) (R : ι → G) (S : Finset ι) (f : G → ℂ),

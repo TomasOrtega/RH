@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.AlgRing
 
+/- English proof (translation)
+Establish `hp0 : minpoly k x ≠ 0` using `minpoly.ne_zero hx`. Take `⟨g, hpg, hg⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd (minpoly k x) hp0 0`. Simplify using `only [map_zero, sub_zero] at hpg hg`. Use `set s := Polynomial.rootMultiplicity 0 (minpoly k x)`. Establish `hcop : IsCoprime (Polynomial.X ^ (s + 1)) g` using `(Polynomial.irreducible_X.coprime_iff_not_dvd.mpr hg).pow_left`.
+
+Take `⟨a, b, hab⟩` from `hcop`. Establish `hev : Polynomial.aeval x (Polynomial.X ^ s * g) = 0`. Rewrite using `[← hpg]`. Conclude with `minpoly.aeval k x`. Establish `hE : ∀ P : Polynomial k, Polynomial.aeval x (P * (Polynomial.X ^ s * g)) = 0` using `fun P => by rw [map_mul, hev, mul_zero]`.
+
+Use `⟨Polynomial.aeval x (a * Polynomial.X ^ (s + 1)), ?_, ?_, ⟨a * Polynomial.X ^ s, ?_⟩⟩` and prove the remaining obligations. Establish `hpoly : (a * Polynomial.X ^ (s + 1)) * (a * Polynomial.X ^ (s + 1)) = a * Polynomial.X ^ (s + 1) + (-(a * b * Polynomial.X)) * (Polynomial.X ^ s * g)`. Take the linear combination `(a * Polynomial.X ^ (s + 1)) * hab`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, hpoly, map_add, hE, add_zero]`.
+
+Introduce `he`. Apply `hn` to reduce the goal to its premises. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hpoly : (Polynomial.X : Polynomial k) ^ s = Polynomial.X ^ s * (a * Polynomial.X ^ (s + 1)) + b * (Polynomial.X ^ s * g)`. Take the linear combination `(Polynomial.X ^ s) * hab.symm`.
+
+Use `congrArg (Polynomial.aeval x) hpoly` as an intermediate fact. Rewrite `this` using `[map_add, hE, add_zero, map_mul, he, mul_zero, map_pow, Polynomial.aeval_X]`. Then use the resulting hypothesis. Establish `h : a * Polynomial.X ^ (s + 1) = Polynomial.X * (a * Polynomial.X ^ s)` using `by ring`. Rewrite using `[h, map_mul, Polynomial.aeval_X]`.
+-/
 private theorem exists_idempotent_of_not_isNilpotent (k R : Type) [Field k] [Ring R] [Algebra k R]
     (x : R) (hx : IsIntegral k x) (hn : ¬ IsNilpotent x) :
     ∃ e : R, IsIdempotentElem e ∧ e ≠ 0 ∧ ∃ q : Polynomial k, e = x * Polynomial.aeval x q := by
@@ -34,6 +45,11 @@ private theorem exists_idempotent_of_not_isNilpotent (k R : Type) [Field k] [Rin
   · have h : a * Polynomial.X ^ (s + 1) = Polynomial.X * (a * Polynomial.X ^ s) := by ring
     rw [h, map_mul, Polynomial.aeval_X]
 
+/- English proof (translation)
+Establish `: ¬ ∀ y : R, IsNilpotent (y * x)` using `fun h => hx (hnil x h)`. Use `push_neg at this`. Take `⟨y, hy⟩` from `this`. Take `⟨e, he, he0, q, rfl⟩` from `exists_idempotent_of_not_isNilpotent k R (y * x) (hint _) hy`. Establish `hcomm : Commute (y * x) (Polynomial.aeval (y * x) q)`.
+
+Simplify using `using (Polynomial.commute_X q).map (Polynomial.aeval (y * x))`. Use `⟨_, Polynomial.aeval (y * x) q * y, he, he0, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm.eq, mul_assoc]`.
+-/
 private theorem exists_idempotent_mem_left_multiples (k R : Type) [Field k] [Ring R] [Algebra k R]
     (hint : ∀ x : R, IsIntegral k x) (hnil : ∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0)
     (x : R) (hx : x ≠ 0) : ∃ e r : R, IsIdempotentElem e ∧ e ≠ 0 ∧ e = r * x := by
@@ -46,6 +62,21 @@ private theorem exists_idempotent_mem_left_multiples (k R : Type) [Field k] [Rin
   refine ⟨_, Polynomial.aeval (y * x) q * y, he, he0, ?_⟩
   rw [hcomm.eq, mul_assoc]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hsum`. Use `set f := 1 - ∑ i, e i with hfdef`. Establish `hf0 : f ≠ 0` using `sub_ne_zero.mpr (Ne.symm hsum)`. Establish `hS : IsIdempotentElem (∑ i, e i)` using `he.isIdempotentElem_sum`. Establish `hf : IsIdempotentElem f` using `hS.one_sub`.
+
+Establish `hef : ∀ i, e i * f = 0` using `fun i => by`. Rewrite using `[hfdef, mul_sub, mul_one, he.mul_sum_of_mem (Finset.mem_univ i), sub_self]`. Establish `hfe : ∀ i, f * e i = 0` using `fun i => by`. Rewrite using `[hfdef, sub_mul, one_mul, Finset.sum_mul, Finset.sum_eq_single i (fun j _ hj => he.ortho hj) (by simp), (he.idem i).eq, sub_self]`. Take `⟨e', r, he', he'0, rfl⟩` from `exists_idempotent_mem_left_multiples k R hint hnil f hf0`.
+
+Establish `hg : IsIdempotentElem (f * (r * f))`. Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation. Establish `hg0 : f * (r * f) ≠ 0`. Introduce `h0`.
+
+Apply `he'0` to reduce the goal to its premises. Rewrite using `[← he'.eq, mul_assoc, h0, mul_zero]`. Use `hmax (Fin.cons (f * (r * f)) e) ⟨fun i => ?_, fun i j hij => ?_⟩ fun i => ?_` and prove the remaining obligations. Use `Fin.cases hg (fun i => ?_) i` and prove the remaining obligations. Simplify using `using he.idem i`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`. Consider the case `succ j => simp only [Fin.cons_zero, Fin.cons_succ]`.
+
+Rewrite using `[mul_assoc, mul_assoc, hfe, mul_zero, mul_zero]`. Consider the case `succ i`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← mul_assoc, hef, zero_mul]`.
+
+Consider the case `succ j`. Simplify using `only [Fin.cons_succ]`. Conclude with `he.ortho fun h => hij (by rw [h])`. Use `Fin.cases hg0 (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hne i`.
+-/
 private theorem sum_eq_one_of_maximal_orthogonalIdempotents (k R : Type) [Field k] [Ring R]
     [Algebra k R] (hint : ∀ x : R, IsIntegral k x)
     (hnil : ∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0) {m : ℕ} (e : Fin m → R)
@@ -89,6 +120,15 @@ private theorem sum_eq_one_of_maximal_orthogonalIdempotents (k R : Type) [Field 
   · refine Fin.cases hg0 (fun i => ?_) i
     simpa using hne i
 
+/- English proof (translation)
+Establish `hpow : ∀ j : ℕ, (a * y) ^ (j + 1) = (a * y * f) ^ j * (a * y)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+
+Rewrite using `[pow_succ (a * y) (j + 1), ih, pow_succ (a * y * f) j, mul_assoc ((a * y * f) ^ j), mul_assoc ((a * y * f) ^ j)]`. Use `congr 1`. Rewrite using `[mul_assoc (a * y) f, ← mul_assoc f a y, hl]`. Introduce and unpack `⟨n, hn⟩`. Establish `hya : ∀ j : ℕ, (y * a) ^ (j + 1) = y * (a * y) ^ j * a`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+
+Conclude with `hy ⟨n + 2, by rw [hya, hpow, hn, zero_mul, mul_zero, zero_mul]⟩`.
+-/
 private theorem not_isNilpotent_mul_mul_of_mul_eq_of_not_isNilpotent {R : Type} [Ring R] (f a y : R) (hl : f * a = a)
     (hy : ¬ IsNilpotent (y * a)) : ¬ IsNilpotent (a * y * f) := by
   have hpow : ∀ j : ℕ, (a * y) ^ (j + 1) = (a * y * f) ^ j * (a * y) := by
@@ -108,6 +148,27 @@ private theorem not_isNilpotent_mul_mul_of_mul_eq_of_not_isNilpotent {R : Type} 
     | succ j ih => rw [pow_succ, ih, pow_succ]; simp only [mul_assoc]
   exact hy ⟨n + 2, by rw [hya, hpow, hn, zero_mul, mul_zero, zero_mul]⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hfe`. Establish `hg : IsIdempotentElem (e i - f)`. Unfold `IsIdempotentElem`. Rewrite using `[sub_mul, mul_sub, mul_sub, (he.idem i).eq, hl, hr, hf.eq]`. Normalize the expressions using the abelian group laws.
+
+Establish `hg0 : e i - f ≠ 0` using `sub_ne_zero.mpr (Ne.symm hfe)`. Establish `hgf : (e i - f) * f = 0` using `by rw [sub_mul, hl, hf.eq, sub_self]`. Establish `hfg : f * (e i - f) = 0` using `by rw [mul_sub, hr, hf.eq, sub_self]`. Establish `hjf : ∀ j, j ≠ i → e j * f = 0` using `fun j hj => by rw [← hl, ← mul_assoc, he.ortho hj, zero_mul]`. Establish `hfj : ∀ j, j ≠ i → f * e j = 0` using `fun j hj => by rw [← hr, mul_assoc, he.ortho hj.symm, mul_zero]`.
+
+Establish `hjg : ∀ j, j ≠ i → e j * (e i - f) = 0` using `fun j hj => by rw [mul_sub, he.ortho hj, hjf j hj, sub_self]`. Establish `hgj : ∀ j, j ≠ i → (e i - f) * e j = 0` using `fun j hj => by rw [sub_mul, he.ortho hj.symm, hfj j hj, sub_self]`. Use `set u := Function.update e i f`. Establish `hu : ∀ j, u j = if j = i then f else e j` using `fun j => Function.update_apply e i f j`. Use `hmax (Fin.cons (e i - f) u) ⟨fun j => ?_, fun a b hab => ?_⟩ fun j => ?_` and prove the remaining obligations.
+
+Use `Fin.cases hg (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.cons_succ, hu]`. Use `split_ifs`. Conclude with `hf`. Conclude with `he.idem j`.
+
+Proceed by induction on `a using Fin.cases with`. Consider the case `zero`. Proceed by induction on `b using Fin.cases with`. Consider the case `zero => exact absurd rfl hab`. Consider the case `succ b`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ, hu]`. Use `split_ifs with hb`. Conclude with `hgf`. Conclude with `hgj b hb`. Consider the case `succ a`.
+
+Proceed by induction on `b using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hu]`. Use `split_ifs with ha`. Conclude with `hfg`.
+
+Conclude with `hjg a ha`. Consider the case `succ b`. Establish `hab' : a ≠ b` using `fun h => hab (by rw [h])`. Simplify using `only [Fin.cons_succ, hu]`. Use `split_ifs with ha hb hb`.
+
+Conclude with `absurd (ha.trans hb.symm) hab'`. Conclude with `hfj b hb`. Conclude with `hjf a ha`. Conclude with `he.ortho hab'`. Use `Fin.cases hg0 (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `only [Fin.cons_succ, hu]`. Use `split_ifs`. Conclude with `hf0`. Conclude with `hne j`.
+-/
 private theorem eq_of_idempotent_in_corner_of_maximal {R : Type} [Ring R] {m : ℕ} (e : Fin m → R)
     (he : OrthogonalIdempotents e) (hne : ∀ i, e i ≠ 0)
     (hmax : ∀ e' : Fin (m + 1) → R, OrthogonalIdempotents e' → (∀ i, e' i ≠ 0) → False)
@@ -158,6 +219,11 @@ private theorem eq_of_idempotent_in_corner_of_maximal {R : Type} [Ring R] {m : �
     · exact hf0
     · exact hne j
 
+/- English proof (translation)
+Take `⟨f, hf, hf0, q, rfl⟩` from `exists_idempotent_of_not_isNilpotent k R z (hint z) hz`. Establish `hcomm : Commute z (Polynomial.aeval z q)`. Simplify using `using (Polynomial.commute_X q).map (Polynomial.aeval z)`. Establish `hfl : e i * (z * Polynomial.aeval z q) = z * Polynomial.aeval z q`. Rewrite using `[← mul_assoc, hl]`.
+
+Establish `hfr : z * Polynomial.aeval z q * e i = z * Polynomial.aeval z q`. Rewrite using `[hcomm.eq, mul_assoc, hr]`. Establish `hfe` using `eq_of_idempotent_in_corner_of_maximal e he hne hmax i _ hf hf0 hfl hfr`. Use `⟨e i * Polynomial.aeval z q, by rw [← mul_assoc, (he.idem i).eq], ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hr, hfe]`.
+-/
 private theorem exists_right_inverse_in_corner_of_not_isNilpotent (k R : Type) [Field k] [Ring R] [Algebra k R]
     (hint : ∀ x : R, IsIntegral k x) {m : ℕ} (e : Fin m → R)
     (he : OrthogonalIdempotents e) (hne : ∀ i, e i ≠ 0)
@@ -175,6 +241,23 @@ private theorem exists_right_inverse_in_corner_of_not_isNilpotent (k R : Type) [
   refine ⟨e i * Polynomial.aeval z q, by rw [← mul_assoc, (he.idem i).eq], ?_⟩
   rw [← mul_assoc, hr, hfe]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hw0`. Establish `: ¬ ∀ y : R, IsNilpotent (y * w)` using `fun h => hw0 (hnil w h)`. Use `push_neg at this`. Take `⟨y, hy⟩` from `this`. Establish `hpow : ∀ j : ℕ, (w * y) ^ (j + 1) = (w * y * e i) ^ j * (w * y)`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ (w * y) (j + 1), ih, pow_succ (w * y * e i) j, mul_assoc ((w * y * e i) ^ j), mul_assoc ((w * y * e i) ^ j)]`.
+
+Use `congr 1`. Rewrite using `[mul_assoc (w * y) (e i), ← mul_assoc (e i) w y, hl]`. Establish `hu : ¬ IsNilpotent (w * y * e i)`. Introduce and unpack `⟨n, hn⟩`. Establish `hyw : ∀ j : ℕ, (y * w) ^ (j + 1) = y * (w * y) ^ j * w`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+
+Conclude with `hy ⟨n + 2, by rw [hyw, hpow, hn, zero_mul, mul_zero, zero_mul]⟩`. Take `⟨t, het, hut⟩` from `exists_right_inverse_in_corner_of_not_isNilpotent k R hint e he hne hmax i (w * y * e i) (by rw [← mul_assoc, ← mul_assoc, hl]) (by rw [mul_assoc, (he.idem i).eq]) hu`. Use `set s := e i * (y * e i * t)`. Establish `hs : e i * s = s` using `by rw [← mul_assoc, (he.idem i).eq]`. Establish `hws : w * s = e i`.
+
+Establish `h3 : w * (y * e i * t) = w * y * e i * t` using `by simp only [mul_assoc]`. Rewrite using `[← mul_assoc, hr, h3, hut]`. Establish `hj : ∀ j : ℕ, e i = w ^ (j + 1) * s ^ (j + 1)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp [hws]`. Consider the case `succ j ih`. Rewrite using `[pow_succ w (j + 1), pow_succ' s (j + 1), mul_assoc, ← mul_assoc w s, hws, pow_succ' s j, ← mul_assoc (e i) s, hs, ← pow_succ']`. Conclude with `ih`. Take `⟨N, hN⟩` from `hw`.
+
+Apply `hne i` to reduce the goal to its premises. Rewrite using `[hj N, pow_succ, hN, zero_mul, zero_mul]`.
+-/
 private theorem eq_zero_of_isNilpotent_in_corner_of_maximal (k R : Type) [Field k] [Ring R] [Algebra k R]
     (hint : ∀ x : R, IsIntegral k x) (hnil : ∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0)
     {m : ℕ} (e : Fin m → R)
@@ -221,6 +304,31 @@ private theorem eq_zero_of_isNilpotent_in_corner_of_maximal (k R : Type) [Field 
   apply hne i
   rw [hj N, pow_succ, hN, zero_mul, zero_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hz : IsNilpotent z`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_smul]`. Conclude with `eq_zero_of_isNilpotent_in_corner_of_maximal k R hint hnil e he hne hmax i z hl hr hz`. Establish `hp0 : minpoly k z ≠ 0` using `minpoly.ne_zero (hint z)`.
+
+Take `⟨g, hpg, hg⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd (minpoly k z) hp0 0`. Simplify using `only [map_zero, sub_zero] at hpg hg`. Use `set s := Polynomial.rootMultiplicity 0 (minpoly k z)`. Establish `hev : Polynomial.aeval z (Polynomial.X ^ s * g) = 0`. Rewrite using `[← hpg]`.
+
+Conclude with `minpoly.aeval k z`. Establish `hg0 : g ≠ 0` using `by rintro rfl; rw [mul_zero] at hpg; exact hp0 hpg`. Establish `hgdeg : g.degree ≠ 0`. Introduce `h0`. Rewrite `hev` using `[Polynomial.eq_C_of_degree_eq_zero h0, map_mul, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one]`.
+
+Establish `hc : g.coeff 0 ≠ 0` using `fun h => hg (Polynomial.X_dvd_iff.mpr h)`. Conclude with `hz ⟨s, by simpa [hc] using hev⟩`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_root g hgdeg`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hg (by simpa using Polynomial.dvd_iff_isRoot.mpr hc)`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `set w := z - c • e i with hw`. Establish `hei : e i * e i = e i` using `(he.idem i).eq`.
+
+Establish `hwl : e i * w = w` using `by rw [hw, mul_sub, hl, mul_smul_comm, hei]`. Establish `hwr : w * e i = w` using `by rw [hw, sub_mul, hr, smul_mul_assoc, hei]`. Establish `hwn : ¬ IsNilpotent w` using `fun hn => hno c (sub_eq_zero.mp (eq_zero_of_isNilpotent_in_corner_of_maximal k R hint hnil e he hne hmax i w hwl hwr hn))`. Take `⟨t, het, hwt⟩` from `exists_right_inverse_in_corner_of_not_isNilpotent k R hint e he hne hmax i w hwl hwr hwn`. Establish `hzu : Polynomial.aeval z (Polynomial.X - Polynomial.C c) * (t - c⁻¹ • (1 - e i)) = 1`.
+
+Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Establish `h1 : z * t - c • t = e i`. Rewrite using `[← hwt, hw, sub_mul, smul_mul_assoc, het]`. Establish `h2 : (z - c • (1 : R)) * (1 - e i) = -(c • (1 - e i))`. Simplify using `only [mul_sub, sub_mul, mul_one, one_mul, hr, smul_mul_assoc, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[mul_sub, mul_smul_comm, h2, smul_neg, smul_smul, inv_mul_cancel₀ hc0, one_smul, sub_mul, smul_mul_assoc, one_mul, h1]`. Normalize the expressions using the abelian group laws. Take `⟨h, hh⟩ : ∃ h, g = (Polynomial.X - Polynomial.C c) * h` from `Polynomial.dvd_iff_isRoot.mpr hc`. Establish `hcomm : Polynomial.X ^ s * g = (Polynomial.X ^ s * h) * (Polynomial.X - Polynomial.C c)`.
+
+Rewrite using `[hh]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : Polynomial.aeval z (Polynomial.X ^ s * h) = 0`. Rewrite `hev` using `[hcomm, map_mul]`. Use `congrArg (· * (t - c⁻¹ • (1 - e i))) hev` as an intermediate fact.
+
+Rewrite `this` using `[mul_assoc, hzu, mul_one, zero_mul]`. Then use the resulting hypothesis. Establish `hh0 : Polynomial.X ^ s * h ≠ 0`. Use `mul_ne_zero (pow_ne_zero _ Polynomial.X_ne_zero) ?_` and prove the remaining obligations. Introduce and unpack `rfl; exact hg0 (by rw [hh, mul_zero])`. Establish `hdeg` using `minpoly.degree_le_of_ne_zero k z hh0 hzero`.
+
+Rewrite `hdeg` using `[hpg, hcomm, Polynomial.degree_mul, Polynomial.degree_X_sub_C]`. Establish `hfin : (Polynomial.X ^ s * h).degree ≠ ⊥`. Rewrite using `[Ne, Polynomial.degree_eq_bot]` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `WithBot.ne_bot_iff_exists.mp hfin`. Rewrite `hdeg` using `[← hn]`.
+
+Rewrite `hdeg` using `[← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_eq_smul_idempotent_of_mem_corner (k R : Type) [Field k] [IsAlgClosed k] [Ring R]
     [Algebra k R] (hint : ∀ x : R, IsIntegral k x)
     (hnil : ∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0) {m : ℕ} (e : Fin m → R)
@@ -289,6 +397,21 @@ private theorem exists_eq_smul_idempotent_of_mem_corner (k R : Type) [Field k] [
   rw [← WithBot.coe_one, ← WithBot.coe_add, WithBot.coe_le_coe] at hdeg
   omega
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ r, e i * r * e j = 0`. Conclude with `⟨0, fun r => ⟨0, by rw [h r, smul_zero]⟩⟩`. Use `push_neg at h`. Take `⟨r0, ha0⟩` from `h`. Use `set a := e i * r0 * e j`.
+
+Establish `hii : e i * e i = e i` using `(he.idem i).eq`. Establish `hjj : e j * e j = e j` using `(he.idem j).eq`. Establish `hal : e i * a = a` using `by simp only [a, ← mul_assoc, hii]`. Establish `har : a * e j = a` using `by simp only [a, mul_assoc, hjj]`. Establish `: ¬ ∀ y : R, IsNilpotent (y * a)` using `fun h => ha0 (hnil a h)`.
+
+Use `push_neg at this`. Take `⟨y, hy⟩` from `this`. Establish `hu` using `not_isNilpotent_mul_mul_of_mul_eq_of_not_isNilpotent (e i) a y hal hy`. Take `⟨ν, hν⟩` from `exists_eq_smul_idempotent_of_mem_corner k R hint hnil e he hne hmax i (a * y * e i) (by rw [← mul_assoc, ← mul_assoc, hal]) (by rw [mul_assoc, hii])`. Establish `hν0 : ν ≠ 0`.
+
+Introduce and unpack `rfl; rw [zero_smul] at hν; exact hu (by rw [hν]; exact IsNilpotent.zero)`. Use `set b := ν⁻¹ • (e j * y * e i)`. Establish `hab : a * b = e i`. Simplify using `only [b, mul_smul_comm, ← mul_assoc, har]`. Rewrite using `[hν, smul_smul, inv_mul_cancel₀ hν0, one_smul]`.
+
+Establish `hbe : b * e i = b` using `by simp only [b, smul_mul_assoc, mul_assoc, hii]`. Take `⟨μ, hμ⟩` from `exists_eq_smul_idempotent_of_mem_corner k R hint hnil e he hne hmax j (b * a) (by simp only [b, smul_mul_assoc, mul_smul_comm, ← mul_assoc, hjj]) (by rw [mul_assoc, har])`. Establish `hμ0 : μ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hμ` using `[zero_smul]`.
+
+Apply `ha0` to reduce the goal to its premises. Rewrite using `[← hal, ← hab, mul_assoc, hμ, mul_zero]`. Use `⟨a, fun r => ?_⟩` and prove the remaining obligations. Use `set c := e i * r * e j`. Establish `hcl : e i * c = c` using `by simp only [c, ← mul_assoc, hii]`.
+
+Establish `hcr : c * e j = c` using `by simp only [c, mul_assoc, hjj]`. Take `⟨l, hl⟩` from `exists_eq_smul_idempotent_of_mem_corner k R hint hnil e he hne hmax i (c * b) (by rw [← mul_assoc, hcl]) (by rw [mul_assoc, hbe])`. Use `⟨μ⁻¹ * l, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_smul_eq_corner_of_maximal_orthogonalIdempotents (k R : Type) [Field k] [IsAlgClosed k] [Ring R]
     [Algebra k R] (hint : ∀ x : R, IsIntegral k x)
     (hnil : ∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0) {m : ℕ} (e : Fin m → R)
@@ -335,6 +458,19 @@ private theorem exists_smul_eq_corner_of_maximal_orthogonalIdempotents (k R : Ty
     _ = μ⁻¹ • (c * (b * a)) := by rw [hμ, mul_smul_comm, smul_smul, inv_mul_cancel₀ hμ0, one_smul]
     _ = (μ⁻¹ * l) • a := by rw [← mul_assoc, hl, smul_mul_assoc, hal, smul_smul]
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ d hint hnil hidem`. Establish `hfin : Module.Finite k R` using `by classical`. Set `P : ℕ → Prop` to `fun m => ∃ e : Fin m → R, OrthogonalIdempotents e ∧ ∀ i, e i ≠ 0`. Establish `hP0 : P 0` using `⟨Fin.elim0, ⟨fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0⟩`. Take `⟨e, he, hne⟩ : P (Nat.findGreatest P d)` from `Nat.findGreatest_spec (Nat.zero_le d) hP0`.
+
+Establish `hmax : ∀ e' : Fin (Nat.findGreatest P d + 1) → R, OrthogonalIdempotents e' → (∀ i, e' i ≠ 0) → False` using `fun e' he' hne' => Nat.findGreatest_is_greatest (Nat.lt_succ_self _) (hidem _ e' he' hne') ⟨e', he', hne'⟩`. Establish `hsum` using `sum_eq_one_of_maximal_orthogonalIdempotents k R hint hnil e he hne hmax`. Use `choose a ha using fun p : Fin (Nat.findGreatest P d) × Fin (Nat.findGreatest P d) => exists_smul_eq_corner_of_maximal_orthogonalIdempotents k R hint hnil e he hne hmax p.1 p.2`. Use `⟨⟨Finset.univ.image a, eq_top_iff.mpr fun r _ => ?_⟩⟩` and prove the remaining obligations. Establish `hr : r = (∑ i, e i) * r * (∑ j, e j)` using `by rw [hsum, one_mul, mul_one]`.
+
+Rewrite using `[hr]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `ha (i, j) r`. Rewrite using `[hc]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `: IsArtinianRing R` using `IsArtinianRing.of_finite k R`. Use `IsArtinianRing.isSemisimpleRing_iff_jacobson.mpr (eq_bot_iff.mpr fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`.
+
+Use `hnil x fun y => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := R)`. Establish `hx' : x ∈ Ideal.jacobson (⊥ : Ideal R)`. Rewrite `hx` using `[Ring.jacobson_eq_sInf_isMaximal]`. Conclude with `Submodule.mem_sInf.mpr fun J hJ => Submodule.mem_sInf.mp hx J hJ.2`.
+
+Establish `hyx : y * x ∈ Ideal.jacobson (⊥ : Ideal R)` using `Ideal.mul_mem_left _ y hx'`. Use `Ideal.pow_mem_pow hyx n` as an intermediate fact. Rewrite `this` using `[hn]`. Conclude with `⟨n, by simpa using this⟩`.
+-/
 theorem _root_.GlobalTheory.AlgRing.finite_and_isSemisimpleRing :
     ∀ (k R : Type) [Field k] [IsAlgClosed k] [Ring R] [Algebra k R] (d : ℕ),
       (∀ x : R, IsIntegral k x) → (∀ x : R, (∀ y : R, IsNilpotent (y * x)) → x = 0) →

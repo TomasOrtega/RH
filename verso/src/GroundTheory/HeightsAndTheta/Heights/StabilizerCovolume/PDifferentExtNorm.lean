@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights.NineStatements
 
 open NumberField
 
+/- English proof (translation)
+Set `_ : Algebra E L` to `ι.toAlgebra`. Establish `h1 : RingOfIntegers.mapRingHom ι = algebraMap (𝓞 E) (𝓞 L)` using `rfl`. Establish `h3 : Module.finrank (𝓞 E) (𝓞 L) = Module.finrank E L` using `(IsFractionRing.finrank_eq (𝓞 E) E (𝓞 L) L).symm`. Rewrite using `[extDifferent, h1, Ideal.absNorm_algebraMap, absNorm_differentIdeal E (𝓞 E), h3]`.
+-/
 theorem absNorm_extDifferent {E L : Type} [Field E] [NumberField E] [Field L] [NumberField L] (ι : E →+* L) :
     letI : Algebra E L := ι.toAlgebra
     Ideal.absNorm (extDifferent ι) = (discr E).natAbs ^ Module.finrank E L := by
@@ -15,6 +18,13 @@ theorem absNorm_extDifferent {E L : Type} [Field E] [NumberField E] [Field L] [N
     (IsFractionRing.finrank_eq (𝓞 E) E (𝓞 L) L).symm
   rw [extDifferent, h1, Ideal.absNorm_algebraMap, absNorm_differentIdeal E (𝓞 E), h3]
 
+/- English proof (translation)
+Introduce `E L _ _ _ _ ι`. Use `⟨extDifferent_ne_bot ι, ?_⟩` and prove the remaining obligations. Set `_ : Algebra E L` to `ι.toAlgebra`. Establish `hN` using `absNorm_extDifferent ι`. Establish `hd : (discr E) ≠ 0` using `discr_ne_zero E`.
+
+Establish `hE : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `hdeg : Module.finrank ℚ L = Module.finrank ℚ E * Module.finrank E L` using `(Module.finrank_mul_finrank ℚ E L).symm`. Rewrite using `[hN, logRd, Nat.cast_pow, Real.log_pow, hdeg, Nat.cast_mul]`. Establish `habs : ((discr E).natAbs : ℝ) = |(discr E : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+
+Rewrite using `[habs]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem DifferentExtNorm.full : DifferentExtNorm.Statement := by
   intro E L _ _ _ _ ι
   refine ⟨extDifferent_ne_bot ι, ?_⟩

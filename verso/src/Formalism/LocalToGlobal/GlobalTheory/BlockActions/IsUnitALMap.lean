@@ -25,6 +25,9 @@ def PL (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP)
     MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL :=
   C (∏ τ, (AL Tf c τ).det ^ shiftOf (lamT u D.R.m) τ) * rowSubK (AL Tf c) F
 
+/- English proof (translation)
+Unfold `AL`. Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression.
+-/
 theorem AL_map (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (j : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) :
     (AL Tf c τ).map j = (((((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) : Matrix _ _ D.host.E) *
       bZ u Tf.til.z0).map (embS D j τ) := by
@@ -32,6 +35,11 @@ theorem AL_map (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (j : D.what�
   rw [Matrix.map_map]
   rfl
 
+/- English proof (translation)
+Unfold `PL`. Rewrite using `[map_mul, map_C, map_rowSubK, rowSubK_eq_subP, subP_eq_blkRow, MvPolynomial.smul_eq_C_mul, map_prod]`. Use `congr 2`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, RingHom.map_det]`.
+
+Both sides reduce to the same expression.
+-/
 theorem map_PL (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (j : D.what₂.LL →+* ℂ)
     (F : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) D.what₂.LL) :
     map j (PL Tf c F) = (∏ τ, ((AL Tf c τ).map j).det ^ shiftOf (lamT u D.R.m) τ) •
@@ -43,6 +51,11 @@ theorem map_PL (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (j : D.what�
   rw [map_zpow₀, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Rewrite using `[AL_map, Matrix.map_mul, Matrix.det_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations. Conclude with `isUnit_det_atInf (embS D j) (((Tf.til.ga c).1)⁻¹ : GL (Fin (D.R.N D.R.m)) D.host.E) τ`. Use `(bZ_isUnitS Tf).map (embS D j τ)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`.
+
+Conclude with `this`.
+-/
 theorem isUnit_AL_map (Tf : FormsTiedSym D u Ch chOf) (c : (D.fm u).clsP) (j : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) :
     IsUnit ((AL Tf c τ).map j).det := by
   rw [AL_map, Matrix.map_mul, Matrix.det_mul]

@@ -17,10 +17,16 @@ namespace GlobalTheory.UpConjLift
 
 variable {D : D7}
 
+/- English proof (translation)
+Consider the cases of `S`. Simplify using `only [negSp, GlobalTheory.Grid.sgn, cond_true, neg_neg, Prod.swap_swap]`.
+-/
 theorem negSp_neg (S : HSp D) : negSp (GlobalTheory.Grid.neg S) = S := by
   cases S
   simp only [negSp, GlobalTheory.Grid.sgn, cond_true, neg_neg, Prod.swap_swap]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: F = F'` using `funext fun x => hF x x HEq.rfl`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem isAutFunSm_of_eq {θ : InfFam D} {S₂ S : HSp D} (e : S₂ = S) {F : GA D S₂ → ℂ} {F' : GA D S → ℂ}
     (hF : ∀ x y, x ≍ y → F x = F' y) (h : IsAutFunSm θ S₂ F) : IsAutFunSm θ S F' := by
   subst e
@@ -30,11 +36,21 @@ theorem isAutFunSm_of_eq {θ : InfFam D} {S₂ S : HSp D} (e : S₂ = S) {F : GA
 def j2 (S : HSp D) (y : GA D S) : GA D (negSp (GlobalTheory.Grid.neg S)) :=
   negGA (GlobalTheory.Grid.neg S) ((GlobalTheory.Grid.ofSgn true S).symm y)
 
+/- English proof (translation)
+Use `(Subtype.heq_iff_coe_eq fun z => ?_).2 rfl` and prove the remaining obligations. Use `show z ∈ HR (AF D.host.F) D.sp.cm.sig (-(-S.gram)) ↔ z ∈ HR (AF D.host.F) D.sp.cm.sig S.gram`. Rewrite using `[neg_neg]`.
+-/
 theorem doubleNegSpaceUnitaryElement_heq (S : HSp D) (y : GA D S) : j2 S y ≍ y := by
   refine (Subtype.heq_iff_coe_eq fun z => ?_).2 rfl
   show z ∈ HR (AF D.host.F) D.sp.cm.sig (-(-S.gram)) ↔ z ∈ HR (AF D.host.F) D.sp.cm.sig S.gram
   rw [neg_neg]
 
+/- English proof (translation)
+Establish `hw2` using `GlobalTheory.ConjWeil.weil_conjSource D ψ (GlobalTheory.Grid.neg S) T χS χT (ω.toSgn true) hw`. Establish `K` using `(GlobalTheory.Mem.Lift.isKerSys_thKer hθ hw2.std (GlobalTheory.Ker.isWeak_of_datum hw2) hw2.om_cont).swap`. Establish `hf : IsThetaFunO ψ (negSp (GlobalTheory.Grid.neg S)) T (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id Φ)` using `((GlobalTheory.CjNeg.theta_heis_neg D ψ hw.std (GlobalTheory.Grid.neg S) T).1 Φ).2.2 hΦ`. Take `⟨h1, h2⟩` from `K.lift hP hθ hq hφ ⟨_, hf⟩`. Establish `key : ∀ y g, GlobalTheory.Mem.Lift.swapKer (GlobalTheory.Mem.Lift.thKer ψ _ T (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjSource (ω.toSgn true))) ⟨_, hf⟩ g (j2 S y) = starRingEnd ℂ (thetaKO ω y g Φ)`.
+
+Introduce `y g`. Use `show starRingEnd ℂ (ω (y, g) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id Φ)) 0) = starRingEnd ℂ (ω (y, g) Φ 0)`. Rewrite using `[GlobalTheory.ConjWeil.cj_id_cj_id]`. Use `⟨fun h => ?_, isAutFunSm_of_eq (negSp_neg S) (fun x y hxy => ?_) h2⟩` and prove the remaining obligations. Use `h1 (j2 S h)` as an intermediate fact.
+
+Simplify using `only [key] at this`. Conclude with `this`. Establish `e : x = j2 S y` using `eq_of_heq (hxy.trans (doubleNegSpaceUnitaryElement_heq S y).symm)`. Substitute `e` using the available equality. Simplify using `only [key]`.
+-/
 theorem conj_lift (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ}
     {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} (ω : GlobalTheory.Grid.WRep S T)
     (hw : IsWeilDatumO ψ (GlobalTheory.Grid.neg S) T χS χT (ω.toSgn true)) {Φ : WO S T → ℂ}

@@ -10,6 +10,19 @@ universe w
 
 namespace GlobalTheory.CompanionTheory.CechSerre
 
+/- English proof (translation)
+Establish `hD : K.D x ∈ K.T (n + 1)` using `K.D_mem n x hx`. Distinguish the cases in `hbn : b ≤ n`. Take `⟨r, rfl⟩ : ∃ r, n = b + r` from `⟨n - b, by omega⟩`. Take `⟨y, hy⟩` from `CrystallineSemistableComparison.Cx.mem_B_succ.mp (hB (r + 1) (by omega))`. Establish `hy' : K.dv b r y = K.D x b (r + 1)` using `hy`.
+
+Use `⟨x - K.sgl b r (((-1 : ℤ) ^ b) • y), sub_mem hx ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q hpq`. Conclude with `K.sgl_ne _ (by omega)`. Introduce `p r' hp`. Simplify using `only [Pi.sub_apply]`.
+
+Rewrite using `[K.sgl_ne _ (Or.inl (by omega)), sub_zero]`. Introduce `p r' hp`. Simplify using `only [map_sub, CrystallineSemistableComparison.DCx.D_sgl, Pi.sub_apply, Pi.add_apply, Pi.smul_apply]`. Rewrite using `[K.sgl_ne _ (Or.inl (by omega)), zero_add]`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hp with hp | rfl` into its components or cases.
+
+Rewrite using `[h0 p r' hp, K.sgl_ne _ (Or.inl (by omega)), smul_zero, sub_zero]`. Distinguish the cases in `hr : r' = r + 1`. Substitute `hr` using the available equality. Rewrite using `[K.sgl_self, map_zsmul, hy', smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul, sub_self]`. Establish `h1 : K.D x p r' = 0` using `hD p r' (by omega)`.
+
+Rewrite using `[h1, K.sgl_ne _ (Or.inr hr), smul_zero, sub_zero]`. Use `⟨x, hx, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `p r hp`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hp with hp | rfl` into its components or cases. Conclude with `h0 p r hp`.
+
+Distinguish the cases in `hr : p + r = n + 1`. Take `rfl : r = 0` from `by omega`. Conclude with `CrystallineSemistableComparison.Cx.mem_B_zero.mp (hB 0 hr)`. Conclude with `hD p r hr`.
+-/
 theorem extend_step {R : Type} [CommRing R] (K : DCx.{w} R) (n b : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T n)
     (h0 : ∀ p r, p < b → K.D x p r = 0)
     (hB : ∀ q, b + q = n + 1 → K.D x b q ∈ (K.col b).B q) :
@@ -45,6 +58,29 @@ theorem extend_step {R : Type} [CommRing R] (K : DCx.{w} R) (n b : ℕ) (x : ∀
         exact CrystallineSemistableComparison.Cx.mem_B_zero.mp (hB 0 hr)
       · exact hD p r hr
 
+/- English proof (translation)
+Introduce `t`. Take `⟨c, hc, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (colH K a) j).1 t`. Take `⟨y, hy, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (K.col j) a).1 c`. Establish `hcls : ∀ (C : CrystallineSemistableComparison.Cx R) (m : ℕ) (u v : C.X m) (hu : C.d m u = 0) (hv : C.d m v = 0), u = v → C.cls u hu = C.cls v hv`. Introduce and unpack `C m u v hu hv rfl`.
+
+Both sides reduce to the same expression. Establish `hy' : K.dv j a y = 0` using `hy`. Establish `hdh : K.dh j a y ∈ (K.col (j + 1)).B a`. Establish `hb : (K.col (j + 1)).d a ((colMap K j).f a y) = 0` using `by show K.dv (j + 1) a (K.dh j a y) = 0`. Rewrite using `[← K.hv j a y, hy', map_zero]`.
+
+Establish `h1 : (colMap K j).mapH a ((K.col j).cls y hy) = 0` using `hc`. Rewrite `h1` using `[CrystallineSemistableComparison.P.mapH_cls (colMap K j) a y hy hb]`. Conclude with `((CrystallineSemistableComparison.P.cls_surj (K.col (j + 1)) a).2.1 _ hb).mp h1`. Establish `hmemT : ∀ (m : ℕ) (u : ∀ p q, K.X p q), u ∈ K.T m ↔ ∀ p q, p + q ≠ m → u p q = 0` using `fun _ _ => Iff.rfl`. Establish `hx0 : K.sgl j a y ∈ K.T (a + j)` using `(hmemT _ _).2 fun p q hpq => K.sgl_ne y (by omega)`.
+
+Establish `hDx0 : ∀ p r, p < j + 1 → K.D (K.sgl j a y) p r = 0`. Introduce `p r hp`. Rewrite using `[CrystallineSemistableComparison.DCx.D_sgl, hy', map_zero, smul_zero, add_zero, K.sgl_ne _ (Or.inl (by omega))]`. Establish `hstep : ∀ k : ℕ, ∃ x ∈ K.T (a + j), (∀ p r, p < j + 1 → x p r = K.sgl j a y p r) ∧ ∀ p r, p < j + 2 + k → K.D x p r = 0`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero`. Take `⟨x', hx', hag, hD'⟩` from `extend_step K (a + j) (j + 1) (K.sgl j a y) hx0 hDx0 (by`. Introduce `q hq`. Take `rfl : q = a` from `by omega`.
+
+Rewrite using `[CrystallineSemistableComparison.DCx.D_sgl, hy', map_zero, smul_zero, add_zero, K.sgl_self]`. Conclude with `hdh)`. Conclude with `⟨x', hx', hag, fun p r hp => hD' p r (by omega)⟩`. Consider the case `succ k ih`. Take `⟨x, hx, hag, hD⟩` from `ih`.
+
+Take `⟨x', hx', hag', hD'⟩` from `extend_step K (a + j) (j + 2 + k) x hx hD (by`. Introduce `q hq`. Establish `hqa : q < a` using `by omega`. Establish `hdv : (K.col (j + 2 + k)).d q (K.D x (j + 2 + k) q) = 0` using `dv_lead K (K.D x) (K.DD x) (j + 2 + k) q hD`. Use `hac (j + 2 + k) q hqa` as an intermediate fact.
+
+Conclude with `((CrystallineSemistableComparison.P.cls_surj (K.col (j + 2 + k)) q).2.1 _ hdv).mp (Subsingleton.elim _ _))`. Conclude with `⟨x', hx', fun p r hp => (hag' p r (by omega)).trans (hag p r hp), fun p r hp => hD' p r (by omega)⟩`. Take `⟨x, hx, hag, hD⟩` from `hstep a`. Establish `hD0 : K.D x = 0`. Use function extensionality and compare the values at `p r`.
+
+Distinguish the cases in `hp : p < j + 2 + a`. Conclude with `hD p r hp`. Conclude with `(hmemT _ _).1 (K.D_mem _ x hx) p r (by omega)`. Establish `hZ : (⟨x, hx⟩ : K.T (a + j)) ∈ K.tot.Z (a + j)` using `LinearMap.mem_ker.2 (Subtype.ext hD0)`. Establish `hxy : x j a = y` using `(hag j a (by omega)).trans (K.sgl_self j a y)`.
+
+Establish `hzf : (⟨⟨x, hx⟩, hZ⟩ : K.tot.Z (a + j)) ∈ Zf K (a + j) j`. Introduce `p q hp`. Conclude with `(hag p q (by omega)).trans (K.sgl_ne y (Or.inl (by omega)))`. Use `⟨⟨⟨⟨x, hx⟩, hZ⟩, hzf⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[leadE_eq]`.
+
+Apply `hcls` to reduce the goal to its premises. Rewrite using `[leadC_eq K j a _ (by show (K.col j).d a (x j a) = 0; rw [hxy]; exact hy)]`. Conclude with `hcls _ _ _ _ _ _ hxy`.
+-/
 theorem leadE_surjective {R : Type} [CommRing R] (K : DCx.{w} R) (a j : ℕ)
     (hac : ∀ p q, q < a → Subsingleton ((K.col p).H q)) :
     Function.Surjective (leadE K j a (n := a + j)) := by

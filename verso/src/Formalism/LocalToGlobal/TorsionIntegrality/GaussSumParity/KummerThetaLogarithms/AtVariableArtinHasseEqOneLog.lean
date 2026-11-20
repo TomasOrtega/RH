@@ -20,29 +20,47 @@ section Lin
 
 variable {K : Type} [NormedField K] {τ : Type}
 
+/- English proof (translation)
+The claim follows from `Function.iterate_fixed (map_one σ) k`.
+-/
 theorem iter_one (σ : K →+* K) (k : ℕ) : σ^[k] 1 = 1 :=
   Function.iterate_fixed (map_one σ) k
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem univ_two : (Finset.univ : Finset (ZMod 2)) = {0, 1} := by decide
 
+/- English proof (translation)
+Unfold `linEL`. Rewrite using `[univ_two, Finset.sum_pair (by decide)]`. Establish `h1 : (1 : ZMod 2).val = 1` using `rfl`. Simplify using `[h1]`.
+-/
 theorem linEL_two (σ : K →+* K) (L : ZMod 2 → MvPowerSeries τ K) : linEL σ 1 L = L 0 := by
   unfold linEL
   rw [univ_two, Finset.sum_pair (by decide)]
   have h1 : (1 : ZMod 2).val = 1 := rfl
   simp [h1]
 
+/- English proof (translation)
+Unfold `linOL`. Rewrite using `[univ_two, Finset.sum_pair (by decide)]`. Establish `h1 : (1 : ZMod 2).val = 1` using `rfl`. Simplify using `[h1]`.
+-/
 theorem linOL_two (σ : K →+* K) (L : ZMod 2 → MvPowerSeries τ K) : linOL σ 1 L = L 1 := by
   unfold linOL
   rw [univ_two, Finset.sum_pair (by decide)]
   have h1 : (1 : ZMod 2).val = 1 := rfl
   simp [h1]
 
+/- English proof (translation)
+Use `⟨by simp, fun r r' => ?_⟩` and prove the remaining obligations. Rewrite using `[univ_two, Finset.sum_pair (by decide)]`. Establish `h1 : (1 : ZMod 2).val = 1` using `rfl`. Simplify using `[h1]`.
+-/
 theorem trDual_two (σ : K →+* K) : TrDual 2 σ (fun _ : Unit => (1 : K)) (fun _ => 1) := by
   refine ⟨by simp, fun r r' => ?_⟩
   rw [univ_two, Finset.sum_pair (by decide)]
   have h1 : (1 : ZMod 2).val = 1 := rfl
   simp [h1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨by simp, by simp⟩, fun _ => ⟨iter_one σ 2, iter_one σ 2⟩⟩`.
+-/
 theorem owOK_two (σ : K →+* K) : OwOK 2 σ (fun _ : Unit => (1 : K)) (fun _ => 1) :=
   ⟨fun _ => ⟨by simp, by simp⟩, fun _ => ⟨iter_one σ 2, iter_one σ 2⟩⟩
 
@@ -50,6 +68,15 @@ end Lin
 
 section Log
 
+/- English proof (translation)
+Use extensionality with `n`. Unfold `at1`. Rewrite using `[PowerSeries.coeff_subst_single]`. Express the relevant statement in the definitionally equal form `_ = oneLog (K := K) l x n`. Unfold `oneLog lgF`.
+
+Rewrite using `[PowerSeries.coeff_mk]`. Use `split_ifs with h`. Establish `hd : n.degree = n x` using `by conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[hd]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Establish `h3 : (n = Finsupp.single x ((l ^ 2) ^ e)) ↔ n x = (l ^ 2) ^ e` using `⟨fun h' => by rw [h']; simp, fun h' => by rw [h, h']⟩`. Simplify using `only [h3]`. Use `symm`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[h']`. Simplify using the standard rewrite rules.
+-/
 theorem at_variable_artin_hasse_eq_one_log {K τ : Type} [Field K] [DecidableEq τ] (l : ℕ) (x : τ) :
     at1 x (lgF K l) = oneLog l x := by
   ext n
@@ -81,6 +108,21 @@ end SingleLetterLog
 
 open SingleLetterLog Pair
 
+/- English proof (translation)
+Introduce `hM K0 _ _ _ l σ hU F hF be0 hF1 hF2 ζ hζ ph hph`. Establish `hp : l.Prime` using `hU.1`. Establish `hl : 2 ≤ l` using `hp.two_le`. Establish `hlK : (l : K0) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨hrefl, hsymm, htrans, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.simeqRules K0 Unit`.
+
+Establish `hST : ShiftType l σ (fun _ : ZMod 2 => (lgF K0 l : MvPowerSeries Unit K0))` using `fun _ => FormalExponential.ip_lgF l σ hl hlK`. Establish `h1` using `hM K0 l 2 σ hU le_rfl (by decide) F hF be0 hF1 hF2 Unit _ _ (owOK_two σ) (trDual_two σ) ζ hζ Unit _ hST`. Establish `hX : constantCoeff (PowerSeries.X : MvPowerSeries Unit K0) = 0` using `PowerSeries.constantCoeff_X`. Establish `hlog : PowerSeries.subst (PowerSeries.X : MvPowerSeries Unit K0) (lgF K0 l) = lgF K0 l` using `PowerSeries.X_subst _`. Establish `h2 : subst (fun _ : ZMod 2 => (lgF K0 l : MvPowerSeries Unit K0)) (beTil (d` using `2) l σ be0 (fun _ : Unit => (1 : K0)) (fun _ => 1)) =`.
+
+Substitute `(fun _ : Fin 2 => (PowerSeries.X : PowerSeries K0)) be0 := by` using the available equality. Rewrite using `[subst_tilde K0 l 2 σ hl be0 Unit _ _ Unit _ (fun _ => cc_lgF hl)]`. Rewrite using `[Finset.univ_unique, Finset.sum_singleton, linEL_two, linOL_two]`. Establish `h3` using `addC_log exponential_specification hl hX hX be0`. Rewrite `h3` using `[hlog]`.
+
+Rewrite using `[h3]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite `h1` using `[h2]`.
+
+Establish `h4` using `B4.simeq_sub_zero (htrans _ _ _ hph (hsymm _ _ h1))`. Establish `h5` using `Formalism.InvariantFactorPaths.G7.Top.lamModule K0 Unit l σ hp hU.2.2.1 hU.2.2.2.2 _ 2 (by`. Introduce `h`. Use `Nat.le_of_dvd (by norm_num) h` as an intermediate fact. Use `hU.2.1` as an intermediate fact.
+
+Use the proof step `omega) h4`. Unfold `Simeq at h5 ⊢`. Establish `h2K : (2 : K0) ≠ 0` using `two_ne_zero`. Establish `e : ∀ B : MvPowerSeries Unit K0, (ph : MvPowerSeries Unit K0) - MvPowerSeries.C ((2 : K0)⁻¹) * B = MvPowerSeries.C (((2 : ℕ) : K0)⁻¹) * (MvPowerSeries.C (2 : K0) * ph - B) - 0`. Introduce `B`.
+
+Rewrite using `[sub_zero, mul_sub, ← mul_assoc, ← map_mul]`. Simplify using `[h2K]`. Rewrite using `[e]`. Conclude with `h5`.
+-/
 theorem OneLetterHalf_of : MeanSimeqL → OneLetterHalf := by
   intro hM K0 _ _ _ l σ hU F hF be0 hF1 hF2 ζ hζ ph hph
   have hp : l.Prime := hU.1
@@ -124,6 +166,31 @@ theorem OneLetterHalf_of : MeanSimeqL → OneLetterHalf := by
   rw [e]
   exact h5
 
+/- English proof (translation)
+Introduce `hH K0 K _ _ _ _ _ _ l N0 N1 σ j hU hj F hF be0 hF1 hF2 ζ hζ ph hph U0 Φ hU0 hΦ0 hΦ`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `h1` using `hH K0 l σ hU F hF be0 hF1 hF2 ζ hζ ph hph`. Generalize the expression as in `beMean (d := 2) l σ be0 (fun _ : Unit => (1 : K0)) (fun _ => 1) ζ = be at h1 ⊢`. Establish `h2` using `(Formalism.InvariantFactorPaths.G7.Top.mapSimeq K0 K Unit j hj).1 _ _ h1`.
+
+Establish `hsL0 : HasSubst (fun _ : ZMod 2 => (lgF K0 l : MvPowerSeries Unit K0))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => cc_lgF hl)`. Establish `hsL : HasSubst (fun _ : ZMod 2 => (lgF K l : MvPowerSeries Unit K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => cc_lgF hl)`. Establish `e2 : MvPowerSeries.map j (MvPowerSeries.C ((2 : K0)⁻¹) *`. Substitute `(fun _ : ZMod 2 => (lgF K0 l : MvPowerSeries Unit K0)) be) =` using the available equality. Use the proof step `MvPowerSeries.C ((2 : K)⁻¹) *`.
+
+Substitute `(fun _ : ZMod 2 => (lgF K l : MvPowerSeries Unit K)) (MvPowerSeries.map j be) := by` using the available equality. Rewrite using `[map_mul, MvPowerSeries.map_C, MvPowerSeries.map_subst hsL0, map_inv₀, map_ofNat]`. Establish `e3 : MvPowerSeries.map j (lgF K0 l : MvPowerSeries Unit K0) = lgF K l` using `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF j l`. Simplify using `only [e3]`. Rewrite `h2` using `[e2]`.
+
+Take `⟨-, hsymm, htrans, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.simeqRules K (Fin N0 × Fin N1)`. Establish `hsub` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K Unit).2.2.2.2 (Fin N0 × Fin N1)`. Establish `h3 : ∀ x : Fin N0 × Fin N1, Simeq (at1 x (PowerSeries.map j ph)) (MvPowerSeries.C ((2 : K)⁻¹) *`. Substitute `(fun _ : ZMod 2 => at1 x (lgF K l)) (MvPowerSeries.map j be)) := by` using the available equality. Introduce `x`.
+
+Establish `hsx : HasSubst (fun _ : Unit => (MvPowerSeries.X x : MvPowerSeries (Fin N0 × Fin N1) K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)`. Establish `h4` using `hsub _ _ (fun _ : Unit => (MvPowerSeries.X x : MvPowerSeries (Fin N0 × Fin N1) K)) (fun _ => by simp) (fun _ => Formalism.InvariantFactorPaths.G7.TwoS.integral_X x) h2`. Rewrite `h4` using `[MvPowerSeries.subst_mul hsx, MvPowerSeries.subst_C, MvPowerSeries.subst_comp_subst_apply hsL hsx]`. Conclude with `h4`. Establish `h5` using `hsymm _ _ (htrans _ _ _ hΦ (B4.simeq_sum Finset.univ _ _ fun x _ => h3 x))`.
+
+Take `⟨h50, h5I⟩` from `h5`. Use `set Bt : MvPowerSeries (Fin N0 × Fin N1) K := ∑ x : Fin N0 × Fin N1, MvPowerSeries.C ((2 : K)⁻¹) *`. Substitute `(fun _ : ZMod 2 => at1 x (lgF K l)) (MvPowerSeries.map j be) with hBt` using the available equality. Establish `hBt0 : constantCoeff Bt = 0`. Rewrite `h50` using `[map_sub, hΦ0, sub_zero]`.
+
+Conclude with `h50`. Use `⟨mvExp (Bt - Φ) * U0, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_mul' h5I hU0, ?_⟩` and prove the remaining obligations. Introduce `g hg0 hg`. Establish `hsg : HasSubst g` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hg0`. Establish `hlg : ∀ y, PowerSeries.subst (g y) (lgF K l) = MvPowerSeries.X y`.
+
+Introduce `y`. Rewrite using `[← subst_single_var hsg, at_variable_artin_hasse_eq_one_log]`. Conclude with `hg y`. Establish `hgE : (fun x => at1 x (expF K l)) = g`. Use function extensionality and compare the values at `y`.
+
+Establish `h6` using `exp_log exponential_specification hl (hg0 y)`. Rewrite `h6` using `[hlg y]`. Conclude with `h6`. Rewrite using `[hgE]`. Establish `e5 : mvExp (-Φ) = mvExp (Bt - Φ) * mvExp (-Bt)`.
+
+Rewrite using `[← Formalism.InvariantFactorPaths.G7.mvExp_add h50 (by rw [map_neg, hBt0, neg_zero])]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e6 : subst g (-Bt) = ((-1 : K) / 2) • ∑ x : Fin N0 × Fin N1, subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else 1) • (MvPowerSeries.X x : MvPowerSeries (Fin N0 × Fin N1) K)) (MvPowerSeries.map j be)`. Establish `hsa : ∀ x : Fin N0 × Fin N1, HasSubst (fun _ : ZMod 2 => at1 x (lgF K l))` using `fun x => MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => constantCoeff_inVar_eq_zero x (cc_lgF hl))`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hsg, map_neg, MvPowerSeries.coe_substAlgHom hsg, hBt, subst_sum hsg, MvPowerSeries.smul_eq_C_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_mul hsg, MvPowerSeries.subst_C, MvPowerSeries.subst_comp_subst_apply (hsa x) hsg]`. Simplify using `only [subst_single_var hsg, hlg, ite_self, one_smul]`. Rewrite using `[← neg_mul, ← map_neg]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Unfold `thetaOne`. Rewrite using `[e5, mul_right_comm, MvPowerSeries.subst_mul hsg, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hsg (by rw [map_neg, hBt0, neg_zero]), e6]`.
+-/
 theorem single_letter_of_half : OneLetterHalf → SingleLetterThetaFactorization := by
   intro hH K0 K _ _ _ _ _ _ l N0 N1 σ j hU hj F hF be0 hF1 hF2 ζ hζ ph hph U0 Φ hU0 hΦ0 hΦ
   have hl : 2 ≤ l := hU.1.two_le

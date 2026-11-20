@@ -6,6 +6,11 @@ open Formalism.FourierDecayAlt.S6
 open NumberField NumberField.IsCMField Module
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Unfold `twLat`. Rewrite using `[Submodule.mem_inf, Submodule.mem_comap]`. Establish `: ((LinearMap.id : E →ₗ[ℤ] E) - ((-1 : ℤ) ^ s) • conjZ E) t = t - (-1) ^ s * complexConj E t`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, zsmul_eq_mul]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem mem_twLat (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E) (s : ℕ) (t : E) :
     t ∈ twLat E A B s ↔ t ∈ A ∧ t - (-1) ^ s * complexConj E t ∈ B := by
   unfold twLat
@@ -17,12 +22,18 @@ theorem mem_twLat (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E
     rfl
   rw [this]; rfl
 
+/- English proof (translation)
+The claim follows from `complexConj_apply_eq_self E (a : maximalRealSubfield E)`.
+-/
 theorem conj_real (E : Type) [Field E] [NumberField E] [IsCMField E]
     (a : 𝓞 (maximalRealSubfield E)) :
     complexConj E (algebraMap (𝓞 (maximalRealSubfield E)) E a)
       = algebraMap (𝓞 (maximalRealSubfield E)) E a :=
   complexConj_apply_eq_self E (a : maximalRealSubfield E)
 
+/- English proof (translation)
+Use `(A : Submodule (𝓞 E) E).smul_mem (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) a) ht` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`.
+-/
 theorem smul_mem_FI (E : Type) [Field E] [NumberField E] [IsCMField E] (A : FI E)
     (a : 𝓞 (maximalRealSubfield E)) (t : E) (ht : t ∈ A) :
     algebraMap (𝓞 (maximalRealSubfield E)) E a * t ∈ A := by
@@ -38,6 +49,13 @@ open Formalism.FourierDecayAlt.S6 Formalism.FourierDecayAlt.P.S6x1
 open NumberField NumberField.IsCMField Module
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `E _ _ _ hU`. Establish `h` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 (maximalRealSubfield E)) (𝓞 E)`. Unfold `Unram at hU`. Establish `h0 : (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≠ ⊥`. Rewrite using `[← hU]`.
+
+Conclude with `differentIdeal_ne_bot`. Establish `h1 : differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) = ⊤`. Rewrite `h` using `[hU]`. Establish `h2 : differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) * (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) = 1 * (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))` using `by rw [one_mul]; exact h.symm`. Simplify using `using mul_right_cancel₀ h0 h2`.
+
+Use `⟨h1, fun g => ?_⟩` and prove the remaining obligations. Unfold `UnramAbove`. Rewrite using `[h1, Ideal.isCoprime_iff_sup_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem unramRelative : Formalism.FourierDecayAlt.S6.UnramRelative := by
   intro E _ _ _ hU
   have h := differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 (maximalRealSubfield E)) (𝓞 E)
@@ -57,6 +75,13 @@ theorem unramRelative : Formalism.FourierDecayAlt.S6.UnramRelative := by
   unfold UnramAbove
   rw [h1, Ideal.isCoprime_iff_sup_eq]; simp
 
+/- English proof (translation)
+Introduce `E _ _ _`. Establish `h2 : finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `h3` using `finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Establish `h4 : 0 < finrank ℚ (maximalRealSubfield E)` using `finrank_pos`. Rewrite `h3` using `[h2]`.
+
+Use `⟨by unfold deg; omega, ?_, h4⟩` and prove the remaining obligations. Establish `h5` using `IsTotallyComplex.finrank E`. Establish `h6` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces E`. Establish `h7 : InfinitePlace.nrRealPlaces E = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Unfold `deg`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem degreeFacts_statement : Formalism.FourierDecayAlt.S6.DegreeFacts := by
   intro E _ _ _
   have h2 : finrank (maximalRealSubfield E) E = 2 :=
@@ -71,6 +96,17 @@ theorem degreeFacts_statement : Formalism.FourierDecayAlt.S6.DegreeFacts := by
   unfold deg
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ g k ν P hP hg`. Establish `hg0 : (g : E) ≠ 0`. Introduce `h`. Apply `hg` to reduce the goal to its premises. Establish `: g = 0` using `by exact_mod_cast h`.
+
+Simplify using `[this]`. Establish `key : ∀ (k k' : ℤ) (t : E), t ∈ locAt E P (zsub E (idl E g k ν)) → t ∈ locAt E P (zsub E (idl E g k' ν))`. Introduce `k k' t`. Introduce and unpack `⟨a, ha, h⟩`. Take `⟨n, hn⟩ : ∃ n : ℕ, k' ≤ k + n` from `⟨(k' - k).toNat, by omega⟩`.
+
+Take `⟨m, hm⟩ : ∃ m : ℕ, k + n = k' + m` from `⟨(k + n - k').toNat, by omega⟩`. Use `⟨(g : 𝓞 (maximalRealSubfield E)) ^ n * a, fun hh => (hP.mem_or_mem hh).elim (fun h' => hg (hP.mem_of_pow_mem _ h')) ha, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ idl E g k ν at h`. Use `show _ ∈ idl E g k' ν`. Unfold `idl at h ⊢`.
+
+Rewrite `h`, the goal using `[mul_comm, FractionalIdeal.mem_singleton_mul]`. Take `⟨z, hz, hh⟩` from `h`. Use `⟨(g : E) ^ m * z, ?_, ?_⟩` and prove the remaining obligations. Use `(dd E ^ ν : FI E).coeToSubmodule.smul_mem ((g : 𝓞 E) ^ m) hz` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`.
+
+Simplify using `using this`. Rewrite using `[map_mul, mul_assoc, hh, map_pow, map_natCast, ← mul_assoc, ← mul_assoc, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hg0, ← zpow_add₀ hg0, add_comm (n : ℤ) k, hm]`. Use extensionality with `t`. Conclude with `⟨key _ _ t, key _ _ t⟩`.
+-/
 theorem localAwayFromLevel : Formalism.FourierDecayAlt.S6.LocOrdinary := by
   intro E _ _ _ g k ν P hP hg
   have hg0 : (g : E) ≠ 0 := by
@@ -100,6 +136,17 @@ theorem localAwayFromLevel : Formalism.FourierDecayAlt.S6.LocOrdinary := by
   ext t
   exact ⟨key _ _ t, key _ _ t⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ A B s P hP t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, h⟩`. Rewrite `h` using `[mem_twLat]`. Use `⟨⟨a, ha, h.1⟩, ⟨a, ha, ?_⟩⟩` and prove the remaining obligations.
+
+Use `h.2` as an intermediate fact. Rewrite `this` using `[map_mul, conj_real]`. Use `show _ ∈ B`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨⟨a, ha, h1⟩, ⟨b, hb, h2⟩⟩`. Use `⟨a * b, fun h => (hP.mem_or_mem h).elim ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_twLat]`. Prove the components needed by the constructor for the conclusion. Use `smul_mem_FI E A b _ h1` as an intermediate fact.
+
+Rewrite using `[map_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `smul_mem_FI E B a _ h2` as an intermediate fact. Rewrite using `[map_mul, map_mul, map_mul, conj_real, conj_real]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localTwistedLattice : Formalism.FourierDecayAlt.S6.LocTw := by
   intro E _ _ _ A B s P hP t
   constructor
@@ -119,6 +166,21 @@ theorem localTwistedLattice : Formalism.FourierDecayAlt.S6.LocTw := by
     · have := smul_mem_FI E B a _ h2
       rw [map_mul, map_mul, map_mul, conj_real, conj_real]; convert this using 1; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ g k ν hg`. Establish `hdeg` using `degreeFacts_statement E`. Establish `hgR : (0 : ℝ) < g` using `by exact_mod_cast hg`. Establish `hD0 : (0 : ℝ) ≤ ((|discr E| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg _`. Establish `hrd : 0 < rd E`.
+
+Unfold `rd`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Establish `: (0 : ℤ) < |discr E|` using `abs_pos.2 (discr_ne_zero E)`. Conclude with `this` after adjusting the coercions. Establish `hD : ((|discr E| : ℤ) : ℝ) = rd E ^ (2 * deg E)`.
+
+Unfold `rd`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hD0, hdeg.1]`. Establish `: ((2 * deg E : ℕ) : ℝ) ≠ 0`. Use `hdeg.2.2` as an intermediate fact. Check the signs of the components of the expression.
+
+Rewrite using `[inv_mul_cancel₀ this, Real.rpow_one]`. Establish `h1 : FractionalIdeal.absNorm (dd E) = ((|discr E| : ℤ) : ℚ)`. Unfold `dd`. Rewrite using `[FractionalIdeal.coeIdeal_absNorm, absNorm_differentIdeal E, Nat.cast_natAbs]`. Establish `h2 : FractionalIdeal.absNorm (FractionalIdeal.spanSingleton (𝓞 E)⁰ ((g : E) ^ k)) = ((g : ℚ) ^ (2 * deg E)) ^ k`.
+
+Rewrite using `[FractionalIdeal.absNorm_span_singleton, show (g : E) ^ k = algebraMap ℚ E ((g : ℚ) ^ k) by rw [map_zpow₀, map_natCast], Algebra.norm_algebraMap, hdeg.1, abs_of_nonneg (by positivity)]`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`. Unfold `idl`. Rewrite using `[map_mul, map_zpow₀, h1, h2]`. Use `push_cast`.
+
+Establish `hD' : (|(discr E : ℝ)|) = rd E ^ (2 * deg E)` using `by rw [← hD]; push_cast; rfl`. Rewrite using `[hD']`. Establish `: (rd E ^ (2 * deg E)) ^ ν * ((g : ℝ) ^ (2 * deg E)) ^ k = (((g : ℝ) ^ k * rd E ^ ν) ^ deg E) ^ 2`. Rewrite using `[← zpow_natCast (rd E), ← zpow_natCast (g : ℝ), ← zpow_mul, ← zpow_mul, ← pow_mul, mul_pow, ← zpow_natCast (((g : ℝ) ^ k)), ← zpow_natCast ((rd E ^ ν)), ← zpow_mul, ← zpow_mul, mul_comm]`. Apply the tactic sequence `congr 2 <;> (push_cast; ring)`.
+
+Rewrite using `[this, Real.sqrt_sq (by positivity)]`.
+-/
 theorem scaledIdealNorm : Formalism.FourierDecayAlt.S6.NormIdl := by
   intro E _ _ _ g k ν hg
   have hdeg := degreeFacts_statement E
@@ -157,6 +219,9 @@ theorem scaledIdealNorm : Formalism.FourierDecayAlt.S6.NormIdl := by
     congr 2 <;> (push_cast; ring)
   rw [this, Real.sqrt_sq (by positivity)]
 
+/- English proof (translation)
+Introduce `E _ _ _ h`. Use `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow (maximalRealSubfield E) (𝓞 (maximalRealSubfield E)) E (𝓞 E)` as an intermediate fact. Rewrite `this` using `[(unramRelative E h).1, Algebra.IsQuadraticExtension.finrank_eq_two]`. Simplify using `using this`.
+-/
 theorem discrSquare : Formalism.FourierDecayAlt.S6.DiscrSquare := by
   intro E _ _ _ h
   have := natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow (maximalRealSubfield E)
@@ -164,6 +229,13 @@ theorem discrSquare : Formalism.FourierDecayAlt.S6.DiscrSquare := by
   rw [(unramRelative E h).1, Algebra.IsQuadraticExtension.finrank_eq_two] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `E _ _ _ A B s hBA hB`. Use `⟨fun t ht => ?_, fun t ht => ((mem_twLat E A B s t).1 ht).1⟩` and prove the remaining obligations. Rewrite using `[mem_twLat]`. Use `⟨hBA ht, ?_⟩` and prove the remaining obligations. Establish `h1 : complexConj E t ∈ B` using `hB t ht`.
+
+Establish `h2 : (-1 : E) ^ s * complexConj E t ∈ B`. Apply the tactic sequence `rcases neg_one_pow_eq_or E s with h | h <;> rw [h]`. Simplify using `using h1`. Rewrite using `[neg_one_mul]`. Conclude with `B.coeToSubmodule.neg_mem h1`.
+
+Conclude with `B.coeToSubmodule.sub_mem ht h2`.
+-/
 theorem twistedLatticeBetween : Formalism.FourierDecayAlt.S6.Between := by
   intro E _ _ _ A B s hBA hB
   refine ⟨fun t ht => ?_, fun t ht => ((mem_twLat E A B s t).1 ht).1⟩
@@ -176,6 +248,11 @@ theorem twistedLatticeBetween : Formalism.FourierDecayAlt.S6.Between := by
     · rw [neg_one_mul]; exact B.coeToSubmodule.neg_mem h1
   exact B.coeToSubmodule.sub_mem ht h2
 
+/- English proof (translation)
+Introduce `E _ _ _ g r i s`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `dualIdl liftIdl nuBlock`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `dualIdl nuBlock`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `nuBlock`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dualIdealEqLiftIdeal : Formalism.FourierDecayAlt.S6.IdealsMatch := by
   intro E _ _ _ g r i s
   refine ⟨?_, ?_, ?_⟩
@@ -183,6 +260,9 @@ theorem dualIdealEqLiftIdeal : Formalism.FourierDecayAlt.S6.IdealsMatch := by
   · unfold dualIdl nuBlock; congr 1; ring
   · unfold nuBlock; ring
 
+/- English proof (translation)
+Introduce `h E _ _ _ hU g₁ g₂ h₁ h₂ ν s _`. Conclude with `h E hU _ ν s (Nat.mul_pos h₁.1.pos h₂.1.pos)`.
+-/
 theorem periodLatticeFactsSplitOfGeneral : Formalism.FourierDecayAlt.S6.TextFromGeneral := by
   intro h E _ _ _ hU g₁ g₂ h₁ h₂ ν s _
   exact h E hU _ ν s (Nat.mul_pos h₁.1.pos h₂.1.pos)

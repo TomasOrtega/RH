@@ -14,6 +14,11 @@ open UpperTheory.V.HV (Coef)
 open scoped TensorProduct
 open UpperTheory.GalN.V
 open private unr_of ss_comp from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IrrOfComp
+/- English proof (translation)
+Introduce `H l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K _ J hJ`. Establish `hpr : Function.Surjective V.pr` using `fun g => by`. Take `⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1` from `QuotientGroup.mk_surjective g.1`. Take `⟨σ, rfl⟩` from `(V.hη τ).1 (by rw [hτ]; exact g.2)`. Conclude with `⟨σ, Subtype.ext hτ⟩`.
+
+Use `fun x h hx ha => ?_` and prove the remaining obligations. Take `⟨lam, ρ, hc, hs, hP, hr⟩` from `_root_.hecke_ideal_end H hn hJ x h hx ha`. Establish `hc' : Continuous (ρ.comp V.pr)` using `hc.comp (V.pr_cont W.continuous_resP)`. Take `⟨σ, hσ, hlg, -⟩` from `hP.aut`. Conclude with `⟨_, hc', ss_comp hpr hs, hr, _root_.UpperTheory.V.Z.Win.Gu.endShape'_alt H L Ω (unr_of s) l s.odd ι n hn σ hσ _ hc' (ss_comp hpr hs) hlg⟩`.
+-/
 theorem UpperTheory.V.Hi.arithmeticPointDecomposition_of_isJ :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ), ∀ (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) (R : _root_.UpperTheory.V.Hi.CaseU.UnitaryHeckeData Q ι Λ) (K : (hset Q R.τ₀).Lev), V.S' = s.S → ∀ J : Ideal B.B, R.IsJ B K J → ArithmeticPointDecomposition B ι J := by

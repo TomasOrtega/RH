@@ -12,6 +12,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL`. Establish `hU : ThetaUnifAV` using `thetaUnifAV_of_laws (by cases hL; assumption) (by cases hL; assumption) (by cases hL; assumption) (by cases hL; assumption) (by cases hL; assumption)`. Conclude with `GlobalTheory.T.familyUniformisation_of_abelianVariety_uniformisation hU hL`.
+-/
 theorem familyUnif_of_laws : Out.Laws → N1c := by
   intro hL
   have hU : ThetaUnifAV :=

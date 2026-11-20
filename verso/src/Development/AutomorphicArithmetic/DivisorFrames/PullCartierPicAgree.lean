@@ -8,9 +8,17 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 private theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Establish `h1 : p (gpt W (closedPoint W.functionField)) = gpt X (spMap φ (closedPoint W.functionField))` using `congrArg (fun q : Sp W.functionField ⟶ X => q (closedPoint W.functionField)) h`. Establish `h2 : spMap φ (closedPoint W.functionField) = closedPoint X.functionField` using `Subsingleton.elim (α := PrimeSpectrum X.functionField) _ _`. Establish `h3 : gpt X (closedPoint X.functionField) = genericPoint X` using `Scheme.fromSpecStalk_closedPoint`. Rewrite `h1` using `[h2, h3]`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `: x ∈ closure ({genericPoint X} : Set X)` using `by rw [(genericPoint_spec X).def]; trivial`. Conclude with `closure_mono (Set.singleton_subset_iff.2 (Set.mem_range.2 ⟨_, h1⟩)) this`.
+-/
 private theorem isDominant_of_generic_points {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (p : W ⟶ X)
     (φ : X.functionField →+* W.functionField) (h : gpt W ≫ p = spMap φ ≫ gpt X) : IsDominant p := by
   have h1 : p (gpt W (closedPoint W.functionField)) = gpt X (spMap φ (closedPoint W.functionField)) :=
@@ -23,12 +31,28 @@ private theorem isDominant_of_generic_points {X W : Scheme.{0}} [IsIntegral X] [
   have : x ∈ closure ({genericPoint X} : Set X) := by rw [(genericPoint_spec X).def]; trivial
   exact closure_mono (Set.singleton_subset_iff.2 (Set.mem_range.2 ⟨_, h1⟩)) this
 
+/- English proof (translation)
+Establish `e : spMap (functionFieldMap p) ≫ gpt X = spMap φ ≫ gpt X` using `(specMap_functionFieldMap p).trans h`. Establish `e'` using `Spec.map_injective ((cancel_mono (X.fromSpecStalk (genericPoint X))).mp e)`. Conclude with `congrArg CommRingCat.Hom.hom e'`.
+-/
 private theorem functionFieldMap_eq_of_generic {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W] (p : W ⟶ X) [IsDominant p]
     (φ : X.functionField →+* W.functionField) (h : gpt W ≫ p = spMap φ ≫ gpt X) : functionFieldMap p = φ := by
   have e : spMap (functionFieldMap p) ≫ gpt X = spMap φ ≫ gpt X := (specMap_functionFieldMap p).trans h
   have e' := Spec.map_injective ((cancel_mono (X.fromSpecStalk (genericPoint X))).mp e)
   exact congrArg CommRingCat.Hom.hom e'
 
+/- English proof (translation)
+Set `R : ValuationSubring X₁.functionField` to `V.comap ε.toRingHom`. Establish `hmem (x : X₁.functionField) : x ∈ R ↔ ε x ∈ V` using `Iff.rfl`. Set `j : V ≃+* R` to `{ toFun := fun v => ⟨ε.symm v, (hmem _).2 (by simp)⟩ invFun := fun v => ⟨ε v, (hmem _).1 v.2⟩ left_inv := fun v => Subtype.ext (by simp) right_inv := fun v => Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by simp) map_add' := fun a b => Subtype.ext (by simp) }`. Establish `hR : IsDiscreteValuationRing R` using `IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing j`. Take `⟨hr', hloc⟩` from `(localSubring_range_le_valuationSubring_iff_isLocalHom _ V).1 ((localSubring_range_le_valuationSubring_iff _ V).2 ⟨hr, hm⟩)`.
+
+Set `ψ : W.presheaf.stalk w →+* R` to `j.toRingHom.comp ((algebraMap _ W.functionField).codRestrict V hr')`. Establish `: IsLocalHom j.toRingHom` using `⟨fun a ha => (isLocalHom_equiv j).1 a ha⟩`. Establish `: IsLocalHom ψ` using `RingHom.isLocalHom_comp _ _`. Set `c : Sp R ⟶ W` to `spMap ψ ≫ W.fromSpecStalk w`. Establish `hc : c (closedPoint R) = w`.
+
+Establish `: spMap ψ (closedPoint R) = closedPoint (W.presheaf.stalk w)` using `IsLocalRing.comap_closedPoint ψ`. Express the relevant statement in the definitionally equal form `W.fromSpecStalk w (spMap ψ (closedPoint R)) = w`. Rewrite using `[this]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hg : spMap R.subtype ≫ c = spMap ε.symm.toRingHom ≫ gpt W`.
+
+Establish `: R.subtype.comp ψ = ε.symm.toRingHom.comp (algebraMap _ W.functionField)` using `rfl`. Establish `e : spMap (algebraMap (W.presheaf.stalk w) W.functionField) ≫ W.fromSpecStalk w = gpt W` using `specAlgebraMap_fromSpecStalk w`. Rewrite using `[← e, ← Category.assoc, ← Category.assoc, spectrumMap_comp, spectrumMap_comp, this]`. Establish `hid : spMap ε.symm.toRingHom ≫ spMap ε.toRingHom = 𝟙 _`. Rewrite using `[spectrumMap_comp, RingEquiv.symm_toRingHom_comp_toRingHom]`.
+
+Conclude with `Spec.map_id _`. Establish `key` using `h R hR (c ≫ p₁) (c ≫ p₂) (by rw [← Category.assoc, hg, Category.assoc, h₁, ← Category.assoc, hid, Category.id_comp]) (by rw [← Category.assoc, hg, Category.assoc, h₂, ← Category.assoc, hid, Category.id_comp]) g₁ g₂ (by change D₁.IsEqn (p₁ (c (closedPoint R))) g₁; rw [hc]; exact e …`. Establish `h0 : R.valuation (θ g₂) ≠ 0` using `by simp`. Establish `k : R.valuation (g₁ / θ g₂) = 1` using `by rw [map_div₀, key, div_self h0]`. Rewrite using `[← map_div₀, ← map_inv₀, ← hmem, ← hmem, ← R.valuation_le_one_iff, ← R.valuation_le_one_iff, map_inv₀, k, inv_one]`.
+
+Conclude with `⟨le_rfl, le_rfl⟩`.
+-/
 private theorem valuation_agree_common_model {X₁ X₂ W : Scheme.{0}} [IsIntegral X₁] [IsIntegral X₂] [IsIntegral W]
     (p₁ : W ⟶ X₁) (p₂ : W ⟶ X₂) (θ : X₂.functionField →+* X₁.functionField)
     (ε : X₁.functionField ≃+* W.functionField) (h₁ : gpt W ≫ p₁ = spMap ε.toRingHom ≫ gpt X₁)
@@ -77,6 +101,17 @@ private theorem valuation_agree_common_model {X₁ X₂ W : Scheme.{0}} [IsInteg
   rw [← map_div₀, ← map_inv₀, ← hmem, ← hmem, ← R.valuation_le_one_iff, ← R.valuation_le_one_iff, map_inv₀, k, inv_one]
   exact ⟨le_rfl, le_rfl⟩
 
+/- English proof (translation)
+Introduce `X₁ X₂ W _ _ _ _ p₁ p₂ θ ε hN h₁ h₂ D₁ D₂ h`. Establish `h₂' : gpt W ≫ p₂ = spMap (ε.toRingHom.comp θ) ≫ gpt X₂`. Rewrite using `[h₂, ← Category.assoc, spectrumMap_comp]`. Use `isDominant_of_generic_points p₁ _ h₁` as an intermediate fact. Use `isDominant_of_generic_points p₂ _ h₂'` as an intermediate fact.
+
+Establish `f₁` using `functionFieldMap_eq_of_generic p₁ _ h₁`. Establish `f₂` using `functionFieldMap_eq_of_generic p₂ _ h₂'`. Establish `e : DomPull.pullback p₁ D₁ = DomPull.pullback p₂ D₂`. Use `CartierDiv.ext_of_isEqn fun w => ?_` and prove the remaining obligations. Take `⟨g₁, e₁⟩` from `D₁.exists_isEqn (p₁ w)`.
+
+Take `⟨g₂, e₂⟩` from `D₂.exists_isEqn (p₂ w)`. Use `⟨_, DomPull.isEqn_pullback p₁ D₁ e₁, (DomPull.isEqn_pullback p₂ D₂ e₂).iff_unitAt.2 ?_⟩` and prove the remaining obligations. Take `⟨_, _⟩` from `(GlobalTheory.isNormalScheme_iff _).1 hN w`. Establish `hu : UnitAt w (ε g₁ / ε (θ g₂))`. Use `(unitAt_iff (by simp)).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `exists_algebraMap_eq_of_forall_discreteValuationSubring fun V hV hr hm => (valuation_agree_common_model p₁ p₂ θ ε h₁ h₂ h w e₁ e₂ V hV hr hm).1`. Conclude with `exists_algebraMap_eq_of_forall_discreteValuationSubring fun V hV hr hm => (valuation_agree_common_model p₁ p₂ θ ε h₁ h₂ h w e₁ e₂ V hV hr hm).2`. Express the relevant statement in the definitionally equal form `UnitAt w (functionFieldMap p₁ g₁ / functionFieldMap p₂ g₂)`. Rewrite using `[f₁, f₂]`. Conclude with `hu`.
+
+Establish `c₁` using `(DomPull.presents_pullback p₁ D₁).toPic_eq`. Establish `c₂` using `(DomPull.presents_pullback p₂ D₂).toPic_eq`. Rewrite `c₁` using `[cls_pull (isLB_toLB D₁)]`. Rewrite `c₂` using `[cls_pull (isLB_toLB D₂)]`. Rewrite using `[toPic_apply, toPic_apply, ← c₁, ← c₂, e]`.
+-/
 theorem UpperTheory.pull_cartier_pic_agree :
     ∀ (X₁ X₂ W : Scheme.{0}) [IsIntegral X₁] [IsIntegral X₂] [IsIntegral W] [IsLocallyNoetherian W] (p₁ : W ⟶ X₁) (p₂ : W ⟶ X₂) (θ : X₂.functionField →+* X₁.functionField) (ε : X₁.functionField ≃+* W.functionField), GlobalTheory.IsNormalScheme W → gpt W ≫ p₁ = spMap ε.toRingHom ≫ gpt X₁ → gpt W ≫ p₂ = spMap ε.toRingHom ≫ spMap θ ≫ gpt X₂ → ∀ (D₁ : CartierDiv X₁) (D₂ : CartierDiv X₂), DvrAgree θ D₁ D₂ → pull p₁ (toPic D₁) = pull p₂ (toPic D₂) := by
   intro X₁ X₂ W _ _ _ _ p₁ p₂ θ ε hN h₁ h₂ D₁ D₂ h

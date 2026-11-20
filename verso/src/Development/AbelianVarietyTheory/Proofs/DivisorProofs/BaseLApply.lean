@@ -25,10 +25,16 @@ def fib (v : V D) (a : ι) : Low (r a) → ℂ := fun s => v (ε.symm (.inr ⟨a
 def pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : V D :=
   WithLp.toLp 2 fun j => Sum.elim (fun b => z b) (fun s => u s.1 s.2) (ε j)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[base, pt]`.
+-/
 theorem base_pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : base ε (pt ε z u) = z := by
   ext j
   simp [base, pt]
 
+/- English proof (translation)
+Use extensionality with `a s`. Simplify using `[fib, pt]`.
+-/
 theorem fib_pt (z : V n) (u : ∀ a, Low (r a) → ℂ) : fib ε (pt ε z u) = u := by
   ext a s
   simp [fib, pt]
@@ -39,6 +45,9 @@ def baseL : V D →L[ℂ] V n :=
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseL_apply (v : V D) : baseL ε v = base ε v := rfl
 
 def stepGram (G : ∀ a, V n → Matrix (Fin (r a)) (Fin (r a)) ℂ) (a : ι) (i : Fin (r a)) (v : V D) :

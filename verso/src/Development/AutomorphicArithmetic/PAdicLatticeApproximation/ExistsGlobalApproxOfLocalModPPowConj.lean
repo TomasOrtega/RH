@@ -6,11 +6,29 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Rewrite using `[norm_pow, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), PadicAlgCl.norm_extends, Padic.norm_p, inv_pow]`.
+-/
 private lemma normPPow {p : ℕ} [Fact p.Prime] (k : ℕ) :
     ‖((p : PadicAlgCl p)) ^ k‖ = ((p : ℝ) ^ k)⁻¹ := by
   rw [norm_pow, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), PadicAlgCl.norm_extends,
     Padic.norm_p, inv_pow]
 
+/- English proof (translation)
+Take `⟨d, hd⟩ : ∃ d : Fin n → K, d = v - S⁻¹ *ᵥ a` from `⟨_, rfl⟩`. Establish `hv' : ∀ j, ‖(d j : PadicAlgCl p)‖ < e`. Introduce `j`. Rewrite using `[hd]`. Conclude with `hv j`.
+
+Establish `hSd : S *ᵥ v - a = S *ᵥ d`. Rewrite using `[hd, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hS), Matrix.one_mulVec]`. Establish `hbound : ∀ i, ‖(((S *ᵥ v - a) i : K) : PadicAlgCl p)‖ ≤ ((p : ℝ) ^ k)⁻¹`. Introduce `i`. Rewrite using `[hSd, ← hCe]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (hv' j)) (norm_nonneg _)`. Use `_ = (∑ j, ‖(S i j : PadicAlgCl p)‖) * e := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ C * e := mul_le_mul_of_nonneg_right (hC i) he`. Establish `hp0 : (0 : ℝ) < (p : ℝ) ^ k` using `pow_pos (Nat.cast_pos.mpr (Fact.out : p.Prime).pos) k`.
+
+Establish `hpK : ((p : K) ^ k) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)`. Use `⟨fun i => ((p : K) ^ k)⁻¹ * (S *ᵥ v - a) i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hi` using `hbound i`. Establish `hnorm : ‖((((p : K) ^ k)⁻¹ * (S *ᵥ v - a) i : K) : PadicAlgCl p)‖ = (p : ℝ) ^ k * ‖(((S *ᵥ v - a) i : K) : PadicAlgCl p)‖`.
+
+Use `push_cast`. Rewrite using `[norm_mul, norm_inv, normPPow, inv_inv]`. Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, mul_inv_cancel_left₀ hpK, Pi.sub_apply, add_sub_cancel]`.
+-/
 private lemma stepAt {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {n : ℕ}
     (S : Matrix (Fin n) (Fin n) K) (hS : S.det ≠ 0) (a v : Fin n → K) (k : ℕ) (e C : ℝ) (he : 0 ≤ e)
     (hC : ∀ i, ∑ j, ‖(S i j : PadicAlgCl p)‖ ≤ C) (hCe : C * e = ((p : ℝ) ^ k)⁻¹)
@@ -57,6 +75,21 @@ private lemma stepAt {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (Pa
     rw [Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, mul_inv_cancel_left₀ hpK,
       Pi.sub_apply, add_sub_cancel]
 
+/- English proof (translation)
+Introduce `hF p _ G S B hS hB a b k`. Use `set C : ℝ := 1 + ∑ w, ∑ i, ∑ j, (‖(S w i j : PadicAlgCl p)‖ + ‖(B w i j : PadicAlgCl p)‖) with hCdef`. Establish `hnn : ∀ w i, 0 ≤ ∑ j, (‖(S w i j : PadicAlgCl p)‖ + ‖(B w i j : PadicAlgCl p)‖)` using `fun w i => Finset.sum_nonneg fun j _ => by positivity`. Establish `hbig : ∀ w i, ∑ j, (‖(S w i j : PadicAlgCl p)‖ + ‖(B w i j : PadicAlgCl p)‖) ≤ C`. Introduce `w i`.
+
+Establish `h2` using `Finset.single_le_sum (f := fun i' => ∑ j, (‖(S w i' j : PadicAlgCl p)‖ + ‖(B w i' j : PadicAlgCl p)‖)) (fun i' _ => hnn w i') (Finset.mem_univ i)`. Establish `h3` using `Finset.single_le_sum (f := fun w' => ∑ i', ∑ j, (‖(S w' i' j : PadicAlgCl p)‖ + ‖(B w' i' j : PadicAlgCl p)‖)) (fun w' _ => Finset.sum_nonneg fun i' _ => hnn w' i') (Finset.mem_univ w)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrowS : ∀ w i, ∑ j, ‖(S w i j : PadicAlgCl p)‖ ≤ C`. Introduce `w i`.
+
+Use `le_trans ?_ (hbig w i)` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun j _ => le_add_of_nonneg_right (norm_nonneg _)`. Establish `hrowB : ∀ w i, ∑ j, ‖(B w i j : PadicAlgCl p)‖ ≤ C`. Introduce `w i`. Use `le_trans ?_ (hbig w i)` and prove the remaining obligations.
+
+Conclude with `Finset.sum_le_sum fun j _ => le_add_of_nonneg_left (norm_nonneg _)`. Establish `hCpos : 0 < C`. Establish `: 0 ≤ ∑ w, ∑ i, ∑ j, (‖(S w i j : PadicAlgCl p)‖ + ‖(B w i j : PadicAlgCl p)‖)` using `Finset.sum_nonneg fun w _ => Finset.sum_nonneg fun i _ => hnn w i`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp0 : (0 : ℝ) < (p : ℝ) ^ k` using `pow_pos (Nat.cast_pos.mpr (Fact.out : p.Prime).pos) k`.
+
+Use `set e : ℝ := ((p : ℝ) ^ k)⁻¹ / C with he_def`. Establish `he : 0 < e` using `div_pos (inv_pos.mpr hp0) hCpos`. Establish `hCe : C * e = ((p : ℝ) ^ k)⁻¹`. Rewrite using `[he_def, mul_div_cancel₀ _ hCpos.ne']`. Establish `hy : ∀ i : Fin G.n, ∃ x : G.F, ∀ w, ‖((G.embW w x - ((S w)⁻¹ *ᵥ a w) i : G.Fw w) : PadicAlgCl p)‖ < e ∧ ‖((G.embW w (IsCMField.complexConj G.F x) - ((B w)⁻¹ *ᵥ b w) i : G.Fw w) : PadicAlgCl p)‖ < e` using `fun i => hF p G (fun w => ((S w)⁻¹ *ᵥ a w) i) (fun w => ((B w)⁻¹ *ᵥ b w) i) e he`.
+
+Use `choose y hy using hy`. Establish `hA : ∀ w, ∃ c : Fin G.n → G.Fw w, (∀ i, ‖(c i : PadicAlgCl p)‖ ≤ 1) ∧ S w *ᵥ (fun i => G.embW w (y i)) = a w + p ^ k • c` using `fun w => stepAt (S w) (hS w) (a w) _ k e C he.le (hrowS w) hCe (fun i => (hy i w).1)`. Establish `hB' : ∀ w, ∃ c : Fin G.n → G.Fw w, (∀ i, ‖(c i : PadicAlgCl p)‖ ≤ 1) ∧ B w *ᵥ (fun i => G.embW w (IsCMField.complexConj G.F (y i))) = b w + p ^ k • c` using `fun w => stepAt (B w) (hB w) (b w) _ k e C he.le (hrowB w) hCe (fun i => (hy i w).2)`. Use `choose a' ha'1 ha'2 using hA`. Use `choose b' hb'1 hb'2 using hB'`.
+
+Conclude with `⟨y, a', b', fun w i => ha'1 w i, fun w i => hb'1 w i, ha'2, hb'2⟩`.
+-/
 theorem UpperTheory.exists_global_approx_of_local_mod_p_pow_conj :
     UpperTheory.Gal.W2.FApprox → ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (S B : ∀ w : Fin G.m, Matrix (Fin G.n) (Fin G.n) (G.Fw w)), (∀ w, (S w).det ≠ 0) → (∀ w, (B w).det ≠ 0) → ∀ (a b : Loc G) (k : ℕ), ∃ (y : Fin G.n → G.F) (a' b' : Loc G), IntL a' ∧ IntL b' ∧ (∀ w, S w *ᵥ (fun i => G.embW w (y i)) = a w + p ^ k • a' w) ∧ ∀ w, B w *ᵥ (fun i => G.embW w (IsCMField.complexConj G.F (y i))) = b w + p ^ k • b' w := by
   intro hF p _ G S B hS hB a b k

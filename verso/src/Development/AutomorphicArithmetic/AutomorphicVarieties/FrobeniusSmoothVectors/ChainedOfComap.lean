@@ -13,6 +13,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuat
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Establish `h : RingHom.ker ((Ideal.Quotient.mk P).comp p) = P.comap p`. Use extensionality with `a`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← h]`. Conclude with `ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective (Ideal.Quotient.mk_surjective.comp hp))`.
+-/
 private theorem dim_comap {A R : Type} [CommRing A] [CommRing R] (p : A →+* R) (hp : Function.Surjective p)
     (P : Ideal R) : ringKrullDim (A ⧸ P.comap p) = ringKrullDim (R ⧸ P) := by
   have h : RingHom.ker ((Ideal.Quotient.mk P).comp p) = P.comap p := by
@@ -21,6 +24,17 @@ private theorem dim_comap {A R : Type} [CommRing A] [CommRing R] (p : A →+* R)
   exact ringKrullDim_eq_of_ringEquiv
     (RingHom.quotientKerEquivOfSurjective (Ideal.Quotient.mk_surjective.comp hp))
 
+/- English proof (translation)
+Establish `hm : (I.comap p).minimalPrimes = Ideal.comap p '' I.minimalPrimes` using `Ideal.comap_minimalPrimes_eq_of_surjective hp I`. Use `⟨fun P hP => ?_, fun P hP Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[← dim_comap p hp]`. Conclude with `h.1 _ (hm ▸ ⟨P, hP, rfl⟩)`. Establish `h1` using `h.2 (P.comap p) (hm ▸ ⟨P, hP, rfl⟩) (Q.comap p) (hm ▸ ⟨Q, hQ, rfl⟩)`.
+
+Establish `h2 : ∀ b, Relation.ReflTransGen (fun P Q : Ideal A => P ∈ (I.comap p).minimalPrimes ∧ Q ∈ (I.comap p).minimalPrimes ∧ (D : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ (P ⊔ Q))) (P.comap p) b → Relation.ReflTransGen (fun P Q : Ideal R => P ∈ I.minimalPrimes ∧ Q ∈ I.minimalPrimes ∧ (D : WithBo …`. Introduce `b hb`. Proceed by induction on `hb with`. Consider the case `refl => rw [Ideal.map_comap_of_surjective p hp]`. Consider the case `tail _ hab ih`.
+
+Use `ih.tail ?_` and prove the remaining obligations. Take `⟨ha, hb, hd⟩` from `hab`. Rewrite `ha`, `hb` using `[hm]`. Take `⟨a, ha, rfl⟩` from `ha`. Take `⟨b, hb, rfl⟩` from `hb`.
+
+Rewrite using `[Ideal.map_comap_of_surjective p hp, Ideal.map_comap_of_surjective p hp]`. Use `⟨ha, hb, ?_⟩` and prove the remaining obligations. Establish `: (a ⊔ b).comap p = a.comap p ⊔ b.comap p` using `by conv_lhs => rw [← Ideal.map_comap_of_surjective p hp a, ← Ideal.map_comap_of_surjective p hp b, ← Ideal.map_sup, Ideal.comap_map_of_surjective p hp]`. Conclude with `sup_eq_left.2 (le_sup_of_le_left (Ideal.comap_mono bot_le))`. Rewrite using `[← dim_comap p hp, this]` and apply the resulting hypothesis.
+
+Establish `h3` using `h2 _ h1`. Rewrite `h3` using `[Ideal.map_comap_of_surjective p hp]`. Then use the resulting hypothesis.
+-/
 private theorem chained_of_comap {A R : Type} [CommRing A] [CommRing R] (p : A →+* R) (hp : Function.Surjective p)
     (I : Ideal R) (D : ℕ) (h : Chained (I.comap p) D) : Chained I D := by
   have hm : (I.comap p).minimalPrimes = Ideal.comap p '' I.minimalPrimes :=
@@ -52,6 +66,9 @@ private theorem chained_of_comap {A R : Type} [CommRing A] [CommRing R] (p : A �
     have h3 := h2 _ h1
     rwa [Ideal.map_comap_of_surjective p hp] at h3
 
+/- English proof (translation)
+Introduce `hu`. Use `(MvPowerSeries.isUnit_iff_constantCoeff.2 hu).map p` as an intermediate fact. Rewrite `this` using `[hf]`. Conclude with `not_isUnit_zero this`.
+-/
 private theorem cc_mem {σ O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Nontrivial R]
     (p : MvPowerSeries σ O →+* R) (f : MvPowerSeries σ O) (hf : p f = 0) :
     MvPowerSeries.constantCoeff f ∈ maximalIdeal O := by
@@ -60,6 +77,9 @@ private theorem cc_mem {σ O R : Type} [CommRing O] [IsLocalRing O] [CommRing R]
   rw [hf] at this
   exact not_isUnit_zero this
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hg`. Conclude with `detsec O a b g D f M h hf hM`.
+-/
 private theorem detsec' (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] (a b g D : ℕ) (hg : g ≠ 0) (f : Fin b → MvPowerSeries (Fin a ⊕ Fin g) O)
     (M : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin a ⊕ Fin g) O)) (h : a = b + D)
@@ -69,6 +89,33 @@ private theorem detsec' (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuatio
   obtain ⟨g, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hg
   exact detsec O a b g D f M h hf hM
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ hF S x L hB hx`. Take `⟨-, -, hcmp, htri⟩` from `loc_rho hF (Or.inr rfl) S x L`. Establish `hoff : ∀ I : Ideal L.R, Chained I (3 * F.d + 1) → ∀ P ∈ I.minimalPrimes, L.ρ.OffTri P`. Introduce `I hI P hP`. Use `⟨fun h => hP.1.1.ne_top (top_le_iff.1 ((htri hx).1 ▸ h)), fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(krull_dim_lt_of_not_le_triangular hF (Or.inr rfl) S x L hB hx).1`. Establish `h2 : ringKrullDim (L.R ⧸ P) ≤ ringKrullDim (L.R ⧸ L.ρ.triM)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor h) (Ideal.Quotient.factor_surjective h)`. Establish `h3` using `((hI.1 P hP).trans h2).trans_lt h1`. Establish `h4 : 3 * F.d + 1 + 1 < 3 * F.d` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hee : S.u.ee ≤ x`. Take `⟨E⟩` from `epres hF S x L hee`. Establish `hG : ∀ i, E.Go i ∈ RingHom.ker E.p` using `fun i => E.ker ▸ Ideal.subset_span (Or.inr ⟨i, rfl⟩)`. Establish `hFe : ∀ i, E.Fe i ∈ RingHom.ker E.p` using `fun i => E.ker ▸ Ideal.subset_span (Or.inl ⟨i, rfl⟩)`. Use `choose M hM hGM using fun i => oddm L.O' E.a E.g (E.Go i) (E.odd i) (E.min _ (hG i))`.
+
+Establish `hGo : E.Go = Matrix.of M *ᵥ fun j => MvPowerSeries.X (.inr j)` using `funext hGM`. Establish `hch : Chained (Ideal.span {E.p (Matrix.of M).det}) (3 * F.d + 1)`. Use `chained_of_comap E.p.toRingHom E.surj _ _ ?_` and prove the remaining obligations. Establish `h1` using `detsec' L.O' E.a E.b E.g _ (gpos hF S x L hx E) E.Fe (Matrix.of M) E.num (fun i => cc_mem E.p.toRingHom _ (hFe i)) hM`. Rewrite `h1` using `[← hGo, Ideal.span_union, ← E.ker]`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Establish `: Ideal.span {E.p (Matrix.of M).det} = (Ideal.span {(Matrix.of M).det}).map E.p.toRingHom`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[this, Ideal.comap_map_of_surjective E.p.toRingHom E.surj, sup_comm]`.
+
+Both sides reduce to the same expression. Use `⟨_, fun h => absurd hee h, fun P hP hne => ?_, hch, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[E.ee, Ideal.span_le, Set.range_subset_iff, not_forall]`. Take `⟨j, hj⟩` from `hne`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`.
+
+Use `(hP.mem_or_mem ?_).resolve_right hj` and prove the remaining obligations. Establish `h1 : ((Matrix.of M).adjugate *ᵥ E.Go) j = (Matrix.of M).det * MvPowerSeries.X (.inr j)`. Rewrite using `[hGo, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `h2 : ((Matrix.of M).adjugate *ᵥ E.Go) j ∈ RingHom.ker E.p`.
+
+Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (hG i)`. Rewrite `h2` using `[h1, RingHom.mem_ker, map_mul]`. Rewrite using `[h2]`. Conclude with `P.zero_mem`.
+
+Distinguish the cases in `he : L.ρ.ee ≤ P`. Conclude with `Or.inr (thick hF S x L E _ hGo P hP.1.1 ⟨hoff _ hch P hP, rfl, he⟩ (hP.1.2 (Ideal.mem_span_singleton_self _)))`. Conclude with `Or.inl ⟨hoff _ hch P hP, fun _ => he⟩`. Take `⟨N, N', p, f, hN, hp, hk⟩` from `pres hF (Or.inr rfl) S x L`. Establish `hch : Chained (⊥ : Ideal L.R) (3 * F.d + 1)`.
+
+Use `chained_of_comap p.toRingHom hp _ _ ?_` and prove the remaining obligations. Use `haveI hco : IsCO L.O' (MvPowerSeries (Fin N) L.O') := co_mvps L.O' L.O' (Fin N)`. Use `haveI : IsNoetherianRing (MvPowerSeries (Fin N) L.O') := hco.toIsNoetherian`. Use `haveI : IsAdicComplete (maximalIdeal (MvPowerSeries (Fin N) L.O')) (MvPowerSeries (Fin N) L.O') := hco.complete`. Establish `h1` using `c1ch (MvPowerSeries (Fin N) L.O') N' (3 * F.d + 1) f (by rw [nilradical_eq_zero]; exact Ideal.isPrime_bot) ⟨L.O', L.cO, L.dO, L.vO, inferInstance, _, hco⟩ (fun i hu => by`.
+
+Establish `h0 : f i ∈ RingHom.ker p` using `hk ▸ Ideal.subset_span ⟨i, rfl⟩`. Use `hu.map p` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker.1 h0]`. Conclude with `not_isUnit_zero this)`. Use the proof step `(by`.
+
+Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_eq_fintype_card, Fintype.card_fin, hN]`. Use `norm_cast`. Use the proof step `omega)`. Rewrite `h1` using `[← hk]`. Conclude with `h1`.
+
+Use `⟨⊥, fun _ => rfl, fun _ _ _ => bot_le, hch, fun P hP => Or.inl ⟨hoff _ hch P hP, fun _ h => hee ?_⟩⟩` and prove the remaining obligations. Conclude with `((hcmp P).2.2.1 h).trans ((Ideal.comap_mono (le_maximalIdeal hP.1.1.ne_top)).trans L.lies.le)`.
+-/
 theorem UpperTheory.V.Fr.sharp3 :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (x : Ideal S.A) (L : S.Loc x), F.Big C₀ → ¬ S.u.triP ≤ x → ∃ I : Ideal L.R, L.Sharp I := by
   intro l _ O _ _ _ _ F C₀ hF S x L hB hx

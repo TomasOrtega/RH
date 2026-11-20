@@ -12,15 +12,34 @@ section Fixed
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E), (GlobalTheory.formallyUnramified_ringOfIntegers_iff_differentIdeal_eq_top F E).1 hu, Ideal.top_mul]`.
+-/
 theorem differentIdeal_eq_map_of_unramified (hu : Algebra.FormallyUnramified (𝓞 F) (𝓞 E)) :
     differentIdeal ℤ (𝓞 E) = (differentIdeal ℤ (𝓞 F)).map (algebraMap (𝓞 F) (𝓞 E)) := by
   rw [differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E),
     (GlobalTheory.formallyUnramified_ringOfIntegers_iff_differentIdeal_eq_top F E).1 hu, Ideal.top_mul]
 
+/- English proof (translation)
+Rewrite using `[dInv, FractionalIdeal.coeIdeal_pow, inv_pow]`.
+-/
 theorem dInv_eq_inv_coe (K : Type) [Field K] [NumberField K] (j : ℕ) :
     dInv K j = ((↑(differentIdeal ℤ (𝓞 K) ^ j) : FractionalIdeal (𝓞 K)⁰ K))⁻¹ := by
   rw [dInv, FractionalIdeal.coeIdeal_pow, inv_pow]
 
+/- English proof (translation)
+Establish `hIE : I.map (algebraMap (𝓞 F) (𝓞 E)) ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot hI`. Rewrite using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 hIE), FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 hI)]`. Establish `key : ∀ a : 𝓞 F, algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap F E (algebraMap (𝓞 F) F a)` using `fun a => by`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h z hz`. Take `⟨a, ha, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Establish `h1` using `h (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)) ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.mem_map_of_mem _ ha, rfl⟩)`. Take `⟨c, hc⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`. Rewrite `hc` using `[key, ← map_mul]`.
+
+Establish `hint : IsIntegral ℤ (y * algebraMap (𝓞 F) F a)`. Rewrite using `[← isIntegral_algHom_iff ((algebraMap F E).toIntAlgHom) (algebraMap F E).injective]`. Use `show IsIntegral ℤ (algebraMap F E (y * algebraMap (𝓞 F) F a))`. Rewrite using `[← hc]`. Conclude with `c.2`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨⟨_, hint⟩, rfl⟩`. Introduce `h z hz`. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hz`. Set `T : Ideal (𝓞 E)` to `Submodule.comap ((LinearMap.mulLeft (𝓞 E) (algebraMap F E y)) ∘ₗ Algebra.linearMap (𝓞 E) E) ((1 : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E)`. Establish `hle : I.map (algebraMap (𝓞 F) (𝓞 E)) ≤ T`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Take `⟨c, hc⟩` from `(FractionalIdeal.mem_one_iff _).1 (h _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨a, ha, rfl⟩))`. Use `show algebraMap F E y * algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[key, ← map_mul, ← hc]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨algebraMap (𝓞 F) (𝓞 E) c, key c⟩`. Conclude with `hle hb`.
+-/
 theorem algebraMap_mem_inv_map_iff (I : Ideal (𝓞 F)) (hI : I ≠ ⊥) (y : F) :
     algebraMap F E y ∈ ((↑(I.map (algebraMap (𝓞 F) (𝓞 E))) : FractionalIdeal (𝓞 E)⁰ E))⁻¹ ↔
       y ∈ ((↑I : FractionalIdeal (𝓞 F)⁰ F))⁻¹ := by
@@ -59,6 +78,11 @@ theorem algebraMap_mem_inv_map_iff (I : Ideal (𝓞 F)) (hI : I ≠ ⊥) (y : F)
       exact (FractionalIdeal.mem_one_iff _).2 ⟨algebraMap (𝓞 F) (𝓞 E) c, key c⟩
     exact hle hb
 
+/- English proof (translation)
+Introduce `hσ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hσ]`. Simplify `this.symm` using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem cm_sigma_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : σ ≠ AlgHom.id F E := by
   intro hσ
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -70,6 +94,15 @@ theorem cm_sigma_ne_id {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : σ ≠ AlgHom
   rw [hσ] at this
   simpa [ComplexEmbedding.conjugate_coe_eq] using this.symm
 
+/- English proof (translation)
+Establish `hne` using `cm_sigma_ne_id h`. Establish `hxS : x ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `hx`. Establish `hle : Module.finrank F (AlgHom.equalizer σ (AlgHom.id F E)) ≤ 2`. Rewrite using `[← Subalgebra.finrank_toSubmodule, ← h.2.2.1]`. Conclude with `Submodule.finrank_le _`.
+
+Establish `hpos : 0 < Module.finrank F (AlgHom.equalizer σ (AlgHom.id F E))` using `Module.finrank_pos`. Establish `hS : AlgHom.equalizer σ (AlgHom.id F E) = ⊥`. Break down `(by omega : Module.finrank F (AlgHom.equalizer σ (AlgHom.id F E)) = 1 ∨ Module.finrank F (AlgHom.equalizer σ (AlgHom.id F E)) = 2) with h1 | h2` into its components or cases. Conclude with `Subalgebra.finrank_eq_one_iff.1 h1`. It suffices to derive a contradiction.
+
+Apply `hne` to reduce the goal to its premises. Establish `htop : Subalgebra.toSubmodule (AlgHom.equalizer σ (AlgHom.id F E)) = ⊤` using `Submodule.eq_top_of_finrank_eq (by rw [Subalgebra.finrank_toSubmodule, h2, h.2.2.1])`. Use extensionality with `z`. Establish `hz : z ∈ Subalgebra.toSubmodule (AlgHom.equalizer σ (AlgHom.id F E))` using `htop ▸ Submodule.mem_top`. Conclude with `hz`.
+
+Rewrite `hxS` using `[hS]`. Conclude with `Algebra.mem_bot.1 hxS`.
+-/
 theorem mem_range_of_cm_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} (hx : σ x = x) :
     x ∈ Set.range (algebraMap F E) := by
   have hne := cm_sigma_ne_id h
@@ -93,6 +126,13 @@ theorem mem_range_of_cm_fixed {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x : E} 
   rw [hS] at hxS
   exact Algebra.mem_bot.1 hxS
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Set `w : InfinitePlace E` to `InfinitePlace.mk τ`. Establish `him : (w.embedding x).im = 0` using `congrFun hx w`.
+
+Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2]`. Conclude with `Complex.conj_eq_iff_im.2 him`. Introduce `hx`. Use function extensionality and compare the values at `w`.
+
+Use `show (w.embedding x).im = 0`. Use `h.2.2.2 w.embedding x` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `Complex.conj_eq_iff_im.1 this.symm`.
+-/
 theorem imV_eq_zero_iff {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : imV x = 0 ↔ σ x = x := by
   constructor
   · intro hx
@@ -111,6 +151,15 @@ theorem imV_eq_zero_iff {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : imV 
 
 end Fixed
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h hu j x`. Establish `hIne : differentIdeal ℤ (𝓞 F) ^ j ≠ ⊥` using `pow_ne_zero _ differentIdeal_ne_bot`. Establish `hE : dInv E j = ((↑((differentIdeal ℤ (𝓞 F) ^ j).map (algebraMap (𝓞 F) (𝓞 E))) : FractionalIdeal (𝓞 E)⁰ E))⁻¹`. Rewrite using `[dInv_eq_inv_coe, differentIdeal_eq_map_of_unramified hu, Ideal.map_pow]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx, him⟩`. Take `⟨y, rfl⟩` from `mem_range_of_cm_fixed h ((imV_eq_zero_iff h x).1 him)`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[dInv_eq_inv_coe]`. Rewrite `hx` using `[hE]`.
+
+Conclude with `(algebraMap_mem_inv_map_iff _ hIne y).1 hx`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨?_, (imV_eq_zero_iff h _).2 (σ.commutes y)⟩` and prove the remaining obligations. Rewrite using `[hE]`. Rewrite `hy` using `[dInv_eq_inv_coe]`.
+
+Conclude with `(algebraMap_mem_inv_map_iff _ hIne y).2 hy`.
+-/
 theorem mem_dInv_imV_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.FormallyUnramified (𝓞 F) (𝓞 E) →
     ∀ (j : ℕ) (x : E), (x ∈ dInv E j ∧ imV x = 0) ↔ ∃ y ∈ dInv F j, algebraMap F E y = x := by

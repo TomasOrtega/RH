@@ -9,6 +9,19 @@ open GlobalTheory.BCT.GlobLev GlobalTheory.SplitPts GroundTheory.Automorphic
 
 namespace UpperTheory.V.Z.J.D
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite (K ⧸ H.subgroupOf K)`. Establish `hc : (Fintype.card (K ⧸ H.subgroupOf K) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `⟨(Fintype.card (K ⧸ H.subgroupOf K) : ℂ)⁻¹ • ∑ q : K ⧸ H.subgroupOf K, R ((q.out : K) : G), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply]`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => hv _ (q.out : K).2]`. Simplify using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hc]`. Introduce `v hv k hk`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum]`. Use `congr 1`.
+
+Establish `key : ∀ q : K ⧸ H.subgroupOf K, R k (R ((q.out : K) : G) v) = R ((((⟨k, hk⟩ : K) • q).out : K) : G) v` using `fun q => by`. Establish `e : (QuotientGroup.mk (((⟨k, hk⟩ : K) • q).out) : K ⧸ H.subgroupOf K) = QuotientGroup.mk ((⟨k, hk⟩ : K) * q.out)`. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+
+Establish `h1` using `QuotientGroup.eq.1 e`. Establish `h2 : ((((⟨k, hk⟩ : K) • q).out : K) : G)⁻¹ * (k * ((q.out : K) : G)) ∈ H` using `h1`. Establish `h3` using `hv _ h2`. Establish `h4 : k * ((q.out : K) : G) = ((((⟨k, hk⟩ : K) • q).out : K) : G) * (((((⟨k, hk⟩ : K) • q).out : K) : G)⁻¹ * (k * ((q.out : K) : G)))` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, h4, map_mul, Module.End.mul_apply, h3]`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => key q]`. Conclude with `Equiv.sum_comp (MulAction.toPerm (⟨k, hk⟩ : K)) fun q : K ⧸ H.subgroupOf K => R ((q.out : K) : G) v`. Introduce `M hM v hv`. Conclude with `M.smul_mem _ (by`. Simplify using `only [LinearMap.sum_apply]`.
+
+Conclude with `M.sum_mem fun q _ => hM _ v hv)`.
+-/
 private theorem exists_avg {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (R : Representation ℂ G V)
     (K H : Subgroup G) (hfin : Finite (K ⧸ H.subgroupOf K)) :
     ∃ A : V →ₗ[ℂ] V, (∀ v, (∀ k ∈ K, R k v = v) → A v = v) ∧
@@ -45,6 +58,11 @@ private theorem exists_avg {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V
       simp only [LinearMap.sum_apply]
       exact M.sum_mem fun q _ => hM _ v hv)
 
+/- English proof (translation)
+Establish `hO : IsOpen (globLev S (KL n) : Set (finU E n))`. Rewrite using `[globLev_KL_eq hS]`. Conclude with `(AdelicGLn.isOpen_integralFiniteGL E n).preimage continuous_finPart`. Use `IsCompact.of_isClosed_subset (isClosedEmbedding_finU.isCompact_preimage ((AdelicGLn.isCompact_integralFiniteGL E n).image continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ hO) fun x hx => ⟨finPart E n x, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[globLev_KL_eq hS]`.
+
+Conclude with `hx`. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+-/
 private theorem is_compact_integral_level {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) :
     IsCompact (globLev S (KL n) : Set (finU E n)) := by
   have hO : IsOpen (globLev S (KL n) : Set (finU E n)) := by
@@ -58,6 +76,11 @@ private theorem is_compact_integral_level {E : Type} [Field E] [NumberField E] [
   · have h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1 := x.2
     exact ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)
 
+/- English proof (translation)
+Establish `hK : globLev S K' ≤ globLev S (KL n)` using `fun k hk => (mem_globLev S _ k).2 fun w hw => hle w ((mem_globLev S _ k).1 hk w hw)`. Use `haveI : CompactSpace (globLev S (KL n)) := isCompact_iff_compactSpace.1 (is_compact_integral_level hS)`. Establish `h0 : Finite (globLev S (KL n) ⧸ U.subgroupOf (globLev S (KL n)))` using `Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)`. Establish `h1 : U.relIndex (globLev S (KL n)) ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h2 : U.relIndex (globLev S K') ≠ 0` using `mt (Subgroup.relIndex_eq_zero_of_le_right hK) h1`.
+
+Use `haveI : (U.subgroupOf (globLev S K')).FiniteIndex := ⟨h2⟩`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+-/
 private theorem finite_quot {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {S : Set (Pl E)} (hS : IsSection S)
     {K' : ∀ w : Pl E, Subgroup (UL n w)} (hle : ∀ w, K' w ≤ KL n w) (U : Subgroup (finU E n)) (hU : IsOpen (U : Set (finU E n))) :
     Finite (globLev S K' ⧸ U.subgroupOf (globLev S K')) := by
@@ -74,6 +97,25 @@ private theorem finite_quot {E : Type} [Field E] [NumberField E] [IsCMField E] {
 private noncomputable def stabG {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (R : Representation ℂ G V) (v : V) : Subgroup G :=
   _root_.UpperTheory.Reformulated.B.StabilizerSubgroup.stabG R v
 
+/- English proof (translation)
+Introduce `E _ _ _ n S hS lam K' hK' J _ σ hd`. Take `⟨h1, h2, -⟩` from `hd`. Establish `hst : ∀ j x, ∀ φ ∈ σ j, RU E n x φ ∈ σ j` using `fun j => (h1 j).1.stable`. Introduce `i`. Establish `hT : ∀ x, ∀ φ ∈ ⨆ (j) (_ : j ≠ i), σ j, RU E n x φ ∈ ⨆ (j) (_ : j ≠ i), σ j`.
+
+Introduce `x φ hφ`. Establish `hc : (⨆ (j) (_ : j ≠ i), σ j) ≤ (⨆ (j) (_ : j ≠ i), σ j).comap (RU E n x)` using `iSup₂_le fun j hj y hy => Submodule.mem_comap.2 (le_iSup₂_of_le (f := fun j (_ : j ≠ i) => σ j) j hj le_rfl (hst j x y hy))`. Conclude with `hc hφ`. Break down `(h1 i).1.irred (σ i ⊓ ⨆ (j) (_ : j ≠ i), σ j) inf_le_left (fun x φ hφ => ⟨hst i x φ hφ.1, hT x φ hφ.2⟩) with h0 | h0` into its components or cases. Conclude with `disjoint_iff.2 h0`.
+
+It suffices to derive a contradiction. Take `⟨φ, hφ, hφ0⟩` from `(Submodule.ne_bot_iff _).1 (h1 i).2.2`. Establish `hφT : φ ∈ ⨆ (j) (_ : j ≠ i), σ j` using `(inf_eq_left.1 h0) hφ.1`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hφT`. Establish `hfσ : ∀ j, f j ∈ σ j` using `fun j => by`.
+
+Distinguish the cases in `hj : j = i`. Use `hf j` as an intermediate fact. Rewrite `this` using `[iSup_neg (not_not.2 hj)]`. Rewrite using `[(Submodule.mem_bot ℂ).1 this]`. Conclude with `Submodule.zero_mem _`.
+
+Use `hf j` as an intermediate fact. Rewrite `this` using `[iSup_pos hj]`. Then use the resulting hypothesis. Establish `hfi : f i = 0`. Use `hf i` as an intermediate fact. Rewrite `this` using `[iSup_neg (not_not.2 rfl)]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `hsum' : ∑ j, f j = φ`. Rewrite using `[← hsum]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => Finsupp.notMem_support_iff.1 hj).symm`. Establish `hopen : IsOpen ((⨅ j, stabG (RF E n) (f j) : Subgroup (finU E n)) : Set (finU E n))`.
+
+Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun j => ((h1 j).1.aut _ (hfσ j)).level`. Take `⟨A, hA1, hA2, hA3⟩` from `exists_avg (RF E n) (globLev S K') (⨅ j, stabG (RF E n) (f j)) (finite_quot hS (fun w => (hK'.1 w).2.1) _ hopen)`. Establish `hφfix : ∀ k ∈ globLev S K', RF E n k φ = φ` using `fun k hk => GlobalTheory.LGrp.mem_fixed.1 hφ.2 k hk`. Establish `hφA : A φ = φ` using `hA1 φ hφfix`.
+
+Establish `ha : ∀ j, A (f j) ∈ σ j ⊓ fixed (RF E n) (globLev S K')` using `fun j => ⟨hA3 (σ j) (fun x v hv => hst j _ v hv) _ (hfσ j), GlobalTheory.LGrp.mem_fixed.2 fun k hk => hA2 _ (fun h hh => (Subgroup.mem_iInf.1 hh j)) k hk⟩`. Establish `hmem : φ ∈ ⨆ (j) (_ : j ≠ i), σ j ⊓ fixed (RF E n) (globLev S K')`. Rewrite using `[← hφA, ← hsum', map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`.
+
+Rewrite using `[hj, hfi, map_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `le_iSup₂_of_le (f := fun j (_ : j ≠ i) => σ j ⊓ fixed (RF E n) (globLev S K')) j hj le_rfl (ha j)`. Conclude with `hφ0 ((Submodule.disjoint_def.1 (h2 i)) φ hφ hmem)`.
+-/
 theorem indepS : IndepS := by
   intro E _ _ _ n S hS lam K' hK' J _ σ hd
   classical

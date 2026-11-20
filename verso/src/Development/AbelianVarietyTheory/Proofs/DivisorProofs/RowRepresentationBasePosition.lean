@@ -16,6 +16,9 @@ namespace GlobalTheory.Fc.R1
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hDS hHC hRD hCW Q Lk`. Use `Row.of_sel fun 𝒜 σ _ _ Fm hc x hx i => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.indefinite_scale_theta_bound_right hRD _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (σ Fm hc x hx i).B (Fm.parT x hx i).nV_ge (GlobalTheory.T.indefinite_scale_theta_equality hDS hHC hRD hCW _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (σ Fm hc x hx i).B).1`.
+-/
 theorem row_hRB_univ : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     GlobalTheory.Published.CasselmanWallach → ∀ (Q : V4.Slot) (Lk : LkT Bundle), R1.RankBoundAtBundlePoints Q Lk := by
   intro hDS hHC hRD hCW Q Lk

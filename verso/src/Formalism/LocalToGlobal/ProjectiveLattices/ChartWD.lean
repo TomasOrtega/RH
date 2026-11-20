@@ -36,6 +36,9 @@ def BorChart : Prop :=
 
 variable {pts mapR borR}
 
+/- English proof (translation)
+Take `⟨p', lam, a, μ, y', h1, h2, h3, h4⟩` from `hc p φ y hy`. Establish `e1 : f p' y' = lam (f p y)` using `hf p p' lam y y' h1`. Establish `e2 : f p' y' = a (f A u)` using `hf A p' a u y' h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chartAt_val {f : Rules pts} (hf : IsNatural pts mapR f) {S : Type} [CommRing S] [Algebra K S] {w : pts S}
     {m : Ideal S} [m.IsPrime] {A : TRing K} {u : pts A.R} {c : A.R →ₐ[K] Localization.AtPrime m}
     (hc : FrChartAt pts mapR w m A u c) {p : TRing K} {φ : p.R →ₐ[K] S} {y : pts p.R} (hy : mapR φ y w) :
@@ -49,6 +52,11 @@ theorem chartAt_val {f : Rules pts} (hf : IsNatural pts mapR f) {S : Type} [Comm
     _ = (μ.comp a) (f A u) := by rw [e2]; rfl
     _ = c (f A u) := by rw [h4]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_localization` to reduce the goal to its premises. Introduce `J hJ`. Use `haveI := hJ`. Establish `hxy` using `h J hJ`.
+
+Simplify using `only [locM, IsScalarTower.coe_toAlgHom'] at hxy`. Rewrite using `[map_sub, hxy, sub_self]`.
+-/
 theorem eq_of_locM {S : Type} [CommRing S] [Algebra K S] {x y : S}
     (h : ∀ (m : Ideal S) (_ : m.IsMaximal), locM K m x = locM K m y) : x = y := by
   rw [← sub_eq_zero]
@@ -59,6 +67,11 @@ theorem eq_of_locM {S : Type} [CommRing S] [Algebra K S] {x y : S}
   simp only [locM, IsScalarTower.coe_toAlgHom'] at hxy
   rw [map_sub, hxy, sub_self]
 
+/- English proof (translation)
+Introduce `f hf S _ _ p q φ ψ y z w hy hz`. Apply `eq_of_locM (K := K)` to reduce the goal to its premises. Introduce `m hm`. Use `haveI := hm`. Take `⟨A, u, c, hc⟩` from `h S w m`.
+
+Rewrite using `[chartAt_val hf hc hy, chartAt_val hf hc hz]`.
+-/
 theorem evalWD_of_frChart (h : FrChart pts mapR) : EvalWD pts mapR := by
   intro f hf S _ _ p q φ ψ y z w hy hz
   apply eq_of_locM (K := K)
@@ -67,6 +80,9 @@ theorem evalWD_of_frChart (h : FrChart pts mapR) : EvalWD pts mapR := by
   obtain ⟨A, u, c, hc⟩ := h S w m
   rw [chartAt_val hf hc hy, chartAt_val hf hc hz]
 
+/- English proof (translation)
+Use `⟨hy.choose, hy.choose_spec.choose, hy.choose_spec.choose_spec.choose, hy.choose_spec.choose_spec.choose_spec, ?_⟩` and prove the remaining obligations. Rewrite using `[evalAt, dif_pos hy]`.
+-/
 private theorem evalAt_spec_lemma {f : Rules pts} {S : Type} [CommRing S] [Algebra K S] {y : pts S}
     (hy : FromTest pts mapR y) : ∃ (p : TRing K) (φ : p.R →ₐ[K] S) (y0 : pts p.R),
       mapR φ y0 y ∧ evalAt pts mapR f y = φ (f p y0) := by
@@ -74,6 +90,13 @@ private theorem evalAt_spec_lemma {f : Rules pts} {S : Type} [CommRing S] [Algeb
     hy.choose_spec.choose_spec.choose_spec, ?_⟩
   rw [evalAt, dif_pos hy]
 
+/- English proof (translation)
+Take `⟨p, φ, y0, hm, hv⟩` from `evalAt_spec_lemma (f := f) hy`. Take `⟨p', φ', y0', hm', hv'⟩` from `evalAt_spec_lemma (f := f) hy'`. Rewrite using `[hv, hv']`. Apply `eq_of_locM (K := K)` to reduce the goal to its premises. Introduce `m hmax`.
+
+Use `haveI := hmax`. Take `⟨A, u, c, c', B, uB, uB', tB, π, π', cB, hc, hc', hπ, hπ', hbB, e1, e2, e3⟩` from `h S t y y' hb m`. Rewrite using `[map_mul, chartAt_val hf hc' hm', chartAt_val hf hc hm]`. Combine the equalities or inequalities in the displayed calculation. Establish `k1 : cB (f B uB) = c (f A u)` using `by rw [← e1, AlgHom.comp_apply, hf A B π u uB hπ]`.
+
+Rewrite using `[k1]`. Simplify using `[wchar, map_prod, map_pow, e3, Units.coe_prod]`.
+-/
 theorem wtAll_of_borChart [Fintype ι] (h : BorChart pts mapR borR) (e : ι → ℕ) {f : Rules pts}
     (hf : IsNatural pts mapR f) (hw : IsWeight pts borR e f) (S : Type) [CommRing S] [Algebra K S] (t : ι → Sˣ)
     (y y' : pts S) (hy : FromTest pts mapR y) (hy' : FromTest pts mapR y') (hb : borR t y y') :

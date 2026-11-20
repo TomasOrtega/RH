@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUSplittingTrRep
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.WeilTr MeasureTheory
 open scoped Matrix ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const | exact GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const | (intros; apply GlobalTheory.SvNForm.schrodinger_intertwiner_l2_const <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_intertwiner_l2_constant : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ),
     (∀ a, ψ a = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) a : ℝ))) →

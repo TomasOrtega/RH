@@ -16,6 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Distinguish the cases in `h : IsUnit A.det`. Establish `e : ((-1 : Rˣ) • A) = -A` using `by simp`. Rewrite using `[← e, Matrix.inv_smul' (A := A) (k := (-1 : Rˣ)) h]`. Simplify using the standard rewrite rules. Establish `h' : ¬ IsUnit (-A).det`.
+
+Rewrite using `[Matrix.det_neg]`. Introduce `hu`. Apply `h` to reduce the goal to its premises. Establish `: IsUnit ((-1 : R) ^ Fintype.card k)` using `(isUnit_neg_one (α := R)).pow _`. Conclude with `(IsUnit.mul_iff.1 hu).2`.
+
+Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]`.
+-/
 theorem inv_neg_mat {k : Type} [Fintype k] [DecidableEq k] {R : Type} [CommRing R] (A : Matrix k k R) :
     (-A)⁻¹ = -A⁻¹ := by
   by_cases h : IsUnit A.det
@@ -30,6 +37,11 @@ theorem inv_neg_mat {k : Type} [Fintype k] [DecidableEq k] {R : Type} [CommRing 
       exact (IsUnit.mul_iff.1 hu).2
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]
 
+/- English proof (translation)
+Establish `h : hO (negSp S) T x y = -hO S T x y`. Unfold `hO`. Rewrite using `[negSp_gram, inv_neg_mat]`. Simplify using `only [Matrix.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`. Unfold `symplOH symplO`.
+
+Rewrite using `[h, mul_neg, map_neg, mul_neg]`.
+-/
 theorem symplOH_negSp (S T : HSp D) (x y : WO S T) :
     symplOH (negSp S) T x y = -symplOH S T x y := by
   have h : hO (negSp S) T x y = -hO S T x y := by
@@ -39,11 +51,17 @@ theorem symplOH_negSp (S T : HSp D) (x y : WO S T) :
   unfold symplOH symplO
   rw [h, mul_neg, map_neg, mul_neg]
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ a]`. Simplify using `[Complex.star_def]`.
+-/
 theorem star_psi {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (a : AF D.host.F) :
     star (ψ a) = ψ (-a) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ a]
   simp [Complex.star_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Unfold `heisO`. Rewrite using `[star_mul, symplOH_negSp, ← star_psi hψ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (S T : HSp D) (w₀ : WO S T)
     (g : WO S T → ℂ) :
     heisO ψ (negSp S) T w₀ (fun w => star (g w)) = fun w => star (heisO ψ S T w₀ g w) := by
@@ -52,6 +70,13 @@ theorem heisO_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a�
   rw [star_mul, symplOH_negSp, ← star_psi hψ]
   ring
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ y`. Use `GlobalTheory.RealLineAt.lineAt_unique D θ hθ m n τ (-y) _ _ (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ (-y)) ?_` and prove the remaining obligations. Use `⟨h.1.neg, fun t => ?_, fun t τ' => ?_⟩` and prove the remaining obligations. Establish `h2` using `h.2.1 t`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h2 i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at this`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, AddMonoidHom.neg_apply, Matrix.neg_apply, RingHom.map_neg, this, neg_zero]`. Establish `h3` using `h.2.2 t τ'`. Establish `e : compAt θ τ' ((-(lineAt θ τ y)) t) = -compAt θ τ' (lineAt θ τ y t)`.
+
+Use extensionality with `i j`. Simplify using `only [compAt, Matrix.map_apply, AddMonoidHom.neg_apply, Matrix.neg_apply, RingHom.map_neg]`. Rewrite using `[e, h3]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lineAt_neg {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (y : Matrix (Fin m) (Fin n) ℂ) :
     lineAt θ τ (-y) = -(lineAt θ τ y) := by
   have h := GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ y
@@ -78,6 +103,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : (fun t : ℝ => hs (lineAt θ τ (-y) t) h x) = fun t => (fun s : ℝ => hs (lineAt θ τ y s) h x) (-t)`. Use function extensionality and compare the values at `t`. Rewrite using `[lineAt_neg hθ, AddMonoidHom.neg_apply, ← map_neg]`. Simplify using `only [Formalism.IndefR.Datum.dRho, Pi.neg_apply]`.
+
+Rewrite using `[e]`. Conclude with `(deriv_comp_neg (f := fun s : ℝ => hs (lineAt θ τ y s) h x) (x := 0)).trans (by rw [neg_zero])`.
+-/
 theorem dRho_neg {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ))
     (τ : D.what₂.Tau) (y : Matrix (Fin m) (Fin n) ℂ) (h : Mx D m n → ℂ) :
     Formalism.IndefR.Datum.dRho hs θ τ (-y) h = -Formalism.IndefR.Datum.dRho hs θ τ y h := by
@@ -89,6 +119,11 @@ theorem dRho_neg {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (hs : Mx D m n 
   rw [e]
   exact (deriv_comp_neg (f := fun s : ℝ => hs (lineAt θ τ y s) h x) (x := 0)).trans (by rw [neg_zero])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.IndefR.Datum.dRho]`. Establish `e : (fun t : ℝ => heisO ψ (negSp S) T (lineAt θ τ z t) (fun w => star (g w)) x) = fun t => star (heisO ψ S T (lineAt θ τ z t) g x)`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO_negSp_star hψ]`.
+
+Rewrite using `[e, deriv.star]`.
+-/
 theorem dRho_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) (θ : InfFam D) (S T : HSp D)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (g : WO S T → ℂ) :
     Formalism.IndefR.Datum.dRho (heisO ψ (negSp S) T) θ τ z (fun w => star (g w)) = fun w => star (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z g w) := by
@@ -100,11 +135,17 @@ theorem dRho_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a�
     rw [heisO_negSp_star hψ]
   rw [e, deriv.star]
 
+/- English proof (translation)
+Unfold `cplxO`. Rewrite using `[Matrix.mul_neg, smul_neg]`.
+-/
 theorem cplxO_neg {m n : ℕ} (sS : Matrix (Fin n) (Fin n) ℂ) (sT : Matrix (Fin m) (Fin m) ℂ)
     (z : Matrix (Fin m) (Fin n) ℂ) : cplxO (-sS) sT z = -cplxO sS sT z := by
   unfold cplxO
   rw [Matrix.mul_neg, smul_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [aPlus, crea, cplxO_neg, dRho_neg hθ, dRho_negSp_star hψ]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, Pi.neg_apply, smul_eq_mul, star_mul, star_sub, Complex.star_def, Complex.conj_I, map_inv₀, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aPlus_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) {θ : InfFam D} (hθ : IsInfFam θ)
     (S T : HSp D) (τ : D.what₂.Tau) (sS : Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (u : Matrix (Fin T.rank) (Fin S.rank) ℂ) (g : WO S T → ℂ) :
@@ -116,6 +157,9 @@ theorem aPlus_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a�
     smul_eq_mul, star_mul, star_sub, Complex.star_def, Complex.conj_I, map_inv₀, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a L ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih]`. Conclude with `aPlus_negSp_star hψ hθ S T a.1 (sS a.1) (sT a.1) _ _`.
+-/
 theorem foldr_negSp_star {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ a, ‖ψ a‖ = 1) {θ : InfFam D} (hθ : IsInfFam θ)
     (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
@@ -135,6 +179,13 @@ namespace GlobalTheory.FockConj
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT BS BT f hψ hθ k x`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Establish `h1 : pureTensorO ψ θ (negSp S) T (fun τ => -sS τ) sT BS BT f (MvPolynomial.monomial k 1) = opPow (aPlusAll (heisO ψ (negSp S) T) θ (fun τ => cplxO (-sS τ) (sT τ)) BS BT) k f`. Use `(MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ).constr_basis ℂ (fun k => opPow (aPlusAll (heisO ψ (negSp S) T) θ (fun τ => cplxO (-sS τ) (sT τ)) BS BT) k f) k` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+
+Establish `h2 : pureTensorO ψ θ S T sS sT BS BT (fun w => starRingEnd ℂ (f w)) (MvPolynomial.monomial k 1) = opPow (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) k (fun w => starRingEnd ℂ (f w))`. Use `(MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ).constr_basis ℂ (fun k => opPow (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT) k (fun w => starRingEnd ℂ (f w))) k` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis. Rewrite using `[h1, h2, opPow, opPow]`. Establish `hf : f = fun w => star (starRingEnd ℂ (f w))`.
+
+Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hf]`. Rewrite using `[foldr_negSp_star hn hθ S T sS sT BS BT]`. Both sides reduce to the same expression.
+-/
 theorem pureTensorO_negSp_monomial : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO (negSp S) T → ℂ), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (k : FVar D T.rank S.rank →₀ ℕ) (x : WO S T), pureTensorO ψ θ (negSp S) T (fun τ => -sS τ) sT BS BT f (MvPolynomial.monomial k 1) x = starRingEnd ℂ (pureTensorO ψ θ S T sS sT BS BT (fun w => starRingEnd ℂ (f w)) (MvPolynomial.monomial k 1) x) := by
   intro D ψ θ S T sS sT BS BT f hψ hθ k x
   have hn : ∀ a, ‖ψ a‖ = 1 := hψ.1.2.1

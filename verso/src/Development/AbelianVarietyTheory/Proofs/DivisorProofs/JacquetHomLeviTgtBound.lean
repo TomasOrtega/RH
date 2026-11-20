@@ -30,12 +30,22 @@ def evalOne {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) {P P₁ :
     change A (π (leviEmb k e l) x) 1 = leviTgt σ₁ ξ₁ ξ₂ l (A x 1)
     rw [h1, h2, leviTgt_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalOne_mk {n m : ℕ} (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) {P P₁ : Type} [AddCommGroup P] [Module ℂ P]
     [AddCommGroup P₁] [Module ℂ P₁] {π : Representation ℂ (GL (Fin n) k) P}
     {σ₁ : Representation ℂ (GL (Fin m) k) P₁} {ξ₁ ξ₂ : kˣ →* ℂˣ} {A : P →ₗ[ℂ] (GL (Fin n) k → P₁)}
     (hA : IsGLIndMap e π σ₁ ξ₁ ξ₂ A) (x : P) :
     (evalOne e hA).toLinearMap (Submodule.Quotient.mk x) = A x 1 := rfl
 
+/- English proof (translation)
+Establish `key : ∀ (B : P →ₗ[ℂ] (GL (Fin n) k → P₁)) (hB : IsGLIndMap e π σ₁ ξ₁ ξ₂ B) x h, B x h = (evalOne e hB).toLinearMap (Submodule.Quotient.mk (π h x))`. Introduce `B hB x h`. Rewrite using `[evalOne_mk, hB.right, one_mul]`. Break down `hJ (evalOne e hA) (evalOne e hA') with h0 | ⟨c, hc⟩` into its components or cases. Use `left`.
+
+Use `LinearMap.ext fun x => funext fun h => ?_` and prove the remaining obligations. Rewrite using `[key A hA, h0]`. Both sides reduce to the same expression. Use `right`. Use `⟨c, LinearMap.ext fun x => funext fun h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key A' hA', hc, LinearMap.smul_apply, LinearMap.smul_apply, Pi.smul_apply, key A hA]`.
+-/
 theorem isGLIndMap_proportional (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (P P₁ : Type)
     [AddCommGroup P] [Module ℂ P] [AddCommGroup P₁] [Module ℂ P₁] (π : Representation ℂ (GL (Fin n) k) P)
     (σ₁ : Representation ℂ (GL (Fin m) k) P₁) (ξ₁ ξ₂ : kˣ →* ℂˣ)
@@ -55,6 +65,9 @@ theorem isGLIndMap_proportional (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) 
     refine ⟨c, LinearMap.ext fun x => funext fun h => ?_⟩
     rw [key A' hA', hc, LinearMap.smul_apply, LinearMap.smul_apply, Pi.smul_apply, key A hA]
 
+/- English proof (translation)
+Introduce `k _ _ _ _` and use `isGLIndMap_proportional`.
+-/
 theorem glIndMap_proportional_of_jacquet : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (P P₁ : Type) [AddCommGroup P] [Module ℂ P]
     [AddCommGroup P₁] [Module ℂ P₁] (π : Representation ℂ (GL (Fin n) k) P)

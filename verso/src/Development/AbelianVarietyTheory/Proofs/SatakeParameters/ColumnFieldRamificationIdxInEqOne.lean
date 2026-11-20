@@ -7,6 +7,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.
 
 namespace GlobalTheory.ColumnField
 
+/- English proof (translation)
+Introduce `hall`. Set `φ : 𝓞 X.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv s.iE`. Set `P' : Ideal (𝓞 D.host.E)` to `P.asIdeal.comap (φ.symm : 𝓞 D.host.E →+* 𝓞 X.E)`. Establish `hmax : P'.IsMaximal`. Use `P.isMaximal` as an intermediate fact.
+
+Use the proof step `Ideal.comap_isMaximal_of_surjective _ φ.symm.surjective`. Take `⟨θ, t, h1, h2⟩` from `Formalism.BasicNotions.Examples₂.unram_at D.host P' hmax`. Establish `hcoe : ∀ y : 𝓞 X.E, algebraMap (𝓞 D.host.E) D.host.E (φ y) = s.iE (algebraMap (𝓞 X.E) X.E y)` using `fun _ => rfl`. Establish `e : φ.symm t = X.conjO (φ.symm θ)`. Apply `φ.injective` to reduce the goal to its premises.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E t = algebraMap (𝓞 D.host.E) D.host.E (φ (X.conjO (φ.symm θ)))`. Rewrite using `[hcoe, h1]`. Express the relevant statement in the definitionally equal form `_ = s.iE (star (algebraMap (𝓞 X.E) X.E (φ.symm θ)))`.
+
+Rewrite using `[hs.2, ← hcoe, RingEquiv.apply_symm_apply]`. Apply `h2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ.symm (θ - t) ∈ P.asIdeal`. Rewrite using `[map_sub, e, ← neg_sub]`. Conclude with `P.asIdeal.neg_mem (hall _)`.
+-/
 theorem conj_notMem_inertia (D : D7) (X : Fields) (s : Seam D X) (hs : s.Ok) (P : HeightOneSpectrum (𝓞 X.E)) :
     ¬ ∀ x : 𝓞 X.E, X.conjO x - x ∈ P.asIdeal := by
   intro hall
@@ -30,6 +39,15 @@ theorem conj_notMem_inertia (D : D7) (X : Fields) (s : Seam D X) (hs : s.Ok) (P 
   rw [map_sub, e, ← neg_sub]
   exact P.asIdeal.neg_mem (hall _)
 
+/- English proof (translation)
+Introduce `D X s hX hs v`. Establish `: Algebra.IsQuadraticExtension X.F X.E` using `⟨hX.rankE⟩`. Establish `: IsGalois X.F X.E` using `inferInstance`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hlo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 X.E) v.asIdeal`.
+
+Establish `hQ0 : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Set `P : HeightOneSpectrum (𝓞 X.E)` to `⟨Q, hQ.isPrime, hQ0⟩`. Establish `hun` using `hX.unram_of_inertia (conj_notMem_inertia D X s hs) P`. Establish `hcomap : Q.comap (algebraMap (𝓞 X.F) (𝓞 X.E)) = v.asIdeal` using `(Ideal.over_def Q v.asIdeal).symm`. Establish `hun' : ¬ v.asIdeal.map (algebraMap (𝓞 X.F) (𝓞 X.E)) ≤ Q ^ 2`.
+
+Rewrite using `[← hcomap]`. Conclude with `hun`. Establish `h1 : v.asIdeal.map (algebraMap (𝓞 X.F) (𝓞 X.E)) ≤ Q ^ 1`. Rewrite using `[pow_one, Ideal.map_le_iff_le_comap, hcomap]`. Establish `he : v.asIdeal.ramificationIdx' Q = 1` using `Ideal.ramificationIdx_spec h1 hun'`.
+
+Use `hQ.isPrime` as an intermediate fact. Rewrite using `[Ideal.ramificationIdxIn_eq_ramificationIdx _ Q (X.E ≃ₐ[X.F] X.E), ← Ideal.ramificationIdx'_eq_ramificationIdx _ _ v.ne_bot]`. Conclude with `he`.
+-/
 theorem ramificationIdxIn_eq_one : ∀ (D : D7) (X : Fields) (s : Seam D X), X.Ok → s.Ok →
     ∀ v : HeightOneSpectrum (𝓞 X.F), v.asIdeal.ramificationIdxIn (𝓞 X.E) = 1 := by
   intro D X s hX hs v

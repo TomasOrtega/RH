@@ -14,11 +14,21 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun z : ℂ => (z, w)) ((1 : ℂ), (0 : V)) z0` using `(hasDerivAt_id z0).prodMk (hasDerivAt_const z0 w)`. Conclude with `(hU.hasFDerivAt.comp_hasDerivAt z0 hl).deriv`.
+-/
 theorem deriv_eq_fderiv_pair (U : ℂ × V → ℂ) (z0 : ℂ) (w : V) (hU : DifferentiableAt ℂ U (z0, w)) :
     deriv (fun z => U (z, w)) z0 = fderiv ℂ U (z0, w) (1, 0) := by
   have hl : HasDerivAt (fun z : ℂ => (z, w)) ((1 : ℂ), (0 : V)) z0 := (hasDerivAt_id z0).prodMk (hasDerivAt_const z0 w)
   exact (hU.hasFDerivAt.comp_hasDerivAt z0 hl).deriv
 
+/- English proof (translation)
+Establish `hs : IsOpen (Set.univ ×ˢ D : Set (ℂ × V))` using `isOpen_univ.prod hD`. Establish `hU' : ContDiffOn ℂ ∞ (fun p : ℂ × V => U ((z, 0) + p)) (Set.univ ×ˢ D)` using `hU.comp (contDiff_const.add contDiff_id).contDiffOn (fun p hp => ⟨trivial, by simpa using hp.2⟩)`. Establish `hpre : (ContinuousLinearMap.inr ℂ ℂ V) ⁻¹' (Set.univ ×ˢ D) = D`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+
+Establish `hfun : (fun w => U (z, w)) = (fun p : ℂ × V => U ((z, 0) + p)) ∘ (ContinuousLinearMap.inr ℂ ℂ V)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Establish `hgw : ContinuousLinearMap.inr ℂ ℂ V w0 ∈ (Set.univ ×ˢ D : Set (ℂ × V))` using `⟨trivial, hw0⟩`. Establish `hD' : IsOpen ((ContinuousLinearMap.inr ℂ ℂ V) ⁻¹' (Set.univ ×ˢ D))` using `by rw [hpre]; exact hD`.
+
+Rewrite using `[hfun, ← iteratedFDerivWithin_of_isOpen k hD' (by rw [hpre]; exact hw0), (ContinuousLinearMap.inr ℂ ℂ V).iteratedFDerivWithin_comp_right hU' hs.uniqueDiffOn hD'.uniqueDiffOn hgw (by exact_mod_cast (WithTop.coe_lt_top _).le), iteratedFDerivWithin_of_isOpen k hs hgw, ContinuousMult …`. Simplify using the standard rewrite rules.
+-/
 theorem iFD_slice (U : ℂ × V → ℂ) (D : Set V) (hD : IsOpen D) (hU : ContDiffOn ℂ ∞ U (Set.univ ×ˢ D))
     (z : ℂ) (w0 : V) (hw0 : w0 ∈ D) (k : ℕ) (v : Fin k → V) :
     iteratedFDeriv ℂ k (fun w => U (z, w)) w0 v = iteratedFDeriv ℂ k U (z, w0) (fun i => ((0 : ℂ), v i)) := by
@@ -40,8 +50,20 @@ theorem iFD_slice (U : ℂ × V → ℂ) (D : Set V) (hD : IsOpen D) (hU : ContD
     iteratedFDeriv_comp_add_left]
   simp
 
+/- English proof (translation)
+The claim follows from `WithTop.coe_le_coe.mpr le_top`.
+-/
 private theorem natCast_le_infty_withTop (a : ℕ) : ((a : ℕ) : WithTop ℕ∞) ≤ ∞ := WithTop.coe_le_coe.mpr le_top
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `y hy`. Establish `hd : DifferentiableAt ℂ f y` using `(hf.contDiffAt (hS.mem_nhds hy)).differentiableAt (by simp)`. Rewrite using `[iteratedFDeriv_zero_eq_comp, iteratedFDeriv_zero_eq_comp, LinearIsometryEquiv.comp_fderiv]`.
+
+Use extensionality with `m`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y hy`. Establish `hev : iteratedFDeriv ℂ k (fun p => fderiv ℂ f p e) =ᶠ[nhds y] fun p => fderiv ℂ (iteratedFDeriv ℂ k f) p e` using `Filter.eventually_of_mem (hS.mem_nhds hy) ih`.
+
+Establish `hg : ContDiffAt ℂ 2 (iteratedFDeriv ℂ k f) y` using `(hf.contDiffAt (hS.mem_nhds hy)).iteratedFDeriv_right (by`. Establish `h : ((2 + k : ℕ) : WithTop ℕ∞) ≤ ∞` using `natCast_le_infty_withTop _`. Conclude with `h)` after adjusting the coercions. Establish `hsym : IsSymmSndFDerivAt ℂ (iteratedFDeriv ℂ k f) y` using `hg.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField])`. Establish `hdg : DifferentiableAt ℂ (fderiv ℂ (iteratedFDeriv ℂ k f)) y` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`.
+
+Establish `happ : fderiv ℂ (fun p => fderiv ℂ (iteratedFDeriv ℂ k f) p e) y = (ContinuousLinearMap.apply ℂ (ContinuousMultilinearMap ℂ (fun _ : Fin k => E) ℂ) e).comp (fderiv ℂ (fderiv ℂ (iteratedFDeriv ℂ k f)) y)` using `((ContinuousLinearMap.apply ℂ (ContinuousMultilinearMap ℂ (fun _ : Fin k => E) ℂ) e).hasFDerivAt.comp y hdg.hasFDerivAt).fderiv`. Rewrite using `[iteratedFDeriv_succ_eq_comp_left, Function.comp_apply, hev.fderiv_eq, happ, iteratedFDeriv_succ_eq_comp_left, LinearIsometryEquiv.comp_fderiv]`. Use extensionality with `m`. Simplify using `[hsym (m 0) e]`.
+-/
 private theorem inv_mul_mul_mul_eq_mul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : E → ℂ) (S : Set E)
     (hS : IsOpen S) (hf : ContDiffOn ℂ ∞ f S) (e : E) (k : ℕ) :
     ∀ y ∈ S, iteratedFDeriv ℂ k (fun p => fderiv ℂ f p e) y = fderiv ℂ (iteratedFDeriv ℂ k f) y e := by
@@ -75,6 +97,13 @@ private theorem inv_mul_mul_mul_eq_mul {E : Type} [NormedAddCommGroup E] [Normed
     ext m
     simp [hsym (m 0) e]
 
+/- English proof (translation)
+Establish `hs : IsOpen (Set.univ ×ˢ D : Set (ℂ × V))` using `isOpen_univ.prod hD`. Establish `hdiffU : ∀ p ∈ (Set.univ ×ˢ D : Set (ℂ × V)), DifferentiableAt ℂ U p` using `fun p hp => (hU.contDiffAt (hs.mem_nhds hp)).differentiableAt (by simp)`. Establish `hU1 : ContDiffOn ℂ ∞ (fun p => fderiv ℂ U p ((1 : ℂ), (0 : V))) (Set.univ ×ˢ D)` using `(hU.fderiv_of_isOpen hs (m := ∞) (by exact le_of_eq (by rfl))).clm_apply contDiffOn_const`. Establish `hL : (fun w => deriv (fun z => U (z, w)) 0) =ᶠ[nhds w0] fun w => fderiv ℂ U (0, w) ((1 : ℂ), (0 : V))` using `Filter.eventually_of_mem (hD.mem_nhds hw0) fun w hw => deriv_eq_fderiv_pair U 0 w (hdiffU (0, w) ⟨trivial, hw⟩)`. Rewrite using `[((Filter.EventuallyEq.iteratedFDeriv ℂ hL k).eq_of_nhds), iFD_slice (fun p => fderiv ℂ U p ((1 : ℂ), (0 : V))) D hD hU1 0 w0 hw0 k v]`.
+
+Establish `hR : (fun z => iteratedFDeriv ℂ k (fun w => U (z, w)) w0 v) = fun z => iteratedFDeriv ℂ k U (z, w0) (fun i => ((0 : ℂ), v i))`. Use function extensionality and compare the values at `fun z => iFD_slice U D hD hU z w0 hw0 k v`. Establish `hdI : DifferentiableAt ℂ (iteratedFDeriv ℂ k U) (0, w0)` using `((hU.contDiffAt (hs.mem_nhds ⟨trivial, hw0⟩)).iteratedFDeriv_right (m := 1) (by`. Establish `h : ((1 + k : ℕ) : WithTop ℕ∞) ≤ ∞` using `natCast_le_infty_withTop _`. Conclude with `h)).differentiableAt one_ne_zero` after adjusting the coercions.
+
+Establish `hdΦ : DifferentiableAt ℂ (fun p => iteratedFDeriv ℂ k U p (fun i => ((0 : ℂ), v i))) (0, w0)` using `(ContinuousMultilinearMap.apply ℂ (fun _ : Fin k => ℂ × V) ℂ (fun i => ((0 : ℂ), v i))).differentiableAt.comp _ hdI`. Rewrite using `[hR, deriv_eq_fderiv_pair _ 0 w0 hdΦ, inv_mul_mul_mul_eq_mul U _ hs hU _ k (0, w0) ⟨trivial, hw0⟩]`. Establish `h2 : fderiv ℂ (fun p => iteratedFDeriv ℂ k U p (fun i => ((0 : ℂ), v i))) (0, w0) = (ContinuousMultilinearMap.apply ℂ (fun _ : Fin k => ℂ × V) ℂ (fun i => ((0 : ℂ), v i))).comp (fderiv ℂ (iteratedFDeriv ℂ k U) (0, w0))` using `((ContinuousMultilinearMap.apply ℂ (fun _ : Fin k => ℂ × V) ℂ (fun i => ((0 : ℂ), v i))).hasFDerivAt.comp (0, w0) hdI.hasFDerivAt).fderiv`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem iFD_deriv_comm (U : ℂ × V → ℂ) (D : Set V) (hD : IsOpen D) (hU : ContDiffOn ℂ ∞ U (Set.univ ×ˢ D))
     (w0 : V) (hw0 : w0 ∈ D) (k : ℕ) (v : Fin k → V) :
     iteratedFDeriv ℂ k (fun w => deriv (fun z => U (z, w)) 0) w0 v =

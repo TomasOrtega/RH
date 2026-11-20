@@ -6,6 +6,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ T Q hQ`. Take `⟨u, huT, A, hA, τ, hτ, hfix⟩` from `hQ`. Use `haveI : Algebra.IsQuadraticExtension F ↥Q.K := ⟨Q.two⟩`. Use `haveI : IsGalois F ↥Q.K := inferInstance`. Take `⟨w, hw, hwu⟩` from `CompanionTheory.FamInh.exists_place_between (K := F) (L := ↥Q.K) hA`.
+
+Establish `hunder : w.under (𝓞 F) = u` using `ReciprocityTheory.Gal.eq_of_isPlaceOver (fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F ↥Q.K Ω]`. Conclude with `hw (algebraMap (𝓞 F) (𝓞 ↥Q.K) x)) hA`. Use `⟨w, fun hun => hfix fun x => ?_, hunder ▸ huT⟩` and prove the remaining obligations. Establish `he : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Ideal.ramificationIdx_eq_one_iff.2 hun`.
+
+Establish `hs` using `CompanionTheory.FamInh.res_mem_inertia (L := ↥Q.K) hw hτ`. Rewrite `hs` using `[(CompanionTheory.FamInh.inertia_eq_bot_iff u w).2 he, Subgroup.mem_bot]`. Establish `hc` using `AlgEquiv.restrictNormal_commutes τ ↥Q.K x`. Establish `h1 : AlgEquiv.restrictNormal τ ↥Q.K x = x` using `DFunLike.congr_fun hs x`. Rewrite `hc` using `[h1]`.
+
+Conclude with `hc.symm`.
+-/
 theorem ramUnr_holds : RamUnr := by
   intro F Ω _ _ _ _ _ T Q hQ
   obtain ⟨u, huT, A, hA, τ, hτ, hfix⟩ := hQ

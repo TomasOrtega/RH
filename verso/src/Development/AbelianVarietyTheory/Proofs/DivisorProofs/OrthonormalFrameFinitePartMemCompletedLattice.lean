@@ -16,6 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameLat
 
+/- English proof (translation)
+Introduce `D S T B B' hB M hM`. Establish `hinv : ((B⁻¹ : GL (Fin S.rank) D.host.E).1) = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 * S.gram`. Establish `h1 : ((B⁻¹ : GL (Fin S.rank) D.host.E).1) * B.1 = 1`. Use `congrArg Units.val (inv_mul_cancel B)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : B.1 * ((B⁻¹ : GL (Fin S.rank) D.host.E).1) = 1`. Use `congrArg Units.val (mul_inv_cancel B)` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Establish `key : -(B'.1 * M * (B⁻¹ : GL (Fin S.rank) D.host.E).1) = ∑ l, ∑ k, GlobalTheory.LatVac.genMap S T (-M l k) (fun m => B.1 m k) (fun i => B'.1 i l)`.
+
+Rewrite using `[hinv]`. Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.genMap, Matrix.neg_apply, Matrix.sum_apply, Matrix.of_apply, Matrix.mul_apply]`. Establish `hc : ∀ k m, Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 k m = star (B.1 m k)` using `fun _ _ => rfl`. Simplify using `only [hc, Finset.sum_mul, ← Finset.sum_neg_distrib]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[neg_mul, neg_mul, mul_assoc, mul_assoc, mul_left_comm]`. Establish `hmem : -(B'.1 * M * (B⁻¹ : GL (Fin S.rank) D.host.E).1) ∈ GlobalTheory.LatVac.latRat S T (colLat B : Set (Fin S.rank → D.host.E)) (colLat B' : Set (Fin T.rank → D.host.E))`. Rewrite using `[key]`.
+
+Use `AddSubgroup.sum_mem _ fun l _ => AddSubgroup.sum_mem _ fun k _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨-M l k, Submodule.neg_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) (hM l k), _, ?_, _, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`. Conclude with `GlobalTheory.LatVac.finTens_mem_latO (GlobalTheory.LatVac.one_mem_intAf _) hmem`.
+-/
 theorem frame_finRat_mem_latO : ∀ {D : D7} (S T : HSp D) (B : GL (Fin S.rank) D.host.E) (B' : GL (Fin T.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 * S.gram * B.1 = 1 → ∀ M : Matrix (Fin T.rank) (Fin S.rank) D.host.E, (∀ i j, M i j ∈ D.host.AA) → GlobalTheory.VacUnique.finRat S T (-(B'.1 * M * (B⁻¹ : GL (Fin S.rank) D.host.E).1)) ∈ latO S T (colLat B : Set (Fin S.rank → D.host.E)) (colLat B' : Set (Fin T.rank → D.host.E)) fun _ => True := by
   intro D S T B B' hB M hM
   have hinv : ((B⁻¹ : GL (Fin S.rank) D.host.E).1) = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) B.1 * S.gram := by

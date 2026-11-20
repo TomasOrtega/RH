@@ -4,6 +4,9 @@ open CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Use `hV.isLocalization_stalk x` as an intermediate fact. Conclude with `isReduced_localizationPreserves (hV.primeIdealOf x).asIdeal.primeCompl ↥(Z.presheaf.stalk x.1) hred`.
+-/
 private theorem isReduced_stalk_of_isAffineOpen {Z : AlgebraicGeometry.Scheme} {V : Z.Opens}
     (hV : AlgebraicGeometry.IsAffineOpen V)
     (hred : _root_.IsReduced ↥(Z.presheaf.obj (Opposite.op V))) (x : V) :
@@ -12,6 +15,11 @@ private theorem isReduced_stalk_of_isAffineOpen {Z : AlgebraicGeometry.Scheme} {
   exact isReduced_localizationPreserves (hV.primeIdealOf x).asIdeal.primeCompl
     ↥(Z.presheaf.stalk x.1) hred
 
+/- English proof (translation)
+Establish `hid : (AlgebraicGeometry.Scheme.Hom.ker f).ideal U = RingHom.ker (AlgebraicGeometry.Scheme.Hom.app f U.1).hom`. Simplify using the standard rewrite rules. Establish `hq : _root_.IsReduced (↥(X.presheaf.obj (Opposite.op U.1)) ⧸ (AlgebraicGeometry.Scheme.Hom.ker f).ideal U)`. Rewrite using `[hid]`. Conclude with `isReduced_of_injective (RingHom.kerLift (AlgebraicGeometry.Scheme.Hom.app f U.1).hom) (RingHom.kerLift_injective _)`.
+
+Establish `hq' : _root_.IsReduced ↥(CommRingCat.of (↥(X.presheaf.obj (Opposite.op U.1)) ⧸ (AlgebraicGeometry.Scheme.Hom.ker f).ideal U))` using `hq`. Conclude with `isReduced_of_injective ((AlgebraicGeometry.Scheme.IdealSheafData.subschemeObjIso (AlgebraicGeometry.Scheme.Hom.ker f) U).hom.hom) (AlgebraicGeometry.Scheme.IdealSheafData.subschemeObjIso (AlgebraicGeometry.Scheme.Hom.ker f) U).commRingCatIsoToRingEquiv.injective`.
+-/
 private theorem isReduced_presheaf_obj_subscheme_ker {W X : AlgebraicGeometry.Scheme} (f : W ⟶ X)
     [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f] (U : X.affineOpens) :
     _root_.IsReduced ↥((AlgebraicGeometry.Scheme.Hom.ker f).subscheme.presheaf.obj
@@ -33,6 +41,9 @@ private theorem isReduced_presheaf_obj_subscheme_ker {W X : AlgebraicGeometry.Sc
     (AlgebraicGeometry.Scheme.IdealSheafData.subschemeObjIso
       (AlgebraicGeometry.Scheme.Hom.ker f) U).commRingCatIsoToRingEquiv.injective
 
+/- English proof (translation)
+Take `⟨U, hU, hyU⟩ : ∃ U : X.Opens, AlgebraicGeometry.IsAffineOpen U ∧ (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι.base y ∈ U` from `⟨(X.affineCover.f (X.affineCover.idx _)).opensRange, AlgebraicGeometry.isAffineOpen_opensRange _, X.affineCover.covers _⟩`. Establish `hVaff : AlgebraicGeometry.IsAffineOpen ((TopologicalSpace.Opens.map (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι.base).obj U)` using `hU.preimage (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι`. Establish `hyV : y ∈ (TopologicalSpace.Opens.map (AlgebraicGeometry.Scheme.Hom.ker f).subschemeι.base).obj U` using `hyU`. Establish `hred` using `isReduced_presheaf_obj_subscheme_ker f ⟨U, hU⟩`. Conclude with `isReduced_stalk_of_isAffineOpen hVaff hred ⟨y, hyV⟩`.
+-/
 private theorem isReduced_stalk_subscheme_ker {W X : AlgebraicGeometry.Scheme} (f : W ⟶ X)
     [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f]
     (y : (AlgebraicGeometry.Scheme.Hom.ker f).subscheme) :
@@ -49,6 +60,9 @@ private theorem isReduced_stalk_subscheme_ker {W X : AlgebraicGeometry.Scheme} (
   have hred := isReduced_presheaf_obj_subscheme_ker f ⟨U, hU⟩
   exact isReduced_stalk_of_isAffineOpen hVaff hred ⟨y, hyV⟩
 
+/- English proof (translation)
+Establish `: ∀ y : (AlgebraicGeometry.Scheme.Hom.ker f).subscheme, _root_.IsReduced ↥((AlgebraicGeometry.Scheme.Hom.ker f).subscheme.presheaf.stalk y)` using `fun y => isReduced_stalk_subscheme_ker f y`. Conclude with `AlgebraicGeometry.isReduced_of_isReduced_stalk _`.
+-/
 theorem isReduced_subscheme_ker {W X : AlgebraicGeometry.Scheme}
     (f : W ⟶ X) [AlgebraicGeometry.IsReduced W] [AlgebraicGeometry.QuasiCompact f] :
     AlgebraicGeometry.IsReduced (AlgebraicGeometry.Scheme.Hom.ker f).subscheme := by

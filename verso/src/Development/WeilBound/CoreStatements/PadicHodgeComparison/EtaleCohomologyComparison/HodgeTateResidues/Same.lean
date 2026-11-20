@@ -20,6 +20,13 @@ structure ACo (θ : B →+* E) (μ : ∀ a, V a →ₛₗ[algebraMap K B] W) (r 
   diff : ∀ a a', a ≠ a' → ∀ y, co (μ a' y) a = 0
   span : Submodule.span B {w : W | ∃ a ≤ r, ∃ y, w = μ a y} = ⊤
 
+/- English proof (translation)
+Establish `hw : w ∈ Submodule.span B {w : W | ∃ a ≤ r, ∃ y, w = μ a y}` using `h.span ▸ trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a', ha', y, rfl⟩` from `hw`. Rewrite using `[hμ a' ha', h'.smul]`.
+
+Distinguish the cases in `e : a = a'`. Substitute `e` using the available equality. Rewrite using `[h'.same a (ha'.trans hr), h.same a ha', ← hθ, ho]`. Both sides reduce to the same expression. Rewrite using `[h'.diff a a' e, h.diff a a' e]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, mul_add]`. Consider the case `smul b x _ hx => rw [map_smulₛₗ, h'.smul, h.smul, hx, hθ, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ACo.hom {W' : Type 1} [AddCommGroup W'] [Module B' W'] {θ : B →+* E} {θ' : B' →+* E}
     {μ : ∀ a, V a →ₛₗ[algebraMap K B] W} {μ' : ∀ a, V' a →ₛₗ[algebraMap K B'] W'} {r r' : ℕ}
     {co : W →+ ∀ a, Dual K (V a) →+ E} {co' : W' →+ ∀ a, Dual K (V' a) →+ E} (h : ACo θ μ r co) (h' : ACo θ' μ' r' co')
@@ -40,6 +47,25 @@ theorem ACo.hom {W' : Type 1} [AddCommGroup W'] [Module B' W'] {θ : B →+* E} 
   | add x y _ _ hx hy => simp only [map_add, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, mul_add]
   | smul b x _ hx => rw [map_smulₛₗ, h'.smul, h.smul, hx, hθ, map_mul]; ring
 
+/- English proof (translation)
+Establish `hw : w ∈ Submodule.span B {w : W | ∃ a ≤ r, ∃ y, w = μ a y}` using `h.span ▸ trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, add_mul, Finset.sum_add_distrib]`.
+
+Consider the case `smul d x _ hx`. Rewrite using `[map_smul, LinearMap.smul_apply, h''.smul, hx]`. Simplify using `only [h.smul, Finset.mul_sum, mul_assoc]`. Consider the case `mem w hw`. Take `⟨a, ha, y, rfl⟩` from `hw`.
+
+Establish `hw' : w' ∈ Submodule.span B {w : W' | ∃ a ≤ r', ∃ y, w = μ' a y}` using `h'.span ▸ trivial`. Proceed by induction on `hw' using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [map_add, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, add_mul, mul_add, Finset.sum_add_distrib]`.
+
+Consider the case `smul d x _ hx`. Rewrite using `[map_smul, h''.smul, hx]`. Simplify using `only [h'.smul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Consider the case `mem w' hw'`.
+
+Take `⟨a', ha', y', rfl⟩` from `hw'`. Establish `hz : ∀ p : (Finset.HasAntidiagonal.antidiagonal c : Finset (ℕ × ℕ)), p.1 ≠ (a, a') → (∑ t, ∑ t', co (μ a y) p.1.1 ((b p.1.1).coord t) * co' (μ' a' y') p.1.2 ((b' p.1.2).coord t') * o (φ (cV (Finset.HasAntidiagonal.mem_antidiagonal.1 p.2) (b p.1.1 t) (b' p.1.2 t')))) = 0`. Introduce `p hp`. Distinguish the cases in `e : p.1.1 = a`. Establish `e' : p.1.2 ≠ a'` using `fun e' => hp (Prod.ext e e')`.
+
+Simplify using `[h'.diff _ _ e']`. Simplify using `[h.diff _ _ e]`. Distinguish the cases in `e : a + a' = c`. Rewrite using `[hμ e ha ha', h''.same c (by omega), ho, Finset.sum_eq_single ⟨(a, a'), Finset.HasAntidiagonal.mem_antidiagonal.2 e⟩ (fun p _ hp => hz p fun e => hp (Subtype.ext e)) (fun hh => absurd (Finset.mem_univ _) hh)]`. Take `⟨β, hβ⟩` from `hV e`.
+
+Simplify using `only [h.same a ha, h'.same a' ha', ho, ← hβ, ← map_mul, ← map_sum]`. Use `congr 1`. Use `conv_lhs => rw [← (b a).sum_repr y, ← (b' a').sum_repr y']`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Basis.coord_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Rewrite using `[hμ rfl ha ha', h''.diff c _ (Ne.symm e), AddMonoidHom.zero_apply]`. Use `(Finset.sum_eq_zero fun p _ => hz p fun e' => e ?_).symm` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 p.2` as an intermediate fact. Rewrite `this` using `[e']`.
+
+Conclude with `this`.
+-/
 theorem ACo.cup {W' W'' : Type 1} [AddCommGroup W'] [Module B W'] [AddCommGroup W''] [Module B W''] {θ : B →+* E}
     {μ : ∀ a, V a →ₛₗ[algebraMap K B] W} {μ' : ∀ a, V' a →ₛₗ[algebraMap K B] W'} {μ'' : ∀ a, V'' a →ₛₗ[algebraMap K B] W''}
     {r r' s : ℕ} {co : W →+ ∀ a, Dual K (V a) →+ E} {co' : W' →+ ∀ a, Dual K (V' a) →+ E} {co'' : W'' →+ ∀ a, Dual K (V'' a) →+ E}

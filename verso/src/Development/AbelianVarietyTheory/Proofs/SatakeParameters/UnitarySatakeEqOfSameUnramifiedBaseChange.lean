@@ -11,6 +11,25 @@ section Weyl
 
 open Formalism.UG GlobalTheory.SatakeWeyl
 
+/- English proof (translation)
+Use `choose T hT using fun a : Fin m → ℤ => P.fSatake_tMat_exists (n := n) hU hm a`. Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Establish `hp : ∀ f : Fin m → ℤ, ∏ i, (q : ℂ) ^ f i = (q : ℂ) ^ ∑ i, f i` using `fun f => (map_prod (zpowersHom ℂˣ (Units.mk0 (q : ℂ) hq)) (fun i => Multiplicative.ofAdd (f i)) Finset.univ) |> congrArg (Units.coeHom ℂ) |> fun e => by`.
+
+Simplify `e.symm` using `[map_prod, ← ofAdd_sum]`. Use `set S : (Fin m → ℤ) → ℂ := fun a => (q : ℂ) ^ 0 * (∏ i : Fin m, (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) * cellSum (KU σ n) (radU σ Fin.val) h (T a) with hSdef`. Establish `h1 : ∀ π : Equiv.Perm (Fin m), ∀ a, S (a ∘ π) = S a`. Use `perm_of_swap S fun i j hij a => ?_` and prove the remaining obligations. Establish `hne : i ≠ j` using `fun e => by rw [e] at hij; omega`.
+
+Simplify using `only [hSdef]`. Rewrite using `[hswap L ϖ σ q n m hU hm hm' h hh a i j hij _ _ (hT a) (hT _), ← mul_assoc, hp, hp, pow_zero, one_mul, one_mul, ← zpow_add₀ hq]`. Use `congr 2`. Rewrite using `[← sub_eq_iff_eq_add', ← Finset.sum_sub_distrib, Finset.sum_eq_add_of_mem i j (by simp) (by simp) hne]`. Simplify using `only [Function.comp, Equiv.swap_apply_left, Equiv.swap_apply_right, hij]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `c - ⟨hc, hc'⟩`. Simplify using `only [Function.comp, Equiv.swap_apply_of_ne_of_ne hc hc', sub_self]`. Establish `h2 : ∀ j : Fin m, j.val + 1 = m → ∀ a, S (Function.update a j (-a j)) = S a`.
+
+Introduce `j hj a`. Simplify using `only [hSdef]`. Rewrite using `[hneg L ϖ σ q n m hU hm hm' h hh a j hj _ _ (hT a) (hT _), ← mul_assoc, hp, hp, pow_zero, one_mul, one_mul, ← zpow_add₀ hq]`. Use `congr 2`. Rewrite using `[← sub_eq_iff_eq_add', ← Finset.sum_sub_distrib, Finset.sum_eq_single j]`.
+
+Rewrite using `[Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c _ hc`. Rewrite using `[Function.update_of_ne hc, sub_self]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : ∀ j : Fin m, ∀ a, S (Function.update a j (-a j)) = S a`. Introduce `j a`. Establish `hj` using `j.2`. Set `l : Fin m` to `⟨m - 1, by omega⟩`. Rewrite using `[← h1 (Equiv.swap j l) a, ← h2 l (by show m - 1 + 1 = m; omega) (a ∘ Equiv.swap j l), ← h1 (Equiv.swap j l) (Function.update a j (-a j))]`.
+
+Use `congr 1`. Rewrite using `[Function.update_comp_equiv]`. Simplify using the standard rewrite rules. Use `⟨fun π => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[satU_eq T hT, satU_eq T hT]`.
+
+Conclude with `sum_perm S π (h1 π) α`. Rewrite using `[satU_eq T hT, satU_eq T hT]`. Conclude with `sum_neg S i (h3 i) α`.
+-/
 theorem weyl_of_coeff (hswap : CoeffSwap) (hneg : CoeffNeg) (L : Type) [Field L]
     [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n m : ℕ)
     (hU : IsUnramInv ϖ σ q) (hm : 2 * m ≤ n) (hm' : n ≤ 2 * m + 1) (α : Fin m → ℂ)
@@ -68,6 +87,9 @@ theorem weyl_of_coeff (hswap : CoeffSwap) (hneg : CoeffNeg) (L : Type) [Field L]
   · rw [satU_eq T hT, satU_eq T hT]
     exact sum_neg S i (h3 i) α
 
+/- English proof (translation)
+Establish `hr : RankOne` using `GlobalTheory.T.cellSumRankOneReflectionSymmetry_of_steps GlobalTheory.T.cell_sum_two_stage_descent_unipotent GlobalTheory.T.cell_sum_left_right_invariance_normaliser (GlobalTheory.T.contractingAutChainCosetSumScaling_of_unimodularity (GlobalTheory.T.relIndexCosetSumUnimodularity_ …`. Establish `hl : LeviStep` using `GlobalTheory.T.unitaryCellSumLeviReduction_of_steps hr GlobalTheory.T.exists_smaller_unitary_group_embedding GlobalTheory.T.smaller_unitary_embedding_preserves_integral_parts GlobalTheory.T.unitary_diagonal_factorization_along_embedding GlobalTheory.T.unitary_levi_normalizes_unip …`. Establish `hi : IntIndex` using `GlobalTheory.T.card_integers_mod_uniformizer_eq_q_sq`. Establish `ht : TraceZeroIndex` using `GlobalTheory.T.traceZeroIntegersModUniformizerCard_of_cardSq hi`. Conclude with `⟨GlobalTheory.T.unitarySatakeCoeff_adjacentSwap_of_leviReduction hl (GlobalTheory.T.unitaryFourLeviGL2RootIndex_of_cardSq hi) GlobalTheory.T.unitaryFourLeviGL2_cartan_doubleCosets, GlobalTheory.T.unitarySatakeCoeff_lastSignChange_of_leviReduction hl (GlobalTheory.T.unitaryRankTwo …`.
+-/
 theorem coeff_symm : CoeffSwap ∧ CoeffNeg := by
   have hr : RankOne := GlobalTheory.T.cellSumRankOneReflectionSymmetry_of_steps GlobalTheory.T.cell_sum_two_stage_descent_unipotent GlobalTheory.T.cell_sum_left_right_invariance_normaliser
     (GlobalTheory.T.contractingAutChainCosetSumScaling_of_unimodularity (GlobalTheory.T.relIndexCosetSumUnimodularity_of_finiteIndex GlobalTheory.T.finite_index_left_right_coset_sums_eq) GlobalTheory.T.contracting_automorphism_subgroup_chain_index)
@@ -80,6 +102,23 @@ theorem coeff_symm : CoeffSwap ∧ CoeffNeg := by
 
 end Weyl
 
+/- English proof (translation)
+Establish `h2` using `congrArg (Multiset.map (fun x : ℂ => s(x, x⁻¹))) h`. Simplify using `only [Multiset.map_add, Multiset.map_map, Function.comp_def, inv_inv] at h2`. Establish `e1 : ∀ γ : Fin m → ℂ, (fun i => s((γ i)⁻¹, γ i)) = fun i => s(γ i, (γ i)⁻¹)` using `fun γ => funext fun i => Sym2.eq_swap`. Rewrite `h2` using `[e1 α, e1 α']`. Establish `h3 : Finset.univ.val.map (fun i => s(α i, (α i)⁻¹)) = Finset.univ.val.map (fun i => s(α' i, (α' i)⁻¹))`.
+
+Use extensionality with `c`. Use `congrArg (Multiset.count c) h2` as an intermediate fact. Simplify using `only [Multiset.count_add] at this`. Use linear arithmetic over natural numbers and integers. Take `⟨π, hπ⟩` from `GlobalTheory.exists_perm_of_univ_map_eq _ _ h3`.
+
+Establish `hor : ∀ i, α' i = α (π i) ∨ α' i = (α (π i))⁻¹`. Introduce `i`. Break down `Sym2.eq_iff.1 (hπ i) with h4 | h4` into its components or cases. Conclude with `Or.inl h4.1.symm`. Conclude with `Or.inr h4.2.symm`.
+
+Establish `key : ∀ s : Finset (Fin m), f (fun i => if i ∈ s then α' i else (α ∘ π) i) = f (α ∘ π)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Function.comp_def]`. Consider the case `insert j s hj ih`.
+
+Rewrite using `[← ih]`. Break down `hor j with h6 | h6` into its components or cases. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[hj, h6]`. Simplify using `[hij]`. Rewrite using `[← (hf (fun i => if i ∈ s then α' i else (α ∘ π) i)).2 j]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hj, h6]`. Simplify using `[hij]`.
+
+Use `key Finset.univ` as an intermediate fact. Simplify using `only [Finset.mem_univ, if_true] at this`. Rewrite using `[← (hf α).1 π, ← this]`.
+-/
 theorem eq_of_invariant (m : ℕ) (f : (Fin m → ℂ) → ℂ)
     (hf : ∀ α : Fin m → ℂ, (∀ π : Equiv.Perm (Fin m), f (α ∘ π) = f α) ∧
       ∀ i, f (Function.update α i (α i)⁻¹) = f α) (α α' : Fin m → ℂ)
@@ -128,6 +167,9 @@ theorem eq_of_invariant (m : ℕ) (f : (Fin m → ℂ) → ℂ)
   simp only [Finset.mem_univ, if_true] at this
   rw [← (hf α).1 π, ← this]
 
+/- English proof (translation)
+Introduce `K _ _ _ ϖ σ q n hU α α' e φ hφ`. Unfold `Formalism.MainNotions.N.ubc at e`. Establish `e1` using `add_right_cancel e`. Use `eq_of_invariant _ (Formalism.UG.SatU ϖ q φ) (fun γ => weyl_of_coeff coeff_symm.1 coeff_symm.2 K ϖ σ q n (n / 2) hU (by omega) (by omega) γ φ hφ) _ _ ?_` and prove the remaining obligations. Simplify `e1` using `only [Multiset.map_map, Function.comp_def]`.
+-/
 theorem satU_eq_of_ubc_eq : ∀ (K : Type) [Field K] [Valued K (WithZero (Multiplicative ℤ))] [CompleteSpace K] (ϖ : K)
     (σ : K →+* K) (q n : ℕ), Formalism.UG.IsUnramInv ϖ σ q → ∀ α α' : Fin (n / 2) → ℂ,
       Formalism.MainNotions.N.ubc n (Finset.univ.val.map α) = Formalism.MainNotions.N.ubc n (Finset.univ.val.map α') →

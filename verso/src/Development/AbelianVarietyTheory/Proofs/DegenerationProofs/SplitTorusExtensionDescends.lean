@@ -15,6 +15,9 @@ namespace GlobalTheory.ExtDescent
 
 variable {S S₀ : Scheme.{0}} {f : S ⟶ S₀}
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `haveI := Flat.epi_of_flat_of_surjective (pullback.fst X.hom f)`. Rewrite using `[← cancel_epi (pullback.fst X.hom f)]`. Conclude with `congrArg (fun z => z.left) (h (Over.mk (pullback.snd X.hom f)) (Over.homMk (pullback.fst X.hom f) (by simpa using pullback.condition)))`.
+-/
 theorem hom_ext_of_points [Flat f] [Surjective f] {X Y : Over S₀} {a b : X ⟶ Y}
     (h : ∀ (T : Over S) (t : Over.mk (T.hom ≫ f) ⟶ X), t ≫ a = t ≫ b) : a = b := by
   apply Over.OverMorphism.ext
@@ -23,6 +26,15 @@ theorem hom_ext_of_points [Flat f] [Surjective f] {X Y : Over S₀} {a b : X ⟶
   exact congrArg (fun z => z.left) (h (Over.mk (pullback.snd X.hom f))
     (Over.homMk (pullback.fst X.hom f) (by simpa using pullback.condition)))
 
+/- English proof (translation)
+Establish `pa : ∀ {T : Over S} (x : T ⟶ X), pushHom hX T x ≫ g₀ = pushHom hY T (x ≫ g)` using `fun x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, w, Category.assoc])`. Establish `hm : μ[X₀] ≫ g₀ = (g₀ ⊗ₘ g₀) ≫ μ`. Use `hom_ext_of_points (f := f) fun T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `GrpDense.pushPt_surjective hX.1 T (t ≫ fst _ _)`.
+
+Take `⟨y, hy⟩` from `GrpDense.pushPt_surjective hX.1 T (t ≫ snd _ _)`. Take `rfl : t = lift (pushHom hX T x) (pushHom hX T y)` from `CartesianMonoidalCategory.hom_ext _ _ (by rw [lift_fst]; exact hx.symm) (by rw [lift_snd]; exact hy.symm)`. Rewrite using `[← Category.assoc, ← Hom.mul_def, ← map_mul, pa, lift_map_assoc, ← Hom.mul_def, pa, pa, ← map_mul, MonObj.mul_comp]`. Use `⟨?_, hm⟩` and prove the remaining obligations. Establish `e : (η[X₀] ≫ g₀) * (η[X₀] ≫ g₀) = η[X₀] ≫ g₀`.
+
+Rewrite using `[Hom.mul_def, ← lift_map, Category.assoc, ← hm, ← Category.assoc]`. Use `congr 1`. Simplify `_root_.mul_one (1 : 𝟙_ (Over S₀) ⟶ X₀)` using `[Hom.mul_def, Hom.one_def]`. Establish `e' : η[X₀] ≫ g₀ = 1` using `by simpa using e`. Rewrite using `[e', Hom.one_def]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isMonHom_of_grpPullback [Flat f] [Surjective f] {X Y : Over S} {X₀ Y₀ : Over S₀}
     [GrpObj X] [GrpObj Y] [GrpObj X₀] [GrpObj Y₀] {φ : X.left ⟶ X₀.left} {ψ : Y.left ⟶ Y₀.left}
     (hX : IsGrpPullback X X₀ f φ) (hY : IsGrpPullback Y Y₀ f ψ) (g : X ⟶ Y) (g₀ : X₀ ⟶ Y₀)
@@ -48,6 +60,11 @@ theorem isMonHom_of_grpPullback [Flat f] [Surjective f] {X Y : Over S} {X₀ Y�
   have e' : η[X₀] ≫ g₀ = 1 := by simpa using e
   rw [e', Hom.one_def]; simp
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S))))`. Establish `e₁ : (1 : 𝟙_ (Over S) ⟶ X) = η[X]` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `Eq.symm (e.trans ?_)` and prove the remaining obligations. Use `show (toUnit _ ≫ η[X₀]).left = _`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem unit_comm {X : Over S} {X₀ : Over S₀} [GrpObj X] [GrpObj X₀] {φ : X.left ⟶ X₀.left}
     (h : IsGrpPullback X X₀ f φ) : f ≫ (η[X₀]).left = (η[X]).left ≫ φ := by
   have e := congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S))))
@@ -57,6 +74,9 @@ theorem unit_comm {X : Over S} {X₀ : Over S₀} [GrpObj X] [GrpObj X₀] {φ :
   show (toUnit _ ≫ η[X₀]).left = _
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨MorphismProperty.of_isPullback (P := @Surjective) h.flip ‹_›, MorphismProperty.of_isPullback (P := @Flat) h.flip ‹_›⟩, MorphismProperty.of_isPullback (P := @QuasiCompact) h.flip ‹_›⟩`.
+-/
 theorem fpqc_of_isPullback [Flat f] [Surjective f] [QuasiCompact f] {X X₀ : Scheme.{0}} {p : X ⟶ X₀}
     {s : X ⟶ S} {s₀ : X₀ ⟶ S₀} (h : IsPullback p s s₀ f) :
     (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) p :=
@@ -64,6 +84,15 @@ theorem fpqc_of_isPullback [Flat f] [Surjective f] [QuasiCompact f] {X X₀ : Sc
     MorphismProperty.of_isPullback (P := @Flat) h.flip ‹_›⟩,
     MorphismProperty.of_isPullback (P := @QuasiCompact) h.flip ‹_›⟩
 
+/- English proof (translation)
+Use `haveI : Flat τ := (fpqc_of_isPullback hτ).1.2`. Use `haveI : Surjective τ := (fpqc_of_isPullback hτ).1.1`. Use `haveI := Flat.epi_of_flat_of_surjective τ`. Establish `w : i₀ ≫ q₀ = t₀ ≫ e₀`. Rewrite using `[← cancel_epi τ, reassoc_of% hi, hγ.w, reassoc_of% H.w, reassoc_of% hτ.w, he]`.
+
+Set `c : T₀ ⟶ pullback q₀ e₀` to `pullback.lift i₀ t₀ w`. Establish `c₁ : c ≫ pullback.fst q₀ e₀ = i₀` using `pullback.lift_fst _ _ _`. Establish `c₂ : c ≫ pullback.snd q₀ e₀ = t₀` using `pullback.lift_snd _ _ _`. Establish `hp : IsPullback (τ ≫ c) t (pullback.snd q₀ e₀) f`. Use `IsPullback.of_right ?_ (by rw [Category.assoc, c₂, hτ.w]) (IsPullback.of_hasPullback q₀ e₀)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, c₁, hi, he]`. Conclude with `H.paste_horiz hγ`. Establish `hc : IsPullback τ (𝟙 T) c (τ ≫ c)`. Use `IsPullback.of_bot ?_ (by simp) hp` and prove the remaining obligations. Rewrite using `[c₂, Category.id_comp]`.
+
+Conclude with `hτ`. Use `haveI : IsIso c := MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.isomorphisms Scheme.{0}) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) hc.flip (fpqc_of_isPullback hp) (inferInstanceAs (IsIso (𝟙 T)))`. Conclude with `IsPullback.of_iso_pullback ⟨w⟩ (asIso c) c₁ c₂`.
+-/
 theorem isPullback_of_baseChange [Flat f] [Surjective f] [QuasiCompact f] {T G B T₀ G₀ B₀ : Scheme.{0}}
     {i : T ⟶ G} {t : T ⟶ S} {q : G ⟶ B} {e : S ⟶ B} (H : IsPullback i t q e)
     {i₀ : T₀ ⟶ G₀} {t₀ : T₀ ⟶ S₀} {q₀ : G₀ ⟶ B₀} {e₀ : S₀ ⟶ B₀}
@@ -97,6 +126,15 @@ namespace GlobalTheory
 
 open ExtDescent
 
+/- English proof (translation)
+Introduce `k K _ _ β G B _ _ G₀ B₀ _ _ X _ φG φ hG hB q i q₀ i₀ wq wi hq hfl hsu hqc hi H`. Use `haveI h₁ : Flat (spMap β) := inferInstance`. Use `haveI h₂ : Surjective (spMap β) := inferInstance`. Use `haveI h₃ : QuasiCompact (spMap β) := inferInstance`. Establish `hγ : IsPullback φG q.left q₀.left φ`.
+
+Use `IsPullback.of_bot ?_ wq hB.1` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Conclude with `hG.1`. Establish `hφ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) φ` using `fpqc_of_isPullback hB.1`. Use `haveI := flat_descendsAlong_fpqc`.
+
+Use `haveI := quasiCompact_descendsAlong_fpqc.{0}`. Establish `hT` using `SplitTorus.isGrpPullback_bcMap (spMap β) X`. Use `⟨isMonHom_of_grpPullback hG hB q q₀ wq, MorphismProperty.of_isPullback_of_descendsAlong (P := @Flat) hγ.flip hφ hfl, MorphismProperty.of_isPullback_of_descendsAlong (P := @Surjective) hγ.flip hφ hsu, MorphismProperty.of_isPullback_of_descendsAlong (P := @QuasiCompact) hγ.flip hφ …` and prove the remaining obligations. Establish `H' : IsPullback i.left (splitTorus (Sp K) X).hom q.left (η[B]).left` using `H.map (Over.forget _)`. Establish `H₀` using `isPullback_of_baseChange H' hT.1 hγ wi (unit_comm hB)`.
+
+Conclude with `IsPullback.of_map (Over.forget _) (Over.OverMorphism.ext H₀.w) H₀`.
+-/
 theorem splitTorus_extension_descends :
     ∀ (k K : Type) [Field k] [Field K] (β : k →+* K) (G B : Over (Sp K)) [GrpObj G] [GrpObj B] (G₀ B₀ : Over (Sp k)) [GrpObj G₀] [GrpObj B₀] (X : Type) [AddCommGroup X] (φG : G.left ⟶ G₀.left) (φ : B.left ⟶ B₀.left), IsGrpPullback G G₀ (spMap β) φG → IsGrpPullback B B₀ (spMap β) φ → ∀ (q : G ⟶ B) (i : splitTorus (Sp K) X ⟶ G) (q₀ : G₀ ⟶ B₀) (i₀ : splitTorus (Sp k) X ⟶ G₀), φG ≫ q₀.left = q.left ≫ φ → GlobalTheory.SplitTorus.bcMap (spMap β) X ≫ i₀.left = i.left ≫ φG → IsMonHom q → Flat q.left → Surjective q.left → QuasiCompact q.left → IsMonHom i → IsPullback i (toUnit _) q (η[B] : 𝟙_ _ ⟶ B) → IsMonHom q₀ ∧ Flat q₀.left ∧ Surjective q₀.left ∧ QuasiCompact q₀.left ∧ IsMonHom i₀ ∧ IsPullback i₀ (toUnit _) q₀ (η[B₀] : 𝟙_ _ ⟶ B₀) := by
   intro k K _ _ β G B _ _ G₀ B₀ _ _ X _ φG φ hG hB q i q₀ i₀ wq wi hq hfl hsu hqc hi H

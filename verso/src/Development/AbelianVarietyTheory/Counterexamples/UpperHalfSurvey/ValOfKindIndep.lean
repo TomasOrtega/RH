@@ -17,9 +17,19 @@ def emptyValue [NeZero d] (X : RowData C V d I J) (ν : WithTop ℝ) : RowValue 
   FF := fun _ => ∅
   VAL := fun _ _ h => absurd h (Set.notMem_empty _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨emptyValue X ⊤, rfl⟩`.
+-/
 theorem exists_value_top [NeZero d] (X : RowData C V d I J) : ∃ Y : RowValue X, Y.nu = ⊤ :=
   ⟨emptyValue X ⊤, rfl⟩
 
+/- English proof (translation)
+Break down `hk : kind ρ with _ | ⟨g, a, a'⟩` into its components or cases. Take `⟨g, hg⟩` from `h.2 ρ hk`. Conclude with `absurd ((hg μ hμ w hw).trans (hg μ' hμ' w' hw').symm) hne`. Take `⟨ha, ho, hl⟩` from `h.1 ρ g a a' hk`. Establish `hab : a ≠ a'`.
+
+Introduce and unpack `rfl`. Simplify using `at ho`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hl μ hμ w hw with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> rcases hl μ' hμ' w' hw' with ⟨h3, h4⟩ | ⟨h3, h4⟩`. Conclude with `absurd (h1.trans h3.symm) hne`.
+
+Rewrite using `[h2, h4]`. Conclude with `hab`. Rewrite using `[h2, h4]`. Conclude with `hab.symm`. Conclude with `absurd (h1.trans h3.symm) hne`.
+-/
 theorem no_equal_types (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ}
     (P : MvPolynomial (Fin N × WV I) C) (kind : Fin N → Option (Fin 2 × ZMod d × ZMod d))
     (h : RowsOK G alt P kind) (ρ : Fin N) (μ μ' : Fin N × WV I →₀ ℕ) (hμ : μ ∈ P.support)
@@ -42,6 +52,9 @@ theorem no_equal_types (G : ∀ g, Cart V d (I g) (J g)) (alt : Prop) {N : ℕ}
 def Agree {σ : Type} (S : Set σ) (F F' : MvPowerSeries σ C) : Prop :=
   ∀ μ : σ →₀ ℕ, (∀ x, μ x ≠ 0 → x ∈ S) → MvPowerSeries.coeff μ F = MvPowerSeries.coeff μ F'
 
+/- English proof (translation)
+Introduce `μ hμ`. Rewrite using `[MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `e : p.1 + p.2 = μ` using `by simpa using hp`. Rewrite using `[h p.1 fun x hx => hμ x (by rw [← e]; simp; omega), h' p.2 fun x hx => hμ x (by rw [← e]; simp; omega)]`.
+-/
 theorem Agree.mul {σ : Type} {S : Set σ} {F F' K K' : MvPowerSeries σ C} (h : Agree S F F')
     (h' : Agree S K K') : Agree S (F * K) (F' * K') := by
   intro μ hμ
@@ -51,12 +64,18 @@ theorem Agree.mul {σ : Type} {S : Set σ} {F F' K K' : MvPowerSeries σ C} (h :
   rw [h p.1 fun x hx => hμ x (by rw [← e]; simp; omega),
     h' p.2 fun x hx => hμ x (by rw [← e]; simp; omega)]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro μ _`. Simplify using the standard rewrite rules. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem Agree.pow {σ : Type} {S : Set σ} {F F' : MvPowerSeries σ C} (h : Agree S F F') (k : ℕ) :
     Agree S (F ^ k) (F' ^ k) := by
   induction k with
   | zero => intro μ _; simp
   | succ k ih => rw [pow_succ, pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Introduce `μ hμ`. Use `show (∑ k ∈ Finset.range (μ.degree + 1), MvPowerSeries.coeff μ (F ^ k) / (k.factorial : C)) = ∑ k ∈ Finset.range (μ.degree + 1), MvPowerSeries.coeff μ (F' ^ k) / (k.factorial : C)`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [h.pow k μ hμ]`.
+-/
 theorem Agree.exp {σ : Type} {S : Set σ} {F F' : MvPowerSeries σ C} (h : Agree S F F') :
     Agree S (mvExp F) (mvExp F') := by
   intro μ hμ
@@ -64,12 +83,22 @@ theorem Agree.exp {σ : Type} {S : Set σ} {F F' : MvPowerSeries σ C} (h : Agre
     ∑ k ∈ Finset.range (μ.degree + 1), MvPowerSeries.coeff μ (F' ^ k) / (k.factorial : C)
   exact Finset.sum_congr rfl fun k _ => by rw [h.pow k μ hμ]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro μ _`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+-/
 theorem Agree.prod {σ α : Type} {S : Set σ} (s : Finset α) {F F' : α → MvPowerSeries σ C}
     (h : ∀ i, Agree S (F i) (F' i)) : Agree S (∏ i ∈ s, F i) (∏ i ∈ s, F' i) := by
   induction s using Finset.induction_on with
   | empty => intro μ _; simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha]; exact (h a).mul ih
 
+/- English proof (translation)
+Introduce `μ hμ`. Establish `hs : MvPowerSeries.HasSubst (fun w : WV I => (MvPowerSeries.X (ρ, w) : MvPowerSeries (Fin N × WV I) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (by simp)`. Unfold `rowCopy`. Rewrite using `[MvPowerSeries.coeff_subst hs, MvPowerSeries.coeff_subst hs]`. Use `finsum_congr fun e => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `he : ∀ x, e x ≠ 0 → (ρ, x) ∈ S`. Rewrite using `[h e he]`. Use `push Not at he`. Take `⟨x, hx, hxS⟩` from `he`. Establish `h0 : μ (ρ, x) = 0`.
+
+Assume the negation of the conclusion as `h1`. Conclude with `hxS (hμ _ h1)`. Establish `hd : (MvPowerSeries.X (ρ, x) : MvPowerSeries (Fin N × WV I) C) ∣ e.prod fun s k => (MvPowerSeries.X (ρ, s) : MvPowerSeries (Fin N × WV I) C) ^ k` using `(dvd_pow_self _ hx).trans (Finset.dvd_prod_of_mem (fun s => (MvPowerSeries.X (ρ, s) : MvPowerSeries (Fin N × WV I) C) ^ e s) (Finsupp.mem_support_iff.2 hx))`. Rewrite using `[MvPowerSeries.X_dvd_iff.1 hd μ h0]`. Simplify using the standard rewrite rules.
+-/
 theorem agree_rowCopy {N : ℕ} (S : Set (Fin N × WV I)) (ρ : Fin N) (F F' : MvPowerSeries (WV I) C)
     (h : Agree {w | (ρ, w) ∈ S} F F') : Agree S (rowCopy ρ F) (rowCopy ρ F') := by
   intro μ hμ
@@ -99,6 +128,9 @@ def hOf (hL : Fin 2 → ZMod d → ZMod d → MvPowerSeries (WV I) C) :
   | some (g, a, a') => hL g a a'
   | none => 0
 
+/- English proof (translation)
+Unfold `ValOf`. Use `congr 1`.
+-/
 theorem valOf_eq (hL : Fin 2 → ZMod d → ZMod d → MvPowerSeries (WV I) C) {N : ℕ}
     (P : MvPolynomial (Fin N × WV I) C) (kind : Fin N → Option (Fin 2 × ZMod d × ZMod d))
     (gr : Fin N → MvPowerSeries (WV I) C) :
@@ -107,6 +139,11 @@ theorem valOf_eq (hL : Fin 2 → ZMod d → ZMod d → MvPowerSeries (WV I) C) {
   unfold ValOf
   congr 1
 
+/- English proof (translation)
+Introduce `μ hμ`. Break down `k with _ | ⟨g, a, a'⟩` into its components or cases. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Use `X.hL_axes g a a' μ ?_` and prove the remaining obligations.
+
+Establish `: g0 = g ∨ g0 = 1 - g` using `(by decide : ∀ x y : Fin 2, x = y ∨ x = 1 - y) g0 g`. Break down `this with e | e` into its components or cases. Conclude with `Or.inl fun w hw => (hT w (hμ w (Finsupp.mem_support_iff.1 hw))).trans e`. Conclude with `Or.inr fun w hw => (hT w (hμ w (Finsupp.mem_support_iff.1 hw))).trans e`.
+-/
 theorem agree_hOf_zero [NeZero d] (X : RowData C V d I J) (T : Set (WV I)) (g0 : Fin 2)
     (hT : ∀ w ∈ T, w.1 = g0) (k : Option (Fin 2 × ZMod d × ZMod d)) : Agree T (hOf X.hL k) 0 := by
   intro μ hμ
@@ -119,6 +156,13 @@ theorem agree_hOf_zero [NeZero d] (X : RowData C V d I J) (T : Set (WV I)) (g0 :
     · exact Or.inl fun w hw => (hT w (hμ w (Finsupp.mem_support_iff.1 hw))).trans e
     · exact Or.inr fun w hw => (hT w (hμ w (Finsupp.mem_support_iff.1 hw))).trans e
 
+/- English proof (translation)
+Establish `hg : g = 0 ∨ g = 1` using `(by decide : ∀ x : Fin 2, x = 0 ∨ x = 1) g`. Unfold `OnLeafV at l0 l1`. Rewrite `l0` using `[h0]`. Rewrite `l1` using `[h1]`. Break down `hg with rfl | rfl` into its components or cases.
+
+Establish `e0 : tyW X.G w0 = a` using `by simpa using l0`. Establish `e1 : tyW X.G w1 = a'` using `by simpa using l1`. Rewrite using `[e0, e1]`. Establish `e0 : tyW X.G w0 = a'` using `by simpa using l0`. Establish `e1 : tyW X.G w1 = a` using `by simpa using l1`.
+
+Rewrite using `[e0, e1, X.hL_swap]`.
+-/
 theorem hOf_mixed [NeZero d] (X : RowData C V d I J) (w0 w1 : WV I) (h0 : w0.1 = 0) (h1 : w1.1 = 1)
     (g : Fin 2) (a a' : ZMod d) (l0 : OnLeafV X.G g a a' w0) (l1 : OnLeafV X.G g a a' w1) :
     X.hL g a a' = X.hL 0 (tyW X.G w0) (tyW X.G w1) := by
@@ -134,6 +178,19 @@ theorem hOf_mixed [NeZero d] (X : RowData C V d I J) (w0 w1 : WV I) (h0 : w0.1 =
     have e1 : tyW X.G w1 = a := by simpa using l1
     rw [e0, e1, X.hL_swap]
 
+/- English proof (translation)
+Rewrite using `[valOf_eq, valOf_eq]`. Use `set S : Set (Fin N × WV I) := {x | ∃ μ ∈ P.support, μ x ≠ 0} with hS`. Establish `key : ∀ ρ, Agree {w | (ρ, w) ∈ S} (hOf X.hL (k ρ)) (hOf X.hL (k' ρ))`. Introduce `ρ`. Distinguish the cases in `hone : ∃ g0 : Fin 2, ∀ w ∈ {w | (ρ, w) ∈ S}, w.1 = g0`.
+
+Take `⟨g0, hg0⟩` from `hone`. Introduce `μ hμ`. Rewrite using `[agree_hOf_zero X _ g0 hg0 _ μ hμ, agree_hOf_zero X _ g0 hg0 _ μ hμ]`. Use `push Not at hone`. Take `⟨w1, ⟨μ1, m1, n1⟩, e1⟩` from `hone 0`.
+
+Take `⟨w0, ⟨μ0, m0, n0⟩, e0⟩` from `hone 1`. Establish `f1 : w1.1 = 1` using `by revert e1; generalize w1.1 = g; revert g; decide`. Establish `f0 : w0.1 = 0` using `by revert e0; generalize w0.1 = g; revert g; decide`. Establish `aux : ∀ kk : Fin N → Option (Fin 2 × ZMod d × ZMod d), RowsOK X.G X.Alt P kk → hOf X.hL (kk ρ) = X.hL 0 (tyW X.G w0) (tyW X.G w1)`. Introduce `kk hkk`.
+
+Break down `hr : kk ρ with _ | ⟨g, a, a'⟩` into its components or cases. Take `⟨g, hg⟩` from `hkk.2 ρ hr`. Use `(hg μ0 m0 w0 n0).trans (hg μ1 m1 w1 n1).symm` as an intermediate fact. Rewrite `this` using `[f0, f1]`. Conclude with `absurd this (by decide)`.
+
+Take `⟨-, -, hl⟩` from `hkk.1 ρ g a a' hr`. Conclude with `hOf_mixed X w0 w1 f0 f1 g a a' (hl μ0 m0 w0 n0) (hl μ1 m1 w1 n1)`. Rewrite using `[aux k hk, aux k' hk']`. Introduce `μ _`. Both sides reduce to the same expression.
+
+Establish `hA` using `Agree.prod (S := S) Finset.univ (fun ρ => Agree.mul (F := rowCopy ρ (gr ρ)) (F' := rowCopy ρ (gr ρ)) (fun _ _ => rfl) (agree_rowCopy S ρ _ _ (key ρ)).exp)`. Unfold `jetAt0`. Conclude with `Finset.sum_congr rfl fun μ hμ => by rw [hA μ fun x hx => ⟨μ, hμ, hx⟩]`.
+-/
 theorem valOf_kind_indep [NeZero d] (X : RowData C V d I J) {N : ℕ}
     (P : MvPolynomial (Fin N × WV I) C) (k k' : Fin N → Option (Fin 2 × ZMod d × ZMod d))
     (hk : RowsOK X.G X.Alt P k) (hk' : RowsOK X.G X.Alt P k')

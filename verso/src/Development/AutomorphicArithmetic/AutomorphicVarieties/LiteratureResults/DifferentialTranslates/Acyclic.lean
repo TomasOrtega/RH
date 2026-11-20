@@ -6,6 +6,29 @@ open CategoryTheory
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Introduce `Γ Ω _ _ _ ρ hP n`. Take `⟨P, hconst, hequi⟩` from `hP`. Set `S : Subgroup Γ` to `⊥`. Use `haveI : Subsingleton S := ⟨fun a b => Subtype.ext ((Subgroup.mem_bot.1 a.2).trans (Subgroup.mem_bot.1 b.2).symm)⟩`. Set `A : Rep ℂ S` to `Rep.of (Representation.trivial ℂ S Ω)`.
+
+Set `C : Rep ℂ Γ` to `Rep.coind S.subtype A`. Establish `hC : Subsingleton (groupCohomology C (n + 1))`. Establish `hz : Limits.IsZero (groupCohomology C (n + 1))` using `(isZero_groupCohomology_succ_of_subsingleton A n).of_iso (groupCohomology.coindIso A (n + 1))`. Establish `h0 : 𝟙 (groupCohomology C (n + 1)) = 0` using `hz.eq_of_src _ _`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `ha` using `congrArg (fun f => f.hom a) h0`. Establish `hb` using `congrArg (fun f => f.hom b) h0`. Simplify using `only [ModuleCat.hom_id, ModuleCat.hom_zero, LinearMap.id_apply, LinearMap.zero_apply] at ha hb`. Rewrite using `[ha, hb]`. Set `L : Ω →ₗ[ℂ] (Γ → Ω)` to `LinearMap.pi fun h => ρ h`.
+
+Establish `hL : ∀ x, L x ∈ Representation.coindV S.subtype A.ρ`. Introduce `x g h`. Establish `hg : (g : Γ) = 1` using `Subgroup.mem_bot.1 g.2`. Simplify using `[L, hg]`. Set `iL : Ω →ₗ[ℂ] Representation.coindV S.subtype A.ρ` to `LinearMap.codRestrict _ L hL`.
+
+Set `M : Representation.coindV S.subtype A.ρ →ₗ[ℂ] (Γ → Ω)` to `LinearMap.pi fun g => ρ g ∘ₗ LinearMap.proj g⁻¹ ∘ₗ Submodule.subtype _`. Set `rL : Representation.coindV S.subtype A.ρ →ₗ[ℂ] Ω` to `P ∘ₗ M`. Set `i : Rep.of ρ ⟶ C` to `Rep.ofHom ⟨iL, fun γ => by`. Use `LinearMap.ext fun x => Subtype.ext (funext fun h => ?_)` and prove the remaining obligations. Simplify using `only [iL, L, LinearMap.comp_apply]`.
+
+Use `show (ρ h) ((ρ γ) x) = (ρ (h * γ)) x`. Rewrite using `[map_mul, Module.End.mul_apply]⟩`. Set `r : C ⟶ Rep.of ρ` to `Rep.ofHom ⟨rL, fun γ => by`. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, rL, M]`.
+
+Rewrite using `[hequi]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[mul_inv_rev, ← Module.End.mul_apply, ← map_mul]`. Use the proof step `rfl⟩`.
+
+Establish `hri : i ≫ r = 𝟙 _`. Use extensionality with `x`. Simplify using `[i, r, rL, M, iL, L, ← Module.End.mul_apply, ← map_mul, hconst]`. Use `show P (fun g => ρ g (ρ g⁻¹ x)) = x`. Rewrite using `[show (fun g => ρ g (ρ g⁻¹ x)) = fun _ => x from`.
+
+Use function extensionality and compare the values at `fun g => by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply], hconst]`. Set `F` to `groupCohomology.functor ℂ Γ (n + 1)`. Establish `hinj : Function.Injective (F.map i).hom`. Introduce `a b hab`. Establish `key : ∀ z, (F.map r).hom ((F.map i).hom z) = z`.
+
+Introduce `z`. Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, hri, F.map_id]`. Both sides reduce to the same expression. Rewrite using `[← key a, ← key b, hab]`. Use `haveI : Subsingleton (F.obj C) := hC`.
+
+Conclude with `hinj.subsingleton`.
+-/
 theorem acyclic : Acyclic := by
   intro Γ Ω _ _ _ ρ hP n
   obtain ⟨P, hconst, hequi⟩ := hP

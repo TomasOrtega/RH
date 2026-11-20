@@ -18,5 +18,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.softQ_all | exact GlobalTheory.ChainTw.softQ_all | (intros; apply GlobalTheory.ChainTw.softQ_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedChain_stage_soft_properties : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SoftQ D := by
   first | exact @GlobalTheory.ChainTw.softQ_all | exact GlobalTheory.ChainTw.softQ_all | (intros; apply GlobalTheory.ChainTw.softQ_all <;> assumption)

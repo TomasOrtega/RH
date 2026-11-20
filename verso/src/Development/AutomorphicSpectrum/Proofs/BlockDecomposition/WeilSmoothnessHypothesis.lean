@@ -38,6 +38,19 @@ section Iwahori
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Apply the tactic sequence `have cA : Continuous fun u : GL (Fin 2) F => u.val 0 0 := GLnLocal.continuous_entry F 2 0 0`. Apply the tactic sequence `have cB : Continuous fun u : GL (Fin 2) F => u.val 0 1 := GLnLocal.continuous_entry F 2 0 1`. Apply the tactic sequence `have cC : Continuous fun u : GL (Fin 2) F => u.val 1 0 := GLnLocal.continuous_entry F 2 1 0`. Apply the tactic sequence `have cD : Continuous fun u : GL (Fin 2) F => u.val 1 1 := GLnLocal.continuous_entry F 2 1 1`. Establish `hD1 : (fun u : GL (Fin 2) F => u.val 1 1) 1 ≠ 0` using `by simp`.
+
+Establish `tx : Tendsto (fun u : GL (Fin 2) F => u.val 0 1 / u.val 1 1) (𝓝 1) (𝓝 0)`. Establish `: ContinuousAt (fun u : GL (Fin 2) F => u.val 0 1 / u.val 1 1) 1` using `(cB.continuousAt (x := 1)).div cD.continuousAt hD1`. Simplify `this` using `[ContinuousAt]`. Establish `ty : Tendsto (fun u : GL (Fin 2) F => u.val 1 0 / u.val 1 1) (𝓝 1) (𝓝 0)`. Establish `: ContinuousAt (fun u : GL (Fin 2) F => u.val 1 0 / u.val 1 1) 1` using `(cC.continuousAt (x := 1)).div cD.continuousAt hD1`.
+
+Simplify `this` using `[ContinuousAt]`. Establish `td : Tendsto (fun u : GL (Fin 2) F => u.val 0 0 * u.val 1 1 - u.val 0 1 * u.val 1 0) (𝓝 1) (𝓝 1)`. Establish `: ContinuousAt (fun u : GL (Fin 2) F => u.val 0 0 * u.val 1 1 - u.val 0 1 * u.val 1 0) 1` using `((cA.mul cD).sub (cB.mul cC)).continuousAt`. Simplify `this` using `[ContinuousAt]`. Establish `ti : Tendsto (fun u : GL (Fin 2) F => (u.val 1 1)⁻¹) (𝓝 1) (𝓝 1)`.
+
+Establish `: ContinuousAt (fun u : GL (Fin 2) F => (u.val 1 1)⁻¹) 1` using `(cD.continuousAt (x := 1)).inv₀ hD1`. Simplify `this` using `[ContinuousAt]`. Establish `hne : ∀ᶠ u : GL (Fin 2) F in 𝓝 1, u.val 1 1 ≠ 0` using `cD.continuousAt.eventually_ne hD1`. Use `filter_upwards [hne, tx.eventually hN, ty.eventually hL, td.eventually hD, ti.eventually hM] with u h0 h1 h2 h3 h4`. Establish `hdet : u.val 0 0 * u.val 1 1 - u.val 0 1 * u.val 1 0 ≠ 0`.
+
+Use `(Matrix.GeneralLinearGroup.det u).ne_zero` as an intermediate fact. Simplify `this` using `[Matrix.det_fin_two]`. Establish `e : u = uni2 (u.val 0 1 / u.val 1 1) * dg2 (Units.mk0 _ hdet) 1 * dg2 (Units.mk0 _ (inv_ne_zero h0)) (Units.mk0 _ (inv_ne_zero h0))⁻¹ * low (u.val 1 0 / u.val 1 1)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [uni2, dg2, low, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring`. Rewrite using `[e]`. Conclude with `H.mul_mem (H.mul_mem (H.mul_mem h1 (h3 _ rfl)) (h4 _ rfl)) h2`.
+-/
 theorem mem_nhds_of_factors (H : Subgroup (GL (Fin 2) F))
     (hN : ∀ᶠ x in 𝓝 (0 : F), uni2 x ∈ H)
     (hL : ∀ᶠ y in 𝓝 (0 : F), low y ∈ H)
@@ -85,6 +98,13 @@ section Local
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Set `` to `nontriviallyNormedField F`. Use `completeSpace_nontriviallyNormedField F` as an intermediate fact. Establish `hd : HasStrictDerivAt (fun x : F => x * x) ((1 : F) * 1 + 1 * 1) 1` using `(hasStrictDerivAt_id (1 : F)).mul (hasStrictDerivAt_id (1 : F))`. Establish `h2 : ((1 : F) * 1 + 1 * 1) ≠ 0`. Evaluate the numerical expressions.
+
+Establish `hm` using `hd.map_nhds_eq h2`. Establish `hs : (fun x : F => x * x) '' {r | P r} ∈ 𝓝 (1 : F)`. Use `image_mem_map (m := fun x : F => x * x) hP` as an intermediate fact. Rewrite `this` using `[hm]`. Simplify using `using this`.
+
+Use `filter_upwards [hs] with a ha`. Take `⟨r, hr, rfl⟩` from `ha`. Conclude with `⟨r, hr, rfl⟩`.
+-/
 theorem ev_sq [CharZero F] {P : F → Prop} (hP : ∀ᶠ r in 𝓝 (1 : F), P r) :
     ∀ᶠ a in 𝓝 (1 : F), ∃ r, P r ∧ r * r = a := by
   let := nontriviallyNormedField F
@@ -102,6 +122,11 @@ theorem ev_sq [CharZero F] {P : F → Prop} (hP : ∀ᶠ r in 𝓝 (1 : F), P r)
   obtain ⟨r, hr, rfl⟩ := ha
   exact ⟨r, hr, rfl⟩
 
+/- English proof (translation)
+Establish `hB : (valBall F 1 : Set F) ∈ 𝓝 (0 : F)` using `(isOpen_valBall 1).mem_nhds (zero_mem _)`. Establish `ht : Tendsto (fun r : F => r - 1) (𝓝 1) (𝓝 0)`. Establish `: ContinuousAt (fun r : F => r - 1) 1` using `(continuous_id.sub continuous_const).continuousAt`. Simplify `this` using `[ContinuousAt]`. Use `filter_upwards [ht hB] with r hr`.
+
+Establish `h` using `modulus_add_eq (K := F) (x := 1) (d := r - 1) one_ne_zero (by simpa using hr)`. Simplify using `using h`.
+-/
 theorem ev_modulus : ∀ᶠ r in 𝓝 (1 : F), GroundTheory.LocalField.modulus r = 1 := by
   have hB : (valBall F 1 : Set F) ∈ 𝓝 (0 : F) := (isOpen_valBall 1).mem_nhds (zero_mem _)
   have ht : Tendsto (fun r : F => r - 1) (𝓝 1) (𝓝 0) := by
@@ -117,6 +142,15 @@ section Support
 
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport Ψ)` using `hΨ.2`. Establish `h1 : ∀ᶠ e in 𝓝 (1 : E), ∀ x ∈ tsupport Ψ, Ψ (x * e) = Ψ x`. Use `hK.eventually_forall_of_forall_eventually (fun y _ => ?_)` and prove the remaining obligations. Establish `f1 : IsLocallyConstant fun p : E × E => Ψ (p.2 * p.1)` using `hΨ.1.comp_continuous (continuous_snd.mul continuous_fst)`. Establish `f2 : IsLocallyConstant fun p : E × E => Ψ p.2` using `hΨ.1.comp_continuous continuous_snd`.
+
+Use `filter_upwards [f1.eventually_eq (1, y), f2.eventually_eq (1, y)] with p h1 h2`. Rewrite using `[h1, h2, mul_one]`. Establish `ti : Tendsto (fun e : E => e⁻¹) (𝓝 1) (𝓝 1)`. Establish `: ContinuousAt (fun e : E => e⁻¹) 1` using `continuousAt_inv₀ one_ne_zero`. Simplify `this` using `[ContinuousAt]`.
+
+Establish `hne : ∀ᶠ e : E in 𝓝 1, e ≠ 0` using `eventually_ne_nhds one_ne_zero`. Use `filter_upwards [h1, ti.eventually h1, hne] with e h1 h2 h0 x`. Distinguish the cases in `hx : x ∈ tsupport Ψ`. Conclude with `h1 x hx`. Distinguish the cases in `hxe : x * e ∈ tsupport Ψ`.
+
+Use `h2 _ hxe` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right₀ h0]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxe]`.
+-/
 theorem ev_dil {Ψ : E → ℂ} (hΨ : Ψ ∈ SBE E) : ∀ᶠ e in 𝓝 (1 : E), ∀ x, Ψ (x * e) = Ψ x := by
   have hK : IsCompact (tsupport Ψ) := hΨ.2
   have h1 : ∀ᶠ e in 𝓝 (1 : E), ∀ x ∈ tsupport Ψ, Ψ (x * e) = Ψ x := by
@@ -139,6 +173,11 @@ theorem ev_dil {Ψ : E → ℂ} (hΨ : Ψ ∈ SBE E) : ∀ᶠ e in 𝓝 (1 : E),
     exact this.symm
   · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxe]
 
+/- English proof (translation)
+Establish `hV : (c.ker : Set Eˣ) ∈ 𝓝 (1 : Eˣ)` using `(GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous c hc).mem_nhds (one_mem _)`. Rewrite `hV` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTV⟩` from `hV`. Simplify using `only [Units.val_one] at hT`. Use `filter_upwards [hT] with e he u hu`.
+
+Conclude with `hTV (show (u : E) ∈ T by rw [hu]; exact he)`.
+-/
 theorem ev_char (c : Eˣ →* ℂˣ) (hc : Continuous c) :
     ∀ᶠ e in 𝓝 (1 : E), ∀ u : Eˣ, (u : E) = e → c u = 1 := by
   have hV : (c.ker : Set Eˣ) ∈ 𝓝 (1 : Eˣ) :=
@@ -156,6 +195,11 @@ section Chirp
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 variable {E : Type} [Field E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ b in 𝓝 (0 : F), ∀ z ∈ tsupport Ψ, (χ (b * Algebra.norm F z) : ℂ) = 1`. Use `IsCompact.eventually_forall_of_forall_eventually hΨ (fun y _ => ?_)` and prove the remaining obligations. Establish `f1 : IsLocallyConstant fun p : F × E => (χ (p.1 * Algebra.norm F p.2) : ℂ)` using `hlc.comp_continuous (continuous_fst.mul (hN.comp continuous_snd))`. Use `filter_upwards [f1.eventually_eq (0, y)] with p h1`. Simplify using `using h1`.
+
+Use `filter_upwards [h1] with b hb z`. Distinguish the cases in `hz : z ∈ tsupport Ψ`. Rewrite using `[hb z hz, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, mul_zero]`.
+-/
 theorem ev_chirp {χ : AddChar F Circle} (hlc : IsLocallyConstant fun x => (χ x : ℂ))
     (hN : Continuous (Algebra.norm F : E → F)) {Ψ : E → ℂ} (hΨ : HasCompactSupport Ψ) :
     ∀ᶠ b in 𝓝 (0 : F), ∀ z, (χ (b * Algebra.norm F z) : ℂ) * Ψ z = Ψ z := by
@@ -178,6 +222,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 variable {E : Type} [CommRing E] [Nontrivial E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Establish `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det` using `⟨t, ht⟩`. Establish `h0 : Algebra.norm F (h.choose : E) = (g.val).det` using `h.choose_spec`. Establish `hne : Algebra.norm F (h.choose : E) ≠ 0` using `(h.choose.isUnit.map (Algebra.norm F : E →* F)).ne_zero`. Take `⟨u, hu⟩ : ∃ u : Eˣ, t = h.choose * u` from `⟨h.choose⁻¹ * t, by group⟩`. Establish `hN : Algebra.norm F (u : E) = 1`.
+
+Establish `e : Algebra.norm F (h.choose : E) * Algebra.norm F (u : E) = Algebra.norm F (h.choose : E) * 1`. Rewrite using `[← map_mul, ← Units.val_mul, ← hu, ht, h0, mul_one]`. Conclude with `mul_left_cancel₀ hne e`. Establish `hfun : (fun y => Φ (y * (t : E))) = fun y => (((c u)⁻¹ : ℂˣ) : ℂ) * Φ (y * (h.choose : E))`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[hu, Units.val_mul, ← mul_assoc]`. Conclude with `hΦ u hN _`. Establish `hcu : ((c u : ℂˣ) : ℂ) * (((c u)⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[piG, dif_pos h, hfun, GlobalTheory.CompanionTheory.WeilChoice.rW_const_mul, hu, map_mul, Units.val_mul]`.
+
+Take the linear combination `(-(((c h.choose : ℂˣ) : ℂ) * (((modulus (g.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * rW χ σ μE lam (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => Φ (x * (h.choose : E))) x)) * hcu`.
+-/
 theorem piG_choice (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) {Φ : E → ℂ}
     (hΦ : ∀ u : Eˣ, Algebra.norm F (u : E) = 1 → ∀ x, Φ (x * u) = (((c u)⁻¹ : ℂˣ) : ℂ) * Φ x)
     (g : GL (Fin 2) F) (t : Eˣ) (ht : Algebra.norm F (t : E) = (g.val).det) (x : E) :
@@ -206,6 +259,9 @@ theorem piG_choice (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E
       rW χ σ μE lam (g.val 0 0 / (g.val).det) (g.val 0 1)
         (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => Φ (x * (h.choose : E))) x)) * hcu
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[piG_choice χ σ μE lam c hΦ g 1 (by simp [hg]), hg]`. Simplify using `[rWm]`.
+-/
 theorem piG_det_one (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) {Φ : E → ℂ}
     (hΦ : ∀ u : Eˣ, Algebra.norm F (u : E) = 1 → ∀ x, Φ (x * u) = (((c u)⁻¹ : ℂˣ) : ℂ) * Φ x)
     (g : GL (Fin 2) F) (hg : (g.val).det = 1) :
@@ -214,22 +270,37 @@ theorem piG_det_one (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure 
   rw [piG_choice χ σ μE lam c hΦ g 1 (by simp [hg]), hg]
   simp [rWm]
 
+/- English proof (translation)
+Rewrite using `[nsg, if_pos ⟨t, rfl⟩]`.
+-/
 theorem nsg_norm (t : Eˣ) : nsg E (Algebra.norm F (t : E)) = 1 := by
   rw [nsg, if_pos ⟨t, rfl⟩]
 
+/- English proof (translation)
+Use `nsg_norm (F := F) (1 : Eˣ)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem nsg_one : nsg E (1 : F) = 1 := by
   have := nsg_norm (F := F) (1 : Eˣ)
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[rW, if_pos rfl]`.
+-/
 theorem rW_zero (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (a b d : F) (Φ : E → ℂ) (z : E) :
     rW χ σ μE lam a b 0 d Φ z = (χ (a * b * Algebra.norm F z) : ℂ) * nsg E a * ((modulus a : ℝ) : ℂ) *
       Φ (algebraMap F E a * z) := by
   rw [rW, if_pos rfl]
 
+/- English proof (translation)
+Simplify using `[rWm, rW_zero, nsg_one]`.
+-/
 theorem rWm_upper (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (x : F) (Φ : E → ℂ) (z : E) :
     rWm χ σ μE lam !![1, x; 0, 1] Φ z = (χ (x * Algebra.norm F z) : ℂ) * Φ z := by
   simp [rWm, rW_zero, nsg_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[rWm, rW_zero, nsg_one]`.
+-/
 theorem rWm_one (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (Φ : E → ℂ) :
     rWm χ σ μE lam 1 Φ = Φ := by
   funext z

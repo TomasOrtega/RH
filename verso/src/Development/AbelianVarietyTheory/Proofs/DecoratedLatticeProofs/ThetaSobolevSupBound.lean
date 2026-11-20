@@ -23,6 +23,13 @@ open GlobalTheory.FockCompare GlobalTheory.OrientedHeis GlobalTheory.ThetaGrowth
 
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WA T S)` using `⟨rfl⟩`. Take `⟨-, hN⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WA T S) (ratL T S) K hK hcov`. Take `⟨N, hN⟩` from `hN φ hφ.cont (theta_norm_periodic hψ hφ)`. Establish `hμ` using `hm.1`.
+
+Establish `hs : IsAddFundamentalDomain (ratL T S) ((fun w => -y + w) ⁻¹' 𝓕) μ` using `hm.2.1.preimage_of_equiv (measurePreserving_add_left μ (-y)).quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => by`. Express the relevant statement in the definitionally equal form `-y + (γ + x) = γ + (-y + x)`. Normalize the expressions using the abelian group laws. Establish `e1` using `(measurePreserving_add_left μ y).setLIntegral_comp_preimage_emb (measurableEmbedding_addLeft y) (fun w => ‖φ w‖ₑ ^ 2) ((fun w => -y + w) ⁻¹' 𝓕)`. Establish `e2 : (fun a => y + a) ⁻¹' ((fun w => -y + w) ⁻¹' 𝓕) = 𝓕`.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite `e1` using `[e2]`. Rewrite using `[e1, (hN μ _ hμ hs).2.2.1, (hN μ 𝓕 hμ hm.2.1).2.2.1, measure_preimage_add]`.
+-/
 theorem lintegral_translate (hψ : IsStdChar D ψ (-1)) {φ : WO S T → ℂ} (hφ : IsThetaFunO ψ S T φ)
     {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (hm : IsCovolOne (ratL T S) μ 𝓕) (y : WO S T) :
     ∫⁻ w in 𝓕, ‖φ (y + w)‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖φ w‖ₑ ^ 2 ∂μ := by
@@ -44,6 +51,27 @@ theorem lintegral_translate (hψ : IsStdChar D ψ (-1)) {φ : WO S T → ℂ} (h
   rw [e2] at e1
   rw [e1, (hN μ _ hμ hs).2.2.1, (hN μ 𝓕 hμ hm.2.1).2.2.1, measure_preimage_add]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WA T S)` using `⟨rfl⟩`. Take `⟨⟨μ₀, 𝓕₀, hμ, h𝓕, h1⟩, -⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WA T S) (ratL T S) K hK hcov`. Establish `: Countable (ratL T S)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `ι : (Fin N → ℝ) →+ WA T S` to `(iotaW σ T S).comp b.equivFun.symm.toLinearMap.toAddMonoidHom`.
+
+Set `π : WA T S →+ (Fin N → ℝ)` to `b.equivFun.toLinearMap.toAddMonoidHom.comp (piW θ T S)`. Establish `hι : Continuous ι` using `(hc.continuous_iota T S).comp b.equivFunL.symm.continuous`. Establish `hπ : Continuous π` using `b.equivFunL.continuous.comp (continuous_pi' hc.inf T S)`. Establish `hπι : ∀ t, π (ι t) = t` using `fun t => by show b.equivFun (piW θ T S (iotaW σ T S (b.equivFun.symm t))) = t`. Rewrite using `[hc.pi_iota, LinearEquiv.apply_symm_apply]`.
+
+Establish `hιπ : ∀ w, ι (π w) = iotaW σ T S (piW θ T S w)` using `fun w => by show iotaW σ T S (b.equivFun.symm (b.equivFun (piW θ T S w))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Take `⟨c, K₁, hK₁, hreal⟩` from `lintegral_real_le (G := WA T S) μ₀ ι π hι hπ hπι hK₀ h0 (isCompact_univ_pi fun _ : Fin N => isCompact_Icc (a := (0 : ℝ)) (b := 1))`. Take `⟨M, hM⟩` from `lintegral_compact_le (G := WA T S) (ratL T S) μ₀ h𝓕 hK₁`. Use `⟨c * M, fun μ 𝓕 hm n hn φ hφ hl y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e, he, heL⟩` from `exists_dilation (S := S) (T := T) hn`. Establish `hsum : ∀ t : Fin N → ℝ, y + ∑ i, iotaW σ T S (t i • n • b i) = y + e (ι t)` using `fun t => by`. Rewrite using `[he]`. Use `show _ = y + n • iotaW σ T S (b.equivFun.symm t)`. Rewrite using `[Module.Basis.equivFun_symm_apply, ← map_nsmul, Finset.smul_sum, map_sum]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_comm]`. Establish `en : ∀ z : ℂ, ENNReal.ofReal (‖z‖ ^ 2) = ‖z‖ₑ ^ 2` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Establish `hmeas : Measurable fun w : WA T S => ‖φ (y + e w)‖ₑ ^ 2` using `(hφ.cont.comp (continuous_const.add e.continuous)).measurable.enorm.pow_const 2`.
+
+Establish `a1` using `hreal _ hmeas fun w hw => by`. Establish `hinf : (w - ι (π w)).map (infPart D) = 0`. Establish `hp : piW θ T S (w - ι (π w)) = 0` using `by rw [hιπ, AddMonoidHom.map_sub, hc.pi_iota, sub_self]`. Use extensionality with `i j`. Conclude with `ThetaCont.infPart_eq_zero hc _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`.
+
+Use `GlobalTheory.HeisOrtho.norm_heisO hψ.1 φ (n • (w - ι (π w))) (y + e (ι (π w)))` as an intermediate fact. Rewrite `this` using `[hl _ hw hinf, ← he, add_assoc, ← map_add, add_sub_cancel]`. Rewrite using `[← en, ← en, this]`. Establish `a2` using `hM _ hmeas fun γ hγ w => by`. Rewrite using `[← en, ← en, map_add, add_left_comm, theta_norm_periodic hψ hφ _ ((heL γ).2 hγ)]`.
+
+Establish `a3 : ∫⁻ w in 𝓕₀, ‖φ (y + e w)‖ₑ ^ 2 ∂μ₀ = ∫⁻ w in 𝓕, ‖φ (y + w)‖ₑ ^ 2 ∂μ` using `lintegral_comp_aut (G := WA T S) (ratL T S) hK hcov e heL hμ h𝓕 h1 hm.1 hm.2.1 hm.2.2 (f := fun x => φ (y + x)) (hφ.cont.comp (continuous_const.add continuous_id)) fun γ hγ w => by`. Express the relevant statement in the definitionally equal form `‖φ (y + (γ + w))‖ = ‖φ (y + w)‖`. Rewrite using `[add_left_comm]`. Conclude with `theta_norm_periodic hψ hφ γ hγ _`. Establish `a3'` using `lintegral_translate hψ hφ hm y`.
+
+Simplify using `only [hsum]`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun t => ‖φ (y + e (ι t))‖ ^ 2) (Filter.Eventually.of_forall fun w => by positivity) ((hφ.cont.comp (continuous_const.add (e.continuous.comp hι))).norm.pow 2).aestronglyMeasurable]`. Simplify using `only [en]`. Establish `a4` using `a1.trans (mul_le_mul_right (a2.trans_eq (congrArg _ ((a3.trans a3').trans (l2O_sq_eq_lintegral μ 𝓕 φ).symm))) _)`. Use `(ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top M) (ENNReal.pow_ne_top (l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hm.1 hm.2.1 hφ)))) a4).trans_eq ?_` and prove the remaining obligations.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem cube_dilate_bound_at (hψ : IsStdChar D ψ (-1)) (hc : Chart θ σ) {N : ℕ} (b : Module.Basis (Fin N) ℝ (RW T S))
     {K₀ : Set (WO S T)} (h0 : K₀ ∈ 𝓝 (0 : WO S T)) (hK₀ : IsCompact K₀) :
     ∃ c : ℝ≥0, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ n : ℕ, 0 < n →

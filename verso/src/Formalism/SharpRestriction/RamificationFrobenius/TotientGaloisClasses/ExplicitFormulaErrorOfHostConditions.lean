@@ -42,11 +42,17 @@ def ChebyshevGrowthImpliesZeroFree : Prop :=
 
 end Level
 
+/- English proof (translation)
+Introduce `ψ hψ`. Take `⟨Λ, h1, h2⟩` from `h ψ hψ`. Conclude with `h2 ψ h1`.
+-/
 theorem zeroFreeOn_of_levels {Q : PChar → Prop} (h : ∀ ψ, Q ψ → ∃ Λ : Level, ψ ∈ Λ.KEPT ∧ Λ.ZeroFreeLevel) : ZeroFreeOn Q := by
   intro ψ hψ
   obtain ⟨Λ, h1, h2⟩ := h ψ hψ
   exact h2 ψ h1
 
+/- English proof (translation)
+Substitute `he` using the available equality. Rewrite `hc` using `[DirichletCharacter.changeLevel_self]`. Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pchar_mk_eq_of_changeLevel_eq_self_of_primitive {N d : ℕ} [NeZero N] [NeZero d] (χ : DirichletCharacter ℂ N)
     (ψ : DirichletCharacter ℂ d) (hd : d ∣ N) (hc : DirichletCharacter.changeLevel hd ψ = χ)
     (h1 : ψ.IsPrimitive) (h2 : χ.IsPrimitive) (he : d = N) :
@@ -56,22 +62,34 @@ private theorem pchar_mk_eq_of_changeLevel_eq_self_of_primitive {N d : ℕ} [NeZ
   subst hc
   rfl
 
+/- English proof (translation)
+Use `haveI : NeZero ψ.χ.conductor := ⟨ψ.χ.conductor_ne_zero⟩`. Conclude with `pchar_mk_eq_of_changeLevel_eq_self_of_primitive ψ.χ ψ.χ.primitiveCharacter ψ.χ.conductor_dvd_level ψ.χ.changeLevel_primitiveCharacter ψ.χ.primitiveCharacter_isPrimitive ψ.prim ψ.prim`.
+-/
 theorem PChar.of_self (ψ : PChar) : PChar.of ψ.χ = ψ := by
   haveI : NeZero ψ.χ.conductor := ⟨ψ.χ.conductor_ne_zero⟩
   exact pchar_mk_eq_of_changeLevel_eq_self_of_primitive ψ.χ ψ.χ.primitiveCharacter ψ.χ.conductor_dvd_level
     ψ.χ.changeLevel_primitiveCharacter ψ.χ.primitiveCharacter_isPrimitive ψ.prim ψ.prim
 
+/- English proof (translation)
+Substitute `he` using the available equality. Take `rfl` from `DirichletCharacter.level_one ψ`. Both sides reduce to the same expression.
+-/
 private theorem pchar_mk_eq_one_of_level_eq_one {d : ℕ} [NeZero d] (ψ : DirichletCharacter ℂ d) (h : ψ.IsPrimitive)
     (he : d = 1) : PChar.mk d ψ h = PChar.one := by
   subst he
   obtain rfl := DirichletCharacter.level_one ψ
   rfl
 
+/- English proof (translation)
+Use `haveI : NeZero (1 : DirichletCharacter ℂ M).conductor := ⟨(1 : DirichletCharacter ℂ M).conductor_ne_zero⟩`. Conclude with `pchar_mk_eq_one_of_level_eq_one _ _ DirichletCharacter.conductor_one`.
+-/
 theorem PChar.of_one (M : ℕ) [NeZero M] : PChar.of (1 : DirichletCharacter ℂ M) = PChar.one := by
   haveI : NeZero (1 : DirichletCharacter ℂ M).conductor :=
     ⟨(1 : DirichletCharacter ℂ M).conductor_ne_zero⟩
   exact pchar_mk_eq_one_of_level_eq_one _ _ DirichletCharacter.conductor_one
 
+/- English proof (translation)
+Substitute `hde` using the available equality. Establish `hq : ψ = φ` using `DirichletCharacter.changeLevel_injective hd (hψ.trans hφ.symm)`. Substitute `hq` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pchar_mk_eq_of_changeLevel_eq_of_level_eq {M d e : ℕ} [NeZero M] [NeZero d] [NeZero e]
     (χ : DirichletCharacter ℂ M) (ψ : DirichletCharacter ℂ d) (φ : DirichletCharacter ℂ e)
     (hd : d ∣ M) (he' : e ∣ M) (hde : d = e) (hψ : DirichletCharacter.changeLevel hd ψ = χ)
@@ -82,17 +100,26 @@ private theorem pchar_mk_eq_of_changeLevel_eq_of_level_eq {M d e : ℕ} [NeZero 
   subst hq
   rfl
 
+/- English proof (translation)
+Apply `DirichletCharacter.conductor_dvd_of_mem_conductorSet` to reduce the goal to its premises. Conclude with `⟨χ.conductor_dvd_level, χ.primitiveCharacter⁻¹, by rw [map_inv, DirichletCharacter.changeLevel_primitiveCharacter]⟩`.
+-/
 private theorem conductor_inv_dvd_conductor {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) :
     χ⁻¹.conductor ∣ χ.conductor := by
   apply DirichletCharacter.conductor_dvd_of_mem_conductorSet
   exact ⟨χ.conductor_dvd_level, χ.primitiveCharacter⁻¹,
     by rw [map_inv, DirichletCharacter.changeLevel_primitiveCharacter]⟩
 
+/- English proof (translation)
+Apply `Nat.dvd_antisymm (conductor_inv_dvd_conductor χ)` to reduce the goal to its premises. Simplify using `using conductor_inv_dvd_conductor χ⁻¹`.
+-/
 private theorem conductor_inv_eq_conductor {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) :
     χ⁻¹.conductor = χ.conductor := by
   apply Nat.dvd_antisymm (conductor_inv_dvd_conductor χ)
   simpa using conductor_inv_dvd_conductor χ⁻¹
 
+/- English proof (translation)
+Use `haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩`. Use `haveI : NeZero χ⁻¹.conductor := ⟨χ⁻¹.conductor_ne_zero⟩`. Conclude with `pchar_mk_eq_of_changeLevel_eq_of_level_eq χ⁻¹ χ⁻¹.primitiveCharacter χ.primitiveCharacter⁻¹ χ⁻¹.conductor_dvd_level χ.conductor_dvd_level (conductor_inv_eq_conductor χ) χ⁻¹.changeLevel_primitiveCharacter (by rw [map_inv, DirichletCharacter.changeLevel_primitiveCharacter]) _ _`.
+-/
 theorem PChar.of_inv {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) : PChar.of χ⁻¹ = (PChar.of χ).inv := by
   haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩
   haveI : NeZero χ⁻¹.conductor := ⟨χ⁻¹.conductor_ne_zero⟩
@@ -113,6 +140,9 @@ def Level.ofSub {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) 
   psK_spec := fun _ h => by cases h
   o := Nat.card Ξ
 
+/- English proof (translation)
+Simplify using `[Level.ofSub]`.
+-/
 theorem Level.mem_ofSub {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) (ψ : PChar) :
     ψ ∈ (Level.ofSub Ξ).KEPT ↔ ∃ χ ∈ Ξ, PChar.of χ = ψ := by
   classical
@@ -120,9 +150,15 @@ theorem Level.mem_ofSub {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter 
 
 def Level.cyc (ψ : PChar) : Level := Level.ofSub (Subgroup.zpowers ψ.χ)
 
+/- English proof (translation)
+The claim follows from `(Level.mem_ofSub _ _).2 ⟨ψ.χ, Subgroup.mem_zpowers _, ψ.of_self⟩`.
+-/
 theorem Level.mem_cyc (ψ : PChar) : ψ ∈ (Level.cyc ψ).KEPT :=
   (Level.mem_ofSub _ _).2 ⟨ψ.χ, Subgroup.mem_zpowers _, ψ.of_self⟩
 
+/- English proof (translation)
+The claim follows from `zeroFreeOn_of_levels fun ψ hψ => ⟨_, Level.mem_cyc ψ, h ψ hψ⟩`.
+-/
 theorem zeroFreeOn_of_cyc {Q : PChar → Prop} (h : ∀ ψ, Q ψ → (Level.cyc ψ).ZeroFreeLevel) : ZeroFreeOn Q :=
   zeroFreeOn_of_levels fun ψ hψ => ⟨_, Level.mem_cyc ψ, h ψ hψ⟩
 
@@ -152,6 +188,11 @@ structure EAtH (Λ : Level) {φ : Frame} (H : HostRaw φ) (TT : Finset φ.A) (x 
 
 def HType.level (T : HType) (o : ℕ) : Level := ⟨T.toKSet, o⟩
 
+/- English proof (translation)
+Use `⟨rfl, h.kept, h.e, hs, h.c1, fun θ hθ N _ χ hχ => (h.b.2 θ hθ N χ hχ).trans ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `hr`. Establish `hJ : (0 : ℝ) < T.J` using `by exact_mod_cast T.one_le_J`. Establish `h3` using `Real.log_le_log (Real.rpow_pos_of_pos (by linarith) _) h2`. Rewrite `h3` using `[Real.log_rpow (by linarith), div_mul_eq_mul_div, one_mul, div_le_iff₀ hJ]`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by linarith) hC`.
+-/
 theorem EAtH.explicit_formula_error_of_host_conditions {T : HType} {κ : HConst} {X x : ℝ} {φ : Frame} {H : HostRaw φ} (hr : T.InRange X x φ.e) (hC : 0 ≤ κ.C)
     (h : HostConditions T κ X x H) {TT : Finset φ.A} (hs : φ.Shares TT (x ^ (-1 + T.eps))) :
     EAtH (T.level φ.o) H TT x T.eps (κ.C * T.J) := by

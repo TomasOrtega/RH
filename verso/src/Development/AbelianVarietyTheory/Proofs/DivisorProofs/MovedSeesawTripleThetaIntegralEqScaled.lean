@@ -29,6 +29,9 @@ namespace GlobalTheory.BotMove
 
 variable {D : D7} {T : Type} {A A' WW : HSp D}
 
+/- English proof (translation)
+Establish `hgs : (ofSgn true A).symm g ∈ GfC (neg A)` using `hg`. Establish `key : Y.ω t (g, h) (pureTensorO ψ θ (neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.f t) P) = pureTensorO ψ θ (neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.ω t (g, h) (Y.f t)) P` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ (neg A) WW _ _ ((Y.ω t).toSgn true) (hY.weil t) hY.isVac.2.inf (fun τ => -Y.rA.s τ) (fun τ => -Y.rA.s τ) Y.rA.B Y.rA.B Y.rW.s Y.rW.s Y.rW.B Y.rW.B ((ofSgn true A).symm g) h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finit …`. Use `show Y.ω t (x, y) (pureTensorO ψ θ (neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B ((r t)⁻¹ • Y.ω t (g, h) (Y.f t)) P) 0 = (r t)⁻¹ * Y.ω t (x * g, y * h) (pureTensorO ψ θ (neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.f t) P) 0`. Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply, smul_eq_mul, ← key, ← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem moveTri_ker (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     {α β : T → ((AE D)ˣ →* Circle)} {νH : T → HChar D.host.E} {S : T → Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hY : Y.Is ψ θ α β νH S) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
@@ -52,6 +55,15 @@ theorem moveTri_ker (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : I
   rw [GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply, smul_eq_mul, ← key, ← Module.End.mul_apply, ← map_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D T A A' WW Y ψ θ α β νH S hY ΛA ΛA' ΛW g hg g' h hh t₀ r r' hr t P y`. Establish `hk : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker ψ θ t P y = fun x => (r t)⁻¹ * Y.ker ψ θ t P (y * h) (x * g)`. Use function extensionality and compare the values at `(moveTri_ker Y ψ θ hY ΛA ΛA' ΛW hg g' hh t₀ r r' t P y)`. Establish `he : MeasurableEmbedding (fun x : GA D A => x * g⁻¹)` using `(MeasurableEquiv.mulRight g⁻¹).measurableEmbedding`. Establish `hpre : (fun x : GA D A => x * g⁻¹) ⁻¹' ((fun x => x * g) ⁻¹' Y.fd) = Y.fd`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hu : IsUnit (r t)⁻¹` using `isUnit_iff_ne_zero.2 (inv_ne_zero (hr t))`. Prove the components needed by the constructor for the conclusion. Use `show IntegrableOn ((moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker ψ θ t P y) ((fun x => x * g) ⁻¹' Y.fd) (Y.m.map fun x => x * g⁻¹) ↔ _`.
+
+Rewrite using `[he.integrableOn_map_iff, hpre, hk]`. Simplify using `only [Function.comp_def, inv_mul_cancel_right]`. Conclude with `integrable_const_mul_iff hu _`. Use `show ∫ x in (fun x => x * g) ⁻¹' Y.fd, (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker ψ θ t P y x ∂(Y.m.map fun x => x * g⁻¹) = (r t)⁻¹ * ∫ x in Y.fd, Y.ker ψ θ t P (y * h) x ∂Y.m`. Rewrite using `[he.setIntegral_map, hpre, hk]`.
+
+Simplify using `only [inv_mul_cancel_right]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem moveTri_I : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
     Y.Is ψ θ α β νH S →

@@ -6,6 +6,13 @@ open UpperTheory.Gal.W2.Seed UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl 
 open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `_ hKN hCG E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W haux N _ _ L hw Ty hTy k hk hkr`. Take `⟨k', hk', hlev, hJ, hχ⟩` from `hk`. Establish `hK : k ∈ Ty.K`. Use `(hTy.K_iff k).2 ⟨⟨k', hk', hlev⟩, fun w hwW => ?_⟩` and prove the remaining obligations. Establish `hr : (r : 𝓞 E) ∈ w.1.asIdeal` using `haux.half.above w hwW`.
+
+Take `⟨K, hK, -, -, -, -, hIw, -⟩` from `hCG E n r haux.prime.pos w.1`. Establish `hf` using `hKN E A n p S F w (L w) (hTy.fac w) r haux.prime haux.good hr r haux.prime.pos K hK`. Conclude with `hIw hr (hf.2 k hkr)`. Use `(Ty.mem_kerK k).2 ⟨hK, ?_⟩` and prove the remaining obligations. Establish `hpr : Ty.L.pr k = comp w₀ k'`.
+
+Rewrite using `[hTy.L_eq, ← hk']`. Conclude with `(hTy.fac ⟨w₀, hw⟩).1 k'`. Use `(hTy.ψ_eq _ ⟨comp w₀ (F.th k'), hJ⟩ ?_).trans hχ` and prove the remaining obligations. Simplify using `only [hpr, th_eq F, CertificateRingHomMap.comp_th, CertificateRingHomMap.invT_val]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pStabKer :
     FacEq → KNFact → CongGrpEx → StabKer := by
   intro _ hKN hCG E _ _ _ A n p _ S F x U w₀ Up V _ _ _ _ _ r W haux N _ _ L hw Ty hTy k hk hkr

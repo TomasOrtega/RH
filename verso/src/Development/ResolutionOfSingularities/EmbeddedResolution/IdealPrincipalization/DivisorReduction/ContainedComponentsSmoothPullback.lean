@@ -21,12 +21,18 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Smooth) hpb hφ`.
+-/
 theorem smooth_of_isPullback (X Y S S' : Scheme.{u}) (σ : S ⟶ X) (σ' : S' ⟶ Y) (φ : Y ⟶ X)
     (ψ : S' ⟶ S) (hpb : IsPullback σ' ψ φ σ) (hφ : AlgebraicGeometry.Smooth φ) :
     AlgebraicGeometry.Smooth ψ :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback
     (P := @AlgebraicGeometry.Smooth) hpb hφ
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `hV.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Conclude with `FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap T.base T.structMap h T.ideal m`.
+-/
 theorem orderAtLeastLocus_comap_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth h]
     (_hq : h ≫ T.structMap = q) (m : ℕ) :
@@ -35,10 +41,16 @@ theorem orderAtLeastLocus_comap_of_smooth (T : MarkedIdealWithBoundary.{u}) (hV 
   have : AlgebraicGeometry.Smooth T.structMap := hV.smooth
   exact FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap T.base T.structMap h T.ideal m
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem withBoundary_withBoundary (T : MarkedIdealWithBoundary.{u})
     (E F : List T.scheme.IdealSheafData) :
     (T.withBoundary E).withBoundary F = T.withBoundary F := rfl
 
+/- English proof (translation)
+Establish `h1 : ((S.withBoundary E).withBoundary S.boundary).IsAdmissible` using `MarkedIdealWithBoundary.validOfSameNontrivialBoundary _ _ hV hBE.symm`. Rewrite `h1` using `[withBoundary_withBoundary, MarkedIdealWithBoundary.withBoundary_self]`. Conclude with `h1`.
+-/
 private theorem isAdmissible_of_withBoundary_isAdmissible (S : MarkedIdealWithBoundary.{u})
     (E : List S.scheme.IdealSheafData) (hBE : MarkedIdealWithBoundary.SameNontrivialBoundary S.boundary E)
     (hV : (S.withBoundary E).IsAdmissible) : S.IsAdmissible := by
@@ -47,6 +59,9 @@ private theorem isAdmissible_of_withBoundary_isAdmissible (S : MarkedIdealWithBo
   rw [withBoundary_withBoundary, MarkedIdealWithBoundary.withBoundary_self] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `T Y q h E' hBE hV`. Conclude with `isAdmissible_of_withBoundary_isAdmissible (T.pullbackAlong Y q h) E' hBE hV`.
+-/
 theorem isAdmissible_pullbackAlong_of_withBoundary_isAdmissible :
     ∀ (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base))
       (h : Y ⟶ T.scheme) (E' : List Y.IdealSheafData),
@@ -55,6 +70,11 @@ theorem isAdmissible_pullbackAlong_of_withBoundary_isAdmissible :
   intro T Y q h E' hBE hV
   exact isAdmissible_of_withBoundary_isAdmissible (T.pullbackAlong Y q h) E' hBE hV
 
+/- English proof (translation)
+Introduce `T hV Y q h hsm hq E' hBE j hj hjE htake hV'`. Establish `: AlgebraicGeometry.Smooth h` using `hsm`. Establish `hj' : j < (T.pullbackAlong Y q h).boundary.length`. Simplify `hj` using `[MarkedIdealWithBoundary.pullbackAlong_boundary]`. Establish `hVal : (T.pullbackAlong Y q h).IsAdmissible` using `hvbr T Y q h E' hBE hV'`.
+
+Rewrite using `[containedComponentsIdeal_withBoundary T j Y q h E' hjE hj' htake]`. Conclude with `hfacts.preIdeal_pullbackAlong T hV Y q h hq hVal j hj hj'`.
+-/
 theorem containedComponentsIdeal_pullbackAlong_of_isAdmissible_pullbackAlong
     {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}} {hno : BlowupPreservesNoetherian.{u}}
     (hfacts : DivisorReductionTerminationProperties hres hno)
@@ -80,6 +100,9 @@ theorem containedComponentsIdeal_pullbackAlong_of_isAdmissible_pullbackAlong
   rw [containedComponentsIdeal_withBoundary T j Y q h E' hjE hj' htake]
   exact hfacts.preIdeal_pullbackAlong T hV Y q h hq hVal j hj hj'
 
+/- English proof (translation)
+The claim follows from `containedComponentsIdeal_pullbackAlong_of_isAdmissible_pullbackAlong hfacts isAdmissible_pullbackAlong_of_withBoundary_isAdmissible`.
+-/
 theorem containedComponentsIdeal_pullbackAlong_of_smooth {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} (hfacts : DivisorReductionTerminationProperties hres hno) :
     ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →

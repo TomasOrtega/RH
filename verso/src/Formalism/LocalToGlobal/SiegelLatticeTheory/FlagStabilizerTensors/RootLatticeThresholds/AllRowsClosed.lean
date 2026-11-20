@@ -13,23 +13,50 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.Arithm
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.RhoSurjW.reduction_map_surjective D X`.
+-/
 theorem rhoSurj_X : Function.Surjective (AllRowsRhoX.rhoX X) := Formalism.L2.SG.Pf.RhoSurjW.reduction_map_surjective D X
 
+/- English proof (translation)
+The claim follows from `redKerOne_of (X := X) (AllRowsRedKer.redKerP_holds X 0) (AllRowsRedKer.redKerP_holds X 1)`.
+-/
 theorem redKerOne_holds : RedKerOne X := redKerOne_of (X := X) (AllRowsRedKer.redKerP_holds X 0) (AllRowsRedKer.redKerP_holds X 1)
 
+/- English proof (translation)
+The claim follows from `etUniv_of (X := X) (redKer_of (X := X) (redKerOne_holds X))`.
+-/
 theorem etUniv_holds : EtUniv X := etUniv_of (X := X) (redKer_of (X := X) (redKerOne_holds X))
 
+/- English proof (translation)
+The claim follows from `etUnip_of (X := X) k (AllRowsRedKer.redKerP_holds X (1 - k)) S`.
+-/
 theorem etUnip_holds (k : Fin 2) (S : Set (Tup D k)) : EtUnip X k S := etUnip_of (X := X) k (AllRowsRedKer.redKerP_holds X (1 - k)) S
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.AllRowsKpp.kppShape_of_fwd (X := X) (rhoSurj_X X) (Formalism.L2.SG.Pf.KppFwdPf.kppFwd_holds (X := X))`.
+-/
 theorem kppShape_holds : AllRowsKpp.KppShape X := Formalism.L2.SG.Pf.AllRowsKpp.kppShape_of_fwd (X := X) (rhoSurj_X X) (Formalism.L2.SG.Pf.KppFwdPf.kppFwd_holds (X := X))
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.AllRowsEtAlg.etAlg_of (X := X) (rhoSurj_X X) S`.
+-/
 theorem etAlg_holds (S : Set (Tup2 D)) : EtAlg X S := Formalism.L2.SG.Pf.AllRowsEtAlg.etAlg_of (X := X) (rhoSurj_X X) S
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.AllRowsEtOne.etOne_of (X := X) (rhoSurj_X X) (kppShape_holds X) ψ₀ hψ₀`.
+-/
 theorem etOne_holds (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hψ₀ : ∀ k, ψ₀ k ≠ 1) : EtOne X ψ₀ := Formalism.L2.SG.Pf.AllRowsEtOne.etOne_of (X := X) (rhoSurj_X X) (kppShape_holds X) ψ₀ hψ₀
 
+/- English proof (translation)
+The claim follows from `isAdmIdem_eT_cyl (X := X) k S (etAlg_holds X (cyl D k S)) (etUnip_holds X k S)`.
+-/
 theorem isAdmIdem_cyl (k : Fin 2) (S : Set (Tup D k)) :
     X.B.I.IsAdmIdem X.B.μf X.B.g (D.host.g (1 - k)) (eT X (cyl D k S)) := isAdmIdem_eT_cyl (X := X) k S (etAlg_holds X (cyl D k S)) (etUnip_holds X k S)
 
+/- English proof (translation)
+Use `AllRowsKCRT.kcrt_holds X.B.I ((Nat.coprime_primes (D.host.g_prime _) (D.host.g_prime _)).2 ?_)` and prove the remaining obligations. Use `fin_cases k`. Conclude with `D.host.g_ne.symm`. Conclude with `D.host.g_ne`.
+-/
 theorem kcrt_g (k : Fin 2) : KCRT X.B.I (D.host.g (1 - k)) (D.host.g k) := by
   refine AllRowsKCRT.kcrt_holds X.B.I ((Nat.coprime_primes (D.host.g_prime _) (D.host.g_prime _)).2 ?_)
   fin_cases k
@@ -39,6 +66,9 @@ theorem kcrt_g (k : Fin 2) : KCRT X.B.I (D.host.g (1 - k)) (D.host.g k) := by
 def allRowsOfL (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hψ₀ : ∀ k, ψ₀ k ≠ 1) (hL : RowsLab X) : AllRows D :=
   allRowsOfP X ψ₀ (AllRowsRedKer.redKerP_holds X 0) (AllRowsRedKer.redKerP_holds X 1) (etOne_holds X ψ₀ hψ₀) hL
 
+/- English proof (translation)
+The claim follows from `admissibleCount_allRows_partner (X := X) ψ₀ (AllRowsRedKer.redKerP_holds X 0) (AllRowsRedKer.redKerP_holds X 1) (etOne_holds X ψ₀ hψ₀) hL hψ₀ hC1 hL6 hg hB (fun k S => etAlg_holds X (cyl D k S)) hP hAd`.
+-/
 theorem admissibleCount_allRows_level (ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ) (hψ₀ : ∀ k, ψ₀ k ≠ 1) (hL : RowsLab X)
     {n₀ : ℕ} {Alev C₃ c₃ cb : ℝ}
     (hC1 : Formalism.MainNotions.S.CountE.CountIdempotentsClass Formalism.MainNotions.S.CountE.PCount D n₀ Alev C₃ c₃ cb) (hL6 : ConclusionL D)

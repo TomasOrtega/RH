@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ K _ _ σ χ h`. Take `⟨⟨n, ρc, htr⟩, hip⟩` from `PI.XgCTieBrWork.Chars.absIrr_isIrr σ h`. Establish `htr' : ∀ x, σ (χ x) = Matrix.trace ((ρc x : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)` using `htr`. Establish `hchar : ∀ x, (PI.XgCTieBrWork.Chars.ofGL ρc).character x = σ (χ x)` using `fun x => by`. Rewrite using `[PI.XgCTieBrWork.Chars.char_ofGL, htr']`.
+
+Use `haveI : NeZero (Nat.card G : ℂ) := ⟨by exact_mod_cast Nat.card_pos.ne'⟩`. Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (NeZero.ne _)`. Establish `hfr` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank (PI.XgCTieBrWork.Chars.ofGL ρc) (PI.XgCTieBrWork.Chars.ofGL ρc)`. Establish `hsum : ∑ g : G, (PI.XgCTieBrWork.Chars.ofGL ρc).character g * (PI.XgCTieBrWork.Chars.ofGL ρc).character g⁻¹ = (Nat.card G : ℂ)`. Repeatedly rewrite using `[hchar]`.
+
+Rewrite using `[Nat.card_eq_fintype_card, ← hip]`. Unfold `Formalism.L2.NT.ipG`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `show σ (χ x) * σ (χ x⁻¹) = σ (χ x) * star (σ (χ x))`. Rewrite using `[htr' x, htr' x⁻¹, PI.XgCTieBrWork.Chars.star_trace_inv]`.
+
+Rewrite `hfr` using `[hsum, inv_mul_cancel₀ (NeZero.ne _)]`. Establish `h1 : Module.finrank ℂ (Representation.IntertwiningMap (PI.XgCTieBrWork.Chars.ofGL ρc) (PI.XgCTieBrWork.Chars.ofGL ρc)) = 1`. Conclude with `hfr.symm` after adjusting the coercions. Conclude with `⟨n, PI.XgCTieBrWork.Chars.ofGL ρc, PI.XgCTieBrWork.Chars.irr_of_finrank_one _ h1, funext hchar⟩`.
+-/
 theorem absIrrChar_comp_mem_gxIrrSet : ∀ {G : Type} [inst : Group G] [inst_1 : Fintype G] {K : Type} [inst_2 : Field K]
     [inst_3 : CharZero K] (σ : K →+* ℂ) (χ : G → K), IsAbsIrrChar χ →
     (fun g => σ (χ g)) ∈ Formalism.L2.Col.gxIrrSet (G := G) ℂ := by

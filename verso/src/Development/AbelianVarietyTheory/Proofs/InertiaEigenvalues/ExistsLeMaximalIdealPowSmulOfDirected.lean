@@ -6,6 +6,11 @@ open TensorProduct Polynomial IsLocalRing GlobalTheory.Pat
 
 namespace GlobalTheory.Chevalley
 
+/- English proof (translation)
+Establish `hdim : Ring.KrullDimLE 0 (B ⧸ maximalIdeal B ^ k)`. Rewrite using `[Ring.krullDimLE_zero_iff]`. Introduce `Q hQ`. Establish `h1 : maximalIdeal B ^ k ≤ Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))` using `fun x hx ↦ by simp [Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Establish `h2 : maximalIdeal B = Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))` using `(maximalIdeal.isMaximal B).eq_of_le (Ideal.IsPrime.ne_top inferInstance) (Ideal.IsPrime.le_of_pow_le h1)`.
+
+Use `haveI h3 : (Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))).IsMaximal := h2 ▸ maximalIdeal.isMaximal B`. Establish `h4` using `Ideal.IsMaximal.map_of_surjective_of_ker_le (f := Ideal.Quotient.mk (maximalIdeal B ^ k)) Ideal.Quotient.mk_surjective (m := Q.comap (Ideal.Quotient.mk (maximalIdeal B ^ k))) (by simpa using h1)`. Rewrite `h4` using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Then use the resulting hypothesis. Conclude with `IsNoetherianRing.isArtinianRing_of_krullDimLE_zero`.
+-/
 theorem isArtinianRing_quotient_maximalIdeal_pow (B : Type) [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] (k : ℕ) : IsArtinianRing (B ⧸ maximalIdeal B ^ k) := by
   have hdim : Ring.KrullDimLE 0 (B ⧸ maximalIdeal B ^ k) := by
@@ -24,6 +29,9 @@ theorem isArtinianRing_quotient_maximalIdeal_pow (B : Type) [CommRing B] [IsLoca
     rwa [Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective] at h4
   exact IsNoetherianRing.isArtinianRing_of_krullDimLE_zero
 
+/- English proof (translation)
+Use `haveI := isArtinianRing_quotient_maximalIdeal_pow B k`. Use `haveI : Module.Finite (B ⧸ maximalIdeal B ^ k) (M ⧸ (maximalIdeal B ^ k • (⊤ : Submodule B M))) := Module.Finite.of_restrictScalars_finite B (B ⧸ maximalIdeal B ^ k) _`. Conclude with `isArtinian_of_surjective_algebraMap (R := B ⧸ maximalIdeal B ^ k) Ideal.Quotient.mk_surjective`.
+-/
 theorem isArtinian_quotient_smul_top (B M : Type) [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M] (k : ℕ) :
     IsArtinian B (M ⧸ (maximalIdeal B ^ k • (⊤ : Submodule B M))) := by
@@ -36,6 +44,13 @@ end GlobalTheory.Chevalley
 
 namespace GlobalTheory.Chevalley
 
+/- English proof (translation)
+Use `set P := maximalIdeal B ^ k • (⊤ : Submodule B M)`. Use `haveI := isArtinian_quotient_smul_top B M k`. Take `⟨_, ⟨i, rfl⟩, hmin⟩` from `IsArtinian.set_has_minimal (Set.range fun i ↦ (K i).map P.mkQ) (Set.range_nonempty _)`. Use `⟨i, fun j ↦ ?_⟩` and prove the remaining obligations. Take `⟨l, hli, hlj⟩` from `hK i j`.
+
+Establish `hle : (K l).map P.mkQ ≤ (K i).map P.mkQ` using `Submodule.map_mono hli`. Establish `heq : (K l).map P.mkQ = (K i).map P.mkQ`. Assume the negation of the conclusion as `hne`. Conclude with `hmin _ ⟨l, rfl⟩ (lt_of_le_of_ne hle hne)`. Establish `h2 : (K i).map P.mkQ ≤ (K j).map P.mkQ` using `heq ▸ Submodule.map_mono hlj`.
+
+Establish `h3` using `Submodule.comap_mono (f := P.mkQ) h2`. Rewrite `h3` using `[Submodule.comap_map_mkQ, Submodule.comap_map_mkQ]`. Conclude with `le_sup_right.trans (h3.trans (by rw [sup_comm]))`.
+-/
 theorem exists_le_sup_maximalIdeal_pow_smul (B M ι : Type) [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M] (K : ι → Submodule B M)
     [Nonempty ι] (hK : Directed (· ≥ ·) K) (k : ℕ) :
@@ -60,6 +75,11 @@ end GlobalTheory.Chevalley
 namespace GlobalTheory.Chevalley
 
 open TensorProduct Polynomial IsLocalRing in
+/- English proof (translation)
+Establish `hmin : maximalIdeal B ∈ (maximalIdeal B ^ (n + 1)).minimalPrimes`. Use `⟨⟨(maximalIdeal.isMaximal B).isPrime, Ideal.pow_le_self (Nat.succ_ne_zero n)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨hq, hle⟩ -`. Conclude with `hq.le_of_pow_le hle`. Establish `: IsArtinianRing (B ⧸ maximalIdeal B ^ (n + 1))` using `IsLocalRing.quotient_artinian_of_mem_minimalPrimes_of_isLocalRing _ hmin`.
+
+Conclude with `isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := maximalIdeal B ^ (n + 1)))`.
+-/
 private theorem isArtinian_quotient_maximalIdeal_pow_succ_smul (B M : Type) [CommRing B]
     [IsLocalRing B] [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M]
     (n : ℕ) : IsArtinian B (M ⧸ (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M))) := by
@@ -73,6 +93,13 @@ private theorem isArtinian_quotient_maximalIdeal_pow_succ_smul (B M : Type) [Com
     (Ideal.Quotient.mk_surjective (I := maximalIdeal B ^ (n + 1)))
 
 open TensorProduct Polynomial IsLocalRing in
+/- English proof (translation)
+Establish `hbot` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := M ⧸ K) (maximalIdeal B) (maximalIdeal.isMaximal B).ne_top`. Establish `hx : K.mkQ x ∈ ⨅ n, maximalIdeal B ^ n • (⊤ : Submodule B (M ⧸ K))`. Rewrite using `[Submodule.mem_iInf]`. Introduce `n`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp (h n)`.
+
+Establish `hmap : (maximalIdeal B ^ n • (⊤ : Submodule B M)).map K.mkQ ≤ maximalIdeal B ^ n • (⊤ : Submodule B (M ⧸ K))`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Establish `hzq` using `hmap (Submodule.mem_map_of_mem hz)`. Establish `hy0 : K.mkQ y = 0` using `(Submodule.Quotient.mk_eq_zero K).mpr hy`.
+
+Rewrite using `[map_add, hy0, zero_add]`. Conclude with `hzq`. Rewrite `hx` using `[hbot, Submodule.mem_bot]`. Conclude with `(Submodule.Quotient.mk_eq_zero K).mp hx`.
+-/
 private theorem mem_of_forall_mem_sup_maximalIdeal_pow_smul (B M : Type) [CommRing B]
     [IsLocalRing B] [IsNoetherianRing B] [AddCommGroup M] [Module B M] [Module.Finite B M]
     (K : Submodule B M) (x : M)
@@ -95,6 +122,23 @@ private theorem mem_of_forall_mem_sup_maximalIdeal_pow_smul (B M : Type) [CommRi
   exact (Submodule.Quotient.mk_eq_zero K).mp hx
 
 open TensorProduct Polynomial IsLocalRing in
+/- English proof (translation)
+Take `⟨m, g, hg⟩` from `Module.Finite.exists_fin (R := B) (M := M)`. Establish `hlift : ∀ (J : Ideal B) (z : M), z ∈ J • (⊤ : Submodule B M) → ∃ c : Fin m → B, (∀ l, c l ∈ J) ∧ ∑ l, c l • g l = z`. Introduce `J z hz`. Rewrite `hz` using `[← hg, Submodule.mem_ideal_smul_span_iff_exists_sum]`. Take `⟨a, ha, rfl⟩` from `hz`.
+
+Conclude with `⟨a, ha, (Finsupp.sum_fintype a (fun i c => c • g i) fun i => zero_smul B (g i)).symm⟩`. Use `choose c hcI hcsum using fun k => hlift _ _ (hy k)`. Take `⟨S, hS⟩ : ∃ S : Fin m → ℕ → B, ∀ l n, S l n = ∑ k ∈ Finset.range n, c k l` from `⟨_, fun _ _ => rfl⟩`. Establish `hSdiff : ∀ l n p, n ≤ p → S l p - S l n ∈ maximalIdeal B ^ (s + n)`. Introduce `l n p hnp`.
+
+Rewrite using `[hS, hS, ← Finset.sum_range_add_sum_Ico _ hnp, add_sub_cancel_left]`. Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `(Finset.mem_Ico.mp hk).1`. Conclude with `Ideal.pow_le_pow_right (by omega) (hcI k l)`. Establish `hprec : IsPrecomplete (maximalIdeal B) B` using `inferInstance`.
+
+Establish `hlim : ∀ l, ∃ L, ∀ n, S l n - L ∈ maximalIdeal B ^ (s + n)`. Introduce `l`. Take `⟨L, hL⟩` from `hprec.prec (f := S l) (fun {a b} hab => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_sub, Submodule.neg_mem_iff]`. Conclude with `Ideal.pow_le_pow_right (by omega) (hSdiff l a b hab))`.
+
+Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `h1` using `hL (s + n)`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2` using `hSdiff l n (s + n) (by omega)`. Establish `e : S l n - L = (S l (s + n) - L) - (S l (s + n) - S l n)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.pow_le_pow_right (by omega) h1) h2`. Use `choose L hL using hlim`. Use `⟨y 0 + ∑ l, L l • g l, fun k => ?_⟩` and prove the remaining obligations. Establish `htel : ∑ l, S l k • g l = y k - y 0`.
+
+Simplify using `only [hS, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[hcsum]`. Conclude with `Finset.sum_range_sub y k`. Establish `e : y 0 + ∑ l, L l • g l - y k = -∑ l, (S l k - L l) • g l`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, htel]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Submodule.neg_mem_iff]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem_smul (hL l k) Submodule.mem_top`.
+-/
 private theorem exists_limit_of_sub_mem_maximalIdeal_pow_smul (B M : Type) [CommRing B]
     [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [AddCommGroup M]
     [Module B M] [Module.Finite B M] (s : ℕ) (y : ℕ → M)
@@ -144,6 +188,31 @@ private theorem exists_limit_of_sub_mem_maximalIdeal_pow_smul (B M : Type) [Comm
 
 open TensorProduct Polynomial IsLocalRing in
 
+/- English proof (translation)
+Introduce `B M ι _ _ _ _ _ _ _ K hne hdir hbot N`. Use `haveI := hne`. Establish `hmin : ∀ n, ∃ j, ∀ i, K j ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M) ≤ K i ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)`. Introduce `n`. Use `haveI := isArtinian_quotient_maximalIdeal_pow_succ_smul B M n`.
+
+Take `⟨_, ⟨j, rfl⟩, hj⟩` from `(wellFounded_lt (α := Submodule B (M ⧸ (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M))))).has_min (Set.range fun i => (K i).map (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ) (Set.range_nonempty _)`. Use `⟨j, fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hki, hkj⟩` from `hdir i j`. Establish `hle` using `Submodule.map_mono (f := (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ) hkj`. Establish `heq : (K k).map (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ = (K j).map (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ`.
+
+Assume the negation of the conclusion as `hne'`. Conclude with `hj _ ⟨k, rfl⟩ (lt_of_le_of_ne hle hne')`. Establish `hji` using `Submodule.map_mono (f := (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ) hki`. Rewrite `hji` using `[heq]`. Establish `hc` using `Submodule.comap_mono (f := (maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)).mkQ) hji`.
+
+Rewrite `hc` using `[Submodule.comap_map_mkQ, Submodule.comap_map_mkQ]`. Rewrite using `[sup_comm (K j), sup_comm (K i)]` and apply the resulting hypothesis. Use `choose j hj using hmin`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hE_step : ∀ n, ∀ x ∈ K (j n) ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M), ∃ x' ∈ K (j (n + 1)) ⊔ maximalIdeal B ^ (n + 1 + 1) • (⊤ : Submodule B M), x - x' ∈ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)`. Introduce `n x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp (hj n (j (n + 1)) hx)`. Conclude with `⟨a, Submodule.mem_sup_left ha, by simpa using hb⟩`. Establish `hE_anti : ∀ n, K (j (n + 1)) ⊔ maximalIdeal B ^ (n + 1 + 1) • (⊤ : Submodule B M) ≤ K (j n) ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)` using `fun n => (hj (n + 1) (j n)).trans (sup_le_sup_left (Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega))) _)`.
+
+Establish `hE_mono : ∀ n p, n ≤ p → K (j p) ⊔ maximalIdeal B ^ (p + 1) • (⊤ : Submodule B M) ≤ K (j n) ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)`. Introduce `n p hnp`. Proceed by induction on `hnp with`. Consider the case `refl => exact le_rfl`. Consider the case `step _ ih => exact (hE_anti _).trans ih`.
+
+Establish `hE_zero : ∀ x, (∀ n, x ∈ K (j n) ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)) → x = 0`. Introduce `x hx`. Establish `hmem : x ∈ ⨅ i, K i` using `Submodule.mem_iInf _ |>.mpr fun i => mem_of_forall_mem_sup_maximalIdeal_pow_smul B M (K i) x fun n => by`. Establish `hle : K i ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M) ≤ K i ⊔ maximalIdeal B ^ n • (⊤ : Submodule B M)` using `sup_le_sup_left (Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ n))) _`. Conclude with `hle (hj n i (hx n))`.
+
+Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hnot : ¬ K (j N) ⊔ maximalIdeal B ^ (N + 1) • (⊤ : Submodule B M) ≤ maximalIdeal B ^ (N + 1) • (⊤ : Submodule B M)` using `fun h => hcon (j N) ((le_sup_left.trans h).trans (Submodule.smul_mono_left (Ideal.pow_le_pow_right (by omega))))`. Take `⟨x0, hx0, hx0P⟩` from `SetLike.not_le_iff_exists.mp hnot`. Use `choose f hf1 hf2 using hE_step`. Set `y : (k : ℕ) → {x // x ∈ K (j (N + k)) ⊔ maximalIdeal B ^ (N + k + 1) • (⊤ : Submodule B M)}` to `fun k => Nat.rec (motive := fun k => {x // x ∈ K (j (N + k)) ⊔ maximalIdeal B ^ (N + k + 1) • (⊤ : Submodule B M)}) ⟨x0, hx0⟩ (fun k z => ⟨f (N + k) z.1 z.2, hf1 _ _ _⟩) k`.
+
+Establish `hy_succ : ∀ k, (y (k + 1)).1 = f (N + k) (y k).1 (y k).2` using `fun k => rfl`. Take `⟨x, hx⟩` from `exists_limit_of_sub_mem_maximalIdeal_pow_smul B M (N + 1) (fun k => (y k).1) (fun k => by`. Establish `e : N + 1 + k = N + k + 1` using `by omega`. Rewrite using `[hy_succ, e, ← neg_sub, Submodule.neg_mem_iff]`. Conclude with `hf2 (N + k) (y k).1 (y k).2)`.
+
+Establish `hxE : ∀ n, x ∈ K (j n) ⊔ maximalIdeal B ^ (n + 1) • (⊤ : Submodule B M)`. Introduce `n`. Establish `e : N + 1 + n = N + n + 1` using `by omega`. Establish `hd` using `hx n`. Rewrite `hd` using `[e]`.
+
+Establish `hk` using `Submodule.add_mem _ (y n).2 (Submodule.mem_sup_right hd)`. Rewrite `hk` using `[add_sub_cancel]`. Conclude with `hE_mono n (N + n) (by omega) hk`. Establish `hx0'` using `hE_zero x hxE`. Apply `hx0P` to reduce the goal to its premises.
+
+Establish `h0` using `hx 0`. Rewrite `h0` using `[hx0', zero_sub, Submodule.neg_mem_iff]`. Conclude with `h0`.
+-/
 theorem _root_.GlobalTheory.Chevalley.exists_le_maximalIdeal_pow_smul_of_directed :
     ∀ (B M ι : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
       [IsAdicComplete (maximalIdeal B) B] [AddCommGroup M] [Module B M] [Module.Finite B M]

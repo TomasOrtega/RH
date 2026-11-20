@@ -45,6 +45,17 @@ def IsQuotIso (u : LB.Iso N (L.pull F)) (v : LB.Iso N (M.pull p)) (w : LB.Iso (L
   ∀ (Z : Scheme.{0}) (x : Z ⟶ Y) (z : Z) (j : M.ι) (k : L.ι) (m : N.ι), p (x z) ∈ M.U j → F (x z) ∈ L.U k →
     x z ∈ N.U m → gw v x z j m = gw w x z j (fun _ => k) * gw u x z k m
 
+/- English proof (translation)
+Establish `glue : ∀ (j : M.ι) (k : L.ι), ∃ s : Γ(Y, (M.pull p).U (fun _ => j) ⊓ (L.pull F).U (fun _ => k))ˣ, ∀ (Z : Scheme.{0}) (x : Z ⟶ Y) (z : Z) (m : N.ι), p (x z) ∈ M.U j → F (x z) ∈ L.U k → x z ∈ N.U m → gm x z _ s = gw v x z j m * (gw u x z k m)⁻¹`. Introduce `j k`. Take `⟨W, hW⟩ : ∃ W : N.ι → Y.Opens, ∀ m y, y ∈ W m ↔ p y ∈ M.U j ∧ F y ∈ L.U k ∧ y ∈ N.U m` from `⟨fun m => p ⁻¹ᵁ M.U j ⊓ (F ⁻¹ᵁ L.U k ⊓ N.U m), fun _ _ => Iff.rfl⟩`. Establish `l₀ : ∀ m, W m ≤ (M.pull p).U (fun _ => j) ⊓ (L.pull F).U (fun _ => k)` using `fun m y hy => ⟨mem_pull.2 ((hW m y).1 hy).1, mem_pull.2 ((hW m y).1 hy).2.1⟩`. Establish `l₁ : ∀ m, W m ≤ (M.pull p).U (fun _ => j) ⊓ N.U m` using `fun m y hy => ⟨mem_pull.2 ((hW m y).1 hy).1, ((hW m y).1 hy).2.2⟩`.
+
+Establish `l₂ : ∀ m, W m ≤ (L.pull F).U (fun _ => k) ⊓ N.U m` using `fun m y hy => ⟨mem_pull.2 ((hW m y).1 hy).2.1, ((hW m y).1 hy).2.2⟩`. Take `⟨a, ha⟩ : ∃ a : ∀ m, Γ(Y, W m)ˣ, ∀ (Z : Scheme.{0}) (x : Z ⟶ Y) (z : Z) (m : N.ι), x z ∈ W m → gm x z (W m) (a m) = gw v x z j m * (gw u x z k m)⁻¹` from `⟨fun m => res (l₁ m) (v.s (fun _ => j, m)) * (res (l₂ m) (u.s (fun _ => k, m)))⁻¹, fun Z x z m hy => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res x z (l₁ m) hy _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res x z (l₂ m) hy _))))⟩`. Take `⟨s, hs⟩` from `glue_unit _ W l₀ (fun y hy => by`. Take `⟨m, hm⟩` from `exists_chart hN y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨m, (hW m y).2 ⟨mem_pull.1 hy.1, mem_pull.1 hy.2, hm⟩⟩) a`.
+
+Use the proof step `(fun m m' y hy => by`. Establish `h₁` using `(hW m y).1 hy.1`. Establish `h₂` using `(hW m' y).1 hy.2`. Rewrite using `[ha _ (𝟙 Y) y m hy.1, ha _ (𝟙 Y) y m' hy.2, hv _ (𝟙 Y) y j j m m' h₁.1 h₁.1 h₁.2.2 h₂.2.2, hu _ (𝟙 Y) y k k m m' h₁.2.1 h₁.2.1 h₁.2.2 h₂.2.2, gm_self hM (𝟙 Y ≫ p) y h₁.1, gm_self hL (𝟙 Y ≫ F) y h₁.2.1]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel)`. Use `⟨s, fun Z x z m hj hk hm => ?_⟩` and prove the remaining obligations. Establish `hy` using `(hW m (x z)).2 ⟨hj, hk, hm⟩`. Conclude with `(gm_res x z (l₀ m) hy s).symm.trans ((congrArg (gm x z (W m)) (hs m)).trans (ha Z x z m hy))`.
+
+Use `choose s hs using glue`. Use `⟨⟨fun c => s (c.1 PUnit.unit) (c.2 PUnit.unit)⟩, fun Z x z j k m hj hk hm => ?_⟩` and prove the remaining obligations. Conclude with `(inv_mul_cancel_right _ _).symm.trans (congrArg (· * gw u x z k m) (hs j k Z x z m hj hk hm).symm)`.
+-/
 theorem exists_isQuotIso (hN : N.IsLB) (hL : L.IsLB) (hM : M.IsLB) {u : LB.Iso N (L.pull F)}
     {v : LB.Iso N (M.pull p)} (hu : PGen u) (hv : PGen v) : ∃ w, IsQuotIso u v w := by
   have glue : ∀ (j : M.ι) (k : L.ι), ∃ s : Γ(Y, (M.pull p).U (fun _ => j) ⊓ (L.pull F).U (fun _ => k))ˣ,
@@ -83,6 +94,11 @@ theorem exists_isQuotIso (hN : N.IsLB) (hL : L.IsLB) (hM : M.IsLB) {u : LB.Iso N
   refine ⟨⟨fun c => s (c.1 PUnit.unit) (c.2 PUnit.unit)⟩, fun Z x z j k m hj hk hm => ?_⟩
   exact (inv_mul_cancel_right _ _).symm.trans (congrArg (· * gw u x z k m) (hs j k Z x z m hj hk hm).symm)
 
+/- English proof (translation)
+Use `(isGen_iff _).2 fun Z x z j j' k k' hj hj' hk hk' => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_chart hN (x z)`. Establish `a` using `hv _ x z j j' m m hj hj' hm hm`. Rewrite `a` using `[h _ x z j (k PUnit.unit) m hj (mem_pull.1 hk) hm, h _ x z j' (k' PUnit.unit) m hj' (mem_pull.1 hk') hm, hu _ x z (k PUnit.unit) (k' PUnit.unit) m m (mem_pull.1 hk) (mem_pull.1 hk') hm hm]`. Rewrite using `[gm_pull_g L F x z k k' hk hk']`.
+
+Express the relevant statement in the definitionally equal form `gw w x z j (fun _ => k PUnit.unit) = _ * gw w x z j' (fun _ => k' PUnit.unit)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a'` using `congrArg Additive.ofMul a`. Simplify using `only [ofMul_mul, ofMul_inv] at a' ⊢`. Take the linear combination `(norm := abel) a'`.
+-/
 theorem IsQuotIso.isGen (hN : N.IsLB) {u : LB.Iso N (L.pull F)} {v : LB.Iso N (M.pull p)} (hu : PGen u)
     (hv : PGen v) {w : LB.Iso (L.pull F) (M.pull p)} (h : IsQuotIso u v w) : w.IsGen := by
   refine (isGen_iff _).2 fun Z x z j j' k k' hj hj' hk hk' => ?_
@@ -97,6 +113,13 @@ theorem IsQuotIso.isGen (hN : N.IsLB) {u : LB.Iso N (L.pull F)} {v : LB.Iso N (M
   simp only [ofMul_mul, ofMul_inv] at a' ⊢
   linear_combination (norm := abel) a'
 
+/- English proof (translation)
+Set `W : M.ι × N.ι → Y.Opens` to `fun c => (M.pull p).U (fun _ => c.1) ⊓ N.U c.2`. Set `b : ∀ c, Γ(Y, W c)ˣ` to `fun c => v'.s (fun _ => c.1, c.2) * (v.s (fun _ => c.1, c.2))⁻¹`. Establish `hb : ∀ (Z : Scheme.{0}) (x : Z ⟶ Y) (z : Z) c, gm x z (W c) (b c) = gw v' x z c.1 c.2 * (gw v x z c.1 c.2)⁻¹` using `fun Z x z c => (map_mul _ _ _).trans (congrArg (gw v' x z c.1 c.2 * ·) (map_inv _ _))`. Take `⟨a, ha⟩` from `glue_unit ⊤ W (fun _ => le_top) (fun y _ => by`. Take `⟨j, hj⟩` from `exists_chart hM (p y)`.
+
+Take `⟨m, hm⟩` from `exists_chart hN y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(j, m), mem_pull.2 hj, hm⟩) b (fun c c' y hy => by`. Rewrite using `[hb, hb, hv _ (𝟙 Y) y c.1 c'.1 c.2 c'.2 (mem_pull.1 hy.1.1) (mem_pull.1 hy.2.1) hy.1.2 hy.2.2, hv' _ (𝟙 Y) y c.1 c'.1 c.2 c'.2 (mem_pull.1 hy.1.1) (mem_pull.1 hy.2.1) hy.1.2 hy.2.2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Use the proof step `abel)`. Use `⟨a, fun Z x z j m hj hm => ?_⟩` and prove the remaining obligations. Use `(gm_res x z le_top (show x z ∈ W (j, m) from ⟨mem_pull.2 hj, hm⟩) a).symm.trans ((congrArg (gm x z (W (j, m))) (ha (j, m))).trans (hb Z x z (j, m)))` as an intermediate fact. Rewrite using `[this, inv_mul_cancel_right]`.
+-/
 theorem exists_ratio (hN : N.IsLB) (hM : M.IsLB) {v v' : LB.Iso N (M.pull p)} (hv : PGen v) (hv' : PGen v') :
     ∃ a : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (x : Z ⟶ Y) (z : Z) (j : M.ι) (m : N.ι), p (x z) ∈ M.U j → x z ∈ N.U m →
       gw v' x z j m = gm x z ⊤ a * gw v x z j m := by
@@ -124,6 +147,25 @@ end Quot
 section Unique
 variable {S S' : Scheme.{0}} {G : Over S'} {B : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj B] [IsCommMonObj B]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_ratio P.L.isLB M.L.isLB ((isGen_iff _).1 h.gen) ((isGen_iff _).1 h'.gen)`. Establish `key : ∀ (T : Over S') (z : T.left), gm (1 : T ⟶ G).left z ⊤ a = 1 ∧ (∀ x : T ⟶ G, gm (x⁻¹).left z ⊤ a = gm x.left z ⊤ a) ∧ ∀ x y u : T ⟶ G, gm (x * y * u).left z ⊤ a * gm x.left z ⊤ a * gm y.left z ⊤ a * gm u.left z ⊤ a = gm (x * y).left z ⊤ a * gm (x * u).left z ⊤ a * gm (y * u) …`. Introduce `T z`. Take `⟨J', hJ'⟩` from `exists_good_pt P.L.isLB z`. Take `⟨J, hJ⟩` from `exists_good_pt M.L.isLB z`.
+
+Take `⟨W, hW⟩ : ∃ W : (T ⟶ G) → (T.left.presheaf.stalk z)ˣ, ∀ x, W x = gw v x.left z (J (x.left ≫ p)) (J' x.left)` from `⟨_, fun _ => rfl⟩`. Take `⟨U, hU⟩ : ∃ U : (T ⟶ G) → (T.left.presheaf.stalk z)ˣ, ∀ x, gm x.left z ⊤ a = U x` from `⟨_, fun _ => rfl⟩`. Take `⟨a₁, a₂, a₃⟩` from `h.vals T z J' J hJ' hJ W hW`. Take `⟨b₁, b₂, b₃⟩` from `h'.vals T z J' J hJ' hJ (fun x => U x * W x) (fun x => by`. Rewrite using `[hW, ← hU]`.
+
+Conclude with `(ha _ x.left z _ _ (hJ (x.left ≫ p)) (hJ' x.left)).symm)`. Simplify using `only [hU]`. Establish `o : U 1 = 1`. Use `mul_right_cancel (b₁.symm.trans a₁)` as an intermediate fact. Conclude with `mul_eq_right.1 this`.
+
+Use `⟨o, fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Establish `a` using `congrArg Additive.ofMul (a₂ x)`. Establish `b` using `congrArg Additive.ofMul (b₂ x)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at a b ⊢`.
+
+Take the linear combination `(norm := abel) a - b`. Establish `a` using `a₃ x y u`. Establish `b` using `b₃ x y u`. Rewrite `b` using `[o]`. Generalize the expression as in `@id (T.left.presheaf.stalk z)ˣ (cubV M.c (T := Over.mk (T.hom ≫ f)) z J (toBase hp x) (toBase hp y) (toBase hp u)) = C at a b`.
+
+Establish `a'` using `congrArg Additive.ofMul a`. Establish `b'` using `congrArg Additive.ofMul b`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_one] at a' b' ⊢`. Take the linear combination `(norm := abel) a' - b'`.
+
+Establish `one : a = 1`. Use `GlobalTheory.even_cubic_unit_eq_one hG S' X G Q a fun T U hU => ?_` and prove the remaining obligations. Set `E : (T ⟶ G) → Γ(T.left, ⊤)ˣ` to `fun x => Units.map x.left.appTop.hom.toMonoidHom a`. Establish `hE : ∀ x, U x = (E x).val` using `hU`. Establish `e : ∀ (x : T ⟶ G) z, gm (𝟙 T.left) z ⊤ (E x) = gm x.left z ⊤ a` using `fun x z => (gm_top _ _ _).symm`.
+
+Simplify using `only [hE, ← Units.val_mul]`. Use `⟨congrArg Units.val (show E 1 = 1 from unit_ext fun z _ => ?_), fun x => congrArg Units.val (unit_ext fun z _ => ?_), fun x y u => congrArg Units.val (unit_ext fun z _ => ?_)⟩` and prove the remaining obligations. Rewrite using `[e, map_one]`. Conclude with `(key T z).1`. Rewrite using `[e, e]`.
+
+Conclude with `(key T z).2.1 x`. Simplify using `only [map_mul, e]`. Conclude with `(key T z).2.2 x y u`. Rewrite using `[ha Z x z j m hj hm, one, map_one, _root_.one_mul]`.
+-/
 theorem gw_eq_of_isCPMap (hG : GlobalFnsSt) [ConnectedSpace S'] [ConnectedSpace G.left] {X : Type} [AddCommGroup X]
     [Module.Free ℤ X] (Q : TQ G X) {P : CP G} {M : CP B} {f : S' ⟶ S} {p : G.left ⟶ B.left} {hp} {v v'}
     (h : IsCPMap P M f p hp v) (h' : IsCPMap P M f p hp v') (Z : Scheme.{0}) (x : Z ⟶ G.left) (z : Z) (j m)
@@ -175,6 +217,11 @@ theorem gw_eq_of_isCPMap (hG : GlobalFnsSt) [ConnectedSpace S'] [ConnectedSpace 
     · simp only [map_mul, e]; exact (key T z).2.2 x y u
   rw [ha Z x z j m hj hm, one, map_one, _root_.one_mul]
 
+/- English proof (translation)
+Substitute `ef eF ep` using the available equality. Take `⟨r, R, Tr⟩` from `(isCPMap_comp_cancel _ _ _ f₁ t H G₁ G P P₁ P₀ F₁ hF₁ u₁ m hm.1.w hF₀ U₁).2 (fun T x y => Over.OverMorphism.ext (hm.2 T x y _ _ rfl rfl).symm) u₀ U₀`. Take `⟨v', Tv, V'⟩` from `V₁.exists_comp R hp₀`. Take `⟨c, hc⟩` from `exists_chart P₀.L.isLB (x z)`. Take `⟨d, hd⟩` from `exists_chart P₁.L.isLB (m (x z))`.
+
+Establish `e₀` using `W₀ Z x z j k c hj hk hc`. Establish `e₁` using `W₁ Z (x ≫ m) z j k d hj hk hd`. Rewrite `e₀` using `[gw_eq_of_isCPMap hG Q V' V₀ Z x z j c hj hc, Tv Z x z j d c hj hd hc, Tr Z x z k d c hk hd hc, e₁, _root_.mul_assoc]`. Conclude with `mul_right_cancel e₀`.
+-/
 theorem gw_compat (hG : GlobalFnsSt) [ConnectedSpace S'] [ConnectedSpace G.left] {X : Type} [AddCommGroup X]
     [Module.Free ℤ X] (Q : TQ G X) {S₁ : Scheme.{0}} {G₁ : Over S₁} {H : Over S} [GrpObj G₁] [IsCommMonObj G₁]
     [GrpObj H] [IsCommMonObj H] {P₀ : CP G} {P₁ : CP G₁} {P : CP H} {M : CP B} {t : S' ⟶ S₁} {f₁ : S₁ ⟶ S}
@@ -205,6 +252,9 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S'} {H B : Over S} [GrpObj
 
 omit [GrpObj G] [IsCommMonObj G] [IsCommMonObj H] in
 
+/- English proof (translation)
+Establish `e : ∀ x : T ⟶ G, toBase hF x = (Over.map f).map x ≫ F` using `fun x => Over.OverMorphism.ext rfl`. Rewrite using `[e, e, e]`.
+-/
 theorem cubV_toBase {L : RigLB H} (c : CubicalStr H L) (F : (Over.map f).obj G ⟶ H)
     (hF : (show G.left ⟶ H.left from F.left) ≫ H.hom = G.hom ≫ f) {T : Over S'} (z : T.left) (J)
     (x y u : T ⟶ G) :
@@ -215,6 +265,17 @@ theorem cubV_toBase {L : RigLB H} (c : CubicalStr H L) (F : (Over.map f).obj G �
   have e : ∀ x : T ⟶ G, toBase hF x = (Over.map f).map x ≫ F := fun x => Over.OverMorphism.ext rfl
   rw [e, e, e]
 
+/- English proof (translation)
+Take `⟨J', hJ'⟩` from `exists_good_pt P₀.L.isLB z`. Take `⟨U, hU⟩ : ∃ U : (Z ⟶ G) → (Z.left.presheaf.stalk z)ˣ, ∀ x, U x = gw u x.left z (JG (x.left ≫ F.left)) (J' x.left)` from `⟨_, fun _ => rfl⟩`. Take `⟨a₁, a₂, a₃⟩` from `hu.vals Z z J' JG hJ' hJG U hU`. Take `⟨b₁, b₂, b₃⟩` from `hv.vals Z z J' J hJ' hJ (fun x => W x * U x) (fun x => by`. Rewrite using `[hW, hU]`.
+
+Conclude with `(hw _ x.left z _ _ _ (hJ (x.left ≫ p.left)) (hJG (x.left ≫ F.left)) (hJ' x.left)).symm)`. Use `⟨b₁.trans ((_root_.mul_assoc _ _ _).trans (congrArg (W 1 * ·) a₁.symm)), fun x => ?_, fun x y t => ?_⟩` and prove the remaining obligations. Establish `a` using `congrArg Additive.ofMul (a₂ x)`. Establish `b` using `congrArg Additive.ofMul (b₂ x)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul] at a b ⊢`. Take the linear combination `(norm := abel) b - a`. Establish `a` using `a₃ x y t`. Establish `b` using `b₃ x y t`. Rewrite `a` using `[cubV_toBase P.c F hF]`.
+
+Rewrite `b` using `[cubV_toBase M.c p hp]`. Generalize the expression as in `@id (Z.left.presheaf.stalk z)ˣ (cubV M.c (T := (Over.map f).obj Z) z J ((Over.map f).map x ≫ p) ((Over.map f).map y ≫ p) ((Over.map f).map t ≫ p)) = C at b ⊢`. Generalize the expression as in `@id (Z.left.presheaf.stalk z)ˣ (cubV P.c (T := (Over.map f).obj Z) z JG ((Over.map f).map x ≫ F) ((Over.map f).map y ≫ F) ((Over.map f).map t ≫ F)) = C' at a ⊢`. Establish `a'` using `congrArg Additive.ofMul a`. Establish `b'` using `congrArg Additive.ofMul b`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at a' b' ⊢`. Take the linear combination `(norm := abel) b' - a'`.
+-/
 theorem IsQuotIso.vals {P₀ : CP G} {P : CP H} {M : CP B} (F : (Over.map f).obj G ⟶ H) (p : (Over.map f).obj G ⟶ B)
     {hF hp u v} (hu : IsCPMap P₀ P f F.left hF u) (hv : IsCPMap P₀ M f p.left hp v) {w} (hw : IsQuotIso u v w)
     (Z : Over S') (z : Z.left) (JG : (Z.left ⟶ H.left) → P.L.L.ι) (J : (Z.left ⟶ B.left) → M.L.L.ι)
@@ -263,6 +324,9 @@ section Assemble
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {P : CP G} {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Introduce `_` and use `⟨⊤, trivial, gen_chartPull (chartPullSame M.L.L _ _ _ (B.hom ⁻¹ᵁ ⊤).ι fun k => by fin_cases k exacts [rfl, (Category.comp_id _).symm]) M.sym M.sym_gen⟩`.
+-/
 theorem sym_of_cp {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] (M : CP B) : Sym B M.L.L := fun _ =>
   ⟨⊤, trivial, gen_chartPull (chartPullSame M.L.L _ _ _ (B.hom ⁻¹ᵁ ⊤).ι fun k => by
     fin_cases k
@@ -270,6 +334,9 @@ theorem sym_of_cp {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] (M :
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Establish `: Nontrivial (R ⧸ I ^ (e + 1))` using `Ideal.Quotient.nontrivial_iff.2 fun h => hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Conclude with `IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`.
+-/
 theorem isLocalRing_quot (hI : I ≠ ⊤) (e : ℕ) : IsLocalRing (R ⧸ I ^ (e + 1)) := by
   have : Nontrivial (R ⧸ I ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2 fun h =>
     hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))
@@ -277,12 +344,28 @@ theorem isLocalRing_quot (hI : I ≠ ⊤) (e : ℕ) : IsLocalRing (R ⧸ I ^ (e 
 
 omit [IsDomain R] [IsLocalRing R] [IsCommMonObj G] in
 
+/- English proof (translation)
+The claim follows from `(isGrpPullback_pullback G (thick R I (e + 1))).cancel ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)`.
+-/
 theorem isGrpPullback_thickMap (e : ℕ) :
     IsGrpPullback (thickObj R I e G) (thickObj R I (e + 1) G) (thickTrans R I e) (thickMap R I e G) :=
   (isGrpPullback_pullback G (thick R I (e + 1))).cancel
     ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm
       ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim R a.B a.isAb`. Take `⟨wA, hwA⟩` from `hA`. Use `choose psi hpsi using fun χ : X => DVR.exists_gen_of_local (V := FractionRing R) a.M.L.L a.M.L.isLB (K := PUnit) (fun _ => ptK (c χ)) (fun _ => -1)`. Set `B : PolAV (Spec (CommRingCat.of R))` to `{ A := a.B, isAb := a.isAb, g := g, smoothDim := hg, L := a.M.L.L, isLB := a.M.L.isLB, rigid := ⟨a.M.L.rig, a.M.L.rigGen⟩, sym := sym_of_cp a.M, ample := a.ample, ktriv := hK }`. Set `D : DegPre R` to `{ P := B, rig := a.M.L.rig, rig_gen := a.M.L.rigGen, cub := a.M.c, sym := a.M.sym, sym_gen := a.M.sym_gen, sym_rig := a.M.sym_rig, X := X, c := c, c_add := hadd, psi := psi, psi_gen := hpsi }`.
+
+Use `choose gt hi hp using fun e => GlobalTheory.exists_gtCoord_of_torusQuotient hG R I D e G (T.l e).Q (a.b e) (a.b_pb e).1 (fun χ => hw χ e)`. Establish `hq : ∀ e, thickMap R I e G ≫ (gt (e + 1)).pG.left = (gt e).pG.left` using `fun e => by`. Rewrite using `[hp, hp, ← Category.assoc, ← T.β_q, Category.assoc, a.b_β]`. Use `choose u hu using fun e => (T.l e).lev`. Establish `hv : ∀ e, ∃ v, IsCPMap (T.l e).Pe a.M (thick R I e) (gt e).pG.left (Over.w (gt e).pG) v` using `fun e => by`.
+
+Take `⟨h, v, hv⟩` from `a.b_pb e`. Establish `: ∀ f p (_ : f = 𝟙 _ ≫ thick R I e) (_ : p = (T.l e).Q.q.left ≫ a.b e) hw, ∃ v, IsCPMap (T.l e).Pe a.M f p hw v`. Introduce and unpack `_ _ rfl rfl hw`. Take `⟨v', -, h'⟩` from `hv.exists_comp (T.l e).D.map hw`. Conclude with `⟨v', h'⟩`.
+
+Conclude with `this _ _ (Category.id_comp _).symm (hp e) _`. Use `choose v hv using hv`. Use `choose w hw using fun e => exists_isQuotIso (T.l e).Pe.L.isLB P.L.isLB a.M.L.isLB ((isGen_iff _).1 (hu e).gen) ((isGen_iff _).1 (hv e).gen)`. Use `⟨D, { semi := hs, gen := gen, gen_hom := hgen, P := P, wA := wA, wA_gen := hwA, gt := gt, gt_q := hq gt_t := fun e => hc D e _ _ (hq e) (by rw [hi, hi]; exact T.tor e) w := w w_gen := fun e => (hw e).isGen (T.l e).Pe.L.isLB ((isGen_iff _).1 (hu e).gen) ((isGen_iff _).1 (hv e).gen …` and prove the remaining obligations. Conclude with `IsQuotIso.vals (fstG I e G) (gt e).pG (hu e) (hv e) (hw e) Z z JG J hJG hJ W hW`.
+
+Use `isLocalRing_quot hI e` as an intermediate fact. Use `GlobalTheory.AbelianDim.connectedSpace_spec_of_isLocalRing (R ⧸ I ^ (e + 1))` as an intermediate fact. Establish `hs'` using `Geo.Tor.IsSemiAbelian.pullback (thick R I e) G hs`. Use `hs'.smooth` as an intermediate fact. Use `hs'.geomConnected` as an intermediate fact.
+
+Establish `: ConnectedSpace (thickObj R I e G).left` using `(GlobalTheory.GroupConn.connectedSpace_group _ (thickObj R I e G)).1`. Conclude with `gw_compat hG (T.l e).Q (thickTrans_comp R I e) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)) (hq e) (isGrpPullback_thickMap e) (hu e) (hu (e + 1)) (hv e) (hv (e + 1)) (hw e) (hw (e + 1)) Z x z j k hj hk`.
+-/
 theorem exists_preU (hG : GlobalFnsSt)
     (hc : ∀ (D : DegPre R) (e : ℕ) (g : GtCoord I D e G) (g' : GtCoord I D (e + 1) G),
       thickMap R I e G ≫ g'.pG.left = g.pG.left → TorusCompat (thickTrans R I e) (thickMap R I e G) g.i g'.i →
@@ -342,6 +425,9 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R}
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Use `GlobalTheory.isAdicComplete_map_of_finite (IsLocalRing.maximalIdeal R) (R ⧸ J)` as an intermediate fact. Rewrite `this` using `[show algebraMap R (R ⧸ J) = Ideal.Quotient.mk J from rfl, IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective]`. Then use the resulting hypothesis.
+-/
 theorem isAdicComplete_quot [IsNoetherianRing R] (h : IsAdicComplete (IsLocalRing.maximalIdeal R) R) (J : Ideal R)
     [IsLocalRing (R ⧸ J)] : IsAdicComplete (IsLocalRing.maximalIdeal (R ⧸ J)) (R ⧸ J) := by
   have := GlobalTheory.isAdicComplete_map_of_finite (IsLocalRing.maximalIdeal R) (R ⧸ J)
@@ -350,6 +436,13 @@ theorem isAdicComplete_quot [IsNoetherianRing R] (h : IsAdicComplete (IsLocalRin
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Set `x : Sp (IsLocalRing.ResidueField R) ⟶ Sp (R ⧸ J)` to `spMap (Ideal.Quotient.lift J (IsLocalRing.residue R) fun r hr => (IsLocalRing.residue_eq_zero_iff r).2 (IsLocalRing.le_maximalIdeal hJ hr))`. Establish `hx : x ≫ spMap (Ideal.Quotient.mk J) = spMap (IsLocalRing.residue R)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `sq : pullback.fst B.hom (spMap (IsLocalRing.residue R)) ≫ B.hom = (pullback.snd B.hom (spMap (IsLocalRing.residue R)) ≫ x) ≫ spMap (Ideal.Quotient.mk J)`.
+
+Rewrite using `[Category.assoc, hx, pullback.condition]`. Establish `hφ` using `hb.1.lift_fst _ _ sq`. Establish `h` using `hb.cancel ((isGrpPullback_pullback B (spMap (IsLocalRing.residue R))).congr hx.symm hφ.symm) (hb.1.lift_snd _ _ sq)`. Establish `hL' : (M.pull (pullback.fst B.hom (spMap (IsLocalRing.residue R)))).IsLB` using `LB.isLB_pull hM _`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : LBIso (M.pull (pullback.fst B.hom (spMap (IsLocalRing.residue R)))) (M.pull (hb.1.lift _ _ sq ≫ b)) := by`.
+
+Rewrite using `[hφ]`. Conclude with `GlobalTheory.lbIso_refl hL'`. Take `⟨w, Tw⟩` from `Geo.Tor.exists_cancel hM v r ((isGen_iff _).1 hv) ((isGen_iff _).1 hr) hM₀ hL'`. Conclude with `kTriv_pull h hM₀ hL' (Tw.pgen_cancel hM ((isGen_iff _).1 hv) ((isGen_iff _).1 hr)) hK`.
+-/
 theorem kTriv_closedFibre {J : Ideal R} (hJ : J ≠ ⊤) {B : Over (Sp R)} [GrpObj B] {B₀ : Over (Sp (R ⧸ J))} [GrpObj B₀]
     {b : B₀.left ⟶ B.left} (hb : IsGrpPullback B₀ B (spMap (Ideal.Quotient.mk J)) b) {M : LB B.left} {M₀ : LB B₀.left}
     (hM : M.IsLB) (hM₀ : M₀.IsLB) {v : LB.Iso M₀ (M.pull b)} (hv : v.IsGen) (hK : KTriv B₀ M₀) :
@@ -375,6 +468,17 @@ theorem kTriv_closedFibre {J : Ideal R} (hJ : J ≠ ⊤) {B : Over (Sp R)} [GrpO
 
 end Principal
 
+/- English proof (translation)
+Introduce `hL hL2 hL3 hE hU R _ _ _ I hR hP G _ _ P hs hW hS A gen hgen hA`. Establish `hI : I ≠ ⊤` using `hR.2.2.2.1.ne_top`. Use `hR.1.1` as an intermediate fact. Establish `hpr : IsProper (pullback.snd G.hom (jK R))`. Use `A.isAb.proper` as an intermediate fact.
+
+Establish `e : pullback.snd G.hom (jK R) = gen.hom.left ≫ A.A.hom` using `(Over.w gen.hom).symm`. Establish `: IsIso gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map gen.hom))`. Rewrite using `[e]`. Use `infer_instance`. Take `⟨X, _, _, _, ⟨T⟩⟩` from `GlobalTheory.T.nonempty_formalUniformisationTower hL hL2 R I hR G P hs hW hpr hS`.
+
+Establish `hf` using `hF hL hL2 hL3 hU R I hR G P hs hW A gen hgen hA X T`. Use `isLocalRing_quot hI 0` as an intermediate fact. Establish `e : I ^ (0 + 1) = I` using `pow_one I`. Establish `: (I ^ (0 + 1)).IsPrime` using `e.symm ▸ hR.2.2.2.1`. Establish `: IsPrincipalIdealRing (R ⧸ I ^ (0 + 1))` using `e.symm ▸ hP`.
+
+Establish `amp : RelAmple (T.l 0).Q.B (T.l 0).D.M.L.L` using `GlobalTheory.T.cubical_bundle_relAmple_of_ample_fibres hL hL2 (R ⧸ I ^ (0 + 1)) (isAdicComplete_quot hR.2.1 _) _ (T.l 0).Q.isAb (T.l 0).D.M fun k _ x => (hf k x).1`. Take `⟨a⟩` from `GlobalTheory.T.nonempty_algebraisation_formal_tower_ample hL hL2 hE R I hR G P X T amp`. Establish `k₀ : KTriv (T.l 0).Q.B (T.l 0).D.M.L.L` using `GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 (R ⧸ I ^ (0 + 1)) _ (T.l 0).Q.isAb _ (T.l 0).D.M.L.isLB amp (hf _ _).2`. Take `⟨hb, v, hv⟩` from `a.b_pb 0`. Establish `hK : KTriv a.B a.M.L.L` using `GlobalTheory.T.kTriv_of_closed_fibre_localRing hL hL2 R _ a.isAb _ a.M.L.isLB a.ample (kTriv_closedFibre (e.symm ▸ hI) hb a.M.L.isLB (T.l 0).D.M.L.isLB hv.gen k₀)`.
+
+Take `⟨c, hadd, hw⟩` from `GlobalTheory.T.exists_additive_weightPoints_of_torusTower hL hL2 hE R I hR G P X T a hK`. Conclude with `exists_preU hL.globalFns (fun D e => GlobalTheory.T.torusCoordinates_compat_of_torus_compat hL.globalFns R I D e G) hI hs T a hK c hadd hw A gen hgen hA`.
+-/
 theorem exists_preU_of_fibres (hF : Laws → Laws2 → Laws3 → USt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G), IsSemiAbelian G → HypW G P.L.L → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (T : TowerR I P X) (k : Type) [Field k] (x : Spec (CommRingCat.of k) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (0 + 1)))), RelAmple ((Over.pullback x).obj (T.l 0).Q.B) ((T.l 0).D.M.L.L.pull (pullback.fst _ x)) ∧ KTriv ((Over.pullback x).obj (T.l 0).Q.B) ((T.l 0).D.M.L.L.pull (pullback.fst _ x))) :
     Laws → Laws2 → Laws3 → Ega → USt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → IsPrincipalIdealRing (R ⧸ I) → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G), IsSemiAbelian G → HypW G P.L.L → SplitOver G I → ∀ (A : PolAV (Sp (FractionRing R))) (gen : (Over.pullback (jK R)).obj G ≅ A.A), IsMonHom gen.hom → LBIso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst G.hom (jK R))) → ∃ (D : DegPre R) (U : PreU I D A G), U.P = P ∧ U.gen = gen := by
   intro hL hL2 hL3 hE hU R _ _ _ I hR hP G _ _ P hs hW hS A gen hgen hA

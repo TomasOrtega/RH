@@ -4,6 +4,11 @@ namespace GlobalTheory.SumSmulAeEq
 
 open MeasureTheory
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `Lp.coeFn_zero ℂ 2 μ`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha]`. Use `filter_upwards [Lp.coeFn_add (c a • y a) (∑ i ∈ s, c i • y i), Lp.coeFn_smul (c a) (y a), h a, ih] with x h1 h2 h3 h4`. Rewrite using `[h1, Pi.add_apply, h2, h4, Finset.sum_insert ha, Pi.smul_apply, h3, smul_eq_mul]`.
+-/
 theorem coeFn_sum_smul_ae_eq {X ι : Type} [MeasurableSpace X] (μ : Measure X) (s : Finset ι)
     (c : ι → ℂ) (y : ι → Lp ℂ (2 : ENNReal) μ) (F : ι → X → ℂ)
     (h : ∀ i, (y i : X → ℂ) =ᵐ[μ] F i) :

@@ -15,24 +15,39 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fvec_succ (F : FlagG S r T) (a : Fin r) : F.fvec a.succ = nxt F.e F.z a := by
   rfl
 
+/- English proof (translation)
+Simplify using `only [nxt]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem nxt_map {V W : Type} (g : V → W) (e : Fin r → V) (z : V) (a : Fin r) :
     g (nxt e z a) = nxt (fun b => g (e b)) (g z) a := by
   simp only [nxt]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[FlagG.Xa, FlagG.Xa, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem mapFlag_Xa (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) (b : ℕ) :
     (mapFlag γ hγ F).Xa b = (F.Xa b).map (γ : S.V →ₗ[E] S.V) := by
   rw [FlagG.Xa, FlagG.Xa, Submodule.map_span, Set.image_image]
   rfl
 
+/- English proof (translation)
+Rewrite using `[FlagG.X, FlagG.X, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem mapFlag_X (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : FlagG S r T) :
     (mapFlag γ hγ F).X = F.X.map (γ : S.V →ₗ[E] S.V) := by
   rw [FlagG.X, FlagG.X, Submodule.map_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Conclude with `Submodule.mem_map_equiv p`.
+-/
 theorem mem_map_iff (γ : S.V ≃ₗ[E] S.V) (p : Submodule E S.V) (y : S.V) :
     y ∈ p.map (γ : S.V →ₗ[E] S.V) ↔ γ.symm y ∈ p := by
   exact Submodule.mem_map_equiv p
@@ -45,10 +60,21 @@ variable {D : D7} (X : HidaSetting D)
 
 def Φ (v : InfinitePlace X.B.I.F) (y : D.host.E) : ℂ := X.B.I.φ v (X.ιE.symm y)
 
+/- English proof (translation)
+Simplify using `[Φ]`.
+-/
 theorem Φ_add (v) (a b : D.host.E) : Φ X v (a + b) = Φ X v a + Φ X v b := by
   simp [Φ]
+/- English proof (translation)
+Simplify using `[Φ, map_sum]`.
+-/
 theorem Φ_sum (v) {ι : Type} (s : Finset ι) (f : ι → D.host.E) : Φ X v (∑ i ∈ s, f i) = ∑ i ∈ s, Φ X v (f i) := by
   simp [Φ, map_sum]
+/- English proof (translation)
+Establish `hb : star a = D.host.conj a` using `Formalism.BasicNotions.bridge_star_holds _ _ a`. Establish `h1 : X.ιE.symm (star a) = star (X.ιE.symm a)`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, X.ιE_conj, RingEquiv.apply_symm_apply, hb]`. Simplify using `only [Φ]`.
+
+Rewrite using `[h1, Formalism.L2.SG.Pf.Level.phi_star]`.
+-/
 theorem Φ_star (v) (a : D.host.E) : Φ X v (star a) = star (Φ X v a) := by
   have hb : star a = D.host.conj a := Formalism.BasicNotions.bridge_star_holds _ _ a
   have h1 : X.ιE.symm (star a) = star (X.ιE.symm a) := by
@@ -56,14 +82,23 @@ theorem Φ_star (v) (a : D.host.E) : Φ X v (star a) = star (Φ X v a) := by
     rw [RingEquiv.apply_symm_apply, X.ιE_conj, RingEquiv.apply_symm_apply, hb]
   simp only [Φ]
   rw [h1, Formalism.L2.SG.Pf.Level.phi_star]
+/- English proof (translation)
+Simplify using `[Φ]`.
+-/
 theorem Φ_rat (v) (q : ℚ) : Φ X v (q : D.host.E) = (q : ℂ) := by
   simp [Φ]
 
+/- English proof (translation)
+Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.Level.iota_hE, Formalism.L2.SG.Pf.Level.toV_crd, Formalism.L2.SG.Pf.Level.toV_crd, RingEquiv.apply_symm_apply]`.
+-/
 theorem hE_crd (p q : (VS D).V) : hE X (X.crd p) (X.crd q) = X.ιE.symm ((VS D).hT p q) := by
   apply X.ιE.injective
   rw [Formalism.L2.SG.Pf.Level.iota_hE, Formalism.L2.SG.Pf.Level.toV_crd, Formalism.L2.SG.Pf.Level.toV_crd,
     RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `h : starRingEnd D.host.E ((VS D).hT (X.eX b) (X.fY a)) = (VS D).hT (X.fY a) (X.eX b)` using `by first`. Consider the case `exact (VS D).herm.eq _ _`. Consider the case `exact (VS D).herm _ _`. Rewrite using `[← h, X.ef b a]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hTfe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 else 0 := by
   have h : starRingEnd D.host.E ((VS D).hT (X.eX b) (X.fY a)) = (VS D).hT (X.fY a) (X.eX b) := by
     first
@@ -72,6 +107,13 @@ theorem hTfe (a b : Fin D.R.rS) : (VS D).hT (X.fY a) (X.eX b) = if b = a then 1 
   rw [← h, X.ef b a]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨M, -, h1, -, h3⟩` from `hx`. Establish `hrc : ∀ v a, rootCoord (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR w)) (uMat (x.1 v)) a = Φ X v ((VS D).hT (X.fY a) (m (nxt X.eX (X.zu w) a)))`. Introduce `v a`. Unfold `rootCoord`. Establish `e1 : nxt (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR w)) a = rv X.B.I v (X.crd (nxt X.eX (X.zu w) a))`.
+
+Rewrite using `[nxt_map (fun y => rv X.B.I v (X.crd y))]`. Both sides reduce to the same expression. Rewrite using `[e1, h1 v, rv_mulVec X v, ← h3, hJ_rv, HidaSetting.fR, hE_crd]`. Both sides reduce to the same expression. Unfold `HidaSetting.psiInfU psiInf psiR`.
+
+Simplify using `only [hrc]`.
+-/
 theorem psi_rat (w : D.what₂.Word) {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m) :
     X.psiInfU w x.1 = ∏ v, Complex.exp (2 * Real.pi * Complex.I *
       ((∑ a : Fin D.R.rS, (Φ X v ((VS D).hT (X.fY a) (m (nxt X.eX (X.zu w) a))) +
@@ -89,9 +131,15 @@ theorem psi_rat (w : D.what₂.Word) {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.
   unfold HidaSetting.psiInfU psiInf psiR
   simp only [hrc]
 
+/- English proof (translation)
+Simplify using `[Φ]`.
+-/
 theorem Φ_sub (X : HidaSetting D) (v) (a b : D.host.E) : Φ X v (a - b) = Φ X v a - Φ X v b := by
   simp [Φ]
 
+/- English proof (translation)
+Rewrite using `[Formalism.BasicNotions.bridge_star_holds _ _ y]`. Conclude with `(D.host.der.mem_F y).mp hy`.
+-/
 theorem star_F (X : HidaSetting D) (y : D.host.E) (hy : y ∈ D.host.F) : star y = y := by
   rw [Formalism.BasicNotions.bridge_star_holds _ _ y]
   exact (D.host.der.mem_F y).mp hy
@@ -101,6 +149,11 @@ def sigF (X : HidaSetting D) : D.host.E ≃ₐ[D.host.F] D.host.E :=
     show star (c : D.host.E) = c
     exact star_F X c c.2
 
+/- English proof (translation)
+Establish `h1 : Algebra.trace D.host.F D.host.E (sigF X y) = Algebra.trace D.host.F D.host.E y` using `Algebra.trace_eq_of_algEquiv (sigF X) y`. Establish `h2 : sigF X y = star y` using `rfl`. Establish `h3 : star y = -y` using `eq_neg_of_add_eq_zero_right hy`. Rewrite `h1` using `[h2, h3, map_neg]`. Establish `h4 : (2 : D.host.F) * Algebra.trace D.host.F D.host.E y = 0`.
+
+Take the linear combination `-h1`. Break down `mul_eq_zero.mp h4 with h5 | h5` into its components or cases. Conclude with `absurd h5 two_ne_zero`. Conclude with `h5`.
+-/
 theorem trace_zero (X : HidaSetting D) {y : D.host.E} (hy : y + star y = 0) : Algebra.trace D.host.F D.host.E y = 0 := by
   have h1 : Algebra.trace D.host.F D.host.E (sigF X y) = Algebra.trace D.host.F D.host.E y :=
     Algebra.trace_eq_of_algEquiv (sigF X) y
@@ -115,6 +168,63 @@ theorem trace_zero (X : HidaSetting D) {y : D.host.E} (hy : y + star y = 0) : Al
 
 open Formalism.L2.SG.TermOp.Vanish in
 
+/- English proof (translation)
+Introduce `D X Yf u u' t ht`. Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hisoF : ∀ a b, (VS D).hT (t.lin a) (t.lin b) = (VS D).hT a b` using `hiso`. Use `set F' := mapFlag t.lin hiso (X.Fu u') with hF'`. Establish `hfr : t.frame = ⟨F', t.lin (X.Fu u').z⟩`.
+
+Unfold `GTerm.frame mapLF`. Rewrite using `[dif_pos hiso]`. Both sides reduce to the same expression. Establish `hnr : ¬ Relevant D.host.F (X.Fu u) F'`. Introduce `h`.
+
+Apply `ht` to reduce the goal to its premises. Unfold `GTerm.relevant TermDef.Term.relevant TermDef.IsRel`. Use `⟨t.frame, ⟨t.rep.2.2.2.2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hfr]`. Conclude with `h`.
+
+Unfold `Relevant at hnr`. Use `push Not at hnr`. Take `⟨Y, ⟨hY1, hY2⟩, hne⟩` from `hnr`. Use `set ℓ := (X.Fu u).ell Y with hℓ`. Use `set ℓ' := F'.ell Y with hℓ'`.
+
+Use `set δ : D.host.E := (ℓ - ℓ') + star (ℓ - ℓ') with hδ`. Establish `hδ0 : δ ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `trace_zero X h0` as an intermediate fact.
+
+Unfold `FlagG.dpsi`. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`. Establish `hδs : star δ = δ` using `by rw [hδ, star_add, star_star, add_comm]`. Use `set N := Fintype.card (InfinitePlace X.B.I.F) with hN`.
+
+Establish `hNpos : 0 < N` using `Fintype.card_pos`. Establish `hg0 : (X.B.g : ℚ) ≠ 0`. Rewrite using `[X.g_eq]`. Use `push_cast`. Conclude with `mul_ne_zero (by exact_mod_cast (D.host.g_prime 0).ne_zero) (by exact_mod_cast (D.host.g_prime 1).ne_zero)`.
+
+Use `set c : ℚ := (X.B.g : ℚ) / (2 * N) with hc`. Use `set s : D.host.E := (c : D.host.E) * δ⁻¹ with hsdef`. Establish `hs : star s = s` using `by rw [hsdef, star_mul', star_inv₀, hδs, star_ratCast]`. Establish `hsδ : s * δ = c` using `by rw [hsdef, mul_assoc, inv_mul_cancel₀ hδ0, mul_one]`. Use `set n := nexpE hY1 s with hn`.
+
+Establish `hnI : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `nexpE_isom hY1 hs`. Establish `hgtop : ∀ m : (VS D).V ≃ₗ[D.host.E] (VS D).V, Formalism.HermitianLatticesTheory.gmap m (⊤ : Submodule (𝓞 D.host.E) (VS D).V) = ⊤`. Introduce `m`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_top]`.
+
+Conclude with `LinearMap.range_eq_top.2 m.surjective`. Establish `horth : ∀ (G : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (y : (VS D).V), y ∈ orth (VS D) G.X → ∀ w ∈ G.X, (VS D).hT w y = 0`. Introduce `G y hy w hw`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy`. Conclude with `hy w hw`.
+
+Establish `hnN : n ∈ NLam ⊤ (lf D (X.Fu u))`. Use `⟨⟨hnI, hgtop n⟩, fun j x hx => nexp_Xa (s := s) hY1 j hx, fun x hx => nexp_perp (s := s) hY1 ?_⟩` and prove the remaining obligations. Use `show ∀ w ∈ (X.Fu u).X, (VS D).hT w x = 0`. Introduce `w hw`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`.
+
+Conclude with `hx w hw`. Take `⟨x, hx⟩` from `ratPt_holds D X n hnI`. Establish `hr1 : x.1 ∈ X.NinfU u` using `nLamNinf_holds D X u ⊤ x n hx hnN`. Establish `hx' : RatLink X (t.pt⁻¹ * x * t.pt) (t.lin⁻¹ * n * t.lin)` using `Vanish.ratLink_mul X (Vanish.ratLink_mul X (Vanish.ratLink_inv X t.rep.2.1) hx) t.rep.2.1`. Use `set n' := t.lin⁻¹ * n * t.lin with hn'`.
+
+Establish `hn'app : ∀ y, n' y = t.lin.symm (n (t.lin y))` using `fun y => rfl`. Establish `hsub : ∀ y, n' y - y = t.lin.symm (nexp Y s (t.lin y) - t.lin y)`. Introduce `y`. Rewrite using `[hn'app, map_sub, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Establish `hn'N : n' ∈ NLam ⊤ (lf D (X.Fu u'))`. Use `⟨⟨?_, hgtop n'⟩, fun j y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hiso) hnI) hiso`. Establish `h1 : t.lin y ∈ F'.Xa (j + 1)`. Rewrite using `[hF', mapFlag_Xa]`.
+
+Conclude with `Submodule.mem_map_of_mem hy`. Establish `h2` using `nexp_Xa (s := s) hY2 j h1`. Rewrite `h2` using `[hF', mapFlag_Xa, mem_map_iff]`. Rewrite using `[hsub]`. Conclude with `h2`.
+
+Establish `h1 : t.lin y ∈ perpS (VS D) F'.X` using `by show ∀ w ∈ F'.X, (VS D).hT w (t.lin y) = 0`. Introduce `w hw`. Rewrite `hw` using `[hF', mapFlag_X, mem_map_iff]`. Use `horth (X.Fu u') y hy _ hw` as an intermediate fact. Rewrite `this` using `[← hisoF (t.lin.symm w) y, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `this`. Establish `h2` using `nexp_perp (s := s) hY2 h1`. Rewrite `h2` using `[hF', mapFlag_X, mem_map_iff]`. Rewrite using `[hsub]`. Conclude with `h2`.
+
+Establish `hr2 : (t.pt⁻¹ * x * t.pt).1 ∈ X.NinfU u'` using `nLamNinf_holds D X u' ⊤ _ n' hx' hn'N`. Use `⟨x.1, ⟨hr1, hr2⟩, ?_⟩` and prove the remaining obligations. Use `show X.psiInfU u x.1 ≠ X.psiInfU u' (t.pt⁻¹ * x * t.pt).1`. Rewrite using `[psi_rat X u hx, psi_rat X u' hx']`. Establish `key : ∀ a, (VS D).hT (X.fY a) (n (nxt X.eX (X.zu u) a)) = s * (X.Fu u).coefX (Y ((X.Fu u).fvec a.succ)) a`.
+
+Introduce `a`. Establish `e : nxt X.eX (X.zu u) a = (X.Fu u).fvec a.succ` using `by rw [fvec_succ, X.Fu_e, X.flagZVector]`. Rewrite using `[e]`. Conclude with `nexp_root hY1 (X.fY a) a (fun b => by rw [X.Fu_e]; exact hTfe X a b) (by rw [X.flagZVector]; exact (X.zu_orth u a).2)`. Establish `key' : ∀ a, (VS D).hT (X.fY a) (n' (nxt X.eX (X.zu u') a)) = s * F'.coefX (Y (F'.fvec a.succ)) a`.
+
+Introduce `a`. Establish `e : t.lin (nxt X.eX (X.zu u') a) = F'.fvec a.succ`. Rewrite using `[fvec_succ, nxt_map t.lin, hF']`. Simplify using `only [mapFlag, X.Fu_e, X.flagZVector]`. Rewrite using `[hn'app, ← hisoF (X.fY a), LinearEquiv.apply_symm_apply, e]`.
+
+Conclude with `nexp_root hY2 (t.lin (X.fY a)) a (fun b => by show (VS D).hT (t.lin (X.fY a)) (t.lin ((X.Fu u').e b)) = _`. Rewrite using `[hisoF, X.Fu_e]`. Conclude with `hTfe X a b)`. Use the proof step `(by show (VS D).hT (t.lin (X.fY a)) (t.lin (X.Fu u').z) = 0`. Rewrite using `[hisoF, X.flagZVector]`.
+
+Conclude with `(X.zu_orth u' a).2)`. Establish `hsum : ∀ (cf : Fin D.R.rS → D.host.E) (v : InfinitePlace X.B.I.F), (∑ a, (Φ X v (s * cf a) + star (Φ X v (s * cf a)))) = Φ X v (s * ((∑ a, cf a) + star (∑ a, cf a)))`. Introduce `cf v`. Repeatedly rewrite using `[← Φ_star, ← Φ_add]`. Rewrite using `[← Φ_sum]`.
+
+Use `congr 1`. Rewrite using `[star_sum, Finset.sum_add_distrib, mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', hs]`.
+
+Establish `hA : ∀ v, (∑ a, (Φ X v (s * (X.Fu u).coefX (Y ((X.Fu u).fvec a.succ)) a) + star (Φ X v (s * (X.Fu u).coefX (Y ((X.Fu u).fvec a.succ)) a)))) = Φ X v (s * (ℓ + star ℓ))` using `fun v => hsum (fun a => (X.Fu u).coefX (Y ((X.Fu u).fvec a.succ)) a) v`. Establish `hA' : ∀ v, (∑ a, (Φ X v (s * F'.coefX (Y (F'.fvec a.succ)) a) + star (Φ X v (s * F'.coefX (Y (F'.fvec a.succ)) a)))) = Φ X v (s * (ℓ' + star ℓ'))` using `fun v => hsum (fun a => F'.coefX (Y (F'.fvec a.succ)) a) v`. Repeatedly rewrite using `[key, key']`. Simplify using `only [hA, hA']`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_sum]`.
+
+Introduce `heq`. Establish `hd : (∑ v, 2 * (Real.pi : ℂ) * Complex.I * (Φ X v (s * (ℓ + star ℓ)) / (X.B.g : ℂ))) - (∑ v, 2 * (Real.pi : ℂ) * Complex.I * (Φ X v (s * (ℓ' + star ℓ')) / (X.B.g : ℂ))) = (Real.pi : ℂ) * Complex.I`. Rewrite using `[← Finset.sum_sub_distrib]`. Establish `hv : ∀ v, 2 * (Real.pi : ℂ) * Complex.I * (Φ X v (s * (ℓ + star ℓ)) / (X.B.g : ℂ)) - 2 * (Real.pi : ℂ) * Complex.I * (Φ X v (s * (ℓ' + star ℓ')) / (X.B.g : ℂ)) = 2 * (Real.pi : ℂ) * Complex.I * ((c : ℂ) / (X.B.g : ℂ))`. Introduce `v`.
+
+Establish `hΦ : Φ X v (s * (ℓ + star ℓ)) - Φ X v (s * (ℓ' + star ℓ')) = (c : ℂ)`. Rewrite using `[← Φ_sub X, ← mul_sub]`. Establish `: (ℓ + star ℓ) - (ℓ' + star ℓ') = δ` using `by rw [hδ, star_sub]; ring`. Rewrite using `[this, hsδ, Φ_rat]`. Rewrite using `[← mul_sub, ← sub_div, hΦ]`.
+
+Rewrite using `[Finset.sum_congr rfl fun v _ => hv v, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hN, hc]`. Establish `hg0' : (X.B.g : ℂ) ≠ 0` using `by exact_mod_cast hg0`. Establish `hN0' : (N : ℂ) ≠ 0` using `by exact_mod_cast hNpos.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h1 : Complex.exp ((Real.pi : ℂ) * Complex.I) = 1`. Rewrite using `[← hd, Complex.exp_sub, heq, div_self (Complex.exp_ne_zero _)]`. Rewrite `h1` using `[Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h1`.
+-/
 theorem nonRelCharC_holds : NonRelCharC := by
   intro D X Yf u u' t ht
   have hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := t.rep.2.2.1

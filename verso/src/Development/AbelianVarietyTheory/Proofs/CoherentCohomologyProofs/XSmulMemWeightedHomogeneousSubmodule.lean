@@ -8,6 +8,11 @@ section Difference
 
 variable {K : Type*} [Field K]
 
+/- English proof (translation)
+Rewrite using `[← taylor_apply, taylor_coeff]`. Establish `hd : (hasseDeriv e P).natDegree ≤ 1`. Use `natDegree_hasseDeriv_le P e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[eq_X_add_C_of_natDegree_le_one hd]`.
+
+Simplify using `only [eval_add, eval_mul, eval_C, eval_X, hasseDeriv_coeff]`. Rewrite using `[show 1 + e = e + 1 by omega, zero_add, Nat.choose_self, Nat.choose_succ_self_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem coeff_comp_X_add_C_of_natDegree_le_add_one (P : K[X]) (r : K) (e : ℕ) (hP : P.natDegree ≤ e + 1) :
     (P.comp (X + C r)).coeff e = P.coeff e + r * (e + 1) * P.coeff (e + 1) := by
   rw [← taylor_apply, taylor_coeff]
@@ -20,11 +25,17 @@ private theorem coeff_comp_X_add_C_of_natDegree_le_add_one (P : K[X]) (r : K) (e
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[coeff_sub, coeff_comp_X_add_C_of_natDegree_le_add_one P r e (natDegree_le_iff_degree_le.mpr hP)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_comp_X_add_C_sub (P : K[X]) (r : K) (e : ℕ) (hP : P.degree ≤ (e + 1 : ℕ)) :
     (P.comp (X + C r) - P).coeff e = r * (e + 1) * P.coeff (e + 1) := by
   rw [coeff_sub, coeff_comp_X_add_C_of_natDegree_le_add_one P r e (natDegree_le_iff_degree_le.mpr hP)]
   ring
 
+/- English proof (translation)
+Rewrite using `[← taylor_apply, taylor_coeff]`. Establish `hd : (hasseDeriv e P).natDegree = 0`. Use `natDegree_hasseDeriv_le P e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[eq_C_of_natDegree_eq_zero hd, eval_C, hasseDeriv_coeff, zero_add, Nat.choose_self, Nat.cast_one, one_mul]`.
+-/
 private theorem coeff_comp_X_add_C_of_natDegree_le (P : K[X]) (r : K) (e : ℕ) (hP : P.natDegree ≤ e) :
     (P.comp (X + C r)).coeff e = P.coeff e := by
   rw [← taylor_apply, taylor_coeff]
@@ -34,6 +45,11 @@ private theorem coeff_comp_X_add_C_of_natDegree_le (P : K[X]) (r : K) (e : ℕ) 
   rw [eq_C_of_natDegree_eq_zero hd, eval_C, hasseDeriv_coeff, zero_add, Nat.choose_self,
     Nat.cast_one, one_mul]
 
+/- English proof (translation)
+Establish `hn : P.natDegree ≤ e` using `natDegree_le_iff_degree_le.mpr hP`. Establish `h1 : (P.comp (X + C r)).natDegree ≤ e`. Rewrite using `[← taylor_apply, natDegree_taylor]`. Conclude with `hn`. Rewrite using `[degree_lt_iff_coeff_zero]`.
+
+Introduce `m hm`. Rewrite using `[coeff_sub]`. Break down `hm.lt_or_eq with h | h` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt (p := P.comp (X + C r)) (by omega), coeff_eq_zero_of_natDegree_lt (p := P) (by omega), sub_zero]`. Rewrite using `[← h, coeff_comp_X_add_C_of_natDegree_le P r e hn, sub_self]`.
+-/
 theorem degree_comp_X_add_C_sub_lt (P : K[X]) (r : K) (e : ℕ) (hP : P.degree ≤ (e : ℕ)) :
     (P.comp (X + C r) - P).degree < (e : ℕ) := by
   have hn : P.natDegree ≤ e := natDegree_le_iff_degree_le.mpr hP
@@ -50,6 +66,17 @@ theorem degree_comp_X_add_C_sub_lt (P : K[X]) (r : K) (e : ℕ) (hP : P.degree �
 
 variable [CharZero K]
 
+/- English proof (translation)
+Proceed by induction on `d generalizing Q with`. Consider the case `zero`. Establish `hQ0 : Q = 0`. Use extensionality with `m`. Simplify using `using (degree_lt_iff_coeff_zero Q 0).1 hQ m (Nat.zero_le m)`.
+
+Conclude with `⟨0, by simp, by simp [hQ0]⟩`. Consider the case `succ d ih`. Establish `hd1 : (d : K) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero d`. Establish `hR0 : (C (Q.coeff d / (d + 1)) * X ^ (d + 1)).degree ≤ ((d + 1 : ℕ) : WithBot ℕ)` using `degree_C_mul_X_pow_le _ _`. Establish `hQ' : (Q - ((C (Q.coeff d / (d + 1)) * X ^ (d + 1)).comp (X + C 1) - C (Q.coeff d / (d + 1)) * X ^ (d + 1))).degree < (d : WithBot ℕ)`.
+
+Rewrite using `[degree_lt_iff_coeff_zero]`. Introduce `m hm`. Rewrite using `[coeff_sub]`. Break down `hm.lt_or_eq with h | h` into its components or cases. Establish `h1` using `degree_comp_X_add_C_sub_lt (C (Q.coeff d / (d + 1)) * X ^ (d + 1)) 1 (d + 1) hR0`.
+
+Rewrite using `[(degree_lt_iff_coeff_zero _ _).1 hQ m (by omega), (degree_lt_iff_coeff_zero _ _).1 h1 m (by omega), sub_zero]`. Rewrite using `[← h, coeff_comp_X_add_C_sub _ 1 d hR0, coeff_C_mul_X_pow, if_pos rfl, one_mul, mul_div_cancel₀ _ hd1, sub_self]`. Take `⟨P', hP'd, hP'⟩` from `ih _ hQ'`. Use `⟨P' + C (Q.coeff d / (d + 1)) * X ^ (d + 1), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(degree_add_le _ _).trans (max_le (hP'd.trans (by exact_mod_cast Nat.le_succ d)) hR0)`.
+
+Rewrite using `[add_comp]`. Take the linear combination `hP'`.
+-/
 theorem exists_comp_X_add_one_sub_eq (d : ℕ) (Q : K[X]) (hQ : Q.degree < (d : ℕ)) :
     ∃ P : K[X], P.degree ≤ (d : ℕ) ∧ P.comp (X + C 1) - P = Q := by
   induction d generalizing Q with
@@ -79,6 +106,11 @@ theorem exists_comp_X_add_one_sub_eq (d : ℕ) (Q : K[X]) (hQ : Q.degree < (d : 
     · rw [add_comp]
       linear_combination hP'
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 h`. Apply `eq_of_infinite_eval_eq` to reduce the goal to its premises. Establish `hinf : ((fun n : ℤ => (n : K)) '' Set.Ici N).Infinite` using `Set.Infinite.image Int.cast_injective.injOn (Set.Ici_infinite N)`. Use `Set.Infinite.mono ?_ hinf` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`.
+
+Conclude with `hN n hn`.
+-/
 theorem polynomial_eq_of_eventually_eval_int {P Q : K[X]}
     (h : ∀ᶠ n : ℤ in atTop, P.eval (n : K) = Q.eval (n : K)) : P = Q := by
   obtain ⟨N, hN⟩ := Filter.eventually_atTop.1 h
@@ -89,10 +121,22 @@ theorem polynomial_eq_of_eventually_eval_int {P Q : K[X]}
   rintro _ ⟨n, hn, rfl⟩
   exact hN n hn
 
+/- English proof (translation)
+Simplify using `[eval_comp]`.
+-/
 private theorem eval_comp_X_add_one_sub_eq_eval_succ_sub (P : K[X]) (n : ℤ) :
     (P.comp (X + C 1) - P).eval (n : K) = P.eval ((n + 1 : ℤ) : K) - P.eval (n : K) := by
   simp [eval_comp]
 
+/- English proof (translation)
+Take `⟨P0, hP0d, hP0⟩` from `exists_comp_X_add_one_sub_eq d Q hQ`. Establish `key : ∀ k : ℕ, f (N + k) - P0.eval ((N + k : ℤ) : K) = f N - P0.eval (N : K)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Establish `h1` using `h (N + k) (by omega)`. Establish `h2` using `eval_comp_X_add_one_sub_eq_eval_succ_sub P0 (N + k)`. Rewrite `h2` using `[hP0]`. Establish `e1 : (N + ((k + 1 : ℕ) : ℤ)) = N + k + 1` using `by push_cast; ring`.
+
+Rewrite using `[e1]`. Take the linear combination `ih + h1 + h2`. Use `⟨P0 + C (f N - P0.eval (N : K)), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(degree_add_le _ _).trans (max_le hP0d (degree_C_le.trans (by exact_mod_cast Nat.zero_le d)))`. Rewrite using `[add_comp, C_comp]`.
+
+Take the linear combination `hP0`. Introduce `n hn`. Take `⟨k, rfl⟩` from `Int.le.dest hn`. Rewrite using `[eval_add, eval_C]`. Take the linear combination `key k`.
+-/
 theorem exists_polynomial_of_diff_from {f : ℤ → K} {Q : K[X]} {d : ℕ} (hQ : Q.degree < (d : ℕ))
     (N : ℤ) (h : ∀ n, N ≤ n → f (n + 1) - f n = Q.eval (n : K)) :
     ∃ P : K[X], P.degree ≤ (d : ℕ) ∧ P.comp (X + C 1) - P = Q ∧
@@ -118,6 +162,11 @@ theorem exists_polynomial_of_diff_from {f : ℤ → K} {Q : K[X]} {d : ℕ} (hQ 
     rw [eval_add, eval_C]
     linear_combination key k
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 h`. Take `⟨P, hPd, hPQ, hP⟩` from `exists_polynomial_of_diff_from hQ N hN`. Use `⟨P, hPd, hPQ, ?_, Filter.eventually_atTop.2 ⟨N, hP⟩⟩` and prove the remaining obligations. Introduce and unpack `e rfl`. Rewrite using `[← hPQ, coeff_comp_X_add_C_sub P 1 e hPd]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_polynomial_of_diff_eventually {f : ℤ → K} {Q : K[X]} {d : ℕ}
     (hQ : Q.degree < (d : ℕ)) (h : ∀ᶠ n : ℤ in atTop, f (n + 1) - f n = Q.eval (n : K)) :
     ∃ P : K[X], P.degree ≤ (d : ℕ) ∧ P.comp (X + C 1) - P = Q ∧
@@ -145,20 +194,37 @@ variable {R : Type*} [CommRing R] {M N : Type*} [AddCommGroup M] [Module R M]
 noncomputable def proj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (n : ℤ) : M →ₗ[R] M :=
   (ℳ n).subtype ∘ₗ component R ℤ (fun i => ℳ i) n ∘ₗ (decomposeLinearEquiv ℳ).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (n : ℤ) (m : M) :
     proj ℳ n m = (decompose ℳ m n : M) := rfl
 
+/- English proof (translation)
+Rewrite using `[proj_apply]`. Conclude with `(decompose ℳ m n).2`.
+-/
 theorem proj_mem (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (n : ℤ) (m : M) :
     proj ℳ n m ∈ ℳ n := by
   rw [proj_apply]
   exact (decompose ℳ m n).2
 
+/- English proof (translation)
+Rewrite using `[proj_apply, decompose_of_mem_same ℳ h]`.
+-/
 theorem proj_of_mem (ℳ : ℤ → Submodule R M) [Decomposition ℳ] {n : ℤ} {m : M} (h : m ∈ ℳ n) :
     proj ℳ n m = m := by rw [proj_apply, decompose_of_mem_same ℳ h]
 
+/- English proof (translation)
+Rewrite using `[proj_apply, decompose_of_mem_ne ℳ h hi]`.
+-/
 theorem proj_of_mem_ne (ℳ : ℤ → Submodule R M) [Decomposition ℳ] {i n : ℤ} {m : M}
     (h : m ∈ ℳ i) (hi : i ≠ n) : proj ℳ n m = 0 := by rw [proj_apply, decompose_of_mem_ne ℳ h hi]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_support_decompose ℳ m]`. Rewrite using `[map_sum, map_sum, Finset.sum_eq_single n]`. Rewrite using `[proj_of_mem 𝒩 (hf n _ (decompose ℳ m n).2), proj_apply]`. Introduce `i _ hi`. Conclude with `proj_of_mem_ne 𝒩 (hf i _ (decompose ℳ m i).2) (by omega)`.
+
+Introduce `hn`. Rewrite using `[DFinsupp.notMem_support_iff.1 hn]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_map (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (𝒩 : ℤ → Submodule R N)
     [Decomposition 𝒩] (f : M →ₗ[R] N) (d : ℤ) (hf : ∀ n, ∀ m ∈ ℳ n, f m ∈ 𝒩 (n + d))
     (n : ℤ) (m : M) : proj 𝒩 (n + d) (f m) = f (proj ℳ n m) := by
@@ -172,6 +238,13 @@ theorem proj_map (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (𝒩 : ℤ �
     rw [DFinsupp.notMem_support_iff.1 hn]
     simp
 
+/- English proof (translation)
+Use `⟨∑ g ∈ G, ∑ i ∈ (decompose ℳ g).support, |i|, ?_⟩` and prove the remaining obligations. Introduce `g hg n hn`. Rewrite using `[proj_apply]`. Assume the negation of the conclusion as `hne`. Establish `hmem : n ∈ (decompose ℳ g).support`.
+
+Rewrite using `[DFinsupp.mem_support_iff]`. Introduce `h0`. Conclude with `hne (by simp [h0])`. Establish `h1 : |n| ≤ ∑ i ∈ (decompose ℳ g).support, |i|` using `Finset.single_le_sum (f := fun i => |i|) (fun i _ => abs_nonneg i) hmem`. Establish `h2 : ∑ i ∈ (decompose ℳ g).support, |i| ≤ ∑ g ∈ G, ∑ i ∈ (decompose ℳ g).support, |i|` using `Finset.single_le_sum (f := fun g => ∑ i ∈ (decompose ℳ g).support, |i|) (fun g _ => Finset.sum_nonneg (fun i _ => abs_nonneg i)) hg`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_bound_proj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (G : Finset M) :
     ∃ b : ℤ, ∀ g ∈ G, ∀ n : ℤ, b < |n| → proj ℳ n g = 0 := by
   classical
@@ -190,6 +263,11 @@ theorem exists_bound_proj (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (G :
       (fun g _ => Finset.sum_nonneg (fun i _ => abs_nonneg i)) hg
   linarith
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Submodule.mem_inf, LinearMap.mem_range, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, x, rfl⟩`. Use `⟨proj ℳ n x, proj_mem ℳ n x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← proj_map ℳ 𝒩 f d hf n x, proj_of_mem 𝒩 hy]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨hf n x hx, x, rfl⟩`.
+-/
 theorem inf_range_eq_map (ℳ : ℤ → Submodule R M) [Decomposition ℳ] (𝒩 : ℤ → Submodule R N)
     [Decomposition 𝒩] (f : M →ₗ[R] N) (d : ℤ) (hf : ∀ n, ∀ m ∈ ℳ n, f m ∈ 𝒩 (n + d))
     (n : ℤ) : 𝒩 (n + d) ⊓ LinearMap.range f = (ℳ n).map f := by
@@ -208,6 +286,13 @@ noncomputable abbrev mul (M : Type*) [AddCommGroup M] [Module R M] [Module (MvPo
     [IsScalarTower R (MvPolynomial ι R) M] (p : MvPolynomial ι R) : M →ₗ[R] M :=
   (LinearMap.lsmul (MvPolynomial ι R) M p).restrictScalars R
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `m hm`. Rewrite using `[← MvPolynomial.algebraMap_eq, algebraMap_smul]`. Conclude with `P.smul_mem a hm`.
+
+Consider the case `add p q hp hq`. Introduce `m hm`. Rewrite using `[add_smul]`. Conclude with `P.add_mem (hp m hm) (hq m hm)`. Consider the case `mul_X p i hp`.
+
+Introduce `m hm`. Rewrite using `[mul_smul]`. Conclude with `hp _ (hP i m hm)`.
+-/
 theorem smul_mem_of_X_smul_mem (P : Submodule R M)
     (hP : ∀ i, ∀ m ∈ P, (MvPolynomial.X i : MvPolynomial ι R) • m ∈ P)
     (p : MvPolynomial ι R) : ∀ m ∈ P, p • m ∈ P := by
@@ -225,6 +310,9 @@ theorem smul_mem_of_X_smul_mem (P : Submodule R M)
     rw [mul_smul]
     exact hp _ (hP i m hm)
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => exact hG x hx`. Consider the case `zero => exact P.zero_mem`. Consider the case `add x y _ _ hx hy => exact P.add_mem hx hy`. Consider the case `smul a x _ hx => exact smul_mem_of_X_smul_mem P hP a x hx`.
+-/
 theorem mem_of_mem_span (P : Submodule R M)
     (hP : ∀ i, ∀ m ∈ P, (MvPolynomial.X i : MvPolynomial ι R) • m ∈ P) {G : Set M}
     (hG : ∀ g ∈ G, g ∈ P) {m : M} (hm : m ∈ Submodule.span (MvPolynomial ι R) G) : m ∈ P := by
@@ -238,6 +326,9 @@ variable (ℳ : ℤ → Submodule R M)
   (hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ ℳ n, (MvPolynomial.X i : MvPolynomial ι R) • m ∈ ℳ (n + 1))
 include hX
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hm`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_smul, Nat.cast_succ, ← add_assoc]`. Conclude with `hX i _ _ ih`.
+-/
 private theorem X_pow_smul_mem_add_nat_cast (i : ι) (k : ℕ) (n : ℤ) (m : M) (hm : m ∈ ℳ n) :
     ((MvPolynomial.X i : MvPolynomial ι R) ^ k) • m ∈ ℳ (n + k) := by
   induction k with
@@ -246,6 +337,13 @@ private theorem X_pow_smul_mem_add_nat_cast (i : ι) (k : ℕ) (n : ℤ) (m : M)
     rw [pow_succ', mul_smul, Nat.cast_succ, ← add_assoc]
     exact hX i _ _ ih
 
+/- English proof (translation)
+Use `Finsupp.induction s ?_ ?_` and prove the remaining obligations. Introduce `n m hm`. Rewrite using `[← MvPolynomial.C_apply, ← MvPolynomial.algebraMap_eq, algebraMap_smul]`. Simplify using `using (ℳ n).smul_mem a hm`. Introduce `i k s _ _ ih n m hm`.
+
+Rewrite using `[MvPolynomial.monomial_single_add, mul_smul]`. Establish `e : n + ((Finsupp.single i k + s).degree : ℤ) = n + s.degree + k`. Rewrite using `[map_add, Finsupp.degree_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `X_pow_smul_mem_add_nat_cast ℳ hX i k _ _ (ih n m hm)`.
+-/
 private theorem monomial_smul_mem_add_degree (s : ι →₀ ℕ) (a : R) :
     ∀ n : ℤ, ∀ m ∈ ℳ n, (MvPolynomial.monomial s a) • m ∈ ℳ (n + s.degree) := by
   refine Finsupp.induction s ?_ ?_
@@ -261,6 +359,11 @@ private theorem monomial_smul_mem_add_degree (s : ι →₀ ℕ) (a : R) :
     rw [e]
     exact X_pow_smul_mem_add_nat_cast ℳ hX i k _ _ (ih n m hm)
 
+/- English proof (translation)
+Rewrite using `[p.as_sum, Finset.sum_smul]`. Use `Submodule.sum_mem _ (fun s hs => ?_)` and prove the remaining obligations. Establish `hsd : s.degree = d`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hp (MvPolynomial.mem_support_iff.1 hs)`.
+
+Use `monomial_smul_mem_add_degree ℳ hX s (p.coeff s) n m hm` as an intermediate fact. Rewrite `this` using `[hsd]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_of_isHomogeneous {p : MvPolynomial ι R} {d : ℕ} (hp : p.IsHomogeneous d)
     (n : ℤ) (m : M) (hm : m ∈ ℳ n) : p • m ∈ ℳ (n + d) := by
   rw [p.as_sum, Finset.sum_smul]
@@ -273,12 +376,34 @@ theorem smul_mem_of_isHomogeneous {p : MvPolynomial ι R} {d : ℕ} (hp : p.IsHo
 
 variable [Decomposition ℳ]
 
+/- English proof (translation)
+Use `proj_map ℳ ℳ (mul M (MvPolynomial.X i)) 1 (fun n m hm => hX i n m hm) (n - 1) m` as an intermediate fact. Simplify `this` using `[mul]`.
+-/
 theorem proj_X_smul (i : ι) (n : ℤ) (m : M) :
     proj ℳ n ((MvPolynomial.X i : MvPolynomial ι R) • m)
       = (MvPolynomial.X i : MvPolynomial ι R) • proj ℳ (n - 1) m := by
   have := proj_map ℳ ℳ (mul M (MvPolynomial.X i)) 1 (fun n m hm => hX i n m hm) (n - 1) m
   simpa [mul] using this
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `Module.Finite.fg_top (R := MvPolynomial ι R) (M := M)`. Take `⟨b, hb⟩` from `exists_bound_proj ℳ G`. Establish `hmon : Submodule.span R (Set.range (fun s : ι →₀ ℕ => (MvPolynomial.monomial s (1 : R) : MvPolynomial ι R))) = ⊤`. Use `(MvPolynomial.basisMonomials ι R).span_eq` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+
+Establish `hS0` using `Submodule.span_smul_of_span_eq_top hmon (G : Set M)`. Rewrite `hS0` using `[hG, Submodule.restrictScalars_top]`. Establish `hS : Submodule.span R (Set.image2 (fun a b => a • b) (Set.range (fun s : ι →₀ ℕ => (MvPolynomial.monomial s (1 : R) : MvPolynomial ι R))) (G : Set M)) = ⊤` using `hS0`. Establish `hrange : ℳ n = Submodule.map (proj ℳ n) (Submodule.span R (Set.image2 (fun a b => a • b) (Set.range (fun s : ι →₀ ℕ => (MvPolynomial.monomial s (1 : R) : MvPolynomial ι R))) (G : Set M)))`. Rewrite using `[hS, Submodule.map_top]`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x, proj_of_mem ℳ hx⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `proj_mem ℳ n y`. Rewrite `hrange` using `[Submodule.map_span]`. Establish `hkey : ∀ (s : ι →₀ ℕ) (g : M), proj ℳ n ((MvPolynomial.monomial s (1 : R) : MvPolynomial ι R) • g) = (MvPolynomial.monomial s (1 : R) : MvPolynomial ι R) • proj ℳ (n - s.degree) g`. Introduce `s g`.
+
+Use `proj_map ℳ ℳ (mul M (MvPolynomial.monomial s (1 : R))) (s.degree : ℤ) (fun n' m hm => smul_mem_of_isHomogeneous ℳ hX (MvPolynomial.isHomogeneous_monomial _ rfl) n' m hm) (n - s.degree) g` as an intermediate fact. Simplify `this` using `[mul]`. Establish `hT : ((fun q : M × (ι →₀ ℕ) => (MvPolynomial.monomial q.2 (1 : R) : MvPolynomial ι R) • proj ℳ (n - q.2.degree) q.1) '' ((G : Set M) ×ˢ {s : ι →₀ ℕ | s.degree ≤ (n + b).toNat})).Finite` using `(G.finite_toSet.prod (Finsupp.finite_of_degree_le _)).image _`. Establish `hfin : (proj ℳ n '' (Set.image2 (fun a b => a • b) (Set.range (fun s : ι →₀ ℕ => (MvPolynomial.monomial s (1 : R) : MvPolynomial ι R))) (G : Set M))).Finite`. Use `(hT.union (Set.finite_singleton (0 : M))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨_, ⟨s, rfl⟩, g, hg, rfl⟩, rfl⟩`. Rewrite using `[hkey]`. Distinguish the cases in `hs : s.degree ≤ (n + b).toNat`. Conclude with `Or.inl ⟨(g, s), ⟨hg, hs⟩, rfl⟩`. Use `Or.inr ?_` and prove the remaining obligations.
+
+Establish `h1 : n + b < (s.degree : ℤ)`. Use `Int.self_le_toNat (n + b)` as an intermediate fact. Establish `h2 : ((n + b).toNat : ℤ) < s.degree` using `by exact_mod_cast not_le.1 hs`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (s.degree : ℤ) - n ≤ |n - (s.degree : ℤ)|`.
+
+Rewrite using `[abs_sub_comm]`. Conclude with `le_abs_self _`. Establish `h3 : b < |n - (s.degree : ℤ)|` using `by linarith`. Rewrite using `[Set.mem_singleton_iff, hb g hg _ h3, smul_zero]`. Rewrite using `[Module.Finite.iff_fg, hrange]`.
+
+Conclude with `Submodule.fg_span hfin`.
+-/
 theorem finite_piece [Finite ι] [Module.Finite (MvPolynomial ι R) M] (n : ℤ) :
     Module.Finite R (ℳ n) := by
   classical
@@ -344,6 +469,11 @@ open Module
 variable {k : Type*} [Field k] {M N : Type*} [AddCommGroup M] [Module k M]
   [AddCommGroup N] [Module k N]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.finrank_range_add_finrank_ker (f.domRestrict B)`. Rewrite `h` using `[LinearMap.range_domRestrict]`. Rewrite using `[← h]`. Use `congr 1`. Establish `hk : LinearMap.ker (f.domRestrict B) = Submodule.comap B.subtype (LinearMap.ker f)` using `LinearMap.ker_comp B.subtype f`.
+
+Rewrite using `[hk, ← Submodule.finrank_map_subtype_eq B (Submodule.comap B.subtype (LinearMap.ker f)), Submodule.map_comap_subtype]`.
+-/
 theorem finrank_map_add_finrank_inf_ker (f : M →ₗ[k] N) (B : Submodule k M)
     [Module.Finite k B] :
     finrank k (B.map f) + finrank k (B ⊓ LinearMap.ker f : Submodule k M) = finrank k B := by
@@ -356,6 +486,17 @@ theorem finrank_map_add_finrank_inf_ker (f : M →ₗ[k] N) (B : Submodule k M)
   rw [hk, ← Submodule.finrank_map_subtype_eq B (Submodule.comap B.subtype (LinearMap.ker f)),
     Submodule.map_comap_subtype]
 
+/- English proof (translation)
+Establish `: Module.Finite k (B ⊓ A.comap f : Submodule k M)` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq A (B.map f)`. Establish `h2` using `finrank_map_add_finrank_inf_ker f B`. Establish `h3` using `finrank_map_add_finrank_inf_ker f (B ⊓ A.comap f)`. Establish `e1 : (B ⊓ A.comap f).map f = A ⊓ B.map f`.
+
+Use extensionality with `y`. Simplify using `only [Submodule.mem_map, Submodule.mem_inf, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨hxB, hxA⟩, rfl⟩`. Conclude with `⟨hxA, x, hxB, rfl⟩`.
+
+Introduce and unpack `⟨hyA, x, hxB, rfl⟩`. Conclude with `⟨x, ⟨hxB, hyA⟩, rfl⟩`. Establish `e2 : (B ⊓ A.comap f) ⊓ LinearMap.ker f = B ⊓ LinearMap.ker f`. Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.mem_comap, LinearMap.mem_ker]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hB, _⟩, hk⟩`. Conclude with `⟨hB, hk⟩`. Introduce and unpack `⟨hB, hk⟩`. Conclude with `⟨⟨hB, by rw [hk]; exact A.zero_mem⟩, hk⟩`.
+
+Rewrite `h3` using `[e1, e2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_sup_map_add_finrank_inf_comap (f : M →ₗ[k] N) (B : Submodule k M)
     (A : Submodule k N) [Module.Finite k B] [Module.Finite k A] :
     finrank k (A ⊔ B.map f : Submodule k N) + finrank k (B ⊓ A.comap f : Submodule k M)
@@ -389,6 +530,19 @@ variable {ι : Type*} [Module (MvPolynomial ι k) M] [IsScalarTower k (MvPolynom
   (hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ ℳ n, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ ℳ (n + 1))
 include hX
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `(IsNoetherian.noetherian B : B.FG)`. Take `⟨b, hb⟩` from `exists_bound_proj ℳ G`. Set `Q : Submodule k M` to `{ carrier := {x | x ∈ B ∧ ∀ n, b < n → proj ℳ n x ∈ A} add_mem' := fun {x y} hx hy => ⟨B.add_mem hx.1 hy.1, fun n hn => by`. Rewrite using `[map_add]`. Conclude with `A.add_mem (hx.2 n hn) (hy.2 n hn)⟩`.
+
+Use the proof step `zero_mem' := ⟨B.zero_mem, fun n _ => by`. Rewrite using `[map_zero]`. Conclude with `A.zero_mem⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨B.smul_of_tower_mem c hx.1, fun n hn => by`. Rewrite using `[map_smul]`.
+
+Conclude with `A.smul_of_tower_mem c (hx.2 n hn)⟩ }`. Establish `hQX : ∀ i, ∀ m ∈ Q, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ Q`. Introduce `i m hm`. Establish `hm' : m ∈ B ∧ ∀ n, b < n → proj ℳ n m ∈ A` using `hm`. Use `show _ ∈ B ∧ ∀ n, b < n → _ ∈ A`.
+
+Conclude with `⟨B.smul_mem _ hm'.1, fun n _ => hA n _ (hs i m hm'.1)⟩`. Establish `hGQ : ∀ g ∈ (G : Set M), g ∈ Q`. Introduce `g hg`. Establish `hgB : g ∈ B`. Rewrite using `[← hG]`.
+
+Conclude with `Submodule.subset_span hg`. Use `show _ ∈ B ∧ ∀ n, b < n → _ ∈ A`. Use `⟨hgB, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hb g hg n (lt_of_lt_of_le hn (le_abs_self n))]`. Conclude with `A.zero_mem`.
+
+Use `Filter.eventually_atTop.2 ⟨b + 1, fun n hn m hmB hmn => ?_⟩` and prove the remaining obligations. Establish `hmQ : m ∈ Q` using `mem_of_mem_span Q hQX hGQ (by rw [hG]; exact hmB)`. Use `(hmQ : m ∈ B ∧ ∀ n, b < n → proj ℳ n m ∈ A).2 n (by omega)` as an intermediate fact. Rewrite `this` using `[proj_of_mem ℳ hmn]`. Then use the resulting hypothesis.
+-/
 private theorem eventually_mem_of_homogeneous_mem_of_X_smul_mem [Finite ι] [Module.Finite (MvPolynomial ι k) M]
     (A B : Submodule (MvPolynomial ι k) M) (hA : ∀ n, ∀ m ∈ A, proj ℳ n m ∈ A)
     (hs : ∀ i, ∀ m ∈ B, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ A) :
@@ -425,6 +579,21 @@ private theorem eventually_mem_of_homogeneous_mem_of_X_smul_mem [Finite ι] [Mod
   have := (hmQ : m ∈ B ∧ ∀ n, b < n → proj ℳ n m ∈ A).2 n (by omega)
   rwa [proj_of_mem ℳ hmn] at this
 
+/- English proof (translation)
+Use `finite_piece ℳ hX n` as an intermediate fact. Use `finite_piece ℳ hX (n + 1)` as an intermediate fact. Establish `: Module.Finite k (B.restrictScalars k ⊓ ℳ n : Submodule k M)` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `: Module.Finite k (A.restrictScalars k ⊓ ℳ (n + 1) : Submodule k M)` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `h` using `finrank_sup_map_add_finrank_inf_comap ((LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)).restrictScalars k) (B.restrictScalars k ⊓ ℳ n) (A.restrictScalars k ⊓ ℳ (n + 1))`.
+
+Establish `e1 : ((A.restrictScalars k ⊓ ℳ (n + 1)) ⊔ (B.restrictScalars k ⊓ ℳ n).map ((LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)).restrictScalars k) : Submodule k M) = (A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))).restrictScalars k ⊓ ℳ (n + 1)`. Apply `le_antisymm` to reduce the goal to its premises. Apply `sup_le` to reduce the goal to its premises. Conclude with `inf_le_inf_right _ (fun x hx => Submodule.mem_sup_left hx)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Take `⟨hxB, hxn⟩` from `Submodule.mem_inf.1 hx`. Conclude with `Submodule.mem_inf.2 ⟨Submodule.mem_sup_right (Submodule.mem_map_of_mem hxB), hX i n x hxn⟩`. Introduce `y hy`. Take `⟨hy, hyn⟩` from `Submodule.mem_inf.1 hy`. Take `⟨a, ha, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hz`. Rewrite using `[← proj_of_mem ℳ hyn, map_add]`. Use `Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨hA _ a ha, proj_mem ℳ _ a⟩) ?_` and prove the remaining obligations. Use `Submodule.mem_map.2 ⟨proj ℳ n b, Submodule.mem_inf.2 ⟨hB n b hb, proj_mem ℳ n b⟩, ?_⟩` and prove the remaining obligations. Use `proj_X_smul ℳ hX i (n + 1) b` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_right]`. Use `show (MvPolynomial.X i : MvPolynomial ι k) • proj ℳ n b = proj ℳ (n + 1) ((MvPolynomial.X i : MvPolynomial ι k) • b)`. Rewrite using `[this]`. Establish `e2 : ((B.restrictScalars k ⊓ ℳ n) ⊓ (A.restrictScalars k ⊓ ℳ (n + 1)).comap ((LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)).restrictScalars k) : Submodule k M) = (B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))).restrictScalars k ⊓ ℳ n`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.mem_inf, Submodule.mem_comap, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxB, hxn⟩, hxA, _⟩`. Conclude with `⟨⟨hxB, hxA⟩, hxn⟩`. Introduce and unpack `⟨⟨hxB, hxA⟩, hxn⟩`.
+
+Conclude with `⟨⟨hxB, hxn⟩, hxA, hX i n x hxn⟩`. Rewrite `h` using `[e1, e2]`. Conclude with `h`.
+-/
 private theorem finrank_graded_inf_add_eq_of_X_smul_comap [Finite ι] [Module.Finite (MvPolynomial ι k) M] (i : ι)
     (A B : Submodule (MvPolynomial ι k) M) (hA : ∀ n, ∀ m ∈ A, proj ℳ n m ∈ A)
     (hB : ∀ n, ∀ m ∈ B, proj ℳ n m ∈ B) (n : ℤ) :
@@ -473,6 +642,33 @@ private theorem finrank_graded_inf_add_eq_of_X_smul_comap [Finite ι] [Module.Fi
   rw [e1, e2] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing A B with`. Consider the case `empty`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_mem_of_homogeneous_mem_of_X_smul_mem ℳ hX A B hA (fun i => hs i (by simp))] with n hn`. Establish `e : (B.restrictScalars k ⊓ ℳ n : Submodule k M) = A.restrictScalars k ⊓ ℳ n`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxB, hxn⟩` from `Submodule.mem_inf.1 hx`. Conclude with `Submodule.mem_inf.2 ⟨hn x hxB hxn, hxn⟩`. Conclude with `inf_le_inf_right _ (fun x hx => hAB hx)`.
+
+Rewrite using `[e, sub_self, eval_zero]`. Consider the case `@insert i s hi ih`. Establish `hAK : A ≤ B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))` using `fun a ha => Submodule.mem_inf.2 ⟨hAB ha, Submodule.mem_comap.2 (A.smul_mem _ ha)⟩`. Establish `hK : ∀ n, ∀ m ∈ B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)), proj ℳ n m ∈ B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))`. Introduce `n m hm`.
+
+Take `⟨hmB, hmA⟩` from `Submodule.mem_inf.1 hm`. Use `Submodule.mem_inf.2 ⟨hB n m hmB, Submodule.mem_comap.2 ?_⟩` and prove the remaining obligations. Use `proj_X_smul ℳ hX i (n + 1) m` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Rewrite using `[LinearMap.lsmul_apply, ← this]`.
+
+Conclude with `hA _ _ (Submodule.mem_comap.1 hmA)`. Establish `hsK : ∀ j ∉ s, ∀ m ∈ B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)), (MvPolynomial.X j : MvPolynomial ι k) • m ∈ A`. Introduce `j hj m hm`. Take `⟨hmB, hmA⟩` from `Submodule.mem_inf.1 hm`. Distinguish the cases in `hji : j = i`.
+
+Substitute `hji` using the available equality. Conclude with `Submodule.mem_comap.1 hmA`. Conclude with `hs j (by simp [hji, hj]) m hmB`. Establish `hB'B : A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)) ≤ B` using `sup_le hAB (Submodule.map_le_iff_le_comap.2 (fun b hb => Submodule.mem_comap.2 (B.smul_mem _ hb)))`. Establish `hB' : ∀ n, ∀ m ∈ A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i)), proj ℳ n m ∈ A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))`.
+
+Introduce `n m hm`. Take `⟨a, ha, z, hz, rfl⟩` from `Submodule.mem_sup.1 hm`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hz`. Rewrite using `[map_add, LinearMap.lsmul_apply, proj_X_smul ℳ hX i n b]`. Conclude with `Submodule.add_mem_sup (hA n a ha) (Submodule.mem_map_of_mem (hB (n - 1) b hb))`.
+
+Establish `hsB' : ∀ j ∉ s, ∀ m ∈ B, (MvPolynomial.X j : MvPolynomial ι k) • m ∈ A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))`. Introduce `j hj m hm`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Conclude with `Submodule.mem_sup_right (Submodule.mem_map_of_mem hm)`.
+
+Conclude with `Submodule.mem_sup_left (hs j (by simp [hji, hj]) m hm)`. Take `⟨P1, hP1d, hP1⟩` from `ih A (B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))) hAK hA hK hsK`. Take `⟨P2, hP2d, hP2⟩` from `ih (A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))) B hB'B hB' hB hsB'`. Take `⟨N1, hN1⟩` from `Filter.eventually_atTop.1 hP1`. Take `⟨N2, hN2⟩` from `Filter.eventually_atTop.1 hP2`.
+
+Establish `hdiff : ∀ᶠ n : ℤ in atTop, ((finrank k (B.restrictScalars k ⊓ ℳ (n + 1) : Submodule k M) : ℚ) - finrank k (A.restrictScalars k ⊓ ℳ (n + 1) : Submodule k M)) - ((finrank k (B.restrictScalars k ⊓ ℳ n : Submodule k M) : ℚ) - finrank k (A.restrictScalars k ⊓ ℳ n : Submodule k M)) = ( …`. Use `Filter.eventually_atTop.2 ⟨max N1 N2, fun n hn => ?_⟩` and prove the remaining obligations. Establish `h1` using `hN1 n (le_of_max_le_left hn)`. Establish `h2` using `hN2 (n + 1) (by linarith [le_of_max_le_right hn])`. Establish `h3` using `finrank_graded_inf_add_eq_of_X_smul_comap ℳ hX i A B hA hB n`.
+
+Establish `h3' : (finrank k ((A ⊔ B.map (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))).restrictScalars k ⊓ ℳ (n + 1) : Submodule k M) : ℚ) + finrank k ((B ⊓ A.comap (LinearMap.lsmul (MvPolynomial ι k) M (MvPolynomial.X i))).restrictScalars k ⊓ ℳ n : Submodule k M) = finrank k (A …`. Conclude with `h3` after adjusting the coercions. Simplify using `only [eval_sub, eval_comp, eval_add, eval_X, eval_C]`. Move the coercions through the operations in `at h2`. Take the linear combination `h2 - h1 + h3'`.
+
+Establish `hQd : (P2.comp (X + C 1) - P1).degree < (s.card : ℕ)`. Use `lt_of_le_of_lt (degree_sub_le _ _) (max_lt ?_ hP1d)` and prove the remaining obligations. Rewrite using `[← taylor_apply, degree_taylor]`. Conclude with `hP2d`. Take `⟨P, hPd, -, -, hP⟩` from `exists_polynomial_of_diff_eventually (f := fun n : ℤ => (finrank k (B.restrictScalars k ⊓ ℳ n : Submodule k M) : ℚ) - finrank k (A.restrictScalars k ⊓ ℳ n : Submodule k M)) hQd hdiff`.
+
+Use `⟨P, ?_, hP⟩` and prove the remaining obligations. Rewrite using `[Finset.card_insert_of_notMem hi]`. Conclude with `lt_of_le_of_lt hPd (by exact_mod_cast Nat.lt_succ_self _)`.
+-/
 theorem exists_polynomial_subquotient [Finite ι] [Module.Finite (MvPolynomial ι k) M]
     (s : Finset ι) (A B : Submodule (MvPolynomial ι k) M) (hAB : A ≤ B)
     (hA : ∀ n, ∀ m ∈ A, proj ℳ n m ∈ A) (hB : ∀ n, ∀ m ∈ B, proj ℳ n m ∈ B)
@@ -573,12 +769,18 @@ structure IsHilbertPoly (ℳ : ℤ → Submodule k M) (P : ℚ[X]) : Prop where
   finite : ∀ n, Module.Finite k (ℳ n)
   eventually_eq : ∀ᶠ n : ℤ in atTop, (finrank k (ℳ n) : ℚ) = P.eval (n : ℚ)
 
+/- English proof (translation)
+Apply `polynomial_eq_of_eventually_eval_int` to reduce the goal to its premises. Use `filter_upwards [hP.eventually_eq, hQ.eventually_eq] with n h1 h2`. Rewrite using `[← h1, ← h2]`.
+-/
 theorem IsHilbertPoly.unique {ℳ : ℤ → Submodule k M} {P Q : ℚ[X]} (hP : IsHilbertPoly ℳ P)
     (hQ : IsHilbertPoly ℳ Q) : P = Q := by
   apply polynomial_eq_of_eventually_eval_int
   filter_upwards [hP.eventually_eq, hQ.eventually_eq] with n h1 h2
   rw [← h1, ← h2]
 
+/- English proof (translation)
+The claim follows from `hP.finite (n + d) eventually_eq := by filter_upwards [(Filter.tendsto_atTop_add_const_right atTop d Filter.tendsto_id).eventually hP.eventually_eq] with n hn simp only [id_eq] at hn rw [hn, eval_comp] simp`.
+-/
 theorem IsHilbertPoly.shift {ℳ : ℤ → Submodule k M} {P : ℚ[X]} (hP : IsHilbertPoly ℳ P)
     (d : ℤ) : IsHilbertPoly (fun n => ℳ (n + d)) (P.comp (X + C (d : ℚ))) where
   finite n := hP.finite (n + d)
@@ -589,6 +791,11 @@ theorem IsHilbertPoly.shift {ℳ : ℤ → Submodule k M} {P : ℚ[X]} (hP : IsH
     rw [hn, eval_comp]
     simp
 
+/- English proof (translation)
+Establish `h` using `finrank_map_add_finrank_inf_ker g (ℳ (n + d))`. Establish `hker : LinearMap.ker g = LinearMap.range f`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Conclude with `hfg y`.
+
+Rewrite `h` using `[hker, inf_range_eq_map ℳ' ℳ f d hf n, LinearEquiv.finrank_eq (Submodule.equivMapOfInjective f hinj (ℳ' n)).symm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq_add_of_exact (ℳ' : ℤ → Submodule k M') [Decomposition ℳ']
     (ℳ : ℤ → Submodule k M) [Decomposition ℳ] (f : M' →ₗ[k] M) (g : M →ₗ[k] M'') (d : ℤ)
     (hf : ∀ n, ∀ m ∈ ℳ' n, f m ∈ ℳ (n + d)) (hinj : Function.Injective f)
@@ -603,6 +810,13 @@ theorem finrank_eq_add_of_exact (ℳ' : ℤ → Submodule k M') [Decomposition �
     LinearEquiv.finrank_eq (Submodule.equivMapOfInjective f hinj (ℳ' n)).symm] at h
   omega
 
+/- English proof (translation)
+Use `hP.finite n` as an intermediate fact. Use `infer_instance`. Use `eventually_eq := by filter_upwards [hP.eventually_eq, (Filter.tendsto_atTop_add_const_right atTop (-d) Filter.tendsto_id).eventually hP'.eventually_eq] with n h1 h2`. Simplify using `only [id_eq] at h2`. Use `hP.finite` as an intermediate fact.
+
+Establish `h` using `finrank_eq_add_of_exact ℳ' ℳ f g d hf hinj hfg (n + -d)`. Rewrite `h` using `[neg_add_cancel_right]`. Rewrite using `[eval_sub, eval_comp, ← h1, h]`. Simplify using `only [eval_sub, eval_X, eval_C]`. Rewrite using `[show (n : ℚ) - d = ((n + -d : ℤ) : ℚ) by push_cast; ring, ← h2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsHilbertPoly.coker {ℳ' : ℤ → Submodule k M'} [Decomposition ℳ']
     {ℳ : ℤ → Submodule k M} [Decomposition ℳ] {P' P : ℚ[X]} (hP' : IsHilbertPoly ℳ' P')
     (hP : IsHilbertPoly ℳ P) (f : M' →ₗ[k] M) (g : M →ₗ[k] M'') (d : ℤ)
@@ -630,6 +844,11 @@ variable {ι : Type*} [Module (MvPolynomial ι k) M'] [IsScalarTower k (MvPolyno
   [Module (MvPolynomial ι k) M] [IsScalarTower k (MvPolynomial ι k) M]
   [Module (MvPolynomial ι k) M''] [IsScalarTower k (MvPolynomial ι k) M'']
 
+/- English proof (translation)
+Take `⟨P, hPd, hP⟩` from `exists_polynomial_subquotient ℳ hX Finset.univ ⊥ ⊤ bot_le (fun n m hm => by`. Rewrite using `[(Submodule.mem_bot _).1 hm, map_zero]`. Conclude with `Submodule.zero_mem _)`. Use the proof step `(fun _ _ _ => Submodule.mem_top) (fun i hi => absurd (Finset.mem_univ i) hi)`. Use `⟨P, ⟨finite_piece ℳ hX, ?_⟩, by simpa using hPd⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hP] with n hn`. Rewrite using `[← hn, Submodule.restrictScalars_top, Submodule.restrictScalars_bot, top_inf_eq, bot_inf_eq, finrank_bot]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isHilbertPoly [Fintype ι] [Module.Finite (MvPolynomial ι k) M]
     (ℳ : ℤ → Submodule k M) [Decomposition ℳ]
     (hX : ∀ (i : ι) (n : ℤ), ∀ m ∈ ℳ n, (MvPolynomial.X i : MvPolynomial ι k) • m ∈ ℳ (n + 1)) :
@@ -659,6 +878,13 @@ variable [Fintype ι] [Module.Finite (MvPolynomial ι k) M] (ℳ : ℤ → Submo
 
 end
 
+/- English proof (translation)
+Establish `hQ : P = (P.comp (X - C r)).comp (X + C r)`. Rewrite using `[comp_assoc]`. Simplify using the standard rewrite rules. Establish `hdeg : (P.comp (X - C r)).degree ≤ (e + 1 : ℕ)`. Rewrite using `[sub_eq_add_neg, ← C_neg, ← taylor_apply, degree_taylor]`.
+
+Conclude with `hP`. Establish `htop : (P.comp (X - C r)).coeff (e + 1) = P.coeff (e + 1)`. Rewrite using `[sub_eq_add_neg, ← C_neg]`. Conclude with `coeff_comp_X_add_C_of_natDegree_le P (-r) (e + 1) (natDegree_le_iff_degree_le.mpr hP)`. Establish `hdiff : P - P.comp (X - C r) = (P.comp (X - C r)).comp (X + C r) - P.comp (X - C r)`.
+
+Rewrite using `[← hQ]`. Rewrite using `[hdiff]`. Conclude with `⟨degree_comp_X_add_C_sub_lt _ r (e + 1) hdeg, by rw [coeff_comp_X_add_C_sub _ r e hdeg, htop]⟩`.
+-/
 theorem coeff_sub_comp_X_sub_C {K : Type*} [Field K] (P : K[X]) (r : K) (e : ℕ)
     (hP : P.degree ≤ (e + 1 : ℕ)) :
     (P - P.comp (X - C r)).degree < (e + 1 : ℕ) ∧
@@ -686,6 +912,9 @@ open DirectSum Module MvPolynomial
 
 variable (ι k : Type*) [Field k]
 
+/- English proof (translation)
+Rewrite `hm`, the goal using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[smul_eq_mul, add_comm]`. Conclude with `(isWeightedHomogeneous_X k (fun _ : ι => (1 : ℤ)) i).mul hm`.
+-/
 theorem X_smul_mem_weightedHomogeneousSubmodule (i : ι) (n : ℤ) (m : MvPolynomial ι k)
     (hm : m ∈ weightedHomogeneousSubmodule k (fun _ : ι => (1 : ℤ)) n) :
     (MvPolynomial.X i : MvPolynomial ι k) • m ∈

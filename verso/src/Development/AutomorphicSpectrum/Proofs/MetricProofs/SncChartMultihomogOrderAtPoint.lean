@@ -11,6 +11,23 @@ open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 
 namespace GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Mono
 
+/- English proof (translation)
+Establish `hdom : IsDomain (locRing I t)` using `isDomain_of_isRegularLocalRing`. Establish `hKt : I ≤ ptIdeal t` using `fun h hh => RingHom.mem_ker.mpr (hI h hh)`. Establish `hspan' : Ideal.span (Set.range fun l => algebraMap _ (locRing I t) (r l)) = IsLocalRing.maximalIdeal (locRing I t)`. Rewrite using `[hspan, maximalIdeal_locRing hKt]`. Establish `hdim' : (e : WithBot ℕ∞) = ringKrullDim (locRing I t)` using `hdim.symm`.
+
+Establish `hprime : ∀ i, Prime (algebraMap _ (locRing I t) (r i))` using `prime_of_regular_params (fun l => algebraMap _ (locRing I t) (r l)) hspan' hdim'`. Establish `hcontr : ∀ 𝔓 : Ideal (locRing I t), 𝔓.IsPrime → (𝔓.comap (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t))).IsPrime ∧ I ≤ 𝔓.comap (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t)) ∧ 𝔓.comap (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t)) ≤ ptIdeal t`. Introduce `𝔓 h𝔓`. Use `⟨Ideal.comap_isPrime _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`.
+
+Rewrite using `[Ideal.mem_comap]`. Establish `: algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) h = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hh)`. Rewrite using `[this]`. Conclude with `𝔓.zero_mem`. Introduce `h hh`.
+
+Rewrite `hh` using `[Ideal.mem_comap]`. Assume the negation of the conclusion as `hne`. Establish `hne' : eval t h ≠ 0` using `fun h0 => hne (RingHom.mem_ker.mpr h0)`. Establish `hu` using `(IrreducibleComponentPreimages.isUnit_algebraMap_locRing_iff I t hI h).mpr hne'`. Conclude with `h𝔓.ne_top (Ideal.eq_top_of_isUnit_mem _ hh hu)`.
+
+Establish `hg0 : algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) g ≠ 0`. Introduce `h0`. Take `⟨h1, h2, h3⟩` from `hcontr ⊥ Ideal.isPrime_bot`. Establish `hgm : g ∈ (⊥ : Ideal (locRing I t)).comap (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t))`. Rewrite using `[Ideal.mem_comap, h0]`.
+
+Conclude with `Ideal.zero_mem _`. Take `⟨i, -, hi⟩` from `(hpr _ h1 h2 h3).1 (hg _ h1 h2 h3 hgm)`. Rewrite `hi` using `[Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `(hprime i).ne_zero hi`. Establish `hrad : (∏ i ∈ J, algebraMap _ (locRing I t) (r i)) ∈ (Ideal.span {algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) g}).radical`.
+
+Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `𝔓 ⟨hle, h𝔓⟩`. Take `⟨h1, h2, h3⟩` from `hcontr 𝔓 h𝔓`. Establish `hgm : g ∈ 𝔓.comap (algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t))`. Rewrite using `[Ideal.mem_comap]`.
+
+Conclude with `hle (Ideal.mem_span_singleton_self _)`. Take `⟨i, hiJ, hi⟩` from `(hpr _ h1 h2 h3).1 (hg _ h1 h2 h3 hgm)`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ hiJ) hi`. Conclude with `eq_unit_mul_monomial (fun l => algebraMap _ (locRing I t) (r l)) hspan' hdim' J hg0 hrad`.
+-/
 theorem exists_unit_mul_monomial_of_primes {m e : ℕ} (I Dc : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)
     (hI : ∀ h ∈ I, eval t h = 0) [hreg : IsRegularLocalRing (locRing I t)]
     (hdim : ringKrullDim (locRing I t) = e) (r : Fin e → MvPolynomial (Fin m) ℂ) (J : Finset (Fin e))
@@ -71,6 +88,25 @@ theorem exists_unit_mul_monomial_of_primes {m e : ℕ} (I Dc : Ideal (MvPolynomi
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `h hh`. Establish `hvan : h ∈ vanishingIdeal ℂ (zeroLocus ℂ 𝔮)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `w hw`. Establish `hw0 : ∀ c ∈ 𝔮, eval w c = 0` using `fun c hc => by simpa using hw c hc`.
+
+Set `w' : (Σ k, ι k) → ℂ` to `w ∘ Fintype.equivFin (Σ k, ι k)`. Establish `hpt : renPt w' = w`. Use function extensionality and compare the values at `j`. Simplify using `[renPt, w']`. Establish `hren : ∀ x, eval w (renC (Σ k, ι k) x) = eval w' x` using `fun x => by`.
+
+Rewrite using `[← eval_renC w' x, hpt]`. Establish `hchart : ∀ c ∈ chartIdeal P p, eval w' c = 0` using `fun c hc => by`. Rewrite using `[← hren]`. Establish `hs : (renR (Σ k, ι k)).symm (renC (Σ k, ι k) c) = c` using `(renR (Σ k, ι k)).symm_apply_apply c`. Establish `hm : renC (Σ k, ι k) c ∈ SncRes.ideal P p`.
+
+Unfold `SncRes.ideal`. Rewrite using `[mem_map_renR_iff, hs]`. Conclude with `hc`. Conclude with `hw0 _ (hI hm)`. Take `⟨hcone, h1, -⟩` from `conePts_of_chartIdeal hP p w' hchart`.
+
+Establish `hlift : (fun q => eval w (SncRes.lift p q)) = w'`. Use function extensionality and compare the values at `q`. Unfold `SncRes.lift`. Use `split_ifs with hq`. Take `⟨k, i⟩` from `q`.
+
+Simplify using `only at hq`. Substitute `hq` using the available equality. Simplify using `[h1 k]`. Simplify using `[w']`. Establish `hfz : eval w' f = 0`.
+
+Establish `h2 : eval w (bind₁ (SncRes.lift p) f) = eval (fun q => eval w (SncRes.lift p q)) f` using `eval₂Hom_bind₁ _ _ _ _`. Rewrite using `[← hlift, ← h2]`. Conclude with `hw0 _ hg`. Establish `hD` using `hf w' hcone hfz`. Establish `hle : chartIdeal (P ⊔ D) p ≤ RingHom.ker (eval w')`.
+
+Use `sup_le (sup_le (fun c hc => RingHom.mem_ker.mpr (hcone.2 c hc)) (fun c hc => RingHom.mem_ker.mpr (hD.2 c hc))) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `show eval w' _ = 0`. Simplify using `[h1 k]`.
+
+Establish `h3 : eval w' ((renR (Σ k, ι k)).symm h) = 0` using `RingHom.mem_ker.mp (hle ((mem_map_renR_iff _ h).1 hh))`. Establish `e1 : renC (Σ k, ι k) ((renR (Σ k, ι k)).symm h) = h` using `(renR (Σ k, ι k)).apply_symm_apply h`. Use `show eval w h = 0`. Rewrite using `[← e1, hren, h3]`. Rewrite `hvan` using `[vanishingIdeal_zeroLocus_eq_radical, h𝔮.radical]`. Then use the resulting hypothesis.
+-/
 theorem ideal_sup_le_of_mem (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k)
     (hP : IsMultiHomogIdeal P) (f : MvPolynomial (Σ k, ι k) ℂ)
     (hf : ∀ z' ∈ conePts P, eval z' f = 0 → z' ∈ conePts D)
@@ -127,6 +163,9 @@ theorem ideal_sup_le_of_mem (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (
     rw [← e1, hren, h3]
   rwa [vanishingIdeal_zeroLocus_eq_radical, h𝔮.radical] at hvan
 
+/- English proof (translation)
+Introduce `K _ ι _ P D e p z r Jf f a hP _ _ _ hI hreg hdim hspan hpr _ hf`. Conclude with `exists_unit_mul_monomial_of_primes (SncRes.ideal P p) (SncRes.ideal (P ⊔ D) p) _ hI hdim r Jf hspan hpr _ fun 𝔮 h𝔮 hle _ hg => ideal_sup_le_of_mem P D p hP f hf 𝔮 h𝔮 hle hg`.
+-/
 theorem exists_unit_mul_monomial : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (e : ℕ) (p : (k : K) → ι k) (z : (Σ k, ι k) → ℂ) (r : Fin e → MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ) (Jf : Finset (Fin e)) (f : MvPolynomial (Σ k, ι k) ℂ) (a : K → ℕ), IsMultiHomogIdeal P → IsMultiHomogIdeal D → z ∈ conePts P → (∀ k, z ⟨k, p k⟩ ≠ 0) → (∀ h ∈ (SncRes.ideal P p), eval (renPt (affCoord p z)) h = 0) → IsRegularLocalRing (locRing (SncRes.ideal P p) (renPt (affCoord p z))) → ringKrullDim (locRing (SncRes.ideal P p) (renPt (affCoord p z))) = e → Ideal.span (Set.range fun l => algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z))) (r l)) = Ideal.map (algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z)))) (ptIdeal (renPt (affCoord p z))) → (∀ 𝔮 : Ideal (MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ), 𝔮.IsPrime → (SncRes.ideal P p) ≤ 𝔮 → 𝔮 ≤ ptIdeal (renPt (affCoord p z)) → ((SncRes.ideal (P ⊔ D) p) ≤ 𝔮 ↔ ∃ i ∈ Jf, r i ∈ 𝔮)) → IsMultiHomog f a → (∀ z' ∈ conePts P, eval z' f = 0 → z' ∈ conePts D) → ∃ (u : (locRing (SncRes.ideal P p) (renPt (affCoord p z)))ˣ) (mm : Fin e → ℕ), (∀ i, i ∉ Jf → mm i = 0) ∧ algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z))) (bind₁ (SncRes.lift p) f) = u * ∏ i ∈ Jf, algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z))) (r i) ^ mm i := by
   intro K _ ι _ P D e p z r Jf f a hP _ _ _ hI hreg hdim hspan hpr _ hf
   exact exists_unit_mul_monomial_of_primes (SncRes.ideal P p) (SncRes.ideal (P ⊔ D) p) _ hI hdim r Jf

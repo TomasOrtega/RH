@@ -15,6 +15,9 @@ section Helpers
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
   [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[smulLeftCLM_apply_apply, TemperedDistribution.delta_apply, smul_apply, TemperedDistribution.delta_apply, SchwartzMap.smulLeftCLM_apply_apply θ.hasTemperateGrowth]`.
+-/
 theorem smulLeftCLM_delta (θ : 𝓢(E, ℂ)) (x₀ : E) :
     smulLeftCLM ℂ (θ : E → ℂ) (TemperedDistribution.delta x₀ : 𝓢'(E, ℂ)) =
       θ x₀ • (TemperedDistribution.delta x₀ : 𝓢'(E, ℂ)) := by
@@ -22,6 +25,11 @@ theorem smulLeftCLM_delta (θ : 𝓢(E, ℂ)) (x₀ : E) :
   rw [smulLeftCLM_apply_apply, TemperedDistribution.delta_apply, smul_apply,
     TemperedDistribution.delta_apply, SchwartzMap.smulLeftCLM_apply_apply θ.hasTemperateGrowth]
 
+/- English proof (translation)
+Establish `hz : Distribution.IsVanishingOn (u - smulLeftCLM ℂ (ψ₁ : E → ℂ) u) V`. Establish `h2` using `isVanishingOn_neg (isVanishingOn_smulLeftCLM_sub ψ₁.hasTemperateGrowth hψ₁ u)`. Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Establish `hc : Distribution.IsVanishingOn (comm T θ (u - smulLeftCLM ℂ (ψ₁ : E → ℂ) u)) V` using `isLocal_comm hT θ V hV _ hz`. Establish `h0` using `smulLeftCLM_eq_zero_of_isVanishingOn ψ.hasTemperateGrowth hc hψ`.
+
+Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem smulLeft_comm_eq {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} (hT : IsLocal T) (θ : 𝓢(E, ℂ))
     {ψ ψ₁ : 𝓢(E, ℂ)} {V : Set E} (hV : IsOpen V) (hψ₁ : ∀ x ∈ V, ψ₁ x = 1)
     (hψ : tsupport (ψ : E → ℂ) ⊆ V) (u : 𝓢'(E, ℂ)) :
@@ -36,6 +44,9 @@ theorem smulLeft_comm_eq {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} (hT : IsLoc
   rw [map_sub, map_sub, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Rewrite using `[pderiv, pderiv, (h.iteratedFDeriv ℝ (mabs α)).eq_of_nhds]`.
+-/
 theorem pderiv_congr {n : ℕ} {α : Fin n → ℕ} {f f' : EuclideanSpace ℝ (Fin n) → ℂ}
     {x : EuclideanSpace ℝ (Fin n)} (h : f =ᶠ[nhds x] f') : pderiv α f x = pderiv α f' x := by
   rw [pderiv, pderiv, (h.iteratedFDeriv ℝ (mabs α)).eq_of_nhds]
@@ -47,10 +58,32 @@ section Comm
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
   [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Use `SobolevSpace.memSobolev_toDistribution (0 : SobolevSpace E ℂ t)` as an intermediate fact. Rewrite `this` using `[SobolevSpace.toDistribution_zero]`. Then use the resulting hypothesis.
+-/
 theorem memSobolev_zero_distribution (t : ℝ) : MemSobolev t 2 (0 : 𝓢'(E, ℂ)) := by
   have := SobolevSpace.memSobolev_toDistribution (0 : SobolevSpace E ℂ t)
   rwa [SobolevSpace.toDistribution_zero] at this
 
+/- English proof (translation)
+It suffices to establish `hloc : ∀ y ∈ (Set.univ : Set E), ∃ ψ : 𝓢(E, ℂ), (∀ᶠ x in nhds y, ψ x = 1) ∧ ∀ t, MemSobolev t 2 (smulLeftCLM ℂ (ψ : E → ℂ) (comm T θ u)) by`. Take `⟨β, hβ, hrep⟩` from `exists_contDiffOn_of_locally_memSobolev isOpen_univ hloc`. Conclude with `⟨β, contDiffOn_univ.1 hβ, fun φ hφ ↦ hrep φ hφ (Set.subset_univ _)⟩`. Introduce `y _`. Break down `hcover y with hy | hy` into its components or cases.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hΩ' y hy`. Establish `hr : 0 < ε / 8` using `by positivity`. Establish `h3 : 0 < 3 * (ε / 8)` using `by positivity`. Establish `h34 : 3 * (ε / 8) < 7 * (ε / 16)` using `by linarith`. Use `set ψ₁ := bumpG y h3 h34`.
+
+Establish `hψ₁Ω : tsupport (ψ₁ : E → ℂ) ⊆ Ω'` using `(tsupport_bumpG y h3 h34).trans fun x hx ↦ hball (by rw [Metric.mem_closedBall] at hx; rw [Metric.mem_ball]; linarith)`. Establish `hψ₁c : HasCompactSupport (ψ₁ : E → ℂ)` using `IsCompact.of_isClosed_subset (isCompact_closedBall y _) (isClosed_tsupport _) (tsupport_bumpG y h3 h34)`. Establish `hψ₁u : smulLeftCLM ℂ (ψ₁ : E → ℂ) u = ((cutMul hΩ' hg ψ₁ hψ₁c hψ₁Ω : 𝓢(E, ℂ)) : 𝓢'(E, ℂ))`. Use extensionality with `φ`. Rewrite using `[smulLeftCLM_apply_apply, SchwartzMap.coe_apply]`.
+
+Establish `hc' : HasCompactSupport (SchwartzMap.smulLeftCLM ℂ (ψ₁ : E → ℂ) φ : E → ℂ)`. Rewrite using `[SchwartzMap.smulLeftCLM_apply ψ₁.hasTemperateGrowth]`. Conclude with `hψ₁c.smul_right`. Establish `hs' : tsupport (SchwartzMap.smulLeftCLM ℂ (ψ₁ : E → ℂ) φ : E → ℂ) ⊆ Ω'`. Rewrite using `[SchwartzMap.smulLeftCLM_apply ψ₁.hasTemperateGrowth]`.
+
+Conclude with `(tsupport_smul_subset_left (ψ₁ : E → ℂ) (φ : E → ℂ)).trans hψ₁Ω`. Rewrite using `[hu _ hc' hs']`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply ψ₁.hasTemperateGrowth, cutMul_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨bump y hr, ?_, fun t ↦ ?_⟩` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds y hr] with x hx`. Conclude with `bump_eq_one y hr (Metric.ball_subset_closedBall hx)`. Rewrite using `[smulLeft_comm_eq hT θ (ψ₁ := ψ₁) (V := Metric.ball y (3 * (ε / 8))) Metric.isOpen_ball (fun x hx ↦ bumpG_eq_one y h3 h34 (Metric.ball_subset_closedBall hx)) ((tsupport_bump y hr).trans (Metric.closedBall_subset_ball (by linarith))), hψ₁u]`.
+
+Use `memSobolev_smulLeft _ ?_` and prove the remaining obligations. Conclude with `hc.memSobolev' (s := t + k) (by ring) (cutMul hΩ' hg ψ₁ hψ₁c hψ₁Ω).memSobolev`. Take `⟨V₀, hV₀, hyV, hZ⟩` from `hy`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hV₀ y hyV`. Establish `hr : 0 < ε / 4` using `by positivity`.
+
+Use `⟨bump y hr, ?_, fun t ↦ ?_⟩` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds y hr] with x hx`. Conclude with `bump_eq_one y hr (Metric.ball_subset_closedBall hx)`. Rewrite using `[smulLeftCLM_eq_zero_of_isVanishingOn (bump y hr).hasTemperateGrowth hZ ((tsupport_bump y hr).trans fun x hx ↦ hball (by`. Rewrite `hx` using `[Metric.mem_closedBall]`.
+
+Rewrite using `[Metric.mem_ball]`. Use the proof step `linarith))]`. Conclude with `memSobolev_zero_distribution t`.
+-/
 theorem exists_contDiff_comm {T : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} (hT : IsLocal T) (θ : 𝓢(E, ℂ)) {k : ℝ}
     (hc : HasOrder (comm T θ) k) {u : 𝓢'(E, ℂ)} {Ω' : Set E} (hΩ' : IsOpen Ω')
     {g : E → ℂ} (hg : ContDiffOn ℝ ∞ g Ω')
@@ -116,6 +149,85 @@ section Parametrix
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: Nontrivial (EuclideanSpace ℝ (Fin n))` using `Module.nontrivial_of_finrank_pos (R := ℝ) (by simpa using hn)`. Take `⟨r, hr, hrU, b, hb⟩` from `exists_schwartz_coeff hU (fun α hα ↦ (ha α hα).mono hUΩ) hx₀U`. Establish `hell' : ∀ y ∈ Metric.closedBall x₀ r, IsEllipticAt (opST A b) m y` using `fun y hy ↦ isEllipticAt_opST A b hA y fun ξ hξ ↦ by`. Establish `e : ∑ α ∈ A with mabs α = m, b α y * (mpow α ξ : ℂ) = prinSymbol A a m y ξ` using `Finset.sum_congr rfl fun α hα ↦ by rw [hb α (Finset.mem_filter.1 hα).1 y hy]`. Rewrite using `[e]`.
+
+Conclude with `hell y (hUΩ (hrU ((Metric.closedBall_subset_closedBall (by linarith)) hy))) ξ hξ`. Establish `hx₀r : x₀ ∈ Metric.closedBall x₀ r` using `Metric.mem_closedBall_self hr.le`. Establish `hnm' : (n : ℝ) < 2 * m` using `by exact_mod_cast hnm`. Establish `hfin : (Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) : ℝ) = n` using `by simp`. Establish `ht : -((m : ℝ) + (n : ℝ) / 2) / 2 < -(Module.finrank ℝ (EuclideanSpace ℝ (Fin n)) : ℝ) / 2`.
+
+Rewrite using `[hfin]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htm : (0 : ℝ) ≤ -((m : ℝ) + (n : ℝ) / 2) / 2 + m` using `by linarith`. Take `⟨r₁, hr₁, E₀, hE₀, hvan⟩` from `(hell' x₀ hx₀r).exists_local_solution hm ht`. Take `⟨ρ, hρ, hρr₁, hρr⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ r₁ ∧ ρ ≤ r` from `⟨min r₁ r, lt_min hr₁ hr, min_le_left _ _, min_le_right _ _⟩`.
+
+Use `set Ω' := Metric.ball x₀ ρ \ {x₀}`. Establish `hΩ' : IsOpen Ω'` using `Metric.isOpen_ball.sdiff isClosed_singleton`. Establish `hΩ'r : Ω' ⊆ Metric.closedBall x₀ r` using `fun y hy ↦ Metric.ball_subset_closedBall (Metric.ball_subset_ball hρr hy.1)`. Take `⟨g, hg, hgrep⟩` from `contDiffOn_of_isEllipticAt hm hΩ' (fun y hy ↦ hell' y (hΩ'r hy)) hE₀ (F := 0) memSobolev_zero_distribution (by`. Rewrite using `[sub_zero]`.
+
+Establish `h1` using `hvan.mono (show Ω' ⊆ Metric.ball x₀ r₁ from fun y hy ↦ Metric.ball_subset_ball hρr₁ hy.1)`. Establish `h2` using `(TemperedDistribution.isVanishingOn_delta x₀).mono (show Ω' ⊆ {x₀}ᶜ from fun y hy ↦ hy.2)`. Use `isVanishingOn_add h1 h2` as an intermediate fact. Rewrite using `[sub_add_cancel] at this)` and apply the resulting hypothesis. Take `⟨e, he⟩` from `memSobolev_zero_iff.1 (hE₀.mono htm)`.
+
+Establish `hE₀e : ∀ φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ), E₀ φ = ∫ x, φ x • e x` using `fun φ ↦ by`. Rewrite using `[he, MeasureTheory.Lp.toTemperedDistribution_apply]`. Establish `he_loc : LocallyIntegrable (e : EuclideanSpace ℝ (Fin n) → ℂ) volume` using `(Lp.memLp e).locallyIntegrable (by norm_num)`. Establish `hae : ∀ᵐ x, x ∈ Ω' → e x = g x`. Establish `h` using `hΩ'.ae_eq_zero_of_integral_contDiff_smul_eq_zero (μ := volume) (f := fun x ↦ e x - g x) (he_loc.locallyIntegrableOn _ |>.sub (hg.continuousOn.locallyIntegrableOn hΩ'.measurableSet)) fun g' hg' hg'c hg'Ω ↦ by`.
+
+Establish `hc₁ : HasCompactSupport (Complex.ofRealCLM ∘ g')` using `hg'c.comp_left rfl`. Establish `hc₂ : ContDiff ℝ ∞ (Complex.ofRealCLM ∘ g')` using `by fun_prop`. Take `⟨φ, hφdef⟩ : ∃ φ : 𝓢(EuclideanSpace ℝ (Fin n), ℂ), φ = hc₁.toSchwartzMap hc₂` from `⟨_, rfl⟩`. Establish `hφf : (φ : EuclideanSpace ℝ (Fin n) → ℂ) = Complex.ofRealCLM ∘ g'`. Rewrite using `[hφdef]`.
+
+Both sides reduce to the same expression. Establish `hφ : ∀ x, φ x = (g' x : ℂ)` using `fun x ↦ by rw [hφf]; rfl`. Establish `hφc : HasCompactSupport (φ : EuclideanSpace ℝ (Fin n) → ℂ)` using `by rw [hφf]; exact hc₁`. Establish `hφΩ : tsupport (φ : EuclideanSpace ℝ (Fin n) → ℂ) ⊆ Ω'`. Rewrite using `[hφf]; exact (tsupport_comp_subset (g := Complex.ofRealCLM) (by simp) _).trans hg'Ω`.
+
+Establish `hi1 : Integrable (fun x ↦ φ x • e x)` using `integrable_smul_of_locallyIntegrableOn (he_loc.locallyIntegrableOn _) hφc (Set.subset_univ _)`. Establish `hi2` using `integrable_smul_of_tsupport_subset hΩ' hg.continuousOn hφc hφΩ`. Establish `e1 : ∫ x, g' x • (e x - g x) = (∫ x, φ x • e x) - ∫ x, φ x • g x`. Rewrite using `[← integral_sub hi1 hi2]`. Use `congr 1`.
+
+Use extensionality with `x`. Rewrite using `[hφ, smul_sub, Complex.real_smul, Complex.real_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[e1, ← hE₀e, ← hgrep φ hφc hφΩ, sub_self]`. Use `filter_upwards [h] with x hx hxΩ`. Conclude with `sub_eq_zero.1 (hx hxΩ)`.
+
+Establish `hq1 : 0 < ρ / 4` using `by positivity`. Establish `hq2 : ρ / 4 < ρ / 2` using `by linarith`. Use `set θ := bumpG x₀ hq1 hq2`. Establish `hθs : tsupport (θ : EuclideanSpace ℝ (Fin n) → ℂ) ⊆ Metric.closedBall x₀ (ρ / 2)` using `tsupport_bumpG x₀ hq1 hq2`. Establish `hθ0 : ∀ x, x ∉ Metric.closedBall x₀ (ρ / 2) → θ x = 0` using `fun x hx ↦ image_eq_zero_of_notMem_tsupport fun h ↦ hx (hθs h)`.
+
+Establish `hθx₀ : θ x₀ = 1` using `bumpG_eq_one x₀ hq1 hq2 (Metric.mem_closedBall_self hq1.le)`. Establish `hhalfU : Metric.closedBall x₀ (ρ / 2) ⊆ U` using `(Metric.closedBall_subset_closedBall (by linarith)).trans hrU`. Use `set E : EuclideanSpace ℝ (Fin n) → ℂ := fun x ↦ θ x * g x`. Establish `hEs : tsupport E ⊆ Metric.closedBall x₀ (ρ / 2)` using `(tsupport_mul_subset_left).trans hθs`. Establish `hEc : HasCompactSupport E` using `IsCompact.of_isClosed_subset (isCompact_closedBall x₀ _) (isClosed_tsupport _) hEs`.
+
+Establish `hEe : E =ᵐ[volume] fun x ↦ θ x * e x`. Establish `hx₀ : ∀ᵐ x : EuclideanSpace ℝ (Fin n), x ≠ x₀`. Rewrite using `[ae_iff]`. Simplify using `only [not_not, Set.ofPred_eq_eq_singleton]`. Conclude with `measure_singleton x₀`.
+
+Use `filter_upwards [hae, hx₀] with x hx hxx₀`. Distinguish the cases in `hxb : x ∈ Metric.ball x₀ ρ`. Simplify using `only [E]`. Rewrite using `[hx ⟨hxb, hxx₀⟩]`. Establish `: x ∉ Metric.closedBall x₀ (ρ / 2)`.
+
+Introduce `h`. Apply `hxb` to reduce the goal to its premises. Rewrite `h` using `[Metric.mem_closedBall]`. Rewrite using `[Metric.mem_ball]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [E, hθ0 x this, zero_mul]`. Establish `hEint : Integrable E`. Establish `h` using `(θ.memLp 2 volume).integrable_mul (Lp.memLp e)`. Conclude with `h.congr hEe.symm`. Establish `hEsmooth : ContDiffOn ℝ ∞ E {x₀}ᶜ`.
+
+Use `contDiffOn_of_locally_contDiffOn fun x hx ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hxb : x ∈ Metric.ball x₀ ρ`. Use `⟨Ω', hΩ', ⟨hxb, hx⟩, ?_⟩` and prove the remaining obligations. Conclude with `(θ.smooth'.contDiffOn.mul hg).mono Set.inter_subset_right`. Use `⟨(Metric.closedBall x₀ (ρ / 2))ᶜ, Metric.isClosed_closedBall.isOpen_compl, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Apply `hxb` to reduce the goal to its premises. Rewrite `h` using `[Metric.mem_closedBall]`. Rewrite using `[Metric.mem_ball]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `(contDiffOn_const (c := (0 : ℂ))).congr fun y hy ↦ ?_` and prove the remaining obligations. Simplify using `only [E, hθ0 y hy.2, zero_mul]`. Establish `hT'loc : IsLocal (opST A b)` using `(hell' x₀ hx₀r).isLocal`. Establish `hZ1 : Distribution.IsVanishingOn (comm (opST A b) θ E₀) (Metric.ball x₀ (ρ / 4))`. Establish `hθE : Distribution.IsVanishingOn (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀ - E₀) (Metric.ball x₀ (ρ / 4))` using `isVanishingOn_smulLeftCLM_sub θ.hasTemperateGrowth (fun x hx ↦ bumpG_eq_one x₀ hq1 hq2 (Metric.ball_subset_closedBall hx)) E₀`.
+
+Establish `hθT : Distribution.IsVanishingOn (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) (opST A b E₀) - opST A b E₀) (Metric.ball x₀ (ρ / 4))` using `isVanishingOn_smulLeftCLM_sub θ.hasTemperateGrowth (fun x hx ↦ bumpG_eq_one x₀ hq1 hq2 (Metric.ball_subset_closedBall hx)) _`. Establish `h1` using `hT'loc _ Metric.isOpen_ball _ hθE`. Rewrite `h1` using `[map_sub]`. Establish `e : comm (opST A b) θ E₀ = (opST A b (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀) - opST A b E₀) - (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) (opST A b E₀) - opST A b E₀)` using `by rw [comm_apply]; abel`. Rewrite using `[e]`.
+
+Conclude with `isVanishingOn_sub h1 hθT`. Establish `hZ2 : Distribution.IsVanishingOn (comm (opST A b) θ E₀) (Metric.closedBall x₀ (ρ / 2))ᶜ`. Establish `hU' : IsOpen (Metric.closedBall x₀ (ρ / 2))ᶜ` using `Metric.isClosed_closedBall.isOpen_compl`. Establish `h1` using `(isVanishingOn_smulLeftCLM_compl θ.hasTemperateGrowth E₀).mono (Set.compl_subset_compl.2 hθs)`. Establish `h2` using `hT'loc _ hU' _ h1`.
+
+Establish `h3` using `(isVanishingOn_smulLeftCLM_compl θ.hasTemperateGrowth (opST A b E₀)).mono (Set.compl_subset_compl.2 hθs)`. Rewrite using `[comm_apply]`. Conclude with `isVanishingOn_sub h2 h3`. Take `⟨β', hβ', hβ'rep⟩` from `exists_contDiff_comm hT'loc θ ((hell' x₀ hx₀r).hasOrder_comm θ) hΩ' hg hgrep fun y ↦ by`. Distinguish the cases in `hy1 : y ∈ Metric.ball x₀ (ρ / 4)`.
+
+Conclude with `Or.inr ⟨_, Metric.isOpen_ball, hy1, hZ1⟩`. Distinguish the cases in `hy2 : y ∈ Metric.closedBall x₀ (ρ / 2)`. Use `left`. Use `⟨Metric.closedBall_subset_ball (by linarith) hy2, fun h ↦ hy1 ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Set.mem_singleton_iff]`.
+
+Rewrite using `[h]`. Conclude with `Metric.mem_ball_self hq1`. Conclude with `Or.inr ⟨_, Metric.isClosed_closedBall.isOpen_compl, hy2, hZ2⟩`. Establish `hβ'0 : Set.EqOn β' 0 (Metric.closedBall x₀ (ρ / 2))ᶜ`. Use `eqOn_of_integral_smul_eq hβ'.continuous continuous_const Metric.isClosed_closedBall.isOpen_compl fun φ hφc hφ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hβ'rep φ hφc, hZ2 φ hφ]`. Use `symm`. Conclude with `integral_eq_zero_of_ae (ae_of_all _ fun x ↦ by simp [Complex.ext_iff])`. Establish `hβ's : tsupport β' ⊆ Metric.closedBall x₀ (ρ / 2)`. Use `closure_minimal (fun x hx ↦ ?_) Metric.isClosed_closedBall` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx (hβ'0 h)`. Establish `hTθ : opST A b (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀) = TemperedDistribution.delta x₀ + comm (opST A b) θ E₀`. Establish `h1 : smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) (opST A b E₀) = TemperedDistribution.delta x₀`. Establish `h0` using `smulLeftCLM_eq_zero_of_isVanishingOn θ.hasTemperateGrowth hvan (hθs.trans (Metric.closedBall_subset_ball (by linarith)))`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero, smulLeftCLM_delta, hθx₀, one_smul]`. Conclude with `h0`. Rewrite using `[comm_apply, h1]`. Normalize the expressions using the abelian group laws. Use `⟨E, fun x ↦ -β' x, hEint, hEc, hEs.trans hhalfU, hEsmooth, hβ'.neg, ?_, ?_, fun φ hφ ↦ ?_⟩` and prove the remaining obligations.
+
+Use `IsCompact.of_isClosed_subset (isCompact_closedBall x₀ (ρ / 2)) (isClosed_tsupport _) ?_ show tsupport (-β') ⊆ _` and prove the remaining obligations. Rewrite using `[tsupport_neg]`. Conclude with `hβ's`. Use `show tsupport (-β') ⊆ _`. Rewrite using `[tsupport_neg]`.
+
+Conclude with `hβ's.trans hhalfU`. Establish `hq3 : 0 < 3 * ρ / 4` using `by positivity`. Establish `hq4 : 3 * ρ / 4 < ρ` using `by linarith`. Use `set θ₂ := bumpG x₀ hq3 hq4`. Establish `hθ₂U : tsupport (θ₂ : EuclideanSpace ℝ (Fin n) → ℂ) ⊆ U` using `(tsupport_bumpG x₀ hq3 hq4).trans ((Metric.closedBall_subset_closedBall (by linarith)).trans hrU)`.
+
+Establish `hθ₂c : HasCompactSupport (θ₂ : EuclideanSpace ℝ (Fin n) → ℂ)` using `IsCompact.of_isClosed_subset (isCompact_closedBall x₀ _) (isClosed_tsupport _) (tsupport_bumpG x₀ hq3 hq4)`. Use `set φ' := cutMul hU hφ θ₂ hθ₂c hθ₂U`. Establish `hφ' : ∀ x ∈ Metric.closedBall x₀ (3 * ρ / 4), φ' x = φ x` using `fun x hx ↦ by`. Rewrite using `[cutMul_apply, bumpG_eq_one x₀ hq3 hq4 hx, one_mul]`. Establish `hφ'c : HasCompactSupport (φ' : EuclideanSpace ℝ (Fin n) → ℂ)`.
+
+Rewrite using `[show (φ' : EuclideanSpace ℝ (Fin n) → ℂ) = fun x ↦ θ₂ x * φ x from rfl]`. Conclude with `hθ₂c.mul_right`. Use `set ψ' := ∑ α ∈ A, SchwartzMap.smulLeftCLM ℂ (b α : EuclideanSpace ℝ (Fin n) → ℂ) (∂^{mdir α} φ')`. Establish `hDψ : ∀ x ∈ Metric.ball x₀ (3 * ρ / 4), diffOp A a φ x = ψ' x`. Introduce `x hx`.
+
+Rewrite using `[sum_smulLeft_apply_eq_diffOp A a b φ' (fun α hα ↦ hb α hα x (Metric.ball_subset_closedBall (Metric.ball_subset_ball (by linarith) hx)))]`. Simplify using `only [diffOp]`. Use `Finset.sum_congr rfl fun α _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Use `pderiv_congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Metric.isOpen_ball.mem_nhds hx] with y hy`. Conclude with `(hφ' y (Metric.ball_subset_closedBall hy)).symm`. Establish `step1 : ∫ x, E x * diffOp A a φ x = ∫ x, ψ' x • (θ x * e x)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use extensionality with `x`. Distinguish the cases in `hx : x ∈ Metric.closedBall x₀ (ρ / 2)`. Rewrite using `[hDψ x (Metric.closedBall_subset_ball (by linarith) hx), smul_eq_mul, mul_comm]`. Simplify using `only [E, hθ0 x hx, zero_mul, mul_zero, smul_zero]`. Use `_ = _ := integral_congr_ae (hEe.mono fun x hx ↦ by show ψ' x • E x = _; rw [hx])`.
+
+Establish `step2 : ∫ x, ψ' x • (θ x * e x) = smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀ ψ'`. Rewrite using `[smulLeftCLM_apply_apply, hE₀e]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply θ.hasTemperateGrowth, smul_eq_mul, smul_eq_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `step3 : smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀ ψ' = opST A b (smulLeftCLM ℂ (θ : EuclideanSpace ℝ (Fin n) → ℂ) E₀) φ'` using `(opST_apply_apply A b _ φ').symm`. Rewrite using `[step1, step2, step3, hTθ, add_apply, TemperedDistribution.delta_apply, hφ' x₀ (Metric.mem_closedBall_self hq3.le), hβ'rep φ' hφ'c]`. Establish `step4 : ∫ x, φ' x • β' x = ∫ x, φ x * β' x`. Use `congr 1`.
+
+Use extensionality with `x`. Distinguish the cases in `hx : x ∈ Metric.closedBall x₀ (ρ / 2)`. Rewrite using `[hφ' x (Metric.closedBall_subset_closedBall (by linarith) hx), smul_eq_mul]`. Rewrite using `[hβ'0 hx]`. Simplify using the standard rewrite rules.
+
+Establish `e5 : ∫ x, (fun x ↦ -β' x) x * φ x = -∫ x, φ x * β' x`. Rewrite using `[← integral_neg]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[step4, e5, sub_neg_eq_add]`.
+-/
 theorem exists_parametrix {m : ℕ} (hn : 0 < n) (hm : 1 ≤ m) (hnm : n < 2 * m)
     {Ω : Set (EuclideanSpace ℝ (Fin n))} (hΩ : IsOpen Ω) {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ}

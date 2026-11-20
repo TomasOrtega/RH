@@ -15,6 +15,45 @@ section Schur
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial H with hH | hH` into its components or cases. Conclude with `⟨0, by`. Use extensionality with `x`. Conclude with `Subsingleton.elim _ _⟩`. Use `haveI : Nontrivial (H →L[ℂ] H) := by`.
+
+Take `⟨e, he⟩` from `exists_ne (0 : H)`. Conclude with `⟨⟨0, 1, fun h0 => he (by simpa using (congrArg (fun T : H →L[ℂ] H => T e) h0).symm)⟩⟩`. Establish `hcom : ∀ (φ : ℝ → ℝ), ∀ U ∈ 𝒰, Commute (cfc φ A) U`. Introduce `φ U hU`. Use `first`.
+
+Consider the case `exact (hcomm U hU).cfc_real φ`. Consider the case `exact Commute.cfc_real (hcomm U hU) φ`. Consider the case `exact (hcomm U hU).cfc (by rw [hA.star_eq]; exact hcomm U hU) φ`. Establish `hne0 : ∀ (φ : ℝ → ℝ) (u : ℝ), Continuous φ → u ∈ spectrum ℝ A → φ u ≠ 0 → cfc φ A ≠ 0`. Introduce `φ u hφ hu hφu h0`.
+
+Establish `hmem : φ u ∈ spectrum ℝ (cfc φ A)` using `by first`. Consider the case `(rw [cfc_map_spectrum φ A hA hφ.continuousOn]; exact ⟨u, hu, rfl⟩)`. Consider the case `(rw [cfc_map_spectrum φ A]; exact ⟨u, hu, rfl⟩)`. Rewrite `hmem` using `[h0, spectrum.zero_eq, Set.mem_singleton_iff]`. Conclude with `hφu hmem`.
+
+Establish `hsub : (spectrum ℝ A).Subsingleton`. Introduce `s hs t ht`. Assume the negation of the conclusion as `hst`. Establish `hδ : 0 < |s - t| / 2`. Establish `: 0 < |s - t|` using `abs_pos.2 (sub_ne_zero.2 hst)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ f g : ℝ → ℝ, Continuous f → Continuous g → (∀ x, f x * g x = 0) → f s ≠ 0 → g t ≠ 0 → False`. Introduce `f g hf hg hfg hfs hgt`. Establish `hF0 : cfc f A ≠ 0` using `hne0 f s hf hs hfs`. Establish `hG0 : cfc g A ≠ 0` using `hne0 g t hg ht hgt`.
+
+Establish `hz : (fun x => f x * g x) = fun _ => (0 : ℝ)` using `funext hfg`. Establish `hFG : cfc f A * cfc g A = 0` using `by first`. Consider the case `rw [← cfc_mul f g A hf.continuousOn hg.continuousOn, hz, cfc_const (0 : ℝ) A hA, map_zero]`. Consider the case `rw [← cfc_mul f g A, hz, cfc_const (0 : ℝ) A hA, map_zero]`. Set `K : Submodule ℂ H` to `LinearMap.ker ((cfc f A : H →L[ℂ] H) : H →ₗ[ℂ] H)`.
+
+Establish `hKc : IsClosed (K : Set H)` using `(cfc f A).isClosed_ker`. Establish `hKi : ∀ U ∈ 𝒰, ∀ v ∈ K, U v ∈ K`. Introduce `U hU v hv`. Establish `hv' : cfc f A v = 0` using `LinearMap.mem_ker.1 hv`. Apply `LinearMap.mem_ker.2` to reduce the goal to its premises.
+
+Use `show cfc f A (U v) = 0`. Establish `hc` using `congrArg (fun T : H →L[ℂ] H => T v) (hcom f U hU).eq`. Simplify using `only [ContinuousLinearMap.mul_apply] at hc`. Rewrite using `[hc, hv', map_zero]`. Break down `hirr K hKc hKi with hbot | htop` into its components or cases.
+
+Apply `hG0` to reduce the goal to its premises. Use extensionality with `y`. Establish `hy : cfc g A y ∈ K`. Apply `LinearMap.mem_ker.2` to reduce the goal to its premises. Use `show cfc f A (cfc g A y) = 0`.
+
+Rewrite using `[← ContinuousLinearMap.mul_apply, hFG, ContinuousLinearMap.zero_apply]`. Rewrite `hy` using `[hbot, Submodule.mem_bot]`. Rewrite using `[hy, ContinuousLinearMap.zero_apply]`. Apply `hF0` to reduce the goal to its premises. Use extensionality with `y`.
+
+Establish `hy : y ∈ K`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite using `[ContinuousLinearMap.zero_apply]`. Conclude with `LinearMap.mem_ker.1 hy`.
+
+Establish `hfc : Continuous fun x : ℝ => max 0 (|s - t| / 2 - |x - s|)` using `by first`. Consider the case `fun_prop`. Consider the case `exact continuous_const.max (continuous_const.sub (continuous_id.sub continuous_const).abs)`. Establish `hgc : Continuous fun x : ℝ => max 0 (|s - t| / 2 - |x - t|)` using `by first`. Consider the case `fun_prop`.
+
+Consider the case `exact continuous_const.max (continuous_const.sub (continuous_id.sub continuous_const).abs)`. Use `key _ _ hfc hgc (fun x => ?_) ?_ ?_` and prove the remaining obligations. Establish `hst' : |s - t| ≤ |x - s| + |x - t|`. Establish `h3` using `abs_sub_le s x t`. Rewrite `h3` using `[abs_sub_comm s x]`.
+
+Conclude with `h3`. Distinguish the cases in `h1 : |s - t| / 2 ≤ |x - s|`. Rewrite using `[max_eq_left (show |s - t| / 2 - |x - s| ≤ 0 by linarith), zero_mul]`. Use `push_neg at h1`. Rewrite using `[max_eq_left (show |s - t| / 2 - |x - t| ≤ 0 by linarith), mul_zero]`.
+
+Use `show max 0 (|s - t| / 2 - |s - s|) ≠ 0`. Rewrite using `[sub_self, abs_zero, sub_zero, max_eq_right hδ.le]`. Conclude with `hδ.ne'`. Use `show max 0 (|s - t| / 2 - |t - t|) ≠ 0`. Rewrite using `[sub_self, abs_zero, sub_zero, max_eq_right hδ.le]`.
+
+Conclude with `hδ.ne'`. Establish `hne : (spectrum ℝ A).Nonempty` using `by first`. Consider the case `exact CFC.spectrum_nonempty ℝ A hA`. Consider the case `exact CFC.spectrum_nonempty ℝ A`. Take `⟨c, hc⟩` from `hne`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h1 : cfc (fun x : ℝ => x) A = cfc (fun _ : ℝ => c) A` using `cfc_congr (fun x hx => hsub hx hc)`. Rewrite `h1` using `[cfc_id' ℝ A hA, cfc_const c A hA, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[h1]`. Use `first`.
+
+Consider the case `exact (Complex.coe_smul c (1 : H →L[ℂ] H)).symm`. Consider the case `exact RCLike.real_smul_eq_coe_smul (K := ℂ) c (1 : H →L[ℂ] H)`. Consider the case `simp`.
+-/
 theorem schur_selfAdjoint (𝒰 : Set (H →L[ℂ] H))
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ U ∈ 𝒰, ∀ v ∈ S, U v ∈ S) → S = ⊥ ∨ S = ⊤)
     (A : H →L[ℂ] H) (hA : IsSelfAdjoint A) (hcomm : ∀ U ∈ 𝒰, Commute A U) : ∃ c : ℝ, A = (c : ℂ) • (1 : H →L[ℂ] H) := by
@@ -119,6 +158,13 @@ theorem schur_selfAdjoint (𝒰 : Set (H →L[ℂ] H))
   | exact RCLike.real_smul_eq_coe_smul (K := ℂ) c (1 : H →L[ℂ] H)
   | simp
 
+/- English proof (translation)
+Establish `hst : ∀ U ∈ 𝒰, Commute (star A) U` using `fun U hU => by`. Use `(hcomm _ (hstar U hU)).star_star` as an intermediate fact. Rewrite `this` using `[star_star]`. Then use the resulting hypothesis. Take `⟨c₁, h₁⟩` from `schur_selfAdjoint 𝒰 hirr (realPart A : H →L[ℂ] H) (realPart A).2 (fun U hU => by`. Rewrite using `[realPart_apply_coe]`.
+
+Conclude with `((hcomm U hU).add_left (hst U hU)).smul_left _)`. Take `⟨c₂, h₂⟩` from `schur_selfAdjoint 𝒰 hirr (imaginaryPart A : H →L[ℂ] H) (imaginaryPart A).2 (fun U hU => by`. Rewrite using `[imaginaryPart_apply_coe]`. Conclude with `(((hcomm U hU).sub_left (hst U hU)).smul_left _).smul_left _)`. Use `⟨(c₁ : ℂ) + Complex.I * c₂, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← realPart_add_I_smul_imaginaryPart A]`. Rewrite using `[h₁, h₂, smul_smul, ← add_smul]`.
+-/
 theorem schur_bounded (𝒰 : Set (H →L[ℂ] H)) (hstar : ∀ U ∈ 𝒰, star U ∈ 𝒰)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ U ∈ 𝒰, ∀ v ∈ S, U v ∈ S) → S = ⊥ ∨ S = ⊤)
     (A : H →L[ℂ] H) (hcomm : ∀ U ∈ 𝒰, Commute A U) : ∃ c : ℂ, A = c • (1 : H →L[ℂ] H) := by
@@ -152,20 +198,32 @@ structure SqRep (μ : Measure G) (ρ : G → (H →L[ℂ] H)) : Prop where
 
 variable {μ : Measure G} {ρ : G → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (⟨(ρ g : H →ₗ[ℂ] H), h.iso g⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y`. Consider the case `exact LinearIsometry.inner_map_map { toLinearMap := (ρ g : H →ₗ[ℂ] H), norm_map' := h.iso g } x y`.
+-/
 theorem SqRep.inner_map (h : SqRep μ ρ) (g : G) (x y : H) : ⟪ρ g x, ρ g y⟫_ℂ = ⟪x, y⟫_ℂ := by
   first
   | exact (⟨(ρ g : H →ₗ[ℂ] H), h.iso g⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y
   | exact LinearIsometry.inner_map_map { toLinearMap := (ρ g : H →ₗ[ℂ] H), norm_map' := h.iso g } x y
 
+/- English proof (translation)
+Establish `e : ρ (g * g⁻¹) x = ρ g (ρ g⁻¹ x)`. Apply the tactic sequence `rw [h.mul] <;> rfl`. Rewrite using `[← e]`. Simplify using `[h.one]`.
+-/
 theorem SqRep.inv_apply (h : SqRep μ ρ) (g : G) (x : H) : ρ g (ρ g⁻¹ x) = x := by
   have e : ρ (g * g⁻¹) x = ρ g (ρ g⁻¹ x) := by
     rw [h.mul] <;> rfl
   rw [← e]
   simp [h.one]
 
+/- English proof (translation)
+Rewrite using `[← h.inner_map g x (ρ g⁻¹ y), h.inv_apply]`.
+-/
 theorem SqRep.inner_left (h : SqRep μ ρ) (g : G) (x y : H) : ⟪ρ g x, y⟫_ℂ = ⟪x, ρ g⁻¹ y⟫_ℂ := by
   rw [← h.inner_map g x (ρ g⁻¹ y), h.inv_apply]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact inner_conj_symm y x`. Consider the case `exact inner_conj_symm x y`. Consider the case `simp`.
+-/
 private theorem star_inner_lemma_2 {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (x y : E) :
     star ⟪x, y⟫_ℂ = ⟪y, x⟫_ℂ := by
   first
@@ -173,6 +231,11 @@ private theorem star_inner_lemma_2 {E : Type*} [NormedAddCommGroup E] [InnerProd
   | exact inner_conj_symm x y
   | simp
 
+/- English proof (translation)
+Establish `e : (fun g => ⟪ρ g v, w⟫_ℂ) = fun g => star ⟪w, ρ g v⟫_ℂ`. Use function extensionality and compare the values at `g`. Conclude with `(star_inner_lemma_2 w (ρ g v)).symm`. Rewrite using `[e]`. Use `first`.
+
+Consider the case `exact (h.sq v w).congr_norm (h.sq v w).1.star (ae_of_all _ fun g => (norm_star _).symm)`. Consider the case `exact (h.sq v w).star`. Consider the case `exact (h.sq v w).congr_norm (continuous_star.comp_aestronglyMeasurable (h.sq v w).1) (ae_of_all _ fun g => (norm_star _).symm)`.
+-/
 theorem SqRep.memLp' (h : SqRep μ ρ) (v w : H) : MemLp (fun g => ⟪ρ g v, w⟫_ℂ) 2 μ := by
   have e : (fun g => ⟪ρ g v, w⟫_ℂ) = fun g => star ⟪w, ρ g v⟫_ℂ := by
     funext g
@@ -197,6 +260,9 @@ def Tlin (h : SqRep μ ρ) (v : H) : H →ₗ[ℂ] Lp ℂ 2 μ where
     funext g
     simp [inner_smul_right]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (h.memLp' v w).coeFn_toLp`. Consider the case `exact MemLp.coeFn_toLp _`.
+-/
 theorem Tlin_coe (h : SqRep μ ρ) (v w : H) : (Tlin h v w : G → ℂ) =ᵐ[μ] fun g => ⟪ρ g v, w⟫_ℂ := by
   first
   | exact (h.memLp' v w).coeFn_toLp
@@ -204,6 +270,13 @@ theorem Tlin_coe (h : SqRep μ ρ) (v w : H) : (Tlin h v w : G → ℂ) =ᵐ[μ]
 
 variable [CompleteSpace H]
 
+/- English proof (translation)
+Use `LinearMap.continuous_of_seq_closed_graph (Tlin h v) ?_` and prove the remaining obligations. Introduce `u x y hu hy`. Establish `h2 : Filter.Tendsto (fun n => eLpNorm (⇑(Tlin h v (u n)) - ⇑y) 2 μ) Filter.atTop (nhds 0)` using `by first`. Consider the case `exact (Lp.tendsto_Lp_iff_tendsto_eLpNorm' (fun n => Tlin h v (u n)) y).1 hy`. Consider the case `exact Lp.tendsto_Lp_iff_tendsto_eLpNorm'.1 hy`.
+
+Establish `hm : TendstoInMeasure μ (fun n => ⇑(Tlin h v (u n))) Filter.atTop ⇑y` using `tendstoInMeasure_of_tendsto_eLpNorm two_ne_zero (fun n => Lp.aestronglyMeasurable _) (Lp.aestronglyMeasurable _) h2`. Take `⟨ns, hns, hae⟩` from `hm.exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ g ∂μ, ∀ n, (Tlin h v (u n) : G → ℂ) g = ⟪ρ g v, u n⟫_ℂ` using `ae_all_iff.2 fun n => Tlin_coe h v (u n)`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [hae, hall, Tlin_coe h v x] with g hg hg' hx`.
+
+Rewrite using `[hx]`. Establish `ht : Filter.Tendsto (fun i => ⟪ρ g v, u (ns i)⟫_ℂ) Filter.atTop (nhds ⟪ρ g v, x⟫_ℂ)` using `(tendsto_const_nhds (x := ρ g v)).inner (hu.comp hns.tendsto_atTop)`. Establish `hg2 : Filter.Tendsto (fun i => ⟪ρ g v, u (ns i)⟫_ℂ) Filter.atTop (nhds (y g))`. Simplify `hg` using `only [hg']`. Conclude with `tendsto_nhds_unique hg2 ht`.
+-/
 theorem Tlin_cont (h : SqRep μ ρ) (v : H) : Continuous (Tlin h v) := by
   refine LinearMap.continuous_of_seq_closed_graph (Tlin h v) ?_
   intro u x y hu hy
@@ -228,12 +301,18 @@ theorem Tlin_cont (h : SqRep μ ρ) (v : H) : Continuous (Tlin h v) := by
 
 def Tcl (h : SqRep μ ρ) (v : H) : H →L[ℂ] Lp ℂ 2 μ := ⟨Tlin h v, Tlin_cont h v⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [RCLike.inner_apply, starRingEnd_apply]; done)`. Consider the case `(simp only [RCLike.inner_apply, starRingEnd_apply]; ring)`. Consider the case `simp [mul_comm]`.
+-/
 private theorem innerC_lemma (a b : ℂ) : ⟪a, b⟫_ℂ = star a * b := by
   first
   | (simp only [RCLike.inner_apply, starRingEnd_apply]; done)
   | (simp only [RCLike.inner_apply, starRingEnd_apply]; ring)
   | simp [mul_comm]
 
+/- English proof (translation)
+Use `show ⟪(Tlin h v w : Lp ℂ 2 μ), Tlin h v' w'⟫_ℂ = _`. Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Tlin_coe h v w, Tlin_coe h v' w'] with g h1 h2`. Rewrite using `[h1, h2, innerC_lemma, star_inner_lemma_2 (ρ g v) w, star_inner_lemma_2 w' (ρ g v')]`.
+-/
 theorem Tcl_inner (h : SqRep μ ρ) (v v' w w' : H) :
     ⟪Tcl h v w, Tcl h v' w'⟫_ℂ = ∫ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ ∂μ := by
   show ⟪(Tlin h v w : Lp ℂ 2 μ), Tlin h v' w'⟫_ℂ = _
@@ -252,6 +331,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSp
 
 def Iint (μ : Measure G) (ρ : G → (H →L[ℂ] H)) (v w v' w' : H) : ℂ := ∫ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ ∂μ
 
+/- English proof (translation)
+Unfold `Iint`. Establish `e : ∀ g, ⟪ρ a w, ρ g v⟫_ℂ * star ⟪ρ a w', ρ g v'⟫_ℂ = ⟪w, ρ (a⁻¹ * g) v⟫_ℂ * star ⟪w', ρ (a⁻¹ * g) v'⟫_ℂ`. Introduce `g`. Apply the tactic sequence `rw [h.inner_left a w, h.inner_left a w', h.mul] <;> rfl`. Repeatedly rewrite using `[e]`.
+
+Use `first`. Consider the case `exact integral_mul_left_eq_self (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ) a⁻¹`. Consider the case `exact integral_mul_left_eq_self (μ := μ) (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ) a⁻¹`.
+-/
 theorem Iint_left [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (a : G) (v w v' w' : H) :
     Iint μ ρ v (ρ a w) v' (ρ a w') = Iint μ ρ v w v' w' := by
   unfold Iint
@@ -264,6 +348,11 @@ theorem Iint_left [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (a : G) (v w v' w' :
   | exact integral_mul_left_eq_self (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ) a⁻¹
   | exact integral_mul_left_eq_self (μ := μ) (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ) a⁻¹
 
+/- English proof (translation)
+Unfold `Iint`. Establish `e : ∀ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ = ⟪v', ρ g⁻¹ w'⟫_ℂ * star ⟪v, ρ g⁻¹ w⟫_ℂ`. Introduce `g`. Rewrite using `[← h.inner_left g v' w', ← h.inner_left g v w, star_inner_lemma_2 w' (ρ g v'), star_inner_lemma_2 (ρ g v) w]`. Conclude with `mul_comm _ _`.
+
+Repeatedly rewrite using `[e]`. Use `first`. Consider the case `exact integral_inv_eq_self (fun g => ⟪v', ρ g w'⟫_ℂ * star ⟪v, ρ g w⟫_ℂ) μ`. Consider the case `exact integral_inv_eq_self (fun g => ⟪v', ρ g w'⟫_ℂ * star ⟪v, ρ g w⟫_ℂ)`.
+-/
 theorem Iint_inv [μ.IsInvInvariant] (h : SqRep μ ρ) (v w v' w' : H) : Iint μ ρ v w v' w' = Iint μ ρ w' v' w v := by
   unfold Iint
   have e : ∀ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ
@@ -277,6 +366,9 @@ theorem Iint_inv [μ.IsInvInvariant] (h : SqRep μ ρ) (v w v' w' : H) : Iint μ
   | exact integral_inv_eq_self (fun g => ⟪v', ρ g w'⟫_ℂ * star ⟪v, ρ g w⟫_ℂ) μ
   | exact integral_inv_eq_self (fun g => ⟪v', ρ g w'⟫_ℂ * star ⟪v, ρ g w⟫_ℂ)
 
+/- English proof (translation)
+Establish `hi` using `MeasureTheory.L2.integrable_inner (𝕜 := ℂ) (Tlin h v w) (Tlin h v' w')`. Use `hi.congr ?_` and prove the remaining obligations. Use `filter_upwards [Tlin_coe h v w, Tlin_coe h v' w'] with g h1 h2`. Rewrite using `[h1, h2, innerC_lemma, star_inner_lemma_2 (ρ g v) w, star_inner_lemma_2 w' (ρ g v')]`.
+-/
 theorem Iint_integrable (h : SqRep μ ρ) (v w v' w' : H) :
     Integrable (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ g v'⟫_ℂ) μ := by
   have hi := MeasureTheory.L2.integrable_inner (𝕜 := ℂ) (Tlin h v w) (Tlin h v' w')
@@ -288,9 +380,19 @@ variable [CompleteSpace H]
 
 def Aop (h : SqRep μ ρ) (v v' : H) : H →L[ℂ] H := (ContinuousLinearMap.adjoint (Tcl h v)).comp (Tcl h v')
 
+/- English proof (translation)
+Conclude with `(ContinuousLinearMap.adjoint_inner_right (Tcl h v) w (Tcl h v' w')).trans (Tcl_inner h v v' w w')`.
+-/
 theorem Aop_inner (h : SqRep μ ρ) (v v' w w' : H) : ⟪w, Aop h v v' w'⟫_ℂ = Iint μ ρ v w v' w' := by
   exact (ContinuousLinearMap.adjoint_inner_right (Tcl h v) w (Tcl h v' w')).trans (Tcl_inner h v v' w w')
 
+/- English proof (translation)
+Establish `key : ∀ w w' : H, ⟪w, Aop h v v' (ρ a w')⟫_ℂ = ⟪w, ρ a (Aop h v v' w')⟫_ℂ`. Introduce `w w'`. Establish `e1 : ⟪w, ρ a (Aop h v v' w')⟫_ℂ = ⟪ρ a⁻¹ w, Aop h v v' w'⟫_ℂ`. Rewrite using `[h.inner_left a⁻¹ w, inv_inv]`. Rewrite using `[e1, Aop_inner h v v' w (ρ a w'), Aop_inner h v v' (ρ a⁻¹ w) w', ← Iint_left h a v (ρ a⁻¹ w) v' w', h.inv_apply]`.
+
+Use `show Aop h v v' * ρ a = ρ a * Aop h v v'`. Use extensionality with `w'`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply]`.
+
+Conclude with `key w w'`.
+-/
 theorem Aop_comm [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (v v' : H) (a : G) : Commute (Aop h v v') (ρ a) := by
   have key : ∀ w w' : H, ⟪w, Aop h v v' (ρ a w')⟫_ℂ = ⟪w, ρ a (Aop h v v' w')⟫_ℂ := by
     intro w w'
@@ -305,11 +407,41 @@ theorem Aop_comm [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (v v' : H) (a : G) : 
   rw [ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply]
   exact key w w'
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[h.inner_left a⁻¹ x, inv_inv]`.
+-/
 theorem star_rho (h : SqRep μ ρ) (a : G) : star (ρ a) = ρ a⁻¹ := by
   rw [ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]
   intro x y
   rw [h.inner_left a⁻¹ x, inv_inv]
 
+/- English proof (translation)
+Establish `hscal : ∀ v v' : H, ∃ c : ℂ, Aop h v v' = c • (1 : H →L[ℂ] H)`. Introduce `v v'`. Use `schur_bounded (Set.range ρ) ?_ ?_ (Aop h v v') ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a⁻¹, (star_rho h a).symm⟩`.
+
+Introduce `S hS hinv`. Conclude with `hirr S hS (fun g x hx => hinv (ρ g) ⟨g, rfl⟩ x hx)`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Aop_comm h v v' a`. Use `choose c hc using hscal`.
+
+Establish `hI : ∀ v w v' w' : H, Iint μ ρ v w v' w' = c v v' * ⟪w, w'⟫_ℂ`. Introduce `v w v' w'`. Rewrite using `[← Aop_inner h v v' w w', hc v v', ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right]`. Take `⟨e, he⟩` from `exists_ne (0 : H)`. Establish `hn : (0 : ℝ) < ‖e‖` using `norm_pos_iff.2 he`.
+
+Establish `hc0 : Continuous fun g => ρ g e` using `h.cont e`. Establish `hfc : Continuous fun g => ‖⟪e, ρ g e⟫_ℂ‖ ^ 2` using `by first`. Consider the case `exact (continuous_const.inner hc0).norm.pow 2`. Consider the case `fun_prop`. Establish `hfi : Integrable (fun g => ‖⟪e, ρ g e⟫_ℂ‖ ^ 2) μ`.
+
+Establish `hi` using `(Iint_integrable h e e e e).norm`. Use `hi.congr (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, norm_star, sq]`. Establish `hpos : 0 < ∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ`. Rewrite using `[integral_pos_iff_support_of_nonneg (fun g => sq_nonneg _) hfi]`.
+
+Use `hfc.isOpen_support.measure_pos μ ⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.mem_support, h.one, ContinuousLinearMap.one_apply]`. Use `first`. Consider the case `exact pow_ne_zero 2 (norm_ne_zero_iff.2 (inner_self_ne_zero.2 he))`. Consider the case `simpa using he`.
+
+Establish `hIe : Iint μ ρ e e e e = ((∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ)`. Unfold `Iint`. Use `first`. Consider the case `rw [← integral_ofReal]`. Consider the case `rw [← integral_complex_ofReal]`.
+
+Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Use `show ⟪e, ρ g e⟫_ℂ * star ⟪e, ρ g e⟫_ℂ = ((‖⟪e, ρ g e⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Use `first`. Consider the case `rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Consider the case `exact RCLike.mul_conj _`.
+
+Consider the case `simp [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.star_def]`. Consider the case `(rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_abs]; push_cast; ring)`. Establish `hee : ⟪e, e⟫_ℂ = ((‖e‖ ^ 2 : ℝ) : ℂ)` using `by first`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast)`. Consider the case `simp [inner_self_eq_norm_sq_to_K]`.
+
+Establish `key : ∀ v v' : H, c v v' * ((‖e‖ ^ 2 : ℝ) : ℂ) = c e e * ⟪v', v⟫_ℂ`. Introduce `v v'`. Rewrite using `[← hee, ← hI v e v' e, Iint_inv h v e v' e, hI e v' e v]`. Establish `hce : c e e * ((‖e‖ ^ 2 : ℝ) : ℂ) = ((∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← hee, ← hI e e e e, hIe]`.
+
+Establish `hn' : ((‖e‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (pow_pos hn 2).ne'`. Establish `hE : ((‖e‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hn.ne'`. Establish `hI0 : ((∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hpos.ne'`. Use `⟨(‖e‖ ^ 2) ^ 2 / ∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ, div_pos (pow_pos (pow_pos hn 2) 2) hpos, fun v w v' w' => ⟨Iint_integrable h v w v' w', ?_⟩⟩` and prove the remaining obligations. Use `show Iint μ ρ v w v' w' = _`.
+
+Establish `hcv : c v v' = c e e * ⟪v', v⟫_ℂ / ((‖e‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[eq_div_iff hn', key v v']`. Establish `hcee : c e e = ((∫ g, ‖⟪e, ρ g e⟫_ℂ‖ ^ 2 ∂μ : ℝ) : ℂ) / ((‖e‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[eq_div_iff hn', hce]`. Rewrite using `[hI v w v' w', hcv, hcee]`.
+
+Use `push_cast`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+-/
 theorem schur_orth [μ.IsMulLeftInvariant] [μ.IsInvInvariant] [μ.IsOpenPosMeasure] [Nontrivial H] (h : SqRep μ ρ)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤) :
     ∃ d : ℝ, 0 < d ∧ ∀ v w v' w' : H,
@@ -393,6 +525,9 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSp
   {H' : Type*} [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] [CompleteSpace H']
   {μ : Measure G} {ρ : G → (H →L[ℂ] H)} {ρ' : G → (H' →L[ℂ] H')}
 
+/- English proof (translation)
+Use `show ⟪(Tlin h v w : Lp ℂ 2 μ), Tlin h' v' w'⟫_ℂ = _`. Rewrite using `[MeasureTheory.L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Tlin_coe h v w, Tlin_coe h' v' w'] with g h1 h2`. Rewrite using `[h1, h2, innerC_lemma, star_inner_lemma_2 (ρ g v) w, star_inner_lemma_2 w' (ρ' g v')]`.
+-/
 theorem Tcl_inner2 (h : SqRep μ ρ) (h' : SqRep μ ρ') (v w : H) (v' w' : H') :
     ⟪Tcl h v w, Tcl h' v' w'⟫_ℂ = ∫ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ' g v'⟫_ℂ ∂μ := by
   show ⟪(Tlin h v w : Lp ℂ 2 μ), Tlin h' v' w'⟫_ℂ = _
@@ -404,10 +539,20 @@ theorem Tcl_inner2 (h : SqRep μ ρ) (h' : SqRep μ ρ') (v w : H) (v' w' : H') 
 def Bop (h : SqRep μ ρ) (h' : SqRep μ ρ') (v : H) (v' : H') : H' →L[ℂ] H :=
   (ContinuousLinearMap.adjoint (Tcl h v)).comp (Tcl h' v')
 
+/- English proof (translation)
+Conclude with `(ContinuousLinearMap.adjoint_inner_right (Tcl h v) w (Tcl h' v' w')).trans (Tcl_inner2 h h' v w v' w')`.
+-/
 theorem Bop_inner (h : SqRep μ ρ) (h' : SqRep μ ρ') (v w : H) (v' w' : H') :
     ⟪w, Bop h h' v v' w'⟫_ℂ = ∫ g, ⟪w, ρ g v⟫_ℂ * star ⟪w', ρ' g v'⟫_ℂ ∂μ := by
   exact (ContinuousLinearMap.adjoint_inner_right (Tcl h v) w (Tcl h' v' w')).trans (Tcl_inner2 h h' v w v' w')
 
+/- English proof (translation)
+Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `w`. Establish `hinv : ∀ x : H', ρ' a⁻¹ (ρ' a x) = x` using `fun x => by`. Use `h'.inv_apply a⁻¹ x` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `e1 : ⟪w, ρ a (Bop h h' v v' w')⟫_ℂ = ⟪ρ a⁻¹ w, Bop h h' v v' w'⟫_ℂ`. Rewrite using `[h.inner_left a⁻¹ w, inv_inv]`. Rewrite using `[e1, Bop_inner h h' v w v' (ρ' a w'), Bop_inner h h' v (ρ a⁻¹ w) v' w']`. Establish `e : ∀ g, ⟪ρ a⁻¹ w, ρ g v⟫_ℂ * star ⟪w', ρ' g v'⟫_ℂ = ⟪w, ρ (a * g) v⟫_ℂ * star ⟪ρ' a w', ρ' (a * g) v'⟫_ℂ`. Introduce `g`.
+
+Rewrite using `[h.inner_left a⁻¹ w, inv_inv, h'.inner_left a w', h.mul, h'.mul, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hinv]`. Repeatedly rewrite using `[e]`. Use `first`. Consider the case `exact (integral_mul_left_eq_self (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪ρ' a w', ρ' g v'⟫_ℂ) a).symm`. Consider the case `exact (integral_mul_left_eq_self (μ := μ) (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪ρ' a w', ρ' g v'⟫_ℂ) a).symm`.
+-/
 theorem Bop_tw [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (h' : SqRep μ ρ') (v : H) (v' : H') (a : G) (w' : H') :
     Bop h h' v v' (ρ' a w') = ρ a (Bop h h' v v' w') := by
   apply ext_inner_left ℂ
@@ -428,6 +573,41 @@ theorem Bop_tw [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (h' : SqRep μ ρ') (v 
   | exact (integral_mul_left_eq_self (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪ρ' a w', ρ' g v'⟫_ℂ) a).symm
   | exact (integral_mul_left_eq_self (μ := μ) (fun g => ⟪w, ρ g v⟫_ℂ * star ⟪ρ' a w', ρ' g v'⟫_ℂ) a).symm
 
+/- English proof (translation)
+Establish `hadj : ∀ a (x : H), (ContinuousLinearMap.adjoint B) (ρ a x) = ρ' a ((ContinuousLinearMap.adjoint B) x)`. Introduce `a x`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`. Establish `e1 : ⟪B y, ρ a x⟫_ℂ = ⟪ρ a⁻¹ (B y), x⟫_ℂ`.
+
+Rewrite using `[h.inner_left a⁻¹ (B y), inv_inv]`. Establish `e2 : ⟪y, ρ' a ((ContinuousLinearMap.adjoint B) x)⟫_ℂ = ⟪ρ' a⁻¹ y, (ContinuousLinearMap.adjoint B) x⟫_ℂ`. Rewrite using `[h'.inner_left a⁻¹ y, inv_inv]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, e1, ← htw, e2, ContinuousLinearMap.adjoint_inner_right]`. Take `⟨c, hc⟩` from `schur_bounded (Set.range ρ') (by`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a⁻¹, (star_rho h' a).symm⟩)`. Use the proof step `(fun S hS hinv => hirr' S hS (fun g x hx => hinv (ρ' g) ⟨g, rfl⟩ x hx))`. Use the proof step `((ContinuousLinearMap.adjoint B).comp B)`. Use the proof step `(by`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `show (ContinuousLinearMap.adjoint B).comp B * ρ' a = ρ' a * (ContinuousLinearMap.adjoint B).comp B`. Use extensionality with `w`. Simplify using `only [ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, htw, hadj])`. Establish `hnorm : ∀ w : H', ((‖B w‖ ^ 2 : ℝ) : ℂ) = c * ((‖w‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `w`. Establish `e1 : ⟪w, ((ContinuousLinearMap.adjoint B).comp B) w⟫_ℂ = ⟪B w, B w⟫_ℂ`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right]`. Rewrite `e1` using `[hc, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, inner_smul_right, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+
+Conclude with `e1.symm`. Choose the witnesses or unpack the hypotheses as in `⟨w₀, hw₀⟩ : ∃ w, B w ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hB (ContinuousLinearMap.ext hcon)`.
+
+Establish `hw₀' : w₀ ≠ 0` using `fun h0 => hw₀ (by rw [h0, map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr, hBr⟩ : ∃ r : ℝ, 0 < r ∧ ∀ w, ‖B w‖ = r * ‖w‖ := by`. Establish `hw0 : 0 < ‖w₀‖` using `norm_pos_iff.2 hw₀'`. Establish `hBw0 : 0 < ‖B w₀‖` using `norm_pos_iff.2 hw₀`. Use `⟨‖B w₀‖ / ‖w₀‖, div_pos hBw0 hw0, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `hc' : c = (((‖B w₀‖ / ‖w₀‖) ^ 2 : ℝ) : ℂ)`. Establish `h0` using `hnorm w₀`. Establish `hne : ((‖w₀‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (pow_pos hw0 2).ne'`. Rewrite using `[div_pow, Complex.ofReal_div, eq_div_iff hne, h0]`. Establish `hreal : ‖B w‖ ^ 2 = (‖B w₀‖ / ‖w₀‖) ^ 2 * ‖w‖ ^ 2`.
+
+Establish `h1` using `hnorm w`. Rewrite `h1` using `[hc']`. Conclude with `h1` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Set `V : H' →ₗᵢ[ℂ] H` to `{ toLinearMap := ((((r⁻¹ : ℝ) : ℂ) • B : H' →L[ℂ] H) : H' →ₗ[ℂ] H) norm_map' := fun w => by show ‖(((r⁻¹ : ℝ) : ℂ) • B) w‖ = ‖w‖`.
+
+Rewrite using `[ContinuousLinearMap.smul_apply, norm_smul, hBr w, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hr, ← mul_assoc, inv_mul_cancel₀ hr.ne', one_mul] }`. Establish `hVtw : ∀ a w, V (ρ' a w) = ρ a (V w)`. Introduce `a w`. Use `show (((r⁻¹ : ℝ) : ℂ) • B) (ρ' a w) = ρ a ((((r⁻¹ : ℝ) : ℂ) • B) w)`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, htw, map_smul]`.
+
+Establish `hsurj : Function.Surjective V`. Establish `hcl : IsClosed (Set.range V)` using `by first`. Consider the case `exact V.isometry.antilipschitz.isClosed_range V.isometry.uniformContinuous`. Consider the case `exact V.isometry.isClosedEmbedding.isClosed_range`. Set `S : Submodule ℂ H` to `LinearMap.range V.toLinearMap`.
+
+Establish `hS : (S : Set H) = Set.range V` using `by first`. Consider the case `exact LinearMap.coe_range _`. Consider the case `exact LinearMap.range_coe _`. Consider the case `(ext x; exact LinearMap.mem_range)`. Establish `hinv : ∀ g, ∀ x ∈ S, ρ g x ∈ S`.
+
+Introduce `g x hx`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.1 hx`. Conclude with `LinearMap.mem_range.2 ⟨ρ' g w, hVtw g w⟩`. Break down `hirr S (by rw [hS]; exact hcl) hinv with hbot | htop` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hm : V.toLinearMap w₀ ∈ S` using `LinearMap.mem_range_self _ w₀`. Rewrite `hm` using `[hbot, Submodule.mem_bot]`. Establish `h0 : V w₀ = 0` using `hm`. Establish `hn` using `V.norm_map w₀`. Rewrite `hn` using `[h0, norm_zero]`.
+
+Conclude with `hw₀' (norm_eq_zero.1 hn.symm)`. Introduce `x`. Establish `hx : x ∈ S`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨w, hw⟩` from `LinearMap.mem_range.1 hx`. Conclude with `⟨w, hw⟩`. Set `E : H' ≃ₗᵢ[ℂ] H` to `LinearIsometryEquiv.ofSurjective V hsurj`. Establish `hE : ∀ x, E x = V x` using `fun x => by first`. Consider the case `rfl`.
+
+Consider the case `simp [E]`. Use `⟨E.symm, fun g v => E.injective ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, hE, hVtw, ← hE, LinearIsometryEquiv.apply_symm_apply]`.
+-/
 theorem equiv_of_intertwiner (h : SqRep μ ρ) (h' : SqRep μ ρ')
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤)
     (hirr' : ∀ S : Submodule ℂ H', IsClosed (S : Set H') → (∀ g, ∀ v ∈ S, ρ' g v ∈ S) → S = ⊥ ∨ S = ⊤)
@@ -530,6 +710,9 @@ theorem equiv_of_intertwiner (h : SqRep μ ρ) (h' : SqRep μ ρ')
   refine ⟨E.symm, fun g v => E.injective ?_⟩
   rw [LinearIsometryEquiv.apply_symm_apply, hE, hVtw, ← hE, LinearIsometryEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hB : Bop h h' v v' = 0`. Assume the negation of the conclusion as `hB`. Conclude with `hne (equiv_of_intertwiner h h' hirr hirr' _ (fun a w' => Bop_tw h h' v v' a w') hB)`. Rewrite using `[← Bop_inner h h' v w v' w', hB, ContinuousLinearMap.zero_apply, inner_zero_right]`.
+-/
 theorem schur_orth_ineq [μ.IsMulLeftInvariant] (h : SqRep μ ρ) (h' : SqRep μ ρ')
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤)
     (hirr' : ∀ S : Submodule ℂ H', IsClosed (S : Set H') → (∀ g, ∀ v ∈ S, ρ' g v ∈ S) → S = ⊥ ∨ S = ⊤)
@@ -549,12 +732,18 @@ variable {n : ℕ} {ε : Fin n → Bool}
 instance instInvInvMuG : (Formalism.REAL.muG ε).IsInvInvariant :=
   ⟨Formalism.REAL.invInvariant_of Formalism.REAL.indefinite_unitary_unimodular n ε⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Units.continuous_val.comp continuous_subtype_val`. Consider the case `fun_prop`. Consider the case `continuity`.
+-/
 theorem continuous_umat : Continuous (fun g : Formalism.REAL.UJ ε => umat g) := by
   first
   | exact Units.continuous_val.comp continuous_subtype_val
   | fun_prop
   | continuity
 
+/- English proof (translation)
+Use `first`. Consider the case `exact g.2`. Consider the case `exact g.prop`.
+-/
 theorem umat_mem (g : Formalism.REAL.UJ ε) : umat g ∈ UJset ε := by
   first
   | exact g.2
@@ -562,6 +751,9 @@ theorem umat_mem (g : Formalism.REAL.UJ ε) : umat g ∈ UJset ε := by
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+The claim follows from `hU.1.1 mul a b := hU.1.2 _ (umat_mem a) _ (umat_mem b) iso g v := hU.2.1 _ (umat_mem g) v cont v := (hU.2.2 v).comp_continuous continuous_umat umat_mem sq v w := hS v w`.
+-/
 theorem sqRep_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) (hS : IsSqIntOn ε σ) :
     SqRep (Formalism.REAL.muG ε) (fun g : Formalism.REAL.UJ ε => σ (umat g)) where
   one := hU.1.1
@@ -570,6 +762,17 @@ theorem sqRep_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsU
   cont v := (hU.2.2 v).comp_continuous continuous_umat umat_mem
   sq v w := hS v w
 
+/- English proof (translation)
+Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `by first`. Consider the case `(unfold Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> norm_num)`. Consider the case `(unfold Formalism.REAL.Jm`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `only [Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Apply the tactic sequence `split_ifs <;> norm_num`. Simplify using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij])`. Establish `hg' : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `hl : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) * g = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hr : g * (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.1 hl`. Consider the case `(have h3 := Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse hl)`. Rewrite using `[Matrix.inv_eq_left_inv hl] at h3)` and apply the resulting hypothesis.
+
+Use `first`. Consider the case `exact ⟨⟨⟨g, _, hr, hl⟩, hg⟩, rfl⟩`. Consider the case `exact ⟨⟨⟨g, _, hr, hl⟩, hg'⟩, rfl⟩`.
+-/
 private theorem umat_surj_lemma {n : ℕ} {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ)
     (hg : g ∈ UJset ε) : ∃ u : Formalism.REAL.UJ ε, umat u = g := by
   have hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
@@ -601,6 +804,9 @@ private theorem umat_surj_lemma {n : ℕ} {ε : Fin n → Bool} (g : Matrix (Fin
   | exact ⟨⟨⟨g, _, hr, hl⟩, hg⟩, rfl⟩
   | exact ⟨⟨⟨g, _, hr, hl⟩, hg'⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `S hS hinv`. Use `hI S hS (fun g hg v hv => ?_)` and prove the remaining obligations. Take `⟨u, rfl⟩` from `umat_surj_lemma g hg`. Conclude with `hinv u v hv`.
+-/
 theorem irr_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hI : IsIrredOn (UJset ε) σ) :
     ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g : Formalism.REAL.UJ ε, ∀ v ∈ S, σ (umat g) v ∈ S) → S = ⊥ ∨ S = ⊤ := by
   intro S hS hinv
@@ -608,6 +814,11 @@ theorem irr_of {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hI : IsIrr
   obtain ⟨u, rfl⟩ := umat_surj_lemma g hg
   exact hinv u v hv
 
+/- English proof (translation)
+Use `haveI := hN`. Use `haveI : (Formalism.REAL.muG ε).IsMulLeftInvariant := by first`. Consider the case `infer_instance`. Consider the case `(unfold Formalism.REAL.muG; infer_instance)`. Use `haveI : (Formalism.REAL.muG ε).IsOpenPosMeasure := by first`.
+
+Consider the case `infer_instance`. Consider the case `(unfold Formalism.REAL.muG; infer_instance)`. Take `⟨d, hd, hrel⟩` from `schur_orth (μ := Formalism.REAL.muG ε) (sqRep_of hU hS) (irr_of hI)`. Conclude with `⟨d, hd, hrel⟩`.
+-/
 theorem schur_UJ [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hN : Nontrivial H)
     (hU : IsURepOn (UJset ε) σ) (hI : IsIrredOn (UJset ε) σ) (hS : IsSqIntOn ε σ) :
     ∃ d : ℝ, IsFdeg (Formalism.REAL.muG ε) σ d := by
@@ -623,6 +834,9 @@ theorem schur_UJ [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[
   obtain ⟨d, hd, hrel⟩ := schur_orth (μ := Formalism.REAL.muG ε) (sqRep_of hU hS) (irr_of hI)
   exact ⟨d, hd, hrel⟩
 
+/- English proof (translation)
+Take `⟨_, hN, hU, hI, hS, _⟩` from `h`. Conclude with `schur_UJ σ hN hU hI hS`.
+-/
 theorem fdeg_of_DS [CompleteSpace H] (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (h : IsDS ε lam σ) :
     ∃ d : ℝ, IsFdeg (Formalism.REAL.muG ε) σ d := by
   obtain ⟨_, hN, hU, hI, hS, _⟩ := h

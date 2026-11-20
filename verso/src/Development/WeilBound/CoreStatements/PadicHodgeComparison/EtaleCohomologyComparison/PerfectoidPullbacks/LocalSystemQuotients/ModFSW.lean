@@ -33,6 +33,9 @@ abbrev sW (m : ℕ) : PDF (WittVector l k) (fl l F ρ m).FullSubcategory := (thW
 
 abbrev Kt (m : ℕ) : Cx.{1} (WittVector l k) := CH.cx (CH.modF (sW l F ρ m).A)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem modF_sW (m : ℕ) : CH.modF (sW l F ρ m).A = (fl l F ρ m).ι ⋙ Wc.OM l F ρ m := rfl
 
 def resF (m j : ℕ) : (Wc.HS l F ρ j).M m →ₗ[WittVector l k] (Kt l F ρ m).H j :=

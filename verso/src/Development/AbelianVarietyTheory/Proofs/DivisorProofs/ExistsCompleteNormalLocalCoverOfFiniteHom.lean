@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LocExt
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteLocalCompleteness.main`. Consider the case `exact _root_.GlobalTheory.FiniteLocalCompleteness.main`. Consider the case `(apply _root_.GlobalTheory.FiniteLocalCompleteness.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteLocalCompleteness.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FiniteLocalCompleteness.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteLocalCompleteness.main ..)`.
+-/
 theorem exists_isCN_cover_of_finite : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (C : Type) [CommRing C] (φ : R →+* C), IsCN R → Function.Injective φ → φ.Finite → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (σ : C →+* R'), IsCN R' ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ σ.comp φ = ρ := by
   first
   | exact @_root_.GlobalTheory.FiniteLocalCompleteness.main

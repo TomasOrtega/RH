@@ -23,6 +23,9 @@ def conjKinf (k : Kinf E a) : Lie E a ≃L[ℝ] Lie E a :=
       simp only [Matrix.mul_assoc, Unitary.mul_star_self_of_mem k.2, Matrix.mul_one]
       rw [← Matrix.mul_assoc, Unitary.mul_star_self_of_mem k.2, Matrix.one_mul]; rfl)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * (Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)))) = _`. Rewrite using `[Matrix.mul_assoc]`.
+-/
 theorem conjKinf_apply (k : Kinf E a) (x : Lie E a) :
     conjKinf k x = toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E))) := by
   change toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * (Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)))) = _
@@ -31,6 +34,9 @@ theorem conjKinf_apply (k : Kinf E a) (x : Lie E a) :
 def frobSq (x : Lie E a) : ℝ := ∑ w, ∑ i, ∑ j, ‖x i j w‖ ^ 2
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_apply, Pi.mul_apply, Pi.star_apply, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem trace_mul_conjTranspose_cinf (M : Matrix (Fin a) (Fin a) (Cinf E)) (w : InfinitePlace E) :
     (M * M.conjTranspose).trace w = ((∑ i, ∑ j, ‖M i j w‖ ^ 2 : ℝ) : ℂ) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_apply,
@@ -38,10 +44,18 @@ theorem trace_mul_conjTranspose_cinf (M : Matrix (Fin a) (Fin a) (Cinf E)) (w : 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Simplify using `only [frobSq, trace_mul_conjTranspose_cinf, Complex.ofReal_re]`. Both sides reduce to the same expression.
+-/
 theorem frobSq_eq (x : Lie E a) :
     frobSq x = ∑ w, ((Matrix.of x * (Matrix.of x).conjTranspose).trace w).re := by
   simp only [frobSq, trace_mul_conjTranspose_cinf, Complex.ofReal_re]; rfl
 
+/- English proof (translation)
+Rewrite using `[frobSq_eq, frobSq_eq, conjKinf_apply]`. Establish `h : ∀ M : Matrix (Fin a) (Fin a) (Cinf E), ((k : Matrix (Fin a) (Fin a) (Cinf E)) * M * star (k : Matrix (Fin a) (Fin a) (Cinf E))) * ((k : Matrix (Fin a) (Fin a) (Cinf E)) * M * star (k : Matrix (Fin a) (Fin a) (Cinf E))).conjTranspose = (k : Matrix (Fin a) (Fin a) (Cinf E)) * ( …`. Introduce `M`. Rewrite using `[← Matrix.star_eq_conjTranspose, ← Matrix.star_eq_conjTranspose, star_mul, star_mul, star_star]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (star (k : Matrix (Fin a) (Fin a) (Cinf E))) (k : Matrix (Fin a) (Fin a) (Cinf E)), Matrix.UnitaryGroup.star_mul_self, Matrix.one_mul]`. Rewrite using `[show Matrix.of (toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)))) = (k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)) from rfl, h, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matr …`.
+-/
 theorem frobSq_conjKinf (k : Kinf E a) (x : Lie E a) : frobSq (conjKinf k x) = frobSq x := by
   rw [frobSq_eq, frobSq_eq, conjKinf_apply]
   have h : ∀ M : Matrix (Fin a) (Fin a) (Cinf E),
@@ -57,6 +71,11 @@ theorem frobSq_conjKinf (k : Kinf E a) (x : Lie E a) : frobSq (conjKinf k x) = f
     (k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)) from rfl, h,
     Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.UnitaryGroup.star_mul_self, Matrix.one_mul]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one`. Consider the case `exact _root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one`. Consider the case `(apply _root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one ..)`.
+-/
 theorem norm_le_one_of_frobSq (x : Lie E a) (h : frobSq x < 1) : ‖x‖ ≤ 1 := by
   first
   | exact @_root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one
@@ -66,10 +85,22 @@ theorem norm_le_one_of_frobSq (x : Lie E a) (h : frobSq x < 1) : ‖x‖ ≤ 1 :
   | (intros; apply @_root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NormBoundSumSquares.norm_le_one_of_sum_sq_lt_one ..)
 
+/- English proof (translation)
+Unfold `frobSq`. Use `fun_prop`.
+-/
 theorem continuous_frobSq : Continuous (frobSq : Lie E a → ℝ) := by
   unfold frobSq
   fun_prop
 
+/- English proof (translation)
+Use `⟨(conjKinf k).continuous.measurable, ?_⟩` and prove the remaining obligations. Establish `: ProperSpace (Lie E a)` using `FiniteDimensional.proper ℝ _`. Establish `hdet : LinearMap.det ((conjKinf k : Lie E a ≃L[ℝ] Lie E a).toLinearEquiv.toLinearMap) ≠ 0` using `(LinearEquiv.isUnit_det' _).ne_zero`. Establish `e` using `Measure.map_linearMap_addHaar_eq_smul_addHaar ν hdet`. Express the relevant statement in the definitionally equal form `Measure.map (conjKinf k) ν = _ at e`.
+
+Use `set B : Set (Lie E a) := frobSq ⁻¹' Set.Iio 1`. Establish `hBo : IsOpen B` using `isOpen_Iio.preimage continuous_frobSq`. Establish `hB0 : (0 : Lie E a) ∈ B` using `by simp [B, frobSq]`. Establish `hpos : ν B ≠ 0` using `(hBo.measure_pos ν ⟨0, hB0⟩).ne'`. Establish `hfin : ν B ≠ ⊤` using `(measure_mono fun x hx => (mem_closedBall_zero_iff.2 (norm_le_one_of_frobSq x hx))).trans_lt (measure_closedBall_lt_top (μ := ν) (x := (0 : Lie E a)) (r := 1)) |>.ne`.
+
+Establish `hpre : conjKinf k ⁻¹' B = B`. Use extensionality with `x`. Simplify using `[B, frobSq_conjKinf]`. Establish `h1` using `congrArg (fun m : Measure (Lie E a) => m B) e`. Simplify using `only [Measure.map_apply (conjKinf k).continuous.measurable hBo.measurableSet, hpre, Measure.smul_apply, smul_eq_mul] at h1`.
+
+Establish `hc` using `(ENNReal.mul_eq_right hpos hfin).1 h1.symm`. Rewrite using `[e, hc, one_smul]`.
+-/
 theorem measurePreserving_conjKinf (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (k : Kinf E a) :
     MeasurePreserving (conjKinf k) ν ν := by
   refine ⟨(conjKinf k).continuous.measurable, ?_⟩
@@ -92,6 +123,13 @@ theorem measurePreserving_conjKinf (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure
   have hc := (ENNReal.mul_eq_right hpos hfin).1 h1.symm
   rw [e, hc, one_smul]
 
+/- English proof (translation)
+Unfold `smoothing`. Rewrite using `[chart_rt_inf, chart_mul, ← (measurePreserving_conjKinf ν k).integral_comp (conjKinf k).toHomeomorph.measurableEmbedding]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `congr 1`.
+
+Rewrite using `[conjKinf_apply]`. Conclude with `hα k x`. Use `congr 1`. Rewrite using `[conjKinf_apply]`. Express the relevant statement in the definitionally equal form `toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x * star (k : Matrix (Fin a) (Fin a) (Cinf E)) * (k : Matrix (Fin a) (Fin a) (Cinf E))) = toL ((k : Matrix (Fin a) (Fin a) (Cinf E)) * Matrix.of x)`.
+
+Rewrite using `[Matrix.mul_assoc _ (star _), Matrix.UnitaryGroup.star_mul_self, Matrix.mul_one]`.
+-/
 theorem smoothing_rt_Kinf (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a))
     [ν.IsAddHaarMeasure] (α : Lie E a → ℂ) (hα : KInv α) (ψ : GA E a → ℂ) (k : Kinf E a) (g : GA E a) :
     smoothing ν α (fun x => ψ (x * infGL E a (Unitary.toUnits k))) g = smoothing ν α ψ (g * infGL E a (Unitary.toUnits k)) := by

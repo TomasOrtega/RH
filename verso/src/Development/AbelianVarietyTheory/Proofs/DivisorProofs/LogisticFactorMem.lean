@@ -10,10 +10,16 @@ def logisticFactor (κ L u : ℝ) : ℝ := 1 / (1 + Real.exp (κ * (u - L)))
 def weightProfile (χ : ℝ → ℝ) (κ L t u : ℝ) : ℝ :=
   t * (χ (u / L) / (1 + Real.exp (κ * (u - L))))
 
+/- English proof (translation)
+Rewrite using `[weightProfile, logisticFactor, mul_one_div]`.
+-/
 theorem weightProfile_eq (χ : ℝ → ℝ) (κ L t u : ℝ) :
     weightProfile χ κ L t u = t * (χ (u / L) * logisticFactor κ L u) := by
   rw [weightProfile, logisticFactor, mul_one_div]
 
+/- English proof (translation)
+Establish `h` using `Real.exp_pos (κ * (u - L))`. Use `⟨by unfold logisticFactor; positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[logisticFactor, div_lt_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logisticFactor_mem (κ L u : ℝ) :
     0 < logisticFactor κ L u ∧ logisticFactor κ L u < 1 := by
   have h := Real.exp_pos (κ * (u - L))

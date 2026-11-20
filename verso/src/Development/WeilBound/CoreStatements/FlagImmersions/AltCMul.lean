@@ -27,23 +27,41 @@ def Maj (f : Polynomial ℝ) (c A : ℝ) : Prop := ∀ s : ℕ, |f.coeff s| ≤ 
 def gdet (e : Fin N → ℕ) (v : Fin N → Polynomial ℝ) : Polynomial ℝ :=
   Matrix.det (Matrix.of fun c b => Polynomial.C (((e c).factorial : ℝ)⁻¹) * v b ^ e c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degFl_eq (G : RP Ψ N) : degFl G = (-1) ^ dimFl Ψ N * alt rho G := rfl
 
+/- English proof (translation)
+Simplify using `[alt, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem alt_add (a : Ψ → Fin N → ℕ) (F G : RP Ψ N) : alt a (F + G) = alt a F + alt a G := by
   simp [alt, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [alt, coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem alt_C_mul (a : Ψ → Fin N → ℕ) (r : ℝ) (G : RP Ψ N) : alt a (C r * G) = r * alt a G := by
   simp only [alt, coeff_C_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `only [alt, coeff_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem alt_sum {ι : Type*} (a : Ψ → Fin N → ℕ) (s : Finset ι) (F : ι → RP Ψ N) :
     alt a (∑ i ∈ s, F i) = ∑ i ∈ s, alt a (F i) := by
   simp only [alt, coeff_sum, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[lam, alt_add, Finset.sum_add_distrib]`.
+-/
 theorem lam_add (τ : Ψ) (k : ℕ) (F G : RP Ψ N) : lam τ k (F + G) = lam τ k F + lam τ k G := by
   simp [lam, alt_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [lam, alt_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem lam_sum {ι : Type*} (τ : Ψ) (k : ℕ) (s : Finset ι) (F : ι → RP Ψ N) :
     lam τ k (∑ i ∈ s, F i) = ∑ i ∈ s, lam τ k (F i) := by
   simp only [lam, alt_sum]

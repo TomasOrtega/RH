@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.AR.Up
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hi` using `ExtFPf.invF_mem X hb'`. Establish `hc` using `ExtFPf.mul_mem X hb hi`. Establish `e : rmul y (rmul b (ExtFPf.invF X b')) = y'`. Rewrite using `[← ExtFPf.rmul_assoc, h, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb', ExtFPf.rmul_oneF]`. Establish `h1` using `hF y hy _ hc (by rw [e]; exact hy')`.
+
+Rewrite `h1` using `[e, ExtFPf.bchar_mul X la hb hi]`. Establish `h2 : bchar la b' * bchar la (ExtFPf.invF X b') = 1`. Rewrite using `[← ExtFPf.bchar_mul X la hb' hi, ExtFPf.rmul_invF X hb', ExtFPf.bchar_oneF]`. Rewrite using `[h1]`. Take the linear combination `(-(bchar la b * F y)) * h2`.
+-/
 theorem value_indep (X : Data E r) (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (F : Frame X.Ψ r → ℂ)
     (hF : ∀ y, IsUnitFr X y → ∀ c ∈ Bor X.Ψ r, IsUnitFr X (rmul y c) → F (rmul y c) = bchar la c * F y)
     {y y' b b' : Frame X.Ψ r} (hy : IsUnitFr X y) (hy' : IsUnitFr X y') (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r)
@@ -28,6 +33,17 @@ theorem value_indep (X : Data E r) (la : ReciprocityTheory.ChartRestriction.G.FD
   rw [h1]
   linear_combination (-(bchar la b * F y)) * h2
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la F hF`. Take `⟨-, hex, huniq, -⟩` from `GlobalTheory.T.gramSchmidt_flagDomain_orthonormalFrames E r X`. Establish `hF' : ∀ y, IsUnitFr X y → ∀ c ∈ Bor X.Ψ r, IsUnitFr X (rmul y c) → F (rmul y c) = bchar la c * F y`. Introduce `y hy c hc hyc`. Take `⟨t, rfl⟩` from `huniq y hy c hc hyc`.
+
+Conclude with `hF y hy t`. Set `D : Frame X.Ψ r → Prop` to `fun x => ∃ p : Frame X.Ψ r × Frame X.Ψ r, IsUnitFr X p.1 ∧ p.2 ∈ Bor X.Ψ r ∧ x = rmul p.1 p.2`. Set `Q : Frame X.Ψ r → ℂ` to `fun x => if h : D x then bchar la h.choose.2 * F h.choose.1 else 0`. Establish `hQ : ∀ y, IsUnitFr X y → ∀ b ∈ Bor X.Ψ r, Q (rmul y b) = bchar la b * F y`. Introduce `y hy b hb`.
+
+Establish `hD : D (rmul y b)` using `⟨(y, b), hy, hb, rfl⟩`. Take `⟨h1, h2, h3⟩` from `hD.choose_spec`. Use `show (if h : D (rmul y b) then bchar la h.choose.2 * F h.choose.1 else 0) = _`. Rewrite using `[dif_pos hD]`. Conclude with `(value_indep X la F hF' hy h1 hb h2 h3).symm`.
+
+Use `⟨Q, fun y hy => ?_, fun x hx b hb => ?_⟩` and prove the remaining obligations. Use `hQ y hy _ (ExtFPf.oneF_mem X)` as an intermediate fact. Rewrite `this` using `[ExtFPf.rmul_oneF, ExtFPf.bchar_oneF, one_mul]`. Then use the resulting hypothesis. Take `⟨y, hy, c, hc, rfl⟩` from `hex x hx`. Rewrite using `[ExtFPf.rmul_assoc, hQ y hy _ (ExtFPf.mul_mem X hc hb), hQ y hy c hc, ExtFPf.bchar_mul X la hc hb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (F : Frame X.Ψ r → ℂ), (∀ y, IsUnitFr X y → ∀ t : X.Ψ → Fin r → ℝ, F (rmul y (fun τ => (Matrix.diagonal fun a => Complex.exp ((t τ a : ℂ) * Complex.I) : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r)) = bchar la (fun τ => (Matrix.diagonal fun a => Complex.exp ((t τ a : ℂ) * Complex.I) : Matrix (Fin r) (Fin r) ℂ) : Frame X.Ψ r) * F y) → ∃ Q : Frame X.Ψ r → ℂ, (∀ y, IsUnitFr X y → Q y = F y) ∧ ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Q (rmul x b) = bchar la b * Q x := by
   intro E _ _ _ r X la F hF
   obtain ⟨-, hex, huniq, -⟩ := GlobalTheory.T.gramSchmidt_flagDomain_orthonormalFrames E r X

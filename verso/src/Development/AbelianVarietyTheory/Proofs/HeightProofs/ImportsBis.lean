@@ -4,6 +4,15 @@ namespace GlobalTheory.MiscellaneousLemmas
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ V k x hx v y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, w, hw, rfl⟩` from `hy`. Take `⟨n, rfl⟩` from `hx w hw`.
+
+Use `⟨fun j => n j • a, fun j => zsmul_mem ha _, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_zsmul, Finsupp.coe_finset_sum, Finsupp.coe_smul, Finset.sum_apply, Pi.smul_apply, TensorProduct.tmul_sum, TensorProduct.smul_tmul]`. Consider the case `zero => exact ⟨0, fun j => zero_mem _, fun i => by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, h⟩` from `hy`.
+
+Take `⟨b, hb, h'⟩` from `hz`. Conclude with `⟨a + b, fun j => add_mem (ha j) (hb j), fun i => by`. Simplify using `[h i, h' i, TensorProduct.add_tmul, Finset.sum_add_distrib]⟩`. Consider the case `neg y _ hy`. Take `⟨a, ha, h⟩` from `hy`.
+
+Conclude with `⟨-a, fun j => neg_mem (ha j), fun i => by`. Simplify using `[h i, TensorProduct.neg_tmul, Finset.sum_neg_distrib]⟩`.
+-/
 theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [inst_3 : NumberField E] [inst_4 : Algebra F E] [inst_5 : StarRing E] (V : Formalism.BasicNotions.HSpace E) {k : ℕ} (x : Fin k → Formalism.BasicNotions.HSpace.V V), (∀ w ∈ Formalism.BasicNotions.HSpace.L0 V, ∃ (n : Fin k → ℤ), w = ∑ j : Fin k, n j • x j) → ∀ (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), ∀ y ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.latLoc V v, ∃ (a : Fin k → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), (∀ (j : Fin k), a j ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers F v) ∧ ∀ (i : Fin (Formalism.BasicNotions.HSpace.rank V)), y i = ∑ j : Fin k, a j ⊗ₜ[F] ((Module.Basis.repr (Formalism.BasicNotions.HSpace.frame V) : Formalism.BasicNotions.HSpace.V V → Fin (Formalism.BasicNotions.HSpace.rank V) →₀ E) (x j) : Fin (Formalism.BasicNotions.HSpace.rank V) → E) i := by
   intro F E _ _ _ _ _ _ V k x hx v y hy
   induction hy using AddSubgroup.closure_induction with

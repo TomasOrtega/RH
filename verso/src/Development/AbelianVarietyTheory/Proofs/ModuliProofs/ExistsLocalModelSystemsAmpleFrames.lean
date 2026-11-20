@@ -27,6 +27,13 @@ open GlobalTheory.Models GlobalTheory.ZM
 
 namespace GlobalTheory.Models
 
+/- English proof (translation)
+Introduce `hext hL hL2 hL3 htop hN1 E _ _ _ H D hpq Xo`. Take `⟨-, hN⟩` from `hN1`. Establish `hlev : ToroidalLevelCompatibility (H` using `H) (D := D) := (hN E H D hpq).1`. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_localModelSystem_ampleFrames_fullLevel hext hL hL2 hL3 htop E H D Xo hpq hlev`. Use `⟨S.Y, fun p W hp hW => ⟨GlobalTheory.T.localModelSystem_transition_siegel_clauses hext hL hL2 hL3 E H D Xo hpq hlev S p W hp hW, fun i => ?_⟩, GlobalTheory.T.exists_global_model_of_local_models hext hL hL2 hL3 E H D Xo hpq hlev S⟩` and prove the remaining obligations.
+
+Use `⟨(GlobalTheory.T.localModel_oneModel_and_splitFibres hext hL hL2 hL3 E H D Xo hpq hlev S p W hp hW i).2, ?_⟩` and prove the remaining obligations. Take `⟨l₀, h₀, hr⟩` from `S.raises p W hp hW i`. Take `⟨k, hk⟩` from `hS (S.ch p)`. Establish `hc` using `(GlobalTheory.CoeffRings.coeff_isDedFrac E H i.l i.c).2.2.2 p W hp hW`. Establish `hcop : (S.n (S.ch p)).Coprime p` using `(Nat.coprime_primes (S.aux _).1 hp).2 (S.ch_ne p)`.
+
+Conclude with `GlobalTheory.T.raised_model_finite_cover_ample_frames hL hL2 hL3 E H D Xo (S.n (S.ch p)) (S.n (S.ch p) ^ S.J (S.ch p)) k (S.T (S.ch p)) hlev l₀ i.l (S.B (S.ch p) l₀ h₀.1) i.c _ (i.c.V W).subtype (S.Y p W hp hW i) (S.aux _).1 (S.aux _).2.1 ⟨_, rfl⟩ (hc.2.1 _ hcop) ((GlobalTheory.M …`.
+-/
 theorem exists_localSystems_ample :
     GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → Out.Laws3 → TopAmpExists → N1 → GlobalTheory.LN.ModelsSt := by
   intro hext hL hL2 hL3 htop hN1 E _ _ _ H D hpq Xo

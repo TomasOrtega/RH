@@ -15,11 +15,29 @@ namespace GlobalTheory.EtaAn.PerfectTrace
 
 open FractionalIdeal
 
+/- English proof (translation)
+Unfold `FD.cc`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem cc_eq_conj (D : D7) (z : D.host.E) : FD.cc z = D.host.conj z := by
   unfold FD.cc
   apply D.host.φ₀.injective
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
+/- English proof (translation)
+Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Establish `h1ne : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) _ _ _`. Establish `key : ∀ e ∈ D.host.AA * D.host.AAbar, D.host.xi0 * x * e ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Introduce `e he`. Use `FractionalIdeal.mul_induction_on (C := fun e => D.host.xi0 * x * e ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) he (fun a ha b hb => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations.
+
+Use `show D.host.xi0 * x * (a * b) ∈ _`. Rewrite using `[mem_dual h1ne]`. Introduce `c hc`. Rewrite `hc` using `[mem_one_iff]`. Take `⟨c, rfl⟩` from `hc`.
+
+Establish `hca : c • a ∈ D.host.AA` using `(D.host.AA : Submodule (𝓞 D.host.E) D.host.E).smul_mem c ha`. Take `⟨n, hn⟩` from `h _ hca _ (conj_mem_AA D hb)`. Rewrite `hn` using `[conj_conj, Algebra.smul_def]`. Rewrite using `[Algebra.traceForm_apply, show D.host.xi0 * x * (a * b) * algebraMap (𝓞 D.host.E) D.host.E c = D.host.xi0 * x * (algebraMap (𝓞 D.host.E) D.host.E c * a) * b by ring, hn]`. Conclude with `⟨n, eq_intCast (algebraMap ℤ ℚ) _⟩`.
+
+Use `show D.host.xi0 * x * (u + w) ∈ _`. Rewrite using `[mul_add]`. Conclude with `(FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).add_mem hu hw`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) x * FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)` using `by conv_lhs => rw [← dual_eq hP D, mul_assoc, ← mul_assoc, spanSingleton_mul_spanSingleton, mul_comm x]`. Rewrite using `[spanSingleton_mul_le_iff]`.
+
+Conclude with `key`. Establish `hJ : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ h1ne`. Generalize the expression as in `FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) = J at hle hJ`. Establish `hle2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) x ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_comm _ J, ← mul_assoc, inv_mul_cancel₀ hJ, one_mul]`. Use `_ ≤ J⁻¹ * J := CovariantClass.elim J⁻¹ hle`. Use `_ = 1 := inv_mul_cancel₀ hJ`. Establish `hx` using `hle2 (mem_spanSingleton_self _ _)`. Take `⟨c, rfl⟩` from `(mem_one_iff _).1 hx`.
+
+Conclude with `c.isIntegral_coe`.
+-/
 theorem isIntegral_of_trace (D : D7) (x : D.host.E)
     (h : ∀ a ∈ D.host.AA, ∀ b ∈ D.host.AA,
       ∃ z : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * x * a * D.host.conj b) = z) :
@@ -67,6 +85,13 @@ theorem isIntegral_of_trace (D : D7) (x : D.host.E)
   obtain ⟨c, rfl⟩ := (mem_one_iff _).1 hx
   exact c.isIntegral_coe
 
+/- English proof (translation)
+Introduce `D`. Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum`. Use `⟨D.host.xi0, (D.host.AA : Submodule (𝓞 D.host.E) D.host.E), conj_xi0_alt D, cmHost_imaginaryGenerator_ne_zero hP D, FractionalIdeal.fg_of_isUnit _ (Ne.isUnit (AA_ne_zero hP D)), ?_, fun x => ⟨fun h => ?_, fun hx a ha b hb => ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Conclude with `AA_ne_zero hP D (FractionalIdeal.coeToSubmodule_eq_bot.1 h)`.
+
+Use `isIntegral_of_trace D x (fun a ha b hb => ?_)` and prove the remaining obligations. Rewrite using `[← cc_eq_conj]`. Conclude with `h a ha b hb`. Establish `hxa : (⟨x, hx⟩ : 𝓞 D.host.E) • a ∈ D.host.AA` using `(D.host.AA : Submodule (𝓞 D.host.E) D.host.E).smul_mem _ ha`. Establish `hm : x * a * D.host.conj b ∈ NAA D` using `mul_mem_mul hxa (conj_mem_AAbar D hb)`.
+
+Take `⟨n, hn⟩` from `trace_int_of_mem hP D hm`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[cc_eq_conj, ← hn]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_perfect_trace_ideal :
     ∀ (D : D7), ∃ (ξ : D.host.E) (AA : Submodule (𝓞 D.host.E) D.host.E), FD.cc ξ = -ξ ∧ ξ ≠ 0 ∧ AA.FG ∧ AA ≠ ⊥ ∧ ∀ x : D.host.E, (∀ a ∈ AA, ∀ b ∈ AA, ∃ z : ℤ, Algebra.trace ℚ D.host.E (ξ * x * a * FD.cc b) = z) ↔ IsIntegral ℤ x := by
   intro D

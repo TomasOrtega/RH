@@ -32,14 +32,26 @@ noncomputable section
 
 variable (P : Par)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kap_eq (f : Ty P → ℂ) :
     kap P f = Matrix.diagonal fun π => algebraMap ℂ (Pr P.r) (f π) := rfl
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).symm`.
+-/
 theorem kap_mul (f g : Ty P → ℂ) : kap P f * kap P g = kap P (f * g) := (map_mul _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[kap_mul, kap_mul, mul_comm]`.
+-/
 theorem kap_comm (f g : Ty P → ℂ) : kap P f * kap P g = kap P g * kap P f := by
   rw [kap_mul, kap_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[kap_eq, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Conclude with `Algebra.commutes _ _`.
+-/
 theorem kap_diag (f : Ty P → ℂ) (n : Ty P → Pr P.r) :
     kap P f * Matrix.diagonal n = Matrix.diagonal n * kap P f := by
   rw [kap_eq, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]
@@ -47,12 +59,24 @@ theorem kap_diag (f : Ty P → ℂ) (n : Ty P → Pr P.r) :
   funext π
   exact Algebra.commutes _ _
 
+/- English proof (translation)
+The claim follows from `kap_diag P f _`.
+-/
 theorem kap_sc (f : Ty P → ℂ) (w : Pr P.r) : kap P f * sc P w = sc P w * kap P f := kap_diag P f _
 
+/- English proof (translation)
+The claim follows from `kap_diag P f _`.
+-/
 theorem kap_nab (f : Ty P → ℂ) : kap P f * nabA P = nabA P * kap P f := kap_diag P f _
 
+/- English proof (translation)
+The claim follows from `kap_diag P f _`.
+-/
 theorem kap_nabs (f : Ty P → ℂ) : kap P f * nabsA P = nabsA P * kap P f := kap_diag P f _
 
+/- English proof (translation)
+Rewrite using `[kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.star_apply]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, star_smul, star_one]`.
+-/
 theorem star_kap (f : Ty P → ℂ) : star (kap P f) = kap P (fun π => star (f π)) := by
   rw [kap_eq, kap_eq, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
   congr 1
@@ -60,6 +84,11 @@ theorem star_kap (f : Ty P → ℂ) : star (kap P f) = kap P (fun π => star (f 
   simp only [Pi.star_apply]
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, star_smul, star_one]
 
+/- English proof (translation)
+Rewrite using `[kap_eq, kap_eq]`. Use extensionality with `π' π`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hu : Up P l π π'`. Simplify using `only [SS, Matrix.of_apply, if_pos hu, h π π' hu]`.
+
+Conclude with `(Algebra.commutes _ _)`. Simplify using `[SS, hu]`.
+-/
 theorem S_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
     kap P g * SS P l = SS P l * kap P f := by
   rw [kap_eq, kap_eq]
@@ -70,6 +99,9 @@ theorem S_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' �
     exact (Algebra.commutes _ _)
   · simp [SS, hu]
 
+/- English proof (translation)
+Establish `h1` using `S_shift P l (fun π => star (f π)) (fun π => star (g π)) (fun π π' hu => by rw [h π π' hu])`. Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_mul, star_mul, star_kap, star_kap]`. Simplify using `using h2`.
+-/
 theorem Ss_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' → g π' = f π) :
     star (SS P l) * kap P g = kap P f * star (SS P l) := by
   have h1 := S_shift P l (fun π => star (f π)) (fun π => star (g π)) (fun π π' hu => by rw [h π π' hu])
@@ -77,6 +109,9 @@ theorem Ss_shift (l : ℕ) (f g : Ty P → ℂ) (h : ∀ π π', Up P l π π' �
   rw [star_mul, star_mul, star_kap, star_kap] at h2
   simpa using h2
 
+/- English proof (translation)
+Use extensionality with `π' π`. Simplify using `only [sc, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, SS, Matrix.of_apply]`. Use `split_ifs`. Conclude with `(Algebra.commutes _ _)`. Simplify using the standard rewrite rules.
+-/
 theorem S_sc (l : ℕ) (w : Pr P.r) : SS P l * sc P w = sc P w * SS P l := by
   ext π' π
   simp only [sc, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, SS, Matrix.of_apply]
@@ -84,21 +119,35 @@ theorem S_sc (l : ℕ) (w : Pr P.r) : SS P l * sc P w = sc P w * SS P l := by
   · exact (Algebra.commutes _ _)
   · simp
 
+/- English proof (translation)
+Establish `h2` using `congrArg star (S_sc P l (star w))`. Rewrite `h2` using `[star_mul, star_mul, Mx1.star_sc, star_star]`. Conclude with `h2.symm`.
+-/
 theorem Ss_sc (l : ℕ) (w : Pr P.r) : star (SS P l) * sc P w = sc P w * star (SS P l) := by
   have h2 := congrArg star (S_sc P l (star w))
   rw [star_mul, star_mul, Mx1.star_sc, star_star] at h2
   exact h2.symm
 
+/- English proof (translation)
+Rewrite using `[Mx3.rhoUp P l π π' h i hi]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rho_up {l : ℕ} {π π' : Ty P} (h : Up P l π π') {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) :
     (rho P π' i : ℂ) = (rho P π i : ℂ) + if i = l then 1 else 0 := by
   rw [Mx3.rhoUp P l π π' h i hi]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[xC, xEx, Finset.sdiff_singleton_eq_erase]`. Conclude with `(Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) hj).symm`.
+-/
 theorem xC_split (π : Ty P) (u : ℂ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
     xC P π u = (u + (rho P π j : ℂ)) * xEx P {j} π u := by
   rw [xC, xEx, Finset.sdiff_singleton_eq_erase]
   exact (Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) hj).symm
 
+/- English proof (translation)
+Establish `h1 : Icc 1 (P.k - 1) \ {l, j} = (Icc 1 (P.k - 1) \ {l}).erase j`. Use extensionality with `x`. Simplify using `only [mem_sdiff, mem_insert, mem_singleton, mem_erase]`. The claim follows by propositional logic. Establish `h2 : j ∈ Icc 1 (P.k - 1) \ {l}` using `by simp only [mem_sdiff, mem_singleton]; exact ⟨hj, hlj⟩`.
+
+Rewrite using `[xEx, xEx, h1]`. Conclude with `(Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) h2).symm`.
+-/
 theorem xEx_split (π : Ty P) (u : ℂ) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hlj : j ≠ l) :
     xEx P {l} π u = (u + (rho P π j : ℂ)) * xEx P {l, j} π u := by
   have h1 : Icc 1 (P.k - 1) \ {l, j} = (Icc 1 (P.k - 1) \ {l}).erase j := by
@@ -107,6 +156,9 @@ theorem xEx_split (π : Ty P) (u : ℂ) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1))
   rw [xEx, xEx, h1]
   exact (Finset.mul_prod_erase _ (fun i => u + (rho P π i : ℂ)) h2).symm
 
+/- English proof (translation)
+Unfold `xEx`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_sdiff.1 hi`. Establish `hne : i ≠ j` using `fun e => hi'.2 (e ▸ hj)`. Rewrite using `[rho_up P h hi'.1, if_neg hne, add_zero]`.
+-/
 theorem xEx_up {j : ℕ} {π π' : Ty P} (h : Up P j π π') (ex : Finset ℕ) (hj : j ∈ ex) (u : ℂ) :
     xEx P ex π' u = xEx P ex π u := by
   unfold xEx
@@ -125,8 +177,16 @@ def lams (j : ℕ) (u : ℂ) : A P := star (SS P j) * kap P (rr P j u)
 
 def Lams (u : ℂ) : A P := ∑ j ∈ Icc 1 (P.k - 1), lams P j u
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lA_eq (u : ℂ) : lA P u = l0A P u + ggiA P * abelian₂ P u := rfl
 
+/- English proof (translation)
+Unfold `abelian₂ Lams lam lams`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul, star_kap]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `π`. Simplify using `[rr]`.
+-/
 theorem star_Lam (u : ℂ) : star (abelian₂ P (star u)) = Lams P u := by
   unfold abelian₂ Lams lam lams
   rw [star_sum]
@@ -136,22 +196,40 @@ theorem star_Lam (u : ℂ) : star (abelian₂ P (star u)) = Lams P u := by
   funext π
   simp [rr]
 
+/- English proof (translation)
+Simplify using `using h π j hj 0 (by decide)`.
+-/
 theorem good0 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
     u + (rho P π j : ℂ) ≠ 0 := by simpa using h π j hj 0 (by decide)
+/- English proof (translation)
+Simplify using `using h π j hj 1 (by decide)`.
+-/
 theorem good1 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
     u + (rho P π j : ℂ) + 1 ≠ 0 := by simpa using h π j hj 1 (by decide)
+/- English proof (translation)
+Simplify `h π j hj (-1) (by decide)` using `[sub_eq_add_neg]`.
+-/
 theorem goodm1 {u : ℂ} (h : Good P u) (π : Ty P) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) :
     u + (rho P π j : ℂ) - 1 ≠ 0 := by simpa [sub_eq_add_neg] using h π j hj (-1) (by decide)
 
+/- English proof (translation)
+Introduce `π j hj n hn h0`. Apply `h π j hj n hn` to reduce the goal to its premises. Use `congrArg star h0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem good_star {u : ℂ} (h : Good P u) : Good P (star u) := by
   intro π j hj n hn h0
   apply h π j hj n hn
   have := congrArg star h0
   simpa using this
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun _ hj => good0 P h π hj`.
+-/
 theorem xC_ne {u : ℂ} (h : Good P u) (π : Ty P) : xC P π u ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ hj => good0 P h π hj
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun j hj => by have := good1 P h π hj intro h0; apply this; rw [← h0]; ring`.
+-/
 theorem coordinate_shift_ne_zero {u : ℂ} (h : Good P u) (π : Ty P) : xC P π (u + 1) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun j hj => by
     have := good1 P h π hj
@@ -164,18 +242,33 @@ end Formalism.FourierDecayAlt.P.Mx6
 namespace Formalism.FourierDecayAlt.P.Mx6
 variable {B : Type*} [Ring B] [Algebra ℂ B]
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h, mul_assoc]`.
+-/
 theorem lc {a b : B} (h : a * b = b * a) (x : B) : a * (b * x) = b * (a * x) := by
   rw [← mul_assoc, h, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h, one_mul]`.
+-/
 theorem lc1 {a b : B} (h : a * b = 1) (x : B) : a * (b * x) = x := by
   rw [← mul_assoc, h, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h, sub_mul, mul_assoc, mul_assoc]`.
+-/
 theorem lcs {a b p q : B} (h : a * b = b * a - p * q) (x : B) : a * (b * x) = b * (a * x) - p * (q * x) := by
   rw [← mul_assoc, h, sub_mul, mul_assoc, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h, add_mul, mul_assoc, mul_assoc]`.
+-/
 theorem lca {a b p q : B} (h : a * b = b * a + p * q) (x : B) : a * (b * x) = b * (a * x) + p * (q * x) := by
   rw [← mul_assoc, h, add_mul, mul_assoc, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNg, lca hNg, hNX, lc hNX, hgG, lc1 hgG, hGg, lc1 hGg, hcg, lc hcg, hXg, lc hXg, hXG, lc hXG, hXc, lc hXc, hLg, lc hLg, hLg', lc …`. Take the linear combination `(norm := module) h1`.
+-/
 theorem commutator_identity_one (N c g G X L L' : B) (α β : ℂ)
     (hNg : N * g = g * N + g * c) (hNX : N * X = X * N)
     (hgG : g * G = 1) (hGg : G * g = 1) (hcg : c * g = g * c)
@@ -189,6 +282,9 @@ theorem commutator_identity_one (N c g G X L L' : B) (α β : ℂ)
     hXg, lc hXg, hXG, lc hXG, hXc, lc hXc, hLg, lc hLg, hLg', lc hLg'] at h1 ⊢
   linear_combination (norm := module) h1
 
+/- English proof (translation)
+Establish `h1'` using `congrArg (fun x => q • (G * (G * x))) h1`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNG, lcs hNG, hNX, lc hNX, hGc, lc hGc, hXG, lc hXG, hXc, lc hXc, hLG, lc hLG, hLG', lc hLG'] at h1' ⊢`. Take the linear combination `(norm := module) h1'`.
+-/
 theorem commutator_identity_two (N c G X L L' : B) (α β q : ℂ)
     (hNG : N * G = G * N - c * G) (hNX : N * X = X * N)
     (hGc : G * c = c * G)
@@ -203,6 +299,9 @@ theorem commutator_identity_two (N c G X L L' : B) (α β q : ℂ)
     hXG, lc hXG, hXc, lc hXc, hLG, lc hLG, hLG', lc hLG'] at h1' ⊢
   linear_combination (norm := module) h1'
 
+/- English proof (translation)
+Establish `h3'` using `congrArg (fun x => G * (G * x)) h3`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNc, lcs hNc, hNG, lcs hNG, hNL, hNL', hGc, lc hGc, hLc, lc hLc, hLc', lc hLc', hLG, lc hLG, hLG', lc hLG'] at h3' ⊢`. Take the linear combination `(norm := module) h3'`.
+-/
 theorem raising_pair_relation (N c G L L' : B) (α β : ℂ)
     (hNc : N * c = c * N - c * c) (hNG : N * G = G * N - c * G)
     (hNL : N * L = L * N - c * L) (hNL' : N * L' = L' * N - c * L')
@@ -217,6 +316,9 @@ theorem raising_pair_relation (N c G L L' : B) (α β : ℂ)
     hLc', lc hLc', hLG, lc hLG, hLG', lc hLG'] at h3' ⊢
   linear_combination (norm := module) h3'
 
+/- English proof (translation)
+Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hcurv, hNsc, hNcz, hNG, lcs hNG, hNsG, lca hNsG, hNsL', hNLs, hGc, lc hGc, hGcz, lc hGcz, hczc, lc hczc, hLc', lc hLc', hLcz', l …`. Use `module`.
+-/
 theorem commutator_identity_four (N Ns c cz G K Ls L' : B) (α β t : ℂ)
     (hcurv : Ns * N = N * Ns + K * (G * G))
     (hNsc : Ns * c = c * Ns + t • (G * G)) (hNcz : N * cz = cz * N - t • (G * G))
@@ -233,10 +335,16 @@ theorem commutator_identity_four (N Ns c cz G K Ls L' : B) (α β t : ℂ)
     hLsc, lc hLsc, hLscz, lc hLscz, hLsG, lc hLsG]
   module
 
+/- English proof (translation)
+Simplify using `only [mul_add, mul_assoc, lc hXG, lc1 hgG]`.
+-/
 theorem diagonal_lowering_absorb (g G X l0 L : B) (hgG : g * G = 1) (hXG : X * G = G * X) :
     g * X * (l0 + G * L) = g * X * l0 + X * L := by
   simp only [mul_add, mul_assoc, lc hXG, lc1 hgG]
 
+/- English proof (translation)
+Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm, smul_add, smul_sub, smul_neg, smul_smul, mul_assoc, neg_neg, hNsg, lcs hNsg, hNsX, hGg, lc1 hGg, hczg, lc hczg, hczX, hLsg, lc hLsg]`. Use `module`.
+-/
 theorem raising_operator_absorb (Ns cz g G X Ls : B) (α : ℂ)
     (hNsg : Ns * g = g * Ns - g * cz) (hNsX : Ns * X = X * Ns) (hGg : G * g = 1) (hczg : cz * g = g * cz)
     (hczX : cz * X = X * cz) (hLsg : Ls * g = g * Ls) :
@@ -253,18 +361,49 @@ section Gauss
 
 variable {B : Type*} [Ring B] [Algebra ℂ B]
 
+/- English proof (translation)
+Rewrite using `[← h, smul_smul, inv_mul_cancel₀ hD, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem solve_right {D : ℂ} (hD : D ≠ 0) {x y z : B} (h : D • (x - y) = z) : y = x - D⁻¹ • z := by
   rw [← h, smul_smul, inv_mul_cancel₀ hD, one_smul]; abel
 
+/- English proof (translation)
+Rewrite using `[← h, smul_smul, inv_mul_cancel₀ hD, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem solve_left {D : ℂ} (hD : D ≠ 0) {x y z : B} (h : D • (x - y) = z) : x = y + D⁻¹ • z := by
   rw [← h, smul_smul, inv_mul_cancel₀ hD, one_smul]; abel
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, h]`.
+-/
 theorem assoc_var {a b R : B} (h : a * b = R) (x : B) : a * (b * x) = R * x := by
   rw [← mul_assoc, h]
 
+/- English proof (translation)
+Rewrite using `[← h]`. Simplify using `only [mul_assoc]`.
+-/
 theorem mul_assoc_four_right {a b c e R : B} (h : a * (b * (c * e)) = R) (x : B) : a * (b * (c * (e * x))) = R * x := by
   rw [← h]; simp only [mul_assoc]
 
+/- English proof (translation)
+Establish `hm1 : D - 1 ≠ 0` using `sub_ne_zero.mpr hD1`. Establish `hp1 : D + 1 ≠ 0` using `by intro h; exact hD2 (by linear_combination h)`. Establish `r1 : l' * τ = τ * l' - D⁻¹ • -(τ * (l - l'))` using `solve_right hD0 D1`. Establish `r2 : l * τ' = τ' * l - D⁻¹ • -(τ' * (l - l'))` using `solve_right hD0 D1s`. Establish `r3 : l' * d = d * l' - D⁻¹ • (d * (l - l'))` using `solve_right hD0 D2`.
+
+Establish `r4 : l * d' = d' * l - D⁻¹ • (d' * (l - l'))` using `solve_right hD0 D2s`. Establish `r5 : τ * m' = m' * τ + D⁻¹ • ((m - m') * τ)` using `solve_left hD0 E1`. Establish `r6 : τ' * m = m * τ' + D⁻¹ • ((m - m') * τ')` using `solve_left hD0 TwistedContraction`. Establish `r7 : d * m' = m' * d + D⁻¹ • -((m - m') * d)` using `solve_left hD0 E2`. Establish `r8 : d' * m = m * d' + D⁻¹ • -((m - m') * d')` using `solve_left hD0 E2VanishingOtherColumns`.
+
+Establish `s1 : τ' * (l' * (m * τ)) = τ' * (m * (l' * τ)) - D⁻¹ • (d' * τ - τ' * d)`. Use `solve_right hD0 D4` as an intermediate fact. Simplify `this` using `only [mul_assoc]`. Establish `s2 : τ * (l * (m' * τ')) = τ * (m' * (l * τ')) - D⁻¹ • (τ * d' - d * τ')`. Use `solve_right hD0 D4s` as an intermediate fact.
+
+Simplify `this` using `only [mul_assoc]`. Establish `o1 : l' * l = (D - 1)⁻¹ • ((D + 1) • (l * l') - l * l - l' * l')`. Establish `h : (D - 1) • (l' * l) = (D + 1) • (l * l') - l * l - l' * l'`. Establish `h2 : D • (l * l') - D • (l' * l) = l * l - l * l' - l' * l + l' * l'`. Rewrite using `[← smul_sub, D3]`.
+
+Use `noncomm_ring`. Rewrite using `[sub_smul, add_smul, one_smul, one_smul]`. Establish `h3 : D • (l' * l) = D • (l * l') - (l * l - l * l' - l' * l + l' * l')` using `by rw [← h2]; abel`. Rewrite using `[h3]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← h, smul_smul, inv_mul_cancel₀ hm1, one_smul]`. Establish `o2 : m' * m = (D + 1)⁻¹ • ((D - 1) • (m * m') + m * m + m' * m')`. Establish `h : (D + 1) • (m' * m) = (D - 1) • (m * m') + m * m + m' * m'`. Establish `h2 : D • (m * m') - D • (m' * m) = -(m * m - m * m' - m' * m + m' * m')`. Rewrite using `[← smul_sub, E3]`.
+
+Use `noncomm_ring`. Rewrite using `[sub_smul, add_smul, one_smul, one_smul]`. Establish `h3 : D • (m' * m) = D • (m * m') + (m * m - m * m' - m' * m + m' * m')`. Establish `: D • (m' * m) = D • (m * m') - (D • (m * m') - D • (m' * m))` using `by abel`. Rewrite using `[this, h2]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h3]`. Normalize the expressions using the abelian group laws. Rewrite using `[← h, smul_smul, inv_mul_cancel₀ hp1, one_smul]`. Introduce `i j k n`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> fin_cases k <;> fin_cases n <;>`. Simplify using `only [Fin.zero_eta, Fin.mk_one, Fin.isValue, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.empty_val', Matrix.head_cons, Matrix.head_fin_const, mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, smul_add, smul_sub …`. Apply the tactic sequence `all_goals (match_scalars <;> field_simp <;> ring)`.
+-/
 theorem gauss_rtt (D : ℂ) (hD0 : D ≠ 0) (hD1 : D ≠ 1) (hD2 : D ≠ -1) (τ τ' d d' l l' m m' : B)
     (c1 : τ' * τ = τ * τ') (c2 : d' * d = d * d') (c3 : d' * τ = τ * d') (c4 : d * τ' = τ' * d)
     (D1 : D • (τ * l' - l' * τ) = -(τ * (l - l'))) (D1s : D • (τ' * l - l * τ') = -(τ' * (l - l')))
@@ -341,31 +480,56 @@ noncomputable section
 
 def pX (I : Finset ℕ) (ρ : ℕ → ℂ) : ℂ[X] := ∏ i ∈ I, (X + C (ρ i))
 
+/- English proof (translation)
+Simplify using `[pX, eval_prod]`.
+-/
 theorem pX_eval (I : Finset ℕ) (ρ : ℕ → ℂ) (u : ℂ) : (pX I ρ).eval u = ∏ i ∈ I, (u + ρ i) := by
   simp [pX, eval_prod]
 
+/- English proof (translation)
+Unfold `pX`. Conclude with `(Finset.mul_prod_erase I _ hl).symm`.
+-/
 theorem pX_erase (I : Finset ℕ) (ρ : ℕ → ℂ) {l : ℕ} (hl : l ∈ I) :
     pX I ρ = (X + C (ρ l)) * pX (I.erase l) ρ := by
   unfold pX; exact (Finset.mul_prod_erase I _ hl).symm
 
+/- English proof (translation)
+The claim follows from `monic_prod_of_monic _ _ (fun _ _ => monic_X_add_C _)`.
+-/
 theorem pX_monic (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).Monic :=
   monic_prod_of_monic _ _ (fun _ _ => monic_X_add_C _)
 
+/- English proof (translation)
+Unfold `pX`. Rewrite using `[natDegree_prod_of_monic _ _ (fun i _ => monic_X_add_C _)]`. Simplify using the standard rewrite rules.
+-/
 theorem pX_natDegree (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).natDegree = I.card := by
   unfold pX; rw [natDegree_prod_of_monic _ _ (fun i _ => monic_X_add_C _)]; simp
 
+/- English proof (translation)
+Unfold `pX`. Rewrite using `[Monic.nextCoeff_prod _ _ (fun i _ => monic_X_add_C _)]`. Simplify using the standard rewrite rules.
+-/
 theorem pX_nextCoeff (I : Finset ℕ) (ρ : ℕ → ℂ) : (pX I ρ).nextCoeff = ∑ i ∈ I, ρ i := by
   unfold pX; rw [Monic.nextCoeff_prod _ _ (fun i _ => monic_X_add_C _)]; simp
 
 def W1 (I : Finset ℕ) (ρ : ℕ → ℂ) (q w : ℂ[X]) (N : ℕ → ℂ) : Prop :=
   w * pX I (fun i => ρ i + 1) = q + ∑ l ∈ I, C (N l) * (pX (I.erase l) ρ * pX (I.erase l) (fun i => ρ i + 1))
 
+/- English proof (translation)
+Use `congrArg (Polynomial.eval u) h` as an intermediate fact. Simplify `this` using `[eval_finsetSum, pX_eval]`.
+-/
 theorem W1.eval {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (h : W1 I ρ q w N) (u : ℂ) :
     w.eval u * ∏ i ∈ I, (u + (ρ i + 1)) = q.eval u +
       ∑ l ∈ I, N l * ((∏ j ∈ I.erase l, (u + ρ j)) * ∏ j ∈ I.erase l, (u + (ρ j + 1))) := by
   have := congrArg (Polynomial.eval u) h
   simpa [eval_finsetSum, pX_eval] using this
 
+/- English proof (translation)
+Establish `h1` using `h.eval (-ρ l)`. Rewrite `h1` using `[← Finset.mul_prod_erase I _ hl, Finset.sum_eq_single l]`. Establish `e1 : ∏ j ∈ I.erase l, (-ρ l + (ρ j + 1)) = ∏ j ∈ I.erase l, (ρ j - ρ l + 1)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Establish `e2 : ∏ j ∈ I.erase l, (-ρ l + ρ j) = ∏ j ∈ I.erase l, (ρ j - ρ l)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Rewrite `h1` using `[e1, e2]`.
+
+Apply `mul_right_cancel₀ hE1` to reduce the goal to its premises. Take the linear combination `h1 + hNd`. Introduce `m _ hml`. Establish `: ∏ j ∈ I.erase m, (-ρ l + ρ j) = 0` using `Finset.prod_eq_zero (i := l) (Finset.mem_erase.2 ⟨fun h => hml h.symm, hl⟩) (by ring)`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd hl h`.
+-/
 theorem rootA {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) {l : ℕ} (hl : l ∈ I)
     (hE1 : ∏ j ∈ I.erase l, (ρ j - ρ l + 1) ≠ 0)
     (hNd : Nd l * ((∏ j ∈ I.erase l, (ρ j - ρ l + 1)) * ∏ j ∈ I.erase l, (ρ j - ρ l)) = -(q.eval (-ρ l))) :
@@ -385,6 +549,25 @@ theorem rootA {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → �
     rw [this]; simp
   · intro h; exact absurd hl h
 
+/- English proof (translation)
+Use `set ρ1 : ℕ → ℂ := fun i => ρ i + 1 with hρ1`. Establish `hx1 : pX I ρ1 = (X + C (ρ l)) * pX (I.erase j0) ρ1`. Rewrite using `[pX_erase I ρ1 hj0, hρ1]`. Simplify using `only [hρ]`. Establish `hF : pX (I.erase j0) ρ1 = (X + C (ρ l + 1)) * pX ((I.erase j0).erase l) ρ1` using `pX_erase _ _ (Finset.mem_erase.2 ⟨hne.symm, hl⟩)`.
+
+Establish `hE : pX (I.erase l) ρ1 = (X + C (ρ l)) * pX ((I.erase j0).erase l) ρ1`. Rewrite using `[pX_erase (I.erase l) ρ1 (Finset.mem_erase.2 ⟨hne, hj0⟩), Finset.erase_right_comm, hρ1]`. Simplify using `only [hρ]`. Establish `hdiv : (X + C (ρ l)) ^ 2 ∣ q + ∑ m ∈ I.erase l, C (N m) * (pX (I.erase m) ρ * pX (I.erase m) ρ1)`. Use `dvd_add hq (Finset.dvd_sum fun m hm => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hm0 : m = j0`. Rewrite using `[hm0, hN0]`. Simplify using the standard rewrite rules. Establish `hm'` using `Finset.mem_erase.1 hm`. Rewrite using `[pX_erase (I.erase m) ρ (Finset.mem_erase.2 ⟨fun e => hm'.1 e.symm, hl⟩), pX_erase (I.erase m) ρ1 (Finset.mem_erase.2 ⟨fun e => hm0 e.symm, hj0⟩)]`.
+
+Establish `: (ρ1 j0) = ρ l` using `hρ`. Rewrite using `[this]`. Conclude with `⟨C (N m) * (pX ((I.erase m).erase l) ρ * pX ((I.erase m).erase j0) ρ1), by ring⟩`. Take `⟨Aq, hA⟩` from `hdiv`. Establish `h2 : w * pX I ρ1 = (q + ∑ m ∈ I.erase l, C (N m) * (pX (I.erase m) ρ * pX (I.erase m) ρ1)) + C (N l) * (pX (I.erase l) ρ * pX (I.erase l) ρ1)`.
+
+Use `h` as an intermediate fact. Unfold `W1 at this`. Rewrite using `[this, ← Finset.add_sum_erase I _ hl]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[hA, hx1, hE]`.
+
+Establish `h3 : w * pX (I.erase j0) ρ1 = (X + C (ρ l)) * Aq + C (N l) * (pX (I.erase l) ρ * pX ((I.erase j0).erase l) ρ1)`. Apply `mul_left_cancel₀ (monic_X_add_C (ρ l)).ne_zero` to reduce the goal to its premises. Take the linear combination `h2`. Rewrite `h3` using `[hF]`. Establish `h4` using `congrArg (Polynomial.eval (-ρ l)) h3`.
+
+Simplify using `only [eval_mul, eval_add, eval_X, eval_C, pX_eval] at h4`. Establish `hG : ∏ j ∈ (I.erase j0).erase l, (-ρ l + ρ1 j) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj h0`. Establish `hj'` using `Finset.mem_erase.1 hj`.
+
+Establish `hj''` using `Finset.mem_erase.1 hj'.2`. Apply `hj''.1` to reduce the goal to its premises. Apply `hinj j hj''.2 j0 hj0` to reduce the goal to its premises. Establish `: ρ1 j = ρ j + 1` using `rfl`. Rewrite `h0` using `[this]`.
+
+Take the linear combination `h0 - hρ`. Establish `e2 : ∏ j ∈ I.erase l, (-ρ l + ρ j) = ∏ j ∈ I.erase l, (ρ j - ρ l)` using `Finset.prod_congr rfl (fun j _ => by ring)`. Rewrite `h4` using `[e2]`. Apply `mul_right_cancel₀ hG` to reduce the goal to its premises. Take the linear combination `h4`.
+-/
 theorem rootB {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (h : W1 I ρ q w N)
     (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {l j0 : ℕ} (hl : l ∈ I) (hj0 : j0 ∈ I) (hne : j0 ≠ l)
     (hρ : ρ j0 + 1 = ρ l) (hq : (X + C (ρ l)) ^ 2 ∣ q) (hN0 : N j0 = 0) :
@@ -435,6 +618,9 @@ theorem rootB {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → �
   apply mul_right_cancel₀ hG
   linear_combination h4
 
+/- English proof (translation)
+Establish `hd : (p + r).natDegree = p.natDegree` using `natDegree_add_eq_left_of_natDegree_lt (by omega)`. Use `⟨hp.add_of_left (degree_lt_degree (by omega)), hd, ?_⟩` and prove the remaining obligations. Rewrite using `[nextCoeff_of_natDegree_pos (by omega), nextCoeff_of_natDegree_pos (by omega), hd, coeff_add, coeff_eq_zero_of_natDegree_lt (p := r) (by omega), add_zero]`.
+-/
 theorem add_low {p r : ℂ[X]} (hp : p.Monic) (hr : r.natDegree + 1 < p.natDegree) :
     (p + r).Monic ∧ (p + r).natDegree = p.natDegree ∧ (p + r).nextCoeff = p.nextCoeff := by
   have hd : (p + r).natDegree = p.natDegree := natDegree_add_eq_left_of_natDegree_lt (by omega)
@@ -442,6 +628,13 @@ theorem add_low {p r : ℂ[X]} (hp : p.Monic) (hr : r.natDegree + 1 < p.natDegre
   rw [nextCoeff_of_natDegree_pos (by omega), nextCoeff_of_natDegree_pos (by omega), hd, coeff_add,
     coeff_eq_zero_of_natDegree_lt (p := r) (by omega), add_zero]
 
+/- English proof (translation)
+Unfold `pX`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `i hi j hj hij show IsCoprime (X + C (ρ i)) (X + C (ρ j))`. Establish `e : ∀ a : ℂ, (X + C a : ℂ[X]) = X - C (-a)` using `by intro a; simp`. Rewrite using `[e, e]`.
+
+Apply `isCoprime_X_sub_C_of_isUnit_sub` to reduce the goal to its premises. Apply `IsUnit.mk0` to reduce the goal to its premises. Introduce `h0`. Conclude with `hij (hinj i hi j hj (by linear_combination -h0))`. Introduce `l hl`.
+
+Establish `e : (X + C (ρ l) : ℂ[X]) = X - C (-(ρ l))` using `by rw [C_neg, sub_neg_eq_add]`. Rewrite using `[e, dvd_iff_isRoot, IsRoot.def]`. Conclude with `hR l hl`.
+-/
 theorem pX_dvd {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {R : ℂ[X]}
     (hR : ∀ l ∈ I, R.eval (-ρ l) = 0) : pX I ρ ∣ R := by
   unfold pX
@@ -459,6 +652,35 @@ theorem pX_dvd {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j �
     rw [e, dvd_iff_isRoot, IsRoot.def]
     exact hR l hl
 
+/- English proof (translation)
+Use `set ρ1 : ℕ → ℂ := fun i => ρ i + 1 with hρ1`. Use `set S1 : ℂ[X] := ∑ l ∈ I, C (N l) * (pX (I.erase l) ρ * pX (I.erase l) ρ1) with hS1`. Use `set S2 : ℂ[X] := ∑ l ∈ I, C (N l - Nd l) * pX (I.erase l) ρ with hS2`. Establish `hcc : (C c⁻¹ * C c : ℂ[X]) = 1` using `by rw [← C_mul, inv_mul_cancel₀ hc, C_1]`. Establish `dS1 : (C c⁻¹ * S1).natDegree ≤ I.card + I.card`.
+
+Use `(natDegree_C_mul_le _ _).trans (natDegree_sum_le_of_forall_le _ _ fun l _ => ?_)` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans (natDegree_mul_le.trans ?_)` and prove the remaining obligations. Rewrite using `[pX_natDegree, pX_natDegree]`. Conclude with `add_le_add (Finset.card_erase_le) (Finset.card_erase_le)`. Establish `dS2 : (-(C c⁻¹ * S2)).natDegree ≤ I.card`.
+
+Rewrite using `[natDegree_neg]`. Use `(natDegree_C_mul_le _ _).trans (natDegree_sum_le_of_forall_le _ _ fun l _ => ?_)` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pX_natDegree]`. Conclude with `Finset.card_erase_le`.
+
+Establish `hM : (C c⁻¹ * w) * pX I ρ1 = q1 + C c⁻¹ * S1`. Use `h` as an intermediate fact. Unfold `W1 at this`. Combine the equalities or inequalities in the displayed calculation. Take `⟨m1, m2, m3⟩` from `add_low (p := q1) (r := C c⁻¹ * S1) hq1 (by omega)`.
+
+Rewrite `m1`, `m2`, `m3` using `[← hM]`. Establish `hw1 : (C c⁻¹ * w).Monic` using `Monic.of_mul_monic_right (pX_monic I ρ1) m1`. Rewrite `m2` using `[hw1.natDegree_mul (pX_monic I ρ1), pX_natDegree]`. Rewrite `m3` using `[hw1.nextCoeff_mul (pX_monic I ρ1), pX_nextCoeff]`. Take `⟨r1, r2, r3⟩` from `add_low (p := C c⁻¹ * w) (r := -(C c⁻¹ * S2)) hw1 (by omega)`.
+
+Establish `hdvd : pX I ρ ∣ C c⁻¹ * w + -(C c⁻¹ * S2)`. Apply `pX_dvd hinj` to reduce the goal to its premises. Introduce `l hl`. Establish `: S2.eval (-ρ l) = (N l - Nd l) * ∏ j ∈ I.erase l, (ρ j - ρ l)`. Rewrite using `[hS2, eval_finsetSum, Finset.sum_eq_single l]`.
+
+Rewrite using `[eval_mul, eval_C, pX_eval]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl (fun j _ => by ring)`. Introduce `m _ hml`. Rewrite using `[eval_mul, eval_C, pX_eval, Finset.prod_eq_zero (i := l) (Finset.mem_erase.2 ⟨fun h => hml h.symm, hl⟩) (by ring)]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd hl h`. Simplify using `only [eval_add, eval_neg, eval_mul, eval_C, this, hroot l hl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨Q, hQ⟩` from `hdvd`. Rewrite `r1`, `r2`, `r3` using `[hQ]`. Establish `hQm : Q.Monic` using `Monic.of_mul_monic_left (pX_monic I ρ) r1`. Rewrite `r2` using `[(pX_monic I ρ).natDegree_mul hQm, pX_natDegree]`. Rewrite `r3` using `[(pX_monic I ρ).nextCoeff_mul hQm, pX_nextCoeff]`.
+
+Establish `hQd : Q.natDegree = 2` using `by omega`. Establish `hQ2 : Q.coeff 2 = 1` using `by rw [← hQd]; exact hQm`. Establish `hQ1 : Q.coeff 1 = Q.nextCoeff` using `by rw [nextCoeff_of_natDegree_pos (by omega), hQd]`. Use `⟨c * Q.coeff 0, fun u => ?_⟩` and prove the remaining obligations. Establish `hQe : Q.eval u = Q.coeff 0 + Q.nextCoeff * u + u ^ 2`.
+
+Rewrite using `[eval_eq_sum_range, hQd]`. Simplify using `[Finset.sum_range_succ, hQ2, hQ1]`. Establish `hS2e : S2.eval u = ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j)`. Rewrite using `[hS2, eval_finsetSum]`. Conclude with `Finset.sum_congr rfl (fun l _ => by rw [eval_mul, eval_C, pX_eval])`.
+
+Establish `h5` using `congrArg (Polynomial.eval u) hQ`. Simplify using `only [eval_add, eval_neg, eval_mul, eval_C, pX_eval, hQe, hS2e] at h5`. Rewrite `h5`, the goal using `[← hS2e]`. Establish `hn : Q.nextCoeff = q1.nextCoeff - ∑ i ∈ I, (ρ i + 1) - ∑ i ∈ I, ρ i`. Establish `: ∑ i ∈ I, ρ1 i = ∑ i ∈ I, (ρ i + 1)` using `rfl`.
+
+Rewrite `m3` using `[this]`. Take the linear combination `r3 + m3`. Rewrite using `[← hn]`. Establish `: w.eval u = c * (c⁻¹ * w.eval u)` using `by field_simp`. Rewrite using `[this]`.
+
+Establish `h6 : c⁻¹ * w.eval u = (∏ i ∈ I, (u + ρ i)) * (Q.coeff 0 + Q.nextCoeff * u + u ^ 2) + c⁻¹ * S2.eval u`. Take the linear combination `h5`. Rewrite using `[h6]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j ∈ I, ρ i = ρ j → i = j) {q1 w : ℂ[X]} (hq1 : q1.Monic)
     (hdeg : q1.natDegree = 2 * I.card + 2) {c : ℂ} (hc : c ≠ 0) {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ (C c * q1) w N)
     (hroot : ∀ l ∈ I, w.eval (-ρ l) = (N l - Nd l) * ∏ j ∈ I.erase l, (ρ j - ρ l)) :
@@ -538,6 +760,19 @@ theorem quad {I : Finset ℕ} {ρ : ℕ → ℂ} (hinj : ∀ i ∈ I, ∀ j ∈ 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hx0 : ∏ i ∈ I, (u + ρ i) ≠ 0` using `Finset.prod_ne_zero_iff.2 h0`. Establish `hx1 : ∏ i ∈ I, (u + (ρ i + 1)) ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun i hi => by rw [← add_assoc]; exact h1 i hi)`. Establish `s1 : ∑ l ∈ I, N l * ((∏ j ∈ I.erase l, (u + ρ j)) * ∏ j ∈ I.erase l, (u + (ρ j + 1))) = ((∏ i ∈ I, (u + ρ i)) * ∏ i ∈ I, (u + (ρ i + 1))) * ∑ l ∈ I, N l / ((u + ρ l) * (u + ρ l + 1))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_prod_erase I (fun i => u + ρ i) hl, ← Finset.mul_prod_erase I (fun i => u + (ρ i + 1)) hl]`. Establish `a0` using `h0 l hl`. Establish `a1` using `h1 l hl`. Establish `a2 : u + (ρ l + 1) = u + ρ l + 1` using `by ring`. Rewrite using `[a2]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `s2 : ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j) = (∏ i ∈ I, (u + ρ i)) * ∑ l ∈ I, (N l - Nd l) / (u + ρ l)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase I (fun i => u + ρ i) hl]`.
+
+Establish `a0` using `h0 l hl`. Clear the denominators using the available nonvanishing facts. Establish `s3 : ∑ l ∈ I, (N l / (u + ρ l + 1) - Nd l / (u + ρ l)) = ∑ l ∈ I, (N l - Nd l) / (u + ρ l) - ∑ l ∈ I, N l / ((u + ρ l) * (u + ρ l + 1))`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
+
+Establish `a0` using `h0 l hl`. Establish `a1` using `h1 l hl`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `h.eval u`.
+
+Rewrite `e1` using `[s1, hw u, s2]`. Rewrite using `[div_eq_iff (mul_ne_zero hx0 hx1), s3]`. Take the linear combination `-e1`.
+-/
 theorem absH {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) (Qf : ℂ → ℂ)
     (hw : ∀ u, w.eval u = (∏ i ∈ I, (u + ρ i)) * Qf u + ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j))
     (u : ℂ) (h0 : ∀ i ∈ I, u + ρ i ≠ 0) (h1 : ∀ i ∈ I, u + ρ i + 1 ≠ 0) :
@@ -576,6 +811,13 @@ theorem absH {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ
   rw [div_eq_iff (mul_ne_zero hx0 hx1), s3]
   linear_combination -e1
 
+/- English proof (translation)
+Rewrite using `[absH Nd h (fun u => c * (u ^ 2 + s * u) + c0) hw u h0 h1, absH Nd h (fun u => c * (u ^ 2 + s * u) + c0) hw v k0 k1]`. Establish `s4 : (u - v) * ∑ j ∈ I, (N j / ((u + ρ j + 1) * (v + ρ j + 1)) - Nd j / ((u + ρ j) * (v + ρ j))) = ∑ l ∈ I, (N l / (v + ρ l + 1) - Nd l / (v + ρ l)) - ∑ l ∈ I, (N l / (u + ρ l + 1) - Nd l / (u + ρ l))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `a0` using `h0 l hl`.
+
+Establish `a1` using `h1 l hl`. Establish `b0` using `k0 l hl`. Establish `b1` using `k1 l hl`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `s4`.
+-/
 theorem weighted_sum_difference_identity {I : Finset ℕ} {ρ : ℕ → ℂ} {q w : ℂ[X]} {N : ℕ → ℂ} (Nd : ℕ → ℂ) (h : W1 I ρ q w N) (c s c0 : ℂ)
     (hw : ∀ u, w.eval u = (∏ i ∈ I, (u + ρ i)) * (c * (u ^ 2 + s * u) + c0) +
       ∑ l ∈ I, (N l - Nd l) * ∏ j ∈ I.erase l, (u + ρ j))
@@ -602,6 +844,11 @@ def rc (P : Par) (π : Ty P) : ℕ → ℂ := fun i => (rho P π i : ℂ)
 def q1P (P : Par) : ℂ[X] :=
   ∏ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))))
 
+/- English proof (translation)
+Introduce `i hi j hj h`. Establish `h2 : rho P π i = rho P π j`. Unfold `rc at h`. Conclude with `h` after adjusting the coercions. Assume the negation of the conclusion as `hij`.
+
+Break down `lt_or_gt_of_ne hij with h' | h'` into its components or cases. Conclude with `absurd h2 (ne_of_gt (Mx3.rho_inj P hP π i j hi hj h'))`. Conclude with `absurd h2 (ne_of_lt (Mx3.rho_inj P hP π j i hj hi h'))`.
+-/
 theorem rc_inj (P : Par) (hP : P.OK) (π : Ty P) :
     ∀ i ∈ Icc 1 (P.k - 1), ∀ j ∈ Icc 1 (P.k - 1), rc P π i = rc P π j → i = j := by
   intro i hi j hj h
@@ -612,6 +859,9 @@ theorem rc_inj (P : Par) (hP : P.OK) (π : Ty P) :
   · exact absurd h2 (ne_of_gt (Mx3.rho_inj P hP π i j hi hj h'))
   · exact absurd h2 (ne_of_lt (Mx3.rho_inj P hP π j i hj hi h'))
 
+/- English proof (translation)
+Use `Mx3.wExact P hP π` as an intermediate fact. Unfold `W1`. Rewrite using `[mul_comm]`. Conclude with `this.symm`.
+-/
 theorem weight_model_identity (P : Par) (hP : P.OK) (π : Ty P) :
     W1 (Icc 1 (P.k - 1)) (rc P π) (C (-((P.T : ℂ) * P.T')) * q1P P) (wNum P π /ₘ coordinatePolynomial P π)
       (fun l => ((Nrm P l π : ℝ) : ℂ)) := by
@@ -620,9 +870,17 @@ theorem weight_model_identity (P : Par) (hP : P.OK) (π : Ty P) :
   rw [mul_comm]
   exact this.symm
 
+/- English proof (translation)
+The claim follows from `monic_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))`.
+-/
 theorem q_polynomial_monic (P : Par) : (q1P P).Monic :=
   monic_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))
 
+/- English proof (translation)
+Unfold `q1P`. Rewrite using `[natDegree_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]`. Establish `: ∀ i ∈ Icc 1 P.k, ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ)))).natDegree = 2`. Introduce `i _`. Rewrite using `[(monic_X_add_C _).natDegree_mul (monic_X_add_C _), natDegree_X_add_C, natDegree_X_add_C]`.
+
+Rewrite using `[Finset.sum_congr rfl this]`. Use `hP.k_pos` as an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natDegree_q1_polynomial (P : Par) (hP : P.OK) : (q1P P).natDegree = 2 * (Icc 1 (P.k - 1)).card + 2 := by
   unfold q1P
   rw [natDegree_prod_of_monic _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]
@@ -634,6 +892,9 @@ theorem natDegree_q1_polynomial (P : Par) (hP : P.OK) : (q1P P).natDegree = 2 * 
   simp
   omega
 
+/- English proof (translation)
+Unfold `q1P`. Rewrite using `[Monic.nextCoeff_prod _ _ (fun _ _ => (monic_X_add_C _).mul (monic_X_add_C _))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(monic_X_add_C _).nextCoeff_mul (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]`.
+-/
 theorem q_polynomial_next_coeff (P : Par) :
     (q1P P).nextCoeff = ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) := by
   unfold q1P
@@ -641,12 +902,44 @@ theorem q_polynomial_next_coeff (P : Par) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [(monic_X_add_C _).nextCoeff_mul (monic_X_add_C _), nextCoeff_X_add_C, nextCoeff_X_add_C]
 
+/- English proof (translation)
+Unfold `q1P qC`. Simplify using `only [eval_mul, eval_C, eval_prod, eval_add, eval_X]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl (fun i _ => by ring)`.
+-/
 theorem q_eval (P : Par) (u : ℂ) : (C (-((P.T : ℂ) * P.T')) * q1P P).eval u = qC P u := by
   unfold q1P qC
   simp only [eval_mul, eval_C, eval_prod, eval_add, eval_X]
   congr 1
   exact Finset.prod_congr rfl (fun i _ => by ring)
 
+/- English proof (translation)
+Establish `hl'` using `Finset.mem_Icc.1 hl`. Distinguish the cases in `hdeg : ∃ j0 ∈ (Icc 1 (P.k - 1)).erase l, rho P π j0 + 1 = rho P π l`. Take `⟨j0, hj0, hρ⟩` from `hdeg`. Establish `hj0'` using `Finset.mem_erase.1 hj0`. Establish `hNd : NrmDown P l π = 0`.
+
+Unfold `NrmDown`. Establish `hz : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l + 1) = 0` using `Finset.prod_eq_zero hj0 (by linarith)`. Rewrite using `[hz, zero_mul, div_zero]`. Establish `hN0 : Nrm P j0 π = 0`. Unfold `Nrm`.
+
+Establish `hz : ∏ j ∈ (Icc 1 (P.k - 1)).erase j0, (rho P π j - rho P π j0 - 1) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨fun e => hj0'.1 e.symm, hl⟩) (by linarith)`. Rewrite using `[hz, mul_zero, div_zero]`. Establish `hI` using `Mx3.tyInterlaces P hP π`. Establish `hlt : l < j0`. Assume the negation of the conclusion as `hcon`.
+
+Establish `: j0 < l` using `lt_of_le_of_ne (not_lt.1 hcon) hj0'.1`. Use `Mx3.rho_inj P hP π j0 l hj0'.2 hl this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `o` using `(Mx3.ord P.k P.u P.u' (rho P π) hI l hl).2.2.2 j0 hj0'.2 hlt`. Establish `b` using `hI l hl`.
+
+Establish `hu : P.u (l + 1) = rho P π l - 1 / 2` using `by linarith [o.1, b.2.2.1]`. Establish `hu' : P.u' (l + 1) = rho P π l - 1 / 2` using `by linarith [o.2, b.2.2.2]`. Establish `hq : (X + C (rc P π l)) ^ 2 ∣ C (-((P.T : ℂ) * P.T')) * q1P P`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Establish `hm : l + 1 ∈ Icc 1 P.k` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Establish `hd` using `Finset.dvd_prod_of_mem (fun i => ((X + C (1 / 2 + (P.u i : ℂ))) * (X + C (1 / 2 + (P.u' i : ℂ))) : ℂ[X])) hm`. Establish `e1 : (1 / 2 + (P.u (l + 1) : ℂ)) = rc P π l` using `by rw [hu]; unfold rc; push_cast; ring`. Establish `e2 : (1 / 2 + (P.u' (l + 1) : ℂ)) = rc P π l` using `by rw [hu']; unfold rc; push_cast; ring`. Simplify using `only [e1, e2] at hd`. Rewrite using `[pow_two]`.
+
+Conclude with `hd`. Use `rootB (weight_model_identity P hP π) (rc_inj P hP π) hl hj0'.2 hj0'.1 (by unfold rc; exact_mod_cast hρ) hq (by simp only [hN0]; simp)` as an intermediate fact. Rewrite using `[this, hNd]`. Simplify using the standard rewrite rules. Use `push Not at hdeg`.
+
+Establish `hA1 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l + 1) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj h0`. Conclude with `hdeg j hj (by linarith)`. Establish `hA0 : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l) ≠ 0`.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `j hj h0`. Establish `hj'` using `Finset.mem_erase.1 hj`. Apply `hj'.1` to reduce the goal to its premises. Apply `rc_inj P hP π j hj'.2 l hl` to reduce the goal to its premises.
+
+Unfold `rc`. Establish `: rho P π j = rho P π l` using `by linarith`. Rewrite using `[this]`. Establish `hk : NrmDown P l π * ((∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l + 1)) * ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rho P π j - rho P π l)) = -I.qpoly P.k P.T P.T' P.u P.u' (-rho P π l)`. Unfold `NrmDown`.
+
+Conclude with `div_mul_cancel₀ _ (mul_ne_zero hA1 hA0)`. Establish `hk'` using `congrArg (fun x : ℝ => (x : ℂ)) hk`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_prod, Complex.ofReal_sub, Complex.ofReal_add, Complex.ofReal_neg, Complex.ofReal_one] at hk'`. Establish `hA1c : ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rc P π j - rc P π l + 1) ≠ 0`. Use `hA1` as an intermediate fact.
+
+Unfold `rc`. Introduce `h0`. Apply `this` to reduce the goal to its premises. Conclude with `h0` after adjusting the coercions. Use `rootA (fun l => ((NrmDown P l π : ℝ) : ℂ)) (weight_model_identity P hP π) hl hA1c ?_` and prove the remaining obligations.
+
+Rewrite using `[q_eval]`. Establish `hr` using `(Mx3.realPoints P π (-rho P π l)).2`. Establish `e : (((-rho P π l : ℝ)) : ℂ) = -(rc P π l)` using `by unfold rc; push_cast; ring`. Rewrite `hr` using `[e]`. Rewrite using `[hr]`.
+
+Conclude with `hk'`.
+-/
 theorem model_root (P : Par) (hP : P.OK) (π : Ty P) (l : ℕ) (hl : l ∈ Icc 1 (P.k - 1)) :
     (wNum P π /ₘ coordinatePolynomial P π).eval (-(rc P π l)) = (((Nrm P l π : ℝ) : ℂ) - ((NrmDown P l π : ℝ) : ℂ)) *
       ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (rc P π j - rc P π l) := by
@@ -722,6 +1015,13 @@ theorem model_root (P : Par) (hP : P.OK) (π : Ty P) (l : ℕ) (hl : l ∈ Icc 1
     rw [hr]
     exact hk'
 
+/- English proof (translation)
+Rewrite using `[q_polynomial_next_coeff]`. Establish `e1 : ∑ i ∈ Icc 1 P.k, ((1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ))) = ∑ i ∈ Icc 1 P.k, ((P.u i : ℂ) + (P.u' i : ℂ)) + (P.k : ℂ)`. Rewrite using `[Finset.sum_congr rfl (fun i _ => (by ring : (1 / 2 + (P.u i : ℂ)) + (1 / 2 + (P.u' i : ℂ)) = ((P.u i : ℂ) + P.u' i) + 1)), Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Establish `e2 : ∑ i ∈ Icc 1 (P.k - 1), (rc P π i + 1) = ∑ i ∈ Icc 1 (P.k - 1), rc P π i + ((P.k : ℂ) - 1)`.
+
+Rewrite using `[Finset.sum_add_distrib]`. Simplify using `[Nat.cast_sub hP.k_pos]`. Rewrite using `[e1, e2]`. Unfold `aC rc`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem s_eq (P : Par) (hP : P.OK) (π : Ty P) :
     (q1P P).nextCoeff - ∑ i ∈ Icc 1 (P.k - 1), (rc P π i + 1) - ∑ i ∈ Icc 1 (P.k - 1), rc P π i =
       1 + 2 * (aC P π : ℂ) := by
@@ -739,22 +1039,43 @@ theorem s_eq (P : Par) (hP : P.OK) (π : Ty P) :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `i hi`. Use `hu π i hi 0 (by simp)` as an intermediate fact. Simplify `this` using `[rc]`.
+-/
 theorem good0 {P : Par} {u : ℂ} (hu : Good P u) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), u + rc P π i ≠ 0 := by
   intro i hi
   have := hu π i hi 0 (by simp)
   simpa [rc] using this
 
+/- English proof (translation)
+Introduce `i hi`. Use `hu π i hi 1 (by simp)` as an intermediate fact. Simplify `this` using `[rc]`.
+-/
 theorem good1 {P : Par} {u : ℂ} (hu : Good P u) (π : Ty P) : ∀ i ∈ Icc 1 (P.k - 1), u + rc P π i + 1 ≠ 0 := by
   intro i hi
   have := hu π i hi 1 (by simp)
   simpa [rc] using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordinate_product_eq (P : Par) (π : Ty P) (u : ℂ) : xC P π u = ∏ i ∈ Icc 1 (P.k - 1), (u + rc P π i) := rfl
 
+/- English proof (translation)
+Unfold `xC rc`. Conclude with `Finset.prod_congr rfl (fun i _ => by ring)`.
+-/
 theorem x_eval_shift_prod (P : Par) (π : Ty P) (u : ℂ) : xC P π (u + 1) = ∏ i ∈ Icc 1 (P.k - 1), (u + (rc P π i + 1)) := by
   unfold xC rc
   exact Finset.prod_congr rfl (fun i _ => by ring)
 
+/- English proof (translation)
+Establish `e1` using `(weight_model_identity P hP π).eval u`. Establish `hx1 : ∏ i ∈ Icc 1 (P.k - 1), (u + (rc P π i + 1)) ≠ 0` using `Finset.prod_ne_zero_iff.2 (fun i hi => by rw [← add_assoc]; exact good1 hu π i hi)`. Rewrite `e1` using `[q_eval]`. Rewrite using `[x_eval_shift_prod]`. Use `show (wNum P π /ₘ coordinatePolynomial P π).eval u = _`.
+
+Apply `mul_right_cancel₀ hx1` to reduce the goal to its premises. Rewrite using `[e1, add_mul, div_mul_cancel₀ _ hx1, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase (Icc 1 (P.k - 1)) (fun i => u + (rc P π i + 1)) hl]`.
+
+Establish `a1` using `good1 hu π l hl`. Establish `a2 : u + (rc P π l + 1) = u + rc P π l + 1` using `by ring`. Establish `a3 : xEx P {l} π u = ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (u + rc P π j)`. Unfold `xEx rc`. Rewrite using `[Finset.sdiff_singleton_eq_erase]`.
+
+Establish `a4 : (rho P π l : ℂ) = rc P π l` using `rfl`. Rewrite using `[a2, a3, a4]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem wC_eq (P : Par) (hP : P.OK) (π : Ty P) (u : ℂ) (hu : Good P u) :
     wC P π u = qC P u / xC P π (u + 1) +
       ∑ l ∈ Icc 1 (P.k - 1), ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1) := by
@@ -778,6 +1099,13 @@ theorem wC_eq (P : Par) (hP : P.OK) (π : Ty P) (u : ℂ) (hu : Good P u) :
   rw [a2, a3, a4]
   field_simp
 
+/- English proof (translation)
+Establish `hc : -((P.T : ℂ) * P.T') ≠ 0`. Establish `h1 : (P.T : ℂ) ≠ 0` using `by exact_mod_cast hP.T_pos.ne'`. Establish `h2 : (P.T' : ℂ) ≠ 0` using `by exact_mod_cast hP.T'_pos.ne'`. Conclude with `neg_ne_zero.2 (mul_ne_zero h1 h2)`. Take `⟨c0, hw⟩` from `quad (rc_inj P hP π) (q_polynomial_monic P) (natDegree_q1_polynomial P hP) hc (fun l => ((NrmDown P l π : ℝ) : ℂ)) (weight_model_identity P hP π) (model_root P hP π)`.
+
+Rewrite `hw` using `[s_eq P hP π]`. Establish `h` using `weighted_sum_difference_identity (fun l => ((NrmDown P l π : ℝ) : ℂ)) (weight_model_identity P hP π) _ _ c0 hw u v (good0 hu π) (good1 hu π) (good0 hv π) (good1 hv π)`. Rewrite `h` using `[q_eval, q_eval, ← coordinate_product_eq, ← coordinate_product_eq, ← x_eval_shift_prod, ← x_eval_shift_prod]`. Rewrite using `[← h]`. Establish `hT : (P.TT : ℂ) = (P.T : ℂ) * P.T'` using `by unfold Par.TT; push_cast; ring`.
+
+Rewrite using `[hT]`. Establish `: ∀ j, (rho P π j : ℂ) = rc P π j` using `fun _ => rfl`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalar_partial_fraction_identity (P : Par) (hP : P.OK) (π : Ty P) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) * ((u + v + 1 + 2 * (aC P π : ℂ)) * (P.TT : ℂ) + ∑ j ∈ Icc 1 (P.k - 1),
       (((Nrm P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ) + 1) * (v + (rho P π j : ℂ) + 1)) -
@@ -821,40 +1149,75 @@ def IsPoly (f : ℂ → B) : Prop := ∃ p : B[X], ∀ y, f y = ev y p
 
 def IsPolyS (a : ℂ → ℂ) : Prop := ∃ s : ℂ[X], ∀ y, a y = s.eval y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply (y : ℂ) (p : B[X]) : ev y p = p.eval₂ (RingHom.id B) (algebraMap ℂ B y) := rfl
 
+/- English proof (translation)
+Rewrite using `[ev_apply, Polynomial.eval₂_C]`. Both sides reduce to the same expression.
+-/
 theorem ev_C (y : ℂ) (b : B) : ev y (C b) = b := by rw [ev_apply, Polynomial.eval₂_C]; rfl
 
+/- English proof (translation)
+Rewrite using `[ev_apply, Polynomial.eval₂_map, RingHom.id_comp]`. Conclude with `Polynomial.eval₂_at_apply (algebraMap ℂ B) y`.
+-/
 theorem ev_map (y : ℂ) (s : ℂ[X]) : ev y (s.map (algebraMap ℂ B)) = algebraMap ℂ B (s.eval y) := by
   rw [ev_apply, Polynomial.eval₂_map, RingHom.id_comp]
   exact Polynomial.eval₂_at_apply (algebraMap ℂ B) y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C b, fun y => (ev_C y b).symm⟩`.
+-/
 theorem IsPoly.const (b : B) : IsPoly fun _ => b := ⟨C b, fun y => (ev_C y b).symm⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p + q, fun y => by show f y + g y = _; rw [hp, hq, map_add]⟩`.
+-/
 theorem IsPoly.add {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y + g y := by
   obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
   exact ⟨p + q, fun y => by show f y + g y = _; rw [hp, hq, map_add]⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p - q, fun y => by show f y - g y = _; rw [hp, hq, map_sub]⟩`.
+-/
 theorem IsPoly.sub {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y - g y := by
   obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
   exact ⟨p - q, fun y => by show f y - g y = _; rw [hp, hq, map_sub]⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Conclude with `⟨-p, fun y => by show -f y = _; rw [hp, map_neg]⟩`.
+-/
 theorem IsPoly.neg {f : ℂ → B} (hf : IsPoly f) : IsPoly fun y => -f y := by
   obtain ⟨p, hp⟩ := hf
   exact ⟨-p, fun y => by show -f y = _; rw [hp, map_neg]⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p * q, fun y => by show f y * g y = _; rw [hp, hq, map_mul]⟩`.
+-/
 theorem IsPoly.mul {f g : ℂ → B} (hf : IsPoly f) (hg : IsPoly g) : IsPoly fun y => f y * g y := by
   obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
   exact ⟨p * q, fun y => by show f y * g y = _; rw [hp, hq, map_mul]⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `ha`. Conclude with `⟨s.map (algebraMap ℂ B), fun y => by show algebraMap ℂ B (a y) = _; rw [hs, ev_map]⟩`.
+-/
 theorem IsPoly.algMap {a : ℂ → ℂ} (ha : IsPolyS a) : IsPoly fun y => algebraMap ℂ B (a y) := by
   obtain ⟨s, hs⟩ := ha
   exact ⟨s.map (algebraMap ℂ B), fun y => by show algebraMap ℂ B (a y) = _; rw [hs, ev_map]⟩
 
+/- English proof (translation)
+Use `(IsPoly.algMap (B := B) ha).mul hf` as an intermediate fact. Simplify `this` using `only [Algebra.smul_def]`.
+-/
 theorem IsPoly.smul {a : ℂ → ℂ} {f : ℂ → B} (ha : IsPolyS a) (hf : IsPoly f) : IsPoly fun y => a y • f y := by
   have := (IsPoly.algMap (B := B) ha).mul hf
   simpa only [Algebra.smul_def] using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using IsPoly.const (0 : B)`. Consider the case `insert a s ha ih`. Establish `h1` using `(hf a (Finset.mem_insert_self a s)).add (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Use `(funext fun y => ?_ : (fun y => ∑ i ∈ insert a s, f i y) = fun y => f a y + ∑ i ∈ s, f i y) ▸ h1` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_insert ha]`.
+-/
 theorem IsPoly.sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → B} (hf : ∀ i ∈ s, IsPoly (f i)) :
     IsPoly fun y => ∑ i ∈ s, f i y := by
   classical
@@ -865,20 +1228,40 @@ theorem IsPoly.sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → B} (hf : ∀
     refine (funext fun y => ?_ : (fun y => ∑ i ∈ insert a s, f i y) = fun y => f a y + ∑ i ∈ s, f i y) ▸ h1
     rw [Finset.sum_insert ha]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X, fun y => by simp⟩`.
+-/
 theorem IsPolyS.id : IsPolyS fun y => y := ⟨X, fun y => by simp⟩
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C c, fun y => by simp⟩`.
+-/
 theorem IsPolyS.const (c : ℂ) : IsPolyS fun _ => c := ⟨C c, fun y => by simp⟩
+/- English proof (translation)
+Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`. Conclude with `⟨p + q, fun y => by show a y + b y = _; rw [hp, hq, eval_add]⟩`.
+-/
 theorem IsPolyS.add {a b : ℂ → ℂ} (ha : IsPolyS a) (hb : IsPolyS b) : IsPolyS fun y => a y + b y := by
   obtain ⟨p, hp⟩ := ha; obtain ⟨q, hq⟩ := hb
   exact ⟨p + q, fun y => by show a y + b y = _; rw [hp, hq, eval_add]⟩
+/- English proof (translation)
+Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`. Conclude with `⟨p - q, fun y => by show a y - b y = _; rw [hp, hq, eval_sub]⟩`.
+-/
 theorem IsPolyS.sub {a b : ℂ → ℂ} (ha : IsPolyS a) (hb : IsPolyS b) : IsPolyS fun y => a y - b y := by
   obtain ⟨p, hp⟩ := ha; obtain ⟨q, hq⟩ := hb
   exact ⟨p - q, fun y => by show a y - b y = _; rw [hp, hq, eval_sub]⟩
+/- English proof (translation)
+Use `choose! p hp using ha`. Conclude with `⟨∏ i ∈ s, p i, fun y => by show ∏ i ∈ s, a i y = _; rw [eval_prod]; exact Finset.prod_congr rfl fun i hi => hp i hi y⟩`.
+-/
 theorem IsPolyS.prod {ι : Type*} (s : Finset ι) {a : ι → ℂ → ℂ} (ha : ∀ i ∈ s, IsPolyS (a i)) :
     IsPolyS fun y => ∏ i ∈ s, a i y := by
   classical
   choose! p hp using ha
   exact ⟨∏ i ∈ s, p i, fun y => by show ∏ i ∈ s, a i y = _; rw [eval_prod]; exact Finset.prod_congr rfl fun i hi => hp i hi y⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Use `⟨∑ n ∈ p.support, monomial n (φ (p.coeff n)), fun y => ?_⟩` and prove the remaining obligations. Use `show φ (f y) = _`. Rewrite using `[hp, ev_apply]`. Simplify using `only [Polynomial.eval₂_eq_sum, Polynomial.sum_def, RingHom.id_apply, map_sum, eval_finsetSum, eval_monomial]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem IsPoly.dual {f : ℂ → B} (hf : IsPoly f) (φ : Module.Dual ℂ B) : IsPolyS fun y => φ (f y) := by
   obtain ⟨p, hp⟩ := hf
   refine ⟨∑ n ∈ p.support, monomial n (φ (p.coeff n)), fun y => ?_⟩
@@ -889,6 +1272,13 @@ theorem IsPoly.dual {f : ℂ → B} (hf : IsPoly f) (φ : Module.Dual ℂ B) : I
   refine Finset.sum_congr rfl fun n _ => ?_
   rw [← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Take `⟨s, hs⟩` from `hf.dual φ`. Establish `h0 : s = 0`. Use `Polynomial.eq_zero_of_infinite_isRoot s (Set.Infinite.mono ?_ hS.infinite_compl)` and prove the remaining obligations.
+
+Introduce `z hz`. Use `show s.eval z = 0`. Rewrite using `[← hs]`. Use `show φ (f z) = 0`. Rewrite using `[h z hz, map_zero]`.
+
+Establish `h1 : φ (f y) = s.eval y` using `hs y`. Rewrite using `[h1, h0, eval_zero]`.
+-/
 theorem IsPoly.eq_zero {f : ℂ → B} (hf : IsPoly f) (S : Set ℂ) (hS : S.Finite) (h : ∀ y, y ∉ S → f y = 0) (y : ℂ) :
     f y = 0 := by
   rw [← Module.forall_dual_apply_eq_zero_iff ℂ]
@@ -908,55 +1298,103 @@ end Poly
 
 variable (P : Par)
 
+/- English proof (translation)
+Use `conv_lhs => rw [pi_eq_sum_univ' f]`. Simplify using `only [map_sum, map_smul]`.
+-/
 theorem kap_sum (f : Ty P → ℂ) : kap P f = ∑ π, f π • kap P (Pi.single π 1) := by
   conv_lhs => rw [pi_eq_sum_univ' f]
   simp only [map_sum, map_smul]
 
+/- English proof (translation)
+Establish `: (fun Y => kap P fun π => F π Y) = fun Y => ∑ π, F π Y • kap P (Pi.single π 1)`. Use function extensionality and compare the values at `Y`. Conclude with `kap_sum P _`. Rewrite using `[this]`. Conclude with `IsPoly.sum _ fun π _ => IsPoly.smul (hF π) (IsPoly.const _)`.
+-/
 theorem isPoly_kap {F : Ty P → ℂ → ℂ} (hF : ∀ π, IsPolyS (F π)) : IsPoly fun Y => kap P fun π => F π Y := by
   have : (fun Y => kap P fun π => F π Y) = fun Y => ∑ π, F π Y • kap P (Pi.single π 1) := by
     funext Y; exact kap_sum P _
   rw [this]
   exact IsPoly.sum _ fun π _ => IsPoly.smul (hF π) (IsPoly.const _)
 
+/- English proof (translation)
+The claim follows from `IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)`.
+-/
 theorem isPolyS_xC (π : Ty P) : IsPolyS fun Y => xC P π Y :=
   IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)
 
+/- English proof (translation)
+The claim follows from `IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)`.
+-/
 theorem isPolyS_xEx (ex : Finset ℕ) (π : Ty P) : IsPolyS fun Y => xEx P ex π Y :=
   IsPolyS.prod _ fun _ _ => IsPolyS.id.add (IsPolyS.const _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, fun _ => rfl⟩`.
+-/
 theorem isPolyS_wC (π : Ty P) : IsPolyS fun Y => wC P π Y := ⟨_, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `isPoly_kap P (isPolyS_xC P)`.
+-/
 theorem isPoly_xA : IsPoly fun Y => xA P Y := isPoly_kap P (isPolyS_xC P)
 
+/- English proof (translation)
+The claim follows from `(IsPoly.const _).sub ((IsPoly.algMap (IsPolyS.id.add (IsPolyS.const _))).mul (IsPoly.const _))`.
+-/
 theorem isPoly_l0A : IsPoly fun Y => l0A P Y :=
   (IsPoly.const _).sub ((IsPoly.algMap (IsPolyS.id.add (IsPolyS.const _))).mul (IsPoly.const _))
 
+/- English proof (translation)
+The claim follows from `(IsPoly.const _).sub ((IsPoly.algMap (IsPolyS.id.sub (IsPolyS.const _))).mul (IsPoly.const _))`.
+-/
 theorem isPoly_m0A : IsPoly fun Y => m0A P Y :=
   (IsPoly.const _).sub ((IsPoly.algMap (IsPolyS.id.sub (IsPolyS.const _))).mul (IsPoly.const _))
 
+/- English proof (translation)
+The claim follows from `IsPoly.sum _ fun l _ => (IsPoly.const _).mul (isPoly_kap P (isPolyS_xEx P {l}))`.
+-/
 theorem isPoly_S21 : IsPoly fun Y => weightedSumBis P Y :=
   IsPoly.sum _ fun l _ => (IsPoly.const _).mul (isPoly_kap P (isPolyS_xEx P {l}))
 
+/- English proof (translation)
+The claim follows from `IsPoly.sum _ fun l _ => (isPoly_kap P (isPolyS_xEx P {l})).mul (IsPoly.const _)`.
+-/
 theorem isPoly_S12 : IsPoly fun Y => S12 P Y :=
   IsPoly.sum _ fun l _ => (isPoly_kap P (isPolyS_xEx P {l})).mul (IsPoly.const _)
 
+/- English proof (translation)
+The claim follows from `IsPoly.sum _ fun l _ => IsPoly.sum _ fun j _ => (IsPoly.const _).mul (isPoly_kap P (isPolyS_xEx P {l, j}))`.
+-/
 theorem isPoly_quartic_sum : IsPoly fun Y => S4 P Y :=
   IsPoly.sum _ fun l _ => IsPoly.sum _ fun j _ => (IsPoly.const _).mul (isPoly_kap P (isPolyS_xEx P {l, j}))
 
+/- English proof (translation)
+The claim follows from `(IsPoly.const _).mul (isPoly_xA P)`.
+-/
 theorem isPoly_diagonal_entry : IsPoly fun Y => t22 P Y := (IsPoly.const _).mul (isPoly_xA P)
 
+/- English proof (translation)
+The claim follows from `(((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_l0A P)).add (isPoly_S21 P)`.
+-/
 theorem isPoly_t21 : IsPoly fun Y => t21 P Y :=
   (((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_l0A P)).add (isPoly_S21 P)
 
+/- English proof (translation)
+The claim follows from `(((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_m0A P)).add (isPoly_S12 P)`.
+-/
 theorem isPoly_upper_right_entry : IsPoly fun Y => t12 P Y :=
   (((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_m0A P)).add (isPoly_S12 P)
 
+/- English proof (translation)
+The claim follows from `(((((IsPoly.const _).mul (isPoly_kap P (isPolyS_wC P))).add ((((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_m0A P)).mul (isPoly_l0A P))).add ((((IsPoly.const _).mul (isPoly_m0A P)).mul (IsPoly.const _)).mul (isPoly_S21 P))).add ((isPoly_S12 P).mul (isPoly_l0A P))).add ((IsPoly …`.
+-/
 theorem isPoly_upper_left_entry : IsPoly fun Y => t11 P Y :=
   (((((IsPoly.const _).mul (isPoly_kap P (isPolyS_wC P))).add
     ((((IsPoly.const _).mul (isPoly_xA P)).mul (isPoly_m0A P)).mul (isPoly_l0A P))).add
     ((((IsPoly.const _).mul (isPoly_m0A P)).mul (IsPoly.const _)).mul (isPoly_S21 P))).add
     ((isPoly_S12 P).mul (isPoly_l0A P))).add ((IsPoly.const _).mul (isPoly_quartic_sum P))
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j`. Apply the tactic sequence `exact isPoly_upper_left_entry P`. Apply the tactic sequence `exact isPoly_upper_right_entry P`. Conclude with `isPoly_t21 P`. Apply the tactic sequence `exact isPoly_diagonal_entry P`.
+-/
 theorem isPoly_QQr (i j : Fin 2) : IsPoly fun Y => QQr P Y i j := by
   fin_cases i <;> fin_cases j
   · exact isPoly_upper_left_entry P
@@ -964,6 +1402,9 @@ theorem isPoly_QQr (i j : Fin 2) : IsPoly fun Y => QQr P Y i j := by
   · exact isPoly_t21 P
   · exact isPoly_diagonal_entry P
 
+/- English proof (translation)
+Use `Set.Finite.subset (Finset.finite_toSet ((Finset.univ : Finset (Ty P)).biUnion fun π => (Icc 1 (P.k - 1)).biUnion fun j => ({-2, -1, 0, 1, 2} : Finset ℤ).image fun n : ℤ => -(rho P π j : ℂ) - (n : ℂ))) ?_` and prove the remaining obligations. Introduce `Y hY`. Simplify using `only [Set.mem_ofPred_eq, Good, not_forall, not_not] at hY`. Take `⟨π, j, hj, n, hn, h⟩` from `hY`. Conclude with `Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨π, Finset.mem_univ _, Finset.mem_biUnion.mpr ⟨j, hj, Finset.mem_image.mpr ⟨n, hn, by linear_combination -h⟩⟩⟩)`.
+-/
 theorem bad_finite : {Y : ℂ | ¬ Good P Y}.Finite := by
   classical
   refine Set.Finite.subset (Finset.finite_toSet ((Finset.univ : Finset (Ty P)).biUnion fun π =>
@@ -974,6 +1415,15 @@ theorem bad_finite : {Y : ℂ | ¬ Good P Y}.Finite := by
   exact Finset.mem_coe.mpr (Finset.mem_biUnion.mpr ⟨π, Finset.mem_univ _, Finset.mem_biUnion.mpr ⟨j, hj,
     Finset.mem_image.mpr ⟨n, hn, by linear_combination -h⟩⟩⟩)
 
+/- English proof (translation)
+Use `set F : ℂ → ℂ → A P := fun u v => (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) - (QQr P u k j * QQr P v i l - QQr P v k j * QQr P u i l) with hF`. Establish `hu : ∀ v, IsPoly fun u => F u v` using `fun v => (IsPoly.smul (IsPolyS.id.sub (IsPolyS.const v)) (((isPoly_QQr P i j).mul (IsPoly.const _)).sub ((IsPoly.const _).mul (isPoly_QQr P i j)))).sub (((isPoly_QQr P k j).mul (IsPoly.const _)).sub ((IsPoly.const _).mul (isPoly_QQr P i l)))`. Establish `hv : ∀ u, IsPoly fun v => F u v` using `fun u => (IsPoly.smul ((IsPolyS.const u).sub IsPolyS.id) (((IsPoly.const _).mul (isPoly_QQr P k l)).sub ((isPoly_QQr P k l).mul (IsPoly.const _)))).sub (((IsPoly.const _).mul (isPoly_QQr P i l)).sub ((isPoly_QQr P k j).mul (IsPoly.const _)))`. Establish `h1 : ∀ v, Good P v → ∀ u, F u v = 0`. Introduce `v gv`.
+
+Use `(hu v).eq_zero ({Y : ℂ | ¬ Good P Y} ∪ {v, v + 1, v - 1}) ((bad_finite P).union (by simp)) ?_` and prove the remaining obligations. Introduce `u hu'`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_singleton_iff, not_or, not_not] at hu'`. Take `⟨gu, a0, a1, a2⟩` from `hu'`. Conclude with `sub_eq_zero.mpr (h u v gu gv (fun e => a0 (by linear_combination e)) (fun e => a1 (by linear_combination e)) (fun e => a2 (by linear_combination e)) i j k l)`.
+
+Establish `h2 : F u v = 0`. Use `(hv u).eq_zero {Y : ℂ | ¬ Good P Y} (bad_finite P) ?_ v` and prove the remaining obligations. Introduce `v' hv'`. Simplify using `only [Set.mem_ofPred_eq, not_not] at hv'`. Conclude with `h1 v' hv' u`.
+
+Conclude with `sub_eq_zero.mp h2`.
+-/
 theorem entries_of_generic
     (h : ∀ u v : ℂ, Good P u → Good P v → u - v ≠ 0 → u - v ≠ 1 → u - v ≠ -1 → ∀ i j k l : Fin 2,
       (u - v) • (QQr P u i j * QQr P v k l - QQr P v k l * QQr P u i j) =
@@ -1011,24 +1461,41 @@ section Entries
 
 variable {B : Type} [Ring B]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]`.
+-/
 theorem kronecker_E1_E2_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
     (E1 M * E2 N) (i, k) (j, l) = M i j * N k l := by
   simp [Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]`.
+-/
 theorem kronecker_embed_mul_apply (M N : Matrix (Fin 2) (Fin 2) B) (i k j l : Fin 2) :
     (E2 N * E1 M) (i, k) (j, l) = N k l * M i j := by
   simp [Matrix.mul_apply, E1, E2, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]`.
+-/
 theorem Pf_mul_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (i k : Fin 2) (p : Fin 2 × Fin 2) :
     (Pf B * X) (i, k) p = X (k, i) p := by
   fin_cases i <;> fin_cases k <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases j <;> fin_cases l <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]`.
+-/
 theorem mul_Pf_apply (X : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) B) (p : Fin 2 × Fin 2) (j l : Fin 2) :
     (X * Pf B) p (j, l) = X p (l, j) := by
   fin_cases j <;> fin_cases l <;> simp [Matrix.mul_apply, Pf, Fintype.sum_prod_type]
 
 end Entries
 
+/- English proof (translation)
+Introduce `H P hP Y Y'`. Apply `Matrix.ext` to reduce the goal to its premises. Introduce and unpack `⟨i, k⟩ ⟨j, l⟩`. Rewrite using `[Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.sub_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.smul_apply, Pf_mul_apply, mul_Pf_apply, kronecker_E1_E2_apply, kronecker_E1_E2_apply, kronecker_embed …`. Establish `h` using `H P hP Y' Y i j k l`.
+
+Rewrite `h` using `[smul_sub]`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h`.
+-/
 theorem ofEntries : Formalism.FourierDecayAlt.M.QQRTTOfEntries := by
   intro H P hP Y Y'
   apply Matrix.ext
@@ -1054,6 +1521,13 @@ noncomputable section
 
 variable (P : Par)
 
+/- English proof (translation)
+Unfold `lam`. Establish `e1 : kap P f * (kap P (rr P j v) * SS P j) = kap P (f * rr P j v) * SS P j`. Rewrite using `[← mul_assoc, kap_mul]`. Establish `e2 : (kap P (rr P j v) * SS P j) * kap P f = kap P (rr P j v * f') * SS P j`. Rewrite using `[mul_assoc, ← S_shift P j f f' hs, ← mul_assoc, kap_mul]`.
+
+Establish `e3 : kap P f * (kap P (rr P j u) * SS P j - kap P (rr P j v) * SS P j) = kap P (f * (rr P j u - rr P j v)) * SS P j`. Rewrite using `[← sub_mul, ← map_sub, ← mul_assoc, kap_mul]`. Rewrite using `[e1, e2, e3, ← sub_mul, ← map_sub, ← smul_mul_assoc, ← smul_mul_assoc, ← map_smul, ← map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `π`.
+
+Simplify using `only [Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, smul_eq_mul]`. Take the linear combination `hf π`.
+-/
 theorem comm_term (j : ℕ) (f f' : Ty P → ℂ) (hs : ∀ π π', Up P j π π' → f' π' = f π) (c u v : ℂ)
     (hf : ∀ π, (u - v) * ((f π - f' π) * rr P j v π) = c * (f π * (rr P j u π - rr P j v π))) :
     (u - v) • (kap P f * lam P j v - lam P j v * kap P f) = c • (kap P f * (lam P j u - lam P j v)) := by
@@ -1071,6 +1545,9 @@ theorem comm_term (j : ℕ) (f f' : Ty P → ℂ) (hs : ∀ π π', Up P j π π
   simp only [Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, smul_eq_mul]
   linear_combination hf π
 
+/- English proof (translation)
+Unfold `abelian₂`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j hj => comm_term P j f (f' j) (hs j hj) c u v (hf j hj)`.
+-/
 theorem comm_sum (f : Ty P → ℂ) (f' : ℕ → Ty P → ℂ) (c u v : ℂ)
     (hs : ∀ j ∈ Icc 1 (P.k - 1), ∀ π π', Up P j π π' → f' j π' = f π)
     (hf : ∀ j ∈ Icc 1 (P.k - 1), ∀ π,
@@ -1080,6 +1557,13 @@ theorem comm_sum (f : Ty P → ℂ) (f' : ℕ → Ty P → ℂ) (c u v : ℂ)
   simp only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, Finset.smul_sum]
   exact Finset.sum_congr rfl fun j hj => comm_term P j f (f' j) (hs j hj) c u v (hf j hj)
 
+/- English proof (translation)
+Establish `h` using `comm_sum P (fun π => xC P π u) (fun j π => (u + (rho P π j : ℂ) - 1) * xEx P {j} π u) (-1) u v (fun j hj π π' hU => by`. Rewrite using `[xEx_up P hU {j} (Finset.mem_singleton_self j), rho_up P hU hj, if_pos rfl, xC_split P π u hj]`. Use the proof step `ring)`. Use the proof step `(fun j hj π => by`. Establish `h1` using `good0 P hu π hj`.
+
+Establish `h2` using `good0 P hv π hj`. Simplify using `only [rr]`. Rewrite using `[xC_split P π u hj]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+
+Rewrite `h` using `[neg_one_smul]`. Conclude with `h`.
+-/
 theorem Lam1 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (xA P u * abelian₂ P v - abelian₂ P v * xA P u) = -(xA P u * (abelian₂ P u - abelian₂ P v)) := by
   have h := comm_sum P (fun π => xC P π u)
@@ -1097,6 +1581,15 @@ theorem Lam1 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
   rw [neg_one_smul] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `comm_sum P (fun π => (xC P π (u + 1))⁻¹) (fun j π => (u + (rho P π j : ℂ) + 1) * (u + (rho P π j : ℂ))⁻¹ * (xC P π (u + 1))⁻¹) 1 u v (fun j hj π π' hU => by`. Establish `h0` using `good0 P hu π' hj`. Establish `h1` using `good1 P hu π' hj`. Rewrite using `[xC_split P π' (u + 1) hj, xC_split P π (u + 1) hj, xEx_up P hU {j} (Finset.mem_singleton_self j), mul_inv, mul_inv]`. Rewrite `h0`, `h1`, the goal using `[rho_up P hU hj, if_pos rfl]`.
+
+Generalize the expression as in `(xEx P {j} π (u + 1))⁻¹ = Ei`. Establish `h2 : u + 1 + ((rho P π j : ℂ) + 1) ≠ 0` using `by intro h; apply h1; rw [← h]; ring`. Establish `h3 : u + 1 + (rho P π j : ℂ) ≠ 0` using `by intro h; apply h0; rw [← h]; ring`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`.
+
+Use the proof step `(fun j hj π => by`. Establish `h1` using `good0 P hu π hj`. Establish `h2` using `good0 P hv π hj`. Simplify using `only [rr]`. Generalize the expression as in `(xC P π (u + 1))⁻¹ = Xi`.
+
+Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Rewrite `h` using `[one_smul]`. Conclude with `h`.
+-/
 theorem Lam2 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • ((kap P fun π => (xC P π (u + 1))⁻¹) * abelian₂ P v -
       abelian₂ P v * (kap P fun π => (xC P π (u + 1))⁻¹)) =
@@ -1126,6 +1619,11 @@ theorem Lam2 (u v : ℂ) (hu : Good P u) (hv : Good P v) :
 
 def sh (i j : ℕ) (b : ℂ) : Ty P → ℂ := fun π => (b + (rho P π j : ℂ) - if j = i then 1 else 0)⁻¹
 
+/- English proof (translation)
+Establish `h` using `S_shift P i (rr P j b) (sh P i j b) (fun π π' hU => by`. Simplify using `only [sh, rr]`. Rewrite using `[rho_up P hU hj]`. Use `congr 1`. Use the proof step `ring)`.
+
+Unfold `lam`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lam_mul (i : ℕ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (a b : ℂ) :
     lam P i a * lam P j b = kap P (rr P i a * sh P i j b) * (SS P i * SS P j) := by
   have h := S_shift P i (rr P j b) (sh P i j b) (fun π π' hU => by
@@ -1147,12 +1645,20 @@ def FF (i j : ℕ) (u v : ℂ) : A P :=
   (u - v) • (lam P i u * lam P j v - lam P i v * lam P j u) -
     (lam P i u - lam P i v) * (lam P j u - lam P j v)
 
+/- English proof (translation)
+Unfold `FF ee`. Simplify using `only [sub_mul, mul_sub, lam_mul P _ hj, map_sub, map_smul, smul_mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem FF_eq (i : ℕ) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (u v : ℂ) :
     FF P i j u v = kap P (ee P i j u v) * (SS P i * SS P j) := by
   unfold FF ee
   simp only [sub_mul, mul_sub, lam_mul P _ hj, map_sub, map_smul, smul_mul_assoc]
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Establish `h1` using `good0 P hu π hi`. Establish `h2` using `good0 P hv π hi`. Establish `h3` using `goodm1 P hu π hi`. Establish `h4` using `goodm1 P hv π hi`.
+
+Simplify using `only [ee, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul, Pi.zero_apply, if_true]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ee_diag {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     ee P i i u v = 0 := by
   funext π
@@ -1167,6 +1673,11 @@ theorem ee_diag {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (u v : ℂ) (hu : Good P 
 def cc (i j : ℕ) (u v : ℂ) : Ty P → ℂ := fun π =>
   -((u - v) ^ 2) * (rr P i u π * rr P i v π * rr P j u π * rr P j v π)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Establish `h1` using `good0 P hu π hi`. Establish `h2` using `good0 P hv π hi`. Establish `h3` using `good0 P hu π hj`. Establish `h4` using `good0 P hv π hj`.
+
+Simplify using `only [ee, cc, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, smul_eq_mul, if_neg hne, sub_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ee_off_diagonal_first {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     ee P i j u v = cc P i j u v * fun π => (rho P π j : ℂ) - (rho P π i : ℂ) + 1 := by
@@ -1179,6 +1690,11 @@ theorem ee_off_diagonal_first {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j �
   field_simp
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Establish `h1` using `good0 P hu π hi`. Establish `h2` using `good0 P hv π hi`. Establish `h3` using `good0 P hu π hj`. Establish `h4` using `good0 P hv π hj`.
+
+Simplify using `only [ee, cc, sh, rr, Pi.sub_apply, Pi.smul_apply, Pi.mul_apply, Pi.neg_apply, smul_eq_mul, if_neg hne.symm, sub_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ee_off_diagonal_second {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     ee P j i u v = -(cc P i j u v * fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) := by
@@ -1192,6 +1708,15 @@ theorem ee_off_diagonal_second {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h` using `hC P hP i hi j hj hne`. Establish `a1` using `S_shift P i (fun π => ((rho P π j - rho P π i - 1 : ℝ) : ℂ)) (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π π' hU => by`. Rewrite using `[rho_up P hU hj, rho_up P hU hi, if_neg hne, if_pos rfl]`. Use `push_cast`. Use the proof step `ring)`.
+
+Establish `a2` using `S_shift P j (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) (fun π π' hU => by`. Rewrite using `[rho_up P hU hj, rho_up P hU hi, if_neg hne.symm, if_pos rfl]`. Use the proof step `ring)`. Establish `b1` using `S_shift P j (fun π => ((rho P π j - rho P π i + 1 : ℝ) : ℂ)) (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π π' hU => by`. Rewrite using `[rho_up P hU hj, rho_up P hU hi, if_neg hne.symm, if_pos rfl]`.
+
+Use `push_cast`. Use the proof step `ring)`. Establish `b2` using `S_shift P i (fun π => (rho P π j : ℂ) - (rho P π i : ℂ)) (fun π => (rho P π j : ℂ) - (rho P π i : ℂ) + 1) (fun π π' hU => by`. Rewrite using `[rho_up P hU hj, rho_up P hU hi, if_neg hne, if_pos rfl]`. Use the proof step `ring)`.
+
+Rewrite using `[← mul_assoc, a2, mul_assoc, a1, ← mul_assoc, h, mul_assoc, ← b1, ← mul_assoc, ← b2, mul_assoc]`.
+-/
 theorem comm_tgt (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1))
     (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) :
     (kap P fun π => (rho P π j : ℂ) - (rho P π i : ℂ) - 1) * (SS P j * SS P i) =
@@ -1217,6 +1742,9 @@ theorem comm_tgt (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 
       ring)
   rw [← mul_assoc, a2, mul_assoc, a1, ← mul_assoc, h, mul_assoc, ← b1, ← mul_assoc, ← b2, mul_assoc]
 
+/- English proof (translation)
+Distinguish the cases in `hne : j = i`. Substitute `hne` using the available equality. Rewrite using `[FF_eq P _ hj, ee_diag P hj u v hu hv, map_zero, zero_mul, add_zero]`. Rewrite using `[FF_eq P _ hj, FF_eq P _ hi, ee_off_diagonal_first P hi hj hne u v hu hv, ee_off_diagonal_second P hi hj hne u v hu hv, map_neg, ← kap_mul, ← kap_mul, neg_mul, mul_assoc, mul_assoc, comm_tgt P hC hP hi hj hne, add_neg_cancel]`.
+-/
 theorem FF_pair (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1))
     (hj : j ∈ Icc 1 (P.k - 1)) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     FF P i j u v + FF P j i u v = 0 := by
@@ -1227,6 +1755,11 @@ theorem FF_pair (hC : SSComm) (hP : P.OK) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1
       map_neg, ← kap_mul, ← kap_mul, neg_mul, mul_assoc, mul_assoc, comm_tgt P hC hP hi hj hne,
       add_neg_cancel]
 
+/- English proof (translation)
+Establish `h1 : ∑ i ∈ I, ∑ j ∈ I, F i j + ∑ i ∈ I, ∑ j ∈ I, F i j = 0` using `by nth_rewrite 2 [Finset.sum_comm]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun j hj => h i hi j hj`.
+
+Establish `h2 : (2 : ℂ) • ∑ i ∈ I, ∑ j ∈ I, F i j = 0` using `by rw [two_smul]; exact h1`. Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+-/
 theorem sum_antisymm {M : Type*} [AddCommGroup M] [Module ℂ M] (I : Finset ℕ) (F : ℕ → ℕ → M)
     (h : ∀ i ∈ I, ∀ j ∈ I, F i j + F j i = 0) : ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by
   have h1 : ∑ i ∈ I, ∑ j ∈ I, F i j + ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by
@@ -1238,6 +1771,9 @@ theorem sum_antisymm {M : Type*} [AddCommGroup M] [Module ℂ M] (I : Finset ℕ
   have h2 : (2 : ℂ) • ∑ i ∈ I, ∑ j ∈ I, F i j = 0 := by rw [two_smul]; exact h1
   exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Establish `h` using `sum_antisymm (Icc 1 (P.k - 1)) (fun i j => FF P i j u v) (fun i hi j hj => FF_pair P hC hP hi hj u v hu hv)`. Rewrite using `[← sub_eq_zero, ← h]`. Unfold `abelian₂ FF`. Simplify using `only [← Finset.sum_sub_distrib, Finset.sum_mul_sum, Finset.smul_sum]`.
+-/
 theorem Lam3 (hC : SSComm) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (abelian₂ P u * abelian₂ P v - abelian₂ P v * abelian₂ P u) = (abelian₂ P u - abelian₂ P v) * (abelian₂ P u - abelian₂ P v) := by
   have h := sum_antisymm (Icc 1 (P.k - 1)) (fun i j => FF P i j u v)
@@ -1258,6 +1794,9 @@ noncomputable section
 
 variable (P : Par)
 
+/- English proof (translation)
+Rewrite using `[← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem kap_sum' (s : Finset ℕ) (f : ℕ → Ty P → ℂ) :
     kap P (fun π => ∑ l ∈ s, f l π) = ∑ l ∈ s, kap P (f l) := by
   rw [← map_sum]
@@ -1267,33 +1806,53 @@ theorem kap_sum' (s : Finset ℕ) (f : ℕ → Ty P → ℂ) :
 
 def rr1 (j : ℕ) (u : ℂ) : Ty P → ℂ := fun π => (u + (rho P π j : ℂ) + 1)⁻¹
 
+/- English proof (translation)
+Unfold `rr rr1`. Rewrite using `[rho_up P h hj, if_pos rfl, add_assoc]`.
+-/
 theorem rr_up_same {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) {π π' : Ty P} (h : Up P j π π') (u : ℂ) :
     rr P j u π' = rr1 P j u π := by
   unfold rr rr1
   rw [rho_up P h hj, if_pos rfl, add_assoc]
 
+/- English proof (translation)
+Unfold `rr`. Rewrite using `[rho_up P h hj, if_neg hne, add_zero]`.
+-/
 theorem rr_up_ne {i j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) {π π' : Ty P} (h : Up P i π π') (u : ℂ) :
     rr P j u π' = rr P j u π := by
   unfold rr
   rw [rho_up P h hj, if_neg hne, add_zero]
 
+/- English proof (translation)
+Unfold `rr1`. Rewrite using `[rho_up P h hj, if_neg hne, add_zero]`.
+-/
 theorem rho_unchanged_off_index {i j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ i) {π π' : Ty P} (h : Up P i π π') (u : ℂ) :
     rr1 P j u π' = rr1 P j u π := by
   unfold rr1
   rw [rho_up P h hj, if_neg hne, add_zero]
 
+/- English proof (translation)
+Unfold `rr`. Rewrite using `[xC_split P π u hj]`. Clear denominators, using `[good0 P hu π hj]` for the nonvanishing conditions.
+-/
 theorem xC_rr {u : ℂ} (hu : Good P u) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (π : Ty P) :
     xC P π u * rr P j u π = xEx P {j} π u := by
   unfold rr
   rw [xC_split P π u hj]
   field_simp [good0 P hu π hj]
 
+/- English proof (translation)
+Unfold `rr`. Rewrite using `[xEx_split P π u hj hne]`. Clear denominators, using `[good0 P hu π hj]` for the nonvanishing conditions.
+-/
 theorem xEx_rr {u : ℂ} (hu : Good P u) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ l) (π : Ty P) :
     xEx P {l} π u * rr P j u π = xEx P {l, j} π u := by
   unfold rr
   rw [xEx_split P π u hj hne]
   field_simp [good0 P hu π hj]
 
+/- English proof (translation)
+Unfold `abelian₂ weightedSumBis lam xA`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, kap_mul]`. Use `S_shift P j _ _ fun π π' h => ?_` and prove the remaining obligations.
+
+Use `show xC P π' u * rr P j u π' = xEx P {j} π u`. Rewrite using `[xC_rr P hu hj, xEx_up P h {j} (by simp)]`.
+-/
 theorem xLam {u : ℂ} (hu : Good P u) : xA P u * abelian₂ P u = weightedSumBis P u := by
   unfold abelian₂ weightedSumBis lam xA
   rw [Finset.mul_sum]
@@ -1303,6 +1862,11 @@ theorem xLam {u : ℂ} (hu : Good P u) : xA P u * abelian₂ P u = weightedSumBi
   show xC P π' u * rr P j u π' = xEx P {j} π u
   rw [xC_rr P hu hj, xEx_up P h {j} (by simp)]
 
+/- English proof (translation)
+Unfold `Lams S12 lams xA`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, kap_mul]`. Use `Ss_shift P j _ _ fun π π' h => ?_` and prove the remaining obligations.
+
+Use `show rr P j u π' * xC P π' u = xEx P {j} π u`. Rewrite using `[mul_comm, xC_rr P hu hj, xEx_up P h {j} (by simp)]`.
+-/
 theorem Lamsx {u : ℂ} (hu : Good P u) : Lams P u * xA P u = S12 P u := by
   unfold Lams S12 lams xA
   rw [Finset.sum_mul]
@@ -1312,11 +1876,17 @@ theorem Lamsx {u : ℂ} (hu : Good P u) : Lams P u * xA P u = S12 P u := by
   show rr P j u π' * xC P π' u = xEx P {j} π u
   rw [mul_comm, xC_rr P hu hj, xEx_up P h {j} (by simp)]
 
+/- English proof (translation)
+The claim follows from `(Ss_shift P l (fun π => xEx P {l} π u) (fun π => xEx P {l} π u) fun _ _ h => xEx_up P h {l} (Finset.mem_singleton_self l) u).symm`.
+-/
 theorem E_Ss (l : ℕ) (u : ℂ) :
     (kap P fun π => xEx P {l} π u) * star (SS P l) = star (SS P l) * kap P fun π => xEx P {l} π u :=
   (Ss_shift P l (fun π => xEx P {l} π u) (fun π => xEx P {l} π u)
     fun _ _ h => xEx_up P h {l} (Finset.mem_singleton_self l) u).symm
 
+/- English proof (translation)
+Establish `h1 : kap P ((fun π => xEx P {l} π u) * rr P j u) * SS P j = SS P j * kap P fun π => xEx P {l, j} π u` using `S_shift P j (fun π => xEx P {l, j} π u) ((fun π => xEx P {l} π u) * rr P j u) fun π π' h => by`. Rewrite using `[Pi.mul_apply, xEx_rr P hu hj hne, xEx_up P h {l, j} (by simp)]`. Rewrite using `[E_Ss, mul_assoc, ← mul_assoc (kap P _) (kap P _), kap_mul, h1, mul_assoc]`.
+-/
 theorem T_ne {u : ℂ} (hu : Good P u) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hne : j ≠ l) :
     (kap P fun π => xEx P {l} π u) * star (SS P l) * (kap P (rr P j u) * SS P j) =
       star (SS P l) * SS P j * kap P fun π => xEx P {l, j} π u := by
@@ -1325,6 +1895,11 @@ theorem T_ne {u : ℂ} (hu : Good P u) {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) 
       rw [Pi.mul_apply, xEx_rr P hu hj hne, xEx_up P h {l, j} (by simp)]
   rw [E_Ss, mul_assoc, ← mul_assoc (kap P _) (kap P _), kap_mul, h1, mul_assoc]
 
+/- English proof (translation)
+Establish `h1 : kap P ((fun π => xEx P {l} π u) * rr P l u) * SS P l = SS P l * kap P ((fun π => xEx P {l} π u) * rr1 P l u)` using `S_shift P l ((fun π => xEx P {l} π u) * rr1 P l u) ((fun π => xEx P {l} π u) * rr P l u) fun π π' h => by`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, xEx_up P h {l} (by simp), rr_up_same P hl h]`. Rewrite using `[E_Ss, mul_assoc, ← mul_assoc (kap P _) (kap P _), kap_mul, h1, ← mul_assoc, (hN P hP l hl).1, kap_mul]`. Use `congr 1`. Use function extensionality and compare the values at `π`.
+
+Simplify using `only [Pi.mul_apply, rr1]`. Rewrite using `[div_eq_mul_inv, mul_assoc]`.
+-/
 theorem T_eq (hP : P.OK) (hN : SSNorm) (u : ℂ) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) :
     (kap P fun π => xEx P {l} π u) * star (SS P l) * (kap P (rr P l u) * SS P l) =
       kap P fun π => ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1) := by
@@ -1338,6 +1913,11 @@ theorem T_eq (hP : P.OK) (hN : SSNorm) (u : ℂ) {l : ℕ} (hl : l ∈ Icc 1 (P.
   simp only [Pi.mul_apply, rr1]
   rw [div_eq_mul_inv, mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : S12 P u * abelian₂ P u = ∑ l ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), (kap P fun π => xEx P {l} π u) * star (SS P l) * (kap P (rr P j u) * SS P j)` using `Finset.sum_mul_sum _ _ _ _`. Establish `e2 : ∀ l ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), (kap P fun π => xEx P {l} π u) * star (SS P l) * (kap P (rr P j u) * SS P j) = (∑ j ∈ (Icc 1 (P.k - 1)).erase l, star (SS P l) * SS P j * kap P fun π => xEx P {l, j} π u) + kap P fun π => ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / ( …`. Introduce `l hl`. Rewrite using `[← Finset.sum_erase_add _ _ hl, T_eq P hP hN u hl]`. Use `congrArg (· + _) ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_erase.1 hj`. Conclude with `T_ne P hu hj'.2 hj'.1`. Rewrite using `[e1, Finset.sum_congr rfl e2, Finset.sum_add_distrib, kap_sum' P _ (fun l π => ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1))]`. Both sides reduce to the same expression.
+-/
 theorem upper_sum_mul_lambda (hP : P.OK) {u : ℂ} (hu : Good P u) (hN : SSNorm) :
     S12 P u * abelian₂ P u = S4 P u + kap P fun π => ∑ l ∈ Icc 1 (P.k - 1),
       ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1) := by
@@ -1358,6 +1938,21 @@ theorem upper_sum_mul_lambda (hP : P.OK) {u : ℂ} (hu : Good P u) (hN : SSNorm)
     kap_sum' P _ (fun l π => ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1))]
   rfl
 
+/- English proof (translation)
+Rewrite using `[kap_sum' P _ (fun j π => ((Nrm P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ) + 1) * (v + (rho P π j : ℂ) + 1)) - ((NrmDown P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ)) * (v + (rho P π j : ℂ))))]`. Establish `e1 : Lams P u * abelian₂ P v = ∑ i ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), lams P i u * lam P j v` using `Finset.sum_mul_sum _ _ _ _`. Establish `e2 : abelian₂ P v * Lams P u = ∑ i ∈ Icc 1 (P.k - 1), ∑ j ∈ Icc 1 (P.k - 1), lam P j v * lams P i u`. Unfold `Lams abelian₂`. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`.
+
+Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Establish `hlam : ∀ j ∈ Icc 1 (P.k - 1), lam P j v = SS P j * kap P (rr1 P j v)` using `fun j hj => S_shift P j _ _ fun π π' h => rr_up_same P hj h v`. Rewrite using `[Finset.sum_eq_single_of_mem i hi]`.
+
+Establish `h1 : lams P i u * lam P i v = kap P ((fun π => ((Nrm P i π : ℝ) : ℂ)) * (rr1 P i u * rr1 P i v))`. Unfold `lams lam`. Rewrite using `[mul_assoc, ← mul_assoc (kap P _) (kap P _), kap_mul, S_shift P i (rr1 P i u * rr1 P i v) _ (fun π π' h => by show rr P i u π' * rr P i v π' = rr1 P i u π * rr1 P i v π`. Rewrite using `[rr_up_same P hi h, rr_up_same P hi h]),`. Use the proof step `← mul_assoc, (hN P hP i hi).1, kap_mul]`.
+
+Establish `h2 : lam P i v * lams P i u = kap P (rr P i v * (fun π => ((NrmDown P i π : ℝ) : ℂ)) * rr P i u)`. Unfold `lams lam`. Rewrite using `[mul_assoc, ← mul_assoc (SS P i), (hN P hP i hi).2, kap_mul, kap_mul, mul_assoc]`. Rewrite using `[h1, h2, ← map_sub]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `π`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, rr, rr1]`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j hj hne`.
+
+Rewrite using `[sub_eq_zero, hlam j hj]`. Unfold `lams`. Establish `h3 : kap P (rr P i u) * SS P j = SS P j * kap P (rr P i u)` using `S_shift P j _ _ fun π π' h => rr_up_ne P hi (Ne.symm hne) h u`. Establish `h4 : kap P (rr1 P j v) * star (SS P i) = star (SS P i) * kap P (rr1 P j v)` using `(Ss_shift P i _ _ fun π π' h => rho_unchanged_off_index P hj hne h v).symm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hM P hP i hi j hj hne, kap_comm]`. Use `_ = SS P j * (star (SS P i) * kap P (rr1 P j v)) * kap P (rr P i u) := by simp only [mul_assoc]`. Use `_ = SS P j * kap P (rr1 P j v) * (star (SS P i) * kap P (rr P i u)) := by rw [← h4]; simp only [mul_assoc]`.
+-/
 theorem Lam4 (hP : P.OK) (u v : ℂ) (hN : SSNorm) (hM : SSMixed) :
     Lams P u * abelian₂ P v - abelian₂ P v * Lams P u = kap P fun π => ∑ j ∈ Icc 1 (P.k - 1),
       (((Nrm P j π : ℝ) : ℂ) / ((u + (rho P π j : ℂ) + 1) * (v + (rho P π j : ℂ) + 1)) -
@@ -1419,16 +2014,25 @@ open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
 section Abs
 variable {B : Type*} [Ring B] [Algebra ℂ B]
 
+/- English proof (translation)
+Simplify using `only [mul_assoc, lc hNw, hNG, mul_sub, lc hGw]`.
+-/
 theorem abs_Nc (N w G : B) (hNw : N * w = w * N) (hNG : N * G = G * N - w * G * G) (hGw : G * w = w * G) :
     N * (w * G) = (w * G) * N - (w * G) * (w * G) := by
   simp only [mul_assoc, lc hNw, hNG, mul_sub, lc hGw]
 
+/- English proof (translation)
+Establish `h : algebraMap ℂ B t = z * w - g` using `by rw [hg]; abel`. Rewrite using `[Algebra.smul_def, h]`. Simplify using `only [sub_mul, mul_assoc, lc1 hgG]`.
+-/
 theorem smul_GG_sq_identity (g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1) :
     t • (G * G) = z * (w * (G * G)) - G := by
   have h : algebraMap ℂ B t = z * w - g := by rw [hg]; abel
   rw [Algebra.smul_def, h]
   simp only [sub_mul, mul_assoc, lc1 hgG]
 
+/- English proof (translation)
+Rewrite using `[smul_GG_sq_identity g G z w t hg hgG, ← mul_assoc, hNsw]`. Simplify using `only [sub_mul, mul_assoc, hNsG, mul_add, one_mul, lc hwz]`. Normalize the expressions using the abelian group laws.
+-/
 theorem abs_Nsc (Ns g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1)
     (hNsw : Ns * w = w * Ns - 1) (hNsG : Ns * G = G * Ns + z * G * G) (hwz : w * z = z * w) :
     Ns * (w * G) = (w * G) * Ns + t • (G * G) := by
@@ -1436,6 +2040,9 @@ theorem abs_Nsc (Ns g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t)
   simp only [sub_mul, mul_assoc, hNsG, mul_add, one_mul, lc hwz]
   abel
 
+/- English proof (translation)
+Rewrite using `[smul_GG_sq_identity g G z w t hg hgG, ← mul_assoc, hNz]`. Simplify using `only [add_mul, mul_assoc, hNG, mul_sub, one_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem abs_Ncz (N g G z w : B) (t : ℂ) (hg : g = z * w - algebraMap ℂ B t) (hgG : g * G = 1)
     (hNz : N * z = z * N + 1) (hNG : N * G = G * N - w * G * G) :
     N * (z * G) = (z * G) * N - t • (G * G) := by
@@ -1453,75 +2060,189 @@ def cc : A P := zbA P * ggiA P
 
 def cz : A P := zA P * ggiA P
 
+/- English proof (translation)
+Unfold `sc`. Conclude with `(map_mul _ _ _).symm`.
+-/
 theorem sc_mul (a b : Pr P.r) : sc P a * sc P b = sc P (a * b) := by
   unfold sc; exact (map_mul _ _ _).symm
 
+/- English proof (translation)
+The claim follows from `sc_mul P _ _`.
+-/
 theorem cc_sc : cc P = sc P (zbP * ggiP P.TT) := sc_mul P _ _
+/- English proof (translation)
+The claim follows from `sc_mul P _ _`.
+-/
 theorem cz_sc : cz P = sc P (zP * ggiP P.TT) := sc_mul P _ _
 
+/- English proof (translation)
+Unfold `l0A cc`. Rewrite using `[Algebra.smul_def]`.
+-/
 theorem lowering_constant_eq_shift (u : ℂ) : l0A P u = -nabA P - (u + 1 / 2) • cc P := by
   unfold l0A cc; rw [Algebra.smul_def]
 
+/- English proof (translation)
+Unfold `m0A cz`. Rewrite using `[Algebra.smul_def]`.
+-/
 theorem raising_constant_eq_shift (u : ℂ) : m0A P u = -nabsA P - (u - 1 / 2) • cz P := by
   unfold m0A cz; rw [Algebra.smul_def]
 
+/- English proof (translation)
+Unfold `lam`. Rewrite using `[mul_assoc, S_sc, ← mul_assoc, kap_sc, mul_assoc]`.
+-/
 theorem lam_sc (j : ℕ) (u : ℂ) (a : Pr P.r) : lam P j u * sc P a = sc P a * lam P j u := by
   unfold lam; rw [mul_assoc, S_sc, ← mul_assoc, kap_sc, mul_assoc]
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => lam_sc P j u a`.
+-/
 theorem Lam_sc (u : ℂ) (a : Pr P.r) : abelian₂ P u * sc P a = sc P a * abelian₂ P u := by
   unfold abelian₂; rw [Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => lam_sc P j u a
 
+/- English proof (translation)
+Unfold `lams`. Rewrite using `[mul_assoc, kap_sc, ← mul_assoc, Ss_sc, mul_assoc]`.
+-/
 theorem lams_sc (j : ℕ) (u : ℂ) (a : Pr P.r) : lams P j u * sc P a = sc P a * lams P j u := by
   unfold lams; rw [mul_assoc, kap_sc, ← mul_assoc, Ss_sc, mul_assoc]
 
+/- English proof (translation)
+Unfold `Lams`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => lams_sc P j u a`.
+-/
 theorem Lams_sc (u : ℂ) (a : Pr P.r) : Lams P u * sc P a = sc P a * Lams P u := by
   unfold Lams; rw [Finset.sum_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => lams_sc P j u a
 
+/- English proof (translation)
+Simplify using `[fnsA]`.
+-/
 theorem zeta_mem_function_algebra : zA P ∈ fnsA P := by simp [fnsA]
+/- English proof (translation)
+Simplify using `[fnsA]`.
+-/
 theorem mem_zb : zbA P ∈ fnsA P := by simp [fnsA]
+/- English proof (translation)
+Simplify using `[fnsA]`.
+-/
 theorem mem_g : ggA P ∈ fnsA P := by simp [fnsA]
+/- English proof (translation)
+Simplify using `[fnsA]`.
+-/
 theorem mem_G : ggiA P ∈ fnsA P := by simp [fnsA]
 
+/- English proof (translation)
+The claim follows from `(Mx2.levFns P).1 x hx y hy`.
+-/
 theorem fcomm {x y : A P} (hx : x ∈ fnsA P) (hy : y ∈ fnsA P) : x * y = y * x := (Mx2.levFns P).1 x hx y hy
 
+/- English proof (translation)
+The claim follows from `(Mx2.levFns P).2.2.2.2.2.2.1`.
+-/
 theorem gG : ggA P * ggiA P = 1 := (Mx2.levFns P).2.2.2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levFns P).2.2.2.2.2.2.2.1`.
+-/
 theorem Gg : ggiA P * ggA P = 1 := (Mx2.levFns P).2.2.2.2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levFns P).2.2.2.2.2.2.2.2`.
+-/
 theorem g_def : ggA P = zA P * zbA P - algebraMap ℂ (A P) (P.TT : ℂ) := (Mx2.levFns P).2.2.2.2.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `(Mx2.levNab P).1`.
+-/
 theorem besselUnipotent_mulVec_middle_vec : nabA P * zA P = zA P * nabA P + 1 := (Mx2.levNab P).1
+/- English proof (translation)
+The claim follows from `(Mx2.levNab P).2.2.1`.
+-/
 theorem N_zb : nabA P * zbA P = zbA P * nabA P := (Mx2.levNab P).2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levNab P).2.2.2.2.1`.
+-/
 theorem nabla_gamma_relations : nabA P * ggA P = ggA P * nabA P + zbA P := (Mx2.levNab P).2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levNab P).2.2.2.2.2.1`.
+-/
 theorem nabla_star_gamma_relations : nabA P * ggiA P = ggiA P * nabA P - zbA P * ggiA P * ggiA P := (Mx2.levNab P).2.2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levNabs P).1`.
+-/
 theorem Ns_zb : nabsA P * zbA P = zbA P * nabsA P - 1 := (Mx2.levNabs P).1
+/- English proof (translation)
+The claim follows from `(Mx2.levNabs P).2.2.2.2.1`.
+-/
 theorem nabla_star_mul_GG : nabsA P * ggA P = ggA P * nabsA P - zA P := (Mx2.levNabs P).2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(Mx2.levNabs P).2.2.2.2.2.1`.
+-/
 theorem nabla_star_gamma_inv_comm : nabsA P * ggiA P = ggiA P * nabsA P + zA P * ggiA P * ggiA P := (Mx2.levNabs P).2.2.2.2.2.1
 
+/- English proof (translation)
+Unfold `cc`. Rewrite using `[lc (fcomm P (mem_g P) (mem_zb P)), gG, mul_one]`.
+-/
 theorem g_cc : ggA P * cc P = zbA P := by
   unfold cc; rw [lc (fcomm P (mem_g P) (mem_zb P)), gG, mul_one]
+/- English proof (translation)
+Unfold `cz`. Rewrite using `[lc (fcomm P (mem_g P) (zeta_mem_function_algebra P)), gG, mul_one]`.
+-/
 theorem g_cz : ggA P * cz P = zA P := by
   unfold cz; rw [lc (fcomm P (mem_g P) (zeta_mem_function_algebra P)), gG, mul_one]
 
+/- English proof (translation)
+Rewrite using `[g_cc, nabla_gamma_relations]`.
+-/
 theorem N_g : nabA P * ggA P = ggA P * nabA P + ggA P * cc P := by rw [g_cc, nabla_gamma_relations]
+/- English proof (translation)
+The claim follows from `nabla_star_gamma_relations P`.
+-/
 theorem N_G : nabA P * ggiA P = ggiA P * nabA P - cc P * ggiA P := nabla_star_gamma_relations P
+/- English proof (translation)
+Rewrite using `[g_cz, nabla_star_mul_GG]`.
+-/
 theorem Ns_g : nabsA P * ggA P = ggA P * nabsA P - ggA P * cz P := by rw [g_cz, nabla_star_mul_GG]
+/- English proof (translation)
+The claim follows from `nabla_star_gamma_inv_comm P`.
+-/
 theorem Ns_G : nabsA P * ggiA P = ggiA P * nabsA P + cz P * ggiA P := nabla_star_gamma_inv_comm P
+/- English proof (translation)
+The claim follows from `abs_Nc _ _ _ (N_zb P) (nabla_star_gamma_relations P) (fcomm P (mem_G P) (mem_zb P))`.
+-/
 theorem N_cc : nabA P * cc P = cc P * nabA P - cc P * cc P :=
   abs_Nc _ _ _ (N_zb P) (nabla_star_gamma_relations P) (fcomm P (mem_G P) (mem_zb P))
+/- English proof (translation)
+The claim follows from `abs_Nsc _ _ _ _ _ _ (g_def P) (gG P) (Ns_zb P) (nabla_star_gamma_inv_comm P) (fcomm P (mem_zb P) (zeta_mem_function_algebra P))`.
+-/
 theorem Ns_cc : nabsA P * cc P = cc P * nabsA P + (P.TT : ℂ) • (ggiA P * ggiA P) :=
   abs_Nsc _ _ _ _ _ _ (g_def P) (gG P) (Ns_zb P) (nabla_star_gamma_inv_comm P) (fcomm P (mem_zb P) (zeta_mem_function_algebra P))
+/- English proof (translation)
+The claim follows from `abs_Ncz _ _ _ _ _ _ (g_def P) (gG P) (besselUnipotent_mulVec_middle_vec P) (nabla_star_gamma_relations P)`.
+-/
 theorem N_cz : nabA P * cz P = cz P * nabA P - (P.TT : ℂ) • (ggiA P * ggiA P) :=
   abs_Ncz _ _ _ _ _ _ (g_def P) (gG P) (besselUnipotent_mulVec_middle_vec P) (nabla_star_gamma_relations P)
 
+/- English proof (translation)
+Unfold `cc`. Rewrite using `[lc (fcomm P (mem_G P) (mem_zb P)), mul_assoc]`.
+-/
 theorem G_cc : ggiA P * cc P = cc P * ggiA P := by
   unfold cc; rw [lc (fcomm P (mem_G P) (mem_zb P)), mul_assoc]
+/- English proof (translation)
+Unfold `cz`. Rewrite using `[lc (fcomm P (mem_G P) (zeta_mem_function_algebra P)), mul_assoc]`.
+-/
 theorem G_cz : ggiA P * cz P = cz P * ggiA P := by
   unfold cz; rw [lc (fcomm P (mem_G P) (zeta_mem_function_algebra P)), mul_assoc]
+/- English proof (translation)
+Unfold `cc`. Rewrite using `[mul_assoc, Gg, mul_one, lc (fcomm P (mem_g P) (mem_zb P)), gG, mul_one]`.
+-/
 theorem cc_g : cc P * ggA P = ggA P * cc P := by
   unfold cc; rw [mul_assoc, Gg, mul_one, lc (fcomm P (mem_g P) (mem_zb P)), gG, mul_one]
+/- English proof (translation)
+Unfold `cz`. Rewrite using `[mul_assoc, Gg, mul_one, lc (fcomm P (mem_g P) (zeta_mem_function_algebra P)), gG, mul_one]`.
+-/
 theorem cz_g : cz P * ggA P = ggA P * cz P := by
   unfold cz; rw [mul_assoc, Gg, mul_one, lc (fcomm P (mem_g P) (zeta_mem_function_algebra P)), gG, mul_one]
+/- English proof (translation)
+Rewrite using `[cc_sc, cz_sc, sc_mul, sc_mul]`. Use `congr 1`. Simplify using `only [zP, zbP, ggiP]`. Rewrite using `[Mx2.multiplierPair_mul, Mx2.multiplierPair_mul]`. Conclude with `Mx2.multiplierPair_comm _ _ _ _`.
+-/
 theorem cz_cc : cz P * cc P = cc P * cz P := by
   rw [cc_sc, cz_sc, sc_mul, sc_mul]
   congr 1
@@ -1529,18 +2250,50 @@ theorem cz_cc : cz P * cc P = cc P * cz P := by
   rw [Mx2.multiplierPair_mul, Mx2.multiplierPair_mul]
   exact Mx2.multiplierPair_comm _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem G_sc : ggiA P = sc P (ggiP P.TT) := rfl
 
+/- English proof (translation)
+The claim follows from `(star_generators P).2.2.2.1`.
+-/
 theorem star_g : star (ggA P) = ggA P := (star_generators P).2.2.2.1
+/- English proof (translation)
+The claim follows from `(star_generators P).2.2.2.2.1`.
+-/
 theorem star_G : star (ggiA P) = ggiA P := (star_generators P).2.2.2.2.1
+/- English proof (translation)
+The claim follows from `(star_generators P).2.1`.
+-/
 theorem star_alt : star (zA P) = zbA P := (star_generators P).2.1
+/- English proof (translation)
+The claim follows from `(star_generators P).2.2.2.2.2`.
+-/
 theorem star_N : star (nabA P) = nabsA P := (star_generators P).2.2.2.2.2
+/- English proof (translation)
+Rewrite using `[← star_N, star_star]`.
+-/
 theorem star_Ns : star (nabsA P) = nabA P := by rw [← star_N, star_star]
+/- English proof (translation)
+Rewrite using `[← star_alt, star_star]`.
+-/
 theorem star_zb : star (zbA P) = zA P := by rw [← star_alt, star_star]
+/- English proof (translation)
+Unfold `cc cz`. Rewrite using `[star_mul, star_G, star_zb, fcomm P (mem_G P) (zeta_mem_function_algebra P)]`.
+-/
 theorem star_cc : star (cc P) = cz P := by
   unfold cc cz; rw [star_mul, star_G, star_zb, fcomm P (mem_G P) (zeta_mem_function_algebra P)]
+/- English proof (translation)
+Rewrite using `[← star_cc, star_star]`.
+-/
 theorem star_cz : star (cz P) = cc P := by rw [← star_cc, star_star]
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Unfold `lam`. Rewrite using `[← mul_assoc, ← kap_nab, mul_assoc, (hS P j hj).1, mul_sub, cc_sc, ← mul_assoc (sc P _), ← kap_sc, ← cc_sc]`.
+
+Simplify using `only [mul_assoc, cc]`.
+-/
 theorem N_Lam (hS : NabSS) (u : ℂ) : nabA P * abelian₂ P u = abelian₂ P u * nabA P - cc P * abelian₂ P u := by
   unfold abelian₂; rw [Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun j hj => ?_
@@ -1548,6 +2301,11 @@ theorem N_Lam (hS : NabSS) (u : ℂ) : nabA P * abelian₂ P u = abelian₂ P u 
   rw [← mul_assoc, ← kap_nab, mul_assoc, (hS P j hj).1, mul_sub, cc_sc, ← mul_assoc (sc P _), ← kap_sc, ← cc_sc]
   simp only [mul_assoc, cc]
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Unfold `lam`. Rewrite using `[← mul_assoc, ← kap_nabs, mul_assoc, (hS P j hj).2, mul_sub, cz_sc, ← mul_assoc (sc P _), ← kap_sc, ← cz_sc]`.
+
+Simplify using `only [mul_assoc, cz]`.
+-/
 theorem Ns_Lam (hS : NabSS) (u : ℂ) : nabsA P * abelian₂ P u = abelian₂ P u * nabsA P - cz P * abelian₂ P u := by
   unfold abelian₂; rw [Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun j hj => ?_
@@ -1555,11 +2313,17 @@ theorem Ns_Lam (hS : NabSS) (u : ℂ) : nabsA P * abelian₂ P u = abelian₂ P 
   rw [← mul_assoc, ← kap_nabs, mul_assoc, (hS P j hj).2, mul_sub, cz_sc, ← mul_assoc (sc P _), ← kap_sc, ← cz_sc]
   simp only [mul_assoc, cz]
 
+/- English proof (translation)
+Establish `h` using `congrArg star (Ns_Lam P hS (star u))`. Rewrite `h` using `[star_mul, star_sub, star_mul, star_mul, star_Lam, star_Ns, star_cz]`. Rewrite using `[h, cc_sc, Lams_sc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem N_Lams (hS : NabSS) (u : ℂ) : nabA P * Lams P u = Lams P u * nabA P + cc P * Lams P u := by
   have h := congrArg star (Ns_Lam P hS (star u))
   rw [star_mul, star_sub, star_mul, star_mul, star_Lam, star_Ns, star_cz] at h
   rw [h, cc_sc, Lams_sc]; abel
 
+/- English proof (translation)
+Unfold `mt`. Rewrite using `[lA_eq, lowering_constant_eq_shift, star_add, star_sub, star_neg, star_N, star_smul, star_cc, star_mul, star_Lam, star_G, G_sc, Lams_sc]`. Use `congr 3`. Simplify using the standard rewrite rules.
+-/
 theorem mt_eq (u : ℂ) : mt P u = -nabsA P - (u + 1 / 2) • cz P + ggiA P * Lams P u := by
   unfold mt
   rw [lA_eq, lowering_constant_eq_shift, star_add, star_sub, star_neg, star_N, star_smul, star_cc, star_mul, star_Lam, star_G, G_sc, Lams_sc]
@@ -1577,11 +2341,17 @@ open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
 section Abs2
 variable {B : Type*} [Ring B] [Algebra ℂ B]
 
+/- English proof (translation)
+Simplify using `only [mul_assoc, lc h1, lc h2, lc1 hgG, lc1 hGg, lc h1g, lc h2g]`.
+-/
 theorem absSand (g G K1 K2 K3 : B) (hgG : g * G = 1) (hGg : G * g = 1)
     (h1 : K1 * G = G * K1) (h2 : K2 * G = G * K2) (h1g : K1 * g = g * K1) (h2g : K2 * g = g * K2) :
     g * K1 * (K2 * (G * G)) * (g * K3) = K1 * K2 * K3 := by
   simp only [mul_assoc, lc h1, lc h2, lc1 hgG, lc1 hGg, lc h1g, lc h2g]
 
+/- English proof (translation)
+Simplify using `only [mul_add, add_mul, mul_assoc, lc hXm, lc hXG, lc hSG]`. Normalize the expressions using the abelian group laws.
+-/
 theorem absN (g G X m0 l0 S12 L : B) (hXm : X * m0 = m0 * X) (hXG : X * G = G * X) (hSG : S12 * G = G * S12) :
     (g * X * m0 + S12) * (l0 + G * L) = g * X * m0 * l0 + g * m0 * G * (X * L) + S12 * l0 + G * (S12 * L) := by
   simp only [mul_add, add_mul, mul_assoc, lc hXm, lc hXG, lc hSG]
@@ -1593,19 +2363,55 @@ noncomputable section
 
 variable (P : Par)
 
+/- English proof (translation)
+The claim follows from `(kap_nab P _).symm`.
+-/
 theorem x_N (u : ℂ) : nabA P * xA P u = xA P u * nabA P := (kap_nab P _).symm
+/- English proof (translation)
+The claim follows from `(kap_nabs P _).symm`.
+-/
 theorem x_Ns (u : ℂ) : nabsA P * xA P u = xA P u * nabsA P := (kap_nabs P _).symm
+/- English proof (translation)
+The claim follows from `kap_sc P _ _`.
+-/
 theorem kap_g (f : Ty P → ℂ) : kap P f * ggA P = ggA P * kap P f := kap_sc P _ _
+/- English proof (translation)
+The claim follows from `kap_sc P _ _`.
+-/
 theorem kap_G (f : Ty P → ℂ) : kap P f * ggiA P = ggiA P * kap P f := kap_sc P _ _
+/- English proof (translation)
+Rewrite using `[cc_sc]`. Conclude with `kap_sc P _ _`.
+-/
 theorem kap_cc (f : Ty P → ℂ) : kap P f * cc P = cc P * kap P f := by rw [cc_sc]; exact kap_sc P _ _
+/- English proof (translation)
+Rewrite using `[cz_sc]`. Conclude with `kap_sc P _ _`.
+-/
 theorem kap_cz (f : Ty P → ℂ) : kap P f * cz P = cz P * kap P f := by rw [cz_sc]; exact kap_sc P _ _
+/- English proof (translation)
+Rewrite using `[cc_sc]`. Conclude with `Lam_sc P _ _`.
+-/
 theorem Lam_cc (u : ℂ) : abelian₂ P u * cc P = cc P * abelian₂ P u := by rw [cc_sc]; exact Lam_sc P _ _
+/- English proof (translation)
+Rewrite using `[cz_sc]`. Conclude with `Lam_sc P _ _`.
+-/
 theorem Lam_cz (u : ℂ) : abelian₂ P u * cz P = cz P * abelian₂ P u := by rw [cz_sc]; exact Lam_sc P _ _
+/- English proof (translation)
+Rewrite using `[cc_sc]`. Conclude with `Lams_sc P _ _`.
+-/
 theorem Lams_cc (u : ℂ) : Lams P u * cc P = cc P * Lams P u := by rw [cc_sc]; exact Lams_sc P _ _
+/- English proof (translation)
+Rewrite using `[cz_sc]`. Conclude with `Lams_sc P _ _`.
+-/
 theorem Lams_cz (u : ℂ) : Lams P u * cz P = cz P * Lams P u := by rw [cz_sc]; exact Lams_sc P _ _
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half (u v : ℂ) : (u + 1 / 2) - (v + 1 / 2) = u - v := by ring
 
+/- English proof (translation)
+Establish `h` using `commutator_identity_one (nabA P) (cc P) (ggA P) (ggiA P) (xA P u) (abelian₂ P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2) (N_g P) (x_N P u) (gG P) (Gg P) (cc_g P) (kap_sc P _ _) (kap_sc P _ _) (kap_cc P _) (Lam_sc P _ _) (Lam_sc P _ _) (by rw [half]; exact L3.Lam1 P u v hu hv)`. Rewrite `h` using `[half]`. Rewrite using `[t22, lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]`. Conclude with `h`.
+-/
 theorem lowering_relation_diagonal_left (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P u * lA P v - lA P v * t22 P u) = -(t22 P u * (lA P u - lA P v)) := by
   have h := commutator_identity_one (nabA P) (cc P) (ggA P) (ggiA P) (xA P u) (abelian₂ P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2)
@@ -1615,6 +2421,9 @@ theorem lowering_relation_diagonal_left (u v : ℂ) (hu : Good P u) (hv : Good P
   rw [t22, lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]
   exact h
 
+/- English proof (translation)
+Establish `h` using `commutator_identity_two (nabA P) (cc P) (ggiA P) (kap P fun π => (xC P π (u + 1))⁻¹) (abelian₂ P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2) (qC P u) (N_G P) (kap_nab P _).symm (G_cc P) (kap_sc P _ _) (kap_cc P _) (Lam_sc P _ _) (Lam_sc P _ _) (by rw [half]; exact L3.Lam2 P u v hu …`. Rewrite `h` using `[half]`. Rewrite using `[dA, lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]`. Conclude with `h`.
+-/
 theorem lowering_relation_diagonal_right (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (dA P u * lA P v - lA P v * dA P u) = dA P u * (lA P u - lA P v) := by
   have h := commutator_identity_two (nabA P) (cc P) (ggiA P) (kap P fun π => (xC P π (u + 1))⁻¹) (abelian₂ P u) (abelian₂ P v)
@@ -1625,6 +2434,9 @@ theorem lowering_relation_diagonal_right (u v : ℂ) (hu : Good P u) (hv : Good 
   rw [dA, lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]
   exact h
 
+/- English proof (translation)
+Establish `h` using `raising_pair_relation (nabA P) (cc P) (ggiA P) (abelian₂ P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2) (N_cc P) (N_G P) (N_Lam P hS u) (N_Lam P hS v) (G_cc P) (Lam_cc P u) (Lam_cc P v) (Lam_sc P _ _) (Lam_sc P _ _) (by rw [half]; exact L3.Lam3 P hC hP u v hu hv)`. Rewrite `h` using `[half]`. Rewrite using `[lA_eq, lA_eq, lowering_constant_eq_shift, lowering_constant_eq_shift]`. Conclude with `h`.
+-/
 theorem commutator_l_sq (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (lA P u * lA P v - lA P v * lA P u) = (lA P u - lA P v) * (lA P u - lA P v) := by
   have h := raising_pair_relation (nabA P) (cc P) (ggiA P) (abelian₂ P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2)
@@ -1636,6 +2448,15 @@ theorem commutator_l_sq (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ) (hu :
 
 def hh (u : ℂ) : Ty P → ℂ := fun π => qC P u / (xC P π u * xC P π (u + 1))
 
+/- English proof (translation)
+Establish `hcurv : nabsA P * nabA P = nabA P * nabsA P + (kap P fun π => ((2 * aC P π * P.TT : ℝ) : ℂ)) * (ggiA P * ggiA P)`. Rewrite using `[← mul_assoc, ← hK P]`. Normalize the expressions using the abelian group laws. Establish `h` using `commutator_identity_four (nabA P) (nabsA P) (cc P) (cz P) (ggiA P) (kap P fun π => ((2 * aC P π * P.TT : ℝ) : ℂ)) (Lams P u) (abelian₂ P v) (u + 1 / 2) (v + 1 / 2) (P.TT : ℂ) hcurv (Ns_cc P) (N_cz P) (N_G P) (Ns_G P) (Ns_Lam P hS v) (N_Lams P hS u) (G_cc P) (G_cz P) (cz_cc P) (La …`. Rewrite using `[mt_eq, lA_eq, lowering_constant_eq_shift, h, L4.Lam4 P hP u v hN hM]`.
+
+Establish `e1 : ∀ f : Ty P → ℂ, ggiA P * (ggiA P * kap P f) = kap P f * (ggiA P * ggiA P)` using `fun f => by`. Rewrite using `[← mul_assoc, G_sc, sc_mul, kap_sc]`. Establish `e2 : ∀ z : ℂ, z • (ggiA P * ggiA P) = kap P (fun _ => z) * (ggiA P * ggiA P)` using `fun z => by`. Establish `: kap P (fun _ => z) = algebraMap ℂ (A P) z` using `(kap P).commutes z`. Rewrite using `[this, Algebra.smul_def]`.
+
+Rewrite using `[e1, e2, ← add_mul, ← add_mul, ← map_add, ← map_add, ← smul_mul_assoc, ← map_smul]`. Use `congr 2`. Use function extensionality and compare the values at `π`. Establish `hs` using `WB.scalar_partial_fraction_identity P hP π u v hu hv`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, hh]`.
+
+Rewrite using `[← hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem relD4core (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP : P.OK)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (mt P u * lA P v - lA P v * mt P u) = kap P (hh P v - hh P u) * (ggiA P * ggiA P) := by
@@ -1661,6 +2482,17 @@ theorem relD4core (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `relD4core P hN hM hS hK hP u v hu hv`. Establish `e : (u - v) • (t22 P v * mt P u * lA P v * t22 P u - t22 P v * lA P v * mt P u * t22 P u) = t22 P v * ((u - v) • (mt P u * lA P v - lA P v * mt P u)) * t22 P u`. Simplify using `only [mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Rewrite using `[e, h, t22, t22, xA, xA, absSand _ _ _ _ _ (gG P) (Gg P) (kap_sc P _ _) (kap_sc P _ _) (kap_sc P _ _) (kap_sc P _ _)]`. Establish `e3 : dA P v * (ggA P * kap P fun π => xC P π u) = kap P fun π => qC P v * (xC P π (v + 1))⁻¹ * xC P π u`.
+
+Rewrite using `[dA, smul_mul_assoc, mul_assoc, lc (kap_g P _), lc1 (Gg P), kap_mul, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e4 : (ggA P * kap P fun π => xC P π v) * dA P u = kap P fun π => xC P π v * (qC P u * (xC P π (u + 1))⁻¹)`. Rewrite using `[dA, mul_smul_comm, mul_assoc, lc (kap_G P _), lc1 (gG P), kap_mul, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Simplify using `only [Pi.smul_apply, Pi.mul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, e4, kap_mul, kap_mul, ← map_sub]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Establish `h1` using `xC_ne P hu π`.
+
+Establish `h2` using `xC_ne P hv π`. Establish `h3` using `coordinate_shift_ne_zero P hu π`. Establish `h4` using `coordinate_shift_ne_zero P hv π`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, hh]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mixed_relation_diagonal_four (hN : SSNorm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP : P.OK)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P v * mt P u * lA P v * t22 P u - t22 P v * lA P v * mt P u * t22 P u) =
@@ -1701,6 +2533,9 @@ open Matrix Finset Polynomial Formalism.FourierDecayAlt.M
 section Abs3
 variable {B : Type*} [Ring B] [Algebra ℂ B]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc a * K1 * (b * K2) = a * b * (K1 * K2) := by rw [mul_assoc, lc h1, mul_assoc] _ = b * a * (K2 * K1) := by rw [hab, hK] _ = b * K2 * (a * K1) := by rw [mul_assoc b K2, lc h2, mul_assoc]`.
+-/
 theorem absCC (a b K1 K2 : B) (hab : a * b = b * a) (hK : K1 * K2 = K2 * K1) (h1 : K1 * b = b * K1)
     (h2 : K2 * a = a * K2) : (a * K1) * (b * K2) = (b * K2) * (a * K1) :=
   calc a * K1 * (b * K2) = a * b * (K1 * K2) := by rw [mul_assoc, lc h1, mul_assoc]
@@ -1713,11 +2548,17 @@ noncomputable section
 
 variable (P : Par)
 
+/- English proof (translation)
+Unfold `xC`. Rewrite using `[← starRingEnd_apply, map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => by simp`.
+-/
 theorem star_xC (π : Ty P) (u : ℂ) : star (xC P π (star u)) = xC P π u := by
   unfold xC
   rw [← starRingEnd_apply, map_prod]
   exact Finset.prod_congr rfl fun i _ => by simp
 
+/- English proof (translation)
+Unfold `qC`. Rewrite using `[← starRingEnd_apply, map_mul, map_prod]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun i _ => by simp [map_ofNat]`.
+-/
 theorem star_qC (u : ℂ) : star (qC P (star u)) = qC P u := by
   unfold qC
   rw [← starRingEnd_apply, map_mul, map_prod]
@@ -1725,12 +2566,18 @@ theorem star_qC (u : ℂ) : star (qC P (star u)) = qC P u := by
   · simp
   · exact Finset.prod_congr rfl fun i _ => by simp [map_ofNat]
 
+/- English proof (translation)
+Rewrite using `[t22, t22, star_mul, star_g, xA, xA, star_kap, kap_g]`. Use `congr 2`. Use function extensionality and compare the values at `π`. Conclude with `star_xC P π u`.
+-/
 theorem star_t22 (u : ℂ) : star (t22 P (star u)) = t22 P u := by
   rw [t22, t22, star_mul, star_g, xA, xA, star_kap, kap_g]
   congr 2
   funext π
   exact star_xC P π u
 
+/- English proof (translation)
+Rewrite using `[dA, dA, star_smul, star_qC, star_mul, star_G, star_kap, kap_G]`. Use `congr 3`. Use function extensionality and compare the values at `π`. Establish `: star u + 1 = star (u + 1)` using `by simp`. Rewrite using `[star_inv₀, this, star_xC]`.
+-/
 theorem star_dA (u : ℂ) : star (dA P (star u)) = dA P u := by
   rw [dA, dA, star_smul, star_qC, star_mul, star_G, star_kap, kap_G]
   congr 3
@@ -1738,8 +2585,14 @@ theorem star_dA (u : ℂ) : star (dA P (star u)) = dA P u := by
   have : star u + 1 = star (u + 1) := by simp
   rw [star_inv₀, this, star_xC]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_lA (u : ℂ) : star (lA P (star u)) = mt P u := rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg star (lowering_relation_diagonal_left P (star u) (star v) (good_star P hu) (good_star P hv))`. Simplify using `only [star_smul, star_sub, star_mul, star_neg, star_star, star_t22, star_lA] at h`. Simplify using `only [mul_sub, sub_mul, smul_sub] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`.
+-/
 theorem commutator_t22_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (t22 P u * mt P v - mt P v * t22 P u) = (mt P u - mt P v) * t22 P u := by
   have h := congrArg star (lowering_relation_diagonal_left P (star u) (star v) (good_star P hu) (good_star P hv))
@@ -1747,6 +2600,9 @@ theorem commutator_t22_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
   simp only [mul_sub, sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
+/- English proof (translation)
+Establish `h` using `congrArg star (lowering_relation_diagonal_right P (star u) (star v) (good_star P hu) (good_star P hv))`. Simplify using `only [star_smul, star_sub, star_mul, star_neg, star_star, star_dA, star_lA] at h`. Simplify using `only [mul_sub, sub_mul, smul_sub] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`.
+-/
 theorem commutator_d_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (dA P u * mt P v - mt P v * dA P u) = -((mt P u - mt P v) * dA P u) := by
   have h := congrArg star (lowering_relation_diagonal_right P (star u) (star v) (good_star P hu) (good_star P hv))
@@ -1754,6 +2610,9 @@ theorem commutator_d_m (u v : ℂ) (hu : Good P u) (hv : Good P v) :
   simp only [mul_sub, sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
+/- English proof (translation)
+Establish `h` using `congrArg star (commutator_l_sq P hC hS hP (star u) (star v) (good_star P hu) (good_star P hv))`. Simplify using `only [star_smul, star_sub, star_mul, star_neg, star_star, star_lA] at h`. Simplify using `only [mul_sub, sub_mul, smul_sub] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`.
+-/
 theorem raising_relation_self (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ) (hu : Good P u) (hv : Good P v) :
     (u - v) • (mt P u * mt P v - mt P v * mt P u) = -((mt P u - mt P v) * (mt P u - mt P v)) := by
   have h := congrArg star (commutator_l_sq P hC hS hP (star u) (star v) (good_star P hu) (good_star P hv))
@@ -1761,26 +2620,43 @@ theorem raising_relation_self (hC : SSComm) (hS : NabSS) (hP : P.OK) (u v : ℂ)
   simp only [mul_sub, sub_mul, smul_sub] at h ⊢
   linear_combination (norm := module) (-1 : ℂ) • h
 
+/- English proof (translation)
+Rewrite using `[t21, t22, lA_eq, diagonal_lowering_absorb (ggA P) (ggiA P) (xA P u) _ _ (gG P) (kap_G P _), L4.xLam P hu]`.
+-/
 theorem nf21 {u : ℂ} (hu : Good P u) : t21 P u = t22 P u * lA P u := by
   rw [t21, t22, lA_eq, diagonal_lowering_absorb (ggA P) (ggiA P) (xA P u) _ _ (gG P) (kap_G P _), L4.xLam P hu]
 
+/- English proof (translation)
+Rewrite using `[t12, t22, mt_eq, raising_operator_absorb _ _ _ _ _ _ _ (Ns_g P) (x_Ns P u) (Gg P) (cz_g P) (kap_cz P _).symm (Lams_sc P _ _), L4.Lamsx P hu, raising_constant_eq_shift]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nf12 {u : ℂ} (hu : Good P u) : t12 P u = mt P u * t22 P u := by
   rw [t12, t22, mt_eq, raising_operator_absorb _ _ _ _ _ _ _ (Ns_g P) (x_Ns P u) (Gg P) (cz_g P) (kap_cz P _).symm (Lams_sc P _ _),
     L4.Lamsx P hu, raising_constant_eq_shift]
   congr 4
   ring
 
+/- English proof (translation)
+Rewrite using `[raising_constant_eq_shift]`. Simplify using `only [mul_sub, sub_mul, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc, x_Ns]`. Rewrite using `[xA, kap_cz]`.
+-/
 theorem coordinate_commute_raising_constant (u v : ℂ) : xA P u * m0A P v = m0A P v * xA P u := by
   rw [raising_constant_eq_shift]
   simp only [mul_sub, sub_mul, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc, x_Ns]
   rw [xA, kap_cz]
 
+/- English proof (translation)
+Unfold `S12`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, G_sc, Ss_sc, ← mul_assoc, kap_sc, mul_assoc]`.
+-/
 theorem S12_commute_GGinv (u : ℂ) : S12 P u * ggiA P = ggiA P * S12 P u := by
   unfold S12
   rw [Finset.sum_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [mul_assoc, G_sc, Ss_sc, ← mul_assoc, kap_sc, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← nf12 P hu, t12, lA_eq, absN _ _ _ _ _ _ _ (coordinate_commute_raising_constant P u u) (kap_G P _) (S12_commute_GGinv P u), L4.xLam P hu, L4.upper_sum_mul_lambda P hP hu hN, t11, mul_add]`. Establish `e : ggiA P * (kap P fun π => wC P π u) = dA P u + ggiA P * kap P fun π => ∑ l ∈ Icc 1 (P.k - 1), ((Nrm P l π : ℝ) : ℂ) * xEx P {l} π u / (u + (rho P π l : ℂ) + 1)`. Rewrite using `[dA, ← mul_smul_comm, ← map_smul, ← mul_add, ← map_add]`. Use `congr 2`. Use function extensionality and compare the values at `π`.
+
+Rewrite using `[WB.wC_eq P hP π u hu]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, div_eq_mul_inv]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem nf11 (hN : SSNorm) (hP : P.OK) {u : ℂ} (hu : Good P u) :
     t11 P u = dA P u + mt P u * t22 P u * lA P u := by
   rw [← nf12 P hu, t12, lA_eq, absN _ _ _ _ _ _ _ (coordinate_commute_raising_constant P u u) (kap_G P _) (S12_commute_GGinv P u), L4.xLam P hu,
@@ -1795,17 +2671,37 @@ theorem nf11 (hN : SSNorm) (hP : P.OK) {u : ℂ} (hu : Good P u) :
   rw [e]
   abel
 
+/- English proof (translation)
+The claim follows from `absCC _ _ _ _ rfl (kap_comm P _ _) (kap_g P _) (kap_g P _)`.
+-/
 theorem comm_tt (u v : ℂ) : t22 P v * t22 P u = t22 P u * t22 P v :=
   absCC _ _ _ _ rfl (kap_comm P _ _) (kap_g P _) (kap_g P _)
 
+/- English proof (translation)
+Simplify using `only [dA, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[smul_comm, absCC _ _ _ _ rfl (kap_comm P _ _) (kap_G P _) (kap_G P _)]`.
+-/
 theorem comm_dd (u v : ℂ) : dA P v * dA P u = dA P u * dA P v := by
   simp only [dA, smul_mul_assoc, mul_smul_comm]
   rw [smul_comm, absCC _ _ _ _ rfl (kap_comm P _ _) (kap_G P _) (kap_G P _)]
 
+/- English proof (translation)
+Simplify using `only [dA, t22, xA, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[absCC _ _ _ _ ((Gg P).trans (gG P).symm) (kap_comm P _ _) (kap_g P _) (kap_G P _)]`.
+-/
 theorem comm_dt (u v : ℂ) : dA P v * t22 P u = t22 P u * dA P v := by
   simp only [dA, t22, xA, smul_mul_assoc, mul_smul_comm]
   rw [absCC _ _ _ _ ((Gg P).trans (gG P).symm) (kap_comm P _ _) (kap_g P _) (kap_G P _)]
 
+/- English proof (translation)
+Establish `eU : ∀ {y : ℂ}, Good P y → QQr P y = !![dA P y + mt P y * t22 P y * lA P y, mt P y * t22 P y; t22 P y * lA P y, t22 P y]` using `fun {y} hy => by`. Rewrite using `[QQr, nf11 P hN hP hy, nf12 P hy, nf21 P hy]`. Establish `e : v - u = -(u - v)` using `by ring`. Rewrite using `[eU hu, eU hv]`. Use `GA.gauss_rtt (u - v) h0 h1 h2 (t22 P u) (t22 P v) (dA P u) (dA P v) (lA P u) (lA P v) (mt P u) (mt P v) (comm_tt P u v) (comm_dd P u v) (comm_dt P u v) (comm_dt P v u) (lowering_relation_diagonal_left P u v hu hv) ?_ (lowering_relation_diagonal_right P u v hu hv) ?_ (commutator_t …` and prove the remaining obligations.
+
+Establish `h` using `lowering_relation_diagonal_left P v u hv hu`. Rewrite `h` using `[e]`. Simplify using `only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`. Establish `h` using `lowering_relation_diagonal_right P v u hv hu`.
+
+Rewrite `h` using `[e]`. Simplify using `only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`. Establish `h` using `commutator_t22_m P v u hv hu`. Rewrite `h` using `[e]`.
+
+Simplify using `only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`. Establish `h` using `commutator_d_m P v u hv hu`. Rewrite `h` using `[e]`. Simplify using `only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢`.
+
+Take the linear combination `(norm := module) (-1 : ℂ) • h`. Establish `h` using `mixed_relation_diagonal_four P hN hM hS hK hP v u hv hu`. Rewrite `h` using `[e]`. Simplify using `only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢`. Take the linear combination `(norm := module) (-1 : ℂ) • h`.
+-/
 theorem generic (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) (hP : P.OK)
     (u v : ℂ) (hu : Good P u) (hv : Good P v) (h0 : u - v ≠ 0) (h1 : u - v ≠ 1) (h2 : u - v ≠ -1)
     (i j k l : Fin 2) :
@@ -1841,6 +2737,9 @@ theorem generic (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Cu
     simp only [mul_sub, sub_mul, smul_sub, neg_smul] at h ⊢
     linear_combination (norm := module) (-1 : ℂ) • h
 
+/- English proof (translation)
+Introduce `P hP` and use `PC.entries_of_generic P fun u v hu hv h0 h1 h2 i j k l => generic P hN hC hM hS hK hP u v hu hv h0 h1 h2 i j k l`.
+-/
 theorem entries_of (hN : SSNorm) (hC : SSComm) (hM : SSMixed) (hS : NabSS) (hK : Curvature) : QQRTTEntries :=
   fun P hP => PC.entries_of_generic P fun u v hu hv h0 h1 h2 i j k l =>
     generic P hN hC hM hS hK hP u v hu hv h0 h1 h2 i j k l
@@ -1851,11 +2750,20 @@ end Formalism.FourierDecayAlt.P.Mx6
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `Mx6.entries_of shift_norm_relation shift_commute_relation shift_mixed_relation nabla_shift_relation m_curvature_proof`.
+-/
 theorem transfer_rtt_entries : Formalism.FourierDecayAlt.M.QQRTTEntries :=
   Mx6.entries_of shift_norm_relation shift_commute_relation shift_mixed_relation nabla_shift_relation m_curvature_proof
 
+/- English proof (translation)
+The claim follows from `Mx6.PC.ofEntries`.
+-/
 theorem transfer_rtt_of_entries : Formalism.FourierDecayAlt.M.QQRTTOfEntries := Mx6.PC.ofEntries
 
+/- English proof (translation)
+The claim follows from `transfer_rtt_of_entries transfer_rtt_entries`.
+-/
 theorem transfer_rtt : Formalism.FourierDecayAlt.M.QQRTT := transfer_rtt_of_entries transfer_rtt_entries
 
 end Formalism.FourierDecayAlt.P

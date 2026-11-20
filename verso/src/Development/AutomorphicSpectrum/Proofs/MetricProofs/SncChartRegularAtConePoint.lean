@@ -13,18 +13,34 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Sig
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `Ideal.map_mono (sup_le_sup_right h _)`.
+-/
 theorem ideal_mono {S S' : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (h : S ≤ S') (p : (k : K) → ι k) :
     SncRes.ideal S p ≤ SncRes.ideal S' p :=
   Ideal.map_mono (sup_le_sup_right h _)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_map_of_mem _ (Ideal.mem_sup_left hg)`.
+-/
 theorem renR_mem {S : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (p : (k : K) → ι k)
     {g : MvPolynomial (Σ k, ι k) ℂ} (hg : g ∈ S) : renR (Σ k, ι k) g ∈ SncRes.ideal S p :=
   Ideal.mem_map_of_mem _ (Ideal.mem_sup_left hg)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩))`.
+-/
 theorem renR_X_sub_one_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k) (k : K) :
     renR (Σ k, ι k) (X ⟨k, p k⟩ - 1) ∈ SncRes.ideal S p :=
   Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.subset_span ⟨k, rfl⟩))
 
+/- English proof (translation)
+Establish `key : (Ideal.Quotient.mk (SncRes.ideal S p)).comp (renR (Σ k, ι k) : MvPolynomial (Σ k, ι k) ℂ →+* _) = (Ideal.Quotient.mk (SncRes.ideal S p)).comp (bind₁ (SncRes.lift p) : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] _).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[renameEquiv_apply]`. Introduce and unpack `⟨k, i⟩`.
+
+Distinguish the cases in `h : i = p k`. Substitute `h` using the available equality. Establish `h1 : SncRes.lift p ⟨k, p k⟩ = 1` using `by simp [SncRes.lift]`. Establish `h2` using `renR_X_sub_one_mem S p k`. Rewrite `h2` using `[map_sub, map_one]`.
+
+Simplify `Ideal.Quotient.eq.2 h2` using `[h1]`. Establish `h1 : SncRes.lift p ⟨k, i⟩ = X (Fintype.equivFin (Σ k, ι k) ⟨k, i⟩)`. Simplify using `[SncRes.lift, h]`. Simplify using `[h1, renameEquiv_apply]`. Conclude with `Ideal.Quotient.eq.1 (RingHom.congr_fun key f)`.
+-/
 theorem renR_sub_deh_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K) → ι k)
     (f : MvPolynomial (Σ k, ι k) ℂ) :
     renR (Σ k, ι k) f - bind₁ (SncRes.lift p) f ∈ SncRes.ideal S p := by
@@ -48,22 +64,40 @@ theorem renR_sub_deh_mem (S : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (p : (k : K
         simp [h1, renameEquiv_apply]
   exact Ideal.Quotient.eq.1 (RingHom.congr_fun key f)
 
+/- English proof (translation)
+Establish `h` using `(SncRes.ideal S p).sub_mem (renR_mem p hg) (renR_sub_deh_mem S p g)`. Simplify using `using h`.
+-/
 theorem deh_mem {S : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (p : (k : K) → ι k)
     {g : MvPolynomial (Σ k, ι k) ℂ} (hg : g ∈ S) : bind₁ (SncRes.lift p) g ∈ SncRes.ideal S p := by
   have h := (SncRes.ideal S p).sub_mem (renR_mem p hg) (renR_sub_deh_mem S p g)
   simpa using h
 
+/- English proof (translation)
+Use `⟨(SncRes.finite_minimalPrimes (P ⊔ D)).toFinset.equivFin ⟨Q, (Set.Finite.mem_toFinset _).2 hQ⟩, ?_⟩` and prove the remaining obligations. Simplify using `[SncRes.compIdeal]`.
+-/
 theorem exists_compIdeal_eq {P D Q : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     (hQ : Q ∈ (P ⊔ D).minimalPrimes) : ∃ k, SncRes.compIdeal P D k = Q := by
   refine ⟨(SncRes.finite_minimalPrimes (P ⊔ D)).toFinset.equivFin
     ⟨Q, (Set.Finite.mem_toFinset _).2 hQ⟩, ?_⟩
   simp [SncRes.compIdeal]
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `((SncRes.finite_minimalPrimes (P ⊔ D)).toFinset.equivFin).symm.injective (Subtype.ext h)`.
+-/
 theorem compIdeal_injective (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) :
     Function.Injective (SncRes.compIdeal P D) := by
   intro a b h
   exact ((SncRes.finite_minimalPrimes (P ⊔ D)).toFinset.equivFin).symm.injective (Subtype.ext h)
 
+/- English proof (translation)
+Establish `hle : P ⊔ D ≤ 𝔮.comap (bind₁ (SncRes.lift p) : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] _)` using `fun g hg => hD (deh_mem p hg)`. Use `haveI : (𝔮.comap (bind₁ (SncRes.lift p) : MvPolynomial (Σ k, ι k) ℂ →ₐ[ℂ] _)).IsPrime := Ideal.comap_isPrime _ _`. Take `⟨Q, hQ, hQle⟩` from `Ideal.exists_minimalPrimes_le hle`. Use `⟨Q, hQ, fun k hX => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : bind₁ (SncRes.lift p) (X ⟨k, p k⟩ : MvPolynomial (Σ k, ι k) ℂ) ∈ 𝔮` using `hQle hX`.
+
+Establish `h2 : SncRes.lift p ⟨k, p k⟩ = 1` using `by simp [SncRes.lift]`. Rewrite `h1` using `[bind₁_X_right, h2]`. Conclude with `h𝔮.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `Ideal.map_le_iff_le_comap.2 (sup_le ?_ ?_)` and prove the remaining obligations. Introduce `f hf`.
+
+Establish `h1 : bind₁ (SncRes.lift p) f ∈ 𝔮` using `hQle hf`. Establish `h2` using `𝔮.add_mem (hD (renR_sub_deh_mem (P ⊔ D) p f)) h1`. Simplify using `using h2`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `hD (renR_X_sub_one_mem (P ⊔ D) p k)`.
+-/
 theorem exists_minimal_below {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (p : (k : K) → ι k)
     {𝔮 : Ideal (MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ)} (h𝔮 : 𝔮.IsPrime)
     (hD : SncRes.ideal (P ⊔ D) p ≤ 𝔮) :
@@ -89,6 +123,37 @@ theorem exists_minimal_below {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (p : 
       rintro _ ⟨k, rfl⟩
       exact hD (renR_X_sub_one_mem (P ⊔ D) p k)
 
+/- English proof (translation)
+Introduce `K _ ι _ P D e p z r Jf hP hD hz hzp hI reg dim span hprim`. Establish `hIDc : SncRes.ideal P p ≤ SncRes.ideal (P ⊔ D) p` using `ideal_mono le_sup_left p`. Establish `pr` using `GlobalTheory.T.regular_system_of_parameters_local_ring_alt _ e (SncRes.ideal P p) (SncRes.ideal (P ⊔ D) p) (renPt (affCoord p z)) r Jf hIDc hI reg dim span hprim`. Establish `hmin` using `GlobalTheory.T.minimal_primes_of_multihomog_sup K ι P D hP hD`. Establish `step : ∀ l (_ : l ∈ Jf), ∃ k, SncRes.ideal (SncRes.compIdeal P D k) p = SncRes.Par.chPrime (SncRes.ideal P p) (renPt (affCoord p z)) (r l) ∧ ∀ k', (X ⟨k', p k'⟩ : MvPolynomial (Σ k, ι k) ℂ) ∉ SncRes.compIdeal P D k`.
+
+Introduce `l hl`. Take `⟨hpr, hIq, hqt, hDq, hrl, hsep, hmn⟩` from `pr l hl`. Take `⟨Q, hQ, hX, hQle⟩` from `exists_minimal_below p hpr hDq`. Establish `hQh` using `hmin Q hQ`. Establish `hQp : Q.IsPrime` using `hQ.1.1`.
+
+Take `⟨hQpr, -⟩` from `GlobalTheory.T.affine_chart_ideal_prime_and_saturated K ι Q p hQh hQp hX`. Establish `hDQ : SncRes.ideal (P ⊔ D) p ≤ SncRes.ideal Q p` using `ideal_mono hQ.1.2 p`. Establish `hIQ` using `hIDc.trans hDQ`. Take `⟨j, hj, hrj⟩` from `(hprim _ hQpr hIQ (hQle.trans hqt)).1 hDQ`. Establish `hjl : j = l`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hsep j hj hne (hQle hrj)`. Substitute `hjl` using the available equality. Take `⟨k, rfl⟩` from `exists_compIdeal_eq hQ`. Conclude with `⟨k, le_antisymm hQle (hmn _ hQpr hIQ (hQle.trans hqt) hrj), hX⟩`.
+
+Use `choose κ hκ using step`. Establish `hσ : ∀ l k, (if h : l ∈ Jf then some (κ l h) else none) = some k → ∃ h : l ∈ Jf, κ l h = k`. Introduce `l k h`. Distinguish the cases in `hl : l ∈ Jf`. Rewrite `h` using `[dif_pos hl]`.
+
+Conclude with `⟨hl, Option.some.inj h⟩`. Rewrite `h` using `[dif_neg hl]`. Consider the cases of `h`. Use `⟨fun l => if h : l ∈ Jf then some (κ l h) else none, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`.
+
+Establish `ha' : a ∈ Jf` using `ha`. Establish `hb' : b ∈ Jf` using `hb`. Simplify using `only [dif_pos ha', dif_pos hb'] at hab`. Establish `hk` using `Option.some.inj hab`. Establish `heq : SncRes.Par.chPrime (SncRes.ideal P p) (renPt (affCoord p z)) (r a) = SncRes.Par.chPrime (SncRes.ideal P p) (renPt (affCoord p z)) (r b)`.
+
+Rewrite using `[← (hκ a ha').1, ← (hκ b hb').1, hk]`. Assume the negation of the conclusion as `hne`. Take `⟨-, -, -, -, -, hsep, -⟩` from `pr a ha'`. Take `⟨-, -, -, -, hrb, -, -⟩` from `pr b hb'`. Conclude with `hsep b hb' (Ne.symm hne) (heq ▸ hrb)`.
+
+Introduce `l`. Apply the tactic sequence `by_cases hl : l ∈ Jf <;> simp [hl]`. Introduce `l k h`. Take `⟨hl, rfl⟩` from `hσ l k h`. Conclude with `hκ l hl`.
+
+Introduce `k hk`. Establish `hQk` using `SncRes.compIdeal_mem (P := P) D k`. Establish `hkh` using `hmin _ hQk`. Establish `hkp : (SncRes.compIdeal P D k).IsPrime` using `hQk.1.1`. Establish `hX : ∀ k', (X ⟨k', p k'⟩ : MvPolynomial (Σ k, ι k) ℂ) ∉ SncRes.compIdeal P D k`.
+
+Introduce `k' hx`. Conclude with `hzp k' (by simpa using hk _ hx)`. Take `⟨hkpr, hdict⟩` from `GlobalTheory.T.affine_chart_ideal_prime_and_saturated K ι _ p hkh hkp hX`. Establish `hzc : z ∈ conePts (SncRes.compIdeal P D k)` using `⟨hz.1, hk⟩`. Establish `hpt : SncRes.ideal (SncRes.compIdeal P D k) p ≤ ptIdeal (renPt (affCoord p z))`.
+
+Introduce `h hh`. Conclude with `renPt_zero _ _ ((mem_conePts_iff_chartIdeal hkh p z hzp).1 hzc) h hh`. Establish `hDk : SncRes.ideal (P ⊔ D) p ≤ SncRes.ideal (SncRes.compIdeal P D k) p` using `ideal_mono hQk.1.2 p`. Establish `hIk` using `hIDc.trans hDk`. Take `⟨l, hl, hrl⟩` from `(hprim _ hkpr hIk hpt).1 hDk`.
+
+Take `⟨-, -, -, -, -, -, hmn⟩` from `pr l hl`. Establish `hle` using `hmn _ hkpr hIk hpt hrl`. Rewrite `hle` using `[← (hκ l hl).1]`. Establish `hQ0` using `SncRes.compIdeal_mem (P := P) D (κ l hl)`. Take `⟨S, hS, hSeq⟩` from `hmin _ hQ0`.
+
+Establish `hsub : SncRes.compIdeal P D (κ l hl) ≤ SncRes.compIdeal P D k`. Rewrite using `[hSeq, Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Establish `hfQ : f ∈ SncRes.compIdeal P D (κ l hl)` using `hSeq ▸ Ideal.subset_span hf`.
+
+Conclude with `(hdict f a ha).1 (hle (deh_mem p hfQ))`. Establish `heq : SncRes.compIdeal P D (κ l hl) = SncRes.compIdeal P D k` using `le_antisymm hsub (hQk.2 ⟨hQ0.1.1, hQ0.1.2⟩ hsub)`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[dif_pos hl, compIdeal_injective P D heq]`.
+-/
 theorem components_of_params : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (e : ℕ) (p : (k : K) → ι k) (z : (Σ k, ι k) → ℂ) (r : Fin e → MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ) (Jf : Finset (Fin e)), IsMultiHomogIdeal P → IsMultiHomogIdeal D → z ∈ conePts P → (∀ k, z ⟨k, p k⟩ ≠ 0) → (∀ h ∈ (SncRes.ideal P p), eval (renPt (affCoord p z)) h = 0) → IsRegularLocalRing (locRing (SncRes.ideal P p) (renPt (affCoord p z))) → ringKrullDim (locRing (SncRes.ideal P p) (renPt (affCoord p z))) = e → Ideal.span (Set.range fun l => algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z))) (r l)) = Ideal.map (algebraMap _ (locRing (SncRes.ideal P p) (renPt (affCoord p z)))) (ptIdeal (renPt (affCoord p z))) → (∀ 𝔮 : Ideal (MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ), 𝔮.IsPrime → (SncRes.ideal P p) ≤ 𝔮 → 𝔮 ≤ ptIdeal (renPt (affCoord p z)) → ((SncRes.ideal (P ⊔ D) p) ≤ 𝔮 ↔ ∃ i ∈ Jf, r i ∈ 𝔮)) → ∃ σ : Fin e → Option (Fin (SncRes.rc P D)), Set.InjOn σ Jf ∧ (∀ l, σ l = none ↔ l ∉ Jf) ∧ (∀ l k, σ l = some k → SncRes.ideal (SncRes.compIdeal P D k) p = SncRes.Par.chPrime (SncRes.ideal P p) (renPt (affCoord p z)) (r l) ∧ ∀ k', (X ⟨k', p k'⟩ : MvPolynomial (Σ k, ι k) ℂ) ∉ SncRes.compIdeal P D k) ∧ ∀ k, (∀ g ∈ SncRes.compIdeal P D k, eval z g = 0) → ∃ l ∈ Jf, σ l = some k := by
   intro K _ ι _ P D e p z r Jf hP hD hz hzp hI reg dim span hprim
   have hIDc : SncRes.ideal P p ≤ SncRes.ideal (P ⊔ D) p := ideal_mono le_sup_left p

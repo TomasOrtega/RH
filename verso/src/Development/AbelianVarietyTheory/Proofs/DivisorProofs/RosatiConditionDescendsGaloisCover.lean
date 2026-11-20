@@ -19,19 +19,51 @@ namespace GlobalTheory.RosatiDescent
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_fst f g)`.
+-/
 theorem lift_left_fst {S : Scheme.{0}} {A T : Over S} (f g : T ⟶ A) :
     (lift f g).left ≫ (fst A A).left = f.left :=
   congrArg (fun q => q.left) (lift_fst f g)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_snd f g)`.
+-/
 theorem lift_left_snd {S : Scheme.{0}} {A T : Over S} (f g : T ⟶ A) :
     (lift f g).left ≫ (snd A A).left = g.left :=
   congrArg (fun q => q.left) (lift_snd f g)
 
+/- English proof (translation)
+Use `show (η[A] ≫ u).left = η[A].left`. Rewrite using `[IsMonHom.one_hom]`.
+-/
 theorem eSec_comp_of_isMonHom {S : Scheme.{0}} {A : Over S} [GrpObj A] (u : A ⟶ A) [IsMonHom u] :
     eSec A ≫ u.left = eSec A := by
   show (η[A] ≫ u).left = η[A].left
   rw [IsMonHom.one_hom]
 
+/- English proof (translation)
+Introduce `O _ star X Y π Ga _ ρ A _ _ A₀ _ _ φ φ₂ P P₀ act act₀ hG hA hA₀ gp hsq hP hP₀ iP _ hact hros c`. Use `hG.fin` as an intermediate fact. Use `hG.etale` as an intermediate fact. Use `hG.onto` as an intermediate fact. Establish `hB : IsAbelianScheme (G2 A₀)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA₀ hA₀`.
+
+Establish `h₁` using `pull_isLB hP₀ (lift (fst A₀ A₀ ≫ act₀.act c) (snd A₀ A₀)).left`. Establish `h₂` using `pull_isLB hP₀ (lift (fst A₀ A₀) (snd A₀ A₀ ≫ act₀.act (star c))).left`. Establish `hN` using `LB.isLB_div h₂ h₁`. Establish `cN` using `cls_div h₂ h₁ hN`. Rewrite `cN` using `[cls_pull hP₀, cls_pull hP₀]`.
+
+Establish `m₀` using `act₀.hom c`. Establish `m₀'` using `act₀.hom (star c)`. Establish `c₁ : φ₂ ≫ (lift (fst A₀ A₀ ≫ act₀.act c) (snd A₀ A₀)).left = (lift (fst A A ≫ act.act c) (snd A A)).left ≫ φ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst A₀ A₀).left = (_ ≫ _) ≫ (fst A₀ A₀).left`.
+
+Rewrite using `[Category.assoc, lift_left_fst, Category.assoc, hsq.1, ← Category.assoc, lift_left_fst]`. Use `show φ₂ ≫ (fst A₀ A₀).left ≫ (act₀.act c).left = (fst A A).left ≫ (act.act c).left ≫ φ`. Rewrite using `[reassoc_of% hsq.1, hact]`. Use `show (_ ≫ _) ≫ (snd A₀ A₀).left = (_ ≫ _) ≫ (snd A₀ A₀).left`. Rewrite using `[Category.assoc, lift_left_snd, Category.assoc, hsq.2, ← Category.assoc, lift_left_snd]`.
+
+Establish `c₂ : φ₂ ≫ (lift (fst A₀ A₀) (snd A₀ A₀ ≫ act₀.act (star c))).left = (lift (fst A A) (snd A A ≫ act.act (star c))).left ≫ φ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst A₀ A₀).left = (_ ≫ _) ≫ (fst A₀ A₀).left`. Rewrite using `[Category.assoc, lift_left_fst, Category.assoc, hsq.1, ← Category.assoc, lift_left_fst]`. Use `show (_ ≫ _) ≫ (snd A₀ A₀).left = (_ ≫ _) ≫ (snd A₀ A₀).left`.
+
+Rewrite using `[Category.assoc, lift_left_snd, Category.assoc, hsq.2, ← Category.assoc, lift_left_snd]`. Use `show φ₂ ≫ (snd A₀ A₀).left ≫ (act₀.act (star c)).left = (snd A A).left ≫ (act.act (star c)).left ≫ φ`. Rewrite using `[reassoc_of% hsq.2, hact]`. Establish `e₁ : eSec (G2 A₀) ≫ (lift (fst A₀ A₀ ≫ act₀.act c) (snd A₀ A₀)).left = eSec (G2 A₀)`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Use `show (_ ≫ _) ≫ (fst A₀ A₀).left = _ ≫ (fst A₀ A₀).left`. Rewrite using `[Category.assoc, lift_left_fst, GlobalTheory.SquareDescent.eSec_fst]`. Use `show eSec (G2 A₀) ≫ (fst A₀ A₀).left ≫ (act₀.act c).left = _`. Rewrite using `[reassoc_of% GlobalTheory.SquareDescent.eSec_fst, eSec_comp_of_isMonHom]`. Use `show (_ ≫ _) ≫ (snd A₀ A₀).left = _ ≫ (snd A₀ A₀).left`.
+
+Rewrite using `[Category.assoc, lift_left_snd]`. Establish `e₂ : eSec (G2 A₀) ≫ (lift (fst A₀ A₀) (snd A₀ A₀ ≫ act₀.act (star c))).left = eSec (G2 A₀)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst A₀ A₀).left = _ ≫ (fst A₀ A₀).left`. Rewrite using `[Category.assoc, lift_left_fst]`.
+
+Use `show (_ ≫ _) ≫ (snd A₀ A₀).left = _ ≫ (snd A₀ A₀).left`. Rewrite using `[Category.assoc, lift_left_snd, GlobalTheory.SquareDescent.eSec_snd]`. Use `show eSec (G2 A₀) ≫ (snd A₀ A₀).left ≫ (act₀.act (star c)).left = _`. Rewrite using `[reassoc_of% GlobalTheory.SquareDescent.eSec_snd, eSec_comp_of_isMonHom]`. Establish `hPφ : pull φ₂ (cls _ hP₀) = cls _ hP` using `((cls_eq_iff hP (pull_isLB hP₀ φ₂)).2 iP).symm`.
+
+Establish `hR : pull (lift (fst A A ≫ act.act c) (snd A A)).left (cls _ hP) = pull (lift (fst A A) (snd A A ≫ act.act (star c))).left (cls _ hP)` using `(cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 (hros c)`. Establish `hpb` using `GlobalTheory.SiegelDescent.isPullback_square gp.1 φ₂ hsq`. Establish `z₁ : pull (eSec (G2 A₀)) (cls _ hN) = 0`. Rewrite using `[cN, map_sub, ← pull_comp, ← pull_comp, e₁, e₂, sub_self]`. Establish `z₂ : pull (pullback.fst (G2 A₀).hom π) (cls _ hN) = 0`.
+
+Rewrite using `[cN, ← hpb.isoPullback_inv_fst, pull_comp, map_sub, ← pull_comp φ₂, ← pull_comp φ₂, c₁, c₂, pull_comp, pull_comp, hPφ, hR, sub_self, map_zero]`. Take `⟨t, ht⟩` from `GlobalTheory.exists_gen_of_rigidified_of_flat_baseChange GlobalTheory.SemiRigid.globalFns Y X π (G2 A₀) _ hB hN inferInstance inferInstance inferInstance ((cls_eq_zero_iff (pull_isLB hN _)).1 ((cls_pull hN _ _).trans z₁)) ((cls_eq_zero_iff (pull_isLB hN _)).1 ((cls_pull hN _ _).t …`. Establish `h0 : cls _ hN = 0` using `(cls_eq_zero_iff hN).2 ⟨t, ht⟩`. Rewrite `h0` using `[cN, sub_eq_zero, ← cls_pull hP₀ _ h₁, ← cls_pull hP₀ _ h₂]`. Conclude with `(cls_eq_iff h₁ h₂).1 h0.symm`.
+-/
 theorem lbIso_act_descent : ∀ (O : Type) [Ring O] (star : O → O) (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (A : Over X) [GrpObj A] [IsCommMonObj A] (A₀ : Over Y) [GrpObj A₀] [IsCommMonObj A₀] (φ : A.left ⟶ A₀.left) (φ₂ : (G2 A).left ⟶ (G2 A₀).left) (P : LB (G2 A).left) (P₀ : LB (G2 A₀).left) (act : OActN O A) (act₀ : OActN O A₀), GlobalTheory.ZM.IsGaloisCover Ga ρ π → IsAbelianScheme A → IsAbelianScheme A₀ → IsGrpPullback A A₀ π φ → IsSquare φ φ₂ → P.IsLB → P₀.IsLB → LBIso P (P₀.pull φ₂) → (∃ t : (P₀.pull (eSec (G2 A₀))).Gen, t.IsGen) → (∀ c, (act.act c).left ≫ φ = φ ≫ (act₀.act c).left) → (∀ c, LBIso (P.pull (lift (fst A A ≫ act.act c) (snd A A)).left) (P.pull (lift (fst A A) (snd A A ≫ act.act (star c))).left)) → ∀ c, LBIso (P₀.pull (lift (fst A₀ A₀ ≫ act₀.act c) (snd A₀ A₀)).left) (P₀.pull (lift (fst A₀ A₀) (snd A₀ A₀ ≫ act₀.act (star c))).left) := by
   intro O _ star X Y π Ga _ ρ A _ _ A₀ _ _ φ φ₂ P P₀ act act₀ hG hA hA₀ gp hsq hP hP₀ iP _ hact hros c
   have := hG.fin

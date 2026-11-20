@@ -11,6 +11,15 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.ArcPts.GtKer
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ D l c O _ β _ _ b a Λ`. Use `⟨GtAnModel.isZero_iff Λ, GtAnModel.isIota Λ, fun lam => ⟨?_, fun x j hc hj => ?_⟩, fun z x h => ?_⟩` and prove the remaining obligations. Rewrite using `[GtAnModel.analyticTorusPoint_base_eq_holUnif_ex, GtAnModel.ex_zero]`. Take `⟨x, rfl⟩` from `Λ.ε.surjective x`. Establish `hz` using `GtAnModel.isLift_gt Λ (lam, 0) x`.
+
+Establish `h` using `FrameValue.valAt'_gen a.D₀.P.isLB ((Λ.ex0 (lam, 0)).isGen _) hz (j := j) hj`. Establish `h1` using `Λ.arcDict_expZero_section (lam, 0) x`. Establish `e : ∀ k k', ![Λ.A.ct x + (0 : Fin Λ.A.gB → ℂ), Λ.A.ct x, 0, 0] k = ![Λ.A.ct x + 0, Λ.A.ct x, 0, 0] k' → j k = j k'` using `fun k k' hk => hc k k' (((Category.id_comp _).symm.trans (hz k)).trans ((congrArg (fun w => (Λ.u.ex w).left) hk).trans ((Category.id_comp _).symm.trans (hz k')).symm))`. Establish `e₁ : j 0 = j 1` using `e 0 1 (by simp)`. Establish `e₂ : j 2 = j 3` using `e 2 3 (by simp)`.
+
+Establish `n₁` using `Λ.u.fr_ne _ _ ((hz.le_iff j).1 hj 1)`. Establish `n₃` using `Λ.u.fr_ne _ _ ((hz.le_iff j).1 hj 3)`. Establish `hf : FrameValue.frameProd Λ.u Out.DegPre.gtε ![Λ.A.ct x + (0 : Fin Λ.A.gB → ℂ), Λ.A.ct x, 0, 0] j = 1`. Simplify using `only [Matrix.cons_val] at n₁ n₃`. Simplify using `only [FrameValue.frameProd, Fin.prod_univ_four, Out.DegPre.gtε, Matrix.cons_val, e₁, e₂, add_zero, zpow_neg, zpow_one]`.
+
+Clear the denominators using the available nonvanishing facts. Use `h.trans ((congrArg₂ (· * ·) h1 hf).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h0 : Λ.u.ex z.2 = 1` using `Over.OverMorphism.ext ((Λ.ex0_b z).symm.trans ((congrArg (·.left) h.1).trans ((toUnit_TF_comp_left _).trans (by rw [Hom.one_def, toUnit_unit, Category.id_comp]))))`. Conclude with `Λ.lam.le ((Λ.u.ker _).1 h0)`.
+-/
 theorem ker_iota_torus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a), (∀ z, (Λ.ex0 z).IsZero ↔ ∃ la : Λ.A.La, la.y = 0 ∧ z = Λ.A.P0 la) ∧ (∀ la : Λ.A.La, Out.GtPtF.IsIota (Λ.ε la.y) (Λ.ex0 (Λ.A.P0 la))) ∧ (∀ lam : Λ.A.X →+ ℂ, IsTorusPt (Λ.ex0 (lam, 0)) (fun x => eTwoPi (lam (Λ.ε.symm x)))) ∧ ∀ z x, IsTorusPt (Λ.ex0 z) x → z.2 ∈ Λ.A.abelian₂ := by
   intro E _ _ _ H _ D l c O _ β _ _ b a Λ
   refine ⟨GtAnModel.isZero_iff Λ, GtAnModel.isIota Λ, fun lam => ⟨?_, fun x j hc hj => ?_⟩, fun z x h => ?_⟩

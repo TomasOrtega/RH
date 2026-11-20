@@ -20,6 +20,9 @@ section Wt
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Subtype.ext hxy]`.
+-/
 theorem rhoK_congr {lam lam' : ι → DomWeight n} (h : lam = lam') (g : ι → GL (Fin n) ℂ) (x : VV ℂ lam) (y : VV ℂ lam')
     (hxy : (x : Pol ℂ ι n) = y) : ((rhoK lam g x : VV ℂ lam) : Pol ℂ ι n) = rhoK lam' g y := by
   subst h
@@ -34,6 +37,11 @@ def wtTopEquiv : VV ℂ (wt G (.top 0)) ≃ₗ[ℂ] VV ℂ (LaP G) := LinearEqui
 def colFun (θ : InfFam D) (ξ : Module.Dual ℂ (coefPlus G θ).W) : Module.Dual ℂ (VV ℂ (wt G (.top 0))) :=
   ξ ∘ₗ (GlobalTheory.CoefModel.toHilb (LaP G) (posDef_dual G)).toLinearMap ∘ₗ (wtTopEquiv G).toLinearMap
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[wtTopEquiv, LinearEquiv.coe_ofEq_apply]`. Use `(rhoK_congr (wt_top_eq G) _ _ _ ?_).symm` and prove the remaining obligations. Use `show (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (Ψ (finG (Xp G) (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (G.V (.top 0)) h)))).1 = _`. Establish `e : finG (Xp G) (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (G.V (.top 0)) h) = Formalism.IndefR.Lev.finE (Xp G) h` using `GlobalTheory.SuppLevO.finE_finPartG _ h`.
+
+Rewrite using `[e]`.
+-/
 theorem arg_eq (θ : InfFam D) (Ψ : GLf G → WtSp G) (h : GA D (G.V (.top 0))) :
     rhoK (LaP G) (invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h⁻¹))
       (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (Ψ (Formalism.IndefR.Lev.finE (Xp G) h))) =
@@ -56,6 +64,11 @@ open GlobalTheory.CoefModel
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Establish `h1 : colFn ch a g = scal ch.W.θ (ch.ξ ∘ₗ (toHilb (LaP ch.G) (posDef_dual ch.G)).toLinearMap) (ch.Psi a) g` using `congr_fun (pairVec_colOf ch.W.θ ch.ξ (ch.Psi a)) g`. Rewrite using `[h1]`. Unfold `scal colFun`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[arg_eq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem colFn_eq (ch : Choice R) (a : Fin ch.n) (g : GA D (ch.G.V (.top 0))) :
     colFn ch a g = colFun ch.G ch.W.θ ch.ξ (rhoK (wt ch.G (.top 0)) (invTrK (realGL ch.W.θ (ch.G.V (.top 0)) g⁻¹))
       (psiC (ch.Psi a) (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (ch.G.V (.top 0)) g))) := by
@@ -67,6 +80,21 @@ theorem colFn_eq (ch : Choice R) (a : Fin ch.n) (g : GA D (ch.G.V (.top 0))) :
   rw [arg_eq]
   rfl
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e : VV ℂ lam ≃ₗ[ℂ] c.W, ∀ v, e (mapVV D.what₂.embLL lam v) = c0 v` from `GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL lam c0 ht.2.1 ht.2.2`. Use `⟨e, he, fun u hu v => ?_⟩` and prove the remaining obligations. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hlab : ∀ τ x, D.what₂.embLL (labLL D τ x) = tauE D τ x` using `fun τ x => DFunLike.congr_fun (GlobalTheory.ThetaFiresProbe.labE_fixed τ) x`. Establish `hrat : ∀ (γ : GQ V) (v : VV ℂ lam), c.ρ γ.1 (e v) = e (rhoK lam (realGL θ V γ.1) v)`.
+
+Introduce `γ v`. Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat V γ γE := by`. Take `⟨γ, ⟨g, -, hg⟩⟩` from `γ`. Conclude with `⟨g, hg.symm⟩`. Establish `e1 : (fun τ => Formalism.UG.bc D.what₂.embLL (embGL (labLL D) γE τ)) = realGL θ V γ`.
+
+Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_coe, realGL_rat hθ V γ γE hγ, embGL_coe, bc_coe]`. Use extensionality with `a b`. Conclude with `hlab _ _`.
+
+Establish `: (c.ρ γ).comp e.toLinearMap = e.toLinearMap.comp (rhoK lam (realGL θ V γ))`. Use `LinearMap.ext_on_range (span_mapVV D.what₂.embLL lam) fun i => ?_` and prove the remaining obligations. Use `show c.ρ γ (e _) = e (rhoK lam (realGL θ V γ) _)`. Rewrite using `[← e1, ← mapVV_rhoK, he, he]`. Conclude with `(ht.1 γ γE hγ _).symm`.
+
+Conclude with `LinearMap.congr_fun this v`. Establish `hfin : ∀ k ∈ GfC V, realGL θ V k = 1` using `fun k hk => funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V k) = 1`. Rewrite using `[show infHom V k = 1 from hk, map_one]`. Rewrite using `[← e.symm_apply_eq]`. Use `Subtype.ext (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations.
+
+Set `Lf : c.W →ₗ[ℂ] ℂ` to `MvPolynomial.lcoeff ℂ m ∘ₗ (VV ℂ lam).subtype ∘ₗ e.symm.toLinearMap`. Establish `hf : Continuous fun h => Lf (c.ρ h (e v))` using `Lf.continuous_of_finiteDimensional.comp (hc.2.2.1 _)`. Establish `hg : Continuous fun h => MvPolynomial.coeff m (actP lam (realGL θ V h) v.1)` using `GlobalTheory.CoefReal.continuous_coeff_actP lam _ (fun τ => (realGL_laws hθ V).1 τ) _ m`. Assume the negation of the conclusion as `hne`. Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V u hu _ (isOpen_ne_fun hf hg) hne`.
+
+Use `hU ?_` and prove the remaining obligations. Use `show Lf (c.ρ (γ * k) (e v)) = MvPolynomial.coeff m (actP lam (realGL θ V (γ * k)) v.1)`. Rewrite using `[map_mul, map_mul (realGL θ V), hc.1 k hk, hfin k hk, mul_one, mul_one, hrat ⟨γ, hγ⟩ v]`. Simplify using `[Lf, rhoK_coe]`.
+-/
 theorem exists_real_model_sq (V : HSp D) (θ : InfFam D) (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank)
     (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.coef.W) (hθ : IsInfFam θ) (hc : c.Is)
     (ht : Bridge.CoefMapTie V c.coef c0 (rhoV (labLL D) lam)) :
@@ -119,6 +147,15 @@ open GlobalTheory.CoefModel
 
 def castGL {N n : ℕ} (h : N = n) : GL (Fin N) ℂ →* GL (Fin n) ℂ := h ▸ MonoidHom.id _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : lam' = lam` using `funext fun τ => by`. Use `hw τ` as an intermediate fact. Generalize the expression as in `lam' τ = a at this`. Generalize the expression as in `lam τ = b at this`.
+
+Consider the cases of `a`. Consider the cases of `b`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `i`. Conclude with `this i`.
+
+Substitute `e` using the available equality. Establish `hr : (Prod.map id (Prod.map (Fin.cast rfl) (Fin.cast rfl)) : ι × Fin N × Fin N → ι × Fin N × Fin N) = id`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite `hxy`, the goal using `[hr, MvPolynomial.rename_id_apply]`.
+
+Rewrite using `[Subtype.ext hxy]`. Both sides reduce to the same expression.
+-/
 theorem rhoK_rename {ι : Type} [Fintype ι] {N n : ℕ} (h : N = n) (lam : ι → DomWeight N) (lam' : ι → DomWeight n)
     (hw : ∀ τ a, (lam' τ).w (Fin.cast h a) = (lam τ).w a) (g : ι → GL (Fin N) ℂ) (x : VV ℂ lam) (y : VV ℂ lam')
     (hxy : y.1 = MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast h) (Fin.cast h))) x.1) :
@@ -144,6 +181,9 @@ theorem rhoK_rename {ι : Type} [Fintype ι] {N n : ℕ} (h : N = n) (lam : ι �
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `hY` using the available equality. Both sides reduce to the same expression.
+-/
 theorem realGL_cast_inv (θ : InfFam D) {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (Y : LSp D)
     (hY : Y = ⟨D.sp.X', Λ⟩) (k : GA D Y.sp) (τ : D.what₂.Tau) :
     realGL θ Y.sp k⁻¹ τ = castGL (congrArg (fun X : LSp D => X.sp.rank) hY).symm
@@ -151,6 +191,9 @@ theorem realGL_cast_inv (θ : InfFam D) {Λ : Submodule (𝓞 D.host.E) (Fin D.s
   subst hY
   rfl
 
+/- English proof (translation)
+Substitute `hY` using the available equality. Conclude with `Subtype.ext (GlobalTheory.LevelNbhd.finHom_finPartG _ k)`.
+-/
 theorem finHom_cast_finPart {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (Y : LSp D) (hY : Y = ⟨D.sp.X', Λ⟩)
     (k : GA D Y.sp) :
     (finHom D.sp.X').rangeRestrict (cast (congrArg (fun X : LSp D => GA D X.sp) hY) (GlobalTheory.LevelNbhd.finPartG Y.sp k)) =
@@ -167,11 +210,17 @@ open GlobalTheory.CoefModel
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨colFun ch.G ch.W.θ ch.ξ, colFn_eq ch⟩`.
+-/
 theorem colFn_realType (ch : Choice R) : ∃ Λ : Module.Dual ℂ (VV ℂ (wt ch.G (.top 0))), ∀ a g,
     colFn ch a g = Λ (rhoK (wt ch.G (.top 0)) (invTrK (realGL ch.W.θ (ch.G.V (.top 0)) g⁻¹))
       (psiC (ch.Psi a) (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (ch.G.V (.top 0)) g))) :=
   ⟨colFun ch.G ch.W.θ ch.ξ, colFn_eq ch⟩
 
+/- English proof (translation)
+Establish `: (VV ℂ (listedWt ch.G (.grid 0 D.R.m))).subtype ∘ₗ ch.S.co ∘ₗ e.toLinearMap = (MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (rank_zero_m ch.G)) (Fin.cast (rank_zero_m ch.G))))).toLinearMap ∘ₗ (VV ℂ (fun τ => Bridge.lamRdef (Ptw D) τ)).subtype`. Use `LinearMap.ext_on_range (span_mapVV D.what₂.embLL _) fun i => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Submodule.subtype_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[he, hco, mapVV_coe]`. Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem co_eq_of (ch : Choice R) (c₀ : VV D.what₂.LL (fun τ => Bridge.lamRdef (Ptw D) τ) →ₛₗ[D.what₂.embLL] R.cX.W)
     (hco : ∀ v, (ch.S.co (c₀ v)).1 = MvPolynomial.rename
       (Prod.map id (Prod.map (Fin.cast (rank_zero_m ch.G)) (Fin.cast (rank_zero_m ch.G)))) (MvPolynomial.map D.what₂.embLL v.1))
@@ -187,6 +236,13 @@ theorem co_eq_of (ch : Choice R) (c₀ : VV D.what₂.LL (fun τ => Bridge.lamRd
     rw [he, hco, mapVV_coe]
   exact LinearMap.congr_fun this x
 
+/- English proof (translation)
+Take `⟨gram, c₀, c₁, ht, hco⟩` from `ch.S.co_is`. Take `⟨e, he⟩` from `GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2`. Introduce `w w' h`. Take `⟨x, rfl⟩` from `e.surjective w`. Take `⟨x', rfl⟩` from `e.surjective w'`.
+
+Establish `h1` using `congrArg Subtype.val h`. Establish `h2 : MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (rank_zero_m ch.G)) (Fin.cast (rank_zero_m ch.G)))) x.1 = MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (rank_zero_m ch.G)) (Fin.cast (rank_zero_m ch.G)))) x'.1`. Rewrite using `[← co_eq_of ch c₀ hco e he x, ← co_eq_of ch c₀ hco e he x']`. Conclude with `h1`. Establish `hinj : Function.Injective (Prod.map id (Prod.map (Fin.cast (rank_zero_m ch.G)) (Fin.cast (rank_zero_m ch.G))) : D.what₂.Tau × Fin D.sp.X'.rank × Fin D.sp.X'.rank → _)` using `Function.injective_id.prodMap ((Fin.cast_injective _).prodMap (Fin.cast_injective _))`.
+
+Rewrite using `[Subtype.ext (MvPolynomial.rename_injective _ hinj h2)]`.
+-/
 theorem co_injective (ch : Choice R) : Function.Injective ch.S.co := by
   obtain ⟨gram, c₀, c₁, ht, hco⟩ := ch.S.co_is
   obtain ⟨e, he⟩ := GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2
@@ -203,6 +259,13 @@ theorem co_injective (ch : Choice R) : Function.Injective ch.S.co := by
     Function.injective_id.prodMap ((Fin.cast_injective _).prodMap (Fin.cast_injective _))
   rw [Subtype.ext (MvPolynomial.rename_injective _ hinj h2)]
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.ForcedWeights.lamRForced D`. Take `⟨gram, c₀, c₁, ht, hco⟩` from `ch.S.co_is`. Take `⟨e, he, hre⟩` from `exists_real_model_sq D.sp.X' ch.W.θ R.cX _ c₀ ch.W.θ_is hc ht.mapR`. Take `⟨x, rfl⟩` from `e.surjective w`. Establish `hw : ∀ τ a, (listedWt ch.G (.grid 0 D.R.m) τ).w (Fin.cast (rank_zero_m ch.G) a) = (Bridge.lamRdef (Ptw D) τ).w a` using `fun τ a => by`.
+
+Express the relevant statement in the definitionally equal form `(wtOf _ (GlobalTheory.SignedHC.entries (parV D ch.sc.cGap 0 D.R.m τ))).w _ = _`. Rewrite using `[parV_zero D ch.sc.cGap le_rfl τ]`. Conclude with `wtOf_entries_eq (rank_zero_m ch.G) (hF τ) a`. Rewrite using `[hre u hu x]`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[co_eq_of ch c₀ hco e he, rhoK_rename (rank_zero_m ch.G) _ _ hw _ x _ (co_eq_of ch c₀ hco e he x)]`.
+-/
 theorem co_real (ch : Choice R) (hc : R.cX.Is) (u : GA D D.sp.X')
     (hu : u ∈ GinfC D.sp.X') (w : R.cX.W) :
     ch.S.co (R.cX.ρ u w) = rhoK (listedWt ch.G (.grid 0 D.R.m))
@@ -220,6 +283,19 @@ theorem co_real (ch : Choice R) (hc : R.cX.Is) (u : GA D D.sp.X')
   refine Subtype.ext ?_
   rw [co_eq_of ch c₀ hco e he, rhoK_rename (rank_zero_m ch.G) _ _ hw _ x _ (co_eq_of ch c₀ hco e he x)]
 
+/- English proof (translation)
+Take `⟨g', hg'⟩ : ∃ g' : GA D D.sp.X', g' = cast (congrArg (fun X : LSp D => GA D X.sp) (colY_m R.toLevCh)) g` from `⟨_, rfl⟩`. Establish `hL : formTop ch t y g = R.prX (R.cX.ρ g'⁻¹ ((R.HX t).e y ((finHom D.sp.X').rangeRestrict g'))) ch.cv.v`. Substitute `hg'` using the available equality. Both sides reduce to the same expression. Establish `hG : realGL ch.W.θ (ch.G.V (.grid 0 D.R.m)) g⁻¹ = fun τ => castGL (rank_zero_m ch.G) (realGL ch.W.θ D.sp.X' g'⁻¹ τ)`.
+
+Use function extensionality and compare the values at `τ`. Use `realGL_cast_inv ch.W.θ (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) g τ` as an intermediate fact. Rewrite `this` using `[← hg']`. Conclude with `this`. Establish `hF' : ch.S.formC t y (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (ch.G.V (.grid 0 D.R.m)) g) = ch.S.co ((R.HX t).e y ((finHom D.sp.X').rangeRestrict g'))`.
+
+Use `finHom_cast_finPart (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) g` as an intermediate fact. Rewrite `this` using `[← hg']`. Conclude with `congrArg (fun z => ch.S.co ((R.HX t).e y z)) this`. Take `⟨k, hkdef⟩ : ∃ k, k = GlobalTheory.LevelNbhd.finPartG D.sp.X' g'` from `⟨_, rfl⟩`. Establish `hk : k ∈ GfC D.sp.X'` using `hkdef ▸ GlobalTheory.LevelNbhd.finPartG_mem_GfC _ _`.
+
+Establish `hu : k⁻¹ * g' ∈ GinfC D.sp.X'` using `hkdef ▸ GlobalTheory.LevelNbhd.inv_finPartG_mul_mem_GinfC _ _`. Establish `hinv : g'⁻¹ = (k⁻¹ * g')⁻¹ * k⁻¹` using `by group`. Establish `hρ : R.cX.ρ g'⁻¹ = R.cX.ρ (k⁻¹ * g')⁻¹` using `by rw [hinv, map_mul, hc.1 _ (inv_mem hk), mul_one]`. Establish `hfin : realGL ch.W.θ D.sp.X' k⁻¹ = 1` using `funext fun τ => by show Formalism.UG.bc (ch.W.θ τ) (infHom D.sp.X' k⁻¹) = 1`. Rewrite using `[show infHom D.sp.X' k⁻¹ = 1 from inv_mem hk, map_one]`.
+
+Establish `hR : realGL ch.W.θ D.sp.X' g'⁻¹ = realGL ch.W.θ D.sp.X' (k⁻¹ * g')⁻¹`. Rewrite using `[hinv, map_mul, hfin, mul_one]`. Establish `h2 : realGL ch.W.θ (ch.G.V (.grid 0 D.R.m)) g⁻¹ = fun τ => castGL (rank_zero_m ch.G) (realGL ch.W.θ D.sp.X' (k⁻¹ * g')⁻¹ τ)` using `hG.trans (by rw [hR])`. Establish `e1 : rhoK (listedWt ch.G (.grid 0 D.R.m)) (realGL ch.W.θ (ch.G.V (.grid 0 D.R.m)) g⁻¹) (ch.S.formC t y (GlobalTheory.IndefiniteRowSideFullHecke.BasisPolynomialParabolics.fp (ch.G.V (.grid 0 D.R.m)) g)) = rhoK (listedWt ch.G (.grid 0 D.R.m)) (fun τ => castGL (rank_zero_m ch.G) (re …`. Use `congr (congrArg (fun M => ⇑(rhoK (listedWt ch.G (.grid 0 D.R.m)) M)) h2) hF'`.
+
+Establish `key` using `(congrArg j e1).trans ((congrArg j (co_real ch hc _ (inv_mem hu) _).symm).trans ((hj _).trans (LinearMap.congr_fun hρ.symm _)))`. Conclude with `hL.trans (congrArg (fun z => R.prX z ch.cv.v) key.symm)`.
+-/
 theorem formTop_eq (ch : Choice R) (hc : R.cX.Is)
     (j : VV ℂ (listedWt ch.G (.grid 0 D.R.m)) →ₗ[ℂ] R.cX.W) (hj : ∀ w, j (ch.S.co w) = w) (t : T) (y : (R.HX t).H)
     (g : GA D (ch.G.V (.grid 0 D.R.m))) :
@@ -261,6 +337,9 @@ theorem formTop_eq (ch : Choice R) (hc : R.cX.Is)
     ((hj _).trans (LinearMap.congr_fun hρ.symm _)))
   exact hL.trans (congrArg (fun z => R.prX z ch.cv.v) key.symm)
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `ch.S.co.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (co_injective ch))`. Conclude with `⟨R.prX.flip ch.cv.v ∘ₗ j, fun t y g => by`. Rewrite using `[formTop_eq ch hc j (fun w => LinearMap.congr_fun hj w) t y g]`. Use the proof step `rfl⟩`.
+-/
 theorem formTop_realType (ch : Choice R) (hc : R.cX.Is) :
     ∃ Λ : Module.Dual ℂ (VV ℂ (listedWt ch.G (.grid 0 D.R.m))), ∀ t y g,
       formTop ch t y g = Λ (rhoK (listedWt ch.G (.grid 0 D.R.m)) (realGL ch.W.θ (ch.G.V (.grid 0 D.R.m)) g⁻¹)

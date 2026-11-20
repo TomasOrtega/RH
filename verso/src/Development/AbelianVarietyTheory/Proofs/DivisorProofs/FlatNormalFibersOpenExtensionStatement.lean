@@ -9,6 +9,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.rule_eq_on_extend_chart | exact GlobalTheory.RealMult.rule_eq_on_extend_chart | (intros; apply GlobalTheory.RealMult.rule_eq_on_extend_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_normal_fibers_open_extension : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k) (N : ℕ) (M : Scheme.{0}) (sM : M ⟶ Sp (Localization.Away (N : ℤ)))
     (U : Obj F 𝔠 M) (V : M.Opens), Flat sM →

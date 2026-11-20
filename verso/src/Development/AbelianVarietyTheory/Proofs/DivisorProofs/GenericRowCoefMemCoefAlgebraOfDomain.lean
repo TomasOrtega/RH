@@ -21,41 +21,71 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 
 namespace GlobalTheory.GenCoef
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rowSubstDualWeylExpressible_matrix_mul_closed`.
+-/
 theorem expr_mul_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (R : Type) [CommRing R] [Algebra O R]
     (Y Y' : Matrix (Fin N) (Fin N) R), Expr O N ν R Y → Expr O N ν R Y' → Expr O N ν R (Y * Y') := GlobalTheory.T.rowSubstDualWeylExpressible_matrix_mul_closed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matrixRowSubstitutionPoly_diagonal_eq_sum_components`.
+-/
 theorem rowSubst_diagonal_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (d : Fin N → R) (D : ℕ)
     (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
     rowSubst O N R (Matrix.diagonal d) f = ∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (D + 1)),
       (∏ a, d a ^ w a) • MvPolynomial.map (algebraMap O R) (weightedHomogeneousComponent (rowW N N) w f) := GlobalTheory.T.matrixRowSubstitutionPoly_diagonal_eq_sum_components
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dividedPowerRowOperator_mem_dualWeylEndSubalgebra`.
+-/
 theorem rowDiv_mem_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (a b : Fin N), a ≠ b → ∀ k : ℕ,
     ∃ p ∈ dwAlg O N ν, ∀ f : dualWeyl O N N ν,
       (p f : MvPolynomial (Fin N × Fin N) O) = rowDiv O a b k (f : MvPolynomial (Fin N × Fin N) O) := GlobalTheory.T.dividedPowerRowOperator_mem_dualWeylEndSubalgebra
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matrixRowSubstitutionPoly_transvection_eq_sum`.
+-/
 theorem rowSubst_transvection_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (a b : Fin N) (r : R)
     (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
     rowSubst O N R (Matrix.transvection a b r) f =
       ∑ k ∈ Finset.range (D + 1), r ^ k • MvPolynomial.map (algebraMap O R) (rowDiv O b a k f) := GlobalTheory.T.matrixRowSubstitutionPoly_transvection_eq_sum
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.totalDegree_le_of_mem_dualWeylLattice`.
+-/
 theorem totalDegree_le_of_mem_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O),
     f ∈ dualWeyl O N N ν → f.totalDegree ≤ ∑ a, ν a := GlobalTheory.T.totalDegree_le_of_mem_dualWeylLattice
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.one_add_strictLower_mem_closure_transvection'`.
+-/
 theorem lower_mem_closure_of_parts : ∀ (R : Type) [CommRing R] (N : ℕ) (c : Matrix (Fin N) (Fin N) R), (∀ a b, a ≤ b → c a b = 0) →
     1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := GlobalTheory.T.one_add_strictLower_mem_closure_transvection'
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.one_add_strictUpper_mem_closure_transvection`.
+-/
 theorem upper_mem_closure_of_parts : ∀ (R : Type) [CommRing R] (N : ℕ) (c : Matrix (Fin N) (Fin N) R), (∀ a b, b ≤ a → c a b = 0) →
     1 + c ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r} := GlobalTheory.T.one_add_strictUpper_mem_closure_transvection
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.genericGaussFactorisation_coeff_smul_injective`.
+-/
 theorem lduHom_pure_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (M : Type) [AddCommGroup M] [Module O M]
     (s : Finset (Fin N × Fin N →₀ ℕ)) (c : (Fin N × Fin N →₀ ℕ) → M),
     (∀ n, ∑ m ∈ s, (lduHom O N (monomial m 1)).coeff n • c m = 0) → ∀ m ∈ s, c m = 0 := GlobalTheory.T.genericGaussFactorisation_coeff_smul_injective
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matrixRowSubstitutionPoly_eq_eval_genericRowSubstitution`.
+-/
 theorem rowSubst_eq_sum_genSub_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R]
     (Y : Matrix (Fin N) (Fin N) R) (f : MvPolynomial (Fin N × Fin N) O),
     rowSubst O N R Y f = ∑ m ∈ (GlobalTheory.HighWt.genSub O N f).support, (m.prod fun v k => Y v.1 v.2 ^ k) •
       MvPolynomial.map (algebraMap O R) ((GlobalTheory.HighWt.genSub O N f).coeff m) := GlobalTheory.T.matrixRowSubstitutionPoly_eq_eval_genericRowSubstitution
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.genericRowSubstitution_coeff_exponent_le_degree`.
+-/
 theorem genSub_coeff_le_of_parts : ∀ (O : Type) [CommRing O] (N : ℕ) (D : ℕ) (f : MvPolynomial (Fin N × Fin N) O), f.totalDegree ≤ D →
     ∀ m, (GlobalTheory.HighWt.genSub O N f).coeff m ≠ 0 → ∀ v, m v ≤ D := GlobalTheory.T.genericRowSubstitution_coeff_exponent_le_degree
 
@@ -67,6 +97,9 @@ section Glue
 
 variable {O : Type} [CommRing O] {N : ℕ} {ν : Fin N → ℕ} {R : Type} [CommRing R] [Algebra O R]
 
+/- English proof (translation)
+Set `e` to `s.equivFin`. Use `⟨s.card, fun j => r (e.symm j), fun j => p (e.symm j), fun j => hp _ (e.symm j).2, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[h f, ← Finset.sum_coe_sort s]`. Conclude with `(Equiv.sum_comp e.symm (fun i : s => r i • MvPolynomial.map (algebraMap O R) (p i f : MvPolynomial (Fin N × Fin N) O))).symm`.
+-/
 theorem expr_of_finset {κ : Type} (s : Finset κ) (Y : Matrix (Fin N) (Fin N) R) (r : κ → R)
     (p : κ → Module.End O (dualWeyl O N N ν)) (hp : ∀ i ∈ s, p i ∈ dwAlg O N ν)
     (h : ∀ f : dualWeyl O N N ν, rowSubst O N R Y (f : MvPolynomial (Fin N × Fin N) O) =
@@ -78,6 +111,9 @@ theorem expr_of_finset {κ : Type} (s : Finset κ) (Y : Matrix (Fin N) (Fin N) R
   rw [h f, ← Finset.sum_coe_sort s]
   exact (Equiv.sum_comp e.symm (fun i : s => r i • MvPolynomial.map (algebraMap O R) (p i f : MvPolynomial (Fin N × Fin N) O))).symm
 
+/- English proof (translation)
+Use `expr_of_finset (Fintype.piFinset (fun _ : Fin N => Finset.range (∑ a, ν a + 1))) _ (fun w => ∏ a, d a ^ w a) (fun w => GlobalTheory.ExpFrame.rowProj O N ν w) (fun w _ => Algebra.subset_adjoin (Or.inr ⟨w, rfl⟩)) (fun f => ?_)` and prove the remaining obligations. Rewrite using `[rowSubst_diagonal_of_parts O N R d _ _ (totalDegree_le_of_mem_of_parts O N ν _ f.2)]`. Both sides reduce to the same expression.
+-/
 theorem expr_diagonal (d : Fin N → R) : Expr O N ν R (Matrix.diagonal d) := by
   classical
   refine expr_of_finset (Fintype.piFinset (fun _ : Fin N => Finset.range (∑ a, ν a + 1))) _ (fun w => ∏ a, d a ^ w a)
@@ -85,10 +121,16 @@ theorem expr_diagonal (d : Fin N → R) : Expr O N ν R (Matrix.diagonal d) := b
   rw [rowSubst_diagonal_of_parts O N R d _ _ (totalDegree_le_of_mem_of_parts O N ν _ f.2)]
   rfl
 
+/- English proof (translation)
+Use `expr_diagonal (O := O) (N := N) (ν := ν) (R := R) (fun _ => 1)` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_one]`. Then use the resulting hypothesis.
+-/
 theorem expr_one : Expr O N ν R 1 := by
   have := expr_diagonal (O := O) (N := N) (ν := ν) (R := R) (fun _ => 1)
   rwa [Matrix.diagonal_one] at this
 
+/- English proof (translation)
+Use `choose p hp hpf using rowDiv_mem_of_parts O N ν b a hab.symm`. Use `expr_of_finset (Finset.range (∑ a, ν a + 1)) _ (fun k => r ^ k) p (fun k _ => hp k) (fun f => ?_)` and prove the remaining obligations. Rewrite using `[rowSubst_transvection_of_parts O N R a b r _ _ (totalDegree_le_of_mem_of_parts O N ν _ f.2)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hpf k f]`.
+-/
 theorem expr_transvection (a b : Fin N) (hab : a ≠ b) (r : R) : Expr O N ν R (Matrix.transvection a b r) := by
   classical
   choose p hp hpf using rowDiv_mem_of_parts O N ν b a hab.symm
@@ -97,6 +139,11 @@ theorem expr_transvection (a b : Fin N) (hab : a ≠ b) (r : R) : Expr O N ν R 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [hpf k f]
 
+/- English proof (translation)
+Proceed by induction on `hY using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, b, r, hab, rfl⟩` from `hx`. Conclude with `expr_transvection a b hab r`. Consider the case `one => exact expr_one`.
+
+Consider the case `mul x y _ _ hx hy => exact expr_mul_of_parts O N ν R x y hx hy`.
+-/
 theorem expr_of_mem_closure (Y : Matrix (Fin N) (Fin N) R)
     (hY : Y ∈ Submonoid.closure {M | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r}) :
     Expr O N ν R Y := by
@@ -107,6 +154,15 @@ theorem expr_of_mem_closure (Y : Matrix (Fin N) (Fin N) R)
   | one => exact expr_one
   | mul x y _ _ hx hy => exact expr_mul_of_parts O N ν R x y hx hy
 
+/- English proof (translation)
+Establish `hL : lowGen O N = 1 + Matrix.of (fun a b => if b < a then (X (a, b) : MvPolynomial (Fin N × Fin N) O) else 0)`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[lowGen]`.
+
+Simplify using `[lowGen, h, Matrix.one_apply_ne h]`. Establish `hU : upGen O N = 1 + Matrix.of (fun a b => if a < b then (X (a, b) : MvPolynomial (Fin N × Fin N) O) else 0)`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using `[upGen]`. Simplify using `[upGen, h, Matrix.one_apply_ne h]`. Use `expr_mul_of_parts O N ν _ _ _ (expr_mul_of_parts O N ν _ _ _ ?_ (expr_diagonal _)) ?_` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `expr_of_mem_closure _ (lower_mem_closure_of_parts _ N _ fun a b hab => by simp [not_lt.mpr hab])`.
+
+Rewrite using `[hU]`. Conclude with `expr_of_mem_closure _ (upper_mem_closure_of_parts _ N _ fun a b hab => by simp [not_lt.mpr hab])`.
+-/
 theorem expr_ldu : Expr O N ν (MvPolynomial (Fin N × Fin N) O) (lowGen O N * diagGen O N * upGen O N) := by
   classical
   have hL : lowGen O N = 1 + Matrix.of (fun a b => if b < a then (X (a, b) : MvPolynomial (Fin N × Fin N) O) else 0) := by
@@ -131,6 +187,23 @@ end GlobalTheory.GenCoef
 
 namespace GlobalTheory.GenCoef
 
+/- English proof (translation)
+Take `⟨n, r, p, hp, hY⟩` from `expr_ldu (O := O) (N := N) (ν := ν)`. Set `D` to `∑ a, ν a`. Set `Cm : (Fin N × Fin N →₀ ℕ) → (dualWeyl O N N ν →ₗ[O] MvPolynomial (Fin N × Fin N) O)` to `fun m => { toFun := fun f => (GlobalTheory.HighWt.genSub O N (f : MvPolynomial (Fin N × Fin N) O)).coeff m map_add' := fun f g => by simp [GlobalTheory.HighWt.genSub] map_smul' := fun c f => by simp [GlobalTheory.HighWt.genSub] }`. Set `Φ : Module.End O (dualWeyl O N N ν) →ₗ[O] (dualWeyl O N N ν →ₗ[O] MvPolynomial (Fin N × Fin N) O)` to `LinearMap.llcomp O _ _ _ (dualWeyl O N N ν).subtype`. Set `Asub : Submodule O (dualWeyl O N N ν →ₗ[O] MvPolynomial (Fin N × Fin N) O)` to `(Subalgebra.toSubmodule (dwAlg O N ν)).map Φ`.
+
+Set `s0 : Finset (Fin N × Fin N →₀ ℕ)` to `(Fintype.piFinset fun _ : Fin N × Fin N => Finset.range (D + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding`. Set `s` to `insert m s0`. Establish `hs : ∀ m' : Fin N × Fin N →₀ ℕ, (∀ v, m' v ≤ D) → m' ∈ s`. Introduce `m' h`. Use `Finset.mem_insert_of_mem (Finset.mem_map.2 ⟨⇑m', Fintype.mem_piFinset.2 fun v => Finset.mem_range.2 (Nat.lt_succ_of_le (h v)), ?_⟩)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `hsum : ∀ f : dualWeyl O N N ν, rowSubst O N _ (lowGen O N * diagGen O N * upGen O N) (f : MvPolynomial (Fin N × Fin N) O) = ∑ m' ∈ s, lduHom O N (monomial m' 1) • MvPolynomial.map (algebraMap O (MvPolynomial (Fin N × Fin N) O)) (Cm m' f)`. Introduce `f`. Rewrite using `[rowSubst_eq_sum_genSub_of_parts]`. Use `Finset.sum_subset (fun m' hm' => hs m' (genSub_coeff_le_of_parts O N D _ (totalDegree_le_of_mem_of_parts O N ν _ f.2) m' (MvPolynomial.mem_support_iff.1 hm'))) (fun m' _ hm' => ?_) |>.trans (Finset.sum_congr rfl fun m' _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[Cm, MvPolynomial.notMem_support_iff.1 hm']`. Simplify using `only [Cm, LinearMap.coe_mk, AddHom.coe_mk, lduHom, aeval_monomial, map_one, one_mul]`. Both sides reduce to the same expression. Establish `hcoef : ∀ k : Fin N × Fin N →₀ ℕ, ∑ m' ∈ s, (lduHom O N (monomial m' 1)).coeff k • Cm m' = ∑ i, (r i).coeff k • Φ (p i)`. Introduce `k`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `MvPolynomial.ext` to reduce the goal to its premises. Introduce `j`. Establish `key : ∀ (t q : MvPolynomial (Fin N × Fin N) O), ((t • MvPolynomial.map (algebraMap O (MvPolynomial (Fin N × Fin N) O)) q).coeff j).coeff k = t.coeff k * q.coeff j`.
+
+Introduce `t q`. Rewrite using `[MvPolynomial.coeff_smul, MvPolynomial.coeff_map, MvPolynomial.algebraMap_eq, smul_eq_mul, mul_comm, MvPolynomial.coeff_C_mul, mul_comm]`. Establish `h` using `congrArg (fun q : MvPolynomial (Fin N × Fin N) (MvPolynomial (Fin N × Fin N) O) => (q.coeff j).coeff k) ((hsum f).symm.trans (hY f))`. Simplify using `only [MvPolynomial.coeff_sum, key] at h`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`.
+
+Simplify `h` using `[Φ]`. Establish `hzero` using `lduHom_pure_of_parts O N _ s (fun m' => Asub.mkQ (Cm m')) (fun k => by`. Simplify using `only [← map_smul, ← map_sum]`. Rewrite using `[hcoef k, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.mem_map_of_mem (hp i))) m (Finset.mem_insert_self _ _)`.
+
+Rewrite `hzero` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨q, hq, hqe⟩` from `Submodule.mem_map.1 hzero`. Conclude with `⟨q, hq, fun f => congrArg (fun φ => φ f) hqe⟩`.
+-/
 theorem coef_mem (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (m : Fin N × Fin N →₀ ℕ) :
     ∃ p ∈ dwAlg O N ν, ∀ f : dualWeyl O N N ν,
       (p f : MvPolynomial (Fin N × Fin N) O) = (GlobalTheory.HighWt.genSub O N (f : MvPolynomial (Fin N × Fin N) O)).coeff m := by
@@ -222,6 +295,19 @@ def atFactorHom (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (
     rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, PiTensorProduct.map_update_smul,
       Module.End.one_eq_id, Function.update_eq_self, PiTensorProduct.map_id, Module.End.one_eq_id]
 
+/- English proof (translation)
+Establish `hle : dwAlg O N (res N (lam τ)) ≤ (alg O N lam).comap (atFactorHom O N lam τ)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨g, rfl⟩ | ⟨w, rfl⟩)`. Use `show atFactor τ _ ∈ alg O N lam`. Establish `: atFactor τ (Formalism.UG.dualWeylRep O N N (res N (lam τ)) g) = grp O N lam (Function.update 1 τ g)` using `by show PiTensorProduct.map _ = PiTensorProduct.map _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = τ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne h]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨_, rfl⟩)`. Use `show atFactor τ _ ∈ alg O N lam`.
+
+Establish `hP : IsProj O N lam τ w (atFactor τ (rowProj O N (res N (lam τ)) w))`. Introduce `x y hy`. Unfold `atFactor`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `only [Function.update_self, LinearMap.restrict_apply, rowProj]`. Conclude with `Subtype.ext hy.symm`.
+
+Simplify using `[Function.update_of_ne h]`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨τ, w, hP⟩)`. Conclude with `hle hp`.
+-/
 theorem atFactor_mem_alg (O : Type) [CommRing O] (N : ℕ) {ι : Type} [DecidableEq ι] (lam : ι → ℕ → ℕ) (τ : ι)
     (p : Module.End O (dualWeyl O N N (res N (lam τ)))) (hp : p ∈ dwAlg O N (res N (lam τ))) :
     atFactor τ p ∈ alg O N lam := by
@@ -259,6 +345,13 @@ namespace GlobalTheory.HighWt
 
 open Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LD GlobalTheory.ExpFrame
 
+/- English proof (translation)
+Introduce `O _ _ _ N ι _ _ lam τ m`. Take `⟨p, hp, hpf⟩` from `GlobalTheory.GenCoef.coef_mem O N (res N (lam τ)) m`. Use `⟨⟨_, GlobalTheory.GenCoef.atFactor_mem_alg O N lam τ p hp⟩, ?_⟩` and prove the remaining obligations. Introduce `x y hy`. Use `show atFactor τ p (PiTensorProduct.tprod O x) = PiTensorProduct.tprod O (Function.update x τ y)`.
+
+Unfold `atFactor`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`.
+
+Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `Subtype.ext ((hpf _).trans hy.symm)`. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem coefIn_of_domain : ∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (lam : ι → ℕ → ℕ), CoefIn O N lam := by
   intro O _ _ _ N ι _ _ lam τ m

@@ -91,6 +91,9 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ
 
 omit [Module k E] [IsScalarTower k Ω E] in
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, -, y, hy, rfl⟩`. Rewrite `hy` using `[hF I, Submodule.mem_bot]`. Rewrite using `[hy, smul_zero]`.
+-/
 theorem twist_sub_eq_bot {F : SubSystem k x E} (hF : ∀ I, F.sub I = ⊥) (Q : SubSystem k x Ω) (I : Chart x) :
     (F.twist Q).sub I = ⊥ := by
   refine Submodule.span_eq_bot.mpr ?_
@@ -100,6 +103,9 @@ theorem twist_sub_eq_bot {F : SubSystem k x E} (hF : ∀ I, F.sub I = ⊥) (Q : 
 
 omit [Module k E] [IsScalarTower k Ω E] in
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, I => hF I | t + 1, _, _, I => twist_sub_eq_bot (fun I => twistPows_sub_eq_bot hF t _ _ I) _ I`.
+-/
 theorem twistPows_sub_eq_bot {F : SubSystem k x E} (hF : ∀ I, F.sub I = ⊥) :
     ∀ (t : ℕ) (L : Fin t → SubSystem k x Ω) (n : Fin t → ℕ) (I : Chart x), (F.twistPows t L n).sub I = ⊥
   | 0, _, _, I => hF I
@@ -107,6 +113,11 @@ theorem twistPows_sub_eq_bot {F : SubSystem k x E} (hF : ∀ I, F.sub I = ⊥) :
 
 omit [Module k E] [IsScalarTower k Ω E] in
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, y, -, rfl⟩`. Establish `hq0 : q = 0`. Establish `h0 : idealMod (primeOf (S` using `k) x) I = ⊥ := by`. Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, s, e, hf, _, hfe, _, rfl⟩`. Rewrite using `[(mem_primeOf_of_isHomogeneous x hfe).mp hf, zero_div]`. Establish `hq' : q ∈ (⊥ : Submodule (chartRing k x I) Ω)` using `h0 ▸ hq`. Conclude with `(Submodule.mem_bot _).mp hq'`. Rewrite using `[hq0, zero_smul]`.
+-/
 theorem twist_idealSys_primeOf_sub (F : SubSystem k x E) (I : Chart x) :
     (F.twist (idealSys x (primeOf (S := k) x))).sub I = ⊥ := by
   refine Submodule.span_eq_bot.mpr ?_
@@ -120,6 +131,13 @@ theorem twist_idealSys_primeOf_sub (F : SubSystem k x E) (I : Chart x) :
     exact (Submodule.mem_bot _).mp hq'
   rw [hq0, zero_smul]
 
+/- English proof (translation)
+Establish `hq : ∀ I, SubSystem.quotSub F₁ F₂ I = ⊥` using `fun I => by`. Use `(Submodule.eq_bot_iff _).mpr fun y hy => Subtype.ext ?_` and prove the remaining obligations. Establish `hy' : (y : E) ∈ F₂.sub I` using `hy`. Rewrite `hy'` using `[h I, Submodule.mem_bot]`. Conclude with `hy'`.
+
+Set `φ : ∀ I, F₁.sub I ≃ₗ[k] (F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I)` to `fun I => (Submodule.quotEquivOfEqBot _ (hq I)).symm`. Establish `hφ : ∀ I J h m, φ J (F₁.res I J h m) = SubSystem.quotRes F₁ F₂ I J h (φ I m)` using `fun _ _ _ _ => rfl`. Unfold `eulerCharQuot eulerChar`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Conclude with `((Cech.hEquivOfEquiv φ hφ i).finrank_eq).symm`.
+-/
 theorem eulerCharQuot_of_bot (F₁ F₂ : SubSystem k x E) (h : ∀ I, F₂.sub I = ⊥) :
     eulerCharQuot k F₁ F₂ = eulerChar k F₁ := by
   have hq : ∀ I, SubSystem.quotSub F₁ F₂ I = ⊥ := fun I => by
@@ -137,6 +155,9 @@ theorem eulerCharQuot_of_bot (F₁ F₂ : SubSystem k x E) (h : ∀ I, F₂.sub 
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x E _ _ _ _ F hF`. Take `⟨r, pp, a, hpp, heq⟩` from `hQ k Ω N x E F (zeroFamily k x E) hF (fun _ => bot_le) (primeOf (S := k) x) (fun f hf d => homogeneousComponent_mem_primeOf x hf d) le_rfl (fun I => (twist_idealSys_primeOf_sub F.toSubSystem I).le)`. Use `⟨r, pp, a, hpp, fun t L n c => ?_⟩` and prove the remaining obligations. Rewrite using `[← heq t L n c]`. Conclude with `(eulerCharQuot_of_bot _ _ fun I => twist_sub_eq_bot (twistPows_sub_eq_bot (fun _ => rfl) t _ n) _ I).symm`.
+-/
 theorem SnapperDevissage.proof (hQ : SnapperQuotDevissage.Statement.{u, v, w}) :
     SnapperDevissage.Statement.{u, v, w} := by
   intro k _ Ω _ _ N x E _ _ _ _ F hF

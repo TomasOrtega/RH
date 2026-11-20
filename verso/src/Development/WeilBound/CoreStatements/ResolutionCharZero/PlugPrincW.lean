@@ -4,6 +4,9 @@ import Development.WeilBound.CoreStatements.ResolutionCharZero.FromRes
 
 namespace PositivityTheory.ResPlug.FromRes
 
+/- English proof (translation)
+The claim follows from `princW_of_functorialPrincipalization FunctorialResolution.functorialPrincipalizationCharZero.{0}`.
+-/
 theorem princW : PositivityTheory.ResPlug.PrincW :=
   princW_of_functorialPrincipalization FunctorialResolution.functorialPrincipalizationCharZero.{0}
 

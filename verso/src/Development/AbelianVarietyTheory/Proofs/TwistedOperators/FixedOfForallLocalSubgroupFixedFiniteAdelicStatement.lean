@@ -15,5 +15,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.TrIdem
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem | exact GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem | (intros; apply GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fixed_of_forall_localSubgroup_fixed_finiteAdelic : ∀ (D : D7) (V : HSp D) (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ (K' : ∀ v, Subgroup (GLoc D.sp.cm.sig V.gram v)), (∀ v, K' v ≤ Kv V v) → ∀ x : W, (∀ v, ∀ k ∈ K' v, σ (locFin V v k) x = x) → ∀ g : GfC V, (∀ v, finLoc V v g ∈ K' v) → σ g x = x := by
   first | exact @GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem | exact GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem | (intros; apply GlobalTheory.TrIdem.fixed_of_forall_finLoc_mem <;> assumption)

@@ -5,6 +5,11 @@ open NumberField
 
 namespace KStar.Choice
 
+/- English proof (translation)
+Use `Fact.mk hl` as an intermediate fact. Establish `hprime : (Ideal.span {(l : ℤ)}).IsPrime`. Rewrite using `[Ideal.span_singleton_prime (by exact_mod_cast hl.ne_zero)]`. Conclude with `Nat.prime_iff_prime_int.mp hl`. Take `⟨⟨P, h1, h2⟩⟩` from `(Ideal.span {(l : ℤ)}).nonempty_primesOver (S := 𝓞 E)`.
+
+Take `⟨⟨Q, hQ1, hQ2⟩⟩` from `Ideal.nonempty_primesOver (S := 𝓞 L) P`. Establish `hQ3 : Q.LiesOver (Ideal.span {(l : ℤ)})` using `Ideal.LiesOver.trans Q P _`. Establish `h3` using `Ideal.ramificationIdx_below_dvd (R := ℤ) P Q`. Rewrite `h3` using `[IsCyclotomicExtension.Rat.ramificationIdx_eq_of_not_dvd l L Q h]`. Conclude with `⟨P, h1, h2, (Nat.dvd_one.1 h3).le⟩`.
+-/
 theorem ramLE_one_of_not_dvd (E L : Type*) [Field E] [NumberField E] [Field L]
     [NumberField L] [Algebra E L] {M l : ℕ} [NeZero M] [IsCyclotomicExtension {M} ℚ L]
     (hl : l.Prime) (h : ¬ l ∣ M) : RamLE E l 1 := by
@@ -19,6 +24,9 @@ theorem ramLE_one_of_not_dvd (E L : Type*) [Field E] [NumberField E] [Field L]
   rw [IsCyclotomicExtension.Rat.ramificationIdx_eq_of_not_dvd l L Q h] at h3
   exact ⟨P, h1, h2, (Nat.dvd_one.1 h3).le⟩
 
+/- English proof (translation)
+The claim follows from `rootData_field E hS (fun l hl h2 h3 h4 => ramLE_one_of_not_dvd E Ω hl fun h => (hM l hl h2 h).elim h3 h4) hL`.
+-/
 theorem rootData_of_cyclotomic (E Ω : Type*) [Field E] [NumberField E] [Field Ω]
     [NumberField Ω] [Algebra E Ω] {M : ℕ} [NeZero M] [IsCyclotomicExtension {M} ℚ Ω]
     {S L : Finset ℕ} (hS : ∀ l ∈ S, l.Prime)
@@ -27,6 +35,9 @@ theorem rootData_of_cyclotomic (E Ω : Type*) [Field E] [NumberField E] [Field �
   rootData_field E hS (fun l hl h2 h3 h4 => ramLE_one_of_not_dvd E Ω hl fun h =>
     (hM l hl h2 h).elim h3 h4) hL
 
+/- English proof (translation)
+The claim follows from `haveI : IsCyclotomicExtension {M} ℚ (CyclotomicField M ℚ) := CyclotomicField.isCyclotomicExtension M ℚ rootData_of_cyclotomic _ (CyclotomicField M ℚ) (M := M) (fun _ h => Nat.prime_of_mem_primeFactors h) (fun _ hl _ h => Or.inl (Nat.mem_primeFactors.2 ⟨hl, h, NeZero.ne M⟩)) (by s …`.
+-/
 example (M : ℕ) [NeZero M] : RootData M.primeFactors ∅ (rootNu (CyclotomicField M ℚ))
     (rootDeg (CyclotomicField M ℚ)) :=
   haveI : IsCyclotomicExtension {M} ℚ (CyclotomicField M ℚ) :=
@@ -35,6 +46,13 @@ example (M : ℕ) [NeZero M] : RootData M.primeFactors ∅ (rootNu (CyclotomicFi
     (fun _ h => Nat.prime_of_mem_primeFactors h)
     (fun _ hl _ h => Or.inl (Nat.mem_primeFactors.2 ⟨hl, h, NeZero.ne M⟩)) (by simp)
 
+/- English proof (translation)
+Establish `h1 : levelSnd N ≤ 4 * N + 8`. Use `(isLevelPair_least hN).2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2 : (levelSnd N : ℝ) ≤ 4 * N + 8` using `by exact_mod_cast h1`. Establish `h0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`.
+
+Use `⟨by linarith, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hl0 : (0 : ℝ) < l`. Break down `Nat.eq_zero_or_pos l with rfl | h` into its components or cases. Simplify using `only [Nat.cast_zero, Real.log_zero] at hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h` after adjusting the coercions. Establish `h3 : Real.exp (z / 2) < l` using `(Real.lt_log_iff_exp_lt hl0).1 hl`. Establish `h4` using `Real.quadratic_le_exp_of_nonneg (show 0 ≤ z / 2 by linarith)`. Establish `h5 : (levelSnd N : ℝ) < l` using `by nlinarith`. Conclude with `h5` after adjusting the coercions.
+-/
 theorem levelSnd_le {N : ℕ} (hN : N ≠ 0) {z : ℝ} (hz : 4 * N + 8 < z) :
     (levelSnd N : ℝ) ≤ z ∧ ∀ l : ℕ, z / 2 < Real.log l → levelSnd N < l := by
   have h1 : levelSnd N ≤ 4 * N + 8 := by

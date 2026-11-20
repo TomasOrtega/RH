@@ -26,6 +26,11 @@ open GlobalTheory.HSApp
 
 namespace GlobalTheory.HSApp.VanishingBound
 
+/- English proof (translation)
+Take `⟨hr, -, -, -, -, g, ee, F, -⟩` from `hY.unf σ hσ`. Establish `h1 : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ σ hσ ee F (by omega) hY.geo`.
+-/
 theorem keySec (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hY : Y.Good e o)
     (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) : Nonempty (GlobalTheory.ShFam.KeySec Y.d.Xo₂ Y.d.c₂) := by
   obtain ⟨hr, -, -, -, -, g, ee, F, -⟩ := hY.unf σ hσ
@@ -35,6 +40,19 @@ theorem keySec (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ
     omega
   exact GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ σ hσ ee F (by omega) hY.geo
 
+/- English proof (translation)
+Establish `hU` using `hY.unf σ hσ`. Distinguish the cases in `hdec : ∀ (τ : D.host.E →+* ℂ) (i j' : ℕ), i ≤ j' → j' < (T.Q.Dw j).mult τ → (wtOf (T.Q.Dw j) la 0).1 (τ, j') ≤ (wtOf (T.Q.Dw j) la 0).1 (τ, i)`. Distinguish the cases in `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Conclude with `GlobalTheory.T.isSec_reading_decreasing_integer_exponents _ _ _ _ _ _ σ _ (Y.U σ) (keySec D T j Y e o hY σ hσ) hσ hU hpq _ (AllWt.even_wtOf la 0) hdec f hf k`. Establish `hp : (T.Q.Dw j).p = 0` using `by omega`.
+
+Establish `hq : (T.Q.Dw j).q = 0` using `by omega`. Establish `hG : wtOf (T.Q.Dw j) la 0 = wtZ (fun _ => 0) 0`. Use `Prod.ext (funext fun x => ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [wtOf, wtZ, hp, hq] split_ifs <;> first | (exfalso; omega) | simp`. Simplify using `[wtOf, wtZ]`.
+
+Rewrite using `[hG, AllWt.modelWt_wtZ]`. Establish `hf' : f ∈ sec Y.d.Xo₂ Y.d.c₂ (fun _ => 0) 0`. Rewrite using `[← AllWt.secZ_nat, ← AllWt.exZ_wtZ, ← hG]`. Conclude with `hf`. Conclude with `hU.2.2.2.2.1 _ _ ⟨fun τ => fun a b _ => le_refl _, ⟨0, rfl⟩⟩ f hf' k`.
+
+Establish `hex : ∃ (τ : D.host.E →+* ℂ) (m : ℕ) (hm : m + 1 < (T.Q.Dw j).mult τ), (wtOf (T.Q.Dw j) la 0).1 (τ, m) < (wtOf (T.Q.Dw j) la 0).1 (τ, m + 1)`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hdec` to reduce the goal to its premises. Introduce `τ i j' hij hj'`.
+
+Use `revert hj'`. Proceed by induction on `j', hij using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `le_refl _`. Consider the case `succ n hn ih => intro hj'; exact (hne τ n hj').trans (ih (by omega))`.
+
+Take `⟨τ, m, hm, hlt⟩` from `hex`. Establish `h0 : f = 0` using `GlobalTheory.NonDomVanish.eq_zero_of_lt hf τ ⟨m, by omega⟩ ⟨m + 1, hm⟩ rfl hlt`. Substitute `h0` using the available equality. Rewrite using `[map_zero]`. Conclude with `⟨differentiableOn_const 0, fun x _ b _ => by simp, fun γ _ x _ => by simp⟩`.
+-/
 theorem isSec (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hY : Y.Good e o)
     (la : AllWt.Weight (T.Q.Dw j)) (f : Rul Y.d.Xo₂ Y.d.c₂)
     (hf : f ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0))
@@ -76,6 +94,15 @@ theorem isSec (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ)
 
 open scoped LaurentSeries in
 
+/- English proof (translation)
+Establish `hf1 : 1 < Module.finrank ℚ D.host.E / 2` using `by omega`. Establish `hU` using `hG.unf σ hσ`. Use `letI : Algebra Y.d.c₂.F ℂ⸨X⸩ := (GlobalTheory.ArcId.cstL.comp σ).toAlgebra`. Establish `halg : ∀ x : Y.d.c₂.F, algebraMap Y.d.c₂.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R` using `ℂ) (σ x)) := fun _ => rfl`. Take `⟨y, T₀, s', d, hbd, hd, hw⟩` from `GlobalTheory.T.exists_laurentArc_degenerating_on_model_convergence _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (Y.U σ)) halg hσ hU k ξ hξ x hx _ _ TF.Y`.
+
+Establish `hc : (algebraMap (PowerSeries ℂ) ℂ⸨X⸩).comp ((PowerSeries.C (R` using `ℂ)).comp σ) = algebraMap Y.d.c₂.F ℂ⸨X⸩ := RingHom.ext fun t => (halg t).symm`. Establish `hex : GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0 none = 0` using `rfl`. Establish `hcoef : ∀ m ≤ (0:ℤ), (evR Y.d.Xo₂ Y.d.c₂ f.1 y).coeff m = 0`. Introduce `m hm`. Distinguish the cases in `hZ : GlobalTheory.AllWt.LiesOn Z y`.
+
+Take `⟨v, hv, hval⟩` from `GlobalTheory.CuspOnTor.evR_mem_maximalIdeal _ _ _ _ _ _ TF.Y TF.X Z la s hs f hfsec (PowerSeries ℂ) ℂ⸨X⸩ _ y hc hZ hbd`. Rewrite using `[hval]`. Conclude with `GlobalTheory.CuspFrom.coeff_eq_zero hv hm`. Rewrite using `[hfs ℂ⸨X⸩ y ((GlobalTheory.AllWt.liesOff_iff Z y).2 hZ)]`. Both sides reduce to the same expression.
+
+Conclude with `GlobalTheory.T.fourierJacobi_constant_term_eq_zero_of_flow_line _ _ _ _ _ ξ x s' d T₀ (fun j => (evR Y.d.Xo₂ Y.d.c₂ f.1 y).coeff j) hsec (GlobalTheory.CuspFrom.freqNonneg _ hf1 hsec) hξ hx hd hcoef fun w hw' => ⟨(hw w hw').1, (hw w hw').2 _ hex _ f.2⟩`.
+-/
 theorem fjZero (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ) (hG : Y.Good e o)
     (hf : 2 < Module.finrank ℚ D.host.E / 2) (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂)
     (la : AllWt.Weight (T.Q.Dw j)) (s) (hs : s ∈ vanBd TF.X Z la)
@@ -111,6 +138,11 @@ namespace GlobalTheory.HSApp
 
 open GlobalTheory.HSApp.VanishingBound in
 
+/- English proof (translation)
+Introduce `D T j Y e o hG hf Z TF la s hs`. Take `⟨f, hfZ, hfs⟩` from `GlobalTheory.T.exists_supportedRule_of_flagComponentSection _ _ _ _ _ _ _ TF.X Z (GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0) (H0.restr le_top s)`. Establish `hsec` using `isSec D T j Y e o hG la f.1 f.2`. Establish `hf1 : 1 < Module.finrank ℚ D.host.E / 2` using `by omega`. Establish `hcusp : (f : Rul Y.d.Xo₂ Y.d.c₂) ∈ cuspOn Y.U Z (wtOf (T.Q.Dw j) la 0)`.
+
+Use `⟨GlobalTheory.AllWt.mem_cuspW.2 ⟨f.2, fun σ hσ => holCusp_mem_holSub _ _ fun k => ?_⟩, hfZ⟩` and prove the remaining obligations. Establish `h0` using `fjZero D T j Y e o hG hf Z TF la s hs f hfZ hfs σ hσ k (hsec σ hσ k)`. Establish `h3` using `(GlobalTheory.FJZero.mem_SS_of_isModerate _ _ _ (hsec σ hσ k) (GlobalTheory.CuspFrom.isModerate _ hf1 (hsec σ hσ k)) h0).1.2`. Conclude with `⟨⟨hsec σ hσ k, h3⟩, fun ξ hξ x hx => h0 ξ hξ x hx⟩`. Conclude with `⟨⟨f.1, hcusp⟩, hfs⟩`.
+-/
 theorem vanBd_le_space : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (T.Q.Dw j)), vanBd TF.X Z la ≤ space TF.X Z Y.U la := by
   intro D T j Y e o hG hf Z TF la s hs
   obtain ⟨f, hfZ, hfs⟩ := GlobalTheory.T.exists_supportedRule_of_flagComponentSection _ _ _ _ _ _ _ TF.X Z (GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0) (H0.restr le_top s)

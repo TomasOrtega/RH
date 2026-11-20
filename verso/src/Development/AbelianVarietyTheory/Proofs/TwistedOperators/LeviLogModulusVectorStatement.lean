@@ -18,5 +18,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 open GlobalTheory.LeviShift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviVec.exists_levi_vec | exact GlobalTheory.LeviVec.exists_levi_vec | (intros; apply GlobalTheory.LeviVec.exists_levi_vec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_log_modulus_vector : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (P : Finset (SV (wittIndex V))), IsPar P → ∀ m ∈ Φ.levi D.sp.cm (AF D.host.F) P, ∃ h : A0 (wittIndex V), ∀ u, vec u ∈ aP P → inner ℝ (vec u) h = - logDelta Φ u m := by
   first | exact @GlobalTheory.LeviVec.exists_levi_vec | exact GlobalTheory.LeviVec.exists_levi_vec | (intros; apply GlobalTheory.LeviVec.exists_levi_vec <;> assumption)

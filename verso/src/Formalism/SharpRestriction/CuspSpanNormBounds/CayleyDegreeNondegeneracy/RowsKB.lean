@@ -12,6 +12,9 @@ section KB
 
 variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.Word} {C1 : ℝ} (Y : LoopTie D large₂ X u u' C1)
 
+/- English proof (translation)
+Establish `hb0 : 0 < large₂.sc.b` using `by linarith [d_two_le_b D large₂]`. Unfold `HHZ`. Rewrite using `[← Real.rpow_mul hb0.le]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rows_HHZ_eq (D : D7) (large₂ : SizeData₂ D) (c : ℝ) (Z : GramM D) :
     HHZ D large₂.sc.b c Z = large₂.sc.b ^ (c ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) * sizeZ D large₂.sc.b c Z ^ 4 := by
   have hb0 : 0 < large₂.sc.b := by linarith [d_two_le_b D large₂]
@@ -20,6 +23,9 @@ theorem rows_HHZ_eq (D : D7) (large₂ : SizeData₂ D) (c : ℝ) (Z : GramM D) 
   congr 2
   ring
 
+/- English proof (translation)
+Establish `hb` using `d_two_le_b D large₂`. Rewrite using `[rows_HHZ_eq]`. Establish `h2 : 1 ≤ sizeZ D large₂.sc.b c Z ^ 4` using `one_le_pow₀ (rows_one_le_sizeZ _ _ _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rows_bpow_le_HHZ (D : D7) (large₂ : SizeData₂ D) {c E : ℝ} (hE : E ≤ c ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) (Z : GramM D) :
     large₂.sc.b ^ E ≤ HHZ D large₂.sc.b c Z := by
   have hb := d_two_le_b D large₂
@@ -29,6 +35,23 @@ theorem rows_bpow_le_HHZ (D : D7) (large₂ : SizeData₂ D) {c E : ℝ} (hE : E
     _ = large₂.sc.b ^ (c ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) * 1 := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_left h2 (by positivity)
 
+/- English proof (translation)
+Establish `hb` using `d_two_le_b D large₂`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Use `set H2 : ℝ := large₂.sc.b ^ (c * (D.R.m : ℝ) ^ 2) with hH2`. Establish `hH21 : 1 ≤ H2` using `Real.one_le_rpow (by linarith) (by positivity)`. Establish `hm2 : (2 : ℝ) ≤ D.R.m`.
+
+Rewrite using `[rows_m_cast]; have : (0 : ℝ) ≤ D.R.rS := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `each : ∀ τ, max 1 (absDl D Z D.R.rS τ ^ 2) ≤ (H2 * max 1 (absDl D Z D.R.rS τ / H2)) ^ 2`. Introduce `τ`. Establish `hD0` using `rows_absDl_nonneg hrd Z D.R.rS τ`.
+
+Establish `a1 : 1 ≤ H2 * max 1 (absDl D Z D.R.rS τ / H2)` using `one_le_mul_of_one_le_of_one_le hH21 (le_max_left _ _)`. Establish `a2 : absDl D Z D.R.rS τ ≤ H2 * max 1 (absDl D Z D.R.rS τ / H2)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `max_le (one_le_pow₀ a1) (pow_le_pow_left₀ hD0 a2 2)`. Establish `single : ∀ τ, max 1 (absDl D Z D.R.rS τ / H2) ≤ ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 (absDl D Z l τ / H2)`.
+
+Introduce `τ`. Establish `hmem : D.R.rS ∈ Finset.Icc 1 (D.R.rS + 1)` using `Finset.mem_Icc.2 ⟨hr, Nat.le_succ _⟩`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem]`. Conclude with `le_mul_of_one_le_right (le_trans zero_le_one (le_max_left _ _)) (rows_one_le_prod _ _ fun l _ => le_max_left _ _)`. Establish `hs1` using `rows_one_le_sizeZ (D := D) large₂.sc.b c Z`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_pow, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, D.what₂.card_Tau]`. Use `_ ≤ (H2 ^ D.R.f * sizeZ D large₂.sc.b c Z) ^ 2 := by`. Apply `pow_le_pow_left₀ (mul_nonneg (by positivity) (Finset.prod_nonneg fun τ _ => le_trans zero_le_one (le_max_left _ _)))` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+
+Unfold `sizeZ`. Conclude with `Finset.prod_le_prod (fun τ _ => le_trans zero_le_one (le_max_left _ _)) fun τ _ => single τ`. Use `_ = (H2 ^ D.R.f) ^ 2 * sizeZ D large₂.sc.b c Z ^ 2 := by ring`. Use `_ ≤ large₂.sc.b ^ (c ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) * sizeZ D large₂.sc.b c Z ^ 4 := by`. Apply `mul_le_mul _ (pow_le_pow_right₀ hs1 (by norm_num)) (by positivity) (by positivity)` to reduce the goal to its premises.
+
+Rewrite using `[hH2, rows_rpow_pow hb0, rows_rpow_pow hb0]`. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises. Use `push_cast`. Establish `h0 : 0 ≤ c * (D.R.m : ℝ) ^ 2 * D.R.f` using `by positivity`. Establish `h1 : (2 : ℝ) ≤ c * D.R.m` using `by nlinarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := (rows_HHZ_eq D large₂ c Z).symm`.
+-/
 theorem rows_Dr_le_HHZ (D : D7) (large₂ : SizeData₂ D) (hrd : 0 < D.host.rdE) (hr : 1 ≤ D.R.rS) {c : ℝ} (hc1 : 1 ≤ c) (Z : GramM D) :
     ∏ τ, max 1 (absDl D Z D.R.rS τ ^ 2) ≤ HHZ D large₂.sc.b c Z := by
   have hb := d_two_le_b D large₂
@@ -78,6 +101,33 @@ theorem rows_Dr_le_HHZ (D : D7) (large₂ : SizeData₂ D) (hrd : 0 < D.host.rdE
           _ = _ := by ring
     _ = _ := (rows_HHZ_eq D large₂ c Z).symm
 
+/- English proof (translation)
+Introduce `t hG hrel`. Establish `hrd` using `d_rdE_pos hH.1`. Establish `hb` using `d_two_le_b D large₂`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hHH1` using `rows_one_le_HHZ D large₂ (by linarith : 0 ≤ c) (termGramMatrix X t)`.
+
+Distinguish the cases in `hD : Dr (X.fl t) (X.fl' t) = 0`. Establish `e : rows_Kt Y t = 1`. Unfold `rows_Kt`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Unfold `chRatio`.
+
+Rewrite using `[if_pos ((rows_Dr_zero_iff Y hrd t τ).2 hD)]`. Rewrite using `[e, one_pow]`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_pow₀ (by norm_num)) (one_le_pow₀ hHH1)`. Establish `eK : rows_Kt Y t = ∏ τ, (1 + Lat.ch (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ)) / Lat.sh (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ)`. Unfold `rows_Kt`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[rows_chRatio_eq Y hrd t τ]`. Unfold `onePlusChSh`. Rewrite using `[if_neg hD]`. Establish `hT1 : 1 ≤ Tr D u` using `by unfold Tr; exact_mod_cast (D.mem u).A.T_prime.pos`.
+
+Establish `hT1' : 1 ≤ Tr D u'` using `by unfold Tr; exact_mod_cast (D.mem u').A.T_prime.pos`. Establish `hDpos : ∀ τ, 0 < absDl D (termGramMatrix X t) D.R.rS τ`. Introduce `τ`. Rewrite using `[← d_norm_Dmin Y hrd t τ D.R.rS (Nat.le_succ _)]`. Conclude with `norm_pos_iff.2 fun h => hD ((rows_Dr_zero_iff Y hrd t τ).1 h)`.
+
+Establish `hGeq : ∀ τ, Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ = Tr D u * Tr D u' * absDl D (termGramMatrix X t) D.R.rS τ ^ 2 * Lat.sh (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ) ^ 2`. Introduce `τ`. Establish `h` using `rowsT_nu_eq Y hrd t hG hrel hD τ`. Unfold `nuV at h`. Rewrite `h` using `[d_Gf_eq Y hrd t τ, d_norm_Dmin Y hrd t τ D.R.rS (Nat.le_succ _)]`.
+
+Establish `hne : Tr D u * absDl D (termGramMatrix X t) D.R.rS τ ^ 2 ≠ 0`. Use `hDpos τ` as an intermediate fact. Check the signs of the components of the expression. Rewrite `h` using `[div_eq_iff hne]`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h23, _, _⟩` from `hH.1.1`. Establish `hm2 : (2 : ℝ) ≤ D.R.m`. Rewrite using `[rows_m_cast]; have : (0 : ℝ) ≤ D.R.rS := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h6 : (Tr D u * Tr D u') ^ Fintype.card D.what₂.Tau ≤ HHZ D large₂.sc.b c (termGramMatrix X t)`. Rewrite using `[D.what₂.card_Tau]`. Establish `a1 : Tr D u * Tr D u' ≤ large₂.sc.b ^ (2 * (c * D.R.m))`. Establish `b1 : Tr D u ≤ large₂.sc.b ^ (c * (D.R.m : ℝ))` using `(h23 u).2.trans (Real.rpow_le_rpow_of_exponent_le (by linarith) (by gcongr))`. Establish `b2 : Tr D u' ≤ large₂.sc.b ^ (c * (D.R.m : ℝ))` using `(h23 u').2.trans (Real.rpow_le_rpow_of_exponent_le (by linarith) (by gcongr))`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : 0 ≤ c * (D.R.m : ℝ) * D.R.f` using `by positivity`. Establish `h1 : (2 : ℝ) ≤ c * (D.R.m : ℝ) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h8 : ∏ τ, max 1 (1 / Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ) ≤ HHZ D large₂.sc.b c (termGramMatrix X t)`. Simplify using `only [one_div]`. Conclude with `(rowsT_HH_term Y hH hHH t hG hrel).2.2.1`. Establish `key` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.degFactorBound D.what₂.Tau (fun τ => Lat.sh (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ)) (fun τ => Lat.ch (Tu D u) (Tu D u') (X.fl t) (X.fl' t) (embS D τ)) (fun τ => Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ) (fu …`. Unfold `Lat.ch`.
+
+Conclude with `div_nonneg (norm_nonneg _) (Real.sqrt_nonneg _), rowsT_ch_sq Y hrd t hG hrel hD τ⟩)`. Use the proof step `(fun τ => rowsT_Gz_pos Y hrd t hG hrel τ) hDpos hGeq h6`. Use the proof step `(rows_Dr_le_HHZ D large₂ hrd hH.2.1.1 hc1 _) h8`. Rewrite `key` using `[D.what₂.card_Tau]`. Rewrite using `[eK]`.
+
+Conclude with `key`.
+-/
 theorem rows_KBound_of {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hHH : UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hc1 : 1 ≤ c) (hCT : CT ≤ c) : rows_KBound Y c := by
   intro t hG hrel
@@ -164,6 +214,11 @@ variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (X : ∀ x, Fm.x1 < x → ∀ i 
   (Y : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
     LoopTie (Fm.D x i) (Fm.L x i) (X x hx i) u u' C1)
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hall⟩` from `hAdm`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h27, _⟩` from `hall Cg cb Cu cT CT C0 A`. Take `⟨cH, x27, H27⟩` from `h27`. Use `⟨max (max 1 CT) (|cH| + 2), fun c hc => ⟨x27, fun x hx i hx1 u u' hH => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `k1 : 1 ≤ c` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hc`. Establish `k2 : CT ≤ c` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hc`. Establish `k3 : |cH| + 2 ≤ c` using `le_trans (le_max_right _ _) hc`. Conclude with `rows_KBound_of _ hH (rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x hx i u u')) k1 k2`.
+-/
 theorem rows_KBoundF_of (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) : rows_KBoundF Fm C1 X Y := by
   intro Cg cb Cu cT CT C0 A
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hall⟩ := hAdm
@@ -176,6 +231,9 @@ theorem rows_KBoundF_of (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) : rows_KBou
   exact rows_KBound_of _ hH
     (rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x hx i u u')) k1 k2
 
+/- English proof (translation)
+The claim follows from `rows_DegF_of Fm C1 X Y hAdm hAmp hT (rows_KBoundF_of Fm C1 X Y hAdm)`.
+-/
 theorem rows_DegF_of' (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hAmp : rows_AmpF Fm C1) (hT : rows_TiesF Fm C1 X Y) :
     rows_DegF Fm C1 X Y := rows_DegF_of Fm C1 X Y hAdm hAmp hT (rows_KBoundF_of Fm C1 X Y hAdm)
 

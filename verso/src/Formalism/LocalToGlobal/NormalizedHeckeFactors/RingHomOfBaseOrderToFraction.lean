@@ -177,6 +177,9 @@ def HWAtF (c : L →+* L) {W : Type} [AddCommGroup W] [Module K W] (ρ : Represe
       Matrix.mulVec (Matrix.of fun a a' => MvPolynomial.eval (evPtF c τ B) (P a a')) v =
         (∏ a, (B.val a a) ^ (lam a)) • v
 
+/- English proof (translation)
+Use `⟨Unit, inferInstance, inferInstance, Module.Basis.singleton Unit K, fun _ _ => 1, fun γ γ₀ _ => ?_, fun _ => 1, fun h => one_ne_zero (congrFun h ()), fun B _ => ?_⟩` and prove the remaining obligations. Use extensionality with `a a'`. Simplify using `[LinearMap.toMatrix_apply, Representation.trivial]`. Use extensionality with `a`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem hwAtF_trivial (c : L →+* L) (τ : L →+* K) :
     HWAtF (n := n) c (Representation.trivial K (GQ L n) K) τ 0 := by
   refine ⟨Unit, inferInstance, inferInstance, Module.Basis.singleton Unit K, fun _ _ => 1,
@@ -204,6 +207,9 @@ def kEmb (D : D7) (i : D.ntw.Tw) (b : Bool) (t : D.what₂.Tau) : D.host.E →+*
       ((embEL0 D).comp
         (D.host.sigmaOf ((D.eTau t : D.R.Psi) : D.R.GG) : D.host.E →+* D.host.E)))
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : D.host.E →+* ℂ => f (D.host.sigmaOf ((D.eTau t : D.R.Psi) : D.R.GG) x)) D.embE_φ₀`. Simplify `h` using `[embEL0, embT, Host.emb]`.
+-/
 theorem embLL_embEL0 (D : D7) (t : D.what₂.Tau) (x : D.host.E) :
     D.what₂.embLL ((embEL0 D (D.host.sigmaOf ((D.eTau t : D.R.Psi) : D.R.GG) x) : ↥D.LL0) :
       D.what₂.LL) = embT D t x := by
@@ -275,17 +281,28 @@ structure NExpTied (D : D7) where
 
 attribute [instance] NExpTied.acgWt NExpTied.modWt NExpTied.fdWt
 
+/- English proof (translation)
+Use `MonoidAlgebra.ext (Finsupp.ext fun g => ?_)` and prove the remaining obligations. Rewrite using `[Y.eAlg_def, Y'.eAlg_def, h]`.
+-/
 theorem eAlg_eq_of_eLL0_eq {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
     {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} {tw : NTw R H what₂ LL0 N} (Y Y' : NExp R H what₂ LL0 N tw)
     (h : Y.eLL0 = Y'.eLL0) (i : tw.Tw) (b : Bool) : Y.eAlg i b = Y'.eAlg i b := by
   refine MonoidAlgebra.ext (Finsupp.ext fun g => ?_)
   rw [Y.eAlg_def, Y'.eAlg_def, h]
 
+/- English proof (translation)
+Take `⟨θ, hθ, -⟩` from `T.psiU_gen i true`. Conclude with `⟨_, char_one_prim (D.host.g_prime k) (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)⟩`.
+-/
 theorem NExpTied.primRoot {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (k : Fin 2)
     (v : D.nd.PlG k) : ∃ ζ : FractionRing (D.ntw.O i), IsPrimitiveRoot ζ (D.host.g k) := by
   obtain ⟨θ, hθ, -⟩ := T.psiU_gen i true
   exact ⟨_, char_one_prim (D.host.g_prime k) (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)⟩
 
+/- English proof (translation)
+Establish `: NeZero (D.host.g k)` using `⟨(D.host.g_prime k).ne_zero⟩`. Take `⟨θ, hθ, hψ⟩` from `T.psiU_gen i b`. Establish `hu : tvAt (p` using `fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) hr ⟨k, v⟩ ∈ D.nexp.U := by`. Rewrite using `[T.U_eq]`. Conclude with `tvAt_mem hr _`.
+
+Use `⟨⟨_, hu⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, stdVal_tvAt]`. Conclude with `char_one_ne (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)`.
+-/
 theorem NExpTied.psiU_ne_one {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (b : Bool) (k : Fin 2)
     (v : D.nd.PlG k) : ∃ u : D.nexp.U, D.nexp.psiU i b u ≠ 1 := by
   classical
@@ -297,6 +314,9 @@ theorem NExpTied.psiU_ne_one {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D
   rw [hψ, stdVal_tvAt]
   exact char_one_ne (θ ⟨k, v⟩) (hθ hr ⟨k, v⟩)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨u, hu⟩` from `T.psiU_ne_one hr i true k v`. Establish `: u = 1` using `Subtype.ext (by simpa [h] using u.2)`. Conclude with `hu (by rw [this, map_one])`.
+-/
 theorem NExpTied.U_ne_bot {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.ntw.Tw) (k : Fin 2) (v : D.nd.PlG k) :
     D.nexp.U ≠ ⊥ := by
   intro h
@@ -304,6 +324,9 @@ theorem NExpTied.U_ne_bot {D : D7} (T : NExpTied D) (hr : 2 ≤ D.R.r) (i : D.nt
   have : u = 1 := Subtype.ext (by simpa [h] using u.2)
   exact hu (by rw [this, map_one])
 
+/- English proof (translation)
+Take `⟨θ, hθ, hψ⟩` from `hg`. Use `⟨fun x => (θ x)⁻¹, fun hr x hx => hθ hr x (inv_eq_one.mp hx), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[h, hψ]`. Simplify using `only [stdVal, MonoidHom.inv_apply, Finset.prod_inv_distrib]`.
+-/
 theorem NX.isStdGeneric_inv {ι : Type} [Fintype ι] {p : ι → ℕ} {r : ℕ} {K : Type} [Field K] {S : Subgroup (GProd p r)}
     (ψ ψ' : S →* Kˣ) (h : ∀ u, ψ' u = (ψ u)⁻¹) (hg : IsStdGeneric p r ψ) : IsStdGeneric p r ψ' := by
   obtain ⟨θ, hθ, hψ⟩ := hg
@@ -311,6 +334,11 @@ theorem NX.isStdGeneric_inv {ι : Type} [Fintype ι] {p : ι → ℕ} {r : ℕ} 
   rw [h, hψ]
   simp only [stdVal, MonoidHom.inv_apply, Finset.prod_inv_distrib]
 
+/- English proof (translation)
+Introduce `h1`. Establish `hl : (D.ntw.l i).Prime` using `(D.ntw.lPrime i).out`. Establish `h2 : 1 < D.ntw.l i ^ M` using `Nat.one_lt_pow (by omega) hl.one_lt`. Establish `: Fact (1 < D.ntw.l i ^ M)` using `⟨h2⟩`. Take `⟨σ, hσ⟩` from `(T.delU_ine i Q M hQ P hP).1 A hA 1`.
+
+Rewrite `hσ` using `[h1]`. Simplify using `at hσ`.
+-/
 theorem NExpTied.delU_ne_one {D : D7} (T : NExpTied D) {i : D.ntw.Tw} {Q : Finset (PlE D.host)} {M : ℕ}
     (hQ : NX.AdmQ D i Q M) (hM : 1 ≤ M) {P : PlE D.host} (hP : P ∈ Q)
     (A : ValuationSubring D.nd.Om) (hA : IsPlaceOver A P) : D.nexp.delU i Q M ≠ 1 := by
@@ -322,6 +350,11 @@ theorem NExpTied.delU_ne_one {D : D7} (T : NExpTied D) {i : D.ntw.Tw} {Q : Finse
   rw [h1] at hσ
   simp at hσ
 
+/- English proof (translation)
+Establish `: Fact (D.ntw.l i).Prime` using `D.ntw.lPrime i`. Establish `: NeZero (D.ntw.l i ^ M)` using `⟨pow_ne_zero _ (Fact.out : (D.ntw.l i).Prime).ne_zero⟩`. Take `⟨f, hf⟩` from `D.ntw.art_univ i Q (fun v hv => (hQ v hv).2) (Multiplicative (DelQM D.host (D.ntw.l i) Q M)) (fun x => ⟨M, by`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `q`.
+
+Simplify using `[toAdd_pow, nsmul_eq_mul]⟩)`. Use the proof step `(D.nexp.delU i Q M) (T.delU_cont i Q M) (D.nexp.delU_anti i Q M)`. Use the proof step `(fun v hv A hA σ hσ => D.nexp.delU_unr i Q M v hv A hA σ hσ)`. Conclude with `⟨f, hf.symm⟩`.
+-/
 theorem NExpTied.delU_fac {D : D7} (T : NExpTied D) (i : D.ntw.Tw) (Q : Finset (PlE D.host)) (M : ℕ) (hQ : TWSet D i Q) :
     ∃ f : D.ntw.RCG i Q →* Multiplicative (DelQM D.host (D.ntw.l i) Q M),
       D.nexp.delU i Q M = f.comp (D.ntw.art i Q) := by
@@ -339,6 +372,9 @@ theorem NExpTied.delU_fac {D : D7} (T : NExpTied D) (i : D.ntw.Tw) (Q : Finset (
 
 namespace NX
 
+/- English proof (translation)
+Use `⟨(Umax D.host.E D.R.nV).one_mem, fun kv => ?_, fun P _ => ?_, fun P _ => ?_⟩` and prove the remaining obligations. Simplify `inLevG_one (n := D.R.nV) (M.sp (pG D kv)).v D.R.r` using `[locM]`. Simplify `inParah_one (n := D.R.nV) (M.sp P).v D.R.r` using `[locM]`. Simplify `inParah_one (n := D.R.nV) (M.sp P).v D.R.r` using `[locM]`.
+-/
 theorem MtVReal.conds_one {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
     {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
     [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
@@ -353,6 +389,11 @@ theorem MtVReal.conds_one {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ}
   · simpa [locM] using inParah_one (n := D.R.nV) (M.sp P).v D.R.r
   · simpa [locM] using inParah_one (n := D.R.nV) (M.sp P).v D.R.r
 
+/- English proof (translation)
+Unfold `gVal`. Use `IsUnit.mul (IsUnit.map _ ?_) ?_` and prove the remaining obligations. Unfold `psiUTot split_ifs`. Conclude with `Units.isUnit _`. Conclude with `isUnit_one`.
+
+Use `split_ifs`. Conclude with `(Units.isUnit _).map _`. Conclude with `isUnit_one`.
+-/
 theorem gVal_isUnit (D : D7) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (kv : Σ k : Fin 2, D.nd.PlG k)
     (s : SplitPlace D.host.E) (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1))
     (τ : (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ)
@@ -369,6 +410,11 @@ theorem gVal_isUnit (D : D7) (i : D.ntw.Tw) (k : ℕ) (b : Bool) (kv : Σ k : Fi
     · exact (Units.isUnit _).map _
     · exact isUnit_one
 
+/- English proof (translation)
+Establish `h' : κ ∈ M'.J` using `hJ ▸ h`. Establish `e1` using `M.chi_eq κ h`. Establish `e2` using `M'.chi_eq κ h'`. Rewrite `e1` using `[hχ κ h h', e2, hQP, hDP, ← hg κ, hsp]`. Establish `hA : (∏ kv : (Σ kk : Fin 2, D.nd.PlG kk), gVal D i k b kv (M.sp (pG D kv)) (M.redG kv) (τ kv) (locM (M.sp (pG D kv)) κ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun kv _ => (gVal_isUnit D i k b kv _ _ _ _).ne_zero`.
+
+Establish `hC : (∏ P ∈ M.DP, ofO0 D i k (tameVal (D.ntw.delta i) P (if b then e else -e) (resRep (M.sp P) P (detT D.R.r (locM (M.sp P) κ)))).1) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun P _ => ((Units.isUnit _).map (ofO0 D i k)).ne_zero`. Conclude with `(mul_left_cancel₀ hA (mul_right_cancel₀ hC e1)).symm`.
+-/
 theorem MtVReal.qprod_eq {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
     {ψ ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
     [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
@@ -395,6 +441,9 @@ theorem MtVReal.qprod_eq {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} 
     Finset.prod_ne_zero_iff.mpr fun P _ => ((Units.isUnit _).map (ofO0 D i k)).ne_zero
   exact (mul_left_cancel₀ hA (mul_right_cancel₀ hC e1)).symm
 
+/- English proof (translation)
+Use `fail_if_success`. Establish `_x : MtVReal D i j b k Q ψ' e W₀ ρ₀ τ` using `{ M with real := E'.trans M.real }`. Discharge the goal by the elementary cases of `trivial`.
+-/
 example {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
     {ψ ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
     [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
@@ -416,6 +465,9 @@ def MtVReal.transferTame {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} 
     chi_eq := fun κ h => by rw [M.chi_eq κ h]; simp only [hT]
     real := E'.trans M.real }
 
+/- English proof (translation)
+Take `⟨ι, _, _, b₀, b₁, -⟩` from `M.bc`. Rewrite using `[Module.finrank_eq_card_basis b₀, Module.finrank_eq_card_basis b₁]`.
+-/
 theorem MtVReal.finrank_W {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ} {Q : Finset (PlE D.host)}
     {ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ} {e : ℤ} {W₀ : Type} [AddCommGroup W₀]
     [Module (FractionRing (D.ntw.O i)) W₀] {ρ₀ : Representation (FractionRing (D.ntw.O i)) (GQ D.host.E D.R.nV) W₀}
@@ -427,6 +479,9 @@ theorem MtVReal.finrank_W {D : D7} {i : D.ntw.Tw} {j : ℕ} {b : Bool} {k : ℕ}
 
 end NX
 
+/- English proof (translation)
+Rewrite using `[T.rhoW_wt i j b t hj hjm sh lam hsh h, T'.rhoW_wt i j b t hj hjm sh lam' hsh h']`.
+-/
 theorem NExpTied.infOf_hw_eq {D : D7} (T T' : NExpTied D) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (t : D.what₂.Tau) (hj : 1 ≤ j)
     (hjm : j ≤ D.R.m) (sh : ℂ) (hsh : D.naut.infG D.naut.etaT (embT D t) = {sh}) {lam lam' : Fin D.R.nV → ℤ}
     (h : HWAtF (cE D) (T.rhoW i j b).dual (kEmb D i b t) lam)
@@ -443,6 +498,9 @@ def HWDet (D : D7) (i : D.ntw.Tw) (b : Bool) : Prop :=
       HWAtF (cE D) ρ'.dual (kEmb D i b t) lam' ∧ NG.infOf lam = NG.infOf lam') →
     ∃ e : W ≃ₗ[FractionRing (D.ntw.O i)] W', ∀ γ x, e (ρ γ x) = ρ' γ (e x)
 
+/- English proof (translation)
+Use `hD _ _ (T.rhoW i j b) (T'.rhoW i j b) (T.rhoW_irr i j b hj hjm) (T'.rhoW_irr i j b hj hjm) (T.rhoW_alg i j b hj hjm) (T'.rhoW_alg i j b hj hjm) fun t => ?_` and prove the remaining obligations. Take `⟨sh, hs⟩` from `hsh t`. Take `⟨lam, hl⟩` from `T.rhoW_hw i j b t hj hjm`. Take `⟨lam', hl'⟩` from `T'.rhoW_hw i j b t hj hjm`. Conclude with `⟨lam, lam', hl, hl', T.infOf_hw_eq T' i j b t hj hjm sh hs hl hl'⟩`.
+-/
 theorem NExpTied.rhoW_iso {D : D7} (T T' : NExpTied D) (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hj : 1 ≤ j) (hjm : j ≤ D.R.m)
     (hsh : ∀ t : D.what₂.Tau, ∃ sh, D.naut.infG D.naut.etaT (embT D t) = {sh}) (hD : HWDet D i b) :
     ∃ e : T.Wt i j b ≃ₗ[FractionRing (D.ntw.O i)] T'.Wt i j b,

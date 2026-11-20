@@ -8,6 +8,25 @@ open scoped BigOperators nonZeroDivisors
 
 namespace GlobalTheory.LatticeLocBasis
 
+/- English proof (translation)
+Use `set M : Submodule A (n → E) := Submodule.span A (L : Set (n → E)) with hM`. Establish `: Submodule.IsLattice E M` using `{ fg := by`. Take `⟨s, hs⟩` from `hfg`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, ← hs, Submodule.span_span_of_tower]`.
+
+Use `span_eq_top := by rw [hM, Submodule.span_span_of_tower, hsp] }`. Establish `hrk : Module.finrank A M = Fintype.card n`. Simplify using `using Submodule.IsLattice.finrank_of_pi E M`. Set `c : Basis n A M` to `(Module.finBasisOfFinrankEq A M hrk).reindex (Fintype.equivFin n).symm`. Establish `hc : ∀ i, ∃ t : S, (t : O) • (c i : n → E) ∈ L` using `fun i => by`.
+
+Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span S A (L : Set (n → E)) _ (c i).2`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hc`. Set `u : n → Aˣ` to `fun i => (IsLocalization.map_units A (t i)).unit`.
+
+Set `c' : Basis n A M` to `c.unitsSMul u`. Establish `hc' : ∀ i, (c' i : n → E) = (t i : O) • (c i : n → E)` using `fun i => by`. Simplify using `only [c', Basis.unitsSMul_apply, u, Units.smul_def, IsUnit.unit_spec, algebraMap_smul, Submodule.coe_smul_of_tower]`. Set `b : n → n → E` to `fun i => (c' i : n → E)`. Establish `hli : LinearIndependent E b`.
+
+Establish `h : b = c'.extendOfIsLattice E` using `funext fun i => by simp [b]`. Rewrite using `[h]`. Conclude with `(c'.extendOfIsLattice E).linearIndependent`. Establish `hspanA : Submodule.span A (Set.range b) = M`. Establish `: Set.range b = M.subtype '' Set.range c'`.
+
+Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, c'.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hw : ∀ w ∈ L, ∃ r : S, (r : O) • w ∈ Submodule.span O (Set.range b)` using `fun w hw => by`. Take `⟨r, hr⟩` from `multiple_mem_span_of_mem_localization_span S A (Set.range b) w (hspanA ▸ Submodule.subset_span hw)`.
+
+Conclude with `⟨r, hr⟩`. Take `⟨G, hG⟩` from `hfg`. Use `choose! r hr using hw`. Use `⟨∏ x ∈ G, r x, b, hli, fun i => by simpa only [b, hc'] using ht i, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[← hG]`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `hy' : y ∈ G` using `hy`. Rewrite using `[← Finset.prod_erase_mul G r hy', Submonoid.coe_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hr y (hG ▸ Submodule.subset_span hy))`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem exists_basis_up_to_fintype {O A E : Type} [CommRing O] [CommRing A] [IsDomain A] [Field E] [Algebra O A]
     [Algebra A E] [Algebra O E] [IsScalarTower O A E] (S : Submonoid O) [IsLocalization S A] [IsFractionRing A E]
     [IsPrincipalIdealRing A] {n : Type} [Fintype n] (L : Submodule O (n → E)) (hfg : L.FG)
@@ -61,6 +80,19 @@ theorem exists_basis_up_to_fintype {O A E : Type} [CommRing O] [CommRing A] [IsD
   | add y z _ _ hy hz => rw [smul_add]; exact Submodule.add_mem _ hy hz
   | smul a y _ hy => rw [smul_comm]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Introduce `K _ _ n _ _ L 𝔭 hfg hsp`. Establish `hp` using `𝔭.isPrime`. Establish `hS : 𝔭.asIdeal.primeCompl ≤ (𝓞 K)⁰` using `Ideal.primeCompl_le_nonZeroDivisors _`. Set `A` to `Localization.subalgebra K 𝔭.asIdeal.primeCompl hS`. Establish `: IsDiscreteValuationRing A` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) 𝔭.ne_bot A`.
+
+Take `⟨⟨s, hs⟩, b, hli, hb, hw⟩` from `exists_basis_up_to_fintype (A := A) 𝔭.asIdeal.primeCompl L hfg hsp`. Set `g : Matrix n n K` to `Matrix.of fun i j => b j i`. Establish `hcol : g.col = b` using `by funext j i; rfl`. Establish `hunit : IsUnit g` using `Matrix.linearIndependent_cols_iff_isUnit.1 (hcol ▸ hli)`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hunit`.
+
+Use `⟨g, hdet, s, hs, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx i`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hw x hx)`. Establish `hg : g *ᵥ (fun i => algebraMap (𝓞 K) K (a i)) = (s : K) • x`. Establish `: (s : K) • x = s • x` using `algebraMap_smul K s x`.
+
+Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `_ = ((⟨s, hs⟩ : 𝔭.asIdeal.primeCompl) : 𝓞 K) • x`. Rewrite using `[← ha]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, g, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Establish `h2 : (s : K) • (g⁻¹ *ᵥ x) = fun i => algebraMap (𝓞 K) K (a i)`. Rewrite using `[← Matrix.mulVec_smul, ← hg, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Conclude with `⟨a i, (congrFun h2 i).symm⟩`.
+
+Introduce `j`. Establish `: (s : K) • (fun i => g i j) = s • b j` using `algebraMap_smul K s (b j)`. Rewrite using `[this]`. Conclude with `L.smul_mem _ (hb j)`.
+-/
 theorem exists_matrix_up_to_notMem : ∀ (K : Type) [Field K] [NumberField K] (n : Type) [Fintype n] [DecidableEq n] (L : Submodule (𝓞 K) (n → K)) (𝔭 : HeightOneSpectrum (𝓞 K)), L.FG → Submodule.span K (L : Set (n → K)) = ⊤ → ∃ g : Matrix n n K, IsUnit g.det ∧ ∃ t : 𝓞 K, t ∉ 𝔭.asIdeal ∧ (∀ x ∈ L, ∀ i, (t : K) * (g⁻¹ *ᵥ x) i ∈ (algebraMap (𝓞 K) K).range) ∧ ∀ j, (t : K) • (fun i => g i j) ∈ L := by
   intro K _ _ n _ _ L 𝔭 hfg hsp
   have hp := 𝔭.isPrime

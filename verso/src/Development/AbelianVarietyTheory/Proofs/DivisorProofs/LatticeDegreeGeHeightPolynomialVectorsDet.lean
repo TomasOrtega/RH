@@ -14,6 +14,11 @@ open MeasureTheory
 
 namespace GlobalTheory.HSShort.DetTop
 
+/- English proof (translation)
+Establish `hr : LinearMap.range w.mulVecLin = ⊤`. Rewrite using `[Matrix.range_mulVecLin]`. Conclude with `hw`. Take `⟨g', hg'⟩` from `w.mulVecLin.exists_rightInverse_of_surjective hr`. Use `⟨LinearMap.toMatrix' g', ?_⟩` and prove the remaining obligations.
+
+Use `congrArg LinearMap.toMatrix' hg'` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`. Establish `e : LinearMap.toMatrix' w.mulVecLin = w` using `LinearMap.toMatrix'_toLin' w`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem exists_rightInv {F : Type} [Field F] {N n : ℕ} (w : Matrix (Fin N) (Fin n) F)
     (hw : Submodule.span F (Set.range w.col) = ⊤) : ∃ w' : Matrix (Fin n) (Fin N) F, w * w' = 1 := by
   have hr : LinearMap.range w.mulVecLin = ⊤ := by
@@ -25,6 +30,9 @@ theorem exists_rightInv {F : Type} [Field F] {N n : ℕ} (w : Matrix (Fin N) (Fi
   have e : LinearMap.toMatrix' w.mulVecLin = w := LinearMap.toMatrix'_toLin' w
   rwa [e] at this
 
+/- English proof (translation)
+Use `RingHom.map_det (aeval (fun p : Fin B × Fin N => ∑ k, C (w p.2 k) * X (p.1, k)) : MvPolynomial (Fin B × Fin N) F →ₐ[F] MvPolynomial (Fin B × Fin n) F).toRingHom P` as an intermediate fact. Conclude with `this`.
+-/
 theorem linSubst_det {F : Type} [Field F] {B N n d : ℕ} (w : Matrix (Fin N) (Fin n) F)
     (P : Matrix (Fin d) (Fin d) (MvPolynomial (Fin B × Fin N) F)) :
     linSubst w P.det = (P.map (linSubst w)).det := by
@@ -36,6 +44,21 @@ end GlobalTheory.HSShort.DetTop
 
 namespace GlobalTheory.HSShort.DetTop
 
+/- English proof (translation)
+Use `haveI := blockSphereMeasure_isProbability (B := B) hN`. Establish `hmap0 : map σ P.det ≠ 0` using `fun h => hP (MvPolynomial.map_injective σ σ.injective (by rw [h, map_zero]))`. Establish `hf0 : linSubst A (map σ P.det) ≠ 0` using `GlobalTheory.HeightUnique.linSubst_ne_zero (Matrix.mul_nonsing_inv A (isUnit_iff_ne_zero.2 hA)) hmap0`. Establish `hfm : IsMultiHomogeneous a (linSubst A (map σ P.det))` using `GlobalTheory.HeightUnique.linSubst_homog A (isMultiHomogeneous_map_ring a _ hhom σ)`. Establish `hint` using `Closed.sphereLogIntegrable B N a _ hf0 hfm`.
+
+Establish `hae` using `ae_blockSphere_eval_ne_zero B N a _ hf0 hfm`. Establish `hpt : ∀ z : BlockSphere B N, eval (blockPoint z) (linSubst A (map σ P.det)) ≠ 0 → Real.log ‖eval (blockPoint z) (linSubst A (map σ P.det))‖ ≤ ∑ k, Real.log (Bd k) - Real.log (nm.gram σ b).det.re / 2`. Introduce `z hz`. Use `set u : Fin B × Fin N → ℂ := fun q => A.mulVec (fun k => blockPoint z (q.1, k)) q.2 with hu`. Establish `hunit : ∀ i, frameNorm A (fun j => u (i, j)) = 1` using `fun i => by show frameNorm A (A.mulVec (fun k => blockPoint z (i, k))) = 1`.
+
+Rewrite using `[GlobalTheory.MaxPoint.frameNorm_mulVec hA]`. Establish `hz` using `(z i).2`. Rewrite `hz` using `[mem_sphere_zero_iff_norm, EuclideanSpace.norm_eq]`. Simplify `hz` using `[blockPoint, spherePoint]`. Establish `hev : eval (blockPoint z) (linSubst A (map σ P.det)) = (Matrix.of fun i k => eval₂ σ u (P i k)).det`.
+
+Rewrite using `[GlobalTheory.MaxPoint.eval_linSubst, MvPolynomial.eval_map]`. Use `RingHom.map_det (eval₂Hom σ u) P` as an intermediate fact. Rewrite `this` using `[coe_eval₂Hom]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Rewrite `hz`, the goal using `[hev]`. Take `⟨hG, hH⟩` from `GlobalTheory.T.hadamard_ineq_complex_combinations_basis F V nm d b σ (Matrix.of fun i k => eval₂ σ u (P i k))`. Establish `hprod : ∏ k, cnrm nm σ (fun i => (Matrix.of fun i k => eval₂ σ u (P i k)) i k) b ≤ ∏ k, Bd k` using `Finset.prod_le_prod (fun k _ => Real.sqrt_nonneg _) (fun k _ => hbd k u hunit)`. Establish `hpos : 0 < ‖(Matrix.of fun i k => eval₂ σ u (P i k)).det‖` using `norm_pos_iff.2 hz`. Establish `hsq : 0 < Real.sqrt (nm.gram σ b).det.re` using `Real.sqrt_pos.2 hG`.
+
+Establish `hle` using `Real.log_le_log (mul_pos hpos hsq) (hH.trans hprod)`. Rewrite `hle` using `[Real.log_mul hpos.ne' hsq.ne', Real.log_prod (fun k _ => (hBd k).ne'), Real.log_sqrt hG.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `blockSphereMean`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hpt z hz)`. Use `_ = _ := by simp`.
+-/
 theorem arch {F V : Type} [Field F] [AddCommGroup V] [Module F V] (nm : HermFam F V) {d : ℕ}
     (b : Module.Basis (Fin d) F V) {B N : ℕ} (hN : 0 < N) (σ : F →+* ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
     (hA : A.det ≠ 0) (P : Matrix (Fin d) (Fin d) (MvPolynomial (Fin B × Fin N) F)) (a : Fin B → ℕ)
@@ -88,6 +111,17 @@ theorem arch {F V : Type} [Field F] [AddCommGroup V] [Module F V] (nm : HermFam 
 
 end GlobalTheory.HSShort.DetTop
 
+/- English proof (translation)
+Introduce `F V _ _ _ _ _ _ nm M d b hM B N n w A Λ hL P a Bd hP hhom hBd hcoef hbd`. Take `⟨w', hw'⟩` from `GlobalTheory.HSShort.DetTop.exists_rightInv w hL.spans`. Establish `hdet` using `GlobalTheory.HSShort.DetTop.linSubst_det w P`. Establish `hg0 : linSubst w P.det ≠ 0` using `GlobalTheory.HeightUnique.linSubst_ne_zero hw' hP`. Establish `hcg : ∀ m, coeff m (linSubst w P.det) ∈ Submodule.span (𝓞 F) {y | ∃ v : Fin d → V, (∀ i, v i ∈ M) ∧ y = b.det v}`.
+
+Rewrite using `[hdet]`. Conclude with `GlobalTheory.T.coeff_det_mem_span_det_integral_polynomial_vectors F V M d b _ (P.map (linSubst w)) (fun k m => by simpa using hcoef k m)`. Establish `hfin` using `GlobalTheory.T.finiteHeight_sub_mean_le_degree_fullLattice_detIdeal F V nm M d b hM _ _ hg0 hcg`. Establish `harch : ∀ σ, blockSphereMean B N (linSubst (A σ) (map σ P.det)) ≤ ∑ k, Real.log (Bd k) - Real.log (nm.gram σ b).det.re / 2` using `fun σ => GlobalTheory.HSShort.DetTop.arch nm b hL.pos σ (A σ) (hL.det σ) P a Bd hP hhom hBd (fun k u hu => hbd k σ u hu)`. Establish `hr : (0 : ℝ) < Module.finrank ℚ F` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hcard : (Fintype.card (F →+* ℂ) : ℝ) = Module.finrank ℚ F`. Conclude with `NumberField.Embeddings.card F ℂ` after adjusting the coercions. Establish `hht : ht w A P.det = finPart (linSubst w P.det) + mean F (fun σ => blockSphereMean B N (linSubst (A σ) (map σ P.det)))`. Simplify using `only [ht, formHeight, finPart, mean, Nat.cast_zero, mul_zero, zero_mul, zero_div, add_zero]`. Rewrite using `[add_div]`.
+
+Establish `hmean : mean F (fun σ => blockSphereMean B N (linSubst (A σ) (map σ P.det))) ≤ ∑ k, Real.log (Bd k) - mean F (fun σ => Real.log (nm.gram σ b).det.re) / 2`. Unfold `mean`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard, ← Finset.sum_div]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.HSShort.deg_ge_ht_det : ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (nm : HermFam F V) (M : Submodule (𝓞 F) V) (d : ℕ) (b : Module.Basis (Fin d) F V), IsFull M → ∀ (B N n : ℕ) (w : Matrix (Fin N) (Fin n) F) (A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (Λ : ℝ), Lat w A Λ → ∀ (P : Matrix (Fin d) (Fin d) (MvPolynomial (Fin B × Fin N) F)) (a : Fin B → ℕ) (Bd : Fin d → ℝ), P.det ≠ 0 → IsMultiHomogeneous a P.det → (∀ k, 0 < Bd k) → (∀ k m, ∑ i, coeff m (linSubst w (P i k)) • b i ∈ M) → (∀ k σ (u : Fin B × Fin N → ℂ), (∀ i, frameNorm (A σ) (fun j => u (i, j)) = 1) → cnrm nm σ (fun i => eval₂ σ u (P i k)) b ≤ Bd k) → ht w A P.det - ∑ k, Real.log (Bd k) ≤ deg nm M := by
   intro F V _ _ _ _ _ _ nm M d b hM B N n w A Λ hL P a Bd hP hhom hBd hcoef hbd
   obtain ⟨w', hw'⟩ := GlobalTheory.HSShort.DetTop.exists_rightInv w hL.spans

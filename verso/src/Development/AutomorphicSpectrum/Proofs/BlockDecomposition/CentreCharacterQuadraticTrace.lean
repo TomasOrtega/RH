@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ChzConj
 
+/- English proof (translation)
+Introduce `D ρ p ψ b₀ b y z₀ hz`. Unfold `chz pr`. Rewrite using `[hz]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `Matrix.trace (Matrix.map b₀.1 (incA D) * ((y * b) * adj y)) = Matrix.trace (b * (adj y * (Matrix.map b₀.1 (incA D) * y)))`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem chz_conj : ∀ (D : D7) (ρ p : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (b : Mx D p p) (y : Mx D ρ p) (z₀ : hermA D ρ),
   z₀.1 = HMul.hMul (HMul.hMul y b : Mx D ρ p) (adj y) →
     chz ψ b₀ z₀ = ψ (halfTr (Matrix.trace (HMul.hMul b (pr b₀ y y) : Mx D p p))) := by

@@ -6,6 +6,9 @@ namespace GlobalTheory.HomLen
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[← ne_eq, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Take `⟨_, h2⟩` from `h`. Use `haveI : IsArtinianRing O := h2`. Conclude with `IsDiscreteValuationRing.not_a_field O (IsLocalRing.isField_iff_maximalIdeal_eq.1 (IsArtinianRing.isField_of_isDomain O))`.
+-/
 theorem length_self_eq_top : Module.length O O = ⊤ := by
   by_contra h
   rw [← ne_eq, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian] at h
@@ -14,6 +17,23 @@ theorem length_self_eq_top : Module.length O O = ⊤ := by
   exact IsDiscreteValuationRing.not_a_field O
     (IsLocalRing.isField_iff_maximalIdeal_eq.1 (IsArtinianRing.isField_of_isDomain O))
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `e : (O ⧸ Ideal.span {(0 : O)}) ≃ₗ[O] O` using `Submodule.quotEquivOfEqBot _ (by simp)`. Rewrite using `[e.length_eq, length_self_eq_top]`. Conclude with `le_top`.
+
+Use `set K := FractionRing O`. Establish `hxK : algebraMap O K x ≠ 0`. Simplify using `using (IsFractionRing.injective O K).ne hx`. Use `set c : K := (algebraMap O K x)⁻¹ with hc`. Set `g0 : O →ₗ[O] KO O` to `(Submodule.mkQ (1 : Submodule O K)) ∘ₗ LinearMap.toSpanSingleton O K c`.
+
+Establish `hg0 : ∀ y, g0 y ∈ LinearMap.ker (x • LinearMap.id : KO O →ₗ[O] KO O)`. Introduce `y`. Simplify using `only [LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, g0, LinearMap.coe_comp, Function.comp_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, Algebra.smul_def, hc, map_mul, mul_right_comm, mul_inv_cancel₀ hxK, one_mul]`. Set `g : O →ₗ[O] LinearMap.ker (x • LinearMap.id : KO O →ₗ[O] KO O)` to `g0.codRestrict _ hg0`. Establish `hgs : Function.Surjective g`. Introduce and unpack `⟨t, ht⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`.
+
+Rewrite `ht` using `[LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Take `⟨y, hy⟩` from `ht`. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [g, g0, LinearMap.codRestrict_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply]`.
+
+Use `congr 1`. Rewrite using `[Algebra.smul_def, hy, Algebra.smul_def, hc, mul_comm _ z, mul_assoc, mul_inv_cancel₀ hxK, mul_one]`. Establish `hker : Ideal.span {x} ≤ LinearMap.ker g`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [g, g0, LinearMap.codRestrict_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply, ZeroMemClass.coe_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hc, mul_inv_cancel₀ hxK, map_one]`. Establish `hqs : Function.Surjective ((Ideal.span {x}).liftQ g hker)`.
+
+Introduce `t`. Take `⟨y, rfl⟩` from `hgs t`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`. Conclude with `Module.length_le_of_surjective _ hqs`.
+-/
 theorem length_ker_smul_le (x : O) :
     Module.length O (LinearMap.ker (x • LinearMap.id : KO O →ₗ[O] KO O)) ≤
       Module.length O (O ⧸ Ideal.span {x}) := by
@@ -70,6 +90,11 @@ namespace GlobalTheory.HomLen
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Introduce `f g hfg`. Use extensionality with `⟨b, hb⟩`. Take `⟨k, rfl⟩` from `AddSubgroup.mem_zmultiples_iff.mp hb`. Establish `: (⟨k • a, hb⟩ : AddSubgroup.zmultiples a) = k • ⟨a, AddSubgroup.mem_zmultiples a⟩` using `rfl`. Simplify using `only at hfg`.
+
+Rewrite using `[this, map_zsmul, map_zsmul, hfg]`.
+-/
 theorem evalGen_injective {A M : Type} [AddCommGroup A] [AddCommGroup M] (a : A) :
     Function.Injective (fun f : (AddSubgroup.zmultiples a) →+ M =>
       f ⟨a, AddSubgroup.mem_zmultiples a⟩) := by
@@ -86,6 +111,23 @@ def evalGen {A M : Type} [AddCommGroup A] [AddCommGroup M] [Module O M] (a : A) 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Establish `hkill : ∀ f : (AddSubgroup.zmultiples a) →+ M, p • f ⟨a, AddSubgroup.mem_zmultiples a⟩ = 0`. Introduce `f`. Rewrite using `[← map_nsmul]`. Establish `: p • (⟨a, AddSubgroup.mem_zmultiples a⟩ : AddSubgroup.zmultiples a) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[← ha, addOrderOf_nsmul_eq_zero]`. Rewrite using `[this, map_zero]`. Use `split_ifs with hpl`. Substitute `hpl` using the available equality. Set `T` to `LinearMap.ker ((p : O) • LinearMap.id : KO O →ₗ[O] KO O)`.
+
+Establish `hT : ∀ f, (eM.toLinearMap ∘ₗ evalGen (O` using `O) (M := M) a) f ∈ T := by`. Introduce `f`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, evalGen, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[← map_smul, Nat.cast_smul_eq_nsmul, hkill, map_zero]`. Set `v` to `(eM.toLinearMap ∘ₗ evalGen (O := O) (M := M) a).codRestrict T hT`.
+
+Establish `hv : Function.Injective v`. Introduce `f g hfg`. Apply `evalGen_injective a` to reduce the goal to its premises. Use `congrArg Subtype.val hfg` as an intermediate fact. Simplify `this` using `[v, evalGen]`.
+
+Conclude with `(Module.length_le_of_injective v hv).trans (length_ker_smul_le _)`. Establish `hunit : IsUnit (p : O)`. Establish `h1 : IsUnit (p : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes (Fact.out) (Fact.out)).2 (Ne.symm hpl)`.
+
+Simplify using `using h1.map (algebraMap ℤ_[l] O)`. Use `haveI : Subsingleton ((AddSubgroup.zmultiples a) →+ M) := by`. Prove the components needed by the constructor for the conclusion. Introduce `f g`. Apply `evalGen_injective a` to reduce the goal to its premises.
+
+Simplify using `only`. Establish `hf` using `hkill f`. Establish `hg` using `hkill g`. Rewrite `hf`, `hg` using `[← Nat.cast_smul_eq_nsmul O]`. Rewrite using `[hunit.smul_eq_zero.1 hf, hunit.smul_eq_zero.1 hg]`.
+
+Rewrite using `[Module.length_eq_zero]`.
+-/
 theorem length_cyclic_le (l : ℕ) [Fact l.Prime] [Algebra ℤ_[l] O] {M : Type} [AddCommGroup M]
     [Module O M] (eM : M ≃ₗ[O] KO O) {A : Type} [AddCommGroup A] (a : A) (p : ℕ)
     [Fact p.Prime] (ha : addOrderOf a = p) :
@@ -147,6 +189,17 @@ def pull {A M : Type} [AddCommGroup A] [AddCommGroup M] [Module O M] (B : AddSub
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Establish `hpull : Function.Injective (pull (O` using `O) (M := M) B) := by`. Introduce `g h hgh`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun hgh x`. Establish `hex : Function.Exact (pull (O` using `O) (M := M) B) (restr (O := O) (M := M) B).rangeRestrict := by`.
+
+Rewrite using `[LinearMap.exact_iff, LinearMap.ker_rangeRestrict]`. Use extensionality with `f`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`.
+
+Establish `hle : B ≤ f.ker`. Introduce `b hb`. Use `DFunLike.congr_fun hf ⟨b, hb⟩` as an intermediate fact. Simplify `this` using `[restr]`. Conclude with `⟨QuotientAddGroup.lift B f hle, by ext x; rfl⟩`.
+
+Introduce and unpack `⟨g, rfl⟩`. Use extensionality with `b`. Use `show g (QuotientAddGroup.mk (b : A)) = 0`. Rewrite using `[(QuotientAddGroup.eq_zero_iff _).2 b.2, map_zero]`. Rewrite using `[Module.length_eq_add_of_exact _ _ hpull (restr B).surjective_rangeRestrict hex]`.
+
+Use `gcongr`. Conclude with `Module.length_le_of_injective (LinearMap.range (restr (O := O) (M := M) B)).subtype (Submodule.subtype_injective _)`.
+-/
 theorem length_le_add {A M : Type} [AddCommGroup A] [AddCommGroup M] [Module O M]
     (B : AddSubgroup A) :
     Module.length O (A →+ M) ≤ Module.length O (A ⧸ B →+ M) + Module.length O (B →+ M) := by
@@ -174,6 +227,21 @@ theorem length_le_add {A M : Type} [AddCommGroup A] [AddCommGroup M] [Module O M
   exact Module.length_le_of_injective (LinearMap.range (restr (O := O) (M := M) B)).subtype
     (Submodule.subtype_injective _)
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `A _ _ hn`. Distinguish the cases in `h1 : n = 1`. Use `haveI : Subsingleton A := by`.
+
+Conclude with `(Nat.card_eq_one_iff_unique.1 (hn.trans h1)).1`. Use `haveI : Subsingleton (A →+ M) := ⟨fun f g => by ext x; rw [Subsingleton.elim x 0, map_zero, map_zero]⟩`. Rewrite using `[Module.length_eq_zero]`. Simplify using the standard rewrite rules. Take `⟨p, hp, hpn⟩` from `Nat.exists_prime_and_dvd h1`.
+
+Use `haveI := Fact.mk hp`. Take `⟨a, ha⟩` from `exists_prime_addOrderOf_dvd_card' (G := A) p (hn ▸ hpn)`. Use `set B := AddSubgroup.zmultiples a`. Establish `hcard` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup B`. Rewrite `hcard` using `[Nat.card_zmultiples, ha, hn]`.
+
+Establish `hn0 : n ≠ 0` using `by rw [← hn]; exact Nat.card_pos.ne'`. Establish `hq0 : Nat.card (A ⧸ B) ≠ 0`. Introduce and unpack `h`. Rewrite `hcard` using `[h, zero_mul]`. Conclude with `hn0 hcard`.
+
+Establish `hlt : Nat.card (A ⧸ B) < n`. Rewrite using `[hcard]`. Conclude with `lt_mul_of_one_lt_right (Nat.pos_of_ne_zero hq0) hp.one_lt`. Establish `ihq` using `ih _ hlt (A ⧸ B) rfl`. Establish `hB` using `length_cyclic_le l eM a p ha`.
+
+Establish `hv : padicValNat l n = padicValNat l (Nat.card (A ⧸ B)) + (if p = l then 1 else 0)`. Rewrite using `[hcard, padicValNat.mul hq0 hp.ne_zero]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `padicValNat_self`. Conclude with `padicValNat_primes (Ne.symm h)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hv]`. Apply the tactic sequence `split_ifs <;> simp [mul_add]`.
+-/
 theorem length_addMonoidHom_le_of_card_eq (l : ℕ) [Fact l.Prime] [Algebra ℤ_[l] O] {M : Type} [AddCommGroup M]
     [Module O M] (eM : M ≃ₗ[O] KO O) (n : ℕ) :
     ∀ (A : Type) [AddCommGroup A] [Finite A], Nat.card A = n →
@@ -216,6 +284,9 @@ theorem length_addMonoidHom_le_of_card_eq (l : ℕ) [Fact l.Prime] [Algebra ℤ_
       rw [hv]
       split_ifs <;> simp [mul_add]
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ M _ _ eM A _ _`. Conclude with `length_addMonoidHom_le_of_card_eq l eM _ A rfl`.
+-/
 theorem length_addMonoidHom_le : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O]
     [Algebra ℤ_[l] O] (M : Type) [AddCommGroup M] [Module O M] (eM : M ≃ₗ[O] KO O)

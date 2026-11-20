@@ -3,6 +3,27 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.JSW Filter T
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `q A B hq hA hB`. Use `set B' := B.map (Units.map (starRingEnd ℂ).toMonoidHom) with hB'`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Establish `hqr : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `key : ∀ p ∈ A ×ˢ B', (1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-(1 : ℂ))) ≠ 0`.
+
+Introduce `p hp`. Rewrite `hp` using `[Multiset.mem_product]`. Take `⟨h1, h2⟩` from `hp`. Rewrite `h2` using `[hB', Multiset.mem_map]`. Take `⟨β, hβ, hpe⟩` from `h2`.
+
+Rewrite using `[← hpe]`. Establish `ha` using `hA _ h1`. Establish `hb` using `hB _ hβ`. Establish `hnb : ‖((Units.map (starRingEnd ℂ).toMonoidHom β : ℂˣ) : ℂ)‖ = ‖(β : ℂ)‖`. Simplify using `[Units.coe_map]`.
+
+Establish `hprod : ‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖ < q`. Establish `h0 : 0 ≤ ‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖` using `by positivity`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: (q : ℝ) * q ≤ (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) * (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖)` using `mul_le_mul hc hc (by positivity) h0`.
+
+Establish `h3 : (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) * (‖(p.1 : ℂ)‖ * ‖(β : ℂ)‖) = ‖(p.1 : ℂ)‖ ^ 2 * ‖(β : ℂ)‖ ^ 2` using `by ring`. Establish `h4 : ‖(p.1 : ℂ)‖ ^ 2 * ‖(β : ℂ)‖ ^ 2 < (q : ℝ) * q` using `mul_lt_mul'' ha hb (by positivity) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h0`. Establish `hz : (p.1 : ℂ) * ((Units.map (starRingEnd ℂ).toMonoidHom β : ℂˣ) : ℂ) * (q : ℂ) ^ (-(1 : ℂ)) = 1`.
+
+Take the linear combination `-h0`. Establish `hn` using `congrArg norm hz`. Rewrite `hn` using `[Complex.cpow_neg_one, norm_mul, norm_mul, hnb, norm_inv, Complex.norm_natCast, norm_one]`. Establish `hqpos : (0 : ℝ) < q` using `by linarith`. Rewrite `hn` using `[mul_inv_eq_one₀ hqpos.ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Establish `hc : ∀ p ∈ A ×ˢ B', Tendsto (fun x : ℝ => (1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-(x : ℂ)))⁻¹) (𝓝[>] 1) (𝓝 ((1 - (p.1 : ℂ) * p.2 * (q : ℂ) ^ (-((1 : ℝ) : ℂ)))⁻¹))`. Introduce `p hp`. Apply `Tendsto.mono_left _ nhdsWithin_le_nhds` to reduce the goal to its premises.
+
+Apply `ContinuousAt.tendsto` to reduce the goal to its premises. Apply `ContinuousAt.inv₀` to reduce the goal to its premises. Apply `ContinuousAt.sub continuousAt_const` to reduce the goal to its premises. Apply `ContinuousAt.mul continuousAt_const` to reduce the goal to its premises. Apply `ContinuousAt.const_cpow` to reduce the goal to its premises.
+
+Conclude with `(Complex.continuous_ofReal.neg).continuousAt`. Conclude with `Or.inl hq0`. Simplify using `using key p hp`. Use `tendsto_multiset_prod (A ×ˢ B') hc` as an intermediate fact. Simplify `this` using `[locL]`.
+
+Unfold `locL`. Apply `Multiset.prod_ne_zero` to reduce the goal to its premises. Rewrite using `[Multiset.mem_map]`. Introduce and unpack `⟨p, hp, h⟩`. Conclude with `inv_ne_zero (key p hp) h`.
+-/
 theorem locL_conj_tendsto_one_and_ne_zero : ∀ (q : ℕ) (A B : Multiset ℂˣ), 1 < q → (∀ α ∈ A, ‖(α : ℂ)‖ ^ 2 < (q : ℝ)) →
     (∀ β ∈ B, ‖(β : ℂ)‖ ^ 2 < (q : ℝ)) →
     Tendsto (fun x : ℝ => locL q A (B.map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) (𝓝[>] 1)

@@ -5,6 +5,9 @@ import Formalism.SelfDualUnimodular.LocalLatticeDictionary.AlgebraMapNeZero
 
 namespace Formalism.L2.SG.Pf.LatDictZ
 
+/- English proof (translation)
+The claim follows from `Z0.lamGenus_of (Z0.BR.semiGenus_of Z0.SGC.semi_genus_local)`.
+-/
 theorem lattice_genus : LatDictZ.LamGenus :=
   Z0.lamGenus_of (Z0.BR.semiGenus_of Z0.SGC.semi_genus_local)
 

@@ -15,6 +15,13 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 
 namespace GlobalTheory.TamCnt
 
+/- English proof (translation)
+Set `f : congG σ J Λ v k →* locCong σ J Λ v k` to `((locHom σ J v).comp (congG σ J Λ v k).subtype).codRestrict _ (fun h => GlobalTheory.T.local_hom_maps_congruence_subgroup F E σ M J Λ v k h.1 h.2)`. Establish `hf : Function.Surjective f` using `fun g => by`. Take `⟨h, hh, e⟩` from `GlobalTheory.T.local_congruence_hom_surjective F E σ M J Λ v k g.1 g.2`. Conclude with `⟨⟨h, hh⟩, Subtype.ext e⟩`. Establish `hc : ((locCong σ J Λ v (k + 1)).subgroupOf (locCong σ J Λ v k)).comap f = (congG σ J Λ v (k + 1)).subgroupOf (congG σ J Λ v k)`.
+
+Use extensionality with `h`. Simplify using `only [Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `GlobalTheory.T.mem_next_congruence_of_local F E σ M J Λ v k h.1 h.2 hh`.
+
+Introduce `hh`. Conclude with `GlobalTheory.T.local_hom_maps_congruence_subgroup F E σ M J Λ v (k + 1) h.1 hh`. Unfold `Subgroup.relIndex`. Rewrite using `[← hc, Subgroup.index_comap_of_surjective _ hf]`.
+-/
 theorem relIndex_congG_succ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (Λ : Submodule (𝓞 E) (Fin M → E))
     (v : HeightOneSpectrum (𝓞 F)) (k : ℕ) :

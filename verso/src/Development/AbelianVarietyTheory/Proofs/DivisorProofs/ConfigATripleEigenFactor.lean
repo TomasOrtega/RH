@@ -19,11 +19,23 @@ namespace GlobalTheory.ConeA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`. Conclude with `integral_const_mul c _`.
+-/
 theorem I_smul {a a' : ℕ} {G : Geo σ a a'} (om : Rep σ G.V G.W) (c : ℂ) (Ψ : (Fin a × Fin (a + a') → AF F) → ℂ)
     (h : UA σ G.W.J) : G.M.I om (c • Ψ) h = c * G.M.I om Ψ h := by
   simp only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he K μK μ hK hμK hμ hΦ₁`. Take `⟨f₁, -, φ₁, hSB₁, hcof₁, h₁, hne₁⟩` from `GlobalTheory.T.nonzero_theta_pure_tensor hKP F E σ B b a' G₁ X om₁ om₁' hT₁ hΦ₁`. Establish `hfin : {v | ¬ φ₁ v = G₁.M.vac v}.Finite` using `Filter.eventually_cofinite.1 hcof₁`. Use `set T : Finset (Pl F) := X.T ∪ hfin.toFinset with hTdef`. Establish `hXT : X.T ⊆ T` using `Finset.subset_union_left`.
+
+Establish `hvac₁ : ∀ v ∉ T, φ₁ v = G₁.M.vac v` using `fun v hv => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc))`. Take `⟨ei, ev, hei, hev, hloc⟩` from `he.loc`. Establish `hcpt : IsCompact (K : Set (UA σ G.V.J))` using `GlobalTheory.T.stabilizer_compact hKP F E σ B (b + 2) G.V _ _ K hT.base hT.geo.hV hK`.
+
+Take `⟨κ, hκ, hcone⟩` from `GlobalTheory.T.theta_triple_seesaw_configuration hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hloc K μK μ hK hμK hμ (existsUnique_isNormK hcpt (evI F)).choose (exists_haar_idelesAt E (evI F)).choose (fun v => (existsUnique_isNormK hcpt (evFin F v)).ch …`. Take `⟨f, hf, φ, hSB, hvac, hne⟩` from `GlobalTheory.T.triple_transfer_along_config_a_third hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hloc K hK (existsUnique_isNormK hcpt (evI F)).choose (exists_haar_idelesAt E (evI F)).choose (fun v => (existsUnique_isNormK hcpt (evFin F v)).choose) (fu …`. Establish `hcofT : ∀ᶠ v in cofinite, φ v = G.M.vac v` using `Filter.eventually_cofinite.2 ((T.finite_toSet).subset fun v hv => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hvac v hc))`.
+
+Take `⟨m, hm⟩` from `GlobalTheory.T.exists_levi_element_skew_cm F E σ B _ _ G.W G₁.W H' 0 (b + 1) _ _ hT.base.cm hT.geo.hW hC.hH' h₁`. Use `⟨pure f φ, Submodule.subset_span ⟨f, hf, φ, hSB, hcofT, rfl⟩, 1, h₁, m, hm, ?_⟩` and prove the remaining obligations. Establish `h11 : om (1, 1) = 1` using `map_one om`. Rewrite using `[h11, Module.End.one_apply, hcone f hf φ hSB hvac, I_smul]`. Conclude with `mul_ne_zero hκ hne`.
+-/
 theorem coneA_nonZero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

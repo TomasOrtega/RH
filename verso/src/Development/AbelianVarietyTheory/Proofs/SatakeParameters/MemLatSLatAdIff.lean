@@ -13,6 +13,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LocCarry
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem prV_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (M : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (w : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
@@ -20,6 +23,9 @@ theorem prV_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   ext i
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem coe_bc_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     (((bc (prV (E := E) v) x)⁻¹ : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
@@ -28,12 +34,26 @@ theorem coe_bc_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [← map_inv]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_bc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     ((bc (prV (E := E) v) x : GL (Fin N) (E ⊗[F] v.adicCompletion F)) :
       Matrix (Fin N) (Fin N) (E ⊗[F] v.adicCompletion F)) =
       (x : Matrix (Fin N) (Fin N) _).map (prV (E := E) v) := rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ N x Lb hfin hspan v z`. Establish `hrec` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin N) Lb hfin hspan x`. Establish `hpr : ∀ y : Fin N → E ⊗[F] v.adicCompletion F, (fun i => prV (E` using `E) v (Formalism.UG.P.afsplitIE v (y i))) = y := fun y => by`. Use extensionality with `i`. Conclude with `Formalism.UG.P.afsplit_prV_IE v (y i)`.
+
+Establish `hlat : Formalism.L2.PairingIndexBounds.F.latAd x Lb = Formalism.UG.CS.globLat x Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`. Rewrite using `[hlat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `Formalism.L2.Geo.Def.PN.IE_latS (Formalism.UG.CS.globLat x Lb) v hz`.
+
+Establish `h2` using `(hrec _).1 h1`. Establish `h3` using `Formalism.L2.Geo.Def.PN.prV_latS Lb v h2`. Rewrite `h3` using `[prV_mulVec, hpr, ← coe_bc_inv]`. Conclude with `h3`. Introduce `hz`.
+
+Establish `h1` using `Formalism.L2.Geo.Def.PN.IE_latS Lb v hz`. Use `set u : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F := ((x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _) *ᵥ (fun i => Formalism.UG.P.afsplitIE v (((((bc (prV (E := E) v) x)⁻¹ : GL (Fin N) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin N) (Fin N) (E ⊗[F] v.adic …`. Establish `h2 : u ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (Formalism.UG.CS.globLat x Lb) := by`. Use `(hrec u).2 ?_` and prove the remaining obligations. Rewrite using `[hu, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `h1`. Establish `h3` using `Formalism.L2.Geo.Def.PN.prV_latS (Formalism.UG.CS.globLat x Lb) v h2`. Rewrite `h3` using `[hu, prV_mulVec, hpr, ← coe_bc, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `h3`.
+-/
 theorem mem_latS_latAd_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)),
     Module.Finite (𝓞 E) Lb → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ →

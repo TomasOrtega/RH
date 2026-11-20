@@ -12,6 +12,13 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.BKReal.CrisBounded
 
+/- English proof (translation)
+Take `⟨ζ, e, h0, -, h1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : e.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`.
+
+Establish `hE : GlobalTheory.MemLoc.IsEps e` using `⟨he, fun hh => h1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`. Establish `h2` using `hd.trans (GlobalTheory.MemLoc.ker_theta_eq_span_xi hE)`.
+
+Establish `h3 : d ∣ GlobalTheory.MemLoc.xi e` using `Ideal.mem_span_singleton.1 (h2 ▸ Ideal.mem_span_singleton_self _)`. Establish `h4` using `((GlobalTheory.MemLoc.filtration_eq_xi_pow l e hE).1 m y).1 ((GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow l m y).2 hy)`. Conclude with `(pow_dvd_pow_of_dvd (map_dvd (GlobalTheory.MemLoc.aDp l) h3) m).trans h4`.
+-/
 theorem dvd_of_ev_eq_zero {l : ℕ} [Fact l.Prime] {d : Ainf l} (hd : Ideal.span {d} = RingHom.ker (Per.θ l))
     (m : ℕ) (y : Per.BdRp l) (hy : Per.ev l m y = 0) : ainfToBdRp l d ^ m ∣ y := by
   obtain ⟨ζ, e, h0, -, h1, hr⟩ := GlobalTheory.MemLoc.exists_zeta_eps l
@@ -28,6 +35,11 @@ theorem dvd_of_ev_eq_zero {l : ℕ} [Fact l.Prime] {d : Ainf l} (hd : Ideal.span
   have h4 := ((GlobalTheory.MemLoc.filtration_eq_xi_pow l e hE).1 m y).1 ((GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow l m y).2 hy)
   exact (pow_dvd_pow_of_dvd (map_dvd (GlobalTheory.MemLoc.aDp l) h3) m).trans h4
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `(isCrisP_crisP l).bdd m`. Use `⟨N, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hN x`. Use `⟨a, dvd_of_ev_eq_zero hd m _ ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `ha.trans (GlobalTheory.MemLoc.CrisUnique.ev_aDp m a).symm`.
+-/
 theorem bdd_crisP {l : ℕ} [Fact l.Prime] {d : Ainf l} (hd : Ideal.span {d} = RingHom.ker (Per.θ l)) (m : ℕ) :
     ∃ N : ℕ, ∀ x : Per.Acris l, ∃ a : Ainf l,
       ainfToBdRp l d ^ m ∣ (l : Per.BdRp l) ^ N * acrisToBdRp l x - ainfToBdRp l a := by
@@ -38,6 +50,9 @@ theorem bdd_crisP {l : ℕ} [Fact l.Prime] {d : Ainf l} (hd : Ideal.span {d} = R
   rw [map_sub, sub_eq_zero]
   exact ha.trans (GlobalTheory.MemLoc.CrisUnique.ev_aDp m a).symm
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis Z O`. Use `choose a c hc using fun i => h (GlobalTheory.Decompl.crd b i z)`. Use `⟨∑ i, b i ⊗ₜ[Z] a i, ∑ i, b i ⊗ₜ[Z] c i, GlobalTheory.Decompl.ext_crd b fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, GlobalTheory.Decompl.crd_natCast_mul, GlobalTheory.Decompl.crd_map, GlobalTheory.Decompl.crd_map, GlobalTheory.Decompl.crd_mul, GlobalTheory.Decompl.crd_sum, GlobalTheory.Decompl.crd_sum, hc]`.
+-/
 theorem bdd_tensor {Z O A C D : Type} [CommRing Z] [CommRing O] [Algebra Z O] [Module.Free Z O]
     [Module.Finite Z O] [CommRing A] [Algebra Z A] [CommRing C] [Algebra Z C] [CommRing D] [Algebra Z D]
     (f : A →ₐ[Z] D) (j : C →ₐ[Z] D) (t : D) (n : ℕ) (h : ∀ x : C, ∃ a : A, t ∣ (n : D) * j x - f a)
@@ -50,6 +65,11 @@ theorem bdd_tensor {Z O A C D : Type} [CommRing Z] [CommRing O] [Algebra Z O] [M
   rw [map_sub, GlobalTheory.Decompl.crd_natCast_mul, GlobalTheory.Decompl.crd_map, GlobalTheory.Decompl.crd_map, GlobalTheory.Decompl.crd_mul,
     GlobalTheory.Decompl.crd_sum, GlobalTheory.Decompl.crd_sum, hc]
 
+/- English proof (translation)
+Introduce `l _ e _ O K _ _ _ _ _ _ _ _ _ ϖ m`. Rewrite using `[show ϖ.iAl O K (EIn l e _) = 1 ⊗ₜ ainfToBdRp l (ϖ.ev 1 (eis l 1 e)) from (ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E 1 O K))]`. Take `⟨N, hN⟩` from `bdd_crisP (ϖ.span_ev_eis 1) m`. Use `⟨N, fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `bdd_tensor (ainfToBdRp l) (acrisToBdRp l) _ (l ^ N) (fun x => by rw [Nat.cast_pow]; exact hN x) z`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow, ← Nat.cast_pow]`. Conclude with `hy`.
+-/
 theorem bdd_crisToOD : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (ϖ : PiSys l e) (m : ℕ), ∃ N : ℕ, ∀ z : OCr l O, ∃ y : OA l O, ϖ.iAl O K (EIn l e _) ^ m ∣ (l : OD l O) ^ N * crisToOD l O z - toOD l O y := by
   intro l _ e _ O K _ _ _ _ _ _ _ _ _ ϖ m
   rw [show ϖ.iAl O K (EIn l e _) = 1 ⊗ₜ ainfToBdRp l (ϖ.ev 1 (eis l 1 e)) from

@@ -23,20 +23,34 @@ noncomputable def scaleEquiv (P : σ → Prop) [DecidablePred P] (u : Sˣ) :
       · simp [hv, ← mul_assoc, ← C_mul]
       · simp [hv])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem scaleEquiv_apply' (P : σ → Prop) [DecidablePred P] (u : Sˣ)
     (p : MvPolynomial σ S) :
     scaleEquiv P u p = aeval (fun v => if P v then C (u : S) * X v else X v) p := rfl
 
+/- English proof (translation)
+Rewrite using `[scaleEquiv_apply', MvPolynomial.aeval_X]`.
+-/
 theorem scaleEquiv_X (P : σ → Prop) [DecidablePred P] (u : Sˣ) (v : σ) :
     scaleEquiv P u (X v) = if P v then C (u : S) * X v else X v := by
   rw [scaleEquiv_apply', MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [scaleEquiv_apply', MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]; done)`. Consider the case `exact (scaleEquiv P u).commutes a`.
+-/
 theorem scaleEquiv_C (P : σ → Prop) [DecidablePred P] (u : Sˣ) (a : S) :
     scaleEquiv P u (C a) = C a := by
   first
     | (rw [scaleEquiv_apply', MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]; done)
     | exact (scaleEquiv P u).commutes a
 
+/- English proof (translation)
+Establish `hf : ∀ v : σ, (if P v then C (u : S) * X v else X v) ^ (s v) = C (if P v then (u : S) ^ (s v) else 1) * X v ^ (s v)`. Introduce `v`. Distinguish the cases in `hv : P v`. Rewrite using `[if_pos hv, if_pos hv, mul_pow, MvPolynomial.C_pow]`. Rewrite using `[if_neg hv, if_neg hv, MvPolynomial.C_1, one_mul]`.
+
+Establish `hc : C ((u : S) ^ (∑ v ∈ Finset.univ.filter P, s v)) = ∏ v, (C (if P v then (u : S) ^ (s v) else 1) : MvPolynomial σ S)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, Finset.prod_filter, map_prod]`. Rewrite using `[scaleEquiv_apply', MvPolynomial.aeval_monomial, MvPolynomial.monomial_eq, Finsupp.prod_fintype s (fun v k => (if P v then C (u : S) * X v else X v) ^ k) (fun v => pow_zero _), Finsupp.prod_fintype s (fun v k => (X v : MvPolynomial σ S) ^ k) (fun v => pow_zero _), hc]`. Simplify using `only [hf, Finset.prod_mul_distrib, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scaleEquiv_monomial [Fintype σ] (P : σ → Prop) [DecidablePred P] (u : Sˣ)
     (s : σ →₀ ℕ) (a : S) :
     scaleEquiv P u (monomial s a) =
@@ -63,6 +77,13 @@ section Blocks
 
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {D N : ℕ}
 
+/- English proof (translation)
+Establish `hsum : ∀ s : TVar D N →₀ ℕ, (∑ v ∈ Finset.univ.filter (fun v : TVar D N => v.1 = b), s v) = ∑ j, s (b, j)`. Introduce `s`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `x _ hx`.
+
+Simplify using `[hx]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`. Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`.
+
+Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[scaleEquiv_monomial, hsum s, hF s hs b]`.
+-/
 theorem scale_multiHomogeneous (b : Fin (D + 1)) (u : Kˣ) (a : Fin (D + 1) → ℕ)
     (F : MvPolynomial (TVar D N) K) (hF : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous a F) :
     scaleEquiv (fun v : TVar D N => v.1 = b) u F = C ((u : K) ^ a b) * F := by
@@ -88,6 +109,11 @@ instance (b : Fin (D + 1)) : DecidablePred (InBlock (D := D) (N := N) b) := by
   intro v
   cases v <;> simp only [InBlock, Sum.elim_inl, Sum.elim_inr] <;> infer_instance
 
+/- English proof (translation)
+Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Rewrite using `[Fin.insertNth_apply_same]`. Conclude with `ha`. Take `⟨k, rfl⟩` from `Fin.exists_succAbove_eq hj`.
+
+Rewrite using `[Fin.insertNth_apply_succAbove]`. Conclude with `hf k`.
+-/
 private theorem prop_insertNth_of_forall {n : ℕ} {M : Type*} (Q : M → Prop) (j₀ : Fin (n + 1))
     (a : M) (f : Fin n → M) (ha : Q a) (hf : ∀ k, Q (f k)) (j : Fin (n + 1)) :
     Q (Fin.insertNth (α := fun _ => M) j₀ a f j) := by
@@ -99,6 +125,15 @@ private theorem prop_insertNth_of_forall {n : ℕ} {M : Type*} (Q : M → Prop) 
     rw [Fin.insertNth_apply_succAbove]
     exact hf k
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `p`. Establish `hX : ∀ k : Fin N, scaleEquiv (InBlock (D` using `D) (N := N) b) u (MvPolynomial.X (Sum.inr (i, k))) = (if i = b then C (u : Ω) else 1) * MvPolynomial.X (Sum.inr (i, k)) := by`. Introduce `k`. Rewrite using `[scaleEquiv_X]`. Distinguish the cases in `h : i = b`.
+
+Simplify using `[InBlock, h]`. Simplify using `[InBlock, h]`. Establish `hA : scaleEquiv (InBlock (D` using `D) (N := N) b) u (if i = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (x k)) = (if i = b then C (u : Ω) else 1) * (if i = 0 then MvPolynomial.X (Sum.inl ()) else -∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (x k)) := by`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality.
+
+Establish `hb' : ¬ ((0 : Fin (D + 1)) = b)` using `fun h => hb h.symm`. Rewrite using `[if_pos rfl, if_neg hb', one_mul, scaleEquiv_X]`. Simplify using `[InBlock]`. Rewrite using `[if_neg h0, map_neg, map_sum, mul_neg, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hX, scaleEquiv_C, mul_assoc]`. Conclude with `prop_insertNth_of_forall (fun m => scaleEquiv (InBlock (D := D) (N := N) b) u m = (if i = b then C (u : Ω) else 1) * m) j₀ _ _ hA hX j`.
+-/
 theorem scale_sImg_expr (b : Fin (D + 1)) (hb : b ≠ 0) (u : Ωˣ) (j₀ : Fin (N + 1))
     (x : Fin N → Ω) (p : TVar D N) :
     scaleEquiv (InBlock (D := D) (N := N) b) u
@@ -159,6 +194,9 @@ noncomputable def sigF (b : Fin (D + 1)) (u : Kˣ) : KTf K D N ≃+* KTf K D N :
 noncomputable def tauF (b : Fin (D + 1)) (u : Kˣ) : OmS Ω D N ≃+* OmS Ω D N :=
   IsFractionRing.ringEquivOfRingEquiv (tauP (Ω := Ω) (D := D) (N := N) b u).toRingEquiv
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [IsScalarTower.algebraMap_apply K (MvPolynomial (SVar D N) Ω) (OmS Ω D N), MvPolynomial.algebraMap_apply]; done)`. Consider the case `exact IsScalarTower.algebraMap_apply K (MvPolynomial (SVar D N) Ω) (OmS Ω D N) κ`. Consider the case `rfl`.
+-/
 theorem algebraMap_K_OmS (κ : K) :
     algebraMap K (OmS Ω D N) κ =
       algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (MvPolynomial.C (algebraMap K Ω κ)) := by
@@ -168,6 +206,9 @@ theorem algebraMap_K_OmS (κ : K) :
     | exact IsScalarTower.algebraMap_apply K (MvPolynomial (SVar D N) Ω) (OmS Ω D N) κ
     | rfl
 
+/- English proof (translation)
+Unfold `tauF`. Use `first`. Consider the case `(rw [IsFractionRing.ringEquivOfRingEquiv_algebraMap]; rfl)`. Consider the case `exact IsLocalization.ringEquivOfRingEquiv_eq _ _`.
+-/
 private theorem tauF_algebraMap' (b : Fin (D + 1)) (u : Kˣ)
     (q : MvPolynomial (SVar D N) Ω) :
     tauF (Ω := Ω) (D := D) (N := N) b u (algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) q) =
@@ -178,6 +219,9 @@ private theorem tauF_algebraMap' (b : Fin (D + 1)) (u : Kˣ)
     | (rw [IsFractionRing.ringEquivOfRingEquiv_algebraMap]; rfl)
     | exact IsLocalization.ringEquivOfRingEquiv_eq _ _
 
+/- English proof (translation)
+Establish `h1 : algebraMap Ω (OmS Ω D N) r = algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (MvPolynomial.C r)` using `by first`. Consider the case `exact IsScalarTower.algebraMap_apply Ω (MvPolynomial (SVar D N) Ω) (OmS Ω D N) r`. Consider the case `rfl`. Rewrite using `[h1, tauF_algebraMap', scaleEquiv_C]`.
+-/
 theorem tauF_algebraMap (b : Fin (D + 1)) (u : Kˣ) (r : Ω) :
     tauF (Ω := Ω) (D := D) (N := N) b u (algebraMap Ω (OmS Ω D N) r) =
       algebraMap Ω (OmS Ω D N) r := by
@@ -188,6 +232,17 @@ theorem tauF_algebraMap (b : Fin (D + 1)) (u : Kˣ) (r : Ω) :
       | rfl
   rw [h1, tauF_algebraMap', scaleEquiv_C]
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on`. Use `next a =>`. Establish `e1 : (sHom (K` using `K) (Ω := Ω) (D := D) (N := N) j₀ x) (C a) = algebraMap K (OmS Ω D N) a := (sHom (K := K) (Ω := Ω) (D := D) (N := N) j₀ x).commutes a`. Establish `e2 : sigP (K` using `K) (D := D) (N := N) b u (C a) = C a := scaleEquiv_C _ _ _`. Rewrite using `[e2, e1, algebraMap_K_OmS, tauF_algebraMap', scaleEquiv_C]`.
+
+Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`. Use `next p v hp =>`. Simplify using `only [map_mul, hp]`. Use `congr 1`.
+
+Establish `hs : ∀ w : TVar D N, (sHom (K` using `K) (Ω := Ω) (D := D) (N := N) j₀ x) (X w) = sImg j₀ x w := fun w => MvPolynomial.aeval_X _ _`. Establish `e2 : sigP (K` using `K) (D := D) (N := N) b u (X v) = if v.1 = b then C (u : K) * X v else X v := scaleEquiv_X _ _ _`. Establish `e3 : (sHom (K` using `K) (Ω := Ω) (D := D) (N := N) j₀ x) (C (u : K)) = algebraMap K (OmS Ω D N) (u : K) := (sHom (K := K) (Ω := Ω) (D := D) (N := N) j₀ x).commutes (u : K)`. Rewrite using `[e2, hs, sImg, tauF_algebraMap', scale_sImg_expr b hb _ j₀ x v]`. Distinguish the cases in `hv : v.1 = b`.
+
+Apply the tactic sequence `rw [if_pos hv] try rw [if_pos hv]`. Simplify using `only [map_mul]`. Rewrite using `[hs, sImg, e3, algebraMap_K_OmS]`. Both sides reduce to the same expression. Apply the tactic sequence `rw [if_neg hv] try rw [if_neg hv]`.
+
+Rewrite using `[one_mul, hs, sImg]`.
+-/
 theorem tauF_sHom (b : Fin (D + 1)) (hb : b ≠ 0) (u : Kˣ) (j₀ : Fin (N + 1)) (x : Fin N → Ω)
     (F : MvPolynomial (TVar D N) K) :
     tauF b u (sHom j₀ x F) = sHom j₀ x (sigP b u F) := by
@@ -233,6 +288,13 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Establish `hl : ∀ G : KTp K d.D d.N, d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) G) = d.sH c G`. Introduce `G`. Use `first`. Consider the case `exact IsFractionRing.lift_algebraMap _ _`. Consider the case `exact IsFractionRing.lift_algebraMap _`.
+
+Consider the case `simp [Data.KTtoS]`. Establish `key : ∀ F : KTp K d.D d.N, tauF (Ω` using `Ω c) b u (d.KTtoS h c (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F)) = d.KTtoS h c (sigF b u (algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F)) := by`. Introduce `F`. Rewrite using `[hl, sigF, IsFractionRing.ringEquivOfRingEquiv_algebraMap, hl]`. Conclude with `tauF_sHom b hb u (d.jc c) (d.x c) F`.
+
+Take `⟨p, q, _, rfl⟩` from `IsFractionRing.div_surjective (A := KTp K d.D d.N) z`. Simplify using `only [map_div₀, key]`.
+-/
 theorem tauF_KTtoS (h : d.S1) (c : ι) (b : Fin (d.D + 1)) (hb : b ≠ 0) (u : Kˣ)
     (z : KTf K d.D d.N) :
     tauF (Ω := Ω c) b u (d.KTtoS h c z) = d.KTtoS h c (sigF b u z) := by
@@ -252,6 +314,11 @@ theorem tauF_KTtoS (h : d.S1) (c : ι) (b : Fin (d.D + 1)) (hb : b ≠ 0) (u : K
   obtain ⟨p, q, _, rfl⟩ := IsFractionRing.div_surjective (A := KTp K d.D d.N) z
   simp only [map_div₀, key]
 
+/- English proof (translation)
+Apply the tactic sequence `try intro _`. Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Establish `he : (algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N)).comp ((sigF (N` using `d.N) b u : KTf K d.D d.N ≃+* KTf K d.D d.N) : KTf K d.D d.N →+* KTf K d.D d.N) = ((tauF (Ω := Ω c) (D := d.D) (N := d.N) b u : OmS (Ω c) d.D d.N ≃+* OmS (Ω c) d.D d.N) : OmS (Ω c) d.D d.N →+* OmS (Ω c) d.D d.N).comp (algebraMap (KTf K d.D d.N) (OmS (Ω c) d.D d.N)) := by`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Conclude with `(tauF_KTtoS d h c b hb u z).symm`.
+
+Establish `hn` using `Algebra.norm_eq_of_equiv_equiv (sigF (N := d.N) b u) (tauF (Ω := Ω c) (D := d.D) (N := d.N) b u) he (algebraMap (Ω c) (OmS (Ω c) d.D d.N) r)`. Rewrite `hn` using `[tauF_algebraMap]`. Establish `h2` using `congrArg (sigF (N := d.N) b u) hn`. Rewrite `h2` using `[RingEquiv.apply_symm_apply]`. Conclude with `h2`.
+-/
 theorem sigF_norm (h : d.S1) (c : ι) (b : Fin (d.D + 1)) (hb : b ≠ 0) (u : Kˣ) (r : Ω c) :
     letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra
     sigF b u (Algebra.norm (KTf K d.D d.N) (algebraMap (Ω c) (OmS (Ω c) d.D d.N) r)) =

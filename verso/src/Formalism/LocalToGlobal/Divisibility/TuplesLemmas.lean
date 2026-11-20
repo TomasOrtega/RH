@@ -11,6 +11,11 @@ section Proved
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
+/- English proof (translation)
+Simplify using `only [tupGrp, finChar, Subgroup.mem_inf, Subgroup.mem_iInf, mem_kills, CommGroup.mem_torsion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩`. Conclude with `⟨⟨h1, h2, h3⟩, h4, h5, h6⟩`. Introduce and unpack `⟨⟨h1, h2, h3⟩, h4, h5, h6⟩`.
+
+Conclude with `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩`.
+-/
 theorem mem_tupGrp {S : Set ℕ} (ξ : Chr F E L) : ξ ∈ tupGrp F E L S ↔
     ((ratId F E).range ≤ ξ.ker ∧ (∃ N : ℕ, 0 < N ∧ congN F E N ≤ ξ.ker) ∧ IsOfFinOrder ξ) ∧
       (idF F E).range ≤ ξ.ker ∧ (∀ v : HeightOneSpectrum (𝓞 F), wildAt E v ≤ ξ.ker) ∧
@@ -22,11 +27,17 @@ theorem mem_tupGrp {S : Set ℕ} (ξ : Chr F E L) : ξ ∈ tupGrp F E L S ↔
   · rintro ⟨⟨h1, h2, h3⟩, h4, h5, h6⟩
     exact ⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩
 
+/- English proof (translation)
+Rewrite using `[tilde, dif_pos h]`. Conclude with `MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ x`.
+-/
 theorem tilde_norm_quotient (σ : E →ₐ[F] E) (ξ : Chr F E L) (h : (h90 σ).ker ≤ ξ.ker) (x : (AfE F E)ˣ) :
     tilde σ ξ ⟨h90 σ x, x, rfl⟩ = ξ x := by
   rw [tilde, dif_pos h]
   exact MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ x
 
+/- English proof (translation)
+Establish `hm : Matrix.GeneralLinearGroup.det g ∈ (h90 σ).range` using `⟨x, hx⟩`. Rewrite using `[detTw, dif_pos hm, ← tilde_norm_quotient σ ξ h x]`. Use `congr 1`. Conclude with `Subtype.ext hx.symm`.
+-/
 theorem detTw_of_det (σ : E →ₐ[F] E) (ξ : Chr F E L) (h : (h90 σ).ker ≤ ξ.ker) {n : ℕ}
     (g : GL (Fin n) (AfE F E)) (x : (AfE F E)ˣ) (hx : h90 σ x = Matrix.GeneralLinearGroup.det g) :
     detTw σ ξ g = ξ x := by
@@ -42,10 +53,18 @@ section ProvedK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {K : Type} [Field K] [NumberField K] [StarRing K] {S : Set ℕ}
 
+/- English proof (translation)
+The claim follows from `((mem_tupGrp (ξ : Chr F E K)).mp ξ.2).1.2.2`.
+-/
 theorem tup_finOrder (ξ : Tup F E K S) : IsOfFinOrder (ξ : Chr F E K) := ((mem_tupGrp (ξ : Chr F E K)).mp ξ.2).1.2.2
 
 end ProvedK
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hg`. Establish `h1 : (δ : Chr F E L) ∈ kills Lˣ (inertAt E v)`. Conclude with `((mem_tupGrp (δ : Chr F E L)).mp δ.2).2.2.2 v hg`. Establish `h2 : (15 : ℕ) ∣ 1` using `((h.2 v).1 hv 1).mp fun x hx => by`. Use `h1 hx` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.mem_ker]`. Rewrite using `[this, one_pow]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsBaseChar.good {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type}
     [Field L] {S : Set ℕ} {p : ℕ} (δ : Tup F E L S) (h : IsBaseChar p (δ : Chr F E L))
     (v : HeightOneSpectrum (𝓞 F)) (hv : plc v = p) : GoodPl E S v := by
@@ -58,6 +77,9 @@ theorem IsBaseChar.good {F E : Type} [Field F] [NumberField F] [Field E] [Number
     rw [this, one_pow]
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hg`. Conclude with `hv (((mem_tupGrp (ξ : Chr F E L)).mp ξ.2).2.2.2 v hg)`.
+-/
 theorem Tup.good {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
     {S : Set ℕ} (ξ : Tup F E L S) {v : HeightOneSpectrum (𝓞 F)} (hv : v ∈ Qprime (ξ : Chr F E L)) : GoodPl E S v := by
   by_contra hg

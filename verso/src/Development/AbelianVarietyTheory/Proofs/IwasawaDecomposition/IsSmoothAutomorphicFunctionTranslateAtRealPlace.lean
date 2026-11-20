@@ -23,14 +23,23 @@ section Lin
 
 variable {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← ha]`. Rewrite using `[Matrix.mul_assoc, hab, Matrix.mul_one]`.
+-/
 theorem mul_inv_eq (ha : aᴴ * H * a = H) (hab : a * b = 1) : H * b = aᴴ * H := by
   conv_lhs => rw [← ha]
   rw [Matrix.mul_assoc, hab, Matrix.mul_one]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← ha]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, hab, conjTranspose_one, Matrix.one_mul]`.
+-/
 theorem inv_mul_eq (ha : aᴴ * H * a = H) (hab : a * b = 1) : bᴴ * H = H * a := by
   conv_lhs => rw [← ha]
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, hab, conjTranspose_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e : (b * X * a)ᴴ * H + H * (b * X * a) = aᴴ * (Xᴴ * (bᴴ * H)) + (H * b) * X * a`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e, inv_mul_eq ha hab, mul_inv_eq ha hab]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem skew_conj (ha : aᴴ * H * a = H) (hab : a * b = 1) {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ * H + H * X = 0) :
     (b * X * a)ᴴ * H + H * (b * X * a) = 0 := by
   have e : (b * X * a)ᴴ * H + H * (b * X * a) = aᴴ * (Xᴴ * (bᴴ * H)) + (H * b) * X * a := by
@@ -39,6 +48,11 @@ theorem skew_conj (ha : aᴴ * H * a = H) (hab : a * b = 1) {X : Matrix (Fin n) 
   calc _ = aᴴ * (Xᴴ * H + H * X) * a := by simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hX, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `h1 : H⁻¹ * aᴴ = b * H⁻¹`. Rewrite using `[← nonsing_inv_mul_cancel_left H (b * H⁻¹) hu, ← Matrix.mul_assoc H, mul_inv_eq ha hab, mul_nonsing_inv_cancel_right _ _ hu]`. Establish `e : H⁻¹ * (b * Z * a)ᴴ * H = (H⁻¹ * aᴴ) * Zᴴ * (bᴴ * H)`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e, h1, inv_mul_eq ha hab]`.
+
+Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+-/
 theorem bar_conj (hu : IsUnit H.det) (ha : aᴴ * H * a = H) (hab : a * b = 1) (Z : Matrix (Fin n) (Fin n) ℂ) :
     -(H⁻¹ * (b * Z * a)ᴴ * H) = b * (-(H⁻¹ * Zᴴ * H)) * a := by
   have h1 : H⁻¹ * aᴴ = b * H⁻¹ := by
@@ -49,6 +63,9 @@ theorem bar_conj (hu : IsUnit H.det) (ha : aᴴ * H * a = H) (hab : a * b = 1) (
   rw [e, h1, inv_mul_eq ha hab]
   simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hu : IsUnit a.det` using `isUnit_det_of_right_inverse hab`. Establish `e : t • (b * X * a) = a⁻¹ * (t • X) * a`. Rewrite using `[inv_eq_right_inv hab, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e, Matrix.exp_conj' _ _ ((isUnit_iff_isUnit_det a).2 hu), Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu]`.
+-/
 theorem exp_conj_eq (hab : a * b = 1) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • X) * a = a * NormedSpace.exp (t • (b * X * a)) := by
   have hu : IsUnit a.det := isUnit_det_of_right_inverse hab
@@ -70,6 +87,11 @@ variable (θ) in
 def IsRealPt (h : GA D V) : Prop :=
   h ∈ GinfC V ∧ ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)
 
+/- English proof (translation)
+Establish `h` using `atTau_spec hθ V τ hg`. Use `⟨h.1, fun τ' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Rewrite using `[h.2.1]`.
+
+Conclude with `hg`. Rewrite using `[h.2.2 τ' c]`. Conclude with `one_mem_UH _`.
+-/
 theorem isRealPt_atTau (hθ : IsInfFam θ) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : IsRealPt θ (atTau θ V τ g) := by
   have h := atTau_spec hθ V τ hg
@@ -80,9 +102,19 @@ theorem isRealPt_atTau (hθ : IsInfFam θ) (τ : D.what₂.Tau) {g : Matrix (Fin
 
 variable {h : GA D V}
 
+/- English proof (translation)
+The claim follows from `skew_conj (hh.2 τ) (infMat_mul_inv θ V τ h) hX`.
+-/
 theorem adAt_mem (hh : IsRealPt θ h) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     adAt θ h τ X ∈ lieAt V τ := skew_conj (hh.2 τ) (infMat_mul_inv θ V τ h) hX
 
+/- English proof (translation)
+Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Establish `h1` using `atTau_spec hθ V τ (GlobalTheory.SmoothAutCheck.exp_mem_UH (R.1 τ).2 hX t)`. Establish `h2` using `atTau_spec hθ V τ (GlobalTheory.SmoothAutCheck.exp_mem_UH (R.1 τ).2 (adAt_mem hh hX) t)`. Use `R.2.2.1 _ (mul_mem h1.1 hh.1) _ (mul_mem hh.1 h2.1) fun τ' => ?_` and prove the remaining obligations. Rewrite using `[infMat_mul, infMat_mul]`.
+
+Unfold `oneP`. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Rewrite using `[h1.2.1, h2.2.1]`. Conclude with `exp_conj_eq (infMat_mul_inv θ V τ' h) X t`.
+
+Rewrite using `[h1.2.2 τ' c, h2.2.2 τ' c, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem oneP_mul (hθ : IsInfFam θ) (hh : IsRealPt θ h) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (t : ℝ) : oneP θ V τ X t * h = h * oneP θ V τ (adAt θ h τ X) t := by
   have R := (GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V
@@ -97,6 +129,9 @@ theorem oneP_mul (hθ : IsInfFam θ) (hh : IsRealPt θ h) {τ : D.what₂.Tau} {
     exact exp_conj_eq (infMat_mul_inv θ V τ' h) X t
   · rw [h1.2.2 τ' c, h2.2.2 τ' c, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `Rder rTr`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, mul_assoc, oneP_mul hθ hh hX]`.
+-/
 theorem Rder_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (φ : GA D V → ℂ) :
     Rder θ V τ X (rTr V h φ) = rTr V h (Rder θ V τ (adAt θ h τ X) φ) := by
@@ -106,6 +141,11 @@ theorem Rder_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) {τ : D.what₂.Tau} {
   funext t
   rw [mul_assoc, mul_assoc, oneP_mul hθ hh hX]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `e : conjAt V τ (adAt θ h τ Z) = adAt θ h τ (conjAt V τ Z)` using `bar_conj (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) (hh.2 τ) (infMat_mul_inv θ V τ h) Z`. Unfold `RderC`. Rewrite using `[Rder_rTr hθ hh h1, Rder_rTr hθ hh h2, e]`. Simplify using `only [adAt, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem RderC_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (φ : GA D V → ℂ) : RderC θ V τ Z (rTr V h φ) = rTr V h (RderC θ V τ (adAt θ h τ Z) φ) := by
   obtain ⟨h1, h2⟩ := GlobalTheory.SmoothAutCheck.parts_mem V τ Z
@@ -116,6 +156,9 @@ theorem RderC_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (τ : D.what₂.Tau) 
   simp only [adAt, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => by simp | k + 1, u, v, e => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, mul_assoc, prod_mul_eq h k _ _ fun i => e i.succ, ← mul_assoc, e, mul_assoc]`.
+-/
 theorem prod_mul_eq {G : Type} [Group G] (h : G) : ∀ (k : ℕ) (u v : Fin k → G), (∀ i, u i * h = h * v i) →
     (List.ofFn u).prod * h = h * (List.ofFn v).prod
   | 0, _, _, _ => by simp
@@ -123,6 +166,9 @@ theorem prod_mul_eq {G : Type} [Group G] (h : G) : ∀ (k : ℕ) (u v : Fin k �
     rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, mul_assoc,
       prod_mul_eq h k _ _ fun i => e i.succ, ← mul_assoc, e, mul_assoc]
 
+/- English proof (translation)
+Introduce `k τs Xs hX g`. Use `hφ k τs (fun i => adAt θ h (τs i) (Xs i)) (fun i => adAt_mem hh (hX i)) (g * h)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Unfold `rTr`. Rewrite using `[mul_assoc, mul_assoc, prod_mul_eq h k _ _ fun i => oneP_mul hθ hh (hX i) (t i)]`.
+-/
 theorem rTr_mem (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) :
     rTr V h φ ∈ SmFun θ V := by
   intro k τs Xs hX g
@@ -131,6 +177,11 @@ theorem rTr_mem (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V → ℂ} (
   unfold rTr
   rw [mul_assoc, mul_assoc, prod_mul_eq h k _ _ fun i => oneP_mul hθ hh (hX i) (t i)]
 
+/- English proof (translation)
+Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Set `ψ : GlobalTheory.SmoothForms.SmF θ V` to `⟨φ, (GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ⟩`. Set `X' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ` to `⟨X, hX⟩`. Set `Y' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ` to `⟨Y, hY⟩`. Establish `k : ∀ W : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ, Rder θ V τ W.1 φ = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ W) ψ).1` using `fun W => GlobalTheory.SmoothForms.Rder_eq R τ W φ`.
+
+Use `k (r • X' + s • Y')` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SmoothForms.opAt_add, GlobalTheory.SmoothForms.opAt_smul, GlobalTheory.SmoothForms.opAt_smul]`. Rewrite using `[k X', k Y']`. Conclude with `this`.
+-/
 theorem Rder_comb (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) {τ : D.what₂.Tau}
     {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) (r s : ℝ) :
     Rder θ V τ (r • X + s • Y) φ = (r : ℂ) • Rder θ V τ X φ + (s : ℂ) • Rder θ V τ Y φ := by
@@ -145,6 +196,11 @@ theorem Rder_comb (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun 
   rw [k X', k Y']
   exact this
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Take `⟨h1', h2'⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z'`. Establish `e : conjAt V τ (Z + Z') = conjAt V τ Z + conjAt V τ Z'`. Simplify using `only [conjAt, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`. Establish `k1` using `Rder_comb hθ hφ h1 h1' 1 1`.
+
+Establish `k2` using `Rder_comb hθ hφ h2 h2' 1 1`. Simplify using `only [one_smul, Complex.ofReal_one, ← smul_add] at k1 k2`. Unfold `RderC`. Rewrite using `[e, add_add_add_comm Z, k1, add_sub_add_comm, k2, smul_add Complex.I, add_add_add_comm]`.
+-/
 theorem RderC_add (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (τ : D.what₂.Tau)
     (Z Z' : Matrix (Fin V.rank) (Fin V.rank) ℂ) : RderC θ V τ (Z + Z') φ = RderC θ V τ Z φ + RderC θ V τ Z' φ := by
   obtain ⟨h1, h2⟩ := GlobalTheory.SmoothAutCheck.parts_mem V τ Z
@@ -157,6 +213,23 @@ theorem RderC_add (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun 
   unfold RderC
   rw [e, add_add_add_comm Z, k1, add_sub_add_comm, k2, smul_add Complex.I, add_add_add_comm]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `e : conjAt V τ (c • Z) = star c • conjAt V τ Z`. Simplify using `only [conjAt, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Establish `k1` using `Rder_comb hθ hφ h1 h2 c.re (-c.im)`. Establish `k2` using `Rder_comb hθ hφ h1 h2 c.im c.re`.
+
+Establish `hI : (1 / (2 * Complex.I) : ℂ) = -Complex.I / 2`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hc : c = c.re + c.im * Complex.I` using `(Complex.re_add_im c).symm`. Establish `hs : star c = c.re - c.im * Complex.I`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `e1 : (1 / 2 : ℂ) • (c • Z + star c • conjAt V τ Z) = c.re • ((1 / 2 : ℂ) • (Z + conjAt V τ Z)) + (-c.im) • ((1 / (2 * Complex.I)) • (Z - conjAt V τ Z))`. Rewrite using `[hs, hI]`. Generalize the expression as in `c.re = x at *`. Generalize the expression as in `c.im = y at *`.
+
+Substitute `hc` using the available equality. Simplify using `only [← Complex.coe_smul]`. Use `push_cast`. Apply the tactic sequence `match_scalars <;> ring`. Establish `e2 : (1 / (2 * Complex.I) : ℂ) • (c • Z - star c • conjAt V τ Z) = c.im • ((1 / 2 : ℂ) • (Z + conjAt V τ Z)) + c.re • ((1 / (2 * Complex.I)) • (Z - conjAt V τ Z))`.
+
+Rewrite using `[hs, hI]`. Generalize the expression as in `c.re = x at *`. Generalize the expression as in `c.im = y at *`. Substitute `hc` using the available equality. Simplify using `only [← Complex.coe_smul]`.
+
+Use `match_scalars`. Take the linear combination `(-(y : ℂ) / 2) * Complex.I_mul_I`. Take the linear combination `(-(y : ℂ) / 2) * Complex.I_mul_I`. Unfold `RderC`. Rewrite using `[e, e1, e2, k1, k2]`.
+
+Generalize the expression as in `c.re = x at *`. Generalize the expression as in `c.im = y at *`. Substitute `hc` using the available equality. Use `push_cast`. Use `match_scalars`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(y : ℂ)) * Complex.I_mul_I`.
+-/
 theorem RderC_smul (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (τ : D.what₂.Tau) (c : ℂ)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) : RderC θ V τ (c • Z) φ = c • RderC θ V τ Z φ := by
   obtain ⟨h1, h2⟩ := GlobalTheory.SmoothAutCheck.parts_mem V τ Z
@@ -213,11 +286,23 @@ def rTrLin (h : GA D V) : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[gelf, GlobalTheory.SmoothForms.gelfA, LinearMap.sum_apply, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun idx _ => GlobalTheory.SmoothForms.foldr_ofFn_eq _ _ _ _ (fun _ _ => rfl) φ`.
+-/
 theorem gelf_eq (hθ : IsInfFam θ) (τ : D.what₂.Tau) (k : ℕ) (φ : SmFun θ V) :
     gelf θ V τ k φ.1 = (GlobalTheory.SmoothForms.gelfA (fun a b => derEnd hθ τ (Matrix.single a b 1)) k φ).1 := by
   rw [gelf, GlobalTheory.SmoothForms.gelfA, LinearMap.sum_apply, Submodule.coe_sum]
   exact Finset.sum_congr rfl fun idx _ => GlobalTheory.SmoothForms.foldr_ofFn_eq _ _ _ _ (fun _ _ => rfl) φ
 
+/- English proof (translation)
+Set `T : Module.End ℂ (SmFun θ V)` to `(rTrLin h).restrict fun _ hx => rTr_mem hθ hh hx`. Establish `hQP : (infMat D.sp.cm.sig V.gram (θ τ) h)ᵀ * (infMat D.sp.cm.sig V.gram (θ τ) h⁻¹)ᵀ = 1`. Rewrite using `[← transpose_mul, mul_eq_one_comm.1 (infMat_mul_inv θ V τ h), transpose_one]`. Establish `key` using `GlobalTheory.Dec.GelfAd.trace_pow_comm (fun a b => derEnd hθ τ (Matrix.single a b 1)) T _ _ hQP (fun a b => by`. Simplify using `only [← map_smul, ← map_sum]`.
+
+Establish `e : ∑ c, ∑ d, ((infMat D.sp.cm.sig V.gram (θ τ) h⁻¹)ᵀ a c * (infMat D.sp.cm.sig V.gram (θ τ) h)ᵀ d b) • (Matrix.single c d 1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) = adAt θ h τ (Matrix.single a b 1)`. Rewrite using `[matrix_eq_sum_single (adAt θ h τ _)]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`.
+
+Simplify using `[adAt, Matrix.mul_apply, Matrix.single, ite_and]`. Rewrite using `[e]`. Conclude with `LinearMap.ext fun ψ => Subtype.ext (RderC_rTr hθ hh τ _ ψ.1)) (k + 1)`. Rewrite `key` using `[← GlobalTheory.SmoothForms.gelfA_eq_sum_pow]`. Use `congrArg (fun S : Module.End ℂ (SmFun θ V) => (S ⟨φ, hφ⟩).1) key` as an intermediate fact.
+
+Rewrite using `[gelf_eq hθ τ k ⟨φ, hφ⟩, gelf_eq hθ τ k ⟨_, rTr_mem hθ hh hφ⟩]`. Conclude with `this`.
+-/
 theorem gelf_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (τ : D.what₂.Tau) (k : ℕ) {φ : GA D V → ℂ}
     (hφ : φ ∈ SmFun θ V) : gelf θ V τ k (rTr V h φ) = rTr V h (gelf θ V τ k φ) := by
   let T : Module.End ℂ (SmFun θ V) := (rTrLin h).restrict fun _ hx => rTr_mem hθ hh hx
@@ -240,6 +325,9 @@ theorem gelf_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (τ : D.what₂.Tau) (
   rw [gelf_eq hθ τ k ⟨φ, hφ⟩, gelf_eq hθ τ k ⟨_, rTr_mem hθ hh hφ⟩]
   exact this
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Rewrite using `[List.map_cons, List.foldr_cons, List.foldr_cons, ih fun q hq => hl q (List.mem_cons_of_mem _ hq), Rder_rTr hθ hh (hl p List.mem_cons_self)]`.
+-/
 theorem foldr_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (φ : GA D V → ℂ)
     (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) :
     l.foldr (fun p f => Rder θ V p.1 p.2 f) (rTr V h φ) =
@@ -250,6 +338,17 @@ theorem foldr_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) (φ : GA D V → ℂ)
     rw [List.map_cons, List.foldr_cons, List.foldr_cons, ih fun q hq => hl q (List.mem_cons_of_mem _ hq),
       Rder_rTr hθ hh (hl p List.mem_cons_self)]
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `{ left := fun γ hγ g => ?_, level := ?_, cont := hφ.cont.comp (continuous_mul_right h), smooth := rTr_mem hθ hh hφ.smooth, zfin := ?_, growth := ?_ }` and prove the remaining obligations. Unfold `rTr`. Rewrite using `[mul_assoc, hφ.left γ hγ]`. Take `⟨U, hU, e⟩` from `hφ.level`.
+
+Use `⟨U, hU, fun u hu hf g => ?_⟩` and prove the remaining obligations. Unfold `rTr`. Rewrite using `[mul_assoc, ← comm_of_mem V hh.1 hf, ← mul_assoc, e u hu hf]`. Take `⟨W, hW, m, s⟩` from `hφ.zfin`. Use `⟨(W ⊓ SmFun θ V).map (rTrLin h), inferInstance, ⟨φ, ⟨m, hφ.smooth⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `τ k _ ⟨f, hf, rfl⟩`. Conclude with `⟨_, ⟨s τ k f hf.1, (linOnSm_gelf τ k).mem f hf.2⟩, (gelf_rTr hθ hh τ k hf.2).symm⟩`. Take `⟨N, hN⟩` from `hφ.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN (l.map fun p => (p.1, adAt θ h p.1 p.2)) (fun p hp => by`.
+
+Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `adAt_mem hh (hl q hq)) x`. Use `⟨|C| * normInf θ V h ^ N, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_rTr hθ hh φ l hl]`. Unfold `rTr`.
+
+Rewrite using `[mul_assoc x, mul_assoc |C|, ← mul_pow, mul_comm (normInf θ V h)]`. Conclude with `(hC _ (mul_mem hg hh.1)).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (normInf_nonneg _) ((GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 g h) N) (pow_nonneg (normInf_nonneg _) N) (abs_nonneg _))`.
+-/
 theorem isAutFunSm_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V → ℂ} (hφ : IsAutFunSm θ V φ) :
     IsAutFunSm θ V (rTr V h φ) := by
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
@@ -278,6 +377,9 @@ theorem isAutFunSm_rTr (hθ : IsInfFam θ) (hh : IsRealPt θ h) {φ : GA D V →
       (pow_le_pow_left₀ (normInf_nonneg _) ((GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 g h) N) (pow_nonneg (normInf_nonneg _) N)
       (abs_nonneg _))
 
+/- English proof (translation)
+Introduce `_ _ hθ _ _ hφ τ _ hg` and use `isAutFunSm_rTr hθ (isRealPt_atTau hθ τ hg) hφ`.
+-/
 theorem isAutFunSm_rTr_atTau : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ), IsAutFunSm θ V φ →
     ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), IsAutFunSm θ V (rTr V (atTau θ V τ g) φ) :=
   fun _ _ hθ _ _ hφ τ _ hg => isAutFunSm_rTr hθ (isRealPt_atTau hθ τ hg) hφ

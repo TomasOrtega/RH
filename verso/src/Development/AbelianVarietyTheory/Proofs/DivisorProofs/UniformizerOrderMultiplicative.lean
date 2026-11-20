@@ -6,6 +6,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.SteinFibre
 
+/- English proof (translation)
+Establish `h1 : P ∣ Ideal.span {π}` using `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hπ)`. Take `⟨J, hJ⟩` from `h1`. Establish `hJP : ¬ J ≤ P` using `fun h => hπ2 (by`. Establish `: Ideal.span {π} ≤ P ^ 2` using `by rw [hJ, sq]; exact Ideal.mul_mono_right h`. Conclude with `this (Ideal.mem_span_singleton_self π))`.
+
+Establish `hJn : ¬ J ^ n ≤ P` using `fun h => hJP (Ideal.IsPrime.le_of_pow_le h)`. Take `⟨s', hs'J, hs'P⟩` from `SetLike.not_le_iff_exists.1 hJn`. Establish `hmem : s' * a ∈ Ideal.span {π ^ n}`. Rewrite using `[← Ideal.span_singleton_pow, hJ, mul_pow, mul_comm]`. Conclude with `Ideal.mul_mem_mul hs'J ha`.
+
+Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 hmem`. Use `⟨s, s', ?_, hs'P, hs.symm⟩` and prove the remaining obligations. Introduce `hsP`. Establish `h2 : s' * a ∈ P ^ (n + 1)`. Rewrite using `[← hs, pow_succ']`.
+
+Conclude with `Ideal.mul_mem_mul hsP (Ideal.pow_mem_pow hπ n)`. Break down `Ideal.IsPrime.mul_mem_pow P h2 with h | h` into its components or cases. Conclude with `hs'P h`. Conclude with `ha1 h`.
+-/
 theorem exists_mul_eq_mul_pow_of_uniformizer {A : Type} [CommRing A] [IsDedekindDomain A]
     (P : Ideal A) [P.IsPrime] (π a : A) (n : ℕ) (hπ : π ∈ P) (hπ2 : π ∉ P ^ 2)
     (ha : a ∈ P ^ n) (ha1 : a ∉ P ^ (n + 1)) :
@@ -30,6 +39,11 @@ theorem exists_mul_eq_mul_pow_of_uniformizer {A : Type} [CommRing A] [IsDedekind
   · exact hs'P h
   · exact ha1 h
 
+/- English proof (translation)
+Establish `hu : IsUnit (X.presheaf.germ ⊤ z trivial a)`. Assume the negation of the conclusion as `h`. Conclude with `ha ((mem_under_iff z a).2 h)`. Establish `hzV : z ∈ X.basicOpen a` using `(X.mem_basicOpen a z trivial).2 hu`. Use `haveI : Nonempty (X.basicOpen a) := ⟨⟨z, hzV⟩⟩`.
+
+Establish `h1` using `Scheme.ord_of_isUnit (U := X.basicOpen a) (f := X.presheaf.map (homOfLE le_top).op a) (X.toRingedSpace.isUnit_res_basicOpen a) hzV`. Rewrite using `[← h1]`. Use `congr 1`. Conclude with `(X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).symm`.
+-/
 theorem ord_eq_zero_of_not_mem_under {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (z : X) (a : Γ(X, ⊤)) (ha : a ∉ under z) :
     Scheme.ord (algebraMap Γ(X, ⊤) X.functionField a) z = 0 := by
@@ -44,6 +58,11 @@ theorem ord_eq_zero_of_not_mem_under {X : Scheme.{0}} [IsIntegral X] [IsLocallyN
   congr 1
   exact (X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `Scheme.ord_mul (x := z) (one_ne_zero (α := X.functionField)) (one_ne_zero (α := X.functionField))`. Simplify using `only [mul_one] at h`. Simplify using `only [pow_zero, Nat.cast_zero, zero_mul]`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Rewrite using `[pow_succ, Scheme.ord_mul (pow_ne_zero _ hf) hf, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_pow_of_ne_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
     (z : X) (f : X.functionField) (hf : f ≠ 0) (n : ℕ) :
     Scheme.ord (f ^ n) z = n * Scheme.ord f z := by
@@ -59,6 +78,13 @@ theorem ord_pow_of_ne_zero {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian 
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `X _ _ _ z P π a n hP _ hz hπ hπ2 ha ha1`. Use `haveI : Nonempty (⊤ : X.Opens) := ⟨⟨Nonempty.some inferInstance, trivial⟩⟩`. Establish `inj : Function.Injective (algebraMap Γ(X, ⊤) X.functionField)` using `X.germToFunctionField_injective ⊤`. Take `⟨s, s', hs, hs', he⟩` from `exists_mul_eq_mul_pow_of_uniformizer P π a n hπ hπ2 ha ha1`. Establish `ha0 : a ≠ 0` using `by rintro rfl; exact ha1 (Ideal.zero_mem _)`.
+
+Establish `hπ0 : π ≠ 0` using `by rintro rfl; exact hπ2 (Ideal.zero_mem _)`. Establish `hs0 : s ≠ 0` using `by rintro rfl; exact hs (Ideal.zero_mem _)`. Establish `hs'0 : s' ≠ 0` using `by rintro rfl; exact hs' (Ideal.zero_mem _)`. Rewrite `hs`, `hs'` using `[← hz]`. Establish `nz : ∀ x : Γ(X, ⊤), x ≠ 0 → algebraMap Γ(X, ⊤) X.functionField x ≠ 0` using `fun x hx => (map_ne_zero_iff _ inj).2 hx`.
+
+Establish `key` using `congrArg (fun x => Scheme.ord (algebraMap Γ(X, ⊤) X.functionField x) z) he`. Simplify using `only [map_mul, map_pow] at key`. Rewrite `key` using `[Scheme.ord_mul (nz s' hs'0) (nz a ha0), Scheme.ord_mul (nz s hs0) (pow_ne_zero _ (nz π hπ0)), ord_eq_zero_of_not_mem_under z s' hs', ord_eq_zero_of_not_mem_under z s hs, zero_add, zero_add, ord_pow_of_ne_zero z _ (nz π hπ0)]`. Conclude with `key`.
+-/
 theorem ord_eq_mul_ord_uniformizer : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [IsDedekindDomain Γ(X, ⊤)] (z : X)
     (P : Ideal Γ(X, ⊤)) (π a : Γ(X, ⊤)) (n : ℕ), P.IsPrime → P ≠ ⊥ → GlobalTheory.SteinFibre.under z = P →

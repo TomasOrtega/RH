@@ -11,6 +11,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ D f hf hl y k`. Take `⟨c0, cadd, cd, -⟩` from `UpperTheory.archimedeanConjugateCurve_oneParameterSubgroup E D k`. Establish `h1` using `UpperTheory.hasDerivAt_whittakerPeriod_oneParameter E D f (cv D k) (toL (XB D k)) (em E (aE y) * k) c0 cadd cd hf.1 (hl _).1 (hl _).2`. Establish `e : (fun t : ℝ => Wo D f.1 (em E (aE y) * k * infGL E 2 (cv D k t))) = fun t : ℝ => Complex.exp (2 * Real.pi * Complex.I * ((t : ℂ) * (re (y : A ℚ) : ℂ))) * Wo D f.1 (em E (aE y) * k)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[UpperTheory.diagonal_mul_archimedeanCurve_eq_unipotent_mul, UpperTheory.whittaker_unipotent_mul_eq_additiveChar_mul E D f.1 hf]`. Establish `e1 : (![0, TR.sInf ℚ fun _ => t * re (y : A ℚ)] : Fin 2 → A ℚ) 1 = TR.sInf ℚ fun _ => t * re (y : A ℚ)` using `rfl`. Rewrite using `[e1, UpperTheory.standardAddChar_neg_archimedean_rat]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[e]`. Establish `a : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0` using `(hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `h2` using `(((a.mul_const (re (y : A ℚ) : ℂ)).const_mul (2 * Real.pi * Complex.I)).cexp).mul_const (Wo D f.1 (em E (aE y) * k))`. Establish `h3` using `h1.unique h2`. Rewrite using `[h3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.whittakerCoeff_lieDeriv_unipotent_eq_mul :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (f : Sm E 2), Pp.Lf f.1 →
         (∀ X, Continuous (lie E 2 X f).1 ∧ ∃ B : ℝ, ∀ g, ‖(lie E 2 X f).1 g‖ ≤ B) → ∀ (y : (A ℚ)ˣ) (k : GL (Fin 2) (A E)),

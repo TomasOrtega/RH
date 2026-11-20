@@ -25,11 +25,23 @@ namespace GlobalTheory.CompanionTheory.RSecPf
 
 variable {D : D7} {n ρ p : ℕ}
 
+/- English proof (translation)
+Break down `le_total r 1 with h | h` into its components or cases. Conclude with `(Real.rpow_le_rpow_of_exponent_ge hr h h₁).trans (le_add_of_nonneg_right (Real.rpow_nonneg hr.le _))`. Conclude with `(Real.rpow_le_rpow_of_exponent_le h h₂).trans (le_add_of_nonneg_left (Real.rpow_nonneg hr.le _))`.
+-/
 theorem rpow_le_add {r τ τ₁ τ₂ : ℝ} (hr : 0 < r) (h₁ : τ₁ ≤ τ) (h₂ : τ ≤ τ₂) : r ^ τ ≤ r ^ τ₁ + r ^ τ₂ := by
   rcases le_total r 1 with h | h
   · exact (Real.rpow_le_rpow_of_exponent_ge hr h h₁).trans (le_add_of_nonneg_right (Real.rpow_nonneg hr.le _))
   · exact (Real.rpow_le_rpow_of_exponent_le h h₂).trans (le_add_of_nonneg_left (Real.rpow_nonneg hr.le _))
 
+/- English proof (translation)
+Establish `hr : 0 < a / b` using `div_pos ha hb`. Establish `e : ∀ t : ℝ, a ^ t = (a / b) ^ t * b ^ t` using `fun t => by`. Rewrite using `[← Real.mul_rpow hr.le hb.le, div_mul_cancel₀ _ hb.ne']`. Establish `key : ∀ {t W : ℝ}, a ^ t * c ≤ W * b ^ t → (a / b) ^ t * c ≤ W` using `fun {t W} h => by`. Establish `hbt : 0 < b ^ t` using `Real.rpow_pos_of_pos hb t`.
+
+Rewrite `h` using `[e t]`. Establish `: (a / b) ^ t * c * b ^ t ≤ W * b ^ t` using `by linarith [h]`. Conclude with `le_of_mul_le_mul_right this hbt`. Establish `k₁` using `key hW₁`. Establish `k₂` using `key hW₂`.
+
+Establish `n₁ : 0 ≤ W₁` using `(mul_nonneg (Real.rpow_nonneg hr.le _) hc).trans k₁`. Establish `n₂ : 0 ≤ W₂` using `(mul_nonneg (Real.rpow_nonneg hr.le _) hc).trans k₂`. Establish `h3 : (a / b) ^ τ * c ≤ W₁ + W₂`. Use `mul_le_mul_of_nonneg_right (rpow_le_add hr h₁ h₂) hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4 : b ^ τ ≤ b ^ τ₁ + b ^ τ₂` using `rpow_le_add hb h₁ h₂`. Establish `hbt : 0 ≤ b ^ τ` using `Real.rpow_nonneg hb.le _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem shear_pt {a b τ τ₁ τ₂ W₁ W₂ c : ℝ} (ha : 0 < a) (hb : 0 < b) (hc : 0 ≤ c) (h₁ : τ₁ ≤ τ) (h₂ : τ ≤ τ₂)
     (hW₁ : a ^ τ₁ * c ≤ W₁ * b ^ τ₁) (hW₂ : a ^ τ₂ * c ≤ W₂ * b ^ τ₂) :
     a ^ τ * c ≤ (W₁ + W₂) * (b ^ τ₁ + b ^ τ₂) := by
@@ -54,6 +66,11 @@ theorem shear_pt {a b τ τ₁ τ₂ W₁ W₂ c : ℝ} (ha : 0 < a) (hb : 0 < b
     _ ≤ (W₁ + W₂) * b ^ τ := mul_le_mul_of_nonneg_right h3 hbt
     _ ≤ (W₁ + W₂) * (b ^ τ₁ + b ^ τ₂) := mul_le_mul_of_nonneg_left h4 (add_nonneg n₁ n₂)
 
+/- English proof (translation)
+Take `⟨ε, hε, hε'⟩ : ∃ ε : ℝ, 0 < ε ∧ ε = (z₀.re - ((ρ : ℝ) - p) / 2) / 2` from `⟨_, by linarith, rfl⟩`. Establish `hnr : (n : ℝ) = ρ + p` using `by rw [← hn]; push_cast; ring`. Use `⟨Metric.ball z₀ ε, Metric.ball_mem_nhds _ hε, z₀.re - ε + n / 2, z₀.re + ε + n / 2, ?_, ?_, fun z hz' => ?_⟩` and prove the remaining obligations. Rewrite using `[hnr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h : |(z - z₀).re| < ε` using `(Complex.abs_re_le_norm _).trans_lt (by simpa [dist_eq_norm] using hz')`. Rewrite `h` using `[Complex.sub_re, abs_lt]`. Apply the tactic sequence `constructor <;> linarith [h.1, h.2]`.
+-/
 theorem local_tau (hn : ρ + p = n) {z₀ : ℂ} (hz : ((ρ : ℝ) - p) / 2 < z₀.re) :
     ∃ V ∈ 𝓝 z₀, ∃ τ₁ τ₂ : ℝ, (ρ : ℝ) < τ₁ ∧ τ₁ ≤ τ₂ ∧
       ∀ z ∈ V, τ₁ ≤ z.re + (n : ℝ) / 2 ∧ z.re + (n : ℝ) / 2 ≤ τ₂ := by
@@ -66,6 +83,9 @@ theorem local_tau (hn : ρ + p = n) {z₀ : ℂ} (hz : ((ρ : ℝ) - p) / 2 < z�
     rw [Complex.sub_re, abs_lt] at h
     constructor <;> linarith [h.1, h.2]
 
+/- English proof (translation)
+Unfold `fam npow`. Use `Continuous.mul (Continuous.cpow ?_ (continuous_fst.sub continuous_const) ?_) (hφ.comp continuous_snd)` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (hH.1.comp continuous_snd))`. Conclude with `fun u => Complex.ofReal_mem_slitPlane.2 (NNReal.coe_pos.2 (hH.2.1 _))`.
+-/
 theorem continuous_fam {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ} (hφ : Continuous φ) (s₁ : ℂ) :
     Continuous fun u : ℂ × G D n => fam H φ s₁ u.1 u.2 := by
   unfold fam npow
@@ -73,12 +93,20 @@ theorem continuous_fam {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ
   · exact Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (hH.1.comp continuous_snd))
   · exact fun u => Complex.ofReal_mem_slitPlane.2 (NNReal.coe_pos.2 (hH.2.1 _))
 
+/- English proof (translation)
+Establish `h : ((H g : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hH.2.1 g).ne'`. Unfold `fam npow`. Conclude with `((differentiable_id.sub_const s₁).const_cpow (Or.inl h)).mul_const _`.
+-/
 theorem differentiable_fam {H : G D n → ℝ≥0} (hH : IsHt H) (φ : G D n → ℂ) (s₁ : ℂ) (g : G D n) :
     Differentiable ℂ fun z => fam H φ s₁ z g := by
   have h : ((H g : ℝ) : ℂ) ≠ 0 := by exact_mod_cast (hH.2.1 g).ne'
   unfold fam npow
   exact ((differentiable_id.sub_const s₁).const_cpow (Or.inl h)).mul_const _
 
+/- English proof (translation)
+Establish `hx : (0 : ℝ) < H x` using `NNReal.coe_pos.2 (hH.2.1 x)`. Establish `hxc : (0 : ℝ) ≤ H (x * c)` using `NNReal.coe_nonneg _`. Establish `hκ0 : 0 ≤ κ` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow hκ0 hx.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ B * κ ^ τ₂ * (H x : ℝ) ^ (z.re + (n : ℝ) / 2) := by`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ?_ hB) (Real.rpow_nonneg hx.le _)` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le hκ h2`.
+-/
 theorem fam_le {H : G D n → ℝ≥0} (hH : IsHt H) {φ : G D n → ℂ} {s₁ : ℂ} {B κ τ₂ : ℝ} (hB : 0 ≤ B) (hκ : 1 ≤ κ)
     (hf : ∀ (z : ℂ) (g : G D n), ‖fam H φ s₁ z g‖ ≤ B * (H g : ℝ) ^ (z.re + (n : ℝ) / 2))
     {z : ℂ} (h0 : 0 ≤ z.re + (n : ℝ) / 2) (h2 : z.re + (n : ℝ) / 2 ≤ τ₂) {x c : G D n}
@@ -100,9 +128,23 @@ section Main
 
 variable {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (b₀ : HermE D ρ)
 
+/- English proof (translation)
+The claim follows from `M.nzx_cont.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem continuous_jacobi_map_origin : Continuous fun ζ : hermA D ρ => M.nzx ζ 0 :=
   M.nzx_cont.comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D ρ) := Subtype.borelSpace _`. Take `⟨B, hB, hf⟩` from `GlobalTheory.T.eisenstein_family_height_bound D n H hH hcpt χ s₁ φ hφ hlaw`. Take `⟨hcz, hnz⟩` from `GlobalTheory.T.centre_character_continuous_unit D ρ ψ hψ b₀`. Establish `hU : IsOpen {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Use `GlobalTheory.T.continuousOn_differentiableOn_parameter_integral (Y := hermA D ρ) (T := G D n) m.lz _ hU (fun z c ζ => fam H φ s₁ z (M.w * M.nzx ζ 0 * c) * conj (chz ψ b₀ ζ)) ?_ ?_ ?_` and prove the remaining obligations. Use `Continuous.continuousOn (Continuous.mul ?_ ?_)` and prove the remaining obligations. Use `(continuous_fam hH hφ s₁).comp (continuous_fst.prodMk ?_)` and prove the remaining obligations. Conclude with `(continuous_const.mul ((continuous_jacobi_map_origin M).comp (continuous_snd.comp continuous_snd))).mul (continuous_fst.comp continuous_snd)`. Conclude with `Complex.continuous_conj.comp (hcz.comp (continuous_snd.comp continuous_snd))`.
+
+Conclude with `fun c ζ => ((differentiable_fam hH φ s₁ _).mul_const _).differentiableOn`. Introduce `z₀ hz₀ c₀`. Take `⟨V, hV, τ₁, τ₂, h1, h12, hτ⟩` from `local_tau hn hz₀`. Take `⟨N, hN, hNm⟩` from `exists_compact_mem_nhds c₀`. Take `⟨κ, hκ, hκc⟩` from `GlobalTheory.T.height_right_translate_compact_bound D n H hH hcpt N hN`.
+
+Establish `hρ : (0 : ℝ) ≤ ρ` using `Nat.cast_nonneg _`. Establish `I₁` using `GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₁ h1`. Establish `I₂` using `GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)`. Use `⟨V, hV, N, hNm, fun ζ => B * κ ^ τ₂ * ((H (M.w * M.nzx ζ 0) : ℝ) ^ τ₁ + (H (M.w * M.nzx ζ 0) : ℝ) ^ τ₂), (I₁.add I₂).const_mul _, fun z hz c hc ζ => ?_⟩` and prove the remaining obligations. Establish `hx : (0 : ℝ) < H (M.w * M.nzx ζ 0)` using `NNReal.coe_pos.2 (hH.2.1 _)`.
+
+Establish `h0 : 0 ≤ z.re + (n : ℝ) / 2` using `by linarith [(hτ z hz).1]`. Rewrite using `[norm_mul, RCLike.norm_conj, hnz, mul_one]`. Use `(fam_le hH hB hκ hf h0 (hτ z hz).2 (hκc c hc _)).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (rpow_le_add hx (hτ z hz).1 (hτ z hz).2) ?_` and prove the remaining obligations. Conclude with `mul_nonneg hB (Real.rpow_nonneg (by linarith) _)`.
+-/
 theorem wz_family (hψ : IsCharAF D.host.F ψ) {H : G D n → ℝ≥0} (hH : IsHt H)
     (hcpt : ∃ C : Set (G D n), IsCompact C ∧ ∀ g, ∃ q ∈ P D n, ∃ c ∈ C, g = q * c)
     {χ : (AE D)ˣ →* Circle} {s₁ : ℂ} {φ : G D n → ℂ} (hφ : Continuous φ) (hlaw : IsLaw χ s₁ φ) :
@@ -140,6 +182,15 @@ theorem wz_family (hψ : IsCharAF D.host.F ψ) {H : G D n → ℝ≥0} (hH : IsH
 
 end Main
 
+/- English proof (translation)
+Introduce `q hq a ha g`. Establish `h1 : absA D (Matrix.GeneralLinearGroup.det a) * absA D (Matrix.GeneralLinearGroup.det a)⁻¹ = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Establish `hne : (absA D (Matrix.GeneralLinearGroup.det a) : ℝ) ≠ 0`.
+
+Conclude with `left_ne_zero_of_mul_eq_one h1` after adjusting the coercions. Establish `hc : ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hne`. Simplify using `only [fam]`. Rewrite using `[hH.2.2 q hq a ha g, hl q hq a ha g]`. Unfold `npow`.
+
+Use `push_cast`. Rewrite using `[Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Establish `e : ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ (z + (n : ℂ) / 2) = ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ (z - s₁) * ((absA D (Matrix.GeneralLinearGroup.det a) : ℝ) : ℂ) ^ (s₁ + (n : ℂ) / 2)`. Rewrite using `[← Complex.cpow_add _ _ hc]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isLaw_fam {H : G D n → ℝ≥0} (hH : IsHt H) {χ : (AE D)ˣ →* Circle} {s₁ : ℂ} {φ : G D n → ℂ} (hl : IsLaw χ s₁ φ) (z : ℂ) :
     IsLaw χ z (fam H φ s₁ z) := by
   intro q hq a ha g
@@ -163,6 +214,25 @@ section Main2
 
 variable {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (b₀ : HermE D ρ)
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Take `⟨hc1, hd1⟩` from `wz_family M m b₀ hψ hH hcpt hφ hlaw`. Take `⟨B, hB, hf⟩` from `GlobalTheory.T.eisenstein_family_height_bound D n H hH hcpt χ s₁ φ hφ hlaw`. Take `⟨hcz, hnz⟩` from `GlobalTheory.T.centre_character_continuous_unit D ρ ψ hψ b₀`. Establish `hU : IsOpen {z : ℂ | ((ρ : ℝ) - p) / 2 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Use `GlobalTheory.T.continuousOn_differentiableOn_parameter_integral (Y := Mx D ρ p) (T := G D p) m.μ _ hU (fun z h y => Wz M m ψ b₀ (fam H φ s₁ z) (M.sh y * M.emb h * g) * conj (Ω h y)) ?_ ?_ ?_` and prove the remaining obligations. Use `ContinuousOn.mul ?_ (Continuous.continuousOn ?_)` and prove the remaining obligations. Use `hc1.comp (f := fun u : ℂ × G D p × Mx D ρ p => (u.1, M.sh u.2.2 * M.emb u.2.1 * g)) (Continuous.continuousOn (continuous_fst.prodMk ?_)) fun u hu => ⟨hu.1, trivial⟩` and prove the remaining obligations. Conclude with `((M.sh_cont.comp (continuous_snd.comp continuous_snd)).mul (M.emb_cont.comp (continuous_fst.comp continuous_snd))).mul continuous_const`. Conclude with `Complex.continuous_conj.comp (hΩ.cont.comp continuous_snd)`.
+
+Conclude with `fun h y => (hd1 _).mul_const _`. Introduce `z₀ hz₀ h₀`. Take `⟨V, hV, τ₁, τ₂, h1, h12, hτ⟩` from `local_tau hn hz₀`. Take `⟨N, hN, hNm⟩` from `exists_compact_mem_nhds h₀`. Establish `hCc : IsCompact ((fun h => M.emb h * g) '' N)` using `hN.image (M.emb_cont.mul continuous_const)`.
+
+Take `⟨κ, hκ, hκc⟩` from `GlobalTheory.T.height_right_translate_compact_bound D n H hH hcpt _ hCc`. Take `⟨Φ, hΦ, hmaj⟩` from `hΩ.maj N hN`. Establish `hρ : (0 : ℝ) ≤ ρ` using `Nat.cast_nonneg _`. Take `⟨W₁, iW₁, hW₁⟩` from `GlobalTheory.T.schwartz_height_majorant_integrable D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₁ (by linarith)`. Take `⟨W₂, iW₂, hW₂⟩` from `GlobalTheory.T.schwartz_height_majorant_integrable D n ρ p hn M m θ hθ H hH hcpt Φ hΦ τ₂ (by linarith)`.
+
+Establish `I₁` using `GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₁ h1`. Establish `I₂` using `GlobalTheory.T.height_power_integrable_weyl_orbit D n ρ p hn M m H hH hcpt τ₂ (h1.trans_le h12)`. Establish `IA` using `I₁.add I₂`. Use `⟨V, hV, N, hNm, fun y => B * κ ^ τ₂ * (W₁ y + W₂ y) * ∫ ζ : hermA D ρ, ((H (M.w * M.nzx ζ 0) : ℝ) ^ τ₁ + (H (M.w * M.nzx ζ 0) : ℝ) ^ τ₂) ∂m.lz, ((iW₁.add iW₂).const_mul _).mul_const _, fun z hz h hh y => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ z.re + (n : ℝ) / 2` using `by linarith [(hτ z hz).1]`.
+
+Rewrite using `[norm_mul, RCLike.norm_conj]`. Establish `hκ0 : 0 ≤ B * κ ^ τ₂` using `mul_nonneg hB (Real.rpow_nonneg (by linarith) _)`. Establish `key : ‖Wz M m ψ b₀ (fam H φ s₁ z) (M.sh y * M.emb h * g)‖ * ‖Φ y‖ ≤ B * κ ^ τ₂ * (W₁ y + W₂ y) * ∫ ζ : hermA D ρ, ((H (M.w * M.nzx ζ 0) : ℝ) ^ τ₁ + (H (M.w * M.nzx ζ 0) : ℝ) ^ τ₂) ∂m.lz`. Establish `e : ‖Wz M m ψ b₀ (fam H φ s₁ z) (M.sh y * M.emb h * g)‖ * ‖Φ y‖ = ‖∫ ζ : hermA D ρ, (fam H φ s₁ z (M.w * M.nzx ζ 0 * (M.sh y * M.emb h * g)) * conj (chz ψ b₀ ζ)) * ((‖Φ y‖ : ℝ) : ℂ) ∂m.lz‖`. Rewrite using `[integral_mul_const, norm_mul, Complex.norm_real, norm_norm]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← integral_const_mul]`. Use `norm_integral_le_of_norm_le (IA.const_mul _) (.of_forall fun ζ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj, hnz, mul_one, Complex.norm_real, norm_norm]`. Establish `e2 : M.w * M.nzx ζ 0 * (M.sh y * M.emb h * g) = (M.w * M.nzx ζ 0 * M.sh y) * (M.emb h * g)`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[e2]`. Establish `hb` using `fam_le hH hB hκ hf h0 (hτ z hz).2 (hκc _ ⟨h, hh, rfl⟩ (M.w * M.nzx ζ 0 * M.sh y))`. Establish `hp` using `shear_pt (NNReal.coe_pos.2 (hH.2.1 (M.w * M.nzx ζ 0 * M.sh y))) (NNReal.coe_pos.2 (hH.2.1 (M.w * M.nzx ζ 0))) (norm_nonneg (Φ y)) (hτ z hz).1 (hτ z hz).2 (hW₁ _ y) (hW₂ _ y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(mul_le_mul_of_nonneg_left (hmaj h hh y) (norm_nonneg _)).trans key`.
+-/
 theorem rsec_family (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {θ : InfFam D} (hθ : IsInfFam θ)
     {Ω : G D p → Mx D ρ p → ℂ} (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) {H : G D n → ℝ≥0} (hH : IsHt H)
     (hcpt : ∃ C : Set (G D n), IsCompact C ∧ ∀ g, ∃ q ∈ P D n, ∃ c ∈ C, g = q * c)
@@ -231,14 +301,33 @@ section Law
 
 variable {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ} (b₀ : HermE D ρ)
 
+/- English proof (translation)
+Unfold `npow`. Conclude with `Complex.cpow_add _ _ (by exact_mod_cast hr)`.
+-/
 theorem npow_add' {r : ℝ≥0} (hr : (r : ℝ) ≠ 0) (s t : ℂ) : npow r (s + t) = npow r s * npow r t := by
   unfold npow
   exact Complex.cpow_add _ _ (by exact_mod_cast hr)
 
+/- English proof (translation)
+Unfold `npow`. Rewrite using `[← Complex.ofReal_cpow (NNReal.coe_nonneg r), Complex.conj_ofReal]`.
+-/
 theorem conj_npow_ofReal (r : ℝ≥0) (t : ℝ) : conj (npow r (t : ℂ)) = npow r (t : ℂ) := by
   unfold npow
   rw [← Complex.ofReal_cpow (NNReal.coe_nonneg r), Complex.conj_ofReal]
 
+/- English proof (translation)
+Establish `h1 : absA D (Matrix.GeneralLinearGroup.det a) * absA D (Matrix.GeneralLinearGroup.det a)⁻¹ = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Establish `hne : (absA D (Matrix.GeneralLinearGroup.det a) : ℝ) ≠ 0`. Conclude with `left_ne_zero_of_mul_eq_one h1` after adjusting the coercions.
+
+Establish `e : ∀ y : Mx D ρ p, Wz M m ψ b₀ f (M.sh y * M.emb (g₀ * h) * g) * conj (Ω (g₀ * h) y) = ((χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (z + (n : ℂ) / 2) * conj ((χ' (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.General …`. Introduce `y`. Establish `e1 : M.sh y * M.emb (g₀ * h) * g = M.emb g₀ * (M.sh (HMul.hMul y a.1 : Mx D ρ p) * M.emb h * g)`. Rewrite using `[map_mul, ← mul_assoc, GlobalTheory.T.shift_commutes_levi_embedding D n ρ p hn M g₀ a ha y]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[e1, GlobalTheory.T.coefficient_levi_equivariance D n ρ p hn M m ψ b₀ χ z f hf g₀ a ha, hΩ.levi g₀ a ha h y]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Rsec`. Repeatedly rewrite using `[e]`.
+
+Rewrite using `[integral_const_mul, GlobalTheory.RightMulJac.integral_mul_right D ρ p m.μ m.𝓕 m.hμ a (fun y' : Mx D ρ p => Wz M m ψ b₀ f (M.sh y' * M.emb h * g) * conj (Ω h y'))]`. Establish `hnr : (n : ℂ) = ρ + p` using `by rw [← hn]; push_cast; ring`. Establish `hs : npow (absA D (Matrix.GeneralLinearGroup.det a)) (z + (p : ℂ) / 2) = npow (absA D (Matrix.GeneralLinearGroup.det a)) (z + (n : ℂ) / 2) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (((ρ / 2 : ℝ) : ℂ)) * npow (absA D (Matrix.GeneralLinearGroup.det a)) (-(ρ : ℂ))`. Rewrite using `[← npow_add' hne, ← npow_add' hne]`. Use `congr 1`.
+
+Rewrite using `[hnr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : conj (npow (absA D (Matrix.GeneralLinearGroup.det a)) ((ρ : ℂ) / 2)) = npow (absA D (Matrix.GeneralLinearGroup.det a)) (((ρ / 2 : ℝ) : ℂ))`. Use `conj_npow_ofReal (absA D (Matrix.GeneralLinearGroup.det a)) (ρ / 2 : ℝ)` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Rewrite using `[hs, map_mul, hc, MonoidHom.mul_apply, MonoidHom.inv_apply, Circle.coe_mul, Circle.coe_inv_eq_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rsec_levi {χ χ' : (AE D)ˣ →* Circle} {θ : InfFam D} {Ω : G D p → Mx D ρ p → ℂ} (hΩ : IsTh ψ χ' θ b₀ m.μ Ω)
     {z : ℂ} {f : G D n → ℂ} (hf : IsLaw χ z f) (g : G D n) (g₀ : G D p) (a : GL (Fin p) (AE D))
     (ha : mat g₀ = blk4 a.1 0 0 (adj (a⁻¹).1)) (h : G D p) :
@@ -280,6 +369,13 @@ theorem rsec_levi {χ χ' : (AE D)ˣ →* Circle} {θ : InfFam D} {Ω : G D p �
     Circle.coe_inv_eq_conj]
   ring
 
+/- English proof (translation)
+Unfold `Rsec`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Take `⟨z₀, x₀, e1, e2⟩` from `GlobalTheory.T.shift_unipotent_levi_commutator D n ρ p hn M g₁ b hb y`. Establish `e3 : M.sh y * M.emb (g₁ * h) * g = M.nzx z₀ x₀ * M.emb g₁ * (M.sh y * M.emb h * g)`. Rewrite using `[map_mul, ← mul_assoc, e1]`.
+
+Simplify using `only [mul_assoc]`. Use `show Wz M m ψ b₀ f (M.sh y * M.emb (g₁ * h) * g) * conj (Ω (g₁ * h) y) = Wz M m ψ b₀ f (M.sh y * M.emb h * g) * conj (Ω h y)`. Rewrite using `[e3, GlobalTheory.T.coefficient_unipotent_levi_invariance D n ρ p hn M m ψ hψ b₀ χ z f hf g₁ b hb, hΩ.unip g₁ b hb h y, GlobalTheory.T.centre_character_quadratic_trace D ρ p ψ b₀ b y z₀ e2, map_mul]`. Establish `hu : ψ (halfTr (Matrix.trace (HMul.hMul b (pr b₀ y y) : Mx D p p))) * conj (ψ (halfTr (Matrix.trace (HMul.hMul b (pr b₀ y y) : Mx D p p)))) = 1`. Rewrite using `[Complex.mul_conj', hψ.2.1]`.
+
+Simplify using the standard rewrite rules. Take the linear combination `(Wz M m ψ b₀ f (M.sh y * M.emb h * g) * conj (Ω h y)) * hu`.
+-/
 theorem rsec_unip (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {θ : InfFam D} {Ω : G D p → Mx D ρ p → ℂ}
     (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) {z : ℂ} {f : G D n → ℂ} (hf : IsLaw χ z f) (g : G D n) (g₁ : G D p) (b : Mx D p p)
     (hb : mat g₁ = blk4 1 b 0 1) (h : G D p) : Rsec M m ψ b₀ f g Ω (g₁ * h) = Rsec M m ψ b₀ f g Ω h := by
@@ -297,6 +393,9 @@ theorem rsec_unip (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {
     rw [Complex.mul_conj', hψ.2.1]; simp
   linear_combination (Wz M m ψ b₀ f (M.sh y * M.emb h * g) * conj (Ω h y)) * hu
 
+/- English proof (translation)
+Introduce `q hq a ha h`. Take `⟨g₁, g₂, b, rfl, h1, h2⟩` from `GlobalTheory.T.parabolic_unipotent_levi_factor D p q hq a ha`. Rewrite using `[mul_assoc, rsec_unip M m b₀ hψ hΩ hf g g₁ b h1, rsec_levi M m b₀ hΩ hf g g₂ a h2]`.
+-/
 theorem rsec_law (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {θ : InfFam D} {Ω : G D p → Mx D ρ p → ℂ}
     (hΩ : IsTh ψ χ' θ b₀ m.μ Ω) {z : ℂ} {f : G D n → ℂ} (hf : IsLaw χ z f) (g : G D n) :
     IsLaw (χ * χ'⁻¹) z (Rsec M m ψ b₀ f g Ω) := by
@@ -306,6 +405,9 @@ theorem rsec_law (hψ : IsCharAF D.host.F ψ) {χ χ' : (AE D)ˣ →* Circle} {�
 
 end Law
 
+/- English proof (translation)
+Introduce `hHt D n ρ p hn M m ψ hψ b₀ _ χ χ' _ _ θ hθ Ω hΩ H hH s₁ φ hφ hlaw g`. Take `⟨h1, h2⟩` from `rsec_family M m b₀ hψ hθ hΩ hH (hHt D n).2 hφ hlaw g`. Conclude with `⟨h1, h2, fun z _ => rsec_law M m b₀ hψ hΩ (isLaw_fam hH hlaw z) g⟩`.
+-/
 theorem rSec_of_htExist : HtExist → RSec := by
   intro hHt D n ρ p hn M m ψ hψ b₀ _ χ χ' _ _ θ hθ Ω hΩ H hH s₁ φ hφ hlaw g
   obtain ⟨h1, h2⟩ := rsec_family M m b₀ hψ hθ hΩ hH (hHt D n).2 hφ hlaw g

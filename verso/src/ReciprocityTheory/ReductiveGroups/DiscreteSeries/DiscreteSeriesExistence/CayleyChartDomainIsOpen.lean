@@ -7,6 +7,9 @@ open scoped ContDiff
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Establish `hH` using `ENNReal.lintegral_mul_le_Lp_mul_Lq (volume.restrict (Ioc (0:ℝ) 1)) Real.HolderConjugate.two_two hf (aemeasurable_const (b := (1 : ENNReal)))`. Simplify using `only [Pi.mul_apply, mul_one, ENNReal.one_rpow, lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioc, sub_zero, ENNReal.ofReal_one, one_mul] at hH`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem slm_sq_lintegral_le {f : ℝ → ENNReal} (hf : AEMeasurable f (volume.restrict (Ioc (0:ℝ) 1))) :
     (∫⁻ s in Ioc (0:ℝ) 1, f s) ^ (2:ℝ) ≤ ∫⁻ s in Ioc (0:ℝ) 1, f s ^ (2:ℝ) := by
   have hH := ENNReal.lintegral_mul_le_Lp_mul_Lq (volume.restrict (Ioc (0:ℝ) 1))
@@ -19,11 +22,21 @@ theorem slm_sq_lintegral_le {f : ℝ → ENNReal} (hf : AEMeasurable f (volume.r
     _ = ∫⁻ s in Ioc (0:ℝ) 1, f s ^ (2:ℝ) := by
         rw [← ENNReal.rpow_mul]; norm_num
 
+/- English proof (translation)
+Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 private lemma eLpNorm_two_rpow_two_eq_lintegral {Y : Type*} [MeasurableSpace Y] {ν : Measure Y} (f : Y → ℂ) :
     eLpNorm f 2 ν ^ (2:ℝ) = ∫⁻ x, ‖f x‖ₑ ^ (2:ℝ) ∂ν := by
   rw [eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), ← ENNReal.rpow_mul]
   norm_num
 
+/- English proof (translation)
+Establish `hmeas : ∀ x, Measurable fun s => D s x` using `fun x => hD.of_uncurry_right`. Establish `hpt : ∀ x, ‖r x‖ₑ ≤ ∫⁻ s in Ioc (0:ℝ) 1, ‖D s x‖ₑ` using `fun x => by`. Rewrite using `[hr x, intervalIntegral.integral_of_le zero_le_one]`. Conclude with `enorm_integral_le_lintegral_enorm _`. Establish `hsq : ∀ s ∈ Ioc (0:ℝ) 1, ∫⁻ x, ‖D s x‖ₑ ^ (2:ℝ) ∂μ ≤ B ^ (2:ℝ)` using `fun s hs => by`.
+
+Rewrite using `[← eLpNorm_two_rpow_two_eq_lintegral]`. Conclude with `ENNReal.rpow_le_rpow (hB s hs) (by norm_num)`. Establish `hmain : eLpNorm r 2 μ ^ (2:ℝ) ≤ B ^ (2:ℝ)`. Rewrite using `[eLpNorm_two_rpow_two_eq_lintegral]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(ENNReal.rpow_le_rpow_iff (by norm_num : (0:ℝ) < 2)).mp hmain`.
+-/
 theorem slm_eLpNorm_le {X : Type*} [MeasurableSpace X] {μ : Measure X} [SFinite μ]
     (r : X → ℂ) (D : ℝ → X → ℂ) (hD : Measurable (Function.uncurry D))
     (hr : ∀ x, r x = ∫ s in (0:ℝ)..1, D s x) (B : ENNReal)
@@ -54,9 +67,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E} {k : WithTop ℕ∞}
 
+/- English proof (translation)
+The claim follows from `contDiffOn_pi.trans (forall_congr' fun _ => contDiffOn_pi)`.
+-/
 theorem slm_cd_iff {f : E → Matrix (Fin n) (Fin n) ℂ} :
     ContDiffOn ℝ k f s ↔ ∀ i j, ContDiffOn ℝ k (fun x => f x i j) s := contDiffOn_pi.trans (forall_congr' fun _ => contDiffOn_pi)
 
+/- English proof (translation)
+Rewrite `hf`, `hg`, the goal using `[slm_cd_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun l _ => (hf i l).mul (hg l j)`.
+-/
 theorem slm_cd_mul {f g : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k f s)
     (hg : ContDiffOn ℝ k g s) : ContDiffOn ℝ k (fun x => f x * g x) s := by
   rw [slm_cd_iff] at hf hg ⊢
@@ -64,6 +83,9 @@ theorem slm_cd_mul {f g : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ
   simp only [Matrix.mul_apply]
   exact ContDiffOn.sum fun l _ => (hf i l).mul (hg l j)
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[slm_cd_iff]`. Introduce `i j`. Use `(Complex.conjCLE.contDiff (n := k)).comp_contDiffOn (hf j i)` as an intermediate fact. Simplify `this` using `[Function.comp_def, Matrix.conjTranspose_apply]`.
+-/
 theorem slm_cd_conjT {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k f s) :
     ContDiffOn ℝ k (fun x => (f x)ᴴ) s := by
   rw [slm_cd_iff] at hf ⊢
@@ -71,6 +93,9 @@ theorem slm_cd_conjT {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ
   have := (Complex.conjCLE.contDiff (n := k)).comp_contDiffOn (hf j i)
   simpa [Function.comp_def, Matrix.conjTranspose_apply] using this
 
+/- English proof (translation)
+Rewrite `hf` using `[slm_cd_iff]`. Simplify using `only [Matrix.det_apply']`. Use `ContDiffOn.sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `contDiffOn_const.mul (contDiffOn_prod fun i _ => hf _ _)`.
+-/
 theorem slm_cd_det {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k f s) :
     ContDiffOn ℝ k (fun x => (f x).det) s := by
   rw [slm_cd_iff] at hf
@@ -78,6 +103,13 @@ theorem slm_cd_det {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k
   refine ContDiffOn.sum fun σ _ => ?_
   exact contDiffOn_const.mul (contDiffOn_prod fun i _ => hf _ _)
 
+/- English proof (translation)
+Rewrite using `[slm_cd_iff]`. Introduce `i j`. Simplify using `only [Matrix.adjugate_apply]`. Apply `slm_cd_det` to reduce the goal to its premises. Rewrite `hf`, the goal using `[slm_cd_iff]`.
+
+Introduce `a b`. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Conclude with `contDiffOn_const`.
+
+Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `hf a b`.
+-/
 theorem slm_cd_adj {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k f s) :
     ContDiffOn ℝ k (fun x => (f x).adjugate) s := by
   rw [slm_cd_iff]
@@ -93,6 +125,11 @@ theorem slm_cd_adj {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k
   · simp only [Matrix.updateRow_ne h]
     exact hf a b
 
+/- English proof (translation)
+Establish `hdi : ContDiffOn ℝ k (fun x => ((f x).det)⁻¹) s` using `(slm_cd_det hf).inv hd`. Establish `hadj` using `slm_cd_adj hf`. Rewrite `hadj`, the goal using `[slm_cd_iff]`. Introduce `i j`. Use `(hdi.mul (hadj i j)).congr fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`.
+-/
 theorem slm_cd_inv {f : E → Matrix (Fin n) (Fin n) ℂ} (hf : ContDiffOn ℝ k f s)
     (hd : ∀ x ∈ s, (f x).det ≠ 0) : ContDiffOn ℝ k (fun x => (f x)⁻¹) s := by
   have hdi : ContDiffOn ℝ k (fun x => ((f x).det)⁻¹) s := (slm_cd_det hf).inv hd
@@ -112,6 +149,11 @@ variable {n : ℕ} {ε : Fin n → Bool}
 
 local notation "JJ" => Formalism.REAL.Jm
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc]`. Establish `h : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Rewrite using `[h, Matrix.one_mul]`.
+-/
 theorem slm_JJ (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : JJ ε * (JJ ε * X) = X := by
   rw [← Matrix.mul_assoc]
   have h : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
@@ -122,6 +164,9 @@ theorem slm_JJ (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : JJ ε * 
     split_ifs <;> norm_num
   rw [h, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ at ha hb ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha, hb]`.
+-/
 theorem slm_inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : Formalism.REAL.inUJ ε a)
     (hb : Formalism.REAL.inUJ ε b) : Formalism.REAL.inUJ ε (a * b) := by
   unfold Formalism.REAL.inUJ at ha hb ⊢
@@ -132,9 +177,15 @@ theorem slm_inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : Formalism.REAL.inU
 def slmJi (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   JJ ε * gᴴ * JJ ε
 
+/- English proof (translation)
+Simplify using `using slm_JJ ε 1`.
+-/
 private lemma Jm_mul_Jm_self_eq_one (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   simpa using slm_JJ ε 1
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+-/
 private lemma Jm_conjTranspose_eq_Jm (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_conjTranspose]
@@ -142,16 +193,27 @@ private lemma Jm_conjTranspose_eq_Jm (ε : Fin n → Bool) : (Formalism.REAL.Jm 
   funext a
   by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Unfold `slmJi`. Unfold `Formalism.REAL.inUJ at hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem slm_Ji_mul {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) : slmJi ε g * g = 1 := by
   unfold slmJi
   unfold Formalism.REAL.inUJ at hg
   calc Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε * (gᴴ * Formalism.REAL.Jm ε * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg, Jm_mul_Jm_self_eq_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.inv_eq_left_inv (slm_Ji_mul hg)]`. Conclude with `Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse (slm_Ji_mul hg))`.
+-/
 theorem slm_mul_Ji {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) : g * slmJi ε g = 1 := by
   rw [← Matrix.inv_eq_left_inv (slm_Ji_mul hg)]
   exact Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse (slm_Ji_mul hg))
 
+/- English proof (translation)
+Establish `h1 : g * (Formalism.REAL.Jm ε * (gᴴ * Formalism.REAL.Jm ε)) = 1`. Use `slm_mul_Ji hg` as an intermediate fact. Unfold `slmJi at this`. Simplify `this` using `only [Matrix.mul_assoc]`. Unfold `Formalism.REAL.inUJ slmJi`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose_eq_Jm, Matrix.mul_assoc, slm_JJ, h1, Matrix.mul_one]`.
+-/
 theorem slm_Ji_inUJ {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     Formalism.REAL.inUJ ε (slmJi ε g) := by
   have h1 : g * (Formalism.REAL.Jm ε * (gᴴ * Formalism.REAL.Jm ε)) = 1 := by
@@ -165,6 +227,11 @@ theorem slm_Ji_inUJ {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ �
 def slmP (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   (1 / 2 : ℂ) • (Y - JJ ε * Yᴴ * JJ ε)
 
+/- English proof (translation)
+Establish `hs : (star (1 / 2 : ℂ)) = 1 / 2` using `by simp`. Unfold `Formalism.REAL.inG slmP`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.conjTranspose_sub]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose_eq_Jm, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, slm_JJ, Jm_mul_Jm_self_eq_one, Matrix.mul_one]`. Rewrite using `[← smul_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem skewAdjointPart_isSkewAdjoint (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.inG ε (slmP ε Y) := by
   have hs : (star (1 / 2 : ℂ)) = 1 / 2 := by simp
   unfold Formalism.REAL.inG slmP
@@ -174,6 +241,11 @@ theorem skewAdjointPart_isSkewAdjoint (ε : Fin n → Bool) (Y : Matrix (Fin n) 
   rw [← smul_add]
   simp
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inG at hY`. Establish `h1 : Yᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * Y)` using `eq_neg_of_add_eq_zero_left hY`. Establish `h2 : Formalism.REAL.Jm ε * Yᴴ * Formalism.REAL.Jm ε = -Y`. Combine the equalities or inequalities in the displayed calculation. Unfold `slmP`.
+
+Rewrite using `[h2, sub_neg_eq_add, ← two_smul ℂ Y, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem skewAdjointPart_eq_self_of_isSkewAdjoint {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Formalism.REAL.inG ε Y) : slmP ε Y = Y := by
   unfold Formalism.REAL.inG at hY
   have h1 : Yᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * Y) := eq_neg_of_add_eq_zero_left hY
@@ -185,6 +257,13 @@ theorem skewAdjointPart_eq_self_of_isSkewAdjoint {Y : Matrix (Fin n) (Fin n) ℂ
   rw [h2, sub_neg_eq_add, ← two_smul ℂ Y, smul_smul]
   norm_num
 
+/- English proof (translation)
+Establish `hu : IsUnit (h + 1).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hA1 : (h + 1) * (h + 1)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hA2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, ((h + 1)⁻¹)ᴴ * ((h + 1)ᴴ * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hA1, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `hm : (h - 1)ᴴ * Formalism.REAL.Jm ε * (h + 1) + (h + 1)ᴴ * Formalism.REAL.Jm ε * (h - 1) = 0`.
+
+Unfold `Formalism.REAL.inUJ at hh`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, hh]`. Normalize the expressions using the abelian group laws. Unfold `Formalism.REAL.inG`. Generalize the expression as in `h + 1 = A at hA1 hA2 hm ⊢`.
+
+Generalize the expression as in `h - 1 = B at hm ⊢`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hA1, hA2, Matrix.mul_one]`. Use `_ = 0 := by rw [hm, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem slm_Y_inG {h : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) (hd : (h + 1).det ≠ 0) :
     Formalism.REAL.inG ε ((h - 1) * (h + 1)⁻¹) := by
   have hu : IsUnit (h + 1).det := isUnit_iff_ne_zero.mpr hd
@@ -205,6 +284,13 @@ theorem slm_Y_inG {h : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε 
         simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hA1, hA2, Matrix.mul_one]
     _ = 0 := by rw [hm, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `hu : IsUnit (1 - X).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hC1 : (1 - X) * (1 - X)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hC2 : ∀ M : Matrix (Fin n) (Fin n) ℂ, ((1 - X)⁻¹)ᴴ * ((1 - X)ᴴ * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hC1, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `hm : (1 + X)ᴴ * Formalism.REAL.Jm ε * (1 + X) = (1 - X)ᴴ * Formalism.REAL.Jm ε * (1 - X)`.
+
+Unfold `Formalism.REAL.inG at hX`. Establish `hX' : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX`. Simplify using `only [Matrix.conjTranspose_sub, Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, hX']`. Normalize the expressions using the abelian group laws. Unfold `Formalism.REAL.inUJ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((1 - X)⁻¹)ᴴ * ((1 - X)ᴴ * Formalism.REAL.Jm ε * (1 - X)) * (1 - X)⁻¹ := by rw [hm]`. Use `_ = Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc, hC1, hC2, Matrix.mul_one]`.
+-/
 theorem slm_cay_inUJ {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (hd : (1 - X).det ≠ 0) :
     Formalism.REAL.inUJ ε ((1 + X) * (1 - X)⁻¹) := by
   have hu : IsUnit (1 - X).det := isUnit_iff_ne_zero.mpr hd
@@ -224,6 +310,13 @@ theorem slm_cay_inUJ {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG �
     _ = ((1 - X)⁻¹)ᴴ * ((1 - X)ᴴ * Formalism.REAL.Jm ε * (1 - X)) * (1 - X)⁻¹ := by rw [hm]
     _ = Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc, hC1, hC2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hu : IsUnit (h + 1).det` using `isUnit_iff_ne_zero.mpr hd`. Establish `hA1 : (h + 1) * (h + 1)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hc : (h + 1) * (h - 1) = (h - 1) * (h + 1)` using `by noncomm_ring`. Establish `e : (h + 1) * ((h - 1) * (h + 1)⁻¹) = h - 1`. Rewrite using `[← Matrix.mul_assoc, hc, Matrix.mul_assoc, hA1, Matrix.mul_one]`.
+
+Establish `key : 1 + (h - 1) * (h + 1)⁻¹ = h * (1 - (h - 1) * (h + 1)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Use `_ = h * (1 - (h - 1) * (h + 1)⁻¹) := by noncomm_ring`.
+
+Establish `hu2 : IsUnit (1 - (h - 1) * (h + 1)⁻¹).det` using `isUnit_iff_ne_zero.mpr hd2`. Rewrite using `[key, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu2, Matrix.mul_one]`.
+-/
 theorem slm_cay_left {h : Matrix (Fin n) (Fin n) ℂ} (hd : (h + 1).det ≠ 0)
     (hd2 : (1 - (h - 1) * (h + 1)⁻¹).det ≠ 0) :
     (1 + (h - 1) * (h + 1)⁻¹) * (1 - (h - 1) * (h + 1)⁻¹)⁻¹ = h := by
@@ -251,6 +344,11 @@ def cayleyChartDomain (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) : 
 def slmV (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) : Set (Matrix (Fin n) (Fin n) ℂ) :=
   cayleyChartDomain ε g0 ∩ (fun g => (1 - slmX ε g0 g).det) ⁻¹' {0}ᶜ
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => slmJi ε g0 * g) (cayleyChartDomain ε g0)` using `slm_cd_mul contDiffOn_const contDiffOn_id`. Establish `hA : ContDiffOn ℝ ∞ (fun g => slmJi ε g0 * g - 1) (cayleyChartDomain ε g0)` using `h1.sub contDiffOn_const`. Establish `hB : ContDiffOn ℝ ∞ (fun g => slmJi ε g0 * g + 1) (cayleyChartDomain ε g0)` using `h1.add contDiffOn_const`. Establish `hY` using `slm_cd_mul hA (slm_cd_inv hB fun g hg => hg)`. Establish `hJYJ` using `slm_cd_mul (slm_cd_mul (contDiffOn_const (c := JJ ε)) (slm_cd_conjT hY)) (contDiffOn_const (c := JJ ε))`.
+
+Conclude with `(hY.sub hJYJ).const_smul (1 / 2 : ℂ)`.
+-/
 theorem slm_X_cd (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) :
     ContDiffOn ℝ ∞ (slmX ε g0) (cayleyChartDomain ε g0) := by
   have h1 : ContDiffOn ℝ ∞ (fun g : Matrix (Fin n) (Fin n) ℂ => slmJi ε g0 * g) (cayleyChartDomain ε g0) :=
@@ -262,16 +360,25 @@ theorem slm_X_cd (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) :
     (contDiffOn_const (c := JJ ε))
   exact (hY.sub hJYJ).const_smul (1 / 2 : ℂ)
 
+/- English proof (translation)
+Use `show IsOpen {g : Matrix (Fin n) (Fin n) ℂ | (slmJi ε g0 * g + 1).det ≠ 0}`. Conclude with `isOpen_ne_fun ((continuous_const.matrix_mul continuous_id).add continuous_const).matrix_det continuous_const`.
+-/
 theorem cayleyChartDomain_isOpen (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) : IsOpen (cayleyChartDomain ε g0) := by
   show IsOpen {g : Matrix (Fin n) (Fin n) ℂ | (slmJi ε g0 * g + 1).det ≠ 0}
   exact isOpen_ne_fun ((continuous_const.matrix_mul continuous_id).add continuous_const).matrix_det
     continuous_const
 
+/- English proof (translation)
+The claim follows from `ContinuousOn.isOpen_inter_preimage (f := fun g => (1 - slmX ε g0 g).det) ((continuous_id.matrix_det).comp_continuousOn (continuousOn_const.sub (slm_X_cd ε g0).continuousOn)) (cayleyChartDomain_isOpen ε g0) isOpen_compl_singleton`.
+-/
 theorem slm_V_open (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) : IsOpen (slmV ε g0) :=
   ContinuousOn.isOpen_inter_preimage (f := fun g => (1 - slmX ε g0 g).det)
     ((continuous_id.matrix_det).comp_continuousOn (continuousOn_const.sub (slm_X_cd ε g0).continuousOn))
     (cayleyChartDomain_isOpen ε g0) isOpen_compl_singleton
 
+/- English proof (translation)
+Establish `hX : ContDiffOn ℝ ∞ (slmX ε g0) (slmV ε g0)` using `(slm_X_cd ε g0).mono fun g hg => hg.1`. Establish `hM : ContDiffOn ℝ ∞ (fun g => 1 - slmX ε g0 g) (slmV ε g0)` using `contDiffOn_const.sub hX`. Establish `hP : ContDiffOn ℝ ∞ (fun g => 1 + slmX ε g0 g) (slmV ε g0)` using `contDiffOn_const.add hX`. Establish `hI` using `slm_cd_inv hM fun g hg => hg.2`. Conclude with `slm_cd_mul contDiffOn_const (slm_cd_mul hP hI)`.
+-/
 theorem slm_ret_cd (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) :
     ContDiffOn ℝ ∞ (slmRet ε g0) (slmV ε g0) := by
   have hX : ContDiffOn ℝ ∞ (slmX ε g0) (slmV ε g0) := (slm_X_cd ε g0).mono fun g hg => hg.1
@@ -280,9 +387,17 @@ theorem slm_ret_cd (ε : Fin n → Bool) (g0 : Matrix (Fin n) (Fin n) ℂ) :
   have hI := slm_cd_inv hM fun g hg => hg.2
   exact slm_cd_mul contDiffOn_const (slm_cd_mul hP hI)
 
+/- English proof (translation)
+Introduce `g hg` and use `slm_inUJ_mul hg0 (slm_cay_inUJ (skewAdjointPart_isSkewAdjoint ε _) hg.2)`.
+-/
 theorem slm_ret_inUJ {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inUJ ε g0) :
     ∀ g ∈ slmV ε g0, Formalism.REAL.inUJ ε (slmRet ε g0 g) := fun g hg => slm_inUJ_mul hg0 (slm_cay_inUJ (skewAdjointPart_isSkewAdjoint ε _) hg.2)
 
+/- English proof (translation)
+Introduce `g hg hgU`. Establish `hh : Formalism.REAL.inUJ ε (slmJi ε g0 * g)` using `slm_inUJ_mul (slm_Ji_inUJ hg0) hgU`. Establish `hd : (slmJi ε g0 * g + 1).det ≠ 0` using `hg.1`. Establish `hXY : slmX ε g0 g = (slmJi ε g0 * g - 1) * (slmJi ε g0 * g + 1)⁻¹` using `skewAdjointPart_eq_self_of_isSkewAdjoint (slm_Y_inG hh hd)`. Establish `hd2 : (1 - slmX ε g0 g).det ≠ 0` using `hg.2`.
+
+Rewrite `hd2` using `[hXY]`. Use `show g0 * ((1 + slmX ε g0 g) * (1 - slmX ε g0 g)⁻¹) = g`. Rewrite using `[hXY, slm_cay_left hd hd2, ← Matrix.mul_assoc, slm_mul_Ji hg0, Matrix.one_mul]`.
+-/
 theorem slm_ret_self {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inUJ ε g0) :
     ∀ g ∈ slmV ε g0, Formalism.REAL.inUJ ε g → slmRet ε g0 g = g := by
   intro g hg hgU
@@ -295,6 +410,13 @@ theorem slm_ret_self {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inU
   show g0 * ((1 + slmX ε g0 g) * (1 - slmX ε g0 g)⁻¹) = g
   rw [hXY, slm_cay_left hd hd2, ← Matrix.mul_assoc, slm_mul_Ji hg0, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1 : slmJi ε g0 * g0 = 1` using `slm_Ji_mul hg0`. Establish `hW : g0 ∈ cayleyChartDomain ε g0` using `by show (slmJi ε g0 * g0 + 1).det ≠ 0`. Rewrite using `[h1, ← two_smul ℂ (1 : Matrix (Fin n) (Fin n) ℂ), Matrix.det_smul, Matrix.det_one]`. Simplify using the standard rewrite rules. Establish `hX0 : slmX ε g0 g0 = 0`.
+
+Unfold `slmX slmP`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Use `show g0 ∈ cayleyChartDomain ε g0 ∧ (1 - slmX ε g0 g0).det ≠ 0`. Use `⟨hW, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hX0]`. Simplify using the standard rewrite rules.
+-/
 theorem slm_mem_V {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inUJ ε g0) : g0 ∈ slmV ε g0 := by
   have h1 : slmJi ε g0 * g0 = 1 := slm_Ji_mul hg0
   have hW : g0 ∈ cayleyChartDomain ε g0 := by
@@ -310,6 +432,9 @@ theorem slm_mem_V {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inUJ �
   rw [hX0]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨slmV ε g0, slmRet ε g0, slm_V_open ε g0, slm_mem_V hg0, slm_ret_cd ε g0, slm_ret_inUJ hg0, slm_ret_self hg0⟩`.
+-/
 theorem slm_exists_ret (ε : Fin n → Bool) {g0 : Matrix (Fin n) (Fin n) ℂ} (hg0 : Formalism.REAL.inUJ ε g0) :
     ∃ (V : Set (Matrix (Fin n) (Fin n) ℂ)) (γ : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ),
       IsOpen V ∧ g0 ∈ V ∧ ContDiffOn ℝ ∞ γ V ∧ (∀ g ∈ V, Formalism.REAL.inUJ ε (γ g)) ∧

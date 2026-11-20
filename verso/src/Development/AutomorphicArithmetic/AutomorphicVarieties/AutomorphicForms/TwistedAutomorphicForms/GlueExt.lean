@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 namespace UpperTheory.V.Af.Tw
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `hB.exists_extension p.range ((QuotientGroup.lift p.ker f (fun x hx => (MonoidHom.mem_ker).2 (h x ((MonoidHom.mem_ker).1 hx)))).comp (QuotientGroup.quotientKerEquivRange p).symm.toMonoidHom)`. Use `⟨F, fun x => (hF ⟨p x, x, rfl⟩).trans ?_⟩` and prove the remaining obligations. Establish `hx : (QuotientGroup.quotientKerEquivRange p).symm ⟨p x, x, rfl⟩ = (x : G ⧸ p.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Rewrite using `[MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, hx]`. Both sides reduce to the same expression.
+-/
 private theorem glue_ext {G H B : Type*} [CommGroup G] [CommGroup H] [CommGroup B] (hB : KStar.Choice.IsDiv B)
     (p : G →* H) (f : G →* B) (h : ∀ x, p x = 1 → f x = 1) : ∃ F : H →* B, ∀ x, F (p x) = f x := by
   classical
@@ -15,6 +20,11 @@ private theorem glue_ext {G H B : Type*} [CommGroup G] [CommGroup H] [CommGroup 
   rw [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, hx]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hc : n.Coprime l`. Establish `hM0 : M ≠ 0` using `hM.ne'`. Establish `hco : n.Coprime (l ^ M.factorization l)` using `Nat.Coprime.pow_right _ hc`. Take `⟨e, he1, he0⟩` from `Nat.chineseRemainder hco 1 0`. Use `⟨e, M / l ^ M.factorization l, he1, Nat.ordCompl_pos l hM0, fun _ => (Nat.coprime_ordCompl hl hM0).symm, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : l ^ M.factorization l ∣ e` using `(Nat.modEq_zero_iff_dvd).1 he0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨1, M, Nat.ModEq.refl 1, hM, fun h' => absurd h' hc, by simp⟩`.
+-/
 private theorem glue_exp (n M l : ℕ) (hM : 0 < M) (hl : l.Prime) :
     ∃ e k : ℕ, e ≡ 1 [MOD n] ∧ 0 < k ∧ (n.Coprime l → k.Coprime l) ∧ M ∣ e * k := by
   by_cases hc : n.Coprime l
@@ -29,6 +39,35 @@ private theorem glue_exp (n M l : ℕ) (hM : 0 < M) (hl : l.Prime) :
       _ ∣ e * (M / l ^ M.factorization l) := mul_dvd_mul_right hd _
   · exact ⟨1, M, Nat.ModEq.refl 1, hM, fun h' => absurd h' hc, by simp⟩
 
+/- English proof (translation)
+Unfold `Glue`. Introduce `I J K B _ _ _ _ hB i d c σ U V N g n M l hM hl h1 h2 h3 h4 h5 h6 h7 h8`. Take `⟨e, k, he, hk0, hkc, hMk⟩` from `glue_exp n M l hM hl`. Take `⟨p₀, hp₀⟩ : ∃ p₀ : J × K × U →* I, ∀ z, p₀ z = i z.1 * d z.2.1 * (z.2.2 : I)` from `⟨i.comp (MonoidHom.fst _ _) * d.comp ((MonoidHom.fst _ _).comp (MonoidHom.snd _ _)) * U.subtype.comp ((MonoidHom.snd _ _).comp (MonoidHom.snd _ _)), fun z => rfl⟩`. Establish `hq : ∀ z, p₀ z = 1 → (z.2.2 : I) / c z.2.2 = d (σ z.2.1 / z.2.1)`.
+
+Introduce `z hz`. Rewrite `hz` using `[hp₀]`. Establish `hu : (z.2.2 : I) = (i z.1 * d z.2.1)⁻¹` using `eq_inv_of_mul_eq_one_right hz`. Rewrite using `[hu, map_inv, map_mul, h1, h2, map_div]`. Simplify using `[div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc]`.
+
+Take `⟨pθ, hpθ⟩ : ∃ pθ : p₀.ker × V →* I, ∀ w, pθ w = d (σ (w.1 : J × K × U).2.1 / (w.1 : J × K × U).2.1) * (w.2 : I)` from `⟨d.comp ((σ / MonoidHom.id K).comp ((MonoidHom.fst _ _).comp ((MonoidHom.snd _ _).comp (p₀.ker.subtype.comp (MonoidHom.fst _ _))))) * V.subtype.comp (MonoidHom.snd _ _), fun w => rfl⟩`. Take `⟨fθ, hfθ⟩ : ∃ fθ : p₀.ker × V →* B, ∀ w, fθ w = (N (w.1 : J × K × U).1 * g ((w.1 : J × K × U).2.2 : I))⁻¹` from `⟨((N.comp (MonoidHom.fst _ _) * g.comp (U.subtype.comp ((MonoidHom.snd _ _).comp (MonoidHom.snd _ _)))).comp (p₀.ker.subtype.comp (MonoidHom.fst _ _)))⁻¹, fun w => rfl⟩`. Take `⟨θ₁, hθ₁⟩` from `glue_ext hB pθ fθ (by`. Introduce and unpack `⟨⟨⟨a, x, u⟩, hz⟩, v⟩ hw`. Rewrite `hw` using `[hpθ]`.
+
+Rewrite using `[hfθ]`. Simplify using `only at hw ⊢`. Establish `hz' : p₀ (a, x, u) = 1` using `MonoidHom.mem_ker.1 hz`. Rewrite `hz'` using `[hp₀]`. Simplify using `only at hz'`.
+
+Establish `hv : d (σ x / x) = (v : I)⁻¹` using `eq_inv_of_mul_eq_one_left hw`. Establish `hσ : σ x = x` using `h7 x (by rw [hv]; exact inv_mem v.2)`. Take `⟨a', ha', hN⟩` from `h5 x hσ`. Establish `hiu : i (a * a') = (u : I)⁻¹`. Rewrite using `[map_mul, ha']`.
+
+Conclude with `eq_inv_of_mul_eq_one_left hz'`. Establish `h4'` using `h4 (a * a') (by rw [hiu]; exact inv_mem u.2)`. Rewrite `h4'` using `[hiu, map_inv, map_mul, hN, mul_one]`. Rewrite using `[← h4', inv_mul_cancel, inv_one])`. Take `⟨θ, hθ⟩ : ∃ θ : I →* B, ∀ y, θ y = θ₁ y ^ e` from `⟨(powMonoidHom e).comp θ₁, fun y => rfl⟩`.
+
+Establish `hV : ∀ v ∈ V, θ₁ v = 1`. Introduce `v hv`. Establish `h` using `hθ₁ (1, ⟨v, hv⟩)`. Rewrite `h` using `[hpθ, hfθ]`. Simplify using `using h`.
+
+Establish `hZ : ∀ z, p₀ z = 1 → θ (z.2.2 / c z.2.2) = (N z.1 * g z.2.2)⁻¹`. Introduce `z hz`. Establish `h` using `hθ₁ (⟨z, MonoidHom.mem_ker.2 hz⟩, 1)`. Rewrite `h` using `[hpθ, hfθ]`. Simplify using `only at h`.
+
+Simplify using `only [OneMemClass.coe_one, mul_one] at h`. Rewrite using `[hθ, hq z hz, h]`. Establish `hw : ((N z.1 * g z.2.2)⁻¹) ^ n = 1`. Establish `hmem : d (σ z.2.1 / z.2.1) ∈ U`. Rewrite using `[← hq z hz]`.
+
+Conclude with `div_mem z.2.2.2 (h3 _ z.2.2.2)`. Rewrite using `[← h, ← map_pow, ← map_pow, h6 _ hmem, map_one, map_one]`. Rewrite using `[pow_eq_pow_mod e hw, show e % n = 1 % n from he, ← pow_eq_pow_mod 1 hw, pow_one]`. Take `⟨f, hf⟩ : ∃ f : J × K × U →* B, ∀ z, f z = N z.1 * (g z.2.2 * θ (z.2.2 / c z.2.2))` from `⟨N.comp (MonoidHom.fst _ _) * (g.comp (U.subtype.comp ((MonoidHom.snd _ _).comp (MonoidHom.snd _ _))) * θ.comp ((U.subtype / c.comp U.subtype).comp ((MonoidHom.snd _ _).comp (MonoidHom.snd _ _)))), fun z => rfl⟩`. Take `⟨ψ, hψ⟩` from `glue_ext hB p₀ f (by`.
+
+Introduce `z hz`. Rewrite using `[hf, hZ z hz, ← mul_assoc, mul_inv_cancel])`. Use `⟨ψ, θ, fun a => ?_, fun x => ?_, fun u hu => ?_, fun v hv => ?_, k, hk0, hkc, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h` using `hψ (a, 1, 1)`. Rewrite `h` using `[hp₀, hf]`.
+
+Simplify using `using h`. Establish `h` using `hψ (1, x, 1)`. Rewrite `h` using `[hp₀, hf]`. Simplify using `using h`. Establish `h` using `hψ (1, 1, ⟨u, hu⟩)`.
+
+Rewrite `h` using `[hp₀, hf]`. Simplify using `using h`. Rewrite using `[hθ, hV v hv, one_pow]`. Take `⟨j, hj⟩` from `hMk`. Rewrite using `[hθ, ← pow_mul, ← map_pow, hj, pow_mul]`.
+
+Conclude with `hV _ (pow_mem (h8 u hu) j)`.
+-/
 theorem glue : Glue := by
   unfold Glue
   intro I J K B _ _ _ _ hB i d c σ U V N g n M l hM hl h1 h2 h3 h4 h5 h6 h7 h8

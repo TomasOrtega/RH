@@ -20,6 +20,9 @@ namespace GlobalTheory.RawLift.LevelFix
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Use `⟨hk.1, hk.2.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hk.2.2`. Establish `e : (R.datWp i R.triv).P.H = ⊥` using `rfl`. Rewrite `h2` using `[e]`. Conclude with `Subgroup.mem_bot.1 h2`.
+-/
 theorem isLiftFiniteGroup_one_of_mem_coeffSpaceLevel (R : RealDat D A Ks) (i : Fin D.R.m) (k : GA D (Wc D i)) (hk : k ∈ levW R i) :
     IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) 1 k := by
   refine ⟨hk.1, hk.2.1, ?_⟩
@@ -28,10 +31,16 @@ theorem isLiftFiniteGroup_one_of_mem_coeffSpaceLevel (R : RealDat D A Ks) (i : F
   rw [e] at h2
   exact Subgroup.mem_bot.1 h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩`.
+-/
 theorem realDatum_identity_lifts_identity (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) 1 1 :=
   ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩
 
+/- English proof (translation)
+Use `(levChar D.sp.cm (Vc D i).gram (R.βV i) (flagL (R.datVt i t))).map_one` as an intermediate fact. Unfold `levChi`. Rewrite using `[map_one]`. Conclude with `congrArg Units.val this`.
+-/
 theorem levChi_flag_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) 1 = 1 := by
   have := (levChar D.sp.cm (Vc D i).gram (R.βV i) (flagL (R.datVt i t))).map_one
@@ -39,12 +48,20 @@ theorem levChi_flag_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
   rw [map_one]
   exact congrArg Units.val this
 
+/- English proof (translation)
+Establish `e` using `GlobalTheory.T.weilAction_liftPair_stepVector_invLevelChar R h.lev h.models.inf h.thP.ωP h.thP.vP i t 1 1 k (realDatum_identity_lifts_identity R i t) (isLiftFiniteGroup_one_of_mem_coeffSpaceLevel R i k hk)`. Rewrite using `[e, levChi_flag_one R i t, inv_one, one_smul]`.
+-/
 theorem levW_fix_vP (R : RealDat D A Ks) (F : Face D A) (h : Laws R F) (i : Fin D.R.m) (t : T)
     (k : GA D (Wc D i)) (hk : k ∈ levW R i) : R.ωP i t (1, k) (R.vP i t) = R.vP i t := by
   have e := GlobalTheory.T.weilAction_liftPair_stepVector_invLevelChar R h.lev h.models.inf h.thP.ωP h.thP.vP i t 1 1 k (realDatum_identity_lifts_identity R i t)
     (isLiftFiniteGroup_one_of_mem_coeffSpaceLevel R i k hk)
   rw [e, levChi_flag_one R i t, inv_one, one_smul]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F h _ i t k hk P`. Establish `hv : R.ωP i t (1, k) (R.vP i t) = (1 : ℂ) • R.vP i t`. Rewrite using `[one_smul]`. Conclude with `levW_fix_vP R F h i t k hk`. Use `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i t) h.models.inf (h.thP.ωP i t) _ _ _ _ _ (h.thP.pt_theta i t) 1 (Subgroup.one_mem _) k hk.1 1 hv P` as an intermediate fact.
+
+Conclude with `this.trans (one_smul ℂ _)`.
+-/
 theorem levFix : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),
     Laws R F → R.FullP → ∀ i t, LevFix R i t := by

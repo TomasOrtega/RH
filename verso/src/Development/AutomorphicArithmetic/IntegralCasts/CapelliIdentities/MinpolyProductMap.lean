@@ -4,6 +4,11 @@ import GroundTheory.LocalFields.Interface
 
 open scoped IntermediateField Algebra TensorProduct Matrix Pointwise NumberField Topology ContDiff NNReal ENNReal Polynomial DirectSum BigOperators InnerProductSpace Manifold
 
+/- English proof (translation)
+Establish `hint : IsIntegral K y` using `Algebra.IsIntegral.isIntegral y`. Use `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (Polynomial.monic_prod_of_monic _ _ fun σ _ => Polynomial.monic_X_sub_C _) ((minpoly.monic hint).map _) ?_ ?_` and prove the remaining obligations. Use `Fintype.prod_dvd_of_coprime (Polynomial.pairwise_coprime_X_sub_C hy) fun σ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.dvd_iff_isRoot, Polynomial.IsRoot.def, Polynomial.eval_map_algebraMap, Polynomial.aeval_algHom_apply σ, minpoly.aeval, map_zero]`. Rewrite using `[Polynomial.natDegree_map, Polynomial.natDegree_prod_of_monic _ _ (fun σ _ => Polynomial.monic_X_sub_C _)]`.
+
+Simplify using `only [Polynomial.natDegree_X_sub_C, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one]`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Conclude with `minpoly.natDegree_le y`.
+-/
 private theorem UpperTheory.Reformulated.B.MinpolyProductMap.field_case {K L : Type*} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] (y : L)
     (hy : Function.Injective fun σ : Gal(L/K) => σ y) :
@@ -22,6 +27,27 @@ private theorem UpperTheory.Reformulated.B.MinpolyProductMap.field_case {K L : T
     rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]
     exact minpoly.natDegree_le y
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ x hx`. Establish `hinj : Function.Injective fun σ : Gal(L/K) => σ (x : L)`. Introduce `σ τ h`. Establish `h1 : ∀ z : (ValuativeRel.valuation L).integer, σ (z : L) = τ (z : L)`. Establish `h2 : (GroundTheory.LocalField.integerAlgEquiv K L σ).toAlgHom = (GroundTheory.LocalField.integerAlgEquiv K L τ).toAlgHom`.
+
+Use `AlgHom.ext_of_adjoin_eq_top hx ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `Subtype.ext h`. Introduce `z`. Conclude with `congrArg Subtype.val (DFunLike.congr_fun h2 z)`.
+
+Use extensionality with `y`. Break down `le_total (ValuativeRel.valuation L y) 1 with hy | hy` into its components or cases. Conclude with `h1 ⟨y, hy⟩`. Establish `hy' : ValuativeRel.valuation L y⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_le_one_of_one_le₀ hy`. Establish `h3 : σ y⁻¹ = τ y⁻¹` using `h1 ⟨y⁻¹, hy'⟩`. Rewrite `h3` using `[map_inv₀, map_inv₀, inv_inj]`. Then use the resulting hypothesis. Establish `hfield` using `UpperTheory.Reformulated.B.MinpolyProductMap.field_case (K := K) (x : L) hinj`. Establish `hprod : (∏ σ : Gal(L/K), (Polynomial.X - Polynomial.C (GroundTheory.LocalField.integerAlgEquiv K L σ x))).map (algebraMap (ValuativeRel.valuation L).integer L) = (minpoly K (x : L)).map (algebraMap K L)`.
+
+Rewrite using `[hfield, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Both sides reduce to the same expression. Establish `hlift : minpoly K (x : L) ∈ Polynomial.lifts (algebraMap (ValuativeRel.valuation K).integer K)`.
+
+Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Establish `h4` using `congrArg (fun p => Polynomial.coeff p n) hprod`. Simplify using `only [Polynomial.coeff_map] at h4`. Establish `h5 : algebraMap K L ((minpoly K (x : L)).coeff n) ∈ (ValuativeRel.valuation L).integer`.
+
+Rewrite using `[← h4]`. Conclude with `Subtype.property _`. Conclude with `⟨⟨_, (GroundTheory.LocalField.algebraMap_mem_integer_iff K L _).mp h5⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (minpoly.monic (Algebra.IsIntegral.isIntegral (x : L)))`. Establish `hcomp : (algebraMap (ValuativeRel.valuation L).integer L).comp (algebraMap (ValuativeRel.valuation K).integer (ValuativeRel.valuation L).integer) = (algebraMap K L).comp (algebraMap (ValuativeRel.valuation K).integer K)`.
+
+Use extensionality with `z`. Conclude with `GroundTheory.LocalField.coe_algebraMap_integer K L z`. Establish `hxint : IsIntegral (ValuativeRel.valuation K).integer x`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Establish `h6` using `Polynomial.hom_eval₂ q (algebraMap (ValuativeRel.valuation K).integer (ValuativeRel.valuation L).integer) (algebraMap (ValuativeRel.valuation L).integer L) x`. Rewrite `h6` using `[hcomp, ← Polynomial.eval₂_map, hq]`. Conclude with `h6.trans (minpoly.aeval K (x : L))`. Establish `hmin` using `minpoly.isIntegrallyClosed_eq_field_fractions K L hxint`. Apply `Polynomial.map_injective (algebraMap (ValuativeRel.valuation L).integer L) Subtype.val_injective` to reduce the goal to its premises.
+
+Rewrite using `[hprod, Polynomial.map_map, hcomp, ← Polynomial.map_map, ← hmin]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.MinpolyProductMap.map_minpoly_eq_prod.{u_1, u_2} :
     ∀ {K : Type u_1} {L : Type u_2} [inst : Field K] [inst_1 : ValuativeRel K] [inst_2 : TopologicalSpace K]
       [inst_3 : IsNonarchimedeanLocalField K] [inst_4 : Field L] [inst_5 : ValuativeRel L] [inst_6 : TopologicalSpace L]

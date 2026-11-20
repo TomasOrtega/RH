@@ -20,6 +20,11 @@ section Carries
 
 variable {X X' Y : Scheme.{0}} (L : LB X) (L' : LB X') (F : X' ⟶ X)
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `h1 : p'.base y ∈ LB.wchart L (fun _ : PUnit => F) (fun _ => j)` using `hy.1`. Establish `h2 : F.base (p'.base y) ∈ L.U j` using `Set.mem_iInter.1 h1 PUnit.unit`. Substitute `hp` using the available equality.
+
+Conclude with `h2`.
+-/
 lemma chart_le_target (p' : Y ⟶ X') (p : Y ⟶ X) (hp : p' ≫ F = p) (j : L.ι) (j' : L'.ι) :
     p' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j') ≤
       LB.wchart L (fun _ : PUnit => p) (fun _ => j) := by
@@ -30,6 +35,9 @@ lemma chart_le_target (p' : Y ⟶ X') (p : Y ⟶ X) (hp : p' ≫ F = p) (j : L.�
   subst hp
   exact h2
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy.2`.
+-/
 lemma chart_le_source (p' : Y ⟶ X') (j : L.ι) (j' : L'.ι) :
     p' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j') ≤
       LB.wchart L' (fun _ : PUnit => p') (fun _ => j') :=
@@ -52,6 +60,9 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 abbrev specOf (φ : R →+* R') : Spec (CommRingCat.of R') ⟶ Spec (CommRingCat.of R) :=
   Spec.map (CommRingCat.ofHom φ)
 
+/- English proof (translation)
+Establish `h1 : ptK x' = jK R' ≫ x'.left` using `rfl`. Establish `h2 : (toUnit (TW W) ≫ x).left = W.ι ≫ x.left` using `rfl`. Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma ptK_comp (φ : R →+* R') {B : Over (Spec (CommRingCat.of R))}
     {B' : Over (Spec (CommRingCat.of R'))} (F : B'.left ⟶ B.left)
     (x : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (x' : 𝟙_ (Over (Spec (CommRingCat.of R'))) ⟶ B')
@@ -86,10 +97,16 @@ structure PullIdent (φ : R →+* R') (D : DegPre R) (D' : DegPre R') where
       (ptK_comp φ F (D.c (xe χ)) (D'.c χ) (c_eq χ) W g hg) (-1) (D'.psi χ)
       (LB.pullGen D.P.L _ _ (ψW.psi (xe χ)) g)
 
+/- English proof (translation)
+The claim follows from `h.xe.toIntLinearEquiv.finrank_eq`.
+-/
 example (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (h : PullIdent φ D D') :
     D'.rank = D.rank :=
   h.xe.toIntLinearEquiv.finrank_eq
 
+/- English proof (translation)
+Take `⟨W, ψW, g, -, -⟩` from `h.w_psi`. Establish `p : (Spec (CommRingCat.of (FractionRing R')))` using `(⊥ : PrimeSpectrum (FractionRing R'))`. Conclude with `⟨W, ⟨ψW⟩, ⟨g.base p⟩⟩`.
+-/
 example (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (h : PullIdent φ D D') :
     ∃ W : (Spec (CommRingCat.of R)).Opens, Nonempty (PsiOn D W) ∧ Nonempty W.toScheme := by
   obtain ⟨W, ψW, g, -, -⟩ := h.w_psi

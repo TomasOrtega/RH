@@ -18,9 +18,17 @@ namespace MoveEx
 
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example
 
+/- English proof (translation)
+The claim follows from `(sigPos_Hc 1 v.embedding).trans (by simp)`.
+-/
 theorem sig_one (v : InfinitePlace (ex 1 one_ne_zero).F) : sigPosH ((ex 1 one_ne_zero).gram_herm v) = 1 :=
   (sigPos_Hc 1 v.embedding).trans (by simp)
 
+/- English proof (translation)
+It suffices to establish `h : ∀ τ : QI →+* ℂ, (star x ⬝ᵥ (gramAt (Hc 1) τ *ᵥ x)).re = ‖x 0‖ ^ 2 from h v.embedding`. Introduce `τ`. Establish `h1 : τ 1 = 1` using `map_one _`. Simplify using `only [gramAt, Hc, dotProduct, Matrix.mulVec, Fin.sum_univ_one, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_fin_one, Rat.cast_one, Pi.star_apply]`. Rewrite using `[h1, one_mul, Complex.star_def, Complex.conj_mul']`.
+
+Use `norm_cast`.
+-/
 theorem form_one (v : InfinitePlace (ex 1 one_ne_zero).F) (x : Fin 1 → ℂ) :
     (star x ⬝ᵥ ((ex 1 one_ne_zero).gram v *ᵥ x)).re = ‖x 0‖ ^ 2 := by
   suffices h : ∀ τ : QI →+* ℂ, (star x ⬝ᵥ (gramAt (Hc 1) τ *ᵥ x)).re = ‖x 0‖ ^ 2 from h v.embedding

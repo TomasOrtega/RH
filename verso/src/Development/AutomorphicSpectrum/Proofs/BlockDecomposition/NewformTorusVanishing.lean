@@ -15,18 +15,27 @@ section Mat
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diagonal_mul_unipotent (a : Rˣ) (y : R) :
     (dg2 a 1 * uni2 y : GL (Fin 2) R) = uni2 ((a : R) * y) * dg2 a 1 := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diagonal_mul_diagonal_alt (a b c d : Rˣ) :
     (dg2 a b * dg2 c d : GL (Fin 2) R) = dg2 (a * c) (b * d) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+-/
 theorem scalar_diagonal_one_one : (dg2 1 1 : GL (Fin 2) R) = 1 := by
   apply Units.ext
   ext i j
@@ -38,15 +47,26 @@ section Loc
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `hn : -y ∈ 𝒪[F]` using `neg_mem hy`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, hy, hn, zero_mem, one_mem]`.
+-/
 theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : uni2 y ∈ integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
   have hn : -y ∈ 𝒪[F] := neg_mem hy
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>
     simp [uni2, hy, hn, zero_mem, one_mem]
 
+/- English proof (translation)
+The claim follows from `mem_valBall_zero_iff.1 ((mem_valBall_iff_le_ord a.ne_zero).2 h)`.
+-/
 theorem mem_of_ord_nonneg {a : Fˣ} (h : 0 ≤ ord (a : F)) : (a : F) ∈ 𝒪[F] :=
   mem_valBall_zero_iff.1 ((mem_valBall_iff_le_ord a.ne_zero).2 h)
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `h1 : (u : F) ∈ 𝒪[F]` using `mem_of_ord_nonneg hu.ge`. Establish `h2 : ((u⁻¹ : Fˣ) : F) ∈ 𝒪[F]` using `mem_of_ord_nonneg (by rw [ord_units_inv, hu]; simp)`. Establish `h2' : (u : F)⁻¹ ∈ 𝒪[F]` using `by simpa using h2`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>`.
+
+Simplify using `[dg2, h1, h2', zero_mem, one_mem]`.
+-/
 theorem scalar_diagonal_mem_level_zero {u : Fˣ} (hu : ord (u : F) = 0) : dg2 u 1 ∈ integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
   have h1 : (u : F) ∈ 𝒪[F] := mem_of_ord_nonneg hu.ge
@@ -55,6 +75,11 @@ theorem scalar_diagonal_mem_level_zero {u : Fˣ} (hu : ord (u : F) = 0) : dg2 u 
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>
     simp [dg2, h1, h2', zero_mem, one_mem]
 
+/- English proof (translation)
+Take `⟨b, hb, k, hk, rfl⟩` from `Iwasawa.exists_borel_mul_integralGL F 2 g`. Establish `h10 : b 1 0 = 0` using `hb (by simp)`. Establish `h0 : b 0 0 ≠ 0` using `Iwasawa.apply_self_ne_zero_of_mem_borel F 2 hb 0`. Establish `h1 : b 1 1 ≠ 0` using `Iwasawa.apply_self_ne_zero_of_mem_borel F 2 hb 1`. Use `⟨b 0 1 / b 1 1, Units.mk0 _ h0, Units.mk0 _ h1, k, hk, ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dg2, uni2, Matrix.mul_apply, Fin.sum_univ_two, h10, h1]`.
+-/
 theorem exists_iwasawa2 (g : GL (Fin 2) F) :
     ∃ (x : F) (a d : Fˣ), ∃ k ∈ integralGL F 2, g = uni2 x * dg2 a d * k := by
   obtain ⟨b, hb, k, hk, rfl⟩ := Iwasawa.exists_borel_mul_integralGL F 2 g
@@ -76,17 +101,30 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
   {ψ : AddChar F Circle} {ω : Fˣ →* ℂˣ} {lam : ℂ} {W : GL (Fin 2) F → ℂ}
 
+/- English proof (translation)
+Establish `h` using `isTrivialOn_addCharConductor hψ.1 hψ.2.1`. Rewrite `h` using `[hψ.2.2]`. Conclude with `h x (mem_valBall_zero_iff.2 hx)`.
+-/
 theorem psi_integral (hψ : IsStd ψ) {x : F} (hx : x ∈ 𝒪[F]) : ψ x = 1 := by
   have h := isTrivialOn_addCharConductor hψ.1 hψ.2.1
   rw [hψ.2.2] at h
   exact h x (mem_valBall_zero_iff.2 hx)
 
+/- English proof (translation)
+Establish `h : (dg2 (a * u) 1 : GL (Fin 2) F) = dg2 a 1 * dg2 u 1`. Rewrite using `[diagonal_mul_diagonal_alt, one_mul]`. Rewrite using `[h, hT.1 _ (scalar_diagonal_mem_level_zero hu)]`.
+-/
 theorem torus_mul_unit (hT : TypeT lam W) (a : Fˣ) {u : Fˣ} (hu : ord (u : F) = 0) :
     W (dg2 (a * u) 1) = W (dg2 a 1) := by
   have h : (dg2 (a * u) 1 : GL (Fin 2) F) = dg2 a 1 * dg2 u 1 := by
     rw [diagonal_mul_diagonal_alt, one_mul]
   rw [h, hT.1 _ (scalar_diagonal_mem_level_zero hu)]
 
+/- English proof (translation)
+Establish `hnt` using `not_isTrivialOn_addCharConductor_sub_one hψ.1 hψ.2.1`. Rewrite `hnt` using `[hψ.2.2]`. Simplify using `only [IsTrivialOn, not_forall] at hnt`. Take `⟨x, hx, hne⟩` from `hnt`. Establish `hx' : x ∈ valBall F (ord (a : F))` using `valBall_antitone (by omega) hx`.
+
+Take `⟨y, rfl⟩` from `exists_mul_of_mem_valBall a.ne_zero hx'`. Establish `h1` using `hT.1 (uni2 (y : F)) (unipotent_integral_mem_compact y.2) (dg2 a 1)`. Rewrite `h1` using `[diagonal_mul_unipotent, hL.1]`. Establish `h2 : ((ψ ((a : F) * y) : ℂ) - 1) * W (dg2 a 1) = 0`. Rewrite using `[sub_mul, h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd (Circle.coe_eq_one.1 (sub_eq_zero.1 h)) hne`. Conclude with `h`.
+-/
 theorem torus_eq_zero_of_ord_neg (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {a : Fˣ}
     (ha : ord (a : F) < 0) : W (dg2 a 1) = 0 := by
   have hnt := not_isTrivialOn_addCharConductor_sub_one hψ.1 hψ.2.1
@@ -103,6 +141,13 @@ theorem torus_eq_zero_of_ord_neg (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT
   · exact absurd (Circle.coe_eq_one.1 (sub_eq_zero.1 h)) hne
   · exact h
 
+/- English proof (translation)
+Establish `h` using `hT.2 ϖ B hR (dg2 a 1)`. Establish `h1 : ∀ b ∈ B, W (dg2 a 1 * upm ϖ b) = W (dg2 (a * ϖ) 1)`. Introduce `b hb`. Establish `hab : (a : F) * b ∈ 𝒪[F]` using `mul_mem (mem_of_ord_nonneg ha) (hR.2.1 b hb)`. Rewrite using `[upm, ← mul_assoc, diagonal_mul_unipotent, mul_assoc, diagonal_mul_diagonal_alt, hL.1, psi_integral hψ hab]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : W (dg2 a 1 * dg2 1 ϖ) = ((ω ϖ : ℂˣ) : ℂ) * W (dg2 (a * ϖ⁻¹) 1)`. Establish `h3 : (dg2 a 1 * dg2 1 ϖ : GL (Fin 2) F) = dg2 ϖ ϖ * dg2 (a * ϖ⁻¹) 1`. Rewrite using `[diagonal_mul_diagonal_alt, diagonal_mul_diagonal_alt, mul_one, one_mul, mul_one, mul_left_comm, mul_inv_cancel, mul_one]`. Rewrite using `[h3, hL.2]`.
+
+Rewrite `h` using `[Finset.sum_congr rfl h1, h2]`. Simplify `h` using `[Finset.sum_const, nsmul_eq_mul]`.
+-/
 theorem torus_hecke (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {ϖ : Fˣ} {B : Finset F}
     (hR : Reps ϖ B) {a : Fˣ} (ha : 0 ≤ ord (a : F)) :
     (B.card : ℂ) * W (dg2 (a * ϖ) 1) + ((ω ϖ : ℂˣ) : ℂ) * W (dg2 (a * ϖ⁻¹) 1) =
@@ -121,10 +166,20 @@ theorem torus_hecke (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {ϖ :
   rw [Finset.sum_congr rfl h1, h2] at h
   simpa [Finset.sum_const, nsmul_eq_mul] using h
 
+/- English proof (translation)
+Take `⟨b, ⟨hb, -⟩, -⟩` from `hR.2.2 0 (zero_mem _)`. Conclude with `Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem hb)`.
+-/
 theorem card_ne_zero {ϖ : Fˣ} {B : Finset F} (hR : Reps ϖ B) : (B.card : ℂ) ≠ 0 := by
   obtain ⟨b, ⟨hb, -⟩, -⟩ := hR.2.2 0 (zero_mem _)
   exact Nat.cast_ne_zero.2 (Finset.card_ne_zero_of_mem hb)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨by simpa [scalar_diagonal_one_one] using h1, torus_eq_zero_of_ord_neg hψ hL hT ?_⟩` and prove the remaining obligations. Rewrite using `[ord_units_zpow, hR.1]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Establish `hn : 0 ≤ ord ((ϖ ^ (n : ℤ) : Fˣ) : F)`. Rewrite using `[ord_units_zpow, hR.1]`. Simplify using the standard rewrite rules. Establish `h` using `torus_hecke hψ hL hT hR hn`.
+
+Rewrite `h` using `[← _root_.zpow_add_one, ← _root_.zpow_sub_one, ih.1, ih.2, mul_zero, mul_zero, add_zero]`. Use `push_cast`. Use `⟨(mul_eq_zero.1 h).resolve_left (card_ne_zero hR), ?_⟩` and prove the remaining obligations. Simplify using `using ih.1`.
+-/
 theorem torus_pow_eq_zero (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {ϖ : Fˣ}
     {B : Finset F} (hR : Reps ϖ B) (h1 : W 1 = 0) (n : ℕ) :
     W (dg2 (ϖ ^ (n : ℤ)) 1) = 0 ∧ W (dg2 (ϖ ^ ((n : ℤ) - 1)) 1) = 0 := by
@@ -143,6 +198,11 @@ theorem torus_pow_eq_zero (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W)
     refine ⟨(mul_eq_zero.1 h).resolve_left (card_ne_zero hR), ?_⟩
     simpa using ih.1
 
+/- English proof (translation)
+Distinguish the cases in `h : ord (a : F) < 0`. Conclude with `torus_eq_zero_of_ord_neg hψ hL hT h`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le (not_lt.1 h)`. Establish `hu : ord ((a * (ϖ ^ (n : ℤ))⁻¹ : Fˣ) : F) = 0`. Rewrite using `[ord_units_mul, ord_units_inv, ord_units_zpow, hR.1, hn]`.
+
+Simplify using the standard rewrite rules. Establish `ha : a = ϖ ^ (n : ℤ) * (a * (ϖ ^ (n : ℤ))⁻¹)`. Rewrite using `[mul_left_comm, mul_inv_cancel, mul_one]`. Rewrite using `[ha, torus_mul_unit hT _ hu]`. Conclude with `(torus_pow_eq_zero hψ hL hT hR h1 n).1`.
+-/
 theorem torus_eq_zero (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {ϖ : Fˣ}
     {B : Finset F} (hR : Reps ϖ B) (h1 : W 1 = 0) (a : Fˣ) : W (dg2 a 1) = 0 := by
   by_cases h : ord (a : F) < 0
@@ -158,6 +218,11 @@ theorem torus_eq_zero (hψ : IsStd ψ) (hL : Law ψ ω W) (hT : TypeT lam W) {ϖ
 
 end Main
 
+/- English proof (translation)
+Introduce `hC F _ _ _ _ _ _ ψ hψ ω lam W hL hT h1`. Take `⟨⟨ϖ, B, hR⟩, -, -⟩` from `hC F ψ hψ`. Use function extensionality and compare the values at `g`. Take `⟨x, a, d, k, hk, rfl⟩` from `exists_iwasawa2 g`. Establish `h : (dg2 a d : GL (Fin 2) F) = dg2 d d * dg2 (a * d⁻¹) 1`.
+
+Rewrite using `[diagonal_mul_diagonal_alt, mul_one, mul_left_comm, mul_inv_cancel, mul_one]`. Rewrite using `[hT.1 k hk, hL.1, h, hL.2, torus_eq_zero hψ hL hT hR h1]`. Simplify using the standard rewrite rules.
+-/
 theorem spherical_whittaker_eq_zero : Ad3.R.C1 → Ad3.R.U0 := by
   intro hC F _ _ _ _ _ _ ψ hψ ω lam W hL hT h1
   obtain ⟨⟨ϖ, B, hR⟩, -, -⟩ := hC F ψ hψ

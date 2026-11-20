@@ -16,6 +16,15 @@ def intCoordSubst (A : Matrix T T₂ ℤ) : MRing (dualBlocks T₂) →ₐ[ℤ] 
 def intCoordPt (A : Matrix T T₂ ℤ) (z : (Σ _ : Unit, T) → ℂ) : (Σ _ : Unit, T₂) → ℂ :=
   fun p => ∑ t, z ⟨(), t⟩ * (A t p.2 : ℂ)
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hA`. Introduce and unpack `⟨⟩`. Take `⟨t, ht⟩` from `hz ()`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Apply `ht` to reduce the goal to its premises. Establish `h1 : ∀ t', (((A * B) t' t : ℤ) : ℂ) = ∑ s, (A t' s : ℂ) * (B s t : ℂ)`. Introduce `t'`. Simplify using `[Matrix.mul_apply]`. Establish `key : z ⟨(), t⟩ = ∑ s, intCoordPt A z ⟨(), s⟩ * (B s t : ℂ)`.
+
+Simplify using `only [intCoordPt, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, ← h1, hB, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[key]`.
+
+Conclude with `Finset.sum_eq_zero fun s _ => by rw [h s, zero_mul]`.
+-/
 theorem intCoordPt_ne_zero {A : Matrix T T₂ ℤ} (hA : ∃ B : Matrix T₂ T ℤ, A * B = 1)
     {z : (Σ _ : Unit, T) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∀ k, ∃ i, intCoordPt A z ⟨k, i⟩ ≠ 0 := by
@@ -57,16 +66,25 @@ def IntCoordChange.Statement : Prop :=
     II Unit (dualBlocks T) (P.map (intCoordSubst A)) n (fun j => intCoordLine A ⟨B, hAB⟩ (L j)) =
       II Unit (dualBlocks T₂) P n L
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp, le_rfl, DualArithVar.full ℚ 1 _ Unit dualBasisStandard le_rfl, (DualLineSemipositive.proof ℚ 1 _ Unit dualBasisStandard _).1⟩`.
+-/
 example : (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ (-1 : Matrix Unit Unit ℤ) * (-1) = 1 ∧ 1 ≤ 1 ∧
     IsArithVar (dualIdeal dualBasisStandard) 1 ∧
     IsSmoothHerm (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective) :=
   ⟨by simp, by simp, le_rfl, DualArithVar.full ℚ 1 _ Unit dualBasisStandard le_rfl,
     (DualLineSemipositive.proof ℚ 1 _ Unit dualBasisStandard _).1⟩
 
+/- English proof (translation)
+The claim follows from `intCoordLine (-1 : Matrix Unit Unit ℤ) ⟨-1, by simp⟩ (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective)`.
+-/
 example : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks Unit) :=
   intCoordLine (-1 : Matrix Unit Unit ℤ) ⟨-1, by simp⟩
     (dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective)
 
+/- English proof (translation)
+Simplify using `[intCoordSubst]`.
+-/
 example : intCoordSubst (-1 : Matrix Unit Unit ℤ) (X ⟨(), ()⟩) = -X ⟨(), ()⟩ := by
   simp [intCoordSubst]
 

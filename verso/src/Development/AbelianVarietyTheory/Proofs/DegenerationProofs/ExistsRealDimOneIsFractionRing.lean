@@ -20,17 +20,29 @@ namespace GlobalTheory.RealInhabitant
 
 open TorsionGenerators NumberField
 
+/- English proof (translation)
+The claim follows from `map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) u a`.
+-/
 theorem unitOn_zpow {k : Type} [CommRing k] (u : kˣ) (a : ℤ) : unitOn (u ^ a) = unitOn u ^ a :=
   map_zpow (Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) u a
 
+/- English proof (translation)
+The claim follows from `h.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) unitOn_injective`.
+-/
 theorem isPrimitiveRoot_unitOn {k : Type} [CommRing k] {u : kˣ} {M : ℕ} (h : IsPrimitiveRoot u M) :
     IsPrimitiveRoot (unitOn u) M :=
   h.map_of_injective (f := Units.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom.toMonoidHom) unitOn_injective
 
+/- English proof (translation)
+The claim follows from `Units.ext (congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ))).symm`.
+-/
 theorem map_unitOn {k k' : Type} [CommRing k] [CommRing k'] (σ : k →+* k') (u : kˣ) :
     Units.map (Geo.Tor.spMap σ).appTop.hom.toMonoidHom (unitOn u) = unitOn (Units.map σ.toMonoidHom u) :=
   Units.ext (congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ))).symm
 
+/- English proof (translation)
+Establish `: NeZero (M : F)` using `⟨hM⟩`. Establish `h₀ : 0 < M` using `Nat.pos_of_ne_zero fun e => hM (by rw [e, Nat.cast_zero])`. Establish `h` using `((IsPrimitiveRoot.coe_units_iff.2 hz).isRoot_cyclotomic h₀).map (f := σ)`. Rewrite `h` using `[Polynomial.map_cyclotomic]`. Conclude with `IsPrimitiveRoot.coe_units_iff.1 (Polynomial.isRoot_cyclotomic_iff.1 h)`.
+-/
 theorem isPrimitiveRoot_map {B F : Type} [CommRing B] [IsDomain B] [Field F] (σ : B →+* F) {M : ℕ} (hM : (M : F) ≠ 0)
     {z : Bˣ} (hz : IsPrimitiveRoot z M) : IsPrimitiveRoot (Units.map σ.toMonoidHom z) M := by
   have : NeZero (M : F) := ⟨hM⟩
@@ -39,6 +51,27 @@ theorem isPrimitiveRoot_map {B F : Type} [CommRing B] [IsDomain B] [Field F] (σ
   rw [Polynomial.map_cyclotomic] at h
   exact IsPrimitiveRoot.coe_units_iff.1 (Polynomial.isRoot_cyclotomic_iff.1 h)
 
+/- English proof (translation)
+Use `P₀.isAb.comm` as an intermediate fact. Use `P₀.isAb.smooth` as an intermediate fact. Use `P₀.isAb.proper` as an intermediate fact. Take `⟨P', φ', β, h', -, hW⟩` from `exists_fibre hL P₀ t`. Take `⟨x, hx, hw⟩` from `ConstThetaLevel.exists_symplectic_points hL Q P' h'.1.symm M hM (unitOn ζ) (isPrimitiveRoot_unitOn hζ)`.
+
+Use `choose s hs hb using fun i => exists_finite_coordinates P₀.A.hom t (β (x i)).left (Over.w _)`. Use `⟨⋃ i, s i, Set.finite_iUnion hs, fun B _ _ io j z hio hj hsB hzζ hMB P φ h => ?_⟩` and prove the remaining obligations. Use `hio.isDomain io` as an intermediate fact. Establish `: IsDominant (Geo.Tor.spMap io)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical io).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot io).1 hio]`.
+
+Conclude with `bot_le)⟩`. Use `choose b hb' using fun i => hb i B io hio (fun c => ⟨j c, congr($hj c)⟩) (fun y hy => hsB y (Set.mem_iUnion.2 ⟨i, hy⟩))`. Establish `hs₀ : Geo.Tor.spMap io ≫ Geo.Tor.spMap j = Geo.Tor.spMap t` using `by rw [spMap_comp_spMap, hj]`. Establish `hbw : ∀ i, b i ≫ P₀.A.hom = Geo.Tor.spMap j` using `fun i => ext_of_isDominant (Geo.Tor.spMap io) (by`. Rewrite using `[← Category.assoc, hb', hs₀]`.
+
+Conclude with `Over.w (β (x i)))`. Set `u : Over.mk (Geo.Tor.spMap t) ⟶ Over.mk (Geo.Tor.spMap j)` to `Over.homMk (Geo.Tor.spMap io) hs₀`. Set `e : Fin (2 * P₀.g) → (Over.mk (Geo.Tor.spMap j) ⟶ P₀.A)` to `fun i => Over.homMk (b i) (hbw i)`. Establish `he : ∀ i, u ≫ e i = β (x i)` using `fun i => Over.OverMorphism.ext (hb' i)`. Establish `: IsReduced (Over.mk (Geo.Tor.spMap j)).left` using `inferInstanceAs (IsReduced (Sp B))`.
+
+Establish `heM : ∀ i, e i ^ M = 1` using `fun i => Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated P₀.A.hom (by rw [Over.w, Over.w]) (Geo.Tor.spMap io) (by show (u ≫ e i ^ M).left = (u ≫ 1).left`. Rewrite using `[comp_pow, he, comp_one, ← map_pow]`. Conclude with `congrArg (·.left) ((congrArg β (hx i)).trans (map_one β))))`. Establish `hz : IsPrimitiveRoot z M` using `IsPrimitiveRoot.of_map_of_injective (hzζ ▸ hζ) (Units.map_injective (f := io.toMonoidHom) hio)`. Take `⟨κ, hκ⟩` from `UnifPoint.exists_pointEquiv h.2.1`.
+
+Establish `hg` using `h.1`. Set `c : Fin (2 * P.g) → Fin (2 * P₀.g)` to `Fin.cast (congrArg (2 * ·) hg)`. Establish `hy : ∀ i, κ.symm (e i) ^ M = 1` using `fun i => (map_pow κ.symm _ _).symm.trans (by rw [heM, map_one])`. Take `⟨lev, -⟩` from `exists_level_of_pairing hL.globalFns hL.weil hL.mulN _ P M (unitOn z) (isPrimitiveRoot_unitOn hz) (fun F _ s => by`. Take `⟨σ, rfl⟩` from `Spec.map_surjective s`.
+
+Establish `hF : (M : F) ≠ 0` using `by rw [← map_natCast σ.hom]; exact (hMB.map σ.hom).ne_zero`. Conclude with `⟨hF, (map_unitOn σ.hom z).symm ▸ isPrimitiveRoot_unitOn (isPrimitiveRoot_map σ.hom hF hz)⟩)`. Use the proof step `(fun i => κ.symm (e (c i))) (fun i => hy _) (fun i i' => by`. Take `⟨v, hv, -⟩` from `(hL.weil _ P M _).1 _ _ (hy (c i)) (hy (c i'))`. Establish `H` using `(weilIs_grpPullback_of_comm _ _ P₀.A P.A _ φ P₀.L P.L P₀.isLB P.isLB h.2.1 (LBIso.symm h.2.2) _ M _ _ (pushPt h.2.1.1.w (κ.symm (e (c i)))) (pushPt h.2.1.1.w (κ.symm (e (c i')))) _ rfl rfl).1 hv`.
+
+Establish `k : ∀ i, (pushPt h.2.1.1.w (κ.symm (e i))).left = (e i).left` using `fun i => (hκ _).symm.trans (congrArg (·.left) (κ.apply_symm_apply _))`. Establish `H₁` using `CommPairing.weilIs_pull hL.globalFns P₀.isAb P₀.isLB u (UnifPoint.weilIs_congr (Category.id_comp _) (k _) (k _) H)`. Rewrite `H₁` using `[he, he]`. Establish `e₁` using `CommutatorPairing.weilIs_unique hL.globalFns P₀.isAb P₀.isLB H₁ (hW _ _ _ _ (hw _ _))`. Set `v'` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom.toMonoidHom v`.
+
+Establish `ev : unitOn v' = v` using `Units.ext (CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of B)) v.val)`. Establish `e₂ : unitOn (Units.map io.toMonoidHom v') = unitOn ζ ^ stdSymp P₀.g (c i) (c i')`. Rewrite using `[← map_unitOn, ev]`. Conclude with `e₁`. Rewrite `e₂` using `[← unitOn_zpow, ← hzζ, ← map_zpow]`.
+
+Establish `e₃` using `Units.map_injective (f := io.toMonoidHom) hio (unitOn_injective e₂)`. Establish `e₄ : stdSymp P₀.g (c i) (c i') = stdSymp P.g i i'` using `by simp only [stdSymp, c, Fin.val_cast, hg]`. Rewrite using `[← unitOn_zpow, ← e₄, ← e₃, ev]`. Conclude with `hv)`. Conclude with `⟨lev⟩`.
+-/
 theorem exists_finite_level (hL : Laws) {R₀ Q : Type} [CommRing R₀] [Field Q] [IsAlgClosed Q] (t : R₀ →+* Q)
     (P₀ : PolAV (Sp R₀)) {M : ℕ} (hM : (M : Q) ≠ 0) {ζ : Qˣ} (hζ : IsPrimitiveRoot ζ M) :
     ∃ s : Set Q, s.Finite ∧ ∀ (B : Type) [CommRing B] [IsNoetherianRing B] (io : B →+* Q) (j : R₀ →+* B) (z : Bˣ),
@@ -103,12 +136,18 @@ theorem exists_finite_level (hL : Laws) {R₀ Q : Type} [CommRing R₀] [Field Q
       exact hv)
   exact ⟨lev⟩
 
+/- English proof (translation)
+The claim follows from `powers_le_nonZeroDivisors_of_noZeroDivisors (by exact_mod_cast (by decide : (3 : ℕ) ≠ 0))`.
+-/
 theorem powers_le (K : Type) [Field K] [NumberField K] : Submonoid.powers (3 : 𝓞 K) ≤ nonZeroDivisors (𝓞 K) :=
   powers_le_nonZeroDivisors_of_noZeroDivisors (by exact_mod_cast (by decide : (3 : ℕ) ≠ 0))
 
 abbrev IntThird (K : Type) [Field K] [NumberField K] : Type :=
   Localization.subalgebra.ofField K (Submonoid.powers (3 : 𝓞 K)) (powers_le K)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isDedekindDomain (𝓞 K) (powers_le K) _ ft := by have : Algebra.FiniteType (𝓞 K) (IntThird K) := IsLocalization.finiteType_of_monoid_fg (Submonoid.powers (3 : 𝓞 K)) _ exact Algebra.FiniteType.trans (S := 𝓞 K) inferInstance inferInstance char := inferInstance inj := …`.
+-/
 theorem arithBase (K : Type) [Field K] [NumberField K] : ArithBase (IntThird K) K where
   ded := IsLocalization.isDedekindDomain (𝓞 K) (powers_le K) _
   ft := by
@@ -118,13 +157,36 @@ theorem arithBase (K : Type) [Field K] [NumberField K] : ArithBase (IntThird K) 
   char := inferInstance
   inj := Subtype.val_injective
 
+/- English proof (translation)
+Simplify `IsLocalization.Away.algebraMap_isUnit (S := IntThird K) (3 : 𝓞 K)` using `only [map_ofNat, Nat.cast_ofNat]`.
+-/
 theorem isUnit_three (K : Type) [Field K] [NumberField K] : IsUnit ((3 : ℕ) : IntThird K) := by
   simpa only [map_ofNat, Nat.cast_ofNat] using IsLocalization.Away.algebraMap_isUnit (S := IntThird K) (3 : 𝓞 K)
 
+/- English proof (translation)
+Simplify `(isUnit_three K).map (algebraMap (IntThird K) R)` using `only [map_ofNat, Nat.cast_ofNat]`.
+-/
 theorem isUnit_three_subalgebra {K : Type} [Field K] [NumberField K] (R : Subalgebra (IntThird K) K) :
     IsUnit (3 : R) := by
   simpa only [map_ofNat, Nat.cast_ofNat] using (isUnit_three K).map (algebraMap (IntThird K) R)
 
+/- English proof (translation)
+Set `Q` to `AlgebraicClosure ℚ`. Set `R₀` to `Localization.Away (3 : ℤ)`. Establish `h₀ : IsUnit (3 : R₀)`. Simplify `IsLocalization.Away.algebraMap_isUnit (S := R₀) (3 : ℤ)` using `only [map_ofNat]`. Use `CMCurve.isElliptic_eisensteinCurve h₀` as an intermediate fact.
+
+Establish `lf : ∀ (B : Type) [CommRing B], IsUnit (3 : B) → Nonempty (R₀ →+* B)` using `fun B _ h => ⟨IsLocalization.Away.lift (3 : ℤ) (g := Int.castRingHom B) (by simpa using h)⟩`. Take `⟨t⟩` from `lf Q (Ne.isUnit three_ne_zero)`. Establish `hM : 0 < 3 ^ (m + 1)` using `by positivity`. Establish `: NeZero (3 ^ (m + 1))` using `⟨hM.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Q (3 ^ (m + 1))`.
+
+Take `⟨s, hs, H⟩` from `exists_finite_level hL t (WeierstrassCurve.ellPolAV (CMCurve.eisensteinCurve R₀)) (Nat.cast_ne_zero.2 hM.ne') (hζ.isUnit_unit hM.ne')`. Establish `: Finite (insert ζ s : Set Q)` using `(hs.insert _).to_subtype`. Establish `: Algebra.IsAlgebraic ℚ Q` using `AlgebraicClosure.isAlgebraic ℚ`. Set `K` to `IntermediateField.adjoin ℚ (insert ζ s)`. Establish `: FiniteDimensional ℚ K` using `IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`.
+
+Establish `: NumberField K` using `{}`. Set `z : K` to `⟨ζ, IntermediateField.subset_adjoin _ _ (Set.mem_insert _ _)⟩`. Establish `hz : IsPrimitiveRoot z (3 ^ (m + 1))` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap K Q) hζ (algebraMap K Q).injective`. Set `z' : 𝓞 K` to `⟨z, hz.isIntegral hM⟩`. Establish `hz' : IsUnit z'` using `IsUnit.of_pow_eq_one (Subtype.ext hz.pow_eq_one) hM.ne'`.
+
+Set `ze : (IntThird K)ˣ` to `(hz'.map (algebraMap (𝓞 K) (IntThird K))).unit`. Set `R : Subalgebra (IntThird K) K` to `Algebra.adjoin _ (Subtype.val ⁻¹' s)`. Establish `hR : R.FG` using `Subalgebra.fg_def.2 ⟨_, hs.preimage Subtype.val_injective.injOn, rfl⟩`. Use `(arithBase K).ded` as an intermediate fact. Establish `: IsNoetherianRing R` using `isNoetherianRing_of_fg hR`.
+
+Establish `h3 : IsUnit (3 : R)` using `isUnit_three_subalgebra R`. Use `CMCurve.isElliptic_eisensteinCurve h3` as an intermediate fact. Take `⟨j⟩` from `lf R h3`. Set `io : R →+* Q` to `(algebraMap K Q).comp R.toSubring.subtype`. Establish `hio : Function.Injective io` using `Subtype.val_injective.comp Subtype.val_injective`.
+
+Set `zR : R` to `⟨z, R.algebraMap_mem ze⟩`. Establish `hω : IsPrimitiveRoot (zR ^ 3 ^ m) 3` using `(IsPrimitiveRoot.of_map_of_injective (f := io) hζ hio).pow hM (pow_succ 3 m)`. Establish `hω' : (zR ^ 3 ^ m) ^ 2 + zR ^ 3 ^ m + 1 = 0`. Use `hω.geom_sum_eq_zero (by norm_num)` as an intermediate fact. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero] at this`.
+
+Take the linear combination `this`. Use `⟨K, inferInstance, inferInstance, R, ze, WeierstrassCurve.ellPolAV (CMCurve.eisensteinCurve R), hR, rfl, CubeRootAut.hypS_eisensteinCurve hL.cube hω', H R io j _ hio (IsLocalization.ringHom_ext (Submonoid.powers (3 : ℤ)) (RingHom.ext_int _ _)) (fun y hy => ?_) (Units.ext rfl) (by …` and prove the remaining obligations. Conclude with `⟨⟨⟨y, IntermediateField.subset_adjoin _ _ (Set.mem_insert_of_mem _ hy)⟩, Algebra.subset_adjoin hy⟩, rfl⟩`. Apply the tactic sequence `ext <;> simp [CMCurve.eisensteinCurve]`.
+-/
 theorem exists_level_hypS (hL : Laws) (m : ℕ) : ∃ (K : Type) (_ : Field K) (_ : NumberField K)
     (R : Subalgebra (IntThird K) K) (ze : (IntThird K)ˣ) (P : PolAV (Sp R)), R.FG ∧ P.g = 1 ∧ HypS P.A P.L ∧
     Nonempty (Out.Level P (3 ^ (m + 1)) (unitOn (Units.map (algebraMap (IntThird K) R).toMonoidHom ze))) := by
@@ -176,6 +238,17 @@ theorem exists_level_hypS (hL : Laws) (m : ℕ) : ∃ (K : Type) (_ : Field K) (
   · exact ⟨⟨⟨y, IntermediateField.subset_adjoin _ _ (Set.mem_insert_of_mem _ hy)⟩, Algebra.subset_adjoin hy⟩, rfl⟩
   · ext <;> simp [CMCurve.eisensteinCurve]
 
+/- English proof (translation)
+Introduce `hL hL₂`. Take `⟨K, _, _, R, ze, P, hR, hg, hS, ⟨lev⟩⟩` from `exists_level_hypS hL 17`. Use `arithBase K` as an intermediate fact. Establish `hfr : ∀ x : K, ∃ a ∈ R, ∃ b ∈ R, x = a / b` using `fun x => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`.
+
+Conclude with `⟨_, R.algebraMap_mem (algebraMap (𝓞 K) _ a), _, R.algebraMap_mem (algebraMap (𝓞 K) _ b), rfl⟩`. Establish `e : 3 ^ (17 + 1) = (3 ^ 5 * (3 ^ 2) ^ 2) ^ 2` using `by norm_num`. Take `⟨S, ρ, -, -, -, hN, hr, hSg, -⟩` from `ThetaReal.exists_thetaSys_real hL hL₂ (IntThird K) K R hR hfr P 3 2 5 ze Nat.prime_three (by decide) le_rfl (by norm_num) (isUnit_three K) hS (e ▸ lev)`. Establish `h1 : S.g = 1` using `hSg.trans hg`. Use `⟨IntThird K, K, inferInstance, inferInstance, inferInstance, this, S, ρ, h1, ?_, inferInstance⟩` and prove the remaining obligations.
+
+Unfold `ThetaSys.Big`. Rewrite using `[h1, hN, hr]`. Establish `a : (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) ≤ 2 ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Establish `b : (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2 - 1) ≤ 2 ^ (-(1 / 4) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Establish `c : (2 : ℝ) ^ (-(1 / 4) : ℝ) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num)`.
+
+Rewrite `a` using `[Real.rpow_one]`. Use `⟨?_, ?_, by norm_num⟩` and prove the remaining obligations. Evaluate the numerical expressions using `at a ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `d` using `b.trans_lt c`.
+
+Generalize the expression as in `(2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2 - 1) = u at d`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_real_dim_one_isFractionRing : Laws → Laws2 → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : ArithBase o Ω) (S : ThetaSys o Ω) (_ : S.Real), S.g = 1 ∧ S.Big ∧ IsFractionRing o Ω := by
   intro hL hL₂
   obtain ⟨K, _, _, R, ze, P, hR, hg, hS, ⟨lev⟩⟩ := exists_level_hypS hL 17

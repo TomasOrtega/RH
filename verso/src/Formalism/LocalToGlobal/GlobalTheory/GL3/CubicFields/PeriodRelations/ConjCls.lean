@@ -11,11 +11,19 @@ open Formalism.BasicNotions (D7)
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity (IsLat jL Uniformization CMTransitive LinkPer KroneckerLimit DedekindFactor)
 open Formalism.MainNotions.TaylorLogMetric (lamConj lamOf embT meanLogOm DataIn tor0 IsCurveIdeal IsDiscriminantTwelfthRootOfIdealLattice per22 logOmVal)
 
+/- English proof (translation)
+The claim follows from `discr_latI_ne_zero D.host.K D.host.d (discriminant_mod_four D) ⟨D.host.sqrtMinusD, br_sqrt_mem D⟩ (br_sqrt_sq D) (br_finrank_K D) (brPhi D) cc hcc`.
+-/
 theorem brcc_discr_one_ne (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : cc ≠ ⊥) :
     discr (lamOf D cc 1) ≠ 0 :=
   discr_latI_ne_zero D.host.K D.host.d (discriminant_mod_four D) ⟨D.host.sqrtMinusD, br_sqrt_mem D⟩
     (br_sqrt_sq D) (br_finrank_K D) (brPhi D) cc hcc
 
+/- English proof (translation)
+Introduce `h0`. Establish `hcc'` using `hcc`. Take `⟨hcc0, -⟩` from `hcc'`. Establish `h12 : δ ^ 12 = discr (lamOf D cc 1)` using `hδ`. Apply `brcc_discr_one_ne D cc hcc0` to reduce the goal to its premises.
+
+Rewrite using `[← h12, h0]`. Evaluate the numerical expressions.
+-/
 theorem brcc_delta_ne (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : δ ≠ 0 := by
   intro h0
@@ -26,6 +34,11 @@ theorem brcc_delta_ne (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal 
   rw [← h12, h0]
   norm_num
 
+/- English proof (translation)
+Unfold `lamOf`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨_, ⟨c, hc, rfl⟩, by simp⟩`. Introduce and unpack `⟨v, ⟨c, hc, rfl⟩, rfl⟩`. Conclude with `⟨c, hc, by simp⟩`.
+-/
 private lemma lamOf_eq_map_mulLeft (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     lamOf D cc δ = (lamOf D cc 1).map (AddMonoidHom.mulLeft δ) := by
   unfold lamOf
@@ -38,6 +51,15 @@ private lemma lamOf_eq_map_mulLeft (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : �
   · rintro ⟨v, ⟨c, hc, rfl⟩, rfl⟩
     exact ⟨c, hc, by simp⟩
 
+/- English proof (translation)
+Set `e : {w : ℂ // w ∈ Λ ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ.map (AddMonoidHom.mulLeft δ) ∧ w ≠ 0}` to `(Equiv.mulLeft₀ δ hδ).subtypeEquiv (fun w => by show (w ∈ Λ ∧ w ≠ 0) ↔ (δ * w ∈ Λ.map (AddMonoidHom.mulLeft δ) ∧ δ * w ≠ 0)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨AddSubgroup.mem_map.2 ⟨w, h1, rfl⟩, mul_ne_zero hδ h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `⟨v, hv, hvw⟩` from `AddSubgroup.mem_map.1 h1`. Establish `hvw' : δ * v = δ * w` using `hvw`. Establish `hv' : v = w` using `mul_left_cancel₀ hδ hvw'`. Rewrite `hv` using `[hv']`. Conclude with `⟨hv, right_ne_zero_of_mul h2⟩)`.
+
+Unfold `Formalism.MainNotions.TaylorLogMetric.eisG`. Use `(e.tsum_eq (fun w => 1 / (w : ℂ) ^ (2 * k))).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+
+Use `show 1 / (δ * (w : ℂ)) ^ (2 * k) = (δ ^ (2 * k))⁻¹ * (1 / (w : ℂ) ^ (2 * k))`. Rewrite using `[mul_pow, one_div, one_div, mul_inv]`.
+-/
 private lemma eisG_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) (k : ℕ) :
     Formalism.MainNotions.TaylorLogMetric.eisG (Λ.map (AddMonoidHom.mulLeft δ)) k = (δ ^ (2 * k))⁻¹ * Formalism.MainNotions.TaylorLogMetric.eisG Λ k := by
   let e : {w : ℂ // w ∈ Λ ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ.map (AddMonoidHom.mulLeft δ) ∧ w ≠ 0} :=
@@ -60,24 +82,36 @@ private lemma eisG_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0
   show 1 / (δ * (w : ℂ)) ^ (2 * k) = (δ ^ (2 * k))⁻¹ * (1 / (w : ℂ) ^ (2 * k))
   rw [mul_pow, one_div, one_div, mul_inv]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.g2`. Rewrite using `[eisG_map_mulLeft Λ δ hδ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma g2_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) :
     Formalism.MainNotions.TaylorLogMetric.g2 (Λ.map (AddMonoidHom.mulLeft δ)) = (δ ^ 4)⁻¹ * Formalism.MainNotions.TaylorLogMetric.g2 Λ := by
   unfold Formalism.MainNotions.TaylorLogMetric.g2
   rw [eisG_map_mulLeft Λ δ hδ]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.g3`. Rewrite using `[eisG_map_mulLeft Λ δ hδ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma g3_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) :
     Formalism.MainNotions.TaylorLogMetric.g3 (Λ.map (AddMonoidHom.mulLeft δ)) = (δ ^ 6)⁻¹ * Formalism.MainNotions.TaylorLogMetric.g3 Λ := by
   unfold Formalism.MainNotions.TaylorLogMetric.g3
   rw [eisG_map_mulLeft Λ δ hδ]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.discr`. Rewrite using `[g2_map_mulLeft Λ δ hδ, g3_map_mulLeft Λ δ hδ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma discr_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) :
     Formalism.MainNotions.TaylorLogMetric.discr (Λ.map (AddMonoidHom.mulLeft δ)) = (δ ^ 12)⁻¹ * Formalism.MainNotions.TaylorLogMetric.discr Λ := by
   unfold Formalism.MainNotions.TaylorLogMetric.discr
   rw [g2_map_mulLeft Λ δ hδ, g3_map_mulLeft Λ δ hδ]
   ring
 
+/- English proof (translation)
+Establish `hne : δ ≠ 0` using `brcc_delta_ne D cc hcc δ hδ`. Establish `h12 : δ ^ 12 = Formalism.MainNotions.TaylorLogMetric.discr (lamOf D cc 1)` using `hδ`. Use `show Formalism.MainNotions.TaylorLogMetric.discr (lamOf D cc δ) = 1`. Rewrite using `[lamOf_eq_map_mulLeft D cc δ, discr_map_mulLeft _ δ hne, ← h12]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hne)`.
+-/
 theorem br_discr_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : discr (lamOf D cc δ) = 1 := by
   have hne : δ ≠ 0 := brcc_delta_ne D cc hcc δ hδ
@@ -86,6 +120,9 @@ theorem br_discr_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal
   rw [lamOf_eq_map_mulLeft D cc δ, discr_map_mulLeft _ δ hne, ← h12]
   exact inv_mul_cancel₀ (pow_ne_zero _ hne)
 
+/- English proof (translation)
+Unfold `jL`. Rewrite using `[g2_map_mulLeft Λ δ hδ, discr_map_mulLeft Λ δ hδ]`. Establish `h : (δ ^ 12)⁻¹ ≠ 0` using `inv_ne_zero (pow_ne_zero _ hδ)`. Rewrite using `[show (1728 : ℂ) * ((δ ^ 4)⁻¹ * Formalism.MainNotions.TaylorLogMetric.g2 Λ) ^ 3 = (δ ^ 12)⁻¹ * (1728 * Formalism.MainNotions.TaylorLogMetric.g2 Λ ^ 3) by ring]`. Conclude with `mul_div_mul_left _ _ h`.
+-/
 private lemma jL_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) :
     jL (Λ.map (AddMonoidHom.mulLeft δ)) = jL Λ := by
   unfold jL
@@ -95,11 +132,19 @@ private lemma jL_map_mulLeft (Λ : AddSubgroup ℂ) (δ : ℂ) (hδ : δ ≠ 0) 
       = (δ ^ 12)⁻¹ * (1728 * Formalism.MainNotions.TaylorLogMetric.g2 Λ ^ 3) by ring]
   exact mul_div_mul_left _ _ h
 
+/- English proof (translation)
+Establish `hne : δ ≠ 0` using `brcc_delta_ne D cc hcc δ hδ`. Rewrite using `[lamOf_eq_map_mulLeft D cc δ, jL_map_mulLeft _ δ hne]`.
+-/
 theorem brcc_jL_delta (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : jL (lamOf D cc 1) = jL (lamOf D cc δ) := by
   have hne : δ ≠ 0 := brcc_delta_ne D cc hcc δ hδ
   rw [lamOf_eq_map_mulLeft D cc δ, jL_map_mulLeft _ δ hne]
 
+/- English proof (translation)
+Rewrite using `[brcc_jL_delta D cc hcc δ hδ]`. Establish `hd : Formalism.MainNotions.TaylorLogMetric.discr (lamOf D cc δ) = 1` using `br_discr_lamOf D cc hcc δ hδ`. Take `⟨-, hg, -⟩` from `hM`. Establish `hg' : Formalism.MainNotions.TaylorLogMetric.g2 (lamOf D cc δ) ∈ M` using `hg`. Establish `hj : jL (lamOf D cc δ) = 1728 * Formalism.MainNotions.TaylorLogMetric.g2 (lamOf D cc δ) ^ 3`.
+
+Unfold `jL`. Rewrite using `[hd, div_one]`. Rewrite using `[hj]`. Conclude with `mul_mem (by simpa using natCast_mem M 1728) (pow_mem hg' 3)`.
+-/
 theorem br_jL_mem (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (M : IntermediateField ℚ ℂ) (hM : DataIn D (tor0 D cc δ) M) :
     jL (lamOf D cc 1) ∈ M := by
@@ -113,6 +158,11 @@ theorem br_jL_mem (D : D7) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc
   rw [hj]
   exact mul_mem (by simpa using natCast_mem M 1728) (pow_mem hg' 3)
 
+/- English proof (translation)
+Establish `he : ∀ k, Formalism.MainNotions.TaylorLogMetric.eisG Λ k = 0`. Introduce `k`. Unfold `Formalism.MainNotions.TaylorLogMetric.eisG`. Use `haveI : IsEmpty {w : ℂ // w ∈ Λ ∧ w ≠ 0} := ⟨fun x => x.2.2 (h x.1 x.2.1)⟩`. Conclude with `tsum_empty`.
+
+Simplify using `[Formalism.MainNotions.TaylorLogMetric.discr, Formalism.MainNotions.TaylorLogMetric.g2, Formalism.MainNotions.TaylorLogMetric.g3, he]`.
+-/
 private lemma discr_eq_zero_of_trivial (Λ : AddSubgroup ℂ) (h : ∀ w ∈ Λ, w = 0) :
     Formalism.MainNotions.TaylorLogMetric.discr Λ = 0 := by
   have he : ∀ k, Formalism.MainNotions.TaylorLogMetric.eisG Λ k = 0 := by
@@ -122,6 +172,11 @@ private lemma discr_eq_zero_of_trivial (Λ : AddSubgroup ℂ) (h : ∀ w ∈ Λ,
     exact tsum_empty
   simp [Formalism.MainNotions.TaylorLogMetric.discr, Formalism.MainNotions.TaylorLogMetric.g2, Formalism.MainNotions.TaylorLogMetric.g3, he]
 
+/- English proof (translation)
+Introduce `h0`. Substitute `h0` using the available equality. Establish `hS : {w : ℂ | ∃ c ∈ 𝔟, w = 0 * φ (c : K)} ⊆ ((⊥ : AddSubgroup ℂ) : Set ℂ)`. Introduce and unpack `w ⟨c, hc, rfl⟩`. Simplify using the standard rewrite rules.
+
+Establish `hz : Formalism.MainNotions.TaylorLogMetric.discr (latI φ 𝔟 0) = 0` using `discr_eq_zero_of_trivial _ (fun w hw => AddSubgroup.mem_bot.1 ((AddSubgroup.closure_le _).2 hS hw))`. Establish `h' : Formalism.MainNotions.TaylorLogMetric.discr (latI φ 𝔟 0) = 1` using `h`. Rewrite `h'` using `[hz]`. Conclude with `zero_ne_one h'`.
+-/
 theorem brcc_discr_delta_ne (K : Type) [Field K] [NumberField K] (φ : K →+* ℂ) (𝔟 : Ideal (𝓞 K))
     (δ : ℂ) (h : discr (latI φ 𝔟 δ) = 1) : δ ≠ 0 := by
   intro h0

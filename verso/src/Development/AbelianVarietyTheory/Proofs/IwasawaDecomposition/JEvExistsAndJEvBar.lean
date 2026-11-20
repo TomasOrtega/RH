@@ -22,6 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CuspValues
 
+/- English proof (translation)
+Use `choose x hx using h`. Use `⟨⟨⟨x, fun f f' => hinj ?_⟩, fun a f => hinj ?_⟩, hx⟩` and prove the remaining obligations. Rewrite using `[map_add, hx, hx, hx, map_add]`. Conclude with `(hx _).trans (by rw [φ.map_smulₛₗ, map_smul, hx])`.
+-/
 theorem evEx_of_range {K C H X : Type} [Field K] [AddCommGroup C] [Module K C] [AddCommGroup H] [Module ℂ H]
     [AddCommGroup X] [Module ℂ X] (σ : K →+* ℂ) (ev : H →ₗ[ℂ] X) (hinj : Function.Injective ev) (φ : C →ₛₗ[σ] X)
     (h : ∀ f, φ f ∈ LinearMap.range ev) : EvEx σ ev φ := by
@@ -30,6 +33,9 @@ theorem evEx_of_range {K C H X : Type} [Field K] [AddCommGroup C] [Module K C] [
   · rw [map_add, hx, hx, hx, map_add]
   · exact (hx _).trans (by rw [φ.map_smulₛₗ, map_smul, hx])
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Both sides reduce to the same expression.
+-/
 theorem phiC_eq {D : D7} (T : CoreJ D) {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) :
     phiC T hV a f = (lieFac (T.Q.Dw j) (xiR D) a : ℂ) •
@@ -48,6 +54,15 @@ noncomputable def evLin {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.wh
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `i σ hσ hV`. Take `⟨hsh, -, w, hw⟩` from `GlobalTheory.T.holomorphicShape_integralWeight_goodEmbedding D G Pl0 T0 A T R κ v₀ ht i σ hσ`. Establish `hg` using `GlobalTheory.T.coreDictionary_good_at_good_embedding D G Pl0 T0 A T R κ v₀ hL hM ht hp i σ hσ hV w hw`. Take `⟨-, hχ, hfin, -⟩` from `GlobalTheory.T.realisation_principalLevel_eq_coreLevel_open D G Pl0 T0 A T R κ v₀ hL hM ht hp i σ hσ hV`. Establish `hinj : Function.Injective (evLin R i σ (v₀ i σ))` using `GlobalTheory.EvalAtUnitVector.evInj T R v₀ hM.HW ht.hv₀ i σ hσ`.
+
+Set `ad` to `adel (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (muPin (Wc D i) (castDict hV (T.dict ((i : ℕ) + 1) (res T σ))) (castDict hV (T.mu ((i : ℕ) + 1) (res T σ))) (T.cE ((i : ℕ) + 1) (res T σ)))`. Establish `key : holSub (T.U ((i : ℕ) + 1) (res T σ)).X (laU (T.U ((i : ℕ) + 1) (res T σ)) (wtA (κ i)) (κ i).n) ≤ (LinearMap.range (evLin R i σ (v₀ i σ))).comap ad`. Use `Submodule.span_le.2 fun P hP => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.holomorphicAdelicForm_of_boundedSection D R.θ _ _ _ w _ _ _ _ _ _ _ _ _ hsh hg P fun k => (hP k).1`. Establish `h2` using `GlobalTheory.T.adelicCuspForm_transvection_constantTerms_zero D R.θ _ _ _ w _ _ _ _ _ _ _ _ _ hsh hg P hP`.
+
+Establish `h3 : GlobalTheory.HolDict.HolForm R.θ (R.MW i σ) w (levS _ (R.βW i) (R.datWp i R.triv)) (Lev.levChi _ (R.βW i) (R.datWp i R.triv)) (ad P)` using `⟨h1.aut, h1.bdd, fun k hk g => by rw [hχ k hk]; exact h1.lev k hk g, h1.hol⟩`. Take `⟨Tm, hT, hTv⟩` from `GlobalTheory.T.boundedHolomorphicForm_eq_multiplicitySpace_value D R.θ _ _ (R.MW i σ) w (v₀ i σ) hM.inf hsh hw (ht.hv₀ i σ).1 (GlobalTheory.HolDict.exists_finPair GlobalTheory.Mem.VolFin.finVol D _) _ _ _ hfin h3 h2`. Establish `hmem : Tm ∈ R.Wall i σ` using `Submodule.subset_span hT`. Rewrite `hmem` using `[← (hM.HW i σ).2.1]`. Take `⟨x, rfl⟩` from `hmem`.
+
+Conclude with `⟨x, hTv⟩`. Set `φ : Cu T κ i →ₛₗ[res T σ] (GA D (Wc D i) → ℂ)` to `((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) • ad).comp ((rdU (T.U ((i : ℕ) + 1) (res T σ))).comp (T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n).subtype)`. Establish `h` using `evEx_of_range (res T σ) _ hinj φ fun f => Submodule.smul_mem _ _ (key (((mem_cusp _ _ _ _ _ _).1 f.2).2 _ hσ))`. Take `⟨j, hj⟩` from `h`. Conclude with `⟨j, fun f => (hj f).trans (phiC_eq T hV _ _).symm⟩`.
+-/
 theorem jEvExists (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
     (hL : R.toLevCh.Is A.μ0) (hM : R.IsModels) (ht : TieIn T R κ v₀) (hp : T.pb = R.C.P.pb) : JEvExists T R κ v₀ := by
@@ -82,6 +97,9 @@ theorem jEvExists (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A 
   obtain ⟨j, hj⟩ := h
   exact ⟨j, fun f => (hj f).trans (phiC_eq T hV _ _).symm⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hL hM ht hp`. Establish `h` using `jEvExists T R κ v₀ hL hM ht hp`. Conclude with `⟨h, (GlobalTheory.T.hilbertModel_conjugation_antilinear_bijection D G Pl0 T0 A T R κ v₀ hM ht).2 h⟩`.
+-/
 theorem jEvExists_and_jEvBar : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.toLevCh.Is A.μ0 → R.IsModels → TieIn T R κ v₀ → T.pb = R.C.P.pb → JEvExists T R κ v₀ ∧ JEvBar T R κ := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hL hM ht hp
   have h := jEvExists T R κ v₀ hL hM ht hp

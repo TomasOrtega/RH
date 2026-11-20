@@ -18,6 +18,17 @@ namespace GlobalTheory.CosetFJ
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_ g hg _`. Establish `e : g = 1` using `GlobalTheory.QRed.grpAt_eq_one (fun v => by simp) hg`. Conclude with `⟨1, one_mem _, one_mem _, 1, one_mem _, one_mem _, by rw [e, one_mul]⟩`.
+
+Consider the case `insert v s hv ih`. Introduce `hloc g hg hc`. Take `⟨g₁, hg₁, g₂, hg₂o, rfl⟩` from `((GlobalTheory.FinPl.localComponents D (· = v)).2 W).1 g`. Establish `mono : ∀ {P : GlobalTheory.FinPl.Pl D → Prop} {a : GA D W}, (∀ w, P w → w ∈ insert v s) → a ∈ grpAt W P → a ∈ grpAt W (· ∈ insert v s)` using `fun hP ha => GlobalTheory.DStepSuppSecond.grpAt_mono hP ha`. Establish `hg₁' : g₁ ∈ grpAt W (· ∈ insert v s)` using `mono (fun w hw => by simp [hw]) hg₁`.
+
+Establish `hg₂ : g₂ ∈ grpAt W (· ∈ insert v s)`. Use `mul_mem (inv_mem hg₁') hg` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `hg₂s : g₂ ∈ grpAt W (· ∈ s)` using `GlobalTheory.QRed.grpAt_of_off (fun w hw => by rcases Finset.mem_insert.1 hw with h | h; exacts [Or.inl h.symm, Or.inr h]) hg₂ hg₂o`. Establish `hcomm : g₁ * g₂ = g₂ * g₁` using `((GlobalTheory.FinPl.localComponents D (· = v)).2 W).2.1 g₁ hg₁ g₂ hg₂o`.
+
+Establish `hdisj : ∀ w, w = v → ¬ w ∈ s` using `fun w hw hws => hv (hw ▸ hws)`. Establish `hg₁o : g₁ ∈ grpOff W (· ∈ s)` using `GlobalTheory.QRed.grpAt_off hdisj hg₁`. Establish `hc₁` using `GlobalTheory.T.of_mul_trivialAtPlaces_subset dW p x y ψ _ _ g₁ g₂ (fun w hw => by simp [hw]) hg₁ hg₂o hcomm hc`. Establish `hc₂` using `GlobalTheory.T.of_mul_trivialAtPlaces_subset dW p x y ψ _ _ g₂ g₁ (fun w hw => Finset.mem_insert_of_mem hw) hg₂s hg₁o hcomm.symm (hcomm ▸ hc)`. Take `⟨r₁, hr₁, hr₁a, k₁, hk₁, hk₁a, e₁⟩` from `hloc v (Finset.mem_insert_self v s) g₁ hg₁ hc₁`.
+
+Take `⟨r₂, hr₂, hr₂a, k₂, hk₂, hk₂a, e₂⟩` from `ih (fun w hw => hloc w (Finset.mem_insert_of_mem hw)) g₂ hg₂s hc₂`. Establish `hk₁r₂ : k₁ * r₂ = r₂ * k₁` using `GlobalTheory.SeeSawLastValue.grpAt_comm hdisj hk₁a hr₂a`. Use `⟨r₁ * r₂, mul_mem hr₁ hr₂, mul_mem (mono (fun w hw => by simp [hw]) hr₁a) (mono (fun w hw => Finset.mem_insert_of_mem hw) hr₂a), k₁ * k₂, mul_mem hk₁ hk₂, mul_mem (mono (fun w hw => by simp [hw]) hk₁a) (mono (fun w hw => Finset.mem_insert_of_mem hw) hk₂a), ?_⟩` and prove the remaining obligations. Rewrite using `[e₁, e₂]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coset_of_places {V₀ W W₀ : HSp D} {ρ σ : ℕ} (dW : HypDec W W₀ σ) (p : Pieces V₀ W W₀ ρ σ)
     (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (ψ : AddChar (AF D.host.F) ℂ) (K : Subgroup (GA D W))
     (S : Finset (GlobalTheory.FinPl.Pl D)) :
@@ -60,6 +71,11 @@ theorem coset_of_places {V₀ W W₀ : HSp D} {ρ σ : ℕ} (dW : HypDec W W₀ 
     calc r₁ * k₁ * (r₂ * k₂) = r₁ * (k₁ * r₂) * k₂ := by simp only [mul_assoc]
       _ = r₁ * r₂ * (k₁ * k₂) := by rw [hk₁r₂]; simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `D hD T L μ0 hL sc G W M hM F _hF σ h h' g hg hc`. Use `coset_of_places (F.dB σ h') (pcFB W F σ h h') (xFB F σ h') 0 W.ψ (lev G (.grid (2 * σ + 2) 0)) G.pl.S0 ?_ g hg hc` and prove the remaining obligations. Introduce `v hv g hg hc`. Take `⟨u, a, ha, hoff⟩` from `hc.pt`. Take `⟨k, hk, hka, hk'⟩` from `GlobalTheory.T.exists_level_element_off_place D hD T L μ0 hL sc G W M hM F _hF σ h h' v hv g hg u a ha hoff`.
+
+Take `⟨r, hr, hra, e⟩` from `GlobalTheory.T.exists_unitriangularStabilizer_of_principal_move _ (xFB F σ h') (· = v) g k u hg hka hk'`. Conclude with `⟨r, hr, hra, k⁻¹, inv_mem hk, inv_mem hka, e⟩`.
+-/
 theorem one_coset_decomposition_base : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ g ∈ grpAt _ (fun v => v ∈ G.pl.S0), Cond (F.dB σ h') (pcFB W F σ h h') (xFB F σ h') 0 W.ψ (fun v => v ∈ G.pl.S0) g → ∃ r ∈ Rgrp _ (xFB F σ h'), r ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ ∃ k ∈ lev G (.grid (2 * σ + 2) 0), k ∈ grpAt _ (fun v => v ∈ G.pl.S0) ∧ g = r * k := by
   intro D hD T L μ0 hL sc G W M hM F _hF σ h h' g hg hc
   refine coset_of_places (F.dB σ h') (pcFB W F σ h h') (xFB F σ h') 0 W.ψ (lev G (.grid (2 * σ + 2) 0)) G.pl.S0 ?_ g hg hc

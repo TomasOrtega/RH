@@ -9,16 +9,53 @@ namespace LevelTowerAlt
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h : Dense (Set.pi Set.univ fun k : Fin n => ({c k}ᶜ : Set ℂ))` using `dense_pi Set.univ fun k _ => dense_compl_singleton (c k)`. Conclude with `(mem_closure_iff_frequently.1 (h y)).mono fun y' hy' k => hy' k (Set.mem_univ k)`.
+-/
 theorem frequently_ne (c y : Fin n → ℂ) : ∃ᶠ y' in 𝓝 y, ∀ k, y' k ≠ c k := by
   have h : Dense (Set.pi Set.univ fun k : Fin n => ({c k}ᶜ : Set ℂ)) :=
     dense_pi Set.univ fun k _ => dense_compl_singleton (c k)
   exact (mem_closure_iff_frequently.1 (h y)).mono fun y' hy' k => hy' k (Set.mem_univ k)
 
+/- English proof (translation)
+The claim follows from `tendsto_nhds_unique_of_frequently_eq hf hg (((frequently_ne c y).and_eventually h).mono fun _ h' => h'.2 h'.1)`.
+-/
 theorem eq_of_eventually_ne {β : Type*} [TopologicalSpace β] [T2Space β] {f g : (Fin n → ℂ) → β} (c : Fin n → ℂ)
     {y : Fin n → ℂ} (hf : ContinuousAt f y) (hg : ContinuousAt g y)
     (h : ∀ᶠ y' in 𝓝 y, (∀ k, y' k ≠ c k) → f y' = g y') : f y = g y :=
   tendsto_nhds_unique_of_frequently_eq hf hg (((frequently_ne c y).and_eventually h).mono fun _ h' => h'.2 h'.1)
 
+/- English proof (translation)
+Establish `hne : ∀ᶠ y in 𝓝 y₀, ∀ i, y₀ i ≠ 0 → y i ≠ 0`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : y₀ i = 0`. Conclude with `Filter.Eventually.of_forall fun _ h' => absurd h h'`. Conclude with `((continuous_apply i).continuousAt.eventually_ne h).mono fun _ h' _ => h'`.
+
+Take `⟨r, hr, hb⟩` from `Metric.eventually_nhds_iff_ball.1 (hf.eventually_analyticAt.and (hz.and hne))`. Establish `hr' : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr.ne'`. Set `A : (Fin n → ℂ) → Fin n → ℂ` to `fun z => y₀ + (r : ℂ) • z`. Establish `hAd : Differentiable ℂ A` using `(differentiable_const _).add (differentiable_id.const_smul (r : ℂ))`. Establish `hA : ∀ z ∈ ball (0 : Fin n → ℂ) 1, A z ∈ ball y₀ r`.
+
+Introduce `z hz`. Rewrite `hz` using `[mem_ball_zero_iff]`. Rewrite using `[mem_ball_iff_norm, add_sub_cancel_left, norm_smul, Complex.norm_real, Real.norm_of_nonneg hr.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hkey : ∀ z ∈ ball (0 : Fin n → ℂ) 1, ∀ i, (y₀ i = 0 → z i ≠ 0) → A z i ≠ 0`.
+
+Introduce `z hz i hi`. Distinguish the cases in `h : y₀ i = 0`. Use `show y₀ i + (r : ℂ) * z i ≠ 0`. Rewrite using `[h, zero_add]`. Conclude with `mul_ne_zero hr' (hi h)`.
+
+Conclude with `(hb _ (hA z hz)).2.2 i h`. Establish `hAa : ∀ z, AnalyticAt ℂ A z` using `fun z => by`. Establish `h1 : AnalyticAt ℂ ((fun _ : Fin n → ℂ => (r : ℂ)) • id) z` using `analyticAt_const.smul analyticAt_id`. Conclude with `analyticAt_const.add h1`. Establish `hpd : ∀ z, AnalyticAt ℂ (fun z => ∏ i ∈ S, A z i) z` using `fun z => Finset.analyticAt_fun_prod (𝕜 := ℂ) S (f := fun i z => A z i) fun i _ => analyticAt_pi_iff.1 (hAa z) i`.
+
+Take `⟨G, hG, hGe⟩` from `GroundTheory.Heights₂.Heights.Regular.RiemannExtensionSlices.proof n (fun z => f (A z) / ∏ i ∈ S, A z i) (fun z hz => (AnalyticAt.fun_div (f := fun z => f (A z)) (g := fun z => ∏ i ∈ S, A z i) (AnalyticAt.comp (g := f) (f := A) (hb _ (hA z hz.1)).1 (hAa z)) (hpd z) (Finset.prod_n …`. Introduce `z hz i hi`. Establish `h0 : Function.update z i 0 ∈ ball (0 : Fin n → ℂ) 1`. Rewrite `hz`, the goal using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `k`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hk]`. Conclude with `hz k`.
+
+Establish `hud : DifferentiableAt ℂ (Function.update z i) (0 : ℂ)` using `(hasFDerivAt_update z (0 : ℂ)).differentiableAt`. Establish `hφ : DifferentiableAt ℂ (fun x : ℂ => f (A (Function.update z i x))) 0` using `DifferentiableAt.comp (g := fun w => f (A w)) 0 ((hb _ (hA _ h0)).1.differentiableAt.comp _ (hAd _)) hud`. Distinguish the cases in `hc : i ∈ S ∧ y₀ i = 0`. Establish `hφ0 : f (A (Function.update z i 0)) = 0` using `(hb _ (hA _ h0)).2.1 ⟨i, hc.1, by simp [A, hc.2]⟩`. Use `⟨_, ((hasDerivAt_iff_tendsto_slope.1 hφ.hasDerivAt).div_const ((r : ℂ) * ∏ k ∈ S.erase i, A z k)).congr fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∏ k ∈ S.erase i, A (Function.update z i x) k = ∏ k ∈ S.erase i, A z k` using `Finset.prod_congr rfl fun k hk => by`. Simplify using `only [A, Pi.add_apply, Pi.smul_apply, Function.update_of_ne (Finset.ne_of_mem_erase hk)]`. Establish `h2 : A (Function.update z i x) i = r * x` using `by simp [A, hc.2]`. Rewrite using `[← Finset.mul_prod_erase S _ hc.1, h1, h2, slope_def_field, hφ0, sub_zero, sub_zero, div_div]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨_, tendsto_nhdsWithin_of_tendsto_nhds (ContinuousAt.tendsto (hφ.continuousAt.div ((hpd _).continuousAt.comp hud.continuousAt) ?_))⟩` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.2 fun k hk => hkey _ h0 k fun h => ?_` and prove the remaining obligations. Establish `hki : k ≠ i` using `fun e => hc ⟨e ▸ hk, e ▸ h⟩`. Rewrite using `[Function.update_of_ne hki]`.
+
+Conclude with `hi k hki)`. Set `B : (Fin n → ℂ) → Fin n → ℂ` to `fun y => (r : ℂ)⁻¹ • (y - y₀)`. Establish `hBa : ∀ y, AnalyticAt ℂ B y` using `fun y => by`. Establish `h1 : AnalyticAt ℂ ((fun _ : Fin n → ℂ => (r : ℂ)⁻¹) • (id - fun _ : Fin n → ℂ => y₀)) y` using `analyticAt_const.smul (analyticAt_id.sub analyticAt_const)`. Conclude with `h1`.
+
+Establish `hAB : ∀ y, A (B y) = y` using `fun y => by`. Simplify using `only [A, B, smul_smul, mul_inv_cancel₀ hr', one_smul, add_sub_cancel]`. Establish `hB : ∀ y ∈ ball y₀ r, B y ∈ ball (0 : Fin n → ℂ) 1`. Introduce `y hy`. Rewrite `hy` using `[mem_ball_iff_norm]`.
+
+Rewrite using `[mem_ball_zero_iff, norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hr.le, inv_mul_lt_iff₀ hr, mul_one]`. Conclude with `hy`. Establish `hu : ∀ y ∈ ball y₀ r, AnalyticAt ℂ (fun y => G (B y)) y` using `fun y hy => AnalyticAt.comp (g := G) (f := B) (hG _ (hB y hy)) (hBa y)`. Use `⟨fun y => G (B y), hu _ (mem_ball_self hr), ?_⟩` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds y₀ hr] with y hy`.
+
+Use `eq_of_eventually_ne (f := f) (g := fun y => G (B y) * ∏ i ∈ S, y i) y₀ (hb y hy).1.continuousAt ((hu y hy).continuousAt.mul (continuous_finsetProd _ fun i _ => continuous_apply i).continuousAt) ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ball.mem_nhds hy] with y' hy' hne'`. Establish `h1 : ∀ i, B y' i ≠ 0` using `fun i => mul_ne_zero (inv_ne_zero hr') (sub_ne_zero.2 (hne' i))`. Establish `h2 : ∏ i ∈ S, y' i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => by`. Use `hkey _ (hB y' hy') i fun _ => h1 i` as an intermediate fact.
+
+Rewrite `this` using `[hAB]`. Then use the resulting hypothesis. Rewrite using `[hGe _ (hB y' hy') h1, hAB, div_mul_cancel₀ _ h2]`.
+-/
 theorem exists_div_coord {f : (Fin n → ℂ) → ℂ} {y₀ : Fin n → ℂ} (hf : AnalyticAt ℂ f y₀) (S : Finset (Fin n))
     (hz : ∀ᶠ y in 𝓝 y₀, y ∈ coordDiv S → f y = 0) :
     ∃ u : (Fin n → ℂ) → ℂ, AnalyticAt ℂ u y₀ ∧ ∀ᶠ y in 𝓝 y₀, f y = u y * ∏ i ∈ S, y i := by
@@ -112,9 +149,15 @@ theorem exists_div_coord {f : (Fin n → ℂ) → ℂ} {y₀ : Fin n → ℂ} (h
     rwa [hAB] at this
   rw [hGe _ (hB y' hy') h1, hAB, div_mul_cancel₀ _ h2]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_zero_iff`.
+-/
 theorem prod_eq_zero_iff_coordDiv (S : Finset (Fin n)) (y : Fin n → ℂ) : ∏ i ∈ S, y i = 0 ↔ y ∈ coordDiv S :=
   Finset.prod_eq_zero_iff
 
+/- English proof (translation)
+Rewrite using `[norm_prod, Real.log_prod fun i hi => norm_ne_zero_iff.2 fun h => hy ⟨i, hi, h⟩, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_inv, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_log_eq (S : Finset (Fin n)) {y : Fin n → ℂ} (hy : y ∉ coordDiv S) :
     ∑ i ∈ S, Real.log (‖y i‖ ^ 2)⁻¹ = -2 * Real.log ‖∏ i ∈ S, y i‖ := by
   rw [norm_prod, Real.log_prod fun i hi => norm_ne_zero_iff.2 fun h => hy ⟨i, hi, h⟩, Finset.mul_sum]
@@ -123,6 +166,17 @@ theorem sum_log_eq (S : Finset (Fin n)) {y : Fin n → ℂ} (hy : y ∉ coordDiv
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨g, hga, hg0, hgr, hgl, -⟩` from `exists_local_inverse hΦ hU hinj`. Take `⟨u, hu, hue⟩` from `exists_div_coord (f := fun y => ∏ i ∈ S', Φ y i) (Finset.analyticAt_fun_prod _ fun i _ => analyticAt_pi_iff.1 hΦ i) S (h.mono fun y hy hS => (prod_eq_zero_iff_coordDiv _ _).2 (hy.1 hS))`. Establish `hgt : Tendsto g (𝓝 (Φ y₀)) (𝓝 y₀)`. Use `hga.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hg0]`. Then use the resulting hypothesis.
+
+Take `⟨v, hv, hve⟩` from `exists_div_coord (f := fun x => ∏ i ∈ S, g x i) (Finset.analyticAt_fun_prod _ fun i _ => analyticAt_pi_iff.1 hga i) S' (by filter_upwards [hgt.eventually h, hgr] with x h1 h2 h3`. Rewrite `h1` using `[h2]`. Conclude with `(prod_eq_zero_iff_coordDiv _ _).2 (h1.2 h3))`. Establish `h1 : v (Φ y₀) * u y₀ = 1`. Use `eq_of_eventually_ne (f := fun y => v (Φ y) * u y) (g := fun _ => 1) 0 ((hv.continuousAt.comp hΦ.continuousAt).mul hu.continuousAt) continuousAt_const ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hue, hΦ.continuousAt.tendsto.eventually hve, hgl] with y e1 e2 e3 hy`. Rewrite `e2` using `[e3, e1, ← mul_assoc]`. Establish `hp : ∏ i ∈ S, y i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hy i`. Conclude with `mul_right_cancel₀ hp (by rw [← e2, one_mul])`. Establish `hu0 : u y₀ ≠ 0` using `right_ne_zero_of_mul_eq_one h1`.
+
+Establish `huR : AnalyticAt ℝ u y₀` using `hu.restrictScalars`. Use `⟨fun y => -2 * Real.log ‖u y‖, contDiffAt_const.mul ((huR.contDiffAt.norm ℝ hu0).log (norm_ne_zero_iff.2 hu0)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [h, hue, hu.continuousAt.eventually_ne hu0] with y e1 e2 e3 hy`. Establish `hp : ∏ i ∈ S, y i ≠ 0` using `fun h0 => hy ((prod_eq_zero_iff_coordDiv _ _).1 h0)`. Rewrite using `[sum_log_eq S' fun h' => hy (e1.2 h'), sum_log_eq S hy, e2, norm_mul, Real.log_mul (norm_ne_zero_iff.2 e3) (norm_ne_zero_iff.2 hp)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smooth_log_diff {Φ : (Fin n → ℂ) → Fin n → ℂ} {y₀ : Fin n → ℂ} (hΦ : AnalyticAt ℂ Φ y₀)
     {U : Set (Fin n → ℂ)} (hU : U ∈ 𝓝 y₀) (hinj : Set.InjOn Φ U) {S S' : Finset (Fin n)}
     (h : ∀ᶠ y in 𝓝 y₀, y ∈ coordDiv S ↔ Φ y ∈ coordDiv S') :
@@ -158,6 +212,11 @@ theorem exists_smooth_log_diff {Φ : (Fin n → ℂ) → Fin n → ℂ} {y₀ : 
     Real.log_mul (norm_ne_zero_iff.2 e3) (norm_ne_zero_iff.2 hp)]
   ring
 
+/- English proof (translation)
+Use `choose! q hq hqe using h`. Use `⟨fun y => q y y, fun y₀ hy₀ => ((hq y₀ hy₀).congr_of_eventuallyEq ?_).contDiffWithinAt, fun y hy => (hqe y hy).self_of_nhds⟩` and prove the remaining obligations. Establish `hc : ∀ᶠ y in 𝓝 y₀, ContinuousAt (q y₀) y` using `(((hq y₀ hy₀).of_le (m := 1) (by exact_mod_cast le_top)).eventually (by simp)).mono fun _ h => h.continuousAt`. Use `filter_upwards [hU.mem_nhds hy₀, hc, (hqe y₀ hy₀).eventually_nhds] with y hy h1 h2`. Use `eq_of_eventually_ne (f := q y) (g := q y₀) 0 (hq y hy).continuousAt h1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h2, hqe y hy] with y' e1 e2 hy'`. Establish `hn : y' ∉ coordDiv S` using `fun ⟨i, _, hi⟩ => hy' i hi`. Rewrite using `[← e1 hn, ← e2 hn]`.
+-/
 theorem exists_smooth_glue {U : Set (Fin n → ℂ)} (hU : IsOpen U) (S : Finset (Fin n)) (E : (Fin n → ℂ) → ℝ)
     (h : ∀ y₀ ∈ U, ∃ q : (Fin n → ℂ) → ℝ, ContDiffAt ℝ ∞ q y₀ ∧ ∀ᶠ y in 𝓝 y₀, y ∉ coordDiv S → E y = q y) :
     ∃ f : (Fin n → ℂ) → ℝ, ContDiffOn ℝ ∞ f U ∧ ∀ y ∈ U, y ∉ coordDiv S → E y = f y := by

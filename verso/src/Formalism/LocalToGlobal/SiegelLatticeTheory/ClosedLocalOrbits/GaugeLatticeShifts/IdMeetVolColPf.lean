@@ -10,12 +10,28 @@ open scoped Classical ENNReal
 open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Introduce `s hs`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hs`. Conclude with `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 hγ).2).1`.
+-/
 theorem gcS_sub {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter) (c : X.B.I.Gf) :
     ((GcS X u hK c : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) ⊆ X.NinfU u := by
   intro s hs
   obtain ⟨γ, hγ, rfl⟩ := Subgroup.mem_map.1 hs
   exact (Subgroup.mem_prod.1 (Subgroup.mem_inf.1 hγ).2).1
 
+/- English proof (translation)
+Establish `himg : (fun s => c * s * c⁻¹) '' Ω = (fun s => c⁻¹ * s * c) ⁻¹' Ω`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`.
+
+Introduce `hx`. Conclude with `⟨c⁻¹ * x * c, hx, by group⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `((measurable_const_mul c⁻¹).mul_const c) hΩ.1`.
+
+Introduce `x`. Take `⟨t, ht, htx⟩` from `hΩ.2.1 (c⁻¹ * x * c)`. Use `⟨c * t * c⁻¹, (hS _).2 ⟨t, ht, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `⟨t * (c⁻¹ * x * c), htx, by group⟩`. Introduce `x hx s hs hsx`.
+
+Take `⟨ω, hω, rfl⟩` from `hx`. Take `⟨t, ht, rfl⟩` from `(hS s).1 hs`. Rewrite `hsx` using `[himg]`. Establish `h1 : t * ω ∈ Ω`. Establish `e : c⁻¹ * (c * t * c⁻¹ * (c * ω * c⁻¹)) * c = t * ω` using `by group`.
+
+Establish `h0 : c⁻¹ * (c * t * c⁻¹ * (c * ω * c⁻¹)) * c ∈ Ω` using `hsx`. Rewrite `h0` using `[e]`. Conclude with `h0`. Use `hΩ.2.2 ω hω t ht h1` as an intermediate fact. Rewrite using `[this]`.
+
+Use `group`.
+-/
 theorem isSFund_conjImg {D : D7} (X : HidaSetting D) (S S' : Set X.B.I.Ginf) (Ω : Set X.B.I.Ginf) (c : X.B.I.Ginf)
     (hS : ∀ s, s ∈ S' ↔ ∃ t ∈ S, c * t * c⁻¹ = s) (hΩ : IsSFund X.B.I S Ω) :
     IsSFund X.B.I S' ((fun s => c * s * c⁻¹) '' Ω) := by
@@ -45,6 +61,69 @@ theorem isSFund_conjImg {D : D7} (X : HidaSetting D) (S S' : Set X.B.I.Ginf) (Ω
     have := hΩ.2.2 ω hω t ht h1
     rw [this]; group
 
+/- English proof (translation)
+Introduce `D X Y u ρ Ω hΩ`. Set `Γ : Hfin X u → Subgroup X.B.I.Ginf` to `fun h => GcS X u Y.hK ((h : X.B.I.Gf) * X.xu u)`. Set `U : Hfin X u → Subgroup X.B.I.Gf` to `fun h => UcS X u Y.hK ((h : X.B.I.Gf) * X.xu u)`. Establish `hsub : ∀ h, ((Γ h : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) ⊆ X.NinfU u` using `fun h => gcS_sub X u Y.hK _`. Establish `hcnt : ∀ h, Countable (Γ h)` using `fun h => h3 D X u Y.hK _`.
+
+Set `Ωh : Hfin X u → Set X.B.I.Ginf` to `fun h => Classical.choose (h8 D X Y u h)`. Establish `hΩh : ∀ h, IsSFund X.B.I (Γ h) (Ωh h)` using `fun h => Classical.choose_spec (h8 D X Y u h)`. Set `F : Hfin X u → ℝ≥0∞` to `fun h => X.muN u (Ωh h)`. Establish `hF : ∀ h Ω', IsSFund X.B.I (Γ h) Ω' → X.muN u Ω' = F h` using `fun h Ω' hΩ' => h4 D X u (Γ h) Ω' (Ωh h) (hsub h) (hcnt h) hΩ' (hΩh h)`. Establish `hratio : ∀ g h : Hfin X u, F g * ((Γ h).relIndex (Γ g) : ℝ≥0∞) = F h * ((Γ g).relIndex (Γ h) : ℝ≥0∞)`.
+
+Introduce `g h`. Establish `hne1 : (Γ h ⊓ Γ g).relIndex (Γ g) ≠ 0`. Rewrite using `[Subgroup.inf_relIndex_right, (h6 D X u Y.hK g h).1]`. Conclude with `(h6 D X u Y.hK g h).2`. Establish `hne2 : (Γ g ⊓ Γ h).relIndex (Γ h) ≠ 0`.
+
+Rewrite using `[Subgroup.inf_relIndex_right, (h6 D X u Y.hK h g).1]`. Conclude with `(h6 D X u Y.hK h g).2`. Take `⟨Ω1, hΩ1, hμ1⟩` from `h5 D X u (Γ g) (Γ h ⊓ Γ g) (Ωh g) inf_le_right (hsub g) (hcnt g) hne1 (hΩh g)`. Take `⟨Ω2, hΩ2, hμ2⟩` from `h5 D X u (Γ h) (Γ g ⊓ Γ h) (Ωh h) inf_le_right (hsub h) (hcnt h) hne2 (hΩh h)`. Rewrite `hΩ2` using `[inf_comm]`.
+
+Establish `hc : Countable ↥(Γ h ⊓ Γ g)`. Conclude with `Set.countable_coe_iff.2 ((Set.countable_coe_iff.1 (hcnt g)).mono (fun x hx => (Subgroup.mem_inf.1 hx).2))`. Establish `heq` using `h4 D X u (Γ h ⊓ Γ g) Ω1 Ω2 (fun x hx => hsub g (Subgroup.mem_inf.1 hx).2) hc hΩ1 hΩ2`. Rewrite `heq` using `[hμ1, hμ2, Subgroup.inf_relIndex_right, Subgroup.inf_relIndex_right]`. Rewrite using `[mul_comm, heq, mul_comm]`.
+
+Establish `hU : ∀ g h : Hfin X u, U (g * h) = (U h).map (MulAut.conj (g : X.B.I.Gf)).toMonoidHom`. Introduce `g h`. Use `h7 D X u Y.hK g ((h : X.B.I.Gf) * X.xu u)` as an intermediate fact. Simplify using `only [U, Subgroup.coe_mul, mul_assoc]`. Conclude with `this`.
+
+Establish `hinj : ∀ g : Hfin X u, Function.Injective (MulAut.conj (g : X.B.I.Gf)).toMonoidHom` using `fun g => (MulAut.conj (g : X.B.I.Gf)).injective`. Establish `hidx : ∀ g h : Hfin X u, (U (g * h)).relIndex (U g) = (U h).relIndex (U 1)`. Introduce `g h`. Establish `e` using `hU g 1`. Rewrite `e` using `[mul_one]`.
+
+Rewrite using `[hU g h, e, Subgroup.relIndex_map_map_of_injective _ _ (hinj g)]`. Establish `hidx' : ∀ g h : Hfin X u, (U g).relIndex (U (g * h)) = (U 1).relIndex (U h)`. Introduce `g h`. Establish `e` using `hU g 1`. Rewrite `e` using `[mul_one]`.
+
+Rewrite using `[hU g h, e, Subgroup.relIndex_map_map_of_injective _ _ (hinj g)]`. Establish `hG : ∀ g h : Hfin X u, (Γ h).relIndex (Γ g) = (U h).relIndex (U g)` using `fun g h => (h6 D X u Y.hK g h).1`. Establish `hGne : ∀ g h : Hfin X u, (Γ h).relIndex (Γ g) ≠ 0` using `fun g h => by`. Rewrite using `[hG]`. Conclude with `(h6 D X u Y.hK g h).2`.
+
+Establish `hmul : ∀ g h : Hfin X u, F (g * h) * F 1 = F g * F h`. Introduce `g h`. Establish `E1` using `hratio g (g * h)`. Establish `E2` using `hratio 1 h`. Use `set A : ℕ := (U h).relIndex (U 1) with hA`.
+
+Use `set B : ℕ := (U 1).relIndex (U h) with hB`. Establish `hA1 : (Γ (g * h)).relIndex (Γ g) = A`. Rewrite using `[hG, hA, hidx g h]`. Establish `hB1 : (Γ g).relIndex (Γ (g * h)) = B`. Rewrite using `[hG, hB, hidx' g h]`.
+
+Establish `hA2 : (Γ h).relIndex (Γ 1) = A` using `by rw [hG]`. Establish `hB2 : (Γ 1).relIndex (Γ h) = B` using `by rw [hG]`. Establish `hA0 : A ≠ 0` using `by rw [← hA2]; exact hGne 1 h`. Establish `hB0 : B ≠ 0` using `by rw [← hB2]; exact hGne h 1`. Rewrite `E1` using `[hA1, hB1]`.
+
+Rewrite `E2` using `[hA2, hB2]`. Establish `hAB0 : ((A : ℝ≥0∞) * B) ≠ 0` using `mul_ne_zero (by exact_mod_cast hA0) (by exact_mod_cast hB0)`. Establish `hABt : ((A : ℝ≥0∞) * B) ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top A) (ENNReal.natCast_ne_top B)`. Use `(ENNReal.mul_left_inj hAB0 hABt).1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinv : ∀ (γ : Gam X u) (h : Hfin X u) (κ : Ku X u Y.hK), F (iotaF X u γ * h * (κ : Hfin X u)) = F h`. Introduce `γ h κ`. Use `set c : X.B.I.Ginf := (γ : X.B.I.GA).1 with hc`. Establish `hcH : c ∈ Hinf X u` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).1`. Establish `hset` using `h9 D X u Y.hK γ h κ`.
+
+Establish `hS : ∀ s, s ∈ ((Γ (iotaF X u γ * h * (κ : Hfin X u)) : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf) ↔ ∃ t ∈ ((Γ h : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf), c * t * c⁻¹ = s`. Introduce `s`. Use `Set.ext_iff.1 hset s` as an intermediate fact. Simplify `this` using `[Γ]`. Establish `hfund` using `isSFund_conjImg X _ _ (Ωh h) c hS (hΩh h)`.
+
+Rewrite using `[← hF _ _ hfund]`. Conclude with `h10 D X u c hcH (Ωh h) (hΩh h).1`. Establish `hfin : (Set.range F).Finite`. Use `(Set.finite_range (fun ρ : (Y.cs u).Cl => F ((Y.cs u).h ρ))).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Take `⟨ρ, ⟨γ, κ, hh⟩, -⟩` from `Y.colReps u h`. Conclude with `⟨ρ, by rw [hh, hinv]⟩`. Establish `hconst : ∀ h, F h = F 1`. Introduce `h`. Establish `E` using `hratio 1 h`.
+
+Establish `ha : (Γ h).relIndex (Γ 1) ≠ 0` using `hGne 1 h`. Establish `hb : (Γ 1).relIndex (Γ h) ≠ 0` using `hGne h 1`. Establish `ha' : ((Γ h).relIndex (Γ 1) : ℝ≥0∞) ≠ 0` using `by exact_mod_cast ha`. Establish `hb' : ((Γ 1).relIndex (Γ h) : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hb`. Distinguish the cases in `h0 : F 1 = 0`.
+
+Rewrite `E` using `[h0, zero_mul]`. Break down `mul_eq_zero.1 E.symm with e | e` into its components or cases. Rewrite using `[e, h0]`. Conclude with `absurd e hb'`. Distinguish the cases in `ht : F 1 = ⊤`.
+
+Rewrite `E` using `[ht, ENNReal.top_mul ha']`. Break down `ENNReal.mul_eq_top.1 E.symm with ⟨-, e⟩ | ⟨e, -⟩` into its components or cases. Conclude with `absurd e (ENNReal.natCast_ne_top _)`. Rewrite using `[e, ht]`. Establish `hpos : ∀ k, F k ≠ 0 ∧ F k ≠ ⊤`.
+
+Introduce `k`. Establish `Ek` using `hratio 1 k`. Establish `hak : ((Γ k).relIndex (Γ 1) : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hGne 1 k`. Establish `hbk : ((Γ 1).relIndex (Γ k) : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hGne k 1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `e`. Rewrite `Ek` using `[e, zero_mul]`. Break down `mul_eq_zero.1 Ek with e' | e'` into its components or cases. Conclude with `h0 e'`. Conclude with `hak e'`.
+
+Introduce `e`. Rewrite `Ek` using `[e, ENNReal.top_mul hbk]`. Break down `ENNReal.mul_eq_top.1 Ek with ⟨-, e'⟩ | ⟨e', -⟩` into its components or cases. Conclude with `ENNReal.natCast_ne_top _ e'`. Conclude with `ht e'`.
+
+Set `q : Hfin X u → ℝ` to `fun k => (F k).toReal / (F 1).toReal`. Establish `hF1 : 0 < (F 1).toReal` using `ENNReal.toReal_pos h0 ht`. Establish `hq : ∀ g k, q (g * k) = q g * q k`. Introduce `g k`. Use `congrArg ENNReal.toReal (hmul g k)` as an intermediate fact.
+
+Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_mul]`. Simplify using `only [q]`. Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[this]`. Establish `hqpow : ∀ n : ℕ, q (h ^ n) = q h ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [q, hF1.ne']`. Consider the case `succ n ih => rw [pow_succ, hq, ih, pow_succ]`. Establish `hqpos : 0 < q h` using `div_pos (ENNReal.toReal_pos (hpos h).1 (hpos h).2) hF1`.
+
+Establish `hq1 : q h = 1`. Assume the negation of the conclusion as `hne`. Establish `hinjq : Function.Injective (fun n : ℕ => q h ^ n)` using `pow_right_injective₀ hqpos hne`. Establish `hrange : (Set.range (fun n : ℕ => q h ^ n)).Finite`. Use `((hfin.image (fun x : ℝ≥0∞ => x.toReal / (F 1).toReal))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `⟨F (h ^ n), ⟨h ^ n, rfl⟩, by simp only [q] at hqpow; exact hqpow n⟩`. Conclude with `Set.infinite_range_of_injective hinjq hrange`. Establish `: (F h).toReal = (F 1).toReal`. Use `hq1` as an intermediate fact.
+
+Simplify using `only [q] at this`. Clear denominators, using `at this` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(ENNReal.toReal_eq_toReal_iff' (hpos h).2 ht).1 this`. Establish `hρ : IsSFund X.B.I (Γ ((Y.cs u).h ρ)) Ω`.
+
+Use `h2 D X Y u ρ` as an intermediate fact. Rewrite `hΩ` using `[this]`. Conclude with `hΩ`. Establish `h1' : IsSFund X.B.I (Γ 1) (Y.FN u)`. Establish `e` using `h1 D X u Y.hK`.
+
+Establish `hFN` using `Y.FN_fund u`. Rewrite `hFN` using `[e]`. Simplify `hFN` using `[Γ]`. Rewrite using `[hF _ _ hρ, hF _ _ h1', hconst]`.
+-/
 theorem volColC_of (h1 : NOinfEqC) (h2 : NOcolEqC) (h3 : GcCountC) (h4 : FundMeasEqC) (h5 : IndexVolC)
     (h6 : IndexTransferC) (h7 : ConjUC) (h8 : GcFundC) (h9 : GcConjC) (h10 : HinfConjC) : VolColC := by
   intro D X Y u ρ Ω hΩ

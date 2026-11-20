@@ -39,14 +39,23 @@ def ptTop (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (n : ℕ) : GA D (G.V
 def ptGrid (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (i : ℕ) : GA D (G.V (.grid i D.R.m)) :=
   if h : i < D.R.m + 1 then (kappa W g).2 ⟨i, h⟩ else 1
 
+/- English proof (translation)
+Simplify using `only [ptTop, dif_pos h]`.
+-/
 theorem ptTop_lt (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) {n : ℕ} (h : n < D.R.m) :
     ptTop W g n = (kappa W g).1 ⟨n, h⟩ := by
   simp only [ptTop, dif_pos h]
 
+/- English proof (translation)
+Simplify using `only [ptTop, lt_irrefl, dif_neg (lt_irrefl _), not_false_eq_true]`. Both sides reduce to the same expression.
+-/
 theorem ptTop_m (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) : ptTop W g D.R.m = kappaTop W g := by
   simp only [ptTop, lt_irrefl, dif_neg (lt_irrefl _), not_false_eq_true]
   rfl
 
+/- English proof (translation)
+Simplify using `only [ptGrid, dif_pos h]`.
+-/
 theorem ptGrid_le (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) {i : ℕ} (h : i < D.R.m + 1) :
     ptGrid W g i = (kappa W g).2 ⟨i, h⟩ := by
   simp only [ptGrid, dif_pos h]
@@ -92,6 +101,11 @@ section More
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Unfold `ptTop`. Use `split_ifs with h h'`. Conclude with `kappa_fst_mem W g _`. Substitute `h'` using the available equality. Conclude with `kappaTop_mem W g`.
+
+Conclude with `one_mem _`.
+-/
 theorem ptTop_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (n : ℕ) : ptTop W g n ∈ GinfC (G.V (.top n)) := by
   unfold ptTop
   split_ifs with h h'
@@ -99,12 +113,18 @@ theorem ptTop_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (n : ℕ) : p
   · subst h'; exact kappaTop_mem W g
   · exact one_mem _
 
+/- English proof (translation)
+Unfold `ptGrid`. Use `split_ifs with h`. Conclude with `kappa_snd_mem W g _`. Conclude with `one_mem _`.
+-/
 theorem ptGrid_mem (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (i : ℕ) : ptGrid W g i ∈ GinfC (G.V (.grid i D.R.m)) := by
   unfold ptGrid
   split_ifs with h
   · exact kappa_snd_mem W g _
   · exact one_mem _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨by simpa using u.2, fun i j hij => absurd ?_ hij⟩` and prove the remaining obligations. Break down `hp with rfl | rfl` into its components or cases. Conclude with `iff_of_true i.2 j.2`. Conclude with `iff_of_false (Nat.not_lt_zero _) (Nat.not_lt_zero _)`.
+-/
 theorem isKMat_cast {a b : ℕ} (h : a = b) (u : Matrix.unitaryGroup (Fin b) ℂ) {p : ℕ} (hp : p = a ∨ p = 0) :
     GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsKMat p ((u : Matrix (Fin b) (Fin b) ℂ).submatrix (Fin.cast h) (Fin.cast h)) := by
   subst h
@@ -113,16 +133,25 @@ theorem isKMat_cast {a b : ℕ} (h : a = b) (u : Matrix.unitaryGroup (Fin b) ℂ
   · exact iff_of_true i.2 j.2
   · exact iff_of_false (Nat.not_lt_zero _) (Nat.not_lt_zero _)
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.rename_injective _ fun x y h => by simp only [Prod.mk.injEq, Fin.cast_inj] at h exact Prod.ext h.1 (Prod.ext h.2.1 h.2.2)`.
+-/
 theorem trCol_injective (G : GridData L sc) (j : Fin D.R.m) : Function.Injective (trCol G j) :=
   MvPolynomial.rename_injective _ fun x y h => by
     simp only [Prod.mk.injEq, Fin.cast_inj] at h
     exact Prod.ext h.1 (Prod.ext h.2.1 h.2.2)
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.rename_injective _ fun x y h => by simp only [Prod.mk.injEq, Fin.cast_inj] at h exact Prod.ext h.1 (Prod.ext h.2.2 h.2.1)`.
+-/
 theorem trRow_injective (G : GridData L sc) (i : Fin D.R.m) : Function.Injective (trRow G i) :=
   MvPolynomial.rename_injective _ fun x y h => by
     simp only [Prod.mk.injEq, Fin.cast_inj] at h
     exact Prod.ext h.1 (Prod.ext h.2.2 h.2.1)
 
+/- English proof (translation)
+Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hB, Matrix.one_mul]`.
+-/
 theorem eq_conj_of_inFrame {n : ℕ} {B M K : Matrix (Fin n) (Fin n) ℂ} (hB : IsUnit B.det) (h : B⁻¹ * M * B = K) :
     M = B * K * B⁻¹ := by
   rw [← h]

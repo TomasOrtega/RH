@@ -21,6 +21,17 @@ section
 open ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.Y
 open scoped ComplexOrder ComplexConjugate
 
+/- English proof (translation)
+Use `set g : ReciprocityTheory.L2DbarEstimates.V n → ℂ := fun v => ((f v : ℝ) : ℂ) with hg`. Establish `hg2 : ContDiffAt ℝ 2 g x` using `Complex.ofRealCLM.contDiff.contDiffAt.comp x hf`. Establish `hgc : (fun w => conj (g w)) = g` using `funext fun w => by simp [g]`. Establish `hH : (cHess n g x).IsHermitian`. Use extensionality with `j k`.
+
+Simplify using `only [Matrix.conjTranspose_apply, cHess, Matrix.of_apply]`. Use `show conj (wd n k (wdb n j g) x) = wd n j (wdb n k g) x`. Establish `h1 : (fun w => conj (wdb n j g w)) = wd n j g`. Use function extensionality and compare the values at `w`. Rewrite using `[← ChartWirtingerDerivatives.wd_conj' n j g w, hgc]`.
+
+Rewrite using `[← ChartWirtingerDerivatives.wdb_conj' n k (wdb n j g) x, h1, comm_wd_wdb g x hg2 j k]`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hH fun y => ?_` and prove the remaining obligations. Establish `hre : dotProduct (star y) (Matrix.mulVec (cHess n g x) y) = leviV n g x (fun k => conj (y k))`. Simplify using `only [dotProduct, Matrix.mulVec, leviV, cHess, Matrix.of_apply, Finset.mul_sum, Pi.star_apply, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `him` using `hH.im_star_dotProduct_mulVec_self y`. Use `Complex.le_def.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hre]`.
+
+Conclude with `hL _`. Simplify using `using him.symm`.
+-/
 theorem cHess_posSemidef_of_levi {n : ℕ} {f : ReciprocityTheory.L2DbarEstimates.V n → ℝ} {x : ReciprocityTheory.L2DbarEstimates.V n} (hf : ContDiffAt ℝ 2 f x)
     (hL : ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun v => ((f v : ℝ) : ℂ)) x ξ).re) :
     (cHess n (fun v => ((f v : ℝ) : ℂ)) x).PosSemidef := by
@@ -48,6 +59,11 @@ theorem cHess_posSemidef_of_levi {n : ℕ} {f : ReciprocityTheory.L2DbarEstimate
   · rw [hre]; exact hL _
   · simpa using him.symm
 
+/- English proof (translation)
+Establish `h` using `(ReciprocityTheory.AnForm.A.mdisc_nonneg_of_posSemidef A hA).2`. Establish `h0 : (D.factorial : ℂ) ≠ 0` using `by exact_mod_cast D.factorial_ne_zero`. Establish `e : (∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => A (τ l) j l).det) = ((D.factorial : ℝ) : ℂ) * ReciprocityTheory.AnForm.mdisc A`. Rewrite using `[ReciprocityTheory.AnForm.A.mdisc_eq_sum_perm, Complex.ofReal_natCast, ← mul_assoc, mul_one_div_cancel h0, one_mul]`. Rewrite using `[e, Complex.re_ofReal_mul]`.
+
+Conclude with `mul_nonneg (Nat.cast_nonneg _) h`.
+-/
 theorem re_sum_perm_det_nonneg {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) (hA : ∀ i, (A i).PosSemidef) :
     0 ≤ (∑ τ : Equiv.Perm (Fin D), (Matrix.of fun j l => A (τ l) j l).det).re := by
   have h := (ReciprocityTheory.AnForm.A.mdisc_nonneg_of_posSemidef A hA).2
@@ -60,12 +76,20 @@ theorem re_sum_perm_det_nonneg {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) �
 
 end
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (by positivity) (re_sum_perm_det_nonneg (fun i => c.hess (L i).φ (pick (L i).φ.isLB y) y) fun i => cHess_posSemidef_of_levi ((L i).cInf.contDiffAt c hy (mem_pick _ y)) (h i _ c y ⟨hy, mem_pick _ y⟩))`.
+-/
 theorem dens_nonneg_of_semiPosReg {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     {L : Fin D → MLine p σ} (h : ∀ i, (L i).φ.SemiPosReg D) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) : 0 ≤ dens L c y :=
   mul_nonneg (by positivity) (re_sum_perm_det_nonneg (fun i => c.hess (L i).φ (pick (L i).φ.isLB y) y) fun i =>
     cHess_posSemidef_of_levi ((L i).cInf.contDiffAt c hy (mem_pick _ y)) (h i _ c y ⟨hy, mem_pick _ y⟩))
 
+/- English proof (translation)
+Introduce `k _ X p σ _ D L h`. Use `le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le` and prove the remaining obligations. Rewrite using `[chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]`. Use `setLIntegral_eq_zero c.e.open_target.measurableSet fun v hv => ?_` and prove the remaining obligations. Use `dens_nonneg_of_semiPosReg h c (c.e.map_target hv)` as an intermediate fact.
+
+Conclude with `ENNReal.ofReal_eq_zero.2 (by simpa using this)`.
+-/
 theorem part_neg_eq_zero_of_semiPosReg : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [SecondCountableTopology (CxPts p σ)] (D : ℕ) (L : Fin D → MLine p σ), (∀ i, (L i).φ.SemiPosReg D) → part L (-1) = 0 := by
   intro k _ X p σ _ D L h
   refine le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le

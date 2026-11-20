@@ -20,17 +20,30 @@ def line : Geo.HermLine (blockIdx fun _ : Unit ↦ 0) where
   pos _ _ := two_pos
   smul c z hc := by simp
 
+/- English proof (translation)
+Use `⟨contDiffOn_const, fun z _ w _ => ?_⟩` and prove the remaining obligations. Simplify using `[line, Geo.leviForm]`.
+-/
 theorem isSemipositiveRel (P0 P : Ideal (Geo.MRing (blockIdx fun _ : Unit ↦ 0))) :
     Geo.IsSemipositiveRel P0 P line := by
   refine ⟨contDiffOn_const, fun z _ w _ => ?_⟩
   simp [line, Geo.leviForm]
 
+/- English proof (translation)
+Introduce `e`. Use `⟨0, fun n _ => ⟨1, fun _ => 1, fun _ c _ => ?_, fun c _ => ⟨fun _ => 1, fun _ => one_mem _, ?_⟩⟩⟩` and prove the remaining obligations. Simplify using `[unitPoint]`. Simplify using `[unitPoint]`.
+-/
 theorem isAmpleOnModel : IsAmpleOnModel (ι := blockIdx fun _ : Unit ↦ 0) unitPoint line.a := by
   intro e
   refine ⟨0, fun n _ => ⟨1, fun _ => 1, fun _ c _ => ?_, fun c _ => ⟨fun _ => 1, fun _ => one_mem _, ?_⟩⟩⟩
   · simp [unitPoint]
   · simp [unitPoint]
 
+/- English proof (translation)
+Introduce `dg dh g h z hg hh hd he _`. Establish `hdd : dg = dh`. Use function extensionality and compare the values at `k`. Establish `h1` using `hd k`. Simplify using `[GroundTheory.Heights₂.Heights.Inter.hermZpow, line] at h1`.
+
+Conclude with `h1` after adjusting the coercions. Substitute `hdd` using the available equality. Establish `hgh : g - h = 0`. Use `form_eq_zero_of_unitPoint (δ := dg) ?_ ?_` and prove the remaining obligations. Conclude with `((geoMultiHomog_iff g dg).mp hg).sub ((geoMultiHomog_iff h dg).mp hh)`.
+
+Rewrite using `[map_sub, he, one_mul, sub_self]`. Rewrite using `[sub_eq_zero.mp hgh]`. Simplify using `[GroundTheory.Heights₂.Heights.Inter.hermZpow, line]`. Combine the linear relations using `[norm_nonneg (eval z (map (Int.castRingHom ℂ) h))]`.
+-/
 theorem isBoundedH_one :
     IsBoundedH (Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ 0) unitPoint) unitPoint
       (GroundTheory.Heights₂.Heights.Inter.hermZpow line ((1 : ℕ) : ℤ)) 1 (1 / 2) 1 := by
@@ -53,6 +66,9 @@ def oneSystem : Geo.IntersectionSystem := fun _ _ _ _ _ _ _ => 1
 
 end NMPointZero
 
+/- English proof (translation)
+Use `⟨unitPoint_isArithVar, bot_le, NMPointZero.isSemipositiveRel _ _, fun _ => rfl, NMPointZero.isAmpleOnModel, ⟨1, le_rfl, 1, fun c _ => ?_, one_ne_zero, 1 / 2, by norm_num, NMPointZero.isBoundedH_one⟩, fun _ e _ _ he => absurd he (Nat.not_lt_zero e)⟩` and prove the remaining obligations. Simplify using `[unitPoint]`.
+-/
 theorem ArithNMLift.hyps_inhabited :
     Geo.IsArithVar (Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ 0) unitPoint) (0 + 1) ∧
       (⊥ : Ideal (Geo.MRing (blockIdx fun _ : Unit ↦ 0))) ≤ Geo.mCoordIdeal unitPoint ∧
@@ -72,6 +88,9 @@ theorem ArithNMLift.hyps_inhabited :
     fun _ e _ _ he => absurd he (Nat.not_lt_zero e)⟩
   simp [unitPoint]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨unitPoint_isArithVar, bot_le, NMPointZero.isSemipositiveRel _ _, fun _ => rfl, NMPointZero.isAmpleOnModel, one_pos⟩`.
+-/
 theorem ArithNMSmallSection.hyps_inhabited :
     Geo.IsArithVar (Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ 0) unitPoint) (0 + 1) ∧
       (⊥ : Ideal (Geo.MRing (blockIdx fun _ : Unit ↦ 0))) ≤ Geo.mCoordIdeal unitPoint ∧
@@ -83,6 +102,9 @@ theorem ArithNMSmallSection.hyps_inhabited :
   ⟨unitPoint_isArithVar, bot_le, NMPointZero.isSemipositiveRel _ _, fun _ => rfl, NMPointZero.isAmpleOnModel,
     one_pos⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [ProjLine.mCoordIdeal_y]; exact bot_le, isAmpleOnModel_projLine⟩`.
+-/
 theorem AmpleOnModelRestrict.hyps_inhabited :
     Geo.mCoordIdeal (ι := ArakelovGeometry.GlobalTheory (Fin 2)) ProjLine.y ≤ Geo.mCoordIdeal (ι := ArakelovGeometry.GlobalTheory (Fin 2)) (fun _ => (1 : ℚ)) ∧
       IsAmpleOnModel (ι := ArakelovGeometry.GlobalTheory (Fin 2)) ProjLine.y ProjLine.fsLine1.a :=

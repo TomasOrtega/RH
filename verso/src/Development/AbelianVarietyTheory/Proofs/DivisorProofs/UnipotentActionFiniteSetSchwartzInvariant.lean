@@ -20,6 +20,31 @@ namespace GlobalTheory.TruncFixOm
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hA hP k hinf S f φ hSB hvac hloc`. Use `set ψ' : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ := fun v => locOp v (om (GlobalTheory.TruncFix.truncU {v} k, 1)) (φ v) with hψ'`. Establish `hone : ∀ v : Pl F, (1 : UA σ W.J) ∈ UAt σ W (evFin F v)`. Introduce `v u _`. Use `show u • (mat (1 : UA σ W.J) - 1) = 0`.
+
+Rewrite using `[show mat (1 : UA σ W.J) = 1 from rfl, sub_self, smul_zero]`. Establish `hoff : ∀ v ∉ S, ψ' v = φ v`. Introduce `v hv`. Use `show locOp v (om (GlobalTheory.TruncFix.truncU {v} k, 1)) (φ v) = φ v`. Rewrite using `[hvac v hv]`.
+
+Conclude with `locOp_eq (hP.good.vac v).1 (hP.good.vac v).1 (hloc v hv)`. Set `fam : Finset (Pl F) → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun T v => if v ∈ T then ψ' v else φ v`. Establish `famSB : ∀ T v, fam T v ∈ SB (Fin n × Fin d → Fv F v)`. Introduce `T v`. Distinguish the cases in `h : v ∈ T`.
+
+Simplify using `only [fam, if_pos h]`. Conclude with `locOp_mem _ _ _`. Simplify using `only [fam, if_neg h]`. Conclude with `hSB v`. Establish `famcof : ∀ T, ∀ᶠ w in cofinite, fam T w = M.vac w`.
+
+Introduce `T`. Use `Filter.eventually_cofinite.2 ((T ∪ S).finite_toSet.subset fun w hw => by_contra fun h => hw ?_)` and prove the remaining obligations. Establish `h1 : w ∉ T` using `fun h' => h (Finset.mem_coe.2 (Finset.mem_union_left _ h'))`. Establish `h2 : w ∉ S` using `fun h' => h (Finset.mem_coe.2 (Finset.mem_union_right _ h'))`. Simplify using `only [fam, if_neg h1]`.
+
+Conclude with `hvac w h2`. Establish `famstd : ∀ T, ∀ᶠ w in cofinite, fam T w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `fun T => ((famcof T).and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Establish `hstep : ∀ T : Finset (Pl F), om (GlobalTheory.TruncFix.truncU T k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (fam T)`. Introduce `T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations.
+
+Establish `e : fam ∅ = φ` using `by funext v; simp [fam]`. Rewrite using `[e, GlobalTheory.TruncFix.truncU_empty, show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Introduce `v T hv ih`. Rewrite using `[GlobalTheory.TruncFix.truncU_insert hv, show (GlobalTheory.TruncFix.truncU {v} k * GlobalTheory.TruncFix.truncU T k, (1 : UA σ W.J)) = (GlobalTheory.TruncFix.truncU {v} k, (1 : UA σ W.J)) * (GlobalTheory.TruncFix.truncU T k, (1 : UA σ W.J)) by simp, map_mul, Module.End.mul_apply …`. Establish `hv' : fam T v = φ v` using `by simp only [fam, if_neg hv]`.
+
+Establish `hAct : Acts (evFin F v) (om (GlobalTheory.TruncFix.truncU {v} k, 1)) (fam T v) (ψ' v)`. Rewrite using `[hv']`. Conclude with `acts_locOp_om hA hP (GlobalTheory.TruncFix.truncU_mem_UAt v k) (hone v) (hSB v)`. Rewrite using `[GlobalTheory.ThK.LocalOps.acts_pure v (om (GlobalTheory.TruncFix.truncU {v} k, 1)) f (fam T) (ψ' v) (GlobalTheory.ConeMeasV.pure_mem_schA hP.good f _ (famSB T) (famcof T)) (fun x => GlobalTheory.PureFactor.mulSupport_finite _ (famstd T) x) hAct]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[fam]`. Rewrite using `[Function.update_of_ne hw]`.
+
+Simplify using `only [fam, Finset.mem_insert, hw, false_or]`. Establish `hfinal : ∀ T : Finset (Pl F), S ⊆ T → fam T = ψ'`. Introduce `T hST`. Use function extensionality and compare the values at `v`. Distinguish the cases in `h : v ∈ T`.
+
+Simplify using `only [fam, if_pos h]`. Simplify using `only [fam, if_neg h]`. Conclude with `(hoff v fun h' => h (hST h')).symm`. Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ schA F _` using `GlobalTheory.ConeMeasV.pure_mem_schA hP.good f φ hSB (by simpa [fam] using famcof ∅)`. Use function extensionality and compare the values at `x`.
+
+Establish `hc : Continuous fun g : UA σ X.J × UA σ W.J => om g (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x` using `hP.weil.2.2 _ (GlobalTheory.TruncFix.eval_mem_adm _ x) _ hpure`. Establish `h1 : Tendsto (fun T : Finset (Pl F) => om (GlobalTheory.TruncFix.truncU T k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) atTop (𝓝 (om (k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x))` using `((hc.comp (continuous_id.prodMk continuous_const)).tendsto k).comp (GlobalTheory.TruncFix.tendsto_truncU k hinf)`. Establish `h2 : (fun T : Finset (Pl F) => om (GlobalTheory.TruncFix.truncU T k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x) =ᶠ[atTop] fun _ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f ψ' x` using `(Filter.eventually_ge_atTop S).mono fun T hT => by show om (GlobalTheory.TruncFix.truncU T k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) x = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f ψ' x`. Rewrite using `[hstep T, hfinal T hT]`. Conclude with `tendsto_nhds_unique (h1.congr' h2) tendsto_const_nhds`.
+-/
 theorem om_archtriv : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (χX χW : Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), GlobalTheory.ThK.ActsEx → GlobalTheory.ThK.IsPair B M χX χW om r s r' s' → ∀ k : UA σ X.J, (∀ u : AF F, At (evI F) u → u • (mat k - 1) = 0) → ∀ (S : Finset (Pl F)) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ v, φ v ∈ SB (Fin n × Fin d → Fv F v)) → (∀ v ∉ S, φ v = M.vac v) → (∀ v ∉ S, Acts (evFin F v) (om (GlobalTheory.TruncFix.truncU {v} k, 1)) (M.vac v) (M.vac v)) → om (k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (fun v => locOp v (om (GlobalTheory.TruncFix.truncU {v} k, 1)) (φ v)) := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hA hP k hinf S f φ hSB hvac hloc
   classical

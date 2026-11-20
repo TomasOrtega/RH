@@ -21,6 +21,17 @@ open scoped ComplexOrder
 namespace GlobalTheory.BottomDeg
 open GlobalTheory.Grid (neg sgn ofSgn)
 variable {D : D7}
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX`. Set `Good : T → Set (FVar D WW.rank A.rank →₀ ℕ)` to `fun t => {k | ∃ h ∈ GfC WW, X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h ≠ 0}`. Establish `one_of : ∀ {c I : ℂ}, I = c * I → I ≠ 0 → c = 1` using `fun {c I} e hI => by`. Establish `h0 : (c - 1) * I = 0` using `by rw [sub_mul, one_mul, ← e, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h0).resolve_right hI)`.
+
+Establish `hfin : ∀ t, (Good t).Finite`. Introduce `t`. Distinguish the cases in `hne : (Good t).Nonempty`. Take `⟨k₀, h₀, -, hk₀⟩` from `hne`. Use `(GlobalTheory.finite_monomials_of_placeDegree D WW.rank A.rank (fun τ => ∑ v ∈ k₀.support with v.1 = τ, k₀ v)).subset fun k hk τ => ?_` and prove the remaining obligations.
+
+Take `⟨h, -, hk⟩` from `hk`. Take `⟨C, w, hw, hI⟩` from `scalar_exists hX t τ`. Establish `e1` using `one_of (hI k h) hk`. Establish `e0` using `one_of (hI k₀ h₀) hk₀`. Establish `hC : C ≠ 0` using `fun h0 => by rw [h0, zero_mul] at e1; exact zero_ne_one e1`.
+
+Conclude with `GlobalTheory.ExpPow.pow_exp_I_or_inv_injective _ _ w hw (mul_left_cancel₀ hC (e1.trans e0.symm))`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne]`. Conclude with `Set.finite_empty`. Establish `hU : (⋃ t, Good t).Finite` using `Set.finite_iUnion hfin`. Use `⟨hU.toFinset, fun t h hh k hk => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hk (hU.mem_toFinset.2 (Set.mem_iUnion.2 ⟨t, h, hh, hne⟩))`.
+-/
 theorem bottomClassSum_eq_zero_off_finite : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -69,6 +80,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite | exact _root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite | (intros; apply _root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bottomClassSum_finite_support : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

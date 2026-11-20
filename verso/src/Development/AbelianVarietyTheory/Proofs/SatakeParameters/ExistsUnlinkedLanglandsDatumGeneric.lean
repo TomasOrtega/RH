@@ -14,6 +14,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.GenericLDatum
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ x hg`. Take `⟨c, Δ, y, hd, hun, hL, ⟨e⟩⟩` from `GlobalTheory.genericUnlinkedGL_outright k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr hg`. Use `⟨c, Δ, hun, c, y, hd, ⟨Δ, ⟨?_, ?_⟩, hL⟩, (isCosocle_self x.2.rep.irr).of_equiv (.refl _) e⟩` and prove the remaining obligations. Conclude with `Fin.univ_val_map Δ`. Introduce `i j hij hP`.
+
+Conclude with `hun i j (ne_of_lt hij) hP.1`.
+-/
 theorem exists_unlinked_isL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (x : IrrGL k), IsGeneric x.rep →
     ∃ (c : ℕ) (Δ : Fin c → Segment k), (∀ i j, i ≠ j → ¬ (Δ i).Linked (Δ j)) ∧

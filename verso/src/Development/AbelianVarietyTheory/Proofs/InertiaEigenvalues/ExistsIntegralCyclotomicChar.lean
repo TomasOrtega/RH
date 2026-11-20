@@ -8,6 +8,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.Cyc
 
+/- English proof (translation)
+Introduce `l _ P`. Establish `hχ : IsCyc P.χQ` using `P.χQ_cyc`. Take `⟨hn, hc, hK⟩` from `cyc_basic l P.χQ hχ`. Set `f : GQ l →* ℤ_[l]` to `{ toFun := fun g => ⟨(P.χQ g : ℚ_[l]), (hn g).le⟩ map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(P.χQ (a * b) : ℚ_[l]) = (P.χQ a : ℚ_[l]) * (P.χQ b : ℚ_[l])`.
+
+Rewrite using `[map_mul, Units.val_mul]) }`. Establish `hf : Continuous f` using `hc.subtype_mk _`. Use `⟨f.toHomUnits, fun g => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hf, hf.comp continuous_inv⟩`.
+
+Introduce `K s hs u hu`. Establish `hu1 : ‖((u : ℤ_[l]) : ℚ_[l])‖ = 1` using `PadicInt.norm_units u`. Take `⟨g, hg, hgu⟩` from `exists_chi_eq K P.χQ hχ _ hu1`. Establish `hG : g ∈ Gj K s` using `((hK K g hg).1 s).2 (by`. Rewrite using `[hgu]`.
+
+Use `(PadicInt.norm_le_pow_iff_mem_span_pow ((u : ℤ_[l]) - 1) s).2 (Ideal.mem_span_singleton.2 hu)` as an intermediate fact. Rewrite using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_one] at this)` and apply the resulting hypothesis. Use `⟨g, IntermediateField.fixingSubgroup_antitone hs hG, ?_⟩` and prove the remaining obligations. Conclude with `Units.ext (Subtype.ext hgu)`.
+-/
 theorem exists_integral_cyclotomicChar : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l), ∃ χ : GQ l →* ℤ_[l]ˣ, (∀ g, (((χ g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) = (P.χQ g : ℚ_[l])) ∧ Continuous χ ∧ ∀ (K : FinExt l) (s : ℕ), K.1 ≤ Ks K s → ∀ u : ℤ_[l]ˣ, (l : ℤ_[l]) ^ s ∣ (u : ℤ_[l]) - 1 → ∃ g ∈ GK K, χ g = u := by
   intro l _ P
   have hχ : IsCyc P.χQ := P.χQ_cyc

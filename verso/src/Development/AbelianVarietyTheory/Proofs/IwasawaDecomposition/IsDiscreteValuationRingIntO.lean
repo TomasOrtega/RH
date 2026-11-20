@@ -7,6 +7,29 @@ open Formalism.MainNotions.DIV.Cons (SCF intO BigT)
 
 namespace GlobalTheory.LocM.Cht.CompletedClosure
 
+/- English proof (translation)
+Establish `hpos : 0 < ‖π‖` using `norm_pos_iff.2 h0`. Establish `hunit : ∀ x : ↥(intO K), IsUnit x ↔ ‖(x : K)‖ = 1`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `e : ‖(x : K)‖ * ‖(y : K)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, hy, Subring.coe_one, norm_one]`. Establish `hx1 : ‖(x : K)‖ ≤ 1` using `x.2`. Establish `hy1 : ‖(y : K)‖ ≤ 1` using `y.2`.
+
+Use polynomial arithmetic with `[norm_nonneg (x : K), norm_nonneg (y : K)]`. Introduce `hx`. Establish `hx0 : (x : K) ≠ 0` using `fun h' => by simp [h'] at hx`. Use `IsUnit.of_mul_eq_one (⟨(x : K)⁻¹, show ‖(x : K)⁻¹‖ ≤ 1 by simp [hx]⟩ : ↥(intO K)) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ hx0`.
+
+Establish `hnat : ∀ x : ↥(intO K), x ≠ 0 → ∃ n : ℕ, ‖(x : K)‖ = ‖π‖ ^ n`. Introduce `x hx`. Take `⟨n, hn⟩` from `h x (fun h' => hx (Subtype.ext h'))`. Establish `hx1 : ‖(x : K)‖ ≤ 1` using `x.2`. Establish `hn0 : 0 ≤ n`.
+
+Rewrite `hx1` using `[hn]`. Conclude with `(zpow_le_one_iff_right_of_lt_one₀ hpos h1).1 hx1`. Use `lift n to ℕ using hn0`. Conclude with `⟨n, by rw [hn, zpow_natCast]⟩`. Set `ϖ : ↥(intO K)` to `⟨π, h1.le⟩`.
+
+Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨ϖ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hunit]`. Conclude with `h1.ne`. Introduce `a b hab`. Establish `e : π = (a : K) * b` using `congrArg Subtype.val hab`.
+
+Establish `ha : a ≠ 0` using `fun h' => h0 (by rw [e, h']; simp)`. Establish `hb : b ≠ 0` using `fun h' => h0 (by rw [e, h']; simp)`. Take `⟨m, hm⟩` from `hnat a ha`. Take `⟨n, hn⟩` from `hnat b hb`. Establish `e2 : ‖π‖ ^ 1 = ‖π‖ ^ (m + n)`.
+
+Rewrite using `[pow_add, ← hm, ← hn, ← norm_mul, ← e, pow_one]`. Establish `e3 : 1 = m + n` using `(pow_right_strictAnti₀ hpos h1).injective e2`. Rewrite using `[hunit, hunit, hm, hn]`. Break down `Nat.eq_zero_or_pos m with rfl | hm0` into its components or cases. Use `left`.
+
+Simplify using the standard rewrite rules. Use `right`. Establish `: n = 0` using `by omega`. Simplify using `[this]`. Introduce `x hx`.
+
+Take `⟨n, hn⟩` from `hnat x hx`. Establish `hnorm : ‖(x : K) / π ^ n‖ = 1`. Rewrite using `[norm_div, norm_pow, hn, div_self (pow_pos hpos n).ne']`. Set `u : ↥(intO K)` to `⟨(x : K) / π ^ n, hnorm.le⟩`. Establish `hu : IsUnit u` using `(hunit u).2 hnorm`.
+
+Use `⟨n, hu.unit, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π ^ n * ((x : K) / π ^ n) = x`. Conclude with `mul_div_cancel₀ _ (pow_ne_zero n h0)`.
+-/
 theorem isDiscreteValuationRing_intO {K : Type} [NormedField K] [IsUltrametricDist K] (π : K) (h0 : π ≠ 0)
     (h1 : ‖π‖ < 1) (h : ∀ x : K, x ≠ 0 → ∃ n : ℤ, ‖x‖ = ‖π‖ ^ n) : IsDiscreteValuationRing ↥(intO K) := by
   have hpos : 0 < ‖π‖ := norm_pos_iff.2 h0
@@ -61,6 +84,17 @@ theorem isDiscreteValuationRing_intO {K : Type} [NormedField K] [IsUltrametricDi
     change π ^ n * ((x : K) / π ^ n) = x
     exact mul_div_cancel₀ _ (pow_ne_zero n h0)
 
+/- English proof (translation)
+Establish `hle : #C ≤ #BigT`. Use `hC.trans ?_` and prove the remaining obligations. Rewrite using `[mk_set, mk_set, mk_real]`. Conclude with `(cantor _).le.trans (cantor _).le`. Take `⟨j⟩` from `(Cardinal.le_def _ _).1 hle`.
+
+Set `S : Set BigT` to `Set.range j`. Set `e : S ≃ C` to `(Equiv.ofInjective j j.injective).symm`. Use `letI : Field S := e.field`. Set `r : S ≃+* C` to `e.ringEquiv`. Use `letI : NormedField S := NormedField.induced S C r r.injective`.
+
+Establish `hn : ∀ x : S, ‖x‖ = ‖r x‖` using `fun _ => rfl`. Establish `hn' : ∀ x : C, ‖r.symm x‖ = ‖x‖` using `fun x => by rw [hn, r.apply_symm_apply]`. Use `letI : NontriviallyNormedField S := { (inferInstance : NormedField S) with non_trivial := by`. Take `⟨x, hx⟩` from `NontriviallyNormedField.non_trivial (α := C)`. Conclude with `⟨r.symm x, (hn' x).symm ▸ hx⟩ }`.
+
+Use `haveI : IsUltrametricDist S := IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => by`. Rewrite using `[hn, hn, hn, map_add]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Use `haveI : IsAlgClosed S := IsAlgClosed.of_ringEquiv C S r.symm`. Apply the tactic sequence `have hiso : Isometry r := AddMonoidHomClass.isometry_of_norm r fun x => (hn x).symm`.
+
+Use `haveI : CompleteSpace S := (hiso.isUniformInducing.completeSpace_congr r.surjective).2 inferInstance`. Use `haveI : CharZero S := charZero_of_injective_ringHom (f := r.symm.toRingHom) r.symm.injective`. Conclude with `⟨{ S := S, norm_p := by rw [hn, map_natCast, hp] }, r.symm.toRingHom, hn', r.symm.surjective⟩`.
+-/
 theorem exists_scf_equiv {p : ℕ} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     [CompleteSpace C] [IsAlgClosed C] [CharZero C] (hp : ‖(p : C)‖ = (p : ℝ)⁻¹) (hC : #C ≤ 𝔠) :
     ∃ (D : SCF p) (e : C →+* ↥D.S), (∀ x, ‖e x‖ = ‖x‖) ∧ Function.Surjective e := by
@@ -91,6 +125,21 @@ theorem exists_scf_equiv {p : ℕ} {C : Type} [NontriviallyNormedField C] [IsUlt
   haveI : CharZero S := charZero_of_injective_ringHom (f := r.symm.toRingHom) r.symm.injective
   exact ⟨{ S := S, norm_p := by rw [hn, map_natCast, hp] }, r.symm.toRingHom, hn', r.symm.surjective⟩
 
+/- English proof (translation)
+Set `A` to `algebraicClosure F C`. Set `L : Subfield C` to `A.toSubfield.topologicalClosure`. Establish `hAL : A.toSubfield ≤ L` using `A.toSubfield.le_topologicalClosure`. Establish `hKL : ∀ y : F, algebraMap F C y ∈ L` using `fun y => hAL (A.algebraMap_mem y)`. Establish `hcl : IsClosed (L : Set C)` using `A.toSubfield.isClosed_topologicalClosure`.
+
+Use `letI : NontriviallyNormedField L := { (inferInstance : NormedField L) with non_trivial := ⟨⟨_, hKL x⟩, hx⟩ }`. Use `haveI : CompleteSpace L := hcl.completeSpace_coe`. Use `letI : Algebra A L := (Subfield.inclusion hAL : A.toSubfield →+* L).toAlgebra`. Establish `hd : DenseRange (algebraMap A L)` using `(denseRange_inclusion_iff (s := (A.toSubfield : Set C)) (t := (L : Set C)) hAL).2 subset_rfl`. Use `haveI : IsAlgClosed A := IsAlgClosure.isAlgClosed F`.
+
+Use `haveI : IsAlgClosed L := isAlgClosed_of_denseRange hd`. Establish `hL : #L ≤ 𝔠`. Use `(GlobalTheory.SmallClosedField.mk_le_of_denseRange _ hd).trans ?_` and prove the remaining obligations. Establish `hA : #A ≤ 𝔠` using `(Algebra.IsAlgebraic.cardinalMk_le_max F A).trans (max_le hF aleph0_le_continuum)`. Conclude with `(power_le_power_right hA).trans continuum_power_aleph0.le`.
+
+Set `i : F →+* L` to `(algebraMap F C).codRestrict L hKL`. Establish `hi : ∀ y, ‖i y‖ = ‖algebraMap F C y‖` using `fun _ => rfl`. Use `haveI : CharZero L := charZero_of_injective_ringHom i.injective`. Establish `hLp : ‖(p : L)‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast i, hi, map_natCast, hp]`.
+
+Take `⟨D, e, he, hs⟩` from `exists_scf_equiv hLp hL`. Use `⟨D, e.comp i, fun y => by rw [RingHom.comp_apply, he, hi], ?_⟩` and prove the remaining obligations. Establish `hc : Continuous e` using `(AddMonoidHomClass.isometry_of_norm e he).continuous`. Use `Dense.mono ?_ (hs.denseRange.comp hd hc)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Take `⟨q, hq, hqa⟩ : IsAlgebraic F (a : C)` from `mem_algebraicClosure_iff.1 a.2`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Establish `h2 : q.eval₂ i (algebraMap A L a) = 0`. Apply `L.subtype.injective` to reduce the goal to its premises. Rewrite using `[Polynomial.hom_eval₂, map_zero]`.
+
+Conclude with `hqa`. Rewrite using `[Function.comp_apply, ← Polynomial.hom_eval₂, h2, map_zero]`.
+-/
 theorem exists_scf_dense {p : ℕ} {F C : Type} [Field F] [CharZero F] [NontriviallyNormedField C]
     [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [Algebra F C] (hF : #F ≤ 𝔠)
     (hp : ‖(p : C)‖ = (p : ℝ)⁻¹) {x : F} (hx : 1 < ‖algebraMap F C x‖) :
@@ -132,6 +181,39 @@ theorem exists_scf_dense {p : ℕ} {F C : Type} [Field F] [CharZero F] [Nontrivi
     exact hqa
   rw [Function.comp_apply, ← Polynomial.hom_eval₂, h2, map_zero]
 
+/- English proof (translation)
+Introduce `p R _ _ _ _ _ hp hpm`. Set `F` to `FractionRing R`. Establish `hp0 : (p : R) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `h1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Take `⟨C, _, _, _, _, _, hC, hCp⟩` from `exists_complete_isAlgClosed_of_isDiscreteValuationRing R F hp0 hpm (inv_pos.2 (zero_lt_one.trans h1)) (inv_lt_one_of_one_lt₀ h1)`.
+
+Establish `hF : #F ≤ 𝔠` using `(IsLocalization.cardinalMk_le (nonZeroDivisors R)).trans (mk_le_aleph0.trans aleph0_le_continuum)`. Establish `hx : 1 < ‖algebraMap F C (algebraMap R F p)⁻¹‖`. Rewrite using `[map_inv₀, norm_inv, hCp, inv_inv]`. Conclude with `h1`. Use `haveI : CharZero F := charZero_of_injective_ringHom (IsFractionRing.injective R F)`.
+
+Take `⟨D, i, hi, hd⟩` from `exists_scf_dense hF (by rw [← hCp, map_natCast, map_natCast]) hx`. Set `g : R →+* ↥D.S` to `i.comp (algebraMap R F)`. Establish `hginj : Function.Injective g` using `i.injective.comp (IsFractionRing.injective R F)`. Establish `hle : ∀ a : R, ‖g a‖ ≤ 1` using `fun a => by`. Rewrite using `[RingHom.comp_apply, hi]`.
+
+Conclude with `(hC _).2 ⟨a, rfl⟩`. Establish `hlt : ∀ a ∈ maximalIdeal R, ‖g a‖ < 1` using `fun a ha => by`. Use `GlobalTheory.SmallClosedField.norm_lt_one_of_mem_maximalIdeal g hle hp0 ?_ ha` and prove the remaining obligations. Rewrite using `[map_natCast, D.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ h1`.
+
+Establish `hone : ∀ a b : R, a * b = 1 → ‖g a‖ = 1` using `fun a b hab => by`. Establish `e : ‖g a‖ * ‖g b‖ = 1` using `by rw [← norm_mul, ← map_mul, hab, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (g a), norm_nonneg (g b), hle a, hle b]`. Set `f : R →+* ↥(intO ↥D.S)` to `g.codRestrict (intO ↥D.S) hle`. Set `K₀ : Subfield ↥D.S` to `Subfield.closure (Set.range fun a => ((f a : ↥(intO ↥D.S)) : ↥D.S))`.
+
+Establish `hK₀ : K₀ = i.fieldRange`. Use `le_antisymm (Subfield.closure_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨algebraMap R F a, rfl⟩`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := R) y`. Rewrite using `[map_div₀]`. Conclude with `div_mem (Subfield.subset_closure ⟨a, rfl⟩) (Subfield.subset_closure ⟨b, rfl⟩)`. Establish `hmem : ∀ y : F, i y ∈ K₀.topologicalClosure` using `fun y => K₀.le_topologicalClosure (hK₀ ▸ ⟨y, rfl⟩)`. Use `⟨D, f, K₀.topologicalClosure, fun a b h => hginj (congrArg Subtype.val h), ⟨fun a ha => ?_⟩, rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hna`. Take `⟨y, hy⟩` from `ha.exists_right_inv`. Establish `e : ‖g a‖ * ‖(y : ↥D.S)‖ = 1`. Rewrite using `[← norm_mul, ← norm_one (α := ↥D.S)]`. Conclude with `congrArg (fun t : ↥(intO ↥D.S) => ‖(t : ↥D.S)‖) hy`.
+
+Establish `hy1 : ‖(y : ↥D.S)‖ ≤ 1` using `y.2`. Use polynomial arithmetic with `[norm_nonneg (g a), norm_nonneg (y : ↥D.S), hlt a hna]`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hπ0 : g π ≠ 0` using `(map_ne_zero_iff g hginj).2 hπ.ne_zero`. Establish `hR : ∀ a : R, a ≠ 0 → ∃ n : ℕ, ‖g a‖ = ‖g π‖ ^ n` using `fun a ha => by`.
+
+Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Conclude with `⟨n, by rw [map_mul, norm_mul, hone _ _ u.mul_inv, one_mul, map_pow, norm_pow]⟩`. Use `isDiscreteValuationRing_intO (K := ↥K₀.topologicalClosure) ⟨g π, hmem _⟩ (fun h => hπ0 (congrArg Subtype.val h)) (hlt π hπ.not_isUnit) fun x hx0 => ?_` and prove the remaining obligations. Establish `hx1 : (x : ↥D.S) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Establish `hxc : (x : ↥D.S) ∈ closure (K₀ : Set ↥D.S)` using `x.2`.
+
+Take `⟨z, hz, hxz⟩` from `Metric.mem_closure_iff.1 hxc ‖(x : ↥D.S)‖ (norm_pos_iff.2 hx1)`. Rewrite `hxz` using `[dist_eq_norm]`. Establish `hzn : ‖z‖ = ‖(x : ↥D.S)‖`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := (x : ↥D.S)) (y := -((x : ↥D.S) - z)) (by rw [norm_neg]; exact hxz.ne')` as an intermediate fact. Rewrite `this` using `[norm_neg, max_eq_left hxz.le]`.
+
+Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[hK₀]`. Take `⟨y, rfl⟩` from `hz`.
+
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) y`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx1 (norm_eq_zero.1 (by rw [← hzn]; simp))`. Take `⟨m, hm⟩` from `hR a ha`.
+
+Take `⟨n, hn⟩` from `hR b (nonZeroDivisors.ne_zero hb)`. Use `⟨(m : ℤ) - n, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(x : ↥D.S)‖ = ‖g π‖ ^ ((m : ℤ) - n)`. Rewrite using `[zpow_sub₀ (norm_ne_zero_iff.2 hπ0), zpow_natCast, zpow_natCast, ← hm, ← hn, ← hzn, map_div₀, norm_div]`. Both sides reduce to the same expression.
+
+Use `hd.mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨q, hq, hqz⟩`. Set `j : F →+* ↥K₀.topologicalClosure` to `i.codRestrict _ hmem`. Use `⟨q.map j, (Polynomial.map_ne_zero_iff j.injective).2 hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`.
+
+Conclude with `hqz`.
+-/
 theorem fieldSt : GlobalTheory.LocM.Cht.FieldSt := by
   intro p R _ _ _ _ _ hp hpm
   let F := FractionRing R

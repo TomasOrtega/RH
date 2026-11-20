@@ -20,10 +20,18 @@ namespace GlobalTheory.RayEv.CocRatio
 
 open Formalism.MainNotions.ModuliIntegralCharts.H1
 
+/- English proof (translation)
+Introduce `u v huv` and use `by have := congrArg (toΓ B) huv simpa [GaugeR.gam, toΓ] using this`.
+-/
 theorem gam_injective (B : Type) [CommRing B] : Function.Injective (GaugeR.gam B) := fun u v huv => by
   have := congrArg (toΓ B) huv
   simpa [GaugeR.gam, toΓ] using this
 
+/- English proof (translation)
+Establish `e : ((spMap f).app ⊤).hom (toΓ A a) = toΓ B (f a)`. Apply `gam_injective` to reduce the goal to its premises. Rewrite using `[GaugeR.gam_pull, GaugeR.gam_toΓ, GaugeR.gam_toΓ]`. Use `gs_pull (𝟙 _) (spMap f) y ⊤ trivial (toΓ A a)` as an intermediate fact. Rewrite `this` using `[Category.id_comp, e]`.
+
+Conclude with `this.symm`.
+-/
 theorem gs_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (y : Sp B) (a : A) :
     gs (spMap f) y ⊤ (toΓ A a) = gs (𝟙 (Sp B)) y ⊤ (toΓ B (f a)) := by
   have e : ((spMap f).app ⊤).hom (toΓ A a) = toΓ B (f a) := by

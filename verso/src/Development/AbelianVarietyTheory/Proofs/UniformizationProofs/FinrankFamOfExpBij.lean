@@ -13,6 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hBC R _ _ I hadm D A G _ _ _ U k hk hbij`. Take `⟨b, hex, huniq⟩` from `GlobalTheory.GenericSectionBasis.exists_secK_basis hBC R I D A G U k hk`. Use `choose F hF using fun i => (hbij.1 (b i)).exists`. Establish `hlin` using `fun c s hs => GlobalTheory.expands_linear R I hadm D A G U k (k ^ A.g) b F c s hF hs`. Set `φ : (Fin (k ^ A.g) → FractionRing R) →ₗ[FractionRing R] Fam D.toPre (FractionRing R) k` to `Fintype.linearCombination (FractionRing R) F`.
+
+Establish `hφ : ∀ c, φ c = ∑ i, c i • F i` using `fun c => rfl`. Establish `hinj : Function.Injective φ`. Introduce `c c' h`. Take `⟨s, hs⟩` from `hex c`. Take `⟨s', hs'⟩` from `hex c'`.
+
+Establish `h1` using `hlin c s hs`. Establish `h2` using `hlin c' s' hs'`. Rewrite `h1`, `h2` using `[← hφ]`. Rewrite `h2` using `[← h]`. Establish `e : s = s'` using `(hbij.2 (φ c)).unique h1 h2`.
+
+Substitute `e` using the available equality. Conclude with `(huniq s).unique hs hs'`. Establish `hsurj : Function.Surjective φ`. Introduce `x`. Take `⟨s, hs⟩` from `(hbij.2 x).exists`.
+
+Take `⟨c, hc⟩` from `(huniq s).exists`. Conclude with `⟨c, (hbij.1 s).unique (hlin c s hc) hs⟩`. Rewrite using `[← (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_fam_of_expBij : SecBaseChangeSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GeometricallyConnected G.hom] (U : UnifPre I D A G) (k : ℕ), 1 ≤ k → U.ExpBij k → Module.finrank (FractionRing R) (Fam D.toPre (FractionRing R) k) = k ^ A.g := by
   intro hBC R _ _ I hadm D A G _ _ _ U k hk hbij
   obtain ⟨b, hex, huniq⟩ := GlobalTheory.GenericSectionBasis.exists_secK_basis hBC R I D A G U k hk

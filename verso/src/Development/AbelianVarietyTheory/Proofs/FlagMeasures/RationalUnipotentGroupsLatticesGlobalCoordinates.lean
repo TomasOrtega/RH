@@ -19,6 +19,23 @@ noncomputable section
 
 namespace GlobalTheory.HL.GrpCoord
 
+/- English proof (translation)
+Establish `hgf : ∀ p, g p = fun a => (c.c p).e (scaled Z p (frame F₁) a)` using `fun p => funext (hg p)`. Prove the components needed by the constructor for the conclusion. Introduce `hγ p`. Apply the tactic sequence `obtain ⟨h, hext, -, -, -, hNU⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D Z p γ hγ.1`. Set `k` to `((c.c p).e.symm.trans h).trans (c.c p).e`.
+
+Establish `hk : k ∈ (G.S p).Nof (g p)`. Rewrite using `[hgf p]`. Apply the tactic sequence `exact (GlobalTheory.T.localUnipotent_frame_corresponds_under_isometry (c.c p) _ h).1 (hNU F₁ hγ)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `c.e.surjective x`. Establish `h1 : (placesOf Z).bc p (c.e y) = (c.c p).e (baseChange₂ D p y)` using `(c.compat p y).symm`. Establish `h2 : ((c.e.symm.trans γ).trans c.e) (c.e y) = c.e (γ y)` using `by simp`. Rewrite using `[h2, h1, ← c.compat p (γ y), ← hext y]`. Use `show (c.c p).e (h ((c.c p).e.symm ((c.c p).e (baseChange₂ D p y)))) = _`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply]`. Introduce `hγ`. Establish `hne : Nonempty (PlF D)`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField _)⟩⟩`.
+
+Take `⟨p⟩` from `hne`. Take `⟨g₀, hg'N, hg'E⟩` from `hγ p`. Set `g' : type_of% ((c.c p).e.symm.trans (c.c p).e)` to `g₀`. Set `h : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p` to `((c.c p).e.trans g').trans (c.c p).e.symm`. Establish `hconj : ((c.c p).e.symm.trans h).trans (c.c p).e = g'`.
+
+Use extensionality with `x`. Simplify using `[h]`. Establish `hN : h ∈ NU (locH Z p) (scaled Z p (frame F₁))`. Apply the tactic sequence `rw [GlobalTheory.T.localUnipotent_frame_corresponds_under_isometry (c.c p), hconj, ← hgf p]`. Conclude with `hg'N`.
+
+Use `GlobalTheory.T.mem_rationalUnipotent_of_local_extension D Z p F₁ γ h ?_ hN` and prove the remaining obligations. Introduce `y`. Establish `h1 : (c.c p).e (baseChange₂ D p y) = (placesOf Z).bc p (c.e y)` using `c.compat p y`. Establish `h3 : g₀ ((placesOf Z).bc p (c.e y)) = (placesOf Z).bc p (c.e (γ y))` using `(hg'E _).trans (by simp)`. Use `show (c.c p).e.symm (g₀ ((c.c p).e (baseChange₂ D p y))) = baseChange₂ D p (γ y)`.
+
+Rewrite using `[h1, h3, ← c.compat p (γ y), LinearEquiv.symm_apply_apply]`.
+-/
 theorem rat_iff (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T')
     (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k) (c : GCoord Z F0 F0' FP G)
     {T₁ : D.host.E} (F₁ : LFlag (VS D) D.R.rS T₁) (g : ∀ p, Fin (D.R.rS + 1) → (G.S p).V)
@@ -59,11 +76,17 @@ theorem rat_iff (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R
     show (c.c p).e.symm (g₀ ((c.c p).e (baseChange₂ D p y))) = baseChange₂ D p (γ y)
     rw [h1, h3, ← c.compat p (γ y), LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[GCoord.grp]`.
+-/
 theorem grp_eq {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T} {F0' : LFlag (VS D) D.R.rS T'}
     {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {G : GFrames (placesOf Z) D.R.rS D.R.k} (c : GCoord Z F0 F0' FP G)
     (σ n : (VS D).V ≃ₗ[D.host.E] (VS D).V) : c.grp σ n = (c.e.symm.trans (σ * n * σ⁻¹)).trans c.e := by
   ext x; simp [GCoord.grp]
 
+/- English proof (translation)
+Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [frame, FlagG.fvec, mapFlag]`. Consider the case `cast b => simp [frame, FlagG.fvec, mapFlag]`.
+-/
 theorem frame_mapLF (D : D7) {T : D.host.E} (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (F : LFlag (VS D) D.R.rS T) (b : Fin (D.R.rS + 1)) : frame (mapLF γ F) b = γ (frame F b) := by
   unfold mapLF; rw [dif_pos hγ]
@@ -71,6 +94,23 @@ theorem frame_mapLF (D : D7) {T : D.host.E} (γ : (VS D).V ≃ₗ[D.host.E] (VS 
   | last => simp [frame, FlagG.fvec, mapFlag]
   | cast b => simp [frame, FlagG.fvec, mapFlag]
 
+/- English proof (translation)
+Introduce `D X Y u u' _ _ w F00 F'0 FP _ _ hAB G c t₀ ρ U U' hmv`. Take `⟨hρ, hU, hU', hF, hF'⟩` from `hmv`. Establish `hN : G.N = (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).rat (fun p => (G.S p).Nof (fun a => (c.c p).e (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame F00) a)))`. Unfold `GFrames.N Frames.N`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[(c.c p).f_eq, (hAB p).1.1]`. Establish `hN' : G.N' = (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).rat (fun p => (G.S p).Nof (fun a => (c.c p).e (scaled (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p (frame F'0) a)))`.
+
+Unfold `GFrames.N' Frames.N'`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[(c.c p).f'_eq, (hAB p).1.2.1]`. Establish `hlin : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Use `⟨fun n => ?_, fun m => ?_, fun σ n Λ => ?_, fun σ x => ?_, fun σ _ p g Λ hg => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine (GlobalTheory.T.rational_unipotent_conj_iff_of_unitriangular_isometry D _ F00 ρ U hρ hU hF n).trans ?_`. Rewrite using `[grp_eq, hN]`.
+
+Conclude with `rat_iff D _ F00 F'0 FP G c _ _ (fun p a => rfl) _`. Establish `hF2 : ∀ b, (ρ * t₀.lin) (frame (lf D (X.Fu u')) b) = ∑ a, U' a b • frame F'0 a`. Introduce `b`. Rewrite using `[← hF' b]`. Use `show ρ (t₀.lin _) = ρ (frame (mapLF t₀.lin (lf D (X.Fu u'))) b)`.
+
+Rewrite using `[frame_mapLF D _ hlin]`. Apply the tactic sequence `refine (GlobalTheory.T.rational_unipotent_conj_iff_of_unitriangular_isometry D _ F'0 (ρ * t₀.lin) U' (Subgroup.mul_mem _ hρ hlin) hU' hF2 m).trans ?_`. Rewrite using `[grp_eq, hN']`. Conclude with `rat_iff D _ F00 F'0 FP G c _ _ (fun p a => rfl) _`. Unfold `GCoord.lat`.
+
+Rewrite using `[← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[GCoord.grp]`. Use `⟨((σ.trans c.e).trans x).trans (σ.trans c.e).symm, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `y`. Simplify using `[GCoord.grp]`. Conclude with `GlobalTheory.T.completion_moved_lattice_eq_local_coordinates D _ F00 F'0 FP G c σ p g Λ hg`. Conclude with `GlobalTheory.T.moves_to_determines_unipotent_factorisation D X Y u u' F00 F'0 t₀ ρ U U' ⟨hρ, hU, hU', hF, hF'⟩`.
+-/
 theorem grp_coords : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → (∀ n, n ∈ NRat (lf D (X.Fu u)) ↔ c.grp ρ n ∈ G.N) ∧ (∀ m, m ∈ NRat (lf D (X.Fu u')) ↔ c.grp (ρ * t₀.lin) m ∈ G.N') ∧ (∀ (σ n : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) Λ, c.lat (σ * n) Λ = (c.lat σ Λ).map (((c.grp σ n : G.GLV) : G.V →ₗ[D.host.E] G.V).restrictScalars (𝓞 D.host.E))) ∧ (∀ (σ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (x : G.GLV), ∃ n, c.grp σ n = x) ∧ (∀ σ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT, ∀ (p : PlF D) g Λ, GlobalTheory.LocOver.Ext p σ g → (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)).lat p (c.lat σ Λ) = (c.c p).lat (LocNG.img (M := Y.M p) g (lattice₂ D Y.M p Λ))) ∧ ∀ (t : TauC Y u u') n m, n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m → ∃ A A' : Formalism.L2.SG.PairVal.MatR D, IsUpUni A ∧ IsUpUni A' ∧ (∀ b, n (frame (lf D (X.Fu u)) b) = ∑ a, A a b • frame (lf D (X.Fu u)) a) ∧ (∀ b, m (frame (lf D (X.Fu u')) b) = ∑ a, A' a b • frame (lf D (X.Fu u')) a) ∧ MovesTo F00 F'0 (lf D (X.Fu u)) t.frame (ρ * n) (U * A) (U' * A') := by
   intro D X Y u u' _ _ w F00 F'0 FP _ _ hAB G c t₀ ρ U U' hmv
   obtain ⟨hρ, hU, hU', hF, hF'⟩ := hmv

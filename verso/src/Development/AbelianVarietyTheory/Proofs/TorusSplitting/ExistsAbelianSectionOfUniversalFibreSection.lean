@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EtaVal
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ Φ _ _ _ _ hx s` and use `Φ.exists_secTie hx s`.
+-/
 theorem exists_secA_secTie :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (R : Type) [CommRing R] [IsDomain R] [CharZero R] (x : Sp (FractionRing R) ⟶ Xo.X) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (Φ : Fib Xo x A) (F : Type) [Field F] [Algebra (FractionRing R) F] (xF : Sp F ⟶ Xo.X), xF = spMap (algebraMap (FractionRing R) F) ≫ x → ∀ s : LB.Sec (PPx xF), ∃ th : GlobalTheory.UT.SecA A F 1, Φ.SecTie xF s th :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ Φ _ _ _ _ hx s => Φ.exists_secTie hx s

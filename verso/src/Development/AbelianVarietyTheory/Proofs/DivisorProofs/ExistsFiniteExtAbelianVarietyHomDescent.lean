@@ -16,6 +16,25 @@ namespace GlobalTheory.HomFinExt
 
 open GlobalTheory.Spread GlobalTheory.HomExtNormal
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ ga A A' _ _ hA hA' f hf`. Use `haveI := hf`. Use `hA.proper` as an intermediate fact. Use `hA'.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact.
+
+Use `hA'.smooth` as an intermediate fact. Set `Ωb` to `AlgebraicClosure Ω`. Set `j : Ω →+* Ωb` to `algebraMap Ω Ωb`. Use `letI : Algebra K Ωb := (j.comp ga).toAlgebra`. Set `Kb` to `algebraicClosure K Ωb`.
+
+Establish `hcomp : spMap j ≫ spMap ga = spMap (algebraMap K Ωb)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨f₁, hf₁, e₁⟩` from `exists_pull_hom (spMap j) (spMap ga) (spMap (algebraMap K Ωb)) hcomp f`. Take `⟨g, hg, eg⟩` from `GlobalTheory.T.exists_mon_hom_over_algebraic_closure K Ωb A A' hA hA' f₁ hf₁`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.HomPairDescent.exists_descend (K := K) (Ω := Kb) A A' g`. Set `L : IntermediateField K Kb` to `IntermediateField.adjoin K (s : Set Kb)`. Take `⟨g', hg'⟩` from `hs L (IntermediateField.subset_adjoin _ _)`. Establish `hfin : FiniteDimensional K L` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `gA` using `GlobalTheory.HomPairDescent.isGrpPullback_bcMap A L.val`.
+
+Establish `gB` using `GlobalTheory.HomPairDescent.isGrpPullback_bcMap A' L.val`. Take `⟨-, hmon⟩` from `GlobalTheory.FieldBaseChange.epi_and_isMonHom_iff L Kb L.val.toRingHom`. Establish `hg'm : IsMonHom g'` using `(hmon _ _ _ _ _ _ g' g gA gB hg').1 hg`. Set `l : L →+* Ωb` to `Kb.val.toRingHom.comp L.val.toRingHom`. Use `⟨L, inferInstance, algebraMap K L, Ωb, inferInstance, j, l, g', RingHom.finite_algebraMap.mpr hfin, ?_, hg'm, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Kb.val (L.val (algebraMap K L x)) = algebraMap K Ωb x`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Introduce `Z p p' t h1 h2 h3`. Establish `hP : (p ≫ pullback.fst _ _) ≫ A.hom = t ≫ spMap (algebraMap K Ωb)`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h2, Category.assoc, hcomp]`. Set `P : Z ⟶ pullback A.hom (spMap (algebraMap K Ωb))` to `pullback.lift (p ≫ pullback.fst _ _) t hP`. Establish `hPp : P ≫ pullMap (spMap j) (spMap ga) (spMap (algebraMap K Ωb)) hcomp A = p`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullMap_fst, pullback.lift_fst]`.
+
+Rewrite using `[Category.assoc, pullMap_snd, pullback.lift_snd_assoc, h2]`. Establish `hQ : (P ≫ bcMap A.hom Kb.val) ≫ bcMap A.hom L.val = p'`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst, Category.assoc, bcMap_fst, pullback.lift_fst, h1]`. Rewrite using `[Category.assoc, bcMap_snd, Category.assoc, bcMap_snd_assoc, pullback.lift_snd_assoc, h3]`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hQ, Category.assoc, Category.assoc, ← Category.assoc (bcMap A.hom L.val), hg', Category.assoc, bcMap_fst]`.
+-/
 theorem exists_finite_hom : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] (ga : K →+* Ω) (A A' : Over (Sp K)) [GrpObj A] [GrpObj A'], IsAbelianScheme A → IsAbelianScheme A' → ∀ f : (Over.pullback (spMap ga)).obj A ⟶ (Over.pullback (spMap ga)).obj A', IsMonHom f → ∃ (K' : Type) (_ : Field K') (io : K →+* K') (Ω' : Type) (_ : Field Ω') (j : Ω →+* Ω') (l : K' →+* Ω') (f' : (Over.pullback (spMap io)).obj A ⟶ (Over.pullback (spMap io)).obj A'), io.Finite ∧ l.comp io = j.comp ga ∧ IsMonHom f' ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ pullback A.hom (spMap ga)) (p' : Z ⟶ pullback A.hom (spMap io)) (t : Z ⟶ Sp Ω'), p ≫ pullback.fst _ _ = p' ≫ pullback.fst _ _ → p ≫ pullback.snd _ _ = t ≫ spMap j → p' ≫ pullback.snd _ _ = t ≫ spMap l → p ≫ f.left ≫ pullback.fst _ _ = p' ≫ f'.left ≫ pullback.fst _ _ := by
   intro K Ω _ _ _ ga A A' _ _ hA hA' f hf
   haveI := hf

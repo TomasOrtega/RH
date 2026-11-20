@@ -14,6 +14,19 @@ section Coords
 variable {K V ι : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `pbLat at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, c, hc, rfl⟩` from `hy`. Use `⟨Pi.single i c, fun j => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hc`. Rewrite using `[Pi.single_eq_of_ne hj]`.
+
+Conclude with `(𝔞 j : Submodule (𝓞 K) K).zero_mem`. Use `symm`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same]`. Consider the case `zero => exact ⟨0, fun i => (𝔞 i : Submodule (𝓞 K) K).zero_mem, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨c, hc, rfl⟩` from `hy`. Take `⟨d, hd, rfl⟩` from `hz`. Conclude with `⟨c + d, fun i => (𝔞 i : Submodule (𝓞 K) K).add_mem (hc i) (hd i), by`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul r y _ hy`.
+
+Take `⟨c, hc, rfl⟩` from `hy`. Use `⟨fun i => algebraMap (𝓞 K) K r * c i, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hm` using `Submodule.smul_mem (𝔞 i : Submodule (𝓞 K) K) r (hc i)`. Rewrite `hm` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, algebraMap_smul]`.
+-/
 theorem pb_coords (x : ι → V) (𝔞 : ι → FractionalIdeal (nonZeroDivisors (𝓞 K)) K) {v : V}
     (hv : v ∈ pbLat x 𝔞) : ∃ c : ι → K, (∀ i, c i ∈ 𝔞 i) ∧ v = ∑ i, c i • x i := by
   unfold pbLat at hv
@@ -45,6 +58,9 @@ theorem pb_coords (x : ι → V) (𝔞 : ι → FractionalIdeal (nonZeroDivisors
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [mul_smul, algebraMap_smul]
 
+/- English proof (translation)
+Establish `h0 : ∑ i, (c - d) i • x i = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Establish `hz` using `Fintype.linearIndependent_iff.mp hind (c - d) h0`. Use function extensionality and compare the values at `i`. Conclude with `sub_eq_zero.mp (hz i)`.
+-/
 theorem coords_unique {x : ι → V} (hind : LinearIndependent K x) {c d : ι → K}
     (h : ∑ i, c i • x i = ∑ i, d i • x i) : c = d := by
   have h0 : ∑ i, (c - d) i • x i = 0 := by
@@ -55,6 +71,11 @@ theorem coords_unique {x : ι → V} (hind : LinearIndependent K x) {c d : ι �
 
 end Coords
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty]`. Conclude with `sStable_one`. Consider the case `insert j s hj ih`.
+
+Rewrite using `[Finset.prod_insert hj]`. Conclude with `sStable_mul (h j) ih`.
+-/
 theorem sStable_prod {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} (s : Finset ι)
     (𝔞 : ι → FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (h : ∀ i, SStable (𝔞 i)) : SStable (∏ i ∈ s, 𝔞 i) := by
   classical

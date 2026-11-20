@@ -9,6 +9,29 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.EtLev
 
+/- English proof (translation)
+Introduce `p _ D R _ b N w0 r hw S _ s o K κ hKf hKe hκ hrep Z et hZf hZe hadd hlin hvan`. Establish `hkill : ∀ y, ∀ c ∈ w0 ^ r, et y ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`. Introduce `y c hc`. Rewrite using `[← hlin]`. Conclude with `hvan _ (Submodule.subset_span ⟨c, hc, y, rfl⟩)`.
+
+Establish `h0 : et 0 = 1` using `hvan 0 (Submodule.zero_mem _)`. Establish `hE : ∀ y, GlobalTheory.LevCover.ClopenCond Z fun _ h => h ≫ et y = 1`. Introduce `y`. Take `⟨u, hu, -⟩` from `hrep Z (et y) (hkill y)`. Take `⟨u0, hu0, -⟩` from `hrep Z (et 0) (hkill 0)`.
+
+Use `(GlobalTheory.LevCover.clopenCond_eq u u0).congr fun T' h => ⟨fun H => ?_, fun H => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ c ∈ w0 ^ r, (h ≫ et y) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1` using `fun c hc => by`. Rewrite using `[Category.assoc, hkill y c hc, MonObj.comp_one]`. Use `(hrep T' (h ≫ et y) hk).unique ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hu]`.
+
+Rewrite using `[Category.assoc, hu0, h0, MonObj.comp_one, H]`. Rewrite using `[← hu, ← Category.assoc, H, Category.assoc, hu0, h0, MonObj.comp_one]`. Establish `hP : ∀ y, GlobalTheory.LevCover.ClopenCond Z fun T' h => ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T'.left), (Over.homMk x rfl : Over.mk (x ≫ T'.hom) ⟶ T') ≫ h ≫ et y = 1 → y ∈ wSub D w0 r`. Introduce `y`. Distinguish the cases in `hy : y ∈ wSub D w0 r`.
+
+Conclude with `⟨⊤, isClosed_univ, fun T' h => ⟨fun _ => by simp, fun _ _ _ _ _ _ => hy⟩⟩`. Take `⟨U, hU, H⟩` from `hE y`. Use `⟨⟨(U : Set Z.left)ᶜ, hU.isOpen_compl⟩, U.isOpen.isClosed_compl, fun T' h => ⟨fun P => ?_, fun hsub k _ _ x hx => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩ ht`. Take `⟨k, _, _, a, ha⟩` from `FinEt.exists_algClosed_point T'.left t`.
+
+Apply `hy` to reduce the goal to its premises. Use `P k a ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Use `(H _ _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Establish `haq : a q = t` using `(ha ▸ Set.mem_range_self q : a q ∈ ({t} : Set T'.left))`. Simplify using `only [Over.comp_left, Over.homMk_left, Scheme.Hom.comp_apply, haq]`. Conclude with `ht`. Rewrite `hx` using `[← Category.assoc]`. Establish `hr` using `(H _ _).1 hx`.
+
+Take `⟨q⟩ : Nonempty (Sp k)` from `inferInstance`. Conclude with `(hsub ⟨x q, rfl⟩ (hr ⟨q, by simp⟩)).elim`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `hpos : 0 < p ^ r` using `pow_pos (Fact.out : p.Prime).pos r`.
+
+Take `⟨κ', _, q, hq⟩` from `GlobalTheory.LevCover.exists_finite_mod D.La hpos`. Establish `hpr : ∀ c : D.La, (p ^ r) • c ∈ wSub D w0 r`. Introduce `c`. Use `Submodule.subset_span ⟨(p : 𝓞 D.F) ^ r, Ideal.pow_mem_pow hw.2.1 r, c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+
+Use `(GlobalTheory.LevCover.ClopenCond.forall_of_finite q hP ?_).congr fun T' h => ?_` and prove the remaining obligations. Introduce `i j hij T' h Pi k _ _ x hx`. Take `⟨c, rfl⟩` from `hq i j hij`. Establish `he : et (i + p ^ r • c) = et i` using `by rw [hadd, hvan _ (hpr c), _root_.mul_one]`. Rewrite `hx` using `[he]`.
+
+Conclude with `(wSub D w0 r).add_mem (Pi k x hx) (hpr c)`. Conclude with `⟨fun H y k _ _ x => H k x y, fun H k _ _ x y => H y k x⟩`.
+-/
 theorem clopenCond_injective_geom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w0 : Ideal (𝓞 D.F)) (r : ℕ), IsEtPlace b w0 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (K : Over S) (κ : K ⟶ o.A), IsFinite K.hom → Etale K.hom → (∀ c ∈ w0 ^ r, κ ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → (∀ (T : Over S) (x : T ⟶ o.A), (∀ c ∈ w0 ^ r, x ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃! y : T ⟶ K, y ≫ κ = x) → ∀ (Z : Over S) (et : D.La → (Z ⟶ o.A)), IsFinite Z.hom → Etale Z.hom → (∀ x y, et (x + y) = et x * et y) → (∀ (c : D.O) x, et (c • x) = et x ≫ o.act.act c) → (∀ x ∈ wSub D w0 r, et x = 1) → GlobalTheory.LevCover.ClopenCond Z fun T' h => ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T'.left), (∀ y, (Over.homMk x rfl : Over.mk (x ≫ T'.hom) ⟶ T') ≫ h ≫ et y = 1 → y ∈ wSub D w0 r) := by
   intro p _ D R _ b N w0 r hw S _ s o K κ hKf hKe hκ hrep Z et hZf hZe hadd hlin hvan
   have hkill : ∀ y, ∀ c ∈ w0 ^ r, et y ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1 := by

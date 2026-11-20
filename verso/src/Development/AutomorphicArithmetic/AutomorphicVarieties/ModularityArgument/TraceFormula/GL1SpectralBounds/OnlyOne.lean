@@ -13,6 +13,13 @@ namespace UpperTheory.V.Z.Tf.GOne.saturation_regularity_aux
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hmem : ∀ ψ ∈ P.V, ψ ∈ ⨆ f : SatakeVectors.SatakeVectorEventually.MapsD P.V w σ, LinearMap.range f.1` using `fun ψ hψ => by`. Rewrite using `[SatakeVectors.SatakeVectorEventually.iSup_range_eq hV w σ hσ]`. Conclude with `hψ`. Prove the components needed by the constructor for the conclusion. Take `⟨f, h0, hfV, hf⟩` from `hσ`.
+
+Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hi : LinearMap.ker f = ⊥` using `((GlobalTheory.IndefiniteRowSideFullHecke.CuspidalCharacters.isIrreducible_iff σ.ρ).1 σ.irred).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, map_zero]) |>.resolve_right fun e => h0 (LinearMap.ker_eq_top.1 e)`. Establish `h1` using `hx.map (ρ' := (finRep E n).comp (locGL E n w)) f hf ((map_ne_zero_iff f (LinearMap.ker_eq_bot.1 hi)).2 hx.1)`.
+
+Use `(Submodule.ne_bot_iff _).2 ⟨⟨f x, hfV x⟩, GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext ?_, fun e => h1.1 (congrArg Subtype.val e)⟩` and prove the remaining obligations. Conclude with `GlobalTheory.LGrp.mem_fixed.1 h1.2.1 k hk`. Introduce `y hy h0`. Establish `h2` using `GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup (ρ := (finRep E n).comp (locGL E n w)) σ.irred hB (fun f : SatakeVectors.SatakeVectorEventually.MapsD P.V w σ => f.1) (fun f => f.2.2) (hmem y.1 y.2) (GlobalTheory.LGrp.mem_fixed.2 fun k hk => congrArg Subtype.val (GlobalT …`. Conclude with `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := (finRep E n).comp (locGL E n w)) P.V.subtype (fun _ _ => rfl) Subtype.val_injective h2`.
+-/
 private theorem hasSat_of_comp {P : CuspSub E n} (hV : IsDiscrete P.V) {w : HeightOneSpectrum (𝓞 E)}
     {σ : SmIrr (GL (Fin n) (w.adicCompletion E))} (hσ : IsLocCompGL P.V w σ) {B : Multiset ℂˣ}
     (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B) : GlobalTheory.LFun.HasSatGL w (P.locRep w) B := by
@@ -37,6 +44,9 @@ private theorem hasSat_of_comp {P : CuspSub E n} (hV : IsDiscrete P.V) {w : Heig
     exact GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := (finRep E n).comp (locGL E n w)) P.V.subtype (fun _ _ => rfl)
       Subtype.val_injective h2
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨_, h, GlobalTheory.DefiniteBC.nodup_infOfWeight lam, fun x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hx`. Take `⟨l, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `⟨lam.w k - lam.w l - (k : ℕ) + (l : ℕ), by push_cast; ring⟩`.
+-/
 private theorem regInt_of_weight {V : Submodule ℂ (Sm E n)} {τ : E →+* ℂ} {m : Multiset ℂ}
     (h : HasInfCharGL V τ m) (lam : Formalism.BasicNotions.DomWeight n) (e : m = infOfWeight lam) : RegInt V τ := by
   subst e
@@ -45,6 +55,11 @@ private theorem regInt_of_weight {V : Submodule ℂ (Sm E n)} {τ : E →+* ℂ}
   obtain ⟨l, -, rfl⟩ := Multiset.mem_map.1 hy
   exact ⟨lam.w k - lam.w l - (k : ℕ) + (l : ℕ), by push_cast; ring⟩
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨lam, hlam⟩` from `hr τ`. Break down `hC E m hn V hV τ (regInt_of_weight (hi τ) lam hlam) with ⟨P, rfl⟩ | ⟨a, d, P, ha, hd, -, -, hA⟩` into its components or cases.
+
+Conclude with `UpperTheory.V.Af.strongMultOneC E m P π (hs.mono fun w ⟨B, h1, h2⟩ => ⟨B, hasSat_of_comp hV (hl w) h1, h2⟩)`. Conclude with `absurd (hs.mono fun w ⟨B, h1, h2⟩ => ⟨σ w, B, hl w, h1, h2⟩) (hT E m a d V P π ha hd hV hA)`.
+-/
 private theorem key (hC : CuspOrTwo) (hT : NotTwo) {m : ℕ} (hn : 1 ≤ n) (π : CuspSub E n) (hm : m = n)
     {V : Submodule ℂ (Sm E m)} (σ : ∀ w : HeightOneSpectrum (𝓞 E), SmIrr (GL (Fin m) (w.adicCompletion E)))
     (mu : (E →+* ℂ) → Multiset ℂ) (hV : IsDiscrete V) (hl : ∀ w, IsLocCompGL V w (σ w))
@@ -63,6 +78,15 @@ private theorem key (hC : CuspOrTwo) (hT : NotTwo) {m : ℕ} (hn : 1 ≤ n) (π 
 
 end UpperTheory.V.Z.Tf.GOne.saturation_regularity_aux
 
+/- English proof (translation)
+Introduce `hC hT hS E _ _ _ n hn π D D' e hR h1 hcls`. Establish `hc : D.c = 1`. Establish `h` using `Fintype.card_congr e`. Simplify using `only [Fintype.card_fin] at h`. Rewrite using `[h]`.
+
+Conclude with `h1.1`. Use `⟨hc, fun i => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ {M : Type} [AddCommMonoid M] (f : Fin D.c → M), ∑ j, f j = f i` using `fun {M} _ f => by`. Establish `hsub : Subsingleton (Fin D.c)` using `by rw [hc]; infer_instance`. Conclude with `Fintype.sum_subsingleton f i`.
+
+Establish `hN : D.N i = n` using `(hsum D.N).symm.trans D.h`. Establish `hsat : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, GlobalTheory.LFun.HasSatGL w (D.σ i w).ρ B ∧ (CG.mk π).HasSat w B` using `by filter_upwards [Rig.eventually_sat D] with w hw`. Take `⟨S, hS1, -⟩` from `hw`. Establish `hB : D.Sat w (∑ j, S j)` using `⟨S, fun j => hS1 j, rfl⟩`. Use `⟨S i, (hS1 i).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hsum S]`. Conclude with `(hS E n hn π D' h1 w _).2 (Rig.permSat E n D D' e w (fun j => hcls j w) _ hB)`. Establish `hreg : ∀ τ, ∃ lam : Formalism.BasicNotions.DomWeight n, D.m i τ = infOfWeight lam` using `fun τ => (hR τ).imp fun lam h => (hsum (D.m · τ)).symm.trans h`. Conclude with `saturation_regularity_aux.key hC hT hn π hN (D.σ i) (D.m i) (D.discrete i) (D.loc i) (D.inf i) hreg hsat`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.onlyOne :
     CuspOrTwo → NotTwo → OneSat → OnlyOne := by
   intro hC hT hS E _ _ _ n hn π D D' e hR h1 hcls

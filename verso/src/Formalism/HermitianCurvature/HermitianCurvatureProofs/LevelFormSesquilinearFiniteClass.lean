@@ -34,6 +34,9 @@ namespace Formalism.FourierDecayAlt.P.JCx2
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Use `choose e he hQ using h`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, one_pos, fun a => (IsEmpty.false a).elim⟩`. Establish `hpos : 0 < Finset.univ.inf' Finset.univ_nonempty e` using `(Finset.lt_inf'_iff _).2 fun b _ => he b`. Conclude with `⟨_, hpos, fun a => hmono a (e a) _ hpos (Finset.inf'_le _ (Finset.mem_univ a)) (hQ a)⟩`.
+-/
 theorem exists_common_eps {ι : Type*} [Fintype ι] (Q : ι → ℝ → Prop)
     (hmono : ∀ a ε ε', 0 < ε' → ε' ≤ ε → Q a ε → Q a ε') (h : ∀ a, ∃ ε, 0 < ε ∧ Q a ε) :
     ∃ ε, 0 < ε ∧ ∀ a, Q a ε := by
@@ -51,9 +54,15 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem ckOn_zero' {m : ℕ∞} {UU : Set (B.Mat k r)} : B.CkOn m UU (0 : B.Mat k r → (Wq →L[ℂ] Wp)) :=
   fun _ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hFf⟩` from `hF g₀ hg₀`. Take `⟨U', f', hU', hgU', hf', hFf'⟩` from `hF' g₀ hg₀`. Use `⟨U ∩ U', f + f', hU.inter hU', ⟨hgU, hgU'⟩, (hf.mono Set.inter_subset_left).add (hf'.mono Set.inter_subset_right), fun g hg hG => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hFf g hg.1 hG, hFf' g hg.2 hG]`.
+-/
 theorem ckOn_add' {m : ℕ∞} {UU : Set (B.Mat k r)} {F F' : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : B.CkOn m UU F)
     (hF' : B.CkOn m UU F') : B.CkOn m UU (F + F') := by
   intro g₀ hg₀
@@ -63,6 +72,9 @@ theorem ckOn_add' {m : ℕ∞} {UU : Set (B.Mat k r)} {F F' : B.Mat k r → (Wq 
     (hf.mono Set.inter_subset_left).add (hf'.mono Set.inter_subset_right), fun g hg hG => ?_⟩
   simp only [Pi.add_apply, hFf g hg.1 hG, hFf' g hg.2 hG]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hFf⟩` from `hF g₀ hg₀`. Use `⟨U, c • f, hU, hgU, hf.const_smul c, fun g hg hG => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, hFf g hg hG]`.
+-/
 theorem ckOn_smul' {m : ℕ∞} {UU : Set (B.Mat k r)} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (c : ℂ)
     (hF : B.CkOn m UU F) : B.CkOn m UU (c • F) := by
   intro g₀ hg₀
@@ -89,15 +101,24 @@ def KKc (Bs : B.RealPlaceData k r Wp Wq) (A : ℝ) (mm : ℕ) : Submodule ℂ (B
 
 end classes
 
+/- English proof (translation)
+Unfold `P5.Auser`. Establish `: (N : ℝ) ≤ N'` using `by exact_mod_cast h`. Use `gcongr`.
+-/
 theorem auser_mono (P : M.Par) {N N' : ℕ} (h : N ≤ N') : P5.Auser P N ≤ P5.Auser P N' := by
   unfold P5.Auser
   have : (N : ℝ) ≤ N' := by exact_mod_cast h
   gcongr
 
+/- English proof (translation)
+Unfold `P5.mmUser`. Use `gcongr`.
+-/
 theorem mmUser_mono (P : M.Par) {N N' : ℕ} (h : N ≤ N') : P5.mmUser P N ≤ P5.mmUser P N' := by
   unfold P5.mmUser
   gcongr
 
+/- English proof (translation)
+Unfold `P5.Auser P5.nV JC.parLev`. Establish `h1 : ((P0.r - (j : ℕ) : ℕ) : ℝ) ≤ P0.r` using `by exact_mod_cast Nat.sub_le _ _`. Establish `h2 : ((2 * (P0.r - (j : ℕ)) + P0.k + 1 : ℕ) : ℝ) ≤ ((2 * P0.r + P0.k + 1 : ℕ) : ℝ)`. Conclude with `(by omega)` after adjusting the coercions. Use `gcongr`.
+-/
 theorem auser_parLev (P0 : M.Par) (j : Fin (P0.r + 1)) (N : ℕ) : P5.Auser (JC.parLev P0 j) N ≤ P5.Auser P0 N := by
   unfold P5.Auser P5.nV JC.parLev
   have h1 : ((P0.r - (j : ℕ) : ℕ) : ℝ) ≤ P0.r := by exact_mod_cast Nat.sub_le _ _
@@ -105,6 +126,9 @@ theorem auser_parLev (P0 : M.Par) (j : Fin (P0.r + 1)) (N : ℕ) : P5.Auser (JC.
     exact_mod_cast (by omega)
   gcongr
 
+/- English proof (translation)
+Unfold `P5.mmUser P5.nV JC.parLev`. Establish `h1 : P0.r - (j : ℕ) ≤ P0.r` using `Nat.sub_le _ _`. Establish `h2 : 2 * (P0.r - (j : ℕ)) + P0.k + 1 ≤ 2 * P0.r + P0.k + 1` using `by omega`. Use `gcongr`.
+-/
 theorem mmUser_parLev (P0 : M.Par) (j : Fin (P0.r + 1)) (N : ℕ) :
     P5.mmUser (JC.parLev P0 j) N ≤ P5.mmUser P0 N := by
   unfold P5.mmUser P5.nV JC.parLev
@@ -118,6 +142,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Introduce `hBeta hAct hJF hBes hNice Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD`. Take `⟨C, hC, hβ⟩` from `hBeta Wp Wq P0 T j μ hD.2.1`. Use `⟨C, hC, fun w F F' Φ Φ' ε hε hF hF' hΦ hΦ' => ?_⟩` and prove the remaining obligations. Establish `hN` using `hNice Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF`. Use `hβ w.length (D.actOp (D.RRlev T (M.sgn P0 l0) j w) F) F' (P5.act (P5.RRi L st 0 (D.positionted w)) Φ) Φ' ε hε hN hF' ?_ hΦ'` and prove the remaining obligations.
+
+Introduce `a y hy`. Rewrite using `[hAct Wp Wq P0 T j X μ L st l0 hD w (fun b => B.JF (T.bs j) (F b)) Φ (fun b => hJF P0.k (P0.r - j) Wp Wq (T.bs j) (F b) ε hε (hF b)) hΦ a y hy]`. Conclude with `(hBes Wp Wq P0 T (M.sgn P0 l0) j w F ε hε hF a y hy).symm`.
+-/
 theorem radial_module_form_of_parts : Formalism.FourierDecayAlt.JC.RadialModuleFormOfParts := by
   intro hBeta hAct hJF hBes hNice Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD
   obtain ⟨C, hC, hβ⟩ := hBeta Wp Wq P0 T j μ hD.2.1
@@ -136,6 +165,9 @@ namespace Formalism.FourierDecayAlt.P.JCx2
 
 open Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Unfold `P5.form`. Establish `: ∀ c'' : P5.Cf r 0, P5.glue 0 c c'' = P5.glue 0 c' c''` using `fun c'' => by`. Use function extensionality and compare the values at `l`. Simplify using `[P5.glue]`. Simplify using `only [this]`.
+-/
 theorem form_zero_indep {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
@@ -160,6 +192,15 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ Bs F ε _hε hF`. Use `P.B5.haar_sigmaFinite Bs.haarW` as an intermediate fact. Use `P.B5.haar_sigmaFinite Bs.haarN` as an intermediate fact. Use `P.B5.haar_sigmaFinite Bs.haarW'` as an intermediate fact. Establish `hN` using `bessel_unipotent_equiv_holds Wp Wq k r Bs.z Bs.z' cStd Bs.π Bs.π' Bs.μW Bs.μN Bs.μW' F Bs.z_mem Bs.z'_mem Bs.haarN.conc (fun n₀ h => Bs.haarN.left n₀ h)`.
+
+Use `⟨P5.Rad.jf_smoothLev Bs F hF.2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g _ n hn`. Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, BesselCapelliCommutation.psi_one Bs.z'_mem, mul_one]`. Conclude with `e`.
+
+Introduce `g _ n hn`. Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`. Rewrite `e` using `[Matrix.one_mul, BesselCapelliCommutation.psi_one Bs.z_mem, one_mul]`. Conclude with `e`. Introduce `g _ h hh h' hh'`.
+
+Conclude with `P5.jf_uEquiv Bs F g hh hh'`.
+-/
 theorem bessel_function_finite_class : Formalism.FourierDecayAlt.JC.JFInFF := by
   intro k r Wp Wq _ _ _ _ _ _ Bs F ε _hε hF
   have := P.B5.haar_sigmaFinite Bs.haarW
@@ -195,6 +236,11 @@ section mnGen
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (Matrix.norm_entry_le_entrywise_sup_norm A) (Matrix.norm_entry_le_entrywise_sup_norm B) (norm_nonneg _) (norm_nonneg _)`. Use `_ = ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖ * ‖B‖ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mn_norm_mul_le (A B : Mat k r) : ‖A * B‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖ * ‖B‖ := by
   rw [Matrix.norm_le_iff (by positivity)]
   intro i j
@@ -207,6 +253,11 @@ theorem mn_norm_mul_le (A B : Mat k r) : ‖A * B‖ ≤ ((2 * r + k + 1 : ℕ) 
     _ = ((2 * r + k + 1 : ℕ) : ℝ) * ‖A‖ * ‖B‖ := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
+/- English proof (translation)
+Establish `e : gN g = Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j))` using `rfl`. Rewrite using `[e, Matrix.norm_le_iff (Real.sqrt_nonneg _)]`. Introduce `i j`. Rewrite using `[Complex.norm_def]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mn_norm_le_gN (g : Mat k r) : ‖g‖ ≤ gN g := by
   have e : gN g = Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j)) := rfl
   rw [e, Matrix.norm_le_iff (Real.sqrt_nonneg _)]
@@ -230,6 +281,13 @@ def mnQ : List (Bool × Mat k r) → Mat k r → Mat k r
 
 variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dx_eq]`. Establish `h1` using `(Λ.comp (Formalism.FourierDecayAlt.P.BetaSesquilinearity.abL P Q)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv_hasDerivAt x g)`. Establish `e1 : (fun t : ℝ => Λ (P * Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv x g t * Q)) = (⇑(Λ.comp (Formalism.FourierDecayAlt.P.BetaSesquilinearity.abL P Q))) ∘ Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv x g`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.abL_apply]`. Establish `e2 : Λ (P * Formalism.FourierDecayAlt.P.BetaSesquilinearity.dirv x g * Q) = (Λ.comp (Formalism.FourierDecayAlt.P.BetaSesquilinearity.abL P Q)) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.dirv x g)`. Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.abL_apply]`. Use `show deriv (fun t : ℝ => Λ (P * Formalism.FourierDecayAlt.P.BetaSesquilinearity.crv x g t * Q)) 0 = _`. Rewrite using `[e1, e2]`.
+
+Conclude with `h1.deriv`.
+-/
 theorem mn_Dx_lin (Λ : Mat k r →L[ℝ] V) (x : Bool × Mat k r) (P Q : Mat k r) :
     Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dx x (fun g => Λ (P * g * Q)) = fun g => Λ (P * Formalism.FourierDecayAlt.P.BetaSesquilinearity.dirv x g * Q) := by
   funext g
@@ -246,6 +304,13 @@ theorem mn_Dx_lin (Λ : Mat k r →L[ℝ] V) (x : Bool × Mat k r) (P Q : Mat k 
   rw [e1, e2]
   exact h1.deriv
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dx x (Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw w _) = _`. Rewrite using `[ih, mn_Dx_lin]`. Use function extensionality and compare the values at `g`.
+
+Take `⟨b, X⟩` from `x`. Consider the cases of `b`. Use `show Λ (mnP w P * (g * X) * mnQ w Q) = Λ (mnP w P * g * (X * mnQ w Q))`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Use `show Λ (mnP w P * (-X * g) * mnQ w Q) = Λ (mnP w P * -X * g * mnQ w Q)`.
+
+Rewrite using `[Matrix.mul_assoc (mnP w P) (-X) g]`.
+-/
 theorem mn_Dw_lin (Λ : Mat k r →L[ℝ] V) (w : List (Bool × Mat k r)) (P Q : Mat k r) :
     Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw w (fun g => Λ (P * g * Q)) = fun g => Λ (mnP w P * g * mnQ w Q) := by
   induction w with
@@ -261,6 +326,15 @@ theorem mn_Dw_lin (Λ : Mat k r →L[ℝ] V) (w : List (Bool × Mat k r)) (P Q :
     · show Λ (mnP w P * (-X * g) * mnQ w Q) = Λ (mnP w P * -X * g * mnQ w Q)
       rw [Matrix.mul_assoc (mnP w P) (-X) g]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [mnP]`. Consider the case `cons x w ih`. Establish `ih'` using `ih fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hx` using `hw x List.mem_cons_self`.
+
+Establish `hn : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Take `⟨b, X⟩` from `x`. Consider the cases of `b`. Simplify using `only [mnP, Bool.false_eq_true, if_false, List.length_cons, pow_succ]`. Establish `: 0 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ w.length * ‖P‖` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [mnP, if_true, List.length_cons, pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_neg]`. Use `gcongr`.
+
+Use `_ = _ := by ring`.
+-/
 theorem norm_mnP_le (w : List (Bool × Mat k r)) (hw : ∀ x ∈ w, ‖x.2‖ ≤ 1) (P : Mat k r) :
     ‖mnP w P‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ w.length * ‖P‖ := by
   induction w with
@@ -281,6 +355,13 @@ theorem norm_mnP_le (w : List (Bool × Mat k r)) (hw : ∀ x ∈ w, ‖x.2‖ �
           gcongr
         _ = _ := by ring
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [mnQ]`. Consider the case `cons x w ih`. Establish `ih'` using `ih fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hx` using `hw x List.mem_cons_self`.
+
+Establish `hn : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Take `⟨b, X⟩` from `x`. Consider the cases of `b`. Simplify using `only [mnQ, Bool.false_eq_true, if_false, List.length_cons, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mnQ, if_true, List.length_cons, pow_succ]`. Establish `: 0 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ w.length * ‖Q‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem mn_mnQ_norm (w : List (Bool × Mat k r)) (hw : ∀ x ∈ w, ‖x.2‖ ≤ 1) (Q : Mat k r) :
     ‖mnQ w Q‖ ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ w.length * ‖Q‖ := by
   induction w with
@@ -300,6 +381,23 @@ theorem mn_mnQ_norm (w : List (Bool × Mat k r)) (hw : ∀ x ∈ w, ‖x.2‖ �
       have : 0 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ w.length * ‖Q‖ := by positivity
       nlinarith
 
+/- English proof (translation)
+Introduce `u v hu hv hl g`. Establish `hK0 : 0 ≤ K`. Establish `h` using `hK 1`. Assume the negation of the conclusion as `hneg`. Establish `h1 : (0 : ℝ) < ‖(1 : Mat k r)‖` using `norm_pos_iff.2 one_ne_zero`.
+
+Use polynomial arithmetic with `[norm_nonneg (Λ 1)]`. Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn_def`. Establish `hn : (1 : ℝ) ≤ n` using `by rw [hn_def]; exact_mod_cast (by omega)`. Establish `e : (fun g => Λ g) = fun g => Λ (1 * g * 1)` using `by funext g; simp`. Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.dLR_eq, e, mn_Dw_lin]`.
+
+Use `set w := Formalism.FourierDecayAlt.P.BetaSesquilinearity.wL u ++ Formalism.FourierDecayAlt.P.BetaSesquilinearity.wR v`. Establish `hw : ∀ x ∈ w, ‖x.2‖ ≤ 1`. Introduce `x hx`. Break down `List.mem_append.mp hx with h | h` into its components or cases. Take `⟨X, hX, rfl⟩` from `List.mem_map.mp h`.
+
+Conclude with `(Matrix.norm_le_iff zero_le_one).2 (hu X hX).2`. Take `⟨X, hX, rfl⟩` from `List.mem_map.mp h`. Conclude with `(Matrix.norm_le_iff zero_le_one).2 (hv X hX).2`. Establish `hlen : w.length ≤ m` using `by rw [Formalism.FourierDecayAlt.P.BetaSesquilinearity.len_LR]; exact hl`. Establish `h1 : ‖(1 : Mat k r)‖ ≤ 1`.
+
+Rewrite using `[Matrix.norm_le_iff zero_le_one]`. Introduce `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Establish `hP` using `(norm_mnP_le w hw 1).trans (mul_le_of_le_one_right (by positivity) h1)`. Establish `hQ` using `(mn_mnQ_norm w hw 1).trans (mul_le_of_le_one_right (by positivity) h1)`.
+
+Establish `hpow : n ^ w.length ≤ n ^ m` using `pow_le_pow_right₀ hn hlen`. Establish `hg` using `mn_norm_le_gN g`. Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hPm : ‖mnP w 1‖ ≤ n ^ m` using `hP.trans hpow`. Establish `hQm : ‖mnQ w 1‖ ≤ n ^ m` using `hQ.trans hpow`.
+
+Establish `hm1 : ‖mnP w 1 * g * mnQ w 1‖ ≤ n * (n * ‖mnP w 1‖ * ‖g‖) * ‖mnQ w 1‖` using `(mn_norm_mul_le _ _).trans (by gcongr; exact mn_norm_mul_le _ _)`. Establish `hgN : 0 ≤ gN g` using `Real.sqrt_nonneg _`. Establish `hm2 : n * (n * ‖mnP w 1‖ * ‖g‖) * ‖mnQ w 1‖ ≤ n * (n * n ^ m * gN g) * n ^ m`. Establish `a1 : n * ‖mnP w 1‖ * ‖g‖ ≤ n * n ^ m * gN g` using `mul_le_mul (mul_le_mul_of_nonneg_left hPm hn0) hg (norm_nonneg _) (mul_nonneg hn0 (pow_nonneg hn0 _))`. Establish `a2 : 0 ≤ n * (n * n ^ m * gN g)` using `mul_nonneg hn0 (mul_nonneg (mul_nonneg hn0 (pow_nonneg hn0 _)) hgN)`.
+
+Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left a1 hn0) hQm (norm_nonneg _) a2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mn_dLR_lin_bound (Λ : Mat k r →L[ℝ] V) (K : ℝ) (hK : ∀ M, ‖Λ M‖ ≤ K * ‖M‖) (m : ℕ) :
     ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m →
       ∀ g : Mat k r, ‖dLR u v (fun g => Λ g) g‖ ≤
@@ -358,12 +456,18 @@ section mnNice
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hff⟩` from `h g₀ hg₀`. Conclude with `⟨U, f, hU, hgU, hf, fun g hg hG => (hE g hG).symm.trans (hff g hg hG)⟩`.
+-/
 theorem mn_ckOn_congr {m : ℕ∞} {F F' : Mat k r → E} (hE : ∀ g ∈ GV k r, F g = F' g)
     (h : CkOn m (GV k r) F) : CkOn m (GV k r) F' := by
   intro g₀ hg₀
   obtain ⟨U, f, hU, hgU, hf, hff⟩ := h g₀ hg₀
   exact ⟨U, f, hU, hgU, hf, fun g hg hG => (hE g hG).symm.trans (hff g hg hG)⟩
 
+/- English proof (translation)
+Use `⟨mn_ckOn_congr hE h.1, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw_congr (Formalism.FourierDecayAlt.P.BetaSesquilinearity.lie_LR (Formalism.FourierDecayAlt.P.BetaSesquilinearity.unit_lie hu) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.unit_lie hv)) hE g hg`. Rewrite using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.dLR_eq, ← e, ← Formalism.FourierDecayAlt.P.BetaSesquilinearity.dLR_eq]`. Conclude with `h.2 u v hu hv hl g hg`.
+-/
 theorem mn_ccle_congr {A : ℝ} {m : ℕ} {c : ℝ} {F F' : Mat k r → E} (hE : ∀ g ∈ GV k r, F g = F' g)
     (h : CCle A m F c) : CCle A m F' c := by
   refine ⟨mn_ckOn_congr hE h.1, fun u v hu hv hl g hg => ?_⟩
@@ -375,9 +479,17 @@ theorem mn_ccle_congr {A : ℝ} {m : ℕ} {c : ℝ} {F F' : Mat k r → E} (hE :
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] {Bs : RealPlaceData k r Wp Wq} {ε : ℝ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero, fun _ _ => ⟨0, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero⟩, fun _ _ h => (h rfl).elim⟩`.
+-/
 theorem mn_nice_zero : JC.NiceCoef Bs ε (fun _ : Mat k r => (0 : Wq →L[ℂ] Wp)) :=
   ⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero, fun _ _ => ⟨0, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero⟩, fun _ _ h => (h rfl).elim⟩
 
+/- English proof (translation)
+Use `⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add h.1 h'.1, fun A m => ?_, fun g hg hne => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.2.1 A m`. Take `⟨c', hc'⟩` from `h'.2.1 A m`. Conclude with `⟨c + c', Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hc hc'⟩`. Distinguish the cases in `hF : F g = 0`.
+
+Conclude with `h'.2.2 g hg (by simpa [hF] using hne)`. Conclude with `h.2.2 g hg hF`.
+-/
 theorem mn_nice_add {F F' : Mat k r → (Wq →L[ℂ] Wp)} (h : JC.NiceCoef Bs ε F) (h' : JC.NiceCoef Bs ε F') :
     JC.NiceCoef Bs ε (fun g => F g + F' g) := by
   refine ⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add h.1 h'.1, fun A m => ?_, fun g hg hne => ?_⟩
@@ -388,18 +500,27 @@ theorem mn_nice_add {F F' : Mat k r → (Wq →L[ℂ] Wp)} (h : JC.NiceCoef Bs �
     · exact h'.2.2 g hg (by simpa [hF] using hne)
     · exact h.2.2 g hg hF
 
+/- English proof (translation)
+Use `⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul a h.1, fun A m => ?_, fun g hg hne => h.2.2 g hg fun h0 => hne (by simp [h0])⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.2.1 A m`. Conclude with `⟨_, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a hc⟩`.
+-/
 theorem mn_nice_smul (a : ℂ) {F : Mat k r → (Wq →L[ℂ] Wp)} (h : JC.NiceCoef Bs ε F) :
     JC.NiceCoef Bs ε (fun g => a • F g) := by
   refine ⟨Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul a h.1, fun A m => ?_, fun g hg hne => h.2.2 g hg fun h0 => hne (by simp [h0])⟩
   obtain ⟨c, hc⟩ := h.2.1 A m
   exact ⟨_, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a hc⟩
 
+/- English proof (translation)
+Establish `e : (fun g => -F g) = fun g => (-1 : ℂ) • F g` using `by funext g; simp`. Rewrite using `[e]`. Conclude with `mn_nice_smul (-1) h`.
+-/
 theorem mn_nice_neg {F : Mat k r → (Wq →L[ℂ] Wp)} (h : JC.NiceCoef Bs ε F) :
     JC.NiceCoef Bs ε (fun g => -F g) := by
   have e : (fun g => -F g) = fun g => (-1 : ℂ) • F g := by funext g; simp
   rw [e]
   exact mn_nice_smul (-1) h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (mn_nice_zero (Bs := Bs) (ε := ε))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `mn_nice_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem mn_nice_sum {ι : Type*} (s : Finset ι) (F : ι → Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ i ∈ s, JC.NiceCoef Bs ε (F i)) : JC.NiceCoef Bs ε (fun g => ∑ i ∈ s, F i g) := by
   classical
@@ -409,12 +530,18 @@ theorem mn_nice_sum {ι : Type*} (s : Finset ι) (F : ι → Mat k r → (Wq →
     simp only [Finset.sum_insert ha]
     exact mn_nice_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Establish `e : (∑ i ∈ s, F i) = fun g => ∑ i ∈ s, F i g` using `by funext g; simp [Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `mn_nice_sum s F h`.
+-/
 theorem mn_nice_sum' {ι : Type*} (s : Finset ι) (F : ι → Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ i ∈ s, JC.NiceCoef Bs ε (F i)) : JC.NiceCoef Bs ε (∑ i ∈ s, F i) := by
   have e : (∑ i ∈ s, F i) = fun g => ∑ i ∈ s, F i g := by funext g; simp [Finset.sum_apply]
   rw [e]
   exact mn_nice_sum s F h
 
+/- English proof (translation)
+Use `⟨mn_ckOn_congr hE h.1, fun A m => ?_, fun g hg hne => h.2.2 g hg (by rw [hE g hg]; exact hne)⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.2.1 A m`. Conclude with `⟨c, mn_ccle_congr hE hc⟩`.
+-/
 theorem mn_nice_congr {F F' : Mat k r → (Wq →L[ℂ] Wp)} (hE : ∀ g ∈ GV k r, F g = F' g)
     (h : JC.NiceCoef Bs ε F) : JC.NiceCoef Bs ε F' := by
   refine ⟨mn_ckOn_congr hE h.1, fun A m => ?_, fun g hg hne => h.2.2 g hg (by rw [hE g hg]; exact hne)⟩
@@ -424,8 +551,14 @@ theorem mn_nice_congr {F F' : Mat k r → (Wq →L[ℂ] Wp)} (hE : ∀ g ∈ GV 
 def mnGood (Bs : RealPlaceData k r Wp Wq) (ε : ℝ) (c : Mat k r → ℂ) : Prop :=
   ∀ F : Mat k r → (Wq →L[ℂ] Wp), JC.NiceCoef Bs ε F → JC.NiceCoef Bs ε (fun g => c g • F g)
 
+/- English proof (translation)
+Introduce `_ h` and use `mn_nice_smul a h`.
+-/
 theorem mn_good_const (a : ℂ) : mnGood Bs ε (fun _ => a) := fun _ h => mn_nice_smul a h
 
+/- English proof (translation)
+Introduce `F hF`. Establish `e : (fun g => (c₁ g * c₂ g) • F g) = fun g => c₁ g • (c₂ g • F g)` using `funext fun g => mul_smul _ _ _`. Rewrite using `[e]`. Conclude with `h₁ _ (h₂ F hF)`.
+-/
 theorem mn_good_mul {c₁ c₂ : Mat k r → ℂ} (h₁ : mnGood Bs ε c₁) (h₂ : mnGood Bs ε c₂) :
     mnGood Bs ε (fun g => c₁ g * c₂ g) := by
   intro F hF
@@ -433,6 +566,9 @@ theorem mn_good_mul {c₁ c₂ : Mat k r → ℂ} (h₁ : mnGood Bs ε c₁) (h�
   rw [e]
   exact h₁ _ (h₂ F hF)
 
+/- English proof (translation)
+Introduce `F hF`. Establish `e : (fun g => (c₁ g + c₂ g) • F g) = fun g => c₁ g • F g + c₂ g • F g` using `funext fun g => add_smul _ _ _`. Rewrite using `[e]`. Conclude with `mn_nice_add (h₁ F hF) (h₂ F hF)`.
+-/
 theorem mn_good_add {c₁ c₂ : Mat k r → ℂ} (h₁ : mnGood Bs ε c₁) (h₂ : mnGood Bs ε c₂) :
     mnGood Bs ε (fun g => c₁ g + c₂ g) := by
   intro F hF
@@ -440,16 +576,31 @@ theorem mn_good_add {c₁ c₂ : Mat k r → ℂ} (h₁ : mnGood Bs ε c₁) (h�
   rw [e]
   exact mn_nice_add (h₁ F hF) (h₂ F hF)
 
+/- English proof (translation)
+Establish `e : (fun g => c₁ g - c₂ g) = fun g => c₁ g + (fun _ => (-1 : ℂ)) g * c₂ g` using `by funext g; ring`. Rewrite using `[e]`. Conclude with `mn_good_add h₁ (mn_good_mul (mn_good_const (-1)) h₂)`.
+-/
 theorem mn_good_sub {c₁ c₂ : Mat k r → ℂ} (h₁ : mnGood Bs ε c₁) (h₂ : mnGood Bs ε c₂) :
     mnGood Bs ε (fun g => c₁ g - c₂ g) := by
   have e : (fun g => c₁ g - c₂ g) = fun g => c₁ g + (fun _ => (-1 : ℂ)) g * c₂ g := by funext g; ring
   rw [e]
   exact mn_good_add h₁ (mn_good_mul (mn_good_const (-1)) h₂)
 
+/- English proof (translation)
+Introduce `F hF` and use `mn_nice_congr (fun g hg => by simp only [hE g hg]) (h F hF)`.
+-/
 theorem mn_good_congr {c c' : Mat k r → ℂ} (hE : ∀ g ∈ GV k r, c g = c' g) (h : mnGood Bs ε c) :
     mnGood Bs ε c' :=
   fun F hF => mn_nice_congr (fun g hg => by simp only [hE g hg]) (h F hF)
 
+/- English proof (translation)
+Introduce `F hF`. Use `⟨?_, fun A m => ?_, fun g hg hne => hF.2.2 g hg fun h0 => hne (by simp [h0])⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hff⟩` from `hF.1 g₀ hg₀`. Conclude with `⟨U, fun g => L g • f g, hU, hgU, L.contDiff.contDiffOn.smul hf, fun g hg hG => by simp only [hff g hg hG]⟩`.
+
+Take `⟨c, hc⟩` from `hF.2.1 (A + 1) m set Λ : Mat k r →L[ℝ] ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) := ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))).restrictScalars ℝ).comp L with hΛdef`. Establish `hΛ : ∀ g, Λ g = L g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)` using `fun g => by simp [Λ]`. Take `⟨K, hK⟩ : ∃ K : ℝ, ∀ M, ‖Λ M‖ ≤ K * ‖M‖` from `⟨_, Λ.le_opNorm⟩`. Establish `ha : CkOn (m : ℕ∞) Set.univ (fun g => Λ g)` using `fun g₀ _ => ⟨Set.univ, fun g => Λ g, isOpen_univ, trivial, Λ.contDiff.contDiffOn, fun _ _ _ => rfl⟩`. Establish `hab : ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ GV k r, g ∉ (∅ : Set (Mat k r)) → ‖dLR u v (fun g => Λ g) g‖ ≤ (K * ((2 * r + k + 1 : ℕ) : ℝ) ^ (2 * m + 2)) * gN g ^ (1 : ℝ)`.
+
+Introduce `u v hu hv hl g _ _`. Rewrite using `[Real.rpow_one]`. Conclude with `mn_dLR_lin_bound Λ K hK m u v hu hv hl g`. Establish `hb` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.prodBound (O := ∅) (UU := Set.univ) isOpen_empty (fun g _ => Or.inr trivial) (A := A) (d := 1) ha hab hc (fun g _ h => h.elim)`. Establish `e : (fun g => L g • F g) = Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap (fun g => Λ g) F`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap, hΛ]`. Rewrite using `[e]`. Conclude with `⟨_, hb⟩`.
+-/
 theorem mn_good_lin (L : Mat k r →L[ℝ] ℂ) : mnGood Bs ε (fun g => L g) := by
   intro F hF
   refine ⟨?_, fun A m => ?_, fun g hg hne => hF.2.2 g hg fun h0 => hne (by simp [h0])⟩
@@ -478,6 +629,13 @@ theorem mn_good_lin (L : Mat k r →L[ℝ] ℂ) : mnGood Bs ε (fun g => L g) :=
     rw [e]
     exact ⟨_, hb⟩
 
+/- English proof (translation)
+Establish `hXl : ∀ Y ∈ [X], inLie k r Y` using `by simpa using hX`. Use `⟨?_, fun A m => ?_, fun g hg hne => ?_⟩` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.B5.ckOn_RdV (m := ⊤) hX (by rw [top_add]; exact hF.1)`. Use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.InCC_Rw (m := m) hXl (hF.2.1 A (m + [X].length))` as an intermediate fact. Simplify `this` using `[Rw]`.
+
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hO : IsOpen {g : Mat k r | Gf k r Bs.z Bs.z' g < ε}` using `isOpen_lt (Formalism.FourierDecayAlt.P.BetaSesquilinearity.Gf_cont _ _) continuous_const`. Establish `hz : ∀ g' ∈ GV k r, g' ∈ {g : Mat k r | Gf k r Bs.z Bs.z' g < ε} → F g' = 0`. Introduce `g' hg' hlt'`.
+
+Assume the negation of the conclusion as `hne'`. Conclude with `absurd (hF.2.2 g' hg' hne') (not_le.2 hlt')`. Use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO hXl hz g hg hlt` as an intermediate fact. Conclude with `hne (by simpa [Rw] using this)`.
+-/
 theorem mn_nice_RdV {X : Mat k r} (hX : inLie k r X) {F : Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.NiceCoef Bs ε F) :
     JC.NiceCoef Bs ε (RdV X F) := by
   have hXl : ∀ Y ∈ [X], inLie k r Y := by simpa using hX
@@ -496,6 +654,9 @@ theorem mn_nice_RdV {X : Mat k r} (hX : inLie k r X) {F : Mat k r → (Wq →L[�
     have := Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hO hXl hz g hg hlt
     exact hne (by simpa [Rw] using this)
 
+/- English proof (translation)
+The claim follows from `mn_nice_add (mn_nice_RdV (Formalism.FourierDecayAlt.P.Qx2.hpart1_lie (k := k) (r := r) (Matrix.single a b 1)) hF) (mn_nice_smul Complex.I (mn_nice_RdV (Formalism.FourierDecayAlt.P.Qx2.hpart2_lie (k := k) (r := r) (Matrix.single a b 1)) hF))`.
+-/
 theorem mn_nice_EH (a b : Fin (2 * r + k + 1)) {F : Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.NiceCoef Bs ε F) :
     JC.NiceCoef Bs ε (Q.EH k r a b F) :=
   mn_nice_add (mn_nice_RdV (Formalism.FourierDecayAlt.P.Qx2.hpart1_lie (k := k) (r := r) (Matrix.single a b 1)) hF)
@@ -534,16 +695,25 @@ def mnLinInv (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) : Mat k
         intro c g
         simp [Matrix.conjTranspose_smul, Matrix.smul_mulVec] }
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `e : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mn_inv_gv {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
   have e : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [e, Formalism.FourierDecayAlt.P.Qx2.hpk_sq']
 
+/- English proof (translation)
+The claim follows from `mn_good_lin (mnLinHerm b v)`.
+-/
 theorem mn_good_herm (b v : Fin (2 * r + k + 1) → ℂ) :
     mnGood Bs ε (fun g => herm (Hpk k r) (g *ᵥ b) v) :=
   mn_good_lin (mnLinHerm b v)
 
+/- English proof (translation)
+The claim follows from `mn_good_congr (fun g hg => by show ((Hpk k r * gᴴ * Hpk k r) *ᵥ v) p = (g⁻¹ *ᵥ v) p rw [mn_inv_gv hg]) (mn_good_lin (mnLinInv v p))`.
+-/
 theorem mn_good_inv (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     mnGood Bs ε (fun g => (g⁻¹ *ᵥ v) p) :=
   mn_good_congr (fun g hg => by
@@ -554,6 +724,11 @@ def mnNP (Bs : RealPlaceData k r Wp Wq) (ε : ℝ)
     (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)) : Prop :=
   ∀ F, JC.NiceCoef Bs ε F → JC.NiceCoef Bs ε (Θ F)
 
+/- English proof (translation)
+Introduce `F hF`. Use `show JC.NiceCoef Bs ε (fun g => (if a = b then u • F g else 0) + Eop a b F g)`. Distinguish the cases in `h : a = b`. Simplify using `only [h, ↓reduceIte]`. Conclude with `mn_nice_add (mn_nice_smul u hF) (hE b b F hF)`.
+
+Simplify using `only [h, ↓reduceIte, zero_add]`. Conclude with `hE a b F hF`.
+-/
 theorem mn_np_Top {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → (Wq →L[ℂ] Wp)) →
     (Mat k r → (Wq →L[ℂ] Wp))} (hE : ∀ a b, mnNP Bs ε (Eop a b)) (u : ℂ) (a b : Fin (2 * r + k + 1)) :
     mnNP Bs ε (Top Eop u a b) := by
@@ -565,6 +740,11 @@ theorem mn_np_Top {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k 
   · simp only [h, ↓reduceIte, zero_add]
     exact hE a b F hF
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro F hF`. Conclude with `hF`. Consider the case `cons T l ih`. Introduce `F hF`.
+
+Conclude with `hl T List.mem_cons_self _ (ih (fun T' h' => hl T' (List.mem_cons_of_mem _ h')) F hF)`.
+-/
 theorem mn_np_foldr (l : List ((Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq →L[ℂ] Wp)))
     (hl : ∀ T ∈ l, mnNP Bs ε T) : mnNP Bs ε (fun F => l.foldr (fun T h => T h) F) := by
   induction l with
@@ -573,6 +753,11 @@ theorem mn_np_foldr (l : List ((Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (
     intro F hF
     exact hl T List.mem_cons_self _ (ih (fun T' h' => hl T' (List.mem_cons_of_mem _ h')) F hF)
 
+/- English proof (translation)
+Introduce `F hF`. Unfold `qminorOp`. Apply `mn_nice_sum'` to reduce the goal to its premises. Introduce `σ _`. Establish `h` using `mn_np_foldr (Bs := Bs) (ε := ε) (List.ofFn fun k : Fin t => Top Eop (u - ((k : ℕ) : ℂ)) (a (σ k)) (b k)) (fun T hT => by`.
+
+Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Conclude with `mn_np_Top hE _ _ _) F hF`. Conclude with `mn_nice_smul _ h`.
+-/
 theorem mn_np_qminorOp {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → (Wq →L[ℂ] Wp)) →
     (Mat k r → (Wq →L[ℂ] Wp))} (hE : ∀ a b, mnNP Bs ε (Eop a b)) {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1))
     (u : ℂ) : mnNP Bs ε (qminorOp Eop a b u) := by
@@ -587,6 +772,11 @@ theorem mn_np_qminorOp {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (M
       exact mn_np_Top hE _ _ _) F hF
   exact mn_nice_smul _ h
 
+/- English proof (translation)
+Introduce `F hF`. Unfold `Q.chatL`. Apply `mn_nice_sum` to reduce the goal to its premises. Introduce `i _`. Apply `mn_nice_sum` to reduce the goal to its premises.
+
+Introduce `j _`. Conclude with `mn_good_mul (mn_good_mul (mn_good_const _) (hβ i)) (ha j) _ (mn_np_qminorOp hE _ _ u F hF)`.
+-/
 theorem mn_np_chatL {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → (Wq →L[ℂ] Wp)) →
     (Mat k r → (Wq →L[ℂ] Wp))} (hE : ∀ a b, mnNP Bs ε (Eop a b)) {t : ℕ} (pos : Fin t → Fin (2 * r + k + 1))
     (u : ℂ) (a β : Mat k r → Fin t → ℂ) (ha : ∀ j, mnGood Bs ε (fun g => a g j))
@@ -600,6 +790,13 @@ theorem mn_np_chatL {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat 
   exact mn_good_mul (mn_good_mul (mn_good_const _) (hβ i)) (ha j) _
     (mn_np_qminorOp hE _ _ u F hF)
 
+/- English proof (translation)
+Introduce `F hF`. Unfold `Q.chat2L`. Apply `mn_nice_sum` to reduce the goal to its premises. Introduce `i _`. Apply `mn_nice_sum` to reduce the goal to its premises.
+
+Introduce `i' _`. Apply `mn_nice_sum` to reduce the goal to its premises. Introduce `j _`. Apply `mn_nice_sum` to reduce the goal to its premises. Introduce `j' _`.
+
+Distinguish the cases in `hP : i < i' ∧ j < j'`. Simplify using `only [if_pos hP]`. Conclude with `mn_good_mul (mn_good_mul (mn_good_const _) (mn_good_sub (mn_good_mul (hβ i) (hβ' i')) (mn_good_mul (hβ i') (hβ' i)))) (mn_good_sub (mn_good_mul (ha j) (ha' j')) (mn_good_mul (ha j') (ha' j))) _ (mn_np_qminorOp hE _ _ u F hF)`. Simplify using `only [if_neg hP]`. Conclude with `mn_nice_zero`.
+-/
 theorem mn_np_chat2L {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat k r → (Wq →L[ℂ] Wp)) →
     (Mat k r → (Wq →L[ℂ] Wp))} (hE : ∀ a b, mnNP Bs ε (Eop a b)) {t : ℕ} (pos : Fin t → Fin (2 * r + k + 1))
     (u : ℂ) (a a' β β' : Mat k r → Fin t → ℂ) (ha : ∀ j, mnGood Bs ε (fun g => a g j))
@@ -620,8 +817,18 @@ theorem mn_np_chat2L {Eop : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → (Mat
   · simp only [if_neg hP]
     exact mn_nice_zero
 
+/- English proof (translation)
+Introduce `a b _ hF` and use `mn_nice_EH a b hF`.
+-/
 theorem mn_np_EH : ∀ a b, mnNP Bs ε (Q.EH k r a b) := fun a b _ hF => mn_nice_EH a b hF
 
+/- English proof (translation)
+Establish `hyv : ∀ j, mnGood Bs ε (fun g => Q.yv k r z 0 g j)` using `fun j => mn_good_inv _ _`. Establish `hybv : ∀ j, mnGood Bs ε (fun g => Q.ybv k r z 0 g j)` using `fun j => mn_good_herm _ _`. Establish `hc : ∀ (v : Fin (Q.mdim k r 0) → ℂ) j, mnGood Bs ε (fun _ : Mat k r => v j)` using `fun v j => mn_good_const _`. Introduce `F hF`. Apply the tactic sequence `fin_cases a <;> fin_cases b`.
+
+Use `show JC.NiceCoef Bs ε (Q.capL k r 0 (Q.uC k r 0 Y) F)`. Conclude with `mn_np_qminorOp mn_np_EH _ _ _ F hF`. Use `show JC.NiceCoef Bs ε (-(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) F))`. Conclude with `mn_nice_neg (mn_np_chatL mn_np_EH _ _ _ _ (fun j => hc _ j) hybv F hF)`. Use `show JC.NiceCoef Bs ε (-(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y) (Q.yv k r z 0) (fun _ => Q.xbv k r z' 0) F))`.
+
+Conclude with `mn_nice_neg (mn_np_chatL mn_np_EH _ _ _ _ hyv (fun j => hc _ j) F hF)`. Use `show JC.NiceCoef Bs ε (-(Q.chat2L (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (Q.yv k r z 0) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) (fun _ => Q.xbv k r z' 0) F))`. Conclude with `mn_nice_neg (mn_np_chat2L mn_np_EH _ _ _ _ _ _ hyv (fun j => hc _ j) hybv (fun j => hc _ j) F hF)`.
+-/
 theorem mn_np_tL (z z' : Fin (2 * r + k + 1) → ℂ) (Y : ℂ) (a b : Fin 2) :
     mnNP Bs ε (Q.tL k r z z' 0 Y a b) := by
   have hyv : ∀ j, mnGood Bs ε (fun g => Q.yv k r z 0 g j) := fun j => mn_good_inv _ _
@@ -641,6 +848,9 @@ theorem mn_np_tL (z z' : Fin (2 * r + k + 1) → ℂ) (Y : ℂ) (a b : Fin 2) :
       (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) (fun _ => Q.xbv k r z' 0) F))
     exact mn_nice_neg (mn_np_chat2L mn_np_EH _ _ _ _ _ _ hyv (fun j => hc _ j) hybv (fun j => hc _ j) F hF)
 
+/- English proof (translation)
+The claim follows from `mn_np_tL Bs.z Bs.z' Y a b F hF`.
+-/
 theorem mn_tL_nice (Bs : RealPlaceData k r Wp Wq) (ε : ℝ) (F : Mat k r → (Wq →L[ℂ] Wp)) (Y : ℂ) (a b : Fin 2)
     (hF : JC.NiceCoef Bs ε F) : JC.NiceCoef Bs ε (Q.tL k r Bs.z Bs.z' 0 Y a b F) :=
   mn_np_tL Bs.z Bs.z' Y a b F hF
@@ -664,57 +874,95 @@ structure mnClosed (S : D.Op X → Prop) : Prop where
 
 variable {S : D.Op X → Prop} {Sl : Type} [Fintype Sl] [DecidableEq Sl]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f S hS.add hS.zero h`.
+-/
 theorem mn_sum_closed (hS : mnClosed S) {ι : Type*} (s : Finset ι) (f : ι → D.Op X) (h : ∀ i ∈ s, S (f i)) :
     S (∑ i ∈ s, f i) :=
   Finset.sum_induction f S hS.add hS.zero h
 
 def mnAll (S : D.Op X → Prop) (M : Wd.SlopeTestRemainingChoices Sl (D.Op X)) : Prop := ∀ a b, S (M a b)
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.mul_apply] exact mn_sum_closed hS _ _ fun c _ => hS.mul _ _ (hM a c) (hN c b)`.
+-/
 theorem mn_all_mul (hS : mnClosed S) {M N : Wd.SlopeTestRemainingChoices Sl (D.Op X)} (hM : mnAll S M) (hN : mnAll S N) :
     mnAll S (M * N) := fun a b => by
   rw [Matrix.mul_apply]
   exact mn_sum_closed hS _ _ fun c _ => hS.mul _ _ (hM a c) (hN c b)
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.add_apply] exact hS.add _ _ (hM a b) (hN a b)`.
+-/
 theorem mn_all_add (hS : mnClosed S) {M N : Wd.SlopeTestRemainingChoices Sl (D.Op X)} (hM : mnAll S M) (hN : mnAll S N) :
     mnAll S (M + N) := fun a b => by
   rw [Matrix.add_apply]
   exact hS.add _ _ (hM a b) (hN a b)
 
+/- English proof (translation)
+Introduce `_ _` and use `hS.zero`.
+-/
 theorem mn_all_zero (hS : mnClosed S) : mnAll S (0 : Wd.SlopeTestRemainingChoices Sl (D.Op X)) := fun _ _ => hS.zero
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.one_apply] split_ifs exacts [hS.one, hS.zero]`.
+-/
 theorem mn_all_one (hS : mnClosed S) : mnAll S (1 : Wd.SlopeTestRemainingChoices Sl (D.Op X)) := fun a b => by
   rw [Matrix.one_apply]
   split_ifs
   exacts [hS.one, hS.zero]
 
+/- English proof (translation)
+Introduce `_ _` and use `hS.cop _`.
+-/
 theorem mn_all_map (hS : mnClosed S) (A : Wd.SlopeTestRemainingChoices Sl ℂ) : mnAll S (A.map D.cOp) := fun _ _ => hS.cop _
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.diagonal_apply] split_ifs exacts [hx, hS.zero]`.
+-/
 theorem mn_all_diag (hS : mnClosed S) (x : D.Op X) (hx : S x) :
     mnAll S (Matrix.diagonal fun _ : Wd.Ix Sl => x) := fun a b => by
   rw [Matrix.diagonal_apply]
   split_ifs
   exacts [hx, hS.zero]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (mnAll S) (fun _ _ => mn_all_add hS) (mn_all_zero hS) h`.
+-/
 theorem mn_all_sum (hS : mnClosed S) {ι : Type*} (s : Finset ι) (f : ι → Wd.SlopeTestRemainingChoices Sl (D.Op X))
     (h : ∀ i ∈ s, mnAll S (f i)) : mnAll S (∑ i ∈ s, f i) :=
   Finset.sum_induction f (mnAll S) (fun _ _ => mn_all_add hS) (mn_all_zero hS) h
 
 def mnAll2 (S : D.Op X → Prop) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) : Prop := ∀ p q, mnAll S (M p q)
 
+/- English proof (translation)
+Introduce `p q` and use `by rw [Matrix.mul_apply] exact mn_all_sum hS _ _ fun c _ => mn_all_mul hS (hM p c) (hN c q)`.
+-/
 theorem monomial_entries_mul (hS : mnClosed S) {M N : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))} (hM : mnAll2 S M) (hN : mnAll2 S N) :
     mnAll2 S (M * N) := fun p q => by
   rw [Matrix.mul_apply]
   exact mn_all_sum hS _ _ fun c _ => mn_all_mul hS (hM p c) (hN c q)
 
+/- English proof (translation)
+Introduce `p q` and use `hM q p`.
+-/
 theorem monomial_entries_transpose {M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))} (hM : mnAll2 S M) : mnAll2 S M.transpose :=
   fun p q => hM q p
 
+/- English proof (translation)
+Introduce `p q` and use `by unfold D.scal rw [Matrix.map_apply] exact mn_all_map hS _`.
+-/
 theorem monomial_entries_scalar_matrix (hS : mnClosed S) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl ℂ)) : mnAll2 S (D.scal M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) :=
   fun p q => by
     unfold D.scal
     rw [Matrix.map_apply]
     exact mn_all_map hS _
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Introduce `p q`. Simplify using `only [D.TTop, Matrix.map_apply]`. Conclude with `mn_all_diag hS _ (hQQ Y p q)`.
+
+Consider the case `cons l w ih`. Simplify using `only [D.TTop]`. Use `split_ifs`. Conclude with `monomial_entries_mul hS ih (monomial_entries_scalar_matrix hS _)`. Conclude with `monomial_entries_mul hS (monomial_entries_scalar_matrix hS _) ih`.
+-/
 theorem mn_TTop (hS : mnClosed S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q, S (QQ Y p q))
     (w : List (Wd.Letter ℂ Sl)) (Y : ℂ) : mnAll2 S (D.TTop QQ w Y) := by
   induction w with
@@ -728,11 +976,19 @@ theorem mn_TTop (hS : mnClosed S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q
     · exact monomial_entries_mul hS ih (monomial_entries_scalar_matrix hS _)
     · exact monomial_entries_mul hS (monomial_entries_scalar_matrix hS _) ih
 
+/- English proof (translation)
+Unfold `D.insOp`. Conclude with `mn_all_sum hS _ _ fun i _ => mn_all_sum hS _ _ fun j _ => mn_all_mul hS (mn_all_map hS _) (hM i j)`.
+-/
 theorem mn_insOp (hS : mnClosed S) (a : Sl) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) (hM : mnAll2 S M) :
     mnAll S (D.insOp a M) := by
   unfold D.insOp
   exact mn_all_sum hS _ _ fun i _ => mn_all_sum hS _ _ fun j _ => mn_all_mul hS (mn_all_map hS _) (hM i j)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact mn_all_one hS`. Consider the case `cons l w ih`. Simplify using `only [D.RRop]`. Use `mn_all_mul hS ih (mn_insOp hS _ _ ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `mn_TTop hS QQ hQQ w l.pt`. Conclude with `monomial_entries_transpose (mn_TTop hS QQ hQQ w l.pt)`.
+-/
 theorem mn_rrop_closure (hS : mnClosed S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q, S (QQ Y p q))
     (w : List (Wd.Letter ℂ Sl)) : ∀ a b, S (D.RRop QQ w a b) := by
   induction w with
@@ -752,6 +1008,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.JCx2
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P0 T s j w F ε hε hF a`. Establish `hcl : mnClosed (mnNP (T.bs j) ε)` using `{ zero := fun _ _ => mn_nice_zero one := fun _ hF => hF add := fun _ _ ha hb F hF => mn_nice_add (ha F hF) (hb F hF) mul := fun _ _ ha hb F hF => ha _ (hb F hF) cop := fun c _ hF => mn_nice_smul c hF }`. Establish `hQQ : ∀ Y p q, mnNP (T.bs j) ε (D.QQlev T s j Y p q)` using `fun Y p q F hF => mn_nice_smul s (mn_tL_nice (T.bs j) ε F Y p q hF)`. Establish `hR` using `mn_rrop_closure hcl (D.QQlev T s j) hQQ (D.positionted w)`. Use `show JC.NiceCoef (T.bs j) ε (∑ b, D.ap (D.RRlev T s j w a b) (F b))`.
+
+Conclude with `mn_nice_sum' _ _ fun b _ => hR a b (F b) (hF b)`.
+-/
 theorem module_regularity : Formalism.FourierDecayAlt.JC.ModuleNice := by
   intro Wp Wq _ _ _ _ _ _ P0 T s j w F ε hε hF a
   have hcl : mnClosed (mnNP (T.bs j) ε) :=
@@ -781,6 +1042,17 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Set `ts : Equiv.Perm (Fin t) → List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))` to `fun σ => List.ofFn fun j : Fin t => (u - ((j : ℕ) : ℂ), p (σ j), q j)`. Use `⟨(Finset.univ : Finset (Equiv.Perm (Fin t))).toList.flatMap (fun σ => (CapelliWordSumExpansion.expand k r (ts σ)).map fun cw => (((Equiv.Perm.sign σ : ℤ) : ℂ) * cw.1, cw.2)), ?_, ?_⟩` and prove the remaining obligations. Introduce `cw hcw`. Simplify using `only [List.mem_flatMap, List.mem_map] at hcw`. Take `⟨σ, _, cw', hm', rfl⟩` from `hcw`.
+
+Use `CapelliWordSumExpansion.expand_words (k := k) (r := r) (ts σ) cw' hm'` as an intermediate fact. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Simplify using `[ts]`. Introduce `E _ _ UU f hf g hgU hg`. Establish `hloc : ∀ σ, CapelliWordSumExpansion.Loc ((ts σ).length : ℕ∞) f g`.
+
+Introduce `σ`. Take `⟨U, f', a, b, c, d⟩` from `hf g hgU`. Use `⟨U, f', a, b, ?_, d⟩` and prove the remaining obligations. Simplify `c` using `[ts]`. Establish `e1 : qminorOp (Q.EH k r) p q u f g = ∑ σ, (((Equiv.Perm.sign σ : ℤ) : ℂ)) • CapelliWordSumExpansion.foldT (ts σ) f g`.
+
+Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Simplify using `only [CapelliWordSumExpansion.foldT, ts, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, CapelliWordSumExpansion.sum_flatMap, Finset.sum_map_toList]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[CapelliWordSumExpansion.expand_eq (ts σ) f g hg (hloc σ), List.map_map, ← CapelliWordSumExpansion.sum_map_mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem bc_qminorWords (k r : ℕ) {t : ℕ} (p q : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     ∃ L : List (ℂ × List (B.Mat k r)),
     (∀ cw ∈ L, (∀ X ∈ cw.2, B.unitLie k r X) ∧ cw.2.length ≤ t) ∧
@@ -819,6 +1091,19 @@ section under
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Take `⟨L, hLw, hL⟩` from `bc_qminorWords k r p q u`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Establish `hCkt : CkOn (t : ℕ∞) (GV k r) F` using `P.B5.ckOn_mono (by exact_mod_cast htm) hCk`. Establish `hJ` using `Formalism.FourierDecayAlt.P.jacquet_derivative_formula k r Wp Wq D A m F hThr hF`. Establish `hJck : CkOn (t : ℕ∞) (Om k r D.z D.z') (B.JF D F)`.
+
+Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, he⟩` from `hJ.1 g₀ ⟨(P.CapelliUnderIntegral.glev0 g₀).2 hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast htm), fun g' hg'U hg'G => he g' hg'U ((P.CapelliUnderIntegral.glev0 g').2 hg'G)⟩`. Establish `hw : ∀ cw ∈ L, (∀ X ∈ cw.2, unitLie k r X) ∧ cw.2.length ≤ m` using `fun cw h => ⟨(hLw cw h).1, (hLw cw h).2.trans htm⟩`. Establish `hword : ∀ cw ∈ L, Integrable (fun p' => xiP D p' • Rw cw.2 (rho D p' F) g) D.μSS ∧ Rw cw.2 (B.JF D F) g = ∫ p', xiP D p' • Rw cw.2 (rho D p' F) g ∂D.μSS`.
+
+Introduce `cw hcw`. Take `⟨hint, heq⟩` from `hJ.2 [] cw.2 (by simp) (hw cw hcw).1 (by simpa using (hw cw hcw).2) g hg`. Establish `hae : (fun p' => xiP D p' • rho D p' (dLR ([].map (AdL p')) (cw.2.map (AdR p')) F) g) =ᵐ[D.μSS] (fun p' => xiP D p' • Rw cw.2 (rho D p' F) g)` using `by filter_upwards [P.B5.ae_inSS D] with p' hp`. Establish `e` using `Formalism.FourierDecayAlt.P.rewrite_rho_action k r Wp Wq D m F p' hp hCk [] cw.2 (by simp) (fun X hX => ((hw cw hcw).1 X hX).1) (by simpa using (hw cw hcw).2) g hg.1`. Simplify using `only [List.map_nil] at e ⊢`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Conclude with `⟨hint.congr hae, (show Rw cw.2 (B.JF D F) g = dLR [] cw.2 (B.JF D F) g from rfl).trans (heq.trans (integral_congr_ae hae))⟩`. Establish `hae2 : (fun p' => xiP D p' • qminorOp (Q.EH k r) p q u (rho D p' F) g) =ᵐ[D.μSS] (fun p' => (L.map (fun cw => cw.1 • (xiP D p' • Rw cw.2 (rho D p' F) g))).sum)` using `by filter_upwards [P.B5.ae_inSS D] with p' hp`. Rewrite using `[hL _ _ (rho D p' F) (P.B5.ckOn_rho D hp hCkt) g hg.1 hg.1, List.smul_sum, List.map_map]`.
+
+Use `congr 1`. Use `List.map_congr_left (fun cw _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Conclude with `smul_comm _ _ _`. Use `⟨(P.CapelliUnderIntegral.integrable_map_sum L (fun cw p' => cw.1 • (xiP D p' • Rw cw.2 (rho D p' F) g)) (fun cw hcw => (hword cw hcw).1.smul cw.1)).congr hae2.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hL _ _ (B.JF D F) hJck g hg hg.1, integral_congr_ae hae2, P.CapelliUnderIntegral.integral_map_sum L (fun cw p' => cw.1 • (xiP D p' • Rw cw.2 (rho D p' F) g)) (fun cw hcw => (hword cw hcw).1.smul cw.1)]`. Use `congr 1`. Use `List.map_congr_left (fun cw hcw => ?_)` and prove the remaining obligations. Rewrite using `[integral_smul, (hword cw hcw).2]`.
+-/
 theorem bc_qminor_under (D : B.RealPlaceData k r Wp Wq) (A : ℝ) (m : ℕ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) {t : ℕ}
     (p q : Fin t → Fin (2 * r + k + 1)) (u : ℂ) (htm : t ≤ m) (hThr : JF.TransportedAlt k r A m) (hF : B.InCC A m F)
     (g : B.Mat k r) (hg : g ∈ JF.Om k r D.z D.z') :
@@ -889,12 +1174,20 @@ def BcUnder (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)
 
 variable {D : B.RealPlaceData k r Wp Wq} {F : B.Mat k r → (Wq →L[ℂ] Wp)} {g : B.Mat k r}
 
+/- English proof (translation)
+Unfold `BcUnder at *`. Simplify using `only [e]`. Conclude with `h`.
+-/
 theorem bcUnder_congr {Θ Θ' : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp)}
     (h : BcUnder D F g Θ) (e : ∀ f, Θ' f g = Θ f g) : BcUnder D F g Θ' := by
   unfold BcUnder at *
   simp only [e]
   exact h
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h.1.smul c` as an intermediate fact. Use `this.congr (Eventually.of_forall fun p' => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Conclude with `smul_comm _ _ _`.
+
+Simplify using `only`. Rewrite using `[h.2, ← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `p'`. Conclude with `smul_comm _ _ _`.
+-/
 theorem bcUnder_smul {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp)} (c : ℂ)
     (h : BcUnder D F g Θ) : BcUnder D F g (fun f x => c • Θ f x) := by
   refine ⟨?_, ?_⟩
@@ -908,6 +1201,11 @@ theorem bcUnder_smul {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (
     funext p'
     exact smul_comm _ _ _
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h.1.neg.congr (Eventually.of_forall fun p' => by simp)`. Simplify using `only`. Rewrite using `[h.2, ← integral_neg]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p'`. Simplify using the standard rewrite rules.
+-/
 theorem bcUnder_neg {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp)}
     (h : BcUnder D F g Θ) : BcUnder D F g (fun f x => -Θ f x) := by
   refine ⟨?_, ?_⟩
@@ -918,6 +1216,11 @@ theorem bcUnder_neg {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (W
     funext p'
     simp
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `integrable_finsetSum s (fun i hi => (h i hi).1)` as an intermediate fact. Use `this.congr (Eventually.of_forall fun p' => ?_)` and prove the remaining obligations. Simplify using `[Finset.smul_sum]`. Simplify using `only`.
+
+Rewrite using `[Finset.sum_congr rfl (fun i hi => (h i hi).2), ← integral_finsetSum s (fun i hi => (h i hi).1)]`. Use `congr 1`. Use function extensionality and compare the values at `p'`. Simplify using `[Finset.smul_sum]`.
+-/
 theorem bcUnder_sum {ι : Type*} (s : Finset ι) (Θ : ι → (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp))
     (h : ∀ i ∈ s, BcUnder D F g (Θ i)) : BcUnder D F g (fun f x => ∑ i ∈ s, Θ i f x) := by
   classical
@@ -931,10 +1234,16 @@ theorem bcUnder_sum {ι : Type*} (s : Finset ι) (Θ : ι → (B.Mat k r → (Wq
     funext p'
     simp [Finset.smul_sum]
 
+/- English proof (translation)
+The claim follows from `bcUnder_congr (bcUnder_smul (c g) h) (fun _ => rfl)`.
+-/
 theorem bcUnder_coef {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp)} (c : B.Mat k r → ℂ)
     (h : BcUnder D F g Θ) : BcUnder D F g (fun f x => c x • Θ f x) :=
   bcUnder_congr (bcUnder_smul (c g) h) (fun _ => rfl)
 
+/- English proof (translation)
+Distinguish the cases in `hP : P`. Simplify using `only [if_pos hP]`. Conclude with `h hP`. Simplify using `only [if_neg hP]`. Conclude with `⟨by simp, by simp⟩`.
+-/
 theorem bcUnder_ite {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (Wq →L[ℂ] Wp)} (P : Prop) [Decidable P]
     (h : P → BcUnder D F g Θ) : BcUnder D F g (fun f x => if P then Θ f x else 0) := by
   by_cases hP : P
@@ -943,6 +1252,11 @@ theorem bcUnder_ite {Θ : (B.Mat k r → (Wq →L[ℂ] Wp)) → B.Mat k r → (W
   · simp only [if_neg hP]
     exact ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Establish `base : ∀ {t : ℕ} (P Q' : Fin t → Fin (2 * r + k + 1)) (u : ℂ), t ≤ 2 * r + k + 1 → BcUnder D F g (qminorOp (Q.EH k r) P Q' u)` using `fun P Q' u ht => bc_qminor_under D A m F P Q' u (ht.trans hnm) hThr hF g hg`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `base _ _ _ (by rw [hm])`. Use `bcUnder_congr (bcUnder_neg (bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcUnder_coef (fun x => (-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * Q.ybv k r D.z 0 x i * Q.xv k r D.z' 0 j) (base (Q.posL k r …` and prove the remaining obligations.
+
+Use `bcUnder_congr (bcUnder_neg (bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcUnder_coef (fun x => (-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * Q.xbv k r D.z' 0 i * Q.yv k r D.z 0 x j) (base (Q.posL k r …` and prove the remaining obligations. Use `bcUnder_congr (bcUnder_neg (bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i' _ => bcUnder_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcUnder_sum (Finset.univ : Finset (Fin (Q.md …` and prove the remaining obligations.
+-/
 theorem bc_tL_under (A : ℝ) (m : ℕ) (hnm : 2 * r + k + 1 ≤ m) (hThr : JF.TransportedAlt k r A m) (hF : B.InCC A m F)
     (hg : g ∈ JF.Om k r D.z D.z') (Y : ℂ) (a b : Fin 2) :
     BcUnder D F g (Q.tL k r D.z D.z' 0 Y a b) := by
@@ -987,6 +1301,11 @@ section invariance
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `P.JFxB.qminor_trn (k := k) (r := r) L gv_one gv_one (Q.EH k r) (Q.EH k r) (fun c d f hf => by`. Introduce `g hg`. Rewrite using `[P.JFxB.EH_trn L gv_one gv_one c d f hf g hg, P.JFxB.EHc_one])`. Use the proof step `(fun c d f f₂ h => P.JFxB.EH_congr c d f f₂ h) (fun c d m f hf => P.JFxB.EH_ck c d m f hf)`. Use `p q u f (P.B5.ckOn_mono le_top hf) g hg`.
+
+Rewrite `h1` using `[P.JFxB.trn_one_one, P.JFxB.trn_one_one]`. Conclude with `h1`.
+-/
 theorem bc_qminor_post {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] (L : E →L[ℂ] E') {f : B.Mat k r → E} (hf : CkOn (⊤ : ℕ∞) (GV k r) f) {g : B.Mat k r}
     (hg : g ∈ GV k r) {t : ℕ} (p q : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
@@ -1000,6 +1319,11 @@ theorem bc_qminor_post {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
   rw [P.JFxB.trn_one_one, P.JFxB.trn_one_one] at h1
   exact h1
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `bc_qminor_post L hf hg _ _ _`. Use `show -(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) (fun x => L (f x))) g = L (-(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) f) g)`. Simplify using `only [Pi.neg_apply, Q.chatL, map_neg, map_sum, map_smul, bc_qminor_post L hf hg]`. Use `show -(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y) (Q.yv k r z 0) (fun _ => Q.xbv k r z' 0) (fun x => L (f x))) g = L (-(Q.chatL (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y) (Q.yv k r z 0) (fun _ => Q.xbv k r z' 0) f) g)`.
+
+Simplify using `only [Pi.neg_apply, Q.chatL, map_neg, map_sum, map_smul, bc_qminor_post L hf hg]`. Use `show -(Q.chat2L (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (Q.yv k r z 0) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) (fun _ => Q.xbv k r z' 0) (fun x => L (f x))) g = L (-(Q.chat2L (Q.EH k r) (Q.posL k r 0) (Q.uC k r 0 Y - 1) (Q.yv k r z 0) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0 …`. Simplify using `only [Pi.neg_apply, Q.chat2L, map_neg, map_sum, apply_ite L, map_smul, map_zero, bc_qminor_post L hf hg]`.
+-/
 theorem bc_tL_post {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] (z z' : Fin (2 * r + k + 1) → ℂ) (L : E →L[ℂ] E') {f : B.Mat k r → E}
     (hf : CkOn (⊤ : ℕ∞) (GV k r) f) {g : B.Mat k r} (hg : g ∈ GV k r) (Y : ℂ) (a b : Fin 2) :
@@ -1019,12 +1343,18 @@ theorem bc_tL_post {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Nor
         (Q.uC k r 0 Y - 1) (Q.yv k r z 0) (fun _ => Q.xv k r z' 0) (Q.ybv k r z 0) (fun _ => Q.xbv k r z' 0) f) g)
     simp only [Pi.neg_apply, Q.chat2L, map_neg, map_sum, apply_ite L, map_smul, map_zero, bc_qminor_post L hf hg]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, he⟩` from `hf g₀ ((P.CapelliUnderIntegral.glev0 g₀).1 hg₀.1)`. Conclude with `⟨U, F', hU, hgU, hc, fun g hg hgl => he g hg ((P.CapelliUnderIntegral.glev0 g).1 hgl)⟩`.
+-/
 theorem bc_smoothLev {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E}
     (hf : CkOn (⊤ : ℕ∞) (GV k r) f) : Q.SmoothLev k r 0 Set.univ f := by
   intro g₀ hg₀
   obtain ⟨U, F', hU, hgU, hc, he⟩ := hf g₀ ((P.CapelliUnderIntegral.glev0 g₀).1 hg₀.1)
   exact ⟨U, F', hU, hgU, hc, fun g hg hgl => he g hg ((P.CapelliUnderIntegral.glev0 g).1 hgl)⟩
 
+/- English proof (translation)
+Use `CkOn_trn (ContinuousLinearMap.id ℂ E) ha hb hf` as an intermediate fact. Establish `e : trn (ContinuousLinearMap.id ℂ E) a b f = fun x => f (a * x * b)`. Use function extensionality and compare the values at `x`. Simplify using `[trn]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem bc_trn_id {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.Mat k r → E} {a b : B.Mat k r}
     (ha : a ∈ GV k r) (hb : b ∈ GV k r) (hf : CkOn (⊤ : ℕ∞) (GV k r) f) :
     CkOn (⊤ : ℕ∞) (GV k r) (fun x => f (a * x * b)) := by
@@ -1033,6 +1363,19 @@ theorem bc_trn_id {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {f : B.M
     funext x; simp [trn]
   rwa [e] at this
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hp`. Establish `ha0 : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ ∈ GV k r` using `gv_mul (gv_inv h1.1) (gv_inv h2.1)`. Establish `hb0 : Matrix.of p.2.2 * Matrix.of p.2.1 ∈ GV k r` using `gv_mul h4.1 h3.1`. Use `set a0 := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ with ha0def`. Use `set n2 := Matrix.of p.2.2`.
+
+Use `set h2' := Matrix.of p.2.1`. Rewrite using `[P.JFxB.rho_eq_trn' D p F, P.JFxB.rho_eq_trn' D p (Q.tL k r D.z D.z' 0 Y a b F)]`. Establish `hf1 : CkOn (⊤ : ℕ∞) (GV k r) (fun x => F (a0 * x * (n2 * h2')))` using `bc_trn_id ha0 hb0 hF`. Use `show Q.tL k r D.z D.z' 0 Y a b (fun x => P.JFxB.Lq D p ((fun x => F (a0 * x * (n2 * h2'))) x)) g = P.JFxB.Lq D p (Q.tL k r D.z D.z' 0 Y a b F (a0 * g * (n2 * h2')))`. Rewrite using `[bc_tL_post D.z D.z' (P.JFxB.Lq D p) hf1 hg Y a b]`.
+
+Use `congr 1`. Establish `hF1 : CkOn (⊤ : ℕ∞) (GV k r) (fun x => F (1 * x * h2'))` using `bc_trn_id gv_one h3.1 hF`. Establish `hDom : ∀ z z' : Fin (2 * r + k + 1) → ℂ, Q.IsDom k r z z' 0 Set.univ` using `fun _ _ => ⟨isOpen_univ, fun _ _ _ _ _ _ => trivial⟩`. Establish `hn1 : (Matrix.of p.1.2)⁻¹ ∈ Q.Nlev k r 0` using `P.Qx8.nlev_inv ⟨h2, (P.CapelliUnderIntegral.glev0 _).2 h2.1⟩`. Establish `hs : a0 ∈ Q.Slev k r D.z 0` using `⟨_, P.BigCellInversePair.uw_inv h1, _, hn1, rfl⟩`.
+
+Establish `hs' : n2 ∈ Q.Slev k r D.z' 0` using `⟨1, P.Qx8.uw_one _, n2, ⟨h4, (P.CapelliUnderIntegral.glev0 _).2 h4.1⟩, (one_mul _).symm⟩`. Establish `hs1 : (1 : B.Mat k r) ∈ Q.Slev k r D.z 0` using `⟨1, P.Qx8.uw_one _, 1, P.Qx8.nlev_one _, (mul_one _).symm⟩`. Establish `hs2 : h2' ∈ Q.Slev k r D.z' 0` using `⟨h2', h3, 1, P.Qx8.nlev_one _, (mul_one _).symm⟩`. Establish `hgl : g ∈ Q.Glev k r 0 ∩ Set.univ` using `⟨(P.CapelliUnderIntegral.glev0 g).2 hg, trivial⟩`. Establish `e1 : (fun x => F (a0 * x * (n2 * h2'))) = fun x => (fun y => F (1 * y * h2')) (a0 * x * n2)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Matrix.mul_assoc]`. Rewrite using `[e1, Formalism.FourierDecayAlt.P.operator_invariance _ k r D.z D.z' 0 Set.univ _ Y a b D.z_mem D.z'_mem (hDom _ _) (bc_smoothLev hF1) a0 hs n2 hs' g hgl]`. Establish `hy : a0 * g * n2 ∈ Q.Glev k r 0 ∩ Set.univ` using `⟨(P.CapelliUnderIntegral.glev0 _).2 (gv_mul (gv_mul ha0 hg) h4.1), trivial⟩`. Rewrite using `[Formalism.FourierDecayAlt.P.operator_invariance _ k r D.z D.z' 0 Set.univ F Y a b D.z_mem D.z'_mem (hDom _ _) (bc_smoothLev hF) 1 hs1 h2' hs2 _ hy]`.
+
+Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem bc_tL_rho {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) {p : B.SS k r} (hp : D.inSS p)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : CkOn (⊤ : ℕ∞) (GV k r) F) (Y : ℂ) (a b : Fin 2) {g : B.Mat k r}
@@ -1085,6 +1428,9 @@ section tLbessel
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Rewrite using `[(bc_tL_under (D := D) (F := F) A m hnm hThr hFi hg Y a b).2]`. Use `show ∫ p, JF.xiP D p • B.rho D p (Q.tL k r D.z D.z' 0 Y a b F) g ∂D.μSS = _`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [P.B5.ae_inSS D] with p hp`. Rewrite using `[bc_tL_rho D hp hF Y a b hg.1]`.
+-/
 theorem bc_tL_bessel (D : B.RealPlaceData k r Wp Wq) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : CkOn (⊤ : ℕ∞) (GV k r) F) (A : ℝ) (m : ℕ) (hnm : 2 * r + k + 1 ≤ m) (hThr : JF.TransportedAlt k r A m)
     (hFi : B.InCC A m F) (Y : ℂ) (a b : Fin 2) {g : B.Mat k r} (hg : g ∈ JF.Om k r D.z D.z') :
@@ -1106,20 +1452,35 @@ def BcLoc (U : Set (B.Mat k r)) (Θ : (B.Mat k r → E) → B.Mat k r → E) : P
 
 variable {U : Set (B.Mat k r)}
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG` and use `by rw [e, e]; exact h f f' hff x hx hxG`.
+-/
 theorem bcLoc_congr {Θ Θ' : (B.Mat k r → E) → B.Mat k r → E} (h : BcLoc U Θ) (e : ∀ f x, Θ' f x = Θ f x) :
     BcLoc U Θ' := fun f f' hff x hx hxG => by rw [e, e]; exact h f f' hff x hx hxG
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG` and use `by simp only [h f f' hff x hx hxG]`.
+-/
 theorem bcLoc_neg {Θ : (B.Mat k r → E) → B.Mat k r → E} (h : BcLoc U Θ) : BcLoc U (fun f x => -Θ f x) :=
   fun f f' hff x hx hxG => by simp only [h f f' hff x hx hxG]
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG` and use `Finset.sum_congr rfl fun i hi => h i hi f f' hff x hx hxG`.
+-/
 theorem bcLoc_sum {ι : Type*} (s : Finset ι) (Θ : ι → (B.Mat k r → E) → B.Mat k r → E)
     (h : ∀ i ∈ s, BcLoc U (Θ i)) : BcLoc U (fun f x => ∑ i ∈ s, Θ i f x) :=
   fun f f' hff x hx hxG => Finset.sum_congr rfl fun i hi => h i hi f f' hff x hx hxG
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG` and use `by simp only [h f f' hff x hx hxG]`.
+-/
 theorem bcLoc_coef {Θ : (B.Mat k r → E) → B.Mat k r → E} (c : B.Mat k r → ℂ) (h : BcLoc U Θ) :
     BcLoc U (fun f x => c x • Θ f x) :=
   fun f f' hff x hx hxG => by simp only [h f f' hff x hx hxG]
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG`. Distinguish the cases in `hP : P`. Simplify using `only [if_pos hP]`. Conclude with `h hP f f' hff x hx hxG`. Simplify using `only [if_neg hP]`.
+-/
 theorem bcLoc_ite {Θ : (B.Mat k r → E) → B.Mat k r → E} (P : Prop) [Decidable P] (h : P → BcLoc U Θ) :
     BcLoc U (fun f x => if P then Θ f x else 0) := by
   intro f f' hff x hx hxG
@@ -1127,6 +1488,11 @@ theorem bcLoc_ite {Θ : (B.Mat k r → E) → B.Mat k r → E} (P : Prop) [Decid
   · simp only [if_pos hP]; exact h hP f f' hff x hx hxG
   · simp only [if_neg hP]
 
+/- English proof (translation)
+Proceed by induction on `Ts with`. Consider the case `nil => intro f f' hff x hx hxG`. Conclude with `hff x hx hxG`. Consider the case `cons T Ts ih`. Introduce `f f' hff x hx hxG`.
+
+Simplify using `only [List.foldr_cons]`. Conclude with `hT T (by simp) _ _ (fun y hy hyG => ih (fun T' hT' => hT T' (by simp [hT'])) f f' hff y hy hyG) x hx hxG`.
+-/
 theorem bcLoc_fold (Ts : List ((B.Mat k r → E) → B.Mat k r → E))
     (hT : ∀ T ∈ Ts, BcLoc U T) : BcLoc U (fun f => Ts.foldr (fun T h => T h) f) := by
   induction Ts with
@@ -1136,12 +1502,20 @@ theorem bcLoc_fold (Ts : List ((B.Mat k r → E) → B.Mat k r → E))
     simp only [List.foldr_cons]
     exact hT T (by simp) _ _ (fun y hy hyG => ih (fun T' hT' => hT T' (by simp [hT'])) f f' hff y hy hyG) x hx hxG
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG`. Rewrite using `[P.CapelliWordSumExpansion.top_apply', P.CapelliWordSumExpansion.top_apply', P.CapelliWordSumExpansion.EH_apply, P.CapelliWordSumExpansion.EH_apply, hff x hx hxG, P.CapelliWordSumExpansion.rdV_congr hU hx hxG (P.CapelliWordSumExpansion.Xa_unit a b).1 hff, P.CapelliWordSumExpansio …`.
+-/
 theorem bcLoc_top (hU : IsOpen U) (u : ℂ) (a b : Fin (2 * r + k + 1)) :
     BcLoc U (Top (E := E) (Q.EH k r) u a b) := by
   intro f f' hff x hx hxG
   rw [P.CapelliWordSumExpansion.top_apply', P.CapelliWordSumExpansion.top_apply', P.CapelliWordSumExpansion.EH_apply, P.CapelliWordSumExpansion.EH_apply, hff x hx hxG,
     P.CapelliWordSumExpansion.rdV_congr hU hx hxG (P.CapelliWordSumExpansion.Xa_unit a b).1 hff, P.CapelliWordSumExpansion.rdV_congr hU hx hxG (P.CapelliWordSumExpansion.Xb_unit a b).1 hff]
 
+/- English proof (translation)
+Introduce `f f' hff x hx hxG`. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `bcLoc_fold _ (fun T hT => ?_) f f' hff x hx hxG` and prove the remaining obligations.
+
+Simplify using `only [List.mem_ofFn] at hT`. Take `⟨j, rfl⟩` from `hT`. Conclude with `bcLoc_top hU _ _ _`.
+-/
 theorem bcLoc_qminor (hU : IsOpen U) {t : ℕ} (p q : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     BcLoc U (qminorOp (E := E) (Q.EH k r) p q u) := by
   intro f f' hff x hx hxG
@@ -1153,6 +1527,11 @@ theorem bcLoc_qminor (hU : IsOpen U) {t : ℕ} (p q : Fin t → Fin (2 * r + k +
   obtain ⟨j, rfl⟩ := hT
   exact bcLoc_top hU _ _ _
 
+/- English proof (translation)
+Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `bcLoc_qminor hU _ _ _`. Use `bcLoc_congr (bcLoc_neg (bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcLoc_coef (fun x => (-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * Q.ybv k r z 0 x i * Q.xv k r z' 0 j) (bcLoc_qminor hU (Q.posL k r 0 …` and prove the remaining obligations. Use `bcLoc_congr (bcLoc_neg (bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcLoc_coef (fun x => (-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * Q.xbv k r z' 0 i * Q.yv k r z 0 x j) (bcLoc_qminor hU (Q.posL k r 0 …` and prove the remaining obligations.
+
+Use `bcLoc_congr (bcLoc_neg (bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i _ => bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun i' _ => bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) _ fun j _ => bcLoc_sum (Finset.univ : Finset (Fin (Q.mdim k r 0))) …` and prove the remaining obligations.
+-/
 theorem bc_tL_local (hU : IsOpen U) (z z' : Fin (2 * r + k + 1) → ℂ) (Y : ℂ) (a b : Fin 2) :
     BcLoc U (Q.tL (E := E) k r z z' 0 Y a b) := by
   have hm : Q.mdim k r 0 = 2 * r + k + 1 := by simp [Q.mdim]
@@ -1195,14 +1574,23 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {Bs : B.RealPlaceData k r Wp Wq} {ε : ℝ}
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq Bs _ F (P5.Rad.thr_big k r 0) (hF.2.1 _ 0)).1 h hh`.
+-/
 theorem bc_integrable {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.NiceCoef Bs ε F) {h : B.Mat k r} (hh : h ∈ JF.Om k r Bs.z Bs.z') :
     Integrable (fun p => JF.xiP Bs p • B.rho Bs p F h) Bs.μSS :=
   (Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq Bs _ F (P5.Rad.thr_big k r 0) (hF.2.1 _ 0)).1 h hh
 
+/- English proof (translation)
+Use `show ∫ p, JF.xiP Bs p • B.rho Bs p (fun _ => (0 : Wq →L[ℂ] Wp)) h ∂Bs.μSS = 0`. Simplify using `[B.rho]`.
+-/
 theorem bc_JF_zero (h : B.Mat k r) : B.JF Bs (fun _ => (0 : Wq →L[ℂ] Wp)) h = 0 := by
   show ∫ p, JF.xiP Bs p • B.rho Bs p (fun _ => (0 : Wq →L[ℂ] Wp)) h ∂Bs.μSS = 0
   simp [B.rho]
 
+/- English proof (translation)
+Use `show ∫ p, JF.xiP Bs p • B.rho Bs p (fun g => F g + G g) h ∂Bs.μSS = ∫ p, JF.xiP Bs p • B.rho Bs p F h ∂Bs.μSS + ∫ p, JF.xiP Bs p • B.rho Bs p G h ∂Bs.μSS`. Rewrite using `[← integral_add (bc_integrable hF hh) (bc_integrable hG hh)]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[B.rho, ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, smul_add]`.
+-/
 theorem bc_JF_add {F G : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.NiceCoef Bs ε F) (hG : JC.NiceCoef Bs ε G)
     {h : B.Mat k r} (hh : h ∈ JF.Om k r Bs.z Bs.z') :
     B.JF Bs (fun g => F g + G g) h = B.JF Bs F h + B.JF Bs G h := by
@@ -1213,6 +1601,11 @@ theorem bc_JF_add {F G : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.NiceCoef Bs �
   funext p
   simp [B.rho, ContinuousLinearMap.add_comp, ContinuousLinearMap.comp_add, smul_add]
 
+/- English proof (translation)
+Use `show ∫ p, JF.xiP Bs p • B.rho Bs p (fun g => c • F g) h ∂Bs.μSS = c • ∫ p, JF.xiP Bs p • B.rho Bs p F h ∂Bs.μSS`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `only [B.rho, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+
+Conclude with `smul_comm _ _ _`.
+-/
 theorem bc_JF_smul (c : ℂ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (h : B.Mat k r) :
     B.JF Bs (fun g => c • F g) h = c • B.JF Bs F h := by
   show ∫ p, JF.xiP Bs p • B.rho Bs p (fun g => c • F g) h ∂Bs.μSS = c • ∫ p, JF.xiP Bs p • B.rho Bs p F h ∂Bs.μSS
@@ -1222,6 +1615,11 @@ theorem bc_JF_smul (c : ℂ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (h : B.Mat k 
   simp only [B.rho, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `bc_JF_zero h`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `e : (G a + ∑ i ∈ s, G i) = fun g => G a g + (∑ i ∈ s, G i) g` using `rfl`. Rewrite using `[e, bc_JF_add (hG a (Finset.mem_insert_self a s)) (mn_nice_sum' s G fun i hi => hG i (Finset.mem_insert_of_mem hi)) hh, ih fun i hi => hG i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem bc_JF_sum {ι : Type*} (s : Finset ι) (G : ι → B.Mat k r → (Wq →L[ℂ] Wp))
     (hG : ∀ i ∈ s, JC.NiceCoef Bs ε (G i)) {h : B.Mat k r} (hh : h ∈ JF.Om k r Bs.z Bs.z') :
     B.JF Bs (∑ i ∈ s, G i) h = ∑ i ∈ s, B.JF Bs (G i) h := by
@@ -1241,6 +1639,9 @@ def BcGood (Bs : B.RealPlaceData k r Wp Wq) (ε : ℝ) (Θ : D.Op (B.Mat k r →
   mnNP Bs ε Θ ∧ (∀ F, JC.NiceCoef Bs ε F → ∀ h ∈ JF.Om k r Bs.z Bs.z', B.JF Bs (Θ F) h = Θ (B.JF Bs F) h) ∧
     BcLoc (Q.OmPlus k r Bs.z Bs.z') Θ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => mn_nice_zero, fun _ _ h _ => bc_JF_zero h, fun _ _ _ _ _ _ => rfl⟩ one := ⟨fun _ hF => hF, fun _ _ _ _ => rfl, fun _ _ hff x hx hxG => hff x hx hxG⟩ add := fun a b ha hb => ⟨fun F hF => mn_nice_add (ha.1 F hF) (hb.1 F hF), fun F hF h hh => by show B.JF Bs (fun g => a …`.
+-/
 theorem bcGood_closed : mnClosed (BcGood Bs ε) where
   zero := ⟨fun _ _ => mn_nice_zero, fun _ _ h _ => bc_JF_zero h, fun _ _ _ _ _ _ => rfl⟩
   one := ⟨fun _ hF => hF, fun _ _ _ _ => rfl, fun _ _ hff x hx hxG => hff x hx hxG⟩
@@ -1262,6 +1663,9 @@ theorem bcGood_closed : mnClosed (BcGood Bs ε) where
       show c • f x = c • f' x
       rw [hff x hx hxG]⟩
 
+/- English proof (translation)
+Use `⟨fun F hF => mn_nice_smul s (mn_tL_nice Bs ε F Y a b hF), fun F hF h hh => ?_, ?_⟩` and prove the remaining obligations. Use `show B.JF Bs (fun g => s • Q.tL k r Bs.z Bs.z' 0 Y a b F g) h = s • Q.tL k r Bs.z Bs.z' 0 Y a b (B.JF Bs F) h`. Rewrite using `[bc_JF_smul, bc_tL_bessel Bs hF.1 _ (2 * r + k + 1) le_rfl (P5.Rad.thr_big k r _) (hF.2.1 _ _) Y a b hh]`. Introduce `f f' hff x hx hxG show s • Q.tL k r Bs.z Bs.z' 0 Y a b f x = s • Q.tL k r Bs.z Bs.z' 0 Y a b f' x`. Rewrite using `[bc_tL_local (P.SmoothnessOnGoodSet.isOpen_OmPlus _ _) Bs.z Bs.z' Y a b f f' hff x hx hxG]`.
+-/
 theorem bcGood_tL (s : ℂ) (Y : ℂ) (a b : Fin 2) :
     BcGood Bs ε (fun f => s • Q.tL k r Bs.z Bs.z' 0 Y a b f) := by
   refine ⟨fun F hF => mn_nice_smul s (mn_tL_nice Bs ε F Y a b hF), fun F hF h hh => ?_, ?_⟩
@@ -1271,6 +1675,9 @@ theorem bcGood_tL (s : ℂ) (Y : ℂ) (a b : Fin 2) :
     show s • Q.tL k r Bs.z Bs.z' 0 Y a b f x = s • Q.tL k r Bs.z Bs.z' 0 Y a b f' x
     rw [bc_tL_local (P.SmoothnessOnGoodSet.isOpen_OmPlus _ _) Bs.z Bs.z' Y a b f f' hff x hx hxG]
 
+/- English proof (translation)
+Use `show B.JF Bs (∑ b, D.ap (RR a b) (F b)) h = (∑ b, D.ap (RR a b) (B.JF Bs (F b))) h`. Rewrite using `[bc_JF_sum Finset.univ (fun b => D.ap (RR a b) (F b)) (fun b _ => (hR a b).1 (F b) (hF b)) hh, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => (hR a b).2.1 (F b) (hF b) _ hh`.
+-/
 theorem bc_core {Sl : Type} [Fintype Sl] [DecidableEq Sl] (RR : Wd.SlopeTestRemainingChoices Sl (D.Op (B.Mat k r → (Wq →L[ℂ] Wp))))
     (hR : ∀ a b, BcGood Bs ε (RR a b)) (F : Wd.Ix Sl → B.Mat k r → (Wq →L[ℂ] Wp))
     (hF : ∀ b, JC.NiceCoef Bs ε (F b)) (a : Wd.Ix Sl) {h : B.Mat k r} (hh : h ∈ JF.Om k r Bs.z Bs.z') :
@@ -1288,6 +1695,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.JCx2
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P0 T s j w F ε _hε hF a y hy`. Establish `hQQ : ∀ Y p q, BcGood (T.bs j) ε (D.QQlev T s j Y p q)` using `fun Y p q => bcGood_tL s Y p q`. Establish `hR` using `mn_rrop_closure bcGood_closed (D.QQlev T s j) hQQ (D.positionted w)`. Establish `hGV : Q.wCell (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) y.1 * y.2 ∈ B.GV (JC.parLev P0 j).k (JC.parLev P0 j).r`. Rewrite using `[P5.Rad.wCell_last_eq]`.
+
+Conclude with `P.BetaSesquilinearity.gv_mul (big_cell_mem_holds _ _ _ 1 hy.1 (by simp)) hy.2.1.1`. Establish `hh : Q.wCell (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) y.1 * y.2 ∈ JF.Om (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z'` using `⟨hGV, P5.Rad.wCell_mem_omPlus (T.bs j).z_mem (T.bs j).z'_mem hy.1 hy.2.1 hy.2.2⟩`. Simplify using `only [Q.resG]`. Use `congr 1`. Conclude with `bc_core (D.RRlev T s j w) hR F hF a hh`.
+-/
 theorem bessel_module : Formalism.FourierDecayAlt.JC.BesselModule := by
   intro Wp Wq _ _ _ _ _ _ P0 T s j w F ε _hε hF a y hy
   have hQQ : ∀ Y p q, BcGood (T.bs j) ε (D.QQlev T s j Y p q) := fun Y p q => bcGood_tL s Y p q
@@ -1324,6 +1736,13 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Use `⟨P.SmoothnessOnGoodSet.isOpen_OmPlus z z', ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨-, hg⟩ s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Establish `hs : h * m ∈ Sset k r z` using `⟨h, hh, m, hm.1, rfl⟩`. Establish `hs' : h' * m' ∈ Sset k r z'` using `⟨h', hh', m', hm'.1, rfl⟩`. Establish `hD : ∀ l, Dmin k r z z' (h * m * g * (h' * m')) l = Dmin k r z z' g l` using `fun l => dInv k r z z' hz hz' _ hs _ hs' g l`.
+
+Use `⟨fun l hl => by rw [hD]; exact hg.1 l hl, ?_⟩` and prove the remaining obligations. Establish `e : Gf k r z z' (h * m * g * (h' * m')) = Gf k r z z' g`. Unfold `Gf`. Rewrite using `[hD, hD]`. Rewrite using `[e]`.
+
+Conclude with `hg.2`.
+-/
 theorem rma_isDom_omPlus (hz : inWb k r z) (hz' : inWb k r z') : IsDom k r z z' 0 (OmPlus k r z z') := by
   refine ⟨P.SmoothnessOnGoodSet.isOpen_OmPlus z z', ?_⟩
   rintro g ⟨-, hg⟩ s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩
@@ -1346,12 +1765,18 @@ def rma_K : Submodule ℂ (Mx k r → (Wq →L[ℂ] Wp)) where
   add_mem' := fun hJ hJ' => P.Qx8.FFl_add hJ hJ'
   smul_mem' := fun a _ hJ => P.Qx8.FFl_smul hJ a
 
+/- English proof (translation)
+Simplify using `only [resG, Pi.smul_apply]`. Rewrite using `[smul_comm]`.
+-/
 theorem rma_resG_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (i : Fin (r + 1)) (s : ℂ)
     (J : Mx k r → E) (c : Fin r → ℂ) (g : Mx k r) :
     resG k r i (s • J) c g = s • resG k r i J c g := by
   simp only [resG, Pi.smul_apply]
   rw [smul_comm]
 
+/- English proof (translation)
+Simplify using `only [resG, Pi.add_apply, smul_add]`.
+-/
 theorem rma_resG_add {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (i : Fin (r + 1))
     (J J' : Mx k r → E) (c : Fin r → ℂ) (g : Mx k r) :
     resG k r i (J + J') c g = resG k r i J c g + resG k r i J' c g := by
@@ -1363,11 +1788,25 @@ open Classical in
 def rma_resFn (J : Mx k r → (Wq →L[ℂ] Wp)) : Fn k r (Wq →L[ℂ] Wp) := fun c g =>
   if (c, g) ∈ DomR k r z z' then resG k r (Fin.last r) J c g else 0
 
+/- English proof (translation)
+Unfold `rma_resFn`. Rewrite using `[if_pos (by simpa using hy)]`.
+-/
 theorem rma_resFn_of_mem (J : Mx k r → (Wq →L[ℂ] Wp)) {y : (Fin r → ℂ) × Mx k r} (hy : y ∈ DomR k r z z') :
     rma_resFn z z' J y.1 y.2 = resG k r (Fin.last r) J y.1 y.2 := by
   unfold rma_resFn
   rw [if_pos (by simpa using hy)]
 
+/- English proof (translation)
+Establish `hsm` using `Formalism.FourierDecayAlt.P5.Rad.sf_resG hJ.1`. Use `⟨fun x hx => ?_, fun x₀ hx₀ => ?_, fun x hx h hh h' hh' => ?_⟩` and prove the remaining obligations. Use `show (if (x.1, x.2) ∈ DomR k r z z' then resG k r (Fin.last r) J x.1 x.2 else 0) = 0`. Rewrite using `[if_neg (by rw [Prod.mk.eta]; exact hx)]`. Take `⟨U, Fe, hU, hxU, hFe, hΦ⟩` from `hsm x₀ ⟨hx₀.1, Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus hz hz' hx₀.1 hx₀.2.1 hx₀.2.2⟩ hx₀.2.1`.
+
+Establish `hV : IsOpen {x : (Fin r → ℂ) × Mx k r | x.1 ∈ OmX r ∧ 0 < GGl k r z z' x.2}` using `((P.Qx3.isOpen_OmX r).preimage continuous_fst).inter (isOpen_lt continuous_const ((P.Qx5.GGl_continuous k r z z').comp continuous_snd))`. Use `⟨U ∩ {x | x.1 ∈ OmX r ∧ 0 < GGl k r z z' x.2}, Fe, hU.inter hV, ⟨hxU, hx₀.1, hx₀.2.2⟩, hFe.mono Set.inter_subset_left, fun x hx hxG => ?_⟩` and prove the remaining obligations. Establish `hxD : (x.1, x.2) ∈ DomR k r z z'` using `⟨hx.2.1, hxG, hx.2.2⟩`. Use `show (if (x.1, x.2) ∈ DomR k r z z' then resG k r (Fin.last r) J x.1 x.2 else 0) = _`. Rewrite using `[if_pos hxD]`.
+
+Conclude with `hΦ x hx.1 hxG`. Establish `hx' : (x.1, x.2) ∈ DomR k r z z'` using `by simpa using hx show (if (x.1, h * x.2 * h') ∈ DomR k r z z' then resG k r (Fin.last r) J x.1 (h * x.2 * h') else 0) = (π h).comp ((if (x.1, x.2) ∈ DomR k r z z' then resG k r (Fin.last r) J x.1 x.2 else 0).comp (π' h'))`. Rewrite using `[if_pos (Formalism.FourierDecayAlt.P5.Rad.domR_uw hx hh hh'), if_pos hx']`. Unfold `resG`. Establish `e : wCell k r (Fin.last r) x.1 * (h * x.2 * h') = h * (wCell k r (Fin.last r) x.1 * x.2) * h'`.
+
+Establish `hc` using `P.Qx3.wlist_comm (k := k) (Fin.last r) x.1 ((List.finRange r).filter fun a => a.val < (Fin.last r).val) (fun a _ => a.isLt) (P.Qx3.uw_glev (Fin.last r) hh)`. Express the relevant statement in the definitionally equal form `wCell k r (Fin.last r) x.1 * h = h * wCell k r (Fin.last r) x.1 at hc`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hc, Matrix.mul_assoc h]`. Establish `hw : wCell k r (Fin.last r) x.1 * x.2 ∈ Glev k r 0 ∩ OmPlus k r z z'` using `⟨P.Qx3.glev_mul (P.Qx3.wlist_glev hx.1 _) (P.Qx3.glev_mono (Fin.zero_le _) hx.2.1), Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus hz hz' hx.1 hx.2.1 hx.2.2⟩`. Rewrite using `[e, hJ.2.2.2 _ hw h hh h' hh']`.
+
+Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem rma_resFn_mem (hz : inWb k r z) (hz' : inWb k r z') (J : Mx k r → (Wq →L[ℂ] Wp))
     (hJ : J ∈ FFl k r z z' π π' 0 (OmPlus k r z z')) : rma_resFn z z' J ∈ RadSp k r z z' π π' := by
   classical
@@ -1430,6 +1869,11 @@ def rma_res (hz : inWb k r z) (hz' : inWb k r z') :
   (rma_resK hz hz').comp (Submodule.projectionOnto _ _
     (Submodule.exists_isCompl (rma_K k r z z' π π')).choose_spec)
 
+/- English proof (translation)
+Establish `e : rma_res (π` using `π) (π' := π') hz hz' J = rma_resK hz hz' ⟨J, hJ⟩ := by`. Unfold `rma_res`. Rewrite using `[LinearMap.comp_apply]`. Use `congr 1`. Conclude with `Submodule.projectionOnto_apply_left _ ⟨J, hJ⟩`.
+
+Rewrite using `[e]`. Conclude with `rma_resFn_of_mem J hy`.
+-/
 theorem rma_res_apply (hz : inWb k r z) (hz' : inWb k r z') (J : Mx k r → (Wq →L[ℂ] Wp))
     (hJ : J ∈ rma_K k r z z' π π') {y : (Fin r → ℂ) × Mx k r} (hy : y ∈ DomR k r z z') :
     ((rma_res hz hz' J : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) y.1 y.2 =
@@ -1452,8 +1896,14 @@ def rma_fst : Pr V →ₐ[ℂ] Module.End ℂ V where
   map_add' _ _ := rfl
   commutes' _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rma_fst_mkP {V : Type} [AddCommGroup V] [Module ℂ V] (A B : Module.End ℂ V) : rma_fst V (mkP A B) = A := rfl
 
+/- English proof (translation)
+Rewrite using `[P.Qx8.algebraMap_Pr, P.Qx8.algebraMap_Pr, P.Qx8.star_mkPair, star_star]`.
+-/
 theorem rma_star_alg {V : Type} [AddCommGroup V] [Module ℂ V] (w : ℂ) :
     star (algebraMap ℂ (Pr V) w) = algebraMap ℂ (Pr V) (star w) := by
   rw [P.Qx8.algebraMap_Pr, P.Qx8.algebraMap_Pr, P.Qx8.star_mkPair, star_star]
@@ -1468,6 +1918,9 @@ def rma_Rel (M : Matrix (Fin 2) (Fin 2) (Pr (RadSp k r z z' π π'))) (N : OM (F
   ∀ a b (Ψ : RadSp k r z z' π π'), ∀ y ∈ DomR k r z z',
     ((rma_fst _ (M a b) Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) y.1 y.2 = N a b (Ψ : Fn k r _) y.1 y.2
 
+/- English proof (translation)
+Introduce `y hy`. Conclude with `hR _ _ y.1 hy.1 (fun c' hc' => h (c', y.2) ⟨hc', hy.2.1, hy.2.2⟩)`.
+-/
 theorem rma_crd_loc {E : Type*} (R : ((Fin r → ℂ) → E) → (Fin r → ℂ) → E)
     (hR : ∀ f₁ f₂ c, c ∈ OmX r → (∀ c' ∈ OmX r, f₁ c' = f₂ c') → R f₁ c = R f₂ c) (f₁ f₂ : Fn k r E)
     (h : ∀ y ∈ DomR k r z z', f₁ y.1 y.2 = f₂ y.1 y.2) :
@@ -1475,10 +1928,18 @@ theorem rma_crd_loc {E : Type*} (R : ((Fin r → ℂ) → E) → (Fin r → ℂ)
   intro y hy
   exact hR _ _ y.1 hy.1 (fun c' hc' => h (c', y.2) ⟨hc', hy.2.1, hy.2.2⟩)
 
+/- English proof (translation)
+The claim follows from `Filter.eventuallyEq_of_mem ((P.Qx3.isOpen_OmX r).mem_nhds hc) h`.
+-/
 theorem rma_eq_nhds {E : Type*} {f₁ f₂ : (Fin r → ℂ) → E} {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (h : ∀ c' ∈ OmX r, f₁ c' = f₂ c') : f₁ =ᶠ[𝓝 c] f₂ :=
   Filter.eventuallyEq_of_mem ((P.Qx3.isOpen_OmX r).mem_nhds hc) h
 
+/- English proof (translation)
+Introduce `a b f₁ f₂ h`. Use `rma_crd_loc (Tmat l Y a b) ?_ f₁ f₂ h` and prove the remaining obligations. Introduce `g₁ g₂ c hc hg`. Establish `h0 : g₁ c = g₂ c` using `hg c hc`. Establish `he` using `rma_eq_nhds hc hg`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Tmat, pOp, wirt, cOp, ciOp, h0, he.fderiv_eq]`.
+-/
 theorem rma_TL_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : Fin r) (Y : ℂ) :
     rma_Loc k r z z' (TL (E := E) k l Y) := by
   intro a b f₁ f₂ h
@@ -1488,6 +1949,11 @@ theorem rma_TL_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : F
   have he := rma_eq_nhds hc hg
   fin_cases a <;> fin_cases b <;> simp [Tmat, pOp, wirt, cOp, ciOp, h0, he.fderiv_eq]
 
+/- English proof (translation)
+Introduce `a b f₁ f₂ h`. Use `rma_crd_loc (TmatStar l Y a b) ?_ f₁ f₂ h` and prove the remaining obligations. Introduce `g₁ g₂ c hc hg`. Establish `h0 : g₁ c = g₂ c` using `hg c hc`. Establish `he` using `rma_eq_nhds hc hg`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [TmatStar, pbOp, wirtBar, cbOp, cbiOp, h0, he.fderiv_eq]`.
+-/
 theorem rma_TLs_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : Fin r) (Y : ℂ) :
     rma_Loc k r z z' (TLs (E := E) k l Y) := by
   intro a b f₁ f₂ h
@@ -1513,6 +1979,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Take `⟨hp, -, hc, hci, -⟩` from `hL`. Use function extensionality and compare the values at `c g`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[Wd.Ts, YangianSpanCharacter.T.Tm, P5.site, hp l, hc l, hci l, rma_fst_mkP, TL, crd, Tmat, X.op_apply, opL]`.
+-/
 theorem rma_T_fst (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (l : Fin r) (Y : ℂ) (a b : Fin 2) (Ψ : RadSp k r z z' π π') :
     ((rma_fst _ (Wd.Ts (P5.site L l) Y a b) Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -1522,6 +1991,9 @@ theorem rma_T_fst (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k 
   fin_cases a <;> fin_cases b <;>
     simp [Wd.Ts, YangianSpanCharacter.T.Tm, P5.site, hp l, hc l, hci l, rma_fst_mkP, TL, crd, Tmat, X.op_apply, opL]
 
+/- English proof (translation)
+Take `⟨hp, -, hc, hci, -⟩` from `hL`. Use function extensionality and compare the values at `c g`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[Matrix.conjTranspose_apply, Wd.Ts, YangianSpanCharacter.T.Tm, P5.site, hp l, hc l, hci l, rma_fst_mkP, rma_star_alg, P.Qx8.star_mkPair, TLs, crd, TmatStar, X.op_apply, opL, sub_eq_add_neg]`.
+-/
 theorem rma_Ts_fst (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (l : Fin r) (Y : ℂ) (a b : Fin 2) (Ψ : RadSp k r z z' π π') :
     ((rma_fst _ ((Wd.Ts (P5.site L l) (star Y))ᴴ a b) Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -1548,6 +2020,15 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b Ψ y hy`. Establish `e1 : rma_fst _ (((Wd.Ts (P5.site L l) (star Y))ᴴ * M * Wd.Ts (P5.site L l) Y) a b) Ψ = ∑ c, rma_fst _ ((Wd.Ts (P5.site L l) (star Y))ᴴ a c) (∑ d, rma_fst _ (M c d) (rma_fst _ (Wd.Ts (P5.site L l) Y d b) Ψ))`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul, LinearMap.sum_apply, Module.End.mul_apply]`. Apply the tactic sequence `first | rfl | exact Finset.sum_comm`.
+
+Rewrite using `[e1]`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, oMul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[rma_Ts_fst X L hL l Y a c]`. Use `rma_TLs_loc l Y a c _ _ (fun y' hy' => ?_) y hy` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[hR c d _ y' hy', rma_T_fst X L hL l Y d b]`. Introduce `a b f₁ f₂ h y hy`. Simplify using `only [oMul, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `rma_TLs_loc l Y a c _ _ (fun y' hy' => ?_) y hy` and prove the remaining obligations. Simplify using `only [Finset.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Conclude with `hN c d _ _ (rma_TL_loc l Y d b f₁ f₂ h) y' hy'`.
+-/
 theorem rma_step (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (l : Fin r) (Y : ℂ)
     {M : Matrix (Fin 2) (Fin 2) (Pr (RadSp k r z z' π π'))} {N : OM (Fn k r (Wq →L[ℂ] Wp))}
@@ -1583,6 +2064,9 @@ def rma_pref (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ) :
   | 0 => 1
   | n + 1 => if h : n < r then Wd.Ts (P5.site L ⟨n, h⟩) Y * rma_pref L Y n else rma_pref L Y n
 
+/- English proof (translation)
+The claim follows from `| 0, i, h => by have hi : i = r := by omega rw [hi, P5.tprod, dif_neg (lt_irrefl r), Matrix.one_mul] | m + 1, i, h => by have hi : i < r := by omega have e : rma_pref L Y (i + 1) = Wd.Ts (P5.site L ⟨i, hi⟩) Y * rma_pref L Y i := by simp only [rma_pref, dif_pos hi] rw [P5.tprod, d …`.
+-/
 theorem rma_tprod_pref (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ) :
     ∀ m i, i + m = r → P5.tprod L Y i * rma_pref L Y i = rma_pref L Y r
   | 0, i, h => by
@@ -1595,6 +2079,9 @@ theorem rma_tprod_pref (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (Y : ℂ
     rw [P5.tprod, dif_pos hi, Matrix.mul_assoc, ← e]
     exact rma_tprod_pref L Y m (i + 1) (by omega)
 
+/- English proof (translation)
+The claim follows from `| 0, _, M, N, hR, hN => by simp only [rma_pref, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, sandw] exact ⟨hR, hN⟩ | n + 1, hn, M, N, hR, hN => by have h : n < r := by omega obtain ⟨hR', hN'⟩ := rma_step X L hL ⟨n, h⟩ Y hR hN have ih := rma_sandw X L hL Y n (by omega …`.
+-/
 theorem rma_sandw (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (Y : ℂ) :
     ∀ n, n ≤ r → ∀ (M : Matrix (Fin 2) (Fin 2) (Pr (RadSp k r z z' π π'))) (N : OM (Fn k r (Wq →L[ℂ] Wp))),
@@ -1618,18 +2105,29 @@ theorem rma_sandw (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k 
     rw [e1, e2]
     exact ih
 
+/- English proof (translation)
+Introduce `a b Ψ y hy`. Use `show ((X.t Y a b Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) y.1 y.2 = _`. Rewrite using `[X.t_apply Y a b Ψ y hy]`. Both sides reduce to the same expression.
+-/
 theorem rma_base (X : ActualOps k r z z' π π') (Y : ℂ) : rma_Rel (X.QQ Y) (QL k r z z' (Fin.last r) Y) := by
   intro a b Ψ y hy
   show ((X.t Y a b Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) y.1 y.2 = _
   rw [X.t_apply Y a b Ψ y hy]
   rfl
 
+/- English proof (translation)
+Introduce `a b f₁ f₂ h y hy`. Conclude with `(P.Qx2.ll_tL (E := E) (i := Fin.last r) (P.Qx8.Dp_open k r z z') z z' Y a b).loc (f₁ y.1) (f₂ y.1) (fun g hg => h (y.1, g) ⟨hy.1, hg.1, hg.2⟩) y.2 ⟨hy.2.1, hy.2.2⟩`.
+-/
 theorem rma_QL_loc {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (Y : ℂ) :
     rma_Loc k r z z' (QL (E := E) k r z z' (Fin.last r) Y) := by
   intro a b f₁ f₂ h y hy
   exact (P.Qx2.ll_tL (E := E) (i := Fin.last r) (P.Qx8.Dp_open k r z z') z z' Y a b).loc (f₁ y.1) (f₂ y.1)
     (fun g hg => h (y.1, g) ⟨hy.1, hg.1, hg.2⟩) y.2 ⟨hy.2.1, hy.2.2⟩
 
+/- English proof (translation)
+Establish `hT0 : ∀ Y', P5.tprod L Y' 0 = rma_pref L Y' r` using `fun Y' => by`. Use `rma_tprod_pref L Y' r 0 (by omega)` as an intermediate fact. Simplify `this` using `[rma_pref]`. Establish `hQ : P5.QQi L st 0 Y = s • ((rma_pref L (star Y) r)ᴴ * X.QQ Y * rma_pref L Y r)`. Simplify using `only [P5.QQi, Fin.val_zero]`.
+
+Rewrite using `[hT0, hT0, hst, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hQ, Matrix.smul_apply, map_smul, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply]`. Use `congr 1`. Conclude with `(rma_sandw X L hL Y r le_rfl _ _ (rma_base X Y) (rma_QL_loc Y)).1 a b Ψ y hy`.
+-/
 theorem rma_QQi (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (st : Fr.Start (Pr (RadSp k r z z' π π'))) (s : ℂ)
     (hst : ∀ Y, st.QQ Y = s • X.QQ Y) (Y : ℂ) (a b : Fin 2) (Ψ : RadSp k r z z' π π')
@@ -1651,6 +2149,17 @@ variable (k r z z') in
 def rma_Qop (s : ℂ) : ℂ → Wd.M2 (D.Op (Mx k r → (Wq →L[ℂ] Wp))) := fun Y =>
   Matrix.of fun a b => (fun f => s • tL k r z z' 0 Y a b f : D.Op (Mx k r → (Wq →L[ℂ] Wp)))
 
+/- English proof (translation)
+Introduce `a y hy`. Establish `hDom` using `rma_isDom_omPlus hz hz'`. Establish `hyp : ∀ (Y : ℂ) (a b : Fin 2), ∀ J ∈ rma_K k r z z' π π', D.ap (rma_Qop k r z z' s Y a b) J ∈ rma_K k r z z' π π' ∧ rma_res hz hz' (D.ap (rma_Qop k r z z' s Y a b) J) = rma_fst _ (P5.QQi L st 0 Y a b) (rma_res hz hz' J)`. Introduce `Y a b J hJ`. Establish `hmem : D.ap (rma_Qop k r z z' s Y a b) J ∈ rma_K k r z z' π π'` using `P.Qx8.FFl_smul (P.operator_preserves_fusion_forms Wp Wq k r z z' π π' 0 _ Y a b hz hz' hDom J hJ) s`.
+
+Use `⟨hmem, P.Qx8.rad_ext fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[rma_res_apply hz hz' _ hmem hy, rma_QQi X L hL st s hst Y a b _ hy]`. Use `show resG k r (Fin.last r) (s • tL k r z z' 0 Y a b J) y.1 y.2 = _`. Establish `hc` using `P.chain_recursion_all_levels Wp Wq k r z z' π π' (Fin.last r) _ Y a b hz hz' hDom J hJ y.1 hy.1 y.2 hy.2.1 (Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus hz hz' hy.1 hy.2.1 hy.2.2)`. Rewrite `hc` using `[Fin.val_last]`.
+
+Rewrite using `[rma_resG_smul, hc]`. Use `congr 1`. Conclude with `(rma_sandw X L hL Y r le_rfl _ _ (rma_base X Y) (rma_QL_loc Y)).2 a b _ _ (fun y' hy' => (rma_res_apply hz hz' J hJ hy').symm) y hy`. Establish `key` using `P.module_of_words (Mx k r → (Wq →L[ℂ] Wp)) (rma_K k r z z' π π') (RadSp k r z z' π π') (rma_res hz hz') (Pr (RadSp k r z z' π π')) S (rma_fst _) (rma_Qop k r z z' s) (P5.QQi L st 0) hyp w x hx`. Take `⟨hmem, heq⟩` from `key a`.
+
+Establish `hΦres : ∀ b, Φ b = rma_res hz hz' (x b)` using `fun b => P.Qx8.rad_ext fun y hy => by`. Rewrite using `[rma_res_apply hz hz' _ (hx b) hy]`. Conclude with `hΦ b y hy`. Establish `e : P5.act (P5.RRi L st 0 w) Φ a = rma_res hz hz' (D.actOp (D.RRop (rma_Qop k r z z' s) w) x a)`. Rewrite using `[heq]`.
+
+Simplify using `only [P5.act, P5.RRi, hΦres]`. Both sides reduce to the same expression. Rewrite using `[e, rma_res_apply hz hz' _ hmem hy]`.
+-/
 theorem rma_main (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' π π')
     (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π'))) (s : ℂ)
     (hL : IsActualLevel X L) (hst : ∀ Y, st.QQ Y = s • X.QQ Y) {S : Type} [Fintype S] [DecidableEq S]
@@ -1699,6 +2208,9 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD w x Φ hx hΦ a y hy`. Conclude with `JCx2.rma_main (T.bs j).z_mem (T.bs j).z'_mem X L st (M.sgn P0 l0) hD.2.2.1 hD.2.2.2.1 (D.positionted w) x Φ hx hΦ a y hy`.
+-/
 theorem radial_module_action : Formalism.FourierDecayAlt.JC.RadialModuleAct := by
   intro Wp Wq _ _ _ _ _ _ P0 T j X μ L st l0 hD w x Φ hx hΦ a y hy
   exact JCx2.rma_main (T.bs j).z_mem (T.bs j).z'_mem X L st (M.sgn P0 l0) hD.2.2.1 hD.2.2.2.1 (D.positionted w) x Φ
@@ -1732,24 +2244,39 @@ def sqOp (d o : ℕ) (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq �
 
 variable {Wp Wq}
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BetaSesquilinearity.sInCC_mono hA hm h`.
+-/
 theorem sq_inCC_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A A' : ℝ} {m m' : ℕ}
     (hA : A ≤ A') (hm : m ≤ m') {F : Mat k r → E} (h : InCC A' m' F) : InCC A m F :=
   Formalism.FourierDecayAlt.P.BetaSesquilinearity.sInCC_mono hA hm h
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Take `⟨c', hc'⟩` from `h'`. Conclude with `⟨c + c', Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hc hc'⟩`.
+-/
 theorem sq_inCC_add {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
     {F F' : Mat k r → E} (h : InCC A m F) (h' : InCC A m F') : InCC A m (fun g => F g + F' g) := by
   obtain ⟨c, hc⟩ := h
   obtain ⟨c', hc'⟩ := h'
   exact ⟨c + c', Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hc hc'⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Conclude with `⟨_, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a hc⟩`.
+-/
 theorem sq_inCC_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} (a : ℂ)
     {F : Mat k r → E} (h : InCC A m F) : InCC A m (fun g => a • F g) := by
   obtain ⟨c, hc⟩ := h
   exact ⟨_, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a hc⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero⟩`.
+-/
 theorem sq_inCC_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} :
     InCC A m (fun _ : Mat k r => (0 : E)) := ⟨0, Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (sq_inCC_zero (k := k) (r := r) (E := E) (A := A) (m := m))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `sq_inCC_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sq_inCC_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} {ι : Type*}
     (s : Finset ι) (F : ι → Mat k r → E) (h : ∀ i ∈ s, InCC A m (F i)) : InCC A m (fun g => ∑ i ∈ s, F i g) := by
   classical
@@ -1759,6 +2286,9 @@ theorem sq_inCC_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : 
     simp only [Finset.sum_insert ha]
     exact sq_inCC_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_zero (k := k) (r := r) (E := E) (m := ⊤))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sq_ckOn_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type*} (s : Finset ι)
     (F : ι → Mat k r → E) (h : ∀ i ∈ s, CkOn (⊤ : ℕ∞) (GV k r) (F i)) :
     CkOn (⊤ : ℕ∞) (GV k r) (fun g => ∑ i ∈ s, F i g) := by
@@ -1769,6 +2299,15 @@ theorem sq_ckOn_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι :
     simp only [Finset.sum_insert ha]
     exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `⟨fun F hF => ?_, fun A m F hF => ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hff⟩` from `hF g₀ hg₀`. Conclude with `⟨U, fun g => L g • f g, hU, hgU, L.contDiff.contDiffOn.smul hf, fun g hg hG => by simp only [hff g hg hG]⟩`. Take `⟨c, hc⟩` from `hF`.
+
+Move the coercions through the operations in `at hc`. Use `set Λ : Mat k r →L[ℝ] ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) := ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))).restrictScalars ℝ).comp L with hΛdef`. Establish `hΛ : ∀ g, Λ g = L g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)` using `fun g => by simp [Λ]`. Take `⟨K, hK⟩ : ∃ K : ℝ, ∀ M, ‖Λ M‖ ≤ K * ‖M‖` from `⟨_, Λ.le_opNorm⟩`. Establish `ha : CkOn (m : ℕ∞) Set.univ (fun g => Λ g)` using `fun g₀ _ => ⟨Set.univ, fun g => Λ g, isOpen_univ, trivial, Λ.contDiff.contDiffOn, fun _ _ _ => rfl⟩`.
+
+Establish `hab : ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ GV k r, g ∉ (∅ : Set (Mat k r)) → ‖dLR u v (fun g => Λ g) g‖ ≤ (K * ((2 * r + k + 1 : ℕ) : ℝ) ^ (2 * m + 2)) * gN g ^ (1 : ℝ)`. Introduce `u v hu hv hl g _ _`. Rewrite using `[Real.rpow_one]`. Conclude with `mn_dLR_lin_bound Λ K hK m u v hu hv hl g`. Establish `hb` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.prodBound (O := ∅) (UU := Set.univ) isOpen_empty (fun g _ => Or.inr trivial) (A := A) (d := 1) ha hab hc (fun g _ h => h.elim)`.
+
+Establish `e : (fun g => L g • F g) = Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap (fun g => Λ g) F`. Use function extensionality and compare the values at `g`. Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap, hΛ]`. Rewrite using `[e]`. Conclude with `⟨_, hb⟩`.
+-/
 theorem sq_good_lin (L : Mat k r →L[ℝ] ℂ) : sqGood Wp Wq 1 (fun g => L g) := by
   refine ⟨fun F hF => ?_, fun A m F hF => ?_⟩
   · intro g₀ hg₀
@@ -1821,51 +2360,84 @@ structure sqGr (S : ℕ → D.Op X → Prop) : Prop where
 
 variable {S : ℕ → D.Op X → Prop} {Sl : Type} [Fintype Sl] [DecidableEq Sl]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (S N) (hS.add N) (hS.zero N) h`.
+-/
 theorem sq_gr_sum (hS : sqGr S) (N : ℕ) {ι : Type*} (s : Finset ι) (f : ι → D.Op X) (h : ∀ i ∈ s, S N (f i)) :
     S N (∑ i ∈ s, f i) :=
   Finset.sum_induction f (S N) (hS.add N) (hS.zero N) h
 
 def sqAll (S : ℕ → D.Op X → Prop) (N : ℕ) (M : Wd.SlopeTestRemainingChoices Sl (D.Op X)) : Prop := ∀ a b, S N (M a b)
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.mul_apply] exact sq_gr_sum hS _ _ _ fun c _ => hS.mul _ _ _ _ (hM a c) (hM' c b)`.
+-/
 theorem sq_all_mul (hS : sqGr S) {N N' : ℕ} {M M' : Wd.SlopeTestRemainingChoices Sl (D.Op X)} (hM : sqAll S N M) (hM' : sqAll S N' M') :
     sqAll S (N + N') (M * M') := fun a b => by
   rw [Matrix.mul_apply]
   exact sq_gr_sum hS _ _ _ fun c _ => hS.mul _ _ _ _ (hM a c) (hM' c b)
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.add_apply] exact hS.add _ _ _ (hM a b) (hM' a b)`.
+-/
 theorem sq_all_add (hS : sqGr S) {N : ℕ} {M M' : Wd.SlopeTestRemainingChoices Sl (D.Op X)} (hM : sqAll S N M) (hM' : sqAll S N M') :
     sqAll S N (M + M') := fun a b => by
   rw [Matrix.add_apply]
   exact hS.add _ _ _ (hM a b) (hM' a b)
 
+/- English proof (translation)
+Introduce `_ _` and use `hS.zero N`.
+-/
 theorem sq_all_zero (hS : sqGr S) (N : ℕ) : sqAll S N (0 : Wd.SlopeTestRemainingChoices Sl (D.Op X)) := fun _ _ => hS.zero N
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.one_apply] split_ifs exacts [hS.one, hS.zero 0]`.
+-/
 theorem sq_all_one (hS : sqGr S) : sqAll S 0 (1 : Wd.SlopeTestRemainingChoices Sl (D.Op X)) := fun a b => by
   rw [Matrix.one_apply]
   split_ifs
   exacts [hS.one, hS.zero 0]
 
+/- English proof (translation)
+Introduce `_ _` and use `hS.cop _`.
+-/
 theorem sq_all_map (hS : sqGr S) (A : Wd.SlopeTestRemainingChoices Sl ℂ) : sqAll S 0 (A.map D.cOp) := fun _ _ => hS.cop _
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.diagonal_apply] split_ifs exacts [hx, hS.zero N]`.
+-/
 theorem sq_all_diag (hS : sqGr S) {N : ℕ} (x : D.Op X) (hx : S N x) :
     sqAll S N (Matrix.diagonal fun _ : Wd.Ix Sl => x) := fun a b => by
   rw [Matrix.diagonal_apply]
   split_ifs
   exacts [hx, hS.zero N]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (sqAll S N) (fun _ _ => sq_all_add hS) (sq_all_zero hS N) h`.
+-/
 theorem sq_all_sum (hS : sqGr S) (N : ℕ) {ι : Type*} (s : Finset ι) (f : ι → Wd.SlopeTestRemainingChoices Sl (D.Op X))
     (h : ∀ i ∈ s, sqAll S N (f i)) : sqAll S N (∑ i ∈ s, f i) :=
   Finset.sum_induction f (sqAll S N) (fun _ _ => sq_all_add hS) (sq_all_zero hS N) h
 
 def sqAll2 (S : ℕ → D.Op X → Prop) (N : ℕ) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) : Prop := ∀ p q, sqAll S N (M p q)
 
+/- English proof (translation)
+Introduce `p q` and use `by rw [Matrix.mul_apply, ← h] exact sq_all_sum hS _ _ _ fun c _ => sq_all_mul hS (hM p c) (hM' c q)`.
+-/
 theorem degree_entries_mul (hS : sqGr S) {N N' N'' : ℕ} (h : N + N' = N'') {M M' : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))}
     (hM : sqAll2 S N M) (hM' : sqAll2 S N' M') : sqAll2 S N'' (M * M') := fun p q => by
   rw [Matrix.mul_apply, ← h]
   exact sq_all_sum hS _ _ _ fun c _ => sq_all_mul hS (hM p c) (hM' c q)
 
+/- English proof (translation)
+Introduce `p q` and use `hM q p`.
+-/
 theorem degree_entries_transpose {N : ℕ} {M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))} (hM : sqAll2 S N M) : sqAll2 S N M.transpose :=
   fun p q => hM q p
 
+/- English proof (translation)
+Introduce `p q` and use `by unfold D.scal rw [Matrix.map_apply] exact sq_all_map hS _`.
+-/
 theorem degree_entries_scalar_matrix (hS : sqGr S) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl ℂ)) :
     sqAll2 S 0 (D.scal M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) :=
   fun p q => by
@@ -1873,6 +2445,11 @@ theorem degree_entries_scalar_matrix (hS : sqGr S) (M : Wd.M2 (Wd.SlopeTestRemai
     rw [Matrix.map_apply]
     exact sq_all_map hS _
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Introduce `p q`. Simplify using `only [D.TTop, Matrix.map_apply]`. Conclude with `sq_all_diag hS _ (hQQ Y p q)`.
+
+Consider the case `cons l w ih`. Simplify using `only [D.TTop]`. Use `split_ifs`. Conclude with `degree_entries_mul hS (by omega) ih (degree_entries_scalar_matrix hS _)`. Conclude with `degree_entries_mul hS (by omega) (degree_entries_scalar_matrix hS _) ih`.
+-/
 theorem sq_TTop (hS : sqGr S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q, S 1 (QQ Y p q))
     (w : List (Wd.Letter ℂ Sl)) (Y : ℂ) : sqAll2 S 1 (D.TTop QQ w Y) := by
   induction w with
@@ -1886,6 +2463,9 @@ theorem sq_TTop (hS : sqGr S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q, S 
     · exact degree_entries_mul hS (by omega) ih (degree_entries_scalar_matrix hS _)
     · exact degree_entries_mul hS (by omega) (degree_entries_scalar_matrix hS _) ih
 
+/- English proof (translation)
+Unfold `D.insOp`. Use `sq_all_sum hS 1 _ _ fun i _ => sq_all_sum hS 1 _ _ fun j _ => ?_` and prove the remaining obligations. Use `sq_all_mul hS (sq_all_map hS (Wd.eU a i j : Wd.SlopeTestRemainingChoices Sl ℂ)) (hM i j)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sq_insOp (hS : sqGr S) (a : Sl) (M : Wd.M2 (Wd.SlopeTestRemainingChoices Sl (D.Op X))) (hM : sqAll2 S 1 M) :
     sqAll S 1 (D.insOp a M) := by
   unfold D.insOp
@@ -1893,6 +2473,11 @@ theorem sq_insOp (hS : sqGr S) (a : Sl) (M : Wd.M2 (Wd.SlopeTestRemainingChoices
   have := sq_all_mul hS (sq_all_map hS (Wd.eU a i j : Wd.SlopeTestRemainingChoices Sl ℂ)) (hM i j)
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact sq_all_one hS`. Consider the case `cons l w ih`. Simplify using `only [D.RRop]`. Use `sq_all_mul hS ih (sq_insOp hS _ _ ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `sq_TTop hS QQ hQQ w l.pt`. Conclude with `degree_entries_transpose (sq_TTop hS QQ hQQ w l.pt)`.
+-/
 theorem sq_rrop (hS : sqGr S) (QQ : ℂ → Wd.M2 (D.Op X)) (hQQ : ∀ Y p q, S 1 (QQ Y p q))
     (w : List (Wd.Letter ℂ Sl)) : sqAll S w.length (D.RRop QQ w) := by
   induction w with
@@ -1920,6 +2505,9 @@ def sqS (N : ℕ) (Θ : D.Op (Mat k r → (Wq →L[ℂ] Wp))) : Prop :=
 
 variable {Wp Wq}
 
+/- English proof (translation)
+Simplify using `[Q.Glev]`.
+-/
 theorem sq_glev0 (g : Mat k r) : g ∈ Q.Glev k r 0 ↔ g ∈ GV k r := by
   simp [Q.Glev]
 
@@ -1943,6 +2531,11 @@ section sqBeta
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `show ∫ p, JF.xiP D p • rho D p F g ∂D.μSS = ∫ p, JF.xiP D p • rho D p F₂ g ∂D.μSS`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`. Take `⟨h1, h2, h3, h4⟩` from `hp`. Establish `hs : sgs p g ∈ GV k r`.
+
+Unfold `sgs`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv h …`. Simplify using `only [rho, h _ hs]`.
+-/
 theorem sq_jf_congr (D : RealPlaceData k r Wp Wq) {F F₂ : Mat k r → (Wq →L[ℂ] Wp)} (h : ∀ g ∈ GV k r, F g = F₂ g)
     {g : Mat k r} (hg : g ∈ GV k r) : JF D F g = JF D F₂ g := by
   show ∫ p, JF.xiP D p • rho D p F g ∂D.μSS = ∫ p, JF.xiP D p • rho D p F₂ g ∂D.μSS
@@ -1955,6 +2548,9 @@ theorem sq_jf_congr (D : RealPlaceData k r Wp Wq) {F F₂ : Mat k r → (Wq →L
       (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv h1.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv h2.1)) hg) h4.1) h3.1
   simp only [rho, h _ hs]
 
+/- English proof (translation)
+Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => by positivity) (pow_nonneg (sub_nonneg.2 h) _)`. Conclude with `le_rfl`.
+-/
 theorem sq_bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight
   split_ifs with h
@@ -1963,6 +2559,11 @@ theorem sq_bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcW
 
 variable [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.beta betaBig`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.big_cell_orbit_set k r Wp Wq D)] with q hq`. Distinguish the cases in `hQ : q ∈ B.Qset D`. Establish `hg : bigCell k r q.1 (D.μsec q.2) ∈ GV k r` using `(hq hQ).1 show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G (bigCell k r q.1 (D.μsec q.2)))) (hsVec (JF D F (bigCell k r q.1 (D.μsec q.2)))) = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (hsVec (JF D G (bigCell k r q.1 (D.μsec q.2)))) (hs …`.
+
+Rewrite using `[sq_jf_congr D h hg]`. Establish `hw : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0` using `le_antisymm (not_lt.1 hQ) (sq_bcWeight_nonneg _ _ q) show (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _ = (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * _`. Rewrite using `[hw]`. Simplify using the standard rewrite rules.
+-/
 theorem sq_beta_congr (D : RealPlaceData k r Wp Wq) {F F₂ G : Mat k r → (Wq →L[ℂ] Wp)}
     (h : ∀ g ∈ GV k r, F g = F₂ g) : beta D F G = beta D F₂ G := by
   unfold B.beta betaBig
@@ -1983,6 +2584,11 @@ theorem sq_beta_congr (D : RealPlaceData k r Wp Wq) {F F₂ G : Mat k r → (Wq 
 
 variable [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Take `⟨c0, -, -, -, hβ, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D A hA`. Take `⟨Ξ, hCB, hXi⟩` from `Formalism.FourierDecayAlt.P.exists_auxiliary_xi k r Wp Wq D A hA`. Establish `hS` using `(Formalism.FourierDecayAlt.P.regularized_beta_bound_continuity_sesquilinear k r Wp Wq D Ξ A hA hCB hXi).2.2 (1, 1) ⟨by norm_num, by norm_num⟩`. Establish `h4 : ∀ {H : Mat k r → (Wq →L[ℂ] Wp)}, InCC A 5 H → InCC A 4 H` using `fun h => sq_inCC_mono le_rfl (by norm_num) h`. Establish `hcF' : InCC A 5 (c • F')` using `sq_inCC_smul c hF'`.
+
+Establish `hsum : InCC A 5 (F + c • F')` using `sq_inCC_add hF hcF'`. Rewrite using `[hβ _ _ hsum hG, hβ _ _ hF hG, hβ _ _ hF' hG, hβ _ _ hG hsum, hβ _ _ hG hF, hβ _ _ hG hF']`. Unfold `betaInf`. Rewrite using `[hS.1 _ _ _ (h4 hF) (h4 hcF') (h4 hG), hS.2.2.1 c _ _ (h4 hF') (h4 hG), hS.2.1 _ _ _ (h4 hG) (h4 hF) (h4 hcF'), hS.2.2.2 c _ _ (h4 hG) (h4 hF')]`. Apply the tactic sequence `constructor <;> ring`.
+-/
 theorem sq_beta_sesq (D : RealPlaceData k r Wp Wq) {A : ℝ} (hA : AB k r ≤ A) {F F' G : Mat k r → (Wq →L[ℂ] Wp)}
     (hF : InCC A 5 F) (hF' : InCC A 5 F') (hG : InCC A 5 G) (c : ℂ) :
     beta D (F + c • F') G = beta D F G + c * beta D F' G ∧
@@ -2033,6 +2639,9 @@ variable {k r : ℕ}
 
 def rbO (T T' : ℝ) : Set ℂ := {ζ | T * T' < Complex.normSq ζ}
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const Complex.continuous_normSq`.
+-/
 theorem rb_isOpen_O (T T' : ℝ) : IsOpen (rbO T T') :=
   isOpen_lt continuous_const Complex.continuous_normSq
 
@@ -2041,6 +2650,11 @@ def rbEf (k r : ℕ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (�
 def rbE (k r : ℕ) (T T' : ℝ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (ζ : ℂ) : Mt k r :=
   (rbO T T').indicator (rbEf k r μsec) ζ
 
+/- English proof (translation)
+Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [rbEf, B2.embWb]`. Use `split_ifs`. Conclude with `hsec _ _`. Conclude with `continuousOn_const`.
+
+Conclude with `continuousOn_const`.
+-/
 theorem rb_contOn_E {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hsec : ∀ i j, ContinuousOn (fun ζ => μsec ζ i j) (rbO T T')) :
     ContinuousOn (rbEf k r μsec) (rbO T T') := by
@@ -2051,12 +2665,18 @@ theorem rb_contOn_E {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k +
   · exact continuousOn_const
   · exact continuousOn_const
 
+/- English proof (translation)
+The claim follows from `B7.meas_ind (rb_isOpen_O T T').measurableSet (rb_contOn_E hsec)`.
+-/
 theorem rb_measurable_E {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hsec : ∀ i j, ContinuousOn (fun ζ => μsec ζ i j) (rbO T T')) : Measurable (rbE k r T T' μsec) :=
   B7.meas_ind (rb_isOpen_O T T').measurableSet (rb_contOn_E hsec)
 
 def rbMul (p : Mt k r × Mt k r) : Mt k r := B7.mulM p.1 p.2
 
+/- English proof (translation)
+The claim follows from `(B7.continuous_mulM (k := k) (r := r)).measurable`.
+-/
 theorem rb_measurable_mul : Measurable (rbMul (k := k) (r := r)) :=
   (B7.continuous_mulM (k := k) (r := r)).measurable
 
@@ -2064,6 +2684,9 @@ def rbPsi (k r : ℕ) (T T' : ℝ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k
     (a : ℂ × (Mt k r × Mt k r)) : Mt k r :=
   rbMul (rbMul (B7.invM a.2.1, rbE k r T T' μsec a.1), a.2.2)
 
+/- English proof (translation)
+Establish `hi : Measurable fun a : ℂ × (Mt k r × Mt k r) => B7.invM a.2.1` using `B7.measurable_invM.comp (measurable_fst.comp measurable_snd)`. Establish `he : Measurable fun a : ℂ × (Mt k r × Mt k r) => rbE k r T T' μsec a.1` using `(rb_measurable_E hsec).comp measurable_fst`. Establish `h1 : Measurable fun a : ℂ × (Mt k r × Mt k r) => rbMul (B7.invM a.2.1, rbE k r T T' μsec a.1)` using `rb_measurable_mul.comp (hi.prodMk he)`. Establish `h3 : Measurable fun a : ℂ × (Mt k r × Mt k r) => a.2.2` using `measurable_snd.comp measurable_snd`. Conclude with `rb_measurable_mul.comp (h1.prodMk h3)`.
+-/
 theorem rb_measurable_Psi {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hsec : ∀ i j, ContinuousOn (fun ζ => μsec ζ i j) (rbO T T')) : Measurable (rbPsi k r T T' μsec) := by
   have hi : Measurable fun a : ℂ × (Mt k r × Mt k r) => B7.invM a.2.1 :=
@@ -2075,6 +2698,9 @@ theorem rb_measurable_Psi {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fi
   have h3 : Measurable fun a : ℂ × (Mt k r × Mt k r) => a.2.2 := measurable_snd.comp measurable_snd
   exact rb_measurable_mul.comp (h1.prodMk h3)
 
+/- English proof (translation)
+Simplify using `only [rbPsi, rbMul, B7.mulM, B7.invM, rbE, Set.indicator_of_mem hζ]`. Both sides reduce to the same expression.
+-/
 theorem rb_Psi_eq {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} {ζ : ℂ} (hζ : ζ ∈ rbO T T')
     (x y : Mt k r) :
     rbPsi k r T T' μsec (ζ, (x, y)) = ((Matrix.of x)⁻¹ * B2.embWb k r (μsec ζ) * Matrix.of y : B.Mat k r) := by
@@ -2083,18 +2709,27 @@ theorem rb_Psi_eq {T T' : ℝ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1
 
 def rbW (k : ℕ) (T T' : ℝ) (ζ : ℂ) : ℝ≥0∞ := ENNReal.ofReal (B2.zWeight k T T' ζ)
 
+/- English proof (translation)
+Unfold `rbW B2.zWeight`. Use `ENNReal.measurable_ofReal.comp (Measurable.ite ?_ ?_ measurable_const)` and prove the remaining obligations. Conclude with `measurableSet_le measurable_const Complex.continuous_normSq.measurable`. Conclude with `((Complex.continuous_normSq.sub continuous_const).pow _).measurable`.
+-/
 theorem measurable_radial_weight (k : ℕ) (T T' : ℝ) : Measurable (rbW k T T') := by
   unfold rbW B2.zWeight
   refine ENNReal.measurable_ofReal.comp (Measurable.ite ?_ ?_ measurable_const)
   · exact measurableSet_le measurable_const Complex.continuous_normSq.measurable
   · exact ((Complex.continuous_normSq.sub continuous_const).pow _).measurable
 
+/- English proof (translation)
+Unfold `B2.zWeight`. Use `split_ifs with h`. Conclude with `pow_nonneg (by linarith) _`. Conclude with `le_rfl`.
+-/
 theorem rb_zWeight_nonneg (k : ℕ) (T T' : ℝ) (ζ : ℂ) : 0 ≤ B2.zWeight k T T' ζ := by
   unfold B2.zWeight
   split_ifs with h
   · exact pow_nonneg (by linarith) _
   · exact le_rfl
 
+/- English proof (translation)
+Establish `hs : (volume : Measure ℂ) (Metric.sphere 0 (Real.sqrt (T * T'))) = 0` using `Measure.addHaar_sphere_of_ne_zero _ _ (Real.sqrt_pos.2 hc).ne'`. Use `ae_iff.2 (measure_mono_null ?_ hs)` and prove the remaining obligations. Introduce `ζ hζ`. Simplify using `only [ne_eq, not_not, Set.mem_ofPred_eq] at hζ`. Rewrite using `[mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem rb_ae_ne_circle {T T' : ℝ} (hc : 0 < T * T') : ∀ᵐ ζ : ℂ, Complex.normSq ζ ≠ T * T' := by
   have hs : (volume : Measure ℂ) (Metric.sphere 0 (Real.sqrt (T * T'))) = 0 :=
     Measure.addHaar_sphere_of_ne_zero _ _ (Real.sqrt_pos.2 hc).ne'
@@ -2103,6 +2738,9 @@ theorem rb_ae_ne_circle {T T' : ℝ} (hc : 0 < T * T') : ∀ᵐ ζ : ℂ, Comple
   simp only [ne_eq, not_not, Set.mem_ofPred_eq] at hζ
   rw [mem_sphere_zero_iff_norm, ← hζ, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Unfold `B2.zWeight`. Rewrite using `[if_neg]`. Introduce `hle`. Conclude with `h1 (lt_of_le_of_ne hle (Ne.symm h2))`.
+-/
 theorem rb_zWeight_zero_of_not {k : ℕ} {T T' : ℝ} {ζ : ℂ} (h1 : ζ ∉ rbO T T') (h2 : Complex.normSq ζ ≠ T * T') :
     B2.zWeight k T T' ζ = 0 := by
   unfold B2.zWeight
@@ -2113,6 +2751,15 @@ theorem rb_zWeight_zero_of_not {k : ℕ} {T T' : ℝ} {ζ : ℂ} (h1 : ζ ∉ rb
 def rbP (k r : ℕ) (T T' : ℝ) (μW μW' : Measure (Mt k r)) : Measure (ℂ × (Mt k r × Mt k r)) :=
   ((volume : Measure ℂ).withDensity (rbW k T T')).prod (μW.prod μW')
 
+/- English proof (translation)
+Use `B7.sf hW` as an intermediate fact. Use `B7.sf hW'` as an intermediate fact. Establish `hcont : ∀ i j, ContinuousOn (fun ζ => μsec ζ i j) (rbO (Tz k r z) (Tz k r z'))` using `fun i j => (hsec.1 i j).continuousOn`. Take `⟨C, hC, hI⟩` from `Formalism.FourierDecayAlt.P.rank_one_integration_formula k r z z' μsec μb μW μW' hk hz hz' hT hT' hsec hb hW hW'`. Use `⟨C, hC, Measure.ext_of_lintegral _ fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `hΨ` using `rb_measurable_Psi (k := k) (r := r) hcont`. Establish `hfΨ : Measurable fun a : ℂ × (Mt k r × Mt k r) => f (rbPsi k r (Tz k r z) (Tz k r z') μsec a)` using `hf.comp hΨ`. Rewrite using `[lintegral_smul_measure, lintegral_map hf hΨ]`. Unfold `rbP`. Rewrite using `[lintegral_prod _ hfΨ.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ (measurable_radial_weight k _ _) hfΨ.lintegral_prod_right', hI f hf]`.
+
+Use `congr 1`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [rb_ae_ne_circle (mul_pos hT hT')] with ζ hζ`. Distinguish the cases in `h : ζ ∈ rbO (Tz k r z) (Tz k r z')`. Simplify using `only [Pi.mul_apply, rbW]`.
+
+Use `congr 1`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[rb_Psi_eq h]`. Simplify using `only [Pi.mul_apply, rbW, rb_zWeight_zero_of_not h hζ, ENNReal.ofReal_zero, zero_mul]`.
+-/
 theorem rb_map {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     {μb μW μW' : Measure (Mt k r)} (hk : 1 ≤ k) (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z)
     (hT' : 0 < Tz k r z') (hsec : IsSection k r z z' μsec) (hb : B.IsHaarOn (B2.UWb k r) μb)
@@ -2155,6 +2802,19 @@ section rankOneB
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `B7.sf hW` as an intermediate fact. Use `B7.sf hW'` as an intermediate fact. Establish `hcont : ∀ i j, ContinuousOn (fun ζ => μsec ζ i j) (rbO (Tz k r z) (Tz k r z'))` using `fun i j => (hsec.1 i j).continuousOn`. Substitute `hmap` using the available equality. Rewrite using `[integral_smul_measure, integral_map (rb_measurable_Psi hcont).aemeasurable hφ.aestronglyMeasurable]`.
+
+Establish `h1 : ∀ᵐ ζ ∂((volume : Measure ℂ).withDensity (rbW k (Tz k r z) (Tz k r z'))), ζ ∈ rbO (Tz k r z) (Tz k r z')`. Rewrite using `[ae_withDensity_iff (measurable_radial_weight k _ _)]`. Use `filter_upwards [rb_ae_ne_circle (mul_pos hT hT')] with ζ hζ hw`. Assume the negation of the conclusion as `h`. Conclude with `hw (by simp [rbW, rb_zWeight_zero_of_not h hζ])`.
+
+Establish `h2 : ∀ᵐ p ∂(μW.prod μW'), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ UWset k r z'`. Establish `a1` using `(Measure.quasiMeasurePreserving_fst (μ := μW) (ν := μW')).ae (B7.ae_mem hW)`. Establish `a2` using `(Measure.quasiMeasurePreserving_snd (μ := μW) (ν := μW')).ae (B7.ae_mem hW')`. Use `filter_upwards [a1, a2] with p hp1 hp2 using ⟨hp1, hp2⟩`. Establish `hae : ∀ᵐ a ∂(rbP k r (Tz k r z) (Tz k r z') μW μW'), φ (rbPsi k r (Tz k r z) (Tz k r z') μsec a) = ψ a.1`.
+
+Establish `g1` using `(Measure.quasiMeasurePreserving_fst (μ := (volume : Measure ℂ).withDensity (rbW k (Tz k r z) (Tz k r z'))) (ν := μW.prod μW')).ae h1`. Establish `g2` using `(Measure.quasiMeasurePreserving_snd (μ := (volume : Measure ℂ).withDensity (rbW k (Tz k r z) (Tz k r z'))) (ν := μW.prod μW')).ae h2`. Unfold `rbP`. Use `filter_upwards [g1, g2] with a ha1 ha2`. Conclude with `hψ a.1 ha1 a.2.1 a.2.2 ha2.1 ha2.2`.
+
+Rewrite using `[integral_congr_ae hae]`. Unfold `rbP`. Rewrite using `[integral_fun_fst (fun ζ => ψ ζ), integral_withDensity_eq_integral_toReal_smul (measurable_radial_weight k _ _) (Filter.Eventually.of_forall fun ζ => ENNReal.ofReal_lt_top)]`. Establish `e : ∀ ζ, (rbW k (Tz k r z) (Tz k r z') ζ).toReal • ψ ζ = (B2.zWeight k (Tz k r z) (Tz k r z') ζ : ℂ) * ψ ζ`. Introduce `ζ`.
+
+Rewrite using `[rbW, ENNReal.toReal_ofReal (rb_zWeight_nonneg k _ _ ζ), Complex.real_smul]`. Simplify using `only [e]`. Rewrite using `[ENNReal.coe_toReal, smul_smul, Complex.real_smul]`.
+-/
 theorem rb_integral {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     {μb μW μW' : Measure (Mt k r)} {C : ℝ≥0} (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     (hsec : IsSection k r z z' μsec) (hW : B.IsHaarOn (UWset k r z) μW) (hW' : B.IsHaarOn (UWset k r z') μW')
@@ -2216,6 +2876,21 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Take `⟨h0, hs, -⟩` from `Φ.2`. Use `set S : Set (Mt k r) := {x | (c, Matrix.of x) ∈ Q.DomR k r z z'} with hSdef`. Establish `hS : MeasurableSet S`. Distinguish the cases in `hc : c ∈ OmX r`. Establish `e : S = {x : Mt k r | Matrix.of x ∈ Q.Glev k r (Fin.last r)} ∩ {x : Mt k r | 0 < Q.GGl k r z z' (Matrix.of x)}`.
+
+Use extensionality with `x`. Simplify using `only [hSdef, Q.DomR, Set.mem_ofPred_eq, Set.mem_inter_iff, hc, true_and]`. Rewrite using `[e]`. Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations. Establish `hcl : IsClosed {x : Mt k r | Matrix.of x ∈ Q.Glev k r (Fin.last r)}` using `(Formalism.FourierDecayAlt.P.Qx5.Glev_closed (k := k) (r := r) (Fin.last r)).preimage (f := fun x : Mt k r => (Matrix.of x : Q.Mx k r)) continuous_id`.
+
+Conclude with `hcl.measurableSet`. Establish `hGc : Continuous fun x : Mt k r => Q.GGl k r z z' (Matrix.of x)` using `(Formalism.FourierDecayAlt.P.Qx5.GGl_continuous k r z z').comp (f := fun x : Mt k r => (Matrix.of x : Q.Mx k r)) continuous_id`. Conclude with `measurableSet_lt measurable_const hGc.measurable`. Establish `e : S = ∅`. Use extensionality with `x`.
+
+Simplify using `only [hSdef, Q.DomR, Set.mem_ofPred_eq, hc, false_and, Set.mem_empty_iff_false]`. Rewrite using `[e]`. Conclude with `MeasurableSet.empty`. Establish `hcont : ContinuousOn (fun x : Mt k r => (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) S`. Introduce `x hx`.
+
+Take `⟨U, F, hU, hxU, hF, hΦF⟩` from `hs (c, Matrix.of x) hx`. Establish `hpc : Continuous fun y : Mt k r => ((c, Matrix.of y) : (Fin r → ℂ) × Q.Mx k r)` using `continuous_const.prodMk continuous_id`. Establish `hFc : ContinuousAt (fun y : Mt k r => F (c, Matrix.of y)) x` using `(hF.continuousOn.continuousAt (hU.mem_nhds hxU)).comp hpc.continuousAt`. Use `hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hΦF _ hxU hx.2.1)` and prove the remaining obligations. Establish `hUx : (fun y : Mt k r => ((c, Matrix.of y) : (Fin r → ℂ) × Q.Mx k r)) ⁻¹' U ∈ nhds x` using `hpc.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU)`.
+
+Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds hUx] with y hyS hyU`. Conclude with `hΦF _ hyU hyS.2.1`. Establish `heq : (fun x : Mt k r => (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) = S.indicator (fun x : Mt k r => (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x))`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ S`.
+
+Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `h0 (c, Matrix.of x) hx`. Rewrite using `[heq]`. Conclude with `B7.sm_ind hS hcont`.
+-/
 theorem rb_slice_sm (Φ : Q.RadSp k r z z' π π') (c : Fin r → ℂ) :
     StronglyMeasurable fun x : Mt k r => (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x) := by
   classical
@@ -2263,6 +2938,9 @@ theorem rb_slice_sm (Φ : Q.RadSp k r z z' π π') (c : Fin r → ℂ) :
   rw [heq]
   exact B7.sm_ind hS hcont
 
+/- English proof (translation)
+The claim follows from `B6.hsInner_continuous.comp_stronglyMeasurable ((rb_slice_sm Φ c).prodMk (rb_slice_sm Ψ c))`.
+-/
 theorem rb_pair_sm (Φ Ψ : Q.RadSp k r z z' π π') (c : Fin r → ℂ) :
     StronglyMeasurable fun x : Mt k r =>
       B.hsInner ((Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) ((Ψ : Q.Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of x)) :=
@@ -2286,13 +2964,32 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def rbGauge (k r : ℕ) (c : Fin r → ℂ) : ℝ :=
   ∏ a : Fin r, (if a.val < (Fin.last r).val then ‖c a‖ ^ (Mdim k r a - 1) else 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hg.1, fun a _ => hg.2 a⟩`.
+-/
 theorem rb_uwb_glev {g : Q.Mx k r} (hg : g ∈ B2.UWb k r) : g ∈ Q.Glev k r (Fin.last r) :=
   ⟨hg.1, fun a _ => hg.2 a⟩
 
+/- English proof (translation)
+Use extensionality with `g`. Conclude with `⟨rb_uwb_glev, P5.Rad.glev_last_uwb⟩`.
+-/
 theorem rb_uwb_eq : (B2.UWb k r : Set (Q.Mx k r)) = Q.Glev k r (Fin.last r) := by
   ext g
   exact ⟨rb_uwb_glev, P5.Rad.glev_last_uwb⟩
 
+/- English proof (translation)
+Establish `hP : (Matrix.of (rbPsi k r (Tz k r D.z) (Tz k r D.z') D.μsec (ζ, (x, y))) : Q.Mx k r) = (Matrix.of x)⁻¹ * B2.embWb k r (D.μsec ζ) * Matrix.of y`. Rewrite using `[rb_Psi_eq hζ]`. Both sides reduce to the same expression. Rewrite using `[hP]`. Take `⟨hmem, hherm⟩` from `Formalism.FourierDecayAlt.P.b2_rank_one_mem k r D.z D.z' D.μsec D.z_mem D.z'_mem D.sec ζ hζ (Matrix.of x) hx (Matrix.of y) hy`.
+
+Establish `hdom : (c, (Matrix.of x)⁻¹ * B2.embWb k r (D.μsec ζ) * Matrix.of y) ∈ Q.DomR k r D.z D.z'`. Use `⟨hc, rb_uwb_glev hmem, ?_⟩` and prove the remaining obligations. Unfold `Q.GGl`. Rewrite using `[P5.Rad.zetaL_last, hherm]`. Conclude with `sub_pos.2 hζ`.
+
+Establish `hinv : (Matrix.of x)⁻¹ ∈ UWset k r D.z` using `WeylGroupFacts.uw_inv hx`. Establish `hfacts` using `Formalism.FourierDecayAlt.P.unipotent_weyl_properties k r`. Establish `hcomm : (Matrix.of x)⁻¹ * bigCell k r c 1 = bigCell k r c 1 * (Matrix.of x)⁻¹` using `hfacts.2.2 c _ (hfacts.2.1 D.z hinv)`. Establish `hcell : Q.wCell k r (Fin.last r) c * ((Matrix.of x)⁻¹ * B2.embWb k r (D.μsec ζ) * Matrix.of y) = (Matrix.of x)⁻¹ * B.gq D (c, ζ) * Matrix.of y`. Rewrite using `[P5.Rad.wCell_last_eq, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hcomm, Matrix.mul_assoc _ (bigCell k r c 1), ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization k r c (D.μsec ζ)).1]`.
+
+Both sides reduce to the same expression. Rewrite using `[hΦ _ hdom, hΦ' _ hdom]`. Simplify using `only [Q.resG]`. Rewrite using `[hcell, P5.jf_uEquiv D F _ hinv hy, P5.jf_uEquiv D F' _ hinv hy, B6.hsInner_smul_left, B6.hsInner_smul_right]`. Establish `hinv2 : B.hsInner ((D.π (Matrix.of x)⁻¹).comp ((B.JF D F (B.gq D (c, ζ))).comp (D.π' (Matrix.of y)))) ((D.π (Matrix.of x)⁻¹).comp ((B.JF D F' (B.gq D (c, ζ))).comp (D.π' (Matrix.of y)))) = B.hsInner (B.JF D F (B.gq D (c, ζ))) (B.JF D F' (B.gq D (c, ζ)))`.
+
+Unfold `B.hsInner`. Conclude with `B7.al_hs_inv _ (D.π_unitary _ hinv) _ (D.π'_unitary _ hy) _ _`. Rewrite using `[hinv2, Complex.conj_ofReal]`. Unfold `rbGauge`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rb_point (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r → (Wq →L[ℂ] Wp))
     (Φ Φ' : Q.RadSp k r D.z D.z' D.π D.π')
     (hΦ : ∀ y ∈ Q.DomR k r D.z D.z',
@@ -2353,6 +3050,13 @@ section pairAt
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hμb : B.IsHaarOn (B2.UWb k r) μ`. Rewrite using `[rb_uwb_eq]`. Conclude with `hμ`. Take `⟨C, hC, hmap⟩` from `rb_map D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos D.sec hμb D.haarW D.haarW'`. Establish `hfW : IsFiniteMeasure D.μW` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW D.z_mem D.T_pos D.haarW`.
+
+Establish `hfW' : IsFiniteMeasure D.μW'` using `RankOneEmbeddings.R1.haar_finite B2x3.compactW D.z'_mem D.T'_pos D.haarW'`. Establish `hm : 0 < (D.μW.prod D.μW').real Set.univ`. Rewrite using `[Measure.real_def, ← Set.univ_prod_univ, Measure.prod_prod, ENNReal.toReal_mul]`. Use `mul_pos (ENNReal.toReal_pos ?_ (measure_ne_top _ _)) (ENNReal.toReal_pos ?_ (measure_ne_top _ _))` and prove the remaining obligations. Conclude with `Measure.measure_univ_ne_zero.2 D.haarW.ne_zero`.
+
+Conclude with `Measure.measure_univ_ne_zero.2 D.haarW'.ne_zero`. Use `⟨(C : ℝ) * (D.μW.prod D.μW').real Set.univ, mul_pos (by exact_mod_cast hC) hm, ?_⟩` and prove the remaining obligations. Introduce `F F' Φ Φ' hΦ hΦ' c hc`. Unfold `P5.pairAt`. Conclude with `rb_integral D.T_pos D.T'_pos D.sec D.haarW D.haarW' hmap _ (rb_pair_sm Φ Φ' c) _ (fun ζ hζ x y hx hy => rb_point D F F' Φ Φ' hΦ hΦ' hc hζ hx hy)`.
+-/
 theorem rb_pairAt (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r))
     (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) μ) :
     ∃ C1 : ℝ, 0 < C1 ∧ ∀ (F F' : B.Mat k r → (Wq →L[ℂ] Wp)) (Φ Φ' : Q.RadSp k r D.z D.z' D.π D.π'),
@@ -2393,11 +3097,19 @@ section weight
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `rbGauge`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by simp [a.isLt])]`.
+-/
 theorem rb_gauge_eq (c : Fin r → ℂ) : rbGauge k r c = ∏ a : Fin r, ‖c a‖ ^ (Mdim k r a - 1) := by
   unfold rbGauge
   refine Finset.prod_congr rfl fun a _ => ?_
   rw [if_pos (by simp [a.isLt])]
 
+/- English proof (translation)
+Rewrite using `[rb_gauge_eq, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Unfold `B2.cWeight`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ht : 0 < ‖c a‖` using `norm_pos_iff.2 (hc a)`. Establish `hM : Mdim k r a - 1 = (Mdim k r a - 2) + 1`.
+
+Use `a.isLt` as an intermediate fact. Unfold `Mdim`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hM, ← pow_mul, show (Mdim k r a - 2 + 1) * 2 = 2 * (Mdim k r a - 2) + 2 by ring, pow_add, _root_.zpow_neg, zpow_two]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rb_cw_eq {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     (∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ)) * rbGauge k r c ^ 2 = B2.cWeight k r c := by
   rw [rb_gauge_eq, ← Finset.prod_pow, ← Finset.prod_mul_distrib]
@@ -2412,12 +3124,18 @@ theorem rb_cw_eq {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     zpow_two]
   field_simp
 
+/- English proof (translation)
+Unfold `bcWeight`. Use `split_ifs with h`. Conclude with `mul_nonneg (Finset.prod_nonneg fun a _ => pow_nonneg (norm_nonneg _) _) (pow_nonneg (by linarith) _)`. Conclude with `le_rfl`.
+-/
 theorem rb_bcWeight_nonneg (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) : 0 ≤ bcWeight k r T T' q := by
   unfold bcWeight
   split_ifs with h
   · exact mul_nonneg (Finset.prod_nonneg fun a _ => pow_nonneg (norm_nonneg _) _) (pow_nonneg (by linarith) _)
   · exact le_rfl
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.weight_factorization k r T T' (c, ζ), ← rb_cw_eq hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rb_weight {c : Fin r → ℂ} (hc : c ∈ OmX r) (T T' : ℝ) (ζ : ℂ) (X : ℂ) :
     ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ((B2.zWeight k T T' ζ : ℂ) * (((rbGauge k r c ^ 2 : ℝ) : ℂ) * X)) =
       (bcWeight k r T T' (c, ζ) : ℂ) * X := by
@@ -2425,6 +3143,11 @@ theorem rb_weight {c : Fin r → ℂ} (hc : c ∈ OmX r) (T T' : ℝ) (ζ : ℂ)
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : ∀ a : Fin r, ∀ᵐ c : Fin r → ℂ, c a ≠ 0`. Introduce `a`. Use `ae_iff.2 ?_` and prove the remaining obligations. Establish `e : {c : Fin r → ℂ | ¬ c a ≠ 0} = Function.eval a ⁻¹' {0}`. Use extensionality with `c`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, volume_pi]`. Conclude with `Measure.pi_eval_preimage_null _ (measure_singleton 0)`. Use `filter_upwards [ae_all_iff.2 h] with c hc`. Conclude with `hc`.
+-/
 theorem rb_ae_OmX : ∀ᵐ c : Fin r → ℂ, c ∈ OmX r := by
   have h : ∀ a : Fin r, ∀ᵐ c : Fin r → ℂ, c a ≠ 0 := by
     intro a
@@ -2444,6 +3167,11 @@ section integrable
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hsm` using `B7.sm_ind (B7.isOpen_good_set D).measurableSet hf`. Use `hsm.aestronglyMeasurable.congr ?_` and prove the remaining obligations. Use `filter_upwards [B7.ae_mem_good_set_or_weight_zero D] with q hq`. Break down `hq with h | h` into its components or cases. Conclude with `Set.indicator_of_mem h _`.
+
+Distinguish the cases in `hq : q ∈ B7.Q0 D`. Conclude with `Set.indicator_of_mem hq _`. Rewrite using `[Set.indicator_of_notMem hq, h0 q h]`.
+-/
 theorem rb_aesm {E : Type*} [NormedAddCommGroup E] [SecondCountableTopology E] (D : B.RealPlaceData k r Wp Wq)
     (f : (Fin r → ℂ) × ℂ → E) (hf : ContinuousOn f (B7.Q0 D))
     (h0 : ∀ q, bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0 → f q = 0) : AEStronglyMeasurable f volume := by
@@ -2456,6 +3184,9 @@ theorem rb_aesm {E : Type*} [NormedAddCommGroup E] [SecondCountableTopology E] (
     · exact Set.indicator_of_mem hq _
     · rw [Set.indicator_of_notMem hq, h0 q h]
 
+/- English proof (translation)
+Establish `hc : Continuous fun q : (Fin r → ℂ) × ℂ => (∏ a : Fin r, ‖q.1 a‖ ^ (2 * (Mdim k r a - 2))) * (Complex.normSq q.2 - Tz k r D.z * Tz k r D.z') ^ (k - 1)` using `(continuous_finsetProd _ fun a _ => (continuous_norm.comp ((continuous_apply a).comp continuous_fst)).pow _).mul (((Complex.continuous_normSq.comp continuous_snd).sub continuous_const).pow _)`. Use `hc.continuousOn.congr fun q hq => ?_` and prove the remaining obligations. Unfold `bcWeight`. Rewrite using `[if_pos hq.2.le]`.
+-/
 theorem rb_contOn_bcW (D : B.RealPlaceData k r Wp Wq) :
     ContinuousOn (bcWeight k r (Tz k r D.z) (Tz k r D.z')) (B7.Q0 D) := by
   have hc : Continuous fun q : (Fin r → ℂ) × ℂ =>
@@ -2466,6 +3197,9 @@ theorem rb_contOn_bcW (D : B.RealPlaceData k r Wp Wq) :
   unfold bcWeight
   rw [if_pos hq.2.le]
 
+/- English proof (translation)
+Establish `h` using `Formalism.FourierDecayAlt.P.jacquet_smooth_coordinates k r Wp Wq D _ 0 F (P5.Rad.thr_big k r 0) (hF _ 0)`. Establish `h2 : ContinuousOn (fun q => B.JF D F (B.gq D q)) (B7.Q0 D)` using `h.continuousOn`. Conclude with `(LinearMap.continuous_of_finiteDimensional (⟨⟨B.hsVec, fun X Y => by ext; simp [B.hsVec]⟩, fun a X => by ext; simp [B.hsVec]⟩ : (Wq →L[ℂ] Wp) →ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp))).comp_continuousOn h2`.
+-/
 theorem rb_contOn_J (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) :
     ContinuousOn (fun q => B.hsVec (B.JF D F (B.gq D q))) (B7.Q0 D) := by
   have h := Formalism.FourierDecayAlt.P.jacquet_smooth_coordinates k r Wp Wq D _ 0 F (P5.Rad.thr_big k r 0) (hF _ 0)
@@ -2474,6 +3208,11 @@ theorem rb_contOn_J (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[
     (⟨⟨B.hsVec, fun X Y => by ext; simp [B.hsVec]⟩, fun a X => by ext; simp [B.hsVec]⟩ :
       (Wq →L[ℂ] Wp) →ₗ[ℂ] PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp))).comp_continuousOn h2
 
+/- English proof (translation)
+Take `⟨-, -, -, ⟨C, hB1⟩, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D (B.AB k r) le_rfl`. Take `⟨c4, hc4⟩` from `hF (B.AB k r) 4`. Establish `hfin` using `(hB1 F F c4 c4 (hF _ 5) (hF _ 5) hc4 hc4).1`. Establish `hmeas : AEStronglyMeasurable (fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2) volume` using `rb_aesm D _ ((rb_contOn_bcW D).mul ((rb_contOn_J D F hF).norm.pow 2)) fun q h => by simp [h]`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun q => mul_nonneg (rb_bcWeight_nonneg _ _ q) (sq_nonneg _))]`. Conclude with `lt_of_le_of_ne le_top hfin`.
+-/
 theorem rb_int_sq (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) :
     Integrable (fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2) := by
   obtain ⟨-, -, -, ⟨C, hB1⟩, -⟩ := Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D (B.AB k r) le_rfl
@@ -2487,6 +3226,13 @@ theorem rb_int_sq (D : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[�
     mul_nonneg (rb_bcWeight_nonneg _ _ q) (sq_nonneg _))]
   exact lt_of_le_of_ne le_top hfin
 
+/- English proof (translation)
+Establish `hmeas : AEStronglyMeasurable (fun q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D F' (B.gq D q))) (B.hsVec (B.JF D F (B.gq D q)))) volume`. Use `rb_aesm D _ ?_ fun q h => by simp [h]` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp_continuousOn (rb_contOn_bcW D)).mul ((rb_contOn_J D F' hF').inner (rb_contOn_J D F hF))`. Use `Integrable.mono' (((rb_int_sq D F hF).add (rb_int_sq D F' hF')).div_const 2) hmeas ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun q => ?_` and prove the remaining obligations.
+
+Use `set b := bcWeight k r (Tz k r D.z) (Tz k r D.z') q`. Use `set u := ‖B.hsVec (B.JF D F (B.gq D q))‖`. Use `set v := ‖B.hsVec (B.JF D F' (B.gq D q))‖`. Establish `hb : 0 ≤ b` using `rb_bcWeight_nonneg _ _ q`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hb]`.
+
+Establish `h1 : ‖inner ℂ (B.hsVec (B.JF D F' (B.gq D q))) (B.hsVec (B.JF D F (B.gq D q)))‖ ≤ v * u` using `norm_inner_le_norm _ _`. Establish `h2 : v * u ≤ (u ^ 2 + v ^ 2) / 2` using `by nlinarith [sq_nonneg (u - v)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rb_int_pair (D : B.RealPlaceData k r Wp Wq) (F F' : B.Mat k r → (Wq →L[ℂ] Wp))
     (hF : ∀ (A : ℝ) (m : ℕ), B.InCC A m F) (hF' : ∀ (A : ℝ) (m : ℕ), B.InCC A m F') :
     Integrable (fun q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) *
@@ -2525,6 +3271,13 @@ section assembly
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `P5.form`. Set `e : {l : Fin r // (0 : Fin (r + 1)).val ≤ l.val} ≃ Fin r` to `Equiv.subtypeUnivEquiv (fun l => Nat.zero_le _)`. Establish `hmp` using `volume_measurePreserving_piCongrLeft (fun _ : Fin r => ℂ) e`. Use `Eq.trans ?_ (hmp.integral_comp' (g := fun c : Fin r → ℂ => ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, P5.pairAt μ (x b) (y b) c))` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun c' => ?_)` and prove the remaining obligations.
+
+Establish `hv : ∀ l : {l : Fin r // (0 : Fin (r + 1)).val ≤ l.val}, (MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c') (e l) = c' l` using `fun l => Equiv.piCongrLeft_apply_apply _ _ _ _`. Establish `hg : P5.glue 0 0 c' = MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c'`. Use function extensionality and compare the values at `l`. Establish `h` using `hv ⟨l, Nat.zero_le _⟩`. Simplify using `only [P5.glue]`.
+
+Conclude with `h.symm`. Simplify using `only [hg]`. Rewrite using `[Fintype.prod_equiv e (fun l => ‖c' l‖ ^ (-2 : ℤ)) (fun a => ‖(MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c') a‖ ^ (-2 : ℤ)) (fun l => by rw [hv])]`.
+-/
 theorem rb_form_eq {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)}
     {S : Type} [Fintype S] [DecidableEq S] (μ : Measure (Mt k r)) (x y : Wd.Ix S → Q.RadSp k r z z' π π') :
     P5.form μ 0 x y 0 =
@@ -2547,6 +3300,15 @@ theorem rb_form_eq {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp �
   rw [Fintype.prod_equiv e (fun l => ‖c' l‖ ^ (-2 : ℤ))
     (fun a => ‖(MeasurableEquiv.piCongrLeft (fun _ : Fin r => ℂ) e c') a‖ ^ (-2 : ℤ)) (fun l => by rw [hv])]
 
+/- English proof (translation)
+Rewrite using `[rb_form_eq]`. Set `f : Wd.Ix (Fin n) → (Fin r → ℂ) × ℂ → ℂ` to `fun a q => (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D (x' a) (B.gq D q))) (B.hsVec (B.JF D (x a) (B.gq D q)))`. Establish `hint : ∀ a, Integrable (f a)` using `fun a => rb_int_pair D (x a) (x' a) (hx a) (hx' a)`. Establish `hae : (fun c : Fin r → ℂ => ((∏ a : Fin r, ‖c a‖ ^ (-2 : ℤ) : ℝ) : ℂ) * ∑ b, P5.pairAt μ (Φ b) (Φ' b) c) =ᵐ[volume] fun c => ∑ b, (C1 : ℂ) * ∫ ζ, f b (c, ζ)` using `by filter_upwards [rb_ae_OmX] with c hc`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hpair (x b) (x' b) (Φ b) (Φ' b) (hΦ b) (hΦ' b) c hc, mul_left_comm, ← integral_const_mul]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[rb_weight hc]`. Both sides reduce to the same expression. Rewrite using `[integral_congr_ae hae, integral_finsetSum _ (fun b _ => ((hint b).integral_prod_left).const_mul _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, ← integral_prod _ (hint b)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rb_main (D : B.RealPlaceData k r Wp Wq) (μ : Measure (Mt k r)) (C1 : ℝ)
     (hpair : ∀ (F F' : B.Mat k r → (Wq →L[ℂ] Wp)) (Φ Φ' : Q.RadSp k r D.z D.z' D.π D.π'),
       (∀ y ∈ Q.DomR k r D.z D.z',
@@ -2592,6 +3354,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P0 T j μ hμ`. Take `⟨C1, hC1, hpair⟩` from `JCx2.rb_pairAt (T.bs j) μ hμ`. Use `⟨C1⁻¹, inv_pos.2 hC1, fun n x x' Φ Φ' ε _ hx hx' hΦ hΦ' => ?_⟩` and prove the remaining obligations. Establish `h : P5.form μ 0 Φ Φ' 0 = (C1 : ℂ) * ∑ a, B.beta (T.bs j) (x a) (x' a)` using `JCx2.rb_main (T.bs j) μ C1 hpair x x' Φ Φ' (fun a => (hx a).2.1) (fun a => (hx' a).2.1) hΦ hΦ'`. Rewrite using `[h]`.
+
+Establish `hC : (C1 : ℂ) ≠ 0` using `by exact_mod_cast hC1.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem radial_beta_pos : Formalism.FourierDecayAlt.JC.RadialBetaPos := by
   intro Wp Wq _ _ _ _ _ _ P0 T j μ hμ
   obtain ⟨C1, hC1, hpair⟩ := JCx2.rb_pairAt (T.bs j) μ hμ
@@ -2632,19 +3399,31 @@ def pdOp (d o : ℕ) (Θ : (Mat k r → (Wq →L[ℂ] Wp)) → Mat k r → (Wq �
 
 variable {Wp Wq}
 
+/- English proof (translation)
+The claim follows from `le_trans (mul_nonneg (Real.rpow_nonneg (Real.sqrt_nonneg _) _) (norm_nonneg _)) (h.2 [] [] (by simp) (by simp) (by simp) 1 Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_one)`.
+-/
 theorem pd_ccle_nonneg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} {F : Mat k r → E}
     {b : ℝ} (h : CCle A m F b) : 0 ≤ b :=
   le_trans (mul_nonneg (Real.rpow_nonneg (Real.sqrt_nonneg _) _) (norm_nonneg _))
     (h.2 [] [] (by simp) (by simp) (by simp) 1 Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_one)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hb⟩`.
+-/
 theorem pd_ccle_mono_c {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} {F : Mat k r → E}
     {b b' : ℝ} (h : CCle A m F b) (hb : b ≤ b') : CCle A m F b' :=
   ⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hb⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A hA (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hm h)`.
+-/
 theorem pd_ccle_mono {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A A' : ℝ} {m m' : ℕ}
     (hA : A ≤ A') (hm : m ≤ m') {F : Mat k r → E} {b : ℝ} (h : CCle A' m' F b) : CCle A m F b :=
   Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A hA (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hm h)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero (A := A) (m := m) (k := k) (r := r) (E := E))`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem pd_ccle_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ} {ι : Type*}
     (s : Finset ι) (F : ι → Mat k r → E) (c : ι → ℝ) (h : ∀ i ∈ s, CCle A m (F i) (c i)) :
     CCle A m (fun g => ∑ i ∈ s, F i g) (∑ i ∈ s, c i) := by
@@ -2655,11 +3434,19 @@ theorem pd_ccle_sum {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : 
     simp only [Finset.sum_insert ha]
     exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `⟨fun F hF => Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul a hF, fun A m => ⟨‖a‖, norm_nonneg _, fun F b hF => ?_⟩⟩` and prove the remaining obligations. Establish `hd : A ≤ A + d` using `by have : (0 : ℝ) ≤ d := Nat.cast_nonneg d; linarith`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a (pd_ccle_mono hd le_rfl hF)`.
+-/
 theorem pd_good_const (d : ℕ) (a : ℂ) : pdGood Wp Wq d (fun _ : Mat k r => a) := by
   refine ⟨fun F hF => Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul a hF, fun A m => ⟨‖a‖, norm_nonneg _, fun F b hF => ?_⟩⟩
   have hd : A ≤ A + d := by have : (0 : ℝ) ≤ d := Nat.cast_nonneg d; linarith
   exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul a (pd_ccle_mono hd le_rfl hF)
 
+/- English proof (translation)
+Establish `e : ∀ F : Mat k r → (Wq →L[ℂ] Wp), (fun g => (c₁ g * c₂ g) • F g) = fun g => c₁ g • (fun g => c₂ g • F g) g` using `fun F => funext fun g => mul_smul _ _ _`. Use `⟨fun F hF => by rw [e]; exact h₁.1 _ (h₂.1 F hF), fun A m => ?_⟩` and prove the remaining obligations. Take `⟨K₁, hK₁, h1⟩` from `h₁.2 A m`. Take `⟨K₂, hK₂, h2⟩` from `h₂.2 (A + d₁) m`. Use `⟨K₁ * K₂, mul_nonneg hK₁ hK₂, fun F b hF => ?_⟩` and prove the remaining obligations.
+
+Establish `hd' : ((d₁ + d₂ : ℕ) : ℝ) ≤ d` using `by exact_mod_cast hd`. Move the coercions through the operations in `at hd'`. Establish `hF' : CCle (A + d₁ + d₂) m F b` using `pd_ccle_mono (by linarith) le_rfl hF`. Rewrite using `[e, mul_assoc]`. Conclude with `h1 _ _ (h2 F b hF')`.
+-/
 theorem pd_good_mul {d₁ d₂ d : ℕ} (hd : d₁ + d₂ ≤ d) {c₁ c₂ : Mat k r → ℂ} (h₁ : pdGood Wp Wq d₁ c₁)
     (h₂ : pdGood Wp Wq d₂ c₂) : pdGood Wp Wq d (fun g => c₁ g * c₂ g) := by
   have e : ∀ F : Mat k r → (Wq →L[ℂ] Wp), (fun g => (c₁ g * c₂ g) • F g) = fun g => c₁ g • (fun g => c₂ g • F g) g :=
@@ -2674,6 +3461,11 @@ theorem pd_good_mul {d₁ d₂ d : ℕ} (hd : d₁ + d₂ ≤ d) {c₁ c₂ : Ma
   rw [e, mul_assoc]
   exact h1 _ _ (h2 F b hF')
 
+/- English proof (translation)
+Establish `e : ∀ F : Mat k r → (Wq →L[ℂ] Wp), (fun g => (c₁ g + c₂ g) • F g) = fun g => c₁ g • F g + c₂ g • F g` using `fun F => funext fun g => add_smul _ _ _`. Use `⟨fun F hF => by rw [e]; exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add (h₁.1 F hF) (h₂.1 F hF), fun A m => ?_⟩` and prove the remaining obligations. Take `⟨K₁, hK₁, h1⟩` from `h₁.2 A m`. Take `⟨K₂, hK₂, h2⟩` from `h₂.2 A m`. Use `⟨K₁ + K₂, add_nonneg hK₁ hK₂, fun F b hF => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, add_mul]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add (h1 F b hF) (h2 F b hF)`.
+-/
 theorem pd_good_add {d : ℕ} {c₁ c₂ : Mat k r → ℂ} (h₁ : pdGood Wp Wq d c₁) (h₂ : pdGood Wp Wq d c₂) :
     pdGood Wp Wq d (fun g => c₁ g + c₂ g) := by
   have e : ∀ F : Mat k r → (Wq →L[ℂ] Wp), (fun g => (c₁ g + c₂ g) • F g) = fun g => c₁ g • F g + c₂ g • F g :=
@@ -2685,6 +3477,9 @@ theorem pd_good_add {d : ℕ} {c₁ c₂ : Mat k r → ℂ} (h₁ : pdGood Wp Wq
   rw [e, add_mul]
   exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add (h1 F b hF) (h2 F b hF)
 
+/- English proof (translation)
+Establish `h` using `pd_good_add h₁ (pd_good_mul (d₁ := 0) (d₂ := d) (by omega) (pd_good_const 0 (-1)) h₂)`. Establish `e : (fun g => c₁ g + (-1) * c₂ g) = fun g => c₁ g - c₂ g` using `funext fun g => by ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem pd_good_sub {d : ℕ} {c₁ c₂ : Mat k r → ℂ} (h₁ : pdGood Wp Wq d c₁) (h₂ : pdGood Wp Wq d c₂) :
     pdGood Wp Wq d (fun g => c₁ g - c₂ g) := by
   have h := pd_good_add h₁ (pd_good_mul (d₁ := 0) (d₂ := d) (by omega) (pd_good_const 0 (-1)) h₂)
@@ -2692,6 +3487,9 @@ theorem pd_good_sub {d : ℕ} {c₁ c₂ : Mat k r → ℂ} (h₁ : pdGood Wp Wq
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Establish `hE' : ∀ F : Mat k r → (Wq →L[ℂ] Wp), ∀ g ∈ GV k r, c g • F g = c' g • F g` using `fun F g hg => by rw [hE g hg]`. Use `⟨fun F hF => mn_ckOn_congr (hE' F) (h.1 F hF), fun A m => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, h2⟩` from `h.2 A m`. Conclude with `⟨K, hK, fun F b hF => mn_ccle_congr (hE' F) (h2 F b hF)⟩`.
+-/
 theorem pd_good_congr {d : ℕ} {c c' : Mat k r → ℂ} (hE : ∀ g ∈ GV k r, c g = c' g) (h : pdGood Wp Wq d c) :
     pdGood Wp Wq d c' := by
   have hE' : ∀ F : Mat k r → (Wq →L[ℂ] Wp), ∀ g ∈ GV k r, c g • F g = c' g • F g :=
@@ -2700,6 +3498,17 @@ theorem pd_good_congr {d : ℕ} {c c' : Mat k r → ℂ} (hE : ∀ g ∈ GV k r,
   obtain ⟨K, hK, h2⟩ := h.2 A m
   exact ⟨K, hK, fun F b hF => mn_ccle_congr (hE' F) (h2 F b hF)⟩
 
+/- English proof (translation)
+Use `⟨(sq_good_lin (Wp := Wp) (Wq := Wq) L).1, fun A m => ?_⟩` and prove the remaining obligations. Use `set Λ : Mat k r →L[ℝ] ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) := ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp))).restrictScalars ℝ).comp L with hΛdef`. Establish `hΛ : ∀ g, Λ g = L g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)` using `fun g => by simp [Λ]`. Take `⟨K, hK⟩ : ∃ K : ℝ, ∀ M, ‖Λ M‖ ≤ K * ‖M‖` from `⟨_, Λ.le_opNorm⟩`. Use `set C := K * ((2 * r + k + 1 : ℕ) : ℝ) ^ (2 * m + 2) with hC`.
+
+Use `⟨2 ^ m * |C|, by positivity, fun F b hF => ?_⟩` and prove the remaining obligations. Establish `hF' : CCle (A + 1) m F b` using `by simpa using hF`. Establish `ha : CkOn (m : ℕ∞) Set.univ (fun g => Λ g)` using `fun g₀ _ => ⟨Set.univ, fun g => Λ g, isOpen_univ, trivial, Λ.contDiff.contDiffOn, fun _ _ _ => rfl⟩`. Establish `hab : ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ GV k r, g ∉ (∅ : Set (Mat k r)) → ‖dLR u v (fun g => Λ g) g‖ ≤ C * gN g ^ (1 : ℝ)`. Introduce `u v hu hv hl g _ _`.
+
+Rewrite using `[Real.rpow_one]`. Conclude with `mn_dLR_lin_bound Λ K hK m u v hu hv hl g`. Establish `hb` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.prodBound (O := ∅) (UU := Set.univ) isOpen_empty (fun g _ => Or.inr trivial) (A := A) (d := 1) ha hab hF' (fun g _ h => h.elim)`. Establish `e : (fun g => L g • F g) = Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap (fun g => Λ g) F`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[Formalism.FourierDecayAlt.P.BetaSesquilinearity.ap, hΛ]`. Rewrite using `[e]`. Establish `hb0` using `pd_ccle_nonneg hF`. Use `pd_ccle_mono_c hb (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg hb0]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pd_good_lin (L : Mat k r →L[ℝ] ℂ) : pdGood Wp Wq 1 (fun g => L g) := by
   refine ⟨(sq_good_lin (Wp := Wp) (Wq := Wq) L).1, fun A m => ?_⟩
   set Λ : Mat k r →L[ℝ] ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp)) :=
@@ -2729,10 +3538,16 @@ theorem pd_good_lin (L : Mat k r →L[ℝ] ℂ) : pdGood Wp Wq 1 (fun g => L g) 
   rw [abs_of_nonneg hb0]
   ring
 
+/- English proof (translation)
+The claim follows from `pd_good_lin (mnLinHerm b v)`.
+-/
 theorem pd_good_herm (b v : Fin (2 * r + k + 1) → ℂ) :
     pdGood Wp Wq 1 (fun g : Mat k r => herm (Hpk k r) (g *ᵥ b) v) :=
   pd_good_lin (mnLinHerm b v)
 
+/- English proof (translation)
+The claim follows from `pd_good_congr (fun g hg => by show ((Hpk k r * gᴴ * Hpk k r) *ᵥ v) p = (g⁻¹ *ᵥ v) p rw [mn_inv_gv hg]) (pd_good_lin (mnLinInv v p))`.
+-/
 theorem pd_good_inv (v : Fin (2 * r + k + 1) → ℂ) (p : Fin (2 * r + k + 1)) :
     pdGood Wp Wq 1 (fun g : Mat k r => (g⁻¹ *ᵥ v) p) :=
   pd_good_congr (fun g hg => by
@@ -2784,27 +3599,50 @@ def pdPhi (M : Mat k r) : ℂ := ((pdChi (pdSq M) : ℝ) : ℂ)
 
 def pdPsi (R : ℝ) (g : Mat k r) : ℂ := 1 - pdPhi (R⁻¹ • g)
 
+/- English proof (translation)
+Unfold `pdSq`. Use `ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.AdmissibleLieWords.normSq_cd.comp (contDiff_apply_apply ℝ ℂ i j)`.
+-/
 theorem pd_sq_cd : ContDiff ℝ ∞ (pdSq (k := k) (r := r)) := by
   unfold pdSq
   refine ContDiff.sum fun i _ => ContDiff.sum fun j _ => ?_
   exact Formalism.FourierDecayAlt.P.AdmissibleLieWords.normSq_cd.comp (contDiff_apply_apply ℝ ℂ i j)
 
+/- English proof (translation)
+Unfold `pdChi`. Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_id).div_const 3)`.
+-/
 theorem pd_chi_cd : ContDiff ℝ ∞ pdChi := by
   unfold pdChi
   exact Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_id).div_const 3)
 
+/- English proof (translation)
+The claim follows from `Complex.ofRealCLM.contDiff.comp (pd_chi_cd.comp pd_sq_cd)`.
+-/
 theorem pd_phi_cd : ContDiff ℝ ∞ (pdPhi (k := k) (r := r)) :=
   Complex.ofRealCLM.contDiff.comp (pd_chi_cd.comp pd_sq_cd)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le (by rw [le_div_iff₀ (by norm_num : (0:ℝ) < 3)]; linarith)`.
+-/
 theorem pd_chi_one {t : ℝ} (ht : t ≤ 1) : pdChi t = 1 :=
   Real.smoothTransition.one_of_one_le (by rw [le_div_iff₀ (by norm_num : (0:ℝ) < 3)]; linarith)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) (by norm_num))`.
+-/
 theorem pd_chi_zero {t : ℝ} (ht : 4 ≤ t) : pdChi t = 0 :=
   Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) (by norm_num))
 
+/- English proof (translation)
+The claim follows from `(Real.sq_sqrt (Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg (M i j))).symm`.
+-/
 theorem pd_sq_eq (M : Mat k r) : pdSq M = gN M ^ 2 :=
   (Real.sq_sqrt (Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg (M i j))).symm
 
+/- English proof (translation)
+Unfold `pdSq`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.smul_apply]`. Rewrite using `[show (s • M i j : ℂ) = (s : ℂ) * M i j from by simp [Complex.real_smul], Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pd_sq_smul (s : ℝ) (M : Mat k r) : pdSq (s • M) = s ^ 2 * pdSq M := by
   unfold pdSq
   rw [Finset.mul_sum]
@@ -2816,6 +3654,13 @@ theorem pd_sq_smul (s : ℝ) (M : Mat k r) : pdSq (s • M) = s ^ 2 * pdSq M := 
     Complex.normSq_ofReal]
   ring
 
+/- English proof (translation)
+Establish `hK : IsCompact {M : Mat k r | pdSq M ≤ 4}`. Use `Metric.isCompact_of_isClosed_isBounded (isClosed_le pd_sq_cd.continuous continuous_const) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Mat k r)) (r := 2)).subset fun M hM => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hM`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Establish `h1` using `mn_norm_le_gN M`. Establish `h2 : gN M ^ 2 ≤ 2 ^ 2` using `by rw [← pd_sq_eq]; linarith`. Establish `h0 : 0 ≤ gN M` using `Real.sqrt_nonneg _`. Establish `h3 : gN M ≤ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `HasCompactSupport.intro hK fun M hM => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_le] at hM`. Simplify using `[pdPhi, pd_chi_zero hM.le]`.
+-/
 theorem pd_phi_support : HasCompactSupport (pdPhi (k := k) (r := r)) := by
   have hK : IsCompact {M : Mat k r | pdSq M ≤ 4} := by
     refine Metric.isCompact_of_isClosed_isBounded (isClosed_le pd_sq_cd.continuous continuous_const) ?_
@@ -2831,12 +3676,20 @@ theorem pd_phi_support : HasCompactSupport (pdPhi (k := k) (r := r)) := by
   simp only [Set.mem_setOf_eq, not_le] at hM
   simp [pdPhi, pd_chi_zero hM.le]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `((pd_phi_cd (k := k) (r := r)).continuous_iteratedFDeriv (m := j) (by exact_mod_cast le_top)).norm.bddAbove_range_of_hasCompactSupport ((pd_phi_support (k := k) (r := r)).iteratedFDeriv (𝕜 := ℝ) j).norm`. Conclude with `⟨B, fun y _ => hB ⟨y, rfl⟩⟩`.
+-/
 theorem pd_phi_bound (j : ℕ) : ∃ B : ℝ, ∀ y ∈ (Set.univ : Set (Mat k r)), ‖iteratedFDeriv ℝ j pdPhi y‖ ≤ B := by
   obtain ⟨B, hB⟩ := ((pd_phi_cd (k := k) (r := r)).continuous_iteratedFDeriv (m := j)
     (by exact_mod_cast le_top)).norm.bddAbove_range_of_hasCompactSupport
     ((pd_phi_support (k := k) (r := r)).iteratedFDeriv (𝕜 := ℝ) j).norm
   exact ⟨B, fun y _ => hB ⟨y, rfl⟩⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Dx_eq, Dx_eq]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 1`.
+
+Unfold `crv`. Use `split_ifs`. Rewrite using `[Matrix.mul_smul]`. Rewrite using `[Matrix.smul_mul]`.
+-/
 theorem pd_Dx_scale {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℝ) (x : Bool × Mat k r)
     (f : Mat k r → E) : Dx x (fun g => f (s • g)) = fun g => Dx x f (s • g) := by
   funext g
@@ -2849,6 +3702,11 @@ theorem pd_Dx_scale {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : 
   · rw [Matrix.mul_smul]
   · rw [Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show Dx x (Dw w _) = fun g => Dx x (Dw w f) (s • g)`. Rewrite using `[ih]`.
+
+Conclude with `pd_Dx_scale s x _`.
+-/
 theorem pd_Dw_scale {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℝ) (f : Mat k r → E) :
     ∀ w : List (Bool × Mat k r), Dw w (fun g => f (s • g)) = fun g => Dw w f (s • g) := by
   intro w
@@ -2859,6 +3717,13 @@ theorem pd_Dw_scale {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : 
     rw [ih]
     exact pd_Dx_scale s x _
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons x w ih`. Introduce `M hM`.
+
+Use `show Dx x (Dw w f) M = Dx x (Dw w f') M`. Rewrite using `[Dx_eq, Dx_eq]`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc` using `(crv_hasDerivAt x M).continuousAt`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, crv x M t ∈ U` using `hc.preimage_mem_nhds (by rw [crv_zero]; exact hU.mem_nhds hM)`.
+
+Use `filter_upwards [hmem] with t ht`. Conclude with `ih _ ht`.
+-/
 theorem pd_Dw_congr_open {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set (Mat k r)} (hU : IsOpen U)
     {f f' : Mat k r → E} (h : ∀ M ∈ U, f M = f' M) :
     ∀ w : List (Bool × Mat k r), ∀ M ∈ U, Dw w f M = Dw w f' M := by
@@ -2876,10 +3741,20 @@ theorem pd_Dw_congr_open {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] 
     filter_upwards [hmem] with t ht
     exact ih _ ht
 
+/- English proof (translation)
+Use function extensionality and compare the values at `M`. Rewrite using `[Dx_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem pd_Dx_const {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (c : E) (x : Bool × Mat k r) :
     Dx x (fun _ : Mat k r => c) = fun _ => 0 := by
   funext M; rw [Dx_eq]; simp
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro h`. Conclude with `(h rfl).elim`. Consider the case `cons x w ih`.
+
+Introduce `_`. Use `show Dx x (Dw w _) = _`. Distinguish the cases in `hw : w = []`. Substitute `hw` using the available equality. Conclude with `pd_Dx_const c x`.
+
+Rewrite using `[ih hw]`. Conclude with `pd_Dx_const 0 x`.
+-/
 theorem pd_Dw_const0 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (c : E) :
     ∀ w : List (Bool × Mat k r), w ≠ [] → Dw w (fun _ : Mat k r => c) = fun _ => 0 := by
   intro w
@@ -2892,6 +3767,9 @@ theorem pd_Dw_const0 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (c :
     · subst hw; exact pd_Dx_const c x
     · rw [ih hw]; exact pd_Dx_const 0 x
 
+/- English proof (translation)
+Distinguish the cases in `hw : w = []`. Substitute `hw` using the available equality. Conclude with `le_rfl`. Rewrite using `[pd_Dw_const0 c w hw]`. Simplify using the standard rewrite rules.
+-/
 theorem pd_Dw_const {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (c : E) (w : List (Bool × Mat k r))
     (M : Mat k r) : ‖Dw w (fun _ => c) M‖ ≤ ‖c‖ := by
   by_cases hw : w = []
@@ -2913,11 +3791,25 @@ section pdCutBound
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ gN M` using `Real.sqrt_nonneg _`. Rewrite `h` using `[pd_sq_eq]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pd_gN_le_of_sq {M : Mat k r} {a : ℝ} (ha : 0 ≤ a) (h : pdSq M ≤ a ^ 2) : gN M ≤ a := by
   have h0 : 0 ≤ gN M := Real.sqrt_nonneg _
   rw [pd_sq_eq] at h
   nlinarith
 
+/- English proof (translation)
+Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ)`. Establish `H : ∀ w, admitted m w → w ≠ [] → ∀ M ∈ {M : Mat k r | pdSq M ≤ 3 ^ 2}, ‖Dw w (fun M : Mat k r => M) M‖ ≤ (n ^ (2 * m + 2) * 3) * (fun _ => (1 : ℝ)) M ^ (0 * w.length + 0)`. Introduce `w hw _ M hM`. Take `⟨u, v, hu, hv, hl, rfl⟩` from `hw`. Establish `h1` using `mn_dLR_lin_bound (ContinuousLinearMap.id ℝ (Mat k r)) 1 (fun M => by show ‖M‖ ≤ 1 * ‖M‖; rw [one_mul]) m u v hu hv hl M`.
+
+Rewrite `h1` using `[dLR_eq]`. Establish `h2 : gN M ≤ 3` using `pd_gN_le_of_sq (by norm_num) hM`. Establish `hn : 0 ≤ n ^ (2 * m + 2)` using `by positivity`. Simplify using `only [one_pow, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨C, hC0, hC⟩` from `Formalism.FourierDecayAlt.P.AdmissibleLieWords.fdb (fun M : Mat k r => M) contDiff_id {M : Mat k r | pdSq M ≤ 3 ^ 2} Set.univ (fun _ _ => trivial) (fun _ => (1 : ℝ)) (fun _ _ => le_rfl) 0 0 (n ^ (2 * m + 2) * 3) m H m ℂ pdPhi pd_phi_cd pd_phi_bound`. Use `⟨C, hC0, fun w hw M => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hM : pdSq M ≤ 3 ^ 2`. Use `hC w hw (Formalism.FourierDecayAlt.P.AdmissibleLieWords.admissible_word_length_le hw) M hM` as an intermediate fact. Simplify using `using this`.
+
+Establish `hU : IsOpen {M : Mat k r | 4 < pdSq M}` using `isOpen_lt continuous_const pd_sq_cd.continuous`. Establish `hz : ∀ M' ∈ {M : Mat k r | 4 < pdSq M}, pdPhi M' = (fun _ => (0 : ℂ)) M'`. Introduce `M' hM'`. Simplify using `[pdPhi, pd_chi_zero (le_of_lt hM')]`. Rewrite using `[pd_Dw_congr_open hU hz w M (by simp only [Set.mem_setOf_eq]; simp only [Set.mem_setOf_eq, not_le] at hM; linarith), Dw_zero]`.
+
+Simplify using `using hC0`.
+-/
 theorem pd_phi_deriv (m : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ w, admitted m w → ∀ M : Mat k r, ‖Dw w pdPhi M‖ ≤ C := by
   set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ)
   have H : ∀ w, admitted m w → w ≠ [] → ∀ M ∈ {M : Mat k r | pdSq M ≤ 3 ^ 2},
@@ -2945,6 +3837,19 @@ theorem pd_phi_deriv (m : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ w, admitted m w �
     rw [pd_Dw_congr_open hU hz w M (by simp only [Set.mem_setOf_eq]; simp only [Set.mem_setOf_eq, not_le] at hM; linarith), Dw_zero]
     simpa using hC0
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `pd_phi_deriv (k := k) (r := r) m`. Use `⟨1 + C, by linarith, fun R hR w hw g => ⟨?_, fun hg => ?_⟩⟩` and prove the remaining obligations. Establish `hcd : ContDiff ℝ ∞ (fun g : Mat k r => pdPhi (R⁻¹ • g))` using `pd_phi_cd.comp (contDiff_const_smul R⁻¹)`. Establish `hsum : Dw w (pdPsi R) g = Dw w (fun _ : Mat k r => (1 : ℂ)) g + Dw w (fun g => (-1 : ℂ) • pdPhi (R⁻¹ • g)) g`. Use `congrFun (Formalism.FourierDecayAlt.P.AdmissibleLieWords.dw_add w (a := fun _ : Mat k r => (1 : ℂ)) (b := fun g => (-1 : ℂ) • pdPhi (R⁻¹ • g)) contDiff_const (hcd.const_smul (-1 : ℂ))) g` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[pdPsi, sub_eq_add_neg]`. Rewrite using `[hsum, Dw_smul, pd_Dw_scale]`.
+
+Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `h1` using `pd_Dw_const (1 : ℂ) w g`. Establish `h2` using `hC w hw (R⁻¹ • g)`. Simplify using `only [norm_neg, norm_one, one_mul] at h1 h2 ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hU : IsOpen {g' : Mat k r | pdSq (R⁻¹ • g') < 1}` using `isOpen_lt (pd_sq_cd.continuous.comp (continuous_const_smul R⁻¹)) continuous_const`. Establish `hgU : g ∈ {g' : Mat k r | pdSq (R⁻¹ • g') < 1}`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[pd_sq_smul, pd_sq_eq]`.
+
+Establish `h0 : 0 ≤ gN g` using `Real.sqrt_nonneg _`. Rewrite using `[inv_pow, inv_mul_lt_iff₀ (by positivity), mul_one]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hz : ∀ g' ∈ {g' : Mat k r | pdSq (R⁻¹ • g') < 1}, pdPsi R g' = (fun _ => (0 : ℂ)) g'`. Introduce `g' hg'`.
+
+Simplify using `[pdPsi, pdPhi, pd_chi_one (le_of_lt hg')]`. Rewrite using `[pd_Dw_congr_open hU hz w g hgU, Dw_zero]`.
+-/
 theorem pd_psi_deriv (m : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ R : ℝ, 0 < R → ∀ w, admitted m w → ∀ g : Mat k r,
     ‖Dw w (pdPsi R) g‖ ≤ C ∧ (gN g < R → Dw w (pdPsi R) g = 0) := by
   obtain ⟨C, hC0, hC⟩ := pd_phi_deriv (k := k) (r := r) m
@@ -2994,9 +3899,25 @@ section pdCutCC
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `contDiff_const.sub (pd_phi_cd.comp (contDiff_const_smul R⁻¹))`.
+-/
 theorem pd_psi_cd (R : ℝ) : ContDiff ℝ ∞ (pdPsi (k := k) (r := r) R) :=
   contDiff_const.sub (pd_phi_cd.comp (contDiff_const_smul R⁻¹))
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `pd_psi_deriv (k := k) (r := r) m`. Use `set L : ℂ →L[ℝ] (E →L[ℂ] E) := (ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (ContinuousLinearMap.id ℂ E)).restrictScalars ℝ with hLdef`. Establish `hL : ∀ z : ℂ, L z = z • ContinuousLinearMap.id ℂ E` using `fun z => by simp [L]`. Use `⟨2 ^ m * (‖L‖ * C), by positivity, fun R hR A F b hF => ?_⟩` and prove the remaining obligations. Establish `hb0` using `pd_ccle_nonneg hF`.
+
+Establish `ha : CkOn (m : ℕ∞) (Set.univ : Set (Mat k r)) (fun g : Mat k r => L (pdPsi R g))` using `fun g₀ _ => ⟨Set.univ, fun g : Mat k r => L (pdPsi R g), isOpen_univ, trivial, (L.contDiff.comp (pd_psi_cd R)).contDiffOn.of_le (by exact_mod_cast le_top), fun _ _ _ => rfl⟩`. Establish `hab : ∀ u v : List (Mat k r), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ v, unitLie k r X) → u.length + v.length ≤ m → ∀ g ∈ GV k r, g ∉ (∅ : Set (Mat k r)) → ‖dLR u v (fun g => L (pdPsi R g)) g‖ ≤ (‖L‖ * C / R) * gN g ^ (1 : ℝ)`. Introduce `u v hu hv hl g hg _`. Rewrite using `[Real.rpow_one, dLR_eq, Formalism.FourierDecayAlt.P.AdmissibleLieWords.dw_clm L _ (pd_psi_cd R)]`. Use `show ‖L (Dw (wL u ++ wR v) (pdPsi R) g)‖ ≤ _`.
+
+Establish `hw : admitted m (wL u ++ wR v)` using `⟨u, v, hu, hv, hl, rfl⟩`. Take `⟨h1, h2⟩` from `hC R hR _ hw g`. Establish `hgN : 0 ≤ gN g` using `Real.sqrt_nonneg _`. Distinguish the cases in `hg' : gN g < R`. Rewrite using `[h2 hg', map_zero, norm_zero]`.
+
+Check the signs of the components of the expression. Use `push_neg at hg'`. Combine the equalities or inequalities in the displayed calculation. Establish `hLC : 0 ≤ ‖L‖ * C` using `mul_nonneg (norm_nonneg _) hC0`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hR]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hg' hLC`. Establish `hF' : CCle (A - 1 + 1) m F b` using `by simpa using hF`. Establish `hb` using `prodBound (O := ∅) (UU := Set.univ) isOpen_empty (fun g _ => Or.inr trivial) (A := A - 1) (d := 1) ha hab hF' (fun g _ h => h.elim)`. Establish `e : (fun g => pdPsi R g • F g) = ap (fun g => L (pdPsi R g)) F`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[ap, hL]`. Rewrite using `[e]`. Use `pd_ccle_mono_c hb (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg hb0, abs_of_nonneg (by positivity)]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pd_cut_ccle {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (m : ℕ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ R : ℝ, 0 < R → ∀ (A : ℝ) (F : Mat k r → E) (b : ℝ), CCle A m F b →
       CCle (A - 1) m (fun g => pdPsi R g • F g) (K * b / R) := by
@@ -3039,6 +3960,15 @@ theorem pd_cut_ccle {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (m : �
   rw [abs_of_nonneg hb0, abs_of_nonneg (by positivity)]
   field_simp
 
+/- English proof (translation)
+Establish `hcd : ContDiff ℝ ∞ (fun g : Mat k r => pdPhi (R⁻¹ • g))` using `pd_phi_cd.comp (contDiff_const_smul R⁻¹)`. Establish `hck : CkOn (⊤ : ℕ∞) (GV k r) (fun g => pdPhi (R⁻¹ • g) • F g)`. Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hff⟩` from `hF g₀ hg₀`. Conclude with `⟨U, fun g => pdPhi (R⁻¹ • g) • f g, hU, hgU, hcd.contDiffOn.smul hf, fun g hg hG => by simp only [hff g hg hG]⟩`.
+
+Use `⟨hck, ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact {g : Mat k r | pdSq g ≤ (2 * R) ^ 2}`. Use `Metric.isCompact_of_isClosed_isBounded (isClosed_le pd_sq_cd.continuous continuous_const) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Mat k r)) (r := 2 * R)).subset fun M hM => ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Conclude with `(mn_norm_le_gN M).trans (pd_gN_le_of_sq (by positivity) hM)`. Use `Formalism.FourierDecayAlt.P.compact_support_finite_class k r E _ _ hck hK fun g hg => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_le] at hg`. Establish `h4 : 4 ≤ pdSq (R⁻¹ • g)`. Rewrite using `[pd_sq_smul, inv_pow, le_inv_mul_iff₀ (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Simplify using `[pdPhi, pd_chi_zero h4]`.
+-/
 theorem pd_cut_nice {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {R : ℝ} (hR : 0 < R)
     {F : Mat k r → E} (hF : CkOn (⊤ : ℕ∞) (GV k r) F) :
     CkOn (⊤ : ℕ∞) (GV k r) (fun g => pdPhi (R⁻¹ • g) • F g) ∧
@@ -3081,6 +4011,23 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 section pdMain
 
+/- English proof (translation)
+Establish `him : z.im = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < |z.im|` using `abs_pos.2 hne`. Take `⟨w, hw, hzw⟩` from `h (max 1 ((|M| + 1) / |z.im|)) (le_max_left _ _)`. Establish `hwim : w.im = 0` using `(Complex.nonneg_iff.1 hw).2.symm`.
+
+Establish `h1 : |z.im| ≤ ‖z - w‖`. Use `Complex.abs_im_le_norm (z - w)` as an intermediate fact. Simplify `this` using `[hwim]`. Establish `hRpos : 0 < max 1 ((|M| + 1) / |z.im|)` using `lt_of_lt_of_le one_pos (le_max_left _ _)`. Establish `h2 : M / max 1 ((|M| + 1) / |z.im|) < |z.im|`.
+
+Rewrite using `[div_lt_iff₀ hRpos]`. Establish `h3 : (|M| + 1) / |z.im| ≤ max 1 ((|M| + 1) / |z.im|)` using `le_max_right _ _`. Establish `h4 : |M| + 1 ≤ |z.im| * max 1 ((|M| + 1) / |z.im|)`. Rewrite `h3` using `[div_le_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear relations using `[le_abs_self M]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : 0 ≤ z.re`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Establish `hpos : 0 < -z.re` using `by linarith`. Take `⟨w, hw, hzw⟩` from `h (max 1 ((|M| + 1) / (-z.re))) (le_max_left _ _)`. Establish `hwre : 0 ≤ w.re` using `(Complex.nonneg_iff.1 hw).1`. Establish `h1 : -z.re ≤ ‖z - w‖`. Use `Complex.abs_re_le_norm (z - w)` as an intermediate fact.
+
+Simplify using `only [Complex.sub_re] at this`. Establish `: |z.re - w.re| ≥ w.re - z.re` using `by rw [abs_sub_comm]; exact le_abs_self _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRpos : 0 < max 1 ((|M| + 1) / (-z.re))` using `lt_of_lt_of_le one_pos (le_max_left _ _)`. Establish `h2 : M / max 1 ((|M| + 1) / (-z.re)) < -z.re`.
+
+Rewrite using `[div_lt_iff₀ hRpos]`. Establish `h3 : (|M| + 1) / (-z.re) ≤ max 1 ((|M| + 1) / (-z.re))` using `le_max_right _ _`. Establish `h4 : |M| + 1 ≤ (-z.re) * max 1 ((|M| + 1) / (-z.re))`. Rewrite `h3` using `[div_le_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear relations using `[le_abs_self M]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.nonneg_iff.2 ⟨hre, him.symm⟩`.
+-/
 theorem pd_nonneg_of_approx (z : ℂ) (M : ℝ) (h : ∀ R : ℝ, 1 ≤ R → ∃ w : ℂ, 0 ≤ w ∧ ‖z - w‖ ≤ M / R) : 0 ≤ z := by
   have him : z.im = 0 := by
     by_contra hne
@@ -3119,6 +4066,9 @@ theorem pd_nonneg_of_approx (z : ℂ) (M : ℝ) (h : ∀ R : ℝ, 1 ≤ R → �
     linarith
   exact Complex.nonneg_iff.2 ⟨hre, him.symm⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f, hU, hgU, hf, hff⟩` from `hF g₀ hg₀`. Conclude with `⟨U, fun g => c g • f g, hU, hgU, hc.contDiffOn.smul hf, fun g hg hG => by simp only [hff g hg hG]⟩`.
+-/
 theorem pd_smooth_smul {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {c : Mat k r → ℂ}
     (hc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) c) {F : Mat k r → E} (hF : CkOn (⊤ : ℕ∞) (GV k r) F) :
     CkOn (⊤ : ℕ∞) (GV k r) (fun g => c g • F g) := by
@@ -3140,6 +4090,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 section pdMain2
 
+/- English proof (translation)
+Unfold `P5.Auser P5.nV at hA`. Unfold `AB`. Establish `hr' : ((P0.r - (j : ℕ) : ℕ) : ℝ) ≤ P0.r` using `by exact_mod_cast Nat.sub_le _ _`. Establish `hr0 : (0 : ℝ) ≤ ((P0.r - (j : ℕ) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Use `set n : ℝ := ((2 * P0.r + P0.k + 1 : ℕ) : ℝ) with hn`.
+
+Establish `hnc : n = 2 * (P0.r : ℝ) + P0.k + 1` using `by rw [hn]; push_cast; ring`. Establish `hk0 : (0 : ℝ) ≤ P0.k` using `Nat.cast_nonneg _`. Establish `hrr0 : (0 : ℝ) ≤ P0.r` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hn1 : 1 ≤ n` using `by rw [hnc]; linarith`.
+
+Establish `h1 : 1 ≤ ((P0.r : ℝ) + 1) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `hbr : 0 ≤ (N : ℝ) * n ^ 2 + n ^ 3` using `by positivity`. Establish `h2 : 127 * ((N : ℝ) * n ^ 2 + n ^ 3) ≤ 127 * ((P0.r : ℝ) + 1) ^ 3 * ((N : ℝ) * n ^ 2 + n ^ 3)`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 2 * ((P0.k : ℝ) + ((P0.r - (j : ℕ) : ℕ) : ℝ)) * (((P0.r - (j : ℕ) : ℕ) : ℝ) + 1) ≤ 2 * n * n`.
+
+Establish `a1 : (P0.k : ℝ) + ((P0.r - (j : ℕ) : ℕ) : ℝ) ≤ n` using `by rw [hnc]; linarith`. Establish `a2 : ((P0.r - (j : ℕ) : ℕ) : ℝ) + 1 ≤ n` using `by rw [hnc]; linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : 2 * n * n + 1 + 2 * N ≤ 127 * ((N : ℝ) * n ^ 2 + n ^ 3)`. Establish `b1 : n * n ≤ n ^ 3` using `by nlinarith`.
+
+Establish `b2 : (N : ℝ) ≤ N * n ^ 2` using `le_mul_of_one_le_right hN0 (one_le_pow₀ hn1)`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pd_thr_AB (P0 : M.Par) (j : Fin (P0.r + 1)) (N : ℕ) (A : ℝ) (hA : P5.Auser P0 N + 1 ≤ A) :
     AB P0.k (P0.r - j) ≤ A - 1 - 2 * N := by
   unfold P5.Auser P5.nV at hA
@@ -3166,6 +4127,11 @@ theorem pd_thr_AB (P0 : M.Par) (j : Fin (P0.r + 1)) (N : ℕ) (A : ℝ) (hA : P5
     nlinarith
   linarith
 
+/- English proof (translation)
+Unfold `P5.mmUser P5.nV at hmm`. Establish `h1 : (2 * (P0.r - (j : ℕ)) + P0.k + 1) * N ≤ (2 * P0.r + P0.k + 1) * N` using `Nat.mul_le_mul_right _ (by omega)`. Establish `h2 : (2 * P0.r + P0.k + 1) * N ≤ 3 * (P0.r + 1) * (N + 2) * (2 * P0.r + P0.k + 1)`. Establish `: (2 * P0.r + P0.k + 1) * N ≤ (2 * P0.r + P0.k + 1) * (3 * (P0.r + 1) * (N + 2))` using `Nat.mul_le_mul_left _ (by nlinarith)`. Combine the linear relations using `[Nat.mul_comm (2 * P0.r + P0.k + 1) (3 * (P0.r + 1) * (N + 2))]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem pd_thr_mm (P0 : M.Par) (j : Fin (P0.r + 1)) (N mm : ℕ) (hmm : P5.mmUser P0 N ≤ mm) :
     5 + (2 * (P0.r - (j : ℕ)) + P0.k + 1) * N ≤ mm := by
   unfold P5.mmUser P5.nV at hmm
@@ -3200,6 +4166,9 @@ section
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `radial_module_form_of_parts radial_beta_pos radial_module_action bessel_function_finite_class bessel_module module_regularity`.
+-/
 theorem radial_module_form : Formalism.FourierDecayAlt.JC.RadialModuleForm :=
   radial_module_form_of_parts radial_beta_pos radial_module_action bessel_function_finite_class
     bessel_module module_regularity
@@ -3240,6 +4209,9 @@ def KKcM (Bs : B.RealPlaceData k r Wp Wq) (A : ℝ) (mm : ℕ) : Submodule ℂ (
     refine hF3 g hg fun h => hne ?_
     simp [h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.1, hF.2.1, fun g hg hne => h.trans (hF.2.2 g hg hne)⟩`.
+-/
 theorem cCCoefM_mono {Bs : B.RealPlaceData k r Wp Wq} {A : ℝ} {mm : ℕ} {ε ε' : ℝ} (h : ε' ≤ ε)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : JC.CCCoefM Bs A mm ε F) : JC.CCCoefM Bs A mm ε' F :=
   ⟨hF.1, hF.2.1, fun g hg hne => h.trans (hF.2.2 g hg hne)⟩
@@ -3253,6 +4225,21 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `hP hRMF hPD hSesq Wp Wq _ _ _ _ _ _ P0 T l0 N admitted A mm hl0 hl0k hAdmN hA hmm hdata`. Use `⟨fun j => JCx2.KKcM (T.bs j) A mm, fun j w hw => ?_, fun j F ε hε hF hF1 hF3 => ⟨ε, hε, hF1, hF, hF3⟩⟩` and prove the remaining obligations. Establish `hlen` using `hAdmN w hw`. Establish `hA' : P5.Auser P0 w.length + 1 ≤ A` using `le_trans (by linarith [JCx2.auser_mono P0 hlen]) hA`. Establish `hmm' : P5.mmUser P0 w.length ≤ mm` using `le_trans (JCx2.mmUser_mono P0 hlen) hmm`.
+
+Establish `hmemK : ∀ x : Wd.Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp), x ∈ Submodule.pi Set.univ (fun _ => JCx2.KKcM (T.bs j) A mm) → ∃ ε, 0 < ε ∧ ∀ a, JC.CCCoefM (T.bs j) A mm ε (x a)`. Introduce `x hx`. Conclude with `JCx2.exists_common_eps (fun a ε => JC.CCCoefM (T.bs j) A mm ε (x a)) (fun a ε ε' _ h hF => JCx2.cCCoefM_mono h hF) (fun a => hx a (Set.mem_univ a))`. Use `⟨fun x hx x' hx' y hy c => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨e1, he1, h1⟩` from `hmemK x hx`.
+
+Take `⟨e2, he2, h2⟩` from `hmemK x' hx'`. Take `⟨e3, he3, h3⟩` from `hmemK y hy`. Establish `hε : 0 < min e1 (min e2 e3)` using `lt_min he1 (lt_min he2 he3)`. Conclude with `hSesq Wp Wq P0 T (M.sgn P0 l0) j w A mm _ hε hA' hmm' x x' y c (fun a => JCx2.cCCoefM_mono (min_le_left _ _) (h1 a)) (fun a => JCx2.cCCoefM_mono ((min_le_right _ _).trans (min_le_left _ _)) (h2 a)) (fun a => JCx2.cCCoefM_mono ((min_le_right _ _).trans (min_le_right _ _)) (h3 a))`. Take `⟨ε, hε, hxε⟩` from `hmemK x hx`.
+
+Use `hPD Wp Wq P0 T (M.sgn P0 l0) j w A mm ε hε hA' hmm' ?_ x hxε` and prove the remaining obligations. Introduce `ε₁ hε₁ v hvn`. Take `⟨X, μ, L, st, hD, hOK⟩` from `hdata j`. Take `⟨Cst, hC, hform⟩` from `hRMF Wp Wq P0 T j X μ L st l0 hD`. Establish `hAu : P5.Auser (JC.parLev P0 j) (Fintype.card (Fin w.length)) ≤ A`.
+
+Rewrite using `[Fintype.card_fin]`. Combine the linear relations using `[JCx2.auser_parLev P0 j w.length]`. Establish `hmu : P5.mmUser (JC.parLev P0 j) (Fintype.card (Fin w.length)) ≤ mm`. Rewrite using `[Fintype.card_fin]`. Conclude with `(JCx2.mmUser_parLev P0 j w.length).trans hmm'`.
+
+Take `⟨K, hThm, -, -, hJ⟩` from `hP Wp Wq (Fin w.length) (JC.parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' X μ L st l0 (T.bs j) A mm hD hl0 hl0k rfl rfl rfl rfl hAu hmu`. Use `choose Φ hΦK hΦ using fun a => hJ (v a) ε₁ hε₁ (hvn a).2.1 (hvn a).2.2`. Rewrite using `[hform w v v Φ Φ ε₁ hε₁ hvn hvn hΦ hΦ]`. Establish `hpos` using `((hThm (D.positionted w) (hOK w hw)).2.2 0 (fun _ => 1) (fun _ => one_ne_zero)).2 Φ (fun a _ => hΦK a)`. Establish `hpos' : 0 ≤ P5.form μ 0 (P5.act (P5.RRi L st 0 (D.positionted w)) Φ) Φ 0` using `hpos.trans_eq (JCx2.form_zero_indep μ _ _ _ _)`.
+
+Conclude with `mul_nonneg (by exact_mod_cast hC.le) hpos'`.
+-/
 theorem theorem_P_module_moderate_growth : Formalism.FourierDecayAlt.JC.ThmPModuleOfActualMM := by
   intro hP hRMF hPD hSesq Wp Wq _ _ _ _ _ _ P0 T l0 N admitted A mm hl0 hl0k hAdmN hA hmm hdata
   refine ⟨fun j => JCx2.KKcM (T.bs j) A mm, fun j w hw => ?_, fun j F ε hε hF hF1 hF3 => ⟨ε, hε, hF1, hF, hF3⟩⟩

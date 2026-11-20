@@ -11,6 +11,29 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ParamSplitPlace
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ ι n r A v w h h' i hP x' hx'`. Take `⟨t', ht', φ', hφ', N, b', hN', hb', rfl⟩` from `hx'`. Take `⟨c, hc, hdeg, hq, hsm⟩` from `GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' (RingEquiv.refl Ω) (algebraMap F K) i hP`. Establish `hcz : ∀ (σ : Weil h) (z : Ω), ((c σ : Weil h') : G K Ω) z = (σ : G F Ω) z` using `fun σ z => ((hc σ (c σ)).2 rfl z).symm`. Establish `hres : ∀ σ : Weil h, res F Ω K ((c σ : Weil h') : G K Ω) = (σ : G F Ω)` using `fun σ => AlgEquiv.ext fun z => hcz σ z`.
+
+Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Establish `hm : ∀ σ : Ine (F` using `F) A, ((c (ineIncl h σ) : Weil h') : G K Ω) ∈ Ine (F := K) A := fun σ => by`. Rewrite using `[← deg_eq_zero_iff, hdeg, deg_ineIncl]`. Set `e : Ine (F` to `F) A →* Ine (F := K) A := (((Weil h').subtype.comp c.toMonoidHom).comp (ineIncl h)).codRestrict _ hm`. Establish `he : ∀ σ, ineIncl h' (e σ) = c (ineIncl h σ)` using `fun σ => Subtype.ext rfl`.
+
+Establish `hez : ∀ (σ : Ine (F` using `F) A) (z : Ω), ((e σ : Ine (F := K) A) : G K Ω) z = (σ : G F Ω) z := fun σ z => by`. Use `hcz (ineIncl h σ) z` as an intermediate fact. Rewrite `this` using `[coe_ineIncl]`. Then use the resulting hypothesis. Establish `he_surj : Function.Surjective e`. Introduce `τ`.
+
+Establish `hm' : ((c.symm (ineIncl h' τ) : Weil h) : G F Ω) ∈ Ine (F` using `F) A := by`. Rewrite using `[← deg_eq_zero_iff, ← hdeg, MulEquiv.apply_symm_apply, deg_ineIncl]`. Use `⟨⟨_, hm'⟩, Subgroup.inclusion_injective (Ine_le_Weil h') ?_⟩` and prove the remaining obligations. Use `show ineIncl h' (e _) = ineIncl h' τ`. Rewrite using `[he]`.
+
+Establish `: ineIncl h ⟨_, hm'⟩ = c.symm (ineIncl h' τ)` using `Subtype.ext rfl`. Rewrite using `[this, MulEquiv.apply_symm_apply]`. Establish `he_cont : Continuous e`. Use `continuous_of_continuousAt_one e ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, tendsto_subtype_rng]`.
+
+Introduce `O' hO'`. Take `⟨U, hU, hU1, hUO⟩` from `GlobalTheory.WeilTransport.conj_nhds F Ω K Ω (RingEquiv.refl Ω) O' hO'`. Use `Filter.mem_map.2 (Filter.mem_of_superset ((hU.preimage continuous_subtype_val).mem_nhds hU1) ?_)` and prove the remaining obligations. Introduce `τ hτ`. Conclude with `hUO (τ : G F Ω) hτ ((e τ : Ine (F := K) A) : G K Ω) fun z => (hez τ z).symm`.
+
+Set `t : Ine (F` to `F) A →* Multiplicative ℤ_[l] := t'.comp e`. Establish `ht : IsTameChar t` using `⟨ht'.1.comp he_cont, ht'.2.comp he_surj⟩`. Establish `hφ : deg (c.symm φ') = 1` using `by rw [← hdeg, MulEquiv.apply_symm_apply, hφ']`. Establish `hN : IsMonodromy t r N`. Take `⟨hnil, U', hU', H⟩` from `hN'`.
+
+Use `⟨hnil, U'.comap e, hU'.preimage he_cont, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1` using `H (e σ) hσ`. Establish `h2 : res F Ω K ((e σ : Ine (F` using `K) A) : G K Ω) = (σ : G F Ω) := AlgEquiv.ext fun z => hez σ z`. Rewrite `h1` using `[MonoidHom.comp_apply, h2]`. Conclude with `h1`.
+
+Establish `hpart : ∀ g : Weil h, e (inePart hφ g) = inePart hφ' (c g)` using `fun g => Subgroup.inclusion_injective (Ine_le_Weil h') (by show ineIncl h' _ = ineIncl h' _`. Rewrite using `[he, ineIncl_inePart, ineIncl_inePart, map_mul, map_inv, map_zpow, MulEquiv.apply_symm_apply, hdeg])`. Establish `key : ∀ g : Weil h, wdMat t hφ r N g = wdMat t' hφ' (r.comp (res F Ω K)) N (c g)` using `fun g => by`. Rewrite using `[wdMat, wdMat, ← hpart]`. Use `show (r (g : G F Ω) : Matrix (Fin n) (Fin n) (Qbar l)) * _ = (r (res F Ω K ((c g : Weil h') : G K Ω)) : Matrix (Fin n) (Fin n) (Qbar l)) * _`.
+
+Rewrite using `[hres]`. Both sides reduce to the same expression. Set `b : WDRep h (Fin n → ℂ)` to `{ ρ := b'.ρ.comp c.toMonoidHom N := b'.N smooth := (hsm _ b'.ρ).1 b'.smooth semisimple := fun σ => b'.semisimple (c σ) nilpotent := b'.nilpotent comm := fun σ => by`. Use `b'.comm (c σ)` as an intermediate fact. Rewrite using `[hdeg, hq] at this }` and apply the resulting hypothesis.
+
+Use `⟨WD.mk b, ⟨t, ht, c.symm φ', hφ, N, b, hN, ⟨hb'.1, fun g => ?_⟩, rfl⟩, ⟨_, b, b', rfl, rfl, rfl, fun σ σ' hσ => ?_⟩⟩` and prove the remaining obligations. Use `show Commute (b'.ρ (c g)) _ ∧ IsNilpotent (_ - b'.ρ (c g))`. Simplify `hb'.2 (c g)` using `only [key]`. Use `show b'.ρ (c σ) = b'.ρ σ'`. Rewrite using `[(hc σ σ').1 hσ]`.
+-/
 theorem main : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G F Ω →* GL (Fin a) (Qbar l)) (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (h' : IsPlaceOver A w) (i : v.adicCompletion F ≃+* w.adicCompletion K), PlaceIso A v A w (RingEquiv.refl Ω) (algebraMap F K) i → ∀ x' : WD h', IsWDOf ι (r.comp (res F Ω K)) x' → ∃ x : WD h, IsWDOf ι r x ∧ WDRel (RingEquiv.refl Ω) x x' := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ ι n r A v w h h' i hP x' hx'
   obtain ⟨t', ht', φ', hφ', N, b', hN', hb', rfl⟩ := hx'

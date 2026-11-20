@@ -9,6 +9,35 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.AdFirst
 
+/- English proof (translation)
+Introduce `F E K _ _ _ _ _ _ _ hc n _ Q Θ q P hP a e he`. Establish `hw : P.1.under (𝓞 F) = qv F P.1` using `HeightOneSpectrum.ext rfl`. Use `set ψ := GlobalTheory.Mem.Dil.psi (qv F P.1) P.1 hw with hψ`. Use `set sp := q.sp P with hsp`. Establish `hu' : ψ (sp.symm (0, 1)) = 0`.
+
+Take `⟨r, hr, hr'⟩` from `exists_mem_notMem (Ne.symm hP)`. Establish `hcr : cO E r ∉ P.1.asIdeal` using `fun h => hr' ((mem_conjP _ _).2 h)`. Take `⟨hne, hinv⟩` from `qdf_phi_unit q P hcr`. Use `set w := Formalism.UG.inclE (F := F) ((qv F P.1).adicCompletion F) (r : E) with hwdef`. Establish `hws : w = Formalism.UG.sigR hc.sig _ (Formalism.UG.inclE (F` using `F) ((qv F P.1).adicCompletion F) ((cO E r : 𝓞 E) : E)) := by`.
+
+Rewrite using `[hwdef]`. Use `show _ = Formalism.UG.inclE (F := F) _ (star (star ((r : 𝓞 E) : E)))`. Rewrite using `[star_star]`. Establish `hw2 : (sp w).2 = q.phi P ((cO E r : 𝓞 E) : E)`. Rewrite using `[hws, hsp, q.sp_sig]`.
+
+Both sides reduce to the same expression. Use `set z := sp.symm (0, ((sp w).2)⁻¹) with hz`. Establish `hzint : z ∈ Formalism.BasicNotions.intV E (qv F P.1)`. Use `(q.sp_int P z).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← hsp, sp.apply_symm_apply]`.
+
+Conclude with `zero_mem _`. Rewrite using `[hz, ← hsp, sp.apply_symm_apply]`. Use `show ((sp w).2)⁻¹ ∈ _`. Rewrite using `[hw2]`. Conclude with `hinv`.
+
+Establish `hwz : w * z = sp.symm (0, 1)`. Apply `sp.injective` to reduce the goal to its premises. Rewrite using `[map_mul, hz, sp.apply_symm_apply, sp.apply_symm_apply]`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Use `show (sp w).2 * ((sp w).2)⁻¹ = 1`.
+
+Rewrite using `[hw2]`. Conclude with `mul_inv_cancel₀ hne`. Establish `hidem : ψ (sp.symm (0, 1)) * ψ (sp.symm (0, 1)) = ψ (sp.symm (0, 1))`. Rewrite using `[← map_mul, ← map_mul sp.symm]`. Simplify using the standard rewrite rules.
+
+Break down `mul_eq_zero.1 (show ψ (sp.symm (0, 1)) * (ψ (sp.symm (0, 1)) - 1) = 0 by rw [mul_sub, hidem, mul_one, sub_self]) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Establish `h1 : ψ (sp.symm (0, 1)) = 1` using `sub_eq_zero.1 h`. Rewrite `h1` using `[← hwz, map_mul]`.
+
+Establish `hv1 : Valued.v (ψ w) < 1`. Rewrite using `[hψ, hwdef, GlobalTheory.Mem.Dil.psi_inclE]`. Conclude with `GlobalTheory.Mem.Dil.val_lt_one hr`. Establish `hv2 : Valued.v (ψ z) ≤ 1` using `(GlobalTheory.Mem.Dil.mem_intV_iff (qv F P.1) z).1 hzint P.1 hw`. Establish `h3` using `congrArg Valued.v h1`.
+
+Rewrite `h3` using `[map_mul, map_one]`. Conclude with `absurd h3 (ne_of_lt (lt_of_le_of_lt (mul_le_of_le_one_right' hv2) hv1))`. Establish `hu : ψ (sp.symm (1, 0)) = 1`. Establish `e1 : sp.symm (1, 0) + sp.symm (0, 1) = 1`. Rewrite using `[← map_add]`.
+
+Simplify using the standard rewrite rules. Establish `e2` using `congrArg ψ e1`. Rewrite `e2` using `[map_add, hu', add_zero, map_one]`. Conclude with `e2`. Use `set x := prV (E := E) (qv F P.1) a - Formalism.UG.inclE (F := F) ((qv F P.1).adicCompletion F) e with hx`.
+
+Establish `hψx : ψ x = 0`. Rewrite using `[hx, map_sub, hψ, GlobalTheory.Mem.Dil.psi_prV, GlobalTheory.Mem.Dil.psi_inclE, he, sub_self]`. Establish `hx1 : (sp x).1 = 0`. Assume the negation of the conclusion as `ht`. Establish `hxy : x * sp.symm (((sp x).1)⁻¹, 0) = sp.symm (1, 0)`.
+
+Apply `sp.injective` to reduce the goal to its premises. Rewrite using `[map_mul, sp.apply_symm_apply, sp.apply_symm_apply]`. Conclude with `Prod.ext (mul_inv_cancel₀ ht) (mul_zero _)`. Establish `h2` using `congrArg ψ hxy`. Rewrite `h2` using `[map_mul, hψx, zero_mul, hu]`.
+
+Conclude with `zero_ne_one h2`. Establish `e3 : qPi q P a - q.phi P e = (sp x).1`. Rewrite using `[hx, map_sub]`. Both sides reduce to the same expression. Conclude with `sub_eq_zero.1 (e3.trans hx1)`.
+-/
 theorem qPi_eq_phi_of_adAt : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {Q : Finset (Pl E)} {Θ : LevQFam E K n Q} (q : QLoc hc n Q Θ) (P : Q), conjPrime₂ P.1 ≠ P.1 → ∀ (a : AfE F E) (e : E), adAt F P.1 a = algebraMap E _ e → qPi q P a = q.phi P e := by
   intro F E K _ _ _ _ _ _ _ hc n _ Q Θ q P hP a e he
   have hw : P.1.under (𝓞 F) = qv F P.1 := HeightOneSpectrum.ext rfl

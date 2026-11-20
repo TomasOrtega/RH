@@ -27,6 +27,11 @@ open Classical in
 def residueAt (a : Ω) : K' :=
   if h : RegularAt hj ψ a then ψ h.choose / ψ h.choose_spec.choose else 0
 
+/- English proof (translation)
+Rewrite using `[div_eq_div_iff hc0 hc]`. Establish `: b0 * c = b * c0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_mul, ← h0, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← map_mul, ← map_mul, this]`.
+-/
 theorem residue_wellDefined {a : Ω} {b c b0 c0 : chartRing S x (singleChart hj)} (hc : ψ c ≠ 0)
     (h : a * (c : Ω) = b) (hc0 : ψ c0 ≠ 0) (h0 : a * (c0 : Ω) = b0) : ψ b0 / ψ c0 = ψ b / ψ c := by
   rw [div_eq_div_iff hc0 hc]
@@ -36,25 +41,42 @@ theorem residue_wellDefined {a : Ω} {b c b0 c0 : chartRing S x (singleChart hj)
     ring
   rw [← map_mul, ← map_mul, this]
 
+/- English proof (translation)
+Establish `hr : RegularAt hj ψ a` using `⟨b, c, hc, h⟩`. Rewrite using `[residueAt, dif_pos hr]`. Conclude with `residue_wellDefined hj ψ hc h hr.choose_spec.choose_spec.1 hr.choose_spec.choose_spec.2`.
+-/
 theorem residueAt_eq {a : Ω} {b c : chartRing S x (singleChart hj)} (hc : ψ c ≠ 0)
     (h : a * (c : Ω) = b) : residueAt hj ψ a = ψ b / ψ c := by
   have hr : RegularAt hj ψ a := ⟨b, c, hc, h⟩
   rw [residueAt, dif_pos hr]
   exact residue_wellDefined hj ψ hc h hr.choose_spec.choose_spec.1 hr.choose_spec.choose_spec.2
 
+/- English proof (translation)
+Rewrite using `[residueAt_eq hj ψ (b := a) (c := 1) (by rw [map_one]; exact one_ne_zero) (by rw [Subalgebra.coe_one, mul_one]), map_one, div_one]`.
+-/
 theorem residueAt_of_mem (a : chartRing S x (singleChart hj)) : residueAt hj ψ (a : Ω) = ψ a := by
   rw [residueAt_eq hj ψ (b := a) (c := 1) (by rw [map_one]; exact one_ne_zero)
     (by rw [Subalgebra.coe_one, mul_one]), map_one, div_one]
 
+/- English proof (translation)
+Use `residueAt_of_mem hj ψ 1` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_one, map_one]`. Then use the resulting hypothesis.
+-/
 theorem residueAt_one : residueAt hj ψ (1 : Ω) = 1 := by
   have := residueAt_of_mem hj ψ 1
   rwa [Subalgebra.coe_one, map_one] at this
 
+/- English proof (translation)
+Use `residueAt_of_mem hj ψ 0` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_zero, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem residueAt_zero : residueAt hj ψ (0 : Ω) = 0 := by
   have := residueAt_of_mem hj ψ 0
   rwa [Subalgebra.coe_zero, map_zero] at this
 
 variable {hj ψ} in
+/- English proof (translation)
+Take `⟨b, c, hc, hbc⟩` from `h`. Take `⟨b', c', hc', hbc'⟩` from `h'`. Establish `hcc : ψ (c * c') ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hc hc'`. Establish `he : (a + a') * ((c * c' : chartRing S x (singleChart hj)) : Ω) = (b * c' + b' * c : chartRing S x (singleChart hj))`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_add, ← hbc, ← hbc']`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, _, hcc, he⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[residueAt_eq hj ψ hcc he, residueAt_eq hj ψ hc hbc, residueAt_eq hj ψ hc' hbc', map_add, map_mul, map_mul, map_mul, div_add_div _ _ hc hc']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RegularAt.add {a a' : Ω} (h : RegularAt hj ψ a) (h' : RegularAt hj ψ a') :
     RegularAt hj ψ (a + a') ∧ residueAt hj ψ (a + a') = residueAt hj ψ a + residueAt hj ψ a' := by
   obtain ⟨b, c, hc, hbc⟩ := h
@@ -69,6 +91,11 @@ theorem RegularAt.add {a a' : Ω} (h : RegularAt hj ψ a) (h' : RegularAt hj ψ 
   ring
 
 variable {hj ψ} in
+/- English proof (translation)
+Take `⟨b, c, hc, hbc⟩` from `h`. Take `⟨b', c', hc', hbc'⟩` from `h'`. Establish `hcc : ψ (c * c') ≠ 0` using `by rw [map_mul]; exact mul_ne_zero hc hc'`. Establish `he : (a * a') * ((c * c' : chartRing S x (singleChart hj)) : Ω) = (b * b' : chartRing S x (singleChart hj))`. Simplify using `only [Subalgebra.coe_mul, ← hbc, ← hbc']`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨_, _, hcc, he⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[residueAt_eq hj ψ hcc he, residueAt_eq hj ψ hc hbc, residueAt_eq hj ψ hc' hbc', map_mul, map_mul, div_mul_div_comm]`.
+-/
 theorem RegularAt.mul {a a' : Ω} (h : RegularAt hj ψ a) (h' : RegularAt hj ψ a') :
     RegularAt hj ψ (a * a') ∧ residueAt hj ψ (a * a') = residueAt hj ψ a * residueAt hj ψ a' := by
   obtain ⟨b, c, hc, hbc⟩ := h
@@ -82,6 +109,11 @@ theorem RegularAt.mul {a a' : Ω} (h : RegularAt hj ψ a) (h' : RegularAt hj ψ 
     map_mul, div_mul_div_comm]
 
 variable {hj ψ} in
+/- English proof (translation)
+Take `⟨b, c, hc, hbc⟩` from `h`. Rewrite `hne`, the goal using `[residueAt_eq hj ψ hc hbc]`. Establish `hb : ψ b ≠ 0` using `fun h0 => hne (by rw [h0, zero_div])`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hb` to reduce the goal to its premises. Establish `: b = 0` using `Subtype.ext (by rw [← hbc, zero_mul]; rfl)`. Rewrite using `[this, map_zero]`. Establish `he : a⁻¹ * (b : Ω) = c` using `by rw [← hbc, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Conclude with `⟨ha, ⟨c, b, hb, he⟩, by rw [residueAt_eq hj ψ hb he, inv_div]⟩`.
+-/
 theorem RegularAt.inv {a : Ω} (h : RegularAt hj ψ a) (hne : residueAt hj ψ a ≠ 0) :
     a ≠ 0 ∧ RegularAt hj ψ a⁻¹ ∧ residueAt hj ψ a⁻¹ = (residueAt hj ψ a)⁻¹ := by
   obtain ⟨b, c, hc, hbc⟩ := h
@@ -95,6 +127,9 @@ theorem RegularAt.inv {a : Ω} (h : RegularAt hj ψ a) (hne : residueAt hj ψ a 
   have he : a⁻¹ * (b : Ω) = c := by rw [← hbc, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]
   exact ⟨ha, ⟨c, b, hb, he⟩, by rw [residueAt_eq hj ψ hb he, inv_div]⟩
 
+/- English proof (translation)
+Establish `: ratio (S` using `S) hj j = 1 := Subtype.ext (div_self hj)`. Rewrite using `[this, map_one]`.
+-/
 theorem ratio_self : ψ (ratio (S := S) hj j) = 1 := by
   have : ratio (S := S) hj j = 1 := Subtype.ext (div_self hj)
   rw [this, map_one]
@@ -103,6 +138,11 @@ variable (hxy : ∀ i, ψ (ratio hj i) ≠ 0 → x i ≠ 0)
 
 include hxy in
 
+/- English proof (translation)
+Establish `hsx : aeval x s ≠ 0` using `eval_ne_zero_of_mem_monos (liftChart hxy K) hs`. Establish `hsy : aeval (reducedPt hj ψ) s ≠ 0` using `eval_ne_zero_of_mem_monos K hs`. Establish `hψ : ∀ g : Poly S N, ψ (aeval (ratio hj) g) = aeval (reducedPt hj ψ) g` using `fun g => comp_aeval_apply (ratio hj) ψ g`. Establish `hc : ψ (aeval (ratio hj) s) ≠ 0` using `by rw [hψ]; exact hsy`. Establish `h : aeval x f / aeval x s * ((aeval (ratio hj) s : chartRing S x (singleChart hj)) : Ω) = (aeval (ratio hj) f : chartRing S x (singleChart hj))`.
+
+Rewrite using `[coe_aeval_ratio hj hse, coe_aeval_ratio hj hf]`. Clear the denominators using the available nonvanishing facts. Conclude with `⟨⟨_, _, hc, h⟩, by rw [residueAt_eq hj ψ hc h, hψ, hψ]⟩`.
+-/
 theorem regularAt_chart (K : Chart (reducedPt hj ψ)) {f s : Poly S N} {e : ℕ} (hs : s ∈ monos K.1)
     (hf : f.IsHomogeneous e) (hse : s.IsHomogeneous e) :
     RegularAt hj ψ (aeval x f / aeval x s) ∧
@@ -119,6 +159,9 @@ theorem regularAt_chart (K : Chart (reducedPt hj ψ)) {f s : Poly S N} {e : ℕ}
     field_simp
   exact ⟨⟨_, _, hc, h⟩, by rw [residueAt_eq hj ψ hc h, hψ, hψ]⟩
 
+/- English proof (translation)
+Take `⟨f, s, e, hs, hf, hse, ha⟩` from `a.2`. Rewrite using `[ha]`. Take `⟨h1, h2⟩` from `regularAt_chart hj ψ hxy K hs hf hse`. Conclude with `⟨h1, h2 ▸ ⟨f, s, e, hs, hf, hse, rfl⟩⟩`.
+-/
 theorem regularAt_mem_chart (K : Chart (reducedPt hj ψ)) (a : chartRing S x (liftChart hxy K)) :
     RegularAt hj ψ (a : Ω) ∧ residueAt hj ψ (a : Ω) ∈ chartRing S (reducedPt hj ψ) K := by
   obtain ⟨f, s, e, hs, hf, hse, ha⟩ := a.2
@@ -126,6 +169,13 @@ theorem regularAt_mem_chart (K : Chart (reducedPt hj ψ)) (a : chartRing S x (li
   obtain ⟨h1, h2⟩ := regularAt_chart hj ψ hxy K hs hf hse
   exact ⟨h1, h2 ▸ ⟨f, s, e, hs, hf, hse, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `ha`. Establish `h1` using `regularAt_mem_chart hj ψ hxy K u`. Establish `h2` using `regularAt_mem_chart hj ψ hxy K ↑u⁻¹`. Establish `hmul : ((u : chartRing S x (liftChart hxy K)) : Ω) * ((↑u⁻¹ : chartRing S x (liftChart hxy K)) : Ω) = 1`. Use `congrArg Subtype.val u.mul_inv` as an intermediate fact.
+
+Conclude with `this`. Use `(h1.1.mul h2.1).2` as an intermediate fact. Rewrite `this` using `[hmul, residueAt_one]`. Introduce `h0`. Rewrite `this` using `[h0, zero_mul]`.
+
+Conclude with `one_ne_zero this`.
+-/
 theorem residueAt_ne_zero_of_isUnit (K : Chart (reducedPt hj ψ)) {a : chartRing S x (liftChart hxy K)}
     (ha : IsUnit a) : residueAt hj ψ (a : Ω) ≠ 0 := by
   obtain ⟨u, rfl⟩ := ha
@@ -146,6 +196,13 @@ def chartIns (K : Chart (reducedPt hj ψ)) : Chart (reducedPt hj ψ) :=
     ⟨(mem_support _).mpr (by change ψ (ratio hj j) ≠ 0; rw [ratio_self hj ψ]; exact one_ne_zero),
       K.2.2⟩⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `h1 : (1 : Ω) ∈ Q0 * Q1` using `by rw [h]; exact Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hψc⟩ : ∃ c : chartRing S x (singleChart hj), (c : Ω) = 1 ∧ ψ c = 0 := by`. Use `Submodule.mul_induction_on (C := fun z => ∃ c : chartRing S x (singleChart hj), (c : Ω) = z ∧ ψ c = 0) h1 ?_ ?_` and prove the remaining obligations.
+
+Introduce `m hm n hn`. Establish `hmn` using `Submodule.mul_mem_mul hm hn`. Rewrite `hmn` using `[h]`. Take `⟨c, hc⟩` from `Submodule.mem_one.mp hmn`. Conclude with `⟨c, hc, H m hm n hn c hc⟩`.
+
+Introduce and unpack `a b ⟨c, hc, hc0⟩ ⟨d, hd, hd0⟩`. Conclude with `⟨c + d, by rw [Subalgebra.coe_add, hc, hd], by rw [map_add, hc0, hd0, add_zero]⟩`. Establish `: c = 1` using `Subtype.ext hc`. Rewrite `hψc` using `[this, map_one]`. Conclude with `one_ne_zero hψc`.
+-/
 theorem exists_generator_at {Q0 Q1 : Submodule (chartRing S x (singleChart hj)) Ω} (h : Q0 * Q1 = 1) :
     ∃ q0 ∈ Q0, ∃ q1 ∈ Q1, ∃ c0 : chartRing S x (singleChart hj), (c0 : Ω) = q0 * q1 ∧ ψ c0 ≠ 0 := by
   by_contra H
@@ -168,12 +225,22 @@ theorem exists_generator_at {Q0 Q1 : Submodule (chartRing S x (singleChart hj)) 
 variable (Q : LineBundle S x) {q0 q1 : Ω} {Q1 : Submodule (chartRing S x (singleChart hj)) Ω}
   {c0 : chartRing S x (singleChart hj)}
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Apply `hψ` to reduce the goal to its premises. Establish `: c0 = 0` using `Subtype.ext (by rw [hc, zero_mul]; rfl)`. Rewrite using `[this, map_zero]`.
+-/
 theorem ne_zero_of_generator (hc : (c0 : Ω) = q0 * q1) (hψ : ψ c0 ≠ 0) : q0 ≠ 0 := by
   rintro rfl
   apply hψ
   have : c0 = 0 := Subtype.ext (by rw [hc, zero_mul]; rfl)
   rw [this, map_zero]
 
+/- English proof (translation)
+Establish `hsub : (singleChart hj).1 ⊆ (liftChart hxy (chartIns hj ψ K)).1` using `Finset.singleton_subset_iff.mpr (Finset.mem_insert_self j K.1)`. Establish `hKsub : (liftChart hxy K).1 ⊆ (liftChart hxy (chartIns hj ψ K)).1` using `Finset.subset_insert j K.1`. Establish `hq'` using `Q.mono _ _ hKsub q hq`. Take `⟨a, ha, haq⟩` from `(Q.mem_iff _ _ hsub q).mp hq'`. Establish `hψa : ψ a ≠ 0`.
+
+Use `residueAt_ne_zero_of_isUnit hj ψ hxy (chartIns hj ψ K) ha` as an intermediate fact. Rewrite `this` using `[show ((chartIncl hsub a : chartRing S x _) : Ω) = (a : Ω) from rfl, residueAt_of_mem]`. Then use the resulting hypothesis. Establish `hm` using `Submodule.mul_mem_mul haq hq1`. Rewrite `hm` using `[hQ1]`. Take `⟨b, hb⟩` from `Submodule.mem_one.mp hm`.
+
+Establish `hb' : (b : Ω) = (a : Ω) * q * q1` using `hb`. Establish `hq00` using `ne_zero_of_generator hj ψ hc hψ`. Use `⟨b, a * c0, by rw [map_mul]; exact mul_ne_zero hψa hψ, ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, hc, hb']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem regularAt_div (hc : (c0 : Ω) = q0 * q1) (hψ : ψ c0 ≠ 0)
     (hQ1 : Q.sub (singleChart hj) * Q1 = 1) (hq1 : q1 ∈ Q1)
     (K : Chart (reducedPt hj ψ)) {q : Ω} (hq : q ∈ Q.sub (liftChart hxy K)) :
@@ -195,6 +262,15 @@ theorem regularAt_div (hc : (c0 : Ω) = q0 * q1) (hψ : ψ c0 ≠ 0)
   rw [Subalgebra.coe_mul, hc, hb']
   field_simp
 
+/- English proof (translation)
+Establish `hsub : (singleChart hj).1 ⊆ (liftChart hxy (chartIns hj ψ K)).1` using `Finset.singleton_subset_iff.mpr (Finset.mem_insert_self j K.1)`. Establish `hKsub : (liftChart hxy K).1 ⊆ (liftChart hxy (chartIns hj ψ K)).1` using `Finset.subset_insert j K.1`. Establish `hq0'` using `Q.mono _ _ hsub q0 hq0`. Take `⟨α, hα, hαq⟩` from `(Q.mem_iff _ _ hKsub q0).mp hq0'`. Establish `hm` using `Submodule.mul_mem_mul hαq hq'`.
+
+Rewrite `hm` using `[hinv]`. Take `⟨β, hβ⟩` from `Submodule.mem_one.mp hm`. Establish `hβ' : (β : Ω) = (α : Ω) * q0 * q'` using `hβ`. Establish `hαne : residueAt hj ψ (α : Ω) ≠ 0` using `residueAt_ne_zero_of_isUnit hj ψ hxy (chartIns hj ψ K) (a := chartIncl hKsub α) hα`. Establish `hα'` using `regularAt_mem_chart hj ψ hxy K α`.
+
+Establish `hβr` using `regularAt_mem_chart hj ψ hxy K β`. Take `⟨hα0, hinvr, -⟩` from `hα'.1.inv hαne`. Establish `he : q' * q0 = (β : Ω) * (α : Ω)⁻¹`. Rewrite using `[hβ']`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[he]`. Conclude with `(hβr.1.mul hinvr).1`.
+-/
 theorem regularAt_mul_generator (hq0 : q0 ∈ Q.sub (singleChart hj)) (K : Chart (reducedPt hj ψ))
     {Qinv : Submodule (chartRing S x (liftChart hxy K)) Ω} (hinv : Q.sub (liftChart hxy K) * Qinv = 1)
     {q' : Ω} (hq' : q' ∈ Qinv) : RegularAt hj ψ (q' * q0) := by
@@ -221,6 +297,11 @@ theorem regularAt_mul_generator (hq0 : q0 ∈ Q.sub (singleChart hj)) (K : Chart
 def restrictSub (q0 : Ω) (K : Chart (reducedPt hj ψ)) : Submodule (chartRing S (reducedPt hj ψ) K) K' :=
   Submodule.span _ ((fun q => residueAt hj ψ (q / q0)) '' (Q.sub (liftChart hxy K) : Set Ω))
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun z _ => z ∈ restrictSub hj ψ hxy Q q0 L) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `Submodule.subset_span ⟨q, Q.mono (liftChart hxy K) (liftChart hxy L) h q hq, rfl⟩`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`. Conclude with `Submodule.smul_mem _ (chartIncl h a) hz`.
+-/
 theorem restrictSub_mono (q0 : Ω) (K L : Chart (reducedPt hj ψ)) (h : K.1 ⊆ L.1) (z : K')
     (hz : z ∈ restrictSub hj ψ hxy Q q0 K) : z ∈ restrictSub hj ψ hxy Q q0 L := by
   refine Submodule.span_induction (p := fun z _ => z ∈ restrictSub hj ψ hxy Q q0 L) ?_ ?_ ?_ ?_ hz
@@ -366,6 +447,13 @@ def restrictBundle (hq0 : q0 ∈ Q.sub (singleChart hj)) (hc : (c0 : Ω) = q0 * 
 
 end Residue
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x pp _ _ _ j hj _ K' _ _ ψ _ hxy Q`. Take `⟨Q1, hQ1⟩` from `Q.invertible (singleChart hj)`. Take `⟨q0, hq0, q1, hq1, c0, hc, hψ⟩` from `exists_generator_at hj ψ hQ1`. Use `⟨restrictBundle hj ψ hxy Q hq0 hc hψ hQ1 hq1, fun q => residueAt hj ψ (q / q0), fun I => ⟨?_, ?_, ?_, rfl⟩⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Conclude with `Submodule.subset_span ⟨q, hq, rfl⟩`. Introduce `q hq q' hq' beta_reduce`. Rewrite using `[add_div]`. Conclude with `((regularAt_div hj ψ hxy Q hc hψ hQ1 hq1 I hq).add (regularAt_div hj ψ hxy Q hc hψ hQ1 hq1 I hq')).2`. Introduce `q hq f s e hs hf hse`.
+
+Establish `hr` using `regularAt_chart hj ψ hxy I hs hf hse`. Use `beta_reduce`. Rewrite using `[mul_div_assoc, (hr.1.mul (regularAt_div hj ψ hxy Q hc hψ hQ1 hq1 I hq)).2, hr.2]`.
+-/
 theorem PrimeFiltration.Restrict.proof : PrimeFiltration.Restrict.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x pp _ _ _ j hj _ K' _ _ ψ _ hxy Q
   obtain ⟨Q1, hQ1⟩ := Q.invertible (singleChart hj)

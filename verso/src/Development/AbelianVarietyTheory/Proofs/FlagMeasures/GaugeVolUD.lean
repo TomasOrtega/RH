@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace GlobalTheory.GaugeVolumeUD
 
+/- English proof (translation)
+Introduce `k` and use `Formalism.L2.SG.Pf.GV.gaugeVolU k`.
+-/
 theorem gaugeVolUD : PI.AprimeInfW.GaugeVolUD := fun k => Formalism.L2.SG.Pf.GV.gaugeVolU k
 
 instance : Fact (PI.AprimeInfW.GaugeVolUD) := ⟨gaugeVolUD⟩

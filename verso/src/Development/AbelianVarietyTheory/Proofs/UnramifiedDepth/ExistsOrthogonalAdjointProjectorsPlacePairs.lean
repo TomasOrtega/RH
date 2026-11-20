@@ -13,6 +13,13 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 
 namespace GlobalTheory.PlaceProj
 
+/- English proof (translation)
+Take `⟨ε, hε, hε1, hεP⟩` from `p.em_unr 0`. Take `⟨a, h1, h2, h3⟩` from `exists_idem_seq (V.l : O) ε hε`. Take `⟨M, M', e1, e2, l1, l2⟩` from `GlobalTheory.ActionLimit.exists_isEnd_of_limit C V O dd Y d I p a h1`. Simplify using `only [hρ] at l1 l2`. Use `⟨![M, M'], e1, e2, Fin.forall_fin_two.2 ⟨⟨ε, a, l1, hε, hε1, hεP, h2, h3⟩, star ε, fun m => star (a m), l2, ?_, fun t => ?_, fun x hx => ?_, fun m => ?_, fun m => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `hε`. Conclude with `⟨star y, by simpa [mul_comm] using congrArg star hy⟩`. Rewrite using `[p.em_conj, star_star]`. Conclude with `hε1 t`. Take `⟨y, hy⟩` from `hεP (star x) fun t => by rw [← p.em_conj]; exact hx t`.
+
+Conclude with `⟨star y, by simpa [mul_comm] using congrArg star hy⟩`. Take `⟨y, hy⟩` from `h2 m`. Conclude with `⟨star y, by simpa [mul_comm] using congrArg star hy⟩`. Take `⟨y, hy⟩` from `h3 m`. Conclude with `⟨star y, by simpa [mul_comm] using congrArg star hy⟩`.
+-/
 theorem exists_lim_pair {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) {d : ℕ} [NeZero d] {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I)
     (ρ : O →+* Matrix (Fin dd) (Fin dd) C) (hρ : ∀ a v, linAct (Y.B.A.act a) v = (ρ a).mulVec v) :
@@ -36,6 +43,17 @@ theorem exists_lim_pair {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} 
   · obtain ⟨y, hy⟩ := h3 m
     exact ⟨star y, by simpa [mul_comm] using congrArg star hy⟩
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ Orb I _ p hsep`. Use `haveI := Y.algClosed`. Take `⟨ρ, hρ1, hρ⟩` from `exists_linHom Y.B.G Y.B.A`. Establish `hint : ∀ x i j, V.Ge 0 (ρ x i j)` using `fun x i j => by rw [hρ1]; exact Y.intAct x i _`. Use `choose M e1 e2 hM using fun o => exists_lim_pair Y (p o) ρ hρ`.
+
+Establish `hs : ∀ o g (a a' : ZMod d), a ≠ a' → ∃ x, V.v ((p o).em g a x - (p o).em g a' x) = 0` using `fun o g a a' h => (p o).em_sep (g, a) (g, a') fun h' => h (congrArg Prod.snd h')`. Use `⟨M, fun o => ⟨e1 o, e2 o⟩, fun o g c => ?_, fun o g o' g' c hne => ?_, fun o g v => ?_⟩` and prove the remaining obligations. Take `⟨ε, a, hl, -, hε1, -, ha, ha0⟩` from `hM o g`. Use `hl.eig ((p o).em g ((p o).ty g c)) 1 (seq_one ha ha0 _ ((p o).em_int g _) (hε1 _)) ((p o).u g c) (fun x => by rw [← hρ, (p o).u_eig])` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+
+Take `⟨ε, a, hl, hε, hε1, hεP, ha, ha0⟩` from `hM o g`. Establish `hmm : V.MM ((p o').em g' ((p o').ty g' c) ε)`. Assume the negation of the conclusion as `hmm`. Take `⟨t, ht⟩` from `eq_em_of_not_mm ((p o).em g) ((p o).em_int g) ((p o).em_frob g) (hs o g) ε hε hε1 hεP _ ((p o').em_int g' _) hmm`. Take `⟨x, hx⟩` from `hsep (o, g, t) (o', g', (p o').ty g' c) fun h => hne (congrArg (fun z : Orb × Fin 2 × ZMod d => (z.1, z.2.1)) h)`.
+
+Simplify using `[ht] at hx`. Use `hl.eig ((p o').em g' ((p o').ty g' c)) 0 (seq_zero ha ha0 _ ((p o').em_int g' _) hmm) ((p o').u g' c) (fun x => by rw [← hρ, (p o').u_eig])` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Take `⟨ε, a, hl, hε, hε1, hεP, ha, ha0⟩` from `hM o g`. Use `hl.range hint ((p o).em g) ((p o).em_int g) ((p o).em_frob g) (hs o g) ε hε hε1 hεP ha ha0 (Submodule.span C (Set.range ((p o).u g))) (fun t w hw => by` as an intermediate fact.
+
+Take `⟨b, -, hb⟩` from `(p o).u_full g t w fun x => by rw [hρ, hw]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun C).2 ⟨b, hb.symm⟩) v`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 this`. Conclude with `⟨b, hb.symm⟩`.
+-/
 theorem exists_orth_proj : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (Orb : Type) (I : Orb → Fin 2 → Type) [∀ o g, Fintype (I o g)] (p : ∀ o, PairData Y d (I o)), (∀ x x' : Orb × Fin 2 × ZMod d, x ≠ x' → ∃ a : O, V.v ((p x.1).em x.2.1 x.2.2 a - (p x'.1).em x'.2.1 x'.2.2 a) = 0) → ∃ M : Orb → Fin 2 → Matrix (Fin dd) (Fin dd) C, (∀ o, IsEnd (Y.raw (p o)) V (M o 0) (M o 1) ∧ IsEnd (Y.raw (p o)) V (M o 1) (M o 0)) ∧ (∀ o g c, (M o g).mulVec ((p o).u g c) = (p o).u g c) ∧ (∀ o g o' g' c, (o, g) ≠ (o', g') → (M o g).mulVec ((p o').u g' c) = 0) ∧ ∀ o g v, ∃ b : I o g → C, (M o g).mulVec v = ∑ c, b c • (p o).u g c := by
   intro C _ _ V O _ _ dd Y d _ Orb I _ p hsep
   haveI := Y.algClosed

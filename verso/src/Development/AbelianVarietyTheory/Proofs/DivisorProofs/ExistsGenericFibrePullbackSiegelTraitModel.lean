@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.GenFibre
 
+/- English proof (translation)
+Introduce `g n o _ ζ F T W _ _ f fK hfK`. Establish `hsq : spMap fK ≫ jK T.V = jK W ≫ spMap f`. Establish `h : fK.comp (algebraMap T.V (FractionRing T.V)) = (algebraMap W (FractionRing W)).comp f` using `RingHom.ext hfK`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, h]`.
+
+Establish `gB` using `((isGrpPullback_pullback ((Over.pullback (spMap f)).obj T.G) (jK W)).comp (isGrpPullback_pullback T.G (spMap f))).congr hsq.symm rfl`. Establish `he` using `isGrpPullback_pullback T.G (jK T.V)`. Use `set B := (Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)`. Establish `w : (pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ pullback.fst T.G.hom (spMap f)) ≫ T.G.hom = (B.hom ≫ spMap fK) ≫ jK T.V`. Rewrite using `[Category.assoc B.hom]`.
+
+Conclude with `gB.1.w`. Take `⟨α, h₁, h₂⟩ : ∃ α : B.left ⟶ ((Over.pullback (jK T.V)).obj T.G).left, α ≫ pullback.fst T.G.hom (jK T.V) = pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ pullback.fst T.G.hom (spMap f) ∧ α ≫ ((Over.pullback (jK T.V)).obj T.G).hom = B.hom ≫ spMap fK` from `⟨he.1.lift _ _ w, he.1.lift_fst _ _ _, he.1.lift_snd _ _ _⟩`. Establish `gα` using `he.cancel (gB.congr rfl h₁.symm) h₂`. Use `haveI := T.U.gen_hom`. Use `⟨α ≫ T.U.gen.hom.left, (gα.comp (isGrpPullback_of_iso T.U.gen)).congr (Category.comp_id _) rfl, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← Category.assoc T.U.gen.hom.left, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.id_comp]`. Conclude with `h₁`.
+-/
 theorem exists_generic_pullback : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F) (W : Type) [CommRing W] [IsDomain W] (f : T.V →+* W) (fK : FractionRing T.V →+* FractionRing W), (∀ a, fK (algebraMap T.V _ a) = algebraMap W _ (f a)) → ∃ κ : ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)).left ⟶ T.A.A.left, IsGrpPullback ((Over.pullback (jK W)).obj ((Over.pullback (spMap f)).obj T.G)) T.A.A (spMap fK) κ ∧ κ ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK T.V) = pullback.fst ((Over.pullback (spMap f)).obj T.G).hom (jK W) ≫ pullback.fst T.G.hom (spMap f) := by
   intro g n o _ ζ F T W _ _ f fK hfK
   have hsq : spMap fK ≫ jK T.V = jK W ≫ spMap f := by

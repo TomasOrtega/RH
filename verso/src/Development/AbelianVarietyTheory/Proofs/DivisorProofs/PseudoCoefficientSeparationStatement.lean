@@ -24,5 +24,8 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SpecTraceProof.specTrace | exact GlobalTheory.SpecTraceProof.specTrace | (intros; apply GlobalTheory.SpecTraceProof.specTrace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pseudo_coefficient_separation : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.HarishChandraCharacters → (∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.CuspidalOperators V μ) → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → GlobalTheory.IndefiniteRowSideFullHecke.PseudoCoefficientSeparation.PseudoCoeffSeparation → SpecTrace := by
   first | exact @GlobalTheory.SpecTraceProof.specTrace | exact GlobalTheory.SpecTraceProof.specTrace | (intros; apply GlobalTheory.SpecTraceProof.specTrace <;> assumption)

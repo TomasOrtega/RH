@@ -9,6 +9,17 @@ namespace GlobalTheory.CompanionTheory.Ar.QuotUnif
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `X Ω _ ξ G _ _ _ Li _ _ M z₀ hξ h`. Take `⟨R, _, x, hx, F, _, _, MR, n, b₀, hp⟩` from `LieVB.exists_chart G (centre z₀)`. Establish `hq' : (X.fromSpecStalk (centre z₀)) (IsLocalRing.closedPoint (X.presheaf.stalk (centre z₀))) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hp`.
+
+Take `⟨ψ, hψ⟩` from `LieVB.exists_lift (A := X.presheaf.stalk (centre z₀)) x (X.fromSpecStalk (centre z₀)) hq'`. Take `⟨EA, _, _, ⟨MA⟩⟩` from `lieModel_exists X G (X.presheaf.stalk (centre z₀)) (X.fromSpecStalk (centre z₀))`. Take `⟨-, BA, -, -⟩` from `LieVB.basis_tr (A := X.presheaf.stalk (centre z₀)) ψ x (X.fromSpecStalk (centre z₀)) hψ MR MA b₀`. Take `⟨i, hi⟩` from `LieVB.exists_tr (A := X.presheaf.stalk (centre z₀)) (X.fromSpecStalk (centre z₀)) ξ (genMap ξ ⟨centre z₀, h⟩) (LieTangent.spec_genMap ξ ⟨centre z₀, h⟩) MA M`. Establish `hext : ∀ a, M.Extends ⟨centre z₀, h⟩ (i a) (MA.pt a)` using `fun a => ⟨MA.tan a, hi a⟩`.
+
+Use `⟨n, fun k => i (BA k), fun k => ?_, fun V _ _ Mz b hb => ?_⟩` and prove the remaining obligations. Take `⟨E₀, _, _, ⟨M₀⟩⟩` from `lieModel_exists X G ℂ z₀`. Take `⟨j, hj⟩` from `LieVB.exists_tr (A := X.presheaf.stalk (centre z₀)) (X.fromSpecStalk (centre z₀)) z₀ (Scheme.stalkClosedPointTo z₀).hom (LieTangent.spec_centre z₀) MA M₀`. Conclude with `⟨M₀.pt (j (BA k)), h, _, hext _, hj _⟩`. Take `⟨β, B, hB, hβ⟩` from `LieVB.basis_tr (R := X.presheaf.stalk (centre z₀)) (Scheme.stalkClosedPointTo z₀).hom (X.fromSpecStalk (centre z₀)) z₀ (LieTangent.spec_centre z₀) MA Mz BA`.
+
+Establish `hbB : b = B`. Use function extensionality and compare the values at `k`. Take `⟨_, v, hv, hw⟩` from `hb k`. Establish `hva : MA.pt (BA k) = v` using `(hext (BA k)).unique (hξ.inj _) hv`. Substitute `hva` using the available equality.
+
+Rewrite using `[hB]`. Conclude with `LieVB.pt_left_inj Mz (hw.trans (hβ _).symm)`. Rewrite using `[hbB]`. Conclude with `⟨B.linearIndependent, B.span_eq⟩`.
+-/
 theorem lie_frame_values_basis : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (z₀ : Sp ℂ ⟶ X), IsCptGen ξ → genPt ξ ⤳ centre z₀ → ∃ (N : ℕ) (s : Fin N → Li), (∀ i, ∃ v : epsAt z₀ ⟶ G, M.ValAt z₀ (s i) v) ∧ ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (Mz : LieModel G z₀ V) (b : Fin N → V), (∀ i, M.ValAt z₀ (s i) (Mz.pt (b i))) → LinearIndependent ℂ b ∧ Submodule.span ℂ (Set.range b) = ⊤ := by
   intro X Ω _ ξ G _ _ _ Li _ _ M z₀ hξ h
   obtain ⟨R, _, x, hx, F, _, _, MR, n, b₀, hp⟩ := LieVB.exists_chart G (centre z₀)

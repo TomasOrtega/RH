@@ -16,6 +16,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ GlobalTheory.CompanionTheory.Si
 open NumberField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.integrable_of_summable_quotient_periodic | exact GlobalTheory.CompanionTheory.SiegelND.Integ.integrable_of_summable_quotient_periodic | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.integrable_of_summable_quo …`.
+-/
 theorem _root_.GlobalTheory.T.summable_over_lattice_quotient_locally_constant : ∀ (G H : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] [AddCommGroup H] (ν : Measure G) [ν.IsAddHaarMeasure] (U : AddSubgroup G),
     IsOpen (U : Set G) → IsCompact (U : Set G) → ∀ ι : H →+ G, (∀ g, ∃ h, g - ι h ∈ U) →

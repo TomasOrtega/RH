@@ -17,15 +17,31 @@ open scoped InnerProductSpace ComplexConjugate
 
 abbrev dgM {r : ℕ} (d : Fin r → ℝ) : Matrix (Fin r) (Fin r) ℂ := Matrix.diagonal fun a => (d a : ℂ)
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.ofReal_mul, hd]`. Simplify using the standard rewrite rules.
+-/
 theorem dgM_mul {r : ℕ} {d : Fin r → ℝ} (hd : ∀ a, d a * d a = 1) : dgM d * dgM d = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext a; rw [← Complex.ofReal_mul, hd]; simp
 
+/- English proof (translation)
+The claim follows from `Matrix.diagonal_transpose _`.
+-/
 theorem dgM_transpose {r : ℕ} (d : Fin r → ℝ) : (dgM d)ᵀ = dgM d := Matrix.diagonal_transpose _
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b; by_cases h : a = b <;> simp [h, Matrix.diagonal_apply]`.
+-/
 theorem cj_dgM {r : ℕ} (d : Fin r → ℝ) : cj (dgM d) = dgM d := by
   ext a b; by_cases h : a = b <;> simp [h, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Rewrite `h` using `[gram_eq]`. Establish `h1 : Mᵀ * (G.map τ * cj M * dgM d) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, dgM_mul hd]`. Establish `hu : IsUnit M.det`. Use `Matrix.isUnit_det_of_right_inverse h1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_transpose]`. Then use the resulting hypothesis. Establish `hMi : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hiM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `⟨hMi, hiM, ?_⟩` and prove the remaining obligations. Establish `c1 : (M⁻¹)ᵀ * Mᵀ = 1` using `by rw [← Matrix.transpose_mul, hMi, Matrix.transpose_one]`.
+
+Establish `c2 : cj M * cj (M⁻¹) = 1` using `by rw [← cj_mul, hMi]; simp`. Rewrite using `[← h]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G.map τ := by rw [c1, c2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem frame_facts_dg {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (d : Fin r → ℝ) (hd : ∀ a, d a * d a = 1) (h : gram τ G M = dgM d) :
     M * M⁻¹ = 1 ∧ M⁻¹ * M = 1 ∧ (M⁻¹)ᵀ * dgM d * cj (M⁻¹) = G.map τ := by
@@ -45,6 +61,17 @@ theorem frame_facts_dg {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Ma
         simp only [Matrix.mul_assoc]
     _ = G.map τ := by rw [c1, c2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `key : ∀ t a b, (starRingEnd ℂ) ((d t a : ℂ) * Y (t, a, b) * (d t b : ℂ)) = -(Y (t, b, a))`. Introduce `t a b`. Establish `h` using `congrArg (fun A : Matrix (Fin r) (Fin r) ℂ => A a b) (hY t)`. Simplify using `only [IsSkew, dgM, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.map_apply, FrameIndep.blk, Matrix.of_apply, Matrix.zero_apply] at h`. Establish `hb : (d t b : ℂ) * d t b = 1` using `by rw [← Complex.ofReal_mul, hd]; simp`.
+
+Rewrite using `[map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal]`. Take the linear combination `(d t b : ℂ) * h - Y (t, b, a) * hb`. Establish `hc : ∀ u w : ℂ, ⟪u, w⟫_ℝ = ((starRingEnd ℂ) u * w).re` using `fun u w => by`. Rewrite using `[Complex.inner, mul_comm]`. Establish `hs : ∑ i, (starRingEnd ℂ) (cjW (fun t => dgM (d t)) (fun t => dgM (d t)) Y i) * Z i = -∑ t, (blk Y t * blk Z t).trace`.
+
+Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Establish `e : ∀ a b, (cjW (fun t => dgM (d t)) (fun t => dgM (d t)) Y) (t, a, b) = (d t a : ℂ) * Y (t, a, b) * (d t b : ℂ)`. Introduce `a b`.
+
+Simplify using `[cjW, FrameIndep.blk, dgM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [e, key, Matrix.trace, Matrix.diag, Matrix.mul_apply, FrameIndep.blk, Matrix.of_apply, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[PiLp.inner_apply]`.
+
+Simplify using `only [hc]`. Rewrite using `[← Complex.re_sum, hs, Complex.neg_re]`.
+-/
 theorem inner_theta_dg {ι : Type} [Fintype ι] {r : ℕ} (d : ι → Fin r → ℝ) (hd : ∀ t a, d t a * d t a = 1)
     (Y Z : WW ι r) (hY : ∀ t, IsSkew (dgM (d t)) (blk Y t)) :
     ⟪cjW (fun t => dgM (d t)) (fun t => dgM (d t)) Y, Z⟫_ℝ = -(∑ t, (blk Y t * blk Z t).trace).re := by
@@ -75,6 +102,13 @@ theorem inner_theta_dg {ι : Type} [Fintype ι] {r : ℕ} (d : ι → Fin r → 
   simp only [hc]
   rw [← Complex.re_sum, hs, Complex.neg_re]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_comap]`. Use `show (∀ τ : Ψ, (Matrix.of (fromFrame x Y τ)).trace = 0 ∧ ∀ u w, hermC τ.1 G (Matrix.of (fromFrame x Y τ) *ᵥ u) w + hermC τ.1 G u (Matrix.of (fromFrame x Y τ) *ᵥ w) = 0) ↔ _`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `frame_facts_dg τ.1 G (mat x τ) (d τ) (hd τ) (hx τ)`. Establish `e : Matrix.of (fromFrame x Y τ) = mat x τ * blk Y τ * (mat x τ)⁻¹` using `rfl`.
+
+Rewrite using `[e, herm_skew_iff, trace_conj h2]`. Use `and_congr Iff.rfl ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `isSkew_conj h1 h2 h3 h` as an intermediate fact. Establish `e2 : (mat x τ)⁻¹ * (mat x τ * blk Y τ * (mat x τ)⁻¹) * mat x τ = blk Y τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Conclude with `isSkew_conj h2 h1 (by rw [← gram_eq]; exact hx τ) h`.
+-/
 theorem mem_comap_iff_dg {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Ψ : Finset (E →+* ℂ)}
     (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (d : Ψ → Fin r → ℝ) (hd : ∀ t a, d t a * d t a = 1)
     (hx : ∀ τ : Ψ, gram τ.1 G (mat x τ) = dgM (d τ)) (Y : WW Ψ r) :
@@ -94,6 +128,9 @@ theorem mem_comap_iff_dg {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
     rwa [e2] at this
   · exact isSkew_conj h2 h1 (by rw [← gram_eq]; exact hx τ) h
 
+/- English proof (translation)
+Rewrite using `[blk_cjW]`. Use `⟨by rw [trace_conj (dgM_mul (hd t))]; exact (hY t).1, isSkew_conj (dgM_mul (hd t)) (dgM_mul (hd t)) ?_ (hY t).2⟩` and prove the remaining obligations. Rewrite using `[dgM_transpose, cj_dgM, dgM_mul (hd t), Matrix.one_mul]`.
+-/
 theorem theta_mem_dg {ι : Type} [Fintype ι] {r : ℕ} (d : ι → Fin r → ℝ) (hd : ∀ t a, d t a * d t a = 1)
     (Y : WW ι r) (hY : ∀ t, (blk Y t).trace = 0 ∧ IsSkew (dgM (d t)) (blk Y t)) (t : ι) :
     (blk (cjW (fun t => dgM (d t)) (fun t => dgM (d t)) Y) t).trace = 0 ∧
@@ -103,6 +140,27 @@ theorem theta_mem_dg {ι : Type} [Fintype ι] {r : ℕ} (d : ι → Fin r → �
     isSkew_conj (dgM_mul (hd t)) (dgM_mul (hd t)) ?_ (hY t).2⟩
   rw [dgM_transpose, cj_dgM, dgM_mul (hd t), Matrix.one_mul]
 
+/- English proof (translation)
+Set `k : Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (mat x τ)⁻¹ * mat y τ`. Set `l : Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (mat y τ)⁻¹ * mat x τ`. Establish `fx` using `fun τ : Ψ => frame_facts_dg τ.1 G (mat x τ) (d τ) (hd τ) (hx τ)`. Establish `fy` using `fun τ : Ψ => frame_facts_dg τ.1 G (mat y τ) (e τ) (he τ) (hy τ)`. Establish `hlk : ∀ τ, l τ * k τ = 1` using `fun τ => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hkl : ∀ τ, k τ * l τ = 1` using `fun τ => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : ∀ τ, (k τ)ᵀ * dgM (d τ) * cj (k τ) = dgM (e τ)` using `fun τ => by`. Use `hy τ` as an intermediate fact.
+
+Rewrite `this` using `[gram_eq, ← (fx τ).2.2]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [k, Matrix.transpose_mul, cj_mul, Matrix.mul_assoc]`. Establish `hL : ∀ τ, (l τ)ᵀ * dgM (e τ) * cj (l τ) = dgM (d τ)` using `fun τ => by`. Use `hx τ` as an intermediate fact.
+
+Rewrite `this` using `[gram_eq, ← (fy τ).2.2]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [l, Matrix.transpose_mul, cj_mul, Matrix.mul_assoc]`. Establish `m1` using `mem_comap_iff_dg G x d hd hx`. Establish `m2` using `mem_comap_iff_dg G y e he hy`.
+
+Establish `hLV : ∀ Y ∈ (realLie Ψ G).comap (fromFrame y), cjW k l Y ∈ (realLie Ψ G).comap (fromFrame x)` using `fun Y hY => (m1 _).2 fun τ => by`. Rewrite using `[blk_cjW]`. Conclude with `⟨by rw [trace_conj (hlk τ)]; exact ((m2 Y).1 hY τ).1, isSkew_conj (hlk τ) (hkl τ) (hK τ) ((m2 Y).1 hY τ).2⟩`. Establish `hKV : ∀ Y ∈ (realLie Ψ G).comap (fromFrame x), cjW l k Y ∈ (realLie Ψ G).comap (fromFrame y)` using `fun Y hY => (m2 _).2 fun τ => by`. Rewrite using `[blk_cjW]`.
+
+Conclude with `⟨by rw [trace_conj (hkl τ)]; exact ((m1 Y).1 hY τ).1, isSkew_conj (hkl τ) (hlk τ) (hL τ) ((m1 Y).1 hY τ).2⟩`. Set `L : (realLie Ψ G).comap (fromFrame y) ≃ₗ[ℝ] (realLie Ψ G).comap (fromFrame x)` to `LinearEquiv.ofLinear ((cjW k l).restrict hLV) ((cjW l k).restrict hKV) (by ext1 Y; exact Subtype.ext (cjW_cjW hkl Y.1)) (by ext1 Y; exact Subtype.ext (cjW_cjW hlk Y.1))`. Establish `hθx : ∀ Y ∈ (realLie Ψ G).comap (fromFrame x), cjW (fun t => dgM (d t)) (fun t => dgM (d t)) Y ∈ (realLie Ψ G).comap (fromFrame x)` using `fun Y hY => (m1 _).2 (theta_mem_dg d hd Y ((m1 Y).1 hY))`. Establish `hθy : ∀ Y ∈ (realLie Ψ G).comap (fromFrame y), cjW (fun t => dgM (e t)) (fun t => dgM (e t)) Y ∈ (realLie Ψ G).comap (fromFrame y)` using `fun Y hY => (m2 _).2 (theta_mem_dg e he Y ((m2 Y).1 hY))`. Establish `hvol : ∀ s, volume (L '' s) = volume s` using `volume_image_of_form L ((cjW _ _).restrict hθy) ((cjW _ _).restrict hθx) (fun Y => Subtype.ext (cjW_cjW (fun t => dgM_mul (he t)) Y.1)) (fun Y => Subtype.ext (cjW_cjW (fun t => dgM_mul (hd t)) Y.1)) (fun a b => by`.
+
+Simplify using `only [Submodule.coe_inner, LinearMap.restrict_coe_apply]`. Express the relevant statement in the definitionally equal form `⟪cjW (fun t => dgM (d t)) (fun t => dgM (d t)) (cjW k l a.1), cjW k l b.1⟫_ℝ = ⟪cjW (fun t => dgM (e t)) (fun t => dgM (e t)) a.1, b.1⟫_ℝ`. Rewrite using `[inner_theta_dg d hd _ _ (fun t => ((m1 _).1 (hLV _ a.2) t).2), inner_theta_dg e he _ _ (fun t => ((m2 _).1 a.2 t).2)]`. Simplify using `only [blk_cjW, trace_conj_mul (hlk _)])`. Establish `hLm : Measurable (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y)` using `L.toLinearMap.continuous_of_finiteDimensional.measurable`.
+
+Establish `hmap : Measure.map (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y) volume = volume`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hLm hs, ← hvol, Set.image_preimage_eq s L.surjective]`. Establish `hfx : Measurable (fun Y : (realLie Ψ G).comap (fromFrame x) => fromFrame x Y.1)` using `(fromFrame x ∘ₗ ((realLie Ψ G).comap (fromFrame x)).subtype).continuous_of_finiteDimensional.measurable`. Establish `hcomp : (fun Y : (realLie Ψ G).comap (fromFrame x) => fromFrame x Y.1) ∘ (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y) = fun Y : (realLie Ψ G).comap (fromFrame y) => fromFrame y Y.1`.
+
+Use function extensionality and compare the values at `Y`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(mat x τ * blk (cjW k l Y.1) τ * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = mat y τ * blk Y.1 τ * (mat y τ)⁻¹`. Rewrite using `[blk_cjW]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [k, l, Matrix.mul_assoc]`. Use `_ = _ := by rw [(fx τ).1, Matrix.one_mul, Matrix.mul_one]`. Unfold `riemLie`. Rewrite using `[OrthonormalBasis.addHaar_eq_volume, OrthonormalBasis.addHaar_eq_volume, ← hmap, Measure.map_map hfx hLm, hcomp]`.
+-/
 theorem riemLie_frame_indep_dg {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {Ψ : Finset (E →+* ℂ)} (G : Matrix (Fin r) (Fin r) E) (x y : Frame Ψ r) (d e : Ψ → Fin r → ℝ)
     (hd : ∀ t a, d t a * d t a = 1) (he : ∀ t a, e t a * e t a = 1)
@@ -182,10 +240,16 @@ theorem riemLie_frame_indep_dg {E : Type} [Field E] [NumberField E] [IsCMField E
   rw [OrthonormalBasis.addHaar_eq_volume, OrthonormalBasis.addHaar_eq_volume, ← hmap,
     Measure.map_map hfx hLm, hcomp]
 
+/- English proof (translation)
+Simplify using `only [hermC, Matrix.neg_apply, map_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem hermC_neg' {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ (-G) u w = -hermC τ G u w := by
   simp only [hermC, Matrix.neg_apply, map_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, Matrix.of_apply, Matrix.neg_apply, hermC_neg']`.
+-/
 theorem gram_neg' {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) : gram τ (-G) M = -gram τ G M := by
   ext a b
@@ -193,6 +257,9 @@ theorem gram_neg' {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ (G' : Matrix (Fin r) (Fin r) E) (g : Ψ → GL (Fin r) ℂ), g ∈ realSU Ψ G' ↔ ∀ τ : Ψ, (g τ : Matrix (Fin r) (Fin r) ℂ).det = 1 ∧ ∀ u w, hermC τ.1 G' ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ u) ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ w) = hermC τ.1 G' u w` using `fun _ _ => Iff.rfl`. Use extensionality with `g`. Rewrite using `[key, key]`. Simplify using `only [hermC_neg', neg_inj]`.
+-/
 theorem realSU_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) : realSU Ψ (-G) = realSU Ψ G := by
   have key : ∀ (G' : Matrix (Fin r) (Fin r) E) (g : Ψ → GL (Fin r) ℂ), g ∈ realSU Ψ G' ↔
       ∀ τ : Ψ, (g τ : Matrix (Fin r) (Fin r) ℂ).det = 1 ∧ ∀ u w,
@@ -202,6 +269,9 @@ theorem realSU_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) : 
   rw [key, key]
   simp only [hermC_neg', neg_inj]
 
+/- English proof (translation)
+Establish `key : ∀ (G' : Matrix (Fin r) (Fin r) E) (X : Ψ → Fin r → Fin r → ℂ), X ∈ realLie Ψ G' ↔ ∀ τ : Ψ, (Matrix.of (X τ)).trace = 0 ∧ ∀ u w, hermC τ.1 G' (Matrix.of (X τ) *ᵥ u) w + hermC τ.1 G' u (Matrix.of (X τ) *ᵥ w) = 0` using `fun _ _ => Iff.rfl`. Use extensionality with `X`. Rewrite using `[key, key]`. Simplify using `only [hermC_neg', ← neg_add, neg_eq_zero]`.
+-/
 theorem realLie_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) :
     realLie Ψ (-G) = realLie Ψ G := by
   have key : ∀ (G' : Matrix (Fin r) (Fin r) E) (X : Ψ → Fin r → Fin r → ℂ), X ∈ realLie Ψ G' ↔
@@ -212,6 +282,9 @@ theorem realLie_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) :
   rw [key, key]
   simp only [hermC_neg', ← neg_add, neg_eq_zero]
 
+/- English proof (translation)
+Establish `key : ∀ S₁ S₂ : Submodule ℝ (Ψ → Fin r → Fin r → ℂ), S₁ = S₂ → Measure.map (fun Y : S₁.comap (fromFrame x) => fromFrame x Y.1) (stdOrthonormalBasis ℝ (S₁.comap (fromFrame x))).toBasis.addHaar = Measure.map (fun Y : S₂.comap (fromFrame x) => fromFrame x Y.1) (stdOrthonormalBasis ℝ …`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression. Conclude with `key _ _ (realLie_neg Ψ G)`.
+-/
 theorem riemLie_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) :
     riemLie Ψ (-G) x = riemLie Ψ G x := by
   have key : ∀ S₁ S₂ : Submodule ℝ (Ψ → Fin r → Fin r → ℂ), S₁ = S₂ →
@@ -222,6 +295,11 @@ theorem riemLie_neg (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (
     rintro _ _ rfl; rfl
   exact key _ _ (realLie_neg Ψ G)
 
+/- English proof (translation)
+Establish `key : ∀ (H₁ H₂ : Subgroup (Ψ → GL (Fin r) ℂ)) (_ : H₁ = H₂) [LocallyCompactSpace H₁] [LocallyCompactSpace H₂] (ν : Measure (Ψ → Fin r → Fin r → ℂ)), @covolume ((Γ.map (embGL Ψ r)).subgroupOf H₁) H₁ _ _ (borel H₁) (@tangentHaar _ _ H₁ _ (borel H₁) (@BorelSpace.mk H₁ _ (borel H₁) r …`. Introduce `H₁ H₂ h _ _ ν`. Substitute `h` using the available equality. Both sides reduce to the same expression. Unfold `riemHaar`.
+
+Rewrite using `[hν]`. Conclude with `key _ _ hSU _`.
+-/
 theorem covolume_congr {Ψ : Finset (E →+* ℂ)} (G₁ G₂ : Matrix (Fin r) (Fin r) E) (x y : Frame Ψ r)
     (Γ : Subgroup (GL (Fin r) E)) (hSU : realSU Ψ G₁ = realSU Ψ G₂) (hν : riemLie Ψ G₁ x = riemLie Ψ G₂ y) :
     covolume (inReal Ψ G₁ Γ) (realSU Ψ G₁) (riemHaar Ψ G₁ x) =
@@ -239,6 +317,11 @@ theorem covolume_congr {Ψ : Finset (E →+* ℂ)} (G₁ G₂ : Matrix (Fin r) (
   rw [hν]
   exact key _ _ hSU _
 
+/- English proof (translation)
+Introduce `E _ _ _ r Ψ Ψ' G G' x x' p0 p1 Γ hΨ hG _ hx hx'`. Substitute `hΨ hG` using the available equality. Use `covolume_congr G (-G) x x' Γ (realSU_neg _ G).symm ?_` and prove the remaining obligations. Rewrite using `[riemLie_neg]`. Use `riemLie_frame_indep_dg G x x' (fun τ a => sgn (p0 τ) (a : ℕ)) (fun _ a => -sgn p1 (a : ℕ)) (fun τ a => sgn_sq _ _) (fun _ a => by rw [neg_mul_neg, sgn_sq]) hx (fun τ => ?_)` and prove the remaining obligations.
+
+Establish `h` using `hx' τ`. Rewrite `h` using `[gram_neg']`. Rewrite using `[← neg_neg (gram _ G _), h]`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, Matrix.diagonal_apply]`.
+-/
 theorem covolume_neg_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ Ψ' : Finset (E →+* ℂ)) (G G' : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (x' : Frame Ψ' r) (p0 : Ψ → ℕ) (p1 : ℕ) (Γ : Subgroup (GL (Fin r) E)), Ψ' = Ψ → G' = -G → (∀ a b, cc (G a b) = G b a) → (∀ τ : Ψ, gram τ.1 G (mat x τ) = Matrix.diagonal fun a : Fin r => ((sgn (p0 τ) (a : ℕ) : ℝ) : ℂ)) → (∀ τ : Ψ', gram τ.1 G' (mat x' τ) = Matrix.diagonal fun a : Fin r => ((sgn p1 (a : ℕ) : ℝ) : ℂ)) → covolume (inReal Ψ G Γ) (realSU Ψ G) (riemHaar Ψ G x) = covolume (inReal Ψ' G' Γ) (realSU Ψ' G') (riemHaar Ψ' G' x') := by
   intro E _ _ _ r Ψ Ψ' G G' x x' p0 p1 Γ hΨ hG _ hx hx'
   subst hΨ hG

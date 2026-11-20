@@ -10,34 +10,57 @@ namespace ChA
 def Zs {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim)) (μ : ℝ) : Submodule ℝ (Vsp dim) :=
   Submodule.span ℝ {x | ∃ α : 𝓞 E, ∃ y ∈ Xg L I, ‖y‖ ≤ μ ∧ x = act α y}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨α, y, hy, hyμ, hx⟩ => ⟨α, y, hy, hyμ.trans h, hx⟩`.
+-/
 lemma Zs_mono {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim)) {μ μ' : ℝ} (h : μ ≤ μ') :
     Zs L I μ ≤ Zs L I μ' := Submodule.span_mono fun _ ⟨α, y, hy, hyμ, hx⟩ => ⟨α, y, hy, hyμ.trans h, hx⟩
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨1, y, hy, hμ, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[act]`.
+-/
 lemma Zs_self {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim)) {μ : ℝ} {y : Vsp dim}
     (hy : y ∈ Xg L I) (hμ : ‖y‖ ≤ μ) : y ∈ Zs L I μ := by
   refine Submodule.subset_span ⟨1, y, hy, hμ, ?_⟩
   ext i
   simp [act]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `first | (simp [act]; done) | (simp [act]; ring)`.
+-/
 private lemma act_add_lemma {dim : (E →+* ℂ) → ℕ} (β : 𝓞 E) (x y : Vsp dim) :
     act β (x + y) = act β x + act β y := by
   ext i
   first | (simp [act]; done) | (simp [act]; ring)
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `first | (simp [act]; done) | (simp [act]; ring)`.
+-/
 private lemma act_smul_lemma_2 {dim : (E →+* ℂ) → ℕ} (β : 𝓞 E) (r : ℝ) (x : Vsp dim) :
     act β (r • x) = r • act β x := by
   ext i
   first | (simp [act]; done) | (simp [act]; ring)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[act]`.
+-/
 private lemma act_zero_lemma_4 {dim : (E →+* ℂ) → ℕ} (β : 𝓞 E) : act β (0 : Vsp dim) = 0 := by
   ext i
   simp [act]
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `first | (simp [act]; done) | (simp [act]; ring)`.
+-/
 private lemma act_mul_lemma_5 {dim : (E →+* ℂ) → ℕ} (β α : 𝓞 E) (y : Vsp dim) :
     act β (act α y) = act (β * α) y := by
   ext i
   first | (simp [act]; done) | (simp [act]; ring)
 
+/- English proof (translation)
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => rw [act_zero_lemma_4]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [act_add_lemma]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [act_smul_lemma_2]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 private lemma act_span_lemma_3 {dim : (E →+* ℂ) → ℕ} (S : Set (Vsp dim)) (β : 𝓞 E)
     (hS : ∀ y ∈ S, act β y ∈ Submodule.span ℝ S) {a : Vsp dim}
     (ha : a ∈ Submodule.span ℝ S) : act β a ∈ Submodule.span ℝ S := by
@@ -47,12 +70,18 @@ private lemma act_span_lemma_3 {dim : (E →+* ℂ) → ℕ} (S : Set (Vsp dim))
   | add x y _ _ hx hy => rw [act_add_lemma]; exact add_mem hx hy
   | smul r x _ hx => rw [act_smul_lemma_2]; exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Use `act_span_lemma_3 _ β ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨α, y, hy, hyμ, rfl⟩`. Conclude with `Submodule.subset_span ⟨β * α, y, hy, hyμ, act_mul_lemma_5 β α y⟩`.
+-/
 lemma Zs_act {dim : (E →+* ℂ) → ℕ} (L I : Submodule ℤ (Vsp dim)) (μ : ℝ) (β : 𝓞 E)
     {x : Vsp dim} (hx : x ∈ Zs L I μ) : act β x ∈ Zs L I μ := by
   refine act_span_lemma_3 _ β ?_ hx
   rintro _ ⟨α, y, hy, hyμ, rfl⟩
   exact Submodule.subset_span ⟨β * α, y, hy, hyμ, act_mul_lemma_5 β α y⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, y, hy, -, rfl⟩`. Take `⟨x, -, hu⟩ : ∃ x ∈ L, IsU I x y` from `hy`. Conclude with `act_span_lemma_3 _ α (fun z hz => Submodule.subset_span (hIs α z hz)) hu.1`.
+-/
 lemma Zs_IR {dim : (E →+* ℂ) → ℕ} {L I : Submodule ℤ (Vsp dim)}
     (hIs : ∀ (α : 𝓞 E) x, x ∈ I → act α x ∈ I) (μ : ℝ) : Zs L I μ ≤ IR I := by
   refine Submodule.span_le.mpr ?_
@@ -60,20 +89,34 @@ lemma Zs_IR {dim : (E →+* ℂ) → ℕ} {L I : Submodule ℤ (Vsp dim)}
   obtain ⟨x, -, hu⟩ : ∃ x ∈ L, IsU I x y := hy
   exact act_span_lemma_3 _ α (fun z hz => Submodule.subset_span (hIs α z hz)) hu.1
 
+/- English proof (translation)
+Simplify using `only [prj]`. Conclude with `LinearMap.map_smul_of_tower _ r x`.
+-/
 lemma prj_rsmul {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (r : ℝ) (x : Vsp dim) :
     prj σ (r • x) = r • prj σ x := by
   simp only [prj]
   exact LinearMap.map_smul_of_tower _ r x
 
+/- English proof (translation)
+Simplify using `only [prj]`. Conclude with `map_add _ x y`.
+-/
 private lemma prj_add_lemma_6 {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (x y : Vsp dim) :
     prj σ (x + y) = prj σ x + prj σ y := by
   simp only [prj]
   exact map_add _ x y
 
+/- English proof (translation)
+Simplify using `only [prj]`. Conclude with `map_zero _`.
+-/
 private lemma prj_zero_lemma_7 {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) : prj σ (0 : Vsp dim) = 0 := by
   simp only [prj]
   exact map_zero _
 
+/- English proof (translation)
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => rw [prj_zero_lemma_7]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [prj_add_lemma_6]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx => rw [prj_rsmul]`. Conclude with `W.smul_of_tower_mem r hx`.
+-/
 lemma prj_mem_of_span {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (W : Submodule ℂ (Vsp dim))
     (S : Set (Vsp dim)) (hS : ∀ y ∈ S, prj σ y ∈ W) {a : Vsp dim}
     (ha : a ∈ Submodule.span ℝ S) : prj σ a ∈ W := by
@@ -83,6 +126,9 @@ lemma prj_mem_of_span {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) (W : Subm
   | add x y _ _ hx hy => rw [prj_add_lemma_6]; exact add_mem hx hy
   | smul r x _ hx => rw [prj_rsmul]; exact W.smul_of_tower_mem r hx
 
+/- English proof (translation)
+The claim follows from `act_span_lemma_3 S α (fun y hy => Submodule.subset_span (hS α y hy)) ha`.
+-/
 lemma span_act {dim : (E →+* ℂ) → ℕ} (S : Set (Vsp dim))
     (hS : ∀ (α : 𝓞 E) y, y ∈ S → act α y ∈ S) (α : 𝓞 E) {a : Vsp dim}
     (ha : a ∈ Submodule.span ℝ S) : act α a ∈ Submodule.span ℝ S := act_span_lemma_3 S α (fun y hy => Submodule.subset_span (hS α y hy)) ha

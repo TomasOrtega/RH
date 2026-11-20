@@ -11,10 +11,16 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] {ι : Type} {K : ι → C
   (hc : ∀ p, IsColimit ((HomologicalComplex.eval C (ComplexShape.up ℤ) p).mapCocone c)) {L : CochainComplex C ℤ}
 
 include hc in
+/- English proof (translation)
+The claim follows from `(hc p).hom_ext fun ⟨j⟩ => h j`.
+-/
 theorem hom_ext_v {p q : ℤ} {a b : c.pt.X p ⟶ L.X q} (h : ∀ j, (c.inj j).f p ≫ a = (c.inj j).f p ≫ b) : a = b :=
   (hc p).hom_ext fun ⟨j⟩ => h j
 
 include hc in
+/- English proof (translation)
+Use extensionality with `p q hpq`. Use `hom_ext_v c hc fun j => ?_` and prove the remaining obligations. Use `congrArg (fun z => Cochain.v z p q hpq) (h j)` as an intermediate fact. Simplify `this` using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+-/
 theorem cochain_ext {n : ℤ} {x y : Cochain c.pt L n}
     (h : ∀ j, (Cochain.ofHom (c.inj j)).comp x (zero_add n) = (Cochain.ofHom (c.inj j)).comp y (zero_add n)) : x = y := by
   ext p q hpq
@@ -36,6 +42,9 @@ def glue (hc : ∀ p, IsColimit ((HomologicalComplex.eval C (ComplexShape.up ℤ
     (b : ∀ j, Cochain (K j) L n) : Cochain c.pt L n :=
   Cochain.mk fun p q hpq => (hc p).desc (cof L b p q hpq)
 
+/- English proof (translation)
+Use extensionality with `p q hpq`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Conclude with `(hc p).fac (cof L b p q hpq) ⟨j⟩`.
+-/
 theorem restr_glue {n : ℤ} (b : ∀ j, Cochain (K j) L n) (j : ι) :
     (Cochain.ofHom (c.inj j)).comp (glue c hc b) (zero_add n) = b j := by
   ext p q hpq
@@ -43,6 +52,19 @@ theorem restr_glue {n : ℤ} (b : ∀ j, Cochain (K j) L n) (j : ι) :
   exact (hc p).fac (cof L b p q hpq) ⟨j⟩
 
 include hc in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨y, rfl⟩` from `y.mk_surjective`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+
+Establish `hj : ∀ j, ∃ β : Cochain (K j) L (n - 1), δ (n - 1) n β = (Cochain.ofHom (c.inj j)).comp (x - y : Cocycle c.pt L n).1 (zero_add n)`. Introduce `j`. Establish `h` using `congrFun hxy j`. Simplify using `only [cpre_mk] at h`. Rewrite `h` using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+
+Take `⟨β, hβ⟩` from `h`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Simplify using `[zcomp, Cochain.comp_sub]`. Use `choose β hβ using hj`.
+
+Use `⟨glue c hc β, cochain_ext c hc fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_ofHom_comp, restr_glue, hβ]`. Introduce `y choose z hz using fun j => (y j).mk_surjective`. Establish `hδ : δ n (n + 1) (glue c hc fun j => (z j).1) = 0` using `cochain_ext c hc fun j => by`. Rewrite using `[← δ_ofHom_comp, restr_glue, Cocycle.δ_eq_zero]`.
+
+Simplify using the standard rewrite rules. Use `⟨CohomologyClass.mk (Cocycle.mk _ (n + 1) rfl hδ), funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [cpre_mk]`. Rewrite using `[← hz j]`. Use `congr 1`.
+
+Conclude with `Cocycle.ext (restr_glue c hc (fun j => (z j).1) j)`.
+-/
 theorem bij (n : ℤ) : Function.Bijective fun (x : CohomologyClass c.pt L n) (j : ι) =>
     cpre (Cocycle.ofHom (c.inj j)) L n n (zero_add n) x := by
   constructor
@@ -78,6 +100,9 @@ theorem bij (n : ℤ) : Function.Bijective fun (x : CohomologyClass c.pt L n) (j
 end General
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `R _ ι K c hc F n`. Establish `h1 : HasColimitsOfSize.{1, 1} (Shv R)` using `IsGrothendieckAbelian.hasColimits.{1} (Shv R)`. Establish `h0 : HasColimitsOfSize.{0, 0} (Shv R)` using `hasColimitsOfSizeShrink.{0, 0, 1, 1} (Shv R)`. Establish `: HasColimitsOfShape (Discrete ι) (Shv R)` using `inferInstance`. Conclude with `bij c (fun p => isColimitOfPreserves (HomologicalComplex.eval _ _ p) hc) n`.
+-/
 theorem HKCoprod_of : LateralTheory.E.CoprodPf.HKCoprod := by
   intro R _ ι K c hc F n
   have h1 : HasColimitsOfSize.{1, 1} (Shv R) := IsGrothendieckAbelian.hasColimits.{1} (Shv R)

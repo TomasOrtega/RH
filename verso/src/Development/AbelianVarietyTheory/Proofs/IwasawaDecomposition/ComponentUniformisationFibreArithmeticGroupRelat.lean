@@ -11,6 +11,21 @@ open MeasureTheory Formalism.DegreeFormula GlobalTheory.TrueCx
 
 namespace GlobalTheory.UnifFibre
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ v hv w hw hvw`. Establish `hjr : Dw.p ≤ Dw.p + Dw.q` using `Nat.le_add_right Dw.p Dw.q`. Establish `hp : (U.X k).p0 = Dw.p + Dw.q - Dw.p`. Use `(hU.2.1 k).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hflat : ∀ u : (U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ, flat (unflat u) = u`. Introduce `u`. Use function extensionality and compare the values at `⟨i, a, b⟩`. Both sides reduce to the same expression. Take `⟨x, hx, hxv⟩` from `GlobalTheory.TrueCx.FrameOnto.frame_onto E (Dw.p + Dw.q) Dw.p (U.X k) hjr (U.X k).Ψ (Equiv.refl _) hp (unflat v) hv`.
+
+Take `⟨x', hx', hxw⟩` from `GlobalTheory.TrueCx.FrameOnto.frame_onto E (Dw.p + Dw.q) Dw.p (U.X k) hjr (U.X k).Ψ (Equiv.refl _) hp (unflat w) hw`. Establish `h1` using `hψ ⟨x, hx⟩`. Establish `h2` using `hψ ⟨x', hx'⟩`. Simplify using `only at h1 h2`. Rewrite `h1` using `[hxv, hflat]`.
+
+Rewrite `h2` using `[hxw, hflat]`. Establish `h3 : cxPt T.Z (U.un k ⟨x, hx⟩) = cxPt T.Z (U.un k ⟨x', hx'⟩)`. Rewrite using `[← h1, ← h2, hvw]`. Establish `h4 : (U.un k ⟨x, hx⟩).x = (U.un k ⟨x', hx'⟩).x`. Establish `h5` using `congrArg Subtype.val h3`.
+
+Simplify using `only [cxPt] at h5`. Use `haveI := T.Z.jQ_open`. Establish `h6` using `(cancel_mono T.Z.jQ).1 h5`. Establish `h7` using `congrArg (· ≫ CategoryTheory.Limits.pullback.fst _ _) h6`. Simplify using `only [GlobalTheory.AllWt.ptF] at h7`.
+
+Rewrite `h7` using `[CategoryTheory.Limits.pullback.lift_fst, CategoryTheory.Limits.pullback.lift_fst]`. Then use the resulting hypothesis. Take `⟨b, hb, hb0, hm, t, ht⟩` from `GlobalTheory.PointOfFrames.exists_frBor U hU hG k ⟨x, hx⟩ _ h4`. Take `⟨γ, hγ, b', hb', heq⟩` from `(hU.2.2.2.1 k k ⟨_, hm⟩ ⟨x', hx'⟩).1 ⟨t, ht⟩`. Establish `hx'eq : x' = ReciprocityTheory.ChartRestriction.G.FD.rmul (ReciprocityTheory.ChartRestriction.G.FD.lact γ (ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) b'` using `eq_of_heq (Sigma.mk.inj_iff.1 heq).2`. Use `⟨GlobalTheory.TrueCx.toUpq (U.X k) hjr (Equiv.refl (U.X k).Ψ) γ, Subgroup.mem_map.2 ⟨γ, hγ, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hxv, ← hxw, hx'eq, GlobalTheory.TrueCx.domPt_rmul _ _ _ hb', GlobalTheory.TrueCx.domPt_lact _ _ _ hp γ hm]`. Rewrite `hb0` using `[hp]`. Rewrite using `[GlobalTheory.PointOfFrames.domPt_rmul_block _ _ _ _ b hb hb0]`.
+-/
 theorem fibre_gamma : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ v ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), ∀ w ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), ψ v = ψ w → ∃ γ ∈ gammaU (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ), moebI γ (unflat v) = unflat w := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ v hv w hw hvw
   have hjr : Dw.p ≤ Dw.p + Dw.q := Nat.le_add_right Dw.p Dw.q

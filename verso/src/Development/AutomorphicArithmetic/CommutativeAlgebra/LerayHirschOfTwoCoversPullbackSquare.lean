@@ -11,35 +11,56 @@ namespace UpperTheory.ChaseS
 
 variable {q : ℕ}
 
+/- English proof (translation)
+Substitute `a b c d` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem c_cc {E : Spc} {n i n' i' n'' i'' : ℤ} (a : n = n') (b : i = i') (c : n' = n'') (d : i' = i'')
     (x : Ht q E n i) : (x.cast a b).cast c d = x.cast (a.trans c) (b.trans d) := by
   subst a b c d
   rfl
 
+/- English proof (translation)
+Substitute `a b` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem c_zero {E : Spc} {n i n' i' : ℤ} (a : n = n') (b : i = i') :
     (0 : Ht q E n i).cast a b = 0 := by
   subst a b
   rfl
 
+/- English proof (translation)
+Substitute `a b` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem c_sum {E : Spc} {n i n' i' : ℤ} (a : n = n') (b : i = i') {ι : Type} (s : Finset ι)
     (f : ι → Ht q E n i) : (∑ j ∈ s, f j).cast a b = ∑ j ∈ s, (f j).cast a b := by
   subst a b
   rfl
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_c {X Y : Spc} (f : X ⟶ Y) {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q Y n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x : Ht q X n i) := by
   subst hn hi
   rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b`.
+-/
 private theorem pull_u {X Y : Spc} (f : X ⟶ Y) {n m i j : ℤ} (a : Ht q Y n i) (b : Ht q Y m j) :
     pull _ f _ _ (cup q a b) = cup q (pull _ f _ _ a : Ht q X n i) (pull _ f _ _ b : Ht q X m j) :=
   GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cup_cl {E : Spc} {n m i j n' i' : ℤ} (hn : n = n') (hi : i = i') (a : Ht q E n i) (b : Ht q E m j) :
     cup q (a.cast hn hi) b = (cup q a b).cast (by rw [hn]) (by rw [hi]) := by
   subst hn hi
   rfl
 
+/- English proof (translation)
+Substitute `hm hj` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cup_cr {E : Spc} {n m i j m' j' : ℤ} (hm : m = m') (hj : j = j') (a : Ht q E n i) (b : Ht q E m j) :
     cup q a (b.cast hm hj) = (cup q a b).cast (by rw [hm]) (by rw [hj]) := by
   subst hm hj
@@ -47,26 +68,41 @@ private theorem cup_cr {E : Spc} {n m i j m' j' : ℤ} (hm : m = m') (hj : j = j
 
 variable [NeZero q]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.tateTwistCupProduct_graded_comm q E a (one q E)]`. Simplify using `only [mul_zero, Int.negOnePow_zero, one_smul]`. Rewrite using `[(GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE a, c_cc]`.
+-/
 private theorem cup_one_r {E : Spc} (hE : Inv q E) {n i : ℤ} (a : Ht q E n i) :
     cup q a (one q E) = a.cast (by ring) (by ring) := by
   rw [GlobalTheory.T.tateTwistCupProduct_graded_comm q E a (one q E)]
   simp only [mul_zero, Int.negOnePow_zero, one_smul]
   rw [(GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE a, c_cc]
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Rewrite using `[cpow_zero, cup_cr, cup_one_r hE, c_cc]`.
+-/
 private theorem cup_pow_zero {E : Spc} (hE : Inv q E) (ξ : Ht q E 2 1) {k : ℕ} (hk : k = 0) {n i : ℤ} (a : Ht q E n i) :
     cup q a (cpow q ξ k) = a.cast (by subst hk; simp) (by subst hk; simp) := by
   subst hk
   rw [cpow_zero, cup_cr, cup_one_r hE, c_cc]
 
+/- English proof (translation)
+Use `(cpow_succ q ξ 0).trans ?_` and prove the remaining obligations. Rewrite using `[cpow_zero, cup_cl, (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE ξ, c_cc, c_cc]`.
+-/
 private theorem cpow_one' {E : Spc} (hE : Inv q E) (ξ : Ht q E 2 1) :
     cpow q ξ 1 = ξ.cast (by simp) (by simp) := by
   refine (cpow_succ q ξ 0).trans ?_
   rw [cpow_zero, cup_cl, (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 E hE ξ, c_cc, c_cc]
 
+/- English proof (translation)
+Use `(cpow_succ q (0 : Ht q E 2 1) 0).trans ?_` and prove the remaining obligations. Rewrite using `[map_zero, c_zero]`.
+-/
 private theorem cpow_zero_one {E : Spc} : cpow q (0 : Ht q E 2 1) 1 = 0 := by
   refine (cpow_succ q (0 : Ht q E 2 1) 0).trans ?_
   rw [map_zero, c_zero]
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_two]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[cup_pow_zero hB ξ (k := ((0 : Fin 2) : ℕ)) rfl, c_cc, pull_c]`. Rewrite using `[pull_c, cup_cl, c_cc]`. Both sides reduce to the same expression.
+-/
 private theorem two_terms {X B : Spc} (p : B ⟶ X) (ξ : Ht q B 2 1) (hB : Inv q B) (n i : ℤ)
     (y : ∀ j : Fin 2, Ht q X (n - 2 * (((j : ℕ) : ℤ))) (i - ((j : ℕ) : ℤ))) :
     ∑ j, ((cup q (pull _ p _ _ (y j)) (cpow q ξ j)).cast (by ring) (by ring) : Ht q B n i) =
@@ -79,6 +115,11 @@ private theorem two_terms {X B : Spc} (p : B ⟶ X) (ξ : Ht q B 2 1) (hB : Inv 
   · rw [pull_c, cup_cl, c_cc]
     rfl
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succ]`. Use `congrArg₂ (· + ·) ?_ (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[cup_pow_zero hY ξ (k := ((0 : Fin (N + 1)) : ℕ)) rfl, c_cc]`. Simplify using `only [Fin.cases_zero]`. Rewrite using `[pull_c, c_cc]`.
+
+Both sides reduce to the same expression. Simplify using `only [Fin.cases_succ]`. Rewrite using `[pull_c, cup_cl, c_cc]`. Both sides reduce to the same expression.
+-/
 private theorem succ_terms {E Y : Spc} (πY : Y ⟶ E) (ξ : Ht q Y 2 1) (hY : Inv q Y) (N : ℕ) (n i : ℤ)
     (a : Ht q E n i) (b : ∀ j : Fin N, Ht q E (n - 2 - 2 * (((j : ℕ) : ℤ))) (i - 1 - ((j : ℕ) : ℤ))) :
     ∑ j : Fin (N + 1), ((cup q (pull _ πY _ _ ((Fin.cases (motive := fun j : Fin (N + 1) =>
@@ -97,6 +138,9 @@ private theorem succ_terms {E Y : Spc} (πY : Y ⟶ E) (ξ : Ht q Y 2 1) (hY : I
     rw [pull_c, cup_cl, c_cc]
     rfl
 
+/- English proof (translation)
+Establish `e1 : (pull _ p _ _ (pull _ πX _ _ b) : Ht q B m e) = pull _ β _ _ (pull _ πY _ _ b)`. Rewrite using `[← pull_comp, ← pull_comp, hp]`. Rewrite using `[pull_c, pull_u, pull_c, pull_u, UpperTheory.pull_cupPow_eq_cupPow_pull q p ξX k iX, UpperTheory.pull_cupPow_eq_cupPow_pull q β ξY (k + 1) iY, e1, hrel k, cpow_one' iB, cup_cl, cup_cr, c_cc, GlobalTheory.T.tateTwistCupProduct_assoc, cup_cr, c_cc, c_cc, c_cc]`.
+-/
 private theorem rel_term {E X Y B : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B ⟶ X) (β : B ⟶ Y) (hp : p ≫ πX = β ≫ πY)
     (ξX : Ht q X 2 1) (ξY : Ht q Y 2 1) (iX : Inv q X) (iY : Inv q Y) (iB : Inv q B)
     (hrel : ∀ j : ℕ, cpow q (pull _ β _ _ ξY) (j + 1) =
@@ -110,6 +154,9 @@ private theorem rel_term {E X Y B : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B 
   rw [pull_c, pull_u, pull_c, pull_u, UpperTheory.pull_cupPow_eq_cupPow_pull q p ξX k iX, UpperTheory.pull_cupPow_eq_cupPow_pull q β ξY (k + 1) iY, e1, hrel k,
     cpow_one' iB, cup_cl, cup_cr, c_cc, GlobalTheory.T.tateTwistCupProduct_assoc, cup_cr, c_cc, c_cc, c_cc]
 
+/- English proof (translation)
+Rewrite using `[map_sum, map_sum, map_sum, AddMonoidHom.finset_sum_apply, c_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => rel_term πX πY p β hp ξX ξY iX iY iB hrel _ (by ring) (by ring) (b j)`.
+-/
 private theorem rel_sum {E X Y B : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B ⟶ X) (β : B ⟶ Y) (hp : p ≫ πX = β ≫ πY)
     (ξX : Ht q X 2 1) (ξY : Ht q Y 2 1) (iX : Inv q X) (iY : Inv q Y) (iB : Inv q B)
     (hrel : ∀ j : ℕ, cpow q (pull _ β _ _ ξY) (j + 1) =
@@ -122,6 +169,11 @@ private theorem rel_sum {E X Y B : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B �
   rw [map_sum, map_sum, map_sum, AddMonoidHom.finset_sum_apply, c_sum]
   exact Finset.sum_congr rfl fun j _ => rel_term πX πY p β hp ξX ξY iX iY iB hrel _ (by ring) (by ring) (b j)
 
+/- English proof (translation)
+Apply `hinj` to reduce the goal to its premises. Establish `e1 : pull _ g₁ _ _ ((cup q (pull _ p _ _ y1) (cpow q ξ 1)).cast (by push_cast; ring) (by push_cast; ring) : Ht q B n i) = 0`. Rewrite using `[pull_c, pull_u, UpperTheory.pull_cupPow_eq_cupPow_pull q g₁ ξ 1 iB, hg, cpow_zero_one, map_zero, c_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy, map_add, e1, add_zero, pull_comp]`.
+
+Use `_ = pull _ b₁ _ _ (pull _ f₁ _ _ x) := by rw [← pull_comp, h₁, pull_comp]`. Use `_ = pull _ ((b₁ ≫ f₁) ≫ πY) _ _ a0 := by rw [← ha, ← pull_comp, Category.assoc]`. Use `_ = pull _ (g₁ ≫ p) _ _ (pull _ πX _ _ a0) := by`. Rewrite using `[← h₁, ← pull_comp, Category.assoc, Category.assoc, hp]`.
+-/
 private theorem gysin_chase_identity {E X Y B W₁ B₁ : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B ⟶ X) (β : B ⟶ Y)
     (f₁ : W₁ ⟶ Y) (g₁ : B₁ ⟶ B) (b₁ : B₁ ⟶ W₁) (h₁ : g₁ ≫ β = b₁ ≫ f₁) (hp : p ≫ πX = β ≫ πY) (ξ : Ht q B 2 1)
     (iB : Inv q B) (hg : pull _ g₁ _ _ ξ = 0) {n i : ℤ} (hinj : Function.Injective (pull _ (g₁ ≫ p) (tw q i) n))
@@ -143,6 +195,15 @@ private theorem gysin_chase_identity {E X Y B W₁ B₁ : Spc} (πX : X ⟶ E) (
 end UpperTheory.ChaseS
 
 open UpperTheory.ChaseS in
+/- English proof (translation)
+Introduce `q _ N hN E X Y B W₁ W₂ B₁ B₂ πX πY p β f₁ f₂ g₁ g₂ b₁ b₂ h₁ h₂ hp ξX ξY iX iY iB c1 c2 lX lp ef eg eb eM hg hrel n i x`. Take `⟨y, hy⟩` from `(lp n i).2 (pull _ β _ _ x)`. Establish `hy2` using `(two_terms p (pull _ β _ _ ξY) iB n i y).symm.trans hy`. Take `⟨y0, y1, hy3⟩ : ∃ (y0 : Ht q X n i) (y1 : Ht q X (n - 2) (i - 1)), pull _ β _ _ x = pull _ p _ _ y0 + ((cup q (pull _ p _ _ y1) (cpow q (pull _ β _ _ ξY) 1)).cast (by push_cast; ring) (by push_cast; ring) : Ht q B n i)` from `⟨_, _, hy2.symm⟩`. Take `⟨a0, ha0⟩` from `(ef i n).2 (pull _ f₁ _ _ x)`.
+
+Establish `hy0` using `gysin_chase_identity πX πY p β f₁ g₁ b₁ h₁ hp _ iB hg ((eg i n).1) x y0 y1 a0 hy3 ha0`. Take `⟨b, hb⟩` from `(lX (n - 2) (i - 1)).2 y1`. Establish `hb' : ∑ j : Fin N, ((cup q (pull _ πX _ _ (b j)) (cpow q ξX j)).cast (by ring) (by ring) : Ht q X (n - 2) (i - 1)) = y1` using `hb`. Establish `hR` using `rel_sum πX πY p β hp ξX ξY iX iY iB hrel N n i b`. Rewrite `hR` using `[hb']`.
+
+Establish `hv` using `UpperTheory.leray_hirsch_of_two_element_cover q N hN πX πY p β f₁ f₂ g₁ g₂ b₁ b₂ h₁ h₂ hp ξX iX c1 c2 lX ef eg eb eM n i (x - pull _ πY _ _ a0 - ∑ j : Fin N, ((cup q (pull _ πY _ _ (b j)) (cpow q ξY ((j : ℕ) + 1))).cast (by push_cast; ring) (by push_cast; ring) : Ht q Y n i)) (by`. Rewrite using `[map_sub, map_sub, ← hR, hy3, hy0, ← pull_comp, ← pull_comp, hp]`. Use the proof step `abel)`. Use `⟨Fin.cases (motive := fun j : Fin (N + 1) => Ht q E (n - 2 * (((j : ℕ) : ℤ))) (i - ((j : ℕ) : ℤ))) (Ht.cast (by simp) (by simp) a0) (fun j => Ht.cast (by rw [Fin.val_succ]; push_cast; ring) (by rw [Fin.val_succ]; push_cast; ring) (b j)), ?_⟩` and prove the remaining obligations. Use `(succ_terms πY ξY iY N n i a0 b).trans ?_` and prove the remaining obligations.
+
+Rewrite `hv` using `[sub_sub, sub_eq_zero]`. Conclude with `hv.symm`.
+-/
 theorem UpperTheory.leray_hirsch_of_two_covers_pullback_square :
     ∀ (q : ℕ) [NeZero q] (N : ℕ), 1 ≤ N → ∀ {E X Y B W₁ W₂ B₁ B₂ : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B ⟶ X) (β : B ⟶ Y)
         (f₁ : W₁ ⟶ Y) (f₂ : W₂ ⟶ Y) (g₁ : B₁ ⟶ B) (g₂ : B₂ ⟶ B) (b₁ : B₁ ⟶ W₁) (b₂ : B₂ ⟶ W₂)

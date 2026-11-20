@@ -11,6 +11,23 @@ open Matrix
 
 namespace GlobalTheory.UnitDiscAlg
 
+/- English proof (translation)
+Take `⟨x, z, a₁, a₂, a₃, ⟨hxN, hzN, h1N, h2N, h3N⟩, hint, hx, hyx, hyz⟩` from `GlobalTheory.T.commuting_integral_matrix_decompose E n N ϖ hN hB h0 h1 hϖ y hyN hy`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Take `⟨e, a', heN, ha'N, he, heI, ha'I, hea⟩` from `GlobalTheory.T.exists_integral_idempotent_lift_newton E n N x a₁ ϖ h1 hxN (fun i j => (hint i j).1) (fun i j => (hint i j).2.2.1) hx`. Establish `hzI : ∀ i j, ‖z i j‖ ≤ 1` using `fun i j => (hint i j).2.1`. Establish `ha₂I : ∀ i j, ‖a₂ i j‖ ≤ 1` using `fun i j => (hint i j).2.2.2.1`.
+
+Establish `ha₃I : ∀ i j, ‖a₃ i j‖ ≤ 1` using `fun i j => (hint i j).2.2.2.2`. Use `⟨e, a₂ - y * a', heN, ?_, fun i j => ⟨heI i j, integ_sub ha₂I (integ_mul hy ha'I) i j⟩, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_mul, mul_sub, h2N, Matrix.mul_assoc, ha'N, ← Matrix.mul_assoc, hyN, Matrix.mul_assoc]`. Establish `hye : y * e = e * y` using `hcomm y e hyN heN`. Establish `hze : z * e = e * z` using `hcomm z e hzN heN`.
+
+Establish `hyz' : y * z = z * y` using `hcomm y z hyN hzN`. Establish `hprod : (y * e + (1 - e)) * (z * e + (1 - e)) = 1 + ϖ • (a₃ + y * z * a' - a')`. Establish `e1 : e = x + ϖ • a'` using `by rw [← hea]; abel`. Establish `e2 : y * z * x = x + ϖ • a₃` using `by rw [← hyz]; abel`. Establish `key : (y * e + (1 - e)) * (z * e + (1 - e)) = 1 + y * z * e - e`.
+
+Establish `: (y * e + (1 - e)) * (z * e + (1 - e)) = y * (e * z) * e + y * e * (1 - e) + (1 - e) * z * e + (1 - e) * (1 - e)` using `by noncomm_ring`. Rewrite using `[this, ← hze]`. Establish `hee : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `hee' : (1 - e) * z * e = 0`. Rewrite using `[Matrix.mul_assoc, hze, ← Matrix.mul_assoc, sub_mul, one_mul, he, sub_self, Matrix.zero_mul]`.
+
+Establish `hee'' : (1 - e) * (1 - e) = 1 - e`. Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`. Rewrite using `[Matrix.mul_assoc y e (1 - e), hee, Matrix.mul_zero, hee', hee'', ← Matrix.mul_assoc, Matrix.mul_assoc (y * z) e e, he]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+
+Use `conv_lhs => rw [e1]`. Rewrite using `[Matrix.mul_add, e2, Matrix.mul_smul]`. Simplify using `only [smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hwI : ∀ i j, ‖(y * e + (1 - e)) i j‖ ≤ 1` using `integ_add (integ_mul hy heI) (integ_sub integ_one heI)`.
+
+Establish `hw'I : ∀ i j, ‖(z * e + (1 - e)) i j‖ ≤ 1` using `integ_add (integ_mul hzI heI) (integ_sub integ_one heI)`. Establish `hd` using `congrArg (fun m => ‖m.det‖) hprod`. Simplify using `only [Matrix.det_mul, norm_mul] at hd`. Rewrite `hd` using `[GlobalTheory.T.ultrametric_norm_det_one_add_smul E n _ ϖ h1 (integ_sub (integ_add ha₃I (integ_mul (integ_mul hy hzI) ha'I)) ha'I)]`. Establish `ha` using `GlobalTheory.T.norm_det_le_one_of_entries_norm_le_one E n _ hwI`.
+
+Establish `hb` using `GlobalTheory.T.norm_det_le_one_of_entries_norm_le_one E n _ hw'I`. Use polynomial arithmetic with `[norm_nonneg (y * e + (1 - e)).det, norm_nonneg (z * e + (1 - e)).det]`. Establish `: y * (1 - e) = y * (1 - x) - y * (e - x)` using `by noncomm_ring`. Rewrite using `[this, hyx, hea, Matrix.mul_smul, ← smul_sub]`.
+-/
 theorem unit_split {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E]
     [LocallyCompactSpace E] {n : ℕ} {N : Matrix (Fin n) (Fin n) E} {ϖ : E}
     (hN : ∀ i j, ‖N i j‖ ≤ 1)
@@ -72,6 +89,11 @@ theorem unit_split {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E]
   · have : y * (1 - e) = y * (1 - x) - y * (e - x) := by noncomm_ring
     rw [this, hyx, hea, Matrix.mul_smul, ← smul_sub]
 
+/- English proof (translation)
+Introduce `E _ _ _ n N c b ϖ hN hB h0 h1 hϖ hc hcN hbN hb hbd`. Establish `hB' : ∃ u v : Polynomial E, u * N.charpoly + v * Polynomial.derivative N.charpoly = 1`. Take `⟨u, v, -, -, h⟩` from `hB`. Conclude with `⟨u, v, h⟩`. Establish `hcomm : ∀ x y : Matrix (Fin n) (Fin n) E, x * N = N * x → y * N = N * y → x * y = y * x` using `fun x y hx hy => comm_of_bezout hB' hx hy`.
+
+Take `⟨e₁, e₂, e₃, u, a₂, a₃, hN6, hI6, hu, h11, h22, h33, h12, h13, h23, hs, hc1, hc2, hc3⟩` from `GlobalTheory.T.matrix_commutant_valuation_decomposition E n N ϖ h0 h1 hcomm (unit_split hN hB h0 h1 hϖ hcomm) c hc hcN`. Conclude with `GlobalTheory.T.quotient_integral_unit_alt E n N c b e₁ e₂ e₃ u a₂ a₃ ϖ h0 h1 hcomm hc hcN hbN hb hbd hN6 hI6 hu h11 h22 h33 h12 h13 h23 hs hc1 hc2 hc3`.
+-/
 theorem units_quotient : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] [LocallyCompactSpace E] (n : ℕ) (N c b : Matrix (Fin n) (Fin n) E) (ϖ : E), (∀ i j, ‖N i j‖ ≤ 1) → (∃ u v : Polynomial E, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧ u * N.charpoly + v * Polynomial.derivative N.charpoly = 1) → 0 < ‖ϖ‖ → ‖ϖ‖ < 1 → (∀ y : E, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖) → IsUnit c → c * N = N * c → b * N = N * b → (∀ i j, ‖b i j‖ ≤ 1) → ‖b.det‖ = 1 → IsUnit (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) ∧ IsUnit (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) ∧ IsUnit (ϖ • c ^ 2 + b ^ 2) ∧ IsUnit (ϖ • c ^ 3 + b ^ 3) ∧ (∀ i j, ‖((ϖ • c ^ 3 + b ^ 3) * (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) * ((ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) * (ϖ • c ^ 2 + b ^ 2))⁻¹) i j‖ ≤ 1) ∧ ‖((ϖ • c ^ 3 + b ^ 3) * (ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 2) * ((ϖ • (1 : Matrix (Fin n) (Fin n) E) + c ^ 3) * (ϖ • c ^ 2 + b ^ 2))⁻¹).det‖ = 1 := by
   intro E _ _ _ n N c b ϖ hN hB h0 h1 hϖ hc hcN hbN hb hbd
   have hB' : ∃ u v : Polynomial E, u * N.charpoly + v * Polynomial.derivative N.charpoly = 1 := by

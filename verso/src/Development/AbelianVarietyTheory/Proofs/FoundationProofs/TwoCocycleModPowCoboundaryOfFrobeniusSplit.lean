@@ -16,13 +16,22 @@ def J (l : ℕ) [Fact l.Prime] (n : ℕ) : AddSubgroup (Qbar l) where
   add_mem' := fun ha hb => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)
   neg_mem' := fun ha => by simpa only [Set.mem_setOf_eq, norm_neg] using ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem cg_iff {n : ℕ} {a b : Qbar l} : Cg n a b ↔ a - b ∈ J l n := Iff.rfl
 
+/- English proof (translation)
+Use `show ‖y * x‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul hy hx (norm_nonneg _) zero_le_one).trans (le_of_eq (one_mul _))`.
+-/
 theorem mul_memJ {n : ℕ} {x y : Qbar l} (hy : ‖y‖ ≤ 1) (hx : x ∈ J l n) : y * x ∈ J l n := by
   show ‖y * x‖ ≤ _
   rw [norm_mul]
   exact (mul_le_mul hy hx (norm_nonneg _) zero_le_one).trans (le_of_eq (one_mul _))
 
+/- English proof (translation)
+Use `show ‖_‖ ≤ _`. Rewrite using `[norm_mul, Nat.cast_mul, norm_mul, Nat.cast_pow]`. Establish `h1` using `IsUltrametricDist.norm_natCast_le_one (Qbar l) q`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem natMul_memJ (n q : ℕ) {y : Qbar l} (hy : ‖y‖ ≤ 1) : ((l ^ n * q : ℕ) : Qbar l) * y ∈ J l n := by
   show ‖_‖ ≤ _
   rw [norm_mul, Nat.cast_mul, norm_mul, Nat.cast_pow]
@@ -30,24 +39,42 @@ theorem natMul_memJ (n q : ℕ) {y : Qbar l} (hy : ‖y‖ ≤ 1) : ((l ^ n * q 
   calc _ ≤ ‖((l : ℕ) : Qbar l) ^ n‖ * 1 * 1 := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Simplify using `[eps, map_mul]`.
+-/
 theorem eps_mul' (s t : G ℚ Ω) : eps l (s * t) = eps l s * eps l t := by
   simp [eps, map_mul]
 
+/- English proof (translation)
+Simplify using `[eps, map_pow]`.
+-/
 theorem eps_pow' (s : G ℚ Ω) (i : ℕ) : eps l (s ^ i) = eps l s ^ i := by
   simp [eps, map_pow]
 
 def Tr (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (j : ℕ) : Qbar l :=
   Nat.rec (motive := fun _ => Qbar l) (ξ 1 1) (fun i t => t - ξ (g ^ i) g) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Tr_zero (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) : Tr ξ g 0 = ξ 1 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Tr_succ (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (j : ℕ) : Tr ξ g (j + 1) = Tr ξ g j - ξ (g ^ j) g := rfl
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [Tr_zero]; exact hint 1 1 | j + 1 => by rw [Tr_succ]; exact sub_mem (Tr_mem c ξ g hint j) (hint _ _)`.
+-/
 theorem Tr_mem (c : Coef l) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (hint : ∀ s t, ξ s t ∈ c.O) :
     ∀ j, Tr ξ g j ∈ c.O
   | 0 => by rw [Tr_zero]; exact hint 1 1
   | j + 1 => by rw [Tr_succ]; exact sub_mem (Tr_mem c ξ g hint j) (hint _ _)
 
+/- English proof (translation)
+The claim follows from `| 0 => by have h := (cg_iff).1 (hcoc (g ^ i) (pow_mem hg i) 1 D.one_mem 1 D.one_mem) simp only [mul_one, eps_pow'] at h have e : ξ (g ^ i) (g ^ 0) - (eps l g ^ i * Tr ξ g 0 - Tr ξ g (i + 0) + Tr ξ g i) = -(eps l g ^ i * ξ 1 1 + ξ (g ^ i) 1 - (ξ (g ^ i) 1 + ξ (g ^ i) 1)) := by sim …`.
+-/
 theorem Tr_key (n : ℕ) (D : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (hg : g ∈ D)
     (hcoc : ∀ r ∈ D, ∀ s ∈ D, ∀ t ∈ D, Cg n (eps l r * ξ s t + ξ r (s * t)) (ξ (r * s) t + ξ r s)) (i : ℕ) :
     ∀ j, ξ (g ^ i) (g ^ j) - (eps l g ^ i * Tr ξ g j - Tr ξ g (i + j) + Tr ξ g i) ∈ J l n
@@ -68,6 +95,13 @@ theorem Tr_key (n : ℕ) (D : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω �
       rw [← add_assoc i j 1]; simp only [Tr_succ]; ring
     rw [e]; exact add_mem h ih
 
+/- English proof (translation)
+Establish `km` using `Tr_key n D ξ g hg hcoc m j`. Establish `k0` using `Tr_key n D ξ g hg hcoc 0 j`. Establish `hi` using `(cg_iff).1 (hinv 1 D.one_mem (g ^ j) (pow_mem hg j) (g ^ m) hgm).1`. Rewrite `hi` using `[one_mul]`. Establish `he : (eps l g ^ m - 1) ∈ J l n`.
+
+Use `(cg_iff).1 (hepsK _ hgm)` as an intermediate fact. Rewrite `this` using `[eps_pow']`. Then use the resulting hypothesis. Establish `hT` using `CupCob.norm_le_one_of_mem c (Tr_mem c ξ g hint j)`. Establish `em` using `mul_memJ hT he`. Establish `e : Tr ξ g (m + j) - (Tr ξ g j + (Tr ξ g m - Tr ξ g 0)) = Tr ξ g j * (eps l g ^ m - 1) - (-(ξ (g ^ m) (g ^ j) - (eps l g ^ m * Tr ξ g j - Tr ξ g (m + j) + Tr ξ g m)) + (ξ (g ^ m) (g ^ j) - ξ 1 (g ^ j)) + (ξ (g ^ 0) (g ^ j) - (eps l g ^ 0 * Tr ξ g j - Tr ξ g (0 + j) + Tr ξ g 0)))`.
+
+Simplify using `only [pow_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `sub_mem em (add_mem (add_mem (neg_mem km) hi) k0)`.
+-/
 theorem Tr_period (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (hg : g ∈ D)
     (m : ℕ) (hgm : g ^ m ∈ K) (hepsK : ∀ k ∈ K, Cg n (eps l k) 1) (hint : ∀ s t, ξ s t ∈ c.O)
     (hcoc : ∀ r ∈ D, ∀ s ∈ D, ∀ t ∈ D, Cg n (eps l r * ξ s t + ξ r (s * t)) (ξ (r * s) t + ξ r s))
@@ -88,6 +122,9 @@ theorem Tr_period (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G ℚ
     simp only [pow_zero, zero_add]; ring
   rw [e]; exact sub_mem em (add_mem (add_mem (neg_mem km) hi) k0)
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp only [mul_zero, zero_add, Nat.cast_zero, zero_mul, add_zero, sub_self]; exact zero_mem _ | t + 1 => by have ih := Tr_periods n c D K ξ g hg m hgm hepsK hint hcoc hinv j t have hp := Tr_period n c D K ξ g hg m hgm hepsK hint hcoc hinv (m * t + j) have e1 : m * (t + …`.
+-/
 theorem Tr_periods (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (hg : g ∈ D)
     (m : ℕ) (hgm : g ^ m ∈ K) (hepsK : ∀ k ∈ K, Cg n (eps l k) 1) (hint : ∀ s t, ξ s t ∈ c.O)
     (hcoc : ∀ r ∈ D, ∀ s ∈ D, ∀ t ∈ D, Cg n (eps l r * ξ s t + ξ r (s * t)) (ξ (r * s) t + ξ r s))
@@ -105,6 +142,11 @@ theorem Tr_periods (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G �
       push_cast; ring
     rw [e]; exact add_mem hp ih
 
+/- English proof (translation)
+Establish `h` using `Tr_periods n c D K ξ g hg m hgm hepsK hint hcoc hinv (j % (m * l ^ n)) (l ^ n * (j / (m * l ^ n)))`. Establish `ej : m * (l ^ n * (j / (m * l ^ n))) + j % (m * l ^ n) = j`. Rewrite using `[← mul_assoc]`. Conclude with `Nat.div_add_mod j (m * l ^ n)`. Rewrite `h` using `[ej]`.
+
+Establish `hd : ‖Tr ξ g m - Tr ξ g 0‖ ≤ 1` using `CupCob.norm_le_one_of_mem c (sub_mem (Tr_mem c ξ g hint m) (Tr_mem c ξ g hint 0))`. Establish `h2` using `natMul_memJ (l := l) n (j / (m * l ^ n)) hd`. Establish `e : Tr ξ g j - Tr ξ g (j % (m * l ^ n)) = (Tr ξ g j - (Tr ξ g (j % (m * l ^ n)) + ((l ^ n * (j / (m * l ^ n)) : ℕ) : Qbar l) * (Tr ξ g m - Tr ξ g 0))) + ((l ^ n * (j / (m * l ^ n)) : ℕ) : Qbar l) * (Tr ξ g m - Tr ξ g 0)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem h h2`.
+-/
 theorem Tr_mod (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (g : G ℚ Ω) (hg : g ∈ D)
     (m : ℕ) (hgm : g ^ m ∈ K) (hepsK : ∀ k ∈ K, Cg n (eps l k) 1) (hint : ∀ s t, ξ s t ∈ c.O)
     (hcoc : ∀ r ∈ D, ∀ s ∈ D, ∀ t ∈ D, Cg n (eps l r * ξ s t + ξ r (s * t)) (ξ (r * s) t + ξ r s))
@@ -122,6 +164,11 @@ theorem Tr_mod (n : ℕ) (c : Coef l) (D K : Subgroup (G ℚ Ω)) (ξ : G ℚ Ω
       ((l ^ n * (j / (m * l ^ n)) : ℕ) : Qbar l) * (Tr ξ g m - Tr ξ g 0) := by ring
   rw [e]; exact add_mem h h2
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun g0 => ?_` and prove the remaining obligations. Establish `hn : (fun g => g0⁻¹ * g) ⁻¹' (χ.ker : Set Γ) ∈ nhds g0` using `(hχ.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp)`. Use `filter_upwards [hn] with g hg`. Establish `hg' : χ (g0⁻¹ * g) = 1` using `hg`. Rewrite `hg'` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Conclude with `hg'.symm`.
+-/
 theorem isLocallyConstant_hom {Γ H : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [Group H] (χ : Γ →* H) (hχ : IsOpen (χ.ker : Set Γ)) : IsLocallyConstant χ := by
   refine (IsLocallyConstant.iff_eventually_eq _).mpr fun g0 => ?_
@@ -132,6 +179,27 @@ theorem isLocallyConstant_hom {Γ H : Type*} [Group Γ] [TopologicalSpace Γ] [I
   rw [map_mul, map_inv, inv_mul_eq_one] at hg'
   exact hg'.symm
 
+/- English proof (translation)
+Use `haveI : NeZero (m * l ^ n) := ⟨Nat.mul_ne_zero hm.ne' (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)⟩`. Use `set g : G ℚ Ω := (φ : G ℚ Ω) with hgdef`. Establish `hg : g ∈ D` using `φ.2`. Establish `hgm : g ^ m ∈ K` using `by simpa [hgdef] using hφm`. Use `set k : ↥D → ℕ := fun s => (Multiplicative.toAdd (d s)).val with hkdef`.
+
+Use `set T := Tr ξ g with hT`. Use `⟨fun s => if h : s ∈ D then T (k ⟨s, h⟩) else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `hc : Continuous (fun s : ↥D => T (k s))` using `((isLocallyConstant_hom d hker).comp fun z => T (Multiplicative.toAdd z).val).continuous`. Conclude with `hc.congr fun s => by simp [Set.restrict, s.2]`.
+
+Introduce `s`. Simplify using `only`. Use `split_ifs`. Conclude with `Tr_mem c ξ g hint _`. Conclude with `zero_mem _`.
+
+Introduce `s hs t ht`. Rewrite using `[cg_iff]`. Use `set s' : ↥D := ⟨s, hs⟩`. Use `set t' : ↥D := ⟨t, ht⟩`. Use `set a := k s' with ha`.
+
+Use `set b := k t' with hb`. Establish `hst : s * t ∈ D` using `D.mul_mem hs ht`. Simplify using `only [dif_pos hs, dif_pos ht, dif_pos hst]`. Establish `hk : k ⟨s * t, hst⟩ = (a + b) % (m * l ^ n)` using `by show (Multiplicative.toAdd (d (s' * t'))).val = _`. Rewrite using `[map_mul, toAdd_mul, ZMod.val_add]`.
+
+Rewrite using `[hk]`. Use `set κ1 : G ℚ Ω := (((φ ^ a)⁻¹ * s' : ↥D) : G ℚ Ω) with hκ1`. Use `set κ2 : G ℚ Ω := (((φ ^ b)⁻¹ * t' : ↥D) : G ℚ Ω) with hκ2`. Establish `hK1 : κ1 ∈ K` using `hdec s'`. Establish `hK2 : κ2 ∈ K` using `hdec t'`.
+
+Establish `es : g ^ a * κ1 = s` using `by simp [hκ1, hgdef, s']`. Establish `et : g ^ b * κ2 = t` using `by simp [hκ2, hgdef, t']`. Establish `i1` using `(cg_iff).1 (hinv (g ^ a) (pow_mem hg a) t ht κ1 hK1).1`. Rewrite `i1` using `[es]`. Establish `i2` using `(cg_iff).1 (hinv (g ^ a) (pow_mem hg a) (g ^ b) (pow_mem hg b) κ2 hK2).2`.
+
+Rewrite `i2` using `[et]`. Establish `kk` using `Tr_key n D ξ g hg hcoc a b`. Establish `md` using `Tr_mod n c D K ξ g hg m hgm hepsK hint hcoc hinv (a + b)`. Establish `he` using `(cg_iff).1 (hepsK κ1 hK1)`. Establish `hn1 : ‖eps l g ^ a * T b‖ ≤ 1`.
+
+Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) (CupCob.norm_le_one_of_mem c (CupCob.eps_mem c g))) (norm_nonneg _) (CupCob.norm_le_one_of_mem c (Tr_mem c ξ g hint b))`. Establish `em` using `mul_memJ hn1 he`. Establish `eeps : eps l s = eps l g ^ a * eps l κ1` using `by rw [← es, eps_mul', eps_pow']`. Rewrite using `[eeps]`.
+
+Establish `e : ξ s t - (eps l g ^ a * eps l κ1 * T b - T ((a + b) % (m * l ^ n)) + T a) = (ξ s t - ξ (g ^ a) t) + (ξ (g ^ a) t - ξ (g ^ a) (g ^ b)) + (ξ (g ^ a) (g ^ b) - (eps l g ^ a * T b - T (a + b) + T a)) - eps l g ^ a * T b * (eps l κ1 - 1) - (T (a + b) - T ((a + b) % (m * l ^ n)))` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem (add_mem (add_mem i1 i2) kk) em) md`.
+-/
 theorem twoCocycleModPow_coboundary_of_frobenius_split (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (c : Coef l) (n : ℕ)
     (D K : Subgroup (G ℚ Ω)) (φ : ↥D) (m : ℕ) (d : ↥D →* Multiplicative (ZMod (m * l ^ n)))
     (ξ : G ℚ Ω → G ℚ Ω → Qbar l) (hm : 0 < m) (hφm : ((φ ^ m : ↥D) : G ℚ Ω) ∈ K) (hker : IsOpen (d.ker : Set ↥D))

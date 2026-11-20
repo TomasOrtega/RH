@@ -23,6 +23,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
   {Or : RootOrigin Y SS RM Fx}
 
+/- English proof (translation)
+Establish `hS` using `Or.hodge ρ zC z hc hI _ _ hν`. Take `⟨ch, hch⟩` from `hS.exists_chart`. Take `⟨u, hu, eu⟩` from `hS.2.2 ch hch`. Prove the components needed by the constructor for the conclusion. Establish `hy : ∀ k, RM.y ⟨k, ch k⟩ ≠ 0` using `fun k => (hc.2 k (ch k) (IsUnit.mk0 _ (hch k))).1`.
+
+Establish `hm` using `(hG.2.2.1 ρ ch hy).2`. Establish `h1` using `hev ⟨_, hm⟩`. Establish `h2` using `valAt_of_hasVal hz (Or.𝔐.all _) hc h1`. Rewrite `hu` using `[one_zpow, one_div, Or.sing_deg]`. Rewrite `h1` using `[CxVal.unique h2 hu]`.
+
+Establish `h3` using `hv_mul h1 (hv_mono hz ch hy hch (RM.xdeg ρ))`. Establish `hM : (∏ k, RM.y ⟨k, ch k⟩ ^ RM.xdeg ρ k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`. Use `⟨_, by` and prove the remaining obligations. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[zero_add]`.
+
+Use `show _ = (_ * _)⁻¹ * _`. Rewrite using `[mul_inv, mul_right_comm, inv_mul_cancel₀ hM, one_mul], ?_⟩`. Rewrite using `[eu, norm_mul, norm_prod, Or.sing_deg]`. Simplify using `only [norm_zpow]`. Establish `hI' : Or.𝔐.Interior (HodgeLine.cj zC)`.
+
+Unfold `HodgeCpt.Interior`. Rewrite using `[HodgeLine.centre_cj]`. Conclude with `hI`. Establish `hS'` using `Or.hodge ρ (HodgeLine.cj zC) _ (HodgeLine.coordsAt_conj hc) hI' _ _ (HodgeLine.isGrNorm_conj Or.𝔐.t Or.𝔐.M _ hν)`. Take `⟨u', hu', eu'⟩` from `hS'.2.2 ch fun k => (map_ne_zero _).2 (hch k)`.
+
+Rewrite `eu'` using `[CxVal.unique hu' (HodgeLine.valAt_conj hu)]`. Simplify using `only [Complex.norm_conj, RCLike.norm_conj] at eu'`. Conclude with `mul_left_cancel₀ (zpow_pos hν.pos _).ne' (eu'.trans eu.symm)`.
+-/
 theorem root_val {Fr : Small.GenFrame Or} {A : Subring RM.Ω} (hG : GoodRing Fr A) {z : (Σ k, RM.ι k) → ℂ}
     (hz : z ∈ Small.ptsOver ℂ (mCoordIdeal RM.y)) (ev : A →+* ℂ)
     (hev : ∀ x : A, Small.HasVal RM.y 0 (x : RM.Ω) z (ev x)) {zC : Sp ℂ ⟶ Or.𝔐.X}
@@ -62,6 +75,11 @@ theorem root_val {Fr : Small.GenFrame Or} {A : Subring RM.Ω} (hG : GoodRing Fr 
     simp only [Complex.norm_conj, RCLike.norm_conj] at eu'
     exact mul_left_cancel₀ (zpow_pos hν.pos _).ne' (eu'.trans eu.symm)
 
+/- English proof (translation)
+Simplify using `only [← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : sg i * n i = -ex i` using `by rw [hn]; linear_combination (-ex i) * hs i`. Rewrite using `[mul_zpow, ← zpow_mul, e, mul_zpow, mul_zpow, zpow_neg (T i)]`. Use `(zpow_pos (hT i) (ex i)).ne'` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_alg {I : Type} [Fintype I] (T T₀ h K : I → ℝ) (sg ex n : I → ℤ) (hT : ∀ i, 0 < T i)
     (hs : ∀ i, sg i * sg i = 1) (hn : ∀ i, n i = -(sg i * ex i)) :
     (∏ i, T i ^ ex i) * ∏ i, ((K i * (T i * T₀ i)) ^ sg i * h i) ^ n i =
@@ -74,6 +92,47 @@ theorem norm_alg {I : Type} [Fintype I] (T T₀ h K : I → ℝ) (sg ex n : I �
   field_simp
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Use `letI := Small.cstAlg Or`. Establish `hU` using `hL.unf σ hσ`. Take `⟨zC, ⟨hgen, hc⟩, -⟩` from `(GlobalTheory.T.local_ring_points_existsUnique Or.𝔐.X RM.Ω Or.𝔐.ξ RM.K RM.ι RM.y Or.𝔐.tie ℂ).1 z (fun k => (hz.1 k).imp fun _ hi => IsUnit.mk0 _ hi) hz.2`. Establish `hva : ∀ a : A, ValAt Or.𝔐.ξ zC (a : RM.Ω) (ev a)` using `fun a => valAt_of_hasVal hz hgen hc (hev a)`. Take `⟨q, φ, yq, hφ, hφA⟩` from `hG.2.1`.
+
+Set `ψ₀ : q.R →+* ℂ` to `ev.comp (φ.toRingHom.codRestrict A hφA)`. Set `ψ : q.R →ₐ[c.F] CAt σ` to `{ (show q.R →+* CAt σ from ψ₀) with commutes' := fun a => by`. Establish `h1` using `hev ⟨φ (algebraMap c.F q.R a), hφA _⟩`. Establish `h2 : φ (algebraMap c.F q.R a) = Or.𝔐.cst a` using `φ.commutes a`. Establish `h3 : Small.HasVal RM.y 0 (φ (algebraMap c.F q.R a)) z (σ a)` using `by rw [h2]; exact hcst a`.
+
+Conclude with `hasVal_unique hz h1 h3 }`. Take `⟨y, hψ⟩` from `GlobalTheory.FramedBaseChange.bcEx_all E H Dw l Xo c σ q yq ψ`. Take `⟨hpt, htan⟩` from `@pt_frame E _ _ _ H Dw l Xo c O _ β Y SS RM Sys Fx Or Fr ℂ _ σ.toAlgebra zC q φ yq hφ ψ y hψ fun r => hva ⟨φ r, hφA r⟩`. Take `⟨hI, hpol⟩` from `interior_of Or.𝔐 zC (Small.ptF (S := CAt σ) y) hpt.symm`. Take `⟨k, x₁, t, ht⟩` from `hU.2.2.1 y`.
+
+Take `⟨x₀, t₀, ho, h0, hpn⟩` from `move_pnorm hσ hU x₁`. Establish `hB'` using `(GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) ((U σ).un k x₀) ((U σ).un k x₁) y).2.2.1 t₀ t h0 ht`. Establish `hx0 : 0 < x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Rewrite using `[← hx σ hσ k τ]`.
+
+Conclude with `norm_pos_iff.2 ((map_ne_zero _).2 ((U σ).X k).ξ0_ne)`. Establish `hnorm : ∀ ρ : RootIx Dw, Or.𝔐.M.IsGrNorm Or.𝔐.t.PP.L (Or.𝔐.V (HodgeCpt.rootIdx Dw ρ).1) (Or.Fl.b (HodgeCpt.rootIdx Dw ρ).1) (HodgeCpt.rootIdx Dw ρ).2 zC 1 (Real.sqrt (Real.pi * (2 * x)) * (‖toC (t (Small.rootFrameIx Dw ρ) : CAt σ)‖ * ‖toC (t₀ (Small.rootFrameIx Dw ρ) : CAt σ)‖))` using `fun ρ => by`. Establish `hr` using `ρ.2.2`. Take `⟨b, T, hfl, hfr, hT, hTA, hTd⟩` from `hG.2.2.2 (HodgeCpt.rootIdx Dw ρ).1 ⟨_, hgen⟩`. Establish `hfr'` using `isFrameAt_of_tri _ _ b _ T hfl hfr hT (fun i j => HodgeLine.mem_of_valAt (hva ⟨_, hTA i j⟩) hgen) fun i => ⟨(hTd i).1, HodgeLine.mem_of_valAt (hva ⟨_, (hTd i).2⟩) hgen⟩`.
+
+Take `⟨Γ, hΓ, hP⟩` from `HodgeMetric.GramFrame.exists_gramAt_posDef_of_frame Or.𝔐 zC hgen hpol _ _ hfr'`. Take `⟨z', v, hz', hv, hIP⟩` from `GF.transport Or.𝔐 zC y hpt _ (Small.labelFin Dw (HodgeCpt.rootIdx Dw ρ).1) _ (htan _) Γ hΓ`. Establish `key` using `GF.gram hσ hU (by omega) x₀ ho y _ hB' _ _ (Small.mult_labelC Dw (HodgeCpt.rootIdx Dw ρ).1) z' hz' v hv Γ hIP (HodgeCpt.rootIdx Dw ρ).2`. Establish `hmul : ‖toC ((t * t₀) (Small.rootFrameIx Dw ρ) : CAt σ)‖ = ‖toC (t (Small.rootFrameIx Dw ρ) : CAt σ)‖ * ‖toC (t₀ (Small.rootFrameIx Dw ρ) : CAt σ)‖` using `norm_mul (toC (t (Small.rootFrameIx Dw ρ) : CAt σ)) (toC (t₀ (Small.rootFrameIx Dw ρ) : CAt σ))`. Rewrite `key` using `[hx σ hσ]`.
+
+Conclude with `⟨hgen, _, Γ, fun _ => rfl, hfr', by simp, hΓ, hP, (key.trans (congrArg _ hmul)).symm⟩`. Establish `hroot` using `fun ρ => root_val hG hz ev hev hc hI ρ (hnorm ρ)`. Use `⟨fun ρ => (hroot ρ).2, ?_⟩` and prove the remaining obligations. Use `choose w hw hwn using fun ρ => (hroot ρ).1`. Establish `htpos : ∀ (t : Ix Dw → (CAt σ)ˣ) j, 0 < ‖toC (t j : CAt σ)‖` using `fun t j => norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) (t j))`.
+
+Establish `hw0 : ∀ ρ, w ρ ≠ 0` using `fun ρ => by`. Rewrite using `[← norm_pos_iff, hwn]`. Conclude with `mul_pos (zpow_pos (hnorm ρ).pos _) ((Or.sing ρ).pos z hz.1)`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hsec : ∀ a : WZ E, ∀ f ∈ secZ Xo c a, Small.HasVal RM.y 0 (Fr.rd f) z ((∏ j, toC (t j : CAt σ) ^ exZ Dw a j) * rdU (U σ) f k x₁.1)` using `fun a f hf => by`.
+
+Establish `hrd : Fr.rd f = φ (f q yq)` using `Fr.rd_eq_of_frMap hL.evalWD hf.1 q φ yq hφ`. Establish `hft : Formalism.L2.Pj.FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y := ⟨q, ψ, yq, hψ⟩`. Establish `hy : evR Xo c f y = ψ (f q yq)`. Unfold `evR evalAt`. Rewrite using `[dif_pos hft]`.
+
+Conclude with `hL.evalWD f hf.1 (CAt σ) _ q _ ψ _ yq y hft.choose_spec.choose_spec.choose_spec hψ`. Establish `hbor : evR Xo c f y = ((∏ i, t i ^ exZ Dw a i : (CAt σ)ˣ) : CAt σ) * evR Xo c f ((U σ).un k x₁)` using `evalAt_bor_zpow (GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.1 (exZ Dw a) hf.1 (fun p t y y' hb => by rw [hf.2 p t y y' hb, Units.coe_prod]) (CAt σ) t _ y (hL.unTest σ hσ k x₁) hft ht`. Establish `h1` using `hev ⟨φ (f q yq), hφA _⟩`. Establish `h2 : ev ⟨φ (f q yq), hφA _⟩ = (∏ j, toC (t j : CAt σ) ^ exZ Dw a j) * rdU (U σ) f k x₁.1`. Use `(show _ = toC (ψ (f q yq)) from rfl).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← hy, hbor]`. Establish `e1 : rdU (U σ) f k x₁.1 = toC (evR Xo c f ((U σ).un k x₁))` using `dif_pos x₁.2`. Establish `e2 : toC ((∏ i, t i ^ exZ Dw a i : (CAt σ)ˣ) : CAt σ) = ∏ j, toC (t j : CAt σ) ^ exZ Dw a j` using `(Units.coe_prod (M := ℂ) (fun i => t i ^ exZ Dw a i) _).trans (Finset.prod_congr rfl fun j _ => Units.val_zpow_eq_zpow_val (α := ℂ) (t j) _)`. Rewrite using `[e1, ← e2]`. Both sides reduce to the same expression.
+
+Rewrite using `[hrd, ← h2]`. Conclude with `h1`. Use `⟨k, ?_, x₁.1, x₁.2, fun a n' hn => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ1, hκ2⟩` from `GlobalTheory.T.compactification_comp_equiv E H Dw l Xo c r U h e hL σ hσ`. Use `(hκ1 Z k).2 (by_contra fun hne => ?_)` and prove the remaining obligations.
+
+Establish `he0 : e Z ∈ secZ Xo c 0`. Establish `h1` using `hL.e_sec Z`. Rewrite `h1` using `[← secZ_nat]`. Conclude with `h1`. Apply the tactic sequence `have hex : ∀ i, exZ Dw (0 : WZ E) i = 0 := fun i => by cases i <;> rfl`.
+
+Establish `hrd : Fr.rd (e Z) = 1`. Rewrite using `[Rd.rd_eq 0 (e Z) he0, (hL.e_val Z).1, map_one]`. Simplify using `[hex]`. Establish `hv` using `hsec 0 _ he0`. Rewrite `hv` using `[hrd, (hκ2 Z k hne _ x₁.2).1, mul_zero]`.
+
+Conclude with `zero_ne_one (hasVal_unique hz hv hv_one)`. Establish `hnone : n' none = 0`. Establish `h1` using `hn none`. Establish `h2 : RM.coef (towerWt Dw a) 0 none = 0` using `by simp [Top.RootModel.coef]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1` after adjusting the coercions. Establish `hsome : ∀ r, n' (some r) = -(HodgeCpt.rootSgn Dw r * exZ Dw a (Small.rootFrameIx Dw r))` using `fun r => by`. Establish `h1` using `hn (some r)`. Establish `h2 : RM.coef (towerWt Dw a) 0 (some r) = -towerWt Dw a r.1 r.2` using `rfl`. Rewrite `h1` using `[h2, towerWt_root]`.
+
+Conclude with `h1` after adjusting the coercions. Establish `hdeg : (Top.combLine (RM.line 1) n').a = 0 + ∑ r, n' (some r) • RM.xdeg r` using `by show ∑ j, n' j • (RM.line 1 j).a = _`. Rewrite using `[Fintype.sum_option, hnone, zero_smul]`. Use `congrArg _ (Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Use `show n' (some r) • (RM.x 1 r).a = _`.
+
+Rewrite using `[RM.x_deg]`. Establish `hev' : ∀ r, Or.e r ^ (-n' (some r)) = (Or.e r)⁻¹ ^ n' (some r)` using `fun r => by`. Rewrite using `[zpow_neg, inv_zpow]`. Establish `hrt : ∀ r ∈ (Finset.univ : Finset (RootIx Dw)), Small.HasVal RM.y (n' (some r) • RM.xdeg r) ((Or.e r)⁻¹ ^ n' (some r)) z (w r ^ n' (some r))` using `fun r _ => hv_zpow hz (hw r) (inv_ne_zero (Or.lines r).1) (hw0 r) _`. Use `⟨(∏ j, toC (t j : CAt σ) ^ exZ Dw a j) * ∏ r, w r ^ n' (some r), ?_, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_prod, norm_prod]`. Simplify using `only [norm_zpow, hwn]`. Rewrite using `[prod_exZ Dw a fun j => ‖toC (t j : CAt σ)‖, hpn, lieFacZ_eq Dw hx0, prod_root, prod_root]`. Conclude with `norm_alg _ _ _ _ _ _ _ (fun _ => htpos t _) (rootSgn_mul_self Dw) hsome`. Rewrite using `[hdeg, mul_right_comm]`.
+
+Simplify using `only [hev']`. Conclude with `hv_mul (hsec a f hf) (hv_prod Finset.univ hrt)`.
+-/
 theorem core {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Comp Xo c → Rul Xo c}
     (hL : CompLaws U h e) {x : ℝ} (hx : ∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x)
     {Fr : Small.GenFrame Or} {Z : Comp Xo c} (Rd : Reading Fr h Z) {A : Subring RM.Ω} (hG : GoodRing Fr A)

@@ -9,6 +9,9 @@ open NumberField Complex
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.HeckeTwo
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeckeTwo.FactorBound.norm_iteratedFDeriv_fourierFactor_le | exact GlobalTheory.HeckeTwo.FactorBound.norm_iteratedFDeriv_fourierFactor_le | (intros; apply GlobalTheory.HeckeTwo.FactorBound.norm_iteratedFDeriv_fourierFactor_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_iteratedFDeriv_heckeFourierFactor_le : (∀ K : Set ℂ, IsCompact K → K ⊆ halfPlane → ∀ j : ℕ, ∃ s : ℕ, ∀ N : ℕ, ∃ C : ℝ,
     ∀ σ ∈ K, ∀ ν y : ℝ, ν ≠ 0 → y ≠ 0 →
       ‖iteratedDeriv j (hTrans σ ν) y‖ ≤ C * (|y| + |y|⁻¹) ^ s / (1 + |ν * y|) ^ N) →

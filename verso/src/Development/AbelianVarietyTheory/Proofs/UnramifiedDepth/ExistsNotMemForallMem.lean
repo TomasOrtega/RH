@@ -13,43 +13,82 @@ section Val
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+The claim follows from `V.v.map_lt_add ha hb`.
+-/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) :=
   V.v.map_lt_add ha hb
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Rewrite using `[V.v.map_neg]` and apply the resulting hypothesis.
+-/
 theorem mm_neg {a : C} (ha : V.MM a) : V.MM (-a) := by
   unfold VF.MM at *; rwa [V.v.map_neg]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `mm_add ha (mm_neg hb)`.
+-/
 theorem mm_sub {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a - b) := by
   rw [sub_eq_add_neg]; exact mm_add ha (mm_neg hb)
 
+/- English proof (translation)
+Unfold `VF.MM VF.Ge at *`. Rewrite using `[V.v.map_mul]`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left (by simpa using ha))`.
+-/
 theorem mm_mul {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   unfold VF.MM VF.Ge at *
   rw [V.v.map_mul]
   exact lt_of_lt_of_le hb (le_add_of_nonneg_left (by simpa using ha))
 
+/- English proof (translation)
+Simplify using `[VF.MM]`.
+-/
 theorem mm_zero : V.MM (0 : C) := by simp [VF.MM]
 
+/- English proof (translation)
+Unfold `VF.MM VF.Ge at *`. Simplify using `using ha.le`.
+-/
 theorem ge_of_mm {a : C} (ha : V.MM a) : V.Ge 0 a := by
   unfold VF.MM VF.Ge at *; simpa using ha.le
 
+/- English proof (translation)
+Unfold `VF.MM VF.Ge at *`. Conclude with `lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)) ha`.
+-/
 theorem mm_of_ge_one {a : C} (ha : V.Ge 1 a) : V.MM a := by
   unfold VF.MM VF.Ge at *
   exact lt_of_lt_of_le (by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)) ha
 
+/- English proof (translation)
+The claim follows from `mm_of_ge_one VF.ge_l`.
+-/
 theorem mm_l : V.MM (V.l : C) := mm_of_ge_one VF.ge_l
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `mm_mul ha mm_l`.
+-/
 theorem mm_l_mul {a : C} (ha : V.Ge 0 a) : V.MM ((V.l : C) * a) := by
   rw [mul_comm]; exact mm_mul ha mm_l
 
+/- English proof (translation)
+Simplify using `[VF.MM]`.
+-/
 theorem not_mm_one : ¬ V.MM (1 : C) := by simp [VF.MM]
 
+/- English proof (translation)
+Unfold `VF.MM VF.Ge at *`. Conclude with `le_antisymm (not_lt.1 h) (by simpa using ha)`.
+-/
 theorem v_eq_zero_of_not_mm {a : C} (ha : V.Ge 0 a) (h : ¬ V.MM a) : V.v a = 0 := by
   unfold VF.MM VF.Ge at *
   exact le_antisymm (not_lt.1 h) (by simpa using ha)
 
+/- English proof (translation)
+Unfold `VF.MM`. Rewrite using `[h]`. Conclude with `lt_irrefl _`.
+-/
 theorem not_mm_of_v {a : C} (h : V.v a = 0) : ¬ V.MM a := by
   unfold VF.MM; rw [h]; exact lt_irrefl _
 
+/- English proof (translation)
+Apply `v_eq_zero_of_not_mm` to reduce the goal to its premises. Simplify using `using (ge_of_mm h).add VF.Ge.one`. Introduce `h'`. Apply `not_mm_one (V := V)` to reduce the goal to its premises. Simplify using `using mm_sub h' h`.
+-/
 theorem v_eq_zero_of_mm_sub_one {a : C} (h : V.MM (a - 1)) : V.v a = 0 := by
   apply v_eq_zero_of_not_mm
   · simpa using (ge_of_mm h).add VF.Ge.one
@@ -57,20 +96,34 @@ theorem v_eq_zero_of_mm_sub_one {a : C} (h : V.MM (a - 1)) : V.v a = 0 := by
     apply not_mm_one (V := V)
     simpa using mm_sub h' h
 
+/- English proof (translation)
+Rewrite using `[← V.v.map_neg]`. Apply `v_eq_zero_of_mm_sub_one` to reduce the goal to its premises. Use `mm_neg h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem v_eq_zero_of_mm_add_one {a : C} (h : V.MM (a + 1)) : V.v a = 0 := by
   rw [← V.v.map_neg]
   apply v_eq_zero_of_mm_sub_one
   have := mm_neg h
   convert this using 1; ring
 
+/- English proof (translation)
+Unfold `VF.Ge at *`. Rewrite `h` using `[V.v.map_mul, hu, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem ge_of_unit_mul {w : ℝ} {u a : C} (hu : V.v u = 0) (h : V.Ge w (u * a)) : V.Ge w a := by
   unfold VF.Ge at *
   rwa [V.v.map_mul, hu, zero_add] at h
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Rewrite `h` using `[V.v.map_mul, hu, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem mm_of_unit_mul {u a : C} (hu : V.v u = 0) (h : V.MM (u * a)) : V.MM a := by
   unfold VF.MM at *
   rwa [V.v.map_mul, hu, zero_add] at h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using mm_zero`. Consider the case `succ n ih`. Use `mm_add (mm_mul ha ih) (mm_mul (hb.pow n) h)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mm_pow_sub {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (h : V.MM (a - b)) (n : ℕ) :
     V.MM (a ^ n - b ^ n) := by
   induction n with
@@ -79,6 +132,13 @@ theorem mm_pow_sub {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (h : V.MM (a - b)) 
     have := mm_add (mm_mul ha ih) (mm_mul (hb.pow n) h)
     convert this using 1; ring
 
+/- English proof (translation)
+Rewrite using `[← V.v.top_iff]`. Unfold `VF.Ge at h`. Proceed by induction on `hv : V.v x using WithTop.recTopCoe with`. Consider the case `top => rfl`. Consider the case `coe t`.
+
+It suffices to derive a contradiction. Take `⟨N, hN⟩` from `exists_nat_gt t`. Use `h N` as an intermediate fact. Rewrite `this` using `[hv]`. Establish `h2 : (N : ℝ) ≤ t` using `by exact_mod_cast this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_forall_ge {x : C} (h : ∀ N : ℕ, V.Ge N x) : x = 0 := by
   rw [← V.v.top_iff]
   unfold VF.Ge at h
@@ -92,26 +152,67 @@ theorem eq_zero_of_forall_ge {x : C} (h : ∀ N : ℕ, V.Ge N x) : x = 0 := by
     have h2 : (N : ℝ) ≤ t := by exact_mod_cast this
     linarith
 
+/- English proof (translation)
+Unfold `VF.Ge`. Proceed by induction on `hv : V.v x using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe t => exact ⟨t, le_rfl⟩`.
+-/
 theorem exists_ge (x : C) : ∃ w : ℝ, V.Ge w x := by
   unfold VF.Ge
   induction hv : V.v x using WithTop.recTopCoe with
   | top => exact ⟨0, le_top⟩
   | coe t => exact ⟨t, le_rfl⟩
 
+/- English proof (translation)
+Use `choose w hw using fun i => exists_ge (V := V) (v i)`. Take `⟨b, hb⟩` from `(Set.finite_range w).bddBelow`. Conclude with `⟨b, fun i => (hw i).mono (hb ⟨i, rfl⟩)⟩`.
+-/
 theorem exists_ge_vec {n : Type} [Fintype n] (v : n → C) : ∃ w : ℝ, ∀ i, V.Ge w (v i) := by
   choose w hw using fun i => exists_ge (V := V) (v i)
   obtain ⟨b, hb⟩ := (Set.finite_range w).bddBelow
   exact ⟨b, fun i => (hw i).mono (hb ⟨i, rfl⟩)⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using VF.Ge.one`. Consider the case `succ n ih => rw [pow_succ]`. Use `push_cast`. Conclude with `ih.mul VF.ge_l`.
+-/
 theorem ge_l_pow (n : ℕ) : V.Ge n ((V.l : C) ^ n) := by
   induction n with
   | zero => simpa using VF.Ge.one
   | succ n ih => rw [pow_succ]; push_cast; exact ih.mul VF.ge_l
 
+/- English proof (translation)
+The claim follows from `VF.Ge.sum fun j _ => (hX i j).mul_int (hv j)`.
+-/
 theorem mulVec_ge {n : Type} [Fintype n] {X : Matrix n n C} (hX : ∀ i j, V.Ge 0 (X i j)) {w : ℝ} {v : n → C}
     (hv : ∀ i, V.Ge w (v i)) (i : n) : V.Ge w ((X *ᵥ v) i) :=
   VF.Ge.sum fun j _ => (hX i j).mul_int (hv j)
 
+/- English proof (translation)
+Establish `hl : ∀ y, D ((V.l : O) * y) = (V.l : C) * D y` using `fun y => by`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Establish `hχ1 : V.MM (χ ε - 1)` using `by simpa using mm_add (hce ε) hε1`. Establish `hpow : ∀ x (n : ℕ), ∃ S, D (x ^ (n + 1)) = S * D x ∧ V.MM (S - ((n + 1 : ℕ) : C) * e x ^ n)`. Introduce `x n`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, by simp, by simpa using mm_zero⟩`. Consider the case `succ n ih`. Take `⟨S, h1, h2⟩` from `ih`. Use `⟨χ x * S + e x ^ (n + 1), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ' x (n + 1), hD, h1, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `mm_add (mm_mul (hχ x) h2) (mm_mul ((VF.ge_natCast (n + 1)).mul_int ((he x).pow n)) (hce x))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `step : ∀ w : ℝ, (∀ x, V.Ge w (D x)) → ∀ x, V.Ge (1 + w) (D x)`. Introduce `w hw x`. Establish `h1 : V.Ge (1 + w) (D ε)`. Take `⟨y, hy⟩` from `hε`.
+
+Establish `h` using `congrArg D hy`. Rewrite `h` using `[map_sub, hD, hl]`. Apply `ge_of_unit_mul (u := χ ε + e ε - 1)` to reduce the goal to its premises. Apply `v_eq_zero_of_mm_sub_one` to reduce the goal to its premises. Use `mm_add hχ1 hε1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(hw y).l_mul using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hy⟩` from `hfr x`.
+
+Establish `h` using `congrArg D hy`. Rewrite `h` using `[hD, hl]`. Establish `h2 : V.Ge (1 + w) (D (x ^ V.l ^ k - x))`. Apply `ge_of_unit_mul (v_eq_zero_of_mm_sub_one hχ1)` to reduce the goal to its premises. Use `((hw y).l_mul).sub ((he (x ^ V.l ^ k - x)).mul_int h1) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩ : ∃ m, V.l ^ k = m + 1` from `⟨V.l ^ k - 1, by`. Use `pow_pos V.l_prime.pos k` as an intermediate fact. Use the proof step `omega⟩`.
+
+Take `⟨S, hS1, hS2⟩` from `hpow x m`. Rewrite `h2` using `[map_sub, hm, hS1]`. Establish `hS : V.MM S`. Rewrite `hS2` using `[← hm]`. Take `⟨k', rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hk`.
+
+Use `mm_add hS2 (mm_l_mul (((VF.ge_natCast V.l).pow k').mul_int ((he x).pow m)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply `ge_of_unit_mul (u := S - 1)` to reduce the goal to its premises. Apply `v_eq_zero_of_mm_add_one` to reduce the goal to its premises. Simplify using `using hS`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hall : ∀ n : ℕ, ∀ x, V.Ge (n + w) (D x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hw`. Consider the case `succ n ih => intro x`.
+
+Use `step _ ih x using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply `eq_zero_of_forall_ge (V := V)` to reduce the goal to its premises. Introduce `N`.
+
+Take `⟨n, hn⟩` from `exists_nat_ge (N - w)`. Conclude with `(hall n x).mono (by linarith)`.
+-/
 theorem twisted_der_eq_zero {O : Type} [CommRing O] (χ e : O →+* C) (hχ : ∀ x, V.Ge 0 (χ x))
     (he : ∀ x, V.Ge 0 (e x)) (hce : ∀ x, V.MM (χ x - e x)) (ε : O) (hε : ∃ y, ε * ε - ε = (V.l : O) * y)
     (hε1 : V.MM (e ε - 1)) (k : ℕ) (hk : k ≠ 0) (hfr : ∀ x, ∃ y, ε * (x ^ V.l ^ k - x) = (V.l : O) * y)
@@ -172,6 +273,21 @@ theorem twisted_der_eq_zero {O : Type} [CommRing O] (χ e : O →+* C) (hχ : �
 
 end Val
 
+/- English proof (translation)
+Take `⟨Z, ⟨hZW, hZi, hZK⟩, hmin⟩` from `(IsArtinian.set_has_minimal (R := C) (M := E) {Z | Z ≤ W ∧ (∀ i, ∀ v ∈ Z, N i v ∈ Z) ∧ ¬ Z ≤ K} ⟨W, le_rfl, hW, hWK⟩)`. Take `⟨v, hvZ, hvK⟩` from `SetLike.not_le_iff_exists.1 hZK`. Use `⟨v, hZW hvZ, hvK, fun i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hi`. Establish `hle : Z.map (N i) ≤ Z`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hZi i z hz`. Establish `heq : Z.map (N i) = Z`. Assume the negation of the conclusion as `hne`. Use `hmin (Z.map (N i)) ⟨hle.trans hZW, ?_, fun h => hi (h ⟨v, hvZ, rfl⟩)⟩ (lt_of_le_of_ne hle hne)` and prove the remaining obligations.
+
+Introduce and unpack `j _ ⟨z, hz, rfl⟩`. Use `⟨N j z, hZi j z hz, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hc i j).eq z`. Establish `hsurj : Function.Surjective ((N i).restrict (hZi i))`. Introduce and unpack `⟨z, hz⟩`.
+
+Rewrite `hz` using `[← heq]`. Take `⟨z', hz', h⟩` from `hz`. Conclude with `⟨⟨z', hz'⟩, Subtype.ext h⟩`. Establish `hinj` using `LinearMap.injective_iff_surjective.2 hsurj`. Take `⟨k, hk⟩` from `hn i v (hZW hvZ)`.
+
+Establish `h0 : (((N i).restrict (hZi i)) ^ k) ⟨v, hvZ⟩ = 0`. Rewrite using `[Module.End.pow_restrict]`. Conclude with `Subtype.ext hk`. Establish `hinj' : Function.Injective (((N i).restrict (hZi i)) ^ k)`. Rewrite using `[Module.End.coe_pow]`.
+
+Conclude with `hinj.iterate k`. Use `hinj' (h0.trans (map_zero _).symm)` as an intermediate fact. Apply `hvK` to reduce the goal to its premises. Establish `hv0 : v = 0` using `congrArg Subtype.val this`. Rewrite using `[hv0]`.
+
+Conclude with `K.zero_mem`.
+-/
 theorem exists_not_mem_forall_mem {C E ι : Type} [Field C] [AddCommGroup E] [Module C E] [FiniteDimensional C E]
     (N : ι → Module.End C E) (hc : ∀ i j, Commute (N i) (N j)) (W K : Submodule C E)
     (hW : ∀ i, ∀ v ∈ W, N i v ∈ W) (hn : ∀ i, ∀ v ∈ W, ∃ k : ℕ, (N i ^ k) v = 0) (hWK : ¬ W ≤ K) :
@@ -206,6 +322,21 @@ theorem exists_not_mem_forall_mem {C E ι : Type} [Field C] [AddCommGroup E] [Mo
   have hv0 : v = 0 := congrArg Subtype.val this
   rw [hv0]; exact K.zero_mem
 
+/- English proof (translation)
+Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI : CharP M l := j.charP hj l`. Use `letI : Algebra (ZMod l) M := ZMod.algebra M l`. Use `letI : Algebra (ZMod l) k := ZMod.algebra k l`. Establish `hq1 : 1 < l ^ d` using `Nat.one_lt_pow hd hl.one_lt`.
+
+Take `⟨q, hqd⟩ : ∃ q, q = l ^ d` from `⟨_, rfl⟩`. Rewrite `hq`, `hq1` using `[← hqd]`. Establish `hdeg : (Polynomial.X ^ q - Polynomial.X : Polynomial k).natDegree = q`. Apply the tactic sequence `rw [Polynomial.natDegree_sub_eq_left_of_natDegree_lt] <;> simp [hq1]`. Establish `hp : (Polynomial.X ^ q - Polynomial.X : Polynomial k) ≠ 0`.
+
+Introduce `h`. Rewrite `hdeg` using `[h]`. Simplify using `at hdeg`. Use linear arithmetic over natural numbers and integers. Set `r : M → (Polynomial.X ^ q - Polynomial.X : Polynomial k).roots.toFinset` to `fun m => ⟨j m, by`.
+
+Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hp]`. Simplify using `[hq]⟩`. Establish `hr : Function.Injective r` using `fun a b h => hj (congrArg Subtype.val h)`. Use `haveI : Finite M := Finite.of_injective r hr`. Establish `hcard : Nat.card M ≤ q`.
+
+Use `(Nat.card_le_card_of_injective r hr).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_coe]`. Conclude with `(Multiset.toFinset_card_le _).trans ((Polynomial.card_roots' _).trans hdeg.le)`. Establish `hfr : Module.finrank (ZMod l) M ≤ d`. Rewrite `hcard` using `[Module.natCard_eq_pow_finrank (K := ZMod l), Nat.card_zmod, hqd]`.
+
+Conclude with `(Nat.pow_le_pow_iff_right hl.one_lt).1 hcard`. Set `F : ι → M →ₐ[ZMod l] k` to `fun o => { f o with commutes' := fun c => RingHom.congr_fun (Subsingleton.elim ((f o).comp (algebraMap (ZMod l) M)) (algebraMap (ZMod l) k)) c }`. Establish `hF : Function.Injective F`. Introduce `a b h`. Apply `hf` to reduce the goal to its premises.
+
+Use extensionality with `x`. Conclude with `AlgHom.congr_fun h x`. Use `haveI : Finite (M →ₐ[ZMod l] k) := inferInstance`. Conclude with `(Nat.card_le_card_of_injective F hF).trans ((card_algHom_le_finrank (ZMod l) M k).trans hfr)`.
+-/
 theorem card_hom_le {M k ι : Type} [CommRing M] [CommRing k] [IsDomain k] [Finite ι] (l d : ℕ) (hl : l.Prime)
     (hd : d ≠ 0) [CharP k l] (j : M →+* k) (hj : Function.Injective j) (hq : ∀ x, j x ^ l ^ d = j x)
     (f : ι → M →+* k) (hf : Function.Injective f) : Nat.card ι ≤ d := by
@@ -245,6 +376,17 @@ theorem card_hom_le {M k ι : Type} [CommRing M] [CommRing k] [IsDomain k] [Fini
   haveI : Finite (M →ₐ[ZMod l] k) := inferInstance
   exact (Nat.card_le_card_of_injective F hF).trans ((card_algHom_le_finrank (ZMod l) M k).trans hfr)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `haveI : Nonempty ι := ⟨i0⟩`. Set `f : Option ι → O →+* k` to `fun o => o.elim ψ e`. Establish `hf : Function.Injective f`.
+
+Introduce and unpack `(_ | a) (_ | b) h`. Both sides reduce to the same expression. Conclude with `absurd h (hne b)`. Conclude with `absurd h.symm (hne a)`. Conclude with `congrArg some (he h)`.
+
+Establish `hfk : ∀ o, ∀ x ∈ RingHom.ker (e i0), f o x = 0`. Introduce and unpack `(_ | a) x hx`. Conclude with `hψ x hx`. Conclude with `hk a x hx`. Use `card_hom_le l (Nat.card ι) hl Nat.card_pos.ne' (RingHom.kerLift (e i0)) (RingHom.kerLift_injective _) (fun m => by` as an intermediate fact.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Rewrite using `[RingHom.kerLift_mk, hq])`. Use the proof step `(fun o => Ideal.Quotient.lift _ (f o) (hfk o)) (fun a b h => hf (by`. Use extensionality with `x`. Conclude with `RingHom.congr_fun h (Ideal.Quotient.mk _ x)))`.
+
+Rewrite `this` using `[Finite.card_option]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hom_eq_of_ker {O k ι : Type} [CommRing O] [CommRing k] [IsDomain k] [Finite ι] (l : ℕ) (hl : l.Prime)
     [CharP k l] (e : ι → O →+* k) (he : Function.Injective e) (i0 : ι)
     (hq : ∀ x, e i0 x ^ l ^ Nat.card ι = e i0 x) (hk : ∀ i x, e i0 x = 0 → e i x = 0)
@@ -304,12 +446,23 @@ instance maxId_isPrime (V : VF C) : (maxId V).IsPrime where
 def red (ψ : O →+* C) (hψ : ∀ x, V.Ge 0 (ψ x)) : O →+* intRing V ⧸ maxId V :=
   (Ideal.Quotient.mk _).comp (ψ.codRestrict (intRing V) hψ)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq`.
+-/
 theorem red_eq {ψ φ : O →+* C} (hψ : ∀ x, V.Ge 0 (ψ x)) (hφ : ∀ x, V.Ge 0 (φ x)) (x y : O) :
     red ψ hψ x = red φ hφ y ↔ V.MM (ψ x - φ y) := Ideal.Quotient.eq
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem red_eq_zero {ψ : O →+* C} (hψ : ∀ x, V.Ge 0 (ψ x)) (x : O) :
     red ψ hψ x = 0 ↔ V.MM (ψ x) := Ideal.Quotient.eq_zero_iff_mem
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using mm_zero`. Consider the case `succ k ih`. Use `mm_add (hfr (a + k) x) (mm_pow_sub (hint _ _) ((hint _ _).pow _) ih V.l)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Rewrite using `[pow_succ, pow_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_iter (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
     (hfr : ∀ a x, V.MM (em (a + 1) x - em a x ^ V.l)) (a : ZMod d) (x : O) (k : ℕ) :
     V.MM (em (a + k) x - em a x ^ V.l ^ k) := by
@@ -321,6 +474,23 @@ theorem frob_iter (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
     push_cast
     rw [pow_succ, pow_mul, add_assoc]; ring
 
+/- English proof (translation)
+Establish `hu` using `v_eq_zero_of_not_mm (hψ ε) h`. Establish `hq : ∀ a x, V.MM (em a (x ^ V.l ^ d - x))` using `fun a x => by`. Use `mm_neg (frob_iter em hint hfr a x d)` as an intermediate fact. Simplify using `using this`. Establish `hall : ∀ x, V.MM (em 0 x) → ∀ a, V.MM (em a x)` using `fun x hx a => by`.
+
+Establish `h1` using `frob_iter em hint hfr 0 x a.val`. Rewrite `h1` using `[zero_add, ZMod.natCast_zmod_val]`. Take `⟨m, hm⟩ : ∃ m, V.l ^ a.val = m + 1` from `⟨V.l ^ a.val - 1, by`. Use `pow_pos V.l_prime.pos a.val` as an intermediate fact. Use the proof step `omega⟩`.
+
+Rewrite `h1` using `[hm]`. Use `mm_add h1 (mm_mul ((hint 0 x).pow m) hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `haveI : CharP (intRing V ⧸ maxId V) V.l := by`.
+
+Rewrite using `[CharP.charP_iff_prime_eq_zero V.l_prime]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (maxId V)), Ideal.Quotient.eq_zero_iff_mem]`. Use `show V.MM _`. Simplify using `using mm_l`. Take `⟨a, ha⟩` from `hom_eq_of_ker V.l V.l_prime (fun a => red (em a) (hint a)) (fun a a' haa => by`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `hsep a a' hne`. Conclude with `not_mm_of_v hx ((red_eq _ _ _ _).1 (RingHom.congr_fun haa x))) 0`. Use the proof step `(fun x => by`. Rewrite using `[Nat.card_zmod, ← map_pow, red_eq]`.
+
+Simplify using `using hq 0 x)`. Use the proof step `(fun a x hx => (red_eq_zero _ _).2 (hall x ((red_eq_zero _ _).1 hx) a)) (red ψ hψ)`. Use the proof step `(fun x hx => by`. Rewrite `hx`, the goal using `[red_eq_zero]`. Take `⟨y, hy⟩` from `hεP x (hall x hx)`.
+
+Apply `mm_of_unit_mul hu` to reduce the goal to its premises. Rewrite using `[← map_mul, hy, map_mul, map_natCast]`. Conclude with `mm_l_mul (hψ y))`. Use `⟨a, RingHom.ext fun x => sub_eq_zero.1 ?_⟩` and prove the remaining obligations. Establish `hc : ∀ x, V.MM (ψ x - em a x)` using `fun x => (red_eq _ _ _ _).1 (RingHom.congr_fun ha x)`.
+
+Conclude with `twisted_der_eq_zero ψ (em a) hψ (hint a) hc ε hε (hε1 a) d (NeZero.ne d) (fun x => hεP _ fun a => hq a x) (ψ.toAddMonoidHom - (em a).toAddMonoidHom) (fun x y => by simp; ring) 0 (fun x => ge_of_mm (hc x)) x`.
+-/
 theorem eq_em_of_not_mm (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
     (hfr : ∀ a x, V.MM (em (a + 1) x - em a x ^ V.l))
     (hsep : ∀ a a', a ≠ a' → ∃ x, V.v (em a x - em a' x) = 0) (ε : O) (hε : ∃ y, ε * ε - ε = (V.l : O) * y)
@@ -365,6 +535,19 @@ theorem eq_em_of_not_mm (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em 
 
 end Place
 
+/- English proof (translation)
+Set `a : ℕ → O` to `fun n => (fun t => 3 * t ^ 2 - 2 * t ^ 3)^[n] ε`. Establish `hs : ∀ n, a (n + 1) = 3 * a n ^ 2 - 2 * a n ^ 3` using `fun n => Function.iterate_succ_apply' _ _ _`. Establish `h1 : ∀ n, ∃ y, a n * a n - a n = l ^ (n + 1) * y`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa [a] using hε`. Consider the case `succ n ih`. Take `⟨y, hy⟩` from `ih`. Use `⟨l ^ n * y ^ 2 * (4 * a n ^ 2 - 4 * a n - 3), ?_⟩` and prove the remaining obligations. Establish `: a (n + 1) * a (n + 1) - a (n + 1) = (a n * a n - a n) ^ 2 * (4 * a n ^ 2 - 4 * a n - 3)`.
+
+Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ n, ∃ y, a (n + 1) - a n = l ^ (n + 1) * y` using `fun n => by`.
+
+Take `⟨y, hy⟩` from `h1 n`. Use `⟨y * (1 - 2 * a n), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hy, hs]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨a, fun n => ?_, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `h2 n`. Conclude with `⟨l * y, by rw [hy]; ring⟩`. Take `⟨y, hy⟩` from `h1 n`. Conclude with `⟨l * y, by rw [hy]; ring⟩`. Proceed by induction on `n with`.
+
+Consider the case `zero => exact ⟨0, by simp [a]⟩`. Consider the case `succ n ih`. Take `⟨y, hy⟩` from `ih`. Take `⟨z, hz⟩` from `h2 n`. Conclude with `⟨y + l ^ n * z, by linear_combination hy + hz⟩`.
+-/
 theorem exists_idem_seq {O : Type} [CommRing O] (l ε : O) (hε : ∃ y, ε * ε - ε = l * y) :
     ∃ a : ℕ → O, (∀ n, ∃ y, a (n + 1) - a n = l ^ n * y) ∧ (∀ n, ∃ y, a n * a n - a n = l ^ n * y) ∧
       ∀ n, ∃ y, a n - ε = l * y := by
@@ -398,6 +581,15 @@ theorem exists_idem_seq {O : Type} [CommRing O] (l ε : O) (hε : ∃ y, ε * ε
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.MainNotions.ModuliIntegralCharts.H1.LinEig in
 
+/- English proof (translation)
+Set `f : O → Matrix (Fin dd) (Fin dd) C` to `fun a => Matrix.of fun i j => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (A.act a i)`. Establish `hadd : ∀ a b, f (a + b) = f a + f b`. Introduce `a b`. Use extensionality with `i j`. Simplify using `only [f, Matrix.of_apply, Matrix.add_apply, A.add_act, FGLaw.add, addOf, ev]`.
+
+Apply the tactic sequence `rw [coeff_single_subst' _ (by rintro ⟨k, l⟩; fin_cases k <;> simp [A.const])]`. Simplify using `[Fintype.sum_prod_type, Fin.sum_univ_two, law_coeff]`. Establish `hmul : ∀ a b, f (a * b) = f a * f b`. Introduce `a b`. Use extensionality with `i j`.
+
+Simplify using `only [f, Matrix.of_apply, Matrix.mul_apply, A.mul_act, comp1, ev]`. Rewrite using `[coeff_single_subst' _ (by rintro ⟨k, l⟩; fin_cases k; simp [A.const])]`. Simplify using `[Fintype.sum_prod_type]`. Establish `hone : f 1 = 1`. Use extensionality with `i j`.
+
+Simplify using `only [f, Matrix.of_apply, A.one_act, pt, MvPowerSeries.coeff_X, Matrix.one_apply]`. Simplify using `[Finsupp.single_left_inj, eq_comm]`. Conclude with `⟨RingHom.mk' ⟨⟨f, hone⟩, hmul⟩ hadd, fun _ _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem exists_linHom {C : Type} [Field C] {O : Type} [CommRing O] {dd : ℕ} (G : FGLaw C dd) (A : OAct O G) :
     ∃ ρ : O →+* Matrix (Fin dd) (Fin dd) C,
       (∀ a i j, ρ a i j = MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (A.act a i)) ∧
@@ -431,16 +623,27 @@ def IsLim (V : VF C) (ρ : O →+* Matrix n n C) (a : ℕ → O) (M : Matrix n n
 
 variable {ρ : O →+* Matrix n n C} {a : ℕ → O} {M : Matrix n n C}
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_all.2 fun i => Filter.eventually_atTop.2 (h N v i)`.
+-/
 theorem IsLim.ev (h : IsLim V ρ a M) (N : ℕ) (v : n → C) :
     ∀ᶠ m in Filter.atTop, ∀ i, V.Ge N ((M *ᵥ v - ρ (a m) *ᵥ v) i) :=
   Filter.eventually_all.2 fun i => Filter.eventually_atTop.2 (h N v i)
 
+/- English proof (translation)
+Take `⟨m0, h⟩` from `exists_nat_ge (N - w)`. Use `filter_upwards [Filter.eventually_ge_atTop m0] with m hm`. Establish `: (m0 : ℝ) ≤ m` using `by exact_mod_cast hm`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ev_ge (N : ℕ) (w : ℝ) : ∀ᶠ m : ℕ in Filter.atTop, (N : ℝ) ≤ m + w := by
   obtain ⟨m0, h⟩ := exists_nat_ge (N - w)
   filter_upwards [Filter.eventually_ge_atTop m0] with m hm
   have : (m0 : ℝ) ≤ m := by exact_mod_cast hm
   linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (eq_zero_of_forall_ge (V := V) fun N => ?_)` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_ge (V := V) (v i)`. Take `⟨m, h1, h2⟩` from `((h.ev N v).and (ev_ge N w)).exists`. Use `(h1 i).add (((hc m).mul hw).mono h2)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[hv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsLim.eig (h : IsLim V ρ a M) (ψ : O → C) (c : C) (hc : ∀ m : ℕ, V.Ge m (ψ (a m) - c)) (v : n → C)
     (hv : ∀ x, ρ x *ᵥ v = ψ x • v) : M *ᵥ v = c • v := by
   funext i
@@ -451,6 +654,11 @@ theorem IsLim.eig (h : IsLim V ρ a M) (ψ : O → C) (c : C) (hc : ∀ m : ℕ,
   convert this using 1
   simp [hv]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (eq_zero_of_forall_ge (V := V) fun N => ?_)` and prove the remaining obligations. Take `⟨m, h1, h2⟩` from `((h.ev N v).and (h.ev N (ρ x *ᵥ v))).exists`. Use `(h2 i).sub (mulVec_ge (hρ x) h1 i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Establish `e : ρ (a m) *ᵥ (ρ x *ᵥ v) = ρ x *ᵥ (ρ (a m) *ᵥ v)`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, ← map_mul, ← map_mul, mul_comm]`. Rewrite using `[mulVec_sub, e]`. Simplify using `only [Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsLim.comm (h : IsLim V ρ a M) (hρ : ∀ x i j, V.Ge 0 (ρ x i j)) (x : O) (v : n → C) :
     M *ᵥ (ρ x *ᵥ v) = ρ x *ᵥ (M *ᵥ v) := by
   funext i
@@ -463,6 +671,13 @@ theorem IsLim.comm (h : IsLim V ρ a M) (hρ : ∀ x i j, V.Ge 0 (ρ x i j)) (x 
   rw [mulVec_sub, e]
   simp only [Pi.sub_apply]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (eq_zero_of_forall_ge (V := V) fun N => ?_)` and prove the remaining obligations. Take `⟨w, hw⟩` from `exists_ge_vec (V := V) v`. Take `⟨m, ⟨h1, h2⟩, h3⟩` from `(((h.ev N v).and (h.ev N (M *ᵥ v))).and (ev_ge N w)).exists`. Take `⟨y, hy⟩` from `ha m`.
+
+Establish `e : ρ (a m) *ᵥ (ρ (a m) *ᵥ v) - ρ (a m) *ᵥ v = (V.l : C) ^ m • (ρ y *ᵥ v)`. Rewrite using `[mulVec_mulVec, ← sub_mulVec, ← map_mul, ← map_sub, hy, ← smul_mulVec, ← Nat.cast_pow, ← Nat.cast_pow, ← nsmul_eq_mul, map_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `h4` using `((ge_l_pow m).mul (mulVec_ge (hρ y) hw i)).mono h3`. Use `(((h2 i).add (mulVec_ge (hρ (a m)) h1 i)).add h4).sub (h1 i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Establish `e'` using `congrFun e i`. Rewrite using `[mulVec_sub]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at e' ⊢`. Take the linear combination `e'`.
+-/
 theorem IsLim.idem (h : IsLim V ρ a M) (hρ : ∀ x i j, V.Ge 0 (ρ x i j))
     (ha : ∀ m, ∃ y, a m * a m - a m = (V.l : O) ^ m * y) (v : n → C) : M *ᵥ (M *ᵥ v) = M *ᵥ v := by
   funext i
@@ -481,6 +696,13 @@ theorem IsLim.idem (h : IsLim V ρ a M) (hρ : ∀ x i j, V.Ge 0 (ρ x i j))
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at e' ⊢
   linear_combination e'
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ha m`. Take `⟨z, hz⟩` from `ha0 m`. Establish `hy'` using `congrArg ψ hy`. Establish `hz'` using `congrArg ψ hz`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at hy' hz'`.
+
+Apply `ge_of_unit_mul (u := ψ (a m))` to reduce the goal to its premises. Apply `v_eq_zero_of_mm_sub_one` to reduce the goal to its premises. Use `mm_add h (mm_l_mul (hψ z)) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hz'`. Use `(ge_l_pow m).mul (hψ y)` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, ← hy']`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seq_one {ε : O} (ha : ∀ m, ∃ y, a m * a m - a m = (V.l : O) ^ m * y) (ha0 : ∀ m, ∃ y, a m - ε = (V.l : O) * y)
     (ψ : O →+* C) (hψ : ∀ x, V.Ge 0 (ψ x)) (h : V.MM (ψ ε - 1)) (m : ℕ) : V.Ge m (ψ (a m) - 1) := by
   obtain ⟨y, hy⟩ := ha m
@@ -496,6 +718,13 @@ theorem seq_one {ε : O} (ha : ∀ m, ∃ y, a m * a m - a m = (V.l : O) ^ m * y
     rw [add_zero, ← hy'] at this
     convert this using 1; ring
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ha m`. Take `⟨z, hz⟩` from `ha0 m`. Establish `hy'` using `congrArg ψ hy`. Establish `hz'` using `congrArg ψ hz`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at hy' hz'`.
+
+Apply `ge_of_unit_mul (u := ψ (a m) - 1)` to reduce the goal to its premises. Apply `v_eq_zero_of_mm_add_one` to reduce the goal to its premises. Use `mm_add h (mm_l_mul (hψ z)) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hz'`. Use `(ge_l_pow m).mul (hψ y)` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, ← hy']`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seq_zero {ε : O} (ha : ∀ m, ∃ y, a m * a m - a m = (V.l : O) ^ m * y) (ha0 : ∀ m, ∃ y, a m - ε = (V.l : O) * y)
     (ψ : O →+* C) (hψ : ∀ x, V.Ge 0 (ψ x)) (h : V.MM (ψ ε)) (m : ℕ) : V.Ge m (ψ (a m) - 0) := by
   obtain ⟨y, hy⟩ := ha m
@@ -511,6 +740,17 @@ theorem seq_zero {ε : O} (ha : ∀ m, ∃ y, a m * a m - a m = (V.l : O) ^ m * 
     rw [add_zero, ← hy'] at this
     convert this using 1; ring
 
+/- English proof (translation)
+Establish `inj : ∀ {s t : C}, s • v = t • v → s = t` using `fun h => smul_left_injective C hv0 h`. Establish `hone : χ 1 = 1` using `inj (by rw [← hv, map_one, one_mulVec, one_smul])`. Establish `hmul : ∀ x y, χ (x * y) = χ x * χ y` using `fun x y => inj (by rw [← hv, map_mul, ← mulVec_mulVec, hv, mulVec_smul, hv, smul_smul, mul_comm])`. Establish `hadd : ∀ x y, χ (x + y) = χ x + χ y` using `fun x y => inj (by rw [← hv, map_add, add_mulVec, hv, hv, add_smul])`. Use `⟨RingHom.mk' ⟨⟨χ, hone⟩, hmul⟩ hadd, fun _ => rfl, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `show V.Ge 0 (χ x)`. Take `⟨i0, hi0⟩` from `Function.ne_iff.1 hv0`. Take `⟨i, -, hi⟩` from `Finset.exists_min_image Finset.univ (fun i => V.v (v i)) ⟨i0, Finset.mem_univ _⟩`. Establish `hne : V.v (v i) ≠ ⊤`. Introduce `h`.
+
+Use `hi i0 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h, top_le_iff, V.v.top_iff]`. Conclude with `hi0 this`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 hne`. Establish `h1 : V.Ge t ((ρ x *ᵥ v) i)` using `mulVec_ge (hρ x) (fun j => by unfold VF.Ge; rw [ht]; exact hi j (Finset.mem_univ _)) i`.
+
+Rewrite `h1` using `[hv]`. Unfold `VF.Ge at h1 ⊢`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul, V.v.map_mul, ← ht]`. Proceed by induction on `hc : V.v (χ x) using WithTop.recTopCoe with`. Consider the case `top => exact le_top`.
+
+Consider the case `coe s`. Rewrite `h1` using `[hc]`. Establish `h2 : t ≤ s + t` using `by exact_mod_cast h1`. Establish `h3 : (0 : ℝ) ≤ s` using `by linarith`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem exists_hom_of_eig (hρ : ∀ x i j, V.Ge 0 (ρ x i j)) (χ : O → C) (v : n → C) (hv0 : v ≠ 0)
     (hv : ∀ x, ρ x *ᵥ v = χ x • v) : ∃ ψ : O →+* C, (∀ x, ψ x = χ x) ∧ ∀ x, V.Ge 0 (ψ x) := by
   have inj : ∀ {s t : C}, s • v = t • v → s = t := fun h => smul_left_injective C hv0 h
@@ -542,6 +782,37 @@ theorem exists_hom_of_eig (hρ : ∀ x i j, V.Ge 0 (ρ x i j)) (χ : O → C) (v
     have h3 : (0 : ℝ) ≤ s := by linarith
     exact_mod_cast h3
 
+/- English proof (translation)
+Set `f : O → Module.End C (n → C)` to `fun x => (ρ x).mulVecLin`. Establish `hf : ∀ x v, f x v = ρ x *ᵥ v` using `fun _ _ => rfl`. Establish `hcomm : ∀ x y, Commute (f x) (f y)` using `fun x y => LinearMap.ext fun v => by`. Simplify using `only [Module.End.mul_apply, hf]`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, ← map_mul, ← map_mul, mul_comm]`.
+
+Establish `hM : ∀ x, Commute (f x) M.mulVecLin` using `fun x => LinearMap.ext fun v => (h.comm hρ x v).symm`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun x y _ => hcomm x y) (fun x => Module.End.iSup_maxGenEigenspace_eq_top (f x))`. It suffices to establish `hle : (⊤ : Submodule C (n → C)) ≤ U.comap M.mulVecLin from hle Submodule.mem_top`. Rewrite using `[← htop]`. Use `iSup_le fun χ u hu => ?_` and prove the remaining obligations.
+
+Set `W : Submodule C (n → C)` to `(⨅ x, (f x).maxGenEigenspace (χ x)) ⊓ LinearMap.eqLocus M.mulVecLin LinearMap.id`. Establish `hMu : M *ᵥ u ∈ W`. Use `⟨?_, h.idem hρ ha u⟩` and prove the remaining obligations. Rewrite `*` using `[SetLike.mem_coe, Submodule.mem_iInf]`. Conclude with `fun x => Module.End.mapsTo_maxGenEigenspace_of_comm (hM x) (χ x) (hu x)`.
+
+Use `show M *ᵥ u ∈ U`. Set `N : O → Module.End C (n → C)` to `fun x => f x - χ x • 1`. Establish `hN : ∀ x v, N x v = ρ x *ᵥ v - χ x • v` using `fun _ _ => rfl`. Establish `hNc : ∀ x y, Commute (N x) (N y)` using `fun x y => ((hcomm x y).sub_right ((Commute.one_right _).smul_right _)).sub_left ((Commute.one_left _).smul_left _)`. Establish `hNW : ∀ x, ∀ v ∈ W, N x v ∈ W`.
+
+Introduce `x v hv`. Use `W.sub_mem ⟨?_, ?_⟩ (W.smul_mem _ hv)` and prove the remaining obligations. Establish `h1` using `hv.1`. Rewrite `*` using `[SetLike.mem_coe, Submodule.mem_iInf]`. Conclude with `fun y => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm y x) (χ y) (h1 y)`.
+
+Establish `h2 : M *ᵥ v = v` using `hv.2 show M *ᵥ (ρ x *ᵥ v) = ρ x *ᵥ v`. Rewrite using `[h.comm hρ, h2]`. Establish `hNn : ∀ x, ∀ v ∈ W, ∃ k : ℕ, (N x ^ k) v = 0`. Introduce `x v hv`. Establish `h1` using `hv.1`.
+
+Rewrite `h1` using `[SetLike.mem_coe, Submodule.mem_iInf]`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).1 (h1 x)`. Distinguish the cases in `hW : W ≤ ⊥`. Establish `: M *ᵥ u = 0` using `hW hMu`. Rewrite using `[this]`.
+
+Conclude with `U.zero_mem`. Take `⟨w, hwW, hw0, hw⟩` from `exists_not_mem_forall_mem N hNc W ⊥ hNW hNn hW`. Establish `hw' : ∀ x, ρ x *ᵥ w = χ x • w` using `fun x => sub_eq_zero.1 (hw x)`. Take `⟨ψ, hψχ, hψ⟩` from `exists_hom_of_eig hρ χ w hw0 hw'`. Establish `hχ : χ = ψ` using `funext fun x => (hψχ x).symm`.
+
+Establish `hmm : ¬ V.MM (ψ ε)`. Introduce `hm`. Establish `h1` using `h.eig ψ 0 (seq_zero ha ha0 ψ hψ hm) w (fun x => by rw [hw', hψχ])`. Establish `h2 : M *ᵥ w = w` using `hwW.2`. Rewrite `h1` using `[h2, zero_smul]`.
+
+Conclude with `hw0 h1`. Take `⟨t, ht⟩` from `eq_em_of_not_mm em hint hfr hsep ε hε hε1 hεP ψ hψ hmm`. Establish `hχt : ∀ x, χ x = em t x` using `fun x => by rw [← hψχ, ht]`. Set `K : Submodule C (n → C)` to `⨅ x, LinearMap.ker (N x)`. Establish `hK : ∀ v, v ∈ K ↔ ∀ x, ρ x *ᵥ v = em t x • v` using `fun v => by`.
+
+Simplify using `only [K, Submodule.mem_iInf, LinearMap.mem_ker, hN, sub_eq_zero, hχt]`. Establish `hWK : W ≤ K`. Assume the negation of the conclusion as `hWK`. Take `⟨z, -, hz0, hz⟩` from `exists_not_mem_forall_mem N hNc W K hNW hNn hWK`. Apply `hz0` to reduce the goal to its premises.
+
+Rewrite using `[hK]`. Introduce `x`. Use function extensionality and compare the values at `i`. Take `⟨w, hw⟩` from `exists_ge_vec (V := V) z`. Set `D : O →+ C` to `AddMonoidHom.mk' (fun x => (ρ x *ᵥ z) i - em t x * z i) (fun x y => by`.
+
+Simplify using `only [map_add, add_mulVec, Pi.add_apply]`. Use the proof step `ring)`. Establish `hD : ∀ x, D x = (ρ x *ᵥ z) i - em t x * z i` using `fun _ => rfl`. Use `sub_eq_zero.1 (twisted_der_eq_zero (em t) (em t) (hint t) (hint t) (fun x => by simpa using mm_zero) ε hε (hε1 t) d (NeZero.ne d) (fun x => hεP _ fun s => ?_) D (fun x y => ?_) w (fun x => (mulVec_ge (hρ x) hw i).sub ((hint t x).mul_int (hw i))) x)` and prove the remaining obligations. Simplify using `using mm_neg (frob_iter em hint hfr s x d)`.
+
+Establish `h1` using `congrFun ((hK _).1 (hz y) x) i`. Rewrite `h1` using `[hN, hχt, mulVec_sub, mulVec_smul, mulVec_mulVec, ← map_mul]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at h1`. Simplify using `only [hD, map_mul (em t)]`. Take the linear combination `h1`.
+
+Conclude with `hU t _ ((hK _).1 (hWK hMu))`.
+-/
 theorem IsLim.range [IsAlgClosed C] {d : ℕ} [NeZero d] (h : IsLim V ρ a M) (hρ : ∀ x i j, V.Ge 0 (ρ x i j))
     (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
     (hfr : ∀ a x, V.MM (em (a + 1) x - em a x ^ V.l))

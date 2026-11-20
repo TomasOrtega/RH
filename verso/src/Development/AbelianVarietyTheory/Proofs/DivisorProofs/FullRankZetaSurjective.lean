@@ -14,16 +14,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 local notation "Yo" => GlobalTheory.FullRankCoinv.Y0 k n d
 
+/- English proof (translation)
+Establish `e : ∀ l : Fin d, ((l : ℕ) = d - n + i) ↔ l = ⟨d - n + i, by omega⟩` using `fun l => by rw [Fin.ext_iff]`. Simplify using `[GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, e]`.
+-/
 theorem Y0_mul_apply (hnd : n ≤ d) {β : Type*} (M : Matrix (Fin d) β k) (i : Fin n) (j : β) :
     (Yo * M) i j = M ⟨d - n + i, by omega⟩ j := by
   have e : ∀ l : Fin d, ((l : ℕ) = d - n + i) ↔ l = ⟨d - n + i, by omega⟩ := fun l => by rw [Fin.ext_iff]
   simp [GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, e]
 
+/- English proof (translation)
+Establish `e : ∀ l : Fin n, (d - n + (j : ℕ) = d - n + l) ↔ l = j` using `fun l => by rw [Fin.ext_iff]; omega`. Simplify using `[GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, e, Fin.val_inj]`.
+-/
 theorem mul_Y0_apply (hnd : n ≤ d) {β : Type*} [Fintype β] (A : Matrix β (Fin n) k) (i : β) (j : Fin n) :
     (A * Yo) i ⟨d - n + j, by omega⟩ = A i j := by
   have e : ∀ l : Fin n, (d - n + (j : ℕ) = d - n + l) ↔ l = j := fun l => by rw [Fin.ext_iff]; omega
   simp [GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, e, Fin.val_inj]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem mul_Y0_apply_lt {β : Type*} [Fintype β] (A : Matrix β (Fin n) k) (i : β) (j : Fin d)
     (hj : (j : ℕ) < d - n) : (A * Yo) i j = 0 := by
   simp only [GlobalTheory.FullRankCoinv.Y0, Matrix.mul_apply, Matrix.of_apply]
@@ -31,6 +40,11 @@ theorem mul_Y0_apply_lt {β : Type*} [Fintype β] (A : Matrix β (Fin n) k) (i :
   simp only [mul_ite, mul_one, mul_zero]
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Y0_mul_apply hnd, transpose_apply]`. Simplify using `only [GlobalTheory.FullRankCoinv.Y0, Matrix.of_apply, Matrix.one_apply, Fin.ext_iff]`. Distinguish the cases in `h : (i : ℕ) = j`. Simplify using `[h]`.
+
+Rewrite using `[if_neg (by omega), if_neg h]`.
+-/
 theorem Y0_mul_transpose (hnd : n ≤ d) : Yo * (Yo)ᵀ = 1 := by
   ext i j
   rw [Y0_mul_apply hnd, transpose_apply]
@@ -42,9 +56,15 @@ theorem Y0_mul_transpose (hnd : n ≤ d) : Yo * (Yo)ᵀ = 1 := by
 def blkEquiv (hnd : n ≤ d) : Fin (d - n) ⊕ Fin n ≃ Fin d :=
   finSumFinEquiv.trans (finCongr (Nat.sub_add_cancel hnd))
 
+/- English proof (translation)
+Simplify using `[blkEquiv]`.
+-/
 theorem blkEquiv_inl (hnd : n ≤ d) (a : Fin (d - n)) : ((blkEquiv hnd (Sum.inl a) : Fin d) : ℕ) = a := by
   simp [blkEquiv]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[blkEquiv]`.
+-/
 theorem blkEquiv_inr (hnd : n ≤ d) (b : Fin n) : blkEquiv hnd (Sum.inr b) = ⟨d - n + b, by omega⟩ := by
   ext; simp [blkEquiv]
 
@@ -57,9 +77,17 @@ def blkMat (hnd : n ≤ d) : Matrix (Fin n) (Fin n) k →* Matrix (Fin d) (Fin d
 
 def blkGL (hnd : n ≤ d) : GL (Fin n) k →* GL (Fin d) k := Units.map (blkMat hnd)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blkGL_val (hnd : n ≤ d) (g : GL (Fin n) k) :
     (blkGL hnd g).val = reindex (blkEquiv hnd) (blkEquiv hnd) (fromBlocks 1 0 0 g.val) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Y0_mul_apply hnd, blkGL_val, ← blkEquiv_inr hnd]`. Take `⟨x, rfl⟩` from `(blkEquiv hnd).surjective j`. Break down `x with a | b` into its components or cases. Rewrite using `[mul_Y0_apply_lt _ _ _ (by rw [blkEquiv_inl]; exact a.2)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[blkEquiv_inr hnd b, mul_Y0_apply hnd, ← blkEquiv_inr hnd]`. Simplify using the standard rewrite rules.
+-/
 theorem Y0_mul_blkGL (hnd : n ≤ d) (g : GL (Fin n) k) : Yo * (blkGL hnd g).val = g.val * Yo := by
   ext i j
   rw [Y0_mul_apply hnd, blkGL_val, ← blkEquiv_inr hnd]
@@ -70,6 +98,15 @@ theorem Y0_mul_blkGL (hnd : n ≤ d) (g : GL (Fin n) k) : Yo * (blkGL hnd g).val
   · rw [blkEquiv_inr hnd b, mul_Y0_apply hnd, ← blkEquiv_inr hnd]
     simp
 
+/- English proof (translation)
+Establish `key : ∀ h : GL (Fin n) k, (∀ i j, h.val i j ∈ 𝒪[k]) → ∀ i j, (blkGL hnd h).val i j ∈ 𝒪[k]`. Introduce `h hh i j`. Take `⟨x, rfl⟩` from `(blkEquiv hnd).surjective i`. Take `⟨y, rfl⟩` from `(blkEquiv hnd).surjective j`. Rewrite using `[blkGL_val, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases x with a | a <;> rcases y with b | b <;> simp only [fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.zero_apply]`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Conclude with `zero_mem _`. Conclude with `zero_mem _`. Conclude with `hh a b`. Rewrite `hg`, the goal using `[mem_KO_iff]`. Use `⟨key g hg.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `key g⁻¹ hg.2`.
+-/
 theorem blkGL_mem_KO (hnd : n ≤ d) {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : blkGL hnd g ∈ KO k (Fin d) := by
   have key : ∀ h : GL (Fin n) k, (∀ i j, h.val i j ∈ 𝒪[k]) → ∀ i j, (blkGL hnd h).val i j ∈ 𝒪[k] := by
     intro h hh i j
@@ -92,6 +129,11 @@ theorem blkGL_mem_KO (hnd : n ≤ d) {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)
 def lrMat (hnd : n ≤ d) (M : Matrix (Fin d) (Fin d) k) : Matrix (Fin n) (Fin n) k :=
   Matrix.of fun i j => M ⟨d - n + i, by omega⟩ ⟨d - n + j, by omega⟩
 
+/- English proof (translation)
+Rewrite `hp` using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.mem_stdMaxParab]`. Use extensionality with `i j`. Rewrite using `[Y0_mul_apply hnd]`. Distinguish the cases in `hj : (j : ℕ) < d - n`. Rewrite using `[mul_Y0_apply_lt _ _ _ hj, hp _ _ hj (by simp)]`.
+
+Establish `e : j = ⟨d - n + (⟨j - (d - n), by omega⟩ : Fin n), by simp; omega⟩` using `by ext; simp; omega`. Rewrite using `[e, mul_Y0_apply hnd]`. Both sides reduce to the same expression.
+-/
 theorem Y0_mul_parab (hnd : n ≤ d) {p : GL (Fin d) k}
     (hp : p ∈ GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.stdMaxParab k (Nat.sub_add_cancel hnd)) : Yo * p.val = lrMat hnd p.val * Yo := by
   rw [GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.mem_stdMaxParab] at hp
@@ -103,6 +145,11 @@ theorem Y0_mul_parab (hnd : n ≤ d) {p : GL (Fin d) k}
     rw [e, mul_Y0_apply hnd]
     rfl
 
+/- English proof (translation)
+Establish `h1` using `Y0_mul_parab hnd hp`. Establish `h2` using `Y0_mul_parab hnd (inv_mem hp)`. Establish `key : ∀ A B : Matrix (Fin n) (Fin n) k, ∀ q r : GL (Fin d) k, q * r = 1 → Yo * q.val = A * Yo → Yo * r.val = B * Yo → A * B = 1`. Introduce `A B q r hqr hq hr`. Establish `: Yo = A * B * Yo`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congrArg (· * (Yo)ᵀ) this` as an intermediate fact. Simplify `this.symm` using `[Matrix.mul_assoc, Y0_mul_transpose hnd]`. Conclude with `⟨⟨_, _, key _ _ _ _ (mul_inv_cancel p) h1 h2, key _ _ _ _ (inv_mul_cancel p) h2 h1⟩, h1⟩`.
+-/
 theorem exists_Y0_mul_parab (hnd : n ≤ d) {p : GL (Fin d) k}
     (hp : p ∈ GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.stdMaxParab k (Nat.sub_add_cancel hnd)) :
     ∃ D : GL (Fin n) k, Yo * p.val = D.val * Yo := by
@@ -126,6 +173,13 @@ def psi (f : GL (Fin d) k → ℂ) (Y : Matrix (Fin n) (Fin d) k) : ℂ :=
 
 variable {ν : kˣ →* ℂˣ} {f : GL (Fin d) k → ℂ}
 
+/- English proof (translation)
+Establish `hex : ∃ κ' ∈ KO k (Fin d), Yo * κ.val = Yo * κ'.val` using `⟨κ, hκ, rfl⟩`. Rewrite using `[psi, dif_pos hex]`. Establish `e` using `hex.choose_spec.2`. Use `set κ' := hex.choose`. Establish `hb : Yo * (κ' * κ⁻¹).val = (1 : GL (Fin n) k).val * Yo`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← e, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Simplify using the standard rewrite rules. Use `hf.2 (κ' * κ⁻¹) κ 1 hb` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem psi_Y0_mul (hf : f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν) {κ : GL (Fin d) k} (hκ : κ ∈ KO k (Fin d)) :
     psi f (Yo * κ.val) = f κ := by
   have hex : ∃ κ' ∈ KO k (Fin d), Yo * κ.val = Yo * κ'.val := ⟨κ, hκ, rfl⟩
@@ -139,9 +193,15 @@ theorem psi_Y0_mul (hf : f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν) {κ : 
   rw [this]
   simp
 
+/- English proof (translation)
+Rewrite using `[psi, dif_neg h]`.
+-/
 theorem psi_eq_zero {Y : Matrix (Fin n) (Fin d) k} (h : ¬ ∃ κ ∈ KO k (Fin d), Y = Yo * κ.val) : psi f Y = 0 := by
   rw [psi, dif_neg h]
 
+/- English proof (translation)
+Introduce `i j`. Use `congrFun (congrFun h i) ⟨d - n + j, by omega⟩` as an intermediate fact. Rewrite `this` using `[mul_Y0_apply hnd, Y0_mul_apply hnd]`. Rewrite using `[this]`. Conclude with `hM _ _`.
+-/
 theorem integral_of_mul_Y0 (hnd : n ≤ d) {A : Matrix (Fin n) (Fin n) k} {M : Matrix (Fin d) (Fin d) k}
     (h : A * Yo = Yo * M) (hM : ∀ i j, M i j ∈ 𝒪[k]) : ∀ i j, A i j ∈ 𝒪[k] := by
   intro i j
@@ -149,6 +209,11 @@ theorem integral_of_mul_Y0 (hnd : n ≤ d) {A : Matrix (Fin n) (Fin n) k} {M : M
   rw [mul_Y0_apply hnd, Y0_mul_apply hnd] at this
   rw [this]; exact hM _ _
 
+/- English proof (translation)
+Use `set κ' := κ * κ₀⁻¹`. Establish `hκ' : κ' ∈ KO k (Fin d)` using `mul_mem hκ (inv_mem h₀)`. Establish `e1 : g.val * Yo = Yo * κ'.val`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← h, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Establish `e2 : (g⁻¹).val * Yo = Yo * (κ'⁻¹).val`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `_ = Yo * (κ'⁻¹).val := by rw [← e1, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite `hκ'`, the goal using `[mem_KO_iff]`. Conclude with `⟨integral_of_mul_Y0 hnd e1 hκ'.1, integral_of_mul_Y0 hnd e2 hκ'.2⟩`.
+-/
 theorem mem_KO_of_mul_Y0 (hnd : n ≤ d) {g : GL (Fin n) k} {κ₀ κ : GL (Fin d) k} (h₀ : κ₀ ∈ KO k (Fin d))
     (hκ : κ ∈ KO k (Fin d)) (h : g.val * (Yo * κ₀.val) = Yo * κ.val) : g ∈ KO k (Fin n) := by
   set κ' := κ * κ₀⁻¹
@@ -164,6 +229,15 @@ theorem mem_KO_of_mul_Y0 (hnd : n ≤ d) {g : GL (Fin n) k} {κ₀ κ : GL (Fin 
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Establish `key : (fun g : GL (Fin n) k => psi f (g.val * (Yo * κ₀.val)) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card (Fin d) : ℂ) / 2)) = (KO k (Fin n) : Set (GL (Fin n) k)).indicator (fun _ => f κ₀)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ KO k (Fin n)`. Rewrite using `[Set.indicator_of_mem hg]`. Establish `e : g.val * (Yo * κ₀.val) = Yo * (blkGL hnd g * κ₀).val`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Y0_mul_blkGL]`. Rewrite using `[e, psi_Y0_mul hf (mul_mem (blkGL_mem_KO hnd hg) h₀), hf.2 _ _ g (Y0_mul_blkGL hnd g), apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg), apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg)]`. Establish `: (ν (gdet g) : ℂ) ≠ 0` using `Units.ne_zero _`. Rewrite using `[Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[Set.indicator_of_notMem hg, psi_eq_zero, zero_mul, zero_mul]`. Introduce and unpack `⟨κ, hκ, e⟩`. Conclude with `hg (mem_KO_of_mul_Y0 hnd h₀ hκ e)`. Establish `hK : @MeasurableSet (GL (Fin n) k) Units.instMeasurableSpace (KO k (Fin n) : Set (GL (Fin n) k))` using `@IsOpen.measurableSet _ _ _ Units.instMeasurableSpace (@BorelSpace.opensMeasurable _ _ Units.instMeasurableSpace borel_GL) isOpen_KO`. Rewrite using `[smallF, key]`.
+
+Use `(integral_indicator_const (μ := haarVol (KO k (Fin n))) (f κ₀) hK).trans ?_` and prove the remaining obligations. Simplify using `[Measure.real, haarVol_self isOpen_KO le_rfl]`.
+-/
 theorem smallF_psi_Y0_mul (hnd : n ≤ d) (hf : f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν) {κ₀ : GL (Fin d) k}
     (h₀ : κ₀ ∈ KO k (Fin d)) : smallF (haarVol (KO k (Fin n))) ν (psi f) (Yo * κ₀.val) = f κ₀ := by
   have key : (fun g : GL (Fin n) k => psi f (g.val * (Yo * κ₀.val)) * (ν (gdet g) : ℂ) *
@@ -197,6 +271,9 @@ variable {ν : kˣ →* ℂˣ} {f : GL (Fin d) k → ℂ}
 def rowsMat (hnd : n ≤ d) (Z : Matrix (Fin n) (Fin d) k) : Matrix (Fin d) (Fin d) k :=
   Matrix.of fun i j => if h : d - n ≤ (i : ℕ) then Z ⟨i - (d - n), by omega⟩ j else (1 : Matrix (Fin d) (Fin d) k) i j
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [rowsMat, Matrix.of_apply]`. Use `split_ifs`. Conclude with `(continuous_apply j).comp (continuous_apply _)`. Conclude with `continuous_const`.
+-/
 theorem continuous_rowsMat (hnd : n ≤ d) : Continuous (rowsMat (k := k) hnd) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [rowsMat, Matrix.of_apply]
@@ -204,12 +281,22 @@ theorem continuous_rowsMat (hnd : n ≤ d) : Continuous (rowsMat (k := k) hnd) :
   · exact (continuous_apply j).comp (continuous_apply _)
   · exact continuous_const
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Y0_mul_apply hnd]`. Simplify using `only [rowsMat, Matrix.of_apply, dif_pos (show d - n ≤ d - n + (i : ℕ) by omega)]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Y0_mul_rowsMat (hnd : n ≤ d) (Z : Matrix (Fin n) (Fin d) k) : Yo * rowsMat hnd Z = Z := by
   ext i j
   rw [Y0_mul_apply hnd]
   simp only [rowsMat, Matrix.of_apply, dif_pos (show d - n ≤ d - n + (i : ℕ) by omega)]
   congr 1; ext; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [rowsMat, Matrix.of_apply]`. Use `split_ifs with h`. Simplify using `only [GlobalTheory.FullRankCoinv.Y0, Matrix.of_apply, Matrix.one_apply, Fin.ext_iff]`. Use `congr 1`.
+
+Apply `propext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem rowsMat_Y0 (hnd : n ≤ d) : rowsMat hnd (Yo) = 1 := by
   ext i j
   simp only [rowsMat, Matrix.of_apply]
@@ -219,6 +306,11 @@ theorem rowsMat_Y0 (hnd : n ≤ d) : rowsMat hnd (Yo) = 1 := by
     apply propext; omega
   · rfl
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite `hV` using `[isEmbedding_val_GL.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨O, hO, hOV⟩` from `hV`. Establish `hdet : {M : Matrix (Fin d) (Fin d) k | M.det ≠ 0} ∈ 𝓝 (1 : Matrix (Fin d) (Fin d) k)` using `(isOpen_ne_fun (continuous_id.matrix_det) continuous_const).mem_nhds (by simp)`. Establish `hc : Filter.Tendsto (rowsMat hnd) (𝓝 (Yo)) (𝓝 1)`.
+
+Use `(continuous_rowsMat (k := k) hnd).tendsto (Yo)` as an intermediate fact. Rewrite `this` using `[rowsMat_Y0]`. Then use the resulting hypothesis. Use `filter_upwards [hc (Filter.inter_mem hO hdet)] with Z hZ`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (rowsMat hnd Z) hZ.2, hOV hZ.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_mkOfDetNeZero, Y0_mul_rowsMat]`.
+-/
 theorem eventually_Y0_mul (hnd : n ≤ d) {V : Set (GL (Fin d) k)} (hV : V ∈ 𝓝 1) :
     ∀ᶠ Z in 𝓝 (Yo), ∃ u ∈ V, Z = Yo * u.val := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -233,6 +325,19 @@ theorem eventually_Y0_mul (hnd : n ≤ d) {V : Set (GL (Fin d) k)} (hV : V ∈ �
   refine ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (rowsMat hnd Z) hZ.2, hOV hZ.1, ?_⟩
   rw [Matrix.GeneralLinearGroup.val_mkOfDetNeZero, Y0_mul_rowsMat]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `Y`. Use `set S : Set (Matrix (Fin n) (Fin d) k) := (fun κ : GL (Fin d) k => Yo * κ.val) '' (KO k (Fin d))`. Establish `hS : IsCompact S` using `isCompact_KO.image (continuous_const.matrix_mul Units.continuous_val)`.
+
+Establish `hmem : ∀ Y, Y ∈ S ↔ ∃ κ ∈ KO k (Fin d), Y = Yo * κ.val` using `fun Y => ⟨fun ⟨κ, hκ, e⟩ => ⟨κ, hκ, e.symm⟩, fun ⟨κ, hκ, e⟩ => ⟨κ, hκ, e.symm⟩⟩`. Distinguish the cases in `hY : ∃ κ ∈ KO k (Fin d), Y = Yo * κ.val`. Take `⟨κ, hκ, rfl⟩` from `hY`. Take `⟨U, hU, hfU⟩` from `hf.1`. Use `set V : Set (GL (Fin d) k) := {u | u ∈ KO k (Fin d) ∧ κ⁻¹ * u * κ ∈ U}`.
+
+Establish `hV : V ∈ 𝓝 1`. Use `Filter.inter_mem (isOpen_KO.mem_nhds (one_mem _)) ?_` and prove the remaining obligations. Establish `hc : Continuous fun u : GL (Fin d) k => κ⁻¹ * u * κ` using `(continuous_const.mul continuous_id).mul continuous_const`. Use `hc.tendsto 1` as an intermediate fact. Simplify using `only [mul_one, inv_mul_cancel] at this`.
+
+Conclude with `this hU`. Establish `ht : Filter.Tendsto (fun Y : Matrix (Fin n) (Fin d) k => Y * (κ⁻¹).val) (𝓝 (Yo * κ.val)) (𝓝 (Yo))`. Use `((continuous_id.matrix_mul continuous_const : Continuous fun Y : Matrix (Fin n) (Fin d) k => Y * (κ⁻¹).val)).tendsto (Yo * κ.val)` as an intermediate fact. Simplify `this` using `only [id, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `filter_upwards [ht (eventually_Y0_mul hnd hV)] with Z hZ`.
+
+Take `⟨u, ⟨hu, hu'⟩, e⟩` from `hZ`. Establish `e' : Z = Yo * (u * κ).val`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← e, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[e', psi_Y0_mul hf (mul_mem hu hκ), psi_Y0_mul hf hκ]`. Use `hfU κ _ hu'` as an intermediate fact.
+
+Rewrite `this` using `[← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul]`. Then use the resulting hypothesis. Establish `hO : Sᶜ ∈ 𝓝 Y` using `hS.isClosed.isOpen_compl.mem_nhds (fun h => hY ((hmem Y).1 h)) filter_upwards [hO] with Z hZ`. Rewrite using `[psi_eq_zero (fun h => hZ ((hmem Z).2 h)), psi_eq_zero hY]`.
+-/
 theorem isLocallyConstant_psi (hnd : n ≤ d) (hf : f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν) :
     IsLocallyConstant (psi f : Matrix (Fin n) (Fin d) k → ℂ) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -267,6 +372,9 @@ theorem isLocallyConstant_psi (hnd : n ≤ d) (hf : f ∈ GlobalTheory.FullRankC
     filter_upwards [hO] with Z hZ
     rw [psi_eq_zero (fun h => hZ ((hmem Z).2 h)), psi_eq_zero hY]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `HasCompactSupport.intro (K := (fun κ : GL (Fin d) k => Yo * κ.val) '' (KO k (Fin d))) (isCompact_KO.image (continuous_const.matrix_mul Units.continuous_val)) ?_` and prove the remaining obligations. Introduce `Y hY`. Conclude with `psi_eq_zero fun ⟨κ, hκ, e⟩ => hY ⟨κ, hκ, e.symm⟩`.
+-/
 theorem hasCompactSupport_psi : HasCompactSupport (psi f : Matrix (Fin n) (Fin d) k → ℂ) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
   refine HasCompactSupport.intro (K := (fun κ : GL (Fin d) k => Yo * κ.val) '' (KO k (Fin d)))
@@ -274,11 +382,17 @@ theorem hasCompactSupport_psi : HasCompactSupport (psi f : Matrix (Fin n) (Fin d
   intro Y hY
   exact psi_eq_zero fun ⟨κ, hκ, e⟩ => hY ⟨κ, hκ, e.symm⟩
 
+/- English proof (translation)
+Use `le_antisymm (Matrix.rank_le_height _) ?_` and prove the remaining obligations. Use `Matrix.rank_mul_le_left (Yo) (Yo)ᵀ` as an intermediate fact. Rewrite `this` using `[Y0_mul_transpose hnd, Matrix.rank_one, Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem rank_zeroth_component_eq (hnd : n ≤ d) : (Yo).rank = n := by
   refine le_antisymm (Matrix.rank_le_height _) ?_
   have := Matrix.rank_mul_le_left (Yo) (Yo)ᵀ
   rwa [Y0_mul_transpose hnd, Matrix.rank_one, Fintype.card_fin] at this
 
+/- English proof (translation)
+Use `⟨⟨isLocallyConstant_psi hnd hf, hasCompactSupport_psi⟩, fun Y hY => psi_eq_zero ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨κ, _, rfl⟩`. Conclude with `hY (by rw [Matrix.rank_mul_eq_left_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 κ.isUnit), rank_zeroth_component_eq hnd])`.
+-/
 theorem psi_mem_fullRk (hnd : n ≤ d) (hf : f ∈ GlobalTheory.FullRankCoinv.indSp k n d ν) :
     psi f ∈ GlobalTheory.FullRankCoinv.fullRk k n d := by
   refine ⟨⟨isLocallyConstant_psi hnd hf, hasCompactSupport_psi⟩, fun Y hY => psi_eq_zero ?_⟩
@@ -287,6 +401,13 @@ theorem psi_mem_fullRk (hnd : n ≤ d) (hf : f ∈ GlobalTheory.FullRankCoinv.in
 
 end Support
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n d ν hnd _ f hf`. Use `⟨psi f, psi_mem_fullRk hnd hf, fun h => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, κ₀, h₀, rfl⟩` from `(GlobalTheory.MaxParabIwasawa.iwasawa_stdMaxParab k d (d - n) n (Nat.sub_add_cancel hnd) h).2`. Take `⟨D, hD⟩` from `exists_Y0_mul_parab hnd hp`. Establish `e : GlobalTheory.FullRankCoinv.Y0 k n d * (p * κ₀).val = D.val * (GlobalTheory.FullRankCoinv.Y0 k n d * κ₀.val)`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, hD, Matrix.mul_assoc]`. Establish `h1` using `smallF_mul_left (haarVol (KO k (Fin n))) ν (psi f) D (GlobalTheory.FullRankCoinv.Y0 k n d * κ₀.val)`. Rewrite `h1` using `[smallF_psi_Y0_mul hnd hf h₀]`. Rewrite using `[e, hf.2 p κ₀ D hD, ← h1, Units.val_inv_eq_inv_val, Fintype.card_fin, neg_div, apow_neg]`. Establish `h2 : (ν (gdet D) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Establish `h3` using `apow_ne_zero (gdet D) ((d : ℂ) / 2)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_fullRk_smallF_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d →
     GlobalTheory.SmGL.IsSmoothChar ν →

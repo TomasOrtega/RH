@@ -23,8 +23,14 @@ instance {Γ J : Type} [Group Γ] : MulAction Γ (Idx Γ J) where
   one_smul i := Idx.ext (one_mul i.g) rfl
   mul_smul γ δ i := Idx.ext (mul_assoc γ δ i.g) rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Idx.smul_g {Γ J : Type} [Group Γ] (γ : Γ) (i : Idx Γ J) : (γ • i).g = γ * i.g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Idx.smul_j {Γ J : Type} [Group Γ] (γ : Γ) (i : Idx Γ J) : (γ • i).j = i.j := rfl
 
 section

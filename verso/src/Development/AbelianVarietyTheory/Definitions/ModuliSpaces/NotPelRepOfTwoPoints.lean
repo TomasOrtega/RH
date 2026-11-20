@@ -17,6 +17,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 namespace DimZero
 open Out.Inh GlobalTheory.ZM.Model
 
+/- English proof (translation)
+Establish `: Out.translT (zeroPolAV S).A x = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[Out.translT]`. Conclude with `toUnit_unique _ _`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem translT_zero {T : Over S} (x : T ⟶ (zeroPolAV S).A) : (Out.translT (zeroPolAV S).A x).left = 𝟙 _ := by
   have : Out.translT (zeroPolAV S).A x = 𝟙 _ := by
     apply CartesianMonoidalCategory.hom_ext
@@ -24,10 +29,20 @@ theorem translT_zero {T : Over S} (x : T ⟶ (zeroPolAV S).A) : (Out.translT (ze
     · exact toUnit_unique _ _
   rw [this]; rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun i j => by rw [hL, _root_.one_mul]; exact (map_one _).trans (map_one _).symm, fun _ => rfl⟩`.
+-/
 theorem exists_gen {X : Scheme.{0}} (L : LB X) (hL : ∀ i j, L.g i j = 1) : ∃ t : L.Gen, t.IsGen ∧ ∀ i, t.s i = 1 :=
   ⟨⟨fun _ => 1⟩, fun i j => by
     rw [hL, _root_.one_mul]; exact (map_one _).trans (map_one _).symm, fun _ => rfl⟩
 
+/- English proof (translation)
+Substitute `hh hh'` using the available equality. Introduce `j j' _ _ _`. Take `rfl : j = fun _ => default` from `Subsingleton.elim _ _`. Take `rfl : j' = fun _ => default` from `Subsingleton.elim _ _`. Establish `e1 : ∀ (V W : Y.Opens) (h1 : V ≤ W) (U U' : Y.Opens) (h2 : W ≤ U) (h3 : W ≤ U') (u : Γ(Y, U)ˣ) (v : Γ(Y, U')ˣ), res h1 (res h2 u * res h3 v) = res (h1.trans h2) u * res (h1.trans h3) v` using `by intros; rw [map_mul, DVR.res_res', DVR.res_res']`.
+
+Use `(e1 _ _ _ _ _ _ _ _ _).trans (Eq.trans ?_ (e1 _ _ _ _ _ _ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (e1 _ _ _ _ _ _ _ _ _) ((congrArg _ (hc _)).trans (map_one _))).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_one, _root_.mul_comm]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Conclude with `(DVR.res_res' _ _ _)`.
+
+Conclude with `(DVR.res_res' _ _ _).symm`.
+-/
 theorem corr_comm {X Y : Scheme.{0}} (L : LB X) [Unique L.ι] {K : Type} [Fintype K] (φ φ' : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb L φ ε)) (b : LB.Gen (LB.LinComb L φ' ε)) (h h' : Y ⟶ Y) (hh : h = 𝟙 Y) (hh' : h' = 𝟙 Y)
     (c : LB.Gen (LB.LinComb L (Y := Y) (K := PEmpty) PEmpty.elim PEmpty.elim)) (hc : ∀ j, c.s j = 1) :
@@ -47,6 +62,13 @@ theorem corr_comm {X Y : Scheme.{0}} (L : LB X) [Unique L.ι] {K : Type} [Fintyp
   · exact (DVR.res_res' _ _ _)
   · exact (DVR.res_res' _ _ _).symm
 
+/- English proof (translation)
+Introduce `p`. Establish `ex : ∀ z : Out.overRes (T` using `T) ⊤ ⟶ (zeroPolAV S).A, ∃ θ : Out.ThetaGrp _ L n _, θ.pt = z := fun z => by`. Take `⟨t, ht, -⟩` from `exists_gen (Out.thetaLB _ L n z) (linComb_g_one L hL _ _)`. Conclude with `⟨⟨z, t, ht⟩, rfl⟩`. Use `⟨⊤, trivial, ?_, fun θx θy _ _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨θx, hx⟩` from `ex (Out.overResι ⊤ ≫ x)`. Take `⟨θy, hy⟩` from `ex (Out.overResι ⊤ ≫ y)`. Conclude with `⟨θx, θy, hx, hy⟩`. Establish `hc : Out.unitRes (T` using `T) ⊤ 1 = 1 := map_one _`. Rewrite using `[hc]`.
+
+Conclude with `corr_comm L _ _ _ _ _ _ _ (translT_zero _) (translT_zero _) _ (fun j => (congrArg _ (map_one _)).trans (map_one _))`.
+-/
 theorem weilIs_zero (L : LB (zeroPolAV S).A.left) [Unique L.ι] (hL : ∀ i j, L.g i j = 1) (n : ℤ) {T : Over S}
     (x y : T ⟶ (zeroPolAV S).A) : Out.WeilIs (zeroPolAV S).A L n x y 1 := by
   intro p
@@ -84,6 +106,23 @@ def zeroSieg (k : ℕ) {B : Type} [CommRing B] (ζ : B) (s : S ⟶ Sp B) : SiegP
     rw [h1]
     exact @weilIs_zero S _ (inferInstanceAs (Unique (PUnit → PUnit))) (linComb_triv_g _ _) _ _ _ _
 
+/- English proof (translation)
+Use `⟨?_, fun _ _ _ => toUnit_unique _ _⟩` and prove the remaining obligations. Generalize the expression as in `hM : (zeroSieg k ζ s).diag = M`. Establish `hg : ∀ i j, M.g i j = 1` using `by subst hM; exact linComb_triv_g _ _`. Establish `hU : ∃ i, M.U i = ⊤`. Substitute `hM` using the available equality.
+
+Conclude with `⟨fun _ => PUnit.unit, top_unique fun y _ => Set.mem_iInter.2 fun _ => trivial⟩`. Take `⟨i₀, hi₀⟩` from `hU`. Express the relevant statement in the definitionally equal form `LB (𝟙_ (Over S)).left at M`. Express the relevant statement in the definitionally equal form `Out.RelAmple (𝟙_ (Over S)) M`. Introduce `U hU`.
+
+Use `haveI : IsIso (𝟙_ (Over S)).hom := by show IsIso (𝟙 S); infer_instance`. Set `Y` to `((𝟙_ (Over S)).hom ⁻¹ᵁ U).toScheme`. Establish `hp : ∀ i j, (Out.powOver (𝟙_ (Over S)) M U 1).g i j = 1` using `fun i j => by`. Conclude with `linComb_g_one M hg _ _ i j`. Set `s0 : LB.Sec (Out.powOver (𝟙_ (Over S)) M U 1)` to `⟨fun _ => 1, by`.
+
+Introduce `i j`. Rewrite using `[hp, Units.val_one, _root_.one_mul]`. Repeat the step `erw [map_one]` while it applies. Apply the tactic sequence `all_goals rfl⟩`. Establish `hD : Out.nonzeroLocus s0 = ⊤`.
+
+Apply `top_unique` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [Out.nonzeroLocus, s0, Scheme.basicOpen_one]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun _ => i₀, Set.mem_iInter.2 fun _ => by show _ ∈ M.U i₀`. Rewrite using `[hi₀]`.
+
+Use the proof step `trivial⟩`. Use `⟨1, le_rfl, 0, fun _ => s0, by simp only [iSup_const]; exact hD, fun _ => ⟨?_, fun _ => 1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hD]`. Establish `: IsAffine Y` using `hU`. Conclude with `isAffineOpen_top Y`.
+
+Introduce `j k erw [map_one]`. Apply the tactic sequence `(try erw [map_one])`. Apply the tactic sequence `(try erw [map_one])`. Conclude with `(_root_.mul_one _).symm`. Introduce `p`.
+
+Take `⟨a, rfl⟩` from `surj_appLE ((𝟙_ (Over S)).hom ∣_ U) _ hD le_top p`. Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+-/
 theorem principal_zeroSieg (k : ℕ) {B : Type} [CommRing B] (ζ : B) (s : S ⟶ Sp B) : (zeroSieg k ζ s).Principal := by
   refine ⟨?_, fun _ _ _ => toUnit_unique _ _⟩
   generalize hM : (zeroSieg k ζ s).diag = M
@@ -125,6 +164,9 @@ def zeroBas (H : Host E) : (Fin (2 * 0) → ℤ) ≃ₗ[ℤ] (Test.zeroDatum H).
   haveI : Subsingleton (Test.zeroDatum H).La := inferInstanceAs (Subsingleton PUnit)
   LinearEquiv.ofSubsingleton _ _
 
+/- English proof (translation)
+The claim follows from `OnePoint.isQProjOver_id o flat := inferInstance red := inferInstance rep := fun _ _ _ _ β t' _ _ _ => ⟨spMap β, Category.comp_id _, tmap_zero _ t' _⟩ inj := fun _ _ _ _ _ _ _ h _ _ => by simpa using h`.
+-/
 theorem pelRep_zero [_root_.IsReduced o] (D : Datum H) (a : J → 𝓞 E) (bas : (Fin (2 * 0) → ℤ) ≃ₗ[ℤ] D.La) (ρ : o)
     (b : TBase o k) : PELRep D a bas ρ (zeroObj J b (𝟙 (Sp o))) where
   qproj := OnePoint.isQProjOver_id o

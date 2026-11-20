@@ -12,6 +12,11 @@ namespace GlobalTheory.OddFrame
 open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
+/- English proof (translation)
+Use `split_ifs with hdvd`. Rewrite using `[(hζ.zpow_eq_one_iff_dvd t).2 hdvd]`. Simplify using the standard rewrite rules. Establish `hne : ζ ^ t ≠ 1` using `fun h1 => hdvd ((hζ.zpow_eq_one_iff_dvd t).1 h1)`. Rewrite using `[geom_sum_eq hne]`.
+
+Establish `: (ζ ^ t) ^ n = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ.pow_eq_one, one_zpow]`. Rewrite using `[this, sub_self, zero_div]`.
+-/
 private lemma sum_range_zpow_primitiveRoot_pow {ζ : ℂ} {n : ℕ} (hζ : IsPrimitiveRoot ζ n) (t : ℤ) :
     ∑ m ∈ Finset.range n, (ζ ^ t) ^ m = if (n : ℤ) ∣ t then (n : ℂ) else 0 := by
   split_ifs with hdvd
@@ -26,6 +31,11 @@ private lemma sum_range_zpow_primitiveRoot_pow {ζ : ℂ} {n : ℕ} (hζ : IsPri
 open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
+/- English proof (translation)
+Establish `hU : {w : ℂ | 0 < w.im} ∈ 𝓝 z` using `(isOpen_lt continuous_const Complex.continuous_im).mem_nhds hz`. Establish `hdiff : DifferentiableAt ℂ (E ∘ ofComplex) z` using `(UpperHalfPlane.mdifferentiable_iff.1 hE).differentiableAt hU`. Establish `hc : ContinuousAt (dslope (E ∘ ofComplex) z) z` using `continuousAt_dslope_same.2 hdiff`. Establish `h1 : ∀ᶠ w in 𝓝 z, dslope (E ∘ ofComplex) z w ≠ 0` using `hc.eventually_ne (by rwa [dslope_same])`. Use `filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with w hw hwz`.
+
+Establish `hs` using `sub_smul_dslope (E ∘ ofComplex) z w`. Rewrite `hs` using `[he, sub_zero, smul_eq_mul]`. Rewrite using `[← hs]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hwz) hw`.
+-/
 private lemma eventually_ne_zero_nhdsNE_of_simple_zero {E : ℍ → ℂ} (hE : MDiff E) {z : ℂ}
     (hz : 0 < z.im) (he : (E ∘ ofComplex) z = 0) (hd : deriv (E ∘ ofComplex) z ≠ 0) :
     ∀ᶠ w in 𝓝[≠] z, (E ∘ ofComplex) w ≠ 0 := by
@@ -45,6 +55,13 @@ private lemma eventually_ne_zero_nhdsNE_of_simple_zero {E : ℍ → ℂ} (hE : M
 open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Distinguish the cases in `hτ : E τ = 0`. Use `swap`. Conclude with `h τ hτ`. Establish `hU : {w : ℂ | 0 < w.im} ∈ 𝓝 (τ : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_im).mem_nhds τ.im_pos`.
+
+Establish `hAc : ContinuousAt (A ∘ ofComplex) τ` using `((UpperHalfPlane.mdifferentiable_iff.1 hA).differentiableAt hU).continuousAt`. Establish `hBc : ContinuousAt (B ∘ ofComplex) τ` using `((UpperHalfPlane.mdifferentiable_iff.1 hB).differentiableAt hU).continuousAt`. Establish `hev` using `eventually_ne_zero_nhdsNE_of_simple_zero hE τ.im_pos (by simpa using hτ) (hzero τ hτ)`. Establish `heq : A ∘ ofComplex =ᶠ[𝓝[≠] (τ : ℂ)] B ∘ ofComplex` using `by filter_upwards [hev] with w hw`. Conclude with `h _ hw`.
+
+Use `tendsto_nhds_unique ((hAc.tendsto.mono_left nhdsWithin_le_nhds).congr' heq) (hBc.tendsto.mono_left nhdsWithin_le_nhds)` as an intermediate fact. Simplify using `using this`.
+-/
 private lemma eq_of_eq_off_simple_zeros' {E A B : ℍ → ℂ} (hE : MDiff E)
     (hzero : ∀ τ : ℍ, E τ = 0 → deriv (E ∘ ofComplex) τ ≠ 0) (hA : MDiff A) (hB : MDiff B)
     (h : ∀ τ, E τ ≠ 0 → A τ = B τ) : A = B := by
@@ -69,6 +86,41 @@ private lemma eq_of_eq_off_simple_zeros' {E A B : ℍ → ℂ} (hE : MDiff E)
 open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
+/- English proof (translation)
+Use `set e := E ∘ ofComplex with he_def`. Use `set h := H ∘ ofComplex with hh_def`. Set `g : ℂ → ℂ` to `fun w => if e w = 0 then deriv h w / deriv e w else h w / e w`. Establish `hEe : ∀ τ : ℍ, e τ = E τ` using `fun τ => by simp [he_def]`. Establish `hHh : ∀ τ : ℍ, h τ = H τ` using `fun τ => by simp [hh_def]`.
+
+Establish `hprod : ∀ τ : ℍ, E τ * g τ = H τ`. Introduce `τ`. Distinguish the cases in `h0 : E τ = 0`. Take `⟨γ, hγ⟩` from `(hzero τ h0).2`. Rewrite using `[h0, zero_mul, hγ, hHz γ]`.
+
+Establish `h0' : e τ ≠ 0` using `by rwa [hEe] show E τ * (if e τ = 0 then _ else _) = H τ`. Rewrite using `[if_neg h0', hEe, hHh, mul_div_cancel₀ _ h0]`. Use `set G : ℍ → ℂ := fun τ => g τ with hG_def`. Establish `hGdiv : ∀ τ, E τ ≠ 0 → G τ = H τ / E τ` using `fun τ hτ => eq_div_of_mul_eq hτ (by rw [mul_comm]; exact hprod τ)`. Establish `hU' : IsOpen {w : ℂ | 0 < w.im}` using `isOpen_lt continuous_const Complex.continuous_im`.
+
+Establish `hed : DifferentiableOn ℂ e {w : ℂ | 0 < w.im}` using `UpperHalfPlane.mdifferentiable_iff.1 hE.2.1`. Establish `hhd : DifferentiableOn ℂ h {w : ℂ | 0 < w.im}` using `UpperHalfPlane.mdifferentiable_iff.1 hH.2.1`. Establish `hgd : ∀ z : ℂ, 0 < z.im → DifferentiableAt ℂ g z`. Introduce `z hz`. Establish `hU` using `hU'.mem_nhds hz`.
+
+Establish `hcoe : ((ofComplex z : ℍ) : ℂ) = z` using `by rw [ofComplex_apply_of_im_pos hz]`. Distinguish the cases in `hez : e z = 0`. Establish `hz' : E (ofComplex z) = 0` using `hez`. Establish `hdz : deriv e z ≠ 0` using `by have := (hzero _ hz').1; rwa [hcoe] at this`. Take `⟨γ, hγ⟩` from `(hzero _ hz').2`.
+
+Establish `hhz : h z = 0` using `by show H (ofComplex z) = 0; rw [hγ]; exact hHz γ`. Establish `hds : DifferentiableAt ℂ (fun w => dslope h z w / dslope e z w) z` using `(((Complex.differentiableOn_dslope hU).2 hhd).differentiableAt hU).div (((Complex.differentiableOn_dslope hU).2 hed).differentiableAt hU) (by rwa [dslope_same])`. Apply `hds.congr_of_eventuallyEq` to reduce the goal to its premises. Establish `hc : ContinuousAt (dslope e z) z` using `continuousAt_dslope_same.2 (hed.differentiableAt hU)`. Use `filter_upwards [hc.eventually_ne (by rwa [dslope_same] : dslope e z z ≠ 0)] with w hw`.
+
+Distinguish the cases in `hwz : w = z`. Rewrite using `[hwz] show (if e z = 0 then _ else _) = _`. Rewrite using `[if_pos hez, dslope_same, dslope_same]`. Establish `he' : e w = (w - z) * dslope e z w`. Use `sub_smul_dslope e z w` as an intermediate fact.
+
+Rewrite `this` using `[hez, sub_zero, smul_eq_mul]`. Conclude with `this.symm`. Establish `hh' : h w = (w - z) * dslope h z w`. Use `sub_smul_dslope h z w` as an intermediate fact. Rewrite `this` using `[hhz, sub_zero, smul_eq_mul]`.
+
+Conclude with `this.symm`. Establish `hew : e w ≠ 0` using `by rw [he']; exact mul_ne_zero (sub_ne_zero.2 hwz) hw`. Use `show (if e w = 0 then _ else _) = _`. Rewrite using `[if_neg hew, he', hh', mul_div_mul_left _ _ (sub_ne_zero.2 hwz)]`. Establish `hq : DifferentiableAt ℂ (fun w => h w / e w) z` using `(hhd.differentiableAt hU).div (hed.differentiableAt hU) hez`.
+
+Apply `hq.congr_of_eventuallyEq` to reduce the goal to its premises. Use `filter_upwards [(hed.differentiableAt hU).continuousAt.eventually_ne hez] with w hw`. Use `show (if e w = 0 then _ else _) = _`. Rewrite using `[if_neg hw]`. Establish `hGm : MDiff G`.
+
+Rewrite using `[UpperHalfPlane.mdifferentiable_iff]`. Introduce `z hz`. Establish `hU` using `hU'.mem_nhds hz`. Establish `heq : G ∘ ofComplex =ᶠ[𝓝 z] g` using `by filter_upwards [hU] with w hw`. Simplify using `only [Function.comp_apply, hG_def]`.
+
+Rewrite using `[ofComplex_apply_of_im_pos hw]`. Conclude with `((hgd z hz).congr_of_eventuallyEq heq).differentiableWithinAt`. Establish `hkey : ∀ (x : SL(2, ℤ)) (τ : ℍ), E τ ≠ 0 → (G ∣[N - b] x) τ = (H ∣[N] x) τ / E τ`. Introduce `x τ hτ`. Establish `hEx` using `congrFun (hE.slash_top x) τ`.
+
+Rewrite `hEx` using `[ModularForm.SL_slash_apply]`. Rewrite using `[ModularForm.SL_slash_apply, ModularForm.SL_slash_apply]`. Use `set D := denom (Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) x)) (τ : ℂ) with hD`. Establish `hD0 : D ≠ 0` using `denom_ne_zero _ _`. Establish `hEx' : E (x • τ) ≠ 0`.
+
+Introduce `h0`. Rewrite `hEx` using `[h0, zero_mul]`. Conclude with `hτ hEx.symm`. Rewrite using `[hGdiv _ hEx', ← hEx, show -(N - b) = -N - -b by ring, zpow_sub₀ hD0]`. Establish `hb0 : D ^ (-b) ≠ 0` using `zpow_ne_zero _ hD0`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨G, ⟨fun γ hγ => ?_, hGm, fun x => ?_⟩, hprod⟩` and prove the remaining obligations. Apply `eq_of_eq_off_simple_zeros' hE.2.1 (fun τ hτ => (hzero τ hτ).1) (_root_.GlobalTheory.OddFrame.mdiff_slash hGm _ _) hGm` to reduce the goal to its premises. Introduce `τ hτ`. Rewrite using `[hkey γ τ hτ, hH.1 γ hγ, hGdiv τ hτ]`.
+
+Take `⟨c, hc, hEc⟩` from `hlim`. Establish `hinv : BoundedAtFilter atImInfty (fun τ => (E τ)⁻¹)`. Unfold `BoundedAtFilter`. Conclude with `(hEc.inv₀ hc).isBigO_one ℝ`. Establish `hbd` using `(hH.2.2 x).mul hinv`.
+
+Unfold `IsBoundedAtImInfty BoundedAtFilter at hbd ⊢`. Use `hbd.congr' ?_ EventuallyEq.rfl` and prove the remaining obligations. Use `filter_upwards [hEc.eventually_ne hc] with τ hτ`. Rewrite using `[Pi.mul_apply, hkey x τ hτ, div_eq_mul_inv]`.
+-/
 private lemma exists_isMF_mul_eq_of_vanishes_on_orbit {Γ : Subgroup SL(2, ℤ)} {N b : ℤ}
     {E H : ℍ → ℂ} {τ₀ : ℍ} (hE : _root_.GlobalTheory.OddFrame.IsMF ⊤ b E)
     (hzero : ∀ τ : ℍ, E τ = 0 → deriv (E ∘ ofComplex) τ ≠ 0 ∧ ∃ γ : SL(2, ℤ), τ = γ • τ₀)
@@ -176,6 +228,51 @@ open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
 
+/- English proof (translation)
+Introduce `Γ r s w F τ₀ hs hF hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Establish `hrow : ∀ i, ∑ j, v j * (F j ∣[w j] s i) τ₀ = 0`. Introduce `i`. Use `congrFun hv i` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, _root_.GlobalTheory.OddFrame.evM, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hrel : ∀ x : SL(2, ℤ), ∑ j, v j * (F j ∣[w j] x) τ₀ = 0` using `fun x => hs.sum_eq_zero hF v τ₀ hrow x`. Take `⟨n, a, b, E, u, hu, hn, hζ, hab, hba, hE, hzero, hlim, hforms⟩` from `_root_.GlobalTheory.LevelOneLocal.exists_local_data τ₀`.
+
+Use `set ζ := denom (Matrix.SpecialLinearGroup.toGL ((Matrix.SpecialLinearGroup.map (Int.castRingHom ℝ)) u)) (τ₀ : ℂ) with hζdef`. Establish `hζ0 : ζ ≠ 0` using `denom_ne_zero _ _`. Establish `hpow : ∀ (m : ℕ) (x : SL(2, ℤ)) (j : Fin r), (F j ∣[w j] (x * u ^ m)) τ₀ = (F j ∣[w j] x) τ₀ * ζ ^ (-((m : ℤ) * w j))`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro x j`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `x j`. Rewrite using `[pow_succ, ← mul_assoc, _root_.GlobalTheory.OddFrame.slash_mul_apply, hu, ih, mul_assoc, ← zpow_add₀ hζ0]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrelm : ∀ (m : ℕ) (x : SL(2, ℤ)), ∑ j, v j * (F j ∣[w j] x) τ₀ * ζ ^ (-((m : ℤ) * w j)) = 0`. Introduce `m x`.
+
+Rewrite using `[← hrel (x * u ^ m)]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hpow, mul_assoc]`. Take `⟨j₁, hj₁⟩ : ∃ j, v j ≠ 0` from `by simpa using Function.ne_iff.1 hv0`. Establish `hclass : ∀ x : SL(2, ℤ), ∑ j, (if (n : ℤ) ∣ w j - w j₁ then v j else 0) * (F j ∣[w j] x) τ₀ = 0`. Introduce `x`.
+
+Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hsum : ∑ m ∈ Finset.range n, ζ ^ ((m : ℤ) * w j₁) * ∑ j, v j * (F j ∣[w j] x) τ₀ * ζ ^ (-((m : ℤ) * w j)) = 0` using `Finset.sum_eq_zero fun m _ => by rw [hrelm, mul_zero]`. Establish `hswap : ∑ m ∈ Finset.range n, ζ ^ ((m : ℤ) * w j₁) * ∑ j, v j * (F j ∣[w j] x) τ₀ * ζ ^ (-((m : ℤ) * w j)) = ∑ j, v j * (F j ∣[w j] x) τ₀ * ∑ m ∈ Finset.range n, (ζ ^ (w j₁ - w j)) ^ m`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, show (w j₁ - w j) * (m : ℤ) = (m : ℤ) * w j₁ + -((m : ℤ) * w j) by ring, zpow_add₀ hζ0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[hswap]`. Rewrite `hsum` using `[sum_range_zpow_primitiveRoot_pow hζ]`.
+
+Establish `hmul : (n : ℂ) * ∑ j, (if (n : ℤ) ∣ w j - w j₁ then v j else 0) * (F j ∣[w j] x) τ₀ = 0`. Use `Eq.trans ?_ hsum` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hd : (n : ℤ) ∣ w j - w j₁`.
+
+Rewrite using `[if_pos hd, if_pos (dvd_sub_comm.1 hd)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd' : ¬ (n : ℤ) ∣ w j₁ - w j` using `fun h' => hd (dvd_sub_comm.1 h')`. Simplify using `[hd, hd']`. Conclude with `(mul_eq_zero.1 hmul).resolve_left hn0`.
+
+Use `set P : Fin r → Prop := fun j => v j ≠ 0 ∧ (n : ℤ) ∣ w j - w j₁ with hP`. Establish `hne : (Finset.univ.filter P).Nonempty` using `⟨j₁, Finset.mem_filter.2 ⟨Finset.mem_univ _, hj₁, by simp⟩⟩`. Take `⟨j₀, hj₀S, hj₀max⟩` from `(Finset.univ.filter P).exists_max_image w hne`. Establish `hj₀ : P j₀` using `(Finset.mem_filter.1 hj₀S).2`. Establish `hforms' : ∀ j, ∃ f : ℍ → ℂ, _root_.GlobalTheory.OddFrame.IsMF ⊤ (w j₀ - w j + a) f ∧ (P j → f τ₀ ≠ 0)`.
+
+Introduce `j`. Distinguish the cases in `hj : P j`. Take `⟨f, hf, hf0⟩` from `hforms (w j₀ - w j) (sub_nonneg.2 (hj₀max j (Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩))) (by have := dvd_sub hj₀.2 hj.2; rwa [sub_sub_sub_cancel_right] at this)`. Conclude with `⟨f, hf, fun _ => hf0⟩`. Conclude with `⟨0, _root_.GlobalTheory.OddFrame.IsMF.zero _ _, fun h' => absurd h' hj⟩`.
+
+Use `choose f hfmf hfne using hforms'`. Use `set e : Fin r → ℍ → ℂ := fun j => (if P j then v j / f j τ₀ else 0) • f j with he_def`. Establish `he_mf : ∀ j, _root_.GlobalTheory.OddFrame.IsMF ⊤ (w j₀ - w j + a) (e j)` using `fun j => (hfmf j).smul _`. Establish `he0 : ∀ j, e j τ₀ = if (n : ℤ) ∣ w j - w j₁ then v j else 0`. Introduce `j`.
+
+Simplify using `only [he_def, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hj : P j`. Rewrite using `[if_pos hj, if_pos hj.2, div_mul_cancel₀ _ (hfne j hj)]`. Rewrite using `[if_neg hj, zero_mul]`. Distinguish the cases in `hd : (n : ℤ) ∣ w j - w j₁`.
+
+Rewrite using `[if_pos hd]`. Conclude with `(not_not.1 fun hv' => hj ⟨hv', hd⟩).symm`. Rewrite using `[if_neg hd]`. Use `set H : ℍ → ℂ := ∑ j, e j * F j with hH_def`. Establish `hHmf : _root_.GlobalTheory.OddFrame.IsMF Γ (w j₀ + a) H` using `_root_.GlobalTheory.OddFrame.IsMF.sum _ fun j _ => ((he_mf j).mono le_top).mul (hF j).2 (by ring)`.
+
+Establish `hHslash : ∀ (x : SL(2, ℤ)) (τ : ℍ), (H ∣[w j₀ + a] x) τ = ∑ j, e j τ * (F j ∣[w j] x) τ`. Introduce `x τ`. Rewrite using `[ModularForm.SL_slash_apply, hH_def, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hex` using `congrFun ((he_mf j).slash_top x) τ`.
+
+Rewrite `hex` using `[ModularForm.SL_slash_apply]`. Rewrite using `[ModularForm.SL_slash_apply, ← hex, Pi.mul_apply, mul_mul_mul_comm, ← zpow_add₀ (denom_ne_zero _ _)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hHz : ∀ γ : SL(2, ℤ), H (γ • τ₀) = 0`.
+
+Introduce `γ`. Establish `h1 : (H ∣[w j₀ + a] γ) τ₀ = 0`. Rewrite using `[hHslash]`. Repeatedly rewrite using `[he0]`. Conclude with `hclass γ`.
+
+Rewrite `h1` using `[ModularForm.SL_slash_apply]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (zpow_ne_zero _ (denom_ne_zero _ _))`. Take `⟨G, hG, hEG⟩` from `exists_isMF_mul_eq_of_vanishes_on_orbit hE hzero hlim hHmf hHz`. Use `⟨j₀, w j₀ + a - b, G, E, e, by linarith, ?_, hG, fun j => (he_mf j).2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show w j₀ + a - b = w j₀ - (b - a) by ring]`.
+
+Conclude with `(hF j₀).1.sub_even hba`. Introduce `h0`. Use `congrFun h0 τ₀` as an intermediate fact. Rewrite `this` using `[he0, if_pos hj₀.2, Pi.zero_apply]`. Conclude with `hj₀.1 this`.
+
+Introduce `x τ`. Rewrite using `[← hHslash]`. Establish `hEGf : H = E * G` using `funext fun τ => (hEG τ).symm`. Establish `hm` using `ModularForm.mul_slash_SL2 b (w j₀ + a - b) x E G`. Rewrite `hm` using `[show b + (w j₀ + a - b) = w j₀ + a by ring, hE.slash_top]`.
+
+Rewrite using `[hEGf, hm]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.OddFrame.reduces_of_det_evM_eq_zero : ∀ (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (τ₀ : ℍ), _root_.GlobalTheory.OddFrame.IsReps Γ s → (∀ j, Odd (w j) ∧ _root_.GlobalTheory.OddFrame.IsMF Γ (w j) (F j)) →
     (_root_.GlobalTheory.OddFrame.evM s w F τ₀).det = 0 → _root_.GlobalTheory.OddFrame.Reduces Γ w F := by

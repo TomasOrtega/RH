@@ -4,6 +4,13 @@ namespace DiscreteGroups.sglob.DzDig
 
 open Finset
 
+/- English proof (translation)
+Establish `h : #s ≤ #(range ((a - 1) / 2 + 1))`. Apply `card_le_card_of_injOn (fun x => (x - 1) / 2)` to reduce the goal to its premises. Introduce `x hx`. Use `ha x (mem_coe.mp hx)` as an intermediate fact. Simplify using `only [mem_coe, mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `x hx y hy hxy`. Establish `hx2` using `(hs x (mem_coe.mp hx)).two_le`. Establish `hy2` using `(hs y (mem_coe.mp hy)).two_le`. Establish `ox` using `(hs x (mem_coe.mp hx)).eq_two_or_odd`.
+
+Establish `oy` using `(hs y (mem_coe.mp hy)).eq_two_or_odd`. Simplify using `only at hxy`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[card_range]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_primes_le {s : Finset ℕ} {a : ℕ} (hs : ∀ q ∈ s, q.Prime) (ha : ∀ q ∈ s, q ≤ a)
     (h2 : 2 ≤ a) : 2 * #s ≤ a + 1 := by
   have h : #s ≤ #(range ((a - 1) / 2 + 1)) := by
@@ -22,6 +29,21 @@ theorem card_primes_le {s : Finset ℕ} {a : ℕ} (hs : ∀ q ∈ s, q.Prime) (h
   rw [card_range] at h
   omega
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Finset.induction_on_max`. Introduce `_ hne`. Conclude with `absurd hne (by simp)`. Use `next a s hlt ih =>`.
+
+Introduce `hs _`. Establish `ha : a ∉ s` using `fun h => lt_irrefl a (hlt a h)`. Establish `ha2` using `(hs a (mem_insert_self a s)).two_le`. Establish `hle : ∀ q ∈ insert a s, q ≤ a`. Introduce `q hq`.
+
+Break down `mem_insert.mp hq with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `(hlt q h).le`. Establish `hcard` using `card_primes_le hs hle ha2`. Rewrite using `[prod_insert ha, prod_insert ha, card_insert_of_notMem ha]`.
+
+Rewrite `hcard` using `[card_insert_of_notMem ha]`. Take `⟨b, rfl⟩ : ∃ b, a = b + 1` from `⟨a - 1, by omega⟩`. Rewrite using `[show b + 1 - 1 = b by omega]`. Break down `s.eq_empty_or_nonempty with hs0 | hsne` into its components or cases. Substitute `hs0` using the available equality.
+
+Rewrite using `[prod_empty, prod_empty, card_empty]`. Apply the tactic sequence `norm_num <;> nlinarith [ha2]`. Establish `hs' : ∀ q ∈ s, q.Prime` using `fun q hq => hs q (mem_insert_of_mem hq)`. Establish `ih'` using `ih hs' hsne`. Establish `hs1 : 1 ≤ #s` using `card_pos.mpr hsne`.
+
+Take `⟨m, hm⟩ : ∃ m, #s = m + 1` from `⟨#s - 1, by omega⟩`. Rewrite `ih'`, `hcard` using `[hm]`. Rewrite using `[hm]`. Rewrite `ih'` using `[show 2 * (m + 1) - 1 = 2 * m + 1 by omega]`. Rewrite using `[show 2 * (m + 1 + 1) - 1 = 2 * m + 3 by omega]`.
+
+Establish `hb : 2 * m + 2 ≤ b` using `by omega`. Establish `h2 : (b + 1) ^ 2 * (2 * m + 1) ≤ (2 * m + 3) * b ^ 2`. Use `Nat.mul_le_mul_right b hb` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_sq_le : ∀ s : Finset ℕ, (∀ q ∈ s, q.Prime) → s.Nonempty →
     (∏ q ∈ s, q) ^ 2 ≤ 4 * (2 * #s - 1) * (∏ q ∈ s, (q - 1)) ^ 2 := by
   intro s
@@ -65,6 +87,11 @@ theorem prod_sq_le : ∀ s : Finset ℕ, (∀ q ∈ s, q.Prime) → s.Nonempty �
             Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ h2)
         _ = 4 * (2 * m + 3) * (b * ∏ q ∈ s, (q - 1)) ^ 2 := by ring
 
+/- English proof (translation)
+Introduce `t ht`. Proceed by induction on `t, ht using Nat.le_induction with`. Consider the case `base => norm_num`. Consider the case `succ t ht ih`. Rewrite using `[pow_succ]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pow_bound : ∀ t, 4 ≤ t → (t + 1) * t ≤ 4 * 2 ^ t := by
   intro t ht
   induction t, ht using Nat.le_induction with
@@ -73,6 +100,11 @@ theorem pow_bound : ∀ t, 4 ≤ t → (t + 1) * t ≤ 4 * 2 ^ t := by
     rw [pow_succ]
     nlinarith
 
+/- English proof (translation)
+Establish `hs : 0 < 2 * n` using `by omega`. Establish `ht : 4 * (2 * n) ≤ p / (2 * n)`. Rewrite using `[Nat.le_div_iff_mul_le hs]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp1 : p < (p / (2 * n) + 1) * (2 * n)`.
+
+Use polynomial arithmetic with `[Nat.div_add_mod p (2 * n), Nat.mod_lt p hs]`. Establish `ht4 : 4 ≤ p / (2 * n)` using `by omega`. Establish `hpt : p ≤ 2 ^ (p / (2 * n))`. Use polynomial arithmetic with `[Nat.mul_le_mul_left (p / (2 * n) + 1) ht, pow_bound (p / (2 * n)) ht4]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_le_two_pow {p n : ℕ} (hn : 1 ≤ n) (h16 : 16 * n ^ 2 < p) : p ^ (2 * n) ≤ 2 ^ p := by
   have hs : 0 < 2 * n := by omega
   have ht : 4 * (2 * n) ≤ p / (2 * n) := by
@@ -87,6 +119,13 @@ theorem pow_le_two_pow {p n : ℕ} (hn : 1 ≤ n) (h16 : 16 * n ^ 2 < p) : p ^ (
     _ = 2 ^ (p / (2 * n) * (2 * n)) := (pow_mul 2 _ _).symm
     _ ≤ 2 ^ p := Nat.pow_le_pow_right (by norm_num) (Nat.div_mul_le_self p (2 * n))
 
+/- English proof (translation)
+Establish `hNpos : 0 < N` using `by omega`. Establish `hSp : ∀ q ∈ N.primeFactors, q.Prime` using `fun q hq => Nat.prime_of_mem_primeFactors hq`. Establish `hSne : N.primeFactors.Nonempty`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd (show N ≠ 1 by omega)`. Conclude with `⟨q, Nat.mem_primeFactors.mpr ⟨hq, hqd, by omega⟩⟩`.
+
+Establish `key` using `prod_sq_le N.primeFactors hSp hSne`. Establish `htot` using `Nat.totient_mul_prod_primeFactors N`. Establish `hQ : 0 < ∏ q ∈ N.primeFactors, (q - 1)` using `prod_pos (fun q hq => by have := (hSp q hq).two_le; omega)`. Establish `h1 : (N * ∏ q ∈ N.primeFactors, (q - 1)) ^ 2 ≤ (4 * (2 * #N.primeFactors - 1) * N.totient ^ 2) * (∏ q ∈ N.primeFactors, (q - 1)) ^ 2`. Rewrite using `[← htot]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[mul_pow]`. Conclude with `Nat.le_of_mul_le_mul_right h1 (pow_pos hQ 2)`.
+-/
 theorem sq_le_totient {N : ℕ} (hN : 2 ≤ N) :
     N ^ 2 ≤ 4 * (2 * #N.primeFactors - 1) * N.totient ^ 2 := by
   have hNpos : 0 < N := by omega
@@ -109,15 +148,32 @@ theorem sq_le_totient {N : ℕ} (hN : 2 ≤ N) :
   rw [mul_pow] at h1
   exact Nat.le_of_mul_le_mul_right h1 (pow_pos hQ 2)
 
+/- English proof (translation)
+Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd (show N ≠ 1 by omega)`. Conclude with `card_pos.mpr ⟨q, Nat.mem_primeFactors.mpr ⟨hq, hqd, by omega⟩⟩`.
+-/
 theorem card_primeFactors_pos {N : ℕ} (hN : 2 ≤ N) : 1 ≤ #N.primeFactors := by
   obtain ⟨q, hq, hqd⟩ := Nat.exists_prime_and_dvd (show N ≠ 1 by omega)
   exact card_pos.mpr ⟨q, Nat.mem_primeFactors.mpr ⟨hq, hqd, by omega⟩⟩
 
+/- English proof (translation)
+The claim follows from `(pow_card_le_prod N.primeFactors (fun q => q) 2 (fun q hq => (Nat.prime_of_mem_primeFactors hq).two_le)).trans (Nat.le_of_dvd hN (Nat.prod_primeFactors_dvd N))`.
+-/
 theorem two_pow_card_le {N : ℕ} (hN : 0 < N) : 2 ^ #N.primeFactors ≤ N :=
   (pow_card_le_prod N.primeFactors (fun q => q) 2
       (fun q hq => (Nat.prime_of_mem_primeFactors hq).two_le)).trans
     (Nat.le_of_dvd hN (Nat.prod_primeFactors_dvd N))
 
+/- English proof (translation)
+Establish `hp2` using `hp.two_le`. Establish `hpn : p ^ 2 ≤ p ^ n` using `Nat.pow_le_pow_right (by omega) hn`. Establish `hp4 : 4 ≤ p ^ 2` using `by nlinarith`. Establish `hN2 : 2 ≤ p ^ n - 1` using `by omega`. Establish `hsq` using `sq_le_totient hN2`.
+
+Establish `hw1` using `card_primeFactors_pos hN2`. Establish `hω` using `two_pow_card_le (show 0 < p ^ n - 1 by omega)`. Establish `hφ : 0 < (p ^ n - 1).totient` using `Nat.totient_pos.mpr (by omega)`. Establish `hwp : 2 * #(p ^ n - 1).primeFactors < p`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `: 2 ^ p < 2 ^ p`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_irrefl _ this`. Establish `h16' : 16 * n ^ 2 ≤ p - 1` using `by omega`.
+
+Establish `hw2 : 2 * #(p ^ n - 1).primeFactors - 1 < p - 1` using `by omega`. Establish `hlt : 16 * n ^ 2 * (2 * #(p ^ n - 1).primeFactors - 1) < (p - 1) * (p - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq2 : (2 * n * (p ^ n - 1)) ^ 2 < ((p - 1) * (p ^ n - 1).totient) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `absurd hsq2 (not_lt.mpr (Nat.pow_le_pow_left hc 2))`.
+-/
 theorem two_n_N_lt {p n : ℕ} (hp : p.Prime) (hn : 2 ≤ n) (h16 : 16 * n ^ 2 < p) :
     2 * n * (p ^ n - 1) < (p - 1) * (p ^ n - 1).totient := by
   have hp2 := hp.two_le

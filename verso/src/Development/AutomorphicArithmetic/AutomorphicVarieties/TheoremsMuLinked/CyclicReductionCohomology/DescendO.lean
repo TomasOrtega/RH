@@ -22,6 +22,9 @@ private def zeroSub {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ
     rw [inv_mul_cancel, y1, ha', map_zero, add_zero] at h
     exact h.symm
 
+/- English proof (translation)
+Establish `y1 : y 1 = 0` using `by simpa using hy.2 1 1`. Establish `h` using `hy.2 g g⁻¹`. Rewrite `h` using `[mul_inv_cancel, y1]`. Rewrite using `[hy.2, hy.2, h0, map_zero, add_zero, map_mul, ht, mul_one]`. Conclude with `h.symm`.
+-/
 private theorem conj_zero {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ]
     [AddCommGroup M] [Module R M] (ρ : Representation R Γ M) (y : Γ → M) (hy : y ∈ Zl ρ) (t g : Γ) (ht : ρ t = 1)
     (h0 : y t = 0) : y (g * t * g⁻¹) = 0 := by
@@ -31,6 +34,13 @@ private theorem conj_zero {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSp
   rw [hy.2, hy.2, h0, map_zero, add_zero, map_mul, ht, mul_one]
   exact h.symm
 
+/- English proof (translation)
+Establish `e : ∀ g, y g = y (Function.surjInv hs (p g))`. Introduce `g`. Establish `: g⁻¹ * Function.surjInv hs (p g) ∈ p.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, Function.surjInv_eq hs, map_inv, inv_mul_cancel]`. Establish `h` using `hy.2 g (g⁻¹ * Function.surjInv hs (p g))`.
+
+Rewrite `h` using `[hk _ this, map_zero, add_zero, mul_inv_cancel_left]`. Conclude with `h.symm`. Use `⟨fun γ => y (Function.surjInv hs γ), fun s => ?_, e⟩` and prove the remaining obligations. Establish `hq : Topology.IsQuotientMap p` using `hc.isClosedMap.isQuotientMap hc hs`. Rewrite using `[← hq.isOpen_preimage]`.
+
+Use `hy.1 s using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, ← e g]`.
+-/
 private theorem factor_lc {R Γ Γ' M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ]
     [Group Γ'] [TopologicalSpace Γ'] [T2Space Γ'] [AddCommGroup M] [Module R M] (ρ : Representation R Γ M)
     (y : Γ → M) (hy : y ∈ Zl ρ) (p : Γ →* Γ') (hc : Continuous p) (hs : Function.Surjective p)
@@ -49,10 +59,44 @@ private theorem factor_lc {R Γ Γ' M : Type} [CommRing R] [Group Γ] [Topologic
   ext g
   simp only [Set.mem_preimage, ← e g]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private theorem red_one {O : Type} [CommRing O] [IsLocalRing O] (n m : ℕ) :
     red m (1 : Matrix (Fin n) (Fin n) O) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Introduce `l _ L G0 T O _ _ _ _ _ n y m N rep' hεc hPL had z' hz hc hta`. Establish `heps : ∀ g, epsm O (T.GN N) m g = epsm O G0 m ((T.h N).p g)` using `fun g => by`. Unfold `epsm`. Rewrite using `[(T.h N).ε]`. Establish `hcoc : ∀ g g' : (T.GN N).G₀, z' ((g * g' : (T.GN N).G₀) : (T.GN N).Γ) = z' g + epsm O (T.GN N) m g • (y.ρm (T.h N) m g * z' g' * y.ρm (T.h N) m g⁻¹)` using `fun g g' => by`.
+
+Establish `e` using `hz.2 g g'`. Rewrite `e` using `[had.1 g]`. Conclude with `e`. Establish `htriv : ∀ j, rep' (T.ta N j) = 1`. Introduce `j`.
+
+Establish `h1 : (T.h N).p₀ (T.ta N j) = 1` using `Subtype.ext (T.ta_ker N j)`. Establish `h2 : y.ρm (T.h N) m (T.ta N j) = 1`. Unfold `Pt.ρm`. Rewrite using `[h1]`. Simplify using `[mat, red_one]`.
+
+Establish `h3 : y.ρm (T.h N) m (T.ta N j)⁻¹ = 1`. Unfold `Pt.ρm`. Rewrite using `[map_inv, h1, inv_one]`. Simplify using `[mat, red_one]`. Establish `h4 : epsm O (T.GN N) m (T.ta N j) = 1`.
+
+Rewrite using `[heps, T.ta_ker]`. Simplify using `[epsm]`. Use `LinearMap.ext fun Z => (had.1 _ Z).trans ?_` and prove the remaining obligations. Rewrite using `[h2, h3, h4, one_smul, one_mul, mul_one]`. Both sides reduce to the same expression.
+
+Establish `hker : (T.h N).p.ker ≤ zeroSub rep' z' hz`. Use `(T.ker_le N).trans (Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) (hz.1.isClosed_fiber 0))` and prove the remaining obligations. Use `(Subgroup.closure_le _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨_, ⟨j, rfl⟩, hj⟩` from `Group.mem_conjugatesOfSet_iff.1 ha`. Take `⟨g, rfl⟩` from `isConj_iff.1 hj`.
+
+Conclude with `conj_zero rep' z' hz _ g (htriv j) (hta j)`. Introduce `a ha`. Establish `hη : a ∈ (T.GN N).η.ker`. Establish `ha'` using `ha`. Simplify using `only [PL, Subgroup.mem_iInf] at ha'`.
+
+Conclude with `ha' ⟨⟨(T.GN N).η.ker, (T.GN N).η_open⟩, MonoidHom.normal_ker _⟩ fun h hh => ⟨0, by`. Rewrite using `[pow_zero, pow_one]`. Use `show (T.GN N).η h = 1`. Rewrite using `[← (T.h N).η]`. Conclude with `T.H_η _ hh⟩`.
+
+Conclude with `(plKill l L G0 T O n y m (T.GN N) (T.h N) hPL (fun g => z' g) (hz.1.comp_continuous continuous_subtype_val) hcoc ⟨a, hη⟩ ha).1`. Take `⟨Z, z1, z2⟩` from `factor_lc rep' z' hz (T.h N).p (T.h N).cont (T.h N).surj fun g hg => hker hg`. Establish `hs : ∀ g0 : G0.G₀, ∃ g : (T.GN N).G₀, (T.h N).p₀ g = g0`. Introduce `g0`. Take `⟨g, hg⟩` from `(T.h N).surj g0`.
+
+Use `⟨⟨g, ?_⟩, Subtype.ext hg⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, ← (T.h N).η, hg]`. Conclude with `g0.2`. Establish `z3 : ∀ g : (T.GN N).G₀, Z ((T.h N).p₀ g : G0.G₀) = z' g` using `fun g => (z2 g).symm`. Use `⟨fun g0 => Z g0, ⟨z1.comp_continuous continuous_subtype_val, fun g0 h0 => ?_, fun g0 => ?_⟩, fun g => by rw [← z3]⟩` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `hs g0`. Take `⟨h, rfl⟩` from `hs h0`. Establish `e` using `hcoc g h`. Rewrite `e` using `[heps]`. Simplify using `only []`.
+
+Rewrite using `[← map_mul, z3, z3, z3, ← map_inv]`. Conclude with `e`. Take `⟨g, rfl⟩` from `hs g0`. Establish `hP : IsUnit (red m (y.P : Matrix (Fin n) (Fin n) O))` using `(Units.isUnit y.P).map (Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix`. Establish `e` using `((polP l (T.GN N).frame O _ n _ _ _ rep' hP had).2 z' hz hc).1 g`.
+
+Establish `e2 : G0.frame.conj ((T.h N).p₀ g) = (T.h N).p₀ ((T.GN N).frame.conj g)`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show G0.c * (T.h N).p g * G0.c⁻¹ = (T.h N).p ((T.GN N).c * g * (T.GN N).c⁻¹)`. Rewrite using `[map_mul, map_mul, map_inv, (T.h N).c]`. Establish `e3 : epsm O (T.GN N) m (T.GN N).c = -1`.
+
+Rewrite using `[heps, (T.h N).c]`. Simplify using `[epsm, hεc]`. Simplify using `only []`. Rewrite using `[e2, z3, z3]`. Use `e.trans ?_` and prove the remaining obligations.
+
+Use `show -(epsm O (T.GN N) m (T.GN N).c • _) = _`. Rewrite using `[e3, neg_smul, neg_neg, one_smul]`.
+-/
 theorem UpperTheory.V.Th.descendO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m N : ℕ) (rep' : Representation O (T.GN N).Γ (Mm O n m)), G0.ε G0.c = -1 → (∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → y.ρ g = 1) → IsAd1 (T.h N) y m rep' → ∀ z' ∈ Zl rep', z' (T.GN N).c = 0 → (∀ j, z' (T.ta N j) = 0) → ∃ z ∈ Tw y m, ∀ g : (T.GN N).G₀, z' g = z ((T.h N).p₀ g) := by
   intro l _ L G0 T O _ _ _ _ _ n y m N rep' hεc hPL had z' hz hc hta

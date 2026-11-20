@@ -7,10 +7,16 @@ variable {k : Type} [Field k] {r : ℕ}
 
 def ev (r : ℕ) (k : Type) [Field k] (i : ℕ) : Fin r → k := fun j => if (j : ℕ) = i then 1 else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [ev, Pi.single_apply, Fin.ext_iff]`.
+-/
 theorem ev_eq_single (i : ℕ) (hi : i < r) : ev r k i = Pi.single (⟨i, hi⟩ : Fin r) 1 := by
   funext j
   simp only [ev, Pi.single_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_mulVec, ih]`.
+-/
 theorem sum_mulVec' {ι : Type} (s : Finset ι) (M : ι → Matrix (Fin r) (Fin r) k) (v : Fin r → k) :
     (∑ i ∈ s, M i) *ᵥ v = ∑ i ∈ s, M i *ᵥ v := by
   classical
@@ -18,6 +24,11 @@ theorem sum_mulVec' {ι : Type} (s : Finset ι) (M : ι → Matrix (Fin r) (Fin 
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_mulVec, ih]
 
+/- English proof (translation)
+Establish `h0` using `aeval_self_charpoly M`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range, charpoly_natDegree_eq_dim, Fintype.card_fin, Finset.sum_range_succ]`. Establish `h1 : M.charpoly.coeff r = 1`. Use `(charpoly_monic M).leadingCoeff` as an intermediate fact. Rewrite `this` using `[Polynomial.leadingCoeff, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Then use the resulting hypothesis.
+
+Rewrite `h0` using `[h1, one_smul]`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `h0`.
+-/
 theorem pow_card_eq (M : Matrix (Fin r) (Fin r) k) :
     M ^ r = - ∑ l ∈ Finset.range r, M.charpoly.coeff l • M ^ l := by
   have h0 := aeval_self_charpoly M
@@ -30,6 +41,9 @@ theorem pow_card_eq (M : Matrix (Fin r) (Fin r) k) :
   rw [eq_neg_iff_add_eq_zero, add_comm]
   exact h0
 
+/- English proof (translation)
+Rewrite using `[ev_eq_single i (by omega)]`. Use function extensionality and compare the values at `j`. Simplify using `only [mulVec_single, companion, of_apply, mul_one, ev]`. Establish `: ¬ (i + 1 = r)` using `by omega`. Simplify using `[this]`.
+-/
 theorem companion_mulVec_ev (p : Fin r → k) (i : ℕ) (hi : i + 1 < r) :
     companion p *ᵥ ev r k i = ev r k (i + 1) := by
   rw [ev_eq_single i (by omega)]
@@ -38,23 +52,39 @@ theorem companion_mulVec_ev (p : Fin r → k) (i : ℕ) (hi : i + 1 < r) :
   have : ¬ (i + 1 = r) := by omega
   simp [this]
 
+/- English proof (translation)
+Rewrite using `[ev_eq_single i (by omega)]`. Use function extensionality and compare the values at `j`. Simplify using `[mulVec_single, companion, hi]`.
+-/
 theorem companion_mulVec_last (p : Fin r → k) (i : ℕ) (hi : i + 1 = r) :
     companion p *ᵥ ev r k i = - p := by
   rw [ev_eq_single i (by omega)]
   funext j
   simp [mulVec_single, companion, hi]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ', ← mulVec_mulVec, ih (by omega), companion_mulVec_ev p i hi]`.
+-/
 theorem companion_pow_ev (p : Fin r → k) (i : ℕ) (hi : i < r) :
     companion p ^ i *ᵥ ev r k 0 = ev r k i := by
   induction i with
   | zero => simp
   | succ i ih => rw [pow_succ', ← mulVec_mulVec, ih (by omega), companion_mulVec_ev p i hi]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, r = m + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[pow_succ', ← mulVec_mulVec, companion_pow_ev p m (by omega), companion_mulVec_last p m rfl]`.
+-/
 theorem companion_pow_card (p : Fin r → k) (hr : 0 < r) :
     companion p ^ r *ᵥ ev r k 0 = - p := by
   obtain ⟨m, rfl⟩ : ∃ m, r = m + 1 := ⟨r - 1, by omega⟩
   rw [pow_succ', ← mulVec_mulVec, companion_pow_ev p m (by omega), companion_mulVec_last p m rfl]
 
+/- English proof (translation)
+Establish `hr : 0 < r` using `i.pos`. Establish `h` using `pow_card_eq (companion p)`. Establish `h2` using `congrArg (fun M => M *ᵥ ev r k 0) h`. Simplify using `only [companion_pow_card p hr, neg_mulVec, sum_mulVec', smul_mulVec] at h2`. Establish `h3` using `congrFun h2 i`.
+
+Simplify using `only [Pi.neg_apply, neg_inj, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h3`. Rewrite using `[h3, Finset.sum_eq_single (i : ℕ)]`. Simplify using `[companion_pow_ev p i i.2, ev]`. Introduce `b hb hne`. Rewrite using `[companion_pow_ev p b (Finset.mem_range.mp hb)]`.
+
+Simplify using `[ev, Ne.symm hne]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr i.2) h`.
+-/
 theorem charpoly_companion_coeff (p : Fin r → k) (i : Fin r) :
     (companion p).charpoly.coeff i = p i := by
   have hr : 0 < r := i.pos
@@ -76,6 +106,11 @@ namespace GlobalTheory.JR.NormalFormL
 
 variable {k : Type} [Field k] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨A, b, c, l⟩` from `Y`. Simplify using `only [inv, act, mom, Prod.mk.injEq, and_true]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.coe_units_inv, charpoly_units_conj]`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Units.conj_pow, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec]`. Use `congr 2`. Simplify using `[mul_assoc]`.
+-/
 theorem inv_act' (g : GL (Fin r) k) (Y : Gl r k) : inv (act g Y) = inv Y := by
   obtain ⟨A, b, c, l⟩ := Y
   simp only [inv, act, mom, Prod.mk.injEq, and_true]
@@ -87,11 +122,17 @@ theorem inv_act' (g : GL (Fin r) k) (Y : Gl r k) : inv (act g Y) = inv Y := by
     congr 2
     simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨A, b, c, l⟩` from `Y`. Simplify using `only [act, _root_.mul_inv_rev, Units.val_mul, mulVec_mulVec, vecMul_vecMul, Prod.mk.injEq, and_true]`. Apply the tactic sequence `try simp [mul_assoc]`.
+-/
 theorem act_mul' (g h : GL (Fin r) k) (Y : Gl r k) : act (g * h) Y = act g (act h Y) := by
   obtain ⟨A, b, c, l⟩ := Y
   simp only [act, _root_.mul_inv_rev, Units.val_mul, mulVec_mulVec, vecMul_vecMul, Prod.mk.injEq, and_true]
   try simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨p, m, l⟩` from `a`. Simplify using `only [inv, sec, Prod.mk.injEq, and_true]`. Use `⟨funext fun i => charpoly_companion_coeff p i, funext fun i => ?_⟩` and prove the remaining obligations. Establish `he : (fun i : Fin r => if (i : ℕ) = 0 then (1 : k) else 0) = ev r k 0` using `rfl`. Simplify using `only [mom, he, companion_pow_ev p i i.2, ev_eq_single (i : ℕ) i.2, dotProduct_single, mul_one]`.
+-/
 theorem inv_sec' (a : Inv r k) : inv (sec a) = a := by
   obtain ⟨p, m, l⟩ := a
   simp only [inv, sec, Prod.mk.injEq, and_true]
@@ -99,6 +140,13 @@ theorem inv_sec' (a : Inv r k) : inv (sec a) = a := by
   have he : (fun i : Fin r => if (i : ℕ) = 0 then (1 : k) else 0) = ev r k 0 := rfl
   simp only [mom, he, companion_pow_ev p i i.2, ev_eq_single (i : ℕ) i.2, dotProduct_single, mul_one]
 
+/- English proof (translation)
+Apply `Polynomial.ext` to reduce the goal to its premises. Introduce `n`. Break down `lt_trichotomy n r with h | h | h` into its components or cases. Conclude with `charpoly_companion_coeff _ ⟨n, h⟩`. Substitute `h` using the available equality.
+
+Establish `h1` using `(charpoly_monic (companion (inv Y).1)).leadingCoeff`. Establish `h2` using `(charpoly_monic Y.1).leadingCoeff`. Rewrite `h1`, `h2` using `[Polynomial.leadingCoeff, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Rewrite using `[h1, h2]`. Apply the tactic sequence `rw [Polynomial.coeff_eq_zero_of_natDegree_lt, Polynomial.coeff_eq_zero_of_natDegree_lt] <;>`.
+
+Simplify using `using h`.
+-/
 theorem charpoly_companion_inv (Y : Gl r k) : (companion (inv Y).1).charpoly = Y.1.charpoly := by
   apply Polynomial.ext
   intro n
@@ -112,6 +160,13 @@ theorem charpoly_companion_inv (Y : Gl r k) : (companion (inv Y).1).charpoly = Y
   · rw [Polynomial.coeff_eq_zero_of_natDegree_lt, Polynomial.coeff_eq_zero_of_natDegree_lt] <;>
       simpa using h
 
+/- English proof (translation)
+Establish `hmon` using `charpoly_monic M`. Establish `hdeg : M.charpoly.natDegree = r` using `by simp`. Establish `hne : M.charpoly ≠ 1`. Introduce `h`. Rewrite `hdeg` using `[h, Polynomial.natDegree_one]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hM : M ^ n = Polynomial.aeval M ((Polynomial.X ^ n) %ₘ M.charpoly)`. Rewrite using `[Polynomial.aeval_modByMonic_eq_self_of_root (aeval_self_charpoly M)]`. Simplify using the standard rewrite rules. Rewrite using `[hM, Polynomial.aeval_eq_sum_range' (n := r) (by have := Polynomial.natDegree_modByMonic_lt (Polynomial.X ^ n) hmon hne; omega), sum_mulVec', dotProduct_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem dot_pow_eq_sum (M : Matrix (Fin r) (Fin r) k) (hr : 0 < r) (b c : Fin r → k) (n : ℕ) :
     c ⬝ᵥ (M ^ n *ᵥ b) = ∑ i ∈ Finset.range r,
       ((Polynomial.X ^ n) %ₘ M.charpoly).coeff i * (c ⬝ᵥ (M ^ i *ᵥ b)) := by
@@ -127,6 +182,13 @@ theorem dot_pow_eq_sum (M : Matrix (Fin r) (Fin r) k) (hr : 0 < r) (b c : Fin r 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Simplify using `[mom, dotProduct]`. Establish `hs` using `inv_sec' (inv Y)`. Simplify using `only [mom]`.
+
+Rewrite using `[dot_pow_eq_sum _ hr, dot_pow_eq_sum _ hr]`. Establish `hc : (sec (inv Y)).1.charpoly = Y.1.charpoly` using `charpoly_companion_inv Y`. Rewrite using `[hc]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `congrFun (congrArg (fun a : Inv r k => a.2.1) hs) ⟨i, Finset.mem_range.mp hi⟩` as an intermediate fact. Simplify `this` using `[inv, mom]`.
+-/
 theorem mom_sec_inv (Y : Gl r k) (n : ℕ) : mom (sec (inv Y)) n = mom Y n := by
   rcases Nat.eq_zero_or_pos r with hr | hr
   · subst hr; simp [mom, dotProduct]
@@ -140,6 +202,9 @@ theorem mom_sec_inv (Y : Gl r k) (n : ℕ) : mom (sec (inv Y)) n = mom Y n := by
   have := congrFun (congrArg (fun a : Inv r k => a.2.1) hs) ⟨i, Finset.mem_range.mp hi⟩
   simpa [inv, mom] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [mul_apply, Cm, Bm, hankel, of_apply, mom_sec_inv]`. Simplify using `only [mom]`. Rewrite using `[pow_add, ← mulVec_mulVec, dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hankel_eq (Y : Gl r k) : Cm Y * Bm Y = hankel (inv Y) := by
   ext i j
   simp only [mul_apply, Cm, Bm, hankel, of_apply, mom_sec_inv]
@@ -153,6 +218,15 @@ namespace GlobalTheory.JR.NormalFormL
 
 variable {k : Type} [Field k] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hl : (Y.1 * Bm Y) i j = (Y.1 ^ ((j : ℕ) + 1) *ᵥ Y.2.1) i`. Rewrite using `[pow_succ', ← mulVec_mulVec]`. Simplify using `[mul_apply, Bm, mulVec, dotProduct]`. Rewrite using `[hl, mul_apply]`.
+
+Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Simplify using `only [companion, of_apply, hj, if_true, Bm, inv]`. Rewrite using `[pow_card_eq Y.1, neg_mulVec, sum_mulVec']`. Simplify using `only [Pi.neg_apply, Finset.sum_apply, smul_mulVec, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => (Y.1 ^ l *ᵥ Y.2.1) i * -Y.1.charpoly.coeff l), ← Finset.sum_neg_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Establish `hj' : (j : ℕ) + 1 < r` using `by omega`. Rewrite using `[Finset.sum_eq_single (⟨(j : ℕ) + 1, hj'⟩ : Fin r)]`. Simplify using `[companion, hj, Bm]`. Introduce `l _ hne`.
+
+Establish `: ¬ ((l : ℕ) = (j : ℕ) + 1)` using `fun h => hne (Fin.ext h)`. Simplify using `[companion, hj, this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mul_Bm (Y : Gl r k) : Y.1 * Bm Y = Bm Y * companion (inv Y).1 := by
   ext i j
   have hl : (Y.1 * Bm Y) i j = (Y.1 ^ ((j : ℕ) + 1) *ᵥ Y.2.1) i := by
@@ -174,15 +248,38 @@ theorem mul_Bm (Y : Gl r k) : Y.1 * Bm Y = Bm Y * companion (inv Y).1 := by
       simp [companion, hj, this]
     · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[vecMul, dotProduct, Bm, inv, mom, mulVec]`.
+-/
 theorem vecMul_Bm (Y : Gl r k) : Y.2.2.1 ᵥ* Bm Y = (inv Y).2.1 := by
   funext j
   simp [vecMul, dotProduct, Bm, inv, mom, mulVec]
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[Delta, ← hankel_eq, det_mul, h0, mul_zero]`.
+-/
 theorem det_Bm_ne (Y : Gl r k) (h : Delta (inv Y) ≠ 0) : (Bm Y).det ≠ 0 := by
   intro h0
   apply h
   rw [Delta, ← hankel_eq, det_mul, h0, mul_zero]
 
+/- English proof (translation)
+Establish `hB : IsUnit (Bm Y)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr (det_Bm_ne Y hΔ))`. Establish `hB₁ : IsUnit (Bm Y₁)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr (det_Bm_ne Y₁ (hI ▸ hΔ)))`. Use `set u := hB.unit with hu`. Use `set u₁ := hB₁.unit with hu₁`. Establish `eu : (u : Matrix (Fin r) (Fin r) k) = Bm Y` using `hB.unit_spec`.
+
+Establish `eu₁ : (u₁ : Matrix (Fin r) (Fin r) k) = Bm Y₁` using `hB₁.unit_spec`. Use `⟨u₁ * u⁻¹, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨A, b, c, l⟩` from `Y`. Take `⟨A₁, b₁, c₁, l₁⟩` from `Y₁`. Establish `hAB` using `mul_Bm (A, b, c, l)`.
+
+Establish `hAB₁` using `mul_Bm (A₁, b₁, c₁, l₁)`. Establish `hc` using `vecMul_Bm (A, b, c, l)`. Establish `hc₁` using `vecMul_Bm (A₁, b₁, c₁, l₁)`. Rewrite `hAB₁`, `hc₁` using `[hI]`. Rewrite `hAB`, `hc` using `[← eu]`.
+
+Rewrite `hAB₁`, `hc₁` using `[← eu₁]`. Establish `hl : l₁ = l` using `congrArg (fun a : Inv r k => a.2.2) hI`. Simplify using `only [act, _root_.mul_inv_rev, inv_inv, Units.val_mul, Prod.mk.injEq]`. Use `⟨?_, ?_, ?_, hl.symm⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hAB, Units.inv_mul_cancel_left]`. Use `_ = A₁ := by rw [← hAB₁, Units.mul_inv_cancel_right]`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Use function extensionality and compare the values at `i`.
+
+Conclude with `i.elim0`. Establish `e0 : ∀ (B : Matrix (Fin r) (Fin r) k) (Z : Gl r k), B = Bm Z → B *ᵥ Pi.single (⟨0, hr⟩ : Fin r) 1 = Z.2.1`. Introduce `B Z hBZ`. Substitute `hBZ` using the available equality. Use function extensionality and compare the values at `i`.
+
+Simplify using `[mulVec_single, Bm]`. Establish `hb : (u : Matrix (Fin r) (Fin r) k) *ᵥ Pi.single (⟨0, hr⟩ : Fin r) 1 = b` using `e0 _ (A, b, c, l) eu`. Establish `hb₁ : (u₁ : Matrix (Fin r) (Fin r) k) *ᵥ Pi.single (⟨0, hr⟩ : Fin r) 1 = b₁` using `e0 _ (A₁, b₁, c₁, l₁) eu₁`. Rewrite using `[← hb, mulVec_mulVec, mul_assoc, Units.inv_mul, mul_one, hb₁]`. Establish `hc' : c ᵥ* (u : Matrix (Fin r) (Fin r) k) = c₁ ᵥ* (u₁ : Matrix (Fin r) (Fin r) k)` using `hc.trans hc₁.symm`.
+
+Rewrite using `[← vecMul_vecMul, hc', vecMul_vecMul, Units.mul_inv, vecMul_one]`. Rewrite using `[Units.val_mul, mul_assoc, eu.symm, Units.inv_mul, mul_one, eu₁]`. Introduce and unpack `g ⟨_, hg⟩`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, eu₁, ← hg, ← eu, mul_assoc, Units.mul_inv, mul_one]`.
+-/
 theorem unique_conj (Y Y₁ : Gl r k) (hΔ : Delta (inv Y) ≠ 0) (hI : inv Y₁ = inv Y) :
     ∃! g : GL (Fin r) k, act g Y = Y₁ ∧ (g : Matrix (Fin r) (Fin r) k) * Bm Y = Bm Y₁ := by
   have hB : IsUnit (Bm Y) := (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr (det_Bm_ne Y hΔ))
@@ -230,6 +327,9 @@ theorem unique_conj (Y Y₁ : Gl r k) (hΔ : Delta (inv Y) ≠ 0) (hI : inv Y₁
 
 end GlobalTheory.JR.NormalFormL
 
+/- English proof (translation)
+Introduce `k _ r`. Conclude with `⟨GlobalTheory.JR.NormalFormL.inv_act', GlobalTheory.JR.NormalFormL.inv_sec', GlobalTheory.JR.NormalFormL.hankel_eq, GlobalTheory.JR.NormalFormL.act_mul', GlobalTheory.JR.NormalFormL.unique_conj⟩`.
+-/
 theorem GlobalTheory.JR.normalForm_invariants : ∀ (k : Type) [Field k] (r : ℕ), (∀ (g : GL (Fin r) k) (Y : Gl r k), inv (act g Y) = inv Y) ∧ (∀ a : Inv r k, inv (sec a) = a) ∧ (∀ Y : Gl r k, Cm Y * Bm Y = hankel (inv Y)) ∧ (∀ (g h : GL (Fin r) k) (Y : Gl r k), act (g * h) Y = act g (act h Y)) ∧ ∀ Y Y₁ : Gl r k, Delta (inv Y) ≠ 0 → inv Y₁ = inv Y → ∃! g : GL (Fin r) k, act g Y = Y₁ ∧ (g : Matrix (Fin r) (Fin r) k) * Bm Y = Bm Y₁ := by
   intro k _ r
   exact ⟨GlobalTheory.JR.NormalFormL.inv_act', GlobalTheory.JR.NormalFormL.inv_sec', GlobalTheory.JR.NormalFormL.hankel_eq,

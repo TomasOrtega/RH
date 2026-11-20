@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift.Glue
 
+/- English proof (translation)
+Introduce `ι _ A _ P _ _ _ _ res hcomp hsurj hfam I hI f`. Take `⟨i, hi⟩` from `hI`. Establish `hsub : ({i} : Finset ι) ⊆ I` using `Finset.singleton_subset_iff.2 hi`. Establish `key : ∀ (J : Finset ι) (hJ : {i} ∪ I = J) (g : P J), ∃ (l : ℕ) (a : P {i}), res {i} J (hJ ▸ Finset.subset_union_left) a = xProd A I ^ l • g`. Introduce `J hJ`.
+
+Substitute `hJ` using the available equality. Introduce `g`. Take `⟨l, a, ha⟩` from `hsurj I {i} g ⟨i, Finset.mem_singleton_self i⟩`. Conclude with `⟨l, a, ha⟩`. Take `⟨l, a, ha⟩` from `key I (Finset.union_eq_right.2 hsub) f`.
+
+Take `⟨c, N, hc, hci⟩` from `hfam i a`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : (MvPolynomial.X i : MvPolynomial ι A) ∣ xProd A I := by`. Simplify `Finset.dvd_prod_of_mem (fun j => (MvPolynomial.X j : MvPolynomial ι A)) hi` using `[xProd]`. Use `⟨N + l, q ^ N • ⟨c, mem_glue.2 hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ev_eq hcomp ⟨i, hi⟩ hi]`.
+
+Express the relevant statement in the definitionally equal form `q ^ N • res {i} I hsub (c i) = _`. Rewrite using `[hci, map_smul, show res {i} I hsub a = xProd A I ^ l • f from ha, hq, smul_smul, smul_smul, pow_add, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_xProd_pow_smul_eq_ev : ∀ (ι : Type) [LinearOrder ι] (A : Type) [CommRing A] (P : Finset ι → Type) [∀ S, AddCommGroup (P S)] [∀ S, Module A (P S)] [∀ S, Module (MvPolynomial ι A) (P S)] [∀ S, IsScalarTower A (MvPolynomial ι A) (P S)] (res : ∀ S S' : Finset ι, S ⊆ S' → P S →ₗ[MvPolynomial ι A] P S'), (∀ S S' S'' (h : S ⊆ S') (h' : S' ⊆ S'') a, res S' S'' h' (res S S' h a) = res S S'' (h.trans h') a) → (∀ (T S : Finset ι) (b : P (S ∪ T)), S.Nonempty → ∃ l : ℕ, xProd A T ^ l • b ∈ LinearMap.range (res S (S ∪ T) Finset.subset_union_left)) → (∀ (i : ι) (f : P {i}), ∃ (c : ∀ j : ι, P {j}) (N : ℕ), (∀ j l, res {j} {j, l} (sub_pair_left j l) (c j) = res {l} {j, l} (sub_pair_right j l) (c l)) ∧ c i = (MvPolynomial.X i : MvPolynomial ι A) ^ N • f) → ∀ (I : Finset ι) (hI : I.Nonempty) (f : P I), ∃ (l : ℕ) (m : glue res), ev res I hI m = xProd A I ^ l • f := by
   intro ι _ A _ P _ _ _ _ res hcomp hsurj hfam I hI f
   classical

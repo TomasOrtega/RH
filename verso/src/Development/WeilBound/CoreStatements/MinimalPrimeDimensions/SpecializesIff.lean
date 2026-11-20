@@ -18,6 +18,11 @@ open ChowFormHeightComparison₂.CF.A
 
 variable {R : Type} [CommRing R] {Z : Scheme.{0}} {B : LB Z} {m : ℕ} {p : Z ⟶ Sp R} {s : Fin m → B.Sec}
 
+/- English proof (translation)
+Rewrite using `[Module.length_quotient, Module.length_quotient]`. Establish `hmap : (Ideal.span {e a} : Ideal B) = (Ideal.relIsoOfBijective (e : A →+* B) e.bijective).symm (Ideal.span {a})` using `by show _ = Ideal.map (e : A →+* B) _`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[hmap]`.
+
+Conclude with `Order.coheight_orderIso _ _`.
+-/
 theorem len_equiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) :
     Module.length B (B ⧸ Ideal.span {e a}) = Module.length A (A ⧸ Ideal.span {a}) := by
   rw [Module.length_quotient, Module.length_quotient]
@@ -32,6 +37,9 @@ theorem len_equiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A)
 abbrev qOf {U : Z.Opens} (hU : IsAffineOpen U) {z : Z} (hz : z ∈ U) : Ideal Γ(Z, U) :=
   (hU.primeIdealOf ⟨z, hz⟩).asIdeal
 
+/- English proof (translation)
+Use `letI : Algebra Γ(Z, U) (Z.presheaf.stalk z) := (Z.presheaf.germ U z hz).hom.toAlgebra`. Use `haveI := hU.isLocalization_stalk ⟨z, hz⟩`. Establish `h` using `IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk z) (qOf hU hz) a`. Rewrite using `[← not_iff_not, not_not]`. Conclude with `h.symm`.
+-/
 theorem mem_qOf {U : Z.Opens} (hU : IsAffineOpen U) {z : Z} (hz : z ∈ U) (a : Γ(Z, U)) :
     a ∈ qOf hU hz ↔ ¬ IsUnit ((Z.presheaf.germ U z hz).hom a) := by
   letI : Algebra Γ(Z, U) (Z.presheaf.stalk z) := (Z.presheaf.germ U z hz).hom.toAlgebra
@@ -47,10 +55,16 @@ structure Ch (p : Z ⟶ Sp R) (s : Fin m → B.Sec) (k : Fin m) (t : Fin m → �
       resG Z (inf_le_left : nonzeroLocus (s k) ⊓ B.U i ≤ nonzeroLocus (s k)) (t j) *
         resG Z (inf_le_right : nonzeroLocus (s k) ⊓ B.U i ≤ B.U i) ((s k).f i)
 
+/- English proof (translation)
+The claim follows from `have ⟨h1, t, h2, h3⟩ := hE.chart k ⟨t, h1, h2, h3⟩`.
+-/
 theorem exists_ch (hE : Emb p s) (k : Fin m) : ∃ t, Ch p s k t :=
   have ⟨h1, t, h2, h3⟩ := hE.chart k
   ⟨t, h1, h2, h3⟩
 
+/- English proof (translation)
+Establish `hz : z ∈ (⨆ k, nonzeroLocus (s k))`. Rewrite using `[hE.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Opens.mem_iSup.mp hz`.
+-/
 theorem exists_mem (hE : Emb p s) (z : Z) : ∃ k, z ∈ nonzeroLocus (s k) := by
   have hz : z ∈ (⨆ k, nonzeroLocus (s k)) := by
     rw [hE.cover]
@@ -59,6 +73,9 @@ theorem exists_mem (hE : Emb p s) (z : Z) : ∃ k, z ∈ nonzeroLocus (s k) := b
 
 variable {k : Fin m} {t : Fin m → Γ(Z, nonzeroLocus (s k))}
 
+/- English proof (translation)
+Establish `hzi : z ∈ nonzeroLocus (s k) ⊓ B.U i` using `⟨hz, hi⟩`. Establish `hc` using `congrArg (Z.presheaf.germ _ z hzi).hom (h.rel j i)`. Rewrite `hc` using `[map_mul]`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at hc`. Conclude with `hc`.
+-/
 theorem Ch.germ (h : Ch p s k t) {z : Z} (hz : z ∈ nonzeroLocus (s k)) {i : B.ι} (hi : z ∈ B.U i) (j : Fin m) :
     (Z.presheaf.germ _ z hi).hom ((s j).f i) =
       (Z.presheaf.germ _ z hz).hom (t j) * (Z.presheaf.germ _ z hi).hom ((s k).f i) := by
@@ -69,6 +86,13 @@ theorem Ch.germ (h : Ch p s k t) {z : Z} (hz : z ∈ nonzeroLocus (s k)) {i : B.
     TopCat.Presheaf.germ_res_apply] at hc
   exact hc
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Unfold `nonzeroLocus at hz`. Take `⟨k, hk⟩` from `Opens.mem_iSup.mp hz`. Establish `hzk : z ∈ B.U k` using `Z.basicOpen_le _ hk`.
+
+Establish `hu` using `(Z.mem_basicOpen _ _ hzk).mp hk`. Establish `hzik : z ∈ B.U i ⊓ B.U k` using `⟨hi, hzk⟩`. Establish `hc` using `congrArg (Z.presheaf.germ (B.U i ⊓ B.U k) z hzik).hom (u.compat i k)`. Rewrite `hc` using `[map_mul]`. Use `erw [TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply] at hc`.
+
+Use `erw [hc]`. Conclude with `((Units.isUnit _).map _).mul hu`. Introduce `hu`. Unfold `nonzeroLocus`. Conclude with `Opens.mem_iSup.mpr ⟨i, (Z.mem_basicOpen _ _ hi).mpr hu⟩`.
+-/
 theorem isUnit_germ {u : B.Sec} {z : Z} {i : B.ι} (hi : z ∈ B.U i) :
     z ∈ nonzeroLocus u ↔ IsUnit ((Z.presheaf.germ _ z hi).hom (u.f i)) := by
   constructor
@@ -87,6 +111,13 @@ theorem isUnit_germ {u : B.Sec} {z : Z} {i : B.ι} (hi : z ∈ B.U i) :
     unfold nonzeroLocus
     exact Opens.mem_iSup.mpr ⟨i, (Z.mem_basicOpen _ _ hi).mpr hu⟩
 
+/- English proof (translation)
+Apply `TopCat.Presheaf.section_ext Z.sheaf` to reduce the goal to its premises. Introduce `z hz`. Establish `hzc : z ∈ (⨆ i, B.U i)`. Rewrite using `[hB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hzc`. Establish `hg` using `h.germ hz hi k`. Establish `hu` using `(isUnit_germ (u := s k) hi).mp hz`. Express the relevant statement in the definitionally equal form `(Z.presheaf.germ _ z hz).hom (t k) = (Z.presheaf.germ _ z hz).hom 1`. Rewrite using `[map_one]`.
+
+Conclude with `(hu.mul_right_cancel (by rw [one_mul]; exact hg)).symm`.
+-/
 theorem Ch.one (h : Ch p s k t) (hB : B.IsLB) : t k = 1 := by
   apply TopCat.Presheaf.section_ext Z.sheaf
   intro z hz
@@ -100,6 +131,13 @@ theorem Ch.one (h : Ch p s k t) (hB : B.IsLB) : t k = 1 := by
   rw [map_one]
   exact (hu.mul_right_cancel (by rw [one_mul]; exact hg)).symm
 
+/- English proof (translation)
+Establish `hUW : z ∈ U ⊓ W` using `⟨hU, hW⟩`. Establish `e1 : algX p (U ⊓ W) r = resG Z (inf_le_left : U ⊓ W ≤ U) (algX p U r)`. Rewrite using `[← GlobalTheory.TopForm.resG_comp_algX p (inf_le_left : U ⊓ W ≤ U)]`. Both sides reduce to the same expression. Establish `e2 : algX p (U ⊓ W) r = resG Z (inf_le_right : U ⊓ W ≤ W) (algX p W r)`.
+
+Rewrite using `[← GlobalTheory.TopForm.resG_comp_algX p (inf_le_right : U ⊓ W ≤ W)]`. Both sides reduce to the same expression. Establish `g1` using `congrArg (Z.presheaf.germ _ z hUW).hom e1`. Establish `g2` using `congrArg (Z.presheaf.germ _ z hUW).hom e2`. Establish `r1` using `Z.presheaf.germ_res_apply (homOfLE (inf_le_left : U ⊓ W ≤ U)) z hUW (algX p U r)`.
+
+Establish `r2` using `Z.presheaf.germ_res_apply (homOfLE (inf_le_right : U ⊓ W ≤ W)) z hUW (algX p W r)`. Conclude with `r1.symm.trans ((g1.symm.trans g2).trans r2)`.
+-/
 theorem germ_algX {U W : Z.Opens} {z : Z} (hU : z ∈ U) (hW : z ∈ W) (r : R) :
     (Z.presheaf.germ _ z hU).hom (algX p U r) = (Z.presheaf.germ _ z hW).hom (algX p W r) := by
   have hUW : z ∈ U ⊓ W := ⟨hU, hW⟩
@@ -115,6 +153,11 @@ theorem germ_algX {U W : Z.Opens} {z : Z} (hU : z ∈ U) (hW : z ∈ W) (r : R) 
   have r2 := Z.presheaf.germ_res_apply (homOfLE (inf_le_right : U ⊓ W ≤ W)) z hUW (algX p W r)
   exact r1.symm.trans ((g1.symm.trans g2).trans r2)
 
+/- English proof (translation)
+Rewrite using `[coe_eval₂Hom, coe_eval₂Hom, hom_eval₂, hom_eval₂]`. Establish `hc : (Z.presheaf.germ _ z hi).hom.comp (algX p (B.U i)) = (Z.presheaf.germ _ z hz).hom.comp (algX p (nonzeroLocus (s k)))`. Use extensionality with `r`. Conclude with `germ_algX hi hz r`. Establish `hfun : (fun j => (Z.presheaf.germ _ z hi).hom ((s j).f i)) = fun j => (Z.presheaf.germ _ z hz).hom (t j) * (Z.presheaf.germ _ z hi).hom ((s k).f i)`.
+
+Use function extensionality and compare the values at `fun j => h.germ hz hi j`. Rewrite using `[hfun, hc]`. Use `eval₂Hom_mul ((Z.presheaf.germ _ z hz).hom.comp (algX p (nonzeroLocus (s k)))) (fun j => (Z.presheaf.germ _ z hz).hom (t j)) hg ((Z.presheaf.germ _ z hi).hom ((s k).f i))` as an intermediate fact. Rewrite `this` using `[coe_eval₂Hom, coe_eval₂Hom]`. Conclude with `this`.
+-/
 theorem Ch.germ_eval (h : Ch p s k t) {z : Z} (hz : z ∈ nonzeroLocus (s k)) {i : B.ι} (hi : z ∈ B.U i) {d : ℕ}
     {g : MvPolynomial (Fin m) R} (hg : g.IsHomogeneous d) :
     (Z.presheaf.germ _ z hi).hom (eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) g) =
@@ -133,6 +176,11 @@ theorem Ch.germ_eval (h : Ch p s k t) {z : Z} (hz : z ∈ nonzeroLocus (s k)) {i
   rw [coe_eval₂Hom, coe_eval₂Hom] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `ChowFormHeightComparison₂.CF.A.cone ((Z.evaluation (B.U i) z hi).hom.comp (algX p (B.U i))) (fun k => (Z.evaluation (B.U i) z hi).hom ((s k).f i)) g = 0 ↔ _`. Rewrite using `[Polynomial.ext_iff]`. Simplify using `only [coeff_cone, Polynomial.coeff_zero]`. Apply `forall_congr'` to reduce the goal to its premises.
+
+Introduce `d`. Establish `e` using `Scheme.evaluation_eq_zero_iff_notMem_basicOpen Z z hi (eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) (homogeneousComponent d g))`. Rewrite `e` using `[Scheme.mem_basicOpen Z _ z hi]`. Rewrite using `[coe_eval₂Hom, ← hom_eval₂]`. Conclude with `e`.
+-/
 theorem mem_ker_coneHom {z : Z} {i : B.ι} (hi : z ∈ B.U i) (g : MvPolynomial (Fin m) R) :
     g ∈ RingHom.ker (coneHom p s z i hi) ↔ ∀ d, ¬ IsUnit ((Z.presheaf.germ _ z hi).hom
       (eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) (homogeneousComponent d g))) := by
@@ -149,6 +197,15 @@ theorem mem_ker_coneHom {z : Z} {i : B.ι} (hi : z ∈ B.U i) (g : MvPolynomial 
   rw [coe_eval₂Hom, ← hom_eval₂]
   exact e
 
+/- English proof (translation)
+Use extensionality with `g`. Establish `hzc : z ∈ (⨆ i, B.U i)`. Rewrite using `[hB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i0, hi0⟩` from `Opens.mem_iSup.mp hzc`.
+
+Establish `key : ∀ i (hi : z ∈ B.U i) (d : ℕ), IsUnit ((Z.presheaf.germ _ z hi).hom (eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) (homogeneousComponent d g))) ↔ IsUnit ((Z.presheaf.germ _ z hz).hom (eval₂Hom (algX p _) t (homogeneousComponent d g)))`. Introduce `i hi d`. Rewrite using `[h.germ_eval hz hi (homogeneousComponent_isHomogeneous d g)]`. Conclude with `IsUnit.mul_iff.trans (and_iff_left (((isUnit_germ hi).mp hz).pow d))`. Rewrite using `[ChowFormHeightComparison₂.CF.A.mem_pr]`.
+
+Simplify using `only [ptIdeal, Submodule.mem_iInf, mem_ker_coneHom]`. Prove the components needed by the constructor for the conclusion. Introduce `H d`. Rewrite using `[mem_qOf]`. Conclude with `(key i0 hi0 d).not.mp (H i0 hi0 d)`.
+
+Introduce `H i hi d`. Conclude with `(key i hi d).not.mpr ((mem_qOf _ _ _).mp (H d))`.
+-/
 theorem Ch.ptIdeal_eq (h : Ch p s k t) (hB : B.IsLB) {z : Z} (hz : z ∈ nonzeroLocus (s k)) :
     ptIdeal p s z = pr (algX p _) t (qOf h.aff hz) := by
   ext g
@@ -172,17 +229,26 @@ theorem Ch.ptIdeal_eq (h : Ch p s k t) (hB : B.IsLB) {z : Z} (hz : z ∈ nonzero
   · intro H i hi d
     exact (key i hi d).not.mpr ((mem_qOf _ _ _).mp (H d))
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_mem hE z`. Take `⟨t, h⟩` from `exists_ch hE k`. Rewrite using `[h.ptIdeal_eq hE.isLB hk]`. Conclude with `isProjPrime_pr (h.one hE.isLB) _`.
+-/
 theorem isProjPrime (hE : Emb p s) (z : Z) : IsProjPrime (ptIdeal p s z) := by
   obtain ⟨k, hk⟩ := exists_mem hE z
   obtain ⟨t, h⟩ := exists_ch hE k
   rw [h.ptIdeal_eq hE.isLB hk]
   exact isProjPrime_pr (h.one hE.isLB) _
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.linForm`. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X (u j) j`.
+-/
 private theorem linForm_isHomogeneous_one_minimal_prime_dimensions (u : Fin m → R) :
     (GroundTheory.Heights₂.Heights.linForm u).IsHomogeneous 1 := by
   unfold GroundTheory.Heights₂.Heights.linForm
   exact MvPolynomial.IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X (u j) j
 
+/- English proof (translation)
+Establish `heq : su.f i = eval₂Hom (algX p (B.U i)) (fun j => (s j).f i) (GroundTheory.Heights₂.Heights.linForm u)`. Rewrite using `[hu i]`. Simplify using `[GroundTheory.Heights₂.Heights.linForm, map_sum]`. Rewrite using `[heq, h.germ_eval hz hi (linForm_isHomogeneous_one_minimal_prime_dimensions u), pow_one]`.
+-/
 theorem Ch.germ_comb (h : Ch p s k t) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) {z : Z}
     (hz : z ∈ nonzeroLocus (s k)) {i : B.ι} (hi : z ∈ B.U i) :
     (Z.presheaf.germ _ z hi).hom (su.f i) =
@@ -194,6 +260,9 @@ theorem Ch.germ_comb (h : Ch p s k t) {u : Fin m → R} {su : B.Sec} (hu : IsCom
     simp [GroundTheory.Heights₂.Heights.linForm, map_sum]
   rw [heq, h.germ_eval hz hi (linForm_isHomogeneous_one_minimal_prime_dimensions u), pow_one]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_mem hE z`. Take `⟨t, h⟩` from `exists_ch hE k`. Take `⟨i, hi⟩` from `LB.mem_of_cover hE.isLB z`. Rewrite using `[h.ptIdeal_eq hE.isLB hk, mem_pr_homog (isHomog_linForm u), mem_qOf, not_not, isUnit_germ hi, h.germ_comb hu hk hi, IsUnit.mul_iff, and_iff_left ((isUnit_germ hi).1 hk)]`.
+-/
 theorem mem_iff (hE : Emb p s) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u su) (z : Z) :
     z ∈ nonzeroLocus su ↔ GroundTheory.Heights₂.Heights.linForm u ∉ ptIdeal p s z := by
   obtain ⟨k, hk⟩ := exists_mem hE z
@@ -202,6 +271,11 @@ theorem mem_iff (hE : Emb p s) {u : Fin m → R} {su : B.Sec} (hu : IsComb p s u
   rw [h.ptIdeal_eq hE.isLB hk, mem_pr_homog (isHomog_linForm u), mem_qOf, not_not, isUnit_germ hi,
     h.germ_comb hu hk hi, IsUnit.mul_iff, and_iff_left ((isUnit_germ hi).1 hk)]
 
+/- English proof (translation)
+Take `⟨k, hz⟩` from `exists_mem hE z`. Take `⟨t, h⟩` from `exists_ch hE k`. Establish `hzc : z ∈ (⨆ i, B.U i)`. Rewrite using `[hE.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hzc`. Rewrite using `[h.ptIdeal_eq hE.isLB hz, ChowFormHeightComparison₂.CF.A.mem_pr_homog (isHomogeneous_X R j), mem_qOf, not_not, eval₂Hom_X', isUnit_germ hi, h.germ hz hi j]`. Conclude with `IsUnit.mul_iff.trans (and_iff_left ((isUnit_germ hi).mp hz))`.
+-/
 theorem mem_iff_X (hE : Emb p s) (j : Fin m) (z : Z) : z ∈ nonzeroLocus (s j) ↔ X j ∉ ptIdeal p s z := by
   obtain ⟨k, hz⟩ := exists_mem hE z
   obtain ⟨t, h⟩ := exists_ch hE k
@@ -213,6 +287,9 @@ theorem mem_iff_X (hE : Emb p s) (j : Fin m) (z : Z) : z ∈ nonzeroLocus (s j) 
     eval₂Hom_X', isUnit_germ hi, h.germ hz hi j]
   exact IsUnit.mul_iff.trans (and_iff_left ((isUnit_germ hi).mp hz))
 
+/- English proof (translation)
+Establish `e` using `(hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff (x := hU.primeIdealOf ⟨z, hz⟩) (y := hU.primeIdealOf ⟨z', hz'⟩))`. Rewrite `e` using `[hU.fromSpec_primeIdealOf, hU.fromSpec_primeIdealOf]`. Rewrite using `[e]`. Conclude with `PrimeSpectrum.le_iff_specializes _ _`.
+-/
 theorem qOf_le_iff {U : Z.Opens} (hU : IsAffineOpen U) {z z' : Z} (hz : z ∈ U) (hz' : z' ∈ U) :
     qOf hU hz ≤ qOf hU hz' ↔ z ⤳ z' := by
   have e := (hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff
@@ -221,6 +298,13 @@ theorem qOf_le_iff {U : Z.Opens} (hU : IsAffineOpen U) {z z' : Z} (hz : z ∈ U)
   rw [e]
   exact PrimeSpectrum.le_iff_specializes _ _
 
+/- English proof (translation)
+Take `⟨k, hz'⟩` from `exists_mem hE z'`. Take `⟨t, h⟩` from `exists_ch hE k`. Establish `h1` using `h.one hE.isLB`. Prove the components needed by the constructor for the conclusion. Introduce `hsp`.
+
+Establish `hz : z ∈ nonzeroLocus (s k)` using `hsp.mem_open (nonzeroLocus (s k)).isOpen hz'`. Rewrite using `[h.ptIdeal_eq hE.isLB hz, h.ptIdeal_eq hE.isLB hz', ChowFormHeightComparison₂.CF.A.pr_le_iff h.surj h1, qOf_le_iff]`. Conclude with `hsp`. Introduce `hle`. Establish `hz : z ∈ nonzeroLocus (s k)` using `(mem_iff_X hE k z).mpr fun hx => (mem_iff_X hE k z').mp hz' (hle hx)`.
+
+Rewrite `hle` using `[h.ptIdeal_eq hE.isLB hz, h.ptIdeal_eq hE.isLB hz', ChowFormHeightComparison₂.CF.A.pr_le_iff h.surj h1, qOf_le_iff]`. Conclude with `hle`.
+-/
 theorem specializes_iff (hE : Emb p s) (z z' : Z) : z ⤳ z' ↔ ptIdeal p s z ≤ ptIdeal p s z' := by
   obtain ⟨k, hz'⟩ := exists_mem hE z'
   obtain ⟨t, h⟩ := exists_ch hE k
@@ -238,17 +322,32 @@ theorem specializes_iff (hE : Emb p s) (z z' : Z) : z ⤳ z' ↔ ptIdeal p s z �
       qOf_le_iff] at hle
     exact hle
 
+/- English proof (translation)
+Introduce `z z' h` and use `(((specializes_iff hE z z').2 h.le).antisymm ((specializes_iff hE z' z).2 h.ge)).eq`.
+-/
 theorem injective (hE : Emb p s) : Function.Injective (ptIdeal p s) := fun z z' h =>
   (((specializes_iff hE z z').2 h.le).antisymm ((specializes_iff hE z' z).2 h.ge)).eq
 
 variable [IsIntegral Z]
 
+/- English proof (translation)
+Use `haveI : Nonempty U := ⟨⟨_, hz⟩⟩`. Use `show (hU.primeIdealOf ⟨genericPoint Z, hz⟩).asIdeal = ⊥`. Rewrite using `[hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]`. Both sides reduce to the same expression.
+-/
 theorem qOf_generic {U : Z.Opens} (hU : IsAffineOpen U) (hz : genericPoint Z ∈ U) : qOf hU hz = ⊥ := by
   haveI : Nonempty U := ⟨⟨_, hz⟩⟩
   show (hU.primeIdealOf ⟨genericPoint Z, hz⟩).asIdeal = ⊥
   rw [hU.primeIdealOf_genericPoint, genericPoint_eq_bot_of_affine]
   rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hW.isRelevant`. Take `⟨t, h⟩` from `exists_ch hE k`. Establish `h1` using `h.one hE.isLB`. Establish `hη : genericPoint Z ∈ nonzeroLocus (s k)` using `(mem_iff_X hE k _).mpr fun hx => hk (hle hx)`. Rewrite `hle` using `[h.ptIdeal_eq hE.isLB hη, qOf_generic]`.
+
+Take `⟨q, hq, hqW⟩` from `ChowFormHeightComparison₂.CF.A.exists_eq_pr h.surj h1 hW.isPrime hW.isHomog hk hle`. Set `P : PrimeSpectrum Γ(Z, nonzeroLocus (s k))` to `⟨q, hq⟩`. Establish `hmem : h.aff.fromSpec P ∈ nonzeroLocus (s k)`. Rewrite using `[← SetLike.mem_coe, ← h.aff.range_fromSpec]`. Conclude with `⟨P, rfl⟩`.
+
+Use `⟨h.aff.fromSpec P, ?_⟩` and prove the remaining obligations. Rewrite using `[h.ptIdeal_eq hE.isLB hmem, ← hqW]`. Use `congr 1`. Establish `hinj : h.aff.primeIdealOf ⟨_, hmem⟩ = P` using `h.aff.fromSpec.isOpenEmbedding.injective (h.aff.fromSpec_primeIdealOf ⟨_, hmem⟩)`. Use `show (h.aff.primeIdealOf ⟨_, hmem⟩).asIdeal = q`.
+
+Rewrite using `[hinj]`.
+-/
 theorem exists_pt (hE : Emb p s) (W : Ideal (MvPolynomial (Fin m) R)) (hW : IsProjPrime W)
     (hle : ptIdeal p s (genericPoint Z) ≤ W) : ∃ z, ptIdeal p s z = W := by
   obtain ⟨k, hk⟩ := hW.isRelevant
@@ -273,9 +372,23 @@ end ChowFormHeightComparison₂.CF.P
 
 namespace ChowFormHeightComparison₂.CF
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ hE` and use `⟨P.isProjPrime hE, P.specializes_iff hE, P.exists_pt hE, fun _ _ hu => P.mem_iff hE hu⟩`.
+-/
 theorem stPts : StPts := fun _ _ _ _ _ _ _ _ hE =>
   ⟨P.isProjPrime hE, P.specializes_iff hE, P.exists_pt hE, fun _ _ hu => P.mem_iff hE hu⟩
 
+/- English proof (translation)
+Establish `hpos : ∀ (p : Ideal A) [p.IsPrime], f ∈ p → 1 ≤ p.height`. Introduce `p _ hfp`. Establish `hlt : (⊥ : Ideal A) < p`. Use `bot_lt_iff_ne_bot.mpr fun hp => hf ?_` and prove the remaining obligations. Rewrite `hfp` using `[hp, Ideal.mem_bot]`.
+
+Conclude with `hfp`. Conclude with `le_trans le_add_self (Ideal.height_add_one_le_of_lt_of_isPrime hlt)`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Establish `hfq : f ∈ q` using `hq.1.2 (Ideal.mem_span_singleton_self f)`.
+
+Conclude with `⟨hfq, le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ q hq) (hpos q hfq)⟩`. Introduce and unpack `⟨hfq, hq1⟩`. Use `⟨⟨inferInstance, (Ideal.span_singleton_le_iff_mem _).mpr hfq⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hfp⟩ hpq`. Use `haveI := hp`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt : p < q` using `lt_of_le_not_ge hpq hne`. Establish `h1` using `hpos p ((Ideal.span_singleton_le_iff_mem _).mp hfp)`. Establish `h2` using `Ideal.height_strict_mono_of_isPrime_of_isPrime hlt`. Rewrite `h2` using `[hq1]`.
+
+Conclude with `absurd (lt_of_le_of_lt h1 h2) (lt_irrefl _)`.
+-/
 private theorem mem_minimalPrimes_span_iff_mem_height_eq_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     (q : Ideal A) [q.IsPrime] {f : A} (hf : f ≠ 0) :
     q ∈ (Ideal.span {f}).minimalPrimes ↔ f ∈ q ∧ q.height = 1 := by
@@ -303,6 +416,33 @@ private theorem mem_minimalPrimes_span_iff_mem_height_eq_one {A : Type} [CommRin
     exact absurd (lt_of_le_of_lt h1 h2) (lt_irrefl _)
 
 open ChowFormHeightComparison₂.CF.A ChowFormHeightComparison₂.CF.P in
+/- English proof (translation)
+Introduce `R _ _ Z _ _ p B m s hE u su hsu hu`. Establish `hB` using `hE.isLB`. Establish `core : ∀ z : Z, ((divOfSec hB su hu).mult z ≠ 0 ↔ ptIdeal p s z ∈ relComps (ptIdeal p s (genericPoint Z) ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm u})) ∧ ((divOfSec hB su hu).mult z ≠ 0 → (divOfSec hB su hu).mult z = ↑(localMult (ptIdeal p s (genericPoint Z) ⊔ Ideal.spa …`. Introduce `z`. Take `⟨k, hz⟩` from `P.exists_mem hE z`.
+
+Take `⟨t, h⟩` from `P.exists_ch hE k`. Establish `h1` using `h.one hB`. Establish `hη : genericPoint Z ∈ nonzeroLocus (s k)` using `((genericPoint_spec Z).mem_open_set_iff (nonzeroLocus (s k)).isOpen).mpr ⟨z, Set.mem_univ _, hz⟩`. Use `haveI : Nonempty (nonzeroLocus (s k)) := ⟨⟨z, hz⟩⟩`. Use `haveI : IsNoetherianRing Γ(Z, nonzeroLocus (s k)) := IsLocallyNoetherian.component_noetherian ⟨_, h.aff⟩`.
+
+Establish `hf0 : eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u) ≠ 0`. Establish `hnm` using `(P.mem_iff hE hsu (genericPoint Z)).mp hu`. Rewrite `hnm` using `[h.ptIdeal_eq hB hη, qOf_generic, ChowFormHeightComparison₂.CF.A.mem_pr_homog (linForm_isHomogeneous_one_minimal_prime_dimensions u)]`. Introduce `h0`. Conclude with `hnm (by rw [Ideal.mem_bot]; exact h0)`.
+
+Rewrite using `[h.ptIdeal_eq hB hz, h.ptIdeal_eq hB hη, qOf_generic]`. Establish `hrel : pr (algX p (nonzeroLocus (s k))) t (qOf h.aff hz) ∈ relComps (pr (algX p (nonzeroLocus (s k))) t ⊥ ⊔ Ideal.span {GroundTheory.Heights₂.Heights.linForm u}) ↔ qOf h.aff hz ∈ (Ideal.span {eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u)}).min …`. Rewrite using `[← ChowFormHeightComparison₂.CF.A.mem_minimalPrimes_iff h.surj h1 u (qOf h.aff hz)]`. Conclude with `⟨fun H => H.1, fun H => ⟨H, k, ChowFormHeightComparison₂.CF.A.X_notMem_pr h1 _⟩⟩`. Rewrite using `[hrel, ChowFormHeightComparison₂.CF.A.localMult_pr h.surj h1 u (qOf h.aff hz)]`.
+
+Establish `hzc : z ∈ (⨆ i, B.U i)`. Rewrite using `[hB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hzc`. Use `letI : Algebra Γ(Z, nonzeroLocus (s k)) (Z.presheaf.stalk z) := (Z.presheaf.germ _ z hz).hom.toAlgebra`.
+
+Use `haveI : IsLocalization.AtPrime (Z.presheaf.stalk z) (qOf h.aff hz) := h.aff.isLocalization_stalk ⟨z, hz⟩`. Establish `hht : Order.coheight z = (qOf h.aff hz).height`. Establish `e1` using `ringKrullDim_stalk_eq_coheight z`. Rewrite `e1` using `[IsLocalization.AtPrime.ringKrullDim_eq_height (qOf h.aff hz) (Z.presheaf.stalk z)]`. Conclude with `(WithBot.coe_inj.mp e1).symm`.
+
+Establish `hg` using `h.germ_comb hsu hz hi`. Establish `hunit` using `(isUnit_germ hi).mp hz`. Establish `hspan : Ideal.span {(Z.presheaf.germ _ z hi).hom (su.f i)} = Ideal.span {algebraMap _ (Z.presheaf.stalk z) (eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u))}`. Rewrite using `[hg]`. Conclude with `Ideal.span_singleton_mul_right_unit hunit _`.
+
+Establish `hlen : Module.length (Z.presheaf.stalk z) (Z.presheaf.stalk z ⧸ Ideal.span {algebraMap _ (Z.presheaf.stalk z) (eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u))}) = Module.length (Localization.AtPrime (qOf h.aff hz)) (Localization.AtPrime (qOf h. …`. Establish `he` using `(IsLocalization.algEquiv (qOf h.aff hz).primeCompl (Localization.AtPrime (qOf h.aff hz)) (Z.presheaf.stalk z)).commutes (eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u))`. Rewrite using `[Ideal.map_span, Set.image_singleton, ← he]`. Conclude with `len_equiv (IsLocalization.algEquiv (qOf h.aff hz).primeCompl (Localization.AtPrime (qOf h.aff hz)) (Z.presheaf.stalk z)).toRingEquiv _`. Establish `hLM : localMult (Ideal.span {eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u)}) (qOf h.aff hz) = (Module.length (Z.presheaf.stalk z) (Z.presheaf.stalk z ⧸ Ideal.span {algebraMap _ (Z.presheaf.stalk z) (eval₂Hom (algX p (nonzeroLocus (s k))) t (Gr …`.
+
+Rewrite using `[hlen]`. Unfold `localMult`. Rewrite using `[dif_pos (show (qOf h.aff hz).IsPrime from inferInstance)]`. Distinguish the cases in `hc : Order.coheight z = 1`. Establish `hmult` using `GlobalTheory.Cartier.mult_divOfSec (hL := hB) (s := su) (hs := hu) hc hi`.
+
+Rewrite using `[hmult, hspan, ← hLM]`. Use `⟨?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[mem_minimalPrimes_span_iff_mem_height_eq_one _ hf0, ← hht, hc, and_iff_left rfl, hLM]`. Use `haveI : Ring.KrullDimLE 1 (Z.presheaf.stalk z) := krullDimLE_of_coheight_le hc.le`. Establish `hne0 : algebraMap _ (Z.presheaf.stalk z) (eval₂Hom (algX p (nonzeroLocus (s k))) t (GroundTheory.Heights₂.Heights.linForm u)) ≠ 0`.
+
+Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Conclude with `germ_injective_of_isIntegral Z z hz (h0.trans (map_zero _).symm)`. Establish `hfin` using `isFiniteLength_quotient_span_singleton (Z.presheaf.stalk z) (mem_nonZeroDivisors_of_ne_zero hne0)`. Establish `hntop` using `Module.length_ne_top_iff.mpr hfin`.
+
+Rewrite using `[Nat.cast_ne_zero, Ne, ENat.toNat_eq_zero, or_iff_left hntop, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff, Ideal.span_singleton_eq_top, IsLocalization.AtPrime.isUnit_to_map_iff (Z.presheaf.stalk z) (qOf h.aff hz)]`. Conclude with `not_not`. Establish `h0 : (divOfSec hB su hu).mult z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hc (GlobalTheory.Cartier.CartierDiv.coheight_eq_one_of_mult_ne_zero hne)`.
+
+Rewrite using `[h0]`. Use `⟨⟨fun H => absurd rfl H, fun H => absurd ?_ hc⟩, fun H => absurd rfl H⟩` and prove the remaining obligations. Rewrite using `[hht]`. Conclude with `((mem_minimalPrimes_span_iff_mem_height_eq_one _ hf0).mp H).2`. Conclude with `⟨fun z => (core z).1, fun z => (core z).2⟩`.
+-/
 theorem stDiv : StDiv := by
   intro R _ _ Z _ _ p B m s hE u su hsu hu
   have hB := hE.isLB

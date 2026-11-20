@@ -19,6 +19,9 @@ open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chart
 open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chartDens chartAbsDens)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `|setSheetDensity S Ψ (pot L) g y w| ≤ 3 ^ e * setSheetDensity S Ψ (pot N) g' y w := by first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxTwist.exists_dominating_twist | exact GlobalTheory.CompanionTheory.Ar.Pub.CxTwist.exists_dominating_twist | (intros; apply GlobalTheory.Comp …`.
+-/
 theorem _root_.GlobalTheory.T.exists_smooth_metrics_nonneg_density : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (e : ℕ) (L : Fin e → HermLine ι),
     (∀ j, IsSmoothHerm (L j)) →
     ∃ N : Fin e → HermLine ι, (∀ j, IsSmoothHerm (N j)) ∧

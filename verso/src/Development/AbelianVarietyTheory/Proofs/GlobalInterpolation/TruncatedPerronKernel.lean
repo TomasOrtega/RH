@@ -3,22 +3,41 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory
 
 namespace GlobalTheory.PerronKernel
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Simplify using `using congrArg Complex.re h0`.
+-/
 lemma ne_zero_of_re {σ t : ℝ} (h : σ ≠ 0) : (σ : ℂ) + t * I ≠ 0 := by
   intro h0
   apply h
   simpa using congrArg Complex.re h0
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Simplify using `using congrArg Complex.im h0`.
+-/
 lemma ne_zero_of_im {σ t : ℝ} (h : t ≠ 0) : (σ : ℂ) + t * I ≠ 0 := by
   intro h0
   apply h
   simpa using congrArg Complex.im h0
 
+/- English proof (translation)
+Conclude with `(by fun_prop : Continuous fun t : ℝ => (σ : ℂ) + t * I).inv₀ fun t => ne_zero_of_re h`.
+-/
 lemma cont_vinv {σ : ℝ} (h : σ ≠ 0) : Continuous fun t : ℝ => ((σ : ℂ) + t * I)⁻¹ := by
   exact (by fun_prop : Continuous fun t : ℝ => (σ : ℂ) + t * I).inv₀ fun t => ne_zero_of_re h
 
+/- English proof (translation)
+Conclude with `(by fun_prop : Continuous fun σ : ℝ => (σ : ℂ) + t * I).inv₀ fun σ => ne_zero_of_im h`.
+-/
 lemma cont_hinv {t : ℝ} (h : t ≠ 0) : Continuous fun σ : ℝ => ((σ : ℂ) + t * I)⁻¹ := by
   exact (by fun_prop : Continuous fun σ : ℝ => (σ : ℂ) + t * I).inv₀ fun σ => ne_zero_of_im h
 
+/- English proof (translation)
+Establish `hpos : 0 < x ^ 2 + s ^ 2` using `by positivity`. Establish `h1 : HasDerivAt (fun x : ℝ => Real.log (x ^ 2 + s ^ 2) / 2) (x / (x ^ 2 + s ^ 2)) x` using `((((hasDerivAt_pow 2 x).add_const (s ^ 2)).log hpos.ne').div_const 2).congr_deriv (by field_simp; ring)`. Establish `h2a : HasDerivAt (fun y : ℝ => y / s) (1 / s) x` using `(hasDerivAt_id' x).div_const s`. Establish `h2b` using `(Real.hasDerivAt_arctan (x / s)).comp x h2a`. Establish `h2 : HasDerivAt (fun x : ℝ => Real.arctan (x / s)) (s / (x ^ 2 + s ^ 2)) x` using `h2b.congr_deriv (by field_simp; ring)`.
+
+Use `(h1.ofReal_comp.sub (h2.ofReal_comp.const_mul I)).congr_deriv ?_` and prove the remaining obligations. Establish `hz : (x : ℂ) + s * I ≠ 0` using `ne_zero_of_im hs`. Establish `hc : (x : ℂ) ^ 2 + (s : ℂ) ^ 2 ≠ 0` using `by exact_mod_cast hpos.ne'`. Use `symm`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hasDerivAt_half_log_sub_I_mul_arctan_eq_inv {s : ℝ} (hs : s ≠ 0) (x : ℝ) :
     HasDerivAt (fun x : ℝ => ((Real.log (x ^ 2 + s ^ 2) / 2 : ℝ) : ℂ) - I * (Real.arctan (x / s) : ℂ))
       ((x : ℂ) + s * I)⁻¹ x := by
@@ -41,6 +60,13 @@ private lemma hasDerivAt_half_log_sub_I_mul_arctan_eq_inv {s : ℝ} (hs : s ≠ 
   rw [I_sq]
   ring
 
+/- English proof (translation)
+Establish `hs : -σ ≠ 0` using `neg_ne_zero.mpr h`. Establish `hd : ∀ t ∈ Set.uIcc (-T) T, HasDerivAt (fun t : ℝ => -I * (((Real.log (t ^ 2 + (-σ) ^ 2) / 2 : ℝ) : ℂ) - I * (Real.arctan (t / -σ) : ℂ))) ((σ : ℂ) + t * I)⁻¹ t`. Introduce `t _`. Use `((hasDerivAt_half_log_sub_I_mul_arctan_eq_inv hs t).const_mul (-I)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[show (t : ℂ) + ((-σ : ℝ) : ℂ) * I = -I * ((σ : ℂ) + t * I) by push_cast; ring_nf; rw [I_sq]; ring]`.
+
+Rewrite using `[mul_inv, ← mul_assoc]`. Rewrite using `[show -I * (-I)⁻¹ = 1 from mul_inv_cancel₀ (neg_ne_zero.mpr I_ne_zero), one_mul]`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd ((cont_vinv h).intervalIntegrable _ _)]`. Simplify using `only [neg_sq, neg_div, div_neg, neg_neg, Real.arctan_neg]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vinv {σ : ℝ} (h : σ ≠ 0) (T : ℝ) :
     ∫ t in (-T)..T, ((σ : ℂ) + t * I)⁻¹ = ((2 * Real.arctan (T / σ) : ℝ) : ℂ) := by
   have hs : -σ ≠ 0 := neg_ne_zero.mpr h
@@ -60,6 +86,9 @@ lemma vinv {σ : ℝ} (h : σ ≠ 0) (T : ℝ) :
   rw [I_sq]
   ring
 
+/- English proof (translation)
+Establish `hs : -T ≠ 0` using `neg_ne_zero.mpr h`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hasDerivAt_half_log_sub_I_mul_arctan_eq_inv hs x) ((cont_hinv hs).intervalIntegrable _ _), intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hasDerivAt_half_log_sub_I_mul_arctan_eq_inv h x) ((cont_hinv h).interv …`. Simplify using `only [neg_sq, div_neg, Real.arctan_neg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hinv {T : ℝ} (h : T ≠ 0) (a b : ℝ) :
     (∫ x in a..b, ((x : ℂ) + ((-T : ℝ) : ℂ) * I)⁻¹) - ∫ x in a..b, ((x : ℂ) + T * I)⁻¹
       = 2 * I * ((Real.arctan (b / T) - Real.arctan (a / T) : ℝ) : ℂ) := by
@@ -72,10 +101,18 @@ lemma hinv {T : ℝ} (h : T ≠ 0) (a b : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules.
+-/
 lemma norm_exp (L σ t : ℝ) : ‖cexp (L * ((σ : ℂ) + t * I))‖ = Real.exp (L * σ) := by
   rw [Complex.norm_exp]
   simp
 
+/- English proof (translation)
+Establish `hb : ∀ t ∈ Set.uIoc (-T) T, ‖cexp (L * ((σ : ℂ) + t * I)) / ((σ : ℂ) + t * I)‖ ≤ Real.exp (L * σ) / |σ|`. Introduce `t _`. Rewrite using `[norm_div, norm_exp]`. Apply `div_le_div_of_nonneg_left (Real.exp_pos _).le (abs_pos.mpr h)` to reduce the goal to its premises. Simplify using `using Complex.abs_re_le_norm ((σ : ℂ) + t * I)`.
+
+Use `intervalIntegral.norm_integral_le_of_norm_le_const hb` as an intermediate fact. Rewrite `this` using `[show |T - -T| = 2 * T by rw [sub_neg_eq_add, ← two_mul, abs_of_nonneg (by linarith)]]`. Then use the resulting hypothesis.
+-/
 lemma vbound (L : ℝ) {σ T : ℝ} (h : σ ≠ 0) (hT : 0 ≤ T) :
     ‖∫ t in (-T)..T, cexp (L * ((σ : ℂ) + t * I)) / ((σ : ℂ) + t * I)‖
       ≤ Real.exp (L * σ) / |σ| * (2 * T) := by
@@ -88,6 +125,13 @@ lemma vbound (L : ℝ) {σ T : ℝ} (h : σ ≠ 0) (hT : 0 ≤ T) :
   have := intervalIntegral.norm_integral_le_of_norm_le_const hb
   rwa [show |T - -T| = 2 * T by rw [sub_neg_eq_add, ← two_mul, abs_of_nonneg (by linarith)]] at this
 
+/- English proof (translation)
+Establish `hb : ∀ᵐ x ∂MeasureTheory.volume, x ∈ Set.Ioc a b → ‖cexp (L * ((x : ℂ) + t * I)) / ((x : ℂ) + t * I)‖ ≤ Real.exp (L * x) / |t|`. Use `Filter.Eventually.of_forall fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_div, norm_exp]`. Apply `div_le_div_of_nonneg_left (Real.exp_pos _).le (abs_pos.mpr h)` to reduce the goal to its premises. Simplify using `using Complex.abs_im_le_norm ((x : ℂ) + t * I)`.
+
+Establish `hF : ∀ x ∈ Set.uIcc a b, HasDerivAt (fun x => Real.exp (L * x) / (L * |t|)) (Real.exp (L * x) / |t|) x`. Introduce `x _`. Use `(((hasDerivAt_id' x).const_mul L).exp.div_const (L * |t|)).congr_deriv ?_` and prove the remaining obligations. Establish `ht : |t| ≠ 0` using `abs_ne_zero.mpr h`. Clear the denominators using the available nonvanishing facts.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hF ((by fun_prop : Continuous fun x : ℝ => Real.exp (L * x) / |t|).intervalIntegrable _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hbound {L : ℝ} (hL : L ≠ 0) {t a b : ℝ} (h : t ≠ 0) (hab : a ≤ b) :
     ‖∫ x in a..b, cexp (L * ((x : ℂ) + t * I)) / ((x : ℂ) + t * I)‖
       ≤ (Real.exp (L * b) - Real.exp (L * a)) / (L * |t|) := by
@@ -111,6 +155,15 @@ lemma hbound {L : ℝ} (hL : L ≠ 0) {t a b : ℝ} (h : t ≠ 0) (hab : a ≤ b
           ((by fun_prop : Continuous fun x : ℝ => Real.exp (L * x) / |t|).intervalIntegrable _ _)]
         ring
 
+/- English proof (translation)
+Establish `hd : DifferentiableOn ℂ (fun z : ℂ => cexp (L * z) / z) (Set.uIcc ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re ((b : ℂ) + T * I).re ×ℂ Set.uIcc ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im ((b : ℂ) + T * I).im)`. Introduce and unpack `z ⟨hzr, -⟩`. Establish `hre : a ≤ z.re`. Simplify using `only [add_re, ofReal_re, mul_re, I_re, I_im, ofReal_im, mul_zero, mul_one, sub_zero, add_zero] at hzr`. Apply the tactic sequence `rcases Set.mem_uIcc.mp hzr with h | h <;> linarith [h.1, h.2]`.
+
+Apply `DifferentiableAt.differentiableWithinAt` to reduce the goal to its premises. Apply `DifferentiableAt.div (by fun_prop) differentiableAt_id` to reduce the goal to its premises. Introduce `h0`. Rewrite `hre` using `[h0, zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re = a` using `by simp`. Establish `h2 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im = -T` using `by simp`. Establish `h3 : ((b : ℂ) + (T : ℂ) * I).re = b` using `by simp`. Establish `h4 : ((b : ℂ) + (T : ℂ) * I).im = T` using `by simp`. Use `Complex.integral_boundary_rect_eq_zero_of_differentiableOn (fun z : ℂ => cexp (L * z) / z) ((a : ℂ) + ((-T : ℝ) : ℂ) * I) ((b : ℂ) + T * I) hd` as an intermediate fact.
+
+Rewrite `this` using `[h1, h2, h3, h4]`. Simplify `this` using `only [smul_eq_mul]`.
+-/
 lemma rect_right (L : ℝ) {a b : ℝ} (T : ℝ) (ha : 0 < a) (hab : a ≤ b) :
     (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
     - (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
@@ -138,6 +191,27 @@ lemma rect_right (L : ℝ) {a b : ℝ} (T : ℝ) (ha : 0 < a) (hab : a ≤ b) :
   rw [h1, h2, h3, h4] at this
   simpa only [smul_eq_mul] using this
 
+/- English proof (translation)
+Use `set D : ℂ → ℂ := dslope (fun z : ℂ => cexp (L * z)) 0 with hD`. Establish `hDd : Differentiable ℂ D`. Establish `: DifferentiableOn ℂ D Set.univ` using `(differentiableOn_dslope Filter.univ_mem).2 (by fun_prop)`. Conclude with `fun z => (this z trivial).differentiableAt Filter.univ_mem`. Establish `hsplit : ∀ z : ℂ, z ≠ 0 → cexp (L * z) / z = D z + z⁻¹`.
+
+Introduce `z hz`. Rewrite using `[hD, dslope_of_ne _ hz, slope_def_field]`. Simplify using `only [mul_zero, Complex.exp_zero, sub_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTn : -T ≠ 0` using `by linarith`. Establish `ha0 : a ≠ 0` using `ha.ne`. Establish `hb0 : b ≠ 0` using `hb.ne'`. Establish `hDc : Continuous D` using `hDd.continuous`. Establish `sb : (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) = (∫ x in a..b, D ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) + ∫ x in a..b, ((x : ℂ) + ((-T : ℝ) : ℂ) * I)⁻¹`.
+
+Establish `i1 : IntervalIntegrable (fun x : ℝ => D ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) MeasureTheory.volume a b` using `(hDc.comp (by fun_prop : Continuous fun x : ℝ => ((x : ℂ) + ((-T : ℝ) : ℂ) * I))).intervalIntegrable _ _`. Rewrite using `[← intervalIntegral.integral_add i1 ((cont_hinv hTn).intervalIntegrable _ _)]`. Conclude with `intervalIntegral.integral_congr fun x _ => hsplit _ (ne_zero_of_im hTn)`. Establish `st : (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I)) = (∫ x in a..b, D ((x : ℂ) + T * I)) + ∫ x in a..b, ((x : ℂ) + T * I)⁻¹`. Establish `i1 : IntervalIntegrable (fun x : ℝ => D ((x : ℂ) + T * I)) MeasureTheory.volume a b` using `(hDc.comp (by fun_prop : Continuous fun x : ℝ => ((x : ℂ) + T * I))).intervalIntegrable _ _`.
+
+Rewrite using `[← intervalIntegral.integral_add i1 ((cont_hinv hT.ne').intervalIntegrable _ _)]`. Conclude with `intervalIntegral.integral_congr fun x _ => hsplit _ (ne_zero_of_im hT.ne')`. Establish `sr : (∫ t in (-T)..T, cexp (L * ((b : ℂ) + t * I)) / ((b : ℂ) + t * I)) = (∫ t in (-T)..T, D ((b : ℂ) + t * I)) + ∫ t in (-T)..T, ((b : ℂ) + t * I)⁻¹`. Establish `i1 : IntervalIntegrable (fun t : ℝ => D ((b : ℂ) + t * I)) MeasureTheory.volume (-T) T` using `(hDc.comp (by fun_prop : Continuous fun t : ℝ => ((b : ℂ) + t * I))).intervalIntegrable _ _`. Rewrite using `[← intervalIntegral.integral_add i1 ((cont_vinv hb0).intervalIntegrable _ _)]`.
+
+Conclude with `intervalIntegral.integral_congr fun t _ => hsplit _ (ne_zero_of_re hb0)`. Establish `sl : (∫ t in (-T)..T, cexp (L * ((a : ℂ) + t * I)) / ((a : ℂ) + t * I)) = (∫ t in (-T)..T, D ((a : ℂ) + t * I)) + ∫ t in (-T)..T, ((a : ℂ) + t * I)⁻¹`. Establish `i1 : IntervalIntegrable (fun t : ℝ => D ((a : ℂ) + t * I)) MeasureTheory.volume (-T) T` using `(hDc.comp (by fun_prop : Continuous fun t : ℝ => ((a : ℂ) + t * I))).intervalIntegrable _ _`. Rewrite using `[← intervalIntegral.integral_add i1 ((cont_vinv ha0).intervalIntegrable _ _)]`. Conclude with `intervalIntegral.integral_congr fun t _ => hsplit _ (ne_zero_of_re ha0)`.
+
+Establish `h1 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).re = a` using `by simp`. Establish `h2 : ((a : ℂ) + ((-T : ℝ) : ℂ) * I).im = -T` using `by simp`. Establish `h3 : ((b : ℂ) + (T : ℂ) * I).re = b` using `by simp`. Establish `h4 : ((b : ℂ) + (T : ℂ) * I).im = T` using `by simp`. Establish `hrect` using `Complex.integral_boundary_rect_eq_zero_of_differentiableOn D ((a : ℂ) + ((-T : ℝ) : ℂ) * I) ((b : ℂ) + T * I) hDd.differentiableOn`.
+
+Rewrite `hrect` using `[h1, h2, h3, h4]`. Simplify using `only [smul_eq_mul] at hrect`. Establish `e1` using `hinv hT.ne' a b`. Establish `e2` using `vinv hb0 T`. Establish `e3` using `vinv ha0 T`.
+
+Establish `r2 : Real.arctan (T / b) = Real.pi / 2 - Real.arctan (b / T)`. Rewrite using `[← inv_div, Real.arctan_inv_of_pos (div_pos hb hT)]`. Establish `r3 : Real.arctan (T / a) = -(Real.pi / 2) - Real.arctan (a / T)`. Rewrite using `[← inv_div, Real.arctan_inv_of_neg (div_neg_of_neg_of_pos ha hT)]`. Rewrite `e2` using `[r2]`.
+
+Rewrite `e3` using `[r3]`. Rewrite using `[sb, st, sr, sl]`. Take the linear combination `(norm := skip) hrect + e1 + I * e2 - I * e3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma rect_left (L : ℝ) {a b T : ℝ} (ha : a < 0) (hb : 0 < b) (hT : 0 < T) :
     (∫ x in a..b, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I))
     - (∫ x in a..b, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I))
@@ -205,6 +279,9 @@ lemma rect_left (L : ℝ) {a b T : ℝ} (ha : a < 0) (hb : 0 < b) (hT : 0 < T) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h0 : Filter.Tendsto (fun U : ℝ => K / U) Filter.atTop (nhds 0)` using `tendsto_const_nhds.div_atTop Filter.tendsto_id`. Establish `hlim` using `h0.const_add B`. Rewrite `hlim` using `[add_zero]`. Conclude with `ge_of_tendsto hlim ((Filter.eventually_ge_atTop c).mono fun U hU => h U hU)`.
+-/
 lemma le_of_forall_large {x B K c : ℝ} (hc : 0 < c) (hK : 0 ≤ K)
     (h : ∀ U : ℝ, c ≤ U → x ≤ B + K / U) : x ≤ B := by
   have h0 : Filter.Tendsto (fun U : ℝ => K / U) Filter.atTop (nhds 0) :=
@@ -213,6 +290,11 @@ lemma le_of_forall_large {x B K c : ℝ} (hc : 0 < c) (hK : 0 ≤ K)
   rw [add_zero] at hlim
   exact ge_of_tendsto hlim ((Filter.eventually_ge_atTop c).mono fun U hU => h U hU)
 
+/- English proof (translation)
+Establish `hx : ‖x‖ = ‖I * x‖` using `by rw [norm_mul, Complex.norm_I, one_mul]`. Establish `hr : ‖I * r‖ = ‖r‖` using `by rw [norm_mul, Complex.norm_I, one_mul]`. Break down `h with h | h` into its components or cases. Rewrite using `[hx, h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hx, h]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_le_three {x p q r : ℂ} (h : I * x = p - q + I * r ∨ I * x = q - p + I * r) :
     ‖x‖ ≤ ‖p‖ + ‖q‖ + ‖r‖ := by
   have hx : ‖x‖ = ‖I * x‖ := by rw [norm_mul, Complex.norm_I, one_mul]
@@ -225,6 +307,15 @@ lemma norm_le_three {x p q r : ℂ} (h : I * x = p - q + I * r ∨ I * x = q - p
     calc ‖q - p + I * r‖ ≤ ‖q - p‖ + ‖I * r‖ := norm_add_le _ _
       _ ≤ ‖p‖ + ‖q‖ + ‖r‖ := by rw [hr]; linarith [norm_sub_le q p]
 
+/- English proof (translation)
+Apply `le_of_forall_large (c := c) hc (K := 2 * T * Real.exp (L * c)) (by positivity)` to reduce the goal to its premises. Introduce `U hU`. Establish `hU0 : 0 < U` using `lt_of_lt_of_le hc hU`. Establish `hR` using `rect_right L T hc hU`. Establish `h3` using `norm_le_three (x := ∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) (p := ∫ x in c..U, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) (q := ∫ x in c..U, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I)) (r := ∫ t in (-T)..T, cexp (L …`.
+
+Establish `hLT : 0 < T * -L` using `mul_pos hT (neg_pos.mpr hL)`. Establish `key : ∀ s : ℝ, |s| = T → (Real.exp (L * U) - Real.exp (L * c)) / (L * |s|) ≤ Real.exp (L * c) / (T * |L|)`. Introduce `s hs`. Rewrite using `[hs, abs_of_neg hL, show L * T = -(T * -L) by ring, div_neg, ← neg_div, neg_sub]`. Conclude with `div_le_div_of_nonneg_right (by linarith [Real.exp_pos (L * U)]) hLT.le`.
+
+Establish `hp` using `(hbound hL.ne (t := -T) (neg_ne_zero.mpr hT.ne') hU).trans (key (-T) (by rw [abs_neg, abs_of_pos hT]))`. Establish `hq` using `(hbound hL.ne (t := T) hT.ne' hU).trans (key T (abs_of_pos hT))`. Establish `hexp : Real.exp (L * U) ≤ Real.exp (L * c)` using `Real.exp_le_exp.mpr (by nlinarith)`. Establish `hr : Real.exp (L * U) / |U| * (2 * T) ≤ 2 * T * Real.exp (L * c) / U`. Rewrite using `[abs_of_pos hU0, div_mul_eq_mul_div]`.
+
+Conclude with `div_le_div_of_nonneg_right (by nlinarith) hU0.le`. Establish `hr'` using `(vbound L (σ := U) hU0.ne' hT.le).trans hr`. Establish `h2 : 2 * Real.exp (L * c) / (T * |L|) = Real.exp (L * c) / (T * |L|) + Real.exp (L * c) / (T * |L|)` using `by ring`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma far_neg {L c T : ℝ} (hL : L < 0) (hc : 0 < c) (hT : 0 < T) :
     ‖∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)‖
       ≤ 2 * Real.exp (L * c) / (T * |L|) := by
@@ -256,6 +347,17 @@ lemma far_neg {L c T : ℝ} (hL : L < 0) (hc : 0 < c) (hT : 0 < T) :
   rw [h2]
   linarith
 
+/- English proof (translation)
+Apply `le_of_forall_large (c := c) hc (K := 2 * T) (by positivity)` to reduce the goal to its premises. Introduce `U hU`. Establish `hU0 : 0 < U` using `lt_of_lt_of_le hc hU`. Establish `hR` using `rect_left L (a := -U) (b := c) (T := T) (by linarith) hc hT`. Establish `h3` using `norm_le_three (x := (∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) - 2 * Real.pi) (p := ∫ x in (-U)..c, cexp (L * ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) / ((x : ℂ) + ((-T : ℝ) : ℂ) * I)) (q := ∫ x in (-U)..c, cexp (L * ((x : ℂ) + T * I)) / ((x : ℂ) + T * I)) (r := ∫ …`.
+
+Establish `hLT : 0 < L * T` using `mul_pos hL hT`. Establish `key : ∀ s : ℝ, |s| = T → (Real.exp (L * c) - Real.exp (L * -U)) / (L * |s|) ≤ Real.exp (L * c) / (T * |L|)`. Introduce `s hs`. Rewrite using `[hs, abs_of_pos hL, mul_comm T L]`. Conclude with `div_le_div_of_nonneg_right (by linarith [Real.exp_pos (L * -U)]) hLT.le`.
+
+Establish `hUc : -U ≤ c` using `by linarith`. Establish `hp` using `(hbound hL.ne' (t := -T) (neg_ne_zero.mpr hT.ne') hUc).trans (key (-T) (by rw [abs_neg, abs_of_pos hT]))`. Establish `hq` using `(hbound hL.ne' (t := T) hT.ne' hUc).trans (key T (abs_of_pos hT))`. Establish `hexp : Real.exp (L * -U) ≤ 1` using `Real.exp_le_one_iff.mpr (by nlinarith)`. Establish `hr : Real.exp (L * -U) / |-U| * (2 * T) ≤ 2 * T / U`.
+
+Rewrite using `[abs_neg, abs_of_pos hU0, div_mul_eq_mul_div]`. Conclude with `div_le_div_of_nonneg_right (by nlinarith) hU0.le`. Establish `hr'` using `(vbound L (σ := -U) (by linarith) hT.le).trans hr`. Establish `h2 : 2 * Real.exp (L * c) / (T * |L|) = Real.exp (L * c) / (T * |L|) + Real.exp (L * c) / (T * |L|)` using `by ring`. Rewrite using `[h2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma far_pos {L c T : ℝ} (hL : 0 < L) (hc : 0 < c) (hT : 0 < T) :
     ‖(∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) - 2 * Real.pi‖
       ≤ 2 * Real.exp (L * c) / (T * |L|) := by
@@ -288,6 +390,23 @@ lemma far_pos {L c T : ℝ} (hL : 0 < L) (hc : 0 < c) (hT : 0 < T) :
   rw [h2]
   linarith
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0` using `hc.ne'`. Use `set g : ℝ → ℂ := fun t => (cexp (I * ((L * t : ℝ) : ℂ)) - 1) / ((c : ℂ) + t * I) with hg`. Establish `hpt : ∀ t : ℝ, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I) = (Real.exp (L * c) : ℂ) * (g t + ((c : ℂ) + t * I)⁻¹)`. Introduce `t`. Establish `hz : (c : ℂ) + t * I ≠ 0` using `ne_zero_of_re hc0`.
+
+Establish `he : cexp (L * ((c : ℂ) + t * I)) = (Real.exp (L * c) : ℂ) * cexp (I * ((L * t : ℝ) : ℂ))`. Rewrite using `[Complex.ofReal_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hg]`. Rewrite using `[he]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hgc : Continuous g`.
+
+Simplify using `only [hg]`. Conclude with `(by fun_prop : Continuous fun t : ℝ => cexp (I * ((L * t : ℝ) : ℂ)) - 1).div (by fun_prop) fun t => ne_zero_of_re hc0`. Establish `hgb : ∀ t ∈ Set.uIoc (-T) T, ‖g t‖ ≤ |L|`. Introduce `t _`. Establish `hz : (c : ℂ) + t * I ≠ 0` using `ne_zero_of_re hc0`.
+
+Establish `hzn : 0 < ‖(c : ℂ) + t * I‖` using `norm_pos_iff.mpr hz`. Simplify using `only [hg]`. Rewrite using `[norm_div, div_le_iff₀ hzn]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (abs_nonneg L)` to reduce the goal to its premises.
+
+Simplify using `using Complex.abs_im_le_norm ((c : ℂ) + t * I)`. Establish `hint : (∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)) = (Real.exp (L * c) : ℂ) * ((∫ t in (-T)..T, g t) + ∫ t in (-T)..T, ((c : ℂ) + t * I)⁻¹)`. Rewrite using `[intervalIntegral.integral_congr (fun t _ => hpt t), intervalIntegral.integral_const_mul, intervalIntegral.integral_add (hgc.intervalIntegrable _ _) ((cont_vinv hc0).intervalIntegrable _ _)]`. Rewrite using `[hint, vinv hc0 T, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Apply `mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le` to reduce the goal to its premises.
+
+Establish `hg2` using `intervalIntegral.norm_integral_le_of_norm_le_const hgb`. Rewrite `hg2` using `[show |T - -T| = 2 * T by rw [sub_neg_eq_add, ← two_mul, abs_of_pos (by linarith)]]`. Establish `hat : |2 * Real.arctan (T / c)| ≤ Real.pi`. Rewrite using `[abs_of_pos (by have := Real.arctan_pos.mpr (div_pos hT hc); linarith)]`. Combine the linear relations using `[Real.arctan_lt_pi_div_two (T / c)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Real.pi + 2 * (T * |L|) := by ring`.
+-/
 lemma near (L : ℝ) {c T : ℝ} (hc : 0 < c) (hT : 0 < T) :
     ‖∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)‖
       ≤ Real.exp (L * c) * (Real.pi + 2 * (T * |L|)) := by
@@ -343,6 +462,27 @@ lemma near (L : ℝ) {c T : ℝ} (hc : 0 < c) (hT : 0 < T) :
         linarith
     _ = Real.pi + 2 * (T * |L|) := by ring
 
+/- English proof (translation)
+Use `⟨3, by norm_num, fun y c T hy hy1 hc hT => ?_⟩` and prove the remaining obligations. Establish `hint : (∫ t in (-T)..T, (y : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)) = ∫ t in (-T)..T, cexp ((Real.log y : ℝ) * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I)`. Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hy.ne'), Complex.ofReal_log hy.le]`. Rewrite using `[hint, Real.rpow_def_of_pos hy]`.
+
+Use `set L := Real.log y with hLdef`. Use `set V := ∫ t in (-T)..T, cexp (L * ((c : ℂ) + t * I)) / ((c : ℂ) + t * I) with hV`. Establish `hL : L ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one hy hy1`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`.
+
+Establish `hE : 0 < Real.exp (L * c)` using `Real.exp_pos _`. Establish `hLa : 0 < |L|` using `abs_pos.mpr hL`. Establish `hTL : 0 < T * |L|` using `mul_pos hT0 hLa`. Establish `hn : ‖(1 / (2 * Real.pi) : ℂ)‖ = 1 / (2 * Real.pi)`. Rewrite using `[show (1 / (2 * Real.pi) : ℂ) = ((1 / (2 * Real.pi) : ℝ) : ℂ) by push_cast; rfl, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`.
+
+Establish `hfar : ‖(1 / (2 * Real.pi) : ℂ) * V - (if 1 < y then 1 else 0)‖ ≤ 1 / (2 * Real.pi) * (2 * Real.exp (L * c) / (T * |L|))` using `by split_ifs with h1`. Establish `hLp : 0 < L` using `Real.log_pos h1`. Establish `e : (1 / (2 * Real.pi) : ℂ) * V - 1 = (1 / (2 * Real.pi) : ℂ) * (V - 2 * Real.pi)`. Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast hpi.ne'`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, norm_mul, hn]`. Conclude with `mul_le_mul_of_nonneg_left (far_pos hLp hc hT0) (by positivity)`. Establish `hLn : L < 0` using `Real.log_neg hy (lt_of_le_of_ne (not_lt.mp h1) hy1)`. Rewrite using `[sub_zero, norm_mul, hn]`. Conclude with `mul_le_mul_of_nonneg_left (far_neg hLn hc hT0) (by positivity)`.
+
+Establish `hind : ‖(if 1 < y then (1 : ℂ) else 0)‖ ≤ Real.exp (L * c)` using `by split_ifs with h1`. Rewrite using `[norm_one]`. Conclude with `Real.one_le_exp (mul_nonneg (Real.log_pos h1).le hc.le)`. Rewrite using `[norm_zero]`. Conclude with `hE.le`.
+
+Establish `hnr : ‖(1 / (2 * Real.pi) : ℂ) * V - (if 1 < y then 1 else 0)‖ ≤ 1 / (2 * Real.pi) * (Real.exp (L * c) * (Real.pi + 2 * (T * |L|))) + Real.exp (L * c)`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hn]`. Conclude with `add_le_add (mul_le_mul_of_nonneg_left (near L hc hT0) (by positivity)) hind`. Break down `le_or_gt (T * |L|) 1 with hs | hs` into its components or cases.
+
+Rewrite using `[min_eq_left (by rw [le_div_iff₀ hTL]; linarith)]`. Use `hnr.trans ?_` and prove the remaining obligations. Establish `h2 : 1 / (2 * Real.pi) * (Real.exp (L * c) * (Real.pi + 2 * (T * |L|))) ≤ Real.exp (L * c) * 2`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hs hE.le, Real.pi_gt_three]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_right (by rw [div_le_iff₀ hTL]; linarith)]`. Use `hfar.trans ?_` and prove the remaining obligations. Rewrite using `[show 1 / (2 * Real.pi) * (2 * Real.exp (L * c) / (T * |L|)) = 1 / Real.pi * (Real.exp (L * c) / (T * |L|)) by field_simp, show 3 * Real.exp (L * c) * (1 / (T * |L|)) = 3 * (Real.exp (L * c) / (T * |L|)) by ring]`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises.
+
+Rewrite using `[div_le_iff₀ hpi]`. Use polynomial arithmetic with `[Real.pi_gt_three]`.
+-/
 theorem truncated_perron_kernel : ∃ C : ℝ, 0 < C ∧ ∀ y c T : ℝ, 0 < y → y ≠ 1 → 0 < c → 1 ≤ T → ‖(1 / (2 * Real.pi) : ℂ) * (∫ t in (-T)..T, (y : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I)) - (if 1 < y then 1 else 0)‖ ≤ C * y ^ c * min 1 (1 / (T * |Real.log y|)) := by
   refine ⟨3, by norm_num, fun y c T hy hy1 hc hT => ?_⟩
   have hint : (∫ t in (-T)..T, (y : ℂ) ^ ((c : ℂ) + t * I) / ((c : ℂ) + t * I))

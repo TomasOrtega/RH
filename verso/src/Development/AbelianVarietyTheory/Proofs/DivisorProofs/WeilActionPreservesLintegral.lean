@@ -10,6 +10,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ArchimedeanActsL2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hW x f f₁ hA μ hμ`. Set `g : (Fin n × Fin d → Af F) → ℂ` to `(GlobalTheory.RealLift.intPts F (Fin n × Fin d)).indicator 1`. Establish `hg : g ∈ SB (Fin n × Fin d → Af F)` using `GlobalTheory.RealLift.indicator_intPts_mem_SB`. Establish `hg0 : g 0 ≠ 0` using `by show (GlobalTheory.RealLift.intPts F (Fin n × Fin d)).indicator (1 : (Fin n × Fin d → Af F) → ℂ) 0 ≠ 0`. Rewrite using `[Set.indicator_of_mem GlobalTheory.RealLift.zero_mem_intPts]`.
+
+Conclude with `one_ne_zero`. Take `⟨μA, hμA, c, hc0, hct, hc⟩` from `GlobalTheory.ArchimedeanUnitaryL2.exists_haar F _ μ g hg hg0`. Set `r : (Fin n × Fin d → AF F) → ℂ` to `fun x => g fun i => (x i).2`. Establish `hS : ∀ f' : SInf F (Fin n × Fin d), tens (evI F) (⇑f') r ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `fun f' => Submodule.subset_span ⟨f', g, hg, rfl⟩`. Establish `hr : ∀ x z, At (evI F) z → r (x + z) = r x`.
+
+Introduce `x z hz`. Use `congrArg g (funext fun i => ?_)` and prove the remaining obligations. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.ArchimedeanUnitaryL2.snd_eq_zero hz i, add_zero]`. Establish `hU` using `(IsUWeilPair.isUSplitting hW).unit μA hμA x (tens (evI F) (⇑f) r) (hS f)`.
+
+Establish `hAct : om x (tens (evI F) (⇑f) r) = tens (evI F) (⇑f₁) r` using `hA r ⟨hr, hS f⟩`. Rewrite `hU` using `[hAct]`. Establish `h1` using `((hc f₁).symm.trans hU).trans (hc f)`. Conclude with `(ENNReal.mul_right_inj hc0 hct).1 h1`.
+-/
 theorem acts_lintegral_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n)
     (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W), M.IsWeil ψ χX χW om →
     ∀ (x : UA σ X.J × UA σ W.J) (f f₁ : SInf F (Fin n × Fin d)), Acts (evI F) (om x) (⇑f) (⇑f₁) →

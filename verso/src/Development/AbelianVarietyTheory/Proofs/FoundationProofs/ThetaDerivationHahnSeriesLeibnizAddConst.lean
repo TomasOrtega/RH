@@ -7,9 +7,21 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory.Glue
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_coeff {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ) (φ : HahnSeries ℚ Ω) (r : ℚ) :
     (theta s φ).coeff r = algebraMap ℚ Ω (s * r) * φ.coeff r := rfl
 
+/- English proof (translation)
+Introduce `Ω _ _ s P Q`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Establish `h1 : (theta s P).support ⊆ P.support` using `fun t ht h => ht (by simp [theta_coeff, h])`. Establish `h2 : (theta s Q).support ⊆ Q.support` using `fun t ht h => ht (by simp [theta_coeff, h])`.
+
+Rewrite using `[HahnSeries.coeff_add, HahnSeries.coeff_mul_left' P.isPWO_support h1, HahnSeries.coeff_mul_right' Q.isPWO_support h2, theta_coeff, HahnSeries.coeff_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Use `(Finset.mem_addAntidiagonal.1 hij).2.2` as an intermediate fact. Rewrite using `[← this, theta_coeff, theta_coeff, mul_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `r`. Simplify using `[theta_coeff, mul_add]`. Introduce `c`. Use extensionality with `r`. Rewrite using `[theta_coeff]`.
+
+Distinguish the cases in `h : r = 0`. Simplify using `[h]`. Simplify using `[HahnSeries.C_apply, HahnSeries.coeff_single_of_ne h]`.
+-/
 theorem theta_leibniz_add_const :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (s : ℚ) (P Q : HahnSeries ℚ Ω),
       theta s (P * Q) = theta s P * Q + P * theta s Q ∧ theta s (P + Q) = theta s P + theta s Q ∧

@@ -25,6 +25,13 @@ section Block
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use `set w := P₀⁻¹ * M - 1 with hw`. Establish `hx : P₀⁻¹ * M = 1 + w` using `by rw [hw]; abel`. Establish `e1 : M * (1 + (1 - l) • w) = Ps * (P₀⁻¹ * M)`. Rewrite using `[hPs, hw]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, ← Matrix.mul_assoc, mul_nonsing_inv _ h0, Matrix.one_mul]`.
+
+Use `module`. Establish `h1 : Ps⁻¹ * M * (1 + (1 - l) • w) = 1 + w`. Rewrite using `[Matrix.mul_assoc, e1, ← Matrix.mul_assoc, nonsing_inv_mul _ hs, Matrix.one_mul, hx]`. Establish `e2 : (Ps⁻¹ * M - 1 - l • w) * (1 + (1 - l) • w) = Ps⁻¹ * M * (1 + (1 - l) • w) - (1 + l • w) * (1 + (1 - l) • w)`. Rewrite using `[← Matrix.sub_mul]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e2, h1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `module`.
+-/
 theorem block_mix (M P₀ Ps : Matrix n n ℂ) (l : ℂ) (hPs : Ps = (1 - l) • M + l • P₀)
     (h0 : IsUnit P₀.det) (hs : IsUnit Ps.det) :
     (Ps⁻¹ * M - 1 - l • (P₀⁻¹ * M - 1)) * (1 + (1 - l) • (P₀⁻¹ * M - 1)) =
@@ -45,6 +52,9 @@ theorem block_mix (M P₀ Ps : Matrix n n ℂ) (l : ℂ) (hPs : Ps = (1 - l) •
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul]
   module
 
+/- English proof (translation)
+Rewrite using `[add_sub_cancel_left, add_sub_cancel_left, smul_smul, h, sub_self]`.
+-/
 theorem block_lin (Y : Matrix n n ℂ) (a a₀ l : ℂ) (h : l * a₀ = a) :
     (1 + a • Y) - 1 - l • ((1 + a₀ • Y) - 1) = 0 := by
   rw [add_sub_cancel_left, add_sub_cancel_left, smul_smul, h, sub_self]
@@ -55,6 +65,9 @@ section Fin
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Establish `ht : (t : ℂ) = 1 - l * (1 - s₀)` using `by rw [h]; ring`. Unfold `GradedNorm.mix`. Use `push_cast`. Rewrite using `[ht]`. Use `module`.
+-/
 theorem mix_rel (M₀ M : Matrix (Fin k) (Fin k) ℂ) (t s₀ : ℝ) (l : ℂ) (h : l * (1 - (s₀ : ℂ)) = 1 - (t : ℂ)) :
     GradedNorm.mix t M₀ M = (1 - l) • M + l • GradedNorm.mix s₀ M₀ M := by
   have ht : (t : ℂ) = 1 - l * (1 - s₀) := by rw [h]; ring
@@ -63,6 +76,11 @@ theorem mix_rel (M₀ M : Matrix (Fin k) (Fin k) ℂ) (t s₀ : ℝ) (l : ℂ) (
   rw [ht]
   module
 
+/- English proof (translation)
+Establish `e : (GradedNorm.mixDual t M₀ M)⁻¹ = (GradedNorm.mix t (GlobalTheory.LieMet.dualGram M₀) (GlobalTheory.LieMet.dualGram M))ᵀ`. Rewrite using `[← GradedNorm.dualGram_mixDual ht h₀ h, GlobalTheory.LieMet.dualGram, transpose_transpose]`. Establish `hu : IsUnit M.det` using `(isUnit_iff_isUnit_det _).1 h.isUnit`. Rewrite using `[e]`. Simplify using `only [GradedNorm.mix, GlobalTheory.LieMet.dualGram, transpose_add, transpose_smul, transpose_transpose, Matrix.add_mul, Matrix.smul_mul, nonsing_inv_mul _ hu]`.
+
+Use `push_cast`. Use `module`.
+-/
 theorem mixDual_inv_mul {M₀ M : Matrix (Fin k) (Fin k) ℂ} (h₀ : M₀.PosDef) (h : M.PosDef) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     (GradedNorm.mixDual t M₀ M)⁻¹ * M = 1 + ((1 : ℂ) - t) • (M₀⁻¹ * M - 1) := by
   have e : (GradedNorm.mixDual t M₀ M)⁻¹ = (GradedNorm.mix t (GlobalTheory.LieMet.dualGram M₀) (GlobalTheory.LieMet.dualGram M))ᵀ := by
@@ -76,6 +94,43 @@ theorem mixDual_inv_mul {M₀ M : Matrix (Fin k) (Fin k) ℂ} (h₀ : M₀.PosDe
 
 end Fin
 
+/- English proof (translation)
+Introduce `ι _ m g hg Ψ M₀ M h₀ h v G hG hG1 s hs s₀ hs₀ s₁ hs₁ hne l l₁ V hl hl₁ hV hT`. Take `⟨N, hN⟩ : ∃ N : ℝ → ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) ℂ, N = fun t τ => (if Ψ τ then GradedNorm.mix t (M₀ τ) (M τ) else GradedNorm.mixDual t (M₀ τ) (M τ))⁻¹` from `⟨_, rfl⟩`. Establish `hG' : ∀ t a b, G t a b = ∑ τ, HermFrame.form (N t τ) (v a τ) (v b τ)` using `by subst hN; exact hG`. Establish `hNΨ : ∀ t τ, Ψ τ → N t τ = (GradedNorm.mix t (M₀ τ) (M τ))⁻¹` using `fun t τ hτ => by rw [hN]; simp only [if_pos hτ]`. Establish `hNo : ∀ t τ, ¬ Ψ τ → N t τ = (GradedNorm.mixDual t (M₀ τ) (M τ))⁻¹` using `fun t τ hτ => by`.
+
+Rewrite using `[hN]`. Simplify using `only [if_neg hτ]`. Establish `hMu : ∀ τ, IsUnit (M τ).det` using `fun τ => (isUnit_iff_isUnit_det _).1 (h τ).isUnit`. Establish `hM₀u : ∀ τ, IsUnit (M₀ τ).det` using `fun τ => (isUnit_iff_isUnit_det _).1 (h₀ τ).isUnit`. Establish `hN1 : ∀ τ, N 1 τ = (M τ)⁻¹` using `fun τ => by`.
+
+Distinguish the cases in `hτ : Ψ τ`. Rewrite using `[hNΨ 1 τ hτ, (GradedNorm.mix_values (s := 0)).2.1]`. Rewrite using `[hNo 1 τ hτ, (GradedNorm.mixDual_values (s := 0) (hM₀u τ) (hMu τ)).2.1]`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin g) (Σ τ, Fin (m τ)) ℂ, ∀ a p, B a p = v a p.1 p.2` from `⟨of fun a p => v a p.1 p.2, fun _ _ => rfl⟩`. Establish `hGB : ∀ t, G t = B * blockDiagonal' (N t) * Bᴴ`.
+
+Introduce `t`. Use extensionality with `a b`. Rewrite using `[hG']`. Use `(HermFrame.form_blockDiagonal' (N t) (fun p => v a p.1 p.2) (fun p => v b p.1 p.2)).symm.trans ?_` and prove the remaining obligations. Simplify using `only [HermFrame.form, dotProduct, mulVec, mul_apply, conjTranspose_apply, hB, Finset.mul_sum, Finset.sum_mul, Pi.star_apply, mul_assoc]`.
+
+Conclude with `Finset.sum_comm`. Take `⟨X, hX⟩ : ∃ X : ℝ → ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) ℂ, ∀ t τ, X t τ = N t τ * M τ` from `⟨fun t τ => N t τ * M τ, fun _ _ => rfl⟩`. Establish `hXD : ∀ t, blockDiagonal' (X t) * blockDiagonal' (N 1) = blockDiagonal' (N t)`. Introduce `t`. Rewrite using `[← blockDiagonal'_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[hX, hN1, Matrix.mul_assoc, mul_nonsing_inv _ (hMu τ), Matrix.mul_one]`. Establish `hG1u : IsUnit (G 1).det` using `hG1`. Use `set C := blockDiagonal' (N 1) * Bᴴ * (G 1)⁻¹ with hC`.
+
+Establish `hBC : B * C = 1`. Rewrite using `[show B * C = B * blockDiagonal' (N 1) * Bᴴ * (G 1)⁻¹ by simp only [hC, Matrix.mul_assoc], ← hGB, mul_nonsing_inv _ hG1u]`. Establish `hCB : C * B = 1` using `(mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq (by simp [Fintype.card_sigma, hg]))).1 hBC`. Establish `hU : ∀ t, G t * (G 1)⁻¹ = B * blockDiagonal' (X t) * C`. Introduce `t`.
+
+Rewrite using `[hGB t, hC]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (blockDiagonal' (X t)) (blockDiagonal' (N 1)), hXD]`. Establish `cm : ∀ P Q : Matrix (Σ τ, Fin (m τ)) (Σ τ, Fin (m τ)) ℂ, B * (P * Q) * C = (B * P * C) * (B * Q * C)`. Introduce `P Q`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc C B, hCB, Matrix.one_mul]`. Establish `c1 : B * (1 : Matrix (Σ τ, Fin (m τ)) (Σ τ, Fin (m τ)) ℂ) * C = 1` using `by rw [Matrix.mul_one, hBC]`. Establish `cs : ∀ P Q : Matrix (Σ τ, Fin (m τ)) (Σ τ, Fin (m τ)) ℂ, B * (P - Q) * C = B * P * C - B * Q * C` using `fun P Q => by rw [Matrix.mul_sub, Matrix.sub_mul]`. Establish `ca : ∀ P Q : Matrix (Σ τ, Fin (m τ)) (Σ τ, Fin (m τ)) ℂ, B * (P + Q) * C = B * P * C + B * Q * C` using `fun P Q => by rw [Matrix.mul_add, Matrix.add_mul]`.
+
+Establish `csm : ∀ (c : ℂ) (P : Matrix (Σ τ, Fin (m τ)) (Σ τ, Fin (m τ)) ℂ), B * (c • P) * C = c • (B * P * C)` using `fun c P => by rw [Matrix.mul_smul, Matrix.smul_mul]`. Establish `hs₀' : (1 - s₀ : ℝ) ≠ 0` using `(sub_pos.2 hs₀.2).ne'`. Establish `hlc : l * (1 - (s₀ : ℂ)) = 1 - (s : ℂ)`. Rewrite using `[hl]`. Conclude with `div_mul_cancel₀ (1 - s) hs₀'` after adjusting the coercions.
+
+Establish `hl₁c : l₁ * (1 - (s₀ : ℂ)) = 1 - (s₁ : ℂ)`. Rewrite using `[hl₁]`. Conclude with `div_mul_cancel₀ (1 - s₁) hs₀'` after adjusting the coercions. Establish `hl₁0 : l₁ ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `: (1 - s₁ : ℝ) = 0` using `by exact_mod_cast (by rw [← hl₁c, zero_mul] : (1 : ℂ) - s₁ = 0)`. Conclude with `(sub_pos.2 hs₁.2).ne' this`. Establish `hl₁1 : 1 - l₁ ≠ 0`. Introduce `h1`. Establish `e : l₁ = 1` using `(sub_eq_zero.1 h1).symm`.
+
+Rewrite `hl₁c` using `[e, one_mul]`. Conclude with `hne (by exact_mod_cast (sub_right_inj.1 hl₁c).symm)`. Establish `hIcc : ∀ t ∈ Set.Ico (0 : ℝ) 1, t ∈ Set.Icc (0 : ℝ) 1` using `fun t ht => ⟨ht.1, ht.2.le⟩`. Establish `hτ : ∀ τ, (l₁ * (1 - l₁)) • ((X s τ - 1 - l • (X s₀ τ - 1)) * (1 + (1 - l) • (X s₀ τ - 1))) = (l * (1 - l)) • ((X s₁ τ - 1 - l₁ • (X s₀ τ - 1)) * (1 + (1 - l₁) • (X s₀ τ - 1)))`. Introduce `τ`.
+
+Rewrite using `[hX, hX, hX]`. Distinguish the cases in `hψ : Ψ τ`. Rewrite using `[hNΨ _ _ hψ, hNΨ _ _ hψ, hNΨ _ _ hψ]`. Establish `u : ∀ t ∈ Set.Icc (0 : ℝ) 1, IsUnit (GradedNorm.mix t (M₀ τ) (M τ)).det` using `fun t ht => (isUnit_iff_isUnit_det _).1 (GradedNorm.mix_posDef ht (h₀ τ) (h τ)).isUnit`. Rewrite using `[block_mix (M τ) _ _ l (mix_rel _ _ s s₀ l hlc) (u s₀ (hIcc s₀ hs₀)) (u s hs), block_mix (M τ) _ _ l₁ (mix_rel _ _ s₁ s₀ l₁ hl₁c) (u s₀ (hIcc s₀ hs₀)) (u s₁ (hIcc s₁ hs₁)), smul_smul, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hNo _ _ hψ, hNo _ _ hψ, hNo _ _ hψ, mixDual_inv_mul (h₀ τ) (h τ) hs, mixDual_inv_mul (h₀ τ) (h τ) (hIcc s₀ hs₀), mixDual_inv_mul (h₀ τ) (h τ) (hIcc s₁ hs₁), block_lin _ _ _ _ hlc, block_lin _ _ _ _ hl₁c, Matrix.zero_mul, Matrix.zero_mul, smul_zero, smul_zero]`. Establish `hPi : (l₁ * (1 - l₁)) • ((X s - 1 - l • (X s₀ - 1)) * (1 + (1 - l) • (X s₀ - 1))) = (l * (1 - l)) • ((X s₁ - 1 - l₁ • (X s₀ - 1)) * (1 + (1 - l₁) • (X s₀ - 1)))`. Use function extensionality and compare the values at `τ`.
+
+Simplify `hτ τ` using `only [Pi.smul_apply, Pi.mul_apply, Pi.sub_apply, Pi.add_apply, Pi.one_apply]`. Establish `hbm : ∀ P Q : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) ℂ, blockDiagonal' (P * Q) = blockDiagonal' P * blockDiagonal' Q` using `fun P Q => blockDiagonal'_mul P Q`. Establish `key` using `congrArg (fun Z => B * blockDiagonal' Z * C) hPi`. Simplify using `only [blockDiagonal'_smul, hbm, blockDiagonal'_sub, blockDiagonal'_add, blockDiagonal'_one, csm, cm, cs, ca, c1, ← hU] at key`. Rewrite `key` using `[← hV]`.
+
+Establish `hk : l₁ * (1 - l₁) ≠ 0` using `mul_ne_zero hl₁0 hl₁1`. Establish `e : (G s * (G 1)⁻¹ - 1 - l • V) * (1 + (1 - l) • V) = (l * (1 - l) / (l₁ * (1 - l₁))) • ((G s₁ * (G 1)⁻¹ - 1 - l₁ • V) * (1 + (1 - l₁) • V))`. Rewrite using `[div_eq_mul_inv, mul_comm, ← smul_smul, ← key, smul_smul, inv_mul_cancel₀ hk, one_smul]`. Establish `e2 : G s * (G 1)⁻¹ - 1 - l • V = (l * (1 - l) / (l₁ * (1 - l₁))) • ((G s₁ * (G 1)⁻¹ - 1 - l₁ • V) * (1 + (1 - l₁) • V) * (1 + (1 - l) • V)⁻¹)`. Rewrite using `[← Matrix.smul_mul, ← e, Matrix.mul_assoc, mul_nonsing_inv _ hT, Matrix.mul_one]`.
+
+Rewrite using `[← e2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gram_interp_formula : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (g : ℕ), g = ∑ τ, m τ → ∀ (Ψ : ι → Prop) (M₀ M : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) ℂ), (∀ τ, (M₀ τ).PosDef) → (∀ τ, (M τ).PosDef) → ∀ (v : Fin g → ∀ τ, Fin (m τ) → ℂ) (G : ℝ → Matrix (Fin g) (Fin g) ℂ), (∀ s a b, G s a b = ∑ τ, HermFrame.form (if Ψ τ then GradedNorm.mix s (M₀ τ) (M τ) else GradedNorm.mixDual s (M₀ τ) (M τ))⁻¹ (v a τ) (v b τ)) → IsUnit (G 1).det → ∀ s ∈ Set.Icc (0 : ℝ) 1, ∀ s₀ ∈ Set.Ico (0 : ℝ) 1, ∀ s₁ ∈ Set.Ico (0 : ℝ) 1, s₁ ≠ s₀ → ∀ (l l₁ : ℂ) (V : Matrix (Fin g) (Fin g) ℂ), l = ((1 - s) / (1 - s₀) : ℝ) → l₁ = ((1 - s₁) / (1 - s₀) : ℝ) → V = G s₀ * (G 1)⁻¹ - 1 → IsUnit (1 + (1 - l) • V).det → G s = (1 + l • V + (l * (1 - l) / (l₁ * (1 - l₁))) • ((G s₁ * (G 1)⁻¹ - 1 - l₁ • V) * (1 + (1 - l₁) • V) * (1 + (1 - l) • V)⁻¹)) * G 1 := by
   intro ι _ m g hg Ψ M₀ M h₀ h v G hG hG1 s hs s₀ hs₀ s₁ hs₁ hne l l₁ V hl hl₁ hV hT
   obtain ⟨N, hN⟩ : ∃ N : ℝ → ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) ℂ, N = fun t τ =>

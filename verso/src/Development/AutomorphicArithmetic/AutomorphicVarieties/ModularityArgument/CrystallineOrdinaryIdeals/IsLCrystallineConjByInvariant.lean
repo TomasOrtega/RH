@@ -6,6 +6,13 @@ namespace GlobalTheory.LCrConj
 
 open TensorProduct
 
+/- English proof (translation)
+Set `F : V ⊗[ℚ_[l]] Bcr l ≃ₗ[ℚ_[l]] V' ⊗[ℚ_[l]] Bcr l` to `TensorProduct.congr f (LinearEquiv.refl _ _)`. Establish `hF : ∀ g x, F (actC φ (resCoef ℚ_[l] ρ) g x) = actC φ (resCoef ℚ_[l] ρ') g (F x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [F, actC, resCoef, hf]`. Establish `hD : (Dcr φ (resCoef ℚ_[l] ρ)).map F.toLinearMap = Dcr φ (resCoef ℚ_[l] ρ')`. Use extensionality with `x`. Take `⟨x, rfl⟩` from `F.surjective x`.
+
+Rewrite using `[Submodule.mem_map_equiv, F.symm_apply_apply]`. Simplify using `only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, ← hF, F.injective.eq_iff]`. Unfold `IsCr`. Rewrite using `[← hD, LinearEquiv.finrank_map_eq, f.finrank_eq]`.
+-/
 private theorem isCr_transfer {l : ℕ} [Fact l.Prime] {G A A' V V' : Type} [Group G] [CommRing A]
     [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [CommRing A']
     [Algebra ℚ_[l] A'] [AddCommGroup V'] [Module A' V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A' V']
@@ -28,6 +35,9 @@ private theorem isCr_transfer {l : ℕ} [Fact l.Prime] {G A A' V V' : Type} [Gro
   unfold IsCr
   rw [← hD, LinearEquiv.finrank_map_eq, f.finrank_eq]
 
+/- English proof (translation)
+The claim follows from `isCr_transfer φ (colRep r) (colRep (conjGL h r)) ((Matrix.toLinearEquiv' (h : Matrix (Fin n) (Fin n) A) h.invertible).restrictScalars ℚ_[l]) fun g x => by simp [colRep, conjGL, Matrix.toLinearEquiv', Matrix.mul_assoc]`.
+-/
 private theorem isCr_conjGL {l : ℕ} [Fact l.Prime] {G A : Type} [Group G] [CommRing A] [Algebra ℚ_[l] A] {n : ℕ}
     (φ : G →* GQ l) (r : G →* GL (Fin n) A) (h : GL (Fin n) A) :
     IsCr φ (colRep r) ↔ IsCr φ (colRep (conjGL h r)) :=
@@ -41,6 +51,9 @@ private def glPart {G R : Type} [Group G] [CommRing R] {m : ℕ} (H : Subgroup G
   map_one' := by simp
   map_mul' g g' := by simp [h g g.2]
 
+/- English proof (translation)
+Use `⟨fun ⟨ρ, h1, h2⟩ => ?_, fun h2 => ⟨_, fun _ => rfl, h2⟩⟩` and prove the remaining obligations. Establish `: ρ = glPart D.HL r h` using `MonoidHom.ext h1`. Conclude with `this ▸ h2`.
+-/
 private theorem isLCr_iff' {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (D : Dat3 l O) {B : Type} [CommRing B] [Algebra O B] [Algebra ℚ_[l] B] (r : GQ l →* GG 3 B)
     (h : ∀ g ∈ D.HL, (r g).right = 1) : D.IsLCr r ↔ IsCr D.HL.subtype (colRep (glPart D.HL r h)) := by
@@ -52,6 +65,13 @@ end GlobalTheory.LCrConj
 
 open GlobalTheory.LCrConj in
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ D B _ _ _ _ _ _ _ r h hm _ hc`. Establish `h1 : ∀ g ∈ D.HL, (r g).right = 1` using `fun g hg => (hm g).trans hg.1`. Establish `hm' : HasMult D.η (conjBy h r)` using `fun g => (by simp [conjBy] : (conjBy h r g).right = (r g).right).trans (hm g)`. Establish `h1' : ∀ g ∈ D.HL, (conjBy h r g).right = 1` using `fun g hg => (hm' g).trans hg.1`. Establish `he : glPart D.HL (conjBy h r) h1' = conjGL h (glPart D.HL r h1)`.
+
+Use extensionality with `g : 1`. Establish `h2 : conjBy h r g = GG.ofGL h * r g * GG.ofGL h⁻¹` using `by rw [map_inv]; rfl`. Use `show (conjBy h r g).left = _`. Rewrite using `[h2, SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.left_inl, SemidirectProduct.left_inl, SemidirectProduct.right_inl, h1 g g.2, mul_one, sgnAct_one, sgnAct_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[isLCr_iff' D r h1, isCr_conjGL _ _ h, ← he, ← isLCr_iff']`. Conclude with `hc`.
+-/
 theorem GlobalTheory.LCrConj.main : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] (r : GQ l →* GG 3 B) (h : GL (Fin 3) B), HasMult D.η r → (∀ a b, QCont l fun g => (r g).mat a b) → D.IsLCr (conjBy h r) → D.IsLCr r := by
   intro l _ O _ _ _ _ _ _ _ D B _ _ _ _ _ _ _ r h hm _ hc
   have h1 : ∀ g ∈ D.HL, (r g).right = 1 := fun g hg => (hm g).trans hg.1

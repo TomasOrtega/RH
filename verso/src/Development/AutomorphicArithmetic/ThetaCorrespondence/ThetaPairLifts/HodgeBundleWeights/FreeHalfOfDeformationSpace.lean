@@ -19,6 +19,15 @@ open Formalism.IndefR.FWT
 noncomputable section
 namespace GlobalTheory.DefHalf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hG`. Establish `h1` using `_root_.GlobalTheory.T.exists_free_half_lift_of_neat hP hG`. Establish `h2` using `_root_.GlobalTheory.T.exists_split_deformation_lift hP hG`. Unfold `Lifts at *`. Use `Closed.imp (h1.and h2) ?_` and prove the remaining obligations.
+
+Introduce and unpack `eps Fm CH - ⟨⟨C1, -, x1, ha1⟩, ⟨C2, -, x2, ha2⟩⟩`. Use `⟨0, le_rfl, max x1 x2, fun x hx hle ι p hp i hi k => ?_⟩` and prove the remaining obligations. Establish `a1` using `ha1 x hx (le_trans (le_max_left _ _) hle) ι p hp i hi k`. Establish `a2` using `ha2 x hx (le_trans (le_max_right _ _) hle) ι p hp i hi hp (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k) (((p.R.eG.trans p.cG).symm.toMonoidHom).comp (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k).subtype) a1`. Take `⟨X, hX, hdX, hact, A, hfr, hint, hperm⟩` from `a2`.
+
+Use `letI := ((p.R.toRealDat.FW i)).towKs`. Take `⟨n, b, hbW, hbK, hbsK, hbL, hbsL⟩` from `p.fw.ks i`. Establish `hK` using `(p.rhoGeo i).1 (fun g f hf => keeps p i hp.1 g f hf)`. Establish `he : ∀ g f, (((p.fw.e i) (actC p i hp.1 g f) : (p.R.FW i).WK) : Fin (p.R.nW i) → (Fm.D x ι).what₂.LL) = (p.R.FW i).ρ g ((p.fw.e i) f)`. Introduce `g f`.
+
+Take `⟨hf, h⟩` from `hK g f`. Rewrite using `[← h]`. Both sides reduce to the same expression. Take `⟨A', hint', hperm'⟩` from `GlobalTheory.T.transport_permuted_directSum_complexification p.T.Q.c.F (Fm.D x ι).what₂.LL (Fin (p.R.nW i) → (Fm.D x ι).what₂.LL) (CF p i) (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k) p.P.Gp X (Fm.D x ι).what₂.embLL (p.R.FW i).WK n b hbW hbK hbsK hbL hbsL (p.fw.e i) (p.R.FW i). …`. Conclude with `⟨X, hX, hdX, hact, A', hfr, hint', fun h y v hv => hperm' h y v hv⟩`.
+-/
 theorem deformation_space_half_free : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k) X)
       (A : X → Submodule ℂ (GlobalTheory.DefRead.VAt p i)),
@@ -65,6 +74,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.DefHalf.deformation_space_half_free | exact _root_.GlobalTheory.DefHalf.deformation_space_half_free | (intros; apply _root_.GlobalTheory.DefHalf.deformation_space_half_free <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.free_half_of_deformation_space : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram → Lifts fun Fm x _ ι p i _ _ => (i : ℕ) + 1 = (Fm.D x ι).R.m → ∀ k : Fin 2,
     ∃ (X : Type) (_ : Fintype X) (_ : DecidableEq X) (_ : MulAction (GlobalTheory.BadCount.Inh.halfH (Fm.D x ι) k) X)
       (A : X → Submodule ℂ (GlobalTheory.DefRead.VAt p i)),

@@ -12,6 +12,15 @@ namespace GlobalTheory.CompanionTheory.LiftLat
 section Coch
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {F : C ⥤ ModuleCat.{0} R} {G : ℕ → C ⥤ ModuleCat.{0} R}
 
+/- English proof (translation)
+Use `GlobalTheory.T.inverse_limit_cohomology_comparison (K := CH.cx F) (fun n => CH.cx (G n)) c (fun n => (red n).hom) (fun n => (tr n).hom) ?_ ?_ ?_ ?_ j k h1 h2 h3` and prove the remaining obligations. Introduce `n j x`. Use function extensionality and compare the values at `s`. Rewrite using `[htr, hred, hred, hcomp]`. Introduce `n j y choose g hg using fun T => hsurj n T`.
+
+Conclude with `⟨fun s => g _ (y s), funext fun s => (hred n j _ s).trans (hg _ _)⟩`. Introduce `n j x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: ∀ s, ∃ y, x s = c ^ n • y` using `fun s => (hker n _ _).1 ((hred n j x s).symm.trans (congrFun hx s))`.
+
+Use `choose y hy using this`. Conclude with `⟨y, funext hy⟩`. Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `s`. Conclude with `(hred n j _ s).trans ((hker n _ _).2 ⟨_, rfl⟩)`.
+
+Introduce `j x hx`. Conclude with `funext fun s => htors _ _ (congrFun hx s)`.
+-/
 theorem gen (c : R) (red : ∀ n, CH.Mor F (G n) (RingHom.id R)) (tr : ∀ n, CH.Mor (G (n + 1)) (G n) (RingHom.id R))
     (τ : ∀ n T, F.obj T →ₗ[R] (G n).obj T) (ρ : ∀ n T, (G (n + 1)).obj T →ₗ[R] (G n).obj T)
     (hred : ∀ n j (x : CH.Cn F j) s, (red n).hom.f j x s = τ n _ (x s))
@@ -51,16 +60,27 @@ end Coch
 section Sq
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Subtype.ext_iff`.
+-/
 theorem sqMk_eq_zero (a b : IdF A) {T : C} (x : A.obj T) (hx : x ∈ a.S T) : sqMk a b x hx = 0 ↔ x ∈ b.S T := by
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   exact Subtype.ext_iff
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Both sides reduce to the same expression.
+-/
 theorem pull_sqLe_toSq {a b a' b' : IdF A} (ha : ∀ T, a.S T = ⊤) (ha' : ∀ T, a'.S T = ⊤) (hle : ∀ T, a.S T ≤ a'.S T)
     (hb : ∀ T, b.S T ≤ b'.S T) (j : ℕ) (z : CH.H (CH.modF A) j) :
     (sqLe hle hb).pull j ((toSq a b ha).pull j z) = (toSq a' b' ha').pull j z := by
   obtain ⟨f, rfl⟩ := Submodule.Quotient.mk_surjective _ z
   rfl
 
+/- English proof (translation)
+Use `gen (G := fun n => sq (IdF.top A) (b n)) c (fun n => toSq (IdF.top A) (b n) fun _ => rfl) (fun n => sqLe (fun _ => le_rfl) (hb n)) (fun n T => (toSq (IdF.top A) (b n) fun _ => rfl).τ T) (fun n T => (sqLe (fun _ => le_rfl) (hb n)).τ T) (fun _ _ _ _ => rfl) (fun _ _ _ _ => rfl) ?_ …` and prove the remaining obligations. Introduce `n T x`. Both sides reduce to the same expression. Introduce `n T y`. Take `⟨y, hy⟩` from `y`.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨x, rfl⟩`. Introduce `n T x`. Conclude with `(sqMk_eq_zero (IdF.top A) (b n) (show A.obj T from x) trivial).trans (hmem n T x)`.
+-/
 theorem gen_top (c : R) (b : ℕ → IdF A) (hb : ∀ n T, (b (n + 1)).S T ≤ (b n).S T)
     (hmem : ∀ n T (x : A.obj T), x ∈ (b n).S T ↔ ∃ y : A.obj T, x = c ^ n • y)
     (htors : ∀ T (x : A.obj T), c • x = 0 → x = 0) (j k : ℕ)
@@ -84,6 +104,19 @@ theorem gen_top (c : R) (b : ℕ → IdF A) (hb : ∀ n T, (b (n + 1)).S T ≤ (
   · intro n T x
     exact (sqMk_eq_zero (IdF.top A) (b n) (show A.obj T from x) trivial).trans (hmem n T x)
 
+/- English proof (translation)
+Use `(gen (G := fun n => sq (IdF.top A) (b n)) c (fun n => sqLe (a' := IdF.top A) (fun T => le_top) (hle n)) (fun n => sqLe (fun _ => le_rfl) (hb n)) (fun n T => (sqLe (a' := IdF.top A) (fun T => le_top) (hle n)).τ T) (fun n T => (sqLe (fun _ => le_rfl) (hb n)).τ T) (fun _ _ _ _ => rf …` and prove the remaining obligations. Introduce `n T x`. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+
+Introduce `n T y`. Take `⟨y, hy⟩` from `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨sqMk a₀ br x (by rw [ha₀]; trivial), rfl⟩`. Introduce `n T x`.
+
+Take `⟨x, hx⟩` from `x`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `e1 : (sqLe (a'` using `IdF.top A) (fun T => le_top) (hle n)).τ T ⟨Ideal.Quotient.mk _ w, hx⟩ = 0 ↔ w ∈ (b n).S T := sqMk_eq_zero (IdF.top A) (b n) w trivial`. Use `e1.trans ((hmem n T w).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`.
+
+Use `⟨sqMk a₀ br y (by rw [ha₀]; trivial), Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.2 hy`. Introduce and unpack `⟨⟨y, hy⟩, h⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨y, Ideal.Quotient.eq.1 (congrArg Subtype.val h)⟩`.
+
+Introduce `T x hx`. Take `⟨x, hx'⟩` from `x`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `e2 : (Ideal.Quotient.mk (br.S T) (c • w)) = 0` using `congrArg Subtype.val hx`. Establish `e3` using `htors T w (Ideal.Quotient.eq_zero_iff_mem.1 e2)`.
+
+Conclude with `Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 e3)`.
+-/
 theorem gen_quo (c : R) (a₀ br : IdF A) (ha₀ : ∀ T, a₀.S T = ⊤) (b : ℕ → IdF A) (hle : ∀ n T, br.S T ≤ (b n).S T)
     (hb : ∀ n T, (b (n + 1)).S T ≤ (b n).S T)
     (hmem : ∀ n T (x : A.obj T), x ∈ (b n).S T ↔ ∃ y : A.obj T, x - c ^ n • y ∈ br.S T)
@@ -124,6 +157,13 @@ theorem gen_quo (c : R) (a₀ br : IdF A) (ha₀ : ∀ T, a₀.S T = ⊤) (b : �
     have e3 := htors T w (Ideal.Quotient.eq_zero_iff_mem.1 e2)
     exact Subtype.ext (Ideal.Quotient.eq_zero_iff_mem.2 e3)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `f g hfg`. Use function extensionality and compare the values at `s`. Establish `e : Ideal.Quotient.mk (b.S _) (show A.obj _ from f s) = Ideal.Quotient.mk (b.S _) (show A.obj _ from g s)` using `congrArg Subtype.val (congrFun hfg s)`. Establish `e'` using `Ideal.Quotient.eq.1 e`.
+
+Rewrite `e'` using `[hb, Ideal.mem_bot]`. Conclude with `sub_eq_zero.1 e'`. Introduce `g`. Establish `: ∀ s : ComposableArrows C n, ∃ x : A.obj (s.obj (Fin.last n)), (toSq a b ha).τ _ x = g s`. Introduce `s`.
+
+Take `⟨y, hy⟩` from `g s`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨x, rfl⟩`. Use `choose f hf using this`. Conclude with `⟨f, funext hf⟩`.
+-/
 theorem bij_toSq (a b : IdF A) (ha : ∀ T, a.S T = ⊤) (hb : ∀ T, b.S T = ⊥) (n : ℕ) :
     Function.Bijective ((toSq a b ha).hom.f n) := by
   constructor
@@ -147,6 +187,9 @@ end Sq
 section Fin
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨n, N₀, hN, hx⟩` from `h`. Set `e` to `LinearEquiv.ofBijective f hf`. Use `⟨n, N₀.map e.symm.toLinearMap, hN.map _, fun x => ⟨c ^ n • e x, hx (e x), ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem afg_of_bij {M N : Type 1} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] (c : R) (f : M →ₗ[R] N)
     (hf : Function.Bijective f) (h : AFG c N) : AFG c M := by
   obtain ⟨n, N₀, hN, hx⟩ := h
@@ -154,11 +197,19 @@ theorem afg_of_bij {M N : Type 1} [AddCommGroup M] [Module R M] [AddCommGroup N]
   refine ⟨n, N₀.map e.symm.toLinearMap, hN.map _, fun x => ⟨c ^ n • e x, hx (e x), ?_⟩⟩
   simp
 
+/- English proof (translation)
+Use `le_antisymm (DPFil.dividedPowerFiltration_one_le δ) fun x hx => ?_` and prove the remaining obligations. Establish `h` using `DPFil.dpow_mem_pdP δ 1 hx`. Rewrite `h` using `[δ.dpow_one hx]`. Then use the resulting hypothesis.
+-/
 theorem dividedPowerFiltration_one_eq {J : Ideal R} (δ : DividedPowers J) : pdP δ 1 = J := by
   refine le_antisymm (DPFil.dividedPowerFiltration_one_le δ) fun x hx => ?_
   have h := DPFil.dpow_mem_pdP δ 1 hx
   rwa [δ.dpow_one hx] at h
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Rewrite using `[pow_zero, Ideal.one_eq_top, top_le_iff]`. Conclude with `(Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨[], by simp, by simp, by simp⟩)`. Consider the case `succ r ih`.
+
+Rewrite using `[pow_succ]`. Use `(Ideal.mul_mono ih ?_).trans (DPFil.dividedPowerFiltration_mul_le δ r 1)` and prove the remaining obligations. Conclude with `(dividedPowerFiltration_one_eq δ).ge`.
+-/
 theorem pow_le_pdP' {J : Ideal R} (δ : DividedPowers J) (r : ℕ) : J ^ r ≤ pdP δ r := by
   induction r with
   | zero =>
@@ -169,6 +220,17 @@ theorem pow_le_pdP' {J : Ideal R} (δ : DividedPowers J) (r : ℕ) : J ^ r ≤ p
     refine (Ideal.mul_mono ih ?_).trans (DPFil.dividedPowerFiltration_mul_le δ r 1)
     exact (dividedPowerFiltration_one_eq δ).ge
 
+/- English proof (translation)
+Establish `hfg : I.FG`. Use `h.fg 1` as an intermediate fact. Rewrite `this` using `[dividedPowerFiltration_one_eq]`. Then use the resulting hypothesis. Establish `hnil : IsNilpotent I` using `⟨m, by`. Use `pow_le_pdP' γ m` as an intermediate fact.
+
+Rewrite `this` using `[h.tf.nil]`. Conclude with `le_bot_iff.1 this⟩`. Establish `hcl : ∀ x : R, (∀ n : ℕ, x ∈ Ideal.span {(l : R) ^ n} ⊔ I) → x ∈ I`. Use `h.closed 1` as an intermediate fact. Rewrite `this` using `[dividedPowerFiltration_one_eq]`. Then use the resulting hypothesis.
+
+Establish `key` using `fun (N : Type 1) [AddCommGroup N] [Module R N] => GlobalTheory.T.almost_finite_module_bounded_torsion R I (l : R) hfg hnil h.prime h.val h.dv h.cpl.toIsPrecomplete hcl N`. Take `⟨k₁, a₁, -, -⟩` from `key M' hM'`. Take `⟨k₂, -, b₂, c₂⟩` from `key M hM`. Use `⟨k₁ + k₂, fun x n hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm, mul_smul, a₁ x n hx, smul_zero]`.
+
+Rewrite using `[pow_add, mul_smul, b₂ x hx, smul_zero]`. Take `⟨z, hz⟩` from `c₂ x hx`. Use `⟨(l : R) ^ k₁ • z, fun n => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hz n`. Use `⟨(l : R) ^ k₁ • y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_add, mul_smul, ← smul_sub, hy, smul_comm]`.
+-/
 theorem bounds {I : Ideal R} {γ : DividedPowers I} {l m : ℕ} (h : LatBase γ l m) {M M' : Type 1} [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (hM : AFG (l : R) M) (hM' : AFG (l : R) M') :
     ∃ k : ℕ, (∀ (x : M') (n : ℕ), (l : R) ^ n • x = 0 → (l : R) ^ k • x = 0) ∧
@@ -202,6 +264,11 @@ end Fin
 section Main
 variable {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Ideal _) ⊔ Ideal.span {algebraMap b.R ((sP Q).A.obj T) c} ↔ _`. Rewrite using `[bot_sup_eq, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by rw [Algebra.smul_def, mul_comm]⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by rw [Algebra.smul_def, mul_comm]⟩`.
+-/
 theorem mem_none (c : b.R) (T : Q.FullSubcategory) (x : (sP Q).A.obj T) :
     x ∈ (stdI Q none c).S T ↔ ∃ y : (sP Q).A.obj T, x = c • y := by
   change x ∈ (⊥ : Ideal _) ⊔ Ideal.span {algebraMap b.R ((sP Q).A.obj T) c} ↔ _
@@ -212,6 +279,9 @@ theorem mem_none (c : b.R) (T : Q.FullSubcategory) (x : (sP Q).A.obj T) :
   · rintro ⟨y, rfl⟩
     exact ⟨y, by rw [Algebra.smul_def, mul_comm]⟩
 
+/- English proof (translation)
+The claim follows from `gen_top c (fun n => stdI Q none (c ^ n)) (stdI_le Q none c) (fun n T x => mem_none Q _ T x) hT j k h1 h2 h3`.
+-/
 theorem top_part (c : b.R) (hT : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x = 0 → x = 0) (j k : ℕ)
     (h1 : ∀ (x : HO Q (j + 1)) (n : ℕ), c ^ n • x = 0 → c ^ k • x = 0)
     (h2 : ∀ x : HO Q j, (∀ n : ℕ, ∃ y, x = c ^ n • y) → c ^ k • x = 0)
@@ -221,6 +291,13 @@ theorem top_part (c : b.R) (hT : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T
     ∀ z : HO Q j, (∀ n, redM Q none (c ^ n) j z = 0) → c ^ k • z = 0 :=
   gen_top c (fun n => stdI Q none (c ^ n)) (stdI_le Q none c) (fun n T x => mem_none Q _ T x) hT j k h1 h2 h3
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x ∈ (sFil Q r).S T ⊔ Ideal.span {algebraMap b.R ((sP Q).A.obj T) c} ↔ _`. Rewrite using `[Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, v, hv, rfl⟩`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hv`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm, add_sub_cancel_right]`. Conclude with `hu`. Introduce and unpack `⟨y, hy⟩`. Use `⟨_, hy, c • y, ?_, sub_add_cancel _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem mem_some (r : ℤ) (c : b.R) (T : Q.FullSubcategory) (x : (sP Q).A.obj T) :
     x ∈ (stdI Q (some r) c).S T ↔ ∃ y : (sP Q).A.obj T, x - c • y ∈ (sFil Q r).S T := by
   change x ∈ (sFil Q r).S T ⊔ Ideal.span {algebraMap b.R ((sP Q).A.obj T) c} ↔ _
@@ -236,6 +313,9 @@ theorem mem_some (r : ℤ) (c : b.R) (T : Q.FullSubcategory) (x : (sP Q).A.obj T
     rw [Algebra.smul_def]
     exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Establish `hle : ∀ (n : ℕ) T, (sFil Q r).S T ≤ (stdI Q (some r) (c ^ n)).S T` using `fun n T => le_sup_left`. Use `gen_quo c (sFil Q 0) (sFil Q r) (fun T => T.obj.pdPow_zero) (fun n => stdI Q (some r) (c ^ n)) hle (stdI_le Q (some r) c) (fun n T x => mem_some Q r _ T x) hT j k h1 h2 h3 _ fun n => ?_` and prove the remaining obligations. Conclude with `(pull_sqLe_toSq (fun T => T.obj.pdPow_zero) (fun _ => rfl) (fun T => le_top) (hle n) j z).trans (hz n)`.
+-/
 theorem quo_part (c : b.R) (r : ℤ)
     (hT : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x ∈ (sFil Q r).S T → x ∈ (sFil Q r).S T) (j k : ℕ)
     (h1 : ∀ (x : HQ Q 0 r (j + 1)) (n : ℕ), c ^ n • x = 0 → c ^ k • x = 0)
@@ -248,9 +328,17 @@ theorem quo_part (c : b.R) (r : ℤ)
     (stdI_le Q (some r) c) (fun n T x => mem_some Q r _ T x) hT j k h1 h2 h3 _ fun n => ?_
   exact (pull_sqLe_toSq (fun T => T.obj.pdPow_zero) (fun _ => rfl) (fun T => le_top) (hle n) j z).trans (hz n)
 
+/- English proof (translation)
+The claim follows from `P.mapH_bij _ (bij_toSq (sFil Q 0) (sFil Q s) (fun T => T.obj.pdPow_zero) h) j`.
+-/
 theorem bij_quoM (s : ℤ) (h : ∀ T : Q.FullSubcategory, (sFil Q s).S T = ⊥) (j : ℕ) : Function.Bijective (quoM Q s j) :=
   P.mapH_bij _ (bij_toSq (sFil Q 0) (sFil Q s) (fun T => T.obj.pdPow_zero) h) j
 
+/- English proof (translation)
+Establish `h : ∀ T : Q.FullSubcategory, Subsingleton ((sq (sFil Q 0) (sFil Q r)).obj T)` using `fun T => by`. Establish `e : (sFil Q r).S T = ⊤` using `(GlobalTheory.CompanionTheory.DPFil.isFil_sFil Q).top r h0 T`. Establish `: Subsingleton ((sP Q).A.obj T ⧸ (sFil Q r).S T)` using `Ideal.Quotient.subsingleton_iff.2 e`. Conclude with `⟨fun x y => Subtype.ext (Subsingleton.elim (α := (sP Q).A.obj T ⧸ (sFil Q r).S T) _ _)⟩`. Establish `h2 : Subsingleton (CH.Cn (sq (sFil Q 0) (sFil Q r)) j)` using `⟨fun f g => funext fun s => (h _).elim _ _⟩`.
+
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `congrArg _ (Subtype.ext (h2.elim _ _))`.
+-/
 theorem sub_HQ (r : ℤ) (h0 : r ≤ 0) (j : ℕ) : Subsingleton (HQ Q 0 r j) := by
   have h : ∀ T : Q.FullSubcategory, Subsingleton ((sq (sFil Q 0) (sFil Q r)).obj T) := fun T => by
     have e : (sFil Q r).S T = ⊤ := (GlobalTheory.CompanionTheory.DPFil.isFil_sFil Q).top r h0 T
@@ -262,6 +350,19 @@ theorem sub_HQ (r : ℤ) (h0 : r ≤ 0) (j : ℕ) : Subsingleton (HQ Q 0 r j) :=
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   exact congrArg _ (Subtype.ext (h2.elim _ _))
 
+/- English proof (translation)
+Establish `htop : ∀ (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x = 0 → x = 0` using `fun T x h => by`. Establish `h' : x ∈ (sFil Q (s : ℤ)).S T` using `htf _ T x (by rw [h]; exact Ideal.zero_mem _)`. Rewrite `h'` using `[hzero]`. Conclude with `h'`. Establish `hHO : ∀ j, AFG c (HO Q j)` using `fun j => afg_of_bij _ (quoM Q s j) (bij_quoM Q _ hzero j) (hQ s le_rfl j)`.
+
+Take `⟨k, a, b, d⟩` from `hb _ _ (hHO j) (hHO (j + 1))`. Take `⟨p1, p2⟩` from `top_part Q c htop j k a b d`. Establish `hr : ∀ t : ℕ, ∃ e : ℕ, t ≤ s → ∀ z : HO Q j, (∀ n, redM Q (some (t : ℤ)) (c ^ n) j z = 0) → c ^ e • quoM Q t j z = 0`. Introduce `t`. Distinguish the cases in `ht : t ≤ s`.
+
+Take `⟨e, a, b, d⟩` from `hb _ _ (hQ t ht j) (hQ t ht (j + 1))`. Conclude with `⟨e, fun _ z hz => quo_part Q c t (htf t) j e a b d z hz⟩`. Conclude with `⟨0, fun h => absurd h ht⟩`. Use `choose f hf using hr`. Use `⟨2 * k + (Finset.range (s + 1)).sup f, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨z, hz⟩` from `p1 x hx`. Use `⟨c ^ (Finset.range (s + 1)).sup f • z, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hz, smul_smul, ← pow_add, Nat.add_comm ((Finset.range (s + 1)).sup f)]`. Introduce `z hz`.
+
+Rewrite using `[show 2 * k + (Finset.range (s + 1)).sup f = (k + (Finset.range (s + 1)).sup f) + k by omega, pow_add, mul_smul, p2 z hz, smul_zero]`. Introduce `r hrs z hz`. Distinguish the cases in `h0 : r ≤ 0`. Establish `: Subsingleton (HQ Q 0 r j)` using `sub_HQ Q r h0 j`. Conclude with `Subsingleton.elim _ _`.
+
+Take `⟨t, rfl⟩` from `Int.eq_ofNat_of_zero_le (by omega : 0 ≤ r)`. Establish `ht : t ≤ s` using `by omega`. Establish `hle : f t ≤ (Finset.range (s + 1)).sup f` using `Finset.le_sup (Finset.mem_range.2 (by omega))`. Take `⟨u, hu⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hu, show 2 * k + (f t + u) = (2 * k + u) + f t by omega, pow_add, mul_smul, hf t ht z hz, smul_zero]`.
+-/
 theorem liftingProperty_of_bounds (c : b.R) (s : ℕ) (hzero : ∀ T : Q.FullSubcategory, (sFil Q (s : ℤ)).S T = ⊥)
     (htf : ∀ (r : ℤ) (T : Q.FullSubcategory) (x : (sP Q).A.obj T), c • x ∈ (sFil Q r).S T → x ∈ (sFil Q r).S T)
     (hQ : ∀ t : ℕ, t ≤ s → ∀ j, AFG c (HQ Q 0 t j))
@@ -306,6 +407,13 @@ theorem liftingProperty_of_bounds (c : b.R) (s : ℕ) (hzero : ∀ T : Q.FullSub
 
 end Main
 
+/- English proof (translation)
+Introduce `hA O A _ _ _ _ _ I γ l s m hdv hO hL hms X q _ U 𝒱 h𝒱 j`. Use `liftingProperty_of_bounds (TS γ q l s 𝒱) (l : A) s ?_ ?_ ?_ ?_ j` and prove the remaining obligations. Introduce `T`. Express the relevant statement in the definitionally equal form `T.obj.pdPow (s : ℤ).toNat = ⊥`. Rewrite using `[Int.toNat_natCast]`.
+
+Conclude with `T.property.1.1`. Introduce `r T x h`. Establish `e : (l : A) • x = (l : T.obj.B) * (show T.obj.B from x)`. Rewrite using `[Algebra.smul_def, map_natCast]`. Rewrite `h` using `[e]`.
+
+Conclude with `T.property.1.2 _ _ h`. Introduce `t ht j`. Conclude with `hA γ l s m hdv hO hL hms q U 𝒱 h𝒱 0 t (by omega) (by omega) j`. Introduce `M M' _ _ _ _ h h'`. Conclude with `bounds hL h h'`.
+-/
 theorem liftA_of_afgA : AfgA → LiftA := by
   intro hA O A _ _ _ _ _ I γ l s m hdv hO hL hms X q _ U 𝒱 h𝒱 j
   refine liftingProperty_of_bounds (TS γ q l s 𝒱) (l : A) s ?_ ?_ ?_ ?_ j

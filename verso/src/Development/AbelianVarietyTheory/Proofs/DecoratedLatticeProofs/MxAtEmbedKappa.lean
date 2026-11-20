@@ -9,6 +9,11 @@ open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.KapLatSupp
 
+/- English proof (translation)
+Introduce `D ρ B L' ζ' l S T A o P x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[OrthDec.resS_symm_apply]`. Conclude with `GlobalTheory.LastOpPf.mxAt_add (GlobalTheory.LastOpPf.mxAt_mul_r GlobalTheory.LastOpPf.mxAt_zero _) (GlobalTheory.LastOpPf.mxAt_mul_r (GlobalTheory.LinkKapMx.mxAt_linkKappa D ρ B L' ζ' l S P x hx) _)`. Rewrite using `[OrthDec.resT_symm_apply]`.
+
+Conclude with `GlobalTheory.LastOpPf.mxAt_add (GlobalTheory.LastOpPf.mxAt_mul_l _ GlobalTheory.LastOpPf.mxAt_zero) (GlobalTheory.LastOpPf.mxAt_mul_l _ hx)`.
+-/
 theorem mxAt_embed_kappa : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E) (l : Link B L' ζ') (S T A : HSp D) (o : OrthDec T A L') (P : Pl D → Prop) (x : WO S L'), MxAt P x → MxAt P ((B.o.resS S).symm (0, l.κ S x)) ∧ MxAt P ((o.resT S).symm (0, x)) := by
   intro D ρ B L' ζ' l S T A o P x hx
   refine ⟨?_, ?_⟩

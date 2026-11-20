@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Stabiliser
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `⟨(equalizer.lift x h).left t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, equalizer.lift_ι]`.
+
+Introduce `h`. Establish `hs : Surjective (pullback.fst x.left (equalizer.ι f g).left)`. Use `⟨Set.range_eq_univ.1 ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `Set.eq_univ_of_forall fun t => h ⟨t, rfl⟩`.
+
+Establish `hc : (equalizer.ι f g).left ≫ f.left = (equalizer.ι f g).left ≫ g.left` using `congrArg CommaMorphism.left (equalizer.condition f g)`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated Z.hom ((Over.w _).trans (Over.w _).symm) (pullback.fst x.left (equalizer.ι f g).left) ?_)` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, pullback.condition_assoc, pullback.condition_assoc, hc]`.
+-/
 theorem comp_eq_iff_range_subset {S : Scheme.{0}} {T X Z : Over S} [IsReduced T.left]
     [IsSeparated Z.hom] (f g : X ⟶ Z) (x : T ⟶ X) :
     x ≫ f = x ≫ g ↔ Set.range x.left ⊆ Set.range (equalizer.ι f g).left := by
@@ -51,6 +58,15 @@ def stab {S : Scheme.{0}} {B Z : Over S} [GrpObj B] (φ : B ⟶ Z) : Subgroup (�
       conv_lhs => rw [← ha]
       rw [← Category.assoc, ← key, mul_inv_cancel, one, Category.id_comp] }
 
+/- English proof (translation)
+Introduce `K _ _ B _ _ hB Z _ φ`. Use `hB.smooth` as an intermediate fact. Establish `: IsReduced B.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced B.hom`. Establish `: IsReduced (𝟙_ (Over (Spec (CommRingCat.of K)))).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of K)))`. Use `⟨stab φ, ⋂ z : 𝟙_ _ ⟶ B, Set.range (equalizer.ι ((𝟙 B * (toUnit B ≫ z)) ≫ φ) (toUnit B ≫ z ≫ φ)).left, isClosed_iInter fun z => (Scheme.Hom.isClosedEmbedding _).isClosed_range, fun _ => Iff.rfl, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `e₁ : ∀ z : 𝟙_ _ ⟶ B, x ≫ (𝟙 B * (toUnit B ≫ z)) ≫ φ = z ≫ ((toUnit B ≫ x) * 𝟙 B) ≫ φ`. Introduce `z`. Simplify using `only [← Category.assoc, MonObj.comp_mul, Category.comp_id]`. Rewrite using `[toUnit_unique (x ≫ toUnit B) (𝟙 _), toUnit_unique (z ≫ toUnit B) (𝟙 _), Category.id_comp, Category.id_comp]`. Establish `e₂ : ∀ z : 𝟙_ _ ⟶ B, x ≫ toUnit B ≫ z ≫ φ = z ≫ φ`.
+
+Introduce `z`. Rewrite using `[← Category.assoc, toUnit_unique (x ≫ toUnit B) (𝟙 _), Category.id_comp]`. Rewrite using `[Set.subset_iInter_iff]`. Simplify using `only [← comp_eq_iff_range_subset, e₁, e₂]`. Use `⟨fun h z => congrArg (z ≫ ·) h, fun h => ?_⟩` and prove the remaining obligations.
+
+Use `Over.OverMorphism.ext (GlobalTheory.ComplexPoints.hom_ext_of_points B.hom Z.hom ((Over.w _).trans (Over.w _).symm) fun y hy => ?_)` and prove the remaining obligations. Conclude with `congrArg CommaMorphism.left (h (Over.homMk y hy))`.
+-/
 theorem exists_closed_stabiliser : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ (Z : Over (Spec (CommRingCat.of K))) [IsSeparated Z.hom] (φ : B ⟶ Z), ∃ (C : Subgroup (𝟙_ _ ⟶ B)) (W : Set B.left), IsClosed W ∧ (∀ x, x ∈ C ↔ ((toUnit B ≫ x) * 𝟙 B) ≫ φ = φ) ∧ ∀ x, x ∈ C ↔ Set.range x.left ⊆ W := by
   intro K _ _ B _ _ hB Z _ φ
   have := hB.smooth

@@ -24,6 +24,9 @@ noncomputable section
 
 namespace GlobalTheory.GenericFrames
 
+/- English proof (translation)
+Take `⟨K, hK, rfl⟩` from `hs`. Use `isMeagre_iUnion fun n => IsNowhereDense.isMeagre ?_` and prove the remaining obligations. Rewrite using `[(hK n).isClosed.isNowhereDense_iff]`. Conclude with `Set.subset_eq_empty (interior_mono (Set.subset_iUnion K n)) hi`.
+-/
 theorem isMeagre_of_isSigmaCompact {X : Type} [TopologicalSpace X] [T2Space X] {s : Set X} (hs : IsSigmaCompact s)
     (hi : interior s = ∅) : IsMeagre s := by
   obtain ⟨K, hK, rfl⟩ := hs
@@ -31,6 +34,11 @@ theorem isMeagre_of_isSigmaCompact {X : Type} [TopologicalSpace X] [T2Space X] {
   rw [(hK n).isClosed.isNowhereDense_iff]
   exact Set.subset_eq_empty (interior_mono (Set.subset_iUnion K n)) hi
 
+/- English proof (translation)
+Take `⟨T, hT, hc, hsT⟩` from `isMeagre_iff_countable_union_isNowhereDense.1 hs`. Take `⟨f, hf⟩` from `(hc.insert ∅).exists_eq_range (Set.insert_nonempty _ _)`. Use `⟨fun n => closure (f n), fun n => ⟨isClosed_closure, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: f n ∈ insert ∅ T` using `hf ▸ Set.mem_range_self n`. Break down `this with h | h` into its components or cases.
+
+Simplify using `[h]`. Conclude with `hT _ h`. Take `⟨t, ht, hxt⟩` from `hsT hx`. Take `⟨n, rfl⟩ : t ∈ Set.range f` from `hf ▸ Set.mem_insert_of_mem _ ht`. Conclude with `⟨n, subset_closure hxt⟩`.
+-/
 theorem exists_seq_of_isMeagre {X : Type} [TopologicalSpace X] {s : Set X} (hs : IsMeagre s) :
     ∃ S : ℕ → Set X, (∀ n, IsClosed (S n) ∧ interior (S n) = ∅) ∧ ∀ x ∈ s, ∃ n, x ∈ S n := by
   obtain ⟨T, hT, hc, hsT⟩ := isMeagre_iff_countable_union_isNowhereDense.1 hs
@@ -51,6 +59,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def pc (x : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) (a : Fin r) : ℂ :=
   if (a : ℕ) < X.p0 then hermC τ.1 X.Gm (col (mat x τ) a) (Data.emb τ.1 v) else ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 v) a
 
+/- English proof (translation)
+Establish `hm : Continuous fun x : X.dom => mat x.1 τ` using `(continuous_apply τ).comp continuous_subtype_val`. Unfold `pc`. Use `split_ifs`. Unfold `hermC col`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((hm.matrix_elem i a).mul continuous_const).mul continuous_const`.
+
+Establish `h3 : Continuous fun x : X.dom => (mat x.1 τ)⁻¹`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`. Conclude with `(hm.matrix_det.inv₀ fun x => (x.2 τ).1).smul hm.matrix_adjugate`. Conclude with `(continuous_apply a).comp (h3.matrix_mulVec continuous_const)`.
+-/
 theorem continuous_pc (v : Fin r → E) (τ : X.Ψ) (a : Fin r) : Continuous fun x : X.dom => pc X x.1 v τ a := by
   have hm : Continuous fun x : X.dom => mat x.1 τ := (continuous_apply τ).comp continuous_subtype_val
   unfold pc
@@ -72,6 +85,17 @@ variable {B : Set (Fin m → ℂ)} (hB : IsOpen B) (P : (Fin m → ℂ) → La �
   (hP : ∀ a, ContinuousOn (fun b => P b a) B) (f : (Fin m → ℂ) → ℂ)
 
 include hB hP in
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace X.dom := (FourierCoefficientDomain.isOpen_dom X).locallyCompactSpace`. Use `haveI : LocallyCompactSpace B := hB.locallyCompactSpace`. Set `W : Set (X.dom × B × (Fin g → Fin g → ℂ))` to `{p | f p.2.1 = 0 ∧ Rel X idx φ T p.1 (P p.2.1) p.2.2}`. Establish `hW : IsClosed W`. Establish `h1 : Continuous fun p : X.dom × B × (Fin g → Fin g → ℂ) => f p.2.1` using `(continuousOn_iff_continuous_restrict.1 hf).comp continuous_snd.fst`.
+
+Simplify using `only [W, Rel]`. Use `(isClosed_eq h1 continuous_const).and (IsClosed.and ?_ ?_)` and prove the remaining obligations. Simplify using `only [Set.setOf_forall, ne_eq, not_imp_comm (a := _ = (0 : ℂ))]`. Use `isClosed_iInter fun j => isClosed_iInter fun j' => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (by fun_prop) continuous_const`.
+
+Simplify using `only [Set.setOf_forall]`. Use `isClosed_iInter fun a => isClosed_iInter fun j => isClosed_eq ((continuous_pc X _ _ _).comp continuous_fst) ?_` and prove the remaining obligations. Establish `h2 : Continuous fun p : X.dom × B × (Fin g → Fin g → ℂ) => P p.2.1 a` using `(continuousOn_iff_continuous_restrict.1 (hP a)).comp continuous_snd.fst`. Establish `h3 : Continuous fun p : X.dom × B × (Fin g → Fin g → ℂ) => (p.2.2 : Matrix (Fin g) (Fin g) ℂ)` using `continuous_snd.snd`. Conclude with `(continuous_apply j).comp (h3.matrix_mulVec h2)`.
+
+Use `(isSigmaCompact_univ.of_isClosed_subset hW (Set.subset_univ _)).image (f := fun p => (p.1 : Frame X.Ψ r)) (by fun_prop)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, b, hb, h0, h, hh⟩`.
+
+Conclude with `⟨(⟨x, hx⟩, ⟨b, hb⟩, h), ⟨h0, hh⟩, rfl⟩`. Introduce and unpack `⟨⟨x, b, h⟩, ⟨h0, hh⟩, rfl⟩`. Conclude with `⟨x.2, b, b.2, h0, h, hh⟩`.
+-/
 theorem isSigmaCompact_rel (hf : ContinuousOn f B) :
     IsSigmaCompact {x | x ∈ X.dom ∧ ∃ b ∈ B, f b = 0 ∧ ∃ h, Rel X idx φ T x (P b) h} := by
   haveI : LocallyCompactSpace X.dom := (FourierCoefficientDomain.isOpen_dom X).locallyCompactSpace
@@ -104,6 +128,15 @@ theorem isSigmaCompact_rel (hf : ContinuousOn f B) :
     exact ⟨x.2, b, b.2, h0, h, hh⟩
 
 include hB hP in
+/- English proof (translation)
+Use `Set.eq_empty_of_forall_notMem fun x₀ hx₀ => ?_` and prove the remaining obligations. Establish `hV` using `mem_interior_iff_mem_nhds.1 hx₀`. Take `⟨hx₀d, b₀, hb₀, -, h, hh⟩` from `interior_subset hx₀`. Use `choose! x₁ hx₁ hr₁ using honto x₀ hx₀d b₀ hb₀ h hh`. Establish `hBn : ∀ᶠ b in 𝓝 b₀, b ∈ B` using `hB.mem_nhds hb₀`.
+
+Establish `key` using `GlobalTheory.T.period_coordinates_frames_lift_tendsto E r X _ (𝓝 b₀) x₀ x₁ hx₀d (hBn.mono hx₁) (fun v hv τ i => by`. Take `⟨a, rfl⟩` from `hφ v hv`. Take `⟨j, hj⟩` from `idx.surjective (τ, i)`. Take `⟨rfl, rfl⟩ : τ = (idx j).1 ∧ i = (idx j).2` from `by rw [hj]; exact ⟨rfl, rfl⟩`. Express the relevant statement in the definitionally equal form `Tendsto (fun b => pc X (x₁ b) (φ a) _ _) _ (𝓝 (pc X x₀ (φ a) _ _))`.
+
+Rewrite using `[hh.2]`. Establish `hc : ContinuousAt (fun b => (h *ᵥ P b a) j) b₀`. Establish `h1 : Continuous fun w : Fin g → ℂ => (h *ᵥ w) j` using `(continuous_apply j).comp (continuous_const.matrix_mulVec continuous_id)`. Conclude with `h1.continuousAt.comp ((hP a).continuousAt hBn)`. Conclude with `hc.tendsto.congr' (hBn.mono fun b hb => ((hr₁ b hb).2 a j).symm)) _ hV`.
+
+Take `⟨b, hb0, hb, x, ⟨hx, b', hb', h0, h', hh'⟩, hxx⟩` from `((hne b₀ hb₀).and_eventually (hBn.and key)).exists`. Use `hb0 ((hmono x hx b hb b' hb' h h' ⟨hh.1, fun a j => ?_⟩ hh').trans h0)` and prove the remaining obligations. Conclude with `(hxx _ _ _).trans ((hr₁ b hb).2 a j)`.
+-/
 theorem interior_rel (hφ : ∀ v ∈ X.Λ, ∃ a, φ a = v) (hne : ∀ b ∈ B, ∃ᶠ b' in 𝓝 b, f b' ≠ 0)
     (honto : ∀ x₀ ∈ X.dom, ∀ b₀ ∈ B, ∀ h, Rel X idx φ T x₀ (P b₀) h → ∀ b ∈ B, ∃ x ∈ X.dom, Rel X idx φ T x (P b) h)
     (hmono : ∀ x ∈ X.dom, ∀ b ∈ B, ∀ b' ∈ B, ∀ h h', Rel X idx φ T x (P b) h → Rel X idx φ T x (P b') h' →
@@ -129,6 +162,13 @@ theorem interior_rel (hφ : ∀ v ∈ X.Λ, ∃ a, φ a = v) (hne : ∀ b ∈ B,
   refine hb0 ((hmono x hx b hb b' hb' h h' ⟨hh.1, fun a j => ?_⟩ hh').trans h0)
   exact (hxx _ _ _).trans ((hr₁ b hb).2 a j)
 
+/- English proof (translation)
+Use `isMeagre_iUnion fun γ => isMeagre_of_isSigmaCompact (hs.image (AR.Up.PairUnfoldPf.lact_cont X γ)) ?_` and prove the remaining obligations. Use `Set.eq_empty_of_forall_notMem fun x hx => ?_` and prove the remaining obligations. Establish `h1 : lact γ⁻¹ x ∈ interior s`. Use `mem_interior.2 ⟨lact γ ⁻¹' interior (lact γ '' s), fun y hy => ?_, isOpen_interior.preimage (AR.Up.PairUnfoldPf.lact_cont X γ), ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `interior_subset hy`.
+
+Use `congrArg (lact γ⁻¹) e` as an intermediate fact. Rewrite `this` using `[AR.Up.PairUnfoldPf.lact_inv_lact, AR.Up.PairUnfoldPf.lact_inv_lact]`. Conclude with `this ▸ hz`. Rewrite using `[Set.mem_preimage, AR.Up.PairUnfoldPf.lact_lact_inv]`. Conclude with `hx`.
+
+Rewrite `h1` using `[hi]`. Conclude with `h1`.
+-/
 theorem isMeagre_translates {s : Set (Frame X.Ψ r)} (hs : IsSigmaCompact s) (hi : interior s = ∅) :
     IsMeagre (⋃ γ : GL (Fin r) E, lact γ '' s) := by
   refine isMeagre_iUnion fun γ => isMeagre_of_isSigmaCompact (hs.image (AR.Up.PairUnfoldPf.lact_cont X γ)) ?_
@@ -151,6 +191,35 @@ section Dictionary
 
 open Formalism.L2.PjFree in
 
+/- English proof (translation)
+Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv X.Ψ X.cmType Dw.p Dw.q r hr (Formalism.L2.PjFree.relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin g ≃ X.Ψ × Fin r, ∀ j, (Formalism.L2.PjFree.relab c σ (e j).1 ∈ X.Ψ ∧ (idx j).1.1 = Formalism.L2.PjFree.relab c σ (e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (e j).2) ∨ (Formalism.L2.PjFree.relab c σ (e j).1 ∉ X.Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (Formalis …` from `⟨e.trans f, fun j => hf (e j)⟩`. Establish `hty' : ∀ j, Formalism.L2.PjFree.relab c σ (e j).1 = if ((idx j).2 : ℕ) < D.q then ComplexEmbedding.conjugate (idx j).1.1 else (idx j).1.1`.
+
+Introduce `j`. Rewrite using `[hq]`. Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), b]`. Rewrite using `[if_pos (by omega), b, hcc]`.
+
+Establish `hqq : D.q = X.p0` using `hq.trans hp0.symm`. Use `⟨idx, fun x v j => ?_, fun b hb j j' hne => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Establish `h` using `hi j`. Unfold `pc`. Generalize the expression as in `idx j = t at h ⊢`.
+
+Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`. Rewrite `h` using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`.
+
+Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (Formalism.L2.PjFree.relab c σ (e j).1) ∈ X.Ψ from hτ), dif_pos hn]`.
+
+Both sides reduce to the same expression. Take `⟨h1, h2⟩` from `PerBor.moveMat_support _ idx hb j j' hne`. Rewrite `h2` using `[← hqq]`. Establish `t1` using `hty' j`. Establish `t2` using `hty' j'`.
+
+Establish `c1` using `hi j`. Establish `c2` using `hi j'`. Distinguish the cases in `hj : ((idx j).2 : ℕ) < D.q`. Rewrite `h2`, `t1` using `[if_pos hj]`. Establish `hj' : ((idx j').2 : ℕ) < D.q` using `by omega`.
+
+Rewrite `t2` using `[if_pos hj']`. Use `⟨hbij.1 (by rw [t1, t2, h1]), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases c1 with ⟨-, -, c1⟩ | ⟨-, -, c1, d1⟩ <;> rcases c2 with ⟨-, -, c2⟩ | ⟨-, -, c2, d2⟩ <;> omega`. Rewrite `h2`, `t1` using `[if_neg hj]`. Establish `hj' : ¬ ((idx j').2 : ℕ) < D.q` using `by omega`.
+
+Rewrite `t2` using `[if_neg hj']`. Use `⟨hbij.1 (by rw [t1, t2, h1]), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases c1 with ⟨-, -, c1⟩ | ⟨-, -, c1, d1⟩ <;> rcases c2 with ⟨-, -, c2⟩ | ⟨-, -, c2, d2⟩ <;> omega`. Break down `eq_or_ne r 0 with hr0 | hr0` into its components or cases. Substitute `hr0 haveI : IsEmpty (Fin g) := idx.isEmpty` using the available equality.
+
+Take `⟨x, hx⟩` from `(GlobalTheory.frames_isConnected E 0 X).nonempty`. Conclude with `⟨x, hx, fun _ j => isEmptyElim j⟩`. Establish `hpos : ∀ τ ∈ X.Ψ, 0 < (τ (-X.ξ0)).im`. Introduce `τ hτ`. Use `hneg hr0 τ hτ` as an intermediate fact.
+
+Rewrite using `[map_neg, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hξ : cc (-X.ξ0) = -(-X.ξ0)`. Establish `h` using `X.ξ0_im`. Unfold `cc at h ⊢`.
+
+Rewrite using `[map_neg, h]`. Set `φ' : D.La →ₗ[𝓞 E] (Fin r → E)` to `X.Λ.subtype.comp φ.toLinearMap`. Establish `hrange : Set.range φ' = X.Λ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `(φ a).2`. Introduce `hy`. Conclude with `⟨φ.symm ⟨y, hy⟩, by simp [φ']⟩`. Take `⟨x, hx, hPx⟩` from `GlobalTheory.exists_frame_of_isPeriod E H D r (-X.ξ0) X.Gm φ' X.Ψ hty g idx _ hty' hξ hpos ⟨fun a b hab => φ.injective (Subtype.ext hab), by rw [hrange]; exact X.Λ_span, X.Gm_herm, X.Gm_det, hef⟩ (by rw [hp, hq, hr]) P hP`.
+
+Rewrite `hx`, `hPx` using `[hqq]`. Conclude with `⟨x, hx, fun a j => (hPx a j).symm⟩`.
+-/
 theorem dictionary {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} (c : Coeff l) (σ : c.F →+* ℂ) {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (D : Datum H) {r : ℕ} (X : Data E r) (φ : D.La ≃ₗ[𝓞 E] X.Λ) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hp : D.p = Dw.p)
@@ -249,6 +318,27 @@ end Dictionary
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨hr, hty, -, hfib, -, g, e, F, ik, ψ, hef, hun⟩` from `hU`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Establish `loc : ∀ b₀ ∈ B, ∃ B' ∈ 𝓝[B] b₀, IsMeagre {x | ∃ hx : x ∈ (U.X k).dom, ∃ b ∈ B', Formalism.L2.PjFree.toC (φ b a) = 0 ∧ ∃ t, FrBor t (U.un k ⟨x, hx⟩) (y b)}`. Introduce `b₀ hb₀`. Take `⟨B', k', P, hB', hb', hs, hP, hyP⟩` from `GlobalTheory.AdaptedPeriods.exists_holPeriods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀`.
+
+Use `⟨B', mem_nhdsWithin_of_mem_nhds (hB'.mem_nhds hb'), ?_⟩` and prove the remaining obligations. Break down `Set.eq_empty_or_nonempty {x | ∃ hx : x ∈ (U.X k).dom, ∃ b ∈ B', Formalism.L2.PjFree.toC (φ b a) = 0 ∧ ∃ t, FrBor t (U.un k ⟨x, hx⟩) (y b)} with h0 | ⟨x₁, hx₁, b₁, hb₁, -, t₁, ht₁⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `IsMeagre.empty`. Take `⟨P₁, hP₁, hP₁', hu₁, -⟩` from `hun k ⟨x₁, hx₁⟩`.
+
+Take `rfl : ik k = k'` from `F.disj _ _ _ _ hP₁' (hP.1 b₁ hb₁) (hu₁.symm.trans (ht₁.1.symm.trans (hyP b₁ hb₁).1))`. Take `⟨idx, hper, hsupp, honto⟩` from `dictionary c σ e _ (U.X k) (ψ k) hσ (F.sig _).1 (F.sig _).2 hr (hty k).1 (hty k).2 (hef k) (GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (ψ k) hσ hr (hty k).1 (hty k).2 (hef k) x₁ hx₁ P₁ hP₁ hP₁')`. Set `T : Fin g → Fin g → Prop` to `fun j j' => (e j).1 = (e j').1 ∧ ((e j).2 : ℕ) ≤ (e j').2`. Set `ρ : (F.Di (ik k)).La → Fin r → E` to `fun v => ψ k v`. Establish `hbor : ∀ x (hx : x ∈ (U.X k).dom), ∀ b ∈ B', ∀ h, Rel (U.X k) idx ρ T x (P b) h → IsUnit h.det ∧ ∃ t, FrBor t (U.un k ⟨x, hx⟩) (y b)`.
+
+Introduce `x hx b hb h hh`. Take `⟨P₀, hP₀, hP₀', hux, hud, -⟩` from `hun k ⟨x, hx⟩`. Establish `hPS : ∀ v, P₀ v = h *ᵥ P b v` using `fun v => funext fun j => (hP₀ v j).trans ((hper _ _ j).trans (hh.2 v j))`. Take `⟨t, ht, -⟩` from `GlobalTheory.FrameNorm.frBor_of_triangular_period E H Dw l Xo c σ g e F _ (P b) P₀ h (y b) (U.un k ⟨x, hx⟩) (hP.1 b hb) hP₀' hPS hh.1 (hyP b hb).1 hux (hyP b hb).2 hud`. Conclude with `⟨(GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F _ (P b) P₀ (LinearEquiv.refl _ _) h (hP.1 b hb) hP₀' (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hPS).1, t, ht⟩`.
+
+Establish `hPc : ∀ v, ContinuousOn (fun b => P b v) B'` using `fun v => (hP.2 v).continuousOn`. Establish `h1` using `isSigmaCompact_rel (U.X k) idx ρ T hB' (fun b => P b) hPc (fun b => Formalism.L2.PjFree.toC (φ b a)) ((hφ a).continuousOn.mono hs)`. Establish `h2` using `interior_rel (U.X k) idx ρ T hB' (fun b => P b) hPc (fun b => Formalism.L2.PjFree.toC (φ b a)) (fun v hv => ⟨(ψ k).symm ⟨v, hv⟩, by simp [ρ]⟩) (fun b hb => hne b (hs hb)) (fun x₀ hx₀ b₀ hb₀ h hh b hb => by`. Take `⟨P', hP', hP'e⟩` from `GlobalTheory.PeriodLin.exists_period_mulVec E H _ g _ (P b) h (hP.1 b hb) (hbor x₀ hx₀ b₀ hb₀ h hh).1 (fun j j' hj => by rw [(hh.1 j j' hj).1])`. Take `⟨x, hx, hxe⟩` from `honto P' hP'`.
+
+Conclude with `⟨x, hx, hh.1, fun v j => (hxe v j).trans (congrFun (hP'e v) j)⟩)`. Use the proof step `(fun x hx b hb b' hb' h h' hh hh' => by`. Take `⟨-, t, ht⟩` from `hbor x hx b hb h hh`. Take `⟨-, t', ht'⟩` from `hbor x hx b' hb' h' hh'`. Rewrite using `[hmono b (hs hb) b' (hs hb') _ (hmul _ _ _ _ _ (hinv _ _ _ ht) ht')])`.
+
+Use `(isMeagre_translates (U.X k) h1 h2).mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, b, hb, h0, t, ht⟩`. Take `⟨x', hx', hxe⟩` from `honto (P b) (hP.1 b hb)`. Take `⟨-, t', ht'⟩` from `hbor x' hx' b hb 1 ⟨fun j j' hj => by`. Choose the witnesses or unpack the hypotheses as in `rfl : j = j' := by`.
+
+Assume the negation of the conclusion as `hjj`. Conclude with `hj (Matrix.one_apply_ne hjj)`. Conclude with `⟨rfl, le_rfl⟩, fun v j => by rw [Matrix.one_mulVec]; exact hxe v j⟩`. Take `⟨γ, -, β, hβ, hxγ⟩` from `(hfib k k ⟨x', hx'⟩ ⟨x, hx⟩).1 ⟨_, hmul _ _ _ _ _ ht' (hinv _ _ _ ht)⟩`. Establish `hxγ' : x = rmul (lact γ x') β` using `eq_of_heq (Sigma.mk.inj hxγ).2`.
+
+Use `Set.mem_iUnion.2 ⟨γ, rmul x' β, ⟨OrthogonalFrameDomain.rmul_mem_dom _ hx' hβ, b, hb, h0, PerBor.moveMat (U.X k).p0 idx β, hsupp β hβ, fun v j => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrFun (PerBor.moveMat_mulVec _ idx hβ (U.X k).Gm x' (ρ v) (P b v) (fun j => pc (U.X k) (rmul x' β) (ρ v) (idx j).1 (idx j).2) (fun j => (hxe v j).symm) (fun _ => rfl)) j`. Rewrite using `[hxγ', AR.Up.PairUnfoldPf.rmul_lact]`. Use `choose! B' hB' hM using loc`. Take `⟨s, hsB, hsc, hcov⟩` from `TopologicalSpace.countable_cover_nhdsWithin hB'`.
+
+Use `(isMeagre_biUnion hsc fun b hb => hM b (hsB hb)).mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, b, hb, h⟩`. Take `⟨b₀, hb₀, hbb⟩` from `Set.mem_iUnion₂.1 (hcov hb)`. Conclude with `Set.mem_iUnion₂.2 ⟨b₀, hb₀, hx, b, hbb, h⟩`.
+-/
 theorem isMeagre_family (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {A : Type} [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) {m : ℕ}
     {B : Set (Fin m → ℂ)} (φ : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ)) (y : (Fin m → ℂ) → FrPt Xo c (CAt σ))
@@ -323,6 +413,23 @@ theorem isMeagre_family (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism
   obtain ⟨b₀, hb₀, hbb⟩ := Set.mem_iUnion₂.1 (hcov hb)
   exact Set.mem_iUnion₂.2 ⟨b₀, hb₀, hx, b, hbb, h⟩
 
+/- English proof (translation)
+Take `⟨hL, -, -, -⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨-, -, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use `haveI := C.sm`. Use `haveI : Countable c.F := Countable.of_equiv _ (Module.finBasis ℚ c.F).equivFun.toEquiv.symm`.
+
+Use `haveI : Countable C.R := by`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType c.F C.R)`. Use `haveI : Countable (MvPolynomial (Fin n) c.F) := Cardinal.mk_le_aleph0_iff.1 (MvPolynomial.cardinalMk_le_max.trans (by simp))`. Conclude with `hf.countable`. Break down `Set.eq_empty_or_nonempty {x | ∃ hx : x ∈ (U.X k).dom, ∃ (ψ : C.R →ₐ[c.F] CAt σ) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap ψ C.y z ∧ FrBor t z (U.un k ⟨x, hx⟩) ∧ ¬ Function.Injective ψ} with h0 | ⟨-, -, ψ₀, -⟩` into its components or cases.
+
+Rewrite using `[h0]`. Conclude with `IsMeagre.empty`. Take `⟨ι, _, m, B, φ, hB, hφσ, hd, hcov, hne⟩` from `GlobalTheory.T.exists_countable_holomorphic_families_smooth c.F C.R σ`. Set `φ' : ∀ i, (Fin (m i) → ℂ) → (C.R →ₐ[c.F] CAt σ)` to `fun i b => if hb : b ∈ B i then { (show C.R →+* CAt σ from φ i b) with commutes' := fun a => RingHom.congr_fun (hφσ i b hb) a } else ψ₀`. Establish `hφ' : ∀ i, ∀ b ∈ B i, ∀ a, Formalism.L2.PjFree.toC (φ' i b a) = φ i b a`.
+
+Introduce `i b hb a`. Simplify using `only [φ', dif_pos hb]`. Both sides reduce to the same expression. Use `choose z hz using fun i b => hL.bc _ _ (φ' i b) C.y`. Establish `key` using `fun (i : ι) (a : {a : C.R // a ≠ 0}) => isMeagre_family U hσ hU k C.y (φ' i) (z i) (hB i) (fun a => (hd i a).congr fun b hb => hφ' i b hb a) (fun b _ => hz i b) (fun b _ b' _ t ht => C.mono (CAt σ) _ _ _ _ t (hz i b) (hz i b') ht) a.1 (fun b hb => ((hne i b hb a.1 a.2).and_eventu …`.
+
+Rewrite using `[hφ' i b' hb'.2]`. Conclude with `hb'.1)`. Use `(isMeagre_iUnion fun i => isMeagre_iUnion fun a => key i a).mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, ψ, w, t, hw, ht, hni⟩`. Take `⟨i, b, hb, e⟩` from `hcov (ψ.toRingHom : C.R →+* ℂ) (RingHom.ext fun a => ψ.commutes a)`.
+
+Establish `e' : φ' i b = ψ` using `AlgHom.ext fun a => by`. Use `hφ' i b hb a` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Take `rfl : w = z i b` from `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c _ _ ψ C.y).1 _ _ hw (e' ▸ hz i b)`.
+
+Rewrite `hni` using `[injective_iff_map_eq_zero]`. Use `push Not at hni`. Take `⟨a, ha0, ha⟩` from `hni`. Use `Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨⟨a, ha⟩, hx, b, hb, ?_, _, hinv _ _ _ ht⟩⟩` and prove the remaining obligations. Rewrite using `[e']`.
+
+Conclude with `ha0`.
+-/
 theorem isMeagre_chart (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (k : U.Comp) {h : GenFrEx Xo c} (C : FChart h) :
     IsMeagre {x | ∃ hx : x ∈ (U.X k).dom, ∃ (ψ : C.R →ₐ[c.F] CAt σ) (z : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ),
@@ -374,6 +481,11 @@ theorem isMeagre_chart (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : Formalism.
   rw [e']
   exact ha0
 
+/- English proof (translation)
+Take `⟨hL, -, -, -⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use `haveI := GlobalTheory.SupGeneric.isFractionRing_chart C`. Set `φ : Om C.Z →ₐ[c.F] CAt σ` to `IsFractionRing.liftAlgHom hψ`. Establish `e : φ.comp C.R.val = ψ` using `AlgHom.ext fun a => IsFractionRing.lift_algebraMap (K := Om C.Z) hψ a`.
+
+Take `⟨w, hw⟩` from `hL.bc _ _ φ (genFr h C.Z)`. Take `⟨w', hw'⟩` from `hL.bc _ _ φ C.yg`. Take `rfl : w' = z` from `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c _ _ ψ C.y).1 _ _ (e ▸ PullbackSections.frMap_trans _ _ C.gen hw') hz`. Conclude with `⟨φ, w, _, hw, GlobalTheory.SupGeneric.frBor_of_frMap _ C.bor hw hw'⟩`.
+-/
 theorem exists_generic_of_injective {h : GenFrEx Xo c} (C : FChart h) (ψ : C.R →ₐ[c.F] CAt σ)
     (hψ : Function.Injective ψ) {z : FrPt Xo c (CAt σ)} (hz : FrMap ψ C.y z) :
     ∃ (φ : Om C.Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ),
@@ -389,6 +501,13 @@ theorem exists_generic_of_injective {h : GenFrEx Xo c} (C : FChart h) (ψ : C.R 
     (e ▸ PullbackSections.frMap_trans _ _ C.gen hw') hz
   exact ⟨φ, w, _, hw, GlobalTheory.SupGeneric.frBor_of_frMap _ C.bor hw hw'⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h k`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Take `⟨ι, _, C, hC⟩` from `GlobalTheory.T.exists_countable_flagSpace_atlas E H Dw l Xo c h`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.exists_component_of_modelCharts E H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hU h k`. Take `⟨S, hS, hcov⟩` from `exists_seq_of_isMeagre (isMeagre_iUnion fun i => isMeagre_chart (Formalism.L2.PjFree.Unf.ofPj U) hσ hU k (C i))`.
+
+Use `⟨Z, S, hS, fun x hx => ?_⟩` and prove the remaining obligations. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨i, ψ, z, t, hz, ht⟩` from `hC (CAt σ) (U.un k x)`. Take `rfl` from `hZ x (C i) ψ z t hz ht`. Establish `hψ : Function.Injective ψ`.
+
+Assume the negation of the conclusion as `hni`. Take `⟨n, hn⟩` from `hcov x.1 (Set.mem_iUnion.2 ⟨i, x.2, ψ, z, t, hz, ht, hni⟩)`. Conclude with `hx n hn`. Take `⟨φ, y', t', hy', ht'⟩` from `exists_generic_of_injective (C i) ψ hψ hz`. Conclude with `⟨φ, y', _, hy', hinv _ _ _ (hmul _ _ _ _ _ ht' ht)⟩`.
+-/
 theorem exists_comp_generic_off_meagre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (h : GenFrEx Xo c) (k : U.Comp), ∃ Z : Comp Xo c, ∃ S : ℕ → Set (Frame (U.X k).Ψ r), (∀ n, IsClosed (S n) ∧ interior (S n) = ∅) ∧ ∀ x : (U.X k).dom, (∀ n, x.1 ∉ S n) → ∃ (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t (U.un k x) y' := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU h k
   obtain ⟨-, hmul, hinv, -⟩ := GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)

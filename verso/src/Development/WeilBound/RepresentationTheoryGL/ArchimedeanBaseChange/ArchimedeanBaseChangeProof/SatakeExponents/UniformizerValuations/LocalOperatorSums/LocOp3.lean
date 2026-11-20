@@ -14,6 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace PositivityTheory.Rg.BcN.F2.LocOpPf
 
+/- English proof (translation)
+Introduce `n a b h w K' hK'o hK'le hK'n X hXK hX`. Conclude with `⟨GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_locally_constant E n a b h w K' hK'o hK'le hK'n X hXK hX, GlobalTheory.CompanionTheory.DiagAvg.ct_eq_diag E n a b h w K' hK'o hK'le hK'n X hXK hX, GlobalTheory.CompanionTheory.ConvMat.constant_term_convolution E n a …`.
+-/
 theorem locOp3 (E : Type) [Field E] [NumberField E] [IsCMField E] : LocOpUniformizer E := by
   intro n a b h w K' hK'o hK'le hK'n X hXK hX
   exact ⟨GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_locally_constant E n a b h w K' hK'o hK'le hK'n X hXK hX, GlobalTheory.CompanionTheory.DiagAvg.ct_eq_diag E n a b h w K' hK'o hK'le hK'n X hXK hX,

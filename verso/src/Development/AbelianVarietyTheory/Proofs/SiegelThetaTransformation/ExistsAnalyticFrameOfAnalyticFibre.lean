@@ -18,6 +18,29 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL`. Take `⟨-, -, -, hadj, -, hinj, hsp, -⟩` from `hx_laws E r X g bas idx 0 hs Even.zero x hx`. Set `lat : AddSubgroup (Fin g → ℂ)` to `{ carrier := {z | ∃ v ∈ L, z = pv X idx x v} add_mem' := by`. Introduce and unpack `_ _ ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`. Conclude with `⟨u + v, add_mem hu hv, by rw [pv, pv, pv, per_add]; rfl⟩`.
+
+Use the proof step `zero_mem' := ⟨0, zero_mem _, by rw [pv, per_zero]; rfl⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨-u, neg_mem hu, by rw [pv, pv, per_neg]; rfl⟩ }`. Establish `hχ (v) : Function.invFun (pv X idx x) (pv X idx x v) = v` using `Function.leftInverse_invFun hinj v`.
+
+Set `Φ : AnVal.AnPt y g (fun j => rowType X (idx j)) e` to `{ e := A.ex lat := lat span := by`. Rewrite using `[← (hsp L (SW.TensLat.span_of_selfD X hL)).1]`. Use `congr 1`. Use extensionality with `z`. Conclude with `⟨fun ⟨v, hv, h⟩ => ⟨v, hv, h.symm⟩, fun ⟨v, hv, h⟩ => ⟨v, hv, h.symm⟩⟩`.
+
+Use `e_add := A.ex_add`. Use `e_onto := A.ex_onto`. Use `e_ker := A.ex_ker`. Use `hol := fun U f => by`. Take `⟨h1, h2⟩` from `A.hol U f`.
+
+Simplify using `only [Set.mem_univ, true_and] at h1 h2`. Conclude with `⟨h1, h2⟩`. Use `Hm := ThFr.Hm X bas idx x`. Use `herm := Hm_isHermitian idx hs hx`. Use `χ := fun z => A.χ (Function.invFun (pv X idx x) z)`.
+
+Use `fr := A.fr`. Use `fr_hol := A.fr_hol`. Use `fr_ne := A.fr_ne`. Use `fr_g := A.fr_g`. Use `fr_0 := A.fr_0`.
+
+Use `χ_norm := by`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[hχ]`. Conclude with `A.χ_norm v hv`. Use `fr_per := by`.
+
+Introduce and unpack `_ ⟨v, hv, rfl⟩ j z hz`. Rewrite using `[hχ, ← hx_eq_hermForm, ← hx_eq_hermForm]`. Conclude with `A.fr_per v hv j z hz`. Use `lin := A.ex_lin`. Use `adj := fun a z w => by`.
+
+Rewrite using `[← hx_eq_hermForm, ← hx_eq_hermForm]`. Establish `hb : cc (a : E) = ((H.bar a : 𝓞 E) : E)` using `(H.bar_eq a).symm`. Establish `h` using `hadj (a : E) z w`. Rewrite `h` using `[hb]`. Conclude with `h`.
+
+Use `der := A.der }`. Use `⟨Φ, fun _ => rfl, rfl, fun _ => Iff.rfl, fun z w => (hx_eq_hermForm idx x z w).symm, fun v _ => congrArg A.χ (hχ v), fun _ _ _ => Iff.rfl, fun k a θ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `cexp _ * θ (z + a) = cexp _ * θ (z + a)`. Use `congr 2`.
+
+Rewrite using `[hx_eq_hermForm]`. Express the relevant statement in the definitionally equal form `_ - _ * _ * hermForm (ThFr.Hm X bas idx x) a a / 2 = _`. Express the relevant statement in the definitionally equal form `-(_ * _ * hermForm (ThFr.Hm X bas idx x) z a) - _ = _`. Simplify using `only [hermForm, add_dotProduct, smul_dotProduct, smul_eq_mul, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AnFib.exists_anPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∃ Φ : AnVal.AnPt y g (fun j => rowType X (idx j)) e, (∀ z, Φ.e z = A.ex z) ∧ Φ.fr = A.fr ∧ (∀ z, z ∈ Φ.lat ↔ ∃ v ∈ L, z = pv X idx x v) ∧ (∀ z w, hermForm Φ.Hm z w = hx X bas idx x z w) ∧ (∀ v ∈ L, Φ.χ (pv X idx x v) = A.χ v) ∧ (∀ (k : ℤ) F θ, Φ.toAnFr.Rd k F θ ↔ A.Reads k F θ) ∧ ∀ (k : ℕ) a θ, AnVal.fock Φ.Hm (k : ℤ) a θ = Dict.fock X bas idx x k a θ := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L y A hs hx hL
   obtain ⟨-, -, -, hadj, -, hinj, hsp, -⟩ := hx_laws E r X g bas idx 0 hs Even.zero x hx

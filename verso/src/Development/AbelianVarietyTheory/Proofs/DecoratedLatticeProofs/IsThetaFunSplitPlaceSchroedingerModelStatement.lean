@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.SplitPlace
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.StandardLattice Formalism.L2.Theta Formalism.IndefR.Datum Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.FinPl GlobalTheory.MixPer GlobalTheory.MixModel GlobalTheory.SplitWeil ValuativeRel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel | exact GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel | (intros; apply GlobalTheory.LocMod.LinTheta.isThetaFunO_placeModel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isThetaFun_splitPlaceSchroedingerModel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     (ΛS : Lat S) (ΛT : Lat T)
     (e : AE D) (f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)),

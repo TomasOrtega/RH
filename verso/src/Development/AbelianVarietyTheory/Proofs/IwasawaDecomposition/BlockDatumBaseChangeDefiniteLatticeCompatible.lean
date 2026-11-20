@@ -9,6 +9,25 @@ namespace GlobalTheory.Mem.R3.LiftLatBC
 open Module NumberField Formalism.L2.DIV Formalism.DivisionValues GlobalTheory.Mem.R3.DefLatBC
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `K K' _ _ _ _ _ _ G G' _ _ _ _ Pl0 Pl0' φ hφ e B B' ℓ ℓ' Z Z' s C _ h`. Take `⟨hC, hH, hact, hnab, hZ, hX, hP, hψ⟩` from `h`. Take `⟨X', P', ψ'⟩` from `ℓ'`. Simplify using `only at hX hP hψ`. Substitute `hP` using the available equality.
+
+Take `⟨m, b, F, hF, hI, hb⟩` from `exists_dual_family φ`. Establish `hc : Nat.card (ℓ.P.map e.toMonoidHom) = Nat.card ℓ.P` using `(Nat.card_congr (ℓ.P.equivMapOfInjective e.toMonoidHom e.injective).toEquiv).symm`. Establish `hl` using `lvlIdem_baseChange φ e B.S B.r B'.S B'.r C hact ℓ.P ℓ.ψ ψ' hψ`. Establish `hg : B'.S.gaMat B'.r (goodAt X' (ℓ.P.map e.toMonoidHom) ψ') * C = C * (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).map φ`. Unfold `goodAt`.
+
+Rewrite using `[(group_action_matrix_hom K' B'.S G' B'.r).2, (group_action_matrix_hom K B.S G B.r).2, Matrix.mul_assoc, hl, ← Matrix.mul_assoc, idemOf_baseChange φ e B.S B.r B'.S B'.r C hact ℓ.X X' hX, Matrix.map_mul, Matrix.mul_assoc]`. Use `set ℓ' : Lvl K' G' := ⟨X', ℓ.P.map e.toMonoidHom, ψ'⟩ with hℓ'`. Take `⟨A0, hA0, hE0⟩` from `subE_baseChange φ C hC.1 _ _ (range_baseChange φ C hC.2 C _ _ hl)`. Take `⟨A1, hA1, hE1⟩` from `subE_baseChange φ C hC.1 _ _ (range_baseChange φ C hC.2 C _ _ hg)`. Express the relevant statement in the definitionally equal form `B'.S.lvlE B'.r ℓ'.P ℓ'.ψ * A0 = C * (B.S.lvlE B.r ℓ.P ℓ.ψ).map φ at hE0`.
+
+Express the relevant statement in the definitionally equal form `B'.vE ℓ' * A1 = C * (B.vE ℓ).map φ at hE1`. Establish `hZ0 : B'.Z0 ℓ' Z' = Submodule.span K' ((fun x : Fin (B.nV ℓ) → K => A1 *ᵥ (fun k => φ (x k))) '' (B.Z0 ℓ Z : Set _))` using `comap_baseChange (R := K) (R' := K') φ (fun i => algebraMap (𝓞 K') K' (b i)) F hF (fun i a => ⟨F i a, rfl⟩) hb C hC.1 A1 hA1.2 _ _ hE1 _ _ hZ _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Take `⟨Gm, hGm, hE2⟩` from `subE_baseChange φ A1 hA1.1 _ _ hZ0`. Express the relevant statement in the definitionally equal form `B'.zE ℓ' Z' * Gm = A1 * (B.zE ℓ Z).map φ at hE2`. Establish `hvPr : B'.vPr ℓ' * C = A1 * (B.vPr ℓ).map φ` using `orthPr_baseChange φ hφ C A1 hA1 _ _ hH _ _ hE1`.
+
+Establish `hHV : A1ᴴ * B'.HV ℓ' * A1 = (B.HV ℓ).map φ`. Establish `h1` using `gram_baseChange φ hφ C A1 _ _ hH _ _ hE1`. Express the relevant statement in the definitionally equal form `A1ᴴ * ((Nat.card (ℓ.P.map e.toMonoidHom) : K')⁻¹ • ((B'.vE ℓ')ᴴ * B'.S.H * B'.vE ℓ')) * A1 = ((Nat.card ℓ.P : K)⁻¹ • ((B.vE ℓ)ᴴ * B.S.H * B.vE ℓ)).map φ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, h1, hc]`. Generalize the expression as in `(B.vE ℓ)ᴴ * B.S.H * B.vE ℓ = M`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, map_natCast]`. Establish `hPq : B'.Pq ℓ' Z' * A1 = Gm * (B.Pq ℓ Z).map φ` using `orthPr_baseChange φ hφ A1 Gm hGm _ _ hHV _ _ hE2`. Establish `hlPr : B'.lPr ℓ' Z' * A0 = Gm * (B.lPr ℓ Z).map φ`. Unfold `BlockDat.lPr`.
+
+Rewrite using `[Matrix.mul_assoc, hE0, Matrix.mul_assoc, ← Matrix.mul_assoc (B'.vPr ℓ'), hvPr, Matrix.mul_assoc A1, ← Matrix.mul_assoc (B'.Pq ℓ' Z'), hPq, Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hN : B'.S.lvlNab B'.r ℓ'.P ℓ'.ψ = Submodule.span (𝓞 K') ((fun x : Fin (B.S.lvlDim B.r ℓ.P ℓ.ψ) → K => A0 *ᵥ (fun k => φ (x k))) '' (B.S.lvlNab B.r ℓ.P ℓ.ψ : Set _))` using `comap_baseChange (R := 𝓞 K) (R' := 𝓞 K') φ b F hF hI hb C hC.1 A0 hA0.2 _ _ hE0 _ _ hnab _ _ (fun _ => Iff.rfl) (fun _ => Iff.rfl)`. Use `⟨Gm, hGm, ?_, fun x => ?_⟩` and prove the remaining obligations. Unfold `BlockDat.Tl matLat`.
+
+Rewrite using `[hN]`. Conclude with `map_baseChange φ A0 Gm _ _ hlPr _`. Establish `hv : B'.vE ℓ' *ᵥ (B'.zE ℓ' Z' *ᵥ (Gm *ᵥ fun k => φ (x k))) = C *ᵥ fun k => φ ((B.vE ℓ *ᵥ (B.zE ℓ Z *ᵥ x)) k)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hE2, ← Matrix.mul_assoc, hE1, Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.mulVec_mulVec, map_mulVec', ← Matrix.mulVec_mulVec]`. Simplify using `only [BlockDat.toF, bcF, LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[hv]`.
+-/
 theorem tl_bcF_of_blockBCAt : ∀ {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K']
   {G G' : Type} [Group G] [Fintype G] [Group G'] [Fintype G'] {Pl0 Pl0' : Type}
   (φ : K →+* K'), (∀ x : K, φ (star x) = star (φ x)) → ∀ (e : G ≃* G') (B : Formalism.L2.DIV.BlockDat K G Pl0) (B' : Formalism.L2.DIV.BlockDat K' G' Pl0')

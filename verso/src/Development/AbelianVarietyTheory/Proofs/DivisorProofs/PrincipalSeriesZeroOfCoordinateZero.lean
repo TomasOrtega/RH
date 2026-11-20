@@ -7,6 +7,17 @@ open Matrix
 
 namespace GlobalTheory.PrinTwo
 
+/- English proof (translation)
+Apply `ext_ev` to reduce the goal to its premises. Introduce `g`. Establish `hz : ev (0 : PSp μ₁ μ₂) g = 0`. Use `ev_smul (0 : ℂ) (0 : PSp μ₁ μ₂) g` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hz]`. Establish `hdet : (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k).det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit |>.ne_zero`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Distinguish the cases in `hr : (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 0 = 0`. Rewrite `hdet` using `[hr, mul_zero, sub_zero]`.
+
+Establish `hp : (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 0 0 ≠ 0` using `left_ne_zero_of_mul hdet`. Establish `hs : (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 1 ≠ 0` using `right_ne_zero_of_mul hdet`. Establish `hg : g = bor (Units.mk0 _ hp) (Units.mk0 _ hs) ((g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 0 1) * 1`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [hr]`. Rewrite using `[hg, ev_bor, h1, mul_zero]`.
+
+Use `set D := (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 0 0 * (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 1 - (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 0 1 * (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 0 with hD`. Establish `hA : -D / (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 0 ≠ 0` using `div_ne_zero (neg_ne_zero.2 hdet) hr`. Establish `hg : g = bor (Units.mk0 _ hA) (Units.mk0 _ hr) ((g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 0 0) * (wE * nU ((g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 1 / (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 0))`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hD] <;> field_simp <;> ring`. Rewrite using `[hg, ev_bor]`.
+
+Use `hc ((g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 1 / (g : Matrix (Fin (1 + 1)) (Fin (1 + 1)) k) 1 0)` as an intermediate fact. Rewrite `this` using `[coord]`. Rewrite using `[this, mul_zero]`.
+-/
 theorem eq_zero_of_ev_one_of_coord {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (μ₁ μ₂ : kˣ →* ℂˣ) (f : PSp μ₁ μ₂) (h1 : ev f 1 = 0)
     (hc : ∀ x : k, coord f x = 0) : f = 0 := by

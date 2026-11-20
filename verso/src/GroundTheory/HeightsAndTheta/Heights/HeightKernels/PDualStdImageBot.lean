@@ -20,6 +20,11 @@ def genPt (K : Type) [Field K] (i : ℕ) : (Σ _ : Unit, Fin i) → ProjField K 
 
 omit [Fintype T] in
 
+/- English proof (translation)
+Establish `h : ∀ g : MRing (dualBlocks T), MvPolynomial.eval (fun _ : Unit => (1 : ProjField K i)) (mConeMap (dualLatticeCoord b) g) = aeval (dualLatticeCoord b) g`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`. Simplify using `[mConeMap]`. Rewrite using `[← h f, show mConeMap (dualLatticeCoord b) f = 0 from hf, map_zero]`.
+-/
 theorem aeval_eq_zero_of_mem (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i)))
     {f : MRing (dualBlocks T)} (hf : f ∈ dualIdeal b) : aeval (dualLatticeCoord b) f = 0 := by
   have h : ∀ g : MRing (dualBlocks T),
@@ -39,6 +44,11 @@ def evalQ (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) :
   eval₂Hom (Ideal.Quotient.lift _ (aeval (dualLatticeCoord b)).toRingHom
     fun _ hf => aeval_eq_zero_of_mem b hf) fun _ => 1
 
+/- English proof (translation)
+Take `⟨⟨⟩, j⟩` from `q`. Establish `hs` using `congrArg (evalForm (K := K) i) (dualStdCoordMat_sum b j)`. Rewrite `hs` using `[map_sum, evalForm, Fintype.linearCombination_apply_single, one_smul, ← evalForm]`. Rewrite using `[genPt, ← hs, linForm, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, aeval_C, aeval_X, map_zsmul, ← dualLatticeCoord_eq, zsmul_eq_mul, eq_intCast]`.
+-/
 theorem aeval_linForm (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (q : Σ _ : Unit, Fin i) :
     aeval (dualLatticeCoord b) (linForm (ι₂ := PBlk i) (dualStdCoordMat b) q) = genPt K i q := by
   obtain ⟨⟨⟩, j⟩ := q
@@ -48,6 +58,11 @@ theorem aeval_linForm (b : Module.Basis T ℤ (dualLattice (HermLattice.standard
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [map_mul, aeval_C, aeval_X, map_zsmul, ← dualLatticeCoord_eq, zsmul_eq_mul, eq_intCast]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [graphMap, evalQ]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, map_mul, aeval_X, rename_X, ← aeval_linForm b q]`.
+
+Simplify using `[graphMap, inrV, evalQ]`.
+-/
 theorem evalQ_graphMap (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (f : MRing (PBlk i)) :
     evalQ b (graphMap (dualIdeal b) (linForm (ι₂ := PBlk i) (dualStdCoordMat b))
       (rename (inrV (ι := dualBlocks T) (ι₂ := PBlk i)) f)) = aeval (genPt K i) f := by
@@ -58,6 +73,11 @@ theorem evalQ_graphMap (b : Module.Basis T ℤ (dualLattice (HermLattice.standar
     rw [map_mul, map_mul, map_mul, hp, map_mul, aeval_X, rename_X, ← aeval_linForm b q]
     simp [graphMap, inrV, evalQ]
 
+/- English proof (translation)
+Establish `hK : AlgebraicIndependent ℤ fun j : Fin i => algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (X j)` using `(algebraicIndependent_gen i).restrictScalars (algebraMap ℤ K).injective_int`. Establish `h` using `hK.comp (fun q : Σ _ : Unit, Fin i => q.2) (by`. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, c⟩ h`. Consider the cases of `h`. Use the proof step `rfl)`.
+
+Conclude with `algebraicIndependent_iff_injective_aeval.mp h`.
+-/
 theorem aeval_genPt_injective : Function.Injective (aeval (R := ℤ) (genPt K i)) := by
   have hK : AlgebraicIndependent ℤ fun j : Fin i =>
       algebraMap (MvPolynomial (Fin i) K) (ProjField K i) (X j) :=
@@ -72,6 +92,9 @@ end StandardDualImageBottom
 
 open StandardDualImageBottom in
 
+/- English proof (translation)
+Introduce `K _ _ i T _ _ b`. Use `eq_bot_iff.mpr fun f hf => (Ideal.mem_bot).mpr (aeval_genPt_injective (K := K) (i := i) ?_)` and prove the remaining obligations. Establish `h0 : graphMap (dualIdeal b) (linForm (ι₂` using `PBlk i) (dualStdCoordMat b)) (rename (inrV (ι := dualBlocks T) (ι₂ := PBlk i)) f) = 0 := hf`. Rewrite using `[map_zero, ← evalQ_graphMap b, h0, map_zero]`.
+-/
 theorem DualStdImageBot.proof : DualStdImageBot.Statement := by
   intro K _ _ i T _ _ b
   refine eq_bot_iff.mpr fun f hf => (Ideal.mem_bot).mpr (aeval_genPt_injective (K := K) (i := i) ?_)

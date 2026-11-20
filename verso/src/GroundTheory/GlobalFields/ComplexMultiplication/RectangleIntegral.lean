@@ -22,22 +22,39 @@ section Edges
 
 variable {z w : ℂ}
 
+/- English proof (translation)
+Simplify using `[rectBoundary, mem_reProdIm, hx]`.
+-/
 lemma bottom_mem_rectBoundary {x : ℝ} (hx : x ∈ [[z.re, w.re]]) :
     (x : ℂ) + z.im * I ∈ rectBoundary z w := by
   simp [rectBoundary, mem_reProdIm, hx]
 
+/- English proof (translation)
+Simplify using `[rectBoundary, mem_reProdIm, hx]`.
+-/
 lemma top_mem_rectBoundary {x : ℝ} (hx : x ∈ [[z.re, w.re]]) :
     (x : ℂ) + w.im * I ∈ rectBoundary z w := by
   simp [rectBoundary, mem_reProdIm, hx]
 
+/- English proof (translation)
+Simplify using `[rectBoundary, mem_reProdIm, hy]`.
+-/
 lemma right_mem_rectBoundary {y : ℝ} (hy : y ∈ [[z.im, w.im]]) :
     (w.re : ℂ) + y * I ∈ rectBoundary z w := by
   simp [rectBoundary, mem_reProdIm, hy]
 
+/- English proof (translation)
+Simplify using `[rectBoundary, mem_reProdIm, hy]`.
+-/
 lemma left_mem_rectBoundary {y : ℝ} (hy : y ∈ [[z.im, w.im]]) :
     (z.re : ℂ) + y * I ∈ rectBoundary z w := by
   simp [rectBoundary, mem_reProdIm, hy]
 
+/- English proof (translation)
+Introduce `u hu`. Simplify using `only [rectBoundary, mem_union, mem_reProdIm, mem_singleton_iff] at hu ⊢`. Break down `hu with ((⟨h1, h2⟩ | ⟨h1, h2⟩) | ⟨h1, h2⟩) | ⟨h1, h2⟩` into its components or cases. Conclude with `⟨h1, h2 ▸ left_mem_uIcc⟩`. Conclude with `⟨h1, h2 ▸ right_mem_uIcc⟩`.
+
+Conclude with `⟨h1 ▸ left_mem_uIcc, h2⟩`. Conclude with `⟨h1 ▸ right_mem_uIcc, h2⟩`.
+-/
 lemma rectBoundary_subset : rectBoundary z w ⊆ [[z.re, w.re]] ×ℂ [[z.im, w.im]] := by
   intro u hu
   simp only [rectBoundary, mem_union, mem_reProdIm, mem_singleton_iff] at hu ⊢
@@ -47,6 +64,11 @@ lemma rectBoundary_subset : rectBoundary z w ⊆ [[z.re, w.re]] ×ℂ [[z.im, w.
   · exact ⟨h1 ▸ left_mem_uIcc, h2⟩
   · exact ⟨h1 ▸ right_mem_uIcc, h2⟩
 
+/- English proof (translation)
+Simplify using `only [rectBoundary, mem_union, mem_reProdIm, mem_singleton_iff, not_or, not_and]`. Establish `key : ∀ {a b t : ℝ}, t ∈ Ioo (min a b) (max a b) → t ≠ a ∧ t ≠ b`. Introduce `a b t ht`. Take `⟨h1, h2⟩` from `ht`. Rewrite `h1` using `[min_lt_iff]`.
+
+Rewrite `h2` using `[lt_max_iff]`. Apply the tactic sequence `constructor <;> rintro rfl <;> rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2 <;> linarith`. Use `⟨⟨⟨fun _ h ↦ (key him).1 h, fun _ h ↦ (key him).2 h⟩, fun h _ ↦ (key hre).1 h⟩, fun h _ ↦ (key hre).2 h⟩` and prove the remaining obligations.
+-/
 lemma notMem_rectBoundary_of_mem_Ioo {p : ℂ}
     (hre : p.re ∈ Ioo (min z.re w.re) (max z.re w.re))
     (him : p.im ∈ Ioo (min z.im w.im) (max z.im w.im)) : p ∉ rectBoundary z w := by
@@ -63,24 +85,36 @@ lemma notMem_rectBoundary_of_mem_Ioo {p : ℂ}
 variable {f g : ℂ → E}
 
 omit [NormedSpace ℂ E] in
+/- English proof (translation)
+The claim follows from `(hf.comp (by fun_prop : Continuous fun x : ℝ ↦ (x : ℂ) + z.im * I).continuousOn fun _ hx ↦ bottom_mem_rectBoundary hx).intervalIntegrable`.
+-/
 lemma intervalIntegrable_bottom (hf : ContinuousOn f (rectBoundary z w)) :
     IntervalIntegrable (fun x : ℝ ↦ f (x + z.im * I)) volume z.re w.re :=
   (hf.comp (by fun_prop : Continuous fun x : ℝ ↦ (x : ℂ) + z.im * I).continuousOn
     fun _ hx ↦ bottom_mem_rectBoundary hx).intervalIntegrable
 
 omit [NormedSpace ℂ E] in
+/- English proof (translation)
+The claim follows from `(hf.comp (by fun_prop : Continuous fun x : ℝ ↦ (x : ℂ) + w.im * I).continuousOn fun _ hx ↦ top_mem_rectBoundary hx).intervalIntegrable`.
+-/
 lemma intervalIntegrable_top (hf : ContinuousOn f (rectBoundary z w)) :
     IntervalIntegrable (fun x : ℝ ↦ f (x + w.im * I)) volume z.re w.re :=
   (hf.comp (by fun_prop : Continuous fun x : ℝ ↦ (x : ℂ) + w.im * I).continuousOn
     fun _ hx ↦ top_mem_rectBoundary hx).intervalIntegrable
 
 omit [NormedSpace ℂ E] in
+/- English proof (translation)
+The claim follows from `(hf.comp (by fun_prop : Continuous fun y : ℝ ↦ (w.re : ℂ) + y * I).continuousOn fun _ hy ↦ right_mem_rectBoundary hy).intervalIntegrable`.
+-/
 lemma intervalIntegrable_right (hf : ContinuousOn f (rectBoundary z w)) :
     IntervalIntegrable (fun y : ℝ ↦ f (w.re + y * I)) volume z.im w.im :=
   (hf.comp (by fun_prop : Continuous fun y : ℝ ↦ (w.re : ℂ) + y * I).continuousOn
     fun _ hy ↦ right_mem_rectBoundary hy).intervalIntegrable
 
 omit [NormedSpace ℂ E] in
+/- English proof (translation)
+The claim follows from `(hf.comp (by fun_prop : Continuous fun y : ℝ ↦ (z.re : ℂ) + y * I).continuousOn fun _ hy ↦ left_mem_rectBoundary hy).intervalIntegrable`.
+-/
 lemma intervalIntegrable_left (hf : ContinuousOn f (rectBoundary z w)) :
     IntervalIntegrable (fun y : ℝ ↦ f (z.re + y * I)) volume z.im w.im :=
   (hf.comp (by fun_prop : Continuous fun y : ℝ ↦ (z.re : ℂ) + y * I).continuousOn
@@ -92,6 +126,9 @@ section Linearity
 
 variable {z w : ℂ} {f g : ℂ → E}
 
+/- English proof (translation)
+Simplify using `only [rectIntegral]`. Rewrite using `[integral_add (intervalIntegrable_bottom hf) (intervalIntegrable_bottom hg), integral_add (intervalIntegrable_top hf) (intervalIntegrable_top hg), integral_add (intervalIntegrable_right hf) (intervalIntegrable_right hg), integral_add (intervalIntegrable_left hf) (intervalIntegrab …`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rectIntegral_add (hf : ContinuousOn f (rectBoundary z w))
     (hg : ContinuousOn g (rectBoundary z w)) :
     rectIntegral (fun u ↦ f u + g u) z w = rectIntegral f z w + rectIntegral g z w := by
@@ -103,6 +140,9 @@ theorem rectIntegral_add (hf : ContinuousOn f (rectBoundary z w))
   simp only [smul_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [rectIntegral]`. Rewrite using `[integral_sub (intervalIntegrable_bottom hf) (intervalIntegrable_bottom hg), integral_sub (intervalIntegrable_top hf) (intervalIntegrable_top hg), integral_sub (intervalIntegrable_right hf) (intervalIntegrable_right hg), integral_sub (intervalIntegrable_left hf) (intervalIntegrab …`. Simplify using `only [smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rectIntegral_sub (hf : ContinuousOn f (rectBoundary z w))
     (hg : ContinuousOn g (rectBoundary z w)) :
     rectIntegral (fun u ↦ f u - g u) z w = rectIntegral f z w - rectIntegral g z w := by
@@ -114,21 +154,36 @@ theorem rectIntegral_sub (hf : ContinuousOn f (rectBoundary z w))
   simp only [smul_sub]
   abel
 
+/- English proof (translation)
+Simplify using `only [rectIntegral, intervalIntegral.integral_neg, smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rectIntegral_neg : rectIntegral (fun u ↦ -f u) z w = -rectIntegral f z w := by
   simp only [rectIntegral, intervalIntegral.integral_neg, smul_neg]
   abel
 
+/- English proof (translation)
+Simplify using `only [rectIntegral, intervalIntegral.integral_smul, smul_sub, smul_add]`. Rewrite using `[smul_comm I c, smul_comm I c]`.
+-/
 theorem rectIntegral_smul (c : ℂ) : rectIntegral (fun u ↦ c • f u) z w = c • rectIntegral f z w := by
   simp only [rectIntegral, intervalIntegral.integral_smul, smul_sub, smul_add]
   rw [smul_comm I c, smul_comm I c]
 
+/- English proof (translation)
+The claim follows from `rectIntegral_smul (f := f) c`.
+-/
 theorem rectIntegral_const_mul {f : ℂ → ℂ} (c : ℂ) :
     rectIntegral (fun u ↦ c * f u) z w = c * rectIntegral f z w :=
   rectIntegral_smul (f := f) c
 
+/- English proof (translation)
+Simplify using `[rectIntegral]`.
+-/
 theorem rectIntegral_zero : rectIntegral (fun _ ↦ (0 : E)) z w = 0 := by
   simp [rectIntegral]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using rectIntegral_zero`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[rectIntegral_add (hf a (Finset.mem_insert_self a s)) (continuousOn_finsetSum _ fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)), ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem rectIntegral_finset_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ → E}
     (hf : ∀ i ∈ s, ContinuousOn (f i) (rectBoundary z w)) :
     rectIntegral (fun u ↦ ∑ i ∈ s, f i u) z w = ∑ i ∈ s, rectIntegral (f i) z w := by
@@ -141,6 +196,9 @@ theorem rectIntegral_finset_sum {ι : Type*} (s : Finset ι) {f : ι → ℂ →
       (continuousOn_finsetSum _ fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)),
       ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Simplify using `only [rectIntegral]`. Rewrite using `[integral_congr (g := fun x : ℝ ↦ g (x + z.im * I)) fun x hx ↦ h (bottom_mem_rectBoundary hx), integral_congr (g := fun x : ℝ ↦ g (x + w.im * I)) fun x hx ↦ h (top_mem_rectBoundary hx), integral_congr (g := fun y : ℝ ↦ g (w.re + y * I)) fun y hy ↦ h (right_mem_rectBoundary hy), i …`.
+-/
 theorem rectIntegral_congr (h : EqOn f g (rectBoundary z w)) :
     rectIntegral f z w = rectIntegral g z w := by
   simp only [rectIntegral]
@@ -156,6 +214,17 @@ section Derivative
 
 variable {z w : ℂ}
 
+/- English proof (translation)
+Establish `hh : ∀ c : ℝ, ∀ x : ℝ, (x : ℂ) + c * I ∈ rectBoundary z w → HasDerivAt (fun x : ℝ ↦ F (x + c * I)) (f (x + c * I)) x`. Introduce `c x hx`. Establish `h1 : HasDerivAt (fun y : ℝ ↦ (y : ℂ) + c * I) 1 x`. Simplify using `using (hasDerivAt_id' x).ofReal_comp.add_const ((c : ℂ) * I)`. Establish `h2` using `(hF _ hx).scomp x h1`.
+
+Rewrite `h2` using `[one_smul]`. Conclude with `h2`. Establish `hv : ∀ c : ℝ, ∀ y : ℝ, (c : ℂ) + y * I ∈ rectBoundary z w → HasDerivAt (fun y : ℝ ↦ F (c + y * I)) (I • f (c + y * I)) y`. Introduce `c y hy`. Establish `h1 : HasDerivAt (fun y : ℝ ↦ (c : ℂ) + y * I) I y`.
+
+Simplify using `using ((hasDerivAt_id' y).ofReal_comp.mul_const I).const_add (c : ℂ)`. Conclude with `(hF _ hy).scomp y h1`. Establish `hb : ∫ x : ℝ in z.re..w.re, f (x + z.im * I) = F (w.re + z.im * I) - F (z.re + z.im * I)` using `integral_eq_sub_of_hasDerivAt (fun x hx ↦ hh _ x (bottom_mem_rectBoundary hx)) (intervalIntegrable_bottom hf)`. Establish `ht : ∫ x : ℝ in z.re..w.re, f (x + w.im * I) = F (w.re + w.im * I) - F (z.re + w.im * I)` using `integral_eq_sub_of_hasDerivAt (fun x hx ↦ hh _ x (top_mem_rectBoundary hx)) (intervalIntegrable_top hf)`. Establish `hr : I • ∫ y : ℝ in z.im..w.im, f (w.re + y * I) = F (w.re + w.im * I) - F (w.re + z.im * I)`.
+
+Rewrite using `[← intervalIntegral.integral_smul]`. Conclude with `integral_eq_sub_of_hasDerivAt (fun y hy ↦ hv _ y (right_mem_rectBoundary hy)) ((intervalIntegrable_right hf).smul I)`. Establish `hl : I • ∫ y : ℝ in z.im..w.im, f (z.re + y * I) = F (z.re + w.im * I) - F (z.re + z.im * I)`. Rewrite using `[← intervalIntegral.integral_smul]`. Conclude with `integral_eq_sub_of_hasDerivAt (fun y hy ↦ hv _ y (left_mem_rectBoundary hy)) ((intervalIntegrable_left hf).smul I)`.
+
+Rewrite using `[rectIntegral, hb, ht, hr, hl]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rectIntegral_eq_zero_of_hasDerivAt [CompleteSpace E] {F f : ℂ → E}
     (hF : ∀ u ∈ rectBoundary z w, HasDerivAt F (f u) u) (hf : ContinuousOn f (rectBoundary z w)) :
     rectIntegral f z w = 0 := by
@@ -194,6 +263,11 @@ theorem rectIntegral_eq_zero_of_hasDerivAt [CompleteSpace E] {F f : ℂ → E}
   rw [rectIntegral, hb, ht, hr, hl]
   abel
 
+/- English proof (translation)
+Establish `hn' : (n : ℂ) + 1 ≠ 0` using `by exact_mod_cast (show n + 1 ≠ 0 by omega)`. Establish `hup : ∀ u ∈ rectBoundary z w, u - p ≠ 0` using `fun u hu h ↦ hp (sub_eq_zero.1 h ▸ hu)`. Use `rectIntegral_eq_zero_of_hasDerivAt (F := fun u ↦ (u - p) ^ (n + 1) / ((n : ℂ) + 1)) (fun u hu ↦ ?_) ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun u : ℂ ↦ u - p) 1 u` using `(hasDerivAt_id u).sub_const p`. Establish `h2` using `((hasDerivAt_zpow (n + 1) (u - p) (Or.inl (hup u hu))).comp u h1).div_const ((n : ℂ) + 1)`.
+
+Use `h2.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[add_sub_cancel_right]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Conclude with `continuousOn_of_forall_continuousAt fun u hu ↦ ((continuousAt_id.sub continuousAt_const).zpow₀ n (Or.inl (hup u hu)))`.
+-/
 theorem rectIntegral_zpow_sub {p : ℂ} {n : ℤ} (hn : n ≠ -1) (hp : p ∉ rectBoundary z w) :
     rectIntegral (fun u ↦ (u - p) ^ n) z w = 0 := by
   have hn' : (n : ℂ) + 1 ≠ 0 := by exact_mod_cast (show n + 1 ≠ 0 by omega)
@@ -217,11 +291,23 @@ section Inverse
 def invPrimitive (c x : ℝ) : ℂ :=
   ((Real.log (x ^ 2 + c ^ 2) / 2 : ℝ) : ℂ) - I * ((Real.arctan (x / c) : ℝ) : ℂ)
 
+/- English proof (translation)
+Introduce `h`. Apply `hc` to reduce the goal to its premises. Simplify using `using congrArg Complex.im h`.
+-/
 lemma ofReal_add_mul_I_ne_zero {c : ℝ} (hc : c ≠ 0) (x : ℝ) : (x : ℂ) + c * I ≠ 0 := by
   intro h
   apply hc
   simpa using congrArg Complex.im h
 
+/- English proof (translation)
+Establish `hpos : 0 < x ^ 2 + c ^ 2` using `by positivity`. Establish `h1 : HasDerivAt (fun x : ℝ ↦ Real.log (x ^ 2 + c ^ 2) / 2) (x / (x ^ 2 + c ^ 2)) x`. Use `(((hasDerivAt_pow 2 x).add_const (c ^ 2)).log hpos.ne').div_const 2` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Nat.cast_ofNat, Nat.add_one_sub_one, pow_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : HasDerivAt (fun x : ℝ ↦ Real.arctan (x / c)) (c / (x ^ 2 + c ^ 2)) x`. Use `((hasDerivAt_id' x).div_const c).arctan` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : HasDerivAt (invPrimitive c) (((x / (x ^ 2 + c ^ 2) : ℝ) : ℂ) - I * ((c / (x ^ 2 + c ^ 2) : ℝ) : ℂ)) x` using `h1.ofReal_comp.sub (h2.ofReal_comp.const_mul I)`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[Complex.inv_re, Complex.normSq_apply]`.
+
+Simplify using `only [add_re, ofReal_re, mul_re, I_re, I_im, ofReal_im, add_im, mul_im, sub_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.inv_im, Complex.normSq_apply]`. Simplify using `only [add_re, ofReal_re, mul_re, I_re, I_im, ofReal_im, add_im, mul_im, sub_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hasDerivAt_invPrimitive {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     HasDerivAt (invPrimitive c) ((x : ℂ) + c * I)⁻¹ x := by
   have hpos : 0 < x ^ 2 + c ^ 2 := by positivity
@@ -247,12 +333,24 @@ lemma hasDerivAt_invPrimitive {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     simp only [add_re, ofReal_re, mul_re, I_re, I_im, ofReal_im, add_im, mul_im, sub_im]
     ring
 
+/- English proof (translation)
+Use `integral_eq_sub_of_hasDerivAt (fun x _ ↦ hasDerivAt_invPrimitive hc x) ?_` and prove the remaining obligations. Use `Continuous.intervalIntegrable ?_ _ _` and prove the remaining obligations. Conclude with `(continuous_ofReal.add continuous_const).inv₀ (ofReal_add_mul_I_ne_zero hc)`.
+-/
 theorem integral_inv_ofReal_add_mul_I {c : ℝ} (hc : c ≠ 0) (a b : ℝ) :
     ∫ x : ℝ in a..b, ((x : ℂ) + c * I)⁻¹ = invPrimitive c b - invPrimitive c a := by
   refine integral_eq_sub_of_hasDerivAt (fun x _ ↦ hasDerivAt_invPrimitive hc x) ?_
   refine Continuous.intervalIntegrable ?_ _ _
   exact (continuous_ofReal.add continuous_const).inv₀ (ofReal_add_mul_I_ne_zero hc)
 
+/- English proof (translation)
+Establish `hlog : ∀ s t : ℝ, Real.log (s ^ 2 + (-t) ^ 2) = Real.log (t ^ 2 + s ^ 2)`. Introduce `s t`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hat : ∀ s t : ℝ, Real.arctan (s / -t) = -Real.arctan (s / t)`.
+
+Introduce `s t`. Rewrite using `[div_neg, Real.arctan_neg]`. Establish `e1 : Real.arctan (b₂ / a₂) = π / 2 - Real.arctan (a₂ / b₂)`. Rewrite using `[← inv_div, Real.arctan_inv_of_pos (div_pos ha₂ hb₂)]`. Establish `e2 : Real.arctan (b₁ / a₂) = -(π / 2) - Real.arctan (a₂ / b₁)`.
+
+Rewrite using `[← inv_div, Real.arctan_inv_of_neg (div_neg_of_pos_of_neg ha₂ hb₁)]`. Establish `e3 : Real.arctan (b₂ / a₁) = -(π / 2) - Real.arctan (a₁ / b₂)`. Rewrite using `[← inv_div, Real.arctan_inv_of_neg (div_neg_of_neg_of_pos ha₁ hb₂)]`. Establish `e4 : Real.arctan (b₁ / a₁) = π / 2 - Real.arctan (a₁ / b₁)`. Rewrite using `[← inv_div, Real.arctan_inv_of_pos (div_pos_of_neg_of_neg ha₁ hb₁)]`.
+
+Simplify using `only [invPrimitive, hlog, hat, e1, e2, e3, e4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma invPrimitive_rect_sum {a₁ a₂ b₁ b₂ : ℝ} (ha₁ : a₁ < 0) (ha₂ : 0 < a₂) (hb₁ : b₁ < 0)
     (hb₂ : 0 < b₂) :
     (invPrimitive b₁ a₂ - invPrimitive b₁ a₁) - (invPrimitive b₂ a₂ - invPrimitive b₂ a₁) +
@@ -274,6 +372,17 @@ lemma invPrimitive_rect_sum {a₁ a₂ b₁ b₂ : ℝ} (ha₁ : a₁ < 0) (ha�
   push_cast
   ring
 
+/- English proof (translation)
+Establish `horiz : ∀ c : ℝ, c - p.im ≠ 0 → ∫ x : ℝ in z.re..w.re, ((x : ℂ) + c * I - p)⁻¹ = invPrimitive (c - p.im) (w.re - p.re) - invPrimitive (c - p.im) (z.re - p.re)`. Introduce `c hc`. Establish `e : ∀ x : ℝ, ((x : ℂ) + c * I - p) = ((x - p.re : ℝ) : ℂ) + ((c - p.im : ℝ) : ℂ) * I`. Apply the tactic sequence `intro x; apply Complex.ext <;> simp`. Repeatedly rewrite using `[e]`.
+
+Use `intervalIntegral.integral_comp_sub_right (fun t : ℝ ↦ ((t : ℂ) + ((c - p.im : ℝ) : ℂ) * I)⁻¹) p.re (a := z.re) (b := w.re)` as an intermediate fact. Rewrite using `[this]`. Conclude with `integral_inv_ofReal_add_mul_I hc _ _`. Establish `vert : ∀ c : ℝ, -(c - p.re) ≠ 0 → I • ∫ y : ℝ in z.im..w.im, ((c : ℂ) + y * I - p)⁻¹ = invPrimitive (-(c - p.re)) (w.im - p.im) - invPrimitive (-(c - p.re)) (z.im - p.im)`. Introduce `c hc`.
+
+Rewrite using `[← intervalIntegral.integral_smul]`. Establish `e : ∀ y : ℝ, I • ((c : ℂ) + y * I - p)⁻¹ = (((y - p.im : ℝ) : ℂ) + ((-(c - p.re) : ℝ) : ℂ) * I)⁻¹`. Introduce `y`. Establish `hX : (c : ℂ) + y * I - p = I * (((y - p.im : ℝ) : ℂ) + ((-(c - p.re) : ℝ) : ℂ) * I)`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+
+Rewrite using `[smul_eq_mul, hX, mul_inv, ← mul_assoc, mul_inv_cancel₀ I_ne_zero, one_mul]`. Repeatedly rewrite using `[e]`. Use `intervalIntegral.integral_comp_sub_right (fun t : ℝ ↦ ((t : ℂ) + ((-(c - p.re) : ℝ) : ℂ) * I)⁻¹) p.im (a := z.im) (b := w.im)` as an intermediate fact. Rewrite using `[this]`. Conclude with `integral_inv_ofReal_add_mul_I hc _ _`.
+
+Unfold `rectIntegral`. Use `beta_reduce`. Rewrite using `[horiz _ (by linarith), horiz _ (by linarith), vert _ (by linarith), vert _ (by linarith)]`. Conclude with `invPrimitive_rect_sum (by linarith) (by linarith) (by linarith) (by linarith)`.
+-/
 theorem rectIntegral_sub_inv {z w p : ℂ} (h1 : z.re < p.re) (h2 : p.re < w.re) (h3 : z.im < p.im)
     (h4 : p.im < w.im) : rectIntegral (fun u ↦ (u - p)⁻¹) z w = 2 * π * I := by
   have horiz : ∀ c : ℝ, c - p.im ≠ 0 → ∫ x : ℝ in z.re..w.re, ((x : ℂ) + c * I - p)⁻¹ =
@@ -310,6 +419,9 @@ end Inverse
 
 section Cauchy
 
+/- English proof (translation)
+The claim follows from `integral_boundary_rect_eq_zero_of_differentiable_on_off_countable f z w s hs Hc Hd`.
+-/
 theorem rectIntegral_eq_zero_of_differentiable_on_off_countable [CompleteSpace E] (f : ℂ → E)
     (z w : ℂ) (s : Set ℂ) (hs : s.Countable)
     (Hc : ContinuousOn f ([[z.re, w.re]] ×ℂ [[z.im, w.im]]))
@@ -322,6 +434,19 @@ end Cauchy
 
 section Periodic
 
+/- English proof (translation)
+Establish `hre : (a + 1 + τ.im * I).re = a.re + 1` using `by simp`. Establish `him : (a + 1 + τ.im * I).im = a.im + τ.im` using `by simp`. Establish `hv : ∫ y : ℝ in a.im..a.im + τ.im, g (((a.re + 1 : ℝ) : ℂ) + y * I) = ∫ y : ℝ in a.im..a.im + τ.im, g ((a.re : ℂ) + y * I)`. Use `congr 1`. Use extensionality with `y`.
+
+Rewrite using `[← h1 ((a.re : ℂ) + y * I)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hh : ∫ x : ℝ in a.re..a.re + 1, g ((x : ℂ) + ((a.im + τ.im : ℝ) : ℂ) * I) = ∫ x : ℝ in a.re..a.re + 1, g ((x : ℂ) + a.im * I)`.
+
+Establish `e : ∀ x : ℝ, g ((x : ℂ) + ((a.im + τ.im : ℝ) : ℂ) * I) = g (((x - τ.re : ℝ) : ℂ) + a.im * I)`. Introduce `x`. Rewrite using `[← hτ (((x - τ.re : ℝ) : ℂ) + a.im * I)]`. Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+
+Repeatedly rewrite using `[e]`. Use `intervalIntegral.integral_comp_sub_right (fun t : ℝ ↦ g ((t : ℂ) + a.im * I)) τ.re (a := a.re) (b := a.re + 1)` as an intermediate fact. Rewrite using `[this]`. Establish `hper : Function.Periodic (fun t : ℝ ↦ g ((t : ℂ) + a.im * I)) 1`. Introduce `t`.
+
+Use `beta_reduce`. Rewrite using `[← h1 ((t : ℂ) + a.im * I)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[show a.re + 1 - τ.re = a.re - τ.re + 1 by ring]`. Conclude with `hper.intervalIntegral_add_eq (a.re - τ.re) a.re`. Unfold `rectIntegral`. Rewrite using `[hre, him, hv, hh]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rectIntegral_eq_zero_of_periodic {g : ℂ → E} {τ : ℂ} (h1 : ∀ u, g (u + 1) = g u)
     (hτ : ∀ u, g (u + τ) = g u) (a : ℂ) : rectIntegral g a (a + 1 + τ.im * I) = 0 := by
   have hre : (a + 1 + τ.im * I).re = a.re + 1 := by simp

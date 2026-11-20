@@ -29,9 +29,17 @@ namespace GlobalTheory.CubicalFibreAmple
 section General
 variable {X X' Y : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)`.
+-/
 theorem pw_pw (H : LB X) (a b : ℤ) : pw (pw H a) b = pw H (a * b) :=
   congrArg (fun g => (⟨H.ι, H.U, g⟩ : LB X)) (funext fun i => funext fun j => (zpow_mul (H.g i j) a b).symm)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Use `⟨⟨fun j => t.s j ^ d⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (· ^ d) (ht i j)`. Simplify using `only [mul_zpow, ← map_zpow] at e`. Use `e.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations.
+
+Use `(Finset.prod_zpow _ _ _).symm.trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Conclude with `(zpow_comm _ _ _).trans (congrArg (· ^ ε k) ((map_zpow _ _ d).symm.trans (congrArg _ (map_zpow (pullU (φ k) _) _ d).symm)))`.
+-/
 theorem triv_linComb_pw {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (h : Triv (LB.LinComb L φ ε)) (d : ℤ) : Triv (LB.LinComb (pw L d) φ ε) := by
   obtain ⟨t, ht⟩ := h
@@ -43,6 +51,11 @@ theorem triv_linComb_pw {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
   exact (zpow_comm _ _ _).trans (congrArg (· ^ ε k)
     ((map_zpow _ _ d).symm.trans (congrArg _ (map_zpow (pullU (φ k) _) _ d).symm)))
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `SpreadSec.exists_pull s π`. Use `⟨t, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `AmpleSpan.exists_chart_of_mem s hz`. Use `(mem_nonzeroLocus t z).2 ⟨fun _ => k, mem_pull.2 hk, ?_⟩` and prove the remaining obligations. Rewrite using `[ht (fun _ => k) z hk]`.
+
+Conclude with `(AmpleSpan.mem_nonzeroLocus_iff_gs s π z hk).1 hz`.
+-/
 theorem exists_pull_mem {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
     ∃ t : LB.Sec (M.pull π), ∀ z, π z ∈ nonzeroLocus s → z ∈ nonzeroLocus t := by
   obtain ⟨t, ht⟩ := SpreadSec.exists_pull s π
@@ -52,6 +65,11 @@ theorem exists_pull_mem {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
   rw [ht (fun _ => k) z hk]
   exact (AmpleSpan.mem_nonzeroLocus_iff_gs s π z hk).1 hz
 
+/- English proof (translation)
+Take `⟨n, c, u, hu⟩` from `FlatSec.exists_comb_of_flat R R' g hg X f X' π f' h M hM σ`. Take `⟨k, hk⟩` from `exists_chart hM (π z)`. Establish `e` using `(AmpleSpan.mem_nonzeroLocus_iff_gs σ (𝟙 X') z (k := fun _ => k) (mem_pull.2 hk)).1 hz`. Rewrite `e` using `[hu z k hk]`. Take `⟨i, -, hi⟩` from `IsLocalRing.exists_of_isUnit_sum e`.
+
+Conclude with `⟨u i, (AmpleSpan.mem_nonzeroLocus_iff_gs _ π z hk).2 (isUnit_of_mul_isUnit_right hi)⟩`.
+-/
 theorem exists_mem_of_flat {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') (hg : g.Flat)
     [CompactSpace X] [QuasiSeparatedSpace X] {f : X ⟶ Spec (CommRingCat.of R)} {π : X' ⟶ X}
     {f' : X' ⟶ Spec (CommRingCat.of R')} (h : IsPullback π f' f (Spec.map (CommRingCat.ofHom g)))
@@ -64,6 +82,11 @@ theorem exists_mem_of_flat {R R' : Type} [CommRing R] [CommRing R'] (g : R →+*
   obtain ⟨i, -, hi⟩ := IsLocalRing.exists_of_isUnit_sum e
   exact ⟨u i, (AmpleSpan.mem_nonzeroLocus_iff_gs _ π z hk).2 (isUnit_of_mul_isUnit_right hi)⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun u : LB.Sec M => (nonzeroLocus u : Set X)) (fun u => (nonzeroLocus u).isOpen) (fun y _ => Set.mem_iUnion.2 (h y))`. Use `⟨F.card, Fin.cons s₀ (fun i => (F.equivFin.symm i : LB.Sec M)), top_unique fun y _ => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hy⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ y))`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨(F.equivFin ⟨u, hu⟩).succ, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.cons_succ, Equiv.symm_apply_apply]`.
+
+Conclude with `hy`.
+-/
 theorem exists_finite_cover [CompactSpace X] {M : LB X} (s₀ : LB.Sec M)
     (h : ∀ x, ∃ u : LB.Sec M, x ∈ nonzeroLocus u) :
     ∃ (m : ℕ) (u : Fin (m + 1) → LB.Sec M), ⨆ i, nonzeroLocus (u i) = ⊤ := by
@@ -78,6 +101,23 @@ theorem exists_finite_cover [CompactSpace X] {M : LB X} (s₀ : LB.Sec M)
 
 end General
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `: GeometricallyIntegral G.hom` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ inferInstance inferInstance`. Establish `hmax : (IsLocalRing.maximalIdeal V ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one]`. Use `infer_instance`.
+
+Use `letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal V ^ (0 + 1))`. Establish `: IsIntegral (pullback G.hom (thick V (IsLocalRing.maximalIdeal V) 0))` using `GeometricallyIntegral.geometrically_isIntegral (thick V (IsLocalRing.maximalIdeal V) 0) _ _ (IsPullback.of_hasPullback G.hom (thick V (IsLocalRing.maximalIdeal V) 0))`. Establish `h0 : ∀ σ : LB.Sec N, ∃ τ : LB.Sec N, DVR.SecIsMul G.hom (ϖ ^ (0 + 1)) σ τ` using `fun σ => (ThickDiv.main V ϖ hϖ G N σ 0).1 fun j => by`. Use `eq_zero_of_basicOpen_eq_bot (X := pullback G.hom (thick V (IsLocalRing.maximalIdeal V) 0)) _ (le_bot_iff.1 fun z hz => ?_)` and prove the remaining obligations. Set `p` to `pullback.fst G.hom (thick V (IsLocalRing.maximalIdeal V) 0)`.
+
+Establish `hz' : p z ∈ G.left.basicOpen (σ.f j)` using `(SetLike.ext_iff.1 (Scheme.preimage_basicOpen p (σ.f j)) z).2 hz`. Use `hcon σ (p z) (TopologicalSpace.Opens.mem_iSup.2 ⟨j, hz'⟩) ?_` and prove the remaining obligations. Establish `e : G.hom (p z) = thick V (IsLocalRing.maximalIdeal V) 0 (pullback.snd G.hom (thick V (IsLocalRing.maximalIdeal V) 0) z)` using `congrArg (fun q => q z) (pullback.condition (f := G.hom) (g := thick V (IsLocalRing.maximalIdeal V) 0))`. Rewrite using `[e]`. Use `PrimeSpectrum.ext ((IsLocalRing.maximalIdeal.isMaximal V).eq_of_le (PrimeSpectrum.isPrime _).ne_top fun a ha => ?_).symm` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ a ∈ PrimeSpectrum.asIdeal _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (by rwa [zero_add, pow_one])]`. Conclude with `zero_mem _`. Establish `h1 : ∀ (n : ℕ) (σ : LB.Sec N), ∃ τ : LB.Sec N, DVR.SecIsMul G.hom (ϖ ^ (n + 1)) σ τ`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact h0`. Consider the case `succ n ih`. Introduce `σ`. Take `⟨τ, hτ⟩` from `ih σ`.
+
+Take `⟨ρ, hρ⟩` from `h0 τ`. Use `⟨ρ, fun k => ?_⟩` and prove the remaining obligations. Establish `e₁ : σ.f k = AbLaw.cst G.hom _ (ϖ ^ (n + 1)) * τ.f k` using `hτ k`. Establish `e₂ : τ.f k = AbLaw.cst G.hom _ (ϖ ^ (0 + 1)) * ρ.f k` using `hρ k`. Express the relevant statement in the definitionally equal form `σ.f k = AbLaw.cst G.hom _ (ϖ ^ (n + 1 + 1)) * ρ.f k`.
+
+Rewrite using `[e₁, e₂, ← _root_.mul_assoc, ← map_mul, ← pow_add]`. Establish `h2 : ∀ k, s.f k = 0` using `(sec_eq_zero_and_hom_eq_of_thickenings V (IsLocalRing.maximalIdeal V) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge G).1 N hN s fun n => (ThickDiv.main V ϖ hϖ G N s n).2 (h1 n s)`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Rewrite `hk` using `[h2, Scheme.basicOpen_zero]`. Conclude with `hk`.
+-/
 theorem exists_mem_closed_fibre (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (G : Over (Spec (CommRingCat.of V))) [GrpObj G] (hG : IsAbelianScheme G) (N : LB G.left) (hN : N.IsLB)
     (s : LB.Sec N) (x : G.left) (hx : x ∈ nonzeroLocus s) :
@@ -134,6 +174,11 @@ theorem exists_mem_closed_fibre (V : Type) [CommRing V] [IsDomain V] [IsDiscrete
   rw [h2, Scheme.basicOpen_zero] at hk
   exact hk
 
+/- English proof (translation)
+Take `⟨O, h, hl⟩` from `IsLocalRing.exists_factor_valuationRing (algebraMap A (AlgebraicClosure (FractionRing A)))`. Use `⟨O, _, ?_, hl⟩` and prove the remaining obligations. Establish `inj : Function.Injective (algebraMap A (AlgebraicClosure (FractionRing A)))`. Rewrite using `[IsScalarTower.algebraMap_eq A (FractionRing A)]`. Conclude with `(algebraMap (FractionRing A) _).injective.comp (IsFractionRing.injective A _)`.
+
+Use `letI := ((algebraMap A (AlgebraicClosure (FractionRing A))).codRestrict O.toSubring h).toAlgebra`. Use `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (eq_bot_iff.2 ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨⟨a, ha⟩, e⟩`. Establish `e' : algebraMap A (AlgebraicClosure (FractionRing A)) a * x.1 = 0` using `congrArg Subtype.val e`. Conclude with `Subtype.ext ((mul_eq_zero.1 e').resolve_left ((map_ne_zero_iff _ inj).2 (nonZeroDivisors.ne_zero ha)))`.
+-/
 theorem exists_valuationRing (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsPrincipalIdealRing A] :
     ∃ (O : ValuationSubring (AlgebraicClosure (FractionRing A))) (g : A →+* O), g.Flat ∧ IsLocalHom g := by
   obtain ⟨O, h, hl⟩ := IsLocalRing.exists_factor_valuationRing (algebraMap A (AlgebraicClosure (FractionRing A)))
@@ -148,6 +193,31 @@ theorem exists_valuationRing (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A
   exact Subtype.ext ((mul_eq_zero.1 e').resolve_left
     ((map_ne_zero_iff _ inj).2 (nonZeroDivisors.ne_zero ha)))
 
+/- English proof (translation)
+Introduce `_ _ A _ _ _ _ _ B _ _ hB M h`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Establish `: CompactSpace B.left` using `QuasiCompact.compactSpace_of_compactSpace B.hom`.
+
+Establish `: QuasiSeparatedSpace B.left` using `quasiSeparatedSpace_of_quasiSeparated B.hom`. Establish `hL` using `M.L.isLB`. Take `⟨d, hd, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy _ _ _ (LB.isLB_pull hL _)).1 (h _ (jK A))`. Establish `hH` using `isLB_pw hL d`. Establish `h₁ : ∃ σ : LB.Sec (pw M.L.L d), ∃ x, x ∈ nonzeroLocus σ`.
+
+Establish `hσ : ∃ (σ : LB.Sec ((pw M.L.L d).pull (pullback.fst B.hom (jK A)))) (z : _), z ∈ nonzeroLocus σ`. Rewrite using `[GlobalTheory.TrivLocus.pull_pw]`. Establish `hz : (η[(Over.pullback (jK A)).obj B]).left (default : PrimeSpectrum (FractionRing A)) ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hs.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Conclude with `⟨s i, _, hi⟩`.
+
+Take `⟨σ, z, hz⟩` from `hσ`. Take `⟨u, hu⟩` from `exists_mem_of_flat (algebraMap A (FractionRing A)) (RingHom.flat_algebraMap_iff.2 inferInstance) (IsPullback.of_hasPullback B.hom (jK A)) hH σ hz`. Conclude with `⟨u, _, hu⟩`. Establish `h₂ : ∃ σ : LB.Sec (pw M.L.L d), ∃ x ∈ nonzeroLocus σ, B.hom x = IsLocalRing.closedPoint A`. Take `⟨σ, x, hx⟩` from `h₁`.
+
+Distinguish the cases in `hA : IsLocalRing.maximalIdeal A = ⊥`. Use `⟨σ, x, hx, PrimeSpectrum.ext (le_antisymm (IsLocalRing.le_maximalIdeal (PrimeSpectrum.isPrime _).ne_top) ?_)⟩` and prove the remaining obligations. Conclude with `hA.le.trans bot_le`. Establish `: IsDiscreteValuationRing A` using `{ not_a_field' := hA }`. Conclude with `exists_mem_closed_fibre A B hB _ hH σ x hx`.
+
+Take `⟨σ, x, hx, hxc⟩` from `h₂`. Take `⟨O, g, hg, hl⟩` from `exists_valuationRing A`. Set `t : Spec (CommRingCat.of O) ⟶ Spec (CommRingCat.of A)` to `Spec.map (CommRingCat.ofHom g)`. Set `π` to `pullback.fst B.hom t`. Establish `ht : Function.Surjective t`.
+
+Use `letI := g.toAlgebra`. Establish `: Module.Flat A O` using `hg`. Establish `: IsLocalHom (algebraMap A O)` using `hl`. Establish `: Module.FaithfullyFlat A O` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `PrimeSpectrum.comap_surjective_of_faithfullyFlat (A := A) (B := O)`.
+
+Establish `hB'` using `CubeGen.isAb_baseChange hB t`. Take `⟨_, _, c, -⟩` from `exists_isCPMap M (toBase_mul_pullback B t) _ (pull_isLB hL π) _ (pullIso_isGen hL π)`. Establish `cube : Triv (Theta ((Over.pullback t).obj B) ((pw M.L.L d).pull π))`. Rewrite using `[GlobalTheory.TrivLocus.pull_pw]`. Conclude with `triv_linComb_pw ⟨c.t, c.isGen⟩ d`.
+
+Take `⟨σ', hσ'⟩` from `exists_pull_mem σ π`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := B.hom) (g := t) x (IsLocalRing.closedPoint O) (hxc.trans (IsLocalRing.comap_closedPoint g).symm)`. Establish `hu` using `SquareGenerated.exists_secs_sq_generate O (AlgebraicClosure (FractionRing A)) _ hB' _ (LB.isLB_pull hH π) cube σ' ⟨z, hσ' z (by rw [← hz₁] at hx; exact hx), hz₂⟩`. Rewrite `hu` using `[← GlobalTheory.TrivLocus.pull_pw, pw_pw, show (d : ℤ) * 2 = ((d * 2 : ℕ) : ℤ) by push_cast; rfl]`. Take `⟨m, u, hu⟩` from `hu`.
+
+Establish `hH₂` using `isLB_pw hL ((d * 2 : ℕ) : ℤ)`. Establish `gen : ∀ y, ∃ v : LB.Sec (pw M.L.L ((d * 2 : ℕ) : ℤ)), y ∈ nonzeroLocus v` using `fun y => by`. Take `⟨q, hq⟩` from `ht (B.hom y)`. Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := B.hom) (g := t) y q hq.symm`. Establish `hw' : w ∈ ⨆ i, nonzeroLocus (u i)` using `by rw [hu]; trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hw'`. Rewrite using `[← hw]`. Conclude with `exists_mem_of_flat g hg (IsPullback.of_hasPullback B.hom t) hH₂ (u i) hi`. Take `⟨m', v, hv⟩` from `exists_finite_cover (gen x).choose gen`. Establish `aff` using `GlobalTheory.T.isAffineOpen_nonzeroLocus_of_fibrewise_ample A _ B.hom M.L.L (d * 2) m' v (by omega) hB.proper hL hv (fun q hq => ⟨q.ResidueField, inferInstance, algebraMap A _, Ideal.ker_algebraMap_residueField q, h _ _⟩)`.
+
+Take `⟨e, he, hw⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw_of_affine_loci A _ B.hom _ m' v hH₂ hv aff`. Rewrite `hw` using `[pw_pw, ← Nat.cast_mul]`. Conclude with `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy A B M.L.L hL).2 ⟨d * 2 * e, Nat.mul_pos (by omega) he, hw⟩`.
+-/
 theorem relAmple_of_fibres : Laws → Laws2 → ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsPrincipalIdealRing A], IsAdicComplete (IsLocalRing.maximalIdeal A) A → ∀ (B : Over (Spec (CommRingCat.of A))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ M : CP B, (∀ (k : Type) [Field k] (x : Spec (CommRingCat.of k) ⟶ Spec (CommRingCat.of A)), RelAmple ((Over.pullback x).obj B) (M.L.L.pull (pullback.fst B.hom x))) → RelAmple B M.L.L := by
   intro _ _ A _ _ _ _ _ B _ _ hB M h
   have := hB.smooth

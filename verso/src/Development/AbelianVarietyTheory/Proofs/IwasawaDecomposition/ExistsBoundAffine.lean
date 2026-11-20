@@ -15,6 +15,11 @@ open SmallSec
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Set `I : Ideal R` to `{ carrier := {a | ∃ b, ι a * h = ι b} add_mem' := fun ⟨b, hb⟩ ⟨c, hc⟩ => ⟨b + c, by rw [map_add, add_mul, hb, hc, map_add]⟩ zero_mem' := ⟨0, by simp⟩ smul_mem' := fun c _ ⟨b, hb⟩ => ⟨c * b, by rw [smul_eq_mul, map_mul, mul_assoc, hb, map_mul]⟩ }`. Take `⟨P, hP, hIP, hd⟩` from `Ideal.exists_le_prime_disjoint I ((nonZeroDivisors O).map ρ) (Set.disjoint_left.2 fun _ hI ⟨a, ha, e⟩ => hne ⟨a, nonZeroDivisors.ne_zero ha, e ▸ hI⟩)`. Take `⟨a, ha, hb⟩` from `hgen P hP (eq_bot_iff.2 fun a ha => by`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `Set.disjoint_left.1 hd ha ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩)`. Conclude with `ha (hIP hb)`.
+-/
 theorem exists_denom {O R K : Type} [CommRing O] [IsDomain O] [CommRing R] [CommRing K] (ρ : O →+* R) (ι : R →+* K)
     (h : K) (hgen : ∀ P : Ideal R, P.IsPrime → P.comap ρ = ⊥ → ∃ a ∉ P, ∃ b, ι a * h = ι b) :
     ∃ a : O, a ≠ 0 ∧ ∃ b, ι (ρ a) * h = ι b := by
@@ -31,6 +36,17 @@ theorem exists_denom {O R K : Type} [CommRing O] [IsDomain O] [CommRing R] [Comm
     exact Set.disjoint_left.1 hd ha ⟨a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩)
   exact ha (hIP hb)
 
+/- English proof (translation)
+Set `ρ` to `Spec.preimage (hW.fromSpec ≫ p)`. Establish `hρ : Spec.map ρ = hW.fromSpec ≫ p` using `Spec.map_preimage _`. Establish `hP (P : PrimeSpectrum Γ(X, W)) : (p (hW.fromSpec P)).asIdeal = P.asIdeal.comap ρ.hom` using `congrArg (fun q : Spec Γ(X, W) ⟶ Sp (𝓞 F) => (q P).asIdeal) hρ.symm`. Establish `hPW (P : PrimeSpectrum Γ(X, W)) : hW.fromSpec P ∈ W` using `hW.range_fromSpec.le ⟨P, rfl⟩`. Take `⟨a, ha, b, hab⟩` from `exists_denom ρ.hom (fnOf W (gen_mem hxW)) h fun P hPp hP0 => by`.
+
+Take `⟨c, rfl⟩` from `hgen _ (hPW ⟨P, hPp⟩) ((hP ⟨P, hPp⟩).trans hP0)`. Set `` to `X.presheaf.algebra_section_stalk (⟨_, hPW ⟨P, hPp⟩⟩ : W)`. Use `hW.isLocalization_stalk' ⟨P, hPp⟩ (hPW ⟨P, hPp⟩)` as an intermediate fact. Take `⟨⟨b, a⟩, e⟩` from `@IsLocalization.surj _ _ P.primeCompl _ _ _ this c`. Use `⟨a, a.2, b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_germ (hPW ⟨P, hPp⟩), ← algebraMap_germ (hPW ⟨P, hPp⟩), ← map_mul, mul_comm]`. Conclude with `congrArg _ e`. Use `⟨a, ha, fun v e yt hy hr hyt => ?_⟩` and prove the remaining obligations. Establish `h₁ : below (spMap e.O.subtype ≫ yt) ∈ W` using `hyt (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Establish `h₂` using `(Points.le_preimage_iff _ _).2 h₁`.
+
+Establish `h₃ : valAt (spMap e.O.subtype ≫ yt) (fnOf W (gen_mem hxW) (ρ.hom a)) = algebraMap F (AlgebraicClosure F) a`. Rewrite using `[valAt_fnOf h₁, Points.valR_eq _ _ h₂]`. Establish `h₄` using `Points.specMap_valMap_fromSpec hW _ h₂`. Rewrite `hy` using `[← h₄, Category.assoc, ← hρ, ← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun q => q.hom a) (Spec.map_injective hy)`.
+
+Rewrite using `[← e.w_alg, ← h₃, ← map_mul, ← valAt_mul (regAt_fnOf h₁ _ _) hr, hab, valAt_fnOf h₁, Points.valR_spMap_comp _ _ _ hyt]`. Conclude with `(e.mem_O _).1 (Subtype.coe_prop _)`.
+-/
 theorem exists_bound_affine {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 F)) {W : X.Opens} (hW : IsAffineOpen W)
     {x : X} (hxW : x ∈ W) (h : X.functionField) (hgen : ∀ z ∈ W, (p z).asIdeal = ⊥ → RegAt z h) :
     ∃ a : 𝓞 F, a ≠ 0 ∧ ∀ (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (yt : Sp e.O ⟶ X),
@@ -65,6 +81,13 @@ theorem exists_bound_affine {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp (𝓞 
     Points.valR_spMap_comp _ _ _ hyt]
   exact (e.mem_O _).1 (Subtype.coe_prop _)
 
+/- English proof (translation)
+Use `choose i hi using hU`. Use `choose W hW hxW hWU using fun x => Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (hi x)`. Use `choose a ha hb using fun x => exists_bound_affine p (hW x) (hxW x) (h (i x)) fun z hz => hgen _ z (hWU x hz)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (W x : Set X)) (fun x => (W x).isOpen) fun x _ => Set.mem_iUnion.2 ⟨x, hxW x⟩`. Use `⟨∏ x ∈ t, a x, Finset.prod_ne_zero_iff.2 fun x _ => ha x, fun v e yt hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, hm⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (yt (IsLocalRing.closedPoint e.O))))`. Establish `h₁` using `(Points.le_preimage_iff yt (W x)).2 hm`. Use `⟨i x, h₁.trans (Scheme.Hom.preimage_mono _ (hWU x)), fun hr => le_trans ?_ (hb x v e yt hy hr h₁)⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (e.w.nonneg _)` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem a hx`.
+
+Rewrite using `[hc, show ((a x * c : 𝓞 F) : F) = a x * c from map_mul (algebraMap (𝓞 F) F) _ _, map_mul]`. Conclude with `mul_le_of_le_one_right (AbsoluteValue.nonneg _ _) (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) c)`.
+-/
 theorem exists_bound {X : Scheme.{0}} [IsIntegral X] [CompactSpace X] (p : X ⟶ Sp (𝓞 F)) {ι : Type}
     (U : ι → X.Opens) (hU : ∀ x, ∃ i, x ∈ U i) (h : ι → X.functionField)
     (hgen : ∀ i, ∀ z ∈ U i, (p z).asIdeal = ⊥ → RegAt z (h i)) :
@@ -90,6 +113,11 @@ theorem exists_bound {X : Scheme.{0}} [IsIntegral X] [CompactSpace X] (p : X ⟶
   exact mul_le_of_le_one_right (AbsoluteValue.nonneg _ _)
     (v.adicAbv_coe_le_one (K := F) (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) c)
 
+/- English proof (translation)
+Establish `hu : A.D.IsEqn _ (eqn A.D (below y.1))` using `Base.isEqn_eqn _ _`. Establish `hw` using `unitAt_quot hu hg`. Establish `hb` using `((hu.nsmul τ).regularAt_iff).1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 hf _)`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Rewrite `hb` using `[Units.val_pow_eq_pow_val]`.
+
+Rewrite `hl` using `[Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val]`. Establish `h₁ : ((A.n * k : ℕ) : ℝ) * (τ * A.lg v e y / ((A.n : ℕ) : ℝ)) = τ * (k * A.lg v e y)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Adl.nrmFin, mul_pow, pow_mul, one_div, Real.rpow_inv_natCast_pow (e.w.nonneg _) A.n.ne_zero, ← Real.exp_nat_mul, h₁, hl, mul_sub, sub_eq_add_neg, Real.exp_add, Real.exp_nat_mul, Real.exp_log (e.w.pos (valAt_ne_zero hw)), mul_pow_eq _ (eqn A.D (below y.1)) g k τ, pow_mul _ τ k, ← …`.
+-/
 theorem nrmFin_pow {C : CxSt F} {Y : Var F} (A : Adl C Y) {k τ : ℕ} {f : Y.Fn} (hf : f ∈ A.secs τ)
     {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : AlgPt Y) {g : Y.Fnˣ} (hg : (k • A.D).IsEqn (below y.1) g) {c : ℝ}
     (hl : k * A.lg v e y =
@@ -111,6 +139,21 @@ theorem nrmFin_pow {C : CxSt F} {Y : Var F} (A : Adl C Y) {k τ : ℕ} {f : Y.Fn
     valAt_mul (regAt_pow hb _) (regAt_pow hw.regAt _), valAt_pow hw.regAt, valAt_pow hb, map_mul, map_pow, map_pow,
     mul_assoc]
 
+/- English proof (translation)
+Take `⟨_, r, hr, -, hfin⟩` from `hA`. Use `M.ar.isIntegral` as an intermediate fact. Use `isPreimmersion_j M` as an intermediate fact. Establish `: QuasiCompact M.p`. Take `⟨N, c, hc, h⟩` from `M.ar.isProjOver`.
+
+Use `isProper_str (𝓞 F) N` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Use `QuasiCompact.compactSpace_of_compactSpace M.p` as an intermediate fact. Establish `hη` using `j_gen_specializes M`.
+
+Use `choose t ht using fun i : L.B.ι => fnMap_surjective M.j hη ((f ^ (A.n : ℕ)) ^ (k : ℕ) * (r fun _ => i) ^ τ)`. Establish `hmem {x : Y.X} {i : L.B.ι} (h : M.j x ∈ L.B.U i) : x ∈ (L.B.pull M.j).U fun _ => i` using `Set.mem_iInter.2 fun _ => h`. Establish `hreg (x : Y.X) (i : L.B.ι) (h : M.j x ∈ L.B.U i) : RegAt (M.j x) (t i)`. Establish `hu : A.D.IsEqn _ (eqn A.D x)` using `Base.isEqn_eqn _ _`. Establish `hb` using `((hu.nsmul τ).regularAt_iff).1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 hf _)`.
+
+Rewrite `hb` using `[Units.val_pow_eq_pow_val]`. Rewrite using `[← regAt_fnMap_iff M.j hη, ht, ← regAt_iff hu (hr.isEqn _ x (hmem h)), pow_mul, ← mul_pow]`. Conclude with `regAt_pow hb _`. Take `⟨a, ha, hb⟩` from `exists_bound M.p L.B.U (exists_chart L.isLB) t fun i z hz h => by`. Take `⟨z, rfl⟩` from `mem_range_j M h`.
+
+Conclude with `hreg z i hz`. Use `⟨a, ha, fun v e y => ?_⟩` and prove the remaining obligations. Take `⟨yt, h⟩` from `exists_lift M e y`. Take `⟨i, hi, h₁⟩` from `hb v e yt (by rw [h, Category.assoc, M.pb.w, ← Category.assoc, y.2])`. Establish `h₂ : M.j (below y.1) ∈ L.B.U i`.
+
+Express the relevant statement in the definitionally equal form `below (y.1 ≫ M.j) ∈ _`. Rewrite using `[← h]`. Conclude with `hi (x := spMap e.O.subtype (IsLocalRing.closedPoint _)) trivial`. Rewrite `h₁` using `[h]`. Rewrite using `[nrmFin_pow A hf e y (hr.isEqn _ _ (hmem h₂)) (hfin v e y yt (fun _ => i) h hi), ← ht, valAt_fnMap _ _ _ (hreg _ i h₂), ← mul_assoc]`.
+
+Conclude with `mul_le_of_le_one_left (Real.exp_pos _).le (h₁ (hreg _ i h₂))`.
+-/
 theorem exists_pow_le {C : CxSt F} {Y : Var F} {A : Adl C Y} {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+}
     {cf : HeightOneSpectrum (𝓞 F) → ℝ} (hA : A.Induced M L k cf) {τ : ℕ} {f : Y.Fn} (hf : f ∈ A.secs τ) :
     ∃ a : 𝓞 F, a ≠ 0 ∧ ∀ v e y, NumberField.HeightOneSpectrum.adicAbv F v a * A.nrmFin v τ f e y ^ (A.n * k : ℕ) ≤
@@ -149,6 +192,15 @@ theorem exists_pow_le {C : CxSt F} {Y : Var F} {A : Adl C Y} {M : TrueGeo.Model 
     valAt_fnMap _ _ _ (hreg _ i h₂), ← mul_assoc]
   exact mul_le_of_le_one_left (Real.exp_pos _).le (h₁ (hreg _ i h₂))
 
+/- English proof (translation)
+Introduce `F _ _ C Y A ⟨M, L, k, cf, hA⟩ τ f hf`. Take `⟨a, ha, hb⟩` from `exists_pow_le hA hf`. Establish `hnk : (A.n * k : ℕ) ≠ 0` using `mul_ne_zero A.n.ne_zero k.ne_zero`. Use `⟨fun v => ⟨max 1 (Real.exp (-(τ * ((k : ℕ) * (A.n : ℕ) * cf v))) / NumberField.HeightOneSpectrum.adicAbv F v a), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨e, y⟩, rfl⟩`.
+
+Use `(le_total (A.nrmFin v τ f e y) 1).elim le_max_of_le_left fun h => le_max_of_le_right ?_` and prove the remaining obligations. Establish `h0 : 0 < NumberField.HeightOneSpectrum.adicAbv F v a` using `AbsoluteValue.pos _ (by simpa using ha)`. Conclude with `(le_self_pow₀ h hnk).trans ((le_div_iff₀' h0).2 (hb v e y))`. Use `((Ideal.finite_factors (I := Ideal.span {a}) (by simpa using ha)).union hA.1).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, y, h⟩`.
+
+Assume the negation of the conclusion as `hv`. Take `⟨h₁, h₂⟩` from `not_or.1 hv`. Establish `h₃ : cf v = 0` using `not_not.1 h₂`. Establish `h₄ : 1 ≤ NumberField.HeightOneSpectrum.adicAbv F v a` using `not_lt.1 fun h' => h₁ (Ideal.dvd_span_singleton.2 ((v.adicAbv_coe_lt_one_iff (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) a).1 h'))`. Establish `h₅` using `hb v e y`.
+
+Rewrite `h₅` using `[h₃, mul_zero, mul_zero, neg_zero, Real.exp_zero]`. Conclude with `h₅.not_gt (one_lt_mul_of_le_of_lt h₄ (one_lt_pow₀ h hnk))`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y), A.IsModel → ∀ τ : ℕ, ∀ f ∈ A.secs τ, (∀ v : HeightOneSpectrum (𝓞 F), BddAbove (Set.range fun q : Ext v × AlgPt Y => A.nrmFin v τ f q.1 q.2)) ∧ {v : HeightOneSpectrum (𝓞 F) | ∃ e y, 1 < A.nrmFin v τ f e y}.Finite := by
   intro F _ _ C Y A ⟨M, L, k, cf, hA⟩ τ f hf
   obtain ⟨a, ha, hb⟩ := exists_pow_le hA hf

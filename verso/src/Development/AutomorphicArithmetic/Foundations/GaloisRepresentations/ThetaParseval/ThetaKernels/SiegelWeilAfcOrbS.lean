@@ -14,17 +14,32 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Establish `h1 : (incM F X).map (cA σ) = incM F (X.map σ)` using `by ext i j; rfl`. Use `show (incM F X)ᵀ * incM F d.A.J * (incM F X).map (cA σ) = _`. Rewrite using `[h1]`. Simplify using `only [gE, incM, ← Matrix.transpose_map, ← Matrix.map_mul]`.
+-/
 theorem gram_incM_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (X : Matrix (Fin d.m) (Fin d.n) E) :
     d.gram (incM F X) (incM F X) = incM F (gE d.A.J σ X) := by
   have h1 : (incM F X).map (cA σ) = incM F (X.map σ) := by ext i j; rfl
   show (incM F X)ᵀ * incM F d.A.J * (incM F X).map (cA σ) = _
   rw [h1]
   simp only [gE, incM, ← Matrix.transpose_map, ← Matrix.map_mul]
+/- English proof (translation)
+Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Afc.gram_incM_k, ← Matrix.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem cond_iff_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (X : Matrix (Fin d.m) (Fin d.n) E) (M : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
     d.gram (incM F X) (incM F X) = (-2 : ℤ) • M ↔
       ∀ k l, inclR (F := F) (AF F) (gE d.A.J σ X k l) = (-2 : ℤ) • M k l := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.Afc.gram_incM_k, ← Matrix.ext_iff]
   rfl
+/- English proof (translation)
+Establish `hE : IsEmpty {X : Matrix (Fin d.m) (Fin d.n) E // d.gram (incM F X) (incM F X) = (-2 : ℤ) • T.1.1}`. Use `⟨fun ⟨X, hX⟩ => ?_⟩` and prove the remaining obligations. Rewrite `hX` using `[_root_.PositivityTheory.SiegelWeilFormula.Afc.gram_incM_k]`. Establish `hdet` using `congrArg Matrix.det hX`. Establish `h0 : (gE d.A.J σ X).det = 0`.
+
+Assume the negation of the conclusion as `h`. Establish `hu : IsUnit (gE d.A.J σ X)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 h)`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Establish `h2 : (gE d.A.J σ X).rank ≤ d.m`. Rewrite using `[gE, Matrix.mul_assoc]`.
+
+Conclude with `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_le_width _)`. Rewrite `h2` using `[h1, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hm : ((gE d.A.J σ X).map (inclR (F` using `F) (AF F))).det = inclR (F := F) (AF F) (gE d.A.J σ X).det := ((inclR (F := F) (AF F)).map_det _).symm`. Rewrite `hdet` using `[incM, hm, h0, map_zero, ← Int.cast_smul_eq_zsmul (AE F E), Matrix.det_smul, Fintype.card_fin]`.
+
+Conclude with `hT ((isUnit_neg_two_pow d.n).mul_right_eq_zero.1 hdet.symm)`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.orb, tsum_empty]`.
+-/
 theorem orb_zero_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (hmn : d.m < d.n) (T : nF σ d.Y d.b) (hT : IsND T) (Φ : d.Fn) : d.orb T Φ = 0 := by
   have hE : IsEmpty {X : Matrix (Fin d.m) (Fin d.n) E // d.gram (incM F X) (incM F X) = (-2 : ℤ) • T.1.1} := by
     refine ⟨fun ⟨X, hX⟩ => ?_⟩
@@ -47,25 +62,54 @@ theorem orb_zero_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (hmn 
 section Res
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 def extendByZeroColumns (X' : Matrix (Fin d.m) (Fin L.n) E) : Matrix (Fin d.m) (Fin d.n) E := fun a => Function.extend L.em (X' a) 0
+/- English proof (translation)
+The claim follows from `L.inj.extend_apply _ _ _`.
+-/
 theorem extendZeroColumn_apply_embed (X' : Matrix (Fin d.m) (Fin L.n) E) (a : Fin d.m) (j : Fin L.n) : _root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X' a (L.em j) = X' a j :=
   L.inj.extend_apply _ _ _
+/- English proof (translation)
+Introduce `h` and use `((L.rng L.i₀).2 h) rfl`.
+-/
 theorem not_mem_range_k : L.i₀ ∉ Set.range L.em := fun h => ((L.rng L.i₀).2 h) rfl
+/- English proof (translation)
+The claim follows from `Function.extend_apply' _ _ _ fun ⟨j, hj⟩ => _root_.PositivityTheory.SiegelWeilFormula.Afc.not_mem_range_k L ⟨j, hj⟩`.
+-/
 theorem extendZeroColumn_apply_missing (X' : Matrix (Fin d.m) (Fin L.n) E) (a : Fin d.m) : _root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X' a L.i₀ = 0 :=
   Function.extend_apply' _ _ _ fun ⟨j, hj⟩ => _root_.PositivityTheory.SiegelWeilFormula.Afc.not_mem_range_k L ⟨j, hj⟩
+/- English proof (translation)
+Distinguish the cases in `h : k = L.i₀`. Conclude with `Or.inl h`. Conclude with `Or.inr ((L.rng k).1 h)`.
+-/
 theorem cases_idx_k (k : Fin d.n) : k = L.i₀ ∨ ∃ j, L.em j = k := by
   by_cases h : k = L.i₀
   · exact Or.inl h
   · exact Or.inr ((L.rng k).1 h)
+/- English proof (translation)
+Simplify using `only [gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed]`.
+-/
 theorem hermForm_extendZeroColumn_embed (X' : Matrix (Fin d.m) (Fin L.n) E) (i j : Fin L.n) :
     gE d.A.J σ (_root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X') (L.em i) (L.em j) = gE d.A.J σ X' i j := by
   simp only [gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed]
+/- English proof (translation)
+Simplify using `[gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing]`.
+-/
 theorem hermForm_extendZeroColumn_left (X' : Matrix (Fin d.m) (Fin L.n) E) (l : Fin d.n) : gE d.A.J σ (_root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X') L.i₀ l = 0 := by
   simp [gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing]
+/- English proof (translation)
+Simplify using `[gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing]`.
+-/
 theorem hermForm_extendZeroColumn_right (X' : Matrix (Fin d.m) (Fin L.n) E) (k : Fin d.n) : gE d.A.J σ (_root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X') k L.i₀ = 0 := by
   simp [gE_apply, _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing]
+/- English proof (translation)
+Simplify using `only [gE_apply, Matrix.submatrix_apply, id]`.
+-/
 theorem gE_sub_k (X : Matrix (Fin d.m) (Fin d.n) E) (i j : Fin L.n) :
     gE d.A.J σ (X.submatrix id L.em) i j = gE d.A.J σ X (L.em i) (L.em j) := by
   simp only [gE_apply, Matrix.submatrix_apply, id]
+/- English proof (translation)
+Establish `hA : Aniso σ d.A.J` using `_root_.GlobalTheory.ThK.Dbl.aniso_of_k d.ok.good (d.ok.sign.elim (fun h => Or.inl h.1) fun h => Or.inr h.1) d.ok.aniso`. Establish `key` using `hA (fun i => X i L.i₀) (by`. Rewrite using `[← h, gE_apply]`. Simplify using `only [form, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Conclude with `congrFun key a`.
+-/
 theorem col_zero_k (X : Matrix (Fin d.m) (Fin d.n) E) (h : gE d.A.J σ X L.i₀ L.i₀ = 0) (a : Fin d.m) : X a L.i₀ = 0 := by
   have hA : Aniso σ d.A.J := _root_.GlobalTheory.ThK.Dbl.aniso_of_k d.ok.good (d.ok.sign.elim (fun h => Or.inl h.1) fun h => Or.inr h.1) d.ok.aniso
   have key := hA (fun i => X i L.i₀) (by
@@ -75,11 +119,17 @@ theorem col_zero_k (X : Matrix (Fin d.m) (Fin d.n) E) (h : gE d.A.J σ X L.i₀ 
     refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_
     ring)
   exact congrFun key a
+/- English proof (translation)
+Use extensionality with `a k`. Break down `_root_.PositivityTheory.SiegelWeilFormula.Afc.cases_idx_k L k with rfl | ⟨j, rfl⟩` into its components or cases. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing, h]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed]`. Both sides reduce to the same expression.
+-/
 theorem extension_by_zero_submatrix (X : Matrix (Fin d.m) (Fin d.n) E) (h : ∀ a, X a L.i₀ = 0) : _root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L (X.submatrix id L.em) = X := by
   ext a k
   rcases _root_.PositivityTheory.SiegelWeilFormula.Afc.cases_idx_k L k with rfl | ⟨j, rfl⟩
   · rw [_root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_missing, h]
   · rw [_root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed]; rfl
+/- English proof (translation)
+Use extensionality with `a j`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed L X' a j`.
+-/
 theorem submatrix_extendZeroColumn (X' : Matrix (Fin d.m) (Fin L.n) E) : (_root_.PositivityTheory.SiegelWeilFormula.Afc.extendByZeroColumns L X').submatrix id L.em = X' := by
   ext a j
   exact _root_.PositivityTheory.SiegelWeilFormula.Afc.extendZeroColumn_apply_embed L X' a j
@@ -109,6 +159,13 @@ def eqv_k (T : nF σ d.Y d.b) (T' : nF σ L.Y L.b) (hs : L.IsSub T T') :
     rw [(hs.1 L.i₀).1, smul_zero] at h
     exact kfour.inclR_injective (h.trans (map_zero _).symm)
   right_inv X' := Subtype.ext (_root_.PositivityTheory.SiegelWeilFormula.Afc.submatrix_extendZeroColumn L X'.1)
+/- English proof (translation)
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.orb`. Use `congrArg (fun f : UA σ d.A.J → ℂ => ⨍ g in d.D, f g ∂d.μ) (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[← (_root_.PositivityTheory.SiegelWeilFormula.Afc.eqv_k L T T' hs).tsum_eq]`. Use `tsum_congr fun X => ?_` and prove the remaining obligations. Establish `hc : ∀ a, X.1 a L.i₀ = 0` using `_root_.PositivityTheory.SiegelWeilFormula.Afc.col_zero_k L X.1 (by`.
+
+Establish `h` using `(_root_.PositivityTheory.SiegelWeilFormula.Afc.cond_iff_k d _ _).1 X.2 L.i₀ L.i₀`. Rewrite `h` using `[(hs.1 L.i₀).1, smul_zero]`. Conclude with `kfour.inclR_injective (h.trans (map_zero _).symm))`. Establish `hz : ∀ a, (mat g⁻¹ * incM F X.1) a L.i₀ = 0` using `fun a => by`. Simplify using `[Matrix.mul_apply, incM, hc]`.
+
+Rewrite using `[← hr.2 _ hz]`. Use `congr 1`.
+-/
 theorem orb_res_k (T : nF σ d.Y d.b) (T' : nF σ L.Y L.b) (hs : L.IsSub T T') (Φ : d.Fn) (Φ' : L.sd.Fn)
     (hr : L.IsRes Φ Φ') : d.orb T Φ = L.sd.orb T' Φ' := by
   unfold _root_.PositivityTheory.SiegelWeilFormula.SD_k.orb
@@ -124,6 +181,9 @@ theorem orb_res_k (T : nF σ d.Y d.b) (T' : nF σ L.Y L.b) (hs : L.IsSub T T') (
   rw [← hr.2 _ hz]
   congr 1
 end Res
+/- English proof (translation)
+Introduce `_F _E _ _ _ _ _ _σ d` and use `⟨fun hmn T hT Φ => _root_.PositivityTheory.SiegelWeilFormula.Afc.orb_zero_k d hmn T hT Φ, fun L T T' hs Φ Φ' hr => _root_.PositivityTheory.SiegelWeilFormula.Afc.orb_res_k L T T' hs Φ Φ' hr⟩`.
+-/
 theorem orbRes_k : _root_.PositivityTheory.SiegelWeilFormula.OrbRes_k := fun _F _E _ _ _ _ _ _σ d =>
   ⟨fun hmn T hT Φ => _root_.PositivityTheory.SiegelWeilFormula.Afc.orb_zero_k d hmn T hT Φ, fun L T T' hs Φ Φ' hr => _root_.PositivityTheory.SiegelWeilFormula.Afc.orb_res_k L T T' hs Φ Φ' hr⟩
 end PositivityTheory.SiegelWeilFormula.Afc

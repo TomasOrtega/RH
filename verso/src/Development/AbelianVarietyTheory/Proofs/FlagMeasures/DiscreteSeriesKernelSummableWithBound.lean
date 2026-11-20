@@ -14,6 +14,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (rkR ε) with h0 | hq` into its components or cases. Simplify using `[GlobalTheory.Count.Majorant.dOp_eq_zero ε h0 g, decE]`. Take `⟨ha, hb, -⟩` from `shell_sum_majorant n (rkR ε) h hn hq hh`. Establish `hp : 0 ≤ dOp (uMat g)` using `((GlobalTheory.Count.Cartan.cartan_distances n ε).2.1 g g hn).1`. Use `(ha (Set.mem_Ici.2 (Nat.cast_nonneg _)) (Set.mem_Ici.2 hp) (Nat.floor_le hp)).trans ?_` and prove the remaining obligations.
+
+Use `(hb _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem decE_dOp_le_floor {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (h : ℝ)
     (hh : 32 * (n : ℝ) ^ 2 * Real.sqrt (rkR ε) ≤ h) (g : UJ ε) :
     decE (rkR ε) h (dOp (uMat g)) ≤ Real.exp (-(2 * (2 * (n : ℝ) ^ 2) * (⌊dOp (uMat g)⌋₊ : ℝ))) := by
@@ -26,6 +31,11 @@ theorem decE_dOp_le_floor {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (h : �
     congr 2
     ring
 
+/- English proof (translation)
+Take `⟨-, he0, he, -⟩` from `GlobalTheory.rowsAut_idem_elementary B`. Establish `hd0 : 0 ≤ ∏ v, d v` using `Finset.prod_nonneg fun v _ => (hd v).2.2.2.1.le`. Establish `h1 : ‖∏ v, ⟪B.w v, B.σ v (uMat (g.1 v)) (B.w v)⟫_ℂ‖ ≤ ∏ v, Real.exp (-(2 * (2 * (B.I.n : ℝ) ^ 2) * (⌊dOp (uMat (g.1 v))⌋₊ : ℝ)))`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => (hl v _).trans (decE_dOp_le_floor hn _ h (hb v) _)`.
+
+Unfold `phe ph`. Rewrite using `[norm_mul, norm_mul, norm_star, Complex.norm_real, Real.norm_of_nonneg hd0, mul_assoc, mul_assoc, mul_comm (B.e 1).re]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h1 (he _) (norm_nonneg _) ((norm_nonneg _).trans h1)) hd0`.
+-/
 theorem norm_phe_le_floor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ) (hd : IsDSData B d)
     (hn : 1 ≤ B.I.n) (hl : LocDec B h) (hb : HBig B 32 h) (g : B.I.GA) :
     ‖phe B d g‖ ≤ ((∏ v, d v) * (B.e 1).re) *
@@ -42,6 +52,21 @@ theorem norm_phe_le_floor (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : �
     mul_comm (B.e 1).re]
   exact mul_le_mul_of_nonneg_left (mul_le_mul h1 (he _) (norm_nonneg _) ((norm_nonneg _).trans h1)) hd0
 
+/- English proof (translation)
+Introduce `B d h hd hn hl hb x y`. Take `⟨-, he0, -, -⟩` from `GlobalTheory.rowsAut_idem_elementary B`. Establish `hd0 : 0 ≤ ∏ v, d v` using `Finset.prod_nonneg fun v _ => (hd v).2.2.2.1.le`. Establish `ht` using `(GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties B.I hn).1`. Establish `hx` using `ht x`.
+
+Establish `hy` using `ht y`. Establish `hn' : (1 : ℝ) ≤ B.I.n` using `by exact_mod_cast hn`. Establish `ha : (1 : ℝ) ≤ 2 * (B.I.n : ℝ) ^ 2` using `by nlinarith`. Establish `hexp : (2 : ℝ) ≤ Real.exp (2 * (B.I.n : ℝ) ^ 2)`. Use `Real.add_one_le_exp (2 * (B.I.n : ℝ) ^ 2)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 0 ≤ (3 * Real.sqrt B.I.n / (tau1 B.I x * tau1 B.I y)) ^ (2 * B.I.n ^ 2 * B.I.f)` using `by positivity`. Establish `hc : 0 ≤ (∏ v, d v) * (B.e 1).re` using `mul_nonneg hd0 he0`. Take `⟨hs, hle⟩` from `GlobalTheory.summable_and_tsum_le_of_box_count (InfinitePlace B.I.F) B.I.GFset (fun γ v => dOp (uMat ((x⁻¹ * γ.1 * y).1 v))) (fun γ => ‖phe B d (x⁻¹ * γ.1 * y)‖) (2 * (B.I.n : ℝ) ^ 2) _ _ hA hc (by rw [Real.exp_neg, one_div]; exact inv_anti₀ two_pos hexp) (fun γ v => ((GlobalTheo …`. Introduce `r hr`.
+
+Take `⟨hf, hcnt⟩` from `GlobalTheory.T.count_rational_elements_bounded_distance B.I x y r hn hr`. Establish `hsub : Subtype.val '' {γ : B.I.GFset | ‖phe B d (x⁻¹ * γ.1 * y)‖ ≠ 0 ∧ ∀ v, dOp (uMat ((x⁻¹ * γ.1 * y).1 v)) ≤ r v} ⊆ {γ ∈ B.I.GFset | (x⁻¹ * γ * y).2 ∈ B.I.Kset ∧ ∀ v, dOp (uMat ((x⁻¹ * γ * y).1 v)) ≤ r v}`. Introduce and unpack `_ ⟨γ, ⟨h1, h2⟩, rfl⟩`. Use `⟨γ.2, B.e_adm.2.2.2.2.1 _ fun h0 => h1 ?_, h2⟩` and prove the remaining obligations. Unfold `phe`.
+
+Rewrite using `[h0, mul_zero, norm_zero]`. Use `⟨Set.Finite.of_finite_image (hf.subset hsub) Subtype.val_injective.injOn, le_trans ?_ hcnt⟩` and prove the remaining obligations. Rewrite using `[← Set.ncard_image_of_injective _ Subtype.val_injective]`. Conclude with `Set.ncard_le_ncard hsub hf)` after adjusting the coercions. Use `⟨hs, hle.trans ?_⟩` and prove the remaining obligations.
+
+Establish `hcard : Fintype.card (InfinitePlace B.I.F) ≤ B.I.f`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank B.I.F`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces B.I.F`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+
+Use `(mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (by linarith) hcard) (mul_nonneg hc hA)).trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `kerC`. Rewrite using `[div_eq_mul_inv, mul_pow (3 * Real.sqrt B.I.n)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernel_abs_bound : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → 1 ≤ B.I.n → LocDec B h → HBig B 32 h → ∀ x y : B.I.GA, Summable (fun γ : B.I.GFset => ‖phe B d (x⁻¹ * γ.1 * y)‖) ∧ ∑' γ : B.I.GFset, ‖phe B d (x⁻¹ * γ.1 * y)‖ ≤ kerC B d * (tau1 B.I x * tau1 B.I y)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) := by
   intro B d h hd hn hl hb x y
   obtain ⟨-, he0, -, -⟩ := GlobalTheory.rowsAut_idem_elementary B

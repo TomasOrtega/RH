@@ -17,6 +17,11 @@ attribute [local instance] GlobalTheory.TypeRec.factG
 
 namespace GlobalTheory.SerSys.Assembly
 
+/- English proof (translation)
+Introduce `hPr hG hZ hDZ hL D P L hLT hκ hCen`. Take `⟨I⟩` from `GlobalTheory.TypeIdent.nonempty_ident D`. Take `⟨rc, hrc, hcl⟩` from `GlobalTheory.TypeRec.exists_isRc_isClassMap hL D P.T I`. Use `GlobalTheory.SerSys.Bridge.serLoc_of_ties D L rc hG hLT (GlobalTheory.T.inertiaInvariantUnderUnramifiedTwist_of_weilDeligne D P.T) (GlobalTheory.T.local_compatibility_of_class_maps hPr hL D P I rc hrc hcl hCen) (GlobalTheory.T.tame_support_compatible hZ hL D P.T I rc hrc) (fun k …` and prove the remaining obligations. Introduce `k v`.
+
+Take `⟨κ, hκ'⟩` from `hκ k v`. Conclude with `GlobalTheory.TameRecord.tameParam_record hDZ hL D P.T I rc hrc L k v κ hκ'`.
+-/
 theorem serLoc_concrete : GlobalTheory.NRows.Hypotheses₂ → Green → GlobalTheory.Published.ZelevinskyPolynomialRing →
     GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : GlobalTheory.NPin.Pin hL D)
     (L : ∀ k, LabelDatum (D.host.g k)), LabTie D L →

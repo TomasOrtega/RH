@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 abbrev KapI : Type := ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) → (Fin n' → ℤ) → ℝ
 
+/- English proof (translation)
+Distinguish the cases in `hs : p ∈ D.host.small`. Establish `h : D.host.cls p = PrimeClass.ram2` using `if_pos hs`. Introduce and unpack `(h' | h')`. Conclude with `PrimeClass.noConfusion (h.symm.trans h')`. Conclude with `PrimeClass.noConfusion (h.symm.trans h')`.
+
+Establish `h : D.host.cls p = PrimeClass.splitK`. Unfold `Host.cls primeClass`. Rewrite using `[if_neg hs, if_neg hq, if_neg hd, if_pos hj]`. Introduce and unpack `(h' | h')`. Establish `h'' : D.host.cls p = PrimeClass.inertClass` using `h'`.
+
+Rewrite `h''` using `[h]`. Conclude with `PrimeClass.noConfusion h''`. Establish `h'' : D.host.cls p = PrimeClass.signal` using `h'`. Rewrite `h''` using `[h]`. Conclude with `PrimeClass.noConfusion h''`.
+-/
 theorem not_inert_of_jacobi (D : D7) (p : ℕ) (h2 : p ≠ 2) (hq : p ≠ D.host.q) (hd : p ≠ D.host.d)
     (hj : jacobiSym (-(D.host.d : ℤ)) p = 1) : ¬ (G.IsResidueClassZero D p ∨ G.IsSg D p) := by
   by_cases hs : p ∈ D.host.small
@@ -76,30 +83,57 @@ def latHyp : LatHyp gatT (H.Gx K Cr Λ) := latHypOf gatT (H.Gx K Cr Λ) (H.posL 
 
 def Gy : G.LatInst D := { (H.latHyp K Cr Λ).latInst with Vram := Λ.Vram }
 
+/- English proof (translation)
+The claim follows from `tieL_supp_sat L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu w h`.
+-/
 theorem supp_sat (w : D.what₂.places.Pl) (h : ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ (H.L K Cr Λ).sc.X'' D.R.n) :
     w ∈ (H.L K Cr Λ).supp :=
   tieL_supp_sat L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu w h
 
+/- English proof (translation)
+The claim follows from `(mem_tieSupp L0 w).2 (H.htw w h)`.
+-/
 theorem tw_supp (w : D.what₂.places.Pl) (h : D.what₂.muAt w ≠ D.what₂.mu0) : w ∈ (H.L K Cr Λ).supp :=
   (mem_tieSupp L0 w).2 (H.htw w h)
 
+/- English proof (translation)
+The claim follows from `tieL_fills L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu (instW_fill L0 kapI ep) w`.
+-/
 theorem fills (w : D.what₂.places.Pl) : G.ParametersFill (H.Gx K Cr Λ) K w :=
   tieL_fills L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu (instW_fill L0 kapI ep) w
 
+/- English proof (translation)
+The claim follows from `sizeDataLat_of_Vram_bot _ _ _ (fun _ _ _ => rfl) (fun _ _ => rfl) w`.
+-/
 theorem lats_zero (w : D.what₂.places.Pl) :
     G.LatticeLengthsAtPlace (H.Gx K Cr (LatIn.zero D)) (H.Gy K Cr (LatIn.zero D)) K w :=
   sizeDataLat_of_Vram_bot _ _ _ (fun _ _ _ => rfl) (fun _ _ => rfl) w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lenMN_eq : (H.L K Cr Λ).lenMN = Λ.len := rfl
 
+/- English proof (translation)
+The claim follows from `(H.latHyp K Cr Λ).latTied (instW_fill L0 kapI ep)`.
+-/
 theorem latTied : G.LatTied gatT (H.Gx K Cr Λ) (H.Gy K Cr Λ) := (H.latHyp K Cr Λ).latTied (instW_fill L0 kapI ep)
 
+/- English proof (translation)
+The claim follows from `tieL_drop_iff L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu p`.
+-/
 theorem drop_iff (p : ℕ) :
     p ∈ (H.L K Cr Λ).drop ↔ NoGain (H.Gx K Cr Λ) K Cr p ∧ ∀ u, p ≠ (D.mem u).A.T :=
   tieL_drop_iff L0 (instW L0 kapI ep) K Cr Λ.len H.hw H.hg H.hu p
 
+/- English proof (translation)
+The claim follows from `tie_FDef L0 (instW L0 kapI ep) K _ Λ.len H.hw H.hg H.hu`.
+-/
 theorem L_FDef : (H.L K Cr Λ).FDef := tie_FDef L0 (instW L0 kapI ep) K _ Λ.len H.hw H.hg H.hu
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 theorem L_keeps : (H.L K Cr Λ).sc = L0.sc ∧ (H.L K Cr Λ).aT = L0.aT ∧ (H.L K Cr Λ).bT = L0.bT ∧ (H.L K Cr Λ).etaSz = L0.etaSz ∧
     (H.L K Cr Λ).Sc = L0.Sc ∧ (H.L K Cr Λ).Cc = L0.Cc ∧ (H.L K Cr Λ).Ct = L0.Ct ∧ (H.L K Cr Λ).CGam = L0.CGam ∧
     (H.L K Cr Λ).de2 = L0.de2 ∧ (H.L K Cr Λ).j0 = L0.j0 ∧ (H.L K Cr Λ).E = L0.E ∧ (H.L K Cr Λ).NuLat = L0.NuLat ∧
@@ -110,6 +144,9 @@ theorem L_keeps : (H.L K Cr Λ).sc = L0.sc ∧ (H.L K Cr Λ).aT = L0.aT ∧ (H.L
 
 end TieHyp
 
+/- English proof (translation)
+Rewrite using `[bsC_val, ZMod.val_natCast, ZMod.val_natCast]`.
+-/
 theorem bsC_natCast_val (N : ℕ) [NeZero N] (h t : ℕ) :
     (bsC (h : ZMod N) (t : ZMod N)).val = bsVal N (h % N) (t % N) := by
   rw [bsC_val, ZMod.val_natCast, ZMod.val_natCast]
@@ -120,6 +157,9 @@ def offShd (R : Ranks) (TTn : Finset ℕ) (sc : Scale) (offS : ℕ → ℕ → �
   if j ∈ Finset.Icc 1 R.m then offS j (t % R.n)
   else if t % R.n ∈ TTn then sc.b' / sc.x else sc.w'' R.n
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h => Finset.mem_image_of_mem _ h`. Introduce `h`. Take `⟨s, hs, hst⟩` from `Finset.mem_image.1 h`. Conclude with `(Formalism.HC.Frame.A.val_injective _ hst) ▸ hs`.
+-/
 theorem mem_TT_iff_image {D : D7} (t : G.HH D) : t ∈ D.host.TT ↔ t.val ∈ D.host.TT.image Formalism.HC.Frame.A.val := by
   constructor
   · exact fun h => Finset.mem_image_of_mem _ h
@@ -127,6 +167,15 @@ theorem mem_TT_iff_image {D : D7} (t : G.HH D) : t ∈ D.host.TT ↔ t.val ∈ D
     obtain ⟨s, hs, hst⟩ := Finset.mem_image.1 h
     exact (Formalism.HC.Frame.A.val_injective _ hst) ▸ hs
 
+/- English proof (translation)
+Unfold `offW offShd`. Establish `hv : (D.R.ofNat t).val = t % D.R.n` using `D.R.val_ofNat t`. Distinguish the cases in `hj : j ∈ SizeData₂.lifts D`. Establish `hj' : j ∈ Finset.Icc 1 D.R.m` using `hj`. Rewrite using `[if_pos hj, if_pos hj', ← hv, ← hS j hj]`.
+
+Distinguish the cases in `h : (D.R.ofNat t) ∈ D.host.TT`. Rewrite using `[if_pos ⟨rfl, h⟩]`. Rewrite using `[if_neg (fun h' => h h'.2)]`. Establish `e : G.bL L (D.R.ofNat t) = 0` using `by unfold G.bL; rw [dif_neg h]`. Rewrite using `[e, Int.cast_zero]`.
+
+Establish `hj' : j ∉ Finset.Icc 1 D.R.m` using `hj`. Rewrite using `[if_neg hj, if_neg hj']`. Unfold `offC`. Establish `h2 : ¬ G.IsThickPl D (false, (D.R.ofNat t))` using `fun h => Bool.noConfusion h.1`. Rewrite using `[if_neg h2, ← hv]`.
+
+Distinguish the cases in `h : (D.R.ofNat t) ∈ D.host.TT`. Rewrite using `[if_pos (show G.IsTopPl D (false, (D.R.ofNat t)) from ⟨rfl, h⟩), if_pos ((mem_TT_iff_image _).1 h)]`. Rewrite using `[if_neg (fun h' : G.IsTopPl D (false, (D.R.ofNat t)) => h h'.2), if_neg (fun h' => h ((mem_TT_iff_image _).2 h'))]`.
+-/
 theorem offW_false_shd {D : D7} (L : SizeData₂ D) (offS : ℕ → ℕ → ℝ)
     (hS : ∀ j ∈ SizeData₂.lifts D, ∀ t : G.HH D, wj D j (tauOf D (false, t)) - (G.bL L t : ℝ) = offS j t.val)
     (j t : ℕ) :
@@ -151,6 +200,11 @@ theorem offW_false_shd {D : D7} (L : SizeData₂ D) (offS : ℕ → ℕ → ℝ)
     · rw [if_neg (fun h' : G.IsTopPl D (false, (D.R.ofNat t)) => h h'.2),
         if_neg (fun h' => h ((mem_TT_iff_image _).2 h'))]
 
+/- English proof (translation)
+Use `allOf_eq _ _ hR hTT hT2 hu0 hcls hhP hsc hSc heta ?_ ?_ rfl rfl haT hbT` and prove the remaining obligations. Introduce `h t h' t' hh ht`. Conclude with `bsA_val_eq (congrArg Ranks.toFrame hR) h t h' t' hh ht`. Introduce `j c t t' ht`. Consider the cases of `c`.
+
+Use `offW_false_eq L L' hR hTT hsc j t t' ht (fun h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[hwj j h1 h2 false t t' ht]`. Establish `e : G.bL L t = G.bL L' t'` using `extension_by_zero_val_eq (congrArg Ranks.toFrame hR) hTT _ _ hbT t t' ht`. Rewrite using `[e]`. Conclude with `offW_true_eq L L' hR hTT hT2 hu0 hsc j t t' ht (fun h1 h2 => hwj j h1 h2 true t t' ht)`.
+-/
 theorem allOf_instW_eq {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (kapI : KapI) (ep : ℕ → ℕ)
     (hR : D.R = D'.R) (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val)
     (hT2 : D.host.T2 = D'.host.T2) (hu0 : D.host.u0.val = D'.host.u0.val)
@@ -175,6 +229,9 @@ theorem allOf_instW_eq {D D' : D7} (L : SizeData₂ D) (L' : SizeData₂ D') (ka
       rw [e]
     · exact offW_true_eq L L' hR hTT hT2 hu0 hsc j t t' ht (fun h1 h2 => hwj j h1 h2 true t t' ht)
 
+/- English proof (translation)
+Establish `h` using `tie_invariance L0 L0' (instW L0 kapI ep) (instW L0' kapI ep) K {p | NoGain (instW L0 kapI ep) K Cr p} {p | NoGain (instW L0' kapI ep) K Cr p} Λ.len Λ'.len H.hw H'.hw H.hg H'.hg H.hu H'.hu hA`. Establish `hX : L0.sc.X'' D.R.n = L0'.sc.X'' D'.R.n` using `congrArg GAll.Xpp hA`. Use `⟨h.1, fun p hp => ⟨(h.2 p hp).1, (h.2 p hp).2.1, fun hle => (h.2 p hp).2.2 ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨fun _ => Or.inl hle, fun _ => Or.inl (hX ▸ hle)⟩`.
+-/
 theorem tieHyp_sameButT {D D' : D7} {gatT : GatTies D} {gatT' : GatTies D'} {L0 : SizeData₂ D} {L0' : SizeData₂ D'}
     {kapI : KapI} {ep : ℕ → ℕ} (H : TieHyp gatT L0 kapI ep) (H' : TieHyp gatT' L0' kapI ep) (K : G.Consts) (Cr : ℝ)
     (Λ : LatIn D) (Λ' : LatIn D') (hA : allOf (instW L0 kapI ep) = allOf (instW L0' kapI ep)) :

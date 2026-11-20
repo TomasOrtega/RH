@@ -118,10 +118,18 @@ def HostTie : Prop :=
 
 variable {N s Pr} in
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+-/
 theorem HostTie.host_heq (h : HostTie N s Pr) : HEq N.H D.host.toHostAx := h.2.2.2.2.2.2.2.2.2.2.2.2.2.2
 
 variable {N s Pr} in
 
+/- English proof (translation)
+Establish `hH` using `h.host_heq`. Establish `hR` using `h.1`. Take `⟨R, sc, H, g, gp, TT, Del, h0, hc⟩` from `N`. Simplify using `only at hR hH`. Substitute `hR` using the available equality.
+
+Take `rfl` from `eq_of_heq hH`. Both sides reduce to the same expression.
+-/
 theorem HostTie.rd_eq (h : HostTie N s Pr) : N.rd = D.host.rdE := by
   have hH := h.host_heq
   have hR := h.1
@@ -133,6 +141,11 @@ theorem HostTie.rd_eq (h : HostTie N s Pr) : N.rd = D.host.rdE := by
 
 variable {N s Pr} in
 
+/- English proof (translation)
+Establish `hH` using `h.host_heq`. Establish `hR` using `h.1`. Take `⟨R, sc, H, g, gp, TT, Del, h0, hc⟩` from `N`. Simplify using `only at hR hH`. Substitute `hR` using the available equality.
+
+Take `rfl` from `eq_of_heq hH`. Both sides reduce to the same expression.
+-/
 theorem HostTie.cond_eq (h : HostTie N s Pr) : N.cond = D.host.condN := by
   have hH := h.host_heq
   have hR := h.1
@@ -144,6 +157,9 @@ theorem HostTie.cond_eq (h : HostTie N s Pr) : N.cond = D.host.condN := by
 
 variable {N s Pr} in
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.1.trans h.cond_eq`.
+-/
 theorem HostTie.pr_cond (h : HostTie N s Pr) : Pr.cond = D.host.condN :=
   h.2.2.2.2.2.2.2.2.2.2.2.1.trans h.cond_eq
 
@@ -216,6 +232,9 @@ def ColumnNormsWith (CK C : ℝ) : Prop :=
 
 def ColumnNorms : Prop := ∃ CK C : ℝ, 0 ≤ CK ∧ 0 ≤ C ∧ ColumnNormsWith CK C
 
+/- English proof (translation)
+Introduce `φ` and use `(h φ).trans (mul_le_mul_of_nonneg_right (Real.exp_le_exp.2 ht) (hpos φ))`.
+-/
 theorem StepBound_sq.mono {K : Type} [Field K] [NumberField K] [StarRing K] {Q : KerChain K} {i : ℕ} {v : InfinitePlace K}
     {t t' : ℝ} (h : StepBound_sq Q i v t) (ht : t ≤ t') (hpos : ∀ φ, 0 ≤ (famIpAt (Q.F i) (Q.hF i) v φ φ).re) :
     StepBound_sq Q i v t' := fun φ =>

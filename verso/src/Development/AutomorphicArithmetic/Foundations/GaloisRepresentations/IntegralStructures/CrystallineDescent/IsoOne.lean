@@ -11,6 +11,13 @@ open UpperTheory.V.Af (FrobEig algSat RepIso)
 open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ ι a r r' hr hr' hs hs' hev`. Rewrite `hev` using `[Filter.eventually_cofinite]`. Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := F) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hev`. Use `GlobalTheory.SplitAttUniq.repIso_of_dense r r' hr hr' hs hs' _ (hD.preimage (Homeomorph.inv (G F Ω)).isOpenMap) ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨v, hv, hdeg, B, hB, hfr⟩` from `hg`. Establish `hprime : Nat.Prime (normV v)`. Establish `h` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).1 v).2 hdeg`. Simplify `h` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hv' : ¬¬(Nat.Prime (normV v) → ∃ S, FrobEig ι r v S ∧ FrobEig ι r' v S)` using `hv`.
+
+Take `⟨S, h1, h2⟩` from `(not_not.1 hv') hprime`. Establish `e1` using `(h1 B hB).2 _ hfr`. Establish `e2` using `(h2 B hB).2 _ hfr`. Simplify using `only [Homeomorph.coe_inv, inv_inv] at e1 e2`. Conclude with `Polynomial.map_injective _ ι.injective (e1.trans e2.symm)`.
+-/
 theorem UpperTheory.Gal.Int.Core.isoOne_holds :
     IsoOne := by
   intro F Ω _ _ _ _ _ l _ ι a r r' hr hr' hs hs' hev

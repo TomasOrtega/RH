@@ -9,6 +9,11 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift ((𝟙 A) ^ n) (𝟙 A) ≫ μ[A]))`.
+-/
 private theorem isMonHom_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (n : ℕ) :
     IsMonHom ((𝟙 A) ^ n) := by
   induction n with
@@ -19,6 +24,9 @@ private theorem isMonHom_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMon
     rw [pow_succ]
     exact inferInstanceAs (IsMonHom (lift ((𝟙 A) ^ n) (𝟙 A) ≫ μ[A]))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Hom.one_def]`. Consider the case `succ n ih`. Simplify using `only [pow_succ, Hom.mul_def, comp_lift_assoc, Category.assoc, IsMonHom.mul_hom, lift_map_assoc, Category.comp_id, Category.id_comp, ih]`.
+-/
 private theorem pow_hom_comm {S : Scheme.{0}} {A : Over S} [GrpObj A] (h : A ⟶ A) [IsMonHom h] (n : ℕ) :
     h ≫ ((𝟙 A) ^ n) = ((𝟙 A) ^ n) ≫ h := by
   induction n with
@@ -26,6 +34,29 @@ private theorem pow_hom_comm {S : Scheme.{0}} {A : Over S} [GrpObj A] (h : A ⟶
   | succ n ih =>
     simp only [pow_succ, Hom.mul_def, comp_lift_assoc, Category.assoc, IsMonHom.mul_hom, lift_map_assoc, Category.comp_id, Category.id_comp, ih]
 
+/- English proof (translation)
+Introduce `hKL hInf hFP hKU hRep hTan`. Introduce `p _ D R _ b N hm ha r w hw hu f κ _ _ _ β hβ o o₁ o₂ o₃ ψ₁ ψ₂ F e h1 hψ₂ h3 hF d hd hR1 hc1 hR2 hc2 hcl T g`. Establish `hp : Nat.Prime p` using `Fact.out`. Take `⟨-, hm1, hact1, -, -, ψ₁', hψ₁', h11, h12⟩` from `h1`. Take `⟨-, hm3, hact3, -, -, χ', hχ', h31, h32⟩` from `h3`.
+
+Use `haveI := hm1`. Use `haveI := hm3`. Use `haveI := hψ₁'`. Use `haveI := hχ'`. Use `haveI := hψ₂`.
+
+Use `haveI hpow : IsMonHom ((𝟙 o.A) ^ p ^ (e + 1)) := isMonHom_pow o.A _`. Establish `hactP : ∀ a : D.O, o.act.act a ≫ ((𝟙 o.A) ^ p ^ (e + 1)) = ((𝟙 o.A) ^ p ^ (e + 1)) ≫ o.act.act a`. Introduce `a`. Use `haveI := o.act.hom a`. Conclude with `pow_hom_comm (o.act.act a) _`.
+
+Establish `kP` using `hKU p D R b N r w hw hu (Sp κ) (spMap β) o o ((𝟙 o.A) ^ p ^ (e + 1)) (𝟙 o.A) (e + 1) hpow inferInstance hactP (by simp) (by simp)`. Take `⟨d', hRP⟩` from `hRep κ o.A _ kP.1`. Establish `k1` using `hKU p D R b N r w hw hu (Sp κ) (spMap β) o o₁ ψ₁ ψ₁' (e + 1) hm1 hψ₁' hact1 h11 h12`. Establish `k3` using `hKU p D R b N r w hw hu (Sp κ) (spMap β) o o₃ (ψ₂ ≫ F) χ' (e + 1) hm3 hχ' hact3 h31 h32`. Take `⟨d₃, hR3⟩` from `hRep κ o.A _ k3.1`.
+
+Establish `sub1 : ∀ (T : Over (Sp κ)) (g : T ⟶ o.A), UKer r o ψ₁ T g → UKer r o ((𝟙 o.A) ^ p ^ (e + 1)) T g`. Introduce `T g hg`. Use `⟨?_, hg.2⟩` and prove the remaining obligations. Rewrite using `[← h11, ← Category.assoc, hg.1]`. Simplify using `[Hom.one_def]`.
+
+Establish `sub3 : ∀ (T : Over (Sp κ)) (g : T ⟶ o.A), UKer r o (ψ₂ ≫ F) T g → UKer r o ((𝟙 o.A) ^ p ^ (e + 1)) T g`. Introduce `T g hg`. Use `⟨?_, hg.2⟩` and prove the remaining obligations. Rewrite using `[← h31, ← Category.assoc, hg.1]`. Simplify using `[Hom.one_def]`.
+
+Establish `hI` using `hInf p f hp κ o.A (UKer r o ψ₁) (UKer r o ((𝟙 o.A) ^ p ^ (e + 1))) d d' hR1 k1.2.1 hc1 hd hRP sub1 (hTan p D R b N hm ha r w hu κ β hβ o e)`. Establish `fp` using `hFP p D R b N r f κ (spMap β) o o₂ ψ₂ hψ₂ d hR2 hc2`. Establish `hF1 : (1 : 𝟙_ (Over (Sp κ)) ⟶ o₂.A) ≫ F = 1` using `(hF _ 1).2 (fun _ => rfl)`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Use `⟨?_, hg.2⟩` and prove the remaining obligations. Use `hKL κ o.A o₃.A (ψ₂ ≫ F) hm3 (UKer r o ψ₁) (p ^ f * d) hR1 k1.2.1 ?_ ?_ T g hg` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[← Category.assoc, ((hcl g').1 hg').1, hF1]`. Introduce `Λ _ _ _ ε g' hg' hi`.
+
+Rewrite using `[← Category.assoc]`. Conclude with `(hF _ _).2 ((fp.2 Λ ε g' hg'.2 hi).2 ((hI Λ ε g' (sub1 _ _ hg') hi).1 hg'))`. Introduce `hg`. Use `⟨?_, hg.2⟩` and prove the remaining obligations. Use `hKL κ o.A o₁.A ψ₁ hm1 (UKer r o (ψ₂ ≫ F)) d₃ hR3 k3.2.1 ?_ ?_ T g hg` and prove the remaining obligations.
+
+Introduce `g' hg'`. Establish `h2 : g' ≫ ψ₂ = 1` using `fp.1 (g' ≫ ψ₂) ((hF _ _).1 (by rw [Category.assoc]; exact hg'.1))`. Conclude with `((hcl g').2 ⟨h2, hg'.2⟩).1`. Introduce `Λ _ _ _ ε g' hg' hi`. Establish `hk : FrobKill p f hp (g' ≫ ψ₂)` using `(hF _ _).1 (by rw [Category.assoc]; exact hg'.1)`.
+
+Conclude with `((hI Λ ε g' (sub3 _ _ hg') hi).2 ((fp.2 Λ ε g' hg'.2 hi).1 hk)).1`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.sameW_of :
     KillLocal → InfW → FrobPass → KerU → RepOfFF → TanOne → SameW := by
   intro hKL hInf hFP hKU hRep hTan

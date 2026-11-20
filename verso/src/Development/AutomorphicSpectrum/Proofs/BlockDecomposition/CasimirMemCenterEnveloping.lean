@@ -13,6 +13,9 @@ open scoped NumberField.AdeleRing
 namespace GlobalTheory.CompanionTheory.Inh.CapelliCasimir
 open Finset
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hx' : x ∉ Subalgebra.toSubmodule S` using `hx`. Take `⟨f, hf1, hf2⟩` from `Submodule.exists_le_ker_of_notMem hx'`. Conclude with `hf1 (h f fun z hz => LinearMap.mem_ker.1 (hf2 hz))`.
+-/
 theorem mem_subalgebra_of_dual {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A) (x : A)
     (h : ∀ f : A →ₗ[ℂ] ℂ, (∀ z ∈ S, f z = 0) → f x = 0) : x ∈ S := by
   by_contra hx
@@ -20,6 +23,31 @@ theorem mem_subalgebra_of_dual {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgeb
   obtain ⟨f, hf1, hf2⟩ := Submodule.exists_le_ker_of_notMem hx'
   exact hf1 (h f fun z hz => LinearMap.mem_ker.1 (hf2 hz))
 
+/- English proof (translation)
+Take `⟨Rm, hR⟩` from `_root_.GlobalTheory.qdet_top_three_orders A n E`. Distinguish the cases in `hn : 2 ≤ n`. Use `swap`. Establish `hn' : n = 0 ∨ n = 1` using `by omega`. Break down `hn' with rfl | rfl` into its components or cases.
+
+Simplify using `[Formalism.REAL.Cas]`. Establish `h0` using `hcap 0`. Rewrite `h0` using `[hR]`. Establish `h1 : E 0 0 ∈ S`. Simplify `h0` using `[Finset.filter_singleton]`.
+
+Establish `: Formalism.REAL.Cas E = E 0 0 * E 0 0` using `by simp [Formalism.REAL.Cas]`. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ h1 h1`. Use `set ρ : Fin n → ℂ := fun l => ((n : ℂ) - 1) / 2 - ((l : ℕ) : ℂ) with hρ`. Establish `hρ0 : ∑ l, ρ l = 0`.
+
+Establish `h1 : ∑ l, ρ l = ∑ l, ρ (Fin.rev l)` using `(Equiv.sum_comp Fin.revPerm ρ).symm`. Establish `h2 : ∑ l, ρ (Fin.rev l) = - ∑ l, ρ l`. Rewrite using `[← sum_neg_distrib]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `l.2` as an intermediate fact.
+
+Simplify using `only [hρ, Fin.val_rev]`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Take the linear combination `(h1.trans h2) / 2`. Establish `core` using `fun (f : A →ₗ[ℂ] ℂ) (hf : ∀ z ∈ S, f z = 0) => scalar_core n hn ρ (fun _ => 0) (fun i => f (E i i)) (fun i j => f (E i i * E j j - E j i * E i j)) (fun d => f (Rm d)) (f 1) (((n : ℂ) - 1) / 2) (fun Y => by`. Establish `h1` using `hf _ (hcap Y)`.
+
+Rewrite `h1` using `[hR]`. Establish `e : f 1 = 0` using `hf 1 (Subalgebra.one_mem _)`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, add_sub_assoc] at h1`. Simplify using `only [e, mul_zero] at h1 ⊢`. Conclude with `h1)`.
+
+Establish `hT : ∑ i, E i i ∈ S`. Use `mem_subalgebra_of_dual S _ fun f hf => ?_` and prove the remaining obligations. Establish `e : f 1 = 0` using `hf 1 (Subalgebra.one_mem _)`. Use `(core f hf).1` as an intermediate fact. Rewrite `this` using `[hρ0, e]`.
+
+Simplify using `only [map_sum]`. Take the linear combination `this`. Establish `hW : (2 : ℂ) • ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (E i i * E j j - E j i * E i j) - ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) • E i i ∈ S`. Use `mem_subalgebra_of_dual S _ fun f hf => ?_` and prove the remaining obligations. Establish `e : f 1 = 0` using `hf 1 (Subalgebra.one_mem _)`.
+
+Establish `h2` using `(core f hf).2`. Rewrite `h2` using `[e]`. Simplify using `only [sum_erase_eq_sub (mem_univ _), hρ0] at h2`. Simplify using `only [map_sub f, map_sum, map_smul, smul_eq_mul]`. Establish `h5 : ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) * f (E i i) = - (2 * ∑ i, (0 - ρ i) * f (E i i))`.
+
+Rewrite using `[mul_sum, ← sum_neg_distrib]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hρ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`.
+
+Simplify using `only [map_sub f] at h2`. Take the linear combination `h2`. Establish `h3` using `sq_sub_cas E hE`. Establish `: Formalism.REAL.Cas E = (∑ i, E i i) * (∑ i, E i i) - ((2 : ℂ) • ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (E i i * E j j - E j i * E i j) - ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) • E i i)`. Rewrite using `[← h3]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Subalgebra.sub_mem _ (Subalgebra.mul_mem _ hT hT) hW`.
+-/
 theorem cas_mem_of_qdet_mem {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A) (n : ℕ)
     (E : Fin n → Fin n → A) (hE : Formalism.REAL.GlRel E)
     (hcap : ∀ Y : ℂ, Formalism.REAL.qdet E (Y + ((n : ℂ) - 1) / 2) ∈ S) : Formalism.REAL.Cas E ∈ S := by
@@ -88,6 +116,9 @@ theorem cas_mem_of_qdet_mem {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra 
   rw [this]
   exact Subalgebra.sub_mem _ (Subalgebra.mul_mem _ hT hT) hW
 
+/- English proof (translation)
+Introduce `F _ _ _ n τ`. Establish `hcap : ∀ Y : ℂ, cap (a` using `n) τ Y ∈ Zalg F n := fun Y => Algebra.subset_adjoin (show cap (a := n) τ Y ∈ {z | ∃ τ u, z = cap τ u} from ⟨τ, Y, rfl⟩)`. Conclude with `cas_mem_of_qdet_mem (Zalg F n) n (Eop τ) (glRel_Eop τ) hcap`.
+-/
 theorem cas_mem_Zalg : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (τ : E →+* ℂ),
     Formalism.REAL.Cas (Eop (a := a) τ) ∈ Zalg E a := by
   intro F _ _ _ n τ

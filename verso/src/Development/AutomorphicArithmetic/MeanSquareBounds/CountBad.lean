@@ -6,6 +6,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `count_bad_core`. Use `⟨C, fun Q F B hQ hB => hC Q F B hQ fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨hp, hF, f, hne, ψ, hf, hN, hψ, hz⟩` from `hB q hq`. Conclude with `⟨hp, hF, f * q, f, hne, ψ, rfl, hf, hψ, hN, hz⟩`.
+-/
 theorem count_bad :
     ∃ C : ℝ, ∀ (Q F : ℝ) (B : Finset ℕ), 3 ≤ Q →
       (∀ q ∈ B, q.Prime ∧ F < q ∧ ∃ (f : ℕ) (_ : NeZero (f * q)) (ψ : DirichletCharacter ℂ (f * q)),

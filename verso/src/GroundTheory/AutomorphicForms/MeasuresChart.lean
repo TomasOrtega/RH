@@ -34,13 +34,27 @@ noncomputable def leftModulus (g : G) : ℝ≥0 := distribHaarChar (ι → F) (C
 
 noncomputable def rightModulus (h : G) : ℝ≥0 := distribHaarChar (ι → F) (C.right h)
 
+/- English proof (translation)
+The claim follows from `distribHaarChar_pos`.
+-/
 theorem leftModulus_pos (g : G) : 0 < C.leftModulus g := distribHaarChar_pos
 
+/- English proof (translation)
+The claim follows from `distribHaarChar_pos`.
+-/
 theorem rightModulus_pos (h : G) : 0 < C.rightModulus h := distribHaarChar_pos
 
+/- English proof (translation)
+The claim follows from `C.isOpenEmbedding.measurableEmbedding`.
+-/
 theorem measurableEmbedding : MeasurableEmbedding C.toFun :=
   C.isOpenEmbedding.measurableEmbedding
 
+/- English proof (translation)
+Rewrite using `[← Set.preimage_smul]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨g * x, hx, (C.toFun_mul_left g x).trans rfl⟩`.
+
+Introduce and unpack `⟨z, hz, hzy⟩`. Use `⟨g⁻¹ * z, by simpa using hz, ?_⟩` and prove the remaining obligations. Apply `(C.left g).injective` to reduce the goal to its premises. Rewrite using `[← C.toFun_mul_left, mul_inv_cancel_left, hzy]`. Both sides reduce to the same expression.
+-/
 theorem image_preimage_mul_left (g : G) (s : Set G) :
     C.toFun '' ((g * ·) ⁻¹' s) = (C.left g)⁻¹ • (C.toFun '' s) := by
   rw [← Set.preimage_smul]
@@ -54,6 +68,11 @@ theorem image_preimage_mul_left (g : G) (s : Set G) :
     rw [← C.toFun_mul_left, mul_inv_cancel_left, hzy]
     rfl
 
+/- English proof (translation)
+Rewrite using `[← Set.preimage_smul]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x * h, hx, (C.toFun_mul_right h x).trans rfl⟩`.
+
+Introduce and unpack `⟨z, hz, hzy⟩`. Use `⟨z * h⁻¹, by simpa using hz, ?_⟩` and prove the remaining obligations. Apply `(C.right h).injective` to reduce the goal to its premises. Rewrite using `[← C.toFun_mul_right, inv_mul_cancel_right, hzy]`. Both sides reduce to the same expression.
+-/
 theorem image_preimage_mul_right (h : G) (s : Set G) :
     C.toFun '' ((· * h) ⁻¹' s) = (C.right h)⁻¹ • (C.toFun '' s) := by
   rw [← Set.preimage_smul]
@@ -69,6 +88,9 @@ theorem image_preimage_mul_right (h : G) (s : Set G) :
 
 variable (μ₀ : Measure (ι → F)) [μ₀.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use extensionality with `s hs`. Rewrite using `[map_apply (continuous_const_mul g).measurable hs, C.measurableEmbedding.comap_apply, Measure.smul_apply, C.measurableEmbedding.comap_apply, image_preimage_mul_left, ← distribHaarChar_mul, map_inv, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem map_mul_left_comap (g : G) :
     map (g * ·) (μ₀.comap C.toFun) = (C.leftModulus g)⁻¹ • μ₀.comap C.toFun := by
   ext s hs
@@ -77,6 +99,9 @@ theorem map_mul_left_comap (g : G) :
     ← distribHaarChar_mul, map_inv, ENNReal.smul_def, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Use extensionality with `s hs`. Rewrite using `[map_apply (continuous_mul_const h).measurable hs, C.measurableEmbedding.comap_apply, Measure.smul_apply, C.measurableEmbedding.comap_apply, image_preimage_mul_right, ← distribHaarChar_mul, map_inv, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem map_mul_right_comap (h : G) :
     map (· * h) (μ₀.comap C.toFun) = (C.rightModulus h)⁻¹ • μ₀.comap C.toFun := by
   ext s hs
@@ -85,10 +110,16 @@ theorem map_mul_right_comap (h : G) :
     ← distribHaarChar_mul, map_inv, ENNReal.smul_def, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[C.measurableEmbedding.comap_apply]`. Conclude with `(hK.image C.isOpenEmbedding.continuous).measure_lt_top`.
+-/
 theorem comap_lt_top_of_isCompact {K : Set G} (hK : IsCompact K) : μ₀.comap C.toFun K < ∞ := by
   rw [C.measurableEmbedding.comap_apply]
   exact (hK.image C.isOpenEmbedding.continuous).measure_lt_top
 
+/- English proof (translation)
+Rewrite using `[C.measurableEmbedding.comap_apply]`. Conclude with `(C.isOpenEmbedding.isOpenMap U hU).measure_pos μ₀ (hne.image _)`.
+-/
 theorem comap_pos_of_isOpen {U : Set G} (hU : IsOpen U) (hne : U.Nonempty) :
     0 < μ₀.comap C.toFun U := by
   rw [C.measurableEmbedding.comap_apply]
@@ -96,6 +127,9 @@ theorem comap_pos_of_isOpen {U : Set G} (hU : IsOpen U) (hne : U.Nonempty) :
 
 variable [LocallyCompactSpace G]
 
+/- English proof (translation)
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hpos : 0 < μ₀.comap C.toFun K` using `(C.comap_pos_of_isOpen μ₀ isOpen_interior ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩).trans_le (measure_mono interior_subset)`. Establish `h'` using `congrArg (fun ν : Measure G => ν K) h`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h'`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj hpos.ne' (C.comap_lt_top_of_isCompact μ₀ hK).ne).1 h')`.
+-/
 theorem eq_of_smul_comap_eq {a b : ℝ≥0} (h : a • μ₀.comap C.toFun = b • μ₀.comap C.toFun) :
     a = b := by
   obtain ⟨K, hK, hK1⟩ := exists_compact_mem_nhds (1 : G)
@@ -107,6 +141,13 @@ theorem eq_of_smul_comap_eq {a b : ℝ≥0} (h : a • μ₀.comap C.toFun = b �
   exact ENNReal.coe_injective ((ENNReal.mul_left_inj hpos.ne'
     (C.comap_lt_top_of_isCompact μ₀ hK).ne).1 h')
 
+/- English proof (translation)
+Set `μ₀ : Measure (ι → F)` to `addHaar`. Establish `e1` using `C.map_mul_left_comap μ₀ (g * h)`. Establish `e2 : map ((g * h) * ·) (μ₀.comap C.toFun) = map (g * ·) (map (h * ·) (μ₀.comap C.toFun))`. Rewrite using `[map_map (continuous_const_mul g).measurable (continuous_const_mul h).measurable]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Rewrite `e1` using `[e2, C.map_mul_left_comap μ₀ h, Measure.map_smul, C.map_mul_left_comap μ₀ g, smul_smul]`. Use `C.eq_of_smul_comap_eq μ₀ e1` as an intermediate fact. Rewrite `this` using `[← mul_inv]`.
+
+Rewrite using `[mul_comm]`. Conclude with `inv_injective this.symm`.
+-/
 theorem leftModulus_mul (g h : G) : C.leftModulus (g * h) = C.leftModulus g * C.leftModulus h := by
   let μ₀ : Measure (ι → F) := addHaar
   have e1 := C.map_mul_left_comap μ₀ (g * h)
@@ -123,6 +164,13 @@ theorem leftModulus_mul (g h : G) : C.leftModulus (g * h) = C.leftModulus g * C.
   rw [mul_comm]
   exact inv_injective this.symm
 
+/- English proof (translation)
+Set `μ₀ : Measure (ι → F)` to `addHaar`. Establish `e1` using `C.map_mul_right_comap μ₀ (g * h)`. Establish `e2 : map (· * (g * h)) (μ₀.comap C.toFun) = map (· * h) (map (· * g) (μ₀.comap C.toFun))`. Rewrite using `[map_map (continuous_mul_const h).measurable (continuous_mul_const g).measurable]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Rewrite `e1` using `[e2, C.map_mul_right_comap μ₀ g, Measure.map_smul, C.map_mul_right_comap μ₀ h, smul_smul]`. Use `C.eq_of_smul_comap_eq μ₀ e1` as an intermediate fact. Rewrite `this` using `[← mul_inv]`.
+
+Conclude with `inv_injective this.symm`.
+-/
 theorem rightModulus_mul (g h : G) :
     C.rightModulus (g * h) = C.rightModulus g * C.rightModulus h := by
   let μ₀ : Measure (ι → F) := addHaar
@@ -155,10 +203,21 @@ noncomputable def rightModulusHom : G →* ℝ≥0 where
     exact ((mul_eq_left₀ (C.rightModulus_pos 1).ne').1 h.symm)
   map_mul' := C.rightModulus_mul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leftModulusHom_apply (g : G) : C.leftModulusHom g = C.leftModulus g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rightModulusHom_apply (g : G) : C.rightModulusHom g = C.rightModulus g := rfl
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun ν : Measure G => ν s) (C.map_mul_left_comap μ₀ g)`. Simplify using `only [map_apply (continuous_const_mul g).measurable hs, hgs, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Establish `: ((C.leftModulus g)⁻¹ : ℝ≥0) = 1`. Use `(ENNReal.mul_eq_right h0 hT).1 e.symm` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Conclude with `inv_eq_one.1 this`.
+-/
 theorem leftModulus_eq_one_of_preimage {g : G} {s : Set G} (hs : MeasurableSet s)
     (hgs : (g * ·) ⁻¹' s = s) (h0 : μ₀.comap C.toFun s ≠ 0) (hT : μ₀.comap C.toFun s ≠ ∞) :
     C.leftModulus g = 1 := by
@@ -170,6 +229,11 @@ theorem leftModulus_eq_one_of_preimage {g : G} {s : Set G} (hs : MeasurableSet s
     exact_mod_cast this
   exact inv_eq_one.1 this
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun ν : Measure G => ν s) (C.map_mul_right_comap μ₀ h)`. Simplify using `only [map_apply (continuous_mul_const h).measurable hs, hhs, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Establish `: ((C.rightModulus h)⁻¹ : ℝ≥0) = 1`. Use `(ENNReal.mul_eq_right h0 hT).1 e.symm` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Conclude with `inv_eq_one.1 this`.
+-/
 theorem rightModulus_eq_one_of_preimage {h : G} {s : Set G} (hs : MeasurableSet s)
     (hhs : (· * h) ⁻¹' s = s) (h0 : μ₀.comap C.toFun s ≠ 0) (hT : μ₀.comap C.toFun s ≠ ∞) :
     C.rightModulus h = 1 := by
@@ -181,6 +245,11 @@ theorem rightModulus_eq_one_of_preimage {h : G} {s : Set G} (hs : MeasurableSet 
     exact_mod_cast this
   exact inv_eq_one.1 this
 
+/- English proof (translation)
+Set `μ₀ : Measure (ι → F)` to `addHaar`. Establish `h0 : μ₀.comap C.toFun V ≠ 0` using `(C.comap_pos_of_isOpen μ₀ V.isOpen ⟨1, V.one_mem⟩).ne'`. Establish `hT : μ₀.comap C.toFun V ≠ ∞` using `(C.comap_lt_top_of_isCompact μ₀ hV).ne`. Use `⟨C.leftModulus_eq_one_of_preimage μ₀ V.isOpen.measurableSet ?_ h0 hT, C.rightModulus_eq_one_of_preimage μ₀ V.isOpen.measurableSet ?_ h0 hT⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Conclude with `(V : Subgroup G).mul_mem_cancel_left hv`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Conclude with `(V : Subgroup G).mul_mem_cancel_right hv`.
+-/
 theorem modulus_eq_one_of_mem {V : OpenSubgroup G} (hV : IsCompact (V : Set G)) {v : G}
     (hv : v ∈ V) : C.leftModulus v = 1 ∧ C.rightModulus v = 1 := by
   let μ₀ : Measure (ι → F) := addHaar
@@ -196,6 +265,9 @@ theorem modulus_eq_one_of_mem {V : OpenSubgroup G} (hV : IsCompact (V : Set G)) 
     simp only [Set.mem_preimage, SetLike.mem_coe]
     exact (V : Subgroup G).mul_mem_cancel_right hv
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous fun s => isOpen_iff_forall_mem_open.2 fun g hg => ⟨g • (V : Set G), ?_, V.isOpen.smul g, ⟨1, V.one_mem, mul_one g⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify using `only [Set.mem_preimage, smul_eq_mul, map_mul, hV v hv, mul_one]`. Conclude with `hg`.
+-/
 theorem continuous_of_eq_one_on_openSubgroup (χ : G →* ℝ≥0) (V : OpenSubgroup G)
     (hV : ∀ v ∈ V, χ v = 1) : Continuous χ := by
   refine IsLocallyConstant.continuous fun s => isOpen_iff_forall_mem_open.2 fun g hg =>
@@ -206,25 +278,44 @@ theorem continuous_of_eq_one_on_openSubgroup (χ : G →* ℝ≥0) (V : OpenSubg
 
 variable [T2Space G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `exists_compactOpenSubgroup (G := G)`. Conclude with `continuous_of_eq_one_on_openSubgroup C.leftModulusHom V fun v hv => (C.modulus_eq_one_of_mem hV hv).1`.
+-/
 theorem continuous_leftModulus : Continuous C.leftModulus := by
   obtain ⟨V, hV⟩ := exists_compactOpenSubgroup (G := G)
   exact continuous_of_eq_one_on_openSubgroup C.leftModulusHom V fun v hv =>
     (C.modulus_eq_one_of_mem hV hv).1
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `exists_compactOpenSubgroup (G := G)`. Conclude with `continuous_of_eq_one_on_openSubgroup C.rightModulusHom V fun v hv => (C.modulus_eq_one_of_mem hV hv).2`.
+-/
 theorem continuous_rightModulus : Continuous C.rightModulus := by
   obtain ⟨V, hV⟩ := exists_compactOpenSubgroup (G := G)
   exact continuous_of_eq_one_on_openSubgroup C.rightModulusHom V fun v hv =>
     (C.modulus_eq_one_of_mem hV hv).2
 
+/- English proof (translation)
+The claim follows from `C.continuous_leftModulus.inv₀ fun g => (C.leftModulus_pos g).ne'`.
+-/
 theorem continuous_density : Continuous fun g : G => (C.leftModulus g)⁻¹ :=
   C.continuous_leftModulus.inv₀ fun g => (C.leftModulus_pos g).ne'
 
+/- English proof (translation)
+The claim follows from `(ENNReal.continuous_coe.comp C.continuous_density).measurable`.
+-/
 theorem measurable_density : Measurable fun g : G => (((C.leftModulus g)⁻¹ : ℝ≥0) : ℝ≥0∞) :=
   (ENNReal.continuous_coe.comp C.continuous_density).measurable
 
 noncomputable def haar : Measure G :=
   (μ₀.comap C.toFun).withDensity fun g => (((C.leftModulus g)⁻¹ : ℝ≥0) : ℝ≥0∞)
 
+/- English proof (translation)
+Use extensionality with `s hs`. Rewrite using `[map_apply hT hs, withDensity_apply _ (hT hs), Measure.smul_apply, withDensity_apply _ hs, ← lintegral_indicator (hT hs), ← lintegral_indicator hs]`. Establish `h1 : (T ⁻¹' s).indicator ρ = fun x => (b : ℝ≥0∞) * s.indicator ρ (T x)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : T x ∈ s`.
+
+Rewrite using `[indicator_of_mem (show x ∈ T ⁻¹' s from hx), indicator_of_mem hx, hρT]`. Rewrite using `[indicator_of_notMem (show x ∉ T ⁻¹' s from hx), indicator_of_notMem hx, mul_zero]`. Rewrite using `[h1]`. Use `show ∫⁻ x, (b : ℝ≥0∞) * s.indicator ρ (T x) ∂ν = _`. Rewrite using `[lintegral_const_mul (f := fun x => s.indicator ρ (T x)) _ ((hρ.indicator hs).comp hT), ← lintegral_map (hρ.indicator hs) hT, hν, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_withDensity_of_scale {X : Type*} [MeasurableSpace X] {T : X → X} (hT : Measurable T)
     {ν : Measure X} {ρ : X → ℝ≥0∞} (hρ : Measurable ρ) {a b : ℝ≥0} (hν : map T ν = a • ν)
     (hρT : ∀ x, ρ x = b * ρ (T x)) : map T (ν.withDensity ρ) = (a * b) • ν.withDensity ρ := by
@@ -250,6 +341,9 @@ instance isMulLeftInvariant_haar : (C.haar μ₀).IsMulLeftInvariant := ⟨fun g
   rw [← ENNReal.coe_mul, ENNReal.coe_inj, C.leftModulus_mul, mul_inv, ← mul_assoc,
     mul_inv_cancel₀ (C.leftModulus_pos g).ne', one_mul]⟩
 
+/- English proof (translation)
+Rewrite using `[haar, map_withDensity_of_scale (continuous_mul_const h).measurable C.measurable_density (C.map_mul_right_comap μ₀ h) (b := C.leftModulus h) fun x => ?_, div_eq_mul_inv, mul_comm]`. Rewrite using `[← ENNReal.coe_mul, ENNReal.coe_inj, C.leftModulus_mul, mul_inv, mul_comm, mul_assoc, inv_mul_cancel₀ (C.leftModulus_pos h).ne', mul_one]`.
+-/
 theorem map_mul_right_haar (h : G) :
     map (· * h) (C.haar μ₀) = (C.leftModulus h / C.rightModulus h) • C.haar μ₀ := by
   rw [haar, map_withDensity_of_scale (continuous_mul_const h).measurable C.measurable_density
@@ -271,6 +365,9 @@ instance isHaarMeasure_haar : (C.haar μ₀).IsHaarMeasure where
     rw [e]
     exact (C.comap_pos_of_isOpen μ₀ hU hne).ne'
 
+/- English proof (translation)
+Set `μ₀ : Measure (ι → F)` to `addHaar`. Express the relevant statement in the definitionally equal form `modularCharacterFun h = _`. Rewrite using `[modularCharacterFun_eq_haarScalarFactor (C.haar μ₀) h]`. Simplify using `only [C.map_mul_right_haar μ₀ h]`. Rewrite using `[haarScalarFactor_smul, haarScalarFactor_self, smul_eq_mul, mul_one]`.
+-/
 theorem modularCharacter_eq (h : G) :
     modularCharacter h = C.leftModulus h / C.rightModulus h := by
   let μ₀ : Measure (ι → F) := addHaar

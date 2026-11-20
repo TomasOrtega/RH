@@ -19,6 +19,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (π' Eπ : LetA O n)
     (h' M σ : ℕ) (c : ZMod n) (α : FrA W π' Eπ h' M c) (β : FrB W π' Eπ h' M c)
 
+/- English proof (translation)
+Take `⟨m, a, z, hz, heq⟩` from `range_rep W T π' c _ hx`. Establish `hrep : IsRepL W T π' Eπ h' c x a z` using `⟨hz, heq⟩`. Use `⟨m, a, z, hrep, ?_⟩` and prove the remaining obligations. Introduce `τ ζ hPt i`. Establish `hzN : ∀ j, z j ∈ W.N T` using `fun j => ((mem_NcS W T _ _).1 (hz j)).1`.
+
+Establish `hα` using `(hfr.1 T hcry hjmp).2.2.2.1 y hy x hx hβ`. Establish `hcE` using `levE_zero W Eπ c hs hww hQ ζ (hpt ζ τ hPt).1 (hpt ζ τ hPt).2`. Break down `lt_or_ge i (4 * h') with hi | hi` into its components or cases. Establish `hpy : ((PD.p : ℕ) : O) ^ (2 * σ) • y ∈ W.N T` using `Submodule.smul_of_tower_mem _ _ hyN`. Establish `hk : W.Q ^ 0 • (Eπ ^ h' • (((PD.p : ℕ) : O) ^ (2 * σ) • y)) ∈ W.N T`.
+
+Rewrite using `[pow_zero, one_smul]`. Conclude with `Submodule.smul_mem _ _ hpy`. Establish `hexp` using `(hfr.1 T hcry hjmp).2.2.2.2.2.2.2.2 τ ζ hPt x hx _ _ hα m a z hrep 0 hk i (by simpa using hi)`. Establish `hl1 : W.lev c ζ (W.Q ^ 0) = 1` using `by rw [pow_zero, map_one]`. Rewrite `hexp` using `[hl1, serMul_one]`.
+
+Establish `hsub : (⟨_, hk⟩ : ↥(W.N T)) = Eπ ^ h' • (⟨_, hpy⟩ : ↥(W.N T))` using `Subtype.ext (by show W.Q ^ 0 • (Eπ ^ h' • (((PD.p : ℕ) : O) ^ (2 * σ) • y)) = Eπ ^ h' • (((PD.p : ℕ) : O) ^ (2 * σ) • y)`. Rewrite using `[pow_zero, one_smul])`. Establish `hL : W.levN T c ζ ⟨_, hk⟩ i ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ ((h' : ℤ) - i) := by`. Rewrite using `[hsub, levN_eq_serMul]`. Use `serMul_mem (fun i => Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ (0 - i)) (FilC_mono_shift T τ 0) (W.lev c ζ (Eπ ^ h')) h' (by rw [map_pow]; exact pow_vanish' _ hcE h') _ (fun i => by` as an intermediate fact.
+
+Use `(Submodule.mem_inf.1 (levN_fil W T c hp4 hPt ⟨_, hpy⟩ i)).2` as an intermediate fact. Simplify using `using this) i`. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite `hL` using `[hexp, ← Nat.cast_smul_eq_nsmul LL]`.
+
+Conclude with `(Submodule.smul_mem_iff _ (by rw [Nat.cast_pow]; exact pow_ne_zero _ (p_ne_zero W))).1 hL`. Conclude with `FilC_anti T τ (by omega) (ιDi_le_top W T h' c hp4 hPt (hjmp τ) (expS_mem W T c hp4 hPt _ z hzN i))`.
+-/
 theorem beta_core (hfr : IsFrame W Pt π' Eπ h' M σ c α β) (hcry : IsCrys PD T.ρ)
     (hjmp : ∀ τ, JumpsInV PD T.ρ τ (Set.Icc (-(h' : ℤ)) h')) (hs : W.s = 1) {w w' : LetA O n}
     (hww : w' * w = 1) (hQ : W.Q = w * Eπ) (hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T)
@@ -60,6 +73,17 @@ theorem beta_core (hfr : IsFrame W Pt π' Eπ h' M σ c α β) (hcry : IsCrys PD
     exact (Submodule.smul_mem_iff _ (by rw [Nat.cast_pow]; exact pow_ne_zero _ (p_ne_zero W))).1 hL
   · exact FilC_anti T τ (by omega) (ιDi_le_top W T h' c hp4 hPt (hjmp τ) (expS_mem W T c hp4 hPt _ z hzN i))
 
+/- English proof (translation)
+Introduce `u hu`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.1 hu`. Take `⟨m, a, z, hz, rfl⟩` from `range_rep W T π' c v hv`. Establish `hb : π' ^ (M - j) * Eπ ^ (3 * h') ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.pow_mem hπΔ _) (W.AΔ.pow_mem hEΔ _)`. Use `⟨smulLA W T π' c (π' ^ (M - j) * Eπ ^ (3 * h')) (∑ k, algebraMap (LetA O n) W.EE ((letE c : LetA O n) * (a k : LetA O n)) ⊗ₜ mkL W T π' c (z k) (hz k)), ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨m, fun k => ⟨Eπ ^ h' * ((π' ^ (M - j) * Eπ ^ (3 * h')) * a k), W.AΔ.mul_mem (W.AΔ.pow_mem hEΔ _) (W.AΔ.mul_mem hb (a k).2)⟩, z, ⟨hz, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smulLA_rep, smulLA_rep]`. Introduce `τ ζ hPt i`. Establish `hzN : ∀ k, z k ∈ W.N T` using `fun k => ((mem_NcS W T _ _).1 (hz k)).1`.
+
+Establish `hcE` using `levE_zero W Eπ c hs hww hQ ζ (hpt ζ τ hPt).1 (hpt ζ τ hPt).2`. Break down `lt_or_ge i (4 * h') with hi | hi` into its components or cases. Unfold `expS serC`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h0`.
+
+Establish `e : Eπ ^ h' * ((π' ^ (M - j) * Eπ ^ (3 * h')) * (a k : LetA O n)) = Eπ ^ (4 * h') * (π' ^ (M - j) * a k)` using `by ring show PowerSeries.coeff i.toNat (W.lev c ζ (Eπ ^ h' * ((π' ^ (M - j) * Eπ ^ (3 * h')) * (a k : LetA O n)))) • valAt W T c ζ (z k) ∈ _`. Rewrite using `[e, map_mul, map_pow, pow_vanish _ hcE _ _ _ (by omega), zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.zero_mem _`. Conclude with `FilC_anti T τ (by omega) (ιDi_le_top W T h' c hp4 hPt (hjmp τ) (expS_mem W T c hp4 hPt _ z hzN i))`.
+
+Use `show smulLA W T π' c (π' ^ j) (smulLA W T π' c _ _) = _`. Rewrite using `[smulLA_smulLA, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hj]`.
+-/
 theorem JLA_le (hs : W.s = 1) {w w' : LetA O n} (hww : w' * w = 1) (hQ : W.Q = w * Eπ)
     (hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 W Pt T) (hpt : ∀ ζ τ, Pt c ζ τ → ζ ^ PD.p = 1 ∧ ζ ≠ 1)
     (hjmp : ∀ τ, JumpsInV PD T.ρ τ (Set.Icc (-(h' : ℤ)) h')) (hπΔ : π' ∈ W.AΔ) (hEΔ : Eπ ∈ W.AΔ)

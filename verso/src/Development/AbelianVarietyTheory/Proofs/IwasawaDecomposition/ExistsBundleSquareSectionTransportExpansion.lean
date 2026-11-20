@@ -19,6 +19,15 @@ namespace GlobalTheory.SqTransport
 
 open ReciprocityTheory.ChartRestriction.G.DVR in
 
+/- English proof (translation)
+Introduce `R _ _ _ hCN G _ _ _ D D' A A' U U' wL hwL σ`. Establish `hR` using `TorRef.admissibleBase_of_completeNormalLocalCharZero hCN`. Use `haveI : IsNoetherianRing R := hR.1`. Establish `hL` using `linComb_isLB U.LG.L U.LG.isLB (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)`. Establish `hL'` using `linComb_isLB U'.LG.L U'.LG.isLB (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)`.
+
+Set `σ' : H0 U'.LG.L 2` to `secOfIso σ hwL hL' hL`. Take `⟨s, hs⟩` from `exists_sec U'.LG.isLB (φ' := fun _ : Fin 1 => pullback.fst G.hom (jK R)) (ε' := fun _ => ((2 : ℕ) : ℤ)) (fun _ _ h => by simp only [Category.comp_id]) (H1.SectionArithmetic.pullSec σ' (pullback.fst G.hom (jK R)))`. Take `⟨E, hsE, -⟩` from `(U'.expand 2 (by norm_num)).1 s`. Take `⟨f', hf', -⟩` from `IntegralExpansionLocal.main R (maximalIdeal R) le_rfl D' A' G U'.toUnifPre 2 σ' s (SectionScalarValuation.secScal_of_sval U'.LG.isLB fun y J hJ => ((hs _ _ y J hJ).trans (H1.SectionArithmetic.sval_pullSec _ _ _ y hJ)).symm) E hsE`. Use `⟨σ', f', hf', fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Establish `hm : r z ∈ (LB.LinComb U'.LG.L (K` using `Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)).U (fun _ => J' r) ⊓ (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)).U (fun _ => J r) := ⟨Set.mem_iInter.2 fun _ => hJ' r, Set.mem_iInter.2 fun _ => hJ r⟩`. Establish `e` using `gs_secOfIso_eq wL σ hwL hL' hL (fun _ => J' r) (fun _ => J r) r z hm`. Rewrite using `[sval_of σ r z J (fun _ => J r) (fun _ => by rw [Category.comp_id]), sval_of σ' r z J' (fun _ => J' r) (fun _ => by rw [Category.comp_id])]`. Use `show _ = (gm r z _ (wL.s ((fun _ => J r), (fun _ => J' r)))).val * _`. Establish `e' : gs r z (LB.wchart U'.LG.L (fun _ : Fin 1 => 𝟙 G.left) fun _ => J' r) (σ'.f fun _ => J' r) = ((gm r z _ (wL.s ((fun _ => J r), (fun _ => J' r))))⁻¹).val * gs r z (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) fun _ => J r) (σ.f fun _ => J r)` using `e`.
+
+Rewrite using `[e', ← _root_.mul_assoc, ← Units.val_mul, _root_.mul_inv_cancel, Units.val_one, _root_.one_mul]`.
+-/
 theorem exists_transport_expansion : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D D' : DegData R (maximalIdeal R)) (A A' : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (U' : Unif (maximalIdeal R) D' A' G), ∀ (wL : LB.Iso (LB.LinComb U'.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2)) (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 2))), wL.IsGen → ∀ (σ : H0 U.LG.L 2), ∃ (σ' : H0 U'.LG.L 2) (f' : ∀ α : D'.toPre.X, D'.toPre.SecB 2 α), (∀ e : ℕ, U'.ExpandsAt e 2 σ' f') ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (J : (Z ⟶ G.left) → U.LG.L.ι) (J' : (Z ⟶ G.left) → U'.LG.L.ι), Good U.LG.L z J → Good U'.LG.L z J' → sval σ r z J = (gv wL r z (fun _ => J r) (fun _ => J' r)).val * sval σ' r z J') := by
   intro R _ _ _ hCN G _ _ _ D D' A A' U U' wL hwL σ
   have hR := TorRef.admissibleBase_of_completeNormalLocalCharZero hCN

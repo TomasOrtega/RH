@@ -10,6 +10,11 @@ open scoped NumberField.AdeleRing RestrictedProduct FourierTransform nonZeroDivi
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[Real.fourierChar_apply', Circle.exp_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, mul_left_cancel₀ (by positivity : (2 * Real.pi) ≠ 0) ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨n, rfl⟩`. Conclude with `⟨n, by ring⟩`.
+-/
 theorem fourierChar_eq_one_iff (t : ℝ) : 𝐞 t = 1 ↔ ∃ n : ℤ, t = n := by
   rw [Real.fourierChar_apply', Circle.exp_eq_one]
   constructor
@@ -20,6 +25,9 @@ theorem fourierChar_eq_one_iff (t : ℝ) : 𝐞 t = 1 ↔ ∃ n : ℤ, t = n := 
   · rintro ⟨n, rfl⟩
     exact ⟨n, by ring⟩
 
+/- English proof (translation)
+The claim follows from `(fourierChar_eq_one_iff _).mpr ⟨n, rfl⟩`.
+-/
 theorem fourierChar_intCast (n : ℤ) : 𝐞 (n : ℝ) = 1 :=
   (fourierChar_eq_one_iff _).mpr ⟨n, rfl⟩
 
@@ -37,10 +45,16 @@ def infiniteTrace : InfiniteAdeleRing K →+ ℝ where
     show (w.mult : ℝ) * (extensionEmbedding w (x w + y w)).re = _
     rw [map_add, Complex.add_re, mul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteTrace_apply (x : InfiniteAdeleRing K) :
     infiniteTrace K x = ∑ w : InfinitePlace K, (w.mult : ℝ) * (extensionEmbedding w (x w)).re :=
   rfl
 
+/- English proof (translation)
+Use `show Continuous fun x : InfiniteAdeleRing K => ∑ w : InfinitePlace K, (w.mult : ℝ) * (extensionEmbedding w (x w)).re`. Conclude with `continuous_finsetSum _ fun w _ => continuous_const.mul (Complex.continuous_re.comp ((isometry_extensionEmbedding w).continuous.comp (continuous_apply w)))`.
+-/
 theorem continuous_infiniteTrace : Continuous (infiniteTrace K) := by
   show Continuous fun x : InfiniteAdeleRing K =>
     ∑ w : InfinitePlace K, (w.mult : ℝ) * (extensionEmbedding w (x w)).re
@@ -48,14 +62,31 @@ theorem continuous_infiniteTrace : Continuous (infiniteTrace K) := by
     ((isometry_extensionEmbedding w).continuous.comp (continuous_apply w)))
 
 omit [NumberField K] in
+/- English proof (translation)
+Simplify using `[InfiniteAdeleRing.algebraMap_apply]`.
+-/
 theorem extensionEmbedding_algebraMap_apply (k : K) (w : InfinitePlace K) :
     extensionEmbedding w (algebraMap K (InfiniteAdeleRing K) k w) = w.embedding k := by
   simp [InfiniteAdeleRing.algebraMap_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qh34.infiniteTrace_algebraMap <;> assumption`.
+-/
 theorem infiniteTrace_algebraMap (k : K) :
     infiniteTrace K (algebraMap K (InfiniteAdeleRing K) k) = (Algebra.trace ℚ K k : ℝ) :=
   by apply _root_.UpperTheory.Reformulated.B.Qh34.infiniteTrace_algebraMap <;> assumption
 
+/- English proof (translation)
+Establish `hd` using `coeIdeal_differentIdeal (A := ℤ) (K := ℚ) (L := K) (B := 𝓞 K)`. Establish `hdual0 : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Establish `hD0 : ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ≠ 0`. Rewrite using `[hd]`. Conclude with `inv_ne_zero hdual0`.
+
+Establish `key : k ∈ ((differentIdeal ℤ (𝓞 K) : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)⁻¹ ↔ k ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[hd, inv_inv]`. Rewrite `key` using `[FractionalIdeal.mem_inv_iff hD0, FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0)]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Use `key.mp (fun y hy => ?_) (algebraMap (𝓞 K) K a) ?_` as an intermediate fact. Simplify `this` using `[Algebra.traceForm_apply]`. Take `⟨y', hy', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hy`. Take `⟨z, hz⟩` from `h y' hy'`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨z, hz⟩`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨a, rfl⟩`. Introduce `h y hy`. Use `key.mpr (fun b hb => ?_) (algebraMap (𝓞 K) K y) ((FractionalIdeal.mem_coeIdeal _).mpr ⟨y, hy, rfl⟩)` as an intermediate fact. Take `⟨z, hz⟩` from `(FractionalIdeal.mem_one_iff _).mp this`. Conclude with `⟨z, hz⟩`.
+
+Take `⟨b', rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hb`. Simplify `h b'` using `[Algebra.traceForm_apply]`.
+-/
 theorem forall_mul_mem_iff_forall_trace_mem (k : K) :
     (∀ y ∈ differentIdeal ℤ (𝓞 K), k * algebraMap (𝓞 K) K y ∈ (algebraMap (𝓞 K) K).range) ↔
       ∀ a : 𝓞 K, Algebra.trace ℚ K (k * algebraMap (𝓞 K) K a) ∈ (algebraMap ℤ ℚ).range := by
@@ -101,26 +132,41 @@ def localInvDifferent (v : HeightOneSpectrum (𝓞 K)) : AddSubgroup (v.adicComp
     rw [neg_mul]
     exact neg_mem (ha y hy)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_localInvDifferent {v : HeightOneSpectrum (𝓞 K)} {x : v.adicCompletion K} :
     x ∈ localInvDifferent v ↔ ∀ y ∈ differentIdeal ℤ (𝓞 K),
       x * ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K) ∈ v.adicCompletionIntegers K :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[coe_mem_adicCompletionIntegers_iff, valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one y`.
+-/
 theorem coe_algebraMap_mem_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 K)) (y : 𝓞 K) :
     ((algebraMap (𝓞 K) K y : K) : v.adicCompletion K) ∈ v.adicCompletionIntegers K := by
   rw [coe_mem_adicCompletionIntegers_iff, valuation_of_algebraMap]
   exact v.intValuation_le_one y
 
+/- English proof (translation)
+Establish `hc : ∀ z : K, (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z` using `fun z => by simp [algebraMap_adicCompletion]`. Rewrite using `[hc, hc, hc, map_mul]`.
+-/
 theorem coe_mul_adicCompletion (v : HeightOneSpectrum (𝓞 K)) (a b : K) :
     ((a * b : K) : v.adicCompletion K) = (a : v.adicCompletion K) * (b : v.adicCompletion K) := by
   have hc : ∀ z : K, (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z :=
     fun z => by simp [algebraMap_adicCompletion]
   rw [hc, hc, hc, map_mul]
 
+/- English proof (translation)
+Introduce `y _` and use `mul_mem hx (coe_algebraMap_mem_adicCompletionIntegers v y)`.
+-/
 theorem mem_localInvDifferent_of_mem {v : HeightOneSpectrum (𝓞 K)} {x : v.adicCompletion K}
     (hx : x ∈ v.adicCompletionIntegers K) : x ∈ localInvDifferent v :=
   fun y _ => mul_mem hx (coe_algebraMap_mem_adicCompletionIntegers v y)
 
+/- English proof (translation)
+Introduce `y hy` and use `by rw [mul_assoc] exact mul_mem ha (hx y hy)`.
+-/
 theorem mul_mem_localInvDifferent {v : HeightOneSpectrum (𝓞 K)} {a x : v.adicCompletion K}
     (ha : a ∈ v.adicCompletionIntegers K) (hx : x ∈ localInvDifferent v) :
     a * x ∈ localInvDifferent v :=
@@ -128,18 +174,29 @@ theorem mul_mem_localInvDifferent {v : HeightOneSpectrum (𝓞 K)} {a x : v.adic
     rw [mul_assoc]
     exact mul_mem ha (hx y hy)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset ((Valued.isOpen_valuationSubring (v.adicCompletion K)).mem_nhds (zero_mem _)) fun _ hx => mem_localInvDifferent_of_mem hx)`.
+-/
 theorem isOpen_localInvDifferent (v : HeightOneSpectrum (𝓞 K)) :
     IsOpen (localInvDifferent v : Set (v.adicCompletion K)) :=
   AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset
     ((Valued.isOpen_valuationSubring (v.adicCompletion K)).mem_nhds (zero_mem _))
     fun _ hx => mem_localInvDifferent_of_mem hx)
 
+/- English proof (translation)
+Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← coe_mul_adicCompletion, coe_mem_adicCompletionIntegers_iff]`.
+-/
 theorem coe_mem_localInvDifferent_iff (v : HeightOneSpectrum (𝓞 K)) (k : K) :
     (k : v.adicCompletion K) ∈ localInvDifferent v ↔
       ∀ y ∈ differentIdeal ℤ (𝓞 K), v.valuation K (k * algebraMap (𝓞 K) K y) ≤ 1 := by
   refine forall₂_congr fun y _ => ?_
   rw [← coe_mul_adicCompletion, coe_mem_adicCompletionIntegers_iff]
 
+/- English proof (translation)
+Rewrite using `[← forall_mul_mem_iff_forall_trace_mem]`. Repeatedly rewrite using `[coe_mem_localInvDifferent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `mem_integers_of_valuation_le_one (R := 𝓞 K) K _ fun v => h v y hy`.
+
+Introduce `h v y hy`. Take `⟨z, hz⟩` from `h y hy`. Rewrite using `[← hz, valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one z`.
+-/
 theorem forall_coe_mem_localInvDifferent_iff (k : K) :
     (∀ v : HeightOneSpectrum (𝓞 K), (k : v.adicCompletion K) ∈ localInvDifferent v) ↔
       ∀ a : 𝓞 K, Algebra.trace ℚ K (k * algebraMap (𝓞 K) K a) ∈ (algebraMap ℤ ℚ).range := by
@@ -153,14 +210,38 @@ theorem forall_coe_mem_localInvDifferent_iff (k : K) :
     rw [← hz, valuation_of_algebraMap]
     exact v.intValuation_le_one z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_add_fst (x y : 𝔸[K]) : (x + y).1 = x.1 + y.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_add_snd (x y : 𝔸[K]) : (x + y).2 = x.2 + y.2 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_sub_fst (x y : 𝔸[K]) : (x - y).1 = x.1 - y.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_sub_snd (x y : 𝔸[K]) : (x - y).2 = x.2 - y.2 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_zero_fst : (0 : 𝔸[K]).1 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_zero_snd : (0 : 𝔸[K]).2 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_algebraMap_fst (k : K) :
     (algebraMap K 𝔸[K] k).1 = algebraMap K (InfiniteAdeleRing K) k := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adeleRing_algebraMap_snd (k : K) :
     (algebraMap K 𝔸[K] k).2 = algebraMap K (FiniteAdeleRing (𝓞 K) K) k := rfl
 
@@ -172,32 +253,50 @@ def finiteInvDifferent : AddSubgroup (FiniteAdeleRing (𝓞 K) K) where
   add_mem' ha hb v := add_mem (ha v) (hb v)
   neg_mem' ha v := neg_mem (ha v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_finiteInvDifferent {a : FiniteAdeleRing (𝓞 K) K} :
     a ∈ finiteInvDifferent K ↔ ∀ v : HeightOneSpectrum (𝓞 K), a v ∈ localInvDifferent v :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `v` and use `mem_localInvDifferent_of_mem (ha v)`.
+-/
 theorem mem_finiteInvDifferent_of_mem_integralFiniteAdeles {a : FiniteAdeleRing (𝓞 K) K}
     (ha : a ∈ integralFiniteAdeles (𝓞 K) K) : a ∈ finiteInvDifferent K :=
   fun v => mem_localInvDifferent_of_mem (ha v)
 
 variable (K) in
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset ((isOpen_integralFiniteAdeles (R := 𝓞 K) (K := K)).mem_nhds (zero_mem _)) fun _ ha => mem_finiteInvDifferent_of_mem_integralFiniteAdeles ha)`.
+-/
 theorem isOpen_finiteInvDifferent :
     IsOpen (finiteInvDifferent K : Set (FiniteAdeleRing (𝓞 K) K)) :=
   AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset
     ((isOpen_integralFiniteAdeles (R := 𝓞 K) (K := K)).mem_nhds (zero_mem _))
     fun _ ha => mem_finiteInvDifferent_of_mem_integralFiniteAdeles ha)
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles (R := 𝓞 K) a`. Conclude with `⟨k, mem_finiteInvDifferent_of_mem_integralFiniteAdeles hk⟩`.
+-/
 theorem exists_sub_mem_finiteInvDifferent (a : FiniteAdeleRing (𝓞 K) K) :
     ∃ k : K, a - algebraMap K (FiniteAdeleRing (𝓞 K) K) k ∈ finiteInvDifferent K := by
   obtain ⟨k, hk⟩ := exists_sub_mem_integralFiniteAdeles (R := 𝓞 K) a
   exact ⟨k, mem_finiteInvDifferent_of_mem_integralFiniteAdeles hk⟩
 
+/- English proof (translation)
+The claim follows from `forall_coe_mem_localInvDifferent_iff k`.
+-/
 theorem algebraMap_mem_finiteInvDifferent_iff (k : K) :
     algebraMap K (FiniteAdeleRing (𝓞 K) K) k ∈ finiteInvDifferent K ↔
       ∀ a : 𝓞 K, Algebra.trace ℚ K (k * algebraMap (𝓞 K) K a) ∈ (algebraMap ℤ ℚ).range :=
   forall_coe_mem_localInvDifferent_iff k
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(algebraMap_mem_finiteInvDifferent_iff k).mp hk 1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[map_one, mul_one]`. Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_trace_eq_intCast {k : K}
     (hk : algebraMap K (FiniteAdeleRing (𝓞 K) K) k ∈ finiteInvDifferent K) :
     ∃ n : ℤ, (Algebra.trace ℚ K k : ℝ) = n := by
@@ -212,12 +311,18 @@ variable (K) in
 def invDifferentAdeles : AddSubgroup 𝔸[K] :=
   (⊤ : AddSubgroup (InfiniteAdeleRing K)).prod (finiteInvDifferent K)
 
+/- English proof (translation)
+Conclude with `⟨fun h => h.2, fun h => ⟨AddSubgroup.mem_top _, h⟩⟩`.
+-/
 theorem mem_invDifferentAdeles {x : 𝔸[K]} :
     x ∈ invDifferentAdeles K ↔ x.2 ∈ finiteInvDifferent K := by
   exact ⟨fun h => h.2, fun h => ⟨AddSubgroup.mem_top _, h⟩⟩
 
 variable (K) in
 
+/- English proof (translation)
+Establish `: (invDifferentAdeles K : Set 𝔸[K]) = Prod.snd ⁻¹' (finiteInvDifferent K : Set (FiniteAdeleRing (𝓞 K) K))`. Use extensionality with `x`. Conclude with `mem_invDifferentAdeles`. Rewrite using `[this]`. Conclude with `(isOpen_finiteInvDifferent K).preimage continuous_snd`.
+-/
 theorem isOpen_invDifferentAdeles : IsOpen (invDifferentAdeles K : Set 𝔸[K]) := by
   have : (invDifferentAdeles K : Set 𝔸[K]) =
       Prod.snd ⁻¹' (finiteInvDifferent K : Set (FiniteAdeleRing (𝓞 K) K)) := by
@@ -226,11 +331,17 @@ theorem isOpen_invDifferentAdeles : IsOpen (invDifferentAdeles K : Set 𝔸[K]) 
   rw [this]
   exact (isOpen_finiteInvDifferent K).preimage continuous_snd
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_sub_mem_finiteInvDifferent x.2`. Conclude with `⟨k, mem_invDifferentAdeles.mpr hk⟩`.
+-/
 theorem exists_sub_mem_invDifferentAdeles (x : 𝔸[K]) :
     ∃ k : K, x - algebraMap K 𝔸[K] k ∈ invDifferentAdeles K := by
   obtain ⟨k, hk⟩ := exists_sub_mem_finiteInvDifferent x.2
   exact ⟨k, mem_invDifferentAdeles.mpr hk⟩
 
+/- English proof (translation)
+Rewrite using `[mem_invDifferentAdeles, Submodule.mem_traceDual]`. Use `(algebraMap_mem_finiteInvDifferent_iff k).trans ⟨fun h a ha => ?_, fun h a => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Submodule.mem_one.mp ha`. Simplify `h b` using `[Algebra.traceForm_apply]`. Simplify `h _ (Submodule.mem_one.mpr ⟨a, rfl⟩)` using `[Algebra.traceForm_apply]`.
+-/
 theorem algebraMap_mem_invDifferentAdeles_iff (k : K) :
     algebraMap K 𝔸[K] k ∈ invDifferentAdeles K ↔
       k ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 K) K) := by
@@ -240,6 +351,11 @@ theorem algebraMap_mem_invDifferentAdeles_iff (k : K) :
     simpa [Algebra.traceForm_apply] using h b
   · simpa [Algebra.traceForm_apply] using h _ (Submodule.mem_one.mpr ⟨a, rfl⟩)
 
+/- English proof (translation)
+Establish `hd : algebraMap K (FiniteAdeleRing (𝓞 K) K) (k' - k) ∈ finiteInvDifferent K`. Use `sub_mem hk hk'` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left, ← map_sub]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `exists_trace_eq_intCast hd`. Establish `: -infiniteTrace K (x - algebraMap K _ k) = -infiniteTrace K (x - algebraMap K _ k') - n`.
+
+Rewrite using `[← hn, ← infiniteTrace_algebraMap]`. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, AddChar.map_sub_eq_div, fourierChar_intCast, div_one]`.
+-/
 theorem fourierChar_infiniteTrace_eq (x : InfiniteAdeleRing K) (a : FiniteAdeleRing (𝓞 K) K)
     {k k' : K} (hk : a - algebraMap K _ k ∈ finiteInvDifferent K)
     (hk' : a - algebraMap K _ k' ∈ finiteInvDifferent K) :
@@ -260,6 +376,9 @@ variable (K) in
 def adelicCharFun (x : 𝔸[K]) : Circle :=
   𝐞 (-infiniteTrace K (x.1 - algebraMap K _ (exists_sub_mem_finiteInvDifferent x.2).choose))
 
+/- English proof (translation)
+The claim follows from `fourierChar_infiniteTrace_eq _ _ (exists_sub_mem_finiteInvDifferent x.2).choose_spec hk`.
+-/
 theorem adelicCharFun_eq (x : 𝔸[K]) {k : K}
     (hk : x.2 - algebraMap K _ k ∈ finiteInvDifferent K) :
     adelicCharFun K x = 𝐞 (-infiniteTrace K (x.1 - algebraMap K _ k)) :=
@@ -287,13 +406,24 @@ def adelicChar : AddChar 𝔸[K] Circle where
     simp only [adeleRing_add_fst, map_add, map_sub]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adelicChar_apply (x : 𝔸[K]) : adelicChar K x = adelicCharFun K x := rfl
 
+/- English proof (translation)
+The claim follows from `adelicCharFun_eq x hk`.
+-/
 theorem adelicChar_eq (x : 𝔸[K]) {k : K}
     (hk : x.2 - algebraMap K _ k ∈ finiteInvDifferent K) :
     adelicChar K x = 𝐞 (-infiniteTrace K (x.1 - algebraMap K _ k)) :=
   adelicCharFun_eq x hk
 
+/- English proof (translation)
+Rewrite using `[adelicChar_eq (k := a)]`. Use `congr 3 show algebraMap K (InfiniteAdeleRing K) a + y.1 - algebraMap K _ a = y.1`. Normalize the expressions using the abelian group laws. Use `show algebraMap K (FiniteAdeleRing (𝓞 K) K) a + y.2 - algebraMap K _ a ∈ _`. Rewrite using `[add_sub_cancel_left]`.
+
+Conclude with `mem_invDifferentAdeles.mp hy`.
+-/
 theorem adelicChar_algebraMap_add (a : K) {y : 𝔸[K]} (hy : y ∈ invDifferentAdeles K) :
     adelicChar K (algebraMap K 𝔸[K] a + y) = 𝐞 (-infiniteTrace K y.1) := by
   rw [adelicChar_eq (k := a)]
@@ -304,18 +434,32 @@ theorem adelicChar_algebraMap_add (a : K) {y : 𝔸[K]} (hy : y ∈ invDifferent
     rw [add_sub_cancel_left]
     exact mem_invDifferentAdeles.mp hy
 
+/- English proof (translation)
+Simplify using `using adelicChar_algebraMap_add (0 : K) hy`.
+-/
 theorem adelicChar_of_mem_invDifferentAdeles {y : 𝔸[K]} (hy : y ∈ invDifferentAdeles K) :
     adelicChar K y = 𝐞 (-infiniteTrace K y.1) := by
   simpa using adelicChar_algebraMap_add (0 : K) hy
 
+/- English proof (translation)
+Simplify using `using adelicChar_algebraMap_add k (zero_mem (invDifferentAdeles K))`.
+-/
 theorem adelicChar_algebraMap (k : K) : adelicChar K (algebraMap K 𝔸[K] k) = 1 := by
   simpa using adelicChar_algebraMap_add k (zero_mem (invDifferentAdeles K))
 
+/- English proof (translation)
+The claim follows from `adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (zero_mem _))`.
+-/
 theorem adelicChar_infinite (x : InfiniteAdeleRing K) :
     adelicChar K ((x, 0) : InfiniteAdeleRing K × FiniteAdeleRing (𝓞 K) K) =
       𝐞 (-infiniteTrace K x) :=
   adelicChar_of_mem_invDifferentAdeles (mem_invDifferentAdeles.mpr (zero_mem _))
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Take `⟨k, hk⟩` from `exists_sub_mem_finiteInvDifferent x0.2`. Establish `hU : IsOpen {x : 𝔸[K] | x.2 - algebraMap K _ k ∈ finiteInvDifferent K}` using `(isOpen_finiteInvDifferent K).preimage (continuous_snd.sub continuous_const)`. Establish `heq : (fun x : 𝔸[K] => 𝐞 (-infiniteTrace K (x.1 - algebraMap K _ k))) =ᶠ[𝓝 x0] adelicChar K` using `Filter.eventually_of_mem (hU.mem_nhds hk) fun x hx => (adelicChar_eq x hx).symm`.
+
+Use `ContinuousAt.congr ?_ heq` and prove the remaining obligations. Conclude with `(Real.continuous_fourierChar.comp ((continuous_infiniteTrace K).comp (continuous_fst.sub continuous_const)).neg).continuousAt`.
+-/
 theorem continuous_adelicChar : Continuous (adelicChar K) := by
   rw [continuous_iff_continuousAt]
   intro x0
@@ -329,6 +473,15 @@ theorem continuous_adelicChar : Continuous (adelicChar K) := by
   exact (Real.continuous_fourierChar.comp ((continuous_infiniteTrace K).comp
     (continuous_fst.sub continuous_const)).neg).continuousAt
 
+/- English proof (translation)
+Introduce `h`. Use `set n := Module.finrank ℚ K with hn`. Establish `hn0 : (n : ℚ) ≠ 0`. Use `Module.finrank_pos (R := ℚ) (M := K)` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `htr : Algebra.trace ℚ K (algebraMap ℚ K (1 / (2 * n))) = 1 / 2`. Rewrite using `[Algebra.trace_algebraMap, ← hn, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : adelicChar K ((algebraMap K (InfiniteAdeleRing K) (algebraMap ℚ K (1 / (2 * n))), 0) : InfiniteAdeleRing K × FiniteAdeleRing (𝓞 K) K) = 1`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[adelicChar_infinite, infiniteTrace_algebraMap, htr, fourierChar_eq_one_iff]`. Take `⟨m, hm⟩` from `h1`. Establish `: (2 * m : ℝ) = -1`. Move the coercions through the operations in `at hm`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (2 * m : ℤ) = -1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem adelicChar_ne_one : adelicChar K ≠ 1 := by
   intro h
   set n := Module.finrank ℚ K with hn

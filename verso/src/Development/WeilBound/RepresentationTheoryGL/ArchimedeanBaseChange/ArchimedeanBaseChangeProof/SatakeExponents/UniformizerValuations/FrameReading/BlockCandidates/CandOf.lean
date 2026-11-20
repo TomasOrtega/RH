@@ -19,6 +19,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {hR : Rd.R
   {χ : Rd.ChAlg (fun x => F.g x i) (X F i) →⋆ₐ[ℂ] ℂ}
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨Pa, ta⟩` from `h5 E _ O.s₁ O.good₁ O.untw₁ fun τ => ⟨_, O.inf₁ τ⟩`. Take `⟨Pb, tb⟩` from `h5 E _ O.s₂ O.good₂ O.untw₂ fun τ => ⟨_, O.inf₂ τ⟩`. Take `⟨D, hJ⟩` from `h6 E n _ _ F₀.μ F₀.e Pa Pb F₀.hμ (Nat.add_sub_of_le (F₀.C.le i))`. Take `⟨j, hj⟩` from `Function.ne_iff.1 O.ne`. Use `⟨Pa, Pb, D, ⟨O.good₁, O.good₂, O.untw₁, O.untw₂, ta, tb, hJ⟩, O.leaves₁, O.leaves₂, fun τ => ?_, fun τ => ?_, O.F j, O.mem j, hj, O.type j⟩` and prove the remaining obligations.
+
+Use `O.inf₁ τ` as an intermediate fact. Rewrite `this` using `[ia τ]`. Conclude with `this`. Use `O.inf₂ τ` as an intermediate fact. Rewrite `this` using `[ib τ]`.
+
+Conclude with `this`.
+-/
 theorem cand_of (O : BO F i χ) (ia : ∀ τ, mOf O.χa τ = mOf (F₀.A i).χa τ) (ib : ∀ τ, mOf O.χb τ = mOf (F₀.A i).χb τ)
     (h5 : PreOfTree) (h6 : JoinEx) : ∃ Pa Pb D, F₀.Cand F.d i O.s₁ O.s₂ Pa Pb D := by
   obtain ⟨Pa, ta⟩ := h5 E _ O.s₁ O.good₁ O.untw₁ fun τ => ⟨_, O.inf₁ τ⟩

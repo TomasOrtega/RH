@@ -36,6 +36,9 @@ def hfsFormBC (F : CoefFrame ι) (C : CoefPk X n (DecoSet X.E n ST SG))
       congrArg Units.val (LevFam.coefMap_chr ι Λ g.2)
     rw [hfsJ_smul, hrho, hc]
 
+/- English proof (translation)
+Rewrite using `[show (Equiv.refl (DecoSet X.E n ST SG)).toEmbedding = Function.Embedding.refl _ from rfl, Finset.map_refl]`. Both sides reduce to the same expression.
+-/
 theorem hfs_nb (C : CoefPk X n (DecoSet X.E n ST SG)) (C' : CoefPk (X.coefExt L ι) n (DecoSet X.E n ST SG))
     (Λ : LevFam X.E X.K n SG) (Λ' : LevFam X.E L n SG) (P : Ideal (𝓞 X.E)) (i : ℕ) (d' : DecoSet X.E n ST SG) :
     ((formPts (X := X.coefExt L ι) C' Λ').nb P i d').map (Equiv.refl (DecoSet X.E n ST SG)).toEmbedding =
@@ -44,6 +47,9 @@ theorem hfs_nb (C : CoefPk X n (DecoSet X.E n ST SG)) (C' : CoefPk (X.coefExt L 
     Finset.map_refl]
   rfl
 
+/- English proof (translation)
+Rewrite using `[show (Equiv.refl (DecoSet X.E n ST SG)).toEmbedding = Function.Embedding.refl _ from rfl, Finset.map_refl]`. Both sides reduce to the same expression.
+-/
 theorem hfs_nbI (C : CoefPk X n (DecoSet X.E n ST SG)) (C' : CoefPk (X.coefExt L ι) n (DecoSet X.E n ST SG))
     (Λ : LevFam X.E X.K n SG) (Λ' : LevFam X.E L n SG) (P : Ideal (𝓞 X.E)) (s : List ℕ) (d' : DecoSet X.E n ST SG) :
     ((formPts (X := X.coefExt L ι) C' Λ').nbI P s d').map (Equiv.refl (DecoSet X.E n ST SG)).toEmbedding =
@@ -52,6 +58,11 @@ theorem hfs_nbI (C : CoefPk X n (DecoSet X.E n ST SG)) (C' : CoefPk (X.coefExt L
     Finset.map_refl]
   rfl
 
+/- English proof (translation)
+Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d'`. Simplify using `only [heckeD_op_apply, GSDBC.lift_apply, map_sum]`. Rewrite using `[← hnb d', Finset.sum_map]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem lifts_heckeD_of_nb_map {S : GSD X.K} {S' : GSD L} (b : GSDBC ι S S') (c : DecoPts S X.E n ST SG)
     (c' : DecoPts S' X.E n ST SG) (P : Ideal (𝓞 X.E)) (i : ℕ)
     (hnb : ∀ d', (c'.nb P i d').map b.eD.toEmbedding = c.nb P i (b.eD d')) :
@@ -63,6 +74,11 @@ private theorem lifts_heckeD_of_nb_map {S : GSD X.K} {S' : GSD L} (b : GSDBC ι 
   rw [← hnb d', Finset.sum_map]
   rfl
 
+/- English proof (translation)
+Introduce `φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d'`. Simplify using `only [heckeI_op_apply, GSDBC.lift_apply, map_sum]`. Rewrite using `[← hnb d', Finset.sum_map]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem lifts_heckeI_of_nbI_map {S : GSD X.K} {S' : GSD L} (b : GSDBC ι S S') (c : DecoPts S X.E n ST SG)
     (c' : DecoPts S' X.E n ST SG) (P : Ideal (𝓞 X.E)) (s : List ℕ)
     (hnb : ∀ d', (c'.nbI P s d').map b.eD.toEmbedding = c.nbI P s (b.eD d')) :
@@ -74,6 +90,11 @@ private theorem lifts_heckeI_of_nbI_map {S : GSD X.K} {S' : GSD L} (b : GSDBC ι
   rw [← hnb d', Finset.sum_map]
   rfl
 
+/- English proof (translation)
+Take `⟨F⟩ : Nonempty (CoefFrame ι)` from `CoefFrame.nonempty (ι := ι)`. Use `(hfsFormBC ι F C rho' pair' Nab' Del' hrho Λ).splitOver F (heckeFamAll (formPts C Λ) S0) _ ?_ hc hp hsp` and prove the remaining obligations. Introduce `x`. Consider the cases of `x with`. Consider the case `inl x => exact lifts_heckeD_of_nb_map ι _ _ _ x.1.1.asIdeal x.2 (fun d' => hfs_nb ι C _ Λ _ x.1.1.asIdeal x.2 d')`.
+
+Consider the case `inr x => exact lifts_heckeI_of_nbI_map ι _ _ _ x.1.1.asIdeal x.2 (fun d' => hfs_nbI ι C _ Λ _ x.1.1.asIdeal x.2 d')`.
+-/
 theorem hfs_splitAll_formPts (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam X.E X.K n SG)
     (S0 : Set (HeightOneSpectrum (𝓞 X.E))) [FiniteDimensional X.K (formGSD C Λ).EqFun] (hc : HeckeCommAll (formPts C Λ) S0)
     {p : X.K[X]} (hp : HeckePolyFor (heckeFamAll (formPts C Λ) S0) p) (hsp : (p.map ι).Splits)
@@ -88,6 +109,9 @@ theorem hfs_splitAll_formPts (C : CoefPk X n (DecoSet X.E n ST SG)) (Λ : LevFam
   | inl x => exact lifts_heckeD_of_nb_map ι _ _ _ x.1.1.asIdeal x.2 (fun d' => hfs_nb ι C _ Λ _ x.1.1.asIdeal x.2 d')
   | inr x => exact lifts_heckeI_of_nbI_map ι _ _ _ x.1.1.asIdeal x.2 (fun d' => hfs_nbI ι C _ Λ _ x.1.1.asIdeal x.2 d')
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `haveI := hfd`. Establish `e : ((Λ.coefMap ι).reidx rfl).inv = Λ.inv.coefMap ι` using `LevFam.coefMap_inv (ι := ι) Λ`. Rewrite using `[e]`. Conclude with `hfs_splitAll_formPts ι (squarePk X lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N) Λ.inv S0 hc hp hsp (squarePk (X.coefExt L ι) lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N).rho (squarePk (X.coefExt L ι) lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N).pair (squarePk (X.coefExt L ι) lam fun d : D …`.
+-/
 theorem hfs_splitAll_sq_reidx {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (h : SG₁ = SG₂) (lam : X.Tau → DomWeight n)
     (Λ : LevFam X.E X.K n SG₂) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
     (hfd : FiniteDimensional X.K (formGSD (squarePk X lam fun d : DecoSet X.E n ∅ SG₂ => d.1.N) Λ.inv).EqFun)
@@ -107,6 +131,9 @@ theorem hfs_splitAll_sq_reidx {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E
     (squarePk (X.coefExt L ι) lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N).Del
     (fun γ v => hfs_rhoV (ι := ι) (lam := lam) (emb := X.emb) (γ := ufGL X.E n γ) (v := v))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `haveI := hfd`. Establish `e : ((Λ.coefMap ι).reidx rfl).inv = Λ.inv.coefMap ι` using `LevFam.coefMap_inv (ι := ι) Λ`. Rewrite using `[e]`. Conclude with `hfs_splitAll_formPts ι (roundPk X lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N) Λ.inv S0 hc hp hsp (roundPk (X.coefExt L ι) lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N).rho (roundPk (X.coefExt L ι) lam fun d : DecoSet X.E n ∅ SG₁ => d.1.N).pair (roundPk (X.coefExt L ι) lam fun d : DecoS …`.
+-/
 theorem hfs_splitAll_rd_reidx {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (h : SG₁ = SG₂) (lam : X.Tau → DomWeight n)
     (Λ : LevFam X.E X.K n SG₂) (S0 : Set (HeightOneSpectrum (𝓞 X.E)))
     (hfd : FiniteDimensional X.K (formGSD (roundPk X lam fun d : DecoSet X.E n ∅ SG₂ => d.1.N) Λ.inv).EqFun)

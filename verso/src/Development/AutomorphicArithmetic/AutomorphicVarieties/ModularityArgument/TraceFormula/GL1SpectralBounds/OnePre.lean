@@ -5,6 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrredu
 open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `a b h`. Establish `: b = a` using `Fin.ext (by simpa using h)`. Simplify using `[this]`.
+
+Consider the case `succ d ih`. Introduce `a b h`. Establish `hb` using `b.2`. Establish `h1` using `ih a ⟨a + d, by omega⟩ rfl`. Establish `h2 : t b < t ⟨a + d, by omega⟩` using `ht (Fin.lt_def.2 (by simp; omega))`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem add_le_of_strictAnti {n : ℕ} {t : Fin n → ℤ} (ht : StrictAnti t) (d : ℕ) :
     ∀ a b : Fin n, (b : ℕ) = a + d → t b + d ≤ t a := by
   induction d with
@@ -20,6 +27,19 @@ private theorem add_le_of_strictAnti {n : ℕ} {t : Fin n → ℤ} (ht : StrictA
     push_cast
     omega
 
+/- English proof (translation)
+Use `choose! f hf using hz`. Set `s : Finset ℤ` to `m.toFinset.image f`. Establish `hinj : Set.InjOn f m.toFinset` using `fun a ha b hb e => by`. Rewrite using `[hf a (by simpa using ha), hf b (by simpa using hb), e]`. Establish `hcs : s.card = n`.
+
+Rewrite using `[Finset.card_image_of_injOn hinj, Multiset.toFinset_card_of_nodup hn, hc]`. Set `e` to `s.orderEmbOfFin hcs`. Set `t : Fin n → ℤ` to `fun k => e k.rev`. Establish `ht : StrictAnti t` using `fun a b h => e.strictMono (Fin.rev_lt_rev.2 h)`. Use `⟨⟨fun k => t k + (k : ℕ), fun a b hab => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hab' : (a : ℕ) ≤ b` using `hab`. Use `add_le_of_strictAnti ht ((b : ℕ) - a) a b (by omega)` as an intermediate fact. Establish `e1 : (((b : ℕ) - (a : ℕ) : ℕ) : ℤ) = (b : ℕ) - (a : ℕ)` using `by omega`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1 : (Finset.univ.val.map fun k : Fin n => e k) = s.val` using `congrArg Finset.val (Finset.map_orderEmbOfFin_univ s hcs)`. Establish `h2 : s.val = m.map f`. Rewrite using `[Finset.image_val_of_injOn hinj, Multiset.toFinset_val, Multiset.dedup_eq_self.2 hn]`. Establish `h3 : m = (m.map f).map fun k : ℤ => (k : ℂ) + ((n : ℂ) - 1) / 2`. Rewrite using `[Multiset.map_map]`.
+
+Use `conv_lhs => rw [← Multiset.map_id m]`. Conclude with `Multiset.map_congr rfl fun z hz => hf z hz`. Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[← h2, ← h1, Multiset.map_map, infOfWeight]`. Use `conv_lhs => rw [← Finset.map_univ_equiv Fin.revPerm, Finset.map_val, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, Function.Embedding.coeFn_mk, Equiv.coe_toEmbedding, Fin.revPerm_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_weight {n : ℕ} (m : Multiset ℂ) (hc : Multiset.card m = n) (hn : m.Nodup)
     (hz : ∀ z ∈ m, ∃ k : ℤ, z = (k : ℂ) + ((n : ℂ) - 1) / 2) : ∃ lam : Formalism.BasicNotions.DomWeight n, m = infOfWeight lam := by
   classical
@@ -54,6 +74,11 @@ private theorem exists_weight {n : ℕ} (m : Multiset ℂ) (hc : Multiset.card m
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn π hr hd`. Establish `hl : ∀ w, ∃ σ, IsLocCompGL π.V w σ` using `fun w => (GlobalTheory.CuspRep.LocEx.exists_isLocComp UpperTheory.V.Af.formsFiniteGL E n π w).imp fun σ h => ((cuspSub_iff π).2.1 w σ).2 h.1`. Use `choose σ hσ using hl`. Use `⟨⟨1, fun _ => n, by simp, fun _ => π.V, fun _ w => σ w, fun _ τ => (CG.mk π).infChar τ, fun _ => hn, fun _ => hd, fun _ w => hσ w, fun _ τ => ?_⟩, ⟨rfl, fun _ => ⟨rfl, rfl⟩⟩, fun τ => ?_⟩` and prove the remaining obligations. Conclude with `((cuspSub_iff π).2.2 τ _).2 (GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) τ)`.
+
+Take `⟨h1, h2⟩` from `hr τ`. Take `⟨lam, hlam⟩` from `exists_weight _ ((CG.mk π).card_infChar τ) h1 h2`. Conclude with `⟨lam, by simpa using hlam⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.onePre :
     OnePre := by
   intro E _ _ _ n hn π hr hd

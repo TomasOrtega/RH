@@ -7,6 +7,13 @@ open scoped TensorProduct
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simpa using hasDerivAt_const (0 : ℝ) (0 : Fin Ξ.d → ℂ)`. Consider the case `add x y hx hy`. Simplify `hx.fun_add hy` using `only [map_add, Pi.add_apply, Matrix.mulVec_add]`. Consider the case `tmul φ v`.
+
+Establish `h1` using `GlobalTheory.CuspRep.hasDerivAt_curve φ h c X h0 hX`. Establish `h2 : HasDerivAt (fun t => Ξ.mat (c t) *ᵥ v) (Ξ.dmat X *ᵥ v) 0` using `hasDerivAt_pi.2 fun j => HasDerivAt.fun_sum (u := Finset.univ) fun i _ => (Ξ.hasDerivAt_curve c X h0 hX j i).mul_const (v i)`. Establish `h3` using `h1.fun_smul h2`. Simplify using `only [h0, map_one, mul_one, Matrix.one_mulVec] at h3`. Establish `h4 : ev (smLie Ξ X (φ ⊗ₜ[ℂ] v)) h = φ.1 h • Ξ.dmat X *ᵥ v + lieD X φ.1 h • v`.
+
+Express the relevant statement in the definitionally equal form `ev ((lie E a X φ) ⊗ₜ[ℂ] v + φ ⊗ₜ[ℂ] (Ξ.dmat X *ᵥ v)) h = _`. Rewrite using `[map_add, Pi.add_apply, ev_tmul, ev_tmul, add_comm]`. Both sides reduce to the same expression. Rewrite using `[h4]`. Simplify `h3` using `only [ev_tmul, Matrix.mulVec_smul]`.
+-/
 private theorem hasDerivAt_evaluation_lie {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a)
     (X : Lie E a) (c : ℝ → GL (Fin a) (Cinf E)) (h0 : c 0 = 1) (hX : HasDerivAt (fun t => toL (c t).val) X 0)
     (h : GA E a) (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) :
@@ -29,6 +36,11 @@ private theorem hasDerivAt_evaluation_lie {E : Type} [Field E] [NumberField E] [
     rw [h4]
     simpa only [ev_tmul, Matrix.mulVec_smul] using h3
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ m g x c X h0 hX`. Establish `h1` using `(mulVecL (Ξ.mat g)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_evaluation_lie Ξ X c h0 hX (infGL E a g * finGL E a x) m)`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `e : infGL E a (g * c t) * finGL E a x = infGL E a g * finGL E a x * infGL E a (c t)`. Rewrite using `[map_mul, mul_assoc, mul_assoc, infGL_comm]`.
+
+Simplify using `only [Function.comp, mulVecL_apply, e, map_mul (Ξ.mat), Matrix.mulVec_mulVec]`.
+-/
 theorem evDeriv : EvDeriv := by
   intro E _ _ _ a Ξ m g x c X h0 hX
   have h1 := (mulVecL (Ξ.mat g)).hasFDerivAt.comp_hasDerivAt (0 : ℝ)

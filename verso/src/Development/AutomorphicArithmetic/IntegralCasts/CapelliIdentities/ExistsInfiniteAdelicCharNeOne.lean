@@ -1,6 +1,13 @@
 import Mathlib
 import GroundTheory.GlobalFields.TateThesis.AdelicCharLocal
 
+/- English proof (translation)
+Introduce `F _ _ w`. Use `⟨((2 * w.mult : ℕ) : w.Completion)⁻¹, fun h => ?_⟩` and prove the remaining obligations. Establish `hm : (w.mult : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr NumberField.InfinitePlace.mult_pos.ne'`. Establish `hx : 2 * Real.pi * -((w.mult : ℝ) * (((2 * w.mult : ℕ) : ℝ))⁻¹) = -Real.pi`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `h` using `[GroundTheory.Global.infiniteAdelicChar_apply, map_inv₀, map_natCast, ← Complex.ofReal_natCast, ← Complex.ofReal_inv, Complex.ofReal_re]`. Establish `h2` using `congrArg (fun c : Circle => (c : ℂ)) h`. Simplify using `only [Real.fourierChar_apply, hx, Circle.coe_one] at h2`. Rewrite `h2` using `[Complex.ofReal_neg, neg_mul, Complex.exp_neg, Complex.exp_pi_mul_I]`.
+
+Evaluate the numerical expressions using `at h2`.
+-/
 theorem UpperTheory.Reformulated.B.Rd3.exists_infiniteAdelicChar_ne_one :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
     (w : NumberField.InfinitePlace F),

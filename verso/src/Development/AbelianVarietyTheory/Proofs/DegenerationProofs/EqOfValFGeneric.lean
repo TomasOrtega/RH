@@ -13,6 +13,13 @@ open GlobalTheory.Points
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Establish `hs : ∀ w, y w ⤳ genericPoint M.Z` using `fun w => (hy w) ▸ specializes_rfl`. Establish `hm : ∀ x : Ω, x ∈ M.O (genericPoint M.Z)` using `fun x => by rw [RatModel.O_genericPoint]; trivial`. Set `β : Ω →+* K` to `(RatModel.valHomOf y _ hs).comp ((RingHom.id Ω).codRestrict (M.O (genericPoint M.Z)).toSubring hm)`. Take `⟨U, hU, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (X := M.Z) (x := genericPoint M.Z) (U := ⊤) trivial`. Establish `h1 : ⊤ ≤ y ⁻¹ᵁ U` using `fun w _ => by`.
+
+Express the relevant statement in the definitionally equal form `y w ∈ U`. Rewrite using `[hy]`. Conclude with `hz`. Establish `h2 : ⊤ ≤ M.pt ⁻¹ᵁ U` using `M.top_le_preimage_pt ⟨_, hz⟩`. Use `⟨β, ext_of_valR hU h1 (le_preimage_comp _ _ h2 (le_preimage_top _)) fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[valR_spMap_comp β M.pt U h2]`. Conclude with `(RatModel.val_valF ((top_le_preimage_iff _ _).1 h1) f).symm`.
+-/
 theorem RatModel.exists_eq_spMap_pt (M : RatModel o Ω) {K : Type} [Field K] (y : Sp K ⟶ M.Z)
     (hy : ∀ w, y w = genericPoint M.Z) : ∃ β : Ω →+* K, y = spMap β ≫ M.pt := by
   have hs : ∀ w, y w ⤳ genericPoint M.Z := fun w => (hy w) ▸ specializes_rfl
@@ -34,6 +41,9 @@ instance ZHPre.isIntegral : IsIntegral Q.G.left :=
   have := Q.semi
   isIntegral_left_of_isSemiAbelian Q.G
 
+/- English proof (translation)
+Establish `hw : η[Q.G].left ≫ Q.G.hom = 𝟙 _` using `Over.w η[Q.G]`. Establish `h1 : Q.G.hom (η[Q.G].left (genericPoint M.Z)) = genericPoint M.Z` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun f : M.Z ⟶ M.Z => f (genericPoint M.Z)) hw)`. Establish `h2` using `(genericPoint_specializes (η[Q.G].left (genericPoint M.Z))).map Q.G.hom.continuous`. Rewrite `h2` using `[h1]`. Conclude with `(h2.antisymm (genericPoint_specializes _)).eq`.
+-/
 theorem ZHPre.hom_genericPoint : Q.G.hom (genericPoint Q.G.left) = genericPoint M.Z := by
   have hw : η[Q.G].left ≫ Q.G.hom = 𝟙 _ := Over.w η[Q.G]
   have h1 : Q.G.hom (η[Q.G].left (genericPoint M.Z)) = genericPoint M.Z :=
@@ -42,6 +52,15 @@ theorem ZHPre.hom_genericPoint : Q.G.hom (genericPoint Q.G.left) = genericPoint 
   rw [h1] at h2
   exact (h2.antisymm (genericPoint_specializes _)).eq
 
+/- English proof (translation)
+Set `K : Type` to `Q.G.left.residueField (genericPoint Q.G.left)`. Set `x : Sp K ⟶ Q.G.left` to `Q.G.left.fromSpecResidueField (genericPoint Q.G.left)`. Establish `hx : ∀ w, x w = genericPoint Q.G.left` using `fun w => Scheme.fromSpecResidueField_apply _ _`. Establish `hx' : ∀ w, (x ≫ Q.G.hom) w = genericPoint M.Z` using `fun w => by`. Rewrite using `[Scheme.Hom.comp_apply, hx, Q.hom_genericPoint]`.
+
+Take `⟨β, hβ⟩` from `M.exists_eq_spMap_pt (x ≫ Q.G.hom) hx'`. Establish `hg : genericPoint M.Z ∈ U₀` using `(genericPoint_specializes hU.some).mem_open U₀.isOpen hU.some_mem`. Establish `hr : Set.range (x ≫ Q.G.hom) ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[hx', Scheme.Opens.range_ι]`.
+
+Conclude with `hg`. Set `y : Sp K ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι (x ≫ Q.G.hom) hr`. Establish `hy : y ≫ U₀.ι = x ≫ Q.G.hom` using `IsOpenImmersion.lift_fac _ _ _`. Set `g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀` to `Q.cart.1.lift x y hy.symm`. Establish `hg1 : g ≫ Q.φ = x` using `Q.cart.1.lift_fst x y hy.symm`.
+
+Establish `hg2 : g ≫ pullback.snd _ _ = y` using `Q.cart.1.lift_snd x y hy.symm`. Take `⟨jP, hj⟩` from `exists_le_preimage_of_iSup_eq_top (g ≫ pullback.fst ρ.P.A.hom Q.u₀) ρ.P.isLB.cover`. Use `⟨K, inferInstance, β, g, pullback.lift ((g ≫ pullback.fst _ _) ≫ ρ.P.A.hom) (g ≫ pullback.fst _ _) (Category.comp_id _), jP, ?_, pullback.lift_snd _ _ _, (top_le_preimage_iff _ _).1 hj, fun w => hg1 ▸ hx w⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg2, hy, hβ]`.
+-/
 theorem ZHPre.exists_generic (hU : (U₀ : Set M.Z).Nonempty) :
     ∃ (K : Type) (_ : Field K) (β : Ω →+* K) (g : Sp K ⟶ pullback ρ.P.A.hom Q.u₀)
       (r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left) (jP : ρ.P.L.ι),
@@ -70,6 +89,13 @@ theorem ZHPre.exists_generic (hU : (U₀ : Set M.Z).Nonempty) :
     (Category.comp_id _), jP, ?_, pullback.lift_snd _ _ _, (top_le_preimage_iff _ _).1 hj, fun w => hg1 ▸ hx w⟩
   rw [← Category.assoc, hg2, hy, hβ]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hne : ((X.basicOpen (f - f') : X.Opens) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`. Conclude with `fun h => h0 (sub_eq_zero.1 ((basicOpen_eq_bot_iff _).1 (SetLike.coe_injective h)))`. Establish `h1 : ⊤ ≤ x ⁻¹ᵁ X.basicOpen (f - f')` using `fun w _ => by`.
+
+Express the relevant statement in the definitionally equal form `x w ∈ X.basicOpen (f - f')`. Rewrite using `[hx]`. Conclude with `(genericPoint_specializes hne.some).mem_open (X.basicOpen _).isOpen hne.some_mem`. Establish `h2 : ⊤ ≤ x ⁻¹ᵁ U` using `le_preimage_mono x (X.basicOpen_le _) h1`. Establish `hu` using `(le_preimage_basicOpen_iff x h2 _).1 h1`.
+
+Establish `h3` using `h h2`. Rewrite `h3` using `[valF_eq_valR, valF_eq_valR, valR_eq x U h2, valR_eq x U h2]`. Rewrite `hu` using `[valR_eq x U h2, map_sub, h3, sub_self]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem eq_of_valF_generic {X : Scheme.{0}} [IsIntegral X] {K : Type} [Field K] (x : Sp K ⟶ X)
     (hx : ∀ w, x w = genericPoint X) {U : X.Opens} {f f' : Γ(X, U)}
     (h : ⊤ ≤ x ⁻¹ᵁ U → valF x U f = valF x U f') : f = f' := by
@@ -88,6 +114,13 @@ theorem eq_of_valF_generic {X : Scheme.{0}} [IsIntegral X] {K : Type} [Field K] 
   rw [valR_eq x U h2, map_sub, h3, sub_self] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Take `⟨K, _, β, g, r, jP, h1, h2, h3, h4⟩` from `Q.exists_generic hU`. Use function extensionality and compare the values at `j`. Take `⟨jL, rfl⟩ : ∃ jL, j = fun _ => jL` from `⟨j 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Use `eq_of_valF_generic (g ≫ Q.φ) h4 fun hm => ?_` and prove the remaining obligations. Establish `hm'` using `(top_le_preimage_iff _ _).1 hm`.
+
+Establish `hV : Set.range (g ≫ Q.φ) ⊆ V` using `fun y hy => (hm' hy).1`. Establish `hL : Set.range (g ≫ Q.φ) ⊆ Q.L.L.U jL` using `fun y hy => Set.mem_iInter.1 (hm' hy).2 0`. Establish `e` using `(h K β g r jP jL h1 h2 h3 hL hV).symm.trans (h' K β g r jP jL h1 h2 h3 hL hV)`. Use `mul_left_cancel₀ (zpow_ne_zero _ ?_) e` and prove the remaining obligations. Use `IsUnit.ne_zero ?_` and prove the remaining obligations.
+
+Establish `hw : ⊤ ≤ g ⁻¹ᵁ (LB.div (ρ.P.L.pull (pullback.fst ρ.P.A.hom Q.u₀)) (Q.L.L.pull Q.φ)).U (fun _ => jP, fun _ => jL)` using `fun w _ => ⟨Set.mem_iInter.2 fun _ => h3 ⟨w, Scheme.Hom.comp_apply _ _ _⟩, Set.mem_iInter.2 fun _ => hL ⟨w, Scheme.Hom.comp_apply _ _ _⟩⟩`. Rewrite using `[valF_eq_valR, valR_eq g _ hw]`. Conclude with `(Units.isUnit _).map _`.
+-/
 theorem ZHPre.eq_of_genVal (hU : (U₀ : Set M.Z).Nonempty) (k : ℤ) {I : Type} [Fintype I]
     (t : I → LB.Sec (LPow ρ.P.A ρ.P.L k (baseOver (Sp S.R)))) (c : I → Ω) (V : Q.G.left.Opens)
     (σ σ' : ∀ j, Γ(Q.G.left, V ⊓ (LB.LinComb Q.L.L (K := Fin 1) (fun _ => 𝟙 Q.G.left) (fun _ => k)).U j))

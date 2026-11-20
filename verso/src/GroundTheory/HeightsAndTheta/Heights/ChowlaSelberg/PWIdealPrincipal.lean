@@ -9,6 +9,9 @@ open scoped nonZeroDivisors
 
 noncomputable section
 
+/- English proof (translation)
+Set `e : Λ ≃ₗ[ℤ] scaleLattice c Λ` to `Submodule.equivMapOfInjective (LinearMap.mulLeft ℤ c) (mul_right_injective₀ hc) Λ`. Rewrite using `[eisensteinSum, eisensteinSum, ← e.toEquiv.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun l ↦ ?_` and prove the remaining obligations. Use `show ((c * (l : ℂ)) ^ n)⁻¹ = (c ^ n)⁻¹ * ((l : ℂ) ^ n)⁻¹`. Rewrite using `[mul_pow, mul_inv]`.
+-/
 theorem eisensteinSum_scale_of_ne_zero (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c ≠ 0) (n : ℕ) :
     eisensteinSum (scaleLattice c Λ) n = (c ^ n)⁻¹ * eisensteinSum Λ n := by
   let e : Λ ≃ₗ[ℤ] scaleLattice c Λ :=
@@ -18,6 +21,9 @@ theorem eisensteinSum_scale_of_ne_zero (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : 
   show ((c * (l : ℂ)) ^ n)⁻¹ = (c ^ n)⁻¹ * ((l : ℂ) ^ n)⁻¹
   rw [mul_pow, mul_inv]
 
+/- English proof (translation)
+Simplify using `only [latticeDiscr, latticeG₂, latticeG₃, eisensteinSum_scale_of_ne_zero Λ hc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem latticeDiscr_scale_of_ne_zero (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c ≠ 0) :
     latticeDiscr (scaleLattice c Λ) = (c ^ 12)⁻¹ * latticeDiscr Λ := by
   simp only [latticeDiscr, latticeG₂, latticeG₃, eisensteinSum_scale_of_ne_zero Λ hc]
@@ -25,6 +31,13 @@ theorem latticeDiscr_scale_of_ne_zero (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.mul_le]`. Introduce `m hm l hl`. Take `⟨y, hy, rfl⟩` from `(mem_idealLattice σ).1 hm`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hy`.
+
+Establish `hb : σ (algebraMap (𝓞 K) K b) ∈ latticeEnd L`. Rewrite using `[hL]`. Conclude with `(mem_cmRing σ).2 ⟨b, rfl⟩`. Use `Submodule.mem_map.2 ⟨σ (algebraMap (𝓞 K) K b) * l, hb l hl, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, Algebra.smul_def, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[scaleLattice, Submodule.map_le_iff_le_comap]`. Introduce `l hl`. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`. Conclude with `Submodule.mul_mem_mul (map_mem_idealLattice σ (FractionalIdeal.mem_spanSingleton_self _ x)) hl`.
+-/
 theorem idealLattice_spanSingleton_mul (σ : K →+* ℂ) (L : PeriodPair) (hL : latticeEnd L = cmRing σ)
     (x : K) :
     idealLattice σ (FractionalIdeal.spanSingleton (𝓞 K)⁰ x) * L.lattice =
@@ -50,6 +63,9 @@ def spanNZ (a : 𝓞 K) (ha : a ≠ 0) : (Ideal (𝓞 K))⁰ :=
   ⟨Ideal.span {a}, mem_nonZeroDivisors_of_ne_zero (by rwa [ne_eq, Ideal.zero_eq_bot,
     Ideal.span_singleton_eq_bot])⟩
 
+/- English proof (translation)
+Establish `haK : algebraMap (𝓞 K) K a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 ha`. Establish `hσ : σ (algebraMap (𝓞 K) K a) ≠ 0` using `(map_ne_zero σ).2 haK`. Rewrite using `[discrRatio, Units.val_inv_eq_inv_val, FractionalIdeal.coe_mk0, spanNZ, FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.spanSingleton_inv, idealLattice_spanSingleton_mul σ L hL, latticeDiscr_scale_of_ne_zero _ ((map_ne_zero σ).2 (inv_ne_zero haK)), map_inv₀, inv_pow, inv …`.
+-/
 theorem discrRatio_span_singleton (σ : K →+* ℂ) (L : PeriodPair) (hL : latticeEnd L = cmRing σ)
     (a : 𝓞 K) (ha : a ≠ 0) :
     discrRatio σ L.lattice (FractionalIdeal.mk0 K (spanNZ a ha)) = σ (algebraMap (𝓞 K) K a) ^ 12 := by

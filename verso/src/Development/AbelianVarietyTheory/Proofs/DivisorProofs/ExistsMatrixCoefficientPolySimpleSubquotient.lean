@@ -21,12 +21,18 @@ variable (O N k) in
 def blockEmb (τ : ι) : MvPolynomial (Fin N × Fin N) O →ₐ[O] MvPolynomial (BVar N ι) k := aeval fun v => X (τ, v)
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, rename_X, blockEmb, aeval_X]`.
+-/
 theorem blockEmb_monomial (τ : ι) (m : Fin N × Fin N →₀ ℕ) :
     blockEmb O N k τ (monomial m 1) = rename (Prod.mk τ) (monomial m (1 : k)) := by
   rw [monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]
   simp only [Finsupp.prod, map_prod, map_pow, rename_X, blockEmb, aeval_X]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `⟨rename (fun v => ⟨(σ, v), h⟩) (monomial m 1), ?_⟩` and prove the remaining obligations. Rewrite using `[blockEmb_monomial]`. Conclude with `rename_rename _ _ _`.
+-/
 theorem blockEmb_of_ne {τ σ : ι} (h : σ ≠ τ) (m : Fin N × Fin N →₀ ℕ) :
     blockEmb O N k σ (monomial m 1) ∈ (rename (R := k) (Subtype.val : OVar N τ → BVar N ι)).range := by
   refine ⟨rename (fun v => ⟨(σ, v), h⟩) (monomial m 1), ?_⟩
@@ -41,6 +47,9 @@ def stepT (τ : ι) (ψ : Gm →+ MvPolynomial (BVar N ι) k) : Gm →+ MvPolyno
   map_add' x y := by simp [mul_add, Finset.sum_add_distrib]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stepT_apply (τ : ι) (ψ : Gm →+ MvPolynomial (BVar N ι) k) (z : Gm) :
     stepT c τ ψ z = ∑ m ∈ expSet N (res N (lam τ)), blockEmb O N k τ (monomial m 1) * ψ (c τ m • z) := rfl
 
@@ -55,6 +64,9 @@ def Good (τ : ι) (w : Fin N → ℕ) (ψ : Gm →+ MvPolynomial (BVar N ι) k)
       ∑ v : Fin N × Fin N, (N - (v.2 : ℕ)) * m v < ∑ v : Fin N × Fin N, (N - (v.1 : ℕ)) * m v) → ∀ z, ψ (c τ m • z) = 0
 
 omit [Fintype ι] in
+/- English proof (translation)
+Introduce `r z`. Rewrite using `[stepT_apply, stepT_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← Algebra.commutes, mul_smul, h, mul_left_comm]`.
+-/
 theorem Semi.stepT {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Semi O lam ψ) (τ : ι) : Semi O lam (stepT c τ ψ) := by
   intro r z
   rw [stepT_apply, stepT_apply, Finset.mul_sum]
@@ -64,6 +76,11 @@ theorem Semi.stepT {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Semi O lam ψ)
 variable (hc : ∀ τ m, (c τ m : Module.End O (NablaT O N lam)) = atN O N lam τ (coefEnd O N _ m))
 include hc
 
+/- English proof (translation)
+Use `⟨h.1.stepT c σ, fun z => ?_, fun m hm z => ?_⟩` and prove the remaining obligations. Rewrite using `[stepT_apply]`. Conclude with `Subalgebra.sum_mem _ fun m _ => Subalgebra.mul_mem _ (blockEmb_of_ne hσ m) (h.2.1 _)`. Rewrite using `[stepT_apply]`. Use `Finset.sum_eq_zero fun m' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, coef_comm c hc hσ, mul_smul, h.2.2 m hm, mul_zero]`.
+-/
 theorem Good.stepT {τ σ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Good c τ w ψ) (hσ : σ ≠ τ) :
     Good c τ w (stepT c σ ψ) := by
   refine ⟨h.1.stepT c σ, fun z => ?_, fun m hm z => ?_⟩
@@ -73,6 +90,9 @@ theorem Good.stepT {τ σ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (
     refine Finset.sum_eq_zero fun m' _ => ?_
     rw [smul_smul, coef_comm c hc hσ, mul_smul, h.2.2 m hm, mul_zero]
 
+/- English proof (translation)
+Use `ext1 z`. Simplify using `only [stepT_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, coef_comm c hc hσ, mul_left_comm]`.
+-/
 theorem stepT_comm {τ σ : ι} (hσ : σ ≠ τ) (ψ : Gm →+ MvPolynomial (BVar N ι) k) :
     stepT c σ (stepT c τ ψ) = stepT c τ (stepT c σ ψ) := by
   ext1 z
@@ -81,6 +101,13 @@ theorem stepT_comm {τ σ : ι} (hσ : σ ≠ τ) (ψ : Gm →+ MvPolynomial (BV
   refine Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => ?_
   rw [smul_smul, smul_smul, coef_comm c hc hσ, mul_left_comm]
 
+/- English proof (translation)
+Set `ev` to `eval (fun p : BVar N ι => if p.2.1 = p.2.2 then (1 : k) else 0)`. Set `θ : MvPolynomial Empty O →ₐ[O] k` to `aeval fun _ => 0`. Use `Eq.trans ?_ (sum_unit c hc (ev.toAddMonoidHom.comp ψ) (fun r z => ?_) θ τ z)` and prove the remaining obligations. Rewrite using `[stepT_apply, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Use `congrArg (· * _) ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, C_1, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, blockEmb, unitHom, aeval_X, eval_X, apply_ite θ, map_one, map_zero]`. Use `show ev (ψ _) = _ * ev (ψ z)`.
+
+Rewrite using `[h, map_mul, MvPolynomial.algebraMap_apply, eval_C]`.
+-/
 theorem eval_stepT {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Semi O lam ψ) (τ : ι) (z : Gm) :
     eval (fun p : BVar N ι => if p.2.1 = p.2.2 then (1 : k) else 0) (stepT c τ ψ z) =
       eval (fun p : BVar N ι => if p.2.1 = p.2.2 then (1 : k) else 0) (ψ z) := by
@@ -96,6 +123,13 @@ theorem eval_stepT {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Semi O lam ψ)
   · show ev (ψ _) = _ * ev (ψ z)
     rw [h, map_mul, MvPolynomial.algebraMap_apply, eval_C]
 
+/- English proof (translation)
+Use `set B := blockSub k N (fun σ => ((((Pi.mulSingle τ g : ι → GL (Fin N) O) σ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (algebraMap O k)) with hB`. Establish `h1 : (blockEmb O N k τ).comp (rowAct O ((g⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O)) = (B.restrictScalars O).comp (blockEmb O N k τ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[hB, blockSub, blockEmb, rowAct, -Matrix.coe_units_inv]`.
+
+Establish `h2 : B.comp (rename (Subtype.val : OVar N τ → BVar N ι)) = rename Subtype.val`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[hB, blockSub, Pi.mulSingle_eq_of_ne v.2, Matrix.one_apply, apply_ite (C : k →+* MvPolynomial (BVar N ι) k)]`. Rewrite using `[stepT_apply, stepT_apply, sum_grp c hc ψ h.1, map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `h.2.1 (c τ m • z)`. Rewrite using `[map_mul, ← hq]`. Conclude with `congrArg₂ (· * ·) (AlgHom.congr_fun h1 _) (AlgHom.congr_fun h2 q).symm`.
+-/
 theorem stepT_grp_single {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Good c τ w ψ) (g : GL (Fin N) O) (z : Gm) :
     stepT c τ ψ (grpA O N lam (Pi.mulSingle τ g) • z) = blockSub k N
       (fun σ => ((((Pi.mulSingle τ g : ι → GL (Fin N) O) σ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (algebraMap O k))
@@ -117,6 +151,13 @@ theorem stepT_grp_single {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomia
   rw [map_mul, ← hq]
   exact congrArg₂ (· * ·) (AlgHom.congr_fun h1 _) (AlgHom.congr_fun h2 q).symm
 
+/- English proof (translation)
+Rewrite using `[stepT_apply, stepT_apply, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h1 : IsWeightedHomogeneous (blockW N τ) (blockEmb O N k τ (monomial m 1) * ψ (c τ m • z)) (Finsupp.weight (rowW N N) m)`. Take `⟨q, hq⟩` from `h.2.1 (c τ m • z)`. Rewrite using `[← hq, blockEmb_monomial, ← add_zero (Finsupp.weight (rowW N N) m)]`.
+
+Use `(isWH_algHom_monomial _ (rowW N N) _ (fun u => ?_) m 1).mul (isWH_algHom _ 0 _ (fun u => ?_) fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[rename_X]`. Simplify `isWeightedHomogeneous_X k (blockW N τ) (τ, u)` using `[blockW, rowW]`. Rewrite using `[rename_X]`. Simplify `isWeightedHomogeneous_X k (blockW N τ) u.1` using `[blockW, u.2]`.
+
+Simplify using `[Finsupp.weight_apply]`. Rewrite using `[weightedHomogeneousComponent_of_mem h1, smul_smul, coef_mul_proj c hc]`. Distinguish the cases in `hv : Finsupp.weight (rowW N N) m = v`. Rewrite using `[if_pos hv, if_pos hv.symm]`. Rewrite using `[if_neg hv, if_neg (Ne.symm hv), zero_smul, map_zero, mul_zero]`.
+-/
 theorem stepT_proj {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Good c τ w ψ) (v : Fin N → ℕ) (z : Gm) :
     stepT c τ ψ (projA O N lam τ v • z) = weightedHomogeneousComponent (blockW N τ) v (stepT c τ ψ z) := by
   rw [stepT_apply, stepT_apply, map_sum]
@@ -135,6 +176,25 @@ theorem stepT_proj {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVa
   · rw [if_pos hv, if_pos hv.symm]
   · rw [if_neg hv, if_neg (Ne.symm hv), zero_smul, map_zero, mul_zero]
 
+/- English proof (translation)
+Set `ψ' : Gm →+ MvPolynomial (OVar N τ) k` to `(constantCoeff.comp (toBlock k N τ).toRingHom).toAddMonoidHom.comp ψ`. Establish `hψ' : ∀ z, ψ' z = constantCoeff (toBlock k N τ (ψ z))` using `fun _ => rfl`. Establish `h1 : ∀ z, toBlock k N τ (ψ z) = C (ψ' z)`. Introduce `z`. Take `⟨q, hq⟩` from `h.2.1 z`.
+
+Establish `: (toBlock k N τ).toRingHom.comp (rename (Subtype.val : OVar N τ → BVar N ι)).toRingHom = C`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `u`.
+
+Simplify using `[toBlock, u.2]`. Establish `e : toBlock k N τ (ψ z) = C q` using `by rw [← hq]; exact RingHom.congr_fun this q`. Rewrite using `[hψ', e, constantCoeff_C]`. Establish `h2 : ∀ m, toBlock k N τ (blockEmb O N k τ (monomial m 1)) = monomial m 1`. Introduce `m`.
+
+Rewrite using `[monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, blockEmb, toBlock, aeval_X, dif_pos]`. Establish `h3 : toBlock k N τ (stepT c τ ψ z) = ∑ m ∈ expSet N (res N (lam τ)), monomial m 1 * C (ψ' (c τ m • z))`. Rewrite using `[stepT_apply, map_sum]`. Simplify using `only [map_mul, h1, h2]`.
+
+Establish `h4 : ∀ m : Fin N × Fin N →₀ ℕ, (Finsupp.weight (colW N N) m ≠ w ∨ ∑ v : Fin N × Fin N, (N - (v.2 : ℕ)) * m v < ∑ v : Fin N × Fin N, (N - (v.1 : ℕ)) * m v) → ∀ z, ψ' (c τ m • z) = 0` using `fun m hm z => by rw [hψ', h.2.2 m hm, map_zero, map_zero]`. Rewrite using `[h3, rowst_mem_dualWeyl_iff]`. Use `⟨IsWeightedHomogeneous.sum _ _ _ fun m _ => ?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : Finsupp.weight (colW N N) m = w`. Rewrite using `[mul_comm]`.
+
+Conclude with `(isWeightedHomogeneous_monomial _ _ _ hm).C_mul _`. Rewrite using `[h4 m (Or.inl hm), map_zero, mul_zero]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Set `θ : MvPolynomial (Option (Fin N × Fin N)) O →ₐ[O] MvPolynomial (Option (Fin N × Fin N)) (MvPolynomial (OVar N τ) k)` to `aeval X`. Use `sum_col_eq c hc ((C : _ →+* MvPolynomial (Option (Fin N × Fin N)) (MvPolynomial (OVar N τ) k)).toAddMonoidHom.comp ψ') (fun r z => by show C (ψ' _) = _ * C (ψ' z)` as an intermediate fact.
+
+Rewrite using `[hψ', hψ', h.1, map_mul, map_mul, map_mul]`. Use `congrArg (· * _) ?_` and prove the remaining obligations. Simplify using `[MvPolynomial.algebraMap_apply]) θ τ l j hlj`. Use the proof step `(fun m hm z => by show C (ψ' _) = 0`. Rewrite using `[h4 m (Or.inr hm), map_zero]) z`.
+
+Rewrite using `[map_sum, map_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun m _ => ?_) (this.trans (Finset.sum_congr rfl fun m _ => ?_))` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.algHom_C]`. Use `congrArg (· * _) ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]`.
+
+Simplify using `only [Finsupp.prod, map_prod, map_pow, colAddGen, aeval_X, apply_ite θ, map_add, map_mul, θ]`. Rewrite using `[map_mul, rename_C]`. Use `congrArg (· * _) ?_` and prove the remaining obligations. Rewrite using `[monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]`. Simplify using `only [Finsupp.prod, map_prod, map_pow, rename_X, aeval_X, θ]`.
+-/
 theorem stepT_mem {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVar N ι) k} (h : Good c τ w ψ) (z : Gm) :
     toBlock k N τ (stepT c τ ψ z) ∈ dualWeyl (MvPolynomial (OVar N τ) k) N N w := by
   let ψ' : Gm →+ MvPolynomial (OVar N τ) k := (constantCoeff.comp (toBlock k N τ).toRingHom).toAddMonoidHom.comp ψ
@@ -186,6 +246,13 @@ theorem stepT_mem {τ : ι} {w : Fin N → ℕ} {ψ : Gm →+ MvPolynomial (BVar
       rw [monomial_eq, monomial_eq, C_1, C_1, one_mul, one_mul]
       simp only [Finsupp.prod, map_prod, map_pow, rename_X, aeval_X, θ]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨ψ, hs, fun _ => rfl, fun τ _ => h τ, by simp⟩`. Consider the case `insert σ s hσ ih`. Take `⟨P, h1, h2, h3, h4⟩` from `ih`. Use `⟨stepT c σ P, h1.stepT c σ, fun z => (eval_stepT c hc h1 σ z).trans (h2 z), fun τ hτ => ?_, fun τ hτ => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hτ` using `[Finset.mem_insert, not_or]`. Conclude with `(h3 τ hτ.2).stepT c hc (Ne.symm hτ.1)`. Break down `Finset.mem_insert.1 hτ with rfl | hτ'` into its components or cases. Conclude with `⟨P, h3 τ hσ, rfl⟩`. Take `⟨ψ', h5, rfl⟩` from `h4 τ hτ'`.
+
+Establish `hne : σ ≠ τ` using `by rintro rfl; exact hσ hτ'`. Conclude with `⟨_, h5.stepT c hc hne, stepT_comm c hc hne ψ'⟩`.
+-/
 theorem exists_poly (w : ι → Fin N → ℕ) (ψ : Gm →+ MvPolynomial (BVar N ι) k) (h : ∀ τ, Good c τ (w τ) ψ) (hs : Semi O lam ψ)
     (s : Finset ι) : ∃ P : Gm →+ MvPolynomial (BVar N ι) k, Semi O lam P ∧
       (∀ z, eval (fun p : BVar N ι => if p.2.1 = p.2.2 then (1 : k) else 0) (P z) =
@@ -205,6 +272,11 @@ theorem exists_poly (w : ι → Fin N → ℕ) (ψ : Gm →+ MvPolynomial (BVar 
         exact ⟨_, h5.stepT c hc hne, stepT_comm c hc hne ψ'⟩
 
 omit hc [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Establish `: (blockSub k N A).comp (blockSub k N A') = blockSub k N (fun τ => A' τ * A τ)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [blockSub, AlgHom.comp_apply, aeval_X, map_sum, map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Conclude with `AlgHom.congr_fun this P`.
+-/
 theorem blockSub_blockSub (A A' : ι → Matrix (Fin N) (Fin N) k) (P : MvPolynomial (BVar N ι) k) :
     blockSub k N A (blockSub k N A' P) = blockSub k N (fun τ => A' τ * A τ) P := by
   have : (blockSub k N A).comp (blockSub k N A') = blockSub k N (fun τ => A' τ * A τ) := by
@@ -216,6 +288,19 @@ theorem blockSub_blockSub (A A' : ι → Matrix (Fin N) (Fin N) k) (P : MvPolyno
   exact AlgHom.congr_fun this P
 
 omit hc in
+/- English proof (translation)
+Set `S : Submonoid (ι → GL (Fin N) O)` to `{ carrier := {g | ∀ z, P (grpA O N lam g • z) = blockSub k N (fun σ => (((g σ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (algebraMap O k)) (P z)} one_mem' := fun z => by`. Establish `e : grpA O N lam 1 = 1` using `Subtype.ext (map_one (Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep O (fun _ => N) (fun _ => N) (fun τ => res N (lam τ))))`. Establish `e' : blockSub k N (fun σ : ι => ((((1 : ι → GL (Fin N) O) σ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (algebraMap O k)) = AlgHom.id k _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`.
+
+Simplify using `[blockSub, Matrix.one_apply, apply_ite (C : k →+* MvPolynomial (BVar N ι) k)]`. Rewrite using `[e, e', one_smul]`. Both sides reduce to the same expression. Use the proof step `mul_mem' := fun {a b} ha hb z => by`. Establish `e : grpA O N lam (a * b) = grpA O N lam a * grpA O N lam b` using `Subtype.ext (map_mul (Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep O (fun _ => N) (fun _ => N) (fun τ => res N (lam τ))) a b)`.
+
+Rewrite using `[e, mul_smul, ha, hb, blockSub_blockSub]`. Simplify using `only [Pi.mul_apply, mul_inv_rev, Units.val_mul, Matrix.map_mul] }`. Establish `key : ∀ s : Finset ι, (fun σ => if σ ∈ s then g σ else 1) ∈ S`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Simplify using `only [Finset.notMem_empty, if_false]`. Conclude with `S.one_mem`. Consider the case `insert τ s hτ ih`. Establish `: (fun σ => if σ ∈ insert τ s then g σ else 1) = Pi.mulSingle τ (g τ) * fun σ => if σ ∈ s then g σ else 1`.
+
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `e : σ = τ`. Substitute `e` using the available equality. Simplify using `[hτ]`. Simplify using `[e]`.
+
+Rewrite using `[this]`. Conclude with `S.mul_mem (h τ (g τ)) ih`. Use `key Finset.univ` as an intermediate fact. Simplify using `only [Finset.mem_univ, if_true] at this`. Conclude with `this z`.
+-/
 theorem grp_of_single (P : Gm →+ MvPolynomial (BVar N ι) k)
     (h : ∀ τ (g : GL (Fin N) O) z, P (grpA O N lam (Pi.mulSingle τ g) • z) = blockSub k N
       (fun σ => ((((Pi.mulSingle τ g : ι → GL (Fin N) O) σ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (algebraMap O k)) (P z))
@@ -262,6 +347,17 @@ end Lemmas
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds Formalism.CohomologicalDescent.LD Formalism.RankGapBounds.FormsTensorLocalization
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 
+/- English proof (translation)
+Introduce `O _ _ _ N ι _ _ lam ϖ _ _ hcoef Gm _ _ _ w hmax φ z₀ hz₀ _ hφ h0`. Use `choose c hc' using hcoef`. Establish `hc` using `fun τ m => eq_of_isCoef O N lam τ m _ (hc' τ m)`. Set `ψ : Gm →+ MvPolynomial (BVar N ι) (O ⧸ Ideal.span {ϖ})` to `(C : _ →+* MvPolynomial (BVar N ι) _).toAddMonoidHom.comp φ`. Establish `hψ : ∀ z, ψ z = C (φ z)` using `fun _ => rfl`.
+
+Establish `hs : Semi O lam ψ` using `fun r z => by rw [hψ, hψ, hφ, map_mul]; rfl`. Establish `h0' : ∀ τ v, v ≠ w τ → ∀ z, φ (projA O N lam τ v • z) = 0` using `fun τ v hv => h0 τ v _ (isProj_projA O N lam τ v) hv`. Establish `hg : ∀ τ, Good c τ (w τ) ψ` using `fun τ => ⟨hs, fun z => ⟨C (φ z), rename_C _ _⟩, fun m hm z => by`. Break down `hm with hm | hm` into its components or cases. Rewrite using `[hψ, apply_coef_eq_zero_of_col c hc φ τ _ (h0' τ) m hm, map_zero]`.
+
+Rewrite using `[hψ, apply_coef_eq_zero_of_lt c hc φ hφ w hmax h0' τ m hm, map_zero]⟩`. Take `⟨P, h1, h2, -, h4⟩` from `exists_poly c hc w ψ hg hs Finset.univ`. Use `⟨P, h1, grp_of_single P fun τ g z => ?_, fun τ v a ha z => ?_, fun z τ => ?_, fun h => hz₀ ?_⟩` and prove the remaining obligations. Take `⟨ψ', h5, rfl⟩` from `h4 τ (Finset.mem_univ _)`. Conclude with `stepT_grp_single c hc h5 g z`.
+
+Take `⟨ψ', h5, rfl⟩` from `h4 τ (Finset.mem_univ _)`. Rewrite using `[eq_projA O N lam ha]`. Conclude with `stepT_proj c hc h5 v z`. Take `⟨ψ', h5, rfl⟩` from `h4 τ (Finset.mem_univ _)`. Conclude with `stepT_mem c hc h5 z`.
+
+Use `h2 z₀` as an intermediate fact. Rewrite `this` using `[h, map_zero, hψ, eval_C, eq_comm]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.HighWtEmb.exists_coefPoly : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (lam τ))) → GlobalTheory.HighWt.CoefIn O N lam → ∀ (Gm : Type) [AddCommGroup Gm] [Module (alg O N lam) Gm], SubQ O N lam ϖ Gm → ∀ w : ι → Fin N → ℕ, (∀ w' : ι → Fin N → ℕ, GlobalTheory.HighWt.JointWt O N lam Gm w' → GlobalTheory.HighWt.pot N w' ≤ GlobalTheory.HighWt.pot N w) → ∀ (φ : Gm →+ O ⧸ Ideal.span {ϖ}) (z₀ : Gm), φ z₀ ≠ 0 → (∀ τ (a : alg O N lam), IsProj O N lam τ (w τ) a → a • z₀ = z₀) → (∀ (c : O) (z : Gm), φ (algebraMap O (alg O N lam) c • z) = Ideal.Quotient.mk (Ideal.span {ϖ}) c * φ z) → (∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → v ≠ w τ → ∀ z, φ (a • z) = 0) → ∃ Pz : Gm →+ MvPolynomial (BVar N ι) (O ⧸ Ideal.span {ϖ}), (∀ (c : O) (z : Gm), Pz (algebraMap O (alg O N lam) c • z) = C (Ideal.Quotient.mk (Ideal.span {ϖ}) c) * Pz z) ∧ (∀ (g : ι → GL (Fin N) O) (z : Gm), Pz (grpA O N lam g • z) = blockSub (O ⧸ Ideal.span {ϖ}) N (fun τ => (((g τ)⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O).map (Ideal.Quotient.mk (Ideal.span {ϖ}))) (Pz z)) ∧ (∀ τ (v : Fin N → ℕ) (a : alg O N lam), IsProj O N lam τ v a → ∀ z, Pz (a • z) = weightedHomogeneousComponent (blockW N τ) v (Pz z)) ∧ (∀ z τ, toBlock (O ⧸ Ideal.span {ϖ}) N τ (Pz z) ∈ dualWeyl (MvPolynomial (OVar N τ) (O ⧸ Ideal.span {ϖ})) N N (w τ)) ∧ Pz z₀ ≠ 0 := by
   intro O _ _ _ N ι _ _ lam ϖ _ _ hcoef Gm _ _ _ w hmax φ z₀ hz₀ _ hφ h0
   choose c hc' using hcoef

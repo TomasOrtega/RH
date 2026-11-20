@@ -25,6 +25,17 @@ end PositivityTheory.Xgf.ChartPullbackComposition
 namespace PositivityTheory.Xgf
 
 open PositivityTheory.Xgf.ChartPullbackComposition in
+/- English proof (translation)
+Introduce `E _ _ _ H S S' t t' f m x' x n v' v Γ hx hv`. Take `⟨w₀, hw₀, -⟩` from `m.lin`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.φ)` using `⟨w₀, hw₀⟩`. Establish `hpull : ∀ {Z : Scheme.{0}} (ψ' : Z ⟶ t'.G.left), LBIso (t'.PP.L.pull ψ') (t.PP.L.pull (ψ' ≫ m.φ))` using `fun ψ' => LBIso.chartPull (chartPullPull t'.PP.L ψ' ψ' rfl) (chartPullComp t.PP.L m.φ ψ') hL`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨Q, ψ', v₁, u, Hm, χ, W, hPB, hLB, hAH, hv₁, hΓ⟩`. Use `⟨Q, ψ' ≫ m.φ, v₁, u, Hm, χ, W, (hPB.comp m.cart).congr hx.symm rfl, ?_, hAH, fun i => ⟨?_, (hv₁ i).2⟩, hΓ⟩` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB t.PP.isLB _) (pull_isLB t'.PP.isLB _) Q.isLB (LBIso.symm (hpull ψ')) hLB`. Rewrite using `[← Category.assoc, (hv₁ i).1, hv i]`. Introduce and unpack `⟨Q, ψ, v₁, u, Hm, χ, W, hPB, hLB, hAH, hv₁, hΓ⟩`.
+
+Establish `hP` using `((isGrpPullback_pullback t'.G x').comp m.cart).congr hx.symm rfl`. Take `⟨e, he, heψ⟩` from `grpPullback_iso hPB hP`. Establish `hψ' : IsGrpPullback Q.A t'.G x' (e.hom.left ≫ pullback.fst t'.G.hom x')` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback t'.G x')).congr (Category.id_comp x') rfl`. Establish `hcomp : (e.hom.left ≫ pullback.fst t'.G.hom x') ≫ m.φ = ψ`. Rewrite using `[Category.assoc]`.
+
+Conclude with `heψ`. Use `⟨Q, e.hom.left ≫ pullback.fst t'.G.hom x', v₁, u, Hm, χ, W, hψ', ?_, hAH, fun i => ⟨?_, (hv₁ i).2⟩, hΓ⟩` and prove the remaining obligations. Use `LBIso.trans (pull_isLB t'.PP.isLB _) (pull_isLB t.PP.isLB _) Q.isLB (hpull _) ?_` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `hLB`.
+
+Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hcomp, (hv₁ i).1, hv i]`. Rewrite using `[Category.assoc, hψ'.1.w, ← Category.assoc, Over.w, Over.w]`. Both sides reduce to the same expression.
+-/
 theorem hodge_gram_invariant_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S) (m : SABMap t' t f) (x' : Sp ℂ ⟶ S') (x : Sp ℂ ⟶ S) (n : ℕ) (v' : Fin n → (epsAt x' ⟶ t'.G)) (v : Fin n → (epsAt x ⟶ t.G)) (Γ : Matrix (Fin n) (Fin n) ℂ), x = x' ≫ f → (∀ k, (v k).left = (v' k).left ≫ m.φ) → (IsHodgeGram t'.G t'.PP.L x' v' Γ ↔ IsHodgeGram t.G t.PP.L x v Γ) := by
   intro E _ _ _ H S S' t t' f m x' x n v' v Γ hx hv
   obtain ⟨w₀, hw₀, -⟩ := m.lin

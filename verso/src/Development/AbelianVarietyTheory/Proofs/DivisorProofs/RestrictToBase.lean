@@ -38,6 +38,11 @@ def baseR (R : RealDat D A Ks) : RealDat D (baseA A) Ks :=
 variable {R : RealDat D A Ks}
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨hlev, hgrp, hfam, hmod, hch, hth⟩` from `h`. Use `⟨LevCh.comap_is hlev (f := fun _ : Unit => A.μ0) (fun _ _ _ => rfl) rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun _ q => hgrp.red_R A.μ0 q, fun i _ q => hgrp.red_L i A.μ0 q, hgrp.levels, hgrp.record, hgrp.chiW⟩`. Take `⟨g, c0R, c0L, ht⟩` from `hfam.tie`. Conclude with `⟨⟨g, c0R, c0L, ht.comap (fun _ : Unit => A.μ0) ()⟩, hfam.Sb, fun _ PP => hfam.roots A.μ0 PP, hfam.pl_onto, fun _ P => hfam.degR A.μ0 P, fun i _ P => hfam.degL i A.μ0 P, fun i _ P hP => hfam.muVal i A.μ0 P hP, fun P hP => hfam.etaVal P hP⟩`.
+
+Conclude with `⟨hmod.inf, hmod.vpos, hmod.cX, hmod.cV, hmod.prX, fun _ => hmod.HX A.μ0, fun i _ => hmod.HV i A.μ0, hmod.HE, hmod.HW, hmod.gE, hmod.gW, fun _ x => hmod.jX A.μ0 x, fun i _ x => hmod.jV i A.μ0 x, fun _ j h2 => hmod.νY A.μ0 j h2, fun _ => hmod.νY' A.μ0, hmod.ν0, fun _ => hmod.νX A.μ …`. Conclude with `⟨fun _ k hk => hch.ωY A.μ0 k hk, fun _ => hch.ωX A.μ0, fun _ k hk => hch.vY A.μ0 k hk, fun _ => hch.vX A.μ0, fun _ k hk P => hch.ptY A.μ0 k hk P, fun _ P => hch.ptX A.μ0 P, fun _ k hk => hch.ItY A.μ0 k hk, fun _ => hch.ItX A.μ0, fun _ => hch.ioY A.μ0, fun _ => hch.ioX A.μ0, fun _ …`. Conclude with `⟨fun i _ => hth.ωP i A.μ0, fun i _ => hth.vP i A.μ0, fun i _ P => hth.pt_theta i A.μ0 P, fun i _ => hth.ioP i A.μ0, fun i _ => hth.thF_mem i A.μ0, fun i _ => hth.thF i A.μ0, fun i _ => hth.thG i A.μ0⟩`.
+-/
 theorem core_base {F : Face D A} (h : GlobalTheory.Hk3.Core R F) : GlobalTheory.Hk3.Core (baseR R) (baseF F) := by
   obtain ⟨hlev, hgrp, hfam, hmod, hch, hth⟩ := h
   refine ⟨LevCh.comap_is hlev (f := fun _ : Unit => A.μ0) (fun _ _ _ => rfl) rfl, ?_, ?_, ?_, ?_, ?_⟩
@@ -55,13 +60,25 @@ theorem core_base {F : Face D A} (h : GlobalTheory.Hk3.Core R F) : GlobalTheory.
   · exact ⟨fun i _ => hth.ωP i A.μ0, fun i _ => hth.vP i A.μ0, fun i _ P => hth.pt_theta i A.μ0 P, fun i _ => hth.ioP i A.μ0,
       fun i _ => hth.thF_mem i A.μ0, fun i _ => hth.thF i A.μ0, fun i _ => hth.thG i A.μ0⟩
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem ioExt_base (h : IoExt R) : IoExt (baseR R) := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => h.1 A.μ0, fun _ => h.2 A.μ0⟩`.
+-/
 theorem qGuard_base (h : QGuard R) : QGuard (baseR R) := ⟨fun _ => h.1 A.μ0, fun _ => h.2 A.μ0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ψ, h.θ, h.sT, h.BS, h.BT, h.ΛS, h.ΛT, h.βS, h.βT, h.vac, h.Pg, h.mu0, h.eta, h.lam, h.delta, h.p, h.q, h.c⟩`.
+-/
 theorem baseOf_base {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)} (h : BaseOf R j B) : BaseOf (baseR R) j B :=
   ⟨h.ψ, h.θ, h.sT, h.BS, h.BT, h.ΛS, h.ΛT, h.βS, h.βT, h.vac, h.Pg, h.mu0, h.eta, h.lam, h.delta, h.p, h.q, h.c⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.xi, h.xi_fin, h.xi_triv, h.xi_tame, h.Q_pl, h.Q_off, fun p hp => (h.Q_de p hp).imp fun _ h' => ⟨fun _ => h'.1 A.μ0, h'.2⟩, h.Q_ram, h.xiR, h.roots, h.muVal, h.half, h.guard⟩`.
+-/
 theorem twLev_base {χ : Formalism.L2.Host.HChar D.host.E} {xi : (AE D)ˣ →* Circle} {Q : Finset (Pl D.host.E)}
     {xiR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ} (h : TwConj.TwLev R χ xi Q xiR) : TwConj.TwLev (baseR R) χ xi Q xiR :=
   ⟨h.xi, h.xi_fin, h.xi_triv, h.xi_tame, h.Q_pl, h.Q_off,
@@ -124,6 +141,11 @@ def omBase {i : Fin D.R.m} (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) :
 variable {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)}
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `hP` using `h.2`. Establish `h1` using `hP.lift`. Establish `h2` using `hP.tuple`. Use `⟨h.1, ⟨h1.field, h1.std, h1.v0, ?_, h1.lev⟩, fun t => ⟨(h2 t).reps, (h2 t).B, (h2 t).xi, (h2 t).phi, (h2 t).half⟩, hP.act, hP.bad, hP.reps, hP.ep, hP.io, hP.w, hP.cov, hP.cxi, hP.model₂⟩` and prove the remaining obligations. Take `⟨g, c, c', h3, h4⟩` from `h1.c0`.
+
+Conclude with `⟨g, c, c', h3.comap (fun _ : Unit => A.μ0) (), h4⟩`.
+-/
 theorem omPins_base {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) : OMPins T (baseR R) κ v₀ (fun i => omBase (O i)) i := by
   have hP := h.2
   have h1 := hP.lift
@@ -135,20 +157,32 @@ theorem omPins_base {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) : OMPins T (bas
   exact ⟨g, c, c', h3.comap (fun _ : Unit => A.μ0) (), h4⟩
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem oneMapOf_base {i : Fin D.R.m} (cc ph) :
     (omBase (O i)).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph ↔ (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph := Iff.rfl
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `⟨cc, p, h'⟩` and use `(oneMapOf_base _ _).2 (h ⟨cc, p, (oneMapOf_base _ _).1 h'⟩)`.
+-/
 theorem phaseTie_base {ph : Fin D.R.m → ℂ} {i : Fin D.R.m} (h : PhaseTie T R κ v₀ O ph i) :
     PhaseTie T (baseR R) κ v₀ (fun i => omBase (O i)) ph i :=
   fun ⟨cc, p, h'⟩ => (oneMapOf_base _ _).2 (h ⟨cc, p, (oneMapOf_base _ _).1 h'⟩)
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun _ _ _ _ h => h, fun c u hc hu => ⟨c, u, hc, hu, fun _ => rfl⟩⟩`.
+-/
 theorem ext_base (j : Fin D.R.m) : TwConj.Ext T R κ v₀ O j (baseR R) v₀ (fun i => omBase (O i)) :=
   ⟨fun _ h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun _ _ _ _ h => h, fun c u hc hu => ⟨c, u, hc, hu, fun _ => rfl⟩⟩
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ O ph j B h`. Take `⟨h1, -, ⟨h3⟩, h4, h5, h6, h7, h8⟩` from `h`. Conclude with `⟨baseA A, baseR R, baseF F, v₀, fun i => omBase (O i), ⟨core_base h1, inferInstance, ⟨fwBase h3⟩, ioExt_base h4, qGuard_base h5, omPins_base h6, phaseTie_base h7, baseOf_base h8⟩, ext_base j, fun _ => h1.lev.xi_base, fun _ _ _ _ h => twLev_base h⟩`.
+-/
 theorem restrict_to_base : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D)
     [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
     (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0))

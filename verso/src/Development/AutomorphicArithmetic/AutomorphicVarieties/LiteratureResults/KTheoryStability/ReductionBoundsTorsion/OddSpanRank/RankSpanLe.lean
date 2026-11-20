@@ -4,6 +4,19 @@ open scoped TensorProduct
 
 namespace PositivityTheory.KB.TwOdd
 
+/- English proof (translation)
+Take `rfl : inst = AddCommGroup.toIntModule A` from `Subsingleton.elim _ _`. Establish `hker : LinearMap.ker T ≤ LinearMap.ker θ` using `fun z hz => h0 z hz`. Establish `hrank : Module.rank ℝ (LinearMap.range θ) ≤ Fintype.card ι`. Establish `e1 : LinearMap.range ((LinearMap.ker T).liftQ θ hker) = LinearMap.range θ` using `Submodule.range_liftQ _ _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmem : ∀ x ∈ Submodule.span ℤ S, (1 : ℝ) ⊗ₜ[ℤ] x ∈ LinearMap.range θ`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨z, hz⟩` from `hS s hs`.
+
+Conclude with `⟨z, hz⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul n x _ hx`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `zsmul_mem hx n`. Apply `rank_le` to reduce the goal to its premises. Introduce `s hs`.
+
+Establish `hA : LinearIndependent ℤ (fun i : s => ((i : Submodule.span ℤ S) : A))` using `hs.map' (Submodule.span ℤ S).subtype (Submodule.ker_subtype _)`. Establish `hR` using `Module.Flat.linearIndependent_one_tmul (S := ℝ) hA`. Set `w : s → LinearMap.range θ` to `fun i => ⟨(1 : ℝ) ⊗ₜ[ℤ] ((i : Submodule.span ℤ S) : A), hmem _ (i : Submodule.span ℤ S).2⟩`. Establish `hw : LinearIndependent ℝ w` using `LinearIndependent.of_comp (LinearMap.range θ).subtype hR`. Establish `h2` using `hw.cardinal_le_rank.trans hrank`.
+
+Simplify using `using h2`.
+-/
 theorem rank_span_le {A : Type} [AddCommGroup A] [inst : Module ℤ A] (S : Set A) {ι C : Type} [Fintype ι] [AddCommGroup C]
     [Module ℝ C] (θ : C →ₗ[ℝ] ℝ ⊗[ℤ] A) (T : C →ₗ[ℝ] (ι → ℝ)) (h0 : ∀ z, T z = 0 → θ z = 0)
     (hS : ∀ s ∈ S, ∃ z, θ z = (1 : ℝ) ⊗ₜ s) :

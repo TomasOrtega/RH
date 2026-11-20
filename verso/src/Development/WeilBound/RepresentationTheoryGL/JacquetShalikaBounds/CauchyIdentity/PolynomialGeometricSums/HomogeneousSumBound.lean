@@ -8,6 +8,15 @@ namespace PositivityTheory.RgJS
 
 namespace HomogeneousSumBound
 
+/- English proof (translation)
+Use `set M := max A A⁻¹ with hM`. Establish `hM1 : 1 ≤ M`. Break down `le_total 1 A with h | h` into its components or cases. Conclude with `h.trans (le_max_left _ _)`. Conclude with `((one_le_inv₀ hA).2 h).trans (le_max_right _ _)`.
+
+Establish `hAM : A ≤ M` using `le_max_left _ _`. Establish `hAiM : A⁻¹ ≤ M` using `le_max_right _ _`. Establish `hl : 0 ≤ A ^ l` using `by positivity`. Break down `le_total l p with h | h` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`.
+
+Rewrite using `[pow_add]`. Use `mul_le_mul_of_nonneg_left ?_ hl` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `e : A ^ p = A ^ (p + d) * A⁻¹ ^ d`.
+
+Rewrite using `[pow_add, inv_pow, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hA.ne'), mul_one]`. Rewrite using `[e]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_le (A : ℝ) (hA : 0 < A) (p l k : ℕ) (h1 : p ≤ l + k) (h2 : l ≤ p + k) :
     A ^ p ≤ A ^ l * max A A⁻¹ ^ k := by
   set M := max A A⁻¹ with hM
@@ -32,6 +41,15 @@ theorem pow_le (A : ℝ) (hA : 0 < A) (p l k : ℕ) (h1 : p ≤ l + k) (h2 : l �
     calc A⁻¹ ^ d ≤ M ^ d := pow_le_pow_left₀ (by positivity) hAiM d
       _ ≤ M ^ k := pow_le_pow_right₀ hM1 (by omega)
 
+/- English proof (translation)
+Establish `hb` using `(hG m α 0 A hA.le hα (by simp)).2`. Establish `hM : 0 ≤ max A A⁻¹` using `le_trans hA.le (le_max_left _ _)`. Unfold `hZ`. Use `split_ifs with hz`. Rewrite using `[norm_zero]`.
+
+Check the signs of the components of the expression. Use `push Not at hz set p := ((l j : ℤ) - j + i).toNat with hp`. Establish `hpz : (p : ℤ) = (l j : ℤ) - j + i` using `Int.toNat_of_nonneg hz`. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
+
+Establish `e1 : p ≤ l j + m'` using `by omega`. Establish `e2 : l j ≤ p + m'` using `by omega`. Use `(hb p).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul ?_ (pow_le A hA p (l j) m' e1 e2) (by positivity) (by positivity)` and prove the remaining obligations.
+
+Conclude with `pow_le_pow_left₀ (by positivity) (by exact_mod_cast (by omega : p + 1 ≤ l j + m' + 1)) m`.
+-/
 theorem entry_le (hG : HGen) {m m' : ℕ} (α : Fin m → ℂ) (A : ℝ) (hA : 0 < A) (hα : ∀ i, ‖α i‖ ≤ A)
     (l : Fin m' → ℕ) (i j : Fin m') :
     ‖hZ ((l j : ℤ) - j + i) α‖ ≤ ((l j + m' + 1 : ℕ) : ℝ) ^ m * A ^ l j * max A A⁻¹ ^ m' := by
@@ -52,6 +70,13 @@ theorem entry_le (hG : HGen) {m m' : ℕ} (α : Fin m → ℂ) (A : ℝ) (hA : 0
     refine mul_le_mul ?_ (pow_le A hA p (l j) m' e1 e2) (by positivity) (by positivity)
     exact pow_le_pow_left₀ (by positivity) (by exact_mod_cast (by omega : p + 1 ≤ l j + m' + 1)) m
 
+/- English proof (translation)
+Unfold `jt cjt`. Rewrite using `[Matrix.det_apply]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ∀ σ : Equiv.Perm (Fin m'), ‖(Equiv.Perm.sign σ) • ∏ i, (Matrix.of fun i j : Fin m' => hZ ((l j : ℤ) - j + i) α) (σ i) i‖ ≤ ∏ j, (((l j + m' + 1 : ℕ) : ℝ) ^ m * A ^ l j * max A A⁻¹ ^ m')`. Introduce `σ`.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul, norm_mul, norm_prod]`. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[hs, one_mul]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => by`.
+
+Simplify `entry_le hG α A hA hα l (σ i) i` using `[Matrix.of_apply]`. Use `(Finset.sum_le_sum fun σ _ => h1 σ).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+-/
 theorem jt_le (hG : HGen) {m m' : ℕ} (α : Fin m → ℂ) (A : ℝ) (hA : 0 < A) (hα : ∀ i, ‖α i‖ ≤ A)
     (l : Fin m' → ℕ) : ‖jt α l‖ ≤ cjt m A l := by
   unfold jt cjt
@@ -70,6 +95,9 @@ theorem jt_le (hG : HGen) {m m' : ℕ} (α : Fin m → ℂ) (A : ℝ) (hA : 0 < 
   refine (Finset.sum_le_sum fun σ _ => h1 σ).trans (le_of_eq ?_)
   rw [Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `| 0 => Summable.of_finite | k + 1 => by have ih := summable_pi g hg0 hg k have hprod : Summable fun p : ℕ × (Fin k → ℕ) => g p.1 * ∏ j, g (p.2 j) := by refine summable_mul_of_summable_norm (f := g) (g := fun l : Fin k → ℕ => ∏ j, g (l j)) ?_ ?_ · exact hg.congr fun k => (Real.nor …`.
+-/
 theorem summable_pi (g : ℕ → ℝ) (hg0 : ∀ k, 0 ≤ g k) (hg : Summable g) :
     ∀ k : ℕ, Summable fun l : Fin k → ℕ => ∏ j, g (l j)
   | 0 => Summable.of_finite
@@ -82,6 +110,15 @@ theorem summable_pi (g : ℕ → ℝ) (hg0 : ∀ k, 0 ≤ g k) (hg : Summable g)
       refine (Fin.consEquiv (fun _ : Fin (k + 1) => ℕ)).summable_iff.1 (hprod.congr fun p => ?_)
       simp [Fin.consEquiv, Fin.prod_univ_succ]
 
+/- English proof (translation)
+Establish `h1 : Summable fun k : ℕ => ((k : ℝ) ^ N * r ^ k)` using `summable_pow_mul_geometric_of_norm_lt_one N (by rw [Real.norm_of_nonneg hr0]; exact hr)`. Establish `h2 : Summable fun k : ℕ => r ^ k` using `summable_geometric_of_lt_one hr0 hr`. Use `Summable.of_nonneg_of_le (fun k => by positivity) (fun k => ?_) ((h1.add h2).mul_left ((2 * ((c : ℝ) + 1)) ^ N))` and prove the remaining obligations. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `e1 : ((k + c + 1 : ℕ) : ℝ) ≤ 2 * ((c : ℝ) + 1) * max (k : ℝ) 1`.
+
+Use `push_cast`. Break down `le_total (k : ℝ) 1 with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[max_eq_left h]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : max (k : ℝ) 1 ^ N ≤ (k : ℝ) ^ N + 1`. Break down `le_total (k : ℝ) 1 with h | h` into its components or cases. Rewrite using `[max_eq_right h, one_pow]`. Combine the linear relations using `[pow_nonneg hk N]`.
+
+Rewrite using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use polynomial arithmetic with `[pow_nonneg hr0 k]`.
+-/
 theorem summable_poly_geom (c N : ℕ) (r : ℝ) (hr0 : 0 ≤ r) (hr : r < 1) :
     Summable fun k : ℕ => ((k + c + 1 : ℕ) : ℝ) ^ N * r ^ k := by
   have h1 : Summable fun k : ℕ => ((k : ℝ) ^ N * r ^ k) :=
@@ -109,6 +146,13 @@ theorem summable_poly_geom (c N : ℕ) (r : ℝ) (hr0 : 0 ≤ r) (hr : r < 1) :
 end HomogeneousSumBound
 
 open HomogeneousSumBound in
+/- English proof (translation)
+Introduce `hG m m' A B ρ hA hB hρ hρAB`. Use `⟨?_, fun α hα l => jt_le hG α A hA hα l⟩` and prove the remaining obligations. Establish `hr0 : 0 ≤ ρ * A * B` using `by positivity`. Establish `hMA0 : 0 ≤ max A A⁻¹` using `le_trans hA.le (le_max_left _ _)`. Establish `hMB0 : 0 ≤ max B B⁻¹` using `le_trans hB.le (le_max_left _ _)`.
+
+Establish `hg0 : ∀ k : ℕ, 0 ≤ ((k + m' + 1 : ℕ) : ℝ) ^ (m + m') * (ρ * A * B) ^ k * (max A A⁻¹ ^ m' * max B B⁻¹ ^ m')` using `fun k => by positivity`. Establish `hgs : Summable fun k : ℕ => ((k + m' + 1 : ℕ) : ℝ) ^ (m + m') * (ρ * A * B) ^ k * (max A A⁻¹ ^ m' * max B B⁻¹ ^ m')` using `(summable_poly_geom m' (m + m') _ hr0 hρAB).mul_right _`. Establish `hall` using `(summable_pi _ hg0 hgs m').mul_left (((m'.factorial : ℝ)) * (m'.factorial : ℝ))`. Use `(hall.comp_injective Subtype.val_injective).congr fun l => ?_` and prove the remaining obligations. Establish `key : ∀ j, ((l.1 j + m' + 1 : ℕ) : ℝ) ^ (m + m') * (ρ * A * B) ^ l.1 j * (max A A⁻¹ ^ m' * max B B⁻¹ ^ m') = (((l.1 j + m' + 1 : ℕ) : ℝ) ^ m * A ^ l.1 j * max A A⁻¹ ^ m') * (((l.1 j + m' + 1 : ℕ) : ℝ) ^ m' * B ^ l.1 j * max B B⁻¹ ^ m') * ρ ^ l.1 j` using `fun j => by`.
+
+Rewrite using `[pow_add, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp_apply, cjt]`. Rewrite using `[Finset.prod_congr rfl fun j _ => key j, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homogeneous_sum_bound : HGen → SumBd := by
   intro hG m m' A B ρ hA hB hρ hρAB
   refine ⟨?_, fun α hα l => jt_le hG α A hA hα l⟩

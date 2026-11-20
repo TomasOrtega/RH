@@ -17,6 +17,15 @@ section
 
 variable {X : Fields}
 
+/- English proof (translation)
+Establish `hD : ∀ k : ℕ, IntAt P.1 ((Formalism.L2.Col.qOf P.1 : X.E) ^ cst.D P * ((k : X.E) * a))` using `fun k => by`. Take `⟨D, hD⟩ : ∃ D, cst.D P = D + 1` from `⟨cst.D P - 1, by have := hc.D_pos P; omega⟩`. Use `((intAt_pow (intAt_nat (P := P.1) (Formalism.L2.Col.qOf P.1)) D).mul (intAt_nat k)).mul ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : ∀ k : ℕ, cst.psi P ((k : X.E) * a) = cst.psi P a ^ k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hc.psi_int P 0 (by simpa using intAt_nat (P := P.1) 0)`. Consider the case `succ k ih`.
+
+Establish `h1` using `hc.psi_add P _ _ (hD k) (hD 1)`. Rewrite `h1` using `[Nat.cast_one, one_mul]`. Rewrite using `[Nat.cast_succ, add_mul, one_mul, h1, ih, pow_succ]`. Establish `h1` using `hk (Formalism.L2.Col.qOf P.1)`. Rewrite `h1` using `[hc.psi_int P _ ha]`.
+
+Establish `hq : Formalism.L2.Col.qOf P.1 ≠ 0` using `fun h0 => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `h2 : ‖σ (cst.psi P a)‖ ^ Formalism.L2.Col.qOf P.1 = 1` using `by rw [← norm_pow, ← map_pow, ← h1, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hq).1 h2`.
+-/
 theorem norm_psi {SB : Finset (HeightOneSpectrum (𝓞 X.E))} {cst : LocCst X SB} (hc : cst.Ok) (P : SB) {a : X.E}
     (ha : IntAt P.1 ((Formalism.L2.Col.qOf P.1 : X.E) * a)) (σ : X.K →+* ℂ) : ‖σ (cst.psi P a)‖ = 1 := by
   have hD : ∀ k : ℕ, IntAt P.1 ((Formalism.L2.Col.qOf P.1 : X.E) ^ cst.D P * ((k : X.E) * a)) := fun k => by
@@ -42,6 +51,29 @@ variable {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `hq` using `qOf_ne_zero (P := P.1)`. Establish `hsingle : ∀ s : Fin (R.N (m2 + 1)), (Pi.single s 1 : Sp X.E (R.N (m2 + 1))) ∈ stdAt X.E (R.N (m2 + 1)) P.1` using `fun s => mem_stdAt.2 fun i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Simplify using `using intAt_nat (P := P.1) 1`.
+
+Simplify using `using intAt_nat (P := P.1) 0`. Use `⟨fun x hx y hy => mem_stdAt.2 fun l => ?_, fun x z hz => ?_, fun σ x => ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_sum]`. Conclude with `intAt_sum _ fun j _ => (mem_stdAt.1 hy j).mul (mem_stdAt.1 (locTop_supp hm hP hx j) l)`. Establish `hz' : ∀ s l, IntAt P.1 (z (Pi.single s 1) l)` using `fun s l => mem_stdAt.1 (hz _ (hsingle s)) l`.
+
+Establish `e : ∀ s l, (x + (Formalism.L2.Col.qOf P.1 : X.E) • z) (Pi.single s 1) l = x (Pi.single s 1) l + (Formalism.L2.Col.qOf P.1 : X.E) * z (Pi.single s 1) l` using `fun s l => rfl`. Establish `hi : ∀ s l, IntAt P.1 ((x + (Formalism.L2.Col.qOf P.1 : X.E) • z) (Pi.single s 1) l) ↔ IntAt P.1 (x (Pi.single s 1) l)` using `fun s l => by rw [e, GlobalTheory.SymLevelDatum.intAt_add_iff P.1 ((intAt_nat _).mul (hz' s l))]`. Distinguish the cases in `hx : ∀ s l, IntAt P.1 (x (Pi.single s 1) l)`. Use `locTop_congr hm hc hP hy' fun s l => ⟨(hi s l).2 (hx s l), hx s l, ?_⟩` and prove the remaining obligations. Rewrite using `[e, add_sub_cancel_left, mul_div_cancel_left₀ _ hq]`.
+
+Conclude with `hz' s l`. Establish `h1 : locTop Ch sel mu cst m2 P x y' = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx fun s l => mem_stdAt.1 (locTop_supp hm hP h s) l`. Establish `h2 : locTop Ch sel mu cst m2 P (x + (Formalism.L2.Col.qOf P.1 : X.E) • z) y' = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx fun s l => (hi s l).1 (mem_stdAt.1 (locTop_supp hm hP h s) l)`. Conclude with `h2.trans h1.symm`. Use `show ‖σ (locTop Ch sel mu cst m2 P x y')‖ ≤ 1`. Unfold `locTop`.
+
+Rewrite using `[map_mul, norm_mul]`. Use `mul_le_one₀ ?_ (norm_nonneg _) ?_` and prove the remaining obligations. Unfold `PhiTop`. Rewrite using `[if_pos hP, hs, if_pos rfl]`. Establish `hq0 : Formalism.L2.Col.qOf P.1 ≠ 0` using `fun h0 => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+
+Establish `hN : ∀ j, R.N j = R.k + j * R.t + j` using `fun j => by unfold Ranks.N; ring`. Establish `h0 : Formalism.L2.Col.cOf R (m2 + 1) = 0` using `by unfold Formalism.L2.Col.cOf; omega`. Use `(GlobalTheory.SymLevelDatum.locSmall_phiGS X.E X.K P.1 _ _ _ _ _ _ _ R.m _ _ 0 _ hq0 (Ideal.absNorm_mem _) ?_ ?_ ?_ ?_ ?_).2.2 σ _` and prove the remaining obligations. Rewrite using `[h0, rank_add_mul_eq_penultimate_rank hm, add_zero]`. Rewrite using `[h0, hN, hN, hm, show m2 + 2 = m2 + 1 + 1 from rfl, add_mul (m2 + 1) 1]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hN]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hN]`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Unfold `ftY`. Rewrite using `[if_pos hP]`. Use `split_ifs with h`.
+
+Use `(norm_psi hc P ?_ σ).le` and prove the remaining obligations. Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `intCast_mem (intRing P.1) _`. Establish `h' : ∀ j, IntAt P.1 (x (Pi.single j 1) (Br.iL (N_m_succ R)))` using `fun j => by`. Use `h j` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, atNL_last]`. Then use the resulting hypothesis.
+
+Use `he.mul (intAt_sum Finset.univ fun j _ => (hy' j).mul (h' j))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[LinearMap.comp_apply, atNL_last, apply_eq_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using the standard rewrite rules.
+-/
 theorem locSmall_locTop (hm : R.m = m2 + 2) (hc : cst.Ok) (hs : cst.sharp = true) {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs)
     {y' : Sp X.E (R.N (m2 + 1))} (hy' : ∀ i, IntAt P.1 ((Formalism.L2.Col.qOf P.1 : X.E) * y' i)) :
     LocSmall (Formalism.L2.Col.qOf P.1) (stdAt X.E (R.N (m2 + 1)) P.1) (stdAt X.E (R.N R.m) P.1)
@@ -104,6 +136,17 @@ theorem locSmall_locTop (hm : R.m = m2 + 2) (hc : cst.Ok) (hs : cst.sharp = true
 
 end
 
+/- English proof (translation)
+Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H p d Y hY`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.ColNorms.BadPrimes.bad_primes D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H`. Establish `hPr : Pr.Ok` using `H.1.2.2.2.2.2.2.2.2.2.1`. Establish `hI` using `H.2.2.2.2.2.2.1`. Establish `hT : TilOk Pr sel mu u`.
+
+Use `tilOk_of hPr u fun P hP => ?_` and prove the remaining obligations. Establish `hmu : mu = mu0 X.F X.E X.K Sg` using `H.2.2.2.2.1`. Rewrite `hP` using `[hmu, twistPrimes_trivialTuple_empty sel Sg]`. Simplify using `at hP`. Establish `key` using `EntryDatum.smallDatum_prod (K := X.K) (S := Sall sel mu u) p.deco.1 (tilQ sel mu u d).1 (tilQ sel mu u d).2 (frsF sel mu p) (tilFr hT d) (frsF_mem p) (fun P => (tilFr_isLiftFr hT d P).1) (fun P => by classical exact Finset.mem_union) (Pr.T u * (Pr.g 0 * Pr.g 1)) (fun P hP => by r …`.
+
+Take `⟨j, -, hj, -⟩` from `h2 P.1 (h1 P.1 P.2)`. Rewrite using `[hj]`. Use `Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Use `fin_cases j`. Conclude with `Dvd.intro _ rfl`.
+
+Conclude with `Dvd.intro_left _ rfl)`. Use the proof step `(fun P y => locTop Ch sel mu cst (N.R.m - 2) P y ((frsF sel mu p P).symm (repY Y))) (fun _ => 1)`. Use the proof step `(fun P => locSmall_locTop hI.hm hI.cst_ok H.2.2.2.2.2.1 (h1 P.1 P.2) (repY_int p hY (h1 P.1 P.2)))`. Rewrite `key` using `[Finset.prod_const_one]`. Use `key using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Unfold `XiCpl2`. Simplify using `only [locTop_tilFr]`.
+-/
 theorem smallDatum_xiCpl2 : ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ (p : ChPt (R := N.R) sel mu u (N.R.m - 2 + 1)) (d : RowPt Pr N.R sel mu), ∀ Y ∈ ybSet sel mu cst p.deco.1.N, SmallDatum (Sall sel mu u) p.deco.1.N (tilQ sel mu u d).1.N (Pr.T u * (Pr.g 0 * Pr.g 1)) (XiCpl2 Ch sel mu cst (N.R.m - 2) p Y d) 1 := by
   intro D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H p d Y hY
   obtain ⟨h1, h2, h3, -⟩ := GlobalTheory.ColNorms.BadPrimes.bad_primes D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H

@@ -13,6 +13,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 instance m2SC (n : ℕ) : SecondCountableTopology (M2 n) :=
   inferInstanceAs (SecondCountableTopology (Fin n ⊕ Fin n → Fin n ⊕ Fin n → ℂ))
 
+/- English proof (translation)
+Establish `hk : (mR (k : GR n))ᴴ * mR (k : GR n) = 1` using `(show InK (mR (k : GR n)) from k.2).2`. Establish `hu : mR (k : GR n) * (((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)⁻¹).val = 1` using `Units.mul_inv _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hk, one_mul]`. Use `_ = (mR (k : GR n))ᴴ := by rw [mul_assoc, hu, mul_one]`.
+-/
 theorem kr_inv_val (n : ℕ) (k : KR n) : (((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)⁻¹).val = (mR (k : GR n))ᴴ := by
   have hk : (mR (k : GR n))ᴴ * mR (k : GR n) = 1 := (show InK (mR (k : GR n)) from k.2).2
   have hu : mR (k : GR n) * (((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)⁻¹).val = 1 := Units.mul_inv _
@@ -21,6 +24,11 @@ theorem kr_inv_val (n : ℕ) (k : KR n) : (((k : GR n) : GL (Fin n ⊕ Fin n) �
         rw [hk, one_mul]
     _ = (mR (k : GR n))ᴴ := by rw [mul_assoc, hu, mul_one]
 
+/- English proof (translation)
+Establish `hemb : Topology.IsInducing (fun k : KR n => Units.embedProduct _ ((k : GR n) : GL (Fin n ⊕ Fin n) ℂ))` using `Units.isEmbedding_embedProduct.isInducing.comp (Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal)`. Use `Topology.IsInducing.of_comp (g := fun M : M2 n => (M, MulOpposite.op Mᴴ)) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Conclude with `continuous_id.prodMk (MulOpposite.continuous_op.comp continuous_id.matrix_conjTranspose)`. Use `hemb using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Use `show (mR (k : GR n), MulOpposite.op (mR (k : GR n))ᴴ) = (((k : GR n) : GL (Fin n ⊕ Fin n) ℂ).val, MulOpposite.op (((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)⁻¹).val)`. Rewrite using `[kr_inv_val]`. Both sides reduce to the same expression.
+-/
 theorem kr_inducing (n : ℕ) : Topology.IsInducing (fun k : KR n => mR (k : GR n)) := by
   have hemb : Topology.IsInducing
       (fun k : KR n => Units.embedProduct _ ((k : GR n) : GL (Fin n ⊕ Fin n) ℂ)) :=
@@ -39,6 +47,9 @@ theorem kr_inducing (n : ℕ) : Topology.IsInducing (fun k : KR n => mR (k : GR 
 
 instance krSC (n : ℕ) : SecondCountableTopology (KR n) := (kr_inducing n).secondCountableTopology
 
+/- English proof (translation)
+Establish `hne : (mR g).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit (g : GL (Fin n ⊕ Fin n) ℂ))).ne_zero`. Unfold `F0 f0`. Conclude with `mul_ne_zero (zpow_ne_zero _ hne) (mul_ne_zero (zpow_ne_zero _ (hD n g).1) (zpow_ne_zero _ (hD n g).2))`.
+-/
 theorem spherical_section_ne_zero (hD : CayleyBlocksInvertible) {n : ℕ} (p q : ℕ) (e : ℤ) (g : GR n) : F0 p q e g ≠ 0 := by
   have hne : (mR g).det ≠ 0 :=
     ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit (g : GL (Fin n ⊕ Fin n) ℂ))).ne_zero
@@ -50,6 +61,9 @@ variable {m n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   {ρ : GR n → PX m n →ₗ[ℂ] PX m n} {Pp Γ : Subgroup G} {ι : GR n →* G} {s₀ : ℂ} {Ht : G → ℝ≥0}
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun y : KR n × (Fin n → Fin n → ℝ) => (y.1 : GR n) * a * nb y.2 * b)` using `(((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (hnbc.comp continuous_snd)).mul continuous_const`. Conclude with `continuous_const.mul (hιc.comp h1)`.
+-/
 theorem continuous_arg (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n} (hnbc : Continuous nb)
     (g : G) : Continuous (fun y : KR n × (Fin n → Fin n → ℝ) => g * ι ((y.1 : GR n) * a * nb y.2 * b)) := by
   have h1 : Continuous (fun y : KR n × (Fin n → Fin n → ℝ) => (y.1 : GR n) * a * nb y.2 * b) :=
@@ -57,6 +71,11 @@ theorem continuous_arg (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin 
       continuous_const
   exact continuous_const.mul (hιc.comp h1)
 
+/- English proof (translation)
+Establish `hint : ∀ k : KR n, Integrable (fun x => Φ k x * ψ x)` using `fun k => ((hΦ.comp (Continuous.prodMk continuous_const continuous_id)).mul hψc).integrable_of_hasCompactSupport hψs.mul_left`. Establish `hcont : Continuous (fun k : KR n => ∫ x, Φ k x * ψ x)`. Establish `h` using `continuous_parametric_integral_of_continuous (μ := (volume : Measure (Fin n → Fin n → ℝ))) (f := fun k x => Φ k x * ψ x) (hΦ.mul (hψc.comp continuous_snd)) hψs.isCompact`. Use `h.congr fun k => ?_` and prove the remaining obligations. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by`.
+
+Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Use `⟨hint, hcont, ?_⟩` and prove the remaining obligations. Establish `hF0 : Continuous (fun k : KR n => (F0 p q e (k : GR n))⁻¹)` using `((continuous_weight_factor hD p q e).comp continuous_subtype_val).inv₀ fun k => spherical_section_ne_zero hD p q e _`. Conclude with `(hF0.mul hcont).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 private theorem integrable_integral_mul_of_continuous_uncurry [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)]
     (μ : Measure (KR n)) [IsFiniteMeasure μ] (hD : CayleyBlocksInvertible) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψc : Continuous ψ)
     (hψs : HasCompactSupport ψ) (Φ : KR n → (Fin n → Fin n → ℝ) → ℂ) (hΦ : Continuous (Function.uncurry Φ)) :
@@ -77,6 +96,9 @@ private theorem integrable_integral_mul_of_continuous_uncurry [MeasurableSpace (
     ((continuous_weight_factor hD p q e).comp continuous_subtype_val).inv₀ fun k => spherical_section_ne_zero hD p q e _
   exact (hF0.mul hcont).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
+/- English proof (translation)
+Conclude with `integrable_integral_mul_of_continuous_uncurry μ hD hψc hψs (fun k x => F (g * ι ((k : GR n) * a * nb x * b))) (hF.comp (continuous_arg hιc hnbc g))`.
+-/
 theorem top_integrable [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hD : CayleyBlocksInvertible) (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n}
     (hnbc : Continuous nb) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψc : Continuous ψ) (hψs : HasCompactSupport ψ)
@@ -87,6 +109,13 @@ theorem top_integrable [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpac
   exact integrable_integral_mul_of_continuous_uncurry μ hD hψc hψs (fun k x => F (g * ι ((k : GR n) * a * nb x * b)))
     (hF.comp (continuous_arg hιc hnbc g))
 
+/- English proof (translation)
+Take `⟨hi1, -, ho1⟩` from `top_integrable (p := p) (q := q) (e := e) μ hD hιc hnbc hψc hψs F hF g`. Take `⟨hi2, -, ho2⟩` from `top_integrable (p := p) (q := q) (e := e) μ hD hιc hnbc hψc hψs F' hF' g`. Establish `hin : ∀ k : KR n, ∫ x, (a' * F (g * ι ((k : GR n) * a * nb x * b)) + F' (g * ι ((k : GR n) * a * nb x * b))) * ψ x = a' * (∫ x, F (g * ι ((k : GR n) * a * nb x * b)) * ψ x) + ∫ x, F' (g * ι ((k : GR n) * a * nb x * b)) * ψ x`. Introduce `k`. Rewrite using `[← integral_const_mul, ← integral_add ((hi1 k).const_mul a') (hi2 k)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Unfold `Top`. Simplify using `only [hin]`.
+
+Rewrite using `[← integral_const_mul, ← integral_add (ho1.const_mul a') ho2]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem top_linear [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hD : CayleyBlocksInvertible) (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n}
     (hnbc : Continuous nb) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψc : Continuous ψ) (hψs : HasCompactSupport ψ)
@@ -108,6 +137,19 @@ theorem top_linear [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (K
   funext k
   ring
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport ψ)` using `hψs`. Use `haveI : IsFiniteMeasure ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ)) := isFiniteMeasure_restrict.mpr hK.measure_lt_top.ne`. Establish `hF0 : Continuous (fun k : KR n => (F0 p q e (k : GR n))⁻¹)` using `((continuous_weight_factor hD p q e).comp continuous_subtype_val).inv₀ fun k => spherical_section_ne_zero hD p q e _`. Establish `harg` using `continuous_arg (a := a) (b := b) hιc hnbc g`. Establish `hC : IsCompact (univ ×ˢ tsupport ψ : Set (KR n × (Fin n → Fin n → ℝ)))` using `isCompact_univ.prod hK`.
+
+Establish `hCc : (μ.prod ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ))) (univ ×ˢ tsupport ψ : Set (KR n × (Fin n → Fin n → ℝ)))ᶜ = 0`. Establish `hc : (univ ×ˢ tsupport ψ : Set (KR n × (Fin n → Fin n → ℝ)))ᶜ = univ ×ˢ (tsupport ψ)ᶜ`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[hc, Measure.prod_prod, Measure.restrict_apply' (isClosed_tsupport ψ).measurableSet, compl_inter_self, measure_empty, mul_zero]`.
+
+Establish `hΦc : ContinuousOn (fun y : (KR n × (Fin n → Fin n → ℝ)) × ℂ => (F0 p q e (y.1.1 : GR n))⁻¹ * (E y.2 (g * ι ((y.1.1 : GR n) * a * nb y.1.2 * b)) * ψ y.1.2)) ((univ ×ˢ tsupport ψ) ×ˢ U)`. Establish `h1 : ContinuousOn (fun y : (KR n × (Fin n → Fin n → ℝ)) × ℂ => E y.2 (g * ι ((y.1.1 : GR n) * a * nb y.1.2 * b))) ((univ ×ˢ tsupport ψ) ×ˢ U)` using `hEc.comp (continuous_snd.prodMk (harg.comp continuous_fst)).continuousOn (fun y hy => ⟨hy.2, mem_univ _⟩)`. Conclude with `(hF0.comp (continuous_fst.comp continuous_fst)).continuousOn.mul (h1.mul (hψc.comp (continuous_snd.comp continuous_fst)).continuousOn)`. Establish `hΦd : ∀ y ∈ (univ ×ˢ tsupport ψ : Set (KR n × (Fin n → Fin n → ℝ))), DifferentiableOn ℂ (fun z => (F0 p q e (y.1 : GR n))⁻¹ * (E z (g * ι ((y.1 : GR n) * a * nb y.2 * b)) * ψ y.2)) U` using `fun y _ => ((hEh _).mul_const (ψ y.2)).const_mul _`. Take `⟨hdiff, -⟩` from `hHP (KR n × (Fin n → Fin n → ℝ)) (μ.prod ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ))) (univ ×ˢ tsupport ψ) hC hCc U (fun y z => (F0 p q e (y.1 : GR n))⁻¹ * (E z (g * ι ((y.1 : GR n) * a * nb y.2 * b)) * ψ y.2)) hU hΦc hΦd`.
+
+Use `hdiff.congr fun z hz => ?_` and prove the remaining obligations. Establish `hcz : Continuous (fun y : KR n × (Fin n → Fin n → ℝ) => (F0 p q e (y.1 : GR n))⁻¹ * (E z (g * ι ((y.1 : GR n) * a * nb y.2 * b)) * ψ y.2))` using `(hF0.comp continuous_fst).mul ((hEc.comp_continuous (continuous_const.prodMk harg) (fun y => ⟨hz, mem_univ _⟩)).mul (hψc.comp continuous_snd))`. Establish `hint : Integrable (fun y : KR n × (Fin n → Fin n → ℝ) => (F0 p q e (y.1 : GR n))⁻¹ * (E z (g * ι ((y.1 : GR n) * a * nb y.2 * b)) * ψ y.2)) (μ.prod ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ)))`. Establish `hae : ∀ᵐ y ∂(μ.prod ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ))), y ∈ (univ ×ˢ tsupport ψ : Set (KR n × (Fin n → Fin n → ℝ)))` using `ae_iff.2 hCc`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae]`.
+
+Conclude with `hcz.continuousOn.integrableOn_compact hC`. Rewrite using `[integral_prod _ hint]`. Unfold `Top`. Use `integral_congr_ae (ae_of_all _ fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[integral_const_mul, setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]]`.
+-/
 theorem top_hol [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hD : CayleyBlocksInvertible) (hHP : HolParam) (hιc : Continuous ι) {a b : GR n}
     {nb : (Fin n → Fin n → ℝ) → GR n} (hnbc : Continuous nb) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψc : Continuous ψ)
@@ -163,6 +205,9 @@ theorem top_hol [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n
   rw [integral_const_mul, setIntegral_eq_integral_of_forall_compl_eq_zero fun x hx => by
     simp [image_eq_zero_of_notMem_tsupport hx]]
 
+/- English proof (translation)
+Take `⟨y, K, r, -, hs⟩` from `hz_split hL hG g0`. Repeatedly rewrite using `[hs z]`. Establish `hyw : Continuous (fun w : GR n => y * w)` using `continuous_const.mul continuous_id`. Use `continuous_const.mul (Continuous.mul ?_ ((continuous_weight_factor hD p q e).comp hyw))` and prove the remaining obligations. Conclude with `Continuous.cpow (Complex.continuous_ofReal.comp ((continuous_hLoc hD).comp hyw)) continuous_const fun w => Complex.ofReal_mem_slitPlane.mpr (hLoc_pos hD _)`.
+-/
 theorem continuous_hz_translate (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ)
     (hD : CayleyBlocksInvertible) (z : ℂ) (g0 : G) : Continuous (fun w : GR n => hz Ht sec s₀ z (g0 * ι w)) := by
   obtain ⟨y, K, r, -, hs⟩ := hz_split hL hG g0
@@ -172,6 +217,33 @@ theorem continuous_hz_translate (hL : LocData ε c t p q e sL ρ) (hG : GlobData
   exact Continuous.cpow (Complex.continuous_ofReal.comp ((continuous_hLoc hD).comp hyw)) continuous_const
     fun w => Complex.ofReal_mem_slitPlane.mpr (hLoc_pos hD _)
 
+/- English proof (translation)
+Establish `hK : IsCompact (tsupport ψ)` using `hψs`. Establish `hw : Continuous (fun y : KR n × (Fin n → Fin n → ℝ) => ((y.1 : GR n) * a * nb y.2 * b))` using `(((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (hnbc.comp continuous_snd)).mul continuous_const`. Establish `harg` using `continuous_arg (a := a) (b := b) hιc hnbc g`. Establish `hC : IsCompact (insert g ((fun y : KR n × (Fin n → Fin n → ℝ) => g * ι ((y.1 : GR n) * a * nb y.2 * b)) '' (univ ×ˢ tsupport ψ)))` using `((isCompact_univ.prod hK).image harg).insert g`. Take `⟨u, hu, hub⟩` from `hmaj _ hC`.
+
+Use `haveI : Countable (Function.support u) := hu.countable_support.to_subtype`. Establish `hmemC : ∀ (k : KR n) (x : Fin n → Fin n → ℝ), x ∈ tsupport ψ → g * ι ((k : GR n) * a * nb x * b) ∈ insert g ((fun y : KR n × (Fin n → Fin n → ℝ) => g * ι ((y.1 : GR n) * a * nb y.2 * b)) '' (univ ×ˢ tsupport ψ))` using `fun k x hx => mem_insert_of_mem _ ⟨(k, x), ⟨mem_univ _, hx⟩, rfl⟩`. Establish `hsumS : ∀ g' ∈ insert g ((fun y : KR n × (Fin n → Fin n → ℝ) => g * ι ((y.1 : GR n) * a * nb y.2 * b)) '' (univ ×ˢ tsupport ψ)), GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z) g' = ∑' j : Function.support u, GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) g' j`. Introduce `g' hg'`. Use `(tsum_subtype_eq_of_support_subset fun j hj => ?_).symm` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Establish `h2` using `hub g' hg' j`. Rewrite `h2` using `[Function.notMem_support.mp h]`. Conclude with `hj (norm_le_zero_iff.mp h2)`. Establish `hterm : ∀ j : GlobalTheory.Eis.Cosets Pp Γ, Continuous (Function.uncurry fun (k : KR n) (x : Fin n → Fin n → ℝ) => GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j)`.
+
+Introduce `j`. Use `((continuous_hz_translate hL hG hD z (((Quotient.out j : Γ) : G) * g)).comp hw).congr ?_` and prove the remaining obligations. Introduce and unpack `⟨k, x⟩`. Simplify using `only [GlobalTheory.Eis.term, Function.comp_apply, Function.uncurry_apply_pair, mul_assoc]`. Establish `hbd : ∀ (j : GlobalTheory.Eis.Cosets Pp Γ) (k : KR n) (x : Fin n → Fin n → ℝ), ‖GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j * ψ x‖ ≤ u j * ‖ψ x‖`.
+
+Introduce `j k x`. Rewrite using `[norm_mul]`. Distinguish the cases in `hx : x ∈ tsupport ψ`. Conclude with `mul_le_mul_of_nonneg_right (hub _ (hmemC k x hx) j) (norm_nonneg _)`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`.
+
+Establish `hI` using `fun j : Function.support u => integrable_integral_mul_of_continuous_uncurry (p := p) (q := q) (e := e) μ hD hψc hψs (fun (k : KR n) (x : Fin n → Fin n → ℝ) => GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j) (hterm j)`. Establish `hψi : Integrable (fun x => ‖ψ x‖)` using `hψc.norm.integrable_of_hasCompactSupport hψs.norm`. Establish `hIb : ∀ (j : Function.support u) (k : KR n), ∫ x, ‖GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j * ψ x‖ ≤ u j * ∫ x, ‖ψ x‖`. Introduce `j k`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_mono ((hI j).1 k).norm (hψi.const_mul _) fun x => hbd j k x`. Establish `hin : ∀ k : KR n, (F0 p q e (k : GR n))⁻¹ * ∫ x, GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) * ψ x = ∑' j : Function.support u, (F0 p q e (k : GR n))⁻¹ * ∫ x, GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j …`. Introduce `k`. Establish `hpt : ∀ x, GlobalTheory.Eis.cosetSum Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) * ψ x = ∑' j : Function.support u, GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j * ψ x`. Introduce `x`.
+
+Rewrite using `[tsum_mul_right]`. Distinguish the cases in `hx : x ∈ tsupport ψ`. Rewrite using `[hsumS _ (hmemC k x hx)]`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Rewrite using `[tsum_mul_left]`.
+
+Use `congr 1`. Repeatedly rewrite using `[hpt]`. Use `(integral_tsum_of_summable_integral_norm (fun j => (hI j).1 k) ?_).symm` and prove the remaining obligations. Conclude with `Summable.of_nonneg_of_le (fun j => integral_nonneg fun x => norm_nonneg _) (fun j => hIb j k) ((hu.subtype _).mul_right _)`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ k : KR n, ‖(F0 p q e (k : GR n))⁻¹‖ ≤ M := by`.
+
+Establish `hF0 : Continuous (fun k : KR n => (F0 p q e (k : GR n))⁻¹)` using `((continuous_weight_factor hD p q e).comp continuous_subtype_val).inv₀ fun k => spherical_section_ne_zero hD p q e _`. Take `⟨M, hM⟩` from `isCompact_univ.exists_bound_of_continuousOn hF0.continuousOn`. Conclude with `⟨M, fun k => hM k (mem_univ _)⟩`. Establish `hj : ∀ j : Function.support u, ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * (∫ x, GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) (g * ι ((k : GR n) * a * nb x * b)) j * ψ x) ∂μ = cz (z - s₀) * GlobalTheory.Eis.term Pp Γ (hz Ht sec s₀ z) g j`. Introduce `j`.
+
+Establish `h` using `top_hz (a := a) (b := b) (nb := nb) (ψ := ψ) μ hL hG hceig z (((Quotient.out (j : GlobalTheory.Eis.Cosets Pp Γ) : Γ) : G) * g)`. Unfold `Top at h`. Simplify using `only [GlobalTheory.Eis.term, mul_assoc] at h ⊢`. Conclude with `h`. Unfold `Top`.
+
+Simplify using `only [hin]`. Rewrite using `[← integral_tsum_of_summable_integral_norm (fun j => (hI j).2.2)]`. Simplify using `only [hj, tsum_mul_left]`. Rewrite using `[hsumS g (mem_insert _ _)]`. Use `Summable.of_nonneg_of_le (fun j => integral_nonneg fun k => norm_nonneg _) (fun j => ?_) ((((hu.subtype _).mul_right (∫ x, ‖ψ x‖)).mul_left M).mul_right (∫ k : KR n, (1 : ℝ) ∂μ))` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (hI j).2.2.norm (integrable_const _) fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_one]`. Conclude with `mul_le_mul (hM k) ((norm_integral_le_integral_norm _).trans (hIb j k)) (norm_nonneg _) ((norm_nonneg _).trans (hM k))`. Use `_ = M * (u j * ∫ x, ‖ψ x‖) * ∫ k : KR n, (1 : ℝ) ∂μ := integral_const_mul _ _`.
+-/
 theorem top_sum [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hL : LocData ε c t p q e sL ρ) (hG : GlobData ε c sL ρ G Pp Γ ι s₀ Ht sec I Λ) (hD : CayleyBlocksInvertible)
     (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n} (hnbc : Continuous nb)

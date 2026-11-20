@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.ProfD
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `ι Z U a s hs h`. Establish `hsub : {i | a i ∈ s} ⊆ ⋃ z ∈ s, {i | a i = z}`. Introduce `i hi`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨a i, hi, rfl⟩`.
+
+Establish `hmem : (⋃ z ∈ s, {i | a i = z}) ∈ U` using `U.1.sets_of_superset h hsub`. Take `⟨z, hz, hzU⟩` from `(Ultrafilter.finite_biUnion_mem_iff hs).1 hmem`. Use `⟨z, ⟨hz, hzU⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `w ⟨-, hw⟩`. Take `⟨i, hi1, hi2⟩` from `(hw.and hzU).exists`.
+
+Conclude with `hi1.symm.trans hi2`.
+-/
 theorem UpperTheory.V.AlgebraTools.ultra_fin :
     ∀ (ι Z : Type) (U : Ultrafilter ι) (a : ι → Z) (s : Set Z), s.Finite → (∀ᶠ i in (U : Filter ι), a i ∈ s) →
       ∃! z, z ∈ s ∧ ∀ᶠ i in (U : Filter ι), a i = z := by

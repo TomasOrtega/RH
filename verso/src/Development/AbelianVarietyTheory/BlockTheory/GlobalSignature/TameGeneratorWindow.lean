@@ -133,13 +133,26 @@ def CarriesTame (Q : GlobalTheory.EX.PtProp) : Prop :=
 
 def Claim : Prop := ∀ Q : GlobalTheory.EX.PtProp, CarriesTame Q → DutyClaim Q
 
+/- English proof (translation)
+Introduce `k v a b hab` and use `by have := h k v (a₁ := some (a, true)) (a₂ := some (b, true)) hab simpa using this`.
+-/
 theorem TameDistinct.injective {D : D7} (h : TameDistinct D) : TameInjective D := fun k v a b hab => by
   have := h k v (a₁ := some (a, true)) (a₂ := some (b, true)) hab
   simpa using this
 
+/- English proof (translation)
+The claim follows from `h.imp fun _ h => h.1`.
+-/
 theorem SmallPrimeSharpAt.weak {D : D7} {L : SizeData₂ D} {C8 : ℝ} (h : SmallPrimeSharpAt L C8) : SmallPrimeAt L :=
   h.imp fun _ h => h.1
 
+/- English proof (translation)
+Establish `hm : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hk : ((D.R.m + 3 : ℕ) : ℝ) ≤ D.R.k` using `by exact_mod_cast D.R.m_add_three_le_k`. Move the coercions through the operations in `at hk`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`.
+
+Establish `h1 : 1 < 3 * hWidth L`. Unfold `hWidth`. Use `L.Sc_pos` as an intermediate fact. Use `L.etaSz_pos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `mul_pos (mul_pos (by linarith) (by linarith)) (Real.log_pos h1)`.
+-/
 theorem lJ_den_pos {D : D7} (L : SizeData₂ D) :
     0 < (D.R.k : ℝ) * ((D.R.m : ℝ) + (D.R.t : ℝ)) * Real.log (3 * hWidth L) := by
   have hm : (2 : ℝ) ≤ D.R.m := by exact_mod_cast D.R.two_le_m

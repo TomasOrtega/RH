@@ -4,6 +4,9 @@ import Mathlib
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.semiHaar_exists_fd_setIntegral | exact GlobalTheory.semiHaar_exists_fd_setIntegral | (intros; apply GlobalTheory.semiHaar_exists_fd_setIntegral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quotient_measure_semidirect_closed_subgroup : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]

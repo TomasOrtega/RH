@@ -15,6 +15,11 @@ namespace UpDivG
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Use `choose C hC using fun k => (hP k).2`. Use `⟨∑ k, C k ^ 2, fun x hx => Finset.sum_le_sum fun k _ => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ X.pnorm la (P k) x`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Conclude with `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (norm_nonneg _) _)`.
+
+Conclude with `pow_le_pow_left₀ h0 (hC k x hx) 2`.
+-/
 theorem sum_bdd (X : Data E r) (la : Wt X.Ψ r) {N : ℕ} (P : Fin N → Frame X.Ψ r → ℂ)
     (hP : ∀ k, X.IsBddSec la (P k)) : ∃ C : ℝ, ∀ x ∈ X.dom, ∑ k, X.pnorm la (P k) x ^ 2 ≤ C := by
   choose C hC using fun k => (hP k).2
@@ -27,6 +32,69 @@ theorem sum_bdd (X : Data E r) (la : Wt X.Ψ r) {N : ℕ} (P : Fin N → Frame X
 
 end UpDivG
 
+/- English proof (translation)
+Introduce `r X Xa Fl _ _ bb m _ hm hmar _ x0 ho F hF hIn`. Establish `hU : IsOpen (OmF X x0)` using `OntoB.isOpen_OmF X x0`. Establish `hUc : IsPreconnected (OmF X x0)` using `OFC.omFConn_of_cm r X x0 ho`. Establish `hbm : bb ≤ m`. Establish `: 0 ≤ bb ^ 2 * ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn2 : 2 ≤ nd X` using `Xa.n_ge`. Establish `hTn : nd X ≤ Xa.T` using `by have := Xa.T_ge; nlinarith`. Establish `hInU` using `hIn`. Unfold `InAt at hInU`.
+
+Rewrite `hInU` using `[IW.muF_lintegral]`. Take `⟨Cs, hCs⟩` from `UpDivG.sum_bdd X Xa.L Fl.s (fun k => (Fl.s_van k).1.1)`. Take `⟨Cw, hCw⟩` from `UpDivG.sum_bdd X Xa.L Xa.w (fun k => (Xa.w_van k).1.1)`. Distinguish the cases in `hex : ∃ k, ∃ z ∈ OmF X x0, Fl.s k (cpt X x0 z) ≠ 0`. Use `swap`.
+
+Simplify using `only [not_exists, not_and, not_not] at hex`. Establish `hWtop : ∀ z ∈ OmF X x0, WSk X Xa Fl (cpt X x0 z) = ⊤`. Introduce `z hz`. Establish `hp : cpt X x0 z ∈ X.dom` using `hz`. Establish `hs0 : ∑ k, X.pnorm Xa.L (Fl.s k) (cpt X x0 z) ^ 2 = 0`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pnorm_sq X hp, hex k z hz, norm_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwp : 0 < ∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2`. Rewrite using `[sumL_eq X Xa x0 hz]`.
+
+Conclude with `mul_pos (Real.exp_pos _) (Sw_pos X Xa x0 hz)`. Unfold `WSk`. Rewrite using `[if_pos hp, hs0, zero_div, ENNReal.ofReal_zero, ENNReal.zero_rpow_of_neg (by`. Establish `: (1 : ℝ) ≤ Xa.T` using `by exact_mod_cast (show 1 ≤ Xa.T by omega)`. Use the proof step `linarith)]`.
+
+Use `ENNReal.mul_top ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne' (ENNReal.rpow_pos (ENNReal.ofReal_pos.mpr hwp) ENNReal.ofReal_ne_top).ne'`. Establish `hF0 : ∀ z ∈ OmF X x0, F z = 0`. Introduce `z0 hz0`. Assume the negation of the conclusion as `hne`.
+
+Establish `hev1 : ∀ᶠ y in 𝓝 z0, y ∈ OmF X x0` using `hU.mem_nhds hz0`. Establish `hev : ∀ᶠ y in 𝓝 z0, y ∈ OmF X x0 ∧ F y ≠ 0` using `hev1.and ((hF.continuousOn.continuousAt (hU.mem_nhds hz0)).eventually_ne hne)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hev`. Establish `hsub : Metric.ball z0 ε ⊆ OmF X x0` using `fun y hy => (hball y hy).1`. Establish `htop : ∫⁻ y in Metric.ball z0 ε, ENNReal.ofReal (densF X x0 y) * (ENNReal.ofReal (‖F y‖ ^ 2 / kaF X x0 bb y) * WSk X Xa Fl (cpt X x0 y)) = ⊤`.
+
+Rewrite using `[setLIntegral_congr_fun measurableSet_ball (g := fun _ => ⊤) fun y hy => ?_, setLIntegral_const, ENNReal.top_mul (Metric.measure_ball_pos volume z0 hε).ne']`. Establish `hyO` using `hsub hy`. Establish `ha : ENNReal.ofReal (densF X x0 y) ≠ 0` using `(ENNReal.ofReal_pos.mpr (OntoB.densF_pos hyO)).ne'`. Establish `hb : ENNReal.ofReal (‖F y‖ ^ 2 / kaF X x0 bb y) ≠ 0`. Use `(ENNReal.ofReal_pos.mpr (div_pos ?_ (Real.exp_pos _))).ne'` and prove the remaining obligations.
+
+Use `(hball y hy).2` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[hWtop y hyO, ENNReal.mul_top hb, ENNReal.mul_top ha]`. Use `lt_of_le_of_lt (lintegral_mono_set hsub) hInU` as an intermediate fact. Rewrite `this` using `[htop]`.
+
+Conclude with `lt_irrefl _ this`. Use `⟨fun _ _ => 0, fun α _ => ⟨differentiableOn_const _, ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Unfold `InAt`. Simplify using the standard rewrite rules. Rewrite using `[hF0 z hz]`.
+
+Simplify using the standard rewrite rules. Take `⟨k1, z1, hz1, hk1⟩` from `hex`. Use `set g1 : V (nd X) → ℂ := fun z => Fl.s k1 (cpt X x0 z) with hg1def`. Establish `hg1 : DifferentiableOn ℂ g1 (OmF X x0)` using `OntoB.hol_comp X x0 (Fl.s_van k1).1.1.1.1`. Establish `hg10 : ∃ z ∈ OmF X x0, g1 z ≠ 0` using `⟨z1, hz1, hk1⟩`.
+
+Use `set U' : Set (V (nd X)) := {z | z ∈ OmF X x0 ∧ g1 z ≠ 0} with hU'def`. Establish `hU'o : IsOpen U'` using `ExG.isOpen_Om X x0 g1 hg1`. Take `⟨S, hSz, -⟩` from `exhaustG_holds r X x0 ho g1 hg1`. Use `set sv : Fin (nd X) → V (nd X) → ℂ := fun k z => Fl.s k (cpt X x0 z) with hsv`. Establish `hsvO : ∀ k, DifferentiableOn ℂ (sv k) (OmF X x0)` using `fun k => OntoB.hol_comp X x0 (Fl.s_van k).1.1.1.1`.
+
+Establish `hsvd : ∀ k, DifferentiableOn ℂ (sv k) U'` using `fun k => (hsvO k).mono fun z hz => hz.1`. Establish `hnz : ∀ y ∈ U', ∃ i, sv i y ≠ 0` using `fun y hy => ⟨k1, hy.2⟩`. Establish `hph : ContDiffOn ℝ ∞ (ph0 X Xa x0 bb) U'` using `(UpDivE.plurisubharmonicWeight_smooth X Xa x0 bb).mono fun z hz => hz.1`. Establish `hl : ∀ y ∈ U', ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => ((ph0 X Xa x0 bb w : ℝ) : ℂ)) y ξ).re` using `fun y hy ξ => UpDivE.leviForm_weight_nonneg X Xa x0 bb hbm ho (hmar x0 ho) hy.1 ξ`. Establish `hSs : ∀ y ∈ U', 0 < Ss X Xa Fl x0 y` using `fun y hy => Finset.sum_pos' (fun _ _ => by positivity) ⟨k1, Finset.mem_univ _, by have := hy.2; positivity⟩`.
+
+Establish `hI : ∫⁻ y in U', ENNReal.ofReal (‖F y‖ ^ 2 * (∑ i, ‖sv i y‖ ^ 2) ^ (-((Xa.T : ℝ) - 1 / 2)) * Real.exp (-ph0 X Xa x0 bb y)) < ⊤`. Use `lt_of_le_of_lt ?_ hInU` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hU'o.measurableSet fun y hy => ?_` and prove the remaining obligations. Conclude with `(wSk_eq X Xa Fl x0 bb hy.1 (hSs y hy) F).symm`.
+
+Use `_ ≤ _ := lintegral_mono_set fun y hy => hy.1`. Establish `hcond : ((nd X : ℕ) : ℝ) - 1 < (Xa.T : ℝ) - 1 / 2 - ((Xa.T - nd X : ℕ) : ℝ) - 1 + 1`. Rewrite using `[Nat.cast_sub hTn]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨H, hH, hid⟩` from `UpDivB.iter_div hU'o S hSz sv (ph0 X Xa x0 bb) hn2 hsvd hnz hph hl ((Xa.T : ℝ) - 1 / 2) (Xa.T - nd X) hcond F (hF.mono fun z hz => hz.1) hI`.
+
+Establish `hexp : ((Xa.T : ℝ) - 1 / 2 - ((Xa.T - nd X : ℕ) : ℝ)) = (nd X : ℝ) - 1 / 2`. Rewrite using `[Nat.cast_sub hTn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSc : ContinuousOn (Ss X Xa Fl x0) (OmF X x0)` using `continuousOn_finsetSum _ fun k _ => ((hsvO k).continuousOn.norm).pow 2`. Establish `hpc : ContinuousOn (ph0 X Xa x0 bb) (OmF X x0)` using `(UpDivE.plurisubharmonicWeight_smooth X Xa x0 bb).continuousOn`.
+
+Establish `hω : ∀ K ⊆ OmF X x0, IsCompact K → ∃ c > 0, ∀ y ∈ K ∩ U', c ≤ (∑ i, ‖sv i y‖ ^ 2) ^ (-((nd X : ℝ) - 1 / 2)) * Real.exp (-ph0 X Xa x0 bb y)`. Introduce `K hKU hK`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hSc.mono hKU)`. Take `⟨P, hP⟩` from `hK.exists_bound_of_continuousOn (hpc.mono hKU)`. Use `⟨(max M 1) ^ (-((nd X : ℝ) - 1 / 2)) * Real.exp (-P), by positivity, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hsy` using `hSs y hy.2`. Establish `hle : Ss X Xa Fl x0 y ≤ max M 1`. Use `hM y hy.1` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg hsy.le]`. Conclude with `this.trans (le_max_left _ _)`.
+
+Establish `ha : (0 : ℝ) ≤ (nd X : ℝ) - 1 / 2`. Establish `: (2 : ℝ) ≤ nd X` using `by exact_mod_cast hn2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (max M 1) ^ (-((nd X : ℝ) - 1 / 2)) ≤ (Ss X Xa Fl x0 y) ^ (-((nd X : ℝ) - 1 / 2))`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_neg hsy.le]`.
+
+Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hsy _) (Real.rpow_le_rpow hsy.le hle ha)`. Establish `h2 : Real.exp (-P) ≤ Real.exp (-ph0 X Xa x0 bb y)`. Use `Real.exp_le_exp.mpr ?_` and prove the remaining obligations. Use `hP y hy.1` as an intermediate fact. Use `le_abs_self (ph0 X Xa x0 bb y)` as an intermediate fact.
+
+Rewrite `*` using `[Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_mul h1 h2 (Real.exp_pos _).le (Real.rpow_nonneg hsy.le _)`. Establish `hext : ∀ α ∈ Finset.Nat.antidiagonalTuple (nd X) (Xa.T - nd X), ∃ H' : V (nd X) → ℂ, DifferentiableOn ℂ H' (OmF X x0) ∧ EqOn H' (H α) U'`. Introduce `α hα`.
+
+Establish `hIα : ∫⁻ y in U', ENNReal.ofReal (‖H α y‖ ^ 2 * ((∑ i, ‖sv i y‖ ^ 2) ^ (-((nd X : ℝ) - 1 / 2)) * Real.exp (-ph0 X Xa x0 bb y))) < ⊤`. Use `(hH α hα).2` as an intermediate fact. Rewrite `this` using `[hexp]`. Simplify `this` using `only [mul_assoc]`. Establish `hloc` using `UpDivF.loc_int hU hU'o (g := g1) (fun y => Iff.rfl) (hH α hα).1.continuousOn hω hIα`.
+
+Conclude with `UpDivC.ext_glue hU hUc hg1 hg10 (hH α hα).1 hloc`. Use `choose! Hx hHxd hHxeq using hext`. Use `⟨Hx, fun α hα => ⟨hHxd α hα, ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Unfold `InAt`. Rewrite using `[IW.muF_lintegral]`.
+
+Establish `hnull` using `UpDivF.zero_null hU hUc hg1 hg10`. Establish `hae : (OmF X x0 : Set (V (nd X))) =ᵐ[volume] U'`. Use `ae_eq_set.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Use `⟨hy.1, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy.2 ⟨hy.1, h⟩`. Establish `: U' \ OmF X x0 = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_sdiff, mem_empty_iff_false, iff_false]`.
+
+Conclude with `fun h => h.2 h.1.1`. Rewrite using `[this, measure_empty]`. Rewrite using `[setLIntegral_congr hae]`. Establish `hn12 : (1 / 2 : ℝ) ≤ (nd X : ℝ)`. Establish `: (2 : ℝ) ≤ nd X` using `by exact_mod_cast hn2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hU'o.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hHxeq α hα hy]`. Conclude with `weightedDensity_bound X Xa Fl x0 bb hy.1 (hSs y hy) (H α) (hCs _ hy.1) (hCw _ hy.1) hn12`.
+
+Use `_ < ⊤ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_` and prove the remaining obligations. Use `(hH α hα).2` as an intermediate fact. Rewrite `this` using `[hexp]`.
+
+Conclude with `this`. Establish `hcont : ContinuousOn (fun z => F z - ∑ α ∈ Finset.Nat.antidiagonalTuple (nd X) (Xa.T - nd X), (∏ k, Fl.s k (cpt X x0 z) ^ α k) * Hx α z) (OmF X x0)`. Use `hF.continuousOn.sub (continuousOn_finsetSum _ fun α hα => ?_)` and prove the remaining obligations. Conclude with `(continuousOn_finsetProd _ fun k _ => ((hsvO k).continuousOn.pow _)).mul (hHxd α hα).continuousOn`. Establish `h0` using `UpDivF.eq_across hU hUc hg1 hg10 hcont (fun y hy hgy => by`.
+
+Establish `hy' : y ∈ U'` using `⟨hy, hgy⟩`. Rewrite using `[hid y hy', sub_eq_zero]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[hHxeq α hα hy']) z hz`. Conclude with `sub_eq_zero.mp h0`.
+-/
 theorem upDiv_holds : UpDivStatement (E := E) := by
   intro r X Xa Fl _ _ bb m _ hm hmar _ x0 ho F hF hIn
   classical

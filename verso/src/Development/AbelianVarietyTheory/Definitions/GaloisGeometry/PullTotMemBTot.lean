@@ -36,6 +36,9 @@ abbrev dH (a q : ℕ) : Term F a q →ₗ[R] Term F (a + 1) q := CatH.d (OmF F q
 def dV (a q : ℕ) : Term F a q →ₗ[R] Term F a (q + 1) :=
   (CatH.Mor.ofNatTrans (dOmNat F q)).pullC a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dV_apply {a q : ℕ} (c : Term F a q) (s : ComposableArrows C a) :
     dV F a q c s = dOm R (F.obj (s.obj (Fin.last a))) q (c s) := rfl
 
@@ -58,16 +61,31 @@ def dTot (n : ℕ) : Tot F n →ₗ[R] Tot F (n + 1) := totH F n + totV F n
 section
 variable {F} {n : ℕ} (c : Tot F n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem totH_zero {q : ℕ} (h : 0 + q = n + 1) : totH F n c ⟨(0, q), h⟩ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem totH_succ {a q : ℕ} (h : a + 1 + q = n + 1) :
     totH F n c ⟨(a + 1, q), h⟩ = dH F a q (c ⟨(a, q), by omega⟩) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem totV_zero {a : ℕ} (h : a + 0 = n + 1) : totV F n c ⟨(a, 0), h⟩ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem totV_succ {a q : ℕ} (h : a + (q + 1) = n + 1) :
     totV F n c ⟨(a, q + 1), h⟩ = (-1 : ℤ) ^ a • dV F a q (c ⟨(a, q), by omega⟩) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dTot_apply (p : Bidegree (n + 1)) : dTot F n c p = totH F n c p + totV F n c p := rfl
 
 end
@@ -86,10 +104,16 @@ instance (n : ℕ) : Module R (Hyp F n) := inferInstanceAs (Module R (_ ⧸ _))
 
 def Hyp.mk (n : ℕ) : ZTot F n →ₗ[R] Hyp F n := Submodule.mkQ _
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem Hyp.mk_surjective (n : ℕ) : Function.Surjective (Hyp.mk F n) := Submodule.mkQ_surjective _
 
 variable {F} in
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem Hyp.mk_eq_zero {n : ℕ} {c : ZTot F n} : Hyp.mk F n c = 0 ↔ c.1 ∈ BTot F n :=
   Submodule.Quotient.mk_eq_zero _
 
@@ -99,12 +123,21 @@ def TotF (p n : ℕ) : Submodule R (Tot F n) where
   zero_mem' _ _ := rfl
   smul_mem' r c hc b hb := by rw [Pi.smul_apply, hc b hb, smul_zero]
 
+/- English proof (translation)
+The claim follows from `fun _ hc b hb ↦ hc b (hb.trans_le h)`.
+-/
 theorem TotF_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : TotF F p' n ≤ TotF F p n :=
   fun _ hc b hb ↦ hc b (hb.trans_le h)
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun _ _ _ hb ↦ absurd hb (Nat.not_lt_zero _)`.
+-/
 theorem TotF_zero (n : ℕ) : TotF F 0 n = ⊤ :=
   eq_top_iff.2 fun _ _ _ hb ↦ absurd hb (Nat.not_lt_zero _)
 
+/- English proof (translation)
+The claim follows from `eq_bot_iff.2 fun _ hc ↦ funext fun b ↦ hc b (by have := b.2; omega)`.
+-/
 theorem TotF_eq_bot {p n : ℕ} (h : n < p) : TotF F p n = ⊥ :=
   eq_bot_iff.2 fun _ hc ↦ funext fun b ↦ hc b (by have := b.2; omega)
 
@@ -114,10 +147,16 @@ def BF (p : ℕ) : ∀ n : ℕ, Submodule R (Tot F n)
   | 0 => ⊥
   | n + 1 => (TotF F p n).map (dTot F n)
 
+/- English proof (translation)
+The claim follows from `| 0 => le_rfl | _ + 1 => LinearMap.map_le_range`.
+-/
 theorem BF_le_BTot (p : ℕ) : ∀ n : ℕ, BF F p n ≤ BTot F n
   | 0 => le_rfl
   | _ + 1 => LinearMap.map_le_range
 
+/- English proof (translation)
+The claim follows from `| 0 => le_rfl | n + 1 => Submodule.map_mono (TotF_anti F h n)`.
+-/
 theorem BF_anti {p p' : ℕ} (h : p ≤ p') : ∀ n : ℕ, BF F p' n ≤ BF F p n
   | 0 => le_rfl
   | n + 1 => Submodule.map_mono (TotF_anti F h n)
@@ -130,11 +169,17 @@ instance (p n : ℕ) : Module R (HypF F p n) := inferInstanceAs (Module R (_ ⧸
 
 def HypF.mk (p n : ℕ) : ZF F p n →ₗ[R] HypF F p n := Submodule.mkQ _
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem HypF.mk_surjective (p n : ℕ) : Function.Surjective (HypF.mk F p n) :=
   Submodule.mkQ_surjective _
 
 variable {F} in
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem HypF.mk_eq_zero {p n : ℕ} {c : ZF F p n} : HypF.mk F p n c = 0 ↔ c.1 ∈ BF F p n :=
   Submodule.Quotient.mk_eq_zero _
 
@@ -145,6 +190,9 @@ def HypF.incl {p p' : ℕ} (h : p ≤ p') (n : ℕ) : HypF F p' n →ₗ[R] HypF
   Submodule.mapQ _ _ (Submodule.inclusion (inf_le_inf_right _ (TotF_anti F h n)))
     fun _ hc ↦ BF_anti F h n hc
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `HypF.mk_surjective F p' n c`. Both sides reduce to the same expression.
+-/
 theorem HypF.toHyp_incl {p p' : ℕ} (h : p ≤ p') (n : ℕ) (c : HypF F p' n) :
     HypF.toHyp F p n (HypF.incl F h n c) = HypF.toHyp F p' n c := by
   obtain ⟨c, rfl⟩ := HypF.mk_surjective F p' n c; rfl
@@ -153,6 +201,11 @@ def Hyp.fil (p n : ℕ) : Submodule R (Hyp F n) := LinearMap.range (HypF.toHyp F
 
 variable {F} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Take `⟨c, rfl⟩` from `HypF.mk_surjective F p n y`. Conclude with `⟨⟨c.1, c.2.2⟩, c.2.1, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+
+Conclude with `⟨HypF.mk F p n ⟨c.1, hc, c.2⟩, rfl⟩`.
+-/
 theorem Hyp.mem_fil {p n : ℕ} {x : Hyp F n} :
     x ∈ Hyp.fil F p n ↔ ∃ c : ZTot F n, c.1 ∈ TotF F p n ∧ Hyp.mk F n c = x := by
   constructor
@@ -162,19 +215,33 @@ theorem Hyp.mem_fil {p n : ℕ} {x : Hyp F n} :
   · rintro ⟨c, hc, rfl⟩
     exact ⟨HypF.mk F p n ⟨c.1, hc, c.2⟩, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨_, HypF.toHyp_incl F h n c⟩`.
+-/
 theorem Hyp.fil_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : Hyp.fil F p' n ≤ Hyp.fil F p n := by
   rintro _ ⟨c, rfl⟩
   exact ⟨_, HypF.toHyp_incl F h n c⟩
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun x _ ↦ by obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x exact Hyp.mem_fil.2 ⟨c, by rw [TotF_zero]; trivial, rfl⟩`.
+-/
 theorem Hyp.fil_zero (n : ℕ) : Hyp.fil F 0 n = ⊤ := eq_top_iff.2 fun x _ ↦ by
   obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
   exact Hyp.mem_fil.2 ⟨c, by rw [TotF_zero]; trivial, rfl⟩
 
+/- English proof (translation)
+The claim follows from `eq_bot_iff.2 fun x hx ↦ by obtain ⟨c, hc, rfl⟩ := Hyp.mem_fil.1 hx rw [TotF_eq_bot F h] at hc rw [show c = 0 from Subtype.ext hc, map_zero]; rfl`.
+-/
 theorem Hyp.fil_eq_bot {p n : ℕ} (h : n < p) : Hyp.fil F p n = ⊥ := eq_bot_iff.2 fun x hx ↦ by
   obtain ⟨c, hc, rfl⟩ := Hyp.mem_fil.1 hx
   rw [TotF_eq_bot F h] at hc
   rw [show c = 0 from Subtype.ext hc, map_zero]; rfl
 
+/- English proof (translation)
+Establish `e` using `congrFun (show dTot F n c.1 = 0 from c.2.2) ⟨(a + 1, p), by omega⟩`. Establish `hV : totV F n c.1 ⟨(a + 1, p), by omega⟩ = 0`. Break down `p with _ | p` into its components or cases. Both sides reduce to the same expression. Rewrite using `[totV_succ, c.2.1 _ (Nat.lt_succ_self p), map_zero, smul_zero]`.
+
+Rewrite `e` using `[dTot_apply, hV, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem dH_lead {a p n : ℕ} (h : a + p = n) (c : ZF F p n) : dH F a p (c.1 ⟨(a, p), h⟩) = 0 := by
   have e := congrFun (show dTot F n c.1 = 0 from c.2.2) ⟨(a + 1, p), by omega⟩
   have hV : totV F n c.1 ⟨(a + 1, p), by omega⟩ = 0 := by
@@ -219,9 +286,15 @@ def omMor (q : ℕ) : CatH.Mor (OmF F q) (OmF F' q) σ where
 
 abbrev pullTerm (a q : ℕ) : Term F a q →ₛₗ[σ] Term F' a q := (omMor m q).pullC a
 
+/- English proof (translation)
+The claim follows from `(omMor m q).d_pullC a c`.
+-/
 theorem dH_pullTerm {a q : ℕ} (c : Term F a q) :
     dH F' a q (pullTerm m a q c) = pullTerm m (a + 1) q (dH F a q c) := (omMor m q).d_pullC a c
 
+/- English proof (translation)
+The claim follows from `funext fun s ↦ ((semiHom_coef m _).mOm_dOm (c (s ⋙ m.G))).symm`.
+-/
 theorem dV_pullTerm {a q : ℕ} (c : Term F a q) :
     dV F' a q (pullTerm m a q c) = pullTerm m a (q + 1) (dV F a q c) :=
   funext fun s ↦ ((semiHom_coef m _).mOm_dOm (c (s ⋙ m.G))).symm
@@ -231,9 +304,17 @@ def pullTot (n : ℕ) : Tot F n →ₛₗ[σ] Tot F' n where
   map_add' c c' := funext fun b ↦ map_add _ (c b) (c' b)
   map_smul' r c := funext fun b ↦ map_smulₛₗ (pullTerm m _ _) r (c b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullTot_apply {n : ℕ} (c : Tot F n) (b : Bidegree n) :
     pullTot m n c b = pullTerm m _ _ (c b) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨(a, q), h⟩`. Rewrite using `[pullTot_apply, dTot_apply, dTot_apply, map_add]`. Use `congr 1`. Break down `a with _ | a` into its components or cases. Conclude with `(map_zero _).symm`.
+
+Conclude with `dH_pullTerm m _`. Break down `q with _ | q` into its components or cases. Conclude with `(map_zero _).symm`. Rewrite using `[totV_succ, totV_succ, map_zsmul, pullTot_apply, dV_pullTerm]`.
+-/
 theorem dTot_pullTot {n : ℕ} (c : Tot F n) :
     dTot F' n (pullTot m n c) = pullTot m (n + 1) (dTot F n c) := by
   funext ⟨(a, q), h⟩
@@ -246,17 +327,29 @@ theorem dTot_pullTot {n : ℕ} (c : Tot F n) :
     · exact (map_zero _).symm
     · rw [totV_succ, totV_succ, map_zsmul, pullTot_apply, dV_pullTerm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `dTot F' n _ = 0`. Rewrite using `[dTot_pullTot, show dTot F n c = 0 from hc, map_zero]`.
+-/
 theorem pullTot_mem_ZTot {n : ℕ} {c : Tot F n} (hc : c ∈ ZTot F n) : pullTot m n c ∈ ZTot F' n := by
   change dTot F' n _ = 0
   rw [dTot_pullTot, show dTot F n c = 0 from hc, map_zero]
 
+/- English proof (translation)
+The claim follows from `fun b hb ↦ by rw [pullTot_apply, hc b hb, map_zero]`.
+-/
 theorem pullTot_mem_TotF {p n : ℕ} {c : Tot F n} (hc : c ∈ TotF F p n) :
     pullTot m n c ∈ TotF F' p n := fun b hb ↦ by rw [pullTot_apply, hc b hb, map_zero]
 
+/- English proof (translation)
+The claim follows from `| 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _ | _ + 1, _, ⟨e, he⟩ => ⟨_, (dTot_pullTot m e).trans (congrArg _ he)⟩`.
+-/
 theorem pullTot_mem_BTot : ∀ {n : ℕ} {c : Tot F n}, c ∈ BTot F n → pullTot m n c ∈ BTot F' n
   | 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _
   | _ + 1, _, ⟨e, he⟩ => ⟨_, (dTot_pullTot m e).trans (congrArg _ he)⟩
 
+/- English proof (translation)
+The claim follows from `| 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _ | _ + 1, _, ⟨e, h, he⟩ => ⟨_, pullTot_mem_TotF m h, (dTot_pullTot m e).trans (congrArg _ he)⟩`.
+-/
 theorem pullTot_mem_BF {p : ℕ} : ∀ {n : ℕ} {c : Tot F n}, c ∈ BF F p n → pullTot m n c ∈ BF F' p n
   | 0, c, hc => by rw [show c = 0 from hc, map_zero]; exact zero_mem _
   | _ + 1, _, ⟨e, h, he⟩ => ⟨_, pullTot_mem_TotF m h, (dTot_pullTot m e).trans (congrArg _ he)⟩
@@ -274,37 +367,61 @@ def Hyp.pull (n : ℕ) : Hyp F n →ₛₗ[σ] Hyp F' n :=
 def HypF.pull (p n : ℕ) : HypF F p n →ₛₗ[σ] HypF F' p n :=
   Submodule.mapQ _ _ (pullZF m p n) fun _ hc ↦ pullTot_mem_BF m hc
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `HypF.mk_surjective F p n c`. Both sides reduce to the same expression.
+-/
 theorem HypF.toHyp_pull {p n : ℕ} (c : HypF F p n) :
     HypF.toHyp F' p n (HypF.pull m p n c) = Hyp.pull m n (HypF.toHyp F p n c) := by
   obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n c; rfl
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hx`. Conclude with `⟨_, HypF.toHyp_pull m c⟩`.
+-/
 theorem Hyp.pull_mem_fil {p n : ℕ} {x : Hyp F n} (hx : x ∈ Hyp.fil F p n) :
     Hyp.pull m n x ∈ Hyp.fil F' p n := by
   obtain ⟨c, rfl⟩ := hx
   exact ⟨_, HypF.toHyp_pull m c⟩
 
+/- English proof (translation)
+The claim follows from `funext fun b ↦ funext fun s ↦ SemiHom.mOm_id _ (fun _ ↦ rfl) (c b s)`.
+-/
 theorem pullTot_id {n : ℕ} (c : Tot F n) : pullTot (CoefMap.id F) n c = c :=
   funext fun b ↦ funext fun s ↦ SemiHom.mOm_id _ (fun _ ↦ rfl) (c b s)
 
+/- English proof (translation)
+The claim follows from `funext fun b ↦ funext fun s ↦ (SemiHom.mOm_mOm (semiHom_coef m _) (semiHom_coef m' _) _ (fun _ ↦ rfl) (c b (s ⋙ m'.G ⋙ m.G))).symm`.
+-/
 theorem pullTot_comp (m' : CoefMap τ F' F'') {n : ℕ} (c : Tot F n) :
     pullTot (m.comp m') n c = pullTot m' n (pullTot m n c) :=
   funext fun b ↦ funext fun s ↦
     (SemiHom.mOm_mOm (semiHom_coef m _) (semiHom_coef m' _) _ (fun _ ↦ rfl)
       (c b (s ⋙ m'.G ⋙ m.G))).symm
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Hyp.mk_surjective F n x`. Conclude with `congrArg (Hyp.mk F n) (Subtype.ext (pullTot_id c.1))`.
+-/
 theorem Hyp.pull_id {n : ℕ} (x : Hyp F n) : Hyp.pull (CoefMap.id F) n x = x := by
   obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
   exact congrArg (Hyp.mk F n) (Subtype.ext (pullTot_id c.1))
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Hyp.mk_surjective F n x`. Conclude with `congrArg (Hyp.mk F'' n) (Subtype.ext (pullTot_comp m m' c.1))`.
+-/
 theorem Hyp.pull_comp (m' : CoefMap τ F' F'') {n : ℕ} (x : Hyp F n) :
     Hyp.pull (m.comp m') n x = Hyp.pull m' n (Hyp.pull m n x) := by
   obtain ⟨c, rfl⟩ := Hyp.mk_surjective F n x
   exact congrArg (Hyp.mk F'' n) (Subtype.ext (pullTot_comp m m' c.1))
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `HypF.mk_surjective F p n x`. Conclude with `congrArg (HypF.mk F p n) (Subtype.ext (pullTot_id c.1))`.
+-/
 theorem HypF.pull_id {p n : ℕ} (x : HypF F p n) : HypF.pull (CoefMap.id F) p n x = x := by
   obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n x
   exact congrArg (HypF.mk F p n) (Subtype.ext (pullTot_id c.1))
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `HypF.mk_surjective F p n x`. Conclude with `congrArg (HypF.mk F'' p n) (Subtype.ext (pullTot_comp m m' c.1))`.
+-/
 theorem HypF.pull_comp (m' : CoefMap τ F' F'') {p n : ℕ} (x : HypF F p n) :
     HypF.pull (m.comp m') p n x = HypF.pull m' p n (HypF.pull m p n x) := by
   obtain ⟨c, rfl⟩ := HypF.mk_surjective F p n x

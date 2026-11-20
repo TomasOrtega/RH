@@ -9,25 +9,40 @@ section LocS
 
 variable {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem locBasic_mem_locS {S : Submonoid R} {L : Submodule R W} {x : W} :
     x ∈ locS S L ↔ ∃ s ∈ S, s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx`. Conclude with `locBasic_mem_locS.mpr ⟨1, S.one_mem, by rwa [one_smul]⟩`.
+-/
 theorem locBasic_le_locS (S : Submonoid R) (L : Submodule R W) : L ≤ locS S L := by
   intro x hx
   exact locBasic_mem_locS.mpr ⟨1, S.one_mem, by rwa [one_smul]⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Conclude with `locBasic_mem_locS.mpr ⟨s, hs, h hsx⟩`.
+-/
 theorem locBasic_locS_mono (S : Submonoid R) {L M : Submodule R W} (h : L ≤ M) :
     locS S L ≤ locS S M := by
   intro x hx
   obtain ⟨s, hs, hsx⟩ := locBasic_mem_locS.mp hx
   exact locBasic_mem_locS.mpr ⟨s, hs, h hsx⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Conclude with `locBasic_mem_locS.mpr ⟨s, hST hs, hsx⟩`.
+-/
 theorem locBasic_locS_le_of_le {S T : Submonoid R} (hST : S ≤ T) (L : Submodule R W) :
     locS S L ≤ locS T L := by
   intro x hx
   obtain ⟨s, hs, hsx⟩ := locBasic_mem_locS.mp hx
   exact locBasic_mem_locS.mpr ⟨s, hST hs, hsx⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ (locBasic_le_locS S _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Take `⟨t, ht, htx⟩` from `locBasic_mem_locS.mp hsx`. Conclude with `locBasic_mem_locS.mpr ⟨t * s, S.mul_mem ht hs, by rwa [mul_smul]⟩`.
+-/
 theorem locBasic_locS_idem (S : Submonoid R) (L : Submodule R W) :
     locS S (locS S L) = locS S L := by
   refine le_antisymm ?_ (locBasic_le_locS S _)
@@ -36,6 +51,11 @@ theorem locBasic_locS_idem (S : Submonoid R) (L : Submodule R W) :
   obtain ⟨t, ht, htx⟩ := locBasic_mem_locS.mp hsx
   exact locBasic_mem_locS.mpr ⟨t * s, S.mul_mem ht hs, by rwa [mul_smul]⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (locBasic_locS_mono S inf_le_left) (locBasic_locS_mono S inf_le_right)`. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).1`. Take `⟨t, ht, htx⟩` from `locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).2`.
+
+Use `locBasic_mem_locS.mpr ⟨s * t, S.mul_mem hs ht, Submodule.mem_inf.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem t hsx`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem s htx`.
+-/
 theorem locBasic_locS_inf (S : Submonoid R) (L M : Submodule R W) :
     locS S (L ⊓ M) = locS S L ⊓ locS S M := by
   apply le_antisymm
@@ -49,6 +69,13 @@ theorem locBasic_locS_inf (S : Submonoid R) (L M : Submodule R W) :
     · rw [mul_smul]
       exact M.smul_mem s htx
 
+/- English proof (translation)
+Set `I : Ideal R` to `L.comap (LinearMap.toSpanSingleton R W x)`. Establish `hI : ∀ r, r ∈ I ↔ r • x ∈ L` using `fun r => by simp [I]`. Assume the negation of the conclusion as `hxL`. Establish `hne : I ≠ ⊤`. Introduce `h`.
+
+Apply `hxL` to reduce the goal to its premises. Establish `h1 : (1 : R) ∈ I`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Simplify using `using (hI 1).mp h1`.
+
+Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp (hx p hp)`. Conclude with `hS p hp s hs (hIp ((hI s).mpr hsx))`.
+-/
 theorem locBasic_lg (S : Ideal R → Submonoid R)
     (hS : ∀ p : Ideal R, p.IsMaximal → ∀ s ∈ S p, s ∉ p) (L : Submodule R W) (x : W)
     (hx : ∀ p : Ideal R, p.IsMaximal → x ∈ locS (S p) L) : x ∈ L := by
@@ -73,6 +100,13 @@ section LocK
 variable {R K V : Type*} [CommRing R] [Field K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Take `⟨l, hl, m, hm, hlm⟩` from `Submodule.mem_sup.mp hsx`. Establish `ha` using `hS s hs`.
+
+Establish `key : ∀ v : V, s • ((algebraMap R K s)⁻¹ • v) = v` using `fun v => by`. Rewrite using `[← algebraMap_smul K s ((algebraMap R K s)⁻¹ • v), smul_smul, mul_inv_cancel₀ ha, one_smul]`. Establish `hx' : x = (algebraMap R K s)⁻¹ • l + (algebraMap R K s)⁻¹ • m`. Rewrite using `[← smul_add, hlm, ← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Rewrite using `[hx']`.
+
+Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Conclude with `locBasic_mem_locS.mpr ⟨s, hs, by rw [key]; exact hl⟩`. Conclude with `locBasic_mem_locS.mpr ⟨s, hs, by rw [key]; exact hm⟩`. Conclude with `sup_le (locBasic_locS_mono S le_sup_left) (locBasic_locS_mono S le_sup_right)`.
+-/
 theorem locBasic_locS_sup (S : Submonoid R) (hS : ∀ s ∈ S, algebraMap R K s ≠ 0)
     (L M : Submodule R V) : locS S (L ⊔ M) = locS S L ⊔ locS S M := by
   apply le_antisymm
@@ -97,6 +131,9 @@ section Herm
 
 variable {R K : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
 
+/- English proof (translation)
+Unfold `hcompl`. Rewrite using `[Submonoid.closure_le]`. Introduce `s hs`. Conclude with `hs.1`.
+-/
 theorem locBasic_hcompl_le (p : Ideal R) [p.IsPrime] :
     hcompl (K := K) p ≤ p.primeCompl := by
   unfold hcompl
@@ -104,9 +141,17 @@ theorem locBasic_hcompl_le (p : Ideal R) [p.IsPrime] :
   intro s hs
   exact hs.1
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_primeCompl_iff.mp (locBasic_hcompl_le (K := K) p hs)`.
+-/
 theorem locBasic_hcompl_not_mem (p : Ideal R) [p.IsPrime] (s : R) (hs : s ∈ hcompl (K := K) p) :
     s ∉ p := Ideal.mem_primeCompl_iff.mp (locBasic_hcompl_le (K := K) p hs)
 
+/- English proof (translation)
+Unfold `hcompl`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨hu, fun t ht htp => hu' ?_⟩` and prove the remaining obligations. Unfold `conjIdeal`. Apply `Ideal.subset_span` to reduce the goal to its premises.
+
+Conclude with `⟨t, htp, by rw [ht, star_star]⟩`.
+-/
 theorem locBasic_mem_hcompl (p : Ideal R) (u : R) (hu : u ∉ p) (hu' : u ∉ conjIdeal (K := K) p) :
     u ∈ hcompl (K := K) p := by
   unfold hcompl
@@ -128,10 +173,20 @@ def locBasic_sigma (hinj : Function.Injective (algebraMap R K))
     rw [(hstar (a + b)).choose_spec, map_add, map_add, (hstar a).choose_spec,
       (hstar b).choose_spec, star_add])
 
+/- English proof (translation)
+The claim follows from `(hstar r).choose_spec`.
+-/
 theorem locBasic_sigma_spec (hinj : Function.Injective (algebraMap R K))
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K)) (r : R) :
     algebraMap R K (locBasic_sigma hinj hstar r) = star (algebraMap R K r) := (hstar r).choose_spec
 
+/- English proof (translation)
+Establish `hσ` using `locBasic_sigma_spec hinj hstar`. Establish `hσσ : ∀ r, locBasic_sigma hinj hstar (locBasic_sigma hinj hstar r) = r` using `fun r => hinj (by rw [hσ, hσ, star_star])`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `conjIdeal`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `r ⟨s, hs, hrs⟩`. Establish `e : r = locBasic_sigma hinj hstar s` using `hinj (by rw [hrs, hσ])`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, e, hσσ]`. Conclude with `hs`. Introduce `r hr`.
+
+Unfold `conjIdeal`. Apply `Ideal.subset_span` to reduce the goal to its premises. Conclude with `⟨locBasic_sigma hinj hstar r, Ideal.mem_comap.mp hr, by rw [hσ, star_star]⟩`.
+-/
 theorem locBasic_conj_eq (hinj : Function.Injective (algebraMap R K))
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K)) (p : Ideal R) :
     conjIdeal (K := K) p = p.comap (locBasic_sigma hinj hstar) := by
@@ -150,6 +205,9 @@ theorem locBasic_conj_eq (hinj : Function.Injective (algebraMap R K))
     apply Ideal.subset_span
     exact ⟨locBasic_sigma hinj hstar r, Ideal.mem_comap.mp hr, by rw [hσ, star_star]⟩
 
+/- English proof (translation)
+Unfold `hcompl`. Rewrite using `[Submonoid.closure_le]`. Introduce and unpack `s ⟨_, hs2⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_primeCompl_iff, locBasic_conj_eq hinj hstar p, Ideal.mem_comap]`. Conclude with `hs2 _ (locBasic_sigma_spec hinj hstar s)`.
+-/
 theorem locBasic_hcompl_le_conj (hinj : Function.Injective (algebraMap R K))
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K)) (p : Ideal R)
     [(conjIdeal (K := K) p).IsPrime] :
@@ -162,6 +220,31 @@ theorem locBasic_hcompl_le_conj (hinj : Function.Injective (algebraMap R K))
 
 end Herm
 
+/- English proof (translation)
+Introduce `R K V _ _ _ _ _ _ _ _ _ hinj`. Unfold `loc localization₂`. Establish `hne : ∀ (p : Ideal R), p.IsPrime → ∀ s ∈ hcompl (K` using `K) p, algebraMap R K s ≠ 0 := by`. Introduce `p hp s hs h0`. Use `haveI := hp`.
+
+Apply `locBasic_hcompl_not_mem (K := K) p s hs` to reduce the goal to its premises. Rewrite `h0` using `[← map_zero (algebraMap R K)]`. Rewrite using `[hinj h0]`. Conclude with `p.zero_mem`. Establish `hnm : ∀ (p : Ideal R), p.IsMaximal → ∀ s ∈ hcompl (K` using `K) p, s ∉ p := by`.
+
+Introduce `p hp s hs`. Use `haveI := hp.isPrime`. Conclude with `locBasic_hcompl_not_mem (K := K) p s hs`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp L M haveI := hp`.
+
+Conclude with `⟨locBasic_le_locS _ L, fun h => locBasic_locS_mono _ h, locBasic_locS_idem _ L, locBasic_locS_inf _ L M, locBasic_locS_sup (K := K) _ (hne p hp) L M⟩`. Introduce `L`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Submodule.mem_iInf] at hx`.
+
+Conclude with `locBasic_lg (fun p => hcompl (K := K) p) hnm L x hx`. Conclude with `le_iInf₂ fun p _ => locBasic_le_locS _ L`. Introduce `L M h x hx`. Conclude with `locBasic_lg (fun p => hcompl (K := K) p) hnm M x (fun p hp => h p hp (locBasic_le_locS _ L hx))`. Introduce `p _ L`.
+
+Conclude with `locBasic_locS_le_of_le (locBasic_hcompl_le (K := K) p) L`. Introduce `hstar p _`. Establish `hc` using `locBasic_conj_eq hinj hstar p`. Use `haveI hpc : (conjIdeal (K := K) p).IsPrime := by`. Rewrite using `[hc]`.
+
+Conclude with `Ideal.comap_isPrime _ _`. Use `⟨hpc, fun L => ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (locBasic_locS_le_of_le (locBasic_hcompl_le (K := K) p) L) (locBasic_locS_le_of_le (locBasic_hcompl_le_conj hinj hstar p) L)`. Introduce `x hx`.
+
+Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).1`. Take `⟨t, ht, htx⟩` from `locBasic_mem_locS.mp (Submodule.mem_inf.mp hx).2`. Establish `hs' : s ∉ p` using `Ideal.mem_primeCompl_iff.mp hs`. Establish `ht' : locBasic_sigma hinj hstar t ∉ p`. Establish `h1` using `Ideal.mem_primeCompl_iff.mp ht`.
+
+Rewrite `h1` using `[hc, Ideal.mem_comap]`. Then use the resulting hypothesis. Establish `key : ∀ u, u • x ∈ L → u ∉ p → locBasic_sigma hinj hstar u ∉ p → x ∈ locS (hcompl (K` using `K) p) L := by`. Introduce `u hux hu1 hu2`. Use `locBasic_mem_locS.mpr ⟨u, locBasic_mem_hcompl (K := K) p u hu1 ?_, hux⟩` and prove the remaining obligations. Rewrite using `[hc, Ideal.mem_comap]`.
+
+Conclude with `hu2`. Distinguish the cases in `h1 : locBasic_sigma hinj hstar s ∈ p`. Distinguish the cases in `h2 : t ∈ p`. Use `key (s + t) (by rw [add_smul]; exact L.add_mem hsx htx) ?_ ?_` and prove the remaining obligations. Introduce `h`.
+
+Conclude with `hs' (by simpa using p.sub_mem h h2)`. Rewrite using `[map_add]`. Introduce `h`. Conclude with `ht' (by simpa using p.sub_mem h h1)`. Conclude with `key t htx h2 ht'`.
+
+Conclude with `key s hsx hs' h1`.
+-/
 theorem locBasic : LocBasic := by
   intro R K V _ _ _ _ _ _ _ _ _ hinj
   unfold loc localization₂

@@ -13,6 +13,11 @@ open GlobalTheory.PeriodChart
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {g : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ i k, a i k = 0 ∧ b i k = 0` using `fun i k => by`. Establish `h1` using `congrFun (h (Pi.single k 1)) i`. Establish `h2` using `congrFun (h (Complex.I • Pi.single k 1)) i`. Simplify using `only [star_smul, star_single, Matrix.mulVec_smul] at h1 h2`. Simplify using `at h1 h2`.
+
+Prove the components needed by the constructor for the conclusion. Take the linear combination `(1 / 2 : ℂ) * h1 - (Complex.I / 2) * h2 + (a i k - b i k) / 2 * Complex.I_mul_I`. Take the linear combination `(1 / 2 : ℂ) * h1 + (Complex.I / 2) * h2 - (a i k - b i k) / 2 * Complex.I_mul_I`. Conclude with `⟨Matrix.ext fun i k => (key i k).1, Matrix.ext fun i k => (key i k).2⟩`.
+-/
 theorem mat_uniq {a b : Matrix (Fin g) (Fin g) ℂ} (h : ∀ z : Fin g → ℂ, a *ᵥ z + b *ᵥ star z = 0) : a = 0 ∧ b = 0 := by
   have key : ∀ i k, a i k = 0 ∧ b i k = 0 := fun i k => by
     have h1 := congrFun (h (Pi.single k 1)) i
@@ -24,6 +29,13 @@ theorem mat_uniq {a b : Matrix (Fin g) (Fin g) ℂ} (h : ∀ z : Fin g → ℂ, 
     · linear_combination (1 / 2 : ℂ) * h1 + (Complex.I / 2) * h2 - (a i k - b i k) / 2 * Complex.I_mul_I
   exact ⟨Matrix.ext fun i k => (key i k).1, Matrix.ext fun i k => (key i k).2⟩
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← sub_eq_zero (a := b)]`. Use `mat_uniq fun z => ?_` and prove the remaining obligations. Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨x, rfl⟩ := hx`.
+
+Simplify using `only [Matrix.sub_mulVec]`. Take the linear combination `h x`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [star_add, Matrix.mulVec_add]`. Take the linear combination `hx + hy`.
+
+Consider the case `smul r x _ hx => rw [star_smul, star_trivial, Matrix.mulVec_smul, Matrix.mulVec_smul, ← smul_add, hx, smul_zero]`.
+-/
 theorem mat_ext {Λ : Type} {P : Λ → Fin g → ℂ} (hs : Submodule.span ℝ (Set.range P) = ⊤)
     {a b a' b' : Matrix (Fin g) (Fin g) ℂ} (h : ∀ x, a *ᵥ P x + b *ᵥ star (P x) = a' *ᵥ P x + b' *ᵥ star (P x)) :
     a = a' ∧ b = b' := by
@@ -36,12 +48,70 @@ theorem mat_ext {Λ : Type} {P : Λ → Fin g → ℂ} (hs : Submodule.span ℝ 
   | add x y _ _ hx hy => simp only [star_add, Matrix.mulVec_add]; linear_combination hx + hy
   | smul r x _ hx => rw [star_smul, star_trivial, Matrix.mulVec_smul, Matrix.mulVec_smul, ← smul_add, hx, smul_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `: (fun x => A x a b) =ᶠ[nhds u] fun x => B x a b` using `h.mono fun x hx => by simp only [hx]`. Simplify using `only [dM, Matrix.of_apply, this.fderiv_eq]`.
+-/
 theorem dM_congr {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {I J : Type} {A B : X → Matrix I J ℂ} {u : X}
     (h : ∀ᶠ x in nhds u, A x = B x) (v : X) : dM A u v = dM B u v := by
   ext a b
   have : (fun x => A x a b) =ᶠ[nhds u] fun x => B x a b := h.mono fun x hx => by simp only [hx]
   simp only [dM, Matrix.of_apply, this.fderiv_eq]
 
+/- English proof (translation)
+Establish `hn : B ∈ nhds (0 : Fin n → ℂ)` using `hB.mem_nhds h0`. Take `⟨hl, hi, hd, hs, G, hG, hp, hE⟩` from `hP.1 0 h0`. Establish `hblock` using `herm_block (hP.1 0 h0) hE`. Rewrite `hl` using `[lin_iff]`. Simplify using `only [← sesq_apply] at hp hE`.
+
+Establish `hex : ∀ u, ∃ (Z : Matrix (Fin g) (Fin g) ℂ) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), u ∈ B → (∀ a z, anti Z (dg ty a *ᵥ z) = dg ty a *ᵥ anti Z z) ∧ (∀ z w, sesq G (anti Z z) w = sesq G (anti Z w) z) ∧ (∀ z, z ≠ 0 → (sesq G (anti Z z) (anti Z z)).re < (sesq G z z).re) ∧ ∀ x, P u x = h …` using `fun u => by`. Distinguish the cases in `hu : u ∈ B`. Take `⟨Z, h, hh⟩` from `exists_contraction (P 0) hl hi hd hs G hp hE (P u) (hP.1 u hu)`. Conclude with `⟨Z, h, fun _ => hh⟩`. Conclude with `⟨0, LinearEquiv.refl _ _, fun h => absurd h hu⟩`.
+
+Use `choose Z h hZ using hex`. Set `a : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun u => LinearMap.toMatrix' (h u).toLinearMap`. Establish `ha : ∀ u z, a u *ᵥ z = h u z` using `fun u z => LinearMap.toMatrix'_mulVec _ _`. Establish `had : ∀ u, (a u).det ≠ 0` using `fun u e => by`. Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 e`.
+
+Conclude with `hy0 ((h u).injective (by rw [← ha, hy, map_zero]))`. Set `b : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun u => a u * Z u`. Establish `hab : ∀ u ∈ B, ∀ x, P u x = a u *ᵥ P 0 x + b u *ᵥ star (P 0 x)` using `fun u hu x => by`. Rewrite using `[(hZ u hu).2.2.2, ← ha, Matrix.mulVec_add, anti_apply, Matrix.mulVec_mulVec]`. Establish `hT : ∀ z, DifferentiableOn ℂ (fun u => a u *ᵥ z + b u *ᵥ star z) B` using `fun z => by`.
+
+Establish `hz : z ∈ Submodule.span ℝ (Set.range (P 0))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨x, rfl⟩ := hx`. Conclude with `(hP.2 x).congr fun u hu => (hab u hu x).symm`. Consider the case `zero => simpa using differentiableOn_const _`.
+
+Consider the case `add x y _ _ hx hy`. Conclude with `(hx.add hy).congr fun u _ => by simp only [star_add, Matrix.mulVec_add, Pi.add_apply]; abel`. Consider the case `smul r x _ hx`. Conclude with `(hx.const_smul (r : ℂ)).congr fun u _ => by`. Simplify using `only [star_smul, star_trivial, Matrix.mulVec_smul, Pi.smul_apply, smul_add, Complex.coe_smul]`.
+
+Establish `hab' : ∀ j k, DifferentiableOn ℂ (fun u => a u j k) B ∧ DifferentiableOn ℂ (fun u => b u j k) B`. Introduce `j k`. Establish `h1` using `differentiableOn_pi.1 (hT (Pi.single k 1)) j`. Establish `h2` using `differentiableOn_pi.1 (hT (Complex.I • Pi.single k 1)) j`. Simplify using `only [star_smul, star_single, Matrix.mulVec_smul] at h1 h2`.
+
+Prove the components needed by the constructor for the conclusion. Use `((h1.const_mul (1 / 2)).sub (h2.const_mul (Complex.I / 2))).congr fun u _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Take the linear combination `(a u j k - b u j k) / 2 * Complex.I_mul_I`. Use `((h1.const_mul (1 / 2)).add (h2.const_mul (Complex.I / 2))).congr fun u _ => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Take the linear combination `-(a u j k - b u j k) / 2 * Complex.I_mul_I`. Establish `hA : HolM B a` using `fun j k => (hab' j k).1`. Establish `hb : HolM B b` using `fun j k => (hab' j k).2`. Take `⟨a0, b0⟩ : a 0 = 1 ∧ b 0 = 0` from `mat_ext hs fun x => by rw [← hab 0 h0]; simp`.
+
+Establish `hty : ∀ u ∈ B, (∀ j k, ¬ ty j = ty k → a u j k = 0) ∧ ∀ j k, ¬ ty j = ComplexEmbedding.conjugate (ty k) → b u j k = 0` using `fun u hu => by`. Use `fun t => mat_ext hs (a := dg ty t * a u) (b := dg ty t * b u) (a' := a u * dg ty t) (b' := b u * dg (fun i => ComplexEmbedding.conjugate (ty i)) t) fun x => by` as an intermediate fact. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_add, ← hab u hu, ← (lin_iff _).1 (hP.1 u hu).1, hab u hu, hl, star_mulVec', dg_map, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `⟨(comm_iff ty ty _).1 fun t => (this t).1, (comm_iff ty _ _).1 fun t => (this t).2⟩`. Establish `dz : ∀ {c : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ} {j k}, (∀ u ∈ B, c u j k = 0) → dM c 0 v j k = 0`.
+
+Introduce `c j k hc`. Establish `: (fun u => c u j k) =ᶠ[nhds 0] fun _ => 0` using `Filter.eventually_of_mem hn hc`. Simplify using `[dM, this.fderiv_eq]`. Use `⟨dM a 0 v, dM b 0 v, fun x => ?_, fun j k h => dz fun u hu => (hty u hu).1 j k h, fun j k h => dz fun u hu => (hty u hu).2 j k h, fun hβ U f hU => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Establish `h1 : (fun u => P u x j) =ᶠ[nhds 0] fun u => (a u * replicateCol Unit (P 0 x)) j () + (b u * replicateCol Unit (star (P 0 x))) j ()` using `Filter.eventually_of_mem hn fun u hu => congrFun (hab u hu x) j`. Establish `h2` using `congrFun (congrFun (dM_mul hA (HolM.const B (replicateCol Unit (P 0 x))) hn v) j) ()`. Establish `h3` using `congrFun (congrFun (dM_mul hb (HolM.const B (replicateCol Unit (star (P 0 x)))) hn v) j) ()`. Rewrite `h2`, `h3` using `[dM_const (A := fun _ => replicateCol Unit _) (.of_forall fun _ => rfl), Matrix.mul_zero, add_zero]`. Establish `h4` using `fderiv_pi (𝕜 := ℂ) (φ := fun j u => P u x j) (x := 0) (fun j => (differentiableOn_pi.1 (hP.2 x) j).differentiableAt hn)`.
+
+Establish `h5 : fderiv ℂ (fun u => P u x) 0 v j = fderiv ℂ (fun u => P u x j) 0 v`. Rewrite using `[show (fun u => P u x) = fun u j => P u x j from rfl, h4]`. Both sides reduce to the same expression. Rewrite using `[h5, h1.fderiv_eq, fderiv_fun_add (((hA.mul (HolM.const B _)) j ()).differentiableAt hn) (((hb.mul (HolM.const B _)) j ()).differentiableAt hn)]`. Conclude with `congrArg₂ (· + ·) h2 h3`.
+
+Establish `hZe : ∀ u, Z u = (a u)⁻¹ * b u` using `fun u => (Matrix.nonsing_inv_mul_cancel_left _ _ (IsUnit.mk0 _ (had u))).symm`. Establish `hZh : HolM B Z`. Use `(hA.inv fun u _ => had u).mul hb` as an intermediate fact. Simplify `this` using `only [← hZe]`. Establish `Z0 : Z 0 = 0` using `by rw [hZe, b0, Matrix.mul_zero]`.
+
+Establish `dZ : dM Z 0 v = dM b 0 v`. Use `dM_mul hA hZh hn v` as an intermediate fact. Rewrite `this` using `[Z0, a0, Matrix.mul_zero, zero_add, Matrix.one_mul]`. Conclude with `this.symm`. Establish `hu : IsUnit Gᵀ.det`.
+
+Rewrite using `[det_transpose]`. Use `isUnit_det_of_ker G fun z hz h => ?_` and prove the remaining obligations. Use `hp (star z) (by simpa using hz)` as an intermediate fact. Simplify using `[sesq_apply, hermForm, h] at this`. Establish `dS : dM (fun u => Gᵀ * Z u) 0 v = Gᵀ * dM b 0 v`.
+
+Rewrite using `[dM_mul (HolM.const B Gᵀ) hZh hn, dM_const (A := fun _ => Gᵀ) (.of_forall fun _ => rfl), dZ]`. Simplify using the standard rewrite rules. Establish `hsym : (Gᵀ * dM b 0 v)ᵀ = Gᵀ * dM b 0 v`. Rewrite using `[← dS]`. Conclude with `dM_congr (A := fun u => (Gᵀ * Z u)ᵀ) (Filter.eventually_of_mem hn fun u hu => (anti_symm_iff _ _).1 (hZ u hu).2.1) v`.
+
+Establish `hS1 : ∀ j k, ty j (H.rt : E) = H.rt0 ∨ ¬ ty k (H.rt : E) = H.rt0 → (Gᵀ * dM b 0 v) j k = 0`. Introduce `j k hjk`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : ty m (H.rt : E) = H.rt0`.
+
+Rewrite using `[hβ m k hm, mul_zero]`. Break down `hjk with hj | hk` into its components or cases. Rewrite using `[Matrix.transpose_apply, hblock m j (fun e => hm (e ▸ hj)), zero_mul]`. Rewrite using `[dz fun u hu => (hty u hu).2 m k fun e => hm ?_, mul_zero]`. Rewrite using `[e]`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hk ((conj_rt H (ty k)).2 hc)`. Establish `dZ0 : dM Z 0 v = 0`. Establish `: Gᵀ * dM b 0 v = 0`. Use extensionality with `j k`.
+
+Distinguish the cases in `hk : ty k (H.rt : E) = H.rt0`. Rewrite using `[← hsym, Matrix.transpose_apply]`. Conclude with `hS1 k j (.inl hk)`. Conclude with `hS1 j k (.inr hk)`. Rewrite using `[dZ, ← Matrix.nonsing_inv_mul_cancel_left _ (dM b 0 v) hu, this, Matrix.mul_zero]`.
+
+Set `𝒵 : Submodule ℂ (Matrix (Fin g) (Fin g) ℂ)` to `{ carrier := {X | (∀ a, dg ty a * X = X * dg (fun i => ComplexEmbedding.conjugate (ty i)) a) ∧ (Gᵀ * X)ᵀ = Gᵀ * X} add_mem' := fun {X Y} hX hY => ⟨fun a => by rw [Matrix.mul_add, Matrix.add_mul, hX.1, hY.1], by rw [Matrix.mul_add, Matrix.transpose_add, hX.2, hY.2]⟩ zero_mem' := ⟨ …`. Set `e` to `(Module.finBasis ℂ 𝒵).equivFun`. Take `⟨π, hπ⟩` from `𝒵.subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Set `L : (Fin (Module.finrank ℂ 𝒵) → ℂ) →ₗ[ℂ] Matrix (Fin g) (Fin g) ℂ` to `𝒵.subtype ∘ₗ e.symm.toLinearMap`. Set `R : (Fin g → Fin g → ℂ) →L[ℂ] (Fin (Module.finrank ℂ 𝒵) → ℂ)` to `LinearMap.toContinuousLinearMap (e.toLinearMap ∘ₗ π ∘ₗ (Matrix.ofLinearEquiv ℂ).toLinearMap)`.
+
+Establish `hLR : ∀ u ∈ B, L (R fun j k => Z u j k) = Z u` using `fun u hu => by`. Establish `hm : Z u ∈ 𝒵` using `⟨fun a => (anti_comm_iff ty a _).1 ((hZ u hu).1 a), (anti_symm_iff _ _).1 (hZ u hu).2.1⟩`. Establish `h1 : π (Z u) = ⟨Z u, hm⟩` using `DFunLike.congr_fun hπ ⟨Z u, hm⟩`. Use `show ((e.symm (e (π (Z u))) : 𝒵) : Matrix (Fin g) (Fin g) ℂ) = Z u`. Rewrite using `[e.symm_apply_apply, h1]`.
+
+Take `⟨ho, -⟩` from `isOpen_convex G hp L`. Set `Q : (Fin (Module.finrank ℂ 𝒵) → ℂ) → ((FU.Di i).La →+ (Fin g → ℂ))` to `fun b => P 0 + (anti (L b)).toAddMonoidHom.comp (P 0)`. Establish `hQ : IsHolPeriods (FU.Di i) ty _ Q` using `⟨fun b hb => isPeriod_add (P 0) hl hi hd hs G hG hE _ (fun a => (anti_comm_iff ty a _).2 ((e.symm b).2.1 a)) ((anti_symm_iff _ _).2 (e.symm b).2.2) hb, fun x => by`. Set `f : (Fin (Module.finrank ℂ 𝒵) → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := fun b => L b *ᵥ star (P 0 x) map_add' := fun b c => by rw [map_add, add_mulVec] map_smul' := fun c b => by rw [map_smul, smul_mulVec]; rfl }`. Conclude with `((differentiable_const (P 0 x)).add f.toContinuousLinearMap.differentiable).differentiableOn⟩`.
+
+Set `w : (Fin n → ℂ) → Fin (Module.finrank ℂ 𝒵) → ℂ` to `fun u => R fun j k => Z u j k`. Establish `hwm : ∀ u ∈ B, w u ∈ {b | ∀ z, z ≠ 0 → (sesq G (anti (L b) z) (anti (L b) z)).re < (sesq G z z).re}` using `fun u hu => by show ∀ z, z ≠ 0 → (sesq G (anti (L (w u)) z) (anti (L (w u)) z)).re < _`. Rewrite using `[hLR u hu]`. Conclude with `(hZ u hu).2.2.1`. Establish `hQP : ∀ u ∈ B, FU.u i (Q (w u)) = FU.u i (P u)` using `fun u hu => (FU.fibre i _ _ (hQ.1 _ (hwm u hu)) (hP.1 u hu)).2 ⟨LinearEquiv.refl _ _, h u, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, fun x => by`.
+
+Rewrite using `[LinearEquiv.refl_apply, (hZ u hu).2.2.2, ← hLR u hu]`. Use the proof step `rfl⟩`. Establish `hF` using `GlobalTheory.LocalLift.hol_differentiableAt (FU.hol i _ _ Q ho hQ).1 (hwm 0 h0) (U := U) (by rw [hQP 0 h0]; exact hU) f`. Establish `hZd : HasFDerivAt (fun u j k => Z u j k) (ContinuousLinearMap.pi fun j => ContinuousLinearMap.pi fun k => fderiv ℂ (fun u => Z u j k) 0) 0` using `hasFDerivAt_pi.2 fun j => hasFDerivAt_pi.2 fun k => ((hZh j k).differentiableAt hn).hasFDerivAt`. Establish `hc` using `hF.hasFDerivAt.comp (0 : Fin n → ℂ) (R.hasFDerivAt.comp (0 : Fin n → ℂ) hZd)`.
+
+Establish `he : (fun u => valAt' (FU.u i (P u)) U f) =ᶠ[nhds 0] (fun z => valAt' (FU.u i (Q z)) U f) ∘ w` using `Filter.eventually_of_mem hn fun u hu => by simp only [Function.comp_apply, hQP u hu]`. Rewrite using `[he.fderiv_eq, hc.fderiv]`. Establish `: (ContinuousLinearMap.pi fun j => ContinuousLinearMap.pi fun k => fderiv ℂ (fun u => Z u j k) 0) v = 0` using `dZ0`. Simplify using `only [ContinuousLinearMap.comp_apply, this, map_zero]`.
+-/
 theorem deriv_zero {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {ty : Fin g → (E →+* ℂ)}
     (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B) (h0 : 0 ∈ B)
     {P : (Fin n → ℂ) → ((FU.Di i).La →+ (Fin g → ℂ))} (hP : IsHolPeriods (FU.Di i) ty B P) (v : Fin n → ℂ) :

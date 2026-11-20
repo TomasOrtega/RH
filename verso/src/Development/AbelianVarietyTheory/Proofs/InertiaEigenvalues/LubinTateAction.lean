@@ -15,6 +15,35 @@ noncomputable section
 
 namespace GlobalTheory.LTRecip
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha ι hι _ _ _ _ π hπ f hf c hc hcW g τ hτ u hu n x hx`. Establish `hWeil : ∀ (σ : Weil h) (τ' : GalLoc w), Lifts ι τ' (σ : G E Ω) → ∀ (u' : 𝒪[w.adicCompletion E]), (u' : w.adicCompletion E) = (a σ : w.adicCompletion E) * (π : w.adicCompletion E) ^ deg σ → lubinTateGalPointMap (hπ` using `hπ) hf τ' x = u' • x := by`. Introduce `σ τ' hτ' u' hu'`. Take `⟨v, hv⟩` from `GlobalTheory.T.local_artin_unit_of_uniformizer E Ω A w h a ha σ π u' hπ hu'`. Establish `hy : unitUniformizerPow hπ v (-deg σ) = a σ`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[unitUniformizerPow, Units.val_mul, Units.coe_map, Units.val_zpow_eq_zpow_val, Units.val_mk0]`. Express the relevant statement in the definitionally equal form `((v : 𝒪[w.adicCompletion E]) : w.adicCompletion E) * _ = _`. Rewrite using `[hv, hu', zpow_neg, mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ (coe_ne_zero_of_irreducible hπ)), mul_one]`. Establish `hvx : (v : 𝒪[w.adicCompletion E]) • x ∈ lubinTateTorsion (Kbar w) (hπ` using `hπ) hf n := Submodule.smul_mem _ _ hx`.
+
+Take `⟨hz, hact⟩` from `GlobalTheory.T.lubin_tate_torsion_galois_action (w.adicCompletion E) (Kbar w) hπ hf v (-deg σ) n _ hvx`. Establish `key` using `GlobalTheory.T.local_artin_frobenius_action E Ω A w h a ha ι hι σ τ' hτ' _ hz`. Rewrite `key` using `[← hy, hact, smul_smul, Units.inv_mul, one_smul]`. Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[lubinTateGalPointMap_val, key, ← hv]`.
+
+Use `set K := w.adicCompletion E`. Establish `hπ0 : (π : K) ≠ 0` using `coe_ne_zero_of_irreducible hπ`. Use `set γ := valuation K ((π : K) ^ n) with hγ`. Establish `hγ0 : γ ≠ 0` using `by simp [γ, hπ0]`. Use `set T := lubinTateField (Kbar w) hπ hf n`.
+
+Establish `hU : IsOpen (T.fixingSubgroup : Set (GalLoc w))` using `T.fixingSubgroup_isOpen`. Use `set V : Set (Dec (F := E) A) := (fun g' => ((c g' : Kˣ) : K)) ⁻¹' {z : K | valuation K (z - (c g : K)) < γ} with hVdef`. Establish `hball : IsOpen {z : K | valuation K (z - (c g : K)) < γ}`. Use `isOpen_iff_mem_nhds.2 fun z hz => (IsValuativeTopology.mem_nhds_iff).2 ⟨Units.mk0 γ hγ0, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Establish `e : z + y - (c g : K) = (z - (c g : K)) + y` using `by ring`. Use `show valuation K (z + y - (c g : K)) < γ`. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ hz hy`. Establish `hV : IsOpen V` using `hball.preimage hc`.
+
+Establish `hgV : g ∈ V` using `by show valuation K (((c g : Kˣ) : K) - (c g : K)) < γ`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_iff.2 hγ0`. Take `⟨σ, τ', hτ', hU', hV'⟩` from `GlobalTheory.T.weil_group_dense_in_decomposition E Ω A w h ι hι g τ hτ _ hU V hV hgV`. Use `set cσ : K := ((c ⟨σ, Weil_le_Dec h σ.2⟩ : Kˣ) : K) with hcσ`.
+
+Establish `hclose : valuation K (cσ - (u : K)) < γ` using `by rw [hu]; exact hV'`. Establish `hγ1 : γ ≤ 1`. Rewrite using `[hγ, map_pow]`. Conclude with `pow_le_one₀ zero_le π.2`. Establish `huv : valuation K (u : K) ≤ 1` using `u.2`.
+
+Establish `hcσ1 : valuation K cσ ≤ 1`. Establish `e : cσ = (cσ - (u : K)) + (u : K)` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (hclose.le.trans hγ1) huv)`. Set `uσ : 𝒪[K]` to `⟨cσ, hcσ1⟩`.
+
+Establish `hWeil` using `hWeil σ τ' hτ' uσ (hcW σ)`. Establish `hxT : x.val ∈ T` using `val_mem_lubinTateField hπ hf hx`. Establish `hfix : (τ⁻¹ * τ') x.val = x.val` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hU' _ hxT`. Establish `hττ' : τ' x.val = τ x.val`. Rewrite `hfix` using `[AlgEquiv.mul_apply]`.
+
+Use `congrArg τ hfix` as an intermediate fact. Rewrite `this` using `[AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `set t : K := (cσ - (u : K)) / (π : K) ^ n with ht`. Establish `htv : valuation K t ≤ 1`. Rewrite using `[ht, map_div₀]`.
+
+Rewrite using `[div_le_one₀ (zero_lt_iff.2 hγ0)]`. Conclude with `hclose.le`. Set `t' : 𝒪[K]` to `⟨t, htv⟩`. Establish `hsplit : uσ = u + π ^ n * t'`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show cσ = (u : K) + (π : K) ^ n * t`. Rewrite using `[ht, mul_div_cancel₀ _ (pow_ne_zero n hπ0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxn : π ^ n • x = 0` using `(mem_lubinTateTorsion hf n x).1 hx`. Establish `hmod : uσ • x = u • x`.
+
+Rewrite using `[hsplit, add_smul, mul_comm, mul_smul, hxn, smul_zero, add_zero]`. Apply `IdealPoint.ext` to reduce the goal to its premises. Rewrite using `[lubinTateGalPointMap_val, ← hττ', ← lubinTateGalPointMap_val, hWeil, hmod]`.
+-/
 theorem lubinTate_action : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)
     (a : Weil h →* (w.adicCompletion E)ˣ), IsLocalArtin h a → ∀ (ι : Ω →ₐ[E] Kbar w), IsLocEmb A w ι →

@@ -14,6 +14,11 @@ section General
 
 variable {σ : Type}
 
+/- English proof (translation)
+Rewrite using `[fockL_apply]`. Unfold `fockS fockN`. Use `push_cast`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem fockL_self (f : MvPolynomial σ ℂ) : fockL f f = (fockN f : ℂ) := by
   rw [fockL_apply]
   unfold fockS fockN
@@ -23,6 +28,9 @@ theorem fockL_self (f : MvPolynomial σ ℂ) : fockL f f = (fockN f : ℂ) := by
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `fockN`. Use `Finset.sum_subset h fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.1 hm]`. Simplify using the standard rewrite rules.
+-/
 theorem fockN_eq_sum (f : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ)) (h : f.support ⊆ S) :
     fockN f = ∑ m ∈ S, ‖coeff m f‖ ^ 2 * (mfact m : ℝ) := by
   unfold fockN
@@ -30,12 +38,22 @@ theorem fockN_eq_sum (f : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ)) (h :
   rw [notMem_support_iff.1 hm]
   simp
 
+/- English proof (translation)
+Establish `h1 : ‖∑ b, c b * z b‖ ≤ ∑ b, ‖c b‖ * ‖z b‖` using `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun b _ => norm_mul _ _))`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun b => ‖c b‖) (fun b => ‖z b‖)`. Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2`.
+-/
 theorem cauchy_schwarz_finite_sum {β : Type} [Fintype β] (c z : β → ℂ) : ‖∑ b, c b * z b‖ ^ 2 ≤ (∑ b, ‖c b‖ ^ 2) * ∑ b, ‖z b‖ ^ 2 := by
   have h1 : ‖∑ b, c b * z b‖ ≤ ∑ b, ‖c b‖ * ‖z b‖ :=
     (norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun b _ => norm_mul _ _))
   have h2 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun b => ‖c b‖) (fun b => ‖z b‖)
   exact (pow_le_pow_left₀ (norm_nonneg _) h1 2).trans h2
 
+/- English proof (translation)
+Use `set S : Finset (σ →₀ ℕ) := (∑ b, C (c b) * G b).support ∪ Finset.univ.biUnion fun b => (G b).support with hS`. Rewrite using `[fockN_eq_sum _ S Finset.subset_union_left]`. Establish `hG : ∀ b, fockN (G b) = ∑ m ∈ S, ‖coeff m (G b)‖ ^ 2 * (mfact m : ℝ)` using `fun b => fockN_eq_sum _ S ((Finset.subset_biUnion_of_mem (fun b => (G b).support) (Finset.mem_univ b)).trans Finset.subset_union_right)`. Simplify using `only [hG]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_C_mul]`.
+
+Conclude with `cauchy_schwarz_finite_sum c fun b => coeff m (G b)`.
+-/
 theorem fockN_lin_le {β : Type} [Fintype β] (c : β → ℂ) (G : β → MvPolynomial σ ℂ) :
     fockN (∑ b, C (c b) * G b) ≤ (∑ b, ‖c b‖ ^ 2) * ∑ b, fockN (G b) := by
   classical
@@ -54,6 +72,19 @@ theorem fockN_lin_le {β : Type} [Fintype β] (c : β → ℂ) (G : β → MvPol
 
 variable [DecidableEq σ]
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[pderiv_monomial, coeff_X_mul', coeff_monomial, coeff_monomial]`. Distinguish the cases in `hv : v ∈ m.support`. Establish `h1 : 1 ≤ m v` using `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hv)`.
+
+Establish `hm : m - Finsupp.single v 1 + Finsupp.single v 1 = m` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 h1)`. Rewrite using `[if_pos hv]`. Distinguish the cases in `hu : u = m`. Substitute `hu` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hu, mul_zero]`. Distinguish the cases in `h2 : u - Finsupp.single v 1 = m - Finsupp.single v 1`. Rewrite using `[if_pos h2]`. Distinguish the cases in `h3 : u v = 0`.
+
+Rewrite using `[h3]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `hu` to reduce the goal to its premises. Establish `hu' : u - Finsupp.single v 1 + Finsupp.single v 1 = u` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h3))`.
+
+Rewrite using `[← hu', h2, hm]`. Rewrite using `[if_neg h2]`. Rewrite using `[if_neg hv, Finsupp.notMem_support_iff.1 hv]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, mul_add, coeff_add, coeff_add, hp, hq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_X_mul_pderiv_columns (v : σ) (F : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     coeff m (X v * pderiv v F) = (m v : ℂ) * coeff m F := by
   induction F using MvPolynomial.induction_on' with
@@ -82,6 +113,9 @@ theorem coeff_X_mul_pderiv_columns (v : σ) (F : MvPolynomial σ ℂ) (m : σ �
       simp
   | add p q hp hq => rw [map_add, mul_add, coeff_add, coeff_add, hp, hq]; ring
 
+/- English proof (translation)
+Establish `h` using `coeff_X_mul_pderiv_columns v F (m + Finsupp.single v 1)`. Rewrite `h` using `[coeff_X_mul', if_pos (by simp), add_tsub_cancel_right]`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_pderiv_eq_coeff_add_single_mul (v : σ) (F : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     coeff m (pderiv v F) = coeff (m + Finsupp.single v 1) F * ((m v : ℂ) + 1) := by
   have h := coeff_X_mul_pderiv_columns v F (m + Finsupp.single v 1)
@@ -102,6 +136,11 @@ def blkE (τ : ι) (F : MvPolynomial (ι × Fin n × Fin n) ℂ) : MvPolynomial 
 def BlockHomogeneous (F : MvPolynomial (ι × Fin n × Fin n) ℂ) (d : ι → ℕ) : Prop :=
   ∀ m, coeff m F ≠ 0 → ∀ τ, ∑ a, ∑ s, m (τ, a, s) = d τ
 
+/- English proof (translation)
+Use extensionality with `m`. Unfold `blkE`. Rewrite using `[coeff_sum, coeff_smul, smul_eq_mul]`. Simplify using `only [coeff_sum, coeff_X_mul_pderiv_columns]`. Simplify using `only [← Finset.sum_mul]`.
+
+Distinguish the cases in `h0 : coeff m F = 0`. Rewrite using `[h0, mul_zero, mul_zero]`. Rewrite using `[← h m h0 τ]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem blkE_of_hom {F : MvPolynomial (ι × Fin n × Fin n) ℂ} {d : ι → ℕ} (h : BlockHomogeneous F d) (τ : ι) : blkE τ F = (d τ : ℂ) • F := by
   classical
   ext m
@@ -115,6 +154,11 @@ theorem blkE_of_hom {F : MvPolynomial (ι × Fin n × Fin n) ℂ} {d : ι → �
     push_cast
     rfl
 
+/- English proof (translation)
+Unfold `blkE`. Simplify using `only [map_sum, map_mul, blockAct_X, pderiv_blockAct, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blkE_blockAct (U : ι → Matrix (Fin n) (Fin n) ℂ) (τ : ι) (F : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     blkE τ (Formalism.GradedWeylDivisibility.blockAct ℂ U F) = Formalism.GradedWeylDivisibility.blockAct ℂ U (blkE τ F) := by
   classical
@@ -127,6 +171,11 @@ theorem blkE_blockAct (U : ι → Matrix (Fin n) (Fin n) ℂ) (τ : ι) (F : MvP
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_
   ring
 
+/- English proof (translation)
+Establish `: ((∑ a, ∑ t, fockN (pderiv (τ, a, t) G) : ℝ) : ℂ) = (((c : ℝ) * fockN G : ℝ) : ℂ)`. Use `push_cast`. Simplify using `only [← fockL_self, fockL_pderiv_X]`. Establish `e : ∑ a, ∑ t, fockL G (X (τ, a, t) * pderiv (τ, a, t) G) = fockL G (blkE τ G)`. Unfold `blkE`.
+
+Simplify using `only [map_sum]`. Rewrite using `[e, hE, map_smul, smul_eq_mul]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem fockN_euler (τ : ι) (G : MvPolynomial (ι × Fin n × Fin n) ℂ) (c : ℕ) (hE : blkE τ G = (c : ℂ) • G) :
     ∑ a, ∑ t, fockN (pderiv (τ, a, t) G) = (c : ℝ) * fockN G := by
   classical
@@ -139,6 +188,21 @@ theorem fockN_euler (τ : ι) (G : MvPolynomial (ι × Fin n × Fin n) ℂ) (c :
     rw [e, hE, map_smul, smul_eq_mul]
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `m hm τ`. Rewrite `hm` using `[coeff_pderiv_eq_coeff_add_single_mul]`. Establish `h1` using `h _ (left_ne_zero_of_mul hm) τ`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at h1`. Distinguish the cases in `hτ : τ = τ₀`.
+
+Substitute `hτ` using the available equality. Rewrite using `[Function.update_self]`. Establish `h2 : ∑ a, ∑ s, (Finsupp.single (τ, b, t) 1 : (ι × Fin n × Fin n) →₀ ℕ) (τ, a, s) = 1`. Rewrite using `[Finset.sum_eq_single b, Finset.sum_eq_single t]`. Simplify using the standard rewrite rules.
+
+Introduce `s _ hs`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h'`. Conclude with `hs (by simpa using (congrArg (fun z : ι × Fin n × Fin n => z.2.2) h').symm)`. Introduce `h'`.
+
+Conclude with `absurd (Finset.mem_univ _) h'`. Introduce `a _ ha`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h'`.
+
+Conclude with `ha (by simpa using (congrArg (fun z : ι × Fin n × Fin n => z.2.1) h').symm)`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hτ]`.
+
+Establish `h2 : ∑ a, ∑ s, (Finsupp.single (τ₀, b, t) 1 : (ι × Fin n × Fin n) →₀ ℕ) (τ, a, s) = 0`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h'`. Conclude with `hτ (by simpa using (congrArg (fun z : ι × Fin n × Fin n => z.1) h').symm)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem blkHom_pderiv {F : MvPolynomial (ι × Fin n × Fin n) ℂ} {d : ι → ℕ} [DecidableEq ι] (h : BlockHomogeneous F d) (τ₀ : ι) (e : ℕ) (he : d τ₀ = e + 1)
     (b t : Fin n) : BlockHomogeneous (pderiv (τ₀, b, t) F) (Function.update d τ₀ e) := by
   intro m hm τ
@@ -171,6 +235,33 @@ theorem blkHom_pderiv {F : MvPolynomial (ι × Fin n × Fin n) ℂ} {d : ι → 
       exact hτ (by simpa using (congrArg (fun z : ι × Fin n × Fin n => z.1) h').symm)
     omega
 
+/- English proof (translation)
+Introduce `D`. Proceed by induction on `D with`. Consider the case `zero`. Introduce `d hd F hF`. Establish `hd0 : ∀ τ, d τ = 0` using `fun τ => (Finset.sum_eq_zero_iff.1 hd) τ (Finset.mem_univ _)`.
+
+Establish `hC : F = C (coeff 0 F)`. Use extensionality with `m`. Rewrite using `[coeff_C]`. Distinguish the cases in `hm : 0 = m`. Rewrite using `[if_pos hm, hm]`.
+
+Rewrite using `[if_neg hm]`. Assume the negation of the conclusion as `h0`. Apply `hm` to reduce the goal to its premises. Use extensionality with `v`. Take `⟨τ, a, s⟩` from `v`.
+
+Establish `h1` using `hF m h0 τ`. Rewrite `h1` using `[hd0 τ, Finset.sum_eq_zero_iff]`. Establish `h2` using `h1 a (Finset.mem_univ _)`. Rewrite `h2` using `[Finset.sum_eq_zero_iff]`. Conclude with `(h2 s (Finset.mem_univ _)).symm`.
+
+Rewrite using `[hC, algHom_C]`. Simplify using `[hd0]`. Consider the case `succ D ih`. Introduce `d hd F hF`. Choose the witnesses or unpack the hypotheses as in `⟨τ₀, hτ₀⟩ : ∃ τ₀, d τ₀ ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hd` using `[Finset.sum_eq_zero fun τ _ => h τ]`. Use linear arithmetic over natural numbers and integers. Take `⟨e, he⟩` from `Nat.exists_eq_succ_of_ne_zero hτ₀`.
+
+Use `set d' : ι → ℕ := Function.update d τ₀ e with hd'`. Establish `hsum : ∑ τ, d' τ = D`. Establish `h1` using `Finset.sum_update_of_mem (Finset.mem_univ τ₀) d e`. Establish `h2` using `Finset.add_sum_erase Finset.univ d (Finset.mem_univ τ₀)`. Rewrite `h1` using `[Finset.sdiff_singleton_eq_erase]`.
+
+Rewrite using `[hd', h1]`. Use linear arithmetic over natural numbers and integers. Establish `hprod : ∏ τ, hsN (U τ) ^ d τ = hsN (U τ₀) * ∏ τ, hsN (U τ) ^ d' τ`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun τ => hsN (U τ) ^ d τ) (Finset.mem_univ τ₀), ← Finset.mul_prod_erase Finset.univ (fun τ => hsN (U τ) ^ d' τ) (Finset.mem_univ τ₀)]`. Establish `e1 : ∏ τ ∈ Finset.univ.erase τ₀, hsN (U τ) ^ d' τ = ∏ τ ∈ Finset.univ.erase τ₀, hsN (U τ) ^ d τ` using `Finset.prod_congr rfl fun τ hτ => by rw [hd', Function.update_of_ne (Finset.ne_of_mem_erase hτ)]`.
+
+Rewrite using `[e1, hd', Function.update_self, he, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `set G := Formalism.GradedWeylDivisibility.blockAct ℂ U F with hG`. Establish `hEG : blkE τ₀ G = ((e + 1 : ℕ) : ℂ) • G`. Rewrite using `[hG, blkE_blockAct, blkE_of_hom hF τ₀, map_smul, he]`.
+
+Establish `h1` using `fockN_euler τ₀ G (e + 1) hEG`. Establish `h2` using `fockN_euler τ₀ F (e + 1) (by rw [blkE_of_hom hF τ₀, he])`. Establish `h3 : ∀ a t, fockN (pderiv (τ₀, a, t) G) ≤ (∑ b, ‖U τ₀ b a‖ ^ 2) * ∑ b, fockN (Formalism.GradedWeylDivisibility.blockAct ℂ U (pderiv (τ₀, b, t) F))`. Introduce `a t`. Rewrite using `[hG, pderiv_blockAct]`.
+
+Conclude with `fockN_lin_le _ _`. Establish `h4 : ∀ b t, fockN (Formalism.GradedWeylDivisibility.blockAct ℂ U (pderiv (τ₀, b, t) F)) ≤ (∏ τ, hsN (U τ) ^ d' τ) * fockN (pderiv (τ₀, b, t) F)` using `fun b t => ih d' hsum _ (blkHom_pderiv hF τ₀ e he b t)`. Establish `hP : 0 ≤ ∏ τ, hsN (U τ) ^ d' τ` using `Finset.prod_nonneg fun τ _ => pow_nonneg (hsN_nonneg _) _`. Establish `h5 : ((e + 1 : ℕ) : ℝ) * fockN G ≤ ((e + 1 : ℕ) : ℝ) * ((∏ τ, hsN (U τ) ^ d τ) * fockN F)`. Rewrite using `[← h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Finset.mul_sum, ← Finset.sum_mul]`. Use `_ = hsN (U τ₀) * ((∏ τ, hsN (U τ) ^ d' τ) * ∑ b, ∑ t, fockN (pderiv (τ₀, b, t) F)) := by`. Unfold `hsN`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (f := fun t b => fockN (pderiv (τ₀, b, t) F))]`.
+
+Use `_ = _ := by rw [h2, hprod]; ring`. Conclude with `le_of_mul_le_mul_left h5 (by positivity)`.
+-/
 theorem fock_norm_substitution_bound (U : ι → Matrix (Fin n) (Fin n) ℂ) : ∀ (D : ℕ) (d : ι → ℕ), ∑ τ, d τ = D →
     ∀ F : MvPolynomial (ι × Fin n × Fin n) ℂ, BlockHomogeneous F d →
       fockN (Formalism.GradedWeylDivisibility.blockAct ℂ U F) ≤ (∏ τ, hsN (U τ) ^ d τ) * fockN F := by
@@ -246,6 +337,9 @@ theorem fock_norm_substitution_bound (U : ι → Matrix (Fin n) (Fin n) ℂ) : �
         _ = _ := by rw [h2, hprod]; ring
     exact le_of_mul_le_mul_left h5 (by positivity)
 
+/- English proof (translation)
+Introduce `ι _ n U d F hF` and use `fock_norm_substitution_bound U _ d rfl F hF`.
+-/
 theorem fockSubNorm : FockSubNorm := fun ι _ n U d F hF => fock_norm_substitution_bound U _ d rfl F hF
 
 end Block

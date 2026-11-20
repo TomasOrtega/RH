@@ -17,6 +17,11 @@ noncomputable section
 namespace GlobalTheory.ZH.IntegralSum
 open GlobalTheory.FormalValue Filter Topology ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.UT
 
+/- English proof (translation)
+Rewrite using `[comp_Oφ_id]`. Establish `h : padd D.P.A (DegPre.cF D F χ) b = padd D.P.A b (DegPre.cF D F χ)` using `_root_.mul_comm (DegPre.cF D F χ) b`. Establish `h' : DegPre.gtφ D F b χ = D.Oφ b χ`. Unfold `DegPre.gtφ DegPre.Oφ`. Rewrite using `[h]`.
+
+Rewrite using `[h']`.
+-/
 theorem gtφ_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
     (b : TF (R := R) F ⟶ D.P.A) (χ : D.X) (k : Fin 4) : DegPre.gtφ D F b χ k = b.left ≫ D.Oφ (𝟙 D.P.A) χ k := by
   rw [comp_Oφ_id]
@@ -26,14 +31,23 @@ theorem gtφ_eq {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [
     rw [h]
   rw [h']
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases k <;> exact Over.w _`.
+-/
 theorem Oφ_over {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (χ : D.X) (k : Fin 4) :
     D.Oφ (𝟙 D.P.A) χ k ≫ D.P.A.hom = D.P.A.hom := by
   fin_cases k <;> exact Over.w _
 
+/- English proof (translation)
+The claim follows from `(gs_pull r q z ⊤ trivial _).trans ((congrArg (fun t => gs t z ⊤ _) h).trans (gs_eq (𝟙 _) z ⊤ trivial _))`.
+-/
 theorem gs_scal {F : Type} [CommRing F] {Y : Scheme.{0}} (q : Y ⟶ Sp F) (r : Sp F ⟶ Y) (h : r ≫ q = 𝟙 _) (z : Sp F)
     (a : F) : gs r z ⊤ (scal q a) = toStkA z a :=
   (gs_pull r q z ⊤ trivial _).trans ((congrArg (fun t => gs t z ⊤ _) h).trans (gs_eq (𝟙 _) z ⊤ trivial _))
 
+/- English proof (translation)
+Introduce `a`. Take `⟨U, hU, s, rfl⟩` from `(Sp F).presheaf.exists_germ_eq a`. Take `rfl : U = ⊤` from `eq_top_iff.2 fun y _ => Subsingleton.elim (α := PrimeSpectrum F) z y ▸ hU`. Take `⟨x, hx⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 s`. Conclude with `⟨x, congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom hx⟩`.
+-/
 theorem toStkA_surj {F : Type} [Field F] (z : Sp F) : Function.Surjective (toStkA z) := by
   intro a
   obtain ⟨U, hU, s, rfl⟩ := (Sp F).presheaf.exists_germ_eq a
@@ -41,14 +55,27 @@ theorem toStkA_surj {F : Type} [Field F] (z : Sp F) : Function.Surjective (toStk
   obtain ⟨x, hx⟩ := (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 s
   exact ⟨x, congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom hx⟩
 
+/- English proof (translation)
+Take `⟨t, e⟩` from `toStkA_surj z v.val`. Conclude with `⟨t, fun e0 => v.ne_zero (by rw [← e, e0, map_zero]), e⟩`.
+-/
 theorem exists_toStkA_unit {F : Type} [Field F] (z : Sp F) (v : ((Sp F).presheaf.stalk z)ˣ) :
     ∃ t : F, t ≠ 0 ∧ toStkA z t = v.val := by
   obtain ⟨t, e⟩ := toStkA_surj z v.val
   exact ⟨t, fun e0 => v.ne_zero (by rw [← e, e0, map_zero]), e⟩
 
+/- English proof (translation)
+Introduce `y _` and use `Subsingleton.elim (α := PrimeSpectrum F) z y ▸ h`.
+-/
 theorem top_le_of_mem {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F) (h : x z ∈ U) :
     ⊤ ≤ x ⁻¹ᵁ U := fun y _ => Subsingleton.elim (α := PrimeSpectrum F) z y ▸ h
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Set `z : Sp F` to `cpt F`. Take `⟨J, hJ, eJ⟩` from `exists_good L hL z (fun _ : PUnit.{1} => r ≫ h) (fun _ => l') (fun _ _ _ => rfl) (fun _ => hl' trivial)`. Use `replace eJ : J (r ≫ h) = l' := eJ PUnit.unit`. Establish `hl₁ : ⊤ ≤ r ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => h) (fun _ => l)` using `fun y hy => Set.mem_iInter.2 fun _ => hl hy`.
+
+Establish `hl₂ : r z ∈ LB.wchart L (fun _ : Fin 1 => h) (fun _ => l')` using `Set.mem_iInter.2 fun _ => hl' trivial`. Take `⟨τ, τ0, hτ⟩` from `exists_toStkA_unit z (trF (L := L) (fun _ : Fin 1 => h) (fun _ => (k : ℤ)) r z (fun _ => l) (fun _ => l'))`. Use `⟨τ, τ0, fun σ' n cc σ hσ => (toStkA z).injective ?_⟩` and prove the remaining obligations. Use `(toStkA_valR_eq_gs r _ z hl₁ _).trans ((sec_trans σ' r z (hl₁ trivial) hl₂).trans ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hτ, map_sum, ← sval_of σ' r z J (fun _ => l') (fun _ => eJ), ExpGTrans.secLin_val hσ r z hJ]`.
+
+Use `congrArg (_ * ·) (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, sval_of (σ i) _ z J (fun _ => l') (fun _ => by rw [Category.comp_id, eJ])]`. Conclude with `congrArg₂ (· * ·) (gs_scal _ r hq z _) (toStkA_valR_eq_gs (r ≫ h) (LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => l')) z (fun y hy => Set.mem_iInter.2 fun _ => hl' hy) _).symm`.
+-/
 theorem exists_valF_secLin {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (h : Y ⟶ X)
     (q : Y ⟶ Sp F) (r : Sp F ⟶ Y) (hq : r ≫ q = 𝟙 _) (x : Sp F ⟶ X) (hr : r ≫ h = x) (k : ℕ) {l l' : L.ι}
     (hl : ⊤ ≤ x ⁻¹ᵁ L.U l) (hl' : ⊤ ≤ x ⁻¹ᵁ L.U l') : ∃ τ : F, τ ≠ 0 ∧
@@ -76,6 +103,19 @@ theorem exists_valF_secLin {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} (h
     (toStkA_valR_eq_gs (r ≫ h) (LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => l')) z
       (fun y hy => Set.mem_iInter.2 fun _ => hl' hy) _).symm
 
+/- English proof (translation)
+Take `⟨Rg, R0, hR⟩` from `exists_toStkA_unit z (rigV D (TF (R := R) F).hom z J)`. Take `⟨W, W0, hW⟩` from `exists_toStkA_unit z (val w (𝟙 _) z J)`. Use `⟨W * (Rg ^ k)⁻¹, by simp [R0, W0], fun s χ n cc f hs b jf jt hb hjf hjt => ?_⟩` and prove the remaining obligations. Set `rb : Sp F ⟶ (DegPre.BF D F).left` to `(lift (𝟙 (TF (R := R) F)) g.b).left`. Establish `hrb : rb ≫ (DegPre.prB D F).left = b` using `(congrArg (fun t => t.left) (lift_snd (𝟙 (TF (R := R) F)) g.b)).trans hb.symm`.
+
+Establish `hrb' : rb ≫ (fst (TF (R` using `R) F) D.P.A).left = 𝟙 _ := congrArg (fun t => t.left) (lift_fst (𝟙 (TF (R := R) F)) g.b)`. Establish `hcf : IsCoef k g w χ (s.s χ) (coef s g w χ)` using `Classical.epsilon_spec (((CoefBasic.coef_basic R D F k g).2.2 w hw).1 χ (s.s χ)).exists`. Establish `e` using `hcf z J hJ`. Establish `a₁ : sval (s.s χ) rb z J = toStkA z (∑ i, cc i * valR b _ ((f i).f jf))`. Rewrite using `[ExpGTrans.secLin_val hs rb z hJ, hrb, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, sval_of (f i) _ z J jf hjf]`. Use `congrArg₂ (· * ·) (gs_scal _ rb hrb' z _) (toStkA_valR_eq_gs b _ z (top_le_of_mem _ _ z ?_) _).symm` and prove the remaining obligations. Use `hJ.mem (D.famφB χ) b` as an intermediate fact. Rewrite `this` using `[funext hjf]`. Then use the resulting hypothesis.
+
+Establish `a₂ : (val (g.s χ) (𝟙 _) z J).val = toStkA z (valF (𝟙 (Sp F)) _ ((g.s χ).s jt).val)`. Establish `c : ∀ i, J (𝟙 (Sp F) ≫ DegPre.gtφ D F g.b χ i) = jt i` using `fun i => (congrArg J ((Category.id_comp _).trans ((gtφ_eq D F g.b χ i).trans (congrArg (· ≫ D.Oφ (𝟙 _) χ i) hb.symm)))).trans (hjt i)`. Use `(congrArg Units.val (val_of (g.s χ) (𝟙 _) z J jt c)).trans ?_` and prove the remaining obligations. Use `(toStkA_valR (𝟙 (Sp F)) _ z (top_le_of_mem _ _ z ?_) _).symm` and prove the remaining obligations. Use `hJ.mem (DegPre.gtφ D F g.b χ) (𝟙 (Sp F))` as an intermediate fact.
+
+Rewrite `this` using `[funext c]`. Then use the resulting hypothesis. Establish `e' : toStkA z (coef s g w χ) * toStkA z Rg ^ k = toStkA z (∑ i, cc i * valR b _ ((f i).f jf)) * toStkA z (valF (𝟙 (Sp F)) _ ((g.s χ).s jt).val) * toStkA z W`. Establish `a₃ : toStkA z (coef s g w χ) = GlobalTheory.UT.cst (R` using `R) F z (coef s g w χ) := (CoefBasic.cst_eq (R := R) z _).symm`. Rewrite using `[hR, hW, ← a₁, ← a₂, a₃]`. Conclude with `e`.
+
+Rewrite `e'` using `[← map_pow, ← map_mul, ← map_mul, ← map_mul]`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ (pow_ne_zero k R0)).2 ((toStkA z).injective e'), Finset.sum_mul]`. Simplify using `only [_root_.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_coef_secLin {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (g : GtPtF D F) (w : Frm D F k g.b) (hw : w.IsGen) (z : Sp F)
     (J : (Sp F ⟶ D.P.A.left) → D.P.L.ι) (hJ : Good D.P.L z J) : ∃ κ : F, κ ≠ 0 ∧

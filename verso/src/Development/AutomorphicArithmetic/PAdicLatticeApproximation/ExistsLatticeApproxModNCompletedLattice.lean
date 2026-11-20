@@ -4,6 +4,21 @@ open NumberField
 open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGeo UpperTheory.Gal.W2.Wit
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p hp D X n hn hnp a`. Take `⟨w, e₀, he₀, h⟩` from `X.dense n hn (inAf D a)`. Rewrite `h` using `[← X.r_apply]`. Establish `hrw : X.r w ∈ LaHat D`. Establish `h2 : X.r w = inAf D a - n • e₀` using `eq_sub_of_add_eq h.symm`.
+
+Rewrite using `[h2]`. Conclude with `sub_mem (GlobalTheory.LKGeo.DenEnd.inAf_mem D a) (AddSubgroup.nsmul_mem _ he₀ n)`. Take `⟨k, hk⟩` from `(UpperTheory.p_lattice_saturated_and_cofinite p D X.M X.hM).2 w`. Establish `hphi : 0 < Nat.totient n` using `Nat.totient_pos.2 hn`. Establish `hp0 : 0 < p` using `(Fact.out : p.Prime).pos`.
+
+Establish `hmod : (p ^ Nat.totient n) ^ k ≡ 1 [MOD n]`. Simplify using `using (Nat.ModEq.pow_totient hnp.symm).pow k`. Establish `hle : k ≤ Nat.totient n * k` using `Nat.le_mul_of_pos_left k hphi`. Establish `ht1 : 1 ≤ p ^ (Nat.totient n * k)` using `Nat.one_le_pow _ _ hp0`. Take `⟨q, hq⟩ : n ∣ p ^ (Nat.totient n * k) - 1` from `(Nat.modEq_iff_dvd' ht1).1 (by rw [pow_mul]; exact hmod.symm)`.
+
+Establish `ht : p ^ (Nat.totient n * k) = 1 + n * q` using `by omega`. Establish `hM : p ^ (Nat.totient n * k) • w ∈ X.M`. Establish `h3 : p ^ (Nat.totient n * k) = p ^ (Nat.totient n * k - k) * p ^ k`. Rewrite using `[← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[h3, mul_smul]`.
+
+Conclude with `AddSubgroup.nsmul_mem _ hk _`. Establish `hr : X.r (p ^ (Nat.totient n * k) • w) = inAf D a + n • (q • X.r w - e₀)`. Rewrite using `[map_nsmul, ht, add_smul, one_smul, mul_smul, smul_sub, h]`. Generalize the expression as in `n • q • X.r w = y`. Generalize the expression as in `n • e₀ = z`.
+
+Normalize the expressions using the abelian group laws. Use `⟨p ^ (Nat.totient n * k) • w, ?_, q • X.r w - e₀, ?_, hr⟩` and prove the remaining obligations. Use `X.mem_lat.2 ⟨hM, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Conclude with `add_mem (GlobalTheory.LKGeo.DenEnd.inAf_mem D a) (AddSubgroup.nsmul_mem _ (sub_mem (AddSubgroup.nsmul_mem _ hrw q) he₀) n)`.
+
+Conclude with `sub_mem (AddSubgroup.nsmul_mem _ hrw q) he₀`.
+-/
 theorem UpperTheory.exists_lattice_approx_mod_n_completedLattice :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D) (n : ℕ), 0 < n → n.Coprime p → ∀ a : D.La, ∃ u ∈ X.lat, ∃ e ∈ LaHat D, X.r u = inAf D a + n • e := by
   intro p hp D X n hn hnp a

@@ -11,6 +11,13 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `⟨{ toFun := fun O => ⟨(ha _ O.2.choose_spec.1).choose, (ha _ O.2.choose_spec.1).choose_spec.1⟩ invFun := fun y => ⟨cl (hb y.1 y.2).choose, _, (hb y.1 y.2).choose_spec.1, rfl⟩ left_inv := ?_ right_inv := ?_ }⟩` and prove the remaining obligations. Introduce and unpack `⟨O, hO⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `(ha _ hO.choose_spec.1).choose_spec`. Establish `h2` using `(hb _ h1.1).choose_spec`.
+
+Establish `h3` using `(hc _ _ _ _ hO.choose_spec.1 h2.1 h1.2 h2.2).1 rfl`. Use `show cl (hb _ h1.1).choose = O`. Conclude with `(hO.choose_spec.2.trans h3).symm`. Introduce and unpack `⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h2` using `(hb y hy).choose_spec`. Establish `hm : ∃ x, P x ∧ cl (hb y hy).choose = cl x` using `⟨_, h2.1, rfl⟩`. Establish `h4` using `(ha _ hm.choose_spec.1).choose_spec`. Use `show (ha _ hm.choose_spec.1).choose = y`. Conclude with `(hc _ _ _ _ hm.choose_spec.1 h2.1 h4.2 h2.2).2 hm.choose_spec.2.symm`.
+-/
 theorem equiv_of_corr {X L S : Type*} (P : X → Prop) (cl : X → S) (G : Set L) (R : X → L → Prop)
     (ha : ∀ x, P x → ∃ y ∈ G, R x y) (hb : ∀ y ∈ G, ∃ x, P x ∧ R x y)
     (hc : ∀ x x' y y', P x → P x' → R x y → R x' y' → (y = y' ↔ cl x = cl x')) :
@@ -54,6 +61,11 @@ def cls (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D)
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) : Set (LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) :=
   {F'' | F'' ∈ CntLocal.EZ (D := D) ((Tu D u' : ℕ) : D.host.E) F0 γ.lam Z ∧ CntLocal.NilradicalFlagMoved F0 γ.lam F' F''}
 
+/- English proof (translation)
+Use extensionality with `O`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F', h1, h2, h3⟩`. Conclude with `⟨F', ⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨F', ⟨h1, h2⟩, h3⟩`.
+
+Conclude with `⟨F', h1, h2, h3⟩`.
+-/
 theorem frPart_eq (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D) :
     frPart γ Z = {O | ∃ F', IsPartner γ Z F' ∧ O = cls γ Z F'} := by
   ext O
@@ -121,6 +133,11 @@ def UniqC : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `γ w hγ w' hG' hk Z hZ`. Establish `hC : Ctx γ Z` using `⟨w, hγ, w', hG', hk, hZ⟩`. Take `⟨F'₂, φ, φ', hS, hCoh⟩` from `h1 γ Z hC`. Use `⟨F'₂, φ, φ', hS.1, hS.2.2, hS.2.1, hCoh, ?_⟩` and prove the remaining obligations. Rewrite using `[frPart_eq]`.
+
+Conclude with `equiv_of_corr (IsPartner γ Z) (cls γ Z) (GlobSet Zd γ F'₂ φ φ') (RelN γ F'₂) (h2 γ Z hC F'₂ φ φ' hS) (h3 γ Z hC F'₂ φ φ' hS) (h4 γ Z hC F'₂ φ φ' hS)`.
+-/
 theorem fStarC_of_route2 (h1 : StarExists2 Zd u u' F0 what₂) (h2 : FwdC Zd u u' F0 what₂) (h3 : BwdC Zd u u' F0 what₂)
     (h4 : UniqC Zd u u' F0 what₂) : FStarC Zd u u' F0 what₂ := by
   intro γ w hγ w' hG' hk Z hZ

@@ -16,6 +16,35 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 
+/- English proof (translation)
+Introduce `hH E _ _ _ H Dw l Xo σ' g ty F r M ξ₀ Gm φ Λ' f hA hσ hty hM hk hφ hfg hsp hsd hc hb hi`. Establish `hξ : cc (-ξ₀) = -(-ξ₀)`. Establish `h` using `(M.X ⟨0, F.n_pos⟩).ξ0_im`. Rewrite `h` using `[(hk _).2]`. Unfold `cc at h ⊢`.
+
+Rewrite using `[map_neg, h]`. Take `⟨D', φ', hp, hq, hr, hφ'⟩` from `GlobalTheory.T.exists_latticeDatum_of_selfDual_lattice E H Dw r (-ξ₀) Gm φ Λ' hξ hφ hfg hsp hsd`. Set `e : D'.La ≃ₗ[𝓞 E] Λ'` to `(LinearEquiv.ofInjective φ' hφ'.1).trans (LinearEquiv.ofEq _ _ hr)`. Establish `he : ∀ x, φ' (e.symm x) = (x : Fin r → E)` using `fun x => by`. Establish `: ∀ y, ((e y : Λ') : Fin r → E) = φ' y` using `fun y => rfl`.
+
+Rewrite using `[← this, e.apply_symm_apply]`. Take `⟨k, gam, hg1, hg2⟩` from `GlobalTheory.allClassesSt_of_hasseNorm hH E H Dw l Xo σ' g ty F hA hσ hty D' (fun n => e.symm.toLinearMap ∘ₗ f n) hp hq ⟨fun n m hn hm a => by`. Take `⟨v, hv⟩` from `hc n m hn hm a`. Conclude with `⟨e.symm v, by simp [hv]⟩,`. Use `fun n hn => ⟨fun a => by`.
+
+Rewrite using `[← (hb n hn).1 a]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Use `⟨e v, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, ← hv]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨v, hv⟩`. Conclude with `⟨e.symm v, by simp [hv]⟩,`. Use `fun a' => by`. Take `⟨a, v, hv⟩` from `(hb n hn).2 (e a')`.
+
+Use `⟨a, e.symm v, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `[hv]⟩⟩`. Use the proof step `(fun n hn a a' => by`. Take `⟨z, hz⟩` from `hi n hn a a'`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h` using `hφ'.2.2.2.2 (e.symm (f n a)) (e.symm (f n a'))`. Rewrite `h` using `[he, he]`. Rewrite `hz` using `[← h]`. Conclude with `hz)` after adjusting the coercions.
+
+Set `ψ : (F.Di k).La →ₗ[𝓞 E] (Fin r → E)` to `(M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap`. Establish `hψ : ∀ a, ψ a = (M.φ k a : Fin r → E)` using `fun a => rfl`. Establish `hrange : Set.range ψ = ((M.X k).Λ : Set (Fin r → E))`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `(M.φ k a).2`. Introduce `hv`. Conclude with `⟨(M.φ k).symm ⟨v, hv⟩, by rw [hψ, LinearEquiv.apply_symm_apply]⟩`. Apply the tactic sequence `obtain ⟨γ, hγ1, hγ2⟩ := GlobalTheory.T.exists_unitary_matrix_of_lattice_isometry E H D' (F.Di k) r (-ξ₀) Gm φ' ψ gam hξ hφ' ⟨Subtype.val_injective.comp (M.φ k).injective, by rw [hrange]; exact (M.X k).Λ_span, hφ.2.2.1, hφ.2.2.2.1, fun x y => by`.
+
+Establish `h` using `hM.ef k x y`. Rewrite `h` using `[(hk k).1, (hk k).2]`. Conclude with `h⟩ hg1`. Use `⟨k, γ, hγ1, fun v => ⟨fun hv => ?_, fun hv => ?_⟩, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `hγ2 (e.symm ⟨v, hv⟩)`.
+
+Rewrite `h` using `[he]`. Rewrite using `[← h]`. Conclude with `(M.φ k _).2`. Establish `h` using `hγ2 (gam.symm ((M.φ k).symm ⟨_, hv⟩))`. Rewrite `h` using `[LinearEquiv.apply_symm_apply, hψ, LinearEquiv.apply_symm_apply]`.
+
+Establish `h2` using `congrArg (fun w => ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ w) h`. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at h2`. Rewrite using `[h2, ← hr]`. Conclude with `LinearMap.mem_range_self _ _`. Take `⟨w, hw⟩` from `hg2 a ha`.
+
+Use `⟨M.φ k w, (M.φ k w).2, ?_⟩` and prove the remaining obligations. Establish `h` using `hγ2 (e.symm (f l.M a))`. Rewrite `h` using `[he]`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `ψ (gam ((e.symm.toLinearMap ∘ₗ f l.M) a)) = ψ (F.t k a) + l.M • ψ w`.
+
+Rewrite using `[hw, map_add, map_nsmul]`.
+-/
 theorem GlobalTheory.selfDual_lattice_occurs : GlobalTheory.Published.HasseNormSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (r : ℕ) (M : ModelsOf F r) (ξ₀ : E) (Gm : Matrix (Fin r) (Fin r) E) (φ : Dw.La →ₗ[𝓞 E] (Fin r → E)) (Λ' : Submodule (𝓞 E) (Fin r → E)) (f : ℕ → Dw.La →ₗ[𝓞 E] Λ'), l.A = 1 → σ' (baseKA l).ρ = H.rt0 → IsTypeFn H Dw.p Dw.q ty → ModelBase M → (∀ k, (M.X k).Gm = Gm ∧ (M.X k).ξ0 = ξ₀) → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc (Gm a b) = Gm b a) ∧ Gm.det ≠ 0 ∧ ∀ x y, ((Dw.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-ξ₀ * herm Gm (φ x) (φ y))) → Λ'.FG → Submodule.span E (Λ' : Set (Fin r → E)) = ⊤ → (∀ v : Fin r → E, (∀ y ∈ Λ', ∃ n : ℤ, Algebra.trace ℚ E (-ξ₀ * herm Gm v y) = n) ↔ v ∈ Λ') → (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ v, f (n * m) a = f n a + n • v) → (∀ n : ℕ, 0 < n → (∀ a, (∃ v, f n a = n • v) ↔ ∃ v, a = n • v) ∧ ∀ a', ∃ a v, a' = f n a + n • v) → (∀ n : ℕ, 0 < n → ∀ a a', ∃ z : ℤ, Algebra.trace ℚ E (-ξ₀ * herm Gm (f n a) (f n a')) - (Dw.EF a a' : ℤ) = n * z) → ∃ (k : Fin F.n) (γ : GL (Fin r) E), (∀ u v, herm Gm ((γ : Matrix (Fin r) (Fin r) E) *ᵥ u) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) = herm Gm u v) ∧ (∀ v, v ∈ Λ' ↔ (γ : Matrix (Fin r) (Fin r) E) *ᵥ v ∈ (M.X k).Λ) ∧ ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) Dw.La), ∃ w ∈ (M.X k).Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ (f l.M a : Fin r → E) = (M.φ k (F.t k a) : Fin r → E) + l.M • w := by
   intro hH E _ _ _ H Dw l Xo σ' g ty F r M ξ₀ Gm φ Λ' f hA hσ hty hM hk hφ hfg hsp hsd hc hb hi
   have hξ : cc (-ξ₀) = -(-ξ₀) := by

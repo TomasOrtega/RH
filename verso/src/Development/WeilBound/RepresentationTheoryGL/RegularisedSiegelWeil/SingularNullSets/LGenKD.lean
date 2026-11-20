@@ -9,17 +9,37 @@ namespace PositivityTheory.Rg.Rsw.L.LGenK
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Unfold `cj`. Rewrite using `[Matrix.fromBlocks_map, Matrix.fromBlocks_transpose]`.
+-/
 theorem cj_fromBlocks {R : Type} [CommRing R] (s : R →+* R) (a b c d : Matrix n n R) :
     cj s (fromBlocks a b c d) = fromBlocks (cj s a) (cj s c) (cj s b) (cj s d) := by
   unfold cj
   rw [Matrix.fromBlocks_map, Matrix.fromBlocks_transpose]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj]`.
+-/
 theorem cj_neg {R : Type} [CommRing R] (s : R →+* R) {m p : Type} (M : Matrix m p R) : cj s (-M) = -cj s M := by
   ext i j; simp [cj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj]`.
+-/
 theorem cj_zero {R : Type} [CommRing R] (s : R →+* R) {m p : Type} : cj s (0 : Matrix m p R) = 0 := by
   ext i j; simp [cj]
 
+/- English proof (translation)
+Use `set M := fromBlocks a b c d with hM`. Use `set J : Matrix (n ⊕ n) (n ⊕ n) R := fromBlocks 0 1 (-1) 0 with hJ`. Establish `hJJ : J * J = -1`. Rewrite using `[hJ, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : (-(J * cj s M * J)) * M = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, hJJ, neg_neg]`. Establish `h2 : M * (-(J * cj s M * J)) = 1` using `mul_eq_one_comm.mp h1`.
+
+Establish `e : M * J * cj s M * J = -1`. Rewrite `h2` using `[Matrix.mul_neg]`. Simplify using `only [Matrix.mul_assoc] at h2 ⊢`. Conclude with `neg_eq_iff_eq_neg.mp h2`. Establish `h3 : M * J * cj s M = J`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[hM, hJ, cj_fromBlocks, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `at h3`. Take `⟨-, k1, k2, k3⟩` from `h3`. Rewrite `k1`, `k2`, `k3` using `[neg_add_eq_sub]`.
+
+Use `⟨k1, sub_eq_zero.mp k3, ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_sub, k2, neg_neg]`.
+-/
 theorem unit_rel {R : Type} [CommRing R] (s : R →+* R) (a b c d : Matrix n n R)
     (h : cj s (fromBlocks a b c d) * fromBlocks 0 1 (-1) 0 * fromBlocks a b c d = fromBlocks 0 1 (-1) 0) :
     a * cj s d - b * cj s c = 1 ∧ c * cj s d = d * cj s c ∧ d * cj s a - c * cj s b = 1 := by
@@ -52,6 +72,25 @@ section Local
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `hinv : ∀ y : Fv F v ⊗[F] E, sigR (Fv F v) σ (sigR (Fv F v) σ y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => simp [sigR, hσ]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Use `set s := sR v σ with hs`. Establish `hss : ∀ y, s (s y) = y`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hs, coe_sR, coe_sR, hinv]`. Establish `hπ : ∀ y, (intLoc F E v).subtype (s y) = sigR (Fv F v) σ ((intLoc F E v).subtype y)`. Introduce `y`. Conclude with `coe_sR v σ y`. Set `a' : Matrix n n (intLoc F E v)` to `fun i j => ⟨a i j, ha i j⟩`.
+
+Set `b' : Matrix n n (intLoc F E v)` to `fun i j => ⟨b i j, hb i j⟩`. Set `c' : Matrix n n (intLoc F E v)` to `fun i j => ⟨c i j, hc i j⟩`. Set `d' : Matrix n n (intLoc F E v)` to `fun i j => ⟨d i j, hd i j⟩`. Establish `ea : a'.map (intLoc F E v).subtype = a` using `rfl`. Establish `eb : b'.map (intLoc F E v).subtype = b` using `rfl`.
+
+Establish `ec : c'.map (intLoc F E v).subtype = c` using `rfl`. Establish `ed : d'.map (intLoc F E v).subtype = d` using `rfl`. Establish `h1m : (1 : Matrix n n (intLoc F E v)).map (intLoc F E v).subtype = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hJm : (fromBlocks 0 1 (-1) 0 : Matrix (n ⊕ n) (n ⊕ n) (intLoc F E v)).map (intLoc F E v).subtype = fromBlocks 0 1 (-1) 0`. Rewrite using `[Matrix.fromBlocks_map, Matrix.map_neg _ (map_neg (intLoc F E v).subtype), h1m]`. Simplify using the standard rewrite rules. Establish `hu' : cj s (fromBlocks a' b' c' d') * fromBlocks 0 1 (-1) 0 * fromBlocks a' b' c' d' = fromBlocks 0 1 (-1) 0`.
+
+Apply `Matrix.map_injective Subtype.val_injective` to reduce the goal to its premises. Establish `key` using `hu`. Rewrite `key` using `[← ea, ← eb, ← ec, ← ed, ← Matrix.fromBlocks_map, ← map_cj s _ _ hπ, ← hJm, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `key`. Take `⟨k1, k2, k3⟩` from `unit_rel s a' b' c' d' hu'`.
+
+Take `⟨𝔭, h𝔭, hloc⟩` from `exists_max v σ hσ1 hfr`. Take `⟨B, hB, hdet⟩` from `core s hss 𝔭 (isUnit_two v h2) hloc a' b' c' d' k1 k2 k3`. Take `⟨w, hw⟩` from `hdet.exists_right_inv`. Use `⟨B.map (intLoc F E v).subtype, fun i j => (B i j).2, ?_, w, w.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_cj s _ _ hπ, hB]`.
+
+Establish `hm : (d' + c' * B).map (intLoc F E v).subtype = d + c * B.map (intLoc F E v).subtype`. Rewrite using `[Matrix.map_add _ (map_add (intLoc F E v).subtype), Matrix.map_mul, ec, ed]`. Rewrite using `[← hm, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using congrArg Subtype.val hw`.
+-/
 theorem local_choice (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (hσ1 : σ ≠ AlgHom.id F E)
     (hfr : Module.finrank F E = 2) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) (a b c d : Matrix n n (Fv F v ⊗[F] E))
     (ha : ∀ i j, a i j ∈ intLoc F E v) (hb : ∀ i j, b i j ∈ intLoc F E v) (hc : ∀ i j, c i j ∈ intLoc F E v)

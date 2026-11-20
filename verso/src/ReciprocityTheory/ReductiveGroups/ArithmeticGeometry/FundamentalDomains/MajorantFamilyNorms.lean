@@ -8,6 +8,11 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[← X.Gm_herm a b]`. Use `first`. Consider the case `simp [NumberField.IsCMField.complexEmbedding_complexConj]`. Consider the case `rw [NumberField.IsCMField.complexEmbedding_complexConj]`.
+
+Consider the case `simp [NumberField.IsCMField.complexConj_apply]`. Consider the case `simp [NumberField.IsCMField.conj_complexEmbedding]`. Consider the case `(simp only [cc]`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj ..)`.
+-/
 theorem hG_of (τ : X.Ψ) : ∀ a b, τ.1 (X.Gm b a) = conj (τ.1 (X.Gm a b)) := by
   intro a b
   rw [← X.Gm_herm a b]
@@ -19,12 +24,20 @@ theorem hG_of (τ : X.Ψ) : ∀ a b, τ.1 (X.Gm b a) = conj (τ.1 (X.Gm a b)) :=
     | (simp only [cc]
        exact NumberField.IsCMField.complexEmbedding_complexConj ..)
 
+/- English proof (translation)
+Unfold `Data.c`. Establish `h : (τ.1 X.ξ0) ≠ 0` using `(map_ne_zero τ.1).mpr X.ξ0_ne`. Use `norm_pos_iff.mpr h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem c_pos (τ : X.Ψ) : 0 < X.c τ := by
   unfold Data.c
   have h : (τ.1 X.ξ0) ≠ 0 := (map_ne_zero τ.1).mpr X.ξ0_ne
   have := norm_pos_iff.mpr h
   linarith
 
+/- English proof (translation)
+Introduce `i h`. Unfold `Data.dom GG at hx`. Simplify using `only [Set.mem_setOf_eq] at hx`. Establish `h1` using `(hx τ).2 ⟨i, Nat.lt_succ_of_le h⟩`. Use `first`.
+
+Consider the case `exact h1`. Consider the case `(unfold dmin lminor gram gramF famN at h1`. Conclude with `h1)`.
+-/
 theorem hsg_of {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) :
     ∀ i (h : i ≤ r), 0 < psgn X.p0 i * (gramF τ.1 X.Gm (famN (mat x τ) i h)).det.re := by
   intro i h
@@ -36,9 +49,19 @@ theorem hsg_of {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) :
     | (unfold dmin lminor gram gramF famN at h1
        exact h1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dmin_eq (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i = (gramF τ.1 X.Gm (famN (mat x τ) i (Nat.le_of_lt_succ i.isLt))).det := rfl
 
+/- English proof (translation)
+Unfold `Data.flowV flw famN mat`. Use function extensionality and compare the values at `a c`. Use `show ∑ b, X.flowMatV (e τ) τ (s τ) c b * x τ b (Fin.castLE h a) = x τ c (Fin.castLE h a) + (-I * (X.c τ : ℂ) * s τ * hermC τ.1 X.Gm (fun d => x τ d (Fin.castLE h a)) (e τ)) * e τ c`. Unfold `Data.flowMatV hermC`. Simplify using `only [Matrix.of_apply, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite using `[sub_eq_add_neg]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem famN_flow (e : X.Ψ → Fin r → ℂ) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) (τ : X.Ψ) (i : ℕ)
     (h : i ≤ r) : famN (mat (X.flowV e s x) τ) i h =
       flw (-I * X.c τ * s τ) (e τ) τ.1 X.Gm (famN (mat x τ) i h) := by
@@ -57,10 +80,20 @@ theorem famN_flow (e : X.Ψ → Fin r → ℂ) (s : X.Ψ → ℂ) (x : Frame X.�
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem alpha_re (c : ℝ) (s : ℂ) : (-I * (c : ℂ) * s) + conj (-I * (c : ℂ) * s) =
     ((2 * c * s.im : ℝ) : ℂ) := by
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Unfold `Data.flowMatV hermC at *`. Establish `key : (of fun a b => (if a = b then (1 : ℂ) else 0) - I * (X.c τ : ℂ) * s * e a * ∑ k, τ.1 (X.Gm b k) * (starRingEnd ℂ) (e k)) = 1 + replicateCol Unit (fun a => -(I * (X.c τ : ℂ) * s * e a)) * replicateRow Unit (fun b => ∑ k, τ.1 (X.Gm b k) * (starRingEnd ℂ) (e k))`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, Matrix.mul_apply, sub_eq_add_neg]`. Establish `hd : (fun b => ∑ k, τ.1 (X.Gm b k) * (starRingEnd ℂ) (e k)) ⬝ᵥ (fun a => -(I * (X.c τ : ℂ) * s * e a)) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dotProduct]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [he, mul_zero]`. Rewrite using `[key, det_one_add_replicateCol_mul_replicateRow, hd, add_zero]`.
+-/
 theorem det_flowMat (e : Fin r → ℂ) (τ : X.Ψ) (s : ℂ) (he : hermC τ.1 X.Gm e e = 0) :
     (X.flowMatV e τ s).det = 1 := by
   unfold Data.flowMatV hermC at *
@@ -88,11 +121,17 @@ section Prof
 variable {x : Frame X.Ψ r} (hx : x ∈ X.dom) (e : X.Ψ → Fin r → ℂ) (τ : X.Ψ)
 include hx
 
+/- English proof (translation)
+Rewrite using `[mt_eq (hG_of X τ) _ _ (unit_of X.p0 (mat x τ) (hsg_of X hx τ) i h), mN, pN, dif_pos h]`. Conclude with `Complex.ext rfl (by simp [hC_self_real (hG_of X τ)])`.
+-/
 theorem mt_famN (i : ℕ) (h : i ≤ r) : GramDeterminantReal.mt τ.1 X.Gm (famN (mat x τ) i h) (e τ) =
     (mN τ.1 X.Gm (mat x τ) (e τ) i : ℂ) := by
   rw [mt_eq (hG_of X τ) _ _ (unit_of X.p0 (mat x τ) (hsg_of X hx τ) i h), mN, pN, dif_pos h]
   exact Complex.ext rfl (by simp [hC_self_real (hG_of X τ)])
 
+/- English proof (translation)
+Rewrite using `[famN_flow, det_flw (hG_of X τ) (e τ) he _ _ (unit_of X.p0 (mat x τ) (hsg_of X hx τ) i h), mt_famN X hx e τ i h, alpha_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dmin_flow (he : hermC τ.1 X.Gm (e τ) (e τ) = 0) (s : X.Ψ → ℂ) (i : ℕ) (h : i ≤ r) :
     (gramF τ.1 X.Gm (famN (mat (X.flowV e s x) τ) i h)).det =
       (gramF τ.1 X.Gm (famN (mat x τ) i h)).det *
@@ -101,11 +140,19 @@ theorem dmin_flow (he : hermC τ.1 X.Gm (e τ) (e τ) = 0) (s : X.Ψ → ℂ) (i
     mt_famN X hx e τ i h, alpha_re]
   push_cast; ring
 
+/- English proof (translation)
+Establish `: X.posPart x τ (e τ) = (GramDeterminantReal.mt τ.1 X.Gm (famN (mat x τ) X.p0 X.p0_le) (e τ)).re` using `rfl`. Rewrite using `[Data.maj, this, mt_famN X hx e τ X.p0 X.p0_le, he, Complex.ofReal_re, Complex.zero_re, sub_zero]`.
+-/
 theorem maj_eq (he : hermC τ.1 X.Gm (e τ) (e τ) = 0) :
     X.maj x τ (e τ) = 2 * mN τ.1 X.Gm (mat x τ) (e τ) X.p0 := by
   have : X.posPart x τ (e τ) = (GramDeterminantReal.mt τ.1 X.Gm (famN (mat x τ) X.p0 X.p0_le) (e τ)).re := rfl
   rw [Data.maj, this, mt_famN X hx e τ X.p0 X.p0_le, he, Complex.ofReal_re, Complex.zero_re, sub_zero]
 
+/- English proof (translation)
+Establish `hα` using `alpha_re (X.c τ) (s τ)`. Establish `hp : X.posPart (X.flowV e s x) τ (e τ) = (GramDeterminantReal.mt τ.1 X.Gm (famN (mat (X.flowV e s x) τ) X.p0 X.p0_le) (e τ)).re` using `rfl`. Rewrite using `[Data.maj, hp, famN_flow, mt_flw (hG_of X τ) (e τ) he _ _ (unit_of X.p0 (mat x τ) (hsg_of X hx τ) X.p0 X.p0_le), hα, mt_famN X hx e τ X.p0 X.p0_le, he, Complex.zero_re, sub_zero]`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_one, ← Complex.ofReal_add, ← Complex.ofReal_div, Complex.ofReal_re]`. Rewrite using `[hα, mt_famN X hx e τ X.p0 X.p0_le, ← Complex.ofReal_mul, ← Complex.ofReal_one, ← Complex.ofReal_add]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem maj_flow (he : hermC τ.1 X.Gm (e τ) (e τ) = 0) (s : X.Ψ → ℂ)
     (h1 : 1 + 2 * X.c τ * (s τ).im * mN τ.1 X.Gm (mat x τ) (e τ) X.p0 ≠ 0) :
     X.maj (X.flowV e s x) τ (e τ) = 2 * (mN τ.1 X.Gm (mat x τ) (e τ) X.p0 /

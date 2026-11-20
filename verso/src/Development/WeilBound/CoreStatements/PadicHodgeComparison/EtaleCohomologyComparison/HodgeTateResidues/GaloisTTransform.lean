@@ -15,6 +15,11 @@ open Pb Pb.Kap
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Use `le_antisymm (Ideal.span_le.2 ?_) fun z hz => by simpa using pow_mem_pdP δ hz 1` and prove the remaining obligations. Introduce and unpack `_ ⟨L, hL, hr, rfl⟩`. Proceed by induction on `L with`. Consider the case `nil => simp at hr`. Consider the case `cons q L ih`.
+
+Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons] at hr ⊢`. Break down `Nat.eq_zero_or_pos q.1 with h | h` into its components or cases. Conclude with `J.mul_mem_left _ (ih (fun q' hq' => hL q' (List.mem_cons_of_mem _ hq')) (by omega))`. Conclude with `J.mul_mem_right _ (δ.dpow_mem h.ne' (hL q List.mem_cons_self))`.
+-/
 theorem dividedPowerFiltration_one {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : pdP δ 1 = J := by
   refine le_antisymm (Ideal.span_le.2 ?_) fun z hz => by simpa using pow_mem_pdP δ hz 1
   rintro _ ⟨L, hL, hr, rfl⟩
@@ -44,6 +49,11 @@ variable {R : Per l K} {Y : CB l K} {e : Y.Λ →+* R.A} {θP : R.P →+* ℂ_[l
 
 include hb hL
 
+/- English proof (translation)
+Use `⟨(L.toB.liftOfSurjective hL.toB_surj) ⟨θP, fun x hx => ?_⟩, fun x => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hL.toB_ker x).1 hx`. Take `⟨t, ht, -⟩` from `hb.θ_i Y.t`. Rewrite `ht` using `[hb.et]`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hL.pos`.
+
+Use `(hb.ker x).2 ⟨t ^ k * y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, hk, pow_add, pow_one, Subring.coe_mul, SubmonoidClass.coe_pow, ht, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem Br.θ_ex : ∃ θ : L.B →+* ℂ_[l], ∀ x, θ (L.toB x) = θP x := by
   refine ⟨(L.toB.liftOfSurjective hL.toB_surj) ⟨θP, fun x hx => ?_⟩, fun x => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _⟩
   obtain ⟨y, hy⟩ := (hL.toB_ker x).1 hx
@@ -54,6 +64,9 @@ theorem Br.θ_ex : ∃ θ : L.B →+* ℂ_[l], ∀ x, θ (L.toB x) = θP x := by
   rw [hy, hk, pow_add, pow_one, Subring.coe_mul, SubmonoidClass.coe_pow, ht, mul_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨t, ht, -⟩` from `hb.θ_i Y.t`. Use `⟨t, by rw [ht, hb.et]; rfl, hL.ι_lam _ t ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← dividedPowerFiltration_one L.γB, hL.pdP_B 1 t (by rw [ht, hb.et]; rfl), pow_one]`.
+-/
 theorem Br.t_ex : ∃ t : R.P, (t : R.B) = R.tB ∧ L.ι (L.lam (e Y.t)) = L.toB t ∧ L.IB = Ideal.span {L.toB t} := by
   obtain ⟨t, ht, -⟩ := hb.θ_i Y.t
   refine ⟨t, by rw [ht, hb.et]; rfl, hL.ι_lam _ t ht, ?_⟩
@@ -61,8 +74,18 @@ theorem Br.t_ex : ∃ t : R.P, (t : R.B) = R.tB ∧ L.ι (L.lam (e Y.t)) = L.toB
 
 def Br.θ : L.B →+* ℂ_[l] := (hb.θ_ex hL).choose
 
+/- English proof (translation)
+The claim follows from `(hb.θ_ex hL).choose_spec x`.
+-/
 theorem Br.θ_toB (x : R.P) : hb.θ hL (L.toB x) = θP x := (hb.θ_ex hL).choose_spec x
 
+/- English proof (translation)
+Take `⟨t, ht, -, hI⟩` from `hb.t_ex hL`. Use extensionality with `b`. Take `⟨x, rfl⟩` from `hL.toB_surj b`. Rewrite using `[RingHom.mem_ker, hb.θ_toB, hI, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨y, hy⟩` from `(hb.ker x).1 h`. Use `⟨L.toB y, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Conclude with `congrArg L.toB (Subtype.ext (by rw [hy, Subring.coe_mul, ht, mul_comm]))`.
+
+Introduce and unpack `⟨a, ha⟩`. Establish `h0 : θP t = 0` using `(hb.ker t).2 ⟨1, by rw [ht]; simp⟩`. Rewrite using `[← hb.θ_toB hL, ← ha, map_mul, hb.θ_toB, h0, mul_zero]`.
+-/
 theorem Br.ker_θ : RingHom.ker (hb.θ hL) = L.IB := by
   obtain ⟨t, ht, -, hI⟩ := hb.t_ex hL
   ext b
@@ -78,6 +101,15 @@ theorem Br.ker_θ : RingHom.ker (hb.θ hL) = L.IB := by
     have h0 : θP t = 0 := (hb.ker t).2 ⟨1, by rw [ht]; simp⟩
     rw [← hb.θ_toB hL, ← ha, map_mul, hb.θ_toB, h0, mul_zero]
 
+/- English proof (translation)
+Take `⟨t, ht, h1, hI⟩` from `hb.t_ex hL`. Rewrite `h` using `[h1]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨x, rfl⟩` from `hL.toB_surj x`. Take `⟨a, rfl⟩` from `hL.toB_surj a`.
+
+Establish `h2 : L.toB (x * t ^ i - a * t ^ (i + 1)) = 0`. Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_pow, ha, sub_self]`. Take `⟨y, hy⟩` from `(hL.toB_ker _).1 h2`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hi`. Establish `h3 : x = (a + t ^ k * y) * t`.
+
+Use `Subtype.ext (mul_right_cancel₀ (pow_ne_zero i hb.t_ne) ?_)` and prove the remaining obligations. Move the coercions through the operations in `at hy ⊢`. Rewrite `hy`, the goal using `[ht]`. Take the linear combination `hy`. Rewrite using `[hI, h3, map_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem Br.gr (i : ℕ) (hi : i < m) (x : L.B)
     (h : x * L.ι (L.lam (e Y.t)) ^ i ∈ Ideal.span {L.ι (L.lam (e Y.t)) ^ (i + 1)}) : x ∈ L.IB := by
   obtain ⟨t, ht, h1, hI⟩ := hb.t_ex hL
@@ -133,6 +165,13 @@ def Br.lv (hd : ∀ n, ∃ d : RedIn (O := OK l K) (Y.γ n) (Y.κ n) L.γ l n, �
     exact (hL.toB_ker _).2 ⟨1, by simp [ht]⟩
   gr := hb.gr hL
 
+/- English proof (translation)
+Take `⟨u, hu, hc⟩` from `hb.galois_t_transform g`. Take `⟨t, ht, h1, -⟩` from `hb.t_ex hL`. Conclude with `⟨{ le := le_rfl sA := L.σA g sB := L.σB g dpA := hL.σ_dp g dpB := hL.σB_dp g oA := hL.σ_O g oB := hL.σB_K g ι := fun a => (hL.σ_ι g a).symm lam := fun x => (hL.σ_lam g (e x)).trans (congrArg L.lam (hb.eσ g x).symm) cris := hb.cris g θ := fun b => by`. Take `⟨x, rfl⟩` from `hL.toB_surj b`. Take `⟨y, h2, h3⟩` from `hb.θ_σ g x`.
+
+Express the relevant statement in the definitionally equal form `hb.θ hL (L.σB g (L.toB x)) = sC g (hb.θ hL (L.toB x))`. Rewrite using `[hL.σB_toB g x y h2, hb.θ_toB, hb.θ_toB, h3]`. Use `cB := L.toB u`. Use `t := by`. Express the relevant statement in the definitionally equal form `L.σB g (L.ι (L.lam (e Y.t))) = L.toB u * L.ι (L.lam (e Y.t))`.
+
+Rewrite using `[h1, ← map_mul]`. Conclude with `hL.σB_toB g t (u * t) (by rw [Subring.coe_mul, ht, hu])`. Use `θc := (hb.θ_toB hL u).trans hc }⟩`.
+-/
 theorem Br.gal (hd) (g : K.fixingSubgroup) : Nonempty (LHom (hb.lv hL hd) (hb.lv hL hd) (sΛ g) (sn g) (sC g) (c g)) := by
   obtain ⟨u, hu, hc⟩ := hb.galois_t_transform g
   obtain ⟨t, ht, h1, -⟩ := hb.t_ex hL
@@ -160,6 +199,9 @@ theorem Br.gal (hd) (g : K.fixingSubgroup) : Nonempty (LHom (hb.lv hL hd) (hb.lv
     θc := (hb.θ_toB hL u).trans hc }⟩
 
 omit hL in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ L := fun m => hb.lv (hS.lev m) (hd m) dn := fun m => { le := Nat.le_succ _ sA := S.dA m sB := S.dB m dpA := hS.ddp m dpB := hS.ddpB m oA := hS.dO m oB := hS.dK m ι := hS.dι m lam := fun x => hS.dlam m (e x) cris := fun _ _ => rfl θ := fun b => by obtain ⟨x, rfl⟩ := (hS.lev (m …`.
+-/
 theorem Br.sys (S : LevSys R) (hS : S.Good)
     (hd : ∀ m n, ∃ d : RedIn (O := OK l K) (Y.γ n) (Y.κ n) (S.L m).γ l n,
       ∀ x, d.ρ (Y.c n x) = Ideal.Quotient.mk _ ((S.L m).lam (e x))) : Nonempty (LvSys Y sΛ sn sC c) :=

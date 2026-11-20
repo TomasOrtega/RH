@@ -8,6 +8,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.InertiaEigenvalues
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ _ _ G _ _ T x k h`. Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Set `b` to `Module.Free.chooseBasis O ↥T.L.T`. Set `f` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `hφ : ∀ i j, (l : ℤ_[l]) ^ k ∣ f.repr (b.repr x i) j`.
+
+Introduce `i j`. Set `φ : ↥T.L.T →+ ℤ_[l]` to `((f.coord j).toAddMonoidHom).comp (b.coord i).toAddMonoidHom`. Use `h φ (by` as an intermediate fact. Introduce `z t`. Use `show f.coord j (b.coord i (algebraMap ℤ_[l] O z • t)) = z * f.coord j (b.coord i t)`.
+
+Rewrite using `[LinearMap.map_smul, smul_eq_mul, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul])`. Simplify `this` using `[φ]`. Use `choose w hw using hφ`. Set `c : _ → O` to `fun i => ∑ j ∈ (f.repr (b.repr x i)).support, w i j • f j`. Set `y : ↥T.L.T` to `∑ i ∈ (b.repr x).support, c i • b i`.
+
+Establish `hc : ∀ i, (l : O) ^ k * c i = b.repr x i`. Introduce `i`. Establish `hl : (l : O) ^ k = algebraMap ℤ_[l] O ((l : ℤ_[l]) ^ k)` using `by simp`. Use `conv_rhs => rw [← f.linearCombination_repr (b.repr x i)]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hl, ← Algebra.smul_def, smul_smul, hw i j]`. Establish `hx : x = (l : O) ^ k • y` using `by conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, hc i]`. Use `⟨(y : T.V), y.2, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Both sides reduce to the same expression.
+-/
 theorem mem_pow_smul_of_coord_dvd : ∀ {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [Field K] [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K] {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (x : ↥T.L.T) (k : ℕ), (∀ φ : ↥T.L.T →+ ℤ_[l], (∀ (z : ℤ_[l]) (t : ↥T.L.T), φ (algebraMap ℤ_[l] O z • t) = z * φ t) → (l : ℤ_[l]) ^ k ∣ φ x) → ∃ y ∈ T.L.T, (x : T.V) = ((l : O) ^ k) • y := by
   intro l _ O K _ _ _ _ _ _ _ _ G _ _ T x k h
   haveI : Module.Free O ↥T.L.T := T.L.free

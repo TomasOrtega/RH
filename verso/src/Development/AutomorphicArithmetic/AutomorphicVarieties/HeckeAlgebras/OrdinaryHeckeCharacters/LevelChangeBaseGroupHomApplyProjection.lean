@@ -18,6 +18,11 @@ section Abs
 
 variable {l : ℕ} [Fact l.Prime] {F' F : W.GFrame l} (h : W.FHom F' F)
 
+/- English proof (translation)
+Apply `W.GDet.ext` to reduce the goal to its premises. Introduce `B _ _ y`. Establish `key : ∀ z : MonoidAlgebra B H, W.GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B φ z) = W.GDet.repAlg (ρ.comp φ) B z`. Introduce `z`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `single g b => simp [W.GDet.repAlg, MonoidAlgebra.lift_single]`. Conclude with `congrArg Matrix.det (key y)`.
+-/
 theorem ofRep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (ρ : G →* Matrix (Fin n) (Fin n) A) (φ : H →* G) :
     (W.GDet.ofRep ρ).comap φ = W.GDet.ofRep (ρ.comp φ) := by
   apply W.GDet.ext
@@ -31,6 +36,9 @@ theorem ofRep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (�
     | single g b => simp [W.GDet.repAlg, MonoidAlgebra.lift_single]
   exact congrArg Matrix.det (key y)
 
+/- English proof (translation)
+Simplify using `only [W.GDet.chi, W.GDet.comap, MonoidAlgebra.mapRingHom_single, map_one]`. Use `show (D.D A[X]) (MonoidAlgebra.mapDomainRingHom A[X] φ _) = _`. Rewrite using `[map_sub, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomain_single, MonoidAlgebra.mapDomain_single, map_one]`.
+-/
 theorem chi_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G) (g : H) :
     (D.comap φ).chi (MonoidAlgebra.single g 1) = D.chi (MonoidAlgebra.single (φ g) 1) := by
   simp only [W.GDet.chi, W.GDet.comap, MonoidAlgebra.mapRingHom_single, map_one]
@@ -38,6 +46,17 @@ theorem chi_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D :
   rw [map_sub, MonoidAlgebra.mapDomainRingHom_apply, MonoidAlgebra.mapDomainRingHom_apply,
     MonoidAlgebra.mapDomain_single, MonoidAlgebra.mapDomain_single, map_one]
 
+/- English proof (translation)
+Introduce `B _ _ _ _ y`. Establish `key : ∀ z : MonoidAlgebra B F'.G₀, MonoidAlgebra.mapDomainRingHom B h.π₀ (F'.star O B n z) = F.star O B n (MonoidAlgebra.mapDomainRingHom B h.π₀ z)`. Introduce `z`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [W.GFrame.star]`.
+
+Consider the case `add a b ha hb`. Simplify using `only [W.GFrame.star, map_add, MulOpposite.unop_add] at *`. Rewrite using `[ha, hb]`. Consider the case `single g b`. Establish `hc : h.π₀ (F'.conj g) = F.conj (h.π₀ g)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show h.π (F'.c * (g : F'.Γ) * F'.c⁻¹) = F.c * h.π g * F.c⁻¹`. Rewrite using `[map_mul, map_mul, map_inv, h.hc]`. Establish `he : F'.eps O B g = F.eps O B (h.π₀ g)`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show (algebraMap O B) ((algebraMap ℤ_[l] O) (F'.ε g : ℤ_[l])) = (algebraMap O B) ((algebraMap ℤ_[l] O) (F.ε (h.π g) : ℤ_[l]))`. Rewrite using `[h.hε]`. Simplify using `[W.GFrame.star, W.GFrame.starOp, MonoidAlgebra.lift_single, hc, he]`. Use `show D.D B (MonoidAlgebra.mapDomainRingHom B h.π₀ _) = D.D B (MonoidAlgebra.mapDomainRingHom B h.π₀ _)`. Rewrite using `[key]`.
+
+Conclude with `hD B _`.
+-/
 theorem polar_comap (O : Type) [CommRing O] [Algebra ℤ_[l] O] {R : Type} [CommRing R] [Algebra O R] {n : ℕ}
     (D : W.GDet n R F.G₀) (hD : F.IsPolar O D) : F'.IsPolar O (D.comap h.π₀) := by
   intro B _ _ _ _ y
@@ -70,6 +89,9 @@ def upG {Lc : Pa.Loc} {G' G : Pa.Glob l Lc} (h : G'.Hom G) {O : Type} [CommRing 
     (h3 : G'.frame.IsPolar O (W.GDet.ofRep (W.diagRep fun i => (r.chib i).comp h.p₀))) : Resid G'.frame O n :=
   ⟨fun i => (r.chib i).comp h.p₀, h1, h2, h3, r.psib, r.psib_open, r.th, r.th_comm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, rfl, rfl⟩`.
+-/
 theorem upG_compat {Lc : Pa.Loc} {G' G : Pa.Glob l Lc} (h : G'.Hom G) {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     (r : Resid G.frame O n) (h1 h2 h3) : Pa.Glob.Compat h (upG h r h1 h2 h3) r := ⟨fun _ => rfl, rfl, rfl⟩
 
@@ -95,8 +117,16 @@ def fh : W.FHom V.frame V0.frame where
 
 def p0 : V.frame.G₀ →* V0.frame.G₀ := (fh h).π₀
 
+/- English proof (translation)
+The claim follows from `(h.cont.comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem continuous_levelChangeBaseGroupHom : Continuous (p0 h) := (h.cont.comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Introduce `g`. Take `⟨x, hx⟩` from `h.surj (g : V0.frame.Γ)`. Establish `hxk : V.η x = 1`. Use `h.η x` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Conclude with `this.symm.trans g.2`. Conclude with `⟨⟨x, hxk⟩, Subtype.ext hx⟩`.
+-/
 theorem surjective_levelChangeBaseGroupHom : Function.Surjective (p0 h) := by
   intro g
   obtain ⟨x, hx⟩ := h.surj (g : V0.frame.Γ)
@@ -106,6 +136,9 @@ theorem surjective_levelChangeBaseGroupHom : Function.Surjective (p0 h) := by
     exact this.symm.trans g.2
   exact ⟨⟨x, hxk⟩, Subtype.ext hx⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (hp _)`.
+-/
 theorem levelChangeBaseGroupHom_apply_projection (hp : ∀ g, h.p (toGS Ω V.S' g) = toGS Ω V0.S' g) (g : G L Ω) : p0 h (V.pr g) = V0.pr g := Subtype.ext (hp _)
 
 def rUp : Resid V.frame O n where
@@ -125,6 +158,11 @@ def rUp : Resid V.frame O n where
     (commutator (Dec (F := L) (s.A v.1))).topologicalClosure → @id (W.muG l (Dec (F := L) (s.A v.1)) →* Oˣ) (r.th v i) g = 1) (r.th_comm v i)
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hm : ∀ g : W.muG l (Dec (F` using `L) (s.A v.1)), ((ψ g : Rˣ) : R) = algebraMap O R ((r.th v i g : Oˣ) : O) := fun g => H.mu g`. Conclude with `⟨H.cont, H.red, hm⟩`. Introduce `H`.
+
+Establish `hm : ∀ g : W.muG l (Dec (F` using `L) (s.A v.1)), ((ψ g : Rˣ) : R) = algebraMap O R ((r.th v i g : Oˣ) : O) := fun g => H.mu g`. Conclude with `⟨H.cont, H.red, hm⟩`.
+-/
 theorem psi_up {R : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R] (v : Vl l L) (i : Fin n) (ψ : Dec (F := L) (s.A v.1) →* Rˣ) :
     (rUp h).IsPsi v i ψ ↔ r.IsPsi v i ψ := by
   constructor
@@ -137,18 +175,30 @@ theorem psi_up {R : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R] (v : Vl l L)
         ((ψ g : Rˣ) : R) = algebraMap O R ((r.th v i g : Oˣ) : O) := fun g => H.mu g
     exact ⟨H.cont, H.red, hm⟩
 
+/- English proof (translation)
+Rewrite using `[Resid.Dbar, Resid.Dbar, ofRep_comap]`. Both sides reduce to the same expression.
+-/
 theorem rUp_Dbar : (rUp h).Dbar = r.Dbar.comap (p0 h) := by
   rw [Resid.Dbar, Resid.Dbar, ofRep_comap]; rfl
 
 def rN : Resid (Pa.globOf r V).frame O n :=
   upG h (Pa.residOf r) (rUp h).chib_open (rUp h).chib_inj (rUp h).polar
 
+/- English proof (translation)
+The claim follows from `upG_compat _ _ _ _ _`.
+-/
 theorem rN_compat : Pa.Glob.Compat h (rN h) (Pa.residOf r) := upG_compat _ _ _ _ _
 
+/- English proof (translation)
+Take `⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩` from `hg`. Conclude with `⟨⟨Subtype.val γ, h1, rfl⟩, Subgroup.mem_iInf.2 fun i => Subgroup.mem_iInf.1 h2 i⟩`.
+-/
 theorem rN_Ip_le (u : s.St) (g : V.η.ker) (hg : g ∈ (rN h).Ip u) : g ∈ (rUp h).Ip u := by
   obtain ⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩ := hg
   exact ⟨⟨Subtype.val γ, h1, rfl⟩, Subgroup.mem_iInf.2 fun i => Subgroup.mem_iInf.1 h2 i⟩
 
+/- English proof (translation)
+Establish `hm : ∀ g : W.muG l (Dec (F` using `L) (s.A v.1)), ((ψ g : Rˣ) : R) = algebraMap O R ((r.th v i g : Oˣ) : O) := fun g => H.mu g`. Conclude with `⟨H.cont, H.red, hm⟩`.
+-/
 theorem psi_N {R : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R] (v : Vl l L) (i : Fin n) (ψ : Dec (F := L) (s.A v.1) →* Rˣ)
     (H : (rUp h).IsPsi v i ψ) : (rN h).IsPsi v i ψ := by
   have hm : ∀ g : W.muG l (Dec (F := L) (s.A v.1)),

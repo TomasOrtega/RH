@@ -17,6 +17,11 @@ def splitVar {n m σ : Type} (P : (n ⊕ m) × σ → Prop) (Q : σ → Prop) (h
   left_inv := by rintro (⟨r, s, hs⟩ | ⟨⟨l, s⟩, hs⟩) <;> rfl
   right_inv := by rintro ⟨⟨r | r, s⟩, hs⟩ <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← det_submatrix_equiv_self (splitVar P Q h) M]`. Establish `: M.submatrix (splitVar P Q h) (splitVar P Q h) = fromBlocks (blockDiagonal fun _ : {s // Q s} => κ) 0 0 1`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with (⟨r, s, hs⟩ | ⟨⟨l, s⟩, hs⟩) <;> rcases b with (⟨r', s', hs'⟩ | ⟨⟨l', s'⟩, hs'⟩) <;>`. Simplify using `[hM, splitVar, blockDiagonal_apply, one_apply]`.
+
+Apply the tactic sequence `by_cases h1 : s = s' <;> by_cases h2 : l = l' <;> simp [h1, h2]`. Rewrite using `[this, det_fromBlocks_zero₂₁, det_blockDiagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem det_colwise_fromBlocks {k : Type} [CommRing k] {n m σ : Type} [Fintype n] [DecidableEq n] [Fintype m]
     [DecidableEq m] [Fintype σ] (P : (n ⊕ m) × σ → Prop) (Q : σ → Prop) (h : ∀ r s, P (Sum.inl r, s) ↔ Q s)
     [Fintype {rs // P rs}] [DecidableEq {rs // P rs}] (κ : Matrix n n k)
@@ -33,6 +38,11 @@ theorem det_colwise_fromBlocks {k : Type} [CommRing k] {n m σ : Type} [Fintype 
   rw [this, det_fromBlocks_zero₂₁, det_blockDiagonal]
   simp
 
+/- English proof (translation)
+Introduce `k _ _ n n' _ _ _ _ c κ hκ`. Set `Q : n' ⊕ Fin (c + 1) → Prop` to `Sum.elim (fun _ => False) (fun i => c / 2 + 1 < i.val + 1 ∨ (Even c ∧ i.val = c / 2))`. Establish `h : ∀ (r : n) s, (Free (c` using `c) (c / 2 + 1) (Sum.inl r, s) ∨ Kept (c := c) (Sum.inl r, s)) ↔ Q s := by`. Apply the tactic sequence `rintro r (s | s) <;> simp [Q, Free, Kept]`. Rewrite using `[det_colwise_fromBlocks (fun rs => Free (c / 2 + 1) rs ∨ Kept rs) Q h κ.val _ (fun a b => by`.
+
+Apply the tactic sequence `simp only [stepLin, of_apply]; split_ifs <;> rfl), map_pow]`. Establish `: valuation k κ.val.det = 1` using `hκ`. Rewrite using `[this, one_pow]`.
+-/
 theorem valuation_det_stepLin_embX : ∀ {k : Type} [Field k] [ValuativeRel k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} (κ : GL n k), valuation k (gdet κ : k) = 1 → valuation k (stepLin n' (embX c κ).val).det = 1 := by
   intro k _ _ n n' _ _ _ _ c κ hκ
   let Q : n' ⊕ Fin (c + 1) → Prop := Sum.elim (fun _ => False)

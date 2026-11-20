@@ -23,6 +23,11 @@ def tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pu
     (σ : k →+* ℂ) (a : (L.pow 4).B.ι) (b : (L.pull f hf).B.ι) (y : CxPts p σ) : ℝ :=
   ((L.pow 4).φ σ).φ a y - ((L.pull f hf).φ σ).φ b y - Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2)
 
+/- English proof (translation)
+Establish `t4` using `((L.pow 4).φ σ).trans a a' y ha ha'`. Establish `tP` using `((L.pull f hf).φ σ).trans b b' y hb hb'`. Establish `r` using `ev_iso_rel hw hb hb' ha ha'`. Establish `e` using `congrArg (fun z : ℂ => Real.log (‖z‖ ^ 2)) r`. Rewrite `e` using `[log_normSq_mul (ev_iso_ne_zero w hb ha) (gv_ne_zero hb hb'), log_normSq_mul (gv_ne_zero ha ha') (ev_iso_ne_zero w hb' ha')]`.
+
+Unfold `tateDefect`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tateDefect_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ : k →+* ℂ}
     {a a' : (L.pow 4).B.ι} {b b' : (L.pull f hf).B.ι} {y : CxPts p σ}
@@ -42,6 +47,9 @@ def tateFn (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pull f
     (σ : k →+* ℂ) (y : CxPts p σ) : ℝ :=
   tateDefect f hf L w σ (pick (L.pow 4).isLB y) (pick (L.pull f hf).isLB y) y
 
+/- English proof (translation)
+The claim follows from `tateDefect_eq hw ha (mem_pick _ y) hb (mem_pick _ y)`.
+-/
 theorem tateFn_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ : k →+* ℂ}
     {a : (L.pow 4).B.ι} {b : (L.pull f hf).B.ι} {y : CxPts p σ}
@@ -49,6 +57,11 @@ theorem tateFn_eq {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     tateFn f hf L w σ y = tateDefect f hf L w σ a b y :=
   tateDefect_eq hw ha (mem_pick _ y) hb (mem_pick _ y)
 
+/- English proof (translation)
+Establish `hab : y ∈ ptsIn p σ ((L.pow 4).B.U a ⊓ (L.pull f hf).B.U b)` using `mem_ptsIn_inf.2 ⟨ha, hb⟩`. Establish `hev : ContinuousAt (fun z => ev p σ _ (w.s (a, b)).val z) y` using `(continuousOn_ev _).continuousAt ((isOpen_ptsIn _).mem_nhds hab)`. Establish `hne : ‖ev p σ _ (w.s (a, b)).val y‖ ^ 2 ≠ 0`. Use `ev_iso_ne_zero w hb ha` as an intermediate fact. Check the signs of the components of the expression.
+
+Conclude with `((((L.pow 4).cInf σ a y ha).continuousAt).sub (((L.pull f hf).cInf σ b y hb).continuousAt)).sub ((hev.norm.pow 2).log hne)`.
+-/
 theorem continuousAt_tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)
     (w : LB.Iso (L.pull f hf).B (L.pow 4).B) {σ : k →+* ℂ}
     {a : (L.pow 4).B.ι} {b : (L.pull f hf).B.ι} {y : CxPts p σ}
@@ -63,6 +76,9 @@ theorem continuousAt_tateDefect (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)
   exact ((((L.pow 4).cInf σ a y ha).continuousAt).sub
     (((L.pull f hf).cInf σ b y hb).continuousAt)).sub ((hev.norm.pow 2).log hne)
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun y => by have ha := mem_pick (L.pow 4).isLB y have hb := mem_pick (L.pull f hf).isLB y refine (continuousAt_tateDefect f hf L w ha hb).congr ?_ have ho : ptsIn p σ ((L.pow 4).B.U (pick (L.pow 4).isLB y)) ∩ ptsIn p σ ((L.pull f hf).B.U (pick (L.pul …`.
+-/
 theorem continuous_tateFn {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
     Continuous (tateFn f hf L w σ) := continuous_iff_continuousAt.2 fun y => by
@@ -74,6 +90,9 @@ theorem continuous_tateFn {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     ((isOpen_ptsIn _).inter (isOpen_ptsIn _)).mem_nhds ⟨ha, hb⟩
   exact eventually_of_mem ho fun z hz => (tateFn_eq hw hz.1 hz.2).symm
 
+/- English proof (translation)
+Establish `ha` using `mem_pick (L.pow 4).isLB y`. Establish `hb` using `mem_pick (L.pull f hf).isLB y`. Rewrite using `[tateFn_eq hw ((mem_ptsIn_iff_of_conj h).2 ha) ((mem_ptsIn_iff_of_conj h).2 hb)]`. Unfold `tateFn tateDefect`. Rewrite using `[(L.pow 4).conj σ σ' _ y y' h ha, (L.pull f hf).conj σ σ' _ y y' h hb, ev_conj' h, norm_star]`.
+-/
 theorem tateFn_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ σ' : k →+* ℂ}
     {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
@@ -88,6 +107,9 @@ def tateSum (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p) (w : LB.Iso (L.pull 
     (σ : k →+* ℂ) (y : CxPts p σ) : ℝ :=
   ∑' n : ℕ, (1 / 4 : ℝ) ^ n * tateFn f hf L w σ ((PtsOver.map f hf (spMap σ))^[n] y)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CxPts.compactSpace σ hX.isProjOver`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_tateFn hw σ).continuousOn`. Conclude with `⟨C, fun y => hC y (mem_univ y)⟩`.
+-/
 theorem exists_bound_tateFn {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p = p}
     {L : HermLB p} {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
     ∃ C, ∀ y, ‖tateFn f hf L w σ y‖ ≤ C := by
@@ -95,6 +117,15 @@ theorem exists_bound_tateFn {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : 
   obtain ⟨C, hC⟩ := isCompact_univ.exists_bound_of_continuousOn (continuous_tateFn hw σ).continuousOn
   exact ⟨C, fun y => hC y (mem_univ y)⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `exists_bound_tateFn hX hw σ`. Use `set F := PtsOver.map f hf (spMap σ)`. Establish `hF : Continuous F` using `PtsOver.continuous_map f hf _`. Establish `hg : Summable fun n : ℕ => C * (1 / 4 : ℝ) ^ n` using `(summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left C`. Establish `hb : ∀ (n : ℕ) y, ‖(1 / 4 : ℝ) ^ n * tateFn f hf L w σ (F^[n] y)‖ ≤ C * (1 / 4 : ℝ) ^ n`.
+
+Introduce `n y`. Rewrite using `[norm_mul, norm_pow, Real.norm_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 4), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (by positivity)`. Use `⟨continuous_tsum (fun n => continuous_const.mul ((continuous_tateFn hw σ).comp (hF.iterate n))) hg hb, fun y => ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun n : ℕ => (1 / 4 : ℝ) ^ n * tateFn f hf L w σ (F^[n] y)` using `Summable.of_norm_bounded hg fun n => hb n y`.
+
+Unfold `tateSum`. Rewrite using `[hs.tsum_eq_zero_add, ← tsum_mul_left]`. Simplify using `only [pow_zero, one_mul, Function.iterate_zero, id_eq, Function.iterate_succ_apply]`. Use `congr 1`. Use `tsum_congr fun n => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tateSum_spec {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p = p}
     {L : HermLB p} {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) (σ : k →+* ℂ) :
     Continuous (tateSum f hf L w σ) ∧ ∀ y, tateSum f hf L w σ y =
@@ -119,6 +150,11 @@ theorem tateSum_spec {D : ℕ} (hX : IsArithVar p D) {f : X ⟶ X} {hf : f ≫ p
   refine tsum_congr fun n => ?_
   ring
 
+/- English proof (translation)
+Establish `key : ∀ n : ℕ, ((PtsOver.map f hf (spMap σ'))^[n] y').1 = spMap (starRingEnd ℂ) ≫ ((PtsOver.map f hf (spMap σ))^[n] y).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h`. Consider the case `succ n ih`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', PtsOver.map_val, PtsOver.map_val, ih, Category.assoc]`. Unfold `tateSum`. Conclude with `tsum_congr fun n => by rw [tateFn_conj hw (key n)]`.
+-/
 theorem tateSum_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
     {w : LB.Iso (L.pull f hf).B (L.pow 4).B} (hw : w.IsGen) {σ σ' : k →+* ℂ}
     {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
@@ -134,6 +170,11 @@ theorem tateSum_conj {f : X ⟶ X} {hf : f ≫ p = p} {L : HermLB p}
   unfold tateSum
   exact tsum_congr fun n => by rw [tateFn_conj hw (key n)]
 
+/- English proof (translation)
+Introduce `k _ X p D hX f hf L w hw`. Use `⟨fun σ y => -(1 / 4) * tateSum f hf L w σ y, fun σ => continuous_const.mul (tateSum_spec hX hw σ).1, fun σ σ' i y y' h _ => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(1 / 4) * tateSum f hf L w σ' y' = -(1 / 4) * tateSum f hf L w σ y`. Rewrite using `[tateSum_conj hw h]`. Introduce `σ a b y ha hb`.
+
+Establish `e` using `(tateSum_spec hX hw σ).2 y`. Establish `d` using `tateFn_eq hw ha hb`. Unfold `tateDefect at d`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_isTate_continuous : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (f : X ⟶ X) (hf : f ≫ p = p) (L : HermLB p)
     (w : LB.Iso (L.pull f hf).B (L.pow 4).B), w.IsGen → ∃ u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ,

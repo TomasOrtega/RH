@@ -3,12 +3,22 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
+/- English proof (translation)
+Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp h`. Take `rfl : I = maximalIdeal O` from `IsLocalRing.eq_maximalIdeal hI`. Conclude with `Nat.card_congr e.toEquiv`.
+-/
 private theorem card_simple (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M] [Module O M]
     [h : IsSimpleModule O M] : Nat.card M = Nat.card (ResidueField O) := by
   obtain ⟨I, hI, ⟨e⟩⟩ := isSimpleModule_iff_quot_maximal.mp h
   obtain rfl : I = maximalIdeal O := IsLocalRing.eq_maximalIdeal hI
   exact Nat.card_congr e.toEquiv
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `of_subsingleton`. Use `⟨0, Module.length_eq_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `Nat.card_of_subsingleton 0`.
+
+Consider the case `@of_simple_quotient M _ _ N _ hS ih`. Take `⟨k, hk, hc⟩` from `ih`. Use `⟨k + 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), hk, Module.length_eq_one]`. Use `norm_cast`.
+
+Establish `hq : Nat.card (M ⧸ N) = Nat.card (ResidueField O)` using `card_simple O (M ⧸ N)`. Establish `hsplit` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup`. Express the relevant statement in the definitionally equal form `Nat.card M = Nat.card (M ⧸ N) * Nat.card N at hsplit`. Rewrite using `[hsplit, hq, hc, pow_succ, mul_comm]`.
+-/
 private theorem card_of_finiteLength (O : Type) [CommRing O] [IsLocalRing O] (M : Type) [AddCommGroup M]
     [Module O M] (h : IsFiniteLength O M) :
     ∃ k : ℕ, Module.length O M = k ∧ Nat.card M = Nat.card (ResidueField O) ^ k := by
@@ -28,6 +38,13 @@ private theorem card_of_finiteLength (O : Type) [CommRing O] [IsLocalRing O] (M 
       change Nat.card M = Nat.card (M ⧸ N) * Nat.card N at hsplit
       rw [hsplit, hq, hc, pow_succ, mul_comm]
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _`. Establish `: CharZero O` using `charZero_of_injective_algebraMap (UpperTheory.V.Base.dvrFacts l O).1`. Establish `hres : Finite (ResidueField O)` using `(UpperTheory.V.abelian₂.dvr_finite l O).2.1`. Establish `h1 : 1 < Nat.card (ResidueField O)` using `Finite.one_lt_card`. Use `⟨h1, fun N _ _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hfl : Finite N → IsFiniteLength O N` using `fun _ => isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, inferInstance⟩`. Use `⟨⟨fun h => ?_, fun h => Module.length_ne_top_iff.2 (hfl h)⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `card_of_finiteLength O N (Module.length_ne_top_iff.1 h)`. Conclude with `Nat.finite_of_card_ne_zero (hk ▸ pow_ne_zero k (by omega))`. Take `⟨k, hk1, hk⟩` from `card_of_finiteLength O N (hfl h)`.
+
+Rewrite using `[hk, hk1, ENat.toNat_coe]`.
+-/
 theorem UpperTheory.V.X.So.cardLen :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O], 1 < Nat.card (ResidueField O) ∧ ∀ (N : Type) [AddCommGroup N] [Module O N], (Module.length O N ≠ ⊤ ↔ Finite N) ∧ (Finite N → Nat.card N = Nat.card (ResidueField O) ^ (Module.length O N).toNat) := by
   intro l _ O _ _ _ _ _

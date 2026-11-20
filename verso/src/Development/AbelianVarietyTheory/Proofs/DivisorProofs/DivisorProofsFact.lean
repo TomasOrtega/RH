@@ -24,6 +24,29 @@ noncomputable section
 
 namespace GlobalTheory.LatModel
 
+/- English proof (translation)
+Introduce `hPC hDR hDC hPM E _ _ _ _ I _ d φ hφ 𝔣 h𝔣 l _ Q hQ hQl y hy lam 𝔠 R _ hR X₀ X U p cm hpull hcm hα j hj φK hφK e a he hL n eH`. Take `⟨c₀, hc₀, hgen⟩` from `GlobalTheory.T.fractional_ideal_generated_prime_to_l (FR E) 𝔠 l`. Take `⟨ψ₀, hcorr, hpol⟩` from `GlobalTheory.T.polarization_form_exists_for_cm_object hDR (FR E) 𝔠 R X₀ c₀`. Establish `hunit : ∀ m : ℕ, m.Coprime l → IsUnit (m : R)`. Introduce `m hm`.
+
+Establish `hm0 : (m : ℚ) ≠ 0`. Establish `: m ≠ 0`. Introduce and unpack `rfl`. Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.coprime_zero_left l |>.mp hm)`. Conclude with `this` after adjusting the coercions.
+
+Establish `hv : 0 ≤ padicValRat l ((m : ℚ)⁻¹)`. Rewrite using `[padicValRat.inv, padicValRat.of_nat]`. Establish `: padicValNat l m = 0` using `padicValNat.eq_zero_of_not_dvd fun h ↦ (Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).1 hm.symm h`. Simplify using `[this]`. Establish `hmem` using `hR.2.2.1 ((m : ℚ)⁻¹) hv`.
+
+Use `isUnit_iff_exists_inv.2 ⟨⟨_, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: ((m : ℚ) : ℂ) ≠ 0` using `by exact_mod_cast hm0`. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one]`. Rewrite `*` using `[Rat.cast_inv, Rat.cast_natCast]`. Conclude with `mul_inv_cancel₀ (by simpa using this)`.
+
+Establish `hbij : Function.Bijective ψ₀` using `GlobalTheory.T.polarization_form_over_dvr_prime_to_l hDR hDC (FR E) 𝔠 l R hunit X₀ c₀ hc₀ hgen ψ₀ hcorr`. Establish `hadj` using `GlobalTheory.T.cm_auxiliary_set_level_structure hPC hDR hDC E I d φ hφ 𝔣 h𝔣 l Q hQ hQl y hy lam 𝔠 R hR X₀ X U p cm hpull hcm hα j hj φK hφK c₀ ψ₀ hc₀ hpol`. Establish `hFil` using `GlobalTheory.T.cm_auxiliary_set_local_conditions hPC hDR hDC E I d φ hφ 𝔣 h𝔣 l Q hQ hQl y hy lam 𝔠 R hR X₀ X U p cm hpull hcm hα j hj φK hφK n eH`. Establish `h2 : (2 : R) ≠ 0` using `two_ne_zero`. Use `⟨c₀, ψ₀, hc₀, hgen, hpol, ⟨inferInstance, inferInstance, ?_, GlobalTheory.T.cm_auxiliary_set_galois_descent hPC hDR hDC E I d φ hφ 𝔣 h𝔣 l Q hQ hQl y hy lam 𝔠 R hR X₀ X U p cm hpull hcm hα j hj φK hφK n eH, ?_, hFil, ?_, ?_, ?_⟩, GlobalTheory.T.cm_auxiliary_set_reduction_good hPC …` and prove the remaining obligations.
+
+Rewrite using `[Module.finrank_fin_fun]`. Conclude with `GlobalTheory.T.de_rham_rank_eq_cm_degree hDR E 𝔠 R X₀ n eH`. Introduce `x h hx hxh`. Take `⟨k, hk, hkh⟩` from `Submodule.mem_map.1 hxh`. Use `Submodule.mem_map.2 ⟨eH.symm h, ?_, by simp⟩` and prove the remaining obligations.
+
+Establish `hk' : k = x • eH.symm h`. Apply `eH.injective` to reduce the goal to its premises. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `hkh`. Substitute `hk'` using the available equality.
+
+Rewrite `hk`, the goal using `[Fil, Submodule.mem_dualAnnihilator]`. Introduce `w hw`. Use `hk w hw` as an intermediate fact. Rewrite `this` using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hx`.
+
+Establish `: ⇑(ψ₀.compl₁₂ eH.symm.toLinearMap eH.symm.toLinearMap) = ⇑eH.symm.dualMap ∘ ⇑ψ₀ ∘ ⇑eH.symm`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `eH.symm.dualMap.bijective.comp (hbij.comp eH.symm.bijective)`.
+
+Introduce `x`. Use `hpol.isAlt (eH.symm x)` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at this`. Simplify using `using (mul_eq_zero.1 this).resolve_left h2`. Introduce `a' b' hab h h' show ψ₀ (eH.symm (eH (act (dp0 R) (𝟙 _) cm a' (eH.symm h)))) (eH.symm h') = ψ₀ (eH.symm h) (eH.symm (eH (act (dp0 R) (𝟙 _) cm b' (eH.symm h'))))`.
+
+Rewrite using `[eH.symm_apply_apply, eH.symm_apply_apply]`. Conclude with `hadj a' b' hab (eH.symm h) (eH.symm h')`.
+-/
 theorem cmLattice_of_model : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

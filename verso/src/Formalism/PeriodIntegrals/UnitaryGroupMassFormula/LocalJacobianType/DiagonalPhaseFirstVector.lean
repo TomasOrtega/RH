@@ -14,17 +14,29 @@ attribute [local instance] PI.VolStabSW.secondCountable_Fv PI.VolStabSW.locallyC
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) (ψ : AddChar (AF F) ℂ)
 
+/- English proof (translation)
+The claim follows from `PI.VolStabSW.SdUniqW.continuous_trace_tens (F := F) (E := E) (Fv F v)`.
+-/
 theorem continuous_tr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) :=
   PI.VolStabSW.SdUniqW.continuous_trace_tens (F := F) (E := E) (Fv F v)
 
+/- English proof (translation)
+Introduce `x _`. Simplify using `[psiV_zero]`.
+-/
 theorem diagonal_phase_first_vector : (0 : Fv F v ⊗[F] E) ∈ D1 (E := E) v ψ := by
   intro x _; simp [psiV_zero]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[mul_add, map_add, psiV_add', hy x hx, hy' x hx, mul_one]`.
+-/
 theorem conductor_add_mem {y y' : Fv F v ⊗[F] E} (hy : y ∈ D1 (E := E) v ψ) (hy' : y' ∈ D1 (E := E) v ψ) :
     y + y' ∈ D1 (E := E) v ψ := by
   intro x hx
   rw [mul_add, map_add, psiV_add', hy x hx, hy' x hx, mul_one]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h` using `psiV_neg_mul v ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * y))`. Rewrite `h` using `[hy x hx, mul_one]`. Rewrite using `[mul_neg, map_neg]` and apply the resulting hypothesis.
+-/
 theorem conductor_neg_mem {y : Fv F v ⊗[F] E} (hy : y ∈ D1 (E := E) v ψ) : -y ∈ D1 (E := E) v ψ := by
   intro x hx
   have h := psiV_neg_mul v ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * y))
@@ -37,6 +49,9 @@ def D1sub : AddSubgroup (Fv F v ⊗[F] E) where
   zero_mem' := diagonal_phase_first_vector v ψ
   neg_mem' := conductor_neg_mem v ψ
 
+/- English proof (translation)
+Introduce `c hc`. Establish `e : c * trE (E` using `E) v y j = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) ((c • bas (E := E) v j) * y) := by`. Rewrite using `[trE_apply, trC_apply, smul_mul_assoc, map_smul, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `hy _ (smul_bas_mem v hc j)`.
+-/
 theorem trE_mem_Aset {y : Fv F v ⊗[F] E} (hy : y ∈ D1 (E := E) v ψ) (j : Fin (Module.finrank F E)) :
     trE (E := E) v y j ∈ PI.OmFibreUniq.W.SdChar.Aset v (psiV F ψ v) := by
   intro c hc
@@ -49,6 +64,9 @@ theorem trE_mem_Aset {y : Fv F v ⊗[F] E} (hy : y ∈ D1 (E := E) v ψ) (j : Fi
 variable (hK : OpenKer v ψ)
 include hK
 
+/- English proof (translation)
+Establish `e : D1 (E` using `E) v ψ = ⋂ x ∈ OEv (E := E) v, {y | psiV F ψ v (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * y)) = 1} := by`. Use extensionality with `y`. Simplify using `[D1]`. Rewrite using `[e]`. Conclude with `isClosed_biInter fun x _ => isClosed_eq ((continuous_psiV_of v ψ hK).comp ((continuous_tr v).comp (continuous_const.mul continuous_id))) continuous_const`.
+-/
 theorem conductor_isClosed : IsClosed (D1 (E := E) v ψ) := by
   have e : D1 (E := E) v ψ = ⋂ x ∈ OEv (E := E) v,
       {y | psiV F ψ v (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x * y)) = 1} := by
@@ -57,6 +75,11 @@ theorem conductor_isClosed : IsClosed (D1 (E := E) v ψ) := by
   exact isClosed_biInter fun x _ => isClosed_eq ((continuous_psiV_of v ψ hK).comp
     ((continuous_tr v).comp (continuous_const.mul continuous_id))) continuous_const
 
+/- English proof (translation)
+Take `⟨y0, -, hy0⟩` from `PI.OmFibreUniq.W.SdChar.Aset_bdd v (psiV F ψ v) (psiV_add' v ψ) (norm_psiV_of v ψ hK) hnt`. Use `set C : Set (Fin (Module.finrank F E) → Fv F v) := Set.univ.pi fun _ => (fun s => y0 * s) '' (v.adicCompletionIntegers F : Set (Fv F v))`. Establish `hC : IsCompact C` using `isCompact_univ_pi fun _ => (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v).image (continuous_const.mul continuous_id)`. Use `(hC.image (continuous_trE_symm (E := E) v)).of_isClosed_subset (conductor_isClosed v ψ hK) ?_` and prove the remaining obligations. Introduce `y hy`.
+
+Use `⟨trE (E := E) v y, fun j _ => ?_, by simp⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `hy0 _ (trE_mem_Aset v ψ hy j)`. Conclude with `⟨s, hs, e.symm⟩`.
+-/
 theorem conductor_isCompact (hnt : ∃ r, psiV F ψ v r ≠ 1) : IsCompact (D1 (E := E) v ψ) := by
   obtain ⟨y0, -, hy0⟩ := PI.OmFibreUniq.W.SdChar.Aset_bdd v (psiV F ψ v) (psiV_add' v ψ)
     (norm_psiV_of v ψ hK) hnt
@@ -70,6 +93,13 @@ theorem conductor_isCompact (hnt : ∃ r, psiV F ψ v r ≠ 1) : IsCompact (D1 (
   obtain ⟨s, hs, e⟩ := hy0 _ (trE_mem_Aset v ψ hy j)
   exact ⟨s, hs, e.symm⟩
 
+/- English proof (translation)
+Take `⟨m, w, hw, hgen⟩` from `exists_gens (E := E) v`. Establish `hA` using `PI.OmFibreUniq.W.SdChar.Aset_mem_nhds v (psiV F ψ v) (continuous_psiV_of v ψ hK) (psiV_add' v ψ) (norm_psiV_of v ψ hK)`. Establish `hN : (⋂ k, {y : Fv F v ⊗[F] E | Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (w k * y) ∈ PI.OmFibreUniq.W.SdChar.Aset v (psiV F ψ v)}) ∈ 𝓝 (0 : Fv F v ⊗[F] E)`. Use `Filter.iInter_mem.2 fun k => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : Fv F v ⊗[F] E => Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (w k * y)` using `(continuous_tr v).comp (continuous_const.mul continuous_id)`.
+
+Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hA)`. Use `Filter.mem_of_superset hN fun y hy x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq] at hy`. Take `⟨c, hc, rfl⟩` from `hgen x hx`. Rewrite using `[Finset.sum_mul, map_sum, psiV_sum]`.
+
+Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul]`. Conclude with `hy k (c k) (hc k)`.
+-/
 theorem conductor_mem_nhds : D1 (E := E) v ψ ∈ 𝓝 (0 : Fv F v ⊗[F] E) := by
   obtain ⟨m, w, hw, hgen⟩ := exists_gens (E := E) v
   have hA := PI.OmFibreUniq.W.SdChar.Aset_mem_nhds v (psiV F ψ v) (continuous_psiV_of v ψ hK)
@@ -88,6 +118,9 @@ theorem conductor_mem_nhds : D1 (E := E) v ψ ∈ 𝓝 (0 : Fv F v ⊗[F] E) := 
   rw [smul_mul_assoc, map_smul, smul_eq_mul]
   exact hy k (c k) (hc k)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.isOpen_of_mem_nhds (D1sub (E := E) v ψ) (conductor_mem_nhds v ψ hK)`.
+-/
 theorem conductor_isOpen : IsOpen (D1 (E := E) v ψ) :=
   AddSubgroup.isOpen_of_mem_nhds (D1sub (E := E) v ψ) (conductor_mem_nhds v ψ hK)
 

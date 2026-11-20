@@ -9,6 +9,13 @@ open Matrix
 
 namespace GlobalTheory.BSP.CoeffIdeal
 
+/- English proof (translation)
+Take `⟨g', hg'⟩` from `(IsPrincipalIdealRing.principal (P.map π)).principal`. Establish `h0 : g' ∈ P.map π` using `by rw [hg']; exact Submodule.mem_span_singleton_self _`. Take `⟨g, hg, rfl⟩` from `(Ideal.mem_map_iff_of_surjective π hπ).1 h0`. Use `⟨g, le_antisymm ?_ ((Ideal.span_singleton_le_iff_mem _).2 hg)⟩` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian P) hp fun x hx => ?_` and prove the remaining obligations.
+
+Establish `h1 : π x ∈ P.map π` using `Ideal.mem_map_of_mem π hx`. Rewrite `h1` using `[hg']`. Take `⟨c', hc'⟩` from `Submodule.mem_span_singleton.1 h1`. Take `⟨c, rfl⟩` from `hπ c'`. Take `⟨y, hy⟩` from `hker (x - c * g) (by rw [map_sub, map_mul, ← hc', smul_eq_mul, sub_self])`.
+
+Establish `hyP : y ∈ P` using `hP y (hy ▸ P.sub_mem hx (P.mul_mem_left c hg))`. Establish `e : x = c * g + p • y` using `by rw [smul_eq_mul, ← hy]; ring`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ c (Ideal.mem_span_singleton_self g)) (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self p) hyP)`.
+-/
 theorem principal_of_saturated {S k : Type} [CommRing S] [IsNoetherianRing S] [CommRing k]
     [IsPrincipalIdealRing k] (π : S →+* k) (hπ : Function.Surjective π) (p : S)
     (hker : ∀ x, π x = 0 → p ∣ x) (hp : Ideal.span {p} ≤ Ideal.jacobson ⊥) (P : Ideal S)
@@ -29,6 +36,15 @@ theorem principal_of_saturated {S k : Type} [CommRing S] [IsNoetherianRing S] [C
   exact Submodule.add_mem_sup (Ideal.mul_mem_left _ c (Ideal.mem_span_singleton_self g))
     (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self p) hyP)
 
+/- English proof (translation)
+Establish `hH : IsHausdorff I (S ⧸ N)` using `IsHausdorff.of_le_jacobson _ _ hI`. Use `Ideal.Quotient.eq_zero_iff_mem.1 (hH.haus _ fun n => ?_)` and prove the remaining obligations. Establish `hF : ∀ i, i ∉ (TB.fin x n).toFinset → TB.c i x ∈ I ^ n` using `fun i hi => by simpa using hi`. Establish `h1` using `Ideal.mem_map_of_mem Φ (TB.approx x n _ hF)`. Establish `e : Φ.comp s = s.comp φ` using `RingHom.ext fun a => (hφ a).symm`.
+
+Rewrite `h1` using `[Ideal.map_map, e, ← Ideal.map_map, Ideal.map_pow]`. Establish `h2` using `TB.c_mem_of_mem_map _ _ (Ideal.map_mono (Ideal.pow_right_mono hφI n) h1) j`. Rewrite `h2` using `[map_sub, map_sub, map_sum, map_sum]`. Establish `h3 : ∑ i ∈ (TB.fin x n).toFinset, TB.c j (Φ (s (TB.c i x) * TB.b i)) ∈ N` using `N.sum_mem fun i _ => by`. Rewrite using `[map_mul, ← hφ, TB.c_mul]`.
+
+Conclude with `N.mul_mem_right _ (hN i)`. Establish `h4 : Ideal.Quotient.mk N (TB.c j (Φ x)) = (TB.c j (Φ x) - ∑ i ∈ (TB.fin x n).toFinset, TB.c j (Φ (s (TB.c i x) * TB.b i))) • (1 : S ⧸ N)`. Rewrite using `[Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq]`. Simplify using `using h3`. Rewrite using `[SModEq.zero, h4]`.
+
+Conclude with `Submodule.smul_mem_smul h2 Submodule.mem_top`.
+-/
 theorem c_frob_mem {S A : Type} [CommRing S] [IsNoetherianRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
     {ι : Type} (TB : TopBasis s I ι) (hI : I ≤ Ideal.jacobson ⊥) (φ : S →+* S) (Φ : A →+* A)
     (hφ : ∀ a, s (φ a) = Φ (s a)) (hφI : I.map φ ≤ I) (x : A) (N : Ideal S) (hN : ∀ i, φ (TB.c i x) ∈ N)
@@ -54,6 +70,11 @@ theorem c_frob_mem {S A : Type} [CommRing S] [IsNoetherianRing S] [CommRing A] {
 
 variable (l : ℕ) [hl : Fact l.Prime] (a : ℕ) [NeZero a]
 
+/- English proof (translation)
+Establish `key : ∀ x : (Wq l a)⟦X⟧, (l : (Wq l a)⟦X⟧) ∣ x → PowerSeries.map (WittVector.constantCoeff (p` using `l) (R := Fq l a)) x = 0 := by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[map_mul, map_natCast, l_eq_zero, zero_mul]`. Use `⟨l_ne_zero l a, fun h => ?_, fun x y h => ?_⟩` and prove the remaining obligations. Use `key 1 h.dvd` as an intermediate fact.
+
+Rewrite `this` using `[map_one]`. Conclude with `one_ne_zero this`. Use `key _ h` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(mul_eq_zero.1 this).imp (dvd_of_map_eq_zero l a x) (dvd_of_map_eq_zero l a y)`.
+-/
 theorem prime_l : Prime (l : (Wq l a)⟦X⟧) := by
   have key : ∀ x : (Wq l a)⟦X⟧, (l : (Wq l a)⟦X⟧) ∣ x →
       PowerSeries.map (WittVector.constantCoeff (p := l) (R := Fq l a)) x = 0 := by
@@ -67,6 +88,11 @@ theorem prime_l : Prime (l : (Wq l a)⟦X⟧) := by
     rw [map_mul] at this
     exact (mul_eq_zero.1 this).imp (dvd_of_map_eq_zero l a x) (dvd_of_map_eq_zero l a y)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨-, ε, η, ⟨-, hδ1⟩, h⟩` from `h`. Rewrite `h` using `[map_zero, eq_comm, Units.mul_right_eq_zero, sub_eq_zero]`. Establish `h1 : ε = 1`. Use `congrArg (fun w : Ainf l => w.coeff 0) h` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `hδ1 (by rw [h1, map_one, map_one])`.
+-/
 theorem ne_zero_of_isPer {K : FinExt l} (bk : BK K) {τ : Ainf l} (h : bk.IsPer τ) : τ ≠ 0 := by
   rintro rfl
   obtain ⟨-, ε, η, ⟨-, hδ1⟩, h⟩ := h
@@ -80,6 +106,35 @@ end GlobalTheory.BSP.CoeffIdeal
 
 open GlobalTheory.BSP.CoeffIdeal in
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ ι TB M`. Use `set I : Ideal bk.S := Ideal.span (Set.range fun i => TB.c i (τ ^ M)) with hI`. Establish `hJ : bk.J ≤ Ideal.jacobson ⊥`. Use `bk.complete` as an intermediate fact. Conclude with `IsAdicComplete.le_jacobson_bot _`.
+
+Establish `hpr` using `prime_l l bk.a`. Set `P : Ideal bk.S` to `{ carrier := {x | ∃ r : ℕ, (l : bk.S) ^ r * x ∈ I} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `x y ⟨r, hr⟩ ⟨t, ht⟩`. Use `⟨r + t, ?_⟩` and prove the remaining obligations. Use `I.add_mem (I.mul_mem_left ((l : bk.S) ^ t) hr) (I.mul_mem_left ((l : bk.S) ^ r) ht)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨r, hr⟩`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `I.mul_mem_left c hr }`. Establish `hsat : ∀ x, (l : bk.S) * x ∈ P → x ∈ P`. Introduce and unpack `x ⟨r, hr⟩`. Conclude with `⟨r + 1, by rwa [pow_succ, mul_assoc]⟩`.
+
+Establish `hIP : I ≤ P` using `fun x hx => ⟨0, by simpa using hx⟩`. Take `⟨g, hg⟩` from `principal_of_saturated (PowerSeries.map (WittVector.constantCoeff (p := l) (R := Fq l bk.a))) (PowerSeries.map_surjective _ (WittVector.constantCoeff_surjective l)) (l : bk.S) (dvd_of_map_eq_zero l bk.a) (le_sup_left.trans hJ) P hsat`. Establish `hgP : g ∈ P` using `by rw [hg]; exact Ideal.mem_span_singleton_self g`. Establish `hdvd : ∀ i, g ∣ TB.c i (τ ^ M)` using `fun i => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hg]`.
+
+Conclude with `hIP (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Conclude with `pow_ne_zero M (ne_zero_of_isPer l bk hτ) (TB.eq_zero_of_c _ fun i => zero_dvd_iff.1 (hdvd i))`. Establish `hlg : ¬ (l : bk.S) ∣ g`.
+
+Introduce and unpack `⟨y, hy⟩`. Establish `h1 : y ∈ P` using `hsat y (hy ▸ hgP)`. Rewrite `h1` using `[hg, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `h1`. Use `hpr.not_unit (IsUnit.of_mul_eq_one z (mul_left_cancel₀ hg0 ?_))` and prove the remaining obligations.
+
+Rewrite using `[mul_one]`. Use `conv_rhs => rw [hy, hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφJ : bk.J.map (frobS l bk.a) ≤ bk.J`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, map_natCast]`.
+
+Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).2 ?_)` and prove the remaining obligations. Take `⟨b, hb⟩` from `frobS_eq l bk.a bk.E`. Rewrite using `[hb, add_comm]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (Fact.out : l.Prime).pos)`. Establish `hE : ∀ j, frobS l bk.a g ∣ bk.E ^ M * TB.c j (τ ^ M)` using `fun j => by`.
+
+Use `c_frob_mem TB hJ (frobS l bk.a) WittVector.frobenius bk.ev_frob hφJ (τ ^ M) (Ideal.span {frobS l bk.a g}) (fun i => Ideal.mem_span_singleton.2 (map_dvd _ (hdvd i))) j` as an intermediate fact. Rewrite `this` using `[map_pow, hτ.1, mul_pow, ← map_pow, TB.c_mul, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hEI : ∀ x ∈ I, frobS l bk.a g ∣ bk.E ^ M * x` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`.
+
+Conclude with `hE i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `dvd_add hx hy`. Consider the case `smul c x _ hx => rw [smul_eq_mul, mul_left_comm]`.
+
+Conclude with `hx.mul_left c`. Take `⟨r, hr⟩` from `hgP`. Establish `hlφ : ¬ (l : bk.S) ∣ frobS l bk.a g`. Take `⟨b, hb⟩` from `frobS_eq l bk.a g`. Rewrite using `[hb]`.
+
+Introduce `h`. Conclude with `hlg (hpr.dvd_of_dvd_pow ((dvd_add_left (dvd_mul_right _ b)).1 h))`. Establish `hfin : frobS l bk.a g ∣ bk.E ^ M * g`. Take `⟨z, hz⟩` from `hEI _ hr`. Take `⟨w, hw⟩ : (l : bk.S) ^ r ∣ z` from `hpr.pow_dvd_of_dvd_mul_left r hlφ ⟨bk.E ^ M * g, by rw [← hz]; ring⟩`.
+
+Use `⟨w, mul_left_cancel₀ (pow_ne_zero r hpr.ne_zero) ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm, hz, hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu` using `GlobalTheory.T.isUnit_of_frobenius_dvd_eisenstein_pow_mul l K bk g hlg M hfin`. Conclude with `⟨r, (I.mul_unit_mem_iff_mem hu).1 hr⟩`.
+-/
 theorem GlobalTheory.BSP.pow_l_mem_span_coeff : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (ι : Type) (TB : TopBasis bk.ev bk.J ι) (M : ℕ), ∃ r : ℕ, (l : bk.S) ^ r ∈ Ideal.span (Set.range fun i => TB.c i (τ ^ M)) := by
   intro l _ K bk τ hτ ι TB M
   set I : Ideal bk.S := Ideal.span (Set.range fun i => TB.c i (τ ^ M)) with hI

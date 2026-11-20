@@ -17,6 +17,9 @@ section Helpers
 
 variable {K : Type*} [CommRing K] {n : ℕ}
 
+/- English proof (translation)
+Establish `e : S * Matrix.diagonal d * X * Matrix.diagonal d' * S = Matrix.diagonal (fun a => s a * d a) * X * Matrix.diagonal (fun a => d' a * s a)`. Rewrite using `[hS, Matrix.diagonal_mul_diagonal, Matrix.mul_assoc _ (Matrix.diagonal d'), Matrix.diagonal_mul_diagonal]`. Rewrite using `[e]`. Conclude with `isUp_conj hX _ _ fun a => by`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isUp_sconj {S X : Matrix (Fin n) (Fin n) K} (s d d' : Fin n → K) (hS : S = Matrix.diagonal s)
     (hs : ∀ a, s a * s a = 1) (hd : ∀ a, d a * d' a = 1) (hX : IsUp X) :
     IsUp (S * Matrix.diagonal d * X * Matrix.diagonal d' * S) := by
@@ -28,6 +31,9 @@ theorem isUp_sconj {S X : Matrix (Fin n) (Fin n) K} (s d d' : Fin n → K) (hS :
     calc s a * d a * (d' a * s a) = (d a * d' a) * (s a * s a) := by ring
       _ = 1 := by rw [hd, hs, one_mul]
 
+/- English proof (translation)
+Establish `e : S * Matrix.diagonal d * X * Matrix.diagonal d' * S = Matrix.diagonal (fun a => s a * d a) * X * Matrix.diagonal (fun a => d' a * s a)`. Rewrite using `[hS, Matrix.diagonal_mul_diagonal, Matrix.mul_assoc _ (Matrix.diagonal d'), Matrix.diagonal_mul_diagonal]`. Rewrite using `[e]`. Conclude with `isLo_conj hX _ _ fun a => by`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isLo_sconj {S X : Matrix (Fin n) (Fin n) K} (s d d' : Fin n → K) (hS : S = Matrix.diagonal s)
     (hs : ∀ a, s a * s a = 1) (hd : ∀ a, d a * d' a = 1) (hX : IsLo X) :
     IsLo (S * Matrix.diagonal d * X * Matrix.diagonal d' * S) := by
@@ -39,9 +45,15 @@ theorem isLo_sconj {S X : Matrix (Fin n) (Fin n) K} (s d d' : Fin n → K) (hS :
     calc s a * d a * (d' a * s a) = (d a * d' a) * (s a * s a) := by ring
       _ = 1 := by rw [hd, hs, one_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by simp, fun a b h => by simp [Matrix.one_apply_ne h.ne]⟩`.
+-/
 theorem isLo_one' {K : Type*} [CommRing K] {n : ℕ} : IsLo (1 : Matrix (Fin n) (Fin n) K) :=
   ⟨fun a => by simp, fun a b h => by simp [Matrix.one_apply_ne h.ne]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by simp, fun a b h => by simp [Matrix.one_apply_ne h.ne']⟩`.
+-/
 theorem isUp_one' {K : Type*} [CommRing K] {n : ℕ} : IsUp (1 : Matrix (Fin n) (Fin n) K) :=
   ⟨fun a => by simp, fun a b h => by simp [Matrix.one_apply_ne h.ne']⟩
 
@@ -51,6 +63,11 @@ section ClearFp
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).lf`. Establish `h` using `fun k => clear_F (fun q => D.s.atP q) p (z k)`. Use `choose t ht0 htz using h`. Use `⟨∏ k, t k, Finset.prod_ne_zero_iff.2 fun k _ => ht0 k, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), map_mul, map_mul, mul_comm ((D.s.atP p).ιF (algebraMap _ _ (t k))), mul_assoc]`.
+
+Conclude with `Subring.mul_mem _ (iotaF_int_mem (fun q => D.s.atP q) p _) (htz k)`.
+-/
 theorem clear_Fp (p : PlF D) {ι : Type} [Fintype ι] (z : ι → (D.s.atP p).Fp) :
     ∃ c : 𝓞 D.host.F, c ≠ 0 ∧ ∀ k,
       (D.s.atP p).ιF (algebraMap (𝓞 D.host.F) D.host.F c) * z k ∈ (haveI := (D.s.atP p).lf; 𝒪[(D.s.atP p).Fp]) := by
@@ -74,6 +91,17 @@ include hR hM hge hgq
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set φ1 := (p1 sg.e).comp (D.s.atP p).ιE with hφ1`. Use `set φ2 := (p2 sg.e).comp (D.s.atP p).ιE with hφ2`. Use `set S := Sg (D.s.atP p).Fp D.R.rS with hS`. Establish `hZ : (L * ptMat w * B * Sg D.host.E D.R.rS) * Sg D.host.E D.R.rS = L * ptMat w * B`. Rewrite using `[Matrix.mul_assoc, sg_sq, Matrix.mul_one]`.
+
+Establish `hΛ1 : IsLo (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p))` using `isLo_conj (isLo_map φ1 hL) _ _ (cf_cfi Zd p)`. Establish `hV1 : IsUp (Matrix.diagonal (cfi Zd p) * B.map φ1 * Matrix.diagonal (cf Zd p))` using `isUp_conj (isUp_map φ1 hB) _ _ (cfi_cf Zd p)`. Establish `hBt : IsLo (S * (B.map φ2).transpose * S)` using `isLo_conj (isLo_transpose (isUp_map φ2 hB)) _ _ (fun a => sgn_sq' D.R.rS a)`. Establish `hLt : IsUp (S * (L.map φ2).transpose * S)` using `isUp_conj (isUp_transpose (isLo_map φ2 hL)) _ _ (fun a => sgn_sq' D.R.rS a)`. Establish `hΛ2 : IsLo (Matrix.diagonal (cf Zd p) * (S * (B.map φ2).transpose * S) * Matrix.diagonal (cfi Zd p))` using `isLo_conj hBt _ _ (cf_cfi Zd p)`.
+
+Establish `hV2 : IsUp (Matrix.diagonal (cfi Zd p) * (S * (L.map φ2).transpose * S) * Matrix.diagonal (cf Zd p))` using `isUp_conj hLt _ _ (cfi_cf Zd p)`. Use `mat_eq sg.e ?_ ?_` and prove the remaining obligations. Establish `l1 : (CntLocal.ZZP (M` using `Zd.M) Zd.δ u u' p (L * ptMat w * B * Sg D.host.E D.R.rS) * LsDatumB.sgnP p).map (p1 sg.e) = (Matrix.diagonal (cf Zd p) * L.map φ1 * Matrix.diagonal (cfi Zd p)) * ((sg.q : (D.s.atP p).Fp)⁻¹ • (Matrix.diagonal (cf Zd p) * (ptMat w).map φ1 * Matrix.diagonal (cf Zd p))) * (Matrix.dia …`. Rewrite using `[zz1' Zd p sg hR g hM hge hgq, hZ, Matrix.map_mul, Matrix.map_mul, fact1 _ _ (cfi_cf Zd p)]`. Rewrite using `[l1, Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst, glue_map_fst, Matrix.mul_sub, Matrix.sub_mul]`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hΛ1 hV1]`. Establish `e2 : ((L * ptMat w * B * Sg D.host.E D.R.rS).map φ2).transpose * S = (S * (B.map φ2).transpose * S) * (S * (ptMat w).map φ2 * S) * (S * (L.map φ2).transpose * S)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, sg_map]`. Conclude with `fact2 _ _ _ _ (sg_sq _) (Matrix.diagonal_transpose _) (by rw [← Matrix.transpose_map, ptMat_transpose])`. Establish `l2 : (CntLocal.ZZP (M` using `Zd.M) Zd.δ u u' p (L * ptMat w * B * Sg D.host.E D.R.rS) * LsDatumB.sgnP p).map (p2 sg.e) = (Matrix.diagonal (cf Zd p) * (S * (B.map φ2).transpose * S) * Matrix.diagonal (cfi Zd p)) * ((-(sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.diagonal (cf Zd p) * (S * (ptMat w).map φ2 * S) * Matrix …`.
+
+Rewrite using `[zz2' Zd p sg hR g hM hge hgq, e2, fact1 _ _ (cfi_cf Zd p)]`. Rewrite using `[l2, Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd, glue_map_snd, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hΛ2 hV2]`.
+-/
 theorem zz_fact (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) {L B : PairVal.MatR D} (hL : IsLo L)
     (hB : IsUp B) :
     CntLocal.ZZP (M := Zd.M) Zd.δ u u' p (L * ptMat w * B * Sg D.host.E D.R.rS) * LsDatumB.sgnP p =
@@ -133,6 +161,15 @@ theorem zz_fact (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) {L B :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Establish `hs0 : ∀ a : Fin (D.R.rS + 1), (-1 : (D.s.atP p).Fp) ^ (D.R.rS - a.val) ≠ 0` using `fun a => pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)`. Take `⟨L1, U1, hL1, hU1, h1⟩` from `generic_comp (sgF w) (sgF_sgF _) (isLo_one' (K := (D.s.atP p).Fp)) (isUp_one' (K := (D.s.atP p).Fp)) (W := (ptMat w).map ((p1 sg.e).comp (D.s.atP p).ιE)) (fun a b hb => by simp only [Matrix.map_apply, ptMat_apply', if_neg hb, map_zero]) (fun a => by`. Simplify using `only [Matrix.map_apply, ptMat_apply', if_true]`. Conclude with `(map_ne_zero _).2 (pTau_ne' _ a))`.
+
+Use the proof step `(cf Zd p) (cfi Zd p) (cfi_cf Zd p) (sg.q : (D.s.atP p).Fp)⁻¹ (inv_ne_zero hq)`. Use the proof step `(-(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Take `⟨L2, U2, hL2, hU2, h2⟩` from `generic_comp (sgF w) (sgF_sgF _) (isLo_one' (K := (D.s.atP p).Fp)) (isUp_one' (K := (D.s.atP p).Fp)) (W := Sg (D.s.atP p).Fp D.R.rS * (ptMat w).map ((p2 sg.e).comp (D.s.atP p).ιE) * Sg (D.s.atP p).Fp D.R.rS) (fun a b hb => by`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_neg hb, map_zero, mul_zero, zero_mul])`. Use the proof step `(fun a => by`.
+
+Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply', if_true]`. Conclude with `mul_ne_zero (mul_ne_zero (hs0 _) ((map_ne_zero _).2 (pTau_ne' _ a))) (hs0 _))`. Use the proof step `(cf Zd p) (cfi Zd p) (cfi_cf Zd p) (-(sg.q : (D.s.atP p).Fp)⁻¹) (neg_ne_zero.2 (inv_ne_zero hq))`. Use the proof step `((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp))`. Rewrite `h1`, `h2` using `[Matrix.one_mul, Matrix.mul_one]`.
+
+Use `⟨glue sg.e L1 L2, glue sg.e U1 U2, isLo_glue sg.e hL1 hL2, isUp_glue sg.e hU1 hU2, mat_eq sg.e ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[glue_map_fst, h1, Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst, mm1' Zd p sg hR g hM hge hgq]`. Rewrite using `[glue_map_snd, h2, Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd, mm2' Zd p sg hR g hM hge hgq]`.
+-/
 theorem target_fact (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) :
     ∃ Gl Gu : MatP D p, IsLo Gl ∧ IsUp Gu ∧
       glue sg.e ((sg.q : (D.s.atP p).Fp)⁻¹ • (Matrix.diagonal (cf Zd p) *

@@ -25,6 +25,9 @@ def pt (K : Type) [CommRing K] {B A : Type} [CommRing B] [CommRing A] [Algebra K
     congr 2
     exact φ.comp_algebraMap)
 
+/- English proof (translation)
+Establish `hn` using `congr(($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ.toRingHom))).hom b)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hn`. Conclude with `hn.symm`.
+-/
 theorem pt_sharp (K : Type) [CommRing K] {B A : Type} [CommRing B] [CommRing A] [Algebra K B] [Algebra K A]
     (φ : B →ₐ[K] A) (b : B) :
     (pt K φ).left.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom b) =
@@ -33,12 +36,20 @@ theorem pt_sharp (K : Type) [CommRing K] {B A : Type} [CommRing B] [CommRing A] 
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hn
   exact hn.symm
 
+/- English proof (translation)
+Introduce `x y h`. Use `congrArg (Scheme.ΓSpecIso R).hom.hom h` as an intermediate fact. Rewrite `this` using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, CommRingCat.id_apply]`. Then use the resulting hypothesis.
+-/
 theorem specInv_injective (R : CommRingCat) : Function.Injective (Scheme.ΓSpecIso R).inv.hom := by
   intro x y h
   have := congrArg (Scheme.ΓSpecIso R).hom.hom h
   rwa [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply,
     CommRingCat.id_apply] at this
 
+/- English proof (translation)
+Set `e : ((Spec (CommRingCat.of B)).asOver (Sp K) ⊗ (Spec (CommRingCat.of D)).asOver (Sp K)).left ≅ Spec (CommRingCat.of (B ⊗[K] D))` to `pullbackSpecIso' K B D`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of (B ⊗[K] D))).hom.hom.comp e.inv.appTop.hom, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.hom.appTop.hom ((Scheme.ΓSpecIso _).inv.hom ((Scheme.ΓSpecIso _).hom.hom (e.inv.appTop.hom x))) = x`. Rewrite using `[← CommRingCat.comp_apply (Scheme.ΓSpecIso _).hom, Iso.hom_inv_id, CommRingCat.id_apply]`. Express the relevant statement in the definitionally equal form `(e.hom ≫ e.inv).appTop.hom x = x`.
+
+Rewrite using `[e.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 theorem secMap_surj (K : Type) [CommRing K] (B D : Type) [CommRing B] [CommRing D] [Algebra K B] [Algebra K D] :
     ∃ Ψ : Γ(((Spec (CommRingCat.of B)).asOver (Sp K) ⊗ (Spec (CommRingCat.of D)).asOver (Sp K)).left, ⊤) →+*
       B ⊗[K] D, ∀ x, GlobalTheory.CharExists.secMap K B D (Ψ x) = x := by
@@ -50,6 +61,9 @@ theorem secMap_surj (K : Type) [CommRing K] (B D : Type) [CommRing B] [CommRing 
   change (e.hom ≫ e.inv).appTop.hom x = x
   rw [e.hom_inv_id]; rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b d => rw [GlobalTheory.CharExists.secMap_lift, hf, hh, Algebra.TensorProduct.lift_tmul, map_mul]`.
+-/
 theorem key (K : Type) [CommRing K] (B A : Type) [CommRing B] [CommRing A] [Algebra K B] [Algebra K A]
     (Y : Over (Sp K)) (f h : Y ⟶ (Spec (CommRingCat.of B)).asOver (Sp K)) (φ ψ : B →ₐ[K] A)
     (j : A →+* Γ(Y.left, ⊤))
@@ -63,6 +77,9 @@ theorem key (K : Type) [CommRing K] (B A : Type) [CommRing B] [CommRing A] [Alge
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul b d => rw [GlobalTheory.CharExists.secMap_lift, hf, hh, Algebra.TensorProduct.lift_tmul, map_mul]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.comp_apply, Bialgebra.comulAlgHom_apply]`. Take `⟨S, hS⟩` from `TensorProduct.exists_finset (R := K) (Coalgebra.comul (R := K) b)`. Rewrite using `[GlobalTheory.CharExists.mulsharp K B Y f h b S (fun i => i.1) (fun i => i.2) hS, hS, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_mul, hf, hh]`.
+-/
 theorem mulpt (K : Type) [CommRing K] (B A : Type) [CommRing B] [HopfAlgebra K B] [CommRing A] [Algebra K A]
     (Y : Over (Sp K)) (f h : Y ⟶ (Spec (CommRingCat.of B)).asOver (Sp K)) (φ ψ : B →ₐ[K] A)
     (j : A →+* Γ(Y.left, ⊤))
@@ -76,6 +93,9 @@ theorem mulpt (K : Type) [CommRing K] (B A : Type) [CommRing B] [HopfAlgebra K B
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Algebra.TensorProduct.lift_tmul, map_mul, hf, hh]
 
+/- English proof (translation)
+Use `Algebra.TensorProduct.ext' fun a b => ?_` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Bialgebra.comulAlgHom_apply, AlgHom.coe_coe]`. Establish `hab : a ⊗ₜ[K] Coalgebra.comul (R` using `K) b = (a ⊗ₜ[K] (1 : B ⊗[K] B)) * ((1 : B) ⊗ₜ[K] Coalgebra.comul (R := K) b) := by simp`. Rewrite using `[hab, map_mul]`. Simplify using `[Algebra.TensorProduct.one_def]`.
+-/
 theorem tensor_assoc_comul_placement_eq (K B : Type) [CommRing K] [CommRing B] [Bialgebra K B] :
     Algebra.TensorProduct.lift
       ((Algebra.TensorProduct.includeLeft : B ⊗[K] B →ₐ[K] (B ⊗[K] B) ⊗[K] B).comp
@@ -93,12 +113,50 @@ theorem tensor_assoc_comul_placement_eq (K B : Type) [CommRing K] [CommRing B] [
   rw [hab, map_mul]
   simp [Algebra.TensorProduct.one_def]
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem over_comp_appTop {S : Scheme.{0}} {X Y Z : Over S} (f : X ⟶ Y) (g : Y ⟶ Z) (v : Γ(Z.left, ⊤)) :
     (f ≫ g).left.appTop.hom v = f.left.appTop.hom (g.left.appTop.hom v) := by
   rw [Over.comp_left, Scheme.Hom.comp_appTop]; rfl
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `K _ _ N _ _ hf c hcoc hsym`. Take `⟨B, _, _, hcc, hfin, e, he⟩` from `GlobalTheory.CharExists.pres K N hf`. Take `⟨Ψ, hΨ⟩` from `secMap_surj K B B`. Take `⟨cG, hcG⟩ : ∃ cG : Γ(((Spec (CommRingCat.of B)).asOver (Sp K) ⊗ (Spec (CommRingCat.of B)).asOver (Sp K)).left, ⊤)ˣ, cG = pullTop (e.hom ⊗ₘ e.hom).left c` from `⟨_, rfl⟩`. Establish `hcB : GlobalTheory.CharExists.secMap K B B (Ψ cG) = cG` using `hΨ _`.
+
+Establish `hcBu : IsUnit (Ψ cG)` using `cG.isUnit.map Ψ`. Establish `hpull : ∀ (T : Over (Sp K)) (x y : T ⟶ (Spec (CommRingCat.of B)).asOver (Sp K)), pullTop (lift (x ≫ e.hom) (y ≫ e.hom)).left c = pullTop (lift x y).left cG`. Introduce `T x y`. Establish `: lift (x ≫ e.hom) (y ≫ e.hom) = lift x y ≫ (e.hom ⊗ₘ e.hom)`. Rewrite using `[lift_map]`.
+
+Rewrite using `[this, Over.comp_left, GlobalTheory.CharExists.pullTop_comp, hcG]`. Establish `hmul : ∀ (T : Over (Sp K)) (x y : T ⟶ (Spec (CommRingCat.of B)).asOver (Sp K)), (x ≫ e.hom) * (y ≫ e.hom) = (x * y) ≫ e.hom`. Introduce `T x y`. Rewrite using `[Hom.mul_def, Hom.mul_def, Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`. Set `iL : B →ₐ[K] B ⊗[K] B` to `Algebra.TensorProduct.includeLeft`.
+
+Set `iR : B →ₐ[K] B ⊗[K] B` to `Algebra.TensorProduct.includeRight`. Establish `hsymB : Algebra.TensorProduct.comm K B B (Ψ cG) = Ψ cG`. Establish `h` using `congrArg Units.val (hsym _ (pt K iL ≫ e.hom) (pt K iR ≫ e.hom))`. Rewrite `h` using `[hpull, hpull]`. Simplify using `only [pullTop, Units.coe_map, MonoidHom.coe_coe] at h`.
+
+Rewrite `h` using `[← hcB, key K B _ _ _ _ iL iR _ (pt_sharp K iL) (pt_sharp K iR), key K B _ _ _ _ iR iL _ (pt_sharp K iR) (pt_sharp K iL)]`. Establish `h'` using `specInv_injective _ h`. Establish `e1 : Algebra.TensorProduct.lift iL iR (fun _ _ => Commute.all _ _) = AlgHom.id K (B ⊗[K] B)` using `Algebra.TensorProduct.ext' fun a b => by simp [iL, iR]`. Establish `e2 : Algebra.TensorProduct.lift iR iL (fun _ _ => Commute.all _ _) = (Algebra.TensorProduct.comm K B B).toAlgHom` using `Algebra.TensorProduct.ext' fun a b => by simp [iL, iR]`. Rewrite `h'` using `[e1, e2]`.
+
+Conclude with `h'.symm`. Set `ι₁ : B →ₐ[K] (B ⊗[K] B) ⊗[K] B` to `Algebra.TensorProduct.includeLeft.comp iL`. Set `ι₂ : B →ₐ[K] (B ⊗[K] B) ⊗[K] B` to `Algebra.TensorProduct.includeLeft.comp iR`. Set `ι₃ : B →ₐ[K] (B ⊗[K] B) ⊗[K] B` to `Algebra.TensorProduct.includeRight`. Establish `hcocB : Ψ cG ⊗ₜ[K] (1 : B) * Algebra.TensorProduct.map (Bialgebra.comulAlgHom K B) (AlgHom.id K B) (Ψ cG) = (Algebra.TensorProduct.assoc K K K B B B).symm ((1 : B) ⊗ₜ[K] Ψ cG * Algebra.TensorProduct.map (AlgHom.id K B) (Bialgebra.comulAlgHom K B) (Ψ cG))`.
+
+Establish `h` using `congrArg Units.val (hcoc _ (pt K ι₁ ≫ e.hom) (pt K ι₂ ≫ e.hom) (pt K ι₃ ≫ e.hom))`. Simplify using `only [hmul, hpull] at h`. Simplify using `only [Units.val_mul, pullTop, Units.coe_map, MonoidHom.coe_coe] at h`. Establish `k₁` using `key K B _ _ (pt K ι₁) (pt K ι₂) ι₁ ι₂ _ (pt_sharp K ι₁) (pt_sharp K ι₂) (Ψ cG)`. Establish `k₂` using `key K B _ _ (pt K ι₁ * pt K ι₂) (pt K ι₃) _ ι₃ _ (mulpt K B _ _ (pt K ι₁) (pt K ι₂) ι₁ ι₂ _ (pt_sharp K ι₁) (pt_sharp K ι₂)) (pt_sharp K ι₃) (Ψ cG)`.
+
+Establish `k₃` using `key K B _ _ (pt K ι₂) (pt K ι₃) ι₂ ι₃ _ (pt_sharp K ι₂) (pt_sharp K ι₃) (Ψ cG)`. Establish `k₄` using `key K B _ _ (pt K ι₁) (pt K ι₂ * pt K ι₃) ι₁ _ _ (pt_sharp K ι₁) (mulpt K B _ _ (pt K ι₂) (pt K ι₃) ι₂ ι₃ _ (pt_sharp K ι₂) (pt_sharp K ι₃)) (Ψ cG)`. Rewrite `k₁`, `k₂`, `k₃`, `k₄` using `[hcB]`. Simplify using `only [k₁, k₂, k₃, k₄] at h`. Establish `h'` using `specInv_injective _ (((map_mul _ _ _).trans h).trans (map_mul _ _ _).symm)`.
+
+Establish `E1 : Algebra.TensorProduct.lift ι₁ ι₂ (fun _ _ => Commute.all _ _) = (Algebra.TensorProduct.includeLeft : B ⊗[K] B →ₐ[K] (B ⊗[K] B) ⊗[K] B)` using `Algebra.TensorProduct.ext' fun a b => by simp [ι₁, ι₂, iL, iR]`. Establish `E3 : Algebra.TensorProduct.lift ι₂ ι₃ (fun _ _ => Commute.all _ _) = (Algebra.TensorProduct.assoc K K K B B B).symm.toAlgHom.comp (Algebra.TensorProduct.includeRight : B ⊗[K] B →ₐ[K] B ⊗[K] (B ⊗[K] B))` using `Algebra.TensorProduct.ext' fun a b => by simp [ι₂, ι₃, iL, iR]`. Establish `E2 : Algebra.TensorProduct.lift ((Algebra.TensorProduct.lift ι₁ ι₂ (fun _ _ => Commute.all _ _)).comp (Bialgebra.comulAlgHom K B)) ι₃ (fun _ _ => Commute.all _ _) = Algebra.TensorProduct.map (Bialgebra.comulAlgHom K B) (AlgHom.id K B)`. Rewrite using `[E1]`. Conclude with `Algebra.TensorProduct.ext' fun a b => by simp [ι₃]`.
+
+Establish `E4 : Algebra.TensorProduct.lift ι₁ ((Algebra.TensorProduct.lift ι₂ ι₃ (fun _ _ => Commute.all _ _)).comp (Bialgebra.comulAlgHom K B)) (fun _ _ => Commute.all _ _) = (Algebra.TensorProduct.assoc K K K B B B).symm.toAlgHom.comp (Algebra.TensorProduct.map (AlgHom.id K B) (Bialgebra. …`. Rewrite using `[E3]`. Conclude with `tensor_assoc_comul_placement_eq K B`. Rewrite `h'` using `[E2, E4, E1, E3]`. Simplify `h'` using `[map_mul]`.
+
+Take `⟨u₀, hu₀, hcu⟩` from `(GlobalTheory.T.exists_twisted_groupLike') K B (Ψ cG) hcBu hcocB hsymB`. Establish `hu` using `(GlobalTheory.T.isUnit_of_isUnit_mul_comul_eq_tmul) K B (Ψ cG) hcBu u₀ hu₀ hcu`. Take `⟨w, hw⟩ : ∃ w : Γ(((Spec (CommRingCat.of B)).asOver (Sp K)).left, ⊤)ˣ, w = Units.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom.toMonoidHom hu.unit` from `⟨_, rfl⟩`. Establish `hcu' : Ψ cG * Coalgebra.comul (R` using `K) (hu.unit : B) = (hu.unit : B) ⊗ₜ[K] (hu.unit : B) := by`. Rewrite using `[IsUnit.unit_spec]`.
+
+Conclude with `hcu`. Use `⟨pullTop e.inv.left w, fun T x y => ?_⟩` and prove the remaining obligations. Establish `hc : pullTop (lift x y).left c = pullTop (lift (x ≫ e.inv) (y ≫ e.inv)).left cG`. Establish `h` using `hpull T (x ≫ e.inv) (y ≫ e.inv)`. Simplify using `only [Category.assoc, e.inv_hom_id, Category.comp_id] at h`.
+
+Conclude with `h`. Establish `hxy : (x * y) ≫ e.inv = (x ≫ e.inv) * (y ≫ e.inv)`. Establish `h` using `hmul T (x ≫ e.inv) (y ≫ e.inv)`. Simplify using `only [Category.assoc, e.inv_hom_id, Category.comp_id] at h`. Simplify using `only [h, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+
+Establish `hval : ∀ z : T ⟶ N, ((pullTop z.left (pullTop e.inv.left w) : Γ(T.left, ⊤)ˣ) : Γ(T.left, ⊤)) = (z ≫ e.inv).left.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (hu.unit : B))`. Introduce `z`. Rewrite using `[hw]`. Conclude with `(over_comp_appTop z e.inv _).symm`. Use `letI : Algebra K Γ(T.left, ⊤) := (T.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom).toAlgebra`.
+
+Set `sh : (T ⟶ (Spec (CommRingCat.of B)).asOver (Sp K)) → (B →ₐ[K] Γ(T.left, ⊤))` to `fun f => { toRingHom := f.left.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom commutes' := fun k => GlobalTheory.CharExists.algsharp K B T f k }`. Establish `kc` using `key K B _ T (x ≫ e.inv) (y ≫ e.inv) (sh (x ≫ e.inv)) (sh (y ≫ e.inv)) (RingHom.id _) (fun _ => rfl) (fun _ => rfl) (Ψ cG)`. Establish `km` using `mulpt K B _ T (x ≫ e.inv) (y ≫ e.inv) (sh (x ≫ e.inv)) (sh (y ≫ e.inv)) (RingHom.id _) (fun _ => rfl) (fun _ => rfl) (hu.unit : B)`. Rewrite `kc` using `[hcB]`. Establish `fin : (Algebra.TensorProduct.lift (sh (x ≫ e.inv)) (sh (y ≫ e.inv)) (fun _ _ => Commute.all _ _)) (Ψ cG) * ((Algebra.TensorProduct.lift (sh (x ≫ e.inv)) (sh (y ≫ e.inv)) (fun _ _ => Commute.all _ _)).comp (Bialgebra.comulAlgHom K B)) (hu.unit : B) = sh (x ≫ e.inv) (hu.unit : B) * …`.
+
+Rewrite using `[AlgHom.comp_apply, Bialgebra.comulAlgHom_apply, ← map_mul, hcu', Algebra.TensorProduct.lift_tmul]`. Simplify using `only [hc]`. Use `ext`. Simplify using `only [Units.val_mul, hval]`. Simplify using `only [hxy]`.
+
+Simplify using `only [pullTop, Units.coe_map, MonoidHom.coe_coe]`. Simplify using `only [kc, km, RingHom.id_apply]`. Conclude with `fin`.
+-/
 theorem exists_coboundary : ∀ (K : Type) [Field K] [IsAlgClosed K] (N : Over (Sp K)) [GrpObj N] [IsCommMonObj N], IsFinite N.hom → ∀ c : Γ((N ⊗ N).left, ⊤)ˣ, (∀ (T : Over (Sp K)) (x y z : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c * GlobalTheory.CharKer.pullTop (lift (x * y) z).left c = GlobalTheory.CharKer.pullTop (lift y z).left c * GlobalTheory.CharKer.pullTop (lift x (y * z)).left c) → (∀ (T : Over (Sp K)) (x y : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c = GlobalTheory.CharKer.pullTop (lift y x).left c) → ∃ u : Γ(N.left, ⊤)ˣ, ∀ (T : Over (Sp K)) (x y : T ⟶ N), GlobalTheory.CharKer.pullTop (lift x y).left c * GlobalTheory.CharKer.pullTop (x * y).left u = GlobalTheory.CharKer.pullTop x.left u * GlobalTheory.CharKer.pullTop y.left u := by
   intro K _ _ N _ _ hf c hcoc hsym
   obtain ⟨B, _, _, hcc, hfin, e, he⟩ := GlobalTheory.CharExists.pres K N hf

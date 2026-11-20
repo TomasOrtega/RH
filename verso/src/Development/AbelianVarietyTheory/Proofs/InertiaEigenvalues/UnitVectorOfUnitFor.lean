@@ -21,6 +21,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {W : LocWach PD LL O v n} {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
+/- English proof (translation)
+Take `⟨-, e₀, h₀, -, -⟩` from `E.one_e`. Take `⟨e, hj, hbij, hφ, hγ, hN⟩` from `hU e₀ h₀`. Use `⟨e, e₀, h₀, ?_, hj, hN, ?_, hφ, hγ, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (Submodule.map W.one.L.T.subtype) h₀`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, Set.image_singleton]`.
+
+Conclude with `h1.symm`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Conclude with `Submodule.mem_span_singleton.2 (hbij.2 z)`. Apply `W.EE_inj` to reduce the goal to its premises.
+
+Apply `hbij.1` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[algebraMap_smul, algebraMap_smul, ha, zero_smul]`.
+-/
 theorem unitVector_of_unitFor (E : EtTie W RA RW inclR φR gR πA)
     (hU : GlobalTheory.IndefiniteRowSideFullHecke.UnitDualParts.UnitFor E) :
     ∃ (e : W.DD W.one) (e₀ : ↥W.one.L.T), Submodule.span O {e₀} = ⊤ ∧
@@ -48,6 +55,9 @@ end Generic
 
 open Formalism.MainNotions.N Formalism.MainNotions.LocalSituation
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h`. Conclude with `unitVector_of_unitFor _ (unitPart l (D.loc l) (D.locA l) (HW l) (F l) K s LL h)`.
+-/
 theorem unitVector : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∃ (e : W.DD W.one) (e₀ : ↥W.one.L.T), Submodule.span ↥(OL LL) {e₀} = ⊤ ∧ W.one.L.T = Submodule.span ↥(OL LL) {(e₀ : W.one.V)} ∧ E.jD W.one e = (1 : RW LL) ⊗ₜ[↥(OL LL)] e₀ ∧ W.N W.one = Submodule.span (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) {e} ∧ Submodule.span W.EE {e} = (⊤ : Submodule W.EE (W.DD W.one)) ∧ W.φD W.one e = e ∧ (∀ g, W.γD W.one g e = e) ∧ ∀ a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)), a • e = 0 → a = 0 := by
   intro D HW F l _ K s LL h
   exact unitVector_of_unitFor _ (unitPart l (D.loc l) (D.locA l) (HW l) (F l) K s LL h)

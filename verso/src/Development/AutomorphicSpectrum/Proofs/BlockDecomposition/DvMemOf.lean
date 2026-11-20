@@ -28,6 +28,9 @@ def DFil.Ex {K : DCx.{w} R} (F : DFil K) (r : ℤ) (p : ℕ) : ℕ → Prop
 
 variable {K : DCx.{w} R} (F : DFil K)
 
+/- English proof (translation)
+Distinguish the cases in `h : a = p ∧ b = q`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[K.sgl_self]` and apply the resulting hypothesis. Rewrite using `[K.sgl_ne x (by omega)]`. Conclude with `zero_mem _`.
+-/
 theorem sgl_mem {r : ℤ} {p q : ℕ} {x : K.X p q} (hx : x ∈ F.L r p q) (a b : ℕ) : K.sgl p q x a b ∈ F.L r a b := by
   by_cases h : a = p ∧ b = q
   · obtain ⟨rfl, rfl⟩ := h
@@ -35,6 +38,11 @@ theorem sgl_mem {r : ℤ} {p q : ℕ} {x : K.X p q} (hx : x ∈ F.L r p q) (a b 
   · rw [K.sgl_ne x (by omega)]
     exact zero_mem _
 
+/- English proof (translation)
+Establish `h3 : K.Dh y e (q + 1) ∈ F.L r e (q + 1)`. Consider the cases of `e with`. Consider the case `zero => exact zero_mem _`. Consider the case `succ e => exact F.mem_h _ _ _ _ (h2 e rfl)`. Rewrite `h1` using `[K.D_apply]`.
+
+Establish `h4 : (-1 : ℤ) ^ e • K.dv e q (y e q) ∈ F.L r e (q + 1)` using `(Submodule.add_mem_iff_right _ h3).1 h1`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℤ e with h | h <;> rw [h] at h4 <;> simpa using h4`.
+-/
 theorem dv_mem_of {r : ℤ} {e q : ℕ} (y : ∀ p q, K.X p q) (h1 : K.D y e (q + 1) ∈ F.L r e (q + 1))
     (h2 : ∀ e', e = e' + 1 → y e' (q + 1) ∈ F.L r e' (q + 1)) : K.dv e q (y e q) ∈ F.L r e (q + 1) := by
   have h3 : K.Dh y e (q + 1) ∈ F.L r e (q + 1) := by
@@ -45,6 +53,33 @@ theorem dv_mem_of {r : ℤ} {e q : ℕ} (y : ∀ p q, K.X p q) (h1 : K.D y e (q 
   have h4 : (-1 : ℤ) ^ e • K.dv e q (y e q) ∈ F.L r e (q + 1) := (Submodule.add_mem_iff_right _ h3).1 h1
   rcases neg_one_pow_eq_or ℤ e with h | h <;> rw [h] at h4 <;> simpa using h4
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `_ _`. Use `⟨0, zero_mem _, fun _ _ _ => rfl, fun p q => ?_, fun p q h => absurd h (by omega)⟩` and prove the remaining obligations.
+
+Simplify using `using hyL p q`. Consider the case `succ e ih`. Introduce `hD hE`. Take `⟨w, hwT, hw0, hwL, hwL'⟩` from `ih (fun p q hp => hD p q (by omega)) (fun p q hp => hE p q (by omega))`. Establish `hyT : y - K.D w ∈ K.T (m + 1)` using `sub_mem hy (K.D_mem m w hwT)`.
+
+Establish `hDy : K.D (y - K.D w) = K.D y` using `by rw [map_sub, K.DD, sub_zero]`. Generalize the expression as in `hy' : y - K.D w = y' at hyT hDy hwL hwL'`. Distinguish the cases in `he : e ≤ m + 1`. Take `⟨q, hq⟩ : ∃ q, e + q = m + 1` from `⟨m + 1 - e, by omega⟩`. Establish `hx : K.dv e q (y' e q) ∈ F.L (r + 1) e (q + 1)` using `dv_mem_of F y' (by rw [hDy]; exact hD e (q + 1) (by omega)) (fun e' h => hwL' e' (q + 1) (by omega))`.
+
+Establish `hEx` using `hE e q (by omega) hq`. Consider the cases of `q with`. Consider the case `zero`. Establish `hx0 : y' e 0 ∈ F.L (r + 1) e 0` using `hEx _ (hwL e 0) hx`. Use `⟨w, hwT, fun p q h => hw0 p q (by omega), by rw [hy']; exact hwL, fun p q hp => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hy']`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hp with hp | rfl` into its components or cases. Conclude with `hwL' p q hp`. Distinguish the cases in `hq0 : q = 0`. Substitute `hq0` using the available equality.
+
+Conclude with `hx0`. Rewrite using `[hyT p q (by omega)]; exact zero_mem _`. Consider the case `succ q`. Take `⟨v, hv, hxv⟩` from `hEx _ (hwL e (q + 1)) hx`. Establish `hDu : K.D ((-1 : ℤ) ^ e • K.sgl e q v) = (-1 : ℤ) ^ e • K.sgl (e + 1) q (K.dh e q v) + K.sgl e (q + 1) (K.dv e q v)`.
+
+Rewrite using `[map_zsmul, K.D_sgl, smul_add, smul_smul, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hval : ∀ p q', (y - K.D (w + (-1 : ℤ) ^ e • K.sgl e q v)) p q' = y' p q' - (-1 : ℤ) ^ e • K.sgl (e + 1) q (K.dh e q v) p q' - K.sgl e (q + 1) (K.dv e q v) p q'`. Introduce `p q'`. Rewrite using `[map_add, hDu, ← sub_sub, hy']`.
+
+Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply]`. Normalize the expressions using the abelian group laws. Use `⟨w + (-1 : ℤ) ^ e • K.sgl e q v, add_mem hwT (?_), fun p q' h => ?_, fun p q' => ?_, fun p q' hp => ?_⟩` and prove the remaining obligations. Use `(K.T m).smul_of_tower_mem _ ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Conclude with `K.sgl_ne v (by omega)`. Simplify using `only [Pi.add_apply, Pi.smul_apply]`. Rewrite using `[hw0 p q' (by omega), K.sgl_ne v (Or.inl (by omega))]`. Simplify using the standard rewrite rules. Rewrite using `[hval]`.
+
+Conclude with `sub_mem (sub_mem (hwL p q') ((F.L r p q').smul_of_tower_mem _ (sgl_mem F (F.mem_h _ _ _ _ hv) p q'))) (sgl_mem F (F.mem_v _ _ _ _ hv) p q')`. Rewrite using `[hval]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hp with hp | rfl` into its components or cases. Rewrite using `[K.sgl_ne _ (Or.inl (by omega)), K.sgl_ne _ (Or.inl (by omega))]`. Simplify using `using hwL' p q' hp`.
+
+Rewrite using `[K.sgl_ne _ (Or.inl (by omega))]`. Distinguish the cases in `hq0 : q' = q + 1`. Substitute `hq0` using the available equality. Rewrite using `[K.sgl_self]`. Simplify using `using hxv`.
+
+Rewrite using `[K.sgl_ne _ (Or.inr hq0), hyT p q' (by omega)]`. Simplify using the standard rewrite rules. Use `⟨w, hwT, fun p q h => hw0 p q (by omega), by rw [hy']; exact hwL, fun p q hp => ?_⟩` and prove the remaining obligations. Rewrite using `[hy']`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hp with hp | rfl` into its components or cases.
+
+Conclude with `hwL' p q hp`. Rewrite using `[hyT p q (by omega)]; exact zero_mem _`.
+-/
 theorem kill (r : ℤ) (m : ℕ) (y : ∀ p q, K.X p q) (hy : y ∈ K.T (m + 1)) (hyL : ∀ p q, y p q ∈ F.L r p q) :
     ∀ e : ℕ, (∀ p q, p < e → K.D y p q ∈ F.L (r + 1) p q) → (∀ p q, p < e → p + q = m + 1 → F.Ex r p q) →
       ∃ w ∈ K.T m, (∀ p q, e ≤ p → w p q = 0) ∧ (∀ p q, (y - K.D w) p q ∈ F.L r p q) ∧
@@ -115,6 +150,15 @@ theorem kill (r : ℤ) (m : ℕ) (y : ∀ p q, K.X p q) (hy : y ∈ K.T (m + 1))
       · exact hwL' p q hp
       · rw [hyT p q (by omega)]; exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Use `⟨y0, hy0, hD, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, hTop]`. Discharge the goal by the elementary cases of `trivial`.
+
+Consider the case `succ r ih`. Take `⟨y, hyT, hDy, hyL⟩` from `ih (by omega)`. Establish `hPr : P ∈ F.L ((r : ℤ) + 1) (n + 1) (n + 1)` using `F.anti (by omega) _ _ hP`. Take `⟨w, hwT, -, hwL, hwL'⟩` from `kill F (r : ℤ) (2 * n) y hyT hyL (n + 2) (fun p q _ => by rw [hDy]; exact sgl_mem F hPr p q) (fun p q hp hq => hE r p q (by omega))`. Use `⟨y - K.D w, sub_mem hyT (K.D_mem _ w hwT), by rw [map_sub, K.DD, sub_zero, hDy], fun p q => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_succ]`. Distinguish the cases in `hp : p < n + 2`. Conclude with `hwL' p q hp`. Use `hV p q (by omega)` as an intermediate fact. Rewrite using `[Subsingleton.elim ((y - K.D w) p q) 0]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem stair_up (n : ℕ) (hTop : ∀ p q, F.L 0 p q = ⊤) (hV : ∀ p q, n + 1 < p → Subsingleton (K.X p q))
     (hE : ∀ (r : ℕ) p q, q ≠ r → F.Ex (r : ℤ) p q) (P : K.X (n + 1) (n + 1)) (hP : P ∈ F.L ((n : ℤ) + 1) (n + 1) (n + 1))
     (y0 : ∀ p q, K.X p q) (hy0 : y0 ∈ K.T (2 * n + 1)) (hD : K.D y0 = K.sgl (n + 1) (n + 1) P) (r : ℕ) (hr : r ≤ n) :
@@ -138,6 +182,33 @@ theorem stair_up (n : ℕ) (hTop : ∀ p q, F.L 0 p q = ⊤) (hV : ∀ p q, n + 
       rw [Subsingleton.elim ((y - K.D w) p q) 0]
       exact zero_mem _
 
+/- English proof (translation)
+Take `⟨y, hyT, hDy, hyL⟩` from `stair_up F n hTop hV hE P hP y0 hy0 hD n le_rfl`. Take `⟨w, hwT, -, hwL, hwL'⟩` from `kill F (n : ℤ) (2 * n) y hyT hyL (n + 1) (fun p q _ => by rw [hDy]; exact sgl_mem F hP p q) (fun p q hp hq => hE n p q (by omega))`. Establish `hy1T : y - K.D w ∈ K.T (2 * n + 1)` using `sub_mem hyT (K.D_mem _ w hwT)`. Establish `hDy1 : K.D (y - K.D w) = K.sgl (n + 1) (n + 1) P` using `by rw [map_sub, K.DD, sub_zero, hDy]`. Generalize the expression as in `y - K.D w = y1 at hy1T hDy1 hwL hwL'`.
+
+Establish `htT : y1 - K.sgl (n + 1) n (y1 (n + 1) n) ∈ K.T (2 * n + 1)` using `sub_mem hy1T fun a b hab => K.sgl_ne _ (by omega)`. Establish `hDt : K.D (y1 - K.sgl (n + 1) n (y1 (n + 1) n)) = K.sgl (n + 1) (n + 1) (P - (-1 : ℤ) ^ (n + 1) • K.dv (n + 1) n (y1 (n + 1) n))`. Use `hV (n + 2) n (by omega)` as an intermediate fact. Rewrite using `[map_sub, K.D_sgl, hDy1, Subsingleton.elim (K.dh (n + 1) n (y1 (n + 1) n)) 0, map_zero, zero_add, map_sub, map_zsmul]`. Establish `htL : ∀ p q, (y1 - K.sgl (n + 1) n (y1 (n + 1) n)) p q ∈ F.L ((n : ℤ) + 1) p q`.
+
+Introduce `p q`. Rewrite using `[Pi.sub_apply, Pi.sub_apply]`. Distinguish the cases in `hp : p < n + 1`. Rewrite using `[K.sgl_ne _ (Or.inl (by omega)), sub_zero]`. Conclude with `hwL' p q hp`.
+
+Distinguish the cases in `hp' : p = n + 1`. Substitute `hp'` using the available equality. Distinguish the cases in `hq : q = n`. Substitute `hq` using the available equality. Rewrite using `[K.sgl_self, sub_self]`.
+
+Conclude with `zero_mem _`. Rewrite using `[K.sgl_ne _ (Or.inr hq), hy1T _ _ (by omega), sub_zero]`. Conclude with `zero_mem _`. Use `hV p q (by omega)` as an intermediate fact. Rewrite using `[Subsingleton.elim (y1 p q - K.sgl (n + 1) n (y1 (n + 1) n) p q) 0]`.
+
+Conclude with `zero_mem _`. Establish `ecast : ((n + 1 : ℕ) : ℤ) = (n : ℤ) + 1` using `by push_cast; rfl`. Take `⟨w2, hw2T, hw20, hw2L, hw2L'⟩` from `kill F ((n : ℤ) + 1) (2 * n) _ htT htL n (fun p q hp => by`. Rewrite using `[hDt, K.sgl_ne _ (Or.inl (by omega))]`. Conclude with `zero_mem _)`.
+
+Use the proof step `(fun p q hp hq => by`. Use `hE (n + 1) p q (by omega)` as an intermediate fact. Rewrite using `[ecast] at this)` and apply the resulting hypothesis. Establish `hDt' : K.D ((y1 - K.sgl (n + 1) n (y1 (n + 1) n)) - K.D w2) = K.sgl (n + 1) (n + 1) (P - (-1 : ℤ) ^ (n + 1) • K.dv (n + 1) n (y1 (n + 1) n))`. Rewrite using `[map_sub, K.DD, sub_zero, hDt]`.
+
+Establish `ht0 : ((y1 - K.sgl (n + 1) n (y1 (n + 1) n)) - K.D w2) (n + 1) n = 0`. Establish `h1 : K.D w2 (n + 1) n = 0`. Rewrite using `[K.D_apply]`. Establish `h2 : K.Dv w2 (n + 1) n = 0`. Consider the cases of `n with`.
+
+Consider the case `zero => rfl`. Consider the case `succ n => show K.dv (n + 1 + 1) n (w2 (n + 1 + 1) n) = 0`. Rewrite using `[hw20 _ _ (by omega), map_zero]`. Establish `h3 : K.Dh w2 (n + 1) n = 0` using `by show K.dh n n (w2 n n) = 0`. Rewrite using `[hw20 _ _ le_rfl, map_zero]`.
+
+Rewrite using `[h2, h3]`. Simplify using the standard rewrite rules. Use `show (y1 (n + 1) n - K.sgl (n + 1) n (y1 (n + 1) n) (n + 1) n) - K.D w2 (n + 1) n = 0`. Rewrite using `[h1, K.sgl_self]`. Simplify using the standard rewrite rules.
+
+Generalize the expression as in `(y1 - K.sgl (n + 1) n (y1 (n + 1) n)) - K.D w2 = t at hDt' ht0 hw2L hw2L'`. Use `⟨t n (n + 1), y1 (n + 1) n, hw2L _ _, ?_, hwL _ _, ?_⟩` and prove the remaining obligations. Use `dv_mem_of F t ?_ (fun e' h => hw2L' e' _ (by omega))` and prove the remaining obligations. Rewrite using `[hDt', K.sgl_ne _ (Or.inl (by omega))]`. Conclude with `zero_mem _`.
+
+Establish `h` using `congrFun (congrFun hDt' (n + 1)) (n + 1)`. Rewrite `h` using `[K.sgl_self, K.D_apply]`. Establish `h2 : K.Dv t (n + 1) (n + 1) = 0` using `by show K.dv (n + 1) n (t (n + 1) n) = 0`. Rewrite using `[ht0, map_zero]`. Rewrite `h` using `[h2, smul_zero, add_zero]`.
+
+Establish `h3 : K.Dh t (n + 1) (n + 1) = K.dh n (n + 1) (t n (n + 1))` using `rfl`. Rewrite using `[← h3, h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem stair (n : ℕ) (hTop : ∀ p q, F.L 0 p q = ⊤) (hV : ∀ p q, n + 1 < p → Subsingleton (K.X p q))
     (hE : ∀ (r : ℕ) p q, q ≠ r → F.Ex (r : ℤ) p q) (P : K.X (n + 1) (n + 1)) (hP : P ∈ F.L ((n : ℤ) + 1) (n + 1) (n + 1))
     (y0 : ∀ p q, K.X p q) (hy0 : y0 ∈ K.T (2 * n + 1)) (hD : K.D y0 = K.sgl (n + 1) (n + 1) P) :

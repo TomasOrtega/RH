@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RatDenseEnd
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨MvPolynomial.C (MvPolynomial.C a), fun g => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨U, hU⟩` from `hp`. Take `⟨W, hW⟩` from `hq`.
+
+Conclude with `⟨U + W, fun g => by rw [map_add, map_add, hU, hW]⟩`. Consider the case `mul_X p v hp`. Take `⟨U, hU⟩` from `hp`. Use `⟨U * ∑ b : Fin n, MvPolynomial.C (MvPolynomial.X (v.1, v.2.1, b)) * MvPolynomial.X (v.1, (b, v.2.2)), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hU]`.
+
+Use `congr 1`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_X]`.
+-/
 theorem blockAct_univ {K : Type} [Field K] {ι : Type} {n : ℕ} (F : MvPolynomial (ι × Fin n × Fin n) K) :
     ∃ U : MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (ι × Fin n × Fin n) K),
       ∀ g : ι → Matrix (Fin n) (Fin n) K,
@@ -30,6 +37,11 @@ theorem blockAct_univ {K : Type} [Field K] {ι : Type} {n : ℕ} (F : MvPolynomi
     congr 1
     simp [Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Use `conv_lhs => rw [U.as_sum]`. Simplify using `only [map_sum, MvPolynomial.map_monomial, map_mul, MvPolynomial.eval_C]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : ∀ c : K, MvPolynomial.monomial m c = c • MvPolynomial.monomial m (1 : K)`. Introduce `c`.
+
+Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, smul_eq_mul]`.
+-/
 theorem lin_map_eval {K σ τ : Type} [Field K] (ℓ : MvPolynomial σ K →ₗ[K] K)
     (U : MvPolynomial σ (MvPolynomial τ K)) (p : τ → K) :
     ℓ (MvPolynomial.map (MvPolynomial.eval p) U) =
@@ -41,6 +53,15 @@ theorem lin_map_eval {K σ τ : Type} [Field K] (ℓ : MvPolynomial σ K →ₗ[
     intro c; rw [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]
   rw [e, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `set A := 1 + X with hA`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hX`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hu`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hu`. Establish `e1 : (1 : Matrix (Fin n) (Fin n) ℂ) - (X - 1) * A⁻¹ = (2 : ℂ) • A⁻¹`.
+
+Establish `: (1 : Matrix (Fin n) (Fin n) ℂ) - (X - 1) * A⁻¹ = (A - (X - 1)) * A⁻¹` using `by conv_rhs => rw [Matrix.sub_mul, h1]`. Rewrite using `[this, show A - (X - 1) = 1 + 1 by rw [hA]; abel, Matrix.add_mul, Matrix.one_mul, two_smul]`. Establish `hdi : A⁻¹.det ≠ 0`. Conclude with `(Matrix.isUnit_nonsing_inv_det A hu).ne_zero`. Use `⟨(X - 1) * A⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ two_ne_zero) hdi`. Establish `hinv : ((2 : ℂ) • A⁻¹)⁻¹ = (2 : ℂ)⁻¹ • A`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, h1, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+
+Rewrite using `[e1, hinv, Matrix.mul_smul, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one, hA]`. Rewrite using `[show (1 + X + (X - 1) : Matrix (Fin n) (Fin n) ℂ) = (2 : ℂ) • X by rw [two_smul]; abel, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+-/
 theorem cayleyInv {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : (1 + X).det ≠ 0) :
     ∃ Y : Matrix (Fin n) (Fin n) ℂ, (1 - Y).det ≠ 0 ∧ (1 + Y) * (1 - Y)⁻¹ = X := by
   set A := 1 + X with hA
@@ -61,6 +82,13 @@ theorem cayleyInv {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : (1 + X).det �
     rw [show (1 + X + (X - 1) : Matrix (Fin n) (Fin n) ℂ) = (2 : ℂ) • X by rw [two_smul]; abel, smul_smul,
       inv_mul_cancel₀ two_ne_zero, one_smul]
 
+/- English proof (translation)
+Use `set ι := Formalism.L2.Theta.incA D with hι`. Establish `key : ∀ x : D.host.E, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig (ι x) = ι (D.sp.cm.sig x)` using `fun x => by`. Simplify using `[hι, Formalism.L2.Theta.incA, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]`. Establish `hc : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig) ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map ι) = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host …`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, key]`. Establish `h' : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = V.gram` using `h`. Establish `hR : Formalism.UG.bc ι γE ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig V.gram`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map ι) * V.gram.map ι * (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map ι = V.gram.map ι`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, h']`.
+
+Conclude with `⟨⟨⟨_, hR⟩, ⟨γE, h, rfl⟩⟩, rfl⟩`.
+-/
 theorem ratOfUJ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (γE : GL (Fin V.rank) D.host.E)
     (h : γE ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram) : ∃ γ : GQ V, Bridge.IsRatMat V γ γE := by
   set ι := Formalism.L2.Theta.incA D with hι
@@ -87,6 +115,11 @@ namespace GlobalTheory.RatDenseEnd
 def pt {ι : Type} {n : ℕ} (Y : ι → Matrix (Fin n) (Fin n) ℂ) : ι × Fin n × Fin n → ℂ :=
   fun p => Y p.1 p.2.1 p.2.2
 
+/- English proof (translation)
+Establish `h1 : A.adjugate.map f = (A.map f).adjugate`. Use `RingHom.map_adjugate f A` as an intermediate fact. Simplify `this` using `[RingHom.mapMatrix_apply]`. Establish `h2 : (A.map f).det = f A.det`. Use `RingHom.map_det f A` as an intermediate fact.
+
+Simplify `this.symm` using `[RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.inv_def, Matrix.inv_def, Matrix.map_smul' _ _ _ (map_mul f), h1, h2, Ring.inverse_eq_inv', Ring.inverse_eq_inv', map_inv₀]`.
+-/
 theorem map_inv_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (A : Matrix (Fin n) (Fin n) K) :
     (A⁻¹).map f = (A.map f)⁻¹ := by
   have h1 : A.adjugate.map f = (A.map f).adjugate := by
@@ -96,6 +129,11 @@ theorem map_inv_hom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (
   rw [Matrix.inv_def, Matrix.inv_def, Matrix.map_smul' _ _ _ (map_mul f), h1, h2, Ring.inverse_eq_inv',
     Ring.inverse_eq_inv', map_inv₀]
 
+/- English proof (translation)
+Introduce `h`. Establish `hall : ∀ a : D.host.E, a ∈ (algebraMap D.host.F D.host.E).range` using `fun a => (D.sp.cm.fixed a).1 (by have := congrArg (fun φ => φ a) h; simpa [CMData.sig, starRingEnd_apply] using this)`. Establish `hbot : (⊥ : Subalgebra D.host.F D.host.E) = ⊤`. Use extensionality with `a`. Simplify using `only [Algebra.mem_top, iff_true, Algebra.mem_bot]`.
+
+Take `⟨b, hb⟩` from `hall a`. Conclude with `⟨b, hb⟩`. Use `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 hbot` as an intermediate fact. Rewrite `this` using `[D.sp.cm.deg2]`. Evaluate the numerical expressions using `at this`.
+-/
 theorem sig_ne_id (D : D7) : D.sp.cm.sig ≠ AlgHom.id D.host.F D.host.E := by
   intro h
   have hall : ∀ a : D.host.E, a ∈ (algebraMap D.host.F D.host.E).range := fun a =>
@@ -109,6 +147,49 @@ theorem sig_ne_id (D : D7) : D.sp.cm.sig ≠ AlgHom.id D.host.F D.host.E := by
   rw [D.sp.cm.deg2] at this
   norm_num at this
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty D.what₂.Tau with hT | hT` into its components or cases. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `hQ 1 (one_mem _)`. Establish `hx : x = fun p => Formalism.BasicNotions.TH.tauE D p.1 (((1 : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)`.
+
+Use function extensionality and compare the values at `fun p => isEmptyElim p.1`. Rewrite using `[map_zero, hx]`. Conclude with `h1`. Set `Vv : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) (MvPolynomial (D.what₂.Tau × Fin V.rank × Fin V.rank) ℂ)` to `fun σ => Matrix.of fun i j => MvPolynomial.X (σ, i, j)`. Set `P : D.what₂.Tau × Fin V.rank × Fin V.rank → MvPolynomial (D.what₂.Tau × Fin V.rank × Fin V.rank) ℂ` to `fun p => ((1 + Vv p.1) * (1 - Vv p.1).adjugate) p.2.1 p.2.2`.
+
+Set `Dd : D.what₂.Tau × Fin V.rank × Fin V.rank → MvPolynomial (D.what₂.Tau × Fin V.rank × Fin V.rank) ℂ` to `fun p => (1 - Vv p.1).det`. Take `⟨G, M, hGM⟩` from `GlobalTheory.clearDenominators Q P Dd`. Establish `evV : ∀ (y : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) σ, (Vv σ).map (MvPolynomial.eval (pt y)) = y σ`. Introduce `y σ`. Use extensionality with `i j`.
+
+Simplify using `[Vv, pt]`. Establish `evDet : ∀ (y : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) σ, MvPolynomial.eval (pt y) ((1 - Vv σ).det) = (1 - y σ).det`. Introduce `y σ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), evV]`. Establish `evDet' : ∀ (y : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) σ, MvPolynomial.eval (pt y) ((1 + Vv σ).det) = (1 + y σ).det`.
+
+Introduce `y σ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), evV]`. Establish `evP : ∀ (y : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ σ, (1 - y σ).det ≠ 0) → (fun p => MvPolynomial.eval (pt y) (P p) / MvPolynomial.eval (pt y) (Dd p)) = pt (fun σ => (1 + y σ) * (1 - y σ)⁻¹)`. Introduce `y hy`. Use function extensionality and compare the values at `p`.
+
+Establish `hm : ((1 + Vv p.1) * (1 - Vv p.1).adjugate).map (MvPolynomial.eval (pt y)) = (1 + y p.1) * (1 - y p.1).adjugate`. Rewrite using `[Matrix.map_mul, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, RingHom.map_adjugate, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), evV]`. Establish `hP : MvPolynomial.eval (pt y) (P p) = ((1 + y p.1) * (1 - y p.1).adjugate) p.2.1 p.2.2`. Rewrite using `[← hm]`. Both sides reduce to the same expression.
+
+Rewrite using `[hP, show MvPolynomial.eval (pt y) (Dd p) = (1 - y p.1).det from evDet y p.1]`. Simplify using `only [pt, Matrix.inv_def, Matrix.mul_smul, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Rewrite using `[div_eq_inv_mul]`. Establish `hQ' : G * ∏ σ, (1 - Vv σ).det = 0`. Use `GlobalTheory.T.mvPolynomial_eq_zero_of_vanish_skewHermitian D.host.F D.host.E D.sp.cm.sig (fun x => star_star x) (sig_ne_id D) D.sp.cm.deg2 (Formalism.BasicNotions.TH.tauE D) ?_ V.rank V.gram (GlobalTheory.ParIndex.gram_herm D V) (GlobalTheory.ParIndex.gram_det_ne D V) _ ?_` and prove the remaining obligations.
+
+Introduce `τ τ' h`. Conclude with `(GlobalTheory.CMTypePlaces.places_bijective D).1 (by simp only at h ⊢; rw [h])`. Introduce `S hS`. Set `y : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun τ => S.map (Formalism.BasicNotions.TH.tauE D τ)`. Establish `hpt : (fun p : D.what₂.Tau × Fin V.rank × Fin V.rank => Formalism.BasicNotions.TH.tauE D p.1 (S p.2.1 p.2.2)) = pt y` using `rfl`.
+
+Rewrite using `[hpt]`. Establish `hdS : ∀ τ, (1 - y τ).det = Formalism.BasicNotions.TH.tauE D τ (1 - S).det`. Introduce `τ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[map_mul, map_prod]`.
+
+Simplify using `only [evDet, hdS]`. Distinguish the cases in `h0 : (1 - S).det = 0`. Take `⟨τ0⟩` from `hT`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ0) (by rw [h0, map_zero]), mul_zero]`. Establish `hJ` using `GlobalTheory.ParIndex.gram_det_ne D V`.
+
+Take `⟨γ, hγ, hγv⟩ : ∃ γ : GL (Fin V.rank) D.host.E, γ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram ∧ (γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = (1 + S) * (1 - S)⁻¹` from `by first`. Consider the case `exact GlobalTheory.T.cayleyTransform_skew_mem_unitaryGroup (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram S hS h0`. Consider the case `exact GlobalTheory.T.cayleyTransform_skew_mem_unitaryGroup (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram S hS hJ h0`. Consider the case `exact GlobalTheory.T.cayleyTransform_skew_mem_unitaryGroup (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram S hJ hS h0`. Establish `hne : ∀ τ, (1 - y τ).det ≠ 0` using `fun τ => by`.
+
+Rewrite using `[hdS]`. Conclude with `(map_ne_zero _).2 h0`. Establish `hDy : ∀ p, MvPolynomial.eval (pt y) (Dd p) ≠ 0` using `fun p => by`. Rewrite using `[show MvPolynomial.eval (pt y) (Dd p) = _ from evDet _ p.1]`. Conclude with `hne p.1`.
+
+Take `⟨-, hG⟩` from `hGM _ hDy`. Rewrite using `[hG, evP _ hne]`. Establish `hc : pt (fun σ => (1 + y σ) * (1 - y σ)⁻¹) = fun p => Formalism.BasicNotions.TH.tauE D p.1 ((γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)`. Use function extensionality and compare the values at `p`. Establish `e : (1 + y p.1) * (1 - y p.1)⁻¹ = ((γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E)).map (Formalism.BasicNotions.TH.tauE D p.1)`.
+
+Rewrite using `[hγv, Matrix.map_mul, map_inv_hom, Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [pt, e, Matrix.map_apply]`. Rewrite using `[hc, hQ γ hγ, mul_zero, zero_mul]`. Establish `hprod : (∏ σ, (1 - Vv σ).det) ≠ 0`. Introduce `h`.
+
+Use `congrArg (MvPolynomial.eval (pt (fun _ => (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ)))) h` as an intermediate fact. Simplify using `only [map_prod, evDet, sub_zero, Matrix.det_one, Finset.prod_const_one, map_zero] at this`. Conclude with `one_ne_zero this`. Establish `hG0 : G = 0` using `(mul_eq_zero.1 hQ').resolve_right hprod`. Establish `hX : ∀ x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ τ, (1 + x τ).det ≠ 0) → MvPolynomial.eval (pt x) Q = 0`.
+
+Introduce `x hx`. Use `choose Y hYd hYX using fun τ => cayleyInv (x τ) (hx τ)`. Establish `hDY : ∀ p, MvPolynomial.eval (pt Y) (Dd p) ≠ 0` using `fun p => by`. Rewrite using `[show MvPolynomial.eval (pt Y) (Dd p) = _ from evDet Y p.1]`. Conclude with `hYd p.1`.
+
+Take `⟨hM, hG⟩` from `hGM _ hDY`. Rewrite `hG` using `[hG0, map_zero, evP _ hYd, show (fun σ => (1 + Y σ) * (1 - Y σ)⁻¹) = x from funext hYX]`. Conclude with `(mul_eq_zero.1 hG.symm).resolve_left hM`. Establish `hprod2 : (∏ σ, (1 + Vv σ).det) ≠ 0`. Introduce `h`.
+
+Use `congrArg (MvPolynomial.eval (pt (fun _ => (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ)))) h` as an intermediate fact. Simplify using `only [map_prod, evDet', add_zero, Matrix.det_one, Finset.prod_const_one, map_zero] at this`. Conclude with `one_ne_zero this`. Establish `hz : Q * ∏ σ, (1 + Vv σ).det = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises.
+
+Introduce `z`. Set `x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun τ => Matrix.of fun i j => z (τ, i, j)`. Establish `hzx : z = pt x` using `rfl`. Rewrite using `[map_zero, hzx, map_mul, map_prod]`. Simplify using `only [evDet']`.
+
+Distinguish the cases in `hx : ∀ τ, (1 + x τ).det ≠ 0`. Rewrite using `[hX x hx, zero_mul]`. Use `push_neg at hx`. Take `⟨τ, hτ⟩` from `hx`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) hτ, mul_zero]`.
+
+Conclude with `(mul_eq_zero.1 hz).resolve_right hprod2`.
+-/
 theorem ratDense (D : D7) (V : Formalism.BasicNotions.TH.HSp D)
     (Q : MvPolynomial (D.what₂.Tau × Fin V.rank × Fin V.rank) ℂ)
     (hQ : ∀ γE : GL (Fin V.rank) D.host.E, γE ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram →
@@ -239,6 +320,33 @@ end GlobalTheory.RatDenseEnd
 
 namespace GlobalTheory.RatDenseEnd
 
+/- English proof (translation)
+Introduce `D V tauL htau lam g hg h v`. Take `⟨g', hg'⟩` from `LinearMap.exists_extend g`. Establish `hgv : ∀ w : VV D.what₂.LL lam, g w = g' (w : Pol D.what₂.LL D.what₂.Tau V.rank)` using `fun w => by`. Rewrite using `[← hg']`. Both sides reduce to the same expression.
+
+Take `⟨Uv, hUv⟩` from `blockAct_univ (v : Pol D.what₂.LL D.what₂.Tau V.rank)`. Take `⟨Ug, hUg⟩` from `blockAct_univ ((g v : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau V.rank)`. Set `ℓ : (D.what₂.Tau × Fin V.rank × Fin V.rank →₀ ℕ) → Pol D.what₂.LL D.what₂.Tau V.rank →ₗ[D.what₂.LL] D.what₂.LL` to `fun μ => (MvPolynomial.lcoeff D.what₂.LL μ).comp ((VV D.what₂.LL lam).subtype.comp g')`. Set `R : (D.what₂.Tau × Fin V.rank × Fin V.rank →₀ ℕ) → MvPolynomial (D.what₂.Tau × Fin V.rank × Fin V.rank) D.what₂.LL` to `fun μ => (∑ m ∈ Uv.support, Uv.coeff m * MvPolynomial.C (ℓ μ (MvPolynomial.monomial m 1))) - Ug.coeff μ`. Establish `hR : ∀ μ (M : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL), MvPolynomial.eval (fun p => M p.1 p.2.1 p.2.2) (R μ) = ((g' (Formalism.GradedWeylDivisibility.blockAct D.what₂.LL M (v : Pol D.what₂.LL D.what₂.Tau V.rank)) : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau …`.
+
+Introduce `μ M`. Simplify using `only [R, map_sub]`. Rewrite using `[← lin_map_eval, ← hUv M, hUg M, MvPolynomial.coeff_map]`. Both sides reduce to the same expression. Establish `hrho : ∀ (k : D.what₂.Tau → GL (Fin V.rank) D.what₂.LL) (w : VV D.what₂.LL lam), ((rhoK lam k w : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau V.rank) = detTwK lam k • trAct k (w : Pol D.what₂.LL D.what₂.Tau V.rank)` using `fun k w => rfl`.
+
+Establish `hgrho : ∀ k : D.what₂.Tau → GL (Fin V.rank) D.what₂.LL, ((g (rhoK lam k v) : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau V.rank) = detTwK lam k • ((g' (trAct k (v : Pol D.what₂.LL D.what₂.Tau V.rank)) : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau V.rank)`. Introduce `k`. Rewrite using `[hgv, hrho, map_smul]`. Both sides reduce to the same expression. Establish `hdet : ∀ k : D.what₂.Tau → GL (Fin V.rank) D.what₂.LL, detTwK lam k ≠ 0`.
+
+Introduce `k`. Simplify using `only [detTwK, detPow]`. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => Units.ne_zero _`. Establish `hvan : ∀ μ, R μ = 0`. Introduce `μ`.
+
+Apply `MvPolynomial.map_injective D.what₂.embLL D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `ratDense D V` to reduce the goal to its premises. Introduce `γE hγE`. Take `⟨γ, hγ⟩` from `ratOfUJ V γE⁻¹ (inv_mem hγE)`.
+
+Establish `hc` using `hg γ γE⁻¹ hγ v`. Use `set k := (invTrK (embGL tauL γE⁻¹) : D.what₂.Tau → GL (Fin V.rank) D.what₂.LL) with hkdef`. Express the relevant statement in the definitionally equal form `g (rhoK lam k v) = rhoK lam k (g v) at hc`. Establish `hk : ∀ τ, Matrix.transpose ((k τ : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL) = (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauL τ)`. Introduce `τ`.
+
+Use `show Matrix.transpose (Matrix.transpose (((Formalism.UG.bc (tauL τ) γE⁻¹)⁻¹ : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL)) = _`. Rewrite using `[Matrix.transpose_transpose, ← map_inv, inv_inv]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun w : VV D.what₂.LL lam => (w : Pol D.what₂.LL D.what₂.Tau V.rank).coeff μ) hc`. Simplify using `only [hgrho, hrho, MvPolynomial.coeff_smul, smul_eq_mul] at h2`.
+
+Establish `h3` using `hR μ (fun τ => Matrix.transpose ((k τ : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL))`. Establish `ht : Formalism.GradedWeylDivisibility.blockAct D.what₂.LL (fun τ => Matrix.transpose ((k τ : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL)) = trAct k` using `rfl`. Rewrite `h3` using `[ht, mul_left_cancel₀ (hdet k) h2, sub_self]`. Establish `hp : (fun p : D.what₂.Tau × Fin V.rank × Fin V.rank => Matrix.transpose ((k p.1 : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL) p.2.1 p.2.2) = fun p => tauL p.1 ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[hk]`. Both sides reduce to the same expression. Rewrite `h3` using `[hp]`. Establish `hmap : (fun p : D.what₂.Tau × Fin V.rank × Fin V.rank => Formalism.BasicNotions.TH.tauE D p.1 ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)) = D.what₂.embLL ∘ fun p => tauL p.1 ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[← htau]`. Both sides reduce to the same expression. Rewrite using `[hmap, MvPolynomial.eval_map]`. Use `MvPolynomial.eval₂_comp_left D.what₂.embLL (RingHom.id D.what₂.LL) (fun p : D.what₂.Tau × Fin V.rank × Fin V.rank => tauL p.1 ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E) p.2.1 p.2.2)) (R μ)` as an intermediate fact. Rewrite `this` using `[RingHom.comp_id]`.
+
+Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `D.what₂.embLL (MvPolynomial.eval _ (R μ)) = 0`. Rewrite using `[h3, map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hgrho, hrho]`.
+
+Use `congr 1`. Use extensionality with `μ`. Use `hR μ (fun τ => Matrix.transpose ((h τ : GL (Fin V.rank) D.what₂.LL) : Matrix (Fin V.rank) (Fin V.rank) D.what₂.LL))` as an intermediate fact. Rewrite `this` using `[hvan μ, map_zero]`. Conclude with `sub_eq_zero.1 this.symm`.
+-/
 theorem comm_all : ∀ (D : D7) (V : Formalism.BasicNotions.TH.HSp D) (tauL : D.what₂.Tau → (D.host.E →+* D.what₂.LL)),
     (∀ τ, D.what₂.embLL.comp (tauL τ) = Formalism.BasicNotions.TH.tauE D τ) →
     ∀ (lam : D.what₂.Tau → DomWeight V.rank) (g : Module.End D.what₂.LL (VV D.what₂.LL lam)),

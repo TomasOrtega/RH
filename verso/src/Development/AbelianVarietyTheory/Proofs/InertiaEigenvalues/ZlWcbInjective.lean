@@ -7,6 +7,17 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.Cyc.UnitGen
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (LinearMap.toSpanSingleton O P e₀)`. Use `⟨(injective_iff_map_eq_zero _).2 htf, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_toSpanSingleton, h0]`. Set `φ : O ≃ₗ[O] P` to `LinearEquiv.ofBijective _ hb`. Establish `hφ : ∀ c, φ c = c • e₀` using `fun _ => rfl`.
+
+Establish `h1 : φ.symm e₀ = 1` using `by rw [LinearEquiv.symm_apply_eq, hφ, one_smul]`. Take `⟨c, rfl⟩` from `φ.surjective t'`. Take `⟨w, rfl⟩` from `φ.surjective t`. Establish `hrc : r * algebraMap O R c = 1`. Use `congrArg (fun y => TensorProduct.rid O R (φ.symm.toLinearMap.lTensor R y)) hr` as an intermediate fact.
+
+Simplify `this` using `[TensorProduct.smul_tmul', h1, Algebra.smul_def, mul_comm]`. Establish `hfr : f r = r`. Establish `h2 : f r * algebraMap O R c = 1`. Rewrite using `[← f.commutes c, ← map_mul, hrc, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨c', rfl⟩` from `hf r hfr`. Establish `hc : c' * c = 1` using `hinj (by rw [map_mul, hrc, map_one])`. Take `⟨w', hw'⟩` from `Submodule.mem_span_singleton.1 (ht ▸ Submodule.mem_top : e₀ ∈ Submodule.span O {φ w})`. Establish `hw : w' * w = 1`. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[← smul_eq_mul, map_smul, hw', hφ, one_smul]`. Use `⟨⟨c * w', c' * w, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take the linear combination `(w' * w) * hc + hw`. Take the linear combination `(w' * w) * hc + hw`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← map_smul, smul_eq_mul, mul_assoc, hw, mul_one]`.
+-/
 theorem gen {O R P : Type*} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup P] [Module O P]
     (f : R →ₐ[O] R) (hinj : Function.Injective (algebraMap O R))
     (hf : ∀ b, f b = b → ∃ x : O, b = algebraMap O R x) (e₀ t t' : P)
@@ -45,6 +56,11 @@ theorem gen {O R P : Type*} [CommRing O] [CommRing R] [Algebra O R] [AddCommGrou
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Break down `mul_eq_zero.1 hx with h | h` into its components or cases.
+
+Conclude with `((PadicInt.unitCoeff h0).isUnit.map _).ne_zero h`. Conclude with `WittVector.p_nonzero l (Cb l) (eq_zero_of_pow_eq_zero h)`.
+-/
 theorem zl_wcb_injective : Function.Injective (algebraMap ℤ_[l] (WCb l)) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -54,10 +70,16 @@ theorem zl_wcb_injective : Function.Injective (algebraMap ℤ_[l] (WCb l)) := by
   · exact ((PadicInt.unitCoeff h0).isUnit.map _).ne_zero h
   · exact WittVector.p_nonzero l (Cb l) (eq_zero_of_pow_eq_zero h)
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.Cyc.FontW.free_OL LL Algebra.TensorProduct.includeLeft_injective (S := ↥(OL LL)) zl_wcb_injective`.
+-/
 theorem ol_rw_injective (LL : FinExt l) : Function.Injective (algebraMap ↥(OL LL) (RW LL)) :=
   haveI := GlobalTheory.Cyc.FontW.free_OL LL
   Algebra.TensorProduct.includeLeft_injective (S := ↥(OL LL)) zl_wcb_injective
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.Cyc.FontW.free_OL LL (GlobalTheory.Cyc.FontW.as_one (O := ↥(OL LL)) (frobW l) (GlobalTheory.ArtinSchreierWitt.main l).1 (GlobalTheory.ArtinSchreierWitt.main l).2.1).2 b hb`.
+-/
 theorem fixed_RW (LL : FinExt l) (b : RW LL) (hb : φRW LL b = b) :
     ∃ x : ↥(OL LL), b = algebraMap ↥(OL LL) (RW LL) x :=
   haveI := GlobalTheory.Cyc.FontW.free_OL LL
@@ -74,6 +96,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨e', e₀, h0, hj, hN'⟩` from `E.one_e`. Take `⟨t', ht'⟩` from `hT (E.jD W.one e) (by rw [← E.jD_φ, hφ])`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (show e' ∈ Submodule.span (LetA O n) {e} by`. Rewrite using `[← hN, hN']`. Conclude with `Submodule.mem_span_singleton_self _)`.
+
+Establish `hne : (e₀ : W.one.V) ≠ 0`. Take `⟨x, hx, hxT⟩` from `W.one_line`. Introduce `h`. Establish `hxm : x ∈ W.one.L.T` using `by rw [hxT]; exact Submodule.mem_span_singleton_self _`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (h0 ▸ Submodule.mem_top : (⟨x, hxm⟩ : ↥W.one.L.T) ∈ Submodule.span O {e₀})`.
+
+Use `congrArg Subtype.val hc` as an intermediate fact. Rewrite `this` using `[Submodule.coe_smul, h, smul_zero]`. Conclude with `hx this.symm`. Rewrite using `[ht']`. Use `gen φR hinj hf e₀ t t' h0 (fun c hc => ?_) ?_ (E.ioE (algebraMap _ W.EE a)) ?_` and prove the remaining obligations.
+
+Use `congrArg Subtype.val hc` as an intermediate fact. Rewrite `this` using `[Submodule.coe_smul, ← algebraMap_smul LL]`. Conclude with `hO (((smul_eq_zero.1 this).resolve_right hne).trans (map_zero _).symm)`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (show x ∈ Submodule.span O {(t : W.one.V)} from ht.ge hx)`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, Subtype.ext hc⟩`. Rewrite using `[← ht', ← E.jD_smul, algebraMap_smul, ha, hj]`.
+-/
 theorem of_tie {W : LocWach PD LL O v n} {RA R : Type} [CommRing RA] [CommRing R] [Algebra O RA]
     [Algebra O R] {inclR : RA →ₐ[O] R} {φR : R →ₐ[O] R} {gR : G → (R →ₐ[O] R)} {πA : RA}
     (E : EtTie W RA R inclR φR gR πA) (hO : Function.Injective (algebraMap O LL))
@@ -111,6 +144,9 @@ theorem of_tie {W : LocWach PD LL O v n} {RA R : Type} [CommRing RA] [CommRing R
 
 end Gen
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W E e t hN hφ ht`. Conclude with `of_tie E Subtype.val_injective (ol_rw_injective LL) (fixed_RW LL) (GlobalTheory.Cyc.FontW.as_TW LL W.one).2 e t hN hφ ht`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∀ (e : W.DD W.one) (t : ↥W.one.L.T), W.N W.one = Submodule.span (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) {e} → W.φD W.one e = e → Submodule.span ↥(OL LL) {(t : W.one.V)} = W.one.L.T → ∃ u : (↥(OL LL))ˣ, E.jD W.one e = ((u : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (1 : WCb l) : RW LL) ⊗ₜ[↥(OL LL)] t := by
   intro D HW F l _ K s LL h W E e t hN hφ ht
   exact of_tie E Subtype.val_injective (ol_rw_injective LL) (fixed_RW LL)

@@ -6,31 +6,82 @@ open Filter Topology
 
 namespace PI.Landherr₃
 
+/- English proof (translation)
+Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]`.
+-/
 theorem unitNormLoc_norm_add_eq_left {K : Type} [NormedField K] [IsUltrametricDist K] (x y : K)
     (h : ‖y‖ < ‖x‖) : ‖x + y‖ = ‖x‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]
 
+/- English proof (translation)
+Establish `h` using `IsUltrametricDist.norm_add_le_max (1 : K) 1`. Rewrite `h` using `[one_add_one_eq_two, norm_one, max_self]`. Conclude with `h`.
+-/
 theorem unitNormLoc_norm_two_le {K : Type} [NormedField K] [IsUltrametricDist K] : ‖(2 : K)‖ ≤ 1 := by
   have h := IsUltrametricDist.norm_add_le_max (1 : K) 1
   rw [one_add_one_eq_two, norm_one, max_self] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)`.
+-/
 theorem unitNormLoc_add_lt {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K} {r : ℝ}
     (hx : ‖x‖ < r) (hy : ‖y‖ < r) : ‖x + y‖ < r := (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 theorem unitNormLoc_add_le {K : Type} [NormedField K] [IsUltrametricDist K] {x y : K} {r : ℝ}
     (hx : ‖x‖ ≤ r) (hy : ‖y‖ ≤ r) : ‖x + y‖ ≤ r := (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hx) hy`.
+-/
 theorem unitNormLoc_mul_lt {K : Type} [NormedField K] {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ < 1) :
     ‖x * y‖ < 1 := by
   rw [norm_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hx) hy
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg x, norm_nonneg y]`.
+-/
 theorem unitNormLoc_mul_le {K : Type} [NormedField K] {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) :
     ‖x * y‖ ≤ 1 := by
   rw [norm_mul]
   nlinarith [norm_nonneg x, norm_nonneg y]
 
+/- English proof (translation)
+Take `⟨f, hf⟩ : ∃ f : K → K, ∀ x, f x = α * x ^ 2 + β * x + γ` from `⟨_, fun _ => rfl⟩`. Take `⟨g, hg⟩ : ∃ g : K → K, ∀ x, g x = 2 * α * x + β` from `⟨_, fun _ => rfl⟩`. Take `⟨s, hs0, hs⟩ : ∃ s : ℕ → K, s 0 = a ∧ ∀ n, s (n + 1) = s n - f (s n) / g (s n)` from `⟨fun n => Nat.rec a (fun _ b => b - f b / g b) n, rfl, fun _ => rfl⟩`. Establish `alg : ∀ b q : K, g b * q = f b → f (b - q) = α * q ^ 2`. Introduce `b q hq`.
+
+Rewrite `hq` using `[hg b, hf b]`. Rewrite using `[hf (b - q)]`. Take the linear combination `(-1 : K) * hq`. Establish `galg : ∀ b q : K, g (b - q) = g b + -(2 * α * q)`. Introduce `b q`.
+
+Rewrite using `[hg, hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[← hf a, ← hg a]`. Take `⟨d, hd⟩ : ∃ d, d = ‖g a‖` from `⟨_, rfl⟩`. Rewrite `h` using `[← hd]`.
+
+Establish `hd0 : 0 < d`. Establish `h1 : 0 < d ^ 2` using `lt_of_le_of_lt (norm_nonneg _) h`. Assume the negation of the conclusion as `hc`. Establish `h3 : d = 0` using `le_antisymm (not_lt.1 hc) (hd ▸ norm_nonneg _)`. Rewrite `h1` using `[h3]`.
+
+Evaluate the numerical expressions using `at h1`. Establish `hdne : d ≠ 0` using `hd0.ne'`. Take `⟨t, ht⟩ : ∃ t, t = ‖f a‖ / d ^ 2` from `⟨_, rfl⟩`. Establish `ht0 : 0 ≤ t` using `by rw [ht]; positivity`. Establish `ht1 : t < 1` using `by rw [ht, div_lt_one (by positivity)]; exact h`.
+
+Establish `h2 : ‖(2 : K)‖ ≤ 1` using `unitNormLoc_norm_two_le`. Establish `inv : ∀ n, ‖g (s n)‖ = d ∧ ‖f (s n)‖ ≤ d ^ 2 * t ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Use `⟨by rw [hs0, hd], ?_⟩` and prove the remaining obligations. Rewrite using `[hs0, zero_add, pow_one, ht]`. Conclude with `le_of_eq (by field_simp)`. Consider the case `succ n ih`. Take `⟨hgn, hfn⟩` from `ih`.
+
+Establish `hne : g (s n) ≠ 0`. Introduce `h0`. Rewrite `hgn` using `[h0, norm_zero]`. Conclude with `hdne hgn.symm`. Establish `hft : ‖f (s n)‖ ≤ d ^ 2 * t`.
+
+Use `hfn.trans (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Conclude with `pow_le_of_le_one ht0 ht1.le (Nat.succ_ne_zero n)`. Establish `hh : ‖f (s n) / g (s n)‖ = ‖f (s n)‖ / d` using `by rw [norm_div, hgn]`. Establish `hhd : ‖f (s n) / g (s n)‖ < d`. Rewrite using `[hh, div_lt_iff₀ hd0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2a : ‖-(2 * α * (f (s n) / g (s n)))‖ < ‖g (s n)‖`. Rewrite using `[norm_neg, norm_mul, norm_mul, hgn]`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : g (s n) * (f (s n) / g (s n)) = f (s n)` using `by field_simp`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, galg, unitNormLoc_norm_add_eq_left _ _ h2a, hgn]`. Rewrite using `[hs, alg _ _ e1, norm_mul, norm_pow, hh]`. Establish `e4 : (‖f (s n)‖ / d) ^ 2 = ‖f (s n)‖ * (‖f (s n)‖ / d ^ 2)` using `by field_simp`. Establish `e5 : ‖f (s n)‖ / d ^ 2 ≤ t`.
+
+Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear relations using `[hft]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdist : ∀ n, dist (s n) (s (n + 1)) ≤ (d * t) * t ^ n`. Introduce `n`.
+
+Take `⟨hgn, hfn⟩` from `inv n`. Rewrite using `[dist_eq_norm, hs, sub_sub_cancel, norm_div, hgn, div_le_iff₀ hd0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : CauchySeq s` using `cauchySeq_of_le_geometric t (d * t) ht1 hdist`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hc`.
+
+Establish `hcont : Continuous f`. Establish `e : f = fun x => α * x ^ 2 + β * x + γ` using `funext hf`. Rewrite using `[e]`. Use `fun_prop`. Establish `h1 : Tendsto (fun n => f (s n)) atTop (𝓝 (f L))` using `(hcont.tendsto L).comp hL`.
+
+Establish `hlim : Tendsto (fun n : ℕ => d ^ 2 * t * t ^ n) atTop (𝓝 0)`. Establish `h3` using `(tendsto_pow_atTop_nhds_zero_of_lt_one ht0 ht1).const_mul (d ^ 2 * t)`. Rewrite `h3` using `[mul_zero]`. Then use the resulting hypothesis. Establish `h0 : Tendsto (fun n => f (s n)) atTop (𝓝 0)`. Use `squeeze_zero_norm (fun n => ?_) hlim` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfL : f L = 0` using `tendsto_nhds_unique h1 h0`. Conclude with `⟨L, by rw [← hf]; exact hfL⟩`.
+-/
 theorem unitNormLoc_newton {K : Type} [NormedField K] [CompleteSpace K] [IsUltrametricDist K]
     (α β γ a : K) (hα : ‖α‖ ≤ 1) (h : ‖α * a ^ 2 + β * a + γ‖ < ‖2 * α * a + β‖ ^ 2) :
     ∃ x : K, α * x ^ 2 + β * x + γ = 0 := by

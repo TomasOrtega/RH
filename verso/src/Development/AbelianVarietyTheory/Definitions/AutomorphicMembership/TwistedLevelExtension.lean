@@ -15,6 +15,11 @@ open NumberField IsDedekindDomain _root_.Formalism.BasicNotions _root_.Formalism
 section
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[ciMem_sclLat, ciMem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[qth_intAt_iff, qth_intAt_iff]`. Use `show P.valuation E (_ * (u * x l)) ≤ 1 ↔ _`.
+
+Simplify using `[hu]`.
+-/
 theorem scal_scl {n : ℕ} (q : ℕ) (e : ℕ → ℤ) {u : E} (h0 : u ≠ 0) (hu : P.valuation E u = 1) :
     LinearEquiv.smulOfNeZero E (Sp E n) u h0 ∈ stabL E n (LocE.sclLat P q n e) := by
   intro x
@@ -24,6 +29,11 @@ theorem scal_scl {n : ℕ} (q : ℕ) (e : ℕ → ℤ) {u : E} (h0 : u ≠ 0) (h
   show P.valuation E (_ * (u * x l)) ≤ 1 ↔ _
   simp [hu]
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[ciMem_stdAt, ciMem_stdAt]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[qth_intAt_iff, qth_intAt_iff]`. Use `show P.valuation E (u * x l) ≤ 1 ↔ _`.
+
+Simplify using `[hu]`.
+-/
 theorem scal_std {n : ℕ} {u : E} (h0 : u ≠ 0) (hu : P.valuation E u = 1) :
     LinearEquiv.smulOfNeZero E (Sp E n) u h0 ∈ stabL E n (stdAt E n P) := by
   intro x
@@ -33,6 +43,11 @@ theorem scal_std {n : ℕ} {u : E} (h0 : u ≠ 0) (hu : P.valuation E u = 1) :
   show P.valuation E (u * x l) ≤ 1 ↔ _
   simp [hu]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `⟨LinearEquiv.smulOfNeZero E (Sp E (n + 0)) u h0, ⟨mem_R1_zero _, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use `show (MulAut.conj (1 : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0))⁻¹) _ ∈ LocE.JQ P q kj n 0`. Rewrite using `[inv_one, map_one]`. Conclude with `⟨scal_std P h0 hu, scal_scl P q _ h0 hu⟩`.
+
+Use `show u • Loc.inX E n 0 x = Loc.inX E n 0 (u • x)`. Rewrite using `[map_smul]`.
+-/
 theorem scal_prX {n c kj q : ℕ} (hc : c = 0) {u : E} (h0 : u ≠ 0) (hu : P.valuation E u = 1) :
     LinearEquiv.smulOfNeZero E (Sp E n) u h0 ∈ Loc.prX (Loc.Cbe (LocE.JQ P q kj n c) 1) := by
   subst hc
@@ -43,18 +58,38 @@ theorem scal_prX {n c kj q : ℕ} (hc : c = 0) {u : E} (h0 : u ≠ 0) (hu : P.va
   · show u • Loc.inX E n 0 x = Loc.inX E n 0 (u • x)
     rw [map_smul]
 
+/- English proof (translation)
+Establish `: ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `h` using `(P.valuation_lt_one_iff_mem (K := E) _).2 this`. Simplify using `using h`.
+-/
 theorem vq_lt : P.valuation E (qOf P : E) < 1 := by
   have : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal := Ideal.absNorm_mem _
   have h := (P.valuation_lt_one_iff_mem (K := E) _).2 this
   simpa using h
 
+/- English proof (translation)
+Establish `: qOf P ≠ 0` using `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `this` after adjusting the coercions.
+-/
 theorem q_ne : (qOf P : E) ≠ 0 := by
   have : qOf P ≠ 0 := fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
   exact_mod_cast this
 
+/- English proof (translation)
+Rewrite using `[Valuation.map_one_add_of_lt _ (vq_lt P)]`.
+-/
 theorem v_one_add : P.valuation E (1 + (qOf P : E)) = 1 := by
   rw [Valuation.map_one_add_of_lt _ (vq_lt P)]
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, -, h⟩`. Establish `hw : (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) ∈ LocE.sclLat P (qOf P) n (twistedLevelExponent n c)`. Rewrite using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[qth_intAt_iff]`.
+
+Distinguish the cases in `e : l = ⟨n - 1, by omega⟩`. Substitute `e` using the available equality. Establish `: n - 1 + 1 = n` using `by omega`. Simplify using `[twistedLevelExponent, this]`. Simplify using `[Pi.single_eq_of_ne e]`.
+
+Establish `h1` using `(ciMem_sclLat P (qOf P) _ _).1 (h _ hw) ⟨n - 1, by omega⟩`. Rewrite `h1` using `[qth_intAt_iff]`. Establish `e : ((LinearEquiv.smulOfNeZero E (Sp E n) _ h0) (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) - (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) : Sp E n) ⟨n - 1, by omega⟩ = (qOf P : E)` using `by show (1 + (qOf P : E)) * (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) ⟨n - 1, by omega⟩ - (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) ⟨n - 1, by omega⟩ = _`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `P.valuation E (_ * ((LinearEquiv.smulOfNeZero E (Sp E n) _ h0) (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) - (Pi.single ⟨n - 1, by omega⟩ 1 : Sp E n) : Sp E n) ⟨n - 1, by omega⟩) ≤ 1 at h1`.
+
+Rewrite `h1` using `[e, map_mul, map_inv₀, map_zpow₀, zpow_natCast]`. Establish `hv0 : 0 < P.valuation E (qOf P : E)` using `zero_lt_iff.2 ((map_ne_zero _).2 (q_ne P))`. Rewrite `h1` using `[inv_mul_le_iff₀ (pow_pos hv0 _), mul_one]`. Use `pow_lt_pow_right_of_lt_one₀ hv0 (vq_lt P) hc` as an intermediate fact. Rewrite `this` using `[pow_one]`.
+
+Conclude with `absurd h1 (not_le.2 this)`.
+-/
 theorem scal_not {n r c : ℕ} (hn : 0 < n) (hc : 1 < c) (h0 : (1 + (qOf P : E)) ≠ 0) :
     (⟨LinearEquiv.smulOfNeZero E (Sp E n) _ h0, scal_std P h0 (v_one_add P)⟩ : GLint E n P) ∉ twK1H P n r c := by
   rintro ⟨-, -, -, h⟩
@@ -92,8 +127,18 @@ def trv {n : ℕ} {a b : Fin n} (h : a ≠ b) : Sp E n ≃ₗ[E] Sp E n where
   left_inv x := by simp [Pi.single_eq_of_ne h.symm]
   right_inv x := by simp [Pi.single_eq_of_ne h.symm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trv_apply {n : ℕ} {a b : Fin n} (h : a ≠ b) (x : Sp E n) : trv h x = x + Pi.single a (x b) := rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ciMem_sclLat]`. Introduce `l`. Rewrite using `[qth_intAt_iff]`. Distinguish the cases in `hl : l = a`. Substitute `hl` using the available equality.
+
+Establish `h1` using `(qth_intAt_iff P _).1 (hx b)`. Rewrite using `[Pi.single_eq_same]`. Establish `hq` using `q_ne P`. Establish `e1 : ((qOf P : E) ^ e l)⁻¹ * x b = (qOf P : E) ^ (e b - e l).toNat * (((qOf P : E) ^ e b)⁻¹ * x b)`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (by omega), zpow_sub₀ hq]`.
+
+Use `zpow_ne_zero (e b) hq` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, map_mul, map_pow]`. Conclude with `mul_le_one' (pow_le_one' (vq_lt P).le _) h1`. Simplify using `[Pi.single_eq_of_ne hl]`.
+-/
 theorem single_mem {n : ℕ} {a b : Fin n} (e : ℕ → ℤ) (he : e a ≤ e b) {x : Sp E n}
     (hx : x ∈ LocE.sclLat P (qOf P) n e) : (Pi.single a (x b) : Sp E n) ∈ LocE.sclLat P (qOf P) n e := by
   rw [ciMem_sclLat] at hx ⊢
@@ -112,6 +157,9 @@ theorem single_mem {n : ℕ} {a b : Fin n} (e : ℕ → ℤ) (he : e a ≤ e b) 
     exact mul_le_one' (pow_le_one' (vq_lt P).le _) h1
   · simp [Pi.single_eq_of_ne hl]
 
+/- English proof (translation)
+Introduce `x`. Use `⟨fun hx => ?_, fun hx => add_mem hx (single_mem P e he hx)⟩` and prove the remaining obligations. Use `sub_mem hx (single_mem P e he hx)` as an intermediate fact. Simplify `this` using `[trv_apply, Pi.single_eq_of_ne h.symm]`.
+-/
 theorem trv_scl {n : ℕ} {a b : Fin n} (h : a ≠ b) (e : ℕ → ℤ) (he : e a ≤ e b) :
     trv h ∈ stabL E n (LocE.sclLat P (qOf P) n e) := by
   intro x
@@ -119,6 +167,19 @@ theorem trv_scl {n : ℕ} {a b : Fin n} (h : a ≠ b) (e : ℕ → ℤ) (he : e 
   have := sub_mem hx (single_mem P e he hx)
   simpa [trv_apply, Pi.single_eq_of_ne h.symm] using this
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `hS : ∀ s, (trv h : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) ∈ stabL E (n + 0) (LocE.flagS P (qOf P) k rS n 0 s)` using `fun s => by`. Use `trv_scl P h _ ?_` and prove the remaining obligations. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact.
+
+Simplify using `only [LocE.scE, LocE.fPos, symIdx, ha]`. Apply the tactic sequence `split_ifs <;> omega`. Use `⟨(trv h : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)), ⟨mem_R1_zero _, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use `show (MulAut.conj (1 : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0))⁻¹) _ ∈ LocE.JGsym P (qOf P) k rS r t n 0`. Rewrite using `[inv_one, map_one]`.
+
+Use `⟨trv_scl P h _ ?_, fun s _ => hS s, fun s hs => ⟨hS s, ?_⟩⟩` and prove the remaining obligations. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Simplify using `only [LocE.scE]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Establish `: LocE.bvecS E (qOf P) k rS n 0 s b = 0`. Simplify using `only [LocE.bvecS, LocE.bvecG, Pi.smul_apply, Loc.eN]`. Rewrite using `[if_neg, smul_zero]`. Simplify using `only [LocE.fIdx, symIdxInv]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Use `show LocE.bvecS E (qOf P) k rS n 0 s + Pi.single a (LocE.bvecS E (qOf P) k rS n 0 s b) - _ ∈ _`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `: ∀ y : Sp E n, Loc.inX E n 0 y = y` using `fun y => by`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[Loc.inX, show l.1 < n from l.2]`. Rewrite using `[this, this]`.
+-/
 theorem trv_prX {n c k rS r t : ℕ} (hc : c = 0) {a b : Fin n} (h : a ≠ b) (ha : a.1 = 0) (hk : 0 < k) (hr : r = k + 2 * rS + 1)
     (hb : r ≤ b.1) : trv h ∈ Loc.prX (Loc.Cbe (LocE.JGsym P (qOf P) k rS r t n c) 1) := by
   subst hc
@@ -149,6 +210,11 @@ theorem trv_prX {n c k rS r t : ℕ} (hc : c = 0) {a b : Fin n} (h : a ≠ b) (h
       simp [Loc.inX, show l.1 < n from l.2]
     rw [this, this]
 
+/- English proof (translation)
+Rewrite `hx` using `[ciMem_stdAt]`. Use function extensionality and compare the values at `l`. Rewrite using `[Matrix.transvection, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.single_mulVec]`. Distinguish the cases in `hl : l = a`. Substitute `hl` using the available equality.
+
+Simplify using `[redV, trv_apply, reduction_add (hx l) (hx b)]`. Simplify using `[redV, trv_apply, Pi.single_eq_of_ne hl, Function.update_of_ne hl]`.
+-/
 theorem trv_red {n : ℕ} {a b : Fin n} (h : a ≠ b) {x : Sp E n} (hx : x ∈ stdAt E n P) :
     redV P (trv h x) = (Matrix.transvection a b (1 : 𝓞 E ⧸ P.asIdeal)).mulVec (redV P x) := by
   rw [ciMem_stdAt] at hx
@@ -164,6 +230,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
   (cst : LocCst X (rowSG Pr sel mu)) (G : ChGlob X R.m) (m2 : ℕ)
 
+/- English proof (translation)
+Introduce `h`. Establish `hm` using `h.hm`. Establish `h0 : (1 + (qOf P : X.E)) ≠ 0`. Introduce `e`. Use `v_one_add P` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Simplify using `at this`. Establish `key` using `h.grpQ R.m (ChIdx.top _ m2 _ _ (by omega)) ⟨P, hP⟩`. Apply `scal_not P (n := R.N R.m) (r := R.r) (c := twTopDepth R) (by have := N_m_succ R; omega) (by unfold twTopDepth; omega) h0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `twK1H P _ _ _ = (prCat (Pr := Pr) cst.sharp R.m P 1).subgroupOf _ at key`.
+
+Rewrite using `[key, Subgroup.mem_subgroupOf]`. Unfold `prCat Jat`. Rewrite using `[if_neg hG]`. Conclude with `scal_prX P (by unfold cOf; omega) h0 (v_one_add P)`.
+-/
 theorem not_ok_Q (Λt) {P} (hP : P ∈ QE sel (mu : Chr X.F X.E X.K)) (hG : P ∉ Pr.vGs) :
     ¬ (twIdxTop Ch sel mu cst m2 Λt (twTt sel mu)).Ok Ch sel mu cst G m2 := by
   intro h
@@ -178,6 +251,17 @@ theorem not_ok_Q (Λt) {P} (hP : P ∈ QE sel (mu : Chr X.F X.E X.K)) (hG : P �
   rw [if_neg hG]
   exact scal_prX P (by unfold cOf; omega) h0 (v_one_add P)
 
+/- English proof (translation)
+Introduce `h`. Establish `hm` using `h.hm`. Establish `hN : R.N R.m = R.r + R.m * R.t + 1`. Use `R.two_le_m` as an intermediate fact. Unfold `Ranks.N Ranks.r`.
+
+Rewrite using `[mul_add]`. Use linear arithmetic over natural numbers and integers. Establish `hk` using `R.m_add_three_le_k`. Establish `hr` using `r_eq_sym R`. Set `a : Fin (R.N R.m)` to `⟨0, by omega⟩`.
+
+Set `b : Fin (R.N R.m)` to `⟨R.r + R.m * R.t, by omega⟩`. Establish `hab : a ≠ b` using `fun e => by have := congrArg Fin.val e; simp only [a, b] at this; omega`. Set `M : GL (Fin (R.N R.m)) (𝓞 X.E ⧸ w.asIdeal)` to `⟨Matrix.transvection a b 1, Matrix.transvection a b (-1), by rw [Matrix.transvection_mul_transvection_same _ _ hab]; simp, by rw [Matrix.transvection_mul_transvection_same _ _ hab]; simp⟩`. Establish `key` using `(h.grpG R.m (ChIdx.top _ m2 _ _ (by omega)) ⟨w, hw⟩ M).2 ⟨trv hab, by show trv hab ∈ prCat (Pr := Pr) cst.sharp R.m w 1`. Unfold `prCat Jat`.
+
+Rewrite using `[if_pos hw, hs, if_pos rfl]`. Conclude with `trv_prX w (by unfold cOf; omega) hab rfl (by omega) hr (by simp [b]), fun x hx => trv_red w hab hx⟩`. Express the relevant statement in the definitionally equal form `M ∈ (colLevSym Ch R.m ⟨w, hw⟩).H at key`. Rewrite `key` using `[colLevSym_top_H Ch le_rfl]`. Establish `h2` using `key.2 a b rfl`.
+
+Use `haveI := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top`. Simplify using `[M, Matrix.transvection, Matrix.one_apply_ne hab] at h2`.
+-/
 theorem not_ok_G (Θt) (hs : cst.sharp = true) {w} (hw : w ∈ Pr.vGs) :
     ¬ (twIdxTop Ch sel mu cst m2 (twLt Ch) Θt).Ok Ch sel mu cst G m2 := by
   intro h
@@ -205,6 +289,13 @@ theorem not_ok_G (Θt) (hs : cst.sharp = true) {w} (hw : w ∈ Pr.vGs) :
   haveI := Ideal.Quotient.nontrivial_iff.2 w.isPrime.ne_top
   simp [M, Matrix.transvection, Matrix.one_apply_ne hab] at h2
 
+/- English proof (translation)
+Introduce `h`. Establish `hP` using `(GlobalTheory.BasePrimes.primes_ok B Y).1`. Establish `hc : 0 < ((B.primes Y).vG 0).card`. Rewrite using `[hP.vG_card, B.fields_f]`. Unfold `Ranks.f Ranks.n`.
+
+Check the signs of the components of the expression. Take `⟨w, hw⟩` from `Finset.card_pos.1 hc`. Establish `hw' : w ∈ (B.primes Y).vGs` using `by classical`. Unfold `Primes.vGs`. Use `Finset.mem_union_left _ hw` and compare the differences between its conclusion and the goal.
+
+Establish `h1` using `h.idx_ok a`. Rewrite `h1` using `[ht]`. Conclude with `not_ok_G _ _ _ _ _ _ _ (h.sharp a) hw' h1`.
+-/
 theorem not_ok_of_idx_top {B : Base} {Y : PreX B.toPre} (I : TC B Y) {a : I.ι}
     (ht : I.idx a = twIdxTop I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 2) (twLt I.Ch) (twTt I.sel (I.tup a))) : ¬ I.Ok := by
   intro h
@@ -233,6 +324,17 @@ namespace GlobalTheory.Mem.Col2.TC.TwModel
 
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
+/- English proof (translation)
+Take `⟨P, X, f, hL, hX, hsp, hdu, p1, p2⟩` from `TrueColsTest.exists_pre`. Take `⟨M, hM, -, -, m1, m2, -⟩` from `FrameVal.frame_values P.R P.host _ f fun j τ => (P.hc τ).e_int j`. Take `⟨α, hα, gα⟩` from `@DatHecke.exists_gen M hM`. Use `choose r hr using fun q : ℕ => IsAlgClosed.exists_pow_nat_eq (q : ℂ) (n := 2) two_pos`. Take `⟨Y, hY, gY⟩` from `InEx.exists_holds (2 * P.R.m) ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar P.host.E))`.
+
+Take `⟨B, rfl, -, -, h2⟩` from `BaseExt.exists_base P ∅ ∅ (insert α (Y ∪ Finset.univ.image fun k => r (P.host.g k))) (by simp) (by simp) (fun z hz => by`. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `hα`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `hY z h`.
+
+Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_natCast _))`. Establish `i1` using `gα B.LL B.embLL (h2 _ (Finset.mem_insert_self _ _))`. Establish `hf : ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)).Finite` using `Set.toFinite _`. Establish `ht : ∀ ξ ∈ ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)), Chr.IsTwist B.host (InEx.avoid B.toPre) ξ` using `fun ξ hξ => InEx.isTwist_of_mem_set B f (Top.TwDat.untw B ∅) ξ (.inl hξ)`.
+
+Take `⟨sel, hsel⟩` from `Formalism.L2.Col.exists_sel B.fields`. Take `⟨J, hJ⟩` from `exists_ambIn_ok B.host`. Take `⟨I, a1, -, -, -, -, -, a7⟩` from `InEx.exists_colIn B X f hX hsp hdu (InEx.avoid B.toPre) (fun u => ⟨Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (Exists.intro u rfl))))), B.T_ne_pde u⟩) (fun i => ⟨Or.inr (Or.inl (Exists.intro i rfl)), (B.host.pde_ne_g i).1.symm, (B.host.pde_ne_g i).2.symm⟩) (fun _ hp h => InEx.mem_avo …`. Take `⟨s, hs⟩` from `h2 _ (Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))))`. Conclude with `⟨s, B.embLL.injective (by rw [map_pow, hs, hr, map_natCast])⟩) sel hsel J hJ`.
+
+Conclude with `⟨B, X, I, hL, a1, ⟨p1, p2⟩, fun a P hP => ((a7 a).2.2.2 P hP).ge, fun a => (a7 a).2.1⟩`.
+-/
 theorem exists_deep : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), StagesInhab.HasLetters B.toPre ∧ I.Ok ∧ TC.Pins B X ∧
     I.Deep ∧ ∀ a, (I.cst a).A = B.R.m := by
   classical
@@ -269,6 +371,15 @@ theorem exists_deep : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), StagesInha
       exact ⟨s, B.embLL.injective (by rw [map_pow, hs, hr, map_natCast])⟩) sel hsel J hJ
   exact ⟨B, X, I, hL, a1, ⟨p1, p2⟩, fun a P hP => ((a7 a).2.2.2 P hP).ge, fun a => (a7 a).2.1⟩
 
+/- English proof (translation)
+Take `⟨w, hw, hw'⟩` from `Ideal.exists_le_maximal (Ideal.span {(B.host.pde : 𝓞 B.host.E)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ)`. Rewrite `h1` using `[← map_natCast (algebraMap ℤ (𝓞 B.host.E)), Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`.
+
+Conclude with `B.host.pde_prime.ne_one (by simpa using h1))`. Establish `hm : (B.host.pde : 𝓞 B.host.E) ∈ w` using `hw' (Ideal.mem_span_singleton_self _)`. Establish `hb : w ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `B.host.pde_prime.ne_zero (by simpa using hm)`.
+
+Establish `hP : ¬ (I.xi I.muStar).UnrAt ⟨w, hw.isPrime, hb⟩` using `fun hu => by`. Rewrite `hu` using `[h.xi_star]`. Establish `h3` using `(I.C.isDel.ine ⟨w, hw.isPrime, hb⟩ hm 1).1 fun x hx => by rw [pow_one]; exact hu x hx`. Use linear arithmetic over natural numbers and integers. Establish `hf` using `GlobalTheory.OpenChrRam.qprime_finite B.fields.F B.fields.E B.fields.K (I.tup I.muStar : Chr B.fields.F B.fields.E B.fields.K) (I.tup I.muStar).2.1.1.1.1.2`.
+
+Use `⟨I.sel ((⟨w, hw.isPrime, hb⟩ : HeightOneSpectrum (𝓞 B.fields.E)).under (𝓞 B.fields.F)), ?_⟩` and prove the remaining obligations. Use `show _ ∈ QE _ _`. Rewrite using `[QE, dif_pos hf]`. Conclude with `Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ((GlobalTheory.Mem.ReadTwist.mem_qprime_iff (h.xi_reads I.muStar) _).2 ⟨_, rfl, hP⟩))`.
+-/
 theorem Q_star_nonempty {B : Base} {X : PreX B.toPre} {I : TC B X} (h : I.Ok) : (I.Q I.muStar).Nonempty := by
   classical
   obtain ⟨w, hw, hw'⟩ := Ideal.exists_le_maximal (Ideal.span {(B.host.pde : 𝓞 B.host.E)}) (by
@@ -292,6 +403,9 @@ theorem Q_star_nonempty {B : Base} {X : PreX B.toPre} {I : TC B X} (h : I.Ok) : 
   rw [QE, dif_pos hf]
   exact Finset.mem_image_of_mem _ (hf.mem_toFinset.2 ((GlobalTheory.Mem.ReadTwist.mem_qprime_iff (h.xi_reads I.muStar) _).2 ⟨_, rfl, hP⟩))
 
+/- English proof (translation)
+Take `⟨B, X, I, hL, h, hP, hD, -⟩` from `exists_deep`. Establish `hk` using `canon_ok h hD`. Conclude with `⟨B, X, I.canon, TrueColsTest.laws hk, hk, I.canon_isTw, hP, TrueColsTest.law0 hk _, Q_star_nonempty hk, TrueColsTest.later _ hL⟩`.
+-/
 theorem exists_isTw : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws), I.Ok ∧ I.IsTw ∧ TC.Pins B X ∧ I.Law0 l ∧
     (I.Q I.muStar).Nonempty ∧ Nonempty (TC.Later B (I.cols l)) := by
   obtain ⟨B, X, I, hL, h, hP, hD, -⟩ := exists_deep
@@ -299,6 +413,9 @@ theorem exists_isTw : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws
   exact ⟨B, X, I.canon, TrueColsTest.laws hk, hk, I.canon_isTw, hP, TrueColsTest.law0 hk _, Q_star_nonempty hk,
     TrueColsTest.later _ hL⟩
 
+/- English proof (translation)
+Take `⟨B, X, I, -, h, -, hD, hA⟩` from `exists_deep`. Use `⟨B, X, I, h, hD, fun ht => ?_⟩` and prove the remaining obligations. Establish `e` using `hA I.mu0`. Rewrite `e` using `[ht.cst_eq]`. Conclude with `Nat.succ_ne_self _ e`.
+-/
 theorem exists_ok_not_isTw : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), I.Ok ∧ I.Deep ∧ ¬ I.IsTw := by
   obtain ⟨B, X, I, -, h, -, hD, hA⟩ := exists_deep
   refine ⟨B, X, I, h, hD, fun ht => ?_⟩
@@ -306,6 +423,9 @@ theorem exists_ok_not_isTw : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), I.O
   rw [ht.cst_eq] at e
   exact Nat.succ_ne_self _ e
 
+/- English proof (translation)
+Rewrite using `[ht.cst_eq, topDep_succ]`. Use `show max _ (2 * B.R.m + 2 * B.R.m) = _`. Unfold `twTopDepth`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem topDep_eq {B : Base} {X : PreX B.toPre} {I : TC B X} (ht : I.IsTw) (a : I.ι) :
     topDep B.R (I.cst a).M + 1 = twTopDepth B.R := by
   rw [ht.cst_eq, topDep_succ]
@@ -313,6 +433,11 @@ theorem topDep_eq {B : Base} {X : PreX B.toPre} {I : TC B X} (ht : I.IsTw) (a : 
   unfold twTopDepth
   omega
 
+/- English proof (translation)
+Establish `hD` using `ht.deep`. Establish `e` using `isTw_iff_canon_eq.1 ht`. Use `revert hOk b hY`. Rewrite using `[ht.idx_eq a, ht.cst_eq a]`. Introduce `hOk b hY`.
+
+Conclude with `kerEquivC_tw W I.Ch I.sel (I.tup a) I.A u (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 h.ch_ok (qOf_mod_four B X) I.glob h.ch_tied h.weil (val_of_ok h) h.hm (Q_notMem_of_ok h a) (fun P _ => degOne_of_ok h a P) (root_of_ok h hD a) (fun P _ => sqrt_of_ok h a P) (fu …`.
+-/
 theorem kerEquivC_of_isTw {B : Base} {X : PreX B.toPre} {I : TC B X} (ht : I.IsTw) (h : I.Ok)
     (W : Wts B.fields (B.primes X).Word B.R) (a : I.ι) (u : B.Word)
     (hOk : ChTh.Ok (Ch := I.Ch) (I.cst a) (chTh W I.Ch I.sel (I.tup a) (I.cst a) I.A u (B.R.m - 2)))

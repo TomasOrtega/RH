@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `A.cover (h z)`. Establish `hcz : ContinuousAt h z` using `hc.continuousAt hV`. Establish `h1 : AnalyticAt ℂ (A.chart k ∘ h) z` using `ha k z ⟨mem_of_mem_nhds hV, hk⟩`. Establish `h2 : AnalyticAt ℂ (g ∘ (A.chart k).symm) ((A.chart k ∘ h) z)`. Use `hg k _ ⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations.
+
+Simplify `hz` using `[Set.mem_preimage, (A.chart k).left_inv hk]`. Establish `h3 : AnalyticAt ℂ ((g ∘ (A.chart k).symm) ∘ (A.chart k ∘ h)) z` using `h2.comp h1`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [hcz.preimage_mem_nhds ((A.chart k).open_source.mem_nhds hk)] with u hu`. Simplify using `[(A.chart k).left_inv hu]`.
+-/
 theorem analyticAt_comp_of_holoOn {D e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas D X) {V : Set (Fin e → ℂ)}
     {Y : Set X} {g : X → ℂ} (hg : A.HoloOn Y g) {h : (Fin e → ℂ) → X} {z : Fin e → ℂ}
     (hV : V ∈ 𝓝 z) (hc : ContinuousOn h V)
@@ -27,6 +32,33 @@ theorem analyticAt_comp_of_holoOn {D e : ℕ} {X : Type} [TopologicalSpace X] (A
   filter_upwards [hcz.preimage_mem_nhds ((A.chart k).open_source.mem_nhds hk)] with u hu
   simp [(A.chart k).left_inv hu]
 
+/- English proof (translation)
+Introduce `K _ ι _ D σ S P Re a e V ΦY zex z hJ hdeg hbr hV hzV hana hmc hex`. Establish `hbij : Function.Bijective Re.π` using `realis_bijective_of_degree_one K ι D σ S P Re hdeg hbr`. Use `set h : (Fin e → ℂ) → Re.R.X := fun u => Function.surjInv hbij.2 (ΦY u) with hdef`. Establish `hπ : ∀ u, Re.π (h u) = ΦY u` using `fun u => Function.surjInv_eq hbij.2 (ΦY u)`. Establish `hSO : ∀ u ∈ V, SameOrbit (Re.R.lift (h u) (h u)) (zex u)` using `fun u hu => hex u hu (h u) (hπ u)`.
+
+Take `⟨hc, hch⟩` from `holo_of_lift_orbit_top K ι P Re.J D e Re.R V zex h hJ hV hana hmc hSO`. Establish `hVn : V ∈ 𝓝 z` using `hV.mem_nhds hzV`. Establish `hcz : ContinuousAt h z` using `hc.continuousAt hVn`. Take `⟨W, hW, hxW, G, hG, hGeq⟩` from `Re.ref_pot a (h z) (Set.mem_univ _)`. Establish `hGh : AnalyticAt ℂ (G ∘ h) z` using `analyticAt_comp_of_holoOn Re.R.A hG hVn hc hch hxW`.
+
+Establish `hxU : h z ∈ Re.R.U (h z)` using `Re.R.mem_U _`. Establish `hi : ∀ k, ∃ i, zex z ⟨k, i⟩ ≠ 0` using `(hmc z hzV).1`. Use `choose i hi using hi`. Use `set c : K → (Fin e → ℂ) → ℂ := fun k u => Re.R.lift (h z) (h u) ⟨k, i k⟩ / zex u ⟨k, i k⟩ with hcdef`. Establish `hcan : ∀ k, AnalyticAt ℂ (c k) z` using `fun k => AnalyticAt.div (analyticAt_comp_of_holoOn Re.R.A (Re.R.holo (h z) ⟨k, i k⟩) hVn hc hch hxU) (hana _ z hzV) (hi k)`.
+
+Establish `hcz0 : ∀ k, c k z ≠ 0`. Introduce `k`. Take `⟨d, hd, hdz⟩` from `hSO z hzV`. Establish `: Re.R.lift (h z) (h z) ⟨k, i k⟩ = d k * zex z ⟨k, i k⟩` using `congrFun hdz ⟨k, i k⟩`. Simplify using `only [hcdef, this]`.
+
+Conclude with `div_ne_zero (mul_ne_zero (hd k) (hi k)) (hi k)`. Establish `hL : ∀ k, ∃ Lk : (Fin e → ℂ) → ℂ, AnalyticAt ℂ Lk z ∧ ∀ᶠ z' in 𝓝 z, Real.log ‖c k z'‖ = (Lk z').re` using `fun k => log_norm_eventually_eq_re_analyticAt e (c k) z (hcan k) (hcz0 k)`. Use `choose L hLan hLeq using hL`. Use `⟨fun u => (∑ k, (((Re.ref a).a k : ℤ) : ℂ) * L k u) - G (h u), ?_, ?_⟩` and prove the remaining obligations. Use `AnalyticAt.sub ?_ hGh` and prove the remaining obligations.
+
+Conclude with `Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul (hLan k)`. Establish `hne : ∀ᶠ u in 𝓝 z, ∀ k, zex u ⟨k, i k⟩ ≠ 0` using `eventually_all.2 fun k => (hana _ z hzV).continuousAt.eventually_ne (hi k) filter_upwards [hVn, hne, eventually_all.2 hLeq, hcz.preimage_mem_nhds (hW.mem_nhds hxW), hcz.preimage_mem_nhds ((Re.R.isOpen_U (h z)).mem_nhds hxU)] with u huV hune huL huW huU`. Establish `hcompat` using `Re.R.compat (h z) (h u) (h u) ⟨huU, Re.R.mem_U _⟩`. Take `⟨d₁, hd₁, e₁⟩` from `hcompat`. Take `⟨d₂, hd₂, e₂⟩` from `hSO u huV`.
+
+Establish `hlift : Re.R.lift (h z) (h u) = fun p => (d₁ p.1 * d₂ p.1) * zex u p`. Use function extensionality and compare the values at `p`. Rewrite using `[congrFun e₁ p, congrFun e₂ p, mul_assoc]`. Establish `hck : ∀ k, c k u = d₁ k * d₂ k`. Introduce `k`.
+
+Simplify using `only [hcdef, hlift]`. Clear denominators, using `[hune k]` for the nonvanishing conditions. Establish `hlift' : Re.R.lift (h z) (h u) = fun p => c p.1 u * zex u p`. Rewrite using `[hlift]`. Use function extensionality and compare the values at `p`.
+
+Rewrite using `[hck]`. Establish `hcne : ∀ k, c k u ≠ 0` using `fun k => by`. Rewrite using `[hck]`. Conclude with `mul_ne_zero (hd₁ k) (hd₂ k)`. Establish `hsm` using `(Re.ref a).smul (fun k => c k u) (zex u) hcne`.
+
+Establish `hpos` using `(Re.ref a).pos (zex u) (hmc u huV).1`. Establish `hlog : Real.log ((Re.ref a).h (Re.R.lift (h z) (h u))) = (∑ k, ((Re.ref a).a k : ℝ) * Real.log ‖c k u‖) + Real.log ((Re.ref a).h (zex u))`. Rewrite using `[hlift', hsm, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hcne k))) hpos.ne', Real.log_prod]`. Simplify using `only [Real.log_zpow]`. Conclude with `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hcne k))`.
+
+Establish `hG' : Real.log ((Re.ref a).h (Re.R.lift (h z) (h u))) - (S.th a).φ (ΦY z) (ΦY u) = (G (h u)).re`. Use `hGeq (h u) huW` as an intermediate fact. Simplify `this` using `only [potOf, LocPot.pullback, hπ]`. Establish `hre : ((∑ k, (((Re.ref a).a k : ℤ) : ℂ) * L k u) - G (h u)).re = (∑ k, ((Re.ref a).a k : ℝ) * Real.log ‖c k u‖) - (G (h u)).re`. Rewrite using `[Complex.sub_re, Complex.re_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[huL k]`. Simplify using the standard rewrite rules. Rewrite using `[hre]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ref_pot_along_exact_family : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) (S : AnSys D σ) (P : Ideal (MRing ι)) (Re : Realis S P) (a : σ) (e : ℕ) (V : Set (Fin e → ℂ)) (ΦY : (Fin e → ℂ) → S.X) (zex : (Fin e → ℂ) → (Σ k, ι k) → ℂ) (z : Fin e → ℂ), Re.J = ⊤ → Re.deg = 1 → Re.br = ∅ → IsOpen V → z ∈ V → (∀ q, AnalyticOnNhd ℂ (fun u => zex u q) V) → (∀ u ∈ V, zex u ∈ mcPts P) → (∀ u ∈ V, ∀ x₀, Re.π x₀ = ΦY u → SameOrbit (Re.R.lift x₀ x₀) (zex u)) → ∃ Hh : (Fin e → ℂ) → ℂ, AnalyticAt ℂ Hh z ∧ ∀ᶠ z' in 𝓝 z, (S.th a).φ (ΦY z) (ΦY z') = Real.log ((Re.ref a).h (zex z')) + (Hh z').re := by
   intro K _ ι _ D σ S P Re a e V ΦY zex z hJ hdeg hbr hV hzV hana hmc hex
   have hbij : Function.Bijective Re.π := realis_bijective_of_degree_one K ι D σ S P Re hdeg hbr

@@ -4,6 +4,19 @@ open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.Growth
 
+/- English proof (translation)
+Establish `hmul : ∀ γ : Γ, Measurable fun x : G => (γ : G) * x` using `fun γ => measurable_const_mul _`. Establish `hterm : ∀ (γ : Γ) (x : G), M.indicator f (γ • x) = f x * (M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x))`. Introduce `γ x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Distinguish the cases in `hx : (γ : G) * x ∈ M`.
+
+Simplify using `[Set.indicator_of_mem hx, hinv γ γ.2 x]`. Simplify using `[Set.indicator_of_notMem hx]`. Establish `hcount : ∀ x : G, ∑' γ : Γ, M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x) ≤ n`. Introduce `x`. Establish `h1 : (fun γ : Γ => M.indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * x)) = ({γ : Γ | (γ : G) * x ∈ M}).indicator (fun _ => (1 : ℝ≥0∞))`.
+
+Use function extensionality and compare the values at `γ`. Distinguish the cases in `hx : (γ : G) * x ∈ M`. Simplify using `[Set.indicator, hx]`. Simplify using `[Set.indicator, hx]`. Rewrite using `[h1, ← tsum_subtype, ENNReal.tsum_set_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_tsum]`. Introduce `γ`. Conclude with `((hf.indicator hM).comp (hmul γ)).aemeasurable`.
+
+Use `_ ≤ ∫⁻ x in 𝓕, n * f x ∂μ := by`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Simplify using `only [hterm]`. Rewrite using `[ENNReal.tsum_mul_left, mul_comm]`. Conclude with `mul_le_mul_left (hcount x) _`.
+
+Use `_ = n * ∫⁻ x in 𝓕, f x ∂μ := by`. Rewrite using `[lintegral_const_mul _ hf]`.
+-/
 theorem lintegral_le_mul_of_encard_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)

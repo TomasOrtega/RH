@@ -11,6 +11,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 namespace GlobalTheory.GalClose
 open GlobalTheory.CuspRep
+/- English proof (translation)
+Use `host_isCMField D.host` as an intermediate fact. Break down `Nat.eq_zero_or_pos a with rfl | ha1` into its components or cases. Use `haveI := P.cg.zero`. Conclude with `isEmptyElim π`. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (P.cg.e a π).1`.
+
+Establish `hmk : CG.mk π₀ = (P.cg.e a π).1` using `hπ₀`. Establish `hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ` using `fun τ => by`. Rewrite using `[P.cg.inf, CGu.infChar, ← hmk]`. Establish `hr₀ : (CG.mk π₀).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact.
+
+Rewrite `this` using `[hinf]`. Then use the resulting hypothesis. Take `⟨w₀, hw⟩` from `(hRP D.host.E a ha1 π₀ hr₀).1`. Use `⟨(w₀ : ℂ), fun τ => ?_⟩` and prove the remaining obligations. Establish `hc : τ.comp (D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E).toRingEquiv.toRingHom = (starRingEnd ℂ).comp τ` using `RingHom.ext fun x => GlobalTheory.SplitRowProbe.conj_sqrt D.host τ x`. Rewrite using `[hc, hinf, hinf, hw]`.
+-/
 theorem purity_alt (hRP : GlobalTheory.Published.RegularAlgebraicPurity) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D)
     (a : ℕ) (π : D.naut.CG a) (hr : D.naut.ralg π) : ∃ w₀ : ℂ, ∀ τ : D.host.E →+* ℂ,
       D.naut.infG π (τ.comp (D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E).toRingEquiv.toRingHom) =

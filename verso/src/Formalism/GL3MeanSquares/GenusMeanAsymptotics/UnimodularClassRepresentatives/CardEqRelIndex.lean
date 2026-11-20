@@ -16,6 +16,9 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 def mu (𝔮 I : Ideal (𝓞 F)) : ℕ := sSup {e : ℕ | I ≤ 𝔮 ^ e}
 
+/- English proof (translation)
+Set `v` to `BrA.maxEquiv F ⟨𝔮, h𝔮⟩`. Establish `hIJ : I * J ≠ ⊥` using `mul_ne_zero hI hJ`. Establish `e : ∀ X : Ideal (𝓞 F), X ≠ ⊥ → mu 𝔮 X = multiplicity v.asIdeal X` using `fun X hX => BrA.sSup_le_pow v hX`. Rewrite using `[e _ hIJ, e _ hI, e _ hJ]`. Conclude with `multiplicity_mul v.prime (FiniteMultiplicity.of_not_isUnit v.prime.not_isUnit hIJ)`.
+-/
 theorem mu_mul {𝔮 : Ideal (𝓞 F)} (h𝔮 : 𝔮.IsMaximal) {I J : Ideal (𝓞 F)} (hI : I ≠ ⊥)
     (hJ : J ≠ ⊥) : mu 𝔮 (I * J) = mu 𝔮 I + mu 𝔮 J := by
   let v := BrA.maxEquiv F ⟨𝔮, h𝔮⟩
@@ -25,6 +28,9 @@ theorem mu_mul {𝔮 : Ideal (𝓞 F)} (h𝔮 : 𝔮.IsMaximal) {I J : Ideal (�
   rw [e _ hIJ, e _ hI, e _ hJ]
   exact multiplicity_mul v.prime (FiniteMultiplicity.of_not_isUnit v.prime.not_isUnit hIJ)
 
+/- English proof (translation)
+Unfold `discrIdeal`. Apply `Ideal.span_mono` to reduce the goal to its premises. Introduce and unpack `z ⟨x, hx, e⟩`. Conclude with `⟨x, fun i => hAB (hx i), e⟩`.
+-/
 theorem discrIdeal_mono {h : V →ₗ⋆[K] V →ₗ[K] K} {A B : Submodule (𝓞 K) V} (hAB : A ≤ B) :
     discrIdeal h A ≤ discrIdeal h B := by
   unfold discrIdeal
@@ -32,6 +38,11 @@ theorem discrIdeal_mono {h : V →ₗ⋆[K] V →ₗ[K] K} {A B : Submodule (�
   rintro z ⟨x, hx, e⟩
   exact ⟨x, fun i => hAB (hx i), e⟩
 
+/- English proof (translation)
+Establish `hp` using `h𝔭.isPrime`. Take `⟨n, hn, hnx⟩` from `LocF.exists_zsmul_le hM hN`. Establish `hn' : (n : 𝓞 F) ≠ 0` using `by exact_mod_cast hn`. Take `⟨r, u, hu, hdvd⟩` from `D2.exists_mul_dvd h𝔭 hn'`. Use `⟨r, fun a ha y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LocF.mem_locF_iff hp]`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hdvd a ha`. Rewrite using `[smul_smul, ← map_mul, hd, map_mul, mul_comm, mul_smul, LocF.algebraMap_intCast_smul]`. Conclude with `N.smul_mem _ (hnx y hy)`.
+-/
 theorem exists_pow_smul {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N : Submodule (𝓞 K) V}
     (hM : Submodule.IsLattice K M) (hN : Submodule.IsLattice K N) :
     ∃ r : ℕ, ∀ a ∈ 𝔭 ^ r, ∀ y ∈ M, ι a • y ∈ locF 𝔭 N := by
@@ -46,12 +57,18 @@ theorem exists_pow_smul {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N : 
   rw [smul_smul, ← map_mul, hd, map_mul, mul_comm, mul_smul, LocF.algebraMap_intCast_smul]
   exact N.smul_mem _ (hnx y hy)
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `(LocF.mem_locF_iff hp N _).1 hx`. Use `(LocF.mem_locF_iff hp N x).2 ⟨s * t, fun hm => (hp.mem_or_mem hm).elim hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul]` and apply the resulting hypothesis.
+-/
 theorem mem_locF_of_smul {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) {N : Submodule (𝓞 K) V} {t : 𝓞 F}
     (ht : t ∉ 𝔭) {x : V} (hx : ι t • x ∈ locF 𝔭 N) : x ∈ locF 𝔭 N := by
   obtain ⟨s, hs, h⟩ := (LocF.mem_locF_iff hp N _).1 hx
   refine (LocF.mem_locF_iff hp N x).2 ⟨s * t, fun hm => (hp.mem_or_mem hm).elim hs ht, ?_⟩
   rwa [map_mul, mul_smul]
 
+/- English proof (translation)
+Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff h𝔭.isPrime M x).1 hx`. Apply `mem_locF_of_smul h𝔭.isPrime ht` to reduce the goal to its premises. Rewrite using `[smul_comm]`. Conclude with `hr a ha _ htx`.
+-/
 theorem pow_smul_locF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N : Submodule (𝓞 K) V} {r : ℕ}
     (hr : ∀ a ∈ 𝔭 ^ r, ∀ y ∈ M, ι a • y ∈ locF 𝔭 N) {a : 𝓞 F} (ha : a ∈ 𝔭 ^ r) {x : V}
     (hx : x ∈ locF 𝔭 M) : ι a • x ∈ locF 𝔭 N := by
@@ -60,6 +77,11 @@ theorem pow_smul_locF {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N : Su
   rw [smul_comm]
   exact hr a ha _ htx
 
+/- English proof (translation)
+Apply `le_antisymm (LocF.locF_mono 𝔮 inf_le_left)` to reduce the goal to its premises. Establish `hnle : ¬ 𝔭 ^ r ≤ 𝔮` using `fun hle => hne (h𝔭.eq_of_le h𝔮.ne_top (h𝔮.isPrime.le_of_pow_le hle)).symm`. Take `⟨a, ha, ha𝔮⟩` from `SetLike.not_le_iff_exists.mp hnle`. Establish `hM : M ≤ locF 𝔮 (M ⊓ locF 𝔭 N)`. Introduce `y hy`.
+
+Conclude with `(LocF.mem_locF_iff h𝔮.isPrime _ y).2 ⟨a, ha𝔮, Submodule.mem_inf.2 ⟨M.smul_mem _ hy, hr a ha y hy⟩⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem locF_inf_of_ne {𝔭 𝔮 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (h𝔮 : 𝔮.IsMaximal) (hne : 𝔮 ≠ 𝔭)
     {M N : Submodule (𝓞 K) V} {r : ℕ} (hr : ∀ a ∈ 𝔭 ^ r, ∀ y ∈ M, ι a • y ∈ locF 𝔭 N) :
     locF 𝔮 (M ⊓ locF 𝔭 N) = locF 𝔮 M := by
@@ -74,6 +96,11 @@ theorem locF_inf_of_ne {𝔭 𝔮 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (h�
   calc locF 𝔮 M ≤ locF 𝔮 (locF 𝔮 (M ⊓ locF 𝔭 N)) := LocF.locF_mono 𝔮 hM
     _ = _ := LocF.locF_idem 𝔮 _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf (LocF.locF_mono 𝔭 inf_le_left) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Take `⟨t, ht, htx⟩` from `(LocF.mem_locF_iff hp M x).1 (Submodule.mem_inf.1 hx).1`.
+
+Conclude with `(LocF.mem_locF_iff hp _ x).2 ⟨t, ht, Submodule.mem_inf.2 ⟨htx, (locF 𝔭 N).smul_mem _ (Submodule.mem_inf.1 hx).2⟩⟩`.
+-/
 theorem locF_inf (𝔭 : Ideal (𝓞 F)) (hp : 𝔭.IsPrime) (M N : Submodule (𝓞 K) V) :
     locF 𝔭 (M ⊓ locF 𝔭 N) = locF 𝔭 M ⊓ locF 𝔭 N := by
   apply le_antisymm
@@ -85,6 +112,17 @@ theorem locF_inf (𝔭 : Ideal (𝓞 F)) (hp : 𝔭.IsPrime) (M N : Submodule (�
     exact (LocF.mem_locF_iff hp _ x).2 ⟨t, ht, Submodule.mem_inf.2
       ⟨htx, (locF 𝔭 N).smul_mem _ (Submodule.mem_inf.1 hx).2⟩⟩
 
+/- English proof (translation)
+Use `set B' := (locF 𝔭 M ⊓ locF 𝔭 N).submoduleOf (locF 𝔭 M) with hB'`. Set `φ : ↥M →ₗ[𝓞 K] ↥(locF 𝔭 M) ⧸ B'` to `B'.mkQ ∘ₗ Submodule.inclusion (LocF.le_locF 𝔭 M)`. Establish `hsurj : Function.Surjective φ`. Introduce `z`. Proceed by induction on `z using Submodule.Quotient.induction_on with`.
+
+Consider the case `H x`. Take `⟨c, hc, hcx⟩` from `localizedQuotients.exists_approx h𝔭 M r x.2`. Use `⟨⟨_, hcx⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Express the relevant statement in the definitionally equal form `(ι c • (x : V) - (x : V)) ∈ locF 𝔭 M ⊓ locF 𝔭 N`. Establish `e : ι c • (x : V) - (x : V) = ι (c - 1) • (x : V)`. Rewrite using `[map_sub, map_one, sub_smul, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.mem_inf.2 ⟨(locF 𝔭 M).smul_mem _ x.2, pow_smul_locF h𝔭 hr hc x.2⟩`.
+
+Establish `hker : (LinearMap.ker φ).toAddSubgroup = (M ⊓ locF 𝔭 N).toAddSubgroup.addSubgroupOf M.toAddSubgroup`. Use extensionality with `y`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker]`. Simplify using `only [φ, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `((y : V) ∈ locF 𝔭 M ⊓ locF 𝔭 N) ↔ (y : V) ∈ M ⊓ locF 𝔭 N`.
+
+Rewrite using `[Submodule.mem_inf, Submodule.mem_inf]`. Conclude with `⟨fun h => ⟨y.2, h.2⟩, fun h => ⟨LocF.le_locF 𝔭 M y.2, h.2⟩⟩`. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, ← hker]`. Conclude with `(Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv).symm`.
+-/
 theorem card_eq_relIndex {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N : Submodule (𝓞 K) V} {r : ℕ}
     (hr : ∀ a ∈ 𝔭 ^ r, ∀ y ∈ M, ι a • y ∈ locF 𝔭 N) :
     Nat.card (↥(locF 𝔭 M) ⧸ (locF 𝔭 M ⊓ locF 𝔭 N).submoduleOf (locF 𝔭 M)) =
@@ -116,6 +154,13 @@ theorem card_eq_relIndex {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {M N :
   rw [AddSubgroup.relIndex, AddSubgroup.index, ← hker]
   exact (Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv).symm
 
+/- English proof (translation)
+Take `⟨n, hn, hnx⟩` from `LocF.exists_zsmul_le hM hN`. Establish `f1 : Module.Finite (𝓞 K) M` using `Module.Finite.iff_fg.mpr hM.fg`. Establish `f2 : Module.Finite ℤ M` using `Module.Finite.trans (𝓞 K) M`. Establish `f3 : AddGroup.FG M.toAddSubgroup` using `Module.Finite.iff_addGroup_fg.mp f2`. Establish `: Finite (↥M.toAddSubgroup ⧸ (M ⊓ locF 𝔭 N).toAddSubgroup.addSubgroupOf M.toAddSubgroup)`.
+
+Apply `AddCommGroup.finite_of_fg_isAddTorsion` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H q`. Rewrite using `[isOfFinAddOrder_iff_zsmul_eq_zero]`.
+
+Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_zsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `Submodule.mem_inf.2 ⟨zsmul_mem q.2 n, LocF.le_locF 𝔭 N (hnx _ q.2)⟩`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero {M N : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M)
     (hN : Submodule.IsLattice K N) (𝔭 : Ideal (𝓞 F)) :
     (M ⊓ locF 𝔭 N).toAddSubgroup.relIndex M.toAddSubgroup ≠ 0 := by
@@ -134,6 +179,27 @@ theorem relIndex_ne_zero {M N : Submodule (𝓞 K) V} (hM : Submodule.IsLattice 
       exact Submodule.mem_inf.2 ⟨zsmul_mem q.2 n, LocF.le_locF 𝔭 N (hnx _ q.2)⟩
   exact AddSubgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Use `set M'' := M ⊓ locF 𝔭 N with hM''`. Use `set n := M''.toAddSubgroup.relIndex M.toAddSubgroup with hn`. Establish `hn0 : n ≠ 0` using `relIndex_ne_zero hM hN 𝔭`. Take `⟨r, hr⟩` from `exists_pow_smul h𝔭 hM hN`. Establish `hle : M'' ≤ M` using `inf_le_left`.
+
+Establish `hnorm` using `BallB.absNorm_discrIdeal_of_le hK hMi (Module.finBasis K V) n M'' hle rfl hn0`. Rewrite `hnorm` using `[BrA.discrIdeal_eq_map hF hs M'', BrA.discrIdeal_eq_map hF hs M, BrA.absNorm_map hK hF, BrA.absNorm_map hK hF, ← mul_pow]`. Establish `hnorm' : Ideal.absNorm (BrA.discrF F h M'') = n * Ideal.absNorm (BrA.discrF F h M)` using `Nat.pow_left_injective (by norm_num : (2 : ℕ) ≠ 0) hnorm`. Establish `hD : BrA.discrF F h M ≠ ⊥`. Introduce `hb`.
+
+Apply `LocF.discrIdeal_ne_bot (LocF.aniso_of_totPosDef hd) hM hMi` to reduce the goal to its premises. Rewrite using `[BrA.discrIdeal_eq_map hF hs M, hb, Ideal.map_bot]`. Establish `hdvd : BrA.discrF F h M ∣ BrA.discrF F h M''`. Rewrite using `[Ideal.dvd_iff_le]`. Conclude with `Ideal.comap_mono (discrIdeal_mono hle)`.
+
+Take `⟨J, hJ⟩` from `hdvd`. Establish `hDn : Ideal.absNorm (BrA.discrF F h M) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]` and apply the resulting hypothesis. Establish `hJn : Ideal.absNorm J = n`. Rewrite `hnorm'` using `[hJ, map_mul, mul_comm]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hDn) hnorm'`. Establish `hJ0 : J ≠ ⊥`. Introduce `hb`. Rewrite `hJn` using `[hb, Ideal.absNorm_bot]`. Conclude with `hn0 hJn.symm`.
+
+Establish `hother : ∀ 𝔮 : {𝔮 : Ideal (𝓞 F) // 𝔮.IsMaximal}, 𝔮.1 ≠ 𝔭 → mu 𝔮.1 J = 0`. Introduce `𝔮 hne`. Establish `e1 : vd h M'' 𝔮.1 = vd h M 𝔮.1`. Rewrite using `[← localizedQuotients.vd_locF hF h M'' 𝔮.2, hM'', locF_inf_of_ne h𝔭 𝔮.2 hne hr, localizedQuotients.vd_locF hF h M 𝔮.2]`. Rewrite `e1` using `[BrA.vd_eq hF hs M'', BrA.vd_eq hF hs M, hJ]`.
+
+Express the relevant statement in the definitionally equal form `mu 𝔮.1 (_ * J) = mu 𝔮.1 _ at e1`. Rewrite `e1` using `[mu_mul 𝔮.2 hD hJ0]`. Use linear arithmetic over natural numbers and integers. Establish `hJn' : Ideal.absNorm J = Ideal.absNorm 𝔭 ^ mu 𝔭 J`. Use `BrA.absNorm_eq_tprod hJ0` as an intermediate fact.
+
+Rewrite `this` using `[tprod_eq_mulSingle ⟨𝔭, h𝔭⟩]`. Establish `h3 : (Ideal.absNorm J : ℝ) = ((Ideal.absNorm 𝔭 ^ mu 𝔭 J : ℕ) : ℝ)`. Rewrite using `[Nat.cast_pow]`. Conclude with `this`. Conclude with `h3` after adjusting the coercions.
+
+Introduce `𝔮 hne`. Rewrite using `[show sSup {e : ℕ | J ≤ 𝔮.1 ^ e} = mu 𝔮.1 J from rfl, hother 𝔮 (fun h => hne (Subtype.ext h)), pow_zero]`. Establish `hvd : vd h M'' 𝔭 = vd h M 𝔭 + mu 𝔭 J`. Rewrite using `[BrA.vd_eq hF hs M'', BrA.vd_eq hF hs M, hJ]`. Conclude with `mu_mul h𝔭 hD hJ0`.
+
+Rewrite using `[hvd, pow_add, ← hJn', hJn, mul_comm]`.
+-/
 theorem vd_mul {𝔭 : Ideal (𝓞 F)} (hF : IsFixF K F) [FiniteDimensional K V] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)
     {M N : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M) (hMi : Formalism.HermitianLatticesTheory.IsIntegralLat h M)

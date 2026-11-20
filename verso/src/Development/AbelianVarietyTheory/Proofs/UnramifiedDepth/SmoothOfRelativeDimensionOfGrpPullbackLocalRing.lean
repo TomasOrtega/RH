@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftDim
 
+/- English proof (translation)
+Establish `: PreconnectedSpace (PrimeSpectrum R)` using `⟨isPreconnected_of_forall (IsLocalRing.closedPoint R) fun y _ => ⟨closure {y}, Set.subset_univ _, (IsLocalRing.specializes_closedPoint y).mem_closure, subset_closure rfl, isPreconnected_singleton.closure⟩⟩`. Conclude with `⟨inferInstance⟩`.
+-/
 private theorem connectedSpace_primeSpectrum (R : Type) [CommRing R] [IsLocalRing R] :
     ConnectedSpace (PrimeSpectrum R) := by
   have : PreconnectedSpace (PrimeSpectrum R) :=
@@ -27,6 +30,11 @@ private theorem connectedSpace_primeSpectrum (R : Type) [CommRing R] [IsLocalRin
         isPreconnected_singleton.closure⟩⟩
   exact ⟨inferInstance⟩
 
+/- English proof (translation)
+Introduce `R' O _ _ _ _ π G _ G' _ ψ g hG hp hg`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: ConnectedSpace (Spec (CommRingCat.of R'))` using `connectedSpace_primeSpectrum R'`. Establish `: ConnectedSpace G.left` using `GeometricallyConnected.connectedSpace G.hom G.hom.isOpenMap`.
+
+Take `⟨n, hn⟩` from `Geo.Tor.exists_dim_of_preconnected G.hom (Classical.arbitrary _)`. Establish `hn' : SmoothOfRelativeDimension n G'.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback hp.1 hn`. Take `⟨p⟩ : Nonempty (PrimeSpectrum O)` from `inferInstance`. Establish `e : n = g` using `H1.dim_unique _ hn' hg ((η[G']).left p)`. Conclude with `e ▸ hn`.
+-/
 theorem smoothOfRelativeDimension_of_isGrpPullback : ∀ (R' O : Type) [CommRing R'] [IsLocalRing R'] [CommRing O] [Nontrivial O] (π : R' →+* O) (G : Over (Spec (CommRingCat.of R'))) [GrpObj G] (G' : Over (Spec (CommRingCat.of O))) [GrpObj G'] (ψ : G'.left ⟶ G.left) (g : ℕ), IsAbelianScheme G → Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom π)) ψ → SmoothOfRelativeDimension g G'.hom → SmoothOfRelativeDimension g G.hom := by
   intro R' O _ _ _ _ π G _ G' _ ψ g hG hp hg
   have := hG.smooth

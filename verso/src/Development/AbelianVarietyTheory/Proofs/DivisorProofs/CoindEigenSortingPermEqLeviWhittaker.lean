@@ -7,6 +7,9 @@ namespace GlobalTheory.FinGL.SortWh
 
 open GlobalTheory.FinGL Formalism.L2.DIV Module
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) (S : Set G) (χ : G → ℂ)
     (v : V) : v ∈ eig τ S χ ↔ ∀ g ∈ S, τ g v = χ g • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
@@ -16,9 +19,17 @@ variable {F : Type} [Field F] {r : ℕ}
 def bd (b : Fin r → ℕ) (M : Matrix (Fin r) (Fin r) F) : Matrix (Fin r) (Fin r) F :=
   Matrix.of fun i k => if b i = b k then M i k else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bd_apply (b : Fin r → ℕ) (M : Matrix (Fin r) (Fin r) F) (i k : Fin r) :
     bd b M i k = if b i = b k then M i k else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[bd_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[Matrix.one_apply_ne]`.
+
+Introduce and unpack `rfl`. Conclude with `h rfl`.
+-/
 theorem bd_one (b : Fin r → ℕ) : bd b (1 : Matrix (Fin r) (Fin r) F) = 1 := by
   ext i k
   rw [bd_apply]
@@ -28,11 +39,21 @@ theorem bd_one (b : Fin r → ℕ) : bd b (1 : Matrix (Fin r) (Fin r) F) = 1 := 
     rintro rfl
     exact h rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [bd_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem bd_bd (b : Fin r → ℕ) (M : Matrix (Fin r) (Fin r) F) : bd b (bd b M) = bd b M := by
   ext i k
   simp only [bd_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [bd_apply, Matrix.mul_apply]`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (b l) (b i) with h1 | h1 | h1` into its components or cases.
+
+Rewrite using `[hM h1]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos h1.symm, if_pos (h1.trans h)]`. Rewrite using `[hN (show b k < b l by omega)]; simp`. Use `(Finset.sum_eq_zero fun l _ => ?_).symm` and prove the remaining obligations.
+
+Distinguish the cases in `h1 : b i = b l`. Rewrite using `[if_neg (show ¬ b l = b k by omega), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+-/
 theorem bd_mul (b : Fin r → ℕ) {M N : Matrix (Fin r) (Fin r) F} (hM : M.BlockTriangular b) (hN : N.BlockTriangular b) :
     bd b (M * N) = bd b M * bd b N := by
   ext i k
@@ -48,6 +69,9 @@ theorem bd_mul (b : Fin r → ℕ) {M N : Matrix (Fin r) (Fin r) F} (hM : M.Bloc
     · rw [if_neg (show ¬ b l = b k by omega), mul_zero]
     · rw [if_neg h1, zero_mul]
 
+/- English proof (translation)
+Introduce `i k h`. Rewrite using `[bd_apply, if_neg (by omega)]`.
+-/
 theorem bd_tri (b : Fin r → ℕ) (M : Matrix (Fin r) (Fin r) F) : (bd b M).BlockTriangular b := by
   intro i k h
   rw [bd_apply, if_neg (by omega)]
@@ -57,10 +81,20 @@ def levi (b : Fin r → ℕ) (p : blockTri (κ := F) b) : blockTri (κ := F) b :
     by rw [← bd_mul b p.2 (p⁻¹).2, ← Units.val_mul]; simp [bd_one],
     by rw [← bd_mul b (p⁻¹).2 p.2, ← Units.val_mul]; simp [bd_one]⟩, bd_tri b _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levi_apply (b : Fin r → ℕ) (p : blockTri (κ := F) b) (i k : Fin r) :
     ((levi b p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k =
       if b i = b k then ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k else 0 := rfl
 
+/- English proof (translation)
+Establish `h : σ (p⁻¹ * levi b p) = 1`. Use `hσ.infl _ fun i k hik => ?_` and prove the remaining obligations. Establish `h1 : bd b ((((p⁻¹ * levi b p : blockTri (κ` using `F) b)) : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = 1 := by`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, bd_mul b (p⁻¹).2 (levi b p).2]`. Establish `: bd b ((levi b p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) = bd b ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F)` using `bd_bd b _`.
+
+Rewrite using `[this, ← bd_mul b (p⁻¹).2 p.2, ← Units.val_mul]`. Simplify using `[bd_one]`. Establish `h2` using `congrFun (congrFun h1 i) k`. Rewrite `h2` using `[bd_apply, if_pos hik]`. Then use the resulting hypothesis. Establish `: levi b p = p * (p⁻¹ * levi b p)` using `by group`.
+
+Rewrite using `[this, map_mul, h, mul_one]`.
+-/
 theorem sigma_levi {V : Type} [AddCommGroup V] [Module ℂ V] {b : Fin r → ℕ}
     {σ : Representation ℂ (blockTri (κ := F) b) V} (hσ : IsCuspDatum b σ) (p : blockTri (κ := F) b) :
     σ (levi b p) = σ p := by
@@ -77,6 +111,9 @@ theorem sigma_levi {V : Type} [AddCommGroup V] [Module ℂ V] {b : Fin r → ℕ
   have : levi b p = p * (p⁻¹ * levi b p) := by group
   rw [this, map_mul, h, mul_one]
 
+/- English proof (translation)
+Unfold `edgeSum`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[levi_apply, if_pos h.2]`. Both sides reduce to the same expression.
+-/
 theorem edgeSum_levi (b : Fin r → ℕ) (p : blockTri (κ := F) b) :
     edgeSum (blkEdge b) (levi b p : GL (Fin r) F) = edgeSum (blkEdge b) (p : GL (Fin r) F) := by
   unfold edgeSum
@@ -89,6 +126,11 @@ section Perm
 
 variable {b : Fin r → ℕ} {j : ℕ} {w : Equiv.Perm (Fin r)}
 
+/- English proof (translation)
+Use `⟨fun hac => h1 a c hac h, fun hw => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy a c with h' | h' | h'` into its components or cases. Conclude with `h'`. Substitute `h'` using the available equality. Conclude with `absurd hw (lt_irrefl _)`.
+
+Conclude with `absurd (h1 c a h' h.symm) (not_lt.2 hw.le)`.
+-/
 theorem lt_iff (h1 : ∀ a c : Fin r, a < c → b (w a) = b (w c) → w a < w c) {a c : Fin r} (h : b (w a) = b (w c)) :
     a < c ↔ w a < w c := by
   refine ⟨fun hac => h1 a c hac h, fun hw => ?_⟩
@@ -97,6 +139,19 @@ theorem lt_iff (h1 : ∀ a c : Fin r, a < c → b (w a) = b (w c) → w a < w c)
   · subst h'; exact absurd hw (lt_irrefl _)
   · exact absurd (h1 c a h' h.symm) (not_lt.2 hw.le)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e1, -⟩`. Establish `hac : a < c` using `(lt_iff h1 h).2 (by rw [Fin.lt_def]; omega)`. Establish `hac' : a.val < c.val` using `hac`. Establish `hc : c.val = a.val + 1`.
+
+Assume the negation of the conclusion as `hne`. Set `e : Fin r` to `⟨a.val + 1, by have := c.2; omega⟩`. Establish `hae : a < e` using `by rw [Fin.lt_def]; simp [e]`. Establish `hec : e < c` using `by rw [Fin.lt_def]; simp only [e]; omega`. Establish `hbe` using `h2 a e c hae.le hec.le h`.
+
+Establish `k1 : (w a).val < (w e).val` using `h1 a e hae hbe.symm`. Establish `k2 : (w e).val < (w c).val` using `h1 e c hec (hbe.trans h)`. Use linear arithmetic over natural numbers and integers. Use `⟨hc, fun hj => h4 a c (by omega) (by omega) h⟩` and prove the remaining obligations. Introduce and unpack `⟨e1, -⟩`.
+
+Use `⟨?_, h⟩` and prove the remaining obligations. Establish `hac : a < c` using `by rw [Fin.lt_def]; omega`. Establish `hw : (w a).val < (w c).val` using `h1 a c hac h`. Assume the negation of the conclusion as `hne`. Set `i : Fin r` to `⟨(w a).val + 1, by have := (w c).2; omega⟩`.
+
+Establish `hai : w a < i` using `by rw [Fin.lt_def]; simp [i]`. Establish `hic : i < w c` using `by rw [Fin.lt_def]; simp only [i]; omega`. Take `⟨e, he⟩` from `w.surjective i`. Establish `k1 : b (w a) ≤ b i` using `hb hai.le`. Establish `k2 : b i ≤ b (w c)` using `hb hic.le`.
+
+Rewrite `hai`, `hic`, `k1`, `k2` using `[← he]`. Establish `l1 : a.val < e.val` using `(lt_iff h1 (by omega)).2 hai`. Establish `l2 : e.val < c.val` using `(lt_iff h1 (by omega)).2 hic`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem edge_iff (hb : Monotone b) (h1 : ∀ a c : Fin r, a < c → b (w a) = b (w c) → w a < w c)
     (h2 : ∀ a e c : Fin r, a ≤ e → e ≤ c → b (w a) = b (w c) → b (w e) = b (w a))
     (h4 : ∀ a c : Fin r, a.val < j → j ≤ c.val → b (w a) ≠ b (w c)) {a c : Fin r} (h : b (w a) = b (w c)) :
@@ -133,6 +188,25 @@ theorem edge_iff (hb : Monotone b) (h1 : ∀ a c : Fin r, a < c → b (w a) = b 
 
 end Perm
 
+/- English proof (translation)
+Introduce `F _ ψ r V _ _ b σ hσ j w x hx h1 h2 h3 h4`. Establish `hsum : ∀ p : blockTri (κ` using `F) b, edgeSum (cutEdge j) (x⁻¹ * (p : GL (Fin r) F) * x) = edgeSum (blkEdge b) (p : GL (Fin r) F) := by`. Introduce `p`. Unfold `edgeSum`. Rewrite using `[← Equiv.sum_comp w (fun i => ∑ k, if blkEdge b i k then ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) i k else 0)]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp w (fun k => if blkEdge b (w a) k then ((p : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (w a) k else 0)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hx]`. Distinguish the cases in `h : b (w a) = b (w c)`.
+
+Simplify using `only [edge_iff hσ.mono h1 h2 h4 h]`. Rewrite using `[if_neg (show ¬ blkEdge b (w a) (w c) from fun h' => h h'.2)] split_ifs with hc`. Conclude with `p.2 (lt_of_le_of_ne (h3 a c hc) (Ne.symm h))`. Both sides reduce to the same expression. Use extensionality with `v`.
+
+Rewrite using `[mem_eig, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce `H p hp`. Establish `hp' : (p : GL (Fin r) F) ∈ unip F r` using `hp`. Establish `hm : x⁻¹ * (levi b p : GL (Fin r) F) * x ∈ unip F r`.
+
+Use `⟨mem_blockTri.2 fun a c hac => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hx, levi_apply] split_ifs with h`. Conclude with `unip_lower hp' (h1 c a hac h.symm)`. Both sides reduce to the same expression. Rewrite using `[hx, levi_apply, if_pos rfl, unip_diag hp']`.
+
+Use `H (levi b p) hm` as an intermediate fact. Rewrite `this` using `[sigma_levi hσ, hsum, edgeSum_levi]`. Conclude with `this`. Introduce `H p hp`. Establish `hp' : x⁻¹ * (p : GL (Fin r) F) * x ∈ unip F r` using `hp`.
+
+Establish `hm : (levi b p : GL (Fin r) F) ∈ unip F r`. Use `⟨mem_blockTri.2 fun i k hik => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `w.surjective i`. Take `⟨c, rfl⟩` from `w.surjective k`. Rewrite using `[levi_apply]`.
+
+Use `split_ifs with h`. Rewrite using `[← hx]`. Conclude with `unip_lower hp' ((lt_iff h1 h.symm).2 hik)`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `w.surjective i`.
+
+Rewrite using `[levi_apply, if_pos rfl, ← hx, unip_diag hp']`. Use `H (levi b p) hm` as an intermediate fact. Rewrite `this` using `[sigma_levi hσ, edgeSum_levi]`. Rewrite using `[hsum]`. Conclude with `this`.
+-/
 theorem eig_conj_eq_leviWh : ∀ (F : Type) [Field F] (ψ : AddChar F ℂ) (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V), IsCuspDatum b σ → ∀ (j : ℕ) (w : Equiv.Perm (Fin r)) (x : GL (Fin r) F), (∀ (g : GL (Fin r) F) (a c : Fin r), ((x⁻¹ * g * x : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) a c = (g : Matrix (Fin r) (Fin r) F) (w a) (w c)) → (∀ a c : Fin r, a < c → b (w a) = b (w c) → w a < w c) → (∀ a e c : Fin r, a ≤ e → e ≤ c → b (w a) = b (w c) → b (w e) = b (w a)) → (∀ a c : Fin r, cutEdge j a c → b (w c) ≤ b (w a)) → (∀ a c : Fin r, a.val < j → j ≤ c.val → b (w a) ≠ b (w c)) → eig σ {p | x⁻¹ * (p : GL (Fin r) F) * x ∈ unip F r} (fun p => ψ (edgeSum (cutEdge j) (x⁻¹ * (p : GL (Fin r) F) * x))) = eig σ {p | (p : GL (Fin r) F) ∈ unip F r} (fun p => ψ (edgeSum (blkEdge b) (p : GL (Fin r) F))) := by
   intro F _ ψ r V _ _ b σ hσ j w x hx h1 h2 h3 h4
   have hsum : ∀ p : blockTri (κ := F) b, edgeSum (cutEdge j) (x⁻¹ * (p : GL (Fin r) F) * x) =

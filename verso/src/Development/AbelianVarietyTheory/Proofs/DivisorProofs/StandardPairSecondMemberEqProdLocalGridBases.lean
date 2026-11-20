@@ -23,14 +23,25 @@ open GlobalTheory.StdPairCone (stdB blk₁ blk₂ IsGLO)
 open GlobalTheory.LFun (locChar locIdele)
 open GlobalTheory.FunObj.Comparison₂ (vEq)
 
+/- English proof (translation)
+The claim follows from `map_sum f p s`.
+-/
 theorem hom_sum {R R' ι : Type} [CommRing R] [CommRing R'] (f : R →+* R') (p : ι → R) (s : Finset ι) :
     f (∑ i ∈ s, p i) = ∑ i ∈ s, f (p i) := map_sum f p s
 
+/- English proof (translation)
+The claim follows from `map_prod f p s`.
+-/
 theorem hom_prod {R R' ι : Type} [CommRing R] [CommRing R'] (f : R →+* R') (p : ι → R) (s : Finset ι) :
     f (∏ i ∈ s, p i) = ∏ i ∈ s, f (p i) := map_prod f p s
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨es, hes, hsum⟩, -⟩` from `he`. Rewrite using `[hsum, hom_sum (toEAf D), hom_sum (cpt (D := D) Q)]`. Use `⟨fun hQ => ?_, fun hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single Q (fun P hP hPQ => (cpt_of_isIdemAt (hes P hP)).2 Q (Ne.symm hPQ)) (fun h => absurd hQ h)]`. Conclude with `(cpt_of_isIdemAt (hes Q hQ)).1`.
+
+Conclude with `Finset.sum_eq_zero fun P hP => (cpt_of_isIdemAt (hes P hP)).2 Q (fun h => hQ (h ▸ hP))`.
+-/
 theorem cpt_idemSum {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) (Q : Pl D.host.E) :
     (Q ∈ S → cpt (D := D) Q (toEAf D e) = 1) ∧ (Q ∉ S → cpt (D := D) Q (toEAf D e) = 0) := by
   obtain ⟨⟨es, hes, hsum⟩, -⟩ := he
@@ -40,6 +51,13 @@ theorem cpt_idemSum {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) (
     exact (cpt_of_isIdemAt (hes Q hQ)).1
   · exact Finset.sum_eq_zero fun P hP => (cpt_of_isIdemAt (hes P hP)).2 Q (fun h => hQ (h ▸ hP))
 
+/- English proof (translation)
+Establish `hloc : ∀ (w : Pl D.host.E) (y : (Kw (D` using `D) w)ˣ), cpt (D := D) Q (toEAf D (locIdele D.host.F w y : AE D)) = (Neutral.B1.finiteSingle D.host.E w (y : Kw (D := D) w)) Q := by`. Introduce `w y`. Rewrite using `[GlobalTheory.DepthFix.cpt_eq_finAd]`. Conclude with `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.LFun.finTens_locIdele (F := D.host.F) w y)`. Rewrite using `[Units.coe_prod, hom_prod (toEAf D), hom_prod (cpt (D := D) Q)]`.
+
+Simplify using `only [hloc]`. Use `⟨fun hQ => ?_, fun hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single ⟨Q, hQ⟩]`. Rewrite using `[GlobalTheory.LFun.finSingle_self]`. Introduce `b _ hb`.
+
+Conclude with `GlobalTheory.LFun.finSingle_ne (fun h => hb (Subtype.ext h.symm)) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Conclude with `Finset.prod_eq_one fun w _ => GlobalTheory.LFun.finSingle_ne (fun h => hQ (by rw [h]; exact w.2)) _`.
+-/
 theorem cpt_prod_locIdele (S : Finset (Pl D.host.E)) (u : ∀ w : S, (Kw (D := D) w.1)ˣ) (Q : Pl D.host.E) :
     (∀ hQ : Q ∈ S, cpt (D := D) Q (toEAf D ((∏ w : S, locIdele D.host.F w.1 (u w) : (AE D)ˣ) : AE D)) = u ⟨Q, hQ⟩) ∧
     (Q ∉ S → cpt (D := D) Q (toEAf D ((∏ w : S, locIdele D.host.F w.1 (u w) : (AE D)ˣ) : AE D)) = 1) := by
@@ -59,15 +77,24 @@ theorem cpt_prod_locIdele (S : Finset (Pl D.host.E)) (u : ∀ w : S, (Kw (D := D
       exact absurd (Finset.mem_univ _) h
   · exact Finset.prod_eq_one fun w _ => GlobalTheory.LFun.finSingle_ne (fun h => hQ (by rw [h]; exact w.2)) _
 
+/- English proof (translation)
+Rewrite using `[Units.coe_prod, hom_prod]`. Conclude with `Finset.prod_eq_one fun w _ => GlobalTheory.LFun.infTens_locIdele (F := D.host.F) w.1 _`.
+-/
 theorem infPart_prod_locIdele (S : Finset (Pl D.host.E)) (u : ∀ w : S, (Kw (D := D) w.1)ˣ) :
     infPart D ((∏ w : S, locIdele D.host.F w.1 (u w) : (AE D)ˣ) : AE D) = 1 := by
   rw [Units.coe_prod, hom_prod]
   exact Finset.prod_eq_one fun w _ => GlobalTheory.LFun.infTens_locIdele (F := D.host.F) w.1 _
 
+/- English proof (translation)
+Simplify using `only [map_inv, Finset.prod_inv_distrib]`.
+-/
 theorem prod_map_inv {ι M : Type} [Fintype ι] [CommGroup M] {K : ι → Type} [∀ i, Group (K i)] (f : ∀ i, K i →* M)
     (u : ∀ i, K i) : (∏ i, f i (u i))⁻¹ = ∏ i, f i (u i)⁻¹ := by
   simp only [map_inv, Finset.prod_inv_distrib]
 
+/- English proof (translation)
+Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`. Use `(map_prod Circle.coeHom _ _).trans (Finset.prod_congr rfl fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `Circle.coe_inv _`.
+-/
 theorem char_prod_inv {ι M : Type} [Fintype ι] [CommMonoid M] (ν : M →* Circle) (x : ι → M) :
     (((ν (∏ i, x i))⁻¹ : Circle) : ℂ) = ∏ i, (((Circle.toUnits (ν (x i)))⁻¹ : ℂˣ) : ℂ) := by
   rw [map_prod, ← Finset.prod_inv_distrib]
@@ -75,6 +102,13 @@ theorem char_prod_inv {ι M : Type} [Fintype ι] [CommMonoid M] (ν : M →* Cir
   rw [Units.val_inv_eq_inv_val]
   exact Circle.coe_inv _
 
+/- English proof (translation)
+Use `⟨infPart_prod_locIdele S u, cpt_ext fun Q => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`. Distinguish the cases in `hQ : Q ∈ S`. Rewrite using `[(cpt_prod_locIdele S u Q).1 hQ, (cpt_idemSum he Q).1 hQ, hu, sub_self, zero_add, one_mul]`. Rewrite using `[(cpt_prod_locIdele S u Q).2 hQ, (cpt_idemSum he Q).2 hQ, sub_zero, zero_mul, add_zero]`.
+
+Establish `e1 : (∏ w : S, locIdele D.host.F w.1 (u w) : (AE D)ˣ)⁻¹ = ∏ w : S, locIdele D.host.F w.1 (u w)⁻¹` using `prod_map_inv (fun w : S => locIdele D.host.F w.1) u`. Rewrite using `[e1]`. Use `(mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ S`. Rewrite using `[(cpt_prod_locIdele S (fun w => (u w)⁻¹) Q).1 hQ, HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀, hv ⟨Q, hQ⟩, inv_one]`.
+
+Rewrite using `[(cpt_prod_locIdele S (fun w => (u w)⁻¹) Q).2 hQ]`. Conclude with `one_mem _`.
+-/
 theorem isUnitDet_prod {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     (N : Matrix (Fin k) (Fin k) (EAf D)) (u : ∀ w : S, (Kw (D := D) w.1)ˣ)
     (hu : ∀ w : S, (u w : Kw (D := D) w.1) = cpt (D := D) w.1 N.det)
@@ -94,10 +128,16 @@ theorem isUnitDet_prod {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S
     · rw [(cpt_prod_locIdele S (fun w => (u w)⁻¹) Q).2 hQ]
       exact one_mem _
 
+/- English proof (translation)
+The claim follows from `Units.ext (ae_ext (h.1.trans h'.1.symm) fun Q => congrArg (cpt (D := D) Q) (h.2.1.trans h'.2.1.symm))`.
+-/
 theorem isUnitDet_unique {e : AE D} {k : ℕ} {N : Matrix (Fin k) (Fin k) (EAf D)} {x x' : (AE D)ˣ} (h : IsUnitDet e N x)
     (h' : IsUnitDet e N x') : x = x' :=
   Units.ext (ae_ext (h.1.trans h'.1.symm) fun Q => congrArg (cpt (D := D) Q) (h.2.1.trans h'.2.1.symm))
 
+/- English proof (translation)
+Establish `hx` using `isUnitDet_prod he N u hu hv`. Establish `hex : ∃ x, IsUnitDet e N x` using `⟨_, hx⟩`. Unfold `unitChar`. Rewrite using `[dif_pos hex, isUnitDet_unique hex.choose_spec hx]`. Conclude with `char_prod_inv ν _`.
+-/
 theorem unitChar_eq_prod (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     (N : Matrix (Fin k) (Fin k) (EAf D)) (u : ∀ w : S, (Kw (D := D) w.1)ˣ)
     (hu : ∀ w : S, (u w : Kw (D := D) w.1) = cpt (D := D) w.1 N.det)
@@ -109,6 +149,11 @@ theorem unitChar_eq_prod (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl 
   rw [dif_pos hex, isUnitDet_unique hex.choose_spec hx]
   exact char_prod_inv ν _
 
+/- English proof (translation)
+Establish `h1 : cpt (D` using `D) w (toEAf D (x : AE D)) = cpt (D := D) w N.det := by`. Rewrite using `[hx.2.1, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, (cpt_idemSum he w).1 hw, sub_self, zero_add, one_mul]`. Establish `h2 : Valued.v (cpt (D` using `D) w (toEAf D ((x⁻¹ : (AE D)ˣ) : AE D))) ≤ 1 := (mem_OA_iff _).1 hx.2.2 w`. Establish `h3 : Valued.v (cpt (D` using `D) w N.det) * Valued.v (cpt (D := D) w (toEAf D ((x⁻¹ : (AE D)ˣ) : AE D))) = 1 := by`. Rewrite using `[← h1, ← Valuation.map_mul, ← RingHom.map_mul, ← RingHom.map_mul, Units.mul_inv, RingHom.map_one, RingHom.map_one, Valuation.map_one]`.
+
+Use `le_antisymm hN ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem v_det_of_isUnitDet {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {N : Matrix (Fin k) (Fin k) (EAf D)} {x : (AE D)ˣ} (hx : IsUnitDet e N x) {w : Pl D.host.E} (hw : w ∈ S)
     (hN : Valued.v (cpt (D := D) w N.det) ≤ 1) : Valued.v (cpt (D := D) w N.det) = 1 := by
@@ -124,6 +169,9 @@ theorem v_det_of_isUnitDet {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum
     _ ≤ Valued.v (cpt (D := D) w N.det) * 1 := mul_le_mul_right h2 _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `h : Valued.v (unifAt (D` using `D) w : Kw (D := D) w) = WithZero.exp (-1 : ℤ) := Formalism.L2.Host.unif_spec w`. Use `(vEq w _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, h, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_cball_pow (w : Pl D.host.E) (c : ℕ) (z : Kw (D := D) w) :
     z ∈ cball (unifAt (D := D) w ^ c) ↔ Valued.v z ≤ WithZero.exp (-(c : ℤ)) := by
   have h : Valued.v (unifAt (D := D) w : Kw (D := D) w) = WithZero.exp (-1 : ℤ) := Formalism.L2.Host.unif_spec w
@@ -131,9 +179,17 @@ theorem mem_cball_pow (w : Pl D.host.E) (c : ℕ) (z : Kw (D := D) w) :
   rw [Units.val_pow_eq_pow_val, map_pow, h, ← WithZero.exp_nsmul]
   simp
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, (vEq w).le_one_iff_le_one]`.
+-/
 theorem mem_integer_iff (w : Pl D.host.E) (z : Kw (D := D) w) : z ∈ (ValuativeRel.valuation (Kw (D := D) w)).integer ↔ Valued.v z ≤ 1 := by
   rw [Valuation.mem_integer_iff, (vEq w).le_one_iff_le_one]
 
+/- English proof (translation)
+Establish `h : (∏ w ∈ S, w.asIdeal ^ c w) = S.inf fun v => v.asIdeal ^ c v` using `(HeightOneSpectrum.inf_pow_eq_prod S c id fun v _ v' _ hne => hne).symm`. Establish `h0 : (∏ w ∈ S, w.asIdeal ^ c w) ≠ ⊥` using `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`. Generalize the expression as in `(∏ w ∈ S, w.asIdeal ^ c w) = I at h h0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ w hw`.
+
+Conclude with `GlobalTheory.FunObj.Comparison₂.v_le_of_mem_idS (s := ⟨z, h1⟩) (h.le.trans (Finset.inf_le hw)) h2`. Introduce `H`. Conclude with `⟨hz, GlobalTheory.FunObj.Comparison₂.mem_idS_of_v_le (w := fun v => v) (e := c) (S := S) (s := ⟨z, hz⟩) h0 h H⟩`.
+-/
 theorem inId_prod_iff (S : Finset (Pl D.host.E)) (c : Pl D.host.E → ℕ) {z : EAf D}
     (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
     InId (∏ w ∈ S, w.asIdeal ^ c w) z ↔ ∀ w ∈ S, Valued.v (cpt (D := D) w z) ≤ WithZero.exp (-(c w : ℤ)) := by
@@ -149,6 +205,25 @@ theorem inId_prod_iff (S : Finset (Pl D.host.E)) (c : Pl D.host.E → ℕ) {z : 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hb : ∀ i j, rightBlock a Y i j = Y i (Fin.natAdd a j)` using `fun i j => dif_pos (Fin.natAdd a j).2`. Establish `hdet : ∀ w, (blk₂ (Y.map (cpt (D` using `D) w))).det = cpt (D := D) w (rightBlock a Y).det := fun w => by`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+
+Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hb]`. Both sides reduce to the same expression. Distinguish the cases in `H : ∀ w ∈ S, (blk₂ (Y.map (cpt (D := D) w))).det ≠ 0 ∧ IsGLO (blk₂ (Y.map (cpt (D := D) w))) ∧ ∀ i j, blk₁ (Y.map (cpt (D := D) w)) i j ∈ cball (unifAt (D := D) w ^ c w)`. Establish `hint : IsIntM Y` using `fun i j => (mem_OA_iff _).2 fun Q => by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Distinguish the cases in `hQ : Q ∈ S`. Use `Fin.addCases (motive := fun j => Valued.v (cpt (D := D) Q (Y i j)) ≤ 1) (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Use `((mem_cball_pow Q _ _).1 ((H Q hQ).2.2 i j)).trans ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(mem_integer_iff Q _).1 ((H Q hQ).2.1.1 i j)`. Rewrite using `[← hY, RingHom.map_mul, (cpt_idemSum he Q).2 hQ, zero_mul, Valuation.map_zero]`. Conclude with `zero_le_one`. Rewrite using `[if_pos ⟨hint, fun i j hj => (inId_prod_iff S c (hint i j)).2 fun w hw => (mem_cball_pow w _ _).1 ((H w hw).2.2 i ⟨j.1, hj⟩)⟩, unitChar_eq_prod ν he _ (fun w => Units.mk0 _ (H w.1 w.2).1) (fun w => hdet w.1) (fun w => (vEq w.1).eq_one_iff_eq_one.1 (H w.1 w.2).2.1.2), ← Finset.pro …`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Unfold `stdB`. Rewrite using `[dif_pos (H w.1 w.2)]`. Take `⟨w, hw⟩` from `not_forall.1 H`. Take `⟨hw, hn⟩` from `Classical.not_imp.1 hw`. Rewrite using `[Finset.prod_eq_zero (f := fun w => stdB (locChar ν w) (unifAt (D := D) w) (c w) a a' (Y.map (cpt (D := D) w))) hw (by unfold stdB; exact dif_neg hn)]`.
+
+Use `split_ifs with hc`. Unfold `unitChar`. Use `dif_neg fun ⟨x, hx⟩ => hn ?_` and prove the remaining obligations. Establish `hi : ∀ i j, blk₂ (Y.map (cpt (D` using `D) w)) i j ∈ (ValuativeRel.valuation (Kw (D := D) w)).integer := fun i j => (mem_integer_iff w _).2 ((mem_OA_iff _).1 (hc.1 i _) w)`. Establish `hd : (blk₂ (Y.map (cpt (D` using `D) w))).det ∈ (ValuativeRel.valuation (Kw (D := D) w)).integer := by`.
+
+Rewrite using `[Matrix.det_apply']`. Conclude with `Subring.sum_mem _ fun σ _ => mul_mem (intCast_mem _ _) (Subring.prod_mem _ fun i _ => hi _ _)`. Establish `h1 : Valued.v (blk₂ (Y.map (cpt (D` using `D) w))).det = 1 := by`. Rewrite `hd` using `[mem_integer_iff, hdet]`. Rewrite using `[hdet]`.
+
+Conclude with `v_det_of_isUnitDet he hx hw hd`. Use `⟨fun h0 => ?_, ⟨hi, (vEq w).eq_one_iff_eq_one.2 h1⟩, fun i j => (mem_cball_pow w _ _).2 ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[h0, Valuation.map_zero]`. Conclude with `zero_ne_one h1`. Conclude with `(inId_prod_iff S c (hc.1 i _)).1 (hc.2 i (Fin.castAdd a' j) j.2) w hw`.
+
+Both sides reduce to the same expression.
+-/
 theorem std_eq_prod (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S)
     (c : Pl D.host.E → ℕ) {a a' : ℕ} (Y : Matrix (Fin a') (Fin (a + a')) (EAf D)) (hY : ∀ i j, toEAf D e * Y i j = Y i j) :
     (if IsIntM Y ∧ ∀ i j, j.1 < a → InId (∏ w ∈ S, w.asIdeal ^ c w) (Y i j) then unitChar ν e (rightBlock a Y) else 0) =
@@ -203,6 +278,11 @@ theorem std_eq_prod (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl D.hos
 
 open Classical in
 
+/- English proof (translation)
+Take `rfl : b = fun _ => a` from `funext fun w => (hb w).symm`. Take `rfl : b' = fun _ => a'` from `funext fun w => (hb' w).symm`. Substitute `hd` using the available equality. Establish `: ∀ w, Z w = Y.map (cpt (D` using `D) w) := fun w => Matrix.ext fun r s => by`. Take `⟨r', s', h1, h2, h3⟩` from `hZ w r s`.
+
+Rewrite using `[h3, Fin.ext h1, Fin.ext h2]`. Both sides reduce to the same expression. Simplify using `only [this]`. Conclude with `std_eq_prod ν he c Y hY`.
+-/
 theorem std_eq_prod' (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl D.host.E)} (he : IsIdemSum e S)
     (c : Pl D.host.E → ℕ) {a a' d : ℕ} (hd : d = a + a') (b b' : Pl D.host.E → ℕ) (hb : ∀ w, a = b w) (hb' : ∀ w, a' = b' w)
     (Y : Matrix (Fin a') (Fin d) (EAf D)) (hY : ∀ i j, toEAf D e * Y i j = Y i j)
@@ -220,6 +300,15 @@ theorem std_eq_prod' (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Pl D.ho
   simp only [this]
   exact std_eq_prod ν he c Y hY
 
+/- English proof (translation)
+Establish `hl : ∀ {k : ℕ} (g : GL (Fin k) R), g.val.map f = (GeneralLinearGroup.map f g).val` using `fun g => rfl`. Establish `hs : (ξ • ((β'⁻¹).val * M * γ'.val)).map f = x • ((β'⁻¹).val * M * γ'.val).map f` using `Matrix.ext fun r s => by`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, hx]`. Both sides reduce to the same expression. Establish `hu : (Units.map (Matrix.scalar (Fin n)).toMonoidHom (Units.mk0 x hξ)).val = x • (1 : Matrix (Fin n) (Fin n) K)`.
+
+Rewrite using `[Matrix.smul_one_eq_diagonal]`. Both sides reduce to the same expression. Rewrite using `[hs, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, hl, hl, hl, hl, map_inv, map_inv]`. Generalize the expression as in `GeneralLinearGroup.map f β = b`. Generalize the expression as in `GeneralLinearGroup.map f β' = b'`.
+
+Generalize the expression as in `GeneralLinearGroup.map f γ = g`. Generalize the expression as in `GeneralLinearGroup.map f γ' = g'`. Generalize the expression as in `M.map f = N`. Establish `h1 : b.val * (b⁻¹).val = 1` using `b.mul_inv`. Establish `h2 : g.val * (g⁻¹).val = 1` using `g.mul_inv`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, hu, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem change_frames {R K : Type} [CommRing R] [Field K] (f : R →+* K) {n d : ℕ} (β β' : GL (Fin n) R) (γ γ' : GL (Fin d) R)
     (M : Matrix (Fin n) (Fin d) R) (ξ : R) (x : K) (hx : f ξ = x) (hξ : x ≠ 0) :
     (Units.map (Matrix.scalar (Fin n)).toMonoidHom (Units.mk0 x hξ) *
@@ -249,6 +338,11 @@ theorem change_frames {R K : Type} [CommRing R] [Field K] (f : R →+* K) {n d :
 
 variable {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.nu t i (j + 1)` using `mul_div_mul_right_eq_div _ _ _`. Rewrite using `[e1, GlobalTheory.LFun.locChar_eq_of_chrEq (SqNum.chrEq_nu G t i j hL)]`. Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Use extensionality with `x`. Simplify using `only [SqNum.nuH, Grid.nu, locGrid, muBase, dif_pos hj, MonoidHom.div_apply, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, div_eq_mul_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem locChar_nu {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) (w : Pl D.host.E) :
     locChar (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) w = (locGrid G t w).nu i j := by
   have e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.nu t i (j + 1) :=
@@ -260,6 +354,11 @@ theorem locChar_nu {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) (w : 
     Formalism.L2.Host.HChar.loc_inv, div_eq_mul_inv]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ z : (locGrid G t w).Cols i j, ((colX G t i j w).symm z).1 = (finSumFinEquiv z).1`. Introduce and unpack `(z | z)`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ + z.1 = _ + z.1`. Rewrite using `[rank_vertex G t w (X := (i, j + 1)) ⟨i.2.le, j.2⟩]`.
+
+Rewrite using `[h]`. Simplify using `[ordX, SplitFlip.stdSplit]`.
+-/
 theorem val_colX_ordX (t : T) (i j : Fin D.R.m) (w : Pl D.host.E)
     (s : Fin ((locGrid G t w).rank (i + 1, j + 1) + (locGrid G t w).rank (i, j))) :
     ((colX G t i j w).symm ((ordX G t i j w).symm s)).1 = s.1 := by
@@ -271,6 +370,17 @@ theorem val_colX_ordX (t : T) (i j : Fin D.R.m) (w : Pl D.host.E)
   rw [h]
   simp [ordX, SplitFlip.stdSplit]
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL B t i j X ε hε`. Use function extensionality and compare the values at `y`. Unfold `stdSnd prodB`. Distinguish the cases in `hy : IsHalf (cA D ε) y`. Rewrite using `[if_pos hy]`.
+
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`. Establish `w₀ : Pl D.host.E` using `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩`. Establish `hd : (spX G i j).rank = (spW G i j).rank + (spW₁ G i j).rank`. Use `Fintype.card_congr ((colX G t i j w₀).trans (ordX G t i j w₀))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, Fintype.card_fin]`.
+
+Rewrite using `[this, rankW G t i j w₀, rankW₁ G t i j w₀]`. Establish `key` using `std_eq_prod' (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) hε (X.c t) hd _ _ (rankW G t i j) (rankW₁ G t i j) (dualCoord (spW₁ G i j) (spX G i j) X.rA'.β X.rW.β y) (fun r s => by`. Unfold `dualCoord`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_left_comm, GlobalTheory.AdjVecLocal.frMapAdj_half _ _ _ _ hy])`. Use the proof step `(fun w => reindex (Equiv.refl _) (ordX G t i j w) ((chB B t X w).val * linB B t i j w y * (chX B t X w).val))`.
+
+Use the proof step `(fun w r s => ⟨(finCongr (rankW₁ G t i j w)).symm r, _, rfl, val_colX_ordX t i j w s, by`. Unfold `chB chX linB frMapAdj dualCoord frMapAdj`. Rewrite using `[GlobalTheory.StepData.reGL_val, GlobalTheory.StepData.reGL_val, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Conclude with `congrFun (congrFun (change_frames (cpt (D := D) w) (B.β i j) X.rA'.β (frX B i j) X.rW.β _ (eToEAf D D.host.xi0) (xiAt (D := D) w) (GlobalTheory.FunObj.Comparison₂.cpt_tmul w _) _) _) _⟩)`. Use `Eq.trans ?_ (key.trans (Finset.prod_congr rfl fun w _ => ?_))` and prove the remaining obligations.
+
+Conclude with `@if_congr _ _ _ (_) (_) _ _ _ _ (and_iff_right hy) rfl rfl`. Rewrite using `[locChar_nu hL]`. Both sides reduce to the same expression. Rewrite using `[if_neg hy, if_neg fun h => hy h.1]`.
+-/
 theorem stdSnd_eq_prodB : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (B : Frames G) (t : T) (i j : Fin D.R.m) (X : TriG G i j) (ε : AE D), IsIdemSum ε (locPl G t) →
       GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) ε (X.ideal (locPl G) t)
         (spW G i j).rank (spW₁ G i j) (spX G i j) X.rA'.β X.rW.β = prodB B t i j ε (locSnd B t X) := by

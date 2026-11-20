@@ -9,18 +9,32 @@ noncomputable def lam (l s : ℕ) (h : ℝ) : ℝ := (s : ℝ) + Real.logb l (2 
 
 variable {l s : ℕ} {h : ℝ}
 
+/- English proof (translation)
+The claim follows from `Real.logb_nonneg (by exact_mod_cast (by omega : 1 < l)) (by linarith)`.
+-/
 theorem logb_nonneg (hl : 2 ≤ l) (hh : 1 ≤ h) : 0 ≤ Real.logb l (2 * h) :=
   Real.logb_nonneg (by exact_mod_cast (by omega : 1 < l)) (by linarith)
 
+/- English proof (translation)
+Unfold `lam`. Combine the linear relations using `[logb_nonneg hl hh]`.
+-/
 theorem s_le_lam (hl : 2 ≤ l) (hh : 1 ≤ h) : (s : ℝ) + 1 ≤ lam l s h := by
   unfold lam
   linarith [logb_nonneg hl hh]
 
+/- English proof (translation)
+Use `s_le_lam (s := s) hl hh` as an intermediate fact. Establish `: (0 : ℝ) ≤ s` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_lam (hl : 2 ≤ l) (hh : 1 ≤ h) : 1 ≤ lam l s h := by
   have := s_le_lam (s := s) hl hh
   have : (0 : ℝ) ≤ s := Nat.cast_nonneg _
   linarith
 
+/- English proof (translation)
+Establish `hl' : (1 : ℝ) < l` using `by exact_mod_cast hl`. Break down `Nat.eq_zero_or_pos n with rfl | hpos` into its components or cases. Simplify using `only [Nat.log_zero_right, Nat.cast_zero]`. Conclude with `Real.logb_nonneg hl' hy`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hpos`.
+
+Conclude with `(Real.natLog_le_logb n l).trans (Real.logb_le_logb_of_le hl' hn0 hn)`.
+-/
 theorem natLog_le_logb (hl : 2 ≤ l) {n : ℕ} {y : ℝ} (hy : 1 ≤ y) (hn : (n : ℝ) ≤ y) :
     (Nat.log l n : ℝ) ≤ Real.logb l y := by
   have hl' : (1 : ℝ) < l := by exact_mod_cast hl
@@ -30,6 +44,13 @@ theorem natLog_le_logb (hl : 2 ≤ l) {n : ℕ} {y : ℝ} (hy : 1 ≤ y) (hn : (
   · have hn0 : (0 : ℝ) < n := by exact_mod_cast hpos
     exact (Real.natLog_le_logb n l).trans (Real.logb_le_logb_of_le hl' hn0 hn)
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `h1` using `natLog_le_logb hl (y := 4 * (2 * h)) (by linarith) (by linarith)`. Rewrite `h1` using `[Real.logb_mul (by norm_num) (by linarith)]`. Establish `h2 : Real.logb l 4 ≤ 2`. Rewrite using `[Real.logb_le_iff_le_rpow hl1 (by norm_num)]`.
+
+Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Rewrite using `[show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Unfold `lam`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem natLog_le_lam (hl : 2 ≤ l) (hs : 1 ≤ s) (hh : 1 ≤ h) {n : ℕ} (hn : (n : ℝ) ≤ 8 * h) :
     (Nat.log l n : ℝ) ≤ lam l s h := by
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (by omega : 1 < l)
@@ -43,6 +64,13 @@ theorem natLog_le_lam (hl : 2 ≤ l) (hs : 1 ≤ s) (hh : 1 ≤ h) {n : ℕ} (hn
   have : (1 : ℝ) ≤ s := by exact_mod_cast hs
   unfold lam; linarith
 
+/- English proof (translation)
+Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hs' : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Establish `hlog2` using `Real.log_two_gt_d9`. Establish `hlogl : Real.log 2 ≤ Real.log l` using `Real.log_le_log (by norm_num) hl2`. Establish `hx : 0 < 2 * h` using `by linarith`.
+
+Establish `hlx : Real.log (2 * h) ≤ 2 * h - 1` using `Real.log_le_sub_one_of_pos hx`. Establish `hlx0 : 0 ≤ Real.log (2 * h)` using `Real.log_nonneg (by linarith)`. Establish `hb : Real.logb l (2 * h) ≤ 3 * h`. Unfold `Real.logb`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Unfold `lam`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lam_le (hl : 2 ≤ l) (hs : 1 ≤ s) (hh : 1 ≤ h) : lam l s h ≤ 6 * h * s := by
   have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hl
   have hs' : (1 : ℝ) ≤ s := by exact_mod_cast hs

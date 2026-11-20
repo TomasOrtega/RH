@@ -21,24 +21,47 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 section Gen
 variable {K : Type} [Field K] (σ : K →+* K) {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 theorem cT_cT (hσ : ∀ x, σ (σ x) = x) (M : Matrix (Fin n) (Fin n) K) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
+/- English proof (translation)
+Rewrite using `[← cT_mul, Units.mul_inv, cT_one]`.
+-/
 theorem cT_units (k : GL (Fin n) K) : cT σ (k⁻¹).val * cT σ k.val = 1 := by
   rw [← cT_mul, Units.mul_inv, cT_one]
 
+/- English proof (translation)
+Rewrite using `[← cT_mul, Units.inv_mul, cT_one]`.
+-/
 theorem cT_units' (k : GL (Fin n) K) : cT σ k.val * cT σ (k⁻¹).val = 1 := by
   rw [← cT_mul, Units.inv_mul, cT_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, cT_units, Matrix.one_mul]`.
+-/
 theorem cT_units_left (k : GL (Fin n) K) (X : Matrix (Fin n) (Fin n) K) : cT σ (k⁻¹).val * (cT σ k.val * X) = X := by
   rw [← Matrix.mul_assoc, cT_units, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, cT_units', Matrix.one_mul]`.
+-/
 theorem cT_units_left' (k : GL (Fin n) K) (X : Matrix (Fin n) (Fin n) K) : cT σ k.val * (cT σ (k⁻¹).val * X) = X := by
   rw [← Matrix.mul_assoc, cT_units', Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `IsHerm`. Rewrite using `[cT_mul, cT_cT σ hσ]`.
+-/
 theorem herm_of (hσ : ∀ x, σ (σ x) = x) (k : GL (Fin n) K) : IsHerm σ (cT σ (k⁻¹).val * (k⁻¹).val) := by
   unfold IsHerm; rw [cT_mul, cT_cT σ hσ]
 
+/- English proof (translation)
+Establish `h1 : ((k⁻¹).val).det ≠ 0` using `((k⁻¹).isUnit.map Matrix.detMonoidHom).ne_zero`. Establish `h2 : (cT σ (k⁻¹).val).det = σ ((k⁻¹).val).det`. Unfold `cT`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.det_mul, h2]`. Conclude with `mul_ne_zero ((map_ne_zero σ).2 h1) h1`.
+-/
 theorem det_ne (k : GL (Fin n) K) : (cT σ (k⁻¹).val * (k⁻¹).val).det ≠ 0 := by
   have h1 : ((k⁻¹).val).det ≠ 0 := ((k⁻¹).isUnit.map Matrix.detMonoidHom).ne_zero
   have h2 : (cT σ (k⁻¹).val).det = σ ((k⁻¹).val).det := by
@@ -46,9 +69,17 @@ theorem det_ne (k : GL (Fin n) K) : (cT σ (k⁻¹).val * (k⁻¹).val).det ≠ 
   rw [Matrix.det_mul, h2]
   exact mul_ne_zero ((map_ne_zero σ).2 h1) h1
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc, cT_units_left', Units.inv_mul]`.
+-/
 theorem one_of (k : GL (Fin n) K) : cT σ k.val * (cT σ (k⁻¹).val * (k⁻¹).val) * k.val = 1 := by
   simp only [Matrix.mul_assoc, cT_units_left', Units.inv_mul]
 
+/- English proof (translation)
+Establish `ha : a = k * (k⁻¹ * a * k) * k⁻¹` using `by group`. Rewrite using `[ha]`. Generalize the expression as in `k⁻¹ * a * k = y at hy ⊢`. Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one] at hy ⊢`. Simplify using `only [cT_units_left', Units.inv_mul_cancel_left]`.
+
+Rewrite using `[← Matrix.mul_assoc (cT σ y.val), hy, Matrix.one_mul]`.
+-/
 theorem inv_of_unit (k a : GL (Fin n) K) (hy : cT σ (k⁻¹ * a * k).val * 1 * (k⁻¹ * a * k).val = 1) :
     cT σ a.val * (cT σ (k⁻¹).val * (k⁻¹).val) * a.val = cT σ (k⁻¹).val * (k⁻¹).val := by
   have ha : a = k * (k⁻¹ * a * k) * k⁻¹ := by group
@@ -58,6 +89,9 @@ theorem inv_of_unit (k a : GL (Fin n) K) (hy : cT σ (k⁻¹ * a * k).val * 1 * 
   simp only [cT_units_left', Units.inv_mul_cancel_left]
   rw [← Matrix.mul_assoc (cT σ y.val), hy, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one]`. Establish `key` using `congrArg (· * (h⁻¹).val) hinv`. Simplify using `only [Matrix.mul_assoc] at key`. Rewrite using `[key, cT_units_left, Units.mul_inv]`.
+-/
 theorem unit_of_form (γ₀ h : GL (Fin n) K) (hinv : cT σ γ₀.val * (cT σ h.val * h.val) * γ₀.val = cT σ h.val * h.val) :
     cT σ (h * γ₀ * h⁻¹).val * 1 * (h * γ₀ * h⁻¹).val = 1 := by
   simp only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one]
@@ -65,6 +99,9 @@ theorem unit_of_form (γ₀ h : GL (Fin n) K) (hinv : cT σ γ₀.val * (cT σ h
   simp only [Matrix.mul_assoc] at key
   rw [key, cT_units_left, Units.mul_inv]
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul, cT_mul, Matrix.mul_assoc, Matrix.mul_one]`. Establish `key` using `congrArg (· * (h⁻¹).val) (h1.symm.trans h2)`. Simplify using `only [Matrix.mul_assoc] at key`. Rewrite using `[key, cT_units_left, Units.mul_inv]`.
+-/
 theorem unit_of_two (k c h : GL (Fin n) K) (H' : Matrix (Fin n) (Fin n) K)
     (h1 : H' = cT σ c.val * (cT σ (k⁻¹).val * (k⁻¹).val) * c.val) (h2 : H' = cT σ h.val * h.val) :
     cT σ (k⁻¹ * c * h⁻¹).val * 1 * (k⁻¹ * c * h⁻¹).val = 1 := by
@@ -75,12 +112,20 @@ theorem unit_of_two (k c h : GL (Fin n) K) (H' : Matrix (Fin n) (Fin n) K)
 
 end Gen
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hw).1`. Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem cT_map (hU : Unr E) (w : Pl E) (hw : ¬ IsSplitAt w) {n : ℕ} (M : Matrix (Fin n) (Fin n) E) :
     (cT (IsCMField.complexConj E).toRingEquiv.toRingHom M).map (algebraMap E (w.adicCompletion E)) =
       cT (cj w) (M.map (algebraMap E (w.adicCompletion E))) := by
   have h := ((GlobalTheory.ConjAtPlace.main E hU w).2.2.2.1 hw).1
   ext i j; simp [cT, h]
 
+/- English proof (translation)
+Establish `hm : GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1 ∈ UL n w`. Unfold `UL`. Use `split_ifs with hs`. Discharge the goal by the elementary cases of `trivial`. Establish `hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom (γ.1 : Matrix (Fin n) (Fin n) E) * 1 * γ.1 = 1` using `γ.2 show cT (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1).val * (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1).val = 1`.
+
+Use `congrArg (Matrix.map · (algebraMap E (w.adicCompletion E))) hγ` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), cT_map hU w hs] at this`. Simplify using `using this`. Unfold `locPt toSub`. Rewrite using `[dif_pos hm]`.
+-/
 theorem locPt_val (hU : Unr E) {n : ℕ} (w : Pl E) (γ : UE E n) :
     ((locPt w γ : UL n w) : GLw n w) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1 := by
   have hm : GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ.1 ∈ UL n w := by
@@ -96,6 +141,9 @@ theorem locPt_val (hU : Unr E) {n : ℕ} (w : Pl E) (γ : UE E n) :
   unfold locPt toSub
   rw [dif_pos hm]
 
+/- English proof (translation)
+Rewrite using `[atPl, aeval_map_algebraMap]`. Use `aeval_algHom_apply (AlgHom.mapMatrix (Algebra.ofId E (w.adicCompletion E))) M p` as an intermediate fact. Establish `e : (⇑(Algebra.ofId E (w.adicCompletion E)) : E → _) = algebraMap E _` using `rfl`. Simplify `this` using `[AlgHom.mapMatrix_apply, e]`.
+-/
 theorem aeval_map_mat {n : ℕ} (w : Pl E) (M : Matrix (Fin n) (Fin n) E) (p : E[X]) :
     aeval (M.map (algebraMap E (w.adicCompletion E))) (atPl w p) = (aeval M p).map (algebraMap E (w.adicCompletion E)) := by
   rw [atPl, aeval_map_algebraMap]
@@ -103,12 +151,18 @@ theorem aeval_map_mat {n : ℕ} (w : Pl E) (M : Matrix (Fin n) (Fin n) E) (p : E
   have e : (⇑(Algebra.ofId E (w.adicCompletion E)) : E → _) = algebraMap E _ := rfl
   simpa [AlgHom.mapMatrix_apply, e] using this
 
+/- English proof (translation)
+Unfold `kapSign sgnOn gramOn hform`. Rewrite using `[if_neg hw]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem kapSign_eq {n : ℕ} (w : Pl E) (hw : ¬ IsSplitAt w) (Q : (w.adicCompletion E)[X]) (γ : GLw n w) :
     kapSign n w Q γ = sgnOn (cj w) 1 Q γ.val := by
   unfold kapSign sgnOn gramOn hform
   rw [if_neg hw]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hS w`. Assume the negation of the conclusion as `h`. Conclude with `hw ⟨u, fun e => h (e ▸ hu), hu'⟩`.
+-/
 theorem mem_S {S : Set (Pl E)} (hS : IsSection S) {w : Pl E} (hw : ¬ IsSplitAt w) : w ∈ S := by
   obtain ⟨u, ⟨hu, hu'⟩, -⟩ := hS w
   by_contra h

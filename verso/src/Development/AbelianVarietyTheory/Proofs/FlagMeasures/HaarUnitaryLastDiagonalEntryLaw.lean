@@ -13,26 +13,41 @@ namespace GlobalTheory.Amp.EntryLaw
 
 def sq {n : ℕ} (x : Fin n → ℂ) : ℝ := ∑ i, ‖x i‖ ^ 2
 
+/- English proof (translation)
+Unfold `sq`. Conclude with `Finset.sum_nonneg fun i _ => by positivity`.
+-/
 theorem sq_nonneg' {n : ℕ} (x : Fin n → ℂ) : 0 ≤ sq x := by
   unfold sq
   exact Finset.sum_nonneg fun i _ => by positivity
 
+/- English proof (translation)
+Unfold `sq`. Conclude with `continuous_finsetSum _ fun i _ => ((continuous_apply i).norm).pow 2`.
+-/
 theorem sq_cont {n : ℕ} : Continuous (sq (n := n)) := by
   unfold sq
   exact continuous_finsetSum _ fun i _ => ((continuous_apply i).norm).pow 2
 
+/- English proof (translation)
+Unfold `sq`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`.
+-/
 theorem sq_smul {n : ℕ} (c : ℝ) (x : Fin n → ℂ) : sq (c • x) = c ^ 2 * sq x := by
   unfold sq
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]
 
+/- English proof (translation)
+Unfold `sq`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem star_dot {n : ℕ} (x : Fin n → ℂ) : star x ⬝ᵥ x = (sq x : ℂ) := by
   unfold sq
   simp only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `sq`. Conclude with `Finset.single_le_sum (f := fun j => ‖x j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`.
+-/
 theorem le_sq {n : ℕ} (x : Fin n → ℂ) (i : Fin n) : ‖x i‖ ^ 2 ≤ sq x := by
   unfold sq
   exact Finset.single_le_sum (f := fun j => ‖x j‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)
@@ -40,11 +55,29 @@ theorem le_sq {n : ℕ} (x : Fin n → ℂ) (i : Fin n) : ‖x i‖ ^ 2 ≤ sq x
 def cone (k : ℕ) (t : ℝ) : Set (Fin (k + 1) → ℂ) :=
   {x | sq x ≤ 1 ∧ (1 - t) * sq x ≤ ‖x (Fin.last k)‖ ^ 2}
 
+/- English proof (translation)
+Unfold `cone`. Conclude with `(isClosed_le sq_cont continuous_const).inter (isClosed_le (continuous_const.mul sq_cont) ((continuous_apply _).norm.pow 2))`.
+-/
 theorem cone_closed (k : ℕ) (t : ℝ) : IsClosed (cone k t) := by
   unfold cone
   exact (isClosed_le sq_cont continuous_const).inter
     (isClosed_le (continuous_const.mul sq_cont) ((continuous_apply _).norm.pow 2))
 
+/- English proof (translation)
+Break down `lt_or_ge b a with hba | hab` into its components or cases. Establish `hempty : {z : ℂ | a ≤ ‖z‖ ^ 2 ∧ ‖z‖ ^ 2 ≤ b} = ∅`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_and, not_le]`. Introduce `h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hempty, measure_empty, ENNReal.ofReal_of_nonpos]`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `hb : 0 ≤ b` using `ha.trans hab`. Establish `hset : {z : ℂ | a ≤ ‖z‖ ^ 2 ∧ ‖z‖ ^ 2 ≤ b} = Metric.closedBall 0 (√b) \ Metric.ball 0 (√a)`.
+
+Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_sdiff, Metric.mem_closedBall, Metric.mem_ball, dist_zero_right, not_lt]`. Establish `hz` using `norm_nonneg z`. Establish `hsb` using `Real.sq_sqrt hb`. Establish `hsa` using `Real.sq_sqrt ha`.
+
+Establish `hb0` using `Real.sqrt_nonneg b`. Establish `ha0` using `Real.sqrt_nonneg a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Prove the components needed by the constructor for the conclusion.
+
+Assume the negation of the conclusion as `hc push Not at hc`. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion as `hc push Not at hc`. Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨h1, h2⟩`.
+
+Apply the tactic sequence `constructor <;> nlinarith`. Establish `hsub : Metric.ball (0 : ℂ) (√a) ⊆ Metric.closedBall 0 (√b)` using `Metric.ball_subset_closedBall.trans (Metric.closedBall_subset_closedBall (Real.sqrt_le_sqrt hab))`. Rewrite using `[hset, measure_sdiff hsub Metric.isOpen_ball.measurableSet.nullMeasurableSet measure_ball_lt_top.ne, Complex.volume_closedBall, Complex.volume_ball]`. Establish `hpi : ((NNReal.pi : ℝ≥0∞)) = ENNReal.ofReal Real.pi`. Rewrite using `[← NNReal.coe_real_pi, ENNReal.ofReal_coe_nnreal]`.
+
+Rewrite using `[hpi, ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt hb, Real.sq_sqrt ha, ← ENNReal.ofReal_mul hb, ← ENNReal.ofReal_mul ha, ← ENNReal.ofReal_sub _ (mul_nonneg ha Real.pi_pos.le)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volume_annulus (a b : ℝ) (ha : 0 ≤ a) :
     volume {z : ℂ | a ≤ ‖z‖ ^ 2 ∧ ‖z‖ ^ 2 ≤ b} = ENNReal.ofReal (Real.pi * (b - a)) := by
   rcases lt_or_ge b a with hba | hab
@@ -89,6 +122,17 @@ theorem volume_annulus (a b : ℝ) (ha : 0 ≤ a) :
     congr 1
     ring
 
+/- English proof (translation)
+Establish `he : MeasurePreserving (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (k + 1) => ℂ) (Fin.last k)) volume (volume.prod volume)` using `measurePreserving_piFinSuccAbove (fun _ : Fin (k + 1) => (volume : Measure ℂ)) (Fin.last k)`. Establish `hSc : IsClosed {p : ℂ × (Fin k → ℂ) | (1 - t) * sq p.2 / t ≤ ‖p.1‖ ^ 2 ∧ ‖p.1‖ ^ 2 ≤ 1 - sq p.2}` using `(isClosed_le ((continuous_const.mul (sq_cont.comp continuous_snd)).div_const t) (continuous_fst.norm.pow 2)).inter (isClosed_le (continuous_fst.norm.pow 2) (continuous_const.sub (sq_cont.comp continuous_snd)))`. Establish `hpre : cone k t = MeasurableEquiv.piFinSuccAbove (fun _ : Fin (k + 1) => ℂ) (Fin.last k) ⁻¹' {p : ℂ × (Fin k → ℂ) | (1 - t) * sq p.2 / t ≤ ‖p.1‖ ^ 2 ∧ ‖p.1‖ ^ 2 ≤ 1 - sq p.2}`. Use extensionality with `x`. Establish `hsplit : sq x = sq (Fin.removeNth (Fin.last k) x) + ‖x (Fin.last k)‖ ^ 2`.
+
+Unfold `sq`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `[Fin.removeNth, Fin.succAbove_last]`. Simplify using `only [cone, Set.mem_ofPred_eq, Set.mem_preimage, MeasurableEquiv.piFinSuccAbove_apply, Fin.insertNthEquiv_symm_apply]`. Rewrite using `[hsplit, div_le_iff₀ h0]`.
+
+Use `sq_nonneg' (Fin.removeNth (Fin.last k) x)` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Apply the tactic sequence `constructor <;> nlinarith`. Introduce and unpack `⟨h1, h2⟩`.
+
+Apply the tactic sequence `constructor <;> nlinarith`. Rewrite using `[hpre, he.measure_preimage hSc.measurableSet.nullMeasurableSet, Measure.prod_apply_symm hSc.measurableSet]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Establish `hy` using `sq_nonneg' y`. Rewrite using `[show (fun z : ℂ => (z, y)) ⁻¹' {p : ℂ × (Fin k → ℂ) | (1 - t) * sq p.2 / t ≤ ‖p.1‖ ^ 2 ∧ ‖p.1‖ ^ 2 ≤ 1 - sq p.2} = {z : ℂ | (1 - t) * sq y / t ≤ ‖z‖ ^ 2 ∧ ‖z‖ ^ 2 ≤ 1 - sq y} from rfl, volume_annulus _ _ (div_nonneg (mul_nonneg (sub_nonneg.2 h1) hy) h0.le)]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volume_cone_eq (k : ℕ) (t : ℝ) (h0 : 0 < t) (h1 : t ≤ 1) :
     volume (cone k t) = ∫⁻ y : Fin k → ℂ, ENNReal.ofReal (Real.pi * (1 - sq y / t)) := by
   have he : MeasurePreserving (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (k + 1) => ℂ) (Fin.last k))
@@ -124,6 +168,23 @@ theorem volume_cone_eq (k : ℕ) (t : ℝ) (h0 : 0 < t) (h1 : t ≤ 1) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hpos : ∀ s : ℝ, 0 < s → s ≤ 1 → volume (cone k s) = ENNReal.ofReal (s ^ k) * volume (cone k 1)`. Introduce `s hs0 hs1`. Rewrite using `[volume_cone_eq k s hs0 hs1, volume_cone_eq k 1 one_pos le_rfl]`. Establish `hc : (√s)⁻¹ ≠ 0` using `inv_ne_zero (Real.sqrt_pos.2 hs0).ne'`. Establish `hF : Measurable fun y : Fin k → ℂ => ENNReal.ofReal (Real.pi * (1 - sq y / 1))` using `ENNReal.measurable_ofReal.comp (measurable_const.mul (measurable_const.sub (sq_cont.measurable.div_const _)))`.
+
+Establish `hcomp : ∫⁻ y : Fin k → ℂ, ENNReal.ofReal (Real.pi * (1 - sq y / s)) = ∫⁻ y : Fin k → ℂ, ENNReal.ofReal (Real.pi * (1 - sq ((√s)⁻¹ • y) / 1))`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[sq_smul, inv_pow, Real.sq_sqrt hs0.le, div_one, inv_mul_eq_div]`. Establish `hd : Module.finrank ℝ (Fin k → ℂ) = 2 * k`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`.
+
+Rewrite using `[hcomp, ← lintegral_map hF (measurable_const_smul _), Measure.map_addHaar_smul volume hc, lintegral_smul_measure, smul_eq_mul]`. Use `congr 2`. Rewrite using `[hd, abs_of_nonneg (by positivity), pow_mul, inv_pow, Real.sq_sqrt hs0.le, inv_pow, inv_inv]`. Establish `hfin : volume (cone k 1) ≠ ⊤`. Use `ne_top_of_le_ne_top (measure_closedBall_lt_top (x := (0 : Fin (k + 1) → ℂ)) (r := 1)).ne (measure_mono ?_)` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Establish `h` using `(le_sq x i).trans hx.1`. Use polynomial arithmetic with `[norm_nonneg (x i)]`.
+
+Break down `h0.lt_or_eq with ht | ht` into its components or cases. Conclude with `hpos t ht h1`. Substitute `ht` using the available equality. Rewrite using `[zero_pow (by omega : k ≠ 0), ENNReal.ofReal_zero, zero_mul]`. Use `le_antisymm ?_ (by simp)` and prove the remaining obligations.
+
+Establish `hlim : Tendsto (fun s : ℝ => ENNReal.ofReal (s ^ k) * volume (cone k 1)) (𝓝[>] 0) (𝓝 0)`. Establish `h` using `((continuous_pow k).tendsto (0 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))`. Rewrite `h` using `[zero_pow (by omega : k ≠ 0)]`. Establish `h2` using `ENNReal.Tendsto.mul_const (ENNReal.tendsto_ofReal h) (Or.inr hfin)`. Rewrite `h2` using `[ENNReal.ofReal_zero, zero_mul]`. Then use the resulting hypothesis.
+
+Use `ge_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT one_pos] with s hs`. Rewrite using `[← hpos s hs.1 hs.2]`. Use `measure_mono fun x hx => ⟨hx.1, ?_⟩` and prove the remaining obligations. Use `sq_nonneg' x` as an intermediate fact.
+
+Use `hx.2` as an intermediate fact. Use polynomial arithmetic with `[hs.1]`.
+-/
 theorem volume_cone (k : ℕ) (hk : 1 ≤ k) (t : ℝ) (h0 : 0 ≤ t) (h1 : t ≤ 1) :
     volume (cone k t) = ENNReal.ofReal (t ^ k) * volume (cone k 1) := by
   have hpos : ∀ s : ℝ, 0 < s → s ≤ 1 →
@@ -169,6 +230,11 @@ theorem volume_cone (k : ℕ) (hk : 1 ≤ k) (t : ℝ) (h0 : 0 ≤ t) (h1 : t �
     have := hx.2
     nlinarith [hs.1]
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) < 1 / (k + 1)` using `by positivity`. Use `(lt_of_lt_of_le (Metric.measure_ball_pos volume (0 : Fin (k + 1) → ℂ) hr) (measure_mono ?_)).ne'` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[mem_ball_zero_iff]`. Establish `hxi : ∀ i, ‖x i‖ ≤ 1 / (k + 1)` using `fun i => (norm_le_pi_norm x i).trans hx.le`.
+
+Establish `hk : (1 : ℝ) ≤ k + 1` using `by have := k.cast_nonneg (α := ℝ); linarith`. Establish `hr1 : (1 / ((k : ℝ) + 1)) * ((k : ℝ) + 1) = 1` using `by field_simp`. Use `⟨?_, by rw [sub_self, zero_mul]; positivity⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem volume_cone_one_ne_zero (k : ℕ) : volume (cone k 1) ≠ 0 := by
   have hr : (0 : ℝ) < 1 / (k + 1) := by positivity
   refine (lt_of_lt_of_le (Metric.measure_ball_pos volume (0 : Fin (k + 1) → ℂ) hr) (measure_mono ?_)).ne'
@@ -184,6 +250,11 @@ theorem volume_cone_one_ne_zero (k : ℕ) : volume (cone k 1) ≠ 0 := by
     _ = ((k : ℝ) + 1) * (1 / ((k : ℝ) + 1)) ^ 2 := by simp
     _ ≤ 1 := by nlinarith
 
+/- English proof (translation)
+Use `ne_top_of_le_ne_top (measure_closedBall_lt_top (x := (0 : Fin (k + 1) → ℂ)) (r := 1)).ne (measure_mono ?_)` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Establish `h` using `(le_sq x i).trans hx.1`.
+
+Use polynomial arithmetic with `[norm_nonneg (x i)]`.
+-/
 theorem volume_cone_one_ne_top (k : ℕ) : volume (cone k 1) ≠ ⊤ := by
   refine ne_top_of_le_ne_top (measure_closedBall_lt_top (x := (0 : Fin (k + 1) → ℂ)) (r := 1)).ne
     (measure_mono ?_)
@@ -193,6 +264,11 @@ theorem volume_cone_one_ne_top (k : ℕ) : volume (cone k 1) ≠ ⊤ := by
   have h := (le_sq x i).trans hx.1
   nlinarith [norm_nonneg (x i)]
 
+/- English proof (translation)
+Establish `hdet : LinearMap.det ((Matrix.vecMulLinear g).restrictScalars ℝ) = 1`. Rewrite using `[LinearMap.det_restrictScalars, ← Matrix.mulVecLin_transpose, ← Matrix.toLin'_apply', LinearMap.det_toLin', Matrix.det_transpose, Algebra.norm_complex_apply]`. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one, Complex.star_def, ← Complex.normSq_eq_conj_mul_self]`. Conclude with `h1` after adjusting the coercions.
+
+Use `⟨(continuous_id.matrix_vecMul continuous_const).measurable, ?_⟩` and prove the remaining obligations. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin n → ℂ)) (f := (Matrix.vecMulLinear g).restrictScalars ℝ) (by rw [hdet]; exact one_ne_zero)`. Rewrite `hmap` using `[hdet, inv_one, abs_one, ENNReal.ofReal_one, one_smul]`. Conclude with `hmap`.
+-/
 theorem measurePreserving_vecMul {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h : gᴴ * g = 1) :
     MeasurePreserving (fun x : Fin n → ℂ => x ᵥ* g) volume volume := by
   have hdet : LinearMap.det ((Matrix.vecMulLinear g).restrictScalars ℝ) = 1 := by
@@ -208,6 +284,9 @@ theorem measurePreserving_vecMul {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h :
   rw [hdet, inv_one, abs_one, ENNReal.ofReal_one, one_smul] at hmap
   exact hmap
 
+/- English proof (translation)
+Establish `h' : g * gᴴ = 1` using `mul_eq_one_comm.mp h`. Establish `key : star (x ᵥ* g) ⬝ᵥ (x ᵥ* g) = star x ⬝ᵥ x`. Rewrite using `[Matrix.star_vecMul, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h', Matrix.one_mulVec, dotProduct_comm]`. Rewrite `key` using `[star_dot, star_dot]`. Conclude with `key` after adjusting the coercions.
+-/
 theorem sq_vecMul {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h : gᴴ * g = 1) (x : Fin n → ℂ) :
     sq (x ᵥ* g) = sq x := by
   have h' : g * gᴴ = 1 := mul_eq_one_comm.mp h
@@ -217,6 +296,17 @@ theorem sq_vecMul {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (h : gᴴ * g = 1) 
   rw [star_dot, star_dot] at key
   exact_mod_cast key
 
+/- English proof (translation)
+Establish `hs : 0 < sq x`. Use `lt_of_le_of_ne (sq_nonneg' x) fun h0 => hx ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1` using `le_sq x i`. Rewrite `h1` using `[← h0]`.
+
+Establish `h2 : ‖x i‖ = 0` using `by nlinarith [norm_nonneg (x i)]`. Simplify using `using h2`. Establish `hsu : sq ((√(sq x))⁻¹ • x) = 1`. Rewrite using `[sq_smul, inv_pow, Real.sq_sqrt hs.le, inv_mul_cancel₀ hs.ne']`. Establish `he : star (Pi.single l (1 : ℂ)) ⬝ᵥ ((1 : Matrix (Fin n) (Fin n) ℂ) *ᵥ Pi.single l 1) = 1`.
+
+Simplify using the standard rewrite rules. Take `⟨γ, hγ, hγe⟩` from `GlobalTheory.exists_unitary_mulVec_eq_of_form_eq ℂ n 1 (by simp) (by simp) (Pi.single l 1) (star ((√(sq x))⁻¹ • x)) (by rw [he, Matrix.one_mulVec, star_star, dotProduct_comm, star_dot, hsu, Complex.ofReal_one]) (by rw [he]; exact one_ne_zero)`. Rewrite `hγ` using `[Matrix.mul_one]`. Use `⟨γᴴ, by rw [Matrix.conjTranspose_conjTranspose]; exact mul_eq_one_comm.mp hγ, hs, ?_⟩` and prove the remaining obligations. Establish `hrow : γᴴ l = (√(sq x))⁻¹ • x`.
+
+Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun hγe j`. Rewrite `hj` using `[Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite using `[Matrix.conjTranspose_apply]`. Rewrite using `[hj, Pi.star_apply, star_star]`.
+
+Rewrite using `[hrow, smul_smul, mul_inv_cancel₀ (Real.sqrt_pos.2 hs).ne', one_smul]`.
+-/
 theorem exists_row {n : ℕ} (l : Fin n) (x : Fin n → ℂ) (hx : x ≠ 0) :
     ∃ h : Matrix (Fin n) (Fin n) ℂ, hᴴ * h = 1 ∧ 0 < sq x ∧ x = √(sq x) • h l := by
   have hs : 0 < sq x := by
@@ -244,6 +334,35 @@ theorem exists_row {n : ℕ} (l : Fin n) (x : Fin n → ℂ) (hx : x ≠ 0) :
     rw [hj, Pi.star_apply, star_star]
   rw [hrow, smul_smul, mul_inv_cancel₀ (Real.sqrt_pos.2 hs).ne', one_smul]
 
+/- English proof (translation)
+Introduce `k μ hk hμ hμ1 t ht0 ht1`. Take `⟨hσ, -, hnull, hinv⟩` from `hμ`. Establish `hU : ∀ᵐ g ∂μ, (Matrix.of g)ᴴ * Matrix.of g = 1` using `by filter_upwards [ae_iff.mpr hnull] with g hg`. Simplify `hg` using `[UH]`. Establish `hE'm : MeasurableSet {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2}` using `(isClosed_le continuous_const (((continuous_apply (Fin.last k)).comp (continuous_apply (Fin.last k))).norm.pow 2)).measurableSet`.
+
+Establish `hEE : μ {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} = μ {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2}`. Use `measure_congr (Filter.eventuallyEq_set.mpr ?_)` and prove the remaining obligations. Use `filter_upwards [hU] with g hg`. Establish `hc : star (fun i => g i (Fin.last k)) ⬝ᵥ (fun i => g i (Fin.last k)) = 1`. Establish `h2` using `congrFun (congrFun hg (Fin.last k)) (Fin.last k)`.
+
+Rewrite `h2` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply] at h2`. Simplify `h2` using `only [dotProduct, Pi.star_apply]`. Rewrite `hc` using `[star_dot]`. Establish `h1 : sq (fun i => g i (Fin.last k)) = 1` using `by exact_mod_cast hc`.
+
+Establish `hle` using `le_sq (fun i => g i (Fin.last k)) (Fin.last k)`. Rewrite `hle` using `[h1]`. Use `show |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t ↔ 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2`. Rewrite using `[abs_sub_comm, abs_of_nonneg (by linarith)]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+
+Establish `hcont : Continuous fun q : PI.MtM (k + 1) × (Fin (k + 1) → ℂ) => q.2 ᵥ* Matrix.of q.1` using `continuous_snd.matrix_vecMul continuous_fst`. Establish `hSm : MeasurableSet {q : PI.MtM (k + 1) × (Fin (k + 1) → ℂ) | q.2 ᵥ* Matrix.of q.1 ∈ cone k t}` using `((cone_closed k t).preimage hcont).measurableSet`. Establish `hA : (μ.prod volume) {q : PI.MtM (k + 1) × (Fin (k + 1) → ℂ) | q.2 ᵥ* Matrix.of q.1 ∈ cone k t} = volume (cone k t)`. Rewrite using `[Measure.prod_apply hSm]`. Establish `h2 : ∀ᵐ g ∂μ, volume (Prod.mk g ⁻¹' {q : PI.MtM (k + 1) × (Fin (k + 1) → ℂ) | q.2 ᵥ* Matrix.of q.1 ∈ cone k t}) = volume (cone k t)` using `by filter_upwards [hU] with g hg`.
+
+Conclude with `(measurePreserving_vecMul (Matrix.of g) hg).measure_preimage (cone_closed k t).measurableSet.nullMeasurableSet`. Rewrite using `[lintegral_congr_ae h2, lintegral_const, hμ1, mul_one]`. Establish `hB : (μ.prod volume) {q : PI.MtM (k + 1) × (Fin (k + 1) → ℂ) | q.2 ᵥ* Matrix.of q.1 ∈ cone k t} = μ {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2} * volume (cone k 1)`. Rewrite using `[Measure.prod_apply_symm hSm, ← lintegral_indicator_const (cone_closed k 1).measurableSet]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [compl_mem_ae_iff.mpr (measure_singleton (0 : Fin (k + 1) → ℂ))] with x hx0`. Establish `hx : x ≠ 0` using `hx0`. Distinguish the cases in `hx1 : sq x ≤ 1`. Rewrite using `[Set.indicator_of_mem (show x ∈ cone k 1 from ⟨hx1, by rw [sub_self, zero_mul]; positivity⟩)]`. Take `⟨h, hh, hs, hxe⟩` from `exists_row (Fin.last k) x hx`.
+
+Establish `hhU : h ∈ UH (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)`. Simplify `hh` using `[UH]`. Establish `hlc : Continuous (PI.lmulQ h)`. Unfold `PI.lmulQ`. Conclude with `continuous_const.matrix_mul continuous_id`.
+
+Establish `hlm : Measurable (PI.lmulQ h)` using `hlc.measurable`. Combine the equalities or inequalities in the displayed calculation. Use `measure_congr (Filter.eventuallyEq_set.mpr ?_)` and prove the remaining obligations. Use `filter_upwards [hU] with g hg`. Establish `e1 : sq (x ᵥ* Matrix.of g) = sq x` using `sq_vecMul _ hg x`.
+
+Establish `hv : x ᵥ* Matrix.of g = √(sq x) • (h (Fin.last k) ᵥ* Matrix.of g)`. Rewrite using `[← Matrix.smul_vecMul, ← hxe]`. Establish `e2 : ‖(x ᵥ* Matrix.of g) (Fin.last k)‖ ^ 2 = sq x * ‖(h * Matrix.of g) (Fin.last k) (Fin.last k)‖ ^ 2`. Rewrite using `[hv, Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (sq_nonneg' x)]`. Both sides reduce to the same expression.
+
+Use `show sq (x ᵥ* Matrix.of g) ≤ 1 ∧ (1 - t) * sq (x ᵥ* Matrix.of g) ≤ ‖(x ᵥ* Matrix.of g) (Fin.last k)‖ ^ 2 ↔ 1 - t ≤ ‖(h * Matrix.of g) (Fin.last k) (Fin.last k)‖ ^ 2`. Rewrite using `[e1, e2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Conclude with `le_of_mul_le_mul_left (by linarith) hs`.
+
+Introduce `hN`. Use `mul_le_mul_of_nonneg_left hN hs.le` as an intermediate fact. Conclude with `⟨hx1, by linarith⟩`. Use `_ = μ.map (PI.lmulQ h) {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2} := (Measure.map_apply hlm hE'm).symm`. Use `_ = μ {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2} := by`.
+
+Rewrite using `[hinv h hhU]`. Rewrite using `[Set.indicator_of_notMem (fun hm => hx1 hm.1)]`. Use `measure_mono_null ?_ (ae_iff.mp hU)` and prove the remaining obligations. Introduce `g hg hgU`. Establish `e1 : sq (x ᵥ* Matrix.of g) = sq x` using `sq_vecMul _ hgU x`.
+
+Conclude with `hx1 (e1 ▸ hg.1)`. Establish `key : μ {g : PI.MtM (k + 1) | 1 - t ≤ ‖g (Fin.last k) (Fin.last k)‖ ^ 2} * volume (cone k 1) = ENNReal.ofReal (t ^ k) * volume (cone k 1)`. Rewrite using `[← hB, hA, volume_cone k hk t ht0 ht1]`. Rewrite using `[hEE]`. Conclude with `(ENNReal.mul_left_inj (volume_cone_one_ne_zero k) (volume_cone_one_ne_top k)).mp key`.
+-/
 theorem measure_entry : ∀ (k : ℕ) (μ : Measure (PI.MtM (k + 1))), 1 ≤ k →
     PI.IsHaarOnM (UH (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)) μ → μ Set.univ = 1 → ∀ t : ℝ, 0 ≤ t → t ≤ 1 →
     μ {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} = ENNReal.ofReal (t ^ k) := by

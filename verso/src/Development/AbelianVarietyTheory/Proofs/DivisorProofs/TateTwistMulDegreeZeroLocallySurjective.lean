@@ -9,20 +9,32 @@ namespace GlobalTheory.EtC.TwMulSurj
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩`.
+-/
 theorem loc_top (U : Scheme.{0}) {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => h V g⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => h' V g (hP V g hg)⟩`.
+-/
 theorem loc_mono {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (h' : ∀ V g, P V g → P' V g) :
     Loc U P' := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun V g hg => h' V g (hP V g hg)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Take `⟨S', hS', hP'⟩` from `h'`. Conclude with `⟨S ⊓ S', GrothendieckTopology.intersection_covering _ hS hS', fun V g hg => ⟨hP V g hg.1, hP' V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P) (h' : Loc U P') :
     Loc U fun V g => P V g ∧ P' V g := by
   obtain ⟨S, hS, hP⟩ := h
   obtain ⟨S', hS', hP'⟩ := h'
   exact ⟨S ⊓ S', GrothendieckTopology.intersection_covering _ hS hS', fun V g hg => ⟨hP V g hg.1, hP' V g hg.2⟩⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Set `Rs : ∀ ⦃V : Scheme.{0}⦄ ⦃g : V ⟶ U⦄, S.arrows g → Sieve V` to `fun V g hg => (h' V g (hP V g hg)).choose`. Use `⟨Sieve.bind S.arrows Rs, Scheme.etaleTopology.bind_covering hS fun V g hg => (h' V g (hP V g hg)).choose_spec.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `W _ ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `(h' V g (hP V g hg)).choose_spec.2 W k hk`.
+-/
 theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {P' : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : Loc U P) (h' : ∀ V g, P V g → Loc V fun W k => P' W (k ≫ g)) : Loc U P' := by
   classical
@@ -32,57 +44,102 @@ theorem loc_bind {U : Scheme.{0}} {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} {
   rintro W _ ⟨V, k, g, hg, hk, rfl⟩
   exact (h' V g (hP V g hg)).choose_spec.2 W k hk
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_comp_apply {F G H : Shv R} (f : F ⟶ G) (g : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (f ≫ g) x = Sec.map g (Sec.map f x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_id_apply {F : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (𝟙 F) x = x := rfl
 
+/- English proof (translation)
+Use `congrArg (fun m => m.hom x) (f.hom.naturality g.op)` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem res_map {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map f x) = Sec.map f (Sec.res g x) := by
   have := congrArg (fun m => m.hom x) (f.hom.naturality g.op)
   simpa using this.symm
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
   simp [Sec.res]
 
+/- English proof (translation)
+The claim follows from `map_add _ x y`.
+-/
 theorem smap_add {F G : Shv R} (f : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map f (x + y) = Sec.map f x + Sec.map f y := map_add _ x y
 
+/- English proof (translation)
+The claim follows from `map_add _ x y`.
+-/
 theorem sres_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x + y) = Sec.res g x + Sec.res g y := map_add _ x y
 
+/- English proof (translation)
+The claim follows from `map_nsmul _ n x`.
+-/
 theorem smap_nsmul {F G : Shv R} (f : F ⟶ G) {U : Scheme.{0}} (n : ℕ) (x : Sec F U) :
     Sec.map f (n • x) = n • Sec.map f x := map_nsmul _ n x
 
+/- English proof (translation)
+The claim follows from `map_nsmul _ n x`.
+-/
 theorem sres_nsmul {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (x : Sec F U) :
     Sec.res g (n • x) = n • Sec.res g x := map_nsmul _ n x
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem smap_zero {F G : Shv R} (f : F ⟶ G) {U : Scheme.{0}} : Sec.map f (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_zero_hom {F G : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (0 : F ⟶ G) x = 0 := by
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_id_apply x, hF.eq_of_src (𝟙 F) 0, map_zero_hom]`.
+-/
 theorem eq_zero_of_isZero {F : Shv R} (hF : IsZero F) {U : Scheme.{0}} (x : Sec F U) : x = 0 := by
   rw [← map_id_apply x, hF.eq_of_src (𝟙 F) 0, map_zero_hom]
 
 def Good {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) (x : Sec G U) : Prop :=
   Loc U fun V g => ∃ z : Sec F V, Sec.map φ z = Sec.res g x
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `h`. Conclude with `loc_top U fun V g => ⟨Sec.res g z, (res_map φ g z).symm⟩`.
+-/
 theorem good_of {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} {x : Sec G U} (h : ∃ z, Sec.map φ z = x) : Good φ U x := by
   obtain ⟨z, rfl⟩ := h
   exact loc_top U fun V g => ⟨Sec.res g z, (res_map φ g z).symm⟩
 
+/- English proof (translation)
+Use `loc_bind hP fun V g hg => ?_` and prove the remaining obligations. Take `⟨S, hS, hS'⟩` from `h V g hg`. Conclude with `⟨S, hS, fun W k hk => by obtain ⟨z, hz⟩ := hS' W k hk; exact ⟨z, by rw [hz, res_comp]⟩⟩`.
+-/
 theorem good_bind {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x : Sec G U) {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (hP : Loc U P) (h : ∀ V g, P V g → Good φ V (Sec.res g x)) : Good φ U x := by
   refine loc_bind hP fun V g hg => ?_
   obtain ⟨S, hS, hS'⟩ := h V g hg
   exact ⟨S, hS, fun W k hk => by obtain ⟨z, hz⟩ := hS' W k hk; exact ⟨z, by rw [hz, res_comp]⟩⟩
 
+/- English proof (translation)
+The claim follows from `loc_mono (loc_and h h') fun _ g ⟨⟨z, hz⟩, ⟨z', hz'⟩⟩ => ⟨z + z', by rw [smap_add, sres_add, hz, hz']⟩`.
+-/
 theorem good_add {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} {x x' : Sec G U} (h : Good φ U x) (h' : Good φ U x') :
     Good φ U (x + x') :=
   loc_mono (loc_and h h') fun _ g ⟨⟨z, hz⟩, ⟨z', hz'⟩⟩ => ⟨z + z', by rw [smap_add, sres_add, hz, hz']⟩
 
+/- English proof (translation)
+The claim follows from `good_of φ ⟨0, smap_zero _⟩`.
+-/
 theorem good_zero {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) : Good φ U 0 := good_of φ ⟨0, smap_zero _⟩
 
 end GlobalTheory.EtC.TwMulSurj
@@ -91,6 +148,31 @@ namespace GlobalTheory.EtC
 
 open TwMulSurj in
 
+/- English proof (translation)
+Introduce `q _ i j k hk K τ hτ φ hφ`. Establish `hT` using `GlobalTheory.T.tateTwist_sections_locally_generated`. Establish `key_gen : ∀ V (a : Sec (tw q i) V) (b : Sec (tw q j) V), Good φ V (τ.mul V 0 0 0 (add_zero 0) (Sec.map (sglι _) a) (Sec.map (sglι _) b))`. Introduce `V a b`. Use `good_bind φ _ ((hT q i).1 V a) ?_` and prove the remaining obligations.
+
+Introduce and unpack `W g (ha | ⟨ζ, c, ha⟩)`. Apply `good_of` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[smap_zero, τ.nat, res_map, res_map, ha, smap_zero]`. Simplify using the standard rewrite rules.
+
+Use `good_bind φ _ ((hT q j).2.1 W ζ (Sec.res g b)) ?_` and prove the remaining obligations. Introduce and unpack `W' g' ⟨c', hb⟩`. Apply `good_of` to reduce the goal to its premises. Use `⟨(c * c') • twGen k (ζ.map g'.appTop.hom), ?_⟩` and prove the remaining obligations. Rewrite using `[smap_nsmul, hφ, τ.nat, τ.nat, res_map, res_map, res_map, res_map, ha, hb, sres_nsmul, (hT q i).2.2.2.1, smap_nsmul, smap_nsmul]`.
+
+Simplify using `[mul_comm, mul_smul]`. Establish `key : ∀ V (x : Tens (sgl (tw q i)) (sgl (tw q j)) V 0), Good φ V (τ.lift V 0 x)`. Introduce `V x`. Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `good_zero φ V`. Consider the case `of p t`. Take `⟨⟨s, t'⟩, hst⟩` from `p`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+
+Conclude with `good_zero φ V`. Consider the case `add u u' hu hu' => rw [map_add, map_add]`. Conclude with `good_add φ hu hu'`. Consider the case `tmul a b`. Establish `hlift : τ.lift V 0 (DirectSum.of _ ⟨(s, t'), hst⟩ (a ⊗ₜ b)) = τ.mul V s t' 0 hst a b`.
+
+Unfold `Pair.lift`. Use `erw [DirectSum.toModule_lof]`. Both sides reduce to the same expression. Rewrite using `[hlift]`. Distinguish the cases in `hs : s = 0`.
+
+Substitute `hs` using the available equality. Take `rfl : t' = 0` from `by omega`. Establish `ea : Sec.map (sglι _) (Sec.map (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (tw q i)).hom a) = a`. Use `(map_comp_apply _ (sglι _) a).symm.trans ?_` and prove the remaining obligations. Simplify using `[sglι]`.
+
+Both sides reduce to the same expression. Establish `eb : Sec.map (sglι _) (Sec.map (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (tw q j)).hom b) = b`. Use `(map_comp_apply _ (sglι _) b).symm.trans ?_` and prove the remaining obligations. Simplify using `[sglι]`. Both sides reduce to the same expression.
+
+Rewrite using `[← ea, ← eb]`. Conclude with `key_gen V _ _`. Establish `h0 : τ.mul V s t' 0 hst a b = 0`. Rewrite using `[eq_zero_of_isZero (F := (sgl (tw q i)).X s) (HomologicalComplex.isZero_single_obj_X _ _ _ _ hs) a]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0]`. Conclude with `good_zero φ V`. Consider the case `add x x' hx hx' => rw [map_add]`. Conclude with `good_add φ hx hx'`. Introduce `U y`.
+
+Conclude with `good_bind φ y (hτ.1 U 0 y) fun V g ⟨x, hx⟩ => hx ▸ key V x`.
+-/
 theorem tw_mul_locSurj : ∀ (q : ℕ) [NeZero q] (i j k : ℤ), i + j = k → ∀ {K : Cx (ZMod q)}
     (τ : Pair (sgl (tw q i)) (sgl (tw q j)) K), τ.IsTensor → ∀ φ : tw q k ⟶ K.X 0,
     (∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)), Sec.map φ (twGen k ζ) =

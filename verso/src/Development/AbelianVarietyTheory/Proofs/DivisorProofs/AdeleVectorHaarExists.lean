@@ -11,6 +11,13 @@ open GlobalTheory.Doubling (absE)
 noncomputable section
 namespace GlobalTheory.AdelicHaarCoord
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `letI : MeasurableSpace (Fin d → AE F E) := borel _`. Use `haveI : BorelSpace (Fin d → AE F E) := ⟨rfl⟩`.
+
+Conclude with `⟨Measure.addHaar, inferInstance⟩`.
+-/
 theorem exists_addHaar_borel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ),
     ∃ μ : @Measure (Fin d → AE F E) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ := by
   intro F E _ _ _ _ _ d

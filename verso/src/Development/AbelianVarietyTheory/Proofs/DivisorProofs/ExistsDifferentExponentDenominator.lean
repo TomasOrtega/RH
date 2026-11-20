@@ -8,6 +8,15 @@ open NumberField IsDedekindDomain GlobalTheory.IndefiniteRowSideFullHecke.Differ
 
 namespace GlobalTheory.DifferentElement
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap V k)` using `IsFractionRing.injective V k`. Establish `h : ∀ x : 𝓞 E, ∃ v : V, algebraMap V k v = ψ (x : E)`. Introduce `x`. Apply `IsIntegrallyClosed.algebraMap_eq_of_integral` to reduce the goal to its premises. Establish `h1 : IsIntegral ℤ (ψ (x : E))` using `(RingOfIntegers.isIntegral_coe x).map ψ.toIntAlgHom`.
+
+Conclude with `h1.tower_top`. Use `choose s hs using h`. Use `⟨{ toFun := s, map_one' := hinj ?_, map_mul' := fun x y => hinj ?_, map_zero' := hinj ?_, map_add' := fun x y => hinj ?_ }, hs⟩` and prove the remaining obligations. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[map_mul, hs, hs, hs]`. Simplify using the standard rewrite rules. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Rewrite using `[map_add, hs, hs, hs]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_intLift (E : Type) [Field E] [NumberField E] (V : Type) [CommRing V] [IsDomain V] [IsIntegrallyClosed V]
     (k : Type) [Field k] [Algebra V k] [IsFractionRing V k] (ψ : E →+* k) :
     ∃ σ : 𝓞 E →+* V, ∀ x : 𝓞 E, algebraMap V k (σ x) = ψ (x : E) := by
@@ -25,6 +34,11 @@ theorem exists_intLift (E : Type) [Field E] [NumberField E] (V : Type) [CommRing
   · rw [hs]; simp
   · rw [map_add, hs, hs, hs]; simp
 
+/- English proof (translation)
+Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K (u : O)) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (algebraMap O K ϖ) = WithZero.exp (-1)`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)]`.
+
+Unfold `ord_vw`. Rewrite using `[map_mul, map_pow, map_mul, map_pow, h1, h2, mul_one, ← WithZero.exp_nsmul, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_vw_pow_mul_unit (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (K : Type) [Field K]
     [Algebra O K] [IsFractionRing O K] {ϖ : O} (hϖ : Irreducible ϖ) (u : Oˣ) (n : ℕ) :
     ord_vw O (algebraMap O K (ϖ ^ n * u)) = n := by
@@ -42,6 +56,17 @@ end GlobalTheory.DifferentElement
 
 namespace GlobalTheory.DifferentElement
 
+/- English proof (translation)
+Use `set Q := Ideal.comap ι (IsLocalRing.maximalIdeal O) with hQdef`. Establish `hQp : Q.IsPrime` using `Ideal.comap_isPrime ι _`. Use `set k := multiplicity Q (Ideal.span {z})`. Establish `hz0 : Ideal.span {z} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hfin : FiniteMultiplicity Q (Ideal.span {z})` using `FiniteMultiplicity.of_prime_left (Ideal.prime_of_isPrime hQ0 hQp) hz0`.
+
+Take `⟨J, hJ⟩` from `pow_multiplicity_dvd Q (Ideal.span {z})`. Establish `hJQ : ¬ J ≤ Q`. Introduce `hle`. Establish `: Q ^ (k + 1) ∣ Ideal.span {z}`. Rewrite using `[hJ, pow_succ]`.
+
+Conclude with `mul_dvd_mul_left _ (Ideal.dvd_iff_le.2 hle)`. Conclude with `(hfin.pow_dvd_iff_le_multiplicity.1 this).not_gt (Nat.lt_succ_self k)`. Take `⟨s, hsJ, hsQ⟩` from `SetLike.not_le_iff_exists.1 hJQ`. Establish `hsu : IsUnit (ι s)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hsQ (Ideal.mem_comap.2 ((IsLocalRing.mem_maximalIdeal _).2 h))`. Establish `hJt : Ideal.map ι J = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem ι hsJ) hsu`. Establish `h1 : Ideal.span {ι z} = Ideal.span {ϖ ^ (e * k)}`. Rewrite using `[← Set.image_singleton, ← Ideal.map_span, hJ, Ideal.map_mul, Ideal.map_pow, he, hJt, Ideal.mul_top, Ideal.span_singleton_pow, pow_mul]`. Take `⟨u, hu⟩` from `(Ideal.span_singleton_eq_span_singleton.1 h1).symm`.
+
+Conclude with `⟨u, hu.symm⟩`.
+-/
 theorem exists_pow_mul_unit {E : Type} [Field E] [NumberField E] {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (ι : 𝓞 E →+* O) (hQ0 : Ideal.comap ι (IsLocalRing.maximalIdeal O) ≠ ⊥) {ϖ : O} (e : ℕ)
     (he : Ideal.map ι (Ideal.comap ι (IsLocalRing.maximalIdeal O)) = Ideal.span {ϖ ^ e}) (z : 𝓞 E) (hz : z ≠ 0) :
@@ -70,6 +95,13 @@ theorem exists_pow_mul_unit {E : Type} [Field E] [NumberField E] {O : Type} [Com
   obtain ⟨u, hu⟩ := (Ideal.span_singleton_eq_span_singleton.1 h1).symm
   exact ⟨u, hu.symm⟩
 
+/- English proof (translation)
+Establish `hl0 : (l : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hl0 ((Submodule.mem_bot _).1 hlP)`. Establish `hirr : Irreducible P` using `(Ideal.prime_of_isPrime hP0 hP).irreducible`.
+
+Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.diffExp E l ((discr E).natAbs.factorization l) (ordCompl[l] (discr E).natAbs) hl (Nat.not_dvd_ordCompl hl hd) (Nat.ordProj_mul_ordCompl_eq_self _ _).symm P hP hlP`. Establish `hspan0 : Ideal.span {(l : 𝓞 E)} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hpos` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.count_span_pos E l hl hP hlP`. Rewrite using `[multiplicity_eq_count_normalizedFactors hirr differentIdeal_ne_bot, multiplicity_eq_count_normalizedFactors hirr hspan0, normalize_eq]`.
+
+Establish `hn : (Module.finrank ℚ E : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Rewrite using `[div_eq_div_iff (by exact_mod_cast hpos.ne') hn]`. Apply the tactic sequence `convert congrArg (fun t : ℕ => (t : ℚ)) h using 1 <;> push_cast <;> ring`.
+-/
 theorem mult_ratio (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (l : ℕ) (hl : l.Prime) (P : Ideal (𝓞 E))
     (hP : P.IsPrime) (hlP : (l : 𝓞 E) ∈ P) :
     (multiplicity P (differentIdeal ℤ (𝓞 E)) : ℚ) / (multiplicity P (Ideal.span {(l : 𝓞 E)}) : ℚ) =
@@ -97,6 +129,39 @@ namespace GlobalTheory.DifferentElement
 
 open Classical in
 
+/- English proof (translation)
+Introduce `E _ _ _ _ l hl O _ _ _ _ K _ _ _ hlm hcard`. Establish `hne : Nonempty (E →+* K)`. Establish `: 0 < Nat.card (E →+* K)` using `hcard ▸ Module.finrank_pos`. Conclude with `(Nat.card_pos_iff.1 this).1`. Take `⟨σ0⟩` from `hne`.
+
+Take `⟨ι, hι⟩` from `exists_intLift E O K σ0`. Use `set Q := Ideal.comap ι (IsLocalRing.maximalIdeal O) with hQdef`. Establish `hlQ : (l : 𝓞 E) ∈ Q` using `by rw [Ideal.mem_comap, map_natCast]; exact hlm`. Establish `hl0 : (l : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hlO : (l : O) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`.
+
+Establish `hQ0 : Q ≠ ⊥`. Introduce `h`. Rewrite `hlQ` using `[h]`. Conclude with `hl0 ((Submodule.mem_bot _).1 hlQ)`. Establish `hQp : Q.IsPrime` using `Ideal.comap_isPrime ι _`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hmap0 : Ideal.map ι Q ≠ ⊥`. Introduce `h`. Use `Ideal.mem_map_of_mem ι hlQ` as an intermediate fact. Rewrite `this` using `[h, map_natCast]`.
+
+Conclude with `hlO ((Submodule.mem_bot _).1 this)`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hmap0 hϖ`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Rewrite `he` using `[pow_zero, Ideal.span_singleton_one]`.
+
+Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top (top_le_iff.1 (he ▸ Ideal.map_comap_le))`. Use `set 𝔇 := differentIdeal ℤ (𝓞 E) with h𝔇def`. Establish `h𝔇 : 𝔇 ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hfin𝔇 : FiniteMultiplicity Q 𝔇` using `FiniteMultiplicity.of_prime_left (Ideal.prime_of_isPrime hQ0 hQp) h𝔇`. Use `set k := multiplicity Q 𝔇 with hkdef`.
+
+Establish `hnle : ¬ 𝔇 ≤ Q ^ (k + 1)` using `fun h => (hfin𝔇.pow_dvd_iff_le_multiplicity.1 (Ideal.dvd_iff_le.2 h)).not_gt (Nat.lt_succ_self k)`. Take `⟨x, hx𝔇, hxQ⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hxQ (zero_mem _)`.
+
+Establish `hxk : multiplicity Q (Ideal.span {x}) = k`. Use `multiplicity_eq_of_dvd_of_not_dvd ?_ ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_iff_le.2 (((Ideal.span_singleton_le_iff_mem _).2 hx𝔇).trans (Ideal.le_of_dvd (pow_multiplicity_dvd Q 𝔇)))`. Introduce `h`. Conclude with `hxQ ((Ideal.span_singleton_le_iff_mem _).1 (Ideal.le_of_dvd h))`.
+
+Use `⟨ι x, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Take `⟨u, hu⟩` from `exists_pow_mul_unit ι hQ0 e he x hx0`. Take `⟨u', hu'⟩` from `exists_pow_mul_unit ι hQ0 e he (l : 𝓞 E) hl0`. Establish `hxK : algebraMap O K (ι x) ≠ 0`.
+
+Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective O K), hu]`. Conclude with `mul_ne_zero (pow_ne_zero _ hϖ.ne_zero) u.ne_zero`. Establish `hlK : (l : K) = algebraMap O K (ι (l : 𝓞 E))` using `by rw [map_natCast, map_natCast]`. Rewrite using `[val_vp, if_neg hxK, hlK, hu, hu', ord_vw_pow_mul_unit O K hϖ, ord_vw_pow_mul_unit O K hϖ, hxk]`. Use `congr 1`.
+
+Establish `hr1` using `mult_ratio E l hl P.asIdeal P.isPrime hP`. Establish `hr2` using `mult_ratio E l hl Q hQp hlQ`. Rewrite using `[diffExp_vp, hr1, ← hr2]`. Establish `hkl : multiplicity Q (Ideal.span {(l : 𝓞 E)}) ≠ 0`. Establish `hfl : FiniteMultiplicity Q (Ideal.span {(l : 𝓞 E)})` using `FiniteMultiplicity.of_prime_left (Ideal.prime_of_isPrime hQ0 hQp) (by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact hl0)`.
+
+Use `hfl.le_multiplicity_of_pow_dvd (k := 1) (by` as an intermediate fact. Rewrite using `[pow_one]`. Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hlQ))`. Use linear arithmetic over natural numbers and integers. Use `push_cast`.
+
+Rewrite using `[mul_div_mul_left _ _ (by exact_mod_cast he0)]`. Introduce `σ y hy haveI : CharZero K := charZero_of_injective_ringHom σ0.injective`. Use `letI : Algebra E K := σ0.toAlgebra`. Use `haveI : IsScalarTower ℚ E K := IsScalarTower.of_algebraMap_eq fun q => by show algebraMap ℚ K q = σ0 (algebraMap ℚ E q)`. Rewrite using `[eq_ratCast (algebraMap ℚ K), eq_ratCast (algebraMap ℚ E), map_ratCast]`.
+
+Set `τ : E ≃ₐ[ℚ] E` to `(σ.toRatAlgHom).restrictNormal' E`. Establish `hτ : ∀ w, σ0 (τ w) = σ w` using `fun w => (σ.toRatAlgHom).restrictNormal_commutes E w`. Establish `hyd : y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`.
+
+Take `⟨b, rfl⟩` from `Submodule.mem_one.1 ha`. Take `⟨n, hn⟩` from `hy b`. Conclude with `⟨n, by rw [Algebra.traceForm_apply, eq_intCast]; exact hn.symm⟩`. Establish `hτy` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.traceDual_smul τ hyd`. Establish `hx'` using `(ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.mem_differentIdeal_iff x).1 hx𝔇`.
+
+Rewrite `hx'` using `[Submodule.mem_div_iff_forall_mul_mem]`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hx' _ hτy)`. Use `⟨ι b, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, hι, ← hτ, ← map_mul]`. Conclude with `congrArg σ0 hb`.
+-/
 theorem diff_element : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (l : ℕ), l.Prime →
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K]
     [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E →

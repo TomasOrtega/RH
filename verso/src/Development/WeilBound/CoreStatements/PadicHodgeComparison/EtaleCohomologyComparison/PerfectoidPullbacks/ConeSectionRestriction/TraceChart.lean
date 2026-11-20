@@ -11,6 +11,45 @@ namespace CrystallineSemistableComparison.Pb
 
 variable {K : Type} [Field K] [CharZero K] {R : Type} [CommRing R] [IsDomain R] [Algebra K R] {n : ℕ}
 
+/- English proof (translation)
+Establish `hι : Function.Injective (algebraMap R (FractionRing R))` using `IsFractionRing.injective R (FractionRing R)`. Establish `hιne : ∀ r : R, r ≠ 0 → algebraMap R (FractionRing R) r ≠ 0` using `fun r hr h => hr (hι (h.trans (map_zero _).symm))`. Use `letI : Algebra (torusS K t S) B' := (Subalgebra.inclusion hTB).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (torusS K t S) B' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hAB : Function.Injective (algebraMap (torusS K t S) B')` using `Subalgebra.inclusion_injective hTB`.
+
+Set `f : B' →ₐ[torusS K t S] R` to `{ B'.val with commutes' := fun _ => rfl }`. Use `haveI : Algebra.IsIntegral (torusS K t S) B' := ⟨fun b => (isIntegral_algHom_iff f Subtype.val_injective).mp (hInt b b.2)⟩`. Use `haveI : Algebra.FiniteType K B' := Subalgebra.fg_iff_finiteType B' |>.mp hFG`. Use `haveI : Algebra.FiniteType (torusS K t S) B' := Algebra.FiniteType.of_restrictScalars_finiteType K _ _`. Use `haveI : Module.Finite (torusS K t S) B' := Algebra.IsIntegral.finite`.
+
+Set `ψ : torusS K t S →+* fldF K t` to `{ toFun := fun a => ⟨algebraMap R (FractionRing R) a, torus_mem_fldF t S a a.2⟩ map_one' := Subtype.ext (map_one _) map_mul' := fun a b => Subtype.ext (map_mul _ (a : R) b) map_zero' := Subtype.ext (map_zero _) map_add' := fun a b => Subtype.ext (map_add _ (a : R) b) }`. Use `letI : Algebra (torusS K t S) (fldF K t) := ψ.toAlgebra`. Establish `hψ : ∀ a : torusS K t S, ((algebraMap (torusS K t S) (fldF K t) a : fldF K t) : FractionRing R) = algebraMap R (FractionRing R) a` using `fun _ => rfl`. Establish `hψinj : Function.Injective (algebraMap (torusS K t S) (fldF K t))` using `fun a b h => Subtype.ext (hι (by rw [← hψ, ← hψ, h]))`. Establish `hQ : ∀ z ∈ fldF K t, ∃ x y : torusS K t S, algebraMap R (FractionRing R) (y : R) ≠ 0 ∧ z = algebraMap R (FractionRing R) x / algebraMap R (FractionRing R) y` using `fun z hz => by`.
+
+Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Take `⟨a', ha', ha'0, hta⟩` from `hfr k`. Use `⟨⟨_, hta⟩, ⟨a', ha'⟩, hιne _ ha'0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul]`. Rewrite using `[mul_div_assoc, div_self (hιne _ ha'0), mul_one]`. Consider the case `algebraMap c`. Use `⟨algebraMap K _ c, 1, by simpa using one_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[IsScalarTower.algebraMap_apply K R (FractionRing R)]`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨x1, x2, hx2, rfl⟩` from `hx`. Take `⟨y1, y2, hy2, rfl⟩` from `hy`. Use `⟨x1 * y2 + y1 * x2, x2 * y2, by simpa using mul_ne_zero hx2 hy2, ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, map_add, map_mul]`.
+
+Rewrite using `[div_add_div _ _ hx2 hy2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inv x _ hx`. Take `⟨x1, x2, hx2, rfl⟩` from `hx`. Distinguish the cases in `h1 : algebraMap R (FractionRing R) (x1 : R) = 0`.
+
+Conclude with `⟨0, 1, by simpa using one_ne_zero, by simp [h1]⟩`. Conclude with `⟨x2, x1, h1, by rw [inv_div]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨x1, x2, hx2, rfl⟩` from `hx`. Take `⟨y1, y2, hy2, rfl⟩` from `hy`.
+
+Use `⟨x1 * y1, x2 * y2, by simpa using mul_ne_zero hx2 hy2, ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.coe_mul, map_mul]`. Rewrite using `[div_mul_div_comm]`. Use `haveI : FaithfulSMul (torusS K t S) (fldF K t) := (faithfulSMul_iff_algebraMap_injective _ _).mpr hψinj`. Use `haveI : IsFractionRing (torusS K t S) (fldF K t) := IsFractionRing.of_field _ _ fun z => by`.
+
+Take `⟨x, y, hy, hz⟩` from `hQ z z.2`. Use `⟨x, y, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_div, hψ, hψ, ← hz]`. Establish `hBL : Function.Injective (algebraMap B' (FractionRing R))` using `fun a b h => Subtype.ext (hι h)`. Use `haveI : FaithfulSMul B' (FractionRing R) := (faithfulSMul_iff_algebraMap_injective _ _).mpr hBL`.
+
+Use `haveI : IsFractionRing B' (FractionRing R) := IsFractionRing.of_field _ _ fun z => by`. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := R) z`. Take `⟨b1, hb1, b1', hb1', hb1'0, hr⟩` from `hFrac r`. Take `⟨b2, hb2, b2', hb2', hb2'0, hs'⟩` from `hFrac s`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`.
+
+Establish `hb20 : b2 ≠ 0` using `by rw [← hs']; exact mul_ne_zero hs0 hb2'0`. Use `⟨⟨b1 * b2', mul_mem hb1 hb2'⟩, ⟨b1' * b2, mul_mem hb1' hb2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = algebraMap R (FractionRing R) (b1 * b2') / algebraMap R (FractionRing R) (b1' * b2)`. Establish `hden : algebraMap R (FractionRing R) (b1' * b2) ≠ 0` using `hιne _ (mul_ne_zero hb1'0 hb20)`. Rewrite using `[div_eq_div_iff (hιne _ hs0) hden, ← map_mul, ← map_mul, ← hr, ← hs']`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : IsScalarTower (torusS K t S) (fldF K t) (FractionRing R) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower (torusS K t S) B' (FractionRing R) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `choose Dl hDl using fun k => frac_deriv (E k)`.
+
+Establish `hDu : ∀ k j, Dl k (algebraMap (torusS K t S) (FractionRing R) (u j)) = if k = j then 1 else 0`. Introduce `k j`. Express the relevant statement in the definitionally equal form `Dl k (algebraMap R (FractionRing R) (u j : R)) = _`. Rewrite using `[hDl, hE]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, bs, rfl⟩` from `hy`. Take `⟨a, ha⟩` from `GlobalTheory.T.fraction_field_transcendence_basis_ext K (n + 1) (torusS K t S) u hinj hloc B' hAB (fldF K t) (FractionRing R) Dl hDu m ⟨κ, hκ⟩ b bs`.
+
+Use `⟨a, a.2, ?_⟩` and prove the remaining obligations. Establish `hX : algebraMap R (FractionRing R) ((b : R) * (Matrix.of fun k l => E (κ k) (bs l : R)).det) = algebraMap B' (FractionRing R) b * (Matrix.of fun k l => Dl ((⟨κ, hκ⟩ : Fin m ↪ Fin (n + 1)) k) (algebraMap B' (FractionRing R) (bs l))).det`. Rewrite using `[map_mul, RingHom.map_det]`. Use `congrArg₂ (· * ·) rfl (congrArg Matrix.det ?_)` and prove the remaining obligations. Use extensionality with `k l`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← hDl]`. Both sides reduce to the same expression. Rewrite using `[← hψ, ha, hX]`. Both sides reduce to the same expression.
+
+Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hxa⟩` from `hx`. Take `⟨b, hb, hyb⟩` from `hy`. Conclude with `⟨a + b, add_mem ha hb, by simp only [map_add] at hxa hyb ⊢; rw [hxa, hyb]⟩`.
+
+Consider the case `neg x _ hx`. Take `⟨a, ha, hxa⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, by simp only [map_neg] at hxa ⊢; rw [hxa]⟩`.
+-/
 theorem trace_chart (t : Fin (n + 1) → Rˣ) (S : Finset (Fin (n + 2))) (u : Fin (n + 1) → torusS K t S)
     (hinj : Function.Injective (MvPolynomial.aeval u : MvPolynomial (Fin (n + 1)) K →ₐ[K] torusS K t S))
     (hloc : ∀ a : torusS K t S, ∃ f g : MvPolynomial (Fin (n + 1)) K,

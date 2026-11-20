@@ -13,6 +13,45 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hσ` using `rreg_isURepOn ε`. Establish `hD : IsDerivedOn ε (rreg ε) (smD ε (rreg ε)) (smE ε (rreg ε))` using `isDerivedOn_smE hσ`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hV` using `datumV_isKIrrHW hP hv₀`. Establish `hV'` using `datumV_isKIrrHW hP' hv₀'`.
+
+Establish `hc` using `datumV_casimir hP v₀`. Establish `hc'` using `datumV_casimir hP' v₀'`. Establish `hVK` using `datumV_kStable hP v₀`. Establish `hVK'` using `datumV_kStable hP' v₀'`. Establish `hinn : ∀ x : L2 ε, inner ℂ x x = ((‖x‖ ^ 2 : ℝ) : ℂ)` using `fun x => by`.
+
+Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Establish `hPB` using `eigenProj_formB dual hσ hD hgap hV hc hVK hW (poleF dual lam s) hPG.1 hPz hP1 hP0`. Establish `hιinj : ∀ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), ∀ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), ι x = ι y → x = y` using `fun x hx y hy h => sub_eq_zero.1 (hι.2.1 _ (Submodule.sub_mem _ hx hy) (by rw [map_sub, h, sub_self]))`. Establish `hPι : ∀ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), P (ι x) = ι x` using `fun x hx => hP1 _ (hι.1 x hx) (hιe x hx)`.
+
+Set `b : smD ε (rreg ε) →ₗ⋆[ℂ] smD ε (rreg ε) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => formB ε (ι x) (ι y)) (fun x x' y => by simp only [map_add, fm_formB_add_left]) (fun a x y => by simp only [map_smul, formB_smul_left, smul_eq_mul]) (fun x y y' => by simp only [map_add, formB_add_right]) (fun a x y => by …`. Establish `hb : ∀ x y, b x y = formB ε (ι x) (ι y)` using `fun _ _ => rfl`. Take `⟨c, hcb⟩` from `data_form_scalar hgap' hσ hD hV' hc' hVK' b (fun a a' x hx y hy => by`. Rewrite using `[hb, hb, hι.2.2.1 a a' x hx, hι.2.2.1 a' a y hy]`. Conclude with `fm_formB_tensF dual hU a a' _ _)`.
+
+Use the proof step `(fun k hk x hx y hy x' hx' y' hy' hxx hyy => by`. Rewrite using `[hb, hb]`. Establish `h1` using `hι.2.2.2 k hk x hx x' hx' hxx`. Establish `h2` using `hι.2.2.2 k hk y hy y' hy' hyy`. Use `fm_formBH_kDiag dual hσ hk (fun c => ((ι x c : smD ε (rreg ε)) : L2 ε)) (fun c => ((ι y c : smD ε (rreg ε)) : L2 ε))` as an intermediate fact.
+
+Rewrite `this` using `[← h1, ← h2]`. Conclude with `this)`. Take `⟨w, hwV, hw0, -⟩` from `hV'.2.2.2`. Establish `hwM : w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀')` using `rorth_le_genSub hwV`. Establish `hwH : ((w : smD ε (rreg ε)) : L2 ε) ≠ 0` using `fun h => hw0 (Subtype.ext h)`.
+
+Establish `hcre : c = (c.re : ℂ)`. Establish `h1` using `hcb w hwM w hwM`. Establish `h2 : starRingEnd ℂ (b w w) = b w w` using `by rw [hb]; exact formB_conj _ _`. Rewrite `h2` using `[h1, map_mul, inner_conj_symm]`. Establish `hww : inner ℂ ((w : smD ε (rreg ε)) : L2 ε) ((w : smD ε (rreg ε)) : L2 ε) ≠ 0` using `inner_self_ne_zero.2 hwH`.
+
+Conclude with `(Complex.conj_eq_iff_re.1 (mul_right_cancel₀ hww h2)).symm`. Establish `hform : ∀ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), ∀ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), formB ε (ι x) (ι y) = (c.re : ℂ) * inner ℂ ((x : smD ε (rreg ε)) : L2 ε) ((y : smD ε (rreg ε)) : L2 ε)`. Introduce `x hx y hy`. Rewrite using `[← hb, hcb x hx y hy, ← hcre]`. Establish `hqex : ∀ f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)), ∃ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), P f = ι x` using `fun f hf => hιs _ (hPG.1 f hf) (hPz f hf)`.
+
+Set `q : (Fin n → smD ε (rreg ε)) → smD ε (rreg ε)` to `fun f => if h : ∃ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), P f = ι x then h.choose else 0`. Establish `hq : ∀ f ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)), q f ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀') ∧ P f = ι (q f)`. Introduce `f hf`. Establish `h` using `hqex f hf`. Establish `e : q f = h.choose` using `dif_pos h`.
+
+Rewrite using `[e]`. Conclude with `h.choose_spec`. Use `⟨c.re, q, ?_, hform, hq, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hιw : ι w ≠ 0` using `fun h => hw0 (hι.2.1 w hwM h)`.
+
+Take `⟨c0, hc0⟩` from `Function.ne_iff.1 hιw`. Set `G : Fin n → smD ε (rreg ε)` to `fun c => (if ε c then (1 : ℂ) else -1) • ι w c`. Establish `hG : G ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))` using `tset_mem.2 fun c => Submodule.smul_mem _ _ (tset_mem.1 (hι.1 w hwM) c)`. Establish `e1 : formB ε (ι w) G = ((∑ c, ‖((ι w c : smD ε (rreg ε)) : L2 ε)‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [formB, G, Submodule.coe_smul, inner_smul_right, Complex.ofReal_sum]`.
+
+Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hinn]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hpos : 0 < ∑ c, ‖((ι w c : smD ε (rreg ε)) : L2 ε)‖ ^ 2`. Use `Finset.sum_pos' (fun c _ => sq_nonneg _) ⟨c0, mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Establish `: ((ι w c0 : smD ε (rreg ε)) : L2 ε) ≠ 0` using `fun h => hc0 (Subtype.ext h)`. Conclude with `pow_pos (norm_pos_iff.2 this) 2`. Take `⟨y, hy, hPy⟩` from `hqex G hG`. Establish `e2 : formB ε (ι w) G = 0`. Rewrite using `[← hPι w hwM, hPB _ (hι.1 w hwM) G hG, hPy, hform w hwM y hy, h0]`.
+
+Simplify using the standard rewrite rules. Rewrite `e2` using `[e1]`. Conclude with `absurd (Complex.ofReal_eq_zero.1 e2) hpos.ne'`. Introduce `a b' f hf`. Establish `hf'` using `tensSub_stable dual a b' f hf`.
+
+Take `⟨h1, h2⟩` from `hq _ hf'`. Take `⟨h3, h4⟩` from `hq f hf`. Use `hιinj _ h1 _ (tset_genSub_E _ _ a b' h3) ?_` and prove the remaining obligations. Rewrite using `[← h2, hPG.2.1 a b' f hf, h4, hι.2.2.1 a b' _ h3]`. Introduce `f hf`.
+
+Take `⟨h1, h2⟩` from `hq f hf`. Rewrite using `[h2, hform _ h1 _ h1, hinn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `f hf f' hf' g hg`.
+
+Take `⟨hq1, hq2⟩` from `hq f hf`. Take `⟨hq1', hq2'⟩` from `hq f' hf'`. Set `F : Fin n → smD ε (rreg ε)` to `fun c => (if ε c then (1 : ℂ) else -1) • f' c`. Establish `hz : ∀ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ' v₀'), inner ℂ ((c.re : ℂ) • q f') y = ∑ c, inner ℂ (F c) (ι y c)`. Introduce `y hy`.
+
+Establish `e1 : ∑ c, inner ℂ (F c) (ι y c) = formB ε f' (ι y)`. Simplify using `only [formB, F, Submodule.coe_inner, inner_smul_left, fm_sgn_star]`. Rewrite using `[e1, ← hPι y hy, ← hPB f' hf' (ι y) (hι.1 y hy), hq2', hform _ hq1' _ hy, Submodule.coe_inner, Submodule.coe_smul, inner_smul_left, Complex.conj_ofReal]`. Establish `key` using `coefE_all dual hσ hD hV.1 hV.2.1 hc hV'.1 hV'.2.1 hc' hι.1 hι.2.2.1 F ((c.re : ℂ) • q f') hz g hg (q f) hq1`. Establish `hTG : ∀ w : Fin n → L2 ε, tensGrp dual (rreg ε) g w = coefTG dual (rreg ε) g w`.
+
+Apply the tactic sequence `intro w; funext c; cases dual <;> rfl`. Rewrite using `[hq2, hTG]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, Submodule.coe_smul, inner_smul_left, Complex.conj_ofReal]`.
+-/
 theorem form_cc (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
     {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)} {v₀ : T.V} {v₀' : T'.V}

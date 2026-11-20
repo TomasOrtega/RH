@@ -7,6 +7,17 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Establish `hS : IsSimpleModule (MonoidAlgebra ℂ H) τ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule τ).1 hτ`. Set `F : {f : T →ₗ[ℂ] M // ∀ h x, f (τ h x) = μ h (f x)} → (τ.asModule →ₗ[MonoidAlgebra ℂ H] μ.asModule)` to `fun f => Representation.IntertwiningMap.equivLinearMapAsModule τ μ (f.1.intertwiningMap_of_isIntertwiningMap τ μ f.2)`. Establish `hle : ∀ f, LinearMap.range (F f) ≤ isotypicComponent (MonoidAlgebra ℂ H) μ.asModule τ.asModule`. Introduce `f`. Break down `LinearMap.injective_or_eq_zero (F f) with hi | h0` into its components or cases.
+
+Conclude with `le_sSup ⟨(LinearEquiv.ofInjective (F f) hi).symm⟩`. Simplify using `[h0]`. Establish `htop : isotypicComponent (MonoidAlgebra ℂ H) μ.asModule τ.asModule = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : ∀ y : M, y ∈ (⨆ f : {f : T →ₗ[ℂ] M // ∀ h x, f (τ h x) = μ h (f x)}, LinearMap.range f.1)` using `fun y => by`. Rewrite using `[hsup]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction _ (motive := fun y : M => (y : μ.asModule) ∈ isotypicComponent (MonoidAlgebra ℂ H) μ.asModule τ.asModule) (hx x) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f _ ⟨t, rfl⟩`.
+
+Conclude with `hle f ⟨t, rfl⟩`. Conclude with `Submodule.zero_mem _`. Introduce `a b ha hb`. Conclude with `Submodule.add_mem _ ha hb`. Establish `hss : IsSemisimpleModule (MonoidAlgebra ℂ H) (isotypicComponent (MonoidAlgebra ℂ H) μ.asModule τ.asModule)` using `inferInstance`.
+
+Rewrite `hss` using `[htop]`. Conclude with `⟨IsSemisimpleModule.congr (Submodule.topEquiv (R := MonoidAlgebra ℂ H) (M := μ.asModule)).symm, IsIsotypicOfType.of_isotypicComponent_eq_top htop⟩`.
+-/
 private theorem isoCopy_struct {H T M : Type} [Group H] [AddCommGroup T] [Module ℂ T] [AddCommGroup M] [Module ℂ M]
     (τ : Representation ℂ H T) (μ : Representation ℂ H M) (hτ : τ.IsIrreducible)
     (hsup : (⨆ f : {f : T →ₗ[ℂ] M // ∀ h x, f (τ h x) = μ h (f x)}, LinearMap.range f.1) = ⊤) :
@@ -42,6 +53,23 @@ private theorem isoCopy_struct {H T M : Type} [Group H] [AddCommGroup T] [Module
   exact ⟨IsSemisimpleModule.congr (Submodule.topEquiv (R := MonoidAlgebra ℂ H) (M := μ.asModule)).symm,
     IsIsotypicOfType.of_isotypicComponent_eq_top htop⟩
 
+/- English proof (translation)
+Introduce `H T M _ _ _ _ _ τ μ hτ hsup`. Take `⟨hss, hiso⟩` from `isoCopy_struct τ μ hτ hsup`. Use `⟨fun v hv => ?_, fun N I _ _ _ ν q hq hsep hN => ?_⟩` and prove the remaining obligations. Take `⟨ι, ⟨e⟩⟩` from `hiso.linearEquiv_finsupp`. Establish `hev : e (v : μ.asModule) ≠ 0` using `fun h => hv (e.map_eq_zero_iff.1 h)`.
+
+Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hev`. Set `P : μ.asModule →ₗ[MonoidAlgebra ℂ H] τ.asModule` to `(Finsupp.lapply i).comp e.toLinearMap`. Set `p` to `(Representation.IntertwiningMap.equivLinearMapAsModule μ τ).symm P`. Conclude with `⟨p.toLinearMap, fun h x => Representation.IntertwiningMap.isIntertwining _ _ p h x, hi⟩`. Set `Q : I → (ν.asModule →ₗ[MonoidAlgebra ℂ H] μ.asModule)` to `fun i => Representation.IntertwiningMap.equivLinearMapAsModule ν μ ((q i).intertwiningMap_of_isIntertwiningMap ν μ (hq i))`.
+
+Establish `hinj : Function.Injective (LinearMap.pi Q)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `hsep x fun i => congrFun hx i`. Establish `hNs : IsSemisimpleModule (MonoidAlgebra ℂ H) ν.asModule` using `IsSemisimpleModule.of_injective _ hinj`.
+
+Use `haveI : Nontrivial ν.asModule := hN`. Take `⟨S, hS⟩` from `IsAtomic.exists_atom (Submodule (MonoidAlgebra ℂ H) ν.asModule)`. Rewrite `hS` using `[← isSimpleModule_iff_isAtom]`. Use `haveI := hS`. Use `haveI := IsSimpleModule.nontrivial (MonoidAlgebra ℂ H) S`.
+
+Take `⟨s, hs⟩` from `exists_ne (0 : S)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, Q i s ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hs (Subtype.ext (hsep s.1 fun i => hc i))`.
+
+Establish `hne : (Q i).comp S.subtype ≠ 0` using `fun h => hi (LinearMap.congr_fun h s)`. Establish `hj : Function.Injective ((Q i).comp S.subtype)` using `(LinearMap.injective_or_eq_zero _).resolve_right hne`. Set `e1` to `LinearEquiv.ofInjective _ hj`. Use `haveI : IsSimpleModule (MonoidAlgebra ℂ H) (LinearMap.range ((Q i).comp S.subtype)) := IsSimpleModule.congr e1.symm`. Take `⟨e2⟩` from `hiso (LinearMap.range ((Q i).comp S.subtype))`.
+
+Set `G : τ.asModule →ₗ[MonoidAlgebra ℂ H] ν.asModule` to `S.subtype.comp (e1.symm.toLinearMap.comp e2.symm.toLinearMap)`. Set `g` to `(Representation.IntertwiningMap.equivLinearMapAsModule τ ν).symm G`. Use `⟨g.toLinearMap, ?_, fun h x => Representation.IntertwiningMap.isIntertwining _ _ g h x⟩` and prove the remaining obligations. Introduce `h0`. Establish `: IsSimpleModule (MonoidAlgebra ℂ H) τ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule τ).1 hτ`.
+
+Use `haveI := IsSimpleModule.nontrivial (MonoidAlgebra ℂ H) τ.asModule`. Take `⟨t, ht⟩` from `exists_ne (0 : τ.asModule)`. Establish `hG : G t = 0` using `LinearMap.congr_fun h0 t`. Establish `: (e1.symm (e2.symm t) : S) = 0` using `Subtype.ext hG`. Conclude with `ht (by simpa using this)`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.isoCopy :
     ∀ (H T M : Type) [Group H] [AddCommGroup T] [Module ℂ T] [AddCommGroup M] [Module ℂ M] (τ : Representation ℂ H T) (μ : Representation ℂ H M),
         τ.IsIrreducible → (⨆ f : {f : T →ₗ[ℂ] M // ∀ h x, f (τ h x) = μ h (f x)}, LinearMap.range f.1) = ⊤ →

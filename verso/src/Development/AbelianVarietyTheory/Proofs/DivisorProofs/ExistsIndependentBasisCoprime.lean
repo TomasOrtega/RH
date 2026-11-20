@@ -4,6 +4,11 @@ open NumberField
 
 namespace GlobalTheory.CoprimeBasis
 
+/- English proof (translation)
+Establish `hxy' : r • x = r • y` using `hxy`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hn : Ideal.absNorm (Ideal.span {r}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hr0`.
+
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {r}))`. Establish `h1 : (Ideal.absNorm (Ideal.span {r})) • (x - y) = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 F), ← hb, mul_smul, smul_sub, hxy', sub_self, smul_zero]`. Conclude with `sub_eq_zero.1 (nsmul_right_injective hn (h1.trans (nsmul_zero _).symm))`.
+-/
 theorem isTorsionFree_of_addTorsionFree {F : Type} [Field F] [NumberField F]
     (M : Type) [AddCommGroup M] [Module (𝓞 F) M] [IsAddTorsionFree M] :
     Module.IsTorsionFree (𝓞 F) M where
@@ -17,6 +22,9 @@ theorem isTorsionFree_of_addTorsionFree {F : Type} [Field F] [NumberField F]
       rw [← Nat.cast_smul_eq_nsmul (𝓞 F), ← hb, mul_smul, smul_sub, hxy', sub_self, smul_zero]
     exact sub_eq_zero.1 (nsmul_right_injective hn (h1.trans (nsmul_zero _).symm))
 
+/- English proof (translation)
+Distinguish the cases in `hI : Ideal.span {s, d} = ⊤`. Take `⟨a, b, h⟩` from `Ideal.mem_span_pair.1 ((Ideal.eq_top_iff_one _).1 hI)`. Conclude with `⟨a, b, h⟩`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hI`. Conclude with `absurd (hle (Ideal.subset_span (by simp))) (hs P hP (hle (Ideal.subset_span (by simp))))`.
+-/
 theorem isCoprime_of_mem_primeTo {R : Type} [CommRing R] {s d : R}
     (hs : s ∈ GlobalTheory.Mass.primeTo d) : IsCoprime s d := by
   by_cases hI : Ideal.span {s, d} = ⊤
@@ -25,6 +33,41 @@ theorem isCoprime_of_mem_primeTo {R : Type} [CommRing R] {s d : R}
   · obtain ⟨P, hP, hle⟩ := Ideal.exists_le_maximal _ hI
     exact absurd (hle (Ideal.subset_span (by simp))) (hs P hP (hle (Ideal.subset_span (by simp))))
 
+/- English proof (translation)
+Introduce `F _ _ M _ _ _ _ N hN`. Use `set S : Submonoid (𝓞 F) := GlobalTheory.Mass.primeTo (N : 𝓞 F) with hSdef`. Establish `hSle : S ≤ nonZeroDivisors (𝓞 F)` using `GlobalTheory.Mass.SemiBasis.primeTo_le hN`. Use `haveI : Module.IsTorsionFree (𝓞 F) M := isTorsionFree_of_addTorsionFree M`. Use `haveI : Module.Finite (𝓞 F) M := Module.Finite.of_restrictScalars_finite ℤ (𝓞 F) M`.
+
+Use `haveI : IsDomain (Localization S) := IsLocalization.isDomain_localization hSle`. Use `haveI : IsPrincipalIdealRing (Localization S) := by haveI := GlobalTheory.Mass.SemiBasis.isPID (K := F) hN haveI : IsLocalization S (GlobalTheory.Mass.SemiBasis.A F hN) := Localization.subalgebra.isLocalization_ofField F _ _`. Conclude with `IsPrincipalIdealRing.of_surjective (IsLocalization.algEquiv S (GlobalTheory.Mass.SemiBasis.A F hN) (Localization S)).toRingHom (IsLocalization.algEquiv S (GlobalTheory.Mass.SemiBasis.A F hN) (Localization S)).surjective`. Use `haveI : Module.Finite (Localization S) (LocalizedModule S M) := Module.Finite.of_isLocalizedModule S (LocalizedModule.mkLinearMap S M)`. Take `⟨r, b⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := Localization S) (M := LocalizedModule S M)`.
+
+Establish `hb : ∀ i, ∃ (m : M) (s : S), b i = LocalizedModule.mk m s` using `fun i => by`. Conclude with `LocalizedModule.induction_on (β := fun y => ∃ (m : M) (s : S), y = LocalizedModule.mk m s) (fun m s => ⟨m, s, rfl⟩) (b i)`. Use `choose x s hxs using hb`. Establish `key : ∀ i, (s i : 𝓞 F) • b i = LocalizedModule.mk (x i) 1`. Introduce `i`.
+
+Rewrite using `[hxs i, LocalizedModule.smul'_mk, ← Submonoid.smul_def, LocalizedModule.mk_cancel]`. Use `⟨r, x, ?_, ?_⟩` and prove the remaining obligations. Set `u : Fin r → (Localization S)ˣ` to `fun i => (IsLocalization.map_units (Localization S) (s i)).unit`. Establish `hu : LinearIndependent (Localization S) (u • ⇑b)` using `b.linearIndependent.units_smul u`. Establish `hfx : (u • ⇑b) = LocalizedModule.mkLinearMap S M ∘ x`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply', Function.comp_apply, LocalizedModule.mkLinearMap_apply, ← key i]`. Rewrite using `[Units.smul_def, IsUnit.unit_spec, algebraMap_smul]`. Rewrite `hu` using `[hfx]`. Establish `hinj : Function.Injective fun a : 𝓞 F => a • (1 : Localization S)`.
+
+Introduce `a a' h`. Simplify using `only [Algebra.smul_def, mul_one] at h`. Conclude with `IsLocalization.injective (Localization S) hSle h`. Conclude with `(hu.restrict_scalars hinj).of_comp _`. Use `set P : Submodule (𝓞 F) M := Submodule.span (𝓞 F) (Set.range x) with hP`.
+
+Establish `hloc : ∀ y : LocalizedModule S M, ∃ t : S, ∃ m' ∈ P, (t : 𝓞 F) • y = LocalizedModule.mk m' 1`. Introduce `y`. Establish `hy : y ∈ Submodule.span (Localization S) (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `⟨s i, x i, Submodule.subset_span ⟨i, rfl⟩, key i⟩`. Consider the case `zero => exact ⟨1, 0, P.zero_mem, by simp [LocalizedModule.zero_mk]⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨t, m, hm, h⟩` from `hy`.
+
+Take `⟨t', m', hm', h'⟩` from `hz`. Use `⟨t * t', (t' : 𝓞 F) • m + (t : 𝓞 F) • m', P.add_mem (P.smul_mem _ hm) (P.smul_mem _ hm'), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submonoid.coe_mul, smul_add, smul_smul, smul_smul, mul_comm (t' : 𝓞 F)]`. Use `_ = _ := by`.
+
+Rewrite using `[h, h', LocalizedModule.smul'_mk, LocalizedModule.smul'_mk, LocalizedModule.mk_add_mk]`. Simplify using the standard rewrite rules. Consider the case `smul a y _ hy`. Take `⟨t, m, hm, h⟩` from `hy`. Take `⟨⟨r0, u⟩, hr⟩` from `IsLocalization.surj S a`.
+
+Establish `hua : (u : 𝓞 F) • a = algebraMap (𝓞 F) (Localization S) r0`. Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `hr`. Use `⟨u * t, r0 • m, P.smul_mem r0 hm, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Submonoid.coe_mul, mul_smul, smul_comm (t : 𝓞 F) a y, smul_assoc]`. Use `_ = LocalizedModule.mk (r0 • m) 1 := by`. Rewrite using `[hua, h, algebraMap_smul, LocalizedModule.smul'_mk]`. Establish `hgen : ∀ m : M, ∃ t : S, (t : 𝓞 F) • m ∈ P`. Introduce `m`.
+
+Take `⟨t, m', hm', h⟩` from `hloc (LocalizedModule.mk m 1)`. Rewrite `h` using `[LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h`. Simplify using `only [one_smul, Submonoid.smul_def] at hu`. Use `⟨u * t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submonoid.coe_mul, mul_smul, hu]`. Conclude with `P.smul_mem _ hm'`. Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := 𝓞 F) (M := M)`. Use `choose t ht using fun j => hgen (g j)`. Use `⟨((∏ j, t j : S) : 𝓞 F), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `nonZeroDivisors.ne_zero (hSle (∏ j, t j).2)`. Conclude with `isCoprime_of_mem_primeTo (∏ j, t j).2`. Introduce `m`. Establish `hle : Submodule.span (𝓞 F) (Set.range g) ≤ P.comap (LinearMap.lsmul (𝓞 F) M ((∏ j, t j : S) : 𝓞 F))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ((∏ j, t j : S) : 𝓞 F) • g j ∈ P`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), Submonoid.coe_mul, mul_smul]`. Conclude with `P.smul_mem _ (ht j)`. Rewrite `hle` using `[hg]`.
+
+Conclude with `hle Submodule.mem_top`.
+-/
 theorem exists_coprime_basis : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] [Module.Finite ℤ M] [IsAddTorsionFree M] (N : ℕ), 2 ≤ N → ∃ (r : ℕ) (x : Fin r → M), LinearIndependent (𝓞 F) x ∧ ∃ c : 𝓞 F, c ≠ 0 ∧ IsCoprime c (N : 𝓞 F) ∧ ∀ m : M, c • m ∈ Submodule.span (𝓞 F) (Set.range x) := by
   intro F _ _ M _ _ _ _ N hN
   classical

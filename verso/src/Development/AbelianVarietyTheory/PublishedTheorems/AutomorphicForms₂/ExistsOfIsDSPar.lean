@@ -28,6 +28,19 @@ def pull {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : G
   cont v := (hσ.2.2 v).comp_continuous
     ((Units.continuous_val.comp (continuous_fst.comp T.emb.continuous)).matrix_reindex e e) (h.cov_mem T)
 
+/- English proof (translation)
+Use `haveI : CompleteSpace H := hσ.1`. Establish `hU` using `hσ.2.2.1`. Establish `hirr : Formalism.MainNotions.SchurIrreducible.IrrU (pull h T hU)` using `⟨hσ.2.1, fun S hS hst => hσ.2.2.2.1 S hS fun g hg v hv => by`. Take `⟨x, rfl⟩` from `h.cov_surj T hg`. Conclude with `hst x v hv⟩`.
+
+Take `⟨M, io, m1, m2, m3⟩` from `hM _ hirr`. Use `haveI := SqInt.isHaarMeasure_map_covU h T`. Establish `hμ` using `Measure.isMulLeftInvariant_eq_smul (T.haar.map (SqInt.covU h T)) (Formalism.REAL.muG P.sgn)`. Take `⟨d, hd, hI⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS n P.sgn P.lam H σ hσ _ (Measure.haarScalarFactor_pos_of_isHaarMeasure (T.haar.map (SqInt.covU h T)) (Formalism.REAL.muG P.sgn))`. Use `⟨⟨pull h T hU, hirr.1, hirr.2, d, hd, fun x y => ?_, M, io, m1, m2, m3⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `H at x y`. Take `⟨i1, i2⟩` from `hI x y x y`. Rewrite `i1`, `i2` using `[← ENNReal.smul_def, ← hμ]`. Establish `hf : (fun g => coefOn (ε` using `P.sgn) σ x y g * star (coefOn (ε := P.sgn) σ x y g)) = fun g => ((‖coefOn (ε := P.sgn) σ x y g‖ ^ 2 : ℝ) : ℂ) := by`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `i1`, `i2` using `[hf]`. Establish `hm` using `(SqInt.continuous_covU h T).measurable.aemeasurable (μ := T.haar)`. Rewrite `i2` using `[integral_map hm i1.aestronglyMeasurable]`. Establish `i3` using `(integrable_map_measure i1.aestronglyMeasurable hm).1 i1`.
+
+Use `⟨i3.re.congr (Filter.Eventually.of_forall fun g => Complex.ofReal_re _), ?_⟩` and prove the remaining obligations. Rewrite `i2` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `i4 : ((∫ g, ‖coefOn (ε` using `P.sgn) σ x y (SqInt.covU h T g)‖ ^ 2 ∂T.haar : ℝ) : ℂ) = ((‖x‖ ^ 2 * ‖y‖ ^ 2 / d : ℝ) : ℂ) := by`. Use `push_cast`. Conclude with `i2`.
+
+Conclude with `i4` after adjusting the coercions. Conclude with `(hasParam_iff_isDSPar _ P h (σ := σ) fun _ => rfl).2 hσ`.
+-/
 theorem exists_of_isDSPar (T : GrpData p q)
     (hM : ∀ U : URep T, Formalism.MainNotions.SchurIrreducible.IrrU U → ∃ (M : GKMod p q) (io : M.V →ₗ[ℂ] U.H), Formalism.MainNotions.SchurIrreducible.IsHCMod U M io)
     (P : SignedPar n) {e : Ix p q ≃ Fin n} (h : BlockOrd e P.sgn) {H : Type} [NormedAddCommGroup H]
@@ -64,6 +77,15 @@ theorem exists_of_isDSPar (T : GrpData p q)
     exact_mod_cast i4
   · exact (hasParam_iff_isDSPar _ P h (σ := σ) fun _ => rfl).2 hσ
 
+/- English proof (translation)
+Introduce `p q T lam hl`. Break down `Nat.eq_zero_or_pos (p + q) with h0 | h0` into its components or cases. Take `⟨rfl, rfl⟩` from `Nat.add_eq_zero_iff.1 h0`. Conclude with `⟨Cover.trivZero T, GlobalTheory.SignedParTest.hasParam_zero _ _⟩`. Establish `key : ∀ lam : Ix p q → ℚ, IsParam lam → (∀ a, ∃ m : ℤ, lam a - (((p + q : ℕ) : ℚ) - 1) / 2 = m) → ∃ R : DSRep T, HasParam R lam`.
+
+Introduce `lam hl hi`. Take `⟨P, e, -, h, rfl⟩` from `exists_blockPar hl hi`. Take `⟨H, _, _, σ, hσ⟩` from `hE _ P.sgn P.lam P.hc`. Conclude with `exists_of_isDSPar T (hM p q h0 T) P h hσ`. Take `⟨P, e, -, h, rfl | rfl⟩` from `isParam_cases hl`.
+
+Conclude with `key _ hl fun a => ⟨(P.hc.2 (e a)).choose, by simp [blockPar, ratEntry]⟩`. Take `⟨R, hR⟩` from `key (fun a => blockPar P e a + 1 / 2 + 1 / 2) ⟨fun x y e => hl.1 (add_left_injective _ e), fun x y e => by simpa using hl.2.1 x y e, fun x => by`. Take `⟨k, hk⟩` from `hl.2.2.1 x`. Conclude with `⟨k + 1, by push_cast; linarith⟩,`. Use `fun x y => by simpa using hl.2.2.2 x y⟩`.
+
+Use `fun a => ⟨(P.hc.2 (e a)).choose + 1, by simp only [blockPar, ratEntry]; push_cast; ring⟩`. Conclude with `⟨Cover.twist R, (Cover.hasParam_twist R _).2 hR⟩`.
+-/
 theorem of_upq (hE : DiscreteSeriesUpqExists)
     (hM : ∀ p q : ℕ, 1 ≤ p + q → ∀ (T : GrpData p q) (U : URep T), Formalism.MainNotions.SchurIrreducible.IrrU U →
       ∃ (M : GKMod p q) (io : M.V →ₗ[ℂ] U.H), Formalism.MainNotions.SchurIrreducible.IsHCMod U M io) :

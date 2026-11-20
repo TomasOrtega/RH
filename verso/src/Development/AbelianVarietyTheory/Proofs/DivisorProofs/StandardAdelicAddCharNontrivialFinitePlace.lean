@@ -22,6 +22,11 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.PsiNontrivAt
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ w`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `GlobalTheory.PsiNontriv.psiAt_ne_one ψ hψ w ?_` and prove the remaining obligations. Use extensionality with `t`.
+
+Rewrite using `[h t, AddChar.one_apply]`.
+-/
 theorem exists_psiAt_ne_one : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1 := by
   intro F _ _ ψ hψ w

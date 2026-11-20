@@ -8,6 +8,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Introduce `k _ X p hs hpr`. Use `haveI := hs`. Use `haveI := hpr`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : GlobalTheory.IsNormalScheme X := LateralTheory.EtaleTrace.LFinCut.normal_of_smooth p`.
+
+Use `haveI : CompactSpace X := ⟨by simpa using QuasiCompact.isCompact_preimage (f := p) Set.univ isOpen_univ isCompact_univ⟩`. Use `haveI : IsNoetherian X := {}`. Use `haveI : Finite (irreducibleComponents X) := TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.to_subtype`. Set `e` to `Finite.equivFin (irreducibleComponents X)`. Establish `hopen : ∀ Z : irreducibleComponents X, IsOpen (Z : Set X)` using `fun Z => (GlobalTheory.IsNormalScheme.component Z).isOpen`.
+
+Use `⟨Nat.card (irreducibleComponents X), fun s => (GlobalTheory.IsNormalScheme.component (e.symm s) : Scheme), fun s => (GlobalTheory.IsNormalScheme.component (e.symm s)).ι, ⟨fun s => inferInstance, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `⟨e ⟨irreducibleComponent x, irreducibleComponent_mem_irreducibleComponents x⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι, Equiv.symm_apply_apply]`. Conclude with `mem_irreducibleComponent`.
+
+Introduce `s s' hss'`. Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Establish `hne : e.symm s ≠ e.symm s'` using `fun h => hss' (e.symm.injective h)`. Use `show Disjoint ((e.symm s : Set X)) ((e.symm s' : Set X))`. Rewrite using `[Set.disjoint_iff_inter_eq_empty, ← Set.not_nonempty_iff_eq_empty]`.
+
+Introduce `hn`. Apply `hne` to reduce the goal to its premises. Establish `h12 : ((e.symm s : Set X)) ⊆ (e.symm s' : Set X)` using `(subset_closure_inter_of_isPreirreducible_of_isOpen (e.symm s).2.1.isPreirreducible (hopen (e.symm s')) hn).trans (closure_minimal Set.inter_subset_right (isClosed_of_mem_irreducibleComponents _ (e.symm s').2))`. Conclude with `Subtype.ext (le_antisymm h12 ((e.symm s).2.2 (e.symm s').2.1 h12))`. Introduce `s haveI : IsReduced X := by haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by`.
+
+Take `⟨hd, -⟩` from `‹GlobalTheory.IsNormalScheme X›`. Use `haveI := hd x`. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`. Use `haveI : IrreducibleSpace ((GlobalTheory.IsNormalScheme.component (e.symm s) : X.Opens) : Set X) := Subtype.irreducibleSpace (e.symm s).2.1`.
+
+Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem UpperTheory.Gal.Int.Geo.compSum_of :
     CompSum := by
   intro k _ X p hs hpr

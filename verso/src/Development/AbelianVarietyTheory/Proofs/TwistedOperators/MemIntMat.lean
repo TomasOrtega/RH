@@ -25,6 +25,9 @@ def matW (S T : HSp D) (w : HeightOneSpectrum (𝓞 D.host.E)) :
   map_zero' := by ext i j; simp [GlobalTheory.FinWeilO.XF.coe_zero]
   map_add' x y := by ext i j; simp [GlobalTheory.FinWeilO.XF.coe_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matW_apply (S T : HSp D) (w : HeightOneSpectrum (𝓞 D.host.E)) (x : GlobalTheory.FinWeilO.XF S T) :
     matW S T w x = (x : WO S T).map (compW D w) := rfl
 
@@ -35,6 +38,9 @@ def intMat (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (m n 
   zero_mem' _ _ := zero_mem _
   neg_mem' hX i j := neg_mem (hX i j)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intMat {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {m n : ℕ}
     {X : Matrix (Fin m) (Fin n) L} : X ∈ intMat L m n ↔ ∀ i j, X i j ∈ Formalism.UG.intL L := Iff.rfl
 
@@ -44,6 +50,9 @@ def lmul {L : Type} [Ring L] {m n : ℕ} (g : Matrix (Fin m) (Fin m) L) :
   map_zero' := Matrix.mul_zero g
   map_add' := Matrix.mul_add g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lmul_apply {L : Type} [Ring L] {m n : ℕ} (g : Matrix (Fin m) (Fin m) L) (X : Matrix (Fin m) (Fin n) L) :
     lmul g X = g * X := rfl
 

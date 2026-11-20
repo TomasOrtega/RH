@@ -20,6 +20,9 @@ namespace UpperTheory.GalC
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain GlobalTheory Tr
 variable {D : D7}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `have R := _root_.UpperTheory.GalC.Tr.rs_cut_of_good_aux41 hc h.Conclusion1.1 h.what₂ have A := _root_.UpperTheory.GalC.Tr.admissible_cut (c := c) h.adm have lam : GlobalTheory.NRows.LamUsed (cut D c) := h.lam { what₂ := R adm := A Conclusion1 := _root_.UpperTheory.GalS.Parts.main …`.
+-/
 theorem pre_cut_alt {c : CutD D} (hc : c.Good) {x : NChoice D} (h : _root_.UpperTheory.GalC.GaloisPreconditions D x) : _root_.UpperTheory.GalC.GaloisPreconditions (cut D c) (nchCut c x) :=
   have R := _root_.UpperTheory.GalC.Tr.rs_cut_of_good_aux41 hc h.Conclusion1.1 h.what₂
   have A := _root_.UpperTheory.GalC.Tr.admissible_cut (c := c) h.adm
@@ -42,6 +45,9 @@ theorem pre_cut_alt {c : CutD D} (hc : c.Good) {x : NChoice D} (h : _root_.Upper
     trip := fun a => h.trip a.1
     same := fun a => h.same a.1
     good := h.good }
+/- English proof (translation)
+The claim follows from `have ex : GlobalTheory.StringRepresentationDecomposition.RbEx D := GlobalTheory.T.residualRankPartExists_of_jointCondition D h.what₂.c.rho have h0 : SumRepresentations.tie0 D := h.adm.1.1.1 have h1 : SumRepresentations.adm1 D := h.adm.1.1.2.2.1 have g2 := _root_.UpperTheory.GalS. …`.
+-/
 theorem facts_of_galois_preconditions_of_cutRec (hCh : GlobalTheory.TwSys.Cheb) (lf : LocalFiniteness) (ltd : LocalTateDuality) (lec : LocalEulerChar)
     {x : NChoice D} (h : _root_.UpperTheory.GalC.GaloisPreconditions D x) (hC : CutRec D) : _root_.GlobalTheory.NFacts.NormChoiceFacts D x :=
   have ex : GlobalTheory.StringRepresentationDecomposition.RbEx D := GlobalTheory.T.residualRankPartExists_of_jointCondition D h.what₂.c.rho
@@ -55,6 +61,9 @@ theorem facts_of_galois_preconditions_of_cutRec (hCh : GlobalTheory.TwSys.Cheb) 
     muUnr := h.muUnr, depthG := h.depthG, bc := h.bc, lam := h.lam, c2 := h.c2, large := h.large
     duties := _root_.UpperTheory.GalS.duties_of_large_aux41 hCh D h.large h.Conclusion1.1 g2.2 h.rhoBar
     nct := h.nct, trip := h.trip, same := h.same, good := h.good }
+/- English proof (translation)
+Take `⟨c, hc⟩` from `_root_.UpperTheory.GalC.exists_good_alt (GlobalTheory.T.central_elements_from_idempotent_coeffs GlobalTheory.CentralIdem.centralIdemCoeff) h hT`. Conclude with `⟨c, hc, _root_.UpperTheory.GalC.facts_of_galois_preconditions_of_cutRec hCh lf ltd lec (_root_.UpperTheory.GalC.pre_cut_alt hc h) (cutRec_cut hc), compatibilityTies_eigenRestriction c hT⟩`.
+-/
 theorem exists_good_cut_facts_tie4 (hCh : GlobalTheory.TwSys.Cheb) (lf : LocalFiniteness) (ltd : LocalTateDuality) (lec : LocalEulerChar)
     {x : NChoice D} (h : _root_.UpperTheory.GalC.GaloisPreconditions D x) (hT : Tie4 D) :
     ∃ c : CutD D, c.Good ∧ _root_.GlobalTheory.NFacts.NormChoiceFacts (cut D c) (nchCut c x) ∧ Tie4 (cut D c) := by

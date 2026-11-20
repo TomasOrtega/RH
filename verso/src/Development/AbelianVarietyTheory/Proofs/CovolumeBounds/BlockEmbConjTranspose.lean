@@ -8,12 +8,18 @@ noncomputable section
 
 namespace GlobalTheory.HCXi
 
+/- English proof (translation)
+Rewrite using `[PI.QnLevBasicsW.ιLev_eq, PI.QnLevBasicsW.ιLev_eq, conjTranspose_submatrix, fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+-/
 theorem blockEmb_conjTranspose (k i r' : ℕ)
     (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     (ιLev k i r' g)ᴴ = ιLev k i r' gᴴ := by
   rw [PI.QnLevBasicsW.ιLev_eq, PI.QnLevBasicsW.ιLev_eq, conjTranspose_submatrix, fromBlocks_conjTranspose]
   simp
 
+/- English proof (translation)
+Introduce `k r' y hy`. Use `⟨PI.QnLevBasicsW.level_group_unitary_hermitian k 1 r' y hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[blockEmb_conjTranspose, ← (PI.QnLevBasicsW.level_group_homomorphism k 1 r').2, hy.2]`. Conclude with `(PI.QnLevBasicsW.level_group_homomorphism k 1 r').1`.
+-/
 theorem blockEmb_mem_Kset : ∀ k r' : ℕ, ∀ y ∈ Kset k r', ιLev k 1 r' y ∈ Kset k (1 + r') := by
   intro k r' y hy
   refine ⟨PI.QnLevBasicsW.level_group_unitary_hermitian k 1 r' y hy.1, ?_⟩

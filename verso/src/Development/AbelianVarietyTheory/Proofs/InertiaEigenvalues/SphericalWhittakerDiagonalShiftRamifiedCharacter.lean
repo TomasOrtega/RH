@@ -12,14 +12,23 @@ namespace GlobalTheory.JSW.ShiftWhit
 open GlobalTheory.IwaCell
 variable {k : Type} [Field k] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SmGL.val_diagT k _`.
+-/
 theorem val_tD' (ϖ : kˣ) (a : Fin n → ℤ) : (tD ϖ a).val = Matrix.diagonal fun i => ((ϖ ^ a i : kˣ) : k) :=
   GlobalTheory.SmGL.val_diagT k _
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, val_tD', val_tD', Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem conj_tD_apply (ϖ : kˣ) (c : Fin n → ℤ) (u : GL (Fin n) k) (i j : Fin n) :
     ((tD ϖ c * u * tD ϖ (-c) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j =
       ((ϖ ^ c i : kˣ) : k) * (u : Matrix (Fin n) (Fin n) k) i j * ((ϖ ^ (-c) j : kˣ) : k) := by
   rw [Units.val_mul, Units.val_mul, val_tD', val_tD', Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Establish `e : (fun i => ((ϖ ^ ν i : kˣ) : k)) = fun i => ((ϖ ^ (ν i).toNat : kˣ) : k)`. Use function extensionality and compare the values at `fun i => by rw [← zpow_natCast, Int.toNat_of_nonneg (h i)]`. Use extensionality with `i j`. Rewrite using `[val_tD', e]`. Both sides reduce to the same expression.
+-/
 theorem tD_eq_diagPow (ϖ : kˣ) (ν : Fin n → ℤ) (h : ∀ i, 0 ≤ ν i) :
     tD ϖ ν = GlobalTheory.JSW.diagPow ϖ (fun i => (ν i).toNat) := by
   have e : (fun i => ((ϖ ^ ν i : kˣ) : k)) = fun i => ((ϖ ^ (ν i).toNat : kˣ) : k) :=
@@ -28,6 +37,9 @@ theorem tD_eq_diagPow (ϖ : kˣ) (ν : Fin n → ℤ) (h : ∀ i, 0 ≤ ν i) :
   rw [val_tD', e]
   rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, val_tD']`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem commute_tD_const (ϖ : kˣ) (c : ℤ) (x : GL (Fin n) k) : Commute (tD ϖ (fun _ : Fin n => c)) x := by
   refine Units.ext ?_
   rw [Units.val_mul, Units.val_mul, val_tD']
@@ -35,6 +47,9 @@ theorem commute_tD_const (ϖ : kˣ) (c : ℤ) (x : GL (Fin n) k) : Commute (tD �
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
   ring
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB k).1 hu`. Use `(GlobalTheory.SmGL.mem_unipB k).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[conj_tD_apply, h1 i j hij, mul_zero, zero_mul]`. Rewrite using `[conj_tD_apply, h2 i, mul_one, ← Units.val_mul, Pi.neg_apply, ← _root_.zpow_add, add_neg_cancel, zpow_zero, Units.val_one]`.
+-/
 theorem conj_mem_unipB (ϖ : kˣ) (c : Fin n → ℤ) {u : GL (Fin n) k} (hu : u ∈ GlobalTheory.SmGL.unipB k (Fin n)) :
     tD ϖ c * u * tD ϖ (-c) ∈ GlobalTheory.SmGL.unipB k (Fin n) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.SmGL.mem_unipB k).1 hu
@@ -42,6 +57,13 @@ theorem conj_mem_unipB (ϖ : kˣ) (c : Fin n → ℤ) {u : GL (Fin n) k} (hu : u
   · rw [conj_tD_apply, h1 i j hij, mul_zero, zero_mul]
   · rw [conj_tD_apply, h2 i, mul_one, ← Units.val_mul, Pi.neg_apply, ← _root_.zpow_add, add_neg_cancel, zpow_zero, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Whittaker.superDiag, GlobalTheory.Whittaker.superDiag, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : (j : ℕ) = (i : ℕ) + 1` using `(Finset.mem_filter.1 hj).2`.
+
+Rewrite using `[conj_tD_apply]`. Establish `hz : (ϖ ^ (e * ((m : ℤ) - ((i : ℕ) : ℤ))) : kˣ) * ϖ ^ ((-(fun i : Fin (m + 1) => e * ((m : ℤ) - ((i : ℕ) : ℤ)))) j) = ϖ ^ e`. Rewrite using `[← _root_.zpow_add]`. Use `congr 1`. Simplify using `only [Pi.neg_apply, hj']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hz, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem superDiag_conj (ϖ : kˣ) (e : ℤ) (m : ℕ) (u : GL (Fin (m + 1)) k) :
     GlobalTheory.Whittaker.superDiag (tD ϖ (fun i : Fin (m + 1) => e * ((m : ℤ) - ((i : ℕ) : ℤ))) * u *
       tD ϖ (-(fun i : Fin (m + 1) => e * ((m : ℤ) - ((i : ℕ) : ℤ))))) =
@@ -70,9 +92,45 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 def psiScaled (w : HeightOneSpectrum (𝓞 E)) (c : w.adicCompletion E) : AddChar (w.adicCompletion E) ℂ :=
   (psiLocChar w).compAddMonoidHom (AddMonoidHom.mulLeft c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiScaled_apply (w : HeightOneSpectrum (𝓞 E)) (c x : w.adicCompletion E) :
     psiScaled w c x = psiLoc w (c * x) := rfl
 
+/- English proof (translation)
+Use `set c : Fin (m + 1) → ℤ := fun i => e * ((m : ℤ) - ((i : ℕ) : ℤ)) with hcdef`. Establish `hsplit : tD ϖ (fun i => c i + ν i) = tD ϖ c * tD ϖ ν` using `by rw [← tD_add]; rfl`. Establish `hcont : ∀ ψ : π.V, Continuous ψ.1.1` using `fun ψ => (π.cusp _ ψ.2).1.continuous`. Establish `hleft : AutomorphicForm.IsLeftInvariant φ.1.1` using `fun γ y => by`. Rewrite using `[show AdelicGLn.diagonal E (m + 1) γ = ratGL E (m + 1) γ from Units.ext (Matrix.ext fun _ _ => rfl)]`.
+
+Conclude with `(π.cusp _ φ.2).1.left γ y`. Set `f : π.V →ₗ[ℂ] (GL (Fin (m + 1)) (w.adicCompletion E) → ℂ)` to `{ toFun := fun ψ h => whit ψ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h))) map_add' := fun ψ ψ' => funext fun h => whit_add (hcont ψ) (hcont ψ') _ map_smul' := fun c ψ => funext fun h => whit_smul c ψ.1.1 _ }`. Establish `hmul : ∀ h k : GL (Fin (m + 1)) (w.adicCompletion E), g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * (h * k))) = (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h))) * finGL E (m + 1) (locGL E (m + 1) w k)`. Introduce `h k`. Rewrite using `[← mul_assoc (tD ϖ c) h k, map_mul (locGL E (m + 1) w), map_mul (finGL E (m + 1)), mul_assoc]`.
+
+Establish `hf : ∀ k (ψ : π.V), f (π.locRep w k ψ) = rightReg ℂ _ ℂ k (f ψ)`. Introduce `k ψ`. Use function extensionality and compare the values at `h`. Express the relevant statement in the definitionally equal form `whit (fun z => ψ.1.1 (z * finGL E (m + 1) (locGL E (m + 1) w k))) (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h))) = whit ψ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * (h * k))))`. Rewrite using `[hmul, whit_mul_right ψ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h)))]`.
+
+Establish `hN0 : ∀ u ∈ GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin (m + 1)), ∀ h : GL (Fin (m + 1)) (w.adicCompletion E), whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (u * h))) = psiLoc w (GlobalTheory.Whittaker.superDiag u) * whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w h …`. Introduce `u hu h`. Rewrite using `[map_mul, map_mul, ← mul_assoc, commute_finGL_locGL w hg u, mul_assoc, finGL_locGL_eq_uGL w hu, whit, whittaker_uGL_mul (hcont φ) hleft, supSum_sLoc]`. Both sides reduce to the same expression. Establish `hN : ∀ u ∈ GlobalTheory.SmGL.unipB (w.adicCompletion E) (Fin (m + 1)), ∀ h, f φ (u * h) = psiScaled w ((ϖ ^ e : (w.adicCompletion E)ˣ) : w.adicCompletion E) (GlobalTheory.Whittaker.superDiag u) * f φ h`.
+
+Introduce `u hu h`. Express the relevant statement in the definitionally equal form `whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * (u * h)))) = _ * whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h)))`. Establish `e1 : tD ϖ c * (u * h) = (tD ϖ c * u * tD ϖ (-c)) * (tD ϖ c * h)` using `by rw [tD_neg]; group`. Rewrite using `[e1, hN0 _ (conj_mem_unipB ϖ c hu), psiScaled_apply, hcdef, superDiag_conj]`. Establish `hK : ∀ h, ∀ k ∈ KGL w (m + 1), f φ (h * k) = f φ h`.
+
+Introduce `h k hk`. Express the relevant statement in the definitionally equal form `whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * (h * k)))) = whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h)))`. Rewrite using `[hmul, whit_mul_right φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * h)))]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+
+Conclude with `congrArg (fun ψ : π.V => ψ.1.1 z) (GlobalTheory.LGrp.mem_fixed.1 hφ k hk)`. Establish `hψ : ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, psiScaled w ((ϖ ^ e : (w.adicCompletion E)ˣ) : w.adicCompletion E) (x * y) = 1) ↔ x ∈ Ov E w`. Introduce `x`. Simplify using `only [psiScaled_apply, ← mul_assoc]`. Conclude with `hc x`.
+
+Establish `hgoal : f φ (tD ϖ ν) = GlobalTheory.RSCell.sphZ (qV E w) (fun i => (α i : ℂ)) ν * f φ 1`. Distinguish the cases in `h0 : φ = 0`. Substitute `h0` using the available equality. Establish `hz : ∀ h, f 0 h = 0` using `fun h => by rw [map_zero]; rfl`. Rewrite using `[hz, hz, mul_zero]`.
+
+Distinguish the cases in `hanti : Antitone ν`. Establish `hpos : ∀ i, 0 ≤ ν i` using `fun i => hν.trans (hanti (Fin.le_last i))`. Establish `hsat` using `hα.2 φ hφ h0`. Establish `hmain` using `GlobalTheory.T.shintani_formula_alt E w (m + 1) _ hψ (f φ) α hN hK ?_ ϖ hϖ (fun i => (ν i).toNat)`. Rewrite using `[GlobalTheory.RSCell.sphZ, if_pos hanti, tD_eq_diagPow ϖ ν hpos]`.
+
+Conclude with `hmain`. Introduce `ϖ' hϖ' j hj`. Rewrite using `[← map_heckeVec (Final.GLintComm E w (m + 1)) (Tj_mem_hecke hϖ' j) f hf, hsat.2.2.2 ϖ' hϖ' j hj, map_smul]`. Rewrite using `[GlobalTheory.RSCell.sphZ, if_neg hanti, zero_mul] set M : ℕ := ∑ i, (ν i).natAbs`. Establish `hM : ∀ i, (ν i).natAbs ≤ M` using `fun i => Finset.single_le_sum (f := fun i => (ν i).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+
+Use `set ν' : Fin (m + 1) → ℤ := fun i => ν i + M`. Establish `hpos : ∀ i, 0 ≤ ν' i` using `fun i => by have := hM i; simp only [ν']; omega`. Use `set z := tD ϖ (fun _ : Fin (m + 1) => -(M : ℤ))`. Establish `hνz : tD ϖ ν = tD ϖ ν' * z`. Rewrite using `[← tD_add]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [ν', Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hanti' : ¬ Antitone (fun i => (ν' i).toNat)`.
+
+Introduce `ha`. Use `hanti fun i j hij => ?_` and prove the remaining obligations. Use `ha hij` as an intermediate fact. Establish `h1` using `Int.toNat_of_nonneg (hpos i)`. Establish `h2` using `Int.toNat_of_nonneg (hpos j)`.
+
+Simplify using `only [ν'] at this h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `hz` using `GlobalTheory.T.whittaker_diagonal_eq_zero_of_not_antitone E w (m + 1) _ hψ (fun h => f φ (h * z)) (fun u hu h => by simp only [mul_assoc]; exact hN u hu (h * z)) (fun h k hk => by show f φ (h * k * z) = f φ (h * z)`. Rewrite using `[mul_assoc, ← (commute_tD_const ϖ _ k).eq, ← mul_assoc, hK _ k hk])`. Use `ϖ hϖ (fun i => (ν' i).toNat) hanti'`.
+
+Rewrite using `[hνz, tD_eq_diagPow ϖ ν' hpos]`. Conclude with `hz`. Establish `e2` using `hgoal`. Express the relevant statement in the definitionally equal form `whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * tD ϖ ν))) = _ * whit φ.1.1 (g * finGL E (m + 1) (locGL E (m + 1) w (tD ϖ c * 1))) at e2`. Rewrite `e2` using `[mul_one, ← hsplit]`.
+
+Conclude with `e2`.
+-/
 theorem main_of_fixed (m : ℕ) (π : CuspSub E (m + 1)) (w : HeightOneSpectrum (𝓞 E))
     (α : Fin (m + 1) → ℂˣ) (hα : HasSatGL w (π.locRep w) (Finset.univ.val.map α))
     (φ : π.V) (hφ : φ ∈ fixed (π.locRep w) (KGL w (m + 1)))
@@ -183,6 +241,9 @@ end GlobalTheory.JSW.ShiftWhit
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `E _ _ _ m π w α hα φ hφV hφ ϖ hϖ e hc g hg ν hν`. Conclude with `GlobalTheory.JSW.ShiftWhit.main_of_fixed m π w α hα ⟨φ, hφV⟩ (GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (hφ k hk)) ϖ hϖ e hc g hg ν hν`.
+-/
 theorem whit_mul_locGL_tD_shift : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (π : CuspSub E (m + 1)) (w : HeightOneSpectrum (𝓞 E)) (α : Fin (m + 1) → ℂˣ), HasSatGL w (π.locRep w) (Finset.univ.val.map α) → ∀ φ ∈ π.V, (∀ k ∈ KGL w (m + 1), act (.fin (locGL E (m + 1) w k)) φ = φ) → ∀ (ϖ : (w.adicCompletion E)ˣ), IsUnifV E w (ϖ : w.adicCompletion E) → ∀ e : ℤ, GlobalTheory.RamShift.CondOne w ((ϖ ^ e : (w.adicCompletion E)ˣ) : w.adicCompletion E) → ∀ g : GA E (m + 1), GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) g = 1 → ∀ ν : Fin (m + 1) → ℤ, 0 ≤ ν (Fin.last m) → GlobalTheory.JSW.whit φ.1 (g * finGL E (m + 1) (locGL E (m + 1) w (GlobalTheory.IwaCell.tD ϖ (fun i => e * ((m : ℤ) - ((i : ℕ) : ℤ)) + ν i)))) = GlobalTheory.RSCell.sphZ (qV E w) (fun i => (α i : ℂ)) ν * GlobalTheory.JSW.whit φ.1 (g * finGL E (m + 1) (locGL E (m + 1) w (GlobalTheory.IwaCell.tD ϖ (fun i => e * ((m : ℤ) - ((i : ℕ) : ℤ)))))) := by
   intro E _ _ _ m π w α hα φ hφV hφ ϖ hϖ e hc g hg ν hν
   exact GlobalTheory.JSW.ShiftWhit.main_of_fixed m π w α hα ⟨φ, hφV⟩

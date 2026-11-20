@@ -11,6 +11,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagLiftComp.liftComp | exact GlobalTheory.FlagLiftComp.liftComp | (intros; apply GlobalTheory.FlagLiftComp.liftComp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_piece_pullback_comp_iso : ∀ {B T Y₁ Y₂ : Scheme.{0}} (g : T ⟶ B) (π₁ : Y₁ ⟶ B) (π₂ : Y₂ ⟶ B) (E : B.Modules)
     (F' : T.Modules) (F₁ : Y₁.Modules) (F₂ : Y₂.Modules) (ι' : F' ⟶ (Scheme.Modules.pullback g).obj E)
     (ι₁ : F₁ ⟶ (Scheme.Modules.pullback π₁).obj E) (ι₂ : F₂ ⟶ (Scheme.Modules.pullback π₂).obj E)

@@ -21,6 +21,11 @@ def UT (A : Matrix (Fin n) (Fin n) E) : Prop := (∀ i j, j < i → A i j = 0) �
 
 def IntM (O : Subring E) (A : Matrix (Fin n) (Fin n) E) : Prop := ∀ i j, A i j ∈ O
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA i k h, zero_mul]`. Rewrite using `[hB k i h, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma diag_mul {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i → A i j = 0)
     (hB : ∀ i j, j < i → B i j = 0) (i : Fin n) : (A * B) i i = A i i * B i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -30,17 +35,32 @@ lemma diag_mul {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i → A i j =
     · rw [hB k i h, mul_zero]
   · simp
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => by rw [diag_mul hA.1 hB.1, hA.2, hB.2, one_mul]⟩` and prove the remaining obligations. Establish `h1 : A.BlockTriangular id` using `fun i j h => hA.1 i j h`. Establish `h2 : B.BlockTriangular id` using `fun i j h => hB.1 i j h`. Conclude with `(h1.mul h2) h`.
+-/
 lemma UT.mul {A B : Matrix (Fin n) (Fin n) E} (hA : UT A) (hB : UT B) : UT (A * B) := by
   refine ⟨fun i j h => ?_, fun i => by rw [diag_mul hA.1 hB.1, hA.2, hB.2, one_mul]⟩
   have h1 : A.BlockTriangular id := fun i j h => hA.1 i j h
   have h2 : B.BlockTriangular id := fun i j h => hB.1 i j h
   exact (h1.mul h2) h
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact O.sum_mem fun k _ => O.mul_mem (hA i k) (hB k j)`.
+-/
 lemma IntM.mul {O : Subring E} {A B : Matrix (Fin n) (Fin n) E} (hA : IntM O A) (hB : IntM O B) :
     IntM O (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact O.sum_mem fun k _ => O.mul_mem (hA i k) (hB k j)
 
+/- English proof (translation)
+Establish `h1 : A.BlockTriangular id` using `fun i j h => hA.1 i j h`. Establish `hd : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular h1]`. Simplify using `[hA.2]`. Establish `hu : IsUnit A.det` using `by rw [hd]; exact isUnit_one`.
+
+Use `letI := A.invertibleOfIsUnitDet hu`. Establish `h2 : (A⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular h1`. Establish `h3 : ∀ i j, j < i → A⁻¹ i j = 0` using `fun i j h => h2 h`. Use `⟨A⁻¹, ⟨h3, fun i => ?_⟩, Matrix.mul_nonsing_inv A hu, Matrix.nonsing_inv_mul A hu, ?_⟩` and prove the remaining obligations. Use `diag_mul hA.1 h3 i` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_nonsing_inv A hu, hA.2, one_mul]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Introduce `O hO i j`. Set `A₀ : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨A i j, hO i j⟩`.
+
+Establish `hA₀ : O.subtype.mapMatrix A₀ = A` using `by ext i j; rfl`. Rewrite using `[Matrix.inv_def, hd, Ring.inverse_one, one_smul, ← hA₀, ← RingHom.map_adjugate]`. Conclude with `(A₀.adjugate i j).2`.
+-/
 lemma UT.inv {A : Matrix (Fin n) (Fin n) E} (hA : UT A) :
     ∃ B, UT B ∧ A * B = 1 ∧ B * A = 1 ∧ ∀ O : Subring E, IntM O A → IntM O B := by
   have h1 : A.BlockTriangular id := fun i j h => hA.1 i j h
@@ -63,6 +83,11 @@ lemma UT.inv {A : Matrix (Fin n) (Fin n) E} (hA : UT A) :
 def Tied (O : Subring E) (θ : E) (A A' : Matrix (Fin n) (Fin n) E) : Prop :=
   UT A ∧ UT A' ∧ IntM O A ∧ IntM O A' ∧ ∃ C, IntM O C ∧ A' = A + θ • C
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, C, hC, e1⟩` from `hA`. Take `⟨b1, b2, b3, b4, D, hD, e2⟩` from `hB`. Use `⟨a1.mul b1, a2.mul b2, a3.mul b3, a4.mul b4, A * D + C * B', fun i j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `O.add_mem (a3.mul hD i j) (hC.mul b4 i j)`. Establish `h : A * B' = A * B + θ • (A * D)` using `by rw [e2, mul_add, Matrix.mul_smul]`.
+
+Rewrite using `[e1, add_mul, smul_add, Matrix.smul_mul, ← add_assoc, ← h]`.
+-/
 lemma Tied.mul {O : Subring E} {θ : E} {A A' B B' : Matrix (Fin n) (Fin n) E}
     (hA : Tied O θ A A') (hB : Tied O θ B B') : Tied O θ (A * B) (A' * B') := by
   obtain ⟨a1, a2, a3, a4, C, hC, e1⟩ := hA
@@ -72,6 +97,11 @@ lemma Tied.mul {O : Subring E} {θ : E} {A A' B B' : Matrix (Fin n) (Fin n) E}
   · have h : A * B' = A * B + θ • (A * D) := by rw [e2, mul_add, Matrix.mul_smul]
     rw [e1, add_mul, smul_add, Matrix.smul_mul, ← add_assoc, ← h]
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, C, hC, e1⟩` from `hA`. Take `⟨B, b1, b2, b3, b4⟩` from `a1.inv`. Take `⟨B', c1, c2, c3, c4⟩` from `a2.inv`. Use `⟨B, B', ⟨b1, c1, b4 O a3, c4 O a4, -(B' * C * B), fun i j => ?_, ?_⟩, b2, b3, c2, c3⟩` and prove the remaining obligations. Conclude with `O.neg_mem (((c4 O a4).mul hC).mul (b4 O a3) i j)`.
+
+Establish `h : θ • C = A' - A` using `by rw [e1]; abel`. Rewrite using `[smul_neg, ← Matrix.smul_mul, ← Matrix.mul_smul, h, mul_sub, sub_mul, c3, one_mul, mul_assoc, b2, mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 lemma Tied.inv {O : Subring E} {θ : E} {A A' : Matrix (Fin n) (Fin n) E} (hA : Tied O θ A A') :
     ∃ B B', Tied O θ B B' ∧ A * B = 1 ∧ B * A = 1 ∧ A' * B' = 1 ∧ B' * A' = 1 := by
   obtain ⟨a1, a2, a3, a4, C, hC, e1⟩ := hA
@@ -84,6 +114,13 @@ lemma Tied.inv {O : Subring E} {θ : E} {A A' : Matrix (Fin n) (Fin n) E} (hA : 
       mul_assoc, b2, mul_one]
     abel
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a1, a2, a3⟩, ⟨b1, b2, b3⟩, h⟩ choose c hc using fun a b => Submodule.mem_span_singleton.1 (h a b)`. Use `⟨⟨a1, a2⟩, ⟨b1, b2⟩, a3, b3, Matrix.of fun a b => -(c a b : E), fun a b => O.neg_mem (c a b).2, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `hc a b` as an intermediate fact.
+
+Rewrite `this` using `[Subring.smul_def, smul_eq_mul]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Take the linear combination `this`. Introduce and unpack `⟨a, b, a3, b3, C, hC, e⟩`. Use `⟨⟨a.1, a.2, a3⟩, ⟨b.1, b.2, b3⟩, fun i j => Submodule.mem_span_singleton.2 ⟨⟨-C i j, O.neg_mem (hC i j)⟩, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Subring.smul_def, smul_eq_mul, e]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma tied_iff_span (O : Subring E) (θ : E) (A A' : Matrix (Fin n) (Fin n) E) :
     (((∀ a b, b < a → A a b = 0) ∧ (∀ a, A a a = 1) ∧ ∀ a b, A a b ∈ O) ∧
       ((∀ a b, b < a → A' a b = 0) ∧ (∀ a, A' a a = 1) ∧ ∀ a b, A' a b ∈ O) ∧
@@ -104,6 +141,13 @@ lemma tied_iff_span (O : Subring E) (θ : E) (A A' : Matrix (Fin n) (Fin n) E) :
     simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩ choose c hc hc' using fun a b => (h1 a b).2.2`. Use `⟨⟨fun i j h => (h2 i j h).1, fun i => (h3 i).1⟩, ⟨fun i j h => (h2 i j h).2, fun i => (h3 i).2⟩, fun i j => (h1 i j).1, fun i j => (h1 i j).2.1, Matrix.of c, hc, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`.
+
+Take the linear combination `hc' a b`. Introduce and unpack `⟨a, b, a3, b3, C, hC, e⟩`. Use `⟨fun i j => ⟨a3 i j, b3 i j, C i j, hC i j, ?_⟩, fun i j h => ⟨a.1 i j h, b.1 i j h⟩, fun i => ⟨a.2 i, b.2 i⟩⟩` and prove the remaining obligations. Rewrite using `[e]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma tied_iff_mul (O : Subring E) (θ : E) (A A' : Matrix (Fin n) (Fin n) E) :
     ((∀ i j, A i j ∈ O ∧ A' i j ∈ O ∧ ∃ c ∈ O, A' i j - A i j = θ * c) ∧
       (∀ i j, j < i → A i j = 0 ∧ A' i j = 0) ∧ (∀ i, A i i = 1 ∧ A' i i = 1)) ↔ Tied O θ A A' := by
@@ -126,12 +170,18 @@ variable {V : Type} [AddCommGroup V] [Module E V]
 
 def act (g : Fin n → V) (A : Matrix (Fin n) (Fin n) E) : Fin n → V := fun j => ∑ i, A i j • g i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [act, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 lemma act_act (g : Fin n → V) (A B : Matrix (Fin n) (Fin n) E) : act (act g A) B = act g (A * B) := by
   funext j
   simp only [act, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]
   rw [Finset.sum_comm]
   simp only [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act]`.
+-/
 lemma map_act (s : V ≃ₗ[E] V) (g : Fin n → V) (A : Matrix (Fin n) (Fin n) E) :
     (fun i => s (act g A i)) = act (fun i => s (g i)) A := by
   funext j
@@ -143,15 +193,26 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r k : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, Matrix.mul_apply, mul_comm]`.
+-/
 lemma cT_mul (L : LocE F E) {n : ℕ} (A B : Matrix (Fin n) (Fin n) E) :
     cT L (A * B) = cT L B * cT L A := by
   ext i j
   simp [cT, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply, eq_comm]`.
+-/
 lemma cT_one (L : LocE F E) {n : ℕ} : cT L (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   ext i j
   simp [cT, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, act, Matrix.of_apply, Matrix.mul_apply, cT, CoordExist.h_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[H.h_herm, CoordExist.h_sum_left, map_sum, mul_comm]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← H.h_herm]`.
+-/
 lemma Zhat_act (H : HermSp M V) (f f' : Fin (r + 1) → V) (A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     H.Zhat (act f A) (act f' A') = cT M.L A * H.Zhat f f' * A' := by
   ext a b
@@ -162,6 +223,13 @@ lemma Zhat_act (H : HermSp M V) (f f' : Fin (r + 1) → V) (A A' : Matrix (Fin (
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Unfold `LocNG.FrameD.N at hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx.1`. Consider the case `one => intro x y`. Both sides reduce to the same expression.
+
+Consider the case `mul a b _ _ ha hb => intro x y`. Conclude with `(ha _ _).trans (hb x y)`. Consider the case `inv a _ ha`. Introduce `x y`. Use `ha (a⁻¹ x) (a⁻¹ y)` as an intermediate fact.
+
+Rewrite using `[← this]`. Simplify using `[LinearEquiv.coe_inv]`.
+-/
 lemma unitary_of_mem {Fr : LocNG.FrameD H r} {g : V ≃ₗ[E] V} (hg : g ∈ Fr.N) : LocNG.IsUnitary H g := by
   unfold LocNG.FrameD.N at hg
   induction hg using Subgroup.closure_induction with
@@ -174,6 +242,11 @@ lemma unitary_of_mem {Fr : LocNG.FrameD H r} {g : V ≃ₗ[E] V} (hg : g ∈ Fr.
     rw [← this]
     simp [LinearEquiv.coe_inv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply `c.e.injective` to reduce the goal to its premises. Use `h j` as an intermediate fact. Simplify using `only [hf, CoordUnip.grp_apply] at this`. Rewrite using `[this]`.
+
+Simplify using `[act]`.
+-/
 lemma pull {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S) (g : V ≃ₗ[E] V)
     (f : Fin (r + 1) → V) (f₁ : Fin (r + 1) → S.V) (hf : ∀ a, f₁ a = c.e (f a))
     (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (h : ∀ j, c.grp g (f₁ j) = ∑ i, s i j • f₁ i) :
@@ -185,6 +258,37 @@ lemma pull {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S) (g : V ≃
   rw [this]
   simp [act]
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P hrk hP d₁ d t₁ t ht₁ ht Y0 c1 hc1 hZ1`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨S, ⟨c⟩⟩` from `CoordExist.exists_coord M hM H r k P hrk hP`. Take `⟨-, hN, hN', hSt, -⟩` from `CoordUnip.transport M hM H r k P S c`.
+
+Take `⟨on, on', -⟩` from `FrameOnto.unipotent_onto M.L r k S`. Take `⟨-, stab⟩` from `FrameStab.stab_eq M.L r k S`. Establish `hmem : ∀ Y, Y ∈ c1 ↔ ∃ A A', Tied M.L.O (algebraMap F E (LocNG.theta M)) A A' ∧ Y = cT M.L A * Y0 * A'`. Introduce `Y`. Rewrite using `[hc1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, A', h1, h2, h3, h4⟩`. Conclude with `⟨A, A', (tied_iff_span _ _ _ _).1 ⟨h1, h2, h3⟩, h4⟩`. Introduce and unpack `⟨A, A', h, h4⟩`. Take `⟨h1, h2, h3⟩` from `(tied_iff_span _ _ _ _).2 h`.
+
+Conclude with `⟨A, A', h1, h2, h3, h4⟩`. Establish `hfr : ∀ {d : LocNG.Datum P} {t : Term V M r}, LocNG.IsTermOver P d t → ∃ u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, UT u ∧ UT u' ∧ t.f = act P.A.f u ∧ t.f' = act P.B.f u'`. Introduce and unpack `d t ⟨-, -, ⟨n, hn, e, -⟩, ⟨n', hn', e', -⟩, -⟩`. Take `⟨u, hu, h⟩` from `on _ ((hN n).1 hn)`. Take `⟨u', hu', h'⟩` from `on' _ ((hN' n').1 hn')`.
+
+Conclude with `⟨u, u', hu, hu', e.trans (pull c n _ _ c.f_eq u h), e'.trans (pull c n' _ _ c.f'_eq u' h')⟩`. Establish `hZ0 : S.Zh = H.Zhat P.A.f P.B.f`. Use extensionality with `a b`. Simplify using `only [Frames.Zh, HermSp.Zhat, Matrix.of_apply, c.f_eq, c.f'_eq, c.h_eq]`. Take `⟨a₁, a₁', ha₁, e₁⟩` from `(hmem _).1 hZ1`.
+
+Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, a', ha, e⟩`. Take `⟨b₁, b₁', hb₁, p1, -, p1', -⟩` from `ha₁.inv`. Establish `hA` using `hb₁.mul ha`.
+
+Establish `eZ : H.Zhat t.f t.f' = cT M.L (b₁ * a) * H.Zhat t₁.f t₁.f' * (b₁' * a')`. Establish `: cT M.L (b₁ * a) * H.Zhat t₁.f t₁.f' * (b₁' * a') = cT M.L (a₁ * b₁ * a) * Y0 * (a₁' * b₁' * a')`. Simplify using `only [e₁, cT_mul, mul_assoc]`. Rewrite using `[this, p1, p1', one_mul, one_mul, e]`. Generalize the expression as in `b₁ * a = A at hA eZ`.
+
+Generalize the expression as in `b₁' * a' = A' at hA eZ`. Take `⟨B, B', hB, q1, q2, q1', q2'⟩` from `hA.inv`. Take `⟨u₁, u₁', hu₁, hu₁', f₁, f₁'⟩` from `hfr ht₁`. Take `⟨u, u', hu, hu', f, f'⟩` from `hfr ht`. Take `⟨v, hv, w1, w2, -⟩` from `hu₁.inv`.
+
+Take `⟨v', hv', w1', w2', -⟩` from `hu₁'.inv`. Rewrite `eZ` using `[f, f', f₁, f₁', Zhat_act, Zhat_act, ← hZ0]`. Establish `key : cT M.L (u * B * v) * S.Zh * (u' * B' * v') = S.Zh`. Establish `h1 : cT M.L (u * B * v) * S.Zh * (u' * B' * v') = cT M.L (B * v) * (cT M.L u * S.Zh * u') * (B' * v')`. Simplify using `only [cT_mul, mul_assoc]`.
+
+Establish `h2 : cT M.L (B * v) * (cT M.L A * (cT M.L u₁ * S.Zh * u₁') * A') * (B' * v') = cT M.L (u₁ * (A * B) * v) * S.Zh * (u₁' * (A' * B') * v')`. Simplify using `only [cT_mul, mul_assoc]`. Rewrite using `[h1, eZ, h2, q1, q1', mul_one, mul_one, w1, w1', cT_one, one_mul, mul_one]`. Take `⟨h, hh, g1, g2⟩` from `(stab _ _ ((hu.mul hB.1).mul hv) ((hu'.mul hB.2.1).mul hv')).1 key`. Take `⟨s, rfl⟩` from `c.grp.surjective h`.
+
+Establish `k1` using `pull c s _ _ c.f_eq _ g1`. Establish `k2` using `pull c s _ _ c.f'_eq _ g2`. Take `⟨z1, z2, z3⟩` from `(tied_iff_mul _ _ _ _).2 hA`. Use `⟨s, (hSt s).2 hh, A, A', z1, z2, z3, ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (show t.f = act (fun i => s (t₁.f i)) A from ?_)` and prove the remaining obligations.
+
+Rewrite using `[f, f₁, map_act, k1, act_act, act_act]`. Use `congr 1`. Establish `: u * B * v * (u₁ * A) = u * (B * (v * u₁) * A)` using `by simp only [mul_assoc]`. Rewrite using `[this, w2, mul_one, q2, mul_one]`. Use `congrFun (show t.f' = act (fun i => s (t₁.f' i)) A' from ?_)` and prove the remaining obligations.
+
+Rewrite using `[f', f₁', map_act, k2, act_act, act_act]`. Use `congr 1`. Establish `: u' * B' * v' * (u₁' * A') = u' * (B' * (v' * u₁') * A')` using `by simp only [mul_assoc]`. Rewrite using `[this, w2', mul_one, q2', mul_one]`. Introduce and unpack `⟨s, hs, A, A', z1, z2, z3, g1, g2⟩`.
+
+Establish `hA` using `(tied_iff_mul _ _ _ _).1 ⟨z1, z2, z3⟩`. Establish `k1 : t.f = act (fun i => s (t₁.f i)) A` using `funext g1`. Establish `k2 : t.f' = act (fun i => s (t₁.f' i)) A'` using `funext g2`. Establish `hz : H.Zhat (fun i => s (t₁.f i)) (fun i => s (t₁.f' i)) = H.Zhat t₁.f t₁.f'`. Use extensionality with `a b`.
+
+Conclude with `unitary_of_mem hs.1 _ _`. Use `⟨a₁ * A, a₁' * A', ha₁.mul hA, ?_⟩` and prove the remaining obligations. Rewrite using `[k1, k2, Zhat_act, hz, e₁]`. Simplify using `only [cT_mul, mul_assoc]`.
+-/
 theorem mem_class_iff : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → ∀ (d₁ d : LocNG.Datum P) (t₁ t : Term V M r), LocNG.IsTermOver P d₁ t₁ → LocNG.IsTermOver P d t → ∀ (Y0 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (c1 : Set (Matrix (Fin (r + 1)) (Fin (r + 1)) E)), c1 = {Y | ∃ A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ a b, b < a → A a b = 0) ∧ (∀ a, A a a = 1) ∧ ∀ a b, A a b ∈ M.L.O) ∧ ((∀ a b, b < a → A' a b = 0) ∧ (∀ a, A' a a = 1) ∧ ∀ a b, A' a b ∈ M.L.O) ∧ (∀ a b, A a b - A' a b ∈ Submodule.span M.L.O {algebraMap F E (LocNG.theta M)}) ∧ Y = (A.transpose.map M.L.cj) * Y0 * A'} → H.Zhat t₁.f t₁.f' ∈ c1 → (H.Zhat t.f t.f' ∈ c1 ↔ ∃ s ∈ P.St, ∃ A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (∀ i j, A i j ∈ M.L.O ∧ A' i j ∈ M.L.O ∧ ∃ c ∈ M.L.O, A' i j - A i j = algebraMap F E (LocNG.theta M) * c) ∧ (∀ i j, j < i → A i j = 0 ∧ A' i j = 0) ∧ (∀ i, A i i = 1 ∧ A' i i = 1) ∧ (∀ j, t.f j = ∑ i, A i j • s (t₁.f i)) ∧ ∀ j, t.f' j = ∑ i, A' i j • s (t₁.f' i)) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P hrk hP d₁ d t₁ t ht₁ ht Y0 c1 hc1 hZ1
   have := hM.loc

@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipConjSiegel.conj_mem_siegel | exact GlobalTheory.UnipConjSiegel.conj_mem_siegel | (intros; apply GlobalTheory.UnipConjSiegel.conj_mem_siegel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.double_coset_orbit_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (B : Base F E) (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s →
     ∀ W₂ : Spc F E (d + d), W₂.J = dblGram finSumFinEquiv W.J →

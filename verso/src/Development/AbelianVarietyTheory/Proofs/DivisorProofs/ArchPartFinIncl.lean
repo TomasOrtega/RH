@@ -30,9 +30,17 @@ def finIncl : E ⊗[F] FiniteAdeleRing (𝓞 F) F →ₗ[F] AE F E :=
   (LinearMap.rTensor E (LinearMap.inr F (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))).comp
     (TensorProduct.comm F E (FiniteAdeleRing (𝓞 F) F)).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finIncl_tmul (x : E) (a : FiniteAdeleRing (𝓞 F) F) :
     finIncl F E (x ⊗ₜ[F] a) = ((0, a) : AdeleRing (𝓞 F) F) ⊗ₜ[F] x := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul x a`. Use function extensionality and compare the values at `w`.
+
+Use `show InfinitePlace.Completion.extensionEmbedding w (0 : w.Completion) * (τ w).1 x = 0`. Rewrite using `[map_zero, zero_mul]`.
+-/
 theorem archPart_finIncl (τ : ∀ w : InfinitePlace F, EmbOver E w) (y : E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     archPart τ (finIncl F E y) = 0 := by
   induction y using TensorProduct.induction_on with
@@ -43,6 +51,9 @@ theorem archPart_finIncl (τ : ∀ w : InfinitePlace F, EmbOver E w) (y : E ⊗[
     show InfinitePlace.Completion.extensionEmbedding w (0 : w.Completion) * (τ w).1 x = 0
     rw [map_zero, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul x a => rfl`.
+-/
 theorem finPart_finIncl (y : E ⊗[F] FiniteAdeleRing (𝓞 F) F) : finPart F E (finIncl F E y) = y := by
   induction y using TensorProduct.induction_on with
   | zero => simp

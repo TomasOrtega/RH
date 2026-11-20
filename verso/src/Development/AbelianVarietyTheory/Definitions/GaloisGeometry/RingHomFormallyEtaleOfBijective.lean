@@ -21,12 +21,18 @@ variable {X Y : Scheme.{0}}
 
 def EtaleAtPt (f : X ⟶ Y) (x : X) : Prop := (f.stalkMap x).hom.FormallyEtale
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Use `show Algebra.FormallyEtale A B`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId A B) hg)`.
+-/
 theorem ringHom_formallyEtale_of_bijective {A B : Type} [CommRing A] [CommRing B] (g : A →+* B)
     (hg : Function.Bijective g) : g.FormallyEtale := by
   letI := g.toAlgebra
   show Algebra.FormallyEtale A B
   exact Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId A B) hg)
 
+/- English proof (translation)
+Unfold `EtaleAtPt`. Conclude with `ringHom_formallyEtale_of_bijective _ (ConcreteCategory.bijective_of_isIso (f.stalkMap x))`.
+-/
 theorem etaleAtPt_of_isIso (f : X ⟶ Y) [IsIso f] (x : X) : EtaleAtPt f x := by
   unfold EtaleAtPt
   exact ringHom_formallyEtale_of_bijective _ (ConcreteCategory.bijective_of_isIso (f.stalkMap x))
@@ -44,6 +50,9 @@ def nonEtaleLocus (j : Fin n) : Set (C.B j.castSucc).left :=
 def stratSet (j : Fin n) : Set S :=
   closure ((C.B j.castSucc).hom.base '' nonEtaleLocus C j)
 
+/- English proof (translation)
+The claim follows from `isClosed_closure`.
+-/
 theorem isClosed_stratSet (j : Fin n) : IsClosed (stratSet C j) := isClosed_closure
 
 def stratClosed (j : Fin n) : Closeds S := ⟨stratSet C j, isClosed_stratSet C j⟩
@@ -51,14 +60,23 @@ def stratClosed (j : Fin n) : Closeds S := ⟨stratSet C j, isClosed_stratSet C 
 def stratIdeal (j : Fin n) : S.IdealSheafData :=
   Scheme.IdealSheafData.vanishingIdeal (stratClosed C j)
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.coe_support_vanishingIdeal _`.
+-/
 @[simp] theorem coe_support_stratIdeal (j : Fin n) : ((stratIdeal C j).support : Set S) = stratSet C j :=
   Scheme.IdealSheafData.coe_support_vanishingIdeal _
 
+/- English proof (translation)
+Establish `: IsIso (C.φ j).left` using `inferInstanceAs (IsIso ((Over.forget S).map (C.φ j)))`. Establish `h : nonEtaleLocus C j = ∅` using `Set.eq_empty_iff_forall_notMem.2 fun x hx => hx (etaleAtPt_of_isIso _ x)`. Rewrite using `[stratSet, h, Set.image_empty, closure_empty]`.
+-/
 theorem stratSet_eq_empty_of_isIso (j : Fin n) [IsIso (C.φ j)] : stratSet C j = ∅ := by
   have : IsIso (C.φ j).left := inferInstanceAs (IsIso ((Over.forget S).map (C.φ j)))
   have h : nonEtaleLocus C j = ∅ := Set.eq_empty_iff_forall_notMem.2 fun x hx => hx (etaleAtPt_of_isIso _ x)
   rw [stratSet, h, Set.image_empty, closure_empty]
 
+/- English proof (translation)
+Establish `: stratClosed C j = ⊥` using `Closeds.ext (stratSet_eq_empty_of_isIso C j)`. Rewrite using `[stratIdeal, this, Scheme.IdealSheafData.vanishingIdeal_bot]`.
+-/
 theorem stratIdeal_eq_top_of_isIso (j : Fin n) [IsIso (C.φ j)] : stratIdeal C j = ⊤ := by
   have : stratClosed C j = ⊥ := Closeds.ext (stratSet_eq_empty_of_isIso C j)
   rw [stratIdeal, this, Scheme.IdealSheafData.vanishingIdeal_bot]
@@ -88,12 +106,20 @@ section Basic₂
 
 variable {S : Scheme.{0}} {O : Type} [Ring O] {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Use `haveI : IsIso ((powChain hA ρ 1 (fun _ => by simp) h n).φ j) := by show IsIso (ρ.act 1); rw [ρ.map_one]; infer_instance`. Conclude with `stratSet_eq_empty_of_isIso _ j`.
+-/
 example (hA : IsAbelianScheme A) (ρ : RingAct A O) (h : IsIsogDeg (ρ.act 1) 1) (n : ℕ) (j : Fin n) :
     stratSet (powChain hA ρ 1 (fun _ => by simp) h n) j = ∅ := by
   haveI : IsIso ((powChain hA ρ 1 (fun _ => by simp) h n).φ j) := by
     show IsIso (ρ.act 1); rw [ρ.map_one]; infer_instance
   exact stratSet_eq_empty_of_isIso _ j
 
+/- English proof (translation)
+Establish `e : ∀ j, stratSet (powChain hA ρ 1 (fun _ => by simp) h n) j = ∅` using `fun j => by haveI : IsIso ((powChain hA ρ 1 (fun _ => by simp) h n).φ j) := by show IsIso (ρ.act 1); rw [ρ.map_one]; infer_instance`. Conclude with `stratSet_eq_empty_of_isIso _ j`. Use extensionality with `s`. Simplify using `only [openStratum, e, Set.mem_empty_iff_false, false_iff, Set.mem_setOf_eq]`. Use `split_ifs with hT`.
+
+Simplify using `[hT]`. Take `⟨j, hj⟩` from `Finset.nonempty_iff_ne_empty.2 hT`. Simplify using `only [Set.mem_empty_iff_false, iff_false, not_forall, not_not]`. Conclude with `⟨j, hj⟩`.
+-/
 example (hA : IsAbelianScheme A) (ρ : RingAct A O) (h : IsIsogDeg (ρ.act 1) 1) (n : ℕ) (T : Finset (Fin n)) :
     openStratum (powChain hA ρ 1 (fun _ => by simp) h n) T = if T = ∅ then Set.univ else ∅ := by
   have e : ∀ j, stratSet (powChain hA ρ 1 (fun _ => by simp) h n) j = ∅ := fun j => by
@@ -108,6 +134,9 @@ example (hA : IsAbelianScheme A) (ρ : RingAct A O) (h : IsIsogDeg (ρ.act 1) 1)
     simp only [Set.mem_empty_iff_false, iff_false, not_forall, not_not]
     exact ⟨j, hj⟩
 
+/- English proof (translation)
+Use `haveI : IsIso ((powChain hA ρ 1 (fun _ => by simp) h 1).φ 0) := by show IsIso (ρ.act 1); rw [ρ.map_one]; infer_instance`. Conclude with `stratIdeal_eq_top_of_isIso _ 0`.
+-/
 example (hA : IsAbelianScheme A) (ρ : RingAct A O) (h : IsIsogDeg (ρ.act 1) 1) :
     stratIdeal (powChain hA ρ 1 (fun _ => by simp) h 1) 0 = ⊤ := by
   haveI : IsIso ((powChain hA ρ 1 (fun _ => by simp) h 1).φ 0) := by

@@ -19,6 +19,11 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Use `ext1`. Simplify using the standard rewrite rules. Name the introduced variables `i`. Simplify using the standard rewrite rules. Use `show (ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.reindex (e.symm : m → n) S))) ((ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.reindex (e : n → m) S))) (AffineSpace.coord S i)) = AffineSpace.coord S i`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem affineSpace_reindex_symm_comp_reindex {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     AffineSpace.reindex (e.symm : m → n) S ≫ AffineSpace.reindex (e : n → m) S =
       𝟙 (AffineSpace n S) := by
@@ -31,6 +36,11 @@ private theorem affineSpace_reindex_symm_comp_reindex {n m : Type u} (e : n ≃ 
           (AffineSpace.coord S i)) = AffineSpace.coord S i
     simp
 
+/- English proof (translation)
+Use `ext1`. Simplify using the standard rewrite rules. Name the introduced variables `i`. Simplify using the standard rewrite rules. Use `show (ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.reindex (e : n → m) S))) ((ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.reindex (e.symm : m → n) S))) (AffineSpace.coord S i)) = AffineSpace.coord S i`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem affineSpace_reindex_comp_reindex_symm {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     AffineSpace.reindex (e : n → m) S ≫ AffineSpace.reindex (e.symm : m → n) S =
       𝟙 (AffineSpace m S) := by
@@ -51,17 +61,29 @@ def affineSpaceIsoOfEquiv {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
   inv_hom_id := affineSpace_reindex_comp_reindex_symm e S
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem affineSpaceIsoOfEquiv_hom {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).hom = AffineSpace.reindex (e.symm : m → n) S := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem affineSpaceIsoOfEquiv_inv {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).inv = AffineSpace.reindex (e : n → m) S := rfl
 
+/- English proof (translation)
+Simplify using `[affineSpaceIsoOfEquiv, AffineSpace.reindex]`.
+-/
 theorem affineSpaceIsoOfEquiv_hom_comp_over {n m : Type u} (e : n ≃ m) (S : Scheme.{u}) :
     (affineSpaceIsoOfEquiv e S).hom ≫ (AffineSpace m S ↘ S) = (AffineSpace n S ↘ S) := by
   simp [affineSpaceIsoOfEquiv, AffineSpace.reindex]
 
+/- English proof (translation)
+Conclude with `affineSpaceIsoOfEquiv_hom_comp_over e (Spec (CommRingCat.of k))`.
+-/
 theorem affineSpaceIsoOfEquiv_hom_comp_toSpec (k : Type u) [Field k] {n m : Type u} (e : n ≃ m) :
     (affineSpaceIsoOfEquiv e (Spec (CommRingCat.of k))).hom ≫ affineSpaceIndexedByToSpec k m =
       affineSpaceIndexedByToSpec k n := by
@@ -77,6 +99,9 @@ def toAffineSpaceOfAmbientIso {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u
   φ.hom ≫ affineSpaceInl k n 1 ≫
     (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom
 
+/- English proof (translation)
+Establish `h : AlgebraicGeometry.IsClosedImmersion (φ.hom ≫ affineSpaceInl k n 1 ≫ (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom)` using `inferInstance`. Conclude with `h`.
+-/
 theorem isClosedImmersion_toAffineSpaceOfAmbientIso {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     {p : Y ⟶ Spec (CommRingCat.of k)} (G : EmbeddingDatum k Y p) (n : ℕ)
     (φ : G.ambient ≅ affineSpaceIndexedBy k (ULift.{u, 0} (Fin n))) :
@@ -87,6 +112,9 @@ theorem isClosedImmersion_toAffineSpaceOfAmbientIso {k : Type u} [Field k] [Char
     inferInstance
   exact h
 
+/- English proof (translation)
+Establish `h : toAffineSpaceOfAmbientIso G n φ = φ.hom ≫ affineSpaceInl k n 1 ≫ (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom` using `rfl`. Rewrite using `[h]`. Simplify using `only [Category.assoc]`. Rewrite using `[affineSpaceIsoOfEquiv_hom_comp_toSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, hφ]`.
+-/
 theorem toAffineSpaceOfAmbientIso_comp_toSpec {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}}
     {p : Y ⟶ Spec (CommRingCat.of k)} (G : EmbeddingDatum k Y p) (n : ℕ)
     (φ : G.ambient ≅ affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)))
@@ -100,6 +128,9 @@ theorem toAffineSpaceOfAmbientIso_comp_toSpec {k : Type u} [Field k] [CharZero k
   simp only [Category.assoc]
   rw [affineSpaceIsoOfEquiv_hom_comp_toSpec, affineSpaceInl_comp_affineSpaceIndexedByToSpec, hφ]
 
+/- English proof (translation)
+Establish `h1 : HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin 1))) (affineSpaceInl k n 1) 1` using `hasSmoothCoordCodim_affineSpaceInl hsm k n 1`. Establish `h2 : HasSmoothCoordCodim (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (n + 1)))) (affineSpaceInl k n 1 ≫ (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom) 1` using `h1.comp_iso_hom (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))) (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin (n + 1)))) (affineSpaceIsoOfEquiv_hom_comp_toSpec k (uliftFinSumOneEquiv.{u} n))`. Establish `hdef : toAffineSpaceOfAmbientIso G n φ = φ.hom ≫ affineSpaceInl k n 1 ≫ (affineSpaceIsoOfEquiv (uliftFinSumOneEquiv.{u} n) (Spec (CommRingCat.of k))).hom` using `rfl`. Rewrite using `[hdef]`. Conclude with `h2.iso_hom_comp φ`.
+-/
 theorem hasSmoothCoordCodim_toAffineSpaceOfAmbientIso (hsm : AffineSpaceIsSmooth.{u}) {k : Type u}
     [Field k] [CharZero k] {Y : Scheme.{u}} {p : Y ⟶ Spec (CommRingCat.of k)}
     (G : EmbeddingDatum k Y p) (n : ℕ)

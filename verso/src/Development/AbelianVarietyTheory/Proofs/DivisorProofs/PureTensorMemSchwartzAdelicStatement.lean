@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PureIndO.pure_mem_schA | exact GlobalTheory.PureIndO.pure_mem_schA | (intros; apply GlobalTheory.PureIndO.pure_mem_schA <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pure_tensor_mem_schwartz_adelic : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = GlobalTheory.FinComm.indO v) →
     pure f φ ∈ schA F κ := by

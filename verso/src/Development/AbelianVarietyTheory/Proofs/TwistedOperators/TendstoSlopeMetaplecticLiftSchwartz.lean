@@ -7,6 +7,15 @@ open scoped Matrix
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Introduce `l _ _ G _ pr om omS h3 h4 X hX γ h0 hγ h6 f`. Rewrite using `[(schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ).tendsto_nhds]`. Introduce and unpack `⟨k, n⟩ ε hε`. Take `⟨A, hA, hb⟩` from `exists_seminorm_le (l := l) k n`. Establish `key : ∀ r, Filter.Tendsto (fun t : ℝ => ‖schwartzToL2 l (A r (t⁻¹ • (omS (γ t) f - f) - quad X f))‖) (nhdsWithin 0 {0}ᶜ) (nhds 0)`.
+
+Introduce `r`. Establish `h` using `hasDerivAt_iff_tendsto_slope_zero.1 (hasDerivAt_toLp_omS h3 h4 hX h0 hγ h6 (hA r) f)`. Rewrite `h` using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `h.congr fun t => ?_` and prove the remaining obligations. Establish `e : ∀ (B : Sch l →L[ℂ] L2 l) (u v w : Sch l) (s : ℝ), B (s • (u - v) - w) = s • (B u - B v) - B w`.
+
+Introduce `B u v w s`. Rewrite using `[B.map_sub, B.map_smul_of_tower, B.map_sub]`. Establish `e1 : omS (γ 0) f = f` using `by rw [h0, omS.map_one]; rfl`. Rewrite using `[zero_add, e1]`. Conclude with `congrArg norm (e ((schwartzToL2 l).comp (A r)) _ _ _ _).symm`.
+
+Establish `hs` using `tendsto_finset_sum Finset.univ fun r _ => key r`. Rewrite `hs` using `[Finset.sum_const_zero]`. Use `filter_upwards [hs.eventually (gt_mem_nhds hε)] with t ht`. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Conclude with `(hb _).trans_lt ht`.
+-/
 theorem tendsto_slope_omS_schwartz :
     ∀ (l : Type) [Fintype l] [DecidableEq l] (G : Type) [Group G] (pr : G →* Matrix.symplecticGroup l ℝ)
     (om : G →* (GlobalTheory.RealWeil.L2 l ≃ₗᵢ[ℂ] GlobalTheory.RealWeil.L2 l)) (omS : G →* (GlobalTheory.RealWeil.Sch l →L[ℂ] GlobalTheory.RealWeil.Sch l)),

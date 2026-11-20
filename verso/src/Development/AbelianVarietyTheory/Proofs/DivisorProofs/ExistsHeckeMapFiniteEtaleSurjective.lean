@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.Hecke
 
+/- English proof (translation)
+Take `⟨n, i, hi, -, e⟩` from `M.qproj`. Establish `: IsSeparated (PSpace.str R n)`. Unfold `PSpace.str`. Use `infer_instance`. Rewrite using `[← e]`.
+
+Use `infer_instance`.
+-/
 theorem isSeparated_model_str {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     (M : Model b N) : IsSeparated M.s := by
   obtain ⟨n, i, hi, -, e⟩ := M.qproj
@@ -22,6 +27,25 @@ theorem isSeparated_model_str {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} 
   rw [← e]
   infer_instance
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b g c k N hc hk hN hNp hg hgk hck M M'`. Establish `hp : p.Prime` using `Fact.out`. Establish `hk0 : 0 < k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Conclude with `absurd (Nat.coprime_zero_left p |>.1 hk) hp.ne_one`. Conclude with `h`. Take `⟨g', h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.exists_adjoint_primeToP_similitude p D g c k hc hk hg hgk hck`. Establish `h3' : ∀ x y, D.EF (g' x) (g' y) = ((k ^ 2 / c : ℕ) : ℤ) * D.EF x y`. Introduce `x y`.
+
+Rewrite using `[h3 x y]`. Use `push_cast`. Both sides reduce to the same expression. Establish `c1 : (N * k).Coprime p` using `Nat.Coprime.mul_left hNp hk`. Establish `c2 : (N * k * k).Coprime p` using `Nat.Coprime.mul_left c1 hk`.
+
+Establish `c3 : (N * k * k * k).Coprime p` using `Nat.Coprime.mul_left c2 hk`. Establish `l1 : 3 ≤ N * k` using `hN.trans (Nat.le_mul_of_pos_right _ hk0)`. Establish `l2 : 3 ≤ N * k * k` using `l1.trans (Nat.le_mul_of_pos_right _ hk0)`. Establish `l3 : 3 ≤ N * k * k * k` using `l2.trans (Nat.le_mul_of_pos_right _ hk0)`. Take `⟨M₂⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D R b (N * k * k) l2 c2`.
+
+Take `⟨M₃⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D R b (N * k * k * k) l3 c3`. Take `⟨π, hπ⟩` from `GlobalTheory.T.exists_heckeMap_harrisTaylorIntegralModels p D R b g c k N hc hk hN hNp hg hgk hck M M'`. Take `⟨π₁, hπ₁⟩` from `GlobalTheory.T.exists_heckeMap_harrisTaylorIntegralModels p D R b g' (k ^ 2 / c) k (N * k) h5 hk l1 c1 h3' h4 h6 M' M₂`. Take `⟨π₂, hπ₂⟩` from `GlobalTheory.T.exists_heckeMap_harrisTaylorIntegralModels p D R b g c k (N * k * k) hc hk l2 c2 hg hgk hck M₂ M₃`. Establish `e : π ≫ M.s = M'.s` using `hπ.1`.
+
+Establish `e₁ : π₁ ≫ M'.s = M₂.s` using `hπ₁.1`. Establish `e₂ : π₂ ≫ M₂.s = M₃.s` using `hπ₂.1`. Establish `f1` using `GlobalTheory.T.harrisTaylor_heckeMap_comp_eq_forgetLevel p D R b g g' c (k ^ 2 / c) k N hk hN hNp h1 h2 h7 c2 M.toRepFam M'.toRepFam M₂.toRepFam π π₁ hπ hπ₁`. Establish `f2` using `GlobalTheory.T.harrisTaylor_heckeMap_comp_eq_forgetLevel p D R b g' g (k ^ 2 / c) c k (N * k) hk l1 c1 h2 h1 (by rw [mul_comm, h7]) c3 M'.toRepFam M₂.toRepFam M₃.toRepFam π₁ π₂ hπ₁ hπ₂`. Take `⟨a1, a2, a3⟩` from `GlobalTheory.T.harrisTaylor_levelForgetting_finite_etale_surjective p D R b N (N * k * k) _ c2 hN M M₂ (π₁ ≫ π) (by rw [Category.assoc, e, e₁]) f1`.
+
+Take `⟨-, -, b3⟩` from `GlobalTheory.T.harrisTaylor_levelForgetting_finite_etale_surjective p D R b (N * k) (N * k * k * k) _ c3 l1 M' M₃ (π₂ ≫ π₁) (by rw [Category.assoc, e₁, e₂]) f2`. Establish `s1 : Surjective π₁` using `Surjective.of_comp π₂ π₁`. Establish `t1 : Etale π₁` using `GlobalTheory.T.etale_of_comp_etale_sameRelativeDimension _ _ _ _ π₁ π M₂.s M'.s _ e₁ M₂.smooth M'.smooth a2`. Establish `hs : IsSeparated π`. Establish `: IsSeparated (π ≫ M.s)` using `e ▸ isSeparated_model_str M'`.
+
+Conclude with `IsSeparated.of_comp π M.s`. Establish `hl : LocallyOfFiniteType π`. Use `M'.smooth` as an intermediate fact. Establish `: Smooth M'.s` using `SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M'.s`. Establish `: LocallyOfFiniteType (π ≫ M.s)` using `by rw [e]; infer_instance`.
+
+Conclude with `locallyOfFiniteType_of_comp π M.s`. Take `⟨r1, r2⟩` from `GlobalTheory.T.etale_isFinite_of_comp_etale_surjective' _ _ _ π₁ π t1 s1 a2 a1 hs hl`. Conclude with `⟨π, hπ, r2, r1, Surjective.of_comp π₁ π⟩`.
+-/
 theorem exists_heckeMap_finite_etale_surjective : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (M : Model b N) (M' : Model b (N * k)), ∃ π : M'.X ⟶ M.X, IsHeckeMap g c k N M.toRepFam M'.toRepFam π ∧ IsFinite π ∧ Etale π ∧ Surjective π := by
   intro p _ D R _ _ b g c k N hc hk hN hNp hg hgk hck M M'
   have hp : p.Prime := Fact.out

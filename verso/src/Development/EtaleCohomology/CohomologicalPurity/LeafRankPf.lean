@@ -5,6 +5,9 @@ open TensorProduct
 
 namespace LateralTheory.CohomologicalPurity.LeafRankPf
 
+/- English proof (translation)
+Establish `: CompatibleSMul A B K X` using `CompatibleSMul.of_algebraMap_surjective K X h`. Conclude with `(LinearEquiv.finrank_eq (equivOfCompatibleSMul A B K K X)).symm`.
+-/
 theorem finrank_tensor_surj {A B K X : Type*} [CommRing A] [CommRing B] [Field K] [Algebra A B] [Algebra A K]
     [Algebra B K] [IsScalarTower A B K] [AddCommGroup X] [Module A X] [Module B X] [IsScalarTower A B X]
     (h : Function.Surjective (algebraMap A B)) :
@@ -12,6 +15,17 @@ theorem finrank_tensor_surj {A B K X : Type*} [CommRing A] [CommRing B] [Field K
   have : CompatibleSMul A B K X := CompatibleSMul.of_algebraMap_surjective K X h
   exact (LinearEquiv.finrank_eq (equivOfCompatibleSMul A B K K X)).symm
 
+/- English proof (translation)
+Establish `hex` using `lTensor_exact K (LinearMap.exact_subtype_mkQ (J • (⊤ : Submodule A J))) (Submodule.mkQ_surjective _)`. Establish `hz : ∀ (x : K) (z : J), z ∈ J • (⊤ : Submodule A J) → (x ⊗ₜ[A] z : K ⊗[A] J) = 0`. Introduce `x z hz`. Use `Submodule.smul_induction_on (p := fun z => (x ⊗ₜ[A] z : K ⊗[A] J) = 0) hz ?_ ?_` and prove the remaining obligations. Introduce `a ha m _`.
+
+Rewrite using `[← smul_tmul, Algebra.smul_def, hJ a ha, zero_mul, zero_tmul]`. Introduce `u v hu hv`. Rewrite using `[tmul_add, hu, hv, add_zero]`. Establish `h0 : LinearMap.lTensor K (J • (⊤ : Submodule A J)).subtype = 0`. Use extensionality with `x z`.
+
+Conclude with `hz x z z.2`. Establish `hinj : Function.Injective (LinearMap.baseChange K (Ideal.toCotangent J))`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `: y ∈ LinearMap.range (LinearMap.lTensor K (J • (⊤ : Submodule A J)).subtype)` using `(hex y).mp (by rw [LinearMap.baseChange_eq_ltensor] at hy; exact hy)`.
+
+Rewrite `this` using `[h0, LinearMap.range_zero]`. Simplify using `using this`. Establish `hsurj : Function.Surjective (LinearMap.baseChange K (Ideal.toCotangent J))`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective K (Submodule.mkQ_surjective _)`.
+
+Conclude with `LinearEquiv.finrank_eq (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩)`.
+-/
 theorem finrank_tensor_cotangent {A K : Type*} [CommRing A] [Field K] [Algebra A K] (J : Ideal A)
     (hJ : ∀ a ∈ J, algebraMap A K a = 0) :
     Module.finrank K (K ⊗[A] J) = Module.finrank K (K ⊗[A] J.Cotangent) := by
@@ -38,6 +52,23 @@ theorem finrank_tensor_cotangent {A K : Type*} [CommRing A] [Field K] [Algebra A
     exact LinearMap.lTensor_surjective K (Submodule.mkQ_surjective _)
   exact LinearEquiv.finrank_eq (LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩)
 
+/- English proof (translation)
+Introduce `e d R A _ _ _ I p _ hIp hA hB`. Establish `hk : ∀ a ∈ I, algebraMap A p.ResidueField a = 0` using `fun a ha => Ideal.algebraMap_residueField_eq_zero.mpr (hIp ha)`. Use `letI : Algebra (A ⧸ I) p.ResidueField := (Ideal.Quotient.lift I (algebraMap A p.ResidueField) hk).toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ I) p.ResidueField := IsScalarTower.of_algebraMap_eq (fun a => rfl)`. Establish `hsurj : Function.Surjective (algebraMap A (A ⧸ I))` using `Ideal.Quotient.mk_surjective`.
+
+Use `haveI : Nontrivial (A ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (Ideal.IsPrime.ne_top ‹_›) hIp)`. Use `haveI : Nontrivial A := (Ideal.Quotient.mk I).domain_nontrivial`. Use `haveI : Algebra.IsStandardSmooth R A := hA.isStandardSmooth`. Use `haveI : Algebra.IsStandardSmooth R (A ⧸ I) := hB.isStandardSmooth`. Establish `rA : Module.finrank A Ω[A⁄R] = e + d` using `Module.finrank_eq_of_rank_eq (Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (e + d))`.
+
+Establish `rB : Module.finrank (A ⧸ I) Ω[(A ⧸ I)⁄R] = e` using `Module.finrank_eq_of_rank_eq (Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential e)`. Establish `eqv` using `AlgebraTensorModule.cancelBaseChange A (A ⧸ I) p.ResidueField p.ResidueField Ω[A⁄R]`. Establish `h1 : Module.finrank p.ResidueField (p.ResidueField ⊗[A] ((A ⧸ I) ⊗[A] Ω[A⁄R])) = e + d`. Rewrite using `[finrank_tensor_surj hsurj, LinearEquiv.finrank_eq eqv, Module.finrank_baseChange, rA]`. Establish `h2 : Module.finrank p.ResidueField (p.ResidueField ⊗[A] Ω[(A ⧸ I)⁄R]) = e`.
+
+Rewrite using `[finrank_tensor_surj hsurj, Module.finrank_baseChange, rB]`. Establish `hK : RingHom.ker (algebraMap A (A ⧸ I)) = I` using `Ideal.mk_ker`. Establish `h3 : Module.finrank p.ResidueField (p.ResidueField ⊗[A] I) = Module.finrank p.ResidueField (p.ResidueField ⊗[A] (RingHom.ker (algebraMap A (A ⧸ I))).Cotangent)`. Rewrite using `[← finrank_tensor_cotangent _ (by rw [hK]; exact hk), hK]`. Take `⟨l, hl⟩` from `(Algebra.FormallySmooth.iff_split_injection (R := R) (P := A) (A := A ⧸ I) hsurj).mp inferInstance`.
+
+Establish `e0 : Function.Exact (KaehlerDifferential.kerCotangentToTensor R A (A ⧸ I)) ((KaehlerDifferential.mapBaseChange R A (A ⧸ I)).restrictScalars A)` using `KaehlerDifferential.exact_kerCotangentToTensor_mapBaseChange R A (A ⧸ I) hsurj`. Establish `s0 : Function.Surjective ((KaehlerDifferential.mapBaseChange R A (A ⧸ I)).restrictScalars A)` using `KaehlerDifferential.mapBaseChange_surjective R A (A ⧸ I) hsurj`. Use `set f := (KaehlerDifferential.kerCotangentToTensor R A (A ⧸ I)).baseChange p.ResidueField`. Use `set g := ((KaehlerDifferential.mapBaseChange R A (A ⧸ I)).restrictScalars A).baseChange p.ResidueField`. Establish `hex : Function.Exact f g`.
+
+Simplify `lTensor_exact p.ResidueField e0 s0` using `only [f, g, LinearMap.baseChange_eq_ltensor]`. Establish `hg : Function.Surjective g`. Simplify `LinearMap.lTensor_surjective p.ResidueField s0` using `only [g, LinearMap.baseChange_eq_ltensor]`. Establish `hf : Function.Injective f`. Establish `hc : (l.baseChange p.ResidueField).comp f = LinearMap.id`.
+
+Rewrite using `[← LinearMap.baseChange_comp, hl, LinearMap.baseChange_id]`. Conclude with `Function.LeftInverse.injective (g := l.baseChange p.ResidueField) (fun x => by`. Simplify using `using LinearMap.congr_fun hc x)`. Establish `: CompatibleSMul A (A ⧸ I) p.ResidueField ((A ⧸ I) ⊗[A] Ω[A⁄R])` using `CompatibleSMul.of_algebraMap_surjective _ _ hsurj`. Use `haveI : Module.Finite p.ResidueField (p.ResidueField ⊗[A] ((A ⧸ I) ⊗[A] Ω[A⁄R])) := Module.Finite.equiv ((LinearEquiv.restrictScalars p.ResidueField (equivOfCompatibleSMul A (A ⧸ I) p.ResidueField p.ResidueField ((A ⧸ I) ⊗[A] Ω[A⁄R])).symm).trans eqv).symm`.
+
+Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker g`. Rewrite `hrk` using `[LinearMap.range_eq_top.mpr hg, finrank_top, hex.linearMap_ker_eq, LinearMap.finrank_range_of_inj hf, h1, h2]`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.LateralTheory.CohomologicalPurity.ChartCut.LeafRank_of : LateralTheory.CohomologicalPurity.ChartCut.LeafRank := by
   intro e d R A _ _ _ I p _ hIp hA hB
   have hk : ∀ a ∈ I, algebraMap A p.ResidueField a = 0 := fun a ha =>

@@ -4,6 +4,31 @@ open Matrix
 
 namespace GlobalTheory.CompanionTheory.UnitaryBlock
 
+/- English proof (translation)
+Introduce `n D m J J' C R hJJ hJh hC hR hJR hCR hsum g h hg hgC hgHC`. Establish `hl : (J * gᴴ * J) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hr : g * (J * gᴴ * J) = 1` using `mul_eq_one_comm.mp hl`. Establish `hgJ : g * J * gᴴ = J`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Use `_ = J := by rw [hr, Matrix.one_mul]`. Take `⟨k, hkdef⟩ : ∃ k, k = Cᴴ * (J * gᴴ * J) * C` from `⟨_, rfl⟩`. Establish `hk : k * h = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hkdef]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Cᴴ * ((J * gᴴ * J) * g) * C := by`. Rewrite using `[← hgC]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hl, Matrix.mul_one, hC]`. Establish `hk' : h * k = 1` using `mul_eq_one_comm.mp hk`. Establish `hunit : IsUnit h` using `⟨⟨h, k, hk', hk⟩, rfl⟩`. Establish `hdet : IsUnit hᴴ.det`.
+
+Establish `: IsUnit hᴴ`. Use `⟨⟨hᴴ, kᴴ, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← Matrix.conjTranspose_mul, hk, Matrix.conjTranspose_one]`. Rewrite using `[← Matrix.conjTranspose_mul, hk', Matrix.conjTranspose_one]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp this`.
+
+Establish `hJC : g * (J * C) * hᴴ = J * C`. Combine the equalities or inequalities in the displayed calculation. Establish `hsecond : g * (J * C) = (J * C) * (hᴴ)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`.
+
+Use `_ = (g * (J * C) * hᴴ) * (hᴴ)⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = (J * C) * (hᴴ)⁻¹ := by rw [hJC]`. Establish `hgpC : (J * gᴴ * J) * C = C * k`. Combine the equalities or inequalities in the displayed calculation. Establish `hCgR : Cᴴ * (g * R) = 0`.
+
+Establish `hadj : Cᴴ * g = h * Cᴴ`. Use `congrArg Matrix.conjTranspose hgHC` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgHJC : gᴴ * J * C = J * C * k`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hCJg : Cᴴ * J * g = kᴴ * Cᴴ * J`. Use `congrArg Matrix.conjTranspose hgHJC` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hJh, Matrix.mul_assoc]`. Establish `hCJgR : Cᴴ * J * (g * R) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hthird : g * R = R * (Rᴴ * g * R)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = R * (Rᴴ * g * R) := by rw [hCgR, hCJgR]; simp`.
+
+Use `⟨hunit, hsecond, hthird, ?_⟩` and prove the remaining obligations. Establish `hRJ : R * J' = J * R` using `hJR.symm`. Establish `hRhJR : Rᴴ * J * R = J'`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = Rᴴ * gᴴ * J * (R * (Rᴴ * g * R)) := by rw [hRJ]; simp only [Matrix.mul_assoc]`. Use `_ = Rᴴ * (gᴴ * J * g) * R := by rw [← hthird]; simp only [Matrix.mul_assoc]`. Use `_ = J' := by rw [hg, hRhJR]`.
+-/
 theorem block_diagonal_of_keeps_frame : ∀ {n D m : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (J' : Matrix (Fin m) (Fin m) ℂ) (C : Matrix (Fin n) (Fin D) ℂ)
     (R : Matrix (Fin n) (Fin m) ℂ), J * J = 1 → Jᴴ = J → Cᴴ * C = 1 → Rᴴ * R = 1 →

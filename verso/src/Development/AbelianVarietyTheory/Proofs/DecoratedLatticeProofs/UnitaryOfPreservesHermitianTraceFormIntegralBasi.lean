@@ -25,15 +25,26 @@ def trBil (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) : (Fin n → E) →ₗ
       simp only [Formalism.UG.hform, Finset.smul_sum, Rat.smul_def, Pi.smul_apply]
       refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trBil_apply (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     trBil σ J x y = Algebra.trace ℚ E (Formalism.UG.hform σ J x y) := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hform_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) (a : E) :
     Formalism.UG.hform σ J x (a • y) = a * Formalism.UG.hform σ J x y := by
   simp only [Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Take `⟨d, hd, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image u)`. Take `⟨z, hz⟩` from `h (d • u) (fun i => hint (u i) (Finset.mem_image_of_mem u (Finset.mem_univ i)))`. Establish `h1 : (d : ℚ) • u ∈ Submodule.span ℚ (Set.range e)`.
+
+Rewrite using `[Int.cast_smul_eq_zsmul, hz]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hd' : (d : ℚ) ≠ 0` using `by exact_mod_cast hd`. Conclude with `(Submodule.smul_mem_iff _ hd').1 h1`.
+-/
 theorem span_eq_top {N : ℕ} (e : Fin N → Fin n → E)
     (h : ∀ u : Fin n → E, (∀ i, IsIntegral ℤ (u i)) → ∃ z : Fin N → ℤ, u = ∑ i, z i • e i) :
     Submodule.span ℚ (Set.range e) = ⊤ := by
@@ -49,6 +60,15 @@ theorem span_eq_top {N : ℕ} (e : Fin N → Fin n → E)
   have hd' : (d : ℚ) ≠ 0 := by exact_mod_cast hd
   exact (Submodule.smul_mem_iff _ hd').1 h1
 
+/- English proof (translation)
+Set `f : (Fin n → E) →ₗ[ℚ] (Fin n → E)` to `(Matrix.mulVecLin M).restrictScalars ℚ`. Establish `hB : (trBil σ J).compl₁₂ f f = trBil σ J`. Use `LinearMap.ext_on_range hs fun i => LinearMap.ext_on_range hs fun j => ?_` and prove the remaining obligations. Simplify `h i j` using `[f]`. Establish `hB' : ∀ x y, trBil σ J (M *ᵥ x) (M *ᵥ y) = trBil σ J x y` using `fun x y => by`.
+
+Use `LinearMap.congr_fun₂ hB x y` as an intermediate fact. Simplify `this` using `[f]`. Establish `hh : ∀ x y, Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) = Formalism.UG.hform σ J x y` using `fun x y => by`. Assume the negation of the conclusion as `hne`. Establish `hD : Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) - Formalism.UG.hform σ J x y ≠ 0` using `sub_ne_zero.2 hne`.
+
+Establish `h1` using `hB' x ((Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) - Formalism.UG.hform σ J x y)⁻¹ • y)`. Rewrite `h1` using `[Matrix.mulVec_smul, trBil_apply, trBil_apply, hform_smul_right, hform_smul_right, ← sub_eq_zero, ← map_sub, ← mul_sub, inv_mul_cancel₀ hD, ← (algebraMap ℚ E).map_one, Algebra.trace_algebraMap]`. Establish `: Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`. Simplify using `[this] at h1`. Use extensionality with `i j`.
+
+Use `hh (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [Formalism.UG.hform, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply] at this`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, this]`. Simplify using `[apply_ite σ]`.
+-/
 theorem unitary_of_trace (σ : E →+* E) (J M : Matrix (Fin n) (Fin n) E) {N : ℕ} (e : Fin N → Fin n → E)
     (hs : Submodule.span ℚ (Set.range e) = ⊤)
     (h : ∀ i j, trBil σ J (M *ᵥ e i) (M *ᵥ e j) = trBil σ J (e i) (e j)) :
@@ -80,6 +100,9 @@ end GlobalTheory.CuspGeo.TraceUnitary
 
 namespace GlobalTheory.CuspGeo
 
+/- English proof (translation)
+The claim follows from `TraceUnitary.unitary_of_trace _ _ _ e (TraceUnitary.span_eq_top e fun u hu => (he.2 u).1 hu) h`.
+-/
 theorem unitary_of_trForm_zBasis (I : AutInst) {N : ℕ} (e : Fin N → Fin I.n → I.E)
     (M : Matrix (Fin I.n) (Fin I.n) I.E) (he : IsZBasis I e)
     (h : ∀ i j, trForm I (M *ᵥ e i) (M *ᵥ e j) = trForm I (e i) (e j)) :

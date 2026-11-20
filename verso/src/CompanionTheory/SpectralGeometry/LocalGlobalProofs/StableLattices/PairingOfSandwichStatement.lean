@@ -11,6 +11,9 @@ section Lat
 
 variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Module L V]
 
+/- English proof (translation)
+Take `⟨m, b, hb⟩` from `hΛ`. Rewrite `hx`, the goal using `[hb]`. Introduce `i`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) (hx i)`.
+-/
 theorem smul_mem_of_isLat {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : ‖a‖ ≤ 1) {x : V}
     (hx : x ∈ Λ) : a • x ∈ Λ := by
   obtain ⟨m, b, hb⟩ := hΛ
@@ -19,6 +22,11 @@ theorem smul_mem_of_isLat {Λ : AddSubgroup V} (hΛ : IsLat L Λ) {a : L} (ha : 
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]
   exact mul_le_one₀ ha (norm_nonneg _) (hx i)
 
+/- English proof (translation)
+Take `⟨m, b, hb⟩` from `hΛ`. Establish `hS0 : 0 ≤ ∑ i, ‖b.repr v i‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Take `⟨a, ha0, ha⟩` from `NormedField.exists_norm_lt L (show (0 : ℝ) < 1 / (1 + ∑ i, ‖b.repr v i‖) by positivity)`. Use `⟨a, norm_pos_iff.mp ha0, (hb _).2 fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, norm_mul]`.
+
+Establish `h1 : ‖b.repr v i‖ ≤ 1 + ∑ i, ‖b.repr v i‖`. Use `Finset.single_le_sum (f := fun i => ‖b.repr v i‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_smul_mem_of_isLat {Λ : AddSubgroup V} (hΛ : IsLat L Λ) (v : V) :
     ∃ a : L, a ≠ 0 ∧ a • v ∈ Λ := by
   obtain ⟨m, b, hb⟩ := hΛ
@@ -59,12 +67,21 @@ section Herm
 variable {L : Type} [NontriviallyNormedField L] {V : Type} [AddCommGroup V] [Module L V]
   {s : L →+* L} {h : V → V → L}
 
+/- English proof (translation)
+Rewrite using `[hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1, ← hh.2.2.1]`.
+-/
 theorem herm_add_left (hh : IsHerm s h) (x y z : V) : h (x + y) z = h x z + h y z := by
   rw [hh.2.2.1 z (x + y), hh.1, map_add, ← hh.2.2.1, ← hh.2.2.1]
 
+/- English proof (translation)
+Rewrite using `[hh.2.2.1 y (a • x), hh.2.1, map_mul, ← hh.2.2.1]`.
+-/
 theorem herm_smul_left (hh : IsHerm s h) (a : L) (x y : V) : h (a • x) y = s a * h x y := by
   rw [hh.2.2.1 y (a • x), hh.2.1, map_mul, ← hh.2.2.1]
 
+/- English proof (translation)
+Rewrite using `[herm_add_left hh, hh.1, hh.1, ← hh.2.2.1 u v]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_add_add (hh : IsHerm s h) (u v : V) :
     h (u + v) (u + v) = h u u + (h u v + s (h u v)) + h v v := by
   rw [herm_add_left hh, hh.1, hh.1, ← hh.2.2.1 u v]
@@ -77,10 +94,18 @@ section Main
 variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] {V : Type} [AddCommGroup V]
   [Module L V] {s : L →+* L} {δ : L} {h : V → V → L}
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha (by simpa using hb))`.
+-/
 theorem norm_sub_le_of_le {a b : L} {c : ℝ} (ha : ‖a‖ ≤ c) (hb : ‖b‖ ≤ c) : ‖a - b‖ ≤ c := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha (by simpa using hb))
 
+/- English proof (translation)
+Use `(hδ.2.1 _).1 fun t ht => ?_` and prove the remaining obligations. Establish `hty : t • y ∈ Λ` using `smul_mem_of_isLat hL ht hy`. Establish `e` using `herm_add_add hh x (t • y)`. Establish `e' : h x y * t + s (h x y * t) = h (x + t • y) (x + t • y) - h x x - h (t • y) (t • y)`. Rewrite using `[e, hh.2.1 t x y, mul_comm t]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `norm_sub_le_of_le (norm_sub_le_of_le (hint _ (Λ.add_mem hx hty)) (hint _ hx)) (hint _ hty)`.
+-/
 theorem pairing_le (hδ : IsDelta s δ) (hh : IsHerm s h) {Λ : AddSubgroup V}
     (hL : IsLat L Λ) (hint : ∀ x ∈ Λ, ‖h x x‖ ≤ 1) {x y : V} (hx : x ∈ Λ) (hy : y ∈ Λ) :
     ‖h x y‖ ≤ ‖δ‖ := by
@@ -94,6 +119,13 @@ theorem pairing_le (hδ : IsDelta s δ) (hh : IsHerm s h) {Λ : AddSubgroup V}
   rw [e']
   exact norm_sub_le_of_le (norm_sub_le_of_le (hint _ (Λ.add_mem hx hty)) (hint _ hx)) (hint _ hty)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨l, hl, a, ha, rfl⟩`. Establish `hpn : 0 < ‖p‖` using `norm_pos_iff.mpr hp0`. Rewrite using `[herm_add_add hh]`. Establish `hb : ‖h l (a • p⁻¹ • x)‖ ≤ ‖δ‖`. Rewrite using `[hh.2.1, hh.2.1, hh.2.2.1 x l, norm_mul, norm_mul, norm_inv, hs.2.1]`.
+
+Establish `h1` using `hsmall l hl`. Combine the equalities or inequalities in the displayed calculation. Establish `htr : ‖h l (a • p⁻¹ • x) + s (h l (a • p⁻¹ • x))‖ ≤ 1`. Use `(hδ.2.1 _).2 hb 1 (by simp)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hlast : ‖h (a • p⁻¹ • x) (a • p⁻¹ • x)‖ ≤ 1`. Rewrite using `[herm_smul_left hh, herm_smul_left hh, hh.2.1, hh.2.1, norm_mul, norm_mul, norm_mul, norm_mul, hs.2.1, hs.2.1, norm_inv]`. Establish `hpp : ‖p‖⁻¹ * (‖p‖⁻¹ * ‖p‖ ^ 2) = 1` using `by field_simp`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hint l hl) htr)) hlast)`.
+-/
 theorem adjoin_integral (hs : IsInv s) (hδ : IsDelta s δ) (hh : IsHerm s h) {Λ : AddSubgroup V}
     (hint : ∀ x ∈ Λ, ‖h x x‖ ≤ 1) {p : L} (hp0 : p ≠ 0) {x : V}
     (hq : ‖h x x‖ ≤ ‖p‖ ^ 2) (hsmall : ∀ y ∈ Λ, ‖h x y‖ ≤ ‖p‖ * ‖δ‖) :
@@ -119,6 +151,29 @@ theorem adjoin_integral (hs : IsInv s) (hδ : IsDelta s δ) (hh : IsHerm s h) {�
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le
     ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hint l hl) htr)) hlast)
 
+/- English proof (translation)
+Introduce `hS L _ _ _ _ s hs δ hδ V _ _ _ h hh Λ hΛ`. Take `⟨hL, hint, hmax⟩` from `hΛ`. Use `⟨fun x hx y hy => pairing_le hδ hh hL hint hx hy, ?_⟩` and prove the remaining obligations. Introduce `p hp hunif x hx hxp hq`. Establish `hp0 : p ≠ 0`.
+
+Introduce and unpack `rfl`. Take `⟨a, ha0, ha⟩` from `NormedField.exists_norm_lt L (show (0 : ℝ) < 1 by norm_num)`. Use `hunif a ha` as an intermediate fact. Rewrite `this` using `[norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hδ0 : δ ≠ 0` using `hδ.1`. Establish `hδn : 0 < ‖δ‖` using `norm_pos_iff.mpr hδ0`. Distinguish the cases in `hex : ∃ y ∈ Λ, ‖h x y‖ = ‖δ‖`. Take `⟨y, hy, hyn⟩` from `hex`. Establish `hne : h x y ≠ 0`.
+
+Introduce `h0`. Rewrite `hyn` using `[h0, norm_zero]`. Conclude with `hδ0 (norm_eq_zero.mp hyn.symm)`. Use `⟨(δ / h x y) • y, smul_mem_of_isLat hL ?_ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, hyn, div_self hδn.ne']`.
+
+Rewrite using `[hh.2.1]`. Clear the denominators using the available nonvanishing facts. It suffices to derive a contradiction. Establish `hsmall : ∀ y ∈ Λ, ‖h x y‖ ≤ ‖p‖ * ‖δ‖`. Introduce `y hy`.
+
+Establish `hlt : ‖h x y‖ < ‖δ‖` using `lt_of_le_of_ne (pairing_le hδ hh hL hint hx hy) fun e => hex ⟨y, hy, e⟩`. Establish `h2 : ‖h x y / δ‖ < 1`. Rewrite using `[norm_div, div_lt_one hδn]`. Conclude with `hlt`. Establish `h3` using `hunif _ h2`.
+
+Rewrite `h3` using `[norm_div, div_le_iff₀ hδn]`. Conclude with `h3`. Establish `hle : Λ ≤ adjoin L Λ (p⁻¹ • x)` using `fun l hl => ⟨l, hl, 0, by simp, by simp⟩`. Establish `hL' : IsLat L (adjoin L Λ (p⁻¹ • x))`. Use `hS L V Λ _ p hL hp0 ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨l, hl, a, ha, rfl⟩`. Establish `e : p • (l + a • p⁻¹ • x) = p • l + a • x`. Rewrite using `[smul_add, smul_comm p a, smul_smul p, mul_inv_cancel₀ hp0, one_smul]`. Rewrite using `[e]`. Conclude with `Λ.add_mem (smul_mem_of_isLat hL hp.le hl) (smul_mem_of_isLat hL ha hx)`.
+
+Introduce `v`. Take `⟨a, ha, hav⟩` from `exists_smul_mem_of_isLat hL v`. Conclude with `⟨a, ha, hle hav⟩`. Introduce and unpack `b hb _ ⟨l, hl, a, ha, rfl⟩`. Use `⟨b • l, smul_mem_of_isLat hL hb hl, b * a, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hb (norm_nonneg _) ha`. Rewrite using `[smul_add, smul_smul]`. Establish `heq` using `hmax _ hL' (adjoin_integral hs hδ hh hint hp0 hq hsmall) hle`. Apply `hxp` to reduce the goal to its premises.
+
+Rewrite using `[← heq]`. Conclude with `⟨0, Λ.zero_mem, 1, by simp, by simp⟩`.
+-/
 theorem pairing_of_sandwich : StSandwich → StPairing := by
   intro hS L _ _ _ _ s hs δ hδ V _ _ _ h hh Λ hΛ
   obtain ⟨hL, hint, hmax⟩ := hΛ

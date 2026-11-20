@@ -11,6 +11,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega`.
+-/
 private theorem unip_blocks {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) :
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv =
       Matrix.fromBlocks 1 ((unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂ 0 (1 : Matrix (Fin b) (Fin b) R) := by
@@ -18,6 +21,11 @@ private theorem unip_blocks {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b
   rcases i with i | i <;> rcases j with j | j <;>
     simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Use `⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[unip_blocks]`. Use `congr 1`. Use extensionality with `i j`. Establish `: (Fin.castAdd b i : Fin (a + b)) ≠ Fin.natAdd a j`.
+
+Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]`.
+-/
 private theorem unip_onto {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a) (Fin b) R) : ∃ X : UPos (a + b) a → R,
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks 1 B 0 (1 : Matrix (Fin b) (Fin b) R) := by
   refine ⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩
@@ -28,11 +36,23 @@ private theorem unip_onto {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a
     simp [Fin.ext_iff]; omega
   simp [unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv, coe_unipGL, unip_blocks]`. Simplify using `[blk, Matrix.fromBlocks_multiply]`.
+-/
 private theorem low_zero {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) (c : GL (Fin a) R) (d : GL (Fin b) R) :
     ((unipGL X * blk c d).val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0 := by
   rw [Units.val_mul, ← Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv, coe_unipGL, unip_blocks]
   simp [blk, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Establish `e1 : g.val.submatrix finSumFinEquiv finSumFinEquiv * g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = (1 : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R)`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Establish `hg : ∀ M : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) R, g.val.submatrix finSumFinEquiv finSumFinEquiv = M → g.val = M.submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Introduce and unpack `_ rfl`. Simplify using the standard rewrite rules.
+
+Generalize the expression as in `g.val.submatrix finSumFinEquiv finSumFinEquiv = M at *`. Generalize the expression as in `g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = N at *`. Establish `hM` using `(Matrix.fromBlocks_toBlocks M).symm`. Rewrite `e1` using `[← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, h, h', Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e1`.
+
+Take `⟨e1, -, -, e2⟩` from `e1`. Take `⟨X, hX⟩` from `unip_onto (M.toBlocks₁₂ * N.toBlocks₂₂)`. Use `⟨⟨_, _, e1, mul_eq_one_comm.1 e1⟩, ⟨_, _, e2, mul_eq_one_comm.1 e2⟩, ⟨rfl, rfl⟩, ⟨rfl, rfl⟩, X, Units.ext ?_⟩` and prove the remaining obligations. Establish `hX' : unipMatrix X = (Matrix.fromBlocks 1 (M.toBlocks₁₂ * N.toBlocks₂₂) 0 1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hX]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, coe_unipGL, hX', hg M rfl]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]`. Rewrite using `[← h, ← hM]`.
+-/
 private theorem dec {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + b)) R)
     (h : (g.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
     (h' : (g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0) :
@@ -65,6 +85,27 @@ private theorem dec {a b : ℕ} {R : Type} [CommRing R] (g : GL (Fin (a + b)) R)
     Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]
   rw [← h, ← hM]
 
+/- English proof (translation)
+Take `⟨hlv, -, -, hc, hdet, -⟩` from `blkLaws (K := K)`. Set `F : G1 K (2 + 2) → Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) 𝔸[K]` to `fun g => (g : AdelicGLn.AdelicGL K (2 + 2)).val.submatrix finSumFinEquiv finSumFinEquiv`. Establish `hF : Continuous F` using `(Units.continuous_val.comp continuous_subtype_val).matrix_submatrix _ _`. Establish `hF' : Continuous fun g => F g⁻¹` using `hF.comp continuous_inv`. Set `C : Set (G1 K (2 + 2))` to `{g | (F g).toBlocks₂₁ = 0 ∧ (F g⁻¹).toBlocks₂₁ = 0}`.
+
+Establish `hC : IsClosed C` using `(isClosed_eq (hF.matrix_submatrix Sum.inr Sum.inl) continuous_const).inter (isClosed_eq (hF'.matrix_submatrix Sum.inr Sum.inl) continuous_const)`. Use `choose a d ha hd X hX using fun s : C => dec (s.1 : AdelicGLn.AdelicGL K (2 + 2)) s.2.1 s.2.2`. Establish `hac : Continuous a` using `Units.continuous_iff.2 ⟨((hF.matrix_submatrix Sum.inl Sum.inl).comp continuous_subtype_val).congr fun s => (ha s).1.symm, ((hF'.matrix_submatrix Sum.inl Sum.inl).comp continuous_subtype_val).congr fun s => (ha s).2.symm⟩`. Establish `hdc : Continuous d` using `Units.continuous_iff.2 ⟨((hF.matrix_submatrix Sum.inr Sum.inr).comp continuous_subtype_val).congr fun s => (hd s).1.symm, ((hF'.matrix_submatrix Sum.inr Sum.inr).comp continuous_subtype_val).congr fun s => (hd s).2.symm⟩`. Set `t : C → ℝ` to `fun s => Real.log (detModule K 2 (a s)).1`.
+
+Establish `htc : Continuous t` using `(continuous_subtype_val.comp (continuous_detModule.comp hac)).log fun s => (detModule K 2 (a s)).2.ne'`. Establish `key : ∀ s : C, (s : G1 K (2 + 2)) = nn (X s) * lv (retractOne (a s)) (retractOne (d s)) (t s)`. Introduce `s`. Establish `h1 : detModule K 2 (a s) * detModule K 2 (d s) = 1`. Use `mem_normOneGL_iff_detModule.1 s.1.2` as an intermediate fact.
+
+Rewrite `this` using `[hX s, map_mul, mem_normOneGL_iff_detModule.1 (unipGL_mem_normOneGL _), one_mul, hdet]`. Then use the resulting hypothesis. Establish `z1 : zt K (t s) = centralSection K 2 (detModule K 2 (a s))`. Unfold `zt`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_log (detModule K 2 (a s)).2)`.
+
+Establish `z2 : zt K (-t s) = centralSection K 2 (detModule K 2 (d s))`. Unfold `zt`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`.
+
+Use `show Real.exp (-Real.log _) = _`. Rewrite using `[Real.exp_neg, Real.exp_log (detModule K 2 (a s)).2]`. Both sides reduce to the same expression. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, hlv, z1, z2, coe_retractOne, coe_retractOne, inv_mul_cancel_right, inv_mul_cancel_right]`.
+
+Conclude with `hX s`. Establish `hP : Continuous fun s : C => (retractOne (a s), retractOne (d s), t s)` using `(continuous_retractOne.comp hac).prodMk ((continuous_retractOne.comp hdc).prodMk htc)`. Establish `hL : Continuous fun s : C => lv (retractOne (a s)) (retractOne (d s)) (t s)`. Simplify `hc.comp hP` using `only [Function.comp_def]`. Establish `hN : Continuous fun s : C => unipMatrix (X s)`.
+
+Establish `: Continuous fun s : C => (nn (X s) : G1 K (2 + 2))` using `(continuous_subtype_val.mul hL.inv).congr fun s => mul_inv_eq_of_eq_mul (key s)`. Establish `h2 : Continuous fun g : G1 K (2 + 2) => (g : AdelicGLn.AdelicGL K (2 + 2)).val` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `h2.comp this`. Establish `hXc : Continuous X` using `continuous_pi fun p => by`. Use `((hN.matrix_elem p.1.1 p.1.2).sub (continuous_const (y := (1 : Matrix (Fin (2 + 2)) (Fin (2 + 2)) 𝔸[K]) p.1.1 p.1.2))).congr fun s => ?_` and prove the remaining obligations.
+
+Use `show unipMatrix (X s) p.1.1 p.1.2 - _ = _`. Rewrite using `[unipMatrix, Matrix.add_apply, blockEntry_apply, dif_pos p.2, add_sub_cancel_left]`. Establish `hlow : ∀ g : G1 K (2 + 2), (∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t) → (F g).toBlocks₂₁ = 0`. Introduce and unpack `_ ⟨X, m₁, m₂, t, rfl⟩`. Simplify using `only [F, Subgroup.coe_mul, hlv]`.
+
+Conclude with `low_zero _ _ _`. Conclude with `⟨C, fun s => (retractOne (a s), retractOne (d s), t s, X s), hC, (continuous_retractOne.comp hac).prodMk ((continuous_retractOne.comp hdc).prodMk (htc.prodMk hXc)), fun g h h' => ⟨hlow _ h, hlow _ h'⟩, key⟩`.
+-/
 private theorem low_coord {K : Type} [Field K] [NumberField K] :
     ∃ (C : Set (G1 K (2 + 2))) (ψ : C → G1 K 2 × G1 K 2 × ℝ × (UPos (2 + 2) 2 → 𝔸[K])), IsClosed C ∧ Continuous ψ ∧
       (∀ g : G1 K (2 + 2), (∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t) → (∃ X m₁ m₂ t, g⁻¹ = nn X * lv m₁ m₂ t) → g ∈ C) ∧
@@ -129,6 +170,21 @@ private theorem low_coord {K : Type} [Field K] [NumberField K] :
     (continuous_retractOne.comp hac).prodMk ((continuous_retractOne.comp hdc).prodMk (htc.prodMk hXc)),
     fun g h h' => ⟨hlow _ h, hlow _ h'⟩, key⟩
 
+/- English proof (translation)
+Take `⟨-, hmul, hone, hc, -⟩` from `blkLaws (K := K)`. Take `⟨-, -, hinj, -⟩` from `pkLaws (K := K)`. Take `⟨C, ψ, hC, hψ, hin, hkey⟩` from `low_coord (K := K)`. Establish `hcomm : ∀ (m₁ m₂ : G1 K 2) (t : ℝ) X, ∃ Y, lv m₁ m₂ t * nn X = nn Y * lv m₁ m₂ t`. Introduce `m₁ m₂ t X`.
+
+Take `⟨e, he, -⟩` from `adMeas m₁ m₂ t`. Conclude with `⟨e.symm X, by rw [he, e.apply_symm_apply]⟩`. Set `S : Subgroup (G1 K (2 + 2))` to `{ carrier := {g | ∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t} one_mem' := ⟨0, 1, 1, 0, by rw [hone, mul_one]; exact (unipOne_zero 2).symm⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨X, m₁, m₂, t, rfl⟩ ⟨X', m₁', m₂', t', rfl⟩`. Take `⟨Y, hY⟩` from `hcomm m₁ m₂ t X'`.
+
+Use `⟨X + Y, m₁ * m₁', m₂ * m₂', t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc (lv m₁ m₂ t), hY, mul_assoc, hmul, ← mul_assoc]`. Conclude with `congrArg (· * _) (unipOne_add 2 X Y).symm`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨X, m₁, m₂, t, rfl⟩`.
+
+Take `⟨Y, hY⟩` from `hcomm m₁⁻¹ m₂⁻¹ (-t) (-X)`. Use `⟨Y, m₁⁻¹, m₂⁻¹, -t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hY, mul_inv_rev]`. Use `congr 1`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+
+Rewrite using `[hmul, mul_inv_cancel, mul_inv_cancel, add_neg_cancel, hone]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← unipOne_add, add_neg_cancel, unipOne_zero] }`. Establish `hSC : ∀ g ∈ S, g ∈ C` using `fun g hg => hin g hg (S.inv_mem hg)`. Establish `hS : (S : Set (G1 K (2 + 2))) = C` using `Set.Subset.antisymm hSC fun g hg => ⟨_, _, _, _, hkey ⟨g, hg⟩⟩`.
+
+Establish `hL : Continuous fun p : G1 K 2 × G1 K 2 × ℝ × (UPos (2 + 2) 2 → 𝔸[K]) => lv p.1 p.2.1 p.2.2.1`. Establish `: Continuous fun p : G1 K 2 × G1 K 2 × ℝ × (UPos (2 + 2) 2 → 𝔸[K]) => (p.1, p.2.1, p.2.2.1)` using `by fun_prop`. Simplify `hc.comp this` using `only [Function.comp_def]`. Establish `hN : Continuous fun p : G1 K 2 × G1 K 2 × ℝ × (UPos (2 + 2) 2 → 𝔸[K]) => (nn p.2.2.2 : G1 K (2 + 2))` using `(continuous_unipOne 2).comp (by fun_prop)`. Use `⟨S, { toFun := fun p => ⟨nn p.2.2.2 * lv p.1 p.2.1 p.2.2.1, _, _, _, _, rfl⟩ invFun := fun s => ψ ⟨s.1, hSC _ s.2⟩ left_inv := fun p => ?_ right_inv := fun s => Subtype.ext (hkey ⟨s.1, hSC _ s.2⟩).symm continuous_toFun := (hN.mul hL).subtype_mk _ continuous_invFun := hψ.comp (con …` and prove the remaining obligations.
+
+Take `⟨h1, h2, h3, h4⟩` from `hinj _ _ _ _ _ _ _ _ (hkey ⟨_, hSC _ ⟨p.2.2.2, p.1, p.2.1, p.2.2.1, rfl⟩⟩)`. Conclude with `Prod.ext h2.symm (Prod.ext h3.symm (Prod.ext h4.symm h1.symm))`.
+-/
 private theorem par_homeo {K : Type} [Field K] [NumberField K] :
     ∃ (S : Subgroup (G1 K (2 + 2))) (φ : (G1 K 2 × G1 K 2 × ℝ × (UPos (2 + 2) 2 → 𝔸[K])) ≃ₜ S),
       IsClosed (S : Set (G1 K (2 + 2))) ∧ (∀ g, g ∈ S ↔ ∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t) ∧
@@ -177,6 +233,29 @@ private theorem par_homeo {K : Type} [Field K] [NumberField K] :
   obtain ⟨h1, h2, h3, h4⟩ := hinj _ _ _ _ _ _ _ _ (hkey ⟨_, hSC _ ⟨p.2.2.2, p.1, p.2.1, p.2.2.1, rfl⟩⟩)
   exact Prod.ext h2.symm (Prod.ext h3.symm (Prod.ext h4.symm h1.symm))
 
+/- English proof (translation)
+Introduce `K _ _ μ₂ _`. Take `⟨S, φ, hS, hmem, hφ⟩` from `par_homeo (K := K)`. Take `⟨-, hmul, -⟩` from `blkLaws (K := K)`. Establish `hw : Continuous fun t : ℝ => Real.exp (-4 * t)` using `by fun_prop`. Establish `hwm : Measurable fun t : ℝ => ENNReal.ofReal (Real.exp (-4 * t))` using `hw.measurable.ennreal_ofReal`.
+
+Set `w : Measure ℝ` to `volume.withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))`. Use `haveI : IsLocallyFiniteMeasure w := IsLocallyFiniteMeasure.withDensity_ofReal hw`. Use `haveI : w.IsOpenPosMeasure := Measure.AbsolutelyContinuous.isOpenPosMeasure (withDensity_absolutelyContinuous' hwm.aemeasurable (Eventually.of_forall fun t => by`. Simplify using `[Real.exp_pos]))`. Use `haveI : (unipMeasure K (2 + 2) 2).IsAddHaarMeasure := inferInstance`.
+
+Set `ρ` to `μ₂.prod (μ₂.prod (w.prod (unipMeasure K (2 + 2) 2)))`. Establish `form : ∀ f : S → ℝ≥0∞, Measurable f → ∫⁻ s, f s ∂ρ.map φ = ∫⁻ m₁, ∫⁻ m₂, ∫⁻ t : ℝ, ∫⁻ X, f (φ (m₁, m₂, t, X)) * ENNReal.ofReal (Real.exp (-4 * t)) ∂unipMeasure K (2 + 2) 2 ∂volume ∂μ₂ ∂μ₂`. Introduce `f hf`. Establish `hm : Measurable fun p => f (φ p)` using `hf.comp φ.continuous.measurable`. Rewrite using `[lintegral_map hf φ.continuous.measurable, lintegral_prod _ hm.aemeasurable]`.
+
+Use `lintegral_congr fun m₁ => ?_` and prove the remaining obligations. Establish `hm1 : Measurable fun p => f (φ (m₁, p))` using `hm.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ hm1.aemeasurable]`. Use `lintegral_congr fun m₂ => ?_` and prove the remaining obligations. Establish `hm2 : Measurable fun p => f (φ (m₁, m₂, p))` using `hm1.comp measurable_prodMk_left`.
+
+Rewrite using `[lintegral_prod _ hm2.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hwm hm2.lintegral_prod_right']`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, Pi.mul_apply, mul_comm]`. Use `haveI : IsFiniteMeasureOnCompacts (ρ.map φ) := Measure.IsFiniteMeasureOnCompacts.map ρ φ`. Use `haveI : (ρ.map φ).IsOpenPosMeasure := φ.continuous.isOpenPosMeasure_map φ.surjective`.
+
+Use `haveI : (ρ.map φ).IsMulLeftInvariant := ⟨fun g => by`. Take `⟨⟨a, b, u, Y⟩, rfl⟩` from `φ.surjective g`. Take `⟨e, he, hme⟩` from `adMeas a b u`. Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hf (measurable_const_mul _), form f hf, form (fun s => f (φ (a, b, u, Y) * s)) (hf.comp (measurable_const_mul _))]`.
+
+Establish `h1 : ∀ m₁ m₂ t X, φ (a, b, u, Y) * φ (m₁, m₂, t, X) = φ (a * m₁, b * m₂, u + t, Y + e.symm X)`. Introduce `m₁ m₂ t X`. Use `Subtype.ext ?_` and prove the remaining obligations. Use `he (e.symm X)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`.
+
+Rewrite using `[Subgroup.coe_mul, hφ, hφ, hφ, mul_assoc, ← mul_assoc (lv a b u), ← this, mul_assoc, hmul, ← mul_assoc]`. Conclude with `congrArg (· * _) (unipOne_add 2 Y _).symm`. Establish `h2 : ∀ (H : (UPos (2 + 2) 2 → 𝔸[K]) → ℝ≥0∞) (t : ℝ), ∫⁻ X, H (Y + e.symm X) * ENNReal.ofReal (Real.exp (-4 * t)) ∂unipMeasure K (2 + 2) 2 = ∫⁻ X, H X * ENNReal.ofReal (Real.exp (-4 * (u + t))) ∂unipMeasure K (2 + 2) 2`. Introduce `H t`. Establish `h3` using `lintegral_map_equiv (μ := unipMeasure K (2 + 2) 2) (fun X => H (Y + e.symm X)) e.toHomeomorph.toMeasurableEquiv`.
+
+Establish `h4 : (e.toHomeomorph.toMeasurableEquiv : _ → _) = e` using `rfl`. Rewrite `h3` using `[h4, hme, lintegral_smul_measure]`. Simplify using `only [e.symm_apply_apply, lintegral_add_left_eq_self, smul_eq_mul] at h3`. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, lintegral_mul_const' _ _ ENNReal.ofReal_ne_top, ← h3, mul_right_comm, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, mul_comm]`. Use `congr 3`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Use `Eq.trans (lintegral_congr fun m₁ => ?_) (lintegral_mul_left_eq_self (μ := μ₂) _ a)` and prove the remaining obligations. Use `Eq.trans (lintegral_congr fun m₂ => ?_) (lintegral_mul_left_eq_self (μ := μ₂) _ b)` and prove the remaining obligations. Use `Eq.trans (lintegral_congr fun t => ?_) (lintegral_add_left_eq_self (μ := volume) _ u)` and prove the remaining obligations.
+
+Conclude with `h2 (fun X => f (φ (a * m₁, b * m₂, u + t, X))) t⟩`. Use `⟨S, ρ.map φ, hS, {}, hmem, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[form (fun s => Φ s) (hΦ.comp measurable_subtype_coe)]`. Simplify using `only [hφ]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.parHaar :
     ∀ {K : Type} [Field K] [NumberField K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure], ∃ (S : Subgroup (G1 K (2 + 2))) (ν : Measure S), IsClosed (S : Set (G1 K (2 + 2))) ∧ ν.IsHaarMeasure ∧
       (∀ g, g ∈ S ↔ ∃ X m₁ m₂ t, g = nn X * lv m₁ m₂ t) ∧ ∀ Φ : G1 K (2 + 2) → ℝ≥0∞, Measurable Φ →

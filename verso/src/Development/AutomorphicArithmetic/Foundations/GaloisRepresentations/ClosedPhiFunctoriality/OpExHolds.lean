@@ -9,6 +9,13 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Establish `h1 : phiA l (zC l z) = zC l z`. Establish `h` using `(GlobalTheory.T.acris_torsionFree_complete_frobenius_properties l K bk).2.2.2.1 (Per.zA l z)`. Establish `h2 : WittVector.frobenius (Per.zA l z) = Per.zA l z`. Rewrite using `[← GlobalTheory.RingBasics.φA_apply]`. Conclude with `(ActLaws.act_laws l).2.2.2.2.2.2.2.2.1 z`.
+
+Rewrite `h` using `[h2]`. Conclude with `h`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Express the relevant statement in the definitionally equal form `(phiA l ^ n) (phiA l (zC l z)) = _`. Rewrite using `[h1, ih]`.
+-/
 private theorem phi_zC (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n : ℕ) (z : ℤ_[l]) :
     (phiA l ^ n) (zC l z) = zC l z := by
   have h1 : phiA l (zC l z) = zC l z := by
@@ -24,6 +31,15 @@ private theorem phi_zC (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n : 
     change (phiA l ^ n) (phiA l (zC l z)) = _
     rw [h1, ih]
 
+/- English proof (translation)
+Introduce `i j`. Establish `hP : (Pi.map (zC l)).map ⇑(phiA l ^ n) = Pi.map (zC l)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Conclude with `phi_zC l K bk n _`.
+
+Establish `hR : (R.map (f0 bk)).map ⇑(phiA l ^ n) = R.map (f0 bk)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Conclude with `hFix l K bk P AI T n hn _`. Establish `h1` using `map_dvd (phiA l ^ n) (h i j)`.
+
+Rewrite `h1` using `[map_pow, map_natCast]`. Establish `h2 : (phiA l ^ n) ((Pi.map (zC l) * Z₁ - Z * R.map (f0 bk)) i j) = (Pi.map (zC l) * Z₁.map ⇑(phiA l ^ n) - Z.map ⇑(phiA l ^ n) * R.map (f0 bk)) i j`. Establish `h3 : (Pi.map (zC l) * Z₁ - Z * R.map (f0 bk)).map ⇑(phiA l ^ n) = Pi.map (zC l) * Z₁.map ⇑(phiA l ^ n) - Z.map ⇑(phiA l ^ n) * R.map (f0 bk)`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul, hP, hR]`. Rewrite using `[← h3, Matrix.map_apply]`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 private theorem map_link (hFix : FixW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied l P AI) (n : ℕ) (hn : FixUr K n) (d d' M : ℕ) (Pi : Matrix (Fin d) (Fin d') ℤ_[l])
     (R : Matrix (Fin d) (Fin d') bk.S) (Z : Matrix (Fin d) (Fin d) (Per.Acris l)) (Z₁ : Matrix (Fin d') (Fin d') (Per.Acris l))
@@ -45,6 +61,11 @@ private theorem map_link (hFix : FixW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (
     rw [← h3, Matrix.map_apply]
   rwa [h2] at h1
 
+/- English proof (translation)
+Take `⟨Y, Y', hY, hYY⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N d _ G.toPre`. Take `⟨Q, Q', hQ⟩` from `hk d G.A G.A' G.A_mul`. Establish `hinv` using `hInvQ l K bk τ hτ N k d ρ G hG Q Q' hQ`. Establish `hyy : Y.map (fI l) * Y'.map (fI l) = fI l τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))`. Rewrite using `[← Matrix.map_mul, hYY, GlobalTheory.BcrisInv.map_smul_matrix, Matrix.map_one _ (map_zero _) (map_one _), map_pow]`.
+
+Take `⟨U, hU, hUe⟩` from `(hInvU l K bk τ hτ).2 N k d ρ G Y Y' Q Q' hY hYY hQ.mul hinv`. Conclude with `⟨Y, Y', Q, Q', hY, hQ, hOp l (fI l τ) (hInvU l K bk τ hτ).1 K N k n₁ n₂ d ρ (Y.map (fI l)) (Y'.map (fI l)) Q Q' U hyy hQ.mul hU hUe⟩`.
+-/
 private theorem one (hInvQ : InvQ) (hInvU : InvU) (hOp : OpOne2) (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l)
     (hτ : bk.IsPer τ) (N k n₁ n₂ : ℕ)
     (hk : ∀ (d : ℕ) (A A' : Matrix (Fin d) (Fin d) bk.S),
@@ -69,6 +90,15 @@ private theorem one (hInvQ : InvQ) (hInvU : InvU) (hOp : OpOne2) (l : ℕ) [Fact
   exact ⟨Y, Y', Q, Q', hY, hQ,
     hOp l (fI l τ) (hInvU l K bk τ hτ).1 K N k n₁ n₂ d ρ (Y.map (fI l)) (Y'.map (fI l)) Q Q' U hyy hQ.mul hU hUe⟩
 
+/- English proof (translation)
+Introduce `hSec hInvQ hInvU hLinkZ hLinkOp hFix hOp l _ K bk τ hτ P AI T n₁ n₂ hn₁ hn₂ d N ρ tw F F₀ r hF hF₀ hlink`. Take `⟨k, hk⟩` from `hSec l K bk N`. Take `⟨Y₀, Y₀', Q₀, Q₀', hY₀, hQ₀, a1, a2, a3, a4⟩` from `one hInvQ hInvU hOp l K bk τ hτ N k n₁ n₂ hk d ρ F₀ hF₀`. Use `choose Y Y' Q Q' hY hQ b1 b2 b3 b4 using fun m => one hInvQ hInvU hOp l K bk τ hτ N k n₁ n₂ hk (tw.d' m) (tw.ρ' m) (F m) (hF m)`. Use `⟨_, (phiA l ^ n₂) (fI l τ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • ((Y₀.map (fI l) * Q₀).map ⇑(phiA l ^ n₁) * (Q₀' * Y₀'.map (fI l)).map ⇑(phiA l ^ n₂)), fun m => (phiA l ^ n₂) (fI l τ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • (((Y m).map (fI l) * Q m).map ⇑(phiA l ^ n₁) * (Q' …` and prove the remaining obligations.
+
+Introduce `M`. Take `⟨n, hn⟩` from `hLinkZ l K bk τ hτ N M`. Take `⟨m, hm, R, -, hdiv, -⟩` from `hlink (max n M)`. Use `⟨m, le_trans (le_max_right _ _) hm, ?_⟩` and prove the remaining obligations. Establish `hd : ∀ i j, (l : WCb l) ^ n ∣ (zW (tw.Pi m) * (F m).T - F₀.T * R.map bk.evW) i j` using `fun i j => (pow_dvd_pow _ (le_max_left _ _)).trans (hdiv i j)`.
+
+Establish `h0` using `hn k d (tw.d' m) _ _ F₀ (F m) Y₀ (Y m) hY₀ (hY m) Q₀ Q₀' (Q m) (Q' m) hQ₀ (hQ m) (tw.Pi m) R hd`. Establish `h1` using `map_link hFix l K bk P AI T n₁ hn₁ d (tw.d' m) M (tw.Pi m) R _ _ h0`. Establish `h2` using `map_link hFix l K bk P AI T n₂ hn₂ d (tw.d' m) M (tw.Pi m) R _ _ h0`. Establish `e1 : (Q₀' * Y₀'.map (fI l)).map ⇑(phiA l ^ n₂) * (Y₀.map (fI l) * Q₀).map ⇑(phiA l ^ n₂) = (phiA l ^ n₂) (fI l τ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) (Per.Acris l))`. Rewrite using `[← Matrix.map_mul, a2, GlobalTheory.BcrisInv.map_smul_matrix, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `e2 : ((Y m).map (fI l) * Q m).map ⇑(phiA l ^ n₂) * (Q' m * (Y' m).map (fI l)).map ⇑(phiA l ^ n₂) = (phiA l ^ n₂) (fI l τ ^ (2 * N) * (l : Per.Acris l) ^ (2 * k)) • (1 : Matrix (Fin (tw.d' m)) (Fin (tw.d' m)) (Per.Acris l))`. Rewrite using `[← Matrix.map_mul, b1 m, GlobalTheory.BcrisInv.map_smul_matrix, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hLinkOp (Per.Acris l) ((l : Per.Acris l) ^ M) _ d (tw.d' m) _ _ _ _ _ _ ((tw.Pi m).map (zC l)) (R.map (f0 bk)) e1 e2 h2 h1`.
+-/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.opEx_holds :
     SecU → InvQ → InvU → LinkZ → LinkOp2 → FixW → OpOne2 → OpEx2 := by
   intro hSec hInvQ hInvU hLinkZ hLinkOp hFix hOp l _ K bk τ hτ P AI T n₁ n₂ hn₁ hn₂ d N ρ tw F F₀ r hF hF₀ hlink

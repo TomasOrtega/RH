@@ -23,6 +23,9 @@ def resSubgroupOfInvHom :
 variable [IsDiscreteRep A]
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (by ext; rfl) (fun _ => rfl) n`.
+-/
 theorem cohomologyMapAlong_resSubgroupOfHom_comp (n : ℕ) :
     cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe h).symm.toMonoidHom
         (continuous_subgroupOfEquivOfLe_symm h) (resSubgroupOfHom h A) n ≫
@@ -46,6 +49,9 @@ noncomputable def cohomologyCoresLE {U V : OpenSubgroup G} (h : V ≤ U) (n : �
       (continuous_subgroupOfEquivOfLe _) (resSubgroupOfInvHom _ C) n ≫
     cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyCoresLE_eq {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
     cohomologyCoresLE C h n =
       cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from h)).toMonoidHom
@@ -53,6 +59,9 @@ theorem cohomologyCoresLE_eq {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
         cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[cohomologyResLE_eq_cohomologyRes_comp, cohomologyCoresLE, Category.assoc, cohomologyMapAlong_resSubgroupOfHom_comp_assoc]`. Conclude with `cohomologyRes_comp_cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n`.
+-/
 theorem cohomologyResLE_comp_cohomologyCoresLE {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
     cohomologyResLE C (show (V : Subgroup G) ≤ U from h) n ≫ cohomologyCoresLE C h n =
       (V : Subgroup G).relIndex U • 𝟙 _ := by
@@ -60,6 +69,9 @@ theorem cohomologyResLE_comp_cohomologyCoresLE {U V : OpenSubgroup G} (h : V ≤
     cohomologyMapAlong_resSubgroupOfHom_comp_assoc]
   exact cohomologyRes_comp_cohomologyCores (openSubgroupOf U V) (Rep.res (U : Subgroup G).subtype C) n
 
+/- English proof (translation)
+Use `congrArg (fun φ => φ.hom x) (cohomologyResLE_comp_cohomologyCoresLE C h n)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cohomologyCoresLE_cohomologyResLE {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ)
     (x : cohomology (Rep.res (U : Subgroup G).subtype C) n) :
     (cohomologyCoresLE C h n).hom ((cohomologyResLE C (show (V : Subgroup G) ≤ U from h) n).hom x) =

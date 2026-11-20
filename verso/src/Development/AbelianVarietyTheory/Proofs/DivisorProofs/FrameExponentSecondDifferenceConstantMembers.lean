@@ -25,6 +25,25 @@ noncomputable section
 namespace GlobalTheory.GSep.FrExpCube
 open GlobalTheory.UT.TorsionValue GlobalTheory.Poinc.Tors GlobalTheory.Poinc.CubeConst
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act`. Use `X₁.ar.ded` as an intermediate fact. Establish `: IsNoetherianRing X₁.S.R` using `isNoetherianRing_of_fg X₁.S.fg`. Establish `: IsLocallyNoetherian (Sp X₁.S.R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.S.R)))`. Use `X₁.ρ.P.isAb.comm` as an intermediate fact.
+
+Take `⟨c₀⟩` from `(GlobalTheory.firstFiveLaws.1.cube (Sp X₁.S.R) X₁.ρ.P ⟨X₁.ρ.P.L, X₁.ρ.rig, X₁.ρ.P.isLB, X₁.ρ.rig_gen⟩ rfl).1`. Use `choose k hk using exists_cube_const c₀ X₁.ρ.pt X₁.ρ.pt_add X₁.ρ.fr (fun a => (X₁.ρ.fr_tors a).2.1)`. Use `⟨fun a a' a'' => (Scheme.ΓSpecIso (CommRingCat.of X₁.S.R)).hom.hom (k a a' a''), fun a a' a'' => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `Eq.trans (congrArg _ (fn_ext (b := 1) fun y _ => ?_)) (map_one _)` and prove the remaining obligations.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' X₁.ρ.P.isLB y`. Establish `e` using `hk a a' a'' _ (𝟙 _) y J hJ`. Rewrite `e` using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Establish `e'` using `congrArg Units.val (cube_torsFrame_pow GlobalTheory.firstFiveLaws.1.globalFns X₁.ρ.P c₀ X₁.ρ.pt X₁.ρ.pt_add X₁.ρ.fr X₁.ρ.fr_tors a a' a'' y J hJ)`. Establish `e''` using `(congrArg (· ^ ((X₁.S.r * X₁.S.N) ^ 2)) e).symm.trans ((Units.val_pow_eq_pow_val _ _).symm.trans e')`.
+
+Rewrite `e''` using `[gs_eq _ y ⊤ trivial, ← map_pow, ← map_pow]`. Rewrite using `[gs_eq _ y ⊤ trivial, gs_eq _ y ⊤ trivial, map_one, map_one]`. Conclude with `e''`. Introduce `V _ _ _ ev X _ t δ 𝔪 x fr hx hfr ρ hρ c a a' a'' z JA hJA`. Use `𝔪.A.isAb.comm` as an intermediate fact.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.ConstFam.exists_good' X₁.ρ.P.isLB z`. Set `U : Over.mk ((TFK (R` to `V) (FractionRing V)).hom ≫ spMap 𝔪.yK) ⟶ baseOver (Sp X₁.S.R) := Over.homMk (spMap 𝔪.yK) (by show spMap 𝔪.yK ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id]`. Express the relevant statement in the definitionally equal form `_ = Spec.map (𝟙 _) ≫ _`. Rewrite using `[Spec.map_id, Category.id_comp])`.
+
+Establish `hp : ∀ b, pushHom 𝔪.cart (TFK (R` using `V) (FractionRing V)) (x b) = U ≫ X₁.ρ.pt b := fun b => Over.OverMorphism.ext (hx b)`. Establish `hadd : ∀ b b', x (b + b') = x b * x b'` using `fun b b' => GlobalTheory.GSep.TwistTranslate.x_add 𝔪 x hx b b' (x b') (hx b')`. Establish `h0 : x 0 = 1` using `mul_eq_left.1 ((hadd 0 0).symm.trans (by rw [add_zero]))`. Establish `e₁` using `cubV_through GlobalTheory.firstFiveLaws.1.globalFns 𝔪.A.isAb 𝔪.cart c₀ c 𝔪.wl 𝔪.wl_gen (T := TFK (R := V) (FractionRing V)) z hJ hJA (x a) (x a') (x a'')`. Rewrite `e₁` using `[hp, hp, hp, ← hadd, ← hadd, ← hadd, ← hadd, ← h0]`.
+
+Establish `e₂` using `hk a a' a'' _ U z J hJ`. Establish `e₃ : gs U.left z ⊤ (k a a' a'') = GlobalTheory.UT.cst (FractionRing V) z (𝔪.yK ((Scheme.ΓSpecIso (CommRingCat.of X₁.S.R)).hom.hom (k a a' a'')))`. Use `Eq.trans ?_ (Geo.Tor.cst_comp (𝟙 _) 𝔪.yK z _)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `congrArg (gs (spMap 𝔪.yK) z ⊤) ((Scheme.ΓSpecIso (CommRingCat.of X₁.S.R)).hom_inv_id_apply _).symm`.
+
+Establish `alg : ∀ {R : Type} [CommRing R] {κ : R} {c c₀ w₁ w₂ w₃ w₄ w₅ w₆ w₇ w₈ f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ g₁ g₂ g₃ g₄ g₅ g₆ g₇ g₈ : Rˣ}, c₀ = w₁ * w₂⁻¹ * w₃⁻¹ * w₄⁻¹ * w₅ * w₆ * w₇ * w₈⁻¹ * c → (c₀ * ((g₂ * g₃ * g₄ * g₈) * (g₁ * g₅ * g₆ * g₇)⁻¹)).val = κ → w₁ * f₁ = g₁ → w₂ * f₂ = g₂ → w₃ * …`. Introduce and unpack `R _ κ c c₀ w₁ w₂ w₃ w₄ w₅ w₆ w₇ w₈ f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ g₁ g₂ g₃ g₄ g₅ g₆ g₇ g₈ rfl rfl rfl rfl rfl rfl`. Use `rfl rfl rfl rfl`. Rewrite using `[← Units.val_mul]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `alg e₁ (e₂.trans e₃) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA) ((hfr _).2 z J JA hJ hJA)`.
+-/
 theorem frame_cube_const : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∃ κ : X₁.S.Gam → X₁.S.Gam → X₁.S.Gam → X₁.S.R, (∀ a a' a'', κ a a' a'' ^ ((X₁.S.r * X₁.S.N) ^ 2) = 1) ∧ ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), ∀ (x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)) (fr : ∀ a, FrAt (x a)), (∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) → (∀ a, (fr a).IsGen ∧ ∀ z J J', Good X₁.ρ.P.L z J → Good 𝔪.A.L z J' → Geo.Tor.gw 𝔪.wl (x a).left z (J ((x a).left ≫ 𝔪.φ)) (J' (x a).left) * val (fr a) (𝟙 _) z J' = val (X₁.ρ.fr a) (show (TFK (R := V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔪.yK) z J) → ∀ (ρ : LB.Gen (𝔪.A.L.pull (eSec 𝔪.A.A))) (hρ : ρ.IsGen) (c : CubicalStr 𝔪.A.A ⟨𝔪.A.L, ρ, 𝔪.A.isLB, hρ⟩) (a a' a'' : X₁.S.Gam) (z : (TF (R := V) (FractionRing V)).left) (JA : ((TF (R := V) (FractionRing V)).left ⟶ 𝔪.A.A.left) → 𝔪.A.L.ι), Good 𝔪.A.L z JA → (@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (cubV c (T := TFK (R := V) (FractionRing V)) z JA (x a) (x a') (x a'')) * (@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr (a + a')) (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr (a + a'')) (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr (a' + a'')) (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr 0) (𝟙 _) z JA))).val = GlobalTheory.UT.cst (FractionRing V) z (𝔪.yK (κ a a' a'')) * (@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr (a + a' + a'')) (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr a) (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr a') (𝟙 _) z JA) * @id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (val (fr a'') (𝟙 _) z JA)).val := by
   intro I X₁ z₁ act
   have := X₁.ar.ded
@@ -87,6 +106,9 @@ variable {I : Type} {X₁ : GlobalTheory.GSep.GSet} {z₁ : X₁.M.Z} {act : I �
   {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
   {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X}
 
+/- English proof (translation)
+Establish `E'` using `congrArg Units.val E`. Simplify using `only [Units.val_mul, K, h₀, h₁, h₂, h₁₂] at E'`. Use `(A * B₀ * B₁ * B₂ * B₁₂).mul_right_inj.1 ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul]`. Take the linear combination `E'`.
+-/
 theorem cube_alg {S : Type} [CommRing S] {A C D B₀ B₁ B₂ B₃ B₁₂ B₁₃ B₂₃ B₁₂₃ : Sˣ} {k v₀ v₁ v₂ v₁₂ : S}
     (E : A * (B₁₂₃ * B₁ * B₂ * B₃) * C = D * (B₁₂ * B₁₃ * B₂₃ * B₀)) (K : D.val = k * A.val)
     (h₀ : B₃.val = v₀ * B₀.val) (h₁ : B₁₃.val = v₁ * B₁.val) (h₂ : B₂₃.val = v₂ * B₂.val)
@@ -97,6 +119,17 @@ theorem cube_alg {S : Type} [CommRing S] {A C D B₀ B₁ B₂ B₃ B₁₂ B₁
   simp only [Units.val_mul]
   linear_combination E'
 
+/- English proof (translation)
+Establish `hadd : ∀ b b', x (b + b') = x b * x b'` using `fun b b' => GlobalTheory.GSep.TwistTranslate.x_add 𝔪 x hx b b' (x b') (hx b')`. Establish `hx0 : x 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`.
+
+Establish `hk : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)`. Take `⟨JA, hJA⟩` from `exists_good' 𝔪.A.isLB z`. Set `P : (X₁.S.Gam × Σ g' : GtPtF 𝔪.D.toPre (FractionRing V), Frm 𝔪.D.toPre (FractionRing V) 1 g'.b) → Prop` to `fun q => (∃ o, GtPtF.IsNsmul (X₁.S.r * X₁.S.N) q.2.1 o ∧ o.IsZero) ∧ q.2.2.IsGen ∧ (fr q.1).IsGen ∧ LiesOver 𝔪.U.toUnifPre w₀ q.2.1 q.2.2 (x q.1) (fr q.1)`. Establish `p₁ : ∀ b : H, P ⟨b, g₁ b, w₁ b⟩` using `fun b => ⟨(h₁ b).1, (h₁ b).2.1, hfr _, (h₁ b).2.2⟩`. Establish `p₂ : ∀ b : H, P ⟨b + τ, g₂ b, w₂ b⟩` using `fun b => ⟨(h₂ b).1, (h₂ b).2.1, hfr _, (h₂ b).2.2⟩`.
+
+Establish `p₃ : P ⟨τ, g₂ 0, w₂ 0⟩`. Use `p₂ 0` as an intermediate fact. Rewrite `this` using `[AddSubgroup.coe_zero, zero_add]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨f, hP, f₀, f₁, f₂, f₃, f₄, f₅, f₆, f₇⟩ : ∃ f : Finset (Fin 3) → (X₁.S.Gam × Σ g' : GtPtF 𝔪.D.toPre (FractionRing V), Frm 𝔪.D.toPre (FractionRing V) 1 g'.b), (∀ S, P (f S)) ∧ f ∅ = ⟨0, g₁ 0, w₁ 0⟩ ∧ f {0} = ⟨a, g₁ a, w₁ a⟩ ∧ f {1} = ⟨a', g₁ a', w₁ a'⟩ ∧ f {2} = ⟨τ, g₂ 0, w₂ 0⟩ ∧ …`. Use `⟨fun S => if 2 ∈ S then (if 0 ∈ S then (if 1 ∈ S then ⟨a + a' + τ, g₂ (a + a'), w₂ (a + a')⟩ else ⟨a + τ, g₂ a, w₂ a⟩) else if 1 ∈ S then ⟨a' + τ, g₂ a', w₂ a'⟩ else ⟨τ, g₂ 0, w₂ 0⟩) else (if 0 ∈ S then (if 1 ∈ S then ⟨a + a', g₁ (a + a'), w₁ (a + a')⟩ else ⟨a, g₁ a, w₁ a⟩) else …` and prove the remaining obligations.
+
+Simplify using `only split_ifs exacts [p₂ (a + a'), p₂ a, p₂ a', p₃, p₁ (a + a'), p₁ a, p₁ a', p₁ 0]`. Simplify using the standard rewrite rules. Establish `E` using `GlobalTheory.T.framed_torsion_torus_extension_respect_cubical V 𝔪.cn 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U w₀ hw₀ _ hk ρ hρ c (fun S => (f S).2.1) (fun S => (f S).2.2) (fun S => x (f S).1) (fun S => fr (f S).1) (by simp only [f₀, hx0]) (by simp only [f₁, f₂, f₄, hadd]) (by simp only [f₁, f₃, f₅ …`. Use `beta_reduce at E`. Rewrite `E` using `[f₀, f₁, f₂, f₃, f₄, f₅, f₆, f₇]`.
+
+Simplify using `only at E`. Use `cube_alg E (hκ a a' τ z JA hJA) (hv 0 z JB hJB) (hv a z JB hJB) (hv a' z JB hJB) (hv (a + a') z JB hJB)` as an intermediate fact. Rewrite `this` using `[hb 0, cst_eq]`. Rewrite using `[map_mul, map_mul, map_mul, this]`.
+-/
 theorem cube_rel (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) {κ : X₁.S.Gam → X₁.S.Gam → X₁.S.Gam → X₁.S.R}
     {x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)}
     {fr : ∀ a, FrAt (x a)} (hx : ∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left) (hfr : ∀ a, (fr a).IsGen)
@@ -155,10 +188,18 @@ theorem cube_rel (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) {κ :
   rw [hb 0, cst_eq] at this
   rw [map_mul, map_mul, map_mul, this]
 
+/- English proof (translation)
+Use `X₁.S.prim.map_of_injective fun a b hab => X₁.ar.inj ?_` and prove the remaining obligations. Simplify using `using congrArg (fun x : X₁.S.R => (x : X₁.Ω₁)) hab`.
+-/
 theorem prim_ring : IsPrimitiveRoot (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ) ((X₁.S.r * X₁.S.N) ^ 2) := by
   refine X₁.S.prim.map_of_injective fun a b hab => X₁.ar.inj ?_
   simpa using congrArg (fun x : X₁.S.R => (x : X₁.Ω₁)) hab
 
+/- English proof (translation)
+Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Use `haveI : CharZero (FractionRing V) := IsFractionRing.charZero V`. Establish `hk : 0 < (X₁.S.r * X₁.S.N) ^ 2` using `pow_pos (Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)) 2`. Establish `h` using `((prim_ring (X₁ := X₁)).isRoot_cyclotomic hk).map (f := 𝔪.yK)`. Rewrite `h` using `[Polynomial.map_cyclotomic]`.
+
+Use `haveI : NeZero ((((X₁.S.r * X₁.S.N) ^ 2 : ℕ)) : FractionRing V) := ⟨by exact_mod_cast hk.ne'⟩`. Conclude with `Polynomial.isRoot_cyclotomic_iff.1 h`.
+-/
 theorem prim_member (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) :
     IsPrimitiveRoot (𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ)) ((X₁.S.r * X₁.S.N) ^ 2) := by
   haveI : CharZero V := 𝔪.cn.2.2.2
@@ -169,6 +210,9 @@ theorem prim_member (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) :
   haveI : NeZero ((((X₁.S.r * X₁.S.N) ^ 2 : ℕ)) : FractionRing V) := ⟨by exact_mod_cast hk.ne'⟩
   exact Polynomial.isRoot_cyclotomic_iff.1 h
 
+/- English proof (translation)
+Establish `hk : 0 < (X₁.S.r * X₁.S.N) ^ 2` using `pow_pos (Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)) 2`. Establish `hp` using `prim_member 𝔪`. Rewrite `h` using `[map_pow, map_pow, (isOfFinOrder_iff_pow_eq_one.2 ⟨_, hk, hp.pow_eq_one⟩).pow_eq_pow_iff_modEq, ← hp.eq_orderOf]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h`.
+-/
 theorem exp_eq (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) {p q : ℕ}
     (h : 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ p) = 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ q)) :
     (p : ZMod ((X₁.S.r * X₁.S.N) ^ 2)) = q := by
@@ -179,6 +223,17 @@ theorem exp_eq (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) {p q : 
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Take `⟨⟨χ, hχ⟩, x', fr', th, w₀', s, g₁, w, hx', hfr', -, hw₀', -, htor, hw, hov, htr⟩` from `H`. Take `rfl : x = x'` from `funext fun a => Over.OverMorphism.ext (𝔪.cart.1.hom_ext ((hx a).trans (hx' a).symm) ((Over.w (x a)).trans (Over.w (x' a)).symm))`. Establish `hf : ∀ a z J, Good 𝔪.A.L z J → val (fr a) (𝟙 _) z J = val (fr' a) (𝟙 _) z J` using `fun a z J hJ => by`. Take `⟨J₀, hJ₀⟩` from `exists_good' X₁.ρ.P.isLB z`. Conclude with `mul_left_cancel (((hfr a).2 z J₀ J hJ₀ hJ).trans ((hfr' a).2 z J₀ J hJ₀ hJ).symm)`.
+
+Take `⟨d, hd0, hd⟩` from `GlobalTheory.Poinc.Sep.TermsCompare.exists_expandsF_pow 𝔪.U.toUnifPre (FractionRing V) hw₀' hw₀`. Establish `hk : 0 < (X₁.S.r * X₁.S.N) ^ 2` using `pow_pos (Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)) 2`. Establish `hu : 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ) ^ e ≠ 0` using `pow_ne_zero _ ((prim_member 𝔪).ne_zero hk.ne')`. Establish `hg₀ : IsTor χ (GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ))` using `(GlobalTheory.UT.isTor_iff _ _).2 (GlobalTheory.TorusExt.isTorusPtF_torusPt χ)`. Establish `hadd` using `(GlobalTheory.TorusExt.isAdd_iff_eq g₁ (GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ)) _).2 rfl`.
+
+Establish `hb` using `(GlobalTheory.UT.ThetaAverage.val_translate hg₀ hadd).1`. Take `⟨w', hw'g, hw'v⟩ : ∃ w' : Frm 𝔪.D.toPre (FractionRing V) 1 (g₁ + GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ)).b, w'.IsGen ∧ ∀ z J, val w' (𝟙 _) z J = val w (𝟙 _) z J` from `by revert hb`. Generalize the expression as in `(g₁ + GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ)).b = b`. Introduce and unpack `rfl`. Conclude with `⟨w, hw, fun _ _ => rfl⟩`.
+
+Take `⟨w'', hw''g, hw''v⟩` from `exists_frm_scale w' hw'g (inv_ne_zero hu)`. Establish `hov₂` using `htr χ hχ _ hg₀ _ hadd w'' hw''g (fun z J hJ => by`. Rewrite using `[hw''v z J hJ, hw'v, cst_eq, ← _root_.mul_assoc, ← map_mul, map_pow, map_pow, mul_inv_cancel₀ hu, map_one, _root_.one_mul])`. Take `⟨w₁, hw₁, hv₁⟩` from `exists_frm_scale w hw hd0`. Take `⟨w₂, hw₂, hv₂⟩` from `exists_frm_scale w'' hw''g hd0`.
+
+Use `⟨g₁, _, w₁, w₂, ⟨htor, hw₁, GlobalTheory.Poinc.Sep.TermsCompare.liesOver_change hd hw hv₁ (hf _) hov⟩, ⟨⟨0, (GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).2 ?_, (GlobalTheory.TorusExt.isZero_iff_eq _).2 rfl⟩, hw₂, GlobalTheory.Poinc.Sep.TermsCompare.liesOver_change hd hw''g hv₂ (hf …` and prove the remaining obligations. Take `⟨o, ho, ho'⟩` from `htor`. Rewrite using `[smul_add, ← (GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 ho, (GlobalTheory.TorusExt.isZero_iff_eq _).1 ho', ← map_nsmul, ← ofMul_pow, hχ.1, ofMul_one, map_zero, add_zero]`. Rewrite using `[hv₂ z J hJ, hw''v z J hJ, hw'v, hv₁ z J hJ, cst_eq, cst_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lifts_of_frExp (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ)
     {x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)} {fr : ∀ a, FrAt (x a)}
     (hx : ∀ a, (x a).left ≫ 𝔪.φ = spMap 𝔪.yK ≫ (X₁.ρ.pt a).left)
@@ -227,6 +282,21 @@ theorem lifts_of_frExp (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ)
   · rw [hv₂ z J hJ, hw''v z J hJ, hw'v, hv₁ z J hJ, cst_eq, cst_eq]
     ring
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act x₀ _ τ _`. Take `⟨κ, hκ1, hκ⟩` from `frame_cube_const I X₁ z₁ act`. Use `haveI : NeZero ((X₁.S.r * X₁.S.N) ^ 2) := ⟨(pow_pos (Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)) 2).ne'⟩`. Use `choose k hk' hk using fun a a' a'' => (prim_ring (X₁ := X₁)).eq_pow_of_pow_eq_one (hκ1 a a' a'')`. Use `⟨fun a b => (k a b 0 : ZMod _) - (k a b τ : ZMod _), ?_⟩` and prove the remaining obligations.
+
+Introduce `V _ _ _ ev Y _ t δ 𝔪 E hE a ha a' ha'`. Take `⟨-, x, fr, -, w₀, -, -, -, hx, hfr, -, hw₀, -⟩` from `hE a ha`. Use `choose g₁ g₂ w₁ w₂ h₁ h₂ hb hv using fun b : X₁.S.HH X₁.M z₁ => lifts_of_frExp 𝔪 hx hfr hw₀ (hE b b.2)`. Take `⟨ρA, hρA, -⟩` from `GlobalTheory.GSep.TwistTranslate.exists_rig_torsFrame 𝔪 x fr hx hfr`. Take `⟨z⟩ : Nonempty (TF (R` from `V) (FractionRing V)).left := exists_pt (R := V) (F := FractionRing V)`.
+
+Take `⟨J, hJ⟩` from `exists_good' 𝔪.D.toPre.P.isLB z`. Take `⟨c⟩` from `(GlobalTheory.firstFiveLaws.1.cube _ 𝔪.A ⟨𝔪.A.L, ρA, 𝔪.A.isLB, hρA⟩ rfl).1`. Establish `K` using `hκ V ev Y t δ 𝔪 x fr hx hfr ρA hρA c`. Establish `E₁` using `cube_rel 𝔪 hx (fun b => (hfr b).1) c K hw₀ h₁ h₂ hb hv ⟨a, ha⟩ ⟨a', ha'⟩ z hJ`. Establish `E₀` using `cube_rel 𝔪 hx (fun b => (hfr b).1) c K hw₀ (τ := 0) (v := fun _ => 1) h₁ (fun b => by rw [add_zero]; exact h₁ b) (fun _ => rfl) (fun b z J _ => by rw [map_one, _root_.one_mul]) ⟨a, ha⟩ ⟨a', ha'⟩ z hJ`.
+
+Simplify using `only [_root_.mul_one, map_one, _root_.one_mul] at E₀`. Rewrite `E₁` using `[E₀, ← map_mul]`. Establish `E'` using `cstH_inj z E₁`. Establish `hu : 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ) ≠ 0` using `(prim_member 𝔪).ne_zero (NeZero.ne _)`. Rewrite `E'` using `[← hk, ← hk]`.
+
+Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_zero, map_pow] at E'`. Establish `q : 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ (k a a' 0 + E a + E a')) = 𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ ^ (k a a' τ + E (a + a') + E 0))`. Simplify using `only [map_mul, map_pow, pow_add]`. Generalize the expression as in `𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ) = y at hu E' ⊢`. Establish `fin : ∀ p q r s k₀ k₁ : FractionRing V, p ≠ 0 → q ≠ 0 → r ≠ 0 → s ≠ 0 → r⁻¹ * s⁻¹ * k₀ = k₁ * p⁻¹ * q⁻¹ → k₀ * p * q = k₁ * r * s` using `fun p q r s k₀ k₁ hp hq hr hs h => by`.
+
+Clear denominators, using `at h` for the nonvanishing conditions. Take the linear combination `h`. Conclude with `fin _ _ _ _ _ _ (pow_ne_zero _ hu) (pow_ne_zero _ hu) (pow_ne_zero _ hu) (pow_ne_zero _ hu) E'`. Establish `b₁` using `exp_eq 𝔪 q`. Move the coercions through the operations in `at b₁`.
+
+Take the linear combination `-b₁`.
+-/
 theorem frExp_second_diff : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ τ ∈ X₁.S.TT X₁.M z₁, ∃ c : X₁.S.Gam → X₁.S.Gam → ZMod ((X₁.S.r * X₁.S.N) ^ 2), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (E : X₁.S.Gam → ℕ), (∀ a ∈ X₁.S.HH X₁.M z₁, GlobalTheory.GSep.TransTerms.FrExp 𝔪 a τ (E a)) → ∀ a ∈ X₁.S.HH X₁.M z₁, ∀ b ∈ X₁.S.HH X₁.M z₁, ((E (a + b) : ℕ) : ZMod ((X₁.S.r * X₁.S.N) ^ 2)) - ((E a : ℕ) : ZMod ((X₁.S.r * X₁.S.N) ^ 2)) - ((E b : ℕ) : ZMod ((X₁.S.r * X₁.S.N) ^ 2)) + ((E 0 : ℕ) : ZMod ((X₁.S.r * X₁.S.N) ^ 2)) = c a b := by
   intro I X₁ z₁ act x₀ _ τ _
   obtain ⟨κ, hκ1, hκ⟩ := frame_cube_const I X₁ z₁ act

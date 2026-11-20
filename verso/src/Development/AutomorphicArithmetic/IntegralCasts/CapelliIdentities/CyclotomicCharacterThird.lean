@@ -29,6 +29,9 @@ noncomputable def UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuou
               ℤ_[l] →* UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.Qbar l)).comp
         (UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.cycZ E Ω l)
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ l _`. Establish `h1 : Continuous (UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.cycZ F Ω l)` using `cyclotomicCharacter.continuous l F Ω`. Apply the tactic sequence `have h2 : Continuous (algebraMap ℚ_[l] (PadicAlgCl l)) := (algebraMap_isometry ℚ_[l] (PadicAlgCl l)).continuous`. Establish `h3 : Continuous (↑((Algebra.algebraMap ℚ_[l] (UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.Qbar l)).comp PadicInt.Coe.ringHom) : ℤ_[l] →* UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.Qbar l)` using `h2.comp continuous_subtype_val`. Conclude with `(Continuous.units_map _ h3).comp h1`.
+-/
 theorem UpperTheory.Reformulated.B.CyclotomicCharacterAtPrimeContinuous.cyc_cont :
     ∀ (F Ω : Type) [inst : Field F] [NumberField F] [inst_2 : Field Ω] [inst_3 : Algebra F Ω] (l : ℕ)
       [inst_4 : Fact (Nat.Prime l)],

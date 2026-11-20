@@ -13,6 +13,9 @@ noncomputable def stalkIdeal (I : X.IdealSheafData) (x : X) : Ideal (X.presheaf.
   ⨆ U : {U : X.affineOpens // x ∈ U.1.1},
     Ideal.map (X.presheaf.germ U.1.1 x U.2).hom (I.ideal U.1)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem map_germ_ideal_congr {X : Scheme.{u}} (I : X.IdealSheafData) (x : X)
     (W W' : X.affineOpens) (h : W = W') (hW : x ∈ W.1) (hW' : x ∈ W'.1) :
     Ideal.map (X.presheaf.germ W.1 x hW).hom (I.ideal W)
@@ -21,6 +24,11 @@ private theorem map_germ_ideal_congr {X : Scheme.{u}} (I : X.IdealSheafData) (x 
   rfl
 
 open CategoryTheory in
+/- English proof (translation)
+Establish `hxf' : x ∈ X.basicOpen f` using `hxf`. Establish `hgerm : (X.presheaf.germ (X.basicOpen f) x hxf').hom.comp (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom = (X.presheaf.germ U.1 x hxU).hom`. Rewrite using `[← CommRingCat.hom_comp, X.presheaf.germ_res]`. Establish `h1 : Ideal.map (X.presheaf.germ (X.basicOpen f) x hxf').hom (Ideal.map (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom (I.ideal U)) = Ideal.map (X.presheaf.germ U.1 x hxU).hom (I.ideal U)`. Rewrite using `[Ideal.map_map, hgerm]`.
+
+Rewrite using `[← h1]`. Conclude with `congrArg (fun J : Ideal Γ(X, X.basicOpen f) => Ideal.map (X.presheaf.germ (X.basicOpen f) x hxf').hom J) (I.map_ideal_basicOpen U f)`.
+-/
 private theorem map_germ_ideal_affineBasicOpen {X : Scheme.{u}} (I : X.IdealSheafData) (x : X)
     (U : X.affineOpens) (f : Γ(X, U.1)) (hxU : x ∈ U.1)
     (hxf : x ∈ (X.affineBasicOpen f).1) :
@@ -40,6 +48,9 @@ private theorem map_germ_ideal_affineBasicOpen {X : Scheme.{u}} (I : X.IdealShea
   exact congrArg (fun J : Ideal Γ(X, X.basicOpen f) =>
     Ideal.map (X.presheaf.germ (X.basicOpen f) x hxf').hom J) (I.map_ideal_basicOpen U f)
 
+/- English proof (translation)
+Take `⟨f, g, hfg, hxf⟩` from `AlgebraicGeometry.exists_basicOpen_le_affine_inter V.2 U.2 x ⟨hxV, hxU⟩`. Establish `hxg : x ∈ X.basicOpen g` using `by rw [← hfg]; exact hxf`. Establish `hW : X.affineBasicOpen f = X.affineBasicOpen g` using `Subtype.ext hfg`. Rewrite using `[map_germ_ideal_affineBasicOpen I x V f hxV hxf, map_germ_ideal_affineBasicOpen I x U g hxU hxg]`. Conclude with `map_germ_ideal_congr I x (X.affineBasicOpen f) (X.affineBasicOpen g) hW hxf hxg`.
+-/
 private theorem map_germ_ideal_eq {X : Scheme.{u}} (I : X.IdealSheafData) (x : X)
     (V U : X.affineOpens) (hxV : x ∈ V.1) (hxU : x ∈ U.1) :
     Ideal.map (X.presheaf.germ V.1 x hxV).hom (I.ideal V)
@@ -52,6 +63,11 @@ private theorem map_germ_ideal_eq {X : Scheme.{u}} (I : X.IdealSheafData) (x : X
     map_germ_ideal_affineBasicOpen I x U g hxU hxg]
   exact map_germ_ideal_congr I x (X.affineBasicOpen f) (X.affineBasicOpen g) hW hxf hxg
 
+/- English proof (translation)
+Establish `h : stalkIdeal I x = ⨆ V : {V : X.affineOpens // x ∈ V.1.1}, Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)` using `rfl`. Rewrite using `[h]`. Use `le_antisymm (iSup_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `⟨V, hxV⟩`. Conclude with `le_of_eq (map_germ_ideal_eq I x V U hxV hx)`.
+
+Conclude with `le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} => Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) ⟨U, hx⟩`.
+-/
 theorem stalkIdeal_eq_map_germ (I : X.IdealSheafData) (x : X) (U : X.affineOpens)
     (hx : x ∈ U.1) :
     stalkIdeal I x = Ideal.map (X.presheaf.germ U.1 x hx).hom (I.ideal U) := by
@@ -64,6 +80,9 @@ theorem stalkIdeal_eq_map_germ (I : X.IdealSheafData) (x : X) (U : X.affineOpens
   · exact le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} =>
       Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) ⟨U, hx⟩
 
+/- English proof (translation)
+Establish `h : Ideal.map (X.presheaf.germ U.1 x hx).hom (I.ideal U) ≤ stalkIdeal I x` using `le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} => Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) ⟨U, hx⟩`. Conclude with `SetLike.le_def.mp h (Ideal.mem_map_of_mem _ hs)`.
+-/
 theorem germ_mem_stalkIdeal (I : X.IdealSheafData) (x : X) (U : X.affineOpens) (hx : x ∈ U.1)
     {s : Γ(X, U.1)} (hs : s ∈ I.ideal U) :
     (X.presheaf.germ U.1 x hx).hom s ∈ stalkIdeal I x := by
@@ -72,6 +91,11 @@ theorem germ_mem_stalkIdeal (I : X.IdealSheafData) (x : X) (U : X.affineOpens) (
       Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) ⟨U, hx⟩
   exact SetLike.le_def.mp h (Ideal.mem_map_of_mem _ hs)
 
+/- English proof (translation)
+Take `⟨U, hxU⟩` from `X.exists_affineOpens_mem x`. Establish `h1 : (1 : Γ(X, U.1)) ∈ (⊤ : X.IdealSheafData).ideal U` using `by simp`. Establish `h3 : Ideal.map (X.presheaf.germ U.1 x hxU).hom ((⊤ : X.IdealSheafData).ideal U) ≤ stalkIdeal (⊤ : X.IdealSheafData) x` using `le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} => Ideal.map (X.presheaf.germ V.1.1 x V.2).hom ((⊤ : X.IdealSheafData).ideal V.1)) ⟨U, hxU⟩`. Establish `h2` using `Ideal.mem_map_of_mem (X.presheaf.germ U.1 x hxU).hom h1`. Rewrite `h2` using `[map_one]`.
+
+Conclude with `(Ideal.eq_top_iff_one _).mpr (SetLike.le_def.mp h3 h2)`.
+-/
 theorem stalkIdeal_top (x : X) : stalkIdeal (⊤ : X.IdealSheafData) x = ⊤ := by
   obtain ⟨U, hxU⟩ := X.exists_affineOpens_mem x
   have h1 : (1 : Γ(X, U.1)) ∈ (⊤ : X.IdealSheafData).ideal U := by simp
@@ -83,10 +107,16 @@ theorem stalkIdeal_top (x : X) : stalkIdeal (⊤ : X.IdealSheafData) x = ⊤ := 
   rw [map_one] at h2
   exact (Ideal.eq_top_iff_one _).mpr (SetLike.le_def.mp h3 h2)
 
+/- English proof (translation)
+Establish `h : ∀ U : X.affineOpens, (⊥ : X.IdealSheafData).ideal U = ⊥` using `fun U => by simp`. Simplify using `only [stalkIdeal, h, Ideal.map_bot, iSup_bot]`.
+-/
 theorem stalkIdeal_bot (x : X) : stalkIdeal (⊥ : X.IdealSheafData) x = ⊥ := by
   have h : ∀ U : X.affineOpens, (⊥ : X.IdealSheafData).ideal U = ⊥ := fun U => by simp
   simp only [stalkIdeal, h, Ideal.map_bot, iSup_bot]
 
+/- English proof (translation)
+Use `show (⨆ U : {U : X.affineOpens // x ∈ U.1.1}, Ideal.map (X.presheaf.germ U.1.1 x U.2).hom (I.ideal U.1)) ≤ ⨆ U : {U : X.affineOpens // x ∈ U.1.1}, Ideal.map (X.presheaf.germ U.1.1 x U.2).hom (J.ideal U.1)`. Conclude with `iSup_mono fun U => Ideal.map_mono (h U.1)`.
+-/
 theorem stalkIdeal_mono {I J : X.IdealSheafData} (h : I ≤ J) (x : X) :
     stalkIdeal I x ≤ stalkIdeal J x := by
   show (⨆ U : {U : X.affineOpens // x ∈ U.1.1},
@@ -95,12 +125,18 @@ theorem stalkIdeal_mono {I J : X.IdealSheafData} (h : I ≤ J) (x : X) :
         Ideal.map (X.presheaf.germ U.1.1 x U.2).hom (J.ideal U.1)
   exact iSup_mono fun U => Ideal.map_mono (h U.1)
 
+/- English proof (translation)
+The claim follows from `le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} => Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) U`.
+-/
 private theorem map_germ_le_stalkIdeal {X : Scheme.{u}} (I : X.IdealSheafData) (x : X)
     (U : {U : X.affineOpens // x ∈ U.1.1}) :
     Ideal.map (X.presheaf.germ U.1.1 x U.2).hom (I.ideal U.1) ≤ stalkIdeal I x :=
   le_iSup (fun V : {V : X.affineOpens // x ∈ V.1.1} =>
     Ideal.map (X.presheaf.germ V.1.1 x V.2).hom (I.ideal V.1)) U
 
+/- English proof (translation)
+Use `show (⨆ U : {U : X.affineOpens // x ∈ U.1.1}, Ideal.map (X.presheaf.germ U.1.1 x U.2).hom ((I ⊔ J).ideal U.1)) ≤ stalkIdeal I x ⊔ stalkIdeal J x`. Use `iSup_le fun U => ?_` and prove the remaining obligations. Establish `h1 : (I ⊔ J).ideal U.1 = I.ideal U.1 ⊔ J.ideal U.1` using `rfl`. Rewrite using `[h1, Ideal.map_sup]`. Conclude with `sup_le (le_sup_of_le_left (map_germ_le_stalkIdeal I x U)) (le_sup_of_le_right (map_germ_le_stalkIdeal J x U))`.
+-/
 private theorem stalkIdeal_sup_le {X : Scheme.{u}} (I J : X.IdealSheafData) (x : X) :
     stalkIdeal (I ⊔ J) x ≤ stalkIdeal I x ⊔ stalkIdeal J x := by
   show (⨆ U : {U : X.affineOpens // x ∈ U.1.1},
@@ -112,11 +148,17 @@ private theorem stalkIdeal_sup_le {X : Scheme.{u}} (I J : X.IdealSheafData) (x :
   exact sup_le (le_sup_of_le_left (map_germ_le_stalkIdeal I x U))
     (le_sup_of_le_right (map_germ_le_stalkIdeal J x U))
 
+/- English proof (translation)
+The claim follows from `le_antisymm (stalkIdeal_sup_le I J x) (sup_le (stalkIdeal_mono le_sup_left x) (stalkIdeal_mono le_sup_right x))`.
+-/
 theorem stalkIdeal_sup (I J : X.IdealSheafData) (x : X) :
     stalkIdeal (I ⊔ J) x = stalkIdeal I x ⊔ stalkIdeal J x :=
   le_antisymm (stalkIdeal_sup_le I J x)
     (sup_le (stalkIdeal_mono le_sup_left x) (stalkIdeal_mono le_sup_right x))
 
+/- English proof (translation)
+Take `⟨U, hxU⟩` from `X.exists_affineOpens_mem x`. Establish `hmul : (I * J).ideal U = I.ideal U * J.ideal U` using `congrFun (Scheme.IdealSheafData.ideal_mul ..) U`. Rewrite using `[stalkIdeal_eq_map_germ (I * J) x U hxU, stalkIdeal_eq_map_germ I x U hxU, stalkIdeal_eq_map_germ J x U hxU, hmul, Ideal.map_mul]`.
+-/
 theorem stalkIdeal_mul (I J : X.IdealSheafData) (x : X) :
     stalkIdeal (I * J) x = stalkIdeal I x * stalkIdeal J x := by
   obtain ⟨U, hxU⟩ := X.exists_affineOpens_mem x
@@ -125,9 +167,15 @@ theorem stalkIdeal_mul (I J : X.IdealSheafData) (x : X) :
   rw [stalkIdeal_eq_map_germ (I * J) x U hxU, stalkIdeal_eq_map_germ I x U hxU,
     stalkIdeal_eq_map_germ J x U hxU, hmul, Ideal.map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem idealSheafData_one_eq_top {X : Scheme.{u}} :
     (1 : X.IdealSheafData) = ⊤ := rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, idealSheafData_one_eq_top, stalkIdeal_top, Ideal.one_eq_top]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, stalkIdeal_mul, ih]`.
+-/
 theorem stalkIdeal_pow (I : X.IdealSheafData) (n : ℕ) (x : X) :
     stalkIdeal (I ^ n) x = stalkIdeal I x ^ n := by
   induction n with
@@ -136,6 +184,11 @@ theorem stalkIdeal_pow (I : X.IdealSheafData) (n : ℕ) (x : X) :
   | succ n ih =>
     rw [pow_succ, pow_succ, stalkIdeal_mul, ih]
 
+/- English proof (translation)
+Establish `h` using `AlgebraicGeometry.Scheme.mem_basicOpen X f x hxU`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hn hx`. Conclude with `hn (h.mp hx)`.
+
+Introduce `hn hu`. Conclude with `hn (h.mpr hu)`.
+-/
 private theorem germ_mem_maximalIdeal_iff_not_mem_basicOpen {X : Scheme.{u}} (x : X) (U : X.Opens) (hxU : x ∈ U)
     (f : Γ(X, U)) :
     (X.presheaf.germ U x hxU).hom f ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ↔
@@ -148,6 +201,11 @@ private theorem germ_mem_maximalIdeal_iff_not_mem_basicOpen {X : Scheme.{u}} (x 
   · intro hn hu
     exact hn (h.mpr hu)
 
+/- English proof (translation)
+Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := U) hxU, AlgebraicGeometry.Scheme.mem_zeroLocus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Conclude with `(germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mpr (h f hf)`. Introduce `h f hf`.
+
+Conclude with `(germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mp (h f hf)`.
+-/
 private theorem mem_support_iff_forall_germ_mem_maximalIdeal {X : Scheme.{u}}
     (I : X.IdealSheafData) (x : X) (U : X.affineOpens) (hxU : x ∈ U.1) :
     x ∈ I.support ↔ ∀ f ∈ I.ideal U,
@@ -160,6 +218,11 @@ private theorem mem_support_iff_forall_germ_mem_maximalIdeal {X : Scheme.{u}}
   · intro h f hf
     exact (germ_mem_maximalIdeal_iff_not_mem_basicOpen x U.1 hxU f).mp (h f hf)
 
+/- English proof (translation)
+Take `⟨U, hxU0⟩` from `X.exists_affineOpens_mem x`. Establish `hxU : x ∈ U.1` using `hxU0`. Rewrite using `[stalkIdeal_eq_map_germ I x U hxU, Ideal.map_le_iff_le_comap, mem_support_iff_forall_germ_mem_maximalIdeal I x U hxU]`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf`.
+
+Conclude with `h f hf`. Introduce `h f hf`. Conclude with `h hf`.
+-/
 theorem mem_support_iff_stalkIdeal_le_maximalIdeal (I : X.IdealSheafData) (x : X) :
     x ∈ I.support ↔ stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) := by
   obtain ⟨U, hxU0⟩ := X.exists_affineOpens_mem x
@@ -172,6 +235,9 @@ theorem mem_support_iff_stalkIdeal_le_maximalIdeal (I : X.IdealSheafData) (x : X
   · intro h f hf
     exact h hf
 
+/- English proof (translation)
+Rewrite using `[mem_support_iff_stalkIdeal_le_maximalIdeal]`. Use `⟨fun h htop => ?_, fun h => IsLocalRing.le_maximalIdeal h⟩` and prove the remaining obligations. Rewrite `h` using `[htop, top_le_iff]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top h`.
+-/
 theorem mem_support_iff_stalkIdeal_ne_top (I : X.IdealSheafData) (x : X) :
     x ∈ I.support ↔ stalkIdeal I x ≠ ⊤ := by
   rw [mem_support_iff_stalkIdeal_le_maximalIdeal]
@@ -182,48 +248,83 @@ theorem mem_support_iff_stalkIdeal_ne_top (I : X.IdealSheafData) (x : X) :
 noncomputable def orderAt (I : X.IdealSheafData) (x : X) : ℕ∞ :=
   idealOrder (stalkIdeal I x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orderAt_eq_idealOrder (I : X.IdealSheafData) (x : X) :
     orderAt I x = idealOrder (stalkIdeal I x) := rfl
 
+/- English proof (translation)
+The claim follows from `le_idealOrder_iff (stalkIdeal I x) n`.
+-/
 theorem le_orderAt_iff (I : X.IdealSheafData) (x : X) (n : ℕ) :
     (n : ℕ∞) ≤ orderAt I x ↔
       stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ^ n :=
   le_idealOrder_iff (stalkIdeal I x) n
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, stalkIdeal_top, idealOrder_top]`.
+-/
 theorem orderAt_top (x : X) : orderAt (⊤ : X.IdealSheafData) x = 0 := by
   rw [orderAt_eq_idealOrder, stalkIdeal_top, idealOrder_top]
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, stalkIdeal_bot, idealOrder_bot]`.
+-/
 theorem orderAt_bot (x : X) : orderAt (⊥ : X.IdealSheafData) x = ⊤ := by
   rw [orderAt_eq_idealOrder, stalkIdeal_bot, idealOrder_bot]
 
+/- English proof (translation)
+The claim follows from `idealOrder_le_of_le (stalkIdeal_mono h x)`.
+-/
 theorem orderAt_le_of_le {I J : X.IdealSheafData} (h : I ≤ J) (x : X) :
     orderAt J x ≤ orderAt I x :=
   idealOrder_le_of_le (stalkIdeal_mono h x)
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, stalkIdeal_sup, idealOrder_sup]`. Both sides reduce to the same expression.
+-/
 theorem orderAt_sup (I J : X.IdealSheafData) (x : X) :
     orderAt (I ⊔ J) x = min (orderAt I x) (orderAt J x) := by
   rw [orderAt_eq_idealOrder, stalkIdeal_sup, idealOrder_sup]
   rfl
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder (I * J), stalkIdeal_mul]`. Conclude with `add_idealOrder_le_idealOrder_mul (stalkIdeal I x) (stalkIdeal J x)`.
+-/
 theorem add_orderAt_le_orderAt_mul (I J : X.IdealSheafData) (x : X) :
     orderAt I x + orderAt J x ≤ orderAt (I * J) x := by
   rw [orderAt_eq_idealOrder (I * J), stalkIdeal_mul]
   exact add_idealOrder_le_idealOrder_mul (stalkIdeal I x) (stalkIdeal J x)
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder (I ^ c), stalkIdeal_pow]`. Conclude with `mul_idealOrder_le_idealOrder_pow (stalkIdeal I x) c`.
+-/
 theorem mul_orderAt_le_orderAt_pow (I : X.IdealSheafData) (c : ℕ) (x : X) :
     (c : ℕ∞) * orderAt I x ≤ orderAt (I ^ c) x := by
   rw [orderAt_eq_idealOrder (I ^ c), stalkIdeal_pow]
   exact mul_idealOrder_le_idealOrder_pow (stalkIdeal I x) c
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, one_le_idealOrder_iff, mem_support_iff_stalkIdeal_le_maximalIdeal]`.
+-/
 theorem one_le_orderAt_iff_mem_support (I : X.IdealSheafData) (x : X) :
     1 ≤ orderAt I x ↔ x ∈ I.support := by
   rw [orderAt_eq_idealOrder, one_le_idealOrder_iff, mem_support_iff_stalkIdeal_le_maximalIdeal]
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, idealOrder_eq_zero_iff, mem_support_iff_stalkIdeal_le_maximalIdeal]`.
+-/
 theorem orderAt_eq_zero_iff_not_mem_support (I : X.IdealSheafData) (x : X) :
     orderAt I x = 0 ↔ x ∉ I.support := by
   rw [orderAt_eq_idealOrder, idealOrder_eq_zero_iff,
     mem_support_iff_stalkIdeal_le_maximalIdeal]
 
+/- English proof (translation)
+Take `⟨U, hxU⟩` from `X.exists_affineOpens_mem x`. Establish `hxU' : x ∈ U.1` using `hxU`. Establish `hnoeth : IsNoetherianRing Γ(X, U.1)` using `IsLocallyNoetherian.component_noetherian U`. Set `germAlgebra : Algebra Γ(X, U.1) (X.presheaf.stalk x)` to `(X.presheaf.germ U.1 x hxU').hom.toAlgebra`. Establish `hloc : IsLocalization (U.2.primeIdealOf ⟨x, hxU'⟩).asIdeal.primeCompl (X.presheaf.stalk x)` using `U.2.isLocalization_stalk ⟨x, hxU'⟩`.
+
+Establish `: IsNoetherianRing (X.presheaf.stalk x)` using `IsLocalization.isNoetherianRing (U.2.primeIdealOf ⟨x, hxU'⟩).asIdeal.primeCompl _ hnoeth`. Rewrite using `[orderAt_eq_idealOrder]`. Conclude with `idealOrder_ne_top_of_ne_bot h`.
+-/
 theorem orderAt_ne_top_of_stalkIdeal_ne_bot [IsLocallyNoetherian X] (I : X.IdealSheafData)
     (x : X) (h : stalkIdeal I x ≠ ⊥) : orderAt I x ≠ ⊤ := by
   obtain ⟨U, hxU⟩ := X.exists_affineOpens_mem x
@@ -238,6 +339,11 @@ theorem orderAt_ne_top_of_stalkIdeal_ne_bot [IsLocallyNoetherian X] (I : X.Ideal
   rw [orderAt_eq_idealOrder]
   exact idealOrder_ne_top_of_ne_bot h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hne`. Conclude with `orderAt_ne_top_of_stalkIdeal_ne_bot I x hne h`. Introduce `h`.
+
+Rewrite using `[orderAt_eq_idealOrder, h, idealOrder_bot]`.
+-/
 theorem orderAt_eq_top_iff [IsLocallyNoetherian X] (I : X.IdealSheafData) (x : X) :
     orderAt I x = ⊤ ↔ stalkIdeal I x = ⊥ := by
   constructor
@@ -247,10 +353,24 @@ theorem orderAt_eq_top_iff [IsLocallyNoetherian X] (I : X.IdealSheafData) (x : X
   · intro h
     rw [orderAt_eq_idealOrder, h, idealOrder_bot]
 
+/- English proof (translation)
+Rewrite using `[orderAt_eq_idealOrder, orderAt_eq_idealOrder, h]`.
+-/
 theorem orderAt_eq_of_stalkIdeal_eq {I J : X.IdealSheafData} {x : X}
     (h : stalkIdeal I x = stalkIdeal J x) : orderAt I x = orderAt J x := by
   rw [orderAt_eq_idealOrder, orderAt_eq_idealOrder, h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Prove the components needed by the constructor for the conclusion. Establish `ha : ((1 : ℕ) : ℕ∞) ≤ orderAt I x` using `by rw [h]; simp`. Simplify using `using (le_orderAt_iff I x 1).mp ha`.
+
+Introduce `hle`. Establish `h2` using `(le_orderAt_iff I x 2).mpr hle`. Rewrite `h2` using `[h]`. Establish `h3 : (2 : ℕ) ≤ 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨ha, hb⟩`. Establish `ha' : ((1 : ℕ) : ℕ∞) ≤ orderAt I x` using `(le_orderAt_iff I x 1).mpr (by simpa using ha)`. Establish `hb' : ¬ ((2 : ℕ) : ℕ∞) ≤ orderAt I x` using `fun hc => hb ((le_orderAt_iff I x 2).mp hc)`. Break down `eq_or_ne (orderAt I x) ⊤ with htop | hfin` into its components or cases. Conclude with `absurd (htop ▸ le_top) hb'`.
+
+Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp hfin`. Rewrite `ha'`, `hb'`, the goal using `[← hn]`. Establish `hn1 : 1 ≤ n` using `by exact_mod_cast ha'`. Establish `hn2 : ¬ (2 ≤ n)` using `fun hc => hb' (by exact_mod_cast hc)`. Establish `hn3 : n = 1` using `by omega`.
+
+Rewrite using `[hn3, Nat.cast_one]`.
+-/
 theorem orderAt_eq_one_iff (I : X.IdealSheafData) (x : X) :
     orderAt I x = 1 ↔
       stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ∧
@@ -277,6 +397,9 @@ theorem orderAt_eq_one_iff (I : X.IdealSheafData) (x : X) :
       have hn3 : n = 1 := by omega
       rw [hn3, Nat.cast_one]
 
+/- English proof (translation)
+Introduce `hle`. Use `h (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal R) (IsLocalRing.maximalIdeal R) (IsNoetherian.noetherian _) ?_ ?_)` and prove the remaining obligations. Rewrite using `[Ideal.smul_eq_mul, ← pow_two]`. Conclude with `hle`. Conclude with `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`.
+-/
 private theorem maximalIdeal_not_le_sq {R : Type*} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (h : IsLocalRing.maximalIdeal R ≠ ⊥) :
     ¬ IsLocalRing.maximalIdeal R ≤ IsLocalRing.maximalIdeal R ^ 2 := by
@@ -287,6 +410,11 @@ private theorem maximalIdeal_not_le_sq {R : Type*} [CommRing R] [IsLocalRing R]
     exact hle
   · exact (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge
 
+/- English proof (translation)
+Take `⟨U, hxU⟩` from `X.exists_affineOpens_mem x`. Establish `hxU' : x ∈ U.1` using `hxU`. Establish `hnoeth : IsNoetherianRing Γ(X, U.1)` using `IsLocallyNoetherian.component_noetherian U`. Set `germAlgebra : Algebra Γ(X, U.1) (X.presheaf.stalk x)` to `(X.presheaf.germ U.1 x hxU').hom.toAlgebra`. Establish `hloc : IsLocalization (U.2.primeIdealOf ⟨x, hxU'⟩).asIdeal.primeCompl (X.presheaf.stalk x)` using `U.2.isLocalization_stalk ⟨x, hxU'⟩`.
+
+Establish `: IsNoetherianRing (X.presheaf.stalk x)` using `IsLocalization.isNoetherianRing (U.2.primeIdealOf ⟨x, hxU'⟩).asIdeal.primeCompl _ hnoeth`. Rewrite using `[orderAt_eq_one_iff]`. Use `⟨h.le, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `maximalIdeal_not_le_sq hne`.
+-/
 theorem orderAt_eq_one_of_stalkIdeal_eq_maximalIdeal [IsLocallyNoetherian X]
     (I : X.IdealSheafData) (x : X)
     (h : stalkIdeal I x = IsLocalRing.maximalIdeal (X.presheaf.stalk x))
@@ -306,6 +434,9 @@ theorem orderAt_eq_one_of_stalkIdeal_eq_maximalIdeal [IsLocallyNoetherian X]
   rw [h]
   exact maximalIdeal_not_le_sq hne
 
+/- English proof (translation)
+Establish `h0 : q ∈ PrimeSpectrum.zeroLocus ((PrimeSpectrum.vanishingIdeal W : Ideal R) : Set R)` using `(PrimeSpectrum.mem_zeroLocus _ _).mpr (fun y hy => h hy)`. Rewrite `h0` using `[PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hW.closure_eq]`. Then use the resulting hypothesis.
+-/
 private theorem mem_of_vanishingIdeal_le {R : Type*} [CommRing R]
     (W : Set (PrimeSpectrum R)) (hW : IsClosed W) (q : PrimeSpectrum R)
     (h : PrimeSpectrum.vanishingIdeal W ≤ q.asIdeal) : q ∈ W := by
@@ -314,6 +445,19 @@ private theorem mem_of_vanishingIdeal_le {R : Type*} [CommRing R]
     (PrimeSpectrum.mem_zeroLocus _ _).mpr (fun y hy => h hy)
   rwa [PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure, hW.closure_eq] at h0
 
+/- English proof (translation)
+Establish `hmap : Ideal.map (algebraMap R S) p = IsLocalRing.maximalIdeal S` using `IsLocalization.AtPrime.map_eq_maximalIdeal ..`. Establish `hcomap_le : Ideal.comap (algebraMap R S) (IsLocalRing.maximalIdeal S) ≤ p`. Introduce `r hr`. Assume the negation of the conclusion as `hrp`. Rewrite `hr` using `[Ideal.mem_comap]`.
+
+Establish `hrp' : r ∈ p.primeCompl` using `hrp`. Establish `hunit : IsUnit (algebraMap R S r)` using `IsLocalization.map_units S ⟨r, hrp'⟩`. Establish `hnu` using `(IsLocalRing.mem_maximalIdeal _).mp hr`. Rewrite `hnu` using `[mem_nonunits_iff]`. Conclude with `hnu hunit`.
+
+Use `le_antisymm (le_trans (Ideal.map_mono hJp) (le_of_eq hmap)) ?_` and prove the remaining obligations. Establish `hle : IsLocalRing.maximalIdeal S ≤ (Ideal.map (algebraMap R S) J).radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hPle, hPprime⟩`.
+
+Establish `: P.IsPrime` using `hPprime`. Establish `hPmax : P ≤ IsLocalRing.maximalIdeal S` using `IsLocalRing.le_maximalIdeal hPprime.ne_top`. Establish `h1 : Ideal.comap (algebraMap R S) P = p`. Use `hmin _ (Ideal.comap_isPrime (algebraMap R S) P) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_le_iff_le_comap]`.
+
+Conclude with `hPle`. Conclude with `le_trans (Ideal.comap_mono hPmax) hcomap_le`. Establish `heq : IsLocalRing.maximalIdeal S = P`. Rewrite using `[← hmap, ← h1]`. Conclude with `IsLocalization.map_under p.primeCompl S P`.
+
+Conclude with `heq.le`. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[← IsLocalization.map_radical p.primeCompl S J]`. Conclude with `Ideal.map_mono hJ`.
+-/
 private theorem map_algebraMap_eq_maximalIdeal {R S : Type*} [CommRing R] [CommRing S]
     [Algebra R S] [IsLocalRing S] (p : Ideal R) [p.IsPrime] [IsLocalization p.primeCompl S]
     (J : Ideal R) (hJ : J.IsRadical) (hJp : J ≤ p)
@@ -350,6 +494,27 @@ private theorem map_algebraMap_eq_maximalIdeal {R S : Type*} [CommRing R] [CommR
   rw [← IsLocalization.map_radical p.primeCompl S J]
   exact Ideal.map_mono hJ
 
+/- English proof (translation)
+Take `⟨U, hxU0⟩` from `X.exists_affineOpens_mem ξ`. Establish `hxU : ξ ∈ U.1` using `hxU0`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hZcl : IsClosed (Z : Set X)` using `Z.2`. Establish `hcont : Continuous (⇑(hU.fromSpec))` using `(hU.fromSpec).continuous`.
+
+Establish `hξT : ξ ∈ T`. Rewrite using `[← hξ]`. Conclude with `subset_closure (Set.mem_singleton ξ)`. Establish `hξZ : ξ ∈ (Z : Set X)` using `hT.1.2 hξT`. Establish `hWclosed : IsClosed ((⇑hU.fromSpec ⁻¹' (Z : Set X)) : Set (PrimeSpectrum Γ(X, U.1)))` using `hZcl.preimage hcont`.
+
+Establish `hJdef : (Scheme.IdealSheafData.vanishingIdeal Z).ideal U = PrimeSpectrum.vanishingIdeal (⇑hU.fromSpec ⁻¹' (Z : Set X))` using `rfl`. Establish `hfp : (⇑(hU.fromSpec)) (hU.primeIdealOf ⟨ξ, hxU⟩) = ξ` using `hU.fromSpec_primeIdealOf ⟨ξ, hxU⟩`. Establish `hmemW : hU.primeIdealOf ⟨ξ, hxU⟩ ∈ (⇑(hU.fromSpec) ⁻¹' (Z : Set X))` using `by show (⇑(hU.fromSpec)) (hU.primeIdealOf ⟨ξ, hxU⟩) ∈ (Z : Set X)`. Rewrite using `[hfp]`. Conclude with `hξZ`.
+
+Rewrite using `[stalkIdeal_eq_map_germ _ ξ U hxU, hJdef]`. Set `germAlgebra : Algebra Γ(X, U.1) (X.presheaf.stalk ξ)` to `(X.presheaf.germ U.1 ξ hxU).hom.toAlgebra`. Establish `hloc : IsLocalization (hU.primeIdealOf ⟨ξ, hxU⟩).asIdeal.primeCompl (X.presheaf.stalk ξ)` using `hU.isLocalization_stalk ⟨ξ, hxU⟩`. Establish `halg : (X.presheaf.germ U.1 ξ hxU).hom = algebraMap Γ(X, U.1) (X.presheaf.stalk ξ)` using `rfl`. Rewrite using `[halg]`.
+
+Use `map_algebraMap_eq_maximalIdeal (hU.primeIdealOf ⟨ξ, hxU⟩).asIdeal _ (PrimeSpectrum.isRadical_vanishingIdeal _) ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Conclude with `(PrimeSpectrum.mem_vanishingIdeal _ _).mp hf _ hmemW`. Introduce `q hq hJq hqp`. Establish `hQW : (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ∈ ((⇑hU.fromSpec ⁻¹' (Z : Set X)) : Set (PrimeSpectrum Γ(X, U.1)))` using `mem_of_vanishingIdeal_le _ hWclosed ⟨q, hq⟩ hJq`.
+
+Establish `hQP : (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ⤳ hU.primeIdealOf ⟨ξ, hxU⟩`. Rewrite using `[specializes_iff_mem_closure, PrimeSpectrum.closure_singleton, PrimeSpectrum.mem_zeroLocus]`. Conclude with `fun y hy => hqp hy`. Establish `hzspec : (⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ⤳ ξ`. Establish `hmapped` using `hQP.map hcont`.
+
+Rewrite `hmapped` using `[hfp]`. Then use the resulting hypothesis. Establish `hzZ : (⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ∈ (Z : Set X)` using `hQW`. Establish `hirr : IsIrreducible (closure {(⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))})` using `isIrreducible_singleton.closure`. Establish `hsubZ : closure {(⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))} ⊆ (Z : Set X)` using `hZcl.closure_subset_iff.mpr (Set.singleton_subset_iff.mpr hzZ)`. Establish `hTsub : T ⊆ closure {(⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))}`.
+
+Rewrite using `[← hξ]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp hzspec)) isClosed_closure`. Establish `hmax` using `hT.2 ⟨hirr, hsubZ⟩ hTsub`. Establish `hzT : (⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1)) ∈ T` using `hmax (subset_closure (Set.mem_singleton _))`. Establish `hξz : ξ ⤳ (⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))` using `specializes_iff_mem_closure.mpr (by rw [hξ]; exact hzT)`.
+
+Establish `hind : Topology.IsInducing (⇑(hU.fromSpec))` using `(hU.fromSpec).isOpenEmbedding.toIsEmbedding.toIsInducing`. Establish `h3 : (⇑(hU.fromSpec)) (hU.primeIdealOf ⟨ξ, hxU⟩) ⤳ (⇑(hU.fromSpec)) (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))`. Rewrite using `[hfp]`. Conclude with `hξz`. Establish `hPQ : hU.primeIdealOf ⟨ξ, hxU⟩ ⤳ (⟨q, hq⟩ : PrimeSpectrum Γ(X, U.1))` using `hind.specializes_iff.mp h3`.
+
+Establish `hpq : (hU.primeIdealOf ⟨ξ, hxU⟩).asIdeal ≤ q`. Establish `h2` using `specializes_iff_mem_closure.mp hPQ`. Rewrite `h2` using `[PrimeSpectrum.closure_singleton, PrimeSpectrum.mem_zeroLocus]`. Conclude with `fun y hy => h2 hy`. Conclude with `le_antisymm hqp hpq`.
+-/
 theorem stalkIdeal_vanishingIdeal_eq_maximalIdeal_of_isGenericPoint (Z : TopologicalSpace.Closeds X) (ξ : X)
     (T : Set X) (hT : Maximal (fun s : Set X => IsIrreducible s ∧ s ⊆ (Z : Set X)) T)
     (hξ : IsGenericPoint ξ T) :
@@ -426,6 +591,9 @@ theorem stalkIdeal_vanishingIdeal_eq_maximalIdeal_of_isGenericPoint (Z : Topolog
       exact fun y hy => h2 hy
     exact le_antisymm hqp hpq
 
+/- English proof (translation)
+The claim follows from `orderAt_eq_one_of_stalkIdeal_eq_maximalIdeal _ ξ (stalkIdeal_vanishingIdeal_eq_maximalIdeal_of_isGenericPoint Z ξ T hT hξ) hne`.
+-/
 theorem orderAt_vanishingIdeal_eq_one [IsLocallyNoetherian X] (Z : TopologicalSpace.Closeds X)
     (ξ : X) (T : Set X) (hT : Maximal (fun s : Set X => IsIrreducible s ∧ s ⊆ (Z : Set X)) T)
     (hξ : IsGenericPoint ξ T)
@@ -434,10 +602,16 @@ theorem orderAt_vanishingIdeal_eq_one [IsLocallyNoetherian X] (Z : TopologicalSp
   orderAt_eq_one_of_stalkIdeal_eq_maximalIdeal _ ξ
     (stalkIdeal_vanishingIdeal_eq_maximalIdeal_of_isGenericPoint Z ξ T hT hξ) hne
 
+/- English proof (translation)
+Introduce `hb` and use `h (IsLocalRing.isField_iff_maximalIdeal_eq.mpr hb)`.
+-/
 private theorem maximalIdeal_ne_bot_of_not_isField {R : Type*} [CommRing R] [IsLocalRing R]
     (h : ¬ IsField R) : IsLocalRing.maximalIdeal R ≠ ⊥ :=
   fun hb => h (IsLocalRing.isField_iff_maximalIdeal_eq.mpr hb)
 
+/- English proof (translation)
+The claim follows from `orderAt_vanishingIdeal_eq_one Z ξ T hT hξ (maximalIdeal_ne_bot_of_not_isField hfield)`.
+-/
 theorem orderAt_vanishingIdeal_eq_one_of_not_isField [IsLocallyNoetherian X]
     (Z : TopologicalSpace.Closeds X) (ξ : X) (T : Set X)
     (hT : Maximal (fun s : Set X => IsIrreducible s ∧ s ⊆ (Z : Set X)) T)
@@ -446,6 +620,15 @@ theorem orderAt_vanishingIdeal_eq_one_of_not_isField [IsLocallyNoetherian X]
     orderAt (Scheme.IdealSheafData.vanishingIdeal Z) ξ = 1 :=
   orderAt_vanishingIdeal_eq_one Z ξ T hT hξ (maximalIdeal_ne_bot_of_not_isField hfield)
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite `hx` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Apply `hx` to reduce the goal to its premises. Establish `h2` using `hu.map g`. Rewrite `h2` using `[hgf]`. Then use the resulting hypothesis. Introduce `z hz`.
+
+Rewrite `hz` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hgz : g z ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `hz` to reduce the goal to its premises.
+
+Establish `h2` using `hu.map f`. Rewrite `h2` using `[hfg]`. Then use the resulting hypothesis. Establish `h3 : f (g z) ∈ Ideal.map f (IsLocalRing.maximalIdeal R)` using `Ideal.mem_map_of_mem _ hgz`. Rewrite `h3` using `[hfg]`. Then use the resulting hypothesis.
+-/
 private theorem map_maximalIdeal_of_inverse {R S : Type*} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (f : R →+* S) (g : S →+* R)
     (hgf : ∀ x, g (f x) = x) (hfg : ∀ x, f (g x) = x) :
@@ -470,6 +653,11 @@ private theorem map_maximalIdeal_of_inverse {R S : Type*} [CommRing R] [CommRing
     have h3 : f (g z) ∈ Ideal.map f (IsLocalRing.maximalIdeal R) := Ideal.mem_map_of_mem _ hgz
     rwa [hfg] at h3
 
+/- English proof (translation)
+Establish `hf` using `map_maximalIdeal_of_inverse f g hgf hfg`. Establish `hg` using `map_maximalIdeal_of_inverse g f hfg hgf`. Establish `h1 : idealOrder J ≤ idealOrder (Ideal.map f J)` using `idealOrder_le_idealOrder_map f hf.le J`. Establish `hcomp : g.comp f = RingHom.id R` using `RingHom.ext hgf`. Establish `h2 : Ideal.map g (Ideal.map f J) = J`.
+
+Rewrite using `[Ideal.map_map, hcomp, Ideal.map_id]`. Establish `h3 : idealOrder (Ideal.map f J) ≤ idealOrder (Ideal.map g (Ideal.map f J))` using `idealOrder_le_idealOrder_map g hg.le (Ideal.map f J)`. Rewrite `h3` using `[h2]`. Conclude with `le_antisymm h3 h1`.
+-/
 private theorem idealOrder_map_of_inverse {R S : Type*} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (f : R →+* S) (g : S →+* R)
     (hgf : ∀ x, g (f x) = x) (hfg : ∀ x, f (g x) = x) (J : Ideal R) :
@@ -487,12 +675,28 @@ private theorem idealOrder_map_of_inverse {R S : Type*} [CommRing R] [CommRing S
   exact le_antisymm h3 h1
 
 open CategoryTheory in
+/- English proof (translation)
+Rewrite using `[← hk, CommRingCat.hom_comp]`. Both sides reduce to the same expression.
+-/
 private theorem hom_hom_apply_of_comp_eq {A B C : CommRingCat} (f : A ⟶ B) (g : B ⟶ C)
     (k : A ⟶ C) (hk : f ≫ g = k) (x : A) : g.hom (f.hom x) = k.hom x := by
   rw [← hk, CommRingCat.hom_comp]
   rfl
 
 open CategoryTheory in
+/- English proof (translation)
+Take `⟨U, sectionFrameQuotient⟩` from `Y.exists_affineOpens_mem y`. Establish `hyU : y ∈ U.1` using `sectionFrameQuotient`. Establish `hVaff : IsAffineOpen (h ''ᵁ U.1)` using `U.2.image_of_isOpenImmersion h`. Establish `hxV : h.base y ∈ (h ''ᵁ U.1)` using `⟨y, hyU, rfl⟩`. Set `appEquiv : Γ(X, h ''ᵁ U.1) ≃+* Γ(Y, U.1)` to `(h.appIso U.1).commRingCatIsoToRingEquiv`.
+
+Establish `hid : (I.comap h).ideal U = Ideal.map ((h.appIso U.1).hom).hom (I.ideal ⟨h ''ᵁ U.1, hVaff⟩)`. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion I h U]`. Conclude with `Ideal.comap_symm appEquiv ..`. Establish `key : (h.appIso U.1).inv ≫ (h.app (h ''ᵁ U.1) ≫ Y.presheaf.germ (h ⁻¹ᵁ h ''ᵁ U.1) y hxV) = Y.presheaf.germ U.1 y hyU`. Rewrite using `[← Category.assoc, Scheme.Hom.appIso_inv_app]`.
+
+Conclude with `Y.presheaf.germ_res _ y hxV`. Establish `hcat : (h.appIso U.1).hom ≫ Y.presheaf.germ U.1 y hyU = X.presheaf.germ (h ''ᵁ U.1) (h.base y) hxV ≫ h.stalkMap y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, Iso.hom_inv_id, Category.id_comp]`. Use `_ = X.presheaf.germ (h ''ᵁ U.1) (h.base y) hxV ≫ h.stalkMap y := (Scheme.Hom.germ_stalkMap h (h ''ᵁ U.1) y hxV).symm`.
+
+Establish `hcomp : (Y.presheaf.germ U.1 y hyU).hom.comp ((h.appIso U.1).hom).hom = ((h.stalkMap y).hom).comp (X.presheaf.germ (h ''ᵁ U.1) (h.base y) hxV).hom`. Establish `h4` using `congrArg CommRingCat.Hom.hom hcat`. Rewrite `h4` using `[CommRingCat.hom_comp, CommRingCat.hom_comp]`. Then use the resulting hypothesis. Establish `hsgf : ∀ x, ((inv (h.stalkMap y)).hom) ((h.stalkMap y).hom x) = x` using `fun x => by`. Rewrite using `[hom_hom_apply_of_comp_eq _ _ _ (IsIso.hom_inv_id (h.stalkMap y)) x, CommRingCat.hom_id]`.
+
+Both sides reduce to the same expression. Establish `hsfg : ∀ x, ((h.stalkMap y).hom) ((inv (h.stalkMap y)).hom x) = x` using `fun x => by`. Rewrite using `[hom_hom_apply_of_comp_eq _ _ _ (IsIso.inv_hom_id (h.stalkMap y)) x, CommRingCat.hom_id]`. Both sides reduce to the same expression. Rewrite using `[orderAt_eq_idealOrder, orderAt_eq_idealOrder, stalkIdeal_eq_map_germ (I.comap h) y U hyU, stalkIdeal_eq_map_germ I (h.base y) ⟨h ''ᵁ U.1, hVaff⟩ hxV, hid, Ideal.map_map, hcomp, ← Ideal.map_map]`.
+
+Conclude with `idealOrder_map_of_inverse (h.stalkMap y).hom (inv (h.stalkMap y)).hom hsgf hsfg _`.
+-/
 theorem orderAt_comap_of_isOpenImmersion {Y : Scheme.{u}} (h : Y ⟶ X) [IsOpenImmersion h]
     (I : X.IdealSheafData) (y : Y) :
     orderAt (I.comap h) y = orderAt I (h.base y) := by
@@ -536,6 +740,9 @@ theorem orderAt_comap_of_isOpenImmersion {Y : Scheme.{u}} (h : Y ⟶ X) [IsOpenI
   exact idealOrder_map_of_inverse (h.stalkMap y).hom (inv (h.stalkMap y)).hom hsgf hsfg _
 
 open CategoryTheory in
+/- English proof (translation)
+The claim follows from `orderAt_comap_of_isOpenImmersion f J x`.
+-/
 theorem orderAt_comap_of_isIso {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f] (J : B.IdealSheafData)
     (x : ↥A) : orderAt (J.comap f) x = orderAt J (f.base x) :=
   orderAt_comap_of_isOpenImmersion f J x
@@ -543,27 +750,45 @@ theorem orderAt_comap_of_isIso {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f] (J : B
 noncomputable def orderAtLeastLocus (I : X.IdealSheafData) (m : ℕ) : Set X :=
   {x : X | (m : ℕ∞) ≤ orderAt I x}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_orderAtLeastLocus_iff (I : X.IdealSheafData) (m : ℕ) (x : X) :
     x ∈ orderAtLeastLocus I m ↔ (m : ℕ∞) ≤ orderAt I x := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_orderAtLeastLocus_iff, le_orderAt_iff]`.
+-/
 theorem mem_orderAtLeastLocus_iff_stalkIdeal_le_maximalIdeal_pow (I : X.IdealSheafData) (m : ℕ)
     (x : X) :
     x ∈ orderAtLeastLocus I m ↔
       stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ^ m := by
   rw [mem_orderAtLeastLocus_iff, le_orderAt_iff]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_orderAtLeastLocus_iff]`.
+-/
 theorem orderAtLeastLocus_zero (I : X.IdealSheafData) : orderAtLeastLocus I 0 = Set.univ := by
   ext x
   simp [mem_orderAtLeastLocus_iff]
 
+/- English proof (translation)
+Rewrite using `[mem_orderAtLeastLocus_iff, Nat.cast_one, one_le_orderAt_iff_mem_support]`.
+-/
 theorem mem_orderAtLeastLocus_one_iff (I : X.IdealSheafData) (x : X) :
     x ∈ orderAtLeastLocus I 1 ↔ x ∈ I.support := by
   rw [mem_orderAtLeastLocus_iff, Nat.cast_one, one_le_orderAt_iff_mem_support]
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `mem_orderAtLeastLocus_one_iff I x`.
+-/
 theorem orderAtLeastLocus_one (I : X.IdealSheafData) : orderAtLeastLocus I 1 = {x : X | x ∈ I.support} := by
   ext x
   exact mem_orderAtLeastLocus_one_iff I x
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [mem_orderAtLeastLocus_iff, Set.mem_empty_iff_false, iff_false, not_le, orderAt_top]`. Establish `h : 0 < m` using `hm`. Conclude with `h` after adjusting the coercions.
+-/
 theorem orderAtLeastLocus_top_eq_empty (m : ℕ) (hm : 1 ≤ m) :
     orderAtLeastLocus (⊤ : X.IdealSheafData) m = ∅ := by
   ext x
@@ -571,6 +796,9 @@ theorem orderAtLeastLocus_top_eq_empty (m : ℕ) (hm : 1 ≤ m) :
   have h : 0 < m := hm
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_orderAtLeastLocus_iff]`. Use `le_trans ?_ hx` and prove the remaining obligations. Conclude with `h` after adjusting the coercions.
+-/
 theorem orderAtLeastLocus_subset_of_le (I : X.IdealSheafData) {m m' : ℕ} (h : m ≤ m') :
     orderAtLeastLocus I m' ⊆ orderAtLeastLocus I m := by
   intro x hx
@@ -578,12 +806,18 @@ theorem orderAtLeastLocus_subset_of_le (I : X.IdealSheafData) {m m' : ℕ} (h : 
   refine le_trans ?_ hx
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_orderAtLeastLocus_iff]`. Conclude with `le_trans hx (orderAt_le_of_le h x)`.
+-/
 theorem orderAtLeastLocus_subset_of_le_ideal {I J : X.IdealSheafData} (h : I ≤ J) (m : ℕ) :
     orderAtLeastLocus J m ⊆ orderAtLeastLocus I m := by
   intro x hx
   rw [mem_orderAtLeastLocus_iff] at hx ⊢
   exact le_trans hx (orderAt_le_of_le h x)
 
+/- English proof (translation)
+Introduce and unpack `x ⟨hx, hx'⟩`. Rewrite `hx`, `hx'`, the goal using `[mem_orderAtLeastLocus_iff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inter_orderAtLeastLocus_subset_orderAtLeastLocus_mul (I J : X.IdealSheafData) (m m' : ℕ) :
     orderAtLeastLocus I m ∩ orderAtLeastLocus J m' ⊆ orderAtLeastLocus (I * J) (m + m') := by
   rintro x ⟨hx, hx'⟩
@@ -592,6 +826,9 @@ theorem inter_orderAtLeastLocus_subset_orderAtLeastLocus_mul (I J : X.IdealSheaf
     _ ≤ orderAt I x + orderAt J x := add_le_add hx hx'
     _ ≤ orderAt (I * J) x := add_orderAt_le_orderAt_mul I J x
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_orderAtLeastLocus_iff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem orderAtLeastLocus_subset_orderAtLeastLocus_pow (I : X.IdealSheafData) (c m : ℕ) :
     orderAtLeastLocus I m ⊆ orderAtLeastLocus (I ^ c) (c * m) := by
   intro x hx

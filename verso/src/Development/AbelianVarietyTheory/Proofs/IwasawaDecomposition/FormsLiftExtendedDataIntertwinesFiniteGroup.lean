@@ -24,6 +24,13 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Apply `(S'.res hS').symm.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d'`. Apply `hrd'` to reduce the goal to its premises. Take `⟨d, hd⟩` from `hex d'`.
+
+Establish `e1 : (S'.res hS').symm (S'.repCSD hS' ρ' a' (L f)) = ρ' a' ((S'.res hS').symm (L f))`. Simplify using `[GSD.repCSD]`. Establish `e2 : (S.res hS).symm (S.repCSD hS ρ a f) = ρ a ((S.res hS).symm f)`. Simplify using `[GSD.repCSD]`. Rewrite using `[e1, hρ']`.
+
+Establish `h1` using `hC f (t d) (t' d') (ht d d' hd)`. Establish `h2` using `hC (S.repCSD hS ρ a f) d d' hd`. Rewrite `h2` using `[e2, hρ]`. Conclude with `eq_of_heq (h1.trans h2.symm)`.
+-/
 theorem repCSD_lift_of_reading {K K' : Type} [Field K] [NumberField K] [StarRing K] [Field K'] [NumberField K'] [StarRing K']
     (S : GSD K) (S' : GSD K') (hS : S.Ok) (hS' : S'.Ok) {A A' : Type} [Group A] [Group A']
     (ρ : Representation K A S.EqFun) (ρ' : Representation K' A' S'.EqFun) {T T' : Type} (rd : S.V → T) (rd' : S'.V → T')
@@ -56,6 +63,9 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Substitute `hQ` using the available equality. Conclude with `⟨fun d' => ⟨d', HEq.rfl⟩, fun g d d' hd => by cases hd; rfl⟩`.
+-/
 theorem decoratedLattice_translates_heq_of_eq_primes {X : Fields} {n r : ℕ} (h : r ≤ n) {SG Q Q' : Finset (HeightOneSpectrum (𝓞 X.E))} (hQ : Q' = Q) :
     (∀ d' : DecoSet X.E n ∅ (uSG SG Q'), ∃ d : DecoSet X.E n ∅ (uSG SG Q), HEq d' d) ∧
     ∀ (g : G0 X.E SG r) (d : DecoSet X.E n ∅ (uSG SG Q)) (d' : DecoSet X.E n ∅ (uSG SG Q')), HEq d' d →
@@ -65,6 +75,11 @@ theorem decoratedLattice_translates_heq_of_eq_primes {X : Fields} {n r : ℕ} (h
 
 open Formalism.L2.Col in
 
+/- English proof (translation)
+Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`. Substitute `h` using the available equality. Consider the cases of `hp`.
+
+Use `⟨fun d' => (decoratedLattice_translates_heq_of_eq_primes (r_le_nV _) (hQ'.trans hQ.symm)).1 d', fun g g' hg d d' hd => ?_⟩` and prove the remaining obligations. Establish `e` using `eq_of_heq hg`. Substitute `e` using the available equality. Conclude with `(decoratedLattice_translates_heq_of_eq_primes (r_le_nV _) (hQ'.trans hQ.symm)).2 _ d d' hd`.
+-/
 theorem decoratedLattice_translates_heq_of_eq_preData (B B' : Base) (px : PreX B.toPre) (px' : PreX B'.toPre) (h : B'.toPre = B.toPre) (hp : HEq px' px)
     (sel : HeightOneSpectrum (𝓞 B.fields.F) → HeightOneSpectrum (𝓞 B.fields.E))
     (sel' : HeightOneSpectrum (𝓞 B'.fields.F) → HeightOneSpectrum (𝓞 B'.fields.E)) {S S' : Set ℕ}
@@ -90,6 +105,9 @@ theorem decoratedLattice_translates_heq_of_eq_preData (B B' : Base) (px : PreX B
 end GlobalTheory.Mem.R3.DefLatBC
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hp Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' _ φ _ e he L _ hC g f0 => ?_` and prove the remaining obligations. Establish `hP` using `GlobalTheory.Mem.R3.DefLatBC.decoratedLattice_translates_heq_of_eq_preData B B' w.px w'.px hE.1 hp w.I.sel w'.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 (Formalism.L2.Col.twi …`. Establish `hinj : Function.Injective fun v : (Formalism.L2.Col.mtKGSD (Pr` using `B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 ((j' : ℕ) + 1)).V => MvPolynomial.map (B'.embLL : B'.fields.K →+* ℂ) v.1 := (MvPolynomial.map_injective _ (B'.embLL : B'.fields.K →+* ℂ).injective).co …`. Conclude with `GlobalTheory.Mem.R3.DefLatBC.repCSD_lift_of_reading (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((j : ℕ) + 1)) (Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fie …`.
+-/
 theorem GlobalTheory.Mem.R3.DefLatBC.act_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

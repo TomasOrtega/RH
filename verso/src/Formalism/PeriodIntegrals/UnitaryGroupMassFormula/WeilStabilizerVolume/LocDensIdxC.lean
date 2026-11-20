@@ -11,6 +11,13 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
 
 namespace IdxHW
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hc` using `hCM.2.1`. Set `w : InfinitePlace E` to `Classical.arbitrary _`. Establish `hcw : w.IsComplex` using `hc.isComplex w`.
+
+Apply `InfinitePlace.not_isReal_iff_isComplex.2 hcw` to reduce the goal to its premises. Rewrite using `[InfinitePlace.isReal_iff]`. Use extensionality with `x`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Establish `h1` using `hCM.2.2.2 w.embedding x`.
+
+Rewrite `h1` using `[h x]`. Conclude with `h1.symm`.
+-/
 theorem sigma_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
   by_contra h
@@ -35,14 +42,23 @@ def Cmat : Matrix (Fin 2) (Fin 2) F := fun k l => b.repr (σ (b l)) k
 
 def cr (y : Fv F v ⊗[F] E) (k : Fin 2) : Fv F v := (Algebra.TensorProduct.basis (Fv F v) b).repr y k
 
+/- English proof (translation)
+The claim follows from `crd_sigR b v σ y k`.
+-/
 theorem cr_sig (y : Fv F v ⊗[F] E) (k : Fin 2) :
     cr b v (sigR (Fv F v) σ y) k = ∑ l, algebraMap F (Fv F v) (Cmat b σ k l) * cr b v y l :=
   crd_sigR b v σ y k
 
+/- English proof (translation)
+Simplify using `[cr, Algebra.TensorProduct.one_def, Algebra.TensorProduct.basis_repr_tmul, map_smul]`.
+-/
 theorem cr_smul_one (t : Fv F v) (k : Fin 2) :
     cr b v (t • (1 : Fv F v ⊗[F] E)) k = t * algebraMap F (Fv F v) (b.repr 1 k) := by
   simp [cr, Algebra.TensorProduct.one_def, Algebra.TensorProduct.basis_repr_tmul, map_smul]
 
+/- English proof (translation)
+Establish `: cr b v ((Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm f) k = (Algebra.TensorProduct.basis (Fv F v) b).equivFun ((Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm f) k`. Simplify using `[cr, Module.Basis.equivFun_apply]`. Rewrite using `[this, LinearEquiv.apply_symm_apply]`.
+-/
 theorem cr_symm (f : Fin 2 → Fv F v) (k : Fin 2) :
     cr b v ((Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm f) k = f k := by
   have : cr b v ((Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm f) k =
@@ -51,6 +67,9 @@ theorem cr_symm (f : Fin 2 → Fv F v) (k : Fin 2) :
     simp [cr, Module.Basis.equivFun_apply]
   rw [this, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crdS_eq (S : HermR (Fv F v) σ a) (i j : Fin a) (k : Fin 2) :
     crdS b v σ a S i j k = cr b v ((S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j) k := rfl
 

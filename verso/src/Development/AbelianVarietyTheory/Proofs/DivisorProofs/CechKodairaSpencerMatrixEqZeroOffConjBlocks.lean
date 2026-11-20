@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.LogPole
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF U n e v hv D Θ hKS i k hik`. Take `⟨htan, huq, heig⟩` from `hv`. Set `A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(TF.Y.X, U.1)` to `fun x => Matrix.diagonal fun j => algX TF.Y.s U.1 (embK c (e.symm j).1 x)`. Establish `hA : ∀ x j, IsCombAtG TF.Y.t (LogKS.chart U) v (A x j) (v j ≫ (TF.Y.t.act.act x).left)`. Introduce `x j`.
+
+Establish `h` using `heig x (e.symm j).1 (e.symm j).2`. Simplify using `only [Sigma.eta, Equiv.apply_symm_apply] at h`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [A, Matrix.diagonal_apply, Pi.single_apply, eq_comm]`.
+
+Take `⟨e', he'⟩` from `TF.logKS U n v A htan huq hA`. Establish `hmem : Θ ∈ LogKS.balanced H.bar A`. Rewrite using `[(he' D Θ).1 hKS]`. Conclude with `(e' D).2`. Establish `hd` using `((LogKS.mem_balanced_diagonal H.bar (fun j x => algX TF.Y.s U.1 (embK c (e.symm j).1 x)) Θ).1 hmem).2`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : 𝓞 E, embK c (e.symm i).1 x ≠ embK c ((starRingEnd ℂ).comp (e.symm k).1) x := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hik` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises.
+
+Use extensionality with `y`. Establish `h` using `congrArg (fun z : c.F => (z : ℂ)) (hcon y)`. Simplify `h` using `[embK_coe, conjEmb]`. Establish `hu : IsUnit (algX TF.Y.s U.1 (embK c (e.symm i).1 x) - algX TF.Y.s U.1 (embK c (e.symm k).1 (H.bar x)))`. Rewrite using `[GlobalTheory.LogKSDiv.GenKSProof.embK_bar', ← map_sub]`.
+
+Conclude with `(IsUnit.mk0 _ (sub_ne_zero.2 hx)).map _`. Conclude with `hu.mul_right_eq_zero.1 (hd x i k)`.
+-/
 theorem ksMatrix_eq_zero_of_ne_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (D : LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(TF.Y.X, U.1)), LogKS.IsKS TF.Y.t (LogKS.interior TF.Y) U v D.1 Θ → ∀ a b, (e.symm a).1 ≠ conjEmb (e.symm b).1 → Θ a b = 0 := by
   intro E _ _ _ H Dw l Xo c TF U n e v hv D Θ hKS i k hik
   obtain ⟨htan, huq, heig⟩ := hv

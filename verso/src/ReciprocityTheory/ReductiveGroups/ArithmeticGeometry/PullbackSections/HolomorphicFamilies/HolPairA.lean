@@ -10,6 +10,15 @@ open AlgebraicGeometry CategoryTheory Opposite ReciprocityTheory.ChartRestrictio
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Introduce `U f`. Establish `hpre : ∀ b, (y b ≫ φ) ⁻¹ᵁ U = y b ⁻¹ᵁ (φ ⁻¹ᵁ U)` using `fun b => by first`. Consider the case `rfl`. Consider the case `simp`. Take `⟨h1, h2⟩` from `hy (φ ⁻¹ᵁ U) (φ.app U f)`.
+
+Simplify using `only [hpre]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `h2.congr (fun b hb => ?_)` and prove the remaining obligations. Establish `hb2 : ⊤ ≤ (y b ≫ φ) ⁻¹ᵁ U`. Rewrite using `[hpre]`.
+
+Conclude with `hb.2`. Unfold `valAt'`. Rewrite using `[dif_pos hb2, dif_pos hb.2]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `simp [Scheme.comp_app]`. Consider the case `(simp only [Scheme.comp_app]; done)`.
+-/
 theorem isHolTo_comp {Y Y' : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ Y)} (hy : IsHolTo B y) (φ : Y ⟶ Y') :
     IsHolTo B (fun b => y b ≫ φ) := by
   intro U f
@@ -31,6 +40,11 @@ theorem isHolTo_comp {Y Y' : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ Y)} 
     | simp [Scheme.comp_app]
     | (simp only [Scheme.comp_app]; done)
 
+/- English proof (translation)
+Unfold `IsHolTo`. Introduce `U f`. Establish `hS : IsOpen {b | b ∈ B ∧ ⊤ ≤ y b ⁻¹ᵁ U}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `b hb`.
+
+Take `⟨N, hN, hNS, -⟩` from `h U f b hb.1 hb.2`. Conclude with `Filter.mem_of_superset hN hNS`. Use `⟨hS, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, -, hd⟩` from `h U f b hb.1 hb.2`. Conclude with `(hd.differentiableAt hN).differentiableWithinAt`.
+-/
 theorem isHolTo_of_local {Y : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ Y)}
     (h : ∀ (U : Y.Opens) (f : Γ(Y, U)) (b₀ : V), b₀ ∈ B → ⊤ ≤ y b₀ ⁻¹ᵁ U →
       ∃ N ∈ nhds b₀, N ⊆ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun b => valAt' (y b) U f) N) :
@@ -46,6 +60,19 @@ theorem isHolTo_of_local {Y : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ Y)}
   obtain ⟨N, hN, -, hd⟩ := h U f b hb.1 hb.2
   exact (hd.differentiableAt hN).differentiableWithinAt
 
+/- English proof (translation)
+Use `isHolTo_of_local fun U f b₀ hb₀ hU => ?_` and prove the remaining obligations. Establish `hmem : (z b₀) cpt ∈ U` using `hU (Set.mem_univ _)`. Take `⟨r, hrU, hr0⟩` from `(isAffineOpen_top T).exists_basicOpen_le (V := U) ⟨(z b₀) cpt, hmem⟩ trivial`. Establish `htop : ∀ b, ⊤ ≤ z b ⁻¹ᵁ (⊤ : T.Opens)` using `fun b p _ => trivial`. Use `set N := {b ∈ B | valAt' (z b) ⊤ r ≠ 0} with hNdef`.
+
+Establish `hNo : IsOpen N` using `(hz r).continuousOn.isOpen_inter_preimage hB isOpen_ne`. Establish `hmemD : ∀ b, valAt' (z b) ⊤ r ≠ 0 → ⊤ ≤ z b ⁻¹ᵁ T.basicOpen r` using `fun b hb => top_le_of_mem ((valAt'_ne_zero_iff (z b) ⊤ (htop b) r cpt).1 hb)`. Establish `hb0N : b₀ ∈ N` using `⟨hb₀, (valAt'_ne_zero_iff (z b₀) ⊤ (htop b₀) r cpt).2 hr0⟩`. Take `⟨⟨hh, s⟩, hk⟩` from `IsLocalization.surj (Submonoid.powers r) (T.presheaf.map (homOfLE hrU).op f)`. Take `⟨k, hks⟩` from `s.2`.
+
+Simplify using `only at hk`. Establish `hval : ∀ b ∈ N, valAt' (z b) U f * valAt' (z b) ⊤ r ^ k = valAt' (z b) ⊤ hh`. Introduce `b hb`. Establish `hD` using `hmemD b hb.2`. Establish `e` using `congrArg (valAt' (z b) (T.basicOpen r)) hk`.
+
+Rewrite `e` using `[valAt'_mul, valAt'_res (z b) hrU hD]`. Establish `e2 : ∀ x : Γ(T, ⊤), valAt' (z b) (T.basicOpen r) (algebraMap Γ(T, ⊤) Γ(T, T.basicOpen r) x) = valAt' (z b) ⊤ x` using `fun x => valAt'_res (z b) le_top hD x`. Rewrite `e` using `[e2, e2, ← hks]`. Establish `e3 : valAt' (z b) ⊤ (r ^ k) = valAt' (z b) ⊤ r ^ k` using `map_pow (valHom (z b) ⊤ (htop b)) r k`. Rewrite `e` using `[e3]`.
+
+Conclude with `e`. Use `⟨N, hNo.mem_nhds hb0N, fun b hb => ⟨hb.1, (hmemD b hb.2).trans (Scheme.Hom.preimage_mono _ hrU)⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : DifferentiableOn ℂ (fun b => valAt' (z b) ⊤ hh) N` using `(hz hh).mono fun b (hb : b ∈ N) => hb.1`. Establish `h2 : DifferentiableOn ℂ ((fun b => valAt' (z b) ⊤ r) ^ k) N` using `((hz r).mono fun b (hb : b ∈ N) => hb.1).pow k`. Establish `h3 : DifferentiableOn ℂ ((fun b => valAt' (z b) ⊤ r) ^ k)⁻¹ N` using `h2.inv fun b (hb : b ∈ N) => by simp only [Pi.pow_apply]; exact pow_ne_zero _ hb.2`.
+
+Establish `h4` using `h1.mul h3`. Use `h4.congr fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Pi.pow_apply]`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ hb.2)]`. Conclude with `hval b hb`.
+-/
 theorem isHolTo_of_affine {T : Scheme.{0}} [IsAffine T] {B : Set V} (hB : IsOpen B) {z : V → (Sp ℂ ⟶ T)}
     (hz : ∀ r : Γ(T, ⊤), DifferentiableOn ℂ (fun b => valAt' (z b) ⊤ r) B) : IsHolTo B z := by
   refine isHolTo_of_local fun U f b₀ hb₀ hU => ?_

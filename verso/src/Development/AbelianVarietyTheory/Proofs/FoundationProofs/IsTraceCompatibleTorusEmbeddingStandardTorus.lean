@@ -39,10 +39,18 @@ def Tr (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N
   Submodule.span Qbar {F | ∃ t : VC D N N', (∃ m : ℕ, 0 < m ∧ m • t ∈ LaB D T b) ∧
     F = U D T t (pullB D T b (sgStar T.abelian₂))}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem La_eq (D : D7) (T : Tor D) {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
     La D T L L' = LaS D T (YYl D L L' : Set (Matrix (Fin N') (Fin N) D.host.E)) := rfl
 
+/- English proof (translation)
+Unfold `LaB LaS`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, j, rfl⟩`.
+
+Conclude with `⟨w, hw, b j, ⟨j, rfl⟩, rfl⟩`. Introduce and unpack `⟨w, hw, _, ⟨j, rfl⟩, rfl⟩`. Conclude with `⟨w, hw, j, rfl⟩`.
+-/
 theorem LaB_eq (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) :
     LaB D T b = LaS D T (Set.range b) := by
   unfold LaB LaS
@@ -52,6 +60,11 @@ theorem LaB_eq (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N'
   · rintro ⟨w, hw, j, rfl⟩; exact ⟨w, hw, b j, ⟨j, rfl⟩, rfl⟩
   · rintro ⟨w, hw, _, ⟨j, rfl⟩, rfl⟩; exact ⟨w, hw, j, rfl⟩
 
+/- English proof (translation)
+Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Rewrite using `[one_nsmul]`. Conclude with `AddSubgroup.subset_closure ⟨j, rfl⟩`.
+-/
 theorem comm_range (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) :
     Comm D b 1 (Set.range b) := by
   refine ⟨?_, fun j => ?_⟩
@@ -63,6 +76,11 @@ theorem comm_range (D : D7) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N
     · simp
   · rw [one_nsmul]; exact AddSubgroup.subset_closure ⟨j, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun y hy => ?_, fun j => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h.1 y hy`. Use `⟨fun j => (m : 𝓞 D.host.K) * a j, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_nsmul', ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.K, smul_smul]`. Simplify using the standard rewrite rules. Rewrite using `[mul_nsmul']`. Conclude with `AddSubgroup.nsmul_mem _ (h.2 j) m`.
+-/
 theorem Comm.mul {D : D7} {N N' r : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} {k : ℕ}
     {Y : Set (Matrix (Fin N') (Fin N) D.host.E)} (h : Comm D b k Y) (m : ℕ) : Comm D b (m * k) Y := by
   refine ⟨fun y hy => ?_, fun j => ?_⟩
@@ -74,33 +92,57 @@ theorem Comm.mul {D : D7} {N N' r : ℕ} {b : Fin r → Matrix (Fin N') (Fin N) 
     simp
   · rw [mul_nsmul']; exact AddSubgroup.nsmul_mem _ (h.2 j) m
 
+/- English proof (translation)
+Conclude with `D.host.conjE_apply e x`.
+-/
 theorem emb_conj (D : D7) (e : D.host.E →+* ℂ) (x : D.host.E) :
     e (D.host.conj x) = (starRingEnd ℂ) (e x) := by
   exact D.host.conjE_apply e x
 
+/- English proof (translation)
+Simplify using `[cj, TaylorLogMetric.liftM, h]`.
+-/
 theorem cj_mem {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) {x : ℂ} (h : x ∈ M) :
     cj M ρ x = ρ ⟨x, h⟩ := by
   simp [cj, TaylorLogMetric.liftM, h]
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ hx, cj_mem ρ hy, cj_mem ρ (add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem cj_add {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) {x y : ℂ} (hx : x ∈ M) (hy : y ∈ M) :
     cj M ρ (x + y) = cj M ρ x + cj M ρ y := by
   rw [cj_mem ρ hx, cj_mem ρ hy, cj_mem ρ (add_mem hx hy), ← map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ hx, cj_mem ρ hy, cj_mem ρ (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem cj_mul {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) {x y : ℂ} (hx : x ∈ M) (hy : y ∈ M) :
     cj M ρ (x * y) = cj M ρ x * cj M ρ y := by
   rw [cj_mem ρ hx, cj_mem ρ hy, cj_mem ρ (mul_mem hx hy), ← map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ (zero_mem M)]`. Conclude with `map_zero ρ`.
+-/
 theorem cj_zero {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) : cj M ρ 0 = 0 := by
   rw [cj_mem ρ (zero_mem M)]; exact map_zero ρ
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ (one_mem M)]`. Conclude with `map_one ρ`.
+-/
 theorem cj_one {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) : cj M ρ 1 = 1 := by
   rw [cj_mem ρ (one_mem M)]; exact map_one ρ
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ (neg_mem (one_mem M))]`. Establish `: (⟨-1, neg_mem (one_mem M)⟩ : M) = -1` using `rfl`. Rewrite using `[this, map_neg, map_one]`.
+-/
 theorem cj_neg_one {M : IntermediateField ℚ ℂ} (ρ : M →ₐ[ℚ] ℂ) : cj M ρ (-1) = -1 := by
   rw [cj_mem ρ (neg_mem (one_mem M))]
   have : (⟨-1, neg_mem (one_mem M)⟩ : M) = -1 := rfl
   rw [this, map_neg, map_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ => embT D τ, fun _ _ => rfl, h.1, h.2⟩`.
+-/
 theorem isTraceCompatibleTorusEmbedding_standardTorus (D : D7) (h : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Good D (tor0 D cc δ) :=
   ⟨fun τ => embT D τ, fun _ _ => rfl, h.1, h.2⟩
 
@@ -108,10 +150,18 @@ def cjEmb (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (h :
     (τ : D.what₂.Tau) : D.host.E →+* ℂ :=
   (ρ : M →+* ℂ).comp ((embT D τ).codRestrict M.toSubfield (h τ))
 
+/- English proof (translation)
+Rewrite using `[cj_mem ρ (h τ x)]`. Both sides reduce to the same expression.
+-/
 theorem cjEmb_apply (D : D7) (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (h : ∀ τ x, embT D τ x ∈ M)
     (τ : D.what₂.Tau) (x : D.host.E) : cjEmb D M ρ h τ x = cj M ρ (embT D τ x) := by
   rw [cj_mem ρ (h τ x)]; rfl
 
+/- English proof (translation)
+Establish `hM : ∀ τ x, embT D τ x ∈ M` using `hD.1`. Use `⟨cjEmb D M ρ hM, fun τ x => (cjEmb_apply D M ρ hM τ x).symm, fun τ a => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[cjEmb_apply, h.1 τ a]`. Conclude with `(hK a).2`. Rewrite using `[← (hK _).2, ← h.2 y, cj_mem ρ (sum_mem fun τ _ => hM τ y)]`.
+
+Establish `: (⟨∑ τ, embT D τ y, sum_mem fun τ _ => hM τ y⟩ : M) = ∑ τ, ⟨embT D τ y, hM τ y⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[this, map_sum]`. Both sides reduce to the same expression.
+-/
 theorem good_torConj (D : D7) (h : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
     (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (hK : FixK D M ρ) (hD : DataIn D (tor0 D cc δ) M) :
     Good D (torConj D (tor0 D cc δ) M ρ) := by
@@ -124,12 +174,18 @@ theorem good_torConj (D : D7) (h : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : �
     rw [this, map_sum]
     rfl
 
+/- English proof (translation)
+Take `⟨e, he, -, -⟩` from `h`. Use function extensionality and compare the values at `τ i j`. Simplify using `[embV, he]`.
+-/
 theorem Good.embV_add {D : D7} {T : Tor D} (h : Good D T) {N N' : ℕ}
     (A B : Matrix (Fin N') (Fin N) D.host.E) : embV D T (A + B) = embV D T A + embV D T B := by
   obtain ⟨e, he, -, -⟩ := h
   funext τ i j
   simp [embV, he]
 
+/- English proof (translation)
+Take `⟨e, he, hK, -⟩` from `h`. Use function extensionality and compare the values at `τ i j`. Establish `: (a • A) i j = (a : D.host.E) * A i j` using `rfl`. Simplify using `only [embV, he, this, map_mul, hK, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem Good.embV_smul {D : D7} {T : Tor D} (h : Good D T) {N N' : ℕ} (a : D.host.K)
     (A : Matrix (Fin N') (Fin N) D.host.E) :
     embV D T (a • A) = D.host.φ₀ (a : D.host.E) • embV D T A := by
@@ -142,6 +198,11 @@ def Good.embHom {D : D7} {T : Tor D} (h : Good D T) (N N' : ℕ) :
     Matrix (Fin N') (Fin N) D.host.E →+ VC D N N' :=
   AddMonoidHom.mk' (embV D T) h.embV_add
 
+/- English proof (translation)
+Take `⟨e, he, hK, hT⟩` from `h`. Establish `h1` using `hT (∑ a, ∑ c, b i a c * D.host.conj (b j a c))`. Establish `h2` using `hb i j`. Unfold `hYY at h2`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : coordB D T b j (embV D T (b i)) = ∑ τ, e τ (∑ a, ∑ c, b i a c * D.host.conj (b j a c))`. Simplify using `only [coordB, embV, he, map_sum, map_mul, emb_conj]`. Rewrite using `[h3, h1]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem Good.coordB_embV {D : D7} {T : Tor D} (h : Good D T) {N N' r : ℕ}
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : TaylorLogMetric.Orthonormal D b) (i j : Fin r) :
     coordB D T b j (embV D T (b i)) = if i = j then 1 else 0 := by
@@ -155,10 +216,16 @@ theorem Good.coordB_embV {D : D7} {T : Tor D} (h : Good D T) {N N' r : ℕ}
   rw [h3, h1]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[coordB, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem coordB_add (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (j : Fin r) (x y : VC D N N') : coordB D T b j (x + y) = coordB D T b j x + coordB D T b j y := by
   simp [coordB, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[coordB, Finset.mul_sum, mul_assoc]`.
+-/
 theorem coordB_smul (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (Fin N) D.host.E)
     (j : Fin r) (c : ℂ) (x : VC D N N') : coordB D T b j (c • x) = c * coordB D T b j x := by
   simp [coordB, Finset.mul_sum, mul_assoc]
@@ -169,6 +236,11 @@ def coordL (D : D7) (T : Tor D) {N N' r : ℕ} (b : Fin r → Matrix (Fin N') (F
   map_add' := coordB_add D T b j
   map_smul' := coordB_smul D T b j
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `coordL D T b j _ = _`. Rewrite using `[map_sum]`. Establish `: ∀ i, coordL D T b j (c i • embV D T (b i)) = if i = j then c i else 0` using `fun i => by`. Express the relevant statement in the definitionally equal form `coordB D T b j _ = _`. Rewrite using `[coordB_smul, h.coordB_embV hb]`.
+
+Simplify using the standard rewrite rules. Simplify using `[this]`.
+-/
 theorem Good.coordB_sum {D : D7} {T : Tor D} (h : Good D T) {N N' r : ℕ}
     {b : Fin r → Matrix (Fin N') (Fin N) D.host.E} (hb : TaylorLogMetric.Orthonormal D b) (c : Fin r → ℂ) (j : Fin r) :
     coordB D T b j (∑ i, c i • embV D T (b i)) = c j := by
@@ -179,22 +251,39 @@ theorem Good.coordB_sum {D : D7} {T : Tor D} (h : Good D T) {N N' r : ℕ}
     rw [coordB_smul, h.coordB_embV hb]; simp
   simp [this]
 
+/- English proof (translation)
+Simplify using `[Hf, add_mul, Finset.sum_add_distrib, add_div]`.
+-/
 theorem Hf_add_left (D : D7) (T : Tor D) {N N' : ℕ} (x y w : VC D N N') :
     Hf D T (x + y) w = Hf D T x w + Hf D T y w := by
   simp [Hf, add_mul, Finset.sum_add_distrib, add_div]
 
+/- English proof (translation)
+Simplify using `[Hf, mul_add, Finset.sum_add_distrib, add_div]`.
+-/
 theorem Hf_add_right (D : D7) (T : Tor D) {N N' : ℕ} (x y w : VC D N N') :
     Hf D T w (x + y) = Hf D T w x + Hf D T w y := by
   simp [Hf, mul_add, Finset.sum_add_distrib, add_div]
 
+/- English proof (translation)
+Simplify using `[Hf, Finset.mul_sum, mul_assoc, mul_div_assoc, Finset.sum_div]`.
+-/
 theorem Hf_smul_left (D : D7) (T : Tor D) {N N' : ℕ} (c : ℂ) (x w : VC D N N') :
     Hf D T (c • x) w = c * Hf D T x w := by
   simp [Hf, Finset.mul_sum, mul_assoc, mul_div_assoc, Finset.sum_div]
 
+/- English proof (translation)
+Simplify using `[Hf, mul_comm]`.
+-/
 theorem Hf_conj (D : D7) (T : Tor D) {N N' : ℕ} (x w : VC D N N') :
     Hf D T w x = (starRingEnd ℂ) (Hf D T x w) := by
   simp [Hf, mul_comm]
 
+/- English proof (translation)
+Unfold `U ee`. Rewrite using `[add_assoc z x y, mul_assoc, ← Complex.exp_add, mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[Hf_add_left, Hf_add_right, Hf_add_left, Hf_add_right, Hf_add_right, Hf_conj D T x y]`. Use `Complex.sub_conj (Hf D T x y)` as an intermediate fact.
+
+Move the coercions through the operations in `at this ⊢`. Take the linear combination `(-(Real.pi : ℂ) / 2) * this`.
+-/
 theorem U_U (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N N' → ℂ) (z : VC D N N') :
     U D T x (U D T y F) z = ee (-(Hf D T x y).im / 2) * U D T (x + y) F z := by
   unfold U ee
@@ -205,14 +294,23 @@ theorem U_U (D : D7) (T : Tor D) {N N' : ℕ} (x y : VC D N N') (F : VC D N N' �
   push_cast at this ⊢
   linear_combination (-(Real.pi : ℂ) / 2) * this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[U, Hf]`.
+-/
 theorem U_zero (D : D7) (T : Tor D) {N N' : ℕ} (F : VC D N N' → ℂ) : U D T 0 F = F := by
   funext z; simp [U, Hf]
 
+/- English proof (translation)
+Unfold `U Hf`. Use `fun_prop`.
+-/
 theorem differentiable_U (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') {F : VC D N N' → ℂ}
     (hF : Differentiable ℂ F) : Differentiable ℂ (U D T x F) := by
   unfold U Hf
   fun_prop
 
+/- English proof (translation)
+Establish `aF : ContDiffAt ℂ (Multiset.card α.toMultiset) F 0` using `(SCV.analyticOnNhd_of_differentiable hF Set.univ 0 (Set.mem_univ _)).contDiffAt`. Establish `aG : ContDiffAt ℂ (Multiset.card α.toMultiset) G 0` using `(SCV.analyticOnNhd_of_differentiable hG Set.univ 0 (Set.mem_univ _)).contDiffAt`. Unfold `taylor`. Rewrite using `[iteratedFDeriv_add_apply aF aG]`. Simplify using `[add_div]`.
+-/
 theorem taylor_add (D : D7) {N N' : ℕ} {F G : VC D N N' → ℂ} (hF : Differentiable ℂ F)
     (hG : Differentiable ℂ G) (α : Mono D N N') :
     taylor D (F + G) α = taylor D F α + taylor D G α := by
@@ -224,6 +322,9 @@ theorem taylor_add (D : D7) {N N' : ℕ} {F G : VC D N N' → ℂ} (hF : Differe
   rw [iteratedFDeriv_add_apply aF aG]
   simp [add_div]
 
+/- English proof (translation)
+Establish `aF : ContDiffAt ℂ (Multiset.card α.toMultiset) F 0` using `(SCV.analyticOnNhd_of_differentiable hF Set.univ 0 (Set.mem_univ _)).contDiffAt`. Unfold `taylor`. Establish `: (fun z => c * F z) = c • F` using `rfl`. Rewrite using `[this, iteratedFDeriv_const_smul_apply aF]`. Simplify using `[mul_div_assoc]`.
+-/
 theorem taylor_mul (D : D7) {N N' : ℕ} (c : ℂ) {F : VC D N N' → ℂ} (hF : Differentiable ℂ F)
     (α : Mono D N N') : taylor D (fun z => c * F z) α = c * taylor D F α := by
   have aF : ContDiffAt ℂ (Multiset.card α.toMultiset) F 0 :=
@@ -233,16 +334,25 @@ theorem taylor_mul (D : D7) {N N' : ℕ} (c : ℂ) {F : VC D N N' → ℂ} (hF :
   rw [this, iteratedFDeriv_const_smul_apply aF]
   simp [mul_div_assoc]
 
+/- English proof (translation)
+Use `taylor_mul D 0 (F := (0 : VC D N N' → ℂ)) (differentiable_const 0) α` as an intermediate fact. Simplify using `only [zero_mul] at this`. Conclude with `this`.
+-/
 theorem taylor_zero (D : D7) {N N' : ℕ} (α : Mono D N N') : taylor D (0 : VC D N N' → ℂ) α = 0 := by
   have := taylor_mul D 0 (F := (0 : VC D N N' → ℂ)) (differentiable_const 0) α
   simp only [zero_mul] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiable_const 0, differentiable_const 0, fun α => by rw [taylor_zero, cj_zero]; exact ⟨zero_mem _, rfl⟩⟩`.
+-/
 theorem CjF.zero (D : D7) {N N' : ℕ} (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) :
     CjF D M ρ (0 : VC D N N' → ℂ) 0 :=
   ⟨differentiable_const 0, differentiable_const 0, fun α => by
     rw [taylor_zero, cj_zero]; exact ⟨zero_mem _, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.add h'.1, h.2.1.add h'.2.1, fun α => by rw [taylor_add D h.1 h'.1, taylor_add D h.2.1 h'.2.1, cj_add ρ (h.2.2 α).1 (h'.2.2 α).1, (h.2.2 α).2, (h'.2.2 α).2] exact ⟨add_mem (h.2.2 α).1 (h'.2.2 α).1, rfl⟩⟩`.
+-/
 theorem CjF.add {D : D7} {N N' : ℕ} {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ}
     {F F' G G' : VC D N N' → ℂ} (h : CjF D M ρ F F') (h' : CjF D M ρ G G') :
     CjF D M ρ (F + G) (F' + G') :=
@@ -251,6 +361,9 @@ theorem CjF.add {D : D7} {N N' : ℕ} {M : IntermediateField ℚ ℂ} {ρ : M �
       (h.2.2 α).2, (h'.2.2 α).2]
     exact ⟨add_mem (h.2.2 α).1 (h'.2.2 α).1, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.const_mul c, h.2.1.const_mul _, fun α => by rw [taylor_mul D _ h.1, taylor_mul D _ h.2.1, cj_mul ρ hc (h.2.2 α).1, (h.2.2 α).2] exact ⟨mul_mem hc (h.2.2 α).1, rfl⟩⟩`.
+-/
 theorem CjF.mul {D : D7} {N N' : ℕ} {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ}
     {F F' : VC D N N' → ℂ} (h : CjF D M ρ F F') {c : ℂ} (hc : c ∈ M) :
     CjF D M ρ (fun z => c * F z) (fun z => cj M ρ c * F' z) :=
@@ -258,6 +371,11 @@ theorem CjF.mul {D : D7} {N N' : ℕ} {M : IntermediateField ℚ ℂ} {ρ : M �
     rw [taylor_mul D _ h.1, taylor_mul D _ h.2.1, cj_mul ρ hc (h.2.2 α).1, (h.2.2 α).2]
     exact ⟨mul_mem hc (h.2.2 α).1, rfl⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `CjF.zero D M ρ`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`.
+
+Conclude with `(h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem CjF.sum {D : D7} {N N' : ℕ} {M : IntermediateField ℚ ℂ} {ρ : M →ₐ[ℚ] ℂ} {ι : Type*}
     (s : Finset ι) {F F' : ι → VC D N N' → ℂ} (h : ∀ i ∈ s, CjF D M ρ (F i) (F' i)) :
     CjF D M ρ (fun z => ∑ i ∈ s, F i z) (fun z => ∑ i ∈ s, F' i z) := by

@@ -15,6 +15,17 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.FactorPull
 
+/- English proof (translation)
+Introduce `S S' f B C B₁ C₁ _ _ _ _ _ _ _ _ δ M N M₁ N₁ gC hM hN hM₁ hN₁ β₂ u hu v' hv' m m₁ hm w hw`. Establish `lM : (abelian₂ B M).IsLB` using `DVR.linComb_isLB _ hM _ _`. Establish `lN : (abelian₂ C N).IsLB` using `DVR.linComb_isLB _ hN _ _`. Establish `lM₁ : (abelian₂ B₁ M₁).IsLB` using `DVR.linComb_isLB _ hM₁ _ _`. Establish `lN₁ : (abelian₂ C₁ N₁).IsLB` using `DVR.linComb_isLB _ hN₁ _ _`.
+
+Establish `pw` using `(isGen_iff _).1 hw`. Establish `pu` using `(isGen_iff u).1 hu`. Establish `pv'` using `pgen_lamIso gC v' ((isGen_iff v').1 hv')`. Take `⟨w₂, T⟩` from `exists_comp lM w u pw pu lN lM₁`. Establish `p₂` using `pgen_pullCongr hm.symm (T.pgen_comp lM pw pu)`.
+
+Take `⟨w₁, T'⟩` from `exists_cancel lN (lamIso gC v') (pullCongr hm.symm w₂) pv' p₂ lN₁ lM₁`. Use `⟨w₁, (isGen_iff _).2 (T'.pgen_cancel lN pv' p₂), fun Z p z I J I₁ J₁ hI hJ hI₁ hJ₁ => ?_⟩` and prove the remaining obligations. Establish `e : (p ≫ m₁) ≫ sqOf gC = (p ≫ β₂) ≫ m` using `by rw [Category.assoc, hm, Category.assoc]`. Establish `t` using `T Z p z (fun k => I (((p ≫ β₂) ≫ m) ≫ lamφ C k)) (fun k => J ((p ≫ β₂) ≫ lamφ B k)) (fun k => J₁ (p ≫ lamφ B₁ k)) (Set.mem_iInter.2 fun k => hI (((p ≫ β₂) ≫ m) ≫ lamφ C k)) (Set.mem_iInter.2 fun k => hJ ((p ≫ β₂) ≫ lamφ B k)) (Set.mem_iInter.2 fun k => hJ₁ (p ≫ lamφ B₁ k))`. Establish `t'` using `T' Z p z (fun k => I (((p ≫ m₁) ≫ sqOf gC) ≫ lamφ C k)) (fun k => I₁ ((p ≫ m₁) ≫ lamφ C₁ k)) (fun k => J₁ (p ≫ lamφ B₁ k)) (Set.mem_iInter.2 fun k => hI (((p ≫ m₁) ≫ sqOf gC) ≫ lamφ C k)) (Set.mem_iInter.2 fun k => hI₁ ((p ≫ m₁) ≫ lamφ C₁ k)) (Set.mem_iInter.2 fun k => hJ₁ (p ≫ l …`.
+
+Use `replace t' := (gw_pullCongr _ _ _ _ _ _).symm.trans (t'.trans (congrArg₂ (· * ·) (gw_lam gC v' (p ≫ m₁) z hI hI₁) rfl))`. Rewrite `t'` using `[e]`. Use `replace t' := t.symm.trans t'`. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) (t'.symm.trans (congrArg₂ (· * ·) ?_ ?_))` and prove the remaining obligations. Use `show Geo.Tor.gw w₁ p z (fun k => I₁ (p ≫ m₁ ≫ lamφ C₁ k)) (fun k => J₁ (p ≫ lamφ B₁ k)) = _`.
+
+Simplify using `only [Category.assoc]`. Use `show _ = Geo.Tor.gw w (p ≫ β₂) z (fun k => I ((p ≫ β₂) ≫ m ≫ lamφ C k)) (fun k => J ((p ≫ β₂) ≫ lamφ B k))`. Simplify using `only [Category.assoc]`. Use `show _ = Geo.Tor.gw u p z (fun k => J (p ≫ β₂ ≫ lamφ B k)) (fun k => J₁ (p ≫ lamφ B₁ k))`. Simplify using `only [Category.assoc]`.
+-/
 theorem lam_down_gen : ∀ {S S' : Scheme.{0}} {f : S' ⟶ S} {B C : Over S} {B₁ C₁ : Over S'} [GrpObj B] [IsCommMonObj B] [GrpObj C]
   [IsCommMonObj C] [GrpObj B₁] [IsCommMonObj B₁] [GrpObj C₁] [IsCommMonObj C₁] {δ : C₁.left ⟶ C.left} {M : LB B.left} {N : LB C.left} {M₁ : LB B₁.left} {N₁ : LB C₁.left}
   (gC : IsGrpPullback C₁ C f δ), M.IsLB → N.IsLB → M₁.IsLB → N₁.IsLB → ∀ (β₂ : (G2 B₁).left ⟶ (G2 B).left) (u : LB.Iso (abelian₂ B₁ M₁) ((abelian₂ B M).pull β₂)), u.IsGen →

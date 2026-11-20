@@ -5,18 +5,29 @@ open MvPolynomial Finset GlobalTheory.FlagHook Formalism.DegreeFormula
 
 namespace GlobalTheory.FlagHook
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, pderiv_C_mul]`.
+-/
 theorem iterate_pderiv_C_mul {σ : Type} (i : σ) (n : ℕ) (c : ℝ) (P : MvPolynomial σ ℝ) :
     (pderiv i)^[n] (C c * P) = C c * (pderiv i)^[n] P := by
   induction n with
   | zero => rfl
   | succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, pderiv_C_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply', ih, map_sum]`.
+-/
 theorem iterate_pderiv_sum {σ κ : Type} (i : σ) (n : ℕ) (S : Finset κ) (P : κ → MvPolynomial σ ℝ) :
     (pderiv i)^[n] (∑ k ∈ S, P k) = ∑ k ∈ S, (pderiv i)^[n] (P k) := by
   induction n with
   | zero => rfl
   | succ n ih => simp only [Function.iterate_succ_apply', ih, map_sum]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih`. Rewrite using `[prod_insert ha, sum_insert ha, erase_insert ha, pderiv_mul, he, ih, mul_sum]`. Use `congr 1`.
+
+Use `sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hak : a ≠ k` using `fun h => ha (h ▸ hk)`. Rewrite using `[erase_insert_of_ne hak, prod_insert (fun h => ha (mem_of_mem_erase h))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_prod_of_const {σ κ : Type} [DecidableEq κ] (i : σ) (S : Finset κ)
     (f : κ → MvPolynomial σ ℝ) (e : κ → ℝ) (he : ∀ k, pderiv i (f k) = C (e k)) :
     pderiv i (∏ k ∈ S, f k) = ∑ k ∈ S, C (e k) * ∏ l ∈ S.erase k, f l := by
@@ -30,6 +41,9 @@ theorem pderiv_prod_of_const {σ κ : Type} [DecidableEq κ] (i : σ) (S : Finse
     rw [erase_insert_of_ne hak, prod_insert (fun h => ha (mem_of_mem_erase h))]
     ring
 
+/- English proof (translation)
+The claim follows from `|eval v ((pderiv i)^[n] (∏ k ∈ S, f k))| ≤ T ^ n * |eval v (∏ k ∈ S, f k)| := by induction n generalizing S with | zero => simp | succ n ih => have hT0 : 0 ≤ T := (sum_nonneg hw).trans hT rw [Function.iterate_succ_apply, pderiv_prod_of_const i S f e he, iterate_pderiv_sum, map_su …`.
+-/
 theorem abs_eval_iterate_pderiv_prod_le {σ κ : Type} [DecidableEq κ] (i : σ) (v : σ → ℝ)
     (f : κ → MvPolynomial σ ℝ) (e w : κ → ℝ) (T : ℝ) (he : ∀ k, pderiv i (f k) = C (e k))
     (n : ℕ) (S : Finset κ) (hw : ∀ k ∈ S, 0 ≤ w k) (hew : ∀ k ∈ S, |e k| ≤ w k * |eval v (f k)|)
@@ -58,6 +72,11 @@ theorem abs_eval_iterate_pderiv_prod_le {σ κ : Type} [DecidableEq κ] (i : σ)
           mul_le_mul_of_nonneg_right hT (by positivity)
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun i c : Fin N => (C ((((rho N) c).factorial : ℝ)⁻¹) * X i ^ (rho N) c : MvPolynomial (Fin N) ℝ)) = Matrix.of fun i c : Fin N => C ((((rho N) c).factorial : ℝ)⁻¹) * ((Matrix.vandermonde (X : Fin N → MvPolynomial (Fin N) ℝ)).submatrix id Fin.revPerm) i c`. Use extensionality with `i c : 2`. Establish `: (rho N) c = ((Fin.rev c : Fin N) : ℕ)` using `by simp [rho, Fin.val_rev]; omega`. Simplify using `[Matrix.vandermonde_apply, this]`. Use `⟨(∏ c : Fin N, (((rho N) c).factorial : ℝ)⁻¹) * ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin N)) : ℤ) : ℝ), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[detE, h, Matrix.det_mul_row, Matrix.det_permute', Matrix.det_vandermonde, prod_sigma, map_mul, map_prod, map_intCast, mul_assoc]`.
+-/
 theorem detE_rho_eq_C_mul_prod (N : ℕ) :
     ∃ c : ℝ, detE (rho N) =
       C c * ∏ p ∈ (univ : Finset (Fin N)).sigma (fun a => Ioi a), (X p.2 - X p.1) := by
@@ -73,6 +92,9 @@ theorem detE_rho_eq_C_mul_prod (N : ℕ) :
   rw [detE, h, Matrix.det_mul_row, Matrix.det_permute', Matrix.det_vandermonde, prod_sigma,
     map_mul, map_prod, map_intCast, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `|eval v ((pderiv i)^[n] (detE (rho N))) / eval v (detE (rho N))| ≤ ((N : ℝ) / g) ^ n := by obtain ⟨c, hc⟩ := detE_rho_eq_C_mul_prod N have key := abs_eval_iterate_pderiv_prod_le (κ := (_ : Fin N) × Fin N) i v (fun p => X p.2 - X p.1) (fun p => (if p.2 = i then 1 else 0) - (if p.1 …`.
+-/
 theorem abs_iterate_pderiv_detE_rho_div_le (N n : ℕ) (v : Fin N → ℝ) (i : Fin N) (g : ℝ)
     (hg : 0 < g) (_hv : ∀ a b, a ≠ b → v a ≠ v b) (hs : ∀ a, a ≠ i → g ≤ |v i - v a|) :
     |eval v ((pderiv i)^[n] (detE (rho N))) / eval v (detE (rho N))| ≤ ((N : ℝ) / g) ^ n := by

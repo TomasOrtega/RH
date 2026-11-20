@@ -11,5 +11,8 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionGerm.isTorsionForm_congr | exact GlobalTheory.TorsionGerm.isTorsionForm_congr | (intros; apply GlobalTheory.TorsionGerm.isTorsionForm_congr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isTorsionForm_congr_of_eventuallyEq : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g n : ℕ) (τ τ' : E → Matrix (Fin g) (Fin g) ℂ) (M : Submodule ℤ (Fl g)) (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (b : E) (T : Ext (n + n)), τ =ᶠ[𝓝 b] τ' → IsTorsionForm τ M j h β b T → IsTorsionForm τ' M j h β b T := by
   first | exact @GlobalTheory.TorsionGerm.isTorsionForm_congr | exact GlobalTheory.TorsionGerm.isTorsionForm_congr | (intros; apply GlobalTheory.TorsionGerm.isTorsionForm_congr <;> assumption)

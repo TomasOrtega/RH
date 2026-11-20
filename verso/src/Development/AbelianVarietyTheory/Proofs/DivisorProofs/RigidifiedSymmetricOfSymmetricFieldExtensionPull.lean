@@ -10,6 +10,9 @@ open GlobalTheory.Mum GlobalTheory.Mum.GenDesc
 
 namespace GlobalTheory.Mum.GenDesc
 
+/- English proof (translation)
+Introduce `K K' _ _ i A _ A' _ φ hA h L L' hL hL' hw hS`. Use `⟨?_, (GlobalTheory.PolDescent.rigidified_sym_kTriv_descend K K' i A A' φ L L' hA h hL hL' hw).2.1 hS⟩` and prove the remaining obligations. Establish `: Subsingleton (𝟙_ (Over (Sp K))).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Conclude with `GlobalTheory.PolDescent.exists_gen_of_unique (default : PrimeSpectrum K) (pull_isLB hL _)`.
+-/
 theorem rigidified_and_sym_of_field_extension : ∀ (K K' : Type) [Field K] [Field K'] (i : K →+* K') (A : Over (Sp K)) [GrpObj A] (A' : Over (Sp K')) [GrpObj A'] (φ : A'.left ⟶ A.left), IsAbelianScheme A → IsGrpPullback A' A (spMap i) φ → ∀ (L : LB A.left) (L' : LB A'.left), L.IsLB → L'.IsLB → LBIso L' (L.pull φ) → Sym A' L' → Rigidified A L ∧ Sym A L := by
   intro K K' _ _ i A _ A' _ φ hA h L L' hL hL' hw hS
   refine ⟨?_, (GlobalTheory.PolDescent.rigidified_sym_kTriv_descend K K' i A A' φ L L' hA h hL hL' hw).2.1 hS⟩

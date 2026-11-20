@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace PositivityTheory.SiegelWeilFormula.KMain
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using holValueAt_const 0 s₀`. Consider the case `insert a T ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem holValueAt_finsum {ι : Type} (T : Finset ι) {f : ι → ℂ → ℂ} {c : ι → ℂ} {s₀ : ℂ}
     (h : ∀ i ∈ T, HolValueAt (f i) s₀ (c i)) : HolValueAt (fun s => ∑ i ∈ T, f i s) s₀ (∑ i ∈ T, c i) := by
   induction T using Finset.induction_on with
@@ -17,6 +20,9 @@ theorem holValueAt_finsum {ι : Type} (T : Finset ι) {f : ι → ℂ → ℂ} {
     simp only [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `GlobalTheory.Eis.cosetSum GlobalTheory.Eis.term`. Conclude with `Summable.tsum_finsetSum fun i hi => (h i hi).of_norm`.
+-/
 theorem cosetSum_finsum {G : Type} [Group G] (Pp Γ : Subgroup G) {ι : Type} (T : Finset ι) (f : ι → G → ℂ) (g : G)
     (h : ∀ i ∈ T, GlobalTheory.Eis.CosetConv Pp Γ (f i) g) :
     GlobalTheory.Eis.cosetSum Pp Γ (fun x => ∑ i ∈ T, f i x) g = ∑ i ∈ T, GlobalTheory.Eis.cosetSum Pp Γ (f i) g := by
@@ -25,9 +31,33 @@ theorem cosetSum_finsum {G : Type} [Group G] (Pp Γ : Subgroup G) {ι : Type} (T
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `schwartz_polyGauss (2 * Real.pi) (by positivity) P`.
+-/
 theorem isSw_fP {m n : ℕ} (P : PX m n) : IsSw (fP P) :=
   schwartz_polyGauss (2 * Real.pi) (by positivity) P
 
+/- English proof (translation)
+Take `⟨hTB, -, -, hTT, hTA⟩` from `hT`. Take `⟨L, hL⟩` from `hLo F E σ d R w`. Take `⟨sL, ρ, p, q, e, hgood, hLD, hsL, hρ⟩` from `hLI F E σ d R w L hL`. Establish `hfock` using `(hFM F E σ d R).2.1 w Ψ hΨ`. Establish `hKF : ∀ P, d.KFin (φ P)` using `fun P => hPK F E σ d R (φ P) (hφ P).1 (by rw [(hφ P).2]; exact hfock.1 P)`.
+
+Establish `hom : ∀ k : GR d.n, InK (mR k) → ∀ P, d.om (R.ι w k) (φ P) = φ (ρ k P)`. Introduce `k hk P`. Establish `h1` using `(hL k (fP P) (isSw_fP P)).2 Ψ hfock.2 (φ P) (hφ P).1 (hφ P).2`. Rewrite `h1` using `[hρ k P hk]`. Establish `hmem : d.om (R.ι w k) (φ P) - φ (ρ k P) ∈ d.sch` using `d.sch.sub_mem (om_mem d _ (hφ P).1) (hφ _).1`.
+
+Use `sub_eq_zero.mp ((hTB F E σ d).2.2 _ hmem ?_)` and prove the remaining obligations. Rewrite using `[← Tl_apply, map_sub, Tl_apply, Tl_apply, h1, (hφ _).2, sub_self]`. Set `Il : PX d.m d.n →ₗ[ℂ] (d.G → ℂ)` to `{ toFun := fun P => d.I (φ P) map_add' := fun P Q => by rw [map_add]; exact I_add d hTT hTA (hφ P).1 (hφ Q).1 map_smul' := fun a P => by rw [map_smul]; exact I_smul d hTT a (hφ P).1 }`. Set `sl : PX d.m d.n →ₗ[ℂ] (d.G → ℂ)` to `(secl d).comp φ`. Take `⟨-, ⟨ε, ww, hww, -⟩, hTG, hLC, hT2, hSC⟩` from `hAux F E σ d`.
+
+Establish `hsec1 : IsSec d.K d.χ (s0 d.m d.n) (d.sec0 (φ 1))` using `hSK F E σ d (φ 1) (hKF 1)`. Establish `hE1 : d.Eis (d.sec0 (φ 1)) (s0 d.m d.n)` using `hEA (φ 1) (hKF 1)`. Take `⟨U, pp, Ê, t, hUo, hRD, hs0, hp, hhol, hcont, hinv, hconv⟩` from `hE1 (s0 d.m d.n)`. Establish `hGDat : GlobData (fun _ => true) (2 * Real.pi) sL ρ d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht sl Il d.lamSet` using `{ ιcont := R.cont w split := by`. Introduce `g`.
+
+Take `⟨x, y, c, r, hr, hg, hx⟩` from `hGS F E σ d R w L hL Ψ hΨ φ hφ g`. Use `⟨x, y, c, r, hr, hg, fun y' => ⟨(hx y').1, fun P => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsL]`. Conclude with `(hx y').2 P`. Use `Icont := ((hTA F E σ d).2.2 (φ 1) (hφ 1).1).2.1`.
+
+Use `Ileft := ((hTA F E σ d).2.2 (φ 1) (hφ 1).1).2.2`. Use `Ik := by`. Introduce `P g k hk`. Use `show thetaMean d.om d.S d.μ d.D (φ P) (g * R.ι w k) = thetaMean d.om d.S d.μ d.D (φ (ρ k P)) g`. Unfold `thetaMean`.
+
+Simplify using `only [map_mul, Module.End.mul_apply, (hTT F E σ d (φ P) (hφ P).1).2, hom k hk P]`. Use `Iinv := fun g a b P => hGI F E σ d R w Ψ hΨ φ hφ g a b P`. Use `Idil := hGD F E σ d R w Ψ hΨ φ hφ`. Use `eis := ⟨U, pp, Ê, t, hUo, hRD, hs0, hp, hhol, hcont, hinv, hconv⟩`. Use `Λadd := fun l hl => (hLB F E σ d l hl).1`.
+
+Use `Λbd := fun l hl => (hLB F E σ d l hl).2`. Use `Λsing := fun f hf hinv hz => hLS F E σ d R w f hf hinv hz`. Use `Λval := by`. Introduce and unpack `l ⟨nb, lam, 𝓖, T, x, hcd, hT, rfl⟩`. Take `⟨t', ht'⟩` from `hU F E σ d _ _ hsec1 hE1`.
+
+Establish `hWh` using `hW F E σ d hnm hEA (φ 1) (hKF 1) nb lam 𝓖 hcd ε ww hww T hT x`. Establish `hC` using `hTC F E σ d (φ 1) (hφ 1).1 nb lam 𝓖 hcd T x`. Use `show HolValueAt (fun z => fc d.B.ψ d.b nb lam 𝓖 (d.eis (d.sec0 (φ 1)) (s0 d.m d.n) z) T x) (s0 d.m d.n) (fc d.B.ψ d.b nb lam 𝓖 (d.I (φ 1)) T x)`. Rewrite using `[hC]`. Conclude with `hWh.congr ⟨t', fun z hz => ((ht' z hz nb lam 𝓖 hcd ε ww hww x).2 T hT).symm⟩ }`.
+
+Conclude with `hA d.m d.n (fun _ => true) (2 * Real.pi) (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) p q e sL ρ hLD (hgood hnm.le) d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht sl Il d.lamSet hGDat P x`.
+-/
 theorem perLift (hA : AbsThm) (hT : TAll) (hTC : ThetaCoef) (hAux : AuxiliaryPrimeFunction) (hFM : FockMem) (hLo : LocOpEx)
     (hLI : LocInst) (hGS : GSplit) (hGI : GIinv) (hGD : GIdil) (hPK : PolyKFin) (hSK : SecK) (hLB : LamBd)
     (hLS : LamSing) (hU : Unfold) (hW : WhitK) (d : SD σ) (hnm : d.n < d.m) (hEA : d.EisAll) (R : RD d)
@@ -90,6 +120,23 @@ theorem perLift (hA : AbsThm) (hT : TAll) (hTC : ThetaCoef) (hAux : AuxiliaryPri
   exact hA d.m d.n (fun _ => true) (2 * Real.pi) (2 * Real.pi * ((R.sg w : ℤ) : ℝ)) p q e sL ρ hLD (hgood hnm.le)
     d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht sl Il d.lamSet hGDat P x
 
+/- English proof (translation)
+Introduce `hA hT hTC hRD hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hLB hLS hU hW F E _ _ _ _ _ σ d hnm hEA Φ hΦ x`. Take `⟨R⟩` from `hRD F E σ d`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨k, P, Ψ, hΨ, hsum⟩` from `(hFM F E σ d R).2.2 w _ (hKP F E σ d R Φ hΦ)`. Use `choose φ hφ using fun i => hLE F E σ d R w (Ψ i) (hΨ i)`.
+
+Establish `hsch : ∀ i, φ i (P i) ∈ d.sch` using `fun i => (hφ i (P i)).1`. Establish `eT : ∀ i, d.T (φ i (P i)) = R.tens w (fP (P i)) (Ψ i)` using `fun i => (hφ i (P i)).2`. Establish `hΦeq : Φ = ∑ i, φ i (P i)`. Establish `hmem : Φ - ∑ i, φ i (P i) ∈ d.sch` using `d.sch.sub_mem hΦ.1 (d.sch.sum_mem fun i _ => hsch i)`. Use `sub_eq_zero.mp ((hT.1 F E σ d).2.2 _ hmem ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Tl_apply, map_sub, map_sum]`. Simplify using `only [Tl_apply, eT, hsum, sub_self]`. Establish `key : ∀ i, HolValueAt (fun z => d.eis (d.sec0 (φ i (P i))) (s0 d.m d.n) z x) (s0 d.m d.n) (d.I (φ i (P i)) x)` using `fun i => perLift hA hT hTC hAux hFM hLo hLI hGS hGI hGD hPK hSK hLB hLS hU hW d hnm hEA R w (hΨ i) (hφ i) (P i) x`. Establish `hv : d.I Φ x = ∑ i, d.I (φ i (P i)) x`. Rewrite using `[hΦeq, I_sum d hT.2.2.2.1 hT.2.2.2.2 Finset.univ _ (fun i _ => hsch i), Finset.sum_apply]`.
+
+Establish `hKi : ∀ i, d.KFin (φ i (P i))` using `fun i => hPK F E σ d R _ (hsch i) (by rw [eT]; exact ((hFM F E σ d R).2.1 w (Ψ i) (hΨ i)).1 (P i))`. Establish `hconv : ∀ i, ∃ t : ℝ, ∀ z : ℂ, t < z.re → GlobalTheory.Eis.CosetConv (par2 σ d.Y) (rat2 σ d.Y) (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 (φ i (P i)) y) x`. Introduce `i`. Take `⟨U, pp, Ê, t, -, -, -, -, -, -, -, hc⟩` from `hEA _ (hKi i) (s0 d.m d.n)`. Use `⟨t, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, hle⟩` from `(hc z hz).1 {x} isCompact_singleton`. Conclude with `Summable.of_nonneg_of_le (fun q => norm_nonneg _) (fun q => hle x rfl q) hu`. Use `choose tt htt using hconv`. Establish `hsec : d.sec0 Φ = fun y => ∑ i, d.sec0 (φ i (P i)) y`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[hΦeq, ← secl_apply, map_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `heq : EqRight (fun z => ∑ i, d.eis (d.sec0 (φ i (P i))) (s0 d.m d.n) z x) (fun z => d.eis (d.sec0 Φ) (s0 d.m d.n) z x)`. Use `⟨∑ i, |tt i|, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : ∀ i, tt i < z.re` using `fun i => lt_of_le_of_lt ((le_abs_self _).trans (Finset.single_le_sum (fun j _ => abs_nonneg (tt j)) (Finset.mem_univ i))) hz`.
+
+Use `cosetSum_finsum (par2 σ d.Y) (rat2 σ d.Y) Finset.univ (fun i y => ((d.Ht y : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 (φ i (P i)) y) x (fun i _ => htt i z (hz' i))` as an intermediate fact. Use `show ∑ i, d.eis (d.sec0 (φ i (P i))) (s0 d.m d.n) z x = d.eis (d.sec0 Φ) (s0 d.m d.n) z x`. Rewrite using `[hsec]`. Unfold `SD.eis`. Simplify using `only [Finset.mul_sum]`.
+
+Conclude with `this.symm`. Rewrite using `[hv]`. Conclude with `(holValueAt_finsum Finset.univ fun i _ => key i).congr heq`.
+-/
 theorem mainOf : MainOf := by
   intro hA hT hTC hRD hAux hFM hLE hLo hLI hGS hGI hGD hKP hPK hSK hLB hLS hU hW F E _ _ _ _ _ σ d hnm hEA Φ hΦ x
   obtain ⟨R⟩ := hRD F E σ d

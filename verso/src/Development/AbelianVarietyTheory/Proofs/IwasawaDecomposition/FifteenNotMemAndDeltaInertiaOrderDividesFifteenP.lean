@@ -7,6 +7,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.Member.DeltaTame
 
+/- English proof (translation)
+Introduce `D T i P hP`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h15`. Establish `hmem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `hmod` using `T.delta_tame i P hP`.
+
+Establish `hdecomp : Ideal.absNorm P.asIdeal = 15 * (Ideal.absNorm P.asIdeal / 15) + 1`. Use `Nat.div_add_mod (Ideal.absNorm P.asIdeal) 15` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hmem` using `[hdecomp]`. Move the coercions through the operations in `at hmem h15`.
+
+Establish `h1 : (1 : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `hm2 : (15 : 𝓞 D.host.E) * ((Ideal.absNorm P.asIdeal / 15 : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `P.asIdeal.mul_mem_right _ h15`. Use `P.asIdeal.sub_mem hmem hm2` as an intermediate fact. Simplify using `using this`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+
+Introduce `A hA σ hσ`. Establish `h15` using `T.delta_15 i P hP A hA`. Establish `hfin : Finite ((Ine (F` using `D.host.E) A).map (T.delta i)) := Nat.finite_of_card_ne_zero (by rw [h15]; norm_num)`. Establish `hpow` using `pow_card_eq_one' (G := (Ine (F := D.host.E) A).map (T.delta i)) (x := ⟨T.delta i σ, Subgroup.mem_map_of_mem _ hσ⟩)`. Rewrite `hpow` using `[h15]`.
+
+Use `⟨1, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hpow` as an intermediate fact. Simplify using `using this`.
+-/
 theorem delta_tame_and_15 : ∀ (D : D7) (T : TwR D.LL0 D.nd) (i : T.Tw) (P : PlE D.host), P ∈ T.pD i →
     ((15 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal ∧ ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P → ∀ σ ∈ Ine (F := D.host.E) A,
       ∃ N : ℕ, T.delta i σ ^ (15 ^ N) = 1 := by

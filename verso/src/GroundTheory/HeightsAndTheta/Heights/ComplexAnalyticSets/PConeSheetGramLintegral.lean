@@ -12,6 +12,11 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, hγd, hγx, hγZ, -⟩` from `hγ`. Take `⟨U', hU', hxU', -, -, -, V, hV, hsV⟩` from `hs`. Establish `hc : ContinuousAt γ (A *ᵥ x)` using `(hγd.differentiableAt (hU.mem_nhds hxU)).continuousAt`. Establish `hV' : ∀ᶠ y in 𝓝 (A *ᵥ x), γ y ∈ V` using `hc.preimage_mem_nhds (by rwa [hγx])`. Use `filter_upwards [hU.mem_nhds hxU, hU'.mem_nhds hxU', hV'] with y hy hy' hyV`.
+
+Take `⟨hAy, hZy⟩` from `hγZ y hy`. Establish `h` using `hsV (γ y) ⟨hZy, hyV⟩ (by rwa [hAy])`. Rewrite `h` using `[hAy]`. Then use the resulting hypothesis.
+-/
 theorem IsSheetAt.eventuallyEq {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} {x : Fin n → ℂ} {γ s : (Fin d → ℂ) → Fin n → ℂ}
     (hγ : IsSheetAt J A x γ) (hs : IsSheetAt J A x s) : γ =ᶠ[𝓝 (A *ᵥ x)] s := by
@@ -24,6 +29,27 @@ theorem IsSheetAt.eventuallyEq {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)
   have h := hsV (γ y) ⟨hZy, hyV⟩ (by rwa [hAy])
   rwa [hAy] at h
 
+/- English proof (translation)
+Introduce `n e h J ℓ A F hJ hdim hℓ hA hF`. Take `⟨U, D, N, s, hUD, hdisj, hnull, hfib, hinj, hsub, hcov⟩` from `hPar n e h J ℓ A hJ hdim hℓ hA`. Use `set v : (Σ k, Fin (N k)) → (Fin e → ℂ) → (Fin n → ℂ) := fun i y => (h.matᵀ)⁻¹ *ᵥ s i.1 i.2 y with hv_def`. Establish `hvd : ∀ i : Σ k, Fin (N k), DifferentiableOn ℂ (v i) (U i.1)` using `fun i => (Matrix.mulVecLin (h.matᵀ)⁻¹).toContinuousLinearMap.differentiable.comp_differentiableOn ((hUD i.1).2.2.2 i.2)`. Use `set H : (Σ k, Fin (N k)) → (Fin e → ℂ) → ℝ≥0∞ := fun i y => ∫⁻ t : ℂ, F (t • WithLp.toLp 2 (v i y)) * ENNReal.ofReal (‖t‖ ^ (2 * e) * gramVol (v i) y) with hH_def`.
+
+Establish `hHm : ∀ i : Σ k, Fin (N k), AEMeasurable (H i) (volume.restrict (D i.1))` using `fun i => aemeasurable_coneTerm (hUD i.1).1 (hUD i.1).2.2.1 (hvd i) hF`. Use `set G : (Fin e → ℂ) → ℝ≥0∞ := fun y => ∑ᶠ x ∈ ComplexSets.fibre (J ⊔ Ideal.span {linForm ℓ - 1}) A y, ∫⁻ t : ℂ, F (t • WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A x y)) * ENNReal.ofReal (‖t‖ ^ (2 * e) * gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ sheetThroug …`. Establish `hGD : ∀ k, ∀ y ∈ D k, G y = ∑ j : Fin (N k), H ⟨k, j⟩ y`. Introduce `k y hy`. Take `⟨hfe, hinjy, hsh⟩` from `hfib k y ((hUD k).2.2.1 hy)`.
+
+Simplify using `only [hG_def, hfe]`. Rewrite using `[finsum_mem_range hinjy, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hAy : A *ᵥ s k j y = y`. Establish `hmem : s k j y ∈ ComplexSets.fibre (J ⊔ Ideal.span {linForm ℓ - 1}) A y` using `hfe ▸ ⟨j, rfl⟩`.
+
+Conclude with `hmem.2`. Establish `hex : ∃ γ, IsSheetAt (J ⊔ Ideal.span {linForm ℓ - 1}) A (s k j y) γ` using `⟨s k j, hsh j⟩`. Establish `hch : sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A (s k j y) =ᶠ[𝓝 y] s k j`. Establish `h1 : sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A (s k j y) = hex.choose`. Simplify using `only [sheetThrough, dif_pos hex]`.
+
+Establish `h2` using `hex.choose_spec.eventuallyEq (hsh j)`. Rewrite `h2` using `[hAy]`. Rewrite using `[h1]`. Conclude with `h2`. Establish `hval : sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A (s k j y) y = s k j y` using `hch.eq_of_nhds`.
+
+Establish `hgram : gramVol (fun y' => (h.matᵀ)⁻¹ *ᵥ sheetThrough (J ⊔ Ideal.span {linForm ℓ - 1}) A (s k j y) y') y = gramVol (v ⟨k, j⟩) y` using `gramVol_congr (hch.fun_comp fun f => (h.matᵀ)⁻¹ *ᵥ f)`. Simplify using `only [hH_def, hv_def, hval, hgram]`. Use `set G' : (Fin e → ℂ) → ℝ≥0∞ := fun y => ∑' k, (D k).indicator (fun y => ∑ j : Fin (N k), H ⟨k, j⟩ y) y with hG'_def`. Establish `hGG' : G =ᵐ[volume] G'`. Establish `hae : ∀ᵐ y ∂(volume : Measure (Fin e → ℂ)), y ∈ ⋃ k, D k`.
+
+Rewrite using `[ae_iff]`. Simplify `hnull` using `[compl_def]`. Use `filter_upwards [hae] with y hy`. Take `⟨k, hk⟩` from `mem_iUnion.1 hy`. Simplify using `only [hG'_def]`.
+
+Rewrite using `[tsum_eq_single k, indicator_of_mem hk, hGD k y hk]`. Introduce `k' hk'`. Conclude with `indicator_of_notMem (fun h' => (hdisj hk').le_bot ⟨h', hk⟩) _`. Establish `hG'm : ∀ k, AEMeasurable ((D k).indicator fun y => ∑ j : Fin (N k), H ⟨k, j⟩ y) volume` using `fun k => (aemeasurable_indicator_iff (hUD k).2.1).2 (Finset.aemeasurable_fun_sum _ fun j _ => hHm ⟨k, j⟩)`. Use `⟨(AEMeasurable.tsum hG'm).congr hGG'.symm, ?_⟩` and prove the remaining obligations.
+
+Establish `hRHS : ∫⁻ y, G y = ∑' i : Σ k, Fin (N k), ∫⁻ y in D i.1, H i y`. Rewrite using `[lintegral_congr_ae hGG', lintegral_tsum hG'm, ENNReal.tsum_sigma']`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator (hUD k).2.1, lintegral_finsetSum' _ fun j _ => hHm ⟨k, j⟩, tsum_fintype]`. Establish `hLHS : ∫⁻ z in {z : EuclideanSpace ℂ (Fin n) | ∀ q ∈ J, eval (h.pointOf z) q = 0}, F z ∂(Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ)) = ∫⁻ z in (fun q : (Σ k, Fin (N k)) × (Fin e → ℂ) × ℂ => q.2.2 • WithLp.toLp 2 (v q.1 q.2.1)) '' {q | q.2.1 ∈ D q.1.1 ∧ q.2.2 ≠ 0}, F z ∂(Mea …`.
+
+Use `setLIntegral_congr (ae_eq_set.2 ⟨hcov, ?_⟩)` and prove the remaining obligations. Rewrite using `[sdiff_eq_empty.2 hsub, measure_empty]`. Establish `hMap` using `hArea n e (Σ k, Fin (N k)) (fun i => U i.1) (fun i => D i.1) v F (fun i => ⟨(hUD i.1).1, (hUD i.1).2.1, (hUD i.1).2.2.1, hvd i⟩) hinj hF`. Rewrite using `[hLHS, hMap]`. Conclude with `congrArg _ hRHS.symm`.
+-/
 theorem ConeSheetGramLintegral.proof (hPar : ConeSliceSheetParam.Statement)
     (hArea : ConeMapArea.Statement) : ConeSheetGramLintegral.Statement := by
   classical

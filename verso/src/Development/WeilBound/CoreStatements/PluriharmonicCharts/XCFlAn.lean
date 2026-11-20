@@ -18,6 +18,13 @@ open scoped ContDiff
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
   {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ}
 
+/- English proof (translation)
+Introduce `z z' h1 h2`. Rewrite using `[fsHerm_h, fsHerm_h, refNorm, refNorm]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ∀ p', M.blk p' ≠ some k`. Establish `: ∀ i, z ⟨k, i⟩ = z' ⟨k, i⟩` using `fun i => congrFun h1 ⟨⟨k, hk⟩, i⟩`.
+
+Simplify using `only [this]`. Distinguish the cases in `hk' : M.blk p = some k`. Simplify using `only [h2 k hk']`. Establish `: M.dy p k = 0`. Unfold `FlagModel.dy`.
+
+Rewrite using `[dif_neg hk, if_neg hk']`. Simplify using `[this]`.
+-/
 theorem onStep_fs (M : FlagModel y Ψ N j) (p : Ψ × Fin N) : M.OnStep p (fsHerm ι (M.dy p)) := by
   intro z z' h1 h2
   rw [fsHerm_h, fsHerm_h, refNorm, refNorm]
@@ -32,10 +39,24 @@ theorem onStep_fs (M : FlagModel y Ψ N j) (p : Ψ × Fin N) : M.OnStep p (fsHer
         rw [dif_neg hk, if_neg hk']
       simp [this]
 
+/- English proof (translation)
+Introduce `x j w hw v` and use `h x j w ⟨hw.1, hw.2, hU _⟩ v`.
+-/
 theorem isPsh_of_univ {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {U : Set X} {P : LocPot X}
     (hU : ∀ x, x ∈ U) (h : IsPshOn A U P) : IsPsh A P :=
   fun x j w hw v => h x j w ⟨hw.1, hw.2, hU _⟩ v
 
+/- English proof (translation)
+Establish `hn : ∀ x, logNormSec (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) x ≤ 0` using `fun x => BM.norm_le (pr x)`. Take `⟨hA, hfs, hΘ⟩` from `GlobalTheory.CompanionTheory.Ar.PB.fs_pos_potential K ι _ e R`. Establish `hfsa : IsSmoothHerm (fsHerm ι (M.dy p))` using `FlagHeightMultilinear.isSmoothHerm_fsHerm _`. Establish `hU : ∀ x, x ∈ (bdry fun x y => BM.s (pr x) (pr y))ᶜ` using `fun x hx => by`. Establish `: pr x ∈ bdry BM.s` using `hx`.
+
+Rewrite `this` using `[hbd]`. Conclude with `this`. Establish `hpts : ∀ x, ∃ z ∈ mcPts (mCoordIdeal y), z ∘ id = R.lift x x ∧ SameOrbit (basePart M.blk z) (BM.Rb.lift (pr x) (pr x))` using `fun x => ⟨R.lift x x, R.mem x x (R.mem_U x), rfl, hb x⟩`. Establish `hyp : IsStepHyp M BM p id id R pr` using `⟨isBlockMap_id, fun k _ => ⟨k, rfl⟩, hp, hpts⟩`. Establish `h0 : stepPh M BM p id R pr = 0`.
+
+Use function extensionality and compare the values at `x`. Unfold `stepPh`. Use `split_ifs`. Rewrite using `[stepGap, hh, sub_self]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Establish `hps` using `PositivityTheory.Xgp.plurisubharmonic_charts.isPshOn_stepPot K ι Φ y Ψ N j M n BM p K ι id id e R pr hp (GlobalTheory.T.flag_gap_pullback_third K ι Φ y Ψ N j M n BM p K ι id id e R pr hyp)`. Rewrite `hps` using `[h0]`. Establish `hps' : IsPsh R.A (potOf R (fsHerm ι (M.dy p)) + LocPot.ofFun (0 : R.X → ℝ))` using `isPsh_of_univ hU hps`. Establish `hsm0 : R.A.Smooth (0 : R.X → ℝ)` using `fun jj => by show ContDiffOn ℝ ∞ (fun _ => (0 : ℝ)) _`.
+
+Conclude with `contDiffOn_const`. Take `⟨C₀, s0, r0, c0⟩` from `(GlobalTheory.CompanionTheory.Ar.PB.enlarging_constants_smooth_members e R.X R.A (potOf R (fsHerm ι fun _ => 1)) _ _ BM.nb BM.m _ pL sL nL hn (hA _ hfs) hΘ).2.2 _ 0 (hA _ hfsa) hsm0 hps'`. Use `⟨C₀, s0, r0, c0, fun _ => rfl, fun _ => onStep_fs M p, fun t _ _ => ⟨hfsa, fun x => by simp⟩, fun x _ => by rw [hh]; simp, fun _ _ _ _ => ⟨rfl, fun _ => rfl⟩, fun hc t => ⟨?_, hps', rfl⟩⟩` and prove the remaining obligations. Establish `flat` using `GlobalTheory.CompanionTheory.Ar.PB.FA.Flat.flat_off_boundary K ι Φ y Ψ N j M n BM p hc K ι id id isBlockMap_id (fun k _ => ⟨k, rfl⟩) e R pr hp 0 hpts (fun x _ z _ _ => by rw [hh]; simp)`. Conclude with `isPsh_of_univ hU flat.2`.
+-/
 theorem step_member [Fintype Ψ] [DecidableEq Ψ]
     (M : FlagModel y Ψ N j) {n e : ℕ} (BM : BaseMetric M n) (R : AnLogRes (mCoordIdeal y) ⊤ e)
     (pr : R.X → BM.Rb.X) (hp : HoloMap R.A BM.Rb.A pr)
@@ -80,6 +101,39 @@ theorem step_member [Fintype Ψ] [DecidableEq Ψ]
     (fun k _ => ⟨k, rfl⟩) e R pr hp 0 hpts (fun x _ z _ _ => by rw [hh]; simp)
   exact isPsh_of_univ hU flat.2
 
+/- English proof (translation)
+Take `⟨pL, sL, nL, B, hB⟩` from `GlobalTheory.CompanionTheory.Ar.PB.SncPull.pullback_projection (d + 1) n R.X BM.Rb.X R.A BM.Rb.A BM.Bat pr hp BM.L BM.s BM.nb BM.m BM.W BM.potL BM.sec BM.snc BM.norm_le hch`. Establish `hn : ∀ x, logNormSec (BM.L.pullback pr hp.1) (fun x y => BM.s (pr x) (pr y)) x ≤ 0` using `fun x => BM.norm_le (pr x)`. Take `⟨hA, hfs, hΘ⟩` from `GlobalTheory.CompanionTheory.Ar.PB.fs_pos_potential K ι _ (d + 1) R`. Establish `hfsa : ∀ a : K → ℤ, IsSmoothHerm (fsHerm ι a)` using `GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.isSmoothHerm_fsHerm`. Use `choose C₅ hm using fun p => step_member M BM R pr hp hbd hh hb pL sL nL p`.
+
+Set `ph : Ψ × Fin N → R.X → ℝ` to `fun _ => 0`. Set `phT : Ψ × Fin N → ℝ → R.X → ℝ` to `fun _ _ => 0`. Set `line : Ψ × Fin N → ℝ → HermLine ι` to `fun p _ => fsHerm ι (M.dy p)`. Set `C` to `C₅`. Set `t₀ : Ψ × Fin N → ℝ` to `fun _ => Real.exp (-Real.exp 1)`.
+
+Take `⟨m₁, m₂, m₃⟩` from `GlobalTheory.CompanionTheory.Ar.PB.enlarging_constants_smooth_members (d + 1) R.X R.A (potOf R (fsHerm ι fun _ => 1)) _ _ BM.nb BM.m _ pL sL nL hn (hA _ hfs) hΘ`. Establish `hsm0 : R.A.Smooth (0 : R.X → ℝ)` using `fun jj => by show ContDiffOn ℝ ∞ (fun _ => (0 : ℝ)) _`. Conclude with `contDiffOn_const`. Establish `hpsh0 : IsPsh R.A (potOf R (fsHerm ι fun _ => 1) + LocPot.ofFun (0 : R.X → ℝ))`. Introduce `x jj z hz w`.
+
+Establish `e1 : (potOf R (fsHerm ι fun _ => 1) + LocPot.ofFun (0 : R.X → ℝ)).φ x ∘ (R.A.chart jj).symm = (potOf R (fsHerm ι fun _ => 1)).φ x ∘ (R.A.chart jj).symm`. Use function extensionality and compare the values at `u`. Use `show (potOf R (fsHerm ι fun _ => 1)).φ x _ + (0 : ℝ) = _`. Rewrite using `[add_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, levi_zero]`. Conclude with `(hΘ x jj z ⟨hz.1, hz.2.1⟩ w hw).le`. Take `⟨C₀, s0, r0, c0⟩` from `m₃ _ 0 (hA _ hfs) hsm0 hpsh0`.
+
+Take `⟨D₅, hD₅⟩` from `common_bound fun o : Option (Ψ × Fin N) => o.elim C₀ C₅`. Take `⟨D, hD⟩` from `common_bound fun o : Option (Ψ × Fin N) => o.elim |C₀| fun p => |C p|`. Take `⟨T, hT0, hT⟩` from `common_scale (fun o : Option (Option (Ψ × Fin N)) => o.elim (Real.exp (-1)) fun o' => o'.elim (Real.exp (-Real.exp 1)) t₀) (by`. Introduce and unpack `(_ | _ | p)`. Conclude with `Real.exp_pos _`.
+
+Conclude with `Real.exp_pos _`. Conclude with `(hm p).2.1.1)`. Establish `hT1 : T ≤ Real.exp (-1)` using `hT none`. Establish `hm' : ∀ p, IsStepMember BM R pr hp p (ph p) (phT p) (line p) D₅ D T` using `fun p => IsStepMember.mono m₁ m₂ (hm p) (hD₅ (some p)) (hD (some p)) hT0 (hT (some (some p))) hT1`. Establish `s0'` using `m₁ _ _ _ _ (hD₅ none) s0`.
+
+Establish `r0'` using `m₂ _ _ _ _ _ _ _ (hD none) hT0 (hT (some none)) hT1 r0 (hA _ hfs)`. Set `S : AnSys (d + 1) (Option (Ψ × Fin N))` to `{ X := R.X A := R.A Θ := potOf R (fsHerm ι fun _ => 1) L := BM.L.pullback pr hp.1 s := fun x y => BM.s (pr x) (pr y) nb := BM.nb m := BM.m W := fun k => pr ⁻¹' BM.W k potΘ := hA _ hfs posΘ := hΘ potL := pL sec := sL snc := nL norm_le := hn th := fun o => o.elim (potOf R (fsHerm ι …`. Introduce and unpack `(_ | p)`. Conclude with `s0'`. Conclude with `(hm' p).1`.
+
+Use `reg := by`. Introduce and unpack `(_ | p)`. Conclude with `r0'`. Conclude with `(hm' p).2.1`. Use `c2 := by`.
+
+Introduce and unpack `(_ | p)`. Conclude with `c0`. Conclude with `(hm' p).2.2.1 }`. Set `Re : Realis S (mCoordIdeal y)` to `{ arith := harith J := ⊤ R := R π := id holo := ⟨continuous_id, fun jj k => R.A.holo jj k⟩ deg := 1 deg_pos := one_pos br := ∅ degree := degree_id_self R.A ref := fun o => o.elim (fsHerm ι fun _ => 1) fun p => fsHerm ι (M.dy p) ref_smooth := by`. Introduce and unpack `(_ | p)`.
+
+Conclude with `hfs`. Conclude with `hfsa _`. Use `ref_pot := by`. Apply the tactic sequence `rintro (_ | p) <;>`. Conclude with `fun x _ => ⟨Set.univ, isOpen_univ, trivial, fun _ => 0, fun _ => analyticOnNhd_const, fun z _ => (sub_self _).trans Complex.zero_re.symm⟩`.
+
+Use `line := fun o t => o.elim (fsHerm ι fun _ => 1) fun p => line p t`. Use `line_deg := by`. Introduce and unpack `(_ | p) t`. Both sides reduce to the same expression. Conclude with `(hm' p).2.2.2.1 t`.
+
+Use `line_smooth := by`. Introduce and unpack `(_ | p) t h0 h1`. Conclude with `hfs`. Conclude with `((hm' p).2.2.2.2.2.1 t h0 h1).1`. Use `line_eq := by`.
+
+Introduce and unpack `(_ | p) t h0 h1 x`. Conclude with `(add_zero _).symm`. Conclude with `((hm' p).2.2.2.2.2.1 t h0 h1).2 x }`. Use `⟨{ S := S, Re := Re, J_top := rfl, deg_one := rfl, br_empty := rfl, ref_some := fun _ => rfl, ref_none := rfl, line_none := fun _ => rfl, ph_none := ⟨rfl, fun _ => rfl⟩, pos_none := ?_, pr := pr, pr_holo := hp, pr_eq := hb, L_eq := rfl, s_eq := rfl, hom_eq := ?_, step := ?_, step …` and prove the remaining obligations. Use `⟨1, one_pos, fun t x jj z _ w => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (S.potT none t + S.Θ.rsmul (-1)).φ x ∘ (S.A.chart jj).symm = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `u`. Use `show ((potOf R (fsHerm ι fun _ => 1)).φ x _ + (0 : ℝ)) + (-1) * (potOf R (fsHerm ι fun _ => 1)).φ x _ = 0`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Simplify using `[levi]`. Conclude with `fun p x hx => (hm' p).2.2.2.2.2.2.1 x hx`. Conclude with `fun p t => (hm' p).2.2.2.2.1 t`. Conclude with `fun p x x' h1 h2 => (hm' p).2.2.2.2.2.2.2.1 x x' h1 h2`. Conclude with `fun p h1 t => (hm' p).2.2.2.2.2.2.2.2 h1 t`.
+-/
 theorem flagAn_of_res [Fintype Ψ] [DecidableEq Ψ]
     (M : FlagModel y Ψ N j) {n : ℕ} (d : ℕ) (BM : BaseMetric M n) (R : AnLogRes (mCoordIdeal y) ⊤ (d + 1))
     (pr : R.X → BM.Rb.X) (hp : HoloMap R.A BM.Rb.A pr) (harith : IsArithVar (mCoordIdeal y) (d + 2))
@@ -216,6 +270,13 @@ end PositivityTheory.Xgp.c_fl_an
 
 end
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM harith hd hbd hh`. Take `⟨e, R, he, pr, hp, hpts, hch⟩` from `PositivityTheory.Xgp.c_smooth.main K ι Φ y Ψ N j M n (d + 1) BM.Rb hd (fun _ => True) K ι id id isBlockMap_id (fun k => ⟨fun _ => by`. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Conclude with `Or.inl h`. Use `push Not at h`.
+
+Take `⟨p, hp⟩` from `h`. Conclude with `Or.inr ⟨p, trivial, hp⟩, fun _ => ⟨k, rfl⟩⟩)`. Take `rfl` from `he fun _ => trivial`. Use `PositivityTheory.Xgp.c_fl_an.flagAn_of_res M d BM R pr hp harith hbd hh (fun x => ?_) hch` and prove the remaining obligations. Take `⟨z, -, hz, ho⟩` from `hpts x`.
+
+Establish `hz' : z = R.lift x x` using `hz`. Rewrite using `[← hz']`. Conclude with `ho`.
+-/
 theorem PositivityTheory.Xgp.t_c_fl_an : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n), IsArithVar (mCoordIdeal y) (d + 2) → d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) → bdry BM.s = ∅ → (∀ p, BM.hom p = fsHerm ι (M.dy p)) → ∃ FA : FlagAn BM d, ∀ p t, FA.Re.line (some p) t = fsHerm ι (M.dy p) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM harith hd hbd hh
   obtain ⟨e, R, he, pr, hp, hpts, hch⟩ := PositivityTheory.Xgp.c_smooth.main K ι Φ y Ψ N j M n (d + 1) BM.Rb hd (fun _ => True) K ι id id

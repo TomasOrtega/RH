@@ -9,6 +9,9 @@ open Polynomial
 
 variable {F : Type*} [NontriviallyNormedField F] [IsUltrametricDist F]
 
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Rewrite using `[Multiset.sum_cons]`. Use `(IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le (h a (Multiset.mem_cons_self _ _)) (ih fun x hx => h x (Multiset.mem_cons_of_mem hx)))` and prove the remaining obligations.
+-/
 theorem nnnorm_multiset_sum_le_of_forall {m : Multiset F} {B : NNReal} (h : ∀ x ∈ m, ‖x‖₊ ≤ B) :
     ‖m.sum‖₊ ≤ B := by
   induction m using Multiset.induction_on with
@@ -18,6 +21,9 @@ theorem nnnorm_multiset_sum_le_of_forall {m : Multiset F} {B : NNReal} (h : ∀ 
     refine (IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le (h a (Multiset.mem_cons_self _ _))
       (ih fun x hx => h x (Multiset.mem_cons_of_mem hx)))
 
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih => rw [Multiset.prod_cons, nnnorm_mul, ih, Multiset.map_cons, Multiset.prod_cons]`.
+-/
 theorem nnnorm_multiset_prod' (m : Multiset F) : ‖m.prod‖₊ = (m.map fun a => ‖a‖₊).prod := by
   induction m using Multiset.induction_on with
   | empty => simp

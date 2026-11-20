@@ -7,6 +7,13 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormInd
 
 open NumberField IsDedekindDomain Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Set `g : GL (Fin 2) (Lsq K Δ)` to `⟨!![a, b; -star b, star a], !![star a, -b; star b, a], by`. Rewrite using `[Matrix.mul_fin_two, Matrix.one_fin_two]`. Use `congr 1`. Apply the tactic sequence `ext1 i; fin_cases i <;> (ext1 j; fin_cases j) <;> simp <;> first | ring1 | linear_combination h, by`. Rewrite using `[Matrix.mul_fin_two, Matrix.one_fin_two]`.
+
+Use `congr 1`. Apply the tactic sequence `ext1 i; fin_cases i <;> (ext1 j; fin_cases j) <;> simp <;> first | ring1 | linear_combination h⟩`. Use `⟨⟨g, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g = (wJ Δ)⁻¹ * g * ((wJ Δ)⁻¹)⁻¹`. Rewrite using `[inv_inv]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(!![a, b; -star b, star a] : Matrix (Fin 2) (Fin 2) (Lsq K Δ)).map (starRingEnd _) = !![0, -1; 1, 0] * !![a, b; -star b, star a] * !![0, 1; -1, 0]`. Use `ext1 i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [starRingEnd_apply]`.
+-/
 private theorem mk_el {K : Type} [Field K] {Δ : K} (a b : Lsq K Δ) (h : a * star a + b * star b = 1) :
     ∃ γ : DX Δ, mt γ = !![a, b; -star b, star a] := by
   let g : GL (Fin 2) (Lsq K Δ) := ⟨!![a, b; -star b, star a], !![star a, -b; star b, a], by
@@ -25,6 +32,11 @@ private theorem mk_el {K : Type} [Field K] {Δ : K} (a b : Lsq K Δ) (h : a * st
   ext1 i j
   fin_cases i <;> fin_cases j <;> simp [starRingEnd_apply]
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) γ.1 = (wJ Δ)⁻¹ * γ.1 * ((wJ Δ)⁻¹)⁻¹` using `γ.2`. Rewrite `h` using `[inv_inv]`. Establish `h' : (mt γ).map (starRingEnd _) = !![0, -1; 1, 0] * mt γ * !![0, 1; -1, 0]` using `congrArg Units.val h`. Establish `h0` using `congrFun (congrFun h' 0) 0`. Establish `h1` using `congrFun (congrFun h' 0) 1`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct, starRingEnd_apply] at h0 h1`. Conclude with `⟨h0.symm, by rw [h1, neg_neg]⟩`.
+-/
 private theorem el_shape {K : Type} [Field K] {Δ : K} (γ : DX Δ) :
     mt γ 1 1 = star (mt γ 0 0) ∧ mt γ 1 0 = -star (mt γ 0 1) := by
   have h : GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) γ.1 = (wJ Δ)⁻¹ * γ.1 * ((wJ Δ)⁻¹)⁻¹ := γ.2
@@ -35,6 +47,11 @@ private theorem el_shape {K : Type} [Field K] {Δ : K} (γ : DX Δ) :
   simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct, starRingEnd_apply] at h0 h1
   exact ⟨h0.symm, by rw [h1, neg_neg]⟩
 
+/- English proof (translation)
+Distinguish the cases in `hv : v ∈ D.Sg`. Establish `: CharZero (Kv v)` using `charZero_of_injective_algebraMap (cv v).injective`. Conclude with `GlobalTheory.Published.HasseNormSt.of_isSquare ((map_ne_zero _).2 h0) (hD.split v hv) _`. Take `⟨ν, -, hν⟩` from `Loc.normEx _ _ _ (hD.off v hv) (-1)`. Use `⟨ν.re, ν.im, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hν` using `[QuadraticAlgebra.norm_def]`. Simplify using `only [Units.val_neg, Units.val_one, map_neg, map_one] at hν`. Take the linear combination `-hν`.
+-/
 private theorem loc_neg_one {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) (hD : D.Ok) (h0 : Δ ≠ 0) (v : Pl F) :
     ∃ a b : Kv v, -1 = a ^ 2 - cv v Δ * b ^ 2 := by
   by_cases hv : v ∈ D.Sg
@@ -46,11 +63,35 @@ private theorem loc_neg_one {F : Type} [Field F] [NumberField F] {Δ : F} (D : D
     simp only [Units.val_neg, Units.val_one, map_neg, map_one] at hν
     linear_combination -hν
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.NormIndexQuadratic.glob_neg_one h0 hl σ₀ hd`.
+-/
 private theorem glob_neg_one {F : Type} [Field F] [NumberField F] {Δ d : F} (h0 : Δ ≠ 0)
     (hl : ∀ v : Pl F, ∃ a b : Kv v, -1 = a ^ 2 - cv v Δ * b ^ 2) (σ₀ : F →+* ℝ) (hd : ∀ σ : F →+* ℝ, σ d < 0) :
     ∃ p₀ p₁ q₀ q₁ : F, p₀ ^ 2 + d * p₁ ^ 2 - Δ * (q₀ ^ 2 + d * q₁ ^ 2) = -1 ∧ p₀ * p₁ = Δ * q₀ * q₁ :=
   _root_.UpperTheory.Reformulated.B.NormIndexQuadratic.glob_neg_one h0 hl σ₀ hd
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD τ`. Use `hD.real` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨σ₀⟩ : Nonempty (F →+* ℝ) := by`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `⟨InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w)⟩`.
+
+Establish `h0 : Δ ≠ 0` using `fun h => by simpa [h] using hD.neg σ₀`. Use `⟨fun hτ => ?_, fun γ hγ hτ σ => ?_⟩` and prove the remaining obligations. Take `⟨p₀, p₁, q₀, q₁, e₁, e₂⟩` from `glob_neg_one h0 (loc_neg_one D hD h0) σ₀ hτ`. Establish `hA : p₁ ^ 2 - Δ * q₁ ^ 2 ≠ 0` using `fun h => by`. Establish `h1 : p₀ ^ 2 + 1 - Δ * q₀ ^ 2 = 0` using `by linear_combination e₁ - (τ ^ 2 - 4) * h`.
+
+Establish `h2` using `congrArg σ₀ h1`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_one, map_zero] at h2`. Use polynomial arithmetic with `[hD.neg σ₀, sq_nonneg (σ₀ p₀), sq_nonneg (σ₀ q₀)]`. Take `⟨A, hAe⟩ : ∃ A, A = p₁ ^ 2 - Δ * q₁ ^ 2` from `⟨_, rfl⟩`. Rewrite `hA` using `[← hAe]`.
+
+Establish `key : p₁ ^ 2 - Δ * (p₀ * q₁ - q₀ * p₁) ^ 2 - Δ * q₁ ^ 2 = -(τ ^ 2 - 4) * A ^ 2`. Rewrite using `[hAe]`. Take the linear combination `(p₁ ^ 2 - Δ * q₁ ^ 2) * e₁ - (p₀ * p₁ - Δ * q₀ * q₁) * e₂`. Set `a : Lsq F Δ` to `⟨τ / 2, (p₀ * q₁ - q₀ * p₁) / (2 * A)⟩`. Set `b : Lsq F Δ` to `⟨p₁ / (2 * A), q₁ / (2 * A)⟩`.
+
+Establish `hab : a * star a + b * star b = 1`. Use `ext`. Simplify using `[a, b, QuadraticAlgebra.re_one]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `key`.
+
+Simplify using `[a, b, QuadraticAlgebra.im_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨γ, hγ⟩` from `mk_el a b hab`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, Matrix.det_fin_two_of]`.
+
+Take the linear combination `hab`. Rewrite using `[hγ, Matrix.trace_fin_two_of]`. Apply the tactic sequence `ext <;> simp [a]`. Take `⟨s₁, s₂⟩` from `el_shape γ`. Take `⟨hd, ht⟩` from `hγ`.
+
+Rewrite `hd` using `[Matrix.det_fin_two, s₁, s₂]`. Rewrite `ht` using `[Matrix.trace_fin_two, s₁]`. Generalize the expression as in `mt γ 0 0 = a at hd ht`. Generalize the expression as in `mt γ 0 1 = b at hd`. Establish `h1` using `congrArg (fun x => σ (QuadraticAlgebra.re x)) hd`.
+
+Establish `h2` using `congrArg (fun x => σ (QuadraticAlgebra.re x)) ht`. Simplify using `[QuadraticAlgebra.re_one] at h1 h2`. Use `lt_of_le_of_ne ?_ ((map_ne_zero σ).2 hτ)` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, map_ofNat]`. Rewrite using `[← h2]`.
+
+Use polynomial arithmetic with `[mul_nonneg (neg_pos.2 (hD.neg σ)).le (mul_self_nonneg (σ a.im)), mul_nonneg (neg_pos.2 (hD.neg σ)).le (mul_self_nonneg (σ b.im)), mul_self_nonneg (σ b.re)]`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.embEx :
     UpperTheory.V.Z.Sym.Glob.EmbEx := by
   intro F _ _ Δ D hD τ

@@ -17,6 +17,9 @@ def IntCoordGeoNum.Statement : Prop :=
       ringKrullDim (MRing (dualBlocks T) ⧸ V) = ((n + Fintype.card Unit : ℕ) : WithBot ℕ∞) →
       ∀ a : Fin n → Unit → ℤ, geoNum n (V.comap (intCoordSubst A)) a = geoNum n V a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, (Bridge.intNum_map_eq_geoNum_hyps 2 0).1, Nat.prime_two, (Bridge.intNum_map_eq_geoNum_hyps 2 0).2.1, (Bridge.intNum_map_eq_geoNum_hyps 2 0).2.2⟩`.
+-/
 example : (-1 : Matrix (Fin 1) (Fin 1) ℤ) * (-1) = 1 ∧
     IsMultiProjPrime (RingHom.ker (Bridge.GeoNum.red (ι := fun _ : Unit => Fin (0 + 1)) 2)) ∧
     Nat.Prime 2 ∧

@@ -16,6 +16,9 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Schem
   [X.Over (Spec (.of A))] {F : X.Modules}
 
 omit [IsNoetherianRing A] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma algV_eq_toFunctions (V : X.Opens) (a : A) : algV X V a = toFunctions V a := rfl
 
 def powSmulTopΓ (V : X.Opens) (n : ℕ) : Submodule Γ(X, V) Γ(F, V) where
@@ -30,6 +33,15 @@ def powSmulTopΓ (V : X.Opens) (n : ℕ) : Submodule Γ(X, V) Γ(F, V) where
     · rw [smul_add]
       exact add_mem hy hz
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Use `Submodule.smul_induction_on hm (fun a ha x _ => ?_) (fun x y hx hy => add_mem hx hy)` and prove the remaining obligations. Rewrite using `[sectionsModuleA_smul, algV_eq_toFunctions]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_map_of_mem _ ha) trivial`.
+
+Introduce `hm`. Establish `h : I ^ n ≤ ((powSmulTopΓ (F` using `F) I V n).colon (Set.univ)).comap (toFunctions V) := by`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Submodule.mem_colon]`. Introduce `x _`.
+
+Express the relevant statement in the definitionally equal form `toFunctions V a • x ∈ (I ^ n • ⊤ : Submodule A Γ(F, V))`. Rewrite using `[← algV_eq_toFunctions, ← sectionsModuleA_smul]`. Conclude with `Submodule.smul_mem_smul ha trivial`. Establish `h'` using `Ideal.map_le_iff_le_comap.2 h`. Establish `: (Ideal.map (toFunctions V) (I ^ n) • ⊤ : Submodule Γ(X, V) Γ(F, V)) ≤ powSmulTopΓ I V n` using `Submodule.smul_le.2 fun c hc x _ => Submodule.mem_colon.1 (h' hc) x trivial`.
+
+Conclude with `this hm`.
+-/
 lemma mem_pow_smul_top_iff {V : X.Opens} (n : ℕ) (m : Γ(F, V)) :
     m ∈ (I ^ n • ⊤ : Submodule A Γ(F, V)) ↔
       m ∈ (Ideal.map (toFunctions V) (I ^ n) • ⊤ : Submodule Γ(X, V) Γ(F, V)) := by
@@ -54,6 +66,9 @@ lemma mem_pow_smul_top_iff {V : X.Opens} (n : ℕ) (m : Γ(F, V)) :
 
 variable [F.IsQuasicoherent]
 
+/- English proof (translation)
+Rewrite using `[range_idealPowι_app I F hV n, mem_pow_smul_top_iff]`. Both sides reduce to the same expression.
+-/
 lemma mem_range_idealPowι_iff {V : X.Opens} (hV : IsAffineOpen V) (n : ℕ) (m : Γ(F, V)) :
     m ∈ Set.range ((idealPowι I F n).app V) ↔ m ∈ (I ^ n • ⊤ : Submodule A Γ(F, V)) := by
   rw [range_idealPowι_app I F hV n, mem_pow_smul_top_iff]
@@ -70,10 +85,16 @@ def reesCoef (n : ℕ) : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V) →+ Γ(F, V) 
   map_zero' := by rw [reesSectionsMap_zero]; rfl
   map_add' s s' := by rw [reesSectionsMap_add]; rfl
 
+/- English proof (translation)
+The claim follows from `(mem_range_idealPowι_iff I hV n _).2 ((mem_reesSubmodule_iff.1 (reesSectionsMap_mem hF hV s)) n)`.
+-/
 lemma reesCoef_mem (n : ℕ) (s : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     reesCoef I hF hV n s ∈ Set.range ((idealPowι I F n).app V) :=
   (mem_range_idealPowι_iff I hV n _).2 ((mem_reesSubmodule_iff.1 (reesSectionsMap_mem hF hV s)) n)
 
+/- English proof (translation)
+The claim follows from `kernel_ι_app_injective _ V`.
+-/
 lemma idealPowι_app_injective (n : ℕ) : Function.Injective ((idealPowι I F n).app V) :=
   kernel_ι_app_injective _ V
 
@@ -96,12 +117,20 @@ def reesDeg (n : ℕ) : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V) →+ Γ(idealPo
     · exact (Equiv.apply_ofInjective_symm (idealPowι_app_injective (F := F) (V := V) I n)
         ⟨reesCoef I hF hV n s', reesCoef_mem I hF hV n s'⟩).symm
 
+/- English proof (translation)
+The claim follows from `Equiv.apply_ofInjective_symm (idealPowι_app_injective I n) ⟨reesCoef I hF hV n s, reesCoef_mem I hF hV n s⟩`.
+-/
 lemma idealPowι_reesDeg (n : ℕ) (s : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     (idealPowι I F n).app V (reesDeg I hF hV n s) = reesCoef I hF hV n s :=
   Equiv.apply_ofInjective_symm (idealPowι_app_injective I n)
     ⟨reesCoef I hF hV n s, reesCoef_mem I hF hV n s⟩
 
 include hV in
+/- English proof (translation)
+Rewrite using `[mem_reesSubmodule_iff]`. Introduce `k`. Rewrite using `[PolynomialModule.lsingle_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `(mem_range_idealPowι_iff I hV n _).1 ⟨g, rfl⟩`. Conclude with `zero_mem _`.
+-/
 lemma lsingle_mem_reesSubmodule (n : ℕ) (g : Γ(idealPow I F n, V)) :
     PolynomialModule.lsingle A n ((idealPowι I F n).app V g) ∈ reesSubmodule I Γ(F, V) := by
   rw [mem_reesSubmodule_iff]
@@ -120,6 +149,9 @@ def reesInc (n : ℕ) : Γ(idealPow I F n, V) →+ Γ(reesSheaf I F, reesPr I X 
       ((PolynomialModule.lsingle A n).toAddMonoidHom.comp ((idealPowι I F n).app V).hom)
       (reesSubmodule I Γ(F, V)).toAddSubmonoid (lsingle_mem_reesSubmodule I hV n))
 
+/- English proof (translation)
+Rewrite using `[← reesSectionsEquiv_apply]`. Express the relevant statement in the definitionally equal form `((reesSectionsEquiv I hF hV ((reesSectionsEquiv I hF hV).symm _)) : PolynomialModule A Γ(F, V)) = _`. Rewrite using `[AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 lemma reesSectionsMap_reesInc (n : ℕ) (g : Γ(idealPow I F n, V)) :
     reesSectionsMap I hF hV (reesInc I hF hV n g) =
       PolynomialModule.lsingle A n ((idealPowι I F n).app V g) := by
@@ -129,16 +161,25 @@ lemma reesSectionsMap_reesInc (n : ℕ) (g : Γ(idealPow I F n, V)) :
   rw [AddEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(reesSectionsMap I hF hV (reesInc I hF hV n g)).coeff k = _`. Rewrite using `[reesSectionsMap_reesInc, PolynomialModule.lsingle_apply]`.
+-/
 lemma reesCoef_reesInc (n k : ℕ) (g : Γ(idealPow I F n, V)) :
     reesCoef I hF hV k (reesInc I hF hV n g) = if n = k then (idealPowι I F n).app V g else 0 := by
   change (reesSectionsMap I hF hV (reesInc I hF hV n g)).coeff k = _
   rw [reesSectionsMap_reesInc, PolynomialModule.lsingle_apply]
 
+/- English proof (translation)
+Apply `idealPowι_app_injective I n` to reduce the goal to its premises. Rewrite using `[idealPowι_reesDeg, reesCoef_reesInc, if_pos rfl]`.
+-/
 lemma reesDeg_reesInc (n : ℕ) (g : Γ(idealPow I F n, V)) :
     reesDeg I hF hV n (reesInc I hF hV n g) = g := by
   apply idealPowι_app_injective I n
   rw [idealPowι_reesDeg, reesCoef_reesInc, if_pos rfl]
 
+/- English proof (translation)
+Apply `idealPowι_app_injective I k` to reduce the goal to its premises. Rewrite using `[idealPowι_reesDeg, reesCoef_reesInc, if_neg h, map_zero]`.
+-/
 lemma reesDeg_reesInc_of_ne {n k : ℕ} (h : n ≠ k) (g : Γ(idealPow I F n, V)) :
     reesDeg I hF hV k (reesInc I hF hV n g) = 0 := by
   apply idealPowι_app_injective I k

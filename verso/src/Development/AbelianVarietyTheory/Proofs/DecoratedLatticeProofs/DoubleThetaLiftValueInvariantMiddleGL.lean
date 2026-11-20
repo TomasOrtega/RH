@@ -21,6 +21,11 @@ namespace GlobalTheory.TriStep.GlMid
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e : (fun u' => comb ψ S A' c (K u') v) = ∑ t ∈ c.support, (c t * ψ (symplOH S A' v t)) • (fun u' => K u' (v + t))`. Use function extensionality and compare the values at `u'`. Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[e, map_sum]`.
+
+Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+-/
 theorem comb_right_comm (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} (L : Module.End ℂ (WO A S → ℂ))
     (K : WO A S → WO S A' → ℂ) (c : WO S A' →₀ ℂ) (u : WO A S) (v : WO S A') :
     comb ψ S A' c (fun v' => L (fun u' => K u' v') u) v = L (fun u' => comb ψ S A' c (K u') v) u := by
@@ -33,6 +38,11 @@ theorem comb_right_comm (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} (L : M
   simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul]
   exact Finset.sum_congr rfl fun t _ => by ring
 
+/- English proof (translation)
+Establish `e : (fun v' => comb ψ A S c (fun u' => K u' v') u) = ∑ t ∈ c.support, (c t * ψ (symplOH A S u t)) • (fun v' => K (u + t) v')`. Use function extensionality and compare the values at `v'`. Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[e, map_sum]`.
+
+Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+-/
 theorem comb_left_comm (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} (L : Module.End ℂ (WO S A' → ℂ))
     (K : WO A S → WO S A' → ℂ) (c : WO A S →₀ ℂ) (u : WO A S) (v : WO S A') :
     comb ψ A S c (fun u' => L (K u') v) u = L (fun v' => comb ψ A S c (fun u' => K u' v') u) v := by
@@ -45,6 +55,9 @@ theorem comb_left_comm (ψ : AddChar (AF D.host.F) ℂ) {A S A' : HSp D} (L : Mo
   simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_smul]
   exact Finset.sum_congr rfl fun t _ => by ring
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[map_smul, h.om_heis g g' t f hf, hc t ht]`.
+-/
 theorem comb_om_comm {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {ω : Om S T}
     (h : IsWeilDatumO ψ S T χS χT ω) (g : GA D S) (g' : GA D T) (c : WO S T →₀ ℂ)
     (hc : ∀ t ∈ c.support, actO S T g g' t = t) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -54,12 +67,20 @@ theorem comb_om_comm {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (
   refine Finset.sum_congr rfl fun t ht => ?_
   rw [map_smul, h.om_heis g g' t f hf, hc t ht]
 
+/- English proof (translation)
+Establish `h1` using `he.1`. Establish `h2` using `he.2.1`. Establish `h3 : cA D e * cA D e = cA D e` using `by rw [← map_mul, h1]`. Take the linear combination `-h1 - 2 * h2 - h3`.
+-/
 theorem idem_mul {e : AE D} (he : IsSplitIdem D e) : (e + cA D e) * (1 - (e + cA D e)) = 0 := by
   have h1 := he.1
   have h2 := he.2.1
   have h3 : cA D e * cA D e = cA D e := by rw [← map_mul, h1]
   linear_combination -h1 - 2 * h2 - h3
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one, show mt S (1 : GA D S) = 1 from rfl, Matrix.mul_one]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ k, mt T a i k * t k j = (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) i k * t k j` using `fun k => by`.
+
+Establish `ha'` using `ha i k`. Rewrite `ha'` using `[Matrix.sub_apply]`. Establish `ht'` using `ht k j`. Take the linear combination `(-(t k j)) * ha' + (-((e + cA D e) * (mt T a i k - (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) i k))) * ht' + ((mt T a i k - (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) i k) * t k j) * idem_mul he`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, ← Matrix.mul_apply, Matrix.one_mul]`.
+-/
 theorem actO_fix_left {e : AE D} (he : IsSplitIdem D e) {S T : HSp D} {a : GA D T} (ha : SuppAt e T a) {t : WO S T}
     (ht : IsHalf (1 - (e + cA D e)) t) : actO S T 1 a t = t := by
   unfold actO
@@ -75,6 +96,11 @@ theorem actO_fix_left {e : AE D} (he : IsSplitIdem D e) {S T : HSp D} {a : GA D 
       ((mt T a i k - (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) i k) * t k j) * idem_mul he
   rw [Finset.sum_congr rfl fun k _ => key k, ← Matrix.mul_apply, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[show mt T (1 : GA D T) = 1 from rfl, Matrix.one_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ k, t i k * mt S a⁻¹ k j = t i k * (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) k j` using `fun k => by`.
+
+Establish `ha'` using `ha k j`. Rewrite `ha'` using `[Matrix.sub_apply]`. Establish `ht'` using `ht i k`. Take the linear combination `(-(t i k)) * ha' + (-((e + cA D e) * (mt S a⁻¹ k j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) k j))) * ht' + ((mt S a⁻¹ k j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) k j) * t i k) * idem_mul he`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, ← Matrix.mul_apply, Matrix.mul_one]`.
+-/
 theorem actO_fix_right {e : AE D} (he : IsSplitIdem D e) {S T : HSp D} {a : GA D S} (ha : SuppAt e S a⁻¹) {t : WO S T}
     (ht : IsHalf (1 - (e + cA D e)) t) : actO S T a 1 t = t := by
   unfold actO
@@ -95,6 +121,43 @@ end GlobalTheory.TriStep.GlMid
 namespace GlobalTheory.TriStep
 open GlobalTheory.TriStep.GlMid
 
+/- English proof (translation)
+Introduce `D ψ hψ σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ g Ξ₁ Ξ₁' Ξ₂ Ξ₂' h₁ h₂ hC f _`. Take `⟨a₁, ha₁⟩` from `Witness.exists_isLoc (ofSplit Q.q) Q.F.F₁ g`. Establish `hsplit : IsSplitIdem D (ofSplit Q.q).e` using `(ofSplit Q.q).split`. Establish `comp₁ : (ofSplit Q.q).IsComp S.χ₁ Q.μ₁⁻¹` using `fun x a hxa => by`. Establish `e` using `Q.comp₁ x a hxa`.
+
+Rewrite `e` using `[MonoidHom.inv_apply, Circle.coe_inv]`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, e, inv_inv]`. Establish `comp₂ : (ofSplit Q.q).IsComp S.χ₂ Q.μ₂⁻¹` using `fun x a hxa => by`. Establish `e` using `Q.comp₂ x a hxa`. Rewrite `e` using `[MonoidHom.inv_apply, Circle.coe_inv]`.
+
+Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, e, inv_inv]`. Establish `hL : ∀ (X₂ : SB (Matrix Q.n₂ Q.n₁ Q.k)) (v : WO S.J.W₀ S.B'.A), IsThetaFunO ψ S.B.A S.J.W₀ (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ X₂) u v) ∧ (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' X₂) u v) = S.oma (1, a₁) (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ X₂) u …`. Introduce `X₂ v`. Take `⟨T₁, hT₁, hT⟩` from `hΛ.1 X₂ v`. Establish `e : ∀ X₁ : SB (Matrix Q.n₁ Q.n₀ Q.k), (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB X₁ X₂) u v) = T₁ X₁` using `fun X₁ => funext (hT X₁ _ (fun _ => rfl))`.
+
+Rewrite using `[e, e]`. Use `⟨hT₁.theta Ξ₁, ?_⟩` and prove the remaining obligations. Use `symm`. Use `GlobalTheory.LocOm.omLoc D Q.k (ofSplit Q.q) ψ S.B.A S.J.W₀ S.χ₁ S.χ₁ S.oma S.weila Q.μ₁⁻¹ Q.μ₁⁻¹ comp₁ comp₁ Q.n₁ Q.n₀ Q.F.F₀ Q.F.F₁ T₁ hT₁ 1 1 a₁ g (GlobalTheory.LocOm.isLoc_one_mul_inv D Q.k (ofSplit Q.q) S.B.A Q.n₀ Q.F.F₀).1 ha₁ Ξ₁ Ξ₁' ?_` and prove the remaining obligations. Rewrite using `[h₁]`.
+
+Simplify using the standard rewrite rules. Establish `hR : ∀ (X₁ : SB (Matrix Q.n₁ Q.n₀ Q.k)) (u : WO S.B.A S.J.W₀), IsThetaFunO ψ S.J.W₀ S.B'.A (Λ (GlobalTheory.LocFlat.CFac.prodSB X₁ Ξ₂) u) ∧ Λ (GlobalTheory.LocFlat.CFac.prodSB X₁ Ξ₂') u = S.omb (a₁, 1) (Λ (GlobalTheory.LocFlat.CFac.prodSB X₁ Ξ₂) u)`. Introduce `X₁ u`. Take `⟨T₂, hT₂, hT⟩` from `hΛ.2 X₁ u`. Establish `e : ∀ X₂ : SB (Matrix Q.n₂ Q.n₁ Q.k), Λ (GlobalTheory.LocFlat.CFac.prodSB X₁ X₂) u = T₂ X₂` using `fun X₂ => funext (hT X₂ _ (fun _ => rfl))`.
+
+Rewrite using `[e, e]`. Use `⟨hT₂.theta Ξ₂, ?_⟩` and prove the remaining obligations. Use `symm`. Use `GlobalTheory.LocOm.omLoc D Q.k (ofSplit Q.q) ψ S.J.W₀ S.B'.A S.χ₂ S.χ₂ S.omb S.weilb Q.μ₂⁻¹ Q.μ₂⁻¹ comp₂ comp₂ Q.n₂ Q.n₁ Q.F.F₁ Q.F.F₂ T₂ hT₂ a₁ g 1 1 ha₁ (GlobalTheory.LocOm.isLoc_one_mul_inv D Q.k (ofSplit Q.q) S.B'.A Q.n₂ Q.F.F₂).1 Ξ₂ Ξ₂' ?_` and prove the remaining obligations. Rewrite using `[h₂]`.
+
+Simplify using the standard rewrite rules. Establish `hA : ∀ t ∈ c₁.support, actO S.B.A S.J.W₀ 1 a₁ t = t` using `fun t ht => actO_fix_left hsplit ha₁.1 (hc₁ t ht)`. Establish `hB : ∀ t ∈ c₂.support, actO S.J.W₀ S.B'.A a₁ 1 t = t` using `fun t ht => actO_fix_right hsplit ((GlobalTheory.LocOm.isLoc_one_mul_inv D Q.k (ofSplit Q.q) S.J.W₀ Q.n₁ Q.F.F₁).2.2 a₁ g ha₁).1 (hc₂ t ht)`. Establish `hY : ∀ v', IsThetaFunO ψ S.B.A S.J.W₀ (fun u => comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) u) v')`. Introduce `v'`.
+
+Establish `e : (fun u => comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) u) v') = ∑ t ∈ c₂.support, (c₂ t * ψ (symplOH S.J.W₀ S.B'.A v' t)) • (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) u (v' + t))`. Use function extensionality and compare the values at `u`. Simplify using `only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Rewrite using `[e]`.
+
+Conclude with `GlobalTheory.Core.Rk.Collect.theta_sum _ _ _ fun t => (hL Ξ₂ (v' + t)).1`. Establish `hC' : ∀ u v, biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂')) u v = S.omb (a₁, 1) (fun v' => S.oma (1, a₁) (fun u' => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u' v') u) v`. Introduce `u v`. Establish `s1 : ∀ u'', comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂') u'') = S.omb (a₁, 1) (comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂) u''))` using `fun u'' => by`. Rewrite using `[(hR Ξ₁' u'').2]`.
+
+Conclude with `comb_om_comm S.weilb a₁ 1 c₂ hB (hR Ξ₁' u'').1`. Establish `s2 : ∀ v' u'', comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂) u'') v' = S.oma (1, a₁) (fun u => comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) u) v') u''` using `fun v' u'' => by`. Establish `e : Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂) u'' = fun w => S.oma (1, a₁) (fun u => Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) u w) u''`. Use function extensionality and compare the values at `fun w => congrFun (hL Ξ₂ w).2 u''`. Rewrite using `[e]`.
+
+Conclude with `comb_right_comm ψ (S.oma (1, a₁)) (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) c₂ u'' v'`. Unfold `biComb`. Simplify using `only [s1]`. Rewrite using `[comb_left_comm ψ (S.omb (a₁, 1)) (fun u'' v' => comb ψ S.J.W₀ S.B'.A c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂) u'') v') c₁ u v]`. Use `congrArg (fun F => S.omb (a₁, 1) F v) (funext fun v' => ?_)` and prove the remaining obligations.
+
+Simplify using `only [s2 v']`. Rewrite using `[comb_om_comm S.weila 1 a₁ c₁ hA (hY v')]`. Take `⟨b1, -, -, -⟩` from `GlobalTheory.SeeSaw.biAct_all D ψ S.B.A S.J.W₀ S.B'.A S.χ₁ S.χ₁ S.χ₂ S.χ₂ S.oma S.omb S.weila S.weilb _ hC`. Establish `hD` using `b1 (1, a₁)`. Take `⟨-, -, d3, -⟩` from `GlobalTheory.SeeSaw.biAct_all D ψ S.B.A S.J.W₀ S.B'.A S.χ₁ S.χ₁ S.χ₂ S.χ₂ S.oma S.omb S.weila S.weilb _ hD`.
+
+Establish `integ : ∀ (h₂ : GA D S.B'.A) (h₁ : GA D S.J.W₀) (h₀ : GA D S.B.A), φ h₀ * S.omb (h₁, h₂) (fun v => S.oma (h₀, h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂')) u v) 0) 0 = φ h₀ * S.omb (h₁ * a₁, h₂) (fun v => S.oma (h₀, h₁ * a₁) (fun …`. Introduce `h₂ h₁ h₀`. Establish `e1 : (fun v => S.oma (h₀, h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂')) u v) 0) = S.omb (a₁, 1) (fun v => S.oma (h₀, h₁ * a₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u v) 0)`. Use function extensionality and compare the values at `v`. Simplify using `only [hC']`.
+
+Rewrite using `[← d3 (h₀, h₁) (a₁, 1) 0 v]`. Use `congrArg (fun F => S.omb (a₁, 1) F v) (funext fun v' => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.oma (h₀, h₁) (S.oma (1, a₁) (fun u' => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u' v')) 0 = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e1, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `hinv : ∀ h₂ : GA D S.B'.A, ∀ γ ∈ GQ S.J.W₀, ∀ h₁ : GA D S.J.W₀, (fun h₁ => ∫ h₀ in S.B.vA.𝓕, φ h₀ * S.omb (h₁, h₂) (fun v => S.oma (h₀, h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u v) 0) 0 ∂S.B.vA.μ) (γ * h₁) = (fun h₁ => ∫ h₀ in …`. Introduce `h₂ γ hγ h₁`. Use `congrArg (fun F : GA D S.B.A → ℂ => ∫ h₀ in S.B.vA.𝓕, F h₀ ∂S.B.vA.μ) (funext fun h₀ => ?_)` and prove the remaining obligations. Establish `e1 : ∀ v, S.oma (h₀, γ * h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u v) 0 = S.oma (h₀, h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u v) 0` using `fun v => by`. Use `GlobalTheory.SeeSawLastValue.om_aut_mul S.weila (one_mem _) hγ h₀ h₁ (GlobalTheory.FrComb.slice_left hC v)` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Simplify using `only [e1]`. Use `GlobalTheory.SeeSawLastValue.om_aut_mul S.weilb hγ (one_mem _) h₁ h₂ (GlobalTheory.FrComb.slice_right (b1 (h₀, h₁)) 0)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `congrArg (φ h₀ * ·) this`.
+
+Unfold `valK`. Use `congr 1`. Use function extensionality and compare the values at `h₂`. Unfold `biLift`. Simplify using `only [integ h₂]`.
+
+Conclude with `GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S.J.W₀ S.J.v0.μ S.J.v0.𝓕 S.J.v0.haar S.J.v0.fund (fun h₁ => ∫ h₀ in S.B.vA.𝓕, φ h₀ * S.omb (h₁, h₂) (fun v => S.oma (h₀, h₁) (fun u => biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂)) u v) 0) 0 ∂S.B. …`.
+-/
 theorem valK_glMid : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (Q : QStep S) (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c₂ : WO S.J.W₀ S.B'.A →₀ ℂ), Q.Away c₁ → Q.Away c₂ → ∀ φ, IsContAut S.B.A φ → ∀ (Λ : SB (Matrix Q.n₁ Q.n₀ Q.k × Matrix Q.n₂ Q.n₁ Q.k) →ₗ[ℂ] (WO S.B.A S.J.W₀ → WO S.J.W₀ S.B'.A → ℂ)), (ofSplit Q.q).IsBiModel ψ Q.F.F₀ Q.F.F₁ Q.F.F₂ Λ → ∀ (g : GL Q.n₁ Q.k) (Ξ₁ Ξ₁' : SB (Matrix Q.n₁ Q.n₀ Q.k)) (Ξ₂ Ξ₂' : SB (Matrix Q.n₂ Q.n₁ Q.k)), Ξ₁'.1 = om Q.μ₁ 1 g Ξ₁.1 → Ξ₂'.1 = om Q.μ₂ g 1 Ξ₂.1 → IsBiTheta ψ S.B.A S.J.W₀ S.B'.A (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂))) → ∀ f ∈ GlobalTheory.TriStep.space Q, GlobalTheory.TriStep.valK S Q c₁ c₂ φ Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁' Ξ₂') f = GlobalTheory.TriStep.valK S Q c₁ c₂ φ Λ (GlobalTheory.LocFlat.CFac.prodSB Ξ₁ Ξ₂) f := by
   intro D ψ hψ σ S Q c₁ c₂ hc₁ hc₂ φ hφ Λ hΛ g Ξ₁ Ξ₁' Ξ₂ Ξ₂' h₁ h₂ hC f _
   obtain ⟨a₁, ha₁⟩ := Witness.exists_isLoc (ofSplit Q.q) Q.F.F₁ g

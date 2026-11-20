@@ -19,17 +19,31 @@ namespace GlobalTheory.NPartConj
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv k`.
+-/
 theorem nsmul_mL' {g k : ℕ} {v : Formalism.L2.SG.HidaSetting.VA I} (hv : v ∈ Formalism.L2.SG.HidaSetting.mL I g) :
     ((k : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • v) ∈ Formalism.L2.SG.HidaSetting.mL I g := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hv k
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hv k`.
+-/
 theorem nsmul_Lf' {k : ℕ} {v : Formalism.L2.SG.HidaSetting.VA I} (hv : v ∈ I.Lf) :
     ((k : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • v) ∈ I.Lf := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem hv k
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨y, hy, rfl⟩; exact nsmul_Lf' I hy)`.
+-/
 theorem mL_le_Lf' (g : ℕ) : Formalism.L2.SG.HidaSetting.mL I g ≤ I.Lf :=
   Submodule.span_le.2 (by rintro _ ⟨y, hy, rfl⟩; exact nsmul_Lf' I hy)
 
+/- English proof (translation)
+Establish `h : Formalism.L2.SG.HidaSetting.mL I g ≤ (Formalism.L2.SG.HidaSetting.mL I g).comap (Formalism.L2.SG.Pf.unitaryCongruence.mvO I (I.fmat x))` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show I.fmat x *ᵥ ((g : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • y) ∈ Formalism.L2.SG.HidaSetting.mL I g`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.smul_mem_mL I (Formalism.L2.SG.Pf.unitaryCongruence.K_mv I hx hy))`.
+
+Conclude with `h hv`.
+-/
 theorem K_mL' {x : I.Gf} (hx : x ∈ I.Kset) {g : ℕ} {v : Formalism.L2.SG.HidaSetting.VA I}
     (hv : v ∈ Formalism.L2.SG.HidaSetting.mL I g) : I.fmat x *ᵥ v ∈ Formalism.L2.SG.HidaSetting.mL I g := by
   have h : Formalism.L2.SG.HidaSetting.mL I g ≤
@@ -41,10 +55,16 @@ theorem K_mL' {x : I.Gf} (hx : x ∈ I.Kset) {g : ℕ} {v : Formalism.L2.SG.Hida
       exact Formalism.L2.SG.Pf.unitaryCongruence.smul_mem_mL I (Formalism.L2.SG.Pf.unitaryCongruence.K_mv I hx hy))
   exact h hv
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `sub_mem (K_mL' I hx hv) hv`.
+-/
 theorem K_sub_mL' {x : I.Gf} (hx : x ∈ I.Kset) {g : ℕ} {v : Formalism.L2.SG.HidaSetting.VA I}
     (hv : v ∈ Formalism.L2.SG.HidaSetting.mL I g) : (I.fmat x - 1) *ᵥ v ∈ Formalism.L2.SG.HidaSetting.mL I g := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec]; exact sub_mem (K_mL' I hx hv) hv
 
+/- English proof (translation)
+Establish `e : (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • (I.fmat x *ᵥ n) - (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • N = I.fmat x *ᵥ ((c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • (n - N0))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_sub, hN, smul_sub]`. Rewrite using `[e]`. Conclude with `K_mL' I hx h`.
+-/
 theorem hcn_of {x : I.Gf} (hx : x ∈ I.Kset) {g : ℕ} {n N N0 : Formalism.L2.SG.HidaSetting.VA I}
     (hN : I.fmat x *ᵥ N0 = N) {c : ℕ}
     (h : (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • (n - N0) ∈ Formalism.L2.SG.HidaSetting.mL I g) :
@@ -55,6 +75,9 @@ theorem hcn_of {x : I.Gf} (hx : x ∈ I.Kset) {g : ℕ} {n N N0 : Formalism.L2.S
     rw [Matrix.mulVec_smul, Matrix.mulVec_sub, hN, smul_sub]
   rw [e]; exact K_mL' I hx h
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.Pf.unitaryCongruence.fmat_mul, Formalism.L2.SG.Pf.unitaryCongruence.fmat_mul]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul, Matrix.one_mulVec]`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+-/
 theorem conj_sub (x m : I.Gf) (n : Formalism.L2.SG.HidaSetting.VA I) :
     (I.fmat (x⁻¹ * m * x) - 1) *ᵥ n = I.fmat x⁻¹ *ᵥ ((I.fmat m - 1) *ᵥ (I.fmat x *ᵥ n)) := by
   rw [Formalism.L2.SG.Pf.unitaryCongruence.fmat_mul, Formalism.L2.SG.Pf.unitaryCongruence.fmat_mul]
@@ -63,6 +86,17 @@ theorem conj_sub (x m : I.Gf) (n : Formalism.L2.SG.HidaSetting.VA I) :
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Formalism.L2.SG.Pf.unitaryCongruence.fmat_inv_mul, Matrix.sub_mulVec,
     Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `set C : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F := (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) with hC`. Establish `e1 : Formalism.L2.SG.HidaSetting.hA I f ((I.fmat (x⁻¹ * m * x) - 1) *ᵥ n) = Formalism.L2.SG.HidaSetting.hA I (I.fmat x *ᵥ f) ((I.fmat m - 1) *ᵥ (I.fmat x *ᵥ n))`. Rewrite using `[conj_sub, PIW.NormChiNBi.hA_left_inv, inv_inv]`. Establish `hsig : Formalism.L2.SG.HidaSetting.sigA I C = C` using `by rw [hC, map_natCast]`. Establish `esc : ∀ u v : Formalism.L2.SG.HidaSetting.VA I, Formalism.L2.SG.HidaSetting.hA I (C • u) ((I.fmat m - 1) *ᵥ (C • v)) = C * C * Formalism.L2.SG.HidaSetting.hA I u ((I.fmat m - 1) *ᵥ v)`.
+
+Introduce `u v`. Rewrite using `[Matrix.mulVec_smul, PIW.NormChiNBi.hA_smul_left, PIW.NormChiNBi.hA_smul_right, hsig]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδf : C • (I.fmat x *ᵥ f) - C • F ∈ Formalism.L2.SG.HidaSetting.mL I g`. Establish `e : C • (I.fmat x *ᵥ f) - C • F = I.fmat x *ᵥ (C • (f - F))`.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_sub, hFx, smul_sub]`. Rewrite using `[e]`. Conclude with `K_mL' I hx hcf`. Establish `hA'L : C • F ∈ I.Lf`. Establish `e : C • F = C • f - C • (f - F)` using `by rw [smul_sub]; abel`.
+
+Rewrite using `[e]`. Conclude with `sub_mem (nsmul_Lf' I hf) (mL_le_Lf' I g hcf)`. Establish `hBL : (I.fmat m - 1) *ᵥ (C • (I.fmat x *ᵥ n)) ∈ I.Lf` using `Formalism.L2.SG.Pf.unitaryCongruence.K_sub_mv I hm (nsmul_Lf' I (Formalism.L2.SG.Pf.unitaryCongruence.K_mv I hx hn))`. Establish `key : ((c * c : ℕ) : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) * (Formalism.L2.SG.HidaSetting.hA I f ((I.fmat (x⁻¹ * m * x) - 1) *ᵥ n) - Formalism.L2.SG.HidaSetting.hA I F ((I.fmat m - 1) *ᵥ N)) = Formalism.L2.SG.HidaSetting.hA I (C • (I.fmat x *ᵥ f) - C • F) ((I.fmat m - 1) *ᵥ …`. Rewrite using `[PIW.NormChiNBi.hA_sub_left, Matrix.mulVec_sub, PIW.NormChiNBi.hA_sub_right, e1, esc, esc, esc, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Take `⟨s, hs, hs'⟩` from `PIW.NormChiNBi.hA_mL_left I g hδf hBL`. Take `⟨t, ht, ht'⟩` from `PIW.NormChiNBi.hA_mL_right I g (K_sub_mL' I hm hcn) hA'L`. Conclude with `⟨s + t, add_mem hs ht, by rw [hs', ht', mul_add]⟩`.
+-/
 theorem term_cong {g : ℕ} {x m : I.Gf} (hx : x ∈ I.Kset) (hm : m ∈ I.Kset)
     {f F n N : Formalism.L2.SG.HidaSetting.VA I} (hf : f ∈ I.Lf) (hn : n ∈ I.Lf) (hFx : I.fmat x *ᵥ F = F) {c : ℕ}
     (hcf : (c : I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) • (f - F) ∈ Formalism.L2.SG.HidaSetting.mL I g)
@@ -105,6 +139,17 @@ end GlobalTheory.NPartConj
 
 namespace GlobalTheory.NPartConj
 
+/- English proof (translation)
+Take `⟨c1, hc1, h1⟩` from `(X.basisApprox a).2`. Establish `hFx : X.B.I.fmat (X.xu u) *ᵥ incl X.B.I (X.fR a) = incl X.B.I (X.fR a)` using `(X.xu_fix u a).2`. Establish `hx` using `X.xu_K u`. Choose the witnesses or unpack the hypotheses as in `⟨c2, hc2, N0, hN0, h2⟩ : ∃ c2 : ℕ, Nat.Coprime c2 X.B.g ∧ ∃ N0 : VA X.B.I, X.B.I.fmat (X.xu u) *ᵥ N0 = incl X.B.I (nxt X.eR (X.zR u) a) ∧ ((c2 : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • (nxt X.e0 X.z0 a - N0)) ∈ mL X.B.I X.B.g := by`. Unfold `nxt`.
+
+Use `split_ifs with h`. Take `⟨c2, hc2, h2⟩` from `(X.basisApprox ⟨a.1 + 1, h⟩).1`. Conclude with `⟨c2, hc2, _, (X.xu_fix u _).1, h2⟩`. Take `⟨c2, hc2, h2⟩` from `X.xu_z u`. Use `⟨c2, hc2, X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_mulVec, PIW.NormChiNBi.fmat_mul_inv', Matrix.one_mulVec]`. Establish `h3` using `neg_mem h2`. Rewrite `h3` using `[← smul_neg, neg_sub]`. Then use the resulting hypothesis. Establish `hcop : Nat.Coprime (c1 * c2) X.B.g` using `Nat.Coprime.mul hc1 hc2`. Use `⟨(c1 * c2) * (c1 * c2), Nat.Coprime.mul hcop hcop, ?_⟩` and prove the remaining obligations.
+
+Establish `hcf : ((c1 * c2 : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • (X.f0 a - incl X.B.I (X.fR a)) ∈ mL X.B.I X.B.g`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `nsmul_mL' X.B.I h1`. Establish `hcN : ((c1 * c2 : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • (nxt X.e0 X.z0 a - N0) ∈ mL X.B.I X.B.g`. Rewrite using `[Nat.cast_mul, mul_smul]`.
+
+Conclude with `nsmul_mL' X.B.I h2`. Conclude with `term_cong X.B.I hx hm (X.vectorsInLattice.1 a).2 (PIW.NormChiNBi.nxt_mem X a) hFx hcf (hcn_of X.B.I hx hN0 hcN)`.
+-/
 theorem term_each (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (m : X.B.I.Gf)
     (hm : m ∈ X.B.I.Kset) (a : Fin D.R.rS) :
     ∃ c : ℕ, Nat.Coprime c X.B.g ∧ ZMod' X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) *
@@ -136,6 +181,13 @@ theorem term_each (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : 
   exact term_cong X.B.I hx hm (X.vectorsInLattice.1 a).2 (PIW.NormChiNBi.nxt_mem X a) hFx hcf
     (hcn_of X.B.I hx hN0 hcN)
 
+/- English proof (translation)
+Introduce `D X u m hm`. Use `choose c hc h using term_each D X u m hm`. Use `⟨∏ a, c a, Nat.Coprime.prod_left fun a _ => hc a, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Formalism.L2.SG.Pf.unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun a _ => ?_` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem c (Finset.mem_univ a)`. Rewrite using `[hk]`. Establish `e : ∀ T : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F, ((c a * k : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * T = (k : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * ((c a : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * T)`. Introduce `T`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.unitaryCongruence.Z_smul X.B.I X.B.g (natCast_mem _ k) (h a)`.
+-/
 theorem nsum_cong : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word) (m : X.B.I.Gf), m ∈ X.B.I.Kset → ∃ c : ℕ, Nat.Coprime c X.B.g ∧ ZMod' X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * ∑ a, (hA X.B.I (X.f0 a) ((X.B.I.fmat ((X.xu u)⁻¹ * m * X.xu u) - 1) *ᵥ nxt X.e0 X.z0 a) - hA X.B.I (incl X.B.I (X.fR a)) ((X.B.I.fmat m - 1) *ᵥ incl X.B.I (nxt X.eR (X.zR u) a)))) := by
   intro D X u m hm
   choose c hc h using term_each D X u m hm

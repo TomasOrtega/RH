@@ -12,6 +12,25 @@ open scoped TensorProduct
 open Classical
 noncomputable section
 namespace GlobalTheory.KTypeProj
+/- English proof (translation)
+Introduce `hP D θ V S M hθ ψ hψ hcusp hWex b hpos hherm hKadj hLie`. Take `⟨W, hWfd, hψW, hWK⟩` from `hWex`. Establish `hWK' : KStable θ M W` using `fun τ g hg f hf => hWK τ g hg.1 hg.2 f hf`. Use `set G := GlobalTheory.CuspGK.gkGen θ M ψ with hGdef`. Use `set F := typeSpan (rhoK θ M) (W ⊓ G) G with hFdef`.
+
+Use `haveI hFfd : FiniteDimensional ℂ F := _root_.GlobalTheory.T.admissible_KType_span_finiteDimensional hP θ V S M hθ ψ hψ hcusp W hWfd hψW hWK' b hpos hherm hKadj hLie`. Establish `hFG : F ≤ G` using `typeSpan_le _ _ _`. Establish `hprojG : ∀ F' : Submodule ℂ (GA D V → ℂ), F' ≤ G → FiniteDimensional ℂ F' → ∃ π : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ), (∀ x, π x ∈ F') ∧ ∀ x, ∀ f ∈ F', b (π x) f = b x f` using `fun F' hF' hfd => GlobalTheory.T.exists_orthogonalProjection_posDef_sesquilinear_finiteDim b F' hfd (fun x hx => hpos x (hF' hx)) (fun x hx y hy => hherm x (hF' hx) y (hF' hy))`. Take `⟨e, heF, hechar⟩` from `hprojG F hFG hFfd`. Establish `hfix : ∀ f ∈ F, e f = f`.
+
+Introduce `f hf`. Assume the negation of the conclusion as `hne`. Establish `hd : e f - f ∈ F` using `F.sub_mem (heF f) hf`. Establish `h0 : b (e f - f) (e f - f) = 0`. Rewrite using `[show b (e f - f) = b (e f) - b f from map_sub b _ _, LinearMap.sub_apply, hechar f _ hd, sub_self]`.
+
+Use `hpos _ (hFG hd) (sub_ne_zero.2 hne)` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hψF : ψ ∈ F` using `le_typeSpan _ inf_le_right ⟨hψW, GlobalTheory.CuspGK.mem_gkGen θ M ψ⟩`. Establish `hinvK : ∀ i : KIdx M, GlobalTheory.CuspGK.InK M i.1.1 i.1.2⁻¹ ∧ i.1.2⁻¹⁻¹ = i.1.2` using `fun i => GlobalTheory.T.inMaxCompactOfModelFrame_inv M i.1.1 i.1.2 i.2`.
+
+Set `inv : KIdx M → KIdx M` to `fun i => ⟨(i.1.1, i.1.2⁻¹), (hinvK i).1⟩`. Establish `hρG : ∀ i, ∀ x ∈ G, rhoK θ M i x ∈ G` using `(kStable_iff θ M G).1 (kStable_gkGen θ M ψ)`. Establish `hadj : ∀ i, ∀ x ∈ G, ∀ y ∈ G, b (rhoK θ M i x) y = b x (rhoK θ M (inv i) y)`. Introduce `i x hx y hy`. Establish `h` using `hKadj i.1.1 i.1.2⁻¹ (hinvK i).1 x hx y hy`.
+
+Rewrite `h` using `[(hinvK i).2]`. Conclude with `h.symm`. Use `⟨e, hfix ψ hψF, ?_, fun x _ => hfix _ (heF x), ?_, ?_⟩` and prove the remaining obligations. Introduce `A hAG hA x hx`. Take `⟨Y, hYfd, hxY, hYK⟩` from `GlobalTheory.T.kFinite_of_mem_gKModuleGeneratedBy θ M hθ ψ hψ ⟨W, hWfd, hψW, hWK'⟩ x (hAG hx)`.
+
+Use `haveI := hYfd`. Establish `hst` using `(kStable_iff θ M (Y ⊓ A)).1 (kStable_inf θ M hYK (kStable_of_isGKSub θ M hA))`. Use `GlobalTheory.T.typeSpanProjection_preserves_finiteDim_invariant_subspace b G (rhoK θ M) inv hpos hherm hρG hadj hprojG (W ⊓ G) e heF hechar (Y ⊓ A) inferInstance (inf_le_right.trans hAG) hst x ⟨hxY, hx⟩` as an intermediate fact. Conclude with `this.2`. Introduce `x hx y hy`.
+
+Establish `h1 : b (e x) (y - e y) = 0`. Rewrite using `[← hherm _ (G.sub_mem hy (hFG (heF y))) _ (hFG (heF x)), map_sub, LinearMap.sub_apply, hechar y _ (heF x), sub_self, star_zero]`. Establish `h2 : b (e x) y = b (e x) (e y)`. Rewrite `h1` using `[map_sub]`. Conclude with `sub_eq_zero.1 h1`.
+
+Rewrite using `[h2, hechar x _ (heF y)]`. Use `Submodule.finiteDimensional_of_le (S₂ := F) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `heF x`.
+-/
 theorem kType_projection_mem : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ →
@@ -88,6 +107,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KTypeProj.kType_projection_mem | exact _root_.GlobalTheory.KTypeProj.kType_projection_mem | (intros; apply _root_.GlobalTheory.KTypeProj.kType_projection_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kType_projection_of_kFinite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ →

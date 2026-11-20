@@ -3,6 +3,13 @@ import Development.EtaleCohomology.DivisorCycles.DivPlus
 open Matrix PositivityTheory.AutomorphicGaloisHodgeTate.Div
 namespace LateralTheory.DivDb
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ K K' _ _ _ _ _ _ _ _ _ N n ρ hρ hss S hS P hP hk X hX he ψ hψ hψS`. Take `⟨r, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, k, T, T', hT, -, hs⟩` from `plus_of hSpec hDeg hStruct hKey hBig hSemis hMU hRep hDA hSub hFD hFP hEm Γ K K' N n ρ hρ hss S hS P hP hk X hX he ψ hψ hψS`. Use `⟨r, h1, h2, h3, ⟨k, Matrix.of fun q a => T q.2 q.1 a, ?_, fun g => ?_⟩, h4, h5, h6, h7, h8, h9, h10⟩` and prove the remaining obligations. Establish `hC : (Matrix.of fun a (q : Fin n × Fin k) => T' q.2 a q.1) * (Matrix.of fun (q : Fin n × Fin k) a => T q.2 q.1 a) = 1`. Rewrite using `[← hs]`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.sum_apply, Fintype.sum_prod_type_right]`. Use `le_antisymm ((Matrix.rank_le_card_width _).trans (by simp)) ?_` and prove the remaining obligations. Use `Matrix.rank_mul_le_right (Matrix.of fun a (q : Fin n × Fin k) => T' q.2 a q.1) (Matrix.of fun (q : Fin n × Fin k) a => T q.2 q.1 a)` as an intermediate fact. Rewrite `this` using `[hC]`.
+
+Simplify using `using this`. Use extensionality with `⟨i, j⟩ a`. Use `congrFun (congrFun (hT j g) i) a` as an intermediate fact. Simplify using `only [Matrix.mul_apply] at this`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply, this]`.
+-/
 theorem goal_of (hSpec : SpecLie) (hDeg : DegAll) (hStruct : Struct) (hKey : Key) (hBig : BigCorner)
     (hSemis : Semis) (hMU : MatrixUnits₂) (hRep : Rep) (hDA : DenseAlg) (hSub : FinSub) (hFD : FinDense)
     (hFP : FinPoly) (hEm : FinEmbed) : DivWCoreLac := by

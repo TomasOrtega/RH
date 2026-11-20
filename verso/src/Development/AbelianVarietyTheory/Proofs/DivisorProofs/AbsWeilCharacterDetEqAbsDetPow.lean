@@ -12,6 +12,17 @@ open MeasureTheory Matrix
 
 namespace GlobalTheory.HeisUnit
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ψ0 hψc hψ1 ι hι Tr Mu hTr hMu hTrI hMuI S hS hSI χ hχ`. Set `ν : kˣ →* ℂˣ` to `χ * { toFun := fun x => Units.mk0 (GlobalTheory.SplitFlip.apow x (-((d : ℂ) / 2))) (GlobalTheory.SplitFlip.apow_ne_zero _ _) map_one' := Units.ext (GlobalTheory.SplitFlip.apow_one _) map_mul' := fun x y => Units.ext (GlobalTheory.SplitFlip.apow_mul x y _) }`. Establish `hν : ∀ x : kˣ, (ν x : ℂ) = (χ x : ℂ) * GlobalTheory.SplitFlip.apow x (-((d : ℂ) / 2))` using `fun x => rfl`. Establish `hfac : ∀ x : kˣ, (χ x : ℂ) = ν x * GlobalTheory.SplitFlip.apow x ((d : ℂ) / 2)` using `fun x => by`. Rewrite using `[hν, mul_assoc, ← GlobalTheory.SplitFlip.apow_add, neg_add_cancel, GlobalTheory.SplitFlip.apow_zero, mul_one]`.
+
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use `⟨1, fun x => by simp, fun g => ?_⟩` and prove the remaining obligations. Establish `hg : g = 1` using `Subsingleton.elim _ _`. Substitute `hg` using the available equality.
+
+Simplify using the standard rewrite rules. Use `⟨ν, fun x => ?_, fun g => hfac _⟩` and prove the remaining obligations. Set `i0 : Fin n` to `⟨0, hn⟩`. Take `⟨φ0, hφ0, hιφ0⟩` from `hι.surjOn (GlobalTheory.HeisUnit.intInd_mem_SB (k := k) n d)`. Establish `hne : φ0 ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h` using `congrFun hιφ0 0`. Rewrite `h` using `[map_zero, GlobalTheory.HeisUnit.intInd_zero]`. Conclude with `zero_ne_one h`. Establish `hN : ∀ μ : @Measure (Fin n × Fin d → k) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ ≠ 0 ∧ ∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ ≠ ⊤` using `fun μ hμ => ⟨(GlobalTheory.T.schwartzBruhat_lintegral_sq_ne_top μ hμ φ0 hφ0).2.2.1 hne, (GlobalTheory.T.schwartzBruhat_lintegral_sq_ne_top μ hμ φ0 hφ0).1⟩`.
+
+Establish `hU` using `GlobalTheory.T.norm_character_unit_eq_one_heisenberg ι hι.injOn S hS hSI χ hχ φ0 hφ0 hιφ0 hN i0`. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.SplitFlip.exists_isUnif (k := k)`. Establish `hP` using `GlobalTheory.T.normSq_uniformizer_character_mul_residueCard_pow_eq_one ι hι.injOn Tr hTr hTrI S hS hSI χ hχ φ0 hφ0 hιφ0 hne ϖ hϖ i0 (fun μ hμ T T' h => GlobalTheory.T.heisenbergCosetRepTranslates_orthogonal ψ0 hψc hψ1 ι hι.injOn Tr hTr Mu hMu hMuI φ0 hφ0 hιφ0 ϖ hϖ i0 T T' h μ hμ)`. Rewrite using `[hν]`. Conclude with `GlobalTheory.T.norm_mul_normalisedAbsPow_half_eq_one d χ hU ϖ hϖ hP x`.
+-/
 theorem exists_unitary_factor : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),
     Set.BijOn ι (GlobalTheory.WeilM.SB (Fin n × Fin d → k) : Set _) (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) : Set _) →

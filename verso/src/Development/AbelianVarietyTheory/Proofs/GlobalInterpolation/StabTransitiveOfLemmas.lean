@@ -19,10 +19,18 @@ section Form
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq_dot {A : Type} [CommRing A] (s : A →+* A) (G : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) : Formalism.UG.hform s G x y = (fun i => s (x i)) ⬝ᵥ G *ᵥ y := by
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hk : Formalism.UG.cT (sigR R σ) (HA.mat R σ J k).1 * JR R J * (HA.mat R σ J k).1 = JR R J` using `(show HR R σ J from k).2`. Establish `e : (fun i => sigR R σ (((HA.mat R σ J k).1 *ᵥ x) i)) = (fun i => sigR R σ (x i)) ᵥ* Formalism.UG.cT (sigR R σ) (HA.mat R σ J k).1`. Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.UG.cT, Matrix.vecMul_transpose]`. Conclude with `RingHom.map_mulVec _ _ _ i`.
+
+Rewrite using `[hR, hR, hform_eq_dot, hform_eq_dot, e, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hk]`.
+-/
 theorem hR_act (k : HA R σ J) (x y : Fin M → R ⊗[F] E) :
     hR R σ J ((HA.mat R σ J k).1 *ᵥ x) ((HA.mat R σ J k).1 *ᵥ y) = hR R σ J x y := by
   have hk : Formalism.UG.cT (sigR R σ) (HA.mat R σ J k).1 * JR R J * (HA.mat R σ J k).1 = JR R J :=
@@ -35,16 +43,30 @@ theorem hR_act (k : HA R σ J) (x y : Fin M → R ⊗[F] E) :
   rw [hR, hR, hform_eq_dot, hform_eq_dot, e, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
     Matrix.mulVec_mulVec, hk]
 
+/- English proof (translation)
+Simplify using `[hR, hE, Formalism.UG.hform, sigR, JR, inclR, TensorProduct.tmul_sum]`.
+-/
 theorem hR_rat (a : R) (x z : Fin M → E) :
     hR R σ J (fun i => inclR R (x i)) (fun i => a ⊗ₜ[F] z i) = a ⊗ₜ[F] hE σ J x z := by
   simp [hR, hE, Formalism.UG.hform, sigR, JR, inclR, TensorProduct.tmul_sum]
 
+/- English proof (translation)
+The claim follows from `hLin_add_left σ J R y z x`.
+-/
 theorem hR_add (x y z : Fin M → R ⊗[F] E) : hR R σ J x (y + z) = hR R σ J x y + hR R σ J x z :=
   hLin_add_left σ J R y z x
 
+/- English proof (translation)
+The claim follows from `hLin_smul_left σ J R c y x`.
+-/
 theorem hR_smul (c : R ⊗[F] E) (x y : Fin M → R ⊗[F] E) : hR R σ J x (c • y) = c * hR R σ J x y :=
   hLin_smul_left σ J R c y x
 
+/- English proof (translation)
+Establish `hσ : ∀ z, sigR R' σ (Algebra.TensorProduct.map φ (AlgHom.id F E) z) = Algebra.TensorProduct.map φ (AlgHom.id F E) (sigR R σ z)` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Simplify using `[hR, Formalism.UG.hform, hσ, JR, inclR]`.
+-/
 theorem hR_map {R' : Type} [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R') (x y : Fin M → R ⊗[F] E) :
     hR R' σ J (fun i => Algebra.TensorProduct.map φ (AlgHom.id F E) (x i))
       (fun i => Algebra.TensorProduct.map φ (AlgHom.id F E) (y i)) =
@@ -64,6 +86,9 @@ section Length
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Rewrite using `[SelfDualLatticeCompare.hR_self R h hJ]`. Conclude with `⟨fun e => e ▸ rfl, fun e => Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := R) (B := E) (algebraMap F E).injective e⟩`.
+-/
 theorem qR_eq_iff (R : Type) [CommRing R] [Algebra F R] (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (y : Fin M → R ⊗[F] E) (b : R) : qR R σ J y = b ↔ hR R σ J y y = b ⊗ₜ[F] (1 : E) := by
   rw [SelfDualLatticeCompare.hR_self R h hJ]
@@ -78,6 +103,15 @@ section Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `mem_intLoc_iff_absFin_le_one.2 ((absFin_le_iff F v).2 fun τ => ?_)` and prove the remaining obligations. Set `ψ : v.adicCompletionIntegers F →+* (valBar F v).integer` to `((algebraMap (Fv F v) (FvBar F v)).comp (v.adicCompletionIntegers F).subtype).codRestrict _ fun a => by`. Express the relevant statement in the definitionally equal form `absBar F v (algebraMap (Fv F v) (FvBar F v) a) ≤ 1`.
+
+Rewrite using `[absBar_algebraMap]`. Conclude with `Valued.toNormedField.norm_le_one_iff.2 a.2` after adjusting the coercions. Use `(Valuation.integer.integers (valBar F v)).mem_of_integral (x := finEmb F v τ z) ?_` and prove the remaining obligations. Use `IsIntegral.map_of_comp_eq ψ (finEmb F v τ).toRingHom (RingHom.ext fun a => ?_) hz` and prove the remaining obligations. Conclude with `((finEmb F v τ).commutes (a : Fv F v)).symm`.
+
+Use `intLoc_induction (p := fun z => z ∈ SelfDualLatticeActions.OEv E v) (fun a ha x => ?_) (zero_mem _) (fun _ _ => add_mem) (fun _ => neg_mem)` and prove the remaining obligations. Establish `h1 : IsIntegral (v.adicCompletionIntegers F) ((1 : Fv F v) ⊗ₜ[F] (x : E))` using `(show IsIntegral ℤ (x : E) from x.2).map_of_comp_eq (algebraMap ℤ _) (inclR (F := F) (E := E) (Fv F v)) (RingHom.ext_int _ _)`. Establish `h2` using `h1.smul (⟨a, ha⟩ : v.adicCompletionIntegers F)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ ↔ IsIntegral _ (a • ((1 : Fv F v) ⊗ₜ[F] (x : E)))`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_OEv_iff (z : Fv F v ⊗[F] E) : z ∈ SelfDualLatticeActions.OEv E v ↔ z ∈ intLoc F E v := by
   constructor
   · intro hz
@@ -108,6 +142,17 @@ def latMax (L : Submodule (𝓞 E) (Fin M → E)) : Submodule (SelfDualLatticeAc
   add_mem' := add_mem
   smul_mem' := fun c _ hy => (latLoc F L v).smul_mem ⟨c.1, (mem_OEv_iff v _).1 c.2⟩ hy
 
+/- English proof (translation)
+Establish `hl : Submodule.IsLattice E L` using `⟨hL.1, hL.2.1⟩`. Establish `hsd : IsSelfDualAt σ J L v`. Use `(SelfDual.forall_isSelfDualAt_iff hJ.2 hl).2 (fun y => (hL.2.2 y).trans ?_) v` and prove the remaining obligations. Conclude with `forall₂_congr fun x _ => ⟨fun h => ⟨⟨_, h⟩, rfl⟩, fun ⟨r, hr⟩ => hr ▸ r.2⟩`. Take `⟨k, S, Φ, h1, hS, hΦ⟩` from `SelfDual.exists_frame L hl`.
+
+Establish `hcol : ∀ j, (fun i => (S.map (inclR (F` using `F) (Fv F v))) i j) ∈ latMax v L := fun j => tmul_mem_latLoc (one_mem _) (hS j)`. Establish `hsum` using `SelfDual.eq_sum_col (SelfDual.map_mul_eq_one (F := F) (Fv F v) h1)`. Use `⟨?_, eq_top_iff.2 fun y _ => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `Submodule.fg_iff_exists_fin_generating_family.2 ⟨k, fun j i => (S.map (inclR (F := F) (Fv F v))) i j, le_antisymm ?_ fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hcol j`. Rewrite using `[hsum y]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ (⟨_, (mem_OEv_iff v _).2 ((SelfDual.mem_latLoc_iff_of_frame h1 hS hΦ v y).1 hy j)⟩ : SelfDualLatticeActions.OEv E v) (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Rewrite using `[hsum y]`. Conclude with `sum_mem fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (hcol j))`. Express the relevant statement in the definitionally equal form `y ∈ latLoc F L v ↔ _`. Rewrite using `[hsd]`. Simplify using `only [Submodule.mem_top, true_and, mem_OEv_iff]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem isSelfDualLat_latMax (hJ : IsHermND σ J) {L : Submodule (𝓞 E) (Fin M → E)}
     (hL : SelfDualLatticeOrthogonalParts.IsSelfDualLattice σ J L) : SelfDualLatticeActions.IsSelfDualLat v σ J (latMax v L) := by
   classical
@@ -145,11 +190,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `funext fun i => RingHom.map_mulVec (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E)).toRingHom _ y i`.
+-/
 theorem vecLoc_actVec (v : HeightOneSpectrum (𝓞 F)) (k : HA (Af F) σ J) (y : Fin M → Af F ⊗[F] E) :
     vecLoc v (SelfDualLatticeOrthogonalParts.actVec σ J k y) = SelfDualLatticeActions.act v σ J (projFinLoc σ J v k) (vecLoc v y) :=
   funext fun i => RingHom.map_mulVec
     (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E)).toRingHom _ y i
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice E L := ⟨hL.1, hL.2.1⟩`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ g ∈ SelfDualLatticeActions.latStab v σ J (latMax v L), SelfDualLatticeActions.act v σ J g (vecLoc v y) = vecLoc v y'` using `fun v => by`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu'⟩ : ∃ u : (v.adicCompletionIntegers F)ˣ, ((u : v.adicCompletionIntegers F) : Fv F v) = algebraMap F (Fv F v) β := by`. Break down `hβ with rfl | rfl` into its components or cases. Conclude with `⟨1, by simp⟩`.
+
+Conclude with `⟨-1, by simp⟩`. Establish `hs : ∀ z ∈ latHat F E (L : Set (Fin M → E)), qR (Af F) σ J z = algebraMap F (Af F) β → vecLoc v z ∈ SelfDualLatticeActions.sphere v σ J (latMax v L) (u : v.adicCompletionIntegers F)`. Introduce `z hz qz`. Use `⟨(mem_latHat_iff hL.1 z).1 hz v, (qR_eq_iff _ h hJ _ _).2 ?_⟩` and prove the remaining obligations. Use `(hR_map (Af F) σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) z z).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[(qR_eq_iff _ h hJ _ _).1 qz, Algebra.TensorProduct.map_tmul, AlgHom.commutes, hu']`. Both sides reduce to the same expression. Conclude with `((H F E σ h M J hM hJ v (fun w _ => hu w) _ (isSelfDualLat_latMax v hJ hL)).2.2 u).2.2.1 _ (hs y hy qy) _ (hs y' hy' qy')`. Use `choose g hg hgy using hloc`. Take `⟨k, hk, -⟩` from `existsUnique_projFinLoc_eq σ J L g (Filter.Eventually.of_forall fun v => hg v)`.
+
+Use `⟨k, fun z => ?_, funext fun i => LatticeLocalGlobal.ext_components _ _ fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [mem_latHat_iff hL.1, vecLoc_actVec, hk]`. Conclude with `forall_congr' fun v => hg v _`. Use `vecLoc_actVec v k y` as an intermediate fact. Rewrite `this` using `[hk, hgy]`.
+
+Conclude with `congrFun this i`.
+-/
 theorem exists_stab_act_eq (H : SelfDualLatticeActions.SelfDualLatticeLemmas) (h : IsCMExt F E σ)
     (hu : SelfDualLatticeOrthogonalParts.UnramifiedAtFinite F E) (hM : 1 ≤ M) (hJ : IsHermND σ J)
     {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLatticeOrthogonalParts.IsSelfDualLattice σ J L) {β : F}
@@ -184,11 +243,29 @@ theorem exists_stab_act_eq (H : SelfDualLatticeActions.SelfDualLatticeLemmas) (h
     exact congrFun this i
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩`.
+-/
 theorem latHat_mono {S T : Set (Fin M → E)} (h : S ⊆ T) : latHat F E S ≤ latHat F E T :=
   AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, z, hz, rfl⟩` from `hy`. Establish `hb : IsIntegral ℤ (algebraMap F E β) ∧ algebraMap F E β * algebraMap F E β = 1`. Break down `hβ with rfl | rfl` into its components or cases.
+
+Conclude with `⟨by rw [map_one]; exact isIntegral_one, by simp⟩`. Conclude with `⟨by rw [map_neg, map_one]; exact isIntegral_one.neg, by simp⟩`. Establish `hc : IsIntegral ℤ (algebraMap F E β * hE σ J x z)` using `hb.1.mul ((hL.2.2 z).1 hz x hx)`. Use `AddSubgroup.subset_closure ⟨a, ha, z - (algebraMap F E β * hE σ J x z) • x, ⟨L.sub_mem hz (L.smul_mem (⟨_, hc⟩ : 𝓞 E) hx), ?_⟩, funext fun i => ?_⟩` and prove the remaining obligations. Establish `: ∀ c : E, hE σ J x (z - c • x) = hE σ J x z - c * hE σ J x x` using `fun c => by`.
+
+Simplify using `only [hE, hform_eq_dot, Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Rewrite using `[this, hq]`. Take the linear combination `(-hE σ J x z) * hb.2`. Use `hR_rat (Af F) σ J a x z` as an intermediate fact. Unfold `SelfDualLatticeOrthogonalParts.ratVec`.
+
+Rewrite using `[this]`. Generalize the expression as in `algebraMap F E β = b`. Simplify using `[inclR, TensorProduct.tmul_sub]`. Consider the case `zero`. Use `hR_smul (Af F) σ J 0 (SelfDualLatticeOrthogonalParts.ratVec F x) 0` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, zero_mul]`. Rewrite using `[this, mul_zero, zero_smul, sub_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[hR_add, mul_add, add_smul, ← sub_add_sub_comm]`.
+
+Conclude with `add_mem hy hz`. Consider the case `neg y _ hy`. Use `hR_smul (Af F) σ J (-1) (SelfDualLatticeOrthogonalParts.ratVec F x) y` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_one_mul]`. Rewrite using `[this, mul_neg, neg_smul, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem proj_mem {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLatticeOrthogonalParts.IsSelfDualLattice σ J L) {β : F}
     (hβ : β = 1 ∨ β = -1) {x : Fin M → E} (hx : x ∈ L) (hq : hE σ J x x = algebraMap F E β)
     {y : Fin M → Af F ⊗[F] E} (hy : y ∈ latHat F E (L : Set (Fin M → E))) :
@@ -230,6 +307,11 @@ theorem proj_mem {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLatticeOrt
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use `⟨fun hy => ⟨latHat_mono (fun _ h => h.1) hy, ?_⟩, fun hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, -, z, hz, rfl⟩` from `hy`. Conclude with `(hR_rat (Af F) σ J a x z).trans (by rw [hz.2, TensorProduct.tmul_zero])`.
+
+Consider the case `zero => simpa using hR_smul (Af F) σ J 0 (SelfDualLatticeOrthogonalParts.ratVec F x) 0`. Consider the case `add y z _ _ hy hz => rw [hR_add, hy, hz, add_zero]`. Consider the case `neg y _ hy => rw [← neg_one_smul (Af F ⊗[F] E) y, hR_smul, hy, mul_zero]`. Simplify `proj_mem hL hβ hx hq hy.1` using `[hy.2]`.
+-/
 theorem mem_latHat_perp_iff {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLatticeOrthogonalParts.IsSelfDualLattice σ J L)
     {β : F} (hβ : β = 1 ∨ β = -1) {x : Fin M → E} (hx : x ∈ L) (hq : hE σ J x x = algebraMap F E β)
     (y : Fin M → Af F ⊗[F] E) :
@@ -247,6 +329,15 @@ theorem mem_latHat_perp_iff {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDua
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `key : ∀ k ∈ SelfDualLatticeOrthogonalParts.stabHat σ J (SelfDualLatticeOrthogonalParts.perpPart σ J L x) ⊓ SelfDualLatticeOrthogonalParts.stabVec σ J x, ∀ y ∈ latHat F E (L : Set (Fin M → E)), SelfDualLatticeOrthogonalParts.actVec σ J k y ∈ latHat F E (L : Set (Fin M → E))`. Introduce and unpack `k ⟨hk, hkx⟩ y hy`. Establish `h1` using `proj_mem hL hβ hx hq hy`. Establish `h2` using `latHat_mono (S := SelfDualLatticeOrthogonalParts.perpPart σ J L x) (T := L) (fun _ h => h.1) h1`. Establish `h3` using `latHat_mono (S := SelfDualLatticeOrthogonalParts.perpPart σ J L x) (T := L) (fun _ h => h.1) ((hk _).1 h1)`.
+
+Establish `h4` using `(SelfDualLatticeOrthogonalParts.mem_stabVec σ J x k).1 hkx`. Unfold `SelfDualLatticeOrthogonalParts.actVec at h3 h4 ⊢`. Rewrite `h3` using `[Matrix.mulVec_sub, Matrix.mulVec_smul, h4]`. Use `add_mem h3 (sub_mem hy h2)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel, sub_add_cancel]`. Then use the resulting hypothesis.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `fun k hk => ⟨fun y => ?_, hk.2⟩` and prove the remaining obligations. Establish `h4` using `(SelfDualLatticeOrthogonalParts.mem_stabVec σ J x k).1 hk.2`. Establish `h5 : hR (Af F) σ J (SelfDualLatticeOrthogonalParts.actVec σ J k (SelfDualLatticeOrthogonalParts.ratVec F x)) (SelfDualLatticeOrthogonalParts.actVec σ J k y) = _` using `hR_act (Af F) σ J k _ _`. Rewrite `h5` using `[h4]`.
+
+Rewrite using `[mem_latHat_perp_iff hL hβ hx hq, mem_latHat_perp_iff hL hβ hx hq, h5]`. Conclude with `and_congr_left' (hk.1 y)`. Use `fun k hk => ⟨fun y => ⟨key k hk y, fun hy => ?_⟩, hk.2⟩` and prove the remaining obligations. Use `key k⁻¹ (inv_mem hk) _ hy` as an intermediate fact. Rewrite `this` using `[← SelfDualLatticeOrthogonalParts.actVec_mul, inv_mul_cancel, SelfDualLatticeOrthogonalParts.actVec_one]`. Then use the resulting hypothesis.
+-/
 theorem stab_inf_eq {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLatticeOrthogonalParts.IsSelfDualLattice σ J L)
     {β : F} (hβ : β = 1 ∨ β = -1) {x : Fin M → E} (hx : x ∈ L) (hq : hE σ J x x = algebraMap F E β) :
     SelfDualLatticeOrthogonalParts.stabHat σ J (L : Set (Fin M → E)) ⊓ SelfDualLatticeOrthogonalParts.stabVec σ J x =
@@ -277,6 +368,15 @@ theorem stab_inf_eq {L : Submodule (𝓞 E) (Fin M → E)} (hL : SelfDualLattice
 
 end Global
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h hu M J hJ L hL β hβ x hx hq`. Establish `hM : 1 ≤ M`. Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. It suffices to derive a contradiction. Establish `h0 : algebraMap F E β = 0` using `by rw [← hq]; simp [hE, Formalism.UG.hform]`.
+
+Apply the tactic sequence `rcases hβ with rfl | rfl <;> simp at h0`. Conclude with `hM`. Establish `hxL : SelfDualLatticeOrthogonalParts.ratVec F x ∈ latHat F E (L : Set (Fin M → E))` using `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, x, hx, rfl⟩`. Establish `hxx : hR (Af F) σ J (SelfDualLatticeOrthogonalParts.ratVec F x) (SelfDualLatticeOrthogonalParts.ratVec F x) = algebraMap F (Af F) β ⊗ₜ[F] (1 : E)`. Use `(hR_rat (Af F) σ J 1 x x).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hq, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `h1 : ∀ y ∈ latHat F E (L : Set (Fin M → E)), qR (Af F) σ J y = algebraMap F (Af F) β → ∃ k ∈ SelfDualLatticeOrthogonalParts.stabHat σ J (L : Set (Fin M → E)), SelfDualLatticeOrthogonalParts.actVec σ J k (SelfDualLatticeOrthogonalParts.ratVec F x) = y` using `fun y hy qy => exists_stab_act_eq H h hu hM hJ hL hβ hxL hy ((qR_eq_iff _ h hJ _ _).2 hxx) qy`. Use `⟨h1, Set.ext fun g => ⟨fun hg => ?_, ?_⟩, stab_inf_eq hL hβ hx hq⟩` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `h1 _ hg ((qR_eq_iff _ h hJ _ _).2 ((hR_act (Af F) σ J g⁻¹ _ _).trans hxx))`. Use `⟨g * k, (SelfDualLatticeOrthogonalParts.mem_stabVec σ J x _).2 ?_, k⁻¹, inv_mem hk, mul_inv_cancel_right g k⟩` and prove the remaining obligations.
+
+Rewrite using `[SelfDualLatticeOrthogonalParts.actVec_mul, e, ← SelfDualLatticeOrthogonalParts.actVec_mul, mul_inv_cancel, SelfDualLatticeOrthogonalParts.actVec_one]`. Introduce and unpack `⟨s, hs, k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `SelfDualLatticeOrthogonalParts.actVec σ J (s * k)⁻¹ _ ∈ latHat F E (L : Set (Fin M → E))`. Rewrite using `[mul_inv_rev, SelfDualLatticeOrthogonalParts.actVec_mul, (SelfDualLatticeOrthogonalParts.mem_stabVec σ J x _).1 (inv_mem hs)]`. Conclude with `(inv_mem hk _).1 hxL`.
+-/
 theorem stabTransitive_of_lemmas (H : SelfDualLatticeActions.SelfDualLatticeLemmas) : SelfDualLatticeOrthogonalParts.StabTransitive := by
   intro F E _ _ _ _ _ σ h hu M J hJ L hL β hβ x hx hq
   have hM : 1 ≤ M := by

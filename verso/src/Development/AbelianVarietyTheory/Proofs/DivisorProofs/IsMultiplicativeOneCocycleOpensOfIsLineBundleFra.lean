@@ -6,6 +6,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LBObs.FrameCoc
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (x : Γ(X, U)ˣ) :
     res h (res h' x) = res (h.trans h') x := by
   ext
@@ -13,6 +16,15 @@ theorem res_res' {X : Scheme.{0}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U)
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `X C _ V hV L u hL hF T T' T'' a b`. Take `⟨τ, -, hτ⟩` from `hF`. Establish `key : ∀ m : L.ι, res (inf_le_left : V T'' ⊓ L.U m ≤ V T'') (u T T'' (a ≫ b)) = res (inf_le_left : V T'' ⊓ L.U m ≤ V T'') (res (hV b) (u T T' a) * u T' T'' b)`. Introduce `m`. Establish `h1` using `hτ T T'' (a ≫ b) m`.
+
+Establish `h2` using `congrArg (res (inf_le_inf_right (L.U m) (hV b))) (hτ T T' a m)`. Establish `h3` using `hτ T' T'' b m`. Rewrite `h2` using `[res_res', map_mul, res_res', h3]`. Rewrite `h2` using `[h1]`. Apply `mul_right_cancel (b := τ T'' m)` to reduce the goal to its premises.
+
+Rewrite using `[h2, map_mul, res_res', ← _root_.mul_assoc]`. Apply `Units.ext` to reduce the goal to its premises. Use `X.sheaf.eq_of_locally_eq' (fun m => V T'' ⊓ L.U m) (V T'') (fun m => homOfLE inf_le_left) ?_ _ _ ?_` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq, hL.cover, inf_top_eq]`. Introduce `m`.
+
+Conclude with `congrArg Units.val (key m)`.
+-/
 theorem isCoc_of_isFrame : ∀ (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C → X.Opens) (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) (L : LB X) (u : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, V T')ˣ), L.IsLB → IsFrame L V hV u → IsCoc V hV u := by
   intro X C _ V hV L u hL hF T T' T'' a b
   obtain ⟨τ, -, hτ⟩ := hF

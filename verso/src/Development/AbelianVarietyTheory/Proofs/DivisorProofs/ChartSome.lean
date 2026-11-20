@@ -18,9 +18,15 @@ def Near.chart {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S 
   | none => N.u
   | some k => N.u ≫ (transl (x k)⁻¹).left
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Near.chart_none {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S}
     [GrpObj G] (N : Near π G) {n : ℕ} (x : Fin n → (Over.mk (𝟙 S) ⟶ G)) : N.chart x none = N.u := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Near.chart_some {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} {π : S ⟶ Sp R} {G : Over S}
     [GrpObj G] (N : Near π G) {n : ℕ} (x : Fin n → (Over.mk (𝟙 S) ⟶ G)) (k : Fin n) :
     N.chart x (some k) = N.u ≫ (transl (x k)⁻¹).left := rfl

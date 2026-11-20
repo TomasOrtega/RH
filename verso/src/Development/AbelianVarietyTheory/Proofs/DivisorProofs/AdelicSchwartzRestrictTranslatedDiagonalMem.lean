@@ -24,8 +24,14 @@ def diagA : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] (κ ⊕ κ → mixedE
       map_add' := fun x x' => by funext i; cases i <;> simp
       map_smul' := fun c x => by funext i; cases i <;> simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagA_apply (x : κ → mixedEmbedding.mixedSpace F) : diagA F κ x = Sum.elim x x := rfl
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => by simpa [diagA_apply] using norm_le_pi_norm (diagA F κ x) (Sum.inl j)`.
+-/
 theorem norm_le_diagA (x : κ → mixedEmbedding.mixedSpace F) : ‖x‖ ≤ ‖diagA F κ x‖ :=
   (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => by
     simpa [diagA_apply] using norm_le_pi_norm (diagA F κ x) (Sum.inl j)
@@ -39,9 +45,17 @@ def restrA : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ →L[�
       have h0 := norm_nonneg (diagA F κ x)
       rw [pow_one, one_mul]; linarith⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrA_apply (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ) (x : κ → mixedEmbedding.mixedSpace F) :
     restrA F κ f x = f (Sum.elim x x) := rfl
 
+/- English proof (translation)
+Establish `hd : Continuous fun y : κ → FiniteAdeleRing (𝓞 F) F => (Sum.elim (y + b) y : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)` using `continuous_pi fun i => by`. Consider the cases of `i with`. Consider the case `inl j => exact (continuous_apply j).add continuous_const`. Consider the case `inr j => exact continuous_apply j`. Establish `hr : Continuous fun z : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F => fun j => z (Sum.inr j)` using `continuous_pi fun j => continuous_apply _`.
+
+Use `⟨hg.1.comp_continuous hd, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (hg.2.isCompact.image hr) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨Sum.elim (y + b) y, subset_tsupport _ h, rfl⟩`.
+-/
 theorem shift_mem_finite {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)) (b : κ → FiniteAdeleRing (𝓞 F) F) :
     (fun y : κ → FiniteAdeleRing (𝓞 F) F => g (Sum.elim (y + b) y)) ∈ finiteSchwartzBruhatPi F := by
@@ -58,6 +72,13 @@ theorem shift_mem_finite {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ
   by_contra h
   exact hy ⟨Sum.elim (y + b) y, subset_tsupport _ h, rfl⟩
 
+/- English proof (translation)
+Establish `key : (fun t : κ → AdeleRing (𝓞 F) F => pureA F f g (Sum.elim (t + u) t)) = schwartzBruhatTensorPi (restrA F κ (SchwartzMap.compSubConstCLM ℂ (-Sum.elim (infPartPi u) 0) f)) (fun y : κ → FiniteAdeleRing (𝓞 F) F => g (Sum.elim (y + finPartPi u) y))`. Use function extensionality and compare the values at `t`. Simplify using `only [schwartzBruhatTensorPi, restrA_apply, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add]`. Unfold `pureA`. Use `congr 1`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl j => exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (t j).1 (u j).1`. Consider the case `inr j => exact (add_zero _).symm`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`. Rewrite using `[key]`. Conclude with `schwartzBruhatTensorPi_mem _ (shift_mem_finite hg _)`.
+-/
 theorem shift_pureA_mem (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F))
     (u : κ → AdeleRing (𝓞 F) F) :
@@ -81,6 +102,11 @@ theorem shift_pureA_mem (f : SchwartzMap (κ ⊕ κ → mixedEmbedding.mixedSpac
   rw [key]
   exact schwartzBruhatTensorPi_mem _ (shift_mem_finite hg _)
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Conclude with `shift_pureA_mem f hg u`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+-/
 theorem shift_mem_schwartzBruhatPi (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (φ : (κ ⊕ κ → AF F) → ℂ) (hφ : φ ∈ schA F (κ ⊕ κ)) (u : κ → AF F) :
     (fun t : κ → AF F => φ (Sum.elim (t + u) t)) ∈ schwartzBruhatPi F κ := by

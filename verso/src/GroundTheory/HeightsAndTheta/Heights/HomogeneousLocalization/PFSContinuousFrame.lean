@@ -14,17 +14,34 @@ namespace SectionsLatticeFS
 
 open ProjScheme
 
+/- English proof (translation)
+Establish `h` using `CP.mk_mem_chartDomain j v.rep v.rep_nonzero`. Rewrite `h` using `[Projectivization.mk_rep]`. Conclude with `h.mp hv`.
+-/
 lemma rep_ne_zero_of_mem_chartDomain {N : ℕ} {j : Fin (N + 1)} {v : CP N}
     (hv : v ∈ CP.chartDomain j) : v.rep j ≠ 0 := by
   have h := CP.mk_mem_chartDomain j v.rep v.rep_nonzero
   rw [Projectivization.mk_rep] at h
   exact h.mp hv
 
+/- English proof (translation)
+Simplify using `[CP.fsNormPoly, norm_pow]`.
+-/
 lemma norm_rep_pow_div {N : ℕ} (n : ℕ) (j : Fin (N + 1)) (v : CP N) :
     ‖v.rep j‖ ^ n / norm2 v.rep ^ n =
       CP.fsNormPoly n ((MvPolynomial.X j : MvPolynomial (Fin (N + 1)) ℂ) ^ n) v := by
   simp [CP.fsNormPoly, norm_pow]
 
+/- English proof (translation)
+Set `V : (self A N).X.Opens` to `U ⊓ ProjSpace.stdOpen A N j`. Establish `hVU : V ≤ U` using `inf_le_left`. Establish `hVj : V ≤ ProjSpace.stdOpen A N j` using `inf_le_right`. Take `⟨f, hf⟩` from `(isBasisOn_frame (A := A) j n V hVj).2 (resM _ hVU e)`. Establish `hV : ∀ y : {y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} // y.1.1 ∈ CP.chartDomain j}, (self A N).point y.1.1 ∈ V` using `fun y => ⟨y.1.2, point_mem_stdOpen y.1.1 (rep_ne_zero_of_mem_chartDomain y.2)⟩`.
+
+Set `ι` to `fun y : {y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} // y.1.1 ∈ CP.chartDomain j} => (⟨y.1.1, hV y⟩ : {x : (self A N).complexPoints ρ // (self A N).point x ∈ V})`. Establish `hι : Continuous ι` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hval : ∀ y : {y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} // y.1.1 ∈ CP.chartDomain j}, fsFibreNorm n ρ y.1.1 ((self A N).sectionValue y.1.1 y.1.2 e) = ‖(self A N).evalAtPoint y.1.1 (germR (hV y) f)‖ * CP.fsNormPoly n ((MvPolynomial.X j : MvPolynomial (Fin (N + …`. Introduce `y`. Establish `hyj` using `rep_ne_zero_of_mem_chartDomain y.2`.
+
+Establish `hp` using `point_mem_stdOpen y.1.1 hyj`. Rewrite using `[h₁ A N n ρ y.1.1 j hyj, mul_div_assoc, norm_rep_pow_div]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `(Via.ofComplex ((self A N).evalAtPoint y.1.1)).symm (fibreEquiv (X := (self A N).X) (L := twistN A N n) ((self A N).evalAtPoint y.1.1) hp (isBasisOn_frame (A := A) j n) (fibreMk (X := (self A N).X) (twistN A N n) ((self A N).evalAtPoint y.1.1) 1 (germM (X := (self A N).X) (L := t …`. Rewrite using `[← germM_resM hVU (hV y) e, ← hf, germM_smul, germM_resM hVj (hV y)]`.
+
+Establish `key` using `fibreEquiv_fibreMk (φ := (self A N).evalAtPoint y.1.1) hp (isBasisOn_frame (A := A) j n) 1 (germR (hV y) f)`. Rewrite `key` using `[mul_one]`. Conclude with `(congrArg (Via.ofComplex ((self A N).evalAtPoint y.1.1)).symm key).trans (RingEquiv.symm_apply_apply _ _)`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `hc : Continuous fun y : {y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} // y.1.1 ∈ CP.chartDomain j} => ‖(self A N).evalAtPoint y.1.1 (germR (hV y) f)‖ * CP.fsNormPoly n ((MvPolynomial.X j : MvPolynomial (Fin (N + 1)) ℂ) ^ n) y.1.1.1` using `(continuous_norm.comp ((h₂ A N (self A N) ρ V f).comp hι)).mul ((CP.continuous_fsNormPoly (MvPolynomial.isHomogeneous_X_pow j n)).comp (continuous_subtype_val.comp (continuous_subtype_val.comp continuous_subtype_val)))`.
+
+Conclude with `hc.congr fun y => (hval y).symm`.
+-/
 theorem continuousOn_chart (h₁ : FSIndex.Statement.{u}) (h₂ : ComplexMetric.RegularContinuous.Statement.{u})
     {A : Type u} [CommRing A] {N n : ℕ} (ρ : A →+* ℂ) {U : (self A N).X.Opens}
     (e : ((preMod (self A N).X).obj (twistN A N n)).obj (op U)) (j : Fin (N + 1)) :
@@ -75,6 +92,11 @@ theorem continuousOn_chart (h₁ : FSIndex.Statement.{u}) (h₂ : ComplexMetric.
         (continuous_subtype_val.comp (continuous_subtype_val.comp continuous_subtype_val)))
   exact hc.congr fun y => (hval y).symm
 
+/- English proof (translation)
+Introduce `A _ N n ρ U e _`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y₀`. Set `j` to `CP.chartIndex y₀.1.1`. Establish `hW : IsOpen {y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} | y.1.1 ∈ CP.chartDomain j}` using `(CP.isOpen_chartDomain j).preimage (continuous_subtype_val.comp continuous_subtype_val : Continuous fun y : {x : (self A N).complexPoints ρ // (self A N).point x ∈ U} => y.1.1)`.
+
+Conclude with `(continuousOn_chart h₁ h₂ ρ e j).continuousAt (hW.mem_nhds (CP.mem_chartDomain_chartIndex y₀.1.1))`.
+-/
 theorem FSContinuousFrame.proof (h₁ : FSIndex.Statement.{u})
     (h₂ : ComplexMetric.RegularContinuous.Statement.{u}) : FSContinuousFrame.Statement.{u} := by
   intro A _ N n ρ U e _
@@ -89,6 +111,9 @@ theorem FSContinuousFrame.proof (h₁ : FSIndex.Statement.{u})
   exact (continuousOn_chart h₁ h₂ ρ e j).continuousAt
     (hW.mem_nhds (CP.mem_chartDomain_chartIndex y₀.1.1))
 
+/- English proof (translation)
+The claim follows from `FSContinuousFrame.proof h₁ h₂ _ _ _ _ _ _ (isBasisOn_frame 0 1)`.
+-/
 example (h₁ : FSIndex.Statement.{0}) (h₂ : ComplexMetric.RegularContinuous.Statement.{0}) :
     Continuous fun y : {x : (self (NumberField.RingOfIntegers ℚ) 1).complexPoints
         (intEmb (Rat.castHom ℂ)) // (self _ 1).point x ∈ ProjSpace.stdOpen _ 1 0} =>

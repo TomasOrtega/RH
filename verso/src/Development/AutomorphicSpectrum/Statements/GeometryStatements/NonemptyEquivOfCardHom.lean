@@ -21,6 +21,9 @@ def QFGroup.IsDerAtOne {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGrou
       valAt v ⊤ le_top s = TrivSqZeroExt.inl (Ideal.Quotient.mk (Ideal.span {(N : R)}) (f 1)) +
         TrivSqZeroExt.inr (Ideal.Quotient.mk (Ideal.span {(N : R)}) (w e))
 
+/- English proof (translation)
+Simplify using `only [QFGroup.IsDerAtOne, QFGroup.IsHT, map_one, Units.val_one]`.
+-/
 theorem QFGroup.isDerAtOne_char_iff {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : QFGroup R T)
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S}
     (i : Γ.G.left ⟶ G.left) {L : Type} [AddCommGroup L] [Module R L] (M : LieModel G x L) (N : ℕ)

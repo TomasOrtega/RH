@@ -8,17 +8,26 @@ noncomputable section
 namespace GlobalTheory.FockMinorFunctional
 open Formalism.L2.DIV
 
+/- English proof (translation)
+Establish `e : (algebraMap ℚ K).comp (Int.castRingHom ℚ) = Int.castRingHom K` using `RingHom.ext_int _ _`. Rewrite using `[map_map, e]`.
+-/
 theorem map_int_eq_map_rat {σ K : Type} [Field K] [CharZero K] (f : MvPolynomial σ ℤ) :
     map (Int.castRingHom K) f = map (algebraMap ℚ K) (map (Int.castRingHom ℚ) f) := by
   have e : (algebraMap ℚ K).comp (Int.castRingHom ℚ) = Int.castRingHom K := RingHom.ext_int _ _
   rw [map_map, e]
 
+/- English proof (translation)
+Unfold `WeylLatticeDuality.nablaX Formalism.BasicNotions.KM.nablaX`. Both sides reduce to the same expression.
+-/
 theorem nablaX_eq {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (J : ∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N) :
     WeylLatticeDuality.nablaX N nu J = Formalism.BasicNotions.KM.nablaX N nu J := by
   unfold WeylLatticeDuality.nablaX Formalism.BasicNotions.KM.nablaX
   rfl
 
+/- English proof (translation)
+Rewrite using `[← map_int_eq_map_rat]`. Unfold `GlobalTheory.WeylMinorDual.colProd`. Rewrite using `[fk_map_bidet]`.
+-/
 theorem colProd_map {K : Type} [Field K] [CharZero K] (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N)
     (J : ∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N) :
     GlobalTheory.WeylMinorDual.colProd K N Y hY J =
@@ -27,6 +36,9 @@ theorem colProd_map {K : Type} [Field K] [CharZero K] (N : ℕ) (Y : YoungDiagra
   unfold GlobalTheory.WeylMinorDual.colProd
   rw [fk_map_bidet]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_int_eq, aeval_map_algebraMap, nablaX_eq]`. Conclude with `GlobalTheory.WeylMinorDual.aeval_nablaX N nu hY J`.
+-/
 theorem aeval_map_nablaX {K Lt : Type} [Field K] [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (J : ∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N) :
     aeval (R := K) (fun v : Lt × ℕ × Fin N =>
@@ -36,6 +48,11 @@ theorem aeval_map_nablaX {K Lt : Type} [Field K] [Fintype Lt] [DecidableEq Lt] (
   rw [← algebraMap_int_eq, aeval_map_algebraMap, nablaX_eq]
   exact GlobalTheory.WeylMinorDual.aeval_nablaX N nu hY J
 
+/- English proof (translation)
+Introduce `p _ Lt _ _ N nu hY g`. Set `ρ : Lt × ℕ × Fin N → Pol ℂ_[p] Lt N` to `fun v => if h : v.2.1 < N then X (v.1, v.2.2, (⟨v.2.1, h⟩ : Fin N)) else 0`. Set `G : Pol ℂ_[p] Lt N` to `ten fun s => map (Int.castRingHom ℂ_[p]) (g s)`. Use `⟨(fockBL G).comp (aeval ρ).toLinearMap, fun J => ?_⟩` and prove the remaining obligations. Establish `h1 : aeval ρ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J)) = ten fun s => GlobalTheory.WeylMinorDual.colProd ℂ_[p] N (nu s) (hY s) (J s)`.
+
+Conclude with `aeval_map_nablaX N nu hY J`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, h1, fockBL_apply, GlobalTheory.WeylMinorDual.fockB_ten]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_int_eq_map_rat, colProd_map, GlobalTheory.WeylMinorDual.fockB_map]`.
+-/
 theorem fock_functional_nablaX : ∀ (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (g : Lt → MvPolynomial (Fin N × Fin N) ℤ),
     ∃ Ψ : Module.Dual ℂ_[p] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[p]),

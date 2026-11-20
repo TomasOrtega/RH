@@ -11,35 +11,83 @@ namespace GlobalTheory.Tube
 
 variable {k : ℕ} {η : ℝ}
 
+/- English proof (translation)
+Simplify using `only [nsq, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem nsq_cast (β : Fin k → ℂ) : ((nsq β : ℝ) : ℂ) = ∑ j, β j * conj (β j) := by
   simp only [nsq, Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; rfl
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem nsq_nonneg (β : Fin k → ℂ) : 0 ≤ nsq β := Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+Simplify using `[nsq]`.
+-/
 theorem nsq_neg (β : Fin k → ℂ) : nsq (-β) = nsq β := by simp [nsq]
 
+/- English proof (translation)
+Simplify using `[dd, nsq_neg]`.
+-/
 theorem dd_neg (β : Fin k → ℂ) : dd η (-β) = dd η β := by simp [dd, nsq_neg]
 
+/- English proof (translation)
+Use `nsq_nonneg β` as an intermediate fact. Apply the tactic sequence `rcases hη with h | h <;> rw [h] <;> linarith`.
+-/
 theorem dd_arg_pos (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : 0 < 1 - η * nsq β := by
   have := nsq_nonneg β
   rcases hη with h | h <;> rw [h] <;> linarith
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_pos.2 (dd_arg_pos hη h)`.
+-/
 theorem dd_pos (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : 0 < dd η β :=
   Real.sqrt_pos.2 (dd_arg_pos hη h)
 
+/- English proof (translation)
+The claim follows from `Real.sq_sqrt (dd_arg_pos hη h).le`.
+-/
 theorem dd_sq (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : dd η β ^ 2 = 1 - η * nsq β :=
   Real.sq_sqrt (dd_arg_pos hη h).le
 
+/- English proof (translation)
+The claim follows from `blk_cc _ _ _ _ _ _`.
+-/
 theorem sec_cc (β : Fin k → ℂ) (i j : Fin k) : sec η β i.castSucc j.castSucc =
     (1 : Matrix (Fin k) (Fin k) ℂ) i j - ((η / (1 + dd η β) : ℝ) : ℂ) * (conj (β i) * β j) := blk_cc _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `blk_cl _ _ _ _ _`.
+-/
 theorem sec_cl (β : Fin k → ℂ) (i : Fin k) : sec η β i.castSucc (Fin.last k) = -(η : ℂ) * conj (β i) :=
   blk_cl _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `blk_lc _ _ _ _ _`.
+-/
 theorem sec_lc (β : Fin k → ℂ) (j : Fin k) : sec η β (Fin.last k) j.castSucc = β j := blk_lc _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `blk_ll _ _ _ _`.
+-/
 theorem sec_ll (β : Fin k → ℂ) : sec η β (Fin.last k) (Fin.last k) = (dd η β : ℂ) := blk_ll _ _ _ _
 
+/- English proof (translation)
+Establish `hd` using `dd_pos hη h`. Apply the tactic sequence `have h2 : (η : ℂ) ^ 2 = 1 := by rcases hη with h | h <;> simp [h]`. Establish `h3 : ((dd η β : ℝ) : ℂ) ^ 2 = 1 - η * ∑ j, β j * conj (β j)`. Rewrite using `[← nsq_cast]`. Conclude with `dd_sq hη h` after adjusting the coercions.
+
+Establish `h4 : ((η / (1 + dd η β) : ℝ) : ℂ) * (1 + dd η β) = η`. Establish `: η / (1 + dd η β) * (1 + dd η β) = η` using `by field_simp`. Conclude with `this` after adjusting the coercions. Take `⟨a, ha⟩ : ∃ a, a = ((η / (1 + dd η β) : ℝ) : ℂ)` from `⟨_, rfl⟩`. Take `⟨d, hdd⟩ : ∃ d, d = ((dd η β : ℝ) : ℂ)` from `⟨_, rfl⟩`.
+
+Rewrite `h4` using `[← ha, ← hdd]`. Rewrite `h3` using `[← hdd]`. Use `blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_` and prove the remaining obligations. Establish `e : ∀ l, ((1 : Matrix (Fin k) (Fin k) ℂ) i l - a * (conj (β i) * β l)) * ((1 : Matrix (Fin k) (Fin k) ℂ) l j - a * (conj (β l) * β j)) = (1 : Matrix (Fin k) (Fin k) ℂ) i l * ((1 : Matrix (Fin k) (Fin k) ℂ) l j - a * (conj (β l) * β j)) - a * (conj (β i) * β l) * (1 : Matrix (Fin …` using `fun l => by ring`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, sec_cc, sec_cl, sec_lc, sec_ll, dd_neg, ← ha, ← hdd, Pi.neg_apply, map_neg, neg_mul_neg, e, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+
+Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Fin.castSucc_inj]`. Generalize the expression as in `∑ j, β j * conj (β j) = n at h3`. Take the linear combination `(conj (β i) * β j) * ((-a ^ 2 * n) * h2 + (a ^ 2 * η) * h3 + (a * η * (1 - d) - 1) * h4 + (a * (1 - d)) * h2)`. Establish `e : ∀ l, ((1 : Matrix (Fin k) (Fin k) ℂ) i l - a * (conj (β i) * β l)) * (η * conj (β l)) = (1 : Matrix (Fin k) (Fin k) ℂ) i l * (η * conj (β l)) - a * η * conj (β i) * (β l * conj (β l))` using `fun l => by ring`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, sec_cc, sec_cl, sec_lc, sec_ll, dd_neg, ← ha, ← hdd, Pi.neg_apply, map_neg, neg_mul_neg, e, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+
+Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Fin.castSucc_ne_last, if_false]`. Generalize the expression as in `∑ j, β j * conj (β j) = n at h3`. Take the linear combination `(conj (β i)) * ((-a) * h3 + (d - 1) * h4)`. Establish `e : ∀ l, β l * ((1 : Matrix (Fin k) (Fin k) ℂ) l j - a * (conj (β l) * β j)) = β l * (1 : Matrix (Fin k) (Fin k) ℂ) l j - a * β j * (β l * conj (β l))` using `fun l => by ring`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, sec_cc, sec_cl, sec_lc, sec_ll, dd_neg, ← ha, ← hdd, Pi.neg_apply, map_neg, neg_mul_neg, e, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+
+Simplify using `only [Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, (Fin.castSucc_ne_last _).symm, if_false]`. Generalize the expression as in `∑ j, β j * conj (β j) = n at h3`. Take the linear combination `(β j) * ((a * n - (1 - d)) * h2 + (-a * η) * h3 + (η * (d - 1)) * h4)`. Establish `e : ∀ l, β l * (η * conj (β l)) = η * (β l * conj (β l))` using `fun l => by ring`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_castSucc, sec_cc, sec_cl, sec_lc, sec_ll, dd_neg, ← ha, ← hdd, Pi.neg_apply, map_neg, neg_mul_neg, e, ← Finset.mul_sum, Matrix.one_apply_eq]`.
+
+Take the linear combination `h3`.
+-/
 theorem sec_mul_neg (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : sec η β * sec η (-β) = 1 := by
   have hd := dd_pos hη h
   have h2 : (η : ℂ) ^ 2 = 1 := by rcases hη with h | h <;> simp [h]
@@ -87,10 +135,18 @@ theorem sec_mul_neg (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β 
       ← Finset.mul_sum, Matrix.one_apply_eq]
     linear_combination h3
 
+/- English proof (translation)
+Use `sec_mul_neg hη (β := -β) (by rwa [nsq_neg])` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+-/
 theorem neg_mul_sec (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : sec η (-β) * sec η β = 1 := by
   have := sec_mul_neg hη (β := -β) (by rwa [nsq_neg])
   rwa [neg_neg] at this
 
+/- English proof (translation)
+Apply the tactic sequence `have h2 : (η : ℂ) * η = 1 := by rcases hη with h | h <;> simp [h]`. Unfold `Hd`. Apply the tactic sequence `refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, sec_cc, sec_cl, sec_lc, sec_ll, dd_neg, Fin.castSucc_ne_last, if_false, if_true, Pi.neg_apply, map_neg]`. Simplify using `[Matrix.one_apply, eq_comm, mul_comm]`.
+
+Simplify using `[mul_comm]`. Simplify using `only [star_mul', star_neg, Complex.star_def, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[mul_comm]`.
+-/
 theorem sec_herm (hη : η = 1 ∨ η = -1) (β : Fin k → ℂ) : (sec η β)ᴴ * Hd k η = Hd k η * sec η (-β) := by
   have h2 : (η : ℂ) * η = 1 := by rcases hη with h | h <;> simp [h]
   unfold Hd
@@ -102,26 +158,50 @@ theorem sec_herm (hη : η = 1 ∨ η = -1) (β : Fin k → ℂ) : (sec η β)�
   · simp only [star_mul', star_neg, Complex.star_def, Complex.conj_conj, Complex.conj_ofReal]; ring
   · simp [mul_comm]
 
+/- English proof (translation)
+Use `show (sec η β)ᴴ * Hd k η * sec η β = Hd k η`. Rewrite using `[sec_herm hη, Matrix.mul_assoc, neg_mul_sec hη h, Matrix.mul_one]`.
+-/
 theorem sec_mem (hη : η = 1 ∨ η = -1) {β : Fin k → ℂ} (h : nsq β < 1) : sec η β ∈ UH (Hd k η) := by
   show (sec η β)ᴴ * Hd k η * sec η β = Hd k η
   rw [sec_herm hη, Matrix.mul_assoc, neg_mul_sec hη h, Matrix.mul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>`. Simplify using `[sec_cc, sec_cl, sec_lc, sec_ll, dd, nsq, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`.
+-/
 theorem sec_zero : sec η (0 : Fin k → ℂ) = 1 := by
   refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>
     simp [sec_cc, sec_cl, sec_lc, sec_ll, dd, nsq, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
 
+/- English proof (translation)
+Apply the tactic sequence `refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>`. Simplify using `[kap, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`.
+-/
 theorem kap_one : kap (1 : Matrix (Fin k) (Fin k) ℂ) 1 = 1 := by
   refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>
     simp [kap, Matrix.one_apply, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]
 
+/- English proof (translation)
+Simplify using `[kap, Matrix.mul_apply, Fin.sum_univ_castSucc]`.
+-/
 theorem kap_mul_last (A : Matrix (Fin k) (Fin k) ℂ) (u : ℂ) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (j : Fin (k + 1)) :
     (kap A u * g) (Fin.last k) j = u * g (Fin.last k) j := by
   simp [kap, Matrix.mul_apply, Fin.sum_univ_castSucc]
 
+/- English proof (translation)
+Simplify using `[kap, Matrix.mul_apply, Fin.sum_univ_castSucc]`.
+-/
 theorem kap_mul_cast (A : Matrix (Fin k) (Fin k) ℂ) (u : ℂ) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i : Fin k)
     (j : Fin (k + 1)) : (kap A u * g) i.castSucc j = ∑ l, A i l * g l.castSucc j := by
   simp [kap, Matrix.mul_apply, Fin.sum_univ_castSucc]
 
+/- English proof (translation)
+Establish `hu' : conj u * u = 1` using `by rw [Complex.conj_mul', hu]; simp`. Establish `e : (kap A u)ᴴ * Hd k η * kap A u = blk (Aᴴ * 1 * A) 0 0 (η : ℂ)`. Unfold `Hd`. Apply the tactic sequence `refine blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_ <;>`. Apply the tactic sequence `rw [Matrix.mul_apply] <;>`.
+
+Simplify using `only [Matrix.mul_diagonal, Fin.sum_univ_castSucc, kap, Matrix.conjTranspose_apply, blk_cc, blk_cl, blk_lc, blk_ll, Fin.castSucc_ne_last, if_false, if_true, Matrix.mul_one]`. Simplify using `[Matrix.mul_apply]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Complex.star_def]`.
+
+Take the linear combination `(η : ℂ) * hu'`. Use `show (kap A u)ᴴ * Hd k η * kap A u = Hd k η ↔ Aᴴ * 1 * A = 1`. Rewrite using `[e, Hd_eq]`. Use `⟨fun h => ?_, fun h => by rw [h]⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h i.castSucc) j.castSucc` as an intermediate fact. Simplify `this` using `only [blk_cc]`.
+-/
 theorem kap_mem_iff (hη : η = 1 ∨ η = -1) (A : Matrix (Fin k) (Fin k) ℂ) {u : ℂ} (hu : ‖u‖ = 1) :
     kap A u ∈ UH (Hd k η) ↔ A ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ) := by
   have hu' : conj u * u = 1 := by rw [Complex.conj_mul', hu]; simp
@@ -143,15 +223,27 @@ theorem kap_mem_iff (hη : η = 1 ∨ η = -1) (A : Matrix (Fin k) (Fin k) ℂ) 
   have := congrFun (congrFun h i.castSucc) j.castSucc
   simpa only [blk_cc] using this
 
+/- English proof (translation)
+The claim follows from `funext fun _ => kap_mul_last _ _ _ _`.
+-/
 theorem row_kap (A : Matrix (Fin k) (Fin k) ℂ) (u : ℂ) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     row (kap A u * g) = fun j => u * row g j := funext fun _ => kap_mul_last _ _ _ _
 
+/- English proof (translation)
+Simplify using `[nsq, hu]`.
+-/
 theorem nsq_mul {u : ℂ} (hu : ‖u‖ = 1) (β : Fin k → ℂ) : nsq (fun j => u * β j) = nsq β := by simp [nsq, hu]
 
+/- English proof (translation)
+Simplify using `only [ph, kap_mul_last, norm_mul, hu, one_mul, mul_div_assoc]`.
+-/
 theorem ph_kap (A : Matrix (Fin k) (Fin k) ℂ) {u : ℂ} (hu : ‖u‖ = 1) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     ph (kap A u * g) = u * ph g := by
   simp only [ph, kap_mul_last, norm_mul, hu, one_mul, mul_div_assoc]
 
+/- English proof (translation)
+Establish `hu' : conj u * u = 1` using `by rw [Complex.conj_mul', hu]; simp`. Use function extensionality and compare the values at `j`. Simplify using `only [bet, ph_kap A hu, row_kap, map_mul]`. Take the linear combination `(conj (ph g) * row g j) * hu'`.
+-/
 theorem bet_kap (A : Matrix (Fin k) (Fin k) ℂ) {u : ℂ} (hu : ‖u‖ = 1) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     bet (kap A u * g) = bet g := by
   have hu' : conj u * u = 1 := by rw [Complex.conj_mul', hu]; simp
@@ -159,12 +251,20 @@ theorem bet_kap (A : Matrix (Fin k) (Fin k) ℂ) {u : ℂ} (hu : ‖u‖ = 1) (g
   simp only [bet, ph_kap A hu, row_kap, map_mul]
   linear_combination (conj (ph g) * row g j) * hu'
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [top, bet_kap A hu, Matrix.mul_assoc, kap_mul_cast]`. Both sides reduce to the same expression.
+-/
 theorem top_kap (A : Matrix (Fin k) (Fin k) ℂ) {u : ℂ} (hu : ‖u‖ = 1) (g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
     top η (kap A u * g) = A * top η g := by
   ext i j
   simp only [top, bet_kap A hu, Matrix.mul_assoc, kap_mul_cast]
   rfl
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (show gᴴ * Hd k η * g = Hd k η from hg) j) j`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Hd, Matrix.mul_diagonal, Fin.sum_univ_castSucc, Matrix.conjTranspose_apply, Fin.castSucc_ne_last, if_false, if_true, mul_one, Matrix.diagonal_apply_eq, Complex.star_def, Complex.conj_mul'] at h`. Establish `e : conj (g (Fin.last k) j) * η * g (Fin.last k) j = η * (‖g (Fin.last k) j‖ : ℂ) ^ 2`. Rewrite using `[← Complex.conj_mul']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Apply the tactic sequence `rw [h]; split_ifs <;> simp`.
+-/
 theorem col_id {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η)) (j : Fin (k + 1)) :
     ∑ i : Fin k, ‖g i.castSucc j‖ ^ 2 + η * ‖g (Fin.last k) j‖ ^ 2 = if j = Fin.last k then η else 1 := by
   have h := congrFun (congrFun (show gᴴ * Hd k η * g = Hd k η from hg) j) j
@@ -178,6 +278,11 @@ theorem col_id {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k
   push_cast
   rw [h]; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hd k η * g = Hd k η` using `hg`. Establish `h1 : (Hd k η * gᴴ * Hd k η) * g = 1`. Rewrite using `[Matrix.mul_assoc (Hd k η), Matrix.mul_assoc (Hd k η), hg', Hd_sq k hη]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Use `show gᴴᴴ * Hd k η * gᴴ = Hd k η`.
+
+Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Hd_sq k hη, Matrix.mul_one]`. Use `_ = Hd k η := by rw [h2, Matrix.one_mul]`.
+-/
 theorem herm_mem (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η)) :
     gᴴ ∈ UH (Hd k η) := by
   have hg' : gᴴ * Hd k η * g = Hd k η := hg
@@ -190,6 +295,9 @@ theorem herm_mem (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 
         simp only [Matrix.mul_assoc, Hd_sq k hη, Matrix.mul_one]
     _ = Hd k η := by rw [h2, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h` using `col_id (herm_mem hη hg) (Fin.last k)`. Simplify using `only [Matrix.conjTranspose_apply, norm_star, if_true] at h`. Establish `: nsq (row g) = ∑ i : Fin k, ‖g (Fin.last k) i.castSucc‖ ^ 2` using `rfl`. Rewrite `h` using `[← this]`. Apply the tactic sequence `rcases hη with h' | h' <;> rw [h'] at h ⊢ <;> linarith`.
+-/
 theorem row_id (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η)) :
     ‖g (Fin.last k) (Fin.last k)‖ ^ 2 = 1 - η * nsq (row g) := by
   have h := col_id (herm_mem hη hg) (Fin.last k)
@@ -198,11 +306,21 @@ theorem row_id (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)
   rw [← this] at h
   rcases hη with h' | h' <;> rw [h'] at h ⊢ <;> linarith
 
+/- English proof (translation)
+The claim follows from `|‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| = nsq (row g) := by rw [row_id hη hg] rcases hη with h' | h' <;> simp [h', abs_of_nonneg (nsq_nonneg (row g))]`.
+-/
 theorem abs_id (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η)) :
     |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| = nsq (row g) := by
   rw [row_id hη hg]
   rcases hη with h' | h' <;> simp [h', abs_of_nonneg (nsq_nonneg (row g))]
 
+/- English proof (translation)
+Establish `h0` using `nsq_nonneg (row g)`. Establish `hl : ∀ j, ‖g (Fin.last k) j‖ ^ 2 ≤ 2` using `fun j => by`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Apply the tactic sequence `rw [row_id hη hg]; rcases hη with h' | h' <;> rw [h'] <;> linarith`. Establish `: ‖row g j‖ ^ 2 ≤ nsq (row g)` using `Finset.single_le_sum (f := fun j => ‖row g j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`.
+
+Conclude with `this.trans (by linarith)`. Establish `: ‖g i j‖ ^ 2 ≤ 2 ^ 2`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Combine the linear relations using `[hl j]`. Establish `h1 : ‖g i.castSucc j‖ ^ 2 ≤ ∑ i : Fin k, ‖g i.castSucc j‖ ^ 2` using `Finset.single_le_sum (f := fun i : Fin k => ‖g i.castSucc j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+
+Establish `h2` using `col_id hg j`. Establish `h3` using `hl j`. Establish `h4 : 0 ≤ ‖g (Fin.last k) j‖ ^ 2` using `by positivity`. Apply the tactic sequence `rcases hη with h' | h' <;> rw [h'] at h2 <;> split_ifs at h2 <;> linarith`. Conclude with `abs_le_of_sq_le_sq' this (by norm_num) |>.2`.
+-/
 theorem entry_le (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η))
     (h : nsq (row g) ≤ 1) (i j : Fin (k + 1)) : ‖g i j‖ ≤ 2 := by
   have h0 := nsq_nonneg (row g)
@@ -223,6 +341,21 @@ theorem entry_le (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 
       rcases hη with h' | h' <;> rw [h'] at h2 <;> split_ifs at h2 <;> linarith
   exact abs_le_of_sq_le_sq' this (by norm_num) |>.2
 
+/- English proof (translation)
+Establish `h1` using `row_id hη hg`. Establish `h2` using `dd_arg_pos hη h`. Establish `h3 : ‖g (Fin.last k) (Fin.last k)‖ ≠ 0` using `fun e => by rw [e] at h1; linarith`. Establish `h3' : (‖g (Fin.last k) (Fin.last k)‖ : ℂ) ≠ 0` using `by exact_mod_cast h3`. Establish `hp : ‖ph g‖ = 1` using `by simp only [ph, norm_div, Complex.norm_real, norm_norm]; exact div_self h3`.
+
+Establish `hp' : ph g * conj (ph g) = 1` using `by rw [Complex.mul_conj', hp]; simp`. Establish `hb : nsq (bet g) = nsq (row g)` using `nsq_mul (by simpa using hp) _`. Establish `hb1 : nsq (bet g) < 1` using `hb ▸ h`. Establish `hd : dd η (bet g) = ‖g (Fin.last k) (Fin.last k)‖`. Rewrite using `[dd, hb, ← h1, Real.sqrt_sq (norm_nonneg _)]`.
+
+Establish `hrow : ∀ j, g (Fin.last k) j = ph g * sec η (bet g) (Fin.last k) j` using `fun j => by`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[sec_ll, hd, ph]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[sec_lc, bet, ← mul_assoc, hp', one_mul]`.
+
+Both sides reduce to the same expression. Establish `hm : g * sec η (-bet g) ∈ UH (Hd k η)` using `CCRuleCW.UH_mul _ _ _ hg (sec_mem hη (by rwa [nsq_neg]))`. Establish `hl : ∀ j, (g * sec η (-bet g)) (Fin.last k) j = ph g * (1 : Matrix _ _ ℂ) (Fin.last k) j` using `fun j => by`. Rewrite using `[← sec_mul_neg hη hb1]`. Simplify using `only [Matrix.mul_apply, hrow, Finset.mul_sum, mul_assoc]`.
+
+Establish `hc` using `col_id hm (Fin.last k)`. Rewrite `hc` using `[hl]`. Simplify using `only [Matrix.one_apply_eq, mul_one, hp, one_pow, if_true, add_eq_right] at hc`. Rewrite `hc` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`. Establish `e : g * sec η (-bet g) = kap (top η g) (ph g)`.
+
+Use `blk_ext (fun i j => ?_) (fun i => ?_) (fun j => ?_) ?_` and prove the remaining obligations. Simplify using `only [kap, blk_cc]`. Both sides reduce to the same expression. Simplify `hc i (Finset.mem_univ i)` using `[kap]`. Rewrite using `[hl]`.
+
+Simplify using `[kap, (Fin.castSucc_ne_last _).symm]`. Rewrite using `[hl]`. Simplify using `[kap]`. Use `⟨(kap_mem_iff hη _ hp).1 (e ▸ hm), hp, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, Matrix.mul_assoc, neg_mul_sec hη hb1, Matrix.mul_one]`.
+-/
 theorem decomp (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hg : g ∈ UH (Hd k η))
     (h : nsq (row g) < 1) : top η g ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ) ∧ ‖ph g‖ = 1 ∧ nsq (bet g) = nsq (row g) ∧
       g = kap (top η g) (ph g) * sec η (bet g) := by
@@ -258,6 +391,13 @@ theorem decomp (hη : η = 1 ∨ η = -1) {g : Matrix (Fin (k + 1)) (Fin (k + 1)
   refine ⟨(kap_mem_iff hη _ hp).1 (e ▸ hm), hp, hb, ?_⟩
   rw [← e, Matrix.mul_assoc, neg_mul_sec hη hb1, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hd : (dd η β : ℂ) ≠ 0` using `by exact_mod_cast (dd_pos hη h).ne'`. Establish `h1 : ph (sec η β) = 1`. Rewrite using `[ph, sec_ll, Complex.norm_real, Real.norm_of_nonneg (dd_pos hη h).le, div_self hd]`. Establish `h2 : row (sec η β) = β` using `funext fun j => sec_lc β j`. Establish `h3 : bet (sec η β) = β` using `by funext j; simp [bet, h1, h2]`.
+
+Establish `h4 : top η (sec η β) = 1`. Use extensionality with `i j`. Simplify using `[top, h3, sec_mul_neg hη h, Matrix.one_apply]`. Use `⟨CCRuleCW.UH_mul _ _ _ ((kap_mem_iff hη A hu).2 hA) (sec_mem hη h), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[top_kap A hu, h4, Matrix.mul_one]`.
+
+Rewrite using `[ph_kap A hu, h1, mul_one]`. Rewrite using `[row_kap, nsq_mul hu, h2]`.
+-/
 theorem comp (hη : η = 1 ∨ η = -1) {A : Matrix (Fin k) (Fin k) ℂ} (hA : A ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ))
     {u : ℂ} (hu : ‖u‖ = 1) {β : Fin k → ℂ} (h : nsq β < 1) :
     kap A u * sec η β ∈ UH (Hd k η) ∧ top η (kap A u * sec η β) = A ∧ ph (kap A u * sec η β) = u ∧
@@ -274,42 +414,71 @@ theorem comp (hη : η = 1 ∨ η = -1) {A : Matrix (Fin k) (Fin k) ℂ} (hA : A
   · rw [ph_kap A hu, h1, mul_one]
   · rw [row_kap, nsq_mul hu, h2]
 
+/- English proof (translation)
+Unfold `ph`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem meas_ph : Measurable fun g : PI.MtM (k + 1) => ph (Matrix.of g) := by
   unfold ph
   simp only [Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Unfold `row`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem meas_row (j : Fin k) : Measurable fun g : PI.MtM (k + 1) => row (Matrix.of g) j := by
   unfold row
   simp only [Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+The claim follows from `(Complex.continuous_conj.measurable.comp meas_ph).mul (meas_row j)`.
+-/
 theorem meas_bet (j : Fin k) : Measurable fun g : PI.MtM (k + 1) => bet (Matrix.of g) j :=
   (Complex.continuous_conj.measurable.comp meas_ph).mul (meas_row j)
 
+/- English proof (translation)
+Establish `hc : Measurable (conj : ℂ → ℂ)` using `Complex.continuous_conj.measurable`. Establish `hd : Measurable fun β : Fin k → ℂ => dd η β` using `by unfold dd nsq; fun_prop`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`. Apply the tactic sequence `simp only [sec_cc, sec_cl, sec_lc, sec_ll] <;> fun_prop`.
+-/
 theorem meas_sec (i j : Fin (k + 1)) : Measurable fun β : Fin k → ℂ => sec η β i j := by
   have hc : Measurable (conj : ℂ → ℂ) := Complex.continuous_conj.measurable
   have hd : Measurable fun β : Fin k → ℂ => dd η β := by unfold dd nsq; fun_prop
   refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>
     simp only [sec_cc, sec_cl, sec_lc, sec_ll] <;> fun_prop
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Use `show Measurable fun g : PI.MtM (k + 1) => ∑ l, g i.castSucc l * sec η (-bet (Matrix.of g)) l j.castSucc`. Use `Finset.measurable_sum _ fun l _ => Measurable.mul (by fun_prop) ?_` and prove the remaining obligations. Conclude with `(meas_sec l j.castSucc).comp (measurable_pi_lambda _ fun a => (meas_bet a).neg)`.
+-/
 theorem meas_top : Measurable fun g : PI.MtM (k + 1) => (Matrix.of.symm (top η (Matrix.of g)) : PI.MtM k) := by
   refine measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_
   show Measurable fun g : PI.MtM (k + 1) => ∑ l, g i.castSucc l * sec η (-bet (Matrix.of g)) l j.castSucc
   refine Finset.measurable_sum _ fun l _ => Measurable.mul (by fun_prop) ?_
   exact (meas_sec l j.castSucc).comp (measurable_pi_lambda _ fun a => (meas_bet a).neg)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)).1`.
+-/
 theorem closed_G (hη : η = 1 ∨ η = -1) : IsClosed {g : PI.MtM (k + 1) | Matrix.of g ∈ UH (Hd k η)} :=
   (GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)).1
 
+/- English proof (translation)
+Unfold `nsq row`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem cont_nsq : Continuous fun g : PI.MtM (k + 1) => nsq (row (Matrix.of g)) := by
   unfold nsq row
   simp only [Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+The claim follows from `(closed_G hη).measurableSet.inter (measurableSet_lt cont_nsq.measurable measurable_const)`.
+-/
 theorem meas_tube (hη : η = 1 ∨ η = -1) (t : ℝ) : MeasurableSet (tubeO k η t) :=
   (closed_G hη).measurableSet.inter (measurableSet_lt cont_nsq.measurable measurable_const)
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ _ μ (GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)) hμ).2.1 (Metric.closedBall 0 2 ∩ {g : PI.MtM (k + 1) | Matrix.of g ∈ UH (Hd k η)}) ((isCompact_closedBall _ _).inter_right (closed_G hη)) (fun x hx => hx.2)`. Use `lt_of_le_of_lt (measure_mono fun g hg => Set.mem_inter ?_ hg.1) h` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (by norm_num)]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg (by norm_num)]`.
+
+Conclude with `fun j => entry_le hη hg.1 (hg.2.le.trans ht) i j`.
+-/
 theorem tube_fin (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (hμ : PI.IsHaarOnM (UH (Hd k η)) μ) {t : ℝ}
     (ht : t ≤ 1) : μ (tubeO k η t) < ⊤ := by
   have h := (GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ _ μ (GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)) hμ).2.1
@@ -321,10 +490,18 @@ theorem tube_fin (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (hμ
   rw [pi_norm_le_iff_of_nonneg (by norm_num)]
   exact fun j => entry_le hη hg.1 (hg.2.le.trans ht) i j
 
+/- English proof (translation)
+Establish `: Continuous (PI.lmulQ a)` using `continuous_const.matrix_mul continuous_id`. Conclude with `this.measurable`.
+-/
 theorem meas_lmul {m : ℕ} (a : Matrix (Fin m) (Fin m) ℂ) : Measurable (PI.lmulQ a) := by
   have : Continuous (PI.lmulQ a) := continuous_const.matrix_mul continuous_id
   exact this.measurable
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)`. Establish `hk` using `(kap_mem_iff hη A hu).2 hA`. Use `show kap A u * Matrix.of g ∈ UH (Hd k η) ∧ nsq (row (kap A u * Matrix.of g)) < t ↔ Matrix.of g ∈ UH (Hd k η) ∧ nsq (row (Matrix.of g)) < t`. Rewrite using `[row_kap, nsq_mul hu]`. Use `and_congr_left fun _ => ⟨fun h => ?_, fun h => hG.2.2.1 _ hk _ h⟩` and prove the remaining obligations.
+
+Use `hG.2.2.1 _ (hG.2.2.2 _ hk).1 _ h` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, mul_eq_one_comm.1 (hG.2.2.2 _ hk).2, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem kap_tube (hη : η = 1 ∨ η = -1) {A : Matrix (Fin k) (Fin k) ℂ} (hA : A ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ))
     {u : ℂ} (hu : ‖u‖ = 1) (t : ℝ) (g : PI.MtM (k + 1)) : PI.lmulQ (kap A u) g ∈ tubeO k η t ↔ g ∈ tubeO k η t := by
   have hG := GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)
@@ -336,6 +513,21 @@ theorem kap_tube (hη : η = 1 ∨ η = -1) {A : Matrix (Fin k) (Fin k) ℂ} (hA
   have := hG.2.2.1 _ (hG.2.2.2 _ hk).1 _ h
   rwa [← Matrix.mul_assoc, mul_eq_one_comm.1 (hG.2.2.2 _ hk).2, Matrix.one_mul] at this
 
+/- English proof (translation)
+Use `set S := (fun g : PI.MtM (k + 1) => ph (Matrix.of g)) ⁻¹' B ∩ tubeO k η t with hS`. Establish `hSm : MeasurableSet S` using `(meas_ph hB).inter (meas_tube hη t)`. Establish `hSf : μ S < ⊤` using `lt_of_le_of_lt (measure_mono Set.inter_subset_right) (tube_fin hη hμ ht)`. Use `set ν : Measure (PI.MtM k) := (μ.restrict S).map fun g => Matrix.of.symm (top η (Matrix.of g)) with hν`. Establish `hap : ∀ C, MeasurableSet C → ν C = μ ((fun g => Matrix.of.symm (top η (Matrix.of g))) ⁻¹' C ∩ S)` using `fun C hC => by rw [hν, Measure.map_apply meas_top hC, Measure.restrict_apply (meas_top hC)]`.
+
+Establish `hu : ν Set.univ = μ S` using `by rw [hap _ MeasurableSet.univ]; simp`. Rewrite using `[← hap A hA, ← hu]`. Distinguish the cases in `h0 : ν = 0`. Simplify using `[h0]`. Establish `hU` using `GlobalTheory.GramExp.isMatGroup_UH (1 : Matrix (Fin k) (Fin k) ℂ) (Matrix.one_mul _)`.
+
+Use `haveI : IsFiniteMeasure ν := ⟨hu ▸ hSf⟩`. Establish `hH : PI.IsHaarOnM (UH (1 : Matrix (Fin k) (Fin k) ℂ)) ν`. Use `⟨inferInstance, h0, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hc : IsClosed {x : PI.MtM k | Matrix.of x ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ)}` using `hU.1`. Use `(hap _ hc.measurableSet.compl).trans ?_` and prove the remaining obligations.
+
+Use `measure_empty (μ := μ)` and compare the differences between its conclusion and the goal. Use `Set.eq_empty_of_forall_notMem fun g hg => hg.1 ?_` and prove the remaining obligations. Conclude with `(decomp hη hg.2.2.1 (hg.2.2.2.trans_le ht)).1`. Use extensionality with `C hC`. Rewrite using `[Measure.map_apply (meas_lmul s) hC, hap _ (meas_lmul s hC), hap _ hC]`.
+
+Use `conv_rhs => rw [← hμ.2.2.2 _ ((kap_mem_iff hη s (u := 1) norm_one).2 hs)]`. Rewrite using `[Measure.map_apply (meas_lmul _) ((meas_top hC).inter hSm)]`. Use `congr 1`. Use extensionality with `g`. Establish `e1 : top η (Matrix.of (PI.lmulQ (kap s 1) g)) = s * top η (Matrix.of g)` using `top_kap s norm_one _`.
+
+Establish `e2 : ph (Matrix.of (PI.lmulQ (kap s 1) g)) = ph (Matrix.of g)` using `(ph_kap s norm_one _).trans (one_mul _)`. Simplify using `only [hS, Set.mem_inter_iff, Set.mem_preimage, e1, e2, kap_tube hη hs norm_one]`. Both sides reduce to the same expression. Take `⟨c, -, -, hc⟩` from `(GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ _ μ₀ hU hμ₀).1 ν hH`. Rewrite using `[hc]`.
+
+Simplify using `[h1, mul_comm]`.
+-/
 theorem prod_top (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (hμ : PI.IsHaarOnM (UH (Hd k η)) μ)
     {μ₀ : Measure (PI.MtM k)} (hμ₀ : PI.IsHaarOnM (UH (1 : Matrix (Fin k) (Fin k) ℂ)) μ₀) (h1 : μ₀ Set.univ = 1)
     {t : ℝ} (ht : t ≤ 1) {A : Set (PI.MtM k)} (hA : MeasurableSet A) {B : Set ℂ} (hB : MeasurableSet B) :
@@ -374,6 +566,15 @@ theorem prod_top (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (hμ
   rw [hc]
   simp [h1, mul_comm]
 
+/- English proof (translation)
+Use `set τ : Measure ℂ := (μ.restrict (tubeO k η t)).map fun g => ph (Matrix.of g) with hτ`. Establish `hap : ∀ B, MeasurableSet B → τ B = μ ((fun g => ph (Matrix.of g)) ⁻¹' B ∩ tubeO k η t)` using `fun C hC => by rw [hτ, Measure.map_apply meas_ph hC, Measure.restrict_apply (meas_ph hC)]`. Use `⟨τ, hap, ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[hap _ MeasurableSet.univ]`. Simplify using `using tube_fin hη hμ ht`.
+
+Rewrite using `[hap _ (isOpen_ne_fun continuous_norm continuous_const).measurableSet]`. Use `measure_empty (μ := μ)` and compare the differences between its conclusion and the goal. Use `Set.eq_empty_of_forall_notMem fun g hg => hg.1 ?_` and prove the remaining obligations. Conclude with `(decomp hη hg.2.1 (hg.2.2.trans_le ht)).2.1`. Use extensionality with `C hC`.
+
+Establish `hm : Measurable fun z : ℂ => u * z` using `by fun_prop`. Establish `h1 : (1 : Matrix (Fin k) (Fin k) ℂ) ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ)` using `by simp [UH]`. Rewrite using `[Measure.map_apply hm hC, hap _ (hm hC), hap _ hC]`. Use `conv_rhs => rw [← hμ.2.2.2 _ ((kap_mem_iff hη 1 hu).2 h1)]`. Rewrite using `[Measure.map_apply (meas_lmul _) ((meas_ph hC).inter (meas_tube hη t))]`.
+
+Use `congr 1`. Use extensionality with `g`. Establish `e2 : ph (Matrix.of (PI.lmulQ (kap 1 u) g)) = u * ph (Matrix.of g)` using `ph_kap 1 hu _`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, e2, kap_tube hη h1 hu]`.
+-/
 theorem phase_law (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (hμ : PI.IsHaarOnM (UH (Hd k η)) μ)
     {t : ℝ} (ht : t ≤ 1) : ∃ τ : Measure ℂ,
       (∀ B, MeasurableSet B → τ B = μ ((fun g => ph (Matrix.of g)) ⁻¹' B ∩ tubeO k η t)) ∧ τ Set.univ < ⊤ ∧
@@ -398,11 +599,29 @@ theorem phase_law (hη : η = 1 ∨ η = -1) {μ : Measure (PI.MtM (k + 1))} (h�
     have e2 : ph (Matrix.of (PI.lmulQ (kap 1 u) g)) = u * ph (Matrix.of g) := ph_kap 1 hu _
     simp only [Set.mem_inter_iff, Set.mem_preimage, e2, kap_tube hη h1 hu]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq, Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[hv, div_pow]`.
+-/
 theorem nsq_hv (w : EuclideanSpace ℂ (Fin k)) : nsq (hv w) = ‖w‖ ^ 2 / 2 := by
   rw [EuclideanSpace.norm_sq_eq, Finset.sum_div]
   refine Finset.sum_congr rfl fun j _ => ?_
   simp [hv, div_pow]
 
+/- English proof (translation)
+Establish `hρ : ρ ^ 2 / 2 < 1` using `by nlinarith`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨X, θ, w⟩, hx, rfl⟩`. Simplify using `only [mem_ball_zero_iff, Prod.norm_mk, max_lt_iff] at hx`.
+
+Establish `hw : nsq (hv w) < ρ ^ 2 / 2`. Rewrite using `[nsq_hv]`. Use `norm_nonneg w` as an intermediate fact. Use polynomial arithmetic with `[hx.2.2]`. Take `⟨a1, a2, a3, a4⟩` from `comp hη (hexp X) (Complex.norm_exp_ofReal_mul_I θ) (hw.trans hρ)`.
+
+Use `⟨⟨X, mem_ball_zero_iff.2 hx.1, congrArg _ a2.symm⟩, ⟨θ, mem_ball_zero_iff.2 hx.2.1, a3.symm⟩, a1, ?_⟩` and prove the remaining obligations. Conclude with `a4.trans_lt hw`. Introduce and unpack `⟨⟨X, hX, e1⟩, ⟨θ, hθ, e2⟩, hg, hr⟩`. Take `⟨-, -, a3, a4⟩` from `decomp hη hg (hr.trans hρ)`. Establish `hs : (Real.sqrt 2 : ℂ) ≠ 0` using `by simp`.
+
+Set `w : EuclideanSpace ℂ (Fin k)` to `WithLp.toLp 2 fun j => bet (Matrix.of g) j * (Real.sqrt 2 : ℂ)`. Establish `hw : hv w = bet (Matrix.of g)`. Use function extensionality and compare the values at `j`. Simplify using `only [hv, w]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hn : ‖w‖ < ρ`. Use `nsq_hv w` as an intermediate fact. Rewrite `this` using `[hw, a3]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 h0.le (by linarith)`. Use `⟨(X, θ, w), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [mem_ball_zero_iff, Prod.norm_mk, max_lt_iff] at hX hθ ⊢`. Conclude with `⟨hX, hθ, hn⟩`. Establish `e1' : NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _)) = top η (Matrix.of g)` using `Matrix.of.symm.injective e1`. Establish `e2' : Complex.exp (θ * Complex.I) = ph (Matrix.of g)` using `e2`. Use `show Matrix.of.symm (kap _ (Complex.exp (θ * Complex.I)) * sec η (hv w)) = g`.
+
+Rewrite using `[e1', e2', hw, ← a4]`. Both sides reduce to the same expression.
+-/
 theorem chart_image (hη : η = 1 ∨ η = -1)
     (hexp : ∀ X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ)),
       NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _)) ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ))

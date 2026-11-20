@@ -10,6 +10,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace GlobalTheory.CompanionTheory.FirstChernClassFactorial
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : (l * n).factorial * l.factorial ∣ (l * n + l).factorial` using `Nat.factorial_mul_factorial_dvd_factorial_add _ _`. Establish `h2 : l ∣ l.factorial` using `Nat.dvd_factorial hl le_rfl`.
+
+Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `(mul_dvd_mul ih h2).trans h1`.
+-/
 theorem pow_dvd_factorial_mul (l : ℕ) (hl : 0 < l) (n : ℕ) : l ^ n ∣ (l * n).factorial := by
   induction n with
   | zero => simp
@@ -20,10 +25,16 @@ theorem pow_dvd_factorial_mul (l : ℕ) (hl : 0 < l) (n : ℕ) : l ^ n ∣ (l * 
     rw [pow_succ, Nat.mul_succ]
     exact (mul_dvd_mul ih h2).trans h1
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(pow_dvd_factorial_mul l (Fact.out : l.Prime).pos n).trans (Nat.factorial_dvd_factorial hk)`. Rewrite using `[ha, Nat.cast_mul, Nat.cast_pow, (PAlg.base l).pow_l_acr n, zero_mul]`.
+-/
 theorem factorial_acr {l : ℕ} [Fact l.Prime] (n k : ℕ) (hk : l * n ≤ k) : (k.factorial : (PAlg.base l).Acr n) = 0 := by
   obtain ⟨a, ha⟩ := (pow_dvd_factorial_mul l (Fact.out : l.Prime).pos n).trans (Nat.factorial_dvd_factorial hk)
   rw [ha, Nat.cast_mul, Nat.cast_pow, (PAlg.base l).pow_l_acr n, zero_mul]
 
+/- English proof (translation)
+Unfold `B.dlog`. Use `(Finset.sum_subset (Finset.range_mono h) fun k _ hk => ?_).symm` and prove the remaining obligations. Rewrite using `[hf k (by simpa using hk)]`. Simplify using the standard rewrite rules.
+-/
 theorem dlog_eq_of_factorial {A : Type} [CommRing A] {J : Ideal A} (δ : DividedPowers J) {N N' : ℕ} (h : N ≤ N')
     (hf : ∀ k, N ≤ k → (k.factorial : A) = 0) (v : A) : B.dlog δ N' v = B.dlog δ N v := by
   unfold B.dlog
@@ -33,6 +44,17 @@ theorem dlog_eq_of_factorial {A : Type} [CommRing A] {J : Ideal A} (δ : Divided
 
 open B in
 
+/- English proof (translation)
+Introduce `C _ G Lf`. Set `mm` to `omMor (c := c) (c' := c') (crMor (F := schFn q) (F' := schFn q) (b := b) (b' := b') (ht := ht) (ht' := ht') σ hp hI (basePt (schFn q) τ hτ) fun _ y r => congrArg y.1.1 (hτσ r)) (RingHom.id Λ) hc`. Set `G' : C ⥤ Thick ((schFn q).cr b ht κ)` to `G ⋙ mm.G`. Set `Lf' : CLift G' D` to `{ p := Lf.p, hp := Lf.hp, w := Lf.w, hw := Lf.hw }`. Take `⟨hz', hcl⟩` from `hy C G' Lf'`.
+
+Set `m4 : CH.Mor (G' ⋙ OM _ c) (G ⋙ OM _ c') (RingHom.id _)` to `{ G := 𝟭 C, τ := fun T => mm.τ (G.obj T), nat := fun φ x => mm.nat (G.map φ) x }`. Establish `hE : m4.pullC 2 (Lf'.coc c N') = Lf.coc c' N`. Use function extensionality and compare the values at `s`. Use `dlog_eq_of_factorial (G.obj (s.obj (Fin.last 2))).δ hN (fun j hj => ?_) _` and prove the remaining obligations. Use `congrArg (G.obj (s.obj (Fin.last 2))).i (hf j hj)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `this`. Establish `hz : CH.d _ 2 (Lf.coc c' N) = 0`. Rewrite using `[← hE, m4.d_pullC, hz', map_zero]`. Use `⟨hz, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (CH.Mor.restrict (OM _ c') G).pull 2 (mm.pull 2 y) = m4.pull 2 ((CH.Mor.restrict (OM _ c) G').pull 2 y)`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Rewrite using `[← hcl]`.
+
+Establish `key : ∀ (z : CH.Cn (G ⋙ OM _ c') 2) (h : CH.d _ 2 z = 0), z = Lf.coc c' N → (CH.cx _).cls z h = (CH.cx _).cls (Lf.coc c' N) hz`. Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression. Conclude with `(key (m4.pullC 2 (Lf'.coc c N')) (by rw [m4.d_pullC, hz', map_zero]) hE).symm`.
+-/
 theorem isFirstChern_base_change {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {b b' : Base}
     {ht : b.t = 1} {ht' : b'.t = 1} {κ : O →+* b.R ⧸ b.I} {κ' : O →+* b'.R ⧸ b'.I}
     (σ : b.R →+* b'.R) (hp : b.p = b'.p) (hI : IsDPMorphism b.γ b'.γ σ) (τ : b.R ⧸ b.I →+* b'.R ⧸ b'.I)
@@ -75,6 +97,9 @@ theorem isFirstChern_base_change {O : Type} [CommRing O] {X : Scheme.{0}} {q : X
 
 open B in
 
+/- English proof (translation)
+The claim follows from `isFirstChern_base_change (b := bs l k (n + 1)) (b' := bs l k n) ((PAlg.base l).red n.le_succ) rfl (dd_red k _ n.le_succ) (Ideal.quotientMap _ _ (red_le k n.le_succ)) (red_κb κ k n.le_succ) (fun _ => rfl) _ _ (red_cris _ n.le_succ) D (Nat.mul_le_mul_left l n.le_succ) (fun j hj => …`.
+-/
 theorem chern_class_reduction_compatible {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* OC l) (k : Bool)
     (D : E.LineData X) (n : ℕ) (y : B.Hc (schFn q) κ k (n + 1) 2)
     (hy : IsFirstChernClassOfLineBundle (q := q) (b := bs l k (n + 1)) (ht := rfl) (κ := κb κ k (n + 1)) D ((PAlg.base l).cris (n + 1)) (l * (n + 1)) y) :
@@ -84,6 +109,9 @@ theorem chern_class_reduction_compatible {l : ℕ} [Fact l.Prime] {O : Type} [Co
     (Ideal.quotientMap _ _ (red_le k n.le_succ)) (red_κb κ k n.le_succ) (fun _ => rfl) _ _ (red_cris _ n.le_succ) D
     (Nat.mul_le_mul_left l n.le_succ) (fun j hj => factorial_acr n j hj) y hy
 
+/- English proof (translation)
+Establish `ex : ∀ n, ∃! x, B.IsFirstChernClassOfLineBundle (q` using `M.p) (b := B.bs l false n) (ht := rfl) (κ := B.κb (okToOC l K) false n) D ((PAlg.base l).cris n) (l * n) x := fun n => GlobalTheory.T.existsUnique_chern_class_nilpotent_base (B.DD false (PAlg.base l) n) l (Fact.out : l.Prime).ne_zero M.p (B.κb (okToOC l K) false n) D hD ((PAlg.ba …`. Use `choose x hx hu using ex`. Use `⟨⟨x, fun n => ?_⟩, hx⟩` and prove the remaining obligations. Conclude with `hu n _ (chern_class_reduction_compatible M.p (okToOC l K) false D n (x (n + 1)) (hx (n + 1)))`.
+-/
 theorem exists_C1H {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (D : E.LineData M.X)
     (hD : sSup (𝒱D D) = ⊤) : ∃ x : (M.HS false 2).lim, B.IsFirstChernFamily M.p D (okToOC l K) false x.1 := by
   have ex : ∀ n, ∃! x, B.IsFirstChernClassOfLineBundle (q := M.p) (b := B.bs l false n) (ht := rfl) (κ := B.κb (okToOC l K) false n) D

@@ -9,6 +9,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.FundCont
 
+/- English proof (translation)
+Introduce `_ _ _ AI T K` and use `contCore_of_tied AI T K`.
+-/
 theorem contCore_tied : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ K : FinExt l, Formalism.MainNotions.LocalSituation.contCore (P.PD K) :=
   fun _ _ _ AI T K => contCore_of_tied AI T K

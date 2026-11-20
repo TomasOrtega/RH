@@ -25,6 +25,13 @@ def coefLin (lam : D.what₂.Tau → DomWeight n) : Pol ℂ D.what₂.Tau n →�
     simp only [coefFn, smul_eq_C_mul, map_mul, eval₂Hom_C, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Establish `e1 : actP lam (invTrK u) F = detTwK lam (invTrK u) • trAct (invTrK u) F` using `rfl`. Establish `e2 : (eval₂Hom (RingHom.id ℂ) (fun v : D.what₂.Tau × Fin n × Fin n => (x v.1).val v.2.1 v.2.2)).comp (trAct (invTrK u) : Pol ℂ D.what₂.Tau n →+* Pol ℂ D.what₂.Tau n) = eval₂Hom (RingHom.id ℂ) (fun v => ((u⁻¹ * x) v.1).val v.2.1 v.2.2)`. Use `MvPolynomial.ringHom_ext (fun a => by simp [trAct, Formalism.GradedWeylDivisibility.blockAct]) fun v => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, trAct, Formalism.GradedWeylDivisibility.blockAct, aeval_X, map_sum, map_mul, eval₂Hom_C, eval₂Hom_X', Pi.mul_apply, Pi.inv_apply, Units.val_mul, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => rfl`.
+
+Establish `e3 : (RingHom.id ℂ) (detTwK lam (invTrK u)) = ((detFam (fun τ => (lam τ).detShift) u⁻¹ : ℂˣ) : ℂ)`. Simplify using `only [detTwK, detPow, detFam, map_prod, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, map_zpow₀, GeneralLinearGroup.val_det_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `(((u τ)⁻¹).valᵀ).det = _`.
+
+Rewrite using `[det_transpose]`. Both sides reduce to the same expression. Rewrite using `[coefFn, coefFn, e1, smul_eq_C_mul, map_mul, eval₂Hom_C, e3, ← e2, map_mul, Units.val_mul]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefFn_actP (lam : D.what₂.Tau → DomWeight n) (u : GLR D n) (F : Pol ℂ D.what₂.Tau n) (x : GLR D n) :
     coefFn (RingHom.id ℂ) lam (actP lam (invTrK u) F) x = coefFn (RingHom.id ℂ) lam F (u⁻¹ * x) := by
   have e1 : actP lam (invTrK u) F = detTwK lam (invTrK u) • trAct (invTrK u) F := rfl
@@ -48,10 +55,26 @@ theorem coefFn_actP (lam : D.what₂.Tau → DomWeight n) (u : GLR D n) (F : Pol
   simp only [RingHom.comp_apply, RingHom.coe_coe]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `Units.ext rfl`.
+-/
 theorem invTrK_invTrK (g : GLR D n) : invTrK (invTrK g) = g := by
   funext τ
   exact Units.ext rfl
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.T.fockMinorProduct_eq_sign_dualWeylExtremalVector D m n w B hw hm`. Establish `hs0 : ((s : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast s.ne_zero`. Establish `h1 : {φ | ∃ F : VV ℂ w.lam, φ = coefFn (RingHom.id ℂ) w.lam (F : Pol ℂ D.what₂.Tau n)} = ((VV ℂ w.lam).map (coefLin w.lam) : Set (GLR D n → ℂ))`. Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨F, rfl⟩`. Conclude with `⟨F, F.2, rfl⟩`. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨⟨F, hF⟩, rfl⟩`. Establish `key : ∀ u : GLR D n, harmFn m w B (fockGL m w B u (w.delta m)) = ((s : ℤ) : ℂ) • coefLin w.lam (actP w.lam (invTrK (u * B)) (ten fun τ => extremal ℂ n (w.lam τ)))` using `fun u => by`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[harmFn_fockGL, hs, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = coefFn _ _ _ _`. Rewrite using `[coefFn_actP, _root_.mul_inv_rev, mul_assoc]`.
+
+Rewrite using `[h1, Submodule.span_eq, GlobalTheory.OrbitSpan.VV_eq_span_orbit, harm, Submodule.map_span, Submodule.map_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Rewrite using `[key]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Establish `h2` using `key (invTrK g * B⁻¹)`. Rewrite `h2` using `[inv_mul_cancel_right, invTrK_invTrK]`.
+
+Use `(Submodule.smul_mem_iff _ hs0).1 ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← h2]`. Conclude with `Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩`.
+-/
 theorem map_harm_eq (D : D7) (m n : ℕ) (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m) :
     (harm m w B).map (harmFn m w B) =
       Submodule.span ℂ {φ | ∃ F : VV ℂ w.lam, φ = coefFn (RingHom.id ℂ) w.lam (F : Pol ℂ D.what₂.Tau n)} := by

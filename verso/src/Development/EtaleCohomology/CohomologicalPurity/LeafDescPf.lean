@@ -34,6 +34,9 @@ def LeafPcSep : Prop := ∀ (q : ℕ) {X : Scheme.{0}} (U : X.Opens) (m i : ℤ)
 
 def LeafPcGlue : Prop := ∀ (q : ℕ) {X : Scheme.{0}} (U : X.Opens) (m i : ℤ), GlueO q U m i → Glue q U m i
 
+/- English proof (translation)
+Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map _ = sch.map (𝟙 _)`. Use `congr 1`. Conclude with `(Scheme.Hom.resLE_id (X := X) (V := U) (V' := U) le_rfl).trans (Scheme.homOfLE_rfl _ _)`. Conclude with `sch.map_id X`.
+-/
 theorem opnMap_id {X : Scheme.{0}} (U : X.Opens) (h) : opnMap (𝟙 X) U U h = 𝟙 _ := by
   apply Arrow.hom_ext
   · change sch.map _ = sch.map (𝟙 _)
@@ -41,6 +44,11 @@ theorem opnMap_id {X : Scheme.{0}} (U : X.Opens) (h) : opnMap (𝟙 X) U U h = �
     exact (Scheme.Hom.resLE_id (X := X) (V := U) (V' := U) le_rfl).trans (Scheme.homOfLE_rfl _ _)
   · exact sch.map_id X
 
+/- English proof (translation)
+Apply `pushout.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `dbl.inl _ ≫ _ = _`. Rewrite using `[inl_map]`. Use `erw [Category.id_comp]`. Express the relevant statement in the definitionally equal form `dbl.inr _ ≫ _ = _`.
+
+Rewrite using `[dbl.inr_map]`. Use `erw [Category.id_comp]`.
+-/
 theorem dbl_id (P : Arrow Spc) : dbl.map (𝟙 P) = 𝟙 _ := by
   apply pushout.hom_ext
   · change dbl.inl _ ≫ _ = _
@@ -48,6 +56,9 @@ theorem dbl_id (P : Arrow Spc) : dbl.map (𝟙 P) = 𝟙 _ := by
   · change dbl.inr _ ≫ _ = _
     rw [dbl.inr_map]; erw [Category.id_comp]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[opnMap_id]`. Express the relevant statement in the definitionally equal form `pull _ (dbl.map _) _ n c.1 = c.1`. Rewrite using `[dbl_id, pull_id]`.
+-/
 theorem Hs_pull_id (q : ℕ) {X : Scheme.{0}} (U : X.Opens) (h) (n i : ℤ) (c : Hs q (opn U) n i) :
     Hs.pull q (opnMap (𝟙 X) U U h) n i c = c := by
   apply Subtype.ext
@@ -60,18 +71,27 @@ variable {q : ℕ} {X : Scheme.{0}} {U : X.Opens}
 
 instance (p : Pc U) : IsOpenImmersion p.j := p.op
 
+/- English proof (translation)
+Rewrite using `[p.hV]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `(p.j.isoOpensRange.hom ≫ p.j.opensRange.ι) y ∈ U`. Rewrite using `[Scheme.Hom.isoOpensRange_hom_ι]`. Conclude with `hy`.
+-/
 theorem pc_le (p : Pc U) : p.V ≤ p.j.isoOpensRange.hom ⁻¹ᵁ (p.j.opensRange.ι ⁻¹ᵁ U) := by
   rw [p.hV]
   intro y hy
   change (p.j.isoOpensRange.hom ≫ p.j.opensRange.ι) y ∈ U
   rw [Scheme.Hom.isoOpensRange_hom_ι]; exact hy
 
+/- English proof (translation)
+Rewrite using `[p.hV]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `(p.j.isoOpensRange.inv ≫ p.j) y ∈ U`. Rewrite using `[Scheme.Hom.isoOpensRange_inv_comp]`. Conclude with `hy`.
+-/
 theorem pc_le' (p : Pc U) : p.j.opensRange.ι ⁻¹ᵁ U ≤ p.j.isoOpensRange.inv ⁻¹ᵁ p.V := by
   rw [p.hV]
   intro y hy
   change (p.j.isoOpensRange.inv ≫ p.j) y ∈ U
   rw [Scheme.Hom.isoOpensRange_inv_comp]; exact hy
 
+/- English proof (translation)
+Use `⟨Function.LeftInverse.injective (g := Hs.pull q (opnMap p.j.isoOpensRange.inv _ _ (pc_le' p)) n i) ?_, Function.RightInverse.surjective (g := Hs.pull q (opnMap p.j.isoOpensRange.inv _ _ (pc_le' p)) n i) ?_⟩` and prove the remaining obligations. Introduce `c`. Conclude with `(pull_pull _ _ p.j.isoOpensRange.inv_hom_id _ _ _ _ _ (fun _ hy => hy) n i c).trans (Hs_pull_id q _ _ n i c)`. Introduce `c`. Conclude with `(pull_pull _ _ p.j.isoOpensRange.hom_inv_id _ _ _ _ _ (fun _ hy => hy) n i c).trans (Hs_pull_id q _ _ n i c)`.
+-/
 theorem pc_bij (p : Pc U) (n i : ℤ) :
     Function.Bijective (Hs.pull q (opnMap p.j.isoOpensRange.hom p.V _ (pc_le p)) n i) := by
   refine ⟨Function.LeftInverse.injective (g := Hs.pull q (opnMap p.j.isoOpensRange.inv _ _ (pc_le' p)) n i) ?_,
@@ -81,11 +101,17 @@ theorem pc_bij (p : Pc U) (n i : ℤ) :
   · intro c
     exact (pull_pull _ _ p.j.isoOpensRange.hom_inv_id _ _ _ _ _ (fun _ hy => hy) n i c).trans (Hs_pull_id q _ _ n i c)
 
+/- English proof (translation)
+The claim follows from `(pull_pull _ _ (Scheme.Hom.isoOpensRange_hom_ι p.j) _ _ _ _ _ _ n i s).symm`.
+-/
 theorem pc_res (p : Pc U) (n i : ℤ) (s : Hs q (opn U) n i) :
     p.res q n i s = Hs.pull q (opnMap p.j.isoOpensRange.hom p.V _ (pc_le p)) n i (resO q U p.j.opensRange n i s) :=
   (pull_pull _ _ (Scheme.Hom.isoOpensRange_hom_ι p.j) _ _ _ _ _ _ n i s).symm
 end
 
+/- English proof (translation)
+Introduce `q X U m i hL x W hx`. Take `⟨p, hxp, hpW, hs⟩` from `hL x W hx`. Use `⟨p.j.opensRange, fun y hy => hpW hy, hxp, fun n hn => ?_⟩` and prove the remaining obligations. Use `hs n hn` as an intermediate fact. Conclude with `(pc_bij p n i).1.subsingleton`.
+-/
 theorem LeafPcVan_pf : LeafPcVan := by
   intro q X U m i hL x W hx
   obtain ⟨p, hxp, hpW, hs⟩ := hL x W hx
@@ -93,6 +119,11 @@ theorem LeafPcVan_pf : LeafPcVan := by
   have := hs n hn
   exact (pc_bij p n i).1.subsingleton
 
+/- English proof (translation)
+Introduce `q X U m i hS s hs`. Apply `hS s` to reduce the goal to its premises. Introduce `x hx`. Take `⟨p, hxp, h0⟩` from `hs x hx`. Use `⟨p.j.opensRange, hxp, ?_⟩` and prove the remaining obligations.
+
+Apply `(pc_bij p m i).1` to reduce the goal to its premises. Rewrite using `[← pc_res, h0, map_zero]`.
+-/
 theorem LeafPcSep_pf : LeafPcSep := by
   intro q X U m i hS s hs
   apply hS s
@@ -102,6 +133,9 @@ theorem LeafPcSep_pf : LeafPcSep := by
   apply (pc_bij p m i).1
   rw [← pc_res, h0, map_zero]
 
+/- English proof (translation)
+Introduce `q X U m i hL`. Establish `hO` using `LeafPcVan_pf q U m i hL`. Conclude with `⟨LeafPcSep_pf q U m i (hS hD hF q U m i hO), hPG q U m i (hG hD hF q U m i hO)⟩`.
+-/
 theorem LeafDesc_of (hD : LeafDict) (hF : LeafFlq) (hS : LeafDescOSep) (hG : LeafDescOGlue) (hPG : LeafPcGlue) :
     LeafDesc := by
   intro q X U m i hL

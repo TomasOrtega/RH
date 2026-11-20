@@ -7,21 +7,57 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix Module
 open scoped ComplexOrder
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sb_re_dot_comm {r : ℕ} (v w : Fin r → ℂ) : (star v ⬝ᵥ w).re = (star w ⬝ᵥ v).re := by
   simp only [dotProduct, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [Pi.star_apply, Complex.star_def, Complex.mul_re, Complex.conj_re, Complex.conj_im]
   ring
 
+/- English proof (translation)
+Unfold `normSq posSq negSq`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sb_normSq_split (p : ℕ) {r : ℕ} (v : Fin r → ℂ) : normSq v = posSq p v + negSq p v := by
   unfold normSq posSq negSq
   rw [← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun k _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => by positivity`.
+-/
 theorem sb_normSq_nonneg {r : ℕ} (v : Fin r → ℂ) : 0 ≤ normSq v :=
   Finset.sum_nonneg fun _ _ => by positivity
 
+/- English proof (translation)
+Introduce `w`. Establish `hJJ : signMat p r * signMat p r = 1` using `sb_J_mul_J p r`. Establish `hA2 : signMat p r * H * (signMat p r * H) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hJ, hJJ]`. Establish `hHx : ∀ x : Fin r → ℂ, H *ᵥ x = signMat p r *ᵥ (signMat p r *ᵥ (H *ᵥ x))`. Introduce `x`. Rewrite using `[mulVec_mulVec, hJJ, one_mulVec]`. Establish `hre : ∀ x : Fin r → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ (H *ᵥ x)).re`.
+
+Introduce `x hx`. Use `hH.re_dotProduct_pos hx` as an intermediate fact. Simplify using `using this`. Establish `hplus : ∀ x : Fin r → ℂ, signMat p r *ᵥ (H *ᵥ x) = x → sbDp p r *ᵥ x = 0 → x = 0`. Introduce `x hAx hDx`.
+
+Assume the negation of the conclusion as `hx`. Establish `h1` using `hre x hx`. Rewrite `h1` using `[hHx x, hAx, sb_re_dot_J, sb_posSq_eq, hDx, sb_negSq_eq]`. Establish `h2` using `sb_normSq_nonneg (sbDn p r *ᵥ x)`. Establish `h3 : normSq (0 : Fin r → ℂ) = 0` using `by simp [normSq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hminus : ∀ x : Fin r → ℂ, signMat p r *ᵥ (H *ᵥ x) = -x → sbDn p r *ᵥ x = 0 → x = 0`. Introduce `x hAx hDx`. Assume the negation of the conclusion as `hx`. Establish `h1` using `hre x hx`.
+
+Rewrite `h1` using `[hHx x, hAx, mulVec_neg, dotProduct_neg, Complex.neg_re, sb_re_dot_J, sb_posSq_eq, sb_negSq_eq, hDx]`. Establish `h2` using `sb_normSq_nonneg (sbDp p r *ᵥ x)`. Establish `h3 : normSq (0 : Fin r → ℂ) = 0` using `by simp [normSq]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin r) (Fin r) ℂ, P = (1 / 2 : ℂ) • (1 + signMat p r * H)` from `⟨_, rfl⟩`.
+
+Take `⟨N, hN⟩ : ∃ N : Matrix (Fin r) (Fin r) ℂ, N = (1 / 2 : ℂ) • (1 - signMat p r * H)` from `⟨_, rfl⟩`. Establish `hAP : signMat p r * H * P = P`. Rewrite using `[hP, Matrix.mul_smul, Matrix.mul_add, Matrix.mul_one, hA2, add_comm]`. Establish `hAN : signMat p r * H * N = -N`. Rewrite using `[hN, Matrix.mul_smul, Matrix.mul_sub, Matrix.mul_one, hA2, ← smul_neg, neg_sub]`.
+
+Establish `hPN : P + N = 1`. Rewrite using `[hP, hN]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hPv : ∀ x, signMat p r *ᵥ (H *ᵥ (P *ᵥ x)) = P *ᵥ x`. Introduce `x`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hAP]`. Establish `hNv : ∀ x, signMat p r *ᵥ (H *ᵥ (N *ᵥ x)) = -(N *ᵥ x)`. Introduce `x`.
+
+Rewrite using `[mulVec_mulVec, mulVec_mulVec, hAN, neg_mulVec]`. Take `⟨F, hF⟩ : ∃ F : Matrix (Fin r) (Fin r) ℂ, F = sbDp p r * P + sbDn p r * N` from `⟨_, rfl⟩`. Establish `hFp : ∀ x, sbDp p r *ᵥ (F *ᵥ x) = sbDp p r *ᵥ (P *ᵥ x)`. Introduce `x`. Simplify using `only [hF, add_mulVec, mulVec_add, mulVec_mulVec, ← Matrix.mul_assoc, sb_Dp_mul_Dp, sb_Dp_mul_Dn, zero_mul, zero_mulVec, add_zero]`.
+
+Establish `hFn : ∀ x, sbDn p r *ᵥ (F *ᵥ x) = sbDn p r *ᵥ (N *ᵥ x)`. Introduce `x`. Simplify using `only [hF, add_mulVec, mulVec_add, mulVec_mulVec, ← Matrix.mul_assoc, sb_Dn_mul_Dn, sb_Dn_mul_Dp, zero_mul, zero_mulVec, zero_add]`. Establish `hinj : Function.Injective F.mulVec`. Introduce `x y hxy`.
+
+Establish `h0 : F *ᵥ (x - y) = 0` using `by rw [mulVec_sub]; exact sub_eq_zero.mpr hxy`. Establish `hp : P *ᵥ (x - y) = 0` using `hplus _ (hPv _) (by rw [← hFp, h0, mulVec_zero])`. Establish `hn : N *ᵥ (x - y) = 0` using `hminus _ (hNv _) (by rw [← hFn, h0, mulVec_zero])`. Establish `: x - y = 0`. Rewrite using `[← one_mulVec (x - y), ← hPN, add_mulVec, hp, hn, add_zero]`.
+
+Conclude with `sub_eq_zero.mp this`. Establish `hsurj : Function.Surjective F.mulVec` using `mulVec_surjective_iff_isUnit.mpr (mulVec_injective_iff_isUnit.mp hinj)`. Take `⟨x, hx⟩` from `hsurj (sbDp p r *ᵥ w)`. Use `⟨P *ᵥ x, hPv x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hFp, hx, mulVec_mulVec, sb_Dp_mul_Dp]`.
+-/
 theorem sb_setup {r p : ℕ} {H : Matrix (Fin r) (Fin r) ℂ} {s : ℝ} (hH : H.PosDef)
     (hJ : H * signMat p r * H = signMat p r)
     (hP : ∀ u : Fin r → ℂ, signMat p r *ᵥ (H *ᵥ u) = u → negSq p u ≤ s ^ 2 * posSq p u) :

@@ -16,14 +16,27 @@ def cmpSl : ((D.fm u).lat 0).V →ₛₗ[c.embW u w h] (D.gat u w h).Fn where
   map_add' := (c.cmp u w h).map_add
   map_smul' := c.cmp_smul u w h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cmpSl_apply (x : ((D.fm u).lat 0).V) : cmpSl c u w h x = c.cmp u w h x := rfl
 
 def cmpZero : ((Tw.fm u (D.what₂.muAt w)).lat 0).V →ₛₗ[c.embW u w h] (D.gat u w h).Fn :=
   (cmpSl c u w h).comp (Tw.e0 u (D.what₂.muAt w)).symm.toLinearMap
 
+/- English proof (translation)
+Simplify using `[cmpZero]`.
+-/
 theorem comparison_zero_embedding (x : ((D.fm u).lat 0).V) : cmpZero c Tw u w h (Tw.e0 u (D.what₂.muAt w) x) = c.cmp u w h x := by
   simp [cmpZero]
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span K (Set.range B)`. Rewrite using `[B.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 private theorem semilinear_apply_mem_span_image_basis {K L V W κ : Type*} [Field K] [Field L] {σ : K →+* L} [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module L W] (B : Module.Basis κ K V) (φ : V →ₛₗ[σ] W) (x : V) :
     φ x ∈ Submodule.span L (Set.range (φ ∘ B)) := by
@@ -39,6 +52,13 @@ private theorem semilinear_apply_mem_span_image_basis {K L V W κ : Type*} [Fiel
   | smul r y _ hy =>
     rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Rewrite `hB`, the goal using `[linearIndependent_iff_card_eq_finrank_span]`. Establish `hs : Submodule.span L (Set.range (φ ∘ B')) = Submodule.span L (Set.range (φ ∘ B))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Conclude with `semilinear_apply_mem_span_image_basis B φ (B' a)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `semilinear_apply_mem_span_image_basis B' φ (B a)`. Unfold `Set.finrank at hB ⊢`.
+
+Rewrite using `[hs, ← hB]`. Conclude with `Fintype.card_congr (B'.indexEquiv B)`.
+-/
 private theorem linearIndependent_semilinear_basis_of_basis {K L V W κ κ' : Type*} [Field K] [Field L] {σ : K →+* L} [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module L W] [Fintype κ] [Fintype κ'] (B : Module.Basis κ K V)
     (B' : Module.Basis κ' K V) (φ : V →ₛₗ[σ] W) (hB : LinearIndependent L (φ ∘ B)) :
@@ -56,6 +76,9 @@ private theorem linearIndependent_semilinear_basis_of_basis {K L V W κ κ' : Ty
   rw [hs, ← hB]
   exact Fintype.card_congr (B'.indexEquiv B)
 
+/- English proof (translation)
+Establish `e : (fun a => cmpZero c Tw u w h (((Tw.fm u (D.what₂.muAt w)).lat 0).b a)) = cmpSl c u w h ∘ (((Tw.fm u (D.what₂.muAt w)).lat 0).b.map (Tw.e0 u (D.what₂.muAt w)).symm)`. Use function extensionality and compare the values at `a`. Simplify using `[cmpZero]`. Rewrite using `[e]`. Conclude with `linearIndependent_semilinear_basis_of_basis ((D.fm u).lat 0).b _ (cmpSl c u w h) (c.5 u w h)`.
+-/
 theorem cmpZero_li : LinearIndependent (D.gat u w h).Kf
     fun a => cmpZero c Tw u w h (((Tw.fm u (D.what₂.muAt w)).lat 0).b a) := by
   have e : (fun a => cmpZero c Tw u w h (((Tw.fm u (D.what₂.muAt w)).lat 0).b a)) =
@@ -65,6 +88,11 @@ theorem cmpZero_li : LinearIndependent (D.gat u w h).Kf
   rw [e]
   exact linearIndependent_semilinear_basis_of_basis ((D.fm u).lat 0).b _ (cmpSl c u w h) (c.5 u w h)
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', rfl⟩`. Use `⟨(Tw.e0 u (D.what₂.muAt w)).symm x', ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Tw.5 u (D.what₂.muAt w) _).2 (by simpa using hx')`.
+
+Simplify using `[cmpZero]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨Tw.e0 u (D.what₂.muAt w) x, (Tw.5 u (D.what₂.muAt w) x).1 hx, comparison_zero_embedding c Tw u w h x⟩`.
+-/
 theorem cmpZero_image : cmpZero c Tw u w h '' (((Tw.fm u (D.what₂.muAt w)).lat 0).L : Set _) =
     c.cmp u w h '' (((D.fm u).lat 0).L : Set _) := by
   ext y
@@ -76,6 +104,9 @@ theorem cmpZero_image : cmpZero c Tw u w h '' (((Tw.fm u (D.what₂.muAt w)).lat
   · rintro ⟨x, hx, rfl⟩
     exact ⟨Tw.e0 u (D.what₂.muAt w) x, (Tw.5 u (D.what₂.muAt w) x).1 hx, comparison_zero_embedding c Tw u w h x⟩
 
+/- English proof (translation)
+Rewrite using `[cmpZero_image]`. Conclude with `c.cmp_M u w h`.
+-/
 theorem cmpZero_int : Submodule.span (D.gat u w h).O
     (cmpZero c Tw u w h '' (((Tw.fm u (D.what₂.muAt w)).lat 0).L : Set _)) = (D.gat u w h).M := by
   rw [cmpZero_image]
@@ -155,6 +186,9 @@ def kerAtP_of {D : D7} (Gt : GatTies D) {c : LatCmp D} {Tw : TwForms D} {u : D.w
   cmp_int := cmpZero_int c Tw u w h
   cmp_K := chainFirst_cmp_K K.up.maps
 
+/- English proof (translation)
+Introduce and unpack `(_ | j) hj`. Conclude with `cmpZero_int c Tw u w h`. Conclude with `K.intS j hj`.
+-/
 theorem kernelAtPrime_comparisonMaps_integral {D : D7} (Gt : GatTies D) {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     [Fact (D.what₂.places.resChar w).Prime]
     {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
@@ -189,6 +223,9 @@ def withFirst {D : D7} (c : LatCmp D) (Tw : TwForms D) (Y : LatInst D)
     (M : ∀ u w hg, CmpMaps c Tw u w hg (Y.Lv u w hg)) : LatInst D :=
   { Y with Ch := fun u w hg => chainFirst (M u w hg), Vram := vramC c }
 
+/- English proof (translation)
+Introduce `u w hg`. Use `first`. Consider the case `rfl`. Consider the case `simp [withFirst, vramC]`.
+-/
 theorem withFirst_vram {D : D7} (c : LatCmp D) (Tw : TwForms D) (Y : LatInst D)
     (M : ∀ u w hg, CmpMaps c Tw u w hg (Y.Lv u w hg)) : c.VramDef (withFirst c Tw Y M) := by
   intro u w hg

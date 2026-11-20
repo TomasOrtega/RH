@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `h : P = ⊥`. Substitute `h` using the available equality. Use `le_antisymm (fun x hx => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `h0`. Establish `h1` using `Ideal.mem_jacobson_bot.1 hx x`. Establish `h2 : 0 < x * x` using `mul_self_pos.2 h0`. Apply the tactic sequence `rcases Int.isUnit_iff.1 h1 with h3 | h3 <;> omega`.
+
+Use `Ring.DimensionLEOne.maximalOfPrime h hP` as an intermediate fact. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+-/
 theorem isJacobsonRing_integers : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
   intro P hP
@@ -16,6 +23,25 @@ theorem isJacobsonRing_integers : IsJacobsonRing ℤ := by
   · have := Ring.DimensionLEOne.maximalOfPrime h hP
     exact Ideal.jacobson_eq_self_of_isMaximal
 
+/- English proof (translation)
+Introduce `R _ _ _ f hf`. Use `haveI := isJacobsonRing_integers`. Set `S` to `Localization.Away f`. Establish `hinj : Function.Injective (algebraMap R S)` using `IsLocalization.injective S (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Use `haveI : Nontrivial S := hinj.nontrivial`.
+
+Use `haveI : Algebra.FiniteType R S := IsLocalization.finiteType_of_monoid_fg (Submonoid.powers f) S`. Use `haveI : Algebra.FiniteType ℤ S := Algebra.FiniteType.trans (S := R) inferInstance inferInstance`. Take `⟨n, hn⟩` from `Ideal.exists_maximal S`. Use `letI : Field (S ⧸ n) := Ideal.Quotient.field n`. Use `haveI : Algebra.FiniteType ℤ (S ⧸ n) := inferInstance`.
+
+Use `haveI hfin := finite_of_finite_type_of_isJacobsonRing ℤ (S ⧸ n)`. Establish `hZ : (algebraMap ℤ (S ⧸ n)).IsIntegral` using `fun x => IsIntegral.of_finite ℤ x`. Set `ψ : R →+* S ⧸ n` to `(Ideal.Quotient.mk n).comp (algebraMap R S)`. Establish `hcomp : ψ.comp (Int.castRingHom R) = algebraMap ℤ (S ⧸ n)` using `RingHom.ext_int _ _`. Establish `hψ : ψ.IsIntegral` using `RingHom.IsIntegral.tower_top (Int.castRingHom R) ψ (hcomp ▸ hZ)`.
+
+Use `haveI hbot : (⊥ : Ideal (S ⧸ n)).IsMaximal := Ideal.bot_isMaximal`. Set `M : Ideal R` to `(⊥ : Ideal (S ⧸ n)).comap ψ`. Establish `hM : M.IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' ψ hψ ⊥`. Use `⟨M, hM, ?_, ?_⟩` and prove the remaining obligations. Introduce `hfM`.
+
+Establish `h0 : ψ f = 0` using `by simpa [M] using hfM`. Establish `hu : IsUnit (algebraMap R S f)` using `IsLocalization.Away.algebraMap_isUnit f`. Establish `hu' : IsUnit (ψ f)` using `hu.map (Ideal.Quotient.mk n)`. Rewrite `hu'` using `[h0]`. Conclude with `not_isUnit_zero hu'`.
+
+Establish `hMZ : (M.comap (Int.castRingHom R)).IsMaximal`. Establish `: M.comap (Int.castRingHom R) = (⊥ : Ideal (S ⧸ n)).comap (algebraMap ℤ (S ⧸ n))`. Rewrite using `[← hcomp, ← Ideal.comap_comap]`. Rewrite using `[this]`. Conclude with `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' _ hZ ⊥`.
+
+Take `⟨a, ha⟩` from `Submodule.IsPrincipal.principal (M.comap (Int.castRingHom R))`. Express the relevant statement in the definitionally equal form `_ = Ideal.span {a} at ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[Ideal.span_singleton_eq_bot.2 rfl]`.
+
+Conclude with `Ring.ne_bot_of_isMaximal_of_not_isField hMZ Int.not_isField ha`. Establish `hpr : Prime a`. Rewrite using `[← Ideal.span_singleton_prime ha0, ← ha]`. Conclude with `hMZ.isPrime`. Use `⟨a.natAbs, Int.prime_iff_natAbs_prime.1 hpr, ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : (a.natAbs : ℤ) ∈ M.comap (Int.castRingHom R)`. Rewrite using `[ha, Ideal.mem_span_singleton]`. Conclude with `Int.dvd_natAbs.2 dvd_rfl`. Establish `h2` using `Ideal.mem_comap.1 hmem`. Simplify `h2` using `only [eq_intCast, Int.cast_natCast]`.
+-/
 theorem closedPt_of_finiteType_int : ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra.FiniteType ℤ R] (f : R), f ≠ 0 → ∃ M : Ideal R, M.IsMaximal ∧ f ∉ M ∧ ∃ p : ℕ, p.Prime ∧ (p : R) ∈ M := by
   intro R _ _ _ f hf
   haveI := isJacobsonRing_integers

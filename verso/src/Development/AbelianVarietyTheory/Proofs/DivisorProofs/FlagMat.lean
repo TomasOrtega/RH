@@ -40,6 +40,13 @@ def StepIso (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) {T : Scheme.
 
 variable {hM π}
 
+/- English proof (translation)
+Use `⟨by rw [Matrix.det_mul]; exact hT.mul h.1, fun k W hWV t hy => ?_⟩` and prove the remaining obligations. Take `⟨cf, h1, h2⟩` from `h.2 k W hWV t hy`. Use `T.invertibleOfIsUnitDet hT` as an intermediate fact. Establish `hb : T.BlockTriangular OrderDual.toDual` using `fun a b hab => hT' a b hab`. Establish `hi` using `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Use `⟨Matrix.vecMul cf T⁻¹, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.vecMul, dotProduct]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Break down `lt_or_ge m l with hm | hm` into its components or cases. Rewrite using `[show T⁻¹ m l = 0 from hi hm, mul_zero]`.
+
+Rewrite using `[h1 m (hl.trans hm), zero_mul]`. Rewrite using `[h2, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hT, Matrix.one_mul]`.
+-/
 theorem FlagMat.mul {fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r} {V : B.Opens} {f : Fin r → Γ(M, V)}
     {hf : IsFrame f} {K : Type} [CommRing K] {y : Sp K ⟶ Y} {A T : Matrix (Fin r) (Fin r) K}
     (h : FlagMat hM π fl hf y A) (hT : IsUnit T.det) (hT' : ∀ i j, i < j → T i j = 0) :

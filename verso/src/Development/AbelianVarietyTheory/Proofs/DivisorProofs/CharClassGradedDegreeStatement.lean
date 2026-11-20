@@ -14,5 +14,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CharDegree.char_chPart_tdPart_mem | exact GlobalTheory.CharDegree.char_chPart_tdPart_mem | (intros; apply GlobalTheory.CharDegree.char_chPart_tdPart_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.char_class_graded_degree : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (R : ArRing B h) (r : ℕ) (E : HermVB p r) (j : ℕ), R.char E (chPart r j) ∈ R.gr j ∧ R.char E (tdPart r j) ∈ R.gr j := by
   first | exact @GlobalTheory.CharDegree.char_chPart_tdPart_mem | exact GlobalTheory.CharDegree.char_chPart_tdPart_mem | (intros; apply GlobalTheory.CharDegree.char_chPart_tdPart_mem <;> assumption)

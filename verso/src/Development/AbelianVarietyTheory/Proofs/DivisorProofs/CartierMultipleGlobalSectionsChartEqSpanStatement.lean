@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Desc.ChartSpan.sec_eq_spanBy | exact GlobalTheory.Desc.ChartSpan.sec_eq_spanBy | (intros; apply GlobalTheory.Desc.ChartSpan.sec_eq_spanBy <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cartierMultipleGlobalSections_chart_eq_span : ∀ (σ : Setup) (x : Sp σ.R) (k : ℕ), Sec (σ.D₁ x) k = spanBy (GlobalTheory.Desc.cst (σ.C x).G.hom) (σ.θ x '' σ.N k) := by
   first | exact @GlobalTheory.Desc.ChartSpan.sec_eq_spanBy | exact GlobalTheory.Desc.ChartSpan.sec_eq_spanBy | (intros; apply GlobalTheory.Desc.ChartSpan.sec_eq_spanBy <;> assumption)

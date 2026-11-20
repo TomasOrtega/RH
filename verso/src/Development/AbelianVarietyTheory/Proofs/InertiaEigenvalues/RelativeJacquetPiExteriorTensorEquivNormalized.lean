@@ -14,11 +14,17 @@ variable {ι : Type} [Fintype ι] [dec0 : DecidableEq ι] {M : ι → Type} [∀
 
 def qlift (i : ι) (q : M i ⧸ p i) : M i := (Submodule.Quotient.mk_surjective (p i) q).choose
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective (p i) q).choose_spec`.
+-/
 theorem mk_qlift (i : ι) (q : M i ⧸ p i) : Submodule.Quotient.mk (qlift p i q) = q :=
   (Submodule.Quotient.mk_surjective (p i) q).choose_spec
 
 variable {p}
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← f.map_update_sub]`. Conclude with `hf v i _ h`.
+-/
 theorem position_eq (f : MultilinearMap ℂ M N) (hf : ∀ v i, ∀ w ∈ p i, f (Function.update v i w) = 0)
     (v : ∀ i, M i) (i : ι) {u u' : M i} (h : u - u' ∈ p i) :
     f (Function.update v i u) = f (Function.update v i u') := by
@@ -45,6 +51,17 @@ def descend (f : MultilinearMap ℂ M N) (hf : ∀ v i, ∀ w ∈ p i, f (Functi
     rw [position_eq f hf _ i (u' := c • qlift p i a), f.map_update_smul]
     rw [← Submodule.Quotient.eq, Submodule.Quotient.mk_smul, mk_qlift, mk_qlift]
 
+/- English proof (translation)
+Use `show f (fun i => qlift p i (Submodule.Quotient.mk (x i))) = f x`. Establish `key : ∀ s : Finset ι, f (fun i => if i ∈ s then qlift p i (Submodule.Quotient.mk (x i)) else x i) = f x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[← ih]`. Use `set F : ∀ i, M i := fun i => if i ∈ s then qlift p i (Submodule.Quotient.mk (x i)) else x i`. Establish `h1 : (fun i => if i ∈ insert a s then qlift p i (Submodule.Quotient.mk (x i)) else x i) = Function.update F a (qlift p a (Submodule.Quotient.mk (x a)))`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi, F, Finset.mem_insert, hi]`. Establish `h2 : F = Function.update F a (x a)`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[F, ha]`. Simplify using `[Function.update_of_ne hi]`.
+
+Rewrite using `[h1]`. Use `conv_rhs => rw [h2]`. Use `position_eq f hf F a ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.eq, mk_qlift]`. Simplify using `using key Finset.univ`.
+-/
 theorem descend_mk (f : MultilinearMap ℂ M N) (hf : ∀ v i, ∀ w ∈ p i, f (Function.update v i w) = 0)
     (x : ∀ i, M i) : descend f hf (fun i => Submodule.Quotient.mk (x i)) = f x := by
   show f (fun i => qlift p i (Submodule.Quotient.mk (x i))) = f x
@@ -90,6 +107,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a)) {X : Fin s → Type} [∀ a, AddCommGroup (X a)]
   [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a))
 
+/- English proof (translation)
+Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h, Function.update_of_ne h]`.
+-/
 theorem piTensor_mulSingle (a : Fin s) (g : GL (Fin (d a)) k) (x : ∀ j, X j) :
     piTensor ρ (Pi.mulSingle a g) (PiTensorProduct.tprod ℂ x) =
       PiTensorProduct.tprod ℂ (Function.update x a (ρ a g (x a))) := by
@@ -103,6 +125,15 @@ theorem piTensor_mulSingle (a : Fin s) (g : GL (Fin (d a)) k) (x : ∀ j, X j) :
 def qf : MultilinearMap ℂ X (Jacquet (piTensor ρ) (relUnipD k e')) :=
   (twKer (piTensor ρ) (relUnipD k e') 1).mkQ.compMultilinearMap (PiTensorProduct.tprod ℂ)
 
+/- English proof (translation)
+Establish `hle : twKer (ρ i) (unipRad k (e' i)) 1 ≤ (twKer (piTensor ρ) (relUnipD k e') 1).comap ((PiTensorProduct.tprod ℂ).toLinearMap v i)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, y, rfl⟩`. Establish `hmem : (Pi.mulSingle i (n : GL (Fin (d i)) k) : ∀ a, GL (Fin (d a)) k) ∈ relUnipD k e'`. Use `(Subgroup.mem_pi _).2 fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using n.2`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `one_mem _`.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, MultilinearMap.toLinearMap_apply, MonoidHom.one_apply, Units.val_one, one_smul, MultilinearMap.map_update_sub]`. Use `Submodule.subset_span ⟨⟨_, hmem⟩, PiTensorProduct.tprod ℂ (Function.update v i y), ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Rewrite using `[piTensor_mulSingle]`. Simplify using the standard rewrite rules.
+
+Use `hle hw` as an intermediate fact. Simplify using `only [Submodule.mem_comap, MultilinearMap.toLinearMap_apply] at this`. Simplify using `[qf, (Submodule.Quotient.mk_eq_zero _).2 this]`.
+-/
 theorem qf_update (v : ∀ a, X a) (i : Fin s) (w : X i)
     (hw : w ∈ twKer (ρ i) (unipRad k (e' i)) 1) : qf e' ρ (Function.update v i w) = 0 := by
   have hle : twKer (ρ i) (unipRad k (e' i)) 1 ≤
@@ -144,11 +175,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def qmap : (⨂[ℂ] a, X a) →ₗ[ℂ] ⨂[ℂ] a, Jacquet (ρ a) (unipRad k (e' a)) :=
   PiTensorProduct.map fun a => (twKer (ρ a) (unipRad k (e' a)) 1).mkQ
 
+/- English proof (translation)
+Simplify using `[qmap, PiTensorProduct.map_tprod]`.
+-/
 theorem qmap_tprod (x : ∀ a, X a) :
     qmap e' ρ (PiTensorProduct.tprod ℂ x) =
       PiTensorProduct.tprod ℂ fun a => (Submodule.Quotient.mk (x a) : Jacquet (ρ a) (unipRad k (e' a))) := by
   simp [qmap, PiTensorProduct.map_tprod]
 
+/- English proof (translation)
+Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, piTensor_tprod, qmap_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨u a, (Subgroup.mem_pi _).1 hu a trivial⟩, x a, ?_⟩)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem qmap_comp (u : ∀ a, GL (Fin (d a)) k) (hu : u ∈ relUnipD k e') :
     qmap e' ρ ∘ₗ piTensor ρ u = qmap e' ρ := by
   refine PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)
@@ -158,6 +197,9 @@ theorem qmap_comp (u : ∀ a, GL (Fin (d a)) k) (hu : u ∈ relUnipD k e') :
   refine (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨u a, (Subgroup.mem_pi _).1 hu a trivial⟩, x a, ?_⟩)
   simp
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, z, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Rewrite using `[← LinearMap.comp_apply, qmap_comp e' ρ u u.2, sub_self]`.
+-/
 theorem twKer_le_ker : twKer (piTensor ρ) (relUnipD k e') 1 ≤ LinearMap.ker (qmap e' ρ) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨u, z, rfl⟩
@@ -170,18 +212,27 @@ def fwd : Jacquet (piTensor ρ) (relUnipD k e') →ₗ[ℂ] ⨂[ℂ] a, Jacquet 
 def bwd : (⨂[ℂ] a, Jacquet (ρ a) (unipRad k (e' a))) →ₗ[ℂ] Jacquet (piTensor ρ) (relUnipD k e') :=
   PiTensorProduct.lift (descend (qf e' ρ) (qf_update e' ρ))
 
+/- English proof (translation)
+Rewrite using `[bwd, PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+-/
 theorem bwd_tprod (q : ∀ a, Jacquet (ρ a) (unipRad k (e' a))) :
     bwd e' ρ (PiTensorProduct.tprod ℂ q) = Submodule.Quotient.mk (PiTensorProduct.tprod ℂ
       fun i => qlift (fun a => twKer (ρ a) (unipRad k (e' a)) 1) i (q i)) := by
   rw [bwd, PiTensorProduct.lift.tprod]
   rfl
 
+/- English proof (translation)
+Rewrite using `[bwd, PiTensorProduct.lift.tprod, descend_mk]`. Both sides reduce to the same expression.
+-/
 theorem bwd_tprod_mk (x : ∀ a, X a) :
     bwd e' ρ (PiTensorProduct.tprod ℂ fun a => (Submodule.Quotient.mk (x a) : Jacquet (ρ a) (unipRad k (e' a)))) =
       Submodule.Quotient.mk (PiTensorProduct.tprod ℂ x) := by
   rw [bwd, PiTensorProduct.lift.tprod, descend_mk]
   rfl
 
+/- English proof (translation)
+Simplify using `only [fwd, Submodule.liftQ_apply, qmap_tprod]`.
+-/
 theorem fwd_mk_tprod' (x : ∀ a, X a) :
     fwd e' ρ (Submodule.Quotient.mk (PiTensorProduct.tprod ℂ x)) =
       PiTensorProduct.tprod ℂ fun a => (Submodule.Quotient.mk (x a) : Jacquet (ρ a) (unipRad k (e' a))) := by
@@ -199,6 +250,11 @@ def jacEquiv : Jacquet (piTensor ρ) (relUnipD k e') ≃ₗ[ℂ] ⨂[ℂ] a, Jac
         fwd_mk_tprod', bwd_tprod_mk, LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearMap.id_apply,
         Submodule.mkQ_apply])
 
+/- English proof (translation)
+Use `⟨Representation.Equiv.mk (jacEquiv e' ρ) fun g => ?_⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (PiTensorProduct.ext (MultilinearMap.ext fun x => ?_))` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[relJacD_mk]`. Use `show fwd e' ρ _ = piTensor (fun a => jac (e' a) (ρ a)) g (fwd e' ρ _)`.
+
+Rewrite using `[map_smul, piTensor_tprod, fwd_mk_tprod', fwd_mk_tprod', piTensor_tprod]`. Simplify using `only [jac_mk, relEmbD_apply]`. Rewrite using `[MultilinearMap.map_smul_univ, relDeltaHalfD_apply]`. Use `congr 1`. Simplify using `[Units.coe_prod, Finset.prod_inv_distrib]`.
+-/
 theorem relJacD_piTensor :
     Nonempty ((relJacD e' (piTensor ρ)).Equiv (piTensor fun a => jac (e' a) (ρ a))) := by
   refine ⟨Representation.Equiv.mk (jacEquiv e' ρ) fun g => ?_⟩
@@ -218,6 +274,9 @@ end GlobalTheory.JacPiTensor
 
 namespace GlobalTheory.JacStages
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ e' _ _ _ ρ` and use `GlobalTheory.JacPiTensor.relJacD_piTensor e' ρ`.
+-/
 theorem relJacD_piTensor_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : ℕ) (d : Fin s → ℕ) (t : Fin s → ℕ) (d' : ∀ a, Fin (t a) → ℕ)
     (e' : ∀ a, (Σ b, Fin (d' a b)) ≃ Fin (d a)) (X : Fin s → Type) [∀ a, AddCommGroup (X a)]

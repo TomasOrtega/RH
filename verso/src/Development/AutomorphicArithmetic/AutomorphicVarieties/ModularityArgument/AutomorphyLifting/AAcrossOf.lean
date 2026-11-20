@@ -27,6 +27,9 @@ def AAcross : Prop :=
     IsIrr (r.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω)) →
     WitA ι (r.comp (AlgEquiv.restrictScalarsHom ℚ : G K Ω →* G ℚ Ω)) → WitAQ ι r
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hW.2 π hreg ha`. Use `H F Ω A w h rc hrc n π t (ht w ?_) σ hσ` and prove the remaining obligations. Distinguish the cases in `e : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal`. Conclude with `Or.inr ((hw.resolve_left fun k => k e).elim (hW.1 w e) id)`. Conclude with `Or.inl e`.
+-/
 theorem guard_of (H : PlainRec) [IsCMField F] [IsAlgClosure F Ω] {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {π : CuspSub F n} (hreg : (CG.mk π).IsRegAlg) (ha : AttC ι r π) (hW : WitA ι r) {w : HeightOneSpectrum (𝓞 F)}
     (hw : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal ∨ Unl1 r w ∨ PotUnl r w) {A : ValuationSubring Ω} {h : IsPlaceOver A w}

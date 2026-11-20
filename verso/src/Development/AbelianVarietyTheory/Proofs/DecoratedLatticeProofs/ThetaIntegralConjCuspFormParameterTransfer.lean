@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Break down `hx with ⟨hv, e, he, hx⟩ | ⟨hw, c, ϖ, e, α, hU, he, hx, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, GlobalTheory.LFun.IsSatVecGL.of_map f (fun g y => hf _ y) hi hx⟩`. Conclude with `Or.inr ⟨hw, c, ϖ, e, α, hU, he, GlobalTheory.LFun.IsSatVecU.of_map hU f (fun g y => hf _ y) hi hx, hB⟩`.
+-/
 theorem isParamVec_of_injective_equivariant {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)}
     {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} {w : IsDedekindDomain.HeightOneSpectrum (𝓞 E)}
@@ -30,10 +33,16 @@ theorem isParamVec_of_injective_equivariant {F E : Type} [Field F] [NumberField 
   · exact Or.inl ⟨hv, e, he, GlobalTheory.LFun.IsSatVecGL.of_map f (fun g y => hf _ y) hi hx⟩
   · exact Or.inr ⟨hw, c, ϖ, e, α, hU, he, GlobalTheory.LFun.IsSatVecU.of_map hU f (fun g y => hf _ y) hi hx, hB⟩
 
+/- English proof (translation)
+Simplify using `only [thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]`.
+-/
 theorem thetaKO_om_apply {D : D7} {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g a : GA D S)
     (x a' : GA D T) (u : WO S T → ℂ) : thetaKO om g x (om (a, a') u) = thetaKO om (g * a) (x * a') u := by
   simp only [thetaKO, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]
 
+/- English proof (translation)
+Establish `e : ((γ * g, x) : GA D S × GA D T) = (γ, 1) * (g, x)` using `by simp`. Simplify using `only [thetaKO, e, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut γ hγ 1 (one_mem _) _ (hW.om_pres _ _ hu)`.
+-/
 theorem thetaKO_left {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) {u : WO S T → ℂ}
     (hu : IsThetaFunO ψ S T u) (γ : GA D S) (hγ : γ ∈ GQ S) (g : GA D S) (x : GA D T) :
@@ -42,6 +51,37 @@ theorem thetaKO_left {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χ
   simp only [thetaKO, e, map_mul, Module.End.mul_apply]
   exact hW.om_aut γ hγ 1 (one_mem _) _ (hW.om_pres _ _ hu)
 
+/- English proof (translation)
+Introduce `hP D hT ψ θ S T χS χT om hθ hW t ht ν 𝓕 hν h𝓕 v hunr w h f hf y B hy hc hB hne`. Set `U : Submodule ℂ (WO S T → ℂ)` to `GlobalTheory.FinWeilO.thetaSub ψ S T`. Establish `hU : ∀ a a', ∀ u ∈ U, om (embV S v a, embV T v a') u ∈ U` using `fun a a' u hu => hW.om_pres _ u hu`. Set `ρ0 : Representation ℂ (Gv S v) (GA D S → ℂ)` to `(rightReg ℂ (GA D S) ℂ).comp (embV S v)`. Establish `hρ0 : ∀ a (z : GA D S → ℂ) g, ρ0 a z g = z (g * embV S v a)` using `fun _ _ _ => rfl`.
+
+Set `cy : GA D S → ℂ` to `fun g => conj (y g)`. Set `X : Submodule ℂ (GA D S → ℂ)` to `Submodule.span ℂ (Set.range fun a : Gv S v => ρ0 a cy)`. Establish `hX : ∀ a, ∀ z ∈ X, ρ0 a z ∈ X`. Introduce `a z hz`. Establish `hle : Submodule.map (ρ0 a) X ≤ X`.
+
+Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `Submodule.subset_span ⟨a * b, rfl⟩`. Conclude with `hle ⟨z, hz, rfl⟩`.
+
+Set `ρ : Representation ℂ (Gv S v) X` to `GlobalTheory.PRep.sub ρ0 X hX`. Establish `hcy : cy ∈ X` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hXp : ∀ z ∈ X, (∀ u, IsThetaFunO ψ S T u → ∀ x, IntegrableOn (fun g => thetaKO om g x u * z g) 𝓕 ν) ∧ (∀ γ ∈ GQ S, ∀ g, z (γ * g) = z g)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Use `⟨fun u hu x => GlobalTheory.T.thetaKernel_mul_conj_cuspForm_integrableOn hP D ψ S T χS χT om hW θ hθ ν 𝓕 hν h𝓕 u y hu hy hc (embV S v a) x, fun γ hγ g => ?_⟩` and prove the remaining obligations. Use `show conj (y (γ * g * embV S v a)) = conj (y (g * embV S v a))`. Rewrite using `[mul_assoc, hy.left γ hγ]`.
+
+Consider the case `zero => exact ⟨fun u _ x => by simp, fun _ _ _ => rfl⟩`. Consider the case `add z z' _ _ h1 h2`. Use `⟨fun u hu x => ?_, fun γ hγ g => by simp [h1.2 γ hγ, h2.2 γ hγ]⟩` and prove the remaining obligations. Rewrite using `[show (fun g => thetaKO om g x u * (z + z') g) = fun g => thetaKO om g x u * z g + thetaKO om g x u * z' g from`. Use function extensionality and compare the values at `fun g => by simp [mul_add]]`.
+
+Conclude with `(h1.1 u hu x).add (h2.1 u hu x)`. Consider the case `smul c z _ h1`. Use `⟨fun u hu x => ?_, fun γ hγ g => by simp [h1.2 γ hγ]⟩` and prove the remaining obligations. Rewrite using `[show (fun g => thetaKO om g x u * (c • z) g) = fun g => c * (thetaKO om g x u * z g) from`. Use function extensionality and compare the values at `fun g => by simp [mul_left_comm]]`.
+
+Conclude with `(h1.1 u hu x).const_mul c`. Set `bf : U → X → GA D T → ℂ` to `fun u z x => ∫ g in 𝓕, thetaKO om g x (u : WO S T → ℂ) * (z : GA D S → ℂ) g ∂ν`. Set `b : U →ₗ[ℂ] X →ₗ[ℂ] (GA D T → ℂ)` to `LinearMap.mk₂ ℂ bf (fun u u' z => by`. Use function extensionality and compare the values at `x`. Use `show _ = bf u z x + bf u' z x`.
+
+Simplify using `only [bf, ← integral_add ((hXp z z.2).1 u u.2 x) ((hXp z z.2).1 u' u'.2 x)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, add_mul])`. Use the proof step `(fun c u z => by`.
+
+Use function extensionality and compare the values at `x`. Use `show _ = c * bf u z x`. Simplify using `only [bf, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[thetaKO, mul_assoc])`. Use the proof step `(fun u z z' => by`. Use function extensionality and compare the values at `x`. Use `show _ = bf u z x + bf u z' x`. Simplify using `only [bf, ← integral_add ((hXp z z.2).1 u u.2 x) ((hXp z' z'.2).1 u u.2 x)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[mul_add])`. Use the proof step `(fun c u z => by`. Use function extensionality and compare the values at `x`.
+
+Use `show _ = c * bf u z x`. Simplify using `only [bf, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `[mul_left_comm])`.
+
+Establish `hb : ∀ a a' (u : U) (z : X), b ⟨om (embV S v a, embV T v a') u, hU a a' u u.2⟩ (ρ a z) = (rightReg ℂ (GA D T) ℂ).comp (embV T v) a' (b u z)`. Introduce `a a' u z`. Use function extensionality and compare the values at `x`. Use `show ∫ g in 𝓕, thetaKO om g x (om (embV S v a, embV T v a') u) * (z : GA D S → ℂ) (g * embV S v a) ∂ν = ∫ g in 𝓕, thetaKO om g (x * embV T v a') (u : WO S T → ℂ) * (z : GA D S → ℂ) g ∂ν`. Repeatedly rewrite using `[thetaKO_om_apply]`.
+
+Conclude with `GlobalTheory.T.setIntegral_fundamentalDomain_right_translate_invariant D S ν 𝓕 hν h𝓕 (fun g => thetaKO om g (x * embV T v a') (u : WO S T → ℂ) * (z : GA D S → ℂ) g) (fun γ hγ g => by simp only [thetaKO_left hW u.2 γ hγ, (hXp z z.2).2 γ hγ]) (embV S v a)`. Establish `hx : GlobalTheory.LFun.IsParamVec D.sp.cm.sig S.gram (frameLat S) h ρ ⟨cy, hcy⟩ B` using `isParamVec_of_injective_equivariant X.subtype (fun _ _ => rfl) Subtype.val_injective hB`. Conclude with `hT ψ S T χS χT om hW t ht v trivial hunr w h U hU ⟨f, hf.1⟩ hf X ρ ⟨cy, hcy⟩ B hx (GA D T → ℂ) ((rightReg ℂ (GA D T) ℂ).comp (embV T v)) b hb hne`.
+-/
 theorem thetaIntegral_param : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, TransferOn D (fun _ => True) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ t : ℕ, T.rank = S.rank + t → ∀ (ν : Measure (GA D S)) (𝓕 : Set (GA D S)), ν.IsHaarMeasure → IsFundamentalDomain (GQ S) 𝓕 ν → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), (∀ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v → UnrAt χS w' ∧ UnrAt χT w') → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (f : WO S T → ℂ), VacFin ψ S T v f → ∀ (y : GA D S → ℂ) (B : Multiset ℂˣ), IsAutFunSm θ S y → IsCuspFun S y → IsParamVec D.sp.cm.sig S.gram (frameLat S) h ((rightReg ℂ (GA D S) ℂ).comp (embV S v)) (fun g => conj (y g)) B → (fun x => ∫ g in 𝓕, thetaKO om g x f * conj (y g) ∂ν) ≠ 0 → IsParamVec D.sp.cm.sig T.gram (frameLat T) h ((rightReg ℂ (GA D T) ℂ).comp (embV T v)) (fun x => ∫ g in 𝓕, thetaKO om g x f * conj (y g) ∂ν) (stepPar χS χT t (fun _ => B) w) := by
   intro hP D hT ψ θ S T χS χT om hθ hW t ht ν 𝓕 hν h𝓕 v hunr w h f hf y B hy hc hB hne
   let U : Submodule ℂ (WO S T → ℂ) := GlobalTheory.FinWeilO.thetaSub ψ S T

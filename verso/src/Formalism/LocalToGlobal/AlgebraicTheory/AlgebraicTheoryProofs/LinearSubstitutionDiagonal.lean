@@ -14,11 +14,24 @@ namespace KerA
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_killIn {m : ℂ} {L M : AddSubgroup V} {y : V} : y ∈ killIn m L M ↔ y ∈ L ∧ m • y ∈ M := by
   exact Iff.rfl
 
+/- English proof (translation)
+Conclude with `Nat.cast_smul_eq_nsmul ℂ m y`.
+-/
 theorem natCast_smul (m : ℕ) (y : V) : ((m : ℂ)) • y = m • y := by exact Nat.cast_smul_eq_nsmul ℂ m y
 
+/- English proof (translation)
+Establish `hg : (Nat.gcdA m₁ m₂) * (m₁ : ℤ) + (Nat.gcdB m₁ m₂) * (m₂ : ℤ) = 1`. Establish `h` using `Nat.gcd_eq_gcd_ab m₁ m₂`. Rewrite `h` using `[hcop.gcd_eq_one]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1' : ((m₁ : ℤ)) • w ∈ Λ` using `by rw [natCast_zsmul, ← natCast_smul]; exact h1`. Establish `h2' : ((m₂ : ℤ)) • w ∈ Λ` using `by rw [natCast_zsmul, ← natCast_smul]; exact h2`. Establish `hw : w = (Nat.gcdA m₁ m₂) • (((m₁ : ℤ)) • w) + (Nat.gcdB m₁ m₂) • (((m₂ : ℤ)) • w)`. Rewrite using `[smul_smul, smul_smul, ← add_smul, hg, one_smul]`. Rewrite using `[hw]`.
+
+Conclude with `Λ.add_mem (Λ.zsmul_mem h1' _) (Λ.zsmul_mem h2' _)`.
+-/
 theorem mem_of_coprime {Λ : AddSubgroup V} {m₁ m₂ : ℕ} (hcop : Nat.Coprime m₁ m₂) {w : V}
     (h1 : ((m₁ : ℂ)) • w ∈ Λ) (h2 : ((m₂ : ℂ)) • w ∈ Λ) : w ∈ Λ := by
   have hg : (Nat.gcdA m₁ m₂) * (m₁ : ℤ) + (Nat.gcdB m₁ m₂) * (m₂ : ℤ) = 1 := by
@@ -33,6 +46,41 @@ theorem mem_of_coprime {Λ : AddSubgroup V} {m₁ m₂ : ℕ} (hcop : Nat.Coprim
   rw [hw]
   exact Λ.add_mem (Λ.zsmul_mem h1' _) (Λ.zsmul_mem h2' _)
 
+/- English proof (translation)
+Establish `cz : ∀ (k : ℕ) (y : V), ((k : ℂ)) • y = ((k : ℤ)) • y` using `fun k y => by`. Rewrite using `[natCast_smul, natCast_zsmul]`. Establish `km : ∀ (k : ℕ) {y : V}, y ∈ killIn (k : ℂ) B Λ ↔ y ∈ B ∧ ((k : ℤ)) • y ∈ Λ`. Introduce `k y`. Rewrite using `[mem_killIn, cz]`.
+
+Take `⟨hS1B, hS1d, hS1c⟩` from `h1`. Take `⟨hS2B, hS2d, hS2c⟩` from `h2`. Establish `sep : ∀ a ∈ S₁, ∀ b ∈ S₂, ∀ a' ∈ S₁, ∀ b' ∈ S₂, (a + b) - (a' + b') ∈ Λ → a = a' ∧ b = b'`. Introduce `a ha b hb a' ha' b' hb' h`. Establish `hA` using `(km m₁).1 (hS1B a ha)`.
+
+Establish `hA'` using `(km m₁).1 (hS1B a' ha')`. Establish `hB` using `(km m₂).1 (hS2B b hb)`. Establish `hB'` using `(km m₂).1 (hS2B b' hb')`. Establish `hsum : (a - a') + (b - b') ∈ Λ`. Establish `e : (a + b) - (a' + b') = (a - a') + (b - b')` using `by abel`.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h1d : ((m₁ : ℤ)) • (a - a') ∈ Λ`. Rewrite using `[zsmul_sub]`. Conclude with `Λ.sub_mem hA.2 hA'.2`. Establish `h2d : ((m₂ : ℤ)) • (b - b') ∈ Λ`.
+
+Rewrite using `[zsmul_sub]`. Conclude with `Λ.sub_mem hB.2 hB'.2`. Establish `h1e : ((m₁ : ℤ)) • (b - b') ∈ Λ`. Establish `e : ((m₁ : ℤ)) • (b - b') = ((m₁ : ℤ)) • ((a - a') + (b - b')) - ((m₁ : ℤ)) • (a - a')`. Rewrite using `[smul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Λ.sub_mem (Λ.zsmul_mem hsum _) h1d`. Establish `hbΛ : b - b' ∈ Λ` using `mem_of_coprime hcop (by rw [cz]; exact h1e) (by rw [cz]; exact h2d)`. Establish `haΛ : a - a' ∈ Λ`.
+
+Establish `e : a - a' = ((a - a') + (b - b')) - (b - b')` using `by abel`. Rewrite using `[e]`. Conclude with `Λ.sub_mem hsum hbΛ`. Conclude with `⟨hS1d a ha a' ha' haΛ, hS2d b hb b' hb' hbΛ⟩`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨hq1, hq2⟩` from `Finset.mem_product.1 hq`. Conclude with `B.add_mem ((km m₁).1 (hS1B _ hq1)).1 ((km m₂).1 (hS2B _ hq2)).1`. Introduce `x hx y hy hxy`.
+
+Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨hq1, hq2⟩` from `Finset.mem_product.1 hq`. Take `⟨hr1, hr2⟩` from `Finset.mem_product.1 hr`. Take `⟨e1, e2⟩` from `sep _ hq1 _ hq2 _ hr1 _ hr2 hxy`.
+
+Use `show q.1 + q.2 = r.1 + r.2`. Rewrite using `[e1, e2]`. Introduce `y hy`. Establish `hg : (Nat.gcdA m₁ m₂) * (m₁ : ℤ) + (Nat.gcdB m₁ m₂) * (m₂ : ℤ) = 1`. Establish `h` using `Nat.gcd_eq_gcd_ab m₁ m₂`.
+
+Rewrite `h` using `[hcop.gcd_eq_one]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hky : ((m₁ : ℤ) * (m₂ : ℤ)) • y ∈ Λ`. Establish `h` using `hkill y hy`.
+
+Rewrite `h` using `[cz]`. Move the coercions through the operations in `at h`. Conclude with `h`. Establish `hu : ((Nat.gcdB m₁ m₂) * (m₂ : ℤ)) • y ∈ killIn (m₁ : ℂ) B Λ`. Rewrite using `[km]`.
+
+Use `⟨B.zsmul_mem hy _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, show (m₁ : ℤ) * ((Nat.gcdB m₁ m₂) * (m₂ : ℤ)) = (Nat.gcdB m₁ m₂) * ((m₁ : ℤ) * (m₂ : ℤ)) by ring, ← smul_smul]`. Conclude with `Λ.zsmul_mem hky _`. Establish `hv : ((Nat.gcdA m₁ m₂) * (m₁ : ℤ)) • y ∈ killIn (m₂ : ℂ) B Λ`. Rewrite using `[km]`.
+
+Use `⟨B.zsmul_mem hy _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, show (m₂ : ℤ) * ((Nat.gcdA m₁ m₂) * (m₁ : ℤ)) = (Nat.gcdA m₁ m₂) * ((m₁ : ℤ) * (m₂ : ℤ)) by ring, ← smul_smul]`. Conclude with `Λ.zsmul_mem hky _`. Take `⟨y₁, hy₁, d₁⟩` from `hS1c _ hu`. Take `⟨y₂, hy₂, d₂⟩` from `hS2c _ hv`.
+
+Use `⟨y₁ + y₂, Finset.mem_image.2 ⟨(y₁, y₂), Finset.mem_product.2 ⟨hy₁, hy₂⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hsplit : ((Nat.gcdB m₁ m₂) * (m₂ : ℤ)) • y + ((Nat.gcdA m₁ m₂) * (m₁ : ℤ)) • y = y`. Rewrite using `[← add_smul, show (Nat.gcdB m₁ m₂) * (m₂ : ℤ) + (Nat.gcdA m₁ m₂) * (m₁ : ℤ) = 1 by linarith, one_smul]`. Establish `e : y - (y₁ + y₂) = (((Nat.gcdB m₁ m₂) * (m₂ : ℤ)) • y - y₁) + (((Nat.gcdA m₁ m₂) * (m₁ : ℤ)) • y - y₂)`. Rewrite using `[sub_add_sub_comm, hsplit]`.
+
+Rewrite using `[e]`. Conclude with `Λ.add_mem d₁ d₂`. Introduce `q hq r hr hqr`. Rewrite `hq`, `hr` using `[Finset.coe_product, Set.mem_prod]`. Establish `hqr' : q.1 + q.2 = r.1 + r.2` using `hqr`.
+
+Establish `h0 : (q.1 + q.2) - (r.1 + r.2) ∈ Λ`. Rewrite using `[hqr', sub_self]`. Conclude with `Λ.zero_mem`. Take `⟨e1, e2⟩` from `sep _ hq.1 _ hq.2 _ hr.1 _ hr.2 h0`. Conclude with `Prod.ext e1 e2`.
+-/
 theorem image_reps [DecidableEq V] (B Λ : AddSubgroup V) (m₁ m₂ : ℕ) (hcop : Nat.Coprime m₁ m₂)
     (hkill : ∀ y ∈ B, (((m₁ * m₂ : ℕ) : ℂ)) • y ∈ Λ) (S₁ S₂ : Finset V)
     (h1 : IsReps Λ (killIn (m₁ : ℂ) B Λ) S₁) (h2 : IsReps Λ (killIn (m₂ : ℂ) B Λ) S₂) :
@@ -129,6 +177,15 @@ end KerA
 
 open KerA
 
+/- English proof (translation)
+Take `⟨hS2, hSd, hSc⟩` from `hS`. Set `φ : S → ↥Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂` to `fun x => QuotientAddGroup.mk ⟨x.1, hS2 x.1 x.2⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+
+Establish `h` using `(QuotientAddGroup.eq).1 hxy`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Establish `h' : (y : V) - x ∈ Λ₁` using `by simpa [neg_add_eq_sub] using h`. Conclude with `Subtype.ext (hSd y.1 y.2 x.1 x.2 h').symm`. Introduce `c`.
+
+Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨x, hx, hzx⟩` from `hSc z.1 z.2`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Apply `(QuotientAddGroup.eq).2` to reduce the goal to its premises. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Simplify `hzx` using `[neg_add_eq_sub]`. Rewrite using `[← Nat.card_eq_of_bijective φ hφ, Nat.card_eq_fintype_card, Fintype.card_coe]`.
+-/
 private theorem card_quotient_eq_card_of_isReps {V : Type*} [AddCommGroup V] [Module ℂ V] {Λ₁ Λ₂ : AddSubgroup V}
     {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) : Nat.card (↥Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) = S.card := by
   classical
@@ -150,6 +207,9 @@ private theorem card_quotient_eq_card_of_isReps {V : Type*} [AddCommGroup V] [Mo
       simpa [neg_add_eq_sub] using hzx
   rw [← Nat.card_eq_of_bijective φ hφ, Nat.card_eq_fintype_card, Fintype.card_coe]
 
+/- English proof (translation)
+Introduce `V _ _ B Λ m₁ m₂ hcop hkill SB S₁ S₂ hB h1 h2`. Take `⟨hR, hinj⟩` from `KerA.image_reps B Λ m₁ m₂ hcop hkill S₁ S₂ h1 h2`. Rewrite using `[← card_quotient_eq_card_of_isReps hB, card_quotient_eq_card_of_isReps hR, Finset.card_image_of_injOn hinj, Finset.card_product]`.
+-/
 theorem RepsSplit_card : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (B Λ : AddSubgroup V) (m₁ m₂ : ℕ), Nat.Coprime m₁ m₂ →
     (∀ y ∈ B, (((m₁ * m₂ : ℕ) : ℂ)) • y ∈ Λ) →
   ∀ SB S₁ S₂ : Finset V, IsReps Λ B SB → IsReps Λ (killIn (m₁ : ℂ) B Λ) S₁ → IsReps Λ (killIn (m₂ : ℂ) B Λ) S₂ →
@@ -159,6 +219,29 @@ theorem RepsSplit_card : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (B Λ : 
   obtain ⟨hR, hinj⟩ := KerA.image_reps B Λ m₁ m₂ hcop hkill S₁ S₂ h1 h2
   rw [← card_quotient_eq_card_of_isReps hB, card_quotient_eq_card_of_isReps hR, Finset.card_image_of_injOn hinj, Finset.card_product]
 
+/- English proof (translation)
+Introduce `n _ Λ hL p hp π hπ hπΛ hπ'Λ Sa hSa`. Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Apply `hp0` to reduce the goal to its premises.
+
+Rewrite using `[← hπ]`. Simplify using the standard rewrite rules. Establish `hπ'0 : conj π ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `hπ0`.
+
+Establish `hr1 : π / conj π * (conj π / π) = 1` using `by field_simp`. Establish `hr2 : π / conj π * conj π = π` using `div_mul_cancel₀ _ hπ'0`. Establish `hr3 : conj π / π * π = conj π` using `div_mul_cancel₀ _ hπ0`. Take `⟨hA1, hA2, hA3⟩` from `hSa`. Establish `hinj : Function.Injective (fun x : n → ℂ => (π / conj π) • x)` using `smul_right_injective _ (div_ne_zero hπ0 hπ'0)`.
+
+Establish `hSb : IsReps (cLat π Λ) Λ (Sa.image fun x => (π / conj π) • x)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨w, hw, rfl⟩` from `SC.mem_cLat.1 (hA1 a ha)`.
+
+Use `show (π / conj π) • ((conj π / π) • w) ∈ Λ`. Rewrite using `[smul_smul, hr1, one_smul]`. Conclude with `hw`. Introduce `x hx y hy hxy`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨w, hw, hwe⟩` from `SC.mem_cLat.1 hxy`. Establish `hab : a - b ∈ cLat (conj π) Λ`. Use `SC.mem_cLat.2 ⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `e : a - b = (conj π / π) • ((π / conj π) • a - (π / conj π) • b)`.
+
+Rewrite using `[smul_sub, smul_smul, smul_smul, mul_comm (conj π / π) (π / conj π), hr1, one_smul, one_smul]`. Rewrite using `[e, ← hwe, smul_smul, hr3]`. Use `show (π / conj π) • a = (π / conj π) • b`. Rewrite using `[hA2 a ha b hb hab]`. Introduce `y hy`.
+
+Establish `hy' : (conj π / π) • y ∈ cLat (conj π / π) Λ` using `SC.mem_cLat.2 ⟨y, hy, rfl⟩`. Take `⟨a, ha, hd⟩` from `hA3 _ hy'`. Take `⟨w, hw, hwe⟩` from `SC.mem_cLat.1 hd`. Use `⟨(π / conj π) • a, Finset.mem_image.2 ⟨a, ha, rfl⟩, SC.mem_cLat.2 ⟨w, hw, ?_⟩⟩` and prove the remaining obligations. Establish `e : y - (π / conj π) • a = (π / conj π) • ((conj π / π) • y - a)`.
+
+Rewrite using `[smul_sub, smul_smul, hr1, one_smul]`. Rewrite using `[e, ← hwe, smul_smul, hr2]`. Establish `hcard` using `Finset.card_image_of_injective Sa hinj`. Establish `hidx` using `SC.relIdx_cLat Λ hL π hπ0 hπΛ`. Establish `hns : Complex.normSq π = p`.
+
+Establish `h` using `Complex.mul_conj π`. Rewrite `h` using `[hπ]`. Conclude with `h.symm` after adjusting the coercions. Rewrite `hidx` using `[hns]`. Establish `hrel : relIdx (cLat π Λ) Λ = (Sa.image fun x => (π / conj π) • x).card`.
+
+Rewrite using `[← card_quotient_eq_card_of_isReps hSb]`. Both sides reduce to the same expression. Rewrite using `[← hcard, ← hrel]`. Conclude with `hidx` after adjusting the coercions.
+-/
 theorem index_product_formula : IdxPi := by
   intro n _ Λ hL p hp π hπ hπΛ hπ'Λ Sa hSa
   have hp0 : (p : ℂ) ≠ 0 := by exact_mod_cast hp.ne_zero
@@ -217,6 +300,13 @@ theorem index_product_formula : IdxPi := by
   rw [← hcard, ← hrel]
   exact_mod_cast hidx
 
+/- English proof (translation)
+Introduce `K _ n _ _ d F m`. Establish `h : (fun i => (∑ x, MvPowerSeries.C (if i = x then d x else 0) * MvPowerSeries.X x : MvPowerSeries n K)) = d • MvPowerSeries.X`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Unfold `linSub`.
+
+Rewrite using `[h, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale]`.
+-/
 theorem linear_substitution_diagonal : LinSubDiag := by
   intro K _ n _ _ d F m
   have h : (fun i => (∑ x, MvPowerSeries.C (if i = x then d x else 0) * MvPowerSeries.X x :
@@ -233,6 +323,13 @@ theorem linear_substitution_diagonal : LinSubDiag := by
 
 namespace KerA
 
+/- English proof (translation)
+Establish `hcq` using `card_quotient_eq_card_of_isReps hS`. Establish `hne : S.card ≠ 0`. Take `⟨x, hx, _⟩` from `hS.2.2 0 (killIn (m : ℂ) B Λ).zero_mem`. Conclude with `Finset.card_ne_zero_of_mem hx`. Establish `: Finite (↥(killIn (m : ℂ) B Λ) ⧸ Λ.addSubgroupOf (killIn (m : ℂ) B Λ))` using `Nat.finite_of_card_ne_zero (by rw [hcq]; exact hne)`.
+
+Use `Fact.mk hq` as an intermediate fact. Take `⟨g, hg⟩` from `exists_prime_addOrderOf_dvd_card' q (by rw [hcq]; exact hd)`. Rewrite using `[← hg]`. Apply `addOrderOf_dvd_of_nsmul_eq_zero` to reduce the goal to its premises. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective g`.
+
+Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul]`. Establish `h` using `(mem_killIn.1 z.2).2`. Rewrite `h` using `[natCast_smul]`. Then use the resulting hypothesis.
+-/
 theorem card_dvd_prime {V : Type*} [AddCommGroup V] [Module ℂ V] (B Λ : AddSubgroup V) (m : ℕ) (S : Finset V)
     (hS : IsReps Λ (killIn (m : ℂ) B Λ) S) (q : ℕ) (hq : q.Prime) (hd : q ∣ S.card) : q ∣ m := by
   classical
@@ -254,6 +351,9 @@ theorem card_dvd_prime {V : Type*} [AddCommGroup V] [Module ℂ V] (B Λ : AddSu
 
 end KerA
 
+/- English proof (translation)
+Introduce `V _ _ B Λ m₁ m₂ hcop hkill SB S₁ S₂ hB h1 h2`. Conclude with `⟨RepsSplit_card V B Λ m₁ m₂ hcop hkill SB S₁ S₂ hB h1 h2, fun q hq hd => KerA.card_dvd_prime B Λ m₁ S₁ h1 q hq hd⟩`.
+-/
 theorem representatives_split : RepsSplit := by
   intro V _ _ B Λ m₁ m₂ hcop hkill SB S₁ S₂ hB h1 h2
   exact ⟨RepsSplit_card V B Λ m₁ m₂ hcop hkill SB S₁ S₂ hB h1 h2,

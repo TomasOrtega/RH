@@ -19,11 +19,30 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 namespace TC
 
+/- English proof (translation)
+The claim follows from `map_div Circle.toUnits _ _`.
+-/
 theorem chrW_div {v : Pl F} (χ χ' : Chr F E) (t : E →ₐ[F] Fv F v) (x : (Fv F v)ˣ) : chrW (χ / χ') t x = chrW χ t x / chrW χ' t x :=
   map_div Circle.toUnits _ _
 
+/- English proof (translation)
+The claim follows from `Circle.norm_coe _`.
+-/
 theorem chrW_norm {v : Pl F} (χ : Chr F E) (t : E →ₐ[F] Fv F v) (x : (Fv F v)ˣ) : ‖(chrW χ t x : ℂ)‖ = 1 := Circle.norm_coe _
 
+/- English proof (translation)
+Introduce `Φ hΦ Ψ hΨ`. Establish `hB` using `p.base`. Establish `eW` using `(h2 F E σ B hB d W r' s' (.inr p.skew)).1`. Take `⟨a1, a2, -, -, -, -, -, a5⟩` from `h1 F E σ hB.cm n X.J (h2 F E σ B hB n X r s (.inl p.herm)).1`. Take `⟨u0, -, u2⟩` from `h4 F E σ hB.cm d W.J (-1) (fun i j => by simp [p.skew.skew]) eW.2`.
+
+Use `u2 μ hμ` as an intermediate fact. Establish `: FirstCountableTopology (UA σ X.J)` using `TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Establish `fin` using `h3 F E σ hB.cm d W.J eW μ D hμ hD`. Establish `hk : ∀ Ψ ∈ schA F (Fin n × Fin d), Ker (theta om Ψ)` using `(hT F E σ B n d X W M _ _ om _ _ _ _ p).1`. Establish `hp` using `p.weil.isUSplitting.pres`.
+
+Use `hC F E σ B n X r s hB p.herm hn T _ ((hk Ψ hΨ).cont a5 (hr Φ hΦ) fin) (fun γ hγ g => ?_) fun v hv hs u hu g => ?_` and prove the remaining obligations. Establish `: theta om Ψ (γ * g) = theta om Ψ g` using `funext fun h => by`. Rewrite using `[← (hk Ψ hΨ).2.1 γ hγ 1 (one_mem _) g h, one_mul]`. Rewrite using `[th, th, this]`. Take `⟨t, ht⟩` from `hne v hv hs`.
+
+Take `⟨s1, ι, b, l1, r1⟩` from `hS F E σ B n d X W M _ _ om _ _ _ _ p v t`. Take `⟨-, ι', b', -, r2⟩` from `hS F E σ B n' d X' W M' _ _ om' _ _ _ _ p' v t`. Take `⟨L, hl⟩` from `exists_form hp hk fin (PolData B M') C hr g`. Take `⟨g₀, hg⟩` from `l1 u hu`. Establish `key` using `inv_loc hL e p'.good b b' (chrW_norm _ t) (chrW_norm _ t) (chrW_div χ χ' t) ht L (fun h₀ => by`.
+
+Take `⟨h, hh, e0⟩` from `s1 h₀`. Use `⟨h, r1 h hh h₀ e0, r2 h hh h₀ e0, fun Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[hl _ (he v t h hh Φ hΦ).1 _ (hp _ _ hΨ), hl _ hΦ _ hΨ, (he v t h hh Φ hΦ).2, th_right hD (hk Ψ hΨ) (hr Φ hΦ)]) hg Φ hΦ Ψ hΨ`. Rewrite `key` using `[hl _ hΦ _ (hp _ _ hΨ), hl _ hΦ _ hΨ]`. Rewrite using `[← key, th, th]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[theta_act, mul_one]`.
+-/
 theorem const_of (hL : LocDist) (hC : ConstOfGood) (hT : ThetaBasic) (h1 : GrpTop) (h2 : EpsOf) (h3 : FinVolU) (h4 : Unimod)
     (hS : SplitModel) {B : Base F E} {X : Spc F E n} {X' : Spc F E n'} {W : Spc F E d} {M : Model σ X W} {M' : Model σ X' W}
     {om : Rep σ X W} {om' : Rep σ X' W} {χ χ' χ₂ : Chr F E} {r s r₁ s₁ r' s' : ℕ} (p : IsPair B M χ (χ / χ') om r s r' s')
@@ -65,6 +84,9 @@ theorem const_of (hL : LocDist) (hC : ConstOfGood) (hT : ThetaBasic) (h1 : GrpTo
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+Take `⟨T, -, m, m', f, φ, f', φ', h1, h2, rfl, rfl, -⟩` from `h`. Conclude with `⟨Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (h1 i).1, φ i, (h1 i).2.1, T.eventually_cofinite_notMem.mono (h1 i).2.2, rfl⟩, Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f' i, (h2 i).1, φ' i, (h2 i).2.1, T.eventually_cofinite_notMem.mono (h2 i).2.2, rfl⟩⟩`.
+-/
 theorem pol_mem {Φ Φ'} (h : PolMatch B G X R Rf Φ Φ') : Φ ∈ PolData B G.M ∧ Φ' ∈ PolData B G.M' := by
   obtain ⟨T, -, m, m', f, φ, f', φ', h1, h2, rfl, rfl, -⟩ := h
   exact ⟨Submodule.sum_mem _ fun i _ => Submodule.subset_span
@@ -72,21 +94,33 @@ theorem pol_mem {Φ Φ'} (h : PolMatch B G X R Rf Φ Φ') : Φ ∈ PolData B G.M
     Submodule.sum_mem _ fun i _ => Submodule.subset_span
       ⟨f' i, (h2 i).1, φ' i, (h2 i).2.1, T.eventually_cofinite_notMem.mono (h2 i).2.2, rfl⟩⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Conclude with `PositivityTheory.KCo.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun _ h => h.1.trans h.2)`.
+-/
 theorem pol_le {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} (hM : M.IsGood B.ψ) : PolData B M ≤ schA F _ := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, -, φ, h1, h2, rfl⟩
   exact PositivityTheory.KCo.pure_mem_schA f φ h1 ((h2.and hM.std).mono fun _ h => h.1.trans h.2)
 
+/- English proof (translation)
+The claim follows from `funext fun h => by simp only [Model.I, theta_add hp hΦ hΨ] exact integral_add (c1 h) (c2 h)`.
+-/
 theorem I_add {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {o : Rep σ Y W}
     (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), o x Ψ ∈ schA F _) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _)
     (c1 : M.Conv o Φ) (c2 : M.Conv o Ψ) : M.I o (Φ + Ψ) = M.I o Φ + M.I o Ψ := funext fun h => by
   simp only [Model.I, theta_add hp hΦ hΨ]
   exact integral_add (c1 h) (c2 h)
 
+/- English proof (translation)
+The claim follows from `funext fun h => by simp only [Model.I, theta_smul, integral_const_mul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem I_smul {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (o : Rep σ Y W) (c : ℂ) (Φ : Fn F n d) :
     M.I o (c • Φ) = c • M.I o Φ := funext fun h => by
   simp only [Model.I, theta_smul, integral_const_mul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `using I_smul M o 0 0`.
+-/
 theorem I_zero {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (o : Rep σ Y W) : M.I o 0 = 0 := by
   simpa using I_smul M o 0 0
 
@@ -96,6 +130,17 @@ def matched (hm : IsMatched B G X om om' R Rf) : Submodule ℂ (Fn F a (a + a') 
   add_mem' h h' := by simpa using pm_add hm 1 h h'
   smul_mem' c _ h := by simpa using pm_add hm c h pm_zero
 
+/- English proof (translation)
+Take `⟨d1, d2⟩` from `hD F E σ B a a' G X om om' hm.triple`. Take `⟨f1, f2⟩` from `hF F E σ B a a' G X om om' R Rf hm`. Set `P` to `(G.M'.So B.ψ B.τ₁).comap (LinearMap.snd ℂ _ _) ⊓ matched hm`. Establish `m1 : ∀ y : P, y.1.1 ∈ schA F _` using `fun y => pol_le hm.triple.geo.hM (pol_mem y.2.2).1`. Establish `m2 : ∀ y : P, y.1.2 ∈ schA F _` using `fun y => pol_le hm.triple.geo.hM' (pol_mem y.2.2).2`.
+
+Set `c : P →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun y => comb G om om' s t y.1 map_add' := fun y z => by`. Simplify using `only [comb, Submodule.coe_add, Prod.fst_add, Prod.snd_add]`. Rewrite using `[I_add hm.triple.weil.isUSplitting.pres (m1 y) (m1 z) (d1 _ (m1 y)) (d1 _ (m1 z)), I_add hm.triple.weil'.isUSplitting.pres (m2 y) (m2 z) (d2 _ y.2.1).2.1 (d2 _ z.2.1).2.1]`. Use `module`. Use the proof step `map_smul' := fun x y => by`.
+
+Simplify using `only [comb, Submodule.coe_smul, Prod.smul_fst, Prod.smul_snd, I_smul, RingHom.id_apply]`. Use `module }`. Take `⟨C, hC⟩` from `exists_fac (LinearMap.fst ℂ _ _ ∘ₗ P.subtype) c fun y h => by`. Establish `h0 : y.1.1 = 0` using `h`. Establish `h1 : PolMatch B G X R Rf y.1.1 y.1.2` using `y.2.2`.
+
+Express the relevant statement in the definitionally equal form `comb G om om' s t y.1 = 0`. Rewrite using `[comb, f2 y.1.2 y.2.1 (h0 ▸ h1), h0, I_zero, smul_zero, smul_zero, add_zero]`. Establish `k : ∀ y ∈ pairs B G X R Rf, C y.1 = comb G om om' s t y` using `fun y hy => hC ⟨y, hy⟩`. Take `⟨C', hC'⟩` from `exists_fac (LinearMap.snd ℂ _ _ ∘ₗ (matched hm).subtype) (C ∘ₗ LinearMap.fst ℂ _ _ ∘ₗ (matched hm).subtype) fun y h => by`. Establish `h0 : y.1.2 = 0` using `h`.
+
+Establish `h1 : PolMatch B G X R Rf y.1.1 y.1.2` using `y.2`. Express the relevant statement in the definitionally equal form `C y.1.1 = 0`. Rewrite using `[k y.1 ⟨h0 ▸ zero_mem _, h1⟩, comb, f1 _ (h0 ▸ h1), h0, I_zero, smul_zero, smul_zero, add_zero]`. Conclude with `⟨C, C', k, fun Φ Φ' h => hC' ⟨(Φ, Φ'), h⟩⟩`.
+-/
 theorem exists_maps (hD : KDecay) (hF : Factor) (hm : IsMatched B G X om om' R Rf) (s t : ℂ) :
     ∃ (C : Fn F a (a + a') →ₗ[ℂ] (UA σ G.W.J → ℂ)) (C' : Fn F a' (a + a') →ₗ[ℂ] (UA σ G.W.J → ℂ)),
       (∀ y ∈ pairs B G X R Rf, C y.1 = comb G om om' s t y) ∧ ∀ Φ Φ', PolMatch B G X R Rf Φ Φ' → C' Φ' = C Φ := by
@@ -131,6 +176,19 @@ theorem exists_maps (hD : KDecay) (hF : Factor) (hm : IsMatched B G X om om' R R
 end TC
 
 open TC in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf hm s t hr μ D hμ hD' y hy`. Take `⟨C, C', c1, c2⟩` from `exists_maps hD hF hm s t`. Take `⟨m1, m2, -⟩` from `hM F E σ B a a' G X om om' R Rf hm`. Establish `hg` using `hG F E σ B a a' G X om om' hm.triple`. Establish `r1 : ∀ Φ ∈ PolData B G.M, IsRapid (C Φ)` using `fun Φ hΦ => by`.
+
+Take `⟨Φ', h, h'⟩` from `m1 Φ hΦ`. Conclude with `c1 (Φ, Φ') ⟨h, h'⟩ ▸ hr (Φ, Φ') ⟨h, h'⟩`. Establish `e1 : ∀ v (_ : E →ₐ[F] Fv F v), ∀ h ∈ UAt σ G.W (evFin F v), ∀ Φ ∈ PolData B G.M, om (1, h) Φ ∈ PolData B G.M ∧ C (om (1, h) Φ) = fun x => C Φ (x * h)` using `fun v w h hh Φ hΦ => by`. Take `⟨Φ', k, k'⟩` from `m1 Φ hΦ`. Establish `k2` using `pm_fin hS hm w hh k'`.
+
+Use `⟨(pol_mem k2).1, ?_⟩` and prove the remaining obligations. Rewrite using `[c1 (_, _) ⟨hO F E σ B a a' G X om om' hm.triple _ _ k, k2⟩, c1 (Φ, Φ') ⟨k, k'⟩]`. Use function extensionality and compare the values at `x`. Simplify using `only [comb, Model.I, Pi.add_apply, Pi.smul_apply, theta_act, mul_one]`. Establish `l1` using `hm.triple.geo.lt`.
+
+Establish `l2` using `hm.triple.geo.aBig`. Rewrite using `[← c1 y hy]`. Use `⟨c2 _ _ hy.2 ▸ const_of hL hC hT h1 h2 h3 h4 hS (pairV hm.triple) (pairV' hm.triple) finSumFinEquiv (by omega) X.T (fun v hv hs => ?_) C' (fun Φ' h => ?_) (fun v w h hh Φ' hΦ => ?_) hμ hD' _ (pol_mem hy.2).2, const_of hL hC hT h1 h2 h3 h4 hS (pairV' hm.triple) (pairV hm.triple) ( …` and prove the remaining obligations. Take `⟨⟨t⟩, h⟩` from `hg v ⟨hv, hs⟩`. Use `⟨t, fun h' => h t ?_⟩` and prove the remaining obligations.
+
+Rewrite `h'` using `[chrW_div, div_eq_one]`. Rewrite using `[Chars.ν, chrW_div, h', div_self']`. Take `⟨Φ, k⟩` from `m2 Φ' h`. Conclude with `c2 _ _ k ▸ r1 Φ (pol_mem k).1`. Take `⟨Φ, k⟩` from `m2 Φ' hΦ`.
+
+Establish `k2` using `pm_fin hS hm w hh k`. Conclude with `⟨(pol_mem k2).2, by rw [c2 _ _ k2, c2 _ _ k, (e1 v w h hh Φ (pol_mem k).1).2]⟩`. Take `⟨⟨t⟩, h⟩` from `hg v ⟨hv, hs⟩`. Conclude with `⟨t, h t⟩`.
+-/
 theorem thConst_of (hL : LocDist) (hG : GoodNe) (hC : ConstOfGood) (hF : Factor) (hM : MatchEx) (hT : ThetaBasic) (hD : KDecay)
     (h1 : GrpTop) (h2 : EpsOf) (h3 : FinVolU) (h4 : Unimod) (hS : SplitModel) (hO : SoSt) : ThConst := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf hm s t hr μ D hμ hD' y hy

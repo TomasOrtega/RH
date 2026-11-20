@@ -13,11 +13,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.MuOpen
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Global.isOpen_ker_of_continuous w GroundTheory.Global.Complex.units_noSmallSubgroups (χ.loc w) (χ.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele w))`.
+-/
 theorem isOpen_ker_loc {L : Type} [Field L] [NumberField L] (χ : HChar L) (w : HeightOneSpectrum (𝓞 L)) :
     IsOpen ((χ.loc w).ker : Set (w.adicCompletion L)ˣ) :=
   GroundTheory.Global.isOpen_ker_of_continuous w GroundTheory.Global.Complex.units_noSmallSubgroups (χ.loc w)
     (χ.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele w))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.unrChar_apply, GlobalTheory.SmGL.SphCompletion.ord_completion]`. Establish `hx' : Valued.v (x : w.adicCompletion L) = 1` using `hx`. Rewrite using `[hx']`. Simplify using the standard rewrite rules.
+-/
 theorem unrChar_apply_of_isUnitAt {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) (α : ℂˣ)
     (x : (w.adicCompletion L)ˣ) (hx : IsUnitAt w x) : GlobalTheory.SmGL.unrChar (w.adicCompletion L) α x = 1 := by
   rw [GlobalTheory.SmGL.unrChar_apply, GlobalTheory.SmGL.SphCompletion.ord_completion]
@@ -29,6 +35,9 @@ end GlobalTheory.CompanionTheory.MuOpen
 
 open GlobalTheory.CompanionTheory.MuOpen in
 
+/- English proof (translation)
+Introduce `h E _ _ _ hU`. Take `⟨μ, e, hμ⟩` from `h E hU`. Use `⟨μ, e, hμ, fun w hw x hx => ?_, GlobalTheory.Mem.UnrAe.unr_ae_and_level E μ |>.1, fun w => isOpen_ker_loc μ w⟩` and prove the remaining obligations. Rewrite using `[hμ.2.2.1 w hw]`. Conclude with `unrChar_apply_of_isUnitAt w _ x hx`.
+-/
 theorem GlobalTheory.CompanionTheory.MuOpen.muEx_of_exists :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E], GlobalTheory.BCT.Unr E → ∃ (μ : HChar E) (e : InfinitePlace E → ℤ), IsMu μ e) → MuEx := by
   intro h E _ _ _ hU

@@ -13,6 +13,11 @@ variable {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M] [Module.Fini
 
 open TensorProduct in
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `(dualTensorHom_bijective (R := R) (M := M) (N := N)).2 u`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_comp, LinearMap.comp_add, ha, hb]`. Consider the case `tmul ξ n`.
+
+Establish `e1 : dualTensorHom R M N (ξ ⊗ₜ n) ∘ₗ v = (ξ ∘ₗ v).smulRight n` using `by ext; simp`. Establish `e2 : v ∘ₗ dualTensorHom R M N (ξ ⊗ₜ n) = ξ.smulRight (v n)` using `by ext; simp`. Rewrite using `[e1, e2, projTrace_smulRight, projTrace_smulRight]`. Both sides reduce to the same expression.
+-/
 private theorem projTrace_comm (u : M →ₗ[R] N) (v : N →ₗ[R] M) :
     projTrace R N (u ∘ₗ v) = projTrace R M (v ∘ₗ u) := by
   obtain ⟨t, rfl⟩ := (dualTensorHom_bijective (R := R) (M := M) (N := N)).2 u
@@ -25,6 +30,17 @@ private theorem projTrace_comm (u : M →ₗ[R] N) (v : N →ₗ[R] M) :
     rw [e1, e2, projTrace_smulRight, projTrace_smulRight]
     rfl
 
+/- English proof (translation)
+Set `E : B' ≃ₗ[B] (∀ i, C i)` to `LinearEquiv.ofBijective (LinearMap.pi fun i ↦ (r i).toLinearMap) hr`. Establish `hE : ∀ x i, E x i = r i x` using `fun _ _ ↦ rfl`. Set `t : ∀ i, C i →ₗ[B] B'` to `fun i ↦ E.symm.toLinearMap ∘ₗ LinearMap.single B C i`. Establish `h1 : ∀ i y, r i (t i y) = y` using `fun i y ↦ by`. Establish `e : E (t i y) = Pi.single i y` using `E.apply_symm_apply _`.
+
+Use `congrFun e i` as an intermediate fact. Rewrite `this` using `[hE, Pi.single_eq_same]`. Then use the resulting hypothesis. Establish `h2 : ∀ x, ∑ i, t i (r i x) = x` using `fun x ↦ by`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`.
+
+Establish `e : ∀ i, E (t i (r i x)) = Pi.single i (r i x)` using `fun i ↦ E.apply_symm_apply _`. Simplify using `only [e]`. Rewrite using `[Finset.univ_sum_single]`. Both sides reduce to the same expression. Establish `h3 : LinearMap.mul B B' b = ∑ i, t i ∘ₗ ((r i).toLinearMap ∘ₗ LinearMap.mul B B' b)`.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply]`. Conclude with `(h2 _).symm`. Rewrite using `[algTrace_apply, h3, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[projTrace_comm, algTrace_apply]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[h1]`.
+-/
 private theorem algTrace_eq_sum {ι : Type*} [Fintype ι] {B B' : Type*} {C : ι → Type*} [CommRing B]
     [CommRing B'] [Algebra B B'] [Module.Finite B B'] [Module.Projective B B']
     [∀ i, CommRing (C i)] [∀ i, Algebra B (C i)] [∀ i, Module.Finite B (C i)]
@@ -60,6 +76,13 @@ private theorem algTrace_eq_sum {ι : Type*} [Fintype ι] {B B' : Type*} {C : ι
 
 end Alg
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y e`. Conclude with `TopCat.Sheaf.eq_of_locally_eq' Y.sheaf D A (fun m ↦ homOfLE (hD m)) hc x y fun m ↦ congrFun e m`. Introduce `y`. Establish `hcomp : TopCat.Presheaf.IsCompatible Y.sheaf.1 D y`.
+
+Introduce `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Both sides reduce to the same expression. Establish `: Subsingleton Γ(Y, D i ⊓ D j)`.
+
+Rewrite using `[hd i j hij]`. Use `infer_instance`. Conclude with `this.elim _ _`. Take `⟨x, hx, -⟩` from `TopCat.Sheaf.existsUnique_gluing' Y.sheaf D A (fun m ↦ homOfLE (hD m)) hc y hcomp`. Conclude with `⟨x, funext hx⟩`.
+-/
 private theorem res_pi_bijective {Y : Scheme.{0}} {M : Type} (A : Y.Opens) (D : M → Y.Opens)
     (hD : ∀ m, D m ≤ A) (hc : A ≤ iSup D) (hd : ∀ i j, i ≠ j → D i ⊓ D j = ⊥) :
     Function.Bijective fun (x : Γ(Y, A)) m ↦ Y.presheaf.map (homOfLE (hD m)).op x := by
@@ -85,6 +108,21 @@ section Geo
 
 variable {k : Type} [CommRing k] {Z Y : Scheme.{0}}
 
+/- English proof (translation)
+Use `letI := secAlg s s' c U`. Use `letI inst : ∀ m, Algebra (Sec s U) (Sec ((W m).ι ≫ s') (((W m).ι ≫ c) ⁻¹ᵁ U)) := fun m ↦ secAlg s ((W m).ι ≫ s') ((W m).ι ≫ c) U`. Use `haveI := sec_finite (s := s) (s' := s') (f := c) hU`. Use `haveI := sec_etale (s := s) (s' := s') (f := c) hU`. Use `haveI := projective_of_etale (Sec s U) (Sec s' (c ⁻¹ᵁ U))`.
+
+Use `haveI : ∀ m, Module.Finite (Sec s U) (Sec ((W m).ι ≫ s') (((W m).ι ≫ c) ⁻¹ᵁ U)) := fun m ↦ sec_finite (s := s) (s' := (W m).ι ≫ s') (f := (W m).ι ≫ c) hU`. Use `haveI : ∀ m, Algebra.Etale (Sec s U) (Sec ((W m).ι ≫ s') (((W m).ι ≫ c) ⁻¹ᵁ U)) := fun m ↦ sec_etale (s := s) (s' := (W m).ι ≫ s') (f := (W m).ι ≫ c) hU`. Use `haveI : ∀ m, Module.Projective (Sec s U) (Sec ((W m).ι ≫ s') (((W m).ι ≫ c) ⁻¹ᵁ U)) := fun m ↦ projective_of_etale _ _`. Set `r : ∀ m, Sec s' (c ⁻¹ᵁ U) →ₐ[Sec s U] Sec ((W m).ι ≫ s') (((W m).ι ≫ c) ⁻¹ᵁ U)` to `fun m ↦ { appSec s' ((W m).ι ≫ s') (W m).ι (c ⁻¹ᵁ U) with commutes' := fun b ↦ by`. Express the relevant statement in the definitionally equal form `(c.app U ≫ (W m).ι.app (c ⁻¹ᵁ U)).hom b = (((W m).ι ≫ c).app U).hom b`.
+
+Rewrite using `[Scheme.Hom.comp_app]`. Use `rfl }`. Establish `hDeq : ∀ m, (W m).ι ''ᵁ ((W m).ι ⁻¹ᵁ (c ⁻¹ᵁ U)) = W m ⊓ c ⁻¹ᵁ U` using `fun m ↦ by`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Establish `hD : ∀ m, (W m).ι ''ᵁ ((W m).ι ⁻¹ᵁ (c ⁻¹ᵁ U)) ≤ c ⁻¹ᵁ U` using `fun m ↦ by`.
+
+Rewrite using `[hDeq]`. Conclude with `inf_le_right`. Establish `hcov : c ⁻¹ᵁ U ≤ ⨆ m, (W m).ι ''ᵁ ((W m).ι ⁻¹ᵁ (c ⁻¹ᵁ U))`. Simplify using `only [hDeq]`. Rewrite using `[← iSup_inf_eq, hc, top_inf_eq]`.
+
+Establish `hdis : ∀ i j, i ≠ j → (W i).ι ''ᵁ ((W i).ι ⁻¹ᵁ (c ⁻¹ᵁ U)) ⊓ (W j).ι ''ᵁ ((W j).ι ⁻¹ᵁ (c ⁻¹ᵁ U)) = ⊥` using `fun i j hij ↦ by`. Rewrite using `[hDeq, hDeq, eq_bot_iff, ← hd i j hij]`. Conclude with `inf_le_inf inf_le_left inf_le_left`. Establish `hb` using `res_pi_bijective (c ⁻¹ᵁ U) _ hD hcov hdis`. Establish `hr : Function.Bijective fun (x : Sec s' (c ⁻¹ᵁ U)) m ↦ r m x`.
+
+Establish `e : (fun (x : Sec s' (c ⁻¹ᵁ U)) m ↦ r m x) = fun x m ↦ Y.presheaf.map (homOfLE (hD m)).op x`. Use function extensionality and compare the values at `x m`. Express the relevant statement in the definitionally equal form `((W m).ι.app (c ⁻¹ᵁ U)).hom x = _`. Rewrite using `[Scheme.Opens.ι_app]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `hb`. Conclude with `algTrace_eq_sum r hr b'`.
+-/
 private theorem secTrace_eq_sum {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ Z} [IsFinite c] [Etale c]
     {M : Type} [Fintype M] (W : M → Y.Opens) (hd : ∀ i j, i ≠ j → W i ⊓ W j = ⊥)
     (hc : iSup W = ⊤) [∀ m, IsFinite ((W m).ι ≫ c)] [∀ m, Etale ((W m).ι ≫ c)] {U : Z.Opens}
@@ -138,6 +176,9 @@ private noncomputable def piece (s' : Y ⟶ Sp k) (c : Y ⟶ Z) (V : Y.Opens) (j
   (Scheme.Modules.pushforward c).map (omegaPull (f := V.ι) rfl j) ≫
     (Scheme.Modules.pushforwardComp V.ι c).hom.app _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(omegaPull (f := V.ι) (s' := V.ι ≫ s') rfl j).val.app (Opposite.op (c ⁻¹ᵁ U)) ((toOmega s' j).app (Opposite.op (c ⁻¹ᵁ U)) (b' • formPull h U j x)) = _`. Rewrite using `[omegaPull_toOmega, formPull_smul, formPull_formPull h rfl hg]`. Both sides reduce to the same expression.
+-/
 private theorem piece_app_smul {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ Z} (h : c ≫ s = s')
     (V : Y.Opens) (hg : (V.ι ≫ c) ≫ s = V.ι ≫ s') (j : ℕ) (U : Z.Opens)
     (b' : Sec s' (c ⁻¹ᵁ U)) (x : OmU s U j) :
@@ -150,6 +191,11 @@ private theorem piece_app_smul {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ Z} 
   rw [omegaPull_toOmega, formPull_smul, formPull_formPull h rfl hg]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty, Scheme.Modules.Hom.zero_app]`. Both sides reduce to the same expression. Consider the case `insert a t ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Scheme.Modules.Hom.add_app, ← ih]`. Both sides reduce to the same expression.
+-/
 private theorem sum_app {X : Scheme.{0}} {F G : X.Modules} {ι : Type} (t : Finset ι)
     (φ : ι → (F ⟶ G)) (U : X.Opens) (y : Γ(F, U)) :
     (∑ i ∈ t, φ i).app U y = ∑ i ∈ t, (φ i).app U y := by
@@ -162,6 +208,11 @@ private theorem sum_app {X : Scheme.{0}} {F G : X.Modules} {ι : Type} (t : Fins
     rw [Finset.sum_insert ha, Finset.sum_insert ha, Scheme.Modules.Hom.add_app, ← ih]
     rfl
 
+/- English proof (translation)
+Use `(omegaTrace_ext h j _ fun U hU b' x ↦ ?_).symm` and prove the remaining obligations. Use `(sum_app Finset.univ _ U _).trans ?_` and prove the remaining obligations. Establish `e : ∀ m, (piece s' c (W m) j ≫ omegaTrace (hg m) j).app U (toOm s' j (c ⁻¹ᵁ U) (b' • formPull h U j x)) = toOm s j U (secTrace (f` using `(W m).ι ≫ c) s ((W m).ι ≫ s') hU (appSec s' ((W m).ι ≫ s') (W m).ι (c ⁻¹ᵁ U) b') • x) := fun m ↦ by`. Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaTrace (hg m) j).app U ((piece s' c (W m) j).app U (toOm s' j (c ⁻¹ᵁ U) (b' • formPull h U j x))) = _`.
+
+Rewrite using `[piece_app_smul h (W m) (hg m) j U]`. Conclude with `omegaTrace_toOm_smul_formPull (hg m) j hU _ x`. Simplify using `only [e]`. Rewrite using `[secTrace_eq_sum W hd hc hU b', Finset.sum_smul, map_sum]`.
+-/
 private theorem omegaTrace_eq_sum {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ Z} [IsFinite c] [Etale c]
     (h : c ≫ s = s') {M : Type} [Fintype M] (W : M → Y.Opens) (hd : ∀ i j, i ≠ j → W i ⊓ W j = ⊥)
     (hc : iSup W = ⊤) [∀ m, IsFinite ((W m).ι ≫ c)] [∀ m, Etale ((W m).ι ≫ c)]
@@ -181,6 +232,9 @@ private theorem omegaTrace_eq_sum {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ 
   simp only [e]
   rw [secTrace_eq_sum W hd hc hU b', Finset.sum_smul, map_sum]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using cohOn.map_zero_hom R F G U n`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, cohOn.map_add_hom, ih]`.
+-/
 private theorem cohOn_map_sum {X : Scheme.{0}} (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)]
     {F G : X.Modules} {ι : Type} (t : Finset ι) (φ : ι → (F ⟶ G)) (U : X.Opens) (n : ℕ) :
     cohOn.map R (∑ i ∈ t, φ i) U n = ∑ i ∈ t, cohOn.map R (φ i) U n := by
@@ -190,6 +244,15 @@ private theorem cohOn_map_sum {X : Scheme.{0}} (R : Type) [CommRing R] [Algebra 
   | insert a t ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, cohOn.map_add_hom, ih]
 
+/- English proof (translation)
+Use `letI := algΓ s`. Use `letI := algΓ s'`. Take `⟨y, rfl⟩` from `(coh.pushforwardEquiv k (appTop_algebraMap h) (Omega s' a) b).surjective w`. Establish `e1 : hodgeTrace h a b (coh.pushforwardEquiv k (appTop_algebraMap h) (Omega s' a) b y) = cohOn.map k (omegaTrace h a) ⊤ b y` using `congrArg (cohOn.map k (omegaTrace h a) ⊤ b) ((coh.pushforwardEquiv k (appTop_algebraMap h) (Omega s' a) b).symm_apply_apply y)`. Rewrite using `[e1, omegaTrace_eq_sum h W hd hc hg a, cohOn_map_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun m _ ↦ ?_` and prove the remaining obligations. Use `letI := algΓ ((W m).ι ≫ s')`. Rewrite using `[cohOn.map_comp, LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `_ = cohOn.map k (omegaTrace (hg m) a) ⊤ b ((coh.pushforwardEquiv k (appTop_algebraMap (hg m)) (Omega ((W m).ι ≫ s') a) b).symm _)`. Use `congr 1`.
+
+Use `((coh.pushforwardEquiv k (appTop_algebraMap (hg m)) (Omega ((W m).ι ≫ s') a) b).eq_symm_apply).2 ?_` and prove the remaining obligations. Establish `s1` using `cohOn.pull_map (σ := RingHom.id k) (appTop_algebraMap (hg m)) (𝟙 _) (piece s' c (W m) a) (le_refl (((W m).ι ≫ c) ⁻¹ᵁ ⊤)) (n := b) y`. Establish `s2` using `cohOn_pull_pull (appTop_algebraMap h) (appTop_algebraMap (f := (W m).ι) (s := s') rfl) (appTop_algebraMap (hg m)) (𝟙 _) (omegaPull rfl a) (le_refl (c ⁻¹ᵁ ⊤)) (le_refl _) (le_refl _) b y`. Use `Eq.trans (cohOn.pushforwardEquiv_apply k (appTop_algebraMap (hg m)) _ ⊤ b _) (s1.trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ s2.symm` and prove the remaining obligations.
+
+Rewrite using `[Category.comp_id, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 private theorem hodgeTrace_eq_sum {s : Z ⟶ Sp k} {s' : Y ⟶ Sp k} {c : Y ⟶ Z} [IsFinite c] [Etale c]
     (h : c ≫ s = s') {M : Type} [Fintype M] (W : M → Y.Opens) (hd : ∀ i j, i ≠ j → W i ⊓ W j = ⊥)
     (hc : iSup W = ⊤) [∀ m, IsFinite ((W m).ι ≫ c)] [∀ m, Etale ((W m).ι ≫ c)]
@@ -226,6 +289,9 @@ end Geo
 
 end UpperTheory.TrSum
 
+/- English proof (translation)
+Introduce `Z Y s s' c _ _ h M _ W hd hc hf he a b w`. Use `haveI := hf`. Use `haveI := he`. Conclude with `UpperTheory.TrSum.hodgeTrace_eq_sum h W hd hc _ a b w`.
+-/
 theorem UpperTheory.Cb.hodgeTrace_eq_sum_clopen_decomposition :
     ∀ (Z Y : Scheme.{0}) (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) (c : Y ⟶ Z) [IsFinite c] [Etale c] (h : c ≫ s = s') (M : Type) [Fintype M] (W : M → Y.Opens), (∀ i j, i ≠ j → W i ⊓ W j = ⊥) → iSup W = ⊤ → ∀ (hf : ∀ m, IsFinite ((W m).ι ≫ c)) (he : ∀ m, Etale ((W m).ι ≫ c)) (a b : ℕ) (w : hodgeH s' a b), hodgeTrace h a b w = ∑ m, (haveI := hf m; haveI := he m; hodgeTrace (f := (W m).ι ≫ c) (s' := (W m).ι ≫ s') (by rw [Category.assoc, h]) a b (hodgePull (f := (W m).ι) rfl a b w)) := by
   intro Z Y s s' c _ _ h M _ W hd hc hf he a b w

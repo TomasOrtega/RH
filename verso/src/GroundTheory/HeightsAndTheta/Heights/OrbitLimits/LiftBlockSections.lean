@@ -17,6 +17,9 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Use extensionality with `s`. Use `show (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * (m • b) k)) ∈ chartRingZ y c) ↔ (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * b k)) ∈ chartRingZ y c)`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, Nat.cast_one, one_mul]`.
+-/
 theorem chartLat_smul_one (y : (Σ k, ι k) → Ω) (m : ℕ) (b : K → ℤ) :
     chartLat y (m • b) 1 = chartLat y b m := by
   ext s
@@ -25,6 +28,19 @@ theorem chartLat_smul_one (y : (Σ k, ι k) → Ω) (m : ℕ) (b : K → ℤ) :
     (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-((m : ℤ) * b k)) ∈ chartRingZ y c)
   simp only [Pi.smul_apply, nsmul_eq_mul, Nat.cast_one, one_mul]
 
+/- English proof (translation)
+Introduce `s hs`. Establish `hle : Submodule.span ℤ {s | ∃ g : MRing (addIdx ι r), IsMultiHomog g (blockDeg (none : Option K) n) ∧ aeval (addBlock y v) g = s} ≤ (chartLat y (n • b) 1).toIntSubmodule`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `show aeval (addBlock y v) g ∈ chartLat y (n • b) 1`.
+
+Rewrite using `[g.as_sum, map_sum]`. Use `AddSubgroup.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hold : ∀ (k : K) (i : ι k), m ⟨some k, i⟩ = 0`. Introduce `k i`. Establish `h` using `hg m hm (some k)`.
+
+Simplify using `only [blockDeg, reduceCtorEq, if_false] at h`. Conclude with `Finset.sum_eq_zero_iff.mp h i (Finset.mem_univ _)`. Establish `htot : ∑ p ∈ m.support, m p = n`. Rewrite using `[Finset.sum_subset (Finset.subset_univ _) (fun p _ hp => Finsupp.notMem_support_iff.mp hp), Fintype.sum_sigma, Fintype.sum_option]`. Establish `h0` using `hg m hm none`.
+
+Simplify using `only [blockDeg, if_true] at h0`. Establish `h1 : ∑ k : K, ∑ i : addIdx ι r (some k), m ⟨some k, i⟩ = 0` using `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => hold k i`. Rewrite using `[h0, h1, add_zero]`. Establish `hprod : m.prod (fun p e => addBlock y v p ^ e) ∈ chartLat y (n • b) 1`. Establish `h` using `LiftBirationalAmple.chartLat_prod (y := y) m.support (fun p => addBlock y v p ^ m p) (fun p => m p • b) (fun p _ => by`.
+
+Break down `p with ⟨_ | k, i⟩` into its components or cases. Conclude with `LiftBirationalAmple.chartLat_pow (hv i) _`. Simplify using `only [hold k i, pow_zero, zero_smul]`. Conclude with `LiftBirationalAmple.chartLat_one_mem)`. Rewrite `h` using `[← Finset.sum_smul, htot]`. Then use the resulting hypothesis.
+
+Rewrite using `[aeval_monomial, algebraMap_int_eq, eq_intCast, ← zsmul_eq_mul]`. Conclude with `AddSubgroup.zsmul_mem _ hprod _`. Conclude with `hle hs`.
+-/
 theorem secM_le_chartLat [DecidableEq K] {r : ℕ} (y : (Σ k, ι k) → Ω) (v : Fin r → Ω) (b : K → ℤ)
     (hv : ∀ j, v j ∈ chartLat y b 1) (n : ℕ) :
     secM (addBlock y v) (blockDeg (none : Option K) n) ≤ chartLat y (n • b) 1 := by
@@ -64,11 +80,21 @@ theorem secM_le_chartLat [DecidableEq K] {r : ℕ} (y : (Σ k, ι k) → Ω) (v 
 
 def oldEmb (r : ℕ) : (Σ k, ι k) → (Σ k, addIdx ι r k) := fun p => ⟨some p.1, p.2⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem oldEmb_injective (r : ℕ) : Function.Injective (oldEmb (ι := ι) r) := by
   rintro ⟨k, i⟩ ⟨k', i'⟩ h
   cases h
   rfl
 
+/- English proof (translation)
+Introduce `m' hm' o`. Rewrite `hm'` using `[support_rename_of_injective (oldEmb_injective r)]`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.mp hm'`. Break down `o with _ | k` into its components or cases. Use `Finset.sum_eq_zero fun j _ => Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨p, hp⟩`. Conclude with `Option.some_ne_none _ (congrArg Sigma.fst hp)`. Establish `h` using `hg m hm k`. Simplify using `only [Option.elim_some]`. Rewrite using `[← h]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply (oldEmb_injective r) m ⟨k, i⟩`.
+-/
 theorem homog_rename_old (r : ℕ) {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     IsMultiHomog (rename (oldEmb (ι := ι) r) g) (fun o => Option.elim o 0 d) := by
   classical
@@ -84,15 +110,62 @@ theorem homog_rename_old (r : ℕ) {g : MRing ι} {d : K → ℕ} (hg : IsMultiH
     rw [← h]
     exact Finset.sum_congr rfl fun i _ => Finsupp.mapDomain_apply (oldEmb_injective r) m ⟨k, i⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+-/
 theorem addBlock_comp_oldEmb {r : ℕ} (y : (Σ k, ι k) → Ω) (v : Fin r → Ω) : addBlock y v ∘ oldEmb r = y := by
   funext p
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem eval_rename_old {r : ℕ} (z : (Σ k, addIdx ι r k) → ℂ) (g : MRing ι) :
     eval z (map (Int.castRingHom ℂ) (rename (oldEmb r) g)) = eval (basePart₂ z) (map (Int.castRingHom ℂ) g) := by
   rw [map_rename, eval_rename]
   rfl
 
+/- English proof (translation)
+Introduce `dg dh g h w hg hh hdeg he hw`. Take `⟨z, hz, rfl⟩` from `hlift w hw`. Take `⟨j, hj⟩` from `hz.1 none`. Use `choose c hc using hw.1`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hc k (by`.
+
+Use `SectionBounded.vanish hw (SectionBounded.homog_X (ι := ι) ⟨k, c k⟩) (by rw [aeval_X]; exact h0)` as an intermediate fact. Simplify using `using this)`. Take `⟨δ, e, he_h, he_v⟩` from `SectionBounded.exists_form_of_mem_chartRingZ y c hyc (hv j c hyc)`. Use `set t : K → ℤ := fun k => (a : ℤ) * N.a k with ht`. Use `set β : K → ℕ := fun k => δ k + (-t k).toNat with hβ`.
+
+Use `set γ : K → ℕ := fun k => (t k).toNat with hγ`. Use `set q₁ := SectionBounded.chartMon c β with hq₁`. Use `set r₁ := e * SectionBounded.chartMon c γ with hr₁`. Establish `hq₁h : IsMultiHomog q₁ β` using `SectionBounded.homog_chartMon c β`. Establish `hr₁h : IsMultiHomog r₁ (δ + γ)` using `SectionBounded.homog_mul he_h (SectionBounded.homog_chartMon c γ)`.
+
+Establish `hdeg₁ : ∀ k, (((δ + γ) k : ℕ) : ℤ) = β k + t k`. Introduce `k`. Simplify using `only [Pi.add_apply, hβ, hγ]`. Use linear arithmetic over natural numbers and integers. Establish `hval₁ : aeval y r₁ = v j * aeval y q₁`.
+
+Rewrite using `[hr₁, hq₁, map_mul, SectionBounded.aeval_chartMon, SectionBounded.aeval_chartMon, he_v]`. Establish `hk : ∀ k, y ⟨k, c k⟩ ^ β k = y ⟨k, c k⟩ ^ (-((a : ℤ) * N.a k)) * y ⟨k, c k⟩ ^ δ k * y ⟨k, c k⟩ ^ γ k`. Introduce `k`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hyc k), ← zpow_add₀ (hyc k)]`. Use `congr 1`.
+
+Simplify using `only [hβ, hγ, ht]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_congr rfl fun k _ => hk k, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `set w := basePart₂ z with hw_def`.
+
+Use `set σ := secNormAt y N a (v j) w with hσ`. Establish `hBpos : 0 < B.h z` using `B.pos z hz.1`. Establish `hZ : 0 < ‖z ⟨none, j⟩‖` using `norm_pos_iff.mpr hj`. Establish `hσB : σ * B.h z = ‖z ⟨none, j⟩‖` using `hmet z hz j`. Establish `hσpos : 0 < σ`.
+
+Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Use the polynomial consequences of the given equalities and inequalities. Establish `hQ : 0 < ‖eval w (map (Int.castRingHom ℂ) q₁)‖`. Rewrite using `[hq₁, SectionBounded.eval_chartMon]`.
+
+Conclude with `norm_pos_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k))`. Establish `hM : 0 < N.h w ^ a` using `pow_pos (N.pos w hw.1) _`. Establish `hR : ‖eval w (map (Int.castRingHom ℂ) r₁)‖ ≤ σ * (‖eval w (map (Int.castRingHom ℂ) q₁)‖ * N.h w ^ a)`. Establish `hS : {c' : ℝ | 0 ≤ c' ∧ IsBoundedAt y N a c' (v j) w}.Nonempty`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Establish `: σ = 0` using `by rw [hσ, secNormAt, hne, Real.sInf_empty]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← div_le_iff₀ (mul_pos hQ hM)]`. Use `le_csInf hS fun c' ⟨_, hc'⟩ => ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ (mul_pos hQ hM)]`. Use `hc' (δ + γ) β r₁ q₁ hr₁h hq₁h (fun k => hdeg₁ k) hval₁` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set G := rename (oldEmb r) g * rename (oldEmb r) (q₁ ^ n) * (X ⟨none, j⟩ : MRing (addIdx ι r)) ^ n with hG`. Use `set H := rename (oldEmb r) h * rename (oldEmb r) (r₁ ^ n) with hH`.
+
+Use `set dG : Option K → ℕ := (fun o => Option.elim o 0 dg) + (fun o => Option.elim o 0 (n • β)) + n • Pi.single (none : Option K) 1 with hdG`. Use `set dH : Option K → ℕ := (fun o => Option.elim o 0 dh) + (fun o => Option.elim o 0 (n • (δ + γ))) with hdH`. Establish `hGh : IsMultiHomog G dG` using `SectionBounded.homog_mul (SectionBounded.homog_mul (homog_rename_old r hg) (homog_rename_old r (SectionBounded.homog_pow hq₁h n))) (SectionBounded.homog_pow (SectionBounded.homog_X (ι := addIdx ι r) ⟨none, j⟩) n)`. Establish `hHh : IsMultiHomog H dH` using `SectionBounded.homog_mul (homog_rename_old r hh) (homog_rename_old r (SectionBounded.homog_pow hr₁h n))`. Establish `hdegGH : ∀ o, (dG o : ℤ) = dH o + n * B.a o`.
+
+Introduce `o`. Rewrite using `[hB, hdG, hdH]`. Break down `o with _ | k` into its components or cases. Simplify using `[unitDeg]`. Establish `h1` using `hdeg k`.
+
+Establish `h2` using `hdeg₁ k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Option.elim_some, smul_eq_mul, Pi.single_apply, reduceCtorEq, if_false, mul_zero, add_zero, unitDeg] at h2 ⊢`. Move the coercions through the operations in `at h1 h2 ⊢`. Simplify using `only [ht] at h2`. Take the linear combination `h1 - (n : ℤ) * h2`.
+
+Establish `hvalGH : aeval (addBlock y v) G = s * aeval (addBlock y v) H`. Establish `e1 : aeval (addBlock y v) G = aeval y g * aeval y q₁ ^ n * v j ^ n`. Simplify using `only [hG, map_mul, map_pow, aeval_rename, addBlock_comp_oldEmb, aeval_X]`. Both sides reduce to the same expression. Establish `e2 : aeval (addBlock y v) H = aeval y h * aeval y r₁ ^ n`.
+
+Simplify using `only [hH, map_mul, map_pow, aeval_rename, addBlock_comp_oldEmb]`. Rewrite using `[e1, e2, hval₁, he]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsm` using `hs _ _ G H z hGh hHh hdegGH hvalGH hz`. Simplify using `only [hG, hH, map_mul, map_pow, eval_rename_old, map_X, eval_X, norm_mul, norm_pow] at hsm`.
+
+Rewrite `hsm` using `[← hw_def]`. Use `set Gw := ‖eval w (map (Int.castRingHom ℂ) g)‖`. Use `set Hw := ‖eval w (map (Int.castRingHom ℂ) h)‖`. Use `set Q := ‖eval w (map (Int.castRingHom ℂ) q₁)‖`. Use `set R := ‖eval w (map (Int.castRingHom ℂ) r₁)‖`.
+
+Use `set M := N.h w ^ a`. Establish `hb` using `B.h z`. Establish `h1 : Gw * (Q * σ) ^ n * B.h z ^ n ≤ Hw * R ^ n * B.h z ^ n`. Establish `e1 : Gw * (Q * σ) ^ n * B.h z ^ n = Gw * Q ^ n * ‖z ⟨none, j⟩‖ ^ n`. Rewrite using `[← hσB]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `hsm`. Establish `h2 : Gw * (Q * σ) ^ n ≤ Hw * R ^ n` using `le_of_mul_le_mul_right h1 (pow_pos hBpos n)`. Establish `h3 : R ^ n ≤ (σ * (Q * M)) ^ n` using `pow_le_pow_left₀ (norm_nonneg _) hR n`.
+
+Establish `h4 : Gw * (Q * σ) ^ n ≤ Hw * M ^ n * (Q * σ) ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `h5` using `le_of_mul_le_mul_right h4 (pow_pos (mul_pos hQ hσpos) n)`. Rewrite using `[pow_mul]`. Conclude with `h5`.
+-/
 theorem isSmallH_of_lift [DecidableEq K] {r : ℕ} {y : (Σ k, ι k) → Ω} {v : Fin r → Ω} {N : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {a : ℕ}
     {B : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (addIdx ι r)} (hB : B.a = unitDeg (none : Option K))
     (hv : ∀ j, v j ∈ chartLat y N.a a)
@@ -216,6 +289,11 @@ theorem isSmallH_of_lift [DecidableEq K] {r : ℕ} {y : (Σ k, ι k) → Ω} {v 
   rw [pow_mul]
   exact h5
 
+/- English proof (translation)
+Unfold `smallSectionCount`. Establish `: Finite {s : La' τ' // P' τ' (s : Ω)}` using `hfin.to_subtype`. Establish `hcard : Nat.card {s : La τ // P τ (s : Ω)} ≤ Nat.card {s : La' τ' // P' τ' (s : Ω)}` using `Nat.card_le_card_of_injective (fun s => ⟨⟨s.1.1, (h s.1.1 s.1.2 s.2).1⟩, (h s.1.1 s.1.2 s.2).2⟩) fun s t hst => by`. Simplify using `only [Subtype.mk.injEq] at hst`. Conclude with `Subtype.ext (Subtype.ext hst)`.
+
+Break down `Nat.eq_zero_or_pos (Nat.card {s : La τ // P τ (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)`.
+-/
 theorem smallSectionCount_mono {P P' : ℕ → Ω → Prop} {La La' : ℕ → AddSubgroup Ω} {τ τ' : ℕ}
     (h : ∀ s ∈ La τ, P τ s → s ∈ La' τ' ∧ P' τ' s) (hfin : {s : La' τ' | P' τ' (s : Ω)}.Finite) :
     smallSectionCount P La τ ≤ smallSectionCount P' La' τ' := by

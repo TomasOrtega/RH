@@ -37,9 +37,15 @@ variable (Y : Tri T A A' WW) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.
   (ΛA' : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E))
   (g : GA D A) (g' : GA D A') (h : GA D WW) (t₀ : T) (r r' : T → ℂ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+-/
 theorem moveTri_lat : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').rA.Λ = ΛA ∧ (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').rA'.Λ = ΛA' ∧
     (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').rW.Λ = ΛW := ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `[moveTri]`.
+-/
 example : (moveTri Y ΛA ΛA' ΛW 1 1 1 t₀ (fun _ => 1) (fun _ => 1)).f = fun t => Y.ω t (1, 1) (Y.f t) := by
   funext t; simp [moveTri]
 

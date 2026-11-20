@@ -21,36 +21,63 @@ namespace Formalism.MainNotions.GlobalTheoryTheory.Inhab
 
 open Formalism.BasicNotions NumberField
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ _ => 0⟩⟩`.
+-/
 theorem GaugeFam_nonempty (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) :
     Nonempty (GenusMassVolumes.GaugeFam F E σ) := ⟨⟨fun _ _ => 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK 1⟩`.
+-/
 theorem Tor_nonempty (D : D7) : Nonempty (Formalism.MainNotions.TaylorLogMetric.Tor D) := ⟨Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨1, fun _ => 2, 1, 1⟩⟩`.
+-/
 theorem Shape_nonempty : Nonempty Formalism.MainNotions.KernelEntryData.Shape := ⟨⟨1, fun _ => 2, 1, 1⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => le_rfl, fun _ _ _ => le_rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem IsPart_zero (n' r0 : ℕ) : Formalism.MainNotions.KernelEntryData.IsPart (n' := n') r0 (fun _ _ => 0) :=
   ⟨fun _ _ => le_rfl, fun _ _ _ => le_rfl, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic ℚ Formalism.MainNotions.TaylorLogMetric.Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `f : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[ℚ] PadicAlgCl p` using `IsAlgClosed.lift`. Conclude with `⟨(algebraMap (PadicAlgCl p) ℂ_[p]).comp (f : Formalism.MainNotions.TaylorLogMetric.Qbar →+* PadicAlgCl p)⟩`.
+-/
 theorem lam_nonempty (p : ℕ) [Fact p.Prime] : Nonempty (Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) := by
   have : Algebra.IsAlgebraic ℚ Formalism.MainNotions.TaylorLogMetric.Qbar := algebraicClosure.isAlgebraic ℚ ℂ
   have f : Formalism.MainNotions.TaylorLogMetric.Qbar →ₐ[ℚ] PadicAlgCl p := IsAlgClosed.lift
   exact ⟨(algebraMap (PadicAlgCl p) ℂ_[p]).comp (f : Formalism.MainNotions.TaylorLogMetric.Qbar →+* PadicAlgCl p)⟩
 
+/- English proof (translation)
+Take `⟨lam⟩` from `lam_nonempty p`. Conclude with `⟨⟨lam, ⊥, 1, 0, 0⟩⟩`.
+-/
 theorem local_datum_nonempty (p : ℕ) [Fact p.Prime] : Nonempty (Formalism.MainNotions.GL3Theta.G1 p) := by
   obtain ⟨lam⟩ := lam_nonempty p
   exact ⟨⟨lam, ⊥, 1, 0, 0⟩⟩
 
 def ChiEx (D : D7) : Prop := ∃ χ, Formalism.MainNotions.TaylorLogMetric.IsChi D χ
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK 1)) (by norm_num : 0 < 12)`. Take `⟨χ, hχ⟩` from `h`. Conclude with `⟨⟨D.host.ccK, δ, χ, fun _ _ _ _ _ => 0, Formalism.MainNotions.GlobalTheoryTheory.jnt_ccK_curve D, hδ, hχ⟩⟩`.
+-/
 theorem theta_family_nonempty (D : D7) (h : ChiEx D) : Nonempty (Formalism.MainNotions.product_first_zeroth_parts.Th22 D) := by
   obtain ⟨δ, hδ⟩ := IsAlgClosed.exists_pow_nat_eq (Formalism.MainNotions.TaylorLogMetric.discr (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK 1))
     (by norm_num : 0 < 12)
   obtain ⟨χ, hχ⟩ := h
   exact ⟨⟨D.host.ccK, δ, χ, fun _ _ _ _ _ => 0, Formalism.MainNotions.GlobalTheoryTheory.jnt_ccK_curve D, hδ, hχ⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Formalism.MainNotions.TaylorLogMetric.isChi_chiRec D idl h⟩`.
+-/
 theorem ChiEx_of_pinned (D : D7) (idl : D.Dt ⧸ D.UO → Formalism.MainNotions.TaylorLogMetric.IdE D) (h : Formalism.MainNotions.TaylorLogMetric.RelDetPinned D idl) :
     ChiEx D := ⟨_, Formalism.MainNotions.TaylorLogMetric.isChi_chiRec D idl h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ f := 1 n := fun _ => 0 unitary := fun _ => by simp cont := ⟨1, one_pos, fun _ _ _ => rfl⟩ aut := fun _ => by simp norm := fun _ => rfl par := fun _ => by simpa using h unr := fun _ _ _ => rfl }⟩`.
+-/
 theorem HeckeU_nonempty_even (D : D7) (N : ℕ) (h : Even N) : Nonempty (Formalism.MainNotions.StandardLatticesGL3.HeckeU D N) :=
   ⟨{ f := 1
      n := fun _ => 0
@@ -74,8 +101,14 @@ def prPsi (e : Formalism.HC.Frame) : e.GG →* e.GG where
     · simp
     · simp
 
+/- English proof (translation)
+The claim follows from `(Formalism.HC.Frame.mem_Psi_iff _).2 rfl`.
+-/
 theorem prPsi_mem (e : Formalism.HC.Frame) (g : e.GG) : prPsi e g ∈ e.Psi := (Formalism.HC.Frame.mem_Psi_iff _).2 rfl
 
+/- English proof (translation)
+Establish `h2 : g.1.2 = 1` using `(Formalism.HC.Frame.mem_Psi_iff g).1 h`. Take `⟨⟨a, b⟩, c⟩` from `g`. Simplify using `only at h2`. Substitute `h2` using the available equality. Simplify using `[prPsi]`.
+-/
 theorem prPsi_of_mem (e : Formalism.HC.Frame) (g : e.GG) (h : g ∈ e.Psi) : prPsi e g = g := by
   have h2 : g.1.2 = 1 := (Formalism.HC.Frame.mem_Psi_iff g).1 h
   obtain ⟨⟨a, b⟩, c⟩ := g
@@ -83,6 +116,11 @@ theorem prPsi_of_mem (e : Formalism.HC.Frame) (g : e.GG) (h : g ∈ e.Psi) : prP
   subst h2
   simp [prPsi]
 
+/- English proof (translation)
+Establish `h2 : g.1.2 ≠ 1` using `fun h' => h ((Formalism.HC.Frame.mem_Psi_iff g).2 h')`. Take `⟨⟨a, b⟩, c⟩` from `g`. Simplify using `only at h2`. Establish `hb : b = -1` using `(Int.units_eq_one_or b).resolve_left h2`. Substitute `hb` using the available equality.
+
+Simplify using `[prPsi, Formalism.HC.Frame.cc, c0]`.
+-/
 theorem prPsi_of_not_mem (e : Formalism.HC.Frame) (g : e.GG) (h : g ∉ e.Psi) : prPsi e g = e.cc * g := by
   have h2 : g.1.2 ≠ 1 := fun h' => h ((Formalism.HC.Frame.mem_Psi_iff g).2 h')
   obtain ⟨⟨a, b⟩, c⟩ := g
@@ -91,6 +129,11 @@ theorem prPsi_of_not_mem (e : Formalism.HC.Frame) (g : e.GG) (h : g ∉ e.Psi) :
   subst hb
   simp [prPsi, Formalism.HC.Frame.cc, c0]
 
+/- English proof (translation)
+Distinguish the cases in `hg : g ∈ e.Psi`. Use `left`. Rewrite `h` using `[prPsi_of_mem e g hg]`. Then use the resulting hypothesis. Use `right`. Rewrite `h` using `[prPsi_of_not_mem e g hg]`.
+
+Apply the tactic sequence `have hcc : e.cc * e.cc = 1 := by ext <;> simp [Formalism.HC.Frame.cc, c0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prPsi_eq_one (e : Formalism.HC.Frame) (g : e.GG) (h : prPsi e g = 1) : g = 1 ∨ g = e.cc := by
   by_cases hg : g ∈ e.Psi
   · left; rwa [prPsi_of_mem e g hg] at h
@@ -101,6 +144,13 @@ theorem prPsi_eq_one (e : Formalism.HC.Frame) (g : e.GG) (h : prPsi e g = 1) : g
       _ = e.cc * (e.cc * g) := mul_assoc _ _ _
       _ = e.cc := by rw [h, mul_one]
 
+/- English proof (translation)
+Establish `key : prPsi D.R.toFrame (Formalism.MainNotions.TaylorLogMetric.posG D φ τ0 s) = (D.eTau τ0 : D.R.GG) * prPsi D.R.toFrame φ ^ s.val`. Unfold `Formalism.MainNotions.TaylorLogMetric.posG`. Rewrite using `[map_mul, map_pow, prPsi_of_mem _ _ (D.eTau τ0).2]`. Rewrite using `[← key]`. Unfold `Formalism.MainNotions.TaylorLogMetric.letterOf`.
+
+Distinguish the cases in `h : Formalism.MainNotions.TaylorLogMetric.posG D φ τ0 s ∈ D.R.Psi`. Rewrite using `[dif_pos h, Equiv.apply_symm_apply, prPsi_of_mem _ _ h]`. Establish `h' : D.R.cc * Formalism.MainNotions.TaylorLogMetric.posG D φ τ0 s ∈ D.R.Psi`. Rewrite using `[← prPsi_of_not_mem _ _ h]`. Conclude with `prPsi_mem _ _`.
+
+Rewrite using `[dif_neg h, dif_pos h', Equiv.apply_symm_apply, prPsi_of_not_mem _ _ h]`.
+-/
 theorem letterOf_eq (D : D7) (φ : D.R.GG) {d : ℕ} (τ0 : D.what₂.Tau) (s : ZMod d) :
     ((D.eTau (Formalism.MainNotions.TaylorLogMetric.letterOf D φ τ0 s) : D.R.Psi) : D.R.GG) =
       (D.eTau τ0 : D.R.GG) * prPsi D.R.toFrame φ ^ s.val := by
@@ -119,6 +169,11 @@ def IsFrobOf (D : D7) (p : ℕ) (φ : D.R.GG) : Prop :=
   ∀ (P : Ideal (𝓞 D.host.E)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})],
     IsArithFrobAt ℤ (D.host.sigmaOf φ) P
 
+/- English proof (translation)
+Rewrite using `[orderOf_eq_orderOf_iff]`. Introduce `n`. Rewrite using `[← map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Break down `prPsi_eq_one e _ h with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (h1 ▸ Subgroup.npow_mem_zpowers φ n) hc`. Introduce `h`. Rewrite using `[h, map_one]`.
+-/
 theorem orderOf_prPsi (e : Formalism.HC.Frame) (φ : e.GG) (hc : e.cc ∉ Subgroup.zpowers φ) :
     orderOf (prPsi e φ) = orderOf φ := by
   rw [orderOf_eq_orderOf_iff]
@@ -131,6 +186,23 @@ theorem orderOf_prPsi (e : Formalism.HC.Frame) (φ : e.GG) (hc : e.cc ∉ Subgro
     · exact absurd (h1 ▸ Subgroup.npow_mem_zpowers φ n) hc
   · intro h; rw [h, map_one]
 
+/- English proof (translation)
+Establish `: Finite (D.R.Psi)` using `Finite.of_equiv _ D.eTau`. Use `set ψ : D.R.Psi := ⟨prPsi D.R.toFrame φ, prPsi_mem _ _⟩ with hψ`. Establish `hfin : IsOfFinOrder ψ` using `isOfFinOrder_of_finite ψ`. Establish `hord : orderOf ψ = orderOf φ`. Rewrite using `[← orderOf_prPsi _ φ hc, ← Subgroup.orderOf_coe ψ]`.
+
+Establish `hpos : 0 < orderOf φ` using `hord ▸ hfin.orderOf_pos`. Establish `: NeZero (orderOf φ)` using `⟨hpos.ne'⟩`. Take `⟨S, hS, -⟩` from `(Subgroup.zpowers ψ).exists_isComplement_left 1`. Establish `hval : ∀ (τ0 : D.what₂.Tau) (s : ZMod (orderOf φ)), D.eTau (Formalism.MainNotions.TaylorLogMetric.letterOf D φ τ0 s) = D.eTau τ0 * ψ ^ s.val`. Introduce `τ0 s`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[letterOf_eq]`. Simplify using `[hψ]`. Use `⟨⟨φ, hφ, rfl, Finset.univ.filter (fun τ => D.eTau τ ∈ S), ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨v, hv⟩, s⟩ ⟨⟨v', hv'⟩, s'⟩ h`.
+
+Establish `hv1 : D.eTau v ∈ S` using `(Finset.mem_filter.1 hv).2`. Establish `hv2 : D.eTau v' ∈ S` using `(Finset.mem_filter.1 hv').2`. Establish `h1 : D.eTau v * ψ ^ s.val = D.eTau v' * ψ ^ s'.val`. Rewrite using `[← hval, ← hval]`. Conclude with `congrArg D.eTau h`.
+
+Establish `h2` using `@hS.1 (⟨D.eTau v, hv1⟩, ⟨ψ ^ s.val, Subgroup.npow_mem_zpowers ψ _⟩) (⟨D.eTau v', hv2⟩, ⟨ψ ^ s'.val, Subgroup.npow_mem_zpowers ψ _⟩) h1`. Establish `h3 : D.eTau v = D.eTau v'` using `congrArg (fun x => (x.1 : D.R.Psi)) h2`. Establish `h4 : ψ ^ s.val = ψ ^ s'.val` using `congrArg (fun x => (x.2 : D.R.Psi)) h2`. Establish `h5 : s.val = s'.val` using `pow_injOn_Iio_orderOf (by simpa [hord] using ZMod.val_lt s) (by simpa [hord] using ZMod.val_lt s') h4`. Establish `h6 : v = v'` using `D.eTau.injective h3`.
+
+Substitute `h6` using the available equality. Rewrite using `[ZMod.val_injective _ h5]`. Introduce `τ`. Take `⟨⟨⟨a, ha⟩, ⟨z, hz⟩⟩, haz⟩` from `hS.2 (D.eTau τ)`. Establish `haz' : a * z = D.eTau τ` using `haz`.
+
+Take `⟨n, hn, hnz⟩` from `(hfin.mem_zpowers_iff_mem_range_orderOf.1 hz |> Finset.mem_image.1)`. Establish `hn' : n < orderOf φ` using `by simpa [hord] using hn`. Use `⟨(⟨D.eTau.symm a, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simpa using ha⟩⟩, (n : ZMod (orderOf φ))), ?_⟩` and prove the remaining obligations. Apply `D.eTau.injective` to reduce the goal to its premises. Rewrite using `[hval]`.
+
+Simplify using `only [Equiv.apply_symm_apply, ZMod.val_natCast_of_lt hn', hnz, haz']`.
+-/
 theorem Pos_nonempty (D : D7) (p : ℕ) (φ : D.R.GG) (hφ : IsFrobOf D p φ)
     (hc : D.R.cc ∉ Subgroup.zpowers φ) : Nonempty (Formalism.MainNotions.TaylorLogMetric.Pos D p (orderOf φ)) := by
   classical
@@ -172,6 +244,19 @@ theorem Pos_nonempty (D : D7) (p : ℕ) (φ : D.R.GG) (hφ : IsFrobOf D p φ)
     rw [hval]
     simp only [Equiv.apply_symm_apply, ZMod.val_natCast_of_lt hn', hnz, haz']
 
+/- English proof (translation)
+Introduce `hc`. Establish `: Finite (D.R.Psi)` using `Finite.of_equiv _ D.eTau`. Establish `: Finite (D.R.GG)`. Establish `: Finite (D.R.MA)` using `inferInstance`. Use `infer_instance`.
+
+Establish `hfin : IsOfFinOrder Po.φ` using `isOfFinOrder_of_finite _`. Establish `hpos : 0 < d` using `Po.d_eq ▸ hfin.orderOf_pos`. Establish `: NeZero d` using `⟨hpos.ne'⟩`. Take `⟨n, hn, hnz⟩` from `(hfin.mem_zpowers_iff_mem_range_orderOf.1 hc |> Finset.mem_image.1)`. Establish `hn' : n < d` using `by simpa [Po.d_eq] using hn`.
+
+Take `⟨⟨v, s⟩, -⟩` from `Po.bij.2 (D.eTau.symm 1)`. Establish `h0 : Formalism.MainNotions.TaylorLogMetric.letterOf D Po.φ v.1 (n : ZMod d) = Formalism.MainNotions.TaylorLogMetric.letterOf D Po.φ v.1 (0 : ZMod d)`. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[letterOf_eq, letterOf_eq, ZMod.val_natCast_of_lt hn', ZMod.val_zero, ← map_pow, hnz]`.
+
+Apply the tactic sequence `have : prPsi D.R.toFrame (D.R.cc) = 1 := by ext <;> simp [prPsi, Formalism.HC.Frame.cc, c0]`. Rewrite using `[this, pow_zero]`. Establish `h1` using `@Po.bij.1 (v, (n : ZMod d)) (v, 0) h0`. Establish `h2 : (n : ZMod d) = 0` using `congrArg Prod.snd h1`. Establish `h3 : n = 0`.
+
+Use `congrArg ZMod.val h2` as an intermediate fact. Rewrite `this` using `[ZMod.val_natCast_of_lt hn', ZMod.val_zero]`. Then use the resulting hypothesis. Substitute `h3` using the available equality. Rewrite `hnz` using `[pow_zero]`. Establish `: (D.R.cc).1.1 = 1` using `by rw [← hnz]; rfl`.
+
+Simplify using `[Formalism.HC.Frame.cc, c0] at this`.
+-/
 theorem Pos_cc_not_mem (D : D7) (p d : ℕ) (Po : Formalism.MainNotions.TaylorLogMetric.Pos D p d) : D.R.cc ∉ Subgroup.zpowers Po.φ := by
   classical
   intro hc
@@ -207,11 +292,19 @@ section Std
 
 variable (D : D7)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.StandardLatticesGL3.stdL`. Simplify using `[Submodule.mem_pi, Submodule.mem_one]`.
+-/
 theorem mem_stdL {N : ℕ} (x : Fin N → D.host.E) :
     x ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N ↔ ∀ i, x i ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   unfold Formalism.MainNotions.StandardLatticesGL3.stdL
   simp [Submodule.mem_pi, Submodule.mem_one]
 
+/- English proof (translation)
+Rewrite using `[mem_stdL]`. Introduce `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.host.E) ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N := by
   rw [mem_stdL]
   intro i
@@ -219,6 +312,9 @@ theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.hos
   · subst h; simp
   · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `h1 : IsIntegral ℤ x` using `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).2 h`. Establish `h2 : IsIntegral ℤ (starRingEnd D.host.E x)` using `map_isIntegral_int (starRingEnd D.host.E) h1`. Conclude with `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 h2`.
+-/
 theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
     (letI := D.host.cmStar; star x) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   let _ := D.host.cmStar
@@ -226,6 +322,23 @@ theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.h
   have h2 : IsIntegral ℤ (starRingEnd D.host.E x) := map_isIntegral_int (starRingEnd D.host.E) h1
   exact (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 h2
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: Formalism.MainNotions.StandardLatticesGL3.stdL D N = Submodule.span (𝓞 D.host.E) (Set.range fun a : Fin N => (Pi.single a 1 : Fin N → D.host.E))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_stdL]`. Use `choose c hc using hx`. Establish `: x = ∑ a, c a • (Pi.single a 1 : Fin N → D.host.E)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hc]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `single_mem_stdL D a`.
+
+Rewrite using `[this]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Establish `: x = ∑ a, x a • (Pi.single a 1 : Fin N → D.host.E)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_stdL D a))`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx`, `hy` using `[mem_stdL]`. Unfold `stdH`. Conclude with `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (star_mem_range D _ (hx i)) (hy i)`.
+
+Introduce `h`. Rewrite using `[mem_stdL]`. Introduce `i`. Use `h _ (single_mem_stdL D i)` as an intermediate fact. Unfold `stdH at this`.
+
+Simplify `this` using `[Pi.single_apply, apply_ite star]`.
+-/
 theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formalism.MainNotions.StandardLatticesGL3.stdL D N)) := by
   let _ := D.host.cmStar
   refine ⟨?_, ?_, ?_⟩
@@ -265,19 +378,35 @@ theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formal
       unfold stdH at this
       simpa [Pi.single_apply, apply_ite star] using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨_, stdL_isSD D N⟩⟩`.
+-/
 theorem SDLat_nonempty (N : ℕ) : (letI := D.host.cmStar; Nonempty (SDLat D.host.E N)) :=
   ⟨⟨_, stdL_isSD D N⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, h', stdL_isSD D N, stdL_isSD D N'⟩`.
+-/
 theorem Adm_std (N N' : ℕ) (h : Even N) (h' : Even N') :
     Formalism.MainNotions.TaylorLogMetric.admitted D N N' (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N') :=
   ⟨h, h', stdL_isSD D N, stdL_isSD D N'⟩
 
+/- English proof (translation)
+Use `⟨⟨_, stdL_isSD D N⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stdL]`. Conclude with `forall_congr' fun k => (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm`.
+-/
 theorem standard_integral_lattice_exists (N : ℕ) : (letI := D.host.cmStar; ∃ L0 : SDLat D.host.E N,
     ∀ x : Fin N → D.host.E, x ∈ L0.1 ↔ ∀ k, IsIntegral ℤ (x k)) := by
   refine ⟨⟨_, stdL_isSD D N⟩, fun x => ?_⟩
   rw [mem_stdL]
   exact forall_congr' fun k => (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm
 
+/- English proof (translation)
+Use `⟨by simp, fun a => ⟨1, by simpa using hρ, ?_⟩, fun x hx => ⟨1, by simpa using hρ, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[one_smul, Matrix.transpose_one]`. Establish `: (1 : Matrix (Fin N) (Fin N) D.host.E) a = Pi.single a 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+
+Rewrite using `[this]`. Conclude with `single_mem_stdL D a`. Rewrite `hx`, `choose`, `c`, `hc`, `using`, `hx` using `[mem_stdL]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Finset.sum_apply, Matrix.one_apply, Algebra.smul_def, hc]`.
+-/
 theorem LocBasisW_std {p : ℕ} [Fact p.Prime] (ρ : D.host.E → ℂ_[p]) (hρ : ‖ρ 1‖ = 1) (N : ℕ) :
     Formalism.MainNotions.TaylorLogMetric.LocBasisW D ρ (Formalism.MainNotions.StandardLatticesGL3.stdL D N) 1 := by
   refine ⟨by simp, fun a => ⟨1, by simpa using hρ, ?_⟩, fun x hx => ⟨1, by simpa using hρ, ?_⟩⟩
@@ -291,20 +420,32 @@ theorem LocBasisW_std {p : ℕ} [Fact p.Prime] (ρ : D.host.E → ℂ_[p]) (hρ 
     funext i
     simp [Finset.sum_apply, Matrix.one_apply, Algebra.smul_def, hc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LocBasisW_std D ρ hρ N, by simp⟩`.
+-/
 theorem OrthoBasisW_std {p : ℕ} [Fact p.Prime] (ρ : D.host.E → ℂ_[p]) (hρ : ‖ρ 1‖ = 1) (N : ℕ) :
     Formalism.MainNotions.TaylorLogMetric.OrthoBasisW D ρ (Formalism.MainNotions.StandardLatticesGL3.stdL D N) 1 :=
   ⟨LocBasisW_std D ρ hρ N, by simp⟩
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.lamC`. Rewrite using `[dif_pos (one_mem _)]`. Conclude with `map_one lam`.
+-/
 theorem lamC_one {p : ℕ} [Fact p.Prime] (lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) : Formalism.MainNotions.TaylorLogMetric.lamC lam 1 = 1 := by
   unfold Formalism.MainNotions.TaylorLogMetric.lamC
   rw [dif_pos (one_mem _)]
   exact map_one lam
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.posEmb`. Rewrite using `[map_one, lamC_one, norm_one]`.
+-/
 theorem posEmb_one {p : ℕ} [Fact p.Prime] (lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) (φ : D.R.GG) {d : ℕ}
     (τ0 : D.what₂.Tau) (s : ZMod d) : ‖Formalism.MainNotions.TaylorLogMetric.posEmb D lam φ τ0 s 1‖ = 1 := by
   unfold Formalism.MainNotions.TaylorLogMetric.posEmb
   rw [map_one, lamC_one, norm_one]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.tauEmb`. Rewrite using `[map_one, lamC_one, norm_one]`.
+-/
 theorem tauEmb_one {p : ℕ} [Fact p.Prime] (lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) :
     ‖Formalism.MainNotions.TaylorLogMetric.tauEmb D lam τ 1‖ = 1 := by
   unfold Formalism.MainNotions.TaylorLogMetric.tauEmb
@@ -316,6 +457,13 @@ section KernelEntryData
 
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `B : Subring ℂ_[p]` to `{ carrier := {x | ‖x‖ ≤ 1} mul_mem' := fun {a b} ha hb => by show ‖a * b‖ ≤ 1`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+
+Use the proof step `one_mem' := by show ‖(1 : ℂ_[p])‖ ≤ 1; rw [norm_one]`. Use the proof step `add_mem' := fun {a b} ha hb => (PadicComplex.isNonarchimedean p a b).trans (max_le ha hb)`. Use the proof step `zero_mem' := by show ‖(0 : ℂ_[p])‖ ≤ 1; rw [norm_zero]; exact zero_le_one`. Use the proof step `neg_mem' := fun {a} ha => by show ‖-a‖ ≤ 1; rw [norm_neg]; exact ha }`. Conclude with `(Subring.closure_le (t := B)).2 (fun y hy => hy) hx`.
+
+Introduce `hx`. Conclude with `Subring.subset_closure hx`.
+-/
 theorem mem_unit_ball_iff_norm_le_one (x : ℂ_[p]) : x ∈ Formalism.MainNotions.KernelEntryData.valuationRingCp p ↔ ‖x‖ ≤ 1 := by
   constructor
   · intro hx
@@ -331,9 +479,17 @@ theorem mem_unit_ball_iff_norm_le_one (x : ℂ_[p]) : x ∈ Formalism.MainNotion
     exact (Subring.closure_le (t := B)).2 (fun y hy => hy) hx
   · intro hx; exact Subring.subset_closure hx
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_p_Cp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap', Padic.norm_p]
 
+/- English proof (translation)
+Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unit_ball_iff_norm_le_one, mem_unit_ball_iff_norm_le_one, norm_inv]`. Break down `le_total ‖x‖ 1 with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (inv_le_one_of_one_le₀ h)`.
+
+Rewrite using `[mem_unit_ball_iff_norm_le_one, norm_inv, norm_p_Cp, inv_inv, not_le]`. Conclude with `(Fact.out : p.Prime).one_lt` after adjusting the coercions.
+-/
 theorem valuation_ring_unit_ball : Formalism.MainNotions.KernelEntryData.ValR p (Formalism.MainNotions.KernelEntryData.valuationRingCp p) := by
   refine ⟨fun x => ?_, ?_⟩
   · rw [mem_unit_ball_iff_norm_le_one, mem_unit_ball_iff_norm_le_one, norm_inv]
@@ -343,6 +499,11 @@ theorem valuation_ring_unit_ball : Formalism.MainNotions.KernelEntryData.ValR p 
   · rw [mem_unit_ball_iff_norm_le_one, norm_inv, norm_p_Cp, inv_inv, not_le]
     exact_mod_cast (Fact.out : p.Prime).one_lt
 
+/- English proof (translation)
+Establish `hpos : 0 < p ^ 2 - 1`. Establish `: 5 ^ 2 ≤ p ^ 2` using `Nat.pow_le_pow_left h5 2`. Use linear arithmetic over natural numbers and integers. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (p : PadicAlgCl p) hpos`. Use `⟨algebraMap (PadicAlgCl p) ℂ_[p] z, Fact.out, h5, valuation_ring_unit_ball p, ?_, he, h2, fun v => IsPart_zero _ _, le_rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, hz, map_natCast]`.
+-/
 theorem setting_nonempty_even_orbits (h5 : 5 ≤ p) (Sh : Formalism.MainNotions.KernelEntryData.Shape) (he : ∀ v, Even (Sh.n' v)) (h2 : ∀ v, 2 ≤ Sh.n' v) :
     ∃ vp : ℂ_[p], Formalism.MainNotions.KernelEntryData.HidaSetting p (Formalism.MainNotions.KernelEntryData.valuationRingCp p) Sh Sh.r0 (fun _ _ _ => 0) vp := by
   have hpos : 0 < p ^ 2 - 1 := by
@@ -359,6 +520,11 @@ section ReadsSec
 open Formalism.MainNotions.Lnk Formalism.D5 Formalism.FrobeniusOrbits Formalism.LFunctionChainParameters.LHost Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds
   Formalism.LFunctionChainParameters.LErr Formalism.LFunctionChainParameters.LChain
 
+/- English proof (translation)
+Use `⟨Finset.univ.filter (fun h => hval D.R.toFrame h ∈ D.host.TT.image Formalism.HC.Frame.A.val), fun h => if hh : ∃ t : D.host.TT, hval D.R.toFrame h = (t : D.R.A).val then (L.aT hh.choose : ℝ) else 0, fun j g => if hh : ∃ τ : D.what₂.Tau, gcode _ ((D.eTau τ : D.R.Psi) : D.R.GG) = m …` and prove the remaining obligations. Introduce `t h hh`. Establish `hex : ∃ t : D.host.TT, hval D.R.toFrame h = (t : D.R.A).val` using `⟨t, hh⟩`. Establish `hc : hex.choose = t` using `Subtype.ext (Formalism.HC.Frame.A.val_injective _ (hex.choose_spec.symm.trans hh))`. Simplify using `only [dif_pos hex, hc]`.
+
+Introduce `j g τ hh`. Establish `hex : ∃ τ : D.what₂.Tau, gcode _ ((D.eTau τ : D.R.Psi) : D.R.GG) = mcode D.R.toFrame g` using `⟨τ, hh⟩`. Establish `hc : hex.choose = τ` using `D.eTau.injective (Subtype.ext (gcode_injective _ (hex.choose_spec.trans hh.symm)))`. Simplify using `only [dif_pos hex, hc]`.
+-/
 theorem Reads_nonempty {D : D7} (L : SizeData₂ D) :
     ∃ (TT : Finset D.R.A) (a : D.R.A → ℝ) (w : Fin D.R.m → E0 × D.R.A → ℝ),
       Reads L D.R.toFrame D.R.m TT a w := by
@@ -385,6 +551,11 @@ section FrobSec
 open Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Use `Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.factQ D` as an intermediate fact. Use `Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.factD D` as an intermediate fact. Use `⟨(Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.Teq D.R.toFrame).symm ((Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.Md D).frob p), fun P _ _ => ?_⟩` and prove the remaining obligations. Use `((Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.fld D p P _).2).mpr ?_` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.galE_sigmaOf, Equiv.apply_symm_apply, sub_self]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem IsFrobOf_exists (D : D7) (p : ℕ) [Fact p.Prime] : ∃ φ, IsFrobOf D p φ := by
   have := Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.factQ D
   have := Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.factD D
@@ -393,6 +564,15 @@ theorem IsFrobOf_exists (D : D7) (p : ℕ) [Fact p.Prime] : ∃ φ, IsFrobOf D p
   rw [Formalism.MainNotions.GlobalTheoryTheory.ConductorLiftingHypotheses.galE_sigmaOf, Equiv.apply_symm_apply, sub_self]
   exact zero_mem _
 
+/- English proof (translation)
+Introduce `hc`. Establish `hpr : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp.out)`. Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty ((Ideal.span {(p : ℤ)}).primesOver (𝓞 D.host.E))` from `inferInstance`. Establish `hmem : (p : 𝓞 D.host.E) ∈ P`. Use `(Ideal.mem_of_liesOver P (Ideal.span {(p : ℤ)}) (p : ℤ)).1 (Ideal.mem_span_singleton_self _)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hne : P ≠ ⊥`. Introduce and unpack `rfl`. Establish `h0 : (p : 𝓞 D.host.E) = 0` using `by simpa using hmem`. Conclude with `hp.out.ne_zero (by exact_mod_cast h0)`.
+
+Establish `hst : D.host.sigmaOf φ ∈ MulAction.stabilizer (D.host.E ≃ₐ[ℚ] D.host.E) P` using `(hφ P).mem_stabilizer`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 hc`. Establish `hconj : D.host.conj = D.host.sigmaOf φ ^ k` using `by show (D.host.gal).symm (D.R.cc) = ((D.host.gal).symm φ) ^ k`. Rewrite using `[← map_zpow, hk]`. Establish `hcs : D.host.conj ∈ MulAction.stabilizer (D.host.E ≃ₐ[ℚ] D.host.E) P` using `hconj ▸ Subgroup.zpow_mem _ hst k`.
+
+Conclude with `hs P hPp hne hmem (MulAction.mem_stabilizer_iff.1 hcs)`.
+-/
 theorem cc_not_mem_of_allSplit (D : D7) (p : ℕ) [hp : Fact p.Prime] (φ : D.R.GG) (hφ : IsFrobOf D p φ)
     (hs : Formalism.MainNotions.TaylorLogMetric.AllSplit D p) : D.R.cc ∉ Subgroup.zpowers φ := by
   intro hc
@@ -414,6 +594,9 @@ theorem cc_not_mem_of_allSplit (D : D7) (p : ℕ) [hp : Fact p.Prime] (φ : D.R.
   have hcs : D.host.conj ∈ MulAction.stabilizer (D.host.E ≃ₐ[ℚ] D.host.E) P := hconj ▸ Subgroup.zpow_mem _ hst k
   exact hs P hPp hne hmem (MulAction.mem_stabilizer_iff.1 hcs)
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `IsFrobOf_exists D p`. Establish `: Finite (D.R.GG)`. Establish `: Finite (D.R.MA)` using `inferInstance`. Use `infer_instance`. Conclude with `⟨orderOf φ, (isOfFinOrder_of_finite φ).orderOf_pos.ne', Pos_nonempty D p φ hφ (cc_not_mem_of_allSplit D p φ hφ hs)⟩`.
+-/
 theorem Pos_nonempty_of_allSplit (D : D7) (p : ℕ) [Fact p.Prime] (hs : Formalism.MainNotions.TaylorLogMetric.AllSplit D p) :
     ∃ d : ℕ, d ≠ 0 ∧ Nonempty (Formalism.MainNotions.TaylorLogMetric.Pos D p d) := by
   obtain ⟨φ, hφ⟩ := IsFrobOf_exists D p
@@ -422,6 +605,9 @@ theorem Pos_nonempty_of_allSplit (D : D7) (p : ℕ) [Fact p.Prime] (hs : Formali
     infer_instance
   exact ⟨orderOf φ, (isOfFinOrder_of_finite φ).orderOf_pos.ne', Pos_nonempty D p φ hφ (cc_not_mem_of_allSplit D p φ hφ hs)⟩
 
+/- English proof (translation)
+Take `⟨d, hd, ⟨Po⟩⟩` from `Pos_nonempty_of_allSplit D p hs`. Take `⟨ϖ, hϖ⟩` from `setting_nonempty_even_orbits p h5 ⟨0, fun _ => 2, 0, 0⟩ (fun v => v.elim0) (fun v => v.elim0)`. Conclude with `⟨d, ⟨hd⟩, Po, ϖ, Adm_std D N N' hN hN', fun v => LocBasisW_std D _ (posEmb_one D lam _ _ _) N, fun v => LocBasisW_std D _ (posEmb_one D lam _ _ _) N', hϖ.vp_pow⟩`.
+-/
 theorem structure_hypotheses_exist (D : D7) (p : ℕ) [Fact p.Prime] (lam : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ_[p]) (h5 : 5 ≤ p)
     (hs : Formalism.MainNotions.TaylorLogMetric.AllSplit D p) (N N' : ℕ) (hN : Even N) (hN' : Even N') :
     ∃ (d : ℕ) (_ : NeZero d) (Po : Formalism.MainNotions.TaylorLogMetric.Pos D p d) (ϖ : ℂ_[p]),
@@ -442,16 +628,25 @@ section Junk
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Unfold `volHE MeasureTheory.covolume`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem volume_zero_gauge_eq_zero (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) E) : volHE (⟨fun _ _ => 0⟩ : GaugeFam F E σ) M J = 0 := by
   unfold volHE MeasureTheory.covolume
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `M J J' x β B _ _ _ _ _ _ _ _`. Rewrite using `[volume_zero_gauge_eq_zero, volume_zero_gauge_eq_zero]`.
+-/
 theorem SWc3G_junk (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) :
     Formalism.MainNotions.UnusedSlot34.SWc3G F E σ (⟨fun _ _ => 0⟩ : GaugeFam F E σ) := by
   intro M J J' x β B _ _ _ _ _ _ _ _
   rw [volume_zero_gauge_eq_zero, volume_zero_gauge_eq_zero]
 
+/- English proof (translation)
+Introduce `h` and use `(h 0 0 _ _ (Adm_std D 0 0 (by simp) (by simp))).2.1 rfl`.
+-/
 theorem zero_family_not_vectors (D : D7) (T : Formalism.MainNotions.TaylorLogMetric.Tor D) : ¬ Formalism.MainNotions.TaylorLogMetric.vec22 D T (fun _ _ _ _ _ => 0) :=
   fun h => (h 0 0 _ _ (Adm_std D 0 0 (by simp) (by simp))).2.1 rfl
 
@@ -470,11 +665,19 @@ open Formalism.BasicNotions Formalism.MainNotions.flipTwoThree NumberField
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `dens`. Rewrite using `[norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dens_const_mul (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (c : ℂ) (Th : (Gx D i → ℂ) → ℂ)
     (z : Gx D i → ℂ) : dens D i s (fun z => c * Th z) z = ‖c‖ ^ 2 * dens D i s Th z := by
   unfold dens
   rw [norm_mul, mul_pow]; ring
 
+/- English proof (translation)
+Use `⟨h.1.const_mul c, fun y hy z => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dens_const_mul, dens_const_mul, h.2.1 y hy z]`. Establish `: dens D i s (fun z => c * Th z) = fun z => ‖c‖ ^ 2 * dens D i s Th z`. Use function extensionality and compare the values at `(dens_const_mul D i s c Th)`. Rewrite using `[this]`.
+
+Conclude with `h.2.2.const_mul _`.
+-/
 theorem admis_const_mul {D : D7} {i : ℕ} {s : D.what₂.LL →+* ℂ} (T : Torus D i s) (c : ℂ)
     {Th : (Gx D i → ℂ) → ℂ} (h : T.Admis Th) : T.Admis (fun z => c * Th z) := by
   refine ⟨h.1.const_mul c, fun y hy z => ?_, ?_⟩
@@ -484,12 +687,20 @@ theorem admis_const_mul {D : D7} {i : ℕ} {s : D.what₂.LL →+* ℂ} (T : Tor
     rw [this]
     exact h.2.2.const_mul _
 
+/- English proof (translation)
+Unfold `Torus.l2Sq`. Repeatedly rewrite using `[dens_const_mul]`. Conclude with `MeasureTheory.integral_const_mul _ _`.
+-/
 theorem l2_norm_sq_const_mul {D : D7} {i : ℕ} {s : D.what₂.LL →+* ℂ} (T : Torus D i s) (c : ℂ)
     (Th : (Gx D i → ℂ) → ℂ) : T.l2Sq (fun z => c * Th z) = ‖c‖ ^ 2 * T.l2Sq Th := by
   unfold Torus.l2Sq
   simp_rw [dens_const_mul]
   exact MeasureTheory.integral_const_mul _ _
 
+/- English proof (translation)
+Establish `hd : dens D i s (fun _ => 0) = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `[dens]`. Use `⟨⟨differentiable_const _, fun y _ z => by rw [hd], ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Conclude with `MeasureTheory.integrableOn_zero`. Unfold `Torus.l2Sq`. Rewrite using `[hd]`. Simplify using the standard rewrite rules.
+-/
 theorem admis_zero {D : D7} {i : ℕ} {s : D.what₂.LL →+* ℂ} (T : Torus D i s) :
     T.Admis (fun _ => 0) ∧ T.l2Sq (fun _ => 0) = 0 := by
   have hd : dens D i s (fun _ => 0) = fun _ => 0 := by
@@ -504,9 +715,17 @@ def ThetaEx (D : D7) : Prop :=
   ∀ (i : ℕ) (s : D.what₂.LL →+* ℂ), ∃ (T : Torus D i s) (Th : (Gx D i → ℂ) → ℂ) (cf : (Gx D i →₀ ℕ) → ℂ),
     T.Admis Th ∧ T.l2Sq Th = 1 ∧ ∀ z, HasSum (fun e => cf e * e.prod fun g n => z g ^ n) (Th z)
 
+/- English proof (translation)
+Introduce `i s` and use `let ⟨T, _⟩ := h i s; ⟨T⟩`.
+-/
 theorem TorusEx_of_ThetaEx (D : D7) (h : ThetaEx D) : TorusEx D := fun i s =>
   let ⟨T, _⟩ := h i s; ⟨T⟩
 
+/- English proof (translation)
+Use `choose T Th cf hA hN hS using h`. Establish `key : ∀ (r : ℝ), 0 ≤ r → ∀ i s, r ^ 2 = (T i s).l2Sq (fun z => (r : ℂ) * Th i s z)`. Introduce `r _ i s`. Rewrite using `[l2_norm_sq_const_mul, hN, Complex.norm_real, Real.norm_eq_abs, sq_abs, mul_one]`. Conclude with `⟨{ embS := fun _ _ => 0 ipS := fun _ _ _ => 0 tor := fun i s _ _ => T i s Th := fun i s L L' z => (((D.fm u).thFree i s L L' : ℝ) : ℂ) * Th i s z cf := fun i s L L' e => (((D.fm u).thFree i s L L' : ℝ) : ℂ) * cf i s e cf_sum := fun i _ s L L' z => by`.
+
+Simplify `(hS i s z).mul_left (((D.fm u).thFree i s L L' : ℝ) : ℂ)` using `[mul_assoc]`. Use `e0 := fun i s L L' z => (((D.fm u).thFree i s L L' : ℝ) : ℂ) * Th i s z`. Use `initial_theta_admissible := fun i _ s L L' => admis_const_mul (T i s) _ (hA i s)`. Use `levelZeroComparison_norm := fun i _ s L L' => key _ ((D.fm u).thFree_nonneg i s L L') i s`. Use `Q := fun _ _ _ _ _ _ => 0 }⟩`.
+-/
 theorem KerData_nonempty (D : D7) (u : D.what₂.Word) (h : ThetaEx D) : Nonempty (KerData D u) := by
   classical
   choose T Th cf hA hN hS using h
@@ -526,6 +745,9 @@ theorem KerData_nonempty (D : D7) (u : D.what₂.Word) (h : ThetaEx D) : Nonempt
     levelZeroComparison_norm := fun i _ s L L' => key _ ((D.fm u).thFree_nonneg i s L L') i s
     Q := fun _ _ _ _ _ _ => 0 }⟩
 
+/- English proof (translation)
+Establish `T : ∀ (i : ℕ) (s : D.what₂.LL →+* ℂ), Torus D i s` using `fun i s => (h i s).some`. Conclude with `⟨{ embS := fun _ _ => 0 ipS := fun _ _ _ => 0 tor := fun i s _ _ => T i s Th := fun _ _ _ _ _ => 0 cf := fun _ _ _ _ _ => 0 cf_sum := fun i _ s L L' z => by simp [hasSum_zero] e0 := fun _ _ _ _ _ => 0 initial_theta_admissible := fun i _ s _ _ => (admis_zero (T i s)).1 levelZeroCo …`.
+-/
 theorem KerData_nonempty_of_zero (D : D7) (u : D.what₂.Word) (h : TorusEx D)
     (h0 : ∀ i < D.R.m, ∀ s L L', (D.fm u).thFree i s L L' = 0) :
     Nonempty (KerData D u) := by
@@ -543,9 +765,15 @@ theorem KerData_nonempty_of_zero (D : D7) (u : D.what₂.Word) (h : TorusEx D)
     levelZeroComparison_norm := fun i hi s L L' => by rw [h0 i hi s L L', (admis_zero (T i s)).2]; norm_num
     Q := fun _ _ _ _ _ _ => 0 }⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.tor i s L L'⟩`.
+-/
 theorem torus_of_KerData {D : D7} {u : D.what₂.Word} (X : KerData D u) (i : ℕ) (s : D.what₂.LL →+* ℂ)
     (L : (D.mem u).C.cls i) (L' : (D.mem u).C.cls (i + 1)) : Nonempty (Torus D i s) := ⟨X.tor i s L L'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.tor i s L L', X.e0 i s L L', X.initial_theta_admissible i hi s L L', by rw [← X.levelZeroComparison_norm i hi s L L']; exact pow_ne_zero 2 h⟩`.
+-/
 theorem theta_of_KerData {D : D7} {u : D.what₂.Word} (X : KerData D u) (i : ℕ) (hi : i < D.R.m)
     (s : D.what₂.LL →+* ℂ) (L : (D.mem u).C.cls i) (L' : (D.mem u).C.cls (i + 1))
     (h : (D.fm u).thFree i s L L' ≠ 0) :
@@ -553,10 +781,16 @@ theorem theta_of_KerData {D : D7} {u : D.what₂.Word} (X : KerData D u) (i : �
   ⟨X.tor i s L L', X.e0 i s L L', X.initial_theta_admissible i hi s L L', by
     rw [← X.levelZeroComparison_norm i hi s L L']; exact pow_ne_zero 2 h⟩
 
+/- English proof (translation)
+Introduce `i hi` and use `by rw [← (h.1 i hi).1, h0]`.
+-/
 theorem emb_zero_of_ConjMetric {D : D7} {u : D.what₂.Word} (X : KerData D u) (h : X.ConjMetric)
     (h0 : ∀ i s, X.embS i s = 0) : ∀ i ≤ D.R.m, (D.fm u).emb i = 0 := fun i hi => by
   rw [← (h.1 i hi).1, h0]
 
+/- English proof (translation)
+Introduce `i hi hK x y L'`. Rewrite using `[(h i hi hK x y).1 L']`. Simplify using `[h0, jet]`.
+-/
 theorem ker_zero_of_Q_zero {D : D7} {u : D.what₂.Word} (X : KerData D u) (s : D.what₂.LL →+* ℂ) (h : X.KerAt s)
     (h0 : ∀ i s L L' x y, X.Q i s L L' x y = 0) :
     ∀ i < D.R.m, ∀ (hK : (D.fm u).KRat i) x y L',
@@ -565,6 +799,9 @@ theorem ker_zero_of_Q_zero {D : D7} {u : D.what₂.Word} (X : KerData D u) (s : 
   rw [(h i hi hK x y).1 L']
   simp [h0, jet]
 
+/- English proof (translation)
+Unfold `Hq Hherm`. Rewrite using `[Complex.re_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.div_ofReal_re, Pi.sub_apply, Complex.sq_norm, Complex.sq_norm, Complex.sq_norm, Complex.normSq_sub, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hq_sub (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (z x : Gx D i → ℂ) :
     Hq D i s (z - x) = Hq D i s z - 2 * (Hherm D i s z x).re + Hq D i s x := by
   unfold Hq Hherm
@@ -574,6 +811,11 @@ theorem Hq_sub (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (z x : Gx D i →
     Complex.normSq_sub, Complex.star_def]
   ring
 
+/- English proof (translation)
+Unfold `dens flipTwoThree.trans`. Rewrite using `[norm_mul, mul_pow, Complex.norm_exp, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add, Hq_sub]`. Use `congr 2`. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dens_trans (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (x : Gx D i → ℂ) (Th : (Gx D i → ℂ) → ℂ)
     (z : Gx D i → ℂ) : dens D i s (trans D i s x Th) z = dens D i s Th (z - x) := by
   unfold dens flipTwoThree.trans
@@ -583,16 +825,29 @@ theorem dens_trans (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (x : Gx D i �
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[dens_trans, dens_trans, add_sub_right_comm, h.2.1 y hy]`.
+-/
 theorem dens_trans_periodic {D : D7} {i : ℕ} {s : D.what₂.LL →+* ℂ} (T : Torus D i s) (x : Gx D i → ℂ)
     {Th : (Gx D i → ℂ) → ℂ} (h : T.Admis Th) (y : Gx D i → ℂ) (hy : y ∈ T.La) (z : Gx D i → ℂ) :
     dens D i s (trans D i s x Th) (z + y) = dens D i s (trans D i s x Th) z := by
   rw [dens_trans, dens_trans, add_sub_right_comm, h.2.1 y hy]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[flipTwoThree.trans, Hherm, Hq]`.
+-/
 theorem trans_zero (D : D7) (i : ℕ) (s : D.what₂.LL →+* ℂ) (Th : (Gx D i → ℂ) → ℂ) :
     trans D i s 0 Th = Th := by
   funext z
   simp [flipTwoThree.trans, Hherm, Hq]
 
+/- English proof (translation)
+Introduce `i hi s L L'`. Take `⟨h0, hb⟩` from `hs i hi s L L'`. Use `⟨((thN i s L L' / (D.fm u).thFree i s L L' : ℝ) : ℂ), 1, fun _ => 1, fun _ => 0, fun z => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : ((D.fm u).thFree i s L L' : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Use `hp i hi s L L' z` as an intermediate fact.
+
+Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_mul, trans_zero]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Establish `e1 : ‖((thN i s L L' / (D.fm u).thFree i s L L' : ℝ) : ℂ)‖ ^ 2 = (thN i s L L' / (D.fm u).thFree i s L L') ^ 2`.
+
+Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Rewrite using `[e1]`. Simplify using `using hb`.
+-/
 theorem theta_condition_of_proposition {D : D7} {u : D.what₂.Word} (X : KerData D u) (C : ℝ)
     (thN : ∀ i, (D.what₂.LL →+* ℂ) → (D.mem u).C.cls i → (D.mem u).C.cls (i + 1) → ℝ)
     (hp : ∀ i < D.R.m, ∀ s L L' z, ((D.fm u).thFree i s L L' : ℂ) * X.Th i s L L' z =
@@ -617,6 +872,11 @@ theorem theta_condition_of_proposition {D : D7} {u : D.what₂.Word} (X : KerDat
     rw [e1]
     simpa using hb
 
+/- English proof (translation)
+Rewrite using `[(D.fm u).emb_norm i x, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `KerData.nrm`. Rewrite using `[h.1, h.2]`. Establish `hw : (D.mem u).C.wt i c = (((Nat.card ((D.mem u).C.stab i c) : ℝ)⁻¹ : ℝ) : ℂ)`.
+
+Simplify using `[ColumnChain.wt]`. Rewrite using `[hw, Complex.re_ofReal_mul]`.
+-/
 theorem conjMetric_at_embLL {D : D7} {u : D.what₂.Word} (X : KerData D u) (i : ℕ)
     (h : X.embS i D.what₂.embLL = (D.fm u).emb i ∧ X.ipS i D.what₂.embLL = (D.fm u).ipV i)
     (x : ((D.fm u).lat i).V) :
@@ -630,6 +890,9 @@ theorem conjMetric_at_embLL {D : D7} {u : D.what₂.Word} (X : KerData D u) (i :
     simp [ColumnChain.wt]
   rw [hw, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Rewrite using `[← h.2.2 i hi s x, ← h.2.2 i hi (ComplexEmbedding.conjugate s) x, InfinitePlace.mk_conjugate_eq]`.
+-/
 theorem conjMetric_conj {D : D7} {u : D.what₂.Word} (X : KerData D u) (h : X.ConjMetric) (i : ℕ) (hi : i ≤ D.R.m)
     (s : D.what₂.LL →+* ℂ) (x : ((D.fm u).lat i).V) :
     ∑ c, ((Nat.card ((D.mem u).C.stab i c) : ℝ))⁻¹ * X.nrm i (ComplexEmbedding.conjugate s) c x =
@@ -646,6 +909,11 @@ open Formalism.BasicNotions NumberField Formalism.MainNotions.flipTwoThree
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Establish `: (star (Formalism.HermitianLatticesTheory.fcoord b X v x i) * Formalism.HermitianLatticesTheory.fcoord b X v x i).re = Complex.normSq (Formalism.HermitianLatticesTheory.fcoord b X v x i)`. Simplify using `[Complex.normSq_apply, Complex.mul_re]`.
+
+Rewrite using `[this]`. Conclude with `Complex.normSq_nonneg _`.
+-/
 theorem majAt_self_re_nonneg {K V ι : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K) (x : V) :
     0 ≤ (Formalism.HermitianLatticesTheory.majAt b X v x x).re := by
@@ -657,8 +925,14 @@ theorem majAt_self_re_nonneg {K V ι : Type} [Field K] [NumberField K] [AddCommG
     simp [Complex.normSq_apply, Complex.mul_re]
   rw [this]; exact Complex.normSq_nonneg _
 
+/- English proof (translation)
+The claim follows from `CV.ne`.
+-/
 theorem ColVal_cls_nonempty {D : D7} {u : D.what₂.Word} (CV : ColVal D u) : Nonempty ((D.mem u).C.cls 0) := CV.ne
 
+/- English proof (translation)
+Take `⟨c⟩` from `CV.ne`. Rewrite using `[← CV.bc_norm c τ v y]`. Conclude with `majAt_self_re_nonneg _ _ _ _`.
+-/
 theorem ColVal_pos_at {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (τ : D.what₂.Tau)
     (v : InfinitePlace D.what₂.LL) (y : (D.sp.X 0).V) :
     0 ≤ (v.embedding (CV.rho τ ((D.sp.X 0).hT y y))).re := by
@@ -666,6 +940,11 @@ theorem ColVal_pos_at {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (τ : D.wh
   rw [← CV.bc_norm c τ v y]
   exact majAt_self_re_nonneg _ _ _ _
 
+/- English proof (translation)
+Set `_` to `ρ.toAlgebra`. Set `_` to `σ.toAlgebra`. Establish `: Algebra.IsAlgebraic D.host.E D.what₂.LL`. Establish `: IsScalarTower ℚ D.host.E D.what₂.LL` using `IsScalarTower.of_algebraMap_eq (fun q => by`. Simplify using `[RingHom.algebraMap_toAlgebra])`.
+
+Conclude with `Algebra.IsAlgebraic.tower_top (K := ℚ) D.host.E`. Set `f : D.what₂.LL →ₐ[D.host.E] ℂ` to `IsAlgClosed.lift`. Conclude with `⟨f.toRingHom, fun a => f.commutes a⟩`.
+-/
 theorem exists_ext (D : D7) (ρ : D.host.E →+* D.what₂.LL) (σ : D.host.E →+* ℂ) :
     ∃ s : D.what₂.LL →+* ℂ, ∀ a, s (ρ a) = σ a := by
   let _ := ρ.toAlgebra
@@ -677,6 +956,11 @@ theorem exists_ext (D : D7) (ρ : D.host.E →+* D.what₂.LL) (σ : D.host.E �
   let f : D.what₂.LL →ₐ[D.host.E] ℂ := IsAlgClosed.lift
   exact ⟨f.toRingHom, fun a => f.commutes a⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_ext D (CV.rho τ) σ`. Establish `h` using `ColVal_pos_at CV τ (InfinitePlace.mk s) y`. Break down `InfinitePlace.embedding_mk_eq s with h1 | h1` into its components or cases. Rewrite `h` using `[h1, hs]`. Conclude with `h`.
+
+Rewrite `h` using `[h1, ComplexEmbedding.conjugate_coe_eq, hs, Complex.conj_re]`. Conclude with `h`.
+-/
 theorem ColVal_pos {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (τ : D.what₂.Tau)
     (σ : D.host.E →+* ℂ) (y : (D.sp.X 0).V) : 0 ≤ (σ ((D.sp.X 0).hT y y)).re := by
   obtain ⟨s, hs⟩ := exists_ext D (CV.rho τ) σ
@@ -685,6 +969,9 @@ theorem ColVal_pos {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (τ : D.what�
   · rw [h1, hs] at h; exact h
   · rw [h1, ComplexEmbedding.conjugate_coe_eq, hs, Complex.conj_re] at h; exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun CV => absurd (ColVal_pos CV τ σ y) (not_le.mpr h)⟩`.
+-/
 theorem ColVal_isEmpty_of_neg (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (σ : D.host.E →+* ℂ)
     (y : (D.sp.X 0).V) (h : (σ ((D.sp.X 0).hT y y)).re < 0) : IsEmpty (ColVal D u) :=
   ⟨fun CV => absurd (ColVal_pos CV τ σ y) (not_le.mpr h)⟩
@@ -721,6 +1008,9 @@ def ColTie {D : D7} {u : D.what₂.Word} (B : ColBase D u) : Prop :=
           (actAll ((D.fm u).lam 0) (fun τ => Matrix.reindex (B.eQ c τ) (B.eQ c τ) ((B.Q c τ).X v)⁻¹)
             (MvPolynomial.map v.embedding (co x c)))).re
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨CV⟩`. Conclude with `⟨⟨CV.rho, CV.Q, CV.Q_good, CV.eQ, CV.bc, CV.bc_smul, CV.bc_L, CV.bc_norm⟩, CV.ne, CV.latT, CV.co, CV.co_inj, CV.co_range, CV.fin, CV.inf⟩`. Introduce and unpack `⟨B, hne, hT, co, h1, h2, h3, h4⟩`. Conclude with `⟨⟨hne, B.rho, B.Q, B.Q_good, B.eQ, B.bc, B.bc_smul, B.bc_L, B.bc_norm, hT, co, h1, h2, h3, h4⟩⟩`.
+-/
 theorem ColVal_nonempty_iff (D : D7) (u : D.what₂.Word) :
     Nonempty (ColVal D u) ↔ ∃ B : ColBase D u, ColTie B := by
   constructor
@@ -745,9 +1035,17 @@ def bcFun : S.V →+ (Fin S.rank → LL) where
   map_zero' := by funext i; simp
   map_add' x y := by funext i; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcFun]`.
+-/
 theorem bcFun_smul (a : E) (y : S.V) : bcFun S ρ (a • y) = ρ a • bcFun S ρ y := by
   funext i; simp [bcFun]
 
+/- English proof (translation)
+Establish `h1 : a • y = (a : E) • y` using `(algebraMap_smul E a y).symm`. Rewrite using `[h1, bcFun_smul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.smul_def]`.
+
+Use `congr 1`.
+-/
 theorem bcFun_smulO (a : 𝓞 E) (y : S.V) :
     bcFun S ρ (a • y) = (RingOfIntegers.mapRingHom ρ a) • bcFun S ρ y := by
   have h1 : a • y = (a : E) • y := (algebraMap_smul E a y).symm
@@ -757,6 +1055,11 @@ theorem bcFun_smulO (a : 𝓞 E) (y : S.V) :
   rw [Algebra.smul_def]
   congr 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [bcFun, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Module.Basis.repr_self]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finsupp.single_eq_of_ne (by simpa using h), Pi.single_eq_of_ne h, map_zero]`.
+-/
 theorem bcFun_frame (i : Fin S.rank) : bcFun S ρ (S.frame i) = Pi.single i 1 := by
   funext j
   simp only [bcFun, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Module.Basis.repr_self]
@@ -771,6 +1074,15 @@ def mkQ (Lc : Submodule (𝓞 E) S.V) (Y : InfinitePlace LL → Matrix (Fin S.ra
   X := fun v => (Y v)⁻¹
   L := Submodule.span (𝓞 LL) (bcFun S ρ '' (Lc : Set S.V))
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h`. Use `⟨s.image (bcFun S ρ), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Rewrite using `[Finset.coe_image]`.
+
+Apply `Set.image_mono` to reduce the goal to its premises. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Rewrite `hy` using `[← hs]`. Rewrite using `[Finset.coe_image]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [bcFun_smulO]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mkQ_fg (Lc : Submodule (𝓞 E) S.V) (h : Lc.FG) :
     (Submodule.span (𝓞 LL) (bcFun S ρ '' (Lc : Set S.V))).FG := by
   classical
@@ -791,6 +1103,15 @@ theorem mkQ_fg (Lc : Submodule (𝓞 E) S.V) (h : Lc.FG) :
     | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
     | smul a x _ hx => rw [bcFun_smulO]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `key : ∀ y : S.V, bcFun S ρ y ∈ Submodule.span LL (bcFun S ρ '' (Lc : Set S.V))`. Introduce `y`. Establish `hy : y ∈ Submodule.span E (Lc : Set S.V)` using `by rw [h]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [bcFun_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : w = ∑ i, w i • (Pi.single i 1 : Fin S.rank → LL)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← bcFun_frame S ρ i]`. Conclude with `Submodule.span_mono Submodule.subset_span (key _)`.
+-/
 theorem mkQ_span (Lc : Submodule (𝓞 E) S.V) (h : Submodule.span E (Lc : Set S.V) = ⊤) :
     Submodule.span LL ((Submodule.span (𝓞 LL) (bcFun S ρ '' (Lc : Set S.V)) : Submodule (𝓞 LL) (Fin S.rank → LL)) :
       Set (Fin S.rank → LL)) = ⊤ := by
@@ -811,6 +1132,11 @@ theorem mkQ_span (Lc : Submodule (𝓞 E) S.V) (h : Submodule.span E (Lc : Set S
   rw [← bcFun_frame S ρ i]
   exact Submodule.span_mono Submodule.subset_span (key _)
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Formalism.HermitianLatticesTheory.fcoord (mkQ S ρ Lc Y).b (mkQ S ρ Lc Y).X v (bcFun S ρ y) = (Y v).mulVec fun j => (v.embedding.comp ρ) (S.frame.repr y j)`. Unfold `Formalism.HermitianLatticesTheory.fcoord`.
+
+Establish `: ((mkQ S ρ Lc Y).X v)⁻¹ = Y v` using `Matrix.nonsing_inv_nonsing_inv _ (hY v)`. Rewrite using `[this]`. Use `congr 1`. Rewrite using `[h1]`. Simplify using `[Complex.mul_re, Complex.sq_norm, Complex.normSq_apply]`.
+-/
 theorem mkQ_norm (Lc : Submodule (𝓞 E) S.V) (Y : InfinitePlace LL → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (hY : ∀ v, IsUnit (Y v).det) (v : InfinitePlace LL) (y : S.V) :
     (Formalism.HermitianLatticesTheory.majAt (mkQ S ρ Lc Y).b (mkQ S ρ Lc Y).X v (bcFun S ρ y) (bcFun S ρ y)).re =
@@ -827,6 +1153,9 @@ theorem mkQ_norm (Lc : Submodule (𝓞 E) S.V) (Y : InfinitePlace LL → Matrix 
   rw [h1]
   simp [Complex.mul_re, Complex.sq_norm, Complex.normSq_apply]
 
+/- English proof (translation)
+Use `choose Y hY hN using hpos`. Use `⟨mkQ S ρ Lc (fun v => Y (v.embedding.comp ρ)), finCongr hr, bcFun S ρ, ⟨fun v => Matrix.isUnit_nonsing_inv_det _ (hY _), mkQ_fg S ρ Lc hfg, mkQ_span S ρ Lc hsp⟩, bcFun_smul S ρ, rfl, fun v y => ?_⟩` and prove the remaining obligations. Conclude with `(mkQ_norm S ρ Lc (fun v => Y (v.embedding.comp ρ)) (fun v => hY _) v y).trans (hN _ y)`.
+-/
 theorem base_exists (Lc : Submodule (𝓞 E) S.V) (hfg : Lc.FG) (hsp : Submodule.span E (Lc : Set S.V) = ⊤)
     (n : ℕ) (hr : S.rank = n)
     (hpos : ∀ σ : E →+* ℂ, ∃ Y : Matrix (Fin S.rank) (Fin S.rank) ℂ, IsUnit Y.det ∧
@@ -842,6 +1171,9 @@ theorem base_exists (Lc : Submodule (𝓞 E) S.V) (hfg : Lc.FG) (hsp : Submodule
 
 end Base
 
+/- English proof (translation)
+Establish `key` using `fun (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) => base_exists (LL := D.what₂.LL) (D.sp.X 0) (rho τ) (D.clsLat u 0 c) (D.clsLat_lat u 0 c).fg (D.clsLat_lat u 0 c).span_eq_top (D.R.N 0) (D.sp.X_rank 0 (Nat.zero_le _)) h`. Use `choose Q eQ bc h1 h2 h3 h4 using key`. Conclude with `⟨⟨rho, Q, h1, eQ, bc, h2, h3, h4⟩, rfl⟩`.
+-/
 theorem ColBase_exists (D : D7) (u : D.what₂.Word) (h : PosFrame D)
     (rho : D.what₂.Tau → (D.host.E →+* D.what₂.LL)) : ∃ B : ColBase D u, B.rho = rho := by
   have key := fun (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) =>
@@ -850,9 +1182,35 @@ theorem ColBase_exists (D : D7) (u : D.what₂.Word) (h : PosFrame D)
   choose Q eQ bc h1 h2 h3 h4 using key
   exact ⟨⟨rho, Q, h1, eQ, bc, h2, h3, h4⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨B, _⟩ := ColBase_exists D u h (fun _ => D.embE); ⟨B⟩`.
+-/
 theorem ColBase_nonempty (D : D7) (u : D.what₂.Word) (h : PosFrame D) : Nonempty (ColBase D u) :=
   let ⟨B, _⟩ := ColBase_exists D u h (fun _ => D.embE); ⟨B⟩
 
+/- English proof (translation)
+Take `⟨e, P, hP⟩` from `h`. Establish `hJ : Formalism.UG.Jpq S.rank 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases.
+
+Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Use `set Pm : Matrix (Fin S.rank ⊕ Fin 0) (Fin S.rank ⊕ Fin 0) ℂ := P.val with hPm`. Use `set Qm : Matrix (Fin S.rank ⊕ Fin 0) (Fin S.rank ⊕ Fin 0) ℂ := (P⁻¹).val with hQm`.
+
+Establish `hPQ : Pm * Qm = 1` using `by rw [hPm, hQm, ← Units.val_mul, mul_inv_cancel]; rfl`. Establish `hcT : Formalism.UG.cT (starRingEnd ℂ) Pm = Pm.conjTranspose`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite `hP` using `[hcT, hJ]`.
+
+Use `set G : Matrix (Fin S.rank) (Fin S.rank) ℂ := S.gram.map σ with hG`. Establish `hGr : G.reindex e e = Qm.conjTranspose * Qm`. Establish `h1 : Qm.conjTranspose * (Pm.conjTranspose * G.reindex e e * Pm) * Qm = Qm.conjTranspose * Qm`. Rewrite using `[hP, Matrix.mul_one]`. Establish `h2 : Qm.conjTranspose * Pm.conjTranspose = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Rewrite using `[← h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, hPQ, Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+
+Set `Y : Matrix (Fin S.rank) (Fin S.rank) ℂ` to `Qm.submatrix e e`. Establish `hGY : G = Y.conjTranspose * Y`. Establish `: G = (G.reindex e e).submatrix e e` using `by ext i j; simp`. Rewrite using `[this, hGr]`. Use extensionality with `i j`.
+
+Simplify using `only [Y, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Conclude with `(Equiv.sum_comp e _).symm`. Use `⟨Y, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `: Y.det = Qm.det` using `Matrix.det_submatrix_equiv_self e Qm`. Rewrite using `[this]`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp ⟨P⁻¹, rfl⟩`. Use `set z : Fin S.rank → ℂ := fun j => σ (S.frame.repr y j) with hz`. Establish `h1 : ∑ i, ‖(Y.mulVec z) i‖ ^ 2 = (star (Y.mulVec z) ⬝ᵥ Y.mulVec z).re`. Simplify using `[dotProduct, Complex.mul_re, Complex.sq_norm, Complex.normSq_apply]`. Establish `h2 : star (Y.mulVec z) ⬝ᵥ Y.mulVec z = star z ⬝ᵥ G.mulVec z`.
+
+Rewrite using `[hGY, Matrix.star_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star z)]`. Establish `h3 : σ (S.hT y y) = star z ⬝ᵥ G.mulVec z`. Use `LinearMap.sum_repr_mul_repr_mulₛₗ S.frame S.frame (B := S.hT) y y` as an intermediate fact. Rewrite using `[← this, Finsupp.sum_fintype _ _ (by intro i; simp)]`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (by intro j; simp), map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul, RingHom.id_apply, hG, hz, Matrix.map_apply, HSpace.gram, Pi.star_apply]`. Rewrite using `[starRingEnd_apply, hσ]`.
+
+Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, h3]`.
+-/
 theorem posFrame_of_sig {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (σ : E →+* ℂ)
     (hσ : ∀ a, σ (star a) = (starRingEnd ℂ) (σ a)) (h : Formalism.UG.HasSignature (S.gram.map σ) S.rank 0) :
     ∃ Y : Matrix (Fin S.rank) (Fin S.rank) ℂ, IsUnit Y.det ∧
@@ -910,16 +1268,30 @@ theorem posFrame_of_sig {E : Type} [Field E] [NumberField E] [StarRing E] (S : H
       ring
     rw [h1, h2, h3]
 
+/- English proof (translation)
+Use `D.host.isCMField_hostE` as an intermediate fact. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E σ a`.
+-/
 theorem host_emb_star (D : D7) (σ : D.host.E →+* ℂ) (a : D.host.E) : σ (star a) = (starRingEnd ℂ) (σ a) := by
   have := D.host.isCMField_hostE
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E σ a
 
+/- English proof (translation)
+Introduce `σ` and use `posFrame_of_sig (D.sp.X 0) σ (host_emb_star D σ) (by have := D.sp.X_sig 0 σ; rw [h σ] at this; exact this)`.
+-/
 theorem PosFrame_of_posDef (D : D7) (h : (D.sp.X 0).IsPosDef) : PosFrame D := fun σ =>
   posFrame_of_sig (D.sp.X 0) σ (host_emb_star D σ) (by have := D.sp.X_sig 0 σ; rw [h σ] at this; exact this)
 
+/- English proof (translation)
+The claim follows from `PosFrame_of_posDef D (h D.sp)`.
+-/
 theorem PosFrame_of_fact (D : D7) (h : BaseSpacePosDef D.R D.host.F D.host.E) : PosFrame D :=
   PosFrame_of_posDef D (h D.sp)
 
+/- English proof (translation)
+Set `f : ((D.fm u).lat 0).V →ₗ[D.what₂.LL] (∀ _ : (D.mem u).C.cls 0, ↥(TSpan D.what₂.LL ((D.fm u).lam 0)))` to `LinearMap.pi fun c => LinearMap.codRestrict (TSpan D.what₂.LL ((D.fm u).lam 0)) ((LinearMap.proj c).comp CV.co) (fun x => (CV.co_range (CV.co x)).mp ⟨x, rfl⟩ c)`. Use `⟨LinearEquiv.ofBijective f ⟨fun x y hxy => CV.co_inj ?_, fun g => ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Conclude with `congrArg Subtype.val (congrFun hxy c)`. Take `⟨x, hx⟩` from `(CV.co_range (fun c => (g c : MvPolynomial _ D.what₂.LL))).mpr (fun c => (g c).2)`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Conclude with `Subtype.ext (congrFun hx c)`.
+-/
 theorem ColVal_equiv {D : D7} {u : D.what₂.Word} (CV : ColVal D u) :
     Nonempty (((D.fm u).lat 0).V ≃ₗ[D.what₂.LL]
       (∀ _ : (D.mem u).C.cls 0, ↥(TSpan D.what₂.LL ((D.fm u).lam 0)))) := by
@@ -935,9 +1307,15 @@ theorem ColVal_equiv {D : D7} {u : D.what₂.Word} (CV : ColVal D u) :
     funext c
     exact Subtype.ext (congrFun hx c)
 
+/- English proof (translation)
+The claim follows from `CV.latT c`.
+-/
 theorem ColVal_latT {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (c : (D.mem u).C.cls 0) :
     LatT (D.sp.X 0) (Tu D u ^ (2 * D.R.f)) (D.clsLat u 0 c) := CV.latT c
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `ColBase_exists D u hX rho`. Conclude with `(ColVal_nonempty_iff D u).mpr ⟨B, hT B hB⟩`.
+-/
 theorem ColVal_nonempty (D : D7) (u : D.what₂.Word) (hX : PosFrame D)
     (rho : D.what₂.Tau → (D.host.E →+* D.what₂.LL))
     (hT : ∀ B : ColBase D u, B.rho = rho → ColTie B) : Nonempty (ColVal D u) := by
@@ -948,6 +1326,29 @@ section LocB
 
 variable {LL : Type} [Field LL] (Pl : Rows.Places LL) (w : Pl.Pl) {V : Type} [AddCommGroup V] [Module LL V]
 
+/- English proof (translation)
+Use the proof step `induction' hn : s.card using Nat.strong_induction_on with n ih generalizing s`. Distinguish the cases in `hli : LinearIndependent LL ((↑) : s → V)`. Conclude with `⟨s, rfl, hli⟩`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Use `push Not at hli`.
+
+Take `⟨g, hsum, i0, hi0⟩` from `hli`. Take `⟨j, -, hj⟩` from `Finset.exists_min_image Finset.univ (fun i => Pl.val w (g i)) ⟨i0, Finset.mem_univ _⟩`. Establish `hgj : g j ≠ 0`. Introduce `h0`. Establish `h1` using `hj i0 (Finset.mem_univ _)`.
+
+Simplify using `only [h0, AddValuation.map_zero, top_le_iff] at h1`. Conclude with `hi0 ((AddValuation.top_iff _).mp h1)`. Establish `hmem : ∀ i, g i / g j ∈ intW Pl w`. Introduce `i`. Use `show (0 : WithTop ℤ) ≤ Pl.val w (g i / g j)`.
+
+Establish `h1 : Pl.val w (g i) = Pl.val w (g i / g j) + Pl.val w (g j)`. Rewrite using `[← AddValuation.map_mul, div_mul_cancel₀ _ hgj]`. Establish `h2` using `hj i (Finset.mem_univ _)`. Establish `h3 : Pl.val w (g j) ≠ ⊤` using `fun h => hgj ((AddValuation.top_iff _).mp h)`. Rewrite `h2` using `[h1]`.
+
+Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Use `WithTop.add_lt_add_right h3 hneg` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `absurd h2 (not_le.mpr this)`.
+
+Establish `key : (j : V) = ∑ i ∈ Finset.univ.erase j, (-(g i / g j)) • (i : V)`. Establish `h0` using `hsum`. Rewrite `h0` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j)]`. Establish `h1 : (j : V) = (g j)⁻¹ • (g j • (j : V))` using `by rw [smul_smul, inv_mul_cancel₀ hgj, one_smul]`. Rewrite using `[h1, eq_neg_of_add_eq_zero_left h0, smul_neg, Finset.smul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, neg_smul, inv_mul_eq_div]`. Establish `hjm : (j : V) ∈ Submodule.span (intW Pl w) ((s.erase (j : V) : Finset V) : Set V)`. Establish `hS : (∑ i ∈ Finset.univ.erase j, (-(g i / g j)) • (i : V)) ∈ Submodule.span (intW Pl w) ((s.erase (j : V) : Finset V) : Set V)` using `?_`. Rewrite `hS` using `[← key]`. Then use the resulting hypothesis.
+
+Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Establish `h1 : (-(g i / g j)) • (i : V) = (⟨-(g i / g j), neg_mem (hmem i)⟩ : intW Pl w) • (i : V)` using `rfl`. Rewrite using `[h1]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Finset.mem_erase]`.
+
+Conclude with `⟨fun h => (Finset.ne_of_mem_erase hi) (Subtype.ext h), i.2⟩`. Establish `hsp : Submodule.span (intW Pl w) ((s.erase (j : V) : Finset V) : Set V) = Submodule.span (intW Pl w) (s : Set V)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (by exact_mod_cast Finset.erase_subset _ _)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `x hx`. Distinguish the cases in `hxj : x = (j : V)`. Rewrite using `[hxj]`. Conclude with `hjm`. Conclude with `Submodule.subset_span (by rw [Finset.mem_coe, Finset.mem_erase]; exact ⟨hxj, hx⟩)`.
+
+Take `⟨t, ht, hli'⟩` from `ih (s.erase (j : V)).card (by rw [← hn]; exact Finset.card_erase_lt_of_mem j.2) _ rfl`. Conclude with `⟨t, ht.trans hsp, hli'⟩`.
+-/
 theorem exists_li_gen (s : Finset V) : ∃ t : Finset V,
     Submodule.span (intW Pl w) (t : Set V) = Submodule.span (intW Pl w) (s : Set V) ∧
     LinearIndependent LL ((↑) : t → V) := by
@@ -1010,6 +1411,25 @@ end LocB
 
 def IntInW (D : D7) (w : D.what₂.places.Pl) : Prop := ∀ z : 𝓞 D.what₂.LL, (z : D.what₂.LL) ∈ intW D.what₂.places w
 
+/- English proof (translation)
+Take `⟨-, ⟨s, hs⟩, hspan⟩` from `hQ`. Establish `h1 : locW D.what₂.places w Q.L = Submodule.span (intW D.what₂.places w) (s : Set Q.V)`. Unfold `locW`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce `x hx`. Rewrite `hx` using `[SetLike.mem_coe, ← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `h2 : a • x = (⟨(a : D.what₂.LL), hO a⟩ : intW D.what₂.places w) • x` using `(algebraMap_smul D.what₂.LL a x).symm`. Rewrite using `[SetLike.mem_coe, h2]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span`. Take `⟨t, ht, hli⟩` from `exists_li_gen D.what₂.places w s`. Establish `htop : Submodule.span D.what₂.LL (t : Set Q.V) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hspan, Submodule.span_le]`. Introduce `x hx`. Establish `h2 : x ∈ Submodule.span (intW D.what₂.places w) (t : Set Q.V)`. Rewrite using `[ht, ← h1]`. Conclude with `Submodule.subset_span hx`.
+
+Conclude with `Submodule.span_subset_span (intW D.what₂.places w) D.what₂.LL _ h2`. Set `bt : Module.Basis t D.what₂.LL Q.V` to `Module.Basis.mk hli (by rw [Subtype.range_coe]; exact htop.ge)`. Set `bt' : Module.Basis (Fin n) D.what₂.LL Q.V` to `bt.reindex ((bt.indexEquiv Q.b).trans e)`. Set `b' : Module.Basis (Fin n) D.what₂.LL Q.V` to `Q.b.reindex e`. Establish `hcol : ∀ a, ∑ i, b'.toMatrix bt' i a • Q.b (e.symm i) = bt' a`.
+
+Introduce `a`. Use `b'.sum_repr (bt' a)` as an intermediate fact. Simplify `this` using `[Module.Basis.toMatrix_apply, b']`. Establish `hrange : Set.range (fun a => bt' a) = (t : Set Q.V)`. Establish `: Set.range (fun a => bt' a) = Set.range bt` using `Module.Basis.range_reindex bt ((bt.indexEquiv Q.b).trans e)`.
+
+Rewrite using `[this]`. Simplify using `[bt]`. Use `⟨b'.toMatrix bt', Matrix.isUnit_det_of_right_inverse (b'.toMatrix_mul_toMatrix_flip bt'), ?_⟩` and prove the remaining obligations. Establish `hfun : (fun a => bt' a) = fun a => ∑ i, b'.toMatrix bt' i a • Q.b (e.symm i)`. Use function extensionality and compare the values at `fun a => (hcol a).symm`.
+
+Rewrite using `[h1, ← ht, ← hrange, hfun]`.
+-/
 theorem LocBasis_exists (D : D7) (w : D.what₂.places.Pl) (hO : IntInW D w) (Q : HLat D.what₂.LL) (hQ : Q.Good) {n : ℕ}
     (e : Q.ι ≃ Fin n) : ∃ γ : Matrix (Fin n) (Fin n) D.what₂.LL, LocBasis D w Q e γ := by
   classical
@@ -1055,6 +1475,13 @@ theorem LocBasis_exists (D : D7) (w : D.what₂.places.Pl) (hO : IntInW D w) (Q 
     funext fun a => (hcol a).symm
   rw [h1, ← ht, ← hrange, hfun]
 
+/- English proof (translation)
+Introduce `z`. Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w (z : D.what₂.LL)`. Distinguish the cases in `hz : (z : D.what₂.LL) = 0`. Rewrite using `[hz, AddValuation.map_zero]`. Conclude with `le_top`.
+
+Rewrite using `[D.val_eq w _ hz]`. Establish `h1 : (D.plEq w).valuation D.what₂.LL (z : D.what₂.LL) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one (D.plEq w) z`. Establish `h0 : (D.plEq w).valuation D.what₂.LL (z : D.what₂.LL) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hz`. Establish `h2 : WithZero.log ((D.plEq w).valuation D.what₂.LL (z : D.what₂.LL)) ≤ 0`. Rewrite using `[← WithZero.log_one]`.
+
+Conclude with `(WithZero.log_le_log h0 one_ne_zero).mpr h1`. Establish `h3 : (0 : ℤ) ≤ vAdd (D.plEq w) (z : D.what₂.LL)` using `by unfold vAdd; omega`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem intInW (D : D7) (w : D.what₂.places.Pl) : IntInW D w := by
   intro z
   show (0 : WithTop ℤ) ≤ D.what₂.places.val w (z : D.what₂.LL)
@@ -1070,10 +1497,16 @@ theorem intInW (D : D7) (w : D.what₂.places.Pl) : IntInW D w := by
   have h3 : (0 : ℤ) ≤ vAdd (D.plEq w) (z : D.what₂.LL) := by unfold vAdd; omega
   exact_mod_cast h3
 
+/- English proof (translation)
+The claim follows from `LocBasis_exists D w (intInW D w) Q hQ e`.
+-/
 theorem LocBasis_exists' (D : D7) (w : D.what₂.places.Pl) (Q : HLat D.what₂.LL) (hQ : Q.Good) {n : ℕ}
     (e : Q.ι ≃ Fin n) : ∃ γ : Matrix (Fin n) (Fin n) D.what₂.LL, LocBasis D w Q e γ :=
   LocBasis_exists D w (intInW D w) Q hQ e
 
+/- English proof (translation)
+Use `choose γ hγ using fun c τ => LocBasis_exists' D w (CV.Q c τ) (CV.Q_good c τ) (CV.eQ c τ)`. Conclude with `⟨γ, hγ, CV.fin w γ hγ⟩`.
+-/
 theorem ColVal_fin_nonvacuous {D : D7} {u : D.what₂.Word} (CV : ColVal D u) (w : D.what₂.places.Pl) :
     ∃ γ : (D.mem u).C.cls 0 → D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL,
       (∀ c τ, LocBasis D w (CV.Q c τ) (CV.eQ c τ) (γ c τ)) ∧
@@ -1092,15 +1525,24 @@ open Formalism.BasicNotions Formalism.MainNotions
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨c, -⟩` from `(Lv u).y_bij.2 (Quotient.mk'' 1)`. Conclude with `⟨c⟩`.
+-/
 theorem level_first_classes_nonempty (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     Nonempty ((D.mem u).C.cls 0) := by
   obtain ⟨c, -⟩ := (Lv u).y_bij.2 (Quotient.mk'' 1)
   exact ⟨c⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun Lv => h.elim (level_first_classes_nonempty D Lv u).some⟩`.
+-/
 theorem LevelData_isEmpty_of (D : D7) (u : D.what₂.Word) (h : IsEmpty ((D.mem u).C.cls 0)) :
     IsEmpty (LevelData D) :=
   ⟨fun Lv => h.elim (level_first_classes_nonempty D Lv u).some⟩
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.ofBijective _ (Lv u).y_bij)`.
+-/
 theorem level_card_first_classes (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     Nat.card ((D.mem u).C.cls 0) = Nat.card (Formalism.UG.ClassSet
       ((Formalism.UG.ratPts D.sp.cm.sig D.sp.gram0 (IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers D.host.F) D.host.F)).subgroupOf
@@ -1108,8 +1550,14 @@ theorem level_card_first_classes (D : D7) (Lv : LevelData D) (u : D.what₂.Word
       ((Lv u).U.subgroupOf (Formalism.UG.UPts D.sp.cm.sig D.sp.gram0 (IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers D.host.F) D.host.F)))) :=
   Nat.card_congr (Equiv.ofBijective _ (Lv u).y_bij)
 
+/- English proof (translation)
+The claim follows from `P.interlace`.
+-/
 theorem Pend_interlace {D : D7} {u : D.what₂.Word} (P : product_first_zeroth_parts.Pend D u) : (D.fm u).SgInterlace := P.interlace
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun P => h P.interlace⟩`.
+-/
 theorem Pend_isEmpty_of_not_interlace (D : D7) (u : D.what₂.Word) (h : ¬ (D.fm u).SgInterlace) :
     IsEmpty (product_first_zeroth_parts.Pend D u) := ⟨fun P => h P.interlace⟩
 
@@ -1118,8 +1566,16 @@ def BeOnIsNorm (D : D7) (u : D.what₂.Word) : Prop :=
     MvPolynomial (Fin (D.R.N D.R.m - 1) × Fin (D.R.N D.R.m - 1)) ℂ),
     ∀ τ, (D.fm u).beOn τ = product_first_zeroth_parts.opNorm D u τ (br τ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨P.br, P.beOn_eq⟩`.
+-/
 theorem Pend_beOn {D : D7} {u : D.what₂.Word} (P : product_first_zeroth_parts.Pend D u) : BeOnIsNorm D u := ⟨P.br, P.beOn_eq⟩
 
+/- English proof (translation)
+Unfold `product_first_zeroth_parts.opNorm`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Real.sSup_le _ le_rfl` to reduce the goal to its premises. Introduce and unpack `x ⟨f, -, rfl⟩`. Simplify using `[normFock, Formalism.REAL.fockF]`.
+
+Apply `Real.sSup_nonneg` to reduce the goal to its premises. Introduce and unpack `x ⟨f, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem opNorm_zero (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : product_first_zeroth_parts.opNorm D u τ 0 = 0 := by
   unfold product_first_zeroth_parts.opNorm
   apply le_antisymm
@@ -1158,6 +1614,11 @@ def pendJunk (D : D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) (hC : (D
   beOn_eq := hb
   interlace := hI
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P⟩`. Use `⟨?_, P.interlace, Pend_beOn P⟩` and prove the remaining obligations. Take `⟨p, hp, hpp⟩` from `Ring.not_isField_iff_exists_prime.1 (NumberField.RingOfIntegers.not_isField D.what₂.LL)`. Set `w : D.what₂.places.Pl` to `D.plEq.symm ⟨p, hpp, hp⟩`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Conclude with `(Submodule.mem_bot ℂ).2 (P.coP_inj w z hz (funext fun c => hE.elim c))`. Introduce and unpack `⟨hC, hI, br, hb⟩`. Conclude with `⟨pendJunk D u hE hC hI br hb⟩`.
+-/
 theorem Pend_nonempty_iff_of_isEmpty (D : D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) :
     Nonempty (product_first_zeroth_parts.Pend D u) ↔ (D.fm u).ptC = ⊥ ∧ (D.fm u).SgInterlace ∧ BeOnIsNorm D u := by
   constructor
@@ -1171,16 +1632,25 @@ theorem Pend_nonempty_iff_of_isEmpty (D : D7) (u : D.what₂.Word) (hE : IsEmpty
   · rintro ⟨hC, hI, br, hb⟩
     exact ⟨pendJunk D u hE hC hI br hb⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pendJunk D u hE hC hI (fun _ => 0) (fun τ => by rw [hb τ, opNorm_zero])⟩`.
+-/
 theorem Pend_nonempty_junk (D : D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) (hC : (D.fm u).ptC = ⊥)
     (hI : (D.fm u).SgInterlace) (hb : ∀ τ, (D.fm u).beOn τ = 0) : Nonempty (product_first_zeroth_parts.Pend D u) :=
   ⟨pendJunk D u hE hC hI (fun _ => 0) (fun τ => by rw [hb τ, opNorm_zero])⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨-, -, ⟨f, -, hf⟩, -⟩` from `h τ`. Conclude with `hf (by rw [h0 τ]; rfl)`.
+-/
 theorem branching_condition_zero_false (D : D7) (u : D.what₂.Word) (P : product_first_zeroth_parts.Pend D u) (h0 : ∀ τ, P.br τ = 0)
     (τ : D.what₂.Tau) : ¬ product_first_zeroth_parts.ArchimedeanSignatureMatching P := by
   intro h
   obtain ⟨-, -, ⟨f, -, hf⟩, -⟩ := h τ
   exact hf (by rw [h0 τ]; rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pendJunk D u hE hC hI br hb, hbr⟩`.
+-/
 theorem branching_condition_of_isEmpty (D : D7) (u : D.what₂.Word) (hE : IsEmpty (D.fm u).clsP) (hC : (D.fm u).ptC = ⊥)
     (hI : (D.fm u).SgInterlace)
     (br : D.what₂.Tau → (MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ →ₗ[ℂ]
@@ -1189,6 +1659,9 @@ theorem branching_condition_of_isEmpty (D : D7) (u : D.what₂.Word) (hE : IsEmp
     (hb : ∀ τ, (D.fm u).beOn τ = product_first_zeroth_parts.opNorm D u τ (br τ)) : ∃ P : product_first_zeroth_parts.Pend D u, product_first_zeroth_parts.ArchimedeanSignatureMatching P :=
   ⟨pendJunk D u hE hC hI br hb, hbr⟩
 
+/- English proof (translation)
+Rewrite using `[← ((D.fm u).emb_basis i).2, ← ((D.fm u).lat i).b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem emb_mem_Fi (D : D7) (u : D.what₂.Word) (i : ℕ) (x : ((D.fm u).lat i).V) :
     (D.fm u).emb i x ∈ (D.fm u).Fi i := by
   rw [← ((D.fm u).emb_basis i).2, ← ((D.fm u).lat i).b.sum_repr x, map_sum]
@@ -1196,6 +1669,13 @@ theorem emb_mem_Fi (D : D7) (u : D.what₂.Word) (i : ℕ) (x : ((D.fm u).lat i)
   rw [LinearMap.map_smulₛₗ]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Unfold `product_first_zeroth_parts.IntSpan at hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hr, hf, rfl⟩` from `hp`. Use `choose g hg hbg using fun τ => h τ (f τ) (hf τ)`.
+
+Rewrite using `[map_smul, product_first_zeroth_parts.blk_ten]`. Conclude with `AddSubgroup.subset_closure ⟨r, g, hr, hg, by simp only [hbg]⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `AddSubgroup.add_mem _ ha hb`. Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `AddSubgroup.neg_mem _ ha`.
+-/
 theorem blk_IntSpan (D : D7) {n n' : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeight n)
     (sg : D.what₂.Tau → DomWeight n')
     (br : D.what₂.Tau → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
@@ -1214,6 +1694,11 @@ theorem blk_IntSpan (D : D7) {n n' : ℕ} (w : D.what₂.places.Pl) (lam : D.wha
   | add a b _ _ ha hb => rw [map_add]; exact AddSubgroup.add_mem _ ha hb
   | neg a _ ha => rw [map_neg]; exact AddSubgroup.neg_mem _ ha
 
+/- English proof (translation)
+Use `(P.pt_co w _ hC).2 fun c => ?_` and prove the remaining obligations. Rewrite using `[P.Pt_eq w _ (emb_mem_Fi D u D.R.m x) c]`. Use `blk_IntSpan D w _ _ P.br (fun τ f hf => ?_) _ (P.lat_co w x hx c)` and prove the remaining obligations. Establish `h` using `(h4 τ).1 f (by unfold product_first_zeroth_parts.lamTr; rw [product_first_zeroth_parts.delSq_wSh]; exact hf)`. Unfold `product_first_zeroth_parts.sgTr at h`.
+
+Rewrite `h` using `[product_first_zeroth_parts.delSq_wSh]`. Then use the resulting hypothesis.
+-/
 theorem Pend_integral {D : D7} {u : D.what₂.Word} (P : product_first_zeroth_parts.Pend D u) (h4 : product_first_zeroth_parts.ArchimedeanSignatureMatching P)
     (w : D.what₂.places.Pl) (x : ((D.fm u).lat D.R.m).V) (hx : x ∈ (D.fm u).S D.R.m w)
     (hC : product_first_zeroth_parts.Pt D u ((D.fm u).emb D.R.m x) ∈ (D.fm u).ptC) :
@@ -1225,10 +1710,24 @@ theorem Pend_integral {D : D7} {u : D.what₂.Word} (P : product_first_zeroth_pa
   unfold product_first_zeroth_parts.sgTr at h
   rwa [product_first_zeroth_parts.delSq_wSh] at h
 
+/- English proof (translation)
+The claim follows from `LevelData_isEmpty_of _ (Formalism.BasicNotions.Examples₂.exampleRecord G).u₀ (⟨fun x => Empty.elim x⟩)`.
+-/
 theorem levelData_exampleRecord_isEmpty (G : Formalism.BasicNotions.Examples₂.LocalGap Formalism.BasicNotions.Examples₂.H0) :
     IsEmpty (LevelData (Formalism.BasicNotions.Examples₂.exampleRecord G)) :=
   LevelData_isEmpty_of _ (Formalism.BasicNotions.Examples₂.exampleRecord G).u₀ (⟨fun x => Empty.elim x⟩)
 
+/- English proof (translation)
+Use `Pend_isEmpty_of_not_interlace _ _ fun h => ?_` and prove the remaining obligations. Establish `hN : 3 < (Formalism.BasicNotions.Examples₂.exampleRecord G).R.N (Formalism.BasicNotions.Examples₂.exampleRecord G).R.m - 1` using `by show 3 < Formalism.BasicNotions.Examples₂.R0.N Formalism.BasicNotions.Examples₂.R0.m - 1`. Simplify using `[Ranks.N, Formalism.BasicNotions.Examples₂.R0]`. Establish `h0` using `(h τ ⟨0, by omega⟩).2`. Establish `h1` using `h τ ⟨1, by omega⟩`.
+
+Establish `h2` using `(h τ ⟨2, by omega⟩).1`. Establish `e1` using `((Formalism.BasicNotions.Examples₂.exampleRecord G).fm u).lam_eq (Formalism.BasicNotions.Examples₂.exampleRecord G).R.m le_rfl τ ⟨1, by omega⟩`. Establish `e2` using `((Formalism.BasicNotions.Examples₂.exampleRecord G).fm u).lam_eq (Formalism.BasicNotions.Examples₂.exampleRecord G).R.m le_rfl τ ⟨2, by omega⟩`. Establish `hk8 : Formalism.BasicNotions.Examples₂.R0.k = 8` using `rfl`. Establish `hk1 : 1 < (Formalism.BasicNotions.Examples₂.exampleRecord G).R.k` using `by show 1 < Formalism.BasicNotions.Examples₂.R0.k; rw [hk8]; norm_num`.
+
+Establish `hk2 : 2 < (Formalism.BasicNotions.Examples₂.exampleRecord G).R.k` using `by show 2 < Formalism.BasicNotions.Examples₂.R0.k; rw [hk8]; norm_num`. Establish `a1 : (((Formalism.BasicNotions.Examples₂.exampleRecord G).fm u).lam (Formalism.BasicNotions.Examples₂.exampleRecord G).R.m τ).w ⟨1, by omega⟩ = 0` using `le_antisymm (show _ ≤ (0 : ℤ) from h0) (show (0 : ℤ) ≤ _ from h1.1)`. Establish `a2 : (((Formalism.BasicNotions.Examples₂.exampleRecord G).fm u).lam (Formalism.BasicNotions.Examples₂.exampleRecord G).R.m τ).w ⟨2, by omega⟩ = 0` using `le_antisymm (show _ ≤ (0 : ℤ) from h1.2) (show (0 : ℤ) ≤ _ from h2)`. Rewrite `e1` using `[dif_pos hk1, a1]`. Rewrite `e2` using `[dif_pos hk2, a2]`.
+
+Establish `u1` using `Formalism.BasicNotions.Examples₂.exampleWeight_middle_entries 0 (by rw [hk8]; norm_num)`. Establish `u2` using `Formalism.BasicNotions.Examples₂.exampleWeight_middle_entries 1 (by rw [hk8]; norm_num)`. Establish `g0` using `Formalism.BasicNotions.Examples₂.exampleWeight_cloud_gap_four 0 (by rw [hk8]; norm_num)`. Establish `e1' : ((0 : ℤ) : ℚ) = Formalism.BasicNotions.Examples₂.hc0.u ⟨0 + 1, by rw [hk8]; norm_num⟩ - ((((Formalism.BasicNotions.Examples₂.R0.k : ℕ) : ℚ) - 1) / 2 - ((1 : ℕ) : ℚ))` using `e1`. Establish `e2' : ((0 : ℤ) : ℚ) = Formalism.BasicNotions.Examples₂.hc0.u ⟨1 + 1, by rw [hk8]; norm_num⟩ - ((((Formalism.BasicNotions.Examples₂.R0.k : ℕ) : ℚ) - 1) / 2 - ((2 : ℕ) : ℚ))` using `e2`.
+
+Rewrite `e1'` using `[u1]`. Rewrite `e2'` using `[u2]`. Move the coercions through the operations in `at e1' e2'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Pend_exampleRecord_isEmpty (G : Formalism.BasicNotions.Examples₂.LocalGap Formalism.BasicNotions.Examples₂.H0) (u : (Formalism.BasicNotions.Examples₂.exampleRecord G).what₂.Word)
     (τ : (Formalism.BasicNotions.Examples₂.exampleRecord G).what₂.Tau) : IsEmpty (product_first_zeroth_parts.Pend (Formalism.BasicNotions.Examples₂.exampleRecord G) u) := by
   refine Pend_isEmpty_of_not_interlace _ _ fun h => ?_

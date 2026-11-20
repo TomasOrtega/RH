@@ -7,10 +7,40 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FinDesc
 
+/- English proof (translation)
+Establish `h : ∀ c : PrimeSpectrum K, c.asIdeal = ⊥` using `fun c => Ideal.eq_bot_of_prime c.asIdeal`. Conclude with `PrimeSpectrum.ext ((h a).trans (h b).symm)`.
+-/
 theorem spField_pt_eq (K : Type) [Field K] (a b : Sp K) : a = b := by
   have h : ∀ c : PrimeSpectrum K, c.asIdeal = ⊥ := fun c => Ideal.eq_bot_of_prime c.asIdeal
   exact PrimeSpectrum.ext ((h a).trans (h b).symm)
 
+/- English proof (translation)
+Introduce `X S s hs K₀ K _ _ _ halg y z hyz`. Set `pb : Sp K` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)`. Establish `hpt : ∀ a : Sp K₀, z a = s (y pb)` using `fun a => by`. Establish `e` using `congrArg (fun h : Sp K ⟶ S => h pb) hyz`. Simplify using `only [Scheme.Hom.comp_apply] at e`.
+
+Rewrite using `[e, spField_pt_eq K₀ a]`. Take `⟨U, hU, hqU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.isBasis_affineOpens) (show s (y pb) ∈ (⊤ : S.Opens) from trivial)`. Take `⟨V, hV, hgV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) (show y pb ∈ s ⁻¹ᵁ U from hqU)`. Establish `hU' : IsAffineOpen U` using `hU`. Establish `hV' : IsAffineOpen V` using `hV`.
+
+Establish `hry : Set.range y ⊆ Set.range hV'.fromSpec`. Rewrite using `[hV'.range_fromSpec]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[spField_pt_eq K a pb]`. Conclude with `hgV`.
+
+Establish `hrz : Set.range z ⊆ Set.range hU'.fromSpec`. Rewrite using `[hU'.range_fromSpec]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hpt a]`. Conclude with `hqU`.
+
+Establish `hy₁` using `IsOpenImmersion.lift_fac hV'.fromSpec y hry`. Establish `hz₁` using `IsOpenImmersion.lift_fac hU'.fromSpec z hrz`. Rewrite `hy₁` using `[← Spec.map_preimage (IsOpenImmersion.lift hV'.fromSpec y hry)]`. Rewrite `hz₁` using `[← Spec.map_preimage (IsOpenImmersion.lift hU'.fromSpec z hrz)]`. Use `set φ := Spec.preimage (IsOpenImmersion.lift hV'.fromSpec y hry) with hφ`.
+
+Use `set ψ := Spec.preimage (IsOpenImmersion.lift hU'.fromSpec z hrz) with hψ`. Establish `key : s.appLE U V hVU ≫ φ = ψ ≫ CommRingCat.ofHom (algebraMap K₀ K)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU'.fromSpec, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec s hU' hV' hVU, ← Category.assoc, hy₁, hz₁]`. Conclude with `hyz`.
+
+Establish `hft` using `LocallyOfFiniteType.finiteType_appLE s hU' hV' hVU`. Set `_` to `(s.appLE U V hVU).hom.toAlgebra`. Take `⟨T, hT⟩` from `hft.out`. Set `L : IntermediateField K₀ K` to `IntermediateField.adjoin K₀ ((T.image φ.hom : Finset K) : Set K)`. Establish `hfin : FiniteDimensional K₀ L` using `IntermediateField.finiteDimensional_adjoin fun x _ => (halg.isAlgebraic x).isIntegral`.
+
+Establish `hmem : ∀ b : Γ(X, V), φ.hom b ∈ L`. Introduce `b`. Establish `hb : b ∈ Algebra.adjoin Γ(S, U) (T : Set Γ(X, V))` using `by rw [hT]; exact Algebra.mem_top`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem b hb => exact IntermediateField.subset_adjoin _ _ (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hb))`.
+
+Consider the case `algebraMap a`. Establish `e` using `congrArg (fun h => h.hom a) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Rewrite using `[RingHom.algebraMap_toAlgebra, e]`. Conclude with `L.algebraMap_mem _`.
+
+Consider the case `add b c _ _ hb hc => rw [map_add]`. Conclude with `L.add_mem hb hc`. Consider the case `mul b c _ _ hb hc => rw [map_mul]`. Conclude with `L.mul_mem hb hc`. Set `φL : Γ(X, V) →+* L` to `φ.hom.codRestrict L hmem`.
+
+Use `⟨L, Spec.map (CommRingCat.ofHom φL : Γ(X, V) ⟶ CommRingCat.of L) ≫ hV'.fromSpec, hfin, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy₁, ← Category.assoc]`. Use `congr 1`. Rewrite using `[spMap, ← Spec.map_comp]`. Use `congr 1`.
+
+Establish `key' : s.appLE U V hVU ≫ CommRingCat.ofHom φL = ψ ≫ CommRingCat.ofHom (algebraMap K₀ L)`. Use extensionality with `a`. Establish `e` using `congrArg (fun h => h.hom a) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e ⊢`. Conclude with `e`.
+
+Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec s hU' hV' hVU, ← Category.assoc, ← Spec.map_comp, key', Spec.map_comp, ← hz₁, spMap]`. Simplify using `only [Category.assoc]`.
+-/
 theorem exists_finite_subext_point : ∀ (X S : Scheme.{0}) (s : X ⟶ S), LocallyOfFiniteType s → ∀ (K₀ K : Type) [Field K₀]
     [Field K] [Algebra K₀ K], Algebra.IsAlgebraic K₀ K → ∀ (y : Sp K ⟶ X) (z : Sp K₀ ⟶ S),
     y ≫ s = spMap (algebraMap K₀ K) ≫ z → ∃ (L : IntermediateField K₀ K) (yL : Sp L ⟶ X), FiniteDimensional K₀ L ∧

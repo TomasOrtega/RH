@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertLocDict.exists_local_dictionary | exact GlobalTheory.InertLocDict.exists_local_dictionary | (intros; apply GlobalTheory.InertLocDict.exists_local_dictionary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_dictionary_inertPlace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n r s : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →

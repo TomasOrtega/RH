@@ -15,6 +15,21 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Rec GlobalT
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hG hTow hVol`. Take `⟨C, hC, hV⟩` from `hVol`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H Dw l Xo c _ II hII hcl hgood hA hq hpq hcard`. Establish `hN : 1 ≤ Dw.p + Dw.q` using `by omega`.
+
+Establish `hp : 1 ≤ Dw.p` using `by omega`. Take `⟨Xf, rfl⟩ : ∃ Xf : ∀ l' : Level H, Moduli Dw l', Xf l = Xo` from `by classical`. Use `⟨Function.update (fun l' => (GlobalTheory.Moduli.moduli_scheme_exists E H Dw l' hN).some) l Xo, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨Y, hY⟩` from `GlobalTheory.CompanionTheory.Ar.Rec.exists_isGlobal E H Dw Xf l c hN hgood hA`.
+
+Take `⟨T, o, hX⟩` from `hTow E H Dw Xf l c Y hY (GlobalTheory.T.split_components_of_alg_closed E H Dw l (Xf l) c Y hcl) hp hq`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.tower_components_equiv_of_given E H Dw l (Xf l) c Y T o.toTowerOrigin hG`. Establish `hbad : T.bad = (2 * discr E * l.M').natAbs.primeFactors`. Establish `hne : 2 * discr E * l.M' ≠ 0`. Introduce `h0`.
+
+Take `⟨r, hr, hrp⟩` from `Nat.exists_infinite_primes (T.bad.sup id + 1)`. Establish `hmem : r ∈ T.bad` using `(o.bad_iff r).2 ⟨hrp, by rw [h0]; exact dvd_zero _⟩`. Use `Finset.le_sup (f := id) hmem` as an intermediate fact. Simplify using `only [id] at this`. Use linear arithmetic over natural numbers and integers.
+
+Use extensionality with `r`. Rewrite using `[o.bad_iff, Nat.mem_primeFactors, Int.natCast_dvd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, h2, by simpa using hne⟩`.
+
+Introduce and unpack `⟨h1, h2, -⟩`. Conclude with `⟨h1, h2⟩`. Establish `hc : T.bad.card ≤ 4 * Fintype.card (CMType H) * (Dw.p + Dw.q) ^ 2`. Rewrite using `[hbad]`. Conclude with `hcard`.
+
+Take `⟨h1, h2, h3, -, -, h6⟩` from `hV E H Dw Xf l c Y T o II hY hX hII hq hpq hc`. Conclude with `⟨Y, T, o, κ, hX, hκ, hbad, h1, h3, h2, h6⟩`.
+-/
 theorem vs_tower : Top.Given → Top.GoodTowerExistsX → Top.VolumeTheoremX → ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [DecidableEq (CMType H)] (II : IntersectionSystem), IsFullIntersectionSystem II → FnAlgClosed Xo c → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → 1 ≤ Dw.q → 3 * Dw.q + 1 ≤ Dw.p + Dw.q → (2 * discr E * l.M').natAbs.primeFactors.card ≤ 4 * Fintype.card (CMType H) * (Dw.p + Dw.q) ^ 2 → ∃ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (κ : Comp Xo c ≃ T.Comp), o.Extra ∧ CompOf o.toTowerOrigin κ ∧ T.bad = (2 * discr E * l.M').natAbs.primeFactors ∧ T.Proportional ∧ T.T1 II ∧ T.VolEq ∧ T.MeanSlope II C (hostRd E) (hostLval H) := by
   intro hG hTow hVol
   obtain ⟨C, hC, hV⟩ := hVol

@@ -31,6 +31,11 @@ def hhaSub {T : Type} (r : T → ℕ) (n : ℕ) (k : Type) [Field k] (cc : T →
     refine ⟨Submodule.smul_mem _ c hP.1, fun σ i i' h t => ?_, fun m hm => hP.2.2 m (support_smul hm)⟩
     rw [map_smul, hP.2.1 σ i i' h t]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg (MvPolynomial.eval (fun v : Ix × Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) K) v.2.1 v.2.2)) h`. Rewrite `h2` using `[RingHom.map_det]`. Establish `: (MvPolynomial.eval (fun v : Ix × Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) K) v.2.1 v.2.2)).mapMatrix (gen K n t) = 1` using `by ext1 i j`. Simplify using `[gen]`.
+
+Rewrite `h2` using `[this]`. Simplify using `at h2`.
+-/
 theorem det_gen_ne_zero {K : Type} [Field K] {Ix : Type} {n : ℕ} (t : Ix) : (gen K n t).det ≠ 0 := by
   intro h
   have h2 := congrArg (MvPolynomial.eval (fun v : Ix × Fin n × Fin n => (1 : Matrix (Fin n) (Fin n) K) v.2.1 v.2.2)) h
@@ -45,10 +50,18 @@ theorem det_gen_ne_zero {K : Type} [Field K] {Ix : Type} {n : ℕ} (t : Ix) : (g
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) {n : ℕ} {Ix : Type} [Fintype Ix]
   (pl : Ix → (E →+* ℂ))
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun t _ => pow_ne_zero _ (det_gen_ne_zero t)`.
+-/
 theorem detFac_ne_zero (K : Type) [Field K] (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → DomWeight n) :
     detFac Dw pl K a s lam ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun t _ => pow_ne_zero _ (det_gen_ne_zero t)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.WeightOrderLemmas.main`. Consider the case `exact _root_.GlobalTheory.WeightOrderLemmas.main`. Consider the case `(apply _root_.GlobalTheory.WeightOrderLemmas.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.WeightOrderLemmas.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.WeightOrderLemmas.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.WeightOrderLemmas.main ..)`.
+-/
 theorem cof_image : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (n : ℕ) (Ix : Type) [Fintype Ix] (pl : Ix → (E →+* ℂ)), IsEnum H pl → Dw.p + Dw.q ≤ n → ∀ (l : Level H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → DomWeight n), (∀ τ, Antitone fun i => a (τ, i)) → WtIs Dw pl a s lam → (∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), ∃ F ∈ VV c.F lam, cof Dw pl c.F n P = detFac Dw pl c.F a s lam * F) ∧ (∀ F ∈ VV c.F lam, ∃! P, P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) ∧ cof Dw pl c.F n P = detFac Dw pl c.F a s lam * F) ∧ ∀ (g : Ix → GL (Fin n) c.F), ∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), ∀ F ∈ VV c.F lam, cof Dw pl c.F n P = detFac Dw pl c.F a s lam * F → cof Dw pl c.F n (letAct Dw pl c.F g P) = (∏ t, ((g t : Matrix (Fin n) (Fin n) c.F).det) ^ (-(s t))) • (detFac Dw pl c.F a s lam * actP lam g F) := by
   first
   | exact @_root_.GlobalTheory.WeightOrderLemmas.main

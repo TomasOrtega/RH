@@ -7,6 +7,31 @@ open Polynomial Module
 
 namespace GlobalTheory.LetterSep
 
+/- English proof (translation)
+Set `sm : L → D →ₗ[U] D` to `fun a => { toFun := fun x => a • x, map_add' := smul_add a map_smul' := fun c x => by rw [hm, RingHom.id_apply, hm, map_smul] }`. Set `r : L →+* Module.End F (D →ₗ[U] F)` to `{ toFun := fun a => { toFun := fun f => f ∘ₗ sm a, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl } map_one' := by ext f x; simp [sm] map_mul' := fun a b => by ext f x; simp [sm, smul_smul, mul_comm] map_zero' := by ext f x; simp [sm] map_add' := fun a b => by ext f x; s …`. Establish `hr : ∀ a f y, r a f y = f (a • y)` using `fun _ _ _ => rfl`. Establish `hrk : ∀ c : k, r (algebraMap k L c) = algebraMap F (Module.End F (D →ₗ[U] F)) (algebraMap k F c)` using `fun c => by`. Use extensionality with `f y`.
+
+Rewrite using `[hr, ← hk, ← hm, map_smul, Module.algebraMap_end_apply, LinearMap.smul_apply, Algebra.smul_def, ← IsScalarTower.algebraMap_apply, smul_eq_mul]`. Take `⟨α, hα⟩` from `Field.exists_primitive_element k L`. Establish `hint : IsIntegral k α` using `Algebra.IsIntegral.isIntegral α`. Establish `hpoly : ∀ a : L, ∃ q : k[X], a = aeval α q` using `fun a => by`. Establish `: a ∈ (IntermediateField.adjoin k {α}).toSubalgebra` using `by rw [hα]; trivial`.
+
+Rewrite `this` using `[IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨q, hq⟩` from `this`. Conclude with `⟨q, hq.symm⟩`. Establish `hev : ∀ q : k[X], r (aeval α q) = aeval (r α) (q.map (algebraMap k F))` using `fun q => by`. Rewrite using `[aeval_def, aeval_def, hom_eval₂, eval₂_map]`.
+
+Use `congr 1`. Conclude with `RingHom.ext hrk`. Establish `hE : ∀ s : L →ₐ[k] F, (⨅ a, (r a).eigenspace (s a)) = (r α).eigenspace (s α)` using `fun s => by`. Use `le_antisymm (iInf_le _ α) (le_iInf fun a y hy => ?_)` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hpoly a`.
+
+Rewrite `hy`, the goal using `[End.mem_eigenspace_iff]`. Rewrite using `[hev, End.aeval_apply_of_mem_apply_eq_smul hy, eval_map_algebraMap, aeval_algHom_apply]`. Establish `h0 : aeval (r α) ((minpoly k α).map (algebraMap k F)) = 0`. Rewrite using `[← hev, minpoly.aeval, map_zero]`. Establish `hss : (r α).IsSemisimple` using `End.isSemisimple_of_squarefree_aeval_eq_zero (Polynomial.Separable.map (Algebra.IsSeparable.isSeparable k α)).squarefree h0`.
+
+Establish `htop : ⊤ ≤ ⨆ s : L →ₐ[k] F, ⨅ a, (r a).eigenspace (s a)`. Rewrite using `[← hss.iSup_eigenspace_eq_top]`. Use `iSup_le fun μ y hy => ?_` and prove the remaining obligations. Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Conclude with `zero_mem _`.
+
+Establish `h1` using `End.aeval_apply_of_mem_apply_eq_smul (p := (minpoly k α).map (algebraMap k F)) (End.mem_eigenspace_iff.mp hy)`. Rewrite `h1` using `[h0, LinearMap.zero_apply, eq_comm, smul_eq_zero_iff_left hy0, eval_map_algebraMap]`. Establish `h2 : μ ∈ Set.range fun s : L →ₐ[k] F => s α`. Rewrite using `[Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly F α, mem_rootSet]`. Conclude with `⟨minpoly.ne_zero hint, h1⟩`.
+
+Take `⟨s, rfl⟩` from `h2`. Conclude with `Submodule.mem_iSup_of_mem s (by rw [hE s]; exact hy)`. Assume the negation of the conclusion as `hx0`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual U D, φ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hx0 ((Module.forall_dual_apply_eq_zero_iff U x).mp h)`. Set `f : D →ₗ[U] F` to `(Algebra.linearMap U F) ∘ₗ φ`. Establish `hf : f x ≠ 0`. Simplify using `only [f, LinearMap.comp_apply, Algebra.linearMap_apply]`.
+
+Conclude with `(_root_.map_ne_zero _).mpr hφ`. Apply `hf` to reduce the goal to its premises. Use `Submodule.iSup_induction (motive := fun g : D →ₗ[U] F => g x = 0) _ (htop (Submodule.mem_top (x := f))) (fun s g hg => ?_) rfl (fun g h hg hh => by simp [hg, hh])` and prove the remaining obligations. Establish `h1 : ∀ a y, g (a • y) = s a * g y`. Introduce `a y`.
+
+Use `(Submodule.mem_iInf _).mp hg a` as an intermediate fact. Rewrite `this` using `[End.mem_eigenspace_iff]`. Use `LinearMap.congr_fun this y` as an intermediate fact. Simplify `this` using `[hr]`. Establish `h2 : ∀ c y, g (m c y) = algebraMap U F c * g y`.
+
+Introduce `c y`. Rewrite using `[← hm, g.map_smul, Algebra.smul_def]`. Conclude with `hx s g.toAddMonoidHom ⟨h1, h2⟩`.
+-/
 theorem eq_zero_of_forall_letterHom {L U D F k : Type} [Field L] [Field U] [AddCommGroup D] [Module L D]
     (m : U →+* Module.End L D) [Field F] [Field k] [Algebra k L] [Algebra k U] [Algebra k F]
     [Algebra U F] [IsScalarTower k U F] [IsAlgClosed F] [FiniteDimensional k L]

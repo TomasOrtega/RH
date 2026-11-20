@@ -6,6 +6,21 @@ open GlobalTheory.KZ
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `m`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨Subsingleton.elim _ _, fun r _ => Subsingleton.elim _ _⟩`. Establish `hx0 : x ≠ 0`. Introduce `h`.
+
+Rewrite `h1` using `[h]`. Simplify using `at h1`. Establish `hxo : x.order = -1`. Use `le_antisymm (HahnSeries.order_le_of_coeff_ne_zero (by rw [h1]; exact one_ne_zero)) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hx0 (HahnSeries.coeff_order_eq_zero.mp (hlt _ hc))`. Establish `hxl : x.leadingCoeff = 1`. Rewrite using `[HahnSeries.leadingCoeff_eq, hxo, h1]`. Establish `key : ∀ n : ℕ, (x ^ n).order = -(n : ℚ) ∧ (x ^ n).leadingCoeff = 1`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hne : (x ^ n).leadingCoeff * x.leadingCoeff ≠ 0`.
+
+Rewrite using `[ih.2, hxl, one_mul]`. Conclude with `one_ne_zero`. Rewrite using `[pow_succ, HahnSeries.order_mul_of_ne_zero hne, HahnSeries.leadingCoeff_mul_of_ne_zero hne, ih.1, ih.2, hxo, hxl]`. Prove the components needed by the constructor for the conclusion. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Take `⟨ho, hl⟩` from `key m`. Use `⟨?_, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[← ho, ← HahnSeries.leadingCoeff_eq, hl]`.
+
+Conclude with `HahnSeries.coeff_eq_zero_of_lt_order (by rw [ho]; exact hr)`.
+-/
 theorem hahn_pow_neg_one_lead {R : Type} [CommRing R] (x : HahnSeries ℚ R)
     (h1 : x.coeff (-1) = 1) (hlt : ∀ r : ℚ, r < -1 → x.coeff r = 0) :
     ∀ m : ℕ, (x ^ m).coeff (-(m : ℚ)) = 1 ∧ ∀ r : ℚ, r < -(m : ℚ) → (x ^ m).coeff r = 0 := by

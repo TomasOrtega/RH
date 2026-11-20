@@ -12,6 +12,11 @@ def cBpp {N : ℕ} (ε : Fin N → Bool) (z : cBNC ε → ℂ) : Matrix (Fin N) 
   fun a b => if h : a < b ∧ ε a ≠ ε b then z ⟨(a, b), h⟩
     else if h' : b < a ∧ ε b ≠ ε a then star (z ⟨(b, a), h'⟩) else 0
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, cBpp]`. Distinguish the cases in `h1 : a < b ∧ ε a ≠ ε b`. Establish `h2 : ¬ (b < a ∧ ε b ≠ ε a)` using `fun h => absurd h1.1 (not_lt.2 h.1.le)`. Rewrite using `[dif_neg h2, dif_pos h1, dif_pos h1, star_star]`.
+
+Distinguish the cases in `h3 : b < a ∧ ε b ≠ ε a`. Rewrite using `[dif_pos h3, dif_neg h1, dif_pos h3]`. Simplify using `[h1, h3]`.
+-/
 theorem cBpp_herm {N : ℕ} (ε : Fin N → Bool) (z : cBNC ε → ℂ) : (cBpp ε z).IsHermitian := by
   ext a b
   simp only [Matrix.conjTranspose_apply, cBpp]

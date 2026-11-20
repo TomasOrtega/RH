@@ -26,6 +26,9 @@ def rootNorm (N j : ℕ) (cW cΩ : ℝ) (GW : Matrix (Fin j) (Fin j) ℂ) (GΩ :
   if hi : (i : ℕ) < j then GlobalTheory.GradedNorm.grSq (wLine cW GW Z) ⟨i, hi⟩
   else (GlobalTheory.GradedNorm.grSq (oLine cΩ GΩ Z) ⟨N - 1 - i, by have := i.isLt; omega⟩)⁻¹
 
+/- English proof (translation)
+Simplify using `[modelHodgeGram, modelFrame]`.
+-/
 example {p q : ℕ} : modelHodgeGram (0 : Matrix (Fin p) (Fin q) ℂ) = fromBlocks (-1) 0 0 1 := by
   simp [modelHodgeGram, modelFrame]
 

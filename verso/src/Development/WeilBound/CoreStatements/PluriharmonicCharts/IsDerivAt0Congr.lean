@@ -11,6 +11,15 @@ noncomputable section
 
 namespace PositivityTheory.Xgp.c_bm_exists_period
 
+/- English proof (translation)
+Set `gm` to `Spec.preimage (X.fromSpecStalk (centre z) ≫ q)`. Establish `hgm : Spec.map gm = X.fromSpecStalk (centre z) ≫ q` using `Spec.map_preimage _`. Use `⟨h, gm.hom a, ?_, ?_⟩` and prove the remaining obligations. Establish `e : Spec.map (CommRingCat.ofHom ((genMap ξ (⟨centre z, h⟩ : Cpt ξ)).comp gm.hom)) = spMap α`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hgm, ← Category.assoc]`. Conclude with `congrArg (· ≫ q) (LieTangent.spec_genMap ξ _)`. Use `_ = spMap α := hα`. Use `congrArg CommRingCat.Hom.hom (Spec.map_injective e)` as an intermediate fact. Conclude with `DFunLike.congr_fun this a`.
+
+Establish `e : Spec.map (CommRingCat.ofHom ((Scheme.stalkClosedPointTo z).hom.comp gm.hom)) = spMap β`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg (· ≫ q) (LieTangent.spec_centre z)`. Use `_ = spMap β := hβ`. Use `congrArg CommRingCat.Hom.hom (Spec.map_injective e)` as an intermediate fact.
+
+Conclude with `DFunLike.congr_fun this a`.
+-/
 theorem valAt_cst {X : Scheme.{0}} {Ω O R : Type} [Field Ω] [CommRing O] [CommRing R] [IsLocalRing R]
     {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt ξ ⤳ centre z) (q : X ⟶ Sp O) {α : O →+* Ω} {β : O →+* R}
     (hα : ξ ≫ q = spMap α) (hβ : z ≫ q = spMap β) (a : O) : ValAt ξ z (α a) (β a) := by
@@ -36,6 +45,11 @@ theorem valAt_cst {X : Scheme.{0}} {Ω O R : Type} [Field Ω] [CommRing O] [Comm
     have := congrArg CommRingCat.Hom.hom (Spec.map_injective e)
     exact DFunLike.congr_fun this a
 
+/- English proof (translation)
+Take `⟨hc, v, ⟨h1, h2⟩, h3⟩` from `h`. Use `⟨hc, v ≫ f, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `IsTanAt at h1 ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, h1, ← Over.comp_left, MonObj.one_comp]`. Rewrite using `[hA e, Over.comp_left, Over.comp_left, h2]`.
+
+Conclude with `Category.assoc _ _ _`. Rewrite using `[Over.comp_left, Over.comp_left, h3]`. Conclude with `Category.assoc _ _ _`.
+-/
 theorem lieValAt_end {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
     {V : Type} [AddCommGroup V] [Module Ω V] {M : LieModel G ξ V} {R : Type} [CommRing R] [IsLocalRing R]
     {z : Spec (CommRingCat.of R) ⟶ X} {f : G ⟶ G} [IsMonHom f] {A : V →ₗ[Ω] V} (hA : M.IsDiffOf f A) {e : V}
@@ -49,12 +63,22 @@ theorem lieValAt_end {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRin
   · rw [Over.comp_left, Over.comp_left, h3]
     exact Category.assoc _ _ _
 
+/- English proof (translation)
+Use `⟨h.1.trans he.self_of_nhds.symm, fun U hU f => (h.2 U hU f).trans ?_⟩` and prove the remaining obligations. Establish `: (fun z => valAt' (e' z) U f) =ᶠ[nhds 0] fun z => valAt' (e z) U f` using `he.mono fun z hz => by simp only [hz]`. Rewrite using `[this.fderiv_eq]`.
+-/
 theorem isDerivAt0_congr {g : ℕ} {X : Scheme.{0}} {e e' : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ}
     {v : Sp (DualNumber ℂ) ⟶ X} (h : IsDerivAt0 e w v) (he : ∀ᶠ z in nhds 0, e' z = e z) : IsDerivAt0 e' w v := by
   refine ⟨h.1.trans he.self_of_nhds.symm, fun U hU f => (h.2 U hU f).trans ?_⟩
   have : (fun z => valAt' (e' z) U f) =ᶠ[nhds 0] fun z => valAt' (e z) U f := he.mono fun z hz => by simp only [hz]
   rw [this.fderiv_eq]
 
+/- English proof (translation)
+Establish `hu : Algebra.FormallyUnramified ℚ F` using `Algebra.FormallyUnramified.of_isSeparable ℚ F`. Establish `h` using `Algebra.FormallyUnramified.ext' (R := ℚ) (A := F) (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ⟨2, by`. Rewrite using `[Submodule.zero_eq_bot, eq_bot_iff, sq, Ideal.mul_le]`. Introduce `a ha b hb`. Establish `ha' : a.fst = 0` using `ha`.
+
+Establish `hb' : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hb']⟩`. Use the proof step `δ.toRatAlgHom ((algebraMap ℂ (DualNumber ℂ)).comp ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp δ)).toRatAlgHom`. Use the proof step `(fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl])`.
+
+Conclude with `RingHom.ext fun x => DFunLike.congr_fun h x`.
+-/
 theorem hom_dual_const {F : Type} [Field F] [NumberField F] (δ : F →+* DualNumber ℂ) :
     δ = (algebraMap ℂ (DualNumber ℂ)).comp ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp δ) := by
   have hu : Algebra.FormallyUnramified ℚ F := Algebra.FormallyUnramified.of_isSeparable ℚ F
@@ -72,6 +96,45 @@ theorem hom_dual_const {F : Type} [Field F] [NumberField F] (δ : F →+* DualNu
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Set `ea` to `Fintype.equivFin A`. Take `⟨W, hW, v, hq, htan, hval⟩` from `GlobalTheory.T.lattice_tangent_vectors_affine_open 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ⟨centre (p 0), 𝔐.all _⟩ _ (fun k => b (ea.symm k)) 𝔐.tie.gen (fun k => hlat _)`. Establish `hW0 : ⊤ ≤ p 0 ⁻¹ᵁ W` using `fun x _ => by`. Establish `: x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`.
+
+Substitute `this` using the available equality. Conclude with `hq`. Take `⟨ρ₁, ψ, hρ₁, hρ₁', hψ, hψp⟩` from `GlobalTheory.T.holomorphic_disc_in_affine_open 𝔐.X W hW n p hp hW0`. Establish `hp₁ : IsHolTo (Metric.ball 0 1) (fun u => spMap (ψ u))` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap Metric.isOpen_ball hψ.2`. Take `⟨tW, ⟨mW⟩⟩` from `exists_sab hW.fromSpec 𝔐.t`.
+
+Take `⟨mY, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp 𝔐.m mW`. Take `⟨ρ₂, C, h, κ, hρ₂, hρ₂', ⟨mC⟩, hκ₁, hκ₂, hC⟩` from `exists_chart Y _ (hW.fromSpec ≫ 𝔐.f) tW mY τ n (fun u => spMap (ψ u)) hp₁ (fun u hu => by`. Use `hc _ (FramePeriods.smul_mem_ball' hρ₁ hρ₁' hu)` as an intermediate fact. Rewrite `this` using `[← hψp u hu]`. Simplify using `using this)`.
+
+Use the proof step `(fun u hu x hx => FramePeriods.interior_range 𝔐 _ (hi _ (FramePeriods.smul_mem_ball' hρ₁ hρ₁' hu.1)) x (by`. Rewrite using `[hx, ← hψp u hu.1, Category.assoc]))`. Take `⟨θ, hθ⟩ : ∃ θ : Γ(𝔐.X, W) →+* C.R, spMap θ = h` from `⟨(Spec.preimage h).hom, Spec.map_preimage _⟩`. Substitute `hθ` using the available equality. Take `⟨mX, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mW mC`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.T.abelian_map_tangent_coordinates E H 𝔐.X 𝔐.t Γ(𝔐.X, W) hW.fromSpec _ v C.R C.t θ mX C.g C.M htan`. Establish `hw : ∀ z : Fin n → ℂ, ∃ w : A → (epsAt (spMap (C.ψ z) ≫ spMap θ ≫ hW.fromSpec) ⟶ 𝔐.t.G), (∀ k, 𝔐.M.ValAt _ (b k) (w k)) ∧ ∀ k, (w k).left = spMap (dualMap (C.ψ z)) ≫ (C.M.pt (x (ea k))).left ≫ mX.φ` using `fun z => by`. Establish `e : spMap ((C.ψ z).comp θ) ≫ hW.fromSpec = spMap (C.ψ z) ≫ spMap θ ≫ hW.fromSpec`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
+
+Conclude with `Spec.map_comp _ _`. Use `choose w hw1 hw2 using hval ((C.ψ z).comp θ) _ e (𝔐.all _)`. Use `⟨fun k => w (ea k), fun k => by simpa using hw1 (ea k), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hw2, FramePeriods.dualMap_comp', hx, Category.assoc]`. Establish `hpt : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (C.ψ z) ≫ spMap θ ≫ hW.fromSpec = p (((ρ₁ * ρ₂ : ℝ) : ℂ) • z)` using `fun z hz => by`.
+
+Rewrite using `[← Category.assoc, hC z hz, hψp _ (FramePeriods.smul_mem_ball' hρ₂ hρ₂' hz), smul_smul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hρ : 0 < ρ₁ * ρ₂` using `mul_pos hρ₁ hρ₂`. Establish `hρ' : ρ₁ * ρ₂ ≤ 1` using `mul_le_one₀ hρ₁' hρ₂.le hρ₂'`.
+
+Take `⟨i, B, P, Wv, G, hB, h0, hsub, hP, hWv, hall⟩` from `chart_periods C FU fun a => x (ea a)`. Establish `hpu : punct n 0 1 = Metric.ball 0 1` using `by ext z; simp [punct]`. Use `⟨i, ρ₁ * ρ₂, B, P, Wv, G, hρ, hρ', hB, h0, hsub, hP, hWv, fun u hu => ⟨(hall u hu).2.1, fun r f => ?_, fun a s hs t => ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨Hm, hR, hH⟩` from `(hall u hu).2.2.1`. Take `⟨w, hw1, hw2⟩` from `hw u`.
+
+Establish `hg` using `GlobalTheory.T.chart_lattice_tangent_coordinates E H D l Xo _ n 0 C 𝔐.X 𝔐.t _ mX Ω 𝔐.ξ 𝔐.Li 𝔐.M r (fun k => b (f k)) (fun k => x (ea (f k))) u Hm (fun k => w (f k)) hR (fun k => hw1 _) (fun k => hw2 _)`. Rewrite using `[← hpt u (hsub hu)]`. Use `hg using 4 with _ i' _ j'` and compare the differences between its conclusion and the goal. Rewrite using `[← hH]`. Both sides reduce to the same expression.
+
+Take `⟨w, hw1, hw2⟩` from `hw u`. Use `(hall u hu).2.2.2 a t _ ?_` and prove the remaining obligations. Establish `hint : _root_.IsIntegral ℤ (labelEmb c s t)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) t).map (labelEmb c s).toIntAlgHom`. Take `⟨h1, st, hst, hst'⟩` from `valAt_cst (z := spMap (C.ψ u) ≫ spMap θ ≫ hW.fromSpec) (𝔐.all _) (𝔐.f ≫ Y.s) 𝔐.cst_over (by`. Rewrite using `[hpt u (hsub hu)]`.
+
+Conclude with `hc _ (FramePeriods.smul_mem_ball' hρ hρ' (hsub hu))) ⟨_, hint⟩`. Establish `h2` using `(hw1 a).smul h1 st`. Use `haveI := 𝔐.t.act.hom t`. Establish `h3` using `lieValAt_end (𝔐.act t) (hw1 a)`. Establish `h4 : 𝔐.ρ t (b a) = 𝔐.emb s t • b a` using `sub_eq_zero.1 ((Submodule.mem_iInf _).1 hs t)`.
+
+Establish `h5 : genMap 𝔐.ξ ⟨_, h1⟩ st = 𝔐.emb s t` using `hst`. Establish `h6 : (Scheme.stalkClosedPointTo (spMap (C.ψ u) ≫ spMap θ ≫ hW.fromSpec)).hom st = τ (labelEmb c s t)` using `hst'`. Rewrite `h2` using `[h5, ← h4, h6]`. Establish `h7` using `congrArg CommaMorphism.left (h3.unique 𝔐.tie.gen h2)`. Take `⟨vv, hvv⟩` from `RiemGram.exists_value C.M (C.ψ u) (x (ea a))`.
+
+Rewrite using `[← hvv]`. Establish `h8 : (w a).left = vv.left ≫ mX.φ` using `by rw [hw2, hvv, Category.assoc]`. Use `mX.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Establish `h9 : (w a).left ≫ (𝔐.t.act.act t).left = spMap (Tor.epsMul (τ (labelEmb c s t))) ≫ (w a).left` using `h7`. Rewrite `h9` using `[h8, Category.assoc]`.
+
+Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `(congrArg (vv.left ≫ ·) (mX.act t)).trans h9`. Conclude with `(Over.w (vv ≫ C.t.act.act t)).trans (Over.w (LieTangent.epsScale _ (τ (labelEmb c s t)) ≫ vv)).symm`. Establish `hb0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Take `⟨v', hv'⟩` from `exists_isDerivAt0_loc (Marking.isHolTo_pt C) (hpu ▸ hb0) v`.
+
+Establish `hn : B ∈ nhds (0 : Fin n → ℂ)` using `hB.mem_nhds h0`. Establish `hpj : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, C.pt u ≫ C.j ≫ spMap θ ≫ hW.fromSpec = p (((ρ₁ * ρ₂ : ℝ) : ℂ) • u)` using `fun u hu => by`. Rewrite using `[← Category.assoc, (C.pt_eq u (hpu ▸ hu)).1, hpt u hu]`. Use `⟨v' ≫ C.j ≫ spMap θ ≫ hW.fromSpec, isDerivAt0_congr (PullbackSections.ExpRows.isDerivAt0_comp_hom hv' _) (Filter.eventually_of_mem hn fun u hu => (hpj u (hsub hu)).symm), ?_⟩` and prove the remaining obligations. Establish `h1 : IsDerivAt0 (fun u => FU.u i (P u)) v (v' ≫ C.k)` using `isDerivAt0_congr (PullbackSections.ExpRows.isDerivAt0_comp_hom hv' _) (Filter.eventually_of_mem hn fun u hu => (hall u hu).1)`.
+
+Establish `h2` using `PullbackSections.ExpRows.isDerivAt0_unique h1 (GlobalTheory.LocalLift.isDerivAt0_const _ v hv)`. Establish `h3 : v' ≫ κ = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ C.pt 0 ≫ κ`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hκ₂]`. Rewrite using `[h2, (hall 0 h0).1]`.
+
+Take `⟨δ, hδ⟩ : ∃ δ : c.F →+* DualNumber ℂ, spMap δ = v' ≫ κ ≫ pullback.snd _ _` from `⟨(Spec.preimage (v' ≫ κ ≫ pullback.snd _ _)).hom, Spec.map_preimage _⟩ haveI : FiniteDimensional ℚ c.F := c.fin haveI : NumberField c.F := ⟨⟩`. Establish `h4 : C.pt 0 = spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v'` using `hv'.1.symm`. Simplify using `only [Category.assoc, h4, ← hδ]`. Use `conv_lhs => rw [hom_dual_const δ]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Establish `h5` using `hpj 0 hb0`. Rewrite `h5` using `[smul_zero]`. Establish `h6 : C.j ≫ spMap θ ≫ hW.fromSpec ≫ 𝔐.f = κ ≫ Y.j` using `hκ₁.symm`. Rewrite using `[← h5]`. Simplify using `only [Category.assoc, h6]`.
+
+Rewrite using `[← Category.assoc, h3]`. Simplify using `only [Category.assoc]`.
+-/
 theorem model_periods {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ}
     {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
     {A : Type} [Fintype A] (b : A → 𝔐.Li) {n : ℕ} (p : (Fin n → ℂ) → (Sp ℂ ⟶ 𝔐.X)) (τ : c.F →+* ℂ)

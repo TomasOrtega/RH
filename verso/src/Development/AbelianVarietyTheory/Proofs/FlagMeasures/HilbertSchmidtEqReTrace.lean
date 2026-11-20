@@ -6,6 +6,11 @@ open Formalism.REAL (Jm hs Jm_mul_self Jm_conjTranspose)
 
 namespace GlobalTheory.LeviIso
 
+/- English proof (translation)
+Establish `hcore : Cᴴ * (Dᴴ * D * C) = yᴴ * y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (C * y)ᴴ * (C * y) := by rw [hD]`. Use `_ = yᴴ * (Cᴴ * C) * y := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = yᴴ * y := by rw [hC, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm, hcore]`.
+-/
 theorem trace_compress {n m : ℕ} (D : Matrix (Fin n) (Fin n) ℂ) (C : Matrix (Fin n) (Fin m) ℂ)
     (y : Matrix (Fin m) (Fin m) ℂ) (hC : Cᴴ * C = 1) (hD : D * C = C * y) :
     (Dᴴ * D * (C * Cᴴ)).trace = (yᴴ * y).trace := by
@@ -17,6 +22,11 @@ theorem trace_compress {n m : ℕ} (D : Matrix (Fin n) (Fin n) ℂ) (C : Matrix 
       _ = yᴴ * y := by rw [hC, Matrix.mul_one]
   rw [← Matrix.mul_assoc, Matrix.trace_mul_comm, hcore]
 
+/- English proof (translation)
+Unfold `hs`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Simplify using `[Complex.mul_re]`.
+-/
 private theorem hs_eq_re_trace_conjTranspose_mul {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : hs X = (trace (Xᴴ * X)).re := by
   unfold hs
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]
@@ -25,6 +35,17 @@ private theorem hs_eq_re_trace_conjTranspose_mul {n : ℕ} (X : Matrix (Fin n) (
   rw [Complex.sq_norm, Complex.normSq_apply]
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Introduce `n n₀ a j ε ε₀ B B₀ h x g`. Establish `hJ : ∀ i, (Jm ε * B i)ᴴ * (Jm ε * B i) = 1` using `fun i => by`. Rewrite using `[Matrix.conjTranspose_mul, Jm_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc (Jm ε), Jm_mul_self, Matrix.one_mul, h.1 i]`. Establish `hsplit : (1 : Matrix (Fin n) (Fin n) ℂ) = ∑ i, B i * (B i)ᴴ + ∑ i, (Jm ε * B i) * (Jm ε * B i)ᴴ + B₀ * B₀ᴴ`. Rewrite using `[← h.2.2.2.2.2.2]`.
+
+Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Jm_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hsub : ∀ {m : ℕ} (C : Matrix (Fin n) (Fin m) ℂ) (y : Matrix (Fin m) (Fin m) ℂ), lev ε B B₀ x g * C = C * y → (lev ε B B₀ x g - 1) * C = C * (y - 1)`.
+
+Introduce `m C y hy`. Rewrite using `[Matrix.sub_mul, hy, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`. Establish `hconj : ∀ {m : ℕ} (Y : Matrix (Fin m) (Fin m) ℂ), hs Yᴴ = hs Y`. Introduce `m Y`. Rewrite using `[hs_eq_re_trace_conjTranspose_mul, hs_eq_re_trace_conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.trace_mul_comm]`.
+
+Use `set M := lev ε B B₀ x g - 1 with hM`. Establish `eB : ∀ i, (Mᴴ * M * (B i * (B i)ᴴ)).trace = ((x i - 1)ᴴ * (x i - 1)).trace` using `fun i => trace_compress M (B i) _ (h.1 i) (hsub _ _ (h.lev_mul_B x g i))`. Establish `eJ : ∀ i, (Mᴴ * M * ((Jm ε * B i) * (Jm ε * B i)ᴴ)).trace = (((x i)⁻¹ᴴ - 1)ᴴ * ((x i)⁻¹ᴴ - 1)).trace` using `fun i => trace_compress M (Jm ε * B i) _ (hJ i) (hsub _ _ (h.lev_mul_JB x g i))`. Establish `e0 : (Mᴴ * M * (B₀ * B₀ᴴ)).trace = ((g - 1)ᴴ * (g - 1)).trace` using `trace_compress M B₀ _ h.2.2.2.2.1 (hsub _ _ (h.lev_mul_B₀ x g))`. Rewrite using `[hs_eq_re_trace_conjTranspose_mul, ← Matrix.mul_one (Mᴴ * M), hsplit]`.
+
+Simplify using `only [Matrix.mul_add, Matrix.mul_sum, Matrix.trace_add, Matrix.trace_sum, Complex.add_re, Complex.re_sum, eB, eJ, e0, Finset.sum_add_distrib]`. Establish `hinv : ∀ i, (x i)⁻¹ᴴ - 1 = ((x i)⁻¹ - 1)ᴴ` using `fun i => by`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one]`. Simplify using `only [hinv, ← hs_eq_re_trace_conjTranspose_mul, hconj]`.
+-/
 theorem hs_lev_sub_one : ∀ (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool)
     (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ), IsFrame ε ε₀ B B₀ →
     ∀ (x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (g : Matrix (Fin n₀) (Fin n₀) ℂ),

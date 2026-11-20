@@ -4,12 +4,18 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Simplify using `only [mapP, Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun p => MvPolynomial.map_map f g p`.
+-/
 private theorem mapP_mapP {R B C ι : Type} [CommRing R] [CommRing B] [CommRing C] (f : R →+* B) (g : B →+* C)
     (N : Polynomial (MvPolynomial ι R)) : mapP g (mapP f N) = mapP (g.comp f) N := by
   simp only [mapP, Polynomial.map_map]
   congr 1
   exact RingHom.ext fun p => MvPolynomial.map_map f g p
 
+/- English proof (translation)
+Rewrite using `[hPP C C' ρ ι J I a (fun j i k => z j i (s j k))]`. Repeatedly rewrite using `[← h]`. Rewrite using `[← mapP_mapP]`. Use `congr 1`. Simplify using `only [mapP, Polynomial.map_prod, Polynomial.map_pow]`.
+-/
 private theorem step_one (hPP : PtsProd) {R C C' ι J : Type} [CommRing R] [CommRing C] [CommRing C'] [Algebra R C]
     [Fintype ι] [Fintype J] (S : J → Type) [∀ j, CommRing (S j)] [∀ j, Algebra R (S j)]
     (N : J → Polynomial (MvPolynomial ι R)) (a : J → ℕ) (s : ∀ j, ι → S j) (ρ : C →+* C')
@@ -22,6 +28,15 @@ private theorem step_one (hPP : PtsProd) {R C C' ι J : Type} [CommRing R] [Comm
   congr 1
   simp only [mapP, Polynomial.map_prod, Polynomial.map_pow]
 
+/- English proof (translation)
+Introduce `hNR hVL hPP hCR l R _ 𝔞 hB J _ S _ _ d hS a b ι _ s hV B _ _ hl I _ z hz B' _ ρ hρ`. Use `choose N hN using fun j => hNR l (d j) R (S j) (hS j) hB.closed ι (s j)`. Establish `hB1 : ∀ j, mapP (algebraMap R B) (N j) = ∏ i, form fun k => z j i (s j k)` using `fun j => (hN j).1 B hl (I j) (z j) (hz j)`. Establish `key : mapP (ρ.comp (algebraMap R B)) (∏ j, N j ^ a j) = mapP (ρ.comp (algebraMap R B)) (∏ j, N j ^ b j)`. Use `hCR R 𝔞 hB.rad ι _ _ ?_ B' _ hρ` and prove the remaining obligations.
+
+Introduce `𝔭 hp`. Use `haveI : 𝔭.IsPrime := hp.1.1`. Take `⟨V, _, _, _, _, _, hl', hc⟩` from `hVL R (l : R) hB.nzd 𝔭`. Establish `hl0 : (l : V) ≠ 0` using `by simpa using hl'`. Use `⟨IsLocalRing.ResidueField V, inferInstance, (IsLocalRing.residue V).comp (algebraMap R V), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← RingHom.comap_ker, IsLocalRing.ker_residue, hc]`. Establish `hfin : ∀ j, Finite (S j →ₐ[R] V)` using `fun j => ((hN j).2 V hl0).1`. Use `letI : ∀ j, Fintype (S j →ₐ[R] V) := fun j => @Fintype.ofFinite _ (hfin j)`. Establish `hV1 : ∀ j, mapP (algebraMap R V) (N j) = ∏ i : S j →ₐ[R] V, form fun k => i (s j k)` using `fun j => ((hN j).2 V hl0).2 (S j →ₐ[R] V) id Function.bijective_id`. Establish `hm` using `hV V hl0 (by rw [hc]; exact hp) (fun j => S j →ₐ[R] V) (fun j i => i) (fun j => Function.bijective_id)`.
+
+Rewrite using `[← step_one hPP S N a s (IsLocalRing.residue V) (fun j => S j →ₐ[R] V) (fun j i => i) hV1, ← step_one hPP S N b s (IsLocalRing.residue V) (fun j => S j →ₐ[R] V) (fun j i => i) hV1, hm]`. Use `show ((pts a fun j i k => ρ (z j i (s j k))).map form).prod = ((pts b fun j i k => ρ (z j i (s j k))).map form).prod`. Rewrite using `[step_one hPP S N a s ρ I z hB1, step_one hPP S N b s ρ I z hB1, key]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.sameNormRing_of :
     NormRead → ValLift → PtsProd → CongrRad → SameNormRing := by
   intro hNR hVL hPP hCR l R _ 𝔞 hB J _ S _ _ d hS a b ι _ s hV B _ _ hl I _ z hz B' _ ρ hρ

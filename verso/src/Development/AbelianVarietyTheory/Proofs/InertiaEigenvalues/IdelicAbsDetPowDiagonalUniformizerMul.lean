@@ -23,6 +23,11 @@ open Matrix
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hpos` using `(GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g)).2`. Rewrite using `[Real.rpow_def_of_pos hpos, ← GlobalTheory.IdeleLogNormCompare.logNorm_eq_log_ideleModule]`. Simplify using `only [GlobalTheory.RSJ.detPow, chiDet, GlobalTheory.HeckeGal.Model.absPow, MonoidHom.coe_comp, Function.comp_apply]`. Express the relevant statement in the definitionally equal form `‖Complex.exp ((x : ℂ) * (GlobalTheory.Mem.Chr.CharModel.logNorm E (GeneralLinearGroup.det g) : ℂ))‖ = _`. Rewrite using `[Complex.norm_exp]`.
+
+Use `congr 1`. Simplify using `[mul_comm]`.
+-/
 theorem detPow_eq_rpow {n : ℕ} (x : ℝ) (g : GA E n) :
     GlobalTheory.RSJ.detPow E n x g =
       ((GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ) := by
@@ -34,6 +39,9 @@ theorem detPow_eq_rpow {n : ℕ} (x : ℝ) (g : GA E n) :
   congr 1
   simp [mul_comm]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GeneralLinearGroup.val_det_apply, GlobalTheory.SmGL.val_diagT, det_diagonal, Units.coe_prod]`.
+-/
 theorem det_diagT {R : Type} [CommRing R] {n : ℕ} (t : Fin n → Rˣ) :
     GeneralLinearGroup.det (GlobalTheory.SmGL.diagT R (Fin n) t) = ∏ i, t i := by
   apply Units.ext
@@ -44,6 +52,9 @@ def posVal : {r : ℝ // 0 < r} →* ℝ where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (Nat.cast_nonneg _) (GlobalTheory.AdeleScale.qV_ne_zero v).symm`.
+-/
 theorem qV_pos (v : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < qV E v :=
   lt_of_le_of_ne (Nat.cast_nonneg _) (GlobalTheory.AdeleScale.qV_ne_zero v).symm
 
@@ -51,6 +62,19 @@ end GlobalTheory.CellEvalDet
 
 open GlobalTheory.CellEvalDet Matrix in
 
+/- English proof (translation)
+Introduce `E _ _ _ n ϖ hϖ l x g`. Rewrite using `[GlobalTheory.RSJ.Model.detPow_mul, detPow_eq_rpow x (GlobalTheory.CellDec.tl n ϖ l)]`. Use `congr 1`. Establish `hdet : GeneralLinearGroup.det (GlobalTheory.CellDec.tl n ϖ l) = ∏ i, finId E (GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun y : Fin n → ℤ => y i) rfl l))`. Unfold `GlobalTheory.CellDec.tl`.
+
+Rewrite using `[det_finGL, det_diagT, map_prod]`. Establish `hmod : ((GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det (GlobalTheory.CellDec.tl n ϖ l)) : ℝ)) = ∏ i, ∏ v ∈ l.support, ((qV E v : ℝ) ^ (l v i))⁻¹`. Rewrite using `[hdet, map_prod]`. Express the relevant statement in the definitionally equal form `posVal (∏ i, _) = _`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _`. Rewrite using `[GlobalTheory.AdeleScale.ideleModule_finId_adl ϖ hϖ _ l.support (fun v hv => by`. Rewrite `hv` using `[Finsupp.notMem_support_iff]`. Simplify using `[hv])]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hmod, Finset.prod_comm, ← Real.finset_prod_rpow _ _ (fun v _ => Finset.prod_nonneg fun i _ => inv_nonneg.2 (zpow_nonneg (Nat.cast_nonneg _) _))]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hq` using `qV_pos (E := E) v`. Establish `e : ∀ i, ((qV E v : ℝ) ^ (l v i))⁻¹ = (qV E v : ℝ) ^ (-(l v i : ℝ))` using `fun i => by`.
+
+Rewrite using `[Real.rpow_neg hq.le, Real.rpow_intCast]`. Repeatedly rewrite using `[e]`. Rewrite using `[← Real.rpow_sum_of_pos hq, ← Real.rpow_mul hq.le]`. Use `congr 1`. Rewrite using `[Finset.sum_neg_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.CellEvalDet.detPow_tl_mul : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ)
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →
     ∀ (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (x : ℝ) (g : GA E n),

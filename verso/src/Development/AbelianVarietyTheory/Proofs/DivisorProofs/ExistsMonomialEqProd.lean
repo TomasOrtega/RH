@@ -26,6 +26,9 @@ open MvPolynomial
 
 namespace GlobalTheory.TrivFlag
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨Fin.append (fun _ => a₀) ν, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_prod_ite {α : Type} {D k n : ℕ} (h : D = k + n) (a₀ : α) (ν : Fin n → α) :
     ∃ ν' : Fin D → α, ∀ b : α, ∏ j : Fin D, (X (if (j : ℕ) < k then b else ν' j) : MvPolynomial α ℝ) =
       X b ^ k * ∏ j, X (ν j) := by
@@ -34,6 +37,11 @@ theorem exists_prod_ite {α : Type} {D k n : ℕ} (h : D = k + n) (a₀ : α) (�
   rw [Fin.prod_univ_add]
   simp
 
+/- English proof (translation)
+Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨0, Fin.elim0, by simp⟩`. Consider the case `add u v hu hv`. Take `⟨n, ν, h⟩` from `hu`. Take `⟨n', ν', h'⟩` from `hv`.
+
+Use `⟨n + n', Fin.append ν ν', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, ← h, ← h', monomial_mul, mul_one]`. Consider the case `single a n => exact ⟨n, fun _ => a, by simp [X_pow_eq_monomial]⟩`.
+-/
 theorem exists_monomial_eq_prod {α : Type} (u : α →₀ ℕ) :
     ∃ (n : ℕ) (ν : Fin n → α), (monomial u 1 : MvPolynomial α ℝ) = ∏ j, X (ν j) := by
   induction u using Finsupp.induction_linear with
@@ -46,11 +54,19 @@ theorem exists_monomial_eq_prod {α : Type} (u : α →₀ ℕ) :
     simp only [Fin.append_left, Fin.append_right, ← h, ← h', monomial_mul, mul_one]
   | single a n => exact ⟨n, fun _ => a, by simp [X_pow_eq_monomial]⟩
 
+/- English proof (translation)
+Simplify using `[lin, Pi.single_apply, apply_ite, ite_mul]`.
+-/
 theorem lin_single {ι : Type} [Fintype ι] (i : ι) : lin (Pi.single i 1 : ι → ℝ) = X i := by
   simp [lin, Pi.single_apply, apply_ite, ite_mul]
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, lg'⟩` from `A'`. Consider the cases of `e`. Use `(GlobalTheory.T.norms_tensor_product F Y V _ _ _ _ _ _ _ _ h (GlobalTheory.T.norms_dual_bundle F Y V _ _ _ _ h')).congr (fun x => ?_) (fun σ y => ?_) fun v ε y => ?_` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ (Units.ne_zero _))`. Conclude with `add_neg_cancel _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norms_div {V : Cover Y} {A A' : Adl (cxSt F) Y} {L L' : HermLB V.p} {m : ℕ} (e : A' = { A with lg := A'.lg })
     (h : Norms V L (fun x => genAt A.D x ^ m) (fun σ y => m * lnAdl A σ y) fun v e y => m * A.lg v e y)
     (h' : Norms V L' (fun x => genAt A'.D x ^ m) (fun σ y => m * lnAdl A' σ y) fun v e y => m * A'.lg v e y) :
@@ -63,6 +79,11 @@ theorem norms_div {V : Cover Y} {A A' : Adl (cxSt F) Y} {L L' : HermLB V.p} {m :
   · exact add_neg_cancel _
   · ring
 
+/- English proof (translation)
+Establish `h0 : (p : Γ(Z, ⊤)) = 0` using `by rw [← map_natCast (algebraMap (ZMod p) Γ(Z, ⊤)), ZMod.natCast_self, map_zero]`. Establish `hf` using `finiteCohTwists_of_isProjOver (f := strHom (ZMod p) Z) (algebraMap_eq_strHom _ Z) (structureModule Z) hZ`. Establish `HD` using `diffVanish_chiPic_of_isProjOver (f := strHom (ZMod p) Z) (algebraMap_eq_strHom _ Z) (structureModule Z) hZ (d := D) (by rw [QCoh.suppDim_structureModule, hd])`. Establish `key (a : ℕ) : FlagOfTriv fun i => p ^ a • g i`. Proceed by induction on `a with`.
+
+Consider the case `zero => simpa using hg`. Consider the case `succ a ih => simpa only [smul_smul, pow_succ'] using GlobalTheory.T.flag_trivial_nsmul_char_p p hp.out Z h0 N _ ih`. Rewrite using `[← GlobalTheory.T.multi_difference_vanishes_of_invariance _ _ D HD N g p hp.out.two_le (fun a => GlobalTheory.T.sum_euler_char_twists_flag_trivial _ Z hf N _ (key a)) m D S hS P]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [interNum_eq_multiDiff _ _ (hB i), funext (h i)]`.
+-/
 theorem sum_interNum_eq_zero (p : ℕ) [hp : Fact p.Prime] (Z : Scheme.{0}) [IsIntegral Z] [Algebra (ZMod p) Γ(Z, ⊤)]
     (hZ : IsProjOver (strHom (ZMod p) Z)) {D : ℕ} (hd : topologicalKrullDim Z = D) {N : ℕ} {g : Fin N → Pic Z}
     (hg : FlagOfTriv g) (m : ℕ) (S : Finset (Fin D)) (hS : S.Nonempty) (B : Fin N → Fin D → LB Z)
@@ -79,6 +100,15 @@ theorem sum_interNum_eq_zero (p : ℕ) [hp : Fact p.Prime] (Z : Scheme.{0}) [IsI
   rw [← GlobalTheory.T.multi_difference_vanishes_of_invariance _ _ D HD N g p hp.out.two_le (fun a => GlobalTheory.T.sum_euler_char_twists_flag_trivial _ Z hf N _ (key a)) m D S hS P]
   exact Finset.sum_congr rfl fun i _ => by rw [interNum_eq_multiDiff _ _ (hB i), funext (h i)]
 
+/- English proof (translation)
+Use `haveI : IsLocallyNoetherian V.X := V.ar.isLocallyNoetherian`. Use `haveI : IsNoetherian V.X := V.ar.isNoetherian`. Take `⟨r, hr, h1, hmult⟩` from `GlobalTheory.T.local_height_bounded_by_prime_weights F Y V M lg hM {p} (fun _ => b) (by simpa using ⟨hp.out, hb⟩) (by simpa only [Finset.mem_singleton] using hlg)`. Establish `key (z : V.X) : ∃ d : T → ℝ, ∑ t, d t = 0 ∧ ((M.div hr).mult z ≠ 0 → ∀ t, ∃ (_ : Fact p.Prime) (Z : Scheme.{0}) (i : Z ⟶ V.X) (_ : IsClosedImmersion i) (_ : IsIntegral Z) (_ : Algebra (ZMod p) Γ(Z, ⊤)), i (genericPoint Z) = z ∧ topologicalKrullDim Z = Y.dim ∧ d t = interNum (ZMod …`. Distinguish the cases in `hz : (M.div hr).mult z = 0`.
+
+Conclude with `⟨0, by simp, fun h => absurd hz h⟩`. Establish `hpos : 0 < Scheme.ord ((p : V.X.functionField)) z`. Use `lt_of_le_of_ne ((GlobalTheory.T.prime_divisors_effective_finite_disjoint _ V.X V.p _ V.ar p hp.out).1 z) fun e => hz ?_` and prove the remaining obligations. Use `hmult z` as an intermediate fact. Rewrite `this` using `[Finset.sum_singleton, ← e, Int.cast_zero, mul_zero]`.
+
+Conclude with `abs_nonpos_iff.1 this` after adjusting the coercions. Take `⟨Z, i, hi, hZ, hA, e₁, e₂⟩` from `GlobalTheory.T.exists_integral_subscheme_prime_fibre _ V.X V.p _ V.ar p z hpos`. Conclude with `⟨fun t => interNum (ZMod p) (structureModule Z) fun j => (N t j).B.pull i, by beta_reduce; exact_mod_cast h Z i e₂, fun _ t => ⟨hp, Z, i, hi, hZ, hA, e₁, e₂, rfl⟩⟩`. Use `choose d hd₀ hd using key`. Establish `hfin : (Function.support (M.div hr).mult).Finite` using `(M.div hr).finite_support_mult`.
+
+Establish `e (t : T) : num (Fin.cons (cl M) fun j => cl (N t j)) = ∑ z ∈ hfin.toFinset, ((M.div hr).mult z : ℝ) * d z t * Real.log p`. Rewrite using `[GlobalTheory.T.height_of_rational_section_via_divisor hP _ V.X V.p _ V.ar num hn M r hr h1 (N t) (fun _ => p) (fun z => d z t) fun z hz => hd z hz t]`. Conclude with `finsum_eq_sum_of_support_subset _ fun z hz => hfin.mem_toFinset.2 fun h0 => hz (by simp [h0])`. Rewrite using `[Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun z _ => by rw [← Finset.sum_mul, ← Finset.mul_sum, hd₀, mul_zero, zero_mul]`.
+-/
 theorem sum_num_cons_eq_zero (hP : Hypotheses2) (V : Cover Y) (num : Form (Cl V.p) Y.dim) (hn : IsArForm Y.dim num)
     (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ)
     (hM : Norms V M (fun _ => 1) (fun _ _ => 0) lg) (p : ℕ) [hp : Fact p.Prime] (b : ℝ) (hb : 0 ≤ b)
@@ -114,6 +144,27 @@ theorem sum_num_cons_eq_zero (hP : Hypotheses2) (V : Cover Y) (num : Form (Cl V.
   rw [Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]
   exact Finset.sum_eq_zero fun z _ => by rw [← Finset.sum_mul, ← Finset.mul_sum, hd₀, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Establish `hC` using `hP.p4`. Take `⟨V, hF⟩` from `hfl`. Take `⟨V', π, L', d, hπ, hl, hd, hL', hΦ⟩` from `GlobalTheory.T.exists_cover_induced_metrics_arith hC F Y M V ι A L m Ψ hI hΨ`. Use `(mul_eq_zero.1 (show d * _ = 0 from ?_)).resolve_left hd` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(d • Ψ) _ = 0`. Generalize the expression as in `d • Ψ = Φ at hΦ`. Take `⟨num, hn, -⟩` from `GlobalTheory.T.arith_intersection_form_exists hC _ _ V'.p _ V'.ar`. Take `⟨rt, rd, -, -⟩` from `GlobalTheory.T.arith_class_form_properties hC _ _ V'.p _ V'.ar num hn`. Proceed by induction on `g using MvPolynomial.induction_on' with`.
+
+Consider the case `add P Q hP hQ => rw [mul_add, mul_add, map_add, hP, hQ, add_zero]`. Consider the case `monomial u a`. Take `⟨n, ν, hν⟩` from `exists_monomial_eq_prod u`. Establish `e₁ : (monomial u a : MvPolynomial ι ℝ) = a • ∏ j, X (ν j)` using `by rw [← hν, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e₁, mul_smul_comm, mul_smul_comm, map_smul, smul_eq_zero]`.
+
+Use `.inr ?_` and prove the remaining obligations. Distinguish the cases in `hD : Y.dim = k + n`. Use `swap`. Use `hΦ.2 _ (k + (1 + ∑ _j : Fin n, 1)) (by simp; omega) ?_` and prove the remaining obligations. Conclude with `(IsHomogeneous.sum _ _ _ fun a _ => isHomogeneous_X_pow _ _).mul (((isHomogeneous_X _ _).sub (isHomogeneous_X _ _)).mul (IsHomogeneous.prod _ _ _ fun j _ => isHomogeneous_X _ _))`.
+
+Take `⟨ν', hν'⟩` from `exists_prod_ite hD i₀ ν`. Establish `hv` using `sum_num_cons_eq_zero hP V' num hn _ _ (norms_div e (hL' i₀) (hL' i₁)) p ((m : ℕ) * b) (by positivity) (fun v ε y => by`. Rewrite using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`. Use `(mul_le_mul_of_nonneg_left (hlg v ε y) (Nat.cast_nonneg _)).trans_eq ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring)`.
+
+Use the proof step `(fun a j => L' (if (j : ℕ) < k then s a else ν' j)) (fun Z i _ _ _ hZ => by`. Establish `h0 : (p : Γ(Z, ⊤)) = 0` using `by rw [← map_natCast (algebraMap (ZMod p) Γ(Z, ⊤)), ZMod.natCast_self, map_zero]`. Take `⟨g, hg, hg'⟩` from `hF V' π hπ hl (fun a => (L' (s a)).B) (fun a => (L' (s a)).isLB) m (fun a => normsAt_of_norms (hL' (s a)) p ⊤) Z i h0`. Use `sum_interNum_eq_zero p Z (GlobalTheory.T.closed_subscheme_proj_over_mod_l _ _ _ _ V'.ar Z i p) hZ hg m (Finset.univ.filter fun j => (j : ℕ) < k) ⟨⟨0, by omega⟩, by simpa using Nat.lt_of_succ_le hk⟩ _ (fun a j => LB.isLB_pull (L' _).isLB i) (fun j => CechPic.pull i (cls _ (L' (ν' …` and prove the remaining obligations. Rewrite using `[cls_pull (L' _).isLB i]`.
+
+Distinguish the cases in `hj : (j : ℕ) < k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hj, if_true, hg']`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hj, if_false])`. Rewrite using `[← hv, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `hn ι L' Φ hΦ (Fin.cons (Pi.single i₀ 1 - Pi.single i₁ 1) fun j => Pi.single (if (j : ℕ) < k then s a else ν' j) 1)` as an intermediate fact. Establish `e₂ : lin (Pi.single i₀ 1 - Pi.single i₁ 1 : ι → ℝ) = X i₀ - X i₁`. Rewrite using `[← lin_single, ← lin_single]`. Simplify using `only [lin, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Rewrite `this` using `[Fin.prod_univ_succ, Fin.cons_zero, e₂]`.
+
+Simplify using `only [Fin.cons_succ, lin_single, hν'] at this`. Rewrite using `[mul_left_comm, this]`. Use `map_congr_rad num fun j => Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h₁` using `neg_mem (add_mem (rt (L' i₀) (L' i₁).dual) (rd (L' i₁)))`. Use `h₁ using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Fin.cons_zero, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Normalize the expressions using the abelian group laws. Simplify using `[Pi.single_apply]`.
+-/
 theorem powerSum_mul_vertical (hP : Hypotheses2) (M : TrueGeo.Model Y) {ι : Type} [Fintype ι]
     (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (hI : ∀ i, (A i).Induced M (L i) m 0) (hΨ : haveI := M.ar.isIntegral; IsArFun L Y.dim Ψ) (p : ℕ) (hp : p.Prime)
@@ -181,6 +232,15 @@ end GlobalTheory.TrivFlag
 
 namespace GlobalTheory.TrivFlag
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => rw [map_add, map_add, map_add, hP, hQ, add_div]`. Consider the case `monomial u a`. Establish `e₁ : (monomial u a : MvPolynomial ι ℝ) = a • monomial u 1` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e₁, map_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_div_assoc]`.
+
+Use `congr 1`. Distinguish the cases in `hd : u.degree = d`. Establish `e₂ : (monomial u 1 : MvPolynomial ι ℝ) = ((Finsupp.toMultiset u).map X).prod`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`. Establish `e₃ : Multiset.card (Finsupp.toMultiset u) = d`.
+
+Rewrite using `[Finsupp.card_toMultiset, ← hd]`. Both sides reduce to the same expression. Rewrite using `[rename_monomial, ← congrFun (coe_basisMonomials B ℝ), numL, Module.Basis.constr_basis, if_pos, e₂, ← h _ e₃, Finsupp.toMultiset_map]`. Rewrite using `[Finsupp.degree_mapDomain, hd]`. Establish `hh : (monomial u 1 : MvPolynomial ι ℝ).IsHomogeneous u.degree` using `isHomogeneous_monomial _ rfl`.
+
+Rewrite using `[numL_homog _ _ _ hd _ hh.rename_isHomogeneous, h₀ _ _ hd hh, zero_div]`.
+-/
 theorem numL_rename {ι B : Type} (w : ι → B) (num : Multiset B → ℝ) (d : ℕ) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (c : ℝ)
     (h₀ : ∀ (P : MvPolynomial ι ℝ) (e : ℕ), e ≠ d → P.IsHomogeneous e → Ψ P = 0)
     (h : ∀ μ : Multiset ι, Multiset.card μ = d → num (μ.map w) = Ψ (μ.map X).prod / c) (P : MvPolynomial ι ℝ) :
@@ -207,15 +267,24 @@ section Syms
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Unfold `rootSym at h`. Apply the tactic sequence `split_ifs at h <;> rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩`.
+-/
 theorem mem_support_rootSym {a : ℕ → Bool} {R : Option ℝ} {τ : E →+* ℂ} {i : ℕ} {b : Sym E}
     (h : b ∈ (rootSym Dw a R τ i).support) : b.1 = a ∧ b.2.1 = R := by
   unfold rootSym at h
   split_ifs at h <;> rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with x | x <;> rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩`.
+-/
 theorem mem_support_wholeSym {a : ℕ → Bool} {R : Option ℝ} {g : ℕ} {x : Fin g ⊕ Fin g} {b : Sym E}
     (h : b ∈ (wholeSym a R x).support) : b.1 = a ∧ b.2.1 = R := by
   rcases x with x | x <;> rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)] <;> exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `h : (rootSym Dw a R τ i).support.Nonempty`. Unfold `rootSym`. Apply the tactic sequence `split_ifs <;> simp [Finsupp.support_single_ne_zero]`. Rewrite using `[parOf, dif_pos h]`. Conclude with `(mem_support_rootSym h.choose_spec).2`.
+-/
 theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) : parOf (rootSym Dw a R τ i) = R := by
   have h : (rootSym Dw a R τ i).support.Nonempty := by
     unfold rootSym
@@ -226,6 +295,9 @@ theorem parOf_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i 
 variable {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Establish `key (n n' : Letter Dw → ℤ) (h : n = n') (r r' : Option ℝ) (h' : r = r') (lg) : (⟨divOf Y n, 1, fun σ => hm r σ n, 0, lg⟩ : Adl C Y.Y) = ⟨divOf Y n', 1, fun σ => hm r' σ n', 0, lg⟩`. Rewrite using `[h, h']`. Conclude with `key _ _ ((expo_rootSym _ _ _ _ _).trans (expo_rootSym _ _ _ _ _).symm) _ _ ((parOf_rootSym _ _ _ _).trans (parOf_rootSym _ _ _ _).symm) _`.
+-/
 theorem adlOf_rootSym_eq {C : CxSt F} (hm : Mets Y C) (a a' : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) :
     adlOf Y hm (rootSym Dw a' R τ i) =
       { adlOf Y hm (rootSym Dw a R τ i) with lg := (adlOf Y hm (rootSym Dw a' R τ i)).lg } := by
@@ -235,6 +307,9 @@ theorem adlOf_rootSym_eq {C : CxSt F} (hm : Mets Y C) (a a' : ℕ → Bool) (R :
   exact key _ _ ((expo_rootSym _ _ _ _ _).trans (expo_rootSym _ _ _ _ _).symm) _ _
     ((parOf_rootSym _ _ _ _).trans (parOf_rootSym _ _ _ _).symm) _
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (rootSym Dw (Function.update a p false) R τ i) v ε y - lgOf Y (rootSym Dw (Function.update a p true) R τ i) v ε y| ≤ (if resP v = p then 1 / ((p : ℝ) - 1) + vDiff E p else 0) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by have hw : 0 ≤ -Real.log (ε.w (resP v : Al …`.
+-/
 theorem abs_lgOf_update_sub_le {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)} (Y : FlagCpt Z e)
     (a : ℕ → Bool) (p : ℕ) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) (v : HeightOneSpectrum (𝓞 F))
     (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :

@@ -15,6 +15,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ hS A _ _ hA hP`. Establish `h1` using `hS.1`. Establish `h3` using `hS.2.2.1`. Establish `h4` using `hS.2.2.2`. Take `⟨n, M, hI, hW⟩` from `GlobalTheory.T.exists_weak_neron_model R K inferInstance A hA.smooth hA.proper hP`.
+
+Take `⟨N, hN, c, hc, hT⟩` from `GlobalTheory.T.exists_weakNeronModel_birational_groupLaw R K hS A hA n M hI hW`. Take `⟨N', hN', hle⟩` from `GlobalTheory.T.exists_strict_model_of_birational R K hS A hA N hN`. Take `⟨G, inst, hG, he, hs⟩` from `GlobalTheory.T.exists_grpObj_of_strictBirationalLaw R K hS A hA N' hN'`. Take `⟨b1, b2, b3, -, -⟩` from `GlobalTheory.T.modelMapGenericallyOpenImmersion_calculus R K hS`. Use `⟨G, inst, hG, he, c, hc, fun a => hs (a ^ c) ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : GenIso N' N (𝟙 A)` using `b1 A N' N hN'.1.1 hle`. Establish `e2 : GenIso N N' (𝟙 A)` using `(b3 A A N' N (Iso.refl A)).1 e1`. Establish `e3` using `b2 A A A N' N N _ _ hN.1 e1 (hT a)`. Establish `e4` using `b2 A A A N' N N' _ _ hN.1 e3 e2`. Simplify `e4` using `only [Category.id_comp, Category.comp_id]`.
+-/
 theorem exists_neutral_group_model : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → GlobalTheory.AbLaw.IsProjBy A.hom → ∃ (G : Model R A) (_ : GrpObj G.Y), SmConn G.Y ∧ IsMonHom G.e.hom ∧ ∃ c : ℕ, 1 ≤ c ∧ ∀ a : (𝟙_ (Over (Sp K)) ⟶ A), ∃ s : 𝟙_ (Over (Sp R)) ⟶ G.Y, spMap (algebraMap R K) ≫ s.left = (a ^ c).left ≫ G.j := by
   intro R K _ _ _ _ _ hS A _ _ hA hP
   have h1 := hS.1

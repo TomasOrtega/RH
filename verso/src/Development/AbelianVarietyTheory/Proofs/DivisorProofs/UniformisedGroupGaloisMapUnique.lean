@@ -17,6 +17,15 @@ namespace GlobalTheory.Mum.GalUniq
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Establish `hcb` using `H.2 _ _ rfl rfl`. Establish `hcb'` using `H'.2 _ _ rfl rfl`. Establish `hov : ∀ k : IsPullDeg s D' D', (k.e.hom.left ≫ pullback.fst D'.P.A.hom (specOf s)) ≫ D'.P.A.hom = D'.P.A.hom ≫ specOf s`. Introduce `k`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Use `congr 1`. Conclude with `Over.w k.e.hom`. Establish `: IsIso hD.e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map hD.e.hom))`. Rewrite using `[← cancel_mono hD.e.hom.left]`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc]`. Simplify using `only [Category.assoc] at hcb hcb'`. Rewrite using `[hcb, hcb']`. Simplify using `only [Category.assoc]`. Establish `w0 : hD.e.hom.left ≫ pullback.snd D.P.A.hom (specOf ρ) = D'.P.A.hom` using `Over.w hD.e.hom`.
+
+Rewrite using `[w0, ← Category.assoc, hov h, ← Category.assoc, hov h']`.
+-/
 theorem abPart_eq {ρ : R →+* R'} {s : R' →+* R'} {D : DegPre R} {D' : DegPre R'}
     (hD : IsPullDeg ρ D D') (h h' : IsPullDeg s D' D') (H : PullOver hD h) (H' : PullOver hD h') :
     h.e.hom.left ≫ pullback.fst D'.P.A.hom (specOf s) =
@@ -39,6 +48,9 @@ theorem abPart_eq {ρ : R →+* R'} {s : R' →+* R'} {D : DegPre R} {D' : DegPr
     have w0 : hD.e.hom.left ≫ pullback.snd D.P.A.hom (specOf ρ) = D'.P.A.hom := Over.w hD.e.hom
     rw [w0, ← Category.assoc, hov h, ← Category.assoc, hov h']
 
+/- English proof (translation)
+The claim follows from `iso_unique_of_rig GlobalTheory.globalFns_holds D'.P.A D'.P.isAb D'.P.isLB D'.P.isLB hw hw' hr hr'`.
+-/
 theorem iso_eq_of_rig {s : R' →+* R'} {D' : DegPre R'} (F : D'.P.A.left ⟶ D'.P.A.left)
     (he : eSec D'.P.A ≫ F = specOf s ≫ eSec D'.P.A)
     (w w' : LB.Iso D'.P.L (D'.P.L.pull F)) (hw : w.IsGen) (hw' : w'.IsGen)
@@ -48,6 +60,9 @@ theorem iso_eq_of_rig {s : R' →+* R'} {D' : DegPre R'} (F : D'.P.A.left ⟶ D'
       (rigPullOf F (specOf s) he D'.P.L D'.rig)) : w = w' :=
   iso_unique_of_rig GlobalTheory.globalFns_holds D'.P.A D'.P.isAb D'.P.isLB D'.P.isLB hw hw' hr hr'
 
+/- English proof (translation)
+Use `GlobalTheory.T.thickenedUniformisedGroup_point_ext g f f' hb (hp.symm.trans hp') fun z J hJ χ => ?_` and prove the remaining obligations. Take `⟨hψ, hm⟩` from `ht χ`. Take `⟨hψ', hm'⟩` from `ht' χ`. Conclude with `GlobalTheory.T.torusCoordinate_value_eq_of_maps g F w f f' χ hψ hψ' hm hm' z J hJ`.
+-/
 theorem level_eq {I' : Ideal R'} {D' : DegPre R'} {e : ℕ} {G' : Over (Sp R')} [GrpObj G']
     [IsCommMonObj G'] (g : GtCoord I' D' e G') (F : D'.P.A.left ⟶ D'.P.A.left)
     (w : LB.Iso D'.P.L (D'.P.L.pull F)) (hw : w.IsGen)
@@ -71,6 +86,9 @@ namespace GlobalTheory.Mum.GalUniq
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Substitute `hF hxe hxe'` using the available equality. Take `rfl` from `iso_eq_of_rig F he w w' hw hw' hr hr'`. Conclude with `level_eq g F w hw f f' hb hp hp' ht ht'`.
+-/
 theorem level_eq_two {s : R' →+* R'} {I' : Ideal R'} {D' : DegPre R'} {e : ℕ} {G' : Over (Sp R')} [GrpObj G']
     [IsCommMonObj G'] (g : GtCoord I' D' e G') (F F' : D'.P.A.left ⟶ D'.P.A.left) (hF : F = F')
     (he : eSec D'.P.A ≫ F = specOf s ≫ eSec D'.P.A) (he' : eSec D'.P.A ≫ F' = specOf s ≫ eSec D'.P.A)
@@ -98,6 +116,27 @@ end GlobalTheory.Mum.GalUniq
 
 open GlobalTheory.Mum.GalUniq in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ R' _ _ _ ρ hρ D D' hD A' G' _ _ hG U' σ a a' ha ha'`. Take `⟨-, h, bc, rfl, P, PO⟩` from `ha`. Take `⟨-, h', bc', rfl, P', PO'⟩` from `ha'`. Establish `hc` using `abPart_eq hD h h' PO PO'`. Establish `hxe : (⇑h.xe : D'.toPre.X → D'.toPre.X) = id` using `funext PO.1`.
+
+Establish `hxe' : (⇑h'.xe : D'.toPre.X → D'.toPre.X) = id` using `funext PO'.1`. Establish `hov : ∀ (b : G' ≅ (Over.pullback (specOf (Gal.hom σ))).obj G'), b.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)) ≫ G'.hom = G'.hom ≫ specOf (Gal.hom σ)`. Introduce `b`. Rewrite using `[pullback.condition, ← Category.assoc]`. Use `congr 1`.
+
+Conclude with `Over.w b.hom`. Establish `lev : ∀ n : ℕ, (fstG (maximalIdeal R') n G').left ≫ bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)) = (fstG (maximalIdeal R') n G').left ≫ bc'.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ))`. Introduce `n`. Take `⟨wL, -, he1, -, hl⟩` from `P.lg`. Take `⟨wL', -, he1', -, hl'⟩` from `P'.lg`.
+
+Take `⟨f, hf, hpG, hT, -⟩` from `hl n`. Take `⟨f', hf', hpG', hT', -⟩` from `hl' n`. Establish `hb : f ≫ pullback.snd G'.hom (thick R' (maximalIdeal R') n) = f' ≫ pullback.snd G'.hom (thick R' (maximalIdeal R') n)`. Establish `: IsClosedImmersion (thick R' (maximalIdeal R') n)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Rewrite using `[← cancel_mono (thick R' (maximalIdeal R') n), Category.assoc, Category.assoc, ← pullback.condition]`.
+
+Establish `e1 : f ≫ (fstG (maximalIdeal R') n G').left ≫ G'.hom = (fstG (maximalIdeal R') n G').left ≫ G'.hom ≫ specOf (Gal.hom σ)`. Rewrite using `[← Category.assoc, hf]`. Simplify using `only [Category.assoc]`. Rewrite using `[hov bc]`. Establish `e2 : f' ≫ (fstG (maximalIdeal R') n G').left ≫ G'.hom = (fstG (maximalIdeal R') n G').left ≫ G'.hom ≫ specOf (Gal.hom σ)`.
+
+Rewrite using `[← Category.assoc, hf']`. Simplify using `only [Category.assoc]`. Rewrite using `[hov bc']`. Conclude with `e1.trans e2.symm`. Use `level_eq_two (U'.gt n) _ _ hc h.he h'.he h.w h.w_gen h'.w h'.w_gen h.w_rig h'.w_rig _ _ hxe hxe' f f' hb hpG hpG' hT hT'` as an intermediate fact.
+
+Rewrite using `[← hf, ← hf', this]`. Establish `hI : maximalIdeal R' ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `: IsNoetherianRing R'` using `hρ.1.1`. Establish `: Smooth G'.hom` using `hG.smooth`.
+
+Establish `: GeometricallyConnected G'.hom` using `hG.geomConnected`. Establish `: IsSeparated G'.hom` using `hG.separated`. Establish `: IsIso (CommRingCat.ofHom (Gal.hom σ))` using `σ.1.toCommRingCatIso.isIso_hom`. Establish `: IsIso (specOf (Gal.hom σ))` using `inferInstanceAs (IsIso (Spec.map _))`. Set `Y : Over (Sp R')` to `Over.mk (G'.hom ≫ inv (specOf (Gal.hom σ)))`.
+
+Establish `: IsSeparated Y.hom` using `inferInstanceAs (IsSeparated (G'.hom ≫ inv (specOf (Gal.hom σ))))`. Establish `hov2 : ∀ (b : G' ≅ (Over.pullback (specOf (Gal.hom σ))).obj G'), (b.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ))) ≫ Y.hom = G'.hom`. Introduce `b`. Express the relevant statement in the definitionally equal form `_ ≫ G'.hom ≫ inv (specOf (Gal.hom σ)) = _`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[reassoc_of% (hov b), IsIso.hom_inv_id, Category.comp_id]`. Establish `key` using `(sec_eq_zero_and_hom_eq_of_thickenings R' (maximalIdeal R') hI G').2 Y (Over.homMk (bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ))) (hov2 bc)) (Over.homMk (bc'.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ))) (hov2 bc')) lev`. Conclude with `congrArg CommaMorphism.left key`.
+-/
 theorem GlobalTheory.Mum.galMap_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (σ : Gal ρ) (a a' : G'.left ⟶ G'.left), GalMap hD U' σ a → GalMap hD U' σ a' → a = a' := by
   intro R _ _ _ _ R' _ _ _ ρ hρ D D' hD A' G' _ _ hG U' σ a a' ha ha'
   obtain ⟨-, h, bc, rfl, P, PO⟩ := ha

@@ -16,5 +16,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime | exact GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime | (intros; apply GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.spec_hom_ext_of_localization_at_primes : ∀ (A : Type) [CommRing A] (X : Scheme.{0}) (a b : Sp A ⟶ X), (∀ (P : Ideal A) [P.IsPrime], spMap (algebraMap A (Localization.AtPrime P)) ≫ a = spMap (algebraMap A (Localization.AtPrime P)) ≫ b) → a = b := by
   first | exact @GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime | exact GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime | (intros; apply GlobalTheory.SpecLocalExt.hom_ext_of_localizationAtPrime <;> assumption)

@@ -21,24 +21,52 @@ namespace GlobalTheory.BotSmallDict.Supp
 section Abstract
 variable {R : Type} [CommRing R] {σ : R →+* R}
 
+/- English proof (translation)
+Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem cT_mul {l m n : Type} [Fintype m] (A : Matrix l m R) (B : Matrix m n R) :
     Formalism.UG.cT σ (A * B) = Formalism.UG.cT σ B * Formalism.UG.cT σ A := by
   unfold Formalism.UG.cT
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => map_add σ _ _`.
+-/
 private theorem cT_add {m n : Type} (A B : Matrix m n R) : Formalism.UG.cT σ (A + B) = Formalism.UG.cT σ A + Formalism.UG.cT σ B :=
   Matrix.ext fun _ _ => map_add σ _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => map_mul σ _ _`.
+-/
 private theorem cT_smul {m n : Type} (c : R) (A : Matrix m n R) : Formalism.UG.cT σ (c • A) = σ c • Formalism.UG.cT σ A :=
   Matrix.ext fun _ _ => map_mul σ _ _
 
+/- English proof (translation)
+Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+-/
 private theorem cT_one {n : Type} [DecidableEq n] : Formalism.UG.cT σ (1 : Matrix n n R) = 1 := by
   unfold Formalism.UG.cT
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => hσ _`.
+-/
 private theorem cT_cT (hσ : ∀ x, σ (σ x) = x) {m n : Type} (A : Matrix m n R) : Formalism.UG.cT σ (Formalism.UG.cT σ A) = A :=
   Matrix.ext fun _ _ => hσ _
 
+/- English proof (translation)
+Establish `hss : σ ε * σ ε = σ ε` using `by rw [← map_mul, hee]`. Take `⟨f, hf⟩ : ∃ f, f = 1 - ε - σ ε` from `⟨_, rfl⟩`. Establish `hσf : σ f = f` using `by rw [hf, map_sub, map_sub, map_one, hσ]; ring`. Establish `fe : f * ε = 0` using `by rw [hf]; linear_combination -hee - h0`. Establish `fs : f * σ ε = 0` using `by rw [hf]; linear_combination -hss - h0`.
+
+Establish `ff : f * f = f` using `by rw [hf] at fe fs ⊢; linear_combination -fe - fs`. Establish `sM : σ ε • Formalism.UG.cT σ M = Formalism.UG.cT σ M` using `by rw [← cT_smul, eM]`. Establish `sB : σ ε • Formalism.UG.cT σ B = Formalism.UG.cT σ B` using `by rw [← cT_smul, eB]`. Establish `fM : f • M = 0` using `by rw [← eM, smul_smul, fe, zero_smul]`. Establish `fB : f • B = 0` using `by rw [← eB, smul_smul, fe, zero_smul]`.
+
+Establish `fM' : f • Formalism.UG.cT σ M = 0` using `by rw [← sM, smul_smul, fs, zero_smul]`. Establish `fB' : f • Formalism.UG.cT σ B = 0` using `by rw [← sB, smul_smul, fs, zero_smul]`. Establish `BB : B * Formalism.UG.cT σ B = 0`. Rewrite using `[← sB, Matrix.mul_smul, ← Matrix.smul_mul, ← eB, smul_smul, mul_comm, h0, zero_smul, Matrix.zero_mul]`. Establish `MM : Formalism.UG.cT σ M * M = 0`.
+
+Rewrite using `[← sM, Matrix.smul_mul, ← Matrix.mul_smul]`. Use `conv_lhs => enter [2]`. Rewrite using `[← eM, smul_smul, mul_comm, h0, zero_smul]`. Rewrite using `[Matrix.mul_zero]`. Establish `MB : Formalism.UG.cT σ M * Formalism.UG.cT σ B = σ ε • (1 : Matrix n n R)` using `by rw [← cT_mul, hBM, cT_smul, cT_one]`.
+
+Establish `h3 : Formalism.UG.cT σ M * (f • (1 : Matrix n n R) + Formalism.UG.cT σ B + M) = σ ε • (1 : Matrix n n R)`. Rewrite using `[Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one, fM', MB, MM, zero_add, add_zero]`. Use `⟨f • (1 : Matrix n n R) + Formalism.UG.cT σ B + M, fun i j => ?_, ?_, h3⟩` and prove the remaining obligations. Use `add_mem (add_mem (mul_mem ?_ ?_) (hO _ (hB j i))) (hM i j)` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Conclude with `sub_mem (sub_mem (one_mem _) hε) (hO _ hε)`. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[cT_add, cT_add, cT_smul, cT_one, cT_cT hσ, hσf, Matrix.add_mul, h3, Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_add, fB', fM, smul_smul, ff, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one, fB, BB, hBM, add_zero, add_zero, add_zero, zero_add, …`.
+-/
 private theorem exists_unitary (hσ : ∀ x, σ (σ x) = x) (O : Subring R) (hO : ∀ x ∈ O, σ x ∈ O) {n : Type} [Fintype n] [DecidableEq n]
     {ε : R} (hε : ε ∈ O) (hee : ε * ε = ε) (h0 : ε * σ ε = 0) {M B : Matrix n n R} (hM : ∀ i j, M i j ∈ O)
     (hB : ∀ i j, B i j ∈ O) (eM : ε • M = M) (eB : ε • B = B) (hBM : B * M = ε • (1 : Matrix n n R)) :
@@ -76,6 +104,9 @@ private theorem exists_unitary (hσ : ∀ x, σ (σ x) = x) (O : Subring R) (hO 
       smul_add, smul_add, fB', fM, smul_smul, ff, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one, fB, BB, hBM,
       add_zero, add_zero, add_zero, zero_add, ← add_smul, ← add_smul, hf, show 1 - ε - σ ε + ε + σ ε = 1 by ring, one_smul]
 
+/- English proof (translation)
+Set `A : Matrix n n O` to `fun i j => ⟨Y i j, hY i j⟩`. Establish `h` using `RingHom.map_adjugate O.subtype A`. Rewrite `h` using `[show O.subtype.mapMatrix A = Y from rfl]`. Rewrite using `[← h]`. Conclude with `(A.adjugate i j).2`.
+-/
 private theorem adjugate_mem (O : Subring R) {n : Type} [Fintype n] [DecidableEq n] {Y : Matrix n n R} (hY : ∀ i j, Y i j ∈ O) (i j : n) :
     Y.adjugate i j ∈ O := by
   let A : Matrix n n O := fun i j => ⟨Y i j, hY i j⟩
@@ -84,11 +115,17 @@ private theorem adjugate_mem (O : Subring R) {n : Type} [Fintype n] [DecidableEq
   rw [← h]
   exact (A.adjugate i j).2
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun a _ => mul_mem (hA i a) (hB a j)`.
+-/
 private theorem mul_mem' (O : Subring R) {l m n : Type} [Fintype m] {A : Matrix l m R} {B : Matrix m n R} (hA : ∀ i j, A i j ∈ O)
     (hB : ∀ i j, B i j ∈ O) (i : l) (j : n) : (A * B) i j ∈ O := by
   rw [Matrix.mul_apply]
   exact sum_mem fun a _ => mul_mem (hA i a) (hB a j)
 
+/- English proof (translation)
+Use `⟨(ε * ξ * t') • (Y.adjugate * β'), fun i j => mul_mem (mul_mem hξ ht') (mul_mem' O (adjugate_mem O hY) hβ' i j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← mul_assoc, ← mul_assoc, hee]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, ← Matrix.mul_assoc β', hβ, Matrix.one_mul, Matrix.adjugate_mul, smul_smul, smul_smul]`. Use `congr 1`. Take the linear combination `ε * ht + (ε * t' * Y.det) * hξη + (t' - t' * Y.det) * hee`.
+-/
 private theorem exists_inv (O : Subring R) {n : Type} [Fintype n] [DecidableEq n] {ε ξ η t' : R} (hee : ε * ε = ε) (hξ : ε * ξ ∈ O)
     (hξη : ξ * η = 1) {β β' Y : Matrix n n R} (hβ : β' * β = 1) (hβ' : ∀ i j, β' i j ∈ O) (hY : ∀ i j, Y i j ∈ O)
     (ht : (1 - ε + ε * Y.det) * t' = 1) (ht' : t' ∈ O) :
@@ -100,6 +137,13 @@ private theorem exists_inv (O : Subring R) {n : Type} [Fintype n] [DecidableEq n
     congr 1
     linear_combination ε * ht + (ε * t' * Y.det) * hξη + (t' - t' * Y.det) * hee
 
+/- English proof (translation)
+Establish `hM : Formalism.UG.cT σ y = η • (β.1 * Y)`. Rewrite using `[hYe, Matrix.mul_smul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, smul_smul, mul_comm η, hξη, one_smul]`. Use `⟨fun i l => (hσ _).symm.trans (congrArg σ (congrFun (congrFun hM l) i)), ?_⟩` and prove the remaining obligations. Take `⟨B, hB, eB, hBM⟩` from `exists_inv O hee hξ hξη β.inv_mul (fun i j => (hβi i j).2) (Y := Y.submatrix id r) (fun i j => hY i (r j)) ht ht'`. Establish `hM2 : η • (β.1 * Y.submatrix id r) = Formalism.UG.cT σ (y.submatrix r id)` using `Matrix.ext fun i j => (congrFun (congrFun hM i) (r j)).symm`.
+
+Establish `hMi : ∀ i j, (η • (β.1 * Y.submatrix id r)) i j ∈ O` using `fun i j => mul_mem hη (mul_mem' _ (fun i j => (hβi i j).1) (B := Y.submatrix id r) (fun i j => hY i (r j)) i j)`. Establish `eM : ε • (η • (β.1 * Y.submatrix id r)) = η • (β.1 * Y.submatrix id r)`. Rewrite using `[hM2]`. Use `conv_lhs => rw [← hσ ε, ← cT_smul]`. Use `congr 1`.
+
+Conclude with `Matrix.ext fun i j => hh (r i) j`. Take `⟨k, hk, hku, hMk⟩` from `exists_unitary hσ O hO hε hee h0 hMi hB eM eB hBM`. Rewrite `hMk` using `[hM2, cT_cT hσ]`. Use `⟨k, hk, hku, fun i j => (congrFun (congrFun hMk i) j).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+-/
 private theorem core (hσ : ∀ x, σ (σ x) = x) (O : Subring R) (hO : ∀ x ∈ O, σ x ∈ O) {m n : Type} [Fintype n] [DecidableEq n] (r : n → m)
     {ε ξ η t' : R} (hε : ε ∈ O) (hee : ε * ε = ε) (h0 : ε * σ ε = 0) (hξ : ε * ξ ∈ O) (hη : η ∈ O) (hξη : ξ * η = 1)
     (β : GL n R) (hβi : ∀ i j, β.1 i j ∈ O ∧ (β⁻¹).1 i j ∈ O) {y : Matrix m n R} {Y : Matrix n m R}
@@ -138,8 +182,14 @@ local notation "σσ" => GlobalTheory.AdelicLatMove.cF D
 private def toE (D : D7) : Formalism.MainNotions.StandardLatticesGL3.AE D ≃+* EAf D :=
   (GlobalTheory.BotFormula.toAfE D).trans (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toRingEquiv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.BotClassDict.toAfE_int_iff y`.
+-/
 private theorem toE_int (y : Formalism.MainNotions.StandardLatticesGL3.AE D) : toE D y ∈ OO ↔ y ∈ OhE D := GlobalTheory.BotClassDict.toAfE_int_iff y
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul x a => rfl`.
+-/
 private theorem comm_sigR (z : Af D.host.F ⊗[D.host.F] D.host.E) :
     Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (sigR (Af D.host.F) D.sp.cm.sig z) =
       σσ (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E z) := by
@@ -148,28 +198,51 @@ private theorem comm_sigR (z : Af D.host.F ⊗[D.host.F] D.host.E) :
   | add a b ha hb => simp only [map_add, ha, hb]
   | tmul x a => rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (GlobalTheory.BotFormula.toAfE D (Formalism.MainNotions.StandardLatticesGL3.sgA D y)) = _`. Rewrite using `[GlobalTheory.BotFormula.toAfE_sgA, comm_sigR]`. Both sides reduce to the same expression.
+-/
 private theorem toE_sgA (y : Formalism.MainNotions.StandardLatticesGL3.AE D) : toE D (Formalism.MainNotions.StandardLatticesGL3.sgA D y) = σσ (toE D y) := by
   change Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (GlobalTheory.BotFormula.toAfE D (Formalism.MainNotions.StandardLatticesGL3.sgA D y)) = _
   rw [GlobalTheory.BotFormula.toAfE_sgA, comm_sigR]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (GlobalTheory.BotFormula.toAfE D _) = _`. Rewrite using `[GlobalTheory.BotClassDict.toAfE_finStd]`. Both sides reduce to the same expression.
+-/
 private theorem toE_finStd (V : HSp D) (hG : V.gram = 1) (g : Formalism.L2.Theta.GA D V) (i j : Fin V.rank) :
     toE D ((GlobalTheory.BotClassDict.finStd V hG g).1.1 i j) = toEAf D (Formalism.L2.Theta.mt V g i j) := by
   change Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (GlobalTheory.BotFormula.toAfE D _) = _
   rw [GlobalTheory.BotClassDict.toAfE_finStd]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul x a => rw [GlobalTheory.AdelicLatMove.cF_tmul, GlobalTheory.AdelicLatMove.cF_tmul, star_star]`.
+-/
 private theorem cF_cF (z : EAf D) : σσ (σσ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
   | add a b ha hb => simp only [map_add, ha, hb]
   | tmul x a => rw [GlobalTheory.AdelicLatMove.cF_tmul, GlobalTheory.AdelicLatMove.cF_tmul, star_star]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(D.sp.cm.sig (b : D.host.E)) ⊗ₜ[D.host.F] (1 : Af D.host.F) = (D.host.conj (b : D.host.E)) ⊗ₜ[D.host.F] (1 : Af D.host.F)`. Rewrite using `[Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]`.
+-/
 private theorem cF_oToS (b : 𝓞 D.host.E) :
     σσ (Formalism.L2.DIV.oToS D.host.F D.host.E b : EAf D) = (Formalism.L2.DIV.oToS D.host.F D.host.E (D.host.conj • b) : EAf D) := by
   change (D.sp.cm.sig (b : D.host.E)) ⊗ₜ[D.host.F] (1 : Af D.host.F) = (D.host.conj (b : D.host.E)) ⊗ₜ[D.host.F] (1 : Af D.host.F)
   rw [Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj]
 
+/- English proof (translation)
+Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem r hr`. Break down `hr with ⟨⟨_, b, rfl⟩, rfl⟩ | ⟨⟨β, hβ⟩, rfl⟩` into its components or cases. Use `(Formalism.L2.DIV.oToS D.host.F D.host.E (D.host.conj • b)).2` as an intermediate fact. Rewrite `this` using `[← cF_oToS]`.
+
+Conclude with `this`. Establish `h : σσ ((1 : D.host.E) ⊗ₜ[D.host.F] β) = (1 : D.host.E) ⊗ₜ[D.host.F] β`. Rewrite using `[GlobalTheory.AdelicLatMove.cF_tmul, star_one]`. Establish `h2 : (1 : D.host.E) ⊗ₜ[D.host.F] β ∈ OO` using `Subring.subset_closure (Or.inr ⟨⟨β, hβ⟩, rfl⟩)`. Rewrite `h2` using `[← h]`.
+
+Conclude with `h2`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`.
+
+Conclude with `mul_mem ha hb`.
+-/
 private theorem cF_mem (z : EAf D) (hz : z ∈ OO) : σσ z ∈ OO := by
   induction hz using Subring.closure_induction with
   | mem r hr =>
@@ -188,6 +261,11 @@ private theorem cF_mem (z : EAf D) (hz : z ∈ OO) : σσ z ∈ OO := by
   | neg a _ ha => rw [map_neg]; exact neg_mem ha
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_mem ha hb
 
+/- English proof (translation)
+Take `⟨h, hz⟩` from `hz`. Set `c : OO →+* OO` to `((σσ).comp (OO).subtype).codRestrict OO fun x => cF_mem _ x.2`. Establish `hle : Formalism.L2.DIV.idS D.host.F I ≤ (Formalism.L2.DIV.idS D.host.F (D.host.conj • I)).comap c`. Use `Ideal.map_le_iff_le_comap.2 fun b hb => ?_` and prove the remaining obligations. Establish `e : c (Formalism.L2.DIV.oToS D.host.F D.host.E b) = Formalism.L2.DIV.oToS D.host.F D.host.E (D.host.conj • b)` using `Subtype.ext (cF_oToS b)`.
+
+Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, e]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.smul_mem_pointwise_smul _ _ _ hb)`. Conclude with `⟨cF_mem _ h, hle hz⟩`.
+-/
 private theorem inId_cF {I : Ideal (𝓞 D.host.E)} {z : EAf D} (hz : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I z) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId (D.host.conj • I) (σσ z) := by
   obtain ⟨h, hz⟩ := hz
@@ -200,20 +278,37 @@ private theorem inId_cF {I : Ideal (𝓞 D.host.E)} {z : EAf D} (hz : GlobalTheo
     exact Ideal.mem_map_of_mem _ (Ideal.smul_mem_pointwise_smul _ _ _ hb)
   exact ⟨cF_mem _ h, hle hz⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_mem _, zero_mem _⟩`.
+-/
 private theorem inId_zero (I : Ideal (𝓞 D.host.E)) : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (0 : EAf D) := ⟨zero_mem _, zero_mem _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, add_mem ha.2 hb.2⟩`.
+-/
 private theorem inId_add {I : Ideal (𝓞 D.host.E)} {a b : EAf D} (ha : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I a) (hb : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I b) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (a + b) := ⟨add_mem ha.1 hb.1, add_mem ha.2 hb.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_mem ha hb.1, Ideal.mul_mem_left _ (⟨a, ha⟩ : OO) hb.2⟩`.
+-/
 private theorem inId_mul {I : Ideal (𝓞 D.host.E)} {a b : EAf D} (ha : a ∈ OO) (hb : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I b) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (a * b) := ⟨mul_mem ha hb.1, Ideal.mul_mem_left _ (⟨a, ha⟩ : OO) hb.2⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ _ (fun _ _ => inId_add) (inId_zero I) ha`.
+-/
 private theorem inId_sum {I : Ideal (𝓞 D.host.E)} {ι : Type} (s : Finset ι) {a : ι → EAf D}
     (ha : ∀ i ∈ s, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (a i)) : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (∑ i ∈ s, a i) :=
   Finset.sum_induction _ _ (fun _ _ => inId_add) (inId_zero I) ha
 
 private def sqI (D : D7) : 𝓞 D.host.E := ⟨D.host.sqrtMinusD, Formalism.L2.Pj.sqrtMinusD_isIntegral D⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `e : D.host.xi0 = -1 / D.host.sqrtMinusD`. Rewrite using `[Formalism.BasicNotions.Host.xi0, hc, Ideal.absNorm_top, Nat.cast_one, one_mul]`. Establish `h0 : D.host.sqrtMinusD ≠ 0` using `fun h0 => h (by rw [e, h0, div_zero])`. Express the relevant statement in the definitionally equal form `D.host.xi0 * (-D.host.sqrtMinusD) = 1`.
+
+Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem xi0_mul_neg_sqI_eq_one_of_ccK_eq (hc : D.host.ccK = ⊤) : D.host.xi0 * ((-sqI D : 𝓞 D.host.E) : D.host.E) = 1 := by
   have h := GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D
   have e : D.host.xi0 = -1 / D.host.sqrtMinusD := by
@@ -223,6 +318,19 @@ private theorem xi0_mul_neg_sqI_eq_one_of_ccK_eq (hc : D.host.ccK = ⊤) : D.hos
   rw [e]
   field_simp
 
+/- English proof (translation)
+Take `⟨⟨⟨es, hes, hs⟩, -⟩, hP⟩` from `he`. Establish `hx` using `xi0_mul_neg_sqI_eq_one_of_ccK_eq hc`. Establish `hx0 : (-sqI D : 𝓞 D.host.E) ≠ 0` using `fun h => by`. Rewrite `hx` using `[h]`. Simplify using `at hx`.
+
+Establish `hξ : D.host.xi0 = ((-sqI D : 𝓞 D.host.E) : D.host.E)⁻¹` using `eq_inv_of_mul_eq_one_left hx`. Establish `hsq : (-sqI D) * (-sqI D) = -((D.host.d : ℕ) : 𝓞 D.host.E)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `Formalism.BasicNotions.Host.sqrtMinusD_sq D.host` as an intermediate fact. Rewrite using `[map_mul, map_neg, map_neg, map_natCast]`.
+
+Express the relevant statement in the definitionally equal form `-D.host.sqrtMinusD * -D.host.sqrtMinusD = _`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.hom_sum, Finset.sum_mul]`. Use `sum_mem fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hn : (-sqI D) ∉ w.asIdeal` using `fun h => hP w hw (by`. Establish `h1 : ((D.host.d : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Rewrite using `[← neg_mem_iff, ← hsq]`. Conclude with `Ideal.mul_mem_left _ _ h`. Rewrite using `[Nat.cast_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ h1)`. Establish `hmem : finPart D (es w * incA D (((-sqI D : 𝓞 D.host.E) : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `hn (((hes w hw).2 _ hx0).2 h)`. Establish `h2` using `GlobalTheory.IdemRes.toEAf_mem_of_finPart hmem`.
+
+Rewrite `h2` using `[RingHom.map_mul, ← hξ]`. Conclude with `h2`.
+-/
 private theorem idempotent_mul_xi0_integral (hc : D.host.ccK = ⊤) {e : Formalism.L2.Theta.AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : GoodIdem e P) :
     toEAf D e * eToEAf D D.host.xi0 ∈ OO := by
   obtain ⟨⟨⟨es, hes, hs⟩, -⟩, hP⟩ := he
@@ -253,6 +361,9 @@ private theorem idempotent_mul_xi0_integral (hc : D.host.ccK = ⊤) {e : Formali
   rw [RingHom.map_mul, ← hξ] at h2
   exact h2
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord frMapAdj`. Rewrite using `[hS, hT, inv_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one, Units.val_one, Matrix.mul_one]`. Use `congr 2`. Conclude with `Matrix.ext fun i j => GlobalTheory.AdelicLatMove.toEAf_cA _`.
+-/
 private theorem dualCoord_eq (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (βS : GL (Fin S.rank) (EAf D)) (y : WO S T) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord S T βS 1 y =
       eToEAf D D.host.xi0 • (HMul.hMul (βS⁻¹).1 (Formalism.UG.cT σσ ((y : Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.Theta.AE D)).map (toEAf D))) :
@@ -263,6 +374,15 @@ private theorem dualCoord_eq (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (
   congr 2
   exact Matrix.ext fun i j => GlobalTheory.AdelicLatMove.toEAf_cA _
 
+/- English proof (translation)
+Set `a : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)` to `k.map (toE D).symm.toRingHom`. Establish `hs : ∀ z, (toE D).symm.toRingHom (σσ z) = Formalism.MainNotions.StandardLatticesGL3.sgA D ((toE D).symm.toRingHom z)` using `fun z => by`. Apply `(toE D).injective` to reduce the goal to its premises. Rewrite using `[toE_sgA]`. Conclude with `((toE D).apply_symm_apply _).trans (congrArg _ ((toE D).apply_symm_apply _).symm)`.
+
+Establish `e : Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) a = (Formalism.UG.cT σσ k).map (toE D).symm.toRingHom` using `Matrix.ext fun i j => (hs _).symm`. Establish `ha : Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) a * a = 1`. Rewrite using `[e, ← Matrix.map_mul, hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `u : GL (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D)` to `⟨a, Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) a, mul_eq_one_comm.1 ha, ha⟩`. Establish `hu' : u ∈ Formalism.MainNotions.StandardLatticesGL3.GA D n`.
+
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ a * _ * a = _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), mul_one]`. Conclude with `ha`. Establish `hi : ∀ z ∈ OO, (toE D).symm.toRingHom z ∈ OhE D` using `fun z hz => by`. Rewrite using `[← toE_int]`.
+
+Conclude with `((toE D).apply_symm_apply z).symm ▸ hz`. Use `⟨⟨u, hu'⟩, (GlobalTheory.NormSum.mem_intG _).2 fun i j => ⟨hi _ (hk i j), ?_⟩, fun i j => (toE D).apply_symm_apply _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (Formalism.MainNotions.StandardLatticesGL3.sgA D) a i j ∈ _`. Rewrite using `[e]`. Conclude with `hi _ (cF_mem _ (hk j i))`.
+-/
 private theorem exists_intG {n : ℕ} {k : Matrix (Fin n) (Fin n) (EAf D)} (hk : ∀ i j, k i j ∈ OO) (hu : Formalism.UG.cT σσ k * k = 1) :
     ∃ h ∈ GlobalTheory.NormSum.intG D n, ∀ i j, toE D (h.1.1 i j) = k i j := by
   let a : Matrix (Fin n) (Fin n) (Formalism.MainNotions.StandardLatticesGL3.AE D) := k.map (toE D).symm.toRingHom
@@ -287,15 +407,34 @@ private theorem exists_intG {n : ℕ} {k : Matrix (Fin n) (Fin n) (EAf D)} (hk :
   rw [e]
   exact hi _ (cF_mem _ (hk j i))
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_inv, show Formalism.L2.Theta.mt T 1 = 1 from rfl, Matrix.one_mul, Matrix.mul_apply]`.
+-/
 private theorem actO_apply (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (y : WO S T) (i : Fin T.rank) (j : Fin S.rank) :
     actO S T g⁻¹ 1 y i j = ∑ l, y i l * Formalism.L2.Theta.mt S g l j := by
   unfold actO
   rw [inv_inv, show Formalism.L2.Theta.mt T 1 = 1 from rfl, Matrix.one_mul, Matrix.mul_apply]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ j => dif_pos (by omega : o + j.1 < d)`.
+-/
 private theorem rightBlock_eq {κ : Type} [Zero κ] {k d o : ℕ} (ho : o + k = d) (Y : Matrix (Fin k) (Fin d) κ) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.rightBlock o Y = Y.submatrix id fun j : Fin k => (⟨o + j.1, by omega⟩ : Fin d) :=
   Matrix.ext fun _ j => dif_pos (by omega : o + j.1 < d)
 
+/- English proof (translation)
+Take `⟨-, hx, hx'⟩` from `hx`. Establish `hβi` using `(GlobalTheory.BotClassDict.mem_range_intGL βS).1 (GlobalTheory.BotClassDict.frame_mem_range hβ)`. Establish `hη : eToEAf D ((-sqI D : 𝓞 D.host.E) : D.host.E) ∈ OO` using `(Formalism.L2.DIV.oToS D.host.F D.host.E (-sqI D)).2`. Establish `hξη : eToEAf D D.host.xi0 * eToEAf D ((-sqI D : 𝓞 D.host.E) : D.host.E) = 1`. Rewrite using `[← RingHom.map_mul, xi0_mul_neg_sqI_eq_one_of_ccK_eq hc, RingHom.map_one]`.
+
+Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he.1]`. Establish `hε` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he.1`. Establish `hσε : toEAf D (cA D e) = σσ (toEAf D e)` using `GlobalTheory.AdelicLatMove.toEAf_cA e`. Establish `h0 : toEAf D e * σσ (toEAf D e) = 0` using `by rw [← hσε, ← RingHom.map_mul, he.1.2, RingHom.map_zero]`. Establish `hhalf : ∀ i j, σσ (toEAf D e) * toEAf D (y i j) = toEAf D (y i j)` using `fun i j => by`.
+
+Rewrite using `[← hσε, ← RingHom.map_mul, hh i j]`. Rewrite `hx` using `[rightBlock_eq ho]`. Establish `hYe` using `dualCoord_eq S T hS hT βS y`. Establish `hξ` using `idempotent_mul_xi0_integral hc he`. Establish `ht0 : toEAf D x.1 * toEAf D (x⁻¹).1 = 1` using `by rw [← RingHom.map_mul, x.mul_inv, RingHom.map_one]`.
+
+Rewrite `ht0` using `[hx]`. Unfold `IsIntM at hY`. Generalize the expression as in `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.dualCoord S T βS 1 y = Y at hY hI hYe ht0`. Establish `hc` using `core (σ := σσ) (y := (y : Matrix (Fin T.rank) (Fin S.rank) (Formalism.L2.Theta.AE D)).map (toEAf D)) (Y := Y) cF_cF OO cF_mem (fun j : Fin S.rank => (⟨o + j.1, by omega⟩ : Fin T.rank)) hε hee h0 hξ hη hξη βS hβi hYe hY hhalf ht0 hx'`. Take `⟨h1, k, hk, hku, h2⟩` from `hc`.
+
+Use `⟨fun i l hi => ?_, k, hk, hku, fun i j => ?_⟩` and prove the remaining obligations. Establish `e1 : toEAf D (y i l) = _` using `h1 i l`. Rewrite using `[e1]`. Conclude with `inId_cF (inId_mul hη (inId_sum _ fun m _ => inId_mul (hβi l m).1 (hI m i hi)))`. Rewrite using `[hσε]`.
+
+Conclude with `h2 i j`.
+-/
 private theorem rows_of_support (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1) (hc : D.host.ccK = ⊤) (βS : GL (Fin S.rank) (EAf D))
     (hβ : Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank)) {e : Formalism.L2.Theta.AE D}
     {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : GoodIdem e P) {I : Ideal (𝓞 D.host.E)} {o : ℕ} (ho : o + S.rank = T.rank)
@@ -333,6 +472,19 @@ private theorem rows_of_support (S T : HSp D) (hS : S.gram = 1) (hT : T.gram = 1
   · rw [hσε]
     exact h2 i j
 
+/- English proof (translation)
+Introduce `D S T hS hT hc βS hβ e P c he o ho ν y hy`. Take `⟨⟨hh, hY, hI⟩, hy⟩` from `ite_ne_right_iff.1 hy`. Take `⟨⟨x, hx⟩, -⟩` from `dite_ne_right_iff.1 hy`. Take `⟨h1, k, hk, hku, h2⟩` from `rows_of_support S T hS hT hc βS hβ he ho hh hY hI hx`. Take `⟨h, hh1, hh2⟩` from `exists_intG hk hku`.
+
+Establish `hlt : ∀ j : Fin S.rank, o + j.1 < T.rank` using `fun j => by omega`. Use `⟨h, hh1, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgk : ∀ i j, toEAf D (Formalism.L2.Theta.mt S g i j) = k i j` using `fun i j => by`. Rewrite using `[← hh2, ← GlobalTheory.BotClassDict.finStd_of_isFinPt S hS hg, toE_finStd]`. Establish `hfin : ∀ i j, toEAf D (actO S T g⁻¹ 1 y i j) = ∑ l, toEAf D (y i l) * k l j` using `fun i j => by`.
+
+Rewrite using `[actO_apply, StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.hom_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [RingHom.map_mul, hgk]`. Use `ite_ne_right_iff.2 ⟨⟨fun i j => ?_, fun i j => ?_⟩, one_ne_zero⟩` and prove the remaining obligations. Rewrite using `[actO_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, hh i l]`.
+
+Rewrite using `[RingHom.map_sub, hfin]`. Unfold `unitPt`. Distinguish the cases in `hi : i.1 < o`. Rewrite using `[if_neg (by omega), RingHom.map_zero, sub_zero]`. Use `inId_sum _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `inId_mul (hk l j) (h1 i l hi)`. Take `⟨i', rfl⟩ : ∃ i' : Fin S.rank, (⟨o + i'.1, hlt i'⟩ : Fin T.rank) = i` from `⟨⟨i.1 - o, by omega⟩, Fin.ext (by dsimp only; omega)⟩`. Rewrite using `[h2]`. Distinguish the cases in `hij : i' = j`.
+
+Rewrite using `[if_pos hij, if_pos (by rw [hij]), sub_self]`. Conclude with `inId_zero _`. Rewrite using `[if_neg hij, if_neg (fun h => hij (Fin.ext (Nat.add_left_cancel h))), RingHom.map_zero, sub_self]`. Conclude with `inId_zero _`.
+-/
 private theorem exists_intG_cosetFn_ne_zero : ∀ {D : D7} (S T : HSp D), S.gram = 1 → T.gram = 1 → D.host.ccK = ⊤ →
     ∀ (βS : GL (Fin S.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank) →
     ∀ (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), GoodIdem e P →
@@ -375,6 +527,9 @@ end GlobalTheory.BotSmallDict.Supp
 
 end
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.BotSmallDict.Supp.exists_intG_cosetFn_ne_zero`.
+-/
 theorem _root_.GlobalTheory.T.exists_maximalLevel_moves_standardPairSupport_to_unitCoset : ∀ {D : D7} (S T : HSp D), S.gram = 1 → T.gram = 1 → D.host.ccK = ⊤ →
     ∀ (βS : GL (Fin S.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank) →
     ∀ (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), GoodIdem e P →

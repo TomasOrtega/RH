@@ -14,13 +14,24 @@ namespace GlobalTheory.ThK.CartanUnit
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`.
+-/
 theorem star_mulVec_map (A : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ) : star (A *ᵥ x) = A.map star *ᵥ star x := by
   funext i
   simp [Matrix.mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, dotProduct_comm]`.
+-/
 theorem mulVec_dot (A : Matrix (Fin n) (Fin n) ℂ) (u v : Fin n → ℂ) : (A *ᵥ u) ⬝ᵥ v = u ⬝ᵥ (Aᵀ *ᵥ v) := by
   rw [dotProduct_comm, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, dotProduct_comm]
 
+/- English proof (translation)
+Establish `hpos` using `hC.2.2 x hx`. Establish `hP : (θ *ᵥ x) ⬝ᵥ M *ᵥ star x ≠ 0` using `fun h => by rw [h] at hpos; simp at hpos`. Establish `h1 : (θ *ᵥ (k *ᵥ x)) ⬝ᵥ M *ᵥ star (k *ᵥ x) = (θ *ᵥ x) ⬝ᵥ M *ᵥ star x`. Rewrite using `[Matrix.mulVec_mulVec, ← hc.eq, ← Matrix.mulVec_mulVec, star_mulVec_map, mulVec_dot, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hk]`. Establish `h2 : (θ *ᵥ (k *ᵥ x)) ⬝ᵥ M *ᵥ star (k *ᵥ x) = c * star c * ((θ *ᵥ x) ⬝ᵥ M *ᵥ star x)`.
+
+Rewrite using `[hkx, Matrix.mulVec_smul, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (c * star c - 1) * ((θ *ᵥ x) ⬝ᵥ M *ᵥ star x) = 0` using `by rw [sub_mul, ← h2, h1, one_mul, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_right hP)`.
+-/
 theorem mul_star_eq_one_of_cartan {M θ k : Matrix (Fin n) (Fin n) ℂ} (hC : IsCartan M θ) (hk : kᵀ * M * k.map star = M)
     (hc : Commute k θ) {x : Fin n → ℂ} (hx : x ≠ 0) {c : ℂ} (hkx : k *ᵥ x = c • x) : c * star c = 1 := by
   have hpos := hC.2.2 x hx
@@ -39,6 +50,25 @@ end GlobalTheory.ThK.CartanUnit
 
 namespace GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG K hK k hk t ht hkt`. Establish `hcm` using `hB.cm`. Establish `hkI` using `(mem_KAt_inf hK).1 hk`. Establish `hx0 : H.x ≠ 0` using `fun h => by`. Use `hC.hH.xy` as an intermediate fact.
+
+Simplify using `[form, h] at this`. Establish `hw : ∀ w, ‖piInf (B.emb w) t.1‖₊ = 1`. Introduce `w`. Establish `hinc : ∀ e : E, piInf (B.emb w) (inclR (F` using `F) (AF F) e) = (B.emb w).1 e := fun e => by`. Simplify using `[piInf, inclR, compInf, infEmb_tmul]`.
+
+Establish `hu : ((mat k).map (piInf (B.emb w)))ᵀ * G.V.J.map (B.emb w).1 * ((mat k).map (piInf (B.emb w))).map star = G.V.J.map (B.emb w).1`. Establish `h0 : (mat k)ᵀ * incM F G.V.J * (mat k).map (cA σ) = incM F G.V.J` using `k.2`. Establish `h1` using `congrArg (fun A => A.map (piInf (B.emb w))) h0`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map] at h1`. Establish `e1 : (incM F G.V.J).map (piInf (B.emb w)) = G.V.J.map (B.emb w).1`.
+
+Use extensionality with `i j`. Conclude with `hinc _`. Establish `e2 : (piInf (B.emb w)) ∘ (cA σ) = star ∘ (piInf (B.emb w))` using `funext fun z => GlobalTheory.StabBounded.cA_piInf hcm _ z`. Rewrite `h1` using `[e1, e2]`. Simplify `h1` using `[Matrix.map_map]`.
+
+Establish `he : (mat k).map (piInf (B.emb w)) *ᵥ (fun i => (B.emb w).1 (H.x i)) = piInf (B.emb w) t.1 • (fun i => (B.emb w).1 (H.x i))`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (fun v => piInf (B.emb w) (v i)) hkt`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.map_mulVec] at h1`. Establish `e3 : (piInf (B.emb w)) ∘ incV F H.x = fun i => (B.emb w).1 (H.x i)` using `funext fun j => hinc _`.
+
+Rewrite `h1` using `[e3]`. Simplify `h1` using `[incV, hinc]`. Establish `hxw : (fun i => (B.emb w).1 (H.x i)) ≠ 0` using `fun h => hx0 (funext fun i => (B.emb w).1.injective (by simpa using congrFun h i))`. Establish `hcs` using `CartanUnit.mul_star_eq_one_of_cartan (hG.hV.cartan w) hu (hkI.2 w) hxw he`. Establish `hn : ‖piInf (B.emb w) t.1‖ ^ 2 = 1`.
+
+Use `Complex.mul_conj' (piInf (B.emb w) t.1)` as an intermediate fact. Rewrite `this` using `[show (starRingEnd ℂ) (piInf (B.emb w) t.1) = star (piInf (B.emb w) t.1) from rfl, hcs]`. Conclude with `this.symm` after adjusting the coercions. Establish `hn' : ‖piInf (B.emb w) t.1‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hn`. Conclude with `NNReal.eq (by simpa using hn')`.
+
+Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Establish `hf : ∀ v, GlobalTheory.Doubling.unitFin F E v t = 1` using `fun v => Units.ext (by`. Use `(at_evI_iff.1 (mem_idelesAt.1 ht)) v` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this)`.
+
+Simplify using `only [hf, map_one, finprod_one, mul_one]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq hcm (B.emb w)]`. Express the relevant statement in the definitionally equal form `‖piInf (B.emb w) t.1‖₊ ^ 2 = 1`. Rewrite using `[hw w, one_pow]`.
+-/
 theorem absE_eq_one_of_KInf_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     B.IsGood σ → G.IsGood B → ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →

@@ -7,20 +7,54 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP.ComplLD
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`.
+-/
 theorem smodEq_iff {Q : Type} [CommRing Q] (I : Ideal Q) (n : ℕ) (x y : Q) :
     x ≡ y [SMOD (I ^ n • ⊤ : Submodule Q Q)] ↔ x - y ∈ I ^ n := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]
 
+/- English proof (translation)
+The claim follows from `IsHausdorff.haus' x fun n => (smodEq_iff I n x 0).2 (by simpa using h n)`.
+-/
 theorem eq_zero_of_mem {Q : Type} [CommRing Q] (I : Ideal Q) [IsHausdorff I Q] (x : Q)
     (h : ∀ n, x ∈ I ^ n) : x = 0 :=
   IsHausdorff.haus' x fun n => (smodEq_iff I n x 0).2 (by simpa using h n)
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `IsPrecomplete.prec' (I := I) f fun {m n} hmn => (smodEq_iff I m _ _).2 (by rw [show f m - f n = -(f n - f m) by ring]; exact neg_mem (h m n hmn))`. Conclude with `⟨z, fun n => (smodEq_iff I n _ _).1 (hz n)⟩`.
+-/
 theorem exists_lim {Q : Type} [CommRing Q] (I : Ideal Q) [IsPrecomplete I Q] (f : ℕ → Q)
     (h : ∀ m n, m ≤ n → f n - f m ∈ I ^ m) : ∃ z, ∀ n, f n - z ∈ I ^ n := by
   obtain ⟨z, hz⟩ := IsPrecomplete.prec' (I := I) f fun {m n} hmn =>
     (smodEq_iff I m _ _).2 (by rw [show f m - f n = -(f n - f m) by ring]; exact neg_mem (h m n hmn))
   exact ⟨z, fun n => (smodEq_iff I n _ _).1 (hz n)⟩
 
+/- English proof (translation)
+Introduce `l _ L _ Q _ i d N hd hbd hc`. Use `set J : Ideal L := Ideal.span {(l : L)} ⊔ Ideal.span {d} with hJ`. Use `set I : Ideal Q := J.map i with hI`. Use `haveI : IsAdicComplete I Q := hc.complete`. Establish `hpow : ∀ n, (J ^ n).map i = I ^ n` using `fun n => Ideal.map_pow _ _ _`.
+
+Establish `surj : ∀ (x : Q) n, ∃ a, x - i a ∈ I ^ n` using `fun x n => by`. Take `⟨a, ha⟩` from `hc.surj x n; exact ⟨a, by rwa [← hpow]⟩`. Establish `ker : ∀ a n, i a ∈ I ^ n → a ∈ J ^ n` using `fun a n h => hc.ker a n (by rwa [hpow])`. Establish `strict : ∀ n z, i d * z ∈ I ^ (2 * (n + N + 1)) → z ∈ I ^ n`. Introduce `n z hz`.
+
+Take `⟨a, ha⟩` from `surj z (2 * (n + N + 1))`. Establish `h1 : i (d * a) ∈ I ^ (2 * (n + N + 1))`. Establish `e : i (d * a) = i d * z - i d * (z - i a)` using `by rw [map_mul]; ring`. Rewrite using `[e]`. Conclude with `sub_mem hz (Ideal.mul_mem_left _ _ ha)`.
+
+Establish `h2` using `GlobalTheory.T.mem_pow_of_mul_mem_pow_bounded_torsion l L d N hd hbd n a (ker _ _ h1)`. Establish `h3 : i a ∈ I ^ n` using `by rw [← hpow]; exact Ideal.mem_map_of_mem i h2`. Establish `h4 : z - i a ∈ I ^ n` using `Ideal.pow_le_pow_right (by omega) ha`. Simplify using `using add_mem h4 h3`. Establish `reg : i d ∈ nonZeroDivisors Q`.
+
+Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨fun z hz => eq_zero_of_mem I z fun n => strict n z (by rw [hz]; exact zero_mem _), fun z hz => eq_zero_of_mem I z fun n => strict n z (by rw [mul_comm (i d) z, hz]; exact zero_mem _)⟩`. Establish `closed : ∀ x, (∀ n, ∃ z, x - i d * z ∈ I ^ n) → x ∈ Ideal.span {i d}`. Introduce `x hx`. Use `choose z hz using fun n => hx (2 * (n + N + 1))`.
+
+Take `⟨w, hw⟩` from `exists_lim I z fun m n hmn => strict m _ (by`. Establish `e : i d * (z n - z m) = (x - i d * z m) - (x - i d * z n)` using `by ring`. Rewrite using `[e]; exact sub_mem (hz m) (Ideal.pow_le_pow_right (by omega) (hz n)))`. Establish `h0 : x - i d * w = 0` using `eq_zero_of_mem I _ fun n => by`. Establish `e : x - i d * w = (x - i d * z n) + i d * (z n - w)` using `by ring`.
+
+Rewrite using `[e]; exact add_mem (Ideal.pow_le_pow_right (by omega) (hz n)) (Ideal.mul_mem_left _ _ (hw n))`. Conclude with `Ideal.mem_span_singleton'.2 ⟨w, by rw [mul_comm]; exact (sub_eq_zero.1 h0).symm⟩`. Use `⟨reg, fun x m hx => closed _ fun n => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hx`. Take `⟨a, ha⟩` from `surj x (m + n + 1)`.
+
+Take `⟨b, hb⟩` from `surj y (m + n + 1)`. Establish `h1 : i ((l : L) ^ m * a - d * b) ∈ I ^ (m + n + 1)`. Establish `e : i ((l : L) ^ m * a - d * b) = -((l : Q) ^ m * (x - i a)) + i d * (y - i b)`. Rewrite using `[map_sub, map_mul, map_mul, map_pow, map_natCast]`. Take the linear combination `(-1 : Q) * hy`.
+
+Rewrite using `[e]`. Conclude with `add_mem (neg_mem (Ideal.mul_mem_left _ _ ha)) (Ideal.mul_mem_left _ _ hb)`. Establish `h2 : (l : L) ^ m * a - d * b ∈ Ideal.span {(l : L) ^ (m + n)} ⊔ Ideal.span {d}`. Establish `hle : J ^ (m + n + 1) ≤ Ideal.span {(l : L)} ^ (m + n) ⊔ Ideal.span {d} ^ 1` using `Ideal.sup_pow_add_le_pow_sup_pow`. Simplify `hle (ker _ _ h1)` using `[Ideal.span_singleton_pow]`.
+
+Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h2`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hu`. Take `⟨e, rfl⟩` from `Ideal.mem_span_singleton'.1 hv`. Establish `h3 : (l : L) ^ m * (a - (l : L) ^ n * c) ∈ Ideal.span {d}` using `Ideal.mem_span_singleton'.2 ⟨b + e, by linear_combination huv⟩`. Take `⟨f, hf⟩` from `Ideal.mem_span_singleton'.1 (hbd _ _ h3)`.
+
+Use `⟨i f, ?_⟩` and prove the remaining obligations. Establish `hf'` using `congrArg i hf`. Simplify using `only [map_mul, map_pow, map_natCast, map_sub] at hf'`. Establish `e : (l : Q) ^ N * x - i d * i f = (l : Q) ^ N * (x - i a) + i ((l : L) ^ (N + n) * c)`. Rewrite using `[map_mul, map_pow, map_natCast]`.
+
+Take the linear combination `(-1 : Q) * hf'`. Rewrite using `[e]`. Use `add_mem (Ideal.pow_le_pow_right (by omega) (Ideal.mul_mem_left _ _ ha)) ?_` and prove the remaining obligations. Rewrite using `[← hpow]`. Use `Ideal.mem_map_of_mem i (Ideal.mul_mem_right _ _ (Ideal.pow_le_pow_right (by omega : n ≤ N + n) (Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) (N + n))))` and prove the remaining obligations.
+-/
 theorem regular_and_torsion_bounded : ∀ (l : ℕ) [Fact l.Prime] (L : Type) [CommRing L] (Q : Type) [CommRing Q] (i : L →+* Q) (d : L) (N : ℕ), d ∈ nonZeroDivisors L → (∀ (x : L) (m : ℕ), (l : L) ^ m * x ∈ Ideal.span {d} → (l : L) ^ N * x ∈ Ideal.span {d}) → IsCompl i (Ideal.span {(l : L)} ⊔ Ideal.span {d}) → i d ∈ nonZeroDivisors Q ∧ ∀ (x : Q) (m : ℕ), (l : Q) ^ m * x ∈ Ideal.span {i d} → (l : Q) ^ N * x ∈ Ideal.span {i d} := by
   intro l _ L _ Q _ i d N hd hbd hc
   set J : Ideal L := Ideal.span {(l : L)} ⊔ Ideal.span {d} with hJ

@@ -41,11 +41,17 @@ def rmul (α : Type) (t : GL β A) : Matrix α β A ≃ₗ[R] Matrix α β A whe
     simp only [Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.mul_one]
 
 omit [DecidableEq β] in
+/- English proof (translation)
+Introduce `i` and use `by funext j simp only [Matrix.mul_apply, h i]`.
+-/
 theorem Del.mul {w : Matrix α β A} (h : Del e w) (M : Matrix β β A) : Del e (w * M) := fun i => by
   funext j
   simp only [Matrix.mul_apply, h i]
 
 omit [DecidableEq β] in
+/- English proof (translation)
+Introduce `i` and use `by funext j simp only [Matrix.mul_apply, h i, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem Nab.mul {w : Matrix α β A} (h : Nab e w) (M : Matrix β β A) : Nab e (w * M) := fun i => by
   funext j
   simp only [Matrix.mul_apply, h i, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]

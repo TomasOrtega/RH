@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.Basi
 open scoped ENNReal Classical
 open Limits
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DegreeRootData.degData | exact GlobalTheory.DegreeRootData.degData | (intros; apply GlobalTheory.DegreeRootData.degData <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.curve_degree_data_outside_set : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (q : ℕ) [Fact q.Prime], q ∉ FlagAr.setB O.Y B →
   ∀ (Z : Scheme.{0}) (i : Z ⟶ (h.mdl (FlagAr.setB O.Y B) c).V.X) [IsClosedImmersion i] [IsIntegral Z]

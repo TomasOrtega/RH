@@ -4,6 +4,11 @@ namespace GlobalTheory.PrimeLogSum
 open Finset
 
 open Finset in
+/- English proof (translation)
+Rewrite using `[Real.log_lt_iff_lt_exp (by norm_num)]`. Establish `h1` using `Real.exp_one_gt_d9`. Establish `h2` using `Real.add_one_le_exp 0.11`. Establish `h3 : Real.exp 1.11 = Real.exp 1 * Real.exp 0.11`. Rewrite using `[← Real.exp_add]`.
+
+Evaluate the numerical expressions. Rewrite using `[h3]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma log_three_lt_one_point_one_one : Real.log 3 < 1.11 := by
   rw [Real.log_lt_iff_lt_exp (by norm_num)]
   have h1 := Real.exp_one_gt_d9
@@ -14,6 +19,15 @@ private lemma log_three_lt_one_point_one_one : Real.log 3 < 1.11 := by
   nlinarith
 
 open Finset in
+/- English proof (translation)
+Use `push_cast`. Use `set x : ℝ := (n : ℝ) with hx`. Establish `hx3 : (3 : ℝ) ≤ x` using `by rw [hx]; exact_mod_cast hn`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hd : Real.log (x + 1) - Real.log x ≤ 1 / x`.
+
+Establish `h` using `Real.log_le_sub_one_of_pos (show 0 < (x + 1) / x by positivity)`. Rewrite `h` using `[Real.log_div (by positivity) hx0.ne']`. Establish `: (x + 1) / x - 1 = 1 / x` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (x + 1) * (Real.log (x + 1) - Real.log x) ≤ (x + 1) * (1 / x)` using `mul_le_mul_of_nonneg_left hd (by linarith)`.
+
+Establish `h2 : (x + 1) * (1 / x) ≤ 4 / 3`. Rewrite using `[mul_one_div, div_le_iff₀ hx0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : Real.log (x + 1) ≤ (x + 1) * (Real.log x + 4 / 3) - x * (Real.log (x + 1) + 4 / 3)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hpos : 0 < (x + 1) * x` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma log_succ_div_le_telescoping_sub (n : ℕ) (hn : 3 ≤ n) :
     Real.log ((n + 1 : ℕ) : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) - 1))
       ≤ (Real.log n + 4 / 3) / n - (Real.log ((n + 1 : ℕ) : ℝ) + 4 / 3) / ((n + 1 : ℕ) : ℝ) := by
@@ -42,6 +56,11 @@ private lemma log_succ_div_le_telescoping_sub (n : ℕ) (hn : 3 ≤ n) :
         field_simp
 
 open Finset in
+/- English proof (translation)
+Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base`. Simplify using `[Finset.sum_range_succ]`. Evaluate the numerical expressions. Consider the case `succ n hn ih`.
+
+Rewrite using `[Finset.sum_range_succ]`. Use `log_succ_div_le_telescoping_sub n hn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma sum_log_div_mul_pred_add_le_const (N : ℕ) (hN : 3 ≤ N) :
     ∑ n ∈ Finset.range (N + 1), Real.log n / ((n : ℝ) * ((n : ℝ) - 1)) + (Real.log N + 4 / 3) / N
       ≤ Real.log 2 / 2 + Real.log 3 / 6 + (Real.log 3 + 4 / 3) / 3 := by
@@ -55,6 +74,11 @@ private lemma sum_log_div_mul_pred_add_le_const (N : ℕ) (hN : 3 ≤ N) :
     linarith
 
 open Finset in
+/- English proof (translation)
+Rewrite using `[Nat.factorization_factorial hp (lt_add_one (Nat.log p N))]`. Break down `Nat.lt_or_ge N p with h | h` into its components or cases. Simplify using `[Nat.div_eq_of_lt h]`. Establish `h1 : 1 ∈ Ico 1 (Nat.log p N + 1)`. Simplify using `[Nat.log_pos hp.one_lt h]`.
+
+Simplify using `using single_le_sum (f := fun i => N / p ^ i) (fun _ _ => Nat.zero_le _) h1`.
+-/
 private lemma div_le_factorization_factorial' (N p : ℕ) (hp : p.Prime) :
     N / p ≤ (N.factorial).factorization p := by
   rw [Nat.factorization_factorial hp (lt_add_one (Nat.log p N))]
@@ -65,6 +89,23 @@ private lemma div_le_factorization_factorial' (N p : ℕ) (hp : p.Prime) :
     simpa using single_le_sum (f := fun i => N / p ^ i) (fun _ _ => Nat.zero_le _) h1
 
 open Finset in
+/- English proof (translation)
+Use `set P := (Finset.range (N + 1)).filter Nat.Prime with hP`. Establish `hfac : Real.log (N.factorial : ℝ) = ∑ p ∈ P, ((N.factorial).factorization p : ℝ) * Real.log p`. Rewrite using `[Real.log_nat_eq_sum_factorization]`. Apply `Finsupp.sum_of_support_subset` to reduce the goal to its premises. Introduce `p hp`.
+
+Rewrite `hp` using `[Nat.support_factorization, Nat.mem_primeFactors]`. Simplify using `only [hP, Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨Nat.lt_succ_of_le ((hp.1.dvd_factorial).1 hp.2.1), hp.1⟩`. Introduce `i _`. Simplify using the standard rewrite rules.
+
+Establish `htheta : ∑ p ∈ P, Real.log p ≤ N * Real.log 4`. Rewrite using `[← Real.log_prod (fun p hp => by`. Use `(Finset.mem_filter.1 hp).2.pos` as an intermediate fact. Use the proof step `positivity), ← Real.log_pow]`. Apply `Real.log_le_log` to reduce the goal to its premises.
+
+Conclude with `Finset.prod_pos fun p hp => by`. Use `(Finset.mem_filter.1 hp).2.pos` as an intermediate fact. Check the signs of the components of the expression. Establish `h` using `primorial_le_four_pow N`. Establish `h' : ((primorial N : ℕ) : ℝ) ≤ ((4 ^ N : ℕ) : ℝ)` using `by exact_mod_cast h`.
+
+Simplify `h'` using `[primorial, hP, Nat.cast_prod]`. Rewrite using `[Finset.mul_sum, hfac]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`.
+
+Establish `hp'` using `(Finset.mem_filter.1 hp).2`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp'.pos`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `hv : ((N / p : ℕ) : ℝ) ≤ ((N.factorial).factorization p : ℝ)`. Conclude with `div_le_factorization_factorial' N p hp'` after adjusting the coercions.
+
+Establish `hlt : (N : ℝ) < ((N / p : ℕ) : ℝ) * p + p`. Conclude with `Nat.lt_div_mul_add hp'.pos` after adjusting the coercions. Establish `hq : (N : ℝ) / p ≤ ((N.factorial).factorization p : ℝ) + 1`. Rewrite using `[div_le_iff₀ hp0]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ p ∈ P, ((N.factorial).factorization p : ℝ) * Real.log p + ∑ p ∈ P, Real.log p := Finset.sum_add_distrib`. Use `_ ≤ _ := by linarith`.
+-/
 private lemma mul_sum_prime_log_div_le_log_factorial_add (N : ℕ) :
     (N : ℝ) * ∑ p ∈ (Finset.range (N + 1)).filter Nat.Prime, Real.log p / p
       ≤ Real.log (N.factorial : ℝ) + N * Real.log 4 := by
@@ -114,6 +155,11 @@ private lemma mul_sum_prime_log_div_le_log_factorial_add (N : ℕ) :
     _ ≤ _ := by linarith
 
 open Finset in
+/- English proof (translation)
+Establish `h1 : Real.log (Stirling.stirlingSeq n) ≤ Real.log (Stirling.stirlingSeq 1)`. Use `Stirling.log_stirlingSeq'_antitone (Nat.zero_le (n - 1))` as an intermediate fact. Simplify `this` using `[Function.comp, Nat.sub_add_cancel hn]`. Rewrite `h1` using `[Stirling.log_stirlingSeq_formula, Stirling.log_stirlingSeq_formula]`. Establish `hn0 : (n : ℝ) ≠ 0` using `by positivity`.
+
+Rewrite `h1` using `[Real.log_mul (by norm_num) hn0, Real.log_div hn0 (Real.exp_pos 1).ne', Real.log_exp]`. Simplify using `only [Nat.factorial_one, Nat.cast_one, mul_one, Real.log_one, one_div, Real.log_inv, Real.log_exp] at h1`. Combine the linear relations using `[h1]`.
+-/
 private lemma log_factorial_le_stirling_bound (n : ℕ) (hn : 1 ≤ n) :
     Real.log (n.factorial : ℝ) ≤ n * Real.log n - n + 1 + Real.log n / 2 := by
   have h1 : Real.log (Stirling.stirlingSeq n) ≤ Real.log (Stirling.stirlingSeq 1) := by
@@ -128,6 +174,27 @@ private lemma log_factorial_le_stirling_bound (n : ℕ) (hn : 1 ≤ n) :
 
 open Finset in
 
+/- English proof (translation)
+Introduce `N`. Establish `hl2` using `Real.log_two_lt_d9`. Establish `hl3` using `log_three_lt_one_point_one_one`. Establish `hl3' : 0 ≤ Real.log 3` using `Real.log_nonneg (by norm_num)`. Break down `Nat.lt_or_ge N 4 with hN | hN` into its components or cases.
+
+Apply the tactic sequence `interval_cases N <;>`. Apply the tactic sequence `simp [Finset.sum_filter, Finset.sum_range_succ, Nat.prime_two, Nat.prime_three] <;>`. Apply the tactic sequence `norm_num <;> linarith`. Use `set P := (Finset.range (N + 1)).filter Nat.Prime with hP`. Establish `hsplit : ∑ p ∈ P, Real.log p / ((p : ℝ) - 1) = ∑ p ∈ P, Real.log p / p + ∑ p ∈ P, Real.log p / ((p : ℝ) * ((p : ℝ) - 1))`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (Finset.mem_filter.1 hp).2.two_le`. Establish `h3 : (p : ℝ) - 1 ≠ 0` using `by linarith`.
+
+Establish `h4 : (p : ℝ) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hB : ∑ p ∈ P, Real.log p / ((p : ℝ) * ((p : ℝ) - 1)) ≤ ∑ n ∈ Finset.range (N + 1), Real.log n / ((n : ℝ) * ((n : ℝ) - 1))`. Apply `Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)` to reduce the goal to its premises.
+
+Introduce `n _ _`. Apply `div_nonneg (Real.log_natCast_nonneg n)` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Simplify using `[h]`. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast h`.
+
+Conclude with `mul_nonneg (by linarith) (by linarith)`. Establish `hC` using `sum_log_div_mul_pred_add_le_const N (by omega)`. Establish `hg : 0 ≤ (Real.log N + 4 / 3) / N` using `div_nonneg (by linarith [Real.log_natCast_nonneg N]) (Nat.cast_nonneg N)`. Establish `hA` using `mul_sum_prime_log_div_le_log_factorial_add N`. Establish `hF` using `log_factorial_le_stirling_bound N (by omega)`.
+
+Establish `hN4 : (4 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hNpos : (0 : ℝ) < N` using `by linarith`. Establish `hlogN : Real.log N ≤ 0.4 * N`. Establish `h` using `Real.log_le_sub_one_of_pos (show 0 < (N : ℝ) / Real.exp 1 by positivity)`. Rewrite `h` using `[Real.log_div hNpos.ne' (Real.exp_pos 1).ne', Real.log_exp]`.
+
+Establish `he` using `Real.exp_one_gt_d9`. Establish `h5 : (N : ℝ) / Real.exp 1 ≤ 0.4 * N`. Rewrite using `[div_le_iff₀ (Real.exp_pos 1)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlog4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Establish `hA' : ∑ p ∈ P, Real.log p / p ≤ Real.log N - 1 + 0.25 + 0.2 + Real.log 4`. Establish `h : (N : ℝ) * ∑ p ∈ P, Real.log p / p ≤ N * (Real.log N - 1 + 0.25 + 0.2 + Real.log 4)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_left h hNpos`. Rewrite using `[hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.PrimeLogSum.sum_log_div_pred_le : ∀ N : ℕ,
     ∑ p ∈ (Finset.range (N + 1)).filter Nat.Prime, Real.log p / ((p : ℝ) - 1)
       ≤ Real.log N + 2.2 := by

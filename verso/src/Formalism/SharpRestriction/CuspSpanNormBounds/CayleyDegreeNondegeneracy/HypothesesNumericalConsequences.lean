@@ -16,6 +16,9 @@ section Frame
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s` using `⟨s, hs⟩`. Rewrite using `[Formalism.HermitianLatticesTheory.massBasic_mass_eq h L hex]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Formalism.HermitianLatticesTheory.massBasic_sum_cast, Formalism.HermitianLatticesTheory.massBasic_sum_cast]`. Conclude with `Formalism.ThetaLiftIndependence.latLiftIndep K V h L _ _ (fun _ _ _ => rfl) (fun _ _ _ => rfl) _ _ hex.choose_spec hs`.
+-/
 theorem mass_eq_sum_inv_aut_card (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (s : Finset (Submodule (𝓞 K) V))
     (hs : Formalism.ThetaLiftIndependence.IsClassReps h L s) :
     Formalism.HermitianLatticesTheory.mass h L = ∑ M ∈ s, ((Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ)⁻¹ := by

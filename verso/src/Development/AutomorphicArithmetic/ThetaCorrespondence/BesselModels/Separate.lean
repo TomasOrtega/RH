@@ -29,8 +29,14 @@ namespace UpperTheory.Lit
 
 open GlobalTheory.SepRows
 
+/- English proof (translation)
+The claim follows from `Bur.BurPos.burGapPos_of_bmu CompanionTheory.Bmu.besselMapUniqGap`.
+-/
 theorem burGapPos : Bur.BurGapPos := Bur.BurPos.burGapPos_of_bmu CompanionTheory.Bmu.besselMapUniqGap
 
+/- English proof (translation)
+The claim follows from `Bur.separate_of_burGapPos burGapPos GlobalTheory.T.dualCoefSpace_isTensorOverRealPlaces (GlobalTheory.T.top_separation P) hT`.
+-/
 theorem separate_of_steps_gap (P : GlobalTheory.FunPr.Hypotheses₂) (hT : RowTower) :
     SizeGap → GoodRows → RowConv → WeakSep → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=
   Bur.separate_of_burGapPos burGapPos GlobalTheory.T.dualCoefSpace_isTensorOverRealPlaces (GlobalTheory.T.top_separation P) hT

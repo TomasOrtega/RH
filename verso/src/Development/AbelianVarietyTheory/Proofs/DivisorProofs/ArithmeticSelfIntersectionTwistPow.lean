@@ -22,11 +22,17 @@ namespace GlobalTheory.MixPull
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {k' : Type} [CommRing k'] [Algebra k k']
 
+/- English proof (translation)
+Introduce `σ y` and use `CxPts.CInfAt.pull ρ hρ (hc σ _)`.
+-/
 theorem cInf_pull (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ) (hc : ∀ σ y, CxPts.CInfAt (c σ) y) :
     ∀ σ (y : CxPts p σ), CxPts.CInfAt (fun y => c σ (PtsOver.map ρ hρ _ y)) y :=
   fun σ y => CxPts.CInfAt.pull ρ hρ (hc σ _)
 
+/- English proof (translation)
+Introduce `σ σ' i y y' h hy`. Conclude with `hcc σ σ' PUnit.unit _ _ (by simp [PtsOver.map_val, h]) CxPts.mem_ptsIn_top`.
+-/
 theorem conj_pull (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ)
     (hcc : ∀ σ σ', (Weight.ofFun (c σ)).IsConj (Weight.ofFun (c σ'))) :
@@ -41,6 +47,9 @@ namespace GlobalTheory.MixPull
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {k' : Type} [CommRing k'] [Algebra k k']
 
+/- English proof (translation)
+Use `HermLB.isometric_of_chart (fun _ => PUnit.unit) (fun _ => le_top) (fun x j j' h h' => ?_) (fun σ j y _ => ?_)` and prove the remaining obligations. Use `(gm_linComb _ _ _ (𝟙 X) x j j' h h').trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `((gm ρ x _).map_one).trans ((gm (𝟙 X) x _).map_one).symm`. Conclude with `(Weight.pull_φ (Weight.ofFun (c σ)) ρ hρ j y).symm`.
+-/
 theorem isometric_pull_fnB (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ) (hc : ∀ σ y, CxPts.CInfAt (c σ) y)
     (hcc : ∀ σ σ', (Weight.ofFun (c σ)).IsConj (Weight.ofFun (c σ'))) :
@@ -59,6 +68,9 @@ namespace GlobalTheory.MixPull
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {k' : Type} [CommRing k'] [Algebra k k']
 
+/- English proof (translation)
+Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← HermLB.icls_eq_iff.2 (isometric_pull_fnB ρ hρ c hc hcc), HermLB.icls_pull, HermLB.icls_eq_iff.2 hM, HermLB.icls_pow, map_nsmul, ← HermLB.icls_pull, icls_comb, Finset.sum_eq_single (none : Option ι) (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using `[natCast_zsmul]`.
+-/
 theorem isometric_comb_none {ι : Type} [Fintype ι] (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (M : HermLB (spMap (algebraMap k k'))) (e : ℕ)
     (c : ∀ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ → ℝ) (hc : ∀ σ y, CxPts.CInfAt (c σ) y)
@@ -76,6 +88,9 @@ end GlobalTheory.MixPull
 
 namespace GlobalTheory.MixPull
 
+/- English proof (translation)
+Establish `h1 : aeval (fun j : Option ι => lin fun i => ((Pi.single j (j.elim (e : ℤ) fun _ => 1) : Option ι → ℤ) i : ℝ)) (rename some (lin fun i => (n i : ℝ))) = rename some (lin fun i => (n i : ℝ))`. Simplify using `[lin, aeval_rename, map_sum, Fintype.sum_option, Pi.single_apply]`. Rewrite using `[map_mul, map_pow, h1, aeval_X]`. Simplify using `[lin, Fintype.sum_option, Pi.single_apply, smul_eq_C_mul, mul_assoc]`.
+-/
 theorem aeval_subst {ι : Type} [Fintype ι] (e : ℕ) (n : ι → ℤ) (D : ℕ) :
     aeval (fun j : Option ι => lin fun i => ((Pi.single j (j.elim (e : ℤ) fun _ => 1) : Option ι → ℤ) i : ℝ))
       (MvPolynomial.X none * rename some (lin fun i => (n i : ℝ)) ^ D) =
@@ -90,6 +105,11 @@ end GlobalTheory.MixPull
 
 namespace GlobalTheory.MixPull
 
+/- English proof (translation)
+Introduce `HA k _ X _ p D hX k' _ _ _ ρ hρ M e c hc hcc hM ι _ L Φ hΦ n`. Establish `hiso` using `((HA.arIso k X p D hX).2 (Option ι) _ Φ hΦ).2.2 (Option ι) (fun o : Option ι => o.elim (fnB (fun σ y => c σ (PtsOver.map ρ hρ _ y)) (cInf_pull ρ hρ c hc) (conj_pull ρ hρ c hcc)) L) (fun j => Pi.single j (j.elim (e : ℤ) fun _ => 1)) (fun j => ?_)`. Establish `h` using `HA.arChange k X p D hX ι L _ (cInf_pull ρ hρ c hc) (conj_pull ρ hρ c hcc) _ hiso n`. Rewrite `h` using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, aeval_subst, LinearMap.map_smul, smul_eq_mul]`. Conclude with `h`.
+
+Consider the cases of `j with`. Consider the case `none => exact isometric_comb_none ρ hρ M e c hc hcc hM L`. Consider the case `some i => exact isometric_comb_single (fun o : Option ι => o.elim (M.pull ρ hρ) L) (some i)`.
+-/
 theorem mix_pull_eq : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')
     (hρ : ρ ≫ spMap (algebraMap k k') = p) (M : HermLB (spMap (algebraMap k k'))) (e : ℕ)

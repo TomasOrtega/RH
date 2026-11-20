@@ -5,6 +5,11 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.Absolut
 open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+Introduce `E _ _ _`. Establish `hs : Summable fun w : {w : HeightOneSpectrum (𝓞 E) // ¬ IsSplitAt w} => ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ)⁻¹` using `PositivityTheory.Rg.BcB.Desc.inertThin_holds E`. Use `⟨hs, fun hfin => ?_⟩` and prove the remaining obligations. Apply `PositivityTheory.RgJS.PrimeSumConvergence.not_summable_all (E := E)` to reduce the goal to its premises. Establish `hf : Summable fun w : {w : HeightOneSpectrum (𝓞 E) | IsSplitAt w} => ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ)⁻¹` using `hfin.summable (fun w : HeightOneSpectrum (𝓞 E) => ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)⁻¹)`.
+
+Conclude with `(summable_subtype_and_compl (f := fun w : HeightOneSpectrum (𝓞 E) => ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)⁻¹) (s := {w : HeightOneSpectrum (𝓞 E) | IsSplitAt w})).1 ⟨hf, hs⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.thin :
     Thin := by
   intro E _ _ _

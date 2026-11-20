@@ -8,6 +8,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 
 namespace LateralTheory.E.LeafStalkValuationPf
 
+/- English proof (translation)
+Establish `h1 : Ring.KrullDimLE 1 R` using `(Ring.krullDimLE_iff).2 (by exact_mod_cast hd)`. Establish `key : ∀ P : Ideal R, P ≠ ⊥ → P.IsPrime → P = IsLocalRing.maximalIdeal R`. Introduce `P hP hPp`. Break down `(Ring.krullDimLE_one_iff.mp h1) P hPp with hmin | hmax` into its components or cases. It suffices to derive a contradiction.
+
+Apply `hP` to reduce the goal to its premises. Establish `hb : (⊥ : Ideal R).IsPrime` using `Ideal.isPrime_bot`. Conclude with `le_antisymm (hmin.2 ⟨hb, bot_le⟩ bot_le) bot_le`. Conclude with `IsLocalRing.eq_maximalIdeal hmax`. Conclude with `((tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (R := R)).out 3 1).mp (⟨inferInstance, key⟩ : IsIntegrallyClosed R ∧ ∀ P : Ideal R, P ≠ ⊥ → P.IsPrime → P = IsLocalRing.maximalIdeal R)`.
+-/
 theorem valuationRing_of_dimLE (R : Type) [CommRing R] [IsNoetherianRing R] [IsLocalRing R] [IsDomain R]
     [IsIntegrallyClosed R] (hd : ringKrullDim R ≤ 1) : ValuationRing R := by
   have h1 : Ring.KrullDimLE 1 R := (Ring.krullDimLE_iff).2 (by exact_mod_cast hd)
@@ -21,6 +26,11 @@ theorem valuationRing_of_dimLE (R : Type) [CommRing R] [IsNoetherianRing R] [IsL
   exact ((tfae_of_isNoetherianRing_of_isLocalRing_of_isDomain (R := R)).out 3 1).mp
     (⟨inferInstance, key⟩ : IsIntegrallyClosed R ∧ ∀ P : Ideal R, P ≠ ⊥ → P.IsPrime → P = IsLocalRing.maximalIdeal R)
 
+/- English proof (translation)
+Take `⟨-, hp, hs⟩` from `hc`. Establish `: Smooth c` using `SmoothOfRelativeDimension.smooth (n := 1) c`. Establish `: LocallyOfFiniteType c` using `inferInstance`. Establish `: IsLocallyNoetherian C` using `LocallyOfFiniteType.isLocallyNoetherian c`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.isIntegrallyClosed_stalk_spec_field Ω (c y)` as an intermediate fact. Conclude with `(GlobalTheory.isDomain_and_isIntegrallyClosed_stalk_of_smooth c y).2`. Conclude with `GlobalTheory.SmoothDimTotal.ringKrullDim_stalk_le_of_smooth Ω C c 1 hs y` after adjusting the coercions.
+-/
 theorem stalk_facts (Ω : Type) [Field Ω] {C : Scheme.{0}} [IsIntegral C] (c : C ⟶ Sp Ω)
     (hc : IsCurve c) (y : C) :
     IsNoetherianRing (C.presheaf.stalk y) ∧ IsIntegrallyClosed (C.presheaf.stalk y) ∧
@@ -34,6 +44,9 @@ theorem stalk_facts (Ω : Type) [Field Ω] {C : Scheme.{0}} [IsIntegral C] (c : 
     exact (GlobalTheory.isDomain_and_isIntegrallyClosed_stalk_of_smooth c y).2
   · exact_mod_cast GlobalTheory.SmoothDimTotal.ringKrullDim_stalk_le_of_smooth Ω C c 1 hs y
 
+/- English proof (translation)
+Introduce `Ω _ C _ c x y hx hc _`. Take `⟨h1, h2, h3⟩` from `stalk_facts Ω c hc y`. Use `⟨valuationRing_of_dimLE _ h3, ?_⟩` and prove the remaining obligations. Take `rfl : x = genericPoint C` from `hx.eq (genericPoint_spec C)`. Conclude with `(inferInstance : IsFractionRing (C.presheaf.stalk y) C.functionField)`.
+-/
 theorem LeafStalkValuation_of : LateralTheory.E.LeafExtendCut.LeafStalkValuation := by
   intro Ω _ C _ c x y hx hc _
   obtain ⟨h1, h2, h3⟩ := stalk_facts Ω c hc y

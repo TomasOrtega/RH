@@ -11,6 +11,13 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r ψ h cost n C₀ hψ hh hb H`. Take `⟨K, _, hK⟩` from `CRH.main ψ h cost n C₀ hψ hh hb (by`. Introduce and unpack `w ⟨u, v, hu, hv, hl, rfl⟩ hne g hg`. Establish `hne' : u ++ v ≠ []`. Introduce and unpack `h0`.
+
+Rewrite `h0` using `[List.append_eq_nil_iff]`. Take `⟨rfl, rfl⟩` from `h0`. Conclude with `hne (by simp [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR])`. Establish `key` using `H u v hu hv hl hne' g hg`. Rewrite using `[P.BetaSesquilinearity.dLR_eq, Real.rpow_natCast, CRH.cs_LR] at key) n 0` and apply the resulting hypothesis.
+
+Use `⟨K, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `key` using `hK (P.BetaSesquilinearity.wL u ++ P.BetaSesquilinearity.wR v) ⟨u, v, hu, hv, hl, rfl⟩ (by simpa [P.BetaSesquilinearity.wL, P.BetaSesquilinearity.wR] using hl) g hg`. Rewrite using `[P.BetaSesquilinearity.dLR_eq, zero_add, Real.rpow_natCast, CRH.cs_LR]`. Simplify `key` using `[iteratedDeriv_zero]`.
+-/
 theorem compact_region_estimate : CompR := by
   intro k r ψ h cost n C₀ hψ hh hb H
   obtain ⟨K, _, hK⟩ := CRH.main ψ h cost n C₀ hψ hh hb (by

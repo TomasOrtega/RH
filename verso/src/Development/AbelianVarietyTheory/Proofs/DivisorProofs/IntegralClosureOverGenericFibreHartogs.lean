@@ -8,6 +8,47 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ClosureHartogs
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ _ hHR hinj D _ _ τ hτC a₀ ha₀ n x y hy hid`. Use `set F := GlobalTheory.LocAcyc.GenFib A R`. Use `set C := GlobalTheory.KeyOriginNoeth.closure A R D`. Use `letI : Algebra R D := (GlobalTheory.KeyOriginNoeth.baseHom A R D).toAlgebra`. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A R D`.
+
+Establish `hbase : ∀ r : R, GlobalTheory.KeyOriginNoeth.baseHom A R D r = algebraMap F D (algebraMap R F r)` using `fun r => rfl`. Establish `hmemC : ∀ z : D, z ∈ C ↔ IsIntegral R z` using `fun z => Iff.rfl`. Establish `hsmulC : ∀ (r : R) (c : C), ((r • c : C) : D) = GlobalTheory.KeyOriginNoeth.baseHom A R D r * c` using `fun r c => rfl`. Establish `hτm : ∀ (f : F) (w : D), τ (algebraMap F D f * w) = f * τ w`. Introduce `f w`.
+
+Rewrite using `[← Algebra.smul_def, τ.map_smul, smul_eq_mul]`. Establish `hunit : ∀ a : A, a ≠ 0 → IsUnit (algebraMap R F (algebraMap A R a))`. Introduce `a ha`. Conclude with `IsLocalization.map_units F (⟨algebraMap A R a, Algebra.mem_algebraMapSubmonoid_of_mem (⟨a, mem_nonZeroDivisors_of_ne_zero ha⟩ : nonZeroDivisors A)⟩ : Algebra.algebraMapSubmonoid R (nonZeroDivisors A))`. Set `N : Submodule R D` to `{ carrier := {d | ∀ z ∈ C, ∃ r : R, algebraMap R F r = τ (d * z)} add_mem' := by`.
+
+Introduce `d₁ d₂ h₁ h₂ z hz`. Take `⟨r₁, e₁⟩` from `h₁ z hz`. Take `⟨r₂, e₂⟩` from `h₂ z hz`. Conclude with `⟨r₁ + r₂, by rw [map_add, e₁, e₂, add_mul, map_add]⟩`. Use the proof step `zero_mem' := by`.
+
+Introduce `z _`. Conclude with `⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce `r d h z hz`. Take `⟨r₁, e₁⟩` from `h z hz`.
+
+Use `⟨r * r₁, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_assoc]`. Express the relevant statement in the definitionally equal form `_ = τ (algebraMap F D (algebraMap R F r) * (d * z))`. Rewrite using `[hτm, ← e₁, map_mul] }`. Establish `hmemN : ∀ d, d ∈ N ↔ ∀ z ∈ C, ∃ r : R, algebraMap R F r = τ (d * z)` using `fun d => Iff.rfl`.
+
+Establish `h1N : (1 : D) ∈ N`. Introduce `z hz`. Simplify using `using hτC z hz`. Take `⟨c₀, hc₀⟩` from `hunit a₀ ha₀`. Set `S : Submodule R D` to `Submodule.span R (Set.range fun i => algebraMap F D (↑c₀⁻¹ : F) * x i)`.
+
+Establish `hNS : N ≤ S`. Introduce `d hd`. Establish `hr : ∀ i, ∃ r : R, algebraMap R F r = τ (y i * d)`. Introduce `i`. Take `⟨r, e⟩` from `hd (y i) (hy i)`.
+
+Conclude with `⟨r, by rw [e, mul_comm]⟩`. Use `choose r hr using hr`. Establish `hd' : d = ∑ i, r i • (algebraMap F D (↑c₀⁻¹ : F) * x i)`. Establish `h` using `hid d`. Establish `h2 : d = algebraMap F D (↑c₀⁻¹ : F) * (GlobalTheory.KeyOriginNoeth.baseHom A R D (algebraMap A R a₀) * d)`.
+
+Rewrite using `[hbase, ← mul_assoc, ← map_mul, ← hc₀, Units.inv_mul, map_one, one_mul]`. Rewrite using `[h2, ← h, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← hr i]`. Express the relevant statement in the definitionally equal form `_ = algebraMap F D (algebraMap R F (r i)) * _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hSnoeth : IsNoetherian R S` using `isNoetherian_of_fg_of_noetherian S (Submodule.fg_span (Set.finite_range _))`. Introduce `a ha m hm`.
+
+Take `⟨c, hc⟩` from `hunit a ha`. Use `set ξ : D := algebraMap F D (↑c⁻¹ : F) * (m : D) with hξ`. Establish `hξN : ∀ d ∈ N, ξ * d ∈ N`. Introduce `d hd z hz`. Establish `hmz : (m : D) * z ∈ C` using `C.mul_mem m.2 hz`.
+
+Take `⟨r₀, e₀⟩` from `hd _ hmz`. Establish `hdiv : ∃ r'' : R, r₀ = algebraMap A R a • r''`. Apply `hHR a ha r₀` to reduce the goal to its premises. Introduce `p hp hph`. Take `⟨u, hu, m', hm'⟩` from `hm p hp hph`.
+
+Establish `hm'z : (m' : D) * z ∈ C` using `C.mul_mem m'.2 hz`. Take `⟨r', e'⟩` from `hd _ hm'z`. Use `⟨u, hu, r', ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Establish `hv` using `congrArg Subtype.val hm'`.
+
+Rewrite `hv` using `[hsmulC, hsmulC, hbase, hbase]`. Rewrite using `[smul_eq_mul, smul_eq_mul, map_mul, map_mul, e₀, e', ← hτm, ← hτm]`. Use `congr 1`. Take the linear combination `(d * z) * hv`. Take `⟨r'', e''⟩` from `hdiv`.
+
+Use `⟨r'', ?_⟩` and prove the remaining obligations. Establish `: ξ * d * z = algebraMap F D (↑c⁻¹ : F) * (d * ((m : D) * z))`. Rewrite using `[hξ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hτm, ← e₀, e'', smul_eq_mul, map_mul, ← hc, ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Establish `hpow : ∀ k : ℕ, ξ ^ k ∈ N`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using h1N`. Consider the case `succ k ih => rw [pow_succ']`.
+
+Conclude with `hξN _ ih`. Establish `hadj : Subalgebra.toSubmodule (Algebra.adjoin R {ξ}) ≤ S`. Rewrite using `[Algebra.adjoin_eq_span]`. Use `le_trans ?_ hNS` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce `w hw`. Take `⟨k, rfl⟩` from `Submonoid.mem_closure_singleton.mp hw`. Conclude with `hpow k`. Establish `hfg : (Subalgebra.toSubmodule (Algebra.adjoin R {ξ})).FG` using `isNoetherian_submodule.mp hSnoeth _ hadj`. Establish `hξC : ξ ∈ C` using `(hmemC ξ).mpr (IsIntegral.of_mem_of_fg _ hfg ξ (Algebra.self_mem_adjoin_singleton R ξ))`.
+
+Use `⟨⟨ξ, hξC⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hsmulC, hbase]`. Express the relevant statement in the definitionally equal form `(m : D) = algebraMap F D (algebraMap R F (algebraMap A R a)) * ξ`. Rewrite using `[hξ, ← mul_assoc, ← map_mul, ← hc, Units.mul_inv, map_one, one_mul]`.
+-/
 theorem closure_hart : ∀ (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R] [IsNoetherianRing R],
     GlobalTheory.GoodEtale.Hart A R R →
     Function.Injective (algebraMap R (GlobalTheory.LocAcyc.GenFib A R)) →

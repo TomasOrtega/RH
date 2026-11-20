@@ -14,6 +14,11 @@ namespace TwistData
 
 variable {K : Type} [Field K] (D : TwistData K)
 
+/- English proof (translation)
+Simplify using `only [Tset, LLj, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨b, hb, rfl⟩ | ⟨m', hm', rfl⟩)`. Conclude with `Or.inl ⟨b, hb, rfl⟩`. Conclude with `Or.inr ⟨m', hm', rfl⟩`.
+
+Introduce and unpack `(⟨b, hb, rfl⟩ | ⟨m', hm', rfl⟩)`. Conclude with `Or.inl ⟨b, hb, rfl⟩`. Conclude with `Or.inr ⟨m', hm', rfl⟩`.
+-/
 theorem mem_Tset (j : Fin D.J) (m : Fin D.r) (z : D.OL) :
     z ∈ D.Tset j m ↔ (∃ b, D.seg b = j ∧ z = Sum.inl b) ∨ (∃ m', m < m' ∧ z = Sum.inr (j, m')) := by
   simp only [Tset, LLj, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -25,6 +30,9 @@ theorem mem_Tset (j : Fin D.J) (m : Fin D.r) (z : D.OL) :
     · exact Or.inl ⟨b, hb, rfl⟩
     · exact Or.inr ⟨m', hm', rfl⟩
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite `hz`, the goal using `[mem_Tset]`. Break down `hz with hz | ⟨m'', hm'', rfl⟩` into its components or cases. Conclude with `Or.inl hz`. Conclude with `Or.inr ⟨m'', lt_of_le_of_lt h hm'', rfl⟩`.
+-/
 theorem Tset_mono (j : Fin D.J) {m m' : Fin D.r} (h : m ≤ m') : D.Tset j m' ⊆ D.Tset j m := by
   intro z hz
   rw [mem_Tset] at hz ⊢
@@ -32,6 +40,13 @@ theorem Tset_mono (j : Fin D.J) {m m' : Fin D.r} (h : m ≤ m') : D.Tset j m' �
   · exact Or.inl hz
   · exact Or.inr ⟨m'', lt_of_le_of_lt h hm'', rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.disjoint_left]`. Introduce `z hz hz'`. Rewrite `hz`, `hz'` using `[mem_Tset]`. Break down `hz with ⟨b, hb, rfl⟩ | ⟨m1, -, rfl⟩` into its components or cases. Break down `hz' with ⟨b', hb', e⟩ | ⟨m2, -, e⟩` into its components or cases.
+
+Establish `: b = b'` using `Sum.inl.inj e`. Substitute `this` using the available equality. Conclude with `h (hb.symm.trans hb')`. Consider the cases of `e`. Break down `hz' with ⟨b', -, e⟩ | ⟨m2, -, e⟩` into its components or cases.
+
+Consider the cases of `e`. Use `Sum.inr.inj e` as an intermediate fact. Conclude with `h (congrArg Prod.fst this)`.
+-/
 theorem Tset_disjoint {j j' : Fin D.J} (h : j ≠ j') (m m' : Fin D.r) :
     Disjoint (D.Tset j m) (D.Tset j' m') := by
   rw [Finset.disjoint_left]
@@ -48,6 +63,11 @@ theorem Tset_disjoint {j j' : Fin D.J} (h : j ≠ j') (m m' : Fin D.r) :
     · have := Sum.inr.inj e
       exact h (congrArg Prod.fst this)
 
+/- English proof (translation)
+Take `⟨j, m⟩` from `x`. Take `⟨j', m'⟩` from `y`. Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality. Break down `le_total m m' with h | h` into its components or cases.
+
+Conclude with `Or.inr (Or.inl (D.Tset_mono j h))`. Conclude with `Or.inl (D.Tset_mono j h)`. Conclude with `Or.inr (Or.inr (D.Tset_disjoint h m m'))`.
+-/
 theorem Tset_pair (x y : Fin D.J × Fin D.r) :
     D.Tset x.1 x.2 ⊆ D.Tset y.1 y.2 ∨ D.Tset y.1 y.2 ⊆ D.Tset x.1 x.2 ∨
       Disjoint (D.Tset x.1 x.2) (D.Tset y.1 y.2) := by
@@ -62,6 +82,13 @@ theorem Tset_pair (x y : Fin D.J × Fin D.r) :
 
 def linkIdx : Finset (Fin D.J × Fin D.r) := univ.filter fun x => x.2.val + 2 ≤ D.r
 
+/- English proof (translation)
+Establish `h1 : D.linkIdx ⊆ (univ : Finset (Fin D.J)) ×ˢ (univ.filter fun m : Fin D.r => m.val + 2 ≤ D.r)`. Introduce `x hx`. Simplify using `only [linkIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hx`. Simplify using `[hx]`. Establish `h2 : (univ.filter fun m : Fin D.r => m.val + 2 ≤ D.r).card ≤ D.r - 1`.
+
+Use `Finset.card_le_card_of_injOn (s := univ.filter fun m : Fin D.r => m.val + 2 ≤ D.r) (t := Finset.range (D.r - 1)) (fun m => m.val) (by` as an intermediate fact. Introduce `m hm`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hm`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Use the proof step `omega)`.
+
+Use the proof step `(by intro a _ b _ hab; exact Fin.ext hab)`. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_product, Finset.card_univ, Fintype.card_fin]`. Use `_ ≤ D.J * (D.r - 1) := Nat.mul_le_mul_left _ h2`.
+-/
 theorem card_linkIdx_le : D.linkIdx.card ≤ D.J * (D.r - 1) := by
   classical
   have h1 : D.linkIdx ⊆ (univ : Finset (Fin D.J)) ×ˢ (univ.filter fun m : Fin D.r => m.val + 2 ≤ D.r) := by
@@ -83,16 +110,27 @@ theorem card_linkIdx_le : D.linkIdx.card ≤ D.J * (D.r - 1) := by
         rw [Finset.card_product, Finset.card_univ, Fintype.card_fin]
     _ ≤ D.J * (D.r - 1) := Nat.mul_le_mul_left _ h2
 
+/- English proof (translation)
+Unfold `eC`. Use `lg_ge_one hp hr (2 * D.totDeg)` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem eC_nonneg' {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) : 0 ≤ D.eC p C0 := by
   unfold eC
   have := lg_ge_one hp hr (2 * D.totDeg)
   positivity
 
+/- English proof (translation)
+Unfold `Dm`. Use `D.eC_nonneg' hp hr h1` as an intermediate fact. Conclude with `Finset.sum_nonneg fun j _ => by positivity`.
+-/
 theorem Dm_nonneg' {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) : 0 ≤ D.Dm p C0 := by
   unfold Dm
   have := D.eC_nonneg' hp hr h1
   exact Finset.sum_nonneg fun j _ => by positivity
 
+/- English proof (translation)
+Unfold `Dl`. Use `D.eC_nonneg' hp hr h1` as an intermediate fact. Establish `h2 : (0 : ℝ) ≤ (D.r : ℝ) - 1`. Establish `: (1 : ℝ) ≤ D.r` using `by exact_mod_cast hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Check the signs of the components of the expression.
+-/
 theorem Dl_nonneg' {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) : 0 ≤ D.Dl p C0 := by
   unfold Dl
   have := D.eC_nonneg' hp hr h1
@@ -101,11 +139,19 @@ theorem Dl_nonneg' {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 
     linarith
   positivity
 
+/- English proof (translation)
+Unfold `kapD`. Use `le_trans ?_ (kap_ge_card hp hr D.dO)` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 theorem kapD_nonneg' {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) : 0 ≤ D.kapD p := by
   unfold kapD
   refine le_trans ?_ (kap_ge_card hp hr D.dO)
   positivity
 
+/- English proof (translation)
+Establish `he : (D.r : ℝ) ^ 2 * lg p D.r (2 * ∑ i, D.dO i) = D.eC p C0` using `rfl`. Rewrite using `[he]`. Unfold `Dl`. Establish `h2 : (D.linkIdx.card : ℝ) ≤ (D.J : ℝ) * ((D.r : ℝ) - 1)`. Use `D.card_linkIdx_le` as an intermediate fact.
+
+Establish `h3 : ((D.linkIdx.card : ℕ) : ℝ) ≤ ((D.J * (D.r - 1) : ℕ) : ℝ)` using `by exact_mod_cast this`. Rewrite `h3` using `[Nat.cast_mul, Nat.cast_sub hr, Nat.cast_one]`. Conclude with `h3`. Conclude with `mul_le_mul_of_nonneg_right h2 (D.eC_nonneg' hp hr h1)`.
+-/
 theorem card_linkIdx_mul_le {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) :
     (D.linkIdx.card : ℝ) * ((D.r : ℝ) ^ 2 * lg p D.r (2 * ∑ i, D.dO i)) ≤ D.Dl p C0 := by
   have he : (D.r : ℝ) ^ 2 * lg p D.r (2 * ∑ i, D.dO i) = D.eC p C0 := rfl
@@ -124,6 +170,45 @@ section StepB
 
 variable {K : Type} [Field K] [CharZero K] {v : AddValuation K (WithTop ℚ)} {p : ℕ} {C0 : ℝ}
 
+/- English proof (translation)
+Introduce `hD D hV hc F hF hF0`. Take `⟨hr, hJ, hc1, -, -, hthl, hga, hgaε⟩` from `hV`. Use `haveI : NeZero D.r := ⟨by omega⟩`. Establish `hp : 2 ≤ p` using `two_le_p hD`. Establish `hr1 : 1 ≤ D.r` using `hr`.
+
+Take `⟨⟨α0, hα0, hge0, hle0⟩, hbF⟩` from `exists_of_vBB_zero v F hF0`. Take `⟨hFP, -, hFl⟩` from `hF`. Take `⟨Pr, p1, p2, p3, p4, -, -⟩` from `prodProj (r := D.r) D.osg D.dO hP hD D.linkIdx (fun x => D.Tset x.1 x.2) (fun x => ⌈D.thl x.1 x.2⌉) (fun x _ y _ => D.Tset_pair x y)`. Establish `hα0d : ∀ i, ldeg α0 i = D.dO i` using `(mem_PolK_iff _ _).mp hFP α0 hα0`. Establish `hmon : (monomial α0 (1 : K)) ∈ PolK K D.r D.dO`.
+
+Rewrite using `[mem_PolK_iff]`. Introduce `β hβ`. Use `support_monomial_subset hβ` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`.
+
+Conclude with `hα0d`. Establish `hDm` using `D.Dm_nonneg' hp hr1 h1`. Establish `hDl` using `D.Dl_nonneg' hp hr1 h1`. Establish `hkap` using `D.kapD_nonneg' hp hr1`. Establish `hcc : 4 * (D.Dm p C0 + D.Dl p C0 + 3 * D.kapD p) < D.c` using `hc`.
+
+Establish `hY1 : Pr (monomial α0 1) ∈ PolK K D.r D.dO` using `p1 _ hmon`. Establish `hY2 : ∀ (j : Fin D.J) (m : Fin D.r), m.val + 2 ≤ D.r → vala D.osg (D.Tset j m) (D.thl j m) (Pr (monomial α0 1))` using `fun j m hm => (vala_iff_Aset _ _ _ _).mpr (p2 _ hmon (j, m) (by simp [TwistData.linkIdx, hm]))`. Establish `hY3 : fock F (Pr (monomial α0 1)) = F.coeff α0 * 1 * (fact α0 : K)`. Rewrite using `[p3 F hFP (fun x hx => ?_) _ hmon, fock_monomial_right]`. Establish `hx' : x.2.val + 2 ≤ D.r` using `by simpa [TwistData.linkIdx] using hx`.
+
+Conclude with `(vala_iff_Aset _ _ _ _).mp (hFl x.1 x.2 hx')`. Establish `hY4 : bge v (vN v (fact α0) / 2 - D.Dl p C0) (Pr (monomial α0 1))`. Establish `h` using `p4 _ hmon _ (bge_monomial v α0 (vge_one v))`. Use `bge_mono v ?_ h` and prove the remaining obligations. Use `D.card_linkIdx_mul_le hp hr1 h1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY5 : vle v (vN v (fact α0) / 2) (fock F (Pr (monomial α0 1)))`. Rewrite using `[hY3, mul_one]`. Use `vle_mul v hle0 (vle_vN hD (fact_ne_zero α0))` as an intermediate fact. Conclude with `vle_mono v (by linarith) this`.
+
+Take `⟨T, lam, hlam, hT⟩` from `hgaε (-1) (Or.inr rfl)`. Establish `hC : CostOK (CostV (K` using `K) (r := D.r) D.osg Set.univ) := costV_ok _ _ (fun S _ θ F G => vala_add) (fun S _ θ a F => vala_smul a)`. Establish `hch : ∀ (x : D.OL × Fin D.r) (k : ℕ), CostV D.osg Set.univ k (fun α : D.OL × Fin D.r →₀ ℕ => ((α x).choose k : K))` using `fun x k S _ θ F h => vala_dg_choose hV2 x k h`. Take `⟨g, hg0, hgc, hgC⟩` from `approx_of_trunc (v := v) hC hch T lam hlam (fun α => D.ga α ^ (-1 : ℤ)) hT`. Establish `hsplit : D.gaAct (dg g (Pr (monomial α0 1))) = Pr (monomial α0 1) + dg (fun α => D.ga α * g α - 1) (Pr (monomial α0 1))`.
+
+Rewrite using `[gaAct_eq_dg]`. Use extensionality with `α`. Rewrite using `[coeff_add, coeff_dg, coeff_dg, coeff_dg]`. Expand and normalize the polynomial expressions, which then agree. Establish `herr : ∀ α, vge v (D.c : ℝ) (D.ga α * g α - 1)`.
+
+Introduce `α`. Establish `hne : D.ga α ≠ 0`. Introduce `h0`. Use `hga α` as an intermediate fact. Rewrite `this` using `[h0, AddValuation.map_zero]`.
+
+Conclude with `absurd this (by simp)`. Establish `e : D.ga α * g α - 1 = -(D.ga α * (D.ga α ^ (-1 : ℤ) - g α))`. Rewrite using `[zpow_neg_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Establish `h2` using `vge_mul v (vge_unit v (hga α)).1 ((vge_natCast_bound v D.c _).mpr (hgc α))`. Rewrite `h2` using `[zero_add]`. Conclude with `vge_neg v h2`. Establish `hpair : vle v (vN v (fact α0) / 2) (fock F (D.gaAct (dg g (Pr (monomial α0 1)))))`.
+
+Rewrite using `[hsplit, fock_add_right]`. Use `vle_add_of_lt v hY5 (vge_fock v hbF (bge_dg v herr hY4)) ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : vN v (fact α0) / 2 ≤ D.n0 v`. Use `fact_upper hD hα0d` as an intermediate fact.
+
+Establish `h4 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2` using `rfl`. Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx0 : 0 ≤ D.n0 v + D.Dl p C0 - vN v (fact α0) / 2` using `by linarith`. Establish `hG2P : dg g (Pr (monomial α0 1)) ∈ PolK K D.r D.dO`.
+
+Rewrite using `[mem_PolK_iff]`. Introduce `β hβ`. Conclude with `(mem_PolK_iff _ _).mp hY1 β (support_dg_subset g _ hβ)`. Establish `hG2b : bge v (0 + (vN v (fact α0) / 2 - D.Dl p C0)) (dg g (Pr (monomial α0 1)))` using `bge_dg v (fun α => (vge_zero_iff v _).mpr (hg0 α)) hY4`. Use `⟨((p : K) ^ ⌈D.n0 v + D.Dl p C0 - vN v (fact α0) / 2⌉₊) • dg g (Pr (monomial α0 1)), ⟨Submodule.smul_mem _ _ hG2P, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cge_zero_iff_Integral]`. Establish `h5` using `cge_smul v (vge_p_pow hD ⌈D.n0 v + D.Dl p C0 - vN v (fact α0) / 2⌉₊) (cge_of_bge hD hG2P hG2b)`. Use `cge_mono v ?_ h5` and prove the remaining obligations. Establish `h6` using `Nat.le_ceil (D.n0 v + D.Dl p C0 - vN v (fact α0) / 2)`. Establish `h4 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2` using `rfl`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j m hm`. Establish `h7` using `hgC (D.Tset j m) (Set.mem_univ _) _ _ (hY2 j m hm)`. Establish `e : D.thl j m - ((6 * D.c : ℕ) : ℝ) = D.thl j m - 6 * D.c` using `by push_cast; ring`. Rewrite `h7` using `[e]`.
+
+Conclude with `vala_smul _ h7`. Establish `e1 : fock F (D.gaAct (((p : K) ^ ⌈D.n0 v + D.Dl p C0 - vN v (fact α0) / 2⌉₊) • dg g (Pr (monomial α0 1)))) = (p : K) ^ ⌈D.n0 v + D.Dl p C0 - vN v (fact α0) / 2⌉₊ * fock F (D.gaAct (dg g (Pr (monomial α0 1))))`. Simplify using `only [gaAct_eq_dg, map_smul, fock_smul_right]`. Rewrite using `[e1]`. Use `vle_mono v ?_ (vle_pow_p hD _ hpair)` and prove the remaining obligations.
+
+Establish `h8` using `Nat.ceil_lt_add_one hx0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem stepB_of (h1 : 1 ≤ C0) (hV2 : V2 K) (hP : PROJ K v p C0) : StepB K v p C0 := by
   classical
   intro hD D hV hc F hF hF0

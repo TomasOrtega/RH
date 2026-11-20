@@ -27,6 +27,13 @@ open GlobalTheory.PlaceModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, hc⟩` from `he`. Establish `h1 : ∀ i ∈ P ∪ Q, es i * es i = es i` using `fun i hi => (hes i hi).1.1`. Establish `hx` using `GlobalTheory.PlaceDatum.cross_eq_zero (R := AE D) GlobalTheory.PlaceDatum.isUnit_natCast (cA D) es (P ∪ Q) h1 hc`. Establish `hcr : ∀ A B : Finset (Pl D.host.E), A ⊆ P ∪ Q → B ⊆ P ∪ Q → (∑ i ∈ A, es i) * cA D (∑ j ∈ B, es j) = 0` using `fun A B hA hB => by`. Rewrite using `[map_sum, Finset.sum_mul_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => hx i (hA hi) j (hB hj)`. Establish `hP : P ⊆ P ∪ Q` using `Finset.subset_union_left`. Establish `hQ : Q ⊆ P ∪ Q` using `Finset.subset_union_right`. Use `⟨∑ i ∈ P, es i, ∑ i ∈ Q, es i, ⟨⟨es, fun i hi => hes i (hP hi), rfl⟩, hcr P P hP hP⟩, ⟨⟨es, fun i hi => hes i (hQ hi), rfl⟩, hcr Q Q hQ hQ⟩, ?_, hcr P Q hP hQ, hcr Q P hQ hP⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`.
+
+Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.PlaceDatum.idemAt_mul (hes i (hP hi)) (hes j (hQ hj)) (hx i (hP hi) j (hQ hj)) (hx j (hQ hj) i (hP hi)) fun h => Finset.disjoint_left.1 hd hi (h ▸ hj)`.
+-/
 theorem idemSum_split {e : AE D} {P Q : Finset (Pl D.host.E)} (he : IsIdemSum e (P ∪ Q)) (hd : Disjoint P Q) :
     ∃ eP eQ : AE D, IsIdemSum eP P ∧ IsIdemSum eQ Q ∧ eP * eQ = 0 ∧ eP * cA D eQ = 0 ∧ eQ * cA D eP = 0 := by
   obtain ⟨⟨es, hes, rfl⟩, hc⟩ := he
@@ -45,6 +52,13 @@ theorem idemSum_split {e : AE D} {P Q : Finset (Pl D.host.E)} (he : IsIdemSum e 
   exact GlobalTheory.PlaceDatum.idemAt_mul (hes i (hP hi)) (hes j (hQ hj)) (hx i (hP hi) j (hQ hj)) (hx j (hQ hj) i (hP hi))
     fun h => Finset.disjoint_left.1 hd hi (h ▸ hj)
 
+/- English proof (translation)
+Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Use `exists_placeModel ψ hec _ (fun u hu y hy => (hdual u (he.infPart_half hu.2)).1 hu.1 y hy.1) (he.mem_of_dual hdual) (fun y hy h => ?_) (fun k hk => ?_) one_ne_zero g hf hf'` and prove the remaining obligations. Use `he.conj.mem_of_dual hdual y hy fun u hu => ?_` and prove the remaining obligations. Rewrite `hu` using `[GlobalTheory.DualPairCheck.cA_cA]`.
+
+Rewrite using `[symplO_skew, AddChar.map_neg_eq_inv, h u hu, inv_one]`. Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, GlobalTheory.PlaceModelSum.idem_smul_half he.idem hu, ?_⟩` and prove the remaining obligations.
+
+Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`.
+-/
 theorem exists_model_of_fix {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {e : AE D} (he : GlobalTheory.PlaceModelSum.IsOrthSum e)
@@ -68,6 +82,11 @@ theorem exists_model_of_fix {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hiff : (∀ PP ∈ Q, IsUnit (topL r (y PP)).det) ↔ ∀ PP ∈ Q, IsUnit (topL r (y' PP)).det` using `forall_congr' fun PP => forall_congr' fun hPP => by rw [h PP hPP]`. Unfold `GlobalTheory.ConjTwist.omegaFlat`. Distinguish the cases in `h1 : ∀ PP ∈ Q, IsUnit (topL r (y PP)).det`. Rewrite using `[dif_pos h1, dif_pos (hiff.1 h1)]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Establish `e : (h1 PP.1 PP.2).unit = (hiff.1 h1 PP.1 PP.2).unit` using `Units.ext (by rw [IsUnit.unit_spec, IsUnit.unit_spec, h PP.1 PP.2])`. Rewrite using `[e]`. Rewrite using `[dif_neg h1, dif_neg fun h2 => h1 (hiff.2 h2)]`.
+-/
 theorem omegaFlat_congr {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     {y y' : ∀ PP : Pl D.host.E, Matrix (Fin a) (Fin b) (kP PP)} (h : ∀ PP ∈ Q, y PP = y' PP) :
     GlobalTheory.ConjTwist.omegaFlat Q r ξ y = GlobalTheory.ConjTwist.omegaFlat Q r ξ y' := by
@@ -82,11 +101,25 @@ theorem omegaFlat_congr {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (ξ : �
     rw [e]
   · rw [dif_neg h1, dif_neg fun h2 => h1 (hiff.2 h2)]
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [← hu a b, ← mul_assoc, ← mul_assoc, hc, hc', zero_mul] exact ⟨rfl, rfl⟩`.
+-/
 theorem off_of_half {e c : AE D} (hc : e * c = 0) (hc' : cA D e * c = 0) {S T : HSp D} {u : WO S T} (hu : IsHalf c u) :
     ∀ a b, e * u a b = 0 ∧ cA D e * u a b = 0 := fun a b => by
   rw [← hu a b, ← mul_assoc, ← mul_assoc, hc, hc', zero_mul]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ i t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨hvac, e, he, -⟩` from `hR.thP.vP i t`. Establish `hψ` using `hvac.1`. Establish `sV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βV i))`.
+
+Establish `sW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hR.lev.βW i))`. Take `⟨eg, eQ, hg, hq, h1, h2, h3⟩` from `idemSum_split he (Formalism.IndefR.Fin.disjoint_Pg_Q R.toLevCh hR.lev t)`. Establish `hinfg` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hg)`. Take `⟨fg, hfg⟩` from `GlobalTheory.PlaceVec.exists_isThetaAt hψ sV sW (a := cA D eg) (by rw [← RingHom.map_mul, GlobalTheory.PlaceVec.idemSum_mul_self hg]) hinfg (GlobalTheory.PlaceModelSum.placeModelExistsSum D R.ψ hψ _ _ _ _ sV sW _ eg hg _ hvac.2.theta hvac.2.lat).2 (GlobalTheory.PlaceVec.isSBHalf_ …`. Establish `hoQ` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum hq`.
+
+Establish `fix : ∀ u, (∀ a b, cA D eg * u a b = 0 ∧ eg * u a b = 0) → heisO R.ψ (Vc D i) (Wc D i) u (R.vacP i) = R.vacP i → heisO R.ψ (Vc D i) (Wc D i) u fg = fg` using `fun u hu h0 => GlobalTheory.Hk3.heisO_fix_thetaAt_off R.ψ _ _ (cA D eg) _ 1 _ _ fg hfg u (fun a b => by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hu a b) h0`. Establish `hPM` using `exists_model_of_fix hψ sV sW hoQ hq.2 (fun u hu => fix u (fun a b => (off_of_half h1 (by rw [mul_comm, h3]) ((isHalf_iff _ _).2 hu.2) a b).symm) (hoQ.heisO_eq (by rw [mul_comm, hq.2]) hvac.2.lat u hu)) (fun u hu => fix u (fun a b => (off_of_half h2 (by rw [← RingHom.map_mul, h1, …`. Establish `hinfQ` using `GlobalTheory.PlaceDatum.infPart_idemSum hq`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO sV.1 sW.1 (R.βV i) (R.βW i)`. Take `⟨f, hf⟩` from `GlobalTheory.PlaceDatum.exists_isThetaAt hψ sV sW (GlobalTheory.PlaceDatum.idemSum_mul_self hq) hinfQ hPM (GlobalTheory.PlaceDatum.isSBHalf_of_red eQ _ (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceDatum.frMapO_add _ _) (GlobalTheory.PlaceDatum.exists_den_frMapO …`.
+
+Conclude with `⟨f, eg, eQ, fg, hg, hq, hfg, hf⟩`. Introduce and unpack `f f' ⟨eg, eQ, fg, hg, hq, hfg, hf⟩ ⟨eg', eQ', fg', hg', hq', hfg', hf'⟩`. Take `rfl` from `GlobalTheory.BaseKernelUniq.idemSum_unique (Vc D i) hg hg'`. Take `rfl` from `GlobalTheory.BaseKernelUniq.idemSum_unique (Vc D i) hq hq'`. Choose the witnesses or unpack the hypotheses as in `rfl : fg = fg' := by`.
+
+Take `⟨⟨Tm, hTm⟩, hall⟩` from `hfg`. Rewrite using `[hall Tm hTm, hfg'.2 Tm hTm]`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hf`. Rewrite using `[hall Tm hTm, hf'.2 Tm hTm]`.
+-/
 theorem flatVec_existsUnique : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), (∃ f, IsFlatVec R i t f) ∧ ∀ f f', IsFlatVec R i t f → IsFlatVec R i t f' → f = f' := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR _ i t
   refine ⟨?_, ?_⟩

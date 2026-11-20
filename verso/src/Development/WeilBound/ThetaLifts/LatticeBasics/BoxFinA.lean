@@ -16,6 +16,19 @@ structure Gau (f : 𝓢(V, ℂ)) (m : V →ₗ[ℝ] V →ₗ[ℝ] ℂ) : Prop wh
   symm : ∀ a y, m a y = m y a
   neg : ∀ a, a ≠ 0 → (m a a).re < 0
 
+/- English proof (translation)
+Take `⟨c, Q, Q', hc, pos, e⟩` from `GlobalTheory.CompanionTheory.Twist.schwartz_logDeriv_linear_gaussian f hf m hm`. Establish `ne : ∀ y, f y ≠ 0` using `fun y => by rw [e]; exact mul_ne_zero hc (exp_ne_zero _)`. Establish `key : ∀ a y, m a y = -((Q a y + Q y a : ℝ) : ℂ) - I * ((Q' a y + Q' y a : ℝ) : ℂ)` using `fun a y => by`. Establish `l : HasDerivAt (fun t : ℝ => y + t • a) a 0` using `by simpa using ((hasDerivAt_id (0 : ℝ)).smul_const a).const_add y`. Establish `h1 : HasDerivAt (fun t : ℝ => f (y + t • a)) (fderiv ℝ f y a) 0` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (f.differentiableAt (x := y)).hasFDerivAt l (by simp)`.
+
+Establish `q : ∀ P : V →ₗ[ℝ] V →ₗ[ℝ] ℝ, HasDerivAt (fun t : ℝ => ((P (y + t • a) (y + t • a) : ℝ) : ℂ)) ((P a y + P y a : ℝ) : ℂ) 0` using `fun P => by`. Establish `e1 : (fun t : ℝ => P (y + t • a) (y + t • a)) = fun t => P y y + t * (P a y + P y a) + t ^ 2 * P a a`. Use function extensionality and compare the values at `t`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: HasDerivAt (fun t : ℝ => P (y + t • a) (y + t • a)) (P a y + P y a) 0`. Rewrite using `[e1]`. Conclude with `((((hasDerivAt_id (0 : ℝ)).mul_const (P a y + P y a)).const_add (P y y)).fun_add ((hasDerivAt_pow 2 (0 : ℝ)).mul_const (P a a))).congr_deriv (by simp)`. Conclude with `this.ofReal_comp`. Establish `h2` using `(((q Q).neg.sub ((q Q').const_mul I)).cexp).const_mul c`.
+
+Establish `h3 : (fun t : ℝ => f (y + t • a)) = _` using `funext fun t => e _`. Rewrite `h1` using `[h3]`. Establish `h4` using `h1.unique h2`. Rewrite `h4` using `[hm]`. Use `mul_right_cancel₀ (ne y) (h4.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `⟨ne, hm, fun a y => by rw [key, key, add_comm (Q a y), add_comm (Q' a y)], fun a ha => ?_⟩` and prove the remaining obligations. Use `pos a ha` as an intermediate fact.
+
+Rewrite using `[key]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gau_of {f : 𝓢(V, ℂ)} (hf : f ≠ 0) {m : V →ₗ[ℝ] V →ₗ[ℝ] ℂ} (hm : ∀ a y, fderiv ℝ f y a = m a y * f y) : Gau f m := by
   obtain ⟨c, Q, Q', hc, pos, e⟩ := GlobalTheory.CompanionTheory.Twist.schwartz_logDeriv_linear_gaussian f hf m hm
   have ne : ∀ y, f y ≠ 0 := fun y => by rw [e]; exact mul_ne_zero hc (exp_ne_zero _)
@@ -43,6 +56,19 @@ theorem gau_of {f : 𝓢(V, ℂ)} (hf : f ≠ 0) {m : V →ₗ[ℝ] V →ₗ[ℝ
   have := pos a ha
   rw [key]; simp; linarith
 
+/- English proof (translation)
+Establish `e1 : ∀ y, m b y - 2 * Real.pi * I * L' y = I * (m a y - 2 * Real.pi * I * L y)` using `fun y => by`. Use `congrArg (fun h : 𝓢(V, ℂ) => h y) h1` as an intermediate fact. Simplify using `only [SchwartzMap.smul_apply, dop_apply, hf.der, smul_eq_mul] at this`. Conclude with `mul_right_cancel₀ (hf.ne y) (by linear_combination this)`. Establish `e2 : ∀ y, -n b y + 2 * Real.pi * I * L' y = I * (n a y - 2 * Real.pi * I * L y)` using `fun y => by`.
+
+Use `congrArg (fun h : 𝓢(V, ℂ) => h y) h2` as an intermediate fact. Simplify using `only [SchwartzMap.smul_apply, dop_apply, hg.der, smul_eq_mul, map_neg, LinearMap.neg_apply, ContinuousLinearMap.neg_apply, ofReal_neg] at this`. Conclude with `mul_right_cancel₀ (hg.ne y) (by linear_combination this)`. Establish `r1` using `fun y => congrArg re (e1 y)`. Establish `i1` using `fun y => congrArg im (e1 y)`.
+
+Establish `r2` using `fun y => congrArg re (e2 y)`. Establish `i2` using `fun y => congrArg im (e2 y)`. Simplify using `at r1 i1 r2 i2`. Establish `s1` using `congrArg im (hf.symm a b)`. Establish `s2` using `congrArg im (hg.symm a b)`.
+
+Establish `le : ∀ {h : 𝓢(V, ℂ)} {k} (_ : Gau h k) x, (k x x).re ≤ 0` using `fun H x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(H.neg x hx).le`. Establish `ha : a = 0`.
+
+Assume the negation of the conclusion as `ha`. Combine the linear relations using `[hf.neg a ha, hg.neg a ha, le hf b, le hg b, r1 b, r2 b, i1 a, i2 a]`. Establish `hb : b = 0`. Assume the negation of the conclusion as `hb`. Combine the linear relations using `[hf.neg b hb, hg.neg b hb, le hf a, le hg a, r1 b, r2 b, i1 a, i2 a]`.
+
+Use `⟨ha, ContinuousLinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Use `r1 y` as an intermediate fact. Simplify `this` using `[ha, hb, Real.pi_ne_zero]`.
+-/
 theorem opp {f g : 𝓢(V, ℂ)} {m n : V →ₗ[ℝ] V →ₗ[ℝ] ℂ} (hf : Gau f m) (hg : Gau g n) {a b : V} {L L' : V →L[ℝ] ℝ}
     (h1 : dop b L' f = I • dop a L f) (h2 : dop (-b) (-L') g = I • dop a L g) : a = 0 ∧ L = 0 := by
   have e1 : ∀ y, m b y - 2 * Real.pi * I * L' y = I * (m a y - 2 * Real.pi * I * L y) := fun y => by

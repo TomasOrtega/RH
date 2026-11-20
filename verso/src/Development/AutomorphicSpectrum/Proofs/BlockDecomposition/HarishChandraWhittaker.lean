@@ -25,6 +25,13 @@ section Transport
 
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Take `⟨⟨h1, h2⟩, h3⟩` from `hu`. Establish `val : ∀ (g : GL α K) (i j : β), ((glEquiv K e g : GL β K) : Matrix β β K) i j = (g : Matrix α α K) (e.symm i) (e.symm j)` using `fun _ _ _ => rfl`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[val]`.
+
+Conclude with `h1 _ _ (by simpa using hij)`. Introduce `i j hij`. Rewrite using `[← map_inv, val]`. Conclude with `h2 _ _ (by simpa using hij)`. Introduce `i j hij`.
+
+Rewrite using `[val, h3 _ _ (by simpa using hij)]`. Simplify using the standard rewrite rules.
+-/
 theorem glEquiv_mem_unip (e : α ≃ β) {s : ℕ} (b' : β → Fin s) {u : GL α K}
     (hu : u ∈ unip K (b' ∘ e)) : glEquiv K e u ∈ unip K b' := by
   obtain ⟨⟨h1, h2⟩, h3⟩ := hu
@@ -41,6 +48,9 @@ theorem glEquiv_mem_unip (e : α ≃ β) {s : ℕ} (b' : β → Fin s) {u : GL �
     rw [val, h3 _ _ (by simpa using hij)]
     simp
 
+/- English proof (translation)
+Introduce `s b' hb' hs v hv`. Use `h s (b' ∘ e) (hb'.comp e.surjective) hs v fun u hu => ?_` and prove the remaining obligations. Use `hv _ (glEquiv_mem_unip e b' hu)` as an intermediate fact. Express the relevant statement in the definitionally equal form `τ.ρ ((glEquiv K e).symm (glEquiv K e u)) v = v at this`. Simplify using `using this`.
+-/
 theorem isCuspidal_transp (e : α ≃ β) (τ : FDRep ℂ (GL α K)) (h : Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal K τ) :
     Formalism.IrreducibleCountingLemmas.TYPES.IsCuspidal K (transp e τ) := by
   intro s b' hb' hs v hv

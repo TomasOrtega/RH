@@ -7,6 +7,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.Lbc
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N h d hd J hJo hJc hIw hpos V _ _ π hπ t t' ht ht' T T' hT hT' v l hl`. Take `⟨r, hr, x, hxN, hx⟩` from `GlobalTheory.T.dominant_iwahori_coset_reps k N h d hd J hJo hJc hIw hpos t' ht'`. Establish `hxJ : ∀ i, x i ∈ J` using `fun i => (hxN i).1`. Establish `hform` using `GlobalTheory.T.hecke_operator_coset_sum k N J hJc V π hπ _ T' hT' r x hr hxJ hx v`. Establish `hr0 : (r : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hr.ne'`.
+
+Use `set g := leviEmb k (stdBlocks d hd) t with hg`. Use `set g' := leviEmb k (stdBlocks d hd) t' with hg'`. Establish `hmul : leviEmb k (stdBlocks d hd) (t * t') = g * g'` using `map_mul _ _ _`. Establish `hterm : ∀ i, l (π g (π (x i * g') (v : V))) = l (π (g * g') (v : V))`. Introduce `i`.
+
+Establish `hc : g * x i * g⁻¹ ∈ J` using `(ht.1 _ (hxN i)).1`. Establish `hfac : g * (x i * g') = (g * x i * g⁻¹) * (g * g')` using `by group`. Establish `h1 : l (π (g * x i * g⁻¹) (π (g * g') (v : V))) = l (π (g * g') (v : V))` using `LinearMap.congr_fun (hl _ hc) _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hfac, map_mul, Module.End.mul_apply, h1]`. Establish `hTT : l (((T * T') v : fixed π J) : V) = l (π g ((T' v : fixed π J) : V))` using `(hT (T' v) l hl).symm`.
+
+Rewrite using `[hTT, hform, hmul, map_smul, map_sum, map_smul, map_sum]`. Simplify using `only [hterm, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hecke_dominant_mul : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], PositivityTheory.Lbc.C1 k := by
   intro k _ _ _ _ N h d hd J hJo hJc hIw hpos V _ _ π hπ t t' ht ht' T T' hT hT' v l hl

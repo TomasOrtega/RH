@@ -12,6 +12,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hm' : (m : ℤ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hdeg : deg (σ * (frob h ^ m) ^ (-(deg σ / m))) = deg σ % m`. Rewrite using `[deg_mul, deg_zpow, deg_pow, deg_frob, Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) (σ * (frob h ^ m) ^ (-(deg σ / m)))`.
+
+Establish `hr0 : 0 ≤ deg σ % (m : ℤ)` using `Int.emod_nonneg _ hm'`. Establish `hr1 : deg σ % (m : ℤ) < m` using `Int.emod_lt_of_pos _ (by exact_mod_cast hm)`. Use `⟨(deg σ % m).toNat, τ, deg σ / m, by omega, ?_⟩` and prove the remaining obligations. Establish `hz : frob h ^ (deg σ % (m : ℤ)).toNat = frob h ^ (deg σ % (m : ℤ))`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg hr0]`.
+
+Rewrite using `[hz, ← hdeg, ← hτ, mul_assoc, ← _root_.zpow_add, neg_add_cancel, zpow_zero, mul_one]`.
+-/
 theorem exists_frob_pow_mul_ineIncl_mul (m : ℕ) (hm : 0 < m) (σ : Weil h) :
     ∃ (r : ℕ) (τ : Ine (F := E) A) (q : ℤ), r < m ∧
       σ = frob h ^ r * ineIncl h τ * (frob h ^ m) ^ q := by
@@ -27,6 +34,51 @@ theorem exists_frob_pow_mul_ineIncl_mul (m : ℕ) (hm : 0 < m) (σ : Weil h) :
     rw [← zpow_natCast, Int.toNat_of_nonneg hr0]
   rw [hz, ← hdeg, ← hτ, mul_assoc, ← _root_.zpow_add, neg_add_cancel, zpow_zero, mul_one]
 
+/- English proof (translation)
+Take `⟨m, hm⟩ : ∃ m : ℕ, 0 < m` from `⟨1, one_pos⟩`. Use `⟨fun P => ?_⟩` and prove the remaining obligations. Establish `hPinv : P.toSubmodule ∈ Module.End.invtSubmodule (ρ (frob h ^ m))`. Rewrite using `[Module.End.mem_invtSubmodule]`. Introduce `v hv`.
+
+Conclude with `P.apply_mem_toSubmodule _ hv`. Take `⟨Q, hQ, hc⟩` from `(Module.End.isSemisimple_iff.mp (hss (frob h ^ m))) _ hPinv`. Rewrite `hQ` using `[Module.End.mem_invtSubmodule]`. Set `p : Module.End ℂ V` to `P.toSubmodule.projection Q hc`. Establish `hp1 : ∀ v ∈ P.toSubmodule, p v = v` using `fun v hv => Submodule.projection_apply_left hc ⟨v, hv⟩`.
+
+Establish `hp2 : ∀ v ∈ Q, p v = 0` using `fun v hv => Submodule.projection_apply_right hc ⟨v, hv⟩`. Establish `hpm : ∀ v, p v ∈ P.toSubmodule` using `fun v => Submodule.projection_apply_mem hc v`. Establish `hpT : ρ (frob h ^ m) * p = p * ρ (frob h ^ m)`. Use extensionality with `v`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 (show v ∈ P.toSubmodule ⊔ Q by rw [hc.sup_eq_top]; trivial)`.
+
+Simplify using `only [Module.End.mul_apply, map_add, hp1 _ hx, hp2 _ hy, add_zero, hp1 _ (hPinv hx), hp2 _ (hQ hy), map_zero]`. Establish `hinv : ∀ σ : Weil h, ρ σ * ρ σ⁻¹ = 1` using `fun σ => by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hinv' : ∀ σ : Weil h, ρ σ⁻¹ * ρ σ = 1` using `fun σ => by rw [← map_mul, inv_mul_cancel, map_one]`. Set `c : Weil h → Module.End ℂ V` to `fun σ => ρ σ * p * ρ σ⁻¹`. Establish `hcm : ∀ σ v, c σ v ∈ P.toSubmodule` using `fun σ v => P.apply_mem_toSubmodule σ (hpm _)`.
+
+Establish `hc1 : ∀ σ, ∀ v ∈ P.toSubmodule, c σ v = v`. Introduce `σ v hv`. Use `show ρ σ (p (ρ σ⁻¹ v)) = v`. Rewrite using `[hp1 _ (P.apply_mem_toSubmodule _ hv), ← Module.End.mul_apply, hinv, Module.End.one_apply]`. Establish `hper : ∀ σ, c (σ * frob h ^ m) = c σ`.
+
+Introduce `σ`. Simplify using `only [c, _root_.mul_inv_rev, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzper : ∀ σ (q : ℤ), c (σ * (frob h ^ m) ^ q) = c σ`. Introduce `σ q`.
+
+Proceed by induction on `q using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [_root_.zpow_add_one, ← mul_assoc, hper, ih]`. Consider the case `pred q ih`. Rewrite using `[← ih, ← hper, mul_assoc, ← _root_.zpow_add_one]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Establish `hFfin` using `hρ.finite_range`. Establish `hCfin : (Set.range c).Finite`. Use `(((Set.finite_Iio m).prod (hFfin.prod hFfin)).image (fun t : ℕ × (Module.End ℂ V × Module.End ℂ V) => ρ (frob h ^ t.1) * (t.2.1 * p * t.2.2) * ρ ((frob h ^ t.1)⁻¹))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨σ, rfl⟩`. Take `⟨r, τ, q, hr, rfl⟩` from `exists_frob_pow_mul_ineIncl_mul m hm σ`. Use `⟨(r, ρ (ineIncl h τ), ρ (ineIncl h τ⁻¹)), ⟨hr, ⟨τ, rfl⟩, ⟨τ⁻¹, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show _ = c _`. Rewrite using `[hzper]`.
+
+Simplify using `only [c, _root_.mul_inv_rev, map_mul, map_inv, mul_assoc]`. Use `set Cf := hCfin.toFinset with hCf`. Establish `hCmem : ∀ x, x ∈ Cf ↔ ∃ σ, c σ = x` using `fun x => by simp [Cf]`. Establish `hcard : Cf.card ≠ 0` using `Finset.card_ne_zero_of_mem ((hCmem _).2 ⟨1, rfl⟩)`. Set `S : Module.End ℂ V` to `∑ x ∈ Cf, x`.
+
+Set `qa : Module.End ℂ V` to `(Cf.card : ℂ)⁻¹ • S`. Establish `hSm : ∀ v, S v ∈ P.toSubmodule`. Introduce `v`. Simplify using `only [S]`. Rewrite using `[LinearMap.sum_apply]`.
+
+Use `P.toSubmodule.sum_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `(hCmem x).1 hx`. Conclude with `hcm σ v`. Establish `hS1 : ∀ v ∈ P.toSubmodule, S v = (Cf.card : ℂ) • v`. Introduce `v hv`.
+
+Simplify using `only [S]`. Rewrite using `[LinearMap.sum_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => v), Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Introduce `x hx`. Take `⟨σ, rfl⟩` from `(hCmem x).1 hx`.
+
+Conclude with `hc1 σ v hv`. Establish `hSeq : ∀ g : Weil h, ρ g * S = S * ρ g`. Introduce `g`. Establish `h1 : ∑ x ∈ Cf, ρ g * x * ρ g⁻¹ = ∑ x ∈ Cf, x`. Use `Finset.sum_nbij' (fun x => ρ g * x * ρ g⁻¹) (fun x => ρ g⁻¹ * x * ρ g) ?_ ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨σ, rfl⟩` from `(hCmem x).1 (Finset.mem_coe.1 hx)`. Conclude with `Finset.mem_coe.2 ((hCmem _).2 ⟨g * σ, by simp only [c, _root_.mul_inv_rev, map_mul, mul_assoc]⟩)`. Introduce `x hx`. Take `⟨σ, rfl⟩` from `(hCmem x).1 (Finset.mem_coe.1 hx)`.
+
+Conclude with `Finset.mem_coe.2 ((hCmem _).2 ⟨g⁻¹ * σ, by`. Simplify using `only [c, _root_.mul_inv_rev, map_mul, inv_inv, mul_assoc]⟩)`. Introduce `x _`. Simplify using `only [← mul_assoc, hinv', one_mul]`. Rewrite using `[mul_assoc, hinv', mul_one]`.
+
+Introduce `x _`. Simplify using `only [← mul_assoc, hinv, one_mul]`. Rewrite using `[mul_assoc, hinv, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Simplify using `only [S, Finset.mul_sum, mul_assoc, hinv', mul_one]`. Use `_ = S * ρ g := by rw [h1]`. Establish `hqm : ∀ v, qa v ∈ P.toSubmodule` using `fun v => P.toSubmodule.smul_mem _ (hSm v)`. Establish `hq1 : ∀ v ∈ P.toSubmodule, qa v = v`. Introduce `v hv`.
+
+Use `show (Cf.card : ℂ)⁻¹ • S v = v`. Rewrite using `[hS1 v hv, inv_smul_smul₀ (by exact_mod_cast hcard)]`. Establish `hqe : ∀ g v, qa (ρ g v) = ρ g (qa v)`. Introduce `g v`. Use `show (Cf.card : ℂ)⁻¹ • S (ρ g v) = ρ g ((Cf.card : ℂ)⁻¹ • S v)`.
+
+Rewrite using `[map_smul, ← Module.End.mul_apply S, ← hSeq, Module.End.mul_apply]`. Set `q' : V →ₗ[ℂ] P.toSubmodule` to `qa.codRestrict P.toSubmodule hqm`. Establish `hcompl : IsCompl P.toSubmodule (LinearMap.ker q')` using `LinearMap.isCompl_of_proj fun x => Subtype.ext (hq1 x x.2)`. Use `⟨⟨LinearMap.ker q', fun g v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h0 : qa v = 0` using `congrArg Subtype.val hv`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show qa (ρ g v) = 0`. Rewrite using `[hqe, h0, map_zero]`. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff, ← Subrepresentation.toSubmodule_injective.eq_iff, ← Subrepresentation.toSubmodule_injective.eq_iff]`. Rewrite `hcompl` using `[isCompl_iff, disjoint_iff, codisjoint_iff]`.
+
+Conclude with `hcompl`.
+-/
 theorem isSemisimpleRepresentation_of_isSmooth [FiniteDimensional ℂ V]
     (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ)
     (hss : ∀ σ, Module.End.IsSemisimple (ρ σ)) : ρ.IsSemisimpleRepresentation := by
@@ -153,6 +205,9 @@ end GlobalTheory.WeilDeligne
 
 namespace GlobalTheory.WeilDeligne.WDRep
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h n a`. Conclude with `isSemisimpleRepresentation_of_isSmooth a.ρ a.smooth a.semisimple`.
+-/
 theorem isSemisimpleRepresentation_rho : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E))
     (h : IsPlaceOver A w) (n : ℕ) (a : WDRep h (Fin n → ℂ)), a.ρ.IsSemisimpleRepresentation := by

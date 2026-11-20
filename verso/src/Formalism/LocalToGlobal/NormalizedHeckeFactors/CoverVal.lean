@@ -8,6 +8,9 @@ section Val
 
 variable {F : Type*} [Field F] (v : AddValuation F (WithTop ℤ))
 
+/- English proof (translation)
+Set `w` to `AddValuation.toValuation v`. Establish `h1 : IsIntegral w.integer y` using `IsIntegral.tower_top hy`. Establish `h2` using `(Valuation.integer.integers w).mem_of_integral h1`. Conclude with `h2`.
+-/
 theorem nonneg_of_isIntegral {y : F} (hy : IsIntegral ℤ y) : 0 ≤ v y := by
 
   let w := AddValuation.toValuation v
@@ -15,11 +18,19 @@ theorem nonneg_of_isIntegral {y : F} (hy : IsIntegral ℤ y) : 0 ≤ v y := by
   have h2 := (Valuation.integer.integers w).mem_of_integral h1
   exact h2
 
+/- English proof (translation)
+Establish `h` using `nonneg_of_isIntegral v hy`. Rewrite `h` using `[AddValuation.map_mul, AddValuation.map_pow, hp, smul_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem nonneg_of_isIntegral_pow_mul {p : F} (hp : v p = 0) {y : F} {N : ℕ}
     (hy : IsIntegral ℤ (p ^ N * y)) : 0 ≤ v y := by
   have h := nonneg_of_isIntegral v hy
   rwa [AddValuation.map_mul, AddValuation.map_pow, hp, smul_zero, zero_add] at h
 
+/- English proof (translation)
+Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp`.
+
+Consider the case `coe b`. Normalize the coercions in `at hx hy ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem withTop_add_pos {x y : WithTop ℤ} (hx : 0 ≤ x) (hy : 0 < y) : 0 < x + y := by
   induction x using WithTop.recTopCoe with
   | top => simp
@@ -30,6 +41,15 @@ theorem withTop_add_pos {x y : WithTop ℤ} (hx : 0 ≤ x) (hy : 0 < y) : 0 < x 
       norm_cast at hx hy ⊢
       omega
 
+/- English proof (translation)
+Establish `hI : ∀ a : ℤ, 0 ≤ v (a : F)` using `fun a => nonneg_of_isIntegral v (by simpa using (isIntegral_algebraMap (R := ℤ) (A := F) (x := a)))`. Establish `hp0 : 0 ≤ v (p : F)` using `by simpa using hI p`. Establish `hcop : IsCoprime (p : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hl).mpr hne)`. Take `⟨a, b, hab⟩` from `hcop`. Establish `hF : (a : F) * (p : F) + (b : F) * (l : F) = 1`.
+
+Use `congrArg (fun z : ℤ => (z : F)) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Assume the negation of the conclusion as `hne0`. Establish `hpos : 0 < v (p : F)` using `lt_of_le_of_ne hp0 (Ne.symm hne0)`.
+
+Establish `h1 : 0 < v ((a : F) * (p : F))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `withTop_add_pos (hI a) hpos`. Establish `h2 : 0 < v ((b : F) * (l : F))`. Rewrite using `[AddValuation.map_mul]`.
+
+Conclude with `withTop_add_pos (hI b) hvl`. Establish `h3` using `lt_of_lt_of_le (lt_min h1 h2) (v.map_add _ _)`. Rewrite `h3` using `[hF, AddValuation.map_one]`. Conclude with `lt_irrefl _ h3`.
+-/
 theorem val_prime_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠ l) (hvl : 0 < v (l : F)) :
     v (p : F) = 0 := by
   have hI : ∀ a : ℤ, 0 ≤ v (a : F) := fun a =>
@@ -53,6 +73,9 @@ theorem val_prime_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠
   rw [hF, AddValuation.map_one] at h3
   exact lt_irrefl _ h3
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_pow, AddValuation.map_pow, val_prime_eq_zero v hl hp hne hvl, smul_zero]`.
+-/
 theorem val_prime_pow_eq_zero {l p : ℕ} (hl : l.Prime) (hp : p.Prime) (hne : p ≠ l) (hvl : 0 < v (l : F))
     (f : ℕ) : v ((p ^ f : ℕ) : F) = 0 := by
   rw [Nat.cast_pow, AddValuation.map_pow, val_prime_eq_zero v hl hp hne hvl, smul_zero]
@@ -63,6 +86,9 @@ section DVR
 
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Establish `hlift : P ∈ Polynomial.lifts (algebraMap O (FractionRing O))` using `(Polynomial.lifts_iff_coeff_lifts P).mpr (fun n => hc n)`. Take `⟨Q, hQ, -, hQm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift hm`. Establish `hint : IsIntegral O μ` using `⟨Q, hQm, by rw [← Polynomial.eval_map, hQ]; exact hμ⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Conclude with `⟨y, hy⟩`.
+-/
 theorem mem_range_of_isRoot (P : (FractionRing O)[X]) (hm : P.Monic)
     (hc : ∀ i, P.coeff i ∈ (algebraMap O (FractionRing O)).range) {μ : FractionRing O} (hμ : P.IsRoot μ) :
     μ ∈ (algebraMap O (FractionRing O)).range := by
@@ -83,8 +109,14 @@ def IntAway (q a : R) : Prop := ∃ N : ℕ, IsIntegral ℤ (q ^ N * a)
 
 variable {q : R}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simpa using ha⟩`.
+-/
 theorem IntAway.of_isIntegral {a : R} (ha : IsIntegral ℤ a) : IntAway q a := ⟨0, by simpa using ha⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ha`. Take `⟨M, hM⟩` from `hb`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Rewrite using `[show q ^ (N + M) * (a + b) = q ^ M * (q ^ N * a) + q ^ N * (q ^ M * b) by ring]`. Conclude with `((hq.pow M).mul hN).add ((hq.pow N).mul hM)`.
+-/
 theorem IntAway.add (hq : IsIntegral ℤ q) {a b : R} (ha : IntAway q a) (hb : IntAway q b) :
     IntAway q (a + b) := by
   obtain ⟨N, hN⟩ := ha
@@ -93,6 +125,9 @@ theorem IntAway.add (hq : IsIntegral ℤ q) {a b : R} (ha : IntAway q a) (hb : I
   rw [show q ^ (N + M) * (a + b) = q ^ M * (q ^ N * a) + q ^ N * (q ^ M * b) by ring]
   exact ((hq.pow M).mul hN).add ((hq.pow N).mul hM)
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ha`. Take `⟨M, hM⟩` from `hb`. Use `⟨N + M, ?_⟩` and prove the remaining obligations. Rewrite using `[show q ^ (N + M) * (a * b) = (q ^ N * a) * (q ^ M * b) by ring]`. Conclude with `hN.mul hM`.
+-/
 theorem IntAway.mul {a b : R} (ha : IntAway q a) (hb : IntAway q b) : IntAway q (a * b) := by
   obtain ⟨N, hN⟩ := ha
   obtain ⟨M, hM⟩ := hb
@@ -100,6 +135,9 @@ theorem IntAway.mul {a b : R} (ha : IntAway q a) (hb : IntAway q b) : IntAway q 
   rw [show q ^ (N + M) * (a * b) = (q ^ N * a) * (q ^ M * b) by ring]
   exact hN.mul hM
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ha`. Conclude with `⟨N, by rw [mul_neg]; exact hN.neg⟩`.
+-/
 theorem IntAway.neg {a : R} (ha : IntAway q a) : IntAway q (-a) := by
   obtain ⟨N, hN⟩ := ha
   exact ⟨N, by rw [mul_neg]; exact hN.neg⟩
@@ -112,6 +150,13 @@ def intAwaySubring (hq : IsIntegral ℤ q) : Subring R where
   zero_mem' := IntAway.of_isIntegral isIntegral_zero
   neg_mem' := fun ha => IntAway.neg ha
 
+/- English proof (translation)
+Set `S` to `intAwaySubring hq`. Establish `hmem : (s.map fun μ => X - C μ).prod ∈ Polynomial.liftsRing S.subtype`. Use `Subring.multiset_prod_mem _ _ (fun P hP => ?_)` and prove the remaining obligations. Take `⟨μ, hμ, rfl⟩` from `Multiset.mem_map.mp hP`. Use `Subring.sub_mem _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Polynomial.lifts_iff_liftsRing]`. Conclude with `Polynomial.X_mem_lifts _`. Rewrite using `[← Polynomial.lifts_iff_liftsRing]`. Conclude with `Polynomial.C_mem_lifts S.subtype ⟨μ, hs μ hμ⟩`. Rewrite `hmem` using `[← Polynomial.lifts_iff_liftsRing, Polynomial.lifts_iff_coeff_lifts]`.
+
+Take `⟨c, hc⟩` from `hmem n`. Rewrite using `[← hc]`. Conclude with `c.2`.
+-/
 theorem intAway_coeff_prod (hq : IsIntegral ℤ q) (s : Multiset R) (hs : ∀ μ ∈ s, IntAway q μ) (n : ℕ) :
     IntAway q ((s.map fun μ => X - C μ).prod.coeff n) := by
   let S := intAwaySubring hq

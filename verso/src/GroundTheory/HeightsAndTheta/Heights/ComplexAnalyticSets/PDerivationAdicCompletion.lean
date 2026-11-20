@@ -9,9 +9,15 @@ open AdicCompletion
 
 variable {R : Type} [CommRing R] (I : Ideal R) (D : Derivation ℤ R R)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qn11.derivation_mem_pow_of_mem_pow_succ <;> assumption`.
+-/
 theorem derivation_mem_pow_of_mem_pow_succ {n : ℕ} {r : R} (hr : r ∈ I ^ (n + 1)) : D r ∈ I ^ n :=
   by apply _root_.UpperTheory.Reformulated.B.Qn11.derivation_mem_pow_of_mem_pow_succ <;> assumption
 
+/- English proof (translation)
+Rewrite using `[smul_eq_mul, Ideal.mul_top]`.
+-/
 theorem pow_smul_top_eq (n : ℕ) : (I ^ n • ⊤ : Ideal R) = I ^ n := by
   rw [smul_eq_mul, Ideal.mul_top]
 
@@ -27,9 +33,15 @@ noncomputable def derivQuot (n : ℕ) :
       rw [pow_smul_top_eq] at hr
       exact derivation_mem_pow_of_mem_pow_succ I D hr)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem derivQuot_mk (n : ℕ) (r : R) :
     derivQuot I D n (Ideal.Quotient.mk _ r) = Ideal.Quotient.mk (I ^ n • ⊤ : Ideal R) (D r) := rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (x.val (n + 1))`. Use `⟨a, ha.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← x.property (Nat.le_succ n), ← ha]`. Both sides reduce to the same expression.
+-/
 theorem exists_rep_succ (x : AdicCompletion I R) (n : ℕ) :
     ∃ a : R, x.val (n + 1) = Ideal.Quotient.mk (I ^ (n + 1) • ⊤ : Ideal R) a ∧
       x.val n = Ideal.Quotient.mk (I ^ n • ⊤ : Ideal R) a := by
@@ -60,6 +72,9 @@ noncomputable def derivCompletion : Derivation ℤ (AdicCompletion I R) (AdicCom
     rw [val_mul, hp1, hq1, hp0, hq0, ← map_mul, derivQuot_mk, derivQuot_mk, derivQuot_mk, D.leibniz,
       smul_eq_mul (α := R), smul_eq_mul (α := R), map_add, map_mul, map_mul])
 
+/- English proof (translation)
+Introduce `R _ I D`. Use `⟨derivCompletion I D, fun r => AdicCompletion.ext fun n => ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem DerivationAdicCompletion.proof : DerivationAdicCompletion.Statement := by
   intro R _ I D
   refine ⟨derivCompletion I D, fun r => AdicCompletion.ext fun n => ?_⟩

@@ -21,5 +21,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CoreOnto.comOK | exact GlobalTheory.CoreOnto.comOK | (intros; apply GlobalTheory.CoreOnto.comOK <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.testGridCommonData_properties_hold : ComOK := by
   first | exact @GlobalTheory.CoreOnto.comOK | exact GlobalTheory.CoreOnto.comOK | (intros; apply GlobalTheory.CoreOnto.comOK <;> assumption)

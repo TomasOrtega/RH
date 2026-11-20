@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Use `⟨top_ne_bot, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩` and prove the remaining obligations. Establish `key : ∀ M : Matrix (Fin 4) (Fin 4) k, ∀ v ∈ W, M.mulVec v ∈ W`. Introduce `M`. Establish `hM : M ∈ Submodule.span k (Set.range r)`. Establish `h1 : Submodule.span k (Set.range r) = ⊤` using `hr`.
+
+Rewrite using `[h1]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+
+Take `⟨s, t, hs⟩` from `h g`. Introduce `v hv`. Rewrite using `[hs, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (hW s v hv)`. Consider the case `zero => intro v _`.
+
+Rewrite using `[Matrix.zero_mulVec]`. Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => intro v hv`. Rewrite using `[Matrix.add_mulVec]`. Conclude with `W.add_mem (hx v hv) (hy v hv)`.
+
+Consider the case `smul a x _ hx => intro v hv`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (hx v hv)`. Distinguish the cases in `hb : W = ⊥`. Conclude with `Or.inl hb`.
+
+Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv0`. Establish `hi' : v i ≠ 0` using `hi`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations.
+
+Establish `h2` using `key (Matrix.of fun a b => if b = i then w a * (v i)⁻¹ else 0) v hv`. Establish `h3 : (Matrix.of fun a b => if b = i then w a * (v i)⁻¹ else 0 : Matrix (Fin 4) (Fin 4) k).mulVec v = w`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hi', mul_one]`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 private theorem irr_of_stab {k Γ H : Type} [Field k] [Group Γ] [Group H] (r : Γ →* M4 k) (hr : Irr r)
     (ρ : H →* GL (Fin 4) k)
     (h : ∀ g, ∃ (s : H) (t : k), r g = t • (ρ s : Matrix (Fin 4) (Fin 4) k)) : Af.IsIrr ρ := by
@@ -35,6 +52,11 @@ private theorem irr_of_stab {k Γ H : Type} [Field k] [Group Γ] [Group H] (r : 
     rw [mul_assoc, inv_mul_cancel₀ hi', mul_one]
   rwa [h3] at h2
 
+/- English proof (translation)
+Introduce `k Γ Γ' _ _ _ r r' hr h`. Use `⟨irr_of_stab r hr _ fun g => ?_, fun χ => irr_of_stab r hr _ fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `h g`. Conclude with `⟨s, 1, by rw [one_smul, ← hs]; rfl⟩`. Take `⟨s, hs⟩` from `h g`.
+
+Use `⟨s, ((χ s : k))⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Af.tw_val, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul, ← hs]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.auIrr :
     ∀ {k Γ Γ' : Type} [Field k] [Group Γ] [Group Γ'] (r : Γ →* M4 k) (r' : Γ' →* M4 k), Irr r → (∀ g, ∃ g', r' g' = r g) → Af.IsIrr r'.toHomUnits ∧ ∀ χ : Γ' →* kˣ, Af.IsIrr (Af.tw r'.toHomUnits χ) := by
   intro k Γ Γ' _ _ _ r r' hr h

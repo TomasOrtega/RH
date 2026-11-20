@@ -17,6 +17,13 @@ open scoped GlobalTheory.VacAny
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ _ ψ v κ _ w h1 h2 φ φ' hφ hA`. Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v φ hφ`. Establish `e` using `hA r hr`. Rewrite `e` using `[GlobalTheory.SchrLoc.schr_tens_of_at ψ v w h1 h2 φ r hr.1]`. Use function extensionality and compare the values at `y`.
+
+Set `z : κ → AF F` to `fun i => GlobalTheory.EmbChart.atPlace v (y i - evFin F v (x₀ i))`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.VacAny.at_atPlace _`. Establish `hrx : r (x₀ + z) = r x₀` using `hr.1 x₀ z hz`. Establish `hev : (fun i => evFin F v ((x₀ + z) i)) = y`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [z, Pi.add_apply, map_add, GlobalTheory.EmbChart.evFin_atPlace, add_sub_cancel]`. Establish `e2` using `congrFun e (x₀ + z)`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens] at e2`. Rewrite `e2` using `[hev, hrx]`. Conclude with `mul_right_cancel₀ hx₀ e2`.
+-/
 theorem GlobalTheory.AdelicActs.schr_local_of_acts : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (v : Pl F) {κ : Type} [Fintype κ]
     (w : (κ → AF F) × (κ → AF F)), (∀ i, At (evFin F v) (w.1 i)) → (∀ i, At (evFin F v) (w.2 i)) →
     ∀ φ φ' : (κ → Fv F v) → ℂ, φ ∈ SB (κ → Fv F v) → Acts (evFin F v) (schr ψ w) φ φ' →

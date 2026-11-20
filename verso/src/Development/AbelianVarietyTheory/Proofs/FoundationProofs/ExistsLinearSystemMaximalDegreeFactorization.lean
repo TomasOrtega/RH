@@ -15,6 +15,9 @@ section Bounded
 variable {k A : Type} [Field k] [CommRing A] [Algebra k A] [Algebra k[X] A]
   [IsScalarTower k k[X] A]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul k[X] c f, map_smul, Finsupp.smul_apply, smul_eq_mul, Polynomial.algebraMap_eq]`.
+-/
 theorem repr_smul_const {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (c : k) (f : A) (i : Fin n) :
     b.repr (c • f) i = C c * b.repr f i := by
   rw [← algebraMap_smul k[X] c f, map_smul, Finsupp.smul_apply, smul_eq_mul,
@@ -36,6 +39,13 @@ def coeffMap {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (D : Ideal A) (d : ℕ)
   map_add' f g := by ext i j; simp [coeff_add]
   map_smul' c f := by ext i j; simp [repr_smul_const, coeff_C_mul]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `h0 : ∀ i, b.repr (f : A) i = 0`. Introduce `i`. Use extensionality with `j`.
+
+Distinguish the cases in `hj : j ≤ d`. Use `congrFun (congrFun hf i) ⟨j, Nat.lt_succ_of_le hj⟩` as an intermediate fact. Simplify `this` using `[coeffMap]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt (f.2.2 i) (not_le.1 hj))]`. Simplify using the standard rewrite rules.
+
+Establish `: (f : A) = 0`. Rewrite using `[← b.sum_repr (f : A)]`. Simplify using `[h0]`. Conclude with `Subtype.ext this`.
+-/
 theorem coeffMap_injective {n : ℕ} (b : Module.Basis (Fin n) k[X] A) (D : Ideal A) (d : ℕ) :
     Function.Injective (coeffMap b D d) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -57,6 +67,9 @@ instance finiteDimensional_boundedIn {n : ℕ} (b : Module.Basis (Fin n) k[X] A)
 
 end Bounded
 
+/- English proof (translation)
+Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h'`. Conclude with `h (le_sup_right.trans (hM.eq_of_le h' le_sup_left).ge)`.
+-/
 theorem isCoprime_of_not_le {A : Type} [CommRing A] {M D : Ideal A} (hM : M.IsMaximal)
     (h : ¬ D ≤ M) : IsCoprime M D := by
   rw [Ideal.isCoprime_iff_sup_eq]
@@ -67,6 +80,39 @@ end GlobalTheory.LinSys
 
 open GlobalTheory.LinSys in
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ _ _ _ _ _ N P₀ hN hP`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Use `set n := Module.finrank k[X] A`. Set `b : Module.Basis (Fin n) k[X] A` to `Module.finBasis k[X] A`.
+
+Take `⟨c, lam, hdeg1, hdeg2⟩` from `GlobalTheory.T.norm_degree_bound_polynomial_combination k A n b`. Take `⟨p, hp2, hpP, hpP2⟩` from `GlobalTheory.T.exists_degree_lt_two_correction_simple_zero k A n b P₀ (∑ i, (C (lam i) * X ^ 2) • b i) hP`. Use `set f₁ : A := ∑ i, (C (lam i) * X ^ 2 + p i) • b i with hf₁def`. Establish `hf₁eq : (∑ i, (C (lam i) * X ^ 2) • b i) + ∑ i, p i • b i = f₁`. Rewrite using `[hf₁def, ← Finset.sum_add_distrib]`.
+
+Simplify using `[add_smul]`. Rewrite `hpP`, `hpP2` using `[hf₁eq]`. Take `⟨hf₁0, hf₁deg⟩` from `hdeg2 2 p hp2`. Take `⟨D, hD⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hpP)`. Establish `hDP : ¬ D ≤ P₀`.
+
+Introduce `h`. Apply `hpP2` to reduce the goal to its premises. Establish `: Ideal.span {f₁} ≤ P₀ ^ 2` using `by rw [hD, sq]; exact Ideal.mul_mono_right h`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Establish `hf₁D : f₁ ∈ D`.
+
+Establish `: Ideal.span {f₁} ≤ D` using `hD ▸ Ideal.mul_le_right`. Conclude with `(Ideal.span_singleton_le_iff_mem _).1 this`. Use `set s := n * 2 + c with hs`. Take `⟨q, r, Q, hqm, hqdeg, hQmax, hQinj, hf₁Q, hqQ⟩` from `GlobalTheory.T.exists_squarefree_poly_distinct_zeros_on_curve k A f₁ s hf₁0`. Use `set d := 2 + (M + 1) * s with hd`.
+
+Establish `hspan : ∀ m : ℕ, Ideal.span {f₁ * algebraMap k[X] A (q ^ m)} = P₀ * D * ∏ i, Q i ^ m`. Introduce `m`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, hD, map_pow, ← Ideal.span_singleton_pow, hqQ, Finset.prod_pow]`. Establish `hrepr₁ : ∀ i, b.repr f₁ i = C (lam i) * X ^ 2 + p i`. Introduce `i`.
+
+Rewrite using `[hf₁def, b.repr_sum_self]`. Establish `hdeg₁ : ∀ i, (b.repr f₁ i).natDegree ≤ 2`. Introduce `i`. Rewrite using `[hrepr₁]`. Conclude with `(natDegree_add_le _ _).trans (max_le (natDegree_C_mul_X_pow_le _ _) (natDegree_le_iff_degree_le.2 (le_of_lt (hp2 i))))`.
+
+Use `set f₀ : A := f₁ * algebraMap k[X] A (q ^ (M + 1)) with hf₀def`. Establish `hf₀smul : f₀ = q ^ (M + 1) • f₁` using `by rw [hf₀def, Algebra.smul_def, mul_comm]`. Establish `hf₀0 : f₀ ≠ 0`. Rewrite using `[hf₀smul]`. Conclude with `smul_ne_zero (pow_ne_zero _ hqm.ne_zero) hf₁0`.
+
+Establish `hf₀V : f₀ ∈ boundedIn b D d`. Use `⟨D.mul_mem_right _ hf₁D, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hf₀smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[hqm.natDegree_pow, hqdeg]`.
+
+Use `hdeg₁ i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnorm₁ : Algebra.norm k[X] f₁ ≠ 0` using `Algebra.norm_ne_zero_iff.2 hf₁0`. Establish `hf₀deg : (Algebra.norm k[X] f₀).natDegree = n * d + c`. Rewrite using `[hf₀def, map_mul, Algebra.norm_algebraMap_of_basis b, Fintype.card_fin, natDegree_mul hnorm₁ (pow_ne_zero _ (pow_ne_zero _ hqm.ne_zero)), hf₁deg, natDegree_pow, hqm.natDegree_pow, hqdeg, hd, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨r, boundedIn b D d, D, Q, f₀, ⟨inferInstance, fun v hv => hv.1, hQmax, hQinj, fun i h => hf₁Q i (h ▸ hpP), fun i h => hf₁Q i (h hf₁D), hDP, hf₀V, hf₀0, hspan (M + 1), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `u`. Establish `hcop : IsCoprime (P₀ * ∏ i, Q i ^ M) D` using `(isCoprime_of_not_le hP hDP).mul_left (IsCoprime.prod_left fun i _ => (isCoprime_of_not_le (hQmax i) (fun h => hf₁Q i (h hf₁D))).pow_left)`. Establish `h1 : (1 : A) ∈ (P₀ * ∏ i, Q i ^ M) ⊔ D`.
+
+Rewrite using `[Ideal.isCoprime_iff_sup_eq.1 hcop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `hqd : (Algebra.norm k[X] f₁).natDegree + (q ^ M).natDegree ≤ d + 1`. Rewrite using `[hqm.natDegree_pow, hqdeg, hf₁deg, hd, hs]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Take `⟨p', hp'd, hp'⟩` from `GlobalTheory.T.exists_lowDegree_coords_mod_mul k A n b f₁ (q ^ M) d hf₁0 (pow_ne_zero _ hqm.ne_zero) hqd (u * y)`. Rewrite `hp'` using `[hspan M]`. Establish `hP0 : P₀ * D * ∏ i, Q i ^ M ≤ D` using `Ideal.mul_le_left.trans Ideal.mul_le_right`. Establish `hPI : P₀ * D * ∏ i, Q i ^ M ≤ P₀ * ∏ i, Q i ^ M` using `Ideal.mul_mono_left Ideal.mul_le_left`.
+
+Use `⟨∑ i, p' i • b i, ⟨?_, fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: ∑ i, p' i • b i = u * y - (u * y - ∑ i, p' i • b i)` using `by ring`. Rewrite using `[this]`. Conclude with `D.sub_mem (D.mul_mem_left _ hy) (hP0 hp')`. Rewrite using `[b.repr_sum_self]`.
+
+Conclude with `hp'd i`. Establish `: u - ∑ i, p' i • b i = u * x + (u * y - ∑ i, p' i • b i)`. Take the linear combination `(-u) * hxy`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hx) (hPI hp')`.
+
+Introduce `f hf hf0`. Rewrite using `[finrank_quotient_span_eq_natDegree_norm b hf0, finrank_quotient_span_eq_natDegree_norm b hf₀0, hf₀deg]`. Use `hdeg1 d (fun i => b.repr f i) hf.2` as an intermediate fact. Rewrite `this` using `[b.sum_repr]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.linear_system_setup : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra k[X] A] [IsScalarTower k k[X] A] [Module.Finite k[X] A] [Module.Free k[X] A] (N : ℕ) (P₀ : Ideal A), 1 ≤ N → P₀.IsMaximal → ∃ (r : ℕ) (V : Submodule k A) (D : Ideal A) (Q : Fin r → Ideal A) (f₀ : A), (FiniteDimensional k V ∧ (∀ v ∈ V, v ∈ D) ∧ (∀ i, (Q i).IsMaximal) ∧ Function.Injective Q ∧ (∀ i, Q i ≠ P₀) ∧ (∀ i, ¬ D ≤ Q i) ∧ ¬ D ≤ P₀ ∧ f₀ ∈ V ∧ f₀ ≠ 0 ∧ Ideal.span {f₀} = P₀ * D * ∏ i, Q i ^ N ∧ (∀ u : A, ∃ v ∈ V, u - v ∈ P₀ * ∏ i, Q i ^ (N - 1))) ∧ (∀ f ∈ V, f ≠ 0 → Module.finrank k (A ⧸ Ideal.span {f}) ≤ Module.finrank k (A ⧸ Ideal.span {f₀})) := by
   intro k A _ _ _ _ _ _ _ _ _ _ N P₀ hN hP
   obtain ⟨M, rfl⟩ : ∃ M, N = M + 1 := ⟨N - 1, by omega⟩

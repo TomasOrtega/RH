@@ -5,6 +5,23 @@ namespace Formalism.LogVandermondeBounds.flipTwoThree
 
 open Finset MeasureTheory
 
+/- English proof (translation)
+Introduce `n g hg`. Simplify using `only`. Establish `hg0 : (0:ℝ) < g` using `by exact_mod_cast hg`. Establish `hE : (4:ℝ) ≤ 2 * Real.exp 1` using `by have := Real.exp_one_gt_d9; linarith`. Distinguish the cases in `hng : n ≤ g`.
+
+Establish `he : (if n = 0 then (1:ℝ) else min 1 ((g:ℝ)/n)) = 1` using `by split_ifs with h`. Both sides reduce to the same expression. Establish `hn : (0:ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero h`. Apply `min_eq_left` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hn, one_mul]`.
+
+Conclude with `hng` after adjusting the coercions. Rewrite using `[he]`. Simplify using `only [one_pow, inv_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hng`.
+
+Establish `hn0 : n ≠ 0` using `by omega`. Establish `hn : (0:ℝ) < n` using `by exact_mod_cast (show 0 < n by omega)`. Establish `hgn : (g:ℝ)/n < 1`. Rewrite using `[div_lt_one hn]`. Conclude with `hng` after adjusting the coercions.
+
+Establish `he : (if n = 0 then (1:ℝ) else min 1 ((g:ℝ)/n)) = (g:ℝ)/n`. Rewrite using `[if_neg hn0]`. Conclude with `min_eq_right hgn.le`. Rewrite using `[he]`. Establish `hmax : max 1 ((n:ℝ)/g) = (n:ℝ)/g`.
+
+Apply `max_eq_right` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hg0, one_mul]`. Conclude with `hng.le` after adjusting the coercions. Rewrite using `[hmax]`. Establish `hx0 : 0 < (g:ℝ)/n` using `by positivity`.
+
+Establish `h1 : (1+(g:ℝ)/n)^n ≤ Real.exp 1 ^ g`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (1+(g:ℝ)/n)^g ≤ 2^g` using `pow_le_pow_left₀ (by positivity) (by linarith) g`. Establish `h3 : (((g:ℝ)/n)^g)⁻¹ = ((n:ℝ)/g)^g` using `by rw [← inv_pow, inv_div]`. Rewrite using `[pow_add, h3, mul_pow, mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul h1 h2 (by positivity) (by positivity)`. Use `_ = 2^g * Real.exp 1 ^ g * ((n:ℝ)/g)^g := by ring`.
+-/
 theorem jet_exponential_bound : MinRatioPowerExponentialBound := by
   intro n g hg
   simp only
@@ -53,6 +70,13 @@ theorem jet_exponential_bound : MinRatioPowerExponentialBound := by
           exact mul_le_mul h1 h2 (by positivity) (by positivity)
       _ = 2^g * Real.exp 1 ^ g * ((n:ℝ)/g)^g := by ring
 
+/- English proof (translation)
+Establish `hval : ∫ u in Set.Ioi (0:ℝ), u ^ k * Real.exp (-Real.pi * u) = (k.factorial : ℝ) / Real.pi ^ (k+1)`. Establish `key` using `Real.integral_rpow_mul_exp_neg_mul_Ioi (a := (k:ℝ) + 1) (r := Real.pi) (by positivity) Real.pi_pos`. Establish `hc : ∫ u in Set.Ioi (0:ℝ), u ^ k * Real.exp (-Real.pi * u) = ∫ t in Set.Ioi (0:ℝ), t ^ ((k:ℝ) + 1 - 1) * Real.exp (-(Real.pi * t))`. Use `setIntegral_congr_fun measurableSet_Ioi (fun t _ => ?_)` and prove the remaining obligations. Simplify using `only [add_sub_cancel_right, Real.rpow_natCast, neg_mul]`.
+
+Rewrite using `[hc, key, Real.Gamma_nat_eq_factorial]`. Rewrite using `[show ((k:ℝ) + 1) = ((k+1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]`. Rewrite using `[one_div, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, hval⟩` and prove the remaining obligations.
+
+Apply `Integrable.of_integral_ne_zero` to reduce the goal to its premises. Rewrite using `[hval]`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+-/
 lemma gamma_term (k : ℕ) :
     IntegrableOn (fun u : ℝ => u ^ k * Real.exp (-Real.pi * u)) (Set.Ioi 0) ∧
     ∫ u in Set.Ioi (0:ℝ), u ^ k * Real.exp (-Real.pi * u) = (k.factorial : ℝ) / Real.pi ^ (k+1) := by
@@ -74,6 +98,19 @@ lemma gamma_term (k : ℕ) :
   have := Real.pi_pos
   positivity
 
+/- English proof (translation)
+Introduce `v g hv`. Establish `hfun : (fun u : ℝ => Real.pi * Real.exp (-Real.pi * u) * (1 + 4 * u * v) ^ g) = fun u => ∑ k ∈ range (g+1), (Real.pi * (g.choose k : ℝ) * (4 * v) ^ k) * (u ^ k * Real.exp (-Real.pi * u))`. Use function extensionality and compare the values at `u`. Rewrite using `[add_comm, add_pow, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[one_pow, mul_one, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ k ∈ range (g+1), Integrable (fun u : ℝ => (Real.pi * (g.choose k : ℝ) * (4 * v) ^ k) * (u ^ k * Real.exp (-Real.pi * u))) (volume.restrict (Set.Ioi 0))` using `fun k _ => (gamma_term k).1.const_mul _`. Rewrite using `[hfun]`. Use `⟨by unfold IntegrableOn; exact integrable_finsetSum _ hint, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_finsetSum _ hint]`. Establish `hpi` using `Real.pi_pos`. Rewrite using `[add_comm (1:ℝ) (4 * (g:ℝ) * v / Real.pi), add_pow]`. Use `Finset.sum_le_sum (fun k hk => ?_)` and prove the remaining obligations. Establish `hkg : k ≤ g` using `Nat.lt_succ_iff.mp (mem_range.mp hk)`.
+
+Rewrite using `[integral_const_mul, (gamma_term k).2, one_pow, mul_one]`. Establish `hf : (k.factorial : ℝ) ≤ (g : ℝ) ^ k`. Conclude with `(Nat.factorial_le_pow k).trans (Nat.pow_le_pow_left hkg k)` after adjusting the coercions. Establish `e1 : Real.pi * (g.choose k : ℝ) * (4 * v) ^ k * ((k.factorial : ℝ) / Real.pi ^ (k+1)) = (g.choose k : ℝ) * (4 * v / Real.pi) ^ k * (k.factorial : ℝ)`. Establish `hpk : Real.pi ^ k ≠ 0` using `by positivity`.
+
+Rewrite using `[div_pow, pow_succ]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `e2 : (4 * (g:ℝ) * v / Real.pi) ^ k * (g.choose k : ℝ) = (g.choose k : ℝ) * (4 * v / Real.pi) ^ k * (g:ℝ) ^ k`. Rewrite using `[show 4 * (g:ℝ) * v / Real.pi = (4 * v / Real.pi) * g by ring, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Use `gcongr`.
+-/
 theorem gamma_integral_polynomial_bound : GammaIntegralBound := by
   intro v g hv
   have hfun : (fun u : ℝ => Real.pi * Real.exp (-Real.pi * u) * (1 + 4 * u * v) ^ g)
@@ -111,6 +148,15 @@ theorem gamma_integral_polynomial_bound : GammaIntegralBound := by
   rw [e1, e2]
   gcongr
 
+/- English proof (translation)
+Introduce `f v x hf hv hx hprod`. Establish `hf0 : (0:ℝ) < f` using `by exact_mod_cast hf`. Establish `hfne : f ≠ 0` using `by omega`. Establish `hw : ∑ _i : Fin f, (f:ℝ)⁻¹ = 1`. Rewrite using `[sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `amgm` using `Real.geom_mean_le_arith_mean_weighted (s := univ) (fun _ => (f:ℝ)⁻¹) x (fun _ _ => by positivity) hw (fun i _ => (hx i).le)`. Rewrite `amgm` using `[Real.finsetProd_rpow _ _ (fun i _ => (hx i).le)]`. Establish `hlow : (2 * v)⁻¹ ≤ (∏ i, x i) ^ ((f:ℝ)⁻¹)`. Establish `h0 : (0:ℝ) ≤ ((2 * v) ^ f)⁻¹` using `by positivity`.
+
+Use `Real.rpow_le_rpow h0 hprod (by positivity : (0:ℝ) ≤ (f:ℝ)⁻¹)` as an intermediate fact. Rewrite `this` using `[← inv_pow, Real.pow_rpow_inv_natCast (by positivity) hfne]`. Conclude with `this`. Establish `h` using `hlow.trans amgm`. Rewrite `h` using `[← Finset.mul_sum]`.
+
+Establish `e : (f:ℝ) / v = 2 * f * (2 * v)⁻¹` using `by field_simp`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem amgm_period_lattice_bound : AmgmSumLowerBoundOfProd := by
   intro f v x hf hv hx hprod
   have hf0 : (0:ℝ) < f := by exact_mod_cast hf
@@ -134,6 +180,11 @@ theorem amgm_period_lattice_bound : AmgmSumLowerBoundOfProd := by
         mul_le_mul_of_nonneg_left h (by positivity)
     _ = 2 * ∑ i, x i := by field_simp
 
+/- English proof (translation)
+Establish `h1 : nu j ≤ nu i` using `hnu hij.le`. Establish `h2 : nu i ≤ nu 0` using `hnu (Fin.zero_le i)`. Establish `h3 : (i:ℕ) < j` using `hij`. Establish `h4 : (j:ℕ) ≤ N` using `Nat.lt_succ_iff.mp j.isLt`. Prove the components needed by the constructor for the conclusion.
+
+Establish `: (1:ℤ) ≤ (nu i : ℤ) - nu j + j - i` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `: ((nu i : ℤ) - nu j + j - i) ≤ (nu 0 : ℤ) + N + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 lemma hook_den_bounds (N : ℕ) (nu : Fin (N+1) → ℕ) (hnu : Antitone nu) (i j : Fin (N+1))
     (hij : i < j) :
     (1:ℝ) ≤ (((nu i : ℤ) - nu j + j - i : ℤ) : ℝ) ∧
@@ -148,6 +199,11 @@ lemma hook_den_bounds (N : ℕ) (nu : Fin (N+1) → ℕ) (hnu : Antitone nu) (i 
   · have : ((nu i : ℤ) - nu j + j - i) ≤ (nu 0 : ℤ) + N + 1 := by omega
     exact_mod_cast this
 
+/- English proof (translation)
+Establish `e` using `Nat.factorial_mul_descFactorial (n := a + N - i) (k := N - i) (by omega)`. Establish `e2 : a + N - i - (N - i) = a` using `by omega`. Rewrite `e` using `[e2]`. Rewrite using `[← e]`. Apply `Nat.mul_le_mul_left` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma fact_bound (a b N i : ℕ) (hab : a ≤ b) (hi : i ≤ N) :
     (a + N - i).factorial ≤ a.factorial * (b + N + 1) ^ (N + 1) := by
   have e := Nat.factorial_mul_descFactorial (n := a + N - i) (k := N - i) (by omega)
@@ -159,6 +215,33 @@ lemma fact_bound (a b N i : ℕ) (hab : a ≤ b) (hi : i ≤ N) :
     _ ≤ (b + N + 1) ^ (N - i) := Nat.pow_le_pow_left (by omega) _
     _ ≤ (b + N + 1) ^ (N + 1) := Nat.pow_le_pow_right (by omega) (by omega)
 
+/- English proof (translation)
+Introduce `N nu hnu`. Use `set D : ℝ := ∏ i : Fin (N+1), ∏ j ∈ univ.filter (fun j => i < j), (((nu i : ℤ) - nu j + j - i : ℤ) : ℝ) with hD`. Use `set num : ℝ := ∏ i : Fin (N + 1), ((nu i + N - i : ℕ).factorial : ℝ) with hnum`. Use `set Mr : ℝ := (nu 0 : ℝ) + N + 1 with hMr`. Establish `hM1 : (1:ℝ) ≤ Mr`.
+
+Establish `h0 : (0:ℝ) ≤ (nu 0 : ℝ) + N` using `by positivity`. Combine the linear relations using `[hMr]`. Establish `hH : hookF nu = num / D`. Unfold `hookF`. Use `congr 1`.
+
+Establish `hD1 : 1 ≤ D`. Rewrite using `[hD]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun _ _ => by positivity)` to reduce the goal to its premises. Introduce `i _`.
+
+Apply `Finset.prod_le_prod (fun _ _ => by positivity)` to reduce the goal to its premises. Introduce `j hj`. Conclude with `(hook_den_bounds N nu hnu i j (mem_filter.mp hj).2).1`. Establish `hDM : D ≤ Mr ^ ((N + 1) ^ 2)`. Rewrite using `[hD]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.prod_nonneg` to reduce the goal to its premises. Introduce `j hj`.
+
+Conclude with `zero_le_one.trans (hook_den_bounds N nu hnu i j (mem_filter.mp hj).2).1`. Introduce `i _`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `j hj`.
+
+Conclude with `zero_le_one.trans (hook_den_bounds N nu hnu i j (mem_filter.mp hj).2).1`. Introduce `j hj`. Conclude with `(hook_den_bounds N nu hnu i j (mem_filter.mp hj).2).2`. Use `_ = Mr ^ (univ.filter (fun j => i < j)).card := prod_const _`. Use `_ ≤ Mr ^ (N + 1) := by`.
+
+Apply `pow_le_pow_right₀ hM1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = Mr ^ ((N + 1) ^ 2) := by rw [prod_const, card_univ, Fintype.card_fin, ← pow_mul, sq]`. Establish `hD0 : 0 < D` using `lt_of_lt_of_le zero_lt_one hD1`. Establish `hnum0 : 0 < num` using `by rw [hnum]; positivity`.
+
+Establish `hnumM : num ≤ (∏ i : Fin (N + 1), ((nu i).factorial : ℝ)) * Mr ^ ((N + 1) ^ 2)`. Rewrite using `[hnum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun _ _ => by positivity)` to reduce the goal to its premises. Introduce `i _`.
+
+Use `fact_bound (nu i) (nu 0) N i (hnu (Fin.zero_le i)) (Nat.lt_succ_iff.mp i.isLt)` as an intermediate fact. Rewrite using `[hMr]`. Conclude with `this` after adjusting the coercions. Use `_ = _ := by rw [prod_mul_distrib, prod_const, card_univ, Fintype.card_fin, ← pow_mul, sq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hH]`. Conclude with `div_le_self hnum0.le hD1`. Rewrite using `[hH, Real.log_div hnum0.ne' hD0.ne', hnum, Real.log_prod (fun i _ => by positivity)]`. Establish `hl : Real.log D ≤ ((N:ℝ) + 1) ^ 2 * Real.log Mr`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hH]`. Establish `hp : 0 < ∏ i : Fin (N + 1), ((nu i).factorial : ℝ)` using `by positivity`. Rewrite using `[div_div, div_le_iff₀ (mul_pos hD0 hp)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use polynomial arithmetic with `[pow_pos (lt_of_lt_of_le zero_lt_one hM1) ((N+1)^2)]`.
+-/
 theorem hook_product_bounds : HookProductBounds := by
   intro N nu hnu
   set D : ℝ := ∏ i : Fin (N+1), ∏ j ∈ univ.filter (fun j => i < j),
@@ -228,6 +311,13 @@ theorem hook_product_bounds : HookProductBounds := by
       _ ≤ Mr ^ ((N + 1) ^ 2) * (D * ∏ i : Fin (N + 1), ((nu i).factorial : ℝ)) := by
         nlinarith [pow_pos (lt_of_lt_of_le zero_lt_one hM1) ((N+1)^2)]
 
+/- English proof (translation)
+Introduce `k α`. Establish `h1 : Nat.multinomial univ α ≤ k ^ (∑ i, α i)`. Establish `key` using `Finset.sum_pow_eq_sum_piAntidiag (univ : Finset (Fin k)) (fun _ => (1:ℕ)) (∑ i, α i)`. Simplify using `only [one_pow, prod_const_one, mul_one, sum_const, card_univ, Fintype.card_fin, smul_eq_mul] at key`. Rewrite using `[key]`.
+
+Conclude with `Finset.single_le_sum (f := fun β => Nat.multinomial univ β) (fun _ _ => Nat.zero_le _) (by simp [mem_piAntidiag])`. Establish `hspec` using `Nat.multinomial_spec univ α`. Establish `hpos : (0:ℝ) < ∏ i, ((α i).factorial : ℝ)` using `by positivity`. Rewrite using `[div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hspec.symm` after adjusting the coercions. Use `_ ≤ (∏ i, ((α i).factorial : ℝ)) * (k : ℝ) ^ (∑ i, α i) := by gcongr`. Conclude with `h1` after adjusting the coercions. Use `_ = _ := by ring`.
+-/
 theorem multinomial_le_pow_card : MultinomialPowerBound := by
   intro k α
   have h1 : Nat.multinomial univ α ≤ k ^ (∑ i, α i) := by

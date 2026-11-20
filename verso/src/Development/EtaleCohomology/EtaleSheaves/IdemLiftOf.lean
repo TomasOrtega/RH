@@ -7,10 +7,16 @@ namespace LateralTheory.E.IdempotentLifting
 
 abbrev Aq : Type := AdjoinRoot (X ^ 2 - X : ℤ[X])
 
+/- English proof (translation)
+Apply `Polynomial.monic_X_pow_sub` to reduce the goal to its premises. Rewrite using `[degree_X]`. Evaluate the decidable proposition.
+-/
 lemma monic_q : (X ^ 2 - X : ℤ[X]).Monic := by
   apply Polynomial.monic_X_pow_sub
   rw [degree_X]; decide
 
+/- English proof (translation)
+Use `monic_q.finite_adjoinRoot` as an intermediate fact. Conclude with `fun x => Algebra.IsIntegral.isIntegral x`.
+-/
 lemma integral_q : (algebraMap ℤ Aq).IsIntegral := by
   have := monic_q.finite_adjoinRoot
   exact fun x => Algebra.IsIntegral.isIntegral x
@@ -18,6 +24,17 @@ lemma integral_q : (algebraMap ℤ Aq).IsIntegral := by
 def toW {W : Type} [CommRing W] (e : W) (he : IsIdempotentElem e) : Aq →+* W :=
   AdjoinRoot.lift (Int.castRingHom W) e (by simp [sq, he.eq])
 
+/- English proof (translation)
+Introduce `P _ _ W _ w _ e he`. Set `Z : Scheme.{0}` to `Spec (CommRingCat.of Aq)`. Set `t : Z ⟶ Spec (CommRingCat.of ℤ)` to `Spec.map (CommRingCat.ofHom (algebraMap ℤ Aq))`. Establish `: IsIntegralHom t` using `IsIntegralHom.SpecMap_iff.2 integral_q`. Set `g : Spec (CommRingCat.of W) ⟶ Z` to `Spec.map (CommRingCat.ofHom (toW e he))`.
+
+Set `f₁ : Spec (CommRingCat.of W) ⟶ pullback (specZIsTerminal.from P) t` to `pullback.lift w g (specZIsTerminal.hom_ext _ _)`. Establish `H : w = f₁ ≫ pullback.fst _ _` using `(pullback.lift_fst _ _ _).symm`. Set `d` to `w.normalizationDesc f₁ (pullback.fst _ _) H`. Set `r : Γ(Z, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of Aq)).inv (AdjoinRoot.root _)`. Use `⟨d.appTop ((pullback.snd (specZIsTerminal.from P) t).appTop r), ?_⟩` and prove the remaining obligations.
+
+Establish `key : w.toNormalization ≫ d ≫ pullback.snd (specZIsTerminal.from P) t = g`. Rewrite using `[← Category.assoc, w.toNormalization_normalizationDesc, pullback.lift_snd]`. Establish `h1 : w.toNormalization.appTop (d.appTop ((pullback.snd (specZIsTerminal.from P) t).appTop r)) = g.appTop r`. Rewrite using `[← key]`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+
+Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of W)).hom (g.appTop r) = e`. Rewrite using `[← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality, CommRingCat.comp_apply]`. Simplify using `[r, toW, AdjoinRoot.lift_root]`. Unfold `phi`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply]`.
+
+Conclude with `(congrArg _ h1).trans h2`.
+-/
 theorem IdemLift_of : IdemLift := by
   intro P _ _ W _ w _ e he
   let Z : Scheme.{0} := Spec (CommRingCat.of Aq)

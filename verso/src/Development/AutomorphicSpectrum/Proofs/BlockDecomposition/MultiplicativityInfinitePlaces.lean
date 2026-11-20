@@ -8,6 +8,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.GramWedge
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Pi.star_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `using Complex.conj_mul' (w i)`.
+-/
 theorem star_dotProduct_self {α : Type} [Fintype α] (w : α → ℂ) :
     star w ⬝ᵥ w = ((∑ i, ‖w i‖ ^ 2 : ℝ) : ℂ) := by
   simp only [dotProduct, Pi.star_apply]
@@ -15,10 +18,20 @@ theorem star_dotProduct_self {α : Type} [Fintype α] (w : α → ℂ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   simpa using Complex.conj_mul' (w i)
 
+/- English proof (translation)
+The claim follows from `le_ciSup (f := fun p : ι' × ι => ‖g p.1 p.2‖) (Set.finite_range _).bddAbove (a, b)`.
+-/
 theorem norm_entry_le_sz {ι ι' : Type} [Fintype ι] [Fintype ι'] (g : Matrix ι' ι ℂ) (a : ι') (b : ι) :
     ‖g a b‖ ≤ sz g :=
   le_ciSup (f := fun p : ι' × ι => ‖g p.1 p.2‖) (Set.finite_range _).bddAbove (a, b)
 
+/- English proof (translation)
+Establish `row : ∀ a, ‖(g *ᵥ v) a‖ ^ 2 ≤ (Fintype.card ι : ℝ) * sz g ^ 2 * ∑ b, ‖v b‖ ^ 2`. Introduce `a`. Establish `h1 : ‖(g *ᵥ v) a‖ ≤ sz g * ∑ b, ‖v b‖`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_entry_le_sz g a b) (norm_nonneg _)`. Establish `h2 : (∑ b, ‖v b‖) ^ 2 ≤ (Fintype.card ι : ℝ) * ∑ b, ‖v b‖ ^ 2`. Simplify using `using sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset ι)) (f := fun b => ‖v b‖)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_norm_mulVec_sq_le {ι ι' : Type} [Fintype ι] [Fintype ι'] (g : Matrix ι' ι ℂ) (v : ι → ℂ) :
     ∑ a, ‖(g *ᵥ v) a‖ ^ 2 ≤
       (Fintype.card ι * Fintype.card ι' : ℝ) * sz g ^ 2 * ∑ b, ‖v b‖ ^ 2 := by
@@ -42,6 +55,13 @@ theorem sum_norm_mulVec_sq_le {ι ι' : Type} [Fintype ι] [Fintype ι'] (g : Ma
       rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
       ring
 
+/- English proof (translation)
+Use `set c : ℝ := (Fintype.card ι * Fintype.card ι' : ℝ) * sz g ^ 2 with hc`. Establish `hG : (Aᴴ * A).IsHermitian` using `isHermitian_conjTranspose_mul_self A`. Establish `hH : ((g * A)ᴴ * (g * A)).IsHermitian` using `isHermitian_conjTranspose_mul_self _`. Use `PosSemidef.of_dotProduct_mulVec_nonneg ((hG.smul (show star (c : ℂ) = c from Complex.conj_ofReal c)).sub hH) fun x => ?_` and prove the remaining obligations. Establish `e : ∀ {α : Type} [Fintype α] (B : Matrix α κ ℂ), star x ⬝ᵥ ((Bᴴ * B) *ᵥ x) = star (B *ᵥ x) ⬝ᵥ (B *ᵥ x)`.
+
+Introduce `α _ B`. Rewrite using `[← mulVec_mulVec, star_mulVec, dotProduct_mulVec]`. Establish `e1` using `e A`. Establish `e2 : star x ⬝ᵥ (((g * A)ᴴ * (g * A)) *ᵥ x) = star (g *ᵥ (A *ᵥ x)) ⬝ᵥ (g *ᵥ (A *ᵥ x))`. Rewrite using `[e (g * A), mulVec_mulVec]`.
+
+Rewrite using `[sub_mulVec, smul_mulVec, dotProduct_sub, dotProduct_smul, e1, e2, star_dotProduct_self, star_dotProduct_self, smul_eq_mul, ← Complex.ofReal_mul, ← Complex.ofReal_sub]`. Conclude with `Complex.zero_le_real.2 (sub_nonneg.2 (sum_norm_mulVec_sq_le g (A *ᵥ x)))`.
+-/
 theorem posSemidef_smul_gram_sub {ι ι' κ : Type} [Fintype ι] [Fintype ι'] [Fintype κ] [DecidableEq κ]
     (g : Matrix ι' ι ℂ) (A : Matrix ι κ ℂ) :
     (((((Fintype.card ι * Fintype.card ι' : ℝ) * sz g ^ 2 : ℝ) : ℂ) • (Aᴴ * A)) -
@@ -62,6 +82,11 @@ theorem posSemidef_smul_gram_sub {ι ι' κ : Type} [Fintype ι] [Fintype ι'] [
     star_dotProduct_self, smul_eq_mul, ← Complex.ofReal_mul, ← Complex.ofReal_sub]
   exact Complex.zero_le_real.2 (sub_nonneg.2 (sum_norm_mulVec_sq_le g (A *ᵥ x)))
 
+/- English proof (translation)
+Establish `h : star s.det * s.det = ((‖s.det‖ ^ 2 : ℝ) : ℂ)`. Simplify using `using Complex.conj_mul' s.det`. Rewrite using `[conjTranspose_mul, show sᴴ * Aᴴ * (A * s) = sᴴ * (Aᴴ * A) * s by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc],`. Use the proof step `det_mul, det_mul, det_conjTranspose, ← h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_mul_det {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ]
     (A : Matrix ι κ ℂ) (s : Matrix κ κ ℂ) :
     ((A * s)ᴴ * (A * s)).det = ((‖s.det‖ ^ 2 : ℝ) : ℂ) * (Aᴴ * A).det := by
@@ -72,6 +97,13 @@ theorem gram_mul_det {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ]
     det_mul, det_mul, det_conjTranspose, ← h]
   ring
 
+/- English proof (translation)
+Introduce `hm ι ι' κ _ _ _ _ A`. Use `⟨fun g => ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `h` using `hm κ _ _ (posSemidef_conjTranspose_mul_self (g * A)) (posSemidef_smul_gram_sub g A)`. Rewrite `h` using `[det_smul, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Conclude with `h`.
+
+Simplify using `only [nI]`. Rewrite using `[gram_mul_det, Complex.re_ofReal_mul, mul_comm]`. Establish `h` using `gram_mul_det (1 : Matrix κ κ ℂ) s`. Simplify using `only [Matrix.one_mul, conjTranspose_one, Matrix.mul_one, det_one, mul_one] at h`. Simplify using `only [nI]`.
+
+Rewrite using `[h, Complex.ofReal_re]`.
+-/
 theorem mulI_of_detMono : DetMono → MulI := by
   intro hm ι ι' κ _ _ _ _ A
   refine ⟨fun g => ?_, fun s => ?_, fun s => ?_⟩

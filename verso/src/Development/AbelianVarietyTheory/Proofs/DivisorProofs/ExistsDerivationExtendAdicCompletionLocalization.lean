@@ -23,6 +23,15 @@ def intDerivationOfLeibniz {A M : Type} [CommRing A] [AddCommGroup M] {instZA : 
       simpa using h1
     leibniz' := h }
 
+/- English proof (translation)
+Take `⟨D', hD'⟩` from `derivation_extend_localization_atPrime ℤ S (Localization.AtPrime P) P (intDerivationOfLeibniz ((algebraMap S (Localization.AtPrime P)).toAddMonoidHom.comp d.toLinearMap.toAddMonoidHom) (fun a b => by simp [d.leibniz, Algebra.smul_def]))`. Establish `hadd : ∀ y z, BK.complDerFun (maximalIdeal (Localization.AtPrime P)) D' (y + z) = BK.complDerFun _ D' y + BK.complDerFun _ D' z` using `fun y z => by`. Use `AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal (Localization.AtPrime P)) (n + 1) y)`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ (maximalIdeal (Localization.AtPrime P)) (n + 1) z)`.
+
+Rewrite using `[BK.evalₐ_complDerFun _ D' (r := r + t) (by rw [map_add, map_add, hr, ht]), map_add, map_add, map_add, BK.evalₐ_complDerFun _ D' hr.symm, BK.evalₐ_complDerFun _ D' ht.symm]`. Use `⟨intDerivationOfLeibniz { toFun := BK.complDerFun (maximalIdeal (Localization.AtPrime P)) D' map_zero' := by` and prove the remaining obligations. Establish `h0` using `hadd 0 0`. Rewrite `h0` using `[add_zero]`. Simplify using `using h0`.
+
+Use the proof step `map_add' := hadd }`. Use the proof step `(fun a b => by simpa [smul_eq_mul] using BK.complDerFun_mul _ D' a b),`. Use `fun x => ?_⟩`. Establish `h2` using `BK.complDerFun_algebraMap (maximalIdeal (Localization.AtPrime P)) D' (algebraMap S (Localization.AtPrime P) x)`. Rewrite `h2` using `[hD']`.
+
+Conclude with `h2`.
+-/
 theorem derivation_extend_completion_localization_atPrime (S : Type) [CommRing S] (P : Ideal S)
     [P.IsPrime] (d : Derivation ℤ S S) :
     ∃ D : Derivation ℤ (AdicCompletion (maximalIdeal (Localization.AtPrime P)) (Localization.AtPrime P))

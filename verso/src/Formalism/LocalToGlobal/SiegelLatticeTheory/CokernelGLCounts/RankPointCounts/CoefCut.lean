@@ -49,15 +49,26 @@ section Assembly
 variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
   {δ : ∀ p : PlF D, (D.s.atP p).Fp}
 
+/- English proof (translation)
+Unfold `repL`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem repL_spec' {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {O : Set (MatP D p)}
     (h : IsLCls M δ T T' p w O) :
     IntP M p (repL M δ T T' p w O) ∧ InOrbP δ T T' p w (repL M δ T T' p w O) ∧ O = kkOrb M p (repL M δ T T' p w O) := by
   unfold repL; rw [dif_pos h]; exact h.choose_spec
 
+/- English proof (translation)
+Unfold `wtL`. Rewrite using `[h]`.
+-/
 theorem wtL_congr {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {Y Y' : MatP D p}
     (h : kkOrb M p Y = kkOrb M p Y') : wtL M δ T T' p w Y = wtL M δ T T' p w Y' := by
   unfold wtL; rw [h]
 
+/- English proof (translation)
+Establish `hcls : IsLCls M δ T T' p w (kkOrb M p Y)` using `⟨Y, hY, hO, rfl⟩`. Take `⟨-, hrO, hrE⟩` from `repL_spec' hcls`. Unfold `hL`. Rewrite using `[if_pos hcls]`. Generalize the expression as in `repL M δ T T' p w (kkOrb M p Y) = R at hrO hrE ⊢`.
+
+Establish `hmem : R ∈ kkOrb M p Y`. Rewrite using `[hrE]`. Conclude with `PCount.mem_kkOrb_self p R`. Rewrite using `[hPC T T' p w Y R hOK hY hO hrO hmem, wtL_congr hrE.symm]`.
+-/
 theorem hL_at {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {Y : MatP D p}
     (hPC : PhCls M δ) (hOK : (M p).OK) (hY : IntP M p Y) (hO : InOrbP δ T T' p w Y) :
     hL M δ T T' p w (kkOrb M p Y) = phL M δ T T' p w Y * (wtL M δ T T' p w Y : ℂ) := by
@@ -73,6 +84,13 @@ theorem hL_at {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {Y : Ma
 variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Introduce `γ w hγ`. Take `⟨hPf, hPe⟩` from `hP γ w hγ`. Take `⟨hVf, hVe⟩` from `hV γ w hγ`. Establish `hfac : ∀ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w (locT M δ γ p) = phL M δ (D.mem u).A.T (D.mem u').A.T p w (yT M δ u u' F0 what₂ γ p) * (wtL M δ (D.mem u).A.T (D.mem u').A.T p w (yT M δ u u' F0 what₂ γ p) : ℂ)`. Introduce `p`.
+
+Take `⟨hyI, hyObP⟩` from `hC γ w hγ p`. Use `show hL M δ (D.mem u).A.T (D.mem u').A.T p w (kkOrb M p (yT M δ u u' F0 what₂ γ p)) = _`. Conclude with `hL_at hPC (hA p).1 hyI hyObP`. Unfold `PairVal.cAt`. Rewrite using `[hPe, hVe, finprod_congr hfac, finprod_mul_distrib hPf hVf]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefProd_of (hA : ∀ p, Agree δ M p) (hC : LocClsE M δ u u' F0 what₂) (hPC : PhCls M δ) (hP : PhaseProd M δ u u' F0 what₂)
     (hV : VolProd M δ u u' F0 what₂) : CoefProd M δ u u' F0 what₂ := by
   intro γ w hγ

@@ -40,10 +40,16 @@ def GoodAt (X : ComponentSetting D O Lt) (B : ℕ) (Θ : LocPot X.M.Xc) (C₁ t 
     (∀ x ∈ X.S.R.Yo, X.S.R.ph x ≤ X.S.regWeight t x ∧ X.S.regWeight t x ≤ C₁) ∧
     IsPsh X.M.atlas (X.S.R.th + LocPot.ofFun (X.S.regWeight t) + Θ)
 
+/- English proof (translation)
+Introduce `_ hu` and use `Eventually.of_forall fun _ _ _ => mem_uniformity_of_eq hu rfl`.
+-/
 theorem tendstoUniformlyOn_const' {α β : Type*} [UniformSpace β] (F : α → β) (s : Set α) :
     TendstoUniformlyOn (fun _ : ℝ => F) F (𝓝[>] 0) s := fun _ hu =>
   Eventually.of_forall fun _ _ _ => mem_uniformity_of_eq hu rfl
 
+/- English proof (translation)
+The claim follows from `|v| ≤ (|C₁| + |X.S.R.Clog|) + (|C₁| + |X.S.R.Clog|) * Real.log (X.S.R.r x) := by have hr : 0 ≤ Real.log (X.S.R.r x) := Real.log_nonneg (X.S.R.one_le_r x hx) have h3 := X.S.R.ph_ge x hx have h4 : X.S.R.Clog * Real.log (X.S.R.r x) ≤ |X.S.R.Clog| * Real.log (X.S.R.r x) := mul_le_mul …`.
+-/
 theorem regWeight_bound (X : ComponentSetting D O Lt) {C₁ v : ℝ} {x : X.M.Xc} (hx : x ∈ X.S.R.Yo)
     (h1 : X.S.R.ph x ≤ v) (h2 : v ≤ C₁) :
     |v| ≤ (|C₁| + |X.S.R.Clog|) + (|C₁| + |X.S.R.Clog|) * Real.log (X.S.R.r x) := by
@@ -59,6 +65,13 @@ theorem regWeight_bound (X : ComponentSetting D O Lt) {C₁ v : ℝ} {x : X.M.Xc
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨U, hU, hy₀, subset_rfl, fun _ => 0, fun _ => analyticOnNhd_const, fun y _ => by simp⟩`. Consider the case `insert p s hp ih`. Establish `hpS : p ∈ D.S` using `hs (Finset.mem_insert_self p s)`.
+
+Take `⟨V₁, hV₁, hy₁, hVU₁, G₁, hG₁, hl₁⟩` from `GlobalTheory.T.local_section_vertical_factor II Ψ K ι Ω E D p M U σ hpS hU hσ hh y₀ hy₀`. Take `⟨V₂, hV₂, hy₂, hVU₂, G₂, hG₂, hl₂⟩` from `ih fun q hq => hs (Finset.mem_insert_of_mem hq)`. Use `⟨V₁ ∩ V₂, hV₁.inter hV₂, ⟨hy₁, hy₂⟩, fun y hy => hVU₁ hy.1, fun y => G₁ y + G₂ y, fun j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `((hG₁ j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_left))).add ((hG₂ j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono Set.inter_subset_right)))`. Establish `hz` using `hσ y (hVU₁ hy.1)`.
+
+Establish `hpos : ∀ q ∈ D.S, 0 < D.vertFactor q (σ y)` using `fun q hq => VertFactorPos.proof II Ψ K ι Ω E D q hq _ hz`. Rewrite using `[Finset.prod_insert hp, Real.log_mul (hpos p hpS).ne' (Finset.prod_pos fun q hq => hpos q (hs (Finset.mem_insert_of_mem hq))).ne', hl₁ y hy.1, hl₂ y hy.2, Complex.add_re]`.
+-/
 theorem log_vert_prod (M : XModel D) (U : Set M.Xc) (σ : M.Xc → (Σ k, ι k) → ℂ) (hU : IsOpen U)
     (hσ : ∀ y ∈ U, σ y ∈ mcPts (mCoordIdeal D.y)) (hh : ∀ q, M.atlas.HoloOn U fun y => σ y q) {y₀ : M.Xc}
     (hy₀ : y₀ ∈ U) (s : Finset ℕ) (hs : s ⊆ D.S) :
@@ -84,6 +97,13 @@ theorem log_vert_prod (M : XModel D) (U : Set M.Xc) (σ : M.Xc → (Σ k, ι k) 
         (Finset.prod_pos fun q hq => hpos q (hs (Finset.mem_insert_of_mem hq))).ne', hl₁ y hy.1, hl₂ y hy.2,
         Complex.add_re]
 
+/- English proof (translation)
+Introduce `y₀ hy`. Take `⟨U₀, hU₀, hy₀, hsub, s, hs, hh, G₀, hG₀, hrel⟩` from `X.S.th_ref x y₀ hy.1.1`. Take `⟨V, hV, hyV, hVU, Gv, hGv, hlog⟩` from `log_vert_prod X.M U₀ s hU₀ (fun y h => (hs y h).1) hh hy₀ (D.SB B) (Finset.filter_subset _ _)`. Use `⟨V, hV, hyV, fun y h => ⟨⟨hsub (hVU h), trivial⟩, trivial⟩, s, fun y h => hs y (hVU h), fun p j => (hh p j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU)), fun y => G₀ y - Gv y, fun j => ((hG₀ j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hVU))).sub (h …` and prove the remaining obligations. Establish `hz` using `(hs y' (hVU hy')).1`.
+
+Establish `hvp : 0 < ∏ p ∈ D.SB B, D.vertFactor p (s y')` using `Finset.prod_pos fun p hp => VertFactorPos.proof II Ψ K ι Ω E D p (Finset.mem_filter.1 hp).1 _ hz`. Establish `h1` using `hrel y' (hVU hy')`. Establish `h2` using `hlog y' hy'`. Establish `hproj` using `(hs y' (hVU hy')).2`. Use `show X.S.R.th.φ x y' + X.S.regWeight t y' - _ = _`.
+
+Rewrite using `[GlobalTheory.T.regularized_hodge_metric_formula II Ψ K ι Ω E D O Lt X B t (s y') hz, Real.log_mul (mul_pos (X.S.ref.pos _ hz.1) (Real.exp_pos _)).ne' hvp.ne', Real.log_mul (X.S.ref.pos _ hz.1).ne' (Real.exp_pos _).ne', Real.log_exp, hproj, h2, Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem reg_rel (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) (x : X.M.Xc) :
     ∀ y₀ ∈ (X.S.R.th + LocPot.ofFun (X.S.regWeight t)).U x ∩ Set.univ, ∃ U : Set X.M.Xc, IsOpen U ∧ y₀ ∈ U ∧
       U ⊆ (X.S.R.th + LocPot.ofFun (X.S.regWeight t)).U x ∩ Set.univ ∧ ∃ s : X.M.Xc → (Σ k, ι k) → ℂ,
@@ -110,6 +130,43 @@ theorem reg_rel (X : ComponentSetting D O Lt) (B : ℕ) (t : ℝ) (x : X.M.Xc) :
     (Real.exp_pos _).ne', Real.log_exp, hproj, h2, Complex.sub_re]
   linarith
 
+/- English proof (translation)
+Use `set R := X.S.R with hR`. Use `set φ := X.S.regWeight with hφ`. Use `set b := |C₁| + |R.Clog| with hb`. Establish `hb0 : 0 ≤ b` using `add_nonneg (abs_nonneg _) (abs_nonneg _)`. Establish `hrpos : ∀ x ∈ R.Yo, 0 ≤ Real.log (R.r x)` using `fun x hx => Real.log_nonneg (R.one_le_r x hx)`.
+
+Establish `hth : IsPotential X.M.atlas R.th` using `R.th_pot`. Set `Pp : Fin D.n → LocPot X.M.Xc` to `fun j => if (j : ℕ) < i ∨ (j : ℕ) + 1 < k then R.th else Θ`. Set `f : Fin D.n → X.M.Xc → ℝ` to `fun j => if (j : ℕ) < i then R.ph else if (j : ℕ) + 1 < k then φ t₀ else fun _ => 0`. Set `fT : Fin D.n → ℝ → X.M.Xc → ℝ` to `fun j t => if (j : ℕ) < i then φ t else if (j : ℕ) + 1 < k then φ t₀ else fun _ => 0`. Establish `hcases : ∀ j : Fin D.n, ((j : ℕ) < i ∧ Pp j = R.th ∧ f j = R.ph ∧ ∀ t, fT j t = φ t) ∨ (¬ (j : ℕ) < i ∧ (j : ℕ) + 1 < k ∧ Pp j = R.th ∧ f j = φ t₀ ∧ ∀ t, fT j t = φ t₀) ∨ (¬ (j : ℕ) < i ∧ ¬ (j : ℕ) + 1 < k ∧ Pp j = Θ ∧ f j = (fun _ => 0) ∧ ∀ t, fT j t = fun _ => 0)`.
+
+Introduce `j`. Distinguish the cases in `h1 : (j : ℕ) < i`. Conclude with `Or.inl ⟨h1, by simp [Pp, h1], by simp [f, h1], fun t => by simp [fT, h1]⟩`. Distinguish the cases in `h2 : (j : ℕ) + 1 < k`. Conclude with `Or.inr (Or.inl ⟨h1, h2, by simp [Pp, h2], by simp [f, h1, h2], fun t => by simp [fT, h1, h2]⟩)`.
+
+Conclude with `Or.inr (Or.inr ⟨h1, h2, by simp [Pp, h1, h2], by simp [f, h1, h2], fun t => by simp [fT, h1, h2]⟩)`. Establish `hbd' : ∀ x ∈ R.Yo, ∀ v, R.ph x ≤ v → v ≤ C₁ → |v| ≤ b + b * Real.log (R.r x)` using `fun x hx v h1 h2 => regWeight_bound X hx h1 h2`. Establish `hbd : ∀ x ∈ R.Yo, ∀ v, R.ph x ≤ v → v ≤ C₁ → |v| ≤ 2 * b + 2 * b * Real.log (R.r x) ∧ v ≤ 2 * b`. Introduce `x hx v h1 h2`. Establish `h3` using `hbd' x hx v h1 h2`.
+
+Establish `h4` using `mul_nonneg hb0 (hrpos x hx)`. Establish `h5 : C₁ ≤ b` using `(le_abs_self _).trans (le_add_of_nonneg_right (abs_nonneg _))`. Apply the tactic sequence `constructor <;> nlinarith`. Establish `hsm0 : X.M.atlas.Smooth (fun _ : X.M.Xc => (0 : ℝ))` using `fun _ => contDiffOn_const`. Establish `hYo : IsOpen R.Yo` using `(GlobalTheory.T.regular_chart_data_properties D.n X.M.Xc X.M.atlas R).1`.
+
+Use `GlobalTheory.T.mixed_integral_limit_on_model K ι (mCoordIdeal D.y) D.n X.M R Θ Pp f fT (fun x => φ t₀ x - R.ph x) (fun t x => φ t₀ x - φ t x) (2 * b) (fun t => mixWord (n := D.n) (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k i) (fun t => logRatio (muReg X.H X.S B t) (muReg X.H …` and prove the remaining obligations. Introduce `j`. Apply the tactic sequence `rcases hcases j with ⟨-, h, -⟩ | ⟨-, -, h, -⟩ | ⟨-, -, h, -⟩ <;> rw [h]`. Conclude with `hth`. Conclude with `hth`.
+
+Conclude with `hΘ`. Introduce `j`. Apply the tactic sequence `rcases hcases j with ⟨-, -, h, -⟩ | ⟨-, -, -, h, -⟩ | ⟨-, -, -, h, -⟩ <;> rw [h]`. Conclude with `R.ph_smooth`. Conclude with `fun c => (h₀.2.1 c).mono (fun y hy => ⟨hy.1, Set.mem_univ _⟩)`.
+
+Conclude with `fun c => contDiffOn_const`. Use `filter_upwards [hev] with t ht j`. Apply the tactic sequence `rcases hcases j with ⟨-, hP, -, hT⟩ | ⟨-, -, hP, -, hT⟩ | ⟨-, -, hP, -, hT⟩ <;> rw [hP, hT t]`. Conclude with `⟨ht.2.1, ht.2.2.2, fun x hx => hbd x hx _ (ht.2.2.1 x hx).1 (ht.2.2.1 x hx).2⟩`. Conclude with `⟨h₀.2.1, h₀.2.2.2, fun x hx => hbd x hx _ (h₀.2.2.1 x hx).1 (h₀.2.2.1 x hx).2⟩`.
+
+Use `⟨hsm0, GlobalTheory.T.psh_double_positive_potential _ _ _ _ hΘ hΘp, fun x hx => ?_⟩` and prove the remaining obligations. Use `hrpos x hx` as an intermediate fact. Establish `h2 : 0 ≤ b * Real.log (R.r x)` using `mul_nonneg hb0 this`. Simplify using `only [abs_zero]`. Apply the tactic sequence `constructor <;> nlinarith`.
+
+Introduce `j c K' hK' hc`. Apply the tactic sequence `rcases hcases j with ⟨-, -, hf, hT⟩ | ⟨-, -, -, hf, hT⟩ | ⟨-, -, -, hf, hT⟩ <;> simp only [hT, hf]`. Conclude with `GlobalTheory.T.regularized_weight_tendsto_C2 K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S X.S_tied c K' hK' hc`. Conclude with `⟨tendstoUniformlyOn_const' _ _, tendstoUniformlyOn_const' _ _, tendstoUniformlyOn_const' _ _⟩`. Conclude with `⟨tendstoUniformlyOn_const' _ _, tendstoUniformlyOn_const' _ _, tendstoUniformlyOn_const' _ _⟩`.
+
+Use `filter_upwards [hev] with t ht`. Use `⟨fun c => (h₀.2.1 c).sub (ht.2.1 c), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hbd' x hx _ (h₀.2.2.1 x hx).1 (h₀.2.2.1 x hx).2`. Establish `h2` using `hbd' x hx _ (ht.2.2.1 x hx).1 (ht.2.2.1 x hx).2`. Establish `h3` using `abs_sub (φ t₀ x) (φ t x)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `K' hK' hc`. Establish `hU` using `GlobalTheory.T.regularized_weight_uniform_on_compact K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S X.S_tied K' hK' hc`. Rewrite `hU`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`.
+
+Use `filter_upwards [hU ε hε] with t ht x hx`. Use `show dist (φ t₀ x - R.ph x) (φ t₀ x - φ t x) < ε`. Rewrite using `[Real.dist_eq, sub_sub_sub_cancel_left, abs_sub_comm, ← Real.dist_eq]`. Conclude with `ht x hx`. Use `filter_upwards [hev] with t ht j x y₀ hy`.
+
+Break down `hcases j with ⟨h1, hP, -, hT⟩ | ⟨h1, h2, hP, -, hT⟩ | ⟨h1, h2, hP, -, hT⟩` into its components or cases. Establish `hw : mixWord (n` using `D.n) (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k i j = muReg X.H X.S B t := by`. Simplify using `[mixWord, h1]`. Simplify using `only [hP, hT, hw] at hy ⊢`. Conclude with `reg_rel X B t x y₀ hy`.
+
+Establish `hw : mixWord (n` using `D.n) (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k i j = muReg X.H X.S B t₀ := by`. Simplify using `[mixWord, h1, h2]`. Simplify using `only [hP, hT, hw] at hy ⊢`. Conclude with `reg_rel X B t₀ x y₀ hy`. Establish `hw : mixWord (n` using `D.n) (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k i j = D.A' := by`.
+
+Simplify using `[mixWord, h1, h2]`. Simplify using `only [hP, hT, hw] at hy ⊢`. Take `⟨U, hU, hyU, hsub, s, hs, hh, G, hG, hrelG⟩` from `hrel x y₀ ⟨hy.1.1, trivial⟩`. Use `⟨U, hU, hyU, fun y hy' => ⟨⟨(hsub hy').1, trivial⟩, trivial⟩, s, hs, hh, G, hG, fun y' hy' => ?_⟩` and prove the remaining obligations. Use `hrelG y' hy'` as an intermediate fact.
+
+Use `show Θ.φ x y' + 0 - _ = _`. Simplify using `using this`. Use `filter_upwards with t z hz`. Establish `hvp : ∀ u : ℝ, 0 < ∏ p ∈ D.SB B, D.vertFactor p z` using `fun _ => Finset.prod_pos fun p hp => VertFactorPos.proof II Ψ K ι Ω E D p (Finset.mem_filter.1 hp).1 z hz`. Establish `hlog : ∀ u : ℝ, Real.log ((muReg X.H X.S B u).h z) = Real.log (X.S.ref.h z) + φ u (X.M.proj z) + Real.log (∏ p ∈ D.SB B, D.vertFactor p z)`.
+
+Introduce `u`. Rewrite using `[GlobalTheory.T.regularized_hodge_metric_formula II Ψ K ι Ω E D O Lt X B u z hz, Real.log_mul (mul_pos (X.S.ref.pos z hz.1) (Real.exp_pos _)).ne' (hvp 0).ne', Real.log_mul (X.S.ref.pos z hz.1).ne' (Real.exp_pos _).ne', Real.log_exp]`. Unfold `logRatio`. Rewrite using `[if_pos hz.1, hlog, hlog]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_tendsto (X : ComponentSetting D O Lt) (B : ℕ) (Θ : LocPot X.M.Xc) (C₁ t₀ : ℝ) (k i : ℕ)
     (hΘ : IsPotential X.M.atlas Θ) (hΘp : IsPosPot X.M.atlas Θ)
     (hrel : ∀ x, ∀ y₀ ∈ Θ.U x ∩ Set.univ, ∃ U : Set X.M.Xc, IsOpen U ∧ y₀ ∈ U ∧ U ⊆ Θ.U x ∩ Set.univ ∧
@@ -229,6 +286,17 @@ end Mix
 
 open Mix in
 
+/- English proof (translation)
+Introduce `_ II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B hII _ k hk`. Take `⟨Θ, hΘ, hrel⟩` from `GlobalTheory.T.local_holomorphic_section_of_potential K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1`. Establish `hΘp` using `GlobalTheory.T.local_section_of_potential_on_model II Ψ K ι Ω E D X.M Θ hΘ hrel`. Take `⟨-, ⟨C₁, hC₁⟩, hpsh⟩` from `GlobalTheory.T.regularized_weight_psh_and_bounds K ι (mCoordIdeal D.y) D.n X.M D.Xo (muLine X.H) X.S Θ X.S_tied hΘ hΘp`. Establish `hsm : ∀ᶠ t in 𝓝[>] (0 : ℝ), IsSmoothHerm (muReg X.H X.S B t)` using `MuRegSmooth.proof HermExtend.proof (ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds) (VertFactorSmooth.proof VertFactorPos.proof) VertFactorPos.proof II Ψ K ι Ω E D O Lt X B`.
+
+Establish `hone : Θ.rsmul 1 = Θ`. Consider the cases of `Θ`. Simplify using `[LocPot.rsmul]`. Establish `hp1` using `hpsh 1 one_pos`. Rewrite `hp1` using `[hone]`.
+
+Establish `hgood : ∀ᶠ t in 𝓝[>] (0 : ℝ), GoodAt X B Θ C₁ t` using `by filter_upwards [hsm, hC₁, hp1] with t h1 h2 h3`. Conclude with `⟨h1, h2.1, h2.2, h3⟩`. Take `⟨t₀, h₀⟩` from `hgood.exists`. Establish `hterm` using `fun i => term_tendsto X B Θ C₁ t₀ k i hΘ hΘp hrel hgood h₀`. Use `choose l hl using hterm`.
+
+Use `⟨X.mixN B k t₀ - ∑ i ∈ Finset.range k, l i, ?_⟩` and prove the remaining obligations. Establish `hlim` using `(tendsto_const_nhds (x := X.mixN B k t₀)).sub (tendsto_finsetSum (Finset.range k) fun i _ => hl i)`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with t ht`. Establish `ha : ∀ u, (muReg X.H X.S B u).a = muTwDeg X.H B` using `fun u => smoothRep_a _ _`.
+
+Establish `hT` using `GlobalTheory.T.intersection_number_telescoping K ι (II K ι) (hII K ι) (mCoordIdeal D.y) D.n (muReg X.H X.S B t) (muReg X.H X.S B t₀) D.A' k D.arith ht.1 h₀.1 D.A'_pos.1 ((ha t).trans (ha t₀).symm) (by omega)`. Establish `hm : ∀ u, X.mixN B k u = II K ι (mCoordIdeal D.y) (D.n + 1) (fun j => if (j : ℕ) < k then muReg X.H X.S B u else D.A')` using `fun _ => rfl`. Rewrite using `[hm t, hm t₀]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mixed_limit : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → TopNMixedLimit.Statement := by
   intro _ II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B hII _ k hk
   obtain ⟨Θ, hΘ, hrel⟩ := GlobalTheory.T.local_holomorphic_section_of_potential K ι (mCoordIdeal D.y) D.n X.M D.A' D.A'_pos.1

@@ -4,6 +4,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ L hτ γ j h1 h2`. Use `haveI := L.frac`. Take `⟨φ, p1, p2, p3, p4⟩` from `dIso O K Δ L`. Take `⟨j', q1, q2, q3⟩` from `p4 τ γ j h1 h2`. Establish `sc : ∀ z : Kˣ, IsScal z (φ.symm (Matrix.GeneralLinearGroup.scalar (Fin 2) z))` using `fun z => (p2 _ _).2 (by simp)`.
+
+Establish `hZ : ∀ g, g ∈ ZD Δ ⊔ KD Δ O ↔ φ g ∈ ZK O K` using `fun g => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(sup_le ?_ ?_ : ZD Δ ⊔ KD Δ O ≤ (ZK O K).comap φ.toMonoidHom) h` and prove the remaining obligations. Introduce and unpack `s ⟨z, hz⟩`.
+
+Conclude with `Subgroup.mem_sup_left ⟨z, ((p2 z s).1 (congrArg Units.val hz).symm).symm⟩`. Conclude with `fun k hk => Subgroup.mem_sup_right ((p1 k).2 hk)`. Introduce `h`. Take `⟨z, k, e⟩` from `mem_ZK.1 h`. Rewrite using `[← φ.symm_apply_apply g, e, map_mul]`.
+
+Conclude with `mul_mem (Subgroup.mem_sup_left ⟨z, Units.ext (sc z).symm⟩) (Subgroup.mem_sup_right ((p1 _).1 (by rw [φ.apply_symm_apply]; exact ⟨k, rfl⟩)))`. Establish `hf : ∀ χ : Kˣ →* ℂˣ, Unr O χ → ∀ g, fZD O χ g = fZK O χ (φ g)` using `fun χ hχ g => by`. Distinguish the cases in `h : φ g ∈ ZK O K`. Take `⟨z, k, e⟩` from `mem_ZK.1 h`. Rewrite using `[e, (fzkLaw O K Δ L χ hχ).2 z _ ⟨k, rfl⟩, ← φ.symm_apply_apply g, e, map_mul]`.
+
+Conclude with `(fzdLaw O K Δ L χ hχ).2 z _ _ (sc z) ((p1 _).1 (by rw [φ.apply_symm_apply]; exact ⟨k, rfl⟩))`. Rewrite using `[(fzkLaw O K Δ L χ hχ).1 _ h, (fzdLaw O K Δ L χ hχ).1 _ fun h' => h ((hZ g).1 h')]`. Establish `main : ∀ (χ : Kˣ →* ℂˣ), Unr O χ → ∀ (f : DX Δ → ℂ) (z : (Etau K τ)ˣ), (∀ y, f (y⁻¹ * j z * y) = fZK O χ (φ (y⁻¹ * j z * y))) → orb j (Cint O τ) (MonoidHom.id _) (ZD Δ ⊔ KD Δ O) f (j z) = gOrb O j' χ z` using `fun χ hχ f z H => by`. Use `orb_congr j (jU j') _ _ _ _ _ _ _ _ _ φ.toEquiv (fun t y => ?_) (fun y y' => ?_) (fun y => ?_) (fun y y' h => ?_) fun t => ?_` and prove the remaining obligations. Simplify using `[q3]`.
+
+Simplify using `[hZ]`. Express the relevant statement in the definitionally equal form `f (y⁻¹ * j z * y) = fZK O χ ((φ y)⁻¹ * jU j' z * φ y)`. Rewrite using `[H, map_mul, map_mul, map_inv, q3]`. Express the relevant statement in the definitionally equal form `f (y⁻¹ * j z * y) = f (y'⁻¹ * j z * y')`. Rewrite using `[H, H, ← fZK_conj L hχ ((hZ _).1 h)]`.
+
+Simplify using `[mul_assoc]`. Express the relevant statement in the definitionally equal form `_ * j z * j t = j z`. Rewrite using `[mul_assoc, ← map_mul, mul_comm z, map_mul, inv_mul_cancel_left]`. Use `⟨j', q2, fun a ha => ?_, fun χ hχ z => main χ hχ _ z fun y => hf χ hχ _⟩` and prove the remaining obligations. Establish `ea : j a = γ` using `φ.injective (by rw [q3]; exact Units.ext (by rw [← q1, ← ha]; rfl))`.
+
+Rewrite using `[dS, ← ea]`. Use `main 1 (fun _ => rfl) _ a fun y => ?_` and prove the remaining obligations. Establish `F` using `fzkLaw O K Δ L 1 fun _ => rfl`. Distinguish the cases in `h : φ (y⁻¹ * j a * y) ∈ ZK O K`. Take `⟨z, k, e⟩` from `mem_ZK.1 h`.
+
+Establish `hd : (1 : K) = (z : K) ^ 2 * algebraMap O K (k : Matrix (Fin 2) (Fin 2) O).det`. Establish `e1` using `congrArg (fun g : GL (Fin 2) K => (g : Matrix (Fin 2) (Fin 2) K).det) e`. Simplify using `only [map_mul, map_inv, q3, Units.val_mul] at e1`. Rewrite `e1` using `[Matrix.det_units_conj', Matrix.det_mul]`. Establish `e2 : ((jU j' a : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).det = 1`.
+
+Express the relevant statement in the definitionally equal form `(j' a).det = 1`. Rewrite using `[ha, j_det_omega j' q2]`. Rewrite using `[← e2, e1, RingHom.map_det]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(Matrix.scalar (Fin 2) (z : K)).det = _`.
+
+Simplify using `[Matrix.det_fin_two, sq]`. Establish `hu : IsUnit (k : Matrix (Fin 2) (Fin 2) O).det` using `(Matrix.GeneralLinearGroup.det k).isUnit`. Take `⟨i, hi⟩` from `hu.exists_right_inv`. Establish `hi'` using `congrArg (algebraMap O K) hi`. Rewrite `hi'` using `[map_mul, map_one]`.
+
+Take `⟨z₀, hz₀⟩ : ∃ z₀ : O, algebraMap O K z₀ = z` from `IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.of_pow (n := 2) (by norm_num) (by`. Rewrite using `[show (z : K) ^ 2 = algebraMap O K i by linear_combination (-algebraMap O K i) * hd - (z : K) ^ 2 * hi']`. Conclude with `isIntegral_algebraMap))`. Establish `hz1 : z₀ * (z₀ * (k : Matrix (Fin 2) (Fin 2) O).det) = 1` using `IsFractionRing.injective O K (by`. Rewrite using `[map_mul, map_mul, hz₀, map_one, hd]`.
+
+Use the proof step `ring)`. Establish `hk : φ (y⁻¹ * j a * y) ∈ KG O K`. Rewrite using `[e]`. Use `mul_mem ⟨Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.mkOfMulEqOne _ _ hz1), Units.ext ?_⟩ ⟨k, rfl⟩` and prove the remaining obligations. Use extensionality with `s t`.
+
+Apply the tactic sequence `by_cases hst : s = t <;> simp [hst, hz₀]`. Rewrite using `[e, F.2 z _ ⟨k, rfl⟩]`. Conclude with `(if_pos ((p1 _).1 hk)).trans (by simp)`. Rewrite using `[F.1 _ h]`. Conclude with `if_neg fun h' => h (Subgroup.mem_sup_right ((p1 _).2 h'))`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.dOrb : UpperTheory.V.Z.Sym.Loc.DOrb := by
   intro O K _ _ _ _ _ Δ τ L hτ γ j h1 h2
   haveI := L.frac

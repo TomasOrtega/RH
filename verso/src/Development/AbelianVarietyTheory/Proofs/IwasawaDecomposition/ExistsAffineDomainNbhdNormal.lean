@@ -7,6 +7,23 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(IsNoetherian.noetherian (RingHom.ker (algebraMap A L)) : (RingHom.ker (algebraMap A L)).FG)`. Establish `hm : ∀ a : S, ∃ m : p.primeCompl, (m : A) * a = 0` using `fun a => by`. Establish `ha : (a : A) ∈ RingHom.ker (algebraMap A L)` using `hS ▸ Submodule.subset_span a.2`. Conclude with `(IsLocalization.map_eq_zero_iff p.primeCompl L _).1 ha`. Use `choose m hm using hm`.
+
+Set `f : A` to `∏ a ∈ S.attach, (m a : A)`. Establish `hfc : f ∈ p.primeCompl` using `Submonoid.prod_mem _ fun a _ => (m a).2`. Establish `hkill : ∀ a ∈ RingHom.ker (algebraMap A L), f * a = 0`. Introduce `a ha`. Rewrite `ha` using `[← hS]`.
+
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨c, hc⟩ : (m ⟨b, hb⟩ : A) ∣ f` from `Finset.dvd_prod_of_mem _ (Finset.mem_attach _ _)`. Rewrite using `[hc, mul_comm (m ⟨b, hb⟩ : A) c, mul_assoc, hm ⟨b, hb⟩, mul_zero]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]`. Use `⟨f, hfc, fun B _ _ _ => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap A L f)` using `(IsLocalization.AtPrime.isUnit_to_map_iff L p f).2 hfc`. Set `g : B →+* L` to `IsLocalization.Away.lift f hu`.
+
+Establish `hg : ∀ a : A, g (algebraMap A B a) = algebraMap A L a` using `fun a => IsLocalization.lift_eq _ _`. Establish `hfB : IsUnit (algebraMap A B f)` using `IsLocalization.Away.algebraMap_isUnit f`. Establish `hinj : Function.Injective g`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`.
+
+Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers f) b`. Establish `h1` using `IsLocalization.mk'_spec B a s`. Establish `h2 : algebraMap A L a = 0` using `by rw [← hg, ← h1, map_mul, hb, zero_mul]`. Establish `h3 : algebraMap A B a = 0`. Use `congrArg (algebraMap A B) (hkill a h2)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(hfB.mul_right_eq_zero).1 this`. Establish `hsB : IsUnit (algebraMap A B s)` using `IsLocalization.map_units B s`. Rewrite `h1` using `[h3]`. Conclude with `(hsB.mul_left_eq_zero).1 h1`.
+
+Conclude with `hinj.isDomain g`.
+-/
 theorem exists_notMem_away_isDomain {A L : Type} [CommRing A] [IsNoetherianRing A] [CommRing L]
     [IsDomain L] [Algebra A L] (p : Ideal A) [p.IsPrime] [IsLocalization.AtPrime L p] :
     ∃ f : A, f ∉ p ∧ ∀ (B : Type) [CommRing B] [Algebra A B] [IsLocalization.Away f B],
@@ -55,6 +72,13 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ hX V x hx`. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset hx`. Establish `: IsNoetherianRing Γ(X, W)` using `IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Set `: Algebra Γ(X, W) (X.presheaf.stalk x)` to `X.presheaf.algebra_section_stalk ⟨x, hxW⟩`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk x) (hW.primeIdealOf ⟨x, hxW⟩).asIdeal` using `hW.isLocalization_stalk ⟨x, hxW⟩`.
+
+Use `haveI := (hX x).1`. Take `⟨f, hf, hB⟩` from `exists_notMem_away_isDomain (L := X.presheaf.stalk x) (hW.primeIdealOf ⟨x, hxW⟩).asIdeal`. Use `hW.isLocalization_basicOpen f` as an intermediate fact. Use `⟨X.basicOpen f, (X.basicOpen_le f).trans hWV, ?_, hW.basicOpen f, hB _⟩` and prove the remaining obligations. Rewrite using `[Scheme.mem_basicOpen X f x hxW]`.
+
+Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk x) _ f).2 hf`.
+-/
 theorem exists_isAffineOpen_isDomain_of_isNormalScheme :
     ∀ (X : Scheme.{0}) [IsLocallyNoetherian X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X →
       ∀ (V : X.Opens) (x : X), x ∈ V →

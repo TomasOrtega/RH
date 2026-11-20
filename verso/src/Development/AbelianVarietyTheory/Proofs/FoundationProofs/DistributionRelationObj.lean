@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 
 namespace GlobalTheory.ToricDistributionObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ToricSumValue.toricSum_eq exists_isHeckeL_of_hasInf`.
+-/
 theorem toricSumFormula_holds : ToricSumFormula :=
   GlobalTheory.ToricSumValue.toricSum_eq exists_isHeckeL_of_hasInf
 

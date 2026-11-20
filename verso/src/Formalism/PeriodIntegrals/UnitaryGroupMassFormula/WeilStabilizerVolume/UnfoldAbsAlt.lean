@@ -13,6 +13,55 @@ section Abs3
 variable {G Y : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableInv G]
   [MulAction G Y] [MeasurableSpace Y]
 
+/- English proof (translation)
+Establish `hsub : orbS Γ y0 ⊆ Set.range (fun γ : Γ => (γ : G) • y0)`. Introduce and unpack `x ⟨γ, hγ, e⟩`. Conclude with `⟨⟨γ, hγ⟩, e⟩`. Establish `hcO : Countable (orbS Γ y0)` using `((Set.countable_range fun γ : Γ => (γ : G) • y0).mono hsub).to_subtype`. Take `⟨A, hA𝓕, hAm, hAe⟩` from `h𝓕.nullMeasurableSet.exists_measurable_subset_ae_eq`.
+
+Establish `hA : IsFundamentalDomain Γ A μ` using `fd_of_subset h𝓕 hA𝓕 hAm (ae_eq_set.1 hAe).2`. Establish `hNm : Measurable (cntN Γ A)` using `meas_cntN Γ hAm`. Establish `hcm : Measurable (cfun Γ A y0)` using `meas_cfun Γ y0 hAm`. Establish `hN1 : ∀ᵐ g ∂μ, cntN Γ A g⁻¹ = 1`. Establish `h0 : μ {g | cntN Γ A g ≠ 1} = 0` using `measure_eq_zero_iff_ae_notMem.2 (by filter_upwards [fd_count_ae hA] with g hg`.
+
+Conclude with `fun h => h hg)`. Establish `h0' : μ (Inv.inv ⁻¹' {g | cntN Γ A g ≠ 1}) = 0`. Rewrite using `[Measure.measure_preimage_inv]`. Conclude with `h0`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0'] with g hg`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hg h`. Establish `step1 : ∫⁻ h in 𝓕, ∑' x : orbS Γ y0, Φ (h⁻¹ • (x : Y)) ∂μ = ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ`. Rewrite using `[setLIntegral_congr hAe.symm, ← lintegral_indicator hAm, ← lintegral_inv_eq_self]`. Establish `hpt : ∀ g : G, A.indicator (fun h => ∑' x : orbS Γ y0, Φ (h⁻¹ • (x : Y))) g⁻¹ = ∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) g⁻¹ * Φ ((g * repO Γ y0 x) • y0)`.
+
+Introduce `g`. Distinguish the cases in `hg : g⁻¹ ∈ A`. Simplify using `only [indicator_of_mem hg, one_mul, inv_inv]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, repO_smul]`.
+
+Simplify using `only [indicator_of_notMem hg, zero_mul, tsum_zero]`. Establish `hmx : ∀ x : orbS Γ y0, Measurable fun g : G => A.indicator (fun _ => (1 : ℝ≥0∞)) g⁻¹ * Φ ((g * repO Γ y0 x) • y0)` using `fun x => ((measurable_const.indicator hAm).comp measurable_inv).mul (hΨ.comp (measurable_mul_const _))`. Establish `hmx' : ∀ x : orbS Γ y0, Measurable fun g : G => A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0)` using `fun x => ((measurable_const.indicator hAm).comp ((measurable_const_mul _).comp measurable_inv)).mul hΨ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_congr hpt, lintegral_tsum fun x => (hmx x).aemeasurable]`.
+
+Use `_ = ∑' x : orbS Γ y0, ∫⁻ g, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0) ∂μ := by`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← lint_mul_right (μ := μ) (fun g => A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0)) (repO Γ y0 x)]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Simplify using `only [mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul]`.
+
+Use `_ = ∫⁻ g, ∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹) * Φ (g • y0) ∂μ := (lintegral_tsum fun x => (hmx' x).aemeasurable).symm`. Use `_ = ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ := by`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, mul_comm]`. Both sides reduce to the same expression.
+
+Set `s : Y → G` to `fun y => if h : ∃ g : G, g • y0 = y then h.choose else 1`. Establish `hs : ∀ y, (∃ g : G, g • y0 = y) → s y • y0 = y` using `fun y h => by`. Simplify using `only [s, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hΨs : ∀ y, (∃ g : G, g • y0 = y) → ∀ k : H, Φ ((s y * (k : G)) • y0) = Φ y` using `fun y h k => by rw [mul_smul, (hH _).1 k.2, hs y h]`.
+
+Establish `hOrb : ∀ᵐ y ∂ν, ∃ g : G, g • y0 = y` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 hcov] with y hy`. Assume the negation of the conclusion as `h`. Conclude with `hy h`. Establish `hmk : ∀ s0 : G, Measurable fun k : H => s0 * (k : G)` using `fun s0 => (measurable_const_mul s0).comp measurable_subtype_coe`. Set `ρ1 : G → ℝ≥0∞` to `{g | cntN Γ A g = 1}.indicator (fun _ => 1)`.
+
+Establish `hρ1m : Measurable ρ1` using `measurable_const.indicator (hNm (measurableSet_singleton 1))`. Establish `hρ1i : ∀ γ ∈ Γ, ∀ g, ρ1 (γ * g) = ρ1 g`. Introduce `γ hγ g`. Simplify using `only [ρ1, Set.indicator, Set.mem_setOf_eq, cntN_mul Γ A hγ]`. Establish `upper : ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ ≤ μ' 𝓕' * ∫⁻ y, Φ y ∂ν`.
+
+Establish `e1 : ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ = ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g * ρ1 g⁻¹ ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hN1] with g hg`. Simplify using `[ρ1, hg]`. Rewrite using `[e1, hcomp (fun g => Φ (g • y0) * cfun Γ A y0 g * ρ1 g⁻¹) ((hΨ.mul hcm).mul (hρ1m.comp measurable_inv)) s hs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hOrb] with y hy`. Simplify using `only [hΨs y hy, mul_assoc]`. Rewrite using `[lintegral_const_mul (Φ y) (f := fun k : H => cfun Γ A y0 (s y * (k : G)) * ρ1 (s y * (k : G))⁻¹) ((hcm.comp (hmk _)).mul (hρ1m.comp (measurable_inv.comp (hmk _))))]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ zero_le` and prove the remaining obligations. Rewrite using `[lint_fibre μ' y0 hH hAm 𝓕' h𝓕' ρ1 hρ1m hρ1i (s y)]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : cntN Γ A ((k : G) * (s y)⁻¹) = 1`.
+
+Simplify using `[ρ1, hk]`. Simplify using `[ρ1, hk]`. Use `_ = μ' 𝓕' := by rw [setLIntegral_const, one_mul]`. Use `_ = μ' 𝓕' * ∫⁻ y, Φ y ∂ν := by rw [lintegral_mul_const'' _ hΦ, mul_comm]`. Set `ρt : G → ℝ≥0∞` to `{g | cntN Γ A g ≠ 1}.indicator (fun _ => ∞)`.
+
+Establish `hρtm : Measurable ρt` using `measurable_const.indicator (hNm (measurableSet_singleton 1).compl)`. Establish `lowerF : ∀ s0 : G, μ' 𝓕' ≤ ∫⁻ k, cfun Γ A y0 (s0 * (k : G)) + ρt (s0 * (k : G))⁻¹ ∂μ'`. Introduce `s0`. Establish `hSm : MeasurableSet {k : H | cntN Γ A (s0 * (k : G))⁻¹ ≠ 1}` using `(hNm.comp (measurable_inv.comp (hmk s0))) (measurableSet_singleton 1).compl`. Distinguish the cases in `hz : μ' {k : H | cntN Γ A (s0 * (k : G))⁻¹ ≠ 1} = 0`.
+
+Establish `hae : ∀ᵐ k : H ∂μ', cntN Γ A ((k : G) * s0⁻¹) = 1`. Establish `h0 : μ' ((Inv.inv : H → H) ⁻¹' {k : H | cntN Γ A (s0 * (k : G))⁻¹ ≠ 1}) = 0`. Rewrite using `[Measure.measure_preimage_inv]`. Conclude with `hz`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with k hk`.
+
+Assume the negation of the conclusion as `h`. Apply `hk` to reduce the goal to its premises. Use `show cntN Γ A (s0 * ((k⁻¹ : H) : G))⁻¹ ≠ 1`. Rewrite using `[Subgroup.coe_inv, mul_inv_rev, inv_inv]` and apply the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hae] with k hk`. Rewrite using `[hk, mul_one]`. Use `_ = ∫⁻ k, cfun Γ A y0 (s0 * (k : G)) * (fun _ => (1 : ℝ≥0∞)) ((s0 * (k : G))⁻¹) ∂μ' := (lint_fibre μ' y0 hH hAm 𝓕' h𝓕' (fun _ => 1) measurable_const (fun _ _ _ => rfl) s0).symm`. Use `_ ≤ ∫⁻ k, cfun Γ A y0 (s0 * (k : G)) + ρt (s0 * (k : G))⁻¹ ∂μ' := lintegral_mono fun k => by rw [mul_one]; exact le_self_add`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (fun k : H => ρt (s0 * (k : G))⁻¹) = {k : H | cntN Γ A (s0 * (k : G))⁻¹ ≠ 1}.indicator (fun _ => ∞) from by`. Use function extensionality and compare the values at `k`. Use the proof step `rfl,`. Use `lintegral_indicator_const hSm, ENNReal.top_mul hz]`.
+
+Use `_ ≤ _ := lintegral_mono fun k => le_add_self`. Establish `lower : μ' 𝓕' * ∫⁻ y, Φ y ∂ν ≤ ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ`. Establish `e2 : ∫⁻ g, Φ (g • y0) * cfun Γ A y0 g ∂μ = ∫⁻ g, Φ (g • y0) * (cfun Γ A y0 g + ρt g⁻¹) ∂μ`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hN1] with g hg`.
+
+Simplify using `[ρt, hg]`. Rewrite using `[e2, hcomp (fun g => Φ (g • y0) * (cfun Γ A y0 g + ρt g⁻¹)) (hΨ.mul (hcm.add (hρtm.comp measurable_inv))) s hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_mul_const'' _ hΦ, mul_comm]`. Use `_ ≤ _ := by`.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hOrb] with y hy`. Simplify using `only [hΨs y hy]`. Rewrite using `[lintegral_const_mul (Φ y) (f := fun k : H => cfun Γ A y0 (s y * (k : G)) + ρt (s y * (k : G))⁻¹) ((hcm.comp (hmk _)).add (hρtm.comp (measurable_inv.comp (hmk _))))]`. Conclude with `mul_le_mul_of_nonneg_left (lowerF (s y)) zero_le`.
+
+Rewrite using `[step1]`. Conclude with `le_antisymm upper lower`.
+-/
 theorem unfold_abs {Γ H : Subgroup G} [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsInvInvariant]
     (μ' : Measure H) [μ'.IsMulLeftInvariant] [μ'.IsInvInvariant]

@@ -19,6 +19,23 @@ namespace Formalism.MainStatements.RowRest
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hF` using `JX.isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Establish `emb` using `embQ hF`. Establish `emb' : MeasurableEmbedding (cM (ε` using `ε) Q' Q) := cM_measEmb (A' := Q) (B' := Q') h2 h2`. Use `set P := Qm e f wf (z0v T z) with hP`.
+
+Use `set P' := Qi ε e f wf (z0v T z) with hP'`. Establish `p1 : P' * P = 1` using `Qi_mul_Qm hF`. Establish `p2 : P * P' = 1` using `Qm_mul_Qi hF`. Establish `hdi : (P' * Q)⁻¹ = Q' * P`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Q, h2, Matrix.one_mul, p1]`. Establish `hd : P' * Q ∈ UH (Hpk k r)` using `by show (P' * Q)ᴴ * Hpk k r * (P' * Q) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Establish `hmap` using `conj_levi hd ht (fun a => by show (P' * Q) *ᵥ Pi.single _ 1 = _`. Rewrite using `[← Matrix.mulVec_mulVec, (hc a).1, Matrix.mulVec_smul, ← Qm_e (e := e) (f := f) (wf := wf) (z0 := z0v T z) a, Matrix.mulVec_mulVec, p1, Matrix.one_mulVec])`.
+
+Use the proof step `(fun a => by show (P' * Q) *ᵥ Pi.single _ 1 = _`. Rewrite using `[← Matrix.mulVec_mulVec, (hc a).2, Matrix.mulVec_smul, ← Qm_f (e := e) (f := f) (wf := wf) (z0 := z0v T z) a, Matrix.mulVec_mulVec, p1, Matrix.one_mulVec]`. Use the proof step `simp)`. Establish `hcomp : cM (ε` using `ε) P' P = conjM (P' * Q) ∘ cM (ε := ε) Q' Q := by`. Use function extensionality and compare the values at `g`.
+
+Use `show P' * uMat g * P = P' * Q * (Q' * uMat g * Q) * (P' * Q)⁻¹`. Rewrite using `[hdi]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q Q' P, h2, Matrix.one_mul, ← Matrix.mul_assoc Q Q', h2, Matrix.one_mul]`. Establish `hu : IsUnit (P' * Q).det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ hd`.
+
+Establish `hinj : Function.Injective (conjM (k` using `k) (r := r) (P' * Q)) := fun x y h => by`. Establish `h' : P' * Q * Matrix.of x * (P' * Q)⁻¹ = P' * Q * Matrix.of y * (P' * Q)⁻¹` using `h`. Use `congrArg (fun m => (P' * Q)⁻¹ * m * (P' * Q)) h'` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul] at this`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one] at this`.
+
+Conclude with `this`. Establish `hκ : haarLie (Nset k r) κ = κ • haarLie (Nset k r) 1` using `by simp [haarLie]`. Use extensionality with `s hs`. Use `show (haarLie (Nset k r) κ).comap (cM (ε := ε) Q' Q) s = ((κ * ENNReal.ofReal ((t ^ B.kap k r)⁻¹)) • (haarLie (Nset k r) 1).comap (cM (ε := ε) P' P)) s`. Rewrite using `[emb'.comap_apply, Measure.smul_apply, emb.comap_apply, hκ, Measure.smul_apply, smul_eq_mul, smul_eq_mul, mul_assoc]`.
+
+Use `congr 1`. Establish `h3` using `congrArg (fun m : Measure (Mt k r) => m (cM (ε := ε) P' P '' s)) hmap`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h3`. Rewrite using `[← h3, Measure.map_apply (meas_conjM _) (emb.measurableSet_image.2 hs), hcomp, Set.image_comp, Set.preimage_image_eq _ hinj]`.
+-/
 theorem place_eq {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (wf : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -82,6 +99,9 @@ theorem place_eq {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e
   rw [← h3, Measure.map_apply (meas_conjM _) (emb.measurableSet_image.2 hs), hcomp, Set.image_comp,
     Set.preimage_image_eq _ hinj]
 
+/- English proof (translation)
+Use `lift c to ℝ≥0 using hc`. Establish `: ∀ i, SigmaFinite ((c : ℝ≥0∞) • μ i)` using `fun i => inferInstanceAs (SigmaFinite (c • μ i))`. Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Simplify using `[Measure.pi_pi, Finset.prod_mul_distrib]`.
+-/
 theorem pi_smul {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)] (μ : ∀ i, Measure (α i))
     [∀ i, SigmaFinite (μ i)] {c : ℝ≥0∞} (hc : c ≠ ⊤) :
     Measure.pi (fun i => c • μ i) = c ^ Fintype.card ι • Measure.pi μ := by
@@ -90,6 +110,13 @@ theorem pi_smul {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSp
   refine Measure.pi_eq fun s _ => ?_
   simp [Measure.pi_pi, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `hs : B.kap k r = ∑ j ∈ Finset.range r, 2 * (2 * (j + 1) + k) * (j + 1)`. Unfold `B.kap Mdim`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun a => 2 * (2 * (r - a) + k + 1 - 1) * (r - a)) r, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `Finset.mem_range.1 hj` as an intermediate fact.
+
+Rewrite using `[show r - (r - 1 - j) = j + 1 by omega]`. Both sides reduce to the same expression. Rewrite using `[hs]`. Use `clear hs`. Proceed by induction on `r with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_range_succ, Nat.cast_add, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kap_real (k r : ℕ) :
     (B.kap k r : ℝ) = (4 * (r : ℝ) ^ 3 + 6 * (r : ℝ) ^ 2 + 2 * r) / 3 + k * ((r : ℝ) ^ 2 + r) := by
   have hs : B.kap k r = ∑ j ∈ Finset.range r, 2 * (2 * (j + 1) + k) * (j + 1) := by
@@ -116,11 +143,19 @@ def iF {D : D7} (X : HidaSetting D) : X.B.I.F ≃+* D.host.F :=
       obtain ⟨a, ha⟩ := (X.ιE_F y.1).1 y.2
       exact ⟨a, Subtype.ext ha⟩⟩
 
+/- English proof (translation)
+Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Put the polynomial expressions in normal form.
+-/
 theorem finrank_E (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.finrank_cmField]
   unfold Ranks.f Ranks.n
   ring_nf
 
+/- English proof (translation)
+Use `Formalism.L2.SG.Pf.Carrier.EnergyMS.discRd_of (fun D X => ?_) finrank_E D X` and prove the remaining obligations. Establish `hE : NumberField.discr X.B.I.E = NumberField.discr D.host.E` using `NumberField.discr_eq_discr_of_ringEquiv X.B.I.E X.ιE`. Establish `hF : NumberField.discr X.B.I.F = NumberField.discr D.host.F` using `NumberField.discr_eq_discr_of_ringEquiv X.B.I.F (iF X)`. Rewrite using `[hE, hF, Formalism.L2.SG.NGCut.LeadingMinorIntegrality.discr_sq]`. Use `push_cast`.
+
+Rewrite using `[abs_pow]`.
+-/
 theorem disc_rd (D : D7) (X : HidaSetting D) : |((NumberField.discr X.B.I.F : ℤ) : ℝ)| = D.host.rdE ^ D.R.f := by
   refine Formalism.L2.SG.Pf.Carrier.EnergyMS.discRd_of (fun D X => ?_) finrank_E D X
   have hE : NumberField.discr X.B.I.E = NumberField.discr D.host.E :=
@@ -131,6 +166,25 @@ theorem disc_rd (D : D7) (X : HidaSetting D) : |((NumberField.discr X.B.I.F : �
   push_cast
   rw [abs_pow]
 
+/- English proof (translation)
+Introduce `D X Y θ C u hθ`. Use `set ρ : ℝ := 2 * D.host.v with hρ`. Establish `hρ1 : 1 ≤ ρ` using `Formalism.L2.SG.Pf.LoopBCovN.rdE_ge_one D`. Establish `hρ0 : 0 < ρ` using `by linarith`. Establish `hrd : D.host.rdE = ρ` using `by rw [hρ]; unfold Formalism.BasicNotions.Host.v; ring`.
+
+Establish `hfr : frS D = ((ρ⁻¹ : ℝ) : ℂ)`. Unfold `frS Formalism.BasicNotions.Host.ka`. Use `congr 1`. Establish `hv : D.host.v ≠ 0` using `by intro h; rw [hρ, h] at hρ0; simp at hρ0`. Rewrite using `[hρ]`.
+
+Clear the denominators using the available nonvanishing facts. Use `set c : ℝ≥0∞ := Formalism.MainNotions.S.kapN D θ * ENNReal.ofReal (((ρ⁻¹) ^ B.kap D.R.k D.R.rS)⁻¹) with hcdef`. Establish `hloc : ∀ (τ : D.what₂.Tau) (v : InfinitePlace X.B.I.F), vOf X τ = v → Formalism.L2.SG.Pf.AmpWinLoc.muNl C τ v = c • refNX X u v`. Introduce and unpack `τ v rfl`. Take `⟨-, h2, hg, hcol⟩` from `C.isT τ`.
+
+Rewrite `hcol` using `[hfr]`. Conclude with `place_eq (nX X) _ (eV X _) (ProductExactness.pV X _) (X.wfr u _) (ProductExactness.zV X u _) (ProductExactness.Tw_pos u) (fX_ee X _) (fX_ff X _) (fX_ef X _) (fX_ww X u _) (fX_ew X u _) (fX_fw X u _) (fX_ez X u _) (fX_fz X u _) (frame_real_z_z_eq_neg X u _) (fX_zw X u _) (C.Q τ) ( …`. Establish `hv : Formalism.L2.SG.Pf.AmpWinGlob.muNv C = fun v => c • refNX X u v`. Use function extensionality and compare the values at `fun v => hloc (X.pl v) v (X.pl.symm_apply_apply v)`. Establish `hsf : ∀ v, SigmaFinite (Formalism.L2.SG.Pf.AmpWinGlob.muNv C v)` using `fun v => by`.
+
+Establish `key : ∀ (τ : D.what₂.Tau) (w : InfinitePlace X.B.I.F), vOf X τ = w → SigmaFinite (Formalism.L2.SG.Pf.AmpWinLoc.muNl C τ w)`. Introduce and unpack `τ w rfl`. Conclude with `Formalism.L2.SG.Pf.AmpWinLoc.sf_muNl C τ hθ`. Conclude with `key (X.pl v) v (X.pl.symm_apply_apply v)`. Establish `: ∀ v, SigmaFinite (refNX X u v)` using `fun v => (refNg_isHaarLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v …`.
+
+Take `⟨hemb, hmapT⟩` from `Formalism.L2.SG.Pf.AmpWinGlob.map_trInf C hsf hθ`. Establish `hcov : Formalism.L2.SG.LoopTerm.dnB D θ (Formalism.L2.SG.LoopTerm.trInf C '' Y.FN u) = Measure.pi (Formalism.L2.SG.Pf.AmpWinGlob.muNv C) (Y.FN u)`. Rewrite using `[← hmapT, hemb.map_apply, Set.preimage_image_eq _ hemb.injective]`. Establish `hce : c = ENNReal.ofReal (ρ ^ (-((D.R.rS : ℝ) * D.R.k)) * θ * ρ ^ (B.kap D.R.k D.R.rS : ℝ))`. Rewrite using `[hcdef, inv_pow, inv_inv, Real.rpow_natCast, ENNReal.ofReal_mul (by positivity)]`.
+
+Both sides reduce to the same expression. Establish `href` using `covol_refN (covolN_of_coordCovol (coordCovol_of kapLaw_holds NOf.nofib_holds CovB.blockCovol_holds)) refNBox_holds X u u (Y.FN u) (Y.FN_fund u)`. Establish `hcard : Fintype.card (InfinitePlace X.B.I.F) = Fintype.card D.what₂.Tau` using `Fintype.card_congr X.pl`. Establish `hf : D.R.f = Fintype.card D.what₂.Tau` using `D.what₂.card_Tau.symm`. Unfold `Formalism.L2.SG.LoopTerm.covN`.
+
+Rewrite using `[hcov, hv, pi_smul _ (by rw [hce]; exact ENNReal.ofReal_ne_top), Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, href, disc_rd D X, hrd, hf, hcard, hce, ENNReal.toReal_pow, ENNReal.toReal_ofReal (by positivity), ← Real.rpow_natCast ρ, ← Real.rpow_mul hρ0.le, mul_comm ((Finty …`. Use `congr 1`. Establish `e : Formalism.L2.SG.Pf.LoopBCovN.eN D = -((D.R.rS : ℝ) * D.R.k) + (B.kap D.R.k D.R.rS : ℝ) + Formalism.L2.SG.Pf.LsNc5.covolumeExponent D.R.rS D.R.k`. Rewrite using `[kap_real]`. Unfold `Formalism.L2.SG.Pf.LoopBCovN.eN Formalism.L2.SG.Pf.LsNc5.covolumeExponent`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Real.rpow_add hρ0, Real.rpow_add hρ0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem covariance_formula : Formalism.L2.SG.Pf.LoopBCovN.CovNFormula := by
   intro D X Y θ C u hθ
   set ρ : ℝ := 2 * D.host.v with hρ

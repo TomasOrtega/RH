@@ -22,6 +22,9 @@ namespace ArithHilbertSamuel
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem resG_resG {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (f : Γ(X, U)) :
     resG X h' (resG X h f) = resG X (h'.trans h) f := by
   rw [← CommRingCat.comp_apply, ← X.presheaf.map_comp]
@@ -47,12 +50,18 @@ def secTensTriv (A : LB X) : A.Sec ≃ (tens A (LB.triv X)).Sec where
   left_inv s := DVR.SecOps.sec_ext fun i => (resG_resG _ _ _).trans (by simp [resG])
   right_inv t := DVR.SecOps.sec_ext fun c => (resG_resG _ _ _).trans (by simp [resG]; rfl)
 
+/- English proof (translation)
+Establish `hy` using `mem_pick ((M.tens (HermLB.triv p)).φ σ).isLB y`. Rewrite using `[(M.φ σ).nsq_eq (secVal_mem s) (mem_ptsIn_inf.1 hy).1]`. Conclude with `congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp (-b)) (ev_res _ hy _) (add_zero _)`.
+-/
 theorem nsq_secTensTriv (M : HermLB p) (s : M.B.Sec) (σ : k →+* ℂ) (y : CxPts p σ) :
     ((M.tens (HermLB.triv p)).φ σ).nsq (secVal p σ (secTensTriv M.B s)) y = (M.φ σ).nsq (secVal p σ s) y := by
   have hy := mem_pick ((M.tens (HermLB.triv p)).φ σ).isLB y
   rw [(M.φ σ).nsq_eq (secVal_mem s) (mem_ptsIn_inf.1 hy).1]
   exact congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp (-b)) (ev_res _ hy _) (add_zero _)
 
+/- English proof (translation)
+Use extensionality with `t`. Take `⟨s, rfl⟩` from `(secTensTriv M.B).surjective t`. Use `Iff.trans ?_ (secTensTriv M.B).injective.mem_set_image.symm` and prove the remaining obligations. Conclude with `forall₂_congr fun σ y => by rw [nsq_secTensTriv]`.
+-/
 theorem smallSec_tens_triv (M : HermLB p) :
     (M.tens (HermLB.triv p)).smallSec = secTensTriv M.B '' M.smallSec := by
   ext t
@@ -62,6 +71,11 @@ theorem smallSec_tens_triv (M : HermLB p) :
 
 variable [IsIntegral X] {L : HermLB p} {a : ℝ}
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `h k X p D hX L (HermLB.triv p) a hL ha`. Establish `e (m : ℕ) : ((L.pow m).tens (HermLB.triv p)).smallSec.ncard = (L.pow m).smallSec.ncard`. Rewrite using `[smallSec_tens_triv]`. Conclude with `Set.ncard_image_of_injective _ (secTensTriv _).injective`. Use `⟨h₁.mono fun m hm => ?_, by simpa only [e] using h₂⟩` and prove the remaining obligations.
+
+Rewrite `hm` using `[smallSec_tens_triv]`. Conclude with `Set.Finite.of_finite_image hm (secTensTriv _).injective.injOn`.
+-/
 theorem of_triv (h : ArithHilbertSamuel) (hX : IsArithVar p D) (hL : L.IsNef D) (ha : L.IsSelfInter a) :
     (∀ᶠ m : ℕ in atTop, (L.pow m).smallSec.Finite) ∧
       (fun m : ℕ => Real.log ((L.pow m).smallSec.ncard : ℝ) -
@@ -74,6 +88,11 @@ theorem of_triv (h : ArithHilbertSamuel) (hX : IsArithVar p D) (hL : L.IsNef D) 
   rw [smallSec_tens_triv] at hm
   exact Set.Finite.of_finite_image hm (secTensTriv _).injective.injOn
 
+/- English proof (translation)
+Establish `hf : ((D + 1).factorial : ℝ) ≠ 0` using `by positivity`. Establish `h₁` using `((h.of_triv hX hL ha).2.tendsto_div_nhds_zero.mul_const ((D + 1).factorial : ℝ)).add_const a`. Rewrite `h₁` using `[zero_mul, zero_add]`. Use `h₁.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with m hm`.
+
+Establish `: (m : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tendsto_of_triv (h : ArithHilbertSamuel) (hX : IsArithVar p D) (hL : L.IsNef D) (ha : L.IsSelfInter a) :
     Tendsto (fun m : ℕ => Real.log ((L.pow m).smallSec.ncard : ℝ) *
       (((D + 1).factorial : ℝ) / (m : ℝ) ^ (D + 1))) atTop (𝓝 a) := by
@@ -86,6 +105,9 @@ theorem tendsto_of_triv (h : ArithHilbertSamuel) (hX : IsArithVar p D) (hL : L.I
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX L a hL ha` and use `by refine Tendsto.limsup_eq (((continuous_coe_real_ereal.tendsto a).comp (h.tendsto_of_triv hX hL ha)).congr' ?_) filter_upwards [(h.of_triv hX hL ha).1] with m hm have h0 : 0 < (L.pow m).smallSec.ncard := (Set.ncard_pos hm).2 ⟨_, (L.pow m).zero_mem_smallSec⟩ rw [← hm.cast_ncard_ …`.
+-/
 theorem volNef (h : ArithHilbertSamuel) : VolNef := fun k _ X _ p D hX L a hL ha => by
   refine Tendsto.limsup_eq (((continuous_coe_real_ereal.tendsto a).comp
     (h.tendsto_of_triv hX hL ha)).congr' ?_)

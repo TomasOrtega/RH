@@ -9,6 +9,9 @@ noncomputable section
 namespace GlobalTheory.FinClsLoc
 open IsDedekindDomain
 
+/- English proof (translation)
+Establish `h` using `(algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q).2`. Use `filter_upwards [h] with v hv`. Conclude with `hv`.
+-/
 theorem ratAdicInt_eventually (q : ℚ) :
     ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite,
       algebraMap ℚ (v.adicCompletion ℚ) q ∈ v.adicCompletionIntegers ℚ := by
@@ -16,6 +19,11 @@ theorem ratAdicInt_eventually (q : ℚ) :
   filter_upwards [h] with v hv
   exact hv
 
+/- English proof (translation)
+Introduce `p _ G c`. Establish `hall : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ i : Fin (Module.finrank ℚ G.C), algebraMap ℚ (v.adicCompletion ℚ) ((Module.finBasis ℚ G.C).repr c i) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun i => ratAdicInt_eventually _`. Establish `ht : Filter.Tendsto (Subtype.val : AwayP p → HeightOneSpectrum ℤ) Filter.cofinite Filter.cofinite` using `Subtype.val_injective.tendsto_cofinite`. Use `filter_upwards [ht.eventually hall] with w hw`. Introduce `i`.
+
+Establish `: coordL G w (inC G (w.1.adicCompletion ℚ) c) i = algebraMap ℚ (w.1.adicCompletion ℚ) ((Module.finBasis ℚ G.C).repr c i)`. Establish `e : inC G (w.1.adicCompletion ℚ) c = (1 : w.1.adicCompletion ℚ) ⊗ₜ[ℚ] c` using `rfl`. Rewrite using `[coordL, e, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`. Rewrite using `[this]`. Conclude with `hw i`.
+-/
 theorem intC_inC_eventually : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (c : G.C), ∀ᶠ w : AwayP p in Filter.cofinite,
     IntC G w (inC G (w.1.adicCompletion ℚ) c) := by
   intro p _ G c

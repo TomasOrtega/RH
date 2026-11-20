@@ -17,6 +17,9 @@ def peirceCut (e : R) (he : IsIdempotentElem e) : A →* A where
 
 variable {A}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem peirceProjection_apply (e : R) (he : IsIdempotentElem e) (x : A) :
     peirceCut A e he x = e • x + (1 - e) • (1 : A) := rfl
 

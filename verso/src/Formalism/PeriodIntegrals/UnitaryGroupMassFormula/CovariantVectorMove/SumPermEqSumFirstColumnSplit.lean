@@ -9,6 +9,9 @@ noncomputable section
 
 namespace PI.UnitaryGroupMassFormula.QmMove
 
+/- English proof (translation)
+Rewrite using `[prod_ofFn_split_pair f i hi, prod_ofFn_split_pair g i hi, take_ofFn_congr g f i (fun k hk => h k (by omega) (by omega)), drop_ofFn_congr g f (i + 2) (fun k hk => h k (by omega) (by omega))]`. Use `noncomm_ring`.
+-/
 theorem prod_diff {A : Type*} [Ring A] {t : ℕ} (f g : Fin t → A) (i : ℕ) (hi : i + 1 < t)
     (h : ∀ k : Fin t, (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → g k = f k) :
     (List.ofFn f).prod - (List.ofFn g).prod =
@@ -19,6 +22,9 @@ theorem prod_diff {A : Type*} [Ring A] {t : ℕ} (f g : Fin t → A) (i : ℕ) (
     drop_ofFn_congr g f (i + 2) (fun k hk => h k (by omega) (by omega))]
   noncomm_ring
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.sign_mul, hs]`. Use `push_cast`. Simplify using the standard rewrite rules.
+-/
 theorem sgn_mul_swap {A : Type*} [Ring A] {t : ℕ} (s : Equiv.Perm (Fin t))
     (hs : Equiv.Perm.sign s = -1) (τ : Equiv.Perm (Fin t)) :
     ((Equiv.Perm.sign (τ * s) : ℤ) : A) = -((Equiv.Perm.sign τ : ℤ) : A) := by
@@ -26,6 +32,11 @@ theorem sgn_mul_swap {A : Type*} [Ring A] {t : ℕ} (s : Equiv.Perm (Fin t))
   push_cast
   simp
 
+/- English proof (translation)
+Establish `hz : ∑ τ, ((Equiv.Perm.sign τ : ℤ) : A) * X τ = 0`. Establish `h1 : ∑ τ, ((Equiv.Perm.sign (τ * s) : ℤ) : A) * X (τ * s) = ∑ τ, ((Equiv.Perm.sign τ : ℤ) : A) * X τ` using `Fintype.sum_equiv (Equiv.mulRight s) _ _ (fun τ => rfl)`. Simplify using `only [hX, sgn_mul_swap s hs, neg_mul, Finset.sum_neg_distrib] at h1`. Conclude with `eq_zero_of_eq_neg_self_of_algebra_complex _ h1.symm`. Establish `h2 : ∑ τ, ((Equiv.Perm.sign (τ * s) : ℤ) : A) * P (τ * s) = ∑ τ, ((Equiv.Perm.sign τ : ℤ) : A) * P τ` using `Fintype.sum_equiv (Equiv.mulRight s) _ _ (fun τ => rfl)`.
+
+Establish `hP : ∀ τ, P (τ * s) = Q τ + X τ` using `fun τ => by rw [← hPQ τ]; abel`. Simplify using `only [hP, sgn_mul_swap s hs, neg_mul, mul_add, Finset.sum_neg_distrib, Finset.sum_add_distrib, hz] at h2`. Rewrite using `[← h2]`. Simplify using `only [neg_zero, add_zero, neg_neg]`.
+-/
 theorem step {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (s : Equiv.Perm (Fin t))
     (hs : Equiv.Perm.sign s = -1) (P Q X : Equiv.Perm (Fin t) → A)
     (hX : ∀ τ, X (τ * s) = X τ) (hPQ : ∀ τ, P (τ * s) - Q τ = X τ) :
@@ -45,6 +56,9 @@ theorem step {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (s : Equiv.Perm (Fin
   rw [← h2]
   simp only [neg_zero, add_zero, neg_neg]
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp | m + 1, h => by rw [h m (by omega), chain S m (fun p hp => h p (by omega))] push_cast rw [pow_succ] simp [mul_neg, neg_mul]`.
+-/
 theorem chain {A : Type*} [Ring A] (S : ℕ → A) : ∀ m : ℕ, (∀ p < m, S (p + 1) = -S p) →
     S m = (((-1 : ℤ) ^ m : ℤ) : A) * S 0
   | 0, _ => by simp
@@ -57,18 +71,34 @@ theorem chain {A : Type*} [Ring A] (S : ℕ → A) : ∀ m : ℕ, (∀ p < m, S 
 def phi0 (m : ℕ) (p : Fin (m + 1) × Equiv.Perm (Fin m)) : Equiv.Perm (Fin (m + 1)) :=
   (Fin.cycleRange p.1).symm * Equiv.Perm.decomposeFin.symm (0, p.2)
 
+/- English proof (translation)
+Simplify using `[phi0, Equiv.Perm.mul_apply]`.
+-/
 theorem firstColumnSplit_zero (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) : phi0 m (j, ρ) 0 = j := by
   simp [phi0, Equiv.Perm.mul_apply]
 
+/- English proof (translation)
+Simplify using `[phi0, Equiv.Perm.mul_apply]`.
+-/
 theorem firstColumnSplit_succ (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) (k : Fin m) :
     phi0 m (j, ρ) k.succ = j.succAbove (ρ k) := by
   simp [phi0, Equiv.Perm.mul_apply]
 
+/- English proof (translation)
+Simplify using `[phi0, Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Equiv.Perm.decomposeFin.symm_sign]`.
+-/
 theorem sign_firstColumnSplit (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (phi0 m (j, ρ)) = (-1) ^ (j : ℕ) * Equiv.Perm.sign ρ := by
   simp [phi0, Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange,
     Equiv.Perm.decomposeFin.symm_sign]
 
+/- English proof (translation)
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, τ⟩ ⟨j', τ'⟩ h`. Establish `hj : j = j'`. Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ 0) h` as an intermediate fact.
+
+Simplify `this` using `[firstColumnSplit_zero]`. Substitute `hj` using the available equality. Establish `: τ = τ'`. Use `Equiv.ext fun k => ?_` and prove the remaining obligations. Use `congrArg (fun σ : Equiv.Perm (Fin (m + 1)) => σ k.succ) h` as an intermediate fact.
+
+Simplify using `only [firstColumnSplit_succ] at this`. Conclude with `Fin.succAbove_right_inj.mp this`. Rewrite using `[this]`. Simplify using `[Fintype.card_prod, Fintype.card_perm, Nat.factorial_succ]`.
+-/
 theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
   rw [Fintype.bijective_iff_injective_and_card]
   refine ⟨?_, ?_⟩
@@ -85,28 +115,46 @@ theorem firstColumnSplit_bijective (m : ℕ) : Function.Bijective (phi0 m) := by
     rw [this]
   · simp [Fintype.card_prod, Fintype.card_perm, Nat.factorial_succ]
 
+/- English proof (translation)
+Rewrite using `[(Fintype.sum_bijective (phi0 m) (firstColumnSplit_bijective m) (fun p => g (phi0 m p)) g (fun _ => rfl)).symm, Fintype.sum_prod_type]`.
+-/
 theorem sum_perm_eq_sum_firstColumnSplit {M : Type*} [AddCommMonoid M] (m : ℕ) (g : Equiv.Perm (Fin (m + 1)) → M) :
     ∑ τ, g τ = ∑ j : Fin (m + 1), ∑ ρ : Equiv.Perm (Fin m), g (phi0 m (j, ρ)) := by
   rw [(Fintype.sum_bijective (phi0 m) (firstColumnSplit_bijective m) (fun p => g (phi0 m p)) g (fun _ => rfl)).symm,
     Fintype.sum_prod_type]
 
+/- English proof (translation)
+Rewrite using `[(Fintype.sum_bijective (lastColumnSplit m) (lastColumnSplit_bijective m) (fun p => g (lastColumnSplit m p)) g (fun _ => rfl)).symm, Fintype.sum_prod_type]`.
+-/
 theorem sum_phiL {M : Type*} [AddCommMonoid M] (m : ℕ) (g : Equiv.Perm (Fin (m + 1)) → M) :
     ∑ τ, g τ = ∑ j : Fin (m + 1), ∑ ρ : Equiv.Perm (Fin m), g (lastColumnSplit m (j, ρ)) := by
   rw [(Fintype.sum_bijective (lastColumnSplit m) (lastColumnSplit_bijective m) (fun p => g (lastColumnSplit m p)) g
     (fun _ => rfl)).symm, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Simplify using `[lastColumnSplit, Equiv.Perm.mul_apply, extendLast_castSucc, cycleToLast_castSucc]`.
+-/
 theorem phiL_castSucc (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) (k : Fin m) :
     lastColumnSplit m (j, ρ) k.castSucc = j.succAbove (ρ k) := by
   simp [lastColumnSplit, Equiv.Perm.mul_apply, extendLast_castSucc, cycleToLast_castSucc]
 
+/- English proof (translation)
+Simplify using `[lastColumnSplit, Equiv.Perm.mul_apply, extendLast_last, cycleToLast_last]`.
+-/
 theorem phiL_last (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) :
     lastColumnSplit m (j, ρ) (Fin.last m) = j := by
   simp [lastColumnSplit, Equiv.Perm.mul_apply, extendLast_last, cycleToLast_last]
 
+/- English proof (translation)
+Simplify using `[lastColumnSplit, Equiv.Perm.sign_mul, sign_cycleToLast, sign_extendLast]`.
+-/
 theorem phiL_sign (m : ℕ) (j : Fin (m + 1)) (ρ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (lastColumnSplit m (j, ρ)) = (-1) ^ (m - (j : ℕ)) * Equiv.Perm.sign ρ := by
   simp [lastColumnSplit, Equiv.Perm.sign_mul, sign_cycleToLast, sign_extendLast]
 
+/- English proof (translation)
+Establish `hm : (m.factorial : ℂ) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos m).ne'`. Establish `e : ∀ Z : A, Z = algebraMap ℂ A ((m.factorial : ℂ)⁻¹) * ((m.factorial : A) * Z)`. Introduce `Z`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap ℂ A), ← map_mul, inv_mul_cancel₀ hm, map_one, one_mul]`. Rewrite using `[e X, e Y, h]`.
+-/
 theorem fact_cancel {A : Type*} [Ring A] [Algebra ℂ A] (m : ℕ) (X Y : A)
     (h : (m.factorial : A) * X = (m.factorial : A) * Y) : X = Y := by
   have hm : (m.factorial : ℂ) ≠ 0 := by exact_mod_cast (Nat.factorial_pos m).ne'
@@ -115,11 +163,17 @@ theorem fact_cancel {A : Type*} [Ring A] [Algebra ℂ A] (m : ℕ) (X Y : A)
     rw [← mul_assoc, ← map_natCast (algebraMap ℂ A), ← map_mul, inv_mul_cancel₀ hm, map_one, one_mul]
   rw [e X, e Y, h]
 
+/- English proof (translation)
+Rewrite using `[← pow_add]`. Rewrite using `[show m + j = (m - j) + 2 * j by omega, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`.
+-/
 theorem neg_one_pow_sub (m j : ℕ) (hj : j ≤ m) :
     ((-1 : ℤ) ^ (m - j) : ℤ) = (-1) ^ m * (-1) ^ j := by
   rw [← pow_add]
   rw [show m + j = (m - j) + 2 * j by omega, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]
 
+/- English proof (translation)
+The claim follows from `(Int.cast_commute z x).eq`.
+-/
 theorem icomm {A : Type*} [Ring A] (z : ℤ) (x : A) : (z : A) * x = x * (z : A) :=
   (Int.cast_commute z x).eq
 

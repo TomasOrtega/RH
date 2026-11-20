@@ -13,6 +13,23 @@ noncomputable section
 
 namespace GlobalTheory.DoublingRat
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n m Xs W M χX χW om r s' r₁ s₁ hP _ W₂ _ _ _ i hi K _ _ φ₀ _ _ μ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `δ hδ`. Take `⟨d, hd⟩` from `MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 hδ)`. Use `Subgroup.mem_subgroupOf.2 (MonoidHom.mem_range.2 ⟨blkGL finSumFinEquiv ((1 : GL (Fin m) E), d), ?_⟩)` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((blkGL finSumFinEquiv ((1 : GL (Fin m) E), d) : GL _ E) : Matrix _ _ E).map (inclR (AF F)) = mat (i (1, δ))`. Rewrite using `[val_blkGL, blkMat_map _ _ (map_zero _), hi]`. Establish `h1 : mat δ = (d : Matrix _ _ E).map (inclR (AF F))` using `by show δ.1.val = _`. Rewrite using `[← hd]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Introduce `δ δ' h`.
+
+Rewrite `h` using `[← map_inv, ← map_mul]`. Establish `h2` using `mem_siegelOf.1 h`. Express the relevant statement in the definitionally equal form `KeepsDiag finSumFinEquiv (mat (i ((1, δ) * (1, δ')⁻¹))) at h2`. Rewrite `h2` using `[hi, keepsDiag_blkMat]`. Establish `h3 : δ * δ'⁻¹ = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h4 : mat (δ * δ'⁻¹) = mat (1 : UA σ W.J)` using `by simpa using h2`. Conclude with `h4`. Conclude with `mul_inv_eq_one.1 h3`.
+
+Introduce `γ hγ`. Take `⟨d, hd⟩` from `MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 hγ)`. Rewrite using `[← hd]`. Establish `h1 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (inclR (AF F)) d) = Units.map (inclR (F` using `F) (E := E) (AF F) : E →* AE F E) (Matrix.GeneralLinearGroup.det d) := by`. Use `ext`.
+
+Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[h1]`. Conclude with `hP.hX.2 _`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable haveI : Countable (Matrix (Fin m) (Fin m) E) := inferInstanceAs (Countable (Fin m → Fin m → E)) haveI : Countable (GL (Fin m) E) := Units.val_injective.countable haveI : Countable (Matrix.GeneralLinearGroup …`. Conclude with `Function.Injective.countable (f := fun x : ratU σ W.J => (⟨x.1.1, Subgroup.mem_subgroupOf.1 x.2⟩ : (Matrix.GeneralLinearGroup.map (n := Fin m) (inclR (F := F) (E := E) (AF F))).range)) fun x y h => by`.
+
+Establish `h'` using `congrArg Subtype.val h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h'`.
+-/
 theorem rat_open_classes : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → 1 ≤ d →
     ∀ W₂ : Spc F E (d + d), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

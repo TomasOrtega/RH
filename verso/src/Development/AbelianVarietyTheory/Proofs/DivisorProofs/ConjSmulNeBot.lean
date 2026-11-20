@@ -17,6 +17,9 @@ def cvec (D : D7) (δ : ℂ) (𝔪 : Ideal (𝓞 D.host.E)) (o a d : ℕ) (e0 : 
     Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (unitBlock D o a d))
       (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) e0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetVec_eq {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (𝔪 : Ideal (𝓞 D.host.E)) (o : ℕ) :
     cosetVec P 𝔪 o = cvec D δ 𝔪 o P.a P.d P.e0 := rfl
 
@@ -26,9 +29,15 @@ def blockSet (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (a N : ℕ) : Set (GA D N) 
 
 def blockJ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (a N : ℕ) : Subgroup (GA D N) := Subgroup.closure (blockSet D 𝔪 a N)
 
+/- English proof (translation)
+The claim follows from `(Subgroup.closure_le _).2 fun _ h => h.1`.
+-/
 theorem blockJ_le (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) (a N : ℕ) : blockJ D 𝔪 a N ≤ intG D N :=
   (Subgroup.closure_le _).2 fun _ h => h.1
 
+/- English proof (translation)
+Introduce `e`. Apply `h` to reduce the goal to its premises. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) e` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+-/
 theorem conj_smul_ne_bot (D : D7) {𝔪 : Ideal (𝓞 D.host.E)} (h : 𝔪 ≠ ⊥) : D.host.conj • 𝔪 ≠ ⊥ := by
   intro e
   apply h

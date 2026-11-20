@@ -15,6 +15,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Introduce `S G _ L hL g R _ _ x hx p`. Take `⟨P, α, -, hp, w, hw⟩` from `hx`. Establish `hS : SecBaseChangeAnySt` using `GlobalTheory.abelianSchemeLaws_all.2.secBaseChangeAny`. Take `⟨V, hpV, hV⟩` from `GlobalTheory.EmbLocal.exists_isGenSec_near hS P p`. Take `⟨_, ⟨r, rfl⟩, hpr, hrV⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := ((V : Set (Sp R)) : Set (PrimeSpectrum R))) hpV V.isOpen`.
+
+Set `j` to `algebraMap R (Localization.Away r)`. Establish `hrange : Set.range (spMap j) ⊆ (V : Set (Sp R))`. Introduce `y hy`. Apply `hrV` to reduce the goal to its premises. Take `⟨z, rfl⟩` from `hy`.
+
+Establish `hz : PrimeSpectrum.comap j z ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `⟨z, rfl⟩`. Conclude with `hz`. Take `⟨th, hth⟩` from `hV (Localization.Away r) (spMap j) hrange`.
+
+Establish `hτ : (𝟙 (Sp (Localization.Away r)) : (Over.mk (spMap j)).left ⟶ (Over.mk (spMap j ≫ x)).left) ≫ (Over.mk (spMap j ≫ x)).hom = (Over.mk (spMap j)).hom ≫ x` using `Category.id_comp _`. Take `⟨θ, hθ⟩` from `GlobalTheory.ThetaPtMove.exists_secRel_up hp (T := Over.mk (spMap j)) (T₀ := Over.mk (spMap j ≫ x)) (𝟙 _) hτ hw hL P.isLB (a := ((1 : ℕ) : ℤ)) th`. Use `⟨r, hpr, θ, fun K _ i => ?_⟩` and prove the remaining obligations. Establish `hτ' : (𝟙 (Sp K) : (Over.mk (spMap i ≫ spMap j)).left ⟶ (Over.mk (spMap i ≫ spMap j ≫ x)).left) ≫ (Over.mk (spMap i ≫ spMap j ≫ x)).hom = (Over.mk (spMap i ≫ spMap j)).hom ≫ x`. Simplify using `[Category.assoc]`.
+
+Set `ξ : Over.mk (spMap i ≫ spMap j) ⟶ Over.mk (spMap j)` to `Over.homMk (spMap i) rfl`. Set `ξ₀ : Over.mk (spMap i ≫ spMap j ≫ x) ⟶ Over.mk (spMap j ≫ x)` to `Over.homMk (spMap i) rfl`. Establish `hξ : (𝟙 (Sp K) : (Over.mk (spMap i ≫ spMap j)).left ⟶ (Over.mk (spMap i ≫ spMap j ≫ x)).left) ≫ ξ₀.left = ξ.left ≫ (𝟙 (Sp (Localization.Away r)) : (Over.mk (spMap j)).left ⟶ (Over.mk (spMap j ≫ x)).left)` using `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hrel : GlobalTheory.ThetaPtMove.SecRel hp _ hτ' w (VVRank.pullS P.A ((1 : ℕ) : ℤ) ξ th) (VVRank.pullS G ((1 : ℕ) : ℤ) ξ₀ θ)` using `GlobalTheory.Ex.OneGen.SecRel.pullS hp _ hτ hθ (T' := Over.mk (spMap i ≫ spMap j)) (T₀' := Over.mk (spMap i ≫ spMap j ≫ x)) _ hτ' ξ ξ₀ hξ`. Establish `: IsAffine (Over.mk (spMap j)).left` using `inferInstanceAs (IsAffine (Spec _))`.
+
+Establish `: IsAffine (Over.mk (spMap i ≫ spMap j)).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `hg : IsGenSec P.A P.L 1 (VVRank.pullS P.A 1 ξ th)` using `GlobalTheory.EmbPull.isGenSec_pullS P hS ξ hth`. Establish `hg' : IsGenSec P.A P.L ((1 : ℕ) : ℤ) (VVRank.pullS P.A ((1 : ℕ) : ℤ) ξ th)` using `hg`. Establish `: IsIso (C` using `Scheme.{0}) (X := (Over.mk (spMap i ≫ spMap j)).left) (Y := (Over.mk (spMap i ≫ spMap j ≫ x)).left) (𝟙 (Sp K)) := IsIso.id _`. Establish `h2 : IsGenSec G L ((1 : ℕ) : ℤ) (VVRank.pullS G ((1 : ℕ) : ℤ) ξ₀ θ)` using `GlobalTheory.ThetaPtUp.isGenSec_up hp _ hτ' hw hL P.isLB hrel hg'`.
+
+Conclude with `h2`.
+-/
 theorem exists_basicOpen_genSec_fibres : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB →
     ∀ (g : ℕ) (R : Type) [CommRing R] [IsNoetherianRing R] (x : Sp R ⟶ S), PolFib G L g x →
     ∀ p : PrimeSpectrum R, ∃ r : R, r ∉ p.asIdeal ∧

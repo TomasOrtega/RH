@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsHeisenberg
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WrongSignPair.exists_neg_pair | exact GlobalTheory.WrongSignPair.exists_neg_pair | (intros; apply GlobalTheory.WrongSignPair.exists_neg_pair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_archimedean_pair_negative_symplectic_pairing : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (B : Base F E) {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ),
     B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → 0 < n → 0 < d →

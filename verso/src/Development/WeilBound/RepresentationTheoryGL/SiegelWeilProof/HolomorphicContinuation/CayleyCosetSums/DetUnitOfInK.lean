@@ -10,17 +10,31 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[nU, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem det_nU (H : Matrix (Fin n) (Fin n) ℂ) : (nU H).det = 1 := by
   simp [nU, Matrix.det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Simplify using `[fz, mul_assoc]`.
+-/
 theorem fz_twist (m : ℕ) (e : ℤ) (z : ℂ) (y : M2 n) : fz m e z y = y.det ^ e * fz m 0 z y := by
   simp [fz, mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det hk.2`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Conclude with `h`.
+-/
 theorem det_unit_of_inK {k : M2 n} (hk : InK k) : star k.det * k.det = 1 := by
   have h := congrArg Matrix.det hk.2
   rw [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one] at h
   exact h
 
+/- English proof (translation)
+Unfold `rhoP`. Rewrite using `[fz_twist m e 0 (ι k)]`. Simplify using `only [star_mul, star_zpow₀]`. Establish `hu : star (ι k).det * (ι k).det = 1` using `det_unit_of_inK (hK k)`. Establish `h1 : star (ι k).det ^ e * (ι k).det ^ e = 1`.
+
+Rewrite using `[← mul_zpow, hu, _root_.one_zpow]`. Take the linear combination `(star ((u2 (ι k))⁻¹ * Y * u1 (ι k)).trace * star (fz m 0 0 (ι k))) * h1`.
+-/
 theorem rhoP_twist {Kg : Type} (ι : Kg → M2 n) (hK : ∀ k, InK (ι k)) (m : ℕ) (e : ℤ) (Y : Matrix (Fin n) (Fin n) ℂ)
     (k : Kg) : rhoP ι m e Y k * (ι k).det ^ e = rhoP ι m 0 Y k := by
   unfold rhoP
@@ -31,6 +45,13 @@ theorem rhoP_twist {Kg : Type} (ι : Kg → M2 n) (hK : ∀ k, InK (ι k)) (m : 
     rw [← mul_zpow, hu, _root_.one_zpow]
   linear_combination (star ((u2 (ι k))⁻¹ * Y * u1 (ι k)).trace * star (fz m 0 0 (ι k))) * h1
 
+/- English proof (translation)
+Unfold `tOp`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hin : (∫ (t : Fin n → Fin n → ℝ), fz m e z (x * ι k * a * nU (herm t) * b) * ψ t) = (x.det ^ e * (ι k).det ^ e * a.det ^ e * b.det ^ e) * ∫ (t : Fin n → Fin n → ℝ), fz m 0 z (x * ι k * a * nU (herm t) * b) * ψ t`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[fz_twist m e z, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, det_nU, mul_one, mul_zpow, mul_zpow, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hin, ← rhoP_twist ι hK m e Y k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tOp_twist {Kg : Type} [MeasurableSpace Kg] (μ : Measure Kg) (ι : Kg → M2 n) (hK : ∀ k, InK (ι k)) (m : ℕ)
     (e : ℤ) (Y : Matrix (Fin n) (Fin n) ℂ) (ψ : (Fin n → Fin n → ℝ) → ℂ) (a b x : M2 n) (z : ℂ) :
     tOp μ ι (rhoP ι m e Y) ψ a b (fz m e z) x =
@@ -51,6 +72,13 @@ theorem tOp_twist {Kg : Type} [MeasurableSpace Kg] (μ : Measure Kg) (ι : Kg �
   rw [hin, ← rhoP_twist ι hK m e Y k]
   ring
 
+/- English proof (translation)
+Introduce `h n m e hmn Kg _ _ _ _ _ _ μ _ ι hι hK`. Take `⟨P, ψ, a, b, x, h1, h2, h3, h4, h5⟩` from `h n m hmn Kg μ ι hι hK`. Use `⟨P, ψ, a, b, x, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `hKk : ∀ k, InK (ι k)` using `fun k => (hK (ι k)).2 ⟨k, rfl⟩`. Establish `hfun : (fun z : ℂ => tOp μ (⇑ι) (rhoP (⇑ι) m e P) ψ a b (fz m e z) x) = fun z : ℂ => (x.det ^ e * a.det ^ e * b.det ^ e) * tOp μ (⇑ι) (rhoP (⇑ι) m 0 P) ψ a b (fz m 0 z) x`.
+
+Use function extensionality and compare the values at `z`. Conclude with `tOp_twist μ ι hKk m e P ψ a b x z`. Rewrite using `[hfun, deriv_const_mul_field']`. Use `mul_ne_zero ?_ h5` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero ?_ ?_) ?_` and prove the remaining obligations.
+
+Conclude with `zpow_ne_zero _ (isUnit_det_of_InG h4).ne_zero`. Conclude with `zpow_ne_zero _ (isUnit_det_of_InG h2).ne_zero`. Conclude with `zpow_ne_zero _ (isUnit_det_of_InG h3).ne_zero`.
+-/
 theorem eRed : ERed := by
   intro h n m e hmn Kg _ _ _ _ _ _ μ _ ι hι hK
   obtain ⟨P, ψ, a, b, x, h1, h2, h3, h4, h5⟩ := h n m hmn Kg μ ι hι hK

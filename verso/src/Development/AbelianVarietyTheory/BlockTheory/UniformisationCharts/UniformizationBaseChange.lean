@@ -58,6 +58,9 @@ structure RigPull {φ : R →+* R'} {G : Over (Spec (CommRingCat.of R))} [GrpObj
 variable {I : Ideal R} {I' : Ideal R'}
 
 omit [IsDomain R] [IsDomain R'] in
+/- English proof (translation)
+The claim follows from `(Ideal.pow_right_mono hI n).trans (Ideal.le_comap_pow φ n)`.
+-/
 lemma pow_le_comap {φ : R →+* R'} (hI : I ≤ I'.comap φ) (n : ℕ) :
     I ^ n ≤ (I' ^ n).comap φ :=
   (Ideal.pow_right_mono hI n).trans (Ideal.le_comap_pow φ n)
@@ -67,6 +70,9 @@ abbrev thickSpec {φ : R →+* R'} (hI : I ≤ I'.comap φ) (e : ℕ) :
   Spec.map (CommRingCat.ofHom (Ideal.quotientMap (I' ^ (e + 1)) φ (pow_le_comap hI (e + 1))))
 
 omit [IsDomain R] [IsDomain R'] in
+/- English proof (translation)
+Simplify using `only [thick, thickSpec, specOf, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`.
+-/
 lemma thickSpec_comp {φ : R →+* R'} (hI : I ≤ I'.comap φ) (e : ℕ) :
     thick R' I' e ≫ specOf φ = thickSpec hI e ≫ thick R I e := by
   simp only [thick, thickSpec, specOf, ← Spec.map_comp, ← CommRingCat.ofHom_comp,
@@ -137,6 +143,11 @@ section Basic₂
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Establish `h : specOf (RingHom.id R) = 𝟙 _` using `by simp [specOf]`. Use `⟨⟨𝟙 _, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h]; exact IsPullback.of_horiz_isIso ⟨by simp⟩`. Rewrite using `[h]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+
+Establish `: ∀ a b, pullback.map G.hom G.hom G.hom G.hom (𝟙 _) (𝟙 _) (specOf (RingHom.id R)) a b = 𝟙 _`. Introduce `a b`. Apply the tactic sequence `apply pullback.hom_ext <;> simp`. Rewrite using `[this]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+-/
 example (G : Over (Spec (CommRingCat.of R))) [GrpObj G] : Nonempty (GrpPull (RingHom.id R) G G) := by
   have h : specOf (RingHom.id R) = 𝟙 _ := by simp [specOf]
   refine ⟨⟨𝟙 _, ?_, ?_, ?_⟩⟩
@@ -149,12 +160,18 @@ example (G : Over (Spec (CommRingCat.of R))) [GrpObj G] : Nonempty (GrpPull (Rin
     rw [this]
     exact (Category.comp_id _).trans (Category.id_comp _).symm
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 example {φ : R →+* R'} {I : Ideal R} {I' : Ideal R'} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     {G' : Over (Spec (CommRingCat.of R'))} [GrpObj G'] (pG : GrpPull φ G G')
     (hI : I ≤ I'.comap φ) (e : ℕ) :
     pG.thickF hI e ≫ (fstG I e G).left = (fstG I' e G').left ≫ pG.F :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Take `⟨W, ψW, g, hg, -⟩` from `h.w_psi`. Conclude with `⟨W, ψW, g, hg⟩`.
+-/
 example (φ : R →+* R') (D : DegPre R) (D' : DegPre R') (h : PullIdent φ D D') :
     GenericInPsiLocus φ D := by
   obtain ⟨W, ψW, g, hg, -⟩ := h.w_psi

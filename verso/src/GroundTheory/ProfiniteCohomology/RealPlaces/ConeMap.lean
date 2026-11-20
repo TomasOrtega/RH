@@ -22,16 +22,25 @@ noncomputable def degZeroMap {E E' : ModuleCat.{u} k} (f : E ⟶ E') :
   CochainComplex.ofHom (degZeroMapF f) fun n => by
     rw [degZeroComplex_d, degZeroComplex_d, comp_zero, zero_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degZeroMap_f_zero_apply {E E' : ModuleCat.{u} k} (f : E ⟶ E') (e : (degZeroComplex E).X 0) :
     ((degZeroMap f).f 0).hom e = f.hom e :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => exact ModuleCat.hom_ext (LinearMap.ext fun _ => Subsingleton.elim _ _)`.
+-/
 theorem degZeroMap_id (E : ModuleCat.{u} k) : degZeroMap (𝟙 E) = 𝟙 _ := by
   ext n : 1
   cases n with
   | zero => rfl
   | succ n => exact ModuleCat.hom_ext (LinearMap.ext fun _ => Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => exact ModuleCat.hom_ext (LinearMap.ext fun _ => Subsingleton.elim _ _)`.
+-/
 theorem degZeroMap_comp {E E' E'' : ModuleCat.{u} k} (f : E ⟶ E') (f' : E' ⟶ E'') :
     degZeroMap (f ≫ f') = degZeroMap f ≫ degZeroMap f' := by
   ext n : 1
@@ -43,6 +52,9 @@ noncomputable def degZeroShortComplex (S : ShortComplex (ModuleCat.{u} k)) :
     ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ) :=
   ShortComplex.mk (degZeroMap S.f) (degZeroMap S.g) (by rw [← degZeroMap_comp, S.zero]; ext n : 1; cases n <;> rfl)
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by cases n with | zero => exact hS | succ n => have h0 : IsZero ((degZeroComplex S.X₂).X (n + 1)) := ModuleCat.isZero_of_subsingleton _ exact { exact := ShortComplex.exact_of_isZero_X₂ _ h0 mono_f := (ModuleCat.mon …`.
+-/
 theorem degZeroShortComplex_shortExact {S : ShortComplex (ModuleCat.{u} k)} (hS : S.ShortExact) :
     (degZeroShortComplex S).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by
@@ -63,6 +75,9 @@ noncomputable def prodShortComplex (S T : ShortComplex (CochainComplex (ModuleCa
       (hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) S.zero) x.1)
       (hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) T.zero) x.2)))
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by have h1 := (HomologicalComplex.shortExact_iff_degreewise_shortExact S).1 hS n have h2 := (HomologicalComplex.shortExact_iff_degreewise_shortExact T).1 hT n refine { exact := ?_, mono_f := ?_, epi_g := ?_ } · rw …`.
+-/
 theorem prodShortComplex_shortExact {S T : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ)}
     (hS : S.ShortExact) (hT : T.ShortExact) : (prodShortComplex S T).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => by
@@ -85,6 +100,11 @@ theorem prodShortComplex_shortExact {S T : ShortComplex (CochainComplex (ModuleC
       obtain ⟨y2, hy2⟩ := (ModuleCat.epi_iff_surjective _).1 h2.epi_g z.2
       exact ⟨(show (prodComplex S.X₂ T.X₂).X n from (y1, y2)), Prod.ext hy1 hy2⟩
 
+/- English proof (translation)
+Establish `e1 : prodMapCx f g ≫ prodFst M' N' = prodFst M N ≫ f` using `prodLift_prodFst _ _`. Establish `e2 : prodMapCx f g ≫ prodSnd M' N' = prodSnd M N ≫ g` using `prodLift_prodSnd _ _`. Use `ModuleCat.hom_ext (LinearMap.ext fun z => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (by`. Rewrite using `[← HomologicalComplex.homologyMap_comp, e1, HomologicalComplex.homologyMap_comp]`.
+
+Conclude with `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)) z`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (by`. Rewrite using `[← HomologicalComplex.homologyMap_comp, e2, HomologicalComplex.homologyMap_comp]`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)) z`.
+-/
 theorem homologyMap_prodMapCx_prodHomologyIso_hom {M N M' N' : CochainComplex (ModuleCat.{u} k) ℕ}
     (f : M ⟶ M') (g : N ⟶ N') (n : ℕ) :
     HomologicalComplex.homologyMap (prodMapCx f g) n ≫ (prodHomologyIso M' N' n).hom =
@@ -110,6 +130,9 @@ noncomputable def piRepHom {Aᵣ Bᵣ : ∀ w, Rep.{u} k (F w)} (g : ∀ w, Aᵣ
     ModuleCat.of k (∀ w, Aᵣ w) ⟶ ModuleCat.of k (∀ w, Bᵣ w) :=
   ModuleCat.ofHom (LinearMap.pi fun w => (g w).hom.toLinearMap.comp (LinearMap.proj w))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piRepHom_apply {Aᵣ Bᵣ : ∀ w, Rep.{u} k (F w)} (g : ∀ w, Aᵣ w ⟶ Bᵣ w)
     (e : ∀ w, Aᵣ w) (w : κ) : (piRepHom g).hom e w = (g w).hom (e w) :=
   rfl
@@ -120,6 +143,13 @@ noncomputable def piRepShortComplex (S : ∀ w, ShortComplex (Rep.{u} k (F w))) 
     (ModuleCat.hom_ext (LinearMap.ext fun e => funext fun w =>
       congrArg (fun φ => Rep.Hom.hom φ (e w)) (S w).zero))
 
+/- English proof (translation)
+Use `{ exact := ?_, mono_f := ?_, epi_g := ?_ }` and prove the remaining obligations. Rewrite using `[ShortComplex.moduleCat_exact_iff]`. Introduce `(x : ∀ w, (S w).X₂) hx`. Establish `e : ∀ w, ∃ y : (S w).X₁, (S w).f.hom y = x w` using `fun w => by`. Establish `ev` using `(hS w).exact.map (forget₂ (Rep.{u} k (F w)) (ModuleCat k))`.
+
+Rewrite `ev` using `[ShortComplex.moduleCat_exact_iff]`. Conclude with `ev (x w) (congrFun hx w)`. Use `choose y hy using e`. Conclude with `⟨show ∀ w, (S w).X₁ from y, funext hy⟩`. Conclude with `(ModuleCat.mono_iff_injective _).2 fun (x x' : ∀ w, (S w).X₁) hxx => funext fun w => (Rep.mono_iff_injective _).1 (hS w).mono_f (congrFun hxx w)`.
+
+Use `(ModuleCat.epi_iff_surjective _).2 fun (z : ∀ w, (S w).X₃) => ?_` and prove the remaining obligations. Establish `e : ∀ w, ∃ y : (S w).X₂, (S w).g.hom y = z w` using `fun w => (Rep.epi_iff_surjective _).1 (hS w).epi_g (z w)`. Use `choose y hy using e`. Conclude with `⟨show ∀ w, (S w).X₂ from y, funext hy⟩`.
+-/
 theorem piRepShortComplex_shortExact {S : ∀ w, ShortComplex (Rep.{u} k (F w))}
     (hS : ∀ w, (S w).ShortExact) : (piRepShortComplex S).ShortExact := by
   refine { exact := ?_, mono_f := ?_, epi_g := ?_ }
@@ -161,6 +191,13 @@ variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRe
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Consider the cases of `n with`. Consider the case `zero`. Use `ModuleCat.hom_ext (LinearMap.ext fun e => funext fun w => ?_)` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `(gᵣ w).hom ((Aᵣ w).ρ.norm (e w)) = (Bᵣ w).ρ.norm ((gᵣ w).hom (e w))`. Conclude with `(congrArg (fun f => Rep.Hom.hom f (e w)) (Rep.norm_comm (gᵣ w))).symm`. Consider the case `succ n`. Express the relevant statement in the definitionally equal form `(0 : _ ⟶ _) ≫ _ = _ ≫ (0 : _ ⟶ _)`.
+
+Rewrite using `[zero_comp, comp_zero]`.
+-/
 theorem normCochains_naturality (gᵣ : ∀ w, Aᵣ w ⟶ Bᵣ w) :
     normCochains Aᵣ ≫ piMap (fun w => cochainsMap (gᵣ w)) =
       degZeroMap (piRepHom gᵣ) ≫ normCochains Bᵣ := by
@@ -188,6 +225,11 @@ noncomputable abbrev tateLocalMap : tateLocalComplex Aᵥ Aᵣ ⟶ tateLocalComp
 
 include hg hgr in
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (congrArg (·.f n) (localRes_naturality φ g gᵥ hg)) x.1`. Express the relevant statement in the definitionally equal form `((piMap fun w => cochainsMap (gᵣ w)).f n).hom (((localRes ψ A Aᵣ ar).f n).hom x.1 + ((normCochains Aᵣ).f n).hom x.2) = ((localRes ψ B Bᵣ br).f n).hom (((cochainsMap g).f n).hom x.1) + ((normCochains Bᵣ).f n).hom (((degZeroMap (piRepHom gᵣ)).f n).hom x.2)`. Rewrite using `[map_add]`.
+
+Conclude with `congrArg₂ (· + ·) (hom_apply_hom_apply_eq_of_comp_eq (congrArg (·.f n) (localRes_naturality ψ g gᵣ hgr)) x.1) (hom_apply_hom_apply_eq_of_comp_eq (congrArg (·.f n) (normCochains_naturality gᵣ)) x.2)`.
+-/
 theorem tateCompactRes_naturality :
     tateCompactRes φ ψ A Aᵥ a Aᵣ ar ≫ tateLocalMap gᵥ gᵣ =
       tateGlobalMap g gᵣ ≫ tateCompactRes φ ψ B Bᵥ b Bᵣ br := by
@@ -215,6 +257,11 @@ noncomputable def tateCompactCohomologyMap (n : ℕ) :
 omit [∀ v, IsDiscreteRep (Bᵥ v)] [∀ v, IsDiscreteRep (Cᵥ v)] [IsDiscreteRep B] [IsDiscreteRep C]
   [∀ w, IsDiscreteRep (Bᵣ w)] [∀ w, IsDiscreteRep (Cᵣ w)] in
 @[simp]
+/- English proof (translation)
+Establish `h : tateCompactCochainsMap φ ψ (𝟙 A) (fun v => 𝟙 (Aᵥ v)) (fun w => 𝟙 (Aᵣ w)) (a` using `a) (ar := ar) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm) = 𝟙 _ := by`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A Aᵣ).X n × shiftNegOneX (tateLocalComplex Aᵥ Aᵣ) n) => Prod.ext (Prod.ext rfl ?_) ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n => exact Subsingleton.elim _ _`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`. Conclude with `(congrArg (HomologicalComplex.homologyMap · n) h).trans (HomologicalComplex.homologyMap_id _ n)`.
+-/
 theorem tateCompactCohomologyMap_id (n : ℕ) :
     tateCompactCohomologyMap φ ψ (𝟙 A) (fun v => 𝟙 (Aᵥ v)) (fun w => 𝟙 (Aᵣ w)) (a := a) (ar := ar)
       (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm)
@@ -234,6 +281,11 @@ theorem tateCompactCohomologyMap_id (n : ℕ) :
   exact (congrArg (HomologicalComplex.homologyMap · n) h).trans
     (HomologicalComplex.homologyMap_id _ n)
 
+/- English proof (translation)
+Establish `h : tateCompactCochainsMap φ ψ (g ≫ g') (fun v => gᵥ v ≫ gᵥ' v) (fun w => gᵣ w ≫ gᵣ' w) (fun v => by rw [reassoc_of% hg v, hg' v, Functor.map_comp, Category.assoc]) (fun w => by rw [reassoc_of% hgr w, hgr' w, Functor.map_comp, Category.assoc]) = tateCompactCochainsMap φ ψ g gᵥ gᵣ …`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex A Aᵣ).X n × shiftNegOneX (tateLocalComplex Aᵥ Aᵣ) n) => Prod.ext (Prod.ext rfl ?_) ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n => exact Subsingleton.elim _ _`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`. Conclude with `(congrArg (HomologicalComplex.homologyMap · n) h).trans (HomologicalComplex.homologyMap_comp _ _ n)`.
+-/
 theorem tateCompactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ Cᵥ v)
     (gᵣ' : ∀ w, Bᵣ w ⟶ Cᵣ w)
     (hg' : ∀ v, b v ≫ gᵥ' v = (Rep.resFunctor (φ v).toMonoidHom).map g' ≫ c v)
@@ -259,6 +311,9 @@ theorem tateCompactCohomologyMap_comp (g' : B ⟶ C) (gᵥ' : ∀ v, Bᵥ v ⟶ 
   exact (congrArg (HomologicalComplex.homologyMap · n) h).trans
     (HomologicalComplex.homologyMap_comp _ _ n)
 
+/- English proof (translation)
+Establish `e : tateCompactCochainsMap φ ψ g gᵥ gᵣ hg hgr ≫ (mappingCoconeNat.fst (tateCompactRes φ ψ B Bᵥ b Bᵣ br) ≫ prodFst _ _) = (mappingCoconeNat.fst (tateCompactRes φ ψ A Aᵥ a Aᵣ ar) ≫ prodFst _ _) ≫ cochainsMap g` using `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`. Conclude with `(HomologicalComplex.homologyMap_comp _ _ _).symm.trans ((congrArg (HomologicalComplex.homologyMap · n) e).trans (HomologicalComplex.homologyMap_comp _ _ _))`.
+-/
 theorem tateCompactCohomologyMap_tateToGlobal (n : ℕ) :
     tateCompactCohomologyMap φ ψ g gᵥ gᵣ hg hgr n ≫ tateToGlobal φ ψ B Bᵥ b Bᵣ br n =
       tateToGlobal φ ψ A Aᵥ a Aᵣ ar n ≫ cohomologyMap g n := by
@@ -273,6 +328,9 @@ theorem tateCompactCohomologyMap_tateToGlobal (n : ℕ) :
 omit [∀ w, Fintype (F w)] in
 include hg hgr in
 
+/- English proof (translation)
+Use `ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (cohomologyMap_globalToLocal φ g gᵥ hg n) x`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq (cohomologyMap_globalToLocal ψ g gᵣ hgr n) x`.
+-/
 theorem cohomologyMap_tateGlobalToLocal (n : ℕ) :
     cohomologyMap g n ≫ tateGlobalToLocal φ ψ B Bᵥ b Bᵣ br n =
       tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n ≫ ModuleCat.ofHom
@@ -284,6 +342,13 @@ theorem cohomologyMap_tateGlobalToLocal (n : ℕ) :
 
 omit [∀ w, Fintype (F w)] in
 
+/- English proof (translation)
+Establish `e1` using `homologyMap_prodMapCx_prodHomologyIso_hom (piMap fun v => cochainsMap (gᵥ v)) (piMap fun w => cochainsMap (gᵣ w)) n`. Establish `e2` using `homologyMap_piMap_piHomologyIso_hom (fun v => cochainsMap (gᵥ v)) n`. Establish `e3` using `homologyMap_piMap_piHomologyIso_hom (fun w => cochainsMap (gᵣ w)) n`. Use `ModuleCat.hom_ext (LinearMap.ext fun z => Prod.ext ?_ ?_)` and prove the remaining obligations. Establish `h1` using `congrArg Prod.fst (hom_apply_hom_apply_eq_of_comp_eq e1 z)`.
+
+Express the relevant statement in the definitionally equal form `(localCohomologyIso Bᵥ n).hom.hom (HomologicalComplex.homologyMap (prodFst _ _) n |>.hom ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z)) = _`. Rewrite using `[show (HomologicalComplex.homologyMap (prodFst _ _) n).hom ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z) = _ from h1]`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq e2 _`. Establish `h2` using `congrArg Prod.snd (hom_apply_hom_apply_eq_of_comp_eq e1 z)`. Express the relevant statement in the definitionally equal form `(localCohomologyIso Bᵣ n).hom.hom (HomologicalComplex.homologyMap (prodSnd _ _) n |>.hom ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z)) = _`.
+
+Rewrite using `[show (HomologicalComplex.homologyMap (prodSnd _ _) n).hom ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z) = _ from h2]`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq e3 _`.
+-/
 theorem homologyMap_tateLocalMap_tateLocalCohomologyIso_hom (n : ℕ) :
     HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n ≫ (tateLocalCohomologyIso Bᵥ Bᵣ n).hom =
       (tateLocalCohomologyIso Aᵥ Aᵣ n).hom ≫ ModuleCat.ofHom
@@ -307,6 +372,11 @@ theorem homologyMap_tateLocalMap_tateLocalCohomologyIso_hom (n : ℕ) :
         ((HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n).hom z) = _ from h2]
     exact hom_apply_hom_apply_eq_of_comp_eq e3 _
 
+/- English proof (translation)
+Establish `h2 : (tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫ HomologicalComplex.homologyMap (tateLocalMap gᵥ gᵣ) n = ModuleCat.ofHom ((LinearMap.pi fun v => (cohomologyMap (gᵥ v) n).hom.comp (LinearMap.proj v)).prodMap (LinearMap.pi fun w => (cohomologyMap (gᵣ w) n).hom.comp (LinearMap.proj w))) …`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, Iso.eq_comp_inv]`. Conclude with `homologyMap_tateLocalMap_tateLocalCohomologyIso_hom gᵥ gᵣ n`. Establish `h` using `congrArg ((tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫ ·) (mappingCoconeNat.homologyδ_naturality (tateGlobalMap g gᵣ) (tateLocalMap gᵥ gᵣ) (tateCompactRes_naturality φ ψ g gᵥ gᵣ hg hgr) n)`. Simplify using `only [← Category.assoc] at h`.
+
+Rewrite `h` using `[h2, Category.assoc]`. Conclude with `h`.
+-/
 theorem tateLocalToCompact_tateCompactCohomologyMap (n : ℕ) :
     tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ tateCompactCohomologyMap φ ψ g gᵥ gᵣ hg hgr (n + 1) =
       ModuleCat.ofHom
@@ -387,6 +457,11 @@ noncomputable abbrev tateCompactCohomologyMap₂₃ (n : ℕ) :=
       (br := fun w => (sr w).τ₃)
     S.g (fun v => (Sᵥ v).g) (fun w => (Sᵣ w).g) (fun v => (s v).comm₂₃) (fun w => (sr w).comm₂₃) n
 
+/- English proof (translation)
+Establish `hK` using `(tateGlobalShortComplex S Sᵣ).zero`. Establish `hL` using `(tateLocalShortComplex Sᵥ Sᵣ).zero`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (tateGlobalComplex S.X₁ fun w => (Sᵣ w).X₁).X n × shiftNegOneX (tateLocalComplex (fun v => (Sᵥ v).X₁) fun w => (Sᵣ w).X₁) n) => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) hK) p.1`.
+
+Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => exact hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) hL) p.2`.
+-/
 theorem tateCompactCochainsMap₁₂_₂₃ :
     tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr ≫ tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr = 0 := by
   have hK := (tateGlobalShortComplex S Sᵣ).zero
@@ -399,6 +474,9 @@ theorem tateCompactCochainsMap₁₂_₂₃ :
     | zero => rfl
     | succ n => exact hom_apply_hom_apply_of_comp_eq (congrArg (·.f n) hL) p.2
 
+/- English proof (translation)
+The claim follows from `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ((congrArg (HomologicalComplex.homologyMap · n) (tateCompactCochainsMap₁₂_₂₃ φ ψ S Sᵥ s Sᵣ sr)).trans (HomologicalComplex.homologyMap_zero _ _ n))`.
+-/
 theorem tateCompactCohomologyMap_f_g (n : ℕ) :
     tateCompactCohomologyMap₁₂ φ ψ S Sᵥ s Sᵣ sr n ≫ tateCompactCohomologyMap₂₃ φ ψ S Sᵥ s Sᵣ sr n = 0 :=
   (HomologicalComplex.homologyMap_comp _ _ n).symm.trans
@@ -406,12 +484,18 @@ theorem tateCompactCohomologyMap_f_g (n : ℕ) :
       (tateCompactCochainsMap₁₂_₂₃ φ ψ S Sᵥ s Sᵣ sr)).trans
       (HomologicalComplex.homologyMap_zero _ _ n))
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem mapShortComplex_tateResShortComplex_f :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).f =
       tateCompactCochainsMap₁₂ φ ψ S Sᵥ s Sᵣ sr := by
   ext n : 1
   exact ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem mapShortComplex_tateResShortComplex_g :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).g =
       tateCompactCochainsMap₂₃ φ ψ S Sᵥ s Sᵣ sr := by
@@ -420,6 +504,9 @@ theorem mapShortComplex_tateResShortComplex_g :
 
 variable {S Sᵥ Sᵣ}
 
+/- English proof (translation)
+The claim follows from `mappingCoconeNat.shortExact_mapShortComplex _ (prodShortComplex_shortExact (cochainsShortComplex_shortExact hS) (degZeroShortComplex_shortExact (piRepShortComplex_shortExact hSᵣ))) (prodShortComplex_shortExact (piShortComplex_shortExact fun v => cochainsShortComplex_shortExact (h …`.
+-/
 theorem tateCompactCochains_shortExact (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact)
     (hSᵣ : ∀ w, (Sᵣ w).ShortExact) :
     (mappingCoconeNat.mapShortComplex (tateResShortComplex φ ψ S Sᵥ s Sᵣ sr)).ShortExact :=
@@ -440,12 +527,18 @@ noncomputable def tateCompactδ (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).Sho
 
 variable (hS : S.ShortExact) (hSᵥ : ∀ v, (Sᵥ v).ShortExact) (hSᵣ : ∀ w, (Sᵣ w).ShortExact)
 
+/- English proof (translation)
+Establish `h` using `(tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).comp_δ n (n + 1) rfl`. Rewrite `h` using `[mapShortComplex_tateResShortComplex_g]`. Conclude with `h`.
+-/
 theorem tateCompactCohomologyMap₂₃_tateCompactδ (n : ℕ) :
     tateCompactCohomologyMap₂₃ φ ψ S Sᵥ s Sᵣ sr n ≫ tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n = 0 := by
   have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).comp_δ n (n + 1) rfl
   rw [mapShortComplex_tateResShortComplex_g] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `(tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).δ_comp n (n + 1) rfl`. Rewrite `h` using `[mapShortComplex_tateResShortComplex_f]`. Conclude with `h`.
+-/
 theorem tateCompactδ_tateCompactCohomologyMap₁₂ (n : ℕ) :
     tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n ≫ tateCompactCohomologyMap₁₂ φ ψ S Sᵥ s Sᵣ sr (n + 1) = 0 := by
   have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).δ_comp n (n + 1) rfl
@@ -454,6 +547,9 @@ theorem tateCompactδ_tateCompactCohomologyMap₁₂ (n : ℕ) :
 
 include hS hSᵥ hSᵣ in
 
+/- English proof (translation)
+Establish `h` using `(tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₂ n`. Use `(ShortComplex.exact_iff_of_iso ?_).1 h` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _) ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _) (mapShortComplex_tateResShortComplex_f φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm)) ((Category.id_comp _).trans ((congrArg (Homologic …`.
+-/
 theorem tateCompactCohomology_exact₂ (n : ℕ) :
     (ShortComplex.mk _ _ (tateCompactCohomologyMap_f_g φ ψ S Sᵥ s Sᵣ sr n)).Exact := by
   have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₂ n
@@ -464,6 +560,9 @@ theorem tateCompactCohomology_exact₂ (n : ℕ) :
     ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _)
       (mapShortComplex_tateResShortComplex_g φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
 
+/- English proof (translation)
+Establish `h` using `(tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₃ n (n + 1) rfl`. Use `(ShortComplex.exact_iff_of_iso ?_).1 h` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _) ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _) (mapShortComplex_tateResShortComplex_g φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm)) ((Category.id_comp _).trans (Category.comp_id _). …`.
+-/
 theorem tateCompactCohomology_exact₃ (n : ℕ) :
     (ShortComplex.mk _ _ (tateCompactCohomologyMap₂₃_tateCompactδ φ ψ s sr hS hSᵥ hSᵣ n)).Exact := by
   have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₃ n (n + 1) rfl
@@ -473,6 +572,9 @@ theorem tateCompactCohomology_exact₃ (n : ℕ) :
       (mapShortComplex_tateResShortComplex_g φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).symm))
     ((Category.id_comp _).trans (Category.comp_id _).symm)
 
+/- English proof (translation)
+Establish `h` using `(tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₁ n (n + 1) rfl`. Use `(ShortComplex.exact_iff_of_iso ?_).1 h` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _) ((Category.id_comp _).trans (Category.comp_id _).symm) ((Category.id_comp _).trans ((congrArg (HomologicalComplex.homologyMap · _) (mapShortComplex_tateResShortComplex_f φ ψ S Sᵥ s Sᵣ sr)).symm.trans (Category.comp_id _).s …`.
+-/
 theorem tateCompactCohomology_exact₁ (n : ℕ) :
     (ShortComplex.mk _ _ (tateCompactδ_tateCompactCohomologyMap₁₂ φ ψ s sr hS hSᵥ hSᵣ n)).Exact := by
   have h := (tateCompactCochains_shortExact φ ψ s sr hS hSᵥ hSᵣ).homology_exact₁ n (n + 1) rfl

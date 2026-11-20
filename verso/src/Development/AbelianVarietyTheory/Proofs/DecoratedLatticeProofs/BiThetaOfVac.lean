@@ -16,6 +16,9 @@ namespace GlobalTheory.FrComb
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Use `⟨fun γ w => hK.quasiL γ w v, ?_, hK.cont.comp (continuous_id.prodMk continuous_const), fun k L hL hLf w => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, h⟩` from `hK.levL`. Conclude with `⟨U, hU, fun a ha ha' => h a ha ha' v⟩`. Use `hK.smooth k L 0 hL continuous_zero hLf (fun _ => by simp) w v` as an intermediate fact. Simplify using `using this`.
+-/
 theorem slice_left {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBiTheta ψ A S A' K) (v : WO S A') :
     IsThetaFunO ψ A S (fun u => K u v) := by
   refine ⟨fun γ w => hK.quasiL γ w v, ?_, hK.cont.comp (continuous_id.prodMk continuous_const), fun k L hL hLf w => ?_⟩
@@ -24,6 +27,9 @@ theorem slice_left {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBiT
   · have := hK.smooth k L 0 hL continuous_zero hLf (fun _ => by simp) w v
     simpa using this
 
+/- English proof (translation)
+Use `⟨fun γ w => hK.quasiR γ u w, ?_, hK.cont.comp (continuous_const.prodMk continuous_id), fun k L hL hLf w => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, h⟩` from `hK.levR`. Conclude with `⟨U, hU, fun a ha ha' => h a ha ha' u⟩`. Use `hK.smooth k 0 L continuous_zero hL (fun _ => by simp) hLf u w` as an intermediate fact. Simplify using `using this`.
+-/
 theorem slice_right {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBiTheta ψ A S A' K) (u : WO A S) :
     IsThetaFunO ψ S A' (K u) := by
   refine ⟨fun γ w => hK.quasiR γ u w, ?_, hK.cont.comp (continuous_const.prodMk continuous_id), fun k L hL hLf w => ?_⟩
@@ -32,6 +38,11 @@ theorem slice_right {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBi
   · have := hK.smooth k 0 L continuous_zero hL (fun _ => by simp) hLf u w
     simpa using this
 
+/- English proof (translation)
+Establish `e1 : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = 1` using `congrArg Units.val (show finHom S g⁻¹ = 1 from inv_mem hg)`. Establish `e2 : (Formalism.L2.Theta.mt T h).map (finPart D) = 1` using `congrArg Units.val (show finHom T h = 1 from hh)`. Establish `e3 : (actO S T g h x).map (infPart D) = x.map (infPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hx, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Establish `e4 : (actO S T g h x).map (finPart D) = x.map (finPart D)`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.mul_one, Matrix.one_mul]`. Conclude with `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)`.
+-/
 theorem actO_real {S T : HSp D} {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h ∈ GinfC T) {x : WO S T}
     (hx : x.map (infPart D) = 0) : actO S T g h x = x := by
   have e1 : (Formalism.L2.Theta.mt S g⁻¹).map (finPart D) = 1 := congrArg Units.val (show finHom S g⁻¹ = 1 from inv_mem hg)
@@ -44,12 +55,20 @@ theorem actO_real {S T : HSp D} {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (
     rw [Matrix.map_mul, Matrix.map_mul, e1, e2, Matrix.mul_one, Matrix.one_mul]
   exact Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext (congrFun (congrFun e3 i) j) (congrFun (congrFun e4 i) j)
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun hx i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.zero_apply] at this ⊢`. Rewrite using `[nsmul_eq_mul, RingHom.map_mul, this, mul_zero]`.
+-/
 theorem nsmul_fin {S T : HSp D} {x : WO S T} (hx : x.map (infPart D) = 0) (n : ℕ) : (n • x).map (infPart D) = 0 := by
   ext i j
   have := congrFun (congrFun hx i) j
   simp only [Matrix.map_apply, Matrix.smul_apply, Matrix.zero_apply] at this ⊢
   rw [nsmul_eq_mul, RingHom.map_mul, this, mul_zero]
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun e he u hu hu' => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[actO_real hg hh (nsmul_fin (GlobalTheory.SplitScalar.latO_fin hu) 2)]`. Use `_ = om (g, h) (heisO ψ S T (2 • u) f) := (hom.om_heis g h _ f hf).symm`. Use `_ = om (g, h) f := by rw [hl.1 u hu]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[actO_real hg hh (GlobalTheory.SplitScalar.latO_fin hu)]`. Use `_ = om (g, h) (heisO ψ S T u f) := (hom.om_heis g h _ f hf).symm`. Use `_ = om (g, h) f := by rw [hl.2 e he u hu hu']`.
+-/
 theorem latVac_om {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χS χT om)
     {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h ∈ GinfC T) {LS : Set (Fin S.rank → D.host.E)}
     {LT : Set (Fin T.rank → D.host.E)} {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -65,6 +84,11 @@ theorem latVac_om {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (
       _ = om (g, h) (heisO ψ S T u f) := (hom.om_heis g h _ f hf).symm
       _ = om (g, h) f := by rw [hl.2 e he u hu hu']
 
+/- English proof (translation)
+Establish `key : ∀ w, (∀ v', heisO ψ A S w (fun u => K u v') = fun u => K u v') → heisO ψ A S w (fun u => T (K u) v) = fun u => T (K u) v`. Introduce `w hw`. Use function extensionality and compare the values at `u`. Establish `e : K u = ψ (symplOH A S u w) • K (u + w)` using `funext fun v' => (congrFun (hw v') u).symm`. Rewrite using `[e, map_smul]`.
+
+Both sides reduce to the same expression. Conclude with `⟨fun u hu => key _ fun v' => (hK v').1 u hu, fun e he u hu hu' => key _ fun v' => (hK v').2 e he u hu hu'⟩`.
+-/
 theorem latVac_opR {A S A' : HSp D} {Λ : AddSubgroup (WO A S)} {K : WO A S → WO S A' → ℂ}
     (hK : ∀ v, IsLatVac (heisO ψ A S) Λ (fun u => K u v)) (T : Module.End ℂ (WO S A' → ℂ)) (v : WO S A') :
     IsLatVac (heisO ψ A S) Λ (fun u => T (K u) v) := by
@@ -77,6 +101,11 @@ theorem latVac_opR {A S A' : HSp D} {Λ : AddSubgroup (WO A S)} {K : WO A S → 
     rfl
   exact ⟨fun u hu => key _ fun v' => (hK v').1 u hu, fun e he u hu hu' => key _ fun v' => (hK v').2 e he u hu hu'⟩
 
+/- English proof (translation)
+Establish `key : ∀ w, (∀ u', heisO ψ S A' w (K u') = K u') → heisO ψ S A' w (fun v => T (fun u' => K u' v) u) = fun v => T (fun u' => K u' v) u`. Introduce `w hw`. Use function extensionality and compare the values at `v`. Establish `e : (fun u' => K u' v) = ψ (symplOH S A' v w) • fun u' => K u' (v + w)`. Use function extensionality and compare the values at `fun u' => (congrFun (hw u') v).symm`.
+
+Rewrite using `[e, map_smul]`. Both sides reduce to the same expression. Conclude with `⟨fun v hv => key _ fun u' => (hK u').1 v hv, fun e he v hv hv' => key _ fun u' => (hK u').2 e he v hv hv'⟩`.
+-/
 theorem latVac_opL {A S A' : HSp D} {Λ : AddSubgroup (WO S A')} {K : WO A S → WO S A' → ℂ}
     (hK : ∀ u, IsLatVac (heisO ψ S A') Λ (K u)) (T : Module.End ℂ (WO A S → ℂ)) (u : WO A S) :
     IsLatVac (heisO ψ S A') Λ (fun v => T (fun u' => K u' v) u) := by
@@ -111,6 +140,13 @@ def latNbhd (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.
       RingHom.map_sub, RingHom.map_neg, nsmul_eq_mul, RingHom.map_mul] at e ⊢
     linear_combination -e
 
+/- English proof (translation)
+Take `⟨l, hl, h⟩` from `hx`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `hl0` using `GlobalTheory.SplitScalar.latO_fin hl`. Use extensionality with `i j`. Use `GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations.
+
+Establish `e1` using `congrFun (congrFun hx' i) j`. Establish `e2` using `congrFun (congrFun hl0 i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, Matrix.smul_apply, nsmul_eq_mul, RingHom.map_mul] at e1 e2 ⊢`. Rewrite using `[e1, e2, mul_zero]`. Establish `e` using `congrFun (congrFun h i) j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.sub_apply, Matrix.zero_apply, RingHom.map_sub] at e`. Conclude with `sub_eq_zero.1 e`.
+-/
 theorem eq_two_smul {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} {x : WO S T}
     (hx : x ∈ latNbhd S T LS LT) (hx' : x.map (infPart D) = 0) :
     ∃ l ∈ latO S T LS LT (fun _ => True), x = 2 • l := by
@@ -127,6 +163,11 @@ theorem eq_two_smul {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set
     simp only [Matrix.map_apply, Matrix.sub_apply, Matrix.zero_apply, RingHom.map_sub] at e
     exact sub_eq_zero.1 e
 
+/- English proof (translation)
+Use `⟨hv.cont, hs, fun γ u v => ((hv.left v).1.quasi γ u), fun γ u v => ((hv.right u).1.quasi γ v), ?_, ?_⟩` and prove the remaining obligations. Use `⟨latNbhd A S LA LS, GlobalTheory.LatOpen.isOpen_nsmul_latO D A S LA LS hLA hLS 2 two_pos, fun a ha ha' v => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, rfl⟩` from `eq_two_smul ha ha'`. Conclude with `(hv.left v).2.1 l hl`. Use `⟨latNbhd S A' LS LA', GlobalTheory.LatOpen.isOpen_nsmul_latO D S A' LS LA' hLS hLA' 2 two_pos, fun a ha ha' u => ?_⟩` and prove the remaining obligations.
+
+Take `⟨l, hl, rfl⟩` from `eq_two_smul ha ha'`. Conclude with `(hv.right u).2.1 l hl`.
+-/
 theorem biTheta_of_vac {A S A' : HSp D} {LA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)}
     {LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {LA' : Submodule (𝓞 D.host.E) (Fin A'.rank → D.host.E)}
     (hLA : IsSelfDualC A LA) (hLS : IsSelfDualC S LS) (hLA' : IsSelfDualC A' LA') {C : WO A S → WO S A' → ℂ}
@@ -139,6 +180,9 @@ theorem biTheta_of_vac {A S A' : HSp D} {LA : Submodule (𝓞 D.host.E) (Fin A.r
     obtain ⟨l, hl, rfl⟩ := eq_two_smul ha ha'
     exact (hv.right u).2.1 l hl
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hom.om_heis g h x f hf, actO_real hg hh (hc x hx)]`.
+-/
 theorem om_comb {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χS χT om)
     {g : GA D S} {h : GA D T} (hg : g ∈ GinfC S) (hh : h ∈ GinfC T) {c : WO S T →₀ ℂ} (hc : IsFinComb c)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : om (g, h) (comb ψ S T c f) = comb ψ S T c (om (g, h) f) := by
@@ -147,6 +191,11 @@ theorem om_comb {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (ho
   refine Finset.sum_congr rfl fun x hx => ?_
   rw [map_smul, hom.om_heis g h x f hf, actO_real hg hh (hc x hx)]
 
+/- English proof (translation)
+Establish `e : (fun u => comb ψ S A' c (K u) v) = ∑ y ∈ c.support, (c y * ψ (symplOH S A' v y)) • fun u => K u (v + y)`. Use function extensionality and compare the values at `u`. Simplify using `only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, mul_assoc]`. Rewrite using `[e, map_sum]`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, map_smul, mul_assoc]`.
+-/
 theorem op_combR {A S A' : HSp D} (T : Module.End ℂ (WO A S → ℂ)) (c : WO S A' →₀ ℂ) (K : WO A S → WO S A' → ℂ)
     (v : WO S A') : T (fun u => comb ψ S A' c (K u) v) = fun u => comb ψ S A' c (fun v' => T (fun u' => K u' v') u) v := by
   have e : (fun u => comb ψ S A' c (K u) v) =
@@ -157,6 +206,11 @@ theorem op_combR {A S A' : HSp D} (T : Module.End ℂ (WO A S → ℂ)) (c : WO 
   funext u
   simp only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, map_smul, mul_assoc]
 
+/- English proof (translation)
+Establish `e : (fun v => comb ψ A S c (fun u' => K u' v) u) = ∑ x ∈ c.support, (c x * ψ (symplOH A S u x)) • K (u + x)`. Use function extensionality and compare the values at `v`. Simplify using `only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, mul_assoc]`. Rewrite using `[e, map_sum]`. Use function extensionality and compare the values at `v`.
+
+Simplify using `only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, map_smul, mul_assoc]`.
+-/
 theorem op_combL {A S A' : HSp D} (T : Module.End ℂ (WO S A' → ℂ)) (c : WO A S →₀ ℂ) (K : WO A S → WO S A' → ℂ)
     (u : WO A S) : T (fun v => comb ψ A S c (fun u' => K u' v) u) = fun v => comb ψ A S c (fun u' => T (K u') v) u := by
   have e : (fun v => comb ψ A S c (fun u' => K u' v) u) =
@@ -167,10 +221,24 @@ theorem op_combL {A S A' : HSp D} (T : Module.End ℂ (WO S A' → ℂ)) (c : WO
   funext v
   simp only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul, map_smul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul]`.
+-/
 theorem comb_apply {S T : HSp D} (c : WO S T →₀ ℂ) (g : WO S T → ℂ) (u : WO S T) :
     comb ψ S T c g u = ∑ x ∈ c.support, c x * (ψ (symplOH S T u x) * g (u + x)) := by
   simp only [comb, Finset.sum_apply, Pi.smul_apply, heisO, smul_eq_mul]
 
+/- English proof (translation)
+Set `K : AddSubgroup (WO S T)` to `{ carrier := {w | ψ (symplOH S T w x) = 1} zero_mem' := by show ψ _ = 1`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_zero_left, ψ.map_zero_eq_one]`. Use the proof step `add_mem' := fun {a b} ha hb => by`. Establish `ha' : ψ _ = 1` using `ha`. Establish `hb' : ψ _ = 1` using `hb`.
+
+Use `show ψ _ = 1`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, AddChar.map_add_eq_mul, ha', hb', one_mul]`. Use the proof step `neg_mem' := fun {a} ha => by`. Establish `ha' : ψ _ = 1` using `ha`. Use `show ψ _ = 1`.
+
+Use `AddChar.map_add_eq_mul ψ (symplOH S T a x) (symplOH S T (-a) x)` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.FinTranslate.symplOH_add_left, add_neg_cancel, GlobalTheory.FinTranslate.symplOH_zero_left, ψ.map_zero_eq_one, ha', one_mul]`. Conclude with `this.symm }`. Use `show IsOpen (K : Set (WO S T))`. Use `K.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations.
+
+Establish `h1 : Continuous fun w : WO S T => (symplOH S T w x).2` using `continuous_snd.comp (GlobalTheory.FinTranslate.continuous_symplOH S T x)`. Establish `h2` using `h1.continuousAt.preimage_mem_nhds (x := 0) (t := {a | ψ (pairA D.host.F 0 a) = 1}) (by rw [GlobalTheory.FinTranslate.symplOH_zero_left]; exact GlobalTheory.FinTranslate.ker_mem_nhds hψ.1.1 hψ.1.2.1)`. Use `Filter.mem_of_superset h2 fun w hw => ?_` and prove the remaining obligations. Establish `h3 : GlobalTheory.FinTranslate.eInf D * symplOH S T w x = 0`. Rewrite using `[← GlobalTheory.FinTranslate.symplOH_smul_right, GlobalTheory.FinTranslate.smul_fin hx, GlobalTheory.FinTranslate.symplOH_zero_right]`.
+
+Establish `h4 : symplOH S T w x = pairA D.host.F 0 (symplOH S T w x).2` using `Prod.ext ((one_mul _).symm.trans (congrArg Prod.fst h3)) rfl`. Use `show ψ _ = 1`. Rewrite using `[h4]`. Conclude with `hw`.
+-/
 theorem isOpen_ker {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {x : WO S T} (hx : x.map (infPart D) = 0) :
     IsOpen {w : WO S T | ψ (symplOH S T w x) = 1} := by
   let K : AddSubgroup (WO S T) :=
@@ -204,6 +272,13 @@ theorem isOpen_ker {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {x : WO S T} (hx : 
   show ψ _ = 1
   rw [h4]; exact hw
 
+/- English proof (translation)
+Set `U : AddSubgroup (WO S T)` to `{ carrier := {w | ∀ x ∈ c.support, ψ (symplOH S T w x) = 1} zero_mem' := fun x _ => by rw [GlobalTheory.FinTranslate.symplOH_zero_left, ψ.map_zero_eq_one] add_mem' := fun {a b} ha hb x hx => by`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, AddChar.map_add_eq_mul, ha x hx, hb x hx, one_mul]`. Use the proof step `neg_mem' := fun {a} ha x hx => by`. Use `AddChar.map_add_eq_mul ψ (symplOH S T a x) (symplOH S T (-a) x)` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.FinTranslate.symplOH_add_left, add_neg_cancel, GlobalTheory.FinTranslate.symplOH_zero_left, ψ.map_zero_eq_one, ha x hx, one_mul]`.
+
+Conclude with `this.symm }`. Use `⟨U, ?_, fun w hw => hw⟩` and prove the remaining obligations. Establish `e : (U : Set (WO S T)) = ⋂ x ∈ c.support, {w | ψ (symplOH S T w x) = 1}`. Use extensionality with `w`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isOpen_biInter_finset fun x hx => isOpen_ker hψ (hc x hx)`.
+-/
 theorem exists_orth {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀ ℂ} (hc : IsFinComb c) :
     ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ w ∈ U, ∀ x ∈ c.support, ψ (symplOH S T w x) = 1 := by
   let U : AddSubgroup (WO S T) :=
@@ -224,6 +299,11 @@ theorem exists_orth {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀
   rw [e]
   exact isOpen_biInter_finset fun x hx => isOpen_ker hψ (hc x hx)
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[GlobalTheory.SplitScalar.heisO_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `h2 : ψ (symplOH S T x w) = 1`. Rewrite using `[GlobalTheory.FinTranslate.symplOH_skew, AddChar.map_neg_eq_inv, hw x hx, inv_one]`.
+
+Rewrite using `[GlobalTheory.SplitScalar.heisO_smul]`. Use `congr 1`. Use `conv_rhs => rw [← hg]`. Rewrite using `[GlobalTheory.FinTranslate.heisO_heisO, GlobalTheory.FinTranslate.heisO_heisO, hw x hx, h2, add_comm]`.
+-/
 theorem heisO_comb {S T : HSp D} {c : WO S T →₀ ℂ} {w : WO S T} (hw : ∀ x ∈ c.support, ψ (symplOH S T w x) = 1)
     {g : WO S T → ℂ} (hg : heisO ψ S T w g = g) : heisO ψ S T w (comb ψ S T c g) = comb ψ S T c g := by
   unfold comb
@@ -236,6 +316,23 @@ theorem heisO_comb {S T : HSp D} {c : WO S T →₀ ℂ} {w : WO S T} (hw : ∀ 
   conv_rhs => rw [← hg]
   rw [GlobalTheory.FinTranslate.heisO_heisO, GlobalTheory.FinTranslate.heisO_heisO, hw x hx, h2, add_comm]
 
+/- English proof (translation)
+Establish `e : (fun u v => comb ψ A S c (fun u' => K u' v) u) = fun u v => ∑ x ∈ c.support, c x * (ψ (symplOH A S u x) * K (u + x) v)`. Use function extensionality and compare the values at `u v`. Conclude with `comb_apply c _ u`. Use `⟨?_, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [comb_apply]`.
+
+Conclude with `continuous_finset_sum _ fun x _ => continuous_const.mul ((hψ.1.1.comp ((GlobalTheory.FinTranslate.continuous_symplOH A S x).comp continuous_fst)).mul (hK.cont.comp ((continuous_fst.add continuous_const).prodMk continuous_snd)))`. Introduce `n L L' hL hL' hLf hL'f u v`. Rewrite using `[e]`. Establish `e2 : (fun t => ∑ x ∈ c.support, c x * (ψ (symplOH A S (u + L t) x) * K (u + L t + x) (v + L' t))) = fun t => ∑ x ∈ c.support, c x * (ψ (symplOH A S u x) * K (u + x + L t) (v + L' t))`. Use function extensionality and compare the values at `t`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_real_fin (hc x hx) (hLf t), add_zero, add_right_comm]`. Simplify using `only []`. Rewrite using `[e2]`. Conclude with `ContDiff.sum fun x _ => contDiff_const.mul (contDiff_const.mul (hK.smooth n L L' hL hL' hLf hL'f (u + x) v))`.
+
+Simplify using `only [comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[add_assoc, hK.quasiL, GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_add_right]`. Establish `key : ψ (symplOH A S (ratW S A γ) x + symplOH A S u x) * ψ (-(symplOH A S (ratW S A γ) u + symplOH A S (ratW S A γ) x)) = ψ (-(symplOH A S (ratW S A γ) u)) * ψ (symplOH A S u x)`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(c x * K (u + x) v) * key`. Simplify using `only [comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hK.quasiR]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, hUf⟩` from `hK.levL`. Take `⟨V, hV, hVf⟩` from `exists_orth hψ hc`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' v => ?_⟩` and prove the remaining obligations.
+
+Conclude with `heisO_comb (hVf a ha.2) (hUf a ha.1 ha' v)`. Take `⟨U, hU, hUf⟩` from `hK.levR`. Use `⟨U, hU, fun a ha ha' u => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `only [heisO, comb_apply, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `e3` using `congrFun (hUf a ha ha' (u + x)) v`. Simplify using `only [heisO] at e3`. Rewrite using `[← e3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem biTheta_combL {A S A' : HSp D} (hψ : IsStdChar D ψ (-1)) {K : WO A S → WO S A' → ℂ}
     (hK : IsBiTheta ψ A S A' K) {c : WO A S →₀ ℂ} (hc : IsFinComb c) :
     IsBiTheta ψ A S A' (fun u v => comb ψ A S c (fun u' => K u' v) u) := by
@@ -283,6 +380,23 @@ theorem biTheta_combL {A S A' : HSp D} (hψ : IsStdChar D ψ (-1)) {K : WO A S �
     rw [← e3]
     ring
 
+/- English proof (translation)
+Establish `e : (fun u v => comb ψ S A' c (K u) v) = fun u v => ∑ y ∈ c.support, c y * (ψ (symplOH S A' v y) * K u (v + y))`. Use function extensionality and compare the values at `u v`. Conclude with `comb_apply c _ v`. Use `⟨?_, ?_, fun γ u v => ?_, fun γ u v => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [comb_apply]`.
+
+Conclude with `continuous_finset_sum _ fun y _ => continuous_const.mul ((hψ.1.1.comp ((GlobalTheory.FinTranslate.continuous_symplOH S A' y).comp continuous_snd)).mul (hK.cont.comp (continuous_fst.prodMk (continuous_snd.add continuous_const))))`. Introduce `n L L' hL hL' hLf hL'f u v`. Rewrite using `[e]`. Establish `e2 : (fun t => ∑ y ∈ c.support, c y * (ψ (symplOH S A' (v + L' t) y) * K (u + L t) (v + L' t + y))) = fun t => ∑ y ∈ c.support, c y * (ψ (symplOH S A' v y) * K (u + L t) (v + y + L' t))`. Use function extensionality and compare the values at `t`.
+
+Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_real_fin (hc y hy) (hL'f t), add_zero, add_right_comm]`. Simplify using `only []`. Rewrite using `[e2]`. Conclude with `ContDiff.sum fun y _ => contDiff_const.mul (contDiff_const.mul (hK.smooth n L L' hL hL' hLf hL'f u (v + y)))`.
+
+Simplify using `only [comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[hK.quasiL]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [comb_apply, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[add_assoc, hK.quasiR, GlobalTheory.FinTranslate.symplOH_add_left, GlobalTheory.FinTranslate.symplOH_add_right]`. Establish `key : ψ (symplOH S A' (ratW A' S γ) y + symplOH S A' v y) * ψ (-(symplOH S A' (ratW A' S γ) v + symplOH S A' (ratW A' S γ) y)) = ψ (-(symplOH S A' (ratW A' S γ) v)) * ψ (symplOH S A' v y)`. Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(c y * K u (v + y)) * key`. Take `⟨U, hU, hUf⟩` from `hK.levL`. Use `⟨U, hU, fun a ha ha' v => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [heisO, comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `e3` using `congrFun (hUf a ha ha' (v + y)) u`. Simplify using `only [heisO] at e3`. Rewrite using `[← e3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, hUf⟩` from `hK.levR`. Take `⟨V, hV, hVf⟩` from `exists_orth hψ hc`. Use `⟨U ⊓ V, hU.inter hV, fun a ha ha' u => ?_⟩` and prove the remaining obligations. Conclude with `heisO_comb (hVf a ha.2) (hUf a ha.1 ha' u)`.
+-/
 theorem biTheta_combR {A S A' : HSp D} (hψ : IsStdChar D ψ (-1)) {K : WO A S → WO S A' → ℂ}
     (hK : IsBiTheta ψ A S A' K) {c : WO S A' →₀ ℂ} (hc : IsFinComb c) :
     IsBiTheta ψ A S A' (fun u v => comb ψ S A' c (K u) v) := by

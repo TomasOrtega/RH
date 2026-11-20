@@ -12,6 +12,11 @@ namespace GlobalTheory.CompanionTheory.PhiGpZero
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hp` using `(mem_Mir_iff k (p : GL (Fin 1) k)).1 p.2`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Take `rfl : a = Fin.last 0` from `Fin.ext (by simp)`.
+
+Take `rfl : b = Fin.last 0` from `Fin.ext (by simp)`. Use `congrFun hp (Fin.last 0)` as an intermediate fact. Simplify `this` using `[eLast]`.
+-/
 theorem mir_zero_eq_one (p : Mir k 0) : p = 1 := by
   have hp := (mem_Mir_iff k (p : GL (Fin 1) k)).1 p.2
   apply Subtype.ext
@@ -22,6 +27,9 @@ theorem mir_zero_eq_one (p : Mir k 0) : p = 1 := by
   have := congrFun hp (Fin.last 0)
   simpa [eLast] using this
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show ((u : GL (Fin (n + 1)) k) : Matrix _ _ k) (Fin.castSucc a) (Fin.castSucc b) = _`. Apply the tactic sequence `rw [GlobalTheory.CompanionTheory.GpUnip.mirUin_entry k n u hu _ _ (Fin.castSucc_ne_last b)]`. Simplify using `[one_apply]`.
+-/
 theorem mirProj_of_mem (n : ℕ) (u : Mir k n) (hu : u ∈ MirUin k n) : mirabolicProjection k n u = 1 := by
   apply Units.ext
   ext a b
@@ -29,15 +37,26 @@ theorem mirProj_of_mem (n : ℕ) (u : Mir k n) (hu : u ∈ MirUin k n) : mirabol
   rw [GlobalTheory.CompanionTheory.GpUnip.mirUin_entry k n u hu _ _ (Fin.castSucc_ne_last b)]
   simp [one_apply]
 
+/- English proof (translation)
+Apply `GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, mirProj_of_mem n u hu, mul_one, map_inv, mul_inv_cancel]`.
+-/
 theorem conj_mem (n : ℕ) (g u : Mir k n) (hu : u ∈ MirUin k n) : g * u * g⁻¹ ∈ MirUin k n := by
   apply GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one
   rw [map_mul, map_mul, mirProj_of_mem n u hu, mul_one, map_inv, mul_inv_cancel]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic, mem_parab_two]`. Introduce `b`. Conclude with `b.elim0`.
+-/
 theorem mem_mirabolicParabolic_zero (m : ℕ) (g : Mir k (m + 1 + 0)) : g ∈ MirabolicParabolic k (m + 1) 0 := by
   rw [GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic, mem_parab_two]
   intro b
   exact b.elim0
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show f.1.1.1 (g * u) = f.1.1.1 g`.
+
+Take `⟨h, hσ⟩` from `hu g`. Establish `hf : f.1.1.1 (g * u * g⁻¹ * g) = σ ⟨_, h⟩ (f.1.1.1 g)` using `f.1.1.2 ⟨_, h⟩ g`. Establish `e : (g * u * g⁻¹) * g = g * u` using `by group`. Rewrite `hf` using `[e, hσ]`. Conclude with `hf`.
+-/
 theorem cInd_apply_of_conj {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) (σ : Representation ℂ H W) (u : G)
     (hu : ∀ g : G, ∃ h : g * u * g⁻¹ ∈ H, σ ⟨_, h⟩ = 1) (f : cIndSpace H σ) : cInd H σ u f = f := by
@@ -52,6 +71,9 @@ theorem cInd_apply_of_conj {G W : Type} [Group G] [TopologicalSpace G] [IsTopolo
   rw [e, hσ] at hf
   exact hf
 
+/- English proof (translation)
+Use `cInd_apply_of_conj _ _ u (fun g => ⟨mem_mirabolicParabolic_zero m _, ?_⟩) f` and prove the remaining obligations. Establish `hc` using `conj_mem (m + 1 + 0) g u hu`. Establish `hp : gpProj k (m + 1) 0 ⟨_, mem_mirabolicParabolic_zero m (g * u * g⁻¹)⟩ = 1` using `Prod.ext (GlobalTheory.CompanionTheory.GpUnip.gpProj_unip k (m + 1) 0 ⟨_, mem_mirabolicParabolic_zero m _⟩ hc).1 (mir_zero_eq_one _)`. Use `show (extTensor ρ₁ τ₁) (gpProj k (m + 1) 0 ⟨_, mem_mirabolicParabolic_zero m (g * u * g⁻¹)⟩) = 1`. Rewrite using `[hp, map_one]`.
+-/
 theorem prodGP_unipotent_apply {m : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (ρ₁ : Representation ℂ (GL (Fin (m + 1)) k) V) (τ₁ : Representation ℂ (Mir k 0) W)
     (u : Mir k (m + 1 + 0)) (hu : u ∈ MirUin k (m + 1 + 0))
@@ -64,6 +86,11 @@ theorem prodGP_unipotent_apply {m : ℕ} {V W : Type} [AddCommGroup V] [Module �
   show (extTensor ρ₁ τ₁) (gpProj k (m + 1) 0 ⟨_, mem_mirabolicParabolic_zero m (g * u * g⁻¹)⟩) = 1
   rw [hp, map_one]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(AddChar.ne_one_iff).1 hψ`. Set `w : Multiplicative (Fin (n + 1) → k)` to `Multiplicative.ofAdd (Pi.single (Fin.last n) x)`. Set `u : MirUin k (n + 1)` to `⟨⟨unip k (n + 1) w, MirU_le_Mir k (n + 1) ⟨w, rfl⟩⟩, ⟨w, rfl⟩⟩`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[mirChar_eq k ψ n u w rfl]`.
+
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h2 : Circle.toUnits (ψ x) = 1` using `by simpa [w] using h`. Establish `h3 : ((Circle.toUnits (ψ x) : ℂˣ) : ℂ) = 1` using `by rw [h2]; rfl`. Conclude with `Circle.ext (by simpa using h3)`.
+-/
 theorem exists_mirChar_ne (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (n : ℕ) :
     ∃ u : MirUin k (n + 1), mirChar k ψ n u ≠ 1 := by
   obtain ⟨x, hx⟩ := (AddChar.ne_one_iff).1 hψ
@@ -77,6 +104,17 @@ theorem exists_mirChar_ne (ψ : AddChar k Circle) (hψ : ψ ≠ 1) (n : ℕ) :
   have h3 : ((Circle.toUnits (ψ x) : ℂˣ) : ℂ) = 1 := by rw [h2]; rfl
   exact Circle.ext (by simpa using h3)
 
+/- English proof (translation)
+Establish `hne : (1 : ℂ) - ((mirChar k ψ n u : ℂˣ) : ℂ) ≠ 0`. Introduce `h`. Apply `hθ` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`.
+
+Conclude with `(sub_eq_zero.1 h).symm`. Establish `top : twKer X.ρ (MirUin k (n + 1)) (mirChar k ψ n) = ⊤`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Establish `hmem : X.ρ (u : Mir k (n + 1)) v - ((mirChar k ψ n u : ℂˣ) : ℂ) • v ∈ twKer X.ρ (MirUin k (n + 1)) (mirChar k ψ n)` using `Submodule.subset_span ⟨u, v, rfl⟩`. Rewrite `hmem` using `[hu]`.
+
+Establish `e : v = ((1 : ℂ) - ((mirChar k ψ n u : ℂˣ) : ℂ))⁻¹ • (v - ((mirChar k ψ n u : ℂˣ) : ℂ) • v)` using `by conv_rhs => rw [show v - ((mirChar k ψ n u : ℂˣ) : ℂ) • v = ((1 : ℂ) - ((mirChar k ψ n u : ℂˣ) : ℂ)) • v by`. Rewrite using `[sub_smul, one_smul]]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+
+Use `show Subsingleton (X.V ⧸ twKer X.ρ (MirUin k (n + 1)) (mirChar k ψ n))`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using Submodule.Quotient.induction_on with`. Consider the case `H a`. Proceed by induction on `b using Submodule.Quotient.induction_on with`.
+
+Consider the case `H b => exact (Submodule.Quotient.eq _).2 (top ▸ Submodule.mem_top)`.
+-/
 theorem phiN_subsingleton_of_fixed (ψ : AddChar k Circle) {n : ℕ} (X : MRep k (n + 1)) (u : MirUin k (n + 1))
     (hθ : mirChar k ψ n u ≠ 1) (hu : ∀ v, X.ρ (u : Mir k (n + 1)) v = v) : Subsingleton (phiN ψ X).V := by
   have hne : (1 : ℂ) - ((mirChar k ψ n u : ℂˣ) : ℂ) ≠ 0 := by
@@ -103,6 +141,9 @@ theorem phiN_subsingleton_of_fixed (ψ : AddChar k Circle) {n : ℕ} (X : MRep k
     induction b using Submodule.Quotient.induction_on with
     | H b => exact (Submodule.Quotient.eq _).2 (top ▸ Submodule.mem_top)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ _ hψ m ρ τ h _ _`. Take `⟨u, hu⟩` from `exists_mirChar_ne ψ hψ (m + 0)`. Use `phiN_subsingleton_of_fixed ψ (mcast h (prodGPn ρ τ)) u hu ?_` and prove the remaining obligations. Introduce `v`. Conclude with `prodGP_unipotent_apply _ _ _ u.2 v`.
+-/
 theorem phiN_prodGPn_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (m : ℕ) (ρ : GRep k (m + 1)) (τ : MRep k 0)
     (h : (m + 1) + 0 = (m + 0) + 1), IsSmooth ρ.ρ → IsSmooth τ.ρ →

@@ -16,6 +16,9 @@ variable {D : D7} (w : Point D.host.E (D.R.rS + 1))
 
 def hgt (q : FreeE w) : ℕ := q.1.2.val - q.1.1.val
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(pinv_lt_iff w q.1.1 q.1.2 q.2.2).1 q.2.1, by rw [blkOf_pinv, blkOf_pinv]; exact q.2.2.symm⟩`.
+-/
 theorem qbar_prop (q : FreeE w) :
     pinv w q.1.2 < pinv w q.1.1 ∧ blkOf w.1 (pinv w q.1.2).val = blkOf w.1 (pinv w q.1.1).val :=
   ⟨(pinv_lt_iff w q.1.1 q.1.2 q.2.2).1 q.2.1, by rw [blkOf_pinv, blkOf_pinv]; exact q.2.2.symm⟩
@@ -64,6 +67,9 @@ def sLat (h : ℕ) (s : D.host.E) (_hs : D.conjF s = s) : AddSubgroup D.host.E w
     rw [map_neg, show -a + s * -D.conjF a = -(a + s * D.conjF a) by ring]
     exact (qdPow D h : Submodule (𝓞 D.host.E) D.host.E).neg_mem ha2
 
+/- English proof (translation)
+Simplify using `[sgq, map_pow, map_neg, map_one]`.
+-/
 theorem sgq_conj (q : FreeE w) : D.conjF (sgq w q) = sgq w q := by
   simp [sgq, map_pow, map_neg, map_one]
 

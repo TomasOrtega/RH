@@ -120,6 +120,9 @@ def pairOfLab {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 
   j' := lab.j'
   big := lab.big o
 
+/- English proof (translation)
+Introduce `x x' h` and use `ha.sep x x' h`.
+-/
 theorem pairsSep_ofLab {C3 : IntChart T io y} {ι : T.Fr →+* C} {Y : FBChart C V (𝓞 E) (chD C3.ch)} {lab : Lab E Orb d}
     (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab) : PairsSep Y (pairOfLab ha hg) :=
   fun x x' h => ha.sep x x' h
@@ -162,6 +165,11 @@ section Top
 
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb] {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Establish `hsep : PairsSep Y (pairOfLab ha hg)` using `pairsSep_ofLab ha hg`. Take `⟨f, hf, he⟩` from `hv hsep P hP Po hQ kind hk S t ht gr hgr`. Use `(hD T io y C3 C V ι hι k Y hY a n).trans ?_` and prove the remaining obligations. Unfold `FBChart.nuPlE`. Use `(iInf₂_le (V.v (Y.nab (chartLetterSystem C3 V ι a) n f P)) ⟨P, hP, f, hf, rfl⟩).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[he, map_prod_add]`. Conclude with `le_rfl`.
+-/
 theorem nuLocC_le (hD : DescentSt Xo c) {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι) {k : ℕ}
     {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ι k Y) {lab : Lab E Orb d}
     (ha : LabArith V io ι lab) (hg : LabGeo C3 ι Y lab) (Hy : ∀ o, (Y.raw (pairOfLab ha hg o)).Hyps V)

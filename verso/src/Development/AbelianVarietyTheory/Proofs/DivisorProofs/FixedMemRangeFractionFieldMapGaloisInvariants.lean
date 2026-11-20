@@ -9,6 +9,21 @@ open GlobalTheory.Mum GlobalTheory.Mum.GenDesc
 
 namespace GlobalTheory.Mum.GenDesc
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ ρ hρ hG y hy`. Take `⟨hfin, hinv⟩` from `hG`. Use `letI : Fintype (Gal ρ) := Fintype.ofFinite _`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R') y`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Use `set P : R' := ∏ σ ∈ (Finset.univ : Finset (Gal ρ)).erase 1, σ.1 b with hP`. Use `set N : R' := ∏ σ : Gal ρ, σ.1 b with hN`. Establish `hNP : N = b * P`. Rewrite using `[hN, hP, ← Finset.mul_prod_erase Finset.univ (fun σ : Gal ρ => σ.1 b) (Finset.mem_univ 1)]`. Both sides reduce to the same expression.
+
+Establish `hσ0 : ∀ σ : Gal ρ, σ.1 b ≠ 0` using `fun σ => (map_ne_zero_iff σ.1 σ.1.injective).2 hb0`. Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun σ _ => hσ0 σ`. Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.2 fun σ _ => hσ0 σ`. Establish `hNfix : ∀ τ ∈ Gal ρ, τ N = N`. Introduce `τ hτ`.
+
+Rewrite using `[hN, map_prod]`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft (⟨τ, hτ⟩ : Gal ρ)) _ _ (fun σ => rfl)`. Take `⟨n, hn⟩` from `hinv N hNfix`. Establish `inj` using `IsFractionRing.injective R' (FractionRing R')`. Establish `hPK : algebraMap R' (FractionRing R') P ≠ 0` using `(map_ne_zero_iff _ inj).2 hP0`.
+
+Establish `hNK : algebraMap R' (FractionRing R') N ≠ 0` using `(map_ne_zero_iff _ inj).2 hN0`. Establish `hy' : algebraMap R' (FractionRing R') a / algebraMap R' (FractionRing R') b = algebraMap R' (FractionRing R') (a * P) / algebraMap R' (FractionRing R') N`. Rewrite using `[hNP, map_mul, map_mul, mul_div_mul_right _ _ hPK]`. Establish `hcfix : ∀ τ ∈ Gal ρ, τ (a * P) = a * P`. Introduce `τ hτ`.
+
+Apply `inj` to reduce the goal to its premises. Establish `hyN : algebraMap R' (FractionRing R') (a * P) = (algebraMap R' (FractionRing R') a / algebraMap R' (FractionRing R') b) * algebraMap R' (FractionRing R') N`. Rewrite using `[hy', div_mul_cancel₀ _ hNK]`. Rewrite using `[← fracAut_algebraMap, hyN, map_mul, hy ⟨τ, hτ⟩, fracAut_algebraMap, hNfix τ hτ]`. Take `⟨m, hm⟩` from `hinv (a * P) hcfix`.
+
+Use `⟨algebraMap R (FractionRing R) m / algebraMap R (FractionRing R) n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, fracMap_algebraMap, fracMap_algebraMap, hm, hn, hy']`.
+-/
 theorem fixed_mem_range : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R')
     (hρ : Function.Injective ρ), IsGal ρ → ∀ y : FractionRing R', (∀ σ : Gal ρ, fracAut σ.1 y = y) →
     y ∈ (fracMap ρ hρ).range := by

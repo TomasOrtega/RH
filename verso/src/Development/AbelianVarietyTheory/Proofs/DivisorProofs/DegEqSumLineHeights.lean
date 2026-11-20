@@ -21,6 +21,17 @@ namespace GlobalTheory.LatFlag
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨d, hd, hdy⟩` from `hy`.
+
+Take `⟨d', hd', hdz⟩` from `hz`. Use `⟨d * d', mul_ne_zero hd hd', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `E.add_mem (by rw [mul_comm, mul_smul]; exact E.smul_mem _ hdy) (by rw [mul_smul]; exact E.smul_mem _ hdz)`. Consider the case `smul b y _ hy`.
+
+Take `⟨d, hd, hdy⟩` from `hy`. Take `⟨n, m, hm, hnm⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) b`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Establish `hmK : algebraMap (𝓞 K) K m ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hm`. Use `⟨d * m, mul_ne_zero hd hm0, ?_⟩` and prove the remaining obligations.
+
+Establish `: (d * m) • (b • y) = n • (d • y)`. Rewrite using `[← hnm, ← algebraMap_smul K (d * m), ← algebraMap_smul K n, ← algebraMap_smul K d, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `E.smul_mem _ hdy`.
+-/
 theorem exists_smul_mem (E : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.span K (E : Set V)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ E := by
   induction hx using Submodule.span_induction with
@@ -46,6 +57,15 @@ theorem exists_smul_mem (E : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule
     rw [this]
     exact E.smul_mem _ hdy
 
+/- English proof (translation)
+Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl, h1, h2⟩`. Use `⟨Fin.snoc c 0, by simp, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `k using Fin.lastCases with`.
+
+Consider the case `last => simp`. Consider the case `cast k => simp only [Fin.snoc_castSucc]`. Conclude with `h1 k (Fin.castSucc_lt_castSucc_iff.1 hk)`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `using h2.1`.
+
+Introduce and unpack `⟨c, rfl, h1, h2⟩`. Establish `hl : c (Fin.last r) = 0` using `h1 _ (Fin.castSucc_lt_last j)`. Establish `hs : ∑ k, c k • v k = ∑ k : Fin r, c k.castSucc • v k.castSucc`. Rewrite using `[Fin.sum_univ_castSucc, hl, zero_smul, add_zero]`. Use `⟨fun k => c k.castSucc, rfl, fun k hk => h1 _ (Fin.castSucc_lt_castSucc_iff.2 hk), Submodule.mem_inf.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← hs]`. Conclude with `h2`. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem grIdeal_castSucc (E : Submodule (𝓞 K) V) {r : ℕ} (v : Fin (r + 1) → V) (j : Fin r) :
     grIdeal (E ⊓ (Submodule.span K (Set.range fun k : Fin r => v k.castSucc)).restrictScalars (𝓞 K))
       (fun k : Fin r => v k.castSucc) j = grIdeal E v j.castSucc := by
@@ -67,6 +87,9 @@ theorem grIdeal_castSucc (E : Submodule (𝓞 K) V) {r : ℕ} (v : Fin (r + 1) �
     · rw [Submodule.restrictScalars_mem]
       exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)
 
+/- English proof (translation)
+Unfold `lineHt`. Rewrite using `[grIdeal_castSucc]`. Use `congr 3`.
+-/
 theorem lineHt_castSucc (h : HermFam K V) (E : Submodule (𝓞 K) V) {r : ℕ} (v : Fin (r + 1) → V) (j : Fin r) :
     lineHt h (E ⊓ (Submodule.span K (Set.range fun k : Fin r => v k.castSucc)).restrictScalars (𝓞 K))
       (fun k : Fin r => v k.castSucc) j = lineHt h E v j.castSucc := by
@@ -81,12 +104,22 @@ namespace GlobalTheory.LatFlag
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `haveI := isNoetherian_of_fg_of_noetherian E hE`. Establish `h1 : (N.comap E.subtype).FG` using `IsNoetherian.noetherian _`. Use `h1.map E.subtype` as an intermediate fact. Rewrite `this` using `[Submodule.map_comap_subtype, inf_eq_right.2 hN]`. Then use the resulting hypothesis.
+-/
 theorem fg_of_le {E N : Submodule (𝓞 K) V} (hE : E.FG) (hN : N ≤ E) : N.FG := by
   haveI := isNoetherian_of_fg_of_noetherian E hE
   have h1 : (N.comap E.subtype).FG := IsNoetherian.noetherian _
   have := h1.map E.subtype
   rwa [Submodule.map_comap_subtype, inf_eq_right.2 hN] at this
 
+/- English proof (translation)
+Establish `hfam : (fun j => d j • e j) = fun j => ∑ k, Matrix.diagonal d k j • e k`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.diagonal_apply, ite_smul]`. Rewrite using `[hfam, GlobalTheory.hermFam_gram_matrix_change, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hmap : ((Matrix.diagonal d).map σ).det = σ (Matrix.diagonal d).det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hmap, Matrix.det_diagonal]`. Use `set z := σ (∏ j, d j)`. Establish `hz : star z * (h.gram σ e).det * z = ((‖z‖ ^ 2 : ℝ) : ℂ) * (h.gram σ e).det`.
+
+Rewrite using `[mul_comm (star z * _) z, ← mul_assoc, Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, Complex.re_ofReal_mul]`. Simplify using `only [z, map_prod, norm_prod, Finset.prod_pow]`.
+-/
 theorem gram_det_smul (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (e : Fin n → V) (d : Fin n → K) :
     (h.gram σ (fun j => d j • e j)).det.re = (∏ j, ‖σ (d j)‖ ^ 2) * (h.gram σ e).det.re := by
   have hfam : (fun j => d j • e j) = fun j => ∑ k, Matrix.diagonal d k j • e k := by
@@ -103,10 +136,16 @@ theorem gram_det_smul (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (e : Fin n 
   rw [hz, Complex.re_ofReal_mul]
   simp only [z, map_prod, norm_prod, Finset.prod_pow]
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 ((h.posDef σ _ v hv).det_pos)).1`.
+-/
 theorem det_re_pos (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (v : Fin n → V) (hv : LinearIndependent K v) :
     0 < (h.gram σ v).det.re :=
   (Complex.pos_iff.1 ((h.posDef σ _ v hv).det_pos)).1
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.GradedCompare.grSq_eq (M := h.gram σ v) (h.posDef σ _ v hv), Fin.succ_last]`. Both sides reduce to the same expression.
+-/
 theorem grSq_last (h : HermFam K V) (σ : K →+* ℂ) {r : ℕ} (v : Fin (r + 1) → V) (hv : LinearIndependent K v) :
     grSq (h.gram σ v) (Fin.last r) = (h.gram σ v).det.re / (h.gram σ fun j : Fin r => v j.castSucc).det.re := by
   rw [GlobalTheory.GradedCompare.grSq_eq (M := h.gram σ v) (h.posDef σ _ v hv), Fin.succ_last]
@@ -119,6 +158,73 @@ namespace GlobalTheory.LatFlag
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `set v0 : Fin r → V := fun k => v k.castSucc with hv0`. Use `set S := Submodule.span K (Set.range v0) with hS`. Use `set E' := E ⊓ S.restrictScalars (𝓞 K) with hE'`. Establish `hmemE' : ∀ x, x ∈ E' ↔ x ∈ E ∧ x ∈ S` using `fun x => Iff.rfl`. Establish `hE'E : E' ≤ E` using `inf_le_left`.
+
+Establish `hE'fg : E'.FG` using `fg_of_le hE hE'E`. Establish `hvE : ∀ k, v k ∈ Submodule.span K (E : Set V)` using `fun k => by`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Use `choose d hd0 hdE using fun k => exists_smul_mem E (hvE k)`.
+
+Use `set dK : Fin (r + 1) → K := fun k => algebraMap (𝓞 K) K (d k) with hdK_def`. Establish `hdK : ∀ k, dK k ≠ 0` using `fun k h0 => hd0 k (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa [dK] using h0))`. Establish `hdKE : ∀ k, dK k • v k ∈ E` using `fun k => by simpa [dK, algebraMap_smul] using hdE k`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply (Fin.last r)).comp hli.repr)`. Establish `hgv : ∀ k, g (v k) = if k = Fin.last r then 1 else 0`.
+
+Introduce `k`. Use `LinearMap.congr_fun hg ⟨v k, Submodule.subset_span ⟨k, rfl⟩⟩` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, Finsupp.lapply_apply] at this`. Rewrite using `[this, hli.repr_eq_single k _ rfl, Finsupp.single_apply]`. Establish `hgsum : ∀ c : Fin (r + 1) → K, g (∑ k, c k • v k) = c (Fin.last r)`.
+
+Introduce `c`. Simplify using `[map_sum, hgv]`. Establish `hrep : ∀ x ∈ Submodule.span K (Set.range v), ∃ c : Fin (r + 1) → K, x = ∑ k, c k • v k`. Introduce `x hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`.
+
+Conclude with `⟨c, hc.symm⟩`. Establish `hSg : ∀ x ∈ S, g x = 0`. Introduce `x hx`. Establish `: S ≤ LinearMap.ker g`. Rewrite using `[hS, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[v0, hgv, Fin.castSucc_ne_last]`. Conclude with `this hx`. Establish `hSS : ∀ x ∈ Submodule.span K (Set.range v), g x = 0 → x ∈ S`. Introduce `x hx hx0`.
+
+Take `⟨c, rfl⟩` from `hrep x hx`. Rewrite `hx0` using `[hgsum]`. Rewrite using `[Fin.sum_univ_castSucc, hx0, zero_smul, add_zero]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hEv : ∀ x ∈ E, x ∈ Submodule.span K (Set.range v)` using `fun x hx => hspan ▸ Submodule.subset_span hx`.
+
+Use `set f : V →ₗ[𝓞 K] K := g.restrictScalars (𝓞 K) with hf_def`. Establish `hf : ∀ x, f x = g x` using `fun x => rfl`. Establish `hex : ∃ a ∈ grIdeal E v (Fin.last r), a ≠ 0`. Use `⟨dK (Fin.last r), ⟨Pi.single (Fin.last r) (dK (Fin.last r)), by simp, fun k hk => absurd hk (not_lt.2 (Fin.le_last k)), ?_⟩, hdK _⟩` and prove the remaining obligations. Simplify `hdKE (Fin.last r)` using `[Pi.single_apply, ite_smul]`.
+
+Use `set a := hex.choose with ha_def`. Take `⟨haI, ha0⟩` from `hex.choose_spec`. Rewrite `haI`, `ha0` using `[← ha_def]`. Take `⟨c, hca, -, hcE⟩` from `haI`. Use `set w := ∑ k, c k • v k with hw_def`.
+
+Establish `hgw : g w = a` using `by rw [hgsum, hca]`. Establish `hwv : w ∈ Submodule.span K (Set.range v)` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hmapE : E.map f = grIdeal E v (Fin.last r)`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨c', rfl⟩` from `hrep x (hEv x hx)`. Conclude with `⟨c', by rw [hf, hgsum], fun k hk => absurd hk (not_lt.2 (Fin.le_last k)), hx⟩`. Introduce and unpack `⟨c', rfl, -, hc'⟩`. Conclude with `⟨_, hc', by rw [hf, hgsum]⟩`.
+
+Use `set u : Fin r → V := fun j => dK j.castSucc • v0 j with hu_def`. Establish `huS : ∀ j, u j ∈ S` using `fun j => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hli0 : LinearIndependent K v0` using `hli.comp Fin.castSucc (Fin.castSucc_injective _)`. Establish `huli : LinearIndependent K u`. Use `hli0.units_smul (fun j => Units.mk0 (dK j.castSucc) (hdK _))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j : 1`. Simplify using `[u, Units.smul_def]`. Establish `hSu : S ≤ Submodule.span K (Set.range u)`. Rewrite using `[hS, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Establish `: v0 j = (dK j.castSucc)⁻¹ • u j`. Simplify using `[u, smul_smul, inv_mul_cancel₀ (hdK _)]`. Use `show v0 j ∈ _`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `huS' : Submodule.span K (Set.range u) ≤ S`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `huS j`.
+
+Establish `hu : IsFrame K E' u` using `⟨fun j => (hmemE' _).2 ⟨hdKE _, huS j⟩, huli, fun x hx => hSu ((hmemE' x).1 hx).2⟩`. Use `set v' : Fin (r + 1) → V := Fin.snoc u w with hv'_def`. Establish `hv' : IsFrame K E v'`. Use `⟨fun k => ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `k using Fin.lastCases with`.
+
+Consider the case `last => simpa [v'] using hcE`. Consider the case `cast j => simpa [v'] using hE'E (hu.1 j)`. Use `linearIndependent_finSnoc.2 ⟨huli, fun hmem => ha0 ?_⟩` and prove the remaining obligations. Rewrite using `[← hgw]`. Conclude with `hSg _ (huS' hmem)`.
+
+Establish `hy : x - (g x / a) • w ∈ S`. Use `hSS _ (Submodule.sub_mem _ (hEv x hx) (Submodule.smul_mem _ _ hwv)) ?_` and prove the remaining obligations. Simplify using `[hgw, div_mul_cancel₀ _ ha0]`. Rewrite using `[SetLike.mem_coe, show v' = Fin.snoc u w from rfl, Fin.range_snoc, Submodule.mem_span_insert]`. Conclude with `⟨g x / a, x - (g x / a) • w, hSu hy, by abel⟩`.
+
+Use `set U := Submodule.span (𝓞 K) (Set.range u) with hU_def`. Use `set U' := Submodule.span (𝓞 K) (Set.range v') with hU'_def`. Establish `hUS : ∀ z ∈ U, z ∈ S` using `fun z hz => (Submodule.span_le (p := S.restrictScalars (𝓞 K))).2 (by rintro _ ⟨j, rfl⟩; exact huS j) hz`. Establish `hU'E : U' ≤ E` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hv'.1 k)`. Establish `hmapU' : U'.map f = Submodule.span (𝓞 K) {a}`.
+
+Rewrite using `[hU'_def, Submodule.map_span, hv'_def, Fin.range_snoc, Set.image_insert_eq]`. Establish `hfw : f w = a` using `by rw [hf, hgw]`. Rewrite using `[hfw]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ (rfl | ⟨_, ⟨j, rfl⟩, rfl⟩)`. Conclude with `Submodule.subset_span rfl`. Rewrite using `[SetLike.mem_coe, hf, hSg _ (huS j)]`. Conclude with `zero_mem _`. Conclude with `Submodule.span_mono (Set.singleton_subset_iff.2 (Set.mem_insert _ _))`.
+
+Establish `hU'ker : U' ⊓ LinearMap.ker f = U`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxk⟩`. Rewrite `hx` using `[hU'_def, hv'_def, Fin.range_snoc]`. Rewrite `hx` using `[SetLike.mem_coe, Submodule.mem_span_insert]`.
+
+Take `⟨b, z, hz, rfl⟩` from `hx`. Establish `hz0 : f z = 0` using `by rw [hf]; exact hSg _ (hUS z hz)`. Establish `hba : b • a = 0`. Use `LinearMap.mem_ker.1 hxk` as an intermediate fact. Rewrite `this` using `[map_add, map_smul, hf w, hgw, hz0, add_zero]`. Then use the resulting hypothesis.
+
+Rewrite using `[(smul_eq_zero.1 hba).resolve_right ha0, zero_smul, zero_add]`. Conclude with `hz`. Use `le_inf ?_ fun z hz => LinearMap.mem_ker.2 (by rw [hf]; exact hSg _ (hUS z hz))` and prove the remaining obligations. Rewrite using `[hU_def, hU'_def]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j.castSucc, by simp [v']⟩`. Establish `hEker : E ⊓ LinearMap.ker f = E'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxk⟩`.
+
+Conclude with `(hmemE' x).2 ⟨hx, hSS _ (hEv x hx) (by rw [← hf x]; exact LinearMap.mem_ker.1 hxk)⟩`. Conclude with `le_inf hE'E fun z hz => LinearMap.mem_ker.2 (by rw [hf]; exact hSg _ ((hmemE' z).1 hz).2)`. Establish `hidx : U'.toAddSubgroup.relIndex E.toAddSubgroup = (Submodule.span (𝓞 K) {a}).toAddSubgroup.relIndex (grIdeal E v (Fin.last r)).toAddSubgroup * U.toAddSubgroup.relIndex E'.toAddSubgroup`. Rewrite using `[GlobalTheory.submodule_relIndex_split f U' E hU'E, hmapU', hU'ker, hEker, hmapE]`. Establish `hne'` using `hv'.relIndex_ne_zero hE`.
+
+Establish `hne` using `hu.relIndex_ne_zero hE'fg`. Establish `hne1 : (Submodule.span (𝓞 K) {a}).toAddSubgroup.relIndex (grIdeal E v (Fin.last r)).toAddSubgroup ≠ 0`. Introduce `h0`. Apply `hne'` to reduce the goal to its premises. Rewrite using `[← hU'_def, hidx, h0, zero_mul]`.
+
+Establish `hG1 : ∀ σ : K →+* ℂ, (h.gram σ v').det.re = (∏ j : Fin r, ‖σ (dK j.castSucc)‖ ^ 2) * ‖σ a‖ ^ 2 * (h.gram σ v).det.re`. Introduce `σ`. Rewrite using `[hv'_def, hw_def, ← hca]`. Conclude with `GlobalTheory.hermFam_gram_det_triangular h σ v (fun j => dK j.castSucc) c`. Establish `hG0 : ∀ σ : K →+* ℂ, (h.gram σ u).det.re = (∏ j : Fin r, ‖σ (dK j.castSucc)‖ ^ 2) * (h.gram σ v0).det.re` using `fun σ => gram_det_smul h σ v0 (fun j => dK j.castSucc)`.
+
+Establish `hP : ∀ σ : K →+* ℂ, 0 < ∏ j : Fin r, ‖σ (dK j.castSucc)‖ ^ 2` using `fun σ => Finset.prod_pos fun j _ => by`. Establish `: σ (dK j.castSucc) ≠ 0` using `(map_ne_zero σ).2 (hdK _)`. Check the signs of the components of the expression. Establish `hA : ∀ σ : K →+* ℂ, 0 < ‖σ a‖` using `fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 ha0)`. Establish `hkey : ∀ σ : K →+* ℂ, Real.log (h.gram σ v').det.re = Real.log (h.gram σ u).det.re + 2 * Real.log ‖σ a‖ + Real.log (grSq (h.gram σ v) (Fin.last r))`.
+
+Introduce `σ`. Establish `p1` using `det_re_pos h σ v hli`. Establish `p0` using `det_re_pos h σ v0 hli0`. Rewrite using `[hG1, hG0, grSq_last h σ v hli, Real.log_div p1.ne' p0.ne', Real.log_mul (by have := hP σ; have := hA σ; positivity) p1.ne', Real.log_mul (hP σ).ne' (by have := hA σ; positivity), Real.log_pow, Real.log_mul (hP σ).ne' p0.ne']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE hv', arakelovDegree_eq_degreeOfFamily h hE'fg hu]`. Unfold `degreeOfFamily lineHt idealLog`. Rewrite using `[dif_pos hex, ← ha_def, ← hU'_def, ← hU_def, hidx, Nat.cast_mul, Real.log_mul (by exact_mod_cast hne1) (by exact_mod_cast hne)]`. Simplify using `only [hkey, Finset.sum_add_distrib, ← Finset.mul_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_snoc (h : HermFam K V) (E : Submodule (𝓞 K) V) {r : ℕ} (v : Fin (r + 1) → V) (hE : E.FG)
     (hli : LinearIndependent K v) (hspan : Submodule.span K (E : Set V) = Submodule.span K (Set.range v)) :
     deg h E = deg h (E ⊓ (Submodule.span K (Set.range fun k : Fin r => v k.castSucc)).restrictScalars (𝓞 K)) +
@@ -306,6 +412,27 @@ namespace GlobalTheory.LatFlag
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `E v hE hli hspan`. Establish `hE0 : E = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: x ∈ Submodule.span K (Set.range v)` using `hspan ▸ Submodule.subset_span hx`. Rewrite `this` using `[Set.range_eq_empty, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot _).2 this`.
+
+Establish `hv : IsFrame K E v` using `⟨fun i => i.elim0, hli, fun x hx => hspan ▸ Submodule.subset_span hx⟩`. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE hv, Finset.univ_eq_empty, Finset.sum_empty]`. Unfold `degreeOfFamily`. Establish `hU : Submodule.span (𝓞 K) (Set.range v) = E`. Rewrite using `[hE0, Set.range_eq_empty, Submodule.span_empty]`.
+
+Rewrite using `[hU, AddSubgroup.relIndex_self]`. Simplify using `[Matrix.det_fin_zero]`. Consider the case `succ r ih`. Introduce `E v hE hli hspan`. Use `set v0 : Fin r → V := fun k => v k.castSucc with hv0`.
+
+Use `set E' := E ⊓ (Submodule.span K (Set.range v0)).restrictScalars (𝓞 K) with hE'`. Establish `hE'fg : E'.FG` using `fg_of_le hE inf_le_left`. Establish `hli0 : LinearIndependent K v0` using `hli.comp Fin.castSucc (Fin.castSucc_injective _)`. Establish `hspan0 : Submodule.span K (E' : Set V) = Submodule.span K (Set.range v0)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hx.2`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Establish `hvE : v j.castSucc ∈ Submodule.span K (E : Set V)`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Take `⟨d, hd, hdE⟩` from `exists_smul_mem E hvE`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0` using `fun h0 => hd (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0))`.
+
+Establish `hmem : algebraMap (𝓞 K) K d • v0 j ∈ E'`. Use `Submodule.mem_inf.2 ⟨by simpa [algebraMap_smul] using hdE, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `: v0 j = (algebraMap (𝓞 K) K d)⁻¹ • (algebraMap (𝓞 K) K d • v0 j)`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hdK, one_smul]`. Use `show v0 j ∈ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`. Rewrite using `[deg_snoc h E v hE hli hspan, ih E' v0 hE'fg hli0 hspan0, Fin.sum_univ_castSucc]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => lineHt_castSucc h E v j`.
+-/
 theorem deg_eq_sum_lineHt_of_span (h : HermFam K V) :
     ∀ (r : ℕ) (E : Submodule (𝓞 K) V) (v : Fin r → V), E.FG → LinearIndependent K v →
       Submodule.span K (E : Set V) = Submodule.span K (Set.range v) → deg h E = ∑ i, lineHt h E v i := by
@@ -357,6 +484,9 @@ theorem deg_eq_sum_lineHt_of_span (h : HermFam K V) :
     congr 1
     exact Finset.sum_congr rfl fun j _ => lineHt_castSucc h E v j
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ h E r v hE hli hspan` and use `deg_eq_sum_lineHt_of_span h r E v hE hli hspan`.
+-/
 theorem deg_eq_sum_lineHt : ∀ (K : Type) [Field K] [NumberField K] (V : Type) [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : HermFam K V) (E : Submodule (𝓞 K) V) (r : ℕ) (v : Fin r → V),
     E.FG → LinearIndependent K v → Submodule.span K (E : Set V) = Submodule.span K (Set.range v) →

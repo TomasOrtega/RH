@@ -13,14 +13,25 @@ def IsK (t : ℂ) : Prop := ∃ p q r : ℤ, r ≠ 0 ∧ (r : ℂ) * t = p + q *
 
 variable {b d}
 
+/- English proof (translation)
+Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`. Conclude with `⟨n, 0, 1, one_ne_zero, by simp⟩`.
+-/
 lemma isK_int (n : ℤ) : IsK b d n := by
   unfold PI.UnitaryGroupMassFormula.UnimodLocStd.IsK
   exact ⟨n, 0, 1, one_ne_zero, by simp⟩
 
+/- English proof (translation)
+Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`. Conclude with `⟨0, 1, 1, one_ne_zero, by simp⟩`.
+-/
 lemma isK_theta : IsK b d (cmTheta b d) := by
   unfold PI.UnitaryGroupMassFormula.UnimodLocStd.IsK
   exact ⟨0, 1, 1, one_ne_zero, by simp⟩
 
+/- English proof (translation)
+Take `⟨p, q, r, hr, h⟩` from `h`. Take `⟨p', q', r', hr', h'⟩` from `h'`. Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`. Use `⟨r' * p + r * p', r' * q + r * q', r * r', mul_ne_zero hr hr', ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `(r' : ℂ) * h + (r : ℂ) * h'`.
+-/
 lemma isK_add {t t' : ℂ} (h : IsK b d t) (h' : IsK b d t') : IsK b d (t + t') := by
   obtain ⟨p, q, r, hr, h⟩ := h
   obtain ⟨p', q', r', hr', h'⟩ := h'
@@ -29,6 +40,9 @@ lemma isK_add {t t' : ℂ} (h : IsK b d t) (h' : IsK b d t') : IsK b d (t + t') 
   push_cast
   linear_combination (r' : ℂ) * h + (r : ℂ) * h'
 
+/- English proof (translation)
+Take `⟨p, q, r, hr, h⟩` from `h`. Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`. Use `⟨-p, -q, r, hr, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `-h`.
+-/
 lemma isK_neg {t : ℂ} (h : IsK b d t) : IsK b d (-t) := by
   obtain ⟨p, q, r, hr, h⟩ := h
   unfold PI.UnitaryGroupMassFormula.UnimodLocStd.IsK
@@ -36,15 +50,26 @@ lemma isK_neg {t : ℂ} (h : IsK b d t) : IsK b d (-t) := by
   push_cast
   linear_combination -h
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `PI.UnitaryGroupMassFormula.UnimodLocStd.isK_add h (PI.UnitaryGroupMassFormula.UnimodLocStd.isK_neg h')`.
+-/
 lemma isK_sub {t t' : ℂ} (h : IsK b d t) (h' : IsK b d t') : IsK b d (t - t') := by
   rw [sub_eq_add_neg]
   exact PI.UnitaryGroupMassFormula.UnimodLocStd.isK_add h (PI.UnitaryGroupMassFormula.UnimodLocStd.isK_neg h')
 
+/- English proof (translation)
+Unfold `cmTheta`. Simplify using `only [map_div₀, map_add, map_mul, Complex.conj_I, Complex.conj_ofReal, map_intCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma conj_cmTheta : conj (cmTheta b d) = (b : ℂ) - cmTheta b d := by
   unfold cmTheta
   simp only [map_div₀, map_add, map_mul, Complex.conj_I, Complex.conj_ofReal, map_intCast, map_ofNat]
   ring
 
+/- English proof (translation)
+Take `⟨p, q, r, hr, h⟩` from `h`. Establish `h2 : (r : ℂ) * conj t = p + q * conj (cmTheta b d)`. Establish `h3` using `congrArg conj h`. Simplify using `using h3`. Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`.
+
+Use `⟨p + q * b, -q, r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, PI.UnitaryGroupMassFormula.UnimodLocStd.conj_cmTheta]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma isK_conj {t : ℂ} (h : IsK b d t) : IsK b d (conj t) := by
   obtain ⟨p, q, r, hr, h⟩ := h
   have h2 : (r : ℂ) * conj t = p + q * conj (cmTheta b d) := by
@@ -59,6 +84,11 @@ lemma isK_conj {t : ℂ} (h : IsK b d t) : IsK b d (conj t) := by
 variable {e : ℤ} (hn : cmTheta b d * (b - cmTheta b d) = (e : ℂ))
 include hn
 
+/- English proof (translation)
+Take `⟨p, q, r, hr, h⟩` from `h`. Take `⟨p', q', r', hr', h'⟩` from `h'`. Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`. Use `⟨p * p' - q * q' * e, p * q' + q * p' + q * q' * b, r * r', mul_ne_zero hr hr', ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Take the linear combination `((r' : ℂ) * t') * h + ((p : ℂ) + q * cmTheta b d) * h' - ((q : ℂ) * q') * hn`.
+-/
 lemma isK_mul {t t' : ℂ} (h : IsK b d t) (h' : IsK b d t') : IsK b d (t * t') := by
   obtain ⟨p, q, r, hr, h⟩ := h
   obtain ⟨p', q', r', hr', h'⟩ := h'
@@ -67,6 +97,21 @@ lemma isK_mul {t t' : ℂ} (h : IsK b d t) (h' : IsK b d t') : IsK b d (t * t') 
   push_cast
   linear_combination ((r' : ℂ) * t') * h + ((p : ℂ) + q * cmTheta b d) * h' - ((q : ℂ) * q') * hn
 
+/- English proof (translation)
+Distinguish the cases in `ht : t = 0`. Rewrite using `[ht, inv_zero]`. Simplify using `using PI.UnitaryGroupMassFormula.UnimodLocStd.isK_int (b := b) (d := d) 0`. Take `⟨p, q, r, hr, h⟩` from `h`. Establish `hrt : (r : ℂ) * t ≠ 0` using `mul_ne_zero (Int.cast_ne_zero.mpr hr) ht`.
+
+Establish `hz : ((p ^ 2 + p * q * b + q ^ 2 * e : ℤ) : ℂ) = (r : ℂ) * t * (p + q * b - q * cmTheta b d)`. Rewrite using `[h]`. Use `push_cast`. Take the linear combination `(-(q : ℂ) ^ 2) * hn`. Unfold `PI.UnitaryGroupMassFormula.UnimodLocStd.IsK`.
+
+Distinguish the cases in `hN : p ^ 2 + p * q * b + q ^ 2 * e = 0`. Establish `hw : (p : ℂ) + q * b - q * cmTheta b d = 0`. Establish `h0 : (r : ℂ) * t * (p + q * b - q * cmTheta b d) = 0`. Rewrite using `[← hz, hN, Int.cast_zero]`. Conclude with `(mul_eq_zero.mp h0).resolve_left hrt`.
+
+Establish `hk : (r : ℂ) * t = ((2 * p + q * b : ℤ) : ℂ)`. Rewrite using `[h]`. Use `push_cast`. Take the linear combination `-hw`. Establish `hk0 : (2 * p + q * b : ℤ) ≠ 0`.
+
+Introduce `h0`. Rewrite `hk` using `[h0, Int.cast_zero]`. Conclude with `hrt hk`. Use `⟨r, 0, 2 * p + q * b, hk0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, mul_inv_cancel_right₀ ht]`.
+
+Simplify using the standard rewrite rules. Use `⟨r * (p + q * b), -(r * q), p ^ 2 + p * q * b + q ^ 2 * e, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma isK_inv {t : ℂ} (h : IsK b d t) : IsK b d t⁻¹ := by
   by_cases ht : t = 0
   · rw [ht, inv_zero]
@@ -103,6 +148,9 @@ lemma isK_inv {t : ℂ} (h : IsK b d t) : IsK b d t⁻¹ := by
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using PI.UnitaryGroupMassFormula.UnimodLocStd.isK_int (b := b) (d := d) 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `PI.UnitaryGroupMassFormula.UnimodLocStd.isK_add (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 lemma isK_sum {ι : Type*} (s : Finset ι) (f : ι → ℂ) (hf : ∀ i ∈ s, IsK b d (f i)) : IsK b d (∑ i ∈ s, f i) := by
   classical
   induction s using Finset.induction_on with

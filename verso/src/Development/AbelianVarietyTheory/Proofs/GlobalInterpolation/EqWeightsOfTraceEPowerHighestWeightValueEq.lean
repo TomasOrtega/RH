@@ -9,6 +9,13 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Introduce `p hp k _ _ N ν μ hν hμ hb hval`. Establish `hS : PowerSeries.mk (hcVal k fun i => (μ i : k)) = PowerSeries.mk (hcVal k fun i => (ν i : k))`. Use extensionality with `j`. Simplify using `[hval j]`. Establish `gμ` using `GlobalTheory.T.traceEPowerHighestWeightValue_generating_series k N (fun i => (μ i : k))`.
+
+Establish `gν` using `GlobalTheory.T.traceEPowerHighestWeightValue_generating_series k N (fun i => (ν i : k))`. Rewrite `gμ` using `[hS]`. Establish `cast : ∀ (w : Fin N → ℕ) (i : Fin N), shift k (fun i => (w i : k)) i = ((w i + (N - 1 - i.val) : ℕ) : k)`. Introduce `w i`. Simplify using `[shift]`.
+
+Simplify using `only [cast] at gμ gν`. Use `GlobalTheory.T.eq_of_dominantWeights_lowestAlcove_linked p N hp ν μ hν hμ hb ?_` and prove the remaining obligations. Use `GlobalTheory.T.residue_multiset_eq_of_shifted_series_eq p hp k N (fun i => ν i + (N - 1 - i.val)) (fun i => μ i + (N - 1 - i.val)) ?_` and prove the remaining obligations. Rewrite using `[← gν, ← gμ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_of_hcVal_eq : ∀ (p : ℕ), p.Prime → ∀ (k : Type) [Field k] [CharP k p] (N : ℕ) (ν μ : Fin N → ℕ), Antitone ν → Antitone μ → (∀ h : 0 < N, ν ⟨N - 1, by omega⟩ = 0 ∧ μ ⟨0, h⟩ ≤ ν ⟨0, h⟩ ∧ ν ⟨0, h⟩ + (N - 1) ≤ p) → (∀ j, hcVal k (fun i => (μ i : k)) j = hcVal k (fun i => (ν i : k)) j) → μ = ν := by
   intro p hp k _ _ N ν μ hν hμ hb hval
   have hS : PowerSeries.mk (hcVal k fun i => (μ i : k)) = PowerSeries.mk (hcVal k fun i => (ν i : k)) := by

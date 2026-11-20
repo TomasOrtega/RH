@@ -17,6 +17,11 @@ open scoped TensorProduct
 
 variable {L : Type} [AddCommGroup L]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩`. Consider the case `tmul r a`. Take `⟨m, rfl⟩` from `ZMod.intCast_surjective r`. Use `⟨m • a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', zsmul_eq_mul, _root_.mul_one]`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, TensorProduct.tmul_add _ _ _⟩`.
+-/
 theorem tmul_surjective (n : ℕ) (x : ZMod n ⊗[ℤ] L) : ∃ a : L, (1 : ZMod n) ⊗ₜ[ℤ] a = x := by
   induction x using TensorProduct.induction_on with
   | zero => exact ⟨0, TensorProduct.tmul_zero _ _⟩
@@ -29,6 +34,11 @@ theorem tmul_surjective (n : ℕ) (x : ZMod n ⊗[ℤ] L) : ∃ a : L, (1 : ZMod
     obtain ⟨b, rfl⟩ := hy
     exact ⟨a + b, TensorProduct.tmul_add _ _ _⟩
 
+/- English proof (translation)
+Set `e : ZMod n ≃ₗ[ℤ] (ℤ ⧸ Ideal.span {(n : ℤ)})` to `(Int.quotientSpanNatEquivZMod n).symm.toAddEquiv.toIntLinearEquiv`. Establish `he : e 1 = 1` using `map_one (Int.quotientSpanNatEquivZMod n).symm`. Establish `h1` using `congrArg (fun y => TensorProduct.quotTensorEquivQuotSMul L (Ideal.span {(n : ℤ)}) (LinearMap.rTensor L e.toLinearMap y)) h`. Simplify using `only [LinearMap.rTensor_tmul, map_zero, LinearEquiv.coe_coe, he, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero] at h1`. Rewrite `h1` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+
+Take `⟨d, -, hd⟩` from `h1`. Conclude with `⟨d, by rw [← hd, natCast_zsmul]⟩`.
+-/
 theorem eq_nsmul_of_tmul_eq_zero {n : ℕ} {a : L} (h : (1 : ZMod n) ⊗ₜ[ℤ] a = 0) : ∃ d, a = n • d := by
   let e : ZMod n ≃ₗ[ℤ] (ℤ ⧸ Ideal.span {(n : ℤ)}) :=
     (Int.quotientSpanNatEquivZMod n).symm.toAddEquiv.toIntLinearEquiv
@@ -41,12 +51,20 @@ theorem eq_nsmul_of_tmul_eq_zero {n : ℕ} {a : L} (h : (1 : ZMod n) ⊗ₜ[ℤ]
   obtain ⟨d, -, hd⟩ := h1
   exact ⟨d, by rw [← hd, natCast_zsmul]⟩
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', nsmul_eq_mul, _root_.mul_one, ZMod.natCast_self, TensorProduct.zero_tmul]`.
+-/
 theorem tmul_nsmul_eq_zero (n : ℕ) (d : L) : (1 : ZMod n) ⊗ₜ[ℤ] (n • d) = 0 := by
   rw [TensorProduct.tmul_smul, TensorProduct.smul_tmul', nsmul_eq_mul, _root_.mul_one, ZMod.natCast_self,
     TensorProduct.zero_tmul]
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `h0 : φ 0 = 1`. Use `hφ 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`. Proceed by induction on `m with`.
+
+Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ m ih => rw [succ_nsmul, hφ, ih, pow_succ]`.
+-/
 theorem map_nsmul_of_add {φ : L → G} (hφ : ∀ a c, φ (a + c) = φ a * φ c) (m : ℕ) (a : L) :
     φ (m • a) = φ a ^ m := by
   have h0 : φ 0 = 1 := by
@@ -57,6 +75,11 @@ theorem map_nsmul_of_add {φ : L → G} (hφ : ∀ a c, φ (a + c) = φ a * φ c
   | zero => rw [zero_smul, pow_zero, h0]
   | succ m ih => rw [succ_nsmul, hφ, ih, pow_succ]
 
+/- English proof (translation)
+Establish `e : φ a = φ (a - c) * φ c` using `by rw [← hφ, sub_add_cancel]`. Rewrite using `[e, mul_eq_right, hk, ← sub_eq_zero, ← TensorProduct.tmul_sub]`. Prove the components needed by the constructor for the conclusion. Conclude with `eq_nsmul_of_tmul_eq_zero`. Introduce and unpack `⟨d, hd⟩`.
+
+Rewrite using `[hd]`. Conclude with `tmul_nsmul_eq_zero n d`.
+-/
 theorem tmul_eq_tmul_iff {n : ℕ} {φ : L → G} (hφ : ∀ a c, φ (a + c) = φ a * φ c)
     (hk : ∀ a, φ a = 1 ↔ ∃ b, a = n • b) (a c : L) :
     (1 : ZMod n) ⊗ₜ[ℤ] a = 1 ⊗ₜ c ↔ φ a = φ c := by
@@ -76,6 +99,9 @@ def matchMap (n : ℕ) (φ φ' : L → G) (hφ : ∀ a c, φ (a + c) = φ a * φ
       rw [← TensorProduct.tmul_add, tmul_eq_tmul_iff hφ hk, hφ, Classical.choose_spec (hr _),
         Classical.choose_spec (hr _), Classical.choose_spec (hr _), hφ']) : L →+ ZMod n ⊗[ℤ] L).toIntLinearMap
 
+/- English proof (translation)
+Rewrite using `[matchMap, LinearMap.liftBaseChange_tmul, one_smul]`. Express the relevant statement in the definitionally equal form `(1 : ZMod n) ⊗ₜ[ℤ] Classical.choose (hr b) = _ ↔ _`. Rewrite using `[tmul_eq_tmul_iff hφ hk, Classical.choose_spec (hr b), eq_comm]`.
+-/
 theorem matchMap_tmul (n : ℕ) (φ φ' : L → G) (hφ : ∀ a c, φ (a + c) = φ a * φ c)
     (hφ' : ∀ a c, φ' (a + c) = φ' a * φ' c) (hk : ∀ a, φ a = 1 ↔ ∃ b, a = n • b)
     (hr : ∀ b, ∃ c, φ c = φ' b) (b c : L) :
@@ -84,6 +110,15 @@ theorem matchMap_tmul (n : ℕ) (φ φ' : L → G) (hφ : ∀ a c, φ (a + c) = 
   change (1 : ZMod n) ⊗ₜ[ℤ] Classical.choose (hr b) = _ ↔ _
   rw [tmul_eq_tmul_iff hφ hk, Classical.choose_spec (hr b), eq_comm]
 
+/- English proof (translation)
+Set `f` to `matchMap n φ φ' hφ hφ' hk hr`. Set `g` to `matchMap n φ' φ hφ' hφ hk' hr'`. Establish `hfg : ∀ x, g (f x) = x`. Introduce `x`. Take `⟨b, rfl⟩` from `tmul_surjective n x`.
+
+Take `⟨c, hc⟩` from `hr b`. Take `⟨d, hd⟩` from `hr' c`. Rewrite using `[(matchMap_tmul n φ φ' hφ hφ' hk hr b c).2 hc, (matchMap_tmul n φ' φ hφ' hφ hk' hr' c d).2 hd, tmul_eq_tmul_iff hφ' hk', hd, hc]`. Establish `hgf : ∀ x, f (g x) = x`. Introduce `x`.
+
+Take `⟨b, rfl⟩` from `tmul_surjective n x`. Take `⟨c, hc⟩` from `hr' b`. Take `⟨d, hd⟩` from `hr c`. Rewrite using `[(matchMap_tmul n φ' φ hφ' hφ hk' hr' b c).2 hc, (matchMap_tmul n φ φ' hφ hφ' hk hr c d).2 hd, tmul_eq_tmul_iff hφ hk, hd, hc]`. Use `⟨LinearEquiv.ofLinear f g (LinearMap.ext hgf) (LinearMap.ext hfg), fun b c => ?_⟩` and prove the remaining obligations.
+
+Conclude with `matchMap_tmul n φ φ' hφ hφ' hk hr b c`.
+-/
 theorem exists_equiv (n : ℕ) (φ φ' : L → G) (hφ : ∀ a c, φ (a + c) = φ a * φ c)
     (hφ' : ∀ a c, φ' (a + c) = φ' a * φ' c) (hk : ∀ a, φ a = 1 ↔ ∃ b, a = n • b)
     (hk' : ∀ a, φ' a = 1 ↔ ∃ b, a = n • b) (hr : ∀ b, ∃ c, φ c = φ' b) (hr' : ∀ c, ∃ b, φ' b = φ c) :

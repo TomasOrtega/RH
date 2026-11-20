@@ -18,6 +18,11 @@ open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Simplify using `only [List.ofFn_succ]`.
+
+Conclude with `List.Forall₂.cons (by simpa using H 0) (ih _ _ fun i => by simpa using H i.succ)`.
+-/
 theorem forall₂_ofFn {α β : Type*} (R : α → β → Prop) {c c' : ℕ} (h : c = c') (f : Fin c → α) (g : Fin c' → β)
     (H : ∀ i, R (f i) (g (Fin.cast h i))) : List.Forall₂ R (List.ofFn f) (List.ofFn g) := by
   subst h
@@ -27,6 +32,11 @@ theorem forall₂_ofFn {α β : Type*} (R : α → β → Prop) {c c' : ℕ} (h 
     simp only [List.ofFn_succ]
     exact List.Forall₂.cons (by simpa using H 0) (ih _ _ fun i => by simpa using H i.succ)
 
+/- English proof (translation)
+Take `⟨M, Vx⟩` from `x`. Take `⟨M', Vy⟩` from `y`. Take `⟨Mz, Vz⟩` from `z`. Take `⟨h1, h1'⟩` from `hx`. Take `⟨h2, h2'⟩` from `hyz`.
+
+Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Conclude with `⟨rfl, PositivityTheory.Rg.BcB.F.F5.Bo.isoV_trans' h1' (PositivityTheory.Rg.BcB.F.F5.Bo.isoV_symm' hy h2')⟩`.
+-/
 theorem siso_trans {x y z : Σ M : ℕ, Submodule ℂ (Sm E M)} (hy : IsStable y.2) (hx : SIso x z) (hyz : SIso y z) :
     SIso x y := by
   obtain ⟨M, Vx⟩ := x
@@ -39,15 +49,24 @@ theorem siso_trans {x y z : Σ M : ℕ, Submodule ℂ (Sm E M)} (hy : IsStable y
   subst h2
   exact ⟨rfl, PositivityTheory.Rg.BcB.F.F5.Bo.isoV_trans' h1' (PositivityTheory.Rg.BcB.F.F5.Bo.isoV_symm' hy h2')⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem c_le {a : ℕ} (P : Pre E a) : P.c ≤ a := by
   calc P.c = ∑ _i : Fin P.c, 1 := by simp
     _ ≤ ∑ i, P.N i := Finset.sum_le_sum fun i _ => P.pos i
     _ = a := P.h
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem N_le {a : ℕ} (P : Pre E a) (j : Fin P.c) : P.N j ≤ a := by
   calc P.N j ≤ ∑ i, P.N i := Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)
     _ = a := P.h
 
+/- English proof (translation)
+Rewrite using `[← hm τ]`. Conclude with `Finset.single_le_sum (f := fun j => P.m j τ) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ j)`.
+-/
 theorem m_le {a : ℕ} (P : Pre E a) (m₀ : (E →+* ℂ) → Multiset ℂ) (hm : ∀ τ, ∑ j, P.m j τ = m₀ τ) (j : Fin P.c)
     (τ : E →+* ℂ) : P.m j τ ≤ m₀ τ := by
   rw [← hm τ]
@@ -59,6 +78,31 @@ namespace PositivityTheory.Rg.BcB.F.FX.Bo.Tw
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.BcB.F.FX.Bo FiniteStrictOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ a Θ Ω hΘ hΩ m₀`. Establish `hF` using `fun (M : ℕ) (K' : Subgroup (GL (Fin M) (Af E))) (W' : Submodule ℂ (Kinf E M → ℂ)) (m' : (E →+* ℂ) → Multiset ℂ) (hK : IsOpen (K' : Set (GL (Fin M) (Af E)))) (hW : FiniteDimensional ℂ W') => Bo.FinIso_holds E M K' W' m' hK hW`. Use `choose V0 _hV0 hV0 using hF`. Set `Ms : Set ((E →+* ℂ) → Multiset ℂ)` to `Set.pi Set.univ fun τ => {s | s ≤ m₀ τ}`. Establish `hMs : Ms.Finite`.
+
+Use `Set.Finite.pi fun τ => ?_` and prove the remaining obligations. Use `(Multiset.toFinset (Multiset.powerset (m₀ τ))).finite_toSet.subset fun s hs => ?_` and prove the remaining obligations. Simplify `hs` using `[Multiset.mem_powerset]`. Set `Reps : Set (Σ M : ℕ, Submodule ℂ (Sm E M))` to `⋃ M ∈ Set.Iic a, ⋃ K' ∈ Θ M, ⋃ W' ∈ Ω M, ⋃ m' ∈ Ms, ⋃ (hK : IsOpen (K' : Set (GL (Fin M) (Af E)))), ⋃ (hW : FiniteDimensional ℂ W'), (Sigma.mk M) '' (V0 M K' W' m' hK hW : Set (Submodule ℂ (Sm E M)))`. Establish `hReps : Reps.Finite` using `(Set.finite_Iic a).biUnion fun M _ => (hΘ M).1.biUnion fun K' _ => (hΩ M).1.biUnion fun W' _ => hMs.biUnion fun m' _ => Set.finite_iUnion fun hK => Set.finite_iUnion fun hW => (Finset.finite_toSet _).image _`.
+
+Use `hReps.to_subtype` as an intermediate fact. Use `hMs.to_subtype` as an intermediate fact. Set `Good : Pre E a → Prop` to `fun P => (∀ j, ∃ K' ∈ Θ (P.N j), ∃ W' ∈ Ω (P.N j), HasType K' W' (P.V j)) ∧ (∀ τ, ∑ j, P.m j τ = m₀ τ)`. Establish `hrep : ∀ P : Pre E a, Good P → ∀ j, ∃ z ∈ Reps, SIso ⟨P.N j, P.V j⟩ z`. Introduce `P hP j`.
+
+Take `⟨K', hK', W', hW', ht⟩` from `hP.1 j`. Establish `hKo` using `(hΘ _).2 K' hK'`. Establish `hWf` using `(hΩ _).2 W' hW'`. Take `⟨V', hV'm, hiso⟩` from `hV0 _ K' W' (P.m j) hKo hWf (P.V j) (P.discrete j) ht (P.inf j)`. Use `⟨⟨P.N j, V'⟩, ?_, rfl, hiso⟩` and prove the remaining obligations.
+
+Simplify using `only [Reps, Set.mem_iUnion, Set.mem_image]`. Conclude with `⟨P.N j, N_le P j, K', hK', W', hW', P.m j, fun τ _ => m_le P m₀ hP.2 j τ, hKo, hWf, V', hV'm, rfl⟩`. Establish `hmem : ∀ P : Pre E a, Good P → ∀ j, P.m j ∈ Ms` using `fun P hP j τ _ => m_le P m₀ hP.2 j τ`. Set `part : Pre E a → ℕ → Option (Reps × Ms)` to `fun P i => if h : i < P.c then (if h' : (∃ z ∈ Reps, SIso ⟨P.N ⟨i, h⟩, P.V ⟨i, h⟩⟩ z) ∧ P.m ⟨i, h⟩ ∈ Ms then some (⟨Classical.choose h'.1, (Classical.choose_spec h'.1).1⟩, ⟨P.m ⟨i, h⟩, h'.2⟩) else none) else none`. Set `key : Pre E a → Fin (a + 1) × (Fin a → Option (Reps × Ms))` to `fun P => (⟨min P.c a, Nat.lt_succ_of_le (min_le_right _ _)⟩, fun i => part P i.1)`.
+
+Establish `hkey : ∀ P Q : Pre E a, Good P → Good Q → key P = key Q → Strict P Q`. Introduce `P Q hP hQ hPQ`. Establish `hc : P.c = Q.c`. Use `congrArg (fun x => (x.1 : ℕ)) (congrArg Prod.fst hPQ)` as an intermediate fact. Simplify `this` using `[key, min_eq_left (c_le P), min_eq_left (c_le Q)]`.
+
+Establish `hpart : ∀ j : Fin P.c, part P j.1 = part Q j.1` using `fun j => congrFun (congrArg Prod.snd hPQ) ⟨j.1, lt_of_lt_of_le j.2 (c_le P)⟩`. Establish `hsome : ∀ (R : Pre E a) (hR : Good R) (j : Fin R.c), ∃ z : Reps, SIso ⟨R.N j, R.V j⟩ z.1 ∧ part R j.1 = some (z, ⟨R.m j, hmem R hR j⟩)`. Introduce `R hR j`. Establish `h' : (∃ z ∈ Reps, SIso ⟨R.N ⟨j.1, j.2⟩, R.V ⟨j.1, j.2⟩⟩ z) ∧ R.m ⟨j.1, j.2⟩ ∈ Ms` using `⟨hrep R hR j, hmem R hR j⟩`. Use `⟨⟨Classical.choose h'.1, (Classical.choose_spec h'.1).1⟩, (Classical.choose_spec h'.1).2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [part, dif_pos j.2, dif_pos h']`. Use `⟨forall₂_ofFn SIso hc _ _ fun j => ?_, hc, fun j => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hPz⟩` from `hsome P hP j`. Take `⟨z', hz', hQz⟩` from `hsome Q hQ (Fin.cast hc j)`. Establish `e` using `(hpart j).trans (hQz : part Q j.1 = _)`.
+
+Rewrite `e` using `[hPz]`. Simplify using `only [Option.some.injEq, Prod.mk.injEq] at e`. Rewrite `hz'` using `[← e.1]`. Conclude with `siso_trans (Q.discrete _).stable hz hz'`. Take `⟨z, hz, hPz⟩` from `hsome P hP j`.
+
+Take `⟨z', hz', hQz⟩` from `hsome Q hQ (Fin.cast hc j)`. Establish `e` using `(hpart j).trans (hQz : part Q j.1 = _)`. Rewrite `e` using `[hPz]`. Simplify using `only [Option.some.injEq, Prod.mk.injEq, Subtype.mk.injEq] at e`. Conclude with `e.2`.
+
+Set `Im : Set (Fin (a + 1) × (Fin a → Option (Reps × Ms)))` to `key '' {P | Good P}`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin Im`. Establish `hpre : ∀ i : Fin k, ∃ P, Good P ∧ key P = (e.symm i).1` using `fun i => (e.symm i).2`. Use `choose Pl hPl hkPl using hpre`. Use `⟨k, Pl, fun P h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Establish `hP : Good P` using `⟨h1, h2⟩`. Use `⟨e ⟨key P, P, hP, rfl⟩, hkey P _ hP (hPl _) ?_⟩` and prove the remaining obligations. Rewrite using `[hkPl, Equiv.symm_apply_apply]`.
+-/
 theorem FinStrict_holds : FinStrict := by
   intro E _ _ _ a Θ Ω hΘ hΩ m₀
 

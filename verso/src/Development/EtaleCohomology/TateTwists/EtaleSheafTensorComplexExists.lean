@@ -10,11 +10,17 @@ namespace LateralTheory.EtaleFoundations
 section
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((F.obj.map g.op ≫ f.hom.app (op V)).hom a) = ((f.hom.app (op U) ≫ G.obj.map g.op).hom a)`. Rewrite using `[f.hom.naturality]`.
+-/
 lemma sec_map_res {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.map f (Sec.res g a) = Sec.res g (Sec.map f a) := by
   change ((F.obj.map g.op ≫ f.hom.app (op V)).hom a) = ((f.hom.app (op U) ≫ G.obj.map g.op).hom a)
   rw [f.hom.naturality]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((I.d i j ≫ I.d j k).hom.app (op U)).hom a = 0`. Rewrite using `[HomologicalComplex.d_comp_d]`. Both sides reduce to the same expression.
+-/
 lemma sec_map_dd (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (a : Sec (I.X i) U) :
     Sec.map (I.d j k) (Sec.map (I.d i j) a) = 0 := by
   change ((I.d i j ≫ I.d j k).hom.app (op U)).hom a = 0
@@ -42,17 +48,26 @@ def dB (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2
 def dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R] Tens I J U (w + 1) :=
   DirectSum.toModule _ _ _ fun p => TensorProduct.lift (dB I J U w p)
 
+/- English proof (translation)
+Simplify using `[dT, tensPure, dB, DirectSum.toModule_lof, Units.smul_def, Sec.map]`.
+-/
 lemma dT_pure (I J : Cx R) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
     dT I J U w (tensPure s t w h a b) =
       tensPure (s + 1) t (w + 1) (by omega) (Sec.map (I.d s (s + 1)) a) b +
       s.negOnePow • tensPure s (t + 1) (w + 1) (by omega) a (Sec.map (J.d t (t + 1)) b) := by
   simp [dT, tensPure, dB, DirectSum.toModule_lof, Units.smul_def, Sec.map]
 
+/- English proof (translation)
+Simplify using `[Tens.res, tensPure, Sec.res]`.
+-/
 lemma tensPure_res (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (s t w : ℤ) (h : s + t = w)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
     Tens.res g w (tensPure s t w h a b) = tensPure s t w h (Sec.res g a) (Sec.res g b) := by
   simp [Tens.res, tensPure, Sec.res]
 
+/- English proof (translation)
+Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Conclude with `H p.1.1 p.1.2 p.2 a b`.
+-/
 lemma tens_ext {I J : Cx R} {U : Scheme.{0}} {w : ℤ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} R) M]
     {f g : Tens I J U w →ₗ[ULift.{1} R] M}
     (H : ∀ s t (h : s + t = w) a b, f (tensPure s t w h a b) = g (tensPure s t w h a b)) : f = g := by
@@ -68,12 +83,23 @@ def dP (I J : Cx R) (w : ℤ) : etaleTensorPresheafOfComplexes I J w ⟶ etaleTe
       Tens.res g.unop (w + 1) (dT I J V.unop w (tensPure s t w h a b))
     simp only [tensPure_res, dT_pure, map_add, Units.smul_def, map_zsmul, sec_map_res]
 
+/- English proof (translation)
+Simplify using `[tensPure]`.
+-/
 lemma tensPure_zero_left (I J : Cx R) {U : Scheme.{0}} (s t w : ℤ) (h : s + t = w) (b : Sec (J.X t) U) :
     tensPure (I := I) s t w h 0 b = 0 := by simp [tensPure]
 
+/- English proof (translation)
+Simplify using `[tensPure]`.
+-/
 lemma tensPure_zero_right (I J : Cx R) {U : Scheme.{0}} (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) :
     tensPure (J := J) s t w h a 0 = 0 := by simp [tensPure]
 
+/- English proof (translation)
+Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Use `tens_ext (M := Tens I J U.unop (w + 1 + 1)) fun s t h a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dT I J U.unop (w + 1) (dT I J U.unop w (tensPure s t w h a b)) = 0`.
+
+Simplify using `only [dT_pure, map_add, Units.smul_def, map_zsmul, sec_map_dd, tensPure_zero_left, tensPure_zero_right, smul_zero, zero_add, add_zero, Int.negOnePow_succ, Units.val_neg, neg_smul]`. Normalize the expressions using the abelian group laws.
+-/
 lemma tensorDifferential_comp_tensorDifferential (I J : Cx R) (w : ℤ) : dP I J w ≫ dP I J (w + 1) = 0 := by
   apply NatTrans.ext; funext U; apply ModuleCat.hom_ext
   refine tens_ext (M := Tens I J U.unop (w + 1 + 1)) fun s t h a b => ?_
@@ -84,6 +110,17 @@ lemma tensorDifferential_comp_tensorDifferential (I J : Cx R) (w : ℤ) : dP I J
 
 end
 
+/- English proof (translation)
+Introduce `R _ I J`. Set `K : Cx R` to `CochainComplex.of (fun w => (presheafToSheaf Scheme.etaleTopology _).obj (etaleTensorPresheafOfComplexes I J w)) (fun w => (presheafToSheaf Scheme.etaleTopology _).map (dP I J w)) (fun w => by rw [← Functor.map_comp, tensorDifferential_comp_tensorDifferential, Functor.map_zero])`. Use `⟨K, fun U w => ((toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)).app (op U)).hom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V U g w x`. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)).app (op U) ≫ (sheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)).map g.op).hom x = _`.
+
+Rewrite using `[← (toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)).naturality]`. Both sides reduce to the same expression. Introduce `U s t w h a b`. Establish `hd : K.d w (w + 1) = (presheafToSheaf Scheme.etaleTopology _).map (dP I J w)`. Simplify using `[K, CochainComplex.of_d]`.
+
+Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w) ≫ sheafifyMap Scheme.etaleTopology (dP I J w)).app (op U)).hom (tensPure s t w h a b) = _`. Rewrite using `[← toSheafify_naturality]`. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J (w + 1))).app (op U)).hom (dT I J U w (tensPure s t w h a b)) = _`. Simplify using `only [dT_pure, Units.smul_def]`.
+
+Conclude with `(LinearMap.map_add _ _ _).trans (congrArg _ (map_zsmul _ _ _))`. Introduce `U w y`. Take `h` from `Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)) (U := op U) y`. Conclude with `⟨_, h, fun V g hg => hg⟩`. Introduce `U w x hx`.
+
+Establish `h` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology (etaleTensorPresheafOfComplexes I J w)) (X := op U) x 0 (by rw [map_zero]; exact hx)`. Conclude with `⟨_, h, fun V g hg => (show Tens.res g w x = Tens.res g w 0 from hg).trans (map_zero _)⟩`.
+-/
 theorem etale_sheaf_tensor_complex_exists : EtaleSheafTensorComplexExists := by
   intro R _ I J
   let K : Cx R := CochainComplex.of (fun w => (presheafToSheaf Scheme.etaleTopology _).obj (etaleTensorPresheafOfComplexes I J w))

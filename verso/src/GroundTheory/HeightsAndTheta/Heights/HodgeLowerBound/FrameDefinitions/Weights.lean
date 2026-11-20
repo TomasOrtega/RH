@@ -96,6 +96,9 @@ def smoothRep (P : Ideal (MRing ι)) (A : HermLine ι) : HermLine ι :=
   if h : ∃ A' : HermLine ι, A'.a = A.a ∧ IsSmoothHerm A' ∧ ∀ z ∈ mcPts P, A'.h z = A.h z then h.choose
   else A
 
+/- English proof (translation)
+Unfold `smoothRep`. Use `split_ifs with h`. Conclude with `h.choose_spec.2.2 z hz`. Both sides reduce to the same expression.
+-/
 theorem smoothRep_h {P : Ideal (MRing ι)} (A : HermLine ι) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     (smoothRep P A).h z = A.h z := by
   classical
@@ -104,6 +107,9 @@ theorem smoothRep_h {P : Ideal (MRing ι)} (A : HermLine ι) {z : (Σ k, ι k) �
   · exact h.choose_spec.2.2 z hz
   · rfl
 
+/- English proof (translation)
+Unfold `smoothRep`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Both sides reduce to the same expression.
+-/
 theorem smoothRep_a (P : Ideal (MRing ι)) (A : HermLine ι) : (smoothRep P A).a = A.a := by
   classical
   unfold smoothRep

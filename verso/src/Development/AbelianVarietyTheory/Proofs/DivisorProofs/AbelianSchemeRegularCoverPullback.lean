@@ -19,6 +19,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 
 namespace GlobalTheory.ThetaCover
 
+/- English proof (translation)
+Introduce `_ hRA k _ X p _ hX P`. Take `⟨Pη, φη, -, hPη⟩` from `PPAS.exists_pull X (Sp X.functionField) P (X.fromSpecStalk (genericPoint X))`. Take `⟨F, _, _, hfin, hF⟩` from `GlobalTheory.T.abelian_variety_theta_after_extension X.functionField Pη`. Take `⟨C, t, ht⟩` from `GlobalTheory.T.regular_cover_over_finite_extension hRA k X p hX F hfin`. Take `⟨P', φ, hg, hP⟩` from `PPAS.exists_pull X C.Y P C.ρ`.
+
+Establish `h1` using `GlobalTheory.T.theta_pullback_cancel_right _ _ _ P Pη _ φη _ hPη hF`. Establish `h2` using `GlobalTheory.T.theta_pullback_composite _ _ _ P _ t h1`. Rewrite `h2` using `[ht]`. Establish `h3` using `GlobalTheory.T.theta_pullback_cancel_left _ _ _ P P' C.ρ φ _ hP h2`. Conclude with `⟨C, P', φ, hP, hg, GlobalTheory.T.theta_descends_from_generic_fibre k C.Y (C.ρ ≫ p) C.reg P' h3⟩`.
+-/
 theorem exists_regCover_hasTheta : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → ∀ (k : Type) [CommRing k]
     (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], IsArithVar p 1 → ∀ P : PPAS X,
     ∃ (C : RegCover p) (P' : PPAS C.Y) (φ : P'.A.left ⟶ P.A.left), P'.IsPull P C.ρ φ ∧ P'.g = P.g ∧ P'.HasTheta := by

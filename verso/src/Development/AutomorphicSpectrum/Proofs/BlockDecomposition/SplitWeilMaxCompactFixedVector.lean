@@ -16,6 +16,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Distinguish the cases in `h1 : z.1 ∈ 𝒪[F]`. Distinguish the cases in `h2 : z.2 ∈ 𝒪[F]`. Rewrite using `[Set.indicator_of_mem (show z ∈ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from ⟨h1, h2⟩), phiS, intInd_of_mem h1, intInd_of_mem h2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem (show z ∉ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from fun h => h2 h.2), phiS, intInd_of_notMem h2]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show z ∉ {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} from fun h => h1 h.1), phiS, intInd_of_notMem h1]`. Simplify using the standard rewrite rules.
+-/
 theorem indicator_eq_phiS :
     Set.indicator {x : F × F | x.1 ∈ 𝒪[F] ∧ x.2 ∈ 𝒪[F]} 1 = (phiS : F × F → ℂ) := by
   funext z
@@ -33,6 +38,9 @@ theorem indicator_eq_phiS :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `h` using `isTrivialOn_addCharConductor hχ.1 hχ.2.1`. Rewrite `h` using `[hχ.2.2]`. Conclude with `h x (mem_valBall_zero_iff.2 hx)`.
+-/
 theorem chi_of_mem (hχ : IsStd χ) {x : F} (hx : x ∈ 𝒪[F]) : χ x = 1 := by
   have h := isTrivialOn_addCharConductor hχ.1 hχ.2.1
   rw [hχ.2.2] at h
@@ -40,6 +48,11 @@ theorem chi_of_mem (hχ : IsStd χ) {x : F} (hx : x ∈ 𝒪[F]) : χ x = 1 := b
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Distinguish the cases in `h1 : z.1 ∈ 𝒪[F]`. Distinguish the cases in `h2 : z.2 ∈ 𝒪[F]`. Rewrite using `[chi_of_mem hχ (mul_mem ht (mul_mem h1 h2))]`. Simplify using the standard rewrite rules. Simplify using `[phiS, intInd_of_notMem h2]`.
+
+Simplify using `[phiS, intInd_of_notMem h1]`.
+-/
 theorem chi_mul_phiS (hχ : IsStd χ) {t : F} (ht : t ∈ 𝒪[F]) (z : F × F) :
     (χ (t * (z.1 * z.2)) : ℂ) * phiS z = phiS z := by
   by_cases h1 : z.1 ∈ 𝒪[F]
@@ -51,6 +64,9 @@ theorem chi_mul_phiS (hχ : IsStd χ) {t : F} (ht : t ∈ 𝒪[F]) (z : F × F) 
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `h1` using `modulus_le_one_iff.2 hu`. Establish `h2` using `modulus_le_one_iff.2 hv`. Establish `h3 : modulus u * modulus v = 1` using `by rw [← modulus_mul, huv, modulus_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem modulus_unit {u v : F} (hu : u ∈ 𝒪[F]) (hv : v ∈ 𝒪[F]) (huv : u * v = 1) : modulus u = 1 := by
   have h1 := modulus_le_one_iff.2 hu
   have h2 := modulus_le_one_iff.2 hv
@@ -62,6 +78,9 @@ theorem modulus_unit {u v : F} (hu : u ∈ 𝒪[F]) (hv : v ∈ 𝒪[F]) (huv : 
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ 𝒪[F]`. Rewrite using `[intInd_of_mem hx, intInd_of_mem (mul_mem hu hx)]`. Rewrite using `[intInd_of_notMem hx, intInd_of_notMem fun h => hx ?_]`. Use `mul_mem hv h` as an intermediate fact. Rewrite `this` using `[show v * (u * x) = x by rw [← mul_assoc, mul_comm v u, huv, one_mul]]`. Then use the resulting hypothesis.
+-/
 theorem intInd_unit_mul {u v : F} (hu : u ∈ 𝒪[F]) (hv : v ∈ 𝒪[F]) (huv : u * v = 1) (x : F) :
     intInd (u * x) = intInd x := by
   by_cases hx : x ∈ 𝒪[F]
@@ -71,11 +90,31 @@ theorem intInd_unit_mul {u v : F} (hu : u ∈ 𝒪[F]) (hv : v ∈ 𝒪[F]) (huv
     rwa [show v * (u * x) = x by rw [← mul_assoc, mul_comm v u, huv, one_mul]] at this
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `only [phiS, Prod.algebraMap_apply, Prod.fst_mul, Prod.snd_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Rewrite using `[intInd_unit_mul hu hv huv, intInd_unit_mul hu hv huv]`.
+-/
 theorem phiS_unit_mul {u v : F} (hu : u ∈ 𝒪[F]) (hv : v ∈ 𝒪[F]) (huv : u * v = 1) (z : F × F) :
     phiS (algebraMap F (F × F) u * z) = phiS z := by
   simp only [phiS, Prod.algebraMap_apply, Prod.fst_mul, Prod.snd_mul, Algebra.algebraMap_self, RingHom.id_apply]
   rw [intInd_unit_mul hu hv huv, intInd_unit_mul hu hv huv]
 
+/- English proof (translation)
+Rewrite using `[Ad3.K.GL2LocalData.rW, if_neg hc, nsg_pair (neg_ne_zero.2 hc), GlobalTheory.CompanionTheory.GJOne.selfDualMeasure_eq_of_isStd hχ]`. Use `set E : F × F → F := fun w => (a * (z.1 * z.2) + d * (w.1 * w.2) - (z.2 * w.1 + z.1 * w.2)) / c with hE`. Establish `hEc : Continuous E`. Simplify using `only [hE]`. Use `fun_prop`.
+
+Establish `hKc : Continuous (fun w => χ (E w))` using `hχ.1.comp hEc`. Establish `hint : ∀ w : F × F, (χ ((a * Algebra.norm F z + d * Algebra.norm F w - Algebra.trace F (F × F) (Ad3.K.GL2LocalData.swapE z * w)) / c) : ℂ) * phiS w = (χ (E w) : ℂ) * phiS w`. Introduce `w`. Establish `: Ad3.K.GL2LocalData.swapE z = (z.2, z.1)` using `rfl`. Rewrite using `[this, norm_pair, norm_pair, trace_pair]`.
+
+Both sides reduce to the same expression. Simplify using `only [hint]`. Establish `hI : Integrable (fun w : F × F => (χ (E w) : ℂ) * phiS w) ((haarIntegers F).prod (haarIntegers F))`. Establish `h` using `integrable_kernel (D := (1 : F)) one_ne_zero hKc`. Establish `e : ((1 : F), (1 : F)) = (1 : F × F)` using `rfl`.
+
+Simplify `h` using `only [e, mul_one]`. Rewrite using `[integral_prod_symm _ hI]`. Establish `hinner : ∀ q : F, ∫ p, (χ (E (p, q)) : ℂ) * phiS (p, q) ∂(haarIntegers F) = (χ (a * (z.1 * z.2) / c) : ℂ) * (intInd q * (χ (-(z.1 / c * q)) : ℂ) * intInd (d / c * q - z.2 / c))`. Introduce `q`. Establish `ho` using `orth hχ ((d * q - z.2) / c)`.
+
+Establish `: ∀ p : F, (χ (E (p, q)) : ℂ) * phiS (p, q) = ((χ (a * (z.1 * z.2) / c) : ℂ) * (χ (-(z.1 / c * q)) : ℂ) * intInd q) * (intInd p * (χ ((d * q - z.2) / c * p) : ℂ))`. Introduce `p`. Establish `e : E (p, q) = a * (z.1 * z.2) / c + -(z.1 / c * q) + (d * q - z.2) / c * p`. Simplify using `only [hE]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, Circle.coe_mul, Circle.coe_mul]`. Simplify using `only [phiS]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`.
+
+Rewrite using `[integral_const_mul, ho, show (d * q - z.2) / c = d / c * q - z.2 / c by ring]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hinner]`. Rewrite using `[integral_const_mul, GlobalTheory.CompanionTheory.SphTheta.SplitRW.J]`. Simplify using `only [one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_gen (hχ : IsStd χ) {a b c d : F} (hc : c ≠ 0) (z : F × F) :
     Ad3.K.GL2LocalData.rW χ Ad3.K.GL2LocalData.swapE ((selfDualMeasure χ).prod (selfDualMeasure χ)) 1 a b c d phiS z =
       (((modulus c : ℝ)⁻¹ : ℝ) : ℂ) * (χ (a * (z.1 * z.2) / c) : ℂ) * GlobalTheory.CompanionTheory.SphTheta.SplitRW.J χ (d / c) (z.2 / c) (z.1 / c) := by
@@ -122,6 +161,31 @@ theorem rW_gen (hχ : IsStd χ) {a b c d : F} (hc : c ≠ 0) (z : F × F) :
   simp only [one_mul]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `hc0 : c = 0`. Substitute `hc0` using the available equality. Establish `had : a * d = 1` using `by simpa using hdet`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul_eq_one had`. Rewrite using `[Ad3.K.GL2LocalData.rW, if_pos rfl, nsg_pair ha0, modulus_unit ha hd had, norm_pair, phiS_unit_mul ha hd had]`.
+
+Use `chi_mul_phiS hχ (mul_mem ha hb) z` as an intermediate fact. Simplify using `using this`. Rewrite using `[rW_gen hχ hc0]`. Distinguish the cases in `hδ : d / c ∈ 𝒪[F]`. Use `set v : F := a * (d / c) - b with hv`.
+
+Establish `hvO : v ∈ 𝒪[F]` using `sub_mem (mul_mem ha hδ) hb`. Establish `hcv : c * v = 1`. Rewrite using `[hv, ← hdet]`. Clear the denominators using the available nonvanishing facts. Establish `hvc : v = c⁻¹` using `eq_inv_of_mul_eq_one_right hcv`.
+
+Establish `hm : modulus c = 1` using `modulus_unit hc hvO hcv`. Establish `hvc' : v * c = 1` using `by rw [mul_comm]; exact hcv`. Rewrite using `[J_of_mem hχ hδ, hm]`. Establish `e1 : z.2 / c = v * z.2` using `by rw [hvc]; field_simp`. Establish `e2 : z.1 / c = v * z.1` using `by rw [hvc]; field_simp`.
+
+Establish `e3 : a * (z.1 * z.2) / c = (a * v) * (z.1 * z.2)` using `by rw [hvc]; field_simp`. Rewrite using `[e1, e2, e3, intInd_unit_mul hvO hc hvc', intInd_unit_mul hvO hc hvc']`. Use `chi_mul_phiS hχ (mul_mem ha hvO) z` as an intermediate fact. Simplify using `only [phiS] at this ⊢`. Simplify using `only [NNReal.coe_one, inv_one, Complex.ofReal_one, one_mul]`.
+
+Rewrite using `[mul_comm (intInd z.2)]`. Conclude with `this`. Take `⟨hδ0, hδi⟩` from `inv_mem_of_notMem hδ`. Establish `hd0 : d ≠ 0` using `fun h => hδ0 (by rw [h, zero_div])`. Use `set v : F := a - b * (d / c)⁻¹ with hv`.
+
+Establish `hvO : v ∈ 𝒪[F]` using `sub_mem ha (mul_mem hb hδi)`. Establish `hdv : d * v = 1`. Rewrite using `[hv, ← hdet]`. Clear the denominators using the available nonvanishing facts. Establish `hvd : v = d⁻¹` using `eq_inv_of_mul_eq_one_right hdv`.
+
+Establish `hm : modulus d = 1` using `modulus_unit hd hvO hdv`. Establish `hvd' : v * d = 1` using `by rw [mul_comm]; exact hdv`. Rewrite using `[J_of_notMem hχ hδ]`. Establish `e1 : z.2 / c / (d / c) = v * z.2` using `by rw [hvd]; field_simp`. Establish `e2 : z.1 / c / (d / c) = v * z.1` using `by rw [hvd]; field_simp`.
+
+Establish `e3 : (((modulus c : ℝ)⁻¹ : ℝ) : ℂ) * (((modulus (d / c) : ℝ)⁻¹ : ℝ) : ℂ) = 1`. Establish `hcp : (modulus c : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hc0`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv, hm, ← Complex.ofReal_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `using hc0`. Establish `e4 : a * (z.1 * z.2) / c + -(z.2 / c * (z.1 / c) / (d / c)) = (b * v) * (z.1 * z.2)`. Rewrite using `[hvd]`. Establish `hbc : a * d - 1 = b * c` using `by rw [← hdet]; ring`. Establish `: a * (z.1 * z.2) / c + -(z.2 / c * (z.1 / c) / (d / c)) = (a * d - 1) * (z.1 * z.2) / (c * d)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hbc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, intInd_unit_mul hvO hd hvd', intInd_unit_mul hvO hd hvd']`.
+
+Establish `hχ2` using `chi_mul_phiS hχ (mul_mem hb hvO) z`. Rewrite `hχ2` using `[← e4, AddChar.map_add_eq_mul, Circle.coe_mul]`. Simplify using `only [phiS] at hχ2 ⊢`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rW_fix (hχ : IsStd χ) {a b c d : F} (ha : a ∈ 𝒪[F]) (hb : b ∈ 𝒪[F]) (hc : c ∈ 𝒪[F])
     (hd : d ∈ 𝒪[F]) (hdet : a * d - b * c = 1) (z : F × F) :
     Ad3.K.GL2LocalData.rW χ Ad3.K.GL2LocalData.swapE ((selfDualMeasure χ).prod (selfDualMeasure χ)) 1 a b c d phiS z =
@@ -191,6 +255,11 @@ theorem rW_fix (hχ : IsStd χ) {a b c d : F} (ha : a ∈ 𝒪[F]) (hb : b ∈ �
             (intInd z.1 * intInd z.2)) := by ring
       _ = _ := by rw [e3, one_mul, hχ2]
 
+/- English proof (translation)
+Introduce `_ F _ _ _ _ _ _ _ χ hc h1 hcond k hdet hk`. Establish `hχ : IsStd χ` using `⟨hc, h1, hcond⟩`. Rewrite using `[indicator_eq_phiS]`. Use function extensionality and compare the values at `z`. Establish `hd : k 0 0 * k 1 1 - k 0 1 * k 1 0 = 1` using `by rw [← Matrix.det_fin_two]; exact hdet`.
+
+Conclude with `rW_fix hχ (hk 0 0) (hk 0 1) (hk 1 0) (hk 1 1) hd z`.
+-/
 theorem rwks : Ad3.K.GL2LocalData.SRep → Ad3.K.QuadraticBaseChangeGL3.Th.RWKS := by
   intro _ F _ _ _ _ _ _ _ χ hc h1 hcond k hdet hk
   have hχ : IsStd χ := ⟨hc, h1, hcond⟩

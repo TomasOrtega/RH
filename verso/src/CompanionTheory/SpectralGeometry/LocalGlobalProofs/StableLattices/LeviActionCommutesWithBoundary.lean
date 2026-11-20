@@ -25,15 +25,27 @@ def dT (lev : Fin n → ℕ) (a b : Fin n) : Module.End ℂ (Cn n V) :=
 
 abbrev LT (E : Fin n → Fin n → Module.End ℂ V) (a b : Fin n) : Module.End ℂ (Cn n V) := lift n (E a b)
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cT_pos {lev : Fin n → ℕ} {a b : Fin n} (h : tau lev a b) :
     (cT lev a b : Module.End ℂ (Cn n V)) = ann ⟨(a, b), h.1⟩ := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem dT_pos {lev : Fin n → ℕ} {a b : Fin n} (h : tau lev a b) :
     (dT lev a b : Module.End ℂ (Cn n V)) = cre ⟨(a, b), h.1⟩ := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem cT_neg {lev : Fin n → ℕ} {a b : Fin n} (h : ¬tau lev a b) :
     (cT lev a b : Module.End ℂ (Cn n V)) = 0 := dif_neg h
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem dT_neg {lev : Fin n → ℕ} {a b : Fin n} (h : ¬tau lev a b) :
     (dT lev a b : Module.End ℂ (Cn n V)) = 0 := dif_neg h
 
@@ -49,33 +61,54 @@ def SU (V : Type) [AddCommGroup V] [Module ℂ V] (lev : Fin n → ℕ) : Submod
 
 variable {lev : Fin n → ℕ} {x : Cn n V}
 
+/- English proof (translation)
+Introduce `A hA j hj` and use `hx _ (CompanionTheory.D.LK.ann_ne hA).2 j (mem_insert_of_mem hj)`.
+-/
 theorem ann_mem (i : Pos n) (hx : x ∈ SU V lev) : ann i x ∈ SU V lev :=
   fun A hA j hj => hx _ (CompanionTheory.D.LK.ann_ne hA).2 j (mem_insert_of_mem hj)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `h`. Conclude with `hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))`.
+-/
 theorem ann_zero {i : Pos n} (hi : ¬inU lev i) (hx : x ∈ SU V lev) : ann i x = 0 := by
   funext A
   by_contra h
   exact hi (hx _ (CompanionTheory.D.LK.ann_ne h).2 i (mem_insert_self _ _))
 
+/- English proof (translation)
+Introduce `A hA j hj`. Distinguish the cases in `e : j = i`. Conclude with `e ▸ hi`. Conclude with `hx _ (CompanionTheory.D.LK.cre_ne hA).2 j (mem_erase.2 ⟨e, hj⟩)`.
+-/
 theorem cre_mem {i : Pos n} (hi : inU lev i) (hx : x ∈ SU V lev) : cre i x ∈ SU V lev := by
   intro A hA j hj
   by_cases e : j = i
   · exact e ▸ hi
   · exact hx _ (CompanionTheory.D.LK.cre_ne hA).2 j (mem_erase.2 ⟨e, hj⟩)
 
+/- English proof (translation)
+Introduce `A hA j hj` and use `hx A (fun e => hA (by simp [e])) j hj`.
+-/
 theorem lift_mem (T : Module.End ℂ V) (hx : x ∈ SU V lev) : lift n T x ∈ SU V lev :=
   fun A hA j hj => hx A (fun e => hA (by simp [e])) j hj
 
+/- English proof (translation)
+Distinguish the cases in `h : tau lev a b`. Rewrite using `[cT_pos h]`. Conclude with `ann_mem _ hx`. Rewrite using `[cT_neg h]`. Conclude with `zero_mem _`.
+-/
 theorem cT_mem (a b : Fin n) (hx : x ∈ SU V lev) : cT lev a b x ∈ SU V lev := by
   by_cases h : tau lev a b
   · rw [cT_pos h]; exact ann_mem _ hx
   · rw [cT_neg h]; exact zero_mem _
 
+/- English proof (translation)
+Distinguish the cases in `h : tau lev a b`. Rewrite using `[dT_pos h]`. Conclude with `cre_mem (i := ⟨(a, b), h.1⟩) h.2 hx`. Rewrite using `[dT_neg h]`. Conclude with `zero_mem _`.
+-/
 theorem dT_mem (a b : Fin n) (hx : x ∈ SU V lev) : dT lev a b x ∈ SU V lev := by
   by_cases h : tau lev a b
   · rw [dT_pos h]; exact cre_mem (i := ⟨(a, b), h.1⟩) h.2 hx
   · rw [dT_neg h]; exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_prod_type' (f := g), ← Finset.sum_filter_of_ne (s := univ) (f := fun y : Fin n × Fin n => g y.1 y.2) (p := fun y => y.1 < y.2) (fun y _ hy => by_contra fun t => hy (h _ _ t))]`. Conclude with `Finset.sum_subtype _ (by simp) _`.
+-/
 theorem sum_pos {M : Type*} [AddCommMonoid M] (g : Fin n → Fin n → M) (h : ∀ a b, ¬a < b → g a b = 0) :
     ∑ a, ∑ b, g a b = ∑ i : Pos n, g i.1.1 i.1.2 := by
   rw [← Fintype.sum_prod_type' (f := g),
@@ -83,6 +116,11 @@ theorem sum_pos {M : Type*} [AddCommMonoid M] (g : Fin n → Fin n → M) (h : �
       (fun y _ hy => by_contra fun t => hy (h _ _ t))]
   exact Finset.sum_subtype _ (by simp) _
 
+/- English proof (translation)
+Simplify using `only [bd, LinearMap.add_apply, LinearMap.sum_apply]`. Use `congr 1`. Use `sum_congr rfl fun i _ => sum_congr rfl fun j _ => sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.1.2 = j.1.1 ∧ k.1.1 = i.1.1 ∧ k.1.2 = j.1.2`. Rewrite using `[if_pos h, if_pos ⟨trivial, trivial, h⟩]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg (fun t => h t.2.2)]`. Both sides reduce to the same expression.
+-/
 theorem bd_allT (E : Fin n → Fin n → Module.End ℂ V) (x : Cn n V) :
     bd (allT n) E x = (∑ i : Pos n, lift n (E i.1.1 i.1.2) (ann i x)) +
       ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n,
@@ -94,6 +132,11 @@ theorem bd_allT (E : Fin n → Fin n → Module.End ℂ V) (x : Cn n V) :
   · rw [if_pos h, if_pos ⟨trivial, trivial, h⟩]; rfl
   · rw [if_neg h, if_neg (fun t => h t.2.2)]; rfl
 
+/- English proof (translation)
+Rewrite using `[sum_pos (fun a b => LT E a b (cT lev a b x)) (fun a b h => by rw [cT_neg (fun t => h t.1)]; simp)]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : inU lev i`. Rewrite using `[cT_pos (lev := lev) (a := i.1.1) (b := i.1.2) ⟨i.2, hi⟩]`. Rewrite using `[cT_neg (lev := lev) (a := i.1.1) (b := i.1.2) (fun t => hi t.2), ann_zero hi hx]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem part_one (E : Fin n → Fin n → Module.End ℂ V) (hx : x ∈ SU V lev) :
     ∑ a, ∑ b, LT E a b (cT lev a b x) = ∑ i : Pos n, lift n (E i.1.1 i.1.2) (ann i x) := by
   rw [sum_pos (fun a b => LT E a b (cT lev a b x))
@@ -103,6 +146,17 @@ theorem part_one (E : Fin n → Fin n → Module.End ℂ V) (hx : x ∈ SU V lev
   · rw [cT_pos (lev := lev) (a := i.1.1) (b := i.1.2) ⟨i.2, hi⟩]
   · rw [cT_neg (lev := lev) (a := i.1.1) (b := i.1.2) (fun t => hi t.2), ann_zero hi hx]; simp
 
+/- English proof (translation)
+Distinguish the cases in `h : i.1.2 = j.1.1`. Use `swap`. Rewrite using `[if_neg h]`. Conclude with `sum_eq_zero fun k _ => if_neg (fun t => h t.1)`. Rewrite using `[if_pos h]`.
+
+Distinguish the cases in `hi : inU lev i`. Use `swap`. Rewrite using `[ann_zero hi hx, cT_neg (lev := lev) (a := i.1.1) (b := i.1.2) (fun t => hi t.2)]`. Simplify using the standard rewrite rules. Distinguish the cases in `hj : inU lev j`.
+
+Use `swap`. Rewrite using `[ann_zero hj (ann_mem i hx), cT_neg (lev := lev) (a := j.1.1) (b := j.1.2) (fun t => hj t.2)]`. Simplify using the standard rewrite rules. Establish `hlt : i.1.1 < j.1.2` using `lt_trans i.2 (h ▸ j.2)`. Establish `hlv : lev i.1.1 < lev j.1.2` using `lt_trans hi (h ▸ hj)`.
+
+Rewrite using `[dT_pos (lev := lev) ⟨hlt, hlv⟩, cT_pos (lev := lev) (a := j.1.1) (b := j.1.2) ⟨j.2, hj⟩, cT_pos (lev := lev) (a := i.1.1) (b := i.1.2) ⟨i.2, hi⟩, sum_eq_single ⟨(i.1.1, j.1.2), hlt⟩]`. Rewrite using `[if_pos ⟨h, rfl, rfl⟩]`. Introduce `k _ hk`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, e1, e2⟩`.
+
+Conclude with `hk (Subtype.ext (Prod.ext e1 e2))`. Simplify using the standard rewrite rules.
+-/
 theorem tri_sum (hx : x ∈ SU V lev) (i j : Pos n) :
     (∑ k : Pos n, if i.1.2 = j.1.1 ∧ k.1.1 = i.1.1 ∧ k.1.2 = j.1.2 then cre k (ann j (ann i x)) else 0) =
       if i.1.2 = j.1.1 then dT lev i.1.1 j.1.2 (cT lev j.1.1 j.1.2 (cT lev i.1.1 i.1.2 x)) else 0 := by
@@ -127,6 +181,11 @@ theorem tri_sum (hx : x ∈ SU V lev) (i j : Pos n) :
     exact hk (Subtype.ext (Prod.ext e1 e2))
   · simp
 
+/- English proof (translation)
+Rewrite using `[sum_pos (fun a b => ∑ e, dT lev a e (cT lev b e (cT lev a b x))) (fun a b h => by rw [cT_neg (fun t => h t.1)]; simp)]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [tri_sum hx]`. Rewrite using `[← sum_pos (fun b e => if i.1.2 = b then dT lev i.1.1 e (cT lev b e (cT lev i.1.1 i.1.2 x)) else 0) (fun b e h => by split_ifs`. Rewrite using `[cT_neg (lev := lev) (a := b) (b := e) (fun t => h t.1)]`.
+
+Simplify using the standard rewrite rules. Use the proof step `rfl),`. Use `sum_eq_single i.1.2 (fun b _ hb => sum_eq_zero fun e _ => if_neg (Ne.symm hb)) (by simp)]`. Conclude with `sum_congr rfl fun e _ => (if_pos rfl).symm`.
+-/
 theorem part_two (hx : x ∈ SU V lev) :
     ∑ a, ∑ b, ∑ e, dT lev a e (cT lev b e (cT lev a b x)) =
       ∑ i : Pos n, ∑ j : Pos n, ∑ k : Pos n,
@@ -149,28 +208,56 @@ def Dl (lev : Fin n → ℕ) (E : Fin n → Fin n → Module.End ℂ V) : Module
 def Th (lev : Fin n → ℕ) (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) : Module.End ℂ (Cn n V) :=
   LT E p q + (∑ r, dT lev p r * cT lev q r - ∑ r, dT lev r q * cT lev r p)
 
+/- English proof (translation)
+Simplify using `only [Dl, LinearMap.add_apply, LinearMap.sum_apply, Module.End.mul_apply]`.
+-/
 theorem Dl_apply (E : Fin n → Fin n → Module.End ℂ V) (x : Cn n V) :
     Dl lev E x = (∑ a, ∑ b, LT E a b (cT lev a b x)) + ∑ a, ∑ b, ∑ e, dT lev a e (cT lev b e (cT lev a b x)) := by
   simp only [Dl, LinearMap.add_apply, LinearMap.sum_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Simplify using `only [Th, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply]`.
+-/
 theorem Th_apply (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (x : Cn n V) :
     Th lev E p q x = LT E p q x + (∑ r, dT lev p r (cT lev q r x) - ∑ r, dT lev r q (cT lev r p x)) := by
   simp only [Th, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[Dl_apply, bd_allT, part_one E hx, part_two hx]`.
+-/
 theorem bd_eq (E : Fin n → Fin n → Module.End ℂ V) (hx : x ∈ SU V lev) : bd (allT n) E x = Dl lev E x := by
   rw [Dl_apply, bd_allT, part_one E hx, part_two hx]
 
+/- English proof (translation)
+Rewrite using `[Dl_apply]`. Conclude with `add_mem (sum_mem fun a _ => sum_mem fun b _ => lift_mem _ (cT_mem a b hx)) (sum_mem fun a _ => sum_mem fun b _ => sum_mem fun e _ => dT_mem a e (cT_mem b e (cT_mem a b hx)))`.
+-/
 theorem Dl_mem (E : Fin n → Fin n → Module.End ℂ V) (hx : x ∈ SU V lev) : Dl lev E x ∈ SU V lev := by
   rw [Dl_apply]
   exact add_mem (sum_mem fun a _ => sum_mem fun b _ => lift_mem _ (cT_mem a b hx))
     (sum_mem fun a _ => sum_mem fun b _ => sum_mem fun e _ => dT_mem a e (cT_mem b e (cT_mem a b hx)))
 
+/- English proof (translation)
+Rewrite using `[Th_apply]`. Conclude with `add_mem (lift_mem _ hx) (sub_mem (sum_mem fun r _ => dT_mem p r (cT_mem q r hx)) (sum_mem fun r _ => dT_mem r q (cT_mem r p hx)))`.
+-/
 theorem Th_mem (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (hx : x ∈ SU V lev) :
     Th lev E p q x ∈ SU V lev := by
   rw [Th_apply]
   exact add_mem (lift_mem _ hx) (sub_mem (sum_mem fun r _ => dT_mem p r (cT_mem q r hx))
     (sum_mem fun r _ => dT_mem r q (cT_mem r p hx)))
 
+/- English proof (translation)
+Establish `e1 : ∑ r, dT lev p r (cT lev q r x) = ∑ a, ∑ b, if q = a then dT lev p b (cT lev a b x) else 0`. Rewrite using `[sum_eq_single q (fun a _ ha => sum_eq_zero fun b _ => if_neg (Ne.symm ha)) (by simp)]`. Conclude with `sum_congr rfl fun r _ => (if_pos rfl).symm`. Rewrite using `[e1, sum_pos (fun a b => if q = a then dT lev p b (cT lev a b x) else 0) (fun a b h => by split_ifs`. Rewrite using `[cT_neg (lev := lev) (a := a) (b := b) (fun t => h t.1)]`.
+
+Simplify using the standard rewrite rules. Use the proof step `rfl)]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : q = i.1.1`. Use `swap`.
+
+Rewrite using `[if_neg h]`. Conclude with `sum_eq_zero fun k _ => by rw [if_neg (fun t => h t.1), zero_smul]`. Rewrite using `[if_pos h]`. Distinguish the cases in `hi : inU lev i`. Use `swap`.
+
+Rewrite using `[ann_zero hi hx, cT_neg (lev := lev) (a := i.1.1) (b := i.1.2) (fun t => hi t.2)]`. Simplify using the standard rewrite rules. Establish `hlv : lev p < lev i.1.2` using `by rw [hpq, h]; exact hi`. Establish `hlt : p < i.1.2` using `hm.reflect_lt hlv`. Rewrite using `[dT_pos (lev := lev) ⟨hlt, hlv⟩, cT_pos (lev := lev) (a := i.1.1) (b := i.1.2) ⟨i.2, hi⟩, sum_eq_single ⟨(p, i.1.2), hlt⟩]`.
+
+Rewrite using `[if_pos ⟨h, rfl⟩, one_smul]`. Introduce `k _ hk`. Rewrite using `[if_neg, zero_smul]`. Introduce and unpack `⟨-, e⟩`. Conclude with `hk (Subtype.ext e)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ad_one (hm : Monotone lev) {p q : Fin n} (hpq : lev p = lev q) (hx : x ∈ SU V lev) :
     ∑ i : Pos n, ∑ k : Pos n, (if q = i.1.1 ∧ k.1 = (p, i.1.2) then (1 : ℂ) else 0) • cre k (ann i x) =
       ∑ r, dT lev p r (cT lev q r x) := by
@@ -203,6 +290,19 @@ theorem ad_one (hm : Monotone lev) {p q : Fin n} (hpq : lev p = lev q) (hx : x �
     exact hk (Subtype.ext e)
   · simp
 
+/- English proof (translation)
+Establish `e1 : ∑ r, dT lev r q (cT lev r p x) = ∑ a, ∑ b, if b = p then dT lev a q (cT lev a b x) else 0`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[sum_eq_single p (fun b _ hb => if_neg hb) (by simp)]`. Conclude with `(if_pos rfl).symm`. Rewrite using `[e1, sum_pos (fun a b => if b = p then dT lev a q (cT lev a b x) else 0) (fun a b h => by split_ifs`.
+
+Rewrite using `[cT_neg (lev := lev) (a := a) (b := b) (fun t => h t.1)]`. Simplify using the standard rewrite rules. Use the proof step `rfl)]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.1.2 = p`.
+
+Use `swap`. Rewrite using `[if_neg h]`. Conclude with `sum_eq_zero fun k _ => by rw [if_neg (fun t => h t.1), zero_smul]`. Rewrite using `[if_pos h]`. Distinguish the cases in `hi : inU lev i`.
+
+Use `swap`. Rewrite using `[ann_zero hi hx, cT_neg (lev := lev) (a := i.1.1) (b := i.1.2) (fun t => hi t.2)]`. Simplify using the standard rewrite rules. Establish `hlv : lev i.1.1 < lev q` using `by rw [← hpq, ← h]; exact hi`. Establish `hlt : i.1.1 < q` using `hm.reflect_lt hlv`.
+
+Rewrite using `[dT_pos (lev := lev) ⟨hlt, hlv⟩, cT_pos (lev := lev) (a := i.1.1) (b := i.1.2) ⟨i.2, hi⟩, sum_eq_single ⟨(i.1.1, q), hlt⟩]`. Rewrite using `[if_pos ⟨h, rfl⟩, one_smul]`. Introduce `k _ hk`. Rewrite using `[if_neg, zero_smul]`. Introduce and unpack `⟨-, e⟩`.
+
+Conclude with `hk (Subtype.ext e)`. Simplify using the standard rewrite rules.
+-/
 theorem ad_two (hm : Monotone lev) {p q : Fin n} (hpq : lev p = lev q) (hx : x ∈ SU V lev) :
     ∑ i : Pos n, ∑ k : Pos n, (if i.1.2 = p ∧ k.1 = (i.1.1, q) then (1 : ℂ) else 0) • cre k (ann i x) =
       ∑ r, dT lev r q (cT lev r p x) := by
@@ -236,12 +336,20 @@ theorem ad_two (hm : Monotone lev) {p q : Fin n} (hpq : lev p = lev q) (hx : x �
     exact hk (Subtype.ext e)
   · simp
 
+/- English proof (translation)
+Rewrite using `[Th_apply, ← ad_one hm hpq hx, ← ad_two hm hpq hx]`. Simplify using `only [lF, adL, adC, sub_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply, Finset.sum_sub_distrib]`.
+-/
 theorem lF_eq (hm : Monotone lev) (E : Fin n → Fin n → Module.End ℂ V) {p q : Fin n} (hpq : lev p = lev q)
     (hx : x ∈ SU V lev) : lF E p q x = Th lev E p q x := by
   rw [Th_apply, ← ad_one hm hpq hx, ← ad_two hm hpq hx]
   simp only [lF, adL, adC, sub_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply,
     LinearMap.sub_apply, Module.End.mul_apply, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use `LinearMap.ext fun y => funext fun A => ?_` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun (hE p q a b) (y A)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at e`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Pi.sub_apply, CompanionTheory.D.LK.lift_apply]`. Rewrite using `[e]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem glRel_LT {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (p q a b : Fin n) :
     LT E p q * LT E a b - LT E a b * LT E p q =
       (if q = a then LT E p b else 0) - (if b = p then LT E a q else 0) := by
@@ -256,6 +364,31 @@ end GlobalTheory.CompanionTheory.LeviChain
 
 open GlobalTheory.CompanionTheory.LeviChain in
 
+/- English proof (translation)
+Introduce `n lev V _ _ E hm hE p q hpq x hx`. Establish `hx' : x ∈ SU V lev` using `hx`. Establish `hc` using `GlobalTheory.T.canonical_anticommutation_relations_consequence n (Module.End ℂ (Cn n V)) (tau lev) (cT lev) (dT lev) (LT E) p q (fun a b a' b' => by`. Distinguish the cases in `h : tau lev a b`. Distinguish the cases in `h' : tau lev a' b'`.
+
+Rewrite using `[cT_pos h, cT_pos h']`. Conclude with `CompanionTheory.D.LK.Car.ann_ann _ _`. Rewrite using `[cT_neg h']`. Simplify using the standard rewrite rules. Rewrite using `[cT_neg h]`.
+
+Use the proof step `simp)`. Use the proof step `(fun a b a' b' => by`. Distinguish the cases in `h : tau lev a b`. Distinguish the cases in `h' : tau lev a' b'`. Rewrite using `[dT_pos h, dT_pos h']`.
+
+Conclude with `CompanionTheory.D.LK.Car.cre_cre _ _`. Rewrite using `[dT_neg h']`. Simplify using the standard rewrite rules. Rewrite using `[dT_neg h]`. Use the proof step `simp)`.
+
+Use the proof step `(fun a b a' b' => by`. Distinguish the cases in `h : tau lev a b`. Distinguish the cases in `h' : tau lev a' b'`. Rewrite using `[cT_pos h, dT_pos h', CompanionTheory.D.LK.Car.ann_cre]`. Distinguish the cases in `e : a = a' ∧ b = b'`.
+
+Take `⟨rfl, rfl⟩` from `e`. Simplify using `[h]`. Rewrite using `[if_neg, if_neg]`. Conclude with `fun t => e ⟨t.1, t.2.1⟩`. Introduce `t`.
+
+Use `congrArg Subtype.val t` as an intermediate fact. Simplify using `only [Prod.mk.injEq] at this`. Conclude with `e this`. Rewrite using `[dT_neg h', if_neg]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨rfl, rfl, t⟩`. Conclude with `h' t`. Rewrite using `[cT_neg h, if_neg (fun t => h t.2.2)]`. Use the proof step `simp)`. Use the proof step `(fun a b h => cT_neg h) (fun a b h => dT_neg h)`.
+
+Use the proof step `(fun b => ⟨fun h => ⟨hm.reflect_lt (by rw [← hpq] at *; exact h.2), by rw [← hpq]; exact h.2⟩, fun h => ⟨hm.reflect_lt (by rw [hpq]; exact h.2), by rw [hpq]; exact h.2⟩⟩)`. Use the proof step `(fun a => ⟨fun h => ⟨hm.reflect_lt (by rw [← hpq]; exact h.2), by rw [← hpq]; exact h.2⟩, fun h => ⟨hm.reflect_lt (by rw [hpq]; exact h.2), by rw [hpq]; exact h.2⟩⟩)`. Use the proof step `(fun a b a' b' => by`. Distinguish the cases in `h : tau lev a' b'`. Rewrite using `[cT_pos h]`.
+
+Conclude with `LinearMap.ext fun y => CompanionTheory.D.LK.lift_ann _ _ y`. Rewrite using `[cT_neg h]`. Conclude with `Commute.zero_right _)`. Use the proof step `(fun a b a' b' => by`. Distinguish the cases in `h : tau lev a' b'`.
+
+Rewrite using `[dT_pos h]`. Conclude with `LinearMap.ext fun y => CompanionTheory.D.LK.lift_cre _ _ y`. Rewrite using `[dT_neg h]`. Conclude with `Commute.zero_right _)`. Use the proof step `(fun a b => glRel_LT hE p q a b)`.
+
+Rewrite using `[bd_eq E hx', lF_eq hm E hpq (Dl_mem E hx'), lF_eq hm E hpq hx', bd_eq E (Th_mem E p q hx')]`. Conclude with `LinearMap.congr_fun hc.eq x`.
+-/
 theorem GlobalTheory.CompanionTheory.LeviChain.lF_bd_comm : ∀ (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V),
     Monotone lev → GlRel E → ∀ p q : Fin n, lev p = lev q → ∀ x : Cn n V, SuppIn (inU lev) x →
       lF E p q (bd (allT n) E x) = bd (allT n) E (lF E p q x) := by

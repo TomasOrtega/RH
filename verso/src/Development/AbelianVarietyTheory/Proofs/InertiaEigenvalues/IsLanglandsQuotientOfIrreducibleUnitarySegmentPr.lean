@@ -6,6 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hprec a V _ _ σ hσ m δ Δ s hL hU hs hd ⟨e⟩`. Use `⟨m, fun j => (δ j).nu (s j), hd, ⟨fun j => (Δ j).nu (s j), ⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Fin.univ_val_map _`. Introduce `i j _ h`. Establish `h1` using `hprec (δ i) (δ j) (Δ i) (Δ j) (hL i) (hU i) (hL j) (hU j) (s i) (s j) h`.
+
+Establish `hi` using `abs_lt.1 (hs i)`. Establish `hj` using `abs_lt.1 (hs j)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j`. Conclude with `((hL j).tw _ (isSmoothChar_absPow _)).of_equiv ((δ j).twEquiv _ _)`.
+
+Conclude with `(isCosocle_self hσ).of_equiv (.refl _) e`.
+-/
 theorem isL_of_irreducible_prod_unitarisable_nu :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     (∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →

@@ -13,6 +13,9 @@ namespace GlobalTheory.Mem.HFld
 
 open Formalism.L2.DIV
 
+/- English proof (translation)
+Establish `h` using `congrArg φ (px.piG_norm i)`. Establish `hc : φ (P.host.conj (px.piG i : P.host.E)) = starRingEnd ℂ (φ (px.piG i : P.host.E))` using `Formalism.HC.HostAx.conjE_apply _ _ _`. Rewrite `h` using `[map_mul, hc, map_natCast, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h2 : ‖φ (px.piG i : P.host.E)‖ ^ 2 = (P.host.g i : ℝ)` using `by exact_mod_cast h`. Use polynomial arithmetic with `[sq_nonneg (‖φ (px.piG i : P.host.E)‖ - 1), norm_nonneg (φ (px.piG i : P.host.E))]`.
+-/
 theorem norm_piG_le {P : Pre} (px : PreX P) (i : Fin 2) (φ : P.host.E →+* ℂ) :
     ‖φ (px.piG i : P.host.E)‖ ≤ (P.host.g i : ℝ) + 1 := by
   have h := congrArg φ (px.piG_norm i)
@@ -21,6 +24,9 @@ theorem norm_piG_le {P : Pre} (px : PreX P) (i : Fin 2) (φ : P.host.E →+* ℂ
   have h2 : ‖φ (px.piG i : P.host.E)‖ ^ 2 = (P.host.g i : ℝ) := by exact_mod_cast h
   nlinarith [sq_nonneg (‖φ (px.piG i : P.host.E)‖ - 1), norm_nonneg (φ (px.piG i : P.host.E))]
 
+/- English proof (translation)
+Use `(Set.Finite.pi (t := fun i => ((↑) : 𝓞 P.host.E → P.host.E) ⁻¹' {x | IsIntegral ℤ x ∧ ∀ φ : P.host.E →+* ℂ, ‖φ x‖ ≤ (P.host.g i : ℝ) + 1}) fun i => (NumberField.Embeddings.finite_of_norm_le P.host.E ℂ _).preimage RingOfIntegers.coe_injective.injOn).subset ?_` and prove the remaining obligations. Introduce `g hg i _`. Conclude with `⟨RingOfIntegers.isIntegral_coe _, hg i⟩`.
+-/
 theorem finite_piG (P : Pre) :
     {g : Fin 2 → 𝓞 P.host.E | ∀ i (φ : P.host.E →+* ℂ), ‖φ (g i : P.host.E)‖ ≤ (P.host.g i : ℝ) + 1}.Finite := by
   refine (Set.Finite.pi (t := fun i => ((↑) : 𝓞 P.host.E → P.host.E) ⁻¹'
@@ -36,6 +42,15 @@ def chiOf {P : Pre} (f : Top.Fr P) : Fin P.R.m → HeightOneSpectrum (𝓞 P.hos
   fun j w y => if h : (f.P.Div 0 w ∨ f.P.Div 1 w) ∧ (y : P.host.E) ≠ 0 ∧ IsUnit (Ideal.Quotient.mk w.asIdeal y) then
     ((((f.mu0 j).locK w (Units.mk0 (y : P.host.E) h.2.1))⁻¹ : ℂˣ) : ℂ) else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j w y`. Establish `hv : w ∈ (B.primes px).vGs ↔ (I.C.P.Div 0 w ∨ I.C.P.Div 1 w)`. Rewrite using `[← h.pibar 0 w, ← h.pibar 1 w]`. Simplify using `[Formalism.L2.Col.Primes.vGs]`. Unfold `chiC chiOf`.
+
+Distinguish the cases in `hw : w ∈ (B.primes px).vGs`. Distinguish the cases in `hu : IsUnit (Ideal.Quotient.mk w.asIdeal y)`. Establish `hy : (y : B.host.E) ≠ 0`. Introduce `h0`. Establish `hy0 : y = 0` using `RingOfIntegers.coe_injective (by simpa using h0)`.
+
+Substitute `hy0` using the available equality. Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Conclude with `hu.ne_zero (map_zero _)`. Rewrite using `[dif_pos hw, dif_pos hu, dif_pos ⟨hv.1 hw, hy, hu⟩]`. Establish `ht` using `(h.ch_tied.mu0 j).atg ⟨w, hw⟩ (Units.mk0 _ hy) y hu.unit rfl (by simp)`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, ht, Units.val_inv_eq_inv_val, map_inv₀, inv_inv]`. Rewrite using `[dif_pos hw, dif_neg hu, dif_neg (fun h' => hu h'.2.2)]`. Rewrite using `[dif_neg hw, dif_neg (fun h' => hw (hv.2 h'.1))]`.
+-/
 theorem chiC_eq {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (h : I.Ok) : chiC I = chiOf I.C := by
   classical
   funext j w y
@@ -60,6 +75,13 @@ theorem chiC_eq {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (h : I.Ok) 
 def ramPl {P : Pre} (ξ : Formalism.L2.Host.HChar P.host.E) : Set (HeightOneSpectrum (𝓞 P.host.F)) :=
   {v | ∃ a : Neutral.B1.Ideles P.host.E, Col2.finAf P.host.F P.host.E a ∈ inertAt P.host.E v ∧ ξ.1 a ≠ 1}
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Qprime, Set.mem_setOf_eq, SetLike.not_le_iff_exists, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hne⟩`. Take `⟨a, rfl⟩` from `Col2.finAf_surjective F E y`.
+
+Use `⟨a, hy, fun h1 => hne (Units.ext (σ.injective ?_))⟩` and prove the remaining obligations. Rewrite using `[← h a, h1]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, ha, hne⟩`. Use `⟨_, ha, fun h1 => hne (Units.ext ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[h a, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem qprime_eq_of_reads {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field K]
     {σ : K →+* ℂ} {μ : Chr F E K} {ξ : Formalism.L2.Host.HChar E} (h : Col2.Reads σ μ ξ) :
     Qprime μ = {v | ∃ a : Neutral.B1.Ideles E, Col2.finAf F E a ∈ inertAt E v ∧ ξ.1 a ≠ 1} := by
@@ -81,6 +103,13 @@ open Classical in
 def qBound {P : Pre} (ξ : Formalism.L2.Host.HChar P.host.E) : Set (HeightOneSpectrum (𝓞 P.host.E)) :=
   if (ramPl ξ).Finite then {Q | ∃ v ∈ ramPl ξ, Ideal.under (𝓞 P.host.F) Q.asIdeal = v.asIdeal} else ∅
 
+/- English proof (translation)
+Unfold `qBound`. Use `split_ifs with hf`. Use `(hf.biUnion fun v _ => Ideal.finite_factors (I := Ideal.map (algebraMap (𝓞 P.host.F) (𝓞 P.host.E)) v.asIdeal) ?_).subset ?_` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `v.ne_bot`.
+
+Introduce and unpack `Q ⟨v, hv, hQ⟩`. Use `Set.mem_biUnion hv ?_` and prove the remaining obligations. Use `show Q.asIdeal ∣ _`. Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap]`. Conclude with `hQ.ge`.
+
+Conclude with `Set.finite_empty`.
+-/
 theorem finite_qBound {P : Pre} (ξ : Formalism.L2.Host.HChar P.host.E) : (qBound ξ).Finite := by
   classical
   unfold qBound
@@ -96,6 +125,15 @@ theorem finite_qBound {P : Pre} (ξ : Formalism.L2.Host.HChar P.host.E) : (qBoun
       exact hQ.ge
   · exact Set.finite_empty
 
+/- English proof (translation)
+Unfold `qC`. Use `split_ifs with hx`. Establish `hr : Qprime (I.tup hx.choose : Chr B.fields.F B.fields.E B.fields.K) = ramPl (P` using `B.toPre) ξ := by`. Use `qprime_eq_of_reads (h.xi_reads hx.choose)` as an intermediate fact. Rewrite `this` using `[hx.choose_spec]`.
+
+Conclude with `this`. Introduce `Q hQ`. Establish `hQ' : Q ∈ Formalism.L2.Col.QE I.sel (I.tup hx.choose : Chr B.fields.F B.fields.E B.fields.K)` using `hQ`. Unfold `Formalism.L2.Col.QE at hQ'`. Use `split_ifs at hQ' with hfin`.
+
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hQ'`. Rewrite `hv` using `[Set.Finite.mem_toFinset]`. Unfold `qBound`. Rewrite using `[if_pos (hr ▸ hfin)]`. Conclude with `⟨v, hr ▸ hv, h.sel_ok v⟩`.
+
+Simplify using `at hQ'`. Simplify using the standard rewrite rules.
+-/
 theorem qC_subset {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (h : I.Ok) (ξ : Formalism.L2.Host.HChar B.host.E) :
     (↑(qC I ξ) : Set (HeightOneSpectrum (𝓞 B.host.E))) ⊆ qBound (P := B.toPre) ξ := by
   classical
@@ -117,12 +155,20 @@ theorem qC_subset {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) (h : I.Ok
     · simp at hQ'
   · simp
 
+/- English proof (translation)
+Unfold `qC`. Rewrite using `[dif_neg fun ⟨a, ha⟩ => hξ ⟨a, ha⟩]`.
+-/
 theorem qC_of_not_mem {B : Base} {px : PreX B.toPre} (I : Col2.ColIn B px) {ξ : Formalism.L2.Host.HChar B.host.E}
     (hξ : ξ ∉ Set.range I.xi) : qC I ξ = ∅ := by
   classical
   unfold qC
   rw [dif_neg fun ⟨a, ha⟩ => hξ ⟨a, ha⟩]
 
+/- English proof (translation)
+Use `haveI := hΞ.to_subtype`. Use `Set.Finite.of_finite_image (f := fun q (ξ : Ξ) => q ξ) ?_ ?_` and prove the remaining obligations. Use `(Set.Finite.pi (t := fun ξ : Ξ => {s : Finset (HeightOneSpectrum (𝓞 P.host.E)) | (↑s : Set (HeightOneSpectrum (𝓞 P.host.E))) ⊆ qBound (ξ : Formalism.L2.Host.HChar P.host.E)}) fun ξ => (finite_qBound (ξ : Formalism.L2.Host.HChar P.host.E)).finite_subsets.preimage Finset.coe_inject …` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩ ξ _`. Conclude with `hq.1 ξ`.
+
+Introduce `q hq q' hq' he`. Use function extensionality and compare the values at `ξ`. Distinguish the cases in `hξ : ξ ∈ Ξ`. Conclude with `congrFun he ⟨ξ, hξ⟩`. Rewrite using `[hq.2 ξ hξ, hq'.2 ξ hξ]`.
+-/
 theorem finite_qFns {P : Pre} {Ξ : Set (Formalism.L2.Host.HChar P.host.E)} (hΞ : Ξ.Finite) :
     {q : Formalism.L2.Host.HChar P.host.E → Finset (HeightOneSpectrum (𝓞 P.host.E)) |
       (∀ ξ, (↑(q ξ) : Set (HeightOneSpectrum (𝓞 P.host.E))) ⊆ qBound ξ) ∧ ∀ ξ ∉ Ξ, q ξ = ∅}.Finite := by
@@ -140,6 +186,23 @@ theorem finite_qFns {P : Pre} {Ξ : Set (Formalism.L2.Host.HChar P.host.E)} (hΞ
     · exact congrFun he ⟨ξ, hξ⟩
     · rw [hq.2 ξ hξ, hq'.2 ξ hξ]
 
+/- English proof (translation)
+Introduce `P f F F₀ Ξ`. Set `admitted : (Σ B0 : Base, Σ px0 : PreX B0.toPre, Col2.ColIn B0 px0) → Prop` to `fun x => x.1.fields.Ok ∧ x.2.2.Ok ∧ x.1.toPre = P ∧ HEq x.2.2.C f ∧ x.1.KsC = F ∧ x.1.fixedCoefficientFieldInComplex = F₀ ∧ HEq (Set.range x.2.2.xi) Ξ`. Set `Tr : Type` to `(Fin 2 → 𝓞 P.host.E) × (Fin P.R.m → HeightOneSpectrum (𝓞 P.host.E) → 𝓞 P.host.E → ℂ) × (Formalism.L2.Host.HChar P.host.E → Finset (HeightOneSpectrum (𝓞 P.host.E)))`. Set `T : Set Tr` to `{t | ∃ x, admitted x ∧ HEq x.2.1.piG t.1 ∧ HEq (chiC x.2.2) t.2.1 ∧ HEq (qC x.2.2) t.2.2}`. Establish `hT : T.Finite`.
+
+Distinguish the cases in `hΞ : Ξ.Finite`. Use `((finite_piG P).prod ((Set.finite_singleton (chiOf f)).prod (finite_qFns hΞ))).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨t1, t2, t3⟩ ⟨⟨B, px, I⟩, ⟨-, hI, hP, hC, -, -, hX⟩, h1, h2, h3⟩`. Simplify using `only at hI hP hC hX h1 h2 h3`. Substitute `hP` using the available equality.
+
+Consider the cases of `eq_of_heq hC`. Consider the cases of `eq_of_heq hX`. Consider the cases of `eq_of_heq h1`. Consider the cases of `eq_of_heq h2`. Consider the cases of `eq_of_heq h3`.
+
+Use `⟨fun i φ => norm_piG_le px i φ, chiC_eq I hI, fun ξ => qC_subset I hI ξ, fun ξ hξ => qC_of_not_mem I hξ⟩` and prove the remaining obligations. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `⟨t1, t2, t3⟩`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨⟨B, px, I⟩, ⟨-, -, hP, -, -, -, hX⟩, -⟩`.
+
+Simplify using `only at hP hX`. Substitute `hP` using the available equality. Conclude with `hΞ (eq_of_heq hX ▸ Set.finite_range I.xi)`. Establish `hch : ∀ t : T, ∃ x, admitted x ∧ HEq x.2.1.piG t.1.1 ∧ HEq (chiC x.2.2) t.1.2.1 ∧ HEq (qC x.2.2) t.1.2.2` using `fun t => t.2`. Use `choose w hwA hwR using hch`.
+
+Use `haveI := hT.fintype`. Set `e` to `Fintype.equivFin T`. Use `⟨Fintype.card T, fun i => w (e.symm i), fun i => ⟨(hwA _).1, (hwA _).2.1⟩, ?_⟩` and prove the remaining obligations. Introduce `B px I hBo hIo hP hC hK hL hX`. Establish `hx : admitted ⟨B, px, I⟩` using `⟨hBo, hIo, hP, hC, hK, hL, hX⟩`.
+
+Substitute `hP` using the available equality. Establish `ht : ((px.piG, chiC I, qC I) : Tr) ∈ T` using `⟨⟨B, px, I⟩, hx, HEq.rfl, HEq.rfl, HEq.rfl⟩`. Use `⟨e ⟨_, ht⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ s : T, s = ⟨_, ht⟩ → GlobalTheory.Mem.HFld.SameCfg B px I (w s).1 (w s).2.1 (w s).2.2`. Introduce and unpack `s rfl`.
+
+Take `⟨-, -, h3, h4, -, -, h6⟩` from `hwA ⟨_, ht⟩`. Take `⟨r1, r2, r3⟩` from `hwR ⟨_, ht⟩`. Conclude with `⟨h3.symm, hC.trans h4.symm, hX.trans h6.symm, r1.symm, r2.symm, r3.symm⟩`. Conclude with `key _ (e.symm_apply_apply _)`.
+-/
 theorem exists_finite_cfg : ∀ (P : Pre) (f : Top.Fr P) (F F₀ : IntermediateField ℚ ℂ) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)),
   ∃ (n : ℕ) (Wt : Fin n → Σ B0 : Base, Σ px0 : PreX B0.toPre, Col2.ColIn B0 px0),
     (∀ i, (Wt i).1.fields.Ok ∧ (Wt i).2.2.Ok) ∧

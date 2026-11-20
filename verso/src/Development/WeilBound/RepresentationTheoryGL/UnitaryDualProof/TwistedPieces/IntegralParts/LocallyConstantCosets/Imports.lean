@@ -15,6 +15,43 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
   {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
+/- English proof (translation)
+Take `⟨W, hW, hWF⟩` from `unifLC hF.1`. Take `⟨j, hj⟩` from `lat_small hL ht hW`. Establish `hLat' : IsLat Z ((((t ^ j : kˣ) : k) • L : AddSubgroup (Matrix (Fin n) (Fin n) k)))` using `isLat_smul hL (t ^ j)`. Use `set L' : AddSubgroup (Matrix (Fin n) (Fin n) k) := (((t ^ j : kˣ) : k) • L) with hLe`. Establish `hL'W : ∀ w ∈ L', w ∈ W` using `fun w hw => hj (by rw [← AddSubgroup.coe_pointwise_smul]; exact hw)`.
+
+Take `⟨U, hUo, hU0, hUZ⟩` from `hLat'.nhd`. Establish `hK : IsCompact (Prod.fst '' tsupport F)` using `hF.1.2.image continuous_fst`. Take `⟨S0, hS0, hS0Z, hS0K⟩` from `exists_cpt hZ hK`. Take `⟨S1, hS1⟩` from `hS0.elim_finite_subcover (fun c : S0 => (fun a => a + (c : Matrix (Fin n) (Fin n) k)) '' U) (fun c => isOpenMap_add_right _ U hUo) (fun s hs => Set.mem_iUnion.2 ⟨⟨s, hs⟩, 0, hU0, zero_add s⟩)`. Set `g : Matrix (Fin n) (Fin n) k → Matrix (Fin n) (Fin n) k` to `fun c => Quotient.out (QuotientAddGroup.mk c : Matrix (Fin n) (Fin n) k ⧸ L')`.
+
+Establish `hg : ∀ c, g c - c ∈ L'`. Introduce `c`. Establish `h1` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk c : Matrix (Fin n) (Fin n) k ⧸ L'))`. Establish `h2 : g c - c = -(-(g c) + c)` using `by abel`. Rewrite using `[h2]`.
+
+Conclude with `L'.neg_mem h1`. Establish `hgeq : ∀ c c', c - c' ∈ L' → g c = g c'`. Introduce `c c' h`. Use `show Quotient.out _ = Quotient.out _`. Use `congr 1`.
+
+Use `QuotientAddGroup.eq.2 ?_` and prove the remaining obligations. Rewrite using `[show -c + c' = -(c - c') by abel]`. Conclude with `L'.neg_mem h`. Establish `hgg : ∀ a a', g a - g a' ∈ L' → g a = g a'`. Introduce `a a' h`.
+
+Apply `hgeq` to reduce the goal to its premises. Establish `e : a - a' = (g a - g a') - (g a - a) + (g a' - a')` using `by abel`. Rewrite using `[e]`. Conclude with `L'.add_mem (L'.sub_mem h (hg a)) (hg a')`. Establish `hmemI : ∀ z c, z ∈ (fun a => a + c) '' (L' : Set (Matrix (Fin n) (Fin n) k)) ↔ z - c ∈ L'`.
+
+Introduce `z c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩`. Simplify using `using hm`. Introduce `hz`.
+
+Conclude with `⟨z - c, hz, by simp⟩`. Use `⟨j, S1.image (fun c : S0 => g (c : Matrix (Fin n) (Fin n) k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Take `⟨i, _, rfl⟩` from `Finset.mem_image.1 hc`. Establish `e : g (i : Matrix (Fin n) (Fin n) k) = (i : Matrix (Fin n) (Fin n) k) + (g i - i)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `Z.add_mem (hS0Z i.2) (hLat'.sub (hg _))`. Introduce and unpack `⟨x, v⟩ hp`. Establish `hx : x ∈ CC Z` using `hp.1`. Simplify using `only [psi_of_mem (p := (x, v)) hx, tr]`.
+
+Distinguish the cases in `hA : ∃ c ∈ S1.image (fun c : S0 => g (c : Matrix (Fin n) (Fin n) k)), zpart Z x - c ∈ L'`. Take `⟨c, hcS, hcz⟩` from `hA`. Rewrite using `[Finset.sum_eq_single c]`. Rewrite using `[Set.indicator_of_mem ((hmemI _ _).2 hcz), Pi.one_apply, one_mul]`. Establish `e : x - zpart Z x + c = x + (c - zpart Z x)` using `by abel`.
+
+Rewrite using `[e]`. Establish `hw : c - zpart Z x ∈ L'`. Rewrite using `[show c - zpart Z x = -(zpart Z x - c) by abel]`. Conclude with `L'.neg_mem hcz`. Conclude with `(hWF _ (hL'W _ hw) (x, v)).symm`.
+
+Introduce `c' hc' hne`. Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce `h'`. Apply `hne` to reduce the goal to its premises. Take `⟨a', _, rfl⟩` from `Finset.mem_image.1 hc'`.
+
+Take `⟨a, _, rfl⟩` from `Finset.mem_image.1 hcS`. Apply `hgg` to reduce the goal to its premises. Establish `e : g (a' : Matrix (Fin n) (Fin n) k) - g a = (zpart Z x - g a) - (zpart Z x - g a')` using `by abel`. Rewrite using `[e]`. Conclude with `L'.sub_mem hcz ((hmemI _ _).1 h')`.
+
+Introduce `h`. Conclude with `absurd hcS h`. Use `push_neg at hA`. Rewrite using `[Finset.sum_eq_zero]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hsupp : (x, v) ∈ tsupport F` using `subset_tsupport F hne`. Establish `hz` using `hS0K x ⟨⟨(x, v), hsupp, rfl⟩, hx⟩`. Take `⟨i, hi, hzi⟩` from `Set.mem_iUnion₂.1 (hS1 hz)`. Take `⟨u, hu, hue⟩` from `hzi`. Simplify using `only at hue`.
+
+Establish `huZ : u ∈ Z`. Establish `e : u = zpart Z x - i` using `by rw [← hue]; abel`. Rewrite using `[e]`. Conclude with `Z.sub_mem (hS0Z hz) (hS0Z i.2)`. Establish `huL : u ∈ L'` using `hUZ ⟨hu, huZ⟩`.
+
+Apply `hA (g i) (Finset.mem_image.2 ⟨i, hi, rfl⟩)` to reduce the goal to its premises. Establish `e : zpart Z x - g i = u - (g i - i)` using `by rw [← hue]; abel`. Rewrite using `[e]`. Conclude with `L'.sub_mem huL (hg _)`. Introduce `c hc`.
+
+Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce `h'`. Conclude with `hA c hc ((hmemI _ _).1 h')`.
+-/
 theorem dec (hZ : CR Z) {L : AddSubgroup (Matrix (Fin n) (Fin n) k)} (hL : IsLat Z L) {t : kˣ}
     (ht : nabs k t < 1) {F : Sp k n → ℂ} (hF : F ∈ supportedIn (UU : Set (Sp k n))) :
     ∃ (j : ℕ) (S : Finset (Matrix (Fin n) (Fin n) k)), (∀ c ∈ S, c ∈ Z) ∧

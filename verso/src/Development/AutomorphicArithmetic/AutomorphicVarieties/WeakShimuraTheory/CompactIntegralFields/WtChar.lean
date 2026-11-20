@@ -6,6 +6,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 
 namespace UpperTheory.V.Ws.WeightCharacterKernel
 
+/- English proof (translation)
+Establish `hpow : ∀ g, δ g ^ N = 1`. Introduce `g`. Assume the negation of the conclusion as `hg`. Take `⟨a, ha⟩ : ∃ a : K, a = ((δ g ^ N : Kˣ) : K)` from `⟨_, rfl⟩`. Establish `ha1 : a ≠ 1` using `fun h1 => hg (Units.val_eq_one.mp (ha ▸ h1))`.
+
+Establish `hUo : IsOpen ((fun x => (δ x : K) ^ N) ⁻¹' ({a}ᶜ : Set K))` using `isOpen_compl_singleton.preimage (hc.pow N)`. Establish `h1U : (1 : G ℚ Ω) ∈ ((fun x => (δ x : K) ^ N) ⁻¹' ({a}ᶜ : Set K))`. Simplify `ha1` using `[eq_comm]`. Take `⟨W, hW⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hUo h1U`. Establish `hsup : W.toSubgroup ⊔ ((powMonoidHom N).comp δ).ker = ⊤`.
+
+Use `B3.minkowski Ω _ inferInstance (Subgroup.isOpen_mono le_sup_left W.isOpen) ?_` and prove the remaining obligations. Introduce `B x hx`. Apply `Subgroup.mem_sup_right` to reduce the goal to its premises. Simplify using `using h B x hx`. Establish `hg' : g ∈ W.toSubgroup ⊔ ((powMonoidHom N).comp δ).ker` using `hsup ▸ Subgroup.mem_top g`.
+
+Take `⟨y, hy, z, hz, hyz⟩` from `Subgroup.mem_sup_of_normal_left.mp hg'`. Establish `hz' : δ z ^ N = 1` using `by simpa using hz`. Establish `heq : (δ y : K) ^ N = a`. Rewrite using `[ha, ← hyz, map_mul, mul_pow, hz', mul_one, Units.val_pow_eq_pow_val]`. Conclude with `(hW hy) heq`.
+
+Establish `hfin : ({x : K | x ^ N = 1} \ {1}).Finite`. Use `(Finset.finite_toSet (Polynomial.nthRoots N (1 : K)).toFinset).subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_nthRoots (Nat.pos_of_ne_zero hN)).mpr hx.1`.
+
+Establish `hopen : IsOpen ((fun g => (δ g : K)) ⁻¹' ({x : K | x ^ N = 1} \ {1})ᶜ)` using `hfin.isClosed.isOpen_compl.preimage hc`. Use `hopen using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_compl_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h1`. Simplify using `[h1]`. Introduce `h2`. Establish `hN1 : (δ g : K) ^ N = 1` using `by rw [← Units.val_pow_eq_pow_val, hpow g, Units.val_one]`. Conclude with `Units.val_eq_one.mp (by by_contra hne; exact h2 ⟨hN1, hne⟩)`.
+-/
 private theorem open_ker {Ω K : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Field K] [TopologicalSpace K] [T2Space K]
     [ContinuousMul K] (δ : G ℚ Ω →* Kˣ) (hc : Continuous fun g => (δ g : K)) (N : ℕ) (hN : N ≠ 0)
     (h : ∀ A : ValuationSubring Ω, ∀ g ∈ Ine (F := ℚ) A, δ g ^ N = 1) : IsOpen (δ.ker : Set (G ℚ Ω)) := by
@@ -52,6 +67,43 @@ private theorem open_ker {Ω K : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
 end UpperTheory.V.Ws.WeightCharacterKernel
 
 open UpperTheory.V.Ws.WeightCharacterKernel in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD κ n hκc hU hSb hl`. Establish `hF` using `facts D hD`. Establish `hrb : IsOpen (D.rbar.ker : Set (G ℚ Ω))` using `hF.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hom : IsOpen (D.om.ker : Set (G ℚ Ω))` using `hF.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hps : IsOpen (D.ψ.ker : Set (G ℚ Ω))` using `hD.psi_open`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨M, hM0, hM⟩ : ∃ M : ℕ, M ≠ 0 ∧ ∀ g : G ℚ Ω, g ^ M ∈ D.rbar.ker ⊓ D.ψ.ker ⊓ D.om.ker := by`. Establish `ho : IsOpen ((D.rbar.ker ⊓ D.ψ.ker ⊓ D.om.ker : Subgroup (G ℚ Ω)) : Set (G ℚ Ω))`. Simplify `(hrb.inter hps).inter hom` using `only [Subgroup.coe_inf]`. Use `Subgroup.quotient_finite_of_isOpen _ ho` as an intermediate fact. Conclude with `⟨_, Subgroup.index_ne_zero_of_finite, fun g => Subgroup.pow_index_mem _ g⟩`.
+
+Establish `two : ∀ (B : ValuationSubring Ω) (p q : ℕ), p.Prime → q.Prime → p ≠ q → B.valuation (p : Ω) < 1 → ¬ B.valuation (q : Ω) < 1`. Introduce `B p q hp hq hpq h1 h2`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hpq)`. Establish `hab' : (a : Ω) * p + (b : Ω) * q = 1`. Use `congrArg (Int.cast : ℤ → Ω) hab` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `ha : B.valuation (a : Ω) ≤ 1` using `(B.valuation_le_one_iff _).mpr (intCast_mem B a)`. Establish `hb : B.valuation (b : Ω) ≤ 1` using `(B.valuation_le_one_iff _).mpr (intCast_mem B b)`. Establish `e1 : B.valuation ((a : Ω) * p) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha) h1`. Establish `e2 : B.valuation ((b : Ω) * q) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hb) h2`.
+
+Use `B.valuation.map_add ((a : Ω) * p) ((b : Ω) * q)` as an intermediate fact. Rewrite `this` using `[hab', map_one]`. Conclude with `absurd this (not_le.mpr (max_lt e1 e2))`. Establish `halg : Continuous fun x : ℤ_[l] => algebraMap ℤ_[l] (PadicAlgCl l) x`. Establish `e : ∀ x : ℤ_[l], algebraMap ℤ_[l] (PadicAlgCl l) x = algebraMap ℚ_[l] (PadicAlgCl l) (x : ℚ_[l])` using `fun x => IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] _ x`.
+
+Repeatedly rewrite using `[e]`. Conclude with `(continuous_algebraMap ℚ_[l] _).comp continuous_subtype_val`. Set `cU : G ℚ Ω →* (PadicAlgCl l)ˣ` to `(Units.map (algebraMap ℤ_[l] (PadicAlgCl l)).toMonoidHom).comp (cycZ ℚ Ω l)`. Establish `hcU : ∀ g, ((cU g : (PadicAlgCl l)ˣ) : PadicAlgCl l) = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l g : ℤ_[l])`. Introduce `g`.
+
+Both sides reduce to the same expression. Set `δ : G ℚ Ω →* (PadicAlgCl l)ˣ` to `κ.toHomUnits * (cU ^ n)⁻¹`. Establish `hδ : ∀ g, δ g = κ.toHomUnits g * (cU g ^ n)⁻¹` using `fun g => by simp [δ]`. Establish `hker : ∀ g, δ g = 1 ↔ κ g = algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l g : ℤ_[l]) ^ n`. Introduce `g`.
+
+Rewrite using `[hδ, mul_inv_eq_one, Units.ext_iff, Units.val_pow_eq_pow_val, hcU, MonoidHom.coe_toHomUnits]`. Establish `hval : ∀ g, ((δ g : (PadicAlgCl l)ˣ) : PadicAlgCl l) = κ g * ((cU g⁻¹ : (PadicAlgCl l)ˣ) : PadicAlgCl l) ^ n`. Introduce `g`. Rewrite using `[hδ, map_inv, ← inv_pow, Units.val_mul, Units.val_pow_eq_pow_val, MonoidHom.coe_toHomUnits]`. Establish `hcont : Continuous fun g => ((δ g : (PadicAlgCl l)ˣ) : PadicAlgCl l)`.
+
+Repeatedly rewrite using `[hval, hcU]`. Conclude with `hκc.mul (((halg.comp (Units.continuous_val.comp (continuous_cycZ ℚ Ω l))).comp continuous_inv).pow n)`. Establish `hδ1 : ∀ h, κ h = 1 → cycZ ℚ Ω l h = 1 → δ h = 1`. Introduce `h h1 h2`. Rewrite using `[hker, h1, h2]`.
+
+Simplify using the standard rewrite rules. Establish `hN : ∀ A : ValuationSubring Ω, ∀ g ∈ Ine (F` using `ℚ) A, δ g ^ M = 1 := by`. Introduce `A g hg`. Distinguish the cases in `hA : Raw.Away D.T A`. Rewrite using `[← map_pow]`.
+
+Establish `hgM : g ^ M ∈ Ine (F` using `ℚ) A := Subgroup.pow_mem _ hg M`. Establish `hr : g ^ M ∈ D.rbar.ker` using `(Subgroup.mem_inf.mp (Subgroup.mem_inf.mp (hM g)).1).1`. Use `hδ1 _ (hU A hA _ hgM hr) ?_` and prove the remaining obligations. Establish `hlA : ¬ A.valuation (l : Ω) < 1` using `hA l (by unfold Raw.T; simp)`. Conclude with `(places ℚ Ω l A).2.2.2 hlA hgM`.
+
+Establish `hA' : ∃ p ∈ D.T, A.valuation (p : Ω) < 1`. Unfold `Raw.Away at hA`. Use `push_neg at hA`. Conclude with `hA`. Take `⟨p, hpT, hpA⟩` from `hA'`.
+
+Establish `hpT' : p = l ∨ p ∈ D.Sb`. Unfold `Raw.T at hpT`. Simplify using `using hpT`. Establish `hp : p.Prime`. Break down `hpT' with rfl | hpS` into its components or cases.
+
+Conclude with `Fact.out`. Conclude with `(hF.1 p hpS).1`. Take `⟨x, hx⟩` from `(B3.placesQ Ω).2.2 p (D.pl p) A hp (hD.pl_over p hp) hpA`. Establish `hconj : δ g ^ M = δ ((x⁻¹ * g * x) ^ M)`. Rewrite using `[map_pow, map_mul, map_mul, map_inv]`.
+
+Use `congr 1`. Rewrite using `[mul_comm (δ x)⁻¹ (δ g), mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[hconj]`. Establish `hI : (x⁻¹ * g * x) ^ M ∈ Ine (F` using `ℚ) (D.pl p) := Subgroup.pow_mem _ (hx g hg) M`. Establish `hm` using `hM (x⁻¹ * g * x)`.
+
+Establish `hψ : (x⁻¹ * g * x) ^ M ∈ D.ψ.ker` using `(Subgroup.mem_inf.mp (Subgroup.mem_inf.mp hm).1).2`. Establish `ho : (x⁻¹ * g * x) ^ M ∈ D.om.ker` using `(Subgroup.mem_inf.mp hm).2`. Break down `hpT' with rfl | hpS` into its components or cases. Conclude with `(hker _).mpr (hl _ (Subgroup.mem_inf.mpr ⟨Subgroup.mem_inf.mpr ⟨hI, hψ⟩, ho⟩))`. Use `hδ1 _ (hSb p hpS _ (Subgroup.mem_inf.mpr ⟨hI, hψ⟩)) ?_` and prove the remaining obligations.
+
+Establish `hne : p ≠ l` using `(hF.1 p hpS).2.1`. Establish `hnl : ¬ (D.pl p).valuation (l : Ω) < 1` using `two (D.pl p) p l hp Fact.out hne (hD.pl_over p hp)`. Conclude with `(places ℚ Ω l (D.pl p)).2.2.2 hnl hI`. Use `⟨δ.ker, open_ker δ hcont M hM0 hN, fun g hg => (hker g).mp hg⟩` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Ws.wtChar :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good →
           ∀ (κ : G ℚ Ω →* PadicAlgCl l) (n : ℕ), Continuous κ → D.UnrT κ 1 → (∀ p ∈ D.Sb, ∀ g ∈ D.Ip p ⊓ D.ψ.ker, κ g = 1) →

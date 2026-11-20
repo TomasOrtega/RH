@@ -12,17 +12,42 @@ namespace Formalism.FourierDecayAlt.P.PBP
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.LevelPointCoordinates
 
+/- English proof (translation)
+Use function extensionality and compare the values at `e`. Simplify using `only [act1, map_smul, Finset.smul_sum]`.
+-/
 theorem act_one_variable_smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Type} [Fintype S] [DecidableEq S]
     (M : Wd.SlopeTestRemainingChoices S (Pr (V1 E))) (s : ℂ) (x : Wd.Ix S → V1 E) :
     act1 M (fun b => s • x b) = fun e => s • act1 M x e := by
   funext e
   simp only [act1, map_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Unfold `kapM kapJ`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kapM_eq (P : M.Par) (j : ℕ) : kapM (P.r - j) P.k = kapJ P j := by
   unfold kapM kapJ
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh X μ L st Φ hD hF hw hΦ t ht e y hy`. Establish `ht0 : t ≠ 0` using `(ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Establish `hn : 1 + (P.r - (j + 1)) = P.r - j` using `by omega`. Establish `hc : y.1 ∈ OmX (P.r - (j + 1))` using `hy.1`. Establish `hdom` using `fun τ (hτ : τ ≠ 0) => base_point_mem_domain hn (PBH.levTower_bs_z_eq_castV_liftVec p.T j hj) (PBH.levTower_bs_z'_eq_castV_liftVec p.T j hj) hy hτ`.
+
+Establish `hL : IsActualLevel X L` using `hD.2.2.1`. Use `set gg : ℝ := ∏ a : Fin (P.r - (j + 1)), (if a.val < (Fin.last (P.r - (j + 1))).val then ‖y.1 a‖ ^ (Mdim P.k (P.r - (j + 1)) a - 1) else 1) with hgg`. Establish `hgg0 : gg ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 (hc a))`. Conclude with `one_ne_zero`.
+
+Use `set γ := wCell P.k (P.r - (j + 1)) (Fin.last _) y.1 * y.2 with hγdef`. Establish `hγ : γ ∈ B.GV P.k (P.r - (j + 1))` using `Formalism.FourierDecayAlt.P.PBF.wCell_mul_GV hc hy.2.1`. Establish `hΩ : γ ∈ Q.OmPlus P.k (P.r - (j + 1)) (p.T.bs (j + 1)).z (p.T.bs (j + 1)).z'` using `Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus (p.T.bs (j + 1)).z_mem (p.T.bs (j + 1)).z'_mem hy.1 hy.2.1 hy.2.2`. Set `Rd` to `rdL (k := P.k) (π := (p.T.bs j).π) (π' := (p.T.bs j).π') hn y hdom`. Set `φ : Wd.Ix (Fin w.length) → V1 (Wq →L[ℂ] Wp)` to `fun b => (((gg⁻¹ : ℝ)) : ℂ) • Rd (Φ b)`.
+
+Establish `hφ : ∀ b τ, τ ≠ 0 → (φ b).1 τ = B.JF (p.T.bs j) (KB.slv p.T F j (by omega) w h hh.2 b) (mLev P j hj τ γ)`. Introduce `b τ hτ`. Establish `hr` using `pic_read (k := P.k) hn (PBH.levTower_bs_z_eq_castV_liftVec p.T j hj) (PBH.levTower_bs_z'_eq_castV_liftVec p.T j hj) (Subtype.val (Φ b)) (B.JF (p.T.bs j) (KB.slv p.T F j (by omega) w h hh.2 b)) (hΦ b) hτ y hy`. Establish `hraw` using `raw_eq hn y hdom (Φ b) hτ`. Express the relevant statement in the definitionally equal form `(((gg⁻¹ : ℝ)) : ℂ) • (Rd (Φ b)).1 τ = _`.
+
+Establish `hpos : ‖τ‖ ^ (2 * (P.r - j) + P.k) ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hτ)`. Establish `hR : (Rd (Φ b)).1 τ = Q.resG P.k (P.r - (j + 1)) (Fin.last _) (fun γ' => B.JF (p.T.bs j) (KB.slv p.T F j (by omega) w h hh.2 b) (D.castM hn (U.mMap P.k 1 (P.r - (j + 1)) (Matrix.of fun _ _ => τ) γ'))) y.1 y.2`. Establish `h2` using `hraw.symm.trans hr`. Establish `h3` using `congrArg (fun v => (((‖τ‖ ^ (2 * (P.r - j) + P.k))⁻¹ : ℝ) : ℂ) • v) h2`. Simplify using `only [smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hpos, Complex.ofReal_one, one_smul] at h3`.
+
+Conclude with `h3`. Rewrite using `[hR]`. Unfold `resG`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hgg0, Complex.ofReal_one, one_smul]`. Both sides reduce to the same expression.
+
+Establish `hRφ : (fun b => Rd (Φ b)) = fun b => ((gg : ℝ) : ℂ) • φ b`. Use function extensionality and compare the values at `b`. Simplify using `only [φ, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hgg0, Complex.ofReal_one, one_smul]`. Establish `hJe` using `hJ Wp Wq P p F j hj w h hh γ hF hw hγ hΩ φ hφ t ht e`. Establish `hraw` using `raw_eq hn y hdom (P5.act (P5.bTl L ⟨0, by change 0 < P.r - j; omega⟩ (D.positionted w)) Φ e) ht0`.
+
+Establish `hact` using `rd_act hn y hc hdom X hL (D.positionted w) Φ e`. Use `hraw.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((‖t‖ ^ (2 * (P.r - j) + P.k) : ℝ) : ℂ) • (Rd (P5.act _ Φ e)).1 t = _`. Rewrite using `[hact, hRφ]`. Unfold `oneBT`.
+
+Rewrite using `[act_one_variable_smul, kapM_eq]`. Express the relevant statement in the definitionally equal form `((‖t‖ ^ (2 * (P.r - j) + P.k) : ℝ) : ℂ) • (((gg : ℝ) : ℂ) • (oneBT (kapJ P j) (D.positionted w) φ e).1 t) = _`. Rewrite using `[← hJe]`. Use `congr 1`.
+-/
 theorem headPic_of (hJ : HeadJ) : HeadPic := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh X μ L st Φ hD hF hw hΦ t ht e y hy
   have ht0 : t ≠ 0 := (ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2
@@ -83,6 +108,9 @@ end Formalism.FourierDecayAlt.P.PBP
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `pb_radHead_of_headPic (PBP.headPic_of hJ)`.
+-/
 theorem pb_radHead_of_headJ (hJ : LevelPointCoordinates.HeadJ) : KB.RadHead := pb_radHead_of_headPic (PBP.headPic_of hJ)
 
 end Formalism.FourierDecayAlt.P

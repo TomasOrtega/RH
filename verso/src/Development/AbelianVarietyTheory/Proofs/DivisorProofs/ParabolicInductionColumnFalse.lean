@@ -8,6 +8,29 @@ noncomputable section
 
 namespace GlobalTheory.SmGL.RowOneCell
 
+/- English proof (translation)
+Introduce `k _ _ _ _ χ₁ χ₂ h₂ u v`. Establish `h0 : ∀ j, j ≠ true → sz u v j false = 0`. Introduce `j hj`. Consider the cases of `j`. Both sides reduce to the same expression.
+
+Conclude with `absurd rfl hj`. Establish `hP : ∀ x : GL (Fin 1) k, x ∈ parab k (colPart u v false)` using `fun x => OneBlockCell.mem_parab_of_single (n := fun i => sz u v i false) (colPart u v false) true h0 x`. Establish `hδ : ∀ z, deltaHalf k (fun i => Fin (sz u v i false)) z = 1` using `fun z => OneBlockCell.deltaHalf_eq_one_of_single true h0 z`. Establish `hd0 : ∀ p : parab k (colPart u v false), GeneralLinearGroup.det (leviProj k (colPart u v false) p false) = 1`. Introduce `p`.
+
+Use `haveI : IsEmpty (Fin (sz u v false false)) := Fin.isEmpty'`. Use `ext`. Simplify using `[Matrix.det_isEmpty]`. Establish `hd1 : ∀ p : parab k (colPart u v false), GeneralLinearGroup.det (leviProj k (colPart u v false) p true) = GeneralLinearGroup.det (p : GL (Fin 1) k)`. Introduce `p`.
+
+Use `ext`. Use `show Matrix.det (((show GL (Fin 1) k from leviProj k (colPart u v false) p true)) : Matrix (Fin 1) (Fin 1) k) = Matrix.det ((p : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k)`. Rewrite using `[Matrix.det_unique, Matrix.det_unique]`. Conclude with `congrArg₂ (fun a b => ((p : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k) a b) (Subsingleton.elim _ _) (Subsingleton.elim _ _)`. Set `ψ : kˣ →* ℂˣ` to `χ₂ * absPow k (-(v : ℂ) / 2)`.
+
+Establish `hsm : IsSmooth (detRep (Fin 1) ψ)` using `(isSmooth_ofChar_iff _).2 (h₂.mul (GlobalTheory.LocGL.isSmoothChar_absPow _)).detChar`. Set `Ψ : ℂ ≃ₗ[ℂ] ℂ ⊗[ℂ] ℂ` to `(TensorProduct.lid ℂ ℂ).symm`. Establish `hΨ : ∀ c, Ψ c = (1 : ℂ) ⊗ₜ c` using `fun c => rfl`. Set `τ` to `(twist (colRep χ₁ χ₂ u v false) (deltaHalf k (fun i => Fin (sz u v i false)))).comp (leviProj k (colPart u v false))`. Establish `law : ∀ (p : parab k (colPart u v false)) c, τ p (Ψ c) = Ψ (detRep (Fin 1) ψ p c)`.
+
+Introduce `p c`. Rewrite using `[MonoidHom.comp_apply, twist_apply, hδ, hΨ, hΨ]`. Simplify using `only [Units.val_one, one_smul]`. Use `show extTensor _ _ _ ((1 : ℂ) ⊗ₜ c) = _`. Rewrite using `[extTensor_tmul]`.
+
+Simplify using `only [detRep, ofChar_apply, detChar_apply]`. Express the relevant statement in the definitionally equal form `(((χ₁ (GeneralLinearGroup.det (leviProj k (colPart u v false) p false)) : ℂˣ) : ℂ) * 1) ⊗ₜ[ℂ] ((((colChar v χ₂ false) (GeneralLinearGroup.det (leviProj k (colPart u v false) p true)) : ℂˣ) : ℂ) * c) = _`. Rewrite using `[hd0, hd1, map_one, Units.val_one, mul_one]`. Both sides reduce to the same expression. Set `F : (detRep (Fin 1) ψ).IntertwiningMap (parInd (colPart u v false) (colRep χ₁ χ₂ u v false))` to `{ toFun := fun c => ⟨⟨fun x => Ψ (detRep (Fin 1) ψ x c), fun p x => by show Ψ (detRep (Fin 1) ψ (↑p * x) c) = _`.
+
+Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(law p _).symm⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hsm c).mem_nhds (by simp)) fun x hx => by`. Establish `hx' : detRep (Fin 1) ψ x c = c` using `hx`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations.
+
+Use `show Ψ (detRep (Fin 1) ψ (y * x) c) = Ψ (detRep (Fin 1) ψ y c)`. Rewrite using `[map_mul, Module.End.mul_apply, hx'])⟩`. Use the proof step `map_add' := fun c d => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `map_smul' := fun a c => Subtype.ext (Subtype.ext (funext fun x => by show Ψ (detRep (Fin 1) ψ x (a • c)) = a • Ψ (detRep (Fin 1) ψ x c)`. Rewrite using `[map_smul, map_smul]))`.
+
+Use the proof step `isIntertwining' := fun h => LinearMap.ext fun c => Subtype.ext (Subtype.ext (funext fun x => by show Ψ (detRep (Fin 1) ψ x (detRep (Fin 1) ψ h c)) = Ψ (detRep (Fin 1) ψ (x * h) c)`. Rewrite using `[map_mul, Module.End.mul_apply])) }`. Use `⟨(LocGL.equivOfBijective F ⟨fun c d hw => ?_, fun φ => ⟨Ψ.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩).symm⟩` and prove the remaining obligations. Establish `h1 : Ψ (detRep (Fin 1) ψ 1 c) = Ψ (detRep (Fin 1) ψ 1 d)` using `congrArg (fun φ => φ.1.1 1) hw`. Simplify using `using h1`.
+
+Use `show Ψ (detRep (Fin 1) ψ x (Ψ.symm (φ.1.1 1))) = φ.1.1 x`. Use `(law ⟨x, hP x⟩ (Ψ.symm (φ.1.1 1))).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (τ ⟨x, hP x⟩) (Ψ.apply_symm_apply (φ.1.1 1))).trans ?_` and prove the remaining obligations. Use `(φ.1.2 ⟨x, hP x⟩ 1).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg φ.1.1 (mul_one x)`.
+-/
 theorem parInd_colPart_false_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₂ → ∀ (u v : ℕ), Nonempty ((parInd (colPart u v false) (colRep χ₁ χ₂ u v false)).Equiv
       (detRep (Fin 1) (χ₂ * absPow k (-(v : ℂ) / 2)))) := by

@@ -15,10 +15,16 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.WeightPf
 
 open Semi
 
+/- English proof (translation)
+Establish `: y ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`.
+-/
 lemma exists_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : X) : ∃ i, y ∈ L.U i := by
   have : y ∈ (⨆ i, L.U i : X.Opens) := by rw [hL.cover]; trivial
   simpa [TopologicalSpace.Opens.mem_iSup] using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => trivial`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.inf_insert]`. Conclude with `⟨h a (Finset.mem_insert_self a s), ih fun i hi => h i (Finset.mem_insert_of_mem hi)⟩`.
+-/
 theorem mem_finset_inf {Y : Scheme.{0}} {κ : Type} (s : Finset κ) (F : κ → Y.Opens) (y : Y)
     (h : ∀ i ∈ s, y ∈ F i) : y ∈ s.inf F := by
   classical
@@ -28,15 +34,60 @@ theorem mem_finset_inf {Y : Scheme.{0}} {κ : Type} (s : Finset κ) (F : κ → 
     rw [Finset.inf_insert]
     exact ⟨h a (Finset.mem_insert_self a s), ih fun i hi => h i (Finset.mem_insert_of_mem hi)⟩
 
+/- English proof (translation)
+The claim follows from `(Finset.inf_le hi : s.inf F ≤ F i) h`.
+-/
 theorem mem_of_finset_inf {Y : Scheme.{0}} {κ : Type} {s : Finset κ} {F : κ → Y.Opens} {y : Y}
     (h : y ∈ s.inf F) {i : κ} (hi : i ∈ s) : y ∈ F i :=
   (Finset.inf_le hi : s.inf F ≤ F i) h
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`.
+-/
 theorem comp_base_eq {A B C : Scheme.{0}} {a b : A ⟶ B} {ψ : B ⟶ C} (h : a ≫ ψ = b ≫ ψ) (z : A) :
     ψ (a z) = ψ (b z) := by
   rw [← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U e k σ f hσ hexp α j`. Take `⟨S, hout, hmain⟩` from `hexp`. Distinguish the cases in `hα : α ∉ S`. Conclude with `hout α hα j`. Use `push Not at hα`.
+
+Use `TopCat.Presheaf.section_ext (thickObj R I e G).left.sheaf _ _ 0 fun x hx => ?_` and prove the remaining obligations. Use `choose c0 hc0 using exists_chart D.toPre.P.L D.toPre.P.isLB`. Set `c : ((thickObj R I e G).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι` to `fun ψ => c0 (ψ.base x)`. Establish `hc : ∀ ψ, ψ.base x ∈ D.toPre.P.L.U (c ψ)` using `fun ψ => hc0 _`. Set `p1 : PUnit → D.toPre.P.L.ι` to `fun _ => c (U.gt e).pG.left`.
+
+Set `jf : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun β k => c ((U.gt e).pG.left ≫ D.toPre.famφB β k)`. Set `jt : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun β k => c (D.toPre.Oφ (U.gt e).pG β k)`. Set `Vst : (thickObj R I e G).left.Opens` to `LB.wchart D.toPre.P.L (fun _ : PUnit => (U.gt e).pG.left) p1 ⊓ S.inf (fun β => (U.gt e).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β) ⊓ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG β) (jt β))`. Establish `hVf : ∀ β ∈ S, Vst ≤ (U.gt e).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β)` using `fun β hβ => inf_le_right.trans ((Finset.inf_le hβ).trans inf_le_left)`. Establish `hVt : ∀ β ∈ S, Vst ≤ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG β) (jt β)` using `fun β hβ => inf_le_right.trans ((Finset.inf_le hβ).trans inf_le_right)`.
+
+Establish `hxV : x ∈ Vst`. Use `⟨Set.mem_iInter.2 fun _ => hc _, mem_finset_inf _ _ _ fun β _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.2 fun k => by`. Use `hc ((U.gt e).pG.left ≫ D.toPre.famφB β k)` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.comp_apply]`. Then use the resulting hypothesis.
+
+Conclude with `Set.mem_iInter.2 fun k => hc _`. Set `Fv : ∀ β ∈ S, Γ((thickObj R I e G).left, Vst)` to `fun β hβ => ((thickObj R I e G).left.presheaf.map (homOfLE (hVf β hβ)).op).hom (((U.gt e).pG.left.app _).hom ((f β).f (jf β)))`. Set `Tv : ∀ β ∈ S, Γ((thickObj R I e G).left, Vst)` to `fun β hβ => (res (hVt β hβ) (((U.gt e).t β).s (jt β))).val`. Set `Φ : Γ((thickObj R I e G).left, Vst)` to `∑ β ∈ S.attach, Fv β.1 β.2 * Tv β.1 β.2`. Establish `hΦ : Φ = 0`.
+
+Use `TopCat.Presheaf.section_ext (thickObj R I e G).left.sheaf _ _ 0 fun y hy => ?_` and prove the remaining obligations. Take `⟨i2, hi2⟩` from `exists_chart U.LG.L U.LG.isLB ((fstG I e G).left.base y)`. Set `p : (PUnit.{1} → D.toPre.P.L.ι) × (PUnit.{1} → U.LG.L.ι)` to `(p1, fun _ => i2)`. Set `j₁ : Fin 1 → U.LG.L.ι` to `fun _ => i2`. Establish `hcoh : CohAll D.toPre.P.L (Sum.elim (fun _ : PUnit.{1} => (U.gt e).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt e).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin 4 => D.toPre.Oφ (U.gt e).pG a.1.1 a.2))) (Sum.elim (fun _ => p.1 PUnit.unit) (Sum.elim (fun a : S × Fin 4 => jf …`.
+
+Introduce `a b hab`. Establish `key : ∀ z, (Sum.elim (fun _ => p.1 PUnit.unit) (Sum.elim (fun a : S × Fin 4 => jf a.1.1 a.2) (fun a : S × Fin 4 => jt a.1.1 a.2))) z = c ((Sum.elim (fun _ : PUnit.{1} => (U.gt e).pG.left) (Sum.elim (fun a : S × Fin 4 => (U.gt e).pG.left ≫ D.toPre.famφB a.1.1 a.2) (fun a : S × Fin …`. Apply the tactic sequence `rintro (z | z | z) <;> rfl`. Rewrite using `[key a, key b, hab]`. Establish `E` using `hmain p j₁ jf jt rfl hcoh`.
+
+Establish `hyW : y ∈ U.expW e p j₁ S jf jt`. Use `⟨⟨⟨hy.1, Set.mem_iInter.2 fun _ => hi2⟩, Set.mem_iInter.2 fun _ => ?_⟩, hy.2⟩` and prove the remaining obligations. Conclude with `hi2`. Establish `hWV : U.expW e p j₁ S jf jt ≤ Vst` using `le_inf (inf_le_left.trans (inf_le_left.trans inf_le_left)) inf_le_right`. Establish `hres : ((thickObj R I e G).left.presheaf.map (homOfLE hWV).op).hom Φ = ∑ β ∈ S.attach, ((thickObj R I e G).left.presheaf.map (homOfLE (U.expW_le_f e p j₁ jf jt β.2)).op).hom (((U.gt e).pG.left.app _).hom ((f β.1).f (jf β.1))) * (res (U.expWeight_le_chart_weight e p j₁ jf jt β.2) …` using `(map_sum _ _ _).trans (Finset.sum_congr rfl fun β _ => (map_mul _ _ _).trans (congrArg₂ (· * ·) (Semi.LBVal.rres _ _ _) (Semi.LBVal.rres _ _ _)))`.
+
+Establish `hR` using `E.symm.trans (mul_eq_zero_of_right _ ((congrArg ((thickObj R I e G).left.presheaf.map (homOfLE (inf_le_left.trans inf_le_right : U.expW e p j₁ S jf jt ≤ (fstG I e G).left ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) j₁)).op).hom (hσ j₁)).trans (map_zero _)))`. Conclude with `((TopCat.Presheaf.germ_res_apply (thickObj R I e G).left.presheaf (homOfLE hWV) y hyW Φ).symm.trans ((congrArg _ (hres.trans hR)).trans (map_zero _))).trans (map_zero _).symm`. Set `g` to `U.gt e`. Set `W' : (Te D.toPre I e ⊗ thickObj R I e G).left.Opens` to `(snd (Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ Vst`. Establish `hpt : ∀ (ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left), (act g).left ≫ ψ = (snd (Te D.toPre I e) (thickObj R I e G)).left ≫ ψ → ∀ z, ψ ((act g).left z) = ψ ((snd (Te D.toPre I e) (thickObj R I e G)).left z)` using `fun ψ h z => comp_base_eq h z`.
+
+Establish `hpG : (act g).left ≫ (U.gt e).pG.left = (snd (Te D.toPre I e) (thickObj R I e G)).left ≫ (U.gt e).pG.left` using `act_left_pG g`. Establish `ha : W' ≤ (act g).left ⁻¹ᵁ Vst`. Introduce `z hz`. Use `⟨Set.mem_iInter.2 fun u => ?_, mem_finset_inf _ _ _ fun β hβ => ⟨Set.mem_iInter.2 fun k => ?_, Set.mem_iInter.2 fun k => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage]`.
+
+Rewrite using `[hpt _ hpG z]`. Conclude with `Set.mem_iInter.1 hz.1 u`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[hpt _ hpG z]`. Conclude with `Set.mem_iInter.1 (mem_of_finset_inf hz.2 hβ).1 k`.
+
+Simplify using `only [Set.mem_preimage]`. Rewrite using `[hpt _ (act_Oφ g β k) z]`. Conclude with `Set.mem_iInter.1 (mem_of_finset_inf hz.2 hβ).2 k`. Establish `keyF : ∀ β (hβ : β ∈ S), ((act g).left.appLE Vst W' ha).hom (Fv β hβ) = ((snd (Te D.toPre I e) (thickObj R I e G)).left.app Vst).hom (Fv β hβ)`. Introduce `β hβ`.
+
+Establish `m : (U.gt e).pG.left.app (LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β)) ≫ (thickObj R I e G).left.presheaf.map (homOfLE (hVf β hβ)).op ≫ (act g).left.appLE Vst W' ha = (U.gt e).pG.left.app (LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β)) ≫ (thickObj R I e G).left.presheaf.map ( …`. Rewrite using `[Scheme.Hom.app_eq_appLE (snd (Te D.toPre I e) (thickObj R I e G)).left, Scheme.Hom.map_appLE, Scheme.Hom.map_appLE, Scheme.Hom.app_eq_appLE (U.gt e).pG.left, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, Semi.TorusInj.appLE_of_eq hpG]`. Conclude with `congrArg (fun φ => φ.hom ((f β).f (jf β))) m`. Establish `keyT : ∀ β (hβ : β ∈ S), ((act g).left.appLE Vst W' ha).hom (Tv β hβ) = ((Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE le_top).op).hom (Semi.TorusInj.chiP D.toPre.X (thickObj R I e G) β) * ((snd (Te D.toPre I e) (thickObj R I e G)).left.app Vst).hom (Tv β hβ)`. Introduce `β hβ`.
+
+Establish `hs : W' ≤ (snd (Te D.toPre I e) (thickObj R I e G)).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.Oφ g.pG β) (jt β)` using `fun z hz => hVt β hβ hz`. Establish `ha' : W' ≤ (act g).left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.Oφ g.pG β) (jt β)` using `fun z hz => hVt β hβ (ha hz)`. Establish `T` using `t_act g β (jt β) (fun k1 k2 h => congrArg c h) W' hs ha'`. Establish `m1 : (thickObj R I e G).left.presheaf.map (homOfLE (hVt β hβ)).op ≫ (act g).left.appLE Vst W' ha = (act g).left.appLE _ W' ha'` using `Scheme.Hom.map_appLE _ _ _`. Establish `m2 : (thickObj R I e G).left.presheaf.map (homOfLE (hVt β hβ)).op ≫ (snd (Te D.toPre I e) (thickObj R I e G)).left.app Vst = (snd (Te D.toPre I e) (thickObj R I e G)).left.appLE _ W' hs`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.map_appLE]`. Conclude with `(congrArg (fun φ => φ.hom (((U.gt e).t β).s (jt β)).val) m1).trans (T.trans (congrArg (_ * ·) (congrArg (fun φ => φ.hom (((U.gt e).t β).s (jt β)).val) m2).symm))`. Set `chi : D.toPre.X → Γ((Te D.toPre I e ⊗ thickObj R I e G).left, W')` to `fun β => ((Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE le_top).op).hom (Semi.TorusInj.chiP D.toPre.X (thickObj R I e G) β)`. Set `sn` to `((snd (Te D.toPre I e) (thickObj R I e G)).left.app Vst).hom`. Set `hfun : D.toPre.X → Γ((thickObj R I e G).left, Vst)` to `fun β => if hβ : β ∈ S then Fv β hβ * Tv β hβ else 0`.
+
+Establish `hd : ∀ β (hβ : β ∈ S), hfun β = Fv β hβ * Tv β hβ` using `fun β hβ => by show (if hβ' : β ∈ S then Fv β hβ' * Tv β hβ' else 0) = _`. Conclude with `dif_pos hβ`. Establish `hZ : ∑ β ∈ S.attach, chi β.1 * sn (Fv β.1 β.2 * Tv β.1 β.2) = 0`. Use `(Finset.sum_congr rfl fun β _ => ?_).trans ((map_sum ((act g).left.appLE Vst W' ha).hom _ _).symm.trans ((congrArg _ hΦ).trans (map_zero _)))` and prove the remaining obligations. Conclude with `((congrArg (chi β.1 * ·) (map_mul sn _ _)).trans (mul_left_comm _ _ _)).trans ((map_mul ((act g).left.appLE Vst W' ha).hom _ _).trans (congrArg₂ (· * ·) (keyF β.1 β.2) (keyT β.1 β.2))).symm`.
+
+Establish `hsum : ∑ β ∈ S, chi β * sn (hfun β) = 0`. Use `(Finset.sum_attach S (fun β => chi β * sn (hfun β))).symm.trans ((Finset.sum_congr rfl fun β _ => ?_).trans hZ)` and prove the remaining obligations. Conclude with `congrArg (fun z => chi β.1 * sn z) (hd β.1 β.2)`. Establish `h0` using `Semi.TorusInj.eq_zero_of_sum D.toPre.X (thickObj R I e G) S hfun hsum α hα`. Establish `hFT : Fv α hα * Tv α hα = 0` using `(hd α hα).symm.trans h0`.
+
+Establish `hF : Fv α hα = 0` using `(Units.mul_left_eq_zero (res (hVt α hα) (((U.gt e).t α).s (jt α)))).mp hFT`. Establish `hO1 : (U.gt e).pG.left ⁻¹ᵁ (LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α)) ≤ (U.gt e).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB α) j` using `fun z hz => hz.1`. Establish `hO2 : (U.gt e).pG.left ⁻¹ᵁ (LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α)) ≤ (U.gt e).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α)` using `fun z hz => hz.2`. Establish `hxO : x ∈ (U.gt e).pG.left ⁻¹ᵁ (LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α))` using `⟨hx, hVf α hα hxV⟩`. Establish `nat1 : (U.gt e).pG.left.app (LB.wchart D.toPre.P.L (D.toPre.famφB α) j) ≫ (thickObj R I e G).left.presheaf.map (homOfLE hO1).op = D.toPre.P.A.left.presheaf.map (homOfLE (inf_le_left : LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α) ≤ _)) …` using `((U.gt e).pG.left.naturality _).symm`.
+
+Establish `nat2 : (U.gt e).pG.left.app (LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α)) ≫ (thickObj R I e G).left.presheaf.map (homOfLE hO2).op = D.toPre.P.A.left.presheaf.map (homOfLE (inf_le_right : LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α) …` using `((U.gt e).pG.left.naturality _).symm`. Establish `hsecond : ((thickObj R I e G).left.presheaf.germ _ x hxO).hom (((U.gt e).pG.left.app _).hom ((D.toPre.P.A.left.presheaf.map (homOfLE (inf_le_right : LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α) ≤ _)).op).hom ((f α).f (jf α)))) = 0` using `(congrArg ((thickObj R I e G).left.presheaf.germ _ x hxO).hom (congrArg (fun φ => φ.hom ((f α).f (jf α))) nat2).symm).trans ((TopCat.Presheaf.germ_res_apply _ (homOfLE hO2) x hxO _).trans ((TopCat.Presheaf.germ_res_apply _ (homOfLE (hVf α hα)) x hxV _).symm.trans ((congrArg _ hF) …`. Conclude with `((TopCat.Presheaf.germ_res_apply _ (homOfLE hO1) x hxO _).symm.trans ((congrArg _ ((congrArg (fun φ => φ.hom ((f α).f j)) nat1).trans ((congrArg ((U.gt e).pG.left.app (LB.wchart D.toPre.P.L (D.toPre.famφB α) j ⊓ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α))).hom ((f α).compat j …`.
+-/
 theorem weightIndep : WeightIndepSt := by
   intro R _ _ I D A G _ _ U e k σ f hσ hexp α j
   classical

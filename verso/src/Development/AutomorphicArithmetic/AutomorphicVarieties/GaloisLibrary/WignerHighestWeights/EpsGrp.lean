@@ -14,6 +14,25 @@ private def outR {n : ℕ} (u : Fin n → ℂ) : (Fin n → ℂ) →ₗ[ℂ] Mat
   map_add' w w' := by ext; simp [vecMulVec_apply, mul_add]
   map_smul' c w := by ext; simp [vecMulVec_apply, mul_left_comm]
 
+/- English proof (translation)
+Establish `hs : ∀ a b : Fin n, g * single a b (1 : ℂ) = ∑ c, g c a • single c b (1 : ℂ)`. Introduce `a b`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hbj : b = j <;> simp [Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, hbj]`. Establish `hdet : ∀ c : Fin n → Fin n, ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, g (c k) (σ k) = (g.submatrix c id).det`.
+
+Introduce `c`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Both sides reduce to the same expression. Establish `hsum : ∀ w : (Fin n → Fin n) → M, ∑ c, (g.submatrix c id).det • w c = ∑ α : Equiv.Perm (Fin n), (((Equiv.Perm.sign α : ℤ) : ℂ) * g.det) • w α`. Introduce `w`.
+
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (fun α : Equiv.Perm (Fin n) => (⇑α : Fin n → Fin n))))]`. Rewrite using `[Finset.sum_image (fun α _ β _ h => Equiv.coe_fn_injective h)]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_permute]`. Introduce `c _ hc`.
+
+Establish `hni : ¬ Function.Injective c`. Introduce `hinj`. Apply `hc` to reduce the goal to its premises. Conclude with `Finset.mem_image.mpr ⟨Equiv.ofBijective c (Finite.injective_iff_bijective.mp hinj), Finset.mem_univ _, rfl⟩`. Simplify using `only [Function.Injective, not_forall] at hni`.
+
+Take `⟨i, j, hij, hne⟩` from `hni`. Rewrite using `[Matrix.det_zero_of_row_eq hne (by ext k; simp [hij]), zero_smul]`. Simplify using `only [eps, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hμ : ∀ σ : Equiv.Perm (Fin n), μ (fun i => g * units σ τ i) = ∑ c : Fin n → Fin n, (∏ k, g (c k) (σ k)) • μ (fun k => single (c k) (τ k) (1 : ℂ))`.
+
+Introduce `σ`. Simplify using `only [units, hs]`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+
+Establish `hc : ∀ c : Fin n → Fin n, ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign τ : ℤ) * (Equiv.Perm.sign σ : ℤ)) • (∏ k, g (c k) (σ k)) • μ (fun k => single (c k) (τ k) (1 : ℂ)) = ((Equiv.Perm.sign τ : ℤ) : ℂ) • ((g.submatrix c id).det • μ (fun k => single (c k) (τ k) (1 : ℂ)))`. Introduce `c`. Simplify using `only [← Int.cast_smul_eq_zsmul ℂ, smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[← hdet c, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hμ, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun c _ => hc c, ← Finset.smul_sum, hsum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem eps_left_mul_eq_det_smul {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (μ : MultilinearMap ℂ (fun _ : Fin n => Matrix (Fin n) (Fin n) ℂ) M) (g : Matrix (Fin n) (Fin n) ℂ) :
     eps (fun x => μ fun i => g * x i) = g.det • eps μ := by
@@ -71,6 +90,13 @@ private theorem eps_left_mul_eq_det_smul {M : Type} [AddCommGroup M] [Module ℂ
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `M _ _ n μ g g' h`. Establish `hT : ∀ ν : (Fin n → Matrix (Fin n) (Fin n) ℂ) → M, eps (fun x => ν fun i => (x i)ᵀ) = eps ν`. Introduce `ν`. Simplify using `only [eps, units, Matrix.transpose_single]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `e1 : eps (fun x => μ fun i => g * x i * g') = g.det • eps (fun x => μ fun i => x i * g')` using `eps_left_mul_eq_det_smul (μ.compLinearMap (fun _ => LinearMap.mulRight ℂ g')) g`. Establish `e2 : eps (fun x => μ fun i => (g'ᵀ * x i)ᵀ) = g'ᵀ.det • eps (fun x => μ fun i => (x i)ᵀ)` using `eps_left_mul_eq_det_smul (μ.compLinearMap (fun _ => (Matrix.transposeLinearEquiv (Fin n) (Fin n) ℂ ℂ).toLinearMap)) g'ᵀ`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.det_transpose, hT] at e2`. Establish `e3 : eps (fun x => μ fun i => x i * g') = g'.det • eps μ`. Rewrite using `[← hT (fun x => μ fun i => x i * g')]`. Conclude with `e2`. Rewrite using `[e1, e3, smul_smul, mul_comm, ← Matrix.det_mul, h, Matrix.det_one, one_smul]`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.epsGrp :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (n : ℕ) (μ : MultilinearMap ℂ (fun _ : Fin n => Matrix (Fin n) (Fin n) ℂ) M) (g g' : Matrix (Fin n) (Fin n) ℂ), g' * g = 1 →
       eps (fun x => μ fun i => g * x i * g') = eps μ := by

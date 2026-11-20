@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.CentralMult
 
 variable {E : Type} [Field E] [NumberField E] {N : ℕ}
 
+/- English proof (translation)
+Establish `hd : DiscreteTopology ((ratGL E N).range)` using `GlobalTheory.MirTower.discrete_of_le_range le_rfl`. Establish `hcl : IsClosed (((ratGL E N).range : Subgroup (GA E N)) : Set (GA E N))` using `Subgroup.isClosed_of_discrete`. Establish `hK : IsCompact (C ∩ ((ratGL E N).range : Set (GA E N)))` using `hC.inter_right hcl`. Establish `hds : DiscreteTopology ↥(C ∩ ((ratGL E N).range : Set (GA E N)))` using `DiscreteTopology.of_subset hd Set.inter_subset_right`. Conclude with `hK.finite ⟨hds⟩`.
+-/
 theorem finite_range_inter (C : Set (GA E N)) (hC : IsCompact C) :
     (C ∩ ((ratGL E N).range : Set (GA E N))).Finite := by
   have hd : DiscreteTopology ((ratGL E N).range) := GlobalTheory.MirTower.discrete_of_le_range le_rfl
@@ -22,6 +25,9 @@ theorem finite_range_inter (C : Set (GA E N)) (hC : IsCompact C) :
     DiscreteTopology.of_subset hd Set.inter_subset_right
   exact hK.finite ⟨hds⟩
 
+/- English proof (translation)
+Establish `h1 : a = z * q * x⁻¹` using `eq_mul_inv_of_mul_eq ha`. Establish `h2 : b = z * r * x⁻¹` using `eq_mul_inv_of_mul_eq hb`. Establish `h3 : z * q * x⁻¹ * (z * r * x⁻¹)⁻¹ = z * (q * r⁻¹) * z⁻¹` using `by group`. Rewrite using `[h1, h2, h3, hz, mul_inv_cancel_right]`.
+-/
 theorem mul_inv_eq_of_central {G : Type} [Group G] {z x a b q r : G} (hz : ∀ g, z * g = g * z)
     (ha : a * x = z * q) (hb : b * x = z * r) : a * b⁻¹ = q * r⁻¹ := by
   have h1 : a = z * q * x⁻¹ := eq_mul_inv_of_mul_eq ha
@@ -29,6 +35,15 @@ theorem mul_inv_eq_of_central {G : Type} [Group G] {z x a b q r : G} (hz : ∀ g
   have h3 : z * q * x⁻¹ * (z * r * x⁻¹)⁻¹ = z * (q * r⁻¹) * z⁻¹ := by group
   rw [h1, h2, h3, hz, mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `E _ _ _ N Q hQ`. Establish `hC : IsCompact (Q * Q⁻¹)` using `hQ.mul hQ.inv`. Establish `hF` using `finite_range_inter (Q * Q⁻¹) hC`. Use `⟨hF.toFinset.card, fun z hz x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF.encard_eq_coe_toFinset_card]`.
+
+Break down `Set.eq_empty_or_nonempty {γ : (ratGL E N).range | (γ : GA E N) * x ∈ (fun q => z * q) '' Q} with h0 | ⟨γ₀, q₀, hq₀, e₀⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `Set.encard_le_encard_of_injOn (f := fun γ : (ratGL E N).range => (γ : GA E N) * (γ₀ : GA E N)⁻¹) ?_ ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨q, hq, e⟩`.
+
+Use `⟨?_, mul_mem γ.2 (inv_mem γ₀.2)⟩` and prove the remaining obligations. Establish `e' : (γ : GA E N) * (γ₀ : GA E N)⁻¹ = q * q₀⁻¹` using `mul_inv_eq_of_central hz e.symm e₀.symm`. Express the relevant statement in the definitionally equal form `(γ : GA E N) * (γ₀ : GA E N)⁻¹ ∈ Q * Q⁻¹`. Rewrite using `[e']`. Conclude with `Set.mul_mem_mul hq (Set.inv_mem_inv.2 hq₀)`.
+
+Introduce `γ _ γ' _ h`. Conclude with `Subtype.ext (mul_right_cancel h)`.
+-/
 theorem multC : PositivityTheory.Rg.BcB.E.E3.MultC := by
   intro E _ _ _ N Q hQ
   have hC : IsCompact (Q * Q⁻¹) := hQ.mul hQ.inv

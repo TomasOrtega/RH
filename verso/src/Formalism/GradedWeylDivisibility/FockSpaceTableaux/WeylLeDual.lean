@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `| []` and use `h1 R r n hn ν hν | x :: w => h2 R r n ν x.1 x.2.1 x.2.2 _ (applyWord_hw_mem_dualWeyl h1 h2 R r n hn ν hν w)`.
+-/
 private theorem applyWord_hw_mem_dualWeyl
     (h1 : HWMem) (h2 : RowDivStable)
     (R : Type) [CommRing R] (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
@@ -16,6 +19,9 @@ private theorem applyWord_hw_mem_dualWeyl
   | x :: w => h2 R r n ν x.1 x.2.1 x.2.2 _
       (applyWord_hw_mem_dualWeyl h1 h2 R r n hn ν hν w)
 
+/- English proof (translation)
+Introduce `R _ r n hn ν hν`. Use `show Submodule.span R (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord R w (hw R hn ν)) ≤ dualWeyl R r n ν`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `applyWord_hw_mem_dualWeyl h1 h2 R r n hn ν hν w`.
+-/
 theorem weylLeDual_of (h1 : HWMem) (h2 : RowDivStable) : WeylLeDual := by
   intro R _ r n hn ν hν
   show Submodule.span R (Set.range fun w : List (Fin r × Fin r × ℕ) =>

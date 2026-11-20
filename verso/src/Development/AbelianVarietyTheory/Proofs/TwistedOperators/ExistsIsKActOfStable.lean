@@ -14,6 +14,13 @@ namespace GlobalTheory.Chain.IoLift
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hU : IsUnit (M.fr τ)` using `M.fr_unit τ`. Establish `hG : IsUnit (gramAt D V τ)` using `GlobalTheory.SmVec.gram_unit hU (M.fr_gram τ)`. Establish `hπ` using `GlobalTheory.SmVec.isURepOn_trRep hU (M.fr_gram τ) (M.ds τ).2.2.1`. Use `⟨fun X => if hX : X ∈ lieAt V τ then { toFun := fun v => ⟨dRep (M.rep τ) X v, hd X hX v v.2⟩ map_add' := fun v w => Subtype.ext (GlobalTheory.SmVec.dRep_add (hs v v.2) (hs w w.2) hX) map_smul' := fun c v => Subtype.ext (GlobalTheory.SmVec.dRep_smul c (hs v v.2) hX) } else 0, ⟨?_, …` and prove the remaining obligations. Introduce `X hX v`.
+
+Rewrite using `[dif_pos hX]`. Conclude with `GlobalTheory.SmVec.hasDerivAt_dRep (hs v v.2) hX`. Introduce `X hX v w`. Rewrite using `[dif_pos hX, Submodule.coe_inner, Submodule.coe_inner]`. Establish `key : ⟪(v : M.H τ), dRep (M.rep τ) X w⟫_ℂ = -⟪dRep (M.rep τ) X v, (w : M.H τ)⟫_ℂ` using `GlobalTheory.SmVec.inner_dRep hG hπ (hs v v.2) (hs w w.2) hX`.
+
+Express the relevant statement in the definitionally equal form `⟪dRep (M.rep τ) X v, (w : M.H τ)⟫_ℂ + ⟪(v : M.H τ), dRep (M.rep τ) X w⟫_ℂ = 0`. Take the linear combination `key`.
+-/
 theorem exists_isKAct_of_stable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     (hs : ∀ x ∈ kFin M τ, x ∈ GlobalTheory.SmVec.smSub (gramAt D V τ) (M.rep τ))
     (hd : ∀ X ∈ lieAt V τ, ∀ x ∈ kFin M τ, dRep (M.rep τ) X x ∈ kFin M τ) :
@@ -35,6 +42,11 @@ theorem exists_isKAct_of_stable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar
     change ⟪dRep (M.rep τ) X v, (w : M.H τ)⟫_ℂ + ⟪(v : M.H τ), dRep (M.rep τ) X w⟫_ℂ = 0
     linear_combination key
 
+/- English proof (translation)
+Introduce `D V S M τ p q T R φ m U hM`. Establish `hk : ∀ y : M.H τ, y ∈ kFin M τ ↔ U y ∈ Set.range R.ι` using `fun y => hM.kfin y`. Establish `hsm : ∀ y ∈ kFin M τ, y ∈ GlobalTheory.SmVec.smSub (gramAt D V τ) (M.rep τ)` using `fun y hy => GlobalTheory.SmVec.mem_smSub.2 (hM.smooth y ((hk y).1 hy))`. Use `⟨fun y hy => Submodule.subset_span (hM.smooth y ((hk y).1 hy)), exists_isKAct_of_stable M τ hsm ?_⟩` and prove the remaining obligations. Introduce `X hX y hy`.
+
+Rewrite `hX` using `[← hM.lie]`. Take `⟨Z, hZ, rfl⟩` from `hX`. Take `⟨v, hv⟩` from `(hk y).1 hy`. Conclude with `(hk _).2 ⟨_, (hM.der Z hZ v y hv.symm).symm⟩`.
+-/
 theorem kFin_smooth_isKAct : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (p q : ℕ) (T : GrpData p q) (R : DSRep T) (φ : Mat p q → Matrix (Fin V.rank) (Fin V.rank) ℂ) (m : ℤ) (U : M.H τ → R.U.H), GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.Matches R M τ φ m U → kFin M τ ≤ M.sm τ ∧ ∃ a : Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ), IsKAct M τ a := by
   intro D V S M τ p q T R φ m U hM
   have hk : ∀ y : M.H τ, y ∈ kFin M τ ↔ U y ∈ Set.range R.ι := fun y => hM.kfin y

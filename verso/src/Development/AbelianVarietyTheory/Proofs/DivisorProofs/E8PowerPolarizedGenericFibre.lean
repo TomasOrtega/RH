@@ -23,6 +23,11 @@ namespace GlobalTheory.E8LatticePullbackGeneric
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Simplify using `only [Fin.sum_univ_four, GlobalTheory.PolDeg.lamPts, GlobalTheory.PolDeg.negε, lam, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons]`. Simplify using `only [smul_add, smul_sub, mul_neg, mul_one, neg_neg, neg_smul]`. Use `first`. Consider the case `(norm_num; done)`. Consider the case `(norm_num; abel)`.
+
+Consider the case `(push_cast; abel)`. Consider the case `(rw [sub_eq_add_neg, sub_eq_add_neg]; congr 1 <;> [congr 1; skip] <;> norm_num)`.
+-/
 theorem sum_lamPts {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x y : T ⟶ G) (c : Pic G.left) (w : ℤ) :
     ∑ k : Fin 4, (-(w * GlobalTheory.PolDeg.negε k)) • pull (GlobalTheory.PolDeg.lamPts x y k) c = w • lam c x y := by
   simp only [Fin.sum_univ_four, GlobalTheory.PolDeg.lamPts, GlobalTheory.PolDeg.negε, lam, Matrix.cons_val_zero, Matrix.cons_val_one,
@@ -34,10 +39,16 @@ theorem sum_lamPts {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x y : T ⟶ G) (c
   | (push_cast; abel)
   | (rw [sub_eq_add_neg, sub_eq_add_neg]; congr 1 <;> [congr 1; skip] <;> norm_num)
 
+/- English proof (translation)
+Simplify using `only [lam, ← pull_comp, ← Over.comp_left, MonObj.mul_comp, MonObj.one_comp]`.
+-/
 theorem lam_pull_hom {S : Scheme.{0}} {G G' T : Over S} [GrpObj G] [GrpObj G'] (φ : G' ⟶ G) [IsMonHom φ]
     (c : Pic G.left) (x y : T ⟶ G') : lam (pull φ.left c) x y = lam c (x ≫ φ) (y ≫ φ) := by
   simp only [lam, ← pull_comp, ← Over.comp_left, MonObj.mul_comp, MonObj.one_comp]
 
+/- English proof (translation)
+Establish `hfst : ∀ z : X ⟶ G, pullback.fst X.hom f ≫ z.left = ((Over.pullback f).map z).left ≫ pullback.fst G.hom f` using `fun z => by simp [pullback.lift_fst]`. Simplify using `only [lam, map_add, map_sub, ← pull_comp, hfst, Functor.map_mul, Functor.map_one]`.
+-/
 theorem pull_fst_lam {S S' : Scheme.{0}} (f : S' ⟶ S) {X G : Over S} [GrpObj G] (c : Pic G.left) (x x' : X ⟶ G) :
     GlobalTheory.CechPic.pull (pullback.fst X.hom f) (lam c x x') =
       lam (GlobalTheory.CechPic.pull (pullback.fst G.hom f) c) ((Over.pullback f).map x) ((Over.pullback f).map x') := by
@@ -47,6 +58,29 @@ theorem pull_fst_lam {S S' : Scheme.{0}} (f : S' ⟶ S) {X G : Over S} [GrpObj G
 
 open GlobalTheory.E8LatticePullbackGeneric GlobalTheory.CechPic in
 
+/- English proof (translation)
+Introduce `hL₁ _ _ V₁ _ _ _ _ D₀ G₀ _ _ A₀ U₀ _ W hW`. Use `A₀.isAb.comm` as an intermediate fact. Set `c` to `GlobalTheory.EighthPowerFactor.siegOne hL₁.globalFns A₀.isAb A₀.isLB A₀.g`. Establish `hc1 : RelAmple c.A c.diag` using `GlobalTheory.EighthPowerFactor.relAmple_diag_lam A₀.isAb A₀.isLB (GlobalTheory.Moduli.cube_of_isLB _ A₀ A₀.L A₀.isLB) A₀.ample`. Establish `hb` using `GlobalTheory.EighthPower.isSymBilin hL₁.globalFns c hc1`.
+
+Establish `hpw` using `GlobalTheory.PowGrp.powers _ _ _ 8 (powIsPowGrp A₀.A 8)`. Establish `hu : ∀ (T : Over (Sp (FractionRing V₁))) (y : Fin 8 → (T ⟶ A₀.A)), ∃! x : T ⟶ powObj A₀.A 8, ∀ u, x ≫ powPr A₀.A u = y u` using `fun T y => ⟨(powIsLimit A₀.A 8).lift (Fan.mk T y), fun u => (powIsLimit A₀.A 8).fac _ ⟨u⟩, fun x hx => (powIsLimit A₀.A 8).hom_ext fun ⟨u⟩ => by rw [(powIsLimit A₀.A 8).fac]; exact hx u⟩`. Set `Q : PolAV (Sp (FractionRing V₁))` to `{ A := powObj A₀.A 8, isAb := hpw.2.2.2.1 A₀.isAb, g := 8 * A₀.g, smoothDim := hpw.2.2.1 _ A₀.smoothDim L := GlobalTheory.MatrixBundle.matLB c.P (powPr A₀.A) W, isLB := LB.isLB_linComb c.isLB _ _ rigid := GlobalTheory.MatrixBundle.rigidified_matLB c.isLB hb (fun u => powPr.isMonH …`. Set `F` to `Over.pullback (jK V₁)`. Establish `hP : IsLimit (Fan.mk (F.obj (powObj G₀ 8)) fun u => F.map (powPr G₀ u))` using `isLimitFanMkObjOfIsLimit F _ _ (powIsLimit G₀ 8)`.
+
+Set `y : Fin 8 → (F.obj (powObj G₀ 8) ⟶ A₀.A)` to `fun u => F.map (powPr G₀ u) ≫ U₀.gen.hom`. Set `gen : F.obj (powObj G₀ 8) ≅ Q.A` to `{ hom := (powIsLimit A₀.A 8).lift (Fan.mk _ y) inv := hP.lift (Fan.mk Q.A fun u => powPr A₀.A u ≫ U₀.gen.inv) hom_inv_id := hP.hom_ext fun ⟨u⟩ => by`. Simplify using `only [Fan.mk_pt, Fan.mk_π_app, Category.assoc, Category.id_comp]`. Use `erw [hP.fac (Fan.mk Q.A fun u => powPr A₀.A u ≫ U₀.gen.inv) ⟨u⟩]`. Simplify using `only [Fan.mk_π_app]`.
+
+Use `erw [(powIsLimit A₀.A 8).fac_assoc (Fan.mk _ y) ⟨u⟩]`. Simplify using `[y]`. Use `inv_hom_id := (powIsLimit A₀.A 8).hom_ext fun ⟨u⟩ => by`. Simplify using `only [Fan.mk_pt, Fan.mk_π_app, Category.assoc, Category.id_comp]`. Use `erw [(powIsLimit A₀.A 8).fac (Fan.mk _ y) ⟨u⟩]`.
+
+Simplify using `only [Fan.mk_π_app, y]`. Rewrite using `[← Category.assoc]`. Use `erw [hP.fac (Fan.mk Q.A fun u => powPr A₀.A u ≫ U₀.gen.inv) ⟨u⟩]`. Simplify using `}`. Establish `hgen : ∀ u, gen.hom ≫ powPr A₀.A u = y u` using `fun u => (powIsLimit A₀.A 8).fac _ ⟨u⟩`.
+
+Use `U₀.gen_hom` as an intermediate fact. Use `⟨Q, gen, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.EighthPowerFactor.isMonHom_of_coord (fun u => powPr.isMonHom A₀.A u) hu fun u => ?_` and prove the remaining obligations. Rewrite using `[hgen u]`. Use `infer_instance`.
+
+Establish `hA` using `A₀.isLB`. Establish `hLG` using `U₀.LG.isLB`. Establish `hQ : Q.L.IsLB` using `Q.isLB`. Establish `hE : (GlobalTheory.PowE8.e8LB G₀ U₀.LG.L W).IsLB` using `LB.isLB_linComb hLG _ _`. Establish `hext : pull (pullback.fst G₀.hom (jK V₁)) (cls _ hLG) = pull U₀.gen.hom.left (cls _ hA)`.
+
+Take `⟨w, hw⟩` from `U₀.ext`. Establish `e` using `(cls_eq_iff (pull_isLB hA _) (pull_isLB hLG _)).2 ⟨w, hw⟩`. Rewrite `e` using `[cls_pull hA, cls_pull hLG]`. Conclude with `e.symm`. Establish `key : ∀ x x' : powObj G₀ 8 ⟶ G₀, pull (pullback.fst (powObj G₀ 8).hom (jK V₁)) (lam (cls _ hLG) x x') = lam (cls _ hA) (F.map x ≫ U₀.gen.hom) (F.map x' ≫ U₀.gen.hom)`.
+
+Introduce `x x'`. Rewrite using `[pull_fst_lam, hext, lam_pull_hom]`. Establish `hlam : cls c.P c.isLB = lam (cls _ hA) (fst A₀.A A₀.A) (snd A₀.A A₀.A)` using `cls_cube_two hA _ _ c.isLB`. Establish `eL : pull gen.hom.left (cls Q.L hQ) = ∑ uv : Fin 8 × Fin 8, W uv.1 uv.2 • lam (cls _ hA) (y uv.1) (y uv.2)`. Rewrite using `[show cls Q.L hQ = _ from cls_linComb c.isLB (fun uv : Fin 8 × Fin 8 => (lift (powPr A₀.A uv.1) (powPr A₀.A uv.2)).left) (fun uv => W uv.1 uv.2) hQ, map_sum]`.
+
+Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hlam]`. Use `erw [pull_lam, pull_lam]`. Rewrite using `[lift_fst, lift_snd]`. Use `erw [hgen, hgen]`.
+
+Establish `eR : pull (pullback.fst (powObj G₀ 8).hom (jK V₁)) (cls _ hE) = ∑ uv : Fin 8 × Fin 8, W uv.1 uv.2 • lam (cls _ hA) (y uv.1) (y uv.2)`. Rewrite using `[show cls _ hE = _ from cls_linComb hLG (K := (Fin 8 × Fin 8) × Fin 4) (fun k => GlobalTheory.PolDeg.lamPts (powPr G₀ k.1.1) (powPr G₀ k.1.2) k.2) (fun k => -(W k.1.1 k.1.2 * GlobalTheory.PolDeg.negε k.2)) hE, Fintype.sum_prod_type]`. Simplify using `only [sum_lamPts, map_sum, map_zsmul, key, y]`. Use `(cls_eq_iff (pull_isLB hQ _) (pull_isLB hE _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hQ, cls_pull hE, eL, eR]`.
+-/
 theorem exists_polAV_gen : Laws → Laws2 → GlobalTheory.LN.Ega → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D₀ : DegData V₁ (maximalIdeal V₁)) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀] (A₀ : PolAV (Sp (FractionRing V₁))) (U₀ : Unif (maximalIdeal V₁) D₀ A₀ G₀), IsSemiAbelian G₀ → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ∃ (A : PolAV (Sp (FractionRing V₁))) (gen : (Over.pullback (jK V₁)).obj (powObj G₀ 8) ≅ A.A), IsMonHom gen.hom ∧ LBIso (A.L.pull gen.hom.left) ((GlobalTheory.PowE8.e8LB G₀ U₀.LG.L W).pull (pullback.fst (powObj G₀ 8).hom (jK V₁))) := by
   intro hL₁ _ _ V₁ _ _ _ _ D₀ G₀ _ _ A₀ U₀ _ W hW
   have := A₀.isAb.comm

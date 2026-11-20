@@ -15,6 +15,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.SuppliedPieri
 
+/- English proof (translation)
+Unfold `n1`. Establish `h1 : I.card = ∑ i : Fin n, (if i ∈ I then 1 else 0)`. Rewrite using `[Finset.sum_boole]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, eZ]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem n1_add_eZ_le {n : ℕ} (ν : Fin n → ℤ) (I : Finset (Fin n)) : n1 (ν + eZ I) ≤ n1 ν + I.card := by
   unfold n1
   have h1 : I.card = ∑ i : Fin n, (if i ∈ I then 1 else 0) := by
@@ -24,11 +29,29 @@ theorem n1_add_eZ_le {n : ℕ} (ν : Fin n → ℤ) (I : Finset (Fin n)) : n1 (�
   simp only [Pi.add_apply, eZ]
   split_ifs <;> omega
 
+/- English proof (translation)
+Simplify using `[B.JF, Formalism.QuantumDeterminants.besselJ]`.
+-/
 theorem JF_zero {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (g : B.Mat k r) :
     B.JF D 0 g = 0 := by
   simp [B.JF, Formalism.QuantumDeterminants.besselJ]
 
+/- English proof (translation)
+Introduce `H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS ν hν c hc hG`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨γ, hγ, hZ, hV⟩` from `GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p c hc hG`. Simplify using `only [hV]`.
+
+Distinguish the cases in `hJ : J ν = 0`. Rewrite using `[hJ, JF_zero, smul_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hS.tau_zero ν I (Or.inl hJ), zero_smul]`.
+
+Take `⟨c0, -, hdich⟩` from `GlobalTheory.T.jN2_eq_const_mul_formal_degree_of_supG H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS`. Take `⟨⟨-, -, -, -, hGap⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Establish `hνI : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), n1 (ν + eZ I.1) ≤ q0`. Introduce `I`.
+
+Establish `h1` using `n1_add_eZ_le ν I.1`. Rewrite `h1` using `[I.2]`. Establish `h2 : P.r + 1 ≤ (P.r + 1) * (P.r + 2)` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Take `⟨io, pr, ep, hT, htau⟩` from `hS.tau_eq ν hν`.
+
+Establish `hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hcon`. Conclude with `hJ (hS.zero ν fun hh => hcon hh.2)`. Establish `key` using `GlobalTheory.T.tensor_weighted_bessel_gap H P.k P.r (Sub (2 * P.r + P.k + 1) (P.r + 1)) (Sub (2 * P.r + P.k + 1) (P.r + 1)) (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (P.r + 1) (R ν) (fun I => R (ν + eZ I.1)) io pr ep (PI.BesselPeriodGGP.eps48 P.k …`. Break down `hdich _ (hνI I) with ⟨h0, -, hn⟩ | ⟨h0, hn, hn', hs, -⟩` into its components or cases.
+
+Conclude with `Or.inl ⟨not_and_or.mp hn, hS.tau_zero ν I.1 (Or.inr h0)⟩`. Conclude with `Or.inr ⟨(hS.coef _ (hνI I) hn hn').1, hs, htau I hJ h0⟩)`. Use `γ hγ`. Rewrite `key` using `[GlobalTheory.TopMinorWedge.herm_cmp_wedge_eq_det, hZ]`. Rewrite using `[key]`.
+
+Use `symm`. Conclude with `Finset.sum_subtype _ (fun I => by simp) (fun I => tau ν I • B.JF p.T.base (J (ν + eZ I)) γ)`.
+-/
 theorem supplied_pieri : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup p lam q0 R l l' dg s J tau → ∀ ν, n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → (D.ptMatN (TBB.bigPt P.r c) (P.r + 1)).det • p.V (J ν) (TBB.bigPt P.r c) = ∑ I ∈ powersetCard (P.r + 1) (univ : Finset (Fin (2 * P.r + P.k + 1))), tau ν I • p.V (J (ν + eZ I)) (TBB.bigPt P.r c) := by
   intro H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS ν hν c hc hG
   haveI := FiniteDimensional.complete ℂ Wp

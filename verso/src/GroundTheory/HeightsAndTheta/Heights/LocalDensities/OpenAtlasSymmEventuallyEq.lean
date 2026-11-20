@@ -25,6 +25,11 @@ def openAtlas {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (hΩ : Non
       exact (Ω.openPartialHomeomorphSubtypeCoe hΩ).right_inv hz
     exact analyticAt_id.congr hev.symm
 
+/- English proof (translation)
+Establish `hy' : y ∈ (Ω.openPartialHomeomorphSubtypeCoe hΩ).target` using `by simpa using hy`. Use `filter_upwards [(Ω.openPartialHomeomorphSubtypeCoe hΩ).open_target.mem_nhds hy'] with z hz`. Establish `h` using `(Ω.openPartialHomeomorphSubtypeCoe hΩ).right_inv hz`. Simplify using `only [TopologicalSpace.Opens.openPartialHomeomorphSubtypeCoe_coe] at h`. Express the relevant statement in the definitionally equal form `F ((Ω.openPartialHomeomorphSubtypeCoe hΩ).symm z : Fin D → ℂ) = F z`.
+
+Rewrite using `[h]`.
+-/
 theorem openAtlas_symm_eventuallyEq {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ))
     (hΩ : Nonempty Ω) (j : Fin (openAtlas Ω hΩ).n) (F : (Fin D → ℂ) → ℝ) {y : Fin D → ℂ}
     (hy : y ∈ Ω) :
@@ -52,6 +57,15 @@ instance {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (hΩ : Nonempty
     Subsingleton (Fin (openAtlas Ω hΩ).n) :=
   (inferInstance : Subsingleton (Fin 1))
 
+/- English proof (translation)
+Establish `hne : Nonempty (ChartPartition (openAtlas Ω hΩ))` using `⟨openAtlasPartition Ω hΩ⟩`. Set `j : Fin (openAtlas Ω hΩ).n` to `⟨0, Nat.one_pos⟩`. Establish `hχ : ∀ x, hne.some.χ j x = 1`. Introduce `x`. Establish `h` using `hne.some.sum_eq_one x`.
+
+Rewrite `h` using `[Fintype.sum_subsingleton _ j]`. Then use the resulting hypothesis. Establish `hT : ((openAtlas Ω hΩ).chart j).target = (Ω : Set (Fin D → ℂ))`. Express the relevant statement in the definitionally equal form `(Ω.openPartialHomeomorphSubtypeCoe hΩ).target = _`. Simplify using the standard rewrite rules. Establish `hmeas : AEMeasurable ((openAtlas Ω hΩ).chart j).symm (volume.restrict ((openAtlas Ω hΩ).chart j).target)` using `((openAtlas Ω hΩ).chart j).continuousOn_symm.aemeasurable ((openAtlas Ω hΩ).chart j).open_target.measurableSet`.
+
+Rewrite using `[maMeasure, dif_pos hne, Measure.finsetSum_apply, Fintype.sum_subsingleton _ j, Measure.map_apply_of_aemeasurable (hmeas.mono_ac (withDensity_absolutelyContinuous _ _)) MeasurableSet.univ, Set.preimage_univ, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, hT]`. Use `setLIntegral_congr_fun Ω.isOpen.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hχ, one_mul]`. Use `congr 1`. Establish `hev : (fun z => Q.φ (((openAtlas Ω hΩ).chart j).symm y) (((openAtlas Ω hΩ).chart j).symm z)) =ᶠ[𝓝 y] fun z => F z / 2` using `by filter_upwards [openAtlas_symm_eventuallyEq Ω hΩ j F hy] with z hz`.
+
+Rewrite using `[hQ, hz]`. Establish `hH` using `(hev.fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)`. Unfold `locDens topDens maDens maDensity mdisc mixedDisc hessC cxHessian`. Simplify using `only [hH]`.
+-/
 theorem openAtlas_mass {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (hΩ : Nonempty Ω)
     (Q : LocPot Ω) (F : (Fin D → ℂ) → ℝ) (hQ : ∀ x z, Q.φ x z = F z / 2) :
     maMeasure (openAtlas Ω hΩ) (fun _ => Q) Set.univ =
@@ -84,6 +98,11 @@ theorem openAtlas_mass {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (
   unfold locDens topDens maDens maDensity mdisc mixedDisc hessC cxHessian
   simp only [hH]
 
+/- English proof (translation)
+Introduce `j`. Establish `hsub : ((openAtlas Ω hΩ).chart j).target ∩ ((openAtlas Ω hΩ).chart j).symm ⁻¹' Set.univ ⊆ (Ω : Set (Fin D → ℂ))`. Introduce `y hy`. Establish `h` using `hy.1`. Express the relevant statement in the definitionally equal form `y ∈ (Ω.openPartialHomeomorphSubtypeCoe hΩ).target at h`.
+
+Simplify using `using h`. Conclude with `(hF.mono hsub).congr fun y hy => (openAtlas_symm_eventuallyEq Ω hΩ j F (hsub hy)).eq_of_nhds`.
+-/
 theorem openAtlas_smooth {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (hΩ : Nonempty Ω)
     (F : (Fin D → ℂ) → ℝ) (hF : ContDiffOn ℝ ∞ F Ω) :
     (openAtlas Ω hΩ).Smooth fun x => F x := by
@@ -97,6 +116,13 @@ theorem openAtlas_smooth {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ))
   exact (hF.mono hsub).congr fun y hy =>
     (openAtlas_symm_eventuallyEq Ω hΩ j F (hsub hy)).eq_of_nhds
 
+/- English proof (translation)
+Introduce `x j y hy w`. Establish `hyΩ : y ∈ (Ω : Set (Fin D → ℂ))`. Establish `h` using `hy.1`. Express the relevant statement in the definitionally equal form `y ∈ (Ω.openPartialHomeomorphSubtypeCoe hΩ).target at h`. Simplify using `using h`.
+
+Establish `hev : (Q.φ x ∘ ((openAtlas Ω hΩ).chart j).symm) =ᶠ[𝓝 y] fun z => (fun _ => (0 : ℝ)) z + (1 / 2 : ℝ) * F z` using `by filter_upwards [openAtlas_symm_eventuallyEq Ω hΩ j F hyΩ] with z hz`. Simplify using `only [Function.comp_apply, hQ, hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hC : ContDiffAt ℝ 2 F y` using `(hF.contDiffAt (Ω.isOpen.mem_nhds hyΩ)).of_le (WithTop.coe_le_coe.2 le_top)`. Rewrite using `[levi_congr hev, levi_add_smul (f := fun _ => (0 : ℝ)) (1 / 2) contDiffAt_const hC]`.
+
+Establish `h0 : levi (fun _ : Fin D → ℂ => (0 : ℝ)) y w = 0` using `by simp [levi]`. Establish `h1 : levi F y w = leviForm F y w` using `rfl`. Establish `h2` using `hL y hyΩ w`. Rewrite using `[h0, h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem openAtlas_isPsh {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) (hΩ : Nonempty Ω)
     (Q : LocPot Ω) (F : (Fin D → ℂ) → ℝ) (hQ : ∀ x z, Q.φ x z = F z / 2)
     (hF : ContDiffOn ℝ ∞ F Ω) (hL : ∀ z ∈ (Ω : Set (Fin D → ℂ)), ∀ w, 0 ≤ leviForm F z w) :
@@ -120,6 +146,17 @@ theorem openAtlas_isPsh {D : ℕ} (Ω : TopologicalSpace.Opens (Fin D → ℂ)) 
   rw [h0, h1]
   linarith
 
+/- English proof (translation)
+Introduce `hA D Ω φ a b hyp`. Take `⟨hΩo, hφ, ha, hb, hpa, hpb, hK⟩` from `hyp`. Break down `Set.eq_empty_or_nonempty Ω with h0 | hne` into its components or cases. Simplify using `[h0]`. Set `U : TopologicalSpace.Opens (Fin D → ℂ)` to `⟨Ω, hΩo⟩`.
+
+Establish `hU : Nonempty U` using `hne.to_subtype`. Set `P : LocPot U` to `LocPot.ofFun fun x => φ x / 2`. Establish `hsum : ∀ c : (Fin D → ℂ) → ℝ, ∀ x z, (P + LocPot.ofFun fun x : U => c x / 2).φ x z = (φ + c) z / 2`. Introduce `c x z`. Express the relevant statement in the definitionally equal form `φ z / 2 + c z / 2 = _`.
+
+Rewrite using `[Pi.add_apply, add_div]`. Establish `key` using `hA (openAtlas U hU) P (fun x => a x / 2) (fun x => b x / 2) ⟨isPotential_ofFun _ _ (openAtlas_smooth U hU (fun z => φ z / 2) (hφ.div_const 2)), openAtlas_smooth U hU (fun z => a z / 2) (ha.div_const 2), openAtlas_smooth U hU (fun z => b z / 2) (hb.div_const 2), openAtlas_isPsh U …`. Rewrite `key` using `[openAtlas_mass U hU _ _ (hsum b), openAtlas_mass U hU _ _ (hsum a)]`. Conclude with `key`. Rewrite using `[Subtype.isCompact_iff]`.
+
+Use `hK (2 * k) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `only [Set.mem_ofPred_eq] at hx`.
+
+Conclude with `⟨x.2, by linarith⟩`. Introduce and unpack `⟨hz, h⟩`. Conclude with `⟨⟨z, hz⟩, by simp only [Set.mem_ofPred_eq]; linarith, rfl⟩`.
+-/
 theorem MAComparison.of_manifold :
     GroundTheory.Heights₂.Heights.FourB.MongeAmpereComparison.Statement → MAComparison.Statement := by
   intro hA D Ω φ a b hyp

@@ -9,6 +9,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue | exact GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue | (intros; apply GlobalTheory.Mum.connectedSpace_pullback_of_finitelyGenerated_residue <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.connectedSpace_closedFibre_finitelyGenerated_ext : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (S : Scheme.{0}) (π : S ⟶ Sp R),
       IsProper π → Surjective π → Function.Bijective π.appTop.hom →
       ∀ (K : Type) [Field K] (κ : ResidueField R →+* K) (L : Subfield K) (hL : ∀ x, κ x ∈ L) (n : ℕ) (c : Fin n → K),

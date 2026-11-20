@@ -4,6 +4,15 @@ namespace ReciprocityTheory.Cheb
 
 open Module
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `Ideal.mem_span_singleton'.mp h`. Establish `hα : α = α' + algebraMap ℤ S m * β`. Rewrite using `[algebraMap_int_eq, eq_intCast, mul_comm, hβ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Int.modEq_iff_dvd, ← Int.natAbs_dvd, ← ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+
+Use `symm`. Set `b` to `Module.Free.chooseBasis ℤ S`. Rewrite using `[Algebra.norm_eq_matrix_det b, Algebra.norm_eq_matrix_det b, hα, map_add, map_mul, AlgHom.commutes]`. Establish `key : ∀ M : Matrix (Module.Free.ChooseBasisIndex ℤ S) (Module.Free.ChooseBasisIndex ℤ S) ℤ, ((Int.castRingHom (ZMod m.natAbs)) M.det : ZMod m.natAbs) = ((Int.castRingHom (ZMod m.natAbs)).mapMatrix M).det` using `fun M => RingHom.map_det _ M`. Simplify using `only [eq_intCast] at key`.
+
+Rewrite using `[key, key]`. Use `congr 1`. Establish `h0 : ((m : ZMod m.natAbs)) = 0`. Use `(ZMod.intCast_eq_intCast_iff_dvd_sub 0 m m.natAbs).mpr (by simp)` as an intermediate fact. Simplify using `using this.symm`.
+
+Establish `hM : (Int.castRingHom (ZMod m.natAbs)).mapMatrix ((algebraMap ℤ (Matrix (Free.ChooseBasisIndex ℤ S) (Free.ChooseBasisIndex ℤ S) ℤ)) m) = 0`. Rewrite using `[eq_intCast, map_intCast]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, h0, Matrix.diagonal, ← Matrix.diagonal_intCast']`. Rewrite using `[map_add, map_mul, hM, zero_mul, add_zero]`.
+-/
 theorem norm_modEq_of_sub_mem_span {S : Type*} [CommRing S] [Module.Free ℤ S] [Module.Finite ℤ S]
     (m : ℤ) {α α' : S} (h : α - α' ∈ Ideal.span {(m : S)}) :
     Algebra.norm ℤ α ≡ Algebra.norm ℤ α' [ZMOD m] := by
@@ -32,11 +41,19 @@ theorem norm_modEq_of_sub_mem_span {S : Type*} [CommRing S] [Module.Free ℤ S] 
     by_cases hij : i = j <;> simp [hij, h0, Matrix.diagonal, ← Matrix.diagonal_intCast']
   rw [map_add, map_mul, hM, zero_mul, add_zero]
 
+/- English proof (translation)
+The claim follows from `Ideal.absNorm_dvd_norm_of_mem h`.
+-/
 theorem absNorm_dvd_algebraNorm {S : Type*} [CommRing S] [IsDedekindDomain S] [Module.Free ℤ S]
     [Module.Finite ℤ S] {b : Ideal S} {α : S} (h : α ∈ b) :
     (Ideal.absNorm b : ℤ) ∣ Algebra.norm ℤ α :=
   Ideal.absNorm_dvd_norm_of_mem h
 
+/- English proof (translation)
+Establish `hm` using `norm_modEq_of_sub_mem_span _ h`. Take `⟨a, ha⟩` from `absNorm_dvd_algebraNorm hα`. Take `⟨c, hc⟩` from `absNorm_dvd_algebraNorm hα'`. Rewrite `hm`, the goal using `[ha, hc]`. Distinguish the cases in `hN : (Ideal.absNorm b : ℤ) = 0`.
+
+Rewrite using `[hN, Int.ediv_zero, Int.ediv_zero]`. Rewrite using `[Int.mul_ediv_cancel_left _ hN, Int.mul_ediv_cancel_left _ hN]`. Rewrite `hm` using `[mul_comm l]`. Conclude with `Int.ModEq.mul_left_cancel' hN hm`.
+-/
 theorem norm_div_absNorm_modEq {S : Type*} [CommRing S] [IsDedekindDomain S] [Module.Free ℤ S]
     [Module.Finite ℤ S] (l : ℤ) {b : Ideal S} {α α' : S} (hα : α ∈ b) (hα' : α' ∈ b)
     (h : α - α' ∈ Ideal.span {((l * (Ideal.absNorm b : ℤ) : ℤ) : S)}) :
@@ -51,10 +68,16 @@ theorem norm_div_absNorm_modEq {S : Type*} [CommRing S] [IsDedekindDomain S] [Mo
   rw [mul_comm l] at hm
   exact Int.ModEq.mul_left_cancel' hN hm
 
+/- English proof (translation)
+The claim follows from `norm_modEq_of_sub_mem_span m h`.
+-/
 example {E : Type*} [Field E] [NumberField E] (m : ℤ) {α α' : NumberField.RingOfIntegers E}
     (h : α - α' ∈ Ideal.span {(m : NumberField.RingOfIntegers E)}) :
     Algebra.norm ℤ α ≡ Algebra.norm ℤ α' [ZMOD m] := norm_modEq_of_sub_mem_span m h
 
+/- English proof (translation)
+The claim follows from `norm_div_absNorm_modEq l hα hα' h`.
+-/
 example {E : Type*} [Field E] [NumberField E] (l : ℤ) {b : Ideal (NumberField.RingOfIntegers E)}
     {α α' : NumberField.RingOfIntegers E} (hα : α ∈ b) (hα' : α' ∈ b)
     (h : α - α' ∈ Ideal.span {((l * (Ideal.absNorm b : ℤ) : ℤ) : NumberField.RingOfIntegers E)}) :

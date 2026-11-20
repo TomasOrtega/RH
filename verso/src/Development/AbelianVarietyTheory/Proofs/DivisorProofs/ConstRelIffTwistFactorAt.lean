@@ -19,6 +19,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 open GlobalTheory.IndefiniteRowSideFullHecke
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `HeckeFinTrivial.eq_one_of_trivial_on_finite D χ h.1 (fun y hy => ?_) x` and prove the remaining obligations. Take `⟨j, h1, h2, h3⟩` from `HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `CharLocProd.char_eq_prod_locK D j h1 h2 (PlaceIdem.exists_isPlIdem D j h1 h2 h3) χ 1 h`. Take `⟨S, k, hS, hS'⟩` from `finiteIdele_exists_local_approx D.host.E N hN (Units.map ((j : _ →+* _).comp (finPart D)).toMonoidHom y)`. Conclude with `Subtype.ext ((hprod y hy S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS').trans (Finset.prod_eq_one fun P _ => rfl))`.
+-/
 theorem eq_one_of_chrEq_one {D : D7} {χ : (AE D)ˣ →* Circle} (h : ChrEq χ 1) (x : (AE D)ˣ) : χ x = 1 := by
   refine HeckeFinTrivial.eq_one_of_trivial_on_finite D χ h.1 (fun y hy => ?_) x
   obtain ⟨j, h1, h2, h3⟩ := HostAdeleIso.exists_finiteAdele_equiv D
@@ -33,6 +36,9 @@ section Row
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem weilTwist_iff :
     WeilTwistColumns.WeilTwist R i ↔ (R.toLevCh.Is A.μ0 → R.thP_ωP → ∀ t, FrameConstantVectors.WeilTwist R i t) := Iff.rfl
 
@@ -47,6 +53,9 @@ def FrameRel (cx : T0 → GA D (Wc D i) → ℂ) : Prop :=
 def BaseIn {X : Type} (f : X → ℂ) : Prop :=
   ∃ ζ : D.what₂.LL, (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧ ∀ h, f h = D.what₂.embLL ζ
 
+/- English proof (translation)
+Take `⟨m, hm, ha⟩` from `ha`. Take `⟨n, hn, hb⟩` from `hb`. Use `⟨fun h => by simp [h, hn.ne'] at hb, m * n, mul_pos hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, ha, one_pow, inv_pow, mul_comm m, pow_mul, hb, one_pow, inv_one, one_mul]`.
+-/
 theorem root_mul_inv {K : Type} [Field K] {a b : K} (ha : ∃ m : ℕ, 0 < m ∧ a ^ m = 1) (hb : ∃ m : ℕ, 0 < m ∧ b ^ m = 1) :
     b ≠ 0 ∧ ∃ m : ℕ, 0 < m ∧ (a * b⁻¹) ^ m = 1 := by
   obtain ⟨m, hm, ha⟩ := ha
@@ -56,6 +65,9 @@ theorem root_mul_inv {K : Type} [Field K] {a b : K} (ha : ∃ m : ℕ, 0 < m ∧
 
 variable {R i}
 
+/- English proof (translation)
+Take `⟨-, h⟩` from `(hv i A.μ0).1`. Use `⟨h.theta, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `h.norm.1`. Use `h.norm.2 p hp` as an intermediate fact. Simplify using `[nrm2, h0] at this`.
+-/
 theorem vac_theta (hv : R.thP_vP) (i : Fin D.R.m) :
     IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vacP i) ∧ R.vacP i ≠ 0 := by
   obtain ⟨-, h⟩ := (hv i A.μ0).1
@@ -64,16 +76,31 @@ theorem vac_theta (hv : R.thP_vP) (i : Fin D.R.m) :
   have := h.norm.2 p hp
   simp [nrm2, h0] at this
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun h => FrameConstantVectors.const_iff_frame _ _ (vac_theta hv i).2 h z (f h)`.
+-/
 theorem constTwist_iff (hv : R.thP_vP) (t : T0) (z : ℂ) (f : GA D (Wc D i) → ℂ) :
     FrameConstantVectors.ConstTwist R i t z f ↔ ∀ h, FrameConstantVectors.frameVec (R.ωP i t) (R.vacP i) h =
       (z * f h) • FrameConstantVectors.frameVec (R.ωP i A.μ0) (R.vacP i) h :=
   forall_congr' fun h => FrameConstantVectors.const_iff_frame _ _ (vac_theta hv i).2 h z (f h)
 
+/- English proof (translation)
+The claim follows from `smul_left_injective ℂ (FrameConstantVectors.frameVec_ne_zero _ (vac_theta hv i).2 h) (((constTwist_iff hv _ z f).1 H h).symm.trans (one_smul ℂ _).symm)`.
+-/
 theorem base_eq_one (hv : R.thP_vP) {z : ℂ} {f : GA D (Wc D i) → ℂ} (H : FrameConstantVectors.ConstTwist R i A.μ0 z f)
     (h : GA D (Wc D i)) : z * f h = 1 :=
   smul_left_injective ℂ (FrameConstantVectors.frameVec_ne_zero _ (vac_theta hv i).2 h)
     (((constTwist_iff hv _ z f).1 H h).symm.trans (one_smul ℂ _).symm)
 
+/- English proof (translation)
+Establish `one : ∃ m : ℕ, 0 < m ∧ (1 : D.what₂.LL) ^ m = 1` using `⟨1, one_pos, one_pow _⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨z, hz, Hz⟩` from `H A.μ0`. Establish `hz0 : D.what₂.embLL z ≠ 0` using `(map_ne_zero _).2 (root_mul_inv one hz).1`.
+
+Establish `hb : ∀ h, cx A.μ0 h = (D.what₂.embLL z)⁻¹` using `fun h => eq_inv_of_mul_eq_one_right (base_eq_one hv Hz h)`. Use `⟨fun t => ?_, 1 * z⁻¹, (root_mul_inv one hz).2, fun h => by rw [hb, one_mul, map_inv₀]⟩` and prove the remaining obligations. Take `⟨ζ, hζ, Hζ⟩` from `H t`. Use `⟨ζ * z⁻¹, (root_mul_inv hζ hz).2, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[(constTwist_iff hv _ _ _).1 Hζ h, smul_smul, hb, map_mul, map_inv₀]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨H, z, hz, hb⟩ t`. Take `⟨ζ, hζ, Hζ⟩` from `H t`. Establish `hz0 : D.what₂.embLL z ≠ 0` using `(map_ne_zero _).2 (root_mul_inv one hz).1`.
+
+Use `⟨ζ * z⁻¹, (root_mul_inv hζ hz).2, (constTwist_iff hv _ _ _).2 fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_smul_smul₀ hz0 (FrameConstantVectors.frameVec (R.ωP i t) (R.vacP i) h), ← hb h, Hζ h, smul_smul, hb, map_mul, map_inv₀]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem constRel_iff (hv : R.thP_vP) (cx : T0 → GA D (Wc D i) → ℂ) :
     ConstRel R i cx ↔ FrameRel R i cx ∧ BaseIn (D := D) (cx A.μ0) := by
   have one : ∃ m : ℕ, 0 < m ∧ (1 : D.what₂.LL) ^ m = 1 := ⟨1, one_pos, one_pow _⟩
@@ -96,6 +123,9 @@ theorem constRel_iff (hv : R.thP_vP) (cx : T0 → GA D (Wc D i) → ℂ) :
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `t` and use `⟨1, ⟨1, one_pos, one_pow _⟩, fun h => by rw [(constTwist_iff hv _ _ _).1 (H t) h, smul_smul, ← mul_assoc, mul_comm (cx A.μ0 h), base_eq_one hv (H A.μ0) h, map_one]⟩`.
+-/
 theorem frameRel_of_free (hv : R.thP_vP) {cx : T0 → GA D (Wc D i) → ℂ} {κ : ℂ}
     (H : ∀ t, FrameConstantVectors.ConstTwist R i t κ (cx t)) : FrameRel R i cx := fun t =>
   ⟨1, ⟨1, one_pos, one_pow _⟩, fun h => by
@@ -116,9 +146,15 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : 
   {dict₂ : ∀ t, GA D (Wc D i) → Σ k, Frame ((U₂ t).X k).Ψ D.R.r}
   {xi : T0 → (Af D.host.F ⊗[D.host.F] D.host.E)ˣ →* ℂˣ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cXi_eq (t : T0) :
     WeilTwistColumns.cXi (dδ t) (U₂ t) (dict₂ t) = FrameConstantVectors.cXi (Wc D i) σ (dδ t) (U₂ t) (dict₂ t) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, _, _, a, b, c, d, e, f, g, h, k, m⟩ => ⟨⟨a, b, c, d, e, g⟩, h, f, k, m⟩, fun ⟨⟨a, b, c, d, e, g⟩, h, f, k, m⟩ => ⟨hR.lev, hR.thP.ωP, hR.thP.vP, a, b, c, d, e, f, g, h, k, m⟩⟩`.
+-/
 theorem ties_iff {Fc : Face D A} (hR : R.Char Fc) :
     WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi ↔
       (VStd D i ∧ (∀ k, ModelW (Wc D i) (rank_Wc i) (U.X k)) ∧
@@ -130,6 +166,9 @@ theorem ties_iff {Fc : Face D A} (hR : R.Char Fc) :
   ⟨fun ⟨_, _, _, a, b, c, d, e, f, g, h, k, m⟩ => ⟨⟨a, b, c, d, e, g⟩, h, f, k, m⟩,
     fun ⟨⟨a, b, c, d, e, g⟩, h, f, k, m⟩ => ⟨hR.lev, hR.thP.ωP, hR.thP.vP, a, b, c, d, e, f, g, h, k, m⟩⟩
 
+/- English proof (translation)
+Take `⟨-, hω, hv, -, -, hΨ, hth, -⟩` from `hT`. Conclude with `frame_iff_const (fun k => ⟨_, (hΨ k _).2 ⟨D.eTau.symm 1, rfl⟩⟩) hth (hω i t) (hω i t') (vac_theta hv i).1 (vac_theta hv i).2 hc hc' h a b`.
+-/
 theorem frame_iff_constOf (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi) {t t' : T0}
     {cst cst' : GA D (Wc D i) → ℂ} (hc : WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t cst)
     (hc' : WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t' cst') (h : GA D (Wc D i)) (a b : ℂ) :
@@ -139,6 +178,9 @@ theorem frame_iff_constOf (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th
   exact frame_iff_const (fun k => ⟨_, (hΨ k _).2 ⟨D.eTau.symm 1, rfl⟩⟩) hth (hω i t) (hω i t')
     (vac_theta hv i).1 (vac_theta hv i).2 hc hc' h a b
 
+/- English proof (translation)
+Take `⟨c0, hc, H⟩` from `cXi_value hC`. Take `⟨γ, -, e⟩` from `H t h`. Rewrite using `[e]`. Conclude with `mul_ne_zero (root_mul_inv hc hc).1 (Units.ne_zero _)`.
+-/
 theorem cXi_ne_zero (hC : CXiVal (Wc D i) (rank_Wc i) σ dδ U₂ dict₂ ι x₀ xi) (t : T0) (h : GA D (Wc D i)) :
     WeilTwistColumns.cXi (dδ t) (U₂ t) (dict₂ t) h ≠ 0 := by
   obtain ⟨c0, hc, H⟩ := cXi_value hC
@@ -146,6 +188,9 @@ theorem cXi_ne_zero (hC : CXiVal (Wc D i) (rank_Wc i) σ dδ U₂ dict₂ ι x�
   rw [e]
   exact mul_ne_zero (root_mul_inv hc hc).1 (Units.ne_zero _)
 
+/- English proof (translation)
+Introduce `hT c0 cb h0 hb t ct ht`. Take `⟨ζ, hζ, Hζ⟩` from `H hT t`. Use `⟨ζ, hζ, fun h => mul_left_cancel₀ (cXi_ne_zero hT.2.2.2.2.2.2.2.2.2.2.2.2 A.μ0 h) ?_⟩` and prove the remaining obligations. Rewrite using `[(frame_iff_constOf hT h0 ht h _ _).1 (Hζ h), hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twistFactorAt_of_frameRel
     (H : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi →
       FrameRel R i fun t => WeilTwistColumns.cXi (dδ t) (U₂ t) (dict₂ t)) :
@@ -156,6 +201,11 @@ theorem twistFactorAt_of_frameRel
   rw [(frame_iff_constOf hT h0 ht h _ _).1 (Hζ h), hb]
   ring
 
+/- English proof (translation)
+Introduce `t`. Take `⟨c0, h0⟩` from `hex A.μ0`. Take `⟨ct, ht⟩` from `hex t`. Establish `hne` using `cXi_ne_zero hT.2.2.2.2.2.2.2.2.2.2.2.2 A.μ0`. Take `⟨ζ, hζ, Hζ⟩` from `H hT c0 (fun h => c0 h / WeilTwistColumns.cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0) h) h0 (fun h => (div_mul_cancel₀ _ (hne h)).symm) t ct ht`.
+
+Use `⟨ζ, hζ, fun h => (frame_iff_constOf hT h0 ht h _ _).2 ?_⟩` and prove the remaining obligations. Use `hne h` as an intermediate fact. Rewrite using `[Hζ h]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem frameRel_of_twistFactorAt (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi)
     (hex : ∀ t, ∃ ct, WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t ct)
     (H : WeilTwistColumns.TwistFactorAt R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi) :
@@ -171,6 +221,11 @@ theorem frameRel_of_twistFactorAt (hT : WeilTwistColumns.Ties R i U dict ι e F 
   rw [Hζ h]
   field_simp
 
+/- English proof (translation)
+Use `⟨fun ⟨z, _, hz⟩ h => ⟨z, hz h⟩, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨c0, ⟨m, hm, hc⟩, H⟩` from `cXi_value hC`. Establish `hb : ∀ h, WeilTwistColumns.cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0) h = c0` using `fun h => by`. Take `⟨γ, -, e⟩` from `H A.μ0 h`. Take `⟨x, hx⟩` from `RecDict.exists_isDetRoot D (Wc D i) (γ * h)`.
+
+Rewrite using `[e, hX _ x hx, eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi A.μ0) x, Circle.coe_one, mul_one]`. Take `⟨a, ha⟩` from `hv 1`. Rewrite `ha` using `[hb]`. Conclude with `⟨a, ⟨m, hm, D.what₂.embLL.injective (by rw [map_pow, ← ha, hc, map_one])⟩, fun h => (hb h).trans ha⟩`.
+-/
 theorem baseIn_iff (hL : R.toLevCh.Is A.μ0) (hX : XiIs R i A.μ0 (xi A.μ0))
     (hC : CXiVal (Wc D i) (rank_Wc i) σ dδ U₂ dict₂ ι x₀ xi) :
     BaseIn (D := D) (WeilTwistColumns.cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0)) ↔
@@ -185,6 +240,9 @@ theorem baseIn_iff (hL : R.toLevCh.Is A.μ0) (hX : XiIs R i A.μ0 (xi A.μ0))
   rw [hb] at ha
   exact ⟨a, ⟨m, hm, D.what₂.embLL.injective (by rw [map_pow, ← ha, hc, map_one])⟩, fun h => (hb h).trans ha⟩
 
+/- English proof (translation)
+The claim follows from `(constRel_iff hT.2.2.1 _).trans (and_congr ⟨fun h => twistFactorAt_of_frameRel fun _ => h, frameRel_of_twistFactorAt hT hex⟩ (baseIn_iff hT.1 (hT.2.2.2.2.2.2.2.2.2.2.2.1 A.μ0) hT.2.2.2.2.2.2.2.2.2.2.2.2))`.
+-/
 theorem constRel_iff_twistFactorAt (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi)
     (hex : ∀ t, ∃ ct, WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t ct) :
     ConstRel R i (fun t => FrameConstantVectors.cXi (Wc D i) σ (dδ t) (U₂ t) (dict₂ t)) ↔
@@ -194,6 +252,9 @@ theorem constRel_iff_twistFactorAt (hT : WeilTwistColumns.Ties R i U dict ι e F
     ⟨fun h => twistFactorAt_of_frameRel fun _ => h, frameRel_of_twistFactorAt hT hex⟩
     (baseIn_iff hT.1 (hT.2.2.2.2.2.2.2.2.2.2.2.1 A.μ0) hT.2.2.2.2.2.2.2.2.2.2.2.2))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(constRel_iff_twistFactorAt hT hex).trans (and_iff_left fun h => ⟨1, (h1 h).trans (map_one _).symm⟩), fun H => H.norm, fun H _ c0 cb h0 hb t ct ht => by obtain rfl : c0 = cb := funext fun h => by rw [hb, h1, mul_one] exact H hT h1 c0 h0 t ct ht⟩`.
+-/
 theorem constRel_iff_norm (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi)
     (hex : ∀ t, ∃ ct, WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t ct)
     (h1 : ∀ h, WeilTwistColumns.cXi (dδ A.μ0) (U₂ A.μ0) (dict₂ A.μ0) h = 1) :
@@ -206,6 +267,9 @@ theorem constRel_iff_norm (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th
       obtain rfl : c0 = cb := funext fun h => by rw [hb, h1, mul_one]
       exact H hT h1 c0 h0 t ct ht⟩
 
+/- English proof (translation)
+The claim follows from `twistFactorAt_of_frameRel fun ⟨_, _, hvP, _, _, _, _, _, a, _, b, d, f⟩ => ((constRel_iff hvP _).1 (H D G Pl0 T0 A Ks R Fc i _ Dw l Xo c σ jL _ (rank_Wc i) dδ U₂ dict₂ ι x₀ xi hR hj b a hI d f hv)).1`.
+-/
 theorem twistFactorAt_of_closed (H : FrameConstantVectors.TwistFactor) {Fc : Face D A} (hR : R.Char Fc) (jL : D.what₂.LL →+* c.F)
     (hj : σ.comp jL = D.what₂.embLL) (hI : LatIsom (Wc D i) Dw.EF ι)
     (hv : ∀ t h, ∃ a : D.what₂.LL, FrameConstantVectors.cXi (Wc D i) σ (dδ t) (U₂ t) (dict₂ t) h = D.what₂.embLL a) :
@@ -213,12 +277,18 @@ theorem twistFactorAt_of_closed (H : FrameConstantVectors.TwistFactor) {Fc : Fac
   twistFactorAt_of_frameRel fun ⟨_, _, hvP, _, _, _, _, _, a, _, b, d, f⟩ => ((constRel_iff hvP _).1
     (H D G Pl0 T0 A Ks R Fc i _ Dw l Xo c σ jL _ (rank_Wc i) dδ U₂ dict₂ ι x₀ xi hR hj b a hI d f hv)).1
 
+/- English proof (translation)
+Introduce `i H' Dw l Xo c σ _ _ ι _ _ _ _ _ _ x₀ dδ U₂ dict₂ xi` and use `twistFactorAt_of_frameRel fun ⟨_, _, hvP, _, _, _, _, _, _, _, _, d, f⟩ => frameRel_of_free hvP (H D G Pl0 T0 A Ks R Fc i H' Dw l Xo c σ _ (rank_Wc i) dδ U₂ dict₂ ι x₀ xi hR d f).choose_spec.2`.
+-/
 theorem twistFactor_of_free (H : FrameConstantVectors.TwistFactorFree) {Fc : Face D A} (hR : R.Char Fc) : WeilTwistColumns.TwistFactor R :=
   fun i H' Dw l Xo c σ _ _ ι _ _ _ _ _ _ x₀ dδ U₂ dict₂ xi =>
     twistFactorAt_of_frameRel fun ⟨_, _, hvP, _, _, _, _, _, _, _, _, d, f⟩ =>
       frameRel_of_free hvP
         (H D G Pl0 T0 A Ks R Fc i H' Dw l Xo c σ _ (rank_Wc i) dδ U₂ dict₂ ι x₀ xi hR d f).choose_spec.2
 
+/- English proof (translation)
+The claim follows from `(constRel_iff_twistFactorAt hT hex).2 ⟨H i _ Dw l Xo c σ U dict ι g e F ik φ th x₀ dδ U₂ dict₂ xi, hv A.μ0⟩`.
+-/
 theorem constRel_of_twistFactor (H : WeilTwistColumns.TwistFactor R)
     (hT : WeilTwistColumns.Ties R i U dict ι e F ik φ th x₀ dδ U₂ dict₂ xi)
     (hex : ∀ t, ∃ ct, WeilTwistColumns.IsConstOf R i U dict ι e F ik φ th x₀ t ct)

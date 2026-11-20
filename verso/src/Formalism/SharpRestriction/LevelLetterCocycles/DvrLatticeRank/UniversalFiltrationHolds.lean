@@ -10,6 +10,9 @@ namespace Formalism.MainNotions.N.Ln34.UniversalFiltration
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.N.Ln34 Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules PowerSeries
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker Phi`. Rewrite `h1` using `[hI, hdim, Module.finrank_fin_fun]`. Establish `h0 : finrank LL ↥(LinearMap.ker Phi) = 0` using `by omega`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.finrank_eq_zero.1 h0`.
+-/
 theorem inj_of_range {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X] {r : ℕ}
     (Phi : (Fin r → LL) →ₗ[LL] X) (I : Submodule LL X) (hI : LinearMap.range Phi = I)
     (hdim : finrank LL ↥I = r) : Function.Injective Phi := by
@@ -19,6 +22,9 @@ theorem inj_of_range {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X] {r
   rw [← LinearMap.ker_eq_bot]
   exact Submodule.finrank_eq_zero.1 h0
 
+/- English proof (translation)
+Rewrite using `[← Submodule.map_comap_eq]`. Conclude with `(Submodule.equivMapOfInjective _ hinj _).finrank_eq`.
+-/
 theorem comap_finrank {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X] {r : ℕ}
     (Phi : (Fin r → LL) →ₗ[LL] X) (hinj : Function.Injective Phi) (S : Submodule LL X) :
     finrank LL ↥(S.comap Phi) = finrank LL ↥(LinearMap.range Phi ⊓ S) := by
@@ -37,6 +43,27 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Establish `: ∀ a, FiniteDimensional LL ↥(FildR PD ρ τ a)` using `fun a => Submodule.finiteDimensional_of_le (inf_le_left : FildR PD ρ τ a ≤ DdRE PD ρ τ)`. Take `⟨hi, hhi⟩` from `fr_fildR_hi PD ρ τ`. Take `⟨lo, hlo⟩` from `fr_fildR_lo PD ρ τ`. Establish `hmult0 : ∀ a, a ∉ deep upτ bτ S → a ∉ Set.Icc (-(η : ℤ)) η → multV PD ρ τ a = 0` using `fun a h1 h2 => fr_multV_of_not_jump PD ρ τ a (fun hJ => (hj a hJ).elim h1 h2)`. Use `⟨fun hup => ⟨?_, ?_⟩, fun hdn => ?_⟩` and prove the remaining obligations.
+
+Introduce `i hi' d hd`. Rewrite `hd` using `[hFC]`. Establish `htop : FildR PD ρ τ ((bτ : ℤ) + S + 1) = ⊥`. Establish `hsum` using `fr_sum_multV PD ρ τ ((bτ : ℤ) + S + 1) (max hi ((bτ : ℤ) + S + 1)) (le_max_right _ _)`. Establish `h0 : ∑ a ∈ Finset.Ico ((bτ : ℤ) + S + 1) (max hi ((bτ : ℤ) + S + 1)), multV PD ρ τ a = 0` using `Finset.sum_eq_zero fun a ha => by`.
+
+Rewrite `ha` using `[Finset.mem_Ico]`. Use `hmult0 a (fun h => ?_) (fun h => ?_)` and prove the remaining obligations. Rewrite `h` using `[hup]`. Simplify using `only [deep, if_true, Set.mem_Icc] at h`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h` using `[Set.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite `hsum` using `[hhi _ (le_max_left _ _), finrank_bot, h0]`. Conclude with `Submodule.finrank_eq_zero.1 (by omega)`. Establish `h1 : FildR PD ρ τ (-i) ⊔ Oth ≤ Oth` using `sup_le (le_trans (fr_fildR_anti PD ρ τ (by omega)) (htop ▸ bot_le)) le_rfl`.
+
+Establish `h0` using `Submodule.disjoint_def.1 hIO _ ⟨d, rfl⟩ (h1 hd)`. Conclude with `hinj (by rw [h0, map_zero])`. Rewrite using `[hFC, hcomap]`. Establish `hsum` using `fr_sum_multV PD ρ τ (min lo (-(η : ℤ))) bτ (by omega)`. Establish `hsub : ∑ a ∈ Finset.Icc (-(η : ℤ)) η, multV PD ρ τ a = ∑ a ∈ Finset.Ico (min lo (-(η : ℤ))) bτ, multV PD ρ τ a`.
+
+Use `Finset.sum_subset (fun a ha => ?_) (fun a ha hna => hmult0 a (fun h => ?_) (fun h => ?_))` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_Icc]`. Rewrite using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[hup]`.
+
+Simplify using `only [deep, if_true, Set.mem_Icc] at h`. Rewrite `ha` using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Conclude with `hna (by rw [Finset.mem_Icc]; exact h)`. Rewrite `hsum` using `[hlo _ (min_le_left _ _), hdR']`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hFC, hcomap]`. Establish `hsum` using `fr_sum_multV PD ρ τ (-(bτ : ℤ) + 1) (max hi ((η : ℤ) + 1)) (by omega)`. Establish `hsub : ∑ a ∈ Finset.Icc (-(η : ℤ)) η, multV PD ρ τ a = ∑ a ∈ Finset.Ico (-(bτ : ℤ) + 1) (max hi ((η : ℤ) + 1)), multV PD ρ τ a`. Use `Finset.sum_subset (fun a ha => ?_) (fun a ha hna => hmult0 a (fun h => ?_) (fun h => ?_))` and prove the remaining obligations.
+
+Rewrite `ha` using `[Finset.mem_Icc]`. Rewrite using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[hdn]`. Simplify using `only [deep, Bool.false_eq_true, if_false, Set.mem_Icc] at h`.
+
+Rewrite `ha` using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Conclude with `hna (by rw [Finset.mem_Icc]; exact h)`. Rewrite `hsum` using `[hhi _ (le_max_left _ _), finrank_bot]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem count (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] {r : ℕ}
     (Phi : (Fin r → LL) →ₗ[LL] V ⊗[Qp] BdR) (hinj : Function.Injective Phi)
     (Oth : Submodule LL (V ⊗[Qp] BdR)) (hIO : Disjoint (LinearMap.range Phi) Oth)
@@ -110,6 +137,13 @@ theorem count (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] {
 
 end Count
 
+/- English proof (translation)
+Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Take `⟨τs, hIs, -⟩` from `hpt`. Establish `hz1 : (D.loc l).ζQ 1 ^ l = 1`. Rewrite using `[(D.loc l).ζQ_succ 0, (D.loc l).ζQ_zero]`. Establish `hmem : (D.loc l).ζQ 1 ∈ Ks K 1` using `le_sup_right (a := K0 K) (IntermediateField.subset_adjoin _ _ (by rw [pow_one]; exact hz1))`.
+
+Establish `hy` using `hIs.2 ⟨_, hmem⟩ rfl`. Establish `hyl : (⟨_, hmem⟩ : ↥(Ks K 1)) ^ l = 1` using `Subtype.ext (by simpa using hz1)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ← hy, ← map_pow, hyl, map_one]`. Introduce `h1`.
+
+Rewrite `h1` using `[← hy]`. Establish `: (⟨_, hmem⟩ : ↥(Ks K 1)) = 1` using `τs.toRingHom.injective (by rw [map_one]; exact h1)`. Conclude with `(D.loc l).ζQ_one (congrArg Subtype.val this)`.
+-/
 theorem pt_root (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL)
     (c : ZMod (finrank ℚ_[l] ↥(K0 K))) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (ζ : ↥LL.1)
     (hpt : Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG c ζ τ) : ζ ^ ((D.loc l).PD K).p = 1 ∧ ζ ≠ 1 := by
@@ -128,6 +162,13 @@ theorem pt_root (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (K LL : FinE
     have : (⟨_, hmem⟩ : ↥(Ks K 1)) = 1 := τs.toRingHom.injective (by rw [map_one]; exact h1)
     exact (D.loc l).ζQ_one (congrArg Subtype.val this)
 
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Take `⟨-, -, -, -, ⟨w2, hw2⟩, ⟨w3, hw3⟩, -, -⟩` from `hp9`. Establish `hQ : ((HW l).W K 1 LL hG).Q = (w2 : LetA _ _) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π'` using `by rw [ModelFPf.Q_eq_q ((HW l).W K 1 LL hG) hs]; exact hw2`. Establish `hE0` using `ModelFPf.levE_zero ((HW l).W K 1 LL hG) (Formalism.MainNotions.DeltaInvariantLattices.Eat E π') c hs (Units.inv_mul w2) hQ ζ hζ.1 hζ.2`. Establish `hs1 : 1 ≤ sK l K`.
+
+Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`. Establish `he : 0 < eK K` using `Nat.pos_of_ne_zero fun h0 => by`. Rewrite `hd` using `[h0, zero_dvd_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Nat.div_pos (Nat.le_of_dvd (by omega) hd) he`. Rewrite using `[hw3, map_mul, map_mul, map_pow, map_mul, map_mul, map_pow, hE0, zero_pow (by omega), mul_zero]`.
+-/
 theorem phi_zero (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL)
     (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K))) (E : ZMod (finrank ℚ_[l] ↥(K0 K)) → Polynomial ↥(OL LL))
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations ((HW l).W K 1 LL hG) (eK K) (sK l K) π' E) (c : ZMod (finrank ℚ_[l] ↥(K0 K))) (ζ : ↥LL.1)
@@ -146,6 +187,13 @@ theorem phi_zero (D : D7) (HW : HWOf D.loc) {l : ℕ} [Fact l.Prime] (hl : l ≠
   rw [hw3, map_mul, map_mul, map_pow, map_mul, map_mul, map_pow, hE0, zero_pow (by omega), mul_zero]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 ((HW l).W K 1 LL hG) (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) T` using `(hA l K 1 LL hG).2.2.2.1 T hT`. Establish `hζ` using `pt_root D HW K LL hG c τ ζ hpt`. Take `⟨hc0, hc1⟩` from `ModelFPf.levQ_pt ((HW l).W K 1 LL hG) hs c ζ hζ.1 hζ.2`.
+
+Establish `hφπ` using `phi_zero D HW hl K LL hG π' E hp9 c ζ hζ`. Take `⟨-, ⟨-, -, -, ⟨r0, b, hbΔ, hbu, -⟩, -⟩, -⟩` from `(hA l K 1 LL hG).2.2.2.2.2.2.2.2.1 T hT hs (by rw [hp]; exact hl)`. Establish `hrN : ∀ k, rep k ∈ ((HW l).W K 1 LL hG).N T` using `fun k => ((mem_NcS ((HW l).W K 1 LL hG) T _ _).1 (hrep k)).1`. Use `le_antisymm ?_ (span_le_range ((HW l).W K 1 LL hG) T c ζ hp4 hpt hc0 hc1 π' hφπ b hbΔ hbu bL rep hrep hbrep)` and prove the remaining obligations. Introduce and unpack `_ ⟨d, rfl⟩`.
+
+Rewrite using `[UniversalLiftFrames.Phi_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (ModelFPf.valAt_mem ((HW l).W K 1 LL hG) T c hp4 hpt (hrN k))`.
+-/
 theorem range_eq (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)
@@ -175,6 +223,9 @@ theorem range_eq (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : Cm
     Submodule.smul_mem _ _ (ModelFPf.valAt_mem ((HW l).W K 1 LL hG) T c hp4 hpt (hrN k))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hr : r = finrank ↥LL.1 T.V` using `r_eq D HW F Cm hA hl K LL hG π' E hp9 T hT c r bL`. Establish `hDiR` using `hDi l K LL hG T hT c`. Establish `hdRR` using `hdR l K LL ⟨1, hG⟩ T hT τ`. Conclude with `⟨Module.finite_of_finrank_pos (by omega), Module.finite_of_finrank_pos (by omega), by omega, by omega⟩`.
+-/
 theorem setup_fd (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)
@@ -195,6 +246,9 @@ theorem setup_fd (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : Cm
     by omega⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨-, -, hI, -⟩` from `setup_fd D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep hrpos`. Conclude with `inj_of_range _ _ (range_eq D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep) hI`.
+-/
 theorem setup_inj (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)
@@ -210,6 +264,11 @@ theorem setup_inj (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : C
   exact inj_of_range _ _ (range_eq D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep) hI
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨h1, h2, hI, hD⟩` from `setup_fd D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep hrpos`. Establish `hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 ((HW l).W K 1 LL hG) (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) T` using `(hA l K 1 LL hG).2.2.2.1 T hT`. Establish `: FiniteDimensional ℚ_[l] ↥K.1` using `((D.loc l).PD K).finK`. Establish `hDO` using `oth_disj ((D.loc l).PD K) T.ρ τ`. Establish `hDI` using `dR_le ((HW l).W K 1 LL hG) T c hp4 hpt`.
+
+Take `⟨hIO, hFil⟩` from `match_fil _ _ _ hDO (by rw [hI, hD]) hDI`. Conclude with `⟨hIO, fun a => hFil _ inf_le_left⟩`.
+-/
 theorem setup_match (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)
@@ -230,6 +289,9 @@ theorem setup_match (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm :
   obtain ⟨hIO, hFil⟩ := match_fil _ _ _ hDO (by rw [hI, hD]) hDI
   exact ⟨hIO, fun a => hFil _ inf_le_left⟩
 
+/- English proof (translation)
+Rewrite using `[comap_finrank Phi hinj, hre]`. Conclude with `h`.
+-/
 theorem comap_count {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X] {r : ℕ}
     (Phi : (Fin r → LL) →ₗ[LL] X) (hinj : Function.Injective Phi) (I : Submodule LL X)
     (hre : LinearMap.range Phi = I) (S : Submodule LL X) {k : ℕ} (h : finrank LL ↥(I ⊓ S) = k) :
@@ -237,6 +299,11 @@ theorem comap_count {LL X : Type*} [Field LL] [AddCommGroup X] [Module LL X] {r 
   rw [comap_finrank Phi hinj, hre]
   exact h
 
+/- English proof (translation)
+Introduce `a hJ`. Break down `hj a hJ with h | h` into its components or cases. Simplify using `only [deep, Bool.false_eq_true, if_false, Set.mem_Icc] at h`. Rewrite using `[Set.mem_Icc]`. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h`, the goal using `[Set.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jumps_sub {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -258,6 +325,11 @@ theorem jumps_sub {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀
     omega
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hp4 : Formalism.MainNotions.DeltaInvariantLattices.p4 ((HW l).W K 1 LL hG) (Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG) T` using `(hA l K 1 LL hG).2.2.2.1 T hT`. Establish `hre` using `range_eq D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep`. Establish `hmem : (UniversalLiftFrames.Phi ((HW l).W K 1 LL hG) T c ζ rep) d ∈ (Formalism.MainNotions.DeltaInvariantLattices.ιDi ((HW l).W K 1 LL hG) T c)` using `hre ▸ LinearMap.mem_range_self _ d`. Use `ModelFPf.ιDi_le_top ((HW l).W K 1 LL hG) T (bτ + S) c hp4 hpt hjm hmem` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem down_d (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)
@@ -280,6 +352,13 @@ theorem down_d (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpO
   ring
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with hr0 | hrpos` into its components or cases. Substitute `hr0` using the available equality. Use `⟨fun _ => ⟨fun i _ d _ => funext fun k => k.elim0, by omega⟩, fun _ => ⟨?_, fun d => ?_⟩⟩` and prove the remaining obligations. Conclude with `(Submodule.finrank_le _).trans (by simp)`. Rewrite using `[show d = 0 from funext fun k => k.elim0, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Take `⟨-, hfd, -, hD⟩` from `setup_fd D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep hrpos`. Establish `hinj` using `setup_inj D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep hrpos`. Take `⟨hIO, hFil⟩` from `setup_match D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep hrpos`. Establish `hre` using `range_eq D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep`.
+
+Take `⟨cu, cd⟩` from `count ((D.loc l).PD K) T.ρ τ (UniversalLiftFrames.Phi ((HW l).W K 1 LL hG) T c ζ rep) hinj (⨆ (τ' : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (_ : τ' ≠ τ), DdRE ((D.loc l).PD K) T.ρ τ') (hre ▸ hIO) (fun a => comap_count (UniversalLiftFrames.Phi ((HW l).W K 1 LL hG) T c ζ rep) hinj (Formalism.MainNot …`. Use `⟨cu, fun hdn => ⟨cd hdn, ?_⟩⟩` and prove the remaining obligations. Substitute `hdn` using the available equality. Conclude with `down_d D HW F Cm hA hdR hDi hl K LL hG π' E hp9 T hT c τ ζ hpt r bL rep hrep hbrep S bτ (jumps_sub ((D.loc l).PD K) T.ρ τ S η bτ hj hηb)`.
+-/
 theorem universal_filtration_holds (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hA : adm1 D HW F Cm) (hdR : DdRFull D) (hDi : DiRank D HW F Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL)

@@ -20,6 +20,15 @@ def GDet.IsTwist {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) 
         map_one' := by simp [← MonoidAlgebra.one_def]
         map_mul' := fun g h => by simp [MonoidAlgebra.single_mul_single] } y)
 
+/- English proof (translation)
+Establish `hsep : TotallySeparatedSpace (G ⧸ N)`. Rewrite using `[totallySeparatedSpace_iff_exists_isClopen]`. Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `_ a`.
+
+Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `_ b`. Establish `hcl : IsClosed ((fun g : G => b⁻¹ * g) ⁻¹' (N : Set G))` using `hN.preimage (continuous_const.mul continuous_id)`. Establish `ha : a ∈ ((fun g : G => b⁻¹ * g) ⁻¹' (N : Set G))ᶜ`. Introduce `h`.
+
+Conclude with `hxy (QuotientGroup.eq.2 h).symm`. Take `⟨C, hC, haC, hCsub⟩` from `compact_exists_isClopen_in_isOpen hcl.isOpen_compl ha`. Use `⟨QuotientGroup.mk '' C, ⟨?_, QuotientGroup.isOpenMap_coe _ hC.isOpen⟩, ⟨a, haC, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← (QuotientGroup.isQuotientMap_mk N).isClosed_preimage, QuotientGroup.preimage_image_mk_eq_mul]`. Conclude with `hN.mul_left_of_isCompact hC.isClosed.isCompact`.
+
+Introduce and unpack `⟨c, hc, hcb⟩`. Conclude with `hCsub hc (QuotientGroup.eq.1 hcb.symm)`. Use `infer_instance`.
+-/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
     TotallyDisconnectedSpace (G ⧸ N) := by
@@ -116,6 +125,9 @@ structure Lev where
   hε : ε.comp (toGS Ω S') = cycZ (Lp L) Ω l
   ε_cont : Continuous ε
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `s.hc`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Simplify using `[hj]`.
+-/
 theorem c_sq : s.c * s.c = 1 := by
   obtain ⟨j, hj⟩ := s.hc
   ext x
@@ -129,12 +141,18 @@ variable {s} (V : s.Lev)
 def pr : G L Ω →* V.η.ker :=
   ((toGS Ω V.S').comp (resP L Ω)).codRestrict _ fun g => (V.hη _).2 ⟨g, rfl⟩
 
+/- English proof (translation)
+The claim follows from `((continuous_toGS Ω _).comp h).subtype_mk _`.
+-/
 theorem pr_cont (h : Continuous (resP L Ω)) : Continuous V.pr := ((continuous_toGS Ω _).comp h).subtype_mk _
 
 end Lev
 
 end HidaSetting
 
+/- English proof (translation)
+The claim follows from `Af.continuous_restrictScalarsHom _ _ _`.
+-/
 theorem continuous_resP : Continuous (resP L Ω) := Af.continuous_restrictScalarsHom _ _ _
 
 def HidaSetting.Lev.frame {s : HidaSetting l L Ω} (V : s.Lev) : GFrame l where

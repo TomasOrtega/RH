@@ -14,6 +14,11 @@ namespace GlobalTheory.HatNF
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.Fr Formalism.REAL Formalism.QuantumDeterminants MeasureTheory GlobalTheory.HatNF
 
+/- English proof (translation)
+Take `⟨h1, -, hmul⟩` from `GlobalTheory.T.polyLift_one_mono_mul Wp Wq P Bs`. Proceed by induction on `H with`. Consider the case `nil => simpa using h1`. Consider the case `cons a H ih`. Use `hmul _ _ _ _ _ _ (hH a (by simp)) (ih fun h hh => hH h (by simp [hh]))` as an intermediate fact.
+
+Rewrite using `[List.prod_cons, List.length_cons, Nat.succ_mul, Nat.succ_mul, add_comm _ o, add_comm _ κ]`. Conclude with `this`.
+-/
 theorem polyLift_listProd {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)
     (Bs : B.RealPlaceData P.k P.r Wp Wq) (o κ : ℕ) (H : List (RA P Bs)) (hH : ∀ h ∈ H, PolyLift P Bs o κ h) :
@@ -26,6 +31,25 @@ theorem polyLift_listProd {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
     rw [List.prod_cons, List.length_cons, Nat.succ_mul, Nat.succ_mul, add_comm _ o, add_comm _ κ]
     exact this
 
+/- English proof (translation)
+Introduce `a ha Wp Wq _ _ _ _ _ _ P p w hw`. Take `⟨X, μ, L, st, hD, hL⟩` from `p.hΘ`. Take `⟨d, hd⟩` from `Formalism.FourierDecayAlt.P.normal_form_actual Wp Wq P _ _ _ _ p.hP X`. Establish `hNF : IsNF (Bs` using `p.T.base) X d := hd`. Establish `hok` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of P _ _ _ _ st p.l0 hD.1.1 p.hl.1 p.hl.2.1 hD.2.2.2.2.1 hD.2.2.2.2.2.1 w hw.1 hw.2`.
+
+Establish `hl : (D.positionted w).length = w.length` using `by simp [D.positionted]`. Take `⟨C, J, Ts, hC, hTs, hB⟩` from `GlobalTheory.T.wordOperator_radial_pointwise_bound Wp Wq P p.T.base X μ L st p.l0 d hD hNF (Fin w.length) _ (a P.r) (ha Wp Wq P p.T.base X μ L st p.l0 d hD hNF) (D.positionted w) hok.1`. Rewrite `hTs`, `hB` using `[hl]`. Establish `hlift : ∀ H : List (RA P p.T.base), ∃ Θ : B.DiffOp P.k P.r Wp Wq, H ∈ Ts → Formalism.FourierDecayAlt.P.CutMP.PolyOp (w.length * (2 * P.r + P.k + 1)) (w.length * (8 * (P.r + 1) * (2 * P.r + P.k + 1))) Θ ∧ TL.RadIs P p.T.base Θ H.prod.1`. Introduce `H`.
+
+Distinguish the cases in `hH : H ∈ Ts`. Take `⟨Θ, hΘ⟩` from `polyLift_listProd P p.T.base _ _ H (hTs H hH).2`. Rewrite `hΘ` using `[(hTs H hH).1]`. Conclude with `⟨Θ, fun _ => hΘ⟩`. Take `⟨Θ, -⟩` from `(GlobalTheory.T.polyLift_one_mono_mul Wp Wq P p.T.base).1`.
+
+Conclude with `⟨Θ, fun h => absurd h hH⟩`. Use `choose lf hlf using hlift`. Use `⟨C, J, Ts.map lf, hC, ?_, ?_⟩` and prove the remaining obligations. Introduce `Θ hΘ`. Take `⟨H, hH, rfl⟩` from `List.mem_map.1 hΘ`.
+
+Conclude with `(hlf H hH).1`. Introduce and unpack `φ f ⟨hφ, hf⟩ e c hc hG`. Take `⟨hm1, hm2⟩` from `GlobalTheory.T.radial_picture_smul_cutoff_G_multiplier Wp Wq P p.T.base φ f`. Take `⟨hsl, hcpt⟩` from `hm1 hφ`. Take `⟨W, hW⟩` from `mulG_exists Wp Wq P p.T.base X μ L st p.l0 d hD hNF φ hsl`.
+
+Take `⟨⟨ε, hε, hN⟩, -⟩` from `Formalism.FourierDecayAlt.P.compact_support_facts P.k P.r Wp Wq p.T.base f hf`. Take `⟨Φ, hΦ⟩` from `Formalism.FourierDecayAlt.P5.radJFExists Wp Wq P _ _ _ _ p.T.base f p.hP rfl rfl rfl rfl ⟨hN.2.1, ε, hε, hN.2.2⟩`. Establish `hΦ' : Top.IsRadOf P p.T.base Φ f` using `hΦ`. Establish `hrad` using `hL w hw _ (hcpt hf) _ (hm2 W Φ hW hΦ') e`. Rewrite `hrad` using `[TL.act_e1Vec]`.
+
+Take `⟨x, hx, hg, hdd, lam, hlam, hV⟩` from `GlobalTheory.T.bigCellVector_norm_eq_radialValue_norm Wp Wq P p c hc hG`. Establish `hb` using `hB φ W hsl hW Φ e x hx`. Rewrite `hb` using `[hg, hdd]`. Establish `hs : ((Ts.map lf).map fun Θ => ‖B.hsVec (p.V (B.opApply Θ f) (TBB.bigPt P.r c))‖).sum = lam * (Ts.map fun H => nv (H.prod.1 Φ) x).sum`. Rewrite using `[List.map_map, ← List.sum_map_mul_left]`.
+
+Use `congr 1`. Use `List.map_congr_left fun H hH => ?_` and prove the remaining obligations. Conclude with `hV _ _ ((hlf H hH).2 f hf Φ hΦ')`. Rewrite using `[hV _ _ hrad, hs]`. Use `mul_le_mul_of_nonneg_left hb hlam.le` as an intermediate fact.
+
+Use `le_trans (le_of_eq rfl) (this.trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wordBound_cptCoef : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (w : List C.Letter), KB.CutWord P p.l0 w → ∃ (C : ℝ) (J : ℕ) (Θs : List (B.DiffOp P.k P.r Wp Wq)), WordBound p (a P.r) w C J Θs (fun φ f => ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ ∧ KB.CptCoef p.T.base f) := by
   intro a ha Wp Wq _ _ _ _ _ _ P p w hw
   obtain ⟨X, μ, L, st, hD, hL⟩ := p.hΘ

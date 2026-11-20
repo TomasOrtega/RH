@@ -8,6 +8,25 @@ open Formalism.UG (cT bc)
 
 namespace GlobalTheory.SphEis
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ N Λ _ ν DN b κ V Y hν hD hV hconj hY hcov`. Establish `hVm : MeasurableSet V` using `hV.isClosed.measurableSet`. Establish `hconjm : Measurable fun u : N => b * (u : G) * b⁻¹` using `(measurable_const.mul measurable_subtype_coe).mul measurable_const`. Establish `hS₀m : MeasurableSet {u : N | b * (u : G) * b⁻¹ ∈ V}` using `hconjm hVm`. Establish `hVNm : MeasurableSet {u : N | (u : G) ∈ V}` using `measurable_subtype_coe hVm`.
+
+Establish `hS₀ : ν {u : N | b * (u : G) * b⁻¹ ∈ V} = κ * ν {u : N | (u : G) ∈ V}`. Establish `h` using `hconj (V.indicator 1) (measurable_one.indicator hVm)`. Establish `e1 : (fun u : N => V.indicator (1 : G → ℝ≥0∞) (b * u * b⁻¹)) = {u : N | b * (u : G) * b⁻¹ ∈ V}.indicator 1`. Use extensionality with `u`. Simplify using `[Set.indicator]`.
+
+Establish `e2 : (fun u : N => V.indicator (1 : G → ℝ≥0∞) u) = {u : N | (u : G) ∈ V}.indicator 1`. Use extensionality with `u`. Simplify using `[Set.indicator]`. Rewrite `h` using `[e1, e2, lintegral_indicator hS₀m, lintegral_indicator hVNm]`. Simplify using `using h`.
+
+Establish `hΛN : Countable (Λ.subgroupOf N)`. Use `Function.Injective.countable (f := fun x : Λ.subgroupOf N => (⟨(x : N), x.2⟩ : Λ)) ?_` and prove the remaining obligations. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using congrArg (fun z : Λ => (z : G)) h`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (Λ.subgroupOf N)` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (Λ.subgroupOf N) ν` as an intermediate fact. Set `T : G → Set N` to `fun y => {v : N | b * (y⁻¹ * (v : G)) * b⁻¹ ∈ V}`. Establish `hle : ν DN ≤ ν (⋃ y ∈ Y, T y)`.
+
+Use `GlobalTheory.measure_le_of_isFundamentalDomain_of_ae_covers hD (.of_forall fun u => ?_)` and prove the remaining obligations. Take `⟨γ, hγΛ, hγN, y, hy, w, hw, heq⟩` from `hcov u u.2`. Use `⟨⟨⟨γ, hγN⟩, (Subgroup.mem_subgroupOf).2 hγΛ⟩, Set.mem_biUnion hy ?_⟩` and prove the remaining obligations. Use `show b * (y⁻¹ * (γ * (u : G))) * b⁻¹ ∈ V`. Rewrite using `[heq]`.
+
+Use `hw using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hT : ∀ y ∈ Y, ν (T y) = κ * ν {u : N | (u : G) ∈ V}`. Introduce `y hy`. Establish `hyN : y⁻¹ ∈ N` using `N.inv_mem (hY y hy)`.
+
+Establish `: T y = (fun v : N => (⟨y⁻¹, hyN⟩ : N) * v) ⁻¹' {u : N | b * (u : G) * b⁻¹ ∈ V}`. Use extensionality with `v`. Simplify using `[T, mul_assoc]`. Rewrite using `[this, measure_preimage_mul, hS₀]`. Use `hle.trans ((measure_biUnion_finset_le _ _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_congr rfl hT, Finset.sum_const, nsmul_eq_mul]`.
+-/
 theorem measure_fund_le_card_mul_of_cover : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N Λ : Subgroup G) [Countable Λ] (ν : Measure N) (DN : Set N) (b : G) (κ : ℝ≥0∞) (V : Set G) (Y : Finset G), ν.IsHaarMeasure → IsFundamentalDomain (Λ.subgroupOf N) DN ν → IsCompact V → (∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ u : N, f (b * u * b⁻¹) ∂ν = κ * ∫⁻ u : N, f u ∂ν) → (∀ y ∈ Y, y ∈ N) → (∀ u ∈ N, ∃ γ ∈ Λ, γ ∈ N ∧ ∃ y ∈ Y, ∃ w ∈ V, γ * u = y * b⁻¹ * w * b) → ν DN ≤ Y.card * (κ * ν {u | (u : G) ∈ V}) := by
   intro G _ _ _ _ _ _ _ _ N Λ _ ν DN b κ V Y hν hD hV hconj hY hcov
   have hVm : MeasurableSet V := hV.isClosed.measurableSet

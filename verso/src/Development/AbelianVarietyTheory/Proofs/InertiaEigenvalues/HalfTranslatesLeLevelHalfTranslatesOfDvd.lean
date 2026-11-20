@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.LevelSeries
 
+/- English proof (translation)
+Introduce `D H l₂ e₂ e' P' h₂ h' hP ψ V W ΛV ΛW f₀ M O`. Take `⟨P₂, ⟨⟨es₂, hes₂, rfl⟩, -⟩, hP₂⟩` from `h₂`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `h'`. Establish `hsub : P' ⊆ P₂` using `fun PP h => (hP₂ PP).2 (hP PP h)`. Establish `key` using `GlobalTheory.PartialIdemSum.sum_mul_sum_of_subset P' P₂ es' es₂ hes' hes₂ hsub`.
+
+Unfold `trSp`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `f ⟨y, hy, hM, rfl⟩`. Use `⟨y, fun i j => ?_, hM, rfl⟩` and prove the remaining obligations. Rewrite using `[← hy i j, ← mul_assoc, mul_comm (∑ P ∈ P₂, es₂ P), key]`.
+-/
 theorem trSp_le_of_subhalf : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (l₂ : Geo.Tor.Level H) (e₂ e' : AE D) (P' : Finset (Formalism.L2.DIV.Pl D.host.E)), IsHalfIdem l₂ e₂ → IsIdemSum e' P' → (∀ PP ∈ P', l₂.Mb ≤ PP.asIdeal) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (f₀ : WO V W → ℂ) (M : ℕ) (O : Subring ℂ), trSp ψ V W ΛV ΛW f₀ e' M O ≤ trSp ψ V W ΛV ΛW f₀ e₂ M O := by
   intro D H l₂ e₂ e' P' h₂ h' hP ψ V W ΛV ΛW f₀ M O
   obtain ⟨P₂, ⟨⟨es₂, hes₂, rfl⟩, -⟩, hP₂⟩ := h₂

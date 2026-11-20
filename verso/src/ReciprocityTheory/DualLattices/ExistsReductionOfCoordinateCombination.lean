@@ -18,17 +18,28 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {C : Type} [Field C] {v : Valuation 
 def nbAct (H : HodgeTateDatum p g v R O σ cp) (a : O) (y : Nb p g) : Nb p g :=
   (H.ρ a).map PadicInt.toZMod *ᵥ y
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec PadicInt.toZMod (H.ρ a) t i`.
+-/
 lemma red_mulVec (H : HodgeTateDatum p g v R O σ cp) (a : O) (t : TT p g) :
     red p g (H.ρ a *ᵥ t) = nbAct H a (red p g t) := by
   funext i
   exact RingHom.map_mulVec PadicInt.toZMod (H.ρ a) t i
 
+/- English proof (translation)
+Use `haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩`. Conclude with `⟨fun i => ((y i).val : ℤ_[p]), funext fun i => by show PadicInt.toZMod (((y i).val : ℕ) : ℤ_[p]) = y i`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]⟩`.
+-/
 lemma red_surj (y : Nb p g) : ∃ t : TT p g, red p g t = y := by
   haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩
   exact ⟨fun i => ((y i).val : ℤ_[p]), funext fun i => by
     show PadicInt.toZMod (((y i).val : ℕ) : ℤ_[p]) = y i
     rw [map_natCast, ZMod.natCast_zmod_val]⟩
 
+/- English proof (translation)
+Take `⟨f', hf', hf'e⟩` from `H.h3 a f hf`. Establish `hfun : (fun y => f (nbAct H a y)) = f'`. Use function extensionality and compare the values at `y`. Take `⟨t, rfl⟩` from `red_surj y`. Rewrite using `[hf'e, red_mulVec]`.
+
+Rewrite using `[hfun]`. Conclude with `hf'`.
+-/
 lemma comp_mem (H : HodgeTateDatum p g v R O σ cp) (a : O) {f : Nb p g → C} (hf : f ∈ H.AA.carrier) :
     (fun y => f (nbAct H a y)) ∈ H.AA.carrier := by
   obtain ⟨f', hf', hf'e⟩ := H.h3 a f hf
@@ -41,6 +52,13 @@ lemma comp_mem (H : HodgeTateDatum p g v R O σ cp) (a : O) {f : Nb p g → C} (
 
 variable {G : Type} [CommGroup G] [Fintype G] (β : G → O)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, y, hxy⟩ : ∃ x y, M x y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hM (Matrix.ext fun x y => by simpa using hc x y)`. Establish `h2 : a * M x y = b * M x y`.
+
+Use `congrFun (congrFun h x) y` as an intermediate fact. Simplify `this` using `only [Matrix.smul_apply, smul_eq_mul]`. Establish `h3 : algebraMap S K (a - b) * algebraMap S K (M x y) = 0`. Rewrite using `[← map_mul, sub_mul, h2, sub_self, map_zero]`. Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases.
+
+Conclude with `sub_eq_zero.mp (hinj (by rw [h4, map_zero]))`. Conclude with `absurd (hinj (by rw [h4, map_zero])) hxy`.
+-/
 private lemma smul_cancel_lemma {S K : Type*} [CommRing S] [Field K] [Algebra S K]
     (hinj : Function.Injective (algebraMap S K)) {ι κ : Type*} {M : Matrix ι κ S} (hM : M ≠ 0)
     {a b : S} (h : a • M = b • M) : a = b := by

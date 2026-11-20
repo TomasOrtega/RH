@@ -15,6 +15,9 @@ namespace GlobalTheory.HomFixMat
 abbrev powPull {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (a : ℤ) : LB Y :=
   LB.LinComb L (K := Fin 1) (fun _ => φ) (fun _ => a)
 
+/- English proof (translation)
+Introduce `y hy`. Conclude with `Set.mem_iInter.2 fun k => by`. Use `Set.mem_iInter.1 hy k` as an intermediate fact. Simplify using `using this`.
+-/
 theorem wchart_comp_le {X Y Z : Scheme.{0}} (L : LB X) (f : Z ⟶ Y) (φ : Y ⟶ X) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => f ≫ φ) j ≤ f ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => φ) j := by
   intro y hy
@@ -126,6 +129,9 @@ end GlobalTheory.HomFixMat
 namespace GlobalTheory.HomFixMat
 variable {Rg : Type} [CommRing Rg] {A B : Over (Sp Rg)} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Take `⟨ψA, ψB, qA, qB, eA, eB, eΦ⟩` from `p₁`. Take `⟨ψA', ψB', qA', qB', eA', eB', eΦ'⟩` from `p₂`. Use `⟨ψA' ≫ ψA, ψB' ≫ ψB, qA'.comp qA, qB'.comp qB, by rw [Category.assoc, eA, eA'], by rw [Category.assoc, eB, eB'], ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, eΦ', Category.assoc, eΦ, Category.assoc]`.
+-/
 theorem IsPullD.comp {T₁ T₂ T₃ : Scheme.{0}} {A₁ B₁ : Over T₁} [GrpObj A₁] [GrpObj B₁] {φA₁ : A₁.left ⟶ A.left}
     {φB₁ : B₁.left ⟶ B.left} {Φ₁ : A₁ ⟶ B₁} {A₂ B₂ : Over T₂} [GrpObj A₂] [GrpObj B₂] {φA₂ : A₂.left ⟶ A.left}
     {φB₂ : B₂.left ⟶ B.left} {Φ₂ : A₂ ⟶ B₂} {A₃ B₃ : Over T₃} [GrpObj A₃] [GrpObj B₃] {φA₃ : A₃.left ⟶ A.left}
@@ -142,6 +148,13 @@ end GlobalTheory.HomFixMat
 
 namespace GlobalTheory.HomFixMat
 
+/- English proof (translation)
+Apply `ext_of_isAffine` to reduce the goal to its premises. Use `(Iso.cancel_iso_inv_left (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin N) Rg))) _ _).1 ?_` and prove the remaining obligations. Use `ext1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Establish `e` using `congrArg (fun f => f.appTop ((Scheme.ΓSpecIso (CommRingCat.of Rg)).inv r)) h0`. Simplify using `only [Scheme.Hom.comp_appTop] at e`. Establish `n2 : (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin N) Rg))).inv (MvPolynomial.C r) = (affπ Rg N).appTop ((Scheme.ΓSpecIso (CommRingCat.of Rg)).inv r)`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_comp]`. Rewrite using `[n2]`. Simplify using `using e`. Introduce `n`. Conclude with `h1 n`.
+-/
 theorem hom_ext_affine (Rg : Type) [CommRing Rg] (N : ℕ) (X : Scheme.{0}) (g g' : X ⟶ Sp (MvPolynomial (Fin N) Rg))
     (h0 : g ≫ affπ Rg N = g' ≫ affπ Rg N) (h1 : ∀ n, coord g n = coord g' n) : g = g' := by
   apply ext_of_isAffine

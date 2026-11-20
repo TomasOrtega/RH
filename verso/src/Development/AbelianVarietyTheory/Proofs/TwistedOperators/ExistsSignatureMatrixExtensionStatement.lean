@@ -13,6 +13,9 @@ open GlobalTheory.ChainFr GlobalTheory.SepRows GlobalTheory.SepPer Matrix
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PackFrame.exists_adapted_frame | exact GlobalTheory.PackFrame.exists_adapted_frame | (intros; apply GlobalTheory.PackFrame.exists_adapted_frame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_signature_matrix_extension : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (τ : D.what₂.Tau)
   (εA : Fin Y.rank → Bool) (A : Matrix (Fin Y.rank) (Fin Y.rank) ℂ) (ε : Fin V.rank → Bool)
   (e : Option (Fin Y.rank) ≃ Fin V.rank),

@@ -53,9 +53,15 @@ def FanGal {eps : ℝ} (Fm : FamP eps) (PL : PrinLevF Fm) : Prop :=
 def FanArGal {eps : ℝ} (Fm : FamP eps) (PL : PrinLevF Fm) : Prop :=
   ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), FanArAt (Fm.D x i) (Fm.X x i) (PL x hx i)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `⟨1, 1, fun _ => ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩⟩`.
+-/
 theorem fanAt_id (D : D7) (V : DivX D) (P : PrinLev V) : FanAt D V P :=
   fun _ _ _ _ _ => ⟨1, 1, fun _ => ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩⟩
 
+/- English proof (translation)
+Introduce `_ _ _` and use `fanAt_id _ _ _`.
+-/
 theorem fanGal_id {eps : ℝ} (Fm : FamP eps) (PL : PrinLevF Fm) : FanGal Fm PL := fun _ _ _ => fanAt_id _ _ _
 
 def TameAtG {eps : ℝ} (Fm : FamP eps)

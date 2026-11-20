@@ -10,10 +10,18 @@ namespace PositivityTheory.jumpWindows.InverseDerivativeContinuity
 
 section Lin
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨‖LinearMap.toContinuousLinearMap L‖, norm_nonneg _, fun x => (LinearMap.toContinuousLinearMap L).le_opNorm x⟩`.
+-/
 theorem lin_bound {V W : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup W] [NormedSpace ℝ W] (L : V →ₗ[ℝ] W) : ∃ K, 0 ≤ K ∧ ∀ x, ‖L x‖ ≤ K * ‖x‖ :=
   ⟨‖LinearMap.toContinuousLinearMap L‖, norm_nonneg _, fun x => (LinearMap.toContinuousLinearMap L).le_opNorm x⟩
 
+/- English proof (translation)
+Set `B' : V →ₗ[ℝ] (V →L[ℝ] W)` to `(LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] W) ≃ₗ[ℝ] (V →L[ℝ] W)).toLinearMap ∘ₗ B`. Set `T` to `LinearMap.toContinuousLinearMap B'`. Use `⟨‖T‖, norm_nonneg _, fun x y => ?_⟩` and prove the remaining obligations. Establish `e : B x y = T x y` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `((T x).le_opNorm y).trans (mul_le_mul_of_nonneg_right (T.le_opNorm x) (norm_nonneg _))`.
+-/
 theorem bil_bound {V W : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup W] [NormedSpace ℝ W] (B : V →ₗ[ℝ] V →ₗ[ℝ] W) :
     ∃ K, 0 ≤ K ∧ ∀ x y, ‖B x y‖ ≤ K * ‖x‖ * ‖y‖ := by
@@ -29,6 +37,11 @@ end Lin
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hA : 0 ≤ ‖A‖` using `norm_nonneg _`. Establish `hB : 0 ≤ ‖B‖` using `norm_nonneg _`. Establish `hC : (0 : ℝ) ≤ a * ‖A‖ * ‖B‖` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg a) hA) hB`. Establish `e : (toL (Matrix.of A * Matrix.of B) : Lie E a) = fun i j => ∑ k, A i k * B k j`. Use function extensionality and compare the values at `i j`.
+
+Simplify using `only [toL, Matrix.of_symm_apply, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[e]`. Use `(pi_norm_le_iff_of_nonneg hC).2 fun i => (pi_norm_le_iff_of_nonneg hC).2 fun j => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_mulL (A B : Lie E a) :
     ‖(toL (Matrix.of A * Matrix.of B) : Lie E a)‖ ≤ a * ‖A‖ * ‖B‖ := by
   have hA : 0 ≤ ‖A‖ := norm_nonneg _
@@ -47,11 +60,17 @@ theorem norm_mulL (A B : Lie E a) :
 
 def invL (z : Lie E a) : Lie E a := toL (Matrix.of z)⁻¹
 
+/- English proof (translation)
+Simplify using `only [invL, oneL, toL]`. Use `show Matrix.of.symm ((1 : Matrix (Fin a) (Fin a) (Cinf E))⁻¹) = _`. Simplify using the standard rewrite rules.
+-/
 theorem invL_one : invL (oneL E a) = oneL E a := by
   simp only [invL, oneL, toL]
   show Matrix.of.symm ((1 : Matrix (Fin a) (Fin a) (Cinf E))⁻¹) = _
   simp
 
+/- English proof (translation)
+Establish `h : ContinuousAt (fun z : Matrix (Fin a) (Fin a) (Cinf E) => z⁻¹) 1` using `continuousAt_matrix_inv _ (by`. Rewrite using `[Matrix.det_one]`. Conclude with `NormedRing.inverse_continuousAt (1 : (Cinf E)ˣ))`. Conclude with `h`.
+-/
 theorem continuousAt_invL : ContinuousAt (invL (E := E) (a := a)) (oneL E a) := by
   have h : ContinuousAt (fun z : Matrix (Fin a) (Fin a) (Cinf E) => z⁻¹) 1 :=
     continuousAt_matrix_inv _ (by
@@ -61,16 +80,27 @@ theorem continuousAt_invL : ContinuousAt (invL (E := E) (a := a)) (oneL E a) := 
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+The claim follows from `have hu : IsUnit (Matrix.of x) := hx ⟨g * infGL E a hu.unit, fun f => by rw [chart, dif_pos hu]⟩`.
+-/
 theorem chart_inv (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     ∃ h : GA E a, ∀ f : GA E a → ℂ, chart f g x = f h :=
   have hu : IsUnit (Matrix.of x) := hx
   ⟨g * infGL E a hu.unit, fun f => by rw [chart, dif_pos hu]⟩
 
+/- English proof (translation)
+Establish `e` using `chart_val f g 1`. Rewrite `e` using `[map_one, mul_one]`. Conclude with `e`.
+-/
 theorem chart_one (f : GA E a → ℂ) (g : GA E a) : chart f g (oneL E a) = f g := by
   have e := chart_val f g 1
   rw [map_one, mul_one] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[chart_lieD hf _ g hx]`. Use `congr 1`. Use `symm`. Use `show (toL (Matrix.of x * ((Matrix.of x)⁻¹ * Matrix.of Y)) : Lie E a) = Y`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hx), Matrix.one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fderiv_chart {f : GA E a → ℂ} (hf : f ∈ Sm E a) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a)
     (Y : Lie E a) : fderiv ℝ (chart f g) x Y = chart (lieD (toL ((Matrix.of x)⁻¹ * Matrix.of Y)) f) g x := by
   rw [chart_lieD hf _ g hx]
@@ -80,6 +110,9 @@ theorem fderiv_chart {f : GA E a → ℂ} (hf : f ∈ Sm E a) (g : GA E a) {x : 
   rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hx), Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun Y => ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `chart_inv g hx`. Rewrite using `[fderiv_chart hf g hx, hh]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_fderiv_chart_le {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K : ℝ} (hK : 0 ≤ K)
     (hb : ∀ Z h, ‖lieD Z f h‖ ≤ K * ‖Z‖) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     ‖fderiv ℝ (chart f g) x‖ ≤ K * (a * ‖invL x‖) := by
@@ -90,6 +123,9 @@ theorem norm_fderiv_chart_le {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K : ℝ} 
     _ ≤ K * (a * ‖invL x‖ * ‖Y‖) := mul_le_mul_of_nonneg_left (norm_mulL (invL x) Y) hK
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `h0 : oneL E a ∈ Metric.ball (oneL E a) r` using `Metric.mem_ball_self (lt_of_le_of_lt dist_nonneg hx)`. Rewrite using `[← chart_one f g]`. Conclude with `(convex_ball _ _).norm_image_sub_le_of_norm_fderiv_le (fun z hz => (contDiffAt_chart hf g (hr hz)).differentiableAt (by simp)) (fun z hz => (norm_fderiv_chart_le hf hK hb g (hr hz)).trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hQ z hz) (Nat.cast_nonneg _)) hK)) h0 …`.
+-/
 theorem lip {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K Q r : ℝ} (hK : 0 ≤ K)
     (hb : ∀ Z h, ‖lieD Z f h‖ ≤ K * ‖Z‖) (hr : Metric.ball (oneL E a) r ⊆ invSet E a)
     (hQ : ∀ x ∈ Metric.ball (oneL E a) r, ‖invL x‖ ≤ Q) (g : GA E a)
@@ -102,6 +138,13 @@ theorem lip {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K Q r : ℝ} (hK : 0 ≤ K
     (fun z hz => (norm_fderiv_chart_le hf hK hb g (hr hz)).trans
       (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hQ z hz) (Nat.cast_nonneg _)) hK)) h0 hx
 
+/- English proof (translation)
+Establish `hQ0 : 0 ≤ Q` using `(norm_nonneg _).trans (hQ x hx)`. Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun Y => ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `chart_inv g (hr hx)`. Rewrite using `[_root_.sub_apply, fderiv_chart hf g (hr hx), hh]`. Establish `e1 : fderiv ℝ (chart f g) (oneL E a) Y = lieD Y f g` using `rfl`.
+
+Establish `e2 : lieD (toL ((Matrix.of x)⁻¹ * Matrix.of Y)) f h - lieD Y f h = lieD (toL (Matrix.of (invL x - oneL E a) * Matrix.of Y)) f h`. Rewrite using `[lieD, lieD, lieD, ← map_sub]`. Use `congr 1`. Use `show (toL ((Matrix.of x)⁻¹ * Matrix.of Y) : Lie E a) - toL (Matrix.of Y) = toL (((Matrix.of x)⁻¹ - 1) * Matrix.of Y)`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`.
+
+Both sides reduce to the same expression. Establish `e3 : lieD Y f h = chart (lieD Y f) g x` using `(hh _).symm`. Establish `hl` using `lip (lieD_mem_Sm Y hf) (by positivity : 0 ≤ K2 * ‖Y‖) (fun Z h => hb2 Y Z h) hr hQ g hx`. Rewrite using `[e1, show lieD (toL ((Matrix.of x)⁻¹ * Matrix.of Y)) f h - lieD Y f g = (lieD (toL ((Matrix.of x)⁻¹ * Matrix.of Y)) f h - lieD Y f h) + (lieD Y f h - lieD Y f g) by ring, e2, e3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dd_bound {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K K2 Q r : ℝ} (hK : 0 ≤ K) (hK2 : 0 ≤ K2)
     (hb1 : ∀ Z h, ‖lieD Z f h‖ ≤ K * ‖Z‖) (hb2 : ∀ Y Z h, ‖lieD Z (lieD Y f) h‖ ≤ K2 * ‖Y‖ * ‖Z‖)
     (hr : Metric.ball (oneL E a) r ⊆ invSet E a) (hQ : ∀ x ∈ Metric.ball (oneL E a) r, ‖invL x‖ ≤ Q)
@@ -131,6 +174,11 @@ theorem dd_bound {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K K2 Q r : ℝ} (hK :
         add_le_add ((hb1 _ _).trans (mul_le_mul_of_nonneg_left (norm_mulL _ _) hK)) hl
     _ = _ := by ring
 
+/- English proof (translation)
+Use `set Q : ℝ := ‖oneL E a‖ + 1 with hQdef`. Establish `ev1 : ∀ᶠ z in 𝓝 (oneL E a), z ∈ invSet E a` using `isOpen_invSet.mem_nhds isUnit_one`. Establish `ev2 : ∀ᶠ z in 𝓝 (oneL E a), ‖invL z‖ < Q` using `continuousAt_invL.norm.eventually (Iio_mem_nhds (by show ‖invL (oneL E a)‖ < Q; rw [invL_one]; linarith))`. Establish `hct : ContinuousAt (fun z : Lie E a => K * a * ‖invL z - oneL E a‖ + K2 * a * Q * ‖z - oneL E a‖) (oneL E a)` using `((continuousAt_invL.sub continuousAt_const).norm.const_mul _).add ((continuousAt_id.sub continuousAt_const).norm.const_mul _)`. Establish `ev3 : ∀ᶠ z in 𝓝 (oneL E a), K * a * ‖invL z - oneL E a‖ + K2 * a * Q * ‖z - oneL E a‖ ≤ c` using `hct.eventually (Iic_mem_nhds (by simp [invL_one, hc]))`.
+
+Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (ev1.and (ev2.and ev3))`. Establish `hr : Metric.ball (oneL E a) δ ⊆ invSet E a` using `fun z hz => (hball z hz).1`. Establish `hQ : ∀ z ∈ Metric.ball (oneL E a) δ, ‖invL z‖ ≤ Q` using `fun z hz => (hball z hz).2.1.le`. Use `⟨δ, hδ, fun g M hM => ?_⟩` and prove the remaining obligations. Conclude with `(convex_ball _ _).norm_image_sub_le_of_norm_fderiv_le' (fun z hz => (contDiffAt_chart hf g (hr hz)).differentiableAt (by simp)) (fun z hz => (dd_bound hf hK hK2 hb1 hb2 hr hQ g hz).trans (hball z hz).2.2) (Metric.mem_ball_self hδ) hM`.
+-/
 theorem key_est {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K K2 : ℝ} (hK : 0 ≤ K) (hK2 : 0 ≤ K2)
     (hb1 : ∀ Z h, ‖lieD Z f h‖ ≤ K * ‖Z‖) (hb2 : ∀ Y Z h, ‖lieD Z (lieD Y f) h‖ ≤ K2 * ‖Y‖ * ‖Z‖)
     {c : ℝ} (hc : 0 < c) : ∃ δ > 0, ∀ g, ∀ M ∈ Metric.ball (oneL E a) δ,
@@ -157,6 +205,9 @@ theorem key_est {f : GA E a → ℂ} (hf : f ∈ Sm E a) {K K2 : ℝ} (hK : 0 �
 
 section Forms
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL.of_invariant (π.cusp _ ψ.2) (hπ _ ψ.2)`.
+-/
 theorem bdd (π : CuspSub E a) (hπ : IsNormalised π) (ψ : π.V) : ∃ C : ℝ, ∀ g, ‖ψ.1.1 g‖ ≤ C :=
   GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL.of_invariant (π.cusp _ ψ.2) (hπ _ ψ.2)
 
@@ -167,16 +218,25 @@ def toXB (π : CuspSub E a) (hπ : IsNormalised π) : π.V →ₗ[ℂ] XB E a wh
   map_add' _ _ := by ext; rfl
   map_smul' _ _ := by ext; rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change lie E a (Z + Z') ψ.1 = lie E a Z ψ.1 + lie E a Z' ψ.1; rw [map_add]; rfl)`.
+-/
 theorem opLie_add (π : CuspSub E a) (Z Z' : Lie E a) (ψ : π.V) :
     π.op (.lie (Z + Z')) ψ = π.op (.lie Z) ψ + π.op (.lie Z') ψ :=
   Subtype.ext (by change lie E a (Z + Z') ψ.1 = lie E a Z ψ.1 + lie E a Z' ψ.1; rw [map_add]; rfl)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (funext fun g => by change lieD (c • Z) ψ.1.1 g = (c : ℂ) * lieD Z ψ.1.1 g rw [lieD, lieD, map_smul, Complex.real_smul]))`.
+-/
 theorem opLie_smul (π : CuspSub E a) (c : ℝ) (Z : Lie E a) (ψ : π.V) :
     π.op (.lie (c • Z)) ψ = (c : ℂ) • π.op (.lie Z) ψ :=
   Subtype.ext (Subtype.ext (funext fun g => by
     change lieD (c • Z) ψ.1.1 g = (c : ℂ) * lieD Z ψ.1.1 g
     rw [lieD, lieD, map_smul, Complex.real_smul]))
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[Complex.real_smul]`.
+-/
 theorem real_smul_XB (c : ℝ) (f : XB E a) : (c : ℂ) • f = c • f := by
   ext g
   simp [Complex.real_smul]
@@ -198,6 +258,11 @@ def B2 (π : CuspSub E a) (hπ : IsNormalised π) (ψ : π.V) : Lie E a →ₗ[�
     (fun Y Z Z' => map_add _ _ _)
     (fun c Y Z => map_smul _ _ _)
 
+/- English proof (translation)
+Introduce `w _`. Establish `ho : IsOpen {k | finRep E a k ψ.1 = ψ.1}` using `(π.cusp _ ψ.2).1.level`. Establish `h1 : locGL E a w 1 ∈ {k | finRep E a k ψ.1 = ψ.1}` using `by show finRep E a (locGL E a w 1) ψ.1 = ψ.1`. Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression.
+
+Use `Filter.mem_of_superset ((ho.preimage (CuspSub.continuous_locGL w)).mem_nhds h1) fun u hu => ?_` and prove the remaining obligations. Use extensionality with `g`. Conclude with `congrFun (congrArg Subtype.val hu) g`.
+-/
 theorem lev_toXB (π : CuspSub E a) (hπ : IsNormalised π) (ψ : π.V) (S : Finset (Pl E)) :
     Lev S (toXB π hπ ψ) := by
   intro w _
@@ -210,10 +275,20 @@ theorem lev_toXB (π : CuspSub E a) (hπ : IsNormalised π) (ψ : π.V) (S : Fin
   ext g
   exact congrFun (congrArg Subtype.val hu) g
 
+/- English proof (translation)
+Unfold `orb chart`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem orb_apply (x : XB E a) (M : Lie E a) (g : GA E a) : orb (repI E a) x M g = chart (⇑x) g M := by
   unfold orb chart
   split_ifs <;> rfl
 
+/- English proof (translation)
+Take `⟨K, hK, hK'⟩` from `lin_bound (dL π hπ ψ)`. Take `⟨K2, hK2, hK2'⟩` from `bil_bound (B2 π hπ ψ)`. Establish `hb1 : ∀ Z h, ‖lieD Z ψ.1.1 h‖ ≤ K * ‖Z‖` using `fun Z h => (norm_coe_le_norm (dL π hπ ψ Z) h).trans (hK' Z)`. Establish `hb2 : ∀ Y Z h, ‖lieD Z (lieD Y ψ.1.1) h‖ ≤ K2 * ‖Y‖ * ‖Z‖` using `fun Y Z h => (norm_coe_le_norm (B2 π hπ ψ Y Z) h).trans (hK2' Y Z)`. Use `HasFDerivAt.of_isLittleO (Asymptotics.isLittleO_iff.2 fun c hc => ?_)` and prove the remaining obligations.
+
+Take `⟨δ, hδ, hM⟩` from `key_est ψ.1.2 hK hK2 hb1 hb2 hc`. Use `filter_upwards [Metric.ball_mem_nhds _ hδ] with M hMb`. Use `(BoundedContinuousFunction.norm_le (by positivity)).2 fun g => ?_` and prove the remaining obligations. Establish `e : (orb (repI E a) (toXB π hπ ψ) M - orb (repI E a) (toXB π hπ ψ) (oneL E a) - (LinearMap.toContinuousLinearMap (dL π hπ ψ)) (M - oneL E a)) g = chart ψ.1.1 g M - chart ψ.1.1 g (oneL E a) - fderiv ℝ (chart ψ.1.1 g) (oneL E a) (M - oneL E a)`. Simplify using `only [BoundedContinuousFunction.coe_sub, Pi.sub_apply, orb_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hM g M hMb`.
+-/
 theorem hasFDerivAt_orb (π : CuspSub E a) (hπ : IsNormalised π) (ψ : π.V) :
     HasFDerivAt (orb (repI E a) (toXB π hπ ψ)) (LinearMap.toContinuousLinearMap (dL π hπ ψ)) (oneL E a) := by
   obtain ⟨K, hK, hK'⟩ := lin_bound (dL π hπ ψ)
@@ -240,6 +315,11 @@ end PositivityTheory.jumpWindows.InverseDerivativeContinuity
 
 namespace PositivityTheory.jumpWindows
 
+/- English proof (translation)
+Introduce `hS1 E _ _ _ a π hπ φ hφ`. Establish `hP : PolyBd (repI E a)` using `⟨1, 0, zero_le_one, fun g x => by`. Rewrite using `[pow_zero, one_mul, one_mul]`. Conclude with `(norm_Rt _ _).le⟩`. Establish `hsm` using `hS1 (InfinitePlace E) a (XB E a) (repI E a) hP (LinearMap.range (InverseDerivativeContinuity.toXB π hπ)) (fun v hv => by`.
+
+Take `⟨ψ, rfl⟩` from `LinearMap.mem_range.1 hv`. Conclude with `⟨_, InverseDerivativeContinuity.hasFDerivAt_orb π hπ ψ, fun Z => LinearMap.mem_range.2 ⟨π.op (.lie Z) ψ, rfl⟩⟩)`. Use the proof step `(InverseDerivativeContinuity.toXB π hπ ⟨φ, hφ⟩) (LinearMap.mem_range.2 ⟨_, rfl⟩)`. Conclude with `⟨InverseDerivativeContinuity.toXB π hπ ⟨φ, hφ⟩, rfl, hsm, InverseDerivativeContinuity.lev_toXB π hπ ⟨φ, hφ⟩⟩`.
+-/
 theorem firstGeometricCondition_of_properties : S1 → G1 := by
   intro hS1 E _ _ _ a π hπ φ hφ
   have hP : PolyBd (repI E a) := ⟨1, 0, zero_le_one, fun g x => by

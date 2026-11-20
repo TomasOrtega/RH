@@ -12,6 +12,13 @@ open GlobalTheory.MiTop
 
 namespace GlobalTheory.MiTop
 
+/- English proof (translation)
+Introduce `K _ _ _ Bs A X fc eV sEE V U c hOp hAn hUn`. Use `choose p b hp hb hid using hAn`. Use `⟨⟨V, fun u => p u / (b u * c u Bs.μ0), U, fun u t => c u t / c u Bs.μ0⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hOp.1, hOp.2, ⟨fun u t => div_ne_zero (hUn.1 u t) (hUn.1 u Bs.μ0), fun u w k hk => hUn.2 u w k hk⟩, fun u => div_self (hUn.1 u Bs.μ0)⟩` and prove the remaining obligations. Introduce `u t φ F`.
+
+Establish `h` using `hid u t φ F`. Establish `hc` using `hUn.1 u Bs.μ0`. Establish `hbu` using `hb u`. Simplify using `only`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `h`. Introduce `u`. Conclude with `div_ne_zero (hp u) (mul_ne_zero (hb u) (hUn.1 u Bs.μ0))`.
+-/
 theorem miStar2_of_anchored : ∀ {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A) {fc : DefSub A → DefFace Bs} (eV : ∀ t, (Fin ((fc X.zs).Df1.nV t) → K) →ₗ[K] A.FR t) (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH) (V : X.EE →ₗ[ℂ] X.EE) (U : ∀ u, Matrix (Fin ((fc X.zs).Dc.a u)) (Fin ((fc X.zs).Dc.a u)) ℂ) (c : (fc X.zs).Dc.Mem → Bs.Tup → ℂ), OpsUnit X V U → Anchored X eV sEE V U c → UnitAt X c → X.MIstar2 eV sEE := by
   intro K _ _ _ Bs A X fc eV sEE V U c hOp hAn hUn
   choose p b hp hb hid using hAn

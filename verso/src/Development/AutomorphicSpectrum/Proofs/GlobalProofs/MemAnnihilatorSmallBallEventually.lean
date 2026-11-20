@@ -12,15 +12,26 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v s`.
+-/
 theorem singleV_apply_self' (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) : (singleV F v s) v = s := by
   classical
   exact RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) v s
 
+/- English proof (translation)
+Conclude with `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) s h`.
+-/
 theorem singleV_apply_ne' (v w : HeightOneSpectrum (𝓞 F)) (s : Fv F v) (h : w ≠ v) :
     (singleV F v s) w = 0 := by
   classical
   exact RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletionIntegers F) s h
 
+/- English proof (translation)
+Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(singleV F v s) w * b w = (singleV F v (s * b v)) w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[singleV_apply_self', singleV_apply_self']`.
+
+Rewrite using `[singleV_apply_ne' v w _ h, singleV_apply_ne' v w _ h, zero_mul]`.
+-/
 theorem singleV_mul_box (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) (b : Af F) :
     singleV F v s * b = singleV F v (s * b v) := by
   refine RestrictedProduct.ext _ _ fun w => ?_
@@ -31,6 +42,9 @@ theorem singleV_mul_box (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) (b : Af F)
   · rw [singleV_apply_ne' v w _ h, singleV_apply_ne' v w _ h, zero_mul]
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : (∑ v ∈ T, singleV F v (c v)) w = ∑ v ∈ T, (singleV F v (c v)) w` using `map_sum (evalV F w) _ T`. Rewrite using `[h1]`. Use `split_ifs with hw`. Rewrite using `[Finset.sum_eq_single w (fun v _ hv => singleV_apply_ne' v w _ (Ne.symm hv)) (fun h => absurd hw h), singleV_apply_self']`. Conclude with `Finset.sum_eq_zero fun v hv => singleV_apply_ne' v w _ (fun h => hw (h ▸ hv))`.
+-/
 theorem sum_singleV_apply (T : Finset (HeightOneSpectrum (𝓞 F))) (c : Af F) (w : HeightOneSpectrum (𝓞 F)) :
     (∑ v ∈ T, singleV F v (c v)) w = if w ∈ T then c w else 0 := by
   classical
@@ -42,6 +56,13 @@ theorem sum_singleV_apply (T : Finset (HeightOneSpectrum (𝓞 F))) (c : Af F) (
       (fun h => absurd hw h), singleV_apply_self']
   · exact Finset.sum_eq_zero fun v hv => singleV_apply_ne' v w _ (fun h => hw (h ▸ hv))
 
+/- English proof (translation)
+Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[singleV_apply_self']`. Conclude with `hS hw`.
+
+Rewrite using `[singleV_apply_ne' v w _ h]`. Conclude with `hU w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[singleV_apply_self']`.
+
+Conclude with `hO hw`. Rewrite using `[singleV_apply_ne' v w _ h]`. Conclude with `zero_mem _`.
+-/
 theorem singleV_mem_boxA (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v))
     (hU : ∀ v, (0 : Fv F v) ∈ U v) (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v)
     (hS : v ∈ S → s ∈ U v) (hO : v ∉ S → s ∈ v.adicCompletionIntegers F) :
@@ -54,6 +75,27 @@ theorem singleV_mem_boxA (S : Finset (HeightOneSpectrum (𝓞 F))) (U : ∀ v : 
     · subst h; rw [singleV_apply_self']; exact hO hw
     · rw [singleV_apply_ne' v w _ h]; exact zero_mem _
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ S hS U hU`. Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `key : ∀ v (s : Fv F v), (v ∈ S → s ∈ U v) → (v ∉ S → s ∈ v.adicCompletionIntegers F) → psiV F ψ v (s * b v) = 1`.
+
+Introduce `v s h1 h2`. Use `hb _ (singleV_mem_boxA S U hU v s h1 h2)` as an intermediate fact. Rewrite `this` using `[singleV_mul_box, psiF_singleV]`. Then use the resulting hypothesis. Use `⟨fun v hv s hs => key v s (fun _ => hs) (fun h => absurd hv h), fun v hv => ?_⟩` and prove the remaining obligations. Establish `hmem : b v ∈ annV ψ v (v.adicCompletionIntegers F : Set (Fv F v))` using `fun s hs => key v s (fun h => absurd h hv) (fun _ => hs)`.
+
+Rewrite `hmem` using `[hS v hv]`. Conclude with `hmem`. Introduce and unpack `⟨hb1, hb2⟩ y ⟨hy1, hy2⟩`. Take `⟨T, hT⟩` from `GlobalTheory.T.adelic_character_trivial_almost_everywhere F ψ hψ`. Use `set c := y * b with hc`.
+
+Establish `hcv : ∀ v, c v = y v * b v` using `fun v => rfl`. Use `set T' := T ∪ S with hT'`. Use `set e : Af F := ∑ v ∈ T', singleV F v (c v) with he`. Establish `hcint : ∀ v, v ∉ S → c v ∈ v.adicCompletionIntegers F` using `fun v hv => by`. Rewrite using `[hcv]`.
+
+Conclude with `mul_mem (hy2 v hv) (hb2 v hv)`. Establish `hd : psiF ψ (c - e) = 1`. Establish `happ : ∀ w, (c - e) w = c w - (if w ∈ T' then c w else 0)` using `fun w => by`. Rewrite using `[← sum_singleV_apply T' c w]`. Both sides reduce to the same expression.
+
+Use `hT _ (fun w => ?_) (fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[happ] split_ifs with h`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Rewrite using `[sub_zero]`.
+
+Conclude with `hcint w (fun hw => h (Finset.mem_union_right _ hw))`. Rewrite using `[happ, if_pos (Finset.mem_union_left _ hw), sub_self]`. Establish `hsum : psiF ψ e = 1`. Rewrite using `[he]`. Use `Finset.sum_induction _ (fun x => psiF ψ x = 1) (fun a b ha hb => by rw [psiF_add, ha, hb, one_mul]) (psiF_zero ψ) (fun v _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[psiF_singleV]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hcv]`. Conclude with `hb1 v hv (y v) (hy1 v hv)`. Establish `h1 : c v ∈ annV ψ v (v.adicCompletionIntegers F : Set (Fv F v))`.
+
+Rewrite using `[hS v hv]`. Conclude with `hcint v hv`. Use `h1 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `: c = (c - e) + e` using `by abel`.
+
+Express the relevant statement in the definitionally equal form `psiF ψ c = 1`. Rewrite using `[this, psiF_add, hd, hsum, one_mul]`.
+-/
 theorem annF_boxA : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ S : Finset (HeightOneSpectrum (𝓞 F)), (∀ v, v ∉ S → annV ψ v (v.adicCompletionIntegers F : Set (Fv F v)) = (v.adicCompletionIntegers F : Set (Fv F v))) → ∀ U : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v), (∀ v, (0 : Fv F v) ∈ U v) → annF ψ (Coef.boxA S U) = Coef.boxA S (fun v => annV ψ v (U v)) := by
   intro F _ _ ψ hψ S hS U hU
   classical

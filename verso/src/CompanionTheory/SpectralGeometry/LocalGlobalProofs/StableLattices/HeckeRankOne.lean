@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.RgExhHecke
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `capEntry`. Distinguish the cases in `h : a = b`. Simplify using `[h, tensE_apply, Module.algebraMap_end_apply]`. Normalize the expressions using the abelian group laws. Simplify using `[h, tensE_apply]`.
+-/
 theorem capEntry_tensE_apply (X : GMod n) (x : ℂ) (a b : Fin n) (f : Fin n → X.V) (d : Fin n) :
     capEntry (tensE X) x a b f d = capEntry X.E x a b (f d) + if d = a then f b else 0 := by
   unfold capEntry
@@ -17,6 +20,9 @@ theorem capEntry_tensE_apply (X : GMod n) (x : ℂ) (a b : Fin n) (f : Fin n →
   · simp [h, tensE_apply, Module.algebraMap_end_apply]; abel
   · simp [h, tensE_apply]
 
+/- English proof (translation)
+Unfold `capEntry`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Module.algebraMap_end_apply, sub_smul, add_assoc]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem capEntry_apply_shift {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (x : ℂ) (a b : Fin n) (v : V) :
     capEntry E x a b v = capEntry E (x - 1) a b v + if b = a then v else 0 := by
@@ -26,6 +32,9 @@ theorem capEntry_apply_shift {V : Type} [AddCommGroup V] [Module ℂ V]
     simp [Module.algebraMap_end_apply, sub_smul, add_assoc]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_prod_type', ← Fintype.sum_prod_type']`. Set `τ : Equiv.Perm (Fin (q + 2) × Fin (q + 1))` to `Function.Involutive.toPerm (fun p => (p.1.succAbove p.2, p.2.predAbove p.1)) (by`. Introduce and unpack `⟨i, k⟩`. Simplify using `only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove])`. Conclude with `(Equiv.sum_comp τ (fun p => Φ p.1 p.2)).symm`.
+-/
 theorem sum_pair_swap {M : Type*} [AddCommMonoid M] {q : ℕ} (Φ : Fin (q + 2) → Fin (q + 1) → M) :
     ∑ i, ∑ k, Φ i k = ∑ i : Fin (q + 2), ∑ k : Fin (q + 1), Φ (i.succAbove k) (k.predAbove i) := by
   rw [← Fintype.sum_prod_type', ← Fintype.sum_prod_type']
@@ -35,6 +44,11 @@ theorem sum_pair_swap {M : Type*} [AddCommMonoid M] {q : ℕ} (Φ : Fin (q + 2) 
       simp only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove])
   exact (Equiv.sum_comp τ (fun p => Φ p.1 p.2)).symm
 
+/- English proof (translation)
+Establish `h : (i.succAbove k : ℕ) + (k.predAbove i : ℕ) + 1 = (i : ℕ) + (k : ℕ) ∨ (i.succAbove k : ℕ) + (k.predAbove i : ℕ) = (i : ℕ) + (k : ℕ) + 1`. Simplify using `only [Fin.succAbove, Fin.predAbove, Fin.lt_def, Fin.val_castSucc, apply_dite Fin.val, Fin.val_pred, Fin.coe_castPred, dite_eq_ite, apply_ite Fin.val, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[← pow_add, ← pow_add]`. Break down `h with h | h` into its components or cases.
+
+Rewrite using `[← h, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_pair_swap {q : ℕ} (i : Fin (q + 2)) (k : Fin (q + 1)) :
     (-1 : ℂ) ^ (i.succAbove k : ℕ) * (-1) ^ (k.predAbove i : ℕ) = -((-1) ^ (i : ℕ) * (-1) ^ (k : ℕ)) := by
   have h : (i.succAbove k : ℕ) + (k.predAbove i : ℕ) + 1 = (i : ℕ) + (k : ℕ) ∨
@@ -47,6 +61,9 @@ theorem sign_pair_swap {q : ℕ} (i : Fin (q + 2)) (k : Fin (q + 1)) :
   · rw [← h, pow_succ]; ring
   · rw [h, pow_succ]; ring
 
+/- English proof (translation)
+Simplify using `[cminor]`.
+-/
 theorem cminor_zero {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (R C : Fin 0 → Fin n) (x : ℂ) : cminor E R C x = 1 := by
   simp [cminor]
@@ -59,6 +76,9 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Mod
 def dbl (i : Fin (q + 2)) (k : Fin (q + 1)) (l : Fin (q + 1)) : V :=
   cminor E ((R ∘ i.succAbove) ∘ k.succAbove) ((C ∘ Fin.succ) ∘ l.succAbove) (x - 1 - 1) (f (C l.succ))
 
+/- English proof (translation)
+Unfold `dbl`. Establish `: (R ∘ (i.succAbove k).succAbove) ∘ (k.predAbove i).succAbove = (R ∘ i.succAbove) ∘ k.succAbove`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, Fin.succAbove_succAbove_succAbove_predAbove]`. Rewrite using `[this]`.
+-/
 theorem dbl_swap (i : Fin (q + 2)) (k l : Fin (q + 1)) :
     dbl E R C x f (i.succAbove k) (k.predAbove i) l = dbl E R C x f i k l := by
   unfold dbl
@@ -67,6 +87,11 @@ theorem dbl_swap (i : Fin (q + 2)) (k l : Fin (q + 1)) :
     simp only [Function.comp, Fin.succAbove_succAbove_succAbove_predAbove]
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[cminor_succ_col]`. Establish `h0 : (C ∘ l.succ.succAbove) 0 = C 0` using `by simp`. Establish `h1 : (C ∘ l.succ.succAbove) ∘ Fin.succ = (C ∘ Fin.succ) ∘ l.succAbove`. Use function extensionality and compare the values at `t`. Simplify using `[Function.comp, Fin.succ_succAbove_succ]`.
+
+Rewrite using `[h0, h1]`. Simplify using `[dbl, LinearMap.sum_apply, Module.End.mul_apply]`.
+-/
 theorem minor_expand (i : Fin (q + 2)) (l : Fin (q + 1)) :
     cminor E (R ∘ i.succAbove) (C ∘ l.succ.succAbove) (x - 1) (f (C l.succ)) =
       ∑ k : Fin (q + 1), ((-1 : ℂ) ^ (k : ℕ)) •
@@ -79,6 +104,19 @@ theorem minor_expand (i : Fin (q + 2)) (l : Fin (q + 1)) :
   rw [h0, h1]
   simp [dbl, LinearMap.sum_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `have h1 : (∑ i : Fin (q + 2), ((-1 : ℂ) ^ (i : ℕ)) • capEntry E x (R i) (C 0) (∑ k : Fin (q + 1), ∑ l : Fin (q + 1), if d = (R ∘ i.succAbove) k then ((-1 : ℂ) ^ ((k : ℕ) + (l : ℕ))) • dbl E R C x f i k l else 0)) = ∑ i : Fin (q + 2), ∑ k : Fin (q + 1), ∑ l : Fin (q + 1), ((-1 : ℂ …`. Simplify using `only [map_sum, Finset.smul_sum, Function.comp]`. Establish `h2 : (∑ i : Fin (q + 2), ((-1 : ℂ) ^ (i : ℕ)) • (if d = R i then (∑ k : Fin (q + 1), ∑ l : Fin (q + 1), if C 0 = (R ∘ i.succAbove) k then ((-1 : ℂ) ^ ((k : ℕ) + (l : ℕ))) • dbl E R C x f i k l else 0) else 0)) = ∑ i : Fin (q + 2), ∑ k : Fin (q + 1), ∑ l : Fin (q + 1), ((-1 : ℂ) ^ …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : d = R i <;> simp [h, Finset.smul_sum]`.
+
+Apply the tactic sequence `have h3 : (∑ i : Fin (q + 2), ∑ l : Fin (q + 1), if d = R i then ((-1 : ℂ) ^ ((i : ℕ) + ((l.succ : Fin (q + 2)) : ℕ))) • cminor E (R ∘ i.succAbove) (C ∘ l.succ.succAbove) (x - 1) (f (C l.succ)) else 0) = ∑ i : Fin (q + 2), ∑ k : Fin (q + 1), ∑ l : Fin (q + 1), if d = R i then ((- …`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : d = R i`.
+
+Simplify using `only [h, if_true, minor_expand, Finset.smul_sum]`. Simplify using `[h]`. Rewrite using `[h1, h2, h3, sum_pair_swap, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.succAbove_succAbove_predAbove, dbl_swap]`. Establish `hs : (-1 : ℂ) ^ (i.succAbove k : ℕ) * (-1) ^ (((k.predAbove i : Fin (q + 1)) : ℕ) + (l : ℕ)) = -((-1) ^ (i : ℕ) * (-1) ^ ((k : ℕ) + (l : ℕ)))`.
+
+Rewrite using `[pow_add, ← mul_assoc, sign_pair_swap, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hd : d = R i`. Simplify using `only [hd, if_true, map_smul, smul_smul, hs]`. Rewrite using `[capEntry_apply_shift E x (R (i.succAbove k)) (C 0)]`.
+
+Distinguish the cases in `hc : C 0 = R (i.succAbove k)`. Simplify using `only [hc, if_true, smul_add, Fin.val_succ, pow_add, pow_one] module`. Simplify using `only [hc, if_false, add_zero, smul_zero, Fin.val_succ, pow_add, pow_one] module`. Simplify using `[hd]`.
+-/
 theorem key_identity :
     (∑ i : Fin (q + 2), ((-1 : ℂ) ^ (i : ℕ)) • capEntry E x (R i) (C 0)
         (∑ k : Fin (q + 1), ∑ l : Fin (q + 1), if d = (R ∘ i.succAbove) k then
@@ -138,6 +176,19 @@ theorem key_identity :
 
 end Key
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Introduce `R C x f d`. Rewrite using `[cminor_succ_col, cminor_succ_col X.E]`. Simplify using `[cminor_zero, capEntry_tensE_apply, Module.End.mul_apply, LinearMap.sum_apply]`.
+
+Consider the case `succ q ih`. Introduce `R C x f d`. Apply the tactic sequence `have hL : cminor (tensE X) R C x f d = ∑ i : Fin (q + 2), ((-1 : ℂ) ^ (i : ℕ)) • (capEntry X.E x (R i) (C 0) (cminor (tensE X) (R ∘ i.succAbove) (C ∘ Fin.succ) (x - 1) f d) + if d = R i then cminor (tensE X) (R ∘ i.succAbove) (C ∘ Fin.succ) (x - 1) f (C 0) else 0) := by`. Rewrite using `[cminor_succ_col]`. Simplify using `only [LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, Module.End.mul_apply, capEntry_tensE_apply]`.
+
+Establish `hR` using `key_identity X.E R C x f d`. Establish `hsplit : ∀ i : Fin (q + 2), (∑ j : Fin (q + 2), if d = R i then ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ))) • cminor X.E (R ∘ i.succAbove) (C ∘ j.succAbove) (x - 1) (f (C j)) else 0) = ((-1 : ℂ) ^ (i : ℕ)) • (if d = R i then cminor X.E (R ∘ i.succAbove) (C ∘ Fin.succ) (x - 1) (f (C 0)) else …`. Introduce `i`. Rewrite using `[Fin.sum_univ_succ]`. Distinguish the cases in `h : d = R i`.
+
+Simplify using `[h, Fin.succAbove_zero]`. Simplify using `[h]`. Rewrite using `[hL]`. Simplify using `only [hsplit, Finset.sum_add_distrib]`. Rewrite using `[← hR, cminor_succ_col X.E R C x]`.
+
+Establish `hit : ∀ (p : Prop) [Decidable p] (a b : X.V), (if p then a + b else 0) = (if p then a else 0) + (if p then b else 0)`. Introduce `p _ a b`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [ih, hit, map_add, smul_add, Finset.sum_add_distrib, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Simplify using `only [dbl, Function.comp_apply]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cminor_tensE_apply (X : GMod n) (q : ℕ) : ∀ (R C : Fin (q + 1) → Fin n) (x : ℂ)
     (f : Fin n → X.V) (d : Fin n),
     cminor (tensE X) R C x f d = cminor X.E R C x (f d) +
@@ -187,10 +238,18 @@ theorem cminor_tensE_apply (X : GMod n) (q : ℕ) : ∀ (R C : Fin (q + 1) → F
 abbrev minorOp {m : ℕ} (X : GMod (m + 1)) (y : ℂ) : Module.End ℂ (Fin (m + 1) → X.V) :=
   Hk.minorOp X y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem minorOp_apply {m : ℕ} (X : GMod (m + 1)) (y : ℂ) (f : Fin (m + 1) → X.V) (a : Fin (m + 1)) :
     minorOp X y f a = ∑ c : Fin (m + 1), ((-1 : ℂ) ^ ((a : ℕ) + (c : ℕ))) • cminor X.E a.succAbove c.succAbove y (f c) :=
   rfl
 
+/- English proof (translation)
+Introduce `m X u`. Rewrite using `[qdet_eq_capelliC, qdet_eq_capelliC]`. Use `LinearMap.ext fun f => funext fun d => ?_` and prove the remaining obligations. Rewrite using `[capelliC, capelliC, cminor_tensE_apply X m id id u f d]`. Simplify using `only [LinearMap.add_apply, Pi.add_apply, minorOp_apply, LinearMap.compLeft_apply, Function.comp_apply, id_eq, Function.id_comp]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rankOneTens : ∀ (m : ℕ) (X : GMod (m + 1)) (u : ℂ),
     qdet (tensE X) u = (qdet X.E u).compLeft (Fin (m + 1)) + minorOp X (u - 1) := by
   intro m X u
@@ -201,6 +260,9 @@ theorem rankOneTens : ∀ (m : ℕ) (X : GMod (m + 1)) (u : ℂ),
     Function.comp_apply, id_eq, Function.id_comp]
   simp
 
+/- English proof (translation)
+The claim follows from `rankOneTens`.
+-/
 theorem rankOne : Hk.RankOne := rankOneTens
 
 end GlobalTheory.CompanionTheory.RgExhHecke

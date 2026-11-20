@@ -9,6 +9,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.IsoSpread
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_inclusion_comp {S : Type} [CommRing S] {A B C : Subring S} (h₁ : A ≤ B)
     (h₂ : B ≤ C) :
     spMap (Subring.inclusion h₂) ≫ spMap (Subring.inclusion h₁) =
@@ -16,11 +19,17 @@ theorem spMap_inclusion_comp {S : Type} [CommRing S] {A B C : Subring S} (h₁ :
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_subtype_comp {S : Type} [CommRing S] {A B : Subring S} (h : A ≤ B) :
     spMap B.subtype ≫ spMap (Subring.inclusion h) = spMap A.subtype := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Substitute `huv` using the available equality. Use `⟨pullback.lift π₁ (f₁ ≫ u) (by rw [Category.assoc, hp.w]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Conclude with `hp`.
+-/
 theorem exists_isPullback_lift {X₀ X₁ T₀ T₁ T₂ : Scheme.{0}} {f₀ : X₀ ⟶ T₀} {f₁ : X₁ ⟶ T₁}
     {π₁ : X₁ ⟶ X₀} {u : T₁ ⟶ T₂} {v : T₂ ⟶ T₀} {w : T₁ ⟶ T₀} (huv : u ≫ v = w)
     (hp : IsPullback π₁ f₁ f₀ w) :
@@ -39,6 +48,33 @@ namespace GlobalTheory
 
 open GlobalTheory.IsoSpread in
 
+/- English proof (translation)
+Introduce `S _ R₀ X X₀ Z f f₀ q π _ _ _ _ _ _ φ hπ hφ`. Take `⟨Fa, ha⟩` from `morphism_descends_to_subring S R₀ X X₀ Z f f₀ q π φ hπ (hφ.w.trans hπ.w.symm)`. Take `⟨Fb, hb⟩` from `morphism_descends_to_subring S R₀ X Z X₀ f q f₀ φ π hφ (hπ.w.trans hφ.w.symm)`. Set `R₂ : Subring S` to `Subring.closure ((R₀ : Set S) ∪ (Fa : Set S) ∪ (Fb : Set S))`. Establish `h₀₂ : R₀ ≤ R₂` using `fun x hx ↦ Subring.subset_closure (Or.inl (Or.inl hx))`.
+
+Establish `hFa : (Fa : Set S) ⊆ R₂` using `fun x hx ↦ Subring.subset_closure (Or.inl (Or.inr hx))`. Establish `hFb : (Fb : Set S) ⊆ R₂` using `fun x hx ↦ Subring.subset_closure (Or.inr hx)`. Take `⟨j₂, hj₂f, hj₂s, hj₂⟩` from `exists_isPullback_lift (spMap_subtype_comp h₀₂) hπ`. Take `⟨k₂, hk₂f, hk₂s, hk₂⟩` from `exists_isPullback_lift (spMap_subtype_comp h₀₂) hφ`. Take `⟨ψ₂, hψ₂, hψ₂q⟩` from `ha R₂ h₀₂ hFa _ _ _ j₂ (IsPullback.of_hasPullback _ _) hj₂f hj₂s`.
+
+Take `⟨χ₂, hχ₂, hχ₂q⟩` from `hb R₂ h₀₂ hFb _ _ _ k₂ (IsPullback.of_hasPullback _ _) hk₂f hk₂s`. Set `α₂` to `pullback.lift ψ₂ (pullback.snd f₀ (spMap (Subring.inclusion h₀₂))) (by rw [hψ₂q, pullback.condition])`. Set `β₂` to `pullback.lift χ₂ (pullback.snd q (spMap (Subring.inclusion h₀₂))) (by rw [hχ₂q, pullback.condition])`. Establish `hα₂f : α₂ ≫ pullback.fst _ _ = ψ₂` using `pullback.lift_fst _ _ _`. Establish `hα₂s : α₂ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+
+Establish `hβ₂f : β₂ ≫ pullback.fst _ _ = χ₂` using `pullback.lift_fst _ _ _`. Establish `hβ₂s : β₂ ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `hjα : j₂ ≫ α₂ = k₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hα₂f, hψ₂, hk₂f]`.
+
+Rewrite using `[Category.assoc, hα₂s, hj₂s, hk₂s]`. Establish `hkβ : k₂ ≫ β₂ = j₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hβ₂f, hχ₂, hj₂f]`. Rewrite using `[Category.assoc, hβ₂s, hj₂s, hk₂s]`.
+
+Take `⟨Fc, hc⟩` from `morphisms_eq_spread_to_subring S R₂ X _ _ f _ _ j₂ (α₂ ≫ β₂) (𝟙 _) hj₂ (by rw [Category.assoc, hβ₂s, hα₂s]) (Category.id_comp _) (by rw [reassoc_of% hjα, hkβ, Category.comp_id])`. Take `⟨Fd, hd⟩` from `morphisms_eq_spread_to_subring S R₂ X _ _ f _ _ k₂ (β₂ ≫ α₂) (𝟙 _) hk₂ (by rw [Category.assoc, hα₂s, hβ₂s]) (Category.id_comp _) (by rw [reassoc_of% hkβ, hjα, Category.comp_id])`. Use `⟨Fa ∪ Fb ∪ Fc ∪ Fd, fun R₁ hle hF X₁ f₁ π₁ j hp₁ hj₁ hjf ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_union, Set.union_subset_iff] at hF`. Take `⟨⟨⟨hFa₁, hFb₁⟩, hFc₁⟩, hFd₁⟩` from `hF`.
+
+Establish `h₂₁ : R₂ ≤ R₁` using `Subring.closure_le.mpr (Set.union_subset (Set.union_subset (fun x hx ↦ hle hx) hFa₁) hFb₁)`. Take `⟨m, hmf, hms, hm⟩` from `exists_isPullback_lift (w := spMap (Subring.inclusion hle)) (spMap_inclusion_comp h₀₂ h₂₁) hp₁`. Take `⟨n, hnf, hns, hn⟩` from `exists_isPullback_lift (w := spMap (Subring.inclusion hle)) (spMap_inclusion_comp h₀₂ h₂₁) (IsPullback.of_hasPullback q (spMap (Subring.inclusion hle)))`. Establish `hmc : m ≫ α₂ ≫ β₂ = m` using `(hc R₁ h₂₁ hFc₁ X₁ f₁ m hm).trans (Category.comp_id _)`. Establish `hnd : n ≫ β₂ ≫ α₂ = n` using `(hd R₁ h₂₁ hFd₁ _ _ n hn).trans (Category.comp_id _)`.
+
+Establish `hjm : j ≫ m = j₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hmf, hj₁, hj₂f]`. Rewrite using `[Category.assoc, hms, reassoc_of% hjf, spMap_subtype_comp, hj₂s]`. Establish `hw : (m ≫ ψ₂) ≫ q = f₁ ≫ spMap (Subring.inclusion hle)`.
+
+Rewrite using `[Category.assoc, hψ₂q, reassoc_of% hmf, hp₁.w]`. Set `α : X₁ ⟶ pullback q (spMap (Subring.inclusion hle))` to `pullback.lift (m ≫ ψ₂) f₁ hw`. Set `β : pullback q (spMap (Subring.inclusion hle)) ⟶ X₁` to `hp₁.lift (n ≫ χ₂) (pullback.snd _ _) (by rw [Category.assoc, hχ₂q, reassoc_of% hnf, pullback.condition])`. Establish `hαf : α ≫ pullback.fst _ _ = m ≫ ψ₂` using `pullback.lift_fst _ _ _`. Establish `hαs : α ≫ pullback.snd _ _ = f₁` using `pullback.lift_snd _ _ _`.
+
+Establish `hβf : β ≫ π₁ = n ≫ χ₂` using `hp₁.lift_fst _ _ _`. Establish `hβs : β ≫ f₁ = pullback.snd _ _` using `hp₁.lift_snd _ _ _`. Establish `hαn : α ≫ n = m ≫ α₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hnf, hαf, Category.assoc, hα₂f]`.
+
+Rewrite using `[Category.assoc, hns, reassoc_of% hαs, Category.assoc, hα₂s, hms]`. Establish `hβm : β ≫ m = n ≫ β₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hmf, hβf, Category.assoc, hβ₂f]`. Rewrite using `[Category.assoc, hms, reassoc_of% hβs, Category.assoc, hβ₂s, hns]`.
+
+Establish `h₁ : α ≫ β = 𝟙 X₁`. Apply `hp₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hβf, reassoc_of% hαn, Category.id_comp, ← hβ₂f, ← Category.assoc m, ← Category.assoc, Category.assoc m, hmc, hmf]`. Rewrite using `[Category.assoc, hβs, hαs, Category.id_comp]`. Establish `h₂ : β ≫ α = 𝟙 _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hαf, reassoc_of% hβm, Category.id_comp, ← hα₂f, ← Category.assoc n, ← Category.assoc, Category.assoc n, hnd, hnf]`. Rewrite using `[Category.assoc, hαs, hβs, Category.id_comp]`. Conclude with `⟨m ≫ ψ₂, by rw [reassoc_of% hjm, hψ₂], IsPullback.of_iso_pullback ⟨hw⟩ ⟨α, β, h₁, h₂⟩ hαf hαs⟩`.
+-/
 theorem iso_spreads_to_subring :
     ∀ (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ Z : Scheme.{0}) (f : X ⟶ Sp S) (f₀ : X₀ ⟶ Sp R₀) (q : Z ⟶ Sp R₀) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] [LocallyOfFinitePresentation f₀] [QuasiCompact q] [QuasiSeparated q] [LocallyOfFinitePresentation q] (φ : X ⟶ Z), IsPullback π f f₀ (spMap R₀.subtype) → IsPullback φ f q (spMap R₀.subtype) → ∃ F : Finset S, ∀ (R₁ : Subring S) (hle : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀) (j : X ⟶ X₁), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion hle)) → j ≫ π₁ = π → j ≫ f₁ = f ≫ spMap R₁.subtype → ∃ ψ : X₁ ⟶ Z, j ≫ ψ = φ ∧ IsPullback ψ f₁ q (spMap (Subring.inclusion hle)) := by
   classical

@@ -48,6 +48,9 @@ def RamBig (δ : ℝ) : Prop := 0 < dU D u ∧ (1 - δ) * (d0 D u : ℝ) ≤ (dU
 
 def UnfoldingConstantsPos : Prop := 0 < c0 D.s u
 
+/- English proof (translation)
+Take `⟨s, l, FF, hl, hi, h⟩` from `h`. Use `⟨FF, hi, fun φ h0 F => ?_⟩` and prove the remaining obligations. Establish `h1` using `h φ F`. Rewrite `h1` using `[h0, LinearMap.zero_apply, mul_zero]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hl`.
+-/
 theorem MIMap.miKer {Θ : Desc D u} (h : MIMap D u Θ) : MIKer D u Θ := by
   obtain ⟨s, l, FF, hl, hi, h⟩ := h
   refine ⟨FF, hi, fun φ h0 F => ?_⟩
@@ -55,6 +58,9 @@ theorem MIMap.miKer {Θ : Desc D u} (h : MIMap D u Θ) : MIKer D u Θ := by
   rw [h0, LinearMap.zero_apply, mul_zero] at h1
   exact (mul_eq_zero.1 h1.symm).resolve_left hl
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨F, hF⟩` from `h (D.s.Pu u x)`. Establish `h1` using `hx F`. Rewrite `h1` using `[hF]`. Conclude with `inner_self_eq_zero.1 h1`.
+-/
 theorem OntoAll.ontoP {Θ : Desc D u} (h : OntoAll D u Θ) : OntoP D u Θ := by
   intro x hx
   obtain ⟨F, hF⟩ := h (D.s.Pu u x)
@@ -62,15 +68,27 @@ theorem OntoAll.ontoP {Θ : Desc D u} (h : OntoAll D u Θ) : OntoP D u Θ := by
   rw [hF] at h1
   exact inner_self_eq_zero.1 h1
 
+/- English proof (translation)
+Take `⟨FF, hi, h⟩` from `h`. Conclude with `⟨FF, hi, fun φ h0 => h' _ (h φ h0)⟩`.
+-/
 theorem kerIncl_of {Θ : Desc D u} (h : MIKer D u Θ) (h' : OntoP D u Θ) : KerIncl D u := by
   obtain ⟨FF, hi, h⟩ := h
   exact ⟨FF, hi, fun φ h0 => h' _ (h φ h0)⟩
 
+/- English proof (translation)
+The claim follows from `(D.s_Cu u).finrank_eq`.
+-/
 theorem d0_eq : d0 D u = D.duS u := (D.s_Cu u).finrank_eq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, FF, one_ne_zero, h, fun _ _ => by simp⟩`.
+-/
 example (FF : (D.mem u).A.Mram →ₗ[ℂ] D.s.Cu u) (h : Function.Injective FF) : MIMap D u 0 :=
   ⟨0, 1, FF, one_ne_zero, h, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `h y`. Simplify using `using hF.symm`.
+-/
 example (h : OntoAll D u 0) (y : D.s.HH) : y = 0 := by
   obtain ⟨F, hF⟩ := h y
   simpa using hF.symm

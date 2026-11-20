@@ -29,6 +29,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   {V : HSpace E} (Φ : WittFrame V) (hc : CMData F E) (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `hR R hc.sig V.gram _ _ = inclR R (V.hT _ _)`. Rewrite using `[IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord]`. Simplify using `[hR, Formalism.UG.hform, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, JR, inclR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, CMData.sig, TensorProduct.tmul_sum, starRingEnd_apply]`.
+-/
 theorem hLin_coordR (x y : V.V) :
     hLin hc.sig V.gram R (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R x) (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR V R y) = inclR R (V.hD x y) := by
   change hR R hc.sig V.gram _ _ = inclR R (V.hT _ _)
@@ -36,6 +39,11 @@ theorem hLin_coordR (x y : V.V) :
   simp [hR, Formalism.UG.hform, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR, JR, inclR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, CMData.sig, TensorProduct.tmul_sum,
     starRingEnd_apply]
 
+/- English proof (translation)
+Establish `h` using `V.herm.eq (Φ.f i) (Φ.e j)`. Simplify using `only [HSpace.hD] at *`. Establish `e2` using `Φ.ef j i`. Simplify using `only [HSpace.hD] at e2`. Rewrite using `[← h, e2]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hij), if_neg hij, map_zero]`.
+-/
 theorem hD_f_e (i j : Fin (wittIndex V)) : V.hD (Φ.f i) (Φ.e j) = if i = j then 1 else 0 := by
   have h := V.herm.eq (Φ.f i) (Φ.e j)
   simp only [HSpace.hD] at *
@@ -46,6 +54,13 @@ theorem hD_f_e (i j : Fin (wittIndex V)) : V.hD (Φ.f i) (Φ.e j) = if i = j the
   · subst hij; simp
   · rw [if_neg (Ne.symm hij), if_neg hij, map_zero]
 
+/- English proof (translation)
+Establish `hij : (i = j) ↔ (j.1 = i.1)` using `by rw [Subtype.ext_iff, eq_comm]`. Simplify using `only [bas, dbas]`. Apply the tactic sequence `by_cases hj : u j.1 = -1 <;> by_cases hi : u i.1 = -1`. Rewrite using `[if_pos hj, if_pos hi, hD_f_e]`. Conclude with `if_congr hij.symm rfl rfl`.
+
+Rewrite using `[if_pos hj, if_neg hi, Φ.ff, if_neg]`. Introduce `h`. Rewrite `hi` using `[h]`. Conclude with `hi hj`. Rewrite using `[if_neg hj, if_pos hi, Φ.ee, if_neg]`.
+
+Introduce `h`. Rewrite `hi` using `[h]`. Conclude with `hj hi`. Rewrite using `[if_neg hj, if_neg hi, Φ.ef]`. Conclude with `if_congr hij.symm rfl rfl`.
+-/
 theorem hD_bas_dbas (u : SV (wittIndex V)) (i j : Supp u) :
     V.hD (bas Φ u j) (dbas Φ u i) = if i = j then 1 else 0 := by
   have hij : (i = j) ↔ (j.1 = i.1) := by rw [Subtype.ext_iff, eq_comm]
@@ -56,11 +71,17 @@ theorem hD_bas_dbas (u : SV (wittIndex V)) (i j : Supp u) :
   · rw [if_neg hj, if_pos hi, Φ.ee, if_neg]; intro h; rw [h] at hi; exact hj hi
   · rw [if_neg hj, if_neg hi, Φ.ef]; exact if_congr hij.symm rfl rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [detMat, Matrix.of_apply, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_one, hLin_coordR, hD_bas_dbas, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [inclR, Algebra.TensorProduct.one_def]`.
+-/
 theorem detMat_one (u : SV (wittIndex V)) : detMat Φ hc R u 1 = 1 := by
   ext i j
   simp only [detMat, Matrix.of_apply, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act_one, hLin_coordR, hD_bas_dbas, Matrix.one_apply]
   split_ifs <;> simp [inclR, Algebra.TensorProduct.one_def]
 
+/- English proof (translation)
+Rewrite using `[detU, detMat_one, Matrix.det_one]`.
+-/
 theorem detU_one (u : SV (wittIndex V)) : detU Φ hc R u 1 = 1 := by
   rw [detU, detMat_one, Matrix.det_one]
 
@@ -74,6 +95,9 @@ variable {D : D7} {V : HSp D} (Φ : WittFrame V) (u : SV (wittIndex V))
 
 local notation "PU" => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub u)
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.T.parabolic_determinant_multiplicative Φ D.sp.cm (AF D.host.F) u _ _ p.2 (p⁻¹).2, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, detU_one]`.
+-/
 theorem detU_mul_inv (p : PU) :
     detU Φ D.sp.cm (AF D.host.F) u (p : GA D V) * detU Φ D.sp.cm (AF D.host.F) u ((p⁻¹ : PU) : GA D V) = 1 := by
   rw [← GlobalTheory.T.parabolic_determinant_multiplicative Φ D.sp.cm (AF D.host.F) u _ _ p.2 (p⁻¹).2, ← Subgroup.coe_mul, mul_inv_cancel,
@@ -94,9 +118,17 @@ def delta : PU →* ℝ≥0 where
   map_mul' p q := by
     rw [Subgroup.coe_mul, GlobalTheory.T.parabolic_determinant_multiplicative Φ D.sp.cm (AF D.host.F) u _ _ p.2 q.2, absA_mul]
 
+/- English proof (translation)
+Rewrite using `[← absA_unit]`. Both sides reduce to the same expression.
+-/
 theorem delta_eq (p : PU) : delta Φ u p = Doubling.absE D.host.F D.host.E (detUnit Φ u p) := by
   rw [← absA_unit]; rfl
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `hm : Continuous fun g : GA D V => (HA.mat _ D.sp.cm.sig V.gram g).1` using `Units.continuous_val.comp continuous_subtype_val`. Use `Continuous.matrix_det (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Simplify using `only [detMat, Matrix.of_apply, hLin, hR_eq, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act]`.
+
+Conclude with `continuous_const.dotProduct (continuous_const.matrix_mulVec (hm.matrix_mulVec continuous_const))`.
+-/
 theorem continuous_detU : Continuous fun g : GA D V => detU Φ D.sp.cm (AF D.host.F) u g := by
   have : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
   have : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (AF D.host.F) _
@@ -106,6 +138,11 @@ theorem continuous_detU : Continuous fun g : GA D V => detU Φ D.sp.cm (AF D.hos
   simp only [detMat, Matrix.of_apply, hLin, hR_eq, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.act]
   exact continuous_const.dotProduct (continuous_const.matrix_mulVec (hm.matrix_mulVec continuous_const))
 
+/- English proof (translation)
+Establish `h : Continuous fun p : PU => detU Φ D.sp.cm (AF D.host.F) u (p : GA D V)` using `(continuous_detU Φ u).comp continuous_subtype_val`. Establish `hu : Continuous (detUnit Φ u)` using `Units.continuous_iff.2 ⟨h, h.comp continuous_inv⟩`. Establish `: (delta Φ u : PU → ℝ≥0) = fun p => Doubling.absE D.host.F D.host.E (detUnit Φ u p)`. Use function extensionality and compare the values at `(delta_eq Φ u)`. Rewrite using `[this]`.
+
+Conclude with `Doubling.continuous_absE.comp hu`.
+-/
 theorem continuous_delta : Continuous (delta Φ u) := by
   have h : Continuous fun p : PU => detU Φ D.sp.cm (AF D.host.F) u (p : GA D V) :=
     (continuous_detU Φ u).comp continuous_subtype_val
@@ -117,6 +154,9 @@ theorem continuous_delta : Continuous (delta Φ u) := by
 
 end GlobalTheory.LeviShift.CptTriv
 
+/- English proof (translation)
+Introduce `D V Φ L a hG u k hk hp`. Use `Doubling.t2Space_adeleRing' (F := D.host.F)` as an intermediate fact. Conclude with `Doubling.triv_of_isCompact (δ := GlobalTheory.LeviShift.CptTriv.delta Φ u) (GlobalTheory.Cusp.isClosed_parab (hc := D.sp.cm) (V := V) (R := AF D.host.F) (Φ.sub u)) (GlobalTheory.LeviShift.CptTriv.continuous_delta Φ u) hG.isCompact ⟨k, hp⟩ hk`.
+-/
 theorem GlobalTheory.LeviShift.CptTriv.absA_detU_eq_one : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ (u : SV (wittIndex V)) (k : GA D V), k ∈ levelAll D.sp.cm.sig V.gram L a → k ∈ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (AF D.host.F) (Φ.sub u) → absA D.host.F D.host.E (detU Φ D.sp.cm (AF D.host.F) u k) = 1 := by
   intro D V Φ L a hG u k hk hp
   have := Doubling.t2Space_adeleRing' (F := D.host.F)

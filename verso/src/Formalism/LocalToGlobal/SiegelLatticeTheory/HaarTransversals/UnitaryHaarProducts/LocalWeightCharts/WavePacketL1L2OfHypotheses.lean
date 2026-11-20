@@ -11,17 +11,29 @@ namespace AQ
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 theorem opn_nonneg (M : Mat k r) : 0 ≤ opn M := norm_nonneg _
 
+/- English proof (translation)
+Unfold `opn`. Rewrite using `[map_mul]`. Conclude with `norm_mul_le _ _`.
+-/
 theorem opn_mul (A B : Mat k r) : opn (A * B) ≤ opn A * opn B := by
   unfold opn
   rw [map_mul]
   exact norm_mul_le _ _
 
+/- English proof (translation)
+Unfold `opn`. Rewrite using `[← Matrix.star_eq_conjTranspose, map_star, norm_star]`.
+-/
 theorem opn_conjTranspose (A : Mat k r) : opn Aᴴ = opn A := by
   unfold opn
   rw [← Matrix.star_eq_conjTranspose, map_star, norm_star]
 
+/- English proof (translation)
+Unfold `opn`. Rewrite using `[map_one]`. Conclude with `norm_one`.
+-/
 theorem opn_one : opn (1 : Mat k r) = 1 := by
   unfold opn; rw [map_one]; exact norm_one
 
@@ -30,6 +42,9 @@ local instance instAlgCLM (n : ℕ) :
 local instance instModCLM (n : ℕ) :
     Module ℂ (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) := ContinuousLinearMap.module
 
+/- English proof (translation)
+Unfold `opn`. Establish `h : Continuous (fun M : Mat k r => Matrix.toEuclideanCLM (n` using `Fin (2 * r + k + 1)) (𝕜 := ℂ) M) := LinearMap.continuous_of_finiteDimensional ((Matrix.toEuclideanCLM (n := Fin (2 * r + k + 1)) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toLinearMap)`. Conclude with `continuous_norm.comp h`.
+-/
 theorem opn_continuous : Continuous (fun M : Mat k r => opn M) := by
   unfold opn
   have h : Continuous (fun M : Mat k r => Matrix.toEuclideanCLM (n := Fin (2 * r + k + 1)) (𝕜 := ℂ) M) :=
@@ -37,8 +52,18 @@ theorem opn_continuous : Continuous (fun M : Mat k r => opn M) := by
       ((Matrix.toEuclideanCLM (n := Fin (2 * r + k + 1)) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toLinearMap)
   exact continuous_norm.comp h
 
+/- English proof (translation)
+Unfold `N1H`. Check the signs of the components of the expression.
+-/
 theorem nilradical_half_sum_nonneg : 0 ≤ N1H k r := by unfold N1H; positivity
 
+/- English proof (translation)
+Establish `h1 : opn (1 : Mat k r) ≤ opn g⁻¹ * opn g` using `by rw [← Grp.inv_mul hg]; exact opn_mul _ _`. Establish `h2 : opn g⁻¹ ≤ opn (Formalism.QuantumDeterminants.Hpk k r) * opn g * opn (Formalism.QuantumDeterminants.Hpk k r)`. Rewrite using `[Grp.inv_eq hg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[opn_one]`.
+
+Establish `h0` using `opn_nonneg g`. Establish `hH` using `opn_nonneg (Formalism.QuantumDeterminants.Hpk k r)`. Establish `h3 : 1 ≤ (opn (Formalism.QuantumDeterminants.Hpk k r) * opn g) ^ 2` using `by nlinarith`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Use `pow_lt_one₀ (mul_nonneg hH h0) hlt two_ne_zero` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_opn {g : Mat k r} (hg : g ∈ Gr k r) : 1 ≤ opn (Formalism.QuantumDeterminants.Hpk k r) * opn g := by
   have h1 : opn (1 : Mat k r) ≤ opn g⁻¹ * opn g := by rw [← Grp.inv_mul hg]; exact opn_mul _ _
   have h2 : opn g⁻¹ ≤ opn (Formalism.QuantumDeterminants.Hpk k r) * opn g * opn (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -57,15 +82,24 @@ theorem one_le_opn {g : Mat k r} (hg : g ∈ Gr k r) : 1 ≤ opn (Formalism.Quan
   have := pow_lt_one₀ (mul_nonneg hH h0) hlt two_ne_zero
   linarith
 
+/- English proof (translation)
+Rewrite using `[← Real.mul_rpow (opn_nonneg _) (opn_nonneg _)]`. Conclude with `Real.one_le_rpow (one_le_opn hg) nilradical_half_sum_nonneg`.
+-/
 theorem one_le_opn_Hpk_rpow_mul_opn_rpow {g : Mat k r} (hg : g ∈ Gr k r) :
     1 ≤ opn (Formalism.QuantumDeterminants.Hpk k r) ^ N1H k r * opn g ^ N1H k r := by
   rw [← Real.mul_rpow (opn_nonneg _) (opn_nonneg _)]
   exact Real.one_le_rpow (one_le_opn hg) nilradical_half_sum_nonneg
 
+/- English proof (translation)
+Rewrite using `[← Real.mul_rpow (opn_nonneg _) (opn_nonneg _)]`. Conclude with `Real.rpow_le_rpow (opn_nonneg _) (opn_mul _ _) nilradical_half_sum_nonneg`.
+-/
 theorem opn_rpow_mul (a b : Mat k r) : opn (a * b) ^ N1H k r ≤ opn a ^ N1H k r * opn b ^ N1H k r := by
   rw [← Real.mul_rpow (opn_nonneg _) (opn_nonneg _)]
   exact Real.rpow_le_rpow (opn_nonneg _) (opn_mul _ _) nilradical_half_sum_nonneg
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Establish `: {p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r | ¬ Matrix.of p.1 ∈ U} = {x | Matrix.of x ∉ U} ×ˢ Set.univ` using `by ext p; simp`. Rewrite using `[this, Measure.prod_prod, hU, zero_mul]`.
+-/
 theorem ae_fst {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} [SFinite μN] {U : Set (Mat k r)}
     (hU : μW {x | Matrix.of x ∉ U} = 0) : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ U := by
   rw [ae_iff]
@@ -73,6 +107,9 @@ theorem ae_fst {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} [SFini
       {x | Matrix.of x ∉ U} ×ˢ Set.univ := by ext p; simp
   rw [this, Measure.prod_prod, hU, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Establish `: {p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r | ¬ Matrix.of p.2 ∈ U} = Set.univ ×ˢ {x | Matrix.of x ∉ U}` using `by ext p; simp`. Rewrite using `[this, Measure.prod_prod, hU, mul_zero]`.
+-/
 theorem ae_snd {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} [SFinite μN] {U : Set (Mat k r)}
     (hU : μN {x | Matrix.of x ∉ U} = 0) : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ U := by
   rw [ae_iff]
@@ -86,10 +123,18 @@ variable {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {H : Type} [Norme
   [InnerProductSpace ℂ H] {σ : Mat k r → (H →L[ℂ] H)} {Vp : Type} [NormedAddCommGroup Vp]
   [InnerProductSpace ℂ Vp] {π : Mat k r → (Vp →L[ℂ] Vp)}
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (T : H →ₗ[ℂ] H), norm_map' := hT }`. Conclude with `L.inner_map_map u v`.
+-/
 theorem inner_iso {T : H →L[ℂ] H} (hT : ∀ v, ‖T v‖ = ‖v‖) (u v : H) : ⟪T u, T v⟫_ℂ = ⟪u, v⟫_ℂ := by
   let L : H →ₗᵢ[ℂ] H := { toLinearMap := (T : H →ₗ[ℂ] H), norm_map' := hT }
   exact L.inner_map_map u v
 
+/- English proof (translation)
+Establish `hm : σ (Matrix.of p.1 * Matrix.of p.2 * x) = (σ (Matrix.of p.1 * Matrix.of p.2)).comp (σ x)` using `hσ.1.2 _ hpG _ hx`. Establish `hmP : Matrix.of (mulP p) = Matrix.of p.1 * Matrix.of p.2` using `rfl`. Establish `hr : ‖bInt z c σ π w' ξ (σ x w) p‖ = ‖ξ‖ * ‖⟪w', σ (Matrix.of (mulP p) * x) w⟫_ℂ‖`. Unfold `bInt`. Rewrite using `[norm_smul, norm_mul, norm_star, hψ, hπ, hmP, hm, ContinuousLinearMap.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ofReal_norm, hr, ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ofReal_norm]`.
+-/
 theorem bInt_enorm (hσ : IsURepOn (Gr k r) σ) {x : Mat k r} (hx : x ∈ Gr k r) (w' w : H) (ξ : Vp)
     (p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) (hpG : Matrix.of p.1 * Matrix.of p.2 ∈ Gr k r)
     (hψ : ‖psiGen k r z c (Matrix.of p.2)‖ = 1) (hπ : ‖π (Matrix.of p.1)⁻¹ ξ‖ = ‖ξ‖) :
@@ -114,6 +159,9 @@ variable {z : Fin (2 * r + k + 1) → ℂ} {c : Fin r → ℂ} {u : Fin k → �
   [FiniteDimensional ℂ Vp] {π : Mat k r → (Vp →L[ℂ] Vp)} {w : H}
   {μG μS ν μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
 
+/- English proof (translation)
+Take `⟨hset, hDS, hHC, -⟩` from `hyp`. Take `⟨-, -, hz, hT, -⟩` from `hset`. Take `⟨hW, hN, hWg, hNg, -⟩` from `hSG k r z c hz hT`. Use `⟨hSig k r _ _ H σ hDS, hW, hN, fun h hh => (hWg h hh h hh).2.1, fun m hm => (hNg m hm m hm).2.2.2.2, (hPU k r z u Vp π hz hT hHC).2⟩` and prove the remaining obligations.
+-/
 theorem facts (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) :
     IsURepOn (Gr k r) σ ∧ Formalism.QuantumDeterminants.UWset k r z ⊆ Gr k r ∧ Formalism.QuantumDeterminants.Nset k r ⊆ Gr k r ∧
       (∀ h ∈ Formalism.QuantumDeterminants.UWset k r z, h⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z) ∧
@@ -129,6 +177,15 @@ def wcoef (σ : Mat k r → (H →L[ℂ] H)) (w' w : H) (e : ℝ) (y : Formalism
   {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}.indicator
     (fun y => ENNReal.ofReal (‖⟪w', σ (Matrix.of y) w⟫_ℂ‖ * opn (Matrix.of y) ^ e)) y
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (fun y : Formalism.QuantumDeterminants.Mt k r => σ (Matrix.of y) w) {y | Matrix.of y ∈ Gr k r}` using `(hσ.2.2 w).comp Grp.continuous_of.continuousOn (fun y hy => hy)`. Establish `h2` using `ContinuousOn.inner (𝕜 := ℂ) (continuousOn_const (c := w')) h1`. Establish `h3 : ContinuousOn (fun y : Formalism.QuantumDeterminants.Mt k r => opn (Matrix.of y) ^ e) {y | Matrix.of y ∈ Gr k r}` using `((opn_continuous.comp Grp.continuous_of).continuousOn).rpow_const (fun _ _ => Or.inr he)`. Establish `hc` using `ENNReal.continuous_ofReal.comp_continuousOn (h2.norm.mul h3)`. Establish `hm` using `ContinuousOn.measurable_piecewise hc (continuous_const (y := (0 : ℝ≥0∞))).continuousOn Grp.measurableSet_Gr`.
+
+Establish `heq : wcoef σ w' w e = {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}.piecewise (ENNReal.ofReal ∘ ((fun x => ‖⟪w', σ (Matrix.of x) w⟫_ℂ‖) * fun y => opn (Matrix.of y) ^ e)) (fun _ => 0)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hy]`. Unfold `wcoef`.
+
+Rewrite using `[Set.indicator_of_mem hy]`. Both sides reduce to the same expression. Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hy]`. Unfold `wcoef`. Rewrite using `[Set.indicator_of_notMem hy]`.
+
+Rewrite using `[heq]`. Conclude with `hm`.
+-/
 theorem wcoef_meas (hσ : IsURepOn (Gr k r) σ) (w' w : H) {e : ℝ} (he : 0 ≤ e) :
     Measurable (wcoef σ w' w e) := by
   have h1 : ContinuousOn (fun y : Formalism.QuantumDeterminants.Mt k r => σ (Matrix.of y) w) {y | Matrix.of y ∈ Gr k r} :=
@@ -149,6 +206,17 @@ theorem wcoef_meas (hσ : IsURepOn (Gr k r) σ) (w' w : H) {e : ℝ} (he : 0 ≤
   rw [heq]
   exact hm
 
+/- English proof (translation)
+Establish `hDecI` using `hDec hCW k r z c u v b H σ Vp π w μG μS ν μW μN hyp`. Take `⟨-, -, -, -, hG, -⟩` from `hyp`. Establish `hGinv` using `hG.2.2.2 x₀ hx₀`. Establish `hlm : Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) x₀) := by`. Establish `: Continuous (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) x₀) := continuous_const.matrix_mul Grp.continuous_of`.
+
+Conclude with `this.measurable`. Establish `hmeas` using `wcoef_meas hσ (σ x₀ w) w (nilradical_half_sum_nonneg (k := k) (r := r))`. Rewrite using `[← hGinv, lintegral_map hmeas hlm]`. Establish `hae : ∀ᵐ y ∂μG, Matrix.of y ∈ Gr k r` using `ae_iff.mpr hG.2.2.1`. Establish `hbound : ∀ᵐ y ∂μG, wcoef σ (σ x₀ w) w (N1H k r) (Formalism.QuantumDeterminants.lmulM x₀ y) ≤ ENNReal.ofReal (opn x₀ ^ N1H k r) * (‖⟪w, σ (Matrix.of y) w⟫_ℂ‖ₑ * ENNReal.ofReal (opn (Matrix.of y) ^ N1H k r))` using `by filter_upwards [hae] with y hy`.
+
+Establish `hxy : Matrix.of (Formalism.QuantumDeterminants.lmulM x₀ y) ∈ Gr k r` using `Grp.mul_mem hx₀ hy`. Unfold `wcoef`. Rewrite using `[Set.indicator_of_mem (show Formalism.QuantumDeterminants.lmulM x₀ y ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r} from hxy)]`. Use `show ENNReal.ofReal (‖⟪σ x₀ w, σ (x₀ * Matrix.of y) w⟫_ℂ‖ * opn (x₀ * Matrix.of y) ^ N1H k r) ≤ _`. Establish `hm : σ (x₀ * Matrix.of y) w = σ x₀ (σ (Matrix.of y) w)`.
+
+Rewrite using `[hσ.1.2 x₀ hx₀ _ hy]`. Both sides reduce to the same expression. Rewrite using `[hm, inner_iso (hσ.2.1 x₀ hx₀), ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul (Real.rpow_nonneg (opn_nonneg _) _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `opn_rpow_mul x₀ (Matrix.of y)` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem G_int (hDec : Decay) (hCW : CoefWeightedLoc) (hσ : IsURepOn (Gr k r) σ)
     (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) {x₀ : Mat k r} (hx₀ : x₀ ∈ Gr k r) :
     ∫⁻ y, wcoef σ (σ x₀ w) w (N1H k r) y ∂μG < ⊤ := by
@@ -190,6 +258,13 @@ theorem G_int (hDec : Decay) (hCW : CoefWeightedLoc) (hσ : IsURepOn (Gr k r) σ
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hDecI
 
+/- English proof (translation)
+Unfold `wcoef`. Distinguish the cases in `hy : Matrix.of y ∈ Gr k r`. Establish `hy' : y ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}` using `hy`. Rewrite using `[Set.indicator_of_mem hy', Set.indicator_of_mem hy', Real.rpow_zero, mul_one, ← ENNReal.ofReal_mul (Real.rpow_nonneg (opn_nonneg _) _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Establish `h1` using `one_le_opn_Hpk_rpow_mul_opn_rpow hy`. Establish `h0` using `norm_nonneg (⟪w', σ (Matrix.of y) w⟫_ℂ)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hy' : y ∉ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}` using `hy`. Rewrite using `[Set.indicator_of_notMem hy']`.
+
+Conclude with `zero_le`.
+-/
 theorem wcoef_zero_le (w' w : H) (y : Formalism.QuantumDeterminants.Mt k r) :
     wcoef σ w' w 0 y ≤ ENNReal.ofReal (opn (Formalism.QuantumDeterminants.Hpk k r) ^ N1H k r) * wcoef σ w' w (N1H k r) y := by
   unfold wcoef
@@ -205,6 +280,15 @@ theorem wcoef_zero_le (w' w : H) (y : Formalism.QuantumDeterminants.Mt k r) :
     rw [Set.indicator_of_notMem hy']
     exact zero_le
 
+/- English proof (translation)
+Take `⟨hσ, hWG, hNG, hWinv, hψ, hπ⟩` from `facts hSG hPU hSig hyp`. Take `⟨-, -, -, -, -, -, -, hW, hN, -⟩` from `hyp`. Use `hN.1` as an intermediate fact. Establish `hWc` using `ae_fst (μN := μN) hW.2.2.1`. Establish `hNc` using `ae_snd (μW := μW) hN.2.2.1`.
+
+Use `show ‖∫ p, bInt z c σ π (σ x₀ w) ξ (σ (Matrix.of x) w) p ∂(μW.prod μN)‖ₑ * ENNReal.ofReal q ≤ _`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hWc, hNc] with p h1 h2`. Establish `hpG : Matrix.of p.1 * Matrix.of p.2 ∈ Gr k r` using `Grp.mul_mem (hWG h1) (hNG h2)`.
+
+Rewrite using `[bInt_enorm hσ hx (σ x₀ w) w ξ p hpG (hψ _ h2) (hπ _ (hWinv _ h1) ξ)]`. Establish `hyG : Matrix.of (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∈ Gr k r` using `Grp.mul_mem hpG hx`. Unfold `wcoef`. Rewrite using `[Set.indicator_of_mem (show (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r} from hyG), ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, mul_assoc]`. Use `gcongr`.
+
+Conclude with `le_rfl`. Conclude with `hqle _ ⟨_, h1, _, h2, rfl⟩`. Use `_ = ‖ξ‖ₑ * ∫⁻ p, wcoef σ (σ x₀ w) w e (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∂(μW.prod μN) := lintegral_const_mul' _ _ enorm_ne_top`.
+-/
 theorem A_bound (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN)
     (x₀ : Mat k r) (ξ : Vp) (x : Formalism.QuantumDeterminants.Mt k r) (hx : Matrix.of x ∈ Gr k r) (e q : ℝ)
     (hqle : ∀ s ∈ Formalism.QuantumDeterminants.Sset k r z, q ≤ opn (s * Matrix.of x) ^ e) :
@@ -239,6 +323,13 @@ theorem A_bound (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hyp : Hyp k r z c u
     _ = ‖ξ‖ₑ * ∫⁻ p, wcoef σ (σ x₀ w) w e (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j)
         ∂(μW.prod μN) := lintegral_const_mul' _ _ enorm_ne_top
 
+/- English proof (translation)
+Take `⟨cS, -, hcS, hU⟩` from `unfold_of hSP hyp`. Establish `hnu` using `nu_conc_of hSG hyp`. Establish `hσ` using `(facts hSG hPU hSig hyp).1`. Establish `hae : ∀ᵐ x ∂ν, Matrix.of x ∈ Gr k r` using `ae_iff.mpr hnu`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`. Conclude with `A_bound hSG hPU hSig hyp x₀ ξ x hx e (q x) (hqle x hx)`. Use `_ = ‖ξ‖ₑ * (cS * ∫⁻ y, wcoef σ (σ x₀ w) w e y ∂μG) := by`. Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top, hU _ (wcoef_meas hσ _ _ he)]`.
+
+Use `_ < ⊤ := ENNReal.mul_lt_top enorm_lt_top (ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hcS) hfin)`.
+-/
 theorem nu_bound (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd)
     (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) (x₀ : Mat k r) (ξ : Vp) (e : ℝ) (he : 0 ≤ e)
     (hfin : ∫⁻ y, wcoef σ (σ x₀ w) w e y ∂μG < ⊤) (q : Formalism.QuantumDeterminants.Mt k r → ℝ)
@@ -258,6 +349,9 @@ theorem nu_bound (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd)
         rw [lintegral_const_mul' _ _ enorm_ne_top, hU _ (wcoef_meas hσ _ _ he)]
     _ < ⊤ := ENNReal.mul_lt_top enorm_lt_top (ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hcS) hfin)
 
+/- English proof (translation)
+Establish `hσ` using `(facts hSG hPU hSig hyp).1`. Establish `hfin : ∫⁻ y, wcoef σ (σ x₀ w) w 0 y ∂μG < ⊤`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `nu_bound hSG hPU hSig hSP hyp x₀ ξ 0 le_rfl hfin (fun _ => 1) (fun x _ s _ => by rw [Real.rpow_zero])`. Simplify `h` using `only [ENNReal.ofReal_one, mul_one]`.
+-/
 theorem wave_packet_l1_finite (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd) (hDec : Decay)
     (hCW : CoefWeightedLoc) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN)
     {x₀ : Mat k r} (hx₀ : x₀ ∈ Gr k r) (ξ : Vp) :
@@ -274,6 +368,11 @@ theorem wave_packet_l1_finite (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP :
     (fun x _ s _ => by rw [Real.rpow_zero])
   simpa only [ENNReal.ofReal_one, mul_one] using h
 
+/- English proof (translation)
+Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp _ hCW x₀ hx₀ ξ`. Establish `hσ` using `(facts hSG hPU hSig hyp).1`. Use `nu_bound hSG hPU hSig hSP hyp x₀ ξ (N1H k r) nilradical_half_sum_nonneg (G_int hDec hCW hσ hyp hx₀) (fun x => nuH k r z (Matrix.of x) ^ N1H k r) ?_` and prove the remaining obligations. Introduce `x _ s hs`. Establish `hbdd : BddBelow (Set.range fun t : Formalism.QuantumDeterminants.Sset k r z => opn ((t : Mat k r) * Matrix.of x))` using `⟨0, by rintro _ ⟨t, rfl⟩; exact opn_nonneg _⟩`.
+
+Establish `h1 : nuH k r z (Matrix.of x) ≤ opn (s * Matrix.of x)` using `ciInf_le hbdd (⟨s, hs⟩ : Formalism.QuantumDeterminants.Sset k r z)`. Establish `h0 : 0 ≤ nuH k r z (Matrix.of x)` using `Real.iInf_nonneg (fun t => opn_nonneg _)`. Conclude with `Real.rpow_le_rpow h0 h1 nilradical_half_sum_nonneg`.
+-/
 theorem aWeighted_of (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd) (hDec : Decay) :
     AWeighted := by
   intro k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp _ hCW x₀ hx₀ ξ
@@ -288,6 +387,27 @@ theorem aWeighted_of (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd) (
   have h0 : 0 ≤ nuH k r z (Matrix.of x) := Real.iInf_nonneg (fun t => opn_nonneg _)
   exact Real.rpow_le_rpow h0 h1 nilradical_half_sum_nonneg
 
+/- English proof (translation)
+Take `⟨hset, -, -, -, -, -, -, hW, hN, hWfin, hNK⟩` from `hyp`. Take `⟨-, -, hz, hT, -⟩` from `hset`. Take `⟨hWG, hNG, hWg, hNg, hconj⟩` from `hSG k r z c hz hT`. Establish `hhG` using `hWG hh`. Establish `hmG` using `hNG hm`.
+
+Establish `hhi : h⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z` using `(hWg h hh h hh).2.1`. Establish `hih : h⁻¹ * h = 1` using `Grp.inv_mul hhG`. Establish `hhi' : h * h⁻¹ = 1` using `Grp.mul_inv hhG`. Establish `hinv2 : (h⁻¹)⁻¹ = h` using `Matrix.nonsing_inv_nonsing_inv h (Matrix.isUnit_det_of_right_inverse hhi')`. Establish `hmi : m⁻¹ ∈ Formalism.QuantumDeterminants.Nset k r` using `(hNg m hm m hm).2.1`.
+
+Establish `hmim : m⁻¹ * m = 1` using `Grp.inv_mul hmG`. Take `⟨hm₀, -⟩` from `hconj h⁻¹ hhi m⁻¹ hmi`. Rewrite `hm₀` using `[hinv2]`. Take `⟨m₀, hm₀def⟩ : ∃ m₀ : Mat k r, m₀ = h * m⁻¹ * h⁻¹` from `⟨_, rfl⟩`. Rewrite `hm₀` using `[← hm₀def]`.
+
+Establish `hm₀G` using `hNG hm₀`. Establish `hW1` using `hWR k r z μW hz hT hW hWfin h⁻¹ hhi`. Establish `hN1` using `hNU k r z μN hz hT hN hNK h⁻¹ hhi m₀ hm₀`. Rewrite `hN1` using `[hinv2]`. Establish `h3 : h⁻¹ * m₀ * (m₀⁻¹ * h) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, AE.cancel (Grp.mul_inv hm₀G), hih]`. Establish `h4 : m₀⁻¹ * h * (h⁻¹ * m₀) = 1`. Rewrite using `[Matrix.mul_assoc, AE.cancel hhi', Grp.inv_mul hm₀G]`. Set `e₁` to `AE.affE (k := k) (r := r) 1 1 h⁻¹ h (Matrix.one_mul 1) (Matrix.one_mul 1) hih hhi'`. Set `e₂` to `AE.affE (k := k) (r := r) h h⁻¹ (h⁻¹ * m₀) (m₀⁻¹ * h) hih hhi' h3 h4`.
+
+Establish `he₁ : μW.map e₁ = μW`. Establish `: (e₁ : Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r) = fun x => fun i j => (Matrix.of x * h⁻¹) i j`. Use function extensionality and compare the values at `x i j`. Use `show ((1 : Mat k r) * Matrix.of x * h⁻¹) i j = _`. Rewrite using `[Matrix.one_mul]`.
+
+Rewrite using `[this, hW1]`. Establish `he₂ : μN.map e₂ = μN`. Establish `: (e₂ : Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r) = fun x => fun i j => (h * Matrix.of x * h⁻¹ * m₀) i j`. Use function extensionality and compare the values at `x i j`. Use `show (h * Matrix.of x * (h⁻¹ * m₀)) i j = _`.
+
+Rewrite using `[← Matrix.mul_assoc (h * Matrix.of x)]`. Rewrite using `[this, hN1]`. Use `⟨e₁.prodCongr e₂, ?_, ?_⟩` and prove the remaining obligations. Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact.
+
+Use `show (μW.prod μN).map (Prod.map e₁ e₂) = _`. Rewrite using `[← Measure.map_prod_map μW μN e₁.measurable e₂.measurable, he₁, he₂]`. Introduce `p show (1 * Matrix.of p.1 * h⁻¹) * (h * Matrix.of p.2 * (h⁻¹ * m₀)) * (h * m) = _`. Rewrite using `[hm₀def]`. Simplify using `only [Matrix.one_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[AE.cancel hih, AE.cancel hih, AE.cancel hih, hmim, Matrix.mul_one]`.
+-/
 theorem substE (hSG : SGrp) (hWR : WRightInv) (hNU : NUnimod) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN)
     {h m : Mat k r} (hh : h ∈ Formalism.QuantumDeterminants.UWset k r z) (hm : m ∈ Formalism.QuantumDeterminants.Nset k r) :
     ∃ E : (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) ≃ᵐ (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r),
@@ -346,6 +466,11 @@ theorem substE (hSG : SGrp) (hWR : WRightInv) (hNU : NUnimod) (hyp : Hyp k r z c
 def aF (σ : Mat k r → (H →L[ℂ] H)) (w' w : H) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (x : Mat k r) : ℝ≥0∞ :=
   ∫⁻ p, wcoef σ w' w 0 (fun i j => (Matrix.of (mulP p) * x) i j) ∂(μW.prod μN)
 
+/- English proof (translation)
+Take `⟨E, hE, hEp⟩` from `substE hSG hWR hNU hyp hh hm`. Unfold `aF`. Use `conv_lhs => rw [← hE]`. Rewrite using `[lintegral_map_equiv]`. Use `lintegral_congr (fun p => ?_)` and prove the remaining obligations.
+
+Use `show wcoef σ w' w 0 (fun i j => (Matrix.of (E p).1 * Matrix.of (E p).2 * (h * m * x)) i j) = wcoef σ w' w 0 (fun i j => (Matrix.of p.1 * Matrix.of p.2 * x) i j)`. Rewrite using `[show Matrix.of (E p).1 * Matrix.of (E p).2 * (h * m * x) = Matrix.of p.1 * Matrix.of p.2 * x by`. Rewrite using `[← hEp p]`. Simplify using `only [Matrix.mul_assoc]]`.
+-/
 theorem aF_inv (hSG : SGrp) (hWR : WRightInv) (hNU : NUnimod) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN)
     (w' : H) {h m : Mat k r} (hh : h ∈ Formalism.QuantumDeterminants.UWset k r z) (hm : m ∈ Formalism.QuantumDeterminants.Nset k r) (x : Mat k r) :
     aF σ w' w μW μN (h * m * x) = aF σ w' w μW μN x := by
@@ -359,6 +484,9 @@ theorem aF_inv (hSG : SGrp) (hWR : WRightInv) (hNU : NUnimod) (hyp : Hyp k r z c
   rw [show Matrix.of (E p).1 * Matrix.of (E p).2 * (h * m * x) = Matrix.of p.1 * Matrix.of p.2 * x by
     rw [← hEp p]; simp only [Matrix.mul_assoc]]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) => (fun i j => (Matrix.of (mulP q.2) * Matrix.of q.1) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous fun q : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) => (Matrix.of (mulP q.2) : Mat k r)` using `continuous_mulP.comp continuous_snd`. Establish `h2 : Continuous fun q : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) => (Matrix.of q.1 : Mat k r)` using `continuous_fst`. Conclude with `h1.matrix_mul h2`. Conclude with `((wcoef_meas hσ w' w le_rfl).comp hc.measurable).lintegral_prod_right'`.
+-/
 theorem aF_meas (hσ : IsURepOn (Gr k r) σ) (w' w : H) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) [SFinite μW]
     [SFinite μN] : Measurable (fun y : Formalism.QuantumDeterminants.Mt k r => aF σ w' w μW μN (Matrix.of y)) := by
   have hc : Continuous (fun q : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) =>
@@ -370,6 +498,13 @@ theorem aF_meas (hσ : IsURepOn (Gr k r) σ) (w' w : H) (μW μN : Measure (Form
     exact h1.matrix_mul h2
   exact ((wcoef_meas hσ w' w le_rfl).comp hc.measurable).lintegral_prod_right'
 
+/- English proof (translation)
+Take `⟨hσ, hWG, hNG, hWinv, hψ, hπ⟩` from `facts hSG hPU hSig hyp`. Take `⟨-, -, -, -, -, -, -, hW, hN, -⟩` from `hyp`. Use `hN.1` as an intermediate fact. Establish `hWc` using `ae_fst (μN := μN) hW.2.2.1`. Establish `hNc` using `ae_snd (μW := μW) hN.2.2.1`.
+
+Unfold `aF`. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hWc, hNc] with p h1 h2`. Establish `hpG : Matrix.of p.1 * Matrix.of p.2 ∈ Gr k r` using `Grp.mul_mem (hWG h1) (hNG h2)`.
+
+Rewrite using `[bInt_enorm hσ hy (σ x₀ w) w ξ p hpG (hψ _ h2) (hπ _ (hWinv _ h1) ξ)]`. Establish `hyG : (fun i j => (Matrix.of (mulP p) * y) i j : Formalism.QuantumDeterminants.Mt k r) ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}` using `Grp.mul_mem hpG hy`. Unfold `wcoef`. Rewrite using `[Set.indicator_of_mem hyG, Real.rpow_zero, mul_one, ofReal_norm]`. Both sides reduce to the same expression.
+-/
 theorem aF_eq (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN)
     (x₀ : Mat k r) (ξ : Vp) {y : Mat k r} (hy : y ∈ Gr k r) :
     ∫⁻ p, ‖bInt z c σ π (σ x₀ w) ξ (σ y w) p‖ₑ ∂(μW.prod μN) = ‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN y := by
@@ -394,6 +529,31 @@ def Fq (σ : Mat k r → (H →L[ℂ] H)) (w' w : H) (μW μN : Measure (Formali
     (y : Formalism.QuantumDeterminants.Mt k r) : ℝ≥0∞ :=
   wcoef σ w' w 0 y * (‖ξ‖ₑ * aF σ w' w μW μN (Matrix.of y))
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `hAB k r z c u v b H σ Vp π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ`. Take `⟨cS, -, hcS, hU⟩` from `unfold_of hSP hyp`. Establish `hnu` using `nu_conc_of hSG hyp`. Establish `hσ` using `(facts hSG hPU hSig hyp).1`. Establish `hGfin` using `G_int hDec hCW hσ hyp hx₀`.
+
+Establish `hG` using `hyp.2.2.2.2.1`. Establish `hW` using `hyp.2.2.2.2.2.2.2.1`. Establish `hN` using `hyp.2.2.2.2.2.2.2.2.1`. Use `hW.1` as an intermediate fact. Use `hN.1` as an intermediate fact.
+
+Establish `hWc` using `ae_fst (μN := μN) hW.2.2.1`. Establish `hNc` using `ae_snd (μW := μW) hN.2.2.1`. Establish `hf₀m : Measurable (wcoef σ (σ x₀ w) w 0)` using `wcoef_meas hσ _ _ le_rfl`. Establish `hFm : Measurable (Fq σ (σ x₀ w) w μW μN ξ)` using `hf₀m.mul ((aF_meas hσ _ _ μW μN).const_mul _)`. Establish `hae : ∀ᵐ x ∂ν, Matrix.of x ∈ Gr k r` using `ae_iff.mpr hnu`.
+
+Establish `hpt : ∀ x : Formalism.QuantumDeterminants.Mt k r, Matrix.of x ∈ Gr k r → (‖Af z c σ π μW μN w x₀ ξ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ≤ ‖ξ‖ₑ * ∫⁻ p, Fq σ (σ x₀ w) w μW μN ξ (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∂(μW.prod μN)`. Introduce `x hx`. Establish `h1` using `A_bound hSG hPU hSig hyp x₀ ξ x hx 0 1 (fun s _ => by rw [Real.rpow_zero])`. Rewrite `h1` using `[ENNReal.ofReal_one, mul_one]`. Establish `h1' : ‖Af z c σ π μW μN w x₀ ξ (Matrix.of x)‖ₑ ≤ ‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN (Matrix.of x)` using `h1`.
+
+Establish `hmeasp : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => wcoef σ (σ x₀ w) w 0 (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j))`. Establish `: Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j : Formalism.QuantumDeterminants.Mt k r))` using `continuous_mulP.matrix_mul continuous_const`. Conclude with `hf₀m.comp this.measurable`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sq, enorm_eq_nnnorm]`.
+
+Use `_ ≤ (‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN (Matrix.of x)) * (‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN (Matrix.of x)) := mul_le_mul' h1' h1'`. Use `_ = ‖ξ‖ₑ * ∫⁻ p, wcoef σ (σ x₀ w) w 0 (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) * (‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN (Matrix.of x)) ∂(μW.prod μN) := by`. Rewrite using `[lintegral_mul_const _ hmeasp, mul_assoc]`. Both sides reduce to the same expression. Use `_ = ‖ξ‖ₑ * ∫⁻ p, Fq σ (σ x₀ w) w μW μN ξ (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) ∂(μW.prod μN) := by`.
+
+Use `congrArg (HMul.hMul ‖ξ‖ₑ) ?_` and prove the remaining obligations. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hWc, hNc] with p hp1 hp2`. Use `show _ = wcoef σ (σ x₀ w) w 0 (fun i j => (Matrix.of (mulP p) * Matrix.of x) i j) * (‖ξ‖ₑ * aF σ (σ x₀ w) w μW μN (Matrix.of p.1 * Matrix.of p.2 * Matrix.of x))`. Rewrite using `[aF_inv hSG hWR hNU hyp _ hp1 hp2]`.
+
+Establish `hFb : ∀ᵐ y ∂μG, Fq σ (σ x₀ w) w μW μN ξ y ≤ ENNReal.ofReal C * wcoef σ (σ x₀ w) w (N1H k r) y` using `by filter_upwards [ae_iff.mpr hG.2.2.1] with y hy`. Establish `hb` using `hC (Matrix.of y) hy`. Rewrite `hb` using `[aF_eq hSG hPU hSig hyp x₀ ξ hy]`. Establish `hy' : y ∈ {y : Formalism.QuantumDeterminants.Mt k r | Matrix.of y ∈ Gr k r}` using `hy`. Unfold `Fq`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `wcoef`. Rewrite using `[Set.indicator_of_mem hy', Set.indicator_of_mem hy', Real.rpow_zero, mul_one, ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul hC0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`. Conclude with `hpt x hx`. Use `_ = ‖ξ‖ₑ * (cS * ∫⁻ y, Fq σ (σ x₀ w) w μW μN ξ y ∂μG) := by`.
+
+Rewrite using `[lintegral_const_mul' _ _ enorm_ne_top, hU _ hFm]`. Use `_ ≤ ‖ξ‖ₑ * (cS * ∫⁻ y, ENNReal.ofReal C * wcoef σ (σ x₀ w) w (N1H k r) y ∂μG) := by gcongr ‖ξ‖ₑ * (cS * ?_)`. Conclude with `lintegral_mono_ae hFb`. Use `_ < ⊤ := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Conclude with `ENNReal.mul_lt_top enorm_lt_top (ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hcS) (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hGfin))`.
+-/
 theorem wave_packet_l2_finite (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd) (hDec : Decay) (hWR : WRightInv)
     (hNU : NUnimod) (hAB : ABound) (hR : Formalism.L2.SG.HCReprodM.HCReprodDSm) (hCW : CoefWeightedLoc)
     (hyp : Hyp k r z c u v b σ π w μG μS ν μW μN) {x₀ : Mat k r} (hx₀ : x₀ ∈ Gr k r) (ξ : Vp) :
@@ -477,6 +637,9 @@ theorem wave_packet_l2_finite (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP :
         exact ENNReal.mul_lt_top enorm_lt_top (ENNReal.mul_lt_top (lt_top_iff_ne_top.mpr hcS)
           (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hGfin))
 
+/- English proof (translation)
+Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ`. Conclude with `⟨wave_packet_l1_finite hSG hPU hSig hSP hDec hCW hyp hx₀ ξ, wave_packet_l2_finite hSG hPU hSig hSP hDec hWR hNU hAB hR hCW hyp hx₀ ξ⟩`.
+-/
 theorem wave_packet_l1_l2_of_hypotheses (hSG : SGrp) (hPU : PiUnit) (hSig : SigmaG) (hSP : SProd) (hDec : Decay)
     (hWR : WRightInv) (hNU : NUnimod) (hAB : ABound) : WavePacketL1L2 := by
   intro k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hyp hR hCW x₀ hx₀ ξ

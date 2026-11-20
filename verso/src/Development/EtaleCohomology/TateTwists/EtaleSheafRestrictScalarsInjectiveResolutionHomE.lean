@@ -10,6 +10,13 @@ def LateralTheory.EtaleFoundations.EtaleSheafRestrictScalarsInjectiveResolutionH
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Introduce `R S _ _ φ F U a`. Take `⟨m, hc, h0⟩` from `hH R S φ F`. Establish `hex : ∃ ρ : SemiMap (res S F) (res R ((restr φ).obj F)), ∀ (U : Scheme.{0}) (a : Sec F U), ρ.app U 0 (Sec.map (resι S F) a) = Sec.map (resι R ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a)`. Use `⟨⟨fun U s => ((m s).hom.app (op U)).hom.toAddMonoidHom, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `V U g s x`.
+
+Establish `h` using `(m s).hom.naturality g.op`. Conclude with `(LinearMap.congr_fun (congrArg ModuleCat.Hom.hom h) x).symm`. Introduce `U s t x`. Establish `h` using `congrArg (fun f : (restr φ).obj ((res S F).X s) ⟶ (res R ((restr φ).obj F)).X t => (f.hom.app (op U)).hom x) (hc s t)`. Conclude with `h.symm`.
+
+Introduce `U x`. Conclude with `congrArg (fun f : (restr φ).obj F ⟶ (res R ((restr φ).obj F)).X 0 => (f.hom.app (op U)).hom x) h0`. Conclude with `pick_spec hex U a`.
+-/
 theorem etaleSheaf_restrictScalars_resolution_comparison_of_hom (hH : EtaleSheafRestrictScalarsInjectiveResolutionHomExists) : EtaleRestrictScalarsResolutionCompatible := by
   intro R S _ _ φ F U a
   obtain ⟨m, hc, h0⟩ := hH R S φ F

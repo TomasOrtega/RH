@@ -19,15 +19,31 @@ variable {n : ℕ}
 
 def psi (t : ℝ) : ℝ := Real.smoothTransition (2 - t)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)`.
+-/
 theorem psi_contDiff : ContDiff ℝ ∞ psi :=
   Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 theorem psi_eq_one {t : ℝ} (h : t ≤ 1) : psi t = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+-/
 theorem psi_eq_zero {t : ℝ} (h : 2 ≤ t) : psi t = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
+/- English proof (translation)
+Establish `hc : Continuous (deriv psi)` using `psi_contDiff.continuous_deriv (by simp)`. Use `HasCompactSupport.exists_bound_of_continuous (HasCompactSupport.intro (isCompact_Icc (a := (1 : ℝ)) (b := 2)) fun t ht => ?_) hc` and prove the remaining obligations. Break down `lt_or_ge t 1 with h | h` into its components or cases. Establish `e : psi =ᶠ[𝓝 t] fun _ => (1 : ℝ)` using `by filter_upwards [Iio_mem_nhds h] with s hs using psi_eq_one (le_of_lt hs)`. Rewrite using `[e.deriv_eq]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : 2 < t`. Assume the negation of the conclusion as `hn`. Conclude with `ht ⟨h, not_lt.1 hn⟩`. Establish `e : psi =ᶠ[𝓝 t] fun _ => (0 : ℝ)` using `by filter_upwards [Ioi_mem_nhds h2] with s hs using psi_eq_zero (le_of_lt hs)`.
+
+Rewrite using `[e.deriv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_deriv_bound : ∃ D : ℝ, ∀ t, ‖deriv psi t‖ ≤ D := by
   have hc : Continuous (deriv psi) := psi_contDiff.continuous_deriv (by simp)
   refine HasCompactSupport.exists_bound_of_continuous
@@ -45,19 +61,31 @@ theorem exists_deriv_bound : ∃ D : ℝ, ∀ t, ‖deriv psi t‖ ≤ D := by
 
 def chi (R : ℝ) (y : Mat n) : ℝ := psi (R⁻¹ * lg y)
 
+/- English proof (translation)
+The claim follows from `psi_contDiff.comp_contDiffOn (contDiffOn_const.mul (hL n).2.2.2.1)`.
+-/
 theorem chi_smooth (hL : LgFacts) (R : ℝ) : ContDiffOn ℝ ∞ (chi R : Mat n → ℝ) (GLs n) :=
   psi_contDiff.comp_contDiffOn (contDiffOn_const.mul (hL n).2.2.2.1)
 
+/- English proof (translation)
+Use `⟨2 * R, fun y _ h => psi_eq_zero ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hR]`. Conclude with `h.le`.
+-/
 theorem chi_cpt {R : ℝ} (hR : 0 < R) : Cpt (chi R : Mat n → ℝ) := by
   refine ⟨2 * R, fun y _ h => psi_eq_zero ?_⟩
   rw [inv_mul_eq_div, le_div_iff₀ hR]
   exact h.le
 
+/- English proof (translation)
+Use `psi_eq_one ?_` and prove the remaining obligations. Rewrite using `[inv_mul_eq_div, div_le_iff₀ hR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chi_eq_one {R : ℝ} (hR : 0 < R) {y : Mat n} (h : lg y ≤ R) : chi R y = 1 := by
   refine psi_eq_one ?_
   rw [inv_mul_eq_div, div_le_iff₀ hR]
   linarith
 
+/- English proof (translation)
+Establish `h0` using `Real.smoothTransition.nonneg (2 - R⁻¹ * lg y)`. Establish `h1` using `Real.smoothTransition.le_one (2 - R⁻¹ * lg y)`. Establish `e : chi R y = Real.smoothTransition (2 - R⁻¹ * lg y)` using `rfl`. Rewrite using `[Complex.norm_real, e, Real.norm_of_nonneg h0]`. Conclude with `h1`.
+-/
 theorem chi_abs_le (R : ℝ) (y : Mat n) : ‖((chi R y : ℝ) : ℂ)‖ ≤ 1 := by
   have h0 := Real.smoothTransition.nonneg (2 - R⁻¹ * lg y)
   have h1 := Real.smoothTransition.le_one (2 - R⁻¹ * lg y)
@@ -65,6 +93,11 @@ theorem chi_abs_le (R : ℝ) (y : Mat n) : ‖((chi R y : ℝ) : ℂ)‖ ≤ 1 :
   rw [Complex.norm_real, e, Real.norm_of_nonneg h0]
   exact h1
 
+/- English proof (translation)
+Establish `hlg : HasFDerivAt (lg : Mat n → ℝ) (fderiv ℝ lg x) x` using `(((hL n).2.2.2.1.contDiffAt (isOpen_invertible.mem_nhds hx)).differentiableAt (by simp)).hasFDerivAt`. Establish `hp : HasDerivAt psi (deriv psi (R⁻¹ * lg x)) (R⁻¹ * lg x)` using `((psi_contDiff.differentiable (by simp)) _).hasDerivAt`. Establish `h` using `(hp.comp_hasFDerivAt x (hlg.const_mul R⁻¹)).fderiv`. Establish `e : fderiv ℝ (chi R) x v = deriv psi (R⁻¹ * lg x) * (R⁻¹ * fderiv ℝ lg x v)`. Establish `e' : chi R = psi ∘ fun y : Mat n => R⁻¹ * lg y` using `rfl`.
+
+Rewrite using `[e']`. Conclude with `(DFunLike.congr_fun h v).trans rfl`. Rewrite using `[e, abs_mul, abs_mul, abs_of_pos (inv_pos.2 hR)]`. Conclude with `mul_le_mul_of_nonneg_right (hD _) (by positivity)`.
+-/
 theorem chi_fderiv_le (hL : LgFacts) {D : ℝ} (hD : ∀ t, ‖deriv psi t‖ ≤ D) {R : ℝ} (hR : 0 < R) {x : Mat n}
     (hx : x ∈ GLs n) (v : Mat n) : |fderiv ℝ (chi R) x v| ≤ D * (R⁻¹ * |fderiv ℝ lg x v|) := by
   have hlg : HasFDerivAt (lg : Mat n → ℝ) (fderiv ℝ lg x) x :=
@@ -79,6 +112,9 @@ theorem chi_fderiv_le (hL : LgFacts) {D : ℝ} (hD : ∀ t, ‖deriv psi t‖ �
   rw [e, abs_mul, abs_mul, abs_of_pos (inv_pos.2 hR)]
   exact mul_le_mul_of_nonneg_right (hD _) (by positivity)
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_ofReal.comp ((chi_smooth hL R).continuousOn.comp_continuous Units.continuous_val val_mem_invertible)`.
+-/
 theorem chi_continuous (hL : LgFacts) (R : ℝ) : Continuous fun y : G n => ((chi R y.val : ℝ) : ℂ) :=
   Complex.continuous_ofReal.comp
     ((chi_smooth hL R).continuousOn.comp_continuous Units.continuous_val val_mem_invertible)
@@ -87,6 +123,13 @@ section Lim
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n))
 
+/- English proof (translation)
+Use `tendsto_integral_of_dominated_convergence (fun y => ‖h y‖) (fun k => ?_) hh.norm (fun k => ?_) ?_` and prove the remaining obligations. Conclude with `(chi_continuous hL _).aestronglyMeasurable.mul hh.1`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (chi_abs_le _ _)`.
+
+Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop ⌈lg y.val⌉₊] with k hk`. Establish `h1 : lg y.val ≤ (k : ℝ) + 1`. Use `(Nat.le_ceil (lg y.val)).trans (Nat.cast_le.2 hk)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[chi_eq_one (by positivity) h1]`. Simplify using the standard rewrite rules.
+-/
 theorem tendsto_chi (hL : LgFacts) {h : G n → ℂ} (hh : Integrable h μ) :
     Tendsto (fun k : ℕ => ∫ y : G n, ((chi ((k : ℝ) + 1) y.val : ℝ) : ℂ) * h y ∂μ) atTop (𝓝 (∫ y, h y ∂μ)) := by
   refine tendsto_integral_of_dominated_convergence (fun y => ‖h y‖) (fun k => ?_) hh.norm (fun k => ?_) ?_
@@ -103,6 +146,15 @@ theorem tendsto_chi (hL : LgFacts) {h : G n → ℂ} (hh : Integrable h μ) :
     rw [chi_eq_one (by positivity) h1]
     simp
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `exists_deriv_bound`. Establish `hD0 : 0 ≤ D` using `(norm_nonneg _).trans (hD 0)`. Establish `hC0 : ∀ x ∈ GLs n, 0 ≤ C` using `fun x hx => (abs_nonneg _).trans (hC x hx)`. Establish `hC1 : 0 ≤ C` using `hC0 _ (val_mem_invertible (1 : G n))`. Establish `hb : ∀ k : ℕ, ‖∫ y : G n, ((fderiv ℝ (chi ((k : ℝ) + 1)) y.val (y.val * X) : ℝ) : ℂ) * h y ∂μ‖ ≤ (D * C * ∫ y, ‖h y‖ ∂μ) * ((k : ℝ) + 1)⁻¹`.
+
+Introduce `k`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Use `norm_integral_le_of_norm_le (μ := μ) (f := fun y : G n => ((fderiv ℝ (chi ((k : ℝ) + 1)) y.val (y.val * X) : ℝ) : ℂ) * h y) (hh.norm.const_mul (D * (((k : ℝ) + 1)⁻¹ * C))) (Eventually.of_forall fun y => by` as an intermediate fact. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Use `(chi_fderiv_le hL hD hk (val_mem_invertible y) _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hC _ (val_mem_invertible y))`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `squeeze_zero_norm hb ?_` and prove the remaining obligations. Use `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (D * C * ∫ y, ‖h y‖ ∂μ)` as an intermediate fact. Simplify `this` using `[one_div]`.
+-/
 theorem tendsto_chi_deriv (hL : LgFacts) {X : Mat n} {C : ℝ} (hC : ∀ x ∈ GLs n, |fderiv ℝ lg x (x * X)| ≤ C)
     {h : G n → ℂ} (hh : Integrable h μ) :
     Tendsto (fun k : ℕ => ∫ y : G n, ((fderiv ℝ (chi ((k : ℝ) + 1)) y.val (y.val * X) : ℝ) : ℂ) * h y ∂μ) atTop (𝓝 0) := by
@@ -136,12 +188,18 @@ section Pair
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Use `⟨fun p => if p.1 then (X p.2.1 p.2.2).re else (X p.2.1 p.2.2).im, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Fintype.sum_prod_type, Fintype.sum_bool, bs, Matrix.single_apply]`. Simplify using `[Finset.sum_add_distrib, Finset.sum_ite_eq, ite_and]`.
+-/
 theorem exists_coeff (X : Mat n) : ∃ c : Bool × Fin n × Fin n → ℝ, X = ∑ p, c p • bs p := by
   refine ⟨fun p => if p.1 then (X p.2.1 p.2.2).re else (X p.2.1 p.2.2).im, ?_⟩
   ext i j
   simp only [Matrix.sum_apply, Matrix.smul_apply, Fintype.sum_prod_type, Fintype.sum_bool, bs, Matrix.single_apply]
   simp [Finset.sum_add_distrib, Finset.sum_ite_eq, ite_and]
 
+/- English proof (translation)
+Simplify using `only [Rd]`. Rewrite using `[h, Matrix.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, map_smul]`.
+-/
 theorem Rd_expand (f : Mat n → V) {X : Mat n} {c : Bool × Fin n × Fin n → ℝ} (h : X = ∑ p, c p • bs p) (g : Mat n) :
     Rd X f g = ∑ p, c p • Rd (bs p) f g := by
   simp only [Rd]
@@ -149,6 +207,13 @@ theorem Rd_expand (f : Mat n → V) {X : Mat n} {c : Bool × Fin n × Fin n → 
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [Matrix.mul_smul, map_smul]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_coeff X`. Take `⟨C, hC⟩` from `(hL n).2.2.2.2.2.2`. Use `⟨∑ p, |c p| * C, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : fderiv ℝ lg x (x * X) = ∑ p, c p * fderiv ℝ lg x (x * bs p)`. Rewrite using `[hc, Matrix.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, map_smul, smul_eq_mul]`. Rewrite using `[e]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hC x hx p) (abs_nonneg _)`.
+-/
 theorem lg_bound (hL : LgFacts) (X : Mat n) : ∃ C : ℝ, ∀ x ∈ GLs n, |fderiv ℝ lg x (x * X)| ≤ C := by
   obtain ⟨c, hc⟩ := exists_coeff X
   obtain ⟨C, hC⟩ := (hL n).2.2.2.2.2.2
@@ -164,6 +229,9 @@ theorem lg_bound (hL : LgFacts) (X : Mat n) : ∃ C : ℝ, ∀ x ∈ GLs n, |fde
 
 variable [MeasurableSpace (G n)] [BorelSpace (G n)] {μ : Measure (G n)}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_coeff X`. Establish `e : (fun y : G n => Rd X f y.val) = fun y : G n => ∑ p, c p • Rd (bs p) f y.val`. Use function extensionality and compare the values at `fun y => Rd_expand f hc y.val`. Rewrite using `[e]`. Conclude with `memLp_finset_sum _ fun p _ => (hf.2 [p]).const_smul (c p)`.
+-/
 theorem memLp_Rd {f : Mat n → V} (hf : Sob μ f) (X : Mat n) : MemLp (fun y : G n => Rd X f y.val) 2 μ := by
   obtain ⟨c, hc⟩ := exists_coeff X
   have e : (fun y : G n => Rd X f y.val) = fun y : G n => ∑ p, c p • Rd (bs p) f y.val :=
@@ -171,14 +239,23 @@ theorem memLp_Rd {f : Mat n → V} (hf : Sob μ f) (X : Mat n) : MemLp (fun y : 
   rw [e]
   exact memLp_finset_sum _ fun p _ => (hf.2 [p]).const_smul (c p)
 
+/- English proof (translation)
+The claim follows from `hf.2 []`.
+-/
 theorem memLp_self {f : Mat n → V} (hf : Sob μ f) : MemLp (fun y : G n => f y.val) 2 μ := hf.2 []
 
+/- English proof (translation)
+Use `(L2.integrable_inner (𝕜 := ℂ) (ha.toLp a) (hb.toLp b)).congr ?_` and prove the remaining obligations. Use `filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with y h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem integrable_pair {a b : G n → V} (ha : MemLp a 2 μ) (hb : MemLp b 2 μ) :
     Integrable (fun y => ⟪a y, b y⟫_ℂ) μ := by
   refine (L2.integrable_inner (𝕜 := ℂ) (ha.toLp a) (hb.toLp b)).congr ?_
   filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with y h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+Simplify using `only [cls, dif_pos ha, dif_pos hb]`. Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ha.coeFn_toLp, hb.coeFn_toLp] with y h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem inner_cls {a b : Mat n → V} (ha : MemLp (fun y : G n => a y.val) 2 μ)
     (hb : MemLp (fun y : G n => b y.val) 2 μ) :
     ⟪cls μ a, cls μ b⟫_ℂ = ∫ y : G n, ⟪a y.val, b y.val⟫_ℂ ∂μ := by
@@ -190,6 +267,15 @@ theorem inner_cls {a b : Mat n → V} (ha : MemLp (fun y : G n => a y.val) 2 μ)
 
 end Pair
 
+/- English proof (translation)
+Introduce `n _ _ μ _ V _ _ hL _ hR f f' hf hf' X`. Take `⟨C, hC⟩` from `lg_bound hL X`. Establish `m0` using `memLp_self hf`. Establish `m0'` using `memLp_self hf'`. Establish `m1` using `memLp_Rd hf X`.
+
+Establish `m1'` using `memLp_Rd hf' X`. Rewrite using `[inner_cls m1 m0', inner_cls m0 m1']`. Establish `iA` using `integrable_pair m0 m1'`. Establish `iB` using `integrable_pair m1 m0'`. Establish `iC` using `integrable_pair m0 m0'`.
+
+Establish `tA` using `tendsto_chi μ hL iA`. Establish `tB` using `tendsto_chi μ hL iB`. Establish `tC` using `tendsto_chi_deriv μ hL hC iC`. Establish `key : ∀ k : ℕ, ∫ y : G n, ((chi ((k : ℝ) + 1) y.val : ℝ) : ℂ) * ⟪f y.val, Rd X f' y.val⟫_ℂ ∂μ = -(∫ y : G n, ((chi ((k : ℝ) + 1) y.val : ℝ) : ℂ) * ⟪Rd X f y.val, f' y.val⟫_ℂ ∂μ) - ∫ y : G n, ((fderiv ℝ (chi ((k : ℝ) + 1)) y.val (y.val * X) : ℝ) : ℂ) * ⟪f y.val, f' y.val⟫_ℂ ∂μ` using `fun k => weight_ibp hR hL μ f' f (chi ((k : ℝ) + 1)) hf'.1 hf.1 (chi_smooth hL _) (chi_cpt (by positivity)) X`. Establish `tA'` using `(tB.neg.sub tC).congr fun k => (key k).symm`.
+
+Establish `e` using `tendsto_nhds_unique tA tA'`. Rewrite using `[e, sub_zero, neg_neg]`.
+-/
 theorem ibpSob : IbpSob := by
   intro n _ _ μ _ V _ _ hL _ hR f f' hf hf' X
   obtain ⟨C, hC⟩ := lg_bound hL X

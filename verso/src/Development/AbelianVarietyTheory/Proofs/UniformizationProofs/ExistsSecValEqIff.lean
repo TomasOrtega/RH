@@ -15,21 +15,39 @@ variable {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X']
 abbrev toField {U : X.Opens} (h : genericPoint X ∈ U) : Γ(X, U) →+* X.functionField :=
   (X.presheaf.germ U (genericPoint X) h).hom
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, h⟩`.
+-/
 theorem generic_mem {U : X.Opens} {x : X} (h : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨x, trivial, h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hU, hV⟩`.
+-/
 theorem generic_inf {U V : X.Opens} (hU : genericPoint X ∈ U) (hV : genericPoint X ∈ V) :
     genericPoint X ∈ U ⊓ V := ⟨hU, hV⟩
 
+/- English proof (translation)
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem generic_top : genericPoint X ∈ (⊤ : X.Opens) := trivial
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply (homOfLE h) _ hV a`.
+-/
 theorem toField_rs {U V : X.Opens} (h : V ≤ U) (hV : genericPoint X ∈ V) (a : Γ(X, U)) :
     toField hV (rs X h a) = toField (h hV) a :=
   X.presheaf.germ_res_apply (homOfLE h) _ hV a
 
+/- English proof (translation)
+The claim follows from `germ_injective_of_isIntegral X _ h`.
+-/
 theorem toField_injective {U : X.Opens} (h : genericPoint X ∈ U) :
     Function.Injective (toField h) := germ_injective_of_isIntegral X _ h
 
+/- English proof (translation)
+Use `choose y hy using hx`. Take `⟨z, hz, -⟩` from `X.sheaf.existsUnique_gluing' O D (fun a => homOfLE (hO a)) hc y fun a b => toField_injective (U := O a ⊓ O b) (generic_inf (hη a) (hη b)) (((toField_rs inf_le_left _ _).trans (hy a)).trans ((toField_rs inf_le_right _ _).trans (hy b)).symm)`. Take `⟨a, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc hD)`. Conclude with `⟨z, (toField_rs (hO a) (hη a) z).symm.trans ((congrArg _ (hz a)).trans (hy a))⟩`.
+-/
 theorem exists_toField_eq {D : X.Opens} (hD : genericPoint X ∈ D) {I : Type} (O : I → X.Opens)
     (hO : ∀ a, O a ≤ D) (hc : D ≤ ⨆ a, O a) (hη : ∀ a, genericPoint X ∈ O a) (x : X.functionField)
     (hx : ∀ a, ∃ y, toField (hη a) y = x) : ∃ y, toField hD y = x := by
@@ -40,6 +58,9 @@ theorem exists_toField_eq {D : X.Opens} (hD : genericPoint X ∈ D) {I : Type} (
   obtain ⟨a, -⟩ := TopologicalSpace.Opens.mem_iSup.1 (hc hD)
   exact ⟨z, (toField_rs (hO a) (hη a) z).symm.trans ((congrArg _ (hz a)).trans (hy a))⟩
 
+/- English proof (translation)
+Establish `h₁ : toField hV ((φ.appLE U V e).hom a) = toField (e hV) ((φ.app U).hom a)` using `toField_rs e hV _`. Rewrite using `[h₁, functionFieldMap, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `erw [TopCat.Presheaf.germ_stalkSpecializes_apply]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply φ U (genericPoint X') (e hV) a).symm`.
+-/
 theorem toField_appLE (φ : X' ⟶ X) [IsDominant φ] {U : X.Opens} {V : X'.Opens} (e : V ≤ φ ⁻¹ᵁ U)
     (hU : genericPoint X ∈ U) (hV : genericPoint X' ∈ V) (a : Γ(X, U)) :
     toField hV ((φ.appLE U V e).hom a) = functionFieldMap φ (toField hU a) := by
@@ -54,6 +75,9 @@ variable {M : LB X} {k₀ : M.ι} (h₀ : genericPoint X ∈ M.U k₀)
 def secVal {V : X.Opens} (hV : genericPoint X ∈ V) (σ : SecOn M V) : X.functionField :=
   toField (U := V ⊓ M.U k₀) (generic_inf (hV) (h₀)) (GlobalTheory.LB.coord σ k₀)
 
+/- English proof (translation)
+Establish `e` using `congrArg (toField (U := V ⊓ M.U k ⊓ M.U k₀) (generic_inf (generic_inf hV hk) h₀)) (SecOn.compat σ k k₀ (O := V ⊓ M.U k ⊓ M.U k₀) inf_le_left (inf_le_inf_right _ inf_le_left) (inf_le_inf_right _ inf_le_right))`. Rewrite `e` using `[map_mul, toField_rs, toField_rs, toField_rs]`. Conclude with `e`.
+-/
 theorem toField_coord {V : X.Opens} (hV : genericPoint X ∈ V) (σ : SecOn M V) {k : M.ι}
     (hk : genericPoint X ∈ M.U k) :
     toField (U := V ⊓ M.U k) (generic_inf (hV) (hk)) (GlobalTheory.LB.coord σ k) =
@@ -64,6 +88,9 @@ theorem toField_coord {V : X.Opens} (hV : genericPoint X ∈ V) (σ : SecOn M V)
   rw [map_mul, toField_rs, toField_rs, toField_rs] at e
   exact e
 
+/- English proof (translation)
+Introduce `σ τ h` and use `GlobalTheory.LB.sec_ext fun k => by by_cases hk : genericPoint X ∈ M.U k · refine toField_injective (U := V ⊓ M.U k) (generic_inf (hV) (hk)) ?_ rw [toField_coord h₀ hV σ hk, toField_coord h₀ hV τ hk, h] · have : V ⊓ M.U k = ⊥ := eq_bot_iff.2 fun x hx => (hk (generic_mem hx.2)).el …`.
+-/
 theorem secVal_injective {V : X.Opens} (hV : genericPoint X ∈ V) :
     Function.Injective (secVal h₀ hV) := fun σ τ h => GlobalTheory.LB.sec_ext fun k => by
   by_cases hk : genericPoint X ∈ M.U k
@@ -73,19 +100,39 @@ theorem secVal_injective {V : X.Opens} (hV : genericPoint X ∈ V) :
     have : Subsingleton Γ(X, V ⊓ M.U k) := this ▸ inferInstance
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+The claim follows from `toField_rs (inf_le_inf_right _ h) _ _`.
+-/
 theorem secVal_restrict {V W : X.Opens} (h : W ≤ V) (hW : genericPoint X ∈ W) (σ : SecOn M V) :
     secVal h₀ hW (SecOn.restrict M h σ) = secVal h₀ (h hW) σ :=
   toField_rs (inf_le_inf_right _ h) _ _
 
+/- English proof (translation)
+The claim follows from `(map_mul (toField (U := V ⊓ M.U k₀) (generic_inf (hV) (h₀))) (rs X inf_le_left a) _).trans (congrArg (· * secVal h₀ hV σ) (toField_rs _ _ _))`.
+-/
 theorem secVal_smul {V : X.Opens} (hV : genericPoint X ∈ V) (a : Γ(X, V)) (σ : SecOn M V) :
     secVal h₀ hV (a • σ) = toField hV a * secVal h₀ hV σ :=
   (map_mul (toField (U := V ⊓ M.U k₀) (generic_inf (hV) (h₀))) (rs X inf_le_left a) _).trans
     (congrArg (· * secVal h₀ hV σ) (toField_rs _ _ _))
 
+/- English proof (translation)
+The claim follows from `map_add (toField (U := V ⊓ M.U k₀) (generic_inf (hV) (h₀))) _ _`.
+-/
 theorem secVal_add {V : X.Opens} (hV : genericPoint X ∈ V) (σ τ : SecOn M V) :
     secVal h₀ hV (σ + τ) = secVal h₀ hV σ + secVal h₀ hV τ :=
   map_add (toField (U := V ⊓ M.U k₀) (generic_inf (hV) (h₀))) _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩ i`. Establish `hne : secVal h₀ (hη i) (τ i) ≠ 0` using `((hτ i k₀).map _).ne_zero`. Use `⟨secVal h₀ generic_top σ / secVal h₀ (hη i) (τ i), ?_, (div_mul_cancel₀ _ hne).symm⟩` and prove the remaining obligations. Use `exists_toField_eq (hη i) (fun k : {k // genericPoint X ∈ M.U k} => D i ⊓ M.U k.1) (fun _ => inf_le_left) (fun y hy => ?_) (fun k => (generic_inf (hη i) (k.2))) _ fun k => ?_` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (trivial : y ∈ ⊤))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨k, generic_mem hk⟩, hy, hk⟩`. Take `⟨u, hu⟩` from `hτ i k.1`. Use `⟨GlobalTheory.LB.coord (SecOn.restrict M le_top σ) k.1 * u⁻¹.val, ?_⟩` and prove the remaining obligations. Establish `e₁` using `toField_coord h₀ (hη i) (τ i) k.2`.
+
+Establish `e₂` using `toField_coord h₀ (hη i) (SecOn.restrict M le_top σ) k.2`. Establish `hg : toField (U` using `M.U k.1 ⊓ M.U k₀) (generic_inf (k.2) (h₀)) (M.g k.1 k₀).val ≠ 0 := ((M.g k.1 k₀).isUnit.map _).ne_zero`. Rewrite using `[map_mul, map_units_inv, hu, e₁, e₂, secVal_restrict]`. Clear the denominators using the available nonvanishing facts. Introduce `h choose a ha hx using h choose b hb using ha`.
+
+Establish `hv : ∀ i, secVal h₀ (hη i) (b i • τ i) = x` using `fun i => by`. Rewrite using `[secVal_smul, hb, hx i]`. Take `⟨σ, hσ, -⟩` from `SecOn.existsUnique_glue D (fun _ => le_top) hc (fun i => b i • τ i) fun i j => secVal_injective h₀ (V := D i ⊓ D j) (generic_inf (hη i) (hη j)) (by`. Rewrite using `[secVal_restrict, secVal_restrict, hv, hv])`. Take `⟨i, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc generic_top)`.
+
+Conclude with `⟨σ, by rw [← hv i, ← hσ i, secVal_restrict]⟩`.
+-/
 theorem exists_secVal_eq_iff (hM : M.IsLB) {I : Type} (D : I → X.Opens) (hc : ⊤ ≤ ⨆ i, D i)
     (hη : ∀ i, genericPoint X ∈ D i) (τ : ∀ i, SecOn M (D i))
     (hτ : ∀ i k, IsUnit (GlobalTheory.LB.coord (τ i) k)) (x : X.functionField) :
@@ -126,6 +173,9 @@ def secValLin {K : Type} [Field K] (f : X ⟶ Spec (CommRingCat.of K)) [Algebra 
   map_smul' r σ := (secVal_smul h₀ generic_top (cst f ⊤ r) σ).trans (by
     rw [RingHom.id_apply, Algebra.smul_def, hK])
 
+/- English proof (translation)
+The claim follows from `toField_appLE φ _ _ _ _`.
+-/
 theorem secVal_pull (φ : X' ⟶ X) [IsDominant φ] {V : X.Opens} (hV : genericPoint X ∈ V)
     (h₀' : genericPoint X' ∈ (M.pull φ).U fun _ => k₀) (hV' : genericPoint X' ∈ φ ⁻¹ᵁ V)
     (σ : SecOn M V) :

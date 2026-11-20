@@ -5,6 +5,15 @@ namespace GlobalTheory.SplitEmbSep
 
 open NumberField in
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `hx`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Rewrite `hp` using `[← Polynomial.aeval_def, hm.as_sum]`. Simplify using `only [map_add, map_pow, Polynomial.aeval_X, map_sum, map_mul, Polynomial.aeval_C, algebraMap_int_eq, eq_intCast, map_intCast] at hp`.
+
+Use `set n := p.natDegree`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Rewrite `hp` using `[hn]`. Simplify using `at hp`. Establish `hs : (Finset.range n).Nonempty` using `Finset.nonempty_range_iff.mpr hn.ne'`.
+
+Take `⟨i, hi, hle⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty hs (fun i => ((p.coeff i : ℤ) : C) * x ^ i)`. Establish `hxn : x ^ n = -∑ i ∈ Finset.range n, ((p.coeff i : ℤ) : C) * x ^ i` using `eq_neg_of_add_eq_zero_left hp`. Establish `h1 : ‖x‖ ^ n ≤ ‖x‖ ^ i`. Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUltrametricDist.norm_intCast_le_one C _`.
+
+Use `_ = ‖x‖ ^ i := one_mul _`. Establish `h2 : ‖x‖ ^ i < ‖x‖ ^ n` using `pow_lt_pow_right₀ h (Finset.mem_range.mp hi)`. Conclude with `absurd h1 (not_le.mpr h2)`.
+-/
 theorem _root_.GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral {C : Type*} [NormedField C] [IsUltrametricDist C]
     {x : C} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   obtain ⟨p, hm, hp⟩ := hx
@@ -36,6 +45,11 @@ theorem _root_.GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral {C : Type*} [N
 
 open NumberField in
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Take `⟨σ, -, hle⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty (Finset.univ_nonempty (α := Equiv.Perm ι)) (fun σ => Equiv.Perm.sign σ • ∏ i, M (σ i) i)`. Use `lt_of_le_of_lt hle ?_` and prove the remaining obligations. Establish `hprod : ‖∏ i, M (σ i) i‖ < 1`. Rewrite using `[norm_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`.
+
+Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) (hk _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun i _ => hM _ _))`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;>`. Simplify `hprod` using `[hs, Units.smul_def]`.
+-/
 theorem _root_.GlobalTheory.SplitEmbSep.norm_det_lt_one {C ι : Type*} [NormedField C] [IsUltrametricDist C]
     [Fintype ι] [DecidableEq ι] (M : Matrix ι ι C) (hM : ∀ i j, ‖M i j‖ ≤ 1) (k : ι)
     (hk : ∀ i, ‖M i k‖ < 1) : ‖M.det‖ < 1 := by
@@ -53,6 +67,15 @@ theorem _root_.GlobalTheory.SplitEmbSep.norm_det_lt_one {C ι : Type*} [NormedFi
 
 open NumberField in
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `((Nat.prime_iff_prime_int.mp hg).irreducible.coprime_iff_not_dvd).mpr hd`. Establish `hC : (a : C) * (g : C) + (b : C) * (d : C) = 1` using `by exact_mod_cast congrArg (Int.cast (R := C)) hab`. Establish `h1 : ‖(a : C) * (g : C)‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `IsUltrametricDist.norm_intCast_le_one C a`. Use `_ < 1 := by rwa [one_mul]`. Establish `h2 : 1 ≤ max ‖(a : C) * (g : C)‖ ‖(b : C) * (d : C)‖`. Rewrite using `[← norm_one (α := C), ← hC]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+
+Establish `h3 : 1 ≤ ‖(b : C) * (d : C)‖`. Break down `le_max_iff.mp h2 with h | h` into its components or cases. Conclude with `absurd h (not_le.mpr h1)`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `IsUltrametricDist.norm_intCast_le_one C b`. Use `_ = ‖(d : C)‖ := one_mul _`.
+-/
 theorem _root_.GlobalTheory.SplitEmbSep.one_le_norm_intCast {C : Type*} [NormedField C] [IsUltrametricDist C] {g : ℕ}
     (hg : g.Prime) (hgC : ‖(g : C)‖ < 1) {d : ℤ} (hd : ¬ (g : ℤ) ∣ d) : 1 ≤ ‖(d : C)‖ := by
   obtain ⟨a, b, hab⟩ :=
@@ -79,6 +102,23 @@ theorem _root_.GlobalTheory.SplitEmbSep.one_le_norm_intCast {C : Type*} [NormedF
 
 open NumberField in
 
+/- English proof (translation)
+Establish `hgp : Prime (g : ℤ)` using `Nat.prime_iff_prime_int.mp hg`. Use `set p : Ideal ℤ := Ideal.span {(g : ℤ)} with hp_def`. Establish `hp0 : p ≠ ⊥` using `by simpa [hp_def] using hgp.ne_zero`. Use `haveI hpprime : p.IsPrime := (Ideal.span_singleton_prime hgp.ne_zero).mpr hgp`. Use `haveI hpmax : p.IsMaximal := hpprime.isMaximal hp0`.
+
+Establish `hsum` using `Ideal.sum_ramification_inertia (𝓞 E) ℚ E hp0`. Establish `hcard : (IsDedekindDomain.primesOverFinset p (𝓞 E)).card = Module.finrank ℚ E`. Rewrite using `[← h, ← IsDedekindDomain.coe_primesOverFinset hp0, Set.ncard_coe_finset]`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) p ≠ ⊥`. Rewrite using `[Ne, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective ℤ (𝓞 E))]`.
+
+Conclude with `hp0`. Establish `hge : ∀ P ∈ IsDedekindDomain.primesOverFinset p (𝓞 E), 1 ≤ p.ramificationIdx' P * p.inertiaDeg' P`. Introduce `P hP`. Establish `hP' : P ∈ p.primesOver (𝓞 E)`. Rewrite using `[← IsDedekindDomain.coe_primesOverFinset hp0]`.
+
+Conclude with `hP`. Use `haveI := hP'.1`. Use `haveI := hP'.2`. Establish `he : p.ramificationIdx' P ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero hmap hP'.1 (Ideal.map_le_iff_le_comap.mpr (le_of_eq (Ideal.over_def P p)))`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero he (Ideal.inertiaDeg'_pos p P).ne')`.
+
+Establish `hone` using `(Finset.sum_eq_sum_iff_of_le hge).mp (by`. Rewrite using `[← Finset.card_eq_sum_ones, hcard, hsum])`. Rewrite using `[NumberField.not_dvd_discr_iff_forall_mem E (𝓞 E) hgp]`. Introduce `P hPprime hgP`. Establish `hunder : p = P.under ℤ`.
+
+Establish `hle : p ≤ P.under ℤ`. Rewrite using `[hp_def, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_comap.mpr (by simpa using hgP)`. Conclude with `hpmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) hle`. Use `haveI : P.LiesOver p := ⟨hunder⟩`.
+
+Establish `hPF : P ∈ IsDedekindDomain.primesOverFinset p (𝓞 E)`. Rewrite using `[← Finset.mem_coe, IsDedekindDomain.coe_primesOverFinset hp0]`. Conclude with `⟨hPprime, this⟩`. Establish `he` using `Nat.eq_one_of_mul_eq_one_right (hone P hPF).symm`. Rewrite using `[Algebra.isUnramifiedAt_iff_of_isDedekindDomain, ← Ideal.ramificationIdx'_eq_ramificationIdx p P hp0]`.
+
+Conclude with `he`.
+-/
 theorem _root_.GlobalTheory.SplitEmbSep.not_dvd_discr_of_split {g : ℕ} (hg : g.Prime) (E : Type*) [Field E]
     [NumberField E]
     (h : (Ideal.primesOver (Ideal.span {(g : ℤ)}) (𝓞 E)).ncard = Module.finrank ℚ E) :

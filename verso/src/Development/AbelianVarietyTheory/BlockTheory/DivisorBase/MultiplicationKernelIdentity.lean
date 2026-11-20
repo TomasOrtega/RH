@@ -11,6 +11,9 @@ variable {C : Type} [Field C]
 abbrev Int0 (v : AddValuation C (WithTop ℝ)) : Subring C :=
   (AddValuation.toValuation v).integer
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_addValuationIntegerRing_iff (v : AddValuation C (WithTop ℝ)) (x : C) : x ∈ Int0 v ↔ 0 ≤ v x := Iff.rfl
 
 def RelLen (v : AddValuation C (WithTop ℝ)) {M : Type} [AddCommGroup M] [Module (Int0 v) M]
@@ -60,6 +63,9 @@ def proj (a : S → O) {N : ℕ} (X : Submodule (RS a) (Fin N → RS a)) :
     (Fin N → RS a) →ₗ[O] ((Fin N → RS a) ⧸ X) :=
   X.mkQ.restrictScalars O
 
+/- English proof (translation)
+Simplify using `[ev, lin]`.
+-/
 theorem ev_lin (a : S → O) (s t : S) : ev a s (lin a t) = a s - a t := by
   simp [ev, lin]
 
@@ -123,6 +129,11 @@ def HerbrandDet : Prop :=
       (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) →
       ∀ τ : S, DetIdentity v a Fil τ ∧ KernelIdentity v a Fil τ ∧ LengthIdentities v a Fil τ
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h1 : v (u : C) + v (w : C) = 0`. Rewrite using `[← v.map_mul, ← Subring.coe_mul, hw]`. Simplify using the standard rewrite rules. Establish `hu0 : 0 ≤ v (u : C)` using `u.2`.
+
+Establish `hw0 : 0 ≤ v (w : C)` using `w.2`. Use `le_antisymm ?_ hu0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem v_unit (v : AddValuation C (WithTop ℝ)) {u : Int0 v} (hu : IsUnit u) : v (u : C) = 0 := by
   obtain ⟨w, hw⟩ := hu.exists_right_inv
   have h1 : v (u : C) + v (w : C) = 0 := by
@@ -133,6 +144,21 @@ theorem v_unit (v : AddValuation C (WithTop ℝ)) {u : Int0 v} (hu : IsUnit u) :
   calc v (u : C) ≤ v (u : C) + v (w : C) := le_add_of_nonneg_right hw0
     _ = 0 := h1
 
+/- English proof (translation)
+Take `⟨n, b, b', A, hA, hr⟩` from `h`. Take `⟨m, c, c', B, hB, hr'⟩` from `h'`. Establish `hnm : n = m` using `by simpa using Fintype.card_congr (b.indexEquiv c)`. Substitute `hnm` using the available equality. Establish `hle : X' ≤ X`.
+
+Introduce `x hx`. Establish `: (x : M) = ∑ k, b'.repr ⟨x, hx⟩ k • (b' k : M)`. Use `congrArg X'.subtype (b'.sum_repr ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Conclude with `this.symm`.
+
+Rewrite using `[this]`. Use `X.sum_mem fun k _ => X.smul_mem _ ?_` and prove the remaining obligations. Rewrite using `[hA k]`. Conclude with `X.sum_mem fun i _ => X.smul_mem _ (b i).2`. Establish `key : ∀ (b : Basis (Fin n) (Int0 v) X) (b' : Basis (Fin n) (Int0 v) X') (A : Matrix (Fin n) (Fin n) (Int0 v)), (∀ k, (b' k : M) = ∑ i, A i k • (b i : M)) → LinearMap.toMatrix b' b (Submodule.inclusion hle) = A`.
+
+Introduce `b b' A hA`. Use extensionality with `i k`. Establish `: Submodule.inclusion hle (b' k) = ∑ i, A i k • b i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hA k`.
+
+Rewrite using `[LinearMap.toMatrix_apply, this]`. Simplify using `[Finsupp.single_apply]`. Establish `hAB : A = b.toMatrix c * B * c'.toMatrix b'`. Rewrite using `[← key b b' A hA, ← key c c' B hB, basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix]`. Establish `u1 : IsUnit (b.toMatrix c).det`.
+
+Use `letI := b.invertibleToMatrix c`. Conclude with `Matrix.isUnit_det_of_invertible _`. Establish `u2 : IsUnit (c'.toMatrix b').det`. Use `letI := c'.invertibleToMatrix b'`. Conclude with `Matrix.isUnit_det_of_invertible _`.
+
+Establish `: v (A.det : C) = v (B.det : C)`. Rewrite using `[hAB, Matrix.det_mul, Matrix.det_mul, Subring.coe_mul, Subring.coe_mul, v.map_mul, v.map_mul, v_unit v u1, v_unit v u2, zero_add, add_zero]`. Rewrite `this` using `[hr, hr']`. Conclude with `this` after adjusting the coercions.
+-/
 theorem RelLen.unique (v : AddValuation C (WithTop ℝ)) {M : Type} [AddCommGroup M]
     [Module (Int0 v) M] {X' X : Submodule (Int0 v) M} {r r' : ℝ}
     (h : RelLen v X' X r) (h' : RelLen v X' X r') : r = r' := by

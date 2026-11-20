@@ -20,40 +20,70 @@ attribute [local instance 100000] MeasurableSpace.pi
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem sfin {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] : SFinite ν := inferInstance
 
+/- English proof (translation)
+Take `⟨γ, e⟩` from `RightCosetSpace.mk_eq_mk_iff.1 (show mk (Gam K n) (Quotient.out (mk (Gam K n) g)) = mk (Gam K n) g from Quotient.out_eq _)`. Rewrite using `[← e]`. Conclude with `hh _ γ.2 _`.
+-/
 private theorem out_mk {n : ℕ} (h : G1 K n → ℂ) (hh : ∀ γ ∈ Gam K n, ∀ m, h (γ * m) = h m) (g : G1 K n) :
     h (Quotient.out (mk (Gam K n) g)) = h g := by
   obtain ⟨γ, e⟩ := RightCosetSpace.mk_eq_mk_iff.1 (show mk (Gam K n) (Quotient.out (mk (Gam K n) g)) = mk (Gam K n) g from Quotient.out_eq _)
   rw [← e]
   exact hh _ γ.2 _
 
+/- English proof (translation)
+Rewrite using `[integral_quotientMeasure]`. Simplify using `only [out_mk h hh]`.
+-/
 private theorem int_out {n : ℕ} (μ : Measure (G1 K n)) (h : G1 K n → ℂ) (hh : ∀ γ ∈ Gam K n, ∀ m, h (γ * m) = h m) :
     ∫ y, h (Quotient.out y) ∂quotientMeasure (Gam K n) μ = ∫ g, h g ∂fd μ := by
   rw [integral_quotientMeasure]
   simp only [out_mk h hh]
 
+/- English proof (translation)
+Introduce and unpack `γ ⟨δ, hδ⟩ m`. Establish `: (γ : AdelicGLn.AdelicGL K n) = AdelicGLn.diagonal K n δ` using `hδ.symm`. Rewrite using `[Subgroup.coe_mul, this, h]`.
+-/
 private theorem left_gam {n : ℕ} {φ : AdelicGLn.AdelicGL K n → ℂ} (h : IsLeftInvariant φ) :
     ∀ γ ∈ Gam K n, ∀ m : G1 K n, φ ((γ * m : G1 K n) : AdelicGLn.AdelicGL K n) = φ m := by
   rintro γ ⟨δ, hδ⟩ m
   have : (γ : AdelicGLn.AdelicGL K n) = AdelicGLn.diagonal K n δ := hδ.symm
   rw [Subgroup.coe_mul, this, h]
 
+/- English proof (translation)
+The claim follows from `Units.ext (GlobalTheory.SmGL.val_emb₂ R _ _)`.
+-/
 private theorem lev_blk {R : Type} [CommRing R] {r s : ℕ} (x : GL (Fin r) R) (y : GL (Fin s) R) :
     GlobalTheory.CompanionTheory.CTFin.lev R r s (x, y) = blk x y := Units.ext (GlobalTheory.SmGL.val_emb₂ R _ _)
 
+/- English proof (translation)
+Rewrite using `[lev_blk]`. Use extensionality with `i j`. Establish `e : ∀ i : Fin 2, (finSumFinEquiv (m` using `2) (n := 0)).symm i = Sum.inl i := fun i => finSumFinEquiv_symm_apply_castAdd i`. Simplify using `[blk, e]`.
+-/
 private theorem lev_zero {R : Type} [CommRing R] (x : GL (Fin 2) R) : GlobalTheory.CompanionTheory.CTFin.lev R 2 0 (x, 1) = x := by
   rw [lev_blk]
   ext i j
   have e : ∀ i : Fin 2, (finSumFinEquiv (m := 2) (n := 0)).symm i = Sum.inl i := fun i => finSumFinEquiv_symm_apply_castAdd i
   simp [blk, e]
 
+/- English proof (translation)
+Use `haveI : IsEmpty (UPos 2 2) := ⟨fun p => by have := p.1.2.2; have := p.2.2; omega⟩`. Establish `e : ∀ X : UPos 2 2 → 𝔸[K], unipGL X = 1` using `fun X => by rw [Subsingleton.elim X 0, unipGL_zero]`. Establish `e2 : unipFundamentalDomain K 2 2 = univ` using `eq_univ_of_forall fun X p => isEmptyElim p`. Simplify using `[constantTerm, e, e2, Measure.real, Measure.pi_empty_univ]`.
+-/
 private theorem ct_top (φ : AdelicGLn.AdelicGL K 2 → ℂ) (g : AdelicGLn.AdelicGL K 2) : constantTerm 2 φ g = φ g := by
   haveI : IsEmpty (UPos 2 2) := ⟨fun p => by have := p.1.2.2; have := p.2.2; omega⟩
   have e : ∀ X : UPos 2 2 → 𝔸[K], unipGL X = 1 := fun X => by rw [Subsingleton.elim X 0, unipGL_zero]
   have e2 : unipFundamentalDomain K 2 2 = univ := eq_univ_of_forall fun X p => isEmptyElim p
   simp [constantTerm, e, e2, Measure.real, Measure.pi_empty_univ]
 
+/- English proof (translation)
+Establish `h1 : ∀ u, blk (scalarUnits K 2 u) (scalarUnits K 2 u) = scalarUnits K (2 + 2) u`. Introduce `u`. Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [blk, scalarUnits_apply, coe_diagUnits, Matrix.fromBlocks_diagonal, Matrix.reindex_apply, Matrix.submatrix_diagonal_equiv]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Apply the tactic sequence `cases finSumFinEquiv.symm i <;> rfl`. Simplify using `only [InvariantSubmoduleMonicPolynomial.zt, UpperTheory.ConvolutionTheory.BW.zt, centralSection, MonoidHom.comp_apply, h1]`. Use `congr 2`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Use `show Real.exp a ^ _ = Real.exp (a + a) ^ _`. Establish `: (Module.finrank ℚ K : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Rewrite using `[← Real.exp_mul, ← Real.exp_mul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem zt_blk (a : ℝ) : blk (InvariantSubmoduleMonicPolynomial.zt K a) (InvariantSubmoduleMonicPolynomial.zt K a) = UpperTheory.ConvolutionTheory.BW.zt K (2 + 2) (a + a) := by
   have h1 : ∀ u, blk (scalarUnits K 2 u) (scalarUnits K 2 u) = scalarUnits K (2 + 2) u := by
     intro u
@@ -74,11 +104,17 @@ private theorem zt_blk (a : ℝ) : blk (InvariantSubmoduleMonicPolynomial.zt K a
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[InvariantSubmoduleMonicPolynomial.zt, InvariantSubmoduleMonicPolynomial.zt, InvariantSubmoduleMonicPolynomial.zt, ← map_mul]`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_add a b)`.
+-/
 private theorem zt_add (a b : ℝ) : InvariantSubmoduleMonicPolynomial.zt K (a + b) = InvariantSubmoduleMonicPolynomial.zt K a * InvariantSubmoduleMonicPolynomial.zt K b := by
   rw [InvariantSubmoduleMonicPolynomial.zt, InvariantSubmoduleMonicPolynomial.zt, InvariantSubmoduleMonicPolynomial.zt, ← map_mul]
   congr 1
   exact Subtype.ext (Real.exp_add a b)
 
+/- English proof (translation)
+Establish `hc : ∀ (x : ℝ) (g : AdelicGLn.AdelicGL K 2), g * InvariantSubmoduleMonicPolynomial.zt K x = InvariantSubmoduleMonicPolynomial.zt K x * g` using `fun x g => (centralSection_mul_comm _ g).symm`. Rewrite using `[blkLaws.1, ← zt_blk, blkLaws.2.2.2.2.2.1, hc, hc, ← mul_assoc, ← mul_assoc, ← zt_add, ← zt_add]`. Apply the tactic sequence `congr 3 <;> ring`.
+-/
 private theorem lev_lv (a b : G1 K 2) (s t : ℝ) :
     blk (InvariantSubmoduleMonicPolynomial.zt K s * (a : AdelicGLn.AdelicGL K 2)) (InvariantSubmoduleMonicPolynomial.zt K t * (b : AdelicGLn.AdelicGL K 2)) =
       UpperTheory.ConvolutionTheory.BW.zt K (2 + 2) ((s + t) / 2 + (s + t) / 2) * ((lv a b ((s - t) / 2) : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) := by
@@ -88,6 +124,11 @@ private theorem lev_lv (a b : G1 K 2) (s t : ℝ) :
 
 variable [IsTotallyComplex K]
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `cuspUmg K 2 b.f b.cusp`. Use `⟨((umgOps K 2).2 _ hu).1.comp continuous_subtype_val, ⟨_, h, ?_⟩, left_gam hu.left, fun m => ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) (mu1 K 2)).ae (coeFn_cuspToL2 (mu1 K 2) ⟨b.f.1, b.cusp⟩)] with y hy`. Rewrite using `[hy]`. Both sides reduce to the same expression.
+
+Use `hc 1 one_pos one_lt_two (m : AdelicGLn.AdelicGL K 2)` as an intermediate fact. Unfold `constantTerm at this`. Conclude with `this`. Conclude with `rapidDecay K 2 b.f hu hc`.
+-/
 private theorem blo_rd {S : Set (Pl K)} (b : Blo S 2) (τ : Submodule ℂ (L2 (mu1 K 2)))
     (h : ((cuspToL2 (mu1 K 2) ⟨b.f.1, b.cusp⟩ : cuspidalL2 (mu1 K 2)) : L2 (mu1 K 2)) ∈ τ) :
     Rd τ fun m : G1 K 2 => b.f.1 (m : AdelicGLn.AdelicGL K 2) := by
@@ -101,6 +142,29 @@ private theorem blo_rd {S : Set (Pl K)} (b : Blo S 2) (τ : Submodule ℂ (L2 (m
     exact this
   · exact rapidDecay K 2 b.f hu hc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `r₁` using `blo_rd b₁ τ₁ m₁`. Establish `r₂` using `blo_rd b₂ τ₂ m₂`. Establish `hc : Continuous fun g : G1 K (2 + 2) => w.1 (g : AdelicGLn.AdelicGL K (2 + 2))` using `((umgOps K _).2 _ hw.umg).1.comp continuous_subtype_val`. Establish `hΓ` using `left_gam hw.umg.left`.
+
+Establish `hrep : Reps μ (Rop μ a y) fun g : G1 K (2 + 2) => w.1 (g : AdelicGLn.AdelicGL K (2 + 2))` using `((quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae hw.ae).mono fun g hg => hg.trans (out_mk (fun g : G1 K (2 + 2) => w.1 (g : AdelicGLn.AdelicGL K (2 + 2))) hΓ g)`. Take `⟨F, hF, hFu, hFr, -⟩` from `ctOps K 2 2 w hw.umg`. Establish `hrat : ∀ γ₁ ∈ Gam K 2, ∀ γ₂ ∈ Gam K 2, ∀ g : G1 K (2 + 2), constantTerm 2 w.1 ((lv γ₁ γ₂ 0 * g : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = constantTerm 2 w.1 (g : AdelicGLn.AdelicGL K (2 + 2))`. Introduce and unpack `γ₁ ⟨δ₁, e₁⟩ γ₂ ⟨δ₂, e₂⟩ g`. Establish `e₁' : (γ₁ : AdelicGLn.AdelicGL K 2) = ratGL K 2 δ₁` using `e₁.symm`.
+
+Establish `e₂' : (γ₂ : AdelicGLn.AdelicGL K 2) = ratGL K 2 δ₂` using `e₂.symm`. Establish `z0 : InvariantSubmoduleMonicPolynomial.zt K 0 = 1`. Use `zt_add (K := K) 0 0` as an intermediate fact. Rewrite `this` using `[add_zero, left_eq_mul]`. Then use the resulting hypothesis. Rewrite using `[Subgroup.coe_mul, blkLaws.1, neg_zero, z0, mul_one, mul_one, e₁', e₂', ← lev_blk, ← hF]`.
+
+Conclude with `hFr (δ₁, δ₂) _`. Set `k' : G1 K (2 + 2)` to `⟨k, (blkLaws.2.2.2.2.2.2.2.2.2.2.2 _).2 _ k.2⟩`. Take `⟨hi, h0⟩` from `unfZero μ (mu1 K 2) τ₁ τ₂ D A h₁ h₂ _ _ (fun g => constantTerm 2 w.1 (g : AdelicGLn.AdelicGL K (2 + 2))) _ _ hc hΓ hrep (by`. Take `⟨N, hN⟩` from `hw.umg.growth`. Take `⟨B, hB⟩` from `hN 1`.
+
+Rewrite `hB` using `[map_one, Module.End.one_apply]`. Conclude with `⟨N, B, fun g => hB g⟩)`. Use the proof step `(fixRep μ D a ha y _ hc hrep) hJ (fun g => rfl) hrat (fun X g => by`. Establish `e : GlobalTheory.CuspRep.unip X = unipGL X` using `Units.ext rfl`. Rewrite using `[← hF, Subgroup.coe_mul, ← hFu X g, e]`.
+
+Use the proof step `rfl) r₁ r₂`. Use the proof step `((t (0 : Fin 2) - t (1 : Fin 2)) / 2) k' k.2`. Use `haveI := finFd (mu1 K 2)`. Use `haveI := sfin (fd (mu1 K 2))`. Rewrite `h0` using `[integral_prod_symm _ hi]`.
+
+Establish `e : ∀ a b : G1 K 2, constantTerm 2 (rt K (2 + 2) k w).1 (GlobalTheory.CompanionTheory.CTFin.lev (Ad K) 2 2 (UpperTheory.ConvolutionTheory.BW.zt K 2 (t (0 : Fin 2)) * a, UpperTheory.ConvolutionTheory.BW.zt K 2 (t (1 : Fin 2)) * b)) = constantTerm 2 w.1 ((lv a b ((t (0 : Fin 2) - t …`. Introduce `a b`. Rewrite using `[lev_blk]`. Use `erw [lev_lv]`. Use `integral_congr_ae (ae_of_all _ fun X => ?_)` and prove the remaining obligations.
+
+Use `show w.1 (unipGL X * (_ * _) * _) = w.1 (unipGL X * (_ * _))`. Rewrite using `[← mul_assoc, UpperTheory.ConvolutionTheory.BW.zt, ← centralSection_mul_comm, mul_assoc, mul_assoc]`. Conclude with `hw.cen _ _`. Establish `hmul` using `(blkLaws (K := K)).2.1`. Establish `hl : ∀ γ₁ ∈ Gam K 2, ∀ γ₂ ∈ Gam K 2, ∀ (a b : G1 K 2) s, constantTerm 2 w.1 ((lv (γ₁ * a) (γ₂ * b) s * k' : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = constantTerm 2 w.1 ((lv a b s * k' : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2))` using `fun γ₁ h1 γ₂ h2 a b s => by`.
+
+Rewrite using `[← hrat γ₁ h1 γ₂ h2 (lv a b s * k'), ← mul_assoc, hmul, zero_add]`. Use `show slice (r := 2) (s := 0) b₂.f.1 (t (1 : Fin 2)) (slice (r := 2) (s := 2) b₁.f.1 (t (0 : Fin 2)) (rt K (2 + 2) k w).1) 1 = 0`. Rewrite using `[← h0, ← int_out (mu1 K 2) _ fun γ hγ b => by`. Simplify `hl 1 (one_mem _) γ hγ a b s : constantTerm 2 w.1 ((lv a (γ * b) s * k' : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = _)]]` using `only [r₂.rat γ hγ b, fun a s => (by simpa only [one_mul]`. Use `integral_congr_ae (ae_of_all _ fun y₂ => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← int_out (mu1 K 2) _ fun γ hγ a => by`. Simplify `hl γ hγ 1 (one_mem _) a b s : constantTerm 2 w.1 ((lv (γ * a) b s * k' : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = _)]]` using `only [r₁.rat γ hγ a, fun b s => (by simpa only [one_mul]`. Use `erw [lev_zero, ct_top]`. Rewrite using `[slice, ← integral_mul_const]`.
+
+Use `integral_congr_ae (ae_of_all _ fun y₁ => ?_)` and prove the remaining obligations. Simplify using `only`. Use `erw [e]`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem compZero (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 (mu1 K 2))) (D : TypeDat K (2 + 2)) {d : ℕ}
     (A : Line μ τ₁ τ₂ D d) (h₁ : CuspIrr (mu1 K 2) τ₁) (h₂ : CuspIrr (mu1 K 2) τ₂) (a : CC K (2 + 2)) (ha : D.Hecke a) (y : L2 μ)
     (w : Sm K (2 + 2)) (hw : Rep μ (Rop μ a y) w) (hJ : ∀ u, ⟪A.J u, Rop μ a y⟫_ℂ = 0) {S : Set (Pl K)} (b₁ b₂ : Blo S 2)

@@ -7,8 +7,14 @@ noncomputable section
 
 namespace PI.VolSemiDirect.W
 
+/- English proof (translation)
+The claim follows from `closedStep_of Lc.tensor_adele_topology_holds`.
+-/
 theorem closed_subgroup_holds : ClosedStep := closedStep_of Lc.tensor_adele_topology_holds
 
+/- English proof (translation)
+The claim follows from `discHA_of Lc.tensor_adele_topology_holds`.
+-/
 theorem discrete_adelic_unitary : DiscHA := discHA_of Lc.tensor_adele_topology_holds
 
 end PI.VolSemiDirect.W

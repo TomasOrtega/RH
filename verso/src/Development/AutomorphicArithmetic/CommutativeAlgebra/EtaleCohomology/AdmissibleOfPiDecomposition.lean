@@ -9,6 +9,19 @@ open UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison 
 
 namespace UpperTheory.Ru.crystallineComparison.JQ
 
+/- English proof (translation)
+Introduce `U _ _ _ _ _ ρ`. Take `⟨hfin, hb⟩` from `(boundSt_holds l P AI hT K LL).1 U ρ`. Set `c : P.R.B →ₗ[ℚ_[l]] Bst P` to `(Polynomial.CAlgHom : P.R.B →ₐ[ℚ_[l]] Bst P).toLinearMap`. Establish `hc : Function.Injective c` using `Polynomial.C_injective`. Establish `hcg : ∀ (g : ↥(GK K)) b, c (σCr P K g b) = σSt P K g (c b)` using `fun g b => (actSt_C P (g : GQ l) b).symm`.
+
+Set `m : U ⊗[ℚ_[l]] P.R.B →ₗ[↥LL.1] U ⊗[ℚ_[l]] Bst P` to `AlgebraTensorModule.map LinearMap.id c`. Establish `hm : Function.Injective m`. Establish `e : ⇑m = ⇑(c.lTensor U)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul u b => simp [m]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[e]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap c hc`.
+
+Establish `hcomm : ∀ (g : ↥(GK K)) x, AlgebraTensorModule.map (ρ g) (σSt P K g) (m x) = m (AlgebraTensorModule.map (ρ g) (σCr P K g) x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u b => simp [m, hcg]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hmem : ∀ x ∈ Dinv (σCr P K) ρ, m x ∈ Dinv (σSt P K) ρ`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_Dinv]`. Introduce `g`.
+
+Rewrite using `[hcomm, hx]`. Set `m' : Dinv (σCr P K) ρ →ₗ[↥LL.1] Dinv (σSt P K) ρ` to `m.restrict hmem`. Establish `hm' : Function.Injective m'` using `fun x y h => Subtype.ext (hm (congrArg Subtype.val h))`. Conclude with `⟨Module.Finite.of_injective m' hm', (LinearMap.finrank_le_finrank_of_injective hm').trans hb⟩`.
+-/
 theorem bound_cr {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied l P AI)) (K LL : FinExt l) :
     Bound (σCr P K) ↥LL.1 (finrank ℚ_[l] ↥(K0 K)) := by
   intro U _ _ _ _ _ ρ
@@ -41,6 +54,11 @@ theorem bound_cr {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (h
   have hm' : Function.Injective m' := fun x y h => Subtype.ext (hm (congrArg Subtype.val h))
   exact ⟨Module.Finite.of_injective m' hm', (LinearMap.finrank_le_finrank_of_injective hm').trans hb⟩
 
+/- English proof (translation)
+Establish `e : Dinv (σCr P K) ρ = Dcris (P.PD K) ρ`. Unfold `Dinv Dcris actVB σCr`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Use `congr 3`. Use extensionality with `b`.
+
+Simplify using `[P.PD_actB]`. Unfold `admitted at h`. Unfold `IsCrys`. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem crys_of_adm {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) {LL V : Type} [Field LL] [Algebra ℚ_[l] LL]
     [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] (ρ : Representation LL ↥(GK K) V)
     (h : admitted (σCr P K) (finrank ℚ_[l] ↥(K0 K)) ρ) : IsCrys (P.PD K) ρ := by
@@ -63,6 +81,11 @@ variable {F G B : Type} [Field F] [Group G] [AddCommGroup B] [Module F B] (σ : 
 
 abbrev tm (f : X →ₗ[L] Y) : X ⊗[F] B →ₗ[L] Y ⊗[F] B := AlgebraTensorModule.map f (LinearMap.id : B →ₗ[F] B)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_Dinv]`. Introduce `g`. Establish `e : ∀ y : X ⊗[F] B, AlgebraTensorModule.map (ρ' g) (σ g) (tm (F` using `F) (B := B) f y) = tm (F := F) (B := B) f (AlgebraTensorModule.map (ρ g) (σ g) y) := by`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul u b => simp [hf g u]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Rewrite using `[e, hx g]`.
+-/
 theorem tm_mem {ρ : Representation L G X} {ρ' : Representation L G Y} {f : X →ₗ[L] Y} (hf : Inter ρ ρ' f) {x : X ⊗[F] B}
     (hx : x ∈ Dinv σ ρ) : tm (F := F) (B := B) f x ∈ Dinv σ ρ' := by
   rw [mem_Dinv] at hx ⊢
@@ -76,6 +99,9 @@ theorem tm_mem {ρ : Representation L G X} {ρ' : Representation L G Y} {f : X �
     | add y z hy hz => simp only [map_add, hy, hz]
   rw [e, hx g]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem tm_comp (f : X →ₗ[L] Y) (h : Y →ₗ[L] Z) (x : X ⊗[F] B) :
     tm (F := F) (B := B) h (tm (F := F) (B := B) f x) = tm (F := F) (B := B) (h ∘ₗ f) x := by
   induction x using TensorProduct.induction_on with
@@ -83,12 +109,34 @@ theorem tm_comp (f : X →ₗ[L] Y) (h : Y →ₗ[L] Z) (x : X ⊗[F] B) :
   | tmul u b => simp
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz, add_zero]`.
+-/
 theorem tm_zero (x : X ⊗[F] B) : tm (F := F) (B := B) (0 : X →ₗ[L] Y) x = 0 := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul u b => simp
   | add y z hy hz => simp only [map_add, hy, hz, add_zero]
 
+/- English proof (translation)
+Set `pr : ∀ i, W →ₗ[L] C i` to `fun i => LinearMap.proj i ∘ₗ E.toLinearMap`. Set `inc : ∀ i, C i →ₗ[L] W` to `fun i => E.symm.toLinearMap ∘ₗ LinearMap.single L C i`. Establish `hz : ∀ i j, i ≠ j → pr j ∘ₗ inc i = 0` using `fun i j h => by`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `[pr, inc, Pi.single_eq_of_ne h.symm]`.
+
+Establish `ho : ∀ j, pr j ∘ₗ inc j = LinearMap.id` using `fun j => by`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `[pr, inc]`. Establish `hinc : ∀ i, Inter (ρC i) ρ (inc i)`. Introduce `i g y`.
+
+Use `E.injective (funext fun t => ?_)` and prove the remaining obligations. Use `show pr t (inc i (ρC i g y)) = pr t (ρ g (inc i y))`. Rewrite using `[hE t g]`. Distinguish the cases in `h : i = t`. Substitute `h` using the available equality.
+
+Establish `e` using `fun z => LinearMap.congr_fun (ho i) z`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at e`. Rewrite using `[e, e]`. Establish `e` using `fun (u : ℕ) (z : C i) => LinearMap.congr_fun (hz i t h) z`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at e`.
+
+Rewrite using `[e 0, e 0, map_zero]`. Use `haveI : ∀ i, Module.Finite L (C i) := fun i => Module.Finite.of_surjective (pr i) fun y => ⟨inc i y, LinearMap.congr_fun (ho i) y⟩`. Use `haveI : ∀ i, Module.Finite L (Dinv σ (ρC i)) := fun i => (hB (C i) (ρC i)).1`. Use `haveI : Module.Finite L (Dinv σ ρ) := (hB W ρ).1`. Set `Ψ : Dinv σ ρ →ₗ[L] ∀ i, Dinv σ (ρC i)` to `LinearMap.pi fun i => (tm (F := F) (B := B) (pr i)).restrict fun x hx => tm_mem σ (hE i) hx`.
+
+Establish `hΨ : Function.Surjective Ψ`. Introduce `y`. Use `⟨⟨∑ i, tm (F := F) (B := B) (inc i) (y i).1, Submodule.sum_mem _ fun i _ => tm_mem σ (hinc i) (y i).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show tm (F := F) (B := B) (pr j) (∑ i, tm (F := F) (B := B) (inc i) (y i).1) = (y j).1`. Rewrite using `[map_sum, Finset.sum_eq_single j]`. Rewrite using `[tm_comp, ho]`. Simplify using the standard rewrite rules. Introduce `i _ h`.
+
+Rewrite using `[tm_comp, hz i j h, tm_zero]`. Simplify using the standard rewrite rules. Establish `hle` using `LinearMap.finrank_le_finrank_of_surjective hΨ`. Rewrite `hle` using `[Module.finrank_pi_fintype]`. Use `le_antisymm (hB W ρ).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[E.finrank_eq, Module.finrank_pi_fintype, Finset.mul_sum]`. Use `le_trans (le_of_eq ?_) hle` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => (hA i).symm`.
+-/
 theorem admissible_of_pi_decomposition {e : ℕ} (hB : Bound σ L e) {W : Type} [AddCommGroup W] [Module L W] [Module F W] [IsScalarTower F L W]
     [Module.Finite L W] (ρ : Representation L G W) {I : Type} [Fintype I] [DecidableEq I] (C : I → Type)
     [∀ i, AddCommGroup (C i)] [∀ i, Module L (C i)] [∀ i, Module F (C i)] [∀ i, IsScalarTower F L (C i)]
@@ -140,6 +188,17 @@ theorem admissible_of_pi_decomposition {e : ℕ} (hB : Bound σ L e) {W : Type} 
   refine le_trans (le_of_eq ?_) hle
   exact Finset.sum_congr rfl fun i _ => (hA i).symm
 
+/- English proof (translation)
+Set `T' : ℕ → End F V` to `fun j => if j ≤ n then T j else 0`. Set `θ' : ℕ → L` to `fun j => if j ≤ n then θ j else 0`. Set `TU : ℕ → End L U` to `fun j => θ' j • (1 : End L U)`. Establish `hN' : AnnD σ ψ q n ρ T'`. Introduce `x hx`.
+
+Rewrite using `[← hN x hx]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `only [T', if_pos (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`. Establish `hpol : UpperTheory.Gal.crystallineComparison.heckePol q n θ = UpperTheory.Gal.crystallineComparison.heckePol q n θ'`. Unfold `UpperTheory.Gal.crystallineComparison.heckePol`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `only [θ', if_pos (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`. Rewrite using `[hpol]`. Use `joinAbs_holds F G B σ ψ hσψ L e hB V ρ q n T' hA hN' U ρU i TU θ' hi hinj ?_ (fun j g => ?_) (fun j j' => ?_) (fun j hj => ?_) W ρW I C ρC f hS hf hsep` and prove the remaining obligations. Introduce `j u`.
+
+Distinguish the cases in `hj : j ≤ n`. Simplify using `only [TU, T', θ', if_pos hj, Module.End.smul_def, Module.End.one_apply, LinearMap.smul_apply]`. Rewrite using `[map_smul, hiT j hj]`. Simplify using `[TU, T', θ', if_neg hj, LinearMap.baseChange_zero]`. Conclude with `(Commute.one_left _).smul_left _`.
+
+Conclude with `((Commute.one_left _).smul_left _).smul_right _`. Simplify using `[TU]`.
+-/
 theorem nil_scalar (ψ : End F B) (hσψ : ∀ g, Commute (σ g) ψ) {e : ℕ} (hB : Bound σ L e) {V : Type} [AddCommGroup V] [Module F V]
     [Module.Finite F V] (ρ : Representation F G V) (q n : ℕ) (T : ℕ → End F V) (hA : admitted σ e ρ) (hN : AnnD σ ψ q n ρ T)
     {U : Type} [AddCommGroup U] [Module L U] (ρU : Representation L G U) (i : U →ₗ[L] L ⊗[F] V) (θ : ℕ → L)
@@ -177,6 +236,9 @@ end Pi
 section Blocks
 variable {L : Type} [Field L] {a : ℕ} (c : Fin a → ℕ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mv {m : ℕ} (A : Matrix (Fin m) (Fin a) L) (x : Fin a → L) (i : Fin m) : (A *ᵥ x) i = ∑ j, A i j * x j := rfl
 
 def blk (L : Type) [Field L] {a : ℕ} (c : Fin a → ℕ) (m : ℕ) : Submodule L (Fin a → L) where
@@ -200,6 +262,9 @@ def prj (m : ℕ) : (Fin a → L) →ₗ[L] blk L c m where
     ext i
     by_cases h : c i = m <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prj_apply (m : ℕ) (x : Fin a → L) (i : Fin a) : (prj c m x : Fin a → L) i = if c i = m then x i else 0 := rfl
 
 def subRep {G X : Type} [Group G] [AddCommGroup X] [Module L X] (ρ : Representation L G X) (S : Submodule L X)
@@ -208,6 +273,11 @@ def subRep {G X : Type} [Group G] [AddCommGroup X] [Module L X] (ρ : Representa
   map_one' := by ext x; simp
   map_mul' g g' := by ext x; simp
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite using `[mv]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : m < c j`. Simplify using `[hx j h]`.
+
+Simplify using `[hA (show c j < c i by omega)]`.
+-/
 theorem low_stable {A : Matrix (Fin a) (Fin a) L} (hA : A.BlockTriangular c) {m : ℕ} {x : Fin a → L} (hx : x ∈ low L c m) :
     A *ᵥ x ∈ low L c m := by
   intro i hi
@@ -217,6 +287,11 @@ theorem low_stable {A : Matrix (Fin a) (Fin a) L} (hA : A.BlockTriangular c) {m 
   · simp [hx j h]
   · simp [hA (show c j < c i by omega)]
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite using `[mv]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c j = m`. Simplify using `[hD i j (by omega)]`.
+
+Simplify using `[hx j h]`.
+-/
 theorem blk_stable {D : Matrix (Fin a) (Fin a) L} (hD : ∀ i j, c i ≠ c j → D i j = 0) {m : ℕ} {x : Fin a → L} (hx : x ∈ blk L c m) :
     D *ᵥ x ∈ blk L c m := by
   intro i hi
@@ -226,6 +301,13 @@ theorem blk_stable {D : Matrix (Fin a) (Fin a) L} (hD : ∀ i j, c i ≠ c j →
   · simp [hD i j (by omega)]
   · simp [hx j h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[prj_apply, mv, mv]`. Distinguish the cases in `h : c i = m`. Rewrite using `[if_pos h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h' : c j = m`. Simplify using `[prj_apply, h']`. Simplify using `[prj_apply, h', hD i j (by omega)]`. Rewrite using `[if_neg h]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h' : c j = m`. Simplify using `[hD i j (by omega)]`. Simplify using `[prj_apply, h']`.
+-/
 theorem prj_diag {D : Matrix (Fin a) (Fin a) L} (hD : ∀ i j, c i ≠ c j → D i j = 0) (m : ℕ) (x : Fin a → L) :
     (prj c m (D *ᵥ x) : Fin a → L) = D *ᵥ (prj c m x : Fin a → L) := by
   funext i
@@ -243,6 +325,13 @@ theorem prj_diag {D : Matrix (Fin a) (Fin a) L} (hD : ∀ i j, c i ≠ c j → D
     · simp [hD i j (by omega)]
     · simp [prj_apply, h']
 
+/- English proof (translation)
+Establish `hD' : ∀ i j, c i ≠ c j → D i j = 0` using `fun i j h => by rw [hD, if_neg h]`. Rewrite using `[← prj_diag c hD']`. Use function extensionality and compare the values at `i`. Rewrite using `[prj_apply, prj_apply]`. Distinguish the cases in `h : c i = m`.
+
+Rewrite using `[if_pos h, if_pos h, mv, mv]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hD]`. Distinguish the cases in `h' : c j = m`. Simplify using `[h, h']`.
+
+Rewrite using `[if_neg (by omega)]`. Break down `lt_or_gt_of_ne h' with h2 | h2` into its components or cases. Simplify using `[hA (show c j < c i by omega)]`. Simplify using `[hx j h2]`. Simplify using `[h]`.
+-/
 theorem prj_tri {A D : Matrix (Fin a) (Fin a) L} (hA : A.BlockTriangular c) (hD : ∀ i j, D i j = if c i = c j then A i j else 0)
     {m : ℕ} {x : Fin a → L} (hx : x ∈ low L c m) :
     (prj c m (A *ᵥ x) : Fin a → L) = D *ᵥ (prj c m x : Fin a → L) := by
@@ -264,6 +353,29 @@ theorem prj_tri {A D : Matrix (Fin a) (Fin a) L} (hA : A.BlockTriangular c) (hD 
 
 end Blocks
 
+/- English proof (translation)
+Establish `hD' : ∀ g i j, c i ≠ c j → D g i j = 0` using `fun g i j hne => by rw [hD, if_neg hne]`. Set `I : Type` to `↥(Finset.univ.image c)`. Set `C : I → Type` to `fun t => ↥(blk L c t.1)`. Set `ρC : ∀ t : I, Representation L G (C t)` to `fun t => subRep ρ (blk L c t.1) fun g x hx => by`. Rewrite using `[h]`.
+
+Conclude with `blk_stable c (hD' g) hx`. Establish `hρC : ∀ (t : I) g (y : C t), (ρC t g y : Fin a → L) = D g *ᵥ (y : Fin a → L)` using `fun t g y => h g y`. Set `toPi : (Fin a → L) →ₗ[L] ∀ t : I, C t` to `LinearMap.pi fun t => prj c t.1`. Set `ofPi : (∀ t : I, C t) →ₗ[L] (Fin a → L)` to `∑ t : I, (blk L c t.1).subtype ∘ₗ LinearMap.proj t`. Establish `hof : ∀ (y : ∀ t : I, C t), ofPi y = ∑ t : I, (y t : Fin a → L)` using `fun y => by simp [ofPi, LinearMap.sum_apply]`.
+
+Establish `h1 : toPi ∘ₗ ofPi = LinearMap.id`. Use `LinearMap.ext fun y => funext fun t => Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Use `show (prj c t.1 (ofPi y) : Fin a → L) i = (y t : Fin a → L) i`. Rewrite using `[prj_apply, hof, Finset.sum_apply]`. Distinguish the cases in `hi : c i = t.1`.
+
+Rewrite using `[if_pos hi]`. Use `Finset.sum_eq_single t (fun s _ hs => (y s).2 i fun e => hs (Subtype.ext (e.symm.trans hi))) (by simp)` and prove the remaining obligations. Rewrite using `[if_neg hi, (y t).2 i hi]`. Establish `h2 : ofPi ∘ₗ toPi = LinearMap.id`. Use `LinearMap.ext fun x => funext fun i => ?_` and prove the remaining obligations.
+
+Use `show ofPi (toPi x) i = x i`. Rewrite using `[hof, Finset.sum_apply]`. Establish `hmem : c i ∈ Finset.univ.image c` using `Finset.mem_image_of_mem c (Finset.mem_univ i)`. Rewrite using `[Finset.sum_eq_single (⟨c i, hmem⟩ : I)]`. Conclude with `if_pos rfl`.
+
+Introduce `s _ hs`. Conclude with `if_neg fun e => hs (Subtype.ext e.symm)`. Simplify using the standard rewrite rules. Set `E : (Fin a → L) ≃ₗ[L] ∀ t : I, C t` to `LinearEquiv.ofLinear toPi ofPi h1 h2`. Use `⟨I, inferInstance, inferInstance, C, inferInstance, inferInstance, inferInstance, inferInstance, ρC, E, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `t g x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (prj c t.1 (ρ g x) : Fin a → L) = (ρC t g (prj c t.1 x) : Fin a → L)`. Rewrite using `[hρC, h, prj_diag c (hD' g)]`. Introduce `t`.
+
+Set `ρL : Representation L G (low L c t.1)` to `subRep ρ₀ (low L c t.1) fun g x hx => by`. Rewrite using `[h₀]`. Conclude with `low_stable c (hT g) hx`. Establish `hρL : ∀ g (y : low L c t.1), (ρL g y : Fin a → L) = A g *ᵥ (y : Fin a → L)` using `fun g y => h₀ g y`. Use `⟨low L c t.1, inferInstance, inferInstance, ρL, (low L c t.1).subtype, prj c t.1 ∘ₗ (low L c t.1).subtype, fun g x => ?_, Subtype.val_injective, fun g x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submodule.subtype_apply]`. Conclude with `hρL g x |>.trans (h₀ g x).symm`. Apply `Subtype.ext show (prj c t.1 (ρL g x : Fin a → L) : Fin a → L) = (ρC t g (prj c t.1 x) : Fin a → L)` to reduce the goal to its premises. Rewrite using `[hρL, hρC]`. Conclude with `prj_tri c (hT g) (hD g) x.2`.
+
+Use `⟨⟨y.1, fun i hi => y.2 i (by omega)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show (if c i = t.1 then y.1 i else 0) = y.1 i`. Distinguish the cases in `hi : c i = t.1`. Rewrite using `[if_pos hi]`.
+
+Rewrite using `[if_neg hi, y.2 i hi]`.
+-/
 theorem blocks (F : Type) {G L : Type} [Field F] [Group G] [Field L] [Algebra F L] {a : ℕ} (c : Fin a → ℕ)
     (A D : G → Matrix (Fin a) (Fin a) L) (ρ₀ ρ : Representation L G (Fin a → L)) (h₀ : ∀ g x, ρ₀ g x = A g *ᵥ x)
     (h : ∀ g x, ρ g x = D g *ᵥ x) (hT : ∀ g, (A g).BlockTriangular c)
@@ -326,6 +438,9 @@ theorem blocks (F : Type) {G L : Type} [Field F] [Group G] [Field L] [Algebra F 
 section Coords
 variable {F A V : Type} [Field F] [Field A] [Algebra F A] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Establish `h` using `LinearMap.toMatrix_mulVec_repr (Algebra.TensorProduct.basis A v) (Algebra.TensorProduct.basis A v) (S.baseChange A) z`. Rewrite `h` using `[LinearMap.toMatrix_baseChange]`. Conclude with `h.symm`.
+-/
 theorem coordBC {d : ℕ} (v : Basis (Fin d) F V) (S : End F V) (z : A ⊗[F] V) :
     (Algebra.TensorProduct.basis A v).equivFun (S.baseChange A z) =
       (LinearMap.toMatrix v v S).map (algebraMap F A) *ᵥ (Algebra.TensorProduct.basis A v).equivFun z := by
@@ -335,6 +450,13 @@ theorem coordBC {d : ℕ} (v : Basis (Fin d) F V) (S : End F V) (z : A ⊗[F] V)
 
 end Coords
 
+/- English proof (translation)
+Set `v` to `Module.finBasis F V`. Set `vb` to `Algebra.TensorProduct.basis A v`. Set `M : Matrix (Fin (finrank F V)) (Fin a) A` to `LinearMap.toMatrix' (vb.equivFun.toLinearMap ∘ₗ b)`. Establish `hM : ∀ x, M *ᵥ x = vb.equivFun (b x)` using `fun x => by simp [M, LinearMap.toMatrix'_mulVec]`. Use `⟨_, v, M, fun x y hxy => hb (vb.equivFun.injective ?_), fun g => ?_, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hM, ← hM]`. Conclude with `hxy`. Use `Matrix.toLin'.injective (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec]`. Rewrite using `[hM, hM, hg, coordBC]`.
+
+Use `Matrix.toLin'.injective (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.smul_mulVec]`. Rewrite using `[hM, ← coordBC, hT j hj, map_smul]`.
+-/
 theorem coords {F A Γ G V : Type} [Field F] [Field A] [Algebra F A] [Group Γ] [Group G] [AddCommGroup V] [Module F V] [Module.Finite F V]
     (ρ : Representation F G V) (T : ℕ → End F V) (h : Γ → G) {a n : ℕ} (ϑ : ℕ → A) (r₀ : Γ → Matrix (Fin a) (Fin a) A)
     (b : (Fin a → A) →ₗ[A] A ⊗[F] V) (hb : Function.Injective b)
@@ -356,6 +478,11 @@ theorem coords {F A Γ G V : Type} [Field F] [Field A] [Algebra F A] [Group Γ] 
     simp only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Matrix.smul_mulVec]
     rw [hM, ← coordBC, hT j hj, map_smul]
 
+/- English proof (translation)
+Set `vb` to `Algebra.TensorProduct.basis L v`. Set `i : (Fin a → L) →ₗ[L] L ⊗[F] V` to `vb.equivFun.symm.toLinearMap ∘ₗ Matrix.toLin' M`. Establish `hi : ∀ u, vb.equivFun (i u) = M *ᵥ u` using `fun u => by`. Simplify using `only [i, LinearMap.comp_apply, LinearEquiv.coe_coe, Matrix.toLin'_apply, LinearEquiv.apply_symm_apply]`. Use `⟨i, fun x y hxy => hM ?_, fun g u => vb.equivFun.injective ?_, fun j hj u => vb.equivFun.injective ?_⟩` and prove the remaining obligations.
+
+Use `show M *ᵥ x = M *ᵥ y`. Rewrite using `[← hi, ← hi, hxy]`. Use `show vb.equivFun (i (ρU g u)) = vb.equivFun ((ρ g).baseChange L (i u))`. Rewrite using `[coordBC, hi, hi, hR, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`. Rewrite using `[coordBC, map_smul, hi, Matrix.mulVec_mulVec, hT j hj, Matrix.smul_mulVec]`.
+-/
 theorem descend {F L G V : Type} [Field F] [Field L] [Algebra F L] [Group G] [AddCommGroup V] [Module F V] {d a n : ℕ}
     (v : Basis (Fin d) F V) (ρ : Representation F G V) (T : ℕ → End F V) (ρU : Representation L G (Fin a → L))
     (R : G → Matrix (Fin a) (Fin a) L) (hR : ∀ g x, ρU g x = R g *ᵥ x) (M : Matrix (Fin d) (Fin a) L)
@@ -378,6 +505,37 @@ theorem descend {F L G V : Type} [Field F] [Field L] [Algebra F L] [Group G] [Ad
 end UpperTheory.Ru.crystallineComparison.JQ
 
 open UpperTheory.Ru.crystallineComparison.JQ in
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw f q n ϑ a r₀ r _ hgr hin`. Take `⟨V, _, _, _, ρ, T, b, hcr, hann, hb, hbg, hbT⟩` from `hin`. Take `⟨c, hc⟩` from `hgr`. Take `⟨d, v, M, hM, hMg, hMT⟩` from `coords ρ T Bw.e ϑ (fun g => (r₀ g : Matrix (Fin a) (Fin a) (Om l))) b hb hbg hbT`. Set `Θ : Matrix (Fin 1) (Fin (n + 1)) (Om l)` to `Matrix.of fun _ j => ϑ j`.
+
+Set `L : FinExt l` to `entExt (entExt Bw.LL M) Θ`. Use `haveI := L.2`. Set `φ : ↥L.1 →+* Om l` to `algebraMap ↥L.1 (Om l)`. Establish `hle : (entExt Bw.LL M).1 ≤ L.1` using `le_entExt _ _`. Establish `hLL : Bw.LL.1 ≤ L.1` using `(le_entExt _ _).trans hle`.
+
+Establish `hMmem : ∀ i j, M i j ∈ L.1` using `fun i j => hle (mem_entExt _ _ i j)`. Establish `hθmem : ∀ j ≤ n, ϑ j ∈ L.1` using `fun j hj => mem_entExt (entExt Bw.LL M) Θ 0 ⟨j, Nat.lt_succ_of_le hj⟩`. Set `M' : Matrix (Fin d) (Fin a) ↥L.1` to `Matrix.of fun i j => ⟨M i j, hMmem i j⟩`. Establish `hM' : M'.map φ = M` using `Matrix.ext fun i j => rfl`. Set `ϑ' : ℕ → ↥L.1` to `fun j => if h : j ≤ n then ⟨ϑ j, hθmem j h⟩ else 0`.
+
+Establish `hϑ' : ∀ j ≤ n, φ (ϑ' j) = ϑ j` using `fun j hj => by simp only [ϑ', dif_pos hj]; rfl`. Establish `hinjM' : Function.Injective M'.mulVec`. Introduce `x y hxy`. Establish `h1 : ∀ w : Fin a → ↥L.1, M *ᵥ (fun i => φ (w i)) = fun i => φ ((M' *ᵥ w) i)` using `fun w => funext fun i => by rw [← hM']; exact (RingHom.map_mulVec φ M' w i).symm`. Establish `h2` using `hM (show M *ᵥ (fun i => φ (x i)) = M *ᵥ (fun i => φ (y i)) by rw [h1, h1, hxy])`.
+
+Conclude with `funext fun i => φ.injective (congrFun h2 i)`. Take `⟨N, hN⟩` from `exists_leftInv M' hinjM'`. Set `RL : ↥(GK Bw.Kw) → Matrix (Fin d) (Fin d) ↥L.1` to `fun g => (LinearMap.toMatrix v v (ρ g)).map (algebraMap ℚ_[l] ↥L.1)`. Establish `hRφ : ∀ g, (RL g).map φ = (LinearMap.toMatrix v v (ρ g)).map (algebraMap ℚ_[l] (Om l))` using `fun g => by`. Simplify using `only [RL, Matrix.map_map]`.
+
+Use `congr 1`. Establish `hr₀ : ∀ g, (r₀ g : Matrix (Fin a) (Fin a) (Om l)) = (N * RL (Bw.e g) * M').map φ` using `fun g => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hRφ, hM', Matrix.mul_assoc, hMg, ← Matrix.mul_assoc, ← hM', ← Matrix.map_mul, hN, Matrix.map_one φ (map_zero φ) (map_one φ), Matrix.one_mul]`. Establish `hmem₀ : ∀ g i j, (r₀ g : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1` using `fun g i j => by`. Rewrite using `[hr₀ g]`.
+
+Conclude with `((N * RL (Bw.e g) * M') i j).2`. Establish `hmem : ∀ g i j, (r g : Matrix (Fin a) (Fin a) (Om l)) i j ∈ L.1` using `fun g i j => by`. Rewrite using `[((hc g).2 i j)]`. Use `split_ifs`. Conclude with `hmem₀ g i j`.
+
+Conclude with `L.1.zero_mem`. Take `⟨s₀, hs₀⟩` from `exists_model_of_mem r₀ L hmem₀`. Take `⟨s, hs⟩` from `exists_model_of_mem r L hmem`. Establish `hs₀g : ∀ g, ((s₀ g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1).map φ = (r₀ g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => by rw [← hs₀]; rfl`. Establish `hsg : ∀ g, ((s g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1).map φ = (r g : Matrix (Fin a) (Fin a) (Om l))` using `fun g => by rw [← hs]; rfl`.
+
+Establish `hinjMap : ∀ {m k : ℕ}, Function.Injective (fun X : Matrix (Fin m) (Fin k) ↥L.1 => X.map φ)` using `fun {m k} X Y h => Matrix.ext fun i j => φ.injective (congrFun (congrFun h i) j)`. Establish `hintL : ∀ g, RL (Bw.e g) * M' = M' * (s₀ g : Matrix (Fin a) (Fin a) ↥L.1)` using `fun g => hinjMap (by simp only [Matrix.map_mul]; rw [hs₀g, hRφ, hM']; exact hMg g)`. Establish `hTL : ∀ j ≤ n, (LinearMap.toMatrix v v (T j)).map (algebraMap ℚ_[l] ↥L.1) * M' = ϑ' j • M'` using `fun j hj => hinjMap (by`. Simplify using `only [Matrix.map_mul]`. Establish `e1 : ((LinearMap.toMatrix v v (T j)).map (algebraMap ℚ_[l] ↥L.1)).map φ = (LinearMap.toMatrix v v (T j)).map (algebraMap ℚ_[l] (Om l))` using `by simp only [Matrix.map_map]; congr 1`.
+
+Rewrite using `[e1, hM', hMT j hj]`. Use extensionality with `x y`. Use `show ϑ j * M x y = φ (ϑ' j * M' x y)`. Rewrite using `[map_mul, hϑ' j hj]`. Use the proof step `rfl)`.
+
+Set `ρU` to `Bw.repE L s₀`. Set `ρW` to `Bw.repE L s`. Take `⟨i, hi, hiG, hiT⟩` from `descend v ρ T ρU (fun g => (s₀ (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1)) (fun _ _ => rfl) M' ϑ' hinjM' (fun g => by have := hintL (Bw.e.symm g); rwa [MulEquiv.apply_symm_apply] at this) hTL`. Establish `hAcr : admitted (σCr P Bw.Kw) (finrank ℚ_[l] ↥(K0 Bw.Kw)) ρ` using `admissible_of_crystalline l P Bw.Kw V ρ hcr`. Take `⟨hBst, hcm⟩` from `boundSt_holds l P AI hT Bw.Kw L`.
+
+Take `⟨hAst, hDst⟩` from `stOfCr_holds l P AI hT Bw.Kw V ρ hAcr`. Establish `hBcr` using `bound_cr P AI hT Bw.Kw L`. Establish `hAL : admitted (σCr P Bw.Kw) (finrank ℚ_[l] ↥(K0 Bw.Kw)) (extRep ↥L.1 ρ)` using `((annExt_of dinvExt_of) ℚ_[l] _ _ (σCr P Bw.Kw) (ψCr P f) ↥L.1 V ρ).1 (finrank ℚ_[l] ↥(K0 Bw.Kw)) hAcr`. Establish `hAU : admitted (σCr P Bw.Kw) (finrank ℚ_[l] ↥(K0 Bw.Kw)) ρU` using `(admissible_sequence_exact ℚ_[l] _ _ (σCr P Bw.Kw) ↥L.1 (finrank ℚ_[l] ↥(K0 Bw.Kw)) hBcr (Fin a → ↥L.1) (↥L.1 ⊗[ℚ_[l]] V) ρU (extRep ↥L.1 ρ) i hiG).1 hi hAL`. Establish `hGr : ∀ g, ((s₀ (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1)).BlockTriangular c ∧ ∀ i j, (s (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1) i j = if c i = c j then (s₀ (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1) i j else 0`.
+
+Introduce `g`. Establish `hx : ∀ (h : ↥Gw) i j, φ ((s₀ h : Matrix (Fin a) (Fin a) ↥L.1) i j) = (r₀ h : Matrix (Fin a) (Fin a) (Om l)) i j` using `fun h i j => congrFun (congrFun (hs₀g h) i) j`. Establish `hy : ∀ (h : ↥Gw) i j, φ ((s h : Matrix (Fin a) (Fin a) ↥L.1) i j) = (r h : Matrix (Fin a) (Fin a) (Om l)) i j` using `fun h i j => congrFun (congrFun (hsg h) i) j`. Use `⟨fun i j hij => φ.injective ?_, fun i j => φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_zero]`.
+
+Conclude with `(hc _).1 hij`. Rewrite using `[hy, (hc _).2 i j] split_ifs`. Rewrite using `[hx]`. Rewrite using `[map_zero]`. Take `⟨I, _, _, C, _, _, _, _, ρC, Eq, hE, hS⟩` from `blocks ℚ_[l] c (fun g => (s₀ (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1)) (fun g => (s (Bw.e.symm g) : Matrix (Fin a) (Fin a) ↥L.1)) ρU ρW (fun _ _ => rfl) (fun _ _ => rfl) (fun g => (hGr g).1) (fun g => (hGr g).2)`.
+
+Establish `hAC : ∀ t, admitted (σCr P Bw.Kw) (finrank ℚ_[l] ↥(K0 Bw.Kw)) (ρC t)` using `fun t => (nilSubq_of admissible_sequence_exact nilEmb_of ℚ_[l] _ _ (σCr P Bw.Kw) (ψCr P f) ↥L.1 (finrank ℚ_[l] ↥(K0 Bw.Kw)) hBcr _ _ ρU (ρC t) (hS t) hAU).1`. Establish `hAW : admitted (σCr P Bw.Kw) (finrank ℚ_[l] ↥(K0 Bw.Kw)) ρW` using `admissible_of_pi_decomposition (σCr P Bw.Kw) hBcr ρW C ρC Eq hE hAC`. Use `⟨L, s, ϑ', ⟨hLL, hs⟩, crys_of_adm P Bw.Kw ρW hAW, hϑ', ?_⟩` and prove the remaining obligations. Conclude with `nil_scalar (σSt P Bw.Kw) (ψSt P f) (hcm f) hBst ρ q n T hAst (hDst f q n T hann) ρU i ϑ' hiG hi hiT ρW C ρC (fun t => LinearMap.proj t ∘ₗ Eq.toLinearMap) hS hE (fun w hw => Eq.injective (funext fun t => by simpa using hw t))`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.joinQ :
     UpperTheory.Ru.crystallineComparison.JoinQ := by
   intro l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw f q n ϑ a r₀ r _ hgr hin

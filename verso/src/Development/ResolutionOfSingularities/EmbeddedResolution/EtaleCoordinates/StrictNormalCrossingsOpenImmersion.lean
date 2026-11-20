@@ -16,16 +16,32 @@ def closedPreimage {X X' : Scheme.{u}} (f : X' ⟶ X) (S : TopologicalSpace.Clos
     TopologicalSpace.Closeds X' :=
   ⟨f.base ⁻¹' (S : Set X), S.isClosed.preimage f.continuous⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem closedPreimage_coe {X X' : Scheme.{u}} (f : X' ⟶ X) (S : TopologicalSpace.Closeds X) :
     (closedPreimage f S : Set X') = f.base ⁻¹' (S : Set X) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reducedInverseImage_eq_vanishingIdeal_closedPreimage {X X' : Scheme.{u}} (f : X' ⟶ X)
     (S : TopologicalSpace.Closeds X) :
     reducedInverseImage f S = Scheme.IdealSheafData.vanishingIdeal (closedPreimage f S) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem support_vanishingIdeal {X : Scheme.{u}} (Z : TopologicalSpace.Closeds X) :
     (Scheme.IdealSheafData.vanishingIdeal Z).support = Z := rfl
 
+/- English proof (translation)
+Use `le_antisymm ?_ Ideal.le_radical` and prove the remaining obligations. Introduce `y hy`. Take `⟨m, hm⟩` from `Ideal.mem_radical_iff.mp hy`. Take `⟨z, rfl⟩` from `hφ.2 y`. Rewrite `hm` using `[← map_pow]`.
+
+Take `⟨w, hw, hw2⟩` from `(Ideal.mem_map_iff_of_surjective φ hφ.2).mp hm`. Establish `hz : z ^ m ∈ I`. Establish `hwz : w = z ^ m` using `hφ.1 hw2`. Rewrite `hw` using `[hwz]`. Then use the resulting hypothesis. Establish `hzI : z ∈ I`.
+
+Rewrite using `[← hI]`. Conclude with `Ideal.mem_radical_iff.mpr ⟨m, hz⟩`. Conclude with `Ideal.mem_map_of_mem _ hzI`.
+-/
 private theorem isRadical_map_of_bijective {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (hφ : Function.Bijective φ) {I : Ideal R} (hI : I.radical = I) :
     (Ideal.map φ I).radical = Ideal.map φ I := by
@@ -43,6 +59,9 @@ private theorem isRadical_map_of_bijective {R S : Type u} [CommRing R] [CommRing
     exact Ideal.mem_radical_iff.mpr ⟨m, hz⟩
   exact Ideal.mem_map_of_mem _ hzI
 
+/- English proof (translation)
+Establish `h2 : Ideal.map ψ (Ideal.map φ I) = I`. Rewrite using `[Ideal.map_map, show ψ.comp φ = RingHom.id R from RingHom.ext hψφ, Ideal.map_id]`. Rewrite using `[← h2, hb, Ideal.map_span, Set.image_singleton]`.
+-/
 private theorem ideal_eq_span_of_map_eq_span {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (ψ : S →+* R) (hψφ : ∀ r, ψ (φ r) = r) (I : Ideal R) (b : S)
     (hb : Ideal.map φ I = Ideal.span {b}) : I = Ideal.span {ψ b} := by
@@ -50,6 +69,11 @@ private theorem ideal_eq_span_of_map_eq_span {R S : Type u} [CommRing R] [CommRi
     rw [Ideal.map_map, show ψ.comp φ = RingHom.id R from RingHom.ext hψφ, Ideal.map_id]
   rw [← h2, hb, Ideal.map_span, Set.image_singleton]
 
+/- English proof (translation)
+Establish `h1` using `hv.1`. Establish `h2` using `hv.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hw : w = fun i => (e : R →+* S) (v i)` using `funext fun i => (hvw i).symm`. Rewrite using `[hw, show (Set.range fun i => (e : R →+* S) (v i)) = (e : R →+* S) '' Set.range v from Set.range_comp _ _, ← Ideal.map_span, h1]`.
+
+Conclude with `IsLocalRing.map_ringEquiv_maximalIdeal e`. Rewrite using `[h2]`. Conclude with `ringKrullDim_eq_of_ringEquiv e`.
+-/
 private theorem isRegularParameterSystem_of_ringEquiv {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (v : Fin n → R) (w : Fin n → S)
     (hvw : ∀ i, e (v i) = w i) (hv : IsRegularParameterSystem R n v) :
@@ -64,12 +88,20 @@ private theorem isRegularParameterSystem_of_ringEquiv {R S : Type u} [CommRing R
   · rw [h2]
     exact ringKrullDim_eq_of_ringEquiv e
 
+/- English proof (translation)
+Rewrite using `[show h.appLE (h ''ᵁ U) U e = (h.appIso U).hom from (Scheme.Hom.appIso_hom' h U).symm]`. Use `infer_instance`.
+-/
 private theorem isIso_appLE_image {X Y : Scheme.{u}} (h : X ⟶ Y) [IsOpenImmersion h] (U : X.Opens)
     (e : U ≤ (TopologicalSpace.Opens.map h.base).obj (h ''ᵁ U)) :
     IsIso (h.appLE (h ''ᵁ U) U e) := by
   rw [show h.appLE (h ''ᵁ U) U e = (h.appIso U).hom from (Scheme.Hom.appIso_hom' h U).symm]
   infer_instance
 
+/- English proof (translation)
+Establish `key : Y.presheaf.germ U (f.base x) hfx ≫ f.stalkMap x = f.app U ≫ X.presheaf.germ ((TopologicalSpace.Opens.map f.base).obj U) x hfx`. Simplify using the standard rewrite rules. Establish `key2 : f.stalkMap x (Y.presheaf.germ U (f.base x) hfx s) = X.presheaf.germ ((TopologicalSpace.Opens.map f.base).obj U) x hfx (f.app U s)`. Rewrite using `[← CommRingCat.comp_apply, key, CommRingCat.comp_apply]`. Establish `h1 : f.appLE U V e s = X.presheaf.map (homOfLE e).op (f.app U s)` using `rfl`.
+
+Rewrite using `[key2, h1, TopCat.Presheaf.germ_res_apply]`.
+-/
 private theorem stalkMap_germ_eq_germ_appLE {X Y : Scheme.{u}} (f : X ⟶ Y) (U : Y.Opens) (V : X.Opens)
     (e : V ≤ (TopologicalSpace.Opens.map f.base).obj U) (x : X) (hx : x ∈ V)
     (hfx : f.base x ∈ U) (s : Γ(Y, U)) :
@@ -84,6 +116,11 @@ private theorem stalkMap_germ_eq_germ_appLE {X Y : Scheme.{u}} (f : X ⟶ Y) (U 
   have h1 : f.appLE U V e s = X.presheaf.map (homOfLE e).op (f.app U s) := rfl
   rw [key2, h1, TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (h ''ᵁ V.1)` using `V.2.image_of_isOpenImmersion h`. Establish `he : V.1 ≤ (TopologicalSpace.Opens.map h.base).obj (h ''ᵁ V.1)` using `le_of_eq (Scheme.Hom.preimage_image_eq h V.1).symm`. Establish `: IsIso (h.appLE (h ''ᵁ V.1) V.1 he)` using `isIso_appLE_image h V.1 he`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I h ⟨h ''ᵁ V.1, hU⟩ V he]`. Use `isRadical_map_of_bijective _ (ConcreteCategory.bijective_of_isIso (h.appLE (h ''ᵁ V.1) V.1 he)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.IdealSheafData.radical_ideal, hI]`.
+-/
 private theorem comap_ideal_radical_eq_of_isOpenImmersion {X' Y' : Scheme.{u}} (h : X' ⟶ Y') [IsOpenImmersion h]
     (I : Y'.IdealSheafData) (hI : I.radical = I) (V : X'.affineOpens) :
     ((I.comap h).ideal V).radical = (I.comap h).ideal V := by
@@ -96,6 +133,13 @@ private theorem comap_ideal_radical_eq_of_isOpenImmersion {X' Y' : Scheme.{u}} (
     (ConcreteCategory.bijective_of_isIso (h.appLE (h ''ᵁ V.1) V.1 he)) ?_
   rw [← Scheme.IdealSheafData.radical_ideal, hI]
 
+/- English proof (translation)
+Establish `hZrad : (Scheme.IdealSheafData.vanishingIdeal Z).radical = Scheme.IdealSheafData.vanishingIdeal Z`. Rewrite using `[← Scheme.IdealSheafData.vanishingIdeal_support, support_vanishingIdeal]`. Establish `hrad : ((Scheme.IdealSheafData.vanishingIdeal Z).comap h).radical = (Scheme.IdealSheafData.vanishingIdeal Z).comap h`. Use `Scheme.IdealSheafData.ext (funext fun V => ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.radical_ideal]`.
+
+Conclude with `comap_ideal_radical_eq_of_isOpenImmersion h _ hZrad V`. Establish `hsupp : ((Scheme.IdealSheafData.vanishingIdeal Z).comap h).support = closedPreimage h Z`. Use `SetLike.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Scheme.IdealSheafData.mem_support_comap]`. Conclude with `Iff.rfl`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_support]`. Use `_ = Scheme.IdealSheafData.vanishingIdeal (closedPreimage h Z) := by rw [hsupp]`.
+-/
 theorem comap_vanishingIdeal_of_isOpenImmersion {X' Y' : Scheme.{u}} (h : X' ⟶ Y')
     [IsOpenImmersion h] (Z : TopologicalSpace.Closeds Y') :
     (Scheme.IdealSheafData.vanishingIdeal Z).comap h
@@ -120,6 +164,9 @@ theorem comap_vanishingIdeal_of_isOpenImmersion {X' Y' : Scheme.{u}} (h : X' ⟶
         rw [Scheme.IdealSheafData.vanishingIdeal_support]
     _ = Scheme.IdealSheafData.vanishingIdeal (closedPreimage h Z) := by rw [hsupp]
 
+/- English proof (translation)
+Establish `h1 : closedPreimage h Z = Z'` using `SetLike.ext' (by rw [closedPreimage_coe, hZ'])`. Rewrite using `[comap_vanishingIdeal_of_isOpenImmersion, h1]`.
+-/
 theorem comap_vanishingIdeal_of_isOpenImmersion_of_coe_eq {X' Y' : Scheme.{u}} (h : X' ⟶ Y')
     [IsOpenImmersion h] (Z : TopologicalSpace.Closeds Y') (Z' : TopologicalSpace.Closeds X')
     (hZ' : (Z' : Set X') = h.base ⁻¹' (Z : Set Y')) :
@@ -128,6 +175,17 @@ theorem comap_vanishingIdeal_of_isOpenImmersion_of_coe_eq {X' Y' : Scheme.{u}} (
   have h1 : closedPreimage h Z = Z' := SetLike.ext' (by rw [closedPreimage_coe, hZ'])
   rw [comap_vanishingIdeal_of_isOpenImmersion, h1]
 
+/- English proof (translation)
+Take `⟨hreg, U', hx, n, g, J, hparams, hideal⟩` from `hE x`. Establish `: IsRegularLocalRing (X'.presheaf.stalk x)` using `hreg`. Establish `hU : IsAffineOpen (h ''ᵁ U'.1)` using `U'.2.image_of_isOpenImmersion h`. Establish `he : U'.1 ≤ (TopologicalSpace.Opens.map h.base).obj (h ''ᵁ U'.1)` using `le_of_eq (Scheme.Hom.preimage_image_eq h U'.1).symm`. Establish `hy : h.base x ∈ h ''ᵁ U'.1` using `⟨x, hx, rfl⟩`.
+
+Establish `: IsIso (h.appLE (h ''ᵁ U'.1) U'.1 he)` using `isIso_appLE_image h U'.1 he`. Establish `: IsIso (h.stalkMap x)` using `inferInstance`. Set `ε : Γ(Y', h ''ᵁ U'.1) ≃+* Γ(X', U'.1)` to `(asIso (h.appLE (h ''ᵁ U'.1) U'.1 he)).commRingCatIsoToRingEquiv`. Set `τ : Y'.presheaf.stalk (h.base x) ≃+* X'.presheaf.stalk x` to `(asIso (h.stalkMap x)).commRingCatIsoToRingEquiv`. Establish `hgerm : ∀ i, τ (Y'.presheaf.germ (h ''ᵁ U'.1) (h.base x) hy (ε.symm (g i))) = X'.presheaf.germ U'.1 x hx (g i)`.
+
+Introduce `i`. Establish `h1` using `stalkMap_germ_eq_germ_appLE h (h ''ᵁ U'.1) U'.1 he x hx hy (ε.symm (g i))`. Establish `h2 : (h.appLE (h ''ᵁ U'.1) U'.1 he) (ε.symm (g i)) = g i` using `ε.apply_symm_apply (g i)`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+
+Use `⟨IsRegularLocalRing.of_ringEquiv τ.symm, ⟨h ''ᵁ U'.1, hU⟩, hy, n, fun i => ε.symm (g i), J, ?_, ?_⟩` and prove the remaining obligations. Use `isRegularParameterSystem_of_ringEquiv τ.symm n (fun i => X'.presheaf.germ U'.1 x hx (g i)) (fun i => Y'.presheaf.germ (h ''ᵁ U'.1) (h.base x) hy (ε.symm (g i))) ?_ hparams` and prove the remaining obligations. Introduce `i`. Rewrite using `[← hgerm i, τ.symm_apply_apply]`. Establish `hmap` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE E h ⟨h ''ᵁ U'.1, hU⟩ U' he`.
+
+Rewrite `hmap` using `[hideal]`. Establish `hprod : (ε.symm : Γ(X', U'.1) →+* Γ(Y', h ''ᵁ U'.1)) (∏ i ∈ J, g i) = ∏ i ∈ J, ε.symm (g i)` using `map_prod _ _ _`. Rewrite using `[ideal_eq_span_of_map_eq_span ((h.appLE (h ''ᵁ U'.1) U'.1 he).hom) (ε.symm : Γ(X', U'.1) →+* Γ(Y', h ''ᵁ U'.1)) (fun r => ε.symm_apply_apply r) (E.ideal ⟨h ''ᵁ U'.1, hU⟩) (∏ i ∈ J, g i) hmap.symm, hprod]`.
+-/
 theorem isStrictNormalCrossingsAt_base_of_comap {X' Y' : Scheme.{u}} (h : X' ⟶ Y') [IsOpenImmersion h]
     (E : Y'.IdealSheafData) (hE : IsStrictNormalCrossingsDivisor (E.comap h)) (x : X') :
     IsRegularLocalRing (Y'.presheaf.stalk (h.base x)) ∧
@@ -170,6 +228,11 @@ theorem isStrictNormalCrossingsAt_base_of_comap {X' Y' : Scheme.{u}} (h : X' ⟶
       (ε.symm : Γ(X', U'.1) →+* Γ(Y', h ''ᵁ U'.1)) (fun r => ε.symm_apply_apply r)
       (E.ideal ⟨h ''ᵁ U'.1, hU⟩) (∏ i ∈ J, g i) hmap.symm, hprod]
 
+/- English proof (translation)
+Establish `h : closedPreimage (g ≫ f) W = closedPreimage g (closedPreimage f W)`. Apply `SetLike.ext'` to reduce the goal to its premises. Use `show (g ≫ f).base ⁻¹' (W : Set Z) = g.base ⁻¹' (f.base ⁻¹' (W : Set Z))`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+
+Rewrite using `[reducedInverseImage_eq_vanishingIdeal_closedPreimage, h]`.
+-/
 theorem reducedInverseImage_comp {A B Z : Scheme.{u}} (g : A ⟶ B) (f : B ⟶ Z)
     (W : TopologicalSpace.Closeds Z) :
     reducedInverseImage (g ≫ f) W
@@ -181,12 +244,18 @@ theorem reducedInverseImage_comp {A B Z : Scheme.{u}} (g : A ⟶ B) (f : B ⟶ Z
     simp
   rw [reducedInverseImage_eq_vanishingIdeal_closedPreimage, h]
 
+/- English proof (translation)
+Rewrite using `[reducedInverseImage_eq_vanishingIdeal_closedPreimage, comap_vanishingIdeal_of_isOpenImmersion, reducedInverseImage_comp]`.
+-/
 theorem comap_reducedInverseImage_of_isOpenImmersion {A B Z : Scheme.{u}} (h : A ⟶ B)
     [IsOpenImmersion h] (f : B ⟶ Z) (W : TopologicalSpace.Closeds Z) :
     (reducedInverseImage f W).comap h = reducedInverseImage (h ≫ f) W := by
   rw [reducedInverseImage_eq_vanishingIdeal_closedPreimage, comap_vanishingIdeal_of_isOpenImmersion,
     reducedInverseImage_comp]
 
+/- English proof (translation)
+Establish `h : J.support = closedPreimage f W` using `SetLike.ext' hJ`. Rewrite using `[reducedInverseImage_eq_vanishingIdeal_closedPreimage, ← h, Scheme.IdealSheafData.vanishingIdeal_support]`.
+-/
 theorem reducedInverseImage_eq_radical {T Y : Scheme.{u}} (f : T ⟶ Y)
     (W : TopologicalSpace.Closeds Y) (J : T.IdealSheafData)
     (hJ : (J.support : Set T) = f.base ⁻¹' (W : Set Y)) :
@@ -195,6 +264,9 @@ theorem reducedInverseImage_eq_radical {T Y : Scheme.{u}} (f : T ⟶ Y)
   rw [reducedInverseImage_eq_vanishingIdeal_closedPreimage, ← h,
     Scheme.IdealSheafData.vanishingIdeal_support]
 
+/- English proof (translation)
+Introduce `x`. Take `⟨i, y, hy⟩` from `hsurj x`. Substitute `hy` using the available equality. Use `hp i` as an intermediate fact. Conclude with `isStrictNormalCrossingsAt_base_of_comap (p i) D (hD i) y`.
+-/
 theorem IsStrictNormalCrossingsDivisor.of_isOpenImmersion_jointly_surjective {X : Scheme.{u}} (D : X.IdealSheafData) {ι : Type v}
     (Y : ι → Scheme.{u}) (p : ∀ i, Y i ⟶ X) (hp : ∀ i, IsOpenImmersion (p i))
     (hsurj : ∀ x : X, ∃ (i : ι) (y : Y i), (p i).base y = x)
@@ -205,6 +277,13 @@ theorem IsStrictNormalCrossingsDivisor.of_isOpenImmersion_jointly_surjective {X 
   have := hp i
   exact isStrictNormalCrossingsAt_base_of_comap (p i) D (hD i) y
 
+/- English proof (translation)
+Introduce `z`. Distinguish the cases in `hz : z ∈ Set.range ⇑(coprod.inl : A ⟶ A ⨿ B).base`. Take `⟨a, rfl⟩` from `hz`. Establish `h1 : (reducedInverseImage g W).comap (coprod.inl : A ⟶ A ⨿ B) = reducedInverseImage ((coprod.inl : A ⟶ A ⨿ B) ≫ g) W` using `comap_reducedInverseImage_of_isOpenImmersion _ g W`. Use `isStrictNormalCrossingsAt_base_of_comap (coprod.inl : A ⟶ A ⨿ B) (reducedInverseImage g W) ?_ a` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `hA`. Establish `hz' : z ∈ Set.range ⇑(coprod.inr : B ⟶ A ⨿ B).base`. Rewrite using `[Blowup.range_coprod_inr_eq_compl]`. Conclude with `hz`.
+
+Take `⟨b, rfl⟩` from `hz'`. Establish `h1 : (reducedInverseImage g W).comap (coprod.inr : B ⟶ A ⨿ B) = reducedInverseImage ((coprod.inr : B ⟶ A ⨿ B) ≫ g) W` using `comap_reducedInverseImage_of_isOpenImmersion _ g W`. Use `isStrictNormalCrossingsAt_base_of_comap (coprod.inr : B ⟶ A ⨿ B) (reducedInverseImage g W) ?_ b` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `hB`.
+-/
 theorem IsStrictNormalCrossingsDivisor.reducedInverseImage_coprod {A B Z : Scheme.{u}} (g : (A ⨿ B) ⟶ Z)
     (W : TopologicalSpace.Closeds Z)
     (hA : IsStrictNormalCrossingsDivisor (reducedInverseImage ((coprod.inl : A ⟶ A ⨿ B) ≫ g) W))

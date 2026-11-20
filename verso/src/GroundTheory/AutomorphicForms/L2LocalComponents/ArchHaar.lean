@@ -12,6 +12,25 @@ noncomputable section
 
 variable (K : Type*) [Field K] [NumberField K] (n : ℕ)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: Subsingleton (AdelicGLn.InfiniteAdelicGL K 0)` using `⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim g 1]`. Simplify using `only [mul_one]`.
+
+Conclude with `Measure.map_id`. Use `set μf : Measure (AdelicGLn.FiniteAdelicGL K n) := Measure.haar`. Use `set P := μi.prod μf`. Use `set e := AdelicGLn.prodEquiv K n`. Use `set ν : Measure (AdelicGLn.AdelicGL K n) := Measure.haar`.
+
+Establish `hν` using `GJGlobal.isMulRightInvariant_haar ν hn`. Establish `he : Measurable e` using `e.continuous.measurable`. Establish `: (ν.map e).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map ν e.toMulEquiv e.continuous e.symm.continuous`. Establish `hν' : ∀ p, (ν.map e).map (· * p) = ν.map e`. Introduce `p`.
+
+Establish `hcomp : (· * p) ∘ e = e ∘ (· * e.symm p)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, map_mul, ContinuousMulEquiv.apply_symm_apply]`. Rewrite using `[Measure.map_map (measurable_mul_const p) he, hcomp, ← Measure.map_map he (measurable_mul_const _), map_mul_right_eq_self]`. Use `set c := haarScalarFactor (ν.map e) P`.
+
+Establish `hc : ν.map e = c • P` using `isMulLeftInvariant_eq_smul (ν.map e) P`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, zero_smul]`. Establish `hne` using `isOpen_univ.measure_ne_zero (ν.map e) univ_nonempty`.
+
+Rewrite `hne` using `[hc]`. Conclude with `hne rfl`. Establish `hP : ∀ p, P.map (· * p) = P`. Introduce `p`. Establish `h1 : P = c⁻¹ • ν.map e` using `by rw [hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+
+Rewrite using `[h1, Measure.map_smul, hν']`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hprod : P.map (· * (g, (1 : AdelicGLn.FiniteAdelicGL K n))) = (μi.map (· * g)).prod μf`. Establish `hf : (· * (g, (1 : AdelicGLn.FiniteAdelicGL K n))) = Prod.map (· * g) id`. Use function extensionality and compare the values at `p`.
+
+Conclude with `Prod.ext rfl (mul_one p.2)`. Rewrite using `[hf, ← Measure.map_prod_map μi μf (measurable_mul_const g) measurable_id, Measure.map_id]`. Rewrite `hprod` using `[hP]`. Take `⟨B, hBc, hB⟩` from `exists_compact_mem_nhds (1 : AdelicGLn.FiniteAdelicGL K n)`. Establish `hB0 : μf B ≠ 0` using `(measure_pos_of_mem_nhds μf hB).ne'`.
+
+Establish `hBt : μf B ≠ ⊤` using `hBc.measure_lt_top.ne`. Use `Measure.ext fun A hA => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun m : Measure _ => m (A ×ˢ B)) hprod`. Simplify using `only [P, Measure.prod_prod] at h1`. Conclude with `((ENNReal.mul_left_inj hB0 hBt).1 h1).symm`.
+-/
 theorem isMulRightInvariant_infinite [MeasurableSpace (AdelicGLn.InfiniteAdelicGL K n)]
     [BorelSpace (AdelicGLn.InfiniteAdelicGL K n)] (μi : Measure (AdelicGLn.InfiniteAdelicGL K n))
     [μi.IsHaarMeasure] : μi.IsMulRightInvariant := by
@@ -66,6 +85,15 @@ theorem isMulRightInvariant_infinite [MeasurableSpace (AdelicGLn.InfiniteAdelicG
 
 variable {K n}
 
+/- English proof (translation)
+Set `_ : MeasurableSpace (AdelicGLn.InfiniteAdelicGL K n)` to `_root_.borel _`. Establish `: BorelSpace (AdelicGLn.InfiniteAdelicGL K n)` using `⟨rfl⟩`. Use `set φ := archEquiv K n`. Establish `hφ : Measurable φ` using `φ.continuous.measurable`. Establish `hφs : Measurable φ.symm` using `φ.symm.continuous.measurable`.
+
+Use `set μi := ν.map φ.symm`. Establish `: μi.IsHaarMeasure` using `MulEquiv.isHaarMeasure_map ν φ.symm.toMulEquiv φ.symm.continuous φ.continuous`. Establish `hμi` using `isMulRightInvariant_infinite K n μi`. Establish `hν : ν = μi.map φ`. Rewrite using `[Measure.map_map hφ hφs]`.
+
+Establish `: (φ ∘ φ.symm : archGroup K n → archGroup K n) = id` using `funext fun x => φ.apply_symm_apply x`. Rewrite using `[this, Measure.map_id]`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hν, Measure.map_map (measurable_mul_const g) hφ]`. Establish `hcomp : (· * g) ∘ φ = φ ∘ (· * φ.symm g)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, map_mul, ContinuousMulEquiv.apply_symm_apply]`. Rewrite using `[hcomp, ← Measure.map_map hφ (measurable_mul_const _), map_mul_right_eq_self]`.
+-/
 theorem isMulRightInvariant_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     ν.IsMulRightInvariant := by
   let _ : MeasurableSpace (AdelicGLn.InfiniteAdelicGL K n) := _root_.borel _
@@ -88,6 +116,15 @@ theorem isMulRightInvariant_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarM
     simp only [Function.comp_apply, map_mul, ContinuousMulEquiv.apply_symm_apply]
   rw [hcomp, ← Measure.map_map hφ (measurable_mul_const _), map_mul_right_eq_self]
 
+/- English proof (translation)
+Use `isMulRightInvariant_archGroup ν` as an intermediate fact. Use `secondCountableTopology_subgroup_units (archGroup K n)` as an intermediate fact. Use `(isExpLieAlgebra K n).locallyCompactSpace` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Set `c : ENNReal` to `Measure.haarScalarFactor ν.inv ν`.
+
+Establish `hc : ν.inv = c • ν` using `Measure.isMulLeftInvariant_eq_smul ν.inv ν`. Establish `h2 : Measure.map Inv.inv (Measure.map Inv.inv ν) = c ^ 2 • ν`. Rewrite using `[← Measure.inv_def ν, hc, Measure.map_smul, ← Measure.inv_def ν, hc, smul_smul, pow_two]`. Establish `νeq : ν = c ^ 2 • ν`. Rewrite `h2` using `[Measure.map_map continuous_inv.measurable continuous_inv.measurable]`.
+
+Simplify `h2` using `only [inv_involutive, Function.Involutive.comp_self, Measure.map_id]`. Establish `Kc : TopologicalSpace.PositiveCompacts (archGroup K n)` using `Classical.arbitrary _`. Establish `h3 : c ^ 2 * ν Kc = 1 ^ 2 * ν Kc` using `by conv_rhs => rw [νeq]`. Simplify using the standard rewrite rules. Establish `h4 : c ^ 2 = 1 ^ 2` using `(ENNReal.mul_left_inj (measure_pos_of_nonempty_interior _ Kc.interior_nonempty).ne' Kc.isCompact.measure_lt_top.ne).1 h3`.
+
+Establish `h5 : c = 1` using `(ENNReal.pow_right_strictMono two_ne_zero).injective h4`. Rewrite using `[hc, h5, one_smul]`.
+-/
 theorem isInvInvariant_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] :
     ν.IsInvInvariant := by
   have := isMulRightInvariant_archGroup ν
@@ -111,12 +148,18 @@ theorem isInvInvariant_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarMeasur
   have h5 : c = 1 := (ENNReal.pow_right_strictMono two_ne_zero).injective h4
   rw [hc, h5, one_smul]
 
+/- English proof (translation)
+Use `isInvInvariant_archGroup ν` as an intermediate fact. Conclude with `integral_inv_eq_self f ν`.
+-/
 theorem integral_inv_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (f : archGroup K n → E) :
     ∫ a, f a⁻¹ ∂ν = ∫ a, f a ∂ν := by
   have := isInvInvariant_archGroup ν
   exact integral_inv_eq_self f ν
 
+/- English proof (translation)
+Use `isMulRightInvariant_archGroup ν` as an intermediate fact. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[integral_mul_right_eq_self (fun a => f (k * a)) k⁻¹, integral_mul_left_eq_self]`.
+-/
 theorem integral_conj_archGroup (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (f : archGroup K n → E) (k : archGroup K n) :
     ∫ a, f (k * a * k⁻¹) ∂ν = ∫ a, f a ∂ν := by

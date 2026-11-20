@@ -15,5 +15,8 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.uEquiv_of_intertwiner_ne_zero | exact GlobalTheory.uEquiv_of_intertwiner_ne_zero | (intros; apply GlobalTheory.uEquiv_of_intertwiner_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bounded_intertwiner_schur : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)), IsURepOn (UJset ε) ρ → IsIrredOn (UJset ε) ρ → IsURepOn (UJset ε) π → IsIrredOn (UJset ε) π → ∀ B : H →L[ℂ] V, B ≠ 0 → (∀ g ∈ UJset ε, ∀ x, B (ρ g x) = π g (B x)) → UEquiv ε π ρ := by
   first | exact @GlobalTheory.uEquiv_of_intertwiner_ne_zero | exact GlobalTheory.uEquiv_of_intertwiner_ne_zero | (intros; apply GlobalTheory.uEquiv_of_intertwiner_ne_zero <;> assumption)

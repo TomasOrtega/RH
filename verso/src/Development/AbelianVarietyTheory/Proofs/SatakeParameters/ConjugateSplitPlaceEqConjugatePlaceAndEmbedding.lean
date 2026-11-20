@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.TypeTame
 
+/- English proof (translation)
+Introduce `D s w hw`. Establish `hc : ∀ z : D.host.E, IsCMField.complexConj D.host.E z = D.host.conj z`. Introduce `z`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+
+Use `⟨?_, fun x => by rw [conjSP_i, hc]⟩` and prove the remaining obligations. Set `c : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E)`. Establish `hce : ∀ e : 𝓞 D.host.E, ((c e : 𝓞 D.host.E) : D.host.E) = IsCMField.complexConj D.host.E (e : D.host.E)` using `fun e => rfl`. Use extensionality with `x`. Establish `h1 : x ∈ (conjSP s).w.asIdeal ↔ c x ∈ s.w.asIdeal` using `by show Valued.v ((conjSP s).i (x : D.host.E)) < 1 ↔ Valued.v (s.i ((c x : 𝓞 D.host.E) : D.host.E)) < 1`.
+
+Rewrite using `[conjSP_i, hce]`. Rewrite using `[h1, hw x (c x) (by rw [hce, hc])]`.
+-/
 theorem conjSP_w_of_isConjPl : ∀ (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host), IsConjPl D.host w s.w → (GlobalTheory.TypeTame.conjSP s).w = w ∧ ∀ x : D.host.E, (GlobalTheory.TypeTame.conjSP s).i x = s.i (D.host.conj x) := by
   intro D s w hw
   have hc : ∀ z : D.host.E, IsCMField.complexConj D.host.E z = D.host.conj z := by

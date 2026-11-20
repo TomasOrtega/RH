@@ -13,10 +13,19 @@ open TopologicalSpace
 namespace GlobalTheory.Mum.LBGal
 open GlobalTheory.Mum.LBDesc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.galoisBaseChange_semiAbelian_invariant_units_descend`.
+-/
 theorem lemD : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (G' : Over (Sp R')) [GrpObj G'] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left) (act : Gal ρ → (G'.left ⟶ G'.left)), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, IsGrpPullback G' G' (spMap (Gal.hom σ)) (act σ)) → (∀ σ, act σ ≫ β = β) → ∀ O : G.left.Opens, Function.Injective (β.app O).hom ∧ ∀ u : Γ(G'.left, β ⁻¹ᵁ O)ˣ, (∀ σ (h : β ⁻¹ᵁ O ≤ act σ ⁻¹ᵁ (β ⁻¹ᵁ O)), ((act σ).appLE _ _ h).hom u.val = u.val) → ∃ g : Γ(G.left, O)ˣ, pullU β O g = u := GlobalTheory.T.galoisBaseChange_semiAbelian_invariant_units_descend
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_galoisInvariant_local_frames_uniformisation`.
+-/
 theorem lemF : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → ∃ (V : G.left → G.left.Opens) (T : ∀ (y : G.left) (k : U'.LG.L.ι), Γ(G'.left, β ⁻¹ᵁ V y ⊓ U'.LG.L.U k)ˣ), (∀ y, y ∈ V y) ∧ (∀ y k k', res (inf_le_left : β ⁻¹ᵁ V y ⊓ U'.LG.L.U k ⊓ (β ⁻¹ᵁ V y ⊓ U'.LG.L.U k') ≤ β ⁻¹ᵁ V y ⊓ U'.LG.L.U k) (T y k) = res (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) : β ⁻¹ᵁ V y ⊓ U'.LG.L.U k ⊓ (β ⁻¹ᵁ V y ⊓ U'.LG.L.U k') ≤ U'.LG.L.U k ⊓ U'.LG.L.U k') (U'.LG.L.g k k') * res (inf_le_right : β ⁻¹ᵁ V y ⊓ U'.LG.L.U k ⊓ (β ⁻¹ᵁ V y ⊓ U'.LG.L.U k') ≤ β ⁻¹ᵁ V y ⊓ U'.LG.L.U k') (T y k')) ∧ ∀ (y y' : G.left) (r : Γ(G'.left, β ⁻¹ᵁ (V y ⊓ V y'))ˣ), (∀ (z : G'.left) (k : U'.LG.L.ι), z ∈ β ⁻¹ᵁ (V y ⊓ V y') → z ∈ U'.LG.L.U k → gm (𝟙 G'.left) z _ r = gm (𝟙 G'.left) z _ (T y' k) * (gm (𝟙 G'.left) z _ (T y k))⁻¹) → ∀ σ (h : β ⁻¹ᵁ (V y ⊓ V y') ≤ a.act σ ⁻¹ᵁ (β ⁻¹ᵁ (V y ⊓ V y'))), ((a.act σ).appLE _ _ h).hom r.val = r.val := GlobalTheory.T.exists_galoisInvariant_local_frames_uniformisation
 
+/- English proof (translation)
+Establish `e : pullU p O a = pullU p O b` using `unit_ext fun z hz => by`. Rewrite using `[gm_pull (𝟙 Z) p z O hz a, gm_pull (𝟙 Z) p z O hz b]`. Conclude with `h z hz`. Conclude with `Units.ext ((hp O) (congrArg Units.val e))`.
+-/
 theorem eq_of_gm_inj {Z Y : Scheme.{0}} (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Injective (p.app V).hom) {O : Y.Opens}
     {a b : Γ(Y, O)ˣ} (h : ∀ z : Z, p z ∈ O → gm (𝟙 Z ≫ p) z O a = gm (𝟙 Z ≫ p) z O b) : a = b := by
   have e : pullU p O a = pullU p O b := unit_ext fun z hz => by
@@ -24,6 +33,9 @@ theorem eq_of_gm_inj {Z Y : Scheme.{0}} (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Fun
     exact h z hz
   exact Units.ext ((hp O) (congrArg Units.val e))
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun y _ => Opens.mem_iSup.2 ⟨y, hyV y⟩ g_self := fun y => eq_of_gm_inj p hp fun z hz => by obtain ⟨k, hk⟩ := exists_chart hL' z rw [gm_res (𝟙 Z ≫ p) z _ hz, map_one] exact (key (𝟙 Z) z y y k hz hz hk).trans (mul_inv_cancel _) cocycle := fun a b c => eq_of_gm_inj p hp …`.
+-/
 theorem isLB_descLB_inj {Z Y : Scheme.{0}} (p : Z ⟶ Y) (hp : ∀ V : Y.Opens, Function.Injective (p.app V).hom)
     (L' : LB Z) (hL' : L'.IsLB)
     (V : Y → Y.Opens) (hyV : ∀ y, y ∈ V y) (T : ∀ (y : Y) (k : L'.ι), Γ(Z, p ⁻¹ᵁ V y ⊓ L'.U k)ˣ)
@@ -51,6 +63,13 @@ end GlobalTheory.Mum.LBGal
 namespace GlobalTheory.Mum
 open GlobalTheory.Mum.LBDesc GlobalTheory.Mum.LBGal
 
+/- English proof (translation)
+Introduce `R _ _ _ hR R' _ _ _ ρ hρ hG D D' hD A' G' _ _ hG' U' a G _ _ β hGs hβ hact`. Establish `hDl` using `lemD R hR R' ρ hρ hG G' G β a.act hGs hβ a.cart hact`. Take `⟨V, T, hyV, hT, hinv⟩` from `lemF R hR R' ρ hρ hG D D' hD A' G' hG' U' a G β hGs hβ hact`. Establish `hL' : U'.LG.L.IsLB` using `U'.LG.isLB`. Establish `hc : ∀ (y : G.left) {W : Scheme.{0}} (f : W ⟶ G'.left) (w : W) (k k' : U'.LG.L.ι), f w ∈ β ⁻¹ᵁ V y → f w ∈ U'.LG.L.U k → f w ∈ U'.LG.L.U k' → gm f w _ (T y k) = gm f w (U'.LG.L.U k ⊓ U'.LG.L.U k') (U'.LG.L.g k k') * gm f w _ (T y k')` using `fun y _ f w k k' h hk hk' => gm_compat U'.LG.L _ (T y) (hT y) f w k k' h hk hk'`.
+
+Use `choose r hr using fun y y' => ratio β U'.LG.L hL' (T y) (T y') (hc y) (hc y')`. Establish `hri : ∀ y y' σ (h : β ⁻¹ᵁ (V y ⊓ V y') ≤ a.act σ ⁻¹ᵁ (β ⁻¹ᵁ (V y ⊓ V y'))), ((a.act σ).appLE _ _ h).hom (r y y').val = (r y y').val` using `fun y y' => hinv y y' (r y y') (fun z k hz hk => hr y y' (𝟙 _) z k hz hk)`. Use `choose g hg using fun y y' => (hDl (V y ⊓ V y')).2 (r y y') (hri y y')`. Establish `key : ∀ {W : Scheme.{0}} (f : W ⟶ G'.left) (w : W) (y y' : G.left) (k : U'.LG.L.ι), β (f w) ∈ V y → β (f w) ∈ V y' → f w ∈ U'.LG.L.U k → gm (f ≫ β) w ((descLB V g).U y ⊓ (descLB V g).U y') ((descLB V g).g y y') = gm f w _ (T y' k) * (gm f w _ (T y k))⁻¹`. Introduce `W f w y y' k h1 h2 hk`.
+
+Conclude with `(gm_pull f β w (V y ⊓ V y') ⟨h1, h2⟩ (g y y')).symm.trans ((congrArg _ (hg y y')).trans (hr y y' f w k ⟨h1, h2⟩ hk))`. Conclude with `⟨descLB V g, isLB_descLB_inj β (fun O => (hDl O).1) U'.LG.L hL' V hyV T g key, descIso β U'.LG.L V T g, isGen_descIso β U'.LG.L V T g hc key⟩`.
+-/
 theorem unif_lb_descend_gal : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), ∀ (a : GalAct ρ hD U') (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G → IsGrpPullback G' G (spMap ρ) β → (∀ σ, a.act σ ≫ β = β) → ∃ L : LB G.left, L.IsLB ∧ LBIso U'.LG.L (L.pull β) := by
   intro R _ _ _ hR R' _ _ _ ρ hρ hG D D' hD A' G' _ _ hG' U' a G _ _ β hGs hβ hact
   have hDl := lemD R hR R' ρ hρ hG G' G β a.act hGs hβ a.cart hact

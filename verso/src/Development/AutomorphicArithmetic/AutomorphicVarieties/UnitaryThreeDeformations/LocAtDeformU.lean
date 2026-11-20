@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F _ _ R _ _ _ f hf _ j v hv r r₂ z γ _ hr hz hγ hd`. Establish `hvl : v ≠ F.vl` using `fun h => hv (h ▸ Set.mem_insert _ _)`. Use `⟨fun h => absurd h hvl, fun h => absurd (Set.mem_insert_of_mem _ h) hv, fun _ s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : r s = 1` using `hr.2.2 hv s hs`. Establish `hz0 : z s = 0` using `hz.2.1 hvl s hs`.
+
+Establish `hγ0 : γ s = 0`. Use extensionality with `a b`. Take `⟨o, ho, e⟩` from `hγ s a b`. Rewrite `ho` using `[hz0]`. Establish `ho' : o ∈ maximalIdeal O` using `(residue_eq_zero_iff o).1 ho`.
+
+Establish `hm : algebraMap O R o ∈ maximalIdeal R` using `fun h => ho' (IsLocalHom.map_nonunit o h)`. Rewrite using `[e, Algebra.smul_def]`. Conclude with `hf _ hm`. Take `⟨e1, e2⟩` from `hd s`. Rewrite `e1` using `[h1]`.
+
+Rewrite `e2` using `[h1, hγ0, add_zero, one_mul]`. Conclude with `SemidirectProduct.ext (Units.ext e2) e1`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.locAt_deform_u :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]
       {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]

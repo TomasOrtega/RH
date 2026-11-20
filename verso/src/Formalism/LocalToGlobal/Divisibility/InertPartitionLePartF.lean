@@ -18,6 +18,9 @@ open Formalism.L2.Col
 variable {K V I I' : Type} [Field K] [AddCommGroup V] [Module K V] (a : I → Module.End K V)
   (b : I' → Module.End K V)
 
+/- English proof (translation)
+Introduce `v hv`. Simplify using `only [eigAt, Submodule.mem_iInf] at hv ⊢`. Introduce `i`. Conclude with `hv (Sum.inl i)`.
+-/
 theorem eigAt_elim_le (x : I ⊕ I' → K) :
     eigAt (Sum.elim a b) x ≤ eigAt a (fun i => x (Sum.inl i)) := by
   intro v hv
@@ -25,12 +28,24 @@ theorem eigAt_elim_le (x : I ⊕ I' → K) :
   intro i
   exact hv (Sum.inl i)
 
+/- English proof (translation)
+Unfold `eigSum`. Conclude with `iSup₂_le fun x hx => (eigAt_elim_le a b x).trans (le_iSup₂ (f := fun (y : I → K) (_ : C y) => eigAt a y) _ hx)`.
+-/
 theorem eigSum_elim_le (C : (I → K) → Prop) :
     eigSum (Sum.elim a b) (fun x => C (fun i => x (Sum.inl i))) ≤ eigSum a C := by
   unfold eigSum
   exact iSup₂_le fun x hx =>
     (eigAt_elim_le a b x).trans (le_iSup₂ (f := fun (y : I → K) (_ : C y) => eigAt a y) _ hx)
 
+/- English proof (translation)
+Establish `hc' : PairComm a` using `fun i j => hc (Sum.inl i) (Sum.inl j)`. Establish `hE` using `eigSum_elim_le a b C`. Establish `hE'` using `eigSum_elim_le a b (fun y => ¬ C y)`. Establish `hcompl` using `isCompl_eigSum (op := Sum.elim a b) hc hs (fun x => C (fun i => x (Sum.inl i)))`. Establish `hdis` using `disjoint_eigSum (op := a) hc' (C := C) (C' := fun y => ¬ C y) (fun x h h' => h' h)`.
+
+Introduce `v hv`. Establish `hv' : v ∈ eigSum (Sum.elim a b) (fun x => C (fun i => x (Sum.inl i))) ⊔ eigSum (Sum.elim a b) (fun x => ¬ C (fun i => x (Sum.inl i)))`. Rewrite using `[hcompl.sup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨e, he, e', he', rfl⟩` from `Submodule.mem_sup.mp hv'`.
+
+Establish `he'A : e' ∈ eigSum a C`. Use `Submodule.sub_mem _ hv (hE he)` as an intermediate fact. Simplify using `using this`. Establish `he'0 : e' = 0` using `Submodule.disjoint_def.mp hdis e' he'A (hE' he')`. Rewrite using `[he'0, add_zero]`.
+
+Conclude with `he`.
+-/
 theorem le_eigSum_elim [FiniteDimensional K V] (hc : PairComm (Sum.elim a b)) (hs : SplitOver (Sum.elim a b))
     (C : (I → K) → Prop) :
     eigSum a C ≤ eigSum (Sum.elim a b) (fun x => C (fun i => x (Sum.inl i))) := by
@@ -51,6 +66,9 @@ theorem le_eigSum_elim [FiniteDimensional K V] (hc : PairComm (Sum.elim a b)) (h
   rw [he'0, add_zero]
   exact he
 
+/- English proof (translation)
+Introduce `i`. Consider the cases of `i with`. Consider the case `inl i => exact ha i`. Consider the case `inr i => exact hb i`.
+-/
 theorem splitOver_elim (ha : SplitOver a) (hb : SplitOver b) : SplitOver (Sum.elim a b) := by
   intro i
   cases i with
@@ -64,9 +82,15 @@ namespace InertDat3
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty : Type}
   {B : BlockDat K G Pl0} (D : InertDat3 B I0 Ty) (ℓ : Lvl K G) (Z : Submodule K B.S.Forms)
 
+/- English proof (translation)
+The claim follows from `splitOver_elim B.op D.opI h.split hD.split`.
+-/
 theorem splitOver_opAll {s : ℕ} (h : B.Ok s) (hD : D.Ok3) : Col.SplitOver D.opAll :=
   splitOver_elim B.op D.opI h.split hD.split
 
+/- English proof (translation)
+Use `show Col.eigSum D.opAll (D.HasRes3 p) ≤ Col.eigSum B.op (B.HasRes p.1)`. Establish `h1 : Col.eigSum D.opAll (D.HasRes3 p) ≤ Col.eigSum D.opAll (fun x => B.HasRes p.1 (fun i => x (Sum.inl i)))` using `Col.eigSum_mono (op := D.opAll) (fun x hx => hx.1)`. Conclude with `h1.trans (eigSum_elim_le B.op D.opI (B.HasRes p.1))`.
+-/
 theorem inertPartition_le_partF (p : Typ3 K Pl0 I0 Ty) : D.inertTypeEigenspaceSum p ≤ B.partF p.1 := by
   show Col.eigSum D.opAll (D.HasRes3 p) ≤ Col.eigSum B.op (B.HasRes p.1)
   have h1 : Col.eigSum D.opAll (D.HasRes3 p) ≤
@@ -74,11 +98,17 @@ theorem inertPartition_le_partF (p : Typ3 K Pl0 I0 Ty) : D.inertTypeEigenspaceSu
     Col.eigSum_mono (op := D.opAll) (fun x hx => hx.1)
   exact h1.trans (eigSum_elim_le B.op D.opI (B.HasRes p.1))
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [InertDat3.part3, BlockDat.inV0, BlockDat.coord, BlockDat.toF, Submodule.mem_comap, Submodule.map_equiv_eq_comap_symm, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+-/
 theorem inert_part_eq_comap (p : Typ3 K Pl0 I0 Ty) : D.part3 ℓ Z p = (D.inertTypeEigenspaceSum p).comap (B.toF ℓ Z) := by
   ext v
   simp only [InertDat3.part3, BlockDat.inV0, BlockDat.coord, BlockDat.toF, Submodule.mem_comap,
     Submodule.map_equiv_eq_comap_symm, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]
 
+/- English proof (translation)
+Simplify using `only [InertDat3.resSet3, Set.mem_setOf_eq] at h`. Simplify using `only [BlockDat.resSet, Set.mem_setOf_eq]`. Use `⟨h.1, fun h0 => h.2.2 (eq_bot_iff.mpr ?_)⟩` and prove the remaining obligations. Rewrite using `[← h0]`. Conclude with `Submodule.comap_mono (Submodule.map_mono (D.inertPartition_le_partF p))`.
+-/
 theorem mem_resSet_of_mem_resSet3 {X : Finset (G → K)} {p : Typ3 K Pl0 I0 Ty} (h : p ∈ D.resSet3 X) :
     p.1 ∈ B.resSet X := by
   simp only [InertDat3.resSet3, Set.mem_setOf_eq] at h
@@ -87,12 +117,24 @@ theorem mem_resSet_of_mem_resSet3 {X : Finset (G → K)} {p : Typ3 K Pl0 I0 Ty} 
   rw [← h0]
   exact Submodule.comap_mono (Submodule.map_mono (D.inertPartition_le_partF p))
 
+/- English proof (translation)
+Unfold `Col.blockPoly`. Rewrite using `[Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_one fun c _ => by simp`.
+-/
 private theorem blockPoly_eval_zero' {L : Type} [Field L] (ν : L) (q t : ℕ) :
     (Col.blockPoly ν q t).eval 0 = 1 := by
   unfold Col.blockPoly
   rw [Polynomial.eval_prod]
   exact Finset.prod_eq_one fun c _ => by simp
 
+/- English proof (translation)
+Introduce and unpack `⟨h1, h2⟩`. Take `⟨hx1, hx2⟩` from `hx`. Break down `hne with ⟨P, hP⟩ | ⟨k, hk⟩` into its components or cases. Apply `hP` to reduce the goal to its premises. Establish `hbp : B.blockProd P ≠ 0`.
+
+Unfold `BlockDat.blockProd`. Rewrite using `[Ne, List.prod_eq_zero_iff, List.mem_map]`. Introduce and unpack `⟨ν, -, hν⟩`. Establish `h0` using `congrArg (Polynomial.eval (0 : K)) hν`. Rewrite `h0` using `[blockPoly_eval_zero', Polynomial.eval_zero]`.
+
+Conclude with `one_ne_zero h0`. Establish `e1` using `hx1 P`. Establish `e2` using `h1 P`. Rewrite `e2` using `[e1]`. Conclude with `mul_right_cancel₀ hbp e2`.
+
+Conclude with `hk ((hx2 k).symm.trans (h2 k))`.
+-/
 theorem excl3 {p p' : Typ3 K Pl0 I0 Ty} (hne : D.DiffAt p p') (x : D.OpIx → K) (hx : D.HasRes3 p x) :
     ¬ D.HasRes3 p' x := by
   rintro ⟨h1, h2⟩
@@ -112,6 +154,21 @@ theorem excl3 {p p' : Typ3 K Pl0 I0 Ty} (hne : D.DiffAt p p') (x : D.OpIx → K)
     exact mul_right_cancel₀ hbp e2
   · exact hk ((hx2 k).symm.trans (h2 k))
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `Col.exists_finset_occurs hc`. Establish `hex : ∀ p ∈ D.resSet3 X, ∃ x, D.HasRes3 p x ∧ Col.Occurs D.opAll x`. Introduce `p hp`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Use `hp.2.2 ?_` and prove the remaining obligations. Establish `h0 : D.inertTypeEigenspaceSum p = ⊥` using `eq_bot_iff.2 (iSup₂_le fun x hx => by`. Assume the negation of the conclusion as `hne`. Conclude with `hcon x hx fun h0 => hne h0.le)`. Rewrite using `[h0, B.good_part_coordinates_bot (Lvl.full X)]`.
+
+Set `f : Typ3 K Pl0 I0 Ty → (D.OpIx → K)` to `fun p => if h : p ∈ D.resSet3 X then (hex p h).choose else 0`. Establish `hf : ∀ p (h : p ∈ D.resSet3 X), D.HasRes3 p (f p) ∧ Col.Occurs D.opAll (f p)`. Introduce `p h`. Simplify using `only [f, dif_pos h]`. Conclude with `(hex p h).choose_spec`.
+
+Use `Set.Finite.of_injOn (f := f) (t := (F : Set (D.OpIx → K))) ?_ ?_ F.finite_toSet` and prove the remaining obligations. Introduce `p h`. Conclude with `Finset.mem_coe.2 ((hF _).1 (hf p h).2)`. Introduce `p h p' h' e`. Establish `h1` using `hf p h`.
+
+Establish `h2` using `hf p' h'`. Rewrite `h1` using `[e]`. Use `Prod.ext (funext fun P0 => ?_) (funext fun k0 => ?_)` and prove the remaining obligations. Distinguish the cases in `hP : P0 ∈ Set.range B.pl`. Take `⟨P, rfl⟩` from `hP`.
+
+Conclude with `mul_right_cancel₀ (B.blockProd_ne_zero P) ((h1.1.1 P).symm.trans (h2.1.1 P))`. Rewrite using `[h.1 P0 hP, h'.1 P0 hP]`. Take `⟨P0, y⟩` from `k0`. Distinguish the cases in `hP : P0 ∈ Set.range D.plI`. Take `⟨P, rfl⟩` from `hP`.
+
+Conclude with `(h1.1.2 (P, y)).symm.trans (h2.1.2 (P, y))`. Rewrite using `[h.2.1 P0 hP y, h'.2.1 P0 hP y]`.
+-/
 theorem resSet3_finite (hc : Col.PairComm D.opAll) (X : Finset (G → K)) : (D.resSet3 X).Finite := by
   classical
   obtain ⟨F, hF⟩ := Col.exists_finset_occurs hc
@@ -148,11 +205,17 @@ theorem resSet3_finite (hc : Col.PairComm D.opAll) (X : Finset (G → K)) : (D.r
         exact (h1.1.2 (P, y)).symm.trans (h2.1.2 (P, y))
       · rw [h.2.1 P0 hP y, h'.2.1 P0 hP y]
 
+/- English proof (translation)
+Unfold `InertDat3.ixFin3`. Rewrite using `[dif_pos (D.resSet3_finite hc X), Set.Finite.mem_toFinset]`.
+-/
 theorem mem_ixFin3 (hc : Col.PairComm D.opAll) (X : Finset (G → K)) (p : Typ3 K Pl0 I0 Ty) :
     p ∈ D.ixFin3 X ↔ p ∈ D.resSet3 X := by
   unfold InertDat3.ixFin3
   rw [dif_pos (D.resSet3_finite hc X), Set.Finite.mem_toFinset]
 
+/- English proof (translation)
+Unfold `InertDat3.ixFin3 at h`. Use `split_ifs at h with hf`. Conclude with `hf.mem_toFinset.mp h`. Simplify using `at h`.
+-/
 theorem mem_resSet3_of_mem_ixFin3 {X : Finset (G → K)} {p : Typ3 K Pl0 I0 Ty} (h : p ∈ D.ixFin3 X) :
     p ∈ D.resSet3 X := by
   unfold InertDat3.ixFin3 at h
@@ -160,11 +223,23 @@ theorem mem_resSet3_of_mem_ixFin3 {X : Finset (G → K)} {p : Typ3 K Pl0 I0 Ty} 
   · exact hf.mem_toFinset.mp h
   · simp at h
 
+/- English proof (translation)
+Rewrite using `[B.mem_ixFin hc]`. Conclude with `D.mem_resSet_of_mem_resSet3 (D.mem_resSet3_of_mem_ixFin3 h)`.
+-/
 theorem mem_ixFin_fst (hc : Col.PairComm B.op) {X : Finset (G → K)} {p : Typ3 K Pl0 I0 Ty} (h : p ∈ D.ixFin3 X) :
     p.1 ∈ B.ixFin X := by
   rw [B.mem_ixFin hc]
   exact D.mem_resSet_of_mem_resSet3 (D.mem_resSet3_of_mem_ixFin3 h)
 
+/- English proof (translation)
+Establish `h1` using `D.mem_resSet3_of_mem_ixFin3 h`. Establish `h2` using `D.mem_resSet3_of_mem_ixFin3 h'`. Simplify using `only [InertDat3.resSet3, Set.mem_setOf_eq] at h1 h2`. Assume the negation of the conclusion as `hd`. Apply `hne` to reduce the goal to its premises.
+
+Simplify using `only [InertDat3.DiffAt, not_or, not_exists, not_not] at hd`. Take `⟨hd1, hd2⟩` from `hd`. Use `Prod.ext (funext fun P0 => ?_) (funext fun q => ?_)` and prove the remaining obligations. Distinguish the cases in `hP : P0 ∈ Set.range B.pl`. Take `⟨P, rfl⟩` from `hP`.
+
+Conclude with `hd1 P`. Rewrite using `[h1.1 P0 hP, h2.1 P0 hP]`. Take `⟨P0, y⟩` from `q`. Distinguish the cases in `hP : P0 ∈ Set.range D.plI`. Take `⟨P, rfl⟩` from `hP`.
+
+Conclude with `hd2 (P, y)`. Rewrite using `[h1.2.1 P0 hP y, h2.2.1 P0 hP y]`.
+-/
 theorem diffAt_of_mem_ixFin3 {X : Finset (G → K)} {p p' : Typ3 K Pl0 I0 Ty} (h : p ∈ D.ixFin3 X)
     (h' : p' ∈ D.ixFin3 X) (hne : p ≠ p') : D.DiffAt p p' := by
   have h1 := D.mem_resSet3_of_mem_ixFin3 h
@@ -185,6 +260,11 @@ theorem diffAt_of_mem_ixFin3 {X : Finset (G → K)} {p p' : Typ3 K Pl0 I0 Ty} (h
       exact hd2 (P, y)
     · rw [h1.2.1 P0 hP y, h2.2.1 P0 hP y]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K B.S.Forms := Module.Finite.of_basis B.S.basis`. Establish `hA : iSupIndep fun i => D.inertTypeEigenspaceSum (ps i)` using `iSupIndep_eigSum (op := D.opAll) hc (fun i => D.HasRes3 (ps i)) (fun i j hij x hx => D.excl3 (hsep i j hij) x hx)`. Establish `e : (fun i => D.part3 ℓ Z (ps i)) = fun i => (D.inertTypeEigenspaceSum (ps i)).comap (B.toF ℓ Z)`. Use function extensionality and compare the values at `fun i => D.inert_part_eq_comap ℓ Z (ps i)`. Rewrite using `[e]`.
+
+Conclude with `iSupIndep_comap (B.toF ℓ Z) (BlockDat.toF_injective (B := B) (ℓ := ℓ) (Z := Z)) hA`.
+-/
 theorem inert_parts_independent (hc : Col.PairComm D.opAll) {ι : Type} (ps : ι → Typ3 K Pl0 I0 Ty)
     (hsep : ∀ i j, i ≠ j → D.DiffAt (ps i) (ps j)) : iSupIndep fun i => D.part3 ℓ Z (ps i) := by
   haveI : FiniteDimensional K B.S.Forms := Module.Finite.of_basis B.S.basis
@@ -196,6 +276,11 @@ theorem inert_parts_independent (hc : Col.PairComm D.opAll) {ι : Type} (ps : ι
   rw [e]
   exact iSupIndep_comap (B.toF ℓ Z) (BlockDat.toF_injective (B := B) (ℓ := ℓ) (Z := Z)) hA
 
+/- English proof (translation)
+Establish `hT : ∀ g, Commute (D.opAll k) (B.r g)`. Break down `k with i | k` into its components or cases. Conclude with `fun g => h.opG i g`. Conclude with `fun g => hD.opG k g`. Unfold `CSD.gaOp`.
+
+Conclude with `Commute.sum_right _ _ _ fun t _ => (hT t).smul_right _`.
+-/
 theorem commute_gaOp {s : ℕ} (h : B.Ok s) (hD : D.Ok3) (a : MonoidAlgebra K G) (k : D.OpIx) :
     Commute (D.opAll k) (B.S.gaOp B.r a) := by
   have hT : ∀ g, Commute (D.opAll k) (B.r g) := by
@@ -205,6 +290,25 @@ theorem commute_gaOp {s : ℕ} (h : B.Ok s) (hD : D.Ok3) (a : MonoidAlgebra K G)
   unfold CSD.gaOp
   exact Commute.sum_right _ _ _ fun t _ => (hT t).smul_right _
 
+/- English proof (translation)
+Establish `hs` using `D.splitOver_opAll h hD`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Use `set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha`. Establish `hidem : a * a = a` using `(good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem`.
+
+Establish `hmul` using `(group_action_matrix_hom K B.S G B.r).2`. Establish `hrange : LinearMap.range (B.vE ℓ).mulVecLin = LinearMap.range (B.S.gaMat B.r a).mulVecLin` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r a)).2`. Use `set φ := B.toF ℓ Z y with hφ`. Establish `hex : ∀ i j, i ≠ j → ∀ x, D.HasRes3 (ps i) x → ¬ D.HasRes3 (ps j) x` using `fun i j hij x hx => D.excl3 (hsep i j hij) x hx`. Establish `h1 : φ ∈ Col.eigSum D.opAll fun x => ∃ i, D.HasRes3 (ps i) x` using `(B.mem_goodPart_iff ℓ _ _).1 (hsame (B.zE_mem ℓ Z y))`.
+
+Establish `hAφ : B.S.gaOp B.r a φ = φ`. Apply `B.S.basis.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← CSD.gaMat_mulVec_equivFun, hφ, BlockDat.toF_apply, LinearEquiv.apply_symm_apply]`. Take `⟨z, hz⟩ : (B.vE ℓ).mulVecLin ((B.zE ℓ Z).mulVec y) ∈ LinearMap.range (B.S.gaMat B.r a).mulVecLin` from `by rw [← hrange]; exact ⟨_, rfl⟩`. Rewrite `hz` using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply]`.
+
+Rewrite using `[← hz, Matrix.mulVec_mulVec, ← hmul, hidem]`. Establish `hcomm : ∀ k, Commute (D.opAll k) (B.S.gaOp B.r a)` using `D.commute_gaOp h hD a`. Establish `key : ∀ i, ∃ yi, B.toF ℓ Z yi = Col.eigProj hD.comm hs (D.HasRes3 (ps i)) φ`. Introduce `i`. Use `set ψ := Col.eigProj hD.comm hs (D.HasRes3 (ps i)) φ with hψ`.
+
+Establish `hψA : B.S.gaOp B.r a ψ = ψ`. Use `(Col.commute_eigProj hD.comm hs (D.HasRes3 (ps i)) hcomm).eq` as an intermediate fact. Establish `h2` using `congrArg (fun f : Module.End K B.S.Forms => f φ) this`. Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[hψ, ← h2, hAφ]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : B.S.basis.equivFun ψ ∈ LinearMap.range (B.vE ℓ).mulVecLin := by`. Rewrite using `[hrange]`. Conclude with `⟨B.S.basis.equivFun ψ, by`. Rewrite using `[Matrix.mulVecLin_apply, CSD.gaMat_mulVec_equivFun, hψA]⟩`. Rewrite `hu` using `[Matrix.mulVecLin_apply]`.
+
+Establish `hu0 : u ∈ B.Z0 ℓ Z`. Rewrite using `[BlockDat.Z0, BlockDat.mem_goodPart_iff, hu, LinearEquiv.symm_apply_apply]`. Conclude with `eigProj_mem_of_stable hD.comm hs _ hZ ((B.mem_goodPart_iff ℓ _ _).1 (B.zE_mem ℓ Z y))`. Take `⟨yi, hyi⟩` from `B.exists_zE ℓ Z hu0`. Conclude with `⟨yi, by rw [BlockDat.toF_apply, hyi, hu, LinearEquiv.symm_apply_apply]⟩`.
+
+Use `choose yy hyy using key`. Establish `hsum : y = ∑ i, yy i`. Apply `B.toF_injective ℓ Z` to reduce the goal to its premises. Rewrite using `[map_sum, Finset.sum_congr rfl fun i _ => hyy i]`. Conclude with `(sum_eigProj hD.comm hs _ hex h1).symm`.
+
+Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations. Rewrite using `[inert_part_eq_comap, Submodule.mem_comap, hyy i]`. Conclude with `Col.eigProj_apply_mem hD.comm hs _ φ`.
+-/
 theorem inert_parts_span_top {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s) (hD : D.Ok3)
     (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) (hZ : D.Stable3 Z) {ι : Type} [Fintype ι]
     (ps : ι → Typ3 K Pl0 I0 Ty) (hsep : ∀ i j, i ≠ j → D.DiffAt (ps i) (ps j))
@@ -259,6 +363,37 @@ theorem inert_parts_span_top {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ
   rw [inert_part_eq_comap, Submodule.mem_comap, hyy i]
   exact Col.eigProj_apply_mem hD.comm hs _ φ
 
+/- English proof (translation)
+Establish `hs` using `D.splitOver_opAll h hD`. Introduce `u hu`. Rewrite using `[BlockDat.mem_goodPart_iff]`. Use `set φ := B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) with hφ`. Establish `hφZ : φ ∈ B.ZH` using `(B.mem_goodPart_iff ℓ _ _).1 hu`.
+
+Establish `hφZ3 : φ ∈ Col.eigSum D.opAll fun x => Col.HasBlocks B.n B.q B.t B.bl (fun i => x (Sum.inl i))` using `le_eigSum_elim B.op D.opI hD.comm hs _ hφZ`. Use `set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha`. Use `set a0 := goodAt ℓ.X (⊥ : Subgroup G) 1 with ha0`. Establish `hidem : a * a = a` using `(good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem`. Establish `ha0a : a0 * a = a`.
+
+Rewrite using `[ha0, ha, goodAt, goodAt, level_idempotent_bot K G 1, mul_one, ← mul_assoc, idemOf_mul_self ℓ.X hX]`. Establish `hAφ : B.S.gaOp B.r a φ = φ` using `B.gaOp_fix ℓ hidem u`. Establish `hA0φ : B.S.gaOp B.r a0 φ = φ` using `by conv_lhs => rw [← hAφ]`. Rewrite using `[← BlockDat.gaOp_mul, ha0a, hAφ]`. Establish `hcomm : ∀ k, Commute (D.opAll k) (B.S.gaOp B.r a0)` using `D.commute_gaOp h hD a0`.
+
+Take `⟨F, hF⟩` from `Col.exists_finset_occurs hD.comm`. Set `HB : (D.OpIx → K) → Prop` to `fun x => Col.HasBlocks B.n B.q B.t B.bl (fun i => x (Sum.inl i))`. Set `ι` to `{x // x ∈ F.filter HB}`. Set `C : ι → (D.OpIx → K) → Prop` to `fun i x => x = i.1`. Establish `hex : ∀ i j : ι, i ≠ j → ∀ x, C i x → ¬ C j x` using `fun i j hij x hx hx' => hij (Subtype.ext (hx.symm.trans hx'))`.
+
+Establish `h1 : φ ∈ Col.eigSum D.opAll fun x => ∃ i, C i x`. Establish `e : Col.eigSum D.opAll HB = Col.eigSum D.opAll fun x => ∃ i, C i x` using `Col.eigSum_congr fun x hx => ⟨fun hb => ⟨⟨x, Finset.mem_filter.2 ⟨(hF x).1 hx, hb⟩⟩, rfl⟩, fun ⟨i, hi⟩ => hi ▸ (Finset.mem_filter.1 i.2).2⟩`. Rewrite using `[← e]`. Conclude with `hφZ3`. Rewrite using `[← sum_eigProj hD.comm hs C hex h1]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `set ψ' := Col.eigProj hD.comm hs (C i) φ with hψ'`. Distinguish the cases in `h0 : ψ' = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hmem : ψ' ∈ Col.eigAt D.opAll i.1`. Establish `h2 : Col.eigSum D.opAll (C i) ≤ Col.eigAt D.opAll i.1` using `iSup₂_le fun x hx => by rw [hx]`. Conclude with `h2 (Col.eigProj_apply_mem hD.comm hs _ φ)`. Establish `hψA : B.S.gaOp B.r a0 ψ' = ψ'`. Establish `h2` using `congrArg (fun f : Module.End K B.S.Forms => f φ) (Col.commute_eigProj hD.comm hs (C i) hcomm).eq`.
+
+Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[hψ', ← h2, hA0φ]`. Establish `hb : HB i.1` using `(Finset.mem_filter.1 i.2).2`. Use `choose c hc using hb`. Set `Sg : Pl0 → K[X]` to `fun P0 => if hP : ∃ P, B.pl P = P0 then c hP.choose else 1`.
+
+Establish `hSg : ∀ P, Sg (B.pl P) = c P`. Introduce `P`. Establish `hP : ∃ P', B.pl P' = B.pl P` using `⟨P, rfl⟩`. Simplify using `only [Sg, dif_pos hP]`. Rewrite using `[h.pl_inj hP.choose_spec]`.
+
+Set `e : I0 × Ty → K` to `fun k0 => if hP : ∃ P, D.plI P = k0.1 then i.1 (Sum.inr (hP.choose, k0.2)) else 0`. Establish `he : ∀ (P : D.PlI) (y : Ty), e (D.plI P, y) = i.1 (Sum.inr (P, y))`. Introduce `P y`. Establish `hP : ∃ P', D.plI P' = D.plI P` using `⟨P, rfl⟩`. Simplify using `only [e, dif_pos hP]`.
+
+Rewrite using `[hD.plI_inj hP.choose_spec]`. Establish `hres : D.HasRes3 (Sg, e) i.1`. Use `⟨fun P => ?_, fun k => (he k.1 k.2).symm⟩` and prove the remaining obligations. Use `show _ = Sg (B.pl P) * B.blockProd P`. Rewrite using `[hSg P, mul_comm]`.
+
+Conclude with `hc P`. Use `Col.eigAt_le_eigSum (C := fun x => ∃ p ∈ D.ixFin3 ℓ.X, D.HasRes3 p x) ⟨(Sg, e), ?_, hres⟩ hmem` and prove the remaining obligations. Rewrite using `[D.mem_ixFin3 hD.comm]`. Use `⟨fun P0 hP0 => ?_, fun P0 hP0 y => ?_, ?_⟩` and prove the remaining obligations. Establish `hP : ¬ ∃ P, B.pl P = P0` using `fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩ show Sg P0 = 1`.
+
+Simplify using `only [Sg, dif_neg hP]`. Establish `hP : ¬ ∃ P, D.plI P = P0` using `fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩ show e (P0, y) = 0`. Simplify using `only [e, dif_neg hP]`. Take `⟨u0, hu0⟩` from `B.exists_vE_of_fix (Lvl.full ℓ.X) hψA`. Introduce `hbot`.
+
+Establish `hu0mem : u0 ∈ B.inV0 (Lvl.full ℓ.X) (D.inertTypeEigenspaceSum (Sg, e))`. Rewrite using `[BlockDat.mem_goodPart_iff, hu0]`. Conclude with `Col.eigAt_le_eigSum (C := D.HasRes3 (Sg, e)) hres hmem`. Rewrite `hu0mem` using `[hbot, Submodule.mem_bot]`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[← hu0, hu0mem, Matrix.mulVec_zero, map_zero]`.
+-/
 theorem sameTypes_self3 {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s) (hD : D.Ok3)
     (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) :
     B.invariantGoodPart ℓ ≤ B.inV0 ℓ (Col.eigSum D.opAll fun x => ∃ p ∈ D.ixFin3 ℓ.X, D.HasRes3 p x) := by
@@ -350,6 +485,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
 
 variable {F3} in
 
+/- English proof (translation)
+Use `show (∀ t i, _) ∧ ∀ j t i, _`. Use `⟨fun t i => ?_, fun j t i => ?_⟩` and prove the remaining obligations. Break down `i with q | g` into its components or cases. Conclude with `hst.1 t (Sum.inl (Sum.inl q))`. Conclude with `hst.1 t (Sum.inr g)`.
+
+Break down `i with q | g` into its components or cases. Conclude with `hst.2 j t (Sum.inl (Sum.inl q))`. Conclude with `hst.2 j t (Sum.inr g)`.
+-/
 theorem toSub2_stable {Zs : DefSub F3.amb3} (hst : Zs.Stable) : (F3.toSub2 Zs).Stable := by
   show (∀ t i, _) ∧ ∀ j t i, _
   refine ⟨fun t i => ?_, fun j t i => ?_⟩
@@ -361,16 +501,28 @@ theorem toSub2_stable {Zs : DefSub F3.amb3} (hst : Zs.Stable) : (F3.toSub2 Zs).S
     · exact hst.2 j t (Sum.inr g)
 
 variable {F3} in
+/- English proof (translation)
+The claim follows from `hin`.
+-/
 theorem toSub2_inBlock {Zs : DefSub F3.amb3} (hin : Zs.InBlock) : (F3.toSub2 Zs).InBlock := hin
 
 variable {F3} in
+/- English proof (translation)
+Introduce `i` and use `Submodule.map_le_iff_le_comap.mp (hst.1 t (Sum.inl i))`.
+-/
 theorem stable3_rows {Zs : DefSub F3.amb3} (hst : Zs.Stable) (t : T) : (F3.RI t).Stable3 (Zs.Z t) :=
   fun i => Submodule.map_le_iff_le_comap.mp (hst.1 t (Sum.inl i))
 
 variable {F3} in
+/- English proof (translation)
+Introduce `i` and use `Submodule.map_le_iff_le_comap.mp (hst.2 j t (Sum.inl i))`.
+-/
 theorem stable3_lifts {Zs : DefSub F3.amb3} (hst : Zs.Stable) (j : J) (t : T) : (F3.LI j t).Stable3 (Zs.Zl j t) :=
   fun i => Submodule.map_le_iff_le_comap.mp (hst.2 j t (Sum.inl i))
 
+/- English proof (translation)
+The claim follows from `((F3.F.R F3.F.μ0).good_part_coordinates_mono _ (DefFam.inBlock_rows (F := F3.F) (Zs := F3.toSub2 Zs) hin F3.F.μ0)).trans ((F3.RI F3.F.μ0).sameTypes_self3 (F3.F.lvl P ψ) h.ok2.conj (h.ok2.what₂ F3.F.μ0) (h.what₂ F3.F.μ0) h.ok2.irr)`.
+-/
 theorem sameTypes_base3 {s : ℕ} (h : F3.Ok3 s) (P : Subgroup G) (ψ : P →* Kˣ) {Zs : DefSub F3.amb3}
     (hin : Zs.InBlock) :
     (F3.F.R F3.F.μ0).Z0 (F3.F.lvl P ψ) (Zs.Z F3.F.μ0) ≤
@@ -378,6 +530,9 @@ theorem sameTypes_base3 {s : ℕ} (h : F3.Ok3 s) (P : Subgroup G) (ψ : P →* K
   ((F3.F.R F3.F.μ0).good_part_coordinates_mono _ (DefFam.inBlock_rows (F := F3.F) (Zs := F3.toSub2 Zs) hin F3.F.μ0)).trans
     ((F3.RI F3.F.μ0).sameTypes_self3 (F3.F.lvl P ψ) h.ok2.conj (h.ok2.what₂ F3.F.μ0) (h.what₂ F3.F.μ0) h.ok2.irr)
 
+/- English proof (translation)
+The claim follows from `isCMSub_cmMax' K conj := h.ok2.conj HV_rat t := BlockDat.HV_rat (ℓ := F3.F.lvl P ψ) h.ok2.conj (h.ok2.what₂ t) h.ok2.irr HV_pos t := BlockDat.HV_pos (ℓ := F3.F.lvl P ψ) h.ok2.conj (h.ok2.what₂ t) h.ok2.irr Mt_lat t := BlockDat.Mt_lat (ℓ := F3.F.lvl P ψ) h.ok2.conj (h.ok2.what₂ t) …`.
+-/
 theorem side_well_formed {s : ℕ} (h : F3.Ok3 s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F3.amb3) (hst : Zs.Stable)
     (hin : Zs.InBlock) (hsep : F3.TypesSep3) : (F3.side3 P ψ Zs).WF where
   cm := isCMSub_cmMax' K
@@ -401,9 +556,15 @@ theorem side_well_formed {s : ℕ} (h : F3.Ok3 s) (P : Subgroup G) (ψ : P →* 
   Zp_indep j := (F3.LI j F3.F.μ0).inert_parts_independent (F3.F.lvlA P ψ) (Zs.Zl j F3.F.μ0) (h.lifts j F3.F.μ0).comm
     (fun p : F3.base3.Ix => F3.tr3 j p.1) fun p p' hpp => hsep p.1 p.2 p'.1 p'.2 (fun e => hpp (Subtype.ext e)) j
 
+/- English proof (translation)
+The claim follows from `hrow`.
+-/
 theorem side_positive (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F3.amb3) (hrow : F3.F.RowsExist P ψ (F3.toSub2 Zs)) :
     (F3.side3 P ψ Zs).Pos := hrow
 
+/- English proof (translation)
+Introduce `j` and use `(F3.LI j F3.F.μ0).inert_parts_span_top (F3.F.lvlA P ψ) (Zs.Zl j F3.F.μ0) h.ok2.conj (h.ok2.lifts j F3.F.μ0) (h.lifts j F3.F.μ0) h.ok2.irr (stable3_lifts hst j F3.F.μ0) (fun p : F3.base3.Ix => F3.tr3 j p.1) (fun p p' hpp => hsep p.1 p.2 p'.1 p'.2 (fun e => hpp (Subtype.ext e)) j) …`.
+-/
 theorem side_Types3 {s : ℕ} (h : F3.Ok3 s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F3.amb3) (hst : Zs.Stable)
     (hsep : F3.TypesSep3) (hsame : F3.SameTypes3 P ψ Zs) : (F3.side3 P ψ Zs).Types :=
   fun j => (F3.LI j F3.F.μ0).inert_parts_span_top (F3.F.lvlA P ψ) (Zs.Zl j F3.F.μ0) h.ok2.conj (h.ok2.lifts j F3.F.μ0)
@@ -421,6 +582,11 @@ def TrISep : Prop :=
       ∃ k : (F3.LI j F3.F.μ0).PlI × Ty,
         F3.trI j p.2 ((F3.LI j F3.F.μ0).plI k.1, k.2) ≠ F3.trI j p'.2 ((F3.LI j F3.F.μ0).plI k.1, k.2)
 
+/- English proof (translation)
+Unfold `DefFam3.TypesSep3`. Introduce `p hp p' hp' hne j`. Break down `(F3.RI F3.F.μ0).diffAt_of_mem_ixFin3 hp hp' hne with ⟨P, hP⟩ | ⟨k, hk⟩` into its components or cases. Establish `h1 : p.1 ≠ p'.1` using `fun e => hP (congrFun e _)`. Take `⟨P', hP'⟩` from `hsep2 p.1 ((F3.RI F3.F.μ0).mem_ixFin_fst hc hp) p'.1 ((F3.RI F3.F.μ0).mem_ixFin_fst hc hp') h1 j`.
+
+Conclude with `Or.inl ⟨P', hP'⟩`. Conclude with `Or.inr (hI j p hp p' hp' ⟨k, hk⟩)`.
+-/
 theorem typesSep3_of (hc : Col.PairComm (F3.F.R F3.F.μ0).op) (hsep2 : F3.F.TypesSep) (hI : F3.TrISep) :
     F3.TypesSep3 := by
   unfold DefFam3.TypesSep3
@@ -445,6 +611,11 @@ def tD : InertDat3 tB Unit Unit where
   plI := id
   opI := fun _ => (1 : ℚ) • 1
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `tB_ok.comm i j`. Conclude with `(Commute.one_right _).smul_right _`. Conclude with `(Commute.one_left _).smul_left _`. Conclude with `((Commute.one_left _).smul_left _).smul_right _`.
+
+Use `split i := top_unique (le_iSup_of_le 1 (maxGen_smul_one (V := tB.S.Forms) (1 : ℚ)).ge)`. Use `opG _ _ := (Commute.one_left _).smul_left _`. Use `plI_inj := Function.injective_id`.
+-/
 theorem tD_ok : tD.Ok3 where
   comm i j := by
     rcases i with i | i <;> rcases j with j | j
@@ -462,15 +633,28 @@ def exampleRationalFamily : DefFam3 ℚ G3 Unit Unit Unit Unit Unit where
   LI _ _ := tD
   trI _ := id
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tF_ok, fun _ => tD_ok, fun _ _ => tD_ok⟩`.
+-/
 theorem example_family_ok : exampleRationalFamily.Ok3 1 := ⟨tF_ok, fun _ => tD_ok, fun _ _ => tD_ok⟩
 
 def tZs3 : DefSub exampleRationalFamily.amb3 := ⟨fun _ => tB.goodF tX, fun _ _ => tB.goodF tX⟩
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite using `[Submodule.mem_comap]`. Simplify `hv` using `[tD]`.
+-/
 theorem tD_stable (k : tD.PlI × Unit) : tB.goodF tX ≤ (tB.goodF tX).comap (tD.opI k) := by
   intro v hv
   rw [Submodule.mem_comap]
   simpa [tD] using hv
 
+/- English proof (translation)
+Establish `h2` using `tZs_stable`. Use `show (∀ t i, _) ∧ ∀ j t i, _`. Use `⟨fun t i => ?_, fun j t i => ?_⟩` and prove the remaining obligations. Break down `i with (q | k) | g` into its components or cases. Conclude with `h2.1 t (Sum.inl q)`.
+
+Conclude with `Submodule.map_le_iff_le_comap.mpr (tD_stable k)`. Conclude with `h2.1 t (Sum.inr g)`. Break down `i with (q | k) | g` into its components or cases. Conclude with `h2.2 j t (Sum.inl q)`. Conclude with `Submodule.map_le_iff_le_comap.mpr (tD_stable k)`.
+
+Conclude with `h2.2 j t (Sum.inr g)`.
+-/
 theorem tZs3_stable : tZs3.Stable := by
   have h2 := tZs_stable
   show (∀ t i, _) ∧ ∀ j t i, _
@@ -484,12 +668,22 @@ theorem tZs3_stable : tZs3.Stable := by
     · exact Submodule.map_le_iff_le_comap.mpr (tD_stable k)
     · exact h2.2 j t (Sum.inr g)
 
+/- English proof (translation)
+The claim follows from `tZs_inBlock`.
+-/
 theorem tZs3_inBlock : tZs3.InBlock := tZs_inBlock
 
 def x1 : tD.OpIx → ℚ := Sum.elim x0 fun _ => 1
 
 def p1 : Typ3 ℚ Unit Unit Unit := (fun _ => 1, fun _ => 1)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v ∈ eigAt tB.op x0`. Rewrite using `[tB_eigAt]`. Discharge the goal by the elementary cases of `trivial`.
+
+Simplify using `only [eigAt, Submodule.mem_iInf] at hv ⊢`. Introduce and unpack `(i | k)`. Conclude with `hv i`. Use `show v ∈ ((1 : ℚ) • (1 : Module.End ℚ tB.S.Forms)).maxGenEigenspace 1`. Rewrite using `[Module.End.mem_maxGenEigenspace]`.
+
+Conclude with `⟨1, by simp⟩`.
+-/
 theorem tD_eigAt : eigAt tD.opAll x1 = ⊤ := by
   rw [eq_top_iff]
   intro v _
@@ -503,12 +697,25 @@ theorem tD_eigAt : eigAt tD.opAll x1 = ⊤ := by
     rw [Module.End.mem_maxGenEigenspace]
     exact ⟨1, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tB_hasRes, fun _ => rfl⟩`.
+-/
 theorem tD_hasRes : tD.HasRes3 p1 x1 := ⟨tB_hasRes, fun _ => rfl⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← tD_eigAt]`. Conclude with `eigAt_le_eigSum (op := tD.opAll) tD_hasRes`.
+-/
 theorem tD_inertTypeEigenspaceSum_eq_top : tD.inertTypeEigenspaceSum p1 = ⊤ := by
   rw [eq_top_iff, ← tD_eigAt]
   exact eigAt_le_eigSum (op := tD.opAll) tD_hasRes
 
+/- English proof (translation)
+Rewrite using `[tD.mem_ixFin3 tD_ok.comm]`. Establish `h1 : (fun _ : Unit => (1 : ℚ[X])) ∈ tB.resSet tX`. Rewrite using `[tB_resSet]`. Conclude with `Set.mem_singleton _`. Simplify using `only [BlockDat.resSet, Set.mem_setOf_eq] at h1`.
+
+Simplify using `only [InertDat3.resSet3, Set.mem_setOf_eq]`. Use `⟨fun _ _ => rfl, fun P0 hP0 => (hP0 (Set.mem_range_self (f := tD.plI) P0)).elim, ?_⟩` and prove the remaining obligations. Establish `h2` using `h1.2`. Rewrite `h2` using `[tB_partF]`. Rewrite using `[tD_inertTypeEigenspaceSum_eq_top]`.
+
+Conclude with `h2`.
+-/
 theorem tD_mem : p1 ∈ tD.ixFin3 tX := by
   rw [tD.mem_ixFin3 tD_ok.comm]
   have h1 : (fun _ : Unit => (1 : ℚ[X])) ∈ tB.resSet tX := by
@@ -522,9 +729,17 @@ theorem tD_mem : p1 ∈ tD.ixFin3 tX := by
   rw [tD_inertTypeEigenspaceSum_eq_top]
   exact h2
 
+/- English proof (translation)
+The claim follows from `exampleRationalFamily.typesSep3_of tB_ok.comm tF_sep (fun _ _ _ _ _ h => h)`.
+-/
 theorem example_types_separated : exampleRationalFamily.TypesSep3 :=
   exampleRationalFamily.typesSep3_of tB_ok.comm tF_sep (fun _ _ _ _ _ h => h)
 
+/- English proof (translation)
+Introduce `j`. Establish `h : Col.eigSum (exampleRationalFamily.LI j exampleRationalFamily.F.μ0).opAll (exampleRationalFamily.IsType3 (exampleRationalFamily.LI j exampleRationalFamily.F.μ0) (exampleRationalFamily.tr3 j)) = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Conclude with `(eq_top_iff.mp tD_eigAt).trans (eigAt_le_eigSum (op := tD.opAll) (C := exampleRationalFamily.IsType3 tD (exampleRationalFamily.tr3 j)) ⟨p1, tD_mem, tB_hasRes, fun _ => rfl⟩)`. Rewrite using `[h]`.
+
+Conclude with `le_top.trans_eq (example_good_coordinates_top _).symm`.
+-/
 theorem example_same_types (P : Subgroup G3) : exampleRationalFamily.SameTypes3 P 1 tZs3 := by
   intro j
   have h : Col.eigSum (exampleRationalFamily.LI j exampleRationalFamily.F.μ0).opAll (exampleRationalFamily.IsType3 (exampleRationalFamily.LI j exampleRationalFamily.F.μ0) (exampleRationalFamily.tr3 j)) = ⊤ := by
@@ -534,8 +749,24 @@ theorem example_same_types (P : Subgroup G3) : exampleRationalFamily.SameTypes3 
   rw [h]
   exact le_top.trans_eq (example_good_coordinates_top _).symm
 
+/- English proof (translation)
+The claim follows from `tF_rows P`.
+-/
 theorem example_rows_exist (P : Subgroup G3) : exampleRationalFamily.F.RowsExist P 1 (exampleRationalFamily.toSub2 tZs3) := tF_rows P
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ tB.S.Forms := Module.Finite.of_basis tB.S.basis`. Establish `hbot : tB.inV0 (Lvl.full tX) ⊥ = ⊥`. Establish `h0 : (fun _ : Unit => (0 : ℚ[X])) ≠ fun _ => 1` using `fun e => zero_ne_one (congrFun e ())`. Establish `hpart : tB.partF (fun _ : Unit => (0 : ℚ[X])) = ⊥`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `h0 (tB_res_eq hne)`. Establish `hnot : (fun _ : Unit => (0 : ℚ[X])) ∉ tB.resSet tX`. Rewrite using `[tB_resSet]`. Conclude with `h0`. Simplify using `only [BlockDat.resSet, Set.mem_setOf_eq, not_and, not_not] at hnot`.
+
+Rewrite using `[← hpart]`. Conclude with `hnot (fun P0 hP0 => (hP0 (Set.mem_range.mpr ⟨(), rfl⟩)).elim)`. Establish `huniq : ∀ p ∈ tD.ixFin3 tX, p = p1`. Introduce `p hp`. Assume the negation of the conclusion as `hne`.
+
+Establish `hd` using `tD.diffAt_of_mem_ixFin3 hp tD_mem hne`. Establish `hdis : Disjoint (tD.inertTypeEigenspaceSum p) (tD.inertTypeEigenspaceSum p1)` using `disjoint_eigSum (op := tD.opAll) tD_ok.comm (C := tD.HasRes3 p) (C' := tD.HasRes3 p1) (fun x h h' => tD.excl3 hd x h h')`. Rewrite `hdis` using `[tD_inertTypeEigenspaceSum_eq_top, disjoint_top]`. Establish `hr` using `tD.mem_resSet3_of_mem_ixFin3 hp`. Simplify using `only [InertDat3.resSet3, Set.mem_setOf_eq] at hr`.
+
+Apply `hr.2.2` to reduce the goal to its premises. Rewrite using `[hdis, hbot]`. Establish `hset : tD.ixFin3 tX = {p1}`. Use extensionality with `p`. Rewrite using `[Finset.mem_singleton]`.
+
+Conclude with `⟨huniq p, fun e => e ▸ tD_mem⟩`. Use `show Fintype.card ↥(tD.ixFin3 tX) = 1`. Rewrite using `[Fintype.card_coe, hset, Finset.card_singleton]`.
+-/
 theorem example_card_types_one : Fintype.card exampleRationalFamily.base3.Ix = 1 := by
   haveI : FiniteDimensional ℚ tB.S.Forms := Module.Finite.of_basis tB.S.basis
   have hbot : tB.inV0 (Lvl.full tX) ⊥ = ⊥ := by
@@ -568,6 +799,9 @@ theorem example_card_types_one : Fintype.card exampleRationalFamily.base3.Ix = 1
   show Fintype.card ↥(tD.ixFin3 tX) = 1
   rw [Fintype.card_coe, hset, Finset.card_singleton]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exampleRationalFamily.side_well_formed example_family_ok P 1 tZs3 tZs3_stable tZs3_inBlock example_types_separated, exampleRationalFamily.side_positive P 1 tZs3 (example_rows_exist P), (tF_WF P).2.2.1, exampleRationalFamily.side_Types3 example_family_ok P 1 tZs3 tZs3_stable exam …`.
+-/
 theorem example_side_well_formed (P : Subgroup G3) :
     (exampleRationalFamily.side3 P 1 tZs3).WF ∧ (exampleRationalFamily.side3 P 1 tZs3).Pos ∧ (exampleRationalFamily.side3 P 1 tZs3).Proviso ∧ (exampleRationalFamily.side3 P 1 tZs3).Types :=
   ⟨exampleRationalFamily.side_well_formed example_family_ok P 1 tZs3 tZs3_stable tZs3_inBlock example_types_separated,

@@ -21,20 +21,34 @@ def twMat {Γ O A : Type} [Group Γ] [CommRing O] [CommRing A] [Algebra O A] {r 
     simp only [map_mul, Units.val_mul, Matrix.map_mul]
     rw [smul_mul_smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twMat_apply {Γ O A : Type} [Group Γ] [CommRing O] [CommRing A] [Algebra O A] {r : ℕ} (ρ : Γ →* GL (Fin r) O)
     (κ : Γ →* Aˣ) (g : Γ) :
     twMat ρ κ g = ((κ g : Aˣ) : A) • (ρ g : Matrix (Fin r) (Fin r) O).map (algebraMap O A) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[repOn, matAct, twMat_apply, mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem repOn_twMat {Γ O A : Type} [Group Γ] [CommRing O] [CommRing A] [Algebra O A] {r : ℕ} (ρ : Γ →* GL (Fin r) O)
     (κ : Γ →* Aˣ) (g : Γ) (v : Fin r → A) : repOn ρ κ A g v = twMat ρ κ g *ᵥ v := by
   funext a
   simp [repOn, matAct, twMat_apply, mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Use `congrFun (h (Pi.single b 1)) a` as an intermediate fact. Simplify `this` using `[Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem eq_one_of_mulVec {A : Type} [CommRing A] {r : ℕ} (M : Matrix (Fin r) (Fin r) A) (h : ∀ v, M *ᵥ v = v) : M = 1 := by
   ext a b
   have := congrFun (h (Pi.single b 1)) a
   simpa [Matrix.one_apply, Pi.single_apply] using this
 
+/- English proof (translation)
+Establish `e : MulSemiringAction.toRingAut (GE N) N.Om (cConj X g) = (X.cc : RingAut N.Om) * MulSemiringAction.toRingAut (GE N) N.Om g * (X.cc : RingAut N.Om)⁻¹`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `: cycZ D.host.E N.Om (X.l i) (cConj X g) = cycZ D.host.E N.Om (X.l i) g`. Simplify using `only [cycZ, MonoidHom.comp_apply]`.
+
+Rewrite using `[e, map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Simplify using `only [eps0, MonoidHom.comp_apply]`. Rewrite using `[this]`.
+-/
 theorem auxiliaryCharacter_complexConj_invariant {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw)
     (g : GE N) : eps0 X i (cConj X g) = eps0 X i g := by
   have e : MulSemiringAction.toRingAut (GE N) N.Om (cConj X g) =
@@ -46,6 +60,35 @@ theorem auxiliaryCharacter_complexConj_invariant {D : Formalism.BasicNotions.D7}
   simp only [eps0, MonoidHom.comp_apply]
   rw [this]
 
+/- English proof (translation)
+Introduce `D N X bkP i s hl M L z hM hz hL A _ _ _ _ _ _ κ Q ρ hS hK hρ hκ hκz hκL x y hb`. Take `⟨J, hJ⟩` from `hS.1.2.2.1`. Take `⟨d, hd, hd2, -, hε⟩` from `GlobalTheory.TwSys.TameScalar.exists_scalar_tmat_of_tame_inertia D N X bkP i s z hS.1.1 hz`. Take `⟨g₀, u, hu⟩` from `UpperTheory.KStar.exists_eps_eq_pow_nu X i`. Use `set φ := algebraMap (X.O0 i) A with hφ`.
+
+Use `set T := twMat (Tgl i s) κ with hT`. Use `set T' := twMat ρ κ⁻¹ with hT'`. Set `χ : GE N →* A` to `(powMonoidHom D.R.t).comp (φ.toMonoidHom.comp ((Units.coeHom _).comp (eps0 X i)))`. Establish `hχ : ∀ g, χ g = φ ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) ^ D.R.t` using `fun g => rfl`. Set `J' : GL (Fin D.R.r) A` to `Units.map φ.mapMatrix.toMonoidHom J`.
+
+Establish `hJ1 : (J' : Matrix (Fin D.R.r) (Fin D.R.r) A) = (J : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map φ` using `rfl`. Establish `hJ2 : ((J'⁻¹ : GL (Fin D.R.r) A) : Matrix (Fin D.R.r) (Fin D.R.r) A) = ((J⁻¹ : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map φ` using `rfl`. Set `d' : Aˣ` to `Units.map φ.toMonoidHom d`. Establish `hd' : (d' : A) = φ d` using `rfl`. Establish `e₁ : ∀ g, T g = ((κ g : Aˣ) : A) • (Tmat i s g).map φ` using `fun g => by rw [hT, twMat_apply, Tgl_coe]`.
+
+Establish `sd : ∀ g, T' (cConj X g) = (J' : Matrix (Fin D.R.r) (Fin D.R.r) A) * (χ g • T g) * ((J'⁻¹ : GL (Fin D.R.r) A) : Matrix (Fin D.R.r) (Fin D.R.r) A)` using `fun g => by`. Rewrite using `[hT', twMat_apply, hρ, hJ g _ (cConj_apply X g), Matrix.map_mul, Matrix.map_mul, e₁, hJ1, hJ2, MonoidHom.inv_apply, antiHom_cConj X hκ, inv_inv, ← smul_mul_assoc, ← mul_smul_comm, hχ]`. Use `congr 2`. Use extensionality with `a b`. Simplify using `[hφ, mul_left_comm]`.
+
+Establish `z₁ : T z = (d' : A) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) A)`. Rewrite using `[e₁, hd, hκz]`. Use extensionality with `a b`. Simplify using `[hd', Matrix.one_apply, apply_ite φ]`. Establish `z₂ : T' z = ((d'⁻¹ : Aˣ) : A) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) A)`.
+
+Establish `h1 : (Tmat i s z)⁻¹ = ((d⁻¹ : (X.O0 i)ˣ) : X.O0 i) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i))`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[hd, smul_mul_smul_comm, Units.inv_mul, mul_one, one_smul]`. Establish `h2 : ((d'⁻¹ : Aˣ) : A) = φ ((d⁻¹ : (X.O0 i)ˣ) : X.O0 i)` using `rfl`. Rewrite using `[hT', twMat_apply, hρ, Tdual, hε, h1, MonoidHom.inv_apply, hκz, h2]`.
+
+Generalize the expression as in `((d⁻¹ : (X.O0 i)ˣ) : X.O0 i) = e`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[hφ]`.
+
+Simplify using `[hab]`. Establish `hχz : χ z = 1` using `by rw [hχ, hε]; simp`. Establish `z₃ : T' (cConj X z) = (d' : A) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) A)`. Rewrite using `[sd, hχz, one_smul, z₁, Matrix.mul_smul, mul_one, Matrix.smul_mul, Units.mul_inv]`. Establish `z₄ : T (cConj X z) = ((d'⁻¹ : Aˣ) : A) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) A)`.
+
+Establish `h1` using `sd (cConj X z)`. Establish `h3 : χ (cConj X z) = 1` using `by rw [← hχz, hχ, hχ, auxiliaryCharacter_complexConj_invariant]`. Rewrite `h1` using `[cConj_cConj, z₂, h3, one_smul]`. Establish `h4 : T (cConj X z) = ((J'⁻¹ : GL (Fin D.R.r) A) : Matrix (Fin D.R.r) (Fin D.R.r) A) * ((J' : Matrix (Fin D.R.r) (Fin D.R.r) A) * T (cConj X z) * ((J'⁻¹ : GL (Fin D.R.r) A) : Matrix (Fin D.R.r) (Fin D.R.r) A)) * J'`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.inv_mul, one_mul, mul_assoc, Units.inv_mul, mul_one]`.
+
+Rewrite using `[h4, ← h1, Matrix.mul_smul, mul_one, Matrix.smul_mul, Units.inv_mul]`. Establish `key` using `KStar.Tree.twist_mul_coord_eq_zero (GE N) A D.R.r T T' χ (cConj X) J' L z d' x.1 y.1 (by`. Use `GlobalTheory.NewPrime.Burnside.span_twist_eq_top D N X bkP i s A κ Q hS` as an intermediate fact. Rewrite using `[← funext e₁] at this) sd hL.1.2.1` and apply the resulting hypothesis. Use the proof step `(fun h hh => (hL.1.2.2.1 h _ (cConj_apply X h)).1 hh)`.
+
+Use the proof step `(fun h hh => ⟨eq_one_of_mulVec _ fun v => by`. Rewrite using `[← repOn_twMat, (GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl M L z hM hL A κ ρ hK hρ A h hh).1, hκL h hh, Units.val_one, one_smul],`. Use `eq_one_of_mulVec _ fun v => by`. Rewrite using `[← repOn_twMat, (GlobalTheory.NewPrime.SmallActs.small_acts D N X i s hl M L z hM hL A κ⁻¹ ρ hK hρ A h hh).2.1, MonoidHom.inv_apply, hκL h hh, inv_one, Units.val_one, one_smul]⟩) z₁ z₂ z₄ z₃`. Use the proof step `(by simpa [hd'] using hd2.map φ)`.
+
+Use the proof step `(fun g h => by rw [← repOn_twMat]; exact x.2.2 g h) (fun g h => by rw [← repOn_twMat]; exact y.2.2 g h)`. Use the proof step `(fun h hh => sub_eq_zero.1 (hb h hh)) g₀`. Establish `hχ0 : χ g₀ ^ D.R.r - 1 = (X.l i : A) ^ nu X i * φ ((u : (X.O0 i)ˣ) : X.O0 i)`. Establish `e` using `congrArg φ hu`. Rewrite `e` using `[map_sub, map_pow, map_one, map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[hχ, ← pow_mul, e]`. Introduce `h hh h' hh' a b`. Establish `e` using `key h hh h' hh' a b`. Rewrite `e` using `[hχ0]`. Use `((u.isUnit.map φ).mul_right_eq_zero).1 ?_` and prove the remaining obligations.
+
+Take the linear combination `e`.
+-/
 theorem two_mul_values_eq_zero : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), 0 < nu X i → ∀ (M : ℕ) (L : Subgroup (GE N)) (z : GE N), nu X i + 1 ≤ M → IsTameInertiaElementAtTwistPrime X i z → Small2 i s M L z → ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] [TopologicalSpace A] [DiscreteTopology A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)), Setup bkP i s κ Q → Kills i A → IsDual i s ρ → AntiHom X.cc κ → κ z = 1 → (∀ g ∈ L, κ g = 1) → ∀ (x : Z1 (repOn (Tgl i s) κ A)) (y : Z1 (repOn ρ κ⁻¹ A)), (∀ h ∈ L, bform (X := X) x.1 y.1 h = 0) → ∀ h ∈ L, ∀ h' ∈ L, ∀ a b, (X.l i : A) ^ nu X i * x.1 h a * y.1 h' b = 0 := by
   intro D N X bkP i s hl M L z hM hz hL A _ _ _ _ _ _ κ Q ρ hS hK hρ hκ hκz hκL x y hb
   obtain ⟨J, hJ⟩ := hS.1.2.2.1

@@ -19,6 +19,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `h1 : 0 ≤ (n : ℝ) ^ (1 / 2 : ℝ) * b ^ 2` using `mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) _) (sq_nonneg b)`. Establish `h2 : 0 ≤ 3 / 2 * (n : ℝ) ^ (3 / 2 : ℝ)` using `mul_nonneg (by norm_num) (Real.rpow_nonneg (Nat.cast_nonneg n) _)`. Establish `h3 : 0 ≤ 3 * (P : ℝ)` using `mul_nonneg (by norm_num) (Nat.cast_nonneg P)`. Simplify using `only [stepConst]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem stepConst_nonneg (n : ℕ) (b : ℝ) (P : ℕ) : 0 ≤ stepConst n b P := by
   have h1 : 0 ≤ (n : ℝ) ^ (1 / 2 : ℝ) * b ^ 2 :=
     mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg n) _) (sq_nonneg b)
@@ -28,6 +31,17 @@ theorem stepConst_nonneg (n : ℕ) (b : ℝ) (P : ℕ) : 0 ≤ stepConst n b P :
   simp only [stepConst]
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, inG ε X) → ∀ w ∈ lowKSub ε lam σ, ∃ x : Vs, x ∈ pfil ε E u l.length ∧ (x : H) = dWord σ l w`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ w hw`.
+
+Rewrite `hw` using `[← hu]`. Take `⟨x, hx, hxw⟩` from `Submodule.mem_map.mp hw`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_nil, poincare_filtration_zero]`. Conclude with `hx`.
+
+Conclude with `hxw`. Consider the case `cons X l ih`. Introduce `hl w hw`. Take `⟨x, hx, hxe⟩` from `ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)) w hw`. Use `⟨∑ a, ∑ b, X a b • E a b x, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (poincare_filtration_succ ε E u hE _ a b x hx)`. Express the relevant statement in the definitionally equal form `_ = dAct σ X (dWord σ l w)`. Rewrite using `[← hxe, dAct, (hd X (hl X List.mem_cons_self) x).deriv]`. Rewrite using `[stepSpace, Submodule.span_le]`. Introduce and unpack `v ⟨l, w, hl, hX, hw, rfl⟩`.
+
+Take `⟨x, hx, hxe⟩` from `key l hX w hw`. Conclude with `Submodule.mem_map.mpr ⟨x, pfil_monotone_in_length ε E u hl hx, hxe⟩`.
+-/
 theorem stepSpace_le {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Vs : Submodule ℂ H)
     (E : Fin n → Fin n → Module.End ℂ Vs) (hE : GlRel E)
@@ -59,6 +73,15 @@ theorem stepSpace_le {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {H : 
   obtain ⟨x, hx, hxe⟩ := key l hX w hw
   exact Submodule.mem_map.mpr ⟨x, pfil_monotone_in_length ε E u hl hx, hxe⟩
 
+/- English proof (translation)
+Take `⟨α, hα, hαc, hfix⟩` from `exists_smooth_fix_lowKSub n ε lam H σ hU hS`. Establish `hcu : Continuous (fun g : UJ ε => umat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hcα : Continuous (fun g : UJ ε => α (umat g))`. Use `continuous_iff_continuousAt.mpr fun g₀ => ?_` and prove the remaining obligations. Take `⟨U, F, hUo, hgU, hF, hFα⟩` from `hα (umat g₀) g₀.2`.
+
+Establish `hev : (fun g : UJ ε => F (umat g)) =ᶠ[nhds g₀] (fun g : UJ ε => α (umat g))` using `by filter_upwards [hcu.continuousAt.preimage_mem_nhds (hUo.mem_nhds hgU)] with g hg`. Conclude with `(hFα _ hg g.2).symm`. Conclude with `((hF.continuousOn.continuousAt (hUo.mem_nhds hgU)).comp hcu.continuousAt).congr hev`. Establish `hcσ : Continuous (fun g : UJ ε => σ (umat g) v)` using `(hU.2.2 v).comp_continuous hcu fun g => g.2`. Establish `hint : Integrable (fun g : UJ ε => α (umat g) • σ (umat g) v) (muG ε)` using `(hcα.smul hcσ).integrable_of_hasCompactSupport (hαc.smul_right)`.
+
+Establish `hv : v = ∫ g : UJ ε, α (umat g) • σ (umat g) v ∂(muG ε)`. Use `ext_inner_left ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[← integral_inner hint y, ← hfix v hv y]`. Simplify using `only [inner_smul_right]`. Establish `hsm` using `GlobalTheory.GardingSmooth.garding_smooth n ε H σ hU α hα hαc v`.
+
+Rewrite `hsm` using `[← hv]`. Conclude with `hsm`.
+-/
 theorem smooth_of_mem_lowKSub {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hU : IsURepOn (UJset ε) σ)
@@ -85,6 +108,27 @@ theorem smooth_of_mem_lowKSub {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → �
   rw [← hv] at hsm
   exact hsm
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ lam b hU hS heig hb`. Take `⟨Vs, E, hVs, hGl, hUn, hD, hEq⟩` from `SmoothVecMod.smoothVec_unitary_module n ε H σ hU`. Establish `hlow : lowKSub ε lam σ ≤ Vs` using `fun v hv => (hVs v).mpr (smooth_of_mem_lowKSub ε lam σ hU hS v hv)`. Take `⟨u, -, hKu, hmap, hfd⟩` from `GlobalTheory.KTypeHighest.kType_generated_by_highest n ε H σ Vs E hU ⟨hVs, hGl, hUn, hD, hEq⟩ _ (lowKSub ε lam σ) hS hlow`. Establish `huS : (u : H) ∈ lowKSub ε lam σ`.
+
+Rewrite using `[← hmap]`. Conclude with `Submodule.mem_map_of_mem (mem_kSpan_self' ε E u)`. Establish `hCas` using `GlobalTheory.CasimirEigen.cas_eq_of_isZEigen n ε H σ Vs E lam hU ⟨hVs, hGl, hUn, hD, hEq⟩ u (heig _ huS)`. Establish `hKind : KindA ε E lam u` using `⟨hKu, hCas, hfd⟩`. Establish `hAlg` using `GlobalTheory.algebraic_step_bound Vs n ε E lam u b hGl hUn hKind hb`.
+
+Establish `hC : ∀ P : ℕ, 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P` using `fun P => stepConst_nonneg n b P`. Establish `hmem : ∀ (P : ℕ) (w : H), w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P → ∃ x : Vs, x ∈ pfil ε E u P ∧ (x : H) = w` using `fun P w hw => Submodule.mem_map.mp (stepSpace_le ε lam σ Vs E hGl (fun X hX x => hD X hX x) u hmap P hw)`. Establish `hact : ∀ X, inG ε X → ∀ x : Vs, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (x : H) = ((∑ a, ∑ c, X a c • E a c x : Vs) : H)` using `fun X hX x => by`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct, (hD X hX x).deriv]`. Establish `hbound : ∀ P : ℕ, ∀ x ∈ pfil ε E u P, ∑ a, ∑ c, ‖E a c x‖ ^ 2 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P ^ 2 * ‖x‖ ^ 2` using `hAlg`.
+
+Introduce `P`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: FiniteDimensional ℂ (pfil ε E u P)` using `pfil_finite_dimensional ε E u hfd P`. Conclude with `Submodule.finiteDimensional_of_le (stepSpace_le ε lam σ Vs E hGl (fun X hX x => hD X hX x) u hmap P)`. Introduce `w hw`.
+
+Take `⟨x, -, rfl⟩` from `hmem P w hw`. Conclude with `fun X hX => (hD X hX x).differentiableAt`. Introduce `F hF w hw`. Take `⟨x, hx, rfl⟩` from `hmem P w hw`. Establish `hON` using `(GlobalTheory.OnbSum.onb_sum n ε Vs (fun a c => E a c x)).1 F hF`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hact (F i) (hF.1 i) x]`. Both sides reduce to the same expression. Use `_ = ∑ a, ∑ c, ‖E a c x‖ ^ 2 := hON`.
+
+Use `_ ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P ^ 2 * ‖x‖ ^ 2 := hbound P x hx`. Use `_ = GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P ^ 2 * ‖(x : H)‖ ^ 2 := rfl`. Introduce `X hX w hw`. Take `⟨x, hx, rfl⟩` from `hmem P w hw`. Establish `hsq` using `(GlobalTheory.OnbSum.onb_sum n ε Vs (fun a c => E a c x)).2 X`.
+
+Establish `hhs : 0 ≤ Formalism.REAL.hs X` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _`. Establish `hnorm : ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (x : H)‖ = ‖∑ a, ∑ c, X a c • E a c x‖`. Rewrite using `[hact X hX x]`. Both sides reduce to the same expression. Establish `h2 : ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (x : H)‖ ^ 2 ≤ (Real.sqrt (Formalism.REAL.hs X) * GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P * ‖(x : H)‖) ^ 2`.
+
+Rewrite using `[hnorm, mul_pow, mul_pow, Real.sq_sqrt hhs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `hr : 0 ≤ Real.sqrt (Formalism.REAL.hs X) * GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P * ‖(x : H)‖` using `mul_nonneg (mul_nonneg (Real.sqrt_nonneg _) (hC P)) (norm_nonneg _)`.
+
+Use polynomial arithmetic with `[norm_nonneg (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (x : H))]`.
+-/
 theorem stepBound_of_eigen : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ) (b : ℝ), IsURepOn (UJset ε) σ → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → (∀ s ∈ lowKSub ε lam σ, ∀ y : H, IsZEigen ε (fun a => (lam a : ℂ)) (fun g => ⟪y, σ g s⟫_ℂ)) → (∀ a, |lam a| ≤ b ^ 2) → (∀ P : ℕ, FiniteDimensional ℂ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P) ∧ (∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.IsDiffVec ε σ w) ∧ (∀ F : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.IsONFamily ε F → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ∑ i, ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ (F i) w‖ ^ 2 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P ^ 2 * ‖w‖ ^ 2) ∧ ∀ X, Formalism.REAL.inG ε X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ‖GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w‖ ≤ Real.sqrt (Formalism.REAL.hs X) * GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepConst n b P * ‖w‖) := by
   intro n ε H _ _ _ σ lam b hU hS heig hb
   obtain ⟨Vs, E, hVs, hGl, hUn, hD, hEq⟩ := SmoothVecMod.smoothVec_unitary_module n ε H σ hU

@@ -17,6 +17,27 @@ noncomputable section
 
 namespace GlobalTheory.TamFourier
 
+/- English proof (translation)
+Introduce `F _ _ hF ψ hψ κ _ inst hB μ hμ Φ hΦ x`. Establish `hFT : ∀ H ∈ schA F κ, (fun y : κ → AF F => ∫ z, H z * ψ (z ⬝ᵥ y) ∂μ) ∈ schA F κ` using `GlobalTheory.T.adelicFourier_mem_schwartz_totallyReal F hF ψ hψ κ μ hμ.1`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `hinst : inst = MeasurableSpace.pi`.
+
+Rewrite using `[hB.measurable_eq]`. Conclude with `(Pi.borelSpace (ι := κ) (X := fun _ => AF F)).measurable_eq.symm`. Substitute `hinst` using the available equality. Use `set N := Fintype.card κ`. Set `e : κ ≃ Fin N` to `Fintype.equivFin κ`.
+
+Take `⟨lam, hlam⟩` from `GlobalTheory.SWQ.exists_isLam F hF ψ hψ`. Take `⟨ν, hν⟩` from `GlobalTheory.SWQ.exists_adeles_haarMeasure_covolume_one F`. Set `a : Fin N → F` to `fun _ => 1 / 2`. Establish `hC : GlobalTheory.SWQ.Ctx ψ lam ν a` using `⟨hF, hψ, hlam, hν, fun _ => by norm_num [a]⟩`. Establish `hμeq` using `GlobalTheory.T.tamagawa_adelicHaar_eq_map_product_measure F κ N e ν hν μ hμ`.
+
+Set `T : (Fin N → AF F) ≃ₜ+ (κ → AF F)` to `GlobalTheory.PoissonReindex.reidx e`. Set `Tm : (Fin N → AF F) ≃ᵐ (κ → AF F)` to `T.toHomeomorph.toMeasurableEquiv`. Establish `hTm : ∀ u, Tm u = T u` using `fun _ => rfl`. Establish `key : ∀ (H : (κ → AF F) → ℂ) (y' : Fin N → AF F), ∫ z, H z * ψ (z ⬝ᵥ T y') ∂μ = GlobalTheory.SWQ.Fo ψ ν a (fun u => H (T u)) y'`. Introduce `H y'`.
+
+Establish `hm : μ = Measure.map Tm (GlobalTheory.SWQ.muV N ν)` using `hμeq`. Rewrite using `[hm, integral_map_equiv]`. Simplify using `only [GlobalTheory.SWQ.Fo, hTm, a, GlobalTheory.PoissonReindex.Bd_half, T, GlobalTheory.PoissonReindex.dot_reidx]`. Use `set G : (κ → AF F) → ℂ := fun y => ∫ z, Φ z * ψ (z ⬝ᵥ y) ∂μ with hG`. Use `set Φ' : (Fin N → AF F) → ℂ := fun u => Φ (T u) with hΦ'`.
+
+Establish `hG' : (fun u => G (T u)) = GlobalTheory.SWQ.Fo ψ ν a Φ'` using `funext fun u => key Φ u`. Establish `hGG : (fun u => (∫ z, G z * ψ (z ⬝ᵥ T u) ∂μ)) = GlobalTheory.SWQ.Fo ψ ν a (GlobalTheory.SWQ.Fo ψ ν a Φ')`. Rewrite using `[← hG']`. Conclude with `funext fun u => key G u`. Establish `hΦs : Φ' ∈ schA F (Fin N)` using `GlobalTheory.PoissonReindex.mem_schA_reidx e hΦ`.
+
+Establish `hGs : G ∈ schA F κ` using `hFT Φ hΦ`. Establish `hGGs : (fun y : κ → AF F => ∫ z, G z * ψ (z ⬝ᵥ y) ∂μ) ∈ schA F κ` using `hFT G hGs`. Establish `hD1 : GlobalTheory.SWQ.Decay Φ'` using `GlobalTheory.SchwartzDecay.decay_of_mem_schA F N Φ' hΦs`. Establish `hD2 : GlobalTheory.SWQ.Decay (GlobalTheory.SWQ.Fo ψ ν a Φ')`. Rewrite using `[← hG']`.
+
+Conclude with `GlobalTheory.SchwartzDecay.decay_of_mem_schA F N _ (GlobalTheory.PoissonReindex.mem_schA_reidx e hGs)`. Establish `hD3 : GlobalTheory.SWQ.Decay (GlobalTheory.SWQ.Fo ψ ν a (GlobalTheory.SWQ.Fo ψ ν a Φ'))`. Rewrite using `[← hGG]`. Conclude with `GlobalTheory.SchwartzDecay.decay_of_mem_schA F N _ (GlobalTheory.PoissonReindex.mem_schA_reidx e hGGs)`. Establish `hinv` using `GlobalTheory.SWQ.fourier_inversion F N ψ lam ν a hC Φ' hD1 hD2 hD3`.
+
+Establish `hx : T (T.symm x) = x` using `T.apply_symm_apply x`. Establish `h1` using `congrFun hGG (T.symm x)`. Rewrite `h1` using `[hinv, hx]`. Establish `hcomm : ∀ y : κ → AF F, y ⬝ᵥ x = x ⬝ᵥ y` using `fun y => dotProduct_comm y x`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [GlobalTheory.SWQ.Da, hΦ', neg_one_smul, map_neg, hx]`.
+-/
 theorem fourier_inversion_tamagawa : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ (κ : Type) [Fintype κ], ∀ [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)] (μ : Measure (κ → AF F)), IsTamagawa F κ μ → ∀ Φ ∈ schA F κ, ∀ x, ∫ y, (∫ z, Φ z * ψ (z ⬝ᵥ y) ∂μ) * ψ (y ⬝ᵥ x) ∂μ = Φ (-x) := by
   intro F _ _ hF ψ hψ κ _ inst hB μ hμ Φ hΦ x
   have hFT : ∀ H ∈ schA F κ, (fun y : κ → AF F => ∫ z, H z * ψ (z ⬝ᵥ y) ∂μ) ∈ schA F κ :=

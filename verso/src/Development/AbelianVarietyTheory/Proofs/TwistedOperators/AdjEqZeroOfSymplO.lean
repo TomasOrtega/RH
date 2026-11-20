@@ -20,12 +20,20 @@ variable {K S : Type} [CommRing K] [Ring S] [Algebra K S] {p q x : S}
 
 def levi (t t' : K) (p q : S) : S := 1 + (t - 1) • p + (t' - 1) • q
 
+/- English proof (translation)
+Simplify using `only [levi, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, hpp, hqq, hpq, hqp, smul_zero, add_zero, zero_add, smul_smul]`. Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination h | linear_combination -h`.
+-/
 theorem levi_mul_swap (hpp : p * p = p) (hqq : q * q = q) (hpq : p * q = 0) (hqp : q * p = 0) {t t' : K}
     (h : t * t' = 1) : levi t t' p q * levi t' t p q = 1 := by
   simp only [levi, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, hpp, hqq, hpq, hqp,
     smul_zero, add_zero, zero_add, smul_smul]
   match_scalars <;> first | ring1 | linear_combination h | linear_combination -h
 
+/- English proof (translation)
+Establish `h1 : p * x = x` using `calc p * x = p * (p * x * q) := by rw [← hx] _ = p * x * q := by rw [← mul_assoc, ← mul_assoc, hpp] _ = x := hx.symm`. Establish `h2 : x * q = x` using `calc x * q = p * x * q * q := by rw [← hx] _ = p * x * q := by rw [mul_assoc, hqq] _ = x := hx.symm`. Establish `h3 : q * x = 0` using `calc q * x = q * (p * x * q) := by rw [← hx] _ = 0 := by rw [← mul_assoc, ← mul_assoc, hqp, zero_mul, zero_mul]`. Establish `h4 : x * p = 0` using `calc x * p = p * x * q * p := by rw [← hx] _ = 0 := by rw [mul_assoc, hqp, mul_zero]`. Simplify using `only [levi, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, h1, h2, h3, h4, smul_zero, add_zero, zero_add, smul_smul]`.
+
+Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination t * h | linear_combination -t * h`.
+-/
 theorem levi_conj (hpp : p * p = p) (hqq : q * q = q) (hqp : q * p = 0) {t t' : K}
     (h : t * t' = 1) (hx : x = p * x * q) :
     levi t t' p q * (1 + x) = (1 + (t * t) • x) * levi t t' p q := by
@@ -47,6 +55,11 @@ theorem levi_conj (hpp : p * p = p) (hqq : q * q = q) (hqp : q * p = 0) {t t' : 
     smul_zero, add_zero, zero_add, smul_smul]
   match_scalars <;> first | ring1 | linear_combination t * h | linear_combination -t * h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih]`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, one_mul, mul_one, hx, smul_zero, add_zero]`.
+
+Use `push_cast`. Apply the tactic sequence `match_scalars <;> ring1`.
+-/
 theorem one_add_pow (hx : x * x = 0) (k : ℕ) : (1 + x) ^ k = 1 + (k : K) • x := by
   induction k with
   | zero => simp
@@ -56,6 +69,19 @@ theorem one_add_pow (hx : x * x = 0) (k : ℕ) : (1 + x) ^ k = 1 + (k : K) • x
     push_cast
     match_scalars <;> ring1
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Establish `a1 : x * (p * x) = 0` using `by rw [← mul_assoc, h1, zero_mul]`. Establish `a2 : x * (p * (x * q)) = 0` using `by rw [← mul_assoc, h1, zero_mul]`. Establish `e1 : x * (x * q) = x * x`. Establish `: x * x = x * (p * x + x * q - p * x * q)` using `by rw [← h3]`.
+
+Rewrite using `[this, mul_sub, mul_add, a1, mul_assoc p, a2, zero_add, sub_zero]`. Establish `b1 : x * (q * x) = 0` using `by rw [h2, mul_zero]`. Establish `b2 : p * (x * (q * x)) = 0` using `by rw [b1, mul_zero]`. Establish `e2 : p * (x * x) = x * x`. Establish `: x * x = (p * x + x * q - p * x * q) * x` using `by rw [← h3]`.
+
+Rewrite using `[this, sub_mul, add_mul, mul_assoc x q, b1, mul_assoc p x x, mul_assoc (p * x), mul_assoc p, b2, add_zero, sub_zero, ← mul_assoc p p, hpp]`. Establish `e3 : x * (x * x) = 0` using `by rw [← e2, ← mul_assoc, h1, zero_mul]`. Establish `h5 : p * (x * q) = p * x + x * q - x`. Use `h3` as an intermediate fact. Rewrite `this` using `[mul_assoc, eq_sub_iff_add_eq]`.
+
+Conclude with `eq_sub_of_add_eq' this`. Establish `l1 : ∀ z, p * (p * z) = p * z` using `fun z => by rw [← mul_assoc, hpp]`. Establish `l2 : ∀ z, q * (q * z) = q * z` using `fun z => by rw [← mul_assoc, hqq]`. Establish `l3 : ∀ z, p * (q * z) = 0` using `fun z => by rw [← mul_assoc, hpq, zero_mul]`. Establish `l4 : ∀ z, q * (p * z) = 0` using `fun z => by rw [← mul_assoc, hqp, zero_mul]`.
+
+Establish `l5 : ∀ z, x * (p * z) = 0` using `fun z => by rw [← mul_assoc, h1, zero_mul]`. Establish `l6 : ∀ z, q * (x * z) = 0` using `fun z => by rw [← mul_assoc, h2, zero_mul]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [mul_assoc, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, l1, hpp, l2, hqq, e1, e2]`. Simplify using `only [levi, mul_assoc, mul_add, add_mul, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, l1, l2, l3, l4, l5, l6, hpp, hqq, hpq, hqp, h1, h2, e1, e2, e3, smul_zero, add_zero, zero_add, sub_zero, smul_smul, smul_add, smul_sub]`.
+
+Rewrite using `[h5]`. Simplify using `only [mul_zero, zero_mul, smul_zero, add_zero, zero_add, sub_zero]`. Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination hh | linear_combination -hh | linear_combination 2 * hh | linear_combination -2 * hh`.
+-/
 theorem levi_two_conj (hpp : p * p = p) (hqq : q * q = q) (hpq : p * q = 0) (hqp : q * p = 0) (h1 : x * p = 0)
     (h2 : q * x = 0) (h3 : x = p * x + x * q - p * x * q) {t h : K} (ht : t = 2) (hh : 2 * h = 1) :
     (p * ((2 : K) • (p * x * q) - x * x) * q = (2 : K) • (p * x * q) - x * x) ∧
@@ -92,6 +118,17 @@ theorem levi_two_conj (hpp : p * p = p) (hqq : q * q = q) (hpq : p * q = 0) (hqp
     simp only [mul_zero, zero_mul, smul_zero, add_zero, zero_add, sub_zero]
     match_scalars <;> first | ring1 | linear_combination hh | linear_combination -hh | linear_combination 2 * hh | linear_combination -2 * hh
 
+/- English proof (translation)
+Take `⟨hy, hc⟩` from `levi_two_conj hpp hqq hpq hqp h1 h2 h3 ht htt`. Generalize the expression as in `(2 : K) • (p * x * q) - x * x = y at hy hc`. Generalize the expression as in `hz : (g * g)⁻¹ * (a * g * a⁻¹) = z`. Establish `can : ∀ (v w : G) (X Y : S), φ v * X * φ w = φ v * Y * φ w → X = Y` using `fun v w X Y e => by`. Establish `e1 : ∀ Z : S, φ v⁻¹ * (φ v * Z * φ w) * φ w⁻¹ = Z` using `fun Z => by`.
+
+Establish `i1 : φ v⁻¹ * φ v = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `i2 : φ w * φ w⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[mul_assoc, mul_assoc, i2, mul_one, ← mul_assoc, i1, one_mul]`. Rewrite using `[← e1 X, e, e1]`. Establish `mz : φ z = 1 + y`.
+
+Use `can (g * g) a _ _ ?_` and prove the remaining obligations. Establish `e : g * g * z * a = a * g` using `by rw [← hz]; group`. Establish `e'` using `congrArg φ e`. Simplify using `only [map_mul, hg, ha] at e' ⊢`. Rewrite using `[e', hc]`.
+
+Establish `yy : y * y = 0` using `calc y * y = p * y * q * (p * y * q) := by rw [hy] _ = p * y * (q * p) * y * q := by simp only [mul_assoc] _ = 0 := by rw [hqp]; simp`. Establish `pw : ∀ k : ℕ, φ (z ^ k) = 1 + (k : K) • y` using `fun k => by rw [map_pow, mz, one_add_pow (K := K) yy]`. Establish `conj : ∀ (c : G) {v v' : K} (k : ℕ), φ c = levi v v' p q → v * v' = 1 → v * v = (k : K) → c * z * c⁻¹ = z ^ k`. Introduce `c v v' k hcv hvv hk`. Rewrite using `[mul_inv_eq_iff_eq_mul]`.
+
+Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, pw, mz, hcv, levi_conj hpp hqq hqp hvv hy.symm, hk]`. Conclude with `⟨conj a 4 ha (by rw [ht]; exact htt) (by rw [ht]; norm_num), conj b 9 hb (by rw [hu]; exact huu) (by rw [hu]; norm_num)⟩`.
+-/
 theorem core_conj {G : Type} [Group G] (φ : G →* S) (hφ : Function.Injective φ) (hpp : p * p = p) (hqq : q * q = q)
     (hpq : p * q = 0) (hqp : q * p = 0) (h1 : x * p = 0) (h2 : q * x = 0) (h3 : x = p * x + x * q - p * x * q)
     {g a b : G} (hg : φ g = 1 + x) {t t' u u' : K} (ht : t = 2) (htt : 2 * t' = 1) (hu : u = 3) (huu : 3 * u' = 1)
@@ -128,6 +165,17 @@ theorem core_conj {G : Type} [Group G] (φ : G →* S) (hφ : Function.Injective
 
 end Ring
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Set `b'` to `(Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b`. Establish `tr : ∀ (a : R) (e : E), Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e)`. Introduce `a e`. Establish `h1 : (a ⊗ₜ[F] e : R ⊗[F] E) = a • ((1 : R) ⊗ₜ[F] e)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `key : ∀ (k) (z : R ⊗[F] E), (Algebra.TensorProduct.basis R b').repr z k = Algebra.trace R (R ⊗[F] E) (z * (1 : R) ⊗ₜ[F] b k)`. Introduce `k z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, add_mul]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, tr, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[b', LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`.
+
+Use `(Algebra.TensorProduct.basis R b').ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[key, h]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_trace_mul {F E R : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [Algebra.IsSeparable F E] [CommRing R] [Algebra F R] (z : R ⊗[F] E)
     (h : ∀ w, Algebra.trace R (R ⊗[F] E) (z * w) = 0) : z = 0 := by
@@ -156,6 +204,9 @@ theorem eq_zero_of_trace_mul {F E R : Type} [Field F] [Field E] [Algebra F E] [F
   refine (Algebra.TensorProduct.basis R b').ext_elem fun k => ?_
   rw [key, h]; simp
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_comm]`.
+-/
 theorem trace_single_mul' {R : Type} [CommRing R] {a b : ℕ} (i : Fin a) (j : Fin b) (w : R)
     (u : Matrix (Fin a) (Fin b) R) : (Matrix.single j i w * u).trace = u i j * w := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_comm]
@@ -164,11 +215,31 @@ section Mean
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Take `⟨r1, -⟩` from `Formalism.IndefR.Eqv.ae_facts (D := D)`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_const.mul ((continuous_apply j).comp (continuous_apply i))`.
+-/
 theorem continuous_smul_Mx (u : AE D) : Continuous fun a : Mx D m n => u • a := by
   obtain ⟨r1, -⟩ := Formalism.IndefR.Eqv.ae_facts (D := D)
   exact continuous_pi fun i => continuous_pi fun j =>
     continuous_const.mul ((continuous_apply j).comp (continuous_apply i))
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hcc : incA D c * incA D c⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hc, map_one]`. Establish `hcc' : incA D c⁻¹ * incA D c = 1` using `by rw [mul_comm, hcc]`.
+
+Set `e : Mx D m n ≃+ Mx D m n` to `{ toFun := fun a => incA D c • a invFun := fun a => incA D c⁻¹ • a left_inv := fun a => by simp only [smul_smul, hcc', one_smul] right_inv := fun a => by simp only [smul_smul, hcc, one_smul] map_add' := fun a b => smul_add _ a b }`. Establish `he : Continuous e` using `continuous_smul_Mx _`. Establish `hes : Continuous e.symm` using `continuous_smul_Mx _`. Establish `hΓ : ∀ x, e x ∈ ratMx D m n ↔ x ∈ ratMx D m n` using `fun x => by`. Use `⟨fun hx => ?_, fun hx => ratMx_smul c hx⟩` and prove the remaining obligations.
+
+Use `ratMx_smul c⁻¹ hx` as an intermediate fact. Rewrite `this` using `[show incA D c⁻¹ • e x = x from e.symm_apply_apply x]`. Then use the resulting hypothesis. Take `⟨hμ, hF, h1⟩` from `id h`. Set `me : Mx D m n ≃ᵐ Mx D m n` to `{ toEquiv := e.toEquiv measurable_toFun := he.measurable measurable_invFun := hes.measurable }`. Establish `hmp : MeasurePreserving me (μ.map e.symm) μ` using `(MeasurePreserving.symm me.symm ⟨me.symm.measurable, rfl⟩)`.
+
+Establish `hmp' : MeasurePreserving e (μ.map e.symm) μ` using `hmp`. Establish `hν : (μ.map e.symm).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map μ e.symm hes (by simpa using he)`. Establish `hF' : IsAddFundamentalDomain (ratMx D m n) (e ⁻¹' 𝓕) (μ.map e.symm)`. Set `f : ratMx D m n → ratMx D m n` to `fun y => ⟨e.symm y, (hΓ _).1 (by simp)⟩`. Establish `hf : Function.Bijective f`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `Subtype.ext (e.symm.injective (congrArg Subtype.val hab))`. Introduce `x`. Conclude with `⟨⟨e x, (hΓ _).2 x.2⟩, Subtype.ext (by simp [f])⟩`.
+
+Use `hF.preimage_of_equiv hmp'.quasiMeasurePreserving hf ?_` and prove the remaining obligations. Introduce `y x`. Simplify using `[f, AddSubgroup.vadd_def]`. Establish `hv : (μ.map e.symm) (e ⁻¹' 𝓕) = 1` using `(hmp.measure_preimage_equiv 𝓕).trans h1`. Establish `hcov : IsCovolOne (ratMx D m n) (μ.map e.symm) (e ⁻¹' 𝓕)` using `⟨hν, hF', hv⟩`.
+
+Establish `heq` using `covolOne_measure_eq h hcov`. Establish `h3 : ∫ w in e ⁻¹' 𝓕, φ (e w) ∂(μ.map e.symm) = ∫ w in 𝓕, φ w ∂μ` using `hmp.setIntegral_preimage_emb me.measurableEmbedding φ 𝓕`. Rewrite `h3`, `hcov` using `[heq]`. Rewrite using `[← h3]`. Use `(covolOne_integral_eq h hcov (fun a => φ (e a)) fun γ hγ a => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[map_add]`. Conclude with `hφ _ ((hΓ γ).2 hγ) _`.
+-/
 theorem mean_smul {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)} (h : IsCovolOne (ratMx D m n) μ 𝓕)
     {c : D.host.E} (hc : c ≠ 0) (φ : Mx D m n → ℂ) (hφ : ∀ γ ∈ ratMx D m n, ∀ a, φ (γ + a) = φ a) :
     ∫ a in 𝓕, φ (incA D c • a) ∂μ = ∫ a in 𝓕, φ a ∂μ := by
@@ -237,6 +308,11 @@ structure IsDualPair (C : Matrix (Fin W.rank) (Fin s) D.host.E) (C' : Matrix (Fi
 
 variable {W}
 
+/- English proof (translation)
+Take `⟨L, h1, h2⟩` from `GlobalTheory.AutFunCompare.exists_dual D.sp.cm W C hC.2.1 hC.2.2`. Establish `hG` using `gram_isUnit_det W`. Establish `h3 : Cᴴ * W.gram * C = 0` using `hC.2.2`. Establish `h2' : L * W.gram⁻¹ * Lᴴ = 0` using `h2`. Use `⟨W.gram⁻¹ * Lᴴ, L, Cᴴ * W.gram, rfl, ?_, h1, ?_, h3, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hG, Matrix.one_mul]`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h2'`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc W.gram, Matrix.mul_nonsing_inv _ hG, Matrix.one_mul, ← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`.
+-/
 theorem exists_dualPair {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W C) :
     ∃ C' L B, IsDualPair W C C' L B := by
   obtain ⟨L, h1, h2⟩ := GlobalTheory.AutFunCompare.exists_dual D.sp.cm W C hC.2.1 hC.2.2
@@ -251,29 +327,53 @@ theorem exists_dualPair {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFr
 
 variable {C C' : Matrix (Fin W.rank) (Fin s) D.host.E} {L B : Matrix (Fin s) (Fin W.rank) D.host.E}
 
+/- English proof (translation)
+The claim follows from `h.hB`.
+-/
 theorem IsDualPair.hB' (h : IsDualPair W C C' L B) : B = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) C * W.gram := h.hB
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc L, h.LC, Matrix.one_mul]`.
+-/
 theorem IsDualPair.pp (h : IsDualPair W C C' L B) : (C * L) * (C * L) = C * L := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc L, h.LC, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc B, h.BC', Matrix.one_mul]`.
+-/
 theorem IsDualPair.qq (h : IsDualPair W C C' L B) : (C' * B) * (C' * B) = C' * B := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc B, h.BC', Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc L, h.LC', Matrix.zero_mul, Matrix.mul_zero]`.
+-/
 theorem IsDualPair.pq (h : IsDualPair W C C' L B) : (C * L) * (C' * B) = 0 := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc L, h.LC', Matrix.zero_mul, Matrix.mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc B, h.BC, Matrix.zero_mul, Matrix.mul_zero]`.
+-/
 theorem IsDualPair.qp (h : IsDualPair W C C' L B) : (C' * B) * (C * L) = 0 := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc B, h.BC, Matrix.zero_mul, Matrix.mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, h.hL, ← h.hB, Matrix.mul_assoc]`.
+-/
 theorem IsDualPair.pH (h : IsDualPair W C C' L B) : (C * L)ᴴ * W.gram = W.gram * (C' * B) := by
   rw [Matrix.conjTranspose_mul, Matrix.mul_assoc, h.hL, ← h.hB, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `congrArg Matrix.conjTranspose h.pH` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul _ W.gram, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_mul W.gram, gram_conjTranspose]`. Conclude with `this.symm`.
+-/
 theorem IsDualPair.qH (h : IsDualPair W C C' L B) : (C' * B)ᴴ * W.gram = W.gram * (C * L) := by
   have := congrArg Matrix.conjTranspose h.pH
   rw [Matrix.conjTranspose_mul _ W.gram, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_mul W.gram,
     gram_conjTranspose] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `e : (levi t t' (C * L) (C' * B))ᴴ * W.gram = W.gram * levi t' t (C * L) (C' * B)`. Simplify using `only [levi, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, star_sub, star_one, ht, ht', Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, h.pH, h.qH]`. Normalize the expressions using the abelian group laws. Rewrite using `[← Matrix.mul_assoc, e, Matrix.mul_assoc, levi_mul_swap h.pp h.qq h.pq h.qp (by rw [mul_comm]; exact htt), Matrix.mul_one]`.
+-/
 theorem IsDualPair.levi_unitary (h : IsDualPair W C C' L B) {t t' : D.host.E} (ht : star t = t) (ht' : star t' = t')
     (htt : t * t' = 1) : (levi t t' (C * L) (C' * B))ᴴ * (W.gram * levi t t' (C * L) (C' * B)) = W.gram := by
   have e : (levi t t' (C * L) (C' * B))ᴴ * W.gram = W.gram * levi t' t (C * L) (C' * B) := by
@@ -283,10 +383,16 @@ theorem IsDualPair.levi_unitary (h : IsDualPair W C C' L B) {t t' : D.host.E} (h
   rw [← Matrix.mul_assoc, e, Matrix.mul_assoc,
     levi_mul_swap h.pp h.qq h.pq h.qp (by rw [mul_comm]; exact htt), Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [levi, rat_add, rat_smul, rat_one, map_sub, map_one]`.
+-/
 theorem rat_levi {n : ℕ} (t t' : D.host.E) (p q : Matrix (Fin n) (Fin n) D.host.E) :
     rat (levi t t' p q) = levi (incA D t) (incA D t') (rat p) (rat q) := by
   simp only [levi, rat_add, rat_smul, rat_one, map_sub, map_one]
 
+/- English proof (translation)
+Establish `hu : adj (rat (levi t t' (C * L) (C' * B))) * (gA W * rat (levi t t' (C * L) (C' * B))) = gA W`. Use `congrArg rat (h.levi_unitary ht ht' htt)` as an intermediate fact. Rewrite `this` using `[rat_mul, rat_mul, rat_conjTranspose]`. Conclude with `this`. Conclude with `⟨ofMat W _ hu, (mem_GQ_iff W _).2 ⟨_, (mt_ofMat W _ hu).symm⟩, mt_ofMat W _ hu⟩`.
+-/
 theorem IsDualPair.exists_levi (h : IsDualPair W C C' L B) {t t' : D.host.E} (ht : star t = t) (ht' : star t' = t')
     (htt : t * t' = 1) : ∃ a : GA D W, a ∈ GQ W ∧ mt W a = rat (levi t t' (C * L) (C' * B)) := by
   have hu : adj (rat (levi t t' (C * L) (C' * B))) * (gA W * rat (levi t t' (C * L) (C' * B))) = gA W := by
@@ -295,6 +401,9 @@ theorem IsDualPair.exists_levi (h : IsDualPair W C C' L B) {t t' : D.host.E} (ht
     exact this
   exact ⟨ofMat W _ hu, (mem_GQ_iff W _).2 ⟨_, (mt_ofMat W _ hu).symm⟩, mt_ofMat W _ hu⟩
 
+/- English proof (translation)
+Simplify using `only [levi, Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_assoc, h.LC, h.BC, Matrix.mul_one, Matrix.mul_zero, smul_zero, add_zero]`. Use `module`.
+-/
 theorem IsDualPair.levi_mul (h : IsDualPair W C C' L B) (t t' : D.host.E) :
     levi t t' (C * L) (C' * B) * C = t • C := by
   simp only [levi, Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_assoc, h.LC, h.BC, Matrix.mul_one,
@@ -317,35 +426,61 @@ def Sc (ψ : AddChar (AF D.host.F) ℂ) (ω : GA D V × GA D W →* Module.End �
 
 variable {C : Mx D W.rank s} {μ : Measure (Mx D s V.rank)} {𝓐 : Set (Mx D s V.rank)} {g g' : GA D W} {c d : ℂ}
 
+/- English proof (translation)
+Establish `: ((1 : GA D V), g * g') = (1, g) * (1, g')` using `by simp`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem om_mul (g g' : GA D W) (f : WO V W → ℂ) : ω (1, g * g') f = ω (1, g) (ω (1, g') f) := by
   have : ((1 : GA D V), g * g') = (1, g) * (1, g') := by simp
   rw [this, map_mul]; rfl
 
+/- English proof (translation)
+Establish `: ((1 : GA D V), (1 : GA D W)) = 1` using `rfl`. Rewrite using `[this, map_one]`. Both sides reduce to the same expression.
+-/
 theorem om_one (f : WO V W → ℂ) : ω (1, 1) f = f := by
   have : ((1 : GA D V), (1 : GA D W)) = 1 := rfl
   rw [this, map_one]; rfl
 
+/- English proof (translation)
+Introduce `f _` and use `by rw [om_one, one_mul]`.
+-/
 theorem Sc.one : Sc ψ ω C μ 𝓐 1 1 := fun f _ => by rw [om_one, one_mul]
 
+/- English proof (translation)
+Introduce `f hf` and use `by rw [om_mul, h _ (hω.om_pres _ _ hf), h' f hf, mul_assoc]`.
+-/
 theorem Sc.mul (hω : IsWeilDatumO ψ V W χS χT ω) (h : Sc ψ ω C μ 𝓐 g c) (h' : Sc ψ ω C μ 𝓐 g' d) :
     Sc ψ ω C μ 𝓐 (g * g') (c * d) := fun f hf => by
   rw [om_mul, h _ (hω.om_pres _ _ hf), h' f hf, mul_assoc]
 
+/- English proof (translation)
+Introduce `f hf` and use `by have := h _ (hω.om_pres (1, g⁻¹) f hf) rw [← om_mul, mul_inv_cancel, om_one] at this rw [this, inv_mul_cancel_left₀ hc]`.
+-/
 theorem Sc.inv (hω : IsWeilDatumO ψ V W χS χT ω) (h : Sc ψ ω C μ 𝓐 g c) (hc : c ≠ 0) :
     Sc ψ ω C μ 𝓐 g⁻¹ c⁻¹ := fun f hf => by
   have := h _ (hω.om_pres (1, g⁻¹) f hf)
   rw [← om_mul, mul_inv_cancel, om_one] at this
   rw [this, inv_mul_cancel_left₀ hc]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using Sc.one`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hω h`.
+-/
 theorem Sc.pow (hω : IsWeilDatumO ψ V W χS χT ω) (h : Sc ψ ω C μ 𝓐 g c) (k : ℕ) : Sc ψ ω C μ 𝓐 (g ^ k) (c ^ k) := by
   induction k with
   | zero => simpa using Sc.one
   | succ k ih => rw [pow_succ, pow_succ]; exact ih.mul hω h
 
+/- English proof (translation)
+The claim follows from `mul_right_cancel₀ h0 ((h f hf).symm.trans (h' f hf))`.
+-/
 theorem Sc.unique (h : Sc ψ ω C μ 𝓐 g c) (h' : Sc ψ ω C μ 𝓐 g d) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
     (h0 : meanL C μ 𝓐 f ≠ 0) : c = d :=
   mul_right_cancel₀ h0 ((h f hf).symm.trans (h' f hf))
 
+/- English proof (translation)
+Establish `: adj (C ⬝ y') ⬝ (gA W ⬝ (C ⬝ y)) = 0`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA W), ← Matrix.mul_assoc (adj C), hC]`. Simplify using the standard rewrite rules. Unfold `symplO`. Rewrite using `[hO_eq_trace, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem symplO_frame (hC : adj C ⬝ (gA W ⬝ C) = 0) (y y' : Mx D s V.rank) :
     symplO V W (C ⬝ y) (C ⬝ y') = 0 := by
   have : adj (C ⬝ y') ⬝ (gA W ⬝ (C ⬝ y)) = 0 := by
@@ -355,6 +490,11 @@ theorem symplO_frame (hC : adj C ⬝ (gA W ⬝ C) = 0) (y y' : Mx D s V.rank) :
   rw [hO_eq_trace, this]
   simp
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨γ, rfl⟩ a`. Establish `e : rat C₀ ⬝ (((incA D).toAddMonoidHom.mapMatrix γ : Mx D s V.rank) + a) = ratW W V (C₀ * γ) + rat C₀ ⬝ a`. Rewrite using `[Matrix.mul_add, ratW_eq, rat_mul]`. Both sides reduce to the same expression. Establish `h0 : symplOH V W (ratW W V (C₀ * γ)) (rat C₀ ⬝ a) = 0`.
+
+Unfold `symplOH`. Rewrite using `[ratW_eq, rat_mul, symplO_frame hC, mul_zero]`. Rewrite using `[e, hf.quasi, h0, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem theta_frame_periodic {C₀ : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : adj (rat C₀) ⬝ (gA W ⬝ rat C₀) = 0)
     {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) :
     ∀ γ ∈ ratMx D s V.rank, ∀ a : Mx D s V.rank, f (rat C₀ ⬝ (γ + a)) = f (rat C₀ ⬝ a) := by
@@ -366,6 +506,13 @@ theorem theta_frame_periodic {C₀ : Matrix (Fin W.rank) (Fin s) D.host.E} (hC :
     rw [ratW_eq, rat_mul, symplO_frame hC, mul_zero]
   rw [e, hf.quasi, h0, neg_zero, AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Introduce `f hf`. Establish `ht' : t' ≠ 0` using `right_ne_zero_of_mul_eq_one htt`. Establish `key : ∀ y : Mx D s V.rank, ω (1, a) f (rat C₀ ⬝ y) = f (rat C₀ ⬝ (incA D t' • y))` using `fun y => by`. Use `GlobalTheory.WeilRat.om_rat_actO D ψ hω.std V W χS χT ω hω 1 (GQ V).one_mem a ha f hf (rat C₀ ⬝ (incA D t' • y))` as an intermediate fact. Establish `e : actO V W 1 a (rat C₀ ⬝ (incA D t' • y)) = rat C₀ ⬝ y`.
+
+Rewrite using `[actO_eq, inv_one, mt_one, Matrix.mul_one, ← Matrix.mul_assoc, hat, Matrix.smul_mul, Matrix.mul_smul, smul_smul, ← map_mul, htt, map_one, one_smul]`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Unfold `meanL`. Repeatedly rewrite using `[key]`. Rewrite using `[one_mul]`.
+
+Conclude with `mean_smul hcov ht' (fun y => f (rat C₀ ⬝ y)) (theta_frame_periodic hC hf)`.
+-/
 theorem Sc_of_rat (hω : IsWeilDatumO ψ V W χS χT ω) (hcov : IsCovolOne (ratMx D s V.rank) μ 𝓐)
     {C₀ : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : adj (rat C₀) ⬝ (gA W ⬝ rat C₀) = 0) {a : GA D W} (ha : a ∈ GQ W)
     {t t' : D.host.E} (htt : t * t' = 1) (hat : mt W a ⬝ rat C₀ = incA D t • rat C₀) :
@@ -391,8 +538,22 @@ variable {D : D7} {V W : HSp D} {s : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {χS 
   {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {μ : Measure (Mx D s V.rank)} {𝓐 : Set (Mx D s V.rank)}
   {C C' : Matrix (Fin W.rank) (Fin s) D.host.E} {L B : Matrix (Fin s) (Fin W.rank) D.host.E}
 
+/- English proof (translation)
+The claim follows from `(rat_mul M N).symm`.
+-/
 theorem rat_mul_sq {n : ℕ} (M N : Matrix (Fin n) (Fin n) D.host.E) : rat M * rat N = rat (M * N) := (rat_mul M N).symm
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show rat (C * L) = rat C ⬝ rat L from rat_mul C L] show x ⬝ (rat C ⬝ rat L) = 0`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.zero_mul]`. Rewrite using `[show rat (C' * B) = rat C' ⬝ rat B from rat_mul C' B] show (rat C' ⬝ rat B) ⬝ x = 0`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_zero]`.
+
+Take `⟨Y, hY⟩ : ∃ Y : Matrix (Fin W.rank) (Fin W.rank) D.host.E, Y = 1 - C' * B` from `⟨_, rfl⟩`. Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin W.rank) (Fin W.rank) D.host.E, Z = 1 - C * L` from `⟨_, rfl⟩`. Establish `hBY : B * Y = 0`. Rewrite using `[hY, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, h.BC', Matrix.one_mul, sub_self]`. Establish `hv : ∀ j, ∃ a : Fin s → AE D, x.mulVec (fun i => incA D (Y i j)) = (rat C).mulVec a` using `fun j => h3 _ (funext fun i => congrFun (congrFun hBY i) j)`.
+
+Use `choose a ha using hv`. Take `⟨Am, e1⟩ : ∃ Am : Mx D s W.rank, x * rat Y = rat C ⬝ Am` from `⟨Matrix.of fun k j => a j k, by`. Use extensionality with `i j`. Conclude with `congrFun (ha j) i⟩`. Establish `e2 : rat Z ⬝ rat C = 0`.
+
+Rewrite using `[← rat_mul, hZ, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, h.LC, Matrix.mul_one, sub_self, rat_zero]`. Establish `e3 : rat Z * (x * rat Y) = 0`. Rewrite using `[e1]`. Use `show rat Z ⬝ (rat C ⬝ Am) = 0`. Rewrite using `[← Matrix.mul_assoc, e2, Matrix.zero_mul]`.
+
+Rewrite `e3` using `[hY, hZ, rat_sub, rat_sub, rat_one]`. Generalize the expression as in `rat (C * L) = p at e3 ⊢`. Generalize the expression as in `rat (C' * B) = q at e3 ⊢`. Establish `e4 : (1 - p) * (x * (1 - q)) = x - (p * x + x * q - p * x * q)` using `by noncomm_ring`. Conclude with `sub_eq_zero.1 (e4.symm.trans e3)`.
+-/
 theorem gen_relations (h : IsDualPair W C C' L B) {x : Mx D W.rank W.rank} (h1 : x ⬝ rat C = 0) (h2 : rat B ⬝ x = 0)
     (h3 : ∀ v : Fin W.rank → D.host.E, B.mulVec v = 0 → ∃ a : Fin s → AE D,
       x.mulVec (fun i => incA D (v i)) = (rat C).mulVec a) :
@@ -427,6 +588,9 @@ theorem gen_relations (h : IsDualPair W C C' L B) {x : Mx D W.rank W.rank} (h1 :
     have e4 : (1 - p) * (x * (1 - q)) = x - (p * x + x * q - p * x * q) := by noncomm_ring
     exact sub_eq_zero.1 (e4.symm.trans e3)
 
+/- English proof (translation)
+Establish `e1 : x ⬝ x' = (rat (C * L) * x + x * rat (C' * B) - rat (C * L) * x * rat (C' * B)) ⬝ x'` using `by rw [← r3]`. Rewrite `e1` using `[Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc x, hq, Matrix.mul_zero, add_zero, Matrix.mul_assoc (rat (C * L) * x), hq, Matrix.mul_zero, sub_zero, Matrix.mul_assoc, rat_mul C L, Matrix.mul_assoc]`. Conclude with `e1`.
+-/
 theorem gen_apply {n : ℕ} {x : Mx D W.rank W.rank} {x' : Mx D W.rank n}
     (r3 : x = rat (C * L) * x + x * rat (C' * B) - rat (C * L) * x * rat (C' * B)) (hq : rat (C' * B) ⬝ x' = 0) :
     x ⬝ x' = rat C ⬝ (rat L ⬝ (x ⬝ x')) := by
@@ -435,6 +599,25 @@ theorem gen_apply {n : ℕ} {x : Mx D W.rank W.rank} {x' : Mx D W.rank n}
     hq, Matrix.mul_zero, sub_zero, Matrix.mul_assoc, rat_mul C L, Matrix.mul_assoc] at e1
   exact e1
 
+/- English proof (translation)
+Establish `hpp : rat (C * L) * rat (C * L) = rat (C * L)` using `by rw [rat_mul_sq, h.pp]`. Establish `hqq : rat (C' * B) * rat (C' * B) = rat (C' * B)` using `by rw [rat_mul_sq, h.qq]`. Establish `hpq : rat (C * L) * rat (C' * B) = 0` using `by rw [rat_mul_sq, h.pq, rat_zero]`. Establish `hqp : rat (C' * B) * rat (C * L) = 0` using `by rw [rat_mul_sq, h.qp, rat_zero]`. Establish `levi_sc : ∀ {t t' : D.host.E}, star t = t → star t' = t' → t * t' = 1 → ∃ a : GA D W, mt W a = levi (incA D t) (incA D t') (rat (C * L)) (rat (C' * B)) ∧ Sc ψ ω (rat C) μ 𝓐 a 1`.
+
+Introduce `t t' ht ht' htt`. Take `⟨a, ha, ma⟩` from `h.exists_levi ht ht' htt`. Use `⟨a, ma.trans (rat_levi _ _ _ _), Sc_of_rat hω hcov hiso ha htt ?_⟩` and prove the remaining obligations. Rewrite using `[ma, ← rat_mul, h.levi_mul, rat_smul]`. Establish `e2 : star (2 : D.host.E) = 2` using `by simp`.
+
+Establish `e3 : star (3 : D.host.E) = 3` using `by simp`. Establish `e2' : star (1 / 2 : D.host.E) = 1 / 2` using `by simp`. Establish `e3' : star (1 / 3 : D.host.E) = 1 / 3` using `by simp`. Take `⟨a, ma, Sa⟩` from `levi_sc e2 e2' (by norm_num)`. Take `⟨b, mb, Sb⟩` from `levi_sc e3 e3' (by norm_num)`.
+
+Establish `hh2 : (2 : AE D) * incA D (1 / 2) = 1`. Rewrite using `[show (2 : AE D) = incA D 2 from (map_ofNat (incA D) 2).symm, ← map_mul]`. Evaluate the numerical expressions. Establish `hh3 : (3 : AE D) * incA D (1 / 3) = 1`. Rewrite using `[show (3 : AE D) = incA D 3 from (map_ofNat (incA D) 3).symm, ← map_mul]`.
+
+Evaluate the numerical expressions. Take `⟨c4, c9⟩` from `core_conj (K := AE D) ((Units.coeHom (Mx D W.rank W.rank)).comp (matHom W)) (mt_injective W) hpp hqq hpq hqp r1 r2 r3 hx (map_ofNat (incA D) 2) hh2 (map_ofNat (incA D) 3) hh3 ma mb`. Generalize the expression as in `hz : (g * g)⁻¹ * (a * g * a⁻¹) = z at c4 c9`. Establish `Sz : Sc ψ ω (rat C) μ 𝓐 z ((c * c)⁻¹ * (1 * c * 1⁻¹))`. Rewrite using `[← hz]`.
+
+Conclude with `((hs.mul hω hs).inv hω (mul_ne_zero hc hc)).mul hω ((Sa.mul hω hs).mul hω (Sa.inv hω one_ne_zero))`. Establish `hd : (c * c)⁻¹ * (1 * c * 1⁻¹) = c⁻¹` using `by field_simp`. Rewrite `Sz` using `[hd]`. Establish `d4 : 1 * c⁻¹ * 1⁻¹ = c⁻¹ ^ 4`. Use `(Sa.mul hω Sz).mul hω (Sa.inv hω one_ne_zero)` as an intermediate fact.
+
+Rewrite `this` using `[c4]`. Conclude with `this.unique (Sz.pow hω 4) hf₀ h0`. Establish `d9 : 1 * c⁻¹ * 1⁻¹ = c⁻¹ ^ 9`. Use `(Sb.mul hω Sz).mul hω (Sb.inv hω one_ne_zero)` as an intermediate fact. Rewrite `this` using `[c9]`.
+
+Conclude with `this.unique (Sz.pow hω 9) hf₀ h0`. Simplify using `only [one_mul, inv_one, mul_one] at d4 d9`. Establish `hi : c⁻¹ ≠ 0` using `inv_ne_zero hc`. Establish `d3 : c⁻¹ ^ 3 = 1` using `mul_left_cancel₀ hi (by rw [mul_one, ← pow_succ']; exact d4.symm)`. Establish `: c⁻¹ = 1` using `by rw [d9, show 9 = 3 * 3 from rfl, pow_mul, d3, one_pow]`.
+
+Conclude with `inv_eq_one.1 this`.
+-/
 theorem scalar_eq_one (hω : IsWeilDatumO ψ V W χS χT ω) (hcov : IsCovolOne (ratMx D s V.rank) μ 𝓐)
     (h : IsDualPair W C C' L B) (hiso : adj (rat C) ⬝ (gA W ⬝ rat C) = 0) {g : GA D W} {x : Mx D W.rank W.rank}
     (hx : mt W g = 1 + x) (r1 : x * rat (C * L) = 0) (r2 : rat (C' * B) * x = 0)
@@ -492,6 +675,15 @@ section Final
 variable {D : D7} {V W : HSp D} {s : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
   {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {μ : Measure (Mx D s V.rank)} {𝓐 : Set (Mx D s V.rank)}
 
+/- English proof (translation)
+Take `⟨u, hu⟩ : ∃ u : Mx D s V.rank, u = adj C ⬝ (gA W ⬝ x)` from `⟨_, rfl⟩`. Rewrite using `[← hu]`. Use extensionality with `i j`. Establish `key : ∀ w : AE D, Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * u i j * w) = 0` using `fun w => by`. Use `h (adj (gA V ⬝ (Matrix.single j i w : Mx D V.rank s)))` as an intermediate fact.
+
+Unfold `symplO at this`. Establish `e : giA V ⬝ (adj (C ⬝ adj (gA V ⬝ (Matrix.single j i w : Mx D V.rank s))) ⬝ (gA W ⬝ x)) = (Matrix.single j i w : Mx D V.rank s) ⬝ u`. Rewrite using `[adj_mul, adj_adj, hu]`. Simplify using `only [Matrix.mul_assoc, giA_gA_cancel]`. Establish `e2 : ((Matrix.single j i w : Mx D V.rank s) ⬝ u).trace = u i j * w`.
+
+Conclude with `trace_single_mul' i j w u`. Rewrite `this` using `[hO_eq_trace, e, e2, ← mul_assoc]`. Conclude with `this`. Establish `hz` using `eq_zero_of_trace_mul (F := D.host.F) (E := D.host.E) (R := AF D.host.F) _ key`. Establish `hξ : incA D D.host.xi0⁻¹ * incA D D.host.xi0 = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one]`. Use `congrArg (incA D D.host.xi0⁻¹ * ·) hz` as an intermediate fact. Simplify `this` using `[← mul_assoc, hξ]`.
+-/
 theorem adj_eq_zero_of_symplO {C : Mx D W.rank s} {x : WO V W}
     (h : ∀ y : Mx D s V.rank, symplO V W x (C ⬝ y) = 0) : adj C ⬝ (gA W ⬝ x) = 0 := by
   obtain ⟨u, hu⟩ : ∃ u : Mx D s V.rank, u = adj C ⬝ (gA W ⬝ x) := ⟨_, rfl⟩
@@ -514,12 +706,28 @@ theorem adj_eq_zero_of_symplO {C : Mx D W.rank s} {x : WO V W}
   have := congrArg (incA D D.host.xi0⁻¹ * ·) hz
   simpa [← mul_assoc, hξ] using this
 
+/- English proof (translation)
+Establish `h : Cᴴ * (W.gram * C) = 0` using `by rw [← Matrix.mul_assoc]; exact hC.2.2`. Use `congrArg rat h` as an intermediate fact. Rewrite `this` using `[rat_mul, rat_mul, rat_zero]`. Conclude with `this`.
+-/
 theorem iso_rat {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W C) : adj (rat C) ⬝ (gA W ⬝ rat C) = 0 := by
   have h : Cᴴ * (W.gram * C) = 0 := by rw [← Matrix.mul_assoc]; exact hC.2.2
   have := congrArg rat h
   rw [rat_mul, rat_mul, rat_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨C', L, B, h⟩` from `exists_dualPair hC`. Establish `hiso` using `iso_rat hC`. Distinguish the cases in `h0 : ∀ f, IsThetaFunO ψ V W f → meanL (rat C) μ 𝓐 f = 0`. Introduce `f hf`. Rewrite using `[h0 _ (hω.om_pres _ _ hf), h0 f hf, mul_zero]`.
+
+Use `push Not at h0`. Take `⟨f₀, hf₀, hm⟩` from `h0`. Unfold `NI at hn`. Use `Subgroup.closure_induction (p := fun g _ => Sc ψ ω (rat C) μ 𝓐 g 1) ?_ Sc.one ?_ ?_ hn` and prove the remaining obligations. Introduce and unpack `g ⟨g1, g2, g3⟩`.
+
+Establish `g1' : (mt W g - 1) ⬝ rat C = 0` using `g1`. Take `⟨r1, r2, r3⟩` from `gen_relations h (x := mt W g - 1) g1' (by rw [h.hB]; exact g2) (fun v hv => g3 v (by rw [← h.hB'] ; exact hv))`. Take `⟨c, hc, hs⟩` from `hsc g (fun y => by`. Establish `e : mt W g ⬝ rat C = rat C` using `by rwa [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at g1'`. Rewrite using `[← Matrix.mul_assoc, e])`.
+
+Use the proof step `(fun x' hx' => by`. Establish `hB : rat B ⬝ x' = 0`. Rewrite using `[h.hB, rat_mul, rat_conjTranspose, Matrix.mul_assoc]`. Conclude with `hx'`. Establish `hq : rat (C' * B) ⬝ x' = 0` using `by rw [rat_mul, Matrix.mul_assoc, hB, Matrix.mul_zero]`.
+
+Use `⟨rat L ⬝ ((mt W g - 1) ⬝ x'), ?_⟩` and prove the remaining obligations. Rewrite using `[← gen_apply r3 hq, Matrix.sub_mul, Matrix.one_mul, add_sub_cancel])`. Use `scalar_eq_one hω hcov h hiso (add_sub_cancel 1 (mt W g)).symm r1 r2 r3 hc hs hf₀ hm` as an intermediate fact. Rewrite `hs` using `[this]`. Then use the resulting hypothesis. Introduce `a b _ _ ha hb`.
+
+Simplify using `using ha.mul hω hb`. Introduce `a _ ha`. Simplify using `using ha.inv hω one_ne_zero`.
+-/
 theorem mean_unip {C : Matrix (Fin W.rank) (Fin s) D.host.E} (hC : IsIsoFrame W C)
     (hω : IsWeilDatumO ψ V W χS χT ω) (hcov : IsCovolOne (ratMx D s V.rank) μ 𝓐)
     (hsc : ∀ g : GA D W, (∀ y : Mx D s V.rank, mt W g ⬝ (rat C ⬝ y) = rat C ⬝ y) →

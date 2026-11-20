@@ -7,6 +7,9 @@ namespace ReciprocityTheory.DiscreteGroups.GlobalClassField
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue v`.
+-/
 theorem ul_card_residue_eq (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) =
       Ideal.absNorm v.asIdeal := by

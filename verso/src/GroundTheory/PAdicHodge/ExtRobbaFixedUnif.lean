@@ -15,6 +15,9 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
+/- English proof (translation)
+Establish `ht : Tendsto (fun ρ : ℝ => ‖a‖ * ρ ^ n) (𝓝[<] 1) (𝓝 (‖a‖ * 1 ^ n))` using `((continuous_const.mul (continuous_pow n)).tendsto 1).mono_left nhdsWithin_le_nhds`. Rewrite `ht` using `[one_pow, mul_one]`. Use `le_of_tendsto ht ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsLT (show (0 : ℝ) < 1 by norm_num)] with ρ hρ`. Conclude with `h ρ hρ.1 hρ.2`.
+-/
 theorem norm_le_one_of_forall_weight_le {a : L} {n : ℕ}
     (h : ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ‖a‖ * ρ ^ n ≤ 1) : ‖a‖ ≤ 1 := by
   have ht : Tendsto (fun ρ : ℝ => ‖a‖ * ρ ^ n) (𝓝[<] 1) (𝓝 (‖a‖ * 1 ^ n)) :=
@@ -28,6 +31,25 @@ namespace TeichFrob
 
 variable {T} (F : T.TeichFrob)
 
+/- English proof (translation)
+Establish `hq` using `F.two_le_q ha`. Establish `hu0 : ∀ n : ℕ, T.red F.u ^ n ≠ 0` using `fun n => pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [F.norm_red_u]; exact one_ne_zero))`. Establish `hw0 : T.red F.u ≠ 0` using `by simpa using hu0 1`. Use `choose r hr hr0 using fun (n : ℕ) (e : L) => exists_root_of_isAlgClosed hq (hu0 n) (T.red F.u) e`. Use `set y := T.ofCoeff (F.approxCoeff F.u r) with hydef`.
+
+Establish `hdig : ∀ n, ‖T.coeff y n‖ ≤ 1`. Introduce `n`. Rewrite using `[hydef, T.coeff_ofCoeff]`. Use `norm_le_one_of_forall_weight_le (n := n) fun ρ hρ0 hρ1 => ?_` and prove the remaining obligations. Establish `hw` using `T.convergesAt_of_mem_int F.u_mem_int hρ0 hρ1`.
+
+Establish `hW : gaussNorm (T.zcoeff F.u) ρ ≤ (1 : ℝ) ^ (p ^ F.a - 1)`. Rewrite using `[T.gaussNorm_eq_one_of_mem_int F.u_mem_int F.norm_red_u hρ0 hρ1, one_pow]`. Conclude with `approxCoeff_weight_le ha hr hρ0 hρ1 hw zero_le_one hW n`. Establish `hyint : y ∈ T.int` using `T.mem_int_iff.2 hdig`. Establish `hy0 : T.red y = r 0 0`.
+
+Rewrite using `[← T.coeff_zero, hydef, T.coeff_ofCoeff]`. Simplify using `[approxCoeff, approx]`. Establish `hr00 : r 0 0 ≠ 0` using `hr0 0 0 rfl hw0`. Establish `hroot` using `hr 0 0`. Simplify using `only [pow_zero, one_mul, add_zero] at hroot`.
+
+Establish `hnorm : ‖r 0 0‖ = 1`. Establish `hle : ‖r 0 0‖ ≤ 1` using `by rw [← hy0, ← T.coeff_zero]; exact hdig 0`. Establish `hq1 : r 0 0 ^ (p ^ F.a - 1) = T.red F.u`. Establish `: r 0 0 ^ p ^ F.a = r 0 0 ^ (p ^ F.a - 1) * r 0 0`. Rewrite using `[← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `hroot` using `[this]`. Conclude with `mul_right_cancel₀ hr00 (by linear_combination hroot)`. Establish `h1 : ‖r 0 0‖ ^ (p ^ F.a - 1) = 1` using `by rw [← norm_pow, hq1, F.norm_red_u]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by omega)).1 h1`. Use `⟨y, hyint, by rw [hy0, hnorm], ?_⟩` and prove the remaining obligations. Establish `hall : ∀ n, F.φ y - F.u * y ∈ Ideal.span {T.π ^ n}` using `fun n => by`. Establish `h1 : y - F.approx F.u r n ∈ Ideal.span {T.π ^ n}`. Rewrite using `[F.approx_eq_finSum]`.
+
+Conclude with `T.mk_sub_finSum_mem _ n`. Establish `: F.φ y - F.u * y = (F.φ (F.approx F.u r n) - F.u * F.approx F.u r n) + (F.φ (y - F.approx F.u r n) - F.u * (y - F.approx F.u r n))`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `add_mem (approx_mem hr n) (sub_mem (F.φ_mem_span_pow h1) (Ideal.mul_mem_left _ _ h1))`. Establish `h0 : F.φ y - F.u * y = 0` using `T.eq_of_coeff_eq (funext fun n => by`. Rewrite using `[T.coeff_zero_elem]`. Conclude with `T.coeff_of_mem_span (hall (n + 1)) n le_rfl)`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem exists_int_φ_eq_u_mul [IsAlgClosed L] (ha : 0 < F.a) :
     ∃ y ∈ T.int, ‖T.red y‖ = 1 ∧ F.φ y = F.u * y := by
   have hq := F.two_le_q ha

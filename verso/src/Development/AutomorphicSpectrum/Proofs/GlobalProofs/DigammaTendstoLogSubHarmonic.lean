@@ -5,6 +5,15 @@ open scoped Nat Real
 
 namespace GlobalTheory.CompanionTheory.DigammaLimit
 
+/- English proof (translation)
+Establish `hfe : ∀ {y : ℝ}, 0 < y → (Real.log ∘ Real.Gamma) (y + 1) = (Real.log ∘ Real.Gamma) y + Real.log y`. Introduce `y hy`. Simplify using `only [Function.comp]`. Rewrite using `[Real.Gamma_add_one hy.ne', Real.log_mul hy.ne' (Real.Gamma_pos_of_pos hy).ne', add_comm]`. Establish `h` using `Real.BohrMollerup.ge_logGammaSeq (f := Real.log ∘ Real.Gamma) Real.convexOn_log_Gamma hfe hx hn`.
+
+Establish `hf1 : (Real.log ∘ Real.Gamma) 1 = 0` using `by simp [Real.Gamma_one]`. Rewrite `h` using `[hf1, zero_add]`. Establish `hn0 : (0 : ℝ) < n` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hn)`. Establish `hfac : (0 : ℝ) < (n ! : ℝ)` using `by positivity`. Establish `hP : ∀ j ∈ Finset.range (n + 1), (0 : ℝ) < x + j` using `fun j _ => by positivity`.
+
+Establish `hPpos : 0 < ∏ j ∈ Finset.range (n + 1), (x + (j : ℝ))` using `Finset.prod_pos hP`. Establish `hlog : Real.log ((n : ℝ) ^ x * (n ! : ℝ) / ∏ j ∈ Finset.range (n + 1), (x + (j : ℝ))) = Real.BohrMollerup.logGammaSeq x n`. Rewrite using `[Real.log_div (by positivity) hPpos.ne', Real.log_mul (by positivity) hfac.ne', Real.log_rpow hn0, Real.log_prod (fun j hj => (hP j hj).ne')]`. Both sides reduce to the same expression. Rewrite `h` using `[← hlog]`.
+
+Conclude with `(Real.log_le_log_iff (by positivity) (Real.Gamma_pos_of_pos hx)).1 h`.
+-/
 theorem euler_seq_le_Gamma {x : ℝ} (hx : 0 < x) {n : ℕ} (hn : n ≠ 0) :
     (n : ℝ) ^ x * (n ! : ℝ) / ∏ j ∈ Finset.range (n + 1), (x + (j : ℝ)) ≤ Real.Gamma x := by
   have hfe : ∀ {y : ℝ}, 0 < y →
@@ -28,6 +37,11 @@ theorem euler_seq_le_Gamma {x : ℝ} (hx : 0 < x) {n : ℕ} (hn : n ≠ 0) :
   rw [← hlog] at h
   exact (Real.log_le_log_iff (by positivity) (Real.Gamma_pos_of_pos hx)).1 h
 
+/- English proof (translation)
+Use `le_trans ?_ (euler_seq_le_Gamma hw hn)` and prove the remaining obligations. Rewrite using `[GammaSeq, norm_div, norm_mul, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hn), norm_prod, Complex.norm_natCast]`. Apply `div_le_div_of_nonneg_left (by positivity) (Finset.prod_pos fun j _ => by positivity)` to reduce the goal to its premises. Apply `Finset.prod_le_prod (fun j _ => by positivity)` to reduce the goal to its premises. Introduce `j _`.
+
+Use `Complex.abs_re_le_norm (w + j)` as an intermediate fact. Simplify using `only [add_re, natCast_re] at this`. Conclude with `(le_abs_self _).trans this`.
+-/
 theorem norm_GammaSeq_le {w : ℂ} (hw : 0 < w.re) {n : ℕ} (hn : n ≠ 0) :
     ‖GammaSeq w n‖ ≤ Real.Gamma w.re := by
   refine le_trans ?_ (euler_seq_le_Gamma hw hn)
@@ -40,6 +54,9 @@ theorem norm_GammaSeq_le {w : ℂ} (hw : 0 < w.re) {n : ℕ} (hn : n ≠ 0) :
   simp only [add_re, natCast_re] at this
   exact (le_abs_self _).trans this
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Complex.re h`. Simplify using `only [add_re, natCast_re, zero_re] at h1`. Establish `h2 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_natCast_ne_zero {z : ℂ} (hz : 0 < z.re) (j : ℕ) : z + (j : ℂ) ≠ 0 := by
   intro h
   have h1 := congrArg Complex.re h
@@ -47,10 +64,18 @@ theorem add_natCast_ne_zero {z : ℂ} (hz : 0 < z.re) (j : ℕ) : z + (j : ℂ) 
   have h2 : (0 : ℝ) ≤ j := Nat.cast_nonneg j
   linarith
 
+/- English proof (translation)
+Introduce `h`. Conclude with `add_natCast_ne_zero hz m (by rw [h]; ring)`.
+-/
 theorem ne_neg_natCast_of_re_pos {z : ℂ} (hz : 0 < z.re) (m : ℕ) : z ≠ -(m : ℂ) := by
   intro h
   exact add_natCast_ne_zero hz m (by rw [h]; ring)
 
+/- English proof (translation)
+Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hP : ∀ j ∈ Finset.range (n + 1), z + (j : ℂ) ≠ 0` using `fun j _ => add_natCast_ne_zero hz j`. Simplify using `only [GammaSeq]`. Use `DifferentiableAt.div ?_ ?_ (Finset.prod_ne_zero_iff.2 hP)` and prove the remaining obligations. Conclude with `(differentiableAt_id.const_cpow (Or.inl hn')).mul_const _`.
+
+Conclude with `DifferentiableAt.fun_finset_prod fun j _ => by fun_prop`.
+-/
 theorem differentiableAt_GammaSeq {z : ℂ} (hz : 0 < z.re) {n : ℕ} (hn : n ≠ 0) :
     DifferentiableAt ℂ (fun w => GammaSeq w n) z := by
   have hn' : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn
@@ -60,6 +85,15 @@ theorem differentiableAt_GammaSeq {z : ℂ} (hz : 0 < z.re) {n : ℕ} (hn : n �
   · exact (differentiableAt_id.const_cpow (Or.inl hn')).mul_const _
   · exact DifferentiableAt.fun_finset_prod fun j _ => by fun_prop
 
+/- English proof (translation)
+Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hP : ∀ j ∈ Finset.range (n + 1), z + (j : ℂ) ≠ 0` using `fun j _ => add_natCast_ne_zero hz j`. Establish `hd1 : HasDerivAt (fun w : ℂ => (n : ℂ) ^ w) ((n : ℂ) ^ z * Complex.log n * 1) z` using `(hasDerivAt_id z).const_cpow (Or.inl hn')`. Establish `hfac : ((n ! : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero n)`. Establish `hcp : (n : ℂ) ^ z ≠ 0` using `by simp [Complex.cpow_eq_zero_iff, hn']`.
+
+Establish `hd2 : DifferentiableAt ℂ (fun w : ℂ => ∏ j ∈ Finset.range (n + 1), (w + (j : ℂ))) z` using `DifferentiableAt.fun_finset_prod fun j _ => by fun_prop`. Establish `e1 : (fun w => GammaSeq w n) = fun w => ((n : ℂ) ^ w * (n ! : ℂ)) / ∏ j ∈ Finset.range (n + 1), (w + (j : ℂ))` using `rfl`. Establish `l1 : logDeriv (fun w : ℂ => (n : ℂ) ^ w) z = Complex.log n`. Rewrite using `[logDeriv_apply, hd1.deriv]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `l2 : ∀ j : ℕ, logDeriv (fun w : ℂ => w + (j : ℂ)) z = 1 / (z + (j : ℂ))`. Introduce `j`. Rewrite using `[logDeriv_apply]`. Simplify using the standard rewrite rules. Rewrite using `[e1, logDeriv_div (f := fun w : ℂ => (n : ℂ) ^ w * (n ! : ℂ)) (g := fun w : ℂ => ∏ j ∈ Finset.range (n + 1), (w + (j : ℂ))) z (mul_ne_zero hcp hfac) (Finset.prod_ne_zero_iff.2 hP) (hd1.differentiableAt.mul_const _) hd2, logDeriv_mul (f := fun w : ℂ => (n : ℂ) ^ w) (g := fun _ : ℂ …`.
+
+Simplify using `only [l2]`.
+-/
 theorem logDeriv_GammaSeq {z : ℂ} (hz : 0 < z.re) {n : ℕ} (hn : n ≠ 0) :
     logDeriv (fun w => GammaSeq w n) z =
       ((Real.log n : ℝ) : ℂ) - ∑ k ∈ Finset.range (n + 1), 1 / (z + (k : ℂ)) := by
@@ -90,6 +124,31 @@ theorem logDeriv_GammaSeq {z : ℂ} (hz : 0 < z.re) {n : ℕ} (hn : n ≠ 0) :
     l1, logDeriv_const, Pi.zero_apply, add_zero, Complex.natCast_log]
   simp only [l2]
 
+/- English proof (translation)
+Take `⟨r, hr_def⟩ : ∃ r : ℝ, r = z.re / 2` from `⟨_, rfl⟩`. Establish `hr : 0 < r` using `by rw [hr_def]; positivity`. Take `⟨U, hU_def⟩ : ∃ U : Set ℂ, U = {w : ℂ | 0 < w.re}` from `⟨_, rfl⟩`. Establish `hUo : IsOpen U`. Rewrite using `[hU_def]`.
+
+Conclude with `isOpen_lt continuous_const Complex.continuous_re`. Establish `hre : ∀ w ∈ closedBall z r, z.re / 2 ≤ w.re ∧ w.re ≤ 3 * z.re / 2`. Introduce `w hw`. Establish `h1 : ‖w - z‖ ≤ r` using `by rwa [mem_closedBall, dist_eq_norm] at hw`. Establish `h2` using `Complex.abs_re_le_norm (w - z)`.
+
+Establish `h3 : |w.re - z.re| ≤ r`. Use `h2.trans h1` as an intermediate fact. Simplify `this` using `only [sub_re]`. Rewrite `h3` using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h3.1, h3.2]`.
+
+Establish `hsub : closedBall z r ⊆ U` using `fun w hw => by`. Use `(hre w hw).1` as an intermediate fact. Rewrite using `[hU_def]`. Use `show 0 < w.re`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hGd : DifferentiableOn ℂ Gamma U` using `fun w hw => by`. Rewrite `hw` using `[hU_def]`. Conclude with `(differentiableAt_Gamma w (ne_neg_natCast_of_re_pos hw)).differentiableWithinAt`. Establish `hFd : ∀ n : ℕ, n ≠ 0 → DifferentiableOn ℂ (fun w => GammaSeq w n) U` using `fun n hn w hw => by`. Rewrite `hw` using `[hU_def]`.
+
+Conclude with `(differentiableAt_GammaSeq hw hn).differentiableWithinAt`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ x ∈ Icc (z.re / 2) (3 * z.re / 2), ‖Real.Gamma x‖ ≤ M := by`. Use `isCompact_Icc.exists_bound_of_continuousOn fun x hx => ?_` and prove the remaining obligations. Establish `hx0 : 0 < x` using `by linarith [hx.1]`. Use `(Real.differentiableAt_Gamma fun m h => ?_).continuousAt.continuousWithinAt` and prove the remaining obligations.
+
+Establish `h2 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbd : ∀ n : ℕ, n ≠ 0 → ∀ w ∈ closedBall z r, ‖GammaSeq w n‖ ≤ M`. Introduce `n hn w hw`. Establish `h1` using `hre w hw`.
+
+Establish `h0 : 0 < w.re` using `by linarith [h1.1]`. Conclude with `(norm_GammaSeq_le h0 hn).trans ((le_abs_self _).trans (hM _ ⟨h1.1, h1.2⟩))`. Establish `hc : ∀ θ, circleMap z r θ ∈ closedBall z r` using `fun θ => sphere_subset_closedBall (circleMap_mem_sphere z hr.le θ)`. Establish `key : Tendsto (fun n : ℕ => ∮ w in C(z, r), ((w - z) ^ 2)⁻¹ • GammaSeq w n) atTop (𝓝 (∮ w in C(z, r), ((w - z) ^ 2)⁻¹ • Gamma w))`. Simplify using `only [circleIntegral]`.
+
+Use `intervalIntegral.tendsto_integral_filter_of_dominated_convergence (fun _ => r * ((r ^ 2)⁻¹ * M)) ?_ ?_ intervalIntegrable_const ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_atTop 0] with n hn`. Apply `Continuous.aestronglyMeasurable` to reduce the goal to its premises. Establish `hcont : Continuous fun θ : ℝ => GammaSeq (circleMap z r θ) n` using `(hFd n hn).continuousOn.comp_continuous (continuous_circleMap z r) (fun θ => hsub (hc θ))`. Establish `h0 : ∀ θ, (circleMap z r θ - z) ^ 2 ≠ 0` using `fun θ => pow_ne_zero 2 (sub_ne_zero.2 (circleMap_ne_center hr.ne'))`.
+
+Simplify using `only [deriv_circleMap]`. Conclude with `((continuous_circleMap 0 r).mul continuous_const).smul (((((continuous_circleMap z r).sub continuous_const).pow 2).inv₀ h0).smul hcont)`. Use `filter_upwards [eventually_ne_atTop 0] with n hn`. Use `Eventually.of_forall fun θ _ => ?_` and prove the remaining obligations. Simplify using `only [deriv_circleMap, circleMap_sub_center, norm_smul, norm_mul, norm_circleMap_zero, Complex.norm_I, norm_inv, norm_pow, abs_of_pos hr, mul_one]`.
+
+Use `gcongr`. Conclude with `hbd n hn _ (hc θ)`. Use `Eventually.of_forall fun θ _ => ?_` and prove the remaining obligations. Conclude with `((GammaSeq_tendsto_Gamma _).const_smul _).const_smul _`. Establish `h2` using `key.const_smul ((2 * π * I : ℂ)⁻¹)`.
+
+Establish `e : cderiv r Gamma z = deriv Gamma z` using `cderiv_eq_deriv hUo hGd hr hsub`. Rewrite using `[← e]`. Use `Tendsto.congr' ?_ h2` and prove the remaining obligations. Use `filter_upwards [eventually_ne_atTop 0] with n hn`. Conclude with `cderiv_eq_deriv hUo (hFd n hn) hr hsub`.
+-/
 theorem tendsto_deriv_GammaSeq {z : ℂ} (hz : 0 < z.re) :
     Tendsto (fun n : ℕ => deriv (fun w => GammaSeq w n) z) atTop (𝓝 (deriv Gamma z)) := by
   obtain ⟨r, hr_def⟩ : ∃ r : ℝ, r = z.re / 2 := ⟨_, rfl⟩
@@ -161,6 +220,11 @@ theorem tendsto_deriv_GammaSeq {z : ℂ} (hz : 0 < z.re) :
   filter_upwards [eventually_ne_atTop 0] with n hn
   exact cderiv_eq_deriv hUo (hFd n hn) hr hsub
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h1` using `(tendsto_deriv_GammaSeq hz).div (GammaSeq_tendsto_Gamma z) (Gamma_ne_zero_of_re_pos hz)`. Rewrite using `[digamma_def, logDeriv_apply]`. Use `Tendsto.congr' ?_ h1` and prove the remaining obligations. Use `filter_upwards [eventually_ne_atTop 0] with n hn`.
+
+Rewrite using `[← logDeriv_GammaSeq hz hn, logDeriv_apply]`. Both sides reduce to the same expression.
+-/
 theorem tendsto_log_sub_sum_digamma : ∀ z : ℂ, 0 < z.re →
     Filter.Tendsto (fun n : ℕ => ((Real.log n : ℝ) : ℂ) -
       ∑ k ∈ Finset.range (n + 1), 1 / (z + (k : ℂ))) Filter.atTop (nhds (Complex.digamma z)) := by

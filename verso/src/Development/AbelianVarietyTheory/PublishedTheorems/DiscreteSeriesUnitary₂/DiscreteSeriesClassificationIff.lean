@@ -35,6 +35,9 @@ def DiscreteSeriesClassification : Prop :=
         ∃ T : H' ≃ₗᵢ[ℂ] H (ε ∘ s) mu, ∀ g ∈ UJset (ε ∘ s), ∀ v,
           T (σ (g.submatrix s.symm s.symm) v) = π (ε ∘ s) mu g (T v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem discreteSeriesClassification_iff : DiscreteSeriesClassification ↔ DSClass := Iff.rfl
 
 end GlobalTheory.Published

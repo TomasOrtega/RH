@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.TwLat
 
+/- English proof (translation)
+Introduce `E _ _ _ _ w hw K e hec _ _ B m b u β hG hβ`. Set `B' : GlobalTheory.UnitLemma.InvAlg K` to `{ B with g := u }`. Establish `hGc0` using `GlobalTheory.GramTwistNorm.gram_map_conj B' (w.adicCompletion E) e (cj w) hec m β hβ b`. Use `set G := gram e b β with hGdef`. Use `set P := mulMat e b u with hP`.
+
+Use `set Φ := GlobalTheory.Tw.Phi m (w.adicCompletion E) with hΦ`. Use `set s : w.adicCompletion E := (-1) ^ (m - 1) with hs`. Establish `hGc : G.map (cj w) = s • (Gᵀ * P)` using `hGc0`. Establish `hGd : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `hΦT : Φᵀ * Φ = 1` using `mul_eq_one_comm.1 (GlobalTheory.GramTwistNorm.phi_mul_transpose m)`.
+
+Establish `hd : (dlt e b β).val = (G⁻¹)ᵀ * Φᵀ`. Rewrite using `[dlt, dif_pos hG]`. Express the relevant statement in the definitionally equal form `((hG.unit⁻¹ : (Matrix (Fin m) (Fin m) (w.adicCompletion E))ˣ).val)ᵀ * Φᵀ = _`. Rewrite using `[Matrix.coe_units_inv, IsUnit.unit_spec]`. Establish `hdi : ((dlt e b β)⁻¹).val = Φ * Gᵀ`.
+
+Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hd, Matrix.mul_assoc, ← Matrix.mul_assoc Φᵀ, hΦT, Matrix.one_mul, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv G hGd, Matrix.transpose_one]`. Establish `hΦΦ : Φᵀ * Φᵀ = s • (1 : Matrix (Fin m) (Fin m) (w.adicCompletion E))`. Rewrite using `[← Matrix.transpose_mul, hΦ, GlobalTheory.GramTwistNorm.phi_mul_self, Matrix.transpose_smul, Matrix.transpose_one]`. Establish `hθ : (thetaGL m (cj w) (dlt e b β)).val = Φ * (((dlt e b β)⁻¹).val.map (cj w))ᵀ * Φᵀ` using `rfl`.
+
+Establish `hGG : (G⁻¹)ᵀ * Gᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv G hGd, Matrix.transpose_one]`. Establish `hss : s * s = 1` using `by rw [hs, ← mul_pow, neg_one_mul, neg_neg, one_pow]`. Rewrite using `[nrmL, if_neg hw, Units.val_mul, hθ, hdi, Matrix.map_mul, hΦ, GlobalTheory.GramTwistNorm.phi_map, ← hΦ, Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose, hGc, hd]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[add_zero]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Φᵀ Φ, hΦT, Matrix.one_mul]`. Use `_ = P := by`. Rewrite using `[add_zero, hGG, hΦΦ, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hss, one_smul]`.
+-/
 theorem nrmL_dlt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A), ∀ u β : B.A, IsUnit (GlobalTheory.TwLat.gram e b β) → B.σ β = β * ((-1) ^ (m - 1) * u) → (nrmL m w (GlobalTheory.TwLat.dlt e b β)).val = GlobalTheory.TwLat.mulMat e b u := by
   intro E _ _ _ _ w hw K e hec _ _ B m b u β hG hβ
   let B' : GlobalTheory.UnitLemma.InvAlg K := { B with g := u }

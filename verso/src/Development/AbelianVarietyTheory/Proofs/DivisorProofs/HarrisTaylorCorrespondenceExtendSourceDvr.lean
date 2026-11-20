@@ -25,6 +25,19 @@ def scaleMap {S S' : Scheme.{0}} {s t : S ⟶ Sp R} {s' t' : S' ⟶ Sp R} {o : O
   pol := m.pol
   eta y := m.eta _
 
+/- English proof (translation)
+Introduce `p _ D R _ _ _ _ b N hN hNp hpm r w j c _ _ _ _ _ M Y₀ s₀ t₀ gs gt o₀ o₀' ms₀ mt₀ ψ₀ hst _ _ _ _ _ _ hψ _ V K _ _ _ _ _ _ y x hy`. Use `set κ := spMap (algebraMap V K) with hκ`. Take `⟨e, rfl⟩` from `hψ.1`. Take `⟨f', hf'⟩` from `ESDual.exists_inv_exp (N := N) (by omega) hNp e`. Take `⟨ψ', hψ'm, h₁, h₂⟩` from `hψ.2.2.2.2.2`.
+
+Use `haveI := hψ'm`. Take `⟨hact, heta, ⟨hpol⟩⟩` from `ESDual.dual_clauses hψ h₁ h₂`. Establish `hrev : IsPIsog (p ^ e) (ESDual.scale o₀' f' rfl) o₀ ψ'`. Use `⟨⟨e, rfl⟩, hψ'm, hact, fun z => ?_, ⟨hpol⟩, ψ₀, hψ.2.1, h₂, h₁⟩` and prove the remaining obligations. Use `show o₀.eta z = o₀'.eta (p ^ f' • z) ≫ ψ'`.
+
+Rewrite using `[← heta, smul_smul, ← pow_add, ESDual.eta_congr o₀ hf' (pow_pos (Fact.out : p.Prime).pos _)]`. Take `⟨oV, ⟨mV⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N M.X (Sp V) M.s y M.univ`. Take `⟨oK, ⟨mK⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N (Sp V) (Sp K) (y ≫ M.s) κ oV`. Establish `hb : κ ≫ y ≫ M.s = x ≫ s₀ ≫ M.s`. Rewrite using `[← Category.assoc, hy, Category.assoc, ← hst]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨o₁, ⟨m₁⟩⟩ : ∃ o₁ : Obj b N (κ ≫ y ≫ M.s), Nonempty (ObjMap o₁ o₀ x) := by`. Rewrite using `[hb]`. Conclude with `GlobalTheory.HTPull.exists_objMap_pull p D R b N Y₀ (Sp K) (s₀ ≫ M.s) x o₀`. Establish `mKU : ObjMap oK M.univ (x ≫ t₀)` using `hy ▸ ESDual.compMap mK mV`. Take `⟨mK0, -⟩` from `GlobalTheory.HTSympCover.exists_objMap_cancel_φ mKU mt₀`.
+
+Take `⟨ψK, hψK, -⟩` from `GlobalTheory.T.isPIsogenyOfSimilitude_pullback_objects p D R b N (p ^ e) Y₀ (Sp K) (s₀ ≫ M.s) (κ ≫ y ≫ M.s) x _ _ (ESDual.scale oK f' rfl) o₁ (scaleMap mK0 f' rfl rfl) m₁ ψ' hrev`. Take `⟨o'', ⟨m''⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_extend_of_pIsogeny_dvr p D R b N hN hNp (p ^ e) V K (y ≫ M.s) (ESDual.scale oV f' rfl) (ESDual.scale oK f' rfl) o₁ (scaleMap mK f' rfl rfl) ψK hψK`. Take `⟨z, ⟨hz, ⟨mz⟩⟩, -⟩` from `M.rep (Sp V) (y ≫ M.s) o''`. Use `⟨z, ?_⟩` and prove the remaining obligations. Take `⟨g, -, hg⟩` from `M.rep (Sp K) (κ ≫ y ≫ M.s) o₁`.
+
+Establish `e1` using `hg (κ ≫ z) ⟨by rw [Category.assoc, hz], ⟨ESDual.compMap m'' mz⟩⟩`. Establish `e2` using `hg (x ≫ s₀) ⟨by rw [Category.assoc, hb], ⟨ESDual.compMap m₁ ms₀⟩⟩`. Conclude with `e1.trans e2.symm`.
+-/
 theorem extend_source : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → (p : R) ∈ IsLocalRing.maximalIdeal R → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j c : ℕ), w.IsMaximal → uIdeal D r ≤ w → j ≤ D.n → (∃ e : ℕ, c = p ^ e ∧ (0 < j → 0 < e)) → D.m = 1 → ∀ M : Model b N, ∀ (Y₀ : Scheme.{0}) (s₀ t₀ : Y₀ ⟶ M.X) (gs gt : Y₀ ⟶ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).toScheme) (o₀ o₀' : Obj b N (s₀ ≫ M.s)) (ms₀ : ObjMap o₀ M.univ s₀) (mt₀ : ObjMap o₀' M.univ t₀) (ψ₀ : o₀.A ⟶ o₀'.A), s₀ ≫ M.s = t₀ ≫ M.s → gs ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι = s₀ → gt ≫ (M.X.basicOpen ((p : ℕ) : Γ(M.X, ⊤))).ι = t₀ → IsFinite gs → Etale gs → IsFinite gt → Etale gt → IsPIsog c o₀ o₀' ψ₀ → IsTj r w j o₀ o₀' ψ₀ → ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (y : Sp V ⟶ M.X) (x : Sp K ⟶ Y₀), spMap (algebraMap V K) ≫ y = x ≫ t₀ → ∃ z : Sp V ⟶ M.X, spMap (algebraMap V K) ≫ z = x ≫ s₀ := by
   intro p _ D R _ _ _ _ b N hN hNp hpm r w j c _ _ _ _ _ M Y₀ s₀ t₀ gs gt o₀ o₀' ms₀ mt₀ ψ₀ hst _ _ _ _ _ _ hψ _ V K _ _ _ _ _ _ y x hy
   set κ := spMap (algebraMap V K) with hκ

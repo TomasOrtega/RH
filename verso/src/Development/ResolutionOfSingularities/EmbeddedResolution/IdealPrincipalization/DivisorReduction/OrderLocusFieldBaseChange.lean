@@ -13,6 +13,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Use `haveI : CharZero T.base := hV.charZero`. Use `haveI : CharZero K := (RingHom.charZero_iff f.injective).mp hV.charZero`. Use `haveI : AlgebraicGeometry.Smooth T.structMap := hV.smooth`. Conclude with `orderAtLeastLocus_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal m`.
+-/
 theorem orderAtLeastLocus_withBoundary_baseChange_eq_preimage (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (K : Type u) [Field K] (f : T.base →+* K)
     (E' : List (T.baseChange K f).scheme.IdealSheafData) (m : ℕ) :

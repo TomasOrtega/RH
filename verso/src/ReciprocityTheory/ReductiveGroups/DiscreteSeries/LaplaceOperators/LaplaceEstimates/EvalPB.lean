@@ -15,13 +15,22 @@ namespace CapelliMinorRestriction
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+The claim follows from `le_sInf fun _ hT => hT.1`.
+-/
 theorem le_gen {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) : V ≤ genSub E V :=
   le_sInf fun _ hT => hT.1
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.mpr fun T hT => hT.2 a b v (Submodule.mem_sInf.mp hv T hT)`.
+-/
 theorem gen_stable {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (a b : Fin n) {v : M}
     (hv : v ∈ genSub E V) : E a b v ∈ genSub E V :=
   Submodule.mem_sInf.mpr fun T hT => hT.2 a b v (Submodule.mem_sInf.mp hv T hT)
 
+/- English proof (translation)
+Unfold `frameE`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (gen_stable E V a b hv)`.
+-/
 theorem gen_stable_frame {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (Q : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) {v : M} (hv : v ∈ genSub E V) :
     frameE Q E i j v ∈ genSub E V := by
@@ -31,6 +40,9 @@ theorem gen_stable_frame {n : ℕ} (E : Fin n → Fin n → Module.End ℂ M) (V
   rw [LinearMap.sum_apply]
   exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (gen_stable E V a b hv)
 
+/- English proof (translation)
+Introduce `a b c d`. Use `hE (e a) (e b) (e c) (e d)` as an intermediate fact. Simplify using `only [he.eq_iff] at this`. Conclude with `this`.
+-/
 theorem isGlRep_reindex {n n' : ℕ} (E : Fin n' → Fin n' → Module.End ℂ M) (e : Fin n → Fin n')
     (he : Function.Injective e) (hE : IsGlRep E) : IsGlRep (fun a b => E (e a) (e b)) := by
   intro a b c d
@@ -38,6 +50,13 @@ theorem isGlRep_reindex {n n' : ℕ} (E : Fin n' → Fin n' → Module.End ℂ M
   simp only [he.eq_iff] at this
   exact this
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f v) (capelliCov (Module.End ℂ M) m E Q⁻¹ Q (om - 1) hE hQ (Fin.last m) j₀)`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, Fin.val_last] at h`. Establish `hF : (fun a b => ∑ c', ∑ d', (Q⁻¹ c' a * Q b d') • E c' d') = frameE Q E` using `rfl`. Rewrite `h` using `[hF]`. Rewrite using `[mul_smul, h, Finset.smul_sum]`.
+
+Unfold `Capelli.nnPlus`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_beta_nnPlus (m : ℕ) (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E)
     (Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hQ : Q⁻¹ * Q = 1) (c₀ : ℂ) (j₀ : Fin (m + 1)) (om : ℂ) (v : M) :
     ∑ d, (c₀ * Q (Fin.last m) d) • Capelli.nnPlus E (Q⁻¹ *ᵥ Pi.single j₀ 1) om v d =
@@ -73,11 +92,17 @@ namespace CapelliMinorRestriction
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `frameE_glRep Q hQ E hE`.
+-/
 theorem frameGl {n : ℕ} {M : Type*} [AddCommGroup M] [Module ℂ M] (Q : Matrix (Fin n) (Fin n) ℂ)
     (E : Fin n → Fin n → Module.End ℂ M) (hQ : Q * Q⁻¹ = 1) (hQ' : Q⁻¹ * Q = 1) (hE : IsGlRep E) :
     IsGlRep (frameE Q E) :=
   frameE_glRep Q hQ E hE
 
+/- English proof (translation)
+Rewrite using `[per_eq, per_eq, per_eq, ← integral_add h₁ h₂]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[perI, add_smul]`.
+-/
 theorem per_add {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
     (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) (F₁ F₂ : Mat k r → ℂ) (ξ : Vp) (x : Mat k r)
@@ -88,11 +113,31 @@ theorem per_add {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] 
   funext p
   simp [perI, add_smul]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, ExponentialSlopeDerivatives.hpk_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem hpk_mulVec (i : Fin (2 * r + k + 1)) (u : Fin (2 * r + k + 1) → ℂ) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ u) i = (if i.val = r + k then -1 else 1) * u (ExponentialSlopeDerivatives.sg k r i) := by
   simp only [Matrix.mulVec, dotProduct, ExponentialSlopeDerivatives.hpk_apply, ite_mul, zero_mul, Finset.sum_ite_eq',
     Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hg₀U : g₀ᴴ * Formalism.QuantumDeterminants.Hpk k r * g₀ = Formalism.QuantumDeterminants.Hpk k r` using `hg₀.1`. Establish `key : ∀ x' : Fin (2 * r + k + 1) → ℂ, g₀ *ᵥ x' = xOne k r z → ∀ d, cJ ε (xJ P z) (Pi.single d 1) (P * g * P⁻¹) = star x' ⬝ᵥ (Formalism.QuantumDeterminants.Hpk k r *ᵥ (Q *ᵥ Pi.single d 1))`. Introduce `x' hx' d`. Unfold `xJ`. Rewrite using `[cJ_transport ε P hP, Matrix.mulVec_mulVec (Pi.single d 1) g P⁻¹, hgQ, ← Matrix.mulVec_mulVec (Pi.single d 1) g₀ Q, ← hx']`.
+
+Conclude with `ExponentialSlopeDerivatives.herm_UH hg₀U x' _`. Establish `hQe : ∀ d, (Q *ᵥ Pi.single d (1 : ℂ)) (Fin.last (2 * r + k)) = Q (Fin.last (2 * r + k)) d`. Introduce `d`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Distinguish the cases in `hr : r = 0`.
+
+Use `⟨-((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ), ?_, fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[neg_ne_zero, Complex.ofReal_ne_zero]`. Conclude with `(Real.sqrt_pos.mpr hTz).ne'`. Establish `hx : g₀ *ᵥ (((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.wI k r (Fin.last k))) = xOne k r z`. Rewrite using `[hg₀.2.2]`.
+
+Unfold `xOne`. Rewrite using `[if_pos hr]`. Rewrite using `[key _ hx]`. Establish `hw : Formalism.QuantumDeterminants.wI k r (Fin.last k) = Fin.last (2 * r + k)` using `Fin.ext (by simp [Formalism.QuantumDeterminants.wI]; omega)`. Establish `hsg : ExponentialSlopeDerivatives.sg k r (Fin.last (2 * r + k)) = Fin.last (2 * r + k)`.
+
+Apply the tactic sequence `apply Fin.ext; rw [ExponentialSlopeDerivatives.sg_val]; split_ifs <;> simp <;> omega`. Establish `hst : star (((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Fin.last (2 * r + k))) = ((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) • Formalism.QuantumDeterminants.bvec (Fin.last (2 * r + k))`. Apply the tactic sequence `funext i; by_cases hi : i = Fin.last (2 * r + k) <;> simp [Formalism.QuantumDeterminants.bvec, hi]`. Rewrite using `[hw, hst, smul_dotProduct, Formalism.QuantumDeterminants.bvec, single_dotProduct, one_mul, hpk_mulVec, hsg, if_pos (by simp; omega), hQe, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨1, one_ne_zero, fun d => ?_⟩` and prove the remaining obligations. Establish `hx : g₀ *ᵥ Pi.single (⟨0, by omega⟩ : Fin (2 * r + k + 1)) 1 = xOne k r z`. Use `(hg₀.2.1 ⟨0, by omega⟩).1` as an intermediate fact. Unfold `xOne`. Rewrite using `[if_neg hr]`.
+
+Conclude with `this`. Establish `hsg : ExponentialSlopeDerivatives.sg k r ⟨0, by omega⟩ = Fin.last (2 * r + k)`. Apply the tactic sequence `apply Fin.ext; rw [ExponentialSlopeDerivatives.sg_val]; simp only [Fin.val_last]; split_ifs <;> omega`. Establish `hst : star (Pi.single (⟨0, by omega⟩ : Fin (2 * r + k + 1)) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = (Pi.single (⟨0, by omega⟩ : Fin (2 * r + k + 1)) (1 : ℂ) : Fin (2 * r + k + 1) → ℂ)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Pi.single_apply]`. Rewrite using `[key _ hx, hst, single_dotProduct, one_mul, hpk_mulVec, hsg, if_neg (by simp; omega), hQe]`.
+-/
 theorem beta_formula (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r)
     (hP : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) (z : Fin (2 * r + k + 1) → ℂ)
     (hTz : 0 < Formalism.QuantumDeterminants.Tz k r z) (g g₀ Q : Mat k r) (hg₀ : Formalism.MainNotions.S.IsFrameW k r z g₀)

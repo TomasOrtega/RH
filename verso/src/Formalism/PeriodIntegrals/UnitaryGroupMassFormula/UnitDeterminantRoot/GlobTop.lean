@@ -7,6 +7,9 @@ namespace PI.UnitaryGroupMassFormula.UnitDetRoot
 
 open PI Submodule NumberField
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (NumberField.RingOfIntegers.isIntegral o).algebraMap`. Consider the case `exact IsIntegral.algebraMap o.isIntegral_coe`. Consider the case `exact (o.isIntegral_coe).map (IsScalarTower.toAlgHom ℤ F ℂ)`.
+-/
 lemma isIntegral_algebraMap_O (F : IntermediateField ℚ ℂ) (o : 𝓞 F) :
     IsIntegral ℤ (algebraMap (𝓞 F) ℂ o) := by
   first
@@ -14,6 +17,13 @@ lemma isIntegral_algebraMap_O (F : IntermediateField ℚ ℂ) (o : 𝓞 F) :
     | exact IsIntegral.algebraMap o.isIntegral_coe
     | exact (o.isIntegral_coe).map (IsScalarTower.toAlgHom ℤ F ℂ)
 
+/- English proof (translation)
+Use `⟨div_ne_zero (div_ne_zero hα hβ) hu, k, hl, ?_, ?_⟩` and prove the remaining obligations. Take `⟨o, ho⟩` from `Submodule.mem_span_singleton.mp (h1 (Submodule.mem_span_singleton_self _))`. Rewrite `ho` using `[Algebra.smul_def]`. Establish `e : (k : ℂ) * (α / β / u) = algebraMap (𝓞 F) ℂ o`. Clear the denominators using the available nonvanishing facts.
+
+Apply the tactic sequence `first | linear_combination ho | linear_combination -ho`. Rewrite using `[e]`. Conclude with `isIntegral_algebraMap_O F o`. Take `⟨o, ho⟩` from `Submodule.mem_span_singleton.mp (h2 (Submodule.mem_span_singleton_self _))`. Rewrite `ho` using `[Algebra.smul_def]`.
+
+Establish `e : (k : ℂ) * (α / β / u)⁻¹ = algebraMap (𝓞 F) ℂ o`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | linear_combination ho | linear_combination -ho`. Rewrite using `[e]`. Conclude with `isIntegral_algebraMap_O F o`.
+-/
 lemma lunit_of (F : IntermediateField ℚ ℂ) {α β u : ℂ} {k l : ℕ} (hα : α ≠ 0) (hβ : β ≠ 0) (hu : u ≠ 0)
     (hl : ¬ l ∣ k)
     (h1 : span (𝓞 F) {(k : ℂ) * α} ≤ span (𝓞 F) {u * β})
@@ -35,6 +45,11 @@ lemma lunit_of (F : IntermediateField ℚ ℂ) {α β u : ℂ} {k l : ℕ} (hα 
     rw [e]
     exact isIntegral_algebraMap_O F o
 
+/- English proof (translation)
+Take `⟨x, hxS, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS`. Introduce `hT`. Establish `hmem : c * x ∈ span (𝓞 F) {c} * S` using `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self c) hxS`. Establish `h2` using `hST hmem`. Rewrite `h2` using `[hT, Submodule.mem_bot]`.
+
+Conclude with `mul_ne_zero hc hx0 h2`.
+-/
 lemma ne_bot_of_smul {F : IntermediateField ℚ ℂ} {S T : Submodule (𝓞 F) ℂ} {c : ℂ} (hc : c ≠ 0)
     (hST : span (𝓞 F) {c} * S ≤ T) (hS : S ≠ ⊥) : T ≠ ⊥ := by
   obtain ⟨x, hxS, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hS
@@ -45,6 +60,31 @@ lemma ne_bot_of_smul {F : IntermediateField ℚ ℂ} {S T : Submodule (𝓞 F) �
   rw [hT, Submodule.mem_bot] at h2
   exact mul_ne_zero hc hx0 h2
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam m _ _ Λa hH`. Take `⟨hok, -, -, hi1, hi2⟩` from `hH`. Establish `: FiniteDimensional ℚ (KF b d)` using `IntermediateField.adjoin.finiteDimensional (theta_isIntegral hok)`. Establish `: NumberField (KF b d)` using `{ }`. Use `set F := KF b d with hFdef`.
+
+Use `set Lt := UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m with hLt`. Use `set N1 := UnitDetRootDefs.relIdx Lt Λa with hN1`. Use `set N2 := UnitDetRootDefs.relIdx Λa Lt with hN2`. Use `set e := Fintype.card m with he`. Use `set h := hF F with hh`.
+
+Establish `hN10 : (N1 : ℂ) ≠ 0` using `by exact_mod_cast hi1`. Establish `hN20 : (N2 : ℂ) ≠ 0` using `by exact_mod_cast hi2`. Establish `hL0 : vol F Lt ≠ ⊥` using `hV4 a b c d ha hd lam hlam m hok`. Establish `hLle : vol F Lt ≤ span (𝓞 F) {lam ^ e}` using `hV3 a b c d ha hd lam hlam m hok`. Establish `hA1 : span (𝓞 F) {(N1 : ℂ) ^ e} * vol F Λa ≤ vol F Lt` using `hV1 F m Λa Lt _ fun x hx => by rw [Nat.cast_smul_eq_nsmul]; exact nsmul_relIdx_mem Lt Λa hx`.
+
+Establish `hA2 : span (𝓞 F) {(N2 : ℂ) ^ e} * vol F Lt ≤ vol F Λa` using `hV1 F m Lt Λa _ fun x hx => by rw [Nat.cast_smul_eq_nsmul]; exact nsmul_relIdx_mem Λa Lt hx`. Establish `hA0 : vol F Λa ≠ ⊥` using `ne_bot_of_smul (pow_ne_zero _ hN20) hA2 hL0`. Establish `hAle : vol F Λa ≤ span (𝓞 F) {lam ^ e / (N1 : ℂ) ^ e}`. Introduce `x hx`. Take `⟨o, ho⟩` from `mem_span_singleton.mp (hLle (hA1 (mul_mem_mul (mem_span_singleton_self _) hx)))`.
+
+Rewrite using `[mem_span_singleton]`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite `ho`, the goal using `[Algebra.smul_def]`. Rewrite using `[mul_div_assoc', div_eq_iff (pow_ne_zero _ hN10)]`. Take the linear combination `ho`.
+
+Take `⟨y1, hy1, e1⟩` from `sub_pow_principal F (vol F Lt) hL0 (lam ^ e) (pow_ne_zero _ hlam) hLle`. Take `⟨y2, hy2, e2⟩` from `sub_pow_principal F (vol F Λa) hA0 (lam ^ e / (N1 : ℂ) ^ e) (div_ne_zero (pow_ne_zero _ hlam) (pow_ne_zero _ hN10)) hAle`. Establish `hy1' : (y1 : ℂ) ≠ 0` using `fun h0 => hy1 (Subtype.ext h0)`. Establish `hy2' : (y2 : ℂ) ≠ 0` using `fun h0 => hy2 (Subtype.ext h0)`. Use `set α := (lam ^ e) ^ h * (y1 : ℂ) with hα`.
+
+Use `set β := (lam ^ e / (N1 : ℂ) ^ e) ^ h * (y2 : ℂ) with hβ`. Establish `hα0 : α ≠ 0` using `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ hlam)) hy1'`. Establish `hβ0 : β ≠ 0` using `mul_ne_zero (pow_ne_zero _ (div_ne_zero (pow_ne_zero _ hlam) (pow_ne_zero _ hN10))) hy2'`. Establish `hγ : α / β = (N1 : ℂ) ^ (e * h) * (y1 : ℂ) / (y2 : ℂ)`. Rewrite using `[hα, hβ, div_pow, pow_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hγmem : α / β ∈ KF b d`. Rewrite using `[hγ]`. Conclude with `div_mem (mul_mem (pow_mem (IntermediateField.natCast_mem _ N1) _) y1.2) y2.2`. Establish `hpos : 0 < h` using `Fintype.card_pos`.
+
+Use `⟨α / β, hγmem, div_ne_zero hα0 hβ0, h, hpos, ?_⟩` and prove the remaining obligations. Introduce `l _ δ _ hE`. Take `⟨k, hk, hk1, hk2⟩` from `hE`. Use `set u := LinearMap.det (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) with hu`. Establish `hu0 : u ≠ 0` using `(LinearEquiv.isUnit_det' δ).ne_zero`.
+
+Establish `hvi` using `hV2 F m δ Λa`. Establish `i1 : span (𝓞 F) {(k : ℂ) ^ e} * vol F Lt ≤ span (𝓞 F) {u} * vol F Λa` using `hvi ▸ hV1 F m _ _ _ hk1`. Establish `i2 : span (𝓞 F) {(k : ℂ) ^ e} * (span (𝓞 F) {u} * vol F Λa) ≤ vol F Lt` using `hvi ▸ hV1 F m _ _ _ hk2`. Establish `j1` using `sub_pow_le F i1 h`. Establish `j2` using `sub_pow_le F i2 h`.
+
+Rewrite `j1` using `[mul_pow, mul_pow, span_single_pow, span_single_pow, e1, e2, span_single_mul, span_single_mul]`. Rewrite `j2` using `[mul_pow, mul_pow, span_single_pow, span_single_pow, e1, e2, span_single_mul, span_single_mul]`. Establish `hkc : ((k : ℂ) ^ e) ^ h = ((k ^ (e * h) : ℕ) : ℂ)` using `by push_cast; rw [pow_mul]`. Rewrite `j1`, `j2` using `[hkc]`. Establish `hl : ¬ l ∣ k ^ (e * h)` using `fun hd' => hk ((Fact.out : l.Prime).dvd_of_dvd_pow hd')`.
+
+Conclude with `lunit_of F hα0 hβ0 (pow_ne_zero _ hu0) hl j1 j2`.
+-/
 theorem globalLUnit_of
     (hV1 : ∀ (F : IntermediateField ℚ ℂ) (m : Type) [Fintype m] [DecidableEq m] (Λ Λ' : AddSubgroup (m → ℂ))
       (c : ℂ), (∀ x ∈ Λ, c • x ∈ Λ') → span (𝓞 F) {c ^ Fintype.card m} * vol F Λ ≤ vol F Λ')

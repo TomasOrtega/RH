@@ -15,6 +15,17 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G ReciprocityTheory.C
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hp0` using `X.p0_le`. Establish `hj : r - X.p0 ≤ r` using `Nat.sub_le _ _`. Establish `hp : r - (r - X.p0) = X.p0` using `by omega`. Establish `hx' : lact γ x ∈ X.dom` using `FrameFibre.lact_mem_GG (X.Γ_stab γ hγ).1 hx`. Establish `key : ∀ τ : X.Ψ, ∃ b t : Matrix (Fin r) (Fin r) ℂ, b.det ≠ 0 ∧ (∀ a c : Fin r, (c : ℕ) < r - (r - X.p0) → ¬ (a : ℕ) < r - (r - X.p0) → b a c = 0) ∧ (∀ a c, c < a → t a c = 0) ∧ mat m τ * b = b * t`.
+
+Introduce `τ`. Use `FreeOnDomain.exists_conj_block hj _ ?_` and prove the remaining obligations. Use extensionality with `a c`. Use `hm τ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[idx_symm_inr]`.
+
+Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[idx_symm_inl]`. Use linear arithmetic over natural numbers and integers. Use `choose b t hb hb0 ht e using key`.
+
+Establish `e' : ∀ τ, mat (lact γ x) τ * b τ = mat x τ * b τ * t τ` using `fun τ => by`. Rewrite using `[Matrix.mul_assoc, ← e, h, ← Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `X.Γ_free γ hγ (rmul x fun τ => b τ) (GlobalTheory.PointOfFrames.rmul_mem_dom X hx _ hb (by rw [hp] at hb0; exact hb0)) (fun τ => t τ) (fun τ => ⟨?_, ht τ⟩) ?_` and prove the remaining obligations. Introduce `h0`.
+
+Establish `h1` using `congrArg det (e' τ)`. Establish `h0' : (t τ).det = 0` using `h0`. Rewrite `h1` using `[det_mul, det_mul, h0', mul_zero]`. Conclude with `mul_ne_zero (hx' τ).1 (hb τ) h1`. Conclude with `(ReciprocityTheory.ChartRestriction.G.AR.Up.KU.lact_rmul' X γ x _).trans (funext e')`.
+-/
 theorem eq_one_of_block (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (m : Frame X.Ψ r) (hm : ∀ τ (a c : Fin r), (c : ℕ) < X.p0 → X.p0 ≤ (a : ℕ) → m τ a c = 0)
     (h : lact γ x = rmul x m) : γ = 1 := by
@@ -47,6 +58,9 @@ theorem eq_one_of_block (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) {
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h1 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat m τ` using `congrFun h τ`. Express the relevant statement in the definitionally equal form `((δ⁻¹ * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ * mat m τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, h1, Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem lact_inv_mul {Ψ : Finset (E →+* ℂ)} {δ γ : GL (Fin r) E} {x m : Frame Ψ r}
     (h : lact γ x = rmul (lact δ x) m) : lact (δ⁻¹ * γ) x = rmul x m := by
   funext τ
@@ -65,6 +79,27 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G ReciprocityTheory.C
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨W⟩` from `nonempty_uw hU`. Take `⟨hκ, -, -, hrk, hinj, hspan, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU h1 W k`. Take `⟨hr, hX, -⟩` from `hU`. Take `⟨hp0, hty⟩` from `hX k`. Take `⟨idx, hi, hper⟩` from `CompInj.exists_idx hσ hr W.e (U.X k) hp0 hty`.
+
+Establish `hq : (W.F.Di (W.ik k)).q = Dw.q` using `(W.F.sig _).2`. Establish `hξ : cc (-(U.X k).ξ0) = -(-(U.X k).ξ0)`. Establish `h` using `(U.X k).ξ0_im`. Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`.
+
+Establish `hpos : ∀ τ ∈ (U.X k).Ψ, 0 < (τ (-(U.X k).ξ0)).im`. Introduce `τ hτ`. Use `(U.X k).κ0_sign ⟨τ, hτ⟩` as an intermediate fact. Rewrite `this` using `[hκ, map_mul, map_ofNat]`. Rewrite using `[map_neg, Complex.neg_im]`.
+
+Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Set `Pf : Frame (U.X k).Ψ r → ((W.F.Di (W.ik k)).La →+ (Fin W.g → ℂ))` to `fun y => AddMonoidHom.mk' (fun v j => Formalism.L2.PjFree.perFr (U.X k) y (W.emb k v) (Formalism.L2.PjFree.relab c σ (W.e j).1) (W.e j).2) (by`. Introduce `a b`. Use function extensionality and compare the values at `j`.
+
+Establish `he : ∀ τ : E →+* ℂ, Data.emb τ (W.emb k (a + b)) = Data.emb τ (W.emb k a) + Data.emb τ (W.emb k b)`. Introduce `τ`. Use function extensionality and compare the values at `i`. Simplify using `[Data.emb]`. Simplify using `only [Pi.add_apply, hper, he]`.
+
+Use `split_ifs`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`. Simplify using `[Matrix.mulVec_add])`. Establish `hpt : ∀ y : (U.X k).dom, (U.un k y).x = W.F.u (W.ik k) (Pf y.1)`. Introduce `y`.
+
+Take `⟨P, hP, -, hu, -⟩` from `W.pt k y`. Rewrite using `[hu]`. Use `congr 1`. Use extensionality with `a j`. Conclude with `hP a j`.
+
+Establish `hrange : LinearMap.range (W.emb k) = (U.X k).Λ`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(W.φ k a).2`.
+
+Introduce `hv`. Conclude with `⟨(W.φ k).symm ⟨v, hv⟩, by simp [UW.emb]⟩`. Take `⟨δ, m, hδ, hM, -, hm, hm0⟩` from `FrameFibre.exists_level_block_of_eq E H Dw l Xo _ W.g _ W.F (W.ik k) r (-(U.X k).ξ0) (U.X k).Gm (W.emb k) (U.X k).Ψ idx Pf hty (by rw [hq]; exact hi) hξ hpos ⟨hinj, hspan, (U.X k).Gm_herm, (U.X k).Gm_det, W.isom k⟩ hrk (by rw [hq]; exact fun y v j => hper y _ j) x.1 (by rw [hq, ← …`. Rewrite `hδ` using `[hrange]`. Rewrite `hm0` using `[hq, ← hp0]`.
+
+Use `⟨δ, m, hδ, fun u hu => ?_, hm, hm0⟩` and prove the remaining obligations. Take `⟨a, rfl⟩ : u ∈ LinearMap.range (W.emb k)` from `hrange ▸ hu`. Take `⟨w, hw⟩` from `hM a`. Conclude with `⟨_, (W.φ k w).2, hw⟩`.
+-/
 theorem exists_level_block {U : Formalism.L2.PjFree.Unf Xo c σ r} (hσ : Formalism.L2.PjFree.GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (h1 : 1 ≤ r) (k : U.Comp) (x x' : (U.X k).dom)
     (hxx : (U.un k x').x = (U.un k x).x) :
@@ -140,6 +175,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h1 _ k hP γ hγ`. Take `⟨x, hx⟩` from `GlobalTheory.CompInj.dom_nonempty (U.X k)`. Establish `hx' : lact γ x ∈ (U.X k).dom` using `GlobalTheory.FrameFibre.lact_mem_GG ((U.X k).Γ_stab γ hγ).1 hx`. Take `⟨t, ht⟩` from `(hU.2.2.2.1 k k ⟨x, hx⟩ ⟨_, hx'⟩).2 ⟨γ, hγ, fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), fun τ => ⟨by`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`.
+
+Use the proof step `simp, fun a c h => Matrix.one_apply_ne h.ne'⟩, by`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_one (mat (lact γ x) τ)).symm⟩`. Take `⟨δ, m, hδ, hM, hm, hm0⟩` from `GlobalTheory.GammaLevel.exists_level_block (U := Formalism.L2.PjFree.Unf.ofPj U) hσ ((Formalism.L2.PjFree.isUnf_ofPj U).2 hU) h1 k ⟨x, hx⟩ ⟨_, hx'⟩ ht.1`.
+
+Establish `h` using `GlobalTheory.GammaLevel.eq_one_of_block (U.X k) (mul_mem (inv_mem (hP δ hδ hM)) hγ) hx m hm0 (GlobalTheory.GammaLevel.lact_inv_mul hm)`. Rewrite `h` using `[inv_mul_eq_one]`. Conclude with `h ▸ hM`.
+-/
 theorem GlobalTheory.GammaLevel.trivial_mod_of_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → l.A = 1 → ∀ (k : U.Comp), (∀ δ : GL (Fin r) E, IsUStab (U.X k).Gm (U.X k).Λ δ → (∀ u ∈ (U.X k).Λ, ∃ u' ∈ (U.X k).Λ, (δ : Matrix (Fin r) (Fin r) E).mulVec u = u + (l.M : ℕ) • u') → δ ∈ (U.X k).Γ) → ∀ γ ∈ (U.X k).Γ, (∀ u ∈ (U.X k).Λ, ∃ u' ∈ (U.X k).Λ, (γ : Matrix (Fin r) (Fin r) E).mulVec u = u + (l.M : ℕ) • u') := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU h1 _ k hP γ hγ
   obtain ⟨x, hx⟩ := GlobalTheory.CompInj.dom_nonempty (U.X k)

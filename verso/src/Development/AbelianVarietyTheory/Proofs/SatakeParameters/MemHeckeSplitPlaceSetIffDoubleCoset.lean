@@ -15,6 +15,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TSetDoubleCoset
 
+/- English proof (translation)
+Introduce `v hv`. Establish `e : ((x * y : GA L n).1 : Matrix (Fin n) (Fin n) (AL L)) = (x.1 : Matrix (Fin n) (Fin n) (AL L)) * (y.1 : Matrix (Fin n) (Fin n) (AL L))` using `rfl`. Rewrite using `[e, Matrix.map_mul, hx v hv, hy v hv, Matrix.mul_one]`.
+-/
 theorem trivOutside_mul {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {x y : GA L n}
     (hx : TrivOutside T x) (hy : TrivOutside T y) : TrivOutside T (x * y) := by
@@ -23,6 +26,11 @@ theorem trivOutside_mul {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
       (x.1 : Matrix (Fin n) (Fin n) (AL L)) * (y.1 : Matrix (Fin n) (Fin n) (AL L)) := rfl
   rw [e, Matrix.map_mul, hx v hv, hy v hv, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => by ext i j; exact congrFun (congrFun h i) j`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`. Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`.
+
+Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+-/
 theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ a b, g.val a b ∈ O) (h2 : ∀ a b, (g⁻¹).val a b ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have inj : Function.Injective (O.subtype.mapMatrix (m := Fin n)) :=
@@ -35,6 +43,11 @@ theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring K) (g :
   · rw [map_mul, hA, hB, map_one, Units.mul_inv]
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
+/- English proof (translation)
+Apply `mem_GLint_of_entries` to reduce the goal to its premises. Introduce `a b`. Conclude with `GlobalTheory.splitPlace_proj_mem_integers_of_integral s (hk a b)`. Introduce `a b`. Rewrite using `[← map_inv]`.
+
+Conclude with `GlobalTheory.splitPlace_proj_mem_integers_of_integral s ((Umax L n).inv_mem hk a b)`.
+-/
 theorem loc_mem_GLint {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L)
     {k : GA L n} (hk : k ∈ Umax L n) :
     s.loc n k ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring := by
@@ -45,6 +58,17 @@ theorem loc_mem_GLint {L : Type} [Field L] [NumberField L] [IsCMField L] {n : �
     rw [← map_inv]
     exact GlobalTheory.splitPlace_proj_mem_integers_of_integral s ((Umax L n).inv_mem hk a b)
 
+/- English proof (translation)
+Introduce `L _ _ _ n sp ϖ k x₀ hx₀ κ`. Take `⟨hx₀t, a₀, ha₀, b₀, hb₀, hx₀e⟩` from `hx₀`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hκt, a, ha, b, hb, hκe⟩`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n sp`.
+
+Establish `hg : a * a₀⁻¹ ∈ Formalism.UG.GLint (Fin n) (sp.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring` using `mul_mem ha (inv_mem ha₀)`. Establish `hg' : b₀⁻¹ * b ∈ Formalism.UG.GLint (Fin n) (sp.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring` using `mul_mem (inv_mem hb₀) hb`. Use `⟨e (a * a₀⁻¹), ⟨GlobalTheory.SplitHeckeComm.mem_Umax_of_loc sp _ (he1 _) (by rw [he2]; exact hg), he1 _⟩, e (b₀⁻¹ * b), ⟨GlobalTheory.SplitHeckeComm.mem_Umax_of_loc sp _ (he1 _) (by rw [he2]; exact hg'), he1 _⟩, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.SplitLocEq.eq_of_trivOutside_of_loc_eq L n sp` to reduce the goal to its premises. Conclude with `hκt`.
+
+Conclude with `trivOutside_mul (trivOutside_mul (he1 _) hx₀t) (he1 _)`. Rewrite using `[map_mul, map_mul, he2, he2]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul]`. Rewrite using `[hκe, hx₀e]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left]`. Introduce and unpack `⟨k₁, ⟨hk₁, hk₁t⟩, k₂, ⟨hk₂, hk₂t⟩, rfl⟩`. Use `⟨trivOutside_mul (trivOutside_mul hk₁t hx₀t) hk₂t, sp.loc n k₁ * a₀, mul_mem (loc_mem_GLint sp hk₁) ha₀, b₀ * sp.loc n k₂, mul_mem hb₀ (loc_mem_GLint sp hk₂), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Simplify using `only [Units.val_mul]`.
+
+Rewrite using `[hx₀e]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem mem_tSet_iff : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (sp : SplitPlace L) (ϖ : (sp.v).adicCompletion (maximalRealSubfield L)) (k : ℕ), ∀ x₀ ∈ Formalism.AUTREP.tSet L n sp ϖ k, ∀ κ, κ ∈ Formalism.AUTREP.tSet L n sp ϖ k ↔ ∃ k₁, (k₁ ∈ Umax L n ∧ TrivOutside {sp.v} k₁) ∧ ∃ k₂, (k₂ ∈ Umax L n ∧ TrivOutside {sp.v} k₂) ∧ κ = k₁ * x₀ * k₂ := by
   intro L _ _ _ n sp ϖ k x₀ hx₀ κ
   obtain ⟨hx₀t, a₀, ha₀, b₀, hb₀, hx₀e⟩ := hx₀

@@ -10,6 +10,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+Establish `hba : b ≠ a` using `ne_of_gt hab`. Establish `hc` using `hR a b b a he he.symm`. Simplify using `only [if_true] at hc`. Establish `hx` using `congrArg (fun F : Module.End ℂ V => F w) hc`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hw.2 a b hab he, map_zero, sub_zero] at hx`.
+
+Establish `h1` using `hU b a he.symm w (A b a w)`. Rewrite using `[h1, hx, hw.1 a, hw.1 b, ← sub_smul, inner_smul_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_lower_self {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     {ε : Fin n → Bool} {A : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {w : V}
     (hR : Formalism.REAL.KRel ε A) (hU : Formalism.REAL.KUnit ε A) (hw : Formalism.REAL.KHighest ε A Λ w)
@@ -25,6 +30,13 @@ theorem inner_lower_self {V : Type*} [NormedAddCommGroup V] [InnerProductSpace �
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `a b hab he`. Establish `h` using `inner_lower_self (KType.kRel T) (KType.kUnit T) (KType.kHighest_w T) hab he`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, T.w_norm]`. Establish `h2 : ‖kunits T b a T.w‖ ^ 2 = Λ a - Λ b`. Establish `h' : ((‖kunits T b a T.w‖ ^ 2 : ℝ) : ℂ) = ((Λ a - Λ b : ℝ) : ℂ)`.
+
+Establish `h0` using `h`. Simplify using `only [RCLike.ofReal_one, one_pow, mul_one] at h0`. Simplify using `using h0`. Conclude with `Complex.ofReal_injective h'`. Establish `h3 : (0 : ℝ) ≤ ‖kunits T b a T.w‖ ^ 2` using `sq_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kType_dom {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : KDom ε Λ := by
   intro a b hab he
   have h := inner_lower_self (KType.kRel T) (KType.kUnit T) (KType.kHighest_w T) hab he
@@ -38,11 +50,17 @@ theorem kType_dom {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KTyp
   have h3 : (0 : ℝ) ≤ ‖kunits T b a T.w‖ ^ 2 := sq_nonneg _
   linarith
 
+/- English proof (translation)
+Introduce `n ε Λ T` and use `⟨hint n ε Λ T, kType_dom T⟩`.
+-/
 theorem kTypeIntDom_of
     (hint : ∀ (n : ℕ) (ε : Fin n → Bool) (Λ : Fin n → ℝ) (_T : KType ε Λ), ∀ a, ∃ m : ℤ, Λ a = m) :
     KTypeIntDomStatement :=
   fun n ε Λ T => ⟨hint n ε Λ T, kType_dom T⟩
 
+/- English proof (translation)
+The claim follows from `kTypeIntDom_of fun _ _ _ T => kType_int T`.
+-/
 theorem kTypeIntDom : KTypeIntDomStatement :=
   kTypeIntDom_of fun _ _ _ T => kType_int T
 

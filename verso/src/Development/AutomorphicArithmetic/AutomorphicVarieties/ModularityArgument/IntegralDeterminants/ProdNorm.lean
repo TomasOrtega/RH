@@ -10,27 +10,51 @@ section SlopeTestRemainingChoices
 
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_mul (x y : ℂ) : nu ι (x * y) = nu ι x * nu ι y := by
   simp [nu]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_pow (x : ℂ) (n : ℕ) : nu ι (x ^ n) = nu ι x ^ n := by
   simp [nu]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_inv (x : ℂ) : nu ι x⁻¹ = (nu ι x)⁻¹ := by
   simp [nu]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_neg (x : ℂ) : nu ι (-x) = nu ι x := by
   simp [nu]
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 private theorem nu_nonneg (x : ℂ) : 0 ≤ nu ι x := norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 ((map_ne_zero ι.symm).2 hx)`.
+-/
 private theorem nu_pos {x : ℂ} (hx : x ≠ 0) : 0 < nu ι x :=
   norm_pos_iff.2 ((map_ne_zero ι.symm).2 hx)
 
+/- English proof (translation)
+Simplify using `[nu, map_prod, norm_prod]`.
+-/
 private theorem nu_prod {α : Type*} (s : Finset α) (f : α → ℂ) :
     nu ι (∏ i ∈ s, f i) = ∏ i ∈ s, nu ι (f i) := by
   simp [nu, map_prod, norm_prod]
 
+/- English proof (translation)
+Take `⟨u, ψ, h1, h2, h3⟩` from `placeHom l ι E τ`. Take `rfl` from `(h3 w).1 hτ`. Establish `h` using `h2 (algebraMap E _ a)`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) a) = w.valuation E a` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a`. Rewrite `h` using `[h1, hv]`. Then use the resulting hypothesis.
+-/
 private theorem nu_le_one_iff {w : HeightOneSpectrum (𝓞 E)} {τ : E →+* ℂ} (hτ : τ ∈ Ov ι w)
     (a : E) : nu ι (τ a) ≤ 1 ↔ w.valuation E a ≤ 1 := by
   obtain ⟨u, ψ, h1, h2, h3⟩ := placeHom l ι E τ
@@ -40,6 +64,11 @@ private theorem nu_le_one_iff {w : HeightOneSpectrum (𝓞 E)} {τ : E →+* ℂ
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a
   rwa [h1, hv] at h
 
+/- English proof (translation)
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `h1` using `(nu_le_one_iff ι hτ a).2 ha.le`. Establish `h2` using `(nu_le_one_iff ι hτ a⁻¹).2 (by rw [map_inv₀, ha, inv_one])`.
+
+Rewrite `h2` using `[map_inv₀, nu_inv]`. Establish `hp` using `nu_pos ι ((map_ne_zero τ).2 ha0)`. Conclude with `le_antisymm h1 ((inv_le_one₀ hp).1 h2)`.
+-/
 private theorem nu_eq_one {w : HeightOneSpectrum (𝓞 E)} {τ : E →+* ℂ} (hτ : τ ∈ Ov ι w)
     {a : E} (ha : w.valuation E a = 1) : nu ι (τ a) = 1 := by
   have ha0 : a ≠ 0 := by
@@ -51,14 +80,23 @@ private theorem nu_eq_one {w : HeightOneSpectrum (𝓞 E)} {τ : E →+* ℂ} (h
   have hp := nu_pos ι ((map_ne_zero τ).2 ha0)
   exact le_antisymm h1 ((inv_le_one₀ hp).1 h2)
 
+/- English proof (translation)
+Take `⟨u, _, _, _, h3⟩` from `placeHom l ι E τ`. Conclude with `⟨u, (h3 u).2 rfl⟩`.
+-/
 private theorem exists_place (τ : E →+* ℂ) : ∃ u : HeightOneSpectrum (𝓞 E), τ ∈ Ov ι u := by
   obtain ⟨u, _, _, _, h3⟩ := placeHom l ι E τ
   exact ⟨u, (h3 u).2 rfl⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_place ι τ`. Conclude with `(nu_le_one_iff ι hu _).2 (u.valuation_le_one x)`.
+-/
 private theorem nu_int (τ : E →+* ℂ) (x : 𝓞 E) : nu ι (τ x) ≤ 1 := by
   obtain ⟨u, hu⟩ := exists_place ι τ
   exact (nu_le_one_iff ι hu _).2 (u.valuation_le_one x)
 
+/- English proof (translation)
+Establish `h` using `unif_spec w`. Unfold `IsUnifAt at h`. Establish `h' : Valued.v (algebraMap E (w.adicCompletion E) (unif w : E)) = WithZero.exp (-1 : ℤ)` using `h`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) (unif w : E)) = w.valuation E (unif w : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Rewrite `h'` using `[hv]`. Then use the resulting hypothesis.
+-/
 private theorem val_unif (w : HeightOneSpectrum (𝓞 E)) :
     w.valuation E (unif w : E) = WithZero.exp (-1 : ℤ) := by
   have h := unif_spec w
@@ -68,6 +106,13 @@ private theorem val_unif (w : HeightOneSpectrum (𝓞 E)) :
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _
   rwa [hv] at h'
 
+/- English proof (translation)
+Set `I0 : (Ideal (𝓞 E))⁰` to `⟨w.asIdeal, mem_nonZeroDivisors_of_ne_zero w.ne_bot⟩`. Take `⟨J, hJ⟩ : ∃ J : (Ideal (𝓞 E))⁰, J = I0 ^ Nat.card (ClassGroup (𝓞 E))` from `⟨_, rfl⟩`. Establish `h1 : ClassGroup.mk0 J = 1`. Rewrite using `[hJ, map_pow, pow_card_eq_one']`. Establish `h2 : (J : Ideal (𝓞 E)).IsPrincipal` using `(ClassGroup.mk0_eq_one_iff J.2).1 h1`.
+
+Establish `h3 : (J : Ideal (𝓞 E)) = w.asIdeal ^ Nat.card (ClassGroup (𝓞 E))`. Rewrite using `[hJ]`. Both sides reduce to the same expression. Take `⟨⟨α, hα⟩⟩` from `h2`. Establish `hα' : Ideal.span {α} = w.asIdeal ^ Nat.card (ClassGroup (𝓞 E))`.
+
+Rewrite using `[← h3, hα]`. Use `⟨_, Nat.card_pos.ne', α, ?_, hα'⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hα'` using `[Ideal.span_singleton_zero]`. Conclude with `pow_ne_zero _ w.ne_bot hα'.symm`.
+-/
 private theorem exists_gen (w : HeightOneSpectrum (𝓞 E)) :
     ∃ h : ℕ, h ≠ 0 ∧ ∃ α : 𝓞 E, α ≠ 0 ∧ Ideal.span {α} = w.asIdeal ^ h := by
   let I0 : (Ideal (𝓞 E))⁰ := ⟨w.asIdeal, mem_nonZeroDivisors_of_ne_zero w.ne_bot⟩
@@ -86,6 +131,9 @@ private theorem exists_gen (w : HeightOneSpectrum (𝓞 E)) :
   rw [Ideal.span_singleton_zero] at hα'
   exact pow_ne_zero _ w.ne_bot hα'.symm
 
+/- English proof (translation)
+Establish `h1 : w.valuation E (α : E) = w.intValuation α` using `w.valuation_of_algebraMap α`. Rewrite using `[h1, w.intValuation_eq_exp_neg_multiplicity h0, hs, val_unif, ← WithZero.exp_nsmul]`. Establish `hm : multiplicity w.asIdeal (w.asIdeal ^ h) = h` using `multiplicity_pow_self w.ne_bot (by simpa using w.isPrime.ne_top) h`. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+-/
 private theorem val_gen (w : HeightOneSpectrum (𝓞 E)) {h : ℕ} {α : 𝓞 E} (h0 : α ≠ 0)
     (hs : Ideal.span {α} = w.asIdeal ^ h) :
     w.valuation E (α : E) = (w.valuation E (unif w : E)) ^ h := by
@@ -96,6 +144,11 @@ private theorem val_gen (w : HeightOneSpectrum (𝓞 E)) {h : ℕ} {α : 𝓞 E}
   rw [hm]
   simp
 
+/- English proof (translation)
+Establish `hα : α ∉ u.asIdeal`. Introduce `hm`. Establish `hle : w.asIdeal ^ h ≤ u.asIdeal`. Rewrite using `[← hs, Ideal.span_singleton_le_iff_mem]`. Conclude with `hm`.
+
+Establish `hwu : w.asIdeal ≤ u.asIdeal` using `u.isPrime.le_of_pow_le hle`. Conclude with `hne (HeightOneSpectrum.ext (w.isMaximal.eq_of_le u.isPrime.ne_top hwu).symm)`. Establish `hmem` using `(Finset.mem_filter.1 hτ).2 α`. Conclude with `le_antisymm (nu_int ι τ α) (not_lt.1 (fun hlt => hα (hmem.2 hlt)))`.
+-/
 private theorem nu_gen_off {w u : HeightOneSpectrum (𝓞 E)} {h : ℕ} {α : 𝓞 E}
     (hs : Ideal.span {α} = w.asIdeal ^ h) (hne : u ≠ w) {τ : E →+* ℂ} (hτ : τ ∈ Ov ι u) :
     nu ι (τ α) = 1 := by
@@ -109,6 +162,11 @@ private theorem nu_gen_off {w u : HeightOneSpectrum (𝓞 E)} {h : ℕ} {α : �
   have hmem := (Finset.mem_filter.1 hτ).2 α
   exact le_antisymm (nu_int ι τ α) (not_lt.1 (fun hlt => hα (hmem.2 hlt)))
 
+/- English proof (translation)
+Establish `h1` using `Algebra.norm_eq_prod_embeddings ℚ ℂ (α : E)`. Establish `h2 : ((Algebra.norm ℤ α : ℤ) : ℚ) = Algebra.norm ℚ (α : E)` using `Algebra.coe_norm_int α`. Rewrite `h1` using `[← h2]`. Establish `h3 : ((Algebra.norm ℤ α : ℤ) : ℂ) = ∏ σ : E →ₐ[ℚ] ℂ, σ (α : E)`. Rewrite using `[← h1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h3]`. Conclude with `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) _ _ (fun τ => rfl)`.
+-/
 private theorem prod_emb (α : 𝓞 E) :
     ∏ τ : E →+* ℂ, τ (α : E) = ((Algebra.norm ℤ α : ℤ) : ℂ) := by
   have h1 := Algebra.norm_eq_prod_embeddings ℚ ℂ (α : E)
@@ -122,6 +180,25 @@ private theorem prod_emb (α : 𝓞 E) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ ι E _ _ w`. Establish `hlt : ∀ τ ∈ Ov ι w, 0 < nu ι (τ (unif w : E)) ∧ nu ι (τ (unif w : E)) < 1`. Introduce `τ hτ`. Establish `hp` using `nu_pos ι ((map_ne_zero τ).2 (unif w).ne_zero)`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ¬ w.valuation E (unif w : E)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, val_unif, not_le, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.2 one_pos`. Rewrite `h1` using `[← nu_le_one_iff ι hτ, map_inv₀, nu_inv, not_le]`. Conclude with `(one_lt_inv₀ hp).1 h1`.
+
+Use `⟨hlt, ?_⟩` and prove the remaining obligations. Take `⟨h, hh, α, h0, hs⟩` from `exists_gen w`. Establish `hon : ∀ τ ∈ Ov ι w, nu ι (τ α) = nu ι (τ (unif w : E)) ^ h`. Introduce `τ hτ`. Establish `hv : w.valuation E ((α : E) / (unif w : E) ^ h) = 1`.
+
+Establish `hu : w.valuation E (unif w : E) ≠ 0`. Rewrite using `[val_unif]`. Conclude with `WithZero.exp_ne_zero`. Rewrite using `[map_div₀, map_pow, val_gen w h0 hs, div_self (pow_ne_zero _ hu)]`. Establish `h1` using `nu_eq_one ι hτ hv`.
+
+Establish `hp` using `nu_pos ι ((map_ne_zero τ).2 (unif w).ne_zero)`. Rewrite `h1` using `[map_div₀, map_pow, div_eq_mul_inv, nu_mul, nu_inv, nu_pow]`. Conclude with `(mul_inv_eq_one₀ (pow_ne_zero _ hp.ne')).1 h1`. Establish `hoff : ∀ τ ∈ (Finset.univ : Finset (E →+* ℂ)), τ ∉ Ov ι w → nu ι (τ α) = 1`. Introduce `τ _ hτ`.
+
+Take `⟨u, hu⟩` from `exists_place ι τ`. Establish `hne : u ≠ w`. Introduce and unpack `rfl`. Conclude with `hτ hu`. Conclude with `nu_gen_off ι hs hne hu`.
+
+Establish `hall : nu ι ((Algebra.norm ℤ α : ℤ) : ℂ) = (∏ τ ∈ Ov ι w, nu ι (τ (unif w : E))) ^ h`. Rewrite using `[← prod_emb, nu_prod, ← Finset.prod_subset (Finset.subset_univ (Ov ι w)) hoff, Finset.prod_congr rfl hon, Finset.prod_pow]`. Establish `hnorm : (Algebra.norm ℤ α).natAbs = normV w ^ h`. Rewrite using `[← Ideal.absNorm_span_singleton, hs, map_pow]`. Both sides reduce to the same expression.
+
+Establish `hN : nu ι ((Algebra.norm ℤ α : ℤ) : ℂ) = nu ι (normV w : ℂ) ^ h`. Rewrite using `[← nu_pow]`. Break down `Int.natAbs_eq (Algebra.norm ℤ α) with he | he` into its components or cases. Rewrite using `[he, hnorm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he, hnorm]`. Simplify using `[nu_neg]`. Establish `hfin` using `hall.symm.trans hN`. Conclude with `(pow_left_inj₀ (Finset.prod_nonneg fun _ _ => nu_nonneg ι _) (nu_nonneg ι _) hh).1 hfin`.
+-/
 theorem prodNorm : ProdNorm := by
   intro l _ ι E _ _ w
   have hlt : ∀ τ ∈ Ov ι w, 0 < nu ι (τ (unif w : E)) ∧ nu ι (τ (unif w : E)) < 1 := by

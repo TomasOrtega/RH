@@ -27,5 +27,8 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPartIrrAdm.irreducible_admissible | exact GlobalTheory.FinPartIrrAdm.irreducible_admissible | (intros; apply GlobalTheory.FinPartIrrAdm.irreducible_admissible <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_part_irreducible_admissible : GlobalTheory.Published.FlathFactorisation → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → HasDSComp M π → ∀ hU : IsSubrep π ⊤, (finPartDSSm M hU).IsIrreducible ∧ IsAdmissible (finPartDSSm M hU) := by
   first | exact @GlobalTheory.FinPartIrrAdm.irreducible_admissible | exact GlobalTheory.FinPartIrrAdm.irreducible_admissible | (intros; apply GlobalTheory.FinPartIrrAdm.irreducible_admissible <;> assumption)

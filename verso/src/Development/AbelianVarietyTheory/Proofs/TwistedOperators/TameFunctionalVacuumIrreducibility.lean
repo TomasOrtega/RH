@@ -18,6 +18,19 @@ namespace GlobalTheory.Irr
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : BorelSpace (Mx D T.rank S.rank) := ⟨rfl⟩`. Use `haveI : DiscreteTopology (ratMx D T.rank S.rank) := i5`. Use `haveI : Countable (ratMx D T.rank S.rank) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨hμ, hF, h1⟩` from `v.covol`.
+
+Use `haveI := hμ`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Take `⟨C, hC⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Establish `e : ∀ w, f₀ w * star (f₀ w) = ((‖f₀ w‖ ^ 2 : ℝ) : ℂ)` using `fun w => by`. Rewrite using `[Complex.star_def, Complex.mul_conj']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hint : Integrable (fun w => ‖f₀ w‖ ^ 2) (v.μ.restrict v.𝓕)` using `Integrable.of_bound (hf.cont.norm.pow 2).measurable.aestronglyMeasurable (C ^ 2) (Filter.Eventually.of_forall fun w => by`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hC w) 2)`.
+
+Introduce `h0`. Establish `h2 : (∫ w in v.𝓕, ‖f₀ w‖ ^ 2 ∂v.μ) = 0`. Establish `: thPair v.μ v.𝓕 f₀ f₀ = ((∫ w in v.𝓕, ‖f₀ w‖ ^ 2 ∂v.μ : ℝ) : ℂ)`. Unfold `thPair`. Repeatedly rewrite using `[e]`.
+
+Conclude with `integral_ofReal`. Rewrite `h0` using `[this]`. Conclude with `h0` after adjusting the coercions. Establish `h3 : ∫⁻ w in v.𝓕, ‖f₀ w‖ₑ ^ 2 ∂v.μ = 0`. Establish `en : ∀ z : ℂ, ‖z‖ₑ ^ 2 = ENNReal.ofReal (‖z‖ ^ 2)` using `fun z => by`.
+
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Repeatedly rewrite using `[en]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun w => by positivity), h2, ENNReal.ofReal_zero]`. Conclude with `hne (GlobalTheory.OrientedHeis.eq_zero_of_lintegral_eq_zero (ratMx D T.rank S.rank) v.μ v.𝓕 hF f₀ hf.cont (fun γ hγ w => GlobalTheory.OrientedHeis.theta_norm_periodic hψ hf γ hγ w) h3)`.
+-/
 theorem thPair_self_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     (v : VolM D T.rank S.rank) {f₀ : WO S T → ℂ} (hf : IsThetaFunO ψ S T f₀) (hne : f₀ ≠ 0) :
     thPair v.μ v.𝓕 f₀ f₀ ≠ 0 := by
@@ -54,6 +67,15 @@ theorem thPair_self_ne_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D 
   exact hne (GlobalTheory.OrientedHeis.eq_zero_of_lintegral_eq_zero (ratMx D T.rank S.rank) v.μ v.𝓕 hF f₀ hf.cont
     (fun γ hγ w => GlobalTheory.OrientedHeis.theta_norm_periodic hψ hf γ hγ w) h3)
 
+/- English proof (translation)
+Introduce `D ψ hψ S T Γ ℓ hℓ f₀ hf₀ hne hann f hf`. Take `⟨v⟩` from `(GlobalTheory.Unf.VolExist.measures_exist D).2.2.1 T.rank S.rank`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : BorelSpace (Mx D T.rank S.rank) := ⟨rfl⟩`. Use `haveI := v.covol.1`.
+
+Use `haveI : SFinite v.μ := inferInstance`. Take `⟨hint, hmoy⟩` from `GlobalTheory.T.moyal_orthogonality_heisenberg_thetaFunctions D ψ hψ S T v f f₀ hf.1 hf₀.1`. Establish `heq : (fun x => ∫ w, thPair v.μ v.𝓕 f (heisO ψ S T w f₀) * heisO ψ S T w f₀ x ∂v.μ) = thPair v.μ v.𝓕 f₀ f₀ • f` using `funext fun x => by rw [hmoy x]; rfl`. Establish `hth : IsThetaFunO ψ S T (fun x => ∫ w, thPair v.μ v.𝓕 f (heisO ψ S T w f₀) * heisO ψ S T w f₀ x ∂v.μ)`. Rewrite using `[heq]`.
+
+Conclude with `GlobalTheory.OrientedHeis.theta_smul _ hf.1`. Establish `hsup` using `hℓ.sup f₀ hf₀.1 v.μ _ hint hth`. Rewrite `hsup` using `[heq, hℓ.smul _ _ hf.1]`. Establish `hz : ∀ w, thPair v.μ v.𝓕 f (heisO ψ S T w f₀) * ℓ (heisO ψ S T w f₀) = 0` using `fun w => by`. Distinguish the cases in `hw : w ∈ Ann ψ S T Γ`.
+
+Rewrite using `[hann w hw, mul_zero]`. Rewrite using `[(GlobalTheory.T.heisenbergVacuumCommutant_preserves_latticeVacua D ψ hψ S T Γ).2.2 v f f₀ hf hf₀ w hw, zero_mul]`. Rewrite `hsup` using `[hz, integral_zero]`. Conclude with `(mul_eq_zero.1 hsup).resolve_left (thPair_self_ne_zero hψ v hf₀.1 hne)`.
+-/
 theorem irr : ∀ D : D7, Irr D := by
   intro D ψ hψ S T Γ ℓ hℓ f₀ hf₀ hne hann f hf
   obtain ⟨v⟩ := (GlobalTheory.Unf.VolExist.measures_exist D).2.2.1 T.rank S.rank

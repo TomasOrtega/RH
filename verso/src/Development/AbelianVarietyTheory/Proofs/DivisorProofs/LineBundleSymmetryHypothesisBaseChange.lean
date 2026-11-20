@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Introduce `K K' _ _ f P P' ψ h hS`. Use `letI := P.isAb.comm`. Use `letI := P'.isAb.comm`. Conclude with `GlobalTheory.SymBaseChange.hypS_baseChange _ _ P.A P'.A (spMap f) ψ P.L P'.L P.isLB P'.isLB h.2.1 h.2.2.symm hS`.
+-/
 theorem hypS_of_isPolFibre : ∀ (K K' : Type) [Field K] [Field K'] (f : K →+* K') (P : PolAV (Sp K)) (P' : PolAV (Sp K')) (ψ : P'.A.left ⟶ P.A.left), IsPolFibre f P P' ψ → (letI := P.isAb.comm; GlobalTheory.ZH.HypS P.A P.L) → (letI := P'.isAb.comm; GlobalTheory.ZH.HypS P'.A P'.L) := by
   intro K K' _ _ f P P' ψ h hS
   letI := P.isAb.comm

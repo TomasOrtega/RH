@@ -5,6 +5,15 @@ open Formalism.NG (KO)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p O _ _ _ _ hP y`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hdvd : ϖ ∣ (p : O)`. Establish `h` using `hP.p_mem`. Rewrite `h` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+
+Conclude with `h`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) y`. Simplify using `only`. Establish `hb : (b : O) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`.
+
+Establish `hbk : (b : O) ∣ (p : O) ^ k`. Rewrite using `[hu]`. Conclude with `(Units.mul_left_dvd).mpr (pow_dvd_pow_of_dvd hdvd k)`. Take `⟨c, hc⟩` from `hbk`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap, LinearMap.lsmul_apply, Submodule.mem_one]`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hc, map_mul, map_mul, mul_assoc, mul_left_comm, IsLocalization.mk'_spec']`.
+-/
 theorem padicCoeff_exists_pow_smul_mem_one :
     ∀ {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O],
     PadicCoeff p O → ∀ y : FractionRing O,

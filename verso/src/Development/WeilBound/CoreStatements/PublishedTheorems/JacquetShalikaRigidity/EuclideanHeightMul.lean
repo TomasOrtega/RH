@@ -17,6 +17,11 @@ open GroundTheory.Automorphic
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
+/- English proof (translation)
+Establish `h : ∀ x : Fin n → F, Reduction.euclidNorm x = ‖(WithLp.toLp 2 x : PiLp 2 (fun _ : Fin n => F))‖`. Introduce `x`. Rewrite using `[PiLp.norm_eq_of_L2]`. Both sides reduce to the same expression. Rewrite using `[h, h, h, WithLp.toLp_add]`.
+
+Conclude with `norm_add_le _ _`.
+-/
 theorem euclid_add {F : Type*} [NormedField F] {n : ℕ} (y z : Fin n → F) :
     Reduction.euclidNorm (y + z) ≤ Reduction.euclidNorm y + Reduction.euclidNorm z := by
   have h : ∀ x : Fin n → F, Reduction.euclidNorm x = ‖(WithLp.toLp 2 x : PiLp 2 (fun _ : Fin n => F))‖ := by
@@ -24,6 +29,9 @@ theorem euclid_add {F : Type*} [NormedField F] {n : ℕ} (y z : Fin n → F) :
   rw [h, h, h, WithLp.toLp_add]
   exact norm_add_le _ _
 
+/- English proof (translation)
+Establish `e : z ᵥ* M = z + z ᵥ* (M - 1)` using `by rw [Matrix.vecMul_sub, Matrix.vecMul_one]; abel`. Rewrite using `[e]`. Use `(euclid_add _ _).trans ?_` and prove the remaining obligations. Use `Reduction.euclidNorm_vecMul_le hm hM z` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem euclid_vecMul_near {F : Type*} [NormedField F] {n : ℕ} {M : Matrix (Fin n) (Fin n) F} {m : ℝ}
     (hm : 0 ≤ m) (hM : ∀ i j, ‖(M - 1) i j‖ ≤ m) (z : Fin n → F) :
     Reduction.euclidNorm (z ᵥ* M) ≤ (1 + √n * (n * m)) * Reduction.euclidNorm z := by
@@ -39,6 +47,15 @@ def Vn (m : ℝ) : Set (GA E k) :=
     ∀ v, v ∉ (∅ : Finset (HeightOneSpectrum (𝓞 E))) →
       Reduction.finAt v c ∈ GLnLocal.integralGL (v.adicCompletion E) k}
 
+/- English proof (translation)
+Establish `hinf : ∀ᶠ c in 𝓝 (1 : GA E k), ∀ w : InfinitePlace E, ∀ i j, ‖((Reduction.infAt w c : Matrix (Fin k) (Fin k) w.Completion) - 1) i j‖ < m`. Use `Filter.eventually_all.2 fun w => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun c : GA E k => ‖((Reduction.infAt w c : Matrix (Fin k) (Fin k) w.Completion) - 1) i j‖`. Simplify using `only [Matrix.sub_apply]`. Conclude with `(((Reduction.continuous_GL_apply i j).comp (Reduction.continuous_infAt w)).sub continuous_const).norm`.
+
+Establish `h1 : ‖((Reduction.infAt w (1 : GA E k) : Matrix (Fin k) (Fin k) w.Completion) - 1) i j‖ = 0`. Simplify using `[Reduction.infAt]`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by rw [h1]; exact hm)`. Establish `hfin` using `(Reduction.isOpen_setOf_forall_not_mem_imp (K := E) (n := k) ∅).mem_nhds (fun v _ => by`. Establish `h1 : Reduction.finAt v (1 : GA E k) = 1`.
+
+Establish `h` using `Reduction.finAt_mul (K := E) (n := k) v 1 1`. Rewrite `h` using `[mul_one]`. Conclude with `left_eq_mul.1 h`. Rewrite using `[h1]`. Conclude with `Subgroup.one_mem _)`.
+
+Use `filter_upwards [hinf, hfin] with c h1 h2`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem Vn_mem {m : ℝ} (hm : 0 < m) : Vn (E := E) (k := k) m ∈ 𝓝 (1 : GA E k) := by
   have hinf : ∀ᶠ c in 𝓝 (1 : GA E k), ∀ w : InfinitePlace E, ∀ i j,
       ‖((Reduction.infAt w c : Matrix (Fin k) (Fin k) w.Completion) - 1) i j‖ < m := by
@@ -60,6 +77,11 @@ theorem Vn_mem {m : ℝ} (hm : 0 < m) : Vn (E := E) (k := k) m ∈ 𝓝 (1 : GA 
   filter_upwards [hinf, hfin] with c h1 h2
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Establish `hy` using `Reduction.hasFiniteContent_height g hξ`. Establish `e : Reduction.height (g * c) ξ = Reduction.adelicNorm ((Reduction.ratVec ξ ᵥ* (g : Matrix (Fin k) (Fin k) (Ad E))) ᵥ* (c : Matrix (Fin k) (Fin k) (Ad E)))`. Rewrite using `[Reduction.height, Units.val_mul, ← Matrix.vecMul_vecMul]`. Rewrite using `[e, Reduction.height]`. Use `Reduction.adelicNorm_le_of_local (hy.vecMul c) hy (fun _ => 1 + √k * (k * m)) (fun _ => 1) ∅ (fun w => ?_) (fun _ _ => rfl) (fun v => ?_)` as an intermediate fact.
+
+Simplify `this` using `only [Finset.prod_empty, mul_one]`. Rewrite using `[Reduction.infComp_vecMul_GL]`. Conclude with `euclid_vecMul_near hm (fun i j => (hc.1 w i j).le) _`. Rewrite using `[Reduction.finComp_vecMul_GL, Reduction.norm_vecMul_integralGL v (hc.2 v (Finset.notMem_empty v)), one_mul]`.
+-/
 theorem height_mul_le {m : ℝ} (hm : 0 ≤ m) {c : GA E k} (hc : c ∈ Vn m) (g : GA E k) {ξ : Fin k → E}
     (hξ : ξ ≠ 0) : Reduction.height (g * c) ξ ≤
       (∏ w : InfinitePlace E, (1 + √k * (k * m)) ^ w.mult) * Reduction.height g ξ := by
@@ -75,6 +97,9 @@ theorem height_mul_le {m : ℝ} (hm : 0 ≤ m) {c : GA E k} (hc : c ∈ Vn m) (g
     exact euclid_vecMul_near hm (fun i j => (hc.1 w i j).le) _
   · rw [Reduction.finComp_vecMul_GL, Reduction.norm_vecMul_integralGL v (hc.2 v (Finset.notMem_empty v)), one_mul]
 
+/- English proof (translation)
+Establish `hcont : Continuous fun m : ℝ => ∏ w : InfinitePlace E, (1 + √k * (k * m)) ^ w.mult` using `by fun_prop`. Establish `hev : ∀ᶠ m in 𝓝 (0 : ℝ), (∏ w : InfinitePlace E, (1 + √k * (k * m)) ^ w.mult) < s` using `hcont.continuousAt.eventually_lt continuousAt_const (by simpa using hs)`. Take `⟨m, hm, h⟩` from `hev.exists_gt`. Conclude with `⟨m, hm, h.le⟩`.
+-/
 theorem exists_m {s : ℝ} (hs : 1 < s) :
     ∃ m : ℝ, 0 < m ∧ (∏ w : InfinitePlace E, (1 + √k * (k * m)) ^ w.mult) ≤ s := by
   have hcont : Continuous fun m : ℝ => ∏ w : InfinitePlace E, (1 + √k * (k * m)) ^ w.mult := by
@@ -92,6 +117,17 @@ open GroundTheory.Automorphic
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
+/- English proof (translation)
+Establish `hs : 1 < √r`. Rewrite using `[show (1 : ℝ) = √1 by simp]; exact Real.sqrt_lt_sqrt zero_le_one hr`. Take `⟨m, hm, hprod⟩` from `exists_m (E := E) (k := k) hs`. Establish `hD1 : Dt (1 : GA E k) = 1`. Establish `h` using `hDmul 1 1`.
+
+Rewrite `h` using `[mul_one]`. Conclude with `(mul_left_cancel₀ (hDpos 1).ne' (h.symm.trans (mul_one _).symm))`. Establish `hcont : ContinuousAt (fun c : GA E k => (Dt c ^ (k : ℝ)⁻¹)⁻¹) 1` using `((hDcont.rpow_const (fun _ => Or.inr (by positivity))).inv₀ (fun c => (Real.rpow_pos_of_pos (hDpos c) _).ne')).continuousAt`. Establish `hev : ∀ᶠ c in 𝓝 (1 : GA E k), (Dt c ^ (k : ℝ)⁻¹)⁻¹ < √r` using `hcont.eventually_lt continuousAt_const (by simpa [hD1] using hs)`. Use `⟨{c | c ∈ Vn m ∧ (Dt c ^ (k : ℝ)⁻¹)⁻¹ < √r}, Filter.inter_mem (Vn_mem hm) hev, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `c ⟨hc, hc2⟩ g ξ hξ`. Establish `h1` using `height_mul_le hm.le hc g hξ`. Establish `hh0 : 0 ≤ Reduction.height g ξ` using `Reduction.height_nonneg _ _`. Establish `ha : 0 < Dt g ^ (k : ℝ)⁻¹` using `Real.rpow_pos_of_pos (hDpos g) _`. Establish `hb : 0 < Dt c ^ (k : ℝ)⁻¹` using `Real.rpow_pos_of_pos (hDpos c) _`.
+
+Establish `hs0 : 0 ≤ √r` using `Real.sqrt_nonneg r`. Unfold `ht`. Rewrite using `[hDmul, Real.mul_rpow (hDpos g).le (hDpos c).le]`. Establish `h2 : Reduction.height (g * c) ξ ≤ √r * Reduction.height g ξ` using `h1.trans (mul_le_mul_of_nonneg_right hprod hh0)`. Combine the equalities or inequalities in the displayed calculation.
+
+Clear the denominators using the available nonvanishing facts. Use `_ ≤ (√r * Reduction.height g ξ) * √r / Dt g ^ (k : ℝ)⁻¹ := by gcongr`. Use `_ = (√r * √r) * (Reduction.height g ξ / Dt g ^ (k : ℝ)⁻¹) := by ring`. Use `_ = r * (Reduction.height g ξ / Dt g ^ (k : ℝ)⁻¹) := by`. Rewrite using `[Real.mul_self_sqrt (by linarith : (0 : ℝ) ≤ r)]`.
+-/
 theorem ht_mul_le (hDpos : ∀ g : GA E k, 0 < Dt g) (hDmul : ∀ g h : GA E k, Dt (g * h) = Dt g * Dt h)
     (hDcont : Continuous (Dt : GA E k → ℝ)) {r : ℝ} (hr : 1 < r) :
     ∃ U ∈ 𝓝 (1 : GA E k), ∀ c ∈ U, ∀ g ξ, ξ ≠ 0 → ht (g * c) ξ ≤ r * ht g ξ := by
@@ -127,14 +163,23 @@ theorem ht_mul_le (hDpos : ∀ g : GA E k, 0 < Dt g) (hDmul : ∀ g h : GA E k, 
     _ = r * (Reduction.height g ξ / Dt g ^ (k : ℝ)⁻¹) := by
         rw [Real.mul_self_sqrt (by linarith : (0 : ℝ) ≤ r)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by rintro _ ⟨ξ, rfl⟩; exact (hpos g ξ.1 ξ.2).le⟩`.
+-/
 theorem bdd (hpos : ∀ (g : GA E k) ξ, ξ ≠ 0 → 0 < ht g ξ) (g : GA E k) :
     BddBelow (Set.range fun ξ : {ξ : Fin k → E // ξ ≠ 0} => ht g ξ.1) :=
   ⟨0, by rintro _ ⟨ξ, rfl⟩; exact (hpos g ξ.1 ξ.2).le⟩
 
+/- English proof (translation)
+The claim follows from `ciInf_le (bdd hpos g) (⟨ξ, hξ⟩ : {ξ : Fin k → E // ξ ≠ 0})`.
+-/
 theorem dmin_le (hpos : ∀ (g : GA E k) ξ, ξ ≠ 0 → 0 < ht g ξ) (g : GA E k) {ξ : Fin k → E} (hξ : ξ ≠ 0) :
     dmin g ≤ ht g ξ :=
   ciInf_le (bdd hpos g) (⟨ξ, hξ⟩ : {ξ : Fin k → E // ξ ≠ 0})
 
+/- English proof (translation)
+Take `⟨x, hx, h⟩` from `Reduction.exists_height_min (K := E) hk g`. Establish `: Nonempty {ξ : Fin k → E // ξ ≠ 0}` using `⟨⟨x, hx⟩⟩`. Use `⟨x, hx, le_antisymm (dmin_le hpos g hx) (le_ciInf fun ξ => ?_)⟩` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (h ξ.1 ξ.2) (Real.rpow_nonneg (hDpos g).le _)`.
+-/
 theorem dmin_eq (hDpos : ∀ g : GA E k, 0 < Dt g) (hpos : ∀ (g : GA E k) ξ, ξ ≠ 0 → 0 < ht g ξ)
     (hk : 1 ≤ k) (g : GA E k) : ∃ x : Fin k → E, x ≠ 0 ∧ dmin g = ht g x := by
   obtain ⟨x, hx, h⟩ := Reduction.exists_height_min (K := E) hk g
@@ -142,6 +187,9 @@ theorem dmin_eq (hDpos : ∀ g : GA E k, 0 < Dt g) (hpos : ∀ (g : GA E k) ξ, 
   refine ⟨x, hx, le_antisymm (dmin_le hpos g hx) (le_ciInf fun ξ => ?_)⟩
   exact div_le_div_of_nonneg_right (h ξ.1 ξ.2) (Real.rpow_nonneg (hDpos g).le _)
 
+/- English proof (translation)
+Take `⟨x, hx, e⟩` from `dmin_eq hDpos hpos hk g`. Rewrite using `[e]`. Conclude with `(dmin_le hpos _ hx).trans (hc g x hx)`.
+-/
 theorem dmin_mul_le (hDpos : ∀ g : GA E k, 0 < Dt g) (hpos : ∀ (g : GA E k) ξ, ξ ≠ 0 → 0 < ht g ξ)
     (hk : 1 ≤ k) {r : ℝ} {c : GA E k} (hc : ∀ g ξ, ξ ≠ 0 → ht (g * c) ξ ≤ r * ht g ξ) (g : GA E k) :
     dmin (g * c) ≤ r * dmin g := by
@@ -152,6 +200,31 @@ theorem dmin_mul_le (hDpos : ∀ g : GA E k, 0 < Dt g) (hpos : ∀ (g : GA E k) 
 end EuclideanHeightMul
 
 open EuclideanHeightMul in
+/- English proof (translation)
+Introduce `hD hH E _ _ _ k hk`. Take `⟨hDpos, hDmul, hDcont, -⟩` from `hD E k`. Take `⟨hpos, hrat, -, hcpt, -⟩` from `hH E k`. Establish `dpos : ∀ g : GA E k, 0 < dmin g` using `fun g => by`. Take `⟨x, hx, e⟩` from `dmin_eq hDpos hpos hk g`.
+
+Rewrite using `[e]`. Conclude with `hpos g x hx`. Use `⟨?_, dpos, fun g ξ hξ => dmin_le hpos g hξ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun g₀ => tendsto_order.2 ⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ r in 𝓝 (1 : ℝ), r * a < dmin g₀` using `(continuous_id.mul continuous_const).continuousAt.eventually_lt continuousAt_const (by simpa using ha)`.
+
+Take `⟨r, hr, hra⟩` from `hev.exists_gt`. Take `⟨U, hU, hUr⟩` from `ht_mul_le hDpos hDmul hDcont hr`. Establish `ht : Filter.Tendsto (fun g : GA E k => g⁻¹ * g₀) (𝓝 g₀) (𝓝 1)`. Establish `h : Filter.Tendsto (fun g : GA E k => g⁻¹ * g₀) (𝓝 g₀) (𝓝 (g₀⁻¹ * g₀))` using `(continuous_inv.mul continuous_const).tendsto g₀`. Rewrite `h` using `[inv_mul_cancel]`. Then use the resulting hypothesis.
+
+Use `filter_upwards [ht hU] with g hg`. Establish `h` using `dmin_mul_le hDpos hpos hk (hUr _ hg) g`. Rewrite `h` using `[mul_inv_cancel_left]`. Establish `: r * a < r * dmin g` using `by linarith`. Conclude with `lt_of_mul_lt_mul_left this (by linarith)`.
+
+Establish `hev : ∀ᶠ r in 𝓝 (1 : ℝ), r * dmin g₀ < b` using `(continuous_id.mul continuous_const).continuousAt.eventually_lt continuousAt_const (by simpa using hb)`. Take `⟨r, hr, hrb⟩` from `hev.exists_gt`. Take `⟨U, hU, hUr⟩` from `ht_mul_le hDpos hDmul hDcont hr`. Establish `ht : Filter.Tendsto (fun g : GA E k => g₀⁻¹ * g) (𝓝 g₀) (𝓝 1)`. Establish `h : Filter.Tendsto (fun g : GA E k => g₀⁻¹ * g) (𝓝 g₀) (𝓝 (g₀⁻¹ * g₀))` using `(continuous_const.mul continuous_id).tendsto g₀`.
+
+Rewrite `h` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Use `filter_upwards [ht hU] with g hg`. Establish `h` using `dmin_mul_le hDpos hpos hk (hUr _ hg) g₀`. Rewrite `h` using `[mul_inv_cancel_left]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hge : ∀ (γ : GL (Fin k) E) (g : GA E k), dmin g ≤ dmin (ratGL E k γ * g)`. Introduce `γ g`. Take `⟨x, hx, e⟩` from `dmin_eq hDpos hpos hk (ratGL E k γ * g)`. Rewrite using `[e, hrat]`. Use `dmin_le hpos g fun h0 => hx ?_` and prove the remaining obligations.
+
+Use `congrArg (· ᵥ* (γ⁻¹ : GL (Fin k) E).val) h0` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul]`. Introduce `γ g`. Use `le_antisymm ?_ (hge γ g)` and prove the remaining obligations. Use `hge γ⁻¹ (ratGL E k γ * g)` as an intermediate fact.
+
+Rewrite `this` using `[map_inv, inv_mul_cancel_left]`. Then use the resulting hypothesis. Introduce `C hC`. Take `⟨B, hB⟩` from `hcpt C hC`. Use `⟨max B 1, le_max_right _ _, fun c hc g => ?_⟩` and prove the remaining obligations. Conclude with `dmin_mul_le hDpos hpos hk (fun g ξ hξ => (hB c hc g ξ hξ).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (hpos g ξ hξ).le)) g`.
+
+Introduce `f hf M`. Take `⟨C0, h0⟩` from `hf 0`. Take `⟨C1, h1⟩` from `hf M`. Use `⟨max C0 C1, fun g => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `dmin_eq hDpos hpos hk g`.
+
+Establish `a` using `h0 g x hx`. Establish `b` using `h1 g x hx`. Rewrite `a` using `[pow_zero, mul_one]`. Rewrite `b` using `[← e]`. Unfold `wt`.
+
+Distinguish the cases in `hd : dmin g ≤ 1`. Rewrite using `[min_eq_right hd]`. Conclude with `b.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (pow_nonneg (dpos g).le M))`. Rewrite using `[min_eq_left (le_of_not_ge hd), one_pow, mul_one]`. Conclude with `a.trans (le_max_left _ _)`.
+-/
 theorem firstCohomologyBound_of_boundaryBound : D0 → H0 → K1 := by
   intro hD hH E _ _ _ k hk
   obtain ⟨hDpos, hDmul, hDcont, -⟩ := hD E k

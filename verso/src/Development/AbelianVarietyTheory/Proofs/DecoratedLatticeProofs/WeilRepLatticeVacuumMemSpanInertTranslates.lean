@@ -25,6 +25,9 @@ namespace GlobalTheory.InertFrameLoc
 
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
 
+/- English proof (translation)
+Use `show GlobalTheory.EmbChart.tensAt D.host.E v ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm (GlobalTheory.LFun.InertChart.complEquiv hw h _)) = a`. Rewrite using `[RingEquiv.symm_apply_apply]`. Use `conv_rhs => rw [← ha]`. Rewrite using `[show algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v) = GlobalTheory.EmbChart.tensAt D.host.E v 1 from rfl, GlobalTheory.EmbChart.tensAt_mul_right, one_mul]`.
+-/
 theorem secW_compFin (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (a : AE D)
     (ha : algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v) * a = a) :
     secW hw h (GlobalTheory.LFun.InertChart.complEquiv hw h (compFin D.host.F D.host.E v a)) = a := by
@@ -35,6 +38,11 @@ theorem secW_compFin (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D
   rw [show algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v) = GlobalTheory.EmbChart.tensAt D.host.E v 1 from rfl,
     GlobalTheory.EmbChart.tensAt_mul_right, one_mul]
 
+/- English proof (translation)
+Set `U : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)` to `u.map fun a => GlobalTheory.LFun.InertChart.complEquiv hw h (compFin D.host.F D.host.E v a)`. Use `⟨k⁻¹ • ((aT⁻¹).1 * U * aS.1), ?_⟩` and prove the remaining obligations. Establish `e1 : k • (aT.1 * (k⁻¹ • ((aT⁻¹).1 * U * aS.1)) * (aS⁻¹).1) = U`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hk0, one_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use extensionality with `i j`.
+
+Rewrite using `[uPt, e1, Matrix.map_apply]`. Conclude with `secW_compFin hw h _ (hu i j)`.
+-/
 theorem exists_uPt_eq (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) {S T : HSp D}
     {k : w.adicCompletion D.host.E} (hk0 : k ≠ 0) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E))
     (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)) {u : WO S T}
@@ -53,6 +61,37 @@ theorem exists_uPt_eq (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 
 open GlobalTheory.Hk3 GlobalTheory.InertLoc GlobalTheory.SplitScalar GlobalTheory.FinWeilO in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW v w hw h uS uT c ϖ k aS aT hU hconj hk haS haT gaS gaT f hf gS gT`. Establish `dict` using `GlobalTheory.T.splitPlace_idempotent_vacuum_hyperspecial_dictionary D v w h`. Establish `hP : Formalism.DivisionValues.conjPl w = w`. Assume the negation of the conclusion as `hne`. Conclude with `GlobalTheory.LFun.not_isSplit_of_isInertAt hw (dict.1.2 hne)`.
+
+Establish `he : IsPrimeIdem w (algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v)) (algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v))` using `GlobalTheory.HeckeRowsCompare.isPrimeIdem_of_inert hw (GlobalTheory.AdelicU.Supp.isPlaceIdem_placeIdem D v)`. Use `set e := algebraMap (AF D.host.F) (AE D) (GlobalTheory.AdelicU.Supp.placeIdem v) with he_def`. Establish `unr : ∀ χ : (AE D)ˣ →* Circle, UnrAt χ w → GlobalTheory.Hk3.UnrPl w χ` using `fun χ hχ => dict.2.1 χ fun w' hw' => by rw [(GlobalTheory.LFun.InertChart.under_eq_iff hw w').1 hw']; exact hχ`. Establish `hfix` using `GlobalTheory.ConjVacFix.vacFix_of_unrPl ψ S T χS χT om w hW (unr χS uS) (unr χT uT)`. Take `⟨ϖ0, σ, q, π, hU0, h2, hc0, hV⟩` from `exists_chart hP he`.
+
+Take `⟨βS, ιS, hS, gS'⟩` from `hV S`. Take `⟨βT, ιT, hT, gT'⟩` from `hV T`. Establish `hψ` using `hW.std`. Take `⟨δ, ψ', hδ, p1, p2, p3⟩` from `exists_delta_psi hU0 h2 (th ψ hc0 k) (th_conj hc0 hU0.1) (by`. Take `⟨β, -, hβ, -⟩` from `hV D.sp.X'`.
+
+Use `th_cond hψ hc0 hU0.2.1 hβ ⟨0, ?_⟩ hk` and prove the remaining obligations. Establish `h1` using `D.R.m_add_three_le_k`. Rewrite using `[D.sp.X'_rank, Ranks.rankX', Ranks.r]`. Use the proof step `omega)`. Set `ρ : Matrix (Fin T.rank) (Fin S.rank) (LP D w) → Module.End ℂ (thetaSub ψ S T)` to `fun x => (heisL ψ S T (kap hc0 βS βT k x)).restrict fun _ hf => GlobalTheory.FinTranslate.isTheta_heisO_fin hψ.1 (hc0.half_fin (kap_half hc0 x)) hf`.
+
+Establish `hρ : ∀ x (m : thetaSub ψ S T), (ρ x m : WO S T → ℂ) = heisO ψ S T (kap hc0 βS βT k x) m` using `fun _ _ => rfl`. Set `ω : Formalism.UG.UJ σ (1 : Matrix (Fin S.rank) (Fin S.rank) (LP D w)) × Formalism.UG.UJ σ (1 : Matrix (Fin T.rank) (Fin T.rank) (LP D w)) →* Module.End ℂ (thetaSub ψ S T)` to `{ toFun := fun p => (om (ιS p.1, ιT p.2)).restrict fun _ hf => hW.om_pres _ _ hf map_one' := LinearMap.ext fun m => Subtype.ext (by show om (ιS 1, ιT 1) m = m`. Rewrite using `[map_one, map_one, Prod.mk_one_one, map_one, Module.End.one_apply])`. Use the proof step `map_mul' := fun p p' => LinearMap.ext fun m => Subtype.ext (by show om (ιS (p.1 * p'.1), ιT (p.2 * p'.2)) m = om (ιS p.1, ιT p.2) (om (ιS p'.1, ιT p'.2) m)`. Rewrite using `[map_mul, map_mul, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply]) }`.
+
+Establish `hω : ∀ g g' (m : thetaSub ψ S T), (ω (g, g') m : WO S T → ℂ) = om (ιS g, ιT g') m` using `fun _ _ _ => rfl`. Establish `hlat` using `kap_mem_iff hc0 hU0.2.1 hS hT hk`. Establish `hvac0 : ∀ m : thetaSub ψ S T, LocVac ρ m ↔ ∀ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True), IsHalf e u → heisO ψ S T u m = m` using `fun m => by`. Use `⟨fun hm u hu hh => ?_, fun hm x hx => Subtype.ext (hm _ ((hlat x).2 hx) (kap_half hc0 x))⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `kap_surj (βS := βS) (βT := βT) hc0 hk.1 hh`.
+
+Conclude with `congrArg Subtype.val (hm x ((hlat x).1 hu))`. Establish `hvac : ∀ m : thetaSub ψ S T, LocVac ρ m ↔ IsVacAt ψ S T w m` using `fun m => by`. Rewrite using `[hvac0]`. Use `⟨fun hm => ⟨m.2, fun e' f' he' u hu hh => hm u hu ?_⟩, fun hm u hu hh => hm.2 e e he u hu (Or.inl hh)⟩` and prove the remaining obligations. Take `⟨rfl, -⟩` from `((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents S).2.2.1 w e e he).2.2.2.1 e' f' he'`.
+
+Rewrite `hh` using `[hc0.1.2.1, or_self]`. Then use the resulting hypothesis. Establish `hhyp : ∀ {V : HSp D} {β ι}, GrpChart V e σ π β ι → ∀ g, ι g ∈ hyp V w ↔ g.1 ∈ Formalism.UG.GLint (Fin V.rank) (Formalism.UG.intL (LP D w))` using `fun hι g => ⟨fun hg => (hι.2.2.2 g).1 hg.1, fun hg => ⟨(hι.2.2.2 g).2 hg, e, e, he, hι.1 g⟩⟩`. Establish `hone : ∀ (n : ℕ) (i j : Fin n), σ ((1 : Matrix (Fin n) (Fin n) (LP D w)) i j) = (1 : Matrix (Fin n) (Fin n) (LP D w)) j i` using `fun n i j => by`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`.
+
+Rewrite using `[if_pos hij, if_pos hij.symm, σ.map_one]`. Rewrite using `[if_neg hij, if_neg (Ne.symm hij), σ.map_zero]`. Establish `hLP : LocPair ϖ0 σ q δ (1 : GL (Fin S.rank) (LP D w)) (1 : GL (Fin T.rank) (LP D w)) ψ' ρ ω`. Use `⟨hU0, odd_of_v_two hU0 h2, one_mem _, one_mem _, hone _, hone _, hδ, p1, p2, ?_, fun x y => ?_, ?_, fun g g' x => ?_, fun g g' hg hg' s hs => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun m => Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[hρ, kap_zero, heisO_zero, Module.End.one_apply]`. Use `LinearMap.ext fun m => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hρ, hρ, heisO_heisO, symplOH_kap hc0 hS hT, LinearMap.smul_apply, Submodule.coe_smul, hρ, kap_add, locH, p3, inv_one, Units.val_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Use `span_vacua hψ hc0.1.1 hc0.1.2.1 (fun u hu hh => ?_) _ fun u hh s m hs hm => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `kap_surj (βS := βS) (βT := βT) hc0 hk.1 hh`. Use `⟨kap hc0 βS βT k ((2⁻¹ : LP D w) • x), (hlat _).2 fun i j => mul_mem (mem_intL.2 ?_) ((hlat x).1 hu i j), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, h2, inv_one]`. Rewrite using `[← kap_add, half_add_half]`. Take `⟨x, rfl⟩` from `kap_surj (βS := βS) (βT := βT) hc0 hk.1 hh`.
+
+Conclude with `Submodule.subset_span ⟨x, s, (hvac0 s).2 hs, Subtype.ext hm⟩`. Use `LinearMap.ext fun m => Subtype.ext ?_ show om (ιS g, ιT g') (heisO ψ S T (kap hc0 βS βT k x) m) = heisO ψ S T (kap hc0 βS βT k _) (om (ιS g, ιT g') m)` and prove the remaining obligations. Rewrite using `[hW.om_heis _ _ _ _ m.2, actO_kap hc0 gS' gT']`. Conclude with `Subtype.ext (hfix _ ((hvac s).1 hs) _ ((hhyp gS' g).2 hg) _ ((hhyp gT' g').2 hg'))`. Take `⟨r1, hr1⟩` from `gS'.2.2.1 (embV S v gS) ((GlobalTheory.AdelicU.Supp.suppF_iff_of_isPrimeIdem S he h _).2 ⟨gS, rfl⟩)`.
+
+Take `⟨r2, hr2⟩` from `gT'.2.2.1 (embV T v gT) ((GlobalTheory.AdelicU.Supp.suppF_iff_of_isPrimeIdem T he h _).2 ⟨gT, rfl⟩)`. Set `fM : thetaSub ψ S T` to `⟨f, hf.1⟩`. Establish `hvf : LocVac ρ fM` using `(hvac fM).2 (dict.2.2.2.1 ψ S T f hf)`. Use `haveI : CharZero (LP D w) := algebraRat.charZero _`. Take `⟨cc, hcc⟩` from `locPair_act_vac_comb (LP D w) ϖ0 σ q δ S.rank T.rank 1 1 ψ' (thetaSub ψ S T) ρ ω hLP (r1, r2)`.
+
+Establish `e1 : om (embV S v gS, embV T v gT) f = ((ω (r1, r2) fM : thetaSub ψ S T) : WO S T → ℂ)`. Rewrite using `[hω, hr1, hr2]`. Rewrite using `[e1, hcc fM hvf, Finsupp.sum, Submodule.coe_sum]`. Use `Submodule.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hρ]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_uPt_eq hw h hk.1 aS aT (kap_half hc0 x)`. Rewrite using `[← hy]`. Conclude with `Submodule.subset_span ⟨y, rfl⟩`.
+-/
 theorem om_mem_span_uPt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v), UnrAt χS w → UnrAt χT w → ∀ (c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E) (ϖ : w.adicCompletion D.host.E) (k : w.adicCompletion D.host.E) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E)) (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)), IsUnramInv ϖ c (qV D.host.F v) → IsConjAt D.sp.cm.sig h c → GlobalTheory.InertLoc.IsGen D w k → IsFrameAt w (frameLat S) aS → IsFrameAt w (frameLat T) aT → Formalism.UG.cT c aS.1 * S.gram.map (algebraMap D.host.E _) * aS.1 = Formalism.UG.antiJ _ S.rank → Formalism.UG.cT c aT.1 * T.gram.map (algebraMap D.host.E _) * aT.1 = Formalism.UG.antiJ _ T.rank → ∀ f, VacFin ψ S T v f → ∀ (gS : Gv S v) (gT : Gv T v), om (embV S v gS, embV T v gT) f ∈ Submodule.span ℂ (Set.range fun x => heisO ψ S T (uPt hw h k aS aT x) f) := by
   intro D ψ S T χS χT om hW v w hw h uS uT c ϖ k aS aT hU hconj hk haS haT gaS gaT f hf gS gT
   have dict := GlobalTheory.T.splitPlace_idempotent_vacuum_hyperspecial_dictionary D v w h

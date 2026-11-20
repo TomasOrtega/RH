@@ -25,8 +25,20 @@ def bqL (H : B.Mat k r) : B.Mat k r →L[ℝ] B.Mat k r →L[ℝ] B.Mat k r :=
     ((LinearMap.toContinuousLinearMap : (B.Mat k r →ₗ[ℝ] B.Mat k r) ≃ₗ[ℝ] (B.Mat k r →L[ℝ] B.Mat k r)).toLinearMap ∘ₗ
       bq H)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bqL_apply (H M N : B.Mat k r) : bqL H M N = Mᴴ * H * N := rfl
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ κ x` using `(hκ.contDiffAt (hO.mem_nhds hx)).differentiableAt (by simp)`. Establish `hl : HasDerivAt (fun t : ℝ => x + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add x`. Establish `hc` using `hd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)`. Establish `hB` using `(bqL (Hpk k r)).hasDerivAt_of_bilinear (fun _ => hc) (fun _ => hc)`.
+
+Establish `hmem : ∀ᶠ t in nhds (0 : ℝ), x + t • v ∈ O`. Establish `hcont : Continuous (fun t : ℝ => x + t • v)` using `by fun_prop`. Conclude with `hcont.continuousAt.preimage_mem_nhds (by simpa using hO.mem_nhds hx)`. Establish `hev : (fun _ : ℝ => Hpk k r) =ᶠ[nhds 0] fun t : ℝ => bqL (Hpk k r) ((κ ∘ fun t : ℝ => x + t • v) t) ((κ ∘ fun t : ℝ => x + t • v) t)` using `by filter_upwards [hmem] with t ht`. Rewrite using `[bqL_apply]`.
+
+Conclude with `(hG _ ht).symm`. Establish `h2` using `hB.congr_of_eventuallyEq hev`. Establish `e` using `h2.deriv`. Rewrite `e` using `[deriv_const]`. Simplify using `only [Function.comp_apply, zero_smul, add_zero] at e`.
+
+Establish `e' : (κ x)ᴴ * Hpk k r * fderiv ℝ κ x v + (fderiv ℝ κ x v)ᴴ * Hpk k r * κ x = 0` using `e.symm`. Conclude with `(add_comm _ _).trans e'`.
+-/
 theorem tangent_eq {d : ℕ} {O : Set (Fin d → ℝ)} {κ : (Fin d → ℝ) → B.Mat k r} (hO : IsOpen O)
     (hκ : ContDiffOn ℝ ∞ κ O) (hG : ∀ y ∈ O, κ y ∈ B.GV k r) {x : Fin d → ℝ} (hx : x ∈ O)
     (v : Fin d → ℝ) :
@@ -51,6 +63,11 @@ theorem tangent_eq {d : ℕ} {O : Set (Fin d → ℝ)} {κ : (Fin d → ℝ) →
   have e' : (κ x)ᴴ * Hpk k r * fderiv ℝ κ x v + (fderiv ℝ κ x v)ᴴ * Hpk k r * κ x = 0 := e.symm
   exact (add_comm _ _).trans e'
 
+/- English proof (translation)
+Take `⟨hO, hU, hκ, hΦ, hκO, _⟩` from `hC`. Establish `hd : DifferentiableAt ℝ κ x` using `(hκ.contDiffAt (hO.mem_nhds hx)).differentiableAt (by simp)`. Establish `hdΦ : DifferentiableAt ℝ Φ (κ x)` using `(hΦ.contDiffAt (hU.mem_nhds (hκO x hx).2.1)).differentiableAt (by simp)`. Establish `h1` using `hdΦ.hasFDerivAt.comp x hd.hasFDerivAt`. Establish `hev : (Φ ∘ κ) =ᶠ[nhds x] id` using `by filter_upwards [hO.mem_nhds hx] with y hy`.
+
+Conclude with `(hκO y hy).2.2`. Establish `h2 : HasFDerivAt (Φ ∘ κ) (ContinuousLinearMap.id ℝ (Fin d → ℝ)) x` using `(hasFDerivAt_id x).congr_of_eventuallyEq hev`. Use `h1.unique h2` as an intermediate fact. Conclude with `congrArg (fun L : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) => L v) this`.
+-/
 theorem chart_id {d : ℕ} {O : Set (Fin d → ℝ)} {U : Set (B.Mat k r)} {κ : (Fin d → ℝ) → B.Mat k r}
     {Φ : B.Mat k r → (Fin d → ℝ)} (hC : IsChart k r d O U κ Φ) {x : Fin d → ℝ} (hx : x ∈ O) (v : Fin d → ℝ) :
     fderiv ℝ Φ (κ x) (fderiv ℝ κ x v) = v := by
@@ -67,6 +84,15 @@ theorem chart_id {d : ℕ} {O : Set (Fin d → ℝ)} {U : Set (B.Mat k r)} {κ :
   have := h1.unique h2
   exact congrArg (fun L : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) => L v) this
 
+/- English proof (translation)
+Establish `hG : ∀ y ∈ O, κ y ∈ B.GV k r` using `fun y hy => (hC.2.2.2.2.1 y hy).1`. Establish `hg : (κ x)ᴴ * Hpk k r * κ x = Hpk k r` using `hG x hx`. Establish `hdet : IsUnit (κ x).det` using `Formalism.FourierDecayAlt.P.PBG.isUnit_det_of_UH (hG x hx)`. Establish `hT` using `tangent_eq hC.1 hC.2.2.1 hG hx v`. Use `set g := κ x with hgdef`.
+
+Use `set A := fderiv ℝ κ x v with hAdef`. Use `⟨g⁻¹ * A, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (g⁻¹)ᴴ * Hpk k r = Hpk k r * g`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Hpk k r * g⁻¹ = gᴴ * Hpk k r`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show (g⁻¹ * A)ᴴ * Hpk k r + Hpk k r * (g⁻¹ * A) = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, e1, ← Matrix.mul_assoc (Hpk k r), e2, ← Matrix.mul_assoc]`. Conclude with `hT`. Use `show fderiv ℝ Φ g (g * (g⁻¹ * A)) = v`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv g hdet, Matrix.one_mul]`. Conclude with `chart_id hC hx v`.
+-/
 theorem vr_onto {d : ℕ} {O : Set (Fin d → ℝ)} {U : Set (B.Mat k r)} {κ : (Fin d → ℝ) → B.Mat k r}
     {Φ : B.Mat k r → (Fin d → ℝ)} (hC : IsChart k r d O U κ Φ) {x : Fin d → ℝ} (hx : x ∈ O) (v : Fin d → ℝ) :
     ∃ Y : B.Mat k r, B.inLie k r Y ∧ VR κ Φ Y x = v := by
@@ -97,12 +123,18 @@ def ellL {d : ℕ} (κ : (Fin d → ℝ) → B.Mat k r) (Φ : B.Mat k r → (Fin
   map_add' X Y := by simp only [VR, Matrix.mul_add, map_add, dotProduct_add]
   map_smul' c X := by simp only [VR, Matrix.mul_smul, map_smul, dotProduct_smul, RingHom.id_apply, smul_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellL_apply {d : ℕ} (κ : (Fin d → ℝ) → B.Mat k r) (Φ : B.Mat k r → (Fin d → ℝ)) (x ξ : Fin d → ℝ)
     (X : B.Mat k r) : ellL κ Φ x ξ X = ξ ⬝ᵥ VR κ Φ X x := rfl
 
 def cMat (ℓ : B.Mat k r →ₗ[ℝ] ℝ) : B.Mat k r :=
   Matrix.of fun j i => ((ℓ (Matrix.single i j 1) : ℝ) : ℂ) - Complex.I * ((ℓ (Complex.I • Matrix.single i j 1) : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `: (Matrix.single i j c : B.Mat k r) = c.re • (Matrix.single i j (1 : ℂ) : B.Mat k r) + c.im • (Complex.I • (Matrix.single i j (1 : ℂ) : B.Mat k r))`. Use extensionality with `p q`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+-/
 theorem ell_single (ℓ : B.Mat k r →ₗ[ℝ] ℝ) (i j : Fin (2 * r + k + 1)) (c : ℂ) :
     ℓ (Matrix.single i j c) = c.re * ℓ (Matrix.single i j 1) + c.im * ℓ (Complex.I • Matrix.single i j 1) := by
   have : (Matrix.single i j c : B.Mat k r) =
@@ -112,6 +144,11 @@ theorem ell_single (ℓ : B.Mat k r →ₗ[ℝ] ℝ) (i j : Fin (2 * r + k + 1))
     split_ifs <;> simp
   rw [this, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
 
+/- English proof (translation)
+Use `conv_rhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using `only [map_sum]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, cMat, Matrix.of_apply, Complex.re_sum, Complex.mul_re, Complex.sub_re, Complex.sub_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.mul_im]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[ell_single ℓ i j (X i j)]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_trace_cMat (ℓ : B.Mat k r →ₗ[ℝ] ℝ) (X : B.Mat k r) : (Matrix.trace (cMat ℓ * X)).re = ℓ X := by
   conv_rhs => rw [Matrix.matrix_eq_sum_single X]
   simp only [map_sum]
@@ -123,6 +160,13 @@ theorem re_trace_cMat (ℓ : B.Mat k r →ₗ[ℝ] ℝ) (X : B.Mat k r) : (Matri
   norm_num
   ring
 
+/- English proof (translation)
+Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `hH' : ∀ M : B.Mat k r, Hpk k r * (Hpk k r * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, hH, Matrix.one_mul]`. Establish `hHc : (Hpk k r)ᴴ = Hpk k r` using `(hpkFacts k r).1`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+
+Use `show ((1 / 2 : ℂ) • (C - Hpk k r * Cᴴ * Hpk k r))ᴴ * Hpk k r + Hpk k r * ((1 / 2 : ℂ) • (C - Hpk k r * Cᴴ * Hpk k r)) = 0`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hHc, Matrix.conjTranspose_conjTranspose, hs]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hH, hH', Matrix.mul_one]`. Rewrite using `[← smul_add]`. Establish `: Cᴴ * Hpk k r - Hpk k r * C + (Hpk k r * C - Cᴴ * Hpk k r) = 0` using `by abel`.
+
+Rewrite using `[this, smul_zero]`.
+-/
 theorem inLie_half (C : B.Mat k r) : B.inLie k r ((1 / 2 : ℂ) • (C - Hpk k r * Cᴴ * Hpk k r)) := by
   have hH : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
   have hH' : ∀ M : B.Mat k r, Hpk k r * (Hpk k r * M) = M := fun M => by
@@ -139,6 +183,15 @@ theorem inLie_half (C : B.Mat k r) : B.inLie k r ((1 / 2 : ℂ) • (C - Hpk k r
   have : Cᴴ * Hpk k r - Hpk k r * C + (Hpk k r * C - Cᴴ * Hpk k r) = 0 := by abel
   rw [this, smul_zero]
 
+/- English proof (translation)
+Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `hX' : Hpk k r * (X * Hpk k r) = -Xᴴ`. Establish `h : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `h2` using `congrArg (· * Hpk k r) h`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hH, Matrix.mul_one, Matrix.zero_mul] at h2`.
+
+Conclude with `eq_neg_of_add_eq_zero_right h2`. Establish `e1 : Matrix.trace (Hpk k r * Cᴴ * Hpk k r * X) = -star (Matrix.trace (C * X))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (Cᴴ * (Hpk k r * (X * Hpk k r))) := by`.
+
+Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = -Matrix.trace ((X * C)ᴴ) := by`. Rewrite using `[hX', Matrix.mul_neg, Matrix.trace_neg, Matrix.conjTranspose_mul]`. Use `_ = -star (Matrix.trace (C * X)) := by rw [Matrix.trace_conjTranspose, Matrix.trace_mul_comm]`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.trace_smul, Matrix.sub_mul, Matrix.trace_sub, e1, smul_eq_mul]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_trace_half (C X : B.Mat k r) (hX : B.inLie k r X) :
     (Matrix.trace ((1 / 2 : ℂ) • (C - Hpk k r * Cᴴ * Hpk k r) * X)).re = (Matrix.trace (C * X)).re := by
   have hH : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
@@ -167,6 +220,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
 open ChartCovPf in
 
+/- English proof (translation)
+Introduce `k r d O U κ Φ hC x hx ξ`. Use `⟨(1 / 2 : ℂ) • (cMat (ellL κ Φ x ξ) - Hpk k r * (cMat (ellL κ Φ x ξ))ᴴ * Hpk k r), inLie_half _, ?_, ?_⟩` and prove the remaining obligations. Introduce `hξ h0`. Take `⟨Y, hY, hYv⟩` from `vr_onto hC hx ξ`. Establish `e` using `re_trace_half (cMat (ellL κ Φ x ξ)) Y hY`.
+
+Rewrite `e` using `[h0, Matrix.zero_mul, Matrix.trace_zero, Complex.zero_re, re_trace_cMat, ellL_apply, hYv]`. Conclude with `hξ (dotProduct_self_eq_zero.1 e.symm)`. Introduce `X hX`. Rewrite using `[re_trace_half _ X hX, re_trace_cMat, ellL_apply]`.
+-/
 theorem chart_covariance_holds : ChartCov := by
   intro k r d O U κ Φ hC x hx ξ
   refine ⟨(1 / 2 : ℂ) • (cMat (ellL κ Φ x ξ) - Hpk k r * (cMat (ellL κ Φ x ξ))ᴴ * Hpk k r),

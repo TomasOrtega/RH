@@ -73,9 +73,15 @@ def ratEquiv {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type} [Finty
   Subgroup.equivMapOfInjective (UJ (σ : E →+* E) J) (bc (inclE (F := F) R))
     (Formalism.UG.P.UG_inclusion_injective F E n R inferInstance)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensRep_apply (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n] (k : ℕ)
     (g : GL n O) : tensRep O n k g = tensAct O n k g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem polyRep_apply (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n]
     (g : GL n O) : polyRep O n g = (polyAct O n g).toLinearMap := rfl
 

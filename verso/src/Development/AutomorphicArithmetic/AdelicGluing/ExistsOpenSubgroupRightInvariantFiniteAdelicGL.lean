@@ -7,6 +7,17 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Establish `hF : IsLocallyConstant fun p : G × G => e (p.1 * p.2) - e p.1` using `(he.comp_continuous (continuous_fst.mul continuous_snd)).sub (he.comp_continuous continuous_fst)`. Establish `hN : IsOpen {p : G × G | e (p.1 * p.2) - e p.1 = 0}` using `hF.isOpen_fiber 0`. Take `⟨A, V, -, hVo, hCA, h1V, hAV⟩` from `generalized_tube_lemma (s := tsupport e) hc (isCompact_singleton (x := (1 : G))) hN (by`. Introduce and unpack `⟨x, k⟩ ⟨-, hk⟩`. Establish `hk' : k = 1` using `hk`.
+
+Simplify using `[hk'])`. Establish `h1 : (1 : G) ∈ V` using `h1V rfl`. Establish `hinv : ∀ x ∈ tsupport e, ∀ k ∈ V, e (x * k) = e x` using `fun x hx k hk => sub_eq_zero.1 (hAV (Set.mk_mem_prod (hCA hx) hk))`. Establish `hVi : IsOpen (V ∩ V⁻¹)` using `hVo.inter hVo.inv`. Establish `hUo : IsOpen ((↑) ⁻¹' (V ∩ V⁻¹) : Set K₀)` using `hVi.preimage continuous_subtype_val`.
+
+Establish `hU1 : (1 : K₀) ∈ ((↑) ⁻¹' (V ∩ V⁻¹) : Set K₀)`. Simplify using `[h1]`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hUo hU1`. Use `⟨(H.toOpenSubgroup.toSubgroup).map K₀.subtype, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hK.isOpenEmbedding_subtypeVal.isOpenMap _ H.toOpenSubgroup.isOpen`. Introduce and unpack `_ ⟨u, hu, rfl⟩ x`. Establish `hV : (u : G) ∈ V ∩ V⁻¹` using `hH hu`. Distinguish the cases in `hx : x ∈ tsupport e`. Conclude with `hinv x hx _ hV.1`.
+
+Distinguish the cases in `hxk : x * u ∈ tsupport e`. Use `hinv _ hxk _ hV.2` as an intermediate fact. Simplify using `using this.symm`. Express the relevant statement in the definitionally equal form `e (x * u) = e x`. Rewrite using `[image_eq_zero_of_notMem_tsupport hxk, image_eq_zero_of_notMem_tsupport hx]`.
+-/
 private theorem locally_constant_right_invariant_open_subgroup {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (K₀ : Subgroup G) (hK : IsOpen (K₀ : Set G)) [CompactSpace K₀] [TotallyDisconnectedSpace K₀]
     (e : G → ℂ) (he : IsLocallyConstant e) (hc : HasCompactSupport e) :
@@ -40,6 +51,9 @@ private theorem locally_constant_right_invariant_open_subgroup {G : Type*} [Grou
     · change e (x * u) = e x
       rw [image_eq_zero_of_notMem_tsupport hxk, image_eq_zero_of_notMem_tsupport hx]
 
+/- English proof (translation)
+Introduce `K _ _ n e he`. Conclude with `locally_constant_right_invariant_open_subgroup (AdelicGLn.integralFiniteGL K n) (AdelicGLn.isOpen_integralFiniteGL K n) e he e.hasCompactSupport`.
+-/
 theorem UpperTheory.exists_open_subgroup_rightInvariant_finiteAdelicGL :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (e : TF K n), IsLocallyConstant e →
       ∃ W : Subgroup (AdelicGLn.FiniteAdelicGL K n), IsOpen (W : Set (AdelicGLn.FiniteAdelicGL K n)) ∧ ∀ k ∈ W, ∀ x, e (x * k) = e x := by

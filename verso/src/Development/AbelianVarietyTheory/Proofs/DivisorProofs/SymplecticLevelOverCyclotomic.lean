@@ -18,6 +18,45 @@ namespace GlobalTheory.HTSympCover
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.SiegelTor
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨by omega⟩`. Take `⟨Y, t₁, lu, hYf, hYe, hY⟩` from `GlobalTheory.T.exists_finiteEtale_symplecticLevel_scheme p D R b N h M hM0 hMp S t o`. Establish `hAu : SympCond o h M Y t₁ lu` using `(hY Y t₁ lu).2 ⟨𝟙 Y, by simp, fun a => Category.id_comp _⟩`. Establish `uniqY : ∀ {T : Over S} (f g : T ⟶ Y), f.left ≫ t₁ = g.left ≫ t₁ → (∀ c, f ≫ lu c = g ≫ lu c) → f = g` using `fun {T} f g e1 e2 => ((hY T (g.left ≫ t₁) (fun c => g ≫ lu c)).1 ((hY T _ _).2 ⟨g, rfl, fun _ => rfl⟩)).unique ⟨e1, e2⟩ ⟨rfl, fun _ => rfl⟩`. Take `⟨o', ⟨m⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N S Y.left t Y.hom o`.
+
+Establish `hlift : ∀ c, ∃ g : 𝟙_ (Over Y.left) ⟶ o'.A, g.left ≫ m.φ = (lu c).left` using `fun c => by`. Establish `w : (lu c).left ≫ o.A.hom = 𝟙 Y.left ≫ Y.hom` using `by rw [Over.w (lu c), Category.id_comp]`. Conclude with `⟨Over.homMk (m.cart.1.lift (lu c).left (𝟙 Y.left) w) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩`. Use `choose lv' hlv' using hlift`. Use `choose n σ hn hσζ hσs using fun a => (hρ a).2.1`.
+
+Establish `hTw : ∀ a, SympCond o h M Y (t₁ ≫ spMap (σ a)) (sympTwist a lu)` using `fun a => GlobalTheory.T.symplecticLevel_twist_by_similitude p D R b N h M hM0 S t o Y t₁ lu hAu a (n a) (σ a) (hn a) (hσζ a)`. Use `choose r hr using fun a => ((hY Y _ _).1 (hTw a)).exists`. Establish `hlev' : IsSympLev o'.P h M (zetaAway M) t₁ lv'` using `GlobalTheory.T.isSymplecticLevel_of_pulledBack_object p D R b N h M S t o Y t₁ o' m lv' lu hlv' hAu`. Establish `hlevT : ∀ a, IsSympLev o'.P h M (zetaAway M) (t₁ ≫ spMap (σ a)) (sympTwist a lv')` using `fun a => GlobalTheory.T.isSymplecticLevel_of_pulledBack_object p D R b N h M S t o Y (t₁ ≫ spMap (σ a)) o' m (sympTwist a lv') (sympTwist a lu) (fun c => hlv' _) (hTw a)`. Take `⟨y, ⟨hys, hys₁, my, hmy⟩, -⟩` from `huniv Y.left (Y.hom ≫ t) t₁ o' lv' hlev'`.
+
+Establish `hdet` using `(GlobalTheory.SiegelTor.cycAway_galois M (by omega)).2.1`. Establish `hσ1 : σ 1 = RingHom.id _` using `hdet _ (σ 1) (RingHom.id _) (by`. Rewrite using `[hσζ, RingHom.id_apply]`. Use `conv_rhs => rw [← pow_one (zetaAway M)]`. Apply `zetaAway_pow_eq M (by omega)` to reduce the goal to its premises.
+
+Establish `hm1 : IsMultOf (1 : sympSimGrp h M) 1` using `fun x y => by simp`. Conclude with `isMultOf_unique h1 (hn 1) hm1)` after adjusting the coercions. Establish `hσmul : ∀ a c, (σ a).comp (σ c) = σ (a * c)` using `fun a c => hdet _ _ _ (by`. Rewrite using `[RingHom.comp_apply, hσζ, map_pow, hσζ, hσζ, ← pow_mul]`. Apply `zetaAway_pow_eq M (by omega)` to reduce the goal to its premises.
+
+Establish `hm : IsMultOf (a * c) (n a * n c)` using `fun x y => by show omegaMod M ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) x)) ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] …`. Rewrite using `[hn a, hn c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `isMultOf_unique h1 hm (hn (a * c)))`.
+
+Establish `hsm : ∀ (k : ℕ) w, lu (k • w) = lu w ^ k`. Establish `h0 : lu 0 = 1`. Establish `e0` using `hAu.1 0 0`. Rewrite `e0` using `[add_zero]`. Conclude with `(by simpa using congrArg (· * (lu 0)⁻¹) e0 : (1 : Y ⟶ o.A) = lu 0).symm`.
+
+Introduce `k w`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, h0, pow_zero]`. Consider the case `succ k ih => rw [succ_nsmul, hAu.1, ih, pow_succ]`. Establish `hper : ∀ c, lu (liftMod (reduceMod M c)) = lu c`.
+
+Introduce `c`. Establish `hw : liftMod (reduceMod M c) = c + M • (fun i => -(c i / M))`. Use function extensionality and compare the values at `i`. Simplify using `only [liftMod, reduceMod, ZMod.val_intCast, Pi.add_apply, Pi.smul_apply, nsmul_eq_mul, Pi.mul_apply, Pi.natCast_apply]`. Rewrite using `[Int.emod_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw, hAu.1, hsm, hAu.2.1, _root_.mul_one]`. Establish `hsp1 : spMap (RingHom.id (cycAway M)) = 𝟙 _` using `Spec.map_id _`. Establish `hr1 : r 1 = 𝟙 Y` using `uniqY _ _ (by rw [(hr 1).1, hσ1, hsp1]; simp) (fun c => by`. Rewrite using `[(hr 1).2, Category.id_comp]`.
+
+Conclude with `hper c)`. Establish `hrmul : ∀ a c, r (a * c) = r a ≫ r c` using `fun a c => uniqY _ _ (by`. Rewrite using `[(hr _).1, Over.comp_left, Category.assoc, (hr c).1, ← Category.assoc, (hr a).1, Category.assoc, ← spMap_comp, hσmul])`. Use the proof step `(fun d => by`. Rewrite using `[(hr _).2, Category.assoc, (hr c).2]`.
+
+Express the relevant statement in the definitionally equal form `sympTwist (a * c) lu d = r a ≫ lu (liftMod ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M d)))`. Rewrite using `[(hr a).2]`. Express the relevant statement in the definitionally equal form `lu (liftMod (((a * c : sympSimGrp h M) : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M d))) = lu (liftMod ((a : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin h → ZMod M)) (reduceMod M (liftMod ((c : (Fin h ⊕ Fin h → ZMod M) ≃ₗ[ZMod M] (Fin h ⊕ Fin …`. Rewrite using `[reduceMod_liftMod]`. Use the proof step `rfl)`.
+
+Use `⟨Y.left, Y.hom, fun a => (r a).left, y, o', ⟨sympSimGrp_finite h M, ?_, ?_, ?_, hYf, hYe, ?_, ?_⟩, ?_, hys, ⟨m⟩, ⟨my⟩⟩` and prove the remaining obligations. Use `show (r 1).left = _`. Rewrite using `[hr1]`. Both sides reduce to the same expression. Introduce `a c show (r (a * c)).left = _`.
+
+Rewrite using `[hrmul]`. Both sides reduce to the same expression. Introduce `a`. Conclude with `Over.w (r a)`. Use `⟨fun pt => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, _, _, x, hx⟩` from `GlobalTheory.FinEt.exists_algClosed_point S pt`. Take `⟨t₀, lv, hlv⟩` from `geo k x`. Take `⟨f, -, -⟩` from `(hY (Over.mk x) t₀ lv).1 hlv`. Take `⟨q, hq⟩ : pt ∈ Set.range x` from `by rw [hx]; rfl`. Conclude with `⟨f.left q, by rw [← Scheme.Hom.comp_apply, Over.w f]; exact hq⟩`.
+
+Introduce `K _ _ y₁ y₂ h12`. Set `P1 : Over.mk (y₁ ≫ Y.hom) ⟶ Y` to `Over.homMk y₁ rfl`. Set `P2 : Over.mk (y₁ ≫ Y.hom) ⟶ Y` to `Over.homMk y₂ h12.symm`. Establish `c1 : SympCond o h M (Over.mk (y₁ ≫ Y.hom)) (y₁ ≫ t₁) (fun c => P1 ≫ lu c)` using `(hY _ _ _).2 ⟨P1, rfl, fun _ => rfl⟩`. Establish `c2 : SympCond o h M (Over.mk (y₁ ≫ Y.hom)) (y₂ ≫ t₁) (fun c => P2 ≫ lu c)` using `(hY _ _ _).2 ⟨P2, rfl, fun _ => rfl⟩`.
+
+Take `⟨a, ⟨ha1, ha2⟩, hu⟩` from `GlobalTheory.T.existsUnique_similitude_between_symplecticLevels p D R b N h M hM0 hodd h1 σ (fun a => ⟨n a, hn a, hσζ a⟩) S t o K (y₁ ≫ Y.hom) _ _ _ _ c1 c2`. Use `⟨a, ?_, fun a' ha' => hu a' ?_⟩` and prove the remaining obligations. Establish `: P1 ≫ r a = P2` using `uniqY _ _ (by show y₁ ≫ (r a).left ≫ t₁ = y₂ ≫ t₁`. Rewrite using `[(hr a).1, ← Category.assoc]`. Conclude with `ha1)`.
+
+Use the proof step `(fun c => by rw [Category.assoc, (hr a).2]; exact ha2 c)`. Conclude with `congrArg (fun q => q.left) this`. Establish `e' : P1 ≫ r a' = P2` using `Over.OverMorphism.ext ha'`. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← (hr a').1, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ t₁) ha'`. Use `show P1 ≫ lu _ = P2 ≫ lu c`. Rewrite using `[← e', Category.assoc, (hr a').2]`. Both sides reduce to the same expression. Conclude with `fun a => GlobalTheory.T.classifyingMap_symplecticLevel_equivariant p D R b N h M X s s₁ u lev huniv ρ hρ σ hσs S t o Y t₁ lu o' m lv' hlv' hlevT y my hmy hys hys₁ r (fun a => (hr a).1) (fun a => (hr a).2) a`.
+-/
 theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] (b : Base D R)
     (N h M : ℕ) (h1 : 1 ≤ h) (hM0 : 0 < M) (hodd : Odd M) (hMp : M.Coprime p)
     (X : Scheme.{0}) (s : X ⟶ Sp R) (s₁ : X ⟶ Sp (cycAway M)) (u : Obj b N s)
@@ -146,6 +185,9 @@ theorem exists_galoisCover_of_geom {p : ℕ} [Fact p.Prime] {D : Datum p} {R : T
   · exact fun a => GlobalTheory.T.classifyingMap_symplecticLevel_equivariant p D R b N h M X s s₁ u lev huniv ρ hρ σ hσs S t o Y t₁ lu o' m lv' hlv' hlevT y my hmy
       hys hys₁ r (fun a => (hr a).1) (fun a => (hr a).2) a
 
+/- English proof (translation)
+Introduce `p _ D R _ b N M e _ _ hM hodd hMp _ hMe hperf X s s₁ u lev _ huniv ρ hρ S t o`. Establish `h1 : 1 ≤ Module.finrank ℤ D.La / 2` using `by have := D.two_le_finrank_La; omega`. Conclude with `exists_galoisCover_of_geom b N _ M h1 (by omega) hodd hMp X s s₁ u lev huniv ρ hρ S t o (fun K _ _ x => GlobalTheory.T.exists_symplectic_level_geometric_point_harrisTaylor p D R b N M e hM hodd hMp hMe hperf S t o K x)`.
+-/
 theorem exists_galoisCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
   (N M e : ℕ),
   3 ≤ N → N.Coprime p → 3 ≤ M → Odd M → M.Coprime p → e.Coprime p → M.Coprime e →

@@ -22,20 +22,44 @@ def intRing {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) : Subring C 
     simp only [Set.mem_setOf_eq] at *
     rwa [v.map_neg]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intRing {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) (z : C) :
     z ∈ intRing v ↔ ((0 : ℝ) : WithTop ℝ) ≤ v z := Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `at h`.
+-/
 theorem ne_zero_of_val_zero {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {z : C}
     (h : v z = 0) : z ≠ 0 := by
   rintro rfl
   simp at h
 
+/- English proof (translation)
+Establish `h1 : v (z * z⁻¹) = 0` using `by rw [mul_inv_cancel₀ (ne_zero_of_val_zero v h)]; simp`. Rewrite `h1` using `[v.map_mul, h, zero_add]`. Conclude with `h1.ge`.
+-/
 theorem inv_mem_of_val_zero {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {z : C}
     (h : v z = 0) : z⁻¹ ∈ intRing v := by
   have h1 : v (z * z⁻¹) = 0 := by rw [mul_inv_cancel₀ (ne_zero_of_val_zero v h)]; simp
   rw [v.map_mul, h, zero_add] at h1
   exact h1.ge
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, fun _ => 1, ?_, by simp, rfl, by simp⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Consider the case `insert b S hb ih`. Rewrite `ha` using `[Finset.mem_insert, not_or]`.
+
+Take `⟨P, c, hP, hPu, hca, hcS⟩` from `ih ha.2`. Take `⟨x, hx⟩` from `hs a b ha.1`. Use `⟨((em a x - em b x)⁻¹ • (M x - em b x • (1 : Matrix (Fin d) (Fin d) C))) * P, fun e => (em a x - em b x)⁻¹ * (em e x - em b x) * c e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `sum_mem fun k _ => mul_mem ?_ (hP k j)` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Use `mul_mem (inv_mem_of_val_zero v hx) (sub_mem (hM x i k) (mul_mem (he b x) ?_))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Introduce `q`. Rewrite using `[← Matrix.mulVec_mulVec, hPu, Matrix.mulVec_smul, Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, hu]`. Use extensionality with `k`.
+
+Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hca, mul_one]`. Conclude with `inv_mul_cancel₀ (ne_zero_of_val_zero v hx)`. Introduce `e he'`.
+
+Break down `Finset.mem_insert.1 he' with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hcS e h]`.
+-/
 theorem exists_projector {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {O A : Type}
     [DecidableEq A] {n : A → ℕ} {d : ℕ} (M : O → Matrix (Fin d) (Fin d) C) (em : A → O → C)
     (u : (Σ a : A, Fin (n a)) → Fin d → C)
@@ -80,6 +104,17 @@ theorem exists_projector {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
       · simp
       · simp [hcS e h]
 
+/- English proof (translation)
+Introduce `C _ v O A _ _ n d M em u hM he hu hs hw`. Use `choose w hwi hw using hw`. Establish `key` using `fun a : A => exists_projector v M em u hM he hu hs a (Finset.univ.erase a) (Finset.notMem_erase a _)`. Use `choose P c hP hPu hca hcS using key`. Use `⟨fun s q => ∑ t, P q.1 t s * w q.1 t q.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s q`. Conclude with `(mem_intRing v _).1 (sum_mem fun t _ => mul_mem (hP _ _ _) ((mem_intRing v _).2 (hwi _ _ _)))`. Introduce and unpack `⟨b, j⟩ ⟨a, i⟩`. Establish `h1 : ∑ s, u ⟨b, j⟩ s * ∑ t, P a t s * w a t i = ∑ t, (P a).mulVec (u ⟨b, j⟩) t * w a t i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun s _ => by ring` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h1, hPu]`. Distinguish the cases in `hba : b = a`.
+
+Substitute `hba` using the available equality. Simplify using `only [hca, one_smul, hw]`. Simplify using the standard rewrite rules. Establish `h0 : c a b = 0` using `hcS a b (by simp [hba])`. Rewrite using `[if_neg (fun h => hba (congrArg Sigma.fst h))]`.
+
+Simplify using `[h0]`.
+-/
 theorem saturated_blocks_summand : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (O A : Type) [Fintype A] [DecidableEq A] (n : A → ℕ) (d : ℕ) (M : O → Matrix (Fin d) (Fin d) C) (em : A → O → C) (u : (Σ a : A, Fin (n a)) → Fin d → C), (∀ x i j, ((0 : ℝ) : WithTop ℝ) ≤ v (M x i j)) → (∀ a x, ((0 : ℝ) : WithTop ℝ) ≤ v (em a x)) → (∀ x q, (M x).mulVec (u q) = em q.1 x • u q) → (∀ a a', a ≠ a' → ∃ x, v (em a x - em a' x) = 0) → (∀ a, ∃ w : Fin d → Fin (n a) → C, (∀ s i, ((0 : ℝ) : WithTop ℝ) ≤ v (w s i)) ∧ ∀ i i', ∑ s, u ⟨a, i⟩ s * w s i' = if i = i' then 1 else 0) → ∃ w : Fin d → (Σ a : A, Fin (n a)) → C, (∀ s q, ((0 : ℝ) : WithTop ℝ) ≤ v (w s q)) ∧ ∀ q q', ∑ s, u q s * w s q' = if q = q' then 1 else 0 := by
   intro C _ v O A _ _ n d M em u hM he hu hs hw
   choose w hwi hw using hw

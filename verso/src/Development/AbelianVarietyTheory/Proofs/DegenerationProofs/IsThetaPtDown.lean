@@ -12,6 +12,9 @@ open ThetaCoord CommPairing GlobalLift
 
 variable {S : Scheme.{0}} {T : Over S}
 
+/- English proof (translation)
+Use `⟨ho, hu, fun p => ⟨⊤, trivial, ?_⟩⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `exists_section (T := T) (V := ⊤) (p := p) trivial`. Establish `hi : overResι (T` using `T) ⊤ ≫ h = 𝟙 _ := by haveI : Mono (overResι (T := T) ⊤) := Over.mono_of_mono_left _ (hk := inferInstanceAs (Mono (⊤ : T.left.Opens).ι))`. Rewrite using `[← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]`. Conclude with `isThetaPtOver_pull P H _ h hi`.
+-/
 theorem isThetaPt_of_over (P : PolAV S) [Subsingleton T.left] {k : ℕ} {I : Type} {x : I → (T ⟶ P.A)}
     {v : I → Γ(T.left, ⊤)} (ho : Odd k) (hu : IsUnit (k : Γ(T.left, ⊤))) (H : IsThetaPtOver P k x v) :
     IsThetaPt P k x v := by
@@ -22,6 +25,11 @@ theorem isThetaPt_of_over (P : PolAV S) [Subsingleton T.left] {k : ℕ} {I : Typ
     rw [← cancel_mono (overResι (T := T) ⊤), Category.assoc, hh, Category.comp_id, Category.id_comp]
   exact isThetaPtOver_pull P H _ h hi
 
+/- English proof (translation)
+Take `⟨o, ho, hv⟩` from `exists_symLift_one P.isLB hν 1`. Rewrite using `[← ho.pt_eq]`. Use `weilIs_of_commIsOf hG P.isAb P.isLB ((commIsOf_iff P.isLB _ _ _).2 fun Z r z J hJ => ?_)` and prove the remaining obligations. Establish `e : translT P.A (1 : T ⟶ P.A) = 𝟙 _`. Rewrite using `[translT, ThetaAct.translPt_one, lift_fst_snd]`.
+
+Rewrite using `[hv _ _ z J hJ, hv _ _ z J hJ, ho.pt_eq, e, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem weilIs_one_left (hG : GlobalFnsSt) (P : PolAV S) {k : ℤ} {ν : LB.Gen (negLB P.A P.L k T)} (hν : ν.IsGen)
     (θ : ThetaGrp P.A P.L k T) : WeilIs P.A P.L k 1 θ.pt 1 := by
   obtain ⟨o, ho, hv⟩ := exists_symLift_one P.isLB hν 1
@@ -32,6 +40,13 @@ theorem weilIs_one_left (hG : GlobalFnsSt) (P : PolAV S) {k : ℤ} {ν : LB.Gen 
   rw [hv _ _ z J hJ, hv _ _ z J hJ, ho.pt_eq, e, map_one]
   simp
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty I with hI | ⟨⟨i₀⟩⟩` into its components or cases. Rewrite using `[Subsingleton.elim v v']` and apply the resulting hypothesis. Take `⟨th', s', α', τ', W, t', w', u', hth', hα', hτ', hs', hW, ht', hw', hv⟩` from `H`. Take `⟨th, s, α, τ, U, t, -, -, hth, hα, hτ, hs, hU, ht, -, -⟩` from `H'`. Take `⟨ρ, hρ⟩` from `exists_unit_of_isGenSec hth hth'`.
+
+Take `⟨ν, hν, -⟩` from `(hW i₀).sym`. Take `⟨o, hoo, -⟩` from `exists_symLift_one P.isLB hν ((n * m) ^ 2)`. Take `⟨u, hu⟩` from `exists_unit_isValueAt hG P.isAb P.isLB (r := n) (q := m ^ 2) rfl (pow_dvd_pow_of_dvd (Dvd.intro_left n rfl) 2) ho.pow hρ hα hα' hs hs' hτ' (one_pow n) hoo hτ`. Use `⟨th, s, α, τ, U, t, fun i => ρ * u * w' i, u' * (ρ * u)⁻¹, hth, hα, hτ, hs, hU, ht, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hu (x i) (U i) (t i) (W i) (t' i) (w' i) 1 (by rw [show (n * m) ^ 2 = n * m ^ 2 * n by ring, pow_mul, pow_mul, hx, one_pow]) (hU i) (ht i) (by rw [_root_.mul_one]; exact hW i) (ht' i) (hw' i) (by rw [← (hW i).pt_eq]; exact weilIs_one_left hG P hν _)` as an intermediate fact.
+
+Rewrite `this` using `[one_pow, Units.val_one, _root_.mul_one]`. Then use the resulting hypothesis. Rewrite using `[hv, ← Units.val_mul, ← _root_.mul_assoc, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem isThetaPtOver_down (hG : GlobalFnsSt) (P : PolAV S) [Subsingleton T.left] {n m : ℕ} (ho : Odd (n * m))
     {I : Type} {x : I → (T ⟶ P.A)} {v v' : I → Γ(T.left, ⊤)} (hx : ∀ i, (x i ^ n) ^ m ^ 2 = 1)
     (H : IsThetaPtOver P (n * m) x v) (H' : IsThetaPtOver P m (fun i => x i ^ n) v') :
@@ -53,6 +68,13 @@ theorem isThetaPtOver_down (hG : GlobalFnsSt) (P : PolAV S) [Subsingleton T.left
     rwa [one_pow, Units.val_one, _root_.mul_one] at this
   · rw [hv, ← Units.val_mul, ← _root_.mul_assoc, ← Units.val_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+Introduce `hL K _ _ P n m Ix x v hx H`. Use `haveI : Subsingleton (baseOver (Sp K)).left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Use `haveI : Nonempty (baseOver (Sp K)).left := inferInstanceAs (Nonempty (PrimeSpectrum K))`. Establish `ho : Odd m` using `(Nat.odd_mul.1 H.1).2`. Establish `hu : IsUnit (m : Γ((baseOver (Sp K)).left, ⊤))` using `isUnit_of_mul_isUnit_right (by rw [← Nat.cast_mul]; exact H.2.1)`.
+
+Establish `hK : (m : K) ≠ 0`. Use `IsUnit.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom hu` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨v', H'⟩` from `ThetaPtExist.exists_isThetaPt hL K P m ho hK (fun i => x i ^ n) hx`.
+
+Conclude with `isThetaPt_of_over P ho hu (isThetaPtOver_down hL.globalFns P H.1 hx (isThetaPtOver_of_subsingleton P H) (isThetaPtOver_of_subsingleton P H'))`.
+-/
 theorem isThetaPt_down : Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (n m : ℕ) (Ix : Type)
     (x : Ix → (baseOver (Sp K) ⟶ P.A)) (v : Ix → Γ((baseOver (Sp K)).left, ⊤)),
     (∀ i, (x i ^ n) ^ m ^ 2 = 1) → IsThetaPt P (n * m) x v → IsThetaPt P m (fun i => x i ^ n) v := by

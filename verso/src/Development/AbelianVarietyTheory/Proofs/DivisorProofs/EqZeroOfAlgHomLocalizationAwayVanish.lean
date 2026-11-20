@@ -3,6 +3,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨n, x, hx⟩` from `IsLocalization.Away.surj e y`. Establish `hxe : x * e = 0`. Apply `h` to reduce the goal to its premises. Introduce `ψ`. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `he : ψ e = 0`. Rewrite using `[he, mul_zero]`. Establish `hu : IsUnit ((ψ : C →+* K) e)` using `Ne.isUnit he`. Set `f : Localization.Away e →+* K` to `IsLocalization.Away.lift e hu`. Establish `hf : ∀ c : C, f (algebraMap C (Localization.Away e) c) = ψ c` using `fun c => IsLocalization.Away.lift_eq e hu c`.
+
+Set `χ : Localization.Away e →ₐ[R] K` to `{ f with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `f (algebraMap R (Localization.Away e) r) = _`. Rewrite using `[IsScalarTower.algebraMap_apply R C (Localization.Away e), hf, AlgHom.commutes] }`. Establish `h0 : f y = 0` using `hy χ`. Establish `: ψ x = 0`.
+
+Rewrite using `[← hf x, ← hx, map_mul, h0, zero_mul]`. Rewrite using `[this, zero_mul]`. Establish `hue : IsUnit (algebraMap C (Localization.Away e) e)` using `IsLocalization.Away.algebraMap_isUnit e`. Establish `h1 : y * algebraMap C (Localization.Away e) e ^ (n + 1) = 0`. Rewrite using `[pow_succ, ← mul_assoc, hx, ← map_mul, hxe, map_zero]`.
+
+Conclude with `(hue.pow (n + 1)).mul_left_eq_zero.mp h1`.
+-/
 theorem points_separate_localization_away (R K C : Type) [CommRing R] [Field K] [Algebra R K]
     [CommRing C] [Algebra R C] (h : ∀ a : C, (∀ ψ : C →ₐ[R] K, ψ a = 0) → a = 0)
     (e : C) (y : Localization.Away e)

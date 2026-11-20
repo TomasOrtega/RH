@@ -19,6 +19,11 @@ open Reduction AutomorphicForm RightCosetSpace
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h : ¬ ((i : ℕ) < r ∧ r ≤ (i : ℕ))` using `by omega`. Simplify using `[unipMatrix, blockEntry_apply, h]`. Introduce `i j hij`.
+
+Establish `hji : (j : ℕ) < i` using `hij`. Establish `h1 : i ≠ j` using `fun h => by rw [h] at hji; exact lt_irrefl _ hji`. Establish `h2 : ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ))` using `by omega`. Simplify using `[unipMatrix, blockEntry_apply, h1, h2]`.
+-/
 theorem det_unipMatrix {r : ℕ} {R : Type*} [CommRing R] (X : UPos n r → R) :
     (unipMatrix X).det = 1 := by
   rw [Matrix.det_of_isUpperTriangular]
@@ -31,6 +36,9 @@ theorem det_unipMatrix {r : ℕ} {R : Type*} [CommRing R] (X : UPos n r → R) :
     have h2 : ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ)) := by omega
     simp [unipMatrix, blockEntry_apply, h1, h2]
 
+/- English proof (translation)
+Establish `h1 : AdelicGLn.det K n (unipGL X) = 1` using `Units.ext (by rw [AdelicGLn.coe_det, coe_unipGL, det_unipMatrix, Units.val_one])`. Rewrite using `[mem_normOneGL, h1, map_one]`. Both sides reduce to the same expression.
+-/
 theorem unipGL_mem_normOneGL {r : ℕ} (X : UPos n r → 𝔸[K]) :
     unipGL X ∈ normOneGL K n := by
   have h1 : AdelicGLn.det K n (unipGL X) = 1 :=
@@ -43,19 +51,34 @@ variable (K n) in
 def unipOne (r : ℕ) (X : UPos n r → 𝔸[K]) : normOneGL K n :=
   ⟨unipGL X, unipGL_mem_normOneGL X⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_unipOne (r : ℕ) (X : UPos n r → 𝔸[K]) :
     (unipOne K n r X : AdelicGLn.AdelicGL K n) = unipGL X := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (unipGL_add X Y)`.
+-/
 theorem unipOne_add (r : ℕ) (X Y : UPos n r → 𝔸[K]) :
     unipOne K n r (X + Y) = unipOne K n r X * unipOne K n r Y :=
   Subtype.ext (unipGL_add X Y)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext unipGL_zero`.
+-/
 theorem unipOne_zero (r : ℕ) : unipOne K n r 0 = 1 :=
   Subtype.ext unipGL_zero
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 continuous_unipGL`.
+-/
 theorem continuous_unipOne (r : ℕ) : Continuous (unipOne K n r) :=
   continuous_induced_rng.2 continuous_unipGL
 
+/- English proof (translation)
+Take `⟨_, ξ, rfl⟩` from `ξ`. Express the relevant statement in the definitionally equal form `unipGL (fun p => algebraMap K 𝔸[K] (ξ p)) ∈ AdelicGLn.rationalGL K n`. Rewrite using `[← diagonal_unipGL]`. Conclude with `⟨unipGL ξ, rfl⟩`.
+-/
 theorem unipOne_mem_rationalGLOne (r : ℕ) (ξ : unipLattice K n r) :
     unipOne K n r ξ ∈ rationalGLOne K n := by
   obtain ⟨_, ξ, rfl⟩ := ξ
@@ -71,6 +94,11 @@ instance (r : ℕ) : SigmaFinite (unipMeasure K n r) := by
   unfold unipMeasure
   infer_instance
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_encard_le_of_isCompact Γ₁ hT`. Use `⟨μ T * N, ENNReal.mul_ne_top hT.measure_lt_top.ne (by simp), fun ψ => ?_⟩` and prove the remaining obligations. Establish `h` using `L2Kernel.lintegral_mul_sq_le (μ.restrict T) (f := fun _ => 1) (g := fun y => ‖ψ (mk Γ₁ y)‖ₑ) aemeasurable_const (stronglyMeasurable_lift Γ₁ μ ψ).measurable.enorm.aemeasurable`. Simplify using `only [one_mul, one_pow, lintegral_const, Measure.restrict_apply_univ] at h`. Use `h.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Use `gcongr`. Conclude with `lintegral_lift_sq_le Γ₁ μ ψ hT.measurableSet hN`.
+-/
 theorem lintegral_lift_le {T : Set (normOneGL K n)}
     (hT : IsCompact T) : ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ),
       (∫⁻ y in T, ‖ψ (mk Γ₁ y)‖ₑ ∂μ) ^ 2 ≤ C * ‖ψ‖ₑ ^ 2 := by
@@ -85,16 +113,27 @@ theorem lintegral_lift_le {T : Set (normOneGL K n)}
   gcongr
   exact lintegral_lift_sq_le Γ₁ μ ψ hT.measurableSet hN
 
+/- English proof (translation)
+Establish `: ∀ᵐ y ∂μ.restrict (⋃ k, compactCovering (normOneGL K n) k), p y` using `(ae_restrict_iUnion_iff _ _).2 fun k => h _ (isCompact_compactCovering _ k)`. Rewrite `this` using `[iUnion_compactCovering, Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 theorem ae_of_forall_isCompact {p : normOneGL K n → Prop}
     (h : ∀ S : Set (normOneGL K n), IsCompact S → ∀ᵐ y ∂μ.restrict S, p y) : ∀ᵐ y ∂μ, p y := by
   have : ∀ᵐ y ∂μ.restrict (⋃ k, compactCovering (normOneGL K n) k), p y :=
     (ae_restrict_iUnion_iff _ _).2 fun k => h _ (isCompact_compactCovering _ k)
   rwa [iUnion_compactCovering, Measure.restrict_univ] at this
 
+/- English proof (translation)
+The claim follows from `((continuous_unipOne r).comp continuous_fst).mul continuous_snd`.
+-/
 theorem continuous_unipOne_mul (r : ℕ) :
     Continuous fun p : (UPos n r → 𝔸[K]) × normOneGL K n => unipOne K n r p.1 * p.2 :=
   ((continuous_unipOne r).comp continuous_fst).mul continuous_snd
 
+/- English proof (translation)
+Establish `hS' : MeasurableSet ((g * ·) '' S)` using `(hS.image (continuous_const_mul g)).measurableSet`. Rewrite using `[← lintegral_indicator hS.measurableSet, ← lintegral_indicator hS']`. Use `Eq.trans ?_ (lintegral_mul_left_eq_self (fun z => ((g * ·) '' S).indicator F z) g)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`.
+
+Distinguish the cases in `hy : y ∈ S`. Rewrite using `[indicator_of_mem hy, indicator_of_mem (mem_image_of_mem _ hy)]`. Rewrite using `[indicator_of_notMem hy, indicator_of_notMem]`. Introduce and unpack `⟨y', hy', h⟩`. Conclude with `hy (mul_left_cancel h ▸ hy')`.
+-/
 theorem setLIntegral_mul_left (F : normOneGL K n → ℝ≥0∞) (g : normOneGL K n)
     {S : Set (normOneGL K n)} (hS : IsCompact S) :
     ∫⁻ y in S, F (g * y) ∂μ = ∫⁻ z in (g * ·) '' S, F z ∂μ := by
@@ -109,6 +148,15 @@ theorem setLIntegral_mul_left (F : normOneGL K n → ℝ≥0∞) (g : normOneGL 
     rintro ⟨y', hy', h⟩
     exact hy (mul_left_cancel h ▸ hy')
 
+/- English proof (translation)
+Take `⟨D', hD'c, hDD'⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Use `set T := (fun p : (UPos n r → 𝔸[K]) × normOneGL K n => unipOne K n r p.1 * p.2) '' (D' ×ˢ S)`. Establish `hT : IsCompact T` using `(hD'c.prod hS).image (continuous_unipOne_mul r)`. Take `⟨C, hC, hCφ⟩` from `lintegral_lift_le μ hT`. Use `⟨C, hC, fun φ => le_trans (pow_le_pow_left₀ zero_le ?_ 2) (hCφ φ)⟩` and prove the remaining obligations.
+
+Establish `hmeas : Measurable fun p : (UPos n r → 𝔸[K]) × normOneGL K n => ‖φ (mk Γ₁ (unipOne K n r p.1 * p.2))‖ₑ` using `((Lp.stronglyMeasurable φ).measurable.comp ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)).enorm`. Establish `hswap : ∫⁻ y in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk Γ₁ (unipOne K n r X * y))‖ₑ ∂unipMeasure K n r ∂μ = ∫⁻ X in unipFundamentalDomain K n r, ∫⁻ y in S, ‖φ (mk Γ₁ (unipOne K n r X * y))‖ₑ ∂μ ∂unipMeasure K n r`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Conclude with `(hmeas.comp measurable_swap).aemeasurable`. Rewrite using `[hswap]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' measurableSet_unipFundamentalDomain fun X hX => ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_mul_left μ (fun z => ‖φ (mk Γ₁ z)‖ₑ) (unipOne K n r X) hS]`. Use `lintegral_mono_set ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `⟨(X, y), ⟨hDD' hX, hy⟩, rfl⟩`. Use `_ = ∫⁻ y in T, ‖φ (mk Γ₁ y)‖ₑ ∂μ := by`. Rewrite using `[setLIntegral_const, unipMeasure_unipFundamentalDomain, mul_one]`.
+-/
 theorem exists_lintegral_unip_sq_le (r : ℕ) {S : Set (normOneGL K n)} (hS : IsCompact S) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ φ : Lp ℂ 2 (quotientMeasure Γ₁ μ),
       (∫⁻ y in S, ∫⁻ X in unipFundamentalDomain K n r,
@@ -149,6 +197,13 @@ def ctFun (r : ℕ) (F : RightCosetSpace Γ₁ → ℂ) (y : normOneGL K n) : �
 def constantTermL2 (r : ℕ) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (y : normOneGL K n) : ℂ :=
   ctFun K n r φ y
 
+/- English proof (translation)
+Use `set Z' := toMeasurable (quotientMeasure Γ₁ μ) Z`. Establish `hZ' : quotientMeasure Γ₁ μ Z' = 0` using `by rw [measure_toMeasurable]; exact hZ`. Establish `hmeas : MeasurableSet {p : (UPos n r → 𝔸[K]) × normOneGL K n | mk Γ₁ (unipOne K n r p.1 * p.2) ∉ Z'}` using `((measurableSet_toMeasurable _ _).preimage ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)).compl`. Establish `h1 : ∀ᵐ X ∂unipMeasure K n r, ∀ᵐ y ∂μ, mk Γ₁ (unipOne K n r X * y) ∉ Z'`. Use `Eventually.of_forall fun X => ?_` and prove the remaining obligations.
+
+Rewrite using `[ae_iff]`. Simplify using `only [not_not]`. Use `measure_preimage_mul μ (unipOne K n r X) (mk Γ₁ ⁻¹' Z')` as an intermediate fact. Rewrite `this` using `[(quasiMeasurePreserving_mk Γ₁ μ).preimage_null hZ']`. Conclude with `this`.
+
+Establish `h2` using `(Measure.ae_ae_comm hmeas).1 h1`. Use `filter_upwards [h2] with y hy`. Use `filter_upwards [hy] with X hX`. Conclude with `fun h => hX (subset_toMeasurable _ _ h)`.
+-/
 theorem ae_ae_unip_notMem {Z : Set (RightCosetSpace Γ₁)} (hZ : quotientMeasure Γ₁ μ Z = 0)
     (r : ℕ) : ∀ᵐ y ∂μ, ∀ᵐ X ∂unipMeasure K n r, mk Γ₁ (unipOne K n r X * y) ∉ Z := by
   set Z' := toMeasurable (quotientMeasure Γ₁ μ) Z
@@ -169,6 +224,9 @@ theorem ae_ae_unip_notMem {Z : Set (RightCosetSpace Γ₁)} (hZ : quotientMeasur
   filter_upwards [hy] with X hX
   exact fun h => hX (subset_toMeasurable _ _ h)
 
+/- English proof (translation)
+Establish `hZ : quotientMeasure Γ₁ μ {x | F x ≠ F' x} = 0` using `ae_iff.1 h`. Use `filter_upwards [ae_ae_unip_notMem μ hZ r] with y hy`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hy] with X hX`. Simplify using `using hX`.
+-/
 theorem ae_ctFun_congr (r : ℕ) {F F' : RightCosetSpace Γ₁ → ℂ}
     (h : F =ᵐ[quotientMeasure Γ₁ μ] F') : ∀ᵐ y ∂μ, ctFun K n r F y = ctFun K n r F' y := by
   have hZ : quotientMeasure Γ₁ μ {x | F x ≠ F' x} = 0 := ae_iff.1 h
@@ -177,6 +235,11 @@ theorem ae_ctFun_congr (r : ℕ) {F F' : RightCosetSpace Γ₁ → ℂ}
   filter_upwards [hy] with X hX
   simpa using hX
 
+/- English proof (translation)
+Establish `hmeas : Measurable fun p : (UPos n r → 𝔸[K]) × normOneGL K n => ‖φ (mk Γ₁ (unipOne K n r p.1 * p.2))‖ₑ` using `((Lp.stronglyMeasurable φ).measurable.comp ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)).enorm`. Use `ae_of_forall_isCompact μ fun S hS => ?_` and prove the remaining obligations. Take `⟨C, hC, hCφ⟩` from `exists_lintegral_unip_sq_le μ r hS`. Establish `hfin : ∫⁻ y in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk Γ₁ (unipOne K n r X * y))‖ₑ ∂unipMeasure K n r ∂μ ≠ ⊤`. Use `(L2Kernel.lt_top_of_sq_lt_top ((hCφ φ).trans_lt ?_)).ne` and prove the remaining obligations.
+
+Conclude with `ENNReal.mul_lt_top hC.lt_top (ENNReal.pow_lt_top enorm_lt_top)`. Establish `hm2 : Measurable fun y => ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk Γ₁ (unipOne K n r X * y))‖ₑ ∂unipMeasure K n r` using `hmeas.lintegral_prod_left'`. Use `filter_upwards [ae_lt_top' hm2.aemeasurable hfin] with y hy`. Use `⟨?_, hy⟩` and prove the remaining obligations. Conclude with `((Lp.stronglyMeasurable φ).comp_measurable ((measurable_mk Γ₁).comp ((continuous_unipOne_mul r).comp (continuous_id.prodMk continuous_const)).measurable)).aestronglyMeasurable`.
+-/
 theorem ae_integrableOn_unip (r : ℕ) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     ∀ᵐ y ∂μ, IntegrableOn (fun X => φ (mk Γ₁ (unipOne K n r X * y)))
       (unipFundamentalDomain K n r) (unipMeasure K n r) := by
@@ -198,6 +261,9 @@ theorem ae_integrableOn_unip (r : ℕ) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)
   exact ((Lp.stronglyMeasurable φ).comp_measurable ((measurable_mk Γ₁).comp
     ((continuous_unipOne_mul r).comp (continuous_id.prodMk continuous_const)).measurable)).aestronglyMeasurable
 
+/- English proof (translation)
+Establish `: StronglyMeasurable (uncurry fun (X : UPos n r → 𝔸[K]) (y : normOneGL K n) => F (mk Γ₁ (unipOne K n r X * y)))` using `hF.comp_measurable ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)`. Conclude with `this.integral_prod_left (μ := (unipMeasure K n r).restrict (unipFundamentalDomain K n r))`.
+-/
 theorem stronglyMeasurable_ctFun (r : ℕ) {F : RightCosetSpace Γ₁ → ℂ} (hF : StronglyMeasurable F) :
     StronglyMeasurable (ctFun K n r F) := by
   have : StronglyMeasurable (uncurry fun (X : UPos n r → 𝔸[K]) (y : normOneGL K n) =>
@@ -205,6 +271,9 @@ theorem stronglyMeasurable_ctFun (r : ℕ) {F : RightCosetSpace Γ₁ → ℂ} (
     hF.comp_measurable ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)
   exact this.integral_prod_left (μ := (unipMeasure K n r).restrict (unipFundamentalDomain K n r))
 
+/- English proof (translation)
+Use `filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_add φ ψ), ae_integrableOn_unip μ r φ, ae_integrableOn_unip μ r ψ] with y h1 h2 h3`. Rewrite using `[constantTermL2, h1]`. Simplify using `only [constantTermL2, ctFun, Pi.add_apply]`. Conclude with `integral_add h2 h3`.
+-/
 theorem ae_constantTermL2_add (r : ℕ) (φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     ∀ᵐ y ∂μ, constantTermL2 μ r (φ + ψ) y = constantTermL2 μ r φ y + constantTermL2 μ r ψ y := by
   filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_add φ ψ), ae_integrableOn_unip μ r φ,
@@ -213,12 +282,18 @@ theorem ae_constantTermL2_add (r : ℕ) (φ ψ : Lp ℂ 2 (quotientMeasure Γ₁
   simp only [constantTermL2, ctFun, Pi.add_apply]
   exact integral_add h2 h3
 
+/- English proof (translation)
+Use `filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_smul c φ)] with y h1`. Rewrite using `[constantTermL2, h1, ctFun, constantTermL2, ctFun, ← integral_const_mul]`. Both sides reduce to the same expression.
+-/
 theorem ae_constantTermL2_smul (r : ℕ) (c : ℂ) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     ∀ᵐ y ∂μ, constantTermL2 μ r (c • φ) y = c * constantTermL2 μ r φ y := by
   filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_smul c φ)] with y h1
   rw [constantTermL2, h1, ctFun, constantTermL2, ctFun, ← integral_const_mul]
   rfl
 
+/- English proof (translation)
+Use `filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_sub φ ψ), ae_integrableOn_unip μ r φ, ae_integrableOn_unip μ r ψ] with y h1 h2 h3`. Rewrite using `[constantTermL2, h1]`. Simplify using `only [constantTermL2, ctFun, Pi.sub_apply]`. Conclude with `integral_sub h2 h3`.
+-/
 theorem ae_constantTermL2_sub (r : ℕ) (φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     ∀ᵐ y ∂μ, constantTermL2 μ r (φ - ψ) y = constantTermL2 μ r φ y - constantTermL2 μ r ψ y := by
   filter_upwards [ae_ctFun_congr μ r (Lp.coeFn_sub φ ψ), ae_integrableOn_unip μ r φ,
@@ -227,6 +302,9 @@ theorem ae_constantTermL2_sub (r : ℕ) (φ ψ : Lp ℂ 2 (quotientMeasure Γ₁
   simp only [constantTermL2, ctFun, Pi.sub_apply]
   exact integral_sub h2 h3
 
+/- English proof (translation)
+Take `⟨C, hC, hCφ⟩` from `exists_lintegral_unip_sq_le μ r hS`. Use `⟨C, hC, fun φ => le_trans ?_ (hCφ φ)⟩` and prove the remaining obligations. Use `gcongr with y`. Conclude with `enorm_integral_le_lintegral_enorm _`.
+-/
 theorem exists_lintegral_constantTermL2_sq_le (r : ℕ) {S : Set (normOneGL K n)} (hS : IsCompact S) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ φ : Lp ℂ 2 (quotientMeasure Γ₁ μ),
       (∫⁻ y in S, ‖constantTermL2 μ r φ y‖ₑ ∂μ) ^ 2 ≤ C * ‖φ‖ₑ ^ 2 := by
@@ -255,9 +333,25 @@ def cuspidalL2 : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ₁ μ)) where
     rw [h1, h2]
     simp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cuspidalL2 {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} : φ ∈ cuspidalL2 μ ↔ IsCuspidalL2 μ φ :=
   Iff.rfl
 
+/- English proof (translation)
+Use `isClosed_of_closure_subset fun φ hφ r hr hrn => ?_` and prove the remaining obligations. Use `ae_of_forall_isCompact μ fun S hS => ?_` and prove the remaining obligations. Take `⟨C, hC, hCφ⟩` from `exists_lintegral_constantTermL2_sq_le μ r hS`. Use `set I := ∫⁻ y in S, ‖constantTermL2 μ r φ y‖ₑ ∂μ`. Establish `hle : ∀ ε : ℝ, 0 < ε → I ^ 2 ≤ C * ENNReal.ofReal ε ^ 2`.
+
+Introduce `ε hε`. Take `⟨ψ, hψ, hdist⟩` from `Metric.mem_closure_iff.1 hφ ε hε`. Establish `hI : I = ∫⁻ y in S, ‖constantTermL2 μ r (φ - ψ) y‖ₑ ∂μ`. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_constantTermL2_sub μ r φ ψ, (hψ : IsCuspidalL2 μ ψ) r hr hrn] with y h1 h2`.
+
+Rewrite using `[h1, h2, Pi.zero_apply, sub_zero]`. Rewrite using `[hI]`. Use `(hCφ (φ - ψ)).trans ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[← ofReal_norm, ← dist_eq_norm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hdist.le`. Establish `hI0 : I ^ 2 = 0`. Use `le_antisymm ?_ zero_le` and prove the remaining obligations. Establish `ht : Tendsto (fun ε : ℝ => C * ENNReal.ofReal ε ^ 2) (𝓝[>] 0) (𝓝 0)`. Establish `h1 : Tendsto (fun ε : ℝ => ENNReal.ofReal ε ^ 2) (𝓝[>] 0) (𝓝 0)`.
+
+Use `(((ENNReal.continuous_pow 2).comp ENNReal.continuous_ofReal).tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (0 : ℝ)))` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Simplify using `using ENNReal.Tendsto.const_mul h1 (Or.inr hC)`. Conclude with `ge_of_tendsto ht (eventually_nhdsWithin_of_forall fun ε hε => hle ε hε)`. Establish `hI' : I = 0` using `pow_eq_zero_iff two_ne_zero |>.1 hI0`.
+
+Establish `hm : AEMeasurable (fun y => ‖constantTermL2 μ r φ y‖ₑ) (μ.restrict S)` using `(stronglyMeasurable_ctFun r (Lp.stronglyMeasurable φ)).measurable.enorm.aemeasurable`. Use `filter_upwards [(lintegral_eq_zero_iff' hm).1 hI'] with y hy`. Simplify using `using hy`.
+-/
 theorem isClosed_cuspidalL2 : IsClosed (cuspidalL2 μ : Set (Lp ℂ 2 (quotientMeasure Γ₁ μ))) := by
   refine isClosed_of_closure_subset fun φ hφ r hr hrn => ?_
   refine ae_of_forall_isCompact μ fun S hS => ?_
@@ -290,6 +384,11 @@ theorem isClosed_cuspidalL2 : IsClosed (cuspidalL2 μ : Set (Lp ℂ 2 (quotientM
   filter_upwards [(lintegral_eq_zero_iff' hm).1 hI'] with y hy
   simpa using hy
 
+/- English proof (translation)
+Introduce `g φ hφ r hr hrn`. Establish `h2` using `ae_ctFun_congr μ r (coeFn_rightRegularRep Γ₁ μ g φ)`. Establish `h3 : ∀ y, ctFun K n r (fun z => φ (rightMul Γ₁ g z)) y = constantTermL2 μ r φ (y * g)`. Introduce `y`. Simplify using `only [ctFun, constantTermL2, rightMul_mk, mul_assoc]`.
+
+Establish `h4 : ∀ᵐ y ∂μ, constantTermL2 μ r φ (y * g) = 0` using `(measurePreserving_mul_right μ g).quasiMeasurePreserving.ae ((hφ : IsCuspidalL2 μ φ) r hr hrn)`. Use `filter_upwards [h2, h4] with y hy1 hy2`. Rewrite using `[constantTermL2, hy1, h3, hy2, Pi.zero_apply]`.
+-/
 theorem isInvariant_cuspidalL2 : (rightRegularRep Γ₁ μ).IsInvariant (cuspidalL2 μ) := by
   intro g φ hφ r hr hrn
   have h2 := ae_ctFun_congr μ r (coeFn_rightRegularRep Γ₁ μ g φ)
@@ -301,6 +400,25 @@ theorem isInvariant_cuspidalL2 : (rightRegularRep Γ₁ μ).IsInvariant (cuspida
   filter_upwards [h2, h4] with y hy1 hy2
   rw [constantTermL2, hy1, h3, hy2, Pi.zero_apply]
 
+/- English proof (translation)
+Use `set S := (x * ·) '' tsupport (f : normOneGL K n → ℂ)`. Establish `hS : IsCompact S` using `f.hasCompactSupport.isCompact.image (continuous_const_mul x)`. Take `⟨M, hM⟩` from `f.continuous.bounded_above_of_compact_support f.hasCompactSupport`. Establish `hfS : ∀ z ∉ S, f (x⁻¹ * z) = 0` using `fun z hz => image_eq_zero_of_notMem_tsupport fun h => hz ⟨x⁻¹ * z, h, by simp⟩`. Use `set F : (UPos n r → 𝔸[K]) → normOneGL K n → ℂ := fun X z => f (x⁻¹ * z) * φ (mk Γ₁ (unipOne K n r X * z))`.
+
+Establish `hFm : StronglyMeasurable (uncurry F)` using `(f.continuous.comp (continuous_const_mul x⁻¹ |>.comp continuous_snd)).stronglyMeasurable.mul ((Lp.stronglyMeasurable φ).comp_measurable ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable))`. Establish `hint : Integrable (uncurry F) (((unipMeasure K n r).restrict (unipFundamentalDomain K n r)).prod μ)`. Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hCφ⟩` from `exists_lintegral_unip_sq_le μ r hS`. Establish `hfin : ∫⁻ z in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk Γ₁ (unipOne K n r X * z))‖ₑ ∂unipMeasure K n r ∂μ < ⊤` using `L2Kernel.lt_top_of_sq_lt_top ((hCφ φ).trans_lt (ENNReal.mul_lt_top hC.lt_top (ENNReal.pow_lt_top enorm_lt_top)))`.
+
+Establish `hmeas : Measurable fun p : (UPos n r → 𝔸[K]) × normOneGL K n => ‖φ (mk Γ₁ (unipOne K n r p.1 * p.2))‖ₑ` using `((Lp.stronglyMeasurable φ).measurable.comp ((measurable_mk Γ₁).comp (continuous_unipOne_mul r).measurable)).enorm`. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hFm.aestronglyMeasurable.enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hS.measurableSet]`.
+
+Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ S`. Rewrite using `[indicator_of_mem hz]`. Simplify using `only [F, uncurry_apply_pair, enorm_mul]`. Use `gcongr`.
+
+Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hM _)`. Rewrite using `[indicator_of_notMem hz]`. Simplify using `[F, hfS z hz]`. Use `_ = ENNReal.ofReal M * ∫⁻ z in S, ∫⁻ X in unipFundamentalDomain K n r, ‖φ (mk Γ₁ (unipOne K n r X * z))‖ₑ ∂unipMeasure K n r ∂μ := by`.
+
+Repeatedly rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`. Conclude with `lintegral_lintegral_swap hmeas.aemeasurable`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`. Establish `hinner : ∀ X, rconv Γ₁ μ f φ (unipOne K n r X * x) = ∫ z, F X z ∂μ`.
+
+Introduce `X`. Rewrite using `[rconv, ← integral_mul_left_eq_self _ (unipOne K n r X)]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [F, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`.
+
+Establish `hCT : ∀ z, ∫ X in unipFundamentalDomain K n r, F X z ∂unipMeasure K n r = f (x⁻¹ * z) * constantTermL2 μ r φ z`. Introduce `z`. Simplify using `only [F, constantTermL2, ctFun]`. Conclude with `integral_const_mul _ _`. Repeatedly rewrite using `[hinner]`.
+
+Rewrite using `[integral_integral_swap hint]`. Repeatedly rewrite using `[hCT]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [(hφ : IsCuspidalL2 μ φ) r hr hrn] with z hz`. Rewrite using `[hz, Pi.zero_apply, mul_zero]`.
+-/
 theorem integral_rconv_unip_eq_zero (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} (hφ : φ ∈ cuspidalL2 μ) {r : ℕ} (hr : 0 < r) (hrn : r < n)
     (x : normOneGL K n) :

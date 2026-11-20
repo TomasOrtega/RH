@@ -10,6 +10,15 @@ noncomputable section
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Establish `hrw : ∀ y : V, Complex.exp (↑(-2 * Real.pi * inner ℝ (r • y + x0) w) * Complex.I) • c y = Complex.exp (↑(-2 * Real.pi * inner ℝ x0 w) * Complex.I) * (Complex.exp (↑(-2 * Real.pi * inner ℝ y (r • w)) * Complex.I) • c y)`. Introduce `y`. Rewrite using `[smul_eq_mul, smul_eq_mul, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Rewrite using `[inner_add_left, real_inner_smul_left, real_inner_smul_right]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.fourier_eq', Real.fourier_eq']`. Establish `h1 : (∫ v : V, Complex.exp (↑(-2 * Real.pi * inner ℝ v w) * Complex.I) • c (r⁻¹ • (v - x0))) = ∫ v : V, (fun y => Complex.exp (↑(-2 * Real.pi * inner ℝ (r • y + x0) w) * Complex.I) • c y) (r⁻¹ • v)`. Rewrite using `[← MeasureTheory.integral_add_right_eq_self _ x0]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [add_sub_cancel_right, smul_inv_smul₀ hr.ne']`. Establish `h2` using `MeasureTheory.Measure.integral_comp_inv_smul_of_nonneg (MeasureTheory.volume : MeasureTheory.Measure V) (fun y => Complex.exp (↑(-2 * Real.pi * inner ℝ (r • y + x0) w) * Complex.I) • c y) hr.le`. Rewrite using `[h1.trans h2]`.
+
+Simplify using `only [hrw]`. Rewrite using `[MeasureTheory.integral_const_mul, norm_smul, norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+-/
 lemma norm_fourier_comp_dil (c : V → ℂ) (r : ℝ) (hr : 0 < r) (x0 w : V) :
     ‖𝓕 (fun x => c (r⁻¹ • (x - x0))) w‖ = r ^ Module.finrank ℝ V * ‖𝓕 c (r • w)‖ := by
   have hrw : ∀ y : V, Complex.exp (↑(-2 * Real.pi * inner ℝ (r • y + x0) w) * Complex.I) • c y =
@@ -36,6 +45,11 @@ lemma norm_fourier_comp_dil (c : V → ℂ) (r : ℝ) (hr : 0 < r) (x0 w : V) :
   rw [MeasureTheory.integral_const_mul, norm_smul, norm_mul, Complex.norm_exp_ofReal_mul_I, one_mul,
     Real.norm_eq_abs, abs_of_nonneg (by positivity)]
 
+/- English proof (translation)
+Establish `hr0 : r ≠ 0` using `hr.ne'`. Establish `hmeas : Measurable (fun w : V => r • w)` using `measurable_const_smul r`. Establish `hg : Measurable (fun u : V => ENNReal.ofReal ((1 + ‖u‖) ^ (-D)))` using `by fun_prop`. Establish `h1 : ∀ w : V, ENNReal.ofReal (r ^ Module.finrank ℝ V * (1 + ‖r • w‖) ^ (-D)) = ENNReal.ofReal (r ^ Module.finrank ℝ V) * ENNReal.ofReal ((1 + ‖r • w‖) ^ (-D))` using `fun w => ENNReal.ofReal_mul (by positivity)`. Repeatedly rewrite using `[h1]`.
+
+Establish `hg' : Measurable (fun w : V => ENNReal.ofReal ((1 + ‖r • w‖) ^ (-D)))` using `hg.comp hmeas`. Rewrite using `[MeasureTheory.lintegral_const_mul _ hg']`. Rewrite using `[← MeasureTheory.lintegral_map hg hmeas, MeasureTheory.Measure.map_addHaar_smul _ hr0, MeasureTheory.lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), abs_of_pos (by positivity), mul_inv_cancel₀ (by positivity), ENNReal.ofReal_one, one_mul]`.
+-/
 lemma lintegral_dil_weight (r : ℝ) (hr : 0 < r) (D : ℝ) (hD : (Module.finrank ℝ V : ℝ) < D) :
     (∫⁻ w : V, ENNReal.ofReal (r ^ Module.finrank ℝ V * (1 + ‖r • w‖) ^ (-D))) =
       ∫⁻ w : V, ENNReal.ofReal ((1 + ‖w‖) ^ (-D)) := by

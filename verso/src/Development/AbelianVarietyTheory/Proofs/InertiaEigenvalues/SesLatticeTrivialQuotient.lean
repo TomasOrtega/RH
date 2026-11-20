@@ -23,6 +23,31 @@ section Abstract
 variable {R F T V B M : Type} [CommRing R] [Field F] [Algebra R F] [AddCommGroup T] [Module R T]
   [AddCommGroup V] [Module F V] [AddCommGroup B] [Module F B] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Use `set Φ := Phi i hi β hβ with hΦ`. Establish `hco : ∀ x k, co bV k (Φ x) = β (co bT k x)` using `co_Phi bT bV i hi β hβ hb`. Establish `hker : ∀ x, Φ x ∈ LinearMap.range (LinearMap.lTensor V Sb.subtype) ↔ LinearMap.lTensor T Nb.mkQ x = 0`. Introduce `x`. Rewrite using `[← LinearMap.mem_ker, lTensor_mkQ, mem_range_iff bV, mem_range_iff bT]`.
+
+Simplify using `only [hco, hbb]`. Establish `hequi : ∀ g x, Φ (TensorProduct.map (ρT g) (ρM g) x) = TensorProduct.map (ρV g) (ρB g) (Φ x)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul t m => simp only [hΦ, map_tmul, Phi_tmul, hiρ, hβρ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hsm : ∀ (c : R) x, Φ (c • x) = algebraMap R F c • Φ x`. Introduce `c x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul t m => rw [smul_tmul', hΦ, Phi_tmul, Phi_tmul, hi, smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Establish `hq : ∀ g x, TensorProduct.map (ρT g) (qb g) (LinearMap.lTensor T Nb.mkQ x) = LinearMap.lTensor T Nb.mkQ (TensorProduct.map (ρT g) (ρM g) x)`. Introduce `g x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m => simp [hqb]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite `hy` using `[mem_range_iff bV]`.
+
+Use `choose n m hm using fun k => hden _ (hy k)`. Use `set N := ∑ k, n k with hN`. Establish `hle : ∀ k, n k ≤ N` using `fun k => Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Use `set x' : T ⊗[R] M := ∑ k, bT k ⊗ₜ[R] (r ^ (N - n k) • m k) with hx'`. Establish `hx : algebraMap R F r ^ N • y - Φ x' ∈ LinearMap.range (LinearMap.lTensor V Sb.subtype)`.
+
+Rewrite using `[mem_range_iff bV]`. Introduce `k`. Rewrite using `[map_sub, map_smul, hco, hx', co_sum, hβ, map_pow]`. Use `Sb.smul_mem (algebraMap R F r ^ (N - n k)) (hm k)` as an intermediate fact. Rewrite `this` using `[smul_sub, smul_smul, ← pow_add, Nat.sub_add_cancel (hle k)]`. Then use the resulting hypothesis.
+
+Use `⟨N, LinearMap.lTensor T Nb.mkQ x', fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : TensorProduct.map (ρV g) (ρB g) (algebraMap R F r ^ N • y - Φ x') ∈ LinearMap.range (LinearMap.lTensor V Sb.subtype)`. Take `⟨u, hu⟩` from `hx`. Rewrite using `[← hu]`. Use `clear hu`.
+
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t m => exact ⟨ρV g t ⊗ₜ[F] ⟨_, hSb g _ m.2⟩, rfl⟩`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Establish `h2 : Φ (r ^ N • (c g ⊗ₜ[R] one)) = algebraMap R F r ^ N • (i (c g) ⊗ₜ[F] β one)`. Rewrite using `[hsm, hΦ, Phi_tmul, map_pow]`. Establish `h3 : LinearMap.lTensor T Nb.mkQ (r ^ N • (c g ⊗ₜ[R] one)) = r ^ N • (c g ⊗ₜ[R] (Submodule.Quotient.mk one : M ⧸ Nb))`. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[← h3, hq, ← map_sub, ← sub_eq_zero, ← map_sub, ← hker, map_sub, map_sub, hequi, h2, ← hc g]`. Establish `e : ∀ (a : F) (y y' p p' : V ⊗[F] B), -((a • y - p) - (a • y' - p')) = a • (y' - y) - (p' - p)`. Introduce `a y y' p p'`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `h4` using `Submodule.neg_mem _ (Submodule.sub_mem _ hx h1)`. Rewrite `h4` using `[map_sub, map_smul, e]`. Conclude with `h4`.
+-/
 theorem cob_core {ι : Type} [Fintype ι] (bT : Basis ι R T) (bV : Basis ι F V)
     (i : T →+ V) (hi : ∀ (c : R) t, i (c • t) = algebraMap R F c • i t) (β : M →+ B)
     (hβ : ∀ (c : R) m, β (c • m) = algebraMap R F c • β m) (hb : ∀ k, i (bT k) = bV k)
@@ -115,6 +140,29 @@ open scoped Formalism.Per
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
+/- English proof (translation)
+Establish `hF : ∀ c x, x ∈ (P.PD K).Fil c ↔ x ∈ (P.PD (botExt l)).Fil c` using `fun c x => by`. Rewrite using `[← SetLike.mem_coe, P.PD_Fil K (botExt l) c, SetLike.mem_coe]`. Take `⟨-, -, w, hw, ht, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J 0`. Establish `hunit : IsUnit (P.ιB P.tB)`. Use `(P.PD (botExt l)).t_unit` as an intermediate fact.
+
+Rewrite `this` using `[P.period_datum_t_eq]`. Conclude with `this.map P.ιB`. Rewrite `hunit` using `[ht]`. Take `⟨u, hu⟩` from `isUnit_of_mul_isUnit_left hunit`. Establish `H` using `zpow_mul_mem AI u hu J w hw ht a`.
+
+Use `⟨beta AI u a, beta_smul AI u LT a, ?_, ?_, ?_, beta_act AI u hu a, ?_⟩` and prove the remaining obligations. Introduce `m`. Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Rewrite using `[hF, beta_eE]`. Use `(H 0 (iD AI y)).mpr (AI.ainf_image_mem_filtration_zero (botExt l) y)` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Introduce `b hab m`. Take `⟨n, rfl⟩` from `Int.exists_add_of_le hab`. Take `⟨y, rfl⟩` from `(eE AI a).surjective m`. Take `⟨-, h2, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J n`.
+
+Rewrite using `[hF, beta_eE, add_comm a, H, iD_apply, h2, eE_coe]`. Establish `key : ∀ y' : Ainf l, (((xiU AI) ^ ((n : ℤ) + a) : (WCb l)ˣ) : WCb l) * inclW l y' = (((xiU AI) ^ a : (WCb l)ˣ) : WCb l) * inclW l (AI.ξ ^ n * y')`. Introduce `y'`. Rewrite using `[zpow_add, Units.val_mul, zpow_natCast, Units.val_pow_eq_pow_val, xiU_coe, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', rfl⟩`. Conclude with `⟨inclW l y', ⟨y', rfl⟩, key y'⟩`. Introduce and unpack `⟨_, ⟨y', rfl⟩, h⟩`. Use `⟨y', inclW_inj (((xiU AI) ^ a).isUnit.mul_left_cancel ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← key]`. Conclude with `h.symm`. Introduce `b hab x hx`. Take `⟨n, rfl⟩` from `Int.exists_add_of_le hab`. Take `⟨h1, -, -⟩` from `GlobalTheory.BdRQuot.fil_quotient l P AI LT J n`.
+
+Establish `hx' : (((u ^ a)⁻¹ : (P.R.BdR)ˣ) : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil 0`. Rewrite using `[← H 0, ← mul_assoc, Units.mul_inv, one_mul, zero_add, ← hF]`. Conclude with `hx`. Take `⟨k, y, hy⟩` from `h1 _ hx'`. Use `⟨k, eE AI a y, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy` using `[← H, add_comm, ← hF]`. Use `hy using 1` and compare the differences between its conclusion and the goal. Rewrite using `[beta_eE, mul_sub, iD_apply, mul_left_comm, ← mul_assoc _ _ x, Units.mul_inv, one_mul, map_natCast, Algebra.smul_def, map_pow, map_natCast]`. Introduce and unpack `rfl m hm`. Take `⟨y, rfl⟩` from `(eE AI 0).surjective m`.
+
+Establish `h1 : inclW l y = 1`. Use `hm` as an intermediate fact. Rewrite `this` using `[eE_coe]`. Simplify using `using this`. Establish `h2 : y = 1` using `inclW_inj (h1.trans (map_one _).symm)`.
+
+Rewrite using `[beta_eE, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_beta_unit (LT : LocTied l P AI) (J : ThetaL P AI) (K : FinExt l) (a : ℤ) :
     ∃ β : ↥(Mxi (AinfSub l) (xiU AI) a) →+ P.R.BdR,
       (∀ (c : ℤ_[l]) m, β (c • m) = algebraMap ℤ_[l] ℚ_[l] c • β m) ∧
@@ -200,6 +248,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V V' : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Use `⟨AlgebraTensorModule.map φ (LinearMap.id : _ →ₗ[Qp] _) w, ?_⟩` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_mem_filV (φ : V →ₗ[LL] V') (a : ℤ) (x : V ⊗[Qp] BdR)
     (hx : x ∈ FilV PD (LL := LL) (V := V) a) :
     AlgebraTensorModule.map φ (LinearMap.id : BdR →ₗ[Qp] BdR) x ∈
@@ -211,6 +264,11 @@ theorem map_mem_filV (φ : V →ₗ[LL] V') (a : ℤ) (x : V ⊗[Qp] BdR)
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Use `⟨w, ?_⟩` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mem_range_of_filV (a : ℤ) (x : V ⊗[Qp] BdR) (hx : x ∈ FilV PD (LL := LL) (V := V) a) :
     x ∈ LinearMap.range (LinearMap.lTensor V ((PD.Fil a).restrictScalars Qp).subtype) := by
   obtain ⟨w, rfl⟩ := hx
@@ -220,6 +278,9 @@ theorem mem_range_of_filV (a : ℤ) (x : V ⊗[Qp] BdR) (hx : x ∈ FilV PD (LL 
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_eq_actVdR (ρ : Representation LL G V) (g : G) (x : V ⊗[Qp] BdR) :
     TensorProduct.map ((ρ g).restrictScalars Qp) ((PD.actdR g).toLinearMap.restrictScalars Qp) x =
       actVdR PD ρ g x := by
@@ -232,6 +293,25 @@ end Fil
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨hi, hs, -, hk, -⟩` from `hse`. Establish `hk' : LinearMap.range ι.f = LinearMap.ker π.f`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hk, LinearMap.mem_range]`. Establish `hone' : ∀ (W : Type) [AddCommGroup W] [Module ↥LL.1 W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] ↥LL.1 W] (v : W), v ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) ∈ FilV (P.PD K) (LL` using `↥LL.1) (V := W) 0 := by`.
+
+Introduce `W _ _ _ _ v`. Conclude with `⟨v ⊗ₜ[ℚ_[l]] ⟨1, h1F⟩, rfl⟩`. Establish `hact : ∀ (W : Type) [AddCommGroup W] [Module ↥LL.1 W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] ↥LL.1 W] (ρ : Representation ↥LL.1 ↥(GK K) W) (g : ↥(GK K)) (v : W), actVdR (P.PD K) ρ g (v ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)) = ρ g v ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)`. Introduce `W _ _ _ _ ρ g v`. Simplify using `[actVdR]`.
+
+Take `⟨-, hst⟩` from `(GlobalTheory.DRSubQuot.deRham_sub_quot l P AI LT K LL Yt.V Yt.ρ Z.V Z.ρ π.f π.equiv).2 hs hdR`. Establish `hz2 : π.f yt ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) ∈ DdR (P.PD K) Z.ρ ⊓ FilV (P.PD K) (LL` using `↥LL.1) (V := Z.V) 0 := by`. Use `⟨?_, hone' _ _⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun g => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, hact, hZ, sub_self]`.
+
+Take `⟨x1, ⟨hx1D, hx1F⟩, hx1π⟩` from `hst 0 _ hz2`. Establish `hx1G : ∀ g, actVdR (P.PD K) Yt.ρ g x1 = x1`. Introduce `g`. Use `(Submodule.mem_iInf _).mp hx1D g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Take `⟨t1, t2⟩` from `GlobalTheory.Per.ExactMult.tensor_exact (Qp := ℚ_[l]) (BdR := P.R.BdR) ι.f π.f hi hs hk'`. Use `set u : Yt.V ⊗[ℚ_[l]] P.R.BdR := yt ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) - x1 with hu`. Establish `hu0 : u ∈ LinearMap.ker (AlgebraTensorModule.map π.f (LinearMap.id : P.R.BdR →ₗ[ℚ_[l]] P.R.BdR))`. Rewrite using `[LinearMap.mem_ker, hu, map_sub, hx1π, AlgebraTensorModule.map_tmul, LinearMap.id_apply, sub_self]`. Rewrite `hu0` using `[← t2]`.
+
+Take `⟨w, hw⟩` from `hu0`. Take `⟨r, hr⟩` from `ι.f.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hi)`. Establish `hwr : w = AlgebraTensorModule.map r (LinearMap.id : P.R.BdR →ₗ[ℚ_[l]] P.R.BdR) u`. Rewrite using `[← hw]`. Use `clear hw`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Establish `: r (ι.f v) = v` using `LinearMap.congr_fun hr v`. Simplify using `[this]`.
+
+Consider the case `add x y hx hy => simp only [map_add, ← hx, ← hy]`. Use `⟨w, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hwr]`. Conclude with `map_mem_filV (P.PD K) r 0 u (Submodule.sub_mem _ (hone' _ _) hx1F)`. Apply `t1` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, GlobalTheory.Per.ExactMult.map_act (P.PD K) T.ρ Yt.ρ ι.f ι.equiv g w, hw, hu, map_sub, hact, hx1G, AlgebraTensorModule.map_tmul, LinearMap.id_apply, hf, sub_tmul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_rational (AI : LocAinf l P) (LT : LocTied l P AI) (K LL : FinExt l)
     (h1F : (1 : P.R.BdR) ∈ (P.PD K).Fil 0)
     (Yt T Z : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L)
@@ -290,6 +370,11 @@ theorem exists_rational (AI : LocAinf l P) (LT : LocTied l P AI) (K LL : FinExt 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI := modTopLL LL`. Use `haveI := finOL LL`. Use `letI := zlMod LL T`. Take `⟨n, bT, bV, hb⟩` from `lat_bases (R := ℤ_[l]) (F := ℚ_[l]) (LL := ↥LL.1) (O := ↥(OL LL)) (fun _ => rfl) (denom LL) T`.
+
+Establish `hX : XiOK (AinfSub l) (AI.actWCbHom.comp (Gj K j).subtype) (xiU AI)` using `⟨fun g x hx => (xiOK AI).1 (g : GQ l) x hx, (xiOK AI).2.1, fun g => (xiOK AI).2.2 (g : GQ l)⟩`. Take `⟨k, x, hx⟩` from `cob_core bT bV T.L.T.subtype.toAddMonoidHom (lat_smul (R := ℤ_[l]) (F := ℚ_[l]) (LL := ↥LL.1) (O := ↥(OL LL)) (fun _ => rfl) T) β b1 hb (l : ℤ_[l]) (((P.PD K).Fil 0).restrictScalars ℚ_[l]) (((P.PD K).Fil ((e : ℤ) + 1)).restrictScalars ℚ_[l]) ((Mxi (AinfSub l) (xiU AI) ((e : ℤ) + …`. Rewrite using `[map_eq_actVdR (P.PD K) T.ρ, hcob, hβ1]`. Use the proof step `rfl)`. Conclude with `⟨k, x, fun g => hx g⟩`.
+-/
 theorem cob_of_rational (AI : LocAinf l P) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (f : ↥(GK K) → ↥T.L.T)
     (e j : ℕ) (hle : Gj K j ≤ GK K)
@@ -338,6 +423,11 @@ theorem cob_of_rational (AI : LocAinf l P) (K LL : FinExt l)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨β, b1, b2, b3, b4, b5, b6⟩` from `exists_beta_unit AI LT J K 0`. Establish `hβ1 : β one = 1` using `b6 rfl one hone`. Establish `h1F : (1 : P.R.BdR) ∈ (P.PD K).Fil 0` using `hβ1 ▸ b2 one`. Establish `hpos : (0 : ℤ) ≤ (e : ℤ) + 1` using `by omega`. Take `⟨w, hwF, hcob⟩` from `exists_rational AI LT K LL h1F Yt T Z ι π hse hZ hdR yt f hf`.
+
+Conclude with `cob_of_rational AI K LL T f e j hle one β b1 (b3 _ hpos) (b4 _ hpos) b5 hβ1 w hwF hcob`.
+-/
 theorem cob_of_strict (AI : LocAinf l P) (LT : LocTied l P AI) (J : ThetaL P AI) (K LL : FinExt l)
     (Yt T Z : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L)
     (hse : IsSESLat (Qp := ℚ_[l]) ι π) (hZ : ∀ g x, Z.ρ g x = x) (hdR : IsDR (P.PD K) Yt.ρ)
@@ -361,6 +451,9 @@ section Top
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
+/- English proof (translation)
+Introduce `D HW F _ h7 l _ K s LL h S E e Yt T Z ι π hle hse hZ hcr yt _ f hf one hone`. Take `⟨J⟩` from `GlobalTheory.ThetaTie.nonempty_thetaL D l`. Conclude with `cob_of_strict (D.locA l) (D.locT l) J K LL Yt T Z ι π hse hZ (GlobalTheory.Cyc.CrysDeRham.isDR_of_isCrysOn D HW h7 l K s LL h Yt hcr) yt f hf e s hle one hone`.
+-/
 theorem connecting_torsion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm5 D → adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (e : ℕ) (Yt T Z : LocLat S.G S.Qp S.LL S.O) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L) (hle : Gj K s ≤ GK K), IsSESLat (Qp := S.Qp) ι π → (∀ g x, Z.ρ g x = x) → IsCrysOn S S.W.GKs Yt → ∀ yt ∈ Yt.L.T, ∀ f : S.G → ↥T.L.T, (∀ g, ι.f (f g : T.V) = Yt.ρ g yt - yt) → ∀ one : ↥(Mxi (AinfSub l) (xiU (D.locA l)) 0), (one : WCb l) = 1 → letI := zlMod LL T; ∃ k : ℕ, IsCob (repQ (D.locA l) (Gj K s) ((actTZ LL T).comp (Subgroup.inclusion hle)) 0 ((e : ℤ) + 1)) (fun g => (l : ℤ_[l]) ^ k • (f (Subgroup.inclusion hle g) ⊗ₜ[ℤ_[l]] (Submodule.Quotient.mk one : Qab (AinfSub l) (xiU (D.locA l)) 0 ((e : ℤ) + 1)))) := by
   intro D HW F _ h7 l _ K s LL h S E e Yt T Z ι π hle hse hZ hcr yt _ f hf one hone
   obtain ⟨J⟩ := GlobalTheory.ThetaTie.nonempty_thetaL D l
@@ -376,6 +469,9 @@ end
 
 section
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TBOne.connecting_torsion | exact GlobalTheory.CompanionTheory.TBOne.connecting_torsion | (intros; apply GlobalTheory.CompanionTheory.TBOne.connecting_torsion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.Adopt.ses_lattice_trivial_quotient : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), adm5 D → adm7 D → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (e : ℕ) (Yt T Z : LocLat S.G S.Qp S.LL S.O) (ι : LatHom T.L Yt.L) (π : LatHom Yt.L Z.L) (hle : Gj K s ≤ GK K), IsSESLat (Qp := S.Qp) ι π → (∀ g x, Z.ρ g x = x) → IsCrysOn S S.W.GKs Yt → ∀ yt ∈ Yt.L.T, ∀ f : S.G → ↥T.L.T, (∀ g, ι.f (f g : T.V) = Yt.ρ g yt - yt) → ∀ one : ↥(Mxi (AinfSub l) (xiU (D.locA l)) 0), (one : WCb l) = 1 → letI := zlMod LL T; ∃ k : ℕ, IsCob (repQ (D.locA l) (Gj K s) ((actTZ LL T).comp (Subgroup.inclusion hle)) 0 ((e : ℤ) + 1)) (fun g => (l : ℤ_[l]) ^ k • (f (Subgroup.inclusion hle g) ⊗ₜ[ℤ_[l]] (Submodule.Quotient.mk one : Qab (AinfSub l) (xiU (D.locA l)) 0 ((e : ℤ) + 1)))) := by
   first | exact @GlobalTheory.CompanionTheory.TBOne.connecting_torsion | exact GlobalTheory.CompanionTheory.TBOne.connecting_torsion | (intros; apply GlobalTheory.CompanionTheory.TBOne.connecting_torsion <;> assumption)
 

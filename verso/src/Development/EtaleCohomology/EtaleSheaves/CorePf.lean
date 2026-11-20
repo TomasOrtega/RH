@@ -14,6 +14,11 @@ def ImageClosed : Prop := ∀ {S X₁ : Scheme.{0}} (p₁ : X₁ ⟶ S) [IsPrope
       γ ≫ pullback.fst p₁ q = V.ι → (∀ j, γ ≫ pullback.snd p₁ q ≫ π j = X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) →
       IsClosedImmersion (γ.imageι ≫ pullback.snd p₁ q)
 
+/- English proof (translation)
+Introduce `s hs`. Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => simpa using hU a`. Consider the case `cons a s ha hs ih`. Rewrite using `[Finset.inf_cons, TopologicalSpace.Opens.coe_inf]`.
+
+Conclude with `nonempty_preirreducible_inter (U a).2 (s.inf U).2 (hU a) ih`.
+-/
 theorem inf_nonempty {X : Type} [TopologicalSpace X] [PreirreducibleSpace X] {n : ℕ}
     (U : Fin n → TopologicalSpace.Opens X) (hU : ∀ j, (U j : Set X).Nonempty) :
     ∀ s : Finset (Fin n), s.Nonempty → ((s.inf U : TopologicalSpace.Opens X) : Set X).Nonempty := by
@@ -24,6 +29,15 @@ theorem inf_nonempty {X : Type} [TopologicalSpace X] [PreirreducibleSpace X] {n 
     rw [Finset.inf_cons, TopologicalSpace.Opens.coe_inf]
     exact nonempty_preirreducible_inter (U a).2 (s.inf U).2 (hU a) ih
 
+/- English proof (translation)
+Introduce `S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP`. Establish `hne : Nonempty X₁` using `inferInstance`. Take `⟨x₀⟩` from `hne`. Take `⟨j₀, -⟩` from `hUc x₀`. Set `V : X₁.Opens` to `Finset.univ.inf U`.
+
+Establish `hV : ∀ j, V ≤ U j` using `fun j => Finset.inf_le (Finset.mem_univ j)`. Establish `hVne : (V : Set X₁).Nonempty` using `inf_nonempty U hUn _ ⟨j₀, Finset.mem_univ _⟩`. Take `⟨g, ⟨hg1, hg2⟩, -⟩` from `hUP (V.ι ≫ p₁) (fun j => X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) (by`. Introduce `j`. Simplify using `only [Category.assoc, hc j, Scheme.homOfLE_ι_assoc])`.
+
+Set `γ : V.toScheme ⟶ pullback p₁ q` to `pullback.lift V.ι g hg1.symm`. Establish `hγ1 : γ ≫ pullback.fst p₁ q = V.ι` using `pullback.lift_fst _ _ _`. Establish `hγ2 : ∀ j, γ ≫ pullback.snd p₁ q ≫ π j = X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι`. Introduce `j`. Rewrite using `[pullback.lift_snd_assoc, hg2 j]`.
+
+Use `⟨γ.image, γ.imageι, V, γ.toImage, inferInstance, hI p₁ n U Pj qj W e P q π hUc hsep he hc hπ V hV γ hγ1 hγ2, hVne, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.toImage_imageι_assoc, hγ1]`.
+-/
 theorem Core_of (hI : ImageClosed) : Core := by
   intro S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP
   have hne : Nonempty X₁ := inferInstance

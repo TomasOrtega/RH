@@ -9,6 +9,23 @@ open MvPolynomial Filter Topology Matrix ComplexSets Metric Set
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d J u M q _hJ _hdim _hu hqJ hqu hreg hchart hdouble`. Take `⟨A, O, V, g, -, hV, hqV, hg, hAg, hS⟩` from `hreg`. Take `⟨N₀, hN₀, hdbl⟩` from `hdouble`. Set `F : Set (Fin n ⊕ Fin M.m → ℂ)` to `{w | w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∧ IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = q}`. Establish `hmemF : ∀ w, w ∈ F ↔ (w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∧ IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = q)` using `fun w => Iff.rfl`.
+
+Establish `hFfin : F.Finite` using `NormalModelFibre.fibre_finite M q`. Take `⟨G, hGo, hGd⟩` from `hFfin.t2_separation`. Set `_ : Fintype F` to `hFfin.fintype`. Set `e : Fin (Fintype.card F) ≃ F` to `(Fintype.equivFin F).symm`. Establish `hbr : ∀ b : Fin (Fintype.card F), ∃ γ : VarBranch J (d + 1) q, ∃ ord : ℕ, (∃ U ∈ 𝓝 (e b : Fin n ⊕ Fin M.m → ℂ), ∀ w' ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal ∩ U, IndefiniteRowSideFullHecke.ComplexSets.firstCoords w' ∈ γ.image) ∧ (∀ x ∈ γ.image, x ∈ N₀ ∧ ∃ w' ∈ …`.
+
+Introduce `b`. Establish `hb` using `(hmemF _).1 (e b).2`. Take `⟨r, φ, k, hr, hφd, hφi, hφ0, hφZ, hφU, hvan, hinjD⟩` from `hchart (e b) hb.1 hb.2`. Take `⟨γ, h⟩` from `GoodPointBranch.exists_branch M hqu hV hqV hg hAg hS hN₀ hdbl hb.2 hr hφd hφi hφ0 hφZ hφU hvan hinjD ((hGo _).2.mem_nhds (hGo _).1)`. Conclude with `⟨γ, k, h⟩`.
+
+Use `choose γ ord hcovw himg hslice hvan hbij using hbr`. Use `⟨Fintype.card F, γ, ord, LinearMap.toMatrix' (A : (Fin n → ℂ) →ₗ[ℂ] (Fin d → ℂ)), ?_, ?_, ?_, hvan, hbij⟩` and prove the remaining obligations. Use `choose U hU hUc using hcovw`. Take `⟨N, hN, hNU⟩` from `NormalModelFibre.eventually_mem_of_fibre_subset M (q := q) (isOpen_iUnion fun b => isOpen_interior (s := U b)) (fun w hw hwq => by`. Take `⟨b, hb⟩` from `e.surjective ⟨w, (hmemF w).2 ⟨hw, hwq⟩⟩`.
+
+Use `mem_iUnion.2 ⟨b, mem_interior_iff_mem_nhds.2 ?_⟩` and prove the remaining obligations. Establish `hbw : (e b : Fin n ⊕ Fin M.m → ℂ) = w` using `congrArg Subtype.val hb`. Rewrite using `[← hbw]`. Conclude with `hU b)`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, rfl⟩` from `NormalModelFibre.exists_mem_fibre M hx.1`. Take `⟨b, hb⟩` from `mem_iUnion.1 (hNU w hw hx.2)`. Conclude with `mem_iUnion.2 ⟨b, hUc b w ⟨hw, interior_subset hb⟩⟩`. Use `choose N' hN' hN'c using hslice`. Conclude with `⟨⋂ b, N' b, Filter.iInter_mem.2 hN', fun x hx hxu b => hN'c b x ⟨hx.1, mem_iInter.1 hx.2 b⟩ hxu⟩`.
+
+Introduce `b b' hbb' x hx`. Take `⟨hxN, w, ⟨hw, hwG⟩, rfl⟩` from `himg b x hx.1`. Take `⟨-, w', ⟨hw', hw'G⟩, hww'⟩` from `himg b' _ hx.2`. Establish `hne : w ≠ w'`. Introduce and unpack `rfl`.
+
+Establish `hdisj : Disjoint (G (e b)) (G (e b'))` using `hGd (e b).2 (e b').2 (fun h => hbb' (e.injective (Subtype.ext h)))`. Conclude with `Set.disjoint_left.1 hdisj hwG hw'G`. Conclude with `hdbl w hw w' hw' hww'.symm hxN hne`.
+-/
 theorem DivisorGoodPointBranches.proof : DivisorGoodPointBranches.Statement := by
   intro n d J u M q _hJ _hdim _hu hqJ hqu hreg hchart hdouble
   obtain ⟨A, O, V, g, -, hV, hqV, hg, hAg, hS⟩ := hreg

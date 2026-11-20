@@ -12,6 +12,11 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha r n e he c`. Set `μ : Measure (GA E a)` to `Measure.haar`. Use `haveI : μ.IsHaarMeasure := inferInstanceAs (Measure.haar : Measure (GA E a)).IsHaarMeasure`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Take `⟨χ, hχ⟩` from `UpperTheory.V.Lit.Bor.twEx E a ha r`.
+
+Take `⟨P, Q, S, h⟩` from `fnProj0 E a ha μ n e he c`. Take `⟨P', Q', S', h'⟩` from `twRes E a r χ hχ (gard μ) n e c P Q S h`. Use `⟨_, P', Q', S', ⟨fun X φ hφ => (twSq E a ha μ r χ hχ φ hφ).1 X, fun φ hφ => ?_, fun φ hφ => (twSq E a ha μ r χ hχ φ hφ).2, fun φ h1 h2 h3 h4 => twCpt E a ha μ r χ hχ φ h1 h2 h3 h4⟩, h'⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hχ.1`. Conclude with `chiGrow E a χ s hs φ (gardFacts E a ha μ _ hφ).2.2.1`.
+-/
 theorem UpperTheory.V.Cj.H.fnProj :
     UpperTheory.V.Cj.H.FnProj := by
   intro E _ _ _ a ha r n e he c

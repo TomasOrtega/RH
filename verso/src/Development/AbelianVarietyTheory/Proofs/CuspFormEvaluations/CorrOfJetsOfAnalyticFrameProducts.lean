@@ -17,6 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal.JetCorr
 
+/- English proof (translation)
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) fun a ha => ?_` and prove the remaining obligations. Establish `hn : IsNilpotent a`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hn` using `jet_nilpotent_of_orig K J m (sub_const_mem_orig (R := K) q)`.
+
+Establish `h0 : MvPolynomial.constantCoeff q = 0`. Assume the negation of the conclusion as `hne`. Use `(IsLocalRing.mem_maximalIdeal _).mp ha ?_` and prove the remaining obligations. Establish `e : algebraMap K (Jet K J m) (MvPolynomial.constantCoeff q) = Ideal.Quotient.mk (orig K J ^ (m + 1)) (MvPolynomial.C (MvPolynomial.constantCoeff q))`. Rewrite using `[← MvPolynomial.algebraMap_eq]`.
+
+Both sides reduce to the same expression. Establish `hsplit : Ideal.Quotient.mk (orig K J ^ (m + 1)) q = algebraMap K (Jet K J m) (MvPolynomial.constantCoeff q) + Ideal.Quotient.mk (orig K J ^ (m + 1)) (q - MvPolynomial.C (MvPolynomial.constantCoeff q))`. Rewrite using `[map_sub, e, add_sub_cancel]`. Rewrite using `[hsplit]`. Conclude with `IsNilpotent.isUnit_add_left_of_commute hn ((isUnit_iff_ne_zero.mpr hne).map (algebraMap K (Jet K J m))) (Commute.all _ _)`.
+
+Rewrite `hn` using `[h0, map_zero, sub_zero]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `hn`. Conclude with `p.isPrime.mem_of_pow_mem n (hn ▸ p.asIdeal.zero_mem)`.
+-/
 theorem jet_point_eq {K : Type} [Field K] {J : Type} {m : ℕ} (p : PrimeSpectrum (Jet K J m)) :
     p = IsLocalRing.closedPoint (Jet K J m) := by
   apply PrimeSpectrum.ext
@@ -45,9 +54,15 @@ section JetOf
 
 variable {N : ℕ} (m : ℕ)
 
+/- English proof (translation)
+Rewrite using `[jetOf_const, map_one]`.
+-/
 theorem jetOf_one' : jetOf m (fun _ : Fin N → ℂ => (1 : ℂ)) = 1 := by
   rw [jetOf_const, map_one]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using jetOf_one' m`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← ih, ← jetOf_mul m (hF.fun_pow k).contDiffAt hF.contDiffAt]`. Use `congr 1`.
+-/
 theorem jetOf_pow' {F : (Fin N → ℂ) → ℂ} (hF : AnalyticAt ℂ F 0) (k : ℕ) :
     jetOf m (fun v => F v ^ k) = jetOf m F ^ k := by
   induction k with
@@ -56,12 +71,20 @@ theorem jetOf_pow' {F : (Fin N → ℂ) → ℂ} (hF : AnalyticAt ℂ F 0) (k : 
     rw [pow_succ, ← ih, ← jetOf_mul m (hF.fun_pow k).contDiffAt hF.contDiffAt]
     congr 1
 
+/- English proof (translation)
+Rewrite using `[← jetOf_mul m hF.contDiffAt (hF.fun_inv h0).contDiffAt, ← jetOf_one' m]`. Use `jetOf_congr m ((hF.continuousAt.eventually_ne h0).mono fun v hv => ?_)` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ hv`.
+-/
 theorem jetOf_mul_inv {F : (Fin N → ℂ) → ℂ} (hF : AnalyticAt ℂ F 0) (h0 : F 0 ≠ 0) :
     jetOf m F * jetOf m (fun v => (F v)⁻¹) = 1 := by
   rw [← jetOf_mul m hF.contDiffAt (hF.fun_inv h0).contDiffAt, ← jetOf_one' m]
   refine jetOf_congr m ((hF.continuousAt.eventually_ne h0).mono fun v hv => ?_)
   exact mul_inv_cancel₀ hv
 
+/- English proof (translation)
+Take `⟨k, rfl | rfl⟩` from `a.eq_nat_or_neg`. Simplify using `only [zpow_natCast, Units.val_pow_eq_pow_val, hu]`. Conclude with `jetOf_pow' m hF k`. Simplify using `only [zpow_neg, zpow_natCast]`. Use `symm`.
+
+Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hu, ← jetOf_pow' m hF k]`. Conclude with `jetOf_mul_inv m (hF.fun_pow k) (pow_ne_zero _ h0)`.
+-/
 theorem jetOf_zpow {F : (Fin N → ℂ) → ℂ} (hF : AnalyticAt ℂ F 0) (h0 : F 0 ≠ 0)
     (u : (Jet ℂ (Fin 1 × Fin N) m)ˣ) (hu : u.val = jetOf m F) (a : ℤ) :
     jetOf m (fun v => F v ^ a) = (u ^ a).val := by
@@ -74,6 +97,11 @@ theorem jetOf_zpow {F : (Fin N → ℂ) → ℂ} (hF : AnalyticAt ℂ F 0) (h0 :
     rw [Units.val_pow_eq_pow_val, hu, ← jetOf_pow' m hF k]
     exact jetOf_mul_inv m (hF.fun_pow k) (pow_ne_zero _ h0)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using jetOf_one' m`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, ← ih, ← jetOf_mul m (hF a).contDiffAt (Finset.analyticAt_fun_prod s fun k _ => hF k).contDiffAt]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `v`. Simplify using `[Finset.prod_insert ha]`.
+-/
 theorem jetOf_prod {K : Type} (s : Finset K) {F : K → (Fin N → ℂ) → ℂ} (hF : ∀ k, AnalyticAt ℂ (F k) 0) :
     jetOf m (fun v => ∏ k ∈ s, F k v) = ∏ k ∈ s, jetOf m (F k) := by
   classical
@@ -88,6 +116,13 @@ theorem jetOf_prod {K : Type} (s : Finset K) {F : K → (Fin N → ℂ) → ℂ}
 
 end JetOf
 
+/- English proof (translation)
+Establish `hc : colsOf n g 0 = 0` using `rfl`. Establish `hA : ∀ k, AnalyticAt ℂ (fun v => f k (Λ k (colsOf n g v))) 0` using `fun k => by`. Establish `h1 : AnalyticAt ℂ (colsOf n g) 0` using `AnalyticAt.pi fun i => AnalyticAt.pi fun j => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (n * g) => ℂ) (finProdFinEquiv (i, j))).analyticAt 0`. Establish `h2 : AnalyticAt ℂ (fun v => Λ k (colsOf n g v)) 0` using `((LinearMap.toContinuousLinearMap (Λ k)).analyticAt _).comp h1`. Conclude with `(hf k).comp_of_eq h2 (by rw [hc, map_zero])`.
+
+Establish `hz : ∀ k, f k (Λ k (colsOf n g 0)) ≠ 0` using `fun k => by rw [hc, map_zero]; exact h0 k`. Set `u0 : K → (Jet ℂ (Fin 1 × Fin (n * g)) m)ˣ` to `fun k => Units.mkOfMulEqOne _ _ (jetOf_mul_inv m (hA k) (hz k))`. Use `⟨fun k => Units.map (renN n g m).toMonoidHom (u0 k), fun k => rfl, ?_⟩` and prove the remaining obligations. Unfold `jetN`. Rewrite using `[jetOf_prod m Finset.univ (F := fun k v => f k (Λ k (colsOf n g v)) ^ ε k) fun k => (hA k).fun_zpow (hz k), map_prod, Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[jetOf_zpow m (hA k) (hz k) (u0 k) rfl, ← map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem jetN_prod_zpow {n g : ℕ} (m : ℕ) {K : Type} [Fintype K] (f : K → (Fin g → ℂ) → ℂ)
     (hf : ∀ k, AnalyticAt ℂ (f k) 0) (h0 : ∀ k, f k 0 ≠ 0)
     (Λ : K → (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (ε : K → ℤ) :
@@ -113,6 +148,13 @@ theorem jetN_prod_zpow {n g : ℕ} (m : ℕ) {K : Type} [Fintype K] (f : K → (
   rfl
 
 open scoped Classical in
+/- English proof (translation)
+Establish `h : ∀ ψ, w ψ ^ (∑ k, if φ k = ψ then ε k else 0) = ∏ k, if φ k = ψ then w ψ ^ ε k else 1` using `fun ψ => by`. Establish `hz : ∀ t : Finset K, ∀ a : K → ℤ, w ψ ^ (∑ k ∈ t, a k) = ∏ k ∈ t, w ψ ^ a k` using `fun t a => by`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert b t hb ih => rw [Finset.sum_insert hb, Finset.prod_insert hb, zpow_add, ih]`.
+
+Rewrite using `[hz]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h]`. Rewrite using `[Finset.prod_comm]`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite_eq, if_pos (hs k)]`.
+-/
 theorem prod_zpow_fiber {M T K : Type*} [CommGroup M] [Fintype K] (s : Finset T) (φ : K → T) (hs : ∀ k, φ k ∈ s)
     (ε : K → ℤ) (w : T → M) :
     ∏ k, w (φ k) ^ ε k = ∏ ψ ∈ s, w ψ ^ (∑ k, if φ k = ψ then ε k else 0) := by
@@ -131,6 +173,13 @@ theorem prod_zpow_fiber {M T K : Type*} [CommGroup M] [Fintype K] (s : Finset T)
 
 open scoped Classical in
 
+/- English proof (translation)
+Set `w : T → M` to `fun ψ => if h : ∃ k, φ k = ψ then u h.choose else if h' : ∃ k, φ' k = ψ then u' h'.choose else 1`. Establish `hw : ∀ k, u k = w (φ k)` using `fun k => by`. Establish `h : ∃ l, φ l = φ k` using `⟨k, rfl⟩`. Simplify using `only [w, dif_pos h]`. Conclude with `h₁ _ _ h.choose_spec.symm`.
+
+Establish `hw' : ∀ k, u' k = w (φ' k)` using `fun k => by`. Distinguish the cases in `h : ∃ l, φ l = φ' k`. Simplify using `only [w, dif_pos h]`. Conclude with `(h₃ _ _ h.choose_spec).symm`. Establish `h' : ∃ l, φ' l = φ' k` using `⟨k, rfl⟩`.
+
+Simplify using `only [w, dif_neg h, dif_pos h']`. Conclude with `h₂ _ _ h'.choose_spec.symm`. Simplify using `only [hw, hw']`. Rewrite using `[prod_zpow_fiber (Finset.univ.image φ ∪ Finset.univ.image φ') φ (fun k => by simp) ε w, prod_zpow_fiber (Finset.univ.image φ ∪ Finset.univ.image φ') φ' (fun k => by simp) ε' w]`. Simplify using `only [hs]`.
+-/
 theorem prod_zpow_eq {M T K K' : Type*} [CommGroup M] [Fintype K] [Fintype K'] (φ : K → T) (ε : K → ℤ)
     (φ' : K' → T) (ε' : K' → ℤ) (u : K → M) (u' : K' → M)
     (h₁ : ∀ k l, φ k = φ l → u k = u l) (h₂ : ∀ k l, φ' k = φ' l → u' k = u' l)
@@ -160,6 +209,9 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Take `⟨hol, rfl⟩` from `h`. Rewrite `hp` using `[Scheme.Hom.comp_apply, jet_point_eq (K := ℂ) (J := Fin 1 × Fin (n * g)) (m := m) (spMap (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) p), jetPt_closedPoint]`. Establish `hc : colsOf n g 0 = 0` using `rfl`. Rewrite `hp` using `[hc, map_zero]`. Conclude with `top_le_of_mem hp`.
+-/
 theorem origin_mem {n m : ℕ} {ψ : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
     {Λ : (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)} (h : Φ.JetMap m ψ Λ) {U : A.left.Opens}
     (p : Sp (Jet ℂ (Fin n × Fin g) m)) (hp : ψ p ∈ U) : ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ U := by
@@ -171,6 +223,9 @@ theorem origin_mem {n m : ℕ} {ψ : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left}
   rw [hc, map_zero] at hp
   exact top_le_of_mem hp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SCV.analyticAt_of_differentiableOn (Φ.fr_hol j) ((Φ.hol (L.L.U j) 0).1.mem_nhds h)`.
+-/
 theorem fr_analyticAt (j : L.L.ι) (h : ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ L.L.U j) : AnalyticAt ℂ (Φ.fr j) 0 :=
   GlobalTheory.SCV.analyticAt_of_differentiableOn (Φ.fr_hol j) ((Φ.hol (L.L.U j) 0).1.mem_nhds h)
 
@@ -178,6 +233,21 @@ end Frame
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ hI n m K K' _ _ φ ε τ Λ φ' ε' τ' Λ' h h' hs j j' c c' cc`. Distinguish the cases in `hW : ∃ p, p ∈ LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j'`. Take `⟨p, hp⟩` from `hW`. Establish `hT : ⊤ ≤ LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j'` using `fun q _ => by`. Establish `e1` using `jet_point_eq (K := ℂ) (J := Fin n × Fin g) (m := m) p`.
+
+Establish `e2` using `jet_point_eq (K := ℂ) (J := Fin n × Fin g) (m := m) q`. Rewrite using `[e2, ← e1]`. Conclude with `hp`. Establish `o : ∀ k, ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ L.L.U (j k)` using `fun k => origin_mem Φ (h.1 k) p (LB.wchart_le L.L φ j k hp.1)`. Establish `o' : ∀ k, ⊤ ≤ (Φ.e 0).left ⁻¹ᵁ L.L.U (j' k)` using `fun k => origin_mem Φ (h'.1 k) p (LB.wchart_le L.L φ' j' k hp.2)`.
+
+Take `⟨u, hu, hP⟩` from `jetN_prod_zpow m (fun k => Φ.fr (j k)) (fun k => fr_analyticAt Φ _ (o k)) (fun k => Φ.fr_ne _ _ (o k)) Λ ε`. Take `⟨u', hu', hP'⟩` from `jetN_prod_zpow m (fun k => Φ.fr (j' k)) (fun k => fr_analyticAt Φ _ (o' k)) (fun k => Φ.fr_ne _ _ (o' k)) Λ' ε'`. Establish `hE : ∏ k, u k ^ ε k = ∏ k, u' k ^ ε' k`. Use `prod_zpow_eq φ ε φ' ε' u u' (fun k l e => Units.ext ?_) (fun k l e => Units.ext ?_) (fun k l e => Units.ext ?_) hs` and prove the remaining obligations. Rewrite using `[hu, hu, c k l e]`.
+
+Conclude with `GlobalTheory.AnVal.JetUniq.jet_uniq S A L x0 g Φ hI n m (φ l) _ _ (e ▸ h.1 k) (h.1 l) _`. Rewrite using `[hu', hu', c' k l e]`. Conclude with `GlobalTheory.AnVal.JetUniq.jet_uniq S A L x0 g Φ hI n m (φ' l) _ _ (e ▸ h'.1 k) (h'.1 l) _`. Rewrite using `[hu, hu', cc k l e]`. Conclude with `GlobalTheory.AnVal.JetUniq.jet_uniq S A L x0 g Φ hI n m (φ' l) _ _ (e ▸ h.1 k) (h'.1 l) _`.
+
+Establish `r` using `h.2 j (hT.trans inf_le_left)`. Establish `r'` using `h'.2 j' (hT.trans inf_le_right)`. Rewrite `r` using `[hP, hE, ← hP', ← r']`. Apply `Units.ext` to reduce the goal to its premises. Establish `r2` using `congrArg ((Sp (Jet ℂ (Fin n × Fin g) m)).presheaf.map (homOfLE (le_top : LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j' ≤ ⊤)).op).hom r`.
+
+Rewrite `r2` using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Functor.map_comp, ← Functor.map_comp]`. Conclude with `r2`. Establish `hB : LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j' = ⊥`. Rewrite using `[eq_bot_iff]`. Conclude with `fun p hp => (hW ⟨p, hp⟩).elim`.
+
+Establish `: Subsingleton Γ(Sp (Jet ℂ (Fin n × Fin g) m), LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j')`. Rewrite using `[hB]`. Use `infer_instance`. Conclude with `Units.ext (Subsingleton.elim _ _)`.
+-/
 theorem corr_of_jetRd : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), Φ.Imm → ∀ (n m : ℕ) (K K' : Type) [Fintype K] [Fintype K'] (φ : K → (Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left)) (ε : K → ℤ) (τ : LB.Gen (LB.LinComb L.L φ ε)) (Λ : K → (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (φ' : K' → (Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left)) (ε' : K' → ℤ) (τ' : LB.Gen (LB.LinComb L.L φ' ε')) (Λ' : K' → (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), Φ.JetRd m φ ε τ Λ → Φ.JetRd m φ' ε' τ' Λ' → LB.SameSum φ ε φ' ε' → LB.Gen.Corr L.L φ ε φ' ε' τ τ' := by
   intro S A _ _ L x0 g Φ hI n m K K' _ _ φ ε τ Λ φ' ε' τ' Λ' h h' hs j j' c c' cc
   by_cases hW : ∃ p, p ∈ LB.wchart L.L φ j ⊓ LB.wchart L.L φ' j'

@@ -15,6 +15,11 @@ namespace GlobalTheory.AdeleUnitModule
 
 open scoped Pointwise ENNReal
 
+/- English proof (translation)
+Establish `h1 : DomMulAct.mk g⁻¹ • μ = μ.map (fun x => g • x)`. Use extensionality with `s hs`. Rewrite using `[Measure.domSMul_apply, Measure.map_apply (measurable_const_smul g) hs, Set.preimage_smul]`. Simplify using the standard rewrite rules. Establish `h2` using `Measure.isAddLeftInvariant_eq_smul (DomMulAct.mk g⁻¹ • μ) μ`.
+
+Rewrite `h2` using `[addHaarScalarFactor_smul_eq_distribHaarChar μ g⁻¹, map_inv (distribHaarChar A)]`. Rewrite using `[← h1, h2, ENNReal.smul_def, ENNReal.coe_inv (distribHaarChar_pos).ne']`.
+-/
 theorem map_smul_eq_inv_smul {G A : Type} [Group G] [AddCommGroup A] [DistribMulAction G A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A]
     [ContinuousConstSMul G A] [MeasurableSpace A] [BorelSpace A] (μ : Measure A) [μ.IsAddHaarMeasure] (g : G) :
@@ -29,6 +34,13 @@ theorem map_smul_eq_inv_smul {G A : Type} [Group G] [AddCommGroup A] [DistribMul
 
 open GroundTheory.Global GroundTheory.Global.AdeleBaseChange
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF F) (AE F E)` using `⟨rfl⟩`. Use `IsModuleTopology.toContinuousSMul (AF F) (AE F E)` as an intermediate fact. Establish `: IsModuleTopology (AF F) (AdeleRing (𝓞 E) E)` using `isModuleTopology_adeleRing`. Set `φ : AE F E ≃ₜ+ AdeleRing (𝓞 E) E` to `{ (adeleTensorAlgEquivLeft F E).toAddEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).symm.toLinearMap }`. Use `haveI : SecondCountableTopology (AdeleRing (𝓞 E) E) := φ.symm.toHomeomorph.secondCountableTopology`.
+
+Use `haveI : T2Space (AdeleRing (𝓞 E) E) := φ.symm.toHomeomorph.isEmbedding.t2Space`. Establish `h1 : distribHaarChar (AdeleRing (𝓞 E) E) (GlobalTheory.IdeleLogHom.toE F E t) = distribHaarChar (AE F E) t` using `GlobalTheory.JR.ModuleNorm.distribHaarChar_transport φ t (GlobalTheory.IdeleLogHom.toE F E t) (fun x => by`. Express the relevant statement in the definitionally equal form `adeleTensorAlgEquivLeft F E ((t : AE F E) * x) = _`. Rewrite using `[map_mul]`. Use the proof step `rfl)`.
+
+Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[← h1, GlobalTheory.ModuAdele.distribHaarChar_adeleRing, GlobalTheory.IdeleLogHom.absE_eq_ideleModule]`.
+-/
 theorem distribHaarChar_eq_absE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTopologicalRing (AE F E)] [LocallyCompactSpace (AE F E)] [SecondCountableTopology (AE F E)] [T2Space (AE F E)]
     (t : (AE F E)ˣ) : distribHaarChar (AE F E) t = absE F E t := by
@@ -49,6 +61,13 @@ theorem distribHaarChar_eq_absE (F E : Type) [Field F] [NumberField F] [Field E]
   apply NNReal.eq
   rw [← h1, GlobalTheory.ModuAdele.distribHaarChar_adeleRing, GlobalTheory.IdeleLogHom.absE_eq_ideleModule]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ _ _ ν _ t`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Establish `h` using `map_smul_eq_inv_smul ν t`.
+
+Rewrite `h` using `[distribHaarChar_eq_absE]`. Conclude with `h`.
+-/
 theorem map_mul_eq_absE_inv_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
   ∀ [MeasurableSpace (AE F E)] [BorelSpace (AE F E)] (ν : Measure (AE F E)), ν.IsAddHaarMeasure →
   ∀ t : (AE F E)ˣ, ν.map (fun x => (t : AE F E) * x) = ((absE F E t : ENNReal))⁻¹ • ν := by

@@ -18,6 +18,11 @@ open GlobalTheory.OrientedHeis GlobalTheory.FockCompare GlobalTheory.Unf.MatCoef
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} {S T : HSp D}
 
+/- English proof (translation)
+Establish `hlin : ∀ s : ℝ, piW θ T S (M s) = s • piW θ T S (M 1)` using `fun s => by`. Use `map_real_smul ((piW θ T S).comp M) ((continuous_pi' h.inf T S).comp hM) s 1` as an intermediate fact. Simplify using `using this`. Establish `e : (fun s : ℝ => ψ (symplOH S T w (M s))) = fun s : ℝ => Complex.exp (-(Real.pi * Complex.I) * ((s * omO S T (piW θ T S w) (piW θ T S (M 1)) : ℝ) : ℂ))`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[← h.iota_pi (hMf s), psi_symplOH h hψ, hlin, LinearMap.map_smul, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `((((hasDerivAt_id (0 : ℝ)).mul_const (omO S T (piW θ T S w) (piW θ T S (M 1)))).ofReal_comp).const_mul (-(Real.pi * Complex.I))).cexp.differentiableAt`.
+-/
 theorem differentiableAt_phase (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : ℝ →+ WO S T} (hM : Continuous M)
     (hMf : ∀ s, (M s).map (finPart D) = 0) (w : WO S T) :
     DifferentiableAt ℝ (fun s : ℝ => ψ (symplOH S T w (M s))) 0 := by
@@ -32,6 +37,15 @@ theorem differentiableAt_phase (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M 
   exact ((((hasDerivAt_id (0 : ℝ)).mul_const (omO S T (piW θ T S w) (piW θ T S (M 1)))).ofReal_comp).const_mul
       (-(Real.pi * Complex.I))).cexp.differentiableAt
 
+/- English proof (translation)
+Establish `hp` using `(differentiableAt_phase h hψ hM hMf w).hasDerivAt`. Establish `hne : ∀ s, ψ (symplOH S T w (M s)) ≠ 0` using `fun s h0 => by`. Use `AddChar.map_add_eq_mul ψ (symplOH S T w (M s)) (-(symplOH S T w (M s)))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero this`.
+
+Establish `h0 : symplOH S T w (M 0) = 0`. Rewrite using `[map_zero]`. Simplify using `[symplOH, symplO, hO]`. Establish `e : (fun s : ℝ => f (w + M s)) = fun s => heisO ψ S T (M s) f w / ψ (symplOH S T w (M s))`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[heisO, mul_div_cancel_left₀ _ (hne s)]`. Rewrite using `[e]`. Use `(hd.div hp (hne 0)).congr_deriv ?_` and prove the remaining obligations. Establish `h1 : heisO ψ S T (M 0) f w = f w`. Rewrite using `[heisO, h0, AddChar.map_zero_eq_one, one_mul, map_zero, add_zero]`.
+
+Rewrite using `[h1, h0, AddChar.map_zero_eq_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_line (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : ℝ →+ WO S T} (hM : Continuous M)
     (hMf : ∀ s, (M s).map (finPart D) = 0) {f : WO S T → ℂ} {w : WO S T} {c : ℂ}
     (hd : HasDerivAt (fun s : ℝ => heisO ψ S T (M s) f w) c 0) :
@@ -54,6 +68,21 @@ theorem hasDerivAt_line (h : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {M : ℝ �
   rw [h1, h0, AddChar.map_zero_eq_one]
   ring
 
+/- English proof (translation)
+Introduce `D ψ hψ S T V hc hd f hf k L hL hLf u`. Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Use `haveI : IsTopologicalAddGroup (Formalism.L2.Theta.AE D) := IsTopologicalRing.to_topologicalAddGroup`. Use `haveI : IsTopologicalAddGroup (WO S T) := Pi.topologicalAddGroup`.
+
+Use `haveI : ContinuousAdd (WO S T) := inferInstance`. Set `P : ((Fin k → ℝ) → ℂ) → Prop` to `fun F => ∃ f ∈ V, F = fun t => f (u + L t)`. Use `contDiff_of_partials P ?_ ?_ _ ⟨f, hf, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `(hc f hf).comp (continuous_const.add hL)`.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩ i`. Set `E : ℝ →ₗ[ℝ] (Fin k → ℝ)` to `LinearMap.toSpanSingleton ℝ (Fin k → ℝ) (Pi.single i 1)`. Set `M : ℝ →+ WO S T` to `L.comp E.toAddMonoidHom`. Establish `hM : Continuous M` using `hL.comp E.continuous_of_finiteDimensional`. Establish `hMf : ∀ s, (M s).map (finPart D) = 0` using `fun s => hLf _`.
+
+Take `⟨f', hf', hD⟩` from `hd f hf M hM hMf`. Use `⟨2, ![fun _ => 1, fun t => -deriv (fun s : ℝ => ψ (symplOH S T (u + L t) (M s))) 0], ![fun t => f' (u + L t), fun t => f (u + L t)], fun j => ?_, fun j => ?_, fun t => ?_⟩` and prove the remaining obligations. Use `fin_cases j`. Conclude with `contDiff_const`. Conclude with `contDiff_phase h hψ hL hM hMf u`.
+
+Use `fin_cases j`. Conclude with `⟨f', hf', rfl⟩`. Conclude with `⟨f, hf, rfl⟩`. Establish `e : (fun s : ℝ => f (u + L (t + s • Pi.single i 1))) = fun s => f ((u + L t) + M s)`. Use function extensionality and compare the values at `s`.
+
+Establish `: E s = s • Pi.single i 1` using `rfl`. Rewrite using `[map_add, add_assoc, ← this]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `hasDerivAt_line h hψ hM hMf (hD (u + L t)) using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_mul]`.
+-/
 theorem contDiff_of_heis_closed : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D)
     (V : Set (WO S T → ℂ)), (∀ f ∈ V, Continuous f) →
     (∀ f ∈ V, ∀ M : ℝ →+ WO S T, Continuous M → (∀ t, (M t).map (finPart D) = 0) →

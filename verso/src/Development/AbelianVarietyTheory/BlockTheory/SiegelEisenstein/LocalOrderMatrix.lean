@@ -20,6 +20,9 @@ def ordZ (R : Ranks) (s : ℕ) (hm : R.m = s + 2) :
       have : R.N R.m = R.k + (s + 1) + (s + 2) * R.t + 1 := by unfold Ranks.N; rw [hm]; ring
       omega))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ordX_d (R : Ranks) (j : ℕ) (i : Fin j) (l : Fin R.t) :
     (ordX R j (.inr (i, l))).val = R.k + j + (l.val + R.t * i.val) := rfl
 
@@ -93,6 +96,11 @@ def Statement : Prop :=
   ∀ S : SymData k s R.k, Tied Ch sel mu cst P σ₀ ι S →
     MatchEntries Ch sel mu cst P σ₀ ι S ν ∧ MatchPsi Ch sel mu cst P σ₀ ι S ∧ MatchTop Ch sel mu cst P σ₀ ι S ν hm
 
+/- English proof (translation)
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ η y, map_sum, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `: (fun j => if e s = j then (1 : E) else 0) = Pi.single (e s) 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Simplify using `[locRow, locVec, this, mul_comm]`.
+-/
 example {E k : Type} [Field E] [Field k] (ι : E →+* k) {a : ℕ} {J : Type} [Fintype J] (e : J ≃ Fin a)
     (η : (Fin a → E) →ₗ[E] E) (y : Fin a → E) : locRow ι e η ⬝ᵥ locVec ι e y = ι (η y) := by
   rw [LinearMap.pi_apply_eq_sum_univ η y, map_sum, ← e.sum_comp]
@@ -101,6 +109,9 @@ example {E k : Type} [Field E] [Field k] (ι : E →+* k) {a : ℕ} {J : Type} [
     funext j; simp [Pi.single_apply, eq_comm]
   simp [locRow, locVec, this, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : epsSg = -1 := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LocalOrderMatrix

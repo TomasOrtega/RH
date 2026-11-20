@@ -4,6 +4,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Establish `hsq : ∀ n i (y' : H R (G'.obj i) F n), pull R (c.π.app i) F n (pull R (α.app i) F n y') = pull R β F n (pull R (c'.π.app i) F n y')`. Introduce `n i y'`. Rewrite using `[← pull_comp, ← pull_comp, h i]`. Establish `hnat : ∀ n {k i : I} (f : k ⟶ i) (y' : H R (G'.obj i) F n), pull R (G.map f) F n (pull R (α.app i) F n y') = pull R (α.app k) F n (pull R (G'.map f) F n y')`. Introduce `n k i f y'`.
+
+Rewrite using `[← pull_comp, ← pull_comp, α.naturality f]`. Prove the components needed by the constructor for the conclusion. Introduce `hc n`. Use `⟨fun x' => ?_, fun i y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨i, y, hy⟩` from `(hc n).1 (pull R β F n x')`.
+
+Take `⟨y', rfl⟩` from `(hα i n).2 y`. Use `⟨i, y', (hβ n).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hsq, hy]`. Take `⟨k, f, hf⟩` from `(hc n).2 i (pull R (α.app i) F n y') (by rw [hsq, hy', map_zero])`. Use `⟨k, f, (hα k n).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hnat, hf, map_zero]`. Introduce `hc n`. Use `⟨fun x => ?_, fun i y hy => ?_⟩` and prove the remaining obligations. Take `⟨x', rfl⟩` from `(hβ n).2 x`. Take `⟨i, y', hy'⟩` from `(hc n).1 x'`.
+
+Conclude with `⟨i, pull R (α.app i) F n y', by rw [hsq, hy']⟩`. Take `⟨y', rfl⟩` from `(hα i n).2 y`. Establish `h0 : pull R (c'.π.app i) F n y' = 0` using `(hβ n).1 (by rw [← hsq, hy, map_zero])`. Take `⟨k, f, hf⟩` from `(hc n).2 i y' h0`. Conclude with `⟨k, f, by rw [hnat, hf, map_zero]⟩`.
+-/
 theorem ContCone.iff_of_eqv (R : Type) [CommRing R] (F : Shv R) (I : Type) [SmallCategory I] [IsCofiltered I]
     (G G' : I ⥤ Spc) (c : Cone G) (c' : Cone G') (α : G ⟶ G') (β : c.pt ⟶ c'.pt)
     (h : ∀ i, c.π.app i ≫ α.app i = β ≫ c'.π.app i) (hα : ∀ i, Eqv R (α.app i) F) (hβ : Eqv R β F) :

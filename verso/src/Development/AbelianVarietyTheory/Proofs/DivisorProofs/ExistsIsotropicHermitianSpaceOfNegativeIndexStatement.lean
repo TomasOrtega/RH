@@ -21,6 +21,9 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx | exact GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx | (intros; apply GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_isotropic_hermitianSpace_of_negativeIndex : ∀ (D : D7) (S : HSp D) (k : ℕ), NegIdx S k → 1 ≤ k → k + 1 ≤ S.rank → 3 ≤ S.rank →
     ∃ x : S.V, x ≠ 0 ∧ S.hT x x = 0 := by
   first | exact @GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx | exact GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx | (intros; apply GlobalTheory.IsoNegIdx.exists_isotropic_of_negIdx <;> assumption)

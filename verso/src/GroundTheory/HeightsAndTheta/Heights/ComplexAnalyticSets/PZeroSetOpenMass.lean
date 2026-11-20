@@ -9,6 +9,11 @@ open MvPolynomial MeasureTheory Filter Topology
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨y₀, hy₀⟩` from `hne`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hS y₀ hy₀`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hP` to reduce the goal to its premises.
+
+Establish `hinf : ∀ i, (Metric.ball (y₀ i) r).Infinite` using `fun i => infinite_of_mem_nhds (y₀ i) (Metric.ball_mem_nhds _ hr)`. Use `(funext_set_iff (p := P) (q := 0) _ hinf).mpr fun y hy => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `h y (hball (by rwa [ball_pi _ hr]))`.
+-/
 theorem exists_eval_ne_zero_of_isOpen {d : ℕ} {P : MvPolynomial (Fin d) ℂ} (hP : P ≠ 0)
     {S : Set (Fin d → ℂ)} (hS : IsOpen S) (hne : S.Nonempty) : ∃ y ∈ S, eval y P ≠ 0 := by
   obtain ⟨y₀, hy₀⟩ := hne
@@ -22,15 +27,36 @@ theorem exists_eval_ne_zero_of_isOpen {d : ℕ} {P : MvPolynomial (Fin d) ℂ} (
   rw [map_zero]
   exact h y (hball (by rwa [ball_pi _ hr]))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]`.
+-/
 theorem eval_linPoly {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ) (z : Fin n → ℂ) :
     (fun i => eval z (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A i)) = A.mulVec z := by
   ext i
   simp [GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Complex.finrank_real_complex, smul_eq_mul, mul_comm]`.
+-/
 theorem finrank_real_fin_complex (d : ℕ) : Module.finrank ℝ (Fin d → ℂ) = 2 * d := by
   rw [Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
     Complex.finrank_real_complex, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `n d W hW hdim x O hO hxO hxZ`. Take `⟨A, hA⟩` from `(hG n d W hW hdim).2.1`. Take `⟨P, hP0, hPcov⟩` from `hD n d W A hW hdim hA`. Establish `hopen` using `hF n d W (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A) hW hA.injective hA.finite x hxZ O (hO.mem_nhds hxO)`. Establish `hfun : (fun z : Fin n → ℂ => fun i => eval z (GroundTheory.Heights₂.Heights.ComplexSets.linPoly A i)) = fun z => A.mulVec z` using `funext (eval_linPoly A)`.
+
+Rewrite `hopen` using `[hfun, eval_linPoly A x]`. Take `⟨y, hyS, hPy⟩` from `exists_eval_ne_zero_of_isOpen hP0 isOpen_interior ⟨_, mem_interior_iff_mem_nhds.mpr hopen⟩`. Take `⟨z, ⟨hzW, hzO⟩, hzy⟩` from `interior_subset hyS`. Substitute `hzy` using the available equality. Take `⟨-, -, hloc⟩` from `hPcov _ hPy`.
+
+Take `⟨U, V, g, hU, hzU, hV, hzV, hg, hgz, hAg, hZV⟩` from `hloc z ⟨hzW, rfl⟩`. Use `set U' := U ∩ g ⁻¹' (O ∩ V) with hU'def`. Establish `hU' : IsOpen U'` using `hg.continuousOn.isOpen_inter_preimage hU (hO.inter hV)`. Establish `hzU' : A.mulVec z ∈ U'` using `⟨hzU, by simp only [Set.mem_preimage, hgz]; exact ⟨hzO, hzV⟩⟩`. Establish `hsub : g '' U' ⊆ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W ∩ O`.
+
+Introduce and unpack `_ ⟨w, ⟨hwU, hwO, -⟩, rfl⟩`. Establish `hw : g w ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W ∩ V`. Rewrite using `[hZV]`. Conclude with `Set.mem_image_of_mem g hwU`. Conclude with `⟨hw.1, hwO⟩`.
+
+Establish `himg : (fun z => A.mulVec z) '' (g '' U') = U'`. Rewrite using `[Set.image_image]`. Conclude with `(Set.image_congr fun w hw => hAg w hw.1).trans (Set.image_id' _)`. Take `⟨K, hK⟩ : ∃ K, LipschitzWith K (fun z : Fin n → ℂ => A.mulVec z)` from `⟨_, (LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).lipschitz⟩`. Establish `hpos : 0 < μH[((2 * d : ℕ) : ℝ)] U'`.
+
+Rewrite using `[← finrank_real_fin_complex d]`. Conclude with `hU'.measure_pos _ ⟨_, hzU'⟩`. Establish `hle` using `hK.hausdorffMeasure_image_le (by positivity : (0 : ℝ) ≤ ((2 * d : ℕ) : ℝ)) (g '' U')`. Rewrite `hle` using `[himg]`. Use `lt_of_lt_of_le ?_ (measure_mono hsub)` and prove the remaining obligations.
+
+Use `pos_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `hle` using `[h0, mul_zero]`. Conclude with `hpos.ne' (nonpos_iff_eq_zero.mp hle)`.
+-/
 theorem ZeroSetOpenMass.proof
     (hG : GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.Statement)
     (hD : GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.Statement)

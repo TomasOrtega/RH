@@ -11,6 +11,21 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W _ hWn _`. Use `hP'.isPrime` as an intermediate fact. Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P' ⊔ W.map (rename (blockIncl j ι')))).subset ?_` and prove the remaining obligations. Introduce and unpack `W' ⟨hW', hPW', hc⟩`. Use `hW'.isPrime` as an intermediate fact.
+
+Take `⟨Q, hQ, hQW'⟩` from `Ideal.exists_minimalPrimes_le (sup_le hPW' (Ideal.map_le_iff_le_comap.mpr hc.ge))`. Use `hQ.1.1` as an intermediate fact. Establish `hP'Q : P' ≤ Q` using `le_sup_left.trans hQ.1.2`. It suffices to establish `Q = W' by rwa [← this]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hQc : contractPrime j Q = W` using `le_antisymm (hc ▸ Ideal.comap_mono hQW') (Ideal.le_comap_map.trans (Ideal.comap_mono (le_sup_right.trans hQ.1.2)))`. Establish `hne' : P' ≠ Q`. Introduce and unpack `rfl`. Rewrite `hPn` using `[hQc, hWn]`. Simplify using `only [natCast_withBot_withTop] at hPn`.
+
+Use `WithTop.coe_inj.mp (WithBot.coe_inj.mp hPn)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨f, hfQ, hfP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hP'Q hne')`. Take `⟨g, hgW, hgQ⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hQW' hne)`. Establish `h1` using `ringKrullDim_add_one_le hP'Q hfP hfQ`.
+
+Establish `h2` using `ringKrullDim_add_one_le hQW' hgQ hgW`. Take `⟨D, -, hD⟩` from `exists_ringKrullDim_eq (fun T _ hq => killBlocks_mem_of_isMultiHomogIdeal hP'.multiHomog T hq) hP'.relevant`. Take `⟨E, -, hE⟩` from `exists_ringKrullDim_eq (fun T _ hq => killBlocks_mem_of_isMultiHomogIdeal hW'.multiHomog T hq) hW'.relevant`. Establish `h3` using `ContractRelDimLe.proof F K K' j ι' W' hW'`. Rewrite `h3` using `[hc, hWn, relDim_eq_int hE, natCast_withBot_withTop]`.
+
+Rewrite `hP'n` using `[relDim_eq_int hD, natCast_withBot_withTop]`. Establish `h4 : ((E + 1 + 1 : ℕ) : WithBot ℕ∞) ≤ D`. Rewrite using `[← hD]`. Rewrite `h2` using `[hE]`. Use `push_cast`.
+
+Conclude with `le_trans (by gcongr) h1`. Establish `h3' : (n : ℤ) ≤ E - Fintype.card K'` using `by exact_mod_cast h3`. Establish `hP'n' : (D : ℤ) - Fintype.card K' = (n + 1 : ℕ)` using `by exact_mod_cast hP'n`. Establish `h4' : E + 1 + 1 ≤ D` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem FibreFinite.proof : FibreFinite.Statement.{u} := by
   intro F _ K K' _ _ _ _ j ι' _ P' hP' n hP'n hPn W _ hWn _
   have := hP'.isPrime

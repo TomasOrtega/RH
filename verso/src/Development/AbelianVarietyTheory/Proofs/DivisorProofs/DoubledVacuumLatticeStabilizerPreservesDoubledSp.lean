@@ -13,6 +13,9 @@ namespace GlobalTheory.DblVacStab
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vecMulVec_mul_transpose' {m k : Type} [Fintype k] {R : Type} [CommRing R] (p : m → R) (q : k → R)
     (M : Matrix k k R) : Matrix.vecMulVec p q * Mᵀ = Matrix.vecMulVec p (M *ᵥ q) := by
   ext i j
@@ -21,6 +24,13 @@ lemma vecMulVec_mul_transpose' {m k : Type} [Fintype k] {R : Type} [CommRing R] 
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) q).toCols₁ = Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) (q ∘ Sum.inl) := by`. Use extensionality with `i j`. Simplify using `[Matrix.toCols₁, Matrix.vecMulVec_apply]`. Rewrite using `[this]`.
+
+Conclude with `GlobalTheory.InertSphStab.vecMulVec_mem X W v hx hq.1`. Establish `: (Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) q).toCols₂ = Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) (q ∘ Sum.inr) := by`. Use extensionality with `i j`. Simplify using `[Matrix.toCols₂, Matrix.vecMulVec_apply]`. Rewrite using `[this]`.
+
+Conclude with `GlobalTheory.InertSphStab.vecMulVec_mem X W v hx hq.2`.
+-/
 lemma vecMulVec_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F) {x : Fin n → E} (hx : x ∈ X.L)
     {q : Fin d ⊕ Fin d → AE F E} (hq : q ∈ GlobalTheory.DblVac.latD W v) :
     Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) q ∈ latDbl X W v := by
@@ -34,6 +44,23 @@ lemma vecMulVec_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F
       ext i j; simp [Matrix.toCols₂, Matrix.vecMulVec_apply]
     rw [this]; exact GlobalTheory.InertSphStab.vecMulVec_mem X W v hx hq.2
 
+/- English proof (translation)
+Set `φ₁ : Matrix (Fin n) (Fin d) (AE F E) →+ Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)` to `AddMonoidHom.mk' (fun γ : Matrix (Fin n) (Fin d) (AE F E) => (Matrix.fromCols γ 0 : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) * Mᵀ) (by`. Apply the tactic sequence `intro a b; rw [← Matrix.add_mul]; congr 1; ext i (j | j) <;> simp)`. Set `φ₂ : Matrix (Fin n) (Fin d) (AE F E) →+ Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)` to `AddMonoidHom.mk' (fun γ : Matrix (Fin n) (Fin d) (AE F E) => (Matrix.fromCols 0 γ : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)) * Mᵀ) (by`. Apply the tactic sequence `intro a b; rw [← Matrix.add_mul]; congr 1; ext i (j | j) <;> simp)`. Establish `key : ∀ (φ : Matrix (Fin n) (Fin d) (AE F E) →+ Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E)), (∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∀ x ∈ X.L, ∀ y ∈ W.L, ∃ q ∈ GlobalTheory.DblVac.latD W v, φ (a • incM F (Matrix.vecMulVec x y)) = Matrix.vecMulVec …` using `F) (AF F) (x i)) q) → latAtV X W v ≤ (latDbl X W v).comap φ := by`.
+
+Introduce `φ hφ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, hai, x, hx, y, hy, rfl⟩`. Take `⟨q, hq, he⟩` from `hφ a ha hai x hx y hy`. Use `show φ _ ∈ latDbl X W v`.
+
+Rewrite using `[he]`. Conclude with `vecMulVec_mem_latDbl X W v hx hq`. Establish `gen : ∀ a : AF F, At (evFin F v) a → evFin F v a ∈ v.adicCompletionIntegers F → ∀ y ∈ W.L, (a • fun i => inclR (F` using `F) (AF F) (y i)) ∈ GlobalTheory.InertSph.latAt W v := fun a ha hai y hy => AddSubgroup.subset_closure ⟨a, ha, hai, y, hy, rfl⟩`. Establish `h₁ : latAtV X W v ≤ (latDbl X W v).comap φ₁`. Use `key φ₁ fun a ha hai x hx y hy => ⟨M *ᵥ Sum.elim (a • fun i => inclR (F := F) (AF F) (y i)) 0, hM _ ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨by simpa using gen a ha hai y hy, by simpa using (GlobalTheory.InertSph.latAt W v).zero_mem⟩`. Rewrite using `[← vecMulVec_mul_transpose']`. Simplify using `only [φ₁, AddMonoidHom.mk'_apply]`. Use `congr 1`. Rewrite using `[GlobalTheory.InertSphStab.incM_vecMulVec, GlobalTheory.InertSphStab.smul_vecMulVec]`.
+
+Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.vecMulVec_apply]`. Establish `h₂ : latAtV X W v ≤ (latDbl X W v).comap φ₂`. Use `key φ₂ fun a ha hai x hx y hy => ⟨M *ᵥ Sum.elim 0 (a • fun i => inclR (F := F) (AF F) (y i)), hM _ ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨by simpa using (GlobalTheory.InertSph.latAt W v).zero_mem, by simpa using gen a ha hai y hy⟩`. Rewrite using `[← vecMulVec_mul_transpose']`.
+
+Simplify using `only [φ₂, AddMonoidHom.mk'_apply]`. Use `congr 1`. Rewrite using `[GlobalTheory.InertSphStab.incM_vecMulVec, GlobalTheory.InertSphStab.smul_vecMulVec]`. Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.vecMulVec_apply]`. Introduce `γ hγ`.
+
+Establish `hsplit : γ * Mᵀ = φ₁ γ.toCols₁ + φ₂ γ.toCols₂`. Simplify using `only [φ₁, φ₂, AddMonoidHom.mk'_apply]`. Rewrite using `[← Matrix.add_mul]`. Use `congr 1`. Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.toCols₁, Matrix.toCols₂]`.
+
+Rewrite using `[hsplit]`. Conclude with `(latDbl X W v).add_mem (h₁ hγ.1) (h₂ hγ.2)`.
+-/
 theorem mul_transpose_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v : Pl F)
     (M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E))
     (hM : ∀ q ∈ GlobalTheory.DblVac.latD W v, M *ᵥ q ∈ GlobalTheory.DblVac.latD W v) :
@@ -88,6 +115,9 @@ theorem mul_transpose_mem_latDbl {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (v 
 
 end GlobalTheory.DblVacStab
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W v g hg γ hγ`. Conclude with `⟨GlobalTheory.DblVacStab.mul_transpose_mem_latDbl X W v _ (fun q hq => (hg.2 q hq).1) γ hγ, GlobalTheory.DblVacStab.mul_transpose_mem_latDbl X W v _ (fun q hq => (hg.2 q hq).2) γ hγ⟩`.
+-/
 theorem GlobalTheory.DblVac.kD_stab_latDbl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n d : ℕ}
     (X : Spc F E n) (W : Spc F E d) (v : Pl F), ∀ g ∈ GlobalTheory.DblVac.KD σ W v, ∀ γ ∈ latDbl X W v,

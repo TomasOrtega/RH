@@ -23,6 +23,9 @@ def pullCompare {Y X : Over (Sp R)} (u : Y ⟶ X)
     change spMap (RingHom.id D) ≫ z.left = w.left ≫ u.left
     rw [Cris.spMap_id, h]; simp)
 
+/- English proof (translation)
+Use `⟨fun D _ _ w ↦ ev f (pullCompare u m w (w ≫ u) rfl), fun D _ _ D' _ _ φ w ↦ ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ (z : Pt X D') (h : z = (spOver φ ≫ w) ≫ u), @Eq D' (ev f (pullCompare u m (spOver φ ≫ w) z h)) (ev f (pullCompare u m (spOver φ ≫ w) _ rfl))` using `fun z h ↦ by subst h; rfl`. Establish `k` using `ev_sq f (trivMap φ (w ≫ u)) (pullCompare u m (spOver φ ≫ w) (spOver φ ≫ w ≫ u) (Category.assoc _ _ _).symm) (pullCompare u m w (w ≫ u) rfl) (m.functor.map (trivMap φ w)) fun _ ↦ rfl`. Establish `key : ∀ a b b' c d : D', b = b' → a + b = c + d → d = a + (b' - c)` using `fun a b b' c d e h ↦ by rw [← e]; linear_combination -h`. Conclude with `key _ _ _ _ _ (h1 _ _) k`.
+-/
 theorem exists_crystallineCocycleOnPoints_pullback_cohomologous {Y X : Over (Sp R)} (u : Y ⟶ X)
     (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R) (Y.hom ≫ 𝟙 _) (RingHom.id R) u.left)
     (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) :
@@ -40,6 +43,13 @@ theorem exists_crystallineCocycleOnPoints_pullback_cohomologous {Y X : Over (Sp 
     fun a b b' c d e h ↦ by rw [← e]; linear_combination -h
   exact key _ _ _ _ _ (h1 _ _) k
 
+/- English proof (translation)
+Establish `h` using `(mem_prim_iff (dp0 R) (𝟙 _) A _).1 hf`. Establish `M : ∀ u : A ⊗ A ⟶ A, IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ A).hom ≫ 𝟙 _) (RingHom.id R) u.left` using `fun u ↦ IsMor.of_over _ (by rw [← Category.assoc, Over.w])`. Establish `h' : CatCoh.H1.mk _ ((M μ[A]).coef.pullbackOneCocycle f) = CatCoh.H1.mk _ ((M (fst A A)).coef.pullbackOneCocycle f + (M (snd A A)).coef.pullbackOneCocycle f)`. Rewrite using `[map_add]`. Conclude with `h`.
+
+Take `⟨k, hk⟩` from `H1.mk_eq_mk.1 h'`. Take `⟨c, hc⟩` from `exists_crystallineCocycleOnPoints_pullback_cohomologous _ (M μ[A]) f`. Take `⟨c₁, hc₁⟩` from `exists_crystallineCocycleOnPoints_pullback_cohomologous _ (M (fst A A)) f`. Take `⟨c₂, hc₂⟩` from `exists_crystallineCocycleOnPoints_pullback_cohomologous _ (M (snd A A)) f`. Set `k' : Fn0 (A ⊗ A)` to `fun D _ _ w ↦ k (trivAt w)`.
+
+Use `⟨fun D _ _ x y ↦ k' D (lift x y) - c D (lift x y) + c₁ D (lift x y) + c₂ D (lift x y), fun D _ _ D' _ _ φ x y ↦ ?_⟩` and prove the remaining obligations. Establish `e : k' D' (spOver φ ≫ lift x y) - φ (k' D (lift x y)) = fv ((M μ[A]).coef.pullbackOneCocycle f) D D' φ (lift x y) - (fv ((M (fst A A)).coef.pullbackOneCocycle f) D D' φ (lift x y) + fv ((M (snd A A)).coef.pullbackOneCocycle f) D D' φ (lift x y))` using `congrFun (congrFun (congrFun hk _) _) (trivMap φ (lift x y))`. Rewrite `e` using `[hc, hc₁, hc₂, lift_fst, lift_snd, ← Hom.mul_def, comp_lift]`. Simplify using `only [map_add, map_sub]`. Take the linear combination `e`.
+-/
 theorem exists_isAdd_of_mem_primDR (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A]
     (f : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (hf : CatCoh.H1.mk _ f ∈ primDR A) :
     ∃ g : Fn2 A, IsAdd (fv f) g := by

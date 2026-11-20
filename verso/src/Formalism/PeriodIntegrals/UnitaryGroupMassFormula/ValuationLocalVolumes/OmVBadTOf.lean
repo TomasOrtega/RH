@@ -46,6 +46,11 @@ def PrimCos (a : ℕ) : Prop :=
     IsSDLoc σ J v Λ → UnramAt (E := E) v → ∀ ϖ : Fv F v, IsUnif v ϖ →
     ∀ X ∈ PrimT v Λ a, ∀ Z ∈ lamN v Λ ϖ a 0, X + Z ∈ PrimT v Λ a
 
+/- English proof (translation)
+Establish `hki : ∀ i, (k • Y) i = Matrix.mulVec ((HA.mat (Fv F v) σ J k : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) _) (Y i)` using `fun i => rfl`. Use `⟨fun i => ?_, fun c hc => hY.2 c ?_⟩` and prove the remaining obligations. Rewrite using `[hki]`. Conclude with `(hk (Y i)).1 (hY.1 i)`. Establish `e : (∑ i, c i • (k • Y) i) = Matrix.mulVec ((HA.mat (Fv F v) σ J k : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) _) (∑ i, c i • Y i)`.
+
+Rewrite using `[Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hki]`. Rewrite `hc` using `[e]`. Conclude with `(hk _).2 hc`.
+-/
 theorem smul_prim {a : ℕ} (k : HA (Fv F v) σ J) (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (Y : TupV (E := E) v n a) (hY : IsPrim v Λ Y) : IsPrim v Λ (k • Y) := by
   have hki : ∀ i, (k • Y) i =
@@ -88,12 +93,30 @@ def OmVdSdW : Prop := ∀ v : PlX X, SdVolW X.B.I.cm.sig X.B.I.J ψ v (abelian�
 
 def OmVdSdH : Prop := ∀ v : PlX X, SdVolH X.B.I.cm.sig X.B.I.J ψ v (D.R.rS + 1 + D.R.rS)
 
+/- English proof (translation)
+Establish `h1` using `X.n_eq`. Establish `h2` using `D.R.rS_two`. Unfold `Ranks.r at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem a_le_n' : D.R.rS + 1 + D.R.rS ≤ X.B.I.n := by
   have h1 := X.n_eq
   have h2 := D.R.rS_two
   unfold Ranks.r at h1
   omega
 
+/- English proof (translation)
+Introduce `hC hS v hv hSD hUn hP`. Establish `hS'` using `hStd hC hS`. Establish `hG : GoodP X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v)` using `⟨hS', hLat, hSD, hUn, a_le_n' X, hP⟩`. Take `⟨ϖ, hϖ⟩` from `unifEx_holds v`. Take `⟨hWe, hHe⟩` from `hEx v hS'`.
+
+Rewrite using `[← hGram v]`. Use `set T := gramR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (yTup X u' v) with hTdef`. Use `set ω := omAt X.B.I.cm.sig X.B.I.J ψ v T with hω`. Use `set O := {Y | ∃ k ∈ Kv X.B.I.cm.sig X.B.I.J (abelian₂ X) v, Y = k • yTup X u' v} with hO`. Establish `hsub : O ⊆ PrimT v (abelian₂ X) (D.R.rS + 1 + D.R.rS)`.
+
+Introduce and unpack `Z ⟨k, hk, rfl⟩`. Conclude with `smul_prim X.B.I.cm.sig X.B.I.J v (abelian₂ X) k hk _ hP`. Establish `hsup : PrimT v (abelian₂ X) (D.R.rS + 1 + D.R.rS) ⊆ O ∪ {Z | gramR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J Z = T}ᶜ`. Introduce `Z hZ`. Distinguish the cases in `hg : gramR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J Z = T`.
+
+Conclude with `Or.inl (hOrb v hv hG Z hZ hg)`. Conclude with `Or.inr hg`. Establish `hEq : ω O = ω (PrimT v (abelian₂ X) (D.R.rS + 1 + D.R.rS))`. Apply `le_antisymm (measure_mono hsub)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show ω O = _`. Rewrite using `[hEq, hω, hFib v hG hWe hHe (hUq v hS').1 ϖ hϖ, hCnt v hv hG hWe ϖ hϖ, hW v hS' hLat hSD hUn hWe, hH v hS' hUn hHe ϖ hϖ]`. Establish `hq` using `qv_pos v`. Establish `hd` using `absV_dV_pos v`. Rewrite using `[← ENNReal.ofReal_mul' (Real.rpow_nonneg hd.le _), ← ENNReal.ofReal_div_of_pos (by positivity)]`.
+
+Use `congr 1`. Establish `e : absV v (dV v) ^ ((X.B.I.n : ℝ) * ((D.R.rS + 1 + D.R.rS : ℕ) : ℝ) - ((D.R.rS + 1 + D.R.rS : ℕ) : ℝ) ^ 2 / 2) = absV v (dV v) ^ ((X.B.I.n : ℝ) * ((D.R.rS + 1 + D.R.rS : ℕ) : ℝ)) / absV v (dV v) ^ (((D.R.rS + 1 + D.R.rS : ℕ) : ℝ) ^ 2 / 2)` using `Real.rpow_sub hd _ _`. Rewrite using `[e]`. Unfold `prodEtaB`. Establish `: (0 : ℝ) < qv v ^ (-(((D.R.rS + 1 + D.R.rS : ℕ) : ℤ) ^ 2))` using `zpow_pos hq _`.
+
+Establish `: (0 : ℝ) < absV v (dV v) ^ (((D.R.rS + 1 + D.R.rS : ℕ) : ℝ) ^ 2 / 2)` using `Real.rpow_pos_of_pos hd _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem omVBadT_of (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hEx : OmVdEx X ψ) (hUq : OmVdUniq X ψ) (hOrb : OmVdOrb X u' ψ) (hFib : OmVdFib X u' ψ)
     (hCnt : OmVdCnt X u' ψ) (hW : OmVdSdW X ψ) (hH : OmVdSdH X ψ) : OmVBadT X u' ψ := by

@@ -46,21 +46,36 @@ namespace OrderApi
 
 omit [CommGroup T] in
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, ha, b, hb, rfl⟩`.
+-/
 theorem mul_mem_prodSpan {A : Subalgebra R (T → R)} {a b : T → R} (ha : a ∈ A) (hb : b ∈ A) :
     (fun z : T × T => a z.1 * b z.2) ∈ prodSpan A :=
   Submodule.subset_span ⟨a, ha, b, hb, rfl⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_indOrder (ι : H →* T) (A : Subalgebra R (H → R)) (f : T → R) :
     f ∈ indOrder ι A ↔ ∀ t, (fun h => f (t * ι h)) ∈ A := Iff.rfl
 
 omit [CommGroup T] in
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨f, hf, rfl⟩`.
+-/
 theorem comp_mem_extOrder {R' : Type} [CommRing R'] (φ : R →+* R') {A : Subalgebra R (T → R)} {f : T → R}
     (hf : f ∈ A) : (fun t => φ (f t)) ∈ extOrder φ A :=
   Algebra.subset_adjoin ⟨f, hf, rfl⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_augIdeal (A : Subalgebra R (T → R)) (f : A) : f ∈ augIdeal A ↔ (f : T → R) 1 = 0 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[dlogChar, dif_pos h]`.
+-/
 theorem dlogChar_of_mem (A : Subalgebra R (T → R)) (χ : T →* Rˣ) (h : (fun t => ((χ t : Rˣ) : R)) ∈ A) :
     dlogChar A χ =
       (augIdeal A).toCotangent ⟨⟨_, h⟩ - 1, by simp [augIdeal, evalAt, RingHom.mem_ker]⟩ := by
@@ -88,6 +103,9 @@ def muTwoOrder : Subalgebra ℤ (ℤˣ → ℤ) where
     change (2 : ℤ) ∣ _
     simp
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example {S : Type} [CommRing S] {G : Type} [CommGroup G] (B : Subalgebra S (G → S)) : Module S (omega B) :=
   inferInstance
 

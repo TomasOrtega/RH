@@ -12,6 +12,17 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiInt
 open GlobalTheory.CompanionTheory.Hypotheses₂.OneV.FouCoord GroundTheory.Automorphic.GJMatrix
 open scoped NNReal
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M dx hdx Φ hΦ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨h1, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := h1`.
+
+Use `haveI := hBor 1 M`. Establish `hf` using `(isSchwartzBruhat_iff b Φ).1 hΦ`. Set `e` to `crd (AF F) b M`. Establish `hcomp : (Φ ∘ e.symm) ∘ e = Φ`. Use function extensionality and compare the values at `X`.
+
+Simplify using the standard rewrite rules. Establish `hcont : Continuous Φ`. Establish `h : Continuous ((Φ ∘ e.symm) ∘ e)` using `(continuous_of_mem_schwartzBruhatPi hf).comp e.continuous`. Rewrite `h` using `[hcomp]`. Then use the resulting hypothesis. Use `⟨hcont, ?_⟩` and prove the remaining obligations.
+
+Use `haveI : LocallyCompactSpace (Fin 1 → Fin M → AF F ⊗[F] E) := e.toHomeomorph.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Fin 1 → Fin M → AF F ⊗[F] E) := e.toHomeomorph.secondCountableTopology`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, dx = c • mu0 e` from `⟨_, Measure.isAddLeftInvariant_eq_smul dx (mu0 e)⟩`. Establish `hI : Integrable Φ (mu0 e)`. Rewrite using `[mu0, (measurableEmbedding_symm e).integrable_map_iff]`.
+
+Conclude with `integrable_of_mem_schwartzBruhatPi hf`. Rewrite using `[hc]`. Conclude with `hI.smul_measure_nnreal`.
+-/
 theorem continuous_integrable_of_isSchwartzBruhat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (dx : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), dx.IsAddHaarMeasure → ∀ Φ : (Fin 1 → Fin M → AF F ⊗[F] E) → ℂ, IsSchwartzBruhat Φ → Continuous Φ ∧ Integrable Φ dx := by
   intro F E _ _ _ _ _ σ hCM M dx hdx Φ hΦ
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E

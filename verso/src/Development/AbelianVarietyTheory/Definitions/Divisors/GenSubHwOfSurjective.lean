@@ -18,27 +18,48 @@ variable {R S : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
 def isoPart (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (Λ : Ix R S → ℚ) : Submodule ℂ V :=
   sInf {N | hwSub act Λ ≤ N ∧ KStable act N}
 
+/- English proof (translation)
+Simplify using `[wtSub, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_wtSub {act : Mat R S →ₗ[ℂ] Module.End ℂ V} {μ : Ix R S → ℚ} {v : V} :
     v ∈ wtSub act μ ↔ ∀ a, act (Eab a a) v = (μ a : ℂ) • v := by
   simp [wtSub, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[hwSub, mem_wtSub, Submodule.mem_iInf]`.
+-/
 theorem mem_hwSub {act : Mat R S →ₗ[ℂ] Module.End ℂ V} {μ : Ix R S → ℚ} {v : V} :
     v ∈ hwSub act μ ↔ (∀ a, act (Eab a a) v = (μ a : ℂ) • v) ∧ ∀ a b, posC a b → act (Eab a b) v = 0 := by
   simp [hwSub, mem_wtSub, Submodule.mem_iInf]
 
+/- English proof (translation)
+The claim follows from `le_sInf fun _ h => h.1`.
+-/
 theorem hwSub_le_isoPart (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (Λ : Ix R S → ℚ) : hwSub act Λ ≤ isoPart act Λ :=
   le_sInf fun _ h => h.1
 
+/- English proof (translation)
+Introduce `_ hv` and use `Submodule.mem_sInf.2 fun _ hN => hN.1 hv`.
+-/
 theorem subset_genSub (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (T : Set V) : T ⊆ genSub act T :=
   fun _ hv => Submodule.mem_sInf.2 fun _ hN => hN.1 hv
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun N hN => hN.2 Z _ (Submodule.mem_sInf.1 hv N hN)`.
+-/
 theorem act_mem_genSub (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (T : Set V) (Z : Mat R S) {v : V} (hv : v ∈ genSub act T) :
     act Z v ∈ genSub act T :=
   Submodule.mem_sInf.2 fun N hN => hN.2 Z _ (Submodule.mem_sInf.1 hv N hN)
 
+/- English proof (translation)
+The claim follows from `sInf_le ⟨hT, hN⟩`.
+-/
 theorem genSub_le {act : Mat R S →ₗ[ℂ] Module.End ℂ V} {T : Set V} {N : Submodule ℂ V} (hT : T ⊆ N)
     (hN : ∀ Z, ∀ y ∈ N, act Z y ∈ N) : genSub act T ≤ N := sInf_le ⟨hT, hN⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (genSub_le (sInf_le (a := genSub act (hwSub act Λ)) ⟨subset_genSub act _, fun X _ _ h => act_mem_genSub act _ X h⟩) fun Z _ h => act_mem_genSub act _ Z h) (genSub_le (fun _ h => subset_genSub act _ (hwSub_le_isoPart act Λ h)) fun Z _ h => act_mem_genSub act _ Z h)`.
+-/
 theorem genSub_isoPart (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (Λ : Ix R S → ℚ) :
     genSub act (isoPart act Λ) = genSub act (hwSub act Λ) :=
   le_antisymm (genSub_le (sInf_le (a := genSub act (hwSub act Λ))
@@ -47,14 +68,25 @@ theorem genSub_isoPart (act : Mat R S →ₗ[ℂ] Module.End ℂ V) (Λ : Ix R S
 
 variable {a : Mat R S →ₗ[ℂ] Module.End ℂ V} {b : Mat R S →ₗ[ℂ] Module.End ℂ W} {π : V →ₗ[ℂ] W}
 
+/- English proof (translation)
+The claim follows from `mem_wtSub.2 fun c => by rw [h, mem_wtSub.1 hv c, map_smul]`.
+-/
 theorem map_mem_wtSub (h : ∀ X v, b X (π v) = π (a X v)) {μ : Ix R S → ℚ} {v : V} (hv : v ∈ wtSub a μ) :
     π v ∈ wtSub b μ := mem_wtSub.2 fun c => by rw [h, mem_wtSub.1 hv c, map_smul]
 
+/- English proof (translation)
+The claim follows from `mem_hwSub.2 ⟨fun c => by rw [h, (mem_hwSub.1 hv).1 c, map_smul], fun c d hcd => by rw [h, (mem_hwSub.1 hv).2 c d hcd, map_zero]⟩`.
+-/
 theorem map_mem_hwSub (h : ∀ X v, b X (π v) = π (a X v)) {μ : Ix R S → ℚ} {v : V} (hv : v ∈ hwSub a μ) :
     π v ∈ hwSub b μ :=
   mem_hwSub.2 ⟨fun c => by rw [h, (mem_hwSub.1 hv).1 c, map_smul],
     fun c d hcd => by rw [h, (mem_hwSub.1 hv).2 c d hcd, map_zero]⟩
 
+/- English proof (translation)
+Establish `: genSub a (hwSub a Λ) ≤ (genSub b (hwSub b Λ)).comap π` using `genSub_le (fun v hv => subset_genSub b _ (map_mem_hwSub h hv)) fun Z y hy => by`. Rewrite using `[Submodule.mem_comap, ← h]`. Conclude with `act_mem_genSub b _ Z hy`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hπ y`.
+
+Conclude with `this (hg ▸ Submodule.mem_top)`.
+-/
 theorem genSub_hw_of_surjective (hπ : Function.Surjective π) (h : ∀ X v, b X (π v) = π (a X v)) {Λ : Ix R S → ℚ}
     (hg : genSub a (hwSub a Λ) = ⊤) : genSub b (hwSub b Λ) = ⊤ := by
   have : genSub a (hwSub a Λ) ≤ (genSub b (hwSub b Λ)).comap π :=
@@ -64,6 +96,9 @@ theorem genSub_hw_of_surjective (hπ : Function.Surjective π) (h : ∀ X v, b X
   obtain ⟨v, rfl⟩ := hπ y
   exact this (hg ▸ Submodule.mem_top)
 
+/- English proof (translation)
+Use `open GlobalTheory.RealPar.DerivedAdjoint in`. Use `⟨(1 / 2 : ℂ) • (Z - adjZ Z), mem_upq_of_adjZ ?_, (-Complex.I / 2) • (Z + adjZ Z), mem_upq_of_adjZ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[adjZ_smul, adjZ_sub, adjZ_adjZ, show star (1 / 2 : ℂ) = 1 / 2 by simp] module`. Rewrite using `[adjZ_smul, adjZ_add, adjZ_adjZ, show star (-Complex.I / 2) = Complex.I / 2 by simp] module`. Rewrite using `[smul_smul, show Complex.I * (-Complex.I / 2) = 1 / 2 by rw [← mul_div_assoc, mul_neg, Complex.I_mul_I, neg_neg]] module`.
+-/
 theorem exists_upq_add (Z : Mat R S) : ∃ X ∈ upq R S, ∃ Y ∈ upq R S, Z = X + Complex.I • Y := by
   open GlobalTheory.RealPar.DerivedAdjoint in
   refine ⟨(1 / 2 : ℂ) • (Z - adjZ Z), mem_upq_of_adjZ ?_, (-Complex.I / 2) • (Z + adjZ Z), mem_upq_of_adjZ ?_, ?_⟩
@@ -81,19 +116,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def rT (h : UA σ J) : (UA σ J → ℂ) →ₗ[ℂ] (UA σ J → ℂ) := LinearMap.funLeft ℂ ℂ (· * h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rT_apply (h : UA σ J) (f : UA σ J → ℂ) (g : UA σ J) : rT h f g = f (g * h) := rfl
 
 def cmp {w : InfinitePlace F} (τ : EmbOver E w) (g : UA σ J) : Matrix (Fin n) (Fin n) ℂ := (mat g).map (piInf τ)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem cmp_mul {w : InfinitePlace F} (τ : EmbOver E w) (g h : UA σ J) : cmp τ (g * h) = cmp τ g * cmp τ h :=
   Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem cmp_one {w : InfinitePlace F} (τ : EmbOver E w) : cmp τ (1 : UA σ J) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 def herm (J : Matrix (Fin n) (Fin n) E) {w : InfinitePlace F} (τ : EmbOver E w) : Matrix (Fin n) (Fin n) ℂ :=
   Complex.I • J.map τ.1
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map {m k : Type} (A : Matrix m k E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F A).map (piInf τ) = A.map τ.1 := by
   ext i j
@@ -167,10 +214,16 @@ def IsGKAt.toGKMod {act : Mat R S →ₗ[ℂ] Module.End ℂ T} (h : IsGKAt τ w
   kfin := h.kfin
   wts := h.wts
 
+/- English proof (translation)
+Simplify using `only [GenBy, genSub_isoPart]`.
+-/
 theorem genBy_iff_hw {Λ : Ix R S → ℚ} :
     GenBy τ w C T Λ ↔ ∃ act, IsGKAt τ w C T act ∧ genSub act (hwSub act Λ) = ⊤ := by
   simp only [GenBy, genSub_isoPart]
 
+/- English proof (translation)
+The claim follows from `funext fun g => (h₁ g).unique (h₂ g)`.
+-/
 theorem HasRDer.unique {γ : Multiplicative ℝ →* UA σ J} {f f₁ f₂ : UA σ J → ℂ} (h₁ : HasRDer γ f f₁) (h₂ : HasRDer γ f f₂) :
     f₁ = f₂ := funext fun g => (h₁ g).unique (h₂ g)
 
@@ -181,6 +234,9 @@ def liftAt [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (w : In
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[liftAt, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), OneParam.liftM_map τ hξ]`. Use `split_ifs with e`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same, add_sub_cancel]`. Rewrite using `[Pi.single_eq_of_ne e, add_zero]`.
+-/
 theorem liftAt_map [IsTotallyReal F] {ξ : E} (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0) (G : Matrix (Fin n) (Fin n) ℂ)
     (w' : InfinitePlace F) : (liftAt τ w ξ G).map (piInf (τ w')) = if w' = w then G else 1 := by
   rw [liftAt, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), OneParam.liftM_map τ hξ]
@@ -188,10 +244,16 @@ theorem liftAt_map [IsTotallyReal F] {ξ : E} (hξ : ∀ w, ((τ w).1 ξ).im ≠
   · subst e; rw [Pi.single_eq_same, add_sub_cancel]
   · rw [Pi.single_eq_of_ne e, add_zero]
 
+/- English proof (translation)
+Rewrite using `[liftAt, add_sub_cancel_left]`. Conclude with `at_liftM τ ξ _`.
+-/
 theorem at_liftAt [IsTotallyReal F] (ξ : E) (G : Matrix (Fin n) (Fin n) ℂ) : At (evI F) (liftAt τ w ξ G - 1) := by
   rw [liftAt, add_sub_cancel_left]
   exact at_liftM τ ξ _
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `piInf_cA hCM τ z`.
+-/
 theorem map_cA_map (hCM : IsCMExt F E σ) (τ : EmbOver E w) (A : Matrix (Fin n) (Fin n) (AE F E)) :
     (A.map (cA σ)).map (piInf τ) = (A.map (piInf τ)).map star := by
   rw [Matrix.map_map, Matrix.map_map]
@@ -199,6 +261,19 @@ theorem map_cA_map (hCM : IsCMExt F E σ) (τ : EmbOver E w) (A : Matrix (Fin n)
   funext z
   exact piInf_cA hCM τ z
 
+/- English proof (translation)
+Use `hCM.1` as an intermediate fact. Take `⟨ξ, hξ⟩` from `exists_moved hCM`. Establish `hξ' : ∀ w, ((τ w).1 ξ).im ≠ 0` using `fun w => im_ne_zero hCM hξ (τ w).1`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `⟨liftAt τ w ξ, continuous_const.add ((continuous_liftM τ ξ).comp ((continuous_single w).comp (continuous_id.sub continuous_const))), ?_, fun G H => ?_, at_liftAt ξ, fun G => by rw [liftAt_map hξ', if_pos rfl], fun G w' e => by rw [liftAt_map hξ', if_neg e], fun G hG => ?_⟩` and prove the remaining obligations.
+
+Use `eq_of_at hCM τ (at_liftAt ξ 1) fun w' => ?_` and prove the remaining obligations. Rewrite using `[liftAt_map hξ', ite_self, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `(eq_of_at hCM τ ?_ fun w' => ?_).symm` and prove the remaining obligations. Establish `e : liftAt τ w ξ G * liftAt τ w ξ H - liftAt τ w ξ (G * H) = (liftAt τ w ξ G - 1) * liftAt τ w ξ H + (liftAt τ w ξ H - 1) - (liftAt τ w ξ (G * H) - 1)` using `by noncomm_ring`. Rewrite using `[e]`.
+
+Conclude with `at_sub (at_add (at_mul_right (at_liftAt ξ G) _) (at_liftAt ξ H)) (at_liftAt ξ _)`. Apply the tactic sequence `rw [Matrix.map_mul, liftAt_map hξ', liftAt_map hξ', liftAt_map hξ'] split_ifs <;> simp`. Use `set f := liftAt τ w ξ G with hf`. Establish `hfat : At (evI F) (f - 1)` using `at_liftAt ξ G`. Use `eq_of_at hCM τ ?_ fun w' => ?_` and prove the remaining obligations.
+
+Establish `e : fᵀ * incM F J * f.map (cA σ) - incM F J = (f - 1)ᵀ * incM F J * f.map (cA σ) + incM F J * (f - 1).map (cA σ)`. Establish `e1 : (f - 1).map (cA σ) = f.map (cA σ) - 1`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e1, Matrix.transpose_sub, Matrix.transpose_one, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `at_add (at_mul_right (at_mul_right (at_transpose hfat) _) _) (at_mul_left (at_map_cA σ hfat) _)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_cA_map hCM, Matrix.transpose_map, hf, liftAt_map hξ', incM_map] split_ifs with e`. Substitute `e` using the available equality. Rewrite `hG` using `[herm, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Conclude with `smul_right_injective _ Complex.I_ne_zero hG`. Rewrite using `[Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (by simp) (by simp), Matrix.mul_one]`.
+-/
 theorem exists_lift (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (w : InfinitePlace F)
     (J : Matrix (Fin n) (Fin n) E) : ∃ L : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) (AE F E), Continuous L ∧ L 1 = 1 ∧
       (∀ G H, L (G * H) = L G * L H) ∧ (∀ G, At (evI F) (L G - 1)) ∧ (∀ G, (L G).map (piInf (τ w)) = G) ∧
@@ -239,6 +314,13 @@ theorem exists_lift (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOve
         exact smul_right_injective _ Complex.I_ne_zero hG
       · rw [Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (by simp) (by simp), Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨L, hc, h1, hm, hat, hw, hw', hu⟩` from `exists_lift hCM τ w J`. Take `⟨hF, C', hC'⟩` from `hC`. Establish `hL : C' * C = 1` using `frame_inv hF hC'`. Use `set f : ℝ → Matrix (Fin n) (Fin n) (AE F E) := fun t => L (C * NormedSpace.exp (t • X) * C') with hf`. Establish `hfadd : ∀ s t, f (s + t) = f s * f t` using `fun s t => by simp only [hf]; rw [conj_add hL, hm]`.
+
+Establish `hf0 : f 0 = 1` using `by simp only [hf]; rw [conj_zero hC', h1]`. Establish `hfc : Continuous f` using `hc.comp ((continuous_const.matrix_mul (continuous_exp_smul X)).matrix_mul continuous_const)`. Set `g : ℝ → UA σ J` to `fun t => ⟨⟨f t, f (-t), by rw [← hfadd, add_neg_cancel, hf0], by rw [← hfadd, neg_add_cancel, hf0]⟩, hu _ (conj_unitary hF hC' hX t)⟩`. Set `γ : Multiplicative ℝ →* UA σ J` to `{ toFun := fun t => g (Multiplicative.toAdd t) map_one' := Subtype.ext (Units.ext hf0) map_mul' := fun x y => Subtype.ext (Units.ext (hfadd _ _)) }`. Use `⟨γ, ⟨?_, fun t => ⟨hat _, hw' _⟩⟩, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hu : Continuous fun t : Multiplicative ℝ => ((g (Multiplicative.toAdd t)).1 : GL (Fin n) (AE F E))` using `Units.continuous_iff.2 ⟨hfc.comp continuous_toAdd, (hfc.comp continuous_neg).comp continuous_toAdd⟩`. Conclude with `hu.subtype_mk _`. Express the relevant statement in the definitionally equal form `(f t).map (piInf (τ w)) * C = _`. Rewrite using `[hf, hw, Matrix.mul_assoc, hL, Matrix.mul_one]`.
+-/
 theorem exists_lineAt (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C) {X : Mat R S} (hX : X ∈ upq R S) :
     ∃ γ ∈ LinesAt σ J τ w, IsGenAt (τ w) C γ X := by
   obtain ⟨L, hc, h1, hm, hat, hw, hw', hu⟩ := exists_lift hCM τ w J
@@ -261,6 +343,11 @@ theorem exists_lineAt (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C) {X
   · change (f t).map (piInf (τ w)) * C = _
     rw [hf, hw, Matrix.mul_assoc, hL, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `key : ∀ X ∈ upq R S, a X = b X` using `fun X hX => by`. Take `⟨γ, hγ, h⟩` from `exists_lineAt hCM hC hX`. Conclude with `LinearMap.ext fun f => Subtype.ext ((ha γ hγ X h f).unique (hb γ hγ X h f))`. Use `LinearMap.ext fun Z => ?_` and prove the remaining obligations. Take `⟨X, hX, Y, hY, rfl⟩` from `exists_upq_add Z`.
+
+Rewrite using `[map_add, map_add, map_smul, map_smul, key X hX, key Y hY]`.
+-/
 theorem IsRightAct.unique (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C) {a b : Mat R S →ₗ[ℂ] Module.End ℂ T}
     (ha : IsRightAct τ w C T a) (hb : IsRightAct τ w C T b) : a = b := by
   have key : ∀ X ∈ upq R S, a X = b X := fun X hX => by
@@ -270,6 +357,21 @@ theorem IsRightAct.unique (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C
   obtain ⟨X, hX, Y, hY, rfl⟩ := exists_upq_add Z
   rw [map_add, map_add, map_smul, map_smul, key X hX, key Y hY]
 
+/- English proof (translation)
+Establish `hker : ∀ Z v, φ v = 0 → φ (M.act Z v) = 0` using `fun Z v hv => by`. Establish `key : ∀ X ∈ upq R S, φ (M.act X v) = 0` using `fun X hX => by`. Take `⟨γ, hγ, h⟩` from `exists_lineAt hCM hC hX`. Use `(hφ γ hγ X h v).unique fun g => ?_` and prove the remaining obligations. Rewrite using `[hv]`.
+
+Conclude with `hasDerivAt_const _ _`. Take `⟨X, hX, Y, hY, rfl⟩` from `exists_upq_add Z`. Rewrite using `[map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, key X hX, key Y hY, smul_zero, add_zero]`. Establish `hs` using `φ.surjective_rangeRestrict`. Take `⟨s, hs'⟩` from `φ.rangeRestrict.exists_rightInverse_of_surjective φ.range_rangeRestrict`.
+
+Set `act : Mat R S →ₗ[ℂ] Module.End ℂ (LinearMap.range φ)` to `{ toFun := fun X => φ.rangeRestrict ∘ₗ M.act X ∘ₗ s map_add' := fun X Y => by rw [map_add, LinearMap.add_comp, LinearMap.comp_add] map_smul' := fun c X => by rw [map_smul, LinearMap.smul_comp, LinearMap.comp_smul]; rfl }`. Establish `heq : ∀ X v, act X (φ.rangeRestrict v) = φ.rangeRestrict (M.act X v)` using `fun X v => by`. Establish `h0 : φ (s (φ.rangeRestrict v) - v) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun hs' (φ.rangeRestrict v))`.
+
+Establish `h1` using `hker X _ h0`. Rewrite `h1` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `Subtype.ext h1`. Use `⟨act, ⟨hC, fun γ hγ X hX f => ?_, fun X Y => LinearMap.ext fun f => ?_, fun f => ?_, fun f => ?_⟩, heq⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals obtain ⟨v, rfl⟩ := hs f`.
+
+Rewrite using `[heq]`. Conclude with `hφ γ hγ X hX v`. Rewrite using `[heq, M.lie X Y]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, heq, map_sub]`. Take `⟨W, hW, hv, hK⟩` from `M.kfin v`.
+
+Use `⟨W.map φ.rangeRestrict, inferInstance, Submodule.mem_map_of_mem hv, ?_⟩` and prove the remaining obligations. Introduce and unpack `X hX _ ⟨y, hy, rfl⟩`. Rewrite using `[heq]`. Conclude with `Submodule.mem_map_of_mem (hK X hX y hy)`. Establish `: (⨆ μ, wtSub M.act μ) ≤ (⨆ μ, wtSub act μ).comap φ.rangeRestrict` using `iSup_le fun μ y hy => Submodule.mem_iSup_of_mem μ (map_mem_wtSub heq hy)`.
+
+Conclude with `this (M.wts v)`.
+-/
 theorem exists_isGKAt_range (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C) (M : GKMod R S)
     (φ : M.V →ₗ[ℂ] (UA σ J → ℂ))
     (hφ : ∀ γ ∈ LinesAt σ J τ w, ∀ X, IsGenAt (τ w) C γ X → ∀ v, HasRDer γ (φ v) (φ (M.act X v))) :
@@ -307,6 +409,9 @@ theorem exists_isGKAt_range (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w))
       iSup_le fun μ y hy => Submodule.mem_iSup_of_mem μ (map_mem_wtSub heq hy)
     exact this (M.wts v)
 
+/- English proof (translation)
+Take `⟨act, h, e⟩` from `exists_isGKAt_range hCM hC M φ hφ`. Conclude with `genBy_iff_hw.2 ⟨act, h, genSub_hw_of_surjective φ.surjective_rangeRestrict e hΛ⟩`.
+-/
 theorem genBy_range (hCM : IsCMExt F E σ) (hC : IsFrame (herm J (τ w)) C) (M : GKMod R S) (φ : M.V →ₗ[ℂ] (UA σ J → ℂ))
     (hφ : ∀ γ ∈ LinesAt σ J τ w, ∀ X, IsGenAt (τ w) C γ X → ∀ v, HasRDer γ (φ v) (φ (M.act X v))) {Λ : Ix R S → ℚ}
     (hΛ : genSub M.act (hwSub M.act Λ) = ⊤) : GenBy τ w C (LinearMap.range φ) Λ := by
@@ -334,15 +439,24 @@ section Entries
 
 variable {a a' p q i j : ℕ} (κ : ℤ)
 
+/- English proof (translation)
+Establish `h1` using `congrArg (Nat.cast : ℕ → ℚ) hR`. Establish `h2` using `congrArg (Nat.cast : ℕ → ℚ) hS`. Move the coercions through the operations in `at h1 h2`. Rewrite using `[cPair, c₁]`. Take the linear combination `(h1 - h2) / 2`.
+-/
 theorem cPair_eq_c₁ (hR : R + (p + q) + (i + j) = a + a') (hS : S + (i + j) = p + q) : cPair R S = c₁ a a' p q := by
   have h1 := congrArg (Nat.cast : ℕ → ℚ) hR
   have h2 := congrArg (Nat.cast : ℕ → ℚ) hS
   push_cast at h1 h2
   rw [cPair, c₁]; linear_combination (h1 - h2) / 2
 
+/- English proof (translation)
+Rewrite using `[cPair, c₂, Nat.sub_sub, Nat.cast_sub ha, Nat.cast_sub hi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cPair_eq_c₂ (hi : i ≤ p) (ha : p + i ≤ a) : cPair (a - p - i) (p - i) = c₂ a p := by
   rw [cPair, c₂, Nat.sub_sub, Nat.cast_sub ha, Nat.cast_sub hi]; push_cast; ring
 
+/- English proof (translation)
+Establish `h1 : ((a : ℚ) + a') < κ` using `by exact_mod_cast hκ`. Establish `h2 : 2 * ((p : ℚ) + q) ≤ a + a'` using `by exact_mod_cast hy`. Establish `h3 : (0 : ℚ) ≤ p + q` using `by positivity`. Apply the tactic sequence `constructor <;> simp only [x₁, y₁, x₂, y₂, c₁] <;> linarith`.
+-/
 theorem x₂_lt_x₁ (hκ : ((a + a' : ℕ) : ℤ) < κ) (hy : 2 * (p + q) ≤ a + a') :
     x₂ a p < x₁ a a' p q κ ∧ y₂ a p < y₁ a a' p q κ := by
   have h1 : ((a : ℚ) + a') < κ := by exact_mod_cast hκ
@@ -352,11 +466,17 @@ theorem x₂_lt_x₁ (hκ : ((a + a' : ℕ) : ℤ) < κ) (hy : 2 * (p + q) ≤ a
 
 end Entries
 
+/- English proof (translation)
+Simplify using `[lam, cPair, List.ofFn_succ]`. Evaluate the numerical expressions.
+-/
 example : (List.ofFn fun k : Fin 5 => laC 5 1 4 1 0 8 (.inl k)) = [3, 3, 3, 1, 1] ∧ laC 5 1 4 1 0 8 (.inr 0) = 5 := by
   simp [lam, cPair, List.ofFn_succ]; norm_num
 
 def stdWt (c : Ix R S) : Ix R S → ℚ := fun d => if d = c then 1 else 0
 
+/- English proof (translation)
+The claim follows from `mem_wtSub.2 fun d => by ext e by_cases h : d = c <;> simp [Eab, stdWt, h, Matrix.single_apply, Pi.single_apply, eq_comm]`.
+-/
 theorem single_mem_wtSub (c : Ix R S) :
     Pi.single c (1 : ℂ) ∈ wtSub (Matrix.toLin' : Mat R S ≃ₗ[ℂ] _).toLinearMap (stdWt c) := mem_wtSub.2 fun d => by
   ext e
@@ -373,6 +493,13 @@ abbrev stdMod : GKMod R S where
     rw [pi_eq_sum_univ' v]
     exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem _ (single_mem_wtSub c))
 
+/- English proof (translation)
+Establish `h0 : Pi.single (.inl 0) (1 : ℂ) ∈ hwSub (stdMod (R + 1) S).act (stdWt (.inl 0))` using `mem_hwSub.2 ⟨mem_wtSub.1 (single_mem_wtSub _), fun b c hbc => by`. Establish `: c ≠ .inl 0`. Introduce and unpack `rfl`. Apply the tactic sequence `cases b <;> simp [posC] at hbc`. Use extensionality with `e`.
+
+Simplify using `[Eab, Matrix.single_apply, this]⟩`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Rewrite using `[pi_eq_sum_univ' v]`. Use `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `act_mem_genSub _ _ (Eab c (.inl 0)) (subset_genSub (stdMod (R + 1) S).act _ h0)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `e`. Simplify using `[Eab, Matrix.single_apply, Pi.single_apply, eq_comm]`.
+-/
 theorem stdMod_gen : genSub (stdMod (R + 1) S).act (hwSub (stdMod (R + 1) S).act (stdWt (.inl 0))) = ⊤ := by
   have h0 : Pi.single (.inl 0) (1 : ℂ) ∈ hwSub (stdMod (R + 1) S).act (stdWt (.inl 0)) :=
     mem_hwSub.2 ⟨mem_wtSub.1 (single_mem_wtSub _), fun b c hbc => by
@@ -392,9 +519,15 @@ theorem stdMod_gen : genSub (stdMod (R + 1) S).act (hwSub (stdMod (R + 1) S).act
 def coef (τ : EmbOver E w) (C : Matrix (Fin n) (Ix R S) ℂ) (i : Fin n) : (Ix R S → ℂ) →ₗ[ℂ] (UA σ J → ℂ) :=
   LinearMap.pi fun g => LinearMap.proj i ∘ₗ Matrix.toLin' (cmp τ g * C)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coef_apply (τ : EmbOver E w) (i : Fin n) (v : Ix R S → ℂ) (g : UA σ J) :
     coef τ C i v g = ((cmp τ g * C) *ᵥ v) i := rfl
 
+/- English proof (translation)
+Introduce `g` and use `by letI : NormedRing (Mat R S) := Matrix.linftyOpNormedRing letI : NormedAlgebra ℝ (Mat R S) := Matrix.linftyOpNormedAlgebra let l : Mat R S →ₗ[ℝ] ℂ := { toFun := fun A => ((cmp τ g * C) *ᵥ (A *ᵥ v)) i map_add' := fun A B => by simp [Matrix.add_mulVec, Matrix.mulVec_add] map_smul …`.
+-/
 theorem hasRDer_coef (τ : EmbOver E w) (i : Fin n) {γ : Multiplicative ℝ →* UA σ J} {X : Mat R S} (hX : IsGenAt τ C γ X)
     (v : Ix R S → ℂ) : HasRDer γ (coef τ C i v) (coef τ C i (X *ᵥ v)) := fun g => by
   letI : NormedRing (Mat R S) := Matrix.linftyOpNormedRing
@@ -409,6 +542,11 @@ theorem hasRDer_coef (τ : EmbOver E w) (i : Fin n) {γ : Multiplicative ℝ →
   change ((cmp τ (g * _) * C) *ᵥ v) i = ((cmp τ g * C) *ᵥ (NormedSpace.exp (t • X) *ᵥ v)) i
   rw [cmp_mul, Matrix.mul_assoc, hX t, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `genBy_range (J := Y.J) hCM hC.1 (stdMod _ _) (coef (τ w) C i) (fun γ _ X hX v => hasRDer_coef _ i hX v) stdMod_gen`. Use `⟨⟨hC, ?_, h.imp fun _ h => h.1⟩, h⟩` and prove the remaining obligations. Introduce and unpack `k - _ ⟨v, rfl⟩`. Take `⟨C', hC'⟩` from `hC.1.2`. Use `⟨(C' * cmp (τ w) k * C) *ᵥ v, funext fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[rT_apply, coef_apply, coef_apply, cmp_mul, Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc C C', hC', Matrix.one_mul]`.
+-/
 theorem stable_genBy_coef (hCM : IsCMExt F E σ) {Y : Spc F E n} {C : Matrix (Fin n) (Ix (R + 1) S) ℂ}
     (hC : IsAdapted τ w Y C) (i : Fin n) : Stable τ w Y C (LinearMap.range (coef (σ := σ) (τ w) C i)) ∧
       GenBy τ w C (LinearMap.range (coef (σ := σ) (J := Y.J) (τ w) C i)) (stdWt (.inl 0)) := by
@@ -428,6 +566,11 @@ def hypPlane : Spc F E 2 := ⟨!![0, 1; -1, 0], ⊤, fun _ => !![0, -2 * Complex
 def hypFrame : Matrix (Fin 2) (Ix 1 1) ℂ :=
   Matrix.of fun r => Sum.elim (fun _ => ![1, Complex.I / 2] r) fun _ => ![1, -Complex.I / 2] r
 
+/- English proof (translation)
+Use `⟨⟨?_, Matrix.of (Sum.elim (fun _ => ![1 / 2, -Complex.I]) fun _ => ![1 / 2, Complex.I]), ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (b | b) (c | c) <;> rw [Subsingleton.elim b 0, Subsingleton.elim c 0] <;>`. Apply the tactic sequence `simp [herm, hypPlane, hypFrame, Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fin.sum_univ_two, map_ofNat, Complex.ext_iff] <;> norm_num`. Apply the tactic sequence `ext r s fin_cases r <;> fin_cases s <;> simp [hypFrame, Matrix.mul_apply, Complex.ext_iff] <;> norm_num`. Apply the tactic sequence `ext r (c | c) <;> rw [Subsingleton.elim c 0] <;> fin_cases r <;>`.
+
+Apply the tactic sequence `simp [hypPlane, hypFrame, Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fin.sum_univ_two, Complex.ext_iff] <;> norm_num`.
+-/
 theorem isAdapted_hyp : IsAdapted τ w (hypPlane F E) hypFrame := by
   refine ⟨⟨?_, Matrix.of (Sum.elim (fun _ => ![1 / 2, -Complex.I]) fun _ => ![1 / 2, Complex.I]), ?_⟩, ?_⟩
   · ext (b | b) (c | c) <;> rw [Subsingleton.elim b 0, Subsingleton.elim c 0] <;>
@@ -437,6 +580,11 @@ theorem isAdapted_hyp : IsAdapted τ w (hypPlane F E) hypFrame := by
   · ext r (c | c) <;> rw [Subsingleton.elim c 0] <;> fin_cases r <;>
       simp [hypPlane, hypFrame, Jm, Formalism.UG.Jpq, Matrix.mul_apply, Fin.sum_univ_two, Complex.ext_iff] <;> norm_num
 
+/- English proof (translation)
+Establish `h` using `stable_genBy_coef (R := 0) (τ := τ) (w := w) hCM isAdapted_hyp 0`. Use `⟨_, h.1, h.2, fun act ha h0 => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, e⟩` from `exists_isGKAt_range (J := (hypPlane F E).J) hCM (isAdapted_hyp (τ := τ) (w := w)).1 (stdMod 1 1) (coef (τ w) hypFrame 0) fun γ _ X hX v => hasRDer_coef _ 0 hX v`. Establish `e1` using `e (Eab (.inr 0) (.inl 0)) (Pi.single (.inl 0) 1)`. Rewrite `e1` using `[← IsRightAct.unique hCM hb.frame ha hb.der, h0]`.
+
+Establish `e2 : (0 : ℂ) = ((cmp (τ w) (1 : UA σ (hypPlane F E).J) * hypFrame) *ᵥ (Eab (.inr 0) (.inl 0) *ᵥ Pi.single (.inl 0) 1)) 0` using `congrFun (congrArg Subtype.val e1) 1`. Rewrite `e2` using `[cmp_one, Matrix.one_mul]`. Simplify using `[Eab, hypFrame, Matrix.mulVec, dotProduct, Matrix.single_apply] at e2`.
+-/
 theorem exists_stable_hyp (hCM : IsCMExt F E σ) : ∃ T : Submodule ℂ (UA σ (hypPlane F E).J → ℂ),
     Stable τ w (hypPlane F E) hypFrame T ∧ GenBy τ w hypFrame T (stdWt (.inl 0)) ∧
       ∀ act, IsRightAct τ w hypFrame T act → act (Eab (.inr 0) (.inl 0)) ≠ 0 := by
@@ -451,6 +599,11 @@ theorem exists_stable_hyp (hCM : IsCMExt F E σ) : ∃ T : Submodule ℂ (UA σ 
   rw [cmp_one, Matrix.one_mul] at e2
   simp [Eab, hypFrame, Matrix.mulVec, dotProduct, Matrix.single_apply] at e2
 
+/- English proof (translation)
+Use `haveI : IsCyclotomicExtension {3} ℚ (CyclotomicField 3 ℚ) := CyclotomicField.isCyclotomicExtension 3 ℚ`. Use `haveI : IsCMField (CyclotomicField 3 ℚ) := IsCyclotomicExtension.Rat.isCMField _ (S := {3}) ⟨3, rfl, by norm_num⟩`. Establish `hCM : IsCMExt (maximalRealSubfield (CyclotomicField 3 ℚ)) (CyclotomicField 3 ℚ) (IsCMField.complexConj (CyclotomicField 3 ℚ)).toAlgHom` using `⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, fun τ x => IsCMField.complexEmbedding_complexConj _ τ x⟩`. Take `⟨w⟩ : Nonempty (InfinitePlace (maximalRealSubfield (CyclotomicField 3 ℚ)))` from `inferInstance`. Take `⟨T, hT⟩` from `exists_stable_hyp (τ := fun _ => Classical.arbitrary _) (w := w) hCM`.
+
+Conclude with `⟨_, _, _, _, _, _, _, _, _, w, T, hCM, hT⟩`.
+-/
 example : ∃ (F E : Type) (_ : Field F) (_ : NumberField F) (_ : Field E) (_ : NumberField E) (_ : Algebra F E)
     (σ : E →ₐ[F] E) (τ : ∀ w : InfinitePlace F, EmbOver E w) (w : InfinitePlace F)
     (T : Submodule ℂ (UA σ (hypPlane F E).J → ℂ)), IsCMExt F E σ ∧ Stable τ w (hypPlane F E) hypFrame T ∧

@@ -13,12 +13,36 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Introduce `L hL hq`. Rewrite using `[eq_top_iff, ← h L hL hq]`. Conclude with `Submodule.span_mono fun x hx ↦ ⟨hx.1, hx.2.trans hle⟩`.
+-/
 theorem shortSpan_mono (S : HSpace E) (q : ℕ) {ρ ρ' : ℝ} (h : ShortSpan S q ρ) (hle : ρ ≤ ρ') :
     ShortSpan S q ρ' := by
   intro L hL hq
   rw [eq_top_iff, ← h L hL hq]
   exact Submodule.span_mono fun x hx ↦ ⟨hx.1, hx.2.trans hle⟩
 
+/- English proof (translation)
+Introduce `L hL hLT`. Take `⟨r, hr, hspan⟩` from `LT.span_trR_short S hσ hsig hpos q hq L hL hLT`. Rewrite using `[eq_top_iff, ← hspan]`. Use `Submodule.span_mono fun x hx ↦ ⟨hx.1, ?_⟩` and prove the remaining obligations. Use `set d : ℝ := (finrank ℚ E : ℝ) with hd`.
+
+Use `set X : ℝ := (q : ℝ) * ((discr E).natAbs : ℝ) ^ 2 with hXdef`. Establish `hX : 0 < X`. Establish `: (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Check the signs of the components of the expression. Establish `hd1 : (1 : ℝ) ≤ d` using `by rw [hd]; exact_mod_cast Module.finrank_pos`.
+
+Use `set Y : ℝ := X ^ (1 / d) with hYdef`. Establish `hY : 0 < Y` using `Real.rpow_pos_of_pos hX _`. Establish `hneg : X ^ (-(1 / d)) = Y⁻¹` using `Real.rpow_neg hX.le _`. Use `set lam := Real.sqrt (d * X ^ (-(1 / d))) with hlam`. Establish `hlam2 : lam ^ 2 = d / Y`.
+
+Rewrite using `[hlam, Real.sq_sqrt (by positivity), hneg, div_eq_mul_inv]`. Establish `hlam0 : 0 < lam` using `Real.sqrt_pos.2 (by positivity)`. Establish `hmean : meanAbs (S.hT x x) = LT.trR (S.hT x x) / d`. Unfold `meanAbs LT.trR`. Rewrite using `[Complex.re_sum]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun σ _ ↦ LT.norm_eq_re S hσ hsig hpos σ x`. Rewrite using `[hmean, div_le_iff₀ (by linarith)]`. Use `hx.2.trans ?_` and prove the remaining obligations. Use `set t : ℝ := (r : ℝ) / 2 / lam with ht`.
+
+Establish `ht0 : 0 ≤ t` using `by positivity`. Establish `htl : t * lam = (r : ℝ) / 2` using `by rw [ht]; field_simp`. Establish `ht2 : t ^ 2 * (d / Y) = (r : ℝ) ^ 2 / 4`. Rewrite using `[← hlam2, ← mul_pow, htl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr' : (r : ℝ) ≤ 2 * d * S.rank`. Use `(Nat.cast_le (α := ℝ)).2 hr` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr2 : (r : ℝ) ^ 2 ≤ 4 * d ^ 2 * (S.rank : ℝ) ^ 2`.
+
+Establish `h0 : (0 : ℝ) ≤ r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht2' : t ^ 2 ≤ d * (S.rank : ℝ) ^ 2 * Y`. Establish `e1 : t ^ 2 = (r : ℝ) ^ 2 * Y / (4 * d)`. Clear denominators, using `at ht2 ⊢` for the nonvanishing conditions.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e1, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsq : (3 * (t + 1)) ^ 2 ≤ 18 * t ^ 2 + 18` using `by nlinarith [sq_nonneg (t - 1)]`. Establish `hn : (0 : ℝ) ≤ (S.rank : ℝ) ^ 2 * Y` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem shortSpan_of_pos (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (q : ℕ) (hq : q ≠ 0) :
     ShortSpan S q (18 * (S.rank : ℝ) ^ 2 *
@@ -78,6 +102,11 @@ section Record
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h2v : 2 * D.host.v = D.host.rdE` using `by show 2 * (D.host.rdE / 2) = D.host.rdE`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2v]`. Unfold `Formalism.BasicNotions.Host.rdE`. Establish `habs : |(discr D.host.E : ℝ)| = ((discr D.host.E).natAbs : ℝ)`.
+
+Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Rewrite using `[habs, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem disc_rpow (D : D7) :
     (((discr D.host.E).natAbs : ℝ) ^ 2) ^ (1 / (finrank ℚ D.host.E : ℝ)) = (2 * D.host.v) ^ 2 := by
   have h2v : 2 * D.host.v = D.host.rdE := by
@@ -93,6 +122,11 @@ theorem disc_rpow (D : D7) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.flipTwoThree.b_finrank_host]`. Use `push_cast`. Establish `hf : (2 * D.R.f : ℕ) ≠ 0`. Use `one_le_f D` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `Real.pow_rpow_inv_natCast (x := (Tu D u : ℝ)) (by positivity) hf` as an intermediate fact. Rewrite using `[one_div]`. Move the coercions through the operations in `at this`. Conclude with `this`.
+-/
 theorem T_rpow (D : D7) (u : D.what₂.Word) :
     (((Tu D u ^ (2 * D.R.f) : ℕ) : ℝ)) ^ (1 / (finrank ℚ D.host.E : ℝ)) = (Tu D u : ℝ) := by
   rw [Formalism.MainNotions.flipTwoThree.b_finrank_host]
@@ -105,6 +139,15 @@ theorem T_rpow (D : D7) (u : D.what₂.Word) :
   push_cast at this
   exact this
 
+/- English proof (translation)
+Establish `hv : 1 ≤ D.host.v` using `one_le_hostv D`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast one_le_f D`. Establish `hT : (1 : ℝ) ≤ (Tu D u : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.one_lt.le`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Unfold `msRho radiusSq`.
+
+Establish `hn2 : (1 : ℝ) ≤ (n : ℝ) ^ 2` using `one_le_pow₀ hn1`. Establish `hv2 : (1 : ℝ) ≤ D.host.v ^ 2` using `one_le_pow₀ hv`. Establish `hT2 : (Tu D u : ℝ) ≤ (Tu D u : ℝ) ^ 2` using `by nlinarith`. Establish `hA : 0 ≤ (n : ℝ) ^ 2 * D.host.v ^ 2` using `by positivity`. Establish `h1 : 18 * (n : ℝ) ^ 2 * (q * (2 * D.host.v) ^ 2) ≤ 72 * ((n : ℝ) ^ 2 * D.host.v ^ 2) * (Tu D u : ℝ) ^ 2`.
+
+Establish `: q ≤ (Tu D u : ℝ) ^ 2` using `hq.trans hT2`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (18 : ℝ) ≤ 18 * ((n : ℝ) ^ 2 * D.host.v ^ 2) * (Tu D u : ℝ) ^ 2`. Establish `: (1 : ℝ) ≤ (n : ℝ) ^ 2 * D.host.v ^ 2` using `one_le_mul_of_one_le_of_one_le hn2 hv2`. Establish `: (1 : ℝ) ≤ (Tu D u : ℝ) ^ 2` using `one_le_pow₀ hT`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 90 * ((n : ℝ) ^ 2 * D.host.v ^ 2) * (Tu D u : ℝ) ^ 2 ≤ 90 * D.R.f * (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2`. Establish `: 0 ≤ (n : ℝ) ^ 2 * D.host.v ^ 2 * (Tu D u : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rho_le (D : D7) (u : D.what₂.Word) (n : ℕ) (hn : 1 ≤ n) (q : ℝ) (hq0 : 0 ≤ q) (hq : q ≤ (Tu D u : ℝ)) :
     18 * (n : ℝ) ^ 2 * (q * (2 * D.host.v) ^ 2) + 18 ≤ msRho D u 90 n := by
   have hv : 1 ≤ D.host.v := one_le_hostv D
@@ -128,6 +171,17 @@ theorem rho_le (D : D7) (u : D.what₂.Word) (n : ℕ) (hn : 1 ≤ n) (q : ℝ) 
     nlinarith
   linarith
 
+/- English proof (translation)
+Establish `hT0 : Tu D u ≠ 0` using `(D.mem u).A.T_prime.ne_zero`. Establish `hT1 : (1 : ℝ) ≤ (Tu D u : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.one_lt.le`. Use `⟨fun i hi ↦ ?_, ?_⟩` and prove the remaining obligations. Use `shortFrame_of_span _ _ _ (shortSpan_mono _ _ (shortSpan_of_pos (D.sp.X i) (host_star D) (D.sp.X_sig i) (D7.X_posDef D i hi) (Tu D u ^ (2 * D.R.f)) (pow_ne_zero _ hT0)) ?_)` and prove the remaining obligations. Establish `hn : 1 ≤ D.R.N i`.
+
+Use `D.R.k_ge` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers. Rewrite using `[D.sp.X_rank i hi, Real.mul_rpow (by positivity) (by positivity), T_rpow, disc_rpow]`. Conclude with `rho_le D u _ hn _ (by positivity) le_rfl`.
+
+Use `shortFrame_of_span _ _ _ (shortSpan_mono _ _ (shortSpan_of_pos D.sp.X' (host_star D) D.sp.X'_sig (D7.X'_posDef D) 1 one_ne_zero) ?_)` and prove the remaining obligations. Establish `hN : D.R.N D.R.m - 1 = D.R.rankX'`. Use `Formalism.BasicNotions.factXm D.R` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn : 1 ≤ D.R.N D.R.m - 1`.
+
+Rewrite using `[hN]`. Unfold `Ranks.rankX' Ranks.r`. Use `D.R.k_ge` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[D.sp.X'_rank, ← hN, Real.mul_rpow (by positivity) (by positivity), disc_rpow]`.
+
+Simplify using `only [Nat.cast_one, Real.one_rpow]`. Conclude with `rho_le D u _ hn 1 zero_le_one hT1`.
+-/
 theorem shortFrame_record (D : D7) (u : D.what₂.Word) :
     (∀ i ≤ D.R.m, ShortFrame (D.sp.X i) (Tu D u ^ (2 * D.R.f)) (msRho D u 90 (D.R.N i))) ∧
     ShortFrame D.sp.X' 1 (msRho D u 90 (D.R.N D.R.m - 1)) := by

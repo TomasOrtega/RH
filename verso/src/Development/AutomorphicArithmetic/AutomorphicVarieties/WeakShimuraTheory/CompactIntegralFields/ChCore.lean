@@ -12,6 +12,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `h1.trans_lt ?_` and prove the remaining obligations. Proceed by induction on `y using WithBot.recBotCoe with`. Consider the case `bot => simp`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`.
+
+Consider the case `top => exact absurd h2 (by norm_cast)`. Consider the case `coe y`. Establish `h3 : y + b ≤ c` using `by exact_mod_cast h2`. Conclude with `(by omega : y + a < N)` after adjusting the coercions.
+-/
 private theorem UpperTheory.V.Ws.ch_num {x y : WithBot ℕ∞} {a b c N : ℕ} (h1 : x ≤ y + (a : ℕ)) (h2 : y + (b : ℕ) ≤ (c : ℕ))
     (h : c + a < N + b) : x < N := by
   refine h1.trans_lt ?_
@@ -24,6 +29,21 @@ private theorem UpperTheory.V.Ws.ch_num {x y : WithBot ℕ∞} {a b c N : ℕ} (
       have h3 : y + b ≤ c := by exact_mod_cast h2
       exact_mod_cast (by omega : y + a < N)
 
+/- English proof (translation)
+Use `haveI := hS.char`. Set `φ : X.B →+* R` to `(f : X.A →+* R).comp (algebraMap X.B X.A)`. Establish `hφ : ∀ t : Λ, φ (algebraMap Λ X.B t) = algebraMap Λ R t` using `fun t => by show f (algebraMap X.B X.A _) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, AlgHom.commutes]`. Take `⟨ϖ, hϖ⟩` from `(IsPrincipalIdealRing.principal (maximalIdeal Λ)).1`.
+
+Establish `hm : ∀ q : Ideal R, algebraMap Λ R ϖ ∈ q → ∀ t ∈ maximalIdeal Λ, algebraMap Λ R t ∈ q` using `fun q hq t ht => by`. Rewrite `ht` using `[hϖ]`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Rewrite using `[map_mul]`. Conclude with `q.mul_mem_left _ hq`.
+
+Establish `hϖm : algebraMap Λ R ϖ ∈ maximalIdeal R` using `map_nonunit _ _ (show ϖ ∈ maximalIdeal Λ by rw [hϖ]; exact Ideal.mem_span_singleton_self ϖ)`. Set `A : {S // S ∈ redTypes} → Ideal R` to `fun S => redIdeal S.1 (X.P.map (f : X.A →+* R)).r`. Set `B : {t : Φ.ι × Fin 4 × Fin 4 // t.2.1 ≠ t.2.2} → Ideal R` to `fun t => J.map φ ⊔ Ideal.span {algebraMap Λ R ϖ} ⊔ Ideal.span ((fun s => φ (X.ψ t.1.1 t.1.2.1 s - X.ψ t.1.1 t.1.2.2 s)) '' U t.1.1)`. Use `haveI : Finite {S // S ∈ redTypes} := (List.finite_toSet redTypes).to_subtype`. Take `⟨p, hp, hIp, hdim, hϖp, hA, hBp⟩` from `Ch.nice _ hϖm N (by omega) A B (fun S => (red Φ l a hS d C hB c hc hg R _ hdef S.1 S.2).trans_lt (by exact_mod_cast hN1)) (fun t q hq hle hr => ch_num (fib Φ l a hS X c hc R f hdef q (Ch.irr hS.ok hc hdef.1 ((algebraMap (R ⧸ q) (FractionRing (R ⧸ q))).comp (Ideal.Quotient.mk q)) …`.
+
+Rewrite using `[hφ]`. Conclude with `hm q (hle (Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))) u hu)`. Use `fun s hs => hle (Ideal.mem_sup_right (Ideal.subset_span ⟨s, hs, rfl⟩))) hN2) _ hPQ.2.2`. Take `⟨K, _, _, _, j, hj, hj0⟩` from `Ch.curve l Λ R p hp hdim (hm p hϖp)`. Establish `hJp : ∀ b ∈ J, φ b ∈ p` using `fun b hb => hIp (Ideal.mem_sup_left (hP hb))`.
+
+Use `haveI : Q.IsPrime := hPQ.2.1.1.1`. Use `hp1 K (j.comp f) (fun b hb => hj0 _ ?_) (fun b hb => (hj _).2 (hJp b hb)) (fun v i i' hi => ?_) (Ch.irr hS.ok hc hdef.1 ((algebraMap (PowerSeries K) (FractionRing (PowerSeries K))).comp (j : R →+* PowerSeries K)) p (fun x hx => (hj x).1 ((map_eq_zero_iff _ (IsFractionRing.injecti …` and prove the remaining obligations. Use `show (f.comp (IsScalarTower.toAlgHom Λ X.B X.A)) b ∈ maximalIdeal R`. Rewrite using `[← res_eq_zero_iff Λ, res_map, res_eq_zero_iff]`. Conclude with `hb`.
+
+Assume the negation of the conclusion as `hn push Not at hn`. Use `hBp ⟨(v, i, i'), hi⟩ (sup_le (sup_le (Ideal.map_le_iff_le_comap.2 hJp) ((Ideal.span_singleton_le_iff_mem _).2 hϖp)) (Ideal.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `(hj _).1 ?_` and prove the remaining obligations. Use `show (j.comp f) (algebraMap X.B X.A (X.ψ v i s - X.ψ v i' s)) = 0`.
+
+Rewrite using `[map_sub, map_sub, X.ψ_map v i s (hU v s hs), X.ψ_map v i' s (hU v s hs), hn s hs, sub_self]`.
+-/
 private theorem UpperTheory.V.Ws.ch_core {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [CompactSpace Γ] [TotallyDisconnectedSpace Γ] {Φ : Fr O Γ} {l : ℕ} [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ]
     [IsDiscreteValuationRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [Finite (ResidueField Λ)] {a : O →+* Λ} (hS : Φ.Std l a)
@@ -93,6 +113,21 @@ private theorem UpperTheory.V.Ws.ch_core {O Γ : Type} [CommRing O] [Group Γ] [
     show (j.comp f) (algebraMap X.B X.A (X.ψ v i s - X.ψ v i' s)) = 0
     rw [map_sub, map_sub, X.ψ_map v i s (hU v s hs), X.ψ_map v i' s (hU v s hs), hn s hs, sub_self]
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ l _ c D T hF hD ι c' h X J hPM C hB hd x hx hg ⟨q₀, hq₀, hq₀x, hq₀J⟩ q hq hqx`. Use `haveI : Finite (ResidueField c'.O) := (UpperTheory.V.abelian₂.dvr_finite l c'.O).2.1`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsAlgClosure T.F Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsGalois T.F Ω := {}`.
+
+Use `haveI : CompactSpace (G T.F Ω) := inferInstanceAs (CompactSpace (Ω ≃ₐ[T.F] Ω))`. Use `haveI : TotallyDisconnectedSpace (G T.F Ω) := inferInstanceAs (TotallyDisconnectedSpace (Ω ≃ₐ[T.F] Ω))`. Establish `hS` using `(std hC D T hF ∅ c' h).1 (Finset.notMem_empty 0)`. Take `⟨R, _, _, _, f, hdef, hfl, hres⟩` from `cmplEx (T.fr ∅) l (inc h) hS X x hx`. Take `⟨a, b, π, e, hπ, hk, hab⟩` from `x1 hC D T hF hD c' h _ hx R _ hdef`.
+
+Take `⟨dv, hdv⟩` from `chDv D T`. Establish `hg' : Nat.card T.ι ≤ C` using `hB.card`. Establish `hdv' : 30 * (C + 1) ≤ dv`. Assume the negation of the conclusion as `hn`. Establish `h1 : dv * Nat.card T.ι ≤ 30 * (C + 1) * C` using `Nat.mul_le_mul (by omega) hg'`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd' : 30 * (C + 1) ≤ T.d` using `le_trans (Nat.le_mul_of_pos_right _ (by omega)) hd`. Take `⟨N, hN⟩ : ∃ N, N + 2 * Nat.card T.ι = 2 * T.d + 1` from `⟨2 * T.d + 1 - 2 * Nat.card T.ι, by omega⟩`. Establish `hker : RingHom.ker x = (maximalIdeal R).comap (f : X.A →+* R)`. Use extensionality with `z`.
+
+Rewrite using `[RingHom.mem_ker, ← hres]`. Conclude with `res_eq_zero_iff c'.O R (f z)`. Take `⟨P, hP, rfl⟩` from `Ch.flat_min _ hfl hq₀ (hker ▸ hq₀x)`. Take `⟨Q, hQ, rfl⟩` from `Ch.flat_min _ hfl hq (hker ▸ hqx)`. Rewrite `hq₀J`, the goal using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap]`.
+
+Establish `hch` using `Ch.chain c'.O (D := N + 1) π e hπ hk (by omega) hP hQ`. Use `clear hq hqx hQ`. Proceed by induction on `hch with`. Consider the case `refl => exact hq₀J`. Consider the case `tail _ hPQ ih`.
+
+Conclude with `ch_core hS X J T.U1 (fun v s hs => Ine_le_Dec _ hs.1) (dv := dv) hB (by omega) (by show _ + (2 + 4 * Nat.card T.ι) < _; omega) (fun v i j hij q h1 h2 h3 h4 => nn hC D T hF hD ι c' h X J hPM v i j hij q h1 h2 h3 h4 dv hdv) hPM.p1 hx hg f hdef hPQ ih`.
+-/
 theorem UpperTheory.V.Ws.ch :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (ι : PadicAlgCl l ≃+* ℂ) (c' : Coef l) (h : c.O ≤ c'.O) (X : Space (T.fr ∅) (inc h)) (J : Ideal X.B), T.PM ι X J → ∀ C : ℕ, (T.fr ∅).Bounds ((residue c'.O).comp (inc h)) T.d C → 30 * (C + 1) * (C + 1) ≤ T.d →
       ∀ x : X.A →ₐ[c'.O] ResidueField c'.O, (T.fr ∅).IsRes ((residue c'.O).comp (inc h)) (X.P.map (x : X.A →+* _)) → (T.fr ∅).Good ((residue c'.O).comp (inc h)) (X.P.map (x : X.A →+* _)) →

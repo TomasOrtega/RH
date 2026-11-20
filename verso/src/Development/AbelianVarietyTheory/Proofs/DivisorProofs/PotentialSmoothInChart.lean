@@ -6,6 +6,13 @@ open scoped ContDiff Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover (ψ.symm z)`. Establish `h2 : ContDiffAt ℝ ∞ (A.chart j ∘ ψ.symm) z` using `(((hψ j).2 z ⟨hz, hj⟩).contDiffAt (n := ∞)).restrict_scalars ℝ`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U (ψ.symm z))` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U _)`. Establish `hmem : (A.chart j ∘ ψ.symm) z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U (ψ.symm z)`. Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `P.mem_U _`. Establish `h1 : ContDiffAt ℝ ∞ (P.φ (ψ.symm z) ∘ (A.chart j).symm) ((A.chart j ∘ ψ.symm) z)` using `(hP.1 (ψ.symm z) j).contDiffAt (hopen.mem_nhds hmem)`. Use `(h1.comp z h2).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ y in 𝓝 z, ψ.symm y ∈ (A.chart j).source` using `(ψ.continuousAt_symm hz).eventually ((A.chart j).open_source.mem_nhds hj)`.
+
+Use `filter_upwards [hev] with y hy`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hy]`.
+-/
 theorem isPotential_contDiffAt_compatChart {e : ℕ} {X : Type} [TopologicalSpace X]
     (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P)
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (hψ : IsCompatChart A ψ)

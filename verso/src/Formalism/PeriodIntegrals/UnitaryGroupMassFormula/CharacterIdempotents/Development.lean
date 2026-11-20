@@ -21,6 +21,9 @@ def MulEq : Prop :=
     (Nonempty (V ≅ W) → charIdem V * charIdem W = charIdem W) ∧
     (IsEmpty (V ≅ W) → charIdem V * charIdem W = 0)
 
+/- English proof (translation)
+Introduce `G _ _ V W hV hW`. Use `⟨(hS G V V hV hV).1 ⟨Iso.refl V⟩, (hS G V W hV hW).2, ?_, hC G V, (hM G V W hV hW).2⟩` and prove the remaining obligations. Conclude with `(hM G V V hV hV).1 ⟨Iso.refl V⟩`.
+-/
 theorem charIdem_of (hC : Central) (hS : Scalar) (hM : MulEq) : PI.CharIdem.CharIdem := by
   intro G _ _ V W hV hW
   refine ⟨(hS G V V hV hV).1 ⟨Iso.refl V⟩, (hS G V W hV hW).2, ?_, hC G V, (hM G V W hV hW).2⟩

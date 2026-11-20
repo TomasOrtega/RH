@@ -4,6 +4,15 @@ open GlobalTheory.CompanionTheory.Ar.Num
 
 namespace PositivityTheory.Xgn.TestFactsBaseChange
 
+/- English proof (translation)
+Establish `h0 : f 0 = 0` using `by simpa using hs 0 0`. Establish `hn : ∀ x, f (-x) = -f x` using `fun x => by simpa using hs (-1) x`. Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, _, ⟨v, hv, rfl⟩, rfl⟩`.
+
+Use `show c • f v ∈ spanOver RC (f '' S)`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, _, ⟨e, he, rfl⟩, rfl⟩` from `hx`. Rewrite using `[hs, hg, smul_smul]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨_, RC.mul_mem hc (h a ha), _, ⟨e, he, rfl⟩, rfl⟩`. Consider the case `zero => rw [h0, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [hadd, smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [hn, smul_neg]`. Conclude with `neg_mem hx`. Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, _, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨c, hc, _, ⟨v, AddSubgroup.subset_closure ⟨1, R₁.one_mem, v, ⟨v, hv, hg v⟩, (one_smul _ _).symm⟩, rfl⟩, rfl⟩`.
+-/
 theorem span_span {o Ω C V W : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C]
     [Algebra Ω C] [AddCommGroup V] [Module Ω V] [AddCommGroup W] [Module C W]
     (R₁ : Subalgebra o Ω) (RC : Subalgebra o C) (h : ∀ a ∈ R₁, algebraMap Ω C a ∈ RC)
@@ -30,10 +39,16 @@ theorem span_span {o Ω C V W : Type} [CommRing o] [Field Ω] [Field C] [Algebra
     exact ⟨c, hc, _, ⟨v, AddSubgroup.subset_closure
       ⟨1, R₁.one_mem, v, ⟨v, hv, hg v⟩, (one_smul _ _).symm⟩, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[map_smul, algebraMap_smul]`.
+-/
 theorem bcMap_smul {Ω C : Type} [Field Ω] [Field C] [Algebra Ω C] (ι : Type) (a : Ω) (x : ι → Ω) :
     bcMap Ω C ι (a • x) = algebraMap Ω C a • bcMap Ω C ι x := by
   rw [map_smul, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `span_span R₁ RC h _ (map_add _) (bcMap_smul ι) _ (fun _ => rfl) S`.
+-/
 theorem span_one {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C]
     [Algebra Ω C] (R₁ : Subalgebra o Ω) (RC : Subalgebra o C)
     (h : ∀ a ∈ R₁, algebraMap Ω C a ∈ RC) (ι : Type) (S : Set (ι → Ω)) :
@@ -41,6 +56,9 @@ theorem span_one {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω
       spanOver RC (bcMap Ω C ι '' S) :=
   span_span R₁ RC h _ (map_add _) (bcMap_smul ι) _ (fun _ => rfl) S
 
+/- English proof (translation)
+The claim follows from `span_span R₁ RC h _ (fun _ _ => Prod.ext (map_add (bcMap Ω C ι) _ _) (map_add (bcMap Ω C κ) _ _)) (fun a _ => Prod.ext (bcMap_smul ι a _) (bcMap_smul κ a _)) _ (fun _ => rfl) S`.
+-/
 theorem span_two {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C]
     [Algebra Ω C] (R₁ : Subalgebra o Ω) (RC : Subalgebra o C)
     (h : ∀ a ∈ R₁, algebraMap Ω C a ∈ RC) (ι κ : Type) (S : Set ((ι → Ω) × (κ → Ω))) :
@@ -51,6 +69,9 @@ theorem span_two {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω
     (fun _ _ => Prod.ext (map_add (bcMap Ω C ι) _ _) (map_add (bcMap Ω C κ) _ _))
     (fun a _ => Prod.ext (bcMap_smul ι a _) (bcMap_smul κ a _)) _ (fun _ => rfl) S
 
+/- English proof (translation)
+Simplify using `only [LieLatticeData.bc, span_one R₁ RC h, span_two R₁ RC h]`.
+-/
 theorem bc_bc {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [Algebra o C]
     [Algebra Ω C] {F : Type} {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s)
     (R₁ : Subalgebra o Ω) (RC : Subalgebra o C) (h : ∀ a ∈ R₁, algebraMap Ω C a ∈ RC) :
@@ -59,6 +80,9 @@ theorem bc_bc {o Ω C : Type} [CommRing o] [Field Ω] [Field C] [Algebra o Ω] [
 
 end PositivityTheory.Xgn.TestFactsBaseChange
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ F _ _ n Sg r s D R R₁ hR p w χ φ H C _ _ _ _ RC hT`. Take `⟨h1, h2, h3, h4⟩` from `hT`. Rewrite using `[PositivityTheory.Xgn.TestFactsBaseChange.bc_bc D R₁ RC h4]`. Conclude with `H C RC ⟨h1, h2, h3, fun a ha => h4 a (hR ha)⟩`.
+-/
 theorem PositivityTheory.Xgn.test_facts_base_change : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {F : Type} [Zero F] [Fintype F] {n : ℕ} {Sg : Type} {r s : Sg → ℕ} (D : LieLatticeData Ω F n Sg r s) (R R₁ : Subalgebra o Ω), R ≤ R₁ → ∀ (p : ℕ) (w : Ω) (χ : Sg → F → Ω) (φ : Equiv.Perm Sg), D.TestFacts R p w χ φ → (D.bc R₁).TestFacts R₁ p w χ φ := by
   intro o Ω _ _ _ F _ _ n Sg r s D R R₁ hR p w χ φ H C _ _ _ _ RC hT
   obtain ⟨h1, h2, h3, h4⟩ := hT

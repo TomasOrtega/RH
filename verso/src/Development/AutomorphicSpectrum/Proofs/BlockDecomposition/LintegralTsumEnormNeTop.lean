@@ -14,6 +14,13 @@ section Domain
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.1 (isOpen_discrete ({1} : Set H))`. Establish `h1 : (1 : G) ∈ V`. Establish `: (1 : H) ∈ (Subtype.val ⁻¹' V : Set H)` using `by rw [hV]; rfl`. Simplify using `using this`. Take `⟨W, hW, hWV⟩` from `exists_nhds_split_inv (hVo.mem_nhds h1)`.
+
+Use `⟨interior W, isOpen_interior, mem_interior_iff_mem_nhds.2 hW, fun a ha b hb hab => ?_⟩` and prove the remaining obligations. Establish `hv : a / b ∈ V` using `hWV a (interior_subset ha) b (interior_subset hb)`. Establish `: (⟨a * b⁻¹, hab⟩ : H) ∈ (Subtype.val ⁻¹' V : Set H)`. Simplify `hv` using `[div_eq_mul_inv]`. Rewrite `this` using `[hV]`.
+
+Establish `h2 : a * b⁻¹ = 1` using `congrArg Subtype.val (Set.mem_singleton_iff.1 this)`. Conclude with `mul_inv_eq_one.1 h2`.
+-/
 theorem exists_open_small (H : Subgroup G) [DiscreteTopology H] :
     ∃ W : Set G, IsOpen W ∧ (1 : G) ∈ W ∧ ∀ a ∈ W, ∀ b ∈ W, a * b⁻¹ ∈ H → a = b := by
   obtain ⟨V, hVo, hV⟩ := isOpen_induced_iff.1 (isOpen_discrete ({1} : Set H))
@@ -29,6 +36,15 @@ theorem exists_open_small (H : Subgroup G) [DiscreteTopology H] :
   have h2 : a * b⁻¹ = 1 := congrArg Subtype.val (Set.mem_singleton_iff.1 this)
   exact mul_inv_eq_one.1 h2
 
+/- English proof (translation)
+Take `⟨W, hWo, hW1, hW⟩` from `exists_open_small H`. Set `s : G → Set G` to `fun g => (fun x => x * g⁻¹) ⁻¹' W`. Establish `hso : ∀ g, IsOpen (s g)` using `fun g => hWo.preimage (continuous_mul_right _)`. Take `⟨T, hTc, hT⟩` from `TopologicalSpace.isOpen_iUnion_countable s hso`. Establish `hcov : ∀ g, ∃ t ∈ T, g ∈ s t`.
+
+Introduce `g`. Establish `: g ∈ ⋃ i, s i` using `mem_iUnion.2 ⟨g, by simpa [s] using hW1⟩`. Rewrite `this` using `[← hT]`. Simplify using `using this`. Establish `hne : T.Nonempty`.
+
+Take `⟨t, ht, -⟩` from `hcov 1`. Conclude with `⟨t, ht⟩`. Take `⟨e, rfl⟩` from `hTc.exists_eq_range hne`. Use `⟨fun i => s (e i), fun i => hso _, fun g => ?_, fun i a ha b hb hab => ?_⟩` and prove the remaining obligations. Take `⟨t, ⟨i, rfl⟩, h⟩` from `hcov g`.
+
+Conclude with `⟨i, h⟩`. Use `hW _ ha _ hb (by simpa [mul_assoc] using hab)` as an intermediate fact. Conclude with `mul_right_cancel this`.
+-/
 theorem exists_small_cover [SecondCountableTopology G] (H : Subgroup G) [DiscreteTopology H] :
     ∃ u : ℕ → Set G, (∀ i, IsOpen (u i)) ∧ (∀ g, ∃ i, g ∈ u i) ∧
       ∀ i, ∀ a ∈ u i, ∀ b ∈ u i, a * b⁻¹ ∈ H → a = b := by
@@ -51,6 +67,27 @@ theorem exists_small_cover [SecondCountableTopology G] (H : Subgroup G) [Discret
   · have := hW _ ha _ hb (by simpa [mul_assoc] using hab)
     exact mul_right_cancel this
 
+/- English proof (translation)
+Take `⟨u, huo, hcov, hu⟩` from `exists_small_cover H`. Set `A : ℕ → Set G` to `fun i => {x | ∃ h : H, (h : G) * x ∈ u i}`. Establish `hAm : ∀ i, MeasurableSet (A i)`. Introduce `i`. Establish `: A i = ⋃ h : H, (fun x => (h : G) * x) ⁻¹' u i`.
+
+Use extensionality with `x`. Simplify using `[A]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iUnion fun h => ((huo i).preimage (continuous_mul_left _)).measurableSet`. Set `D : Set G` to `⋃ i, (u i ∩ ⋂ j : Fin i, (A j)ᶜ)`.
+
+Establish `hD : MeasurableSet D` using `MeasurableSet.iUnion fun i => (huo i).measurableSet.inter (MeasurableSet.iInter fun j => (hAm j).compl)`. Establish `memD : ∀ x, x ∈ D ↔ ∃ i, x ∈ u i ∧ ∀ j < i, x ∉ A j`. Introduce `x`. Simplify using `only [D, mem_iUnion, mem_inter_iff, mem_iInter, mem_compl_iff]`. Conclude with `exists_congr fun i => and_congr_right fun _ => ⟨fun h j hj => h ⟨j, hj⟩, fun h j => h j j.2⟩`.
+
+Establish `hAinv : ∀ i (h : H) x, (h : G) * x ∈ A i ↔ x ∈ A i`. Introduce `i h x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨k * h, by simpa [mul_assoc] using hk⟩`.
+
+Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨k * h⁻¹, by simpa [mul_assoc] using hk⟩`. Use `⟨D, hD, fun g => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ i, g ∈ A i`. Take `⟨i, hi⟩` from `hcov g`.
+
+Conclude with `⟨i, 1, by simpa using hi⟩`. Establish `hmin` using `Nat.find_spec hex`. Use `set m := Nat.find hex with hm`. Take `⟨h, hh⟩` from `hmin`. Use `⟨h, (memD _).2 ⟨m, hh, fun j hj hA => ?_⟩, fun h' hh' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Nat.find_min hex hj ((hAinv j h g).1 hA)`. Take `⟨i, hi, hij⟩` from `(memD _).1 hh'`. Establish `hgi : g ∈ A i` using `⟨h', hi⟩`. Establish `hmi : m ≤ i` using `Nat.find_min' hex hgi`. Establish `him : i = m`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt : m < i` using `lt_of_le_of_ne hmi (Ne.symm hne)`. Use `hij m hlt ((hAinv m h' g).2 ⟨h, hh⟩)` and prove the remaining obligations. Substitute `him` using the available equality. Establish `hk : ((h' : G) * g) * ((h : G) * g)⁻¹ ∈ H`.
+
+Establish `: ((h' : G) * g) * ((h : G) * g)⁻¹ = ((h' * h⁻¹ : H) : G)`. Simplify using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `Subtype.property _`. Use `hu _ _ hi _ hh hk` as an intermediate fact.
+
+Conclude with `Subtype.ext (mul_right_cancel this)`.
+-/
 theorem exists_strict_domain [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (H : Subgroup G) [Countable H] [DiscreteTopology H] :
     ∃ D : Set G, MeasurableSet D ∧ ∀ g : G, ∃! h : H, (h : G) * g ∈ D := by
@@ -104,6 +141,11 @@ theorem exists_strict_domain [SecondCountableTopology G] [MeasurableSpace G] [Bo
     have := hu _ _ hi _ hh hk
     exact Subtype.ext (mul_right_cancel this)
 
+/- English proof (translation)
+Establish `hmi : Measurable (fun h : H => h⁻¹)` using `measurable_of_countable _`. Use `⟨?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Express the relevant statement in the definitionally equal form `Measure.map (fun h : H => h⁻¹) Measure.count s = _`. Rewrite using `[Measure.map_apply hmi hs]`.
+
+Establish `: (Inv.inv ⁻¹' s : Set H) = (fun h : H => h⁻¹) '' s`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Measure.count_injective_image' inv_injective hs ((Set.to_countable _).measurableSet)]`.
+-/
 theorem count_isInvInvariant [MeasurableSpace G] [MeasurableInv G]
     (H : Subgroup G) [Countable H] [MeasurableSingletonClass H] : (Measure.count : Measure H).IsInvInvariant := by
   have hmi : Measurable (fun h : H => h⁻¹) := measurable_of_countable _
@@ -133,9 +175,15 @@ def reidx {K : Type*} [Group K] (S : Subgroup K) : (K ⧸ S) × S ≃ K where
     simp only [h1, inv_mul_cancel_right]
   right_inv γ := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reidx_apply {K : Type*} [Group K] (S : Subgroup K) (q : K ⧸ S) (s : S) :
     reidx S (q, s) = (s : K) * q.out⁻¹ := rfl
 
+/- English proof (translation)
+Rewrite using `[← e.tsum_eq a]`. Conclude with `(e.summable_iff.2 hs).tsum_prod`.
+-/
 theorem tsum_equiv_prod {K Q S : Type*} (e : Q × S ≃ K) (a : K → ℂ) (hs : Summable a) :
     ∑' k, a k = ∑' q, ∑' s, a (e (q, s)) := by
   rw [← e.tsum_eq a]
@@ -147,6 +195,9 @@ section Unfold
 
 variable {G : Type*} [Group G] {Γ Γ₀ : Subgroup G} {D : Set G}
 
+/- English proof (translation)
+Take `⟨h, hh, hu⟩` from `hD y`. Use `⟨⟨⟨h, hle h.2⟩, Subgroup.mem_subgroupOf.2 h.2⟩, hh, fun s hs => ?_⟩` and prove the remaining obligations. Use `hu ⟨((s : Γ) : G), Subgroup.mem_subgroupOf.1 s.2⟩ hs` as an intermediate fact. Establish `h2 : ((s : Γ) : G) = h` using `congrArg Subtype.val this`. Conclude with `Subtype.ext (Subtype.ext h2)`.
+-/
 theorem existsUnique_subgroupOf (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : Γ₀, (h : G) * g ∈ D) (y : G) :
     ∃! s : Γ₀.subgroupOf Γ, (((s : Γ) : G)) * y ∈ D := by
   obtain ⟨h, hh, hu⟩ := hD y
@@ -155,6 +206,9 @@ theorem existsUnique_subgroupOf (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : �
   have h2 : ((s : Γ) : G) = h := congrArg Subtype.val this
   exact Subtype.ext (Subtype.ext h2)
 
+/- English proof (translation)
+Take `⟨s₀, hs₀, hu⟩` from `existsUnique_subgroupOf hle hD y`. Rewrite using `[tsum_eq_single s₀ (fun s hs => indicator_of_notMem (fun hm => hs (hu s hm)) _), indicator_of_mem hs₀]`. Conclude with `hf _ (Subgroup.mem_subgroupOf.1 s₀.2) y`.
+-/
 theorem tsum_indicator_eq {M : Type*} [AddCommMonoid M] [TopologicalSpace M] [T2Space M]
     (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : Γ₀, (h : G) * g ∈ D) (f : G → M)
     (hf : ∀ h ∈ Γ₀, ∀ g, f (h * g) = f g) (y : G) :
@@ -164,6 +218,9 @@ theorem tsum_indicator_eq {M : Type*} [AddCommMonoid M] [TopologicalSpace M] [T2
     indicator_of_mem hs₀]
   exact hf _ (Subgroup.mem_subgroupOf.1 s₀.2) y
 
+/- English proof (translation)
+Rewrite using `[← (reidx (Γ₀.subgroupOf Γ)).tsum_eq, ENNReal.tsum_prod']`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [reidx_apply, Subgroup.coe_mul, InvMemClass.coe_inv, mul_assoc]`. Conclude with `tsum_indicator_eq hle hD f hf _`.
+-/
 theorem tsum_enorm_eq (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : Γ₀, (h : G) * g ∈ D) (f : G → ℝ≥0∞)
     (hf : ∀ h ∈ Γ₀, ∀ g, f (h * g) = f g) (x : G) :
     ∑' γ : Γ, D.indicator f ((γ : G) * x) =
@@ -173,6 +230,9 @@ theorem tsum_enorm_eq (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : Γ₀, (h :
   simp only [reidx_apply, Subgroup.coe_mul, InvMemClass.coe_inv, mul_assoc]
   exact tsum_indicator_eq hle hD f hf _
 
+/- English proof (translation)
+Rewrite using `[tsum_equiv_prod (reidx (Γ₀.subgroupOf Γ)) _ hs]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [reidx_apply, Subgroup.coe_mul, InvMemClass.coe_inv, mul_assoc]`. Conclude with `tsum_indicator_eq hle hD f hf _`.
+-/
 theorem tsum_complex_eq (hle : Γ₀ ≤ Γ) (hD : ∀ g : G, ∃! h : Γ₀, (h : G) * g ∈ D) (f : G → ℂ)
     (hf : ∀ h ∈ Γ₀, ∀ g, f (h * g) = f g) (x : G)
     (hs : Summable fun γ : Γ => D.indicator f ((γ : G) * x)) :
@@ -192,6 +252,27 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {Γ Γ₀ : Subgroup G} [Countable Γ] [DiscreteTopology Γ₀]
   {μ : Measure G} [μ.IsMulLeftInvariant] [SFinite μ] {Fd : Set G} {F : G → ℂ}
 
+/- English proof (translation)
+Use `haveI : Countable (Γ ⧸ Γ₀.subgroupOf Γ) := Function.Surjective.countable (f := (QuotientGroup.mk : Γ → _)) QuotientGroup.mk_surjective`. Use `haveI : Countable Γ₀ := (Subgroup.inclusion_injective hle).countable`. Use `haveI : MeasurableSingletonClass Γ₀ := ⟨fun h => (isOpen_discrete ({h} : Set Γ₀)).measurableSet⟩`. Use `haveI := count_isInvInvariant Γ₀`. Take `⟨D, hDm, hD⟩` from `exists_strict_domain Γ₀`.
+
+Establish `hρ : IsQuotNormaliser Γ₀ Measure.count (D.indicator (1 : G → ℝ≥0∞))`. Use `⟨measurable_one.indicator hDm, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_count]`. Take `⟨h₀, h₁, hu⟩` from `hD g`. Rewrite using `[tsum_eq_single h₀ (fun h hh => indicator_of_notMem (fun hm => hh (hu h hm)) _), indicator_of_mem h₁]`.
+
+Both sides reduce to the same expression. Rewrite using `[GlobalTheory.CompanionTheory.QuotNorm.quotIntegral_eq hF hFH hρ]`. Establish `hfe : (fun g => F g * (((D.indicator (1 : G → ℝ≥0∞)) g).toReal : ℂ)) = D.indicator F`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `by_cases hg : g ∈ D <;> simp [hg]`.
+
+Rewrite using `[hfe]`. Establish `hfm : Measurable (D.indicator F)` using `hF.indicator hDm`. Establish `hne : ∀ x, ‖D.indicator F x‖ₑ = D.indicator (fun g => ‖F g‖ₑ) x`. Introduce `x`. Apply the tactic sequence `by_cases hx : x ∈ D <;> simp [hx]`.
+
+Establish `hFe : ∀ h ∈ Γ₀, ∀ g, ‖F (h * g)‖ₑ = ‖F g‖ₑ` using `fun h hh g => by rw [hFH h hh g]`. Establish `hmγ : ∀ γ : Γ, Measurable fun x => D.indicator F ((γ : G) * x)` using `fun γ => hfm.comp (measurable_const_mul _)`. Establish `hl0 : ∫⁻ x, ‖D.indicator F x‖ₑ ∂μ = ∑' γ : Γ, ∫⁻ x in Fd, ‖D.indicator F ((γ : G) * x)‖ₑ ∂μ` using `hFd.lintegral_eq_tsum'' (fun x => ‖D.indicator F x‖ₑ)`. Establish `hl : ∫⁻ x, ‖D.indicator F x‖ₑ ∂μ = ∫⁻ x in Fd, ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, ‖F (((q.out : Γ) : G)⁻¹ * x)‖ₑ ∂μ`. Rewrite using `[hl0, ← lintegral_tsum fun γ => (hmγ γ).enorm.aemeasurable]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hne]`. Conclude with `tsum_enorm_eq hle hD (fun g => ‖F g‖ₑ) hFe x`. Establish `hfi : Integrable (D.indicator F) μ` using `⟨hfm.aestronglyMeasurable, by`. Rewrite using `[hasFiniteIntegral_iff_enorm, hl]`.
+
+Conclude with `lt_top_iff_ne_top.2 hint⟩`. Establish `hsum : ∑' γ : Γ, ∫⁻ x in Fd, ‖D.indicator F ((γ : G) * x)‖ₑ ∂μ ≠ ∞`. Rewrite using `[← hl0, hl]`. Conclude with `hint`. Establish `key : ∫ x, D.indicator F x ∂μ = ∫ x in Fd, ∑' γ : Γ, D.indicator F ((γ : G) * x) ∂μ`.
+
+Rewrite using `[integral_tsum (fun γ => (hmγ γ).aestronglyMeasurable) hsum, hFd.integral_eq_tsum'' _ hfi]`. Both sides reduce to the same expression. Rewrite using `[key]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hmq : Measurable fun x => ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, ‖F (((q.out : Γ) : G)⁻¹ * x)‖ₑ` using `Measurable.ennreal_tsum fun q => (hF.comp (measurable_const_mul _)).enorm`.
+
+Use `filter_upwards [ae_lt_top hmq hint] with x hx`. Use `tsum_complex_eq hle hD F hFH x ?_` and prove the remaining obligations. Establish `h2 : ∑' γ : Γ, ‖D.indicator F ((γ : G) * x)‖ₑ ≠ ∞`. Simplify using `only [hne]`. Rewrite using `[tsum_enorm_eq hle hD (fun g => ‖F g‖ₑ) hFe x]`.
+
+Conclude with `hx.ne`. Conclude with `Summable.of_nnnorm (ENNReal.tsum_coe_ne_top_iff_summable.1 h2)`.
+-/
 theorem quotIntegral_unfold (hle : Γ₀ ≤ Γ) (hFd : IsFundamentalDomain Γ Fd μ) (hF : Measurable F)
     (hFH : ∀ h ∈ Γ₀, ∀ g, F (h * g) = F g)
     (hint : ∫⁻ x in Fd, ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, ‖F (((q.out : Γ) : G)⁻¹ * x)‖ₑ ∂μ ≠ ∞) :
@@ -253,6 +334,9 @@ theorem quotIntegral_unfold (hle : Γ₀ ≤ Γ) (hFd : IsFundamentalDomain Γ F
     exact hx.ne
   exact Summable.of_nnnorm (ENNReal.tsum_coe_ne_top_iff_summable.1 h2)
 
+/- English proof (translation)
+Use `haveI : Countable (Γ ⧸ Γ₀.subgroupOf Γ) := Function.Surjective.countable (f := (QuotientGroup.mk : Γ → _)) QuotientGroup.mk_surjective`. Use `⟨AEStronglyMeasurable.tsum fun q => (hF.comp (measurable_const_mul _)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Conclude with `lt_of_le_of_lt (lintegral_mono fun x => enorm_tsum_le_tsum_enorm) (lt_top_iff_ne_top.2 hint)`.
+-/
 theorem integrableOn_unfold (hF : Measurable F)
     (hint : ∫⁻ x in Fd, ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, ‖F (((q.out : Γ) : G)⁻¹ * x)‖ₑ ∂μ ≠ ∞) :
     IntegrableOn (fun x => ∑' q : Γ ⧸ Γ₀.subgroupOf Γ, F (((q.out : Γ) : G)⁻¹ * x)) Fd μ := by

@@ -21,16 +21,27 @@ noncomputable section
 namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a`. Simplify using the standard rewrite rules.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (a : E) : cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := by
   show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a
   simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => show Algebra.TensorProduct.map _ _ (Algebra.TensorProduct.map _ _ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x`. Simplify using `[hσ]`.
+-/
 theorem cA_cA {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a x => show Algebra.TensorProduct.map _ _ (Algebra.TensorProduct.map _ _ (a ⊗ₜ[F] x)) = a ⊗ₜ[F] x; simp [hσ]
 
+/- English proof (translation)
+Simplify using `only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA hσ, incM, Matrix.map_apply, cA_inclR]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hJ y x, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hA_skew {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → AE F E) : cA σ (hA σ J v w) = -hA σ J w v := by
   simp only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA hσ, incM, Matrix.map_apply, cA_inclR]
@@ -42,40 +53,67 @@ theorem hA_skew {σ : E →ₐ[F] E} (hσ : ∀ a, σ (σ a) = a) {n : ℕ} {J :
   rw [hJ y x, map_neg]
   ring
 
+/- English proof (translation)
+Simplify using `only [hA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, cA_inclR]`.
+-/
 theorem hA_incV (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     hA σ J (incV F v) (incV F w) = inclR (F := F) (AF F) (form σ J v w) := by
   simp only [hA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, cA_inclR]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+-/
 theorem incM_mulVec_incV {m n : ℕ} (A : Matrix (Fin m) (Fin n) E) (v : Fin n → E) :
     incM F A *ᵥ incV F v = incV F (A *ᵥ v) := by
   ext i
   simp only [incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
+/- English proof (translation)
+The claim follows from `add_dotProduct _ _ _`.
+-/
 theorem hA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     hA σ J (v + v') w = hA σ J v w + hA σ J v' w := add_dotProduct _ _ _
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => cA σ (w i) + cA σ (w' i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i) from rfl, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hA_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → AE F E) :
     hA σ J v (w + w') = hA σ J v w + hA σ J v w' := by
   simp only [hA, Pi.add_apply, map_add]
   rw [show (fun i => cA σ (w i) + cA σ (w' i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i) from rfl,
     Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+The claim follows from `neg_dotProduct _ _`.
+-/
 theorem hA_neg_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → AE F E) :
     hA σ J (-v) w = -hA σ J v w := neg_dotProduct _ _
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.neg_apply, map_neg]`. Rewrite using `[show (fun i => -cA σ (w i)) = -(fun i => cA σ (w i)) from rfl, Matrix.mulVec_neg, dotProduct_neg]`.
+-/
 theorem hA_neg_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → AE F E) :
     hA σ J v (-w) = -hA σ J v w := by
   simp only [hA, Pi.neg_apply, map_neg]
   rw [show (fun i => -cA σ (w i)) = -(fun i => cA σ (w i)) from rfl, Matrix.mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `only [hA, Pi.zero_apply, map_zero]`. Rewrite using `[show (fun _ : Fin n => (0 : AE F E)) = 0 from rfl, Matrix.mulVec_zero, dotProduct_zero]`.
+-/
 theorem hA_zero_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Fin n → AE F E) :
     hA σ J v 0 = 0 := by
   simp only [hA, Pi.zero_apply, map_zero]
   rw [show (fun _ : Fin n => (0 : AE F E)) = 0 from rfl, Matrix.mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Simplify using `[hA]`.
+-/
 theorem hA_zero_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : Fin n → AE F E) :
     hA σ J 0 v = 0 := by simp [hA]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [nmat, incV, incM, Matrix.map_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, map_sub, map_mul, map_sum, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, cA_inclR, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem nmat_rat (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x u : Fin n → E) (c : E) :
     nmat σ J (incV F x) (incV F u) (inclR (F := F) (AF F) c) =
       (1 - Matrix.vecMulVec (u + c • x) (J *ᵥ fun i => σ (x i)) - Matrix.vecMulVec x (J *ᵥ fun i => σ (u i))).map
@@ -90,6 +128,9 @@ end GlobalTheory.UnipMass
 namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [nmat, zero_smul, add_zero, Pi.zero_apply, map_zero]`. Rewrite using `[show (fun _ : Fin n => (0 : AE F E)) = 0 from rfl, Matrix.mulVec_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem nmat_zero (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → AE F E) :
     nmat σ J x 0 0 = 1 := by
   simp only [nmat, zero_smul, add_zero, Pi.zero_apply, map_zero]
@@ -104,17 +145,26 @@ structure Hyp (σ : E →ₐ[F] E) {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E 
 
 variable {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Use `hA_skew h.σσ h.skew (incM F H'.ι *ᵥ z) (incV F H'.x)` as an intermediate fact. Rewrite `this` using `[h.ιx z, map_zero]`. Conclude with `neg_eq_zero.1 this.symm`.
+-/
 theorem Hyp.xι (h : Hyp σ W H') (z : Fin d₁ → AE F E) : hA σ W.J (incV F H'.x) (incM F H'.ι *ᵥ z) = 0 := by
   have := hA_skew h.σσ h.skew (incM F H'.ι *ᵥ z) (incV F H'.x)
   rw [h.ιx z, map_zero] at this
   exact neg_eq_zero.1 this.symm
 
+/- English proof (translation)
+Use `Subgroup.subset_closure ⟨?_, fun z => ⟨-hA σ W.J (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ b), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hg, nmat_mulVec, h.xx, h.xι]`. Simplify using the standard rewrite rules. Rewrite using `[hg, nmat_mulVec, h.ιx]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem mem_unip (h : Hyp σ W H') (g : UA σ W.J) (b : Fin d₁ → AE F E) (c : AE F E)
     (hg : mat g = nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c) : g ∈ unip σ W H' := by
   refine Subgroup.subset_closure ⟨?_, fun z => ⟨-hA σ W.J (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ b), ?_⟩⟩
   · rw [hg, nmat_mulVec, h.xx, h.xι]; simp
   · rw [hg, nmat_mulVec, h.ιx]; simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.heisenberg_matrix_mul F E σ h.σσ d W.J h.skew _ _ _ c c' h.xx (h.ιx b) (h.ιx b'), Matrix.mulVec_add]`.
+-/
 theorem nmat_mul (h : Hyp σ W H') (b b' : Fin d₁ → AE F E) (c c' : AE F E) :
     nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c * nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b') c' =
       nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ (b + b')) (c + c' - hA σ W.J (incM F H'.ι *ᵥ b') (incM F H'.ι *ᵥ b)) := by
@@ -131,9 +181,15 @@ def elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E)
     GlobalTheory.T.heisenberg_matrix_preserves_form F E σ h.σσ d W.J h.skew _ _ c h.xx (h.ιx b) hc⟩,
     mem_unip h _ b c rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_elt (h : Hyp σ W H') (b : Fin d₁ → AE F E) (c : AE F E) (hc) :
     mat ((elt h b c hc : unip σ W H') : UA σ W.J) = nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ b) c := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (Units.ext e))`.
+-/
 theorem unip_ext {g g' : unip σ W H'} (e : mat (g : UA σ W.J) = mat (g' : UA σ W.J)) : g = g' :=
   Subtype.ext (Subtype.ext (Units.ext e))
 
@@ -142,6 +198,11 @@ end GlobalTheory.UnipMass
 namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `inj : Function.Injective fun N : Matrix (Fin n) (Fin n) E => N.map (inclR (F` using `F) (AF F)) := Matrix.map_injective (Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F))`. Establish `e1 : M * M' = 1` using `inj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul (f := inclR (F := F) (AF F)), ← h1, ← h2, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)])`. Establish `e2 : M' * M = 1` using `inj (by`.
+
+Simplify using `only`. Rewrite using `[Matrix.map_mul (f := inclR (F := F) (AF F)), ← h1, ← h2, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)])`. Conclude with `⟨⟨M, M', e1, e2⟩, Units.ext (by simp [Matrix.GeneralLinearGroup.map, h1])⟩`.
+-/
 theorem mem_range_of {n : ℕ} (g : GL (Fin n) (AE F E)) (M M' : Matrix (Fin n) (Fin n) E)
     (h1 : (g : Matrix (Fin n) (Fin n) (AE F E)) = M.map (inclR (F := F) (AF F)))
     (h2 : ((g⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = M'.map (inclR (F := F) (AF F))) :
@@ -161,6 +222,9 @@ def nE (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x u : Fin 
 
 variable {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Use `Subgroup.mem_subgroupOf.2 (mem_range_of _ (nE σ W.J H'.x (H'.ι *ᵥ b₀) c₀) (nE σ W.J H'.x (H'.ι *ᵥ -b₀) (-c₀ - form σ W.J (H'.ι *ᵥ b₀) (H'.ι *ᵥ b₀))) ?_ ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun u => nmat σ W.J (incV F H'.x) u _) (incM_mulVec_incV _ _)).trans (nmat_rat σ W.J _ _ c₀)`. Use `show nmat σ W.J (incV F H'.x) (incM F H'.ι *ᵥ -incV F b₀) (-inclR (F := F) (AF F) c₀ - hA σ W.J (incM F H'.ι *ᵥ incV F b₀) (incM F H'.ι *ᵥ incV F b₀)) = _`. Rewrite using `[show -incV F b₀ = incV F (-b₀) from funext fun i => (map_neg (inclR (F := F) (AF F)) (b₀ i)).symm, incM_mulVec_incV, incM_mulVec_incV, hA_incV, ← map_neg, ← map_sub]`. Conclude with `nmat_rat σ W.J _ _ _`.
+-/
 theorem elt_rat (h : Hyp σ W H') (b₀ : Fin d₁ → E) (c₀ : E) (hc) :
     ((elt h (incV F b₀) (inclR (F := F) (AF F) c₀) hc : unip σ W H') : UA σ W.J) ∈ ratU σ W.J := by
   refine Subgroup.mem_subgroupOf.2 (mem_range_of _ (nE σ W.J H'.x (H'.ι *ᵥ b₀) c₀)
@@ -177,6 +241,9 @@ end GlobalTheory.UnipMass
 namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hA, form, dotProduct, Matrix.mulVec, incM, incV, Matrix.map_apply, cA_inclR, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => enter [2, i]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem hA_incM_incV (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n) E) (A : Matrix (Fin n) (Fin m) E)
     (z : Fin m → AE F E) (v : Fin n → E) :
     hA σ J (incM F A *ᵥ z) (incV F v) = ∑ j, z j * inclR (F := F) (AF F) (form σ J (fun i => A i j) v) := by
@@ -186,6 +253,17 @@ theorem hA_incM_incV (σ : E →ₐ[F] E) {n m : ℕ} (J : Matrix (Fin n) (Fin n
   conv_lhs => rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`.
+
+Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GL (Fin n) (AE F E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
+
+Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : T2Space (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hs : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hc : IsClosed (UG (cA σ) (incM F J) : Set (GL (Fin n) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin n) (AE F E) => (g : Matrix (Fin n) (Fin n) (AE F E))` using `Units.continuous_val`.
+
+Conclude with `isClosed_eq ((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hs)) continuous_const`. Conclude with `⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstanceAs (T2Space (UG (cA σ) (incM F J)))⟩`.
+-/
 theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) ∧
       T2Space (UA σ J) := by
@@ -219,6 +297,9 @@ theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology,
     inferInstanceAs (T2Space (UG (cA σ) (incM F J)))⟩
 
+/- English proof (translation)
+Use `haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective`. Use `haveI : Countable (GL (Fin n) E) := Function.Injective.countable (f := fun (g : GL (Fin n) E) (i j : Fin n) => (g : Matrix (Fin n) (Fin n) E) i j) fun _ _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)`. Use `haveI := (Set.countable_range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))).to_subtype`. Conclude with `Function.Injective.countable (f := fun γ : (ratU σ J).subgroupOf N => (⟨γ.1.1.1, Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ.2)⟩ : Set.range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))))) fun γ γ' h => Subtype.val_injective (Subtype.val …`.
+-/
 theorem countable_ratU' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (N : Subgroup (UA σ J)) :
     Countable ((ratU σ J).subgroupOf N) := by
   haveI : Countable E := Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective
@@ -231,6 +312,11 @@ theorem countable_ratU' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
       Set.range (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F)))))
     fun γ γ' h => Subtype.val_injective (Subtype.val_injective (Subtype.val_injective (congrArg Subtype.val h :)))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hs : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Unfold `nmat`. Use `(continuous_const.sub ?_).sub ?_` and prove the remaining obligations.
+
+Conclude with `(hu.add (hc.smul continuous_const)).matrix_vecMulVec continuous_const`. Conclude with `continuous_const.matrix_vecMulVec (continuous_const.matrix_mulVec (continuous_pi fun i => hs.comp ((continuous_apply i).comp hu)))`.
+-/
 theorem continuous_nmat (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → AE F E) {X : Type}
     [TopologicalSpace X] {u : X → Fin n → AE F E} {c : X → AE F E} (hu : Continuous u) (hc : Continuous c) :
     Continuous fun p => nmat σ J x (u p) (c p) := by
@@ -249,6 +335,39 @@ namespace GlobalTheory.UnipMass
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hs : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Take `⟨KE, hKE, hcov⟩` from `GlobalTheory.T.adele_quotient_compact_fundamental_set F E`. Use `set ι := incM F H'.ι with hι`.
+
+Use `set half : AE F E := inclR (F := F) (AF F) (2⁻¹ : E) with hhalf_def`. Establish `hhalf : (2 : AE F E) * half = 1`. Rewrite using `[hhalf_def, ← map_ofNat (inclR (F := F) (AF F)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Establish `hσhalf : cA σ half = half` using `by rw [hhalf_def, cA_inclR, map_inv₀, map_ofNat]`. Establish `hsk : ∀ v w, cA σ (hA σ W.J v w) = -hA σ W.J w v` using `hA_skew h.σσ h.skew`.
+
+Set `cf : (Fin d₁ → AE F E) → AE F E → AE F E` to `fun b k => half * (k + cA σ k) - half * hA σ W.J (ι *ᵥ b) (ι *ᵥ b)`. Establish `hcf : ∀ b k, cf b k - cA σ (cf b k) = -hA σ W.J (ι *ᵥ b) (ι *ᵥ b)`. Introduce `b k`. Simplify using `only [cf, map_sub, map_mul, map_add, hσhalf, cA_cA h.σσ, hsk]`. Take the linear combination `(-hA σ W.J (ι *ᵥ b) (ι *ᵥ b)) * hhalf`.
+
+Set `Q : (Fin d₁ → AE F E) × AE F E → unip σ W H'` to `fun p => elt h p.1 (cf p.1 p.2) (hcf p.1 p.2)`. Establish `hcfc : Continuous fun p : (Fin d₁ → AE F E) × AE F E => cf p.1 p.2`. Establish `hh : Continuous fun p : (Fin d₁ → AE F E) × AE F E => hA σ W.J (ι *ᵥ p.1) (ι *ᵥ p.1)`. Unfold `hA`. Conclude with `(continuous_const.matrix_mulVec continuous_fst).dotProduct (continuous_const.matrix_mulVec (continuous_pi fun i => hs.comp ((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_fst))))`.
+
+Conclude with `(continuous_const.mul (continuous_snd.add (hs.comp continuous_snd))).sub (continuous_const.mul hh)`. Establish `hQ : Continuous Q`. Use `Continuous.subtype_mk (Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _) _` and prove the remaining obligations. Conclude with `continuous_nmat σ W.J _ (continuous_const.matrix_mulVec continuous_fst) hcfc`. Establish `hh : Continuous fun p : (Fin d₁ → AE F E) × AE F E => hA σ W.J (ι *ᵥ p.1) (ι *ᵥ p.1)`.
+
+Unfold `hA`. Conclude with `(continuous_const.matrix_mulVec continuous_fst).dotProduct (continuous_const.matrix_mulVec (continuous_pi fun i => hs.comp ((continuous_apply i).comp (continuous_const.matrix_mulVec continuous_fst))))`. Conclude with `continuous_nmat σ W.J _ (continuous_const.matrix_mulVec continuous_fst.neg) (hcfc.neg.sub hh)`. Use `⟨Q '' (Set.univ.pi (fun _ => KE) ×ˢ KE), ((isCompact_univ_pi fun _ => hKE).prod hKE).image hQ, fun g => ?_⟩` and prove the remaining obligations. Take `⟨b, c, hc, hg⟩` from `GlobalTheory.T.hyperbolic_pair_decomposition F E σ h.σσ d d₁ W H' h.skew hxx hyy hxy horth hspan g g.2`.
+
+Use `choose e he using fun j => hcov (b j)`. Use `set u₀ := ι *ᵥ incV F (-e) with hu₀`. Use `set c₁E : E := -(2⁻¹ * form σ W.J (H'.ι *ᵥ -e) (H'.ι *ᵥ -e)) with hc₁E`. Establish `hhu₀ : hA σ W.J u₀ u₀ = inclR (F` using `F) (AF F) (form σ W.J (H'.ι *ᵥ -e) (H'.ι *ᵥ -e)) := by`. Rewrite using `[hu₀, hι, incM_mulVec_incV, hA_incV]`.
+
+Establish `hc₁ : inclR (F` using `F) (AF F) c₁E - cA σ (inclR (F := F) (AF F) c₁E) = -hA σ W.J u₀ u₀ := by`. Establish `e1 : inclR (F` using `F) (AF F) c₁E = -(half * hA σ W.J u₀ u₀) := by`. Rewrite using `[hhu₀, hc₁E, map_neg, map_mul, hhalf_def]`. Rewrite using `[e1, map_neg, map_mul, hσhalf, hsk]`. Take the linear combination `(-hA σ W.J u₀ u₀) * hhalf`.
+
+Set `γ₁ : (ratU σ W.J).subgroupOf (unip σ W H')` to `⟨elt h (incV F (-e)) _ hc₁, elt_rat h _ _ hc₁⟩`. Use `set c₂ := inclR (F := F) (AF F) c₁E + c - hA σ W.J (ι *ᵥ b) u₀ with hc₂_def`. Use `set b' : Fin d₁ → AE F E := incV F (-e) + b with hb'_def`. Establish `hm1 : mat ((γ₁ • g : unip σ W H') : UA σ W.J) = nmat σ W.J (incV F H'.x) (ι *ᵥ b') c₂` using `by show nmat σ W.J (incV F H'.x) u₀ (inclR (F := F) (AF F) c₁E) * mat (g : UA σ W.J) = _`. Rewrite using `[hg, hu₀, nmat_mul h]`.
+
+Establish `hc₂ : c₂ - cA σ c₂ = -hA σ W.J (ι *ᵥ b') (ι *ᵥ b')`. Rewrite using `[hb'_def, Matrix.mulVec_add, ← hu₀, hA_add_left, hA_add_right, hA_add_right, hc₂_def]`. Simplify using `only [map_add, map_sub]`. Take the linear combination `hc₁ + hc + hsk (ι *ᵥ b) u₀`. Use `set s := half * (c₂ + cA σ c₂) with hs_def`.
+
+Establish `hσs : cA σ s = s` using `by rw [hs_def, map_mul, hσhalf, map_add, cA_cA h.σσ, add_comm (cA σ c₂)]`. Take `⟨e', he'⟩` from `hcov s`. Use `set k := s - inclR (F := F) (AF F) e' with hk_def`. Use `set e₀ : E := -(2⁻¹ * (e' + σ e')) with he₀_def`. Establish `hσe₀ : σ e₀ = e₀`.
+
+Rewrite using `[he₀_def, map_neg, map_mul, map_add, h.σσ, map_inv₀, map_ofNat, add_comm (σ e')]`. Establish `h0 : incV F (0 : Fin d₁ → E) = 0` using `funext fun _ => map_zero _`. Establish `hc₃ : inclR (F` using `F) (AF F) e₀ - cA σ (inclR (F := F) (AF F) e₀) = -hA σ W.J (ι *ᵥ incV F 0) (ι *ᵥ incV F 0) := by`. Rewrite using `[cA_inclR, hσe₀, sub_self, h0, Matrix.mulVec_zero, hA_zero_left, neg_zero]`. Set `γ₂ : (ratU σ W.J).subgroupOf (unip σ W H')` to `⟨elt h (incV F 0) _ hc₃, elt_rat h _ _ hc₃⟩`.
+
+Establish `key : inclR (F` using `F) (AF F) e₀ + c₂ = cf b' k := by`. Establish `he₀' : inclR (F` using `F) (AF F) e₀ = -(half * (inclR (F := F) (AF F) e' + inclR (F := F) (AF F) (σ e'))) := by`. Rewrite using `[he₀_def, map_neg, map_mul, map_add, hhalf_def]`. Establish `hσk : cA σ k = s - inclR (F` using `F) (AF F) (σ e') := by rw [hk_def, map_sub, hσs, cA_inclR]`. Simplify using `only [cf]`.
+
+Take the linear combination `he₀' + (-half) * hk_def + (-half) * hσk + half * hc₂ - (c₂ * (1 + half) + half * cA σ c₂) * hhalf + (-2 * half) * hs_def`. Use `⟨γ₂ * γ₁, (b', k), ⟨fun j _ => ?_, he'⟩, ?_⟩` and prove the remaining obligations. Establish `: b' j = b j - inclR (F` using `F) (AF F) (e j) := by`. Rewrite using `[hb'_def, Pi.add_apply, show incV F (-e) j = -inclR (F := F) (AF F) (e j) from map_neg _ _]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show b' j ∈ KE`. Rewrite using `[this]`. Conclude with `he j`. Apply `unip_ext` to reduce the goal to its premises. Rewrite using `[mul_smul]`.
+
+Use `show nmat σ W.J (incV F H'.x) (ι *ᵥ b') (cf b' k) = nmat σ W.J (incV F H'.x) (ι *ᵥ incV F 0) (inclR (F := F) (AF F) e₀) * mat ((γ₁ • g : unip σ W H') : UA σ W.J)`. Rewrite using `[hm1, nmat_mul h, h0, zero_add, Matrix.mulVec_zero, hA_zero_right, sub_zero, key]`.
+-/
 theorem cocompact (h : Hyp σ W H') (hxx : form σ W.J H'.x H'.x = 0) (hyy : form σ W.J H'.y H'.y = 0)
     (hxy : form σ W.J H'.x H'.y = 1)
     (horth : ∀ u, form σ W.J (H'.ι *ᵥ u) H'.x = 0 ∧ form σ W.J (H'.ι *ᵥ u) H'.y = 0)
@@ -345,6 +464,27 @@ end GlobalTheory.UnipMass
 
 namespace GlobalTheory.UnipMass
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' hT`. Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hT.base.cm`. Establish `hW` using `hT.geo.hW`. Establish `hH` using `hC.hH'`. Establish `hspan : ∀ v : Fin (b + 2 + a') → E, ∃ (s t : E) (u : Fin (b + a') → E), v = s • H'.x + H'.ι *ᵥ u + t • H'.y`.
+
+Introduce `v`. Establish `hv : v ∈ Submodule.span E (G.W.L : Set (Fin (b + 2 + a') → E))`. Rewrite using `[hW.lat.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨s, t, u, -, -, -, hz⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, hz⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨s, t, u, rfl⟩` from `hy`. Take `⟨s', t', u', rfl⟩` from `hz`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Consider the case `smul a y _ hy`. Take `⟨s, t, u, rfl⟩` from `hy`.
+
+Conclude with `⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩`. Establish `horthA : ∀ z, hA σ G.W.J (incM F H'.ι *ᵥ z) (incV F H'.x) = 0`. Introduce `z`. Rewrite using `[hA_incM_incV]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hH.orth (Pi.single j 1)).1`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Rewrite using `[show (fun i => H'.ι i j) = H'.ι.col j from rfl, h1, map_zero, mul_zero]`. Establish `h : Hyp σ G.W H'` using `⟨hσ, hW.skew, by rw [hA_incV, hH.xx, map_zero], horthA⟩`. Establish `hx0 : H'.x ≠ 0` using `fun h0 => by`.
+
+Establish `h1` using `hH.xy`. Rewrite `h1` using `[h0]`. Simplify using `[form] at h1`. Take `⟨hTG, hLC, hSC, hT2⟩` from `topUA σ G.W.J`. Use `haveI := hTG`.
+
+Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Establish `hcl` using `GlobalTheory.T.unipotent_radical_closed_nonzero F E σ _ _ G.W H' hx0`.
+
+Use `haveI : LocallyCompactSpace (unip σ G.W H') := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ G.W H') := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Use `haveI := countable_ratU' σ G.W.J (unip σ G.W H')`. Use `haveI := GlobalTheory.T.discrete_rational_points_subgroup F E σ _ G.W.J (unip σ G.W H')`. Take `⟨K, hK, hcov⟩` from `cocompact h hH.xx hH.yy hH.xy hH.orth hspan`.
+
+Conclude with `GlobalTheory.T.cocompact_lattice_unit_covolume _ _ K hK hcov`.
+-/
 theorem exists_haar_unip_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

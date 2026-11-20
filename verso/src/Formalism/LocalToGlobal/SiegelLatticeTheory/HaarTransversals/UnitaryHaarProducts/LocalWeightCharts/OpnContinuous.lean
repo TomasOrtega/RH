@@ -32,6 +32,19 @@ def NUniq : Prop :=
   ∀ (k r : ℕ) (μ μ' : Measure (Formalism.QuantumDeterminants.Mt k r)), IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μ →
     IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μ' → ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ μ = c • μ'
 
+/- English proof (translation)
+Introduce `k r μN hN _`. Take `⟨m, d, q, Φ, κ, hq, hD, hκ, hΦ, hrange, hT, hgrow⟩` from `hC k r`. Establish `hmeasL : ∀ a : Mat k r, Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) a) := fun a => by`. Establish `: Continuous (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) a) := by`. Unfold `Formalism.QuantumDeterminants.lmulM`.
+
+Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `this.measurable`. Establish `hH : IsHaarOn (Formalism.QuantumDeterminants.Nset k r) ((volume : Measure (CSp m d)).map Φ)`. Use `⟨hΦ.sigmaFinite_map, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Rewrite `h0` using `[Measure.map_eq_zero_iff hΦ.measurable.aemeasurable]`. Conclude with `isOpen_univ.measure_ne_zero (volume : Measure (CSp m d)) Set.univ_nonempty (by rw [h0, Measure.coe_zero, Pi.zero_apply])`. Rewrite using `[Measure.map_apply hΦ.measurable]`. Establish `: Φ ⁻¹' {x | Matrix.of x ∉ Formalism.QuantumDeterminants.Nset k r} = ∅`. Use extensionality with `t`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Establish `: Φ t ∈ Set.range Φ` using `⟨t, rfl⟩`. Rewrite `this` using `[hrange]`. Conclude with `this`. Rewrite using `[this, measure_empty]`.
+
+Establish `hcl : MeasurableSet (Set.range Φ)` using `hΦ.measurableSet_range`. Rewrite `hcl` using `[hrange]`. Conclude with `hcl.compl`. Introduce `s hs`. Take `⟨T, hTm, hTe⟩` from `hT s hs`.
+
+Rewrite using `[Measure.map_map (hmeasL s) hΦ.measurable]`. Establish `: Formalism.QuantumDeterminants.lmulM s ∘ Φ = Φ ∘ T` using `funext hTe`. Rewrite using `[this, ← Measure.map_map hΦ.measurable hTm.measurable, hTm.map_eq]`. Take `⟨c, hc, hμ⟩` from `hU k r μN _ hN hH`. Conclude with `⟨m, d, q, Φ, c, κ, hq, hD, hκ, hc, hΦ.measurable, hμ, hgrow⟩`.
+-/
 theorem nCoordHaar_of (hC : NChart) (hU : NUniq) : NCoordHaar := by
   intro k r μN hN _
   obtain ⟨m, d, q, Φ, κ, hq, hD, hκ, hΦ, hrange, hT, hgrow⟩ := hC k r
@@ -70,6 +83,9 @@ local instance instAlgCLM (n : ℕ) :
 local instance instModCLM (n : ℕ) :
     Module ℂ (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) := ContinuousLinearMap.module
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.WuDecay.opn`. Establish `: Continuous fun m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin (2 * r + k + 1)) m := by`. Set `L : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin (2 * r + k + 1)) →L[ℂ] EuclideanSpace ℂ (Fin (2 * r + k + 1)))` to `{ toFun := fun m => Matrix.toEuclideanCLM (𝕜 := ℂ) m map_add' := fun a b => map_add _ a b map_smul' := fun a b => map_smul _ a b }`. Conclude with `L.continuous_of_finiteDimensional`. Conclude with `continuous_norm.comp (this.comp continuous_id)`.
+-/
 lemma opn_continuous (k r : ℕ) :
     Continuous fun m : Formalism.QuantumDeterminants.Mt k r => Formalism.L2.SG.WuDecay.opn (Matrix.of m) := by
   unfold Formalism.L2.SG.WuDecay.opn
@@ -83,10 +99,28 @@ lemma opn_continuous (k r : ℕ) :
     exact L.continuous_of_finiteDimensional
   exact continuous_norm.comp (this.comp continuous_id)
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_fin_fun]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`.
+-/
 lemma finrank_CSp (m d : ℕ) : Module.finrank ℝ (CSp m d) = 2 * m + d := by
   rw [Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_fin_fun]
   simp [Complex.finrank_real_complex, mul_comm]
 
+/- English proof (translation)
+Introduce `k r μN hN hNc`. Take `⟨m, d, q, Φ, c, κ, hq, hD, hκ, hc, hΦ, hμ, hgrow⟩` from `h k r μN hN hNc`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hD' : (Module.finrank ℝ (CSp m d) : ℝ) < N1H k r / q`. Rewrite using `[finrank_CSp, lt_div_iff₀ hq0, mul_comm]`.
+
+Conclude with `hD` after adjusting the coercions. Establish `hF : Measurable fun x : Formalism.QuantumDeterminants.Mt k r => ENNReal.ofReal (Formalism.L2.SG.WuDecay.opn (Matrix.of x) ^ (-N1H k r))` using `ENNReal.measurable_ofReal.comp ((opn_continuous k r).measurable.pow_const _)`. Rewrite using `[hμ, lintegral_smul_measure, lintegral_map hF hΦ]`. Use `ENNReal.mul_lt_top hc.lt_top ?_` and prove the remaining obligations. Use `set s := N1H k r / q with hs`.
+
+Establish `hbound : ∀ t : CSp m d, ENNReal.ofReal (Formalism.L2.SG.WuDecay.opn (Matrix.of (Φ t)) ^ (-N1H k r)) ≤ ENNReal.ofReal (κ ^ s) * ENNReal.ofReal ((1 + ‖t‖) ^ (-s))`. Introduce `t`. Use `set o := Formalism.L2.SG.WuDecay.opn (Matrix.of (Φ t)) with ho`. Establish `ho0 : 0 ≤ o` using `norm_nonneg _`. Establish `h1 : 0 < 1 + ‖t‖` using `by positivity`.
+
+Establish `h2 : (1 + ‖t‖) / κ ≤ o ^ q`. Rewrite using `[div_le_iff₀ hκ, mul_comm]`. Conclude with `hgrow t`. Establish `h3 : 0 < (1 + ‖t‖) / κ` using `div_pos h1 hκ`. Establish `hoq : o ^ (-N1H k r) = (o ^ q) ^ (-s)`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ho0, hs]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Rewrite using `[hoq]`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 < s` using `lt_of_le_of_lt (Nat.cast_nonneg _) hD'`. Use the proof step `linarith)`. Use `_ = κ ^ s * (1 + ‖t‖) ^ (-s) := by`.
+
+Rewrite using `[Real.div_rpow h1.le hκ.le, div_eq_mul_inv, ← Real.rpow_neg hκ.le, neg_neg, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nIntDecay_of (h : NCoordHaar) : NIntDecay := by
   intro k r μN hN hNc
   obtain ⟨m, d, q, Φ, c, κ, hq, hD, hκ, hc, hΦ, hμ, hgrow⟩ := h k r μN hN hNc

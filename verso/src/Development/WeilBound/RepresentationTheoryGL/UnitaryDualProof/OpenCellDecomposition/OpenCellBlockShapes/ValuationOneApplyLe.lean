@@ -13,6 +13,9 @@ namespace PositivityTheory.RgUd.CellB
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Unfold `blockE`. Use `split_ifs`. Conclude with `hY _`. Simplify using the standard rewrite rules.
+-/
 theorem valuation_blockE_le {r m : ℕ} {γ : ValueGroupWithZero k} {Y : Fin m × Fin r → k}
     (hY : Y ∈ box (Fin m × Fin r) γ) (i j : Fin (r + m)) : valuation k (blockE r Y i j) ≤ γ := by
   unfold blockE
@@ -21,10 +24,26 @@ theorem valuation_blockE_le {r m : ℕ} {γ : ValueGroupWithZero k} {Y : Fin m �
   · simp
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem valuation_one_apply_le {N : ℕ} (i j : Fin N) : valuation k ((1 : Matrix (Fin N) (Fin N) k) i j) ≤ 1 := by
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hE` using `eq_one_add_blockE hu`. Establish `hγ : valuation k (uniformizer k : k) ^ n ≤ 1` using `pow_le_one₀ zero_le' (GroundTheory.Automorphic.GLnLocal.valuation_uniformizer_lt_one k).le`. Rewrite using `[GroundTheory.Automorphic.GLnLocal.mem_congruenceSubgroup_iff, mem_box]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ ⟨i, j⟩`.
+
+Simplify `h (rowI i) (colI j)` using `only [blockY, one_rowI_colI, sub_zero]`. Introduce `hY`. Establish `hY' : blockY (u : Matrix (Fin (r + m)) (Fin (r + m)) k) ∈ box (Fin m × Fin r) (valuation k (uniformizer k : k) ^ n)` using `mem_box.2 hY`. Establish `hent : ∀ i j, valuation k ((u : Matrix (Fin (r + m)) (Fin (r + m)) k) i j - (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) i j) ≤ valuation k (uniformizer k : k) ^ n`. Introduce `i j`.
+
+Rewrite using `[hE, Matrix.add_apply, add_sub_cancel_left]`. Conclude with `valuation_blockE_le hY' i j`. Use `⟨(GroundTheory.Automorphic.GLnLocal.mem_integralGL_iff k _).2 ⟨fun i j => ?_, fun i j => ?_⟩, hent⟩` and prove the remaining obligations. Use `show valuation k _ ≤ 1`. Establish `e : (u : Matrix (Fin (r + m)) (Fin (r + m)) k) i j = (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) i j + ((u : Matrix (Fin (r + m)) (Fin (r + m)) k) i j - (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) i j)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (valuation_one_apply_le i j) ((hent i j).trans hγ))`. Establish `hinv : ((u⁻¹ : GL (Fin (r + m)) k) : Matrix (Fin (r + m)) (Fin (r + m)) k) = 1 - blockE r (blockY (u : Matrix (Fin (r + m)) (Fin (r + m)) k))`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [add_mul, mul_sub, one_mul, mul_one, blockE_mul]`. Normalize the expressions using the abelian group laws. Use `show valuation k _ ≤ 1`. Rewrite using `[hinv, Matrix.sub_apply]`.
+
+Conclude with `(Valuation.map_sub _ _ _).trans (max_le (valuation_one_apply_le i j) ((valuation_blockE_le hY' i j).trans hγ))`.
+-/
 theorem mem_congr_iff_box {r m : ℕ} (n : ℕ) {u : GL (Fin (r + m)) k}
     (hu : IsBlockShape (u : Matrix (Fin (r + m)) (Fin (r + m)) k)) :
     u ∈ congruenceSubgroup k (r + m) n ↔
@@ -71,6 +90,11 @@ abbrev congrL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
     Subgroup (GL (Fin (r + m)) k) :=
   unipU k (dd r m) (hdd r m) ⊓ (congruenceSubgroup k (r + m) n).comap (MulAut.conj (pm k (wOpen (dd r m) (hdd r m)))).toMonoidHom
 
+/- English proof (translation)
+Rewrite using `[congrL, Subgroup.mem_inf, Subgroup.mem_comap]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, pm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `GroundTheory.Automorphic.Parabolic.permGL_conj_mem_congruenceSubgroup (w := (wOpen (dd r m) (hdd r m))⁻¹) h` as an intermediate fact. Simplify `this` using `[map_inv, mul_assoc]`. Conclude with `GroundTheory.Automorphic.Parabolic.permGL_conj_mem_congruenceSubgroup`.
+-/
 theorem mem_congrL {r m n : ℕ} {u : GL (Fin (r + m)) k} :
     u ∈ congrL k r m n ↔ u ∈ unipU k (dd r m) (hdd r m) ∧ u ∈ congruenceSubgroup k (r + m) n := by
   rw [congrL, Subgroup.mem_inf, Subgroup.mem_comap]
@@ -85,6 +109,41 @@ theorem mem_congrL {r m n : ℕ} {u : GL (Fin (r + m)) k} :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set U := unipU k (dd r m) (hdd r m) with hUdef`. Use `set a := aDiag k (r + m) m z with hadef`. Use `set L₀ := congrL k r m n with hL₀def`. Use `set C := congruenceSubgroup k (r + m) n with hCdef`. Establish `hL₀U : L₀ ≤ U` using `inf_le_left`.
+
+Establish `hmemL₀ : ∀ u, u ∈ L₀ ↔ u ∈ U ∧ u ∈ C` using `fun u => mem_congrL`. Establish `haU : ∀ u ∈ U, a * u * a⁻¹ ∈ U` using `fun u hu => aDiag_conj_mem_unipU k z hu`. Establish `haU' : ∀ u ∈ U, a⁻¹ * u * a ∈ U`. Introduce `u hu`. Use `aDiag_conj_mem_unipU k z⁻¹ hu` as an intermediate fact.
+
+Rewrite `this` using `[← aDiag_inv, inv_inv]`. Then use the resulting hypothesis. Establish `hφ : ∀ (u : GL (Fin (r + m)) k) (hu : u ∈ U), Multiplicative.toAdd (blockEquiv U hU2 ⟨u, hu⟩) = blockY (u : Matrix (Fin (r + m)) (Fin (r + m)) k)`. Introduce `u hu`. Use function extensionality and compare the values at `p`. Conclude with `blockEquiv_apply U hU2 ⟨u, hu⟩ p.1 p.2`.
+
+Establish `hc0 : (GroundTheory.Automorphic.GLnLocal.uniformizer k : k) ≠ 0` using `GroundTheory.Automorphic.GLnLocal.uniformizer_ne_zero k`. Use `set c : kˣ := (Units.mk0 _ hc0) ^ n with hcdef`. Establish `hvc : valuation k (c : k) = valuation k (uniformizer k : k) ^ n`. Simplify using `[c, map_pow]`. Establish `hUclosed : IsClosed (U : Set (GL (Fin (r + m)) k))`.
+
+Establish `e : (U : Set (GL (Fin (r + m)) k)) = {u : GL (Fin (r + m)) k | ∀ i j : Fin (r + m), ¬ ((i : ℕ) < m ∧ m ≤ (j : ℕ)) → (u : Matrix (Fin (r + m)) (Fin (r + m)) k) i j = (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) i j}`. Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, Set.mem_setOf_eq]`. Rewrite using `[hU2]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hs⟩ i j hij`. Assume the negation of the conclusion as `hne`. Conclude with `hij (hs i j hne)`. Introduce `H`. Use `⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩, fun i j hne => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[H i j (fun h => absurd (lt_of_lt_of_le h.1 h.2) (not_lt.mpr (Fin.le_def.mp hji.le)))]`. Conclude with `Matrix.one_apply_ne hji.ne'`. Rewrite using `[H i i (fun h => absurd (lt_of_lt_of_le h.1 h.2) (lt_irrefl _))]`. Conclude with `Matrix.one_apply_eq i`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hne (H i j hc)`. Rewrite using `[e]`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem i j) continuous_const`. Establish `hL₀set : (L₀ : Set (GL (Fin (r + m)) k)) = (C : Set (GL (Fin (r + m)) k)) ∩ U`.
+
+Use extensionality with `u`. Simplify using `only [SetLike.mem_coe, Set.mem_inter_iff, hmemL₀]`. The claim follows by propositional logic. Establish `hcomp₀ : IsCompact (L₀ : Set (GL (Fin (r + m)) k))`. Rewrite using `[hL₀set]`.
+
+Conclude with `(GroundTheory.Automorphic.GLnLocal.isCompact_congruenceSubgroup k (r + m) n).inter_right hUclosed`. Establish `hopen₀ : ∃ O : Set (GL (Fin (r + m)) k), IsOpen O ∧ O ∩ (U : Set (GL (Fin (r + m)) k)) = L₀` using `⟨C, GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k (r + m) n, hL₀set.symm⟩`. Establish `hcont : Continuous fun u : GL (Fin (r + m)) k => a * u * a⁻¹` using `by fun_prop`. Establish `hcomp : IsCompact ((L₀.map (MulAut.conj a).toMonoidHom : Subgroup _) : Set (GL (Fin (r + m)) k))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hcomp₀.image hcont`. Establish `hopen : ∃ O : Set (GL (Fin (r + m)) k), IsOpen O ∧ O ∩ (U : Set (GL (Fin (r + m)) k)) = (L₀.map (MulAut.conj a).toMonoidHom : Subgroup _)`. Use `⟨(fun u => a⁻¹ * u * a) ⁻¹' (C : Set (GL (Fin (r + m)) k)), (GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k (r + m) n).preimage (by fun_prop), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_map_equiv, MulAut.conj_symm_apply, hmemL₀]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hC, hU⟩`. Conclude with `⟨haU' x hU, hC⟩`. Introduce and unpack `⟨hU, hC⟩`. Use `⟨hC, ?_⟩` and prove the remaining obligations.
+
+Use `haU _ hU` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hS : ∀ (u : GL (Fin (r + m)) k) (hu : u ∈ U), u ∈ L₀ ↔ Multiplicative.toAdd (blockEquiv U hU2 ⟨u, hu⟩) ∈ box (Fin m × Fin r) (valuation k (c : k))`. Introduce `u hu`. Rewrite using `[hφ, hvc, hmemL₀, ← mem_congr_iff_box n ((hU2 u).1 hu).2]`.
+
+Simplify using `[hu, C]`. Establish `hscale : ∀ (u : GL (Fin (r + m)) k) (hu : u ∈ U), Multiplicative.toAdd (blockEquiv U hU2 ⟨a * u * a⁻¹, haU u hu⟩) = z • Multiplicative.toAdd (blockEquiv U hU2 ⟨u, hu⟩)`. Introduce `u hu`. Rewrite using `[hφ, hφ]`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [blockY, Pi.smul_apply, Units.smul_def, smul_eq_mul, a, aDiag_conj_apply]`. Establish `h1 : ((rowI (r` using `r) p.1 : Fin (r + m)) : ℕ) < m := p.1.2`. Establish `h2 : ¬ ((colI (m` using `m) p.2 : Fin (r + m)) : ℕ) < m := by simp [colI]`. Rewrite using `[if_pos h1, if_neg h2, mul_one]`. Take `⟨hLL₀, hidx⟩` from `relIndex_conj (Fin m × Fin r) U (blockEquiv U hU2) a z haU hscale L₀ hL₀U (box (Fin m × Fin r) (valuation k (c : k))) hS (isCompact_box _ c) (isOpen_box _ c) (fun x hx => smul_mem_box z hz hx)`.
+
+Establish `hvol` using `vol_relIndex ψ (dd r m) (hdd r m) ρ J vol (fun u hu hb f f' h => hU u hu hb f f' h) hV hLL₀ hL₀U hcomp₀ hopen₀ hcomp hopen hθ g v hv hg1 hg0`. Rewrite `hvol` using `[hidx]`. Establish `hpos` using `GlobalTheory.SplitWeil.nabs_pos k z`. Establish `hcard : Fintype.card (Fin m × Fin r) = m * r` using `by simp`. Rewrite `hvol` using `[hcard]`.
+
+Rewrite using `[hvol, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hpos.ne', one_pow, one_mul]`.
+-/
 theorem vol_conj_aDiag (ψ : AddChar k Circle) {r m : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Levi k fun a => Fin (dd r m a)) W) (J : openFns (dd r m) (hdd r m) ρ →ₗ[ℂ] W)
     (vol : Subgroup (GL (Fin (r + m)) k) → ℝ)

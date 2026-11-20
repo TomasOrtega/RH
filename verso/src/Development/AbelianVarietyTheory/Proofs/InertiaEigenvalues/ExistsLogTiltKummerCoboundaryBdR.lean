@@ -14,6 +14,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ P AI T`. Take `⟨Co, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Take `⟨ϖ, hr⟩` from `exists_tilt (lRoot l) (lRoot_succ l) l (lRoot_zero l)`. Establish `hϖ : ϖ.untilt = ((l : ℕ) : Per.OC l)` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact.
+
+Rewrite `this` using `[lRoot_zero, map_natCast]`. Conclude with `this.trans (SubringClass.coe_natCast _ _).symm)`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_logOnePlus_kerTheta_deRhamPlus l (beta ϖ) (by`. Rewrite using `[GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ]`. Conclude with `Ideal.mem_span_singleton_self _)`.
+
+Establish `hg` using `GlobalTheory.T.galois_logTeichmullerRatio_eq_add_kummer l P Co hC.ζ ϖ hr hϖ u hu`. Establish `hct : ∀ g : GQ l, T.eD (P.ιB ((kummer P g : ℚ_[l]) • P.tB)) = algebraMap (Per.BdRp l) (Per.BdR l) (Co.j (algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l (kummer P g)) * Co.t))`. Introduce `g`. Rewrite using `[hC.ι, Algebra.smul_def, map_mul, T.zB, hC.t, ← Co.ι_j]`. Simplify using `only [Core.tB, GlobalTheory.RingIface.zB_alg, map_mul]`.
+
+Use `⟨T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) u), fun g => ?_⟩` and prove the remaining obligations. Apply `T.eD.injective` to reduce the goal to its premises. Rewrite using `[T.actD, RingEquiv.apply_symm_apply, map_add, RingEquiv.apply_symm_apply, hct]`. Rewrite using `[show Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) u) = algebraMap (Per.BdRp l) (Per.BdR l) (Per.σDp g u) from GlobalTheory.MemLoc.ActLaws.σD_alg _ _, hg, map_add]`.
+-/
 theorem exists_log_tilt_BdR : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     ∃ u : P.R.BdR, ∀ g : GQ l, P.actQdR g u = u + P.ιB ((kummer P g : ℚ_[l]) • P.tB) := by
   intro l _ P AI T

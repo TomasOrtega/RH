@@ -37,6 +37,9 @@ noncomputable section
 
 namespace GlobalTheory.PlaceDecomp
 
+/- English proof (translation)
+Introduce `D θ _ N U`. Use `⟨⟨⟨Formalism.IndefR.Mult.isAutFunSm_zero θ N.V, Formalism.IndefR.Mult.isCuspFun_zero N.V, fun τ => (GlobalTheory.TypeAtTest.isTypeAt_zero θ N.V).2 ⟨N.M.H τ, _, _, N.M.σ τ, N.M.lam τ, N.M.ε τ, N.M.fr τ, N.M.enum τ, N.M.ds τ, N.M.fr_unit τ, N.M.fr_gram τ⟩⟩, fun _ _ _ _ => rfl⟩, fun …` and prove the remaining obligations. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `hf`. Use `⟨⟨Formalism.IndefR.Mult.isAutFunSm_smul θ N.V h1 c, Formalism.IndefR.Mult.isCuspFun_smul N.V h2 c, fun τ => GlobalTheory.Mem.Th.isTypeAt_smul c (h3 τ)⟩, fun k hk hk' g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h4 k hk hk' g]`.
+-/
 theorem cls_zero_smul : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)), (0 : GA D N.V → ℂ) ∈ Cls θ N U ∧ ∀ (c : ℂ) (f : GA D N.V → ℂ), f ∈ Cls θ N U → c • f ∈ Cls θ N U := by
   intro D θ _ N U
   refine ⟨⟨⟨Formalism.IndefR.Mult.isAutFunSm_zero θ N.V, Formalism.IndefR.Mult.isCuspFun_zero N.V, fun τ =>

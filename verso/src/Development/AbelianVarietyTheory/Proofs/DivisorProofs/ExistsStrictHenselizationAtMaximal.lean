@@ -10,12 +10,22 @@ namespace GlobalTheory.HensMax
 
 open IsLocalRing
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `⟨fun h hx => h (hx.map f), fun h hx => h (isUnit_of_map_unit f x hx)⟩`.
+-/
 theorem comap_maximalIdeal_of_localHom {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S]
     (f : R →+* S) [IsLocalHom f] : (maximalIdeal S).comap f = maximalIdeal R := by
   ext x
   simp only [Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]
   exact ⟨fun h hx => h (hx.map f), fun h hx => h (isUnit_of_map_unit f x hx)⟩
 
+/- English proof (translation)
+Use `IsSepClosed.of_exists_root L fun p hm hirr hsep => ?_` and prove the remaining obligations. Establish `hq : (p.map e.symm.toRingHom).Separable` using `hsep.map`. Establish `hdeg : (p.map e.symm.toRingHom).degree ≠ 0`. Rewrite using `[Polynomial.degree_map]`. Conclude with `(Polynomial.degree_pos_of_irreducible hirr).ne'`.
+
+Take `⟨x, hx⟩` from `IsSepClosed.exists_root _ hdeg hq`. Use `⟨e x, ?_⟩` and prove the remaining obligations. Use `congrArg (e : K →+* L) hx` as an intermediate fact. Rewrite `this` using `[Polynomial.eval_map, map_zero, Polynomial.hom_eval₂]`. Establish `h2 : (e : K →+* L).comp e.symm.toRingHom = RingHom.id L` using `by ext; simp`.
+
+Rewrite `this` using `[h2, Polynomial.eval₂_id]`. Conclude with `this`.
+-/
 theorem isSepClosed_of_ringEquiv {K L : Type} [Field K] [Field L] [IsSepClosed K] (e : K ≃+* L) : IsSepClosed L := by
   refine IsSepClosed.of_exists_root L fun p hm hirr hsep => ?_
   have hq : (p.map e.symm.toRingHom).Separable := hsep.map
@@ -34,6 +44,19 @@ end GlobalTheory.HensMax
 
 open IsLocalRing in
 
+/- English proof (translation)
+Introduce `B _ P _ hsep`. Take `⟨S, _, _, hH, hloc, -, -, hbij, ι, _, _, _, Si, hmono, hcov, hSi⟩` from `GlobalTheory.Henselisation.exists_henselisation (Localization.AtPrime P)`. Use `letI : Algebra B S := ((algebraMap (Localization.AtPrime P) S).comp (algebraMap B (Localization.AtPrime P))).toAlgebra`. Use `haveI : IsScalarTower B (Localization.AtPrime P) S := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `⟨S, inferInstance, inferInstance, ⟨hH, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.HensMax.isSepClosed_of_ringEquiv (RingEquiv.ofBijective _ hbij)`. Establish `hRS : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap (Localization.AtPrime P) S)`. Use `GlobalTheory.StrictHensUnion.indEtale_of_directed_union _ S ι Si hmono hcov fun i => ?_` and prove the remaining obligations. Take `⟨A, _, _, _, q, _, ⟨e⟩⟩` from `hSi i`. Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale _ A q.primeCompl)`.
+
+Establish `hBR : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap B (Localization.AtPrime P))` using `GlobalTheory.StrictHensUnion.indEtale_localization_of_etale B B P.primeCompl`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (algebraMap B S)`. Rewrite using `[IsScalarTower.algebraMap_eq B (Localization.AtPrime P) S]`. Conclude with `GlobalTheory.T.ind_etale_comp _ _ _ _ _ hBR hRS`. Introduce `Q hQ`.
+
+Take `rfl : Q = maximalIdeal S` from `IsLocalRing.eq_maximalIdeal hQ`. Use `⟨?_, fun o => ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq B (Localization.AtPrime P) S, ← Ideal.comap_comap, GlobalTheory.HensMax.comap_maximalIdeal_of_localHom]`. Conclude with `Localization.AtPrime.comap_maximalIdeal (I := P)`. Take `⟨y, hy⟩` from `hbij.2 (residue S o)`.
+
+Take `⟨r, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨b, hb⟩` from `(IsLocalization.AtPrime.equivQuotMaximalIdeal P (Localization.AtPrime P)).surjective (Ideal.Quotient.mk _ r)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `hb` using `[IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk, Ideal.Quotient.eq]`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : residue _ (algebraMap B (Localization.AtPrime P) b) = residue _ r`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hb`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, ← hy, IsScalarTower.algebraMap_apply B (Localization.AtPrime P) S, ← ResidueField.map_residue, h1, sub_self]`.
+-/
 theorem GlobalTheory.HensMax.exists_strictHens_of_maximal : ∀ (B : Type) [CommRing B] (P : Ideal B) [P.IsMaximal],
     IsSepClosed (IsLocalRing.ResidueField (Localization.AtPrime P)) → ∃ (O : Type) (_ : CommRing O) (_ : Algebra B O),
     SH O ∧ IndEt B O ∧ ∀ Q : Ideal O, Q.IsMaximal → Q.comap (algebraMap B O) = P ∧ ∀ o : O, ∃ b : B, o - algebraMap B O b ∈ Q := by

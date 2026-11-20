@@ -11,6 +11,13 @@ open TensorProduct DividedPowers
 
 namespace GlobalTheory.CompanionTheory.ConeLocal
 
+/- English proof (translation)
+Use `Ideal.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Establish `h : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Establish `: (l.map Prod.fst).sum = 0` using `List.sum_eq_zero (by simpa using h)`. Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, h0⟩` from `h`. Use `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, ?_⟩)` and prove the remaining obligations. Establish `e : p.2 = 0` using `hl p hp`.
+
+Rewrite using `[e]`. Conclude with `(dividedPowersBot K).dpow_eval_zero h0`.
+-/
 theorem dividedPowerFiltration_dividedPowersBot_of_one_le {K : Type} [CommRing K] {r : ℕ} (hr : 1 ≤ r) : pdP (dividedPowersBot K) r = ⊥ := by
   refine Ideal.span_eq_bot.2 ?_
   rintro _ ⟨l, hl, hs, rfl⟩
@@ -25,6 +32,9 @@ theorem dividedPowerFiltration_dividedPowersBot_of_one_le {K : Type} [CommRing K
   rw [e]
   exact (dividedPowersBot K).dpow_eval_zero h0
 
+/- English proof (translation)
+The claim follows from `dividedPowerFiltration_dividedPowersBot_of_one_le hs tf r x h := by simpa using h dv n hn := ⟨0, (n : K)⁻¹, by have : (n : K) ≠ 0 := Nat.cast_ne_zero.2 hn simp [this]⟩`.
+-/
 theorem tfBase_dpBot {K : Type} [Field K] [CharZero K] {s : ℕ} (hs : 1 ≤ s) : TFBase (dividedPowersBot K) 1 s where
   nil := dividedPowerFiltration_dividedPowersBot_of_one_le hs
   tf r x h := by simpa using h
@@ -32,6 +42,17 @@ theorem tfBase_dpBot {K : Type} [Field K] [CharZero K] {s : ℕ} (hs : 1 ≤ s) 
     have : (n : K) ≠ 0 := Nat.cast_ne_zero.2 hn
     simp [this]⟩
 
+/- English proof (translation)
+Introduce `K _ _ X q W d c s hs`. Establish `hb : TFBase (dividedPowersBot K) 1 s` using `tfBase_dpBot hs`. Take `⟨c', e, hTF, he1, he2, he3⟩` from `GlobalTheory.CompanionTheory.ChartAlg.chart_exists (O := K) (R := K) (dividedPowersBot K) 1 s hb q (Ideal.Quotient.mk ⊥) (fun a => rfl) c`. Use `letI := (strV q W).toAlgebra`. Establish `hg` using `GlobalTheory.CompanionTheory.ChartMaps.good c'`.
+
+Establish `hD : KS q s {W} c'.D` using `⟨hTF, W, rfl, c'.inV⟩`. Take `⟨hpow, hc⟩` from `GlobalTheory.CompanionTheory.ChartFil.chart_grConst c' hg (KS q s {W}) (ks_in q s W) hD`. Set `E` to `c'.frame hg (KS q s {W}) (ks_in q s W) hD`. Set `ε : Γ(X, W) ≃+* c'.D.B` to `(Algebra.TensorProduct.lid K Γ(X, W)).symm.toRingEquiv.trans e`. Establish `hε : ∀ f, ε f = e ((1 : K) ⊗ₜ[K] f)` using `fun f => rfl`.
+
+Use `⟨E, ε, hc, fun x hx => ?_, fun a => ?_, fun T u g => ?_, fun i T u v => ?_⟩` and prove the remaining obligations. Establish `h2 : (show c'.D.B from x) ∈ c'.D.pdPow 1` using `hx`. Rewrite `h2` using `[hpow, dividedPowerFiltration_dividedPowersBot_of_one_le le_rfl, Ideal.map_bot]`. Conclude with `Ideal.mem_bot.1 h2`. Establish `e1 : (1 : K) ⊗ₜ[K] (strV q W a) = a ⊗ₜ[K] (1 : Γ(X, W))`.
+
+Establish `: strV q W a = a • (1 : Γ(X, W))`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this, TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `ε (strV q W a) = c'.D.i a`.
+
+Rewrite using `[hε, e1, he1]`. Establish `h1` using `GlobalTheory.CompanionTheory.GrForm.ev_nat (q := q) u.hom c'.inV (ks_in q s W _ T.property) g`. Conclude with `h1.trans ((congrArg (Ideal.quotientMap T.obj.J u.hom.φ u.hom.hle) (he3 g)).trans rfl)`. Express the relevant statement in the definitionally equal form `(v.hom.φ (c'.t i) - u.hom.φ (c'.t i) : T.obj.B) = v.hom.φ (ε (c.t i)) - u.hom.φ (ε (c.t i))`. Rewrite using `[hε, he2]`.
+-/
 theorem exists_loc : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {W : X.Opens} {d : ℕ} (c : Coord q W d) (s : ℕ), 1 ≤ s →
     ∃ (E : Frame (sP (KS q s {W})) d) (ε : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj E.D), IsLoc q s c.t E ε := by
   intro K _ _ X q W d c s hs

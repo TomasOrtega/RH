@@ -27,6 +27,9 @@ def mat (a : TensO s) : Matrix (Fin r) (Fin r) ℤ := a
 
 def ofMat (a : Matrix (Fin r) (Fin r) ℤ) : TensO s := a
 
+/- English proof (translation)
+Establish `h1 : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (s.1 : Matrix (Fin r) (Fin r) ℤ) = 1` using `Units.inv_mul s.1`. Establish `h2 : (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) = 1` using `Units.mul_inv s.1`. Establish `h3` using `congrArg Matrix.transpose h1`. Rewrite `h3` using `[Matrix.transpose_mul, s.2, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_transpose : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ).transpose =
     ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) := by
   have h1 : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (s.1 : Matrix (Fin r) (Fin r) ℤ) = 1 :=
@@ -68,11 +71,23 @@ instance : StarRing (TensO s) where
     rw [Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_def (a : TensO s) : star a = ofMat s (((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) *
     (mat s a).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_mul (a b : TensO s) : mat s (a * b) = mat s a * mat s b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_add (a b : TensO s) : mat s (a + b) = mat s a + mat s b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_one : mat s (1 : TensO s) = 1 := rfl
 
 end TensO
@@ -93,6 +108,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : M
 def Tens.smulF (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) : D'.X :=
   T.xe.symm (fun i => ∑ j, TensO.mat s a i j • T.xe z j)
 
+/- English proof (translation)
+Simplify using `[Tens.smulF]`.
+-/
 theorem Tens.xe_smulF (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) (i : Fin r) :
     T.xe (T.smulF s a z) i = ∑ j, TensO.mat s a i j • T.xe z j := by
   simp [Tens.smulF]
@@ -135,6 +153,9 @@ def Tens.mod (T : Tens D D' W) (s : SymUnit r) : Module (TensO s) D'.X where
       show (0 : Matrix (Fin r) (Fin r) ℤ) i j • T.xe z j = 0
       simp
 
+/- English proof (translation)
+The claim follows from `T.xe_smulF s a z i`.
+-/
 theorem Tens.xe_smul (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) (i : Fin r) :
     letI := T.mod s
     T.xe (a • z) i = ∑ j, TensO.mat s a i j • T.xe z j :=
@@ -143,6 +164,9 @@ theorem Tens.xe_smul (T : Tens D D' W) (s : SymUnit r) (a : TensO s) (z : D'.X) 
 def Tens.act (T : Tens D D' W) (a : Matrix (Fin r) (Fin r) ℤ) : D'.P.A ⟶ D'.P.A :=
   T.lim.lift (Fan.mk D'.P.A fun i => ∏ j, T.pr j ^ a i j)
 
+/- English proof (translation)
+The claim follows from `T.lim.fac _ ⟨i⟩`.
+-/
 theorem Tens.act_pr (T : Tens D D' W) (a : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     T.act a ≫ T.pr i = ∏ j, T.pr j ^ a i j :=
   T.lim.fac _ ⟨i⟩
@@ -150,6 +174,9 @@ theorem Tens.act_pr (T : Tens D D' W) (a : Matrix (Fin r) (Fin r) ℤ) (i : Fin 
 def Tens.inc (T : Tens D D' W) (i₀ : Fin r) : D.P.A ⟶ D'.P.A :=
   T.lim.lift (Fan.mk D.P.A fun i => if i = i₀ then 𝟙 _ else 1)
 
+/- English proof (translation)
+The claim follows from `T.lim.fac _ ⟨i⟩`.
+-/
 theorem Tens.inc_pr' (T : Tens D D' W) (i₀ i : Fin r) :
     T.inc i₀ ≫ T.pr i = if i = i₀ then 𝟙 _ else 1 :=
   T.lim.fac _ ⟨i⟩
@@ -164,6 +191,9 @@ end
 
 def TensO.idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) : TensO s := TensO.ofMat s (Matrix.single i₀ i₀ 1)
 
+/- English proof (translation)
+Establish `h : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1`. Simplify using the standard rewrite rules. Conclude with `h`.
+-/
 theorem TensO.idem_mul_idem {r : ℕ} (s : SymUnit r) (i₀ : Fin r) : TensO.idem s i₀ * TensO.idem s i₀ = TensO.idem s i₀ := by
   have h : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1 := by
     simp

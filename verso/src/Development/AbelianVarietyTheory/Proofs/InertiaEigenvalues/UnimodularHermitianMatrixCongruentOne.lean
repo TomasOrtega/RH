@@ -14,6 +14,9 @@ variable {E : Type} [NormedField E]
 
 def Intg {n m : Type} (h : Matrix n m E) : Prop := ∀ i j, ‖h i j‖ ≤ 1
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hr`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem nsum_le [IsUltrametricDist E] {ι : Type} (s : Finset ι) (f : ι → E) {r : ℝ} (hr : 0 ≤ r) (h : ∀ i ∈ s, ‖f i‖ ≤ r) :
     ‖∑ i ∈ s, f i‖ ≤ r := by
   classical
@@ -24,6 +27,9 @@ theorem nsum_le [IsUltrametricDist E] {ι : Type} (s : Finset ι) (f : ι → E)
     exact (IsUltrametricDist.norm_add_le_max _ _).trans
       (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[mul_apply]`. Use `nsum_le _ _ zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)`.
+-/
 theorem intg_mul [IsUltrametricDist E] {l n m : Type} [Fintype n] {A : Matrix l n E} {B : Matrix n m E} (hA : Intg A)
     (hB : Intg B) : Intg (A * B) := by
   intro i j
@@ -32,17 +38,26 @@ theorem intg_mul [IsUltrametricDist E] {l n m : Type} [Fintype n] {A : Matrix l 
   rw [norm_mul]
   exact mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[conjTranspose_apply, hs]`. Conclude with `hA j i`.
+-/
 theorem intg_conjT [StarRing E] (hs : ∀ y : E, ‖star y‖ = ‖y‖) {n m : Type} {A : Matrix n m E} (hA : Intg A) :
     Intg Aᴴ := by
   intro i j
   rw [conjTranspose_apply, hs]
   exact hA j i
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem intg_one {n : Type} [DecidableEq n] : Intg (1 : Matrix n n E) := by
   intro i j
   rw [one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[det_conjTranspose, hs]`.
+-/
 theorem norm_det_conjT [StarRing E] (hs : ∀ y : E, ‖star y‖ = ‖y‖) {n : Type} [Fintype n] [DecidableEq n]
     (A : Matrix n n E) : ‖Aᴴ.det‖ = ‖A.det‖ := by
   rw [det_conjTranspose, hs]
@@ -57,6 +72,9 @@ section Step
 
 variable {E : Type} [NormedField E] [IsUltrametricDist E] [StarRing E]
 
+/- English proof (translation)
+Introduce and unpack `(i | i) (j | j)`. Conclude with `hA i j`. Conclude with `hB i j`. Conclude with `hC i j`. Conclude with `hD i j`.
+-/
 theorem intg_fromBlocks {l m n o : Type} {A : Matrix n l E} {B : Matrix n m E} {C : Matrix o l E}
     {D : Matrix o m E} (hA : Intg A) (hB : Intg B) (hC : Intg C) (hD : Intg D) :
     Intg (fromBlocks A B C D) := by
@@ -66,25 +84,50 @@ theorem intg_fromBlocks {l m n o : Type} {A : Matrix n l E} {B : Matrix n m E} {
   · exact hC i j
   · exact hD i j
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.sub_apply, sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hA i j) (by rw [norm_neg]; exact hB i j))`.
+-/
 theorem intg_sub {n m : Type} {A B : Matrix n m E} (hA : Intg A) (hB : Intg B) : Intg (A - B) := by
   intro i j
   rw [Matrix.sub_apply, sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hA i j) (by rw [norm_neg]; exact hB i j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[neg_apply, norm_neg]`. Conclude with `hA i j`.
+-/
 theorem intg_neg {n m : Type} {A : Matrix n m E} (hA : Intg A) : Intg (-A) := by
   intro i j
   rw [neg_apply, norm_neg]
   exact hA i j
 
+/- English proof (translation)
+Introduce `i j`. Simplify using the standard rewrite rules.
+-/
 theorem intg_zero {n m : Type} : Intg (0 : Matrix n m E) := by
   intro i j
   simp
 
+/- English proof (translation)
+Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply, sub_eq_add_neg]`.
+-/
 theorem schur_conj {m : Type} [Fintype m] [DecidableEq m] (A : Matrix m m E) (B : Matrix m Unit E) :
     (fromBlocks 1 0 (-Bᴴ) 1 : Matrix (m ⊕ Unit) (m ⊕ Unit) E)ᴴ * fromBlocks A B Bᴴ 1 *
         fromBlocks 1 0 (-Bᴴ) 1 = fromBlocks (A - B * Bᴴ) 0 0 1 := by
   simp [fromBlocks_conjTranspose, fromBlocks_multiply, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `hD : G.toBlocks₂₂ = 1`. Use extensionality with `⟨⟩ ⟨⟩`. Simplify using `[toBlocks₂₂, hk]`. Establish `hG' : G = fromBlocks G.toBlocks₁₁ G.toBlocks₁₂ G.toBlocks₂₁ 1`. Rewrite using `[← hD, fromBlocks_toBlocks]`.
+
+Use `set A := G.toBlocks₁₁`. Use `set B := G.toBlocks₁₂`. Use `set C := G.toBlocks₂₁`. Establish `hh` using `hG`. Rewrite `hh` using `[hG', isHermitian_fromBlocks_iff]`.
+
+Take `⟨hA, hBC, -, -⟩` from `hh`. Rewrite `hG'` using `[← hBC]`. Establish `hAi : Intg A` using `fun i j => hGi _ _`. Establish `hBi : Intg B` using `fun i j => hGi _ _`. Establish `hA'i : Intg (A - B * Bᴴ)` using `intg_sub hAi (intg_mul hBi (intg_conjT hs hBi))`.
+
+Establish `hA'h : (A - B * Bᴴ).IsHermitian` using `hA.sub (isHermitian_mul_conjTranspose_self B)`. Establish `hA'd : ‖(A - B * Bᴴ).det‖ = 1`. Rewrite using `[← det_fromBlocks_one₂₂, ← hG']`. Conclude with `hGd`. Take `⟨h', hi', hd', hh'⟩` from `H _ hA'h hA'i hA'd`.
+
+Use `⟨fromBlocks 1 0 (-Bᴴ) 1 * fromBlocks h' 0 0 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `intg_mul (intg_fromBlocks intg_one intg_zero (intg_neg (intg_conjT hs hBi)) intg_one) (intg_fromBlocks hi' intg_zero intg_zero intg_one)`. Rewrite using `[det_mul, det_fromBlocks_zero₁₂, det_fromBlocks_zero₁₂]`. Simplify using `[hd']`. Rewrite using `[conjTranspose_mul, hG']`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[schur_conj]`. Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply, hh']`.
+-/
 theorem good_sum (hs : ∀ y : E, ‖star y‖ = ‖y‖) {m : Type} [Fintype m] [DecidableEq m] (H : Good m E)
     (G : Matrix (m ⊕ Unit) (m ⊕ Unit) E) (hG : G.IsHermitian) (hGi : ∀ i j, ‖G i j‖ ≤ 1)
     (hGd : ‖G.det‖ = 1) (hk : G (Sum.inr ()) (Sum.inr ()) = 1) :
@@ -129,6 +172,11 @@ section Main
 
 variable {E : Type} [NormedField E] [IsUltrametricDist E] [StarRing E]
 
+/- English proof (translation)
+Use `⟨reindex e.symm e.symm h, fun i j => hi _ _, by rw [det_reindex_self]; exact hd, ?_⟩` and prove the remaining obligations. Establish `: reindex e.symm e.symm (hᴴ * reindex e e G * h) = 1` using `by rw [hh]; simp`. Rewrite using `[← this]`. Simplify using `only [reindex_apply, Equiv.symm_symm, conjTranspose_submatrix]`. Rewrite using `[← submatrix_mul_equiv (hᴴ * _) h e e e, ← submatrix_mul_equiv hᴴ _ e e e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sol_transfer (hs : ∀ y : E, ‖star y‖ = ‖y‖) {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n']
     [DecidableEq n'] (e : n ≃ n') (G : Matrix n n E) (h : Matrix n' n' E) (hi : ∀ i j, ‖h i j‖ ≤ 1)
     (hd : ‖h.det‖ = 1) (hh : hᴴ * reindex e e G * h = 1) :
@@ -140,6 +188,19 @@ theorem sol_transfer (hs : ∀ y : E, ‖star y‖ = ‖y‖) {n n' : Type} [Fin
   rw [← submatrix_mul_equiv (hᴴ * _) h e e e, ← submatrix_mul_equiv hᴴ _ e e e]
   simp
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n _ _ hc G _ _ _`. Use `haveI : IsEmpty n := Fintype.card_eq_zero_iff.1 hc`.
+
+Use `⟨1, fun i => isEmptyElim i, by simp, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Conclude with `isEmptyElim i`. Consider the case `succ m ih`. Introduce `n _ _ hc G hG hGi hGd`.
+
+Use `haveI : Nonempty n := Fintype.card_pos_iff.1 (by omega)`. Take `⟨P, hPi, hPd, k, hk⟩` from `piv n G hG hGi hGd`. Establish `hM : (Pᴴ * G * P).IsHermitian` using `isHermitian_conjTranspose_mul_mul P hG`. Establish `hMi : Intg (Pᴴ * G * P)` using `intg_mul (intg_mul (intg_conjT hs hPi) hGi) hPi`. Establish `hMd : ‖(Pᴴ * G * P).det‖ = 1`.
+
+Rewrite using `[det_mul, det_mul, norm_mul, norm_mul, norm_det_conjT hs, hPd, hGd, one_mul, one_mul]`. Set `e : n ≃ {j // j ≠ k} ⊕ Unit` to `(Equiv.optionSubtypeNe k).symm.trans (Equiv.optionEquivSumPUnit.{0, 0} _)`. Establish `hc' : Fintype.card {j // j ≠ k} = m`. Use `Fintype.card_congr (Equiv.optionSubtypeNe k)` as an intermediate fact. Rewrite `this` using `[Fintype.card_option]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hk' : reindex e e (Pᴴ * G * P) (Sum.inr ()) (Sum.inr ()) = 1`. Simplify `hk` using `[e, reindex_apply, Equiv.optionSubtypeNe]`. Take `⟨h, hi, hd, hh⟩` from `good_sum hs (ih _ hc') (reindex e e (Pᴴ * G * P)) (by simpa [reindex_apply] using hM.submatrix e.symm) (fun i j => hMi _ _) (by rw [det_reindex_self]; exact hMd) hk'`. Take `⟨h₁, hi₁, hd₁, hh₁⟩` from `sol_transfer hs e _ h hi hd hh`.
+
+Use `⟨P * h₁, intg_mul hPi hi₁, by rw [det_mul, norm_mul, hPd, hd₁, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, ← hh₁]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem good_all (hs : ∀ y : E, ‖star y‖ = ‖y‖)
     (piv : ∀ (n : Type) [Fintype n] [DecidableEq n] [Nonempty n] (G : Matrix n n E), G.IsHermitian →
       Intg G → ‖G.det‖ = 1 → ∃ P : Matrix n n E, Intg P ∧ ‖P.det‖ = 1 ∧ ∃ k, (Pᴴ * G * P) k k = 1) :
@@ -180,6 +241,11 @@ end Main
 
 section Piv
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitValueExistence.main`. Consider the case `exact _root_.GlobalTheory.UnitValueExistence.main`. Consider the case `(apply _root_.GlobalTheory.UnitValueExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitValueExistence.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UnitValueExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitValueExistence.main ..)`.
+-/
 theorem pivot_w {E : Type} [NormedField E] [IsUltrametricDist E] [StarRing E]
     (hs : ∀ y : E, ‖star y‖ = ‖y‖) (e0 : E) (he0 : ‖e0‖ ≤ 1) (he0' : e0 + star e0 = 1) {n : Type}
     [Fintype n] [DecidableEq n] [Nonempty n] (G : Matrix n n E) (hG : G.IsHermitian) (hGi : Intg G)
@@ -200,6 +266,17 @@ section Field
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
   [Unram F E]
 
+/- English proof (translation)
+Set `L : E →ₗ[F] E` to `{ toFun := fun y => star y - y map_add' := by`. Introduce `x y`. Simplify using `only [star_add]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := by`.
+
+Introduce `c y`. Simplify using `only [Algebra.smul_def, star_mul', Unram.star_fix, RingHom.id_apply, mul_sub] }`. Establish `hfin : Module.finrank F E = 2` using `Unram.finrank_eq`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Establish `hlt : LinearMap.ker L < ⊤`.
+
+Take `⟨y, hy⟩` from `Unram.star_ne (F := F) (E := E)`. Use `lt_top_iff_ne_top.2 fun h => hy ?_` and prove the remaining obligations. Establish `: y ∈ LinearMap.ker L` using `h ▸ Submodule.mem_top`. Simplify `this` using `[L, sub_eq_zero]`. Establish `h1 : Module.finrank F (LinearMap.ker L) < 2` using `hfin ▸ Submodule.finrank_lt hlt.ne`.
+
+Establish `hle : LinearMap.range (Algebra.linearMap F E) ≤ LinearMap.ker L`. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `[L, Unram.star_fix]`. Establish `hr : Module.finrank F (LinearMap.range (Algebra.linearMap F E)) = 1`. Rewrite using `[LinearMap.finrank_range_of_inj (algebraMap F E).injective, Module.finrank_self]`.
+
+Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Establish `hmem : a ∈ LinearMap.ker L` using `by simp [L, ha]`. Rewrite `hmem` using `[← heq]`. Take `⟨u, hu⟩` from `hmem`. Conclude with `⟨u, hu⟩`.
+-/
 theorem fixed_mem (a : E) (ha : star a = a) : ∃ u : F, algebraMap F E u = a := by
   let L : E →ₗ[F] E :=
     { toFun := fun y => star y - y
@@ -229,6 +306,9 @@ theorem fixed_mem (a : E) (ha : star a = a) : ∃ u : F, algebraMap F E u = a :=
   obtain ⟨u, hu⟩ := hmem
   exact ⟨u, hu⟩
 
+/- English proof (translation)
+Simplify using `only [mul_apply, dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_col {n : Type} [Fintype n] (G P : Matrix n n E) (k : n) :
     (Pᴴ * G * P) k k = star (fun a => P a k) ⬝ᵥ (G *ᵥ fun a => P a k) := by
   simp only [mul_apply, dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, Finset.mul_sum,
@@ -238,6 +318,23 @@ theorem quad_col {n : Type} [Fintype n] (G P : Matrix n n E) (k : n) :
   ring
 
 include F in
+/- English proof (translation)
+Use `haveI := Unram.ultraE (F := F) (E := E)`. Establish `hs : ∀ y : E, ‖star y‖ = ‖y‖` using `Unram.norm_star (F := F)`. Take `⟨-, ⟨e0, he0, he0'⟩, -⟩` from `GlobalTheory.T.unramifiedQuadratic_integral_traceForm_perfect F E`. Take `⟨i, w, hw, hwi, hq⟩` from `pivot_w hs e0 he0 he0' G hG hGi hGd`. Establish `ha : star (star w ⬝ᵥ (G *ᵥ w)) = star w ⬝ᵥ (G *ᵥ w)`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩` from `fixed_mem (F := F) _ ha`. Establish `hu1 : ‖u‖ = 1` using `by rw [← norm_algebraMap' E u, hu]; exact hq`. Take `⟨v0, hv0⟩` from `GlobalTheory.T.exists_mul_star_eq_of_norm_one_unramifiedQuadratic F E u hu1`. Rewrite `hv0` using `[hu]`.
+
+Establish `hv0n : ‖v0‖ = 1`. Establish `h` using `congrArg norm hv0`. Rewrite `h` using `[norm_mul, hs, hq]`. Use polynomial arithmetic with `[norm_nonneg v0]`. Establish `hv0ne : v0 ≠ 0`.
+
+Introduce `h`. Rewrite `hv0n` using `[h, norm_zero]`. Conclude with `zero_ne_one hv0n`. Establish `hc : ‖(star v0)⁻¹‖ = 1` using `by rw [norm_inv, hs, hv0n, inv_one]`. Use `⟨(1 : Matrix n n E).updateCol i ((star v0)⁻¹ • w), ?_, ?_, i, ?_⟩` and prove the remaining obligations.
+
+Introduce `p q`. Rewrite using `[updateCol_apply]`. Use `split_ifs`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, hc, one_mul]`. Conclude with `hw p`.
+
+Conclude with `intg_one p q`. Rewrite using `[← cramer_apply, cramer_one]`. Simplify using `[hc, hwi]`. Rewrite using `[quad_col]`. Establish `hcol : (fun a => (1 : Matrix n n E).updateCol i ((star v0)⁻¹ • w) a i) = (star v0)⁻¹ • w`.
+
+Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `hst : star ((star v0)⁻¹ • w) = v0⁻¹ • star w`. Use function extensionality and compare the values at `p`. Simplify using `[star_mul', star_inv₀]`.
+
+Rewrite using `[hcol, hst, smul_dotProduct, mulVec_smul, dotProduct_smul, ← hv0, smul_eq_mul, smul_eq_mul]`. Establish `hsv : star v0 ≠ 0` using `by rwa [star_ne_zero]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pivot {n : Type} [Fintype n] [DecidableEq n] [Nonempty n] (G : Matrix n n E) (hG : G.IsHermitian)
     (hGi : Intg G) (hGd : ‖G.det‖ = 1) :
     ∃ P : Matrix n n E, Intg P ∧ ‖P.det‖ = 1 ∧ ∃ k, (Pᴴ * G * P) k k = 1 := by
@@ -283,6 +380,9 @@ theorem pivot {n : Type} [Fintype n] [DecidableEq n] [Nonempty n] (G : Matrix n 
 
 end Field
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ s G hG hGi hGd`. Use `haveI := Unram.ultraE (F := F) (E := E)`. Conclude with `good_all (Unram.norm_star (F := F)) (fun n _ _ _ G hG hGi hGd => pivot (F := F) (E := E) G hG hGi hGd) s (Fin s) (Fintype.card_fin s) G hG hGi hGd`.
+-/
 theorem unimodular_hermitian_eq_conj : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (s : ℕ) (G : Matrix (Fin s) (Fin s) E), G.IsHermitian →
     (∀ i j, ‖G i j‖ ≤ 1) → ‖G.det‖ = 1 →

@@ -16,6 +16,11 @@ variable (D : D7) [hL : IsEmpty D.nd.Loc] (C : TwCore D.R D.host D.what₂ D.LL0
   (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `h1` using `congrArg (iotaOk R i 1) h`. Rewrite `h1` using `[map_mul, iotaOk_alg, iotaOk_alg]`. Establish `h2 : toLL0 R hR (x : R.what₂.LL) = x` using `Subtype.ext rfl`. Use `show iotaOk R i 1 (R.ntw.emb0 i (toLL0 R hR (x : R.what₂.LL))) * _ = _`. Rewrite using `[h2]`.
+
+Conclude with `h1`.
+-/
 theorem embedding_baseField_mul (R : D7) (hR : ∀ x : R.what₂.LL, x ∈ R.LL0) (i : R.ntw.Tw) (x : R.LL0) (y z : R.ntw.O0 i)
     (h : R.ntw.emb0 i x * algebraMap (R.ntw.O0 i) (FractionRing (R.ntw.O0 i)) z =
       algebraMap (R.ntw.O0 i) (FractionRing (R.ntw.O0 i)) y) :

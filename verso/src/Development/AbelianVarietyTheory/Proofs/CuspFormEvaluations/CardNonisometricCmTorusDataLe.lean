@@ -21,6 +21,13 @@ open Matrix ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestrict
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Set `I : FractionalIdeal (𝓞 E)⁰ E` to `⟨AA, FractionalIdeal.isFractional_of_fg hfg⟩`. Establish `hI : I ≠ 0` using `fun h => h0 ((congrArg FractionalIdeal.coeToSubmodule h).trans FractionalIdeal.coe_zero)`. Establish `h1 : (1 : E) ∈ I * I⁻¹`. Rewrite using `[mul_inv_cancel₀ hI]`. Conclude with `FractionalIdeal.one_mem_one _`.
+
+Establish `key : ∀ r ∈ I * I⁻¹, r • v ∈ N`. Introduce `r hr`. Use `FractionalIdeal.mul_induction_on (C := fun r => r • v ∈ N) hr ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Use `h a ha b fun c hc => ?_` and prove the remaining obligations.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hI).1 hb c hc)`. Introduce `x y hx hy`. Rewrite using `[add_smul]`. Conclude with `N.add_mem hx hy`. Simplify using `using key 1 h1`.
+-/
 theorem mem_of_forall_mul_smul {V : Type} [AddCommGroup V] [Module E V]
     (AA : Submodule (𝓞 E) E) (hfg : AA.FG) (h0 : AA ≠ ⊥) (N : AddSubmonoid V) (v : V)
     (h : ∀ a ∈ AA, ∀ b : E, (∀ c ∈ AA, ∃ o : 𝓞 E, (o : E) = b * c) → (a * b) • v ∈ N) :
@@ -51,6 +58,9 @@ def divLat {r : ℕ} (AA : Submodule (𝓞 E) E) (M : Submodule (𝓞 E) (Fin r 
   smul_mem' := fun c x hx a ha => by
     rw [smul_comm]; exact M.smul_mem c (hx a ha)
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨o, ho⟩` from `hb a ha`. Rewrite using `[smul_smul, mul_comm, ← ho]`. Conclude with `M.smul_mem o hv`.
+-/
 theorem smul_mem_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} {M : Submodule (𝓞 E) (Fin r → E)}
     {v : Fin r → E} (hv : v ∈ M) {b : E} (hb : ∀ c ∈ AA, ∃ o : 𝓞 E, (o : E) = b * c) :
     b • v ∈ divLat AA M := by
@@ -59,6 +69,9 @@ theorem smul_mem_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} {M : Submodule (�
   rw [smul_smul, mul_comm, ← ho]
   exact M.smul_mem o hv
 
+/- English proof (translation)
+Use `⟨fun hv b hb => smul_mem_divLat hv hb, fun h => ?_⟩` and prove the remaining obligations. Use `mem_of_forall_mul_smul AA hfg h0 M.toAddSubmonoid v fun a ha b hb => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `h b hb a ha`.
+-/
 theorem mem_iff_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0 : AA ≠ ⊥)
     (M : Submodule (𝓞 E) (Fin r → E)) (v : Fin r → E) :
     v ∈ M ↔ ∀ b : E, (∀ c ∈ AA, ∃ o : 𝓞 E, (o : E) = b * c) → b • v ∈ divLat AA M := by
@@ -67,6 +80,13 @@ theorem mem_iff_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0 :
   rw [mul_smul]
   exact h b hb a ha
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Set `f : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)` to `(LinearMap.lsmul E (Fin r → E) a).restrictScalars _`. Establish `hf : Function.Injective f` using `smul_right_injective _ ha0`. Apply `Submodule.fg_of_fg_map_injective f hf` to reduce the goal to its premises.
+
+Use `haveI : IsNoetherian (𝓞 E) M := isNoetherian_of_fg_of_noetherian M hM`. Use `Submodule.FG.of_le_of_isNoetherian (T := M) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hv a ha`. Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`.
+
+Introduce `v hv`. Use `mem_of_forall_mul_smul AA hfg h0 (Submodule.span E _).toAddSubmonoid v fun a _ b hb => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (smul_mem_divLat hv hb))`.
+-/
 theorem isLattice_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0 : AA ≠ ⊥)
     {M : Submodule (𝓞 E) (Fin r → E)} (hM : M.FG)
     (hs : Submodule.span E (M : Set (Fin r → E)) = ⊤) :
@@ -88,10 +108,22 @@ theorem isLattice_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[herm_smul_left, herm_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_smul_smul {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (ξ a b : E) (x y : Fin r → E) :
     ξ * FD.herm G (a • x) (b • y) = ξ * FD.herm G x y * a * FD.cc b := by
   rw [herm_smul_left, herm_smul_right]; ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x hx y hy`. Use `(hA _).1 fun a ha b hb => ?_` and prove the remaining obligations. Rewrite using `[← herm_smul_smul]`. Conclude with `(hM _).2 (hx a ha) _ (hy b hb)`.
+
+Introduce `x hx a ha`. Use `(hM _).1 fun y hy => ?_` and prove the remaining obligations. Set `N : AddSubmonoid (Fin r → E)` to `{ carrier := {y | ∃ n : ℤ, Algebra.trace ℚ E (ξ * FD.herm G (a • x) y) = n} add_mem' := by`. Introduce and unpack `u w ⟨n, hn⟩ ⟨k, hk⟩`. Use `⟨n + k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[herm_add_right, mul_add, map_add, hn, hk]`. Use `push_cast`. Both sides reduce to the same expression. Use the proof step `zero_mem' := ⟨0, by rw [herm_zero_right]; simp⟩ }`. Use `mem_of_forall_mul_smul AA hfg h0 N y fun a' ha' b hb => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∃ n : ℤ, _`. Rewrite using `[mul_smul, herm_smul_smul]`. Conclude with `(hA _).2 (hx _ (smul_mem_divLat hy hb)) a ha a' ha'`.
+-/
 theorem selfDual_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0 : AA ≠ ⊥) (ξ : E)
     (hA : ∀ x : E, (∀ a ∈ AA, ∀ b ∈ AA, ∃ z : ℤ, Algebra.trace ℚ E (ξ * x * a * FD.cc b) = z) ↔
       IsIntegral ℤ x) (G : Matrix (Fin r) (Fin r) E) {M : Submodule (𝓞 E) (Fin r → E)}
@@ -118,6 +150,13 @@ theorem selfDual_divLat {r : ℕ} {AA : Submodule (𝓞 E) E} (hfg : AA.FG) (h0 
     rw [mul_smul, herm_smul_smul]
     exact (hA _).2 (hx _ (smul_mem_divLat hy hb)) a ha a' ha'
 
+/- English proof (translation)
+Establish `hmap : (LinearMap.range φ).map ((g.restrictScalars (𝓞 E) : (Fin r → E) ≃ₗ[𝓞 E] (Fin r → E)) : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)) = LinearMap.range φ'`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hm x).1 hx`.
+
+Introduce `hy`. Use `⟨g.symm y, (hm _).2 (by rwa [g.apply_symm_apply]), g.apply_symm_apply y⟩` and prove the remaining obligations. Set `gam : D.La ≃ₗ[𝓞 E] D'.La` to `((LinearEquiv.ofInjective φ hφ).trans (LinearEquiv.ofSubmodules (g.restrictScalars (𝓞 E)) _ _ hmap)).trans (LinearEquiv.ofInjective φ' hφ').symm`. Establish `hgam : ∀ a, φ' (gam a) = g (φ a)` using `fun a => congrArg Subtype.val ((LinearEquiv.ofInjective φ' hφ').apply_symm_apply _)`. Use `⟨gam, fun a b => ?_⟩` and prove the remaining obligations.
+
+Establish `: ((D'.EF (gam a) (gam b) : ℤ) : ℚ) = D.EF a b`. Rewrite using `[hE', hE, hgam, hgam, hg]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem exists_isometry {H : Host E} (D D' : Datum H) {r : ℕ} (ξ : E)
     (G : Matrix (Fin r) (Fin r) E) (φ : D.La →ₗ[𝓞 E] (Fin r → E))
     (φ' : D'.La →ₗ[𝓞 E] (Fin r → E)) (hφ : Function.Injective φ) (hφ' : Function.Injective φ')
@@ -154,6 +193,21 @@ namespace GlobalTheory
 
 open DataClassCount in
 
+/- English proof (translation)
+Introduce `hH E _ _ _ H p q r hr ξ AA hξ hξ0 hfg h0 hA m Di hpq hne`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Rewrite using `[Nat.cast_zero]`. Check the signs of the components of the expression. Set `i0 : Fin m` to `⟨0, hm⟩`.
+
+Take `⟨G, φ0, hM0⟩` from `GlobalTheory.exists_herm_coord_of_datum E H (Di i0) ξ hξ hξ0 r (by rw [(hpq i0).1, (hpq i0).2, hr])`. Establish `hex` using `fun i => GlobalTheory.model_in_same_space (GlobalTheory.LocalQuad.landherrSt_of_hasseNormSt hH) hH E H (Di i0) (Di i) r ξ G φ0 (by rw [(hpq i0).1, (hpq i).1]) (by rw [(hpq i0).2, (hpq i).2]) hξ hM0`. Use `choose φ hφ using hex`. Take `⟨S, -, hS, hcard, -⟩` from `GlobalTheory.exists_finset_selfDual_classes_herm G hM0.2.2.1`. Establish `hcl` using `fun i => by`.
+
+Establish `h` using `GlobalTheory.HermModel.rank_integral_selfDual E H (Di i) r ξ G (φ i) hξ (hφ i)`. Establish `hsd` using `selfDual_divLat hfg h0 ξ hA G (M := LinearMap.range (φ i)) fun v => by`. Rewrite using `[← h.2.2.2 v]`. Conclude with `⟨fun h y => h _ ⟨y, rfl⟩, by rintro h _ ⟨y, rfl⟩; exact h y⟩`. Conclude with `hS _ (isLattice_divLat hfg h0 h.2.1 (hφ i).2.1) hsd.1 hsd.2`.
+
+Use `choose L hL γ hγ hmem using hcl`. Use `le_trans ?_ hcard` and prove the remaining obligations. Establish `hinj : Function.Injective L`. Introduce `i j hij`. Set `g : ∀ k : Fin m, (Fin r → E) ≃ₗ[E] (Fin r → E)` to `fun k => Matrix.toLin'OfInv (γ k).inv_mul (γ k).mul_inv`.
+
+Establish `hg : ∀ k x y, FD.herm G (g k x) (g k y) = FD.herm G x y` using `hγ`. Establish `hgm : ∀ k x, x ∈ L k ↔ g k x ∈ divLat AA (LinearMap.range (φ k))` using `hmem`. Apply the tactic sequence `obtain ⟨gam, hgam⟩ := exists_isometry (Di i) (Di j) ξ G (φ i) (φ j) (hφ i).1 (hφ j).1 (hφ i).2.2.2.2 (hφ j).2.2.2.2 ((g i).symm.trans (g j)) (fun x y => by`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hg, ← hg i, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply])`. Use the proof step `(fun x => by`.
+
+Rewrite using `[mem_iff_divLat hfg h0, mem_iff_divLat hfg h0]`. Use `forall₂_congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, LinearEquiv.trans_apply, ← hgm, ← hij, hgm, LinearEquiv.apply_symm_apply])`. Conclude with `hne i j gam hgam`. Use `Finset.card_le_card_of_injOn (s := Finset.univ) (t := S) L (fun i _ => hL i) hinj.injOn` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem card_nonisometric_data_le : GlobalTheory.Published.HasseNormSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (p q r : ℕ), r = p + q → ∀ (ξ : E) (AA : Submodule (𝓞 E) E), FD.cc ξ = -ξ → ξ ≠ 0 → AA.FG → AA ≠ ⊥ → (∀ x : E, (∀ a ∈ AA, ∀ b ∈ AA, ∃ z : ℤ, Algebra.trace ℚ E (ξ * x * a * FD.cc b) = z) ↔ IsIntegral ℤ x) → ∀ (m : ℕ) (Di : Fin m → Datum H), (∀ i, (Di i).p = p ∧ (Di i).q = q) → (∀ i j (gam : (Di i).La ≃ₗ[𝓞 E] (Di j).La), (∀ a b, (Di j).EF (gam a) (gam b) = (Di i).EF a b) → i = j) → (m : ℝ) ≤ (1 + 2 * max 1 ((2 * FD.fdeg E * r : ℝ) ^ 4 * FD.dE E ^ 2 / (4 * FD.fdeg E))) ^ (2 * FD.fdeg E * r ^ 2) * (r * max 1 ((2 * FD.fdeg E * r : ℝ) ^ 4 * FD.dE E ^ 2 / (4 * FD.fdeg E))) ^ (2 * FD.fdeg E * r ^ 2) := by
   intro hH E _ _ _ H p q r hr ξ AA hξ hξ0 hfg h0 hA m Di hpq hne
   rcases Nat.eq_zero_or_pos m with rfl | hm

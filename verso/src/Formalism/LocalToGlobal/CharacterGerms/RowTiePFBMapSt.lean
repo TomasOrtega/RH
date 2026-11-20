@@ -12,6 +12,13 @@ variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {d : ℕ}
 
 def mpt {n : ℕ} (a : Pt R n d) : Pt S n d := fun i => MvPowerSeries.map φ (a i)
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Rewrite using `[finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext h)`. Rewrite using `[map_finsuppProd]`. Simplify using `only [map_pow, ha, Finsupp.prod]`.
+
+Rewrite using `[Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]`.
+-/
 private theorem cc_subst_lemma {σ τ A : Type} [Finite σ] [CommRing A] (a : σ → MvPowerSeries τ A)
     (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ A) :
     constantCoeff (MvPowerSeries.subst a f) = constantCoeff f := by
@@ -27,12 +34,18 @@ private theorem cc_subst_lemma {σ τ A : Type} [Finite σ] [CommRing A] (a : σ
     simp only [map_pow, ha, Finsupp.prod]
     rw [Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (zero_pow hs), smul_zero]
 
+/- English proof (translation)
+Unfold `ev`. Conclude with `MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2)) f`.
+-/
 theorem map_ev {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) : MvPowerSeries.map φ (ev a f) = ev (fun j => mpt φ (a j)) (MvPowerSeries.map φ f) := by
   unfold ev
   exact MvPowerSeries.map_subst
     (MvPowerSeries.hasSubst_of_constantCoeff_zero (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2)) f
 
+/- English proof (translation)
+Rewrite using `[map_ev φ ![a] (by intro j i; fin_cases j; simp [ha]) f]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem map_ev1 {n : ℕ} (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) (f : PS R 1 d) :
     MvPowerSeries.map φ (ev ![a] f) = ev ![mpt φ a] (MvPowerSeries.map φ f) := by
   rw [map_ev φ ![a] (by intro j i; fin_cases j; simp [ha]) f]
@@ -41,6 +54,9 @@ theorem map_ev1 {n : ℕ} (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) (
   fin_cases j
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rw [map_ev φ ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) f]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem map_ev2 {n : ℕ} (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (f : PS R 2 d) :
     MvPowerSeries.map φ (ev ![a, b] f) = ev ![mpt φ a, mpt φ b] (MvPowerSeries.map φ f) := by
@@ -49,6 +65,9 @@ theorem map_ev2 {n : ℕ} (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
   funext j
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rw [map_ev φ ![a, b, c] (by intro j i; fin_cases j <;> simp [ha, hb, hc]) f]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem map_ev3 {n : ℕ} (a b c : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (hc : ∀ i, constantCoeff (c i) = 0) (f : PS R 3 d) :
     MvPowerSeries.map φ (ev ![a, b, c] f) = ev ![mpt φ a, mpt φ b, mpt φ c] (MvPowerSeries.map φ f) := by
@@ -58,42 +77,69 @@ theorem map_ev3 {n : ℕ} (a b c : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 
   fin_cases j <;> rfl
 
 omit [CommRing S] in
+/- English proof (translation)
+Unfold `ev`. Conclude with `(cc_subst_lemma (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f).trans hf`.
+-/
 theorem cc_ev {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j i, constantCoeff (a j i) = 0) (f : PS R m d)
     (hf : constantCoeff f = 0) : constantCoeff (ev a f) = 0 := by
   unfold ev
   exact (cc_subst_lemma (fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) f).trans hf
 
 omit [CommRing S] in
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 @[simp] theorem cc_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   simp [pt]
 
 omit [CommRing S] in
+/- English proof (translation)
+The claim follows from `cc_ev ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) (F i) (hF i)`.
+-/
 @[simp] theorem cc_addOf {n : ℕ} (F : Fin d → PS R 2 d) (hF : ∀ i, constantCoeff (F i) = 0)
     (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) (i : Fin d) :
     constantCoeff (addOf F a b i) = 0 := cc_ev ![a, b] (by intro j i; fin_cases j <;> simp [ha, hb]) (F i) (hF i)
 
 omit [CommRing S] in
+/- English proof (translation)
+The claim follows from `cc_ev ![a] (by intro j i; fin_cases j; simp [ha]) (ψ i) (hψ i)`.
+-/
 @[simp] theorem cc_comp1 {n : ℕ} (ψ : Pt R 1 d) (hψ : ∀ i, constantCoeff (ψ i) = 0)
     (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) :
     constantCoeff (comp1 ψ a i) = 0 := cc_ev ![a] (by intro j i; fin_cases j; simp [ha]) (ψ i) (hψ i)
 
 omit [CommRing S] in
+/- English proof (translation)
+Introduce `i` and use `by simp`.
+-/
 theorem zc_zero {n : ℕ} : ∀ i : Fin d, constantCoeff ((0 : Pt R n d) i) = 0 := fun i => by simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mpt, pt]`.
+-/
 @[simp] theorem mpt_pt {n : ℕ} (j : Fin n) : mpt φ (pt R d j) = pt S d j := by
   funext i
   simp [mpt, pt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mpt]`.
+-/
 @[simp] theorem mpt_zero {n : ℕ} : mpt φ (0 : Pt R n d) = 0 := by
   funext i
   simp [mpt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_ev2 φ a b ha hb (F i)`.
+-/
 theorem mpt_addOf {n : ℕ} (F : Fin d → PS R 2 d) (a b : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) :
     mpt φ (addOf F a b) = addOf (fun i => MvPowerSeries.map φ (F i)) (mpt φ a) (mpt φ b) := by
   funext i
   exact map_ev2 φ a b ha hb (F i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_ev1 φ a ha (ψ i)`.
+-/
 theorem mpt_comp1 {n : ℕ} (ψ : Pt R 1 d) (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) :
     mpt φ (comp1 ψ a) = comp1 (mpt φ ψ) (mpt φ a) := by
   funext i

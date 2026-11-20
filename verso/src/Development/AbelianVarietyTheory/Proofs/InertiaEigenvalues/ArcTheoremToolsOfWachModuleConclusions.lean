@@ -18,6 +18,15 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 
 namespace GlobalTheory.ArcTools
 
+/- English proof (translation)
+Introduce `D HW F Cm`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, c2, a, b, c, d, l3, pE⟩` from `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`. Establish `hNat : HerrComplexNaturality.HerrNaturality D HW F` using `HerrComplexNaturality.herr_naturality_theorem_holds D HW F (GlobalTheory.HerrFull.herr_part_a_every_record D HW F)`. Establish `sA : UnusedSlot80.SaturationArcLifting D HW F` using `UnusedSlot80.saturation_general_statement D HW F ⟨p1, p9⟩`. Establish `sE : UnusedSlot80.SaturationEtale D HW F` using `UnusedSlot80.saturation_unramified_statement D HW F ⟨p1, p9⟩`.
+
+Establish `sP : ArcLiftingSetup.SaturationFrobeniusPullback D HW F` using `UnusedSlot80.saturation_pullback_statement D HW F p9`. Establish `pi : UnusedSlot80.GammaPreservesUniformiser D HW F` using `UnusedSlot80.gamma_uniformizer_divisible_statement D HW F p9`. Establish `kL : UnusedSlot80.KillerAtLevels D HW F` using `UnusedSlot80.annihilator_levels_unramified_statement D HW F Cm ⟨p4, p9⟩`. Establish `kA : UnusedSlot80.KillerBoundWithConstant D HW F 8` using `UnusedSlot80.killer_first_theorem_holds D HW F (le_refl _) ⟨kL, pi⟩`. Establish `kE : UnusedSlot80.KillerAtLevelsSecondForm D HW F` using `UnusedSlot80.killer_second_theorem_holds D HW F pi`.
+
+Establish `f1A : UnusedSlot80.FirstFiltrationArcLifting D HW F` using `UnusedSlot80.firstFiltrationTheoremCaseA D HW F ⟨p2, p5, p9, a, hNat⟩`. Establish `f1E : UnusedSlot80.FirstFiltrationEtale D HW F` using `UnusedSlot80.firstFiltrationTheoremEtale D HW F ⟨p2, p5, p9, a, hNat⟩`. Establish `f2A : UnusedSlot80.SecondFiltrationArcLifting D HW F` using `UnusedSlot80.second_filtration_theorem_arc_lifting D HW F ⟨⟨p7, p9, b⟩, f1A⟩`. Establish `f2E : UnusedSlot80.SecondFiltrationEtale D HW F` using `UnusedSlot80.cohomology_class_unramified_statement D HW F ⟨⟨p7, p9, b⟩, f1E⟩`. Establish `tE : UnusedSlot80.FiltrationPropertiesEtale D HW F Cm` using `UnusedSlot80.tools_unramified_statement D HW F Cm ⟨p3, p4, p9⟩`.
+
+Establish `bc : UnusedSlot80.H1fBaseChangeFree D` using `UnusedSlot80.base_change_statement D`. Conclude with `⟨sA, sE, sP, pi, kL, kA, kE, f1A, f1E, f2A, f2E, tE, bc⟩`.
+-/
 theorem arc_tools_from_clauses :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),
       UnusedSlot80.SaturationArcLifting D HW F ∧ UnusedSlot80.SaturationEtale D HW F ∧ ArcLiftingSetup.SaturationFrobeniusPullback D HW F ∧ UnusedSlot80.GammaPreservesUniformiser D HW F ∧

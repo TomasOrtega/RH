@@ -13,6 +13,13 @@ namespace UpperTheory.GalS
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Set `K : Subgroup (Ine (F` to `E) A) := S.comap (a.ρ.toHomUnits.comp (ineIncl h))`. Establish `one : ∀ τ : Ine (F` using `E) A, a.ρ (ineIncl h τ) = 1 → τ ∈ K := fun τ e => by`. Establish `: a.ρ.toHomUnits (ineIncl h τ) = 1` using `Units.ext e`. Use `show a.ρ.toHomUnits (ineIncl h τ) ∈ S`. Rewrite using `[this]`.
+
+Conclude with `S.one_mem`. Establish `hO : IsOpen (K : Set (Ine (F` using `E) A)) := Subgroup.isOpen_mono (H₁ := (a.ρ.comp (ineIncl h)).ker) (fun τ e => one τ e) a.smooth`. Establish `hK : IsClosed ((K.map (Ine (F` using `E) A).subtype : Subgroup (G E Ω)) : Set (G E Ω)) := (isClosed_Ine A).isClosedEmbedding_subtypeVal.isClosedMap _ (K.isClosed_of_isOpen hO)`. Establish `hle : Subgroup.closure (insert γ (Wild E A : Set (G E Ω))) ≤ K.map (Ine (F` using `E) A).subtype := by`. Rewrite using `[Subgroup.closure_le]`.
+
+Introduce and unpack `u (rfl | hu)`. Conclude with `⟨⟨u, hγ.1⟩, h1, rfl⟩`. Conclude with `⟨⟨u, Wild_le_Ine hu⟩, one _ (ha _ hu), rfl⟩`. Take `⟨u, hu, e⟩` from `closure_minimal (SetLike.coe_subset_coe.mpr hle) hK (hγ.2 σ.2)`. Rewrite using `[← Subtype.ext (a1 := u) (a2 := σ) e]` and apply the resulting hypothesis.
+-/
 theorem mem_of_gen {n : ℕ} {a : WDRep h (Fin n → ℂ)} (ha : a.Tame) {γ : G E Ω} (hγ : TameGenAt A γ)
     (S : Subgroup (End ℂ (Fin n → ℂ))ˣ) (h1 : a.ρ.toHomUnits (ineIncl h ⟨γ, hγ.1⟩) ∈ S) (σ : Ine (F := E) A) :
     a.ρ.toHomUnits (ineIncl h σ) ∈ S := by
@@ -33,6 +40,13 @@ theorem mem_of_gen {n : ℕ} {a : WDRep h (Fin n → ℂ)} (ha : a.Tame) {γ : G
   obtain ⟨u, hu, e⟩ := closure_minimal (SetLike.coe_subset_coe.mpr hle) hK (hγ.2 σ.2)
   rwa [← Subtype.ext (a1 := u) (a2 := σ) e]
 
+/- English proof (translation)
+Establish `top` using `hf.iSup_eigenspace_eq_top`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ ⨆ z, f.eigenspace z` using `top ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.iSup_induction' with`. Consider the case `mem z x hx`.
+
+Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Establish `he : f.HasEigenvector z x` using `⟨hx, h0⟩`. Rewrite using `[he.pow_apply, k z ((End.hasEigenvalue_iff_isRoot_charpoly _ _).1 (End.hasEigenvalue_of_hasEigenvector he))]`. Simplify using the standard rewrite rules.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem pow_eq_one_of_roots {n : ℕ} {f : End ℂ (Fin n → ℂ)} (hf : f.IsSemisimple) {m : ℕ}
     (k : ∀ z : ℂ, f.charpoly.IsRoot z → z ^ m = 1) : f ^ m = 1 := by
   have top := hf.iSup_eigenspace_eq_top
@@ -48,6 +62,21 @@ theorem pow_eq_one_of_roots {n : ℕ} {f : End ℂ (Fin n → ℂ)} (hf : f.IsSe
   | zero => simp
   | add x y _ _ hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨n, a, rfl⟩` from `y.exists_rep`. Establish `ha : a.Tame` using `(WD.tame_mk a).1 ((WD.tame_iff_inePol _).2 fun σ hσ => k.1 σ hσ)`. Take `⟨γ, hγ⟩ : ∃ γ : G E Ω, TameGenAt A γ` from `GlobalTheory.exists_tameGenAt_of_isPlaceOver E Ω A w h`. Set `u` to `a.ρ.toHomUnits`. Set `g : Weil h` to `ineIncl h ⟨γ, hγ.1⟩`.
+
+Establish `hq : 1 ≤ normV w` using `Nat.pos_of_ne_zero fun h0 => by`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `w.asIdeal.finiteQuotientOfFreeOfNeBot w.ne_bot`. Conclude with `(Nat.card_pos (α := 𝓞 E ⧸ w.asIdeal)).ne' h0`. Establish `p1 : a.ρ g ^ (normV w - 1) = 1` using `pow_eq_one_of_roots (a.semisimple g) fun z hz => by`. Use `k.2.2 γ hγ.1 hγ.2 z ?_` and prove the remaining obligations.
+
+Rewrite using `[ht, WD.inePol_of_mem_Ine _ hγ.1, WD.charPol_mk]`. Conclude with `(rootMultiplicity_pos (LinearMap.charpoly_monic _).ne_zero).2 hz`. Establish `p2 : a.ρ (frob h * g * (frob h)⁻¹) = a.ρ g`. Rewrite using `[ha.conj_eq_pow hγ.1 deg_frob, ← Nat.sub_add_cancel hq, pow_succ, p1, one_mul]`. Establish `c1 : Commute (u (frob h)) (u g)`.
+
+Establish `e : u (frob h * g * (frob h)⁻¹) = u g` using `Units.ext p2`. Rewrite `e` using `[map_mul, map_mul, map_inv, mul_inv_eq_iff_eq_mul]`. Conclude with `e`. Establish `cen : ∀ x : (End ℂ (Fin n → ℂ))ˣ, Commute x (u g) → ∀ σ, Commute x (u (ineIncl h σ))` using `fun x hx σ => Subgroup.mem_centralizer_singleton_iff.1 (mem_of_gen ha hγ (Subgroup.centralizer {x}) (Subgroup.mem_centralizer_singleton_iff.2 hx.symm) σ) |>.symm`. Establish `c2` using `cen _ c1`.
+
+Establish `c3 : ∀ τ σ, Commute (u (ineIncl h τ)) (u (ineIncl h σ))` using `fun τ => cen _ (cen _ (Commute.refl _) τ).symm`. Introduce `s t`. Establish `c : Commute (u s) (u t)`. Take `⟨τ, e⟩` from `exists_eq_zpow_mul deg_frob s`. Take `⟨τ', e'⟩` from `exists_eq_zpow_mul deg_frob t`.
+
+Rewrite using `[e, e', map_mul, map_mul, map_zpow, map_zpow]`. Conclude with `Commute.mul_left (Commute.mul_right (Commute.zpow_zpow_self _ _ _) ((c2 τ').zpow_left _)) (Commute.mul_right ((c2 τ).symm.zpow_right _) (c3 τ τ'))`. Establish `e : a.ρ ⁅s, t⁆ = 1`. Use `(map_commutatorElement u s t).trans (commutatorElement_eq_one_iff_commute.2 c)` as an intermediate fact. Conclude with `congrArg Units.val this`.
+
+Use `show (WD.mk a).charPol _ = _`. Rewrite using `[WD.charPol_mk, e, LinearMap.charpoly_one, WD.lpDim_mk]`.
+-/
 theorem tor_of_ncW {y : WD h} (ht : thr w y.lpDim = 1) (k : NcW y) : UpperTheory.GalStar.Tor y := by
   obtain ⟨n, a, rfl⟩ := y.exists_rep
   have ha : a.Tame := (WD.tame_mk a).1 ((WD.tame_iff_inePol _).2 fun σ hσ => k.1 σ hσ)

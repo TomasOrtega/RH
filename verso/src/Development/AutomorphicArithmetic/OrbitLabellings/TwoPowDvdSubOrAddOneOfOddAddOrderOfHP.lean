@@ -10,6 +10,19 @@ open UpperTheory.HF
 open scoped BigOperators
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Classical
 
+/- English proof (translation)
+Introduce `D p hp hc ho`. Establish `hcl : primeClass D.host.toHostRaw p = PrimeClass.inertClass` using `hc`. Take `⟨hN, -, -⟩` from `(primeClass_eq_inert_iff_symbols hp).1 hcl`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : (Ideal.span {(p : ℤ)}).IsPrime := (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)`.
+
+Take `⟨⟨P, hP1, hP2⟩⟩` from `(Ideal.span {(p : ℤ)}).nonempty_primesOver (S := 𝓞 D.host.E)`. Take `⟨σ, hσ⟩ : ∃ σ, D.host.galE σ = D.host.toHostAx.frobG p` from `⟨D.host.gal.symm _, D.host.gal.apply_symm_apply _⟩`. Establish `hfr : IsArithFrobAt ℤ σ P` using `((UpperTheory.HF.frobG_spec _ D.host.toHostAx p hN).1 P σ).2 hσ`. Establish `hord` using `(UpperTheory.galE_arithFrob_eq_iota_hP D p hp hc P σ hfr).2`. Rewrite `hord` using `[hσ]`.
+
+Establish `h1 : D.R.toFrame.hH (D.host.toHostAx.frobG p).2 = 1`. Assume the negation of the conclusion as `hne`. Establish `he` using `D.R.toFrame.even_orderOf_of_hH_ne_one hne`. Rewrite `he` using `[hord]`. Conclude with `Nat.not_even_iff_odd.2 ho he`.
+
+Take `⟨-, -, h3, h4⟩` from `UpperTheory.HF.frob_h_order _ D.host.toHostAx p hp hN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `h4.1 h1 with h | h` into its components or cases. Use `left`. Establish `: (((p : ℤ) - 1 : ℤ) : ZMod (2 ^ (D.R.e + 2))) = 0` using `by push_cast; exact sub_eq_zero.2 h`.
+
+Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 this` after adjusting the coercions. Use `right`. Establish `: (((p : ℤ) + 1 : ℤ) : ZMod (2 ^ (D.R.e + 2))) = 0` using `by push_cast; exact add_eq_zero_iff_eq_neg.2 h`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 this` after adjusting the coercions. Rewrite `h3` using `[h1, orderOf_one, mul_one]`.
+
+Conclude with `h3`.
+-/
 theorem UpperTheory.two_pow_dvd_sub_or_add_one_of_odd_addOrderOf_hP :
     ∀ (D : D7) (p : ℕ), p.Prime → IsResidueClassZero D p → Odd (addOrderOf (hP D p)) →
     ((2 ^ (D.R.e + 2) : ℤ) ∣ (p : ℤ) - 1 ∨ (2 ^ (D.R.e + 2) : ℤ) ∣ (p : ℤ) + 1) ∧ 2 ^ (D.R.e + 2) ≤ p + 1 := by

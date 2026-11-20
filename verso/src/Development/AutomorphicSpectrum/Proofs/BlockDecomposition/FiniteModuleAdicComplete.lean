@@ -4,6 +4,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.FiniteComplete
 
+/- English proof (translation)
+Introduce `O M _ _ _ hO _ _ _`. Use `set I := IsLocalRing.maximalIdeal O`. Establish `hb : Function.Bijective (AdicCompletion.of I O)` using `AdicCompletion.of_bijective_iff.2 hO`. Set `φ : O ≃ₗ[O] AdicCompletion I O` to `LinearEquiv.ofBijective (AdicCompletion.of I O) hb`. Set `e : M ≃ₗ[O] AdicCompletion I O ⊗[O] M` to `(TensorProduct.lid O M).symm.trans (TensorProduct.congr φ (LinearEquiv.refl O M))`.
+
+Establish `h1 : AdicCompletion.of I O 1 = 1`. Use extensionality with `n`. Simplify using the standard rewrite rules. Establish `hfac : ⇑(AdicCompletion.of I M) = ⇑(AdicCompletion.ofTensorProduct I M) ∘ ⇑e`. Use function extensionality and compare the values at `m`.
+
+Establish `he : e m = (1 : AdicCompletion I O) ⊗ₜ[O] m`. Simplify using `[e, φ, h1]`. Simplify using `[he]`. Use `AdicCompletion.of_bijective_iff.1 ?_` and prove the remaining obligations. Rewrite using `[hfac]`.
+
+Conclude with `(AdicCompletion.ofTensorProduct_bijective_of_finite_of_isNoetherian I M).comp e.bijective`.
+-/
 theorem isAdicComplete_of_finite : ∀ (O M : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [AddCommGroup M] [Module O M]
     [Module.Finite O M], IsAdicComplete (IsLocalRing.maximalIdeal O) M := by

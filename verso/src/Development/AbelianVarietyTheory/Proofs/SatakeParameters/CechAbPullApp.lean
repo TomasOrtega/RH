@@ -24,6 +24,9 @@ namespace Cube.PullHom
 variable {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {R : Type u} [Ring R] {S : Type u'} [Ring S]
   {σ : R →+* S} {τ : κ → ι} {A : Cube.{v} ι R} {B : Cube.{v'} κ S} (ψ : Cube.PullHom σ τ A B)
 
+/- English proof (translation)
+Rewrite using `[Finset.card_image_of_injOn h, t.2]`.
+-/
 theorem card_image {p : ℕ} (t : {s : Finset κ // s.card = p}) (h : Set.InjOn τ (t.1 : Set κ)) :
     (t.1.image τ).card = p := by
   rw [Finset.card_image_of_injOn h, t.2]
@@ -44,6 +47,9 @@ def term (p : ℕ) : Cube.Term A p →ₛₗ[σ] Cube.Term B p where
     · simp only [dif_pos h, Pi.smul_apply, map_smulₛₗ, smul_comm (PD.sortSign τ t.1) (σ r)]
     · simp only [dif_neg h, Pi.smul_apply, smul_zero]
 
+/- English proof (translation)
+Unfold `term`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos h]`.
+-/
 theorem term_apply_of_injOn {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : Set.InjOn τ (t.1 : Set κ)) :
     ψ.term p x t = PD.sortSign τ t.1 • ψ.app t.1 (x ⟨t.1.image τ, card_image t h⟩) := by
@@ -51,6 +57,9 @@ theorem term_apply_of_injOn {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ //
   simp only [LinearMap.coe_mk, AddHom.coe_mk]
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `term`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_neg h]`.
+-/
 theorem term_apply_of_not_injOn {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : ¬ Set.InjOn τ (t.1 : Set κ)) : ψ.term p x t = 0 := by
   unfold term
@@ -85,6 +94,9 @@ def cechAbPull (φ : F ⟶ (push f).obj G) :
         (homOfLE (cechOpen_anti V' U' h)).op) _))
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechAbPull_app (φ : F ⟶ (push f).obj G) (s : Finset κ)
     (x : F.obj.obj (op (cechOpen V U (s.image τ)))) :
     (cechAbPull f τ hτ φ).app s x =

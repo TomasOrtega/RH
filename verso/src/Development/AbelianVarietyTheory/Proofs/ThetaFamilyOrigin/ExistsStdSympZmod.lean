@@ -7,12 +7,30 @@ set_option autoImplicit false
 
 namespace GlobalTheory.SympMod
 
+/- English proof (translation)
+Establish `h` using `IsAddCyclic.card_nsmulAddMonoidHom_ker (ZMod M) d`. Rewrite `h` using `[Nat.card_zmod, Nat.gcd_eq_right hd]`. Conclude with `h`.
+-/
 theorem card_torsion_zmod {M d : ℕ} [NeZero M] (hd : d ∣ M) :
     Nat.card {a : ZMod M // d • a = 0} = d := by
   have h := IsAddCyclic.card_nsmulAddMonoidHom_ker (ZMod M) d
   rw [Nat.card_zmod, Nat.gcd_eq_right hd] at h
   exact h
 
+/- English proof (translation)
+Establish `: IsPrincipalIdealRing (ZMod M)` using `IsPrincipalIdealRing.of_surjective (Int.castRingHom (ZMod M)) (ZMod.ringHom_surjective _)`. Take `⟨e, he, f, hf, h₁, h₂, h₃⟩` from `exists_pair_dvd_of_bilinForm B N`. Establish `hall : ∀ x ∈ N, ∀ y ∈ N, B e f ∣ B x y`. Introduce `x hx y hy`. Take `⟨b, hb⟩` from `h₁ y hy`.
+
+Take `⟨a, ha⟩` from `h₂ x hx`. Establish `k₁ : B (x - a • e) f = 0` using `by simp [ha, mul_comm]`. Establish `k` using `h₃ (x - a • e) (N.sub_mem hx (N.smul_mem _ he)) (y - b • f) (N.sub_mem hy (N.smul_mem _ hf)) (by simp [hb, mul_comm]) k₁`. Rewrite `k` using `[map_sub, map_smul, k₁, smul_zero, sub_zero]`. Establish `: B x y = B (x - a • e) y + a * B e y` using `by simp`.
+
+Rewrite using `[this]`. Conclude with `dvd_add k (Dvd.dvd.mul_left (h₁ y hy) a)`. Establish `hu : IsUnit (B e f)`. Assume the negation of the conclusion as `hnu`. Take `⟨m, hm⟩` from `ZMod.natCast_zmod_surjective (B e f)`.
+
+Rewrite `hnu` using `[← hm, ZMod.isUnit_iff_coprime, Nat.Prime.not_coprime_iff_dvd]`. Take `⟨p, hp, ⟨c, rfl⟩, ⟨q, hq⟩⟩` from `hnu`. Establish `hkill : ∀ x ∈ N, q • x = 0`. Introduce `x hx`. Use `hN _ (N.toAddSubgroup.nsmul_mem hx q) fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨r, hr⟩` from `hall x hx y hy`. Rewrite using `[map_nsmul, LinearMap.smul_apply, hr, ← hm, nsmul_eq_mul, ← mul_assoc, ← Nat.cast_mul, ← mul_assoc, mul_comm q p, ← hq, Nat.cast_mul, ZMod.natCast_self, zero_mul, zero_mul]`. Establish `hM : ∀ x : V, M • x = 0` using `fun x => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod M), ZMod.natCast_self, zero_smul]`. Establish `k₁` using `hc q ⟨p, by rw [hq, mul_comm]⟩`.
+
+Establish `k₂` using `hc M dvd_rfl`. Establish `k₃ : Nat.card {x : V // x ∈ N ∧ q • x = 0} = Nat.card {x : V // x ∈ N ∧ M • x = 0}` using `Nat.card_congr (Equiv.subtypeEquivRight fun x => ⟨fun h => ⟨h.1, hM x⟩, fun h => ⟨h.1, hkill x h.1⟩⟩)`. Rewrite `k₃` using `[k₁, k₂]`. Establish `k₄ : q = M` using `Nat.pow_left_injective (by omega) k₃`. Establish `k₅` using `NeZero.pos M`.
+
+Use `hp.two_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨u, hu⟩` from `hu.exists_left_inv`. Conclude with `⟨e, he, u • f, N.smul_mem _ hf, by simpa using hu⟩`.
+-/
 theorem exists_pair_eq_one {M g : ℕ} [NeZero M] {V : Type*} [AddCommGroup V] [Module (ZMod M) V]
     {B : LinearMap.BilinForm (ZMod M) V} (N : Submodule (ZMod M) V)
     (hN : ∀ x ∈ N, (∀ y ∈ N, B x y = 0) → x = 0)
@@ -58,6 +76,37 @@ theorem exists_pair_eq_one {M g : ℕ} [NeZero M] {V : Type*} [AddCommGroup V] [
   obtain ⟨u, hu⟩ := hu.exists_left_inv
   exact ⟨e, he, u • f, N.smul_mem _ hf, by simpa using hu⟩
 
+/- English proof (translation)
+Proceed by induction on `g generalizing N with`. Consider the case `zero`. Conclude with `⟨Fin.elim0, Fin.elim0, ⟨fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ g ih`. Take `⟨e, he, f, hf, hd⟩` from `exists_pair_eq_one N hN hc`.
+
+Establish `hd' : B f e = -1` using `by rw [← hB.neg_eq, hd]`. Set `N' : Submodule (ZMod M) V` to `N ⊓ (LinearMap.ker (B e) ⊓ LinearMap.ker (B f))`. Establish `hmem : ∀ y, y ∈ N' ↔ y ∈ N ∧ B e y = 0 ∧ B f y = 0` using `fun y => Iff.rfl`. Establish `hpr : ∀ y ∈ N, y - B y f • e - B e y • f ∈ N'` using `fun y hy => (hmem _).2 ⟨N.sub_mem (N.sub_mem hy (N.smul_mem _ he)) (N.smul_mem _ hf), by simp [hd, hB.self_eq_zero], by simp [← hB.neg_eq y f, hd', hB.self_eq_zero]⟩`. Establish `hdec : ∀ y ∈ N, ∃ a b : ZMod M, ∃ y' ∈ N', y = a • e + b • f + y'` using `fun y hy => ⟨B y f, B e y, _, hpr y hy, by abel⟩`.
+
+Take `⟨e', f', hs, he', hf'⟩` from `ih N' (by`. Introduce `x hx hx0`. Use `hN x hx.1 fun y hy => ?_` and prove the remaining obligations. Take `⟨a, b, y', hy', rfl⟩` from `hdec y hy`. Simplify using `[hx0 y' hy', hB.eq_iff.1 ((hmem x).1 hx).2.1, hB.eq_iff.1 ((hmem x).1 hx).2.2]) (by`.
+
+Introduce `d hdM`. Establish `hd0 : 0 < d` using `Nat.pos_of_dvd_of_pos hdM (NeZero.pos M)`. Set `F : {a : ZMod M // d • a = 0} × {a : ZMod M // d • a = 0} × {x : V // x ∈ N' ∧ d • x = 0} → {x : V // x ∈ N ∧ d • x = 0}` to `fun t => ⟨t.1.1 • e + t.2.1.1 • f + t.2.2.1, N.add_mem (N.add_mem (N.smul_mem _ he) (N.smul_mem _ hf)) t.2.2.2.1.1, by`. Rewrite using `[smul_add, smul_add, ← smul_assoc, ← smul_assoc, t.1.2, t.2.1.2, t.2.2.2.2]`. Use the proof step `simp⟩`.
+
+Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩, ⟨y, hy, hy'⟩⟩ ⟨⟨a', ha'⟩, ⟨b', hb'⟩, ⟨z, hz, hz'⟩⟩ h`. Establish `h : a • e + b • f + y = a' • e + b' • f + z` using `congrArg Subtype.val h`. Choose the witnesses or unpack the hypotheses as in `rfl : b = b' := by`.
+
+Simplify `congrArg (B e) h` using `[hd, hB.self_eq_zero, ((hmem _).1 hy).2.1, ((hmem _).1 hz).2.1]`. Choose the witnesses or unpack the hypotheses as in `rfl : a = a' := by`. Simplify `congrArg (B f) h` using `[hd', hB.self_eq_zero, ((hmem _).1 hy).2.2, ((hmem _).1 hz).2.2]`. Take `rfl : y = z` from `add_left_cancel h`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨x, hx, hx'⟩`. Establish `k₁ : d • B x f = 0` using `by rw [← LinearMap.smul_apply, ← map_nsmul, hx']; simp`. Establish `k₂ : d • B e x = 0` using `by rw [← map_nsmul, hx', map_zero]`. Use `⟨⟨⟨B x f, k₁⟩, ⟨B e x, k₂⟩, ⟨_, hpr x hx, ?_⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, smul_sub, ← smul_assoc, ← smul_assoc, k₁, k₂, hx']`.
+
+Simplify using the standard rewrite rules. Use `show B x f • e + B e x • f + (x - B x f • e - B e x • f) = x`. Normalize the expressions using the abelian group laws. Establish `h` using `Nat.card_eq_of_bijective F hF`. Rewrite `h` using `[hc d hdM, Nat.card_prod, Nat.card_prod, card_torsion_zmod hdM, show d ^ (2 * (g + 1)) = d * (d * d ^ (2 * g)) by ring]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left hd0 (Nat.eq_of_mul_eq_mul_left hd0 h))`. Use `⟨Fin.cons e e', Fin.cons f f', ⟨?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `cases i using Fin.cases <;> cases j using Fin.cases`. Simplify using `[hB.self_eq_zero]`.
+
+Simplify using `[((hmem _).1 (he' _)).2.1]`. Simplify using `[hB.eq_iff.1 ((hmem _).1 (he' _)).2.1]`. Simplify using `[hs.left_left]`. Introduce `i j`. Apply the tactic sequence `cases i using Fin.cases <;> cases j using Fin.cases`.
+
+Simplify using `[hB.self_eq_zero]`. Simplify using `[((hmem _).1 (hf' _)).2.2]`. Simplify using `[hB.eq_iff.1 ((hmem _).1 (hf' _)).2.2]`. Simplify using `[hs.right_right]`. Introduce `i`.
+
+Consider the cases of `i using Fin.cases`. Simplify using `[hd]`. Simplify using `[hs.left_right_self]`. Introduce `i j hij`. Apply the tactic sequence `cases i using Fin.cases <;> cases j using Fin.cases`.
+
+Conclude with `absurd rfl hij`. Simplify using `[((hmem _).1 (hf' _)).2.1]`. Simplify using `[hB.eq_iff.1 ((hmem _).1 (he' _)).2.2]`. Simplify using `using hs.left_right_ne _ _ fun a => hij (congrArg _ a)`. Introduce `i`.
+
+Consider the cases of `i using Fin.cases`. Conclude with `he`. Conclude with `(he' _).1`. Introduce `i`. Consider the cases of `i using Fin.cases`.
+
+Conclude with `hf`. Conclude with `(hf' _).1`.
+-/
 theorem exists_isSymplecticFamily {M : ℕ} [NeZero M] {V : Type*} [AddCommGroup V] [Module (ZMod M) V]
     {B : LinearMap.BilinForm (ZMod M) V} (hB : B.IsAlt) (g : ℕ) (N : Submodule (ZMod M) V)
     (hN : ∀ x ∈ N, (∀ y ∈ N, B x y = 0) → x = 0)
@@ -146,6 +195,11 @@ theorem exists_isSymplecticFamily {M : ℕ} [NeZero M] {V : Type*} [AddCommGroup
 
 open ReciprocityTheory.ChartRestriction.G.Out in
 
+/- English proof (translation)
+Take `⟨e, f, hs, -, -⟩` from `exists_isSymplecticFamily hB g ⊤ (fun x _ h => hN x fun y => h y trivial) (fun d hd => by simpa using hc d hd)`. Set `σ : Fin (2 * g) ≃ Fin g ⊕ Fin g` to `(finCongr (two_mul g)).trans finSumFinEquiv.symm`. Use `⟨Sum.elim e f ∘ σ, fun i k => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `σ.symm.surjective i`. Take `⟨b, rfl⟩` from `σ.symm.surjective k`.
+
+Simplify using `only [Function.comp, Equiv.apply_symm_apply, stdSymp]`. Establish `l : ∀ a, (σ.symm (.inl a) : ℕ) = a` using `fun _ => rfl`. Establish `r : ∀ a, (σ.symm (.inr a) : ℕ) = g + a` using `fun _ => rfl`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> have := a.2 <;> have := b.2 <;>`. Apply the tactic sequence `simp only [l, r, Sum.elim_inl, Sum.elim_inr, hs.left_left, hs.right_right, hs.left_right, hs.right_left hB, Fin.ext_iff] <;> split_ifs <;> first | omega | simp`.
+-/
 theorem exists_stdSymp_zmod {M g : ℕ} [NeZero M] {V : Type*} [AddCommGroup V] [Module (ZMod M) V]
     {B : LinearMap.BilinForm (ZMod M) V} (hB : B.IsAlt) (hN : ∀ x, (∀ y, B x y = 0) → x = 0)
     (hc : ∀ d, d ∣ M → Nat.card {x : V // d • x = 0} = d ^ (2 * g)) :
@@ -169,6 +223,17 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G.Out in
 
+/- English proof (translation)
+Introduce `M g G _ R _ _ ze hM hz hG hc w halt hnd`. Establish `: NeZero M` using `⟨hM.ne'⟩`. Establish `wm : ∀ x y, w x y ∈ Subgroup.zpowers ze` using `fun x y => by`. Rewrite using `[hz.zpowers_eq, mem_rootsOfUnity, ← map_pow, hG, map_one]`. Establish `hT : ∀ x : Additive G, M • x = 0` using `fun x => hG x.toMul`.
+
+Set `_ : Module (ZMod M) (Additive G)` to `AddCommGroup.zmodModule hT`. Set `β : Additive G → Additive G → ZMod M` to `fun x y => hz.zmodEquivZPowers.symm (Additive.ofMul ⟨w x.toMul y.toMul, wm _ _⟩)`. Establish `βl : ∀ x x' y, β (x + x') y = β x y + β x' y` using `fun x x' y => by`. Simplify using `only [β, ← map_add]`. Conclude with `congrArg _ (Subtype.ext (by show w (x.toMul * x'.toMul) y.toMul = w x.toMul y.toMul * w x'.toMul y.toMul`.
+
+Rewrite using `[map_mul, MonoidHom.mul_apply]))`. Establish `βr : ∀ x y y', β x (y + y') = β x y + β x y'` using `fun x y y' => by`. Simplify using `only [β, ← map_add]`. Conclude with `congrArg _ (Subtype.ext (map_mul (w x.toMul) y.toMul y'.toMul))`. Establish `βw : ∀ x y (n : ℤ), β x y = n ↔ w x.toMul y.toMul = ze ^ n` using `fun x y n => by`.
+
+Simplify using `only [β]`. Rewrite using `[AddEquiv.symm_apply_eq, hz.zmodEquivZPowers_apply_coe_int]`. Conclude with `Subtype.ext_iff`. Set `B : LinearMap.BilinForm (ZMod M) (Additive G)` to `LinearMap.mk₂ _ β βl (fun c x y => ZMod.map_smul (AddMonoidHom.mk' (β · y) fun x x' => βl x x' y) c x) βr (fun c x y => ZMod.map_smul (AddMonoidHom.mk' (β x) (βr x)) c y)`. Take `⟨v, hv⟩` from `SympMod.exists_stdSymp_zmod (V := Additive G) (g := g) (B := B) (fun x => ((βw x x 0).2 (by simpa using halt _)).trans Int.cast_zero) (fun x hx => hnd x.toMul fun y => by`.
+
+Establish `h` using `(βw x (Additive.ofMul y) 0).1 ((hx _).trans Int.cast_zero.symm)`. Rewrite using `[zpow_zero] at h) (fun d hd => hc d hd)` and apply the resulting hypothesis. Conclude with `⟨fun i => (v i).toMul, fun i k => (βw _ _ _).1 (hv i k)⟩`.
+-/
 theorem exists_stdSymp_of_alternating_pairing :
     ∀ (M g : ℕ) (G : Type) [CommGroup G] (R : Type) [CommRing R] [IsDomain R] (ζ : Rˣ), 0 < M →
     IsPrimitiveRoot ζ M → (∀ x : G, x ^ M = 1) →

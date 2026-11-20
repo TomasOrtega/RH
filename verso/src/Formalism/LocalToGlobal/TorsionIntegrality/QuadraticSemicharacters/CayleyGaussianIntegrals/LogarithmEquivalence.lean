@@ -10,22 +10,39 @@ namespace Inv
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `show (H y x).im = -(H x y).im`. Rewrite using `[hH x y, Complex.conj_im]`.
+-/
 theorem altE_swap {H : Sesq V} (hH : IsHerm H) (x y : V) : altE H y x = -altE H x y := by
   show (H y x).im = -(H x y).im
   rw [hH x y, Complex.conj_im]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.H.altE, map_add, LinearMap.add_apply, Complex.add_im]`.
+-/
 theorem altE_add_left (H : Sesq V) (x x' y : V) : altE H (x + x') y = altE H x y + altE H x' y := by
   simp only [Formalism.L2.Th1.H.altE, map_add, LinearMap.add_apply, Complex.add_im]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.H.altE, map_neg, Complex.neg_im]`.
+-/
 theorem altE_neg_right (H : Sesq V) (x y : V) : altE H x (-y) = -altE H x y := by
   simp only [Formalism.L2.Th1.H.altE, map_neg, Complex.neg_im]
 
+/- English proof (translation)
+Establish `h : -(2 * (Real.pi : ℂ)) * Complex.I * (((m : ℝ)) : ℂ) = ((-m : ℤ) : ℂ) * (2 * Real.pi * Complex.I)` using `by push_cast; ring`. Rewrite using `[h, Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 theorem exp_two_pi_int (m : ℤ) :
     Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (((m : ℝ)) : ℂ)) = 1 := by
   have h : -(2 * (Real.pi : ℂ)) * Complex.I * (((m : ℝ)) : ℂ) = ((-m : ℤ) : ℂ) * (2 * Real.pi * Complex.I) := by
     push_cast; ring
   rw [h, Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp h`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `mul_ne_zero (mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)) Complex.I_ne_zero`. Establish `h3 : ((t : ℝ) : ℂ) = (((-n : ℤ) : ℝ) : ℂ)`. Apply `mul_right_cancel₀ h2` to reduce the goal to its premises.
+
+Use `push_cast`. Take the linear combination `-hn`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem int_of_exp_two_pi {t : ℝ}
     (h : Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (t : ℂ)) = 1) : ∃ m : ℤ, t = (m : ℝ) := by
   obtain ⟨n, hn⟩ := Complex.exp_eq_one_iff.mp h
@@ -38,6 +55,9 @@ theorem int_of_exp_two_pi {t : ℝ}
     linear_combination -hn
   exact_mod_cast h3
 
+/- English proof (translation)
+Take `⟨_, hdist, hcov⟩` from `hS`. Take `⟨y₀, hy₀S, hy₀⟩` from `hcov 0 (zero_mem _)`. Establish `hy₀' : y₀ ∈ Λ₁` using `by simpa using Λ₁.neg_mem hy₀`. Use `⟨y₀, hy₀S, hy₀', ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_eq_single y₀ (fun y hyS hne => hg y hyS (fun hy => hne (hdist y hyS y₀ hy₀S (Λ₁.sub_mem hy hy₀')))) (fun h => absurd hy₀S h)`.
+-/
 theorem sum_reps {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) (g : V → ℂ)
     (hg : ∀ y ∈ S, y ∉ Λ₁ → g y = 0) : ∃ y₀ ∈ S, y₀ ∈ Λ₁ ∧ ∑ y ∈ S, g y = g y₀ := by
   obtain ⟨_, hdist, hcov⟩ := hS
@@ -48,19 +68,31 @@ theorem sum_reps {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁
     (fun y hyS hne => hg y hyS (fun hy => hne (hdist y hyS y₀ hy₀S (Λ₁.sub_mem hy hy₀'))))
     (fun h => absurd hy₀S h)
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.H.opU]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem opU_const_mul (H : Sesq V) (x : V) (c : ℂ) (G : V → ℂ) (z : V) :
     opU H x (fun v => c * G v) z = c * opU H x G z := by
   simp only [Formalism.L2.Th1.H.opU]
   ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.H.opU, Finset.sum_mul]`.
+-/
 theorem opU_finset_sum {ι : Type} (H : Sesq V) (x : V) (S : Finset ι) (G : ι → V → ℂ) (z : V) :
     opU H x (fun v => ∑ i ∈ S, G i v) z = ∑ i ∈ S, opU H x (G i) z := by
   simp only [Formalism.L2.Th1.H.opU, Finset.sum_mul]
 
+/- English proof (translation)
+Establish `h` using `smul_finsum c f`. Simplify `h.symm` using `only [smul_eq_mul]`.
+-/
 private theorem finsum_const_mul' {ι : Type*} (c : ℂ) (f : ι → ℂ) : ∑ᶠ i, c * f i = c * ∑ᶠ i, f i := by
   have h := smul_finsum c f
   simpa only [smul_eq_mul] using h.symm
 
+/- English proof (translation)
+Rewrite using `[altE_add_left, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermitian_character_exp_add_left (H : Formalism.L2.Th1.H.Sesq V) (u w y : V) :
     Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (Formalism.L2.Th1.H.altE H (u + w) y : ℂ)) = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (Formalism.L2.Th1.H.altE H u y : ℂ)) * Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (Formalism.L2.Th1.H.altE H w y : ℂ)) := by
   rw [altE_add_left, ← Complex.exp_add]
@@ -68,6 +100,11 @@ private theorem hermitian_character_exp_add_left (H : Formalism.L2.Th1.H.Sesq V)
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hy' : ∀ x ∈ Λ, ∃ m : ℤ, Formalism.L2.Th1.H.altE H y x = m` using `hy`. Take `⟨m, hm⟩` from `hy' d hd`. Establish `h : Formalism.L2.Th1.H.altE H d y = ((-m : ℤ) : ℝ)`. Rewrite using `[altE_swap hH y d, hm, Int.cast_neg]`. Rewrite using `[h]`.
+
+Conclude with `exp_two_pi_int (-m)`.
+-/
 private theorem hermitian_character_exp_eq_one_of_mem_dual_lattice {H : Formalism.L2.Th1.H.Sesq V} (hH : Formalism.L2.Th1.H.IsHerm H) {Λ : AddSubgroup V} {y : V}
     (hy : y ∈ Formalism.L2.Th1.H.dualLat H Λ) {d : V} (hd : d ∈ Λ) : Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (Formalism.L2.Th1.H.altE H d y : ℂ)) = 1 := by
   have hy' : ∀ x ∈ Λ, ∃ m : ℤ, Formalism.L2.Th1.H.altE H y x = m := hy
@@ -77,6 +114,25 @@ private theorem hermitian_character_exp_eq_one_of_mem_dual_lattice {H : Formalis
   rw [h]
   exact exp_two_pi_int (-m)
 
+/- English proof (translation)
+Establish `: Nonempty V` using `⟨0⟩`. Take `⟨hsub, hdist, hcov⟩` from `hS`. Use `choose! rep hrepS hrepd using hcov`. Establish `hrep : ∀ v ∈ Λ₁, χ (rep v) = χ v`. Introduce `v hv`.
+
+Establish `h` using `hadd (rep v) (v - rep v)`. Rewrite `h` using `[show rep v + (v - rep v) = v by abel, htriv _ (hrepd v hv), mul_one]`. Conclude with `h.symm`. Establish `hperm : ∑ x ∈ S, χ (rep (x + x')) = ∑ x ∈ S, χ x`. Use `Finset.sum_nbij' (i := fun x => rep (x + x')) (j := fun x => rep (x - x')) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Conclude with `hrepS _ (Λ₁.add_mem (hsub a ha) hx')`. Introduce `a ha`. Conclude with `hrepS _ (Λ₁.sub_mem (hsub a ha) hx')`. Introduce `a ha`.
+
+Establish `h1 : a + x' ∈ Λ₁` using `Λ₁.add_mem (hsub a ha) hx'`. Establish `h2 : rep (a + x') - x' ∈ Λ₁` using `Λ₁.sub_mem (hsub _ (hrepS _ h1)) hx'`. Use `show rep (rep (a + x') - x') = a`. Use `hdist _ (hrepS _ h2) a ha ?_` and prove the remaining obligations. Establish `hmem` using `Λ₂.neg_mem (Λ₂.add_mem (hrepd _ h2) (hrepd _ h1))`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce `a ha`. Establish `h1 : a - x' ∈ Λ₁` using `Λ₁.sub_mem (hsub a ha) hx'`. Establish `h2 : rep (a - x') + x' ∈ Λ₁` using `Λ₁.add_mem (hsub _ (hrepS _ h1)) hx'`.
+
+Use `show rep (rep (a - x') + x') = a`. Use `hdist _ (hrepS _ h2) a ha ?_` and prove the remaining obligations. Establish `hmem` using `Λ₂.neg_mem (Λ₂.add_mem (hrepd _ h2) (hrepd _ h1))`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Introduce `a _`. Both sides reduce to the same expression. Establish `hshift : ∑ x ∈ S, χ (rep (x + x')) = χ x' * ∑ x ∈ S, χ x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[hrep _ (Λ₁.add_mem (hsub x hx) hx'), hadd, mul_comm]`. Establish `h0 : (1 - χ x') * ∑ x ∈ S, χ x = 0`. Rewrite using `[sub_mul, one_mul, ← hshift, hperm, sub_self]`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hne`.
+
+Conclude with `h`.
+-/
 private theorem sum_char_isReps_eq_zero_of_nontrivial {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : Formalism.L2.Th1.H.IsReps Λ₂ Λ₁ S)
     (χ : V → ℂ) (hadd : ∀ u w, χ (u + w) = χ u * χ w) (htriv : ∀ d ∈ Λ₂, χ d = 1)
     {x' : V} (hx' : x' ∈ Λ₁) (hne : χ x' ≠ 1) : ∑ x ∈ S, χ x = 0 := by
@@ -123,6 +179,9 @@ private theorem sum_char_isReps_eq_zero_of_nontrivial {Λ₁ Λ₂ : AddSubgroup
   · exact absurd (sub_eq_zero.mp h).symm hne
   · exact h
 
+/- English proof (translation)
+Establish `hs : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) * ((Real.sqrt (n : ℝ) : ℝ) : ℂ) = (n : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`. Establish `hne : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (Real.sqrt_ne_zero'.mpr (Nat.cast_pos.mpr (Nat.pos_of_ne_zero hn)))`. Rewrite using `[← hs, show ∀ s : ℂ, s⁻¹ * (s⁻¹ * (s * s * w)) = (s⁻¹ * s) * (s⁻¹ * s) * w from fun s => by ring, inv_mul_cancel₀ hne, one_mul, one_mul]`.
+-/
 private theorem inv_sqrt_mul_inv_sqrt_mul_natCast_mul {n : ℕ} (hn : n ≠ 0) (w : ℂ) :
     ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ * (((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ * ((n : ℂ) * w)) = w := by
   have hs : ((Real.sqrt (n : ℝ) : ℝ) : ℂ) * ((Real.sqrt (n : ℝ) : ℝ) : ℂ) = (n : ℂ) := by
@@ -132,6 +191,11 @@ private theorem inv_sqrt_mul_inv_sqrt_mul_natCast_mul {n : ℕ} (hn : n ≠ 0) (
   rw [← hs, show ∀ s : ℂ, s⁻¹ * (s⁻¹ * (s * s * w)) = (s⁻¹ * s) * (s⁻¹ * s) * w from fun s => by ring,
     inv_mul_cancel₀ hne, one_mul, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [Formalism.L2.Th1.H.inter, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm c]`. Use `congr 1`. Rewrite using `[← finsum_const_mul']`.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Th1.H.opU, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inter_smul (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V) (c : ℂ) (F : V → ℂ) :
     inter H α Λ₁ Λ₂ (c • F) = c • inter H α Λ₁ Λ₂ F := by
   funext z
@@ -143,6 +207,9 @@ theorem inter_smul (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V) (
   simp only [Formalism.L2.Th1.H.opU, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[Formalism.L2.Th1.H.inter, Formalism.L2.Th1.H.opU]`.
+-/
 theorem inter_zero (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V) :
     inter H α Λ₁ Λ₂ 0 = 0 := by
   funext z
@@ -152,6 +219,17 @@ end Inv
 
 open Inv
 
+/- English proof (translation)
+Introduce `V _ _ H hH Λ₁ Λ₂ h₁ h₂ S hS y hy`. Establish `h₁' : dualLat H Λ₁ = Λ₁` using `h₁`. Establish `h₂' : dualLat H Λ₂ = Λ₂` using `h₂`. Establish `hy₂ : y ∈ dualLat H Λ₂` using `by rw [h₂']; exact hy`. Distinguish the cases in `hy₁ : y ∈ Λ₁`.
+
+Rewrite using `[if_pos hy₁]`. Establish `hy₁' : y ∈ dualLat H Λ₁` using `by rw [h₁']; exact hy₁`. Rewrite using `[Finset.sum_congr rfl fun x hx => _root_.Formalism.L2.Th1.H.Inv.hermitian_character_exp_eq_one_of_mem_dual_lattice hH hy₁' (hS.1 x hx)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hy₁]`.
+
+Establish `hy₁' : y ∉ dualLat H Λ₁` using `by rw [h₁']; exact hy₁`. Establish `hx' : ∃ x' ∈ Λ₁, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x' y : ℂ)) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hy₁'` to reduce the goal to its premises.
+
+Use `show ∀ x ∈ Λ₁, ∃ m : ℤ, altE H y x = m`. Introduce `x hx`. Take `⟨m, hm⟩` from `Formalism.L2.Th1.H.Inv.int_of_exp_two_pi (hcon x hx)`. Conclude with `⟨-m, by rw [Formalism.L2.Th1.H.Inv.altE_swap hH x y, hm, Int.cast_neg]⟩`. Take `⟨x', hx'Λ, hne⟩` from `hx'`.
+
+Conclude with `_root_.Formalism.L2.Th1.H.Inv.sum_char_isReps_eq_zero_of_nontrivial hS (fun v => Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H v y : ℂ))) (fun u w => _root_.Formalism.L2.Th1.H.Inv.hermitian_character_exp_add_left H u w y) (fun d hd => _root_.Formalism.L2.Th1.H.Inv.hermi …`.
+-/
 theorem characterSum : CharSum := by
   intro V _ _ H hH Λ₁ Λ₂ h₁ h₂ S hS y hy
   have h₁' : dualLat H Λ₁ = Λ₁ := h₁
@@ -176,6 +254,15 @@ theorem characterSum : CharSum := by
     exact _root_.Formalism.L2.Th1.H.Inv.sum_char_isReps_eq_zero_of_nontrivial hS (fun v => Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H v y : ℂ))) (fun u w => _root_.Formalism.L2.Th1.H.Inv.hermitian_character_exp_add_left H u w y)
       (fun d hd => _root_.Formalism.L2.Th1.H.Inv.hermitian_character_exp_eq_one_of_mem_dual_lattice hH hy₂ hd) hx'Λ hne
 
+/- English proof (translation)
+Introduce `V _ _ H hH Λ₁ Λ₂ h₁ h₂ h12 h21`. Take `⟨⟨S₂, hS₂⟩, hcard₂⟩` from `hr V Λ₁ Λ₂ h12`. Take `⟨⟨S₁, hS₁⟩, hcard₁⟩` from `hr V Λ₂ Λ₁ h21`. Rewrite using `[← hcard₂ S₂ hS₂, ← hcard₁ S₁ hS₁]`. Establish `hA : ∑ y ∈ S₂, ∑ x ∈ S₁, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ)) = (S₁.card : ℂ)`.
+
+Take `⟨y₀, hy₀S, hy₀, hsum⟩` from `Formalism.L2.Th1.H.Inv.sum_reps hS₂ (fun y => ∑ x ∈ S₁, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ))) (by`. Introduce `y hy hyn`. Rewrite using `[hc V H hH Λ₁ Λ₂ h₁ h₂ S₁ hS₁ y (hS₂.1 y hy), if_neg hyn])`. Rewrite using `[hsum, hc V H hH Λ₁ Λ₂ h₁ h₂ S₁ hS₁ y₀ (hS₂.1 y₀ hy₀S), if_pos hy₀]`. Establish `hB : ∑ x ∈ S₁, ∑ y ∈ S₂, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H y (-x) : ℂ)) = (S₂.card : ℂ)`.
+
+Take `⟨x₀, hx₀S, hx₀, hsum⟩` from `Formalism.L2.Th1.H.Inv.sum_reps hS₁ (fun x => ∑ y ∈ S₂, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H y (-x) : ℂ))) (by`. Introduce `x hx hxn`. Rewrite using `[hc V H hH Λ₂ Λ₁ h₂ h₁ S₂ hS₂ (-x) (Λ₁.neg_mem (hS₁.1 x hx)), if_neg (fun h => hxn (by simpa using Λ₂.neg_mem h))])`. Rewrite using `[hsum, hc V H hH Λ₂ Λ₁ h₂ h₁ S₂ hS₂ (-x₀) (Λ₁.neg_mem (hS₁.1 x₀ hx₀S)), if_pos (Λ₂.neg_mem hx₀)]`. Establish `key : (S₁.card : ℂ) = (S₂.card : ℂ)`.
+
+Rewrite using `[← hA, ← hB, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.H.Inv.altE_neg_right, Formalism.L2.Th1.H.Inv.altE_swap hH a b, neg_neg]`. Conclude with `key.symm` after adjusting the coercions.
+-/
 theorem IndexEq_of (hc : CharSum) (hr : RepsExist) : IndexEq := by
   intro V _ _ H hH Λ₁ Λ₂ h₁ h₂ h12 h21
   obtain ⟨⟨S₂, hS₂⟩, hcard₂⟩ := hr V Λ₁ Λ₂ h12
@@ -198,6 +285,21 @@ theorem IndexEq_of (hc : CharSum) (hr : RepsExist) : IndexEq := by
     rw [Formalism.L2.Th1.H.Inv.altE_neg_right, Formalism.L2.Th1.H.Inv.altE_swap hH a b, neg_neg]
   exact_mod_cast key.symm
 
+/- English proof (translation)
+Introduce `V _ _ H hH Λ₁ Λ₂ α h₁ h₂ hα₁ hα₂ h12 h21 F hF z`. Establish `hidx : relIdx Λ₁ Λ₂ = relIdx Λ₂ Λ₁` using `IndexEq_of characterSum hr V H hH Λ₁ Λ₂ h₁ h₂ h12 h21`. Take `⟨⟨S₂, hS₂⟩, -⟩` from `hr V Λ₁ Λ₂ h12`. Take `⟨⟨S₁, hS₁⟩, hcard₁⟩` from `hr V Λ₂ Λ₁ h21`. Establish `hF' : ∀ x ∈ Λ₁, ∀ w, α x * opU H x F w = F w` using `hF`.
+
+Establish `hG` using `hfix V H hH Λ₁ Λ₂ α hα₂ h12 F hF`. Establish `hIF : inter H α Λ₁ Λ₂ F = fun v => ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * ∑ y ∈ S₂, α y * opU H y F v`. Use function extensionality and compare the values at `v`. Conclude with `hreps V H hH Λ₁ Λ₂ α hα₂ F hF S₂ hS₂ v`. Establish `hfixop : ∀ x ∈ Λ₁, ∀ y, α x * opU H y (opU H x F) z = opU H y F z`.
+
+Introduce `x hx y`. Establish `hfun : (fun v => α x * opU H x F v) = F` using `funext (hF' x hx)`. Rewrite using `[← Formalism.L2.Th1.H.Inv.opU_const_mul, hfun]`. Establish `hterm : ∀ x ∈ Λ₁, ∀ y, α x * (α y * opU H x (opU H y F) z) = Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ)) * (α y * opU H y F z)`. Introduce `x hx y`.
+
+Rewrite using `[(hcomm V H hH F z).2 x y, ← hfixop x hx y]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ x ∈ S₁, α x * opU H x (fun v => ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * ∑ y ∈ S₂, α y * opU H y F v) z = ((Real.sqrt (relIdx Λ₁ Λ₂) : ℝ) : ℂ)⁻¹ * ∑ y ∈ S₂, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ)) * (α y * opU H y F z)`. Introduce `x hx`. Rewrite using `[Formalism.L2.Th1.H.Inv.opU_const_mul, Formalism.L2.Th1.H.Inv.opU_finset_sum, mul_left_comm, Finset.mul_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.H.Inv.opU_const_mul]`. Conclude with `hterm x (hS₁.1 x hx) y`. Rewrite using `[hreps V H hH Λ₂ Λ₁ α hα₁ _ hG S₁ hS₁ z, sumU, hIF, Finset.sum_congr rfl e1, ← Finset.mul_sum, Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_mul]`. Take `⟨y₀, hy₀S, hy₀, hsum⟩` from `Formalism.L2.Th1.H.Inv.sum_reps hS₂ (fun y => (∑ x ∈ S₁, Complex.exp (-(2 * (Real.pi : ℂ)) * Complex.I * (altE H x y : ℂ))) * (α y * opU H y F z)) (by`. Introduce `y hy hyn`. Rewrite using `[characterSum V H hH Λ₁ Λ₂ h₁ h₂ S₁ hS₁ y (hS₂.1 y hy), if_neg hyn, zero_mul])`. Rewrite using `[hsum, characterSum V H hH Λ₁ Λ₂ h₁ h₂ S₁ hS₁ y₀ (hS₂.1 y₀ hy₀S), if_pos hy₀, hF' y₀ hy₀ z, hcard₁ S₁ hS₁, hidx]`.
+
+Conclude with `_root_.Formalism.L2.Th1.H.Inv.inv_sqrt_mul_inv_sqrt_mul_natCast_mul h21 (F z)`.
+-/
 theorem InterInv_of (hcomm : OpUComm) (hreps : InterReps) (hfix : InterFixed) (hr : RepsExist) :
     InterInv := by
   intro V _ _ H hH Λ₁ Λ₂ α h₁ h₂ hα₁ hα₂ h12 h21 F hF z
@@ -240,6 +342,13 @@ theorem InterInv_of (hcomm : OpUComm) (hreps : InterReps) (hfix : InterFixed) (h
     hcard₁ S₁ hS₁, hidx]
   exact _root_.Formalism.L2.Th1.H.Inv.inv_sqrt_mul_inv_sqrt_mul_natCast_mul h21 (F z)
 
+/- English proof (translation)
+Introduce `V _ _ _ H hH Λ₁ Λ₂ α h₁ h₂ hα₁ hα₂ h12 h21 θ₁ hθ₁ hne hline`. Establish `hθ' : AnalyticOnNhd ℂ θ₁ Set.univ ∧ θ₁ ∈ fixedBy H α Λ₁` using `hθ₁`. Use `⟨fun h0 => hne ?_, fun F hF => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `h` using `hinv V H hH Λ₁ Λ₂ α h₁ h₂ hα₁ hα₂ h12 h21 θ₁ hθ'.2 z`.
+
+Rewrite `h` using `[h0, Formalism.L2.Th1.H.Inv.inter_zero]`. Simplify using `using h.symm`. Establish `hF' : AnalyticOnNhd ℂ F Set.univ ∧ F ∈ fixedBy H α Λ₂` using `hF`. Take `⟨c, hc⟩` from `hline _ (hth V H hH Λ₂ Λ₁ α hα₁ h21 F hF)`. Use `⟨c, funext fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hinv V H hH Λ₂ Λ₁ α h₂ h₁ hα₂ hα₁ h21 h12 F hF'.2 z, hc, Formalism.L2.Th1.H.Inv.inter_smul]`.
+-/
 theorem LineTransport_of (hinv : InterInv) (hth : InterTh) : LineTransport := by
   intro V _ _ _ H hH Λ₁ Λ₂ α h₁ h₂ hα₁ hα₂ h12 h21 θ₁ hθ₁ hne hline
   have hθ' : AnalyticOnNhd ℂ θ₁ Set.univ ∧ θ₁ ∈ fixedBy H α Λ₁ := hθ₁

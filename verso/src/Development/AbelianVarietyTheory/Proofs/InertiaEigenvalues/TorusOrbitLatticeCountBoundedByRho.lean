@@ -12,12 +12,23 @@ section General
 
 variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stabLat_iff (t : Aˣ) (L : Submodule O A) :
     t ∈ stabLat O L ↔ ∀ y, y ∈ L ↔ (t : A) * y ∈ L := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intUnits_iff (t : Aˣ) :
     t ∈ intUnits O A ↔ IsIntegral O (t : A) ∧ IsIntegral O ((t⁻¹ : Aˣ) : A) := Iff.rfl
 
+/- English proof (translation)
+Simplify using `only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`.
+
+Conclude with `⟨_, h, by simp⟩`.
+-/
 theorem mem_mulLat_unit (u : Aˣ) (L : Submodule O A) (w : A) :
     w ∈ mulLat O (u : A) L ↔ ((u⁻¹ : Aˣ) : A) * w ∈ L := by
   simp only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]
@@ -27,6 +38,11 @@ theorem mem_mulLat_unit (u : Aˣ) (L : Submodule O A) (w : A) :
   · intro h
     exact ⟨_, h, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[mem_stabLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+
+Use extensionality with `w`. Rewrite using `[mem_mulLat_unit, mem_mulLat_unit, h (((v⁻¹ : Aˣ) : A) * w)]`. Simplify using `[mul_assoc]`.
+-/
 theorem mulLat_eq_iff (u v : Aˣ) (L : Submodule O A) :
     mulLat O (u : A) L = mulLat O (v : A) L ↔ u⁻¹ * v ∈ stabLat O L := by
   rw [mem_stabLat_iff]
@@ -40,6 +56,11 @@ theorem mulLat_eq_iff (u v : Aˣ) (L : Submodule O A) :
     rw [mem_mulLat_unit, mem_mulLat_unit, h (((v⁻¹ : Aˣ) : A) * w)]
     simp [mul_assoc]
 
+/- English proof (translation)
+Rewrite `hu` using `[mem_intUnits_iff]`. Rewrite using `[mul_inv_rev, Units.val_mul, mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hu.1.mul h` as an intermediate fact.
+
+Simplify using `using this`. Introduce `h`. Conclude with `hu.2.mul h`.
+-/
 theorem isIntegral_inv_mul_iff (t u : Aˣ) (hu : u ∈ intUnits O A) (w : A) :
     IsIntegral O ((((t * u)⁻¹ : Aˣ) : A) * w) ↔ IsIntegral O (((t⁻¹ : Aˣ) : A) * w) := by
   rw [mem_intUnits_iff] at hu
@@ -57,6 +78,9 @@ section Main
 
 variable {K : UQ} (B : InvAlg K)
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul ((intUnits K.O B.A).subgroupOf B.T) t`. Rewrite using `[hh, Subgroup.coe_mul]`. Conclude with `isIntegral_inv_mul_iff _ _ (Subgroup.mem_subgroupOf.mp h.2) w`.
+-/
 theorem rho_cond_mk (t : B.T) (w : B.A) :
     IsIntegral K.O (((((Quotient.out (QuotientGroup.mk t : B.T ⧸ (intUnits K.O B.A).subgroupOf B.T) : B.T) :
       B.Aˣ)⁻¹ : B.Aˣ) : B.A) * w) ↔ IsIntegral K.O ((((t : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * w) := by
@@ -64,6 +88,41 @@ theorem rho_cond_mk (t : B.T) (w : B.A) :
   rw [hh, Subgroup.coe_mul]
   exact isIntegral_inv_mul_iff _ _ (Subgroup.mem_subgroupOf.mp h.2) w
 
+/- English proof (translation)
+Introduce `K B L hSle hidx a hrho m k hmk hin hout`. Use `set w : B.A := algebraMap K.O B.A a with hw`. Use `set H : Subgroup B.T := (stabLat K.O L).subgroupOf B.T with hH`. Use `set Kc : Subgroup B.T := (intUnits K.O B.A).subgroupOf B.T with hKc`. Establish `hHK : H ≤ Kc`.
+
+Introduce `x hx`. Rewrite `hx` using `[hH, Subgroup.mem_subgroupOf]`. Rewrite using `[hKc, Subgroup.mem_subgroupOf]`. Conclude with `hSle ⟨hx, x.2⟩`. Establish `hidx_eq : (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) = (H.subgroupOf Kc).index`.
+
+Rewrite using `[← Subgroup.relIndex_subgroupOf (inf_le_right : intUnits K.O B.A ⊓ B.T ≤ B.T), Subgroup.inf_subgroupOf_right, Subgroup.inf_subgroupOf_right]`. Both sides reduce to the same expression. Establish `hQfin : Finite (Kc ⧸ H.subgroupOf Kc)`. Rewrite using `[← Subgroup.index_ne_zero_iff_finite, ← hidx_eq]`. Conclude with `hidx`.
+
+Establish `hRfin : ∀ j, Finite {d : B.T ⧸ Kc // IsIntegral K.O ((((Quotient.out d : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ j : B.A)}` using `fun j => (Nat.card_pos_iff.mp (hrho j)).2`. Establish `hrho_eq : ∀ j, B.rho (w ^ j) = Nat.card {d : B.T ⧸ Kc // IsIntegral K.O ((((Quotient.out d : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ j : B.A)}` using `fun j => rfl`. Set `e` to `Subgroup.quotientEquivProdOfLE hHK`. Establish `he1 : ∀ g : B.T, (e (QuotientGroup.mk g)).1 = QuotientGroup.mk g` using `fun g => rfl`. Set `Y` to `{c : B.T ⧸ H // w ^ k ∈ mulLat K.O (((Quotient.out c : B.T) : B.Aˣ) : B.A) L}`.
+
+Set `fY : Y → {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ w ^ k ∈ M}` to `fun c => ⟨mulLat K.O (((Quotient.out c.1 : B.T) : B.Aˣ) : B.A) L, ⟨_, (Quotient.out c.1).2, rfl⟩, c.2⟩`. Establish `hfY : Function.Bijective fY`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩ ⟨c', hc'⟩ h`. Establish `h' : mulLat K.O (((Quotient.out c : B.T) : B.Aˣ) : B.A) L = mulLat K.O (((Quotient.out c' : B.T) : B.Aˣ) : B.A) L` using `congrArg Subtype.val h`.
+
+Rewrite `h'` using `[mulLat_eq_iff]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c = c'`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' c', QuotientGroup.eq]`. Conclude with `Subgroup.mem_subgroupOf.mpr (by simpa using h')`.
+
+Introduce and unpack `⟨M, ⟨t, ht, rfl⟩, hM⟩`. Establish `hc` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk ⟨t, ht⟩ : B.T ⧸ H))`. Rewrite `hc` using `[hH, Subgroup.mem_subgroupOf]`. Establish `key : mulLat K.O (((Quotient.out (QuotientGroup.mk ⟨t, ht⟩ : B.T ⧸ H) : B.T) : B.Aˣ) : B.A) L = mulLat K.O (t : B.A) L`. Rewrite using `[mulLat_eq_iff]`.
+
+Simplify using `using hc`. Conclude with `⟨⟨_, key ▸ hM⟩, Subtype.ext key⟩`. Establish `hcardXY` using `Nat.card_congr (Equiv.ofBijective fY hfY)`. Establish `key1 : ∀ g : B.T, ((((g : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * w ^ k ∈ L) → IsIntegral K.O ((((Quotient.out (e (QuotientGroup.mk g)).1 : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ (k + m) : B.A)`. Introduce `g hg`.
+
+Rewrite using `[he1 g, rho_cond_mk]`. Use `hout _ hg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `U : Y → {d : B.T ⧸ Kc // IsIntegral K.O ((((Quotient.out d : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ (k + m) : B.A)} × (Kc ⧸ H.subgroupOf Kc)` to `fun c => (⟨(e c.1).1, by`. Use `key1 (Quotient.out c.1) (by rw [← mem_mulLat_unit]; exact c.2)` as an intermediate fact. Rewrite using `[QuotientGroup.out_eq'] at this⟩, (e c.1).2)` and apply the resulting hypothesis. Establish `hU : Function.Injective U`. Introduce `c c' h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `e.injective` to reduce the goal to its premises. Establish `h1` using `congrArg (fun p => p.1.1) h`. Establish `h2` using `congrArg Prod.snd h`. Conclude with `Prod.ext h1 h2`.
+
+Establish `hYfin : Finite Y` using `by haveI := hRfin (k + m)`. Conclude with `Finite.of_injective U hU`. Establish `key2 : ∀ g : B.T, IsIntegral K.O ((((Quotient.out (e (QuotientGroup.mk g)).1 : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ (k - m) : B.A) → w ^ k ∈ mulLat K.O ((g : B.Aˣ) : B.A) L`. Introduce `g hg`. Rewrite `hg` using `[he1 g, rho_cond_mk]`.
+
+Rewrite using `[mem_mulLat_unit]`. Use `hin _ hg` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Nat.add_sub_cancel' hmk, pow_add, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `D : {d : B.T ⧸ Kc // IsIntegral K.O ((((Quotient.out d : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * w ^ (k - m) : B.A)} × (Kc ⧸ H.subgroupOf Kc) → Y` to `fun p => ⟨e.symm (p.1.1, p.2), by`. Establish `hc : e (e.symm (p.1.1, p.2)) = (p.1.1, p.2)` using `e.apply_symm_apply _`. Apply `key2` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq', hc]`. Conclude with `p.1.2⟩`.
+
+Establish `hD : Function.Injective D`. Introduce `p p' h`. Establish `h'` using `e.symm.injective (congrArg Subtype.val h)`. Take `⟨h1, h2⟩` from `Prod.mk.inj h'`. Conclude with `Prod.ext (Subtype.ext h1) h2`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finite.of_equiv Y (Equiv.ofBijective fY hfY)`. Rewrite using `[← hcardXY, hidx_eq, hrho_eq, mul_comm]`. Conclude with `(Nat.card_prod _ _).symm.trans_le (Nat.card_le_card_of_injective D hD)`. Rewrite using `[← hcardXY, hidx_eq, hrho_eq, mul_comm] haveI := hRfin (k + m)`.
+
+Conclude with `(Nat.card_le_card_of_injective U hU).trans_eq (Nat.card_prod _ _)`.
+-/
 theorem orbit_count : ∀ (K : UQ) (B : InvAlg K) (L : Submodule K.O B.A), stabLat K.O L ⊓ B.T ≤ intUnits K.O B.A → (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) ≠ 0 → ∀ a : K.O, (∀ j : ℕ, 0 < B.rho (algebraMap K.O B.A a ^ j)) → ∀ m k : ℕ, m ≤ k → (∀ y : B.A, IsIntegral K.O y → algebraMap K.O B.A a ^ m * y ∈ L) → (∀ y ∈ L, IsIntegral K.O (algebraMap K.O B.A a ^ m * y)) → Finite {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ∧ (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) * B.rho (algebraMap K.O B.A a ^ (k - m)) ≤ Nat.card {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ∧ Nat.card {M : Submodule K.O B.A // (∃ t ∈ B.T, M = mulLat K.O (t : B.A) L) ∧ algebraMap K.O B.A a ^ k ∈ M} ≤ (stabLat K.O L ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) * B.rho (algebraMap K.O B.A a ^ (k + m)) := by
   intro K B L hSle hidx a hrho m k hmk hin hout
   set w : B.A := algebraMap K.O B.A a with hw

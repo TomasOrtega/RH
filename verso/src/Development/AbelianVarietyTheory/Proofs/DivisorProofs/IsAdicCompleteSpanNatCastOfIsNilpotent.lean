@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, hN, smul_eq_mul, Ideal.mul_top]`. Simplify using the standard rewrite rules.
+-/
 theorem span_natCast_pow_eq_bot_of_isNilpotent (p : ℕ) (R : Type) [CommRing R]
     (h : IsNilpotent (p : R)) : ∃ N : ℕ, Ideal.span {(p : R)} ^ N • (⊤ : Submodule R R) = ⊥ := by
   obtain ⟨N, hN⟩ := h
@@ -18,6 +21,13 @@ theorem span_natCast_pow_eq_bot_of_isNilpotent (p : ℕ) (R : Type) [CommRing R]
   rw [Ideal.span_singleton_pow, hN, smul_eq_mul, Ideal.mul_top]
   simp
 
+/- English proof (translation)
+Introduce `p R _ h`. Take `⟨N, hN⟩` from `span_natCast_pow_eq_bot_of_isNilpotent p R h`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Use `hx N` as an intermediate fact.
+
+Rewrite `this` using `[hN, SModEq.bot]`. Then use the resulting hypothesis. Introduce `f hf`. Use `⟨f N, fun n => ?_⟩` and prove the remaining obligations. Break down `le_total n N with hn | hn` into its components or cases. Conclude with `hf hn`.
+
+Establish `h1` using `hf hn`. Rewrite `h1` using `[hN, SModEq.bot]`. Rewrite using `[h1]`.
+-/
 theorem isAdicComplete_span_natCast_of_isNilpotent :
     ∀ (p : ℕ) (R : Type) [CommRing R], IsNilpotent (p : R) →
       IsAdicComplete (Ideal.span {(p : R)}) R := by

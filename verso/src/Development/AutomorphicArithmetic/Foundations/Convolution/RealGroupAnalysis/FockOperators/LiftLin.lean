@@ -6,16 +6,31 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Establish `ha` using `(poisson_of_mem_schwartzBruhatPi a.2).1.of_norm`. Establish `hb` using `(poisson_of_mem_schwartzBruhatPi b.2).1.of_norm`. Conclude with `ha.tsum_add hb`.
+-/
 private lemma th_add {F : Type} [Field F] [NumberField F] (a b : S4 F) :
     Th (a + b).1 = Th a.1 + Th b.1 := by
   have ha := (poisson_of_mem_schwartzBruhatPi a.2).1.of_norm
   have hb := (poisson_of_mem_schwartzBruhatPi b.2).1.of_norm
   exact ha.tsum_add hb
 
+/- English proof (translation)
+The claim follows from `tsum_mul_left`.
+-/
 private lemma th_smul {F : Type} [Field F] [NumberField F] (c : ℂ) (a : S4 F) :
     Th (c • a).1 = c * Th a.1 :=
   tsum_mul_left
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ`. Establish `hI` using `fun f hf φ hφ h => (UpperTheory.ConvolutionTheory.R2.conv F E D W M π f hf φ hφ h).1`. Use `⟨fun f' hf' => ?_, fun φ' hφ' => ?_, fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Establish `e : ∀ x, (f + f').1 x = f.1 x + f'.1 x` using `fun x => rfl`.
+
+Simplify using `only [lift, Pi.add_apply, e, add_mul]`. Conclude with `integral_add (hI f hf φ hφ h) (hI f' hf' φ hφ h)`. Use function extensionality and compare the values at `h`. Simplify using `only [lift, Pi.add_apply, map_add, LinearMap.add_apply, th_add, mul_add]`. Conclude with `integral_add (hI f hf φ hφ h) (hI f hf φ' hφ' h)`.
+
+Use function extensionality and compare the values at `h`. Establish `e : ∀ x, (c • f).1 x = c * f.1 x` using `fun x => rfl`. Simplify using `only [lift, Pi.smul_apply, smul_eq_mul, e, mul_assoc]`. Conclude with `integral_const_mul _ _`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [lift, Pi.smul_apply, smul_eq_mul, map_smul, th_smul, mul_left_comm _ c]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.liftLin :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ,
     (∀ f' ∈ π.V, lift W M (f + f').1 φ = lift W M f.1 φ + lift W M f'.1 φ) ∧ (∀ φ' ∈ Fock D.δ, lift W M f.1 (φ + φ') = lift W M f.1 φ + lift W M f.1 φ') ∧

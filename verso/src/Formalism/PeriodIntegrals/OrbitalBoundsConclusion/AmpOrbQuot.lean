@@ -10,11 +10,29 @@ namespace PI.AmpOrbQuot
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon
 
+/- English proof (translation)
+Rewrite using `[LocBessel.μN]`. Unfold `haarLie`. Rewrite using `[one_smul]`.
+-/
 theorem muN_smul {k r : ℕ} (L : LocBessel k r) : L.μN = L.κN • haarLie (Nset k r) 1 := by
   rw [LocBessel.μN]
   unfold haarLie
   rw [one_smul]
 
+/- English proof (translation)
+Establish `: SigmaFinite μR` using `hμ.1`. Establish `: IsFiniteMeasure L.μW` using `⟨by rw [L.hμW.2]; exact ENNReal.one_lt_top⟩`. Establish `: IsFiniteMeasure L.μW'` using `⟨by rw [L.hμW'.2]; exact ENNReal.one_lt_top⟩`. Establish `: SFinite (pairMeas L)` using `by unfold pairMeas; infer_instance`. Take `⟨θ, hθ, hθ1⟩` from `cutoff_exists hg hμ`.
+
+Use `⟨(pairMeas L).withDensity θ, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hJ : Measurable (fun p : Mt k r × PairSp k r => f (stabAct g (Matrix.of p.1) p.2))` using `hf.comp (measurable_stabAct g)`. Establish `hin : Measurable (fun x : PairSp k r => ∫⁻ a, f (stabAct g (Matrix.of a) x) ∂μR)` using `hJ.lintegral_prod_left'`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ hθ hin]`. Establish `step1 : ∀ x : PairSp k r, (θ * fun x => ∫⁻ a, f (stabAct g (Matrix.of a) x) ∂μR) x = ∫⁻ a, θ x * f (stabAct g (Matrix.of a) x) ∂μR`.
+
+Introduce `x`. Simplify using `only [Pi.mul_apply]`. Establish `hmx : Measurable fun a : Mt k r => f (stabAct g (Matrix.of a) x)` using `hJ.comp (f := fun a : Mt k r => (a, x)) (measurable_id.prodMk measurable_const)`. Rewrite using `[lintegral_const_mul _ hmx]`. Repeatedly rewrite using `[step1]`.
+
+Establish `hm1 : Measurable (Function.uncurry fun (x : PairSp k r) (a : Mt k r) => θ x * f (stabAct g (Matrix.of a) x))` using `(hθ.comp measurable_fst).mul (hJ.comp (f := Prod.swap) measurable_swap)`. Rewrite using `[lintegral_lintegral_swap hm1.aemeasurable]`. Establish `step2 : ∀ a : Mt k r, Matrix.of a ∈ RStab k r g → ∫⁻ x, θ x * f (stabAct g (Matrix.of a) x) ∂(pairMeas L) = ∫⁻ y, θ (stabAct g (Matrix.of a)⁻¹ y) * f y ∂(pairMeas L)`. Introduce `a ha`. Establish `hh : Measurable fun y : PairSp k r => θ (stabAct g (Matrix.of a)⁻¹ y) * f y` using `(hθ.comp (measurable_stabAct_one g _)).mul hf`.
+
+Use `conv_rhs => rw [← pairMeas_inv L hN ha]`. Rewrite using `[lintegral_map hh (measurable_stabAct_one g _)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[stabAct_inv_cancel hg ha.1.1]`. Establish `hR : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r g` using `ae_iff.2 hμ.2.2.1`.
+
+Rewrite using `[lintegral_congr_ae (hR.mono step2)]`. Establish `hm2 : Measurable (Function.uncurry fun (a : Mt k r) (y : PairSp k r) => θ (stabAct g (Matrix.of a)⁻¹ y) * f y)` using `(hθ.comp (measurable_stabAct_inv g)).mul (hf.comp measurable_snd)`. Rewrite using `[lintegral_lintegral_swap hm2.aemeasurable]`. Establish `hNae : ∀ᵐ y ∂(pairMeas L), y.1.2 ∈ NS k r` using `ae_iff.2 (by`. Use `pairMeas_null L hc` as an intermediate fact.
+
+Simplify using `using this)`. Use `lintegral_congr_ae (hNae.mono fun y hy => ?_)` and prove the remaining obligations. Establish `hmy : Measurable fun a : Mt k r => θ (stabAct g (Matrix.of a)⁻¹ y)` using `hθ.comp ((measurable_stabAct_inv g).comp (f := fun a : Mt k r => (a, y)) (measurable_id.prodMk measurable_const))`. Use `show f y = ∫⁻ a, θ (stabAct g (Matrix.of a)⁻¹ y) * f y ∂μR`. Rewrite using `[lintegral_mul_const _ hmy, hθ1 y hy, one_mul]`.
+-/
 theorem exists_isOrbQuot_of_isHaarOn {k r : ℕ} (L : LocBessel k r) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (μR : Measure (Mt k r)) (hg : g ∈ UH (Hpk k r)) (hμ : IsHaarOn (RStab k r g) μR)
     [SFinite L.μN] (hN : ∀ s ∈ Nset k r, L.μN.map (lmulM s) = L.μN) (hc : L.μN (NS k r)ᶜ = 0) :
@@ -68,6 +86,13 @@ theorem exists_isOrbQuot_of_isHaarOn {k r : ℕ} (L : LocBessel k r) (g : Matrix
 end PI.AmpOrbQuot
 
 open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon PI.AmpOrbQuot in
+/- English proof (translation)
+Introduce `k r L p g₀ μR hpt _ hμ`. Take `⟨hsf, _, hnull, hinv⟩` from `h k r 1 one_ne_zero ENNReal.one_ne_top`. Establish `e` using `muN_smul L`. Use `haveI := hsf`. Use `haveI : SFinite L.μN := by rw [e]; infer_instance`.
+
+Use `exists_isOrbQuot_of_isHaarOn L g₀ μR hpt.1 hμ ?_ ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[e, Measure.map_smul, hinv s hs]`. Rewrite using `[e, Measure.smul_apply]`. Establish `h0 : haarLie (Nset k r) 1 (NS k r)ᶜ = 0` using `hnull`.
+
+Rewrite using `[h0, smul_eq_mul, mul_zero]`.
+-/
 theorem orbQuotEx_of_haarLieN (h : PI.AmpOrbQ.HaarLieN) : PI.AmpOrbQ.OrbQuotEx := by
   intro k r L p g₀ μR hpt _ hμ
   obtain ⟨hsf, _, hnull, hinv⟩ := h k r 1 one_ne_zero ENNReal.one_ne_top

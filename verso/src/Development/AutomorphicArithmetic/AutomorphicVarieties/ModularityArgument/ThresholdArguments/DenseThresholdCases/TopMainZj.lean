@@ -15,6 +15,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open GlobalTheory.Published
+/- English proof (translation)
+The claim follows from `(_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O) bern := (_root_.UpperTheory.LiteratureTheorems.bernstein_unitary_product_irreducible_of_open O) geo := (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_geometric_of_open O) zel := (_root_ …`.
+-/
 theorem UpperTheory.One.Join.local_inputs_from_literature (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LitLocAlt where
   bz := (_root_.UpperTheory.LiteratureTheorems.bernstein_zelevinsky_finiteness_of_open O)
@@ -35,6 +38,9 @@ theorem UpperTheory.One.Join.local_inputs_from_literature (O : _root_.UpperTheor
   brauer := (_root_.UpperTheory.LiteratureTheorems.brauer_degree_zero_of_open O)
   chev := (_root_.UpperTheory.LiteratureTheorems.chevalley_units_of_open O)
   green := (_root_.UpperTheory.LiteratureTheorems.green_regular_characters_of_open O)
+/- English proof (translation)
+The claim follows from `(_root_.UpperTheory.LiteratureTheorems.cusp_rapid_decay_of_open O) hc := (_root_.UpperTheory.LiteratureTheorems.harish_chandra_finite_of_open O) fin := (_root_.UpperTheory.LiteratureTheorems.automorphic_forms_finite_gl_of_open O) js := (_root_.UpperTheory.LiteratureTheorems.jacqu …`.
+-/
 theorem UpperTheory.One.Join.automorphic_inputs_from_literature (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) (bc : _root_.PositivityTheory.Rg.BcN.BaseChangeIsobaricN)
     (gal : _root_.UpperTheory.V.Z.Win.RowT) : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureAutomorphyHypothesis where
   decay := (_root_.UpperTheory.LiteratureTheorems.cusp_rapid_decay_of_open O)
@@ -52,10 +58,16 @@ theorem UpperTheory.One.Join.automorphic_inputs_from_literature (O : _root_.Uppe
   chA := (_root_.UpperTheory.LiteratureTheorems.hecke_ladic_character_above_of_open O)
   chW := (_root_.UpperTheory.LiteratureTheorems.algebraic_character_wd_of_open O)
   berger := (_root_.UpperTheory.LiteratureTheorems.de_rham_pot_semistable_of_open O)
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.v_window_of_literal_automorphy_n ⟨_root_.UpperTheory.One.Join.local_inputs_from_literature O, _root_.UpperTheory.One.Join.automorphic_inputs_from_literature O bc gal, _root_.UpperTheory.LiteratureTheorems.galois_cohomology_from_literature O, cm⟩`.
+-/
 theorem UpperTheory.One.Join.v_window_of_depth_zero_residual_bc_cm (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition)
  (bc : _root_.PositivityTheory.Rg.BcN.BaseChangeIsobaricN) (gal : _root_.UpperTheory.V.Z.Win.RowT) (cm : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureCMHypothesis) :
     UpperTheory.Top.VWin :=
   _root_.UpperTheory.V.v_window_of_literal_automorphy_n ⟨_root_.UpperTheory.One.Join.local_inputs_from_literature O, _root_.UpperTheory.One.Join.automorphic_inputs_from_literature O bc gal, _root_.UpperTheory.LiteratureTheorems.galois_cohomology_from_literature O, cm⟩
+/- English proof (translation)
+The claim follows from `(_root_.UpperTheory.LiteratureTheorems.grothendieck_deformation_of_open O) dr := (_root_.UpperTheory.LiteratureTheorems.abelian_de_rham_of_open O) dual := (GlobalTheory.abelianDualCrystal_of_dual_of_smoothLift (_root_.UpperTheory.LiteratureTheorems.dual_abelian_scheme_of_open O) …`.
+-/
 theorem UpperTheory.One.Join.cm_abelian_inputs_from_literature (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition) : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureCMHypothesis where
   gm := (_root_.UpperTheory.LiteratureTheorems.grothendieck_deformation_of_open O)
   dr := (_root_.UpperTheory.LiteratureTheorems.abelian_de_rham_of_open O)
@@ -68,6 +80,9 @@ theorem UpperTheory.One.Join.cm_abelian_inputs_from_literature (O : _root_.Upper
   dri := (_root_.UpperTheory.LiteratureTheorems.siegel_klingen_deligne_ribet_of_open O)
   pz := (_root_.UpperTheory.LiteratureTheorems.partial_zeta_functional_equation_of_open O)
   fe := (_root_.UpperTheory.LiteratureTheorems.hecke_tate_functional_equation_of_open O)
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.One.Join.v_window_of_depth_zero_residual_bc_cm O bc gal (_root_.UpperTheory.One.Join.cm_abelian_inputs_from_literature O)`.
+-/
 theorem UpperTheory.One.Join.automorphic_window_of_inputs (O : _root_.UpperTheory.LiteratureTheorems.OpenImageCondition)
  (bc : _root_.PositivityTheory.Rg.BcN.BaseChangeIsobaricN) (gal : _root_.UpperTheory.V.Z.Win.RowT) :
     UpperTheory.Top.VWin :=

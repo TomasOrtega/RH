@@ -19,6 +19,9 @@ namespace GlobalTheory.GaussDiv
 
 section Finite
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `h`. Establish `hx : x ^ n = 1` using `σ.injective (by rw [map_pow, hz, map_one])`. Establish `hi : IsIntegral ℤ x` using `IsIntegral.of_pow hn (by rw [hx]; exact isIntegral_one)`. Conclude with `⟨⟨x, hi⟩, rfl⟩`.
+-/
 theorem exists_int_of_pow_eq_one {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {z : ℂ} {n : ℕ} (hn : 0 < n)
     (hz : z ^ n = 1) (h : z ∈ Set.range σ) : ∃ g : NumberField.RingOfIntegers K, σ g = z := by
   obtain ⟨x, rfl⟩ := h
@@ -26,6 +29,17 @@ theorem exists_int_of_pow_eq_one {K : Type} [Field K] [NumberField K] (σ : K �
   have hi : IsIntegral ℤ x := IsIntegral.of_pow hn (by rw [hx]; exact isIntegral_one)
   exact ⟨⟨x, hi⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hN` using `GlobalTheory.gauss_units_norm_sq m hm ψ hψ χ (map_mul χ) hχ t₀ ht₀ hχt₀`. Establish `h1 : ∀ u, ∃ g : NumberField.RingOfIntegers K, σ g = χ u` using `fun u => exists_int_of_pow_eq_one σ (Fintype.card_pos (α := Rˣ)) (by rw [← map_pow, pow_card_eq_one, map_one]) (hr u)`. Establish `h2 : ∀ y, ∃ g : NumberField.RingOfIntegers K, σ g = ψ y` using `fun y => by`. Establish `: ψ y ^ Fintype.card R = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]`.
+
+Conclude with `exists_int_of_pow_eq_one σ (Fintype.card_pos (α := R)) this (hζ _ this)`. Use `choose a ha using h1`. Use `choose b hb using h2`. Establish `hinv : ∀ u, χ u⁻¹ = (χ u)⁻¹` using `fun u => eq_inv_of_mul_eq_one_left (by rw [← map_mul, inv_mul_cancel, map_one])`. Establish `hg : σ ((∑ u : Rˣ, a u⁻¹ * b u : NumberField.RingOfIntegers K) : K) = ∑ u : Rˣ, (χ u)⁻¹ * ψ u`.
+
+Simplify using `only [map_sum, map_mul, ha, hb, hinv]`. Establish `hg' : σ ((∑ u : Rˣ, a u * b (-u) : NumberField.RingOfIntegers K) : K) = starRingEnd ℂ (∑ u : Rˣ, (χ u)⁻¹ * ψ u)`. Simplify using `only [map_sum, map_mul, ha, hb]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.inv_eq_conj (hχ z), Complex.conj_conj, AddChar.map_neg_eq_conj]`.
+
+Use `⟨_, ∑ u : Rˣ, a u * b (-u), hg, ?_⟩` and prove the remaining obligations. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Apply `σ.injective` to reduce the goal to its premises. Establish `e : ∀ x y : NumberField.RingOfIntegers K, σ ((x * y : NumberField.RingOfIntegers K) : K) = σ x * σ y` using `fun x y => by simp only [map_mul]`. Rewrite using `[e, hg, hg', Complex.mul_conj, Complex.normSq_eq_norm_sq, hN]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_int_gauss {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {R : Type} [CommRing R] [Fintype R]
     [DecidableEq R] [Fintype Rˣ] (m : Ideal R) (hm : ∀ x : R, IsUnit x ↔ x ∉ m) (ψ : AddChar R ℂ)
     (hψ : ∀ d : R, (∀ x, ψ (d * x) = 1) → d = 0) (χ : Rˣ →* ℂ) (hχ : ∀ u, ‖χ u‖ = 1) (t₀ : Rˣ)
@@ -67,6 +81,9 @@ open ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil Glo
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card]`. Establish `hne : IsLocalRing.maximalIdeal 𝒪[k] ≠ ⊥` using `IsDiscreteValuationRing.not_a_field _`. Establish `hq` using `cardQuot_pow_of_prime (P := IsLocalRing.maximalIdeal 𝒪[k]) hne (i := e)`. Rewrite `hq` using `[Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `hq`.
+-/
 theorem card_res (e : ℕ) : Fintype.card (Res k e) = resCard k ^ e := by
   rw [← Nat.card_eq_fintype_card]
   have hne : IsLocalRing.maximalIdeal 𝒪[k] ≠ ⊥ := IsDiscreteValuationRing.not_a_field _
@@ -74,12 +91,38 @@ theorem card_res (e : ℕ) : Fintype.card (Res k e) = resCard k ^ e := by
   rw [Submodule.cardQuot_apply, Submodule.cardQuot_apply] at hq
   exact hq
 
+/- English proof (translation)
+The claim follows from `(mk_eq_mk_iff hϖ c (Quotient.out y) a).1 (by rw [Ideal.Quotient.mk_out, h])`.
+-/
 theorem val_rep_sub {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (y : Res k c) (a : 𝒪[k])
     (h : y = Ideal.Quotient.mk _ a) : valuation k (rep y - a) ≤ valuation k (ϖ : k) ^ c :=
   (mk_eq_mk_iff hϖ c (Quotient.out y) a).1 (by rw [Ideal.Quotient.mk_out, h])
 
 open Classical in
 
+/- English proof (translation)
+Establish `hdiv : ∀ a b : k, valuation k (a - b) ≤ valuation k (ϖ : k) ^ c → ψl (a / (ϖ : k) ^ c) = ψl (b / (ϖ : k) ^ c)` using `fun a b h => by`. Apply `psi_congr hadd hO` to reduce the goal to its premises. Rewrite using `[← sub_div, map_div₀, map_pow]`. Conclude with `div_le_one_of_le₀ h zero_le'`. Establish `hmul : ∀ x y : Res k c, valuation k (rep (x * y) - rep x * rep y) ≤ valuation k (ϖ : k) ^ c` using `fun x y => val_rep_sub hϖ (x * y) (Quotient.out x * Quotient.out y) (by rw [map_mul, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out])`.
+
+Set `Ψ : AddChar (Res k c) ℂ` to `{ toFun := fun y => ψl (rep y / (ϖ : k) ^ c) map_zero_eq_one' := by`. Rewrite using `[hdiv _ 0 (val_rep_sub hϖ (0 : Res k c) 0 (map_zero _).symm), zero_div]`. Conclude with `hO 0 (by simp)`. Use the proof step `map_add_eq_mul' := fun x y => by`. Rewrite using `[← hadd, ← add_div]`.
+
+Conclude with `hdiv _ _ (val_rep_sub hϖ (x + y) (Quotient.out x + Quotient.out y) (by rw [map_add, Ideal.Quotient.mk_out, Ideal.Quotient.mk_out])) }`. Set `χ : (Res k c)ˣ →* ℂ` to `{ toFun := fun u => ν (uRep hϖ hc1 u) map_one' := by`. Rewrite using `[nu_congr hϖ hc1 hc (b := 1) (by simp) (val_rep_sub hϖ (1 : Res k c) 1 (map_one _).symm)]`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun u w => by`.
+
+Rewrite using `[nu_congr hϖ hc1 hc (b := uRep hϖ hc1 u * uRep hϖ hc1 w) (by simp [val_rep_unit hϖ hc1]) (hmul u w)]`. Simplify using `}`. Establish `hΨ : ∀ d : Res k c, (∀ x, Ψ (d * x) = 1) → d = 0` using `fun d hd => by`. Establish `h3` using `hcond (rep d / (ϖ : k) ^ c) fun a ha => by`. Rewrite using `[← hd (Ideal.Quotient.mk _ ⟨a, ha⟩), div_mul_eq_mul_div]`.
+
+Conclude with `(hdiv _ _ (val_rep_sub hϖ _ (Quotient.out d * ⟨a, ha⟩) (by rw [map_mul, Ideal.Quotient.mk_out]))).symm`. Rewrite using `[← Ideal.Quotient.mk_out d, ← map_zero (Ideal.Quotient.mk _)]`. Apply `(mk_eq_mk_iff hϖ c _ _).2` to reduce the goal to its premises. Establish `e2 : rep d = rep d / (ϖ : k) ^ c * (ϖ : k) ^ c` using `by field_simp`. Express the relevant statement in the definitionally equal form `valuation k (rep d - 0) ≤ _`.
+
+Rewrite using `[sub_zero, e2, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_left' h3`. Use `haveI : Nontrivial (Res k c) := Ideal.Quotient.nontrivial_iff.2 fun h => (IsLocalRing.maximalIdeal.isMaximal 𝒪[k]).ne_top (top_le_iff.1 (h.ge.trans (Ideal.pow_le_self (by omega))))`. Use `haveI : IsLocalRing (Res k c) := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Take `⟨u, ⟨hu1, hu2⟩, hν⟩` from `hmin`.
+
+Establish `hu' : IsUnit (⟨u, hu1.le⟩ : 𝒪[k])` using `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 hu1`. Use `set ub : (Res k c)ˣ := (hu'.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c))).unit with hub_def`. Establish `hub : (ub : Res k c) = Ideal.Quotient.mk _ ⟨u, hu1.le⟩` using `rfl`. Establish `ht₀ : ∀ x ∈ IsLocalRing.maximalIdeal (Res k c), ((ub : Res k c) - 1) * x = 0` using `fun x hx => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Establish `ha : valuation k (a : k) < 1` using `lt_of_le_of_ne a.2 fun h => hx (((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 h).map _)`. Establish `hx' : valuation k (a : k) ≤ valuation k (ϖ : k)` using `by rw [hϖ]; exact le_uniformizer_iff.2 ha`. Establish `hu2' : valuation k ((u : k) - 1) ≤ valuation k (ϖ : k) ^ (c - 1)`. Simplify `hu2` using `[Units.val_pow_eq_pow_val]`. Rewrite using `[hub, ← map_one (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c)), ← map_sub, ← map_mul, ← map_zero (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c))]`.
+
+Apply `(mk_eq_mk_iff hϖ c _ _).2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `valuation k (((u : k) - 1) * a - 0) ≤ _`. Rewrite using `[sub_zero, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hχt₀ : χ ub ≠ 1`.
+
+Express the relevant statement in the definitionally equal form `((ν (uRep hϖ hc1 ub) : ℂˣ) : ℂ) ≠ 1`. Rewrite using `[nu_congr hϖ hc1 hc (b := u) hu1 (val_rep_sub hϖ _ _ hub)]`. Conclude with `fun h => hν (Units.ext h)`. Take `⟨g, g', h1, h2⟩` from `exists_int_gauss σ (IsLocalRing.maximalIdeal (Res k c)) (fun x => by simp [IsLocalRing.mem_maximalIdeal]) Ψ hΨ χ (fun u => hun _) ub ht₀ hχt₀ (fun u => hr _ (val_rep_unit hϖ hc1 u)) (by rwa [card_res])`. Use `⟨g, g', ?_, by rw [h2, card_res, Nat.cast_pow]⟩` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Unfold `gS`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[one_mul, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+-/
 theorem exists_int_gS {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {ψl : k → ℂ}
     (hadd : ∀ x y, ψl (x + y) = ψl x * ψl y) (hO : ∀ x : k, valuation k x ≤ 1 → ψl x = 1)
     (hcond : ∀ x : k, (∀ y : k, valuation k y ≤ 1 → ψl (x * y) = 1) → valuation k x ≤ 1)
@@ -182,6 +225,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (gauss unifAt PsiU
 
 open ValuativeRel GlobalTheory.SplitFlip GlobalTheory.GaussNonvanish GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
+/- English proof (translation)
+Introduce `F _ _ K _ _ σ ψ v ν hψ hcont hun hc1 hr hζ`. Establish `hϖ : IsUnif (unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Establish `hadd : ∀ x y, psiLoc ψ v (x + y) = psiLoc ψ v x * psiLoc ψ v y` using `fun x y => by`. Simplify using `only [psiLoc, map_add]`. Conclude with `AddChar.map_add_eq_mul ψ _ _`.
+
+Establish `hO : ∀ x : Fv F v, valuation (Fv F v) x ≤ 1 → psiLoc ψ v x = 1` using `fun x hx => by`. Use `((hψ 1).2 ((val_le_one_iff v 1).1 (by simp))) x ((val_le_one_iff v x).1 hx)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hcond : ∀ x : Fv F v, (∀ y : Fv F v, valuation (Fv F v) y ≤ 1 → psiLoc ψ v (x * y) = 1) → valuation (Fv F v) x ≤ 1` using `fun x h => (val_le_one_iff v x).2 ((hψ x).1 fun y hy => h y ((val_le_one_iff v y).2 hy))`. Establish `hne : {c | CondLE (unifAt v) c ν}.Nonempty` using `exists_condLE hϖ ν hcont`.
+
+Establish `hmem : CondLE (unifAt v) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν) ν` using `Nat.sInf_mem hne`. Establish `hmin : ∃ u ∈ unitCong (unifAt v ^ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν - 1)), ν u ≠ 1`. Establish `hlt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν - 1 < sInf {c | CondLE (unifAt v) c ν}` using `by show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν - 1 < GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν`. Use linear arithmetic over natural numbers and integers. Establish `h : ¬ CondLE (unifAt v) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν - 1) ν` using `Nat.notMem_of_lt_sInf hlt`.
+
+Simplify `h` using `[CondLE]`. Establish `hq : GlobalTheory.SplitWeil.resCard (Fv F v) = Ideal.absNorm v.asIdeal` using `GlobalTheory.LFun.SatBoundGL.resCard_completion v`. Take `⟨g, g', h1, h2⟩` from `GlobalTheory.GaussDiv.exists_int_gS σ hadd hO hcond hϖ hc1 hmem hmin hun (fun x hx => hr x ((val_le_one_iff v _).1 hx.le) ((val_le_one_iff v _).1 (by rw [Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]))) (by rwa [hq])`. Use `⟨g, g', ?_, by rw [h2, hq]⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Unfold `gauss gS`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hr` using `rep_ne_zero hϖ hc1 y`. Unfold `rep at hr`. Rewrite using `[dif_neg hr, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.GaussDiv.gauss_dvd_pow : ∀ {F : Type} [Field F] [NumberField F] {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ)
     (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (ν : (Fv F v)ˣ →* ℂˣ), PsiUnr ψ v →
     Continuous (fun x : (Fv F v)ˣ => (ν x : ℂ)) → (∀ x, ‖(ν x : ℂ)‖ = 1) → 1 ≤ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν →

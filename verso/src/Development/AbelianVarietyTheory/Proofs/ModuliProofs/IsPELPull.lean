@@ -14,11 +14,29 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.PELPull
 
+/- English proof (translation)
+The claim follows from `H.chartPull (chartPullPull A h h rfl) (chartPullSame L (fun _ : PUnit => F) (fun _ : PUnit => φ) (fun _ => 1) h fun _ => e)`.
+-/
 theorem lbIso_pull {X Y Y' : Scheme.{0}} {A : LB Y} {L : LB X} {φ : Y ⟶ X} (H : LBIso A (L.pull φ)) (h : Y' ⟶ Y)
     {F : Y' ⟶ X} (e : F = h ≫ φ) : LBIso (A.pull h) (L.pull F) :=
   H.chartPull (chartPullPull A h h rfl)
     (chartPullSame L (fun _ : PUnit => F) (fun _ : PUnit => φ) (fun _ => 1) h fun _ => e)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g k J a bas o _ b ρ S S' s s' f t t' τ hs ⟨ψ, hψ, hψL, hpt, hact⟩ ⟨φ, hφ, hφL, hφa, hgeom⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ', ⟨m⟩⟩ : ∃ τ' : SAB H S', Nonempty (SABMap τ' τ f) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f τ`. Conclude with `⟨_, ⟨m⟩⟩`. Establish `hL : LBIso τ'.PP.L (τ.PP.L.pull m.cm.F)`.
+
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Establish `hc : IsGrpPullback τ'.G t.A f (m.cm.F ≫ φ.hom.left)` using `(IsGrpPullback.comp m.cart (isGrpPullback_of_iso φ)).congr (Category.comp_id f) rfl`. Take `⟨e, he, heF⟩` from `grpPullback_iso hc hψ`. Use `⟨τ', e, he, ?_, fun j => ?_, fun K _ _ _ x β hx => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hL.trans τ'.PP.isLB (pull_isLB τ.PP.isLB _) (pull_isLB t.isLB _) (lbIso_pull hφL m.cm.F rfl)).trans τ'.PP.isLB (pull_isLB t.isLB _) (pull_isLB t'.isLB _) (lbIso_pull hψL e.hom.left heF.symm).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hψ.1.hom_ext` to reduce the goal to its premises. Establish `h₁ : (τ.act.act (a j)).left ≫ φ.hom.left = φ.hom.left ≫ (t.act j).left` using `congrArg (fun z => z.left) (hφa j)`. Establish `h₂ : (τ'.act.act (a j)).left ≫ m.cm.F = m.cm.F ≫ (τ.act.act (a j)).left` using `m.act _`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, heF, hact, ← Category.assoc, h₂, Category.assoc, h₁, ← Category.assoc, ← heF, Category.assoc]`. Rewrite using `[Over.w, Over.w]`. Take `⟨hdet, I, hI, hA⟩` from `hgeom K (x ≫ f) β (by rw [Category.assoc, hs, hx])`. Use `⟨fun σ => ?_, GlobalTheory.ObjPull.tateMove (GlobalTheory.ObjPull.pushEquiv m.cart (Over.mk x)) (fun c y => ?_) (fun n y y' c hc => ?_) I, hI, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LiePull.lieMult_pull _ S S' τ.G τ'.G f m.cm.F τ.act τ'.act m.cart m.act K x σ, GlobalTheory.LiePull.lieMult_pull _ S S' τ.G τ'.G f m.cm.F τ.act τ'.act m.cart m.act K x σ]`.
+
+Conclude with `hdet σ`. Apply `Over.OverMorphism.ext show (y.left ≫ _) ≫ _ = (y.left ≫ _) ≫ _` to reduce the goal to its premises. Rewrite using `[Category.assoc, m.act, Category.assoc]`. Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm S S' τ.G τ'.G f m.cm.F τ.PP.L τ'.PP.L τ.PP.isLB τ'.PP.isLB m.cart hL (Over.mk x) n y y' _ _ _ rfl rfl).2 hc`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `hψ.1.hom_ext` to reduce the goal to its premises. Establish `h₁ : (I.ev k (bas (Pi.single i 1))).left ≫ φ.hom.left = (x ≫ f) ≫ (t.pt i).left` using `congrArg (fun z => z.left) (hA i)`. Establish `h₂` using `GlobalTheory.ObjPull.pushEquiv_symm_left m.cart (Over.mk x) (I.ev k (bas (Pi.single i 1)))`. Use `show (((GlobalTheory.ObjPull.pushEquiv m.cart (Over.mk x)).symm (I.ev k (bas (Pi.single i 1)))).left ≫ e.hom.left) ≫ ψ = (x ≫ (t'.pt i).left) ≫ ψ`. Rewrite using `[Category.assoc, heF, Category.assoc, hpt]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ.hom.left) h₂).trans (h₁.trans (Category.assoc _ _ _)))`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem isPEL_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g k : ℕ) (J : Type) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La) (o : Type) [CommRing o] (b : TBase o k) (ρ : o) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (f : S' ⟶ S) (t : TObj g k J b s) (t' : TObj g k J b s') (τ : SAB H S), f ≫ s = s' → TMap t' t f → IsPEL D a bas ρ t τ → ∃ τ' : SAB H S', IsPEL D a bas ρ t' τ' := by
   intro E _ _ _ H D g k J a bas o _ b ρ S S' s s' f t t' τ hs ⟨ψ, hψ, hψL, hpt, hact⟩ ⟨φ, hφ, hφL, hφa, hgeom⟩
   obtain ⟨τ', ⟨m⟩⟩ : ∃ τ' : SAB H S', Nonempty (SABMap τ' τ f) := by

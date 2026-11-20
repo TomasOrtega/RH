@@ -32,6 +32,9 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
   {x : St P} (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x)
+/- English proof (translation)
+Introduce `big` and use `_root_.GlobalTheory.T.side_rational_hecke_data_alt hP.what₂.art (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M l.c.ch l.c.tp l.c.side (_root_.GlobalTheory.HeightCounting.Fin3.mtInput_of_levelC l) l.a.elem.star l.a.ele …`.
+-/
 theorem builtEx_of_published_inputs' (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) : _root_.GlobalTheory.CoefDuty.AutomorphicSideExists l.a.A l.mt.M l.c.ch l.c.tp.tup := fun big =>
   _root_.GlobalTheory.T.side_rational_hecke_data_alt hP.what₂.art (Dof x) (cfOf x) l.a.jE l.a.A (lowAll (Dof x)) l.Pq l.rat.S l.rat.In.hL l.rat.In.eig l.rat.In.θ l.b.Bs l.mt.M
     l.c.ch l.c.tp l.c.side (_root_.GlobalTheory.HeightCounting.Fin3.mtInput_of_levelC l) l.a.elem.star l.a.elem.int l.a.elem.split (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _)
@@ -40,6 +43,9 @@ theorem builtEx_of_published_inputs' (hP : _root_.GlobalTheory.HeightCounting.Up
 variable {big : (Dof x).what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 (Dof x))} (Sp : NdSpec l.a.A.pl l.mt.M l.c.ch big L.X L.T)
   (Au : _root_.GlobalTheory.HeightCounting.AutomorphicSpecialisation l.a.A l.mt.M l.c.tp.tup Sp.iq L.Y L.C) (ss : ∀ σ lam, IsSSRep (L.Z.rbar σ lam))
 include Au ss in
+/- English proof (translation)
+Take `⟨a, h1, h2, h3, h4, ⟨h5⟩, h6, h7⟩` from `_root_.GlobalTheory.HeightCounting.FitAll.nAllC_withLoc_alt hL hA.lp hA.cg _ (_root_.GlobalTheory.HeightCounting.Fin3.nTrueAtWeight l Sp Au ss).toNBuilt l.a.fr l.a.fr_jE l.a.pht l.a.elem (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _) Finset.subset_union_left`. Conclude with `⟨⟨a, h1, h2, h3, h4, h5, h6, h7⟩⟩`.
+-/
 theorem nonempty_allL_of_archCmp (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hA : _root_.GlobalTheory.HeightCounting.ArchimedeanComparison' hL) : Nonempty (_root_.GlobalTheory.HeightCounting.Fin3.AllLevelsData l L) := by
   obtain ⟨a, h1, h2, h3, h4, ⟨h5⟩, h6, h7⟩ := _root_.GlobalTheory.HeightCounting.FitAll.nAllC_withLoc_alt hL hA.lp hA.cg _ (_root_.GlobalTheory.HeightCounting.Fin3.nTrueAtWeight l Sp Au ss).toNBuilt l.a.fr l.a.fr_jE
     l.a.pht l.a.elem (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _) Finset.subset_union_left
@@ -48,6 +54,9 @@ variable (al : _root_.GlobalTheory.HeightCounting.Fin3.AllLevelsData l L) (hLg :
 variable {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y)
 omit l in
 variable (x L) in
+/- English proof (translation)
+Take `⟨m, hm, hc, hco⟩` from `GlobalTheory.T.exists_movedData_state_localisations x L`. Take `⟨s, r, hpin⟩` from `GlobalTheory.T.exists_reading_of_rowLiftFamily_movedData B f T w P.Z₀ P.hX P.Wt P.z P.q (oL x L) (GlobalTheory.LinksInputs.inputs_of_hypotheses hW hD hP.hc hP.decay (w.D (oL x L).Z)) (fitsL L) m`. Take `⟨t, rx, -, hz, hy, -⟩` from `hR ⟨oL x L, fitsL L, x.G_eq, x.etaF, bkL L, m, hc, hco, s, r, hpin⟩ he`. Take `⟨Y₁, h1⟩` from `_root_.GlobalTheory.HeightCounting.Fin3.exists_read_heq_of_eq hm r.Y`. Conclude with `⟨s.p0, t, rx, Y₁, GlobalTheory.T.normalisedReadings_related_localizedAdelicData x L m hm hco s r hpin Y₁ h1, hz.trans (heq_of_eq hm), hy.trans h1.symm⟩`.
+-/
 theorem exists_base_level_rXs_and_yRel (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hD : GlobalTheory.Published.DiscreteSeriesExists) (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hR : RowsAt P)
     (he : ∀ j v, 1 ≤ j → j ≤ B.R.m → etaL x L j v = P.q.eta j v) :
     ∃ (p : BaseLevelRowSide (w.D (oL x L).Z)) (t : RowsT K w (oL x L).Z P.Wt p), Nonempty (RXs t) ∧
@@ -58,6 +67,13 @@ theorem exists_base_level_rXs_and_yRel (hW : GlobalTheory.Published.WeilRepresen
   obtain ⟨t, rx, -, hz, hy, -⟩ := hR ⟨oL x L, fitsL L, x.G_eq, x.etaF, bkL L, m, hc, hco, s, r, hpin⟩ he
   obtain ⟨Y₁, h1⟩ := _root_.GlobalTheory.HeightCounting.Fin3.exists_read_heq_of_eq hm r.Y
   exact ⟨s.p0, t, rx, Y₁, GlobalTheory.T.normalisedReadings_related_localizedAdelicData x L m hm hco s r hpin Y₁ h1, hz.trans (heq_of_eq hm), hy.trans h1.symm⟩
+/- English proof (translation)
+Establish `hB` using `_root_.GlobalTheory.HeightCounting.Fin3.builtEx_of_published_inputs' l hP`. Take `⟨big, hbig⟩` from `hE hB`. Take `⟨L, hL'⟩` from `hB big`. Take `⟨hLg, he⟩` from `hbig L hL'`. Take `⟨Sp, ⟨Au⟩, ss⟩` from `hL'`.
+
+Take `⟨al⟩` from `_root_.GlobalTheory.HeightCounting.Fin3.nonempty_allL_of_archCmp l Sp Au ss hP hA`. Take `⟨xd, hxd⟩` from `hX`. Take `⟨p, t, ⟨rx⟩, Y₁, hY₁, hz, ht⟩` from `_root_.GlobalTheory.HeightCounting.Fin3.exists_base_level_rXs_and_yRel x L hW hD hP hR fun j v h1 h2 => he j v h1 h2 v HEq.rfl`. Take `⟨c, ⟨ne⟩, hp⟩` from `_root_.GlobalTheory.HeightCounting.Fin3.exists_core_and_listPin l Sp Au ss al hLg Y₁ hY₁ hxd t hz ht`. Take `⟨nn⟩` from `hN _ p t _ _ _ c ne hp`.
+
+Establish `hg : GIs2 K w x.o.G` using `x.G_eq ▸ P.g`. Conclude with `⟨(oL x L).Z, { g := hg, coh := P.coh, Wt := P.Wt, p0 := p, what₂ := t, rx := rx, nch := _root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l, n := _root_.GlobalTheory.HeightCounting.Fin3.localCharacterChoiceTwist l Sp Au ss al hLg, xd := xdD L xd chiT := fun k v => Ty …`.
+-/
 theorem lv3_of_third_alt_alt (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair) (hD : GlobalTheory.Published.DiscreteSeriesExists) (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hA : _root_.GlobalTheory.HeightCounting.ArchimedeanComparison' hL)
     (hR : RowsAt P)
     (hE : _root_.GlobalTheory.CoefDuty.AutomorphicSideExists l.a.A l.mt.M l.c.ch l.c.tp.tup → _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' =>
@@ -82,6 +98,11 @@ theorem lv3_of_third_alt_alt (hW : GlobalTheory.Published.WeilRepresentationUnit
     { g := hg, coh := P.coh, Wt := P.Wt, p0 := p, what₂ := t, rx := rx, nch := _root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l, n := _root_.GlobalTheory.HeightCounting.Fin3.localCharacterChoiceTwist l Sp Au ss al hLg, xd := xdD L xd
       chiT := fun k v => TypesTrue.chiT_gen (fitsL L).grp k v, nx := ⟨c, nn⟩ }, rfl, _root_.GlobalTheory.HeightCounting.Fin3.kept_characterChoiceLocal L l⟩
 omit l in
+/- English proof (translation)
+Introduce `hW hD hP hL hA hE hX`. Establish `h` using `_root_.GlobalTheory.HeightCounting.Fin3.start_at_all_pre2.and (StepW.and hE hX)`. Use `⟨h.trans (StepW.of_all ?_), fun cDep => h.trans (StepW.of_all ?_)⟩` and prove the remaining obligations. Introduce `K B f T w _ _ H P x l S Γ`. Conclude with `_root_.GlobalTheory.HeightCounting.Fin3.lv3_of_third_alt_alt l hW hD hP hA (H.1 P) (H.2.1 P x l) (H.2.2 P x ⟨l.toStrictHenselianAcyclic.toLI, l.b.toSeriesState⟩) S Γ (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL) fun _ _ _ _ _ _ _ a _ => ⟨a⟩`.
+
+Introduce `K B f T w _ _ H P x l S Γ hp`. Conclude with `_root_.GlobalTheory.HeightCounting.Fin3.lv3_of_third_alt_alt l hW hD hP hA (H.1 P) (H.2.1 P x l) (H.2.2 P x ⟨l.toStrictHenselianAcyclic.toLI, l.b.toSeriesState⟩) S Γ (_root_.GlobalTheory.HeightCounting.Up.extensionWithList hL cDep) fun _ _ _ _ _ _ _ a b => ⟨(a, ⟨b cDep hp⟩)⟩`.
+-/
 theorem sFin_and_sFinl_of_theta_data_exists : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt →
     ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.ArchimedeanComparison' hL → _root_.GlobalTheory.HeightCounting.Up.EtaStatement' hL → _root_.GlobalTheory.HeightCounting.Up.ThetaDataExists hL → _root_.GlobalTheory.HeightCounting.Up.FinitenessStatement hL ∧ ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep := by
   intro hW hD hP hL hA hE hX
@@ -99,6 +120,9 @@ end
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists | exact _root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists <;> assumpti …`.
+-/
 theorem _root_.GlobalTheory.T.sFin_and_sFinl_of_archCmp_sEta_thetaData : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.ArchimedeanComparison' hL → _root_.GlobalTheory.HeightCounting.Up.EtaStatement' hL → _root_.GlobalTheory.HeightCounting.Up.ThetaDataExists hL → _root_.GlobalTheory.HeightCounting.Up.FinitenessStatement hL ∧ ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep := by
   first | exact @_root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists | exact _root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.sFin_and_sFinl_of_theta_data_exists <;> assumption)
 end

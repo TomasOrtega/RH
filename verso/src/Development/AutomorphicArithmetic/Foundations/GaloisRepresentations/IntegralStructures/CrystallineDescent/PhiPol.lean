@@ -10,6 +10,13 @@ open UpperTheory.V.Af (FrobEig algSat RepIso)
 open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ A w h x y σ hs`. Establish `split : ∀ z : WD h, ((z.charPol σ).roots.map fun a => X - C a).prod = z.charPol σ`. Introduce `z`. Proceed by induction on `z using WD.ind with`. Consider the case `hP n a`.
+
+Rewrite using `[WD.charPol_mk]`. Conclude with `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (LinearMap.charpoly_monic _) (IsAlgClosed.splits _).natDegree_eq_card_roots.symm`. Establish `hc : Multiset.card (x.charPol σ).roots = Multiset.card (y.charPol σ).roots`. Establish `h0` using `hs 0`. Simplify using `only [GlobalTheory.CongPhi.phiSum, pow_zero, Multiset.map_const', Multiset.sum_replicate, nsmul_eq_mul, mul_one] at h0`.
+
+Conclude with `h0` after adjusting the coercions. Rewrite using `[← split x, ← split y]`. Conclude with `GlobalTheory.CharpolyNewton.prod_eq_of_psum_eq _ _ hc hs`.
+-/
 theorem UpperTheory.Gal.Int.Core.phiPol_holds :
     PhiPol := by
   intro F Ω _ _ _ _ _ A w h x y σ hs

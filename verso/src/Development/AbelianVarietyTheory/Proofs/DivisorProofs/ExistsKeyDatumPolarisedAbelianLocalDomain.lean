@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Introduce `W _ _ _ _ P hg`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all`. Set `m : PrimeSpectrum W` to `IsLocalRing.closedPoint W`. Take `⟨th, a, ha, -, hth⟩` from `GlobalTheory.T.exists_principalPolarization_section_nonzero_near_two_primes hL.1 hL.2 W P m m`. Establish `c : IsCommMonObj P.A` using `P.isAb.comm`.
+
+Take `⟨b, hb, -, v, hv⟩` from `GlobalTheory.T.exists_lieBasis_away_avoiding_two_primes W P.A P.g P.smoothDim m m`. Establish `hbu : IsUnit b` using `(IsLocalRing.mem_maximalIdeal b).not.mp hb |> not_not.mp`. Set `g : Localization.Away b →+* W` to `IsLocalization.Away.lift (g := RingHom.id W) b hbu`. Establish `hgf : g.comp (algebraMap W (Localization.Away b)) = RingHom.id W`. Use extensionality with `x`.
+
+Simplify using `[g]`. Establish `h₁` using `isGrpPullback_pullback P.A (spMap (algebraMap W (Localization.Away b)))`. Establish `hA₁` using `Out.TLinPf.isAb_pullback (spMap (algebraMap W (Localization.Away b))) P.A P.isAb`. Establish `c₁` using `hA₁.comm`. Establish `e : spMap g ≫ spMap (algebraMap W (Localization.Away b)) = 𝟙 (Sp W)`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hgf, CommRingCat.ofHom_id, Spec.map_id]`. Establish `w₁ : 𝟙 P.A.left ≫ P.A.hom = (P.A.hom ≫ spMap g) ≫ spMap (algebraMap W (Localization.Away b))`. Rewrite using `[Category.assoc, e]`. Simplify using the standard rewrite rules. Use `haveI : IsMonHom (Iso.refl P.A).hom := inferInstanceAs (IsMonHom (𝟙 P.A))`.
+
+Establish `hid : IsGrpPullback P.A P.A (𝟙 _) (𝟙 P.A.left)` using `isGrpPullback_of_iso (Iso.refl P.A)`. Establish `h₂ : IsGrpPullback P.A _ (spMap g) (h₁.1.lift _ _ w₁)` using `IsGrpPullback.cancel h₁ (hid.congr e.symm (h₁.1.lift_fst _ _ w₁).symm) (h₁.1.lift_snd _ _ w₁)`. Take `⟨v', hb', -⟩` from `exists_isLieBasis_baseChange _ W g _ P.A _ h₂ hA₁.smooth P.g v hv`. Take `⟨rig, hr⟩` from `P.rigid`. Use `⟨⟨P, hg, rig, hr, th, fun s => hth s fun h => ?_, v', hb'⟩, rfl⟩` and prove the remaining obligations.
+
+Establish `hs : s.asIdeal ≤ IsLocalRing.maximalIdeal W` using `IsLocalRing.le_maximalIdeal s.isPrime.ne_top`. Conclude with `ha (hs h)`.
+-/
 theorem exists_keyIn_local : ∀ (W : Type) [CommRing W] [IsDomain W] [IsNoetherianRing W] [IsLocalRing W]
     (P : PolAV (Sp W)), 1 ≤ P.g → ∃ y : KeyIn W, y.P = P := by
   intro W _ _ _ _ P hg

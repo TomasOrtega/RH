@@ -6,6 +6,9 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨k, hk, k', hk', rfl⟩`. Use `Submodule.mem_sup.2 ⟨_, Submodule.subset_span ⟨k, hk, k', hk', rfl⟩, _, Submodule.subset_span ⟨k, hk, k', hk', rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 private lemma span_add_le {H : Type} [Group H] (K : Subgroup H) (f f' : H → ℂ) :
     Submodule.span ℂ {φ : H → ℂ | ∃ k ∈ K, ∃ k' ∈ K, φ = fun g => (f + f') (k * g * k')} ≤
       Submodule.span ℂ {φ : H → ℂ | ∃ k ∈ K, ∃ k' ∈ K, φ = fun g => f (k * g * k')} ⊔
@@ -16,6 +19,9 @@ private lemma span_add_le {H : Type} [Group H] (K : Subgroup H) (f f' : H → �
     Submodule.subset_span ⟨k, hk, k', hk', rfl⟩, ?_⟩
   funext g; simp
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨k, hk, k', hk', rfl⟩`. Establish `: (fun g => (c • f) (k * g * k')) = c • fun g => f (k * g * k')` using `by funext g; simp`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨k, hk, k', hk', rfl⟩)`.
+-/
 private lemma span_smul_le {H : Type} [Group H] (K : Subgroup H) (c : ℂ) (f : H → ℂ) :
     Submodule.span ℂ {φ : H → ℂ | ∃ k ∈ K, ∃ k' ∈ K, φ = fun g => (c • f) (k * g * k')} ≤
       Submodule.span ℂ {φ : H → ℂ | ∃ k ∈ K, ∃ k' ∈ K, φ = fun g => f (k * g * k')} := by
@@ -25,6 +31,9 @@ private lemma span_smul_le {H : Type} [Group H] (K : Subgroup H) (c : ℂ) (f : 
   rw [SetLike.mem_coe, this]
   exact Submodule.smul_mem _ c (Submodule.subset_span ⟨k, hk, k', hk', rfl⟩)
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨k, hk, k', hk', rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_bot]`. Both sides reduce to the same expression.
+-/
 private lemma span_zero_le {H : Type} [Group H] (K : Subgroup H) :
     Submodule.span ℂ {φ : H → ℂ | ∃ k ∈ K, ∃ k' ∈ K, φ = fun g => (0 : H → ℂ) (k * g * k')} ≤ ⊥ := by
   refine Submodule.span_le.2 ?_
@@ -32,6 +41,11 @@ private lemma span_zero_le {H : Type} [Group H] (K : Subgroup H) :
   simp only [SetLike.mem_coe, Submodule.mem_bot]
   rfl
 
+/- English proof (translation)
+Introduce `H _ K`. Use `⟨?_, fun f f' hf hf' => ?_, fun c f hf => ?_⟩` and prove the remaining obligations. Unfold `IsBiFinite`. Conclude with `Submodule.finiteDimensional_of_le (span_zero_le K)`. Unfold `IsBiFinite at *`.
+
+Conclude with `Submodule.finiteDimensional_of_le (span_add_le K f f')`. Unfold `IsBiFinite at *`. Conclude with `Submodule.finiteDimensional_of_le (span_smul_le K c f)`.
+-/
 theorem isBiFinite_subspace : ∀ (H : Type) [Group H] (K : Subgroup H), IsBiFinite K (0 : H → ℂ) ∧
     (∀ f f' : H → ℂ, IsBiFinite K f → IsBiFinite K f' → IsBiFinite K (f + f')) ∧
     ∀ (c : ℂ) (f : H → ℂ), IsBiFinite K f → IsBiFinite K (c • f) := by

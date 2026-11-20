@@ -33,10 +33,16 @@ def toE : (AE F E)ˣ →* IdeleGroup E :=
 def ofE : IdeleGroup E →* (AE F E)ˣ :=
   Units.map ((adeleTensorAlgEquivLeft F E).symm : AdeleRing (𝓞 E) E →ₐ[AF F] AE F E).toMonoidHom
 
+/- English proof (translation)
+Use `ext`. Simplify using `[ofE, toE]`.
+-/
 theorem ofE_toE (x : (AE F E)ˣ) : ofE F E (toE F E x) = x := by
   ext
   simp [ofE, toE]
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF F) (AE F E)` using `⟨rfl⟩`. Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `IsModuleTopology.toContinuousSMul (AF F) (AE F E)` as an intermediate fact. Establish `: IsModuleTopology (AF F) (AdeleRing (𝓞 E) E)` using `isModuleTopology_adeleRing`. Conclude with `Continuous.units_map _ (IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).symm.toLinearMap)`.
+-/
 theorem continuous_ofE : Continuous (ofE F E) := by
   have : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -45,11 +51,19 @@ theorem continuous_ofE : Continuous (ofE F E) := by
   exact Continuous.units_map _
     (IsModuleTopology.continuous_of_linearMap (adeleTensorAlgEquivLeft F E).symm.toLinearMap)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[toE, inclR, adeleTensorAlgEquivLeft_tmul, IdeleGroup.coe_diagonal]`.
+-/
 theorem toE_inclR (γ : Eˣ) :
     toE F E (Units.map (inclR (F := F) (AF F)).toMonoidHom γ) = IdeleGroup.diagonal E γ := by
   ext
   simp [toE, inclR, adeleTensorAlgEquivLeft_tmul, IdeleGroup.coe_diagonal]
 
+/- English proof (translation)
+Rewrite using `[← GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := F), ← GlobalTheory.ModuAdele.modu_norm_eq_absE]`. Establish `h2 : ∀ u : (AF F)ˣ, (((adeleClass F).modu u : ℝ≥0) : ℝ) = (IdeleGroup.ideleModule F u : ℝ)` using `fun u => by`. Express the relevant statement in the definitionally equal form `(distribHaarChar (AdeleRing (𝓞 F) F) u : ℝ) = _`. Conclude with `GlobalTheory.ModuAdele.distribHaarChar_adeleRing F u`. Establish `h3 : Units.map (Algebra.norm (AF F) : AE F E →* AF F) x = ideleNorm F E (toE F E x)`.
+
+Use `ext`. Simplify using `[toE, ideleNorm, Algebra.norm_eq_of_algEquiv]`. Rewrite using `[h2, h3]`.
+-/
 theorem absE_eq_ideleModule (x : (AE F E)ˣ) :
     (absE F E x : ℝ) = (IdeleGroup.ideleModule E (toE F E x) : ℝ) := by
   rw [← GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := F), ← GlobalTheory.ModuAdele.modu_norm_eq_absE]
@@ -67,6 +81,11 @@ section OnE
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `hadd 1 1`. Rewrite `h` using `[mul_one]`. Simplify using `using h`.
+
+Consider the case `succ n ih => rw [pow_succ, hadd, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_pow_eq (ψ : IdeleGroup E → ℂ) (hadd : ∀ s t, ψ (s * t) = ψ s + ψ t) (y : IdeleGroup E) (n : ℕ) :
     ψ (y ^ n) = n * ψ y := by
   induction n with
@@ -76,6 +95,13 @@ theorem map_pow_eq (ψ : IdeleGroup E → ℂ) (hadd : ∀ s t, ψ (s * t) = ψ 
     simpa using h
   | succ n ih => rw [pow_succ, hadd, ih]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨D, hD, -, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup E`. Take `⟨M, hM⟩` from `(hD.image hψ).isBounded.exists_norm_le`. Establish `hb : ∀ z ∈ IdeleGroup.normOneSubgroup E, ‖ψ z‖ ≤ M` using `fun z hz => by`. Take `⟨k, hk⟩` from `hxD z hz`. Use `hM _ ⟨_, hk, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[hadd, hE, zero_add]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖ψ y‖` using `norm_pos_iff.2 hne`. Take `⟨n, hn⟩` from `exists_nat_gt (M / ‖ψ y‖)`. Establish `h1` using `hb _ (pow_mem hy n)`.
+
+Rewrite `h1` using `[map_pow_eq ψ hadd, norm_mul, Complex.norm_natCast]`. Rewrite `hn` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_mem_normOne (ψ : IdeleGroup E → ℂ) (hψ : Continuous ψ) (hadd : ∀ s t, ψ (s * t) = ψ s + ψ t)
     (hE : ∀ γ : Eˣ, ψ (IdeleGroup.diagonal E γ) = 0) {y : IdeleGroup E} (hy : y ∈ IdeleGroup.normOneSubgroup E) :
     ψ y = 0 := by
@@ -93,6 +119,19 @@ theorem eq_zero_of_mem_normOne (ψ : IdeleGroup E → ℂ) (hψ : Continuous ψ)
   rw [div_lt_iff₀ hpos] at hn
   linarith
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Set `s` to `moduleSection w`. Establish `h1 : ψ 1 = 0`. Establish `h` using `hadd 1 1`. Rewrite `h` using `[mul_one]`.
+
+Take the linear combination `-h`. Set `e : ℝ → {r : ℝ // 0 < r}` to `fun u => ⟨Real.exp u, Real.exp_pos u⟩`. Set `fA : ℝ →+ ℂ` to `{ toFun := fun u => ψ (s (e u)) map_zero' := by`. Establish `: e 0 = 1` using `Subtype.ext Real.exp_zero`. Simplify using `only [this, map_one, h1]`.
+
+Use the proof step `map_add' := fun u v => by`. Establish `: e (u + v) = e u * e v` using `Subtype.ext (Real.exp_add u v)`. Simplify using `only [this, map_mul, hadd] }`. Establish `hfc : Continuous fA` using `hψ.comp ((continuous_moduleSection w).comp (Real.continuous_exp.subtype_mk _))`. Set `L` to `fA.toRealLinearMap hfc`.
+
+Establish `hL : ∀ u : ℝ, fA u = u * fA 1` using `fun u => by`. Establish `h` using `L.map_smul u 1`. Simplify using `only [smul_eq_mul, mul_one, Complex.real_smul, L, AddMonoidHom.coe_toRealLinearMap] at h`. Conclude with `h`. Use `⟨fA 1, fun y => ?_⟩` and prove the remaining obligations.
+
+Use `set r := IdeleGroup.ideleModule E y with hr`. Establish `hsplit : y = (y * (s r)⁻¹) * s r` using `by group`. Establish `hr' : e (Real.log r) = r` using `Subtype.ext (Real.exp_log r.2)`. Establish `hz : ψ (y * (s r)⁻¹) = 0` using `eq_zero_of_mem_normOne ψ hψ hadd hE (by exact mul_inv_moduleSection_mem w y)`. Establish `hs : ψ (s r) = fA (Real.log r)` using `by show ψ (s r) = ψ (s (e (Real.log r)))`.
+
+Rewrite using `[hr']`. Rewrite using `[hsplit, hadd, hz, zero_add, hs, hL, mul_comm]`.
+-/
 theorem exists_log_of_ideleGroup (ψ : IdeleGroup E → ℂ) (hψ : Continuous ψ) (hadd : ∀ s t, ψ (s * t) = ψ s + ψ t)
     (hE : ∀ γ : Eˣ, ψ (IdeleGroup.diagonal E γ) = 0) :
     ∃ A : ℂ, ∀ y, ψ y = A * (Real.log (IdeleGroup.ideleModule E y : ℝ) : ℂ) := by
@@ -131,6 +170,11 @@ theorem exists_log_of_ideleGroup (ψ : IdeleGroup E → ℂ) (hψ : Continuous �
 
 end OnE
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ φ hφ hadd hE`. Establish `hdiag : ∀ γ : Eˣ, ofE F E (IdeleGroup.diagonal E γ) = Units.map (inclR (F` using `F) (AF F)).toMonoidHom γ := fun γ => by rw [← toE_inclR F E, ofE_toE]`. Take `⟨A, hA⟩` from `exists_log_of_ideleGroup (fun y => φ (ofE F E y)) (hφ.comp (continuous_ofE F E)) (fun s t => by simp only [map_mul, hadd]) (fun γ => by simp only [hdiag, hE])`. Use `⟨A, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `hA (toE F E t)`.
+
+Rewrite `h` using `[ofE_toE]`. Rewrite using `[h, absE_eq_ideleModule F E]`.
+-/
 theorem exists_eq_mul_log_absE : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (φ : (AE F E)ˣ → ℂ), Continuous φ → (∀ s t, φ (s * t) = φ s + φ t) →
     (∀ γ : Eˣ, φ (Units.map (inclR (F := F) (AF F)).toMonoidHom γ) = 0) →

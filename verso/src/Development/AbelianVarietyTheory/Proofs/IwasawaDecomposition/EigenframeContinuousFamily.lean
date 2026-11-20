@@ -10,6 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShFam.OddPrimesWithRootsOfUnity
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z _ x σ V φ F T _ a S ha hF τ`. Use `continuousOn_pi.2 fun a' => continuousOn_pi.2 fun b' => ?_` and prove the remaining obligations. Take `⟨g, h1, h2, h3⟩` from `x.gram_smooth (σ := σ) V F τ a' b'`. Establish `hre` using `h1.continuousOn (isOpen_ptsIn _)`. Establish `him` using `h2.continuousOn (isOpen_ptsIn _)`.
+
+Establish `hg : ContinuousOn g (ptsIn (genStr Z) σ V.1)`. Establish `hc : ContinuousOn (fun y => ((g y).re : ℂ) + ((g y).im : ℂ) * Complex.I) (ptsIn (genStr Z) σ V.1)` using `(Complex.continuous_ofReal.comp_continuousOn hre).add ((Complex.continuous_ofReal.comp_continuousOn him).mul continuousOn_const)`. Conclude with `hc.congr fun y _ => (Complex.re_add_im (g y)).symm`. Establish `hmaps : Set.MapsTo (fun t => (a t).1) S (ptsIn (genStr Z) σ V.1)` using `fun t ht => (hF t ht).1`. Use `(hg.comp ha hmaps).congr fun t ht => ?_` and prove the remaining obligations.
+
+Take `⟨hy, hm⟩` from `hF t ht`. Conclude with `h3 _ hy _ (hm τ)`.
+-/
 theorem gram_continuousOn_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] (x : OddPrimesWithRootsOfUnity Z) (σ : c.F →+* ℂ) (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (T : Type) [TopologicalSpace T] (a : T → CxFr Z σ) (S : Set T), ContinuousOn (fun t => (a t).1) S → (∀ t ∈ S, ∃ hy : (a t).1 ∈ ptsIn (genStr Z) σ V.1, F.IsMap (evHom hy) (a t).2) → ∀ τ : E →+* ℂ, ContinuousOn (fun t => x.gram (a t).1 (a t).2 τ) S := by
   intro E _ _ _ H Dw l Xo c O _ β Z _ x σ V φ F T _ a S ha hF τ
   refine continuousOn_pi.2 fun a' => continuousOn_pi.2 fun b' => ?_

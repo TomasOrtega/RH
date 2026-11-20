@@ -21,6 +21,9 @@ def LeafPairExt : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) L, IsAct q i L →
     ∀ (U : Scheme.{0}) (t : ℤ) (a : Sec (tw q 0) U) (b : Sec ((res _ (tw q i)).X t) U),
       ν.mul U 0 t t (zero_add t) (Sec.map (resι _ (tw q 0)) a) b = L U t a b
 
+/- English proof (translation)
+Introduce `q _ i`. Take `⟨L, hL, hLζ⟩` from `hact q i`. Take `⟨ν, hν⟩` from `hext q i L hL`. Use `⟨ν, fun U t ζ b => ?_⟩` and prove the remaining obligations. Conclude with `(hν U t (twGen 0 ζ) b).trans (hLζ U t ζ b)`.
+-/
 theorem LeafUnitPairG_of (hact : LeafUnitAct) (hext : LeafPairExt) : LeafUnitPairG := by
   intro q _ i
   obtain ⟨L, hL, hLζ⟩ := hact q i

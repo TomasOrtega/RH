@@ -4,6 +4,9 @@ open MeasureTheory Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, hu, hu, hu]`. Simplify using `only [Matrix.reindex_apply, Equiv.symm_symm]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.of_add_of]`.
+-/
 theorem typeFunction_unip_add {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι]
     {a b : ℕ} (e : ι ≃ Fin a ⊕ Fin b) (u : (Fin a → Fin b → K) → GL ι K)
     (hu : ∀ X, (u X : Matrix ι ι K) =
@@ -15,6 +18,31 @@ theorem typeFunction_unip_add {K : Type} [Field K] {ι : Type} [Fintype ι] [Dec
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   simp [Matrix.of_add_of]
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ ι _ _ J hJo hJc χ hχ hnt f hf1 hf0`. Establish `hR : ∀ g j (hj : j ∈ J), f (g * j) = f g * (((χ ⟨j, hj⟩)⁻¹ : ℂˣ) : ℂ)`. Introduce `g j hj`. Distinguish the cases in `hg : g ∈ J`. Rewrite using `[hf1 _ (J.mul_mem hg hj), hf1 g hg]`.
+
+Establish `: (⟨g * j, J.mul_mem hg hj⟩ : J) = ⟨g, hg⟩ * ⟨j, hj⟩` using `rfl`. Rewrite using `[this, map_mul, mul_inv, Units.val_mul]`. Rewrite using `[hf0 g hg, hf0 _ (fun h => hg ((J.mul_mem_cancel_right hj).1 h)), zero_mul]`. Establish `hL : ∀ g j (hj : j ∈ J), f (j * g) = (((χ ⟨j, hj⟩)⁻¹ : ℂˣ) : ℂ) * f g`. Introduce `g j hj`.
+
+Distinguish the cases in `hg : g ∈ J`. Rewrite using `[hf1 _ (J.mul_mem hj hg), hf1 g hg]`. Establish `: (⟨j * g, J.mul_mem hj hg⟩ : J) = ⟨j, hj⟩ * ⟨g, hg⟩` using `rfl`. Rewrite using `[this, map_mul, mul_inv, Units.val_mul]`. Rewrite using `[hf0 g hg, hf0 _ (fun h => hg ((J.mul_mem_cancel_left hj).1 h)), mul_zero]`.
+
+Establish `hRk : ∀ y ∈ (χ.ker.map J.subtype), ∀ g, f (g * y) = f g`. Introduce and unpack `_ ⟨y, hy, rfl⟩ g`. Establish `h1 : χ y = 1` using `hy`. Use `hR g y y.2` as an intermediate fact. Simplify using `only [Subtype.coe_eta, h1, inv_one, Units.val_one, mul_one] at this`.
+
+Conclude with `this`. Establish `hLk : ∀ y ∈ (χ.ker.map J.subtype), ∀ g, f (y * g) = f g`. Introduce and unpack `_ ⟨y, hy, rfl⟩ g`. Establish `h1 : χ y = 1` using `hy`. Use `hL g y y.2` as an intermediate fact.
+
+Simplify using `only [Subtype.coe_eta, h1, inv_one, Units.val_one, one_mul] at this`. Conclude with `this`. Establish `hNo : IsOpen ((χ.ker.map J.subtype : Subgroup (GL ι K)) : Set (GL ι K))`. Rewrite using `[Subgroup.coe_map]`. Conclude with `hJo.isOpenMap_subtype_val _ hχ`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun x => g⁻¹ * x) ⁻¹' ((χ.ker.map J.subtype : Subgroup (GL ι K)) : Set (GL ι K)), hNo.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, inv_mul_cancel, SetLike.mem_coe]`.
+
+Conclude with `Subgroup.one_mem _`. Introduce `x hx`. Use `hRk _ hx g` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Conclude with `HasCompactSupport.intro' hJc (J.isClosed_of_isOpen hJo) (fun g hg => hf0 g hg)`.
+
+Introduce `x hx y hy g`. Rewrite using `[hRk y hy, hLk x hx]`. Introduce `a b e ha hb μ hμ u hu g h`. Take `⟨Y, hY, hne⟩` from `hnt a b e ha hb u hu h`. Establish `key : ∀ X, f (g * (h⁻¹ * u (Y + X) * h)) = f (g * (h⁻¹ * u X * h)) * (((χ ⟨_, hY⟩)⁻¹ : ℂˣ) : ℂ)`.
+
+Introduce `X`. Rewrite using `[← hR _ _ hY, typeFunction_unip_add e u hu]`. Use `congr 1`. Use `group`. Establish `h1` using `integral_add_left_eq_self (μ := μ) (fun X => f (g * (h⁻¹ * u X * h))) Y`.
+
+Simplify using `only [key] at h1`. Rewrite `h1` using `[integral_mul_const]`. Establish `hc : (((χ ⟨_, hY⟩)⁻¹ : ℂˣ) : ℂ) ≠ 1`. Introduce `hc`. Conclude with `hne (inv_eq_one.1 (Units.val_eq_one.1 hc))`.
+
+Assume the negation of the conclusion as `hI`. Conclude with `hc (mul_left_cancel₀ hI (h1.trans (mul_one _).symm))`.
+-/
 theorem typeFunction_constantTerm_eq_zero :
   ∀ (K : Type) [Field K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K] [MeasurableSpace K] [BorelSpace K]
   (ι : Type) [Fintype ι] [DecidableEq ι] (J : Subgroup (GL ι K)), IsOpen (J : Set (GL ι K)) → IsCompact (J : Set (GL ι K)) →

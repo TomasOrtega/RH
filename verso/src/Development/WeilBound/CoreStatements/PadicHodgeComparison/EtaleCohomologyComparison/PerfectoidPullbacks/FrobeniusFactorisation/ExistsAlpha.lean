@@ -22,9 +22,15 @@ def ev {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [Module A T
       change (w • a) • g y = a • g (w • y)
       rw [hg, Algebra.smul_def, mul_comm, mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_tmul {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [Module A T] (g : L →+ T)
     (hg : ∀ (w : W) y, g (w • y) = algebraMap W A w • g y) (a : A) (y : L) : ev g hg (a ⊗ₜ y) = a • g y := rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b y => rw [TensorProduct.smul_tmul', ev_tmul, ev_tmul, smul_eq_mul, mul_smul]`. Consider the case `add z z' h h' => rw [smul_add, map_add, map_add, h, h', smul_add]`.
+-/
 theorem ev_smul {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [Module A T] (g : L →+ T)
     (hg : ∀ (w : W) y, g (w • y) = algebraMap W A w • g y) (a : A) (z : A ⊗[W] L) : ev g hg (a • z) = a • ev g hg z := by
   induction z using TensorProduct.induction_on with
@@ -32,6 +38,9 @@ theorem ev_smul {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [M
   | tmul b y => rw [TensorProduct.smul_tmul', ev_tmul, ev_tmul, smul_eq_mul, mul_smul]
   | add z z' h h' => rw [smul_add, map_add, map_add, h, h', smul_add]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b y => exact h b y`. Consider the case `add z z' h h' => rw [map_add, map_add, h, h']`.
+-/
 theorem add_ext {L : Type 1} [AddCommGroup L] [Module W L] {T : Type 1} [AddCommGroup T] {f f' : A ⊗[W] L →+ T}
     (h : ∀ a y, f (a ⊗ₜ y) = f' (a ⊗ₜ y)) (z : A ⊗[W] L) : f z = f' z := by
   induction z using TensorProduct.induction_on with
@@ -39,6 +48,9 @@ theorem add_ext {L : Type 1} [AddCommGroup L] [Module W L] {T : Type 1} [AddComm
   | tmul b y => exact h b y
   | add z z' h h' => rw [map_add, map_add, h, h']
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Establish `: ⇑(ev g hg) = e ∘ (fun z => Pi.single () z)` using `funext fun z => add_ext (f := ev g hg) (f' := e.toAddMonoidHom.comp (AddMonoidHom.single (fun _ : Unit => A ⊗[W] L) ())) (fun a y => (he () a y).symm) z`. Rewrite using `[this]`. Conclude with `e.bijective.comp ⟨Pi.single_injective (M := fun _ : Unit => A ⊗[W] L) (), fun f => ⟨f (), funext fun _ => Pi.single_eq_same _ _⟩⟩`.
+-/
 theorem ev_bij {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [Module A T] (g : L →+ T)
     (hg : ∀ (w : W) y, g (w • y) = algebraMap W A w • g y)
     (h : Tens W (N := fun _ : Unit => A) (M := fun _ => L) (M' := T) fun _ a y => a • g y) : Function.Bijective (ev g hg) := by
@@ -48,6 +60,13 @@ theorem ev_bij {L T : Type 1} [AddCommGroup L] [Module W L] [AddCommGroup T] [Mo
   rw [this]
   exact e.bijective.comp ⟨Pi.single_injective (M := fun _ : Unit => A ⊗[W] L) (), fun f => ⟨f (), funext fun _ => Pi.single_eq_same _ _⟩⟩
 
+/- English proof (translation)
+Take `⟨hs, α, hα⟩` from `GlobalTheory.T.flat_base_change_limit_system W l hl S c h1 h2 h3 h4 A`. Establish `hev : ∀ n w, ev (g' n) (hg' n) w = ev (g n) (hg n) ((Tw.pr S n).baseChange A w)` using `fun n => add_ext (f' := (ev (g n) (hg n)).comp ((Tw.pr S n).baseChange A).toAddMonoidHom) fun a y => by`. Rewrite using `[ev_tmul, e]`. Both sides reduce to the same expression. Establish `hbij` using `fun n => ev_bij (g n) (hg n) (hb n)`.
+
+Use `⟨fun w hw => hs w fun n => (hbij n).1 (by rw [← hev, hw, map_zero]), fun z hz => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun n => (hbij n).2 (z n)`. Establish `hc : ∀ n, (S.r n).baseChange A (u (n + 1)) = u n` using `fun n => (hbij n).1 (by`. Rewrite using `[hu, ← hz, ← hu]`. Conclude with `add_ext (f := (ev (g n) (hg n)).comp ((S.r n).baseChange A).toAddMonoidHom) (f' := (T.r n).toAddMonoidHom.comp (ev (g (n + 1)) (hg (n + 1)))) (fun a y => by`.
+
+Express the relevant statement in the definitionally equal form `a • g n (S.r n y) = T.r n (a • g (n + 1) y)`. Rewrite using `[map_smul, hr]) _)`. Use `⟨α ⟨u, hc⟩, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hev, hα, ev_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `congrArg _ (hu n)`.
+-/
 theorem core [IsDomain W] [IsDiscreteValuationRing W] (l : ℕ) (hl : Irreducible (l : W)) (S : Sys.{1} W) (c : ℕ) (h1 : Module.Finite W S.lim)
     (h2 : ∀ n (x : S.M n), ((l : W) ^ n) • x = 0) (h3 : ∀ n (x : S.lim), x.1 n = 0 → ∃ y : S.lim, x = ((l : W) ^ n) • y)
     (h4 : ∀ n (x : S.M n), ∃ y : S.lim, y.1 n = ((l : W) ^ c) • x) [Module.Flat W A] [IsAdicComplete (Ideal.span {(l : A)}) A]
@@ -74,6 +93,9 @@ theorem core [IsDomain W] [IsDiscreteValuationRing W] (l : ℕ) (hl : Irreducibl
   rw [hev, hα, ev_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
   exact congrArg _ (hu n)
 
+/- English proof (translation)
+Use `choose a ha using hx`. Conclude with `⟨AddMonoidHom.mk' a fun x y => sub_eq_zero.1 (hs _ fun n => by`. Rewrite using `[map_sub, map_add, ha, ha, ha, map_add, nsmul_add, sub_self]), fun n x => ha x n⟩`.
+-/
 theorem exists_alpha {P H : Type 1} [AddCommGroup P] [AddCommGroup H] {T : ℕ → Type 1} [∀ n, AddCommGroup (T n)] (E : ∀ n, P →+ T n)
     (ν : ∀ n, H →+ T n) (k : ℕ) (hs : ∀ w, (∀ n, E n w = 0) → w = 0) (hx : ∀ x, ∃ w, ∀ n, E n w = k • ν n x) :
     ∃ α : H →+ P, ∀ n x, E n (α x) = k • ν n x := by
@@ -81,6 +103,9 @@ theorem exists_alpha {P H : Type 1} [AddCommGroup P] [AddCommGroup H] {T : ℕ �
   exact ⟨AddMonoidHom.mk' a fun x y => sub_eq_zero.1 (hs _ fun n => by
     rw [map_sub, map_add, ha, ha, ha, map_add, nsmul_add, sub_self]), fun n x => ha x n⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sub_eq_zero.1 (hs _ fun n => by rw [map_sub, map_nsmul, map_nsmul, hα', h1, hα, map_nsmul, h2, smul_comm, sub_self]), fun h => sub_eq_zero.1 (hs _ fun n => by rw [map_sub, hα', h1, hα, map_nsmul, h2, h, sub_self])⟩`.
+-/
 theorem alpha_op {P H P' H' : Type 1} [AddCommGroup P] [AddCommGroup H] [AddCommGroup P'] [AddCommGroup H'] {T T' : ℕ → Type 1}
     [∀ n, AddCommGroup (T n)] [∀ n, AddCommGroup (T' n)] {E : ∀ n, P →+ T n} {ν : ∀ n, H →+ T n} {k : ℕ} {α : H →+ P}
     (hα : ∀ n x, E n (α x) = k • ν n x) {E' : ∀ n, P' →+ T' n} {ν' : ∀ n, H' →+ T' n} {k' : ℕ} {α' : H' →+ P'}
@@ -98,10 +123,19 @@ def E (g : Sys.Hom S T (algebraMap W A)) (n : ℕ) : A ⊗[W] S.lim →+ T.M n :
   ev (A := A) (AddMonoidHom.mk' (fun y : S.lim => g.f n (y.1 n)) fun _ _ => map_add (g.f n) _ _)
     fun w y => LinearMap.map_smulₛₗ (g.f n) w _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem E_tmul (g : Sys.Hom S T (algebraMap W A)) (n : ℕ) (a : A) (y : S.lim) : E g n (a ⊗ₜ y) = a • g.f n (y.1 n) := rfl
 
+/- English proof (translation)
+The claim follows from `ev_smul _ _ a w`.
+-/
 theorem E_smul (g : Sys.Hom S T (algebraMap W A)) (n : ℕ) (a : A) (w : A ⊗[W] S.lim) : E g n (a • w) = a • E g n w := ev_smul _ _ a w
 
+/- English proof (translation)
+The claim follows from `add_ext (f := (T.r n).toAddMonoidHom.comp (E g (n + 1))) (fun a y => by change T.r n (a • g.f (n + 1) (y.1 (n + 1))) = a • g.f n (y.1 n) rw [map_smul, g.comm, y.2 n]) w`.
+-/
 theorem E_r (g : Sys.Hom S T (algebraMap W A)) (n : ℕ) (w : A ⊗[W] S.lim) : T.r n (E g (n + 1) w) = E g n w :=
   add_ext (f := (T.r n).toAddMonoidHom.comp (E g (n + 1))) (fun a y => by
     change T.r n (a • g.f (n + 1) (y.1 (n + 1))) = a • g.f n (y.1 n)
@@ -123,6 +157,9 @@ structure Pin (l : ℕ) (g : Sys.Hom S T (algebraMap W A)) {ψ : A →+* A} (ν 
   sep : ∀ w, (∀ n, E g n w = 0) → w = 0
   pin : ∀ n x, E g n (α x) = (l ^ e) • nuL ν n x
 
+/- English proof (translation)
+Take `⟨hs, hx⟩` from `core l hl S c h1 h2 h3 h4 T (fun n => (g.f n).toAddMonoidHom) (fun n w y => LinearMap.map_smulₛₗ (g.f n) w y) (fun n y => g.comm n y) hb (fun n => AddMonoidHom.mk' (fun y : S.lim => g.f n (y.1 n)) fun _ _ => map_add (g.f n) _ _) (fun n w y => LinearMap.map_smulₛₗ (g.f n) w _) fun …`. Take `⟨α, hα⟩` from `exists_alpha (E g) (nuL ν) (l ^ c) hs fun x => hx (fun n => nuL ν n x) fun n => (ν.lim x).2 n`. Conclude with `⟨α, hs, hα⟩`.
+-/
 theorem pin_ex [IsDomain W] [IsDiscreteValuationRing W] (l : ℕ) (hl : Irreducible (l : W)) (c : ℕ) (h1 : Module.Finite W S.lim)
     (h2 : ∀ n (x : S.M n), ((l : W) ^ n) • x = 0) (h3 : ∀ n (x : S.lim), x.1 n = 0 → ∃ y : S.lim, x = ((l : W) ^ n) • y)
     (h4 : ∀ n (x : S.M n), ∃ y : S.lim, y.1 n = ((l : W) ^ c) • x) [Module.Flat W A] [IsAdicComplete (Ideal.span {(l : A)}) A]
@@ -138,16 +175,25 @@ theorem pin_ex [IsDomain W] [IsDiscreteValuationRing W] (l : ℕ) (hl : Irreduci
 variable {l e e' : ℕ} {g : Sys.Hom S T (algebraMap W A)} {g' : Sys.Hom S' T' (algebraMap W A)} {ψ : A →+* A} {ν : Sys.Hom H T ψ}
   {ν' : Sys.Hom H' T' ψ} {α : H.lim →+ A ⊗[W] S.lim} {α' : H'.lim →+ A ⊗[W] S'.lim}
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (h.sep _ fun n => by rw [map_sub, E_smul, h.pin, h.pin, smul_comm, sub_eq_zero] exact congrArg _ (LinearMap.map_smulₛₗ (ν.f n) a _))`.
+-/
 theorem Pin.lin (h : Pin l g ν e α) (a : A) (x : H.lim) : α (a • x) = ψ a • α x :=
   sub_eq_zero.1 (h.sep _ fun n => by
     rw [map_sub, E_smul, h.pin, h.pin, smul_comm, sub_eq_zero]
     exact congrArg _ (LinearMap.map_smulₛₗ (ν.f n) a _))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n => by change μ.f n (E g n (α x)) = ((l : A) ^ e) • y.1 n rw [h.pin, map_nsmul, ← hy, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]; rfl)`.
+-/
 theorem Pin.fac (h : Pin l g ν e α) (μ : Sys.Hom T H (RingHom.id A)) (x y : H.lim) (hy : ∀ n, μ.f n (ν.f n (x.1 n)) = y.1 n) :
     beta g μ (α x) = ((l : A) ^ e) • y := Subtype.ext (funext fun n => by
   change μ.f n (E g n (α x)) = ((l : A) ^ e) • y.1 n
   rw [h.pin, map_nsmul, ← hy, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]; rfl)
 
+/- English proof (translation)
+Use `alpha_op h.pin h'.pin h'.sep (fun n => (oT n).toAddMonoidHom) x x' (o (α x)) (fun n => add_ext (f := (E g' n).comp o) (f' := (oT n).toAddMonoidHom.comp (E g n)) (fun a y => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `E g' n (o (a ⊗ₜ y)) = oT n (a • g.f n (y.1 n))`. Rewrite using `[ho, E_tmul, hS, LinearMap.map_smulₛₗ]) _) hx`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `⟨this.1, fun he => this.2 (by rw [he])⟩`.
+-/
 theorem Pin.op (h : Pin l g ν e α) (h' : Pin l g' ν' e' α') {τ : A →+* A} (oT : ∀ n, T.M n →ₛₗ[τ] T'.M n) (oS : S.lim → S'.lim)
     (hS : ∀ n y, g'.f n ((oS y).1 n) = oT n (g.f n (y.1 n))) (o : A ⊗[W] S.lim →+ A ⊗[W] S'.lim) (ho : ∀ a y, o (a ⊗ₜ y) = τ a ⊗ₜ oS y)
     (x : H.lim) (x' : H'.lim) (hx : ∀ n, ν'.f n (x'.1 n) = oT n (ν.f n (x.1 n))) :

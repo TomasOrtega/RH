@@ -14,6 +14,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨U, F, hU, hgU, hF, e⟩` from `hf g hg`. Take `⟨U', F', hU', hgU', hF', e'⟩` from `hf' g hg`. Use `⟨U ∩ U', fun h => F h + c * F' h, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).add (contDiffOn_const.mul (hF'.mono Set.inter_subset_right)), ?_⟩` and prove the remaining obligations. Introduce `x hx hxJ`.
+
+Simplify using `only [e x hx.1 hxJ, e' x hx.2 hxJ]`.
+-/
 theorem smooth_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f') : SmoothOnG ε (fun h => f h + c * f' h) := by
   intro g hg
@@ -24,6 +29,9 @@ theorem smooth_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
   intro x hx hxJ
   simp only [e x hx.1 hxJ, e' x hx.2 hxJ]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih`. Establish `hc` using `cpartMem n ε (Matrix.single p.1 p.2 1)`. Conclude with `smooth_comb Complex.I (rdSmooth n ε _ _ ih hc.1) (rdSmooth n ε _ _ ih hc.2.1)`.
+-/
 theorem smooth_word {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f)
     (w : List (Fin n × Fin n)) : SmoothOnG ε (Eword ε w f) := by
   induction w with
@@ -32,6 +40,13 @@ theorem smooth_word {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε 
     have hc := cpartMem n ε (Matrix.single p.1 p.2 1)
     exact smooth_comb Complex.I (rdSmooth n ε _ _ ih hc.1) (rdSmooth n ε _ _ ih hc.2.1)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `g hg`.
+
+Establish `hc` using `cpartMem n ε (Matrix.single p.1 p.2 1)`. Establish `h1` using `Eword_congr ε ih [p] g hg`. Establish `h2` using `fun X hX => (rdLin n ε _ _ X X 0 c g (smooth_word hf w) (smooth_word hf' w) hX hX hg).2.2`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Simplify using `only [Eword, Eab, Ec, id, h2 _ hc.1, h2 _ hc.2.1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem word_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f') (w : List (Fin n × Fin n)) :
     ∀ g, inUJ ε g → Eword ε w (fun h => f h + c * f' h) g = Eword ε w f g + c * Eword ε w f' g := by
@@ -46,6 +61,9 @@ theorem word_comb {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ} (c : ℂ)
     simp only [Eword, Eab, Ec, id, h2 _ hc.1, h2 _ hc.2.1]
     ring
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => simp only [List.cons_append, Eword, ih]`.
+-/
 theorem word_append (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (w v : List (Fin n × Fin n)) :
     Eword ε (w ++ v) f = Eword ε w (Eword ε v f) := by
   induction w with
@@ -55,14 +73,25 @@ theorem word_append (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (w v : List (Fin n 
 def ZeroJet (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) : Prop :=
   SmoothOnG ε f ∧ ∀ w : List (Fin n × Fin n), Eword ε w f 1 = 0
 
+/- English proof (translation)
+Simplify using `[inUJ]`.
+-/
 theorem one_mem : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by simp [inUJ]
 
+/- English proof (translation)
+Use `⟨fun g _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, fun w => ?_⟩` and prove the remaining obligations. Consider the cases of `w with`. Consider the case `nil => rfl`. Consider the case `cons p w => rw [Eword_const]`.
+-/
 theorem zeroJet_zero : ZeroJet ε (fun _ => 0) := by
   refine ⟨fun g _ => ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, fun w => ?_⟩
   cases w with
   | nil => rfl
   | cons p w => rw [Eword_const]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using zeroJet_zero`. Consider the case `insert i s hi ih`. Establish `e : (fun g => ∑ j ∈ insert i s, c j * F j g) = fun g => (∑ j ∈ s, c j * F j g) + c i * F i g`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[Finset.sum_insert hi, add_comm]`. Rewrite using `[e]`. Use `⟨smooth_comb _ ih.1 (hF i).1, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[word_comb _ ih.1 (hF i).1 w 1 one_mem, ih.2, (hF i).2]`. Simplify using the standard rewrite rules.
+-/
 theorem zeroJet_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (F : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hF : ∀ i, ZeroJet ε (F i)) : ZeroJet ε (fun g => ∑ i ∈ s, c i * F i g) := by
   classical
@@ -76,6 +105,11 @@ theorem zeroJet_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (F : ι → Mat
     rw [word_comb _ ih.1 (hF i).1 w 1 one_mem, ih.2, (hF i).2]
     simp
 
+/- English proof (translation)
+Establish `hI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2)` using `by field_simp; simp`. Simplify using `only [cpart1, cpart2, hI, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Generalize the expression as in `Jm ε * Zᴴ * Jm ε = W`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Complex.real_smul]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem cpart1_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
     cpart1 ε (c • Z) = c.re • cpart1 ε Z + (-c.im) • cpart2 ε Z := by
   have hI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2) := by
@@ -86,6 +120,11 @@ theorem cpart1_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
   simp only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Complex.real_smul]
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Establish `hI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2)` using `by field_simp; simp`. Simplify using `only [cpart1, cpart2, hI, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Generalize the expression as in `Jm ε * Zᴴ * Jm ε = W`. Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Complex.real_smul]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem cpart2_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
     cpart2 ε (c • Z) = c.re • cpart2 ε Z + c.im • cpart1 ε Z := by
   have hI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2) := by
@@ -96,6 +135,21 @@ theorem cpart2_smul (c : ℂ) (Z : Matrix (Fin n) (Fin n) ℂ) :
   simp only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Complex.real_smul]
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Take `⟨U, F, hU, hgU, hF, e⟩` from `hf g hg`. Establish `hE : ∀ Z, Ec ε Z f g = fderiv ℝ F g (g * cpart1 ε Z) + Complex.I * fderiv ℝ F g (g * cpart2 ε Z)` using `fun Z => by`. Establish `hc` using `cpartMem n ε Z`. Simplify using `only [Ec, rdExt n ε f F U g _ hU hgU hg hF e hc.1, rdExt n ε f F U g _ hU hgU hg hF e hc.2.1]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ` to `{ toFun := fun Z => Ec ε Z f g map_add' := fun Y Z => by`.
+
+Establish `h1 : cpart1 ε (Y + Z) = cpart1 ε Y + cpart1 ε Z`. Simplify using `only [cpart1, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `h2 : cpart2 ε (Y + Z) = cpart2 ε Y + cpart2 ε Z`.
+
+Simplify using `only [cpart2, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [hE, h1, h2, Matrix.mul_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use the proof step `map_smul' := fun c Z => by`. Simplify using `only [hE, cpart1_smul, cpart2_smul, Matrix.mul_add, Matrix.mul_smul, map_add, map_smul, RingHom.id_apply, smul_eq_mul, Complex.real_smul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring }`. Establish `hc` using `(cpartMem n ε X).2.2.2 hX`. Establish `h0 : Rd X f g = L X`.
+
+Express the relevant statement in the definitionally equal form `_ = Ec ε X f g`. Rewrite using `[hE, hc.1, hc.2, rdExt n ε f F U g _ hU hgU hg hF e hX]`. Simplify using the standard rewrite rules. Establish `h1 : X = ∑ p : Fin n × Fin n, X p.1 p.2 • Matrix.single p.1 p.2 (1 : ℂ)`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Use `conv_lhs => rw [h1]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+-/
 theorem rd_eq_sum {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     Rd X f g = ∑ p : Fin n × Fin n, X p.1 p.2 * Eab ε p.1 p.2 f g := by
@@ -135,6 +189,9 @@ theorem rd_eq_sum {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f)
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Use `⟨rdSmooth n ε _ _ hf.1 hX, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Eword_congr ε (rd_eq_sum hf.1 hX) w 1 one_mem]`. Use `(zeroJet_sum Finset.univ (fun p : Fin n × Fin n => X p.1 p.2) (fun p => Eab ε p.1 p.2 f) (fun p => ⟨smooth_word hf.1 [p], fun v => ?_⟩)).2 w` and prove the remaining obligations. Use `hf.2 (v ++ [p])` as an intermediate fact. Rewrite `this` using `[word_append]`. Then use the resulting hypothesis.
+-/
 theorem zeroJet_rd {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : ZeroJet ε f) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) : ZeroJet ε (Rd X f) := by
   refine ⟨rdSmooth n ε _ _ hf.1 hX, fun w => ?_⟩
@@ -144,6 +201,9 @@ theorem zeroJet_rd {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : ZeroJet ε f) 
   have := hf.2 (v ++ [p])
   rwa [word_append] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Simplify using `only [Rd, ← oneParam n X s]`. Rewrite using `[deriv_comp_const_add (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) s 0, add_zero]`.
+-/
 theorem deriv_line (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     deriv (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) =
       fun t : ℝ => Rd X f (NormedSpace.exp ((t : ℂ) • X)) := by
@@ -151,6 +211,11 @@ theorem deriv_line (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (X : Matrix (Fin n) 
   simp only [Rd, ← oneParam n X s]
   rw [deriv_comp_const_add (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) s 0, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `f hf`. Simplify `hf.2 []` using `[Eword]`. Consider the case `succ j ih`.
+
+Introduce `f hf`. Rewrite using `[iteratedDeriv_succ', deriv_line]`. Conclude with `ih _ (zeroJet_rd hf hX)`.
+-/
 theorem iteratedDeriv_line {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (j : ℕ) :
     ∀ f : Matrix (Fin n) (Fin n) ℂ → ℂ, ZeroJet ε f →
       iteratedDeriv j (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) 0 = 0 := by
@@ -163,6 +228,11 @@ theorem iteratedDeriv_line {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (j :
     rw [iteratedDeriv_succ', deriv_line]
     exact ih _ (zeroJet_rd hf hX)
 
+/- English proof (translation)
+Introduce `n ε f X hf hX hw hA`. Establish `htop : analyticOrderAt (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) 0 = ⊤`. Use `ENat.eq_top_iff_forall_ge.2 fun m => ?_` and prove the remaining obligations. Conclude with `(natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (hA 0 trivial)).2 fun i _ => iteratedDeriv_line hX i f ⟨hf, hw⟩`. Establish `h` using `hA.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) (analyticOrderAt_eq_top.1 htop) (Set.mem_univ 1)`.
+
+Simplify using `using h`.
+-/
 theorem vanish_of_zero_jet : ∀ (n : ℕ) (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (X : Matrix (Fin n) (Fin n) ℂ), SmoothOnG ε f → inG ε X → (∀ w : List (Fin n × Fin n), Eword ε w f 1 = 0) → AnalyticOnNhd ℝ (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) Set.univ → f (NormedSpace.exp X) = 0 := by
   intro n ε f X hf hX hw hA
   have htop : analyticOrderAt (fun t : ℝ => f (NormedSpace.exp ((t : ℂ) • X))) 0 = ⊤ := by

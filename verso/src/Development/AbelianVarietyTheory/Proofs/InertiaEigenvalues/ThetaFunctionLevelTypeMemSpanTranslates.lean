@@ -21,6 +21,13 @@ namespace GlobalTheory.DownLift.GenFinite
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g', f', hf', rfl⟩` from `hx`. Use `Submodule.subset_span ⟨g * g', f', hf', ?_⟩` and prove the remaining obligations. Establish `hm : ((1, g) : GA D (Vc D i) × GA D (Wc D i)) * (1, g') = (1, g * g')`.
+
+Rewrite using `[Prod.mk_mul_mk, mul_one]`. Rewrite using `[← hm, map_mul, Module.End.mul_apply]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem transl_mem_span_gen (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (g : GA D (Wc D i))
     {φ : WO (Vc D i) (Wc D i) → ℂ} (hφ : φ ∈ Submodule.span ℂ (Gen R i t)) :
     R.ωP i t (1, g) φ ∈ Submodule.span ℂ (Gen R i t) := by
@@ -35,10 +42,20 @@ theorem transl_mem_span_gen (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (g : GA
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1, fun c hc h0 => hf.2 c (fun u hu => ⟨hc u hu, fun v hv => absurd hv (Finset.notMem_empty v)⟩) h0⟩`.
+-/
 theorem finLike_of_likeOff_empty (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {f : WO (Vc D i) (Wc D i) → ℂ}
     (hf : LikeOff R i t ∅ f) : FinLike R i t f :=
   ⟨hf.1, fun c hc h0 => hf.2 c (fun u hu => ⟨hc u hu, fun v hv => absurd hv (Finset.notMem_empty v)⟩) h0⟩
 
+/- English proof (translation)
+Proceed by induction on `Sb using Finset.induction_on with`. Consider the case `empty`. Introduce `f _ _ hL`. Use `Submodule.subset_span ⟨1, f, finLike_of_likeOff_empty R i t hL, ?_⟩` and prove the remaining obligations. Establish `h1 : ((1, 1) : GA D (Vc D i) × GA D (Wc D i)) = 1` using `rfl`.
+
+Rewrite using `[h1, map_one, Module.End.one_apply]`. Consider the case `insert v s hv ih`. Introduce `f hT hC hL`. Establish `h` using `hst (insert v s) v (Finset.mem_insert_self v s) f hT hC hL`. Rewrite `h` using `[dropPl_insert hv]`.
+
+Use `(Submodule.span_le.2 ?_) h` and prove the remaining obligations. Introduce and unpack `φ ⟨g, f', hT', hC', hL', rfl⟩`. Conclude with `transl_mem_span_gen R i t g (ih f' hT' hC' hL')`.
+-/
 theorem mem_span_gen_of_step (R : RealDat D A Ks) (i : Fin D.R.m) (t : T)
     (hst : ∀ (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (v : HeightOneSpectrum (𝓞 D.host.F)), v ∈ Sb →
       ∀ f, TypeIn R i t Sb f → CleanIn R i t Sb f → LikeOff R i t Sb f → f ∈ Submodule.span ℂ (StepGen R i t (dropPl Sb v)))
@@ -63,6 +80,15 @@ end GlobalTheory.DownLift.GenFinite
 
 namespace GlobalTheory.DownLift.GenFinite
 
+/- English proof (translation)
+Introduce `hH D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t f hT hC`. Take `⟨Sb, hL⟩` from `GlobalTheory.T.exists_places_thetaFunction_fixedVectorShape D G Pl0 T A Ks R F hG hP i t f hT.1`. Use `mem_span_gen_of_step R i t ?_ Sb f ⟨hT.1, fun κ hκ _ => hT.2 κ hκ⟩ (fun PP a ha tr ε hε _ κ hκ _ => hC PP a ha tr ε hε κ hκ) hL` and prove the remaining obligations. Introduce `Sb v hv f hT hC hL`. Distinguish the cases in `hpg : ∃ PP ∈ R.Pg, Over PP v`.
+
+Conclude with `GlobalTheory.T.local_generation_thetaFun_at_type_prime D G Pl0 T A Ks R F hG hP i t Sb v hv hpg f hT hC hL`. Distinguish the cases in `hq : ∃ PP ∈ R.Q t, Over PP v`. Conclude with `GlobalTheory.T.localGeneration_thetaFunctions_twistPlace D G Pl0 T A Ks R F hG hP i t Sb v hv (fun PP h ho => hpg ⟨PP, h, ho⟩) hq f hT hC hL`. Establish `hoff : ∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ¬ Over PP v`. Introduce and unpack `PP (h | h) ho`.
+
+Conclude with `hpg ⟨PP, h, ho⟩`. Conclude with `hq ⟨PP, h, ho⟩`. Distinguish the cases in `hs : ∃ ε e, IsPlaceIdem D v ε ∧ IsSplitIdem D e ∧ e * algebraMap (AF D.host.F) (AE D) ε ≠ 0`. Conclude with `GlobalTheory.T.thetaFunction_localGeneration_splitPlaceOffLevels D G Pl0 T A Ks R F hG hP i t Sb v hv hs hoff f hT hC hL`. Use `GlobalTheory.T.thetaFunction_local_generation_inertPlace_offLevel hH D G Pl0 T A Ks R F hG hP i t Sb v hv ?_ hoff f hT hC hL` and prove the remaining obligations.
+
+Introduce `ε hε e he`. Assume the negation of the conclusion as `hne`. Conclude with `hs ⟨ε, e, hε, he, hne⟩`.
+-/
 theorem gen_of_type_clean : GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (f : WO (Vc D i) (Wc D i) → ℂ), GlobalTheory.DownLift.GenFinite.TypeVec R i t f → GlobalTheory.DownLift.GenFinite.Clean R i t f → f ∈ Submodule.span ℂ (GlobalTheory.DownLift.GenFinite.Gen R i t) := by
   intro hH D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t f hT hC
   obtain ⟨Sb, hL⟩ := GlobalTheory.T.exists_places_thetaFunction_fixedVectorShape D G Pl0 T A Ks R F hG hP i t f hT.1

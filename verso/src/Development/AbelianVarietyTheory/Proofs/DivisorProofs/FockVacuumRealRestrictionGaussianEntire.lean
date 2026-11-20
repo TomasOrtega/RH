@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FockPos
 
+/- English proof (translation)
+Introduce `Z`. Establish `hL` using `(hG Z).hasFDerivAt.mul (hE Z).hasFDerivAt`. Use `set L : V →L[ℝ] ℂ := G Z • fderiv ℝ E Z + E Z • fderiv ℝ G Z with hLdef`. Establish `hI : ∀ Y, L (Complex.I • Y) = Complex.I * L Y` using `fun Y => by`. Establish `h1` using `hGc Z Y`.
+
+Establish `h2` using `hEc Z Y`. Simplify using `only [hLdef, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Take the linear combination `(-(Complex.I * E Z)) * h1 + (-(Complex.I * G Z)) * h2 + (E Z * fderiv ℝ G Z (Complex.I • Y) + G Z * fderiv ℝ E Z (Complex.I • Y)) * Complex.I_sq`. Establish `hsm : ∀ (a : ℂ) (Y : V), L (a • Y) = a * L Y` using `fun a Y => by`. Establish `e : a • Y = a.re • Y + a.im • (Complex.I • Y)`.
+
+Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul, smul_smul, ← add_smul]`. Use `congr 1`. Conclude with `(Complex.re_add_im a).symm`. Rewrite using `[e, L.map_add, L.map_smul, L.map_smul, hI, Complex.real_smul, Complex.real_smul]`. Use `conv_rhs => rw [← Complex.re_add_im a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `g : V →L[ℂ] ℂ` to `{ toFun := fun Y => L Y map_add' := fun Y Y' => L.map_add Y Y' map_smul' := fun a Y => hsm a Y cont := L.continuous }`. Conclude with `(differentiableAt_iff_restrictScalars ℝ hL.differentiableAt).2 ⟨g, by rw [hL.fderiv]; ext Y; rfl⟩`.
+-/
 theorem differentiable_mul_of_cr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (G E : V → ℂ) (c : V → V → ℂ)
     (hG : Differentiable ℝ G) (hE : Differentiable ℝ E)
     (hGc : ∀ Z Y, fderiv ℝ G Z Y + Complex.I * fderiv ℝ G Z (Complex.I • Y) = -(c Z Y * G Z))
@@ -38,6 +47,15 @@ theorem differentiable_mul_of_cr {V : Type} [NormedAddCommGroup V] [NormedSpace 
       cont := L.continuous }
   exact (differentiableAt_iff_restrictScalars ℝ hL.differentiableAt).2 ⟨g, by rw [hL.fderiv]; ext Y; rfl⟩
 
+/- English proof (translation)
+Set `P : ι → Fin m → Fin n → ((ι → Fin m → Fin n → ℂ) →L[ℝ] ℂ)` to `fun τ a b => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) b).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : ι => Fin m → Fin n → ℂ) τ))`. Establish `hP : ∀ τ a b (Z : ι → Fin m → Fin n → ℂ), P τ a b Z = Z τ a b` using `fun _ _ _ _ => rfl`. Establish `hq : ∀ Z : ι → Fin m → Fin n → ℂ, HasFDerivAt (fun Z : ι → Fin m → Fin n → ℂ => ∑ τ, ∑ a, ∑ b, ‖Z τ a b‖ ^ 2) (∑ τ, ∑ a, ∑ b, (2 : ℕ) • (innerSL ℝ (Z τ a b)).comp (P τ a b)) Z` using `fun Z => by`. Use `HasFDerivAt.fun_sum fun τ _ => HasFDerivAt.fun_sum fun a _ => HasFDerivAt.fun_sum fun b _ => ?_` and prove the remaining obligations. Conclude with `(P τ a b).hasFDerivAt.norm_sq`.
+
+Establish `hE : ∀ Z : ι → Fin m → Fin n → ℂ, HasFDerivAt (fun Z : ι → Fin m → Fin n → ℂ => Complex.exp ((Real.pi * r * ∑ τ, ∑ a, ∑ b, ‖Z τ a b‖ ^ 2 : ℝ) : ℂ)) (Complex.exp ((Real.pi * r * ∑ τ, ∑ a, ∑ b, ‖Z τ a b‖ ^ 2 : ℝ) : ℂ) • Complex.ofRealCLM.comp ((Real.pi * r) • ∑ τ, ∑ a, ∑ b, (2 : ℕ) …` using `fun Z => (Complex.ofRealCLM.hasFDerivAt.comp Z ((hq Z).const_mul (Real.pi * r))).cexp`. Use `⟨fun Z => (hE Z).differentiableAt, fun Z Y => ?_⟩` and prove the remaining obligations. Rewrite using `[(hE Z).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, smul_eq_mul, Complex.ofRealCLM_apply, innerSL_apply_apply, hP, Pi.smul_apply, ContinuousLinearMap.smul_apply, nsmul_eq_mul]`. Establish `key : ∀ z y : ℂ, z * starRingEnd ℂ y = ((inner ℝ z y : ℝ) : ℂ) + Complex.I * ((inner ℝ z (Complex.I * y) : ℝ) : ℂ)`.
+
+Introduce `z y`. Rewrite using `[Complex.inner, Complex.inner]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Repeatedly rewrite using `[key]`. Use `push_cast`.
+
+Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_cr {ι : Type} [Fintype ι] {m n : ℕ} (r : ℝ) :
     Differentiable ℝ (fun Z : ι → Fin m → Fin n → ℂ =>
       Complex.exp ((Real.pi * r * ∑ τ, ∑ a, ∑ b, ‖Z τ a b‖ ^ 2 : ℝ) : ℂ)) ∧
@@ -77,6 +95,11 @@ theorem gauss_cr {ι : Type} [Fintype ι] {m n : ℕ} (r : ℝ) :
   simp only [Finset.sum_add_distrib, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Establish `e : GS⁻¹ * (B' * Y * B⁻¹)ᴴ * GT * (B' * Z * B⁻¹) = (GS⁻¹ * (B⁻¹)ᴴ) * (Yᴴ * Z) * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hB', Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Establish `e2 : B⁻¹ * (GS⁻¹ * (B⁻¹)ᴴ) = 1`.
+
+Rewrite using `[Matrix.conjTranspose_nonsing_inv, ← Matrix.mul_inv_rev, ← Matrix.mul_inv_rev, hB, inv_one]`. Rewrite using `[e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, e2, Matrix.one_mul]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, RCLike.star_def]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem trace_frames {m n : ℕ} (GS B : Matrix (Fin n) (Fin n) ℂ) (GT B' : Matrix (Fin m) (Fin m) ℂ)
     (hB : Bᴴ * GS * B = 1) (hB' : B'ᴴ * GT * B' = 1) (Z Y : Matrix (Fin m) (Fin n) ℂ) :
     (GS⁻¹ * (B' * Y * B⁻¹)ᴴ * GT * (B' * Z * B⁻¹)).trace = ∑ a, ∑ b, Z a b * starRingEnd ℂ (Y a b) := by
@@ -114,10 +137,18 @@ def frLin {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) 
         show (frAt frT τ * (c • Matrix.of (Z τ)) * (frAt frS τ)⁻¹ : Matrix (Fin T.rank) (Fin S.rank) ℂ) = c • _
         rw [Matrix.mul_smul, Matrix.smul_mul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frLin_apply {S T : HSp D} (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E)
     (Z : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank) (τ : D.what₂.Tau) :
     frLin frS frT Z τ = (frAt frT τ * Matrix.of (Z τ) * (frAt frS τ)⁻¹ : Matrix (Fin T.rank) (Fin S.rank) ℂ) := rfl
 
+/- English proof (translation)
+Establish `hs : ∀ τ : D.host.E →+* ℂ, ‖τ D.host.sqrtMinusD‖ = Real.sqrt D.host.d`. Introduce `τ`. Establish `h0 : (τ D.host.sqrtMinusD) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[← map_pow, Formalism.BasicNotions.Host.sqrtMinusD_sq D.host, map_neg, map_natCast]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (τ D.host.sqrtMinusD)), ← norm_pow, h0, norm_neg, Complex.norm_natCast]`.
+
+Unfold `Formalism.L2.Pj.xiR Host.xi0`. Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, Complex.norm_natCast, hs]`.
+-/
 theorem norm_embedding_xi0_eq (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host.xi0‖ = Formalism.L2.Pj.xiR D := by
   have hs : ∀ τ : D.host.E →+* ℂ, ‖τ D.host.sqrtMinusD‖ = Real.sqrt D.host.d := by
     intro τ
@@ -128,6 +159,11 @@ theorem norm_embedding_xi0_eq (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host.
   simp only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul,
     Complex.norm_natCast, hs]
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero D τ`. Establish `h2` using `Formalism.L2.Theta.xi_zero_im_pos D τ`. Establish `h3 : ‖tauE D τ D.host.xi0‖ = Formalism.L2.Pj.xiR D` using `norm_embedding_xi0_eq D (tauE D τ)`. Establish `h4 : (tauE D τ D.host.xi0).im = Formalism.L2.Pj.xiR D`. Rewrite using `[← h3, Complex.norm_def, Complex.normSq_apply, h1, zero_mul, zero_add, Real.sqrt_mul_self_eq_abs, abs_of_pos h2]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [h1, h4]`.
+-/
 theorem xi_zero_eq_host (τ : D.what₂.Tau) : tauE D τ D.host.xi0 = Complex.I * (Formalism.L2.Pj.xiR D : ℂ) := by
   have h1 := GlobalTheory.RealSymplForm.realPlace_imaginaryGenerator_re_eq_zero D τ
   have h2 := Formalism.L2.Theta.xi_zero_im_pos D τ
@@ -137,6 +173,31 @@ theorem xi_zero_eq_host (τ : D.what₂.Tau) : tauE D τ D.host.xi0 = Complex.I 
       abs_of_pos h2]
   apply Complex.ext <;> simp [h1, h4]
 
+/- English proof (translation)
+Introduce `D ψ θ S T frS frT LS LT hS hT f hf`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hf.2.inf`. Take `⟨hF, hann⟩` from `GlobalTheory.VacUnique.Ann.vacuum_annihilation D θ σ hσ ψ hf.1 S T (fun _ => 1) (fun _ => 1) f hf.2.theta hf.2.fock`. Use `set F : RW T S → ℂ := fun z => f (iotaW σ T S z) with hFdef`. Use `set X := frLin frS frT with hX`.
+
+Use `set r := Formalism.L2.Pj.xiR D with hr`. Use `set E : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ := fun Z => Complex.exp ((Real.pi * r * ∑ τ, ∑ a, ∑ b, ‖Z τ a b‖ ^ 2 : ℝ) : ℂ) with hE`. Establish `hU : ∀ {k : ℕ} (fr : GL (Fin k) D.host.E) τ, IsUnit (frAt fr τ).det` using `fun fr τ => isUnit_iff_ne_zero.2 (frAt_det_ne fr τ)`. Establish `hG : Differentiable ℝ (fun Z => F (X Z))` using `hF.comp (X.restrictScalars ℝ).differentiable`. Establish `hdG : ∀ Z Y, fderiv ℝ (fun Z => F (X Z)) Z Y = fderiv ℝ F (X Z) (X Y)` using `fun Z Y => by`.
+
+Establish `h : HasFDerivAt (fun Z => F (X Z)) ((fderiv ℝ F (X Z)).comp (X.restrictScalars ℝ)) Z` using `(hF (X Z)).hasFDerivAt.comp Z (X.restrictScalars ℝ).hasFDerivAt`. Rewrite using `[h.fderiv]`. Both sides reduce to the same expression. Use `⟨fun Z => F (X Z) * E Z, differentiable_mul_of_cr (fun Z => F (X Z)) E (fun Z Y => (2 * Real.pi * r * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b) : ℂ)) hG (gauss_cr r).1 (fun Z Y => ?_) (gauss_cr r).2, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hdG, hdG]`.
+
+Establish `hj : jO S T (fun _ => 1) (fun _ => 1) (X Y) = X (Complex.I • Y)`. Rewrite using `[X.map_smul]`. Use function extensionality and compare the values at `τ`. Rewrite using `[jO_apply]`. Express the relevant statement in the definitionally equal form `Complex.I • ((1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) * Matrix.of (X Y τ) * (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) = _`.
+
+Rewrite using `[Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `h` using `hann (X Z) (X Y)`. Rewrite `h` using `[hj]`. Establish `hom : ∀ Y' : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank, omO S T (X Z) (X Y') = ∑ τ, 2 * (Complex.I * (r : ℂ) * ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y' τ a b)).re`.
+
+Introduce `Y'`. Rewrite using `[omO_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `show 2 * (tauE D τ D.host.xi0 * hAt S T τ (X Z τ) (X Y' τ)).re = _`. Unfold `hAt`.
+
+Rewrite using `[hX, frLin_apply, frLin_apply, trace_frames _ _ _ _ (frAt_on frS hS τ) (frAt_on frT hT τ), xi_zero_eq_host τ]`. Both sides reduce to the same expression. Rewrite `h` using `[hom, hom]`. Establish `hs2 : ∀ τ, (∑ a, ∑ b, Z τ a b * starRingEnd ℂ ((Complex.I • Y) τ a b)) = -Complex.I * ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b)` using `fun τ => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Complex.conj_I, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations. Simplify using `only [hs2] at h`. Establish `key : ((∑ τ, 2 * (Complex.I * (r : ℂ) * ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b)).re : ℝ) : ℂ) + Complex.I * ((∑ τ, 2 * (Complex.I * (r : ℂ) * (-Complex.I * ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b))).re : ℝ) : ℂ) = 2 * Complex.I * r * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ …`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `set s := ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b)`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Use `show _ = -((2 * Real.pi * r * ∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b) : ℂ) * F (X Z))`. Establish `h' : fderiv ℝ F (X Z) (X Y) - Real.pi * Complex.I * ((∑ τ, 2 * (Complex.I * (r : ℂ) * ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b)).re : ℝ) : ℂ) * F (X Z) + Complex.I * (fderiv ℝ F (X Z) (X (Complex.I • Y)) - Real.pi * Complex.I * ((∑ τ, 2 * (Complex.I * (r : ℂ) * (-Complex.I * ∑ …` using `h`.
+
+Take the linear combination `h' + Real.pi * Complex.I * F (X Z) * key + 2 * Real.pi * r * (∑ τ, ∑ a, ∑ b, Z τ a b * starRingEnd ℂ (Y τ a b)) * F (X Z) * Complex.I_sq`. Establish `e1 : X (zCo θ frS frT w) = piW θ T S w`. Use function extensionality and compare the values at `τ`. Rewrite using `[hX, frLin_apply]`. Express the relevant statement in the definitionally equal form `frAt frT τ * ((frAt frT τ)⁻¹ * compAt θ τ w * frAt frS τ) * (frAt frS τ)⁻¹ = _`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hU _ τ), Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hU _ τ), Matrix.mul_one]`. Both sides reduce to the same expression. Use `show f w = gaussO θ frS frT w * (f (iotaW σ T S (X (zCo θ frS frT w))) * E (zCo θ frS frT w))`. Rewrite using `[e1, hσ.iota_pi hw, ← mul_assoc, mul_comm _ (f w), mul_assoc, hE, gaussO, ← Complex.exp_add]`. Establish `e2 : -((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, ((‖zCo θ frS frT w τ a b‖ ^ 2 : ℝ) : ℂ) + ((Real.pi * r * ∑ τ, ∑ a, ∑ b, ‖zCo θ frS frT w τ a b‖ ^ 2 : ℝ) : ℂ) = 0`.
+
+Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Complex.exp_zero, mul_one]`.
+-/
 theorem vacuum_real_entire : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frS.1 * S.gram * frS.1 = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) frT.1 * T.gram * frT.1 = 1 → ∀ f : WO S T → ℂ, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) LS LT f → ∃ Φ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ, Differentiable ℂ Φ ∧ ∀ w : WO S T, w.map (finPart D) = 0 → f w = GlobalTheory.FockPos.gaussO θ frS frT w * Φ (GlobalTheory.FockPos.zCo θ frS frT w) := by
   intro D ψ θ S T frS frT LS LT hS hT f hf
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hf.2.inf

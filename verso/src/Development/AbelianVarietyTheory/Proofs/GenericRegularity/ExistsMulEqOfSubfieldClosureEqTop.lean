@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsFractionRing R.toSubring Ω := isFractionRing_subring_of_closure_eq_top ht R.toSubring (Set.union_subset (by rintro _ ⟨a, rfl⟩; exact R.algebraMap_mem a) hR)`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R.toSubring) x`. Establish `hb0 : (b : Ω) ≠ 0` using `fun h => nonZeroDivisors.ne_zero hb (Subtype.ext h)`. Conclude with `⟨a, a.2, b, b.2, hb0, div_mul_cancel₀ _ hb0⟩`.
+-/
 theorem exists_mul_eq_of_subfield_closure_eq_top {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
     {t : Set Ω} (ht : Subfield.closure (Set.range (algebraMap K Ω) ∪ t) = ⊤)
     (R : Subalgebra K Ω) (hR : t ⊆ R) (x : Ω) : ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a := by
@@ -19,6 +22,33 @@ theorem exists_mul_eq_of_subfield_closure_eq_top {K Ω : Type} [Field K] [Field 
   have hb0 : (b : Ω) ≠ 0 := fun h => nonZeroDivisors.ne_zero hb (Subtype.ext h)
   exact ⟨a, a.2, b, b.2, hb0, div_mul_cancel₀ _ hb0⟩
 
+/- English proof (translation)
+Introduce `K Ω O _ _ _ _ _ _ _ io gens es hgen _ hsm`. Use `letI : Algebra K (FractionRing O) := io.toAlgebra`. Take `⟨J, hJ, Ω', hΩ', α, gm, hαgm, htop, hR⟩` from `GlobalTheory.BaseChangeComponents.components K (FractionRing O) Ω (Algebra.adjoin K (gens : Set Ω)) (Subalgebra.fg_adjoin_finset gens) (exists_mul_eq_of_subfield_closure_eq_top hgen _ Algebra.subset_adjoin)`. Establish `hαgm' : ∀ j (k : K), α j (algebraMap K Ω k) = gm j (io k)` using `hαgm`. Use `letI : ∀ j, Algebra O (Ω' j) := fun j => ((gm j).comp (algebraMap O (FractionRing O))).toAlgebra`.
+
+Establish `hO : ∀ j (a : O), algebraMap O (Ω' j) a = gm j (algebraMap O (FractionRing O) a)` using `fun _ _ => rfl`. Establish `hinj : ∀ j, Function.Injective (algebraMap O (Ω' j))` using `fun j => (gm j).injective.comp (IsFractionRing.injective O (FractionRing O))`. Establish `hcl : ∀ j, Subfield.closure (Set.range (algebraMap O (Ω' j)) ∪ ((gens.image (α j) : Finset (Ω' j)) : Set (Ω' j))) = ⊤`. Introduce `j`. Use `set E := Subfield.closure (Set.range (algebraMap O (Ω' j)) ∪ ((gens.image (α j) : Finset (Ω' j)) : Set (Ω' j))) with hE`.
+
+Establish `hgm : ∀ a, gm j a ∈ E`. Introduce `a`. Take `⟨x, y, -, rfl⟩` from `IsFractionRing.div_surjective (A := O) a`. Rewrite using `[map_div₀, ← hO, ← hO]`. Conclude with `div_mem (Subfield.subset_closure (Or.inl ⟨x, rfl⟩)) (Subfield.subset_closure (Or.inl ⟨y, rfl⟩))`.
+
+Establish `hα : (⊤ : Subfield Ω) ≤ E.comap (α j)`. Rewrite using `[← hgen, Subfield.closure_le]`. Introduce and unpack `x (⟨k, rfl⟩ | hx)`. Express the relevant statement in the definitionally equal form `α j _ ∈ E`. Rewrite using `[hαgm']`.
+
+Conclude with `hgm _`. Express the relevant statement in the definitionally equal form `α j _ ∈ E`. Conclude with `Subfield.subset_closure (Or.inr (by`. Rewrite using `[Finset.coe_image]`. Conclude with `⟨x, hx, rfl⟩))`.
+
+Rewrite using `[eq_top_iff, ← htop j, Subfield.closure_le]`. Introduce and unpack `x (⟨y, rfl⟩ | ⟨y, rfl⟩)`. Conclude with `hα (Subfield.mem_top y)`. Conclude with `hgm y`. Use `choose A hsA hft hfl hic hfr hmin hW using fun j => GlobalTheory.exists_normalisation_adjoin_finset_dvr O (Ω' j) (hinj j) (gens.image (α j)) (hcl j)`.
+
+Set `ε : ∀ j, Ω' j ≃ₐ[A j] FractionRing (A j)` to `fun j => (FractionRing.algEquiv (A j) (Ω' j)).symm`. Establish `hε : ∀ j (x : A j), algebraMap (A j) (FractionRing (A j)) x = ε j (x : Ω' j)` using `fun j x => ((ε j).commutes x).symm`. Use `⟨J, hJ, fun j => A j, inferInstance, inferInstance, inferInstance, fun j => ((ε j).toRingEquiv.toRingHom).comp (α j), fun j => ⟨hft j, hfl j, hic j⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j k a b h`. Rewrite using `[hε, hε]`.
+
+Express the relevant statement in the definitionally equal form `ε j (α j _) * ε j (algebraMap O (Ω' j) b) = ε j (algebraMap O (Ω' j) a)`. Rewrite using `[← map_mul, hαgm', hO, hO, ← map_mul, h]`. Introduce `j g hg`. Use `⟨⟨α j g, hsA j (by rw [Finset.coe_image]; exact ⟨g, hg, rfl⟩)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hε]`.
+
+Both sides reduce to the same expression. Introduce `e he L _ W χ ψ hψ hχ hg`. Establish `hsub : (gens : Set Ω) ⊆ Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))` using `(Set.subset_insert _ _).trans Algebra.subset_adjoin`. Take `⟨hD, hφ⟩` from `hR (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))) (hsm e he) (exists_mul_eq_of_subfield_closure_eq_top hgen _ hsub)`. Take `⟨j, φ, h1, h2⟩` from `hφ L χ ψ hψ`.
+
+Establish `hgmD : ∀ a, gm j a ∈ Subring.closure (α j '' (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) : Set Ω) ∪ Set.range (gm j))` using `fun a => Subring.subset_closure (Or.inr ⟨a, rfl⟩)`. Establish `hαD : ∀ r : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), α j r ∈ Subring.closure (α j '' (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) : Set Ω) ∪ Set.range (gm j))` using `fun r => Subring.subset_closure (Or.inl ⟨r, r.2, rfl⟩)`. Establish `hAD` using `hmin j _ (hD j) (fun a => hgmD _) (by`. Rewrite using `[Finset.coe_image]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+
+Conclude with `hαD ⟨g, hsub hg⟩)`. Set `inc : A j →+* Subring.closure (α j '' (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) : Set Ω) ∪ Set.range (gm j))` to `((A j).val : A j →+* Ω' j).codRestrict _ fun x => hAD x.2`. Establish `hφO : ∀ a : O, (φ.comp inc) (algebraMap O (A j) a) = χ (algebraMap O _ a)` using `fun a => h2 _ (hgmD _)`. Use `⟨j, φ.comp inc, hW j L W (φ.comp inc) (fun a => by rw [hφO]; exact hχ a) ?_, hφO, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨g, hg', hgx⟩` from `Finset.mem_image.mp hx`. Establish `: inc x = ⟨α j (⟨g, hsub hg'⟩ : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))), hαD _⟩` using `Subtype.ext hgx.symm`. Rewrite using `[RingHom.comp_apply, this, h1]`. Conclude with `hg _ hg'`. Introduce `r x s h`.
+
+Rewrite `h` using `[hε, hε]`. Establish `h' : α j r * (s : Ω' j) = x` using `(ε j).injective (by rw [map_mul]; exact h)`. Rewrite using `[← h1 r (hαD r), RingHom.comp_apply, RingHom.comp_apply, ← map_mul]`. Conclude with `congrArg φ (Subtype.ext h')`.
+-/
 theorem exists_normal_charts_over_dvr :
     ∀ (K Ω O : Type) [Field K] [Field Ω] [Algebra K Ω] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (io : K →+* FractionRing O) (gens es : Finset Ω), Subfield.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω)) = ⊤ → (∀ e ∈ es, e ≠ 0 ∧ e ∈ Subring.closure ((algebraMap K Ω '' {a | io a ∈ Set.range (algebraMap O (FractionRing O))}) ∪ (gens : Set Ω))) → (∀ e ∈ es, Algebra.Smooth K (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)))) → ∃ (J : Type) (_ : Finite J) (A : J → Type) (_ : ∀ j, CommRing (A j)) (_ : ∀ j, IsDomain (A j)) (_ : ∀ j, Algebra O (A j)) (α : ∀ j, Ω →+* FractionRing (A j)), (∀ j, Algebra.FiniteType O (A j) ∧ Module.Flat O (A j) ∧ IsIntegrallyClosed (A j)) ∧ (∀ j (k : K) (a b : O), io k * algebraMap O _ b = algebraMap O _ a → α j (algebraMap K Ω k) * algebraMap (A j) _ (algebraMap O (A j) b) = algebraMap (A j) _ (algebraMap O (A j) a)) ∧ (∀ j, ∀ g ∈ gens, α j g ∈ Set.range (algebraMap (A j) (FractionRing (A j)))) ∧ ∀ e ∈ es, ∀ (L : Type) [Field L] (W : ValuationSubring L) (χ : FractionRing O →+* L) (ψ : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) →+* L), (∀ k : K, ψ (algebraMap K _ k) = χ (io k)) → (∀ a : O, χ (algebraMap O _ a) ∈ W) → (∀ g : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), (g : Ω) ∈ gens → ψ g ∈ W) → ∃ (j : J) (φ : A j →+* L), (∀ x, φ x ∈ W) ∧ (∀ a : O, φ (algebraMap O (A j) a) = χ (algebraMap O _ a)) ∧ ∀ (r : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))) (x s : A j), α j r * algebraMap (A j) _ s = algebraMap (A j) _ x → ψ r * φ s = φ x := by
   classical

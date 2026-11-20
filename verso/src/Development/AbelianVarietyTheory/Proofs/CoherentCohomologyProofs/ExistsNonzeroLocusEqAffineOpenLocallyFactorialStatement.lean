@@ -8,5 +8,8 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AffineComplement.exists_nonzeroLocus_eq | exact GlobalTheory.AffineComplement.exists_nonzeroLocus_eq | (intros; apply GlobalTheory.AffineComplement.exists_nonzeroLocus_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_nonzeroLocus_eq_affineOpen_locallyFactorial : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [X.IsSeparated] (U : X.Opens), IsAffineOpen U → (U : Set X).Nonempty → (∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) → ∃ (L : LB X) (σ : LB.Sec L), L.IsLB ∧ nonzeroLocus σ = U := by
   first | exact @GlobalTheory.AffineComplement.exists_nonzeroLocus_eq | exact GlobalTheory.AffineComplement.exists_nonzeroLocus_eq | (intros; apply GlobalTheory.AffineComplement.exists_nonzeroLocus_eq <;> assumption)

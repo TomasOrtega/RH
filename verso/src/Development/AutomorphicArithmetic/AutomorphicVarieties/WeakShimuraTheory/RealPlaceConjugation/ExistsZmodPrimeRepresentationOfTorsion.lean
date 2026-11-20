@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Use `⟨{ toFun := fun g => (ρ g).toAddMonoidHom.toZModLinearMap n map_one' := ?_ map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Simplify using the standard rewrite rules. Introduce `g h`. Use extensionality with `m`.
+
+Simplify using the standard rewrite rules. Introduce `g m`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.V.Ws.exists_zmod_representation (n : ℕ) (Γ : Type) [Group Γ] (R M : Type) [CommRing R]
     [AddCommGroup M] [Module R M] [Module (ZMod n) M] (ρ : Representation R Γ M) :
     ∃ ρ' : Representation (ZMod n) Γ M, ∀ g m, ρ' g m = ρ g m := by
@@ -18,6 +23,9 @@ private theorem UpperTheory.V.Ws.exists_zmod_representation (n : ℕ) (Γ : Type
   · intro g m
     rfl
 
+/- English proof (translation)
+Introduce `l Γ _ R M _ _ _ hl ρ`. Use `letI : Module (ZMod (l ^ 1)) M := AddCommGroup.zmodModule (fun m => by simpa using hl m)`. Take `⟨ρ', hρ'⟩` from `UpperTheory.V.Ws.exists_zmod_representation (l ^ 1) Γ R M ρ`. Conclude with `⟨this, ρ', hρ'⟩`.
+-/
 theorem UpperTheory.V.Ws.exists_zmod_prime_representation_of_torsion :
     ∀ (l : ℕ) (Γ : Type) [Group Γ] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M], (∀ m : M, l • m = 0) → ∀ ρ : Representation R Γ M, ∃ (_ : Module (ZMod (l ^ 1)) M) (ρ' : Representation (ZMod (l ^ 1)) Γ M), ∀ g m, ρ' g m = ρ g m := by
   intro l Γ _ R M _ _ _ hl ρ

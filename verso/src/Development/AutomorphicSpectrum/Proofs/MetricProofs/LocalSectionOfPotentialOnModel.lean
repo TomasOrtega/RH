@@ -15,10 +15,46 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.LowerBoundFree
 
+/- English proof (translation)
+Introduce `k` and use `⟨A.holo k j, A.holo j k⟩`.
+-/
 theorem isCompatChart_atlas {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X) (j : Fin A.n) :
     IsCompatChart A (A.chart j) :=
   fun k => ⟨A.holo k j, A.holo j k⟩
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D M Φ hΦ hloc x j y hy v hv`. Use `set e := M.atlas.chart j with he`. Establish `hcompat : IsCompatChart M.atlas e` using `isCompatChart_atlas M.atlas j`. Establish `hsrc : e.symm y ∈ e.source` using `e.map_target hy.1`. Take `⟨U, hUo, hyU, hUsub, s, hs, hsh, G, hG, hrel⟩` from `hloc x (e.symm y) ⟨hy.2, trivial⟩`.
+
+Use `set V : Set (Fin D.n → ℂ) := e.target ∩ e.symm ⁻¹' U with hV`. Establish `hVo : IsOpen V` using `e.isOpen_inter_preimage_symm hUo`. Establish `hyV : y ∈ V` using `⟨hy.1, hyU⟩`. Establish `hVn : V ∈ 𝓝 y` using `hVo.mem_nhds hyV`. Use `set τ : (Fin D.n → ℂ) → (Σ k, ι k) → ℂ := fun u => s (e.symm u) with hτdef`.
+
+Establish `hτ : AnalyticOnNhd ℂ τ V` using `fun u hu => analyticAt_pi_iff.2 fun p => hsh p j u hu`. Establish `hg : AnalyticAt ℂ (G ∘ e.symm) y` using `hG j y hyV`. Establish `hτmem : ∀ u ∈ V, τ u ∈ mcPts (mCoordIdeal D.y) ∧ M.proj (τ u) = e.symm u` using `fun u hu => hs _ hu.2`. Establish `hz : τ y ∈ mcPts (mCoordIdeal D.y)` using `(hτmem y hyV).1`. Establish `hpz : M.proj (τ y) = e.symm y` using `(hτmem y hyV).2`.
+
+Establish `hτy : AnalyticAt ℂ τ y` using `hτ y hyV`. Use `set w := fderiv ℂ τ y v with hwdef`. Use `set L : ℂ → Fin D.n → ℂ := fun σ => y + σ • v with hL`. Establish `hLd : HasDerivAt L v 0`. Establish `h` using `((hasDerivAt_id (0 : ℂ)).smul_const v).const_add y`.
+
+Simplify using `only [id, one_smul] at h`. Conclude with `h`. Establish `hL0 : L 0 = y` using `by simp [hL]`. Establish `hLn : ∀ᶠ σ in 𝓝 (0 : ℂ), L σ ∈ V` using `hLd.continuousAt.preimage_mem_nhds (by rw [hL0]; exact hVn)`. Use `set γ : ℂ → (Σ k, ι k) → ℂ := fun σ => τ (L σ) with hγdef`.
+
+Establish `hγ0 : γ 0 = τ y` using `by simp [hγdef, hL0]`. Establish `hγw : HasDerivAt γ w 0` using `(hτy.differentiableAt.hasFDerivAt).comp_hasDerivAt_of_eq (0 : ℂ) hLd hL0.symm`. Establish `htan : IsConeTangent (Int.castRingHom ℂ) (mCoordIdeal D.y) (τ y) w`. Introduce `f hf`. Establish `hder` using `hasDerivAt_eval_comp (map (Int.castRingHom ℂ) f) hγw`.
+
+Rewrite `hder` using `[hγ0]`. Establish `hzero : (fun σ => eval (γ σ) (map (Int.castRingHom ℂ) f)) =ᶠ[𝓝 0] fun _ => (0 : ℂ)` using `by filter_upwards [hLn] with σ hσ`. Conclude with `(hτmem _ hσ).1.2 f hf`. Conclude with `hder.unique ((hasDerivAt_const (0 : ℂ) (0 : ℂ)).congr_of_eventuallyEq hzero)`. Establish `hnt : ∀ c : K → ℂ, w ≠ torusSmul c (τ y)`.
+
+Introduce `c hwc`. Take `⟨W, hWo, hzW, F, hFd, hF⟩` from `projHoloLocal II Ψ K ι Ω E D M e hcompat (τ y) hz (by rw [hpz]; exact hsrc)`. Establish `hFz : HasFDerivAt F (fderiv ℂ F (τ y)) (τ y)` using `(hFd.differentiableAt (hWo.mem_nhds hzW)).hasFDerivAt`. Establish `hFγ : HasFDerivAt F (fderiv ℂ F (τ y)) (γ 0)` using `hγ0 ▸ hFz`. Establish `hWγ : ∀ᶠ σ in 𝓝 (0 : ℂ), γ σ ∈ W` using `hγw.continuousAt.preimage_mem_nhds (hWo.mem_nhds (hγ0 ▸ hzW))`.
+
+Establish `h1 : fderiv ℂ F (τ y) w = v`. Use `(hFγ.comp_hasDerivAt (0 : ℂ) hγw).unique (hLd.congr_of_eventuallyEq ?_)` and prove the remaining obligations. Use `filter_upwards [hLn, hWγ] with σ hσ hσW`. Rewrite using `[Function.comp_apply, ← (hF (γ σ) ⟨hσW, (hτmem _ hσ).1⟩).2, (hτmem _ hσ).2, e.right_inv hσ.1]`. Use `set δ : ℂ → (Σ k, ι k) → ℂ := fun σ => torusSmul (fun k => Complex.exp (σ * c k)) (τ y) with hδ`.
+
+Establish `hδ0 : δ 0 = τ y`. Use function extensionality and compare the values at `p`. Simplify using `[hδ, torusSmul]`. Establish `hδd : HasDerivAt δ (torusSmul c (τ y)) 0`. Use `hasDerivAt_pi.2 fun p => ?_` and prove the remaining obligations.
+
+Establish `h` using `(((hasDerivAt_id (0 : ℂ)).mul_const (c p.1)).cexp).mul_const (τ y p)`. Simplify `h` using `[hδ, torusSmul]`. Establish `hδmem : ∀ σ, δ σ ∈ mcPts (mCoordIdeal D.y)` using `fun σ => ComponentDataEquivalence.mcPts_torus D.arith.2.1.2.1 hz fun k => Complex.exp_ne_zero _`. Establish `hδproj : ∀ σ, M.proj (δ σ) = M.proj (τ y)` using `fun σ => ((M.fibre (τ y) hz (δ σ) (hδmem σ)).2 ⟨_, fun k => Complex.exp_ne_zero _, rfl⟩).symm`. Establish `hWδ : ∀ᶠ σ in 𝓝 (0 : ℂ), δ σ ∈ W` using `hδd.continuousAt.preimage_mem_nhds (hWo.mem_nhds (hδ0 ▸ hzW))`.
+
+Establish `h2 : fderiv ℂ F (τ y) (torusSmul c (τ y)) = 0`. Establish `hFz' : HasFDerivAt F (fderiv ℂ F (τ y)) (δ 0)` using `hδ0 ▸ hFz`. Use `(hFz'.comp_hasDerivAt (0 : ℂ) hδd).unique ((hasDerivAt_const (0 : ℂ) (e (M.proj (τ y)))).congr_of_eventuallyEq ?_)` and prove the remaining obligations. Use `filter_upwards [hWδ] with σ hσW`. Rewrite using `[Function.comp_apply, ← (hF (δ σ) ⟨hσW, hδmem σ⟩).2, hδproj σ]`.
+
+Conclude with `hv (h1.symm.trans (hwc ▸ h2))`. Establish `hO : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} ∈ 𝓝 (τ y)` using `MuRegSmooth.isOpen_blocks.mem_nhds hz.1`. Establish `hlogA : ContDiffAt ℝ 2 (fun z => Real.log (D.A'.h z)) (τ y)` using `((D.A'_pos.1.contDiffAt hO).of_le (WithTop.coe_le_coe.2 le_top)).log (D.A'.pos _ hz.1).ne'`. Establish `hc1 : ContDiffAt ℝ 2 ((fun z => Real.log (D.A'.h z)) ∘ τ) y` using `hlogA.comp y (hτy.restrictScalars.contDiffAt (n := 2))`. Establish `hc2 : ContDiffAt ℝ 2 (fun u => ((G ∘ e.symm) u).re) y`.
+
+Establish `h` using `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp y (hg.restrictScalars.contDiffAt (n := 2))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules. Establish `hev : (Φ.φ x ∘ e.symm) =ᶠ[𝓝 y] fun u => ((fun z => Real.log (D.A'.h z)) ∘ τ) u + (1 : ℝ) * ((G ∘ e.symm) u).re` using `by filter_upwards [hVn] with u hu`.
+
+Use `hrel _ hu.2` as an intermediate fact. Simplify using `only [Function.comp_apply, one_mul, hτdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos` using `D.A'_pos.2 (τ y) hz w htan hnt`. Rewrite using `[levi_congr hev, levi_add_smul 1 hc1 hc2, levi_re_analytic hg, levi_comp v hτy hlogA]`.
+
+Rewrite using `[mul_zero, add_zero]`. Conclude with `hpos`.
+-/
 theorem potential_pos_of_section :
     ∀ (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (E : Ψ → Type) [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (M : XModel D) (Φ : LocPot M.Xc), IsPotential M.atlas Φ → (∀ x, ∀ y₀ ∈ (Φ).U x ∩ Set.univ, ∃ U : Set M.Xc, IsOpen U ∧ y₀ ∈ U ∧ U ⊆ (Φ).U x ∩ Set.univ ∧ ∃ s : M.Xc → (Σ k, ι k) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts (mCoordIdeal D.y) ∧ M.proj (s y') = y') ∧ (∀ p, M.atlas.HoloOn U fun y' => s y' p) ∧ ∃ G : M.Xc → ℂ, M.atlas.HoloOn U G ∧ ∀ y' ∈ U, (Φ).φ x y' - (fun z => Real.log (D.A'.h z)) (s y') = (G y').re) → IsPosPot M.atlas Φ := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D M Φ hΦ hloc x j y hy v hv

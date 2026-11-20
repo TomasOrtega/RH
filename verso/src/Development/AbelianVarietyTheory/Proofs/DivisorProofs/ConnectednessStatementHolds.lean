@@ -17,6 +17,11 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `F _ _ V _ X s Xw hI _ hPr hF hG`. Take `⟨O, _, _, _, _, φ, hφi, hφl⟩` from `GlobalTheory.T.exists_complete_dvr_extension F V`. Establish `hpr : IsProper s`. Take `⟨N, c, hc, rfl⟩` from `hPr`. Use `isProper_str (↥V) N` as an intermediate fact.
+
+Use `infer_instance`. Establish `hc` using `GlobalTheory.T.base_change_complete_connected V O φ hφi hφl X s Xw hI hF hG`. Establish `hsp` using `GlobalTheory.T.special_fibre_connected_of_proper hP.q18.1 O (pullback s (Spec.map (CommRingCat.ofHom φ))) (pullback.snd _ _) inferInstance hc`. Conclude with `GlobalTheory.T.special_fibre_connected_of_base_change V O φ hφl X s hsp`.
+-/
 theorem connected_of_hypotheses (hP : GlobalTheory.CovTop.Hypotheses2) : ConnSt := by
   intro F _ _ V _ X s Xw hI _ hPr hF hG
   obtain ⟨O, _, _, _, _, φ, hφi, hφl⟩ := GlobalTheory.T.exists_complete_dvr_extension F V

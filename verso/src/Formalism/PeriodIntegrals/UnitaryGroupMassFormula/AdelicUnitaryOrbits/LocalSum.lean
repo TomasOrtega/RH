@@ -8,6 +8,9 @@ namespace PIW.AdelicOrbitU
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open scoped RestrictedProduct
 
+/- English proof (translation)
+Establish `h1 : (1 : A) ∈ Ideal.span (Set.range f)`. Rewrite using `[hf]`. Conclude with `Submodule.mem_top`. Conclude with `Ideal.mem_span_range_iff_exists_fun.mp h1`.
+-/
 theorem uc_coeffs {A : Type} [CommRing A] {k : ℕ} {f : Fin k → A}
     (hf : Ideal.span (Set.range f) = ⊤) : ∃ a : Fin k → A, ∑ i, a i * f i = 1 := by
   have h1 : (1 : A) ∈ Ideal.span (Set.range f) := by
@@ -15,10 +18,24 @@ theorem uc_coeffs {A : Type} [CommRing A] {k : ℕ} {f : Fin k → A}
     exact Submodule.mem_top
   exact Ideal.mem_span_range_iff_exists_fun.mp h1
 
+/- English proof (translation)
+Conclude with `(Ideal.eq_top_iff_one _).mpr (Ideal.mem_span_range_iff_exists_fun.mpr ⟨a, h⟩)`.
+-/
 theorem uc_span {A : Type} [CommRing A] {k : ℕ} (f a : Fin k → A) (h : ∑ i, a i * f i = 1) :
     Ideal.span (Set.range f) = ⊤ := by
   exact (Ideal.eq_top_iff_one _).mpr (Ideal.mem_span_range_iff_exists_fun.mpr ⟨a, h⟩)
 
+/- English proof (translation)
+Unfold `UnitChoice at hA hB ⊢`. Introduce `k f hf`. Take `⟨a, ha⟩` from `uc_coeffs hf`. Establish `hA1 : Ideal.span (Set.range fun i => (f i).1) = ⊤` using `uc_span (fun i => (f i).1) (fun i => (a i).1) (by`. Establish `h` using `congrArg Prod.fst ha`.
+
+Simplify `h)` using `[Prod.fst_sum]`. Establish `hB1 : Ideal.span (Set.range fun i => (f i).2) = ⊤` using `uc_span (fun i => (f i).2) (fun i => (a i).2) (by`. Establish `h` using `congrArg Prod.snd ha`. Simplify `h)` using `[Prod.snd_sum]`. Take `⟨eA, hA1', hA2, hA3, hA4⟩` from `hA k _ hA1`.
+
+Take `⟨eB, hB1', hB2, hB3, hB4⟩` from `hB k _ hB1`. Use `⟨fun i => (eA i, eB i), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Conclude with `Prod.ext (hA1' i) (hB1' i)`. Introduce `i j hij`.
+
+Conclude with `Prod.ext (hA2 i j hij) (hB2 i j hij)`. Conclude with `Prod.ext (by simpa [Prod.fst_sum] using hA3) (by simpa [Prod.snd_sum] using hB3)`. Rewrite using `[Prod.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Simplify `hA4` using `[Prod.fst_sum]`.
+
+Simplify `hB4` using `[Prod.snd_sum]`.
+-/
 theorem uc_prod {A B : Type} [CommRing A] [CommRing B] (hA : UnitChoice A) (hB : UnitChoice B) :
     UnitChoice (A × B) := by
   unfold UnitChoice at hA hB ⊢
@@ -45,6 +62,19 @@ theorem uc_prod {A B : Type} [CommRing A] [CommRing B] (hA : UnitChoice A) (hB :
     · simpa [Prod.fst_sum] using hA4
     · simpa [Prod.snd_sum] using hB4
 
+/- English proof (translation)
+Introduce `k f hf`. Take `⟨a, ha⟩` from `uc_coeffs hf`. Establish `hex : ∀ v, ∃ i, f i v ≠ 0`. Introduce `v`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `h` using `congrFun ha v`. Simplify using `[Finset.sum_apply, hne] at h`. Use `choose c hc using hex`. Use `⟨fun i v => if c v = i then 1 else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `i j hij`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`. Use function extensionality and compare the values at `v`. Simplify using `[Finset.sum_apply]`.
+
+Rewrite using `[Pi.isUnit_iff]`. Introduce `v`. Apply `isUnit_iff_ne_zero.mpr` to reduce the goal to its premises. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (c v)]`. Simplify using `using hc v`.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem uc_pi {ι : Type} (K : ι → Type) [∀ v, Field (K v)] : UnitChoice (∀ v, K v) := by
   intro k f hf
   obtain ⟨a, ha⟩ := uc_coeffs hf
@@ -77,6 +107,11 @@ theorem uc_pi {ι : Type} (K : ι → Type) [∀ v, Field (K v)] : UnitChoice (�
     · intro h
       exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hmem : ∀ i, a i * f i ∈ IsLocalRing.maximalIdeal A` using `fun i => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).mpr (hne i))`. Establish `h1 : (1 : A) ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[← h]`.
+
+Conclude with `Ideal.sum_mem _ fun i _ => hmem i`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h1 isUnit_one`.
+-/
 theorem local_sum {A : Type} [CommRing A] [IsLocalRing A] {k : ℕ} (a f : Fin k → A)
     (h : ∑ i, a i * f i = 1) : ∃ i, IsUnit (f i) := by
   by_contra hne
@@ -88,6 +123,35 @@ theorem local_sum {A : Type} [CommRing A] [IsLocalRing A] {k : ℕ} (a f : Fin k
     exact Ideal.sum_mem _ fun i _ => hmem i
   exact (IsLocalRing.mem_maximalIdeal _).mp h1 isUnit_one
 
+/- English proof (translation)
+Introduce `k f hf`. Take `⟨a, ha⟩` from `uc_coeffs hf`. Establish `hev : ∀ (x : Fin k → Πʳ v, [K v, B v]_[𝓕]) (v : ι), (∑ i, x i) v = ∑ i, x i v` using `fun x v => map_sum (RestrictedProduct.evalRingHom K v) x Finset.univ`. Establish `hcomp : ∀ v, ∑ i, a i v * f i v = 1`. Introduce `v`.
+
+Establish `h` using `congrArg (fun x : Πʳ v, [K v, B v]_[𝓕] => x v) ha`. Simplify using `only [hev, RestrictedProduct.mul_apply] at h`. Conclude with `h`. Establish `hex : ∀ v, ∃ i, f i v ≠ 0 ∧ ((∀ j, a j v ∈ B v ∧ f j v ∈ B v) → (f i v)⁻¹ ∈ B v)`. Introduce `v`.
+
+Distinguish the cases in `hg : ∀ j, a j v ∈ B v ∧ f j v ∈ B v`. Establish `hsum : ∑ j, (⟨a j v, (hg j).1⟩ : B v) * ⟨f j v, (hg j).2⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `map_sum (SubringClass.subtype (B v)) (fun j => (⟨a j v, (hg j).1⟩ : B v) * ⟨f j v, (hg j).2⟩) Finset.univ`. Simplify using `only [map_mul] at h1`.
+
+Conclude with `h1.trans (hcomp v)`. Take `⟨i, hi⟩` from `hloc v k (fun j => ⟨a j v, (hg j).1⟩) (fun j => ⟨f j v, (hg j).2⟩) hsum`. Take `⟨b, hb⟩` from `hi.exists_right_inv`. Establish `hb' : f i v * (b : K v) = 1` using `congrArg Subtype.val hb`. Use `⟨i, ?_, fun _ => ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Rewrite `hb'` using `[h0, zero_mul]`. Conclude with `zero_ne_one hb'`. Rewrite using `[inv_eq_of_mul_eq_one_right hb']`. Conclude with `b.2`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, f i v ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h` using `hcomp v`. Simplify using `[hne] at h`.
+
+Conclude with `⟨i, hi, fun h => absurd h hg⟩`. Use `choose c hc using hex`. Set `e : Fin k → Πʳ v, [K v, B v]_[𝓕]` to `fun i => RestrictedProduct.mk (fun v => if c v = i then (1 : K v) else 0) (Filter.Eventually.of_forall fun v => by show (if c v = i then (1 : K v) else 0) ∈ B v split_ifs exacts [one_mem (B v), zero_mem (B v)])`. Establish `he : ∀ i v, e i v = if c v = i then (1 : K v) else 0` using `fun i v => rfl`. Use `⟨e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[RestrictedProduct.mul_apply, he]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `i j hij`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[RestrictedProduct.mul_apply, he, he, show ((0 : Πʳ v, [K v, B v]_[𝓕]) v) = 0 from rfl]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+
+Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hev, show ((1 : Πʳ v, [K v, B v]_[𝓕]) v) = 1 from rfl]`. Simplify using `[he]`. Establish `hgood : ∀ᶠ v in 𝓕, ∀ j, a j v ∈ B v ∧ f j v ∈ B v`.
+
+Rewrite using `[Filter.eventually_all]`. Introduce `j`. Conclude with `(a j).2.and (f j).2`. Set `z : Πʳ v, [K v, B v]_[𝓕]` to `RestrictedProduct.mk (fun v => (f (c v) v)⁻¹) (hgood.mono fun v hv => (hc v).2 hv)`. Use `isUnit_iff_exists_inv.mpr ⟨z, ?_⟩` and prove the remaining obligations.
+
+Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[RestrictedProduct.mul_apply, hev]`. Establish `hs : ∑ i, (e i * f i) v = f (c v) v`. Rewrite using `[Finset.sum_eq_single (c v)]`.
+
+Rewrite using `[RestrictedProduct.mul_apply, he, if_pos rfl, one_mul]`. Introduce `b _ hb`. Rewrite using `[RestrictedProduct.mul_apply, he, if_neg (Ne.symm hb), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite using `[hs]`. Conclude with `mul_inv_cancel₀ (hc v).1`.
+-/
 theorem uc_rp {ι : Type} (K : ι → Type) [∀ v, Field (K v)] {S : ι → Type} [∀ v, SetLike (S v) (K v)]
     [∀ v, SubringClass (S v) (K v)] (B : ∀ v, S v) (𝓕 : Filter ι)
     (hloc : ∀ v (k : ℕ) (a f : Fin k → B v), ∑ i, a i * f i = 1 → ∃ i, IsUnit (f i)) :
@@ -170,12 +234,18 @@ theorem uc_rp {ι : Type} (K : ι → Type) [∀ v, Field (K v)] {S : ι → Typ
     rw [hs]
     exact mul_inv_cancel₀ (hc v).1
 
+/- English proof (translation)
+Conclude with `uc_rp (fun v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) => v.adicCompletion F) (fun v => v.adicCompletionIntegers F) Filter.cofinite (fun v k a f h => local_sum a f h)`.
+-/
 theorem uc_fin (F : Type) [Field F] [NumberField F] :
     UnitChoice (IsDedekindDomain.FiniteAdeleRing (NumberField.RingOfIntegers F) F) := by
   exact uc_rp (fun v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) =>
     v.adicCompletion F) (fun v => v.adicCompletionIntegers F) Filter.cofinite
     (fun v k a f h => local_sum a f h)
 
+/- English proof (translation)
+Unfold `StP`. Introduce `F _ _`. Unfold `AF`. Conclude with `uc_prod (uc_pi (fun v : NumberField.InfinitePlace F => v.Completion)) (uc_fin F)`.
+-/
 theorem stP : StP := by
   unfold StP
   intro F _ _

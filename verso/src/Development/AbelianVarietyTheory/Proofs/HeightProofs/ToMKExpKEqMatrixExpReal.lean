@@ -32,16 +32,27 @@ def mxDer (X : Mx n) (F : Mx n → ℂ) : Mx n → ℂ := fun M => fderiv ℝ F 
 def mxDerW (l : List (Mx n)) (F : Mx n → ℂ) : Mx n → ℂ :=
   l.foldr (fun X G => mxDer X G) F
 
+/- English proof (translation)
+Unfold `mxDer`. Conclude with `(hF.fderiv_right le_top).clm_apply (contDiff_id.mul contDiff_const)`.
+-/
 theorem contDiff_mxDer (X : Mx n) {F : Mx n → ℂ} (hF : ContDiff ℝ ⊤ F) : ContDiff ℝ ⊤ (mxDer X F) := by
   unfold mxDer
   exact (hF.fderiv_right le_top).clm_apply (contDiff_id.mul contDiff_const)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hF`. Consider the case `cons X l ih => exact contDiff_mxDer X ih`.
+-/
 theorem contDiff_mxDerW (l : List (Mx n)) {F : Mx n → ℂ} (hF : ContDiff ℝ ⊤ F) :
     ContDiff ℝ ⊤ (mxDerW l F) := by
   induction l with
   | nil => exact hF
   | cons X l ih => exact contDiff_mxDer X ih
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Establish `e : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) = fun t : ℝ => NormedSpace.exp (t • X)`. Use function extensionality and compare the values at `t`. Rewrite using `[Complex.coe_smul]`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem hasDerivAt_exp_ofReal_smul (X : Mx n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
@@ -50,6 +61,13 @@ theorem hasDerivAt_exp_ofReal_smul (X : Mx n) :
     funext t; rw [Complex.coe_smul]
   rw [e]; exact h
 
+/- English proof (translation)
+Proceed by induction on `l generalizing k with`. Consider the case `nil => exact hφ k`. Consider the case `cons X l ih`. Establish `hX : inK ε X` using `hl X List.mem_cons_self`. Establish `hl' : ∀ Y ∈ l, inK ε Y` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`.
+
+Rewrite using `[rder_cons]`. Establish `e : (fun t : ℝ => rder ε l φ (k * expK ε X t)) = (mxDerW l F) ∘ (fun t : ℝ => toMK k * NormedSpace.exp ((t : ℂ) • X))`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, ih hl' (k * expK ε X t), toMK_mul, toMK_expK hX]`. Rewrite using `[e]`.
+
+Establish `hd : HasDerivAt (fun t : ℝ => toMK k * NormedSpace.exp ((t : ℂ) • X)) (toMK k * X) 0` using `(hasDerivAt_exp_ofReal_smul X).const_mul (toMK k)`. Establish `hF'` using `((contDiff_mxDerW l hF).differentiable (by simp)) (toMK k)`. Establish `h2` using `hF'.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hd (by simp [NormedSpace.exp_zero])`. Rewrite using `[h2.deriv]`. Both sides reduce to the same expression.
+-/
 theorem rder_eq_mxDerW {ε : Fin n → Bool} (l : List (Mx n)) (hl : ∀ X ∈ l, inK ε X) {F : Mx n → ℂ}
     (hF : ContDiff ℝ ⊤ F) {φ : KG ε → ℂ} (hφ : ∀ k, φ k = F (toMK k)) (k : KG ε) :
     rder ε l φ k = mxDerW l F (toMK k) := by
@@ -74,6 +92,11 @@ theorem rder_eq_mxDerW {ε : Fin n → Bool} (l : List (Mx n)) (hl : ∀ X ∈ l
 def mxCoord (c : Fin n × Fin n × Bool) (M : Mx n) : ℂ :=
   if c.2.2 then M c.1 c.2.1 else star (M c.1 c.2.1)
 
+/- English proof (translation)
+Set `L : Mx n →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ c.1 c.2.1)`. Establish `hL : ContDiff ℝ ⊤ fun M : Mx n => M c.1 c.2.1` using `L.contDiff`. Unfold `mxCoord`. Use `split_ifs`. Conclude with `hL`.
+
+Conclude with `(Complex.conjCLE.contDiff.comp hL : _)`.
+-/
 theorem contDiff_mxCoord (c : Fin n × Fin n × Bool) : ContDiff ℝ ⊤ (mxCoord (n := n) c) := by
   let L : Mx n →L[ℝ] ℂ := LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ c.1 c.2.1)
   have hL : ContDiff ℝ ⊤ fun M : Mx n => M c.1 c.2.1 := L.contDiff
@@ -82,6 +105,13 @@ theorem contDiff_mxCoord (c : Fin n × Fin n × Bool) : ContDiff ℝ ⊤ (mxCoor
   · exact hL
   · exact (Complex.conjCLE.contDiff.comp hL : _)
 
+/- English proof (translation)
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨s, -, rfl⟩` from `hx`. Use `⟨fun M => (s.map fun c => mxCoord c M).prod, ?_, fun k => rfl⟩` and prove the remaining obligations. Proceed by induction on `s with`.
+
+Consider the case `nil => simpa using (contDiff_const : ContDiff ℝ ⊤ fun _ : Mx n => (1 : ℂ))`. Consider the case `cons c s ih => simpa using (contDiff_mxCoord c).mul ih`. Consider the case `zero => exact ⟨0, contDiff_const, fun k => rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨F, hF, e⟩` from `hx`.
+
+Take `⟨G, hG, e'⟩` from `hy`. Conclude with `⟨F + G, hF.add hG, fun k => by simp [e, e']⟩`. Consider the case `smul a x _ hx`. Take `⟨F, hF, e⟩` from `hx`. Conclude with `⟨a • F, hF.const_smul a, fun k => by simp [e]⟩`.
+-/
 theorem exists_ext_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     ∃ F : Mx n → ℂ, ContDiff ℝ ⊤ F ∧ ∀ k, φ k = F (toMK k) := by
   induction h using Submodule.span_induction with
@@ -100,10 +130,16 @@ theorem exists_ext_of_mem {ε : Fin n → Bool} {d : ℕ} {φ : KG ε → ℂ} (
     obtain ⟨F, hF, e⟩ := hx
     exact ⟨a • F, hF.const_smul a, fun k => by simp [e]⟩
 
+/- English proof (translation)
+Simplify using `only [mxDer, Matrix.mul_sum, Matrix.mul_smul, map_sum, map_smul]`.
+-/
 theorem mxDer_sum_smul {ι : Type*} (s : Finset ι) (c : ι → ℝ) (b : ι → Mx n) (F : Mx n → ℂ) (M : Mx n) :
     mxDer (∑ j ∈ s, c j • b j) F M = ∑ j ∈ s, c j • mxDer (b j) F M := by
   simp only [mxDer, Matrix.mul_sum, Matrix.mul_smul, map_sum, map_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `M`. Establish `h : HasFDerivAt (fun M => ∑ i ∈ s, c i • G i M) (∑ i ∈ s, c i • fderiv ℝ (G i) M) M` using `HasFDerivAt.fun_sum fun i hi => ((((hG i hi).differentiable (by simp)) M).hasFDerivAt).const_smul (c i)`. Simplify using `only [mxDer, h.fderiv, FunLike.coe_sum, Finset.sum_apply, FunLike.coe_smul, Pi.smul_apply]`.
+-/
 theorem mxDer_sum (X : Mx n) {ι : Type*} (s : Finset ι) (c : ι → ℝ) (G : ι → Mx n → ℂ)
     (hG : ∀ i ∈ s, ContDiff ℝ ⊤ (G i)) :
     mxDer X (fun M => ∑ i ∈ s, c i • G i M) = fun M => ∑ i ∈ s, c i • mxDer X (G i) M := by
@@ -130,6 +166,17 @@ section Expansion
 
 open scoped Matrix.Norms.Operator
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Use function extensionality and compare the values at `M`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `x hx`. Establish `ih'` using `ih (fun i => x i.succ) (fun i => hx i.succ)`. Use function extensionality and compare the values at `M`.
+
+Rewrite using `[List.ofFn_succ]`. Use `show mxDer (x 0) (mxDerW (List.ofFn fun i => x i.succ) F) M = _`. Rewrite using `[ih', mxDer_sum (x 0) Finset.univ _ _ (fun σ _ => contDiff_mxDerW _ hF)]`. Rewrite using `[← (Fin.consEquiv fun _ => Fin r).sum_comp, Fintype.sum_prod_type]`. Establish `hx0` using `hx 0`.
+
+Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, List.ofFn_succ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `key : ∀ G, mxDer (x 0) G M = ∑ j, cf (x 0) j • mxDer (b j) G M` using `fun G => by conv_lhs => rw [hx0]`. Conclude with `mxDer_sum_smul _ _ _ _ _`.
+
+Rewrite using `[key, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem mxDerW_expand {r : ℕ} (b : Fin r → Mx n) (cf : Mx n → Fin r → ℝ) {F : Mx n → ℂ}
     (hF : ContDiff ℝ ⊤ F) : ∀ (k : ℕ) (x : Fin k → Mx n), (∀ i, x i = ∑ j, cf (x i) j • b j) →
     mxDerW (List.ofFn x) F = fun M => ∑ σ : Fin k → Fin r,
@@ -207,6 +254,9 @@ def kSub (ε : Fin n → Bool) : Submodule ℝ (Mx n) where
     · show (c • X) * Jm ε = Jm ε * (c • X)
       rw [Matrix.smul_mul, Matrix.mul_smul, hX2]
 
+/- English proof (translation)
+Establish `h1 : ‖X i j‖ ^ 2 ≤ ∑ j', ‖X i j'‖ ^ 2` using `Finset.single_le_sum (f := fun j' => ‖X i j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ j', ‖X i j'‖ ^ 2 ≤ hs X` using `Finset.single_le_sum (f := fun i' => ∑ j', ‖X i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (X i j)]`.
+-/
 theorem norm_entry_le_of_hs {X : Mx n} (h : hs X ≤ 1) (i j : Fin n) : ‖X i j‖ ≤ 1 := by
   have h1 : ‖X i j‖ ^ 2 ≤ ∑ j', ‖X i j'‖ ^ 2 :=
     Finset.single_le_sum (f := fun j' => ‖X i j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)
@@ -215,6 +265,11 @@ theorem norm_entry_le_of_hs {X : Mx n} (h : hs X ≤ 1) (i j : Fin n) : ‖X i j
       (Finset.mem_univ i)
   nlinarith [norm_nonneg (X i j)]
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single X]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, Matrix.smul_single, ← Matrix.single_add]`. Use `congr 1`. Rewrite using `[Complex.real_smul, Complex.real_smul, mul_one]`.
+
+Conclude with `(Complex.re_add_im _).symm`.
+-/
 theorem eq_sum_re_im (X : Mx n) :
     X = ∑ a : Fin n, ∑ b : Fin n, ((X a b).re • (Matrix.single a b (1 : ℂ) : Mx n) +
       (X a b).im • (Matrix.single a b Complex.I : Mx n)) := by
@@ -225,6 +280,9 @@ theorem eq_sum_re_im (X : Mx n) :
   rw [Complex.real_smul, Complex.real_smul, mul_one]
   exact (Complex.re_add_im _).symm
 
+/- English proof (translation)
+The claim follows from `|ψ X| ≤ ∑ a : Fin n, ∑ b : Fin n, (|ψ (Matrix.single a b (1 : ℂ))| + |ψ (Matrix.single a b Complex.I)|) := by conv_lhs => rw [eq_sum_re_im X] simp only [map_sum, map_add, map_smul, smul_eq_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun a _ => ?_) refine …`.
+-/
 theorem abs_linear_le (ψ : Mx n →ₗ[ℝ] ℝ) {X : Mx n} (h : hs X ≤ 1) :
     |ψ X| ≤ ∑ a : Fin n, ∑ b : Fin n, (|ψ (Matrix.single a b (1 : ℂ))| + |ψ (Matrix.single a b Complex.I)|) := by
   conv_lhs => rw [eq_sum_re_im X]
@@ -240,6 +298,13 @@ theorem abs_linear_le (ψ : Mx n →ₗ[ℝ] ℝ) {X : Mx n} (h : hs X ≤ 1) :
   have := abs_nonneg (ψ (Matrix.single a b Complex.I))
   nlinarith [abs_nonneg (X a b).re, abs_nonneg (X a b).im]
 
+/- English proof (translation)
+Set `B` to `Module.finBasis ℝ (kSub ε)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (kSub ε).subtype (Submodule.ker_subtype _)`. Set `ψ : Fin (Module.finrank ℝ (kSub ε)) → (Mx n →ₗ[ℝ] ℝ)` to `fun j => (B.coord j).comp g`. Set `A : ℝ` to `∑ j, ∑ a : Fin n, ∑ b : Fin n, (|ψ j (Matrix.single a b (1 : ℂ))| + |ψ j (Matrix.single a b Complex.I)|)`. Establish `hg' : ∀ X (hX : inK ε X), g X = ⟨X, hX⟩` using `fun X hX => LinearMap.congr_fun hg ⟨X, hX⟩`.
+
+Use `⟨Module.finrank ℝ (kSub ε), fun j => (B j : Mx n), fun X j => ψ j X, A, ?_, fun j => (B j).2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => add_nonneg (abs_nonneg _) (abs_nonneg _)`. Introduce `X hX`. Use `congrArg Subtype.val (B.sum_repr ⟨X, hX⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`.
+
+Simplify `this.symm` using `[ψ, hg' X hX]`. Introduce `X _ h1 j`. Use `(abs_linear_le (ψ j) h1).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ∑ a : Fin n, ∑ b : Fin n, (|ψ j (Matrix.single a b (1 : ℂ))| + |ψ j (Matrix.single a b Complex.I)|)) (fun j _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) (Finset.mem_univ j)`.
+-/
 theorem exists_basis_kSub (ε : Fin n → Bool) : ∃ (r : ℕ) (b : Fin r → Mx n) (cf : Mx n → Fin r → ℝ) (A : ℝ),
     0 ≤ A ∧ (∀ j, inK ε (b j)) ∧ (∀ X, inK ε X → X = ∑ j, cf X j • b j) ∧
       (∀ X, inK ε X → hs X ≤ 1 → ∀ j, |cf X j| ≤ A) := by
@@ -276,6 +341,27 @@ namespace GlobalTheory.KFourier
 
 open Matrix
 
+/- English proof (translation)
+Introduce `n ε m`. Take `⟨r, b, cf, A, hA, hb, hrep, hcf⟩` from `exists_basis_kSub ε`. Set `word : ∀ k, (Fin k → Fin r) → List (Mx n)` to `fun k σ => List.ofFn fun i => b (σ i)`. Set `U : List (List (Mx n))` to `(List.range (m + 1)).flatMap fun k => (Finset.univ : Finset (Fin k → Fin r)).toList.map (word k)`. Establish `hword : ∀ k σ, ∀ X ∈ word k σ, inK ε X`.
+
+Introduce `k σ X hX`. Simplify using `only [word, List.mem_ofFn] at hX`. Take `⟨i, rfl⟩` from `hX`. Conclude with `hb _`. Use `⟨U, (max 1 A) ^ m, by positivity, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu X hX`. Simplify using `only [U, List.mem_flatMap, List.mem_map] at hu`. Take `⟨k, -, σ, -, rfl⟩` from `hu`. Conclude with `hword k σ X hX`. Introduce `d φ hφ w hw hwK`.
+
+Take `⟨F, hF, hφF⟩` from `exists_ext_of_mem hφ`. Establish `hx : ∀ i : Fin w.length, w.get i = ∑ j, cf (w.get i) j • b j` using `fun i => hrep _ (hwK _ (List.get_mem w i)).1`. Establish `e1 : rder ε w φ 1 = mxDerW w F (toMK 1)` using `rder_eq_mxDerW w (fun X hX => (hwK X hX).1) hF hφF 1`. Establish `e2` using `mxDerW_expand b cf hF w.length w.get hx`. Rewrite `e2` using `[List.ofFn_get]`.
+
+Establish `e3 : ∀ k (σ : Fin k → Fin r), mxDerW (word k σ) F (toMK 1) = rder ε (word k σ) φ 1` using `fun k σ => (rder_eq_mxDerW _ (hword k σ) hF hφF 1).symm`. Establish `hcoef : ∀ σ : Fin w.length → Fin r, |∏ i, cf (w.get i) (σ i)| ≤ (max 1 A) ^ m`. Introduce `σ`. Rewrite using `[Finset.abs_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsum : ∑ σ : Fin w.length → Fin r, ‖rder ε (word w.length σ) φ 1‖ ≤ (U.map fun u => ‖rder ε u φ 1‖).sum`. Establish `e4 : (U.map fun u => ‖rder ε u φ 1‖).sum = ((List.range (m + 1)).map fun k => ∑ σ : Fin k → Fin r, ‖rder ε (word k σ) φ 1‖).sum`. Simplify using `only [U, List.flatMap, List.map_flatten, List.sum_flatten, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun k _ => ?_` and prove the remaining obligations.
+
+Use `show ((List.map (word k) Finset.univ.toList).map fun u => ‖rder ε u φ 1‖).sum = _`. Rewrite using `[List.map_map, Finset.sum_map_toList]`. Both sides reduce to the same expression. Rewrite using `[e4]`. Conclude with `List.single_le_sum (fun x hx => by`.
+
+Take `⟨k, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `Finset.sum_nonneg fun _ _ => norm_nonneg _) _`. Use the proof step `(List.mem_map.2 ⟨w.length, List.mem_range.2 (by omega), rfl⟩)`. Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Use `e3 w.length σ` as an intermediate fact. Simplify using `only [word] at this`. Rewrite using `[this]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hcoef σ) (norm_nonneg _)`. Use `_ = (max 1 A) ^ m * ∑ σ : Fin w.length → Fin r, ‖rder ε (word w.length σ) φ 1‖ := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (max 1 A) ^ m * (U.map fun u => ‖rder ε u φ 1‖).sum := mul_le_mul_of_nonneg_left hsum (by positivity)`.
+-/
 theorem rder_bound_basisWords : ∀ {n : ℕ} (ε : Fin n → Bool) (m : ℕ), ∃ (U : List (List (Mx n))) (C : ℝ),
     0 ≤ C ∧ (∀ u ∈ U, ∀ X ∈ u, inK ε X) ∧ ∀ (d : ℕ) (φ : KG ε → ℂ), φ ∈ GlobalTheory.KFourier.polyV ε d →
       ∀ w : List (Mx n), w.length ≤ m → (∀ X ∈ w, inK ε X ∧ hs X ≤ 1) →

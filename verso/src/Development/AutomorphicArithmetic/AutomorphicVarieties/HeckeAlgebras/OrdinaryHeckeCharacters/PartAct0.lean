@@ -20,6 +20,15 @@ universe u
 variable {A K M W ι : Type} [CommRing A] [Field K] [Algebra A K] [AddCommGroup M] [Module A M]
   [AddCommGroup W] [Module K W] [Module A W] [IsScalarTower A K W]
 
+/- English proof (translation)
+Establish `hr : LinearMap.range (s.liftBaseChange K) = E`. Rewrite using `[LinearMap.range_liftBaseChange, hE]`. Both sides reduce to the same expression. Set `Ψ : K ⊗[A] N ≃ₗ[K] E` to `(LinearEquiv.ofInjective _ hs).trans (LinearEquiv.ofEq _ _ hr)`. Establish `hΨ : ∀ v, (Ψ v : W) = s.liftBaseChange K v` using `fun v => rfl`.
+
+Set `ρ : Module.End A N →+* Module.End K E` to `(Ψ.conjRingEquiv : Module.End K (K ⊗[A] N) →+* Module.End K E).comp (Module.End.baseChangeHom A K N).toRingHom`. Establish `h1 : ∀ φ v, ρ φ (Ψ v) = Ψ (φ.baseChange K v)` using `fun φ v => by`. Express the relevant statement in the definitionally equal form `Ψ (φ.baseChange K (Ψ.symm (Ψ v))) = _`. Rewrite using `[Ψ.symm_apply_apply]`. Use `⟨ρ, Ψ, h1, fun φ f F hF => ?_, fun b F => ?_⟩` and prove the remaining obligations.
+
+Establish `: F = Ψ (1 ⊗ₜ f)` using `Subtype.ext (by rw [hF, hΨ]; simp)`. Rewrite using `[this, h1, hΨ]`. Simplify using the standard rewrite rules. Take `⟨v, rfl⟩` from `Ψ.surjective F`. Rewrite using `[h1, ← map_smul, Algebra.algebraMap_eq_smul_one b, LinearMap.baseChange_smul, LinearMap.baseChange_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem pa_rho {N : Type} [AddCommGroup N] [Module A N] (s : N →ₗ[A] W)
     (hs : Function.Injective (s.liftBaseChange K)) (E : Submodule K W) (hE : E = Submodule.span K (Set.range s)) :
     ∃ (ρ : Module.End A N →+* Module.End K E) (Ψ : K ⊗[A] N ≃ₗ[K] E),
@@ -42,6 +51,11 @@ private theorem pa_rho {N : Type} [AddCommGroup N] [Module A N] (s : N →ₗ[A]
     rw [h1, ← map_smul, Algebra.algebraMap_eq_smul_one b, LinearMap.baseChange_smul, LinearMap.baseChange_one]
     simp
 
+/- English proof (translation)
+Take `⟨F, hF⟩` from `F`. Substitute `hE` using the available equality. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨f, rfl⟩ := hx`. Conclude with `h f _ rfl`.
+
+Consider the case `zero => exact (map_zero α).trans (map_zero β).symm`. Consider the case `add x y hx hy h1 h2 => exact ((map_add α ⟨x, hx⟩ ⟨y, hy⟩).trans (by rw [h1, h2])).trans (map_add β ⟨x, hx⟩ ⟨y, hy⟩).symm`. Consider the case `smul c x hx h1 => exact ((map_smul α c ⟨x, hx⟩).trans (by rw [h1])).trans (map_smul β c ⟨x, hx⟩).symm`.
+-/
 private theorem pa_ext {N W' : Type} [AddCommGroup N] [Module A N] [AddCommGroup W'] [Module K W'] (s : N →ₗ[A] W)
     (E : Submodule K W) (hE : E = Submodule.span K (Set.range s)) (α β : E →ₗ[K] W')
     (h : ∀ f (F : E), (F : W) = s f → α F = β F) (F : E) : α F = β F := by
@@ -53,6 +67,9 @@ private theorem pa_ext {N W' : Type} [AddCommGroup N] [Module A N] [AddCommGroup
   | add x y hx hy h1 h2 => exact ((map_add α ⟨x, hx⟩ ⟨y, hy⟩).trans (by rw [h1, h2])).trans (map_add β ⟨x, hx⟩ ⟨y, hy⟩).symm
   | smul c x hx h1 => exact ((map_smul α c ⟨x, hx⟩).trans (by rw [h1])).trans (map_smul β c ⟨x, hx⟩).symm
 
+/- English proof (translation)
+The claim follows from `pa_ext s E hE (E.subtype ∘ₗ ρ t) (opC i ∘ₗ E.subtype) (fun f F hF => by change (ρ t F : W) = opC i F rw [h1 t f F hF, hF, hop i f _ (ht f)]) F`.
+-/
 private theorem pa_op (Y : Submodule A M) (op : ι → Module.End A M) (s : Y →ₗ[A] W) (opC : ι → Module.End K W)
     (hop : ∀ i (f g : Y), (g : M) = op i f → s g = opC i (s f))
     (E : Submodule K W) (hE : E = Submodule.span K (Set.range s)) (ρ : Module.End A Y →+* Module.End K E)
@@ -62,6 +79,13 @@ private theorem pa_op (Y : Submodule A M) (op : ι → Module.End A M) (s : Y �
     change (ρ t F : W) = opC i F
     rw [h1 t f F hF, hF, hop i f _ (ht f)]) F
 
+/- English proof (translation)
+Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨i, hi⟩ := hx`. Introduce `F hF`. Rewrite using `[h2 i x hi]`. Conclude with `hZ i _ ⟨hF, F.2⟩`.
+
+Consider the case `algebraMap b => intro F hF`. Rewrite using `[h3]`. Conclude with `Z.smul_mem _ hF`. Consider the case `add x y _ _ hx hy => intro F hF`. Rewrite using `[map_add]`.
+
+Conclude with `Z.add_mem (hx F hF) (hy F hF)`. Consider the case `mul x y _ _ hx hy => intro F hF`. Rewrite using `[map_mul]`. Conclude with `hx _ (hy F hF)`.
+-/
 private theorem pa_stab (Y : Submodule A M) (op : ι → Module.End A M) (opC : ι → Module.End K W)
     (E : Submodule K W) (ρ : Module.End A Y →+* Module.End K E)
     (h2 : ∀ i t, Restr t (op i) → ∀ F : E, (ρ t F : W) = opC i F)
@@ -74,6 +98,11 @@ private theorem pa_stab (Y : Submodule A M) (op : ι → Module.End A M) (opC : 
   | add x y _ _ hx hy => intro F hF; rw [map_add]; exact Z.add_mem (hx F hF) (hy F hF)
   | mul x y _ _ hx hy => intro F hF; rw [map_mul]; exact hx _ (hy F hF)
 
+/- English proof (translation)
+Establish `hc : ∀ s t, Commute (act s) (act t)` using `fun s t => (Commute.all s t).map act`. Take `⟨φ, hφ, h⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.quotOfEig (fun t => act t) hc z v hv he`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, φ ∘ₗ (Z j).subtype ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+
+Use `hφ (LinearMap.ker_eq_top.1 (top_le_iff.1 (hZ ▸ iSup_le fun j F hF => ?_)))` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hn j) ⟨F, hF⟩`. Take `⟨F, hF, h'⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigOfQuot (fun t => (act t).restrict (hst j t)) (fun s t => LinearMap.ext fun F => Subtype.ext (LinearMap.congr_fun (hc s t).eq F)) z _ hj (fun t F => h t F)`. Conclude with `⟨j, F, F.2, fun h0 => hF (Subtype.ext h0), fun t => congrArg Subtype.val (h' t)⟩`.
+-/
 private theorem pa_eig {T E : Type} {J : Type u} [CommRing T] [AddCommGroup E] [Module K E] [FiniteDimensional K E]
     (act : T →+* Module.End K E) (z : T → K) (Z : J → Submodule K E) (hZ : ⨆ j, Z j = ⊤)
     (hst : ∀ j t, ∀ F ∈ Z j, act t F ∈ Z j) (v : E) (hv : v ≠ 0) (he : ∀ t, act t v = z t • v) :
@@ -89,6 +118,13 @@ private theorem pa_eig {T E : Type} {J : Type u} [CommRing T] [AddCommGroup E] [
     (fun s t => LinearMap.ext fun F => Subtype.ext (LinearMap.congr_fun (hc s t).eq F)) z _ hj (fun t F => h t F)
   exact ⟨j, F, F.2, fun h0 => hF (Subtype.ext h0), fun t => congrArg Subtype.val (h' t)⟩
 
+/- English proof (translation)
+Use `choose z hz using h`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hZ`. Establish `inj : ∀ a b : K, a • v = b • v → a = b` using `fun a b h => smul_left_injective K hv0 h`. Use `⟨⟨⟨⟨z, inj _ _ ?_⟩, fun s t => inj _ _ ?_⟩, inj _ _ ?_, fun s t => inj _ _ ?_⟩, hz⟩` and prove the remaining obligations. Rewrite using `[← hz _ v hv]`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `z (s * t) • v = (z s * z t) • v`. Rewrite using `[← hz _ v hv, map_mul, Module.End.mul_apply, hz t v hv, map_smul, hz s v hv, smul_smul, mul_comm]`. Express the relevant statement in the definitionally equal form `z 0 • v = _`. Rewrite using `[← hz _ v hv]`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `z (s + t) • v = (z s + z t) • v`. Rewrite using `[← hz _ v hv, map_add, LinearMap.add_apply, hz t v hv, hz s v hv, add_smul]`.
+-/
 private theorem pa_chr {T E : Type} [CommRing T] [AddCommGroup E] [Module K E]
     (act : T →+* Module.End K E) (Z : Submodule K E) (hZ : Z ≠ ⊥) (h : ∀ t, ∃ μ : K, ∀ F ∈ Z, act t F = μ • F) :
     ∃ z : T →+* K, ∀ t, ∀ F ∈ Z, act t F = z t • F := by
@@ -104,6 +140,37 @@ private theorem pa_chr {T E : Type} [CommRing T] [AddCommGroup E] [Module K E]
   · change z (s + t) • v = (z s + z t) • v
     rw [← hz _ v hv, map_add, LinearMap.add_apply, hz t v hv, hz s v hv, add_smul]
 
+/- English proof (translation)
+Establish `heY : ∀ y : Y0, (e y : M) ∈ Y` using `fun y => (hY _).2 (LinearMap.congr_fun hi.eq y)`. Set `r : Y0 →ₗ[A] Y` to `LinearMap.codRestrict _ (Y0.subtype ∘ₗ e) heY`. Establish `hr : r ∘ₗ Submodule.inclusion hle = LinearMap.id` using `LinearMap.ext fun y => Subtype.ext (congrArg (fun z : Y0 => (z : M)) ((hY (Submodule.inclusion hle y)).1 y.2))`. Establish `hs' : Function.Injective ((s ∘ₗ Submodule.inclusion hle).liftBaseChange K)`. Establish `h1 : (s ∘ₗ Submodule.inclusion hle).liftBaseChange K = s.liftBaseChange K ∘ₗ (Submodule.inclusion hle).baseChange K`.
+
+Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[h1, LinearMap.coe_comp]`. Use `hs.comp (Function.LeftInverse.injective (g := r.baseChange K) fun v => ?_)` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hr, LinearMap.baseChange_id, LinearMap.id_apply]`.
+
+Take `⟨ρ0, -, -, a1, a3⟩` from `pa_rho s hs O hO`. Take `⟨ρ, Ψ, b0, b1, b3⟩` from `pa_rho _ hs' E hE`. Establish `a2` using `pa_op Y0 op s opC hop O hO ρ0 a1`. Establish `b2` using `pa_op Y op (s ∘ₗ Submodule.inclusion hle) opC (fun i f g h => hop i _ _ h) E hE ρ b1`. Establish `hEO : E ≤ O`.
+
+Rewrite using `[hE, hO]; exact Submodule.span_mono (by rintro _ ⟨f, rfl⟩; exact ⟨_, rfl⟩)`. Establish `hfix : ∀ F : E, (ρ0 e ⟨F, hEO F.2⟩ : W) = F` using `pa_ext _ E hE (O.subtype ∘ₗ ρ0 e ∘ₗ Submodule.inclusion hEO) E.subtype fun f F hF => by`. Express the relevant statement in the definitionally equal form `(ρ0 e ⟨F, hEO F.2⟩ : W) = F`. Rewrite using `[a1 e (Submodule.inclusion hle f) _ hF, hF, (hY (Submodule.inclusion hle f)).1 f.2]`. Both sides reduce to the same expression.
+
+Establish `hin : ∀ F : O, (ρ0 e F : W) ∈ E` using `fun F => (Submodule.Quotient.mk_eq_zero E).1 (pa_ext s O hO (E.mkQ ∘ₗ O.subtype ∘ₗ ρ0 e) 0 (fun f F hF => by`. Express the relevant statement in the definitionally equal form `E.mkQ (ρ0 e F : W) = 0`. Rewrite using `[a1 e f _ hF, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hE]`. Conclude with `Submodule.subset_span ⟨r f, rfl⟩) F)`. Establish `hsum : E = ⨆ j, Z j ⊓ E`.
+
+Use `le_antisymm (fun F hF => ?_) (iSup_le fun j => inf_le_right)` and prove the remaining obligations. Establish `key : ∀ G ∈ ⨆ j, Z j ⊓ O, ∃ h : G ∈ O, (ρ0 e ⟨G, h⟩ : W) ∈ ⨆ j, Z j ⊓ E`. Introduce `G hG`. Proceed by induction on `hG using Submodule.iSup_induction' with`. Consider the case `mem j G hG`.
+
+Conclude with `⟨hG.2, Submodule.mem_iSup_of_mem j ⟨pa_stab Y0 op opC O ρ0 a2 a3 (Z j) (fun i F hF => hZ j i F hF.1) e he _ hG.1, hin _⟩⟩`. Consider the case `zero => exact ⟨zero_mem _, by rw [show (⟨0, zero_mem _⟩ : O) = 0 from rfl, map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨hx, hx'⟩` from `hx`. Take `⟨hy, hy'⟩` from `hy`.
+
+Conclude with `⟨add_mem hx hy, by`. Rewrite using `[show (⟨x + y, add_mem hx hy⟩ : O) = ⟨x, hx⟩ + ⟨y, hy⟩ from rfl, map_add]`. Conclude with `add_mem hx' hy'⟩`. Take `⟨h, h'⟩` from `key F (hOZ ▸ hEO hF)`. Rewrite `h'` using `[show (ρ0 e ⟨F, h⟩ : W) = F from hfix ⟨F, hF⟩]`. Then use the resulting hypothesis.
+
+Set `act : heckeAlg Y op →+* Module.End K E` to `ρ.comp (heckeAlg Y op).val.toRingHom`. Establish `c2 : ∀ i (F : E), (act (heckeGen Y op i) F : W) = opC i F` using `fun i F => b2 i _ (fun _ => rfl) F`. Use `⟨hsum, act, fun t f F hF => b1 t f F hF, c2, b3, fun z hz => ?_, fun Z' h0 hsc => ?_⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional K E := Module.Finite.equiv Ψ`. Take `⟨v, hv, hv'⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.pointEig (M := Y) ({ z with commutes' := fun b => RingHom.congr_fun hz b } : heckeAlg Y op →ₐ[A] K)`.
+
+Establish `htop : ⨆ j, (Z j).comap E.subtype = ⊤`. Apply `Submodule.map_injective_of_injective E.subtype_injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_iSup, Submodule.map_subtype_top]`. Repeatedly rewrite using `[Submodule.map_comap_subtype, inf_comm E]`. Conclude with `hsum.symm`.
+
+Take `⟨j, F, hF, hF0, hF'⟩` from `pa_eig act z (fun j => (Z j).comap E.subtype) htop (fun j t F hF => pa_stab Y op opC E ρ b2 b3 (Z j) (fun i F hF => hZ j i F hF.1) t t.2 F hF) (Ψ v) (fun h => hv (Ψ.map_eq_zero_iff.1 h)) (fun t => (b0 t v).trans (by rw [← map_smul]; exact congrArg Ψ (hv' t)))`. Conclude with `⟨j, F, fun h => hF0 (Subtype.ext h), ⟨hF, F.2⟩, fun i => by rw [← c2, hF']; rfl⟩`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h0`. Take `⟨z, hz⟩` from `pa_chr act (Z'.comap E.subtype) ((Submodule.ne_bot_iff _).2 ⟨⟨v, hv.2⟩, hv.1, fun h => hv0 (congrArg Subtype.val h)⟩) (by`. Introduce and unpack `⟨t, ht⟩`.
+
+Express the relevant statement in the definitionally equal form `∃ μ : K, ∀ F ∈ Z'.comap E.subtype, ρ t F = μ • F`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, hi⟩` from `hx`. Take `⟨μ, hμ⟩` from `hsc i`.
+
+Conclude with `⟨μ, fun F hF => Subtype.ext ((b2 i x hi F).trans (hμ F ⟨hF, F.2⟩))⟩`. Consider the case `algebraMap b => exact ⟨_, fun F _ => b3 b F⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨μ, hμ⟩` from `hx`. Take `⟨ν, hν⟩` from `hy`.
+
+Conclude with `⟨μ + ν, fun F hF => by rw [map_add, LinearMap.add_apply, hμ F hF, hν F hF, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨μ, hμ⟩` from `hx`. Take `⟨ν, hν⟩` from `hy`. Conclude with `⟨ν * μ, fun F hF => by rw [map_mul, Module.End.mul_apply, hν F hF, map_smul, hμ F hF, smul_smul]⟩)`.
+
+Use `⟨z, RingHom.ext fun b => ?_, fun t F hF => hz t F hF⟩` and prove the remaining obligations. Use `smul_left_injective K (m := (⟨v, hv.2⟩ : E)) (fun h => hv0 (congrArg Subtype.val h)) ?_` and prove the remaining obligations. Conclude with `(hz _ ⟨v, hv.2⟩ hv.1).symm.trans (b3 b _)`.
+-/
 private theorem pa_inst {J : Type u} (Y0 Y : Submodule A M) [Module.Finite A Y] (hle : Y ≤ Y0) (op : ι → Module.End A M)
     [hc : Fact (CommOn Y op)] (e : Module.End A Y0) (he : e ∈ heckeAlg Y0 op)
     (hi : IsIdempotentElem e) (hY : ∀ y : Y0, (y : M) ∈ Y ↔ e y = y)
@@ -206,6 +273,15 @@ private theorem pa_inst {J : Type u} (Y0 Y : Submodule A M) [Module.Finite A Y] 
 end Abs
 
 universe u in
+/- English proof (translation)
+Use `letI : Algebra A K := χ.toAlgebra`. Use `letI : Module A W := Module.compHom W χ`. Use `haveI : IsScalarTower A K W := ⟨fun a k w => mul_smul (χ a) k w⟩`. Set `s : Y0 →ₗ[A] W` to `{ toFun := fun f => sp f map_add' := fun f g => hadd _ f.2 _ g.2 map_smul' := fun b f => hsmul _ f.2 b }`. Use `⟨hE ▸ hO ▸ Submodule.span_mono (Set.image_mono hle), pa_inst Y0 Y hle op e he hi hY s ?_ opC (fun i f g h => ?_) O E ?_ ?_ Z hZ hOZ⟩` and prove the remaining obligations.
+
+Set `b` to `Module.Free.chooseBasis A Y0`. Establish `h1 : s.liftBaseChange K = Finsupp.linearCombination K (fun i => sp (b i)) ∘ₗ (b.baseChange K).repr.toLinearMap` using `(b.baseChange K).ext fun i => by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.repr_self, Finsupp.linearCombination_single, Module.Basis.baseChange_apply, LinearMap.liftBaseChange_tmul]`. Both sides reduce to the same expression. Rewrite using `[h1, LinearMap.coe_comp]`.
+
+Conclude with `Function.Injective.comp (hind _ b) (b.baseChange K).repr.injective`. Express the relevant statement in the definitionally equal form `sp g = opC i (sp f)`. Rewrite using `[h, hop i _ f.2]`. Rewrite using `[← hO, Set.image_eq_range]`. Both sides reduce to the same expression.
+
+Rewrite using `[hE, Set.image_eq_range]`. Both sides reduce to the same expression.
+-/
 private theorem pa_main {A K M W ι : Type} [CommRing A] [Field K] [AddCommGroup M] [Module A M]
     [AddCommGroup W] [Module K W] {J : Type u} (Y0 Y : Submodule A M) [Module.Free A Y0] [Module.Finite A Y] (hle : Y ≤ Y0)
     (op : ι → Module.End A M)
@@ -247,6 +323,9 @@ private theorem pa_main {A K M W ι : Type} [CommRing A] [Field K] [AddCommGroup
   · rw [← hO, Set.image_eq_range]; rfl
   · rw [hE, Set.image_eq_range]; rfl
 
+/- English proof (translation)
+Establish `hz' : ∀ b, ι.symm (z (algebraMap A T b)) = x b` using `fun b => ι.symm_apply_eq.2 (RingHom.congr_fun hz b)`. Use `⟨{ ι.symm.toRingHom.comp z with commutes' := fun b => ?_ }, RingHom.ext hz', fun t => ι.apply_symm_apply _⟩` and prove the remaining obligations. Conclude with `(congrArg (fun t => ι.symm (z t)) (IsScalarTower.algebraMap_apply O A T b)).trans ((hz' _).trans (x.commutes b))`.
+-/
 private theorem pa_pt {O A T K K' : Type} [CommRing O] [CommRing A] [CommRing T] [Field K] [Field K'] [Algebra O A]
     [Algebra O T] [Algebra A T] [IsScalarTower O A T] [Algebra O K] (ι : K ≃+* K') (x : A →ₐ[O] K) (z : T →+* K')
     (hz : z.comp (algebraMap A T) = ι.toRingHom.comp x.toRingHom) :
@@ -256,6 +335,11 @@ private theorem pa_pt {O A T K K' : Type} [CommRing O] [CommRing A] [CommRing T]
   exact (congrArg (fun t => ι.symm (z t)) (IsScalarTower.algebraMap_apply O A T b)).trans ((hz' _).trans (x.commutes b))
 
 universe u in
+/- English proof (translation)
+Take `⟨hEO, hsum, act, h1, h2, h3, h4, h5⟩` from `pa_main Y0 Y hle op e he hi hY (φ.toRingHom.comp x.toRingHom) sp hadd hsmul hind opC hop O E hO hE Z hZ hOZ`. Use `⟨hEO, hsum, act, h1, h2, h3, fun y hy => ?_, fun Z' hne hsc => ?_⟩` and prove the remaining obligations. Take `⟨j, F, hF0, hF, h⟩` from `h4 (φ.toRingHom.comp y.toRingHom) (by rw [RingHom.comp_assoc, hy])`. Conclude with `⟨j, F, hF0, ⟨hF.1, hEO hF.2⟩, h⟩`. Take `⟨z, hz, h⟩` from `h5 Z' hne fun i => (hsc i).imp fun μ hμ F hF => hμ F ⟨hF.1, hEO hF.2⟩`.
+
+Take `⟨y, hy, hy'⟩` from `pa_pt φ x z hz`. Conclude with `⟨y, hy, fun t F hF => by rw [hy', h t F hF]⟩`.
+-/
 private theorem pa_fin {R A K K' M W ι : Type} [CommRing R] [CommRing A] [Algebra R A] [Field K] [Field K'] [Algebra R K']
     [AddCommGroup M] [Module A M] [Module R M] [IsScalarTower R A M]
     [AddCommGroup W] [Module K W] {J : Type u} (Y0 Y : Submodule A M) [Module.Free A Y0] [Module.Finite A Y] (hle : Y ≤ Y0)
@@ -285,6 +369,11 @@ private theorem pa_fin {R A K K' M W ι : Type} [CommRing R] [CommRing A] [Algeb
     obtain ⟨y, hy, hy'⟩ := pa_pt φ x z hz
     exact ⟨y, hy, fun t F hF => by rw [hy', h t F hF]⟩
 
+/- English proof (translation)
+Introduce `F hF`. Use `(iSup_le (a := Y.comap (ρ g)) ?_) (h hF)` and prove the remaining obligations. Introduce and unpack `f _ ⟨v, rfl⟩`. Express the relevant statement in the definitionally equal form `ρ g (f.1 v) ∈ Y`. Rewrite using `[← f.2.1]`.
+
+Conclude with `f.2.2 ⟨_, rfl⟩`.
+-/
 private theorem pa_iso {H M : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [AddCommGroup M] [Module ℂ M]
     {ρ : Representation ℂ H M} {Y : Submodule ℂ M} {σ : SmIrr H} (h : IsoSum ρ Y σ) (g : H) : ∀ F ∈ Y, ρ g F ∈ Y := by
   intro F hF
@@ -294,6 +383,9 @@ private theorem pa_iso {H M : Type} [Group H] [TopologicalSpace H] [IsTopologica
   rw [← f.2.1]
   exact f.2.2 ⟨_, rfl⟩
 
+/- English proof (translation)
+Set `S : Subgroup (∀ v, G v)` to `{ carrier := {g | (∀ F ∈ Y, ρ g F ∈ Y) ∧ ∀ F ∈ Y, ρ g⁻¹ F ∈ Y} mul_mem' := fun {a b} ha hb => ⟨fun F hF => by rw [map_mul]; exact ha.1 _ (hb.1 F hF), fun F hF => by rw [mul_inv_rev, map_mul]; exact hb.2 _ (ha.2 F hF)⟩ one_mem' := ⟨fun F hF => by rw [map_one]; exact hF, fun F hF = …`. Conclude with `(Subgroup.pi_mem_of_mulSingle_mem (H := S) g fun v => ⟨h v _, by rw [← Pi.mulSingle_inv]; exact h v _⟩).1`.
+-/
 private theorem pa_pi {V M : Type} [Finite V] [DecidableEq V] {G : V → Type} [∀ v, Group (G v)] [AddCommGroup M] [Module ℂ M]
     (ρ : Representation ℂ (∀ v, G v) M) (Y : Submodule ℂ M) (h : ∀ v g, ∀ F ∈ Y, ρ (Pi.mulSingle v g) F ∈ Y)
     (g : ∀ v, G v) : ∀ F ∈ Y, ρ g F ∈ Y := by
@@ -306,6 +398,11 @@ private theorem pa_pi {V M : Type} [Finite V] [DecidableEq V] {G : V → Type} [
   exact (Subgroup.pi_mem_of_mulSingle_mem (H := S) g fun v =>
     ⟨h v _, by rw [← Pi.mulSingle_inv]; exact h v _⟩).1
 
+/- English proof (translation)
+Establish `h1 : ∀ g : GV n H.Sl, ∀ F ∈ Y.Y, H.X.rpF ℂ d H.m g F ∈ Y.Y`. Conclude with `pa_pi _ _ fun v g => pa_iso (Y.isoL v) g`. Introduce `F hF`. Break down `i with x | x` into its components or cases. Express the relevant statement in the definitionally equal form `sphOp (H.atW ι d x.1.1) (x.2 + 1) F ∈ _`.
+
+Rewrite using `[Y.sph x.1 _ F hF]`. Conclude with `Y.Y.smul_mem _ hF`. Use `Y.Y.smul_mem _ ?_` and prove the remaining obligations. Conclude with `finsum_induction (p := fun φ : Module.End ℂ (Fin H.m → H.X.Fn ℂ d) => φ F ∈ Y.Y) (zero_mem _) (fun _ _ => add_mem) fun q => h1 _ F hF`.
+-/
 private theorem pa_part {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {d : ℕ}
     (ξ : GV n H.Sl →* GL (Fin d) ℂ) (Y : H.Part ι lam ξ) (i : H.Op) : ∀ F ∈ Y.Y, H.opC ι lam d i F ∈ Y.Y := by
@@ -322,6 +419,15 @@ private theorem pa_part {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Alge
       (fun _ _ => add_mem) fun q => h1 _ F hF
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hN L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K _ E hE`. Use `haveI : Finite (ResidueField c.O) := by haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1 haveI : Finite (ResidueField ℤ_[l]) := IsCNL.finite`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨h0, hfin, hfree, hK⟩` from `hiComm L Ω l n c H hH A θ hθ K`.
+
+Use `haveI := (hK a).2.1`. Take `⟨e, he, hi, hY, -⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locIdem A _ _ _ (H.op A) (fun i => algebraMap c.O A (a i)) h0`. Take `⟨hEO, hsum, act, h1, h2, h3, h4, h5⟩` from `pa_fin (H.X.Ord (H.τA A) θ (H.lev K)) (H.MK θ a K) inf_le_left (H.op A) e he hi hY ι x sp (hsp.add K) (hsp.smul K) (hsp.indep K) (H.opC ι lam d) (hsp.op K) _ E (hsp.span K c0 le_rfl) hE (fun Y : {Y : H.Part ι lam ξ // P lam Y.r} => Y.1.Y) (fun Y => pa_part H ι lam ξ Y.1) (clParts …`. Use `⟨Or.inl hsum, act, h1, h2, h3, fun y hy => ?_, fun hg Y hne => ?_⟩` and prove the remaining obligations. Take `⟨Y, F, hF0, hF, h⟩` from `h4 y hy`.
+
+Conclude with `⟨Y.1, F, c0, Y.2, le_rfl, hF0, hF, h⟩`. Take `⟨ω, -, -, -, hω⟩` from `goodScalB hN L Ω l n c H hH A θ hθ ι x lam d ξ c0 sp hsp hg Y K c0 le_rfl (fun h => hne (le_bot_iff.1 ((inf_le_inf_left _ hEO).trans h.le)))`. Use `h5 Y.Y hne ?_` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `⟨_, fun F hF => Y.sph i.1 _ F hF.1⟩`.
+
+Conclude with `⟨_, (hω i.1 i.2).2⟩`.
+-/
 theorem UpperTheory.V.Hi.partAct0 :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

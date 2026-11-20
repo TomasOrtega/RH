@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hψ`. Consider the case `cons γ l ih => exact hD γ (hl γ (by simp)) _ (ih fun δ hδ => hl δ (by simp [hδ]))`.
+-/
 theorem foldr_mem (A : Submodule ℂ (GAd σ J → ℂ)) (hD : ∀ β, IsRealLine σ J β → ∀ ψ ∈ A, lineDer β ψ ∈ A)
     {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine σ J γ) {ψ : GAd σ J → ℂ} (hψ : ψ ∈ A) :
     l.foldr lineDer ψ ∈ A := by
@@ -25,6 +28,9 @@ theorem foldr_mem (A : Submodule ℂ (GAd σ J → ℂ)) (hD : ∀ β, IsRealLin
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : dop z ψ = ∑ l ∈ z.support, z l • l.foldr lineDer ψ`. Use function extensionality and compare the values at `g`. Simplify using `[dop, Finsupp.sum, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `A.sum_mem fun l hl => A.smul_mem _ (foldr_mem A hD (hz l hl) hψ)`.
+-/
 theorem dop_mem (A : Submodule ℂ (GAd σ J → ℂ)) (hD : ∀ β, IsRealLine σ J β → ∀ ψ ∈ A, lineDer β ψ ∈ A)
     {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : ∀ l ∈ z.support, ∀ γ ∈ l, IsRealLine σ J γ) {ψ : GAd σ J → ℂ} (hψ : ψ ∈ A) :
     dop z ψ ∈ A := by
@@ -34,6 +40,11 @@ theorem dop_mem (A : Submodule ℂ (GAd σ J → ℂ)) (hD : ∀ β, IsRealLine 
   rw [e]
   exact A.sum_mem fun l hl => A.smul_mem _ (foldr_mem A hD (hz l hl) hψ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `e : (fun t => dop z ψ (g * β t)) = fun t => dop z (fun x => ψ (x * β t)) g`. Use function extensionality and compare the values at `fun t => (hz.2 ψ hψ (β t) (GlobalTheory.T.real_line_mem_inf_points F E σ n J β hβ t) g).symm`. Establish `hd : HasDerivAt (fun t => dop z (fun x => ψ (x * β t)) g) (dop z (lineDer β ψ) g) 0`. Simplify using `only [dop, Finsupp.sum]`.
+
+Conclude with `HasDerivAt.fun_sum fun l hl => (GlobalTheory.T.line_derivative_comm_translate F E σ n J ψ hψ l (hz.1 l hl) β hβ g).const_mul (z l)`. Use `show deriv (fun t => dop z ψ (g * β t)) 0 = _`. Rewrite using `[e]`. Conclude with `hd.deriv`.
+-/
 theorem dop_lineDer {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : IsCentral σ J z) {ψ : GAd σ J → ℂ} (hψ : IsSm σ J ψ)
     {β : ℝ → GAd σ J} (hβ : IsRealLine σ J β) : lineDer β (dop z ψ) = dop z (lineDer β ψ) := by
   funext g
@@ -67,6 +78,15 @@ def cenOp (A : Submodule ℂ (GAd σ J → ℂ)) (hS : ∀ ψ ∈ A, IsSm σ J �
   map_add' x y := Subtype.ext (dop_add hz.1 (hS x x.2) (hS y y.2))
   map_smul' a x := Subtype.ext (dop_smul z a x)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J A K hK hS hD hT hr ⟨L, hL⟩ ψ₀ h₀`. Set `S : Set (Module.End ℂ A)` to `{s | (∃ β, ∃ hβ : IsRealLine σ J β, s = derOp A hS hD β hβ) ∨ ∃ k, ∃ hk : k ∈ K, s = trOp A k (hT k hk)}`. Establish `hL' : ∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ A), StrictMono N → (∀ i, ∀ s ∈ S, ∀ x ∈ N i, s x ∈ N i) → m ≤ L`. Use `⟨L, fun m N hN hst => hL m (fun i => (N i).map A.subtype) (fun i j hij => lt_of_le_of_ne (Submodule.map_mono (hN hij).le) (fun e => (hN hij).ne (Submodule.map_injective_of_injective A.injective_subtype e))) (fun i => Submodule.map_subtype_le _ _) ?_ ?_⟩` and prove the remaining obligations. Introduce `i β hβ ψ hψ`.
+
+Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hψ`. Conclude with `Submodule.mem_map.2 ⟨derOp A hS hD β hβ x, hst i _ (Or.inl ⟨β, hβ, rfl⟩) x hx, rfl⟩`. Introduce `i k hk ψ hψ`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hψ`. Conclude with `Submodule.mem_map.2 ⟨trOp A k (hT k hk) x, hst i _ (Or.inr ⟨k, hk, rfl⟩) x hx, rfl⟩`.
+
+Establish `hcomm : ∀ z (hz : IsCentral σ J z), ∀ s ∈ S, s * cenOp A hS hD z hz = cenOp A hS hD z hz * s`. Apply the tactic sequence `rintro z hz s (⟨β, hβ, rfl⟩ | ⟨k, hk, rfl⟩) <;> refine LinearMap.ext fun x => Subtype.ext ?_`. Conclude with `dop_lineDer hz (hS x x.2) hβ`. Conclude with `funext fun g => (hz.2 x (hS x x.2) k (hK k hk) g).symm`. Use `haveI := GlobalTheory.FiniteLengthCommutant.finiteDimensional_span_commutant A S hr hL' ⟨ψ₀, h₀⟩`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {w : A | ∃ T : Module.End ℂ A, (∀ s ∈ S, s * T = T * s) ∧ T ⟨ψ₀, h₀⟩ = w}).map A.subtype) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `Submodule.mem_map.2 ⟨cenOp A hS hD z hz ⟨ψ₀, h₀⟩, Submodule.subset_span ⟨_, hcomm z hz, rfl⟩, rfl⟩`.
+-/
 theorem finiteDimensional_span_dop : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (A : Submodule ℂ (GAd σ J → ℂ)) (K : Set (GAd σ J)), (∀ k ∈ K, k ∈ infPts σ J) →
     (∀ ψ ∈ A, IsSm σ J ψ) → (∀ β, IsRealLine σ J β → ∀ ψ ∈ A, lineDer β ψ ∈ A) →

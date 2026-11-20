@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.RowType
 
+/- English proof (translation)
+Introduce `hPr D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hiso uE huE σ`. Use `GlobalTheory.T.basis_row_rows_mem_eigensystem_type_part hPr D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hL hiso σ ?_` and prove the remaining obligations. Establish `h` using `Y.tied.sharp.ft σ`. Rewrite `h` using `[Y.prtE]`. Take `⟨z, hz, hz'⟩` from `h`.
+
+Establish `e : z = R.HE.e (uE (D.what₂.onb σ))`. Apply `(PiTensorProduct.lift : Mult.MMap (R.MY 0) ≃ₗ[ℂ] _).injective` to reduce the goal to its premises. Conclude with `hz'.trans (huE _)`. Rewrite using `[Submodule.mem_comap, ← e]`. Conclude with `hz`.
+-/
 theorem row_mem_part : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → ∀ (hL : Lam3 Z), (∀ σ (i : Fin D.R.m), D.what₂.isot ((i : ℕ) + 1) (D.what₂.ft σ) ≠ ⊥) → ∀ (uE : D.what₂.EE →ₗ[ℂ] R.HE.H), (∀ y, (Y.Ish.jE y).1 = PiTensorProduct.lift (R.HE.e (uE y))) → ∀ σ, uE (D.what₂.onb σ) ∈ R.EEp3 (Classical.choose hL (D.what₂.ft σ)) := by
   intro hPr D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hiso uE huE σ
   refine GlobalTheory.T.basis_row_rows_mem_eigensystem_type_part hPr D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hL hiso σ ?_
@@ -27,6 +32,13 @@ theorem row_mem_part : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalThe
   rw [Submodule.mem_comap, ← e]
   exact hz
 
+/- English proof (translation)
+Introduce `hPr D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hiso uE huE σ`. Use `⟨Classical.choose hL (D.what₂.ft σ), row_mem_part hPr D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hL hiso uE huE σ, ?_⟩` and prove the remaining obligations. Establish `h2` using `(Classical.choose_spec hL).2.1`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`.
+
+Establish `hj' : j - 1 < D.R.m` using `by omega`. Establish `e` using `h2 ⟨j - 1, hj'⟩ A3.A.μ0 (D.what₂.ft σ) (Or.inl Y.tup0) (hiso σ ⟨j - 1, hj'⟩)`. Simplify using `only [Fin.val_mk, Nat.sub_add_cancel hj1, Y.tup0] at e`. Unfold `RealDat3.lamN`. Rewrite using `[dif_pos hj', e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem row_type : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → Lam3 Z → (∀ σ (i : Fin D.R.m), D.what₂.isot ((i : ℕ) + 1) (D.what₂.ft σ) ≠ ⊥) → ∀ (uE : D.what₂.EE →ₗ[ℂ] R.HE.H), (∀ y, (Y.Ish.jE y).1 = PiTensorProduct.lift (R.HE.e (uE y))) → ∀ σ, ∃ p, uE (D.what₂.onb σ) ∈ R.EEp3 p ∧ ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.μ0 j p = ∏ j ∈ Finset.Icc 1 D.R.m, D.what₂.lamP D.what₂.mu0 j (D.what₂.ft σ) := by
   intro hPr D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hL hiso uE huE σ
   refine ⟨Classical.choose hL (D.what₂.ft σ), row_mem_part hPr D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hL hiso uE huE σ, ?_⟩

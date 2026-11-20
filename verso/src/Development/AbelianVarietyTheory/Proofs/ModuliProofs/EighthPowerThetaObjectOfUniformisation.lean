@@ -23,6 +23,9 @@ namespace GlobalTheory
 
 namespace SharpObj
 
+/- English proof (translation)
+Simplify using `only [omegaStd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omegaStd_sum_smul {h : ℕ} {I : Type} [Fintype I] (x : Fin h ⊕ Fin h → ℤ) (c : I → ℤ)
     (y : I → Fin h ⊕ Fin h → ℤ) : omegaStd x (∑ v, c v • y v) = ∑ v, c v * omegaStd x (y v) := by
   simp only [omegaStd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
@@ -30,15 +33,28 @@ theorem omegaStd_sum_smul {h : ℕ} {I : Type} [Fintype I] (x : Fin h ⊕ Fin h 
   refine Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [omegaStd_sum_smul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem form_act {h : ℕ} (G A : Matrix (Fin 8) (Fin 8) ℤ) (x : Fin 8 → Fin h ⊕ Fin h → ℤ) :
     ∑ u, ∑ v, G u v * omegaStd (x u) (∑ v', A v v' • x v') = ∑ u, ∑ v, (G * A) u v * omegaStd (x u) (x v) := by
   refine Finset.sum_congr rfl fun u _ => ?_
   simp only [omegaStd_sum_smul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[_root_.mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+-/
 theorem exp_pi_I_int (n : ℤ) : Complex.exp (Real.pi * Complex.I * (n : ℂ)) = (-1) ^ n := by
   rw [_root_.mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (form_ext s hs (fun z w => hermForm Hm z w - ∑ i, ∑ j, (G i j : ℂ) * hermForm H₀ (R i z) (R j w)) ?_ ?_ ?_ ?_ ?_ z w)` and prove the remaining obligations. Introduce `z z' w`. Simplify using `only [hermForm, map_add, add_dotProduct, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z w w'`.
+
+Simplify using `only [hermForm, map_add, star_add, Matrix.mulVec_add, dotProduct_add, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c z w`. Simplify using `only [hermForm, map_smul, smul_dotProduct, smul_eq_mul, mul_sub, Finset.mul_sum, mul_left_comm c]`. Introduce `c z w`.
+
+Simplify using `only [hermForm, map_smul, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, mul_sub, Finset.mul_sum, Complex.star_def, Complex.conj_ofReal, mul_left_comm (c : ℂ)]`. Introduce `z hz w hw`. Simplify using `[h0 z hz w hw, Complex.im_sum]`.
+-/
 theorem hermForm_eq_sum {g h : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (H₀ : Matrix (Fin h) (Fin h) ℂ)
     (G : Matrix (Fin 8) (Fin 8) ℤ) (R : Fin 8 → ((Fin g → ℂ) →ₗ[ℂ] (Fin h → ℂ))) (s : Set (Fin g → ℂ))
     (hs : Submodule.span ℝ s = ⊤)
@@ -64,6 +80,35 @@ end SharpObj
 
 open SharpObj in
 
+/- English proof (translation)
+Introduce `laws laws2 hc hT o _ g k J b em w w' h W a bas σ EF _ _ hw _ hEF t τ m Q Hm ⟨hs, hp⟩ hm hQ ⟨_, _, Qspan, _, _, hQim⟩ ⟨u, χ', hAH, hΛ, hχ, hpt, hact⟩`. Take `⟨Ef₀, hEf₀, hbij⟩` from `exists_form hs hp`. Take `⟨P₀, u₀, χ₀, hg, hΛ₀, hAH₀, -, -⟩` from `principalTorus_algebraic h _ (imInv τ) Ef₀ (per_lattice hs hp).2.1 (per_lattice hs hp).2.2 (imInv_isHermitian hp) (imInv_pos hp) hEf₀ hbij`. Substitute `hg` using the available equality. Set `R : Fin 8 → (Fin g → ℂ) →ₗ[ℂ] (Fin P₀.g → ℂ)` to `fun i => LinearMap.funLeft ℂ ℂ fun j => σ (i, j)`.
+
+Establish `hRQ : ∀ i x, R i (Q x) = per τ (x i)` using `fun i x => funext fun j => hQ x i j`. Establish `hmem : ∀ x, per τ x ∈ u₀.Λ` using `fun x => hΛ₀ ▸ ⟨x, rfl⟩`. Establish `hΛ' : ∀ z, z ∈ u.Λ ↔ ∀ i, (fun j => z (σ (i, j))) ∈ u₀.Λ` using `fun z => by`. Rewrite using `[hΛ, hΛ₀]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩ i`. Conclude with `⟨x i, (hRQ i x).symm⟩`. Introduce `H choose x hx using H`. Use `⟨x, funext fun c => ?_⟩` and prove the remaining obligations. Take `⟨⟨i, j⟩, rfl⟩` from `σ.surjective c`.
+
+Conclude with `(hQ x i j).trans (congrFun (hx i) j)`. Take `⟨pr, hpr, hpru, hprod⟩` from `exists_proj laws laws2 hc hT t.pol P₀ u u₀ σ hΛ'`. Express the relevant statement in the definitionally equal form `Fin 8 → (t.A ⟶ P₀.A) at pr`. Express the relevant statement in the definitionally equal form `∀ i, IsMonHom (pr i : t.A ⟶ P₀.A) at hpr`. Express the relevant statement in the definitionally equal form `∀ (T : Over (Sp ℂ)) (y : Fin 8 → (T ⟶ P₀.A)), ∃! x : T ⟶ t.A, ∀ i, x ≫ pr i = y i at hprod`.
+
+Express the relevant statement in the definitionally equal form `∀ i z, u₀.ex (R i z) = u.ex z ≫ pr i at hpru`. Establish `hk : (k : ℂ) ≠ 0` using `by simpa using (b.unit.map em).ne_zero`. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero fun e => hk (by simp [e])`. Take `⟨Ef, hEf, -, -, -, -, -, -, hWeil⟩` from `GlobalTheory.T.appellHumbert_uniformisation_riemannForm laws laws2 hc hT P₀ u₀ _ χ₀ hAH₀`. Take `⟨c, φ, hφ, hcP, ⟨wP, hwP⟩, hlev⟩` from `GlobalTheory.T.exists_siegPre_iso_of_polAV laws hc o ℂ em P₀.g k b.ζ (Units.map (em : o →* ℂ) b.ζ) P₀ (fun x => u₀.ex ((k : ℂ)⁻¹ • per τ (m x))) rfl hk rfl (IsPrimitiveRoot.coe_units_iff.1 (b.prim ℂ em)) (fun x y => by rw [map_add, map_add, smul_add, u₀.ex_add]) (fun x => by`.
+
+Rewrite using `[← ex_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hk, one_smul, u₀.ker]`. Conclude with `hmem _)`. Use the proof step `(fun x y => hWeil k ⟨_, hmem (m x)⟩ ⟨_, hmem (m y)⟩ _ hk0 (by`. Establish `e : Ef ⟨_, hmem (m x)⟩ ⟨_, hmem (m y)⟩ = omegaStd (m x) (m y)`. Use `hEf ⟨_, hmem (m x)⟩ ⟨_, hmem (m y)⟩` as an intermediate fact.
+
+Rewrite `this` using `[im_hermForm_per hs hp]`. Conclude with `this` after adjusting the coercions. Rewrite using `[e, hm]`. Use the proof step `simp))`. Establish `hform : ∀ z z', hermForm Hm z z' = ∑ i, ∑ j, ((W + W.transpose) i j : ℂ) * hermForm (imInv τ) (R i z) (R j z')` using `hermForm_eq_sum Hm (imInv τ) (W + W.transpose) R _ Qspan (by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Simplify using `only [hQim, hEF, hRQ, im_hermForm_per hs hp, Int.cast_sum, Int.cast_mul])`. Establish `hchi : ∀ l : u.Λ, χ' l = Complex.exp (Real.pi * Complex.I * ∑ i, ∑ j, (W i j : ℂ) * ((hermForm (imInv τ) (R i l) (R j l)).im : ℂ))` using `fun l => by`. Take `⟨x, hx⟩` from `(hΛ l).1 l.2`. Rewrite using `[hχ x l hx.symm, hEF, form_act, hw, ← exp_pi_I_int, ← hx]`.
+
+Simplify using `[hRQ, im_hermForm_per hs hp]`. Establish `hL` using `GlobalTheory.T.lbIso_linComb_lam_of_appellHumbert_alt laws laws2 hc hT W t.pol u Hm χ' P₀ u₀ _ χ₀ pr R hAH hAH₀ hpru hform hchi`. Use `letI := P₀.isAb.comm`. Use `haveI := hpr`. Use `⟨c, hcP, fun i => pr i ≫ φ.inv, fun i => inferInstanceAs (IsMonHom (pr i ≫ φ.inv)), fun T y => ?_, ?_, fun j i => ?_, fun i v => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [← Category.assoc, Iso.comp_inv_eq]`. Conclude with `hprod T fun i => y i ≫ φ.hom`. Establish `hLam : (abelian₂ P₀.A P₀.L).IsLB` using `DVR.linComb_isLB _ P₀.isLB _ _`. Use `LBIso.trans t.isLB (DVR.linComb_isLB _ hLam _ _) (DVR.linComb_isLB _ c.isLB _ _) hL (LBIso.symm ?_)` and prove the remaining obligations. Use `iso_linComb ((isGen_iff wP).1 hwP) (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1 ≫ φ.inv) (pr uv.2 ≫ φ.inv)).left) (fun uv => W uv.1 uv.2)` as an intermediate fact.
+
+Simplify using `only [← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id] at this`. Conclude with `this`. Take `⟨F, hF, hFa⟩` from `hact j haveI := t.hom j`. Establish `hRF : ∀ z, R i (F z) = ∑ v, a j i v • R v z` using `fun z => by`. Establish `: ((R i ∘ₗ F).restrictScalars ℝ) = (∑ v, a j i v • R v).restrictScalars ℝ` using `LinearMap.ext_on_range Qspan fun x => by`.
+
+Rewrite using `[LinearMap.restrictScalars_apply, LinearMap.restrictScalars_apply, LinearMap.comp_apply, hF, hRQ, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, hRQ]`. Conclude with `(map_sum (per τ) _ _).trans (Finset.sum_congr rfl fun v _ => map_zsmul (per τ) _ _)`. Simplify using `using LinearMap.congr_fun this z`. Establish `e1 : ∀ z, u₀.ex (R i (F z)) = u.ex z ≫ t.act j ≫ pr i` using `fun z => by`.
+
+Rewrite using `[hpru, hFa, Category.assoc]`. Establish `e2 : ∀ z, u₀.ex (R i (F z)) = u.ex z ≫ ∏ v, pr v ^ a j i v` using `fun z => by`. Rewrite using `[hRF, ex_sum, PowMatrixLinear.comp_prod]`. Simplify using `only [ex_zsmul, hpru, GrpObj.comp_zpow]`. Establish `e : t.act j ≫ pr i = ∏ v, pr v ^ a j i v` using `hom_ext_of_lin laws laws2 hc hT t.pol P₀ u u₀ (R i ∘ₗ F) _ _ e1 e2 (inferInstanceAs (IsMonHom (t.act j ≫ pr i)))`.
+
+Rewrite using `[← Category.assoc, e, PowMatrixLinear.prod_comp]`. Simplify using `only [GrpObj.zpow_comp]`. Conclude with `(List.prod_ofFn).symm`. Rewrite using `[Over.comp_left, hpt, ← Over.comp_left, ← Category.assoc, ← hpru, map_smul, hRQ, ← hlev, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+-/
 theorem sharpClass_of_unif : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (em : o →+* ℂ) (w w' : J) (h : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (a : J → Matrix (Fin 8) (Fin 8) ℤ) (bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] (Fin 8 → (Fin h ⊕ Fin h → ℤ))) (σ : Fin 8 × Fin h ≃ Fin g) (EF : LinearMap.BilinForm ℤ (Fin 8 → (Fin h ⊕ Fin h → ℤ))), IsE8 W → IsSharpBasis W bas → (W + W.transpose) * a w = W → (W + W.transpose) * a w' = W.transpose → (∀ x y, EF x y = ∑ u, ∑ v, (W + W.transpose) u v * omegaStd (x u) (y v)) → ∀ (t : TObj g k J b (spMap em)) (τ : Matrix (Fin h) (Fin h) ℂ) (m : (Fin h ⊕ Fin h → ℤ) →+ (Fin h ⊕ Fin h → ℤ)) (Q : (Fin 8 → (Fin h ⊕ Fin h → ℤ)) →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), ((τ).IsSymm ∧ ((τ).map Complex.im).PosDef) → (∀ x y, Complex.exp (-(2 * Real.pi * Complex.I) * (omegaStd (m x) (m y) : ℂ) / k) = em (b.ζ : o) ^ omegaStd x y) → (∀ x u i, Q x (σ (u, i)) = (τ).mulVec (fun i' => (x u (.inl i') : ℂ)) i + (x u (.inr i) : ℂ)) → (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = EF x y) → (∃ (u : HolUnif t.A t.L g) (χ' : u.Λ → ℂ), u.IsAH Hm χ' ∧ (∀ z, z ∈ u.Λ ↔ z ∈ (Q).range) ∧ (∀ x (l : u.Λ), (l : Fin g → ℂ) = Q x → χ' l = (-1) ^ EF x ((fun j (x : (Fin 8 → (Fin h ⊕ Fin h → ℤ))) u => ∑ v, a j u v • x v) w x)) ∧ (∀ i₀, (t.pt i₀).left = (u.ex (((k : ℕ) : ℂ)⁻¹ • Q ((fun i u => m (bas (Pi.single i 1) u)) i₀))).left) ∧ ∀ j₀, ∃ F : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ x, F (Q x) = Q ((fun j (x : (Fin 8 → (Fin h ⊕ Fin h → ℤ))) u => ∑ v, a j u v • x v) j₀ x)) ∧ ∀ z, u.ex (F z) = u.ex z ≫ t.act j₀) → SharpClass W a bas em t := by
   intro laws laws2 hc hT o _ g k J b em w w' h W a bas σ EF _ _ hw _ hEF t τ m Q Hm ⟨hs, hp⟩ hm hQ
     ⟨_, _, Qspan, _, _, hQim⟩ ⟨u, χ', hAH, hΛ, hχ, hpt, hact⟩

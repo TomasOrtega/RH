@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Introduce `R _ X f h`. Take `⟨N, φ, hφ, e⟩` from `(GlobalTheory.ProjSpace.isProjBy_iff_isProjOver (R := R) f).1 h`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+-/
 theorem isProper_of_isProjBy :
     ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)), IsProjBy f → IsProper f := by
   intro R _ X f h

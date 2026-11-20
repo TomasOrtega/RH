@@ -19,11 +19,17 @@ def pullW (Z : TrueGeo.Model Y) (L : HermLB Z.p) (σ : F →+* ℂ) : Weight Y.s
 
 variable (Z : TrueGeo.Model Y) (L : HermLB Z.p)
 
+/- English proof (translation)
+The claim follows from `(Fintype.sum_unique fun a : PUnit.{1} => ((1 : ℤ) : ℝ) * (L.φ (σ.comp (algebraMap (𝓞 F) F))).φ (i a) (OfModel.ptMap Z σ y)).trans (by simp)`.
+-/
 theorem pullW_φ (σ : F →+* ℂ) (i : (L.B.pull Z.j).ι) (y : Pts Y σ) :
     (pullW Z L σ).φ i y = (L.φ (σ.comp (algebraMap (𝓞 F) F))).φ (i PUnit.unit) (OfModel.ptMap Z σ y) :=
   (Fintype.sum_unique fun a : PUnit.{1} =>
     ((1 : ℤ) : ℝ) * (L.φ (σ.comp (algebraMap (𝓞 F) F))).φ (i a) (OfModel.ptMap Z σ y)).trans (by simp)
 
+/- English proof (translation)
+Introduce `i y y' hy hi`. Rewrite using `[pullW_φ, pullW_φ]`. Use `L.conj (σ'.comp (algebraMap (𝓞 F) F)) (σ.comp (algebraMap (𝓞 F) F)) (i PUnit.unit) (OfModel.ptMap Z σ' y) (OfModel.ptMap Z σ y') ?_ (mem_of_mem_linComb (m := fun _ => OfModel.ptMap Z σ' y) (fun _ => rfl) hi PUnit.unit)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y'.1 ≫ Z.j = spMap (starRingEnd ℂ) ≫ y.1 ≫ Z.j`. Rewrite using `[hy, Category.assoc]`.
+-/
 theorem pullW_isConj (σ σ' : F →+* ℂ) : (pullW Z L σ').IsConj (pullW Z L σ) := by
   intro i y y' hy hi
   rw [pullW_φ, pullW_φ]

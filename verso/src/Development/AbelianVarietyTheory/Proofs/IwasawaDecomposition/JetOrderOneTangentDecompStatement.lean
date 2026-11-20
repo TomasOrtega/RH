@@ -16,6 +16,9 @@ open GlobalTheory Formalism.L2.Pj GlobalTheory.Serre GlobalTheory.RayEv GlobalTh
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JetOneTan.jetOne_tan_span | exact GlobalTheory.JetOneTan.jetOne_tan_span | (intros; apply GlobalTheory.JetOneTan.jetOne_tan_span <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jet_order_one_tangent_decomp : ∀ {S : Type} [CommRing S] {ρ : Type} [Fintype ρ] [DecidableEq ρ],
     (∀ r : ρ, (jetTrunc : Jet S ρ (0 + 1) →ₐ[S] Jet S ρ 0) (Ideal.Quotient.mk _ (MvPolynomial.X r)) = 0) ∧
     ∀ p : Jet S ρ (0 + 1), (jetTrunc : Jet S ρ (0 + 1) →ₐ[S] Jet S ρ 0) p = 0 →

@@ -20,6 +20,13 @@ def Concl {k : Type} [Field k] (d : ℕ) {Y : Scheme.{0}} (f : Y ⟶ Sp k) (I : 
     IsSmoothBlowupSeq f (I.support : Set Y) s ∧ IsIso (s ∣_ I.support.compl) ∧
     FinalTheorems.EffCartier (I.comap s) ∧ FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal (I.comap s).support)
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Establish `hs : (f.appLE ⊤ U (by simp)).hom.Smooth` using `HasRingHomProperty.appLE (P := @Smooth) f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Establish `hk : IsField Γ(Sp k, ⊤)` using `MulEquiv.isField (Field.toIsField k) (Scheme.ΓSpecIso (.of k)).commRingCatIsoToRingEquiv.toMulEquiv`. Set `` to `hk.toField`. Set `` to `(f.appLE ⊤ U (by simp)).hom.toAlgebra`.
+
+Establish `: Algebra.Smooth Γ(Sp k, ⊤) Γ(Y, U)` using `hs`. Establish `hr : IsRegularRing Γ(Y, U)` using `isRegularRing_of_smooth Γ(Sp k, ⊤) Γ(Y, U)`. Set `` to `Y.presheaf.algebra_section_stalk (⟨y, hy⟩ : U)`. Use `hU.isLocalization_stalk ⟨y, hy⟩` as an intermediate fact. Establish `h` using `isRegularRing_iff.mp hr (hU.primeIdealOf ⟨y, hy⟩).asIdeal`.
+
+Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (Localization.AtPrime (hU.primeIdealOf ⟨y, hy⟩).asIdeal) (Y.presheaf.stalk y)).toRingEquiv`.
+-/
 theorem regular_stalk {k : Type} [Field k] {Y : Scheme.{0}} (f : Y ⟶ Sp k) [Smooth f] (y : Y) :
     IsRegularLocalRing (Y.presheaf.stalk y) := by
   obtain ⟨_, ⟨U, hU, rfl⟩, hy, -⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ
@@ -37,6 +44,9 @@ theorem regular_stalk {k : Type} [Field k] {Y : Scheme.{0}} (f : Y ⟶ Sp k) [Sm
   exact IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (hU.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl
     (Localization.AtPrime (hU.primeIdealOf ⟨y, hy⟩).asIdeal) (Y.presheaf.stalk y)).toRingEquiv
 
+/- English proof (translation)
+Establish `: Smooth f` using `SmoothOfRelativeDimension.smooth d f`. Use `⟨Y, 𝟙 Y, h₁, by simpa using h₂, by simpa using h₃, .id, inferInstance, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.comap_id]`. Conclude with `effCartier_top Y`. Conclude with `sncAt_of_not_mem _ y (by simp) (regular_stalk f y)`.
+-/
 theorem concl_top {k : Type} [Field k] (d : ℕ) {Y : Scheme.{0}} (f : Y ⟶ Sp k) (h₁ : IsIntegral Y)
     (h₂ : SmoothOfRelativeDimension d f) (h₃ : IsProjOver f) : Concl d f ⊤ := by
   have : Smooth f := SmoothOfRelativeDimension.smooth d f
@@ -44,6 +54,11 @@ theorem concl_top {k : Type} [Field k] (d : ℕ) {Y : Scheme.{0}} (f : Y ⟶ Sp 
   · rw [Scheme.IdealSheafData.comap_id]; exact effCartier_top Y
   · exact sncAt_of_not_mem _ y (by simp) (regular_stalk f y)
 
+/- English proof (translation)
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨U, f, hx, hf, e⟩` from `h x`. Establish `hf0 : f = 0`. Establish `: f ∈ (⊥ : W.IdealSheafData).ideal U` using `e ▸ Ideal.mem_span_singleton_self f`. Simplify using `using this`.
+
+Establish `: Nonempty U.1` using `⟨⟨x, hx⟩⟩`. Conclude with `nonZeroDivisors.ne_zero hf hf0`.
+-/
 theorem isEmpty_of_effCartier_bot {W : Scheme.{0}} (h : FinalTheorems.EffCartier (⊥ : W.IdealSheafData)) : IsEmpty W := by
   refine ⟨fun x => ?_⟩
   obtain ⟨U, f, hx, hf, e⟩ := h x
@@ -53,11 +68,17 @@ theorem isEmpty_of_effCartier_bot {W : Scheme.{0}} (h : FinalTheorems.EffCartier
   have : Nonempty U.1 := ⟨⟨x, hx⟩⟩
   exact nonZeroDivisors.ne_zero hf hf0
 
+/- English proof (translation)
+Introduce and unpack `⟨Y', s, h, -, -, -, -, hE, -⟩`. Rewrite `hE` using `[Scheme.IdealSheafData.comap_bot]`. Conclude with `(isEmpty_of_effCartier_bot hE).false (Nonempty.some inferInstance)`.
+-/
 theorem not_concl_bot {k : Type} [Field k] (d : ℕ) {Y : Scheme.{0}} (f : Y ⟶ Sp k) : ¬ Concl d f ⊥ := by
   rintro ⟨Y', s, h, -, -, -, -, hE, -⟩
   rw [Scheme.IdealSheafData.comap_bot] at hE
   exact (isEmpty_of_effCartier_bot hE).false (Nonempty.some inferInstance)
 
+/- English proof (translation)
+Use `⟨fun x => isEmptyElim x, fun W g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Scheme.IdealSheafData.comap_bot]`. Use `isEmpty_of_effCartier_bot hg` as an intermediate fact. Establish `hW` using `isInitialOfIsEmpty (X := W)`. Conclude with `⟨hW.to _, hW.hom_ext _ _, fun _ _ => hW.hom_ext _ _⟩`.
+-/
 theorem blowup_bot (X : Scheme.{0}) : FinalTheorems.Blowup (Scheme.emptyTo X) ⊥ := by
   refine ⟨fun x => isEmptyElim x, fun W g hg => ?_⟩
   rw [Scheme.IdealSheafData.comap_bot] at hg
@@ -65,9 +86,15 @@ theorem blowup_bot (X : Scheme.{0}) : FinalTheorems.Blowup (Scheme.emptyTo X) �
   have hW := isInitialOfIsEmpty (X := W)
   exact ⟨hW.to _, hW.hom_ext _ _, fun _ _ => hW.hom_ext _ _⟩
 
+/- English proof (translation)
+The claim follows from `.single ⊥ _ inferInstance (Set.subset_univ _) (blowup_bot Y)`.
+-/
 theorem seq_empty {S Y : Scheme.{0}} (f : Y ⟶ S) [Smooth f] : IsSmoothBlowupSeq f Set.univ (Scheme.emptyTo Y) :=
   .single ⊥ _ inferInstance (Set.subset_univ _) (blowup_bot Y)
 
+/- English proof (translation)
+The claim follows from `h.isIso_restrict ⊤ (by simp)`.
+-/
 theorem isIso_of_seq_empty {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {s : Y' ⟶ Y} (h : IsSmoothBlowupSeq f ∅ s) :
     IsIso (s ∣_ ⊤) := h.isIso_restrict ⊤ (by simp)
 
@@ -99,10 +126,16 @@ def hypPt' : PSpace k (N + 1) :=
 def hypIdeal : (PSpace k (N + 1)).IdealSheafData :=
   Scheme.IdealSheafData.vanishingIdeal (Opens.compl (Proj.basicOpen _ (MvPolynomial.X 0)))
 
+/- English proof (translation)
+Rewrite using `[hypIdeal, ← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Conclude with `fun h => (Proj.mem_basicOpen _ _ _).1 h (Ideal.mem_span_singleton_self _)`.
+-/
 theorem mem_support : hypPt k N ∈ (hypIdeal k N).support := by
   rw [hypIdeal, ← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]
   exact fun h => (Proj.mem_basicOpen _ _ _).1 h (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Rewrite using `[hypIdeal, ← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Use `fun h => h ((Proj.mem_basicOpen _ _ _).2 fun h1 => ?_)` and prove the remaining obligations. Establish `h2` using `Ideal.mem_span_singleton.1 h1`. Rewrite `h2` using `[MvPolynomial.X_dvd_X]`. Conclude with `absurd h2 (by simp)`.
+-/
 theorem not_mem_support : hypPt' k N ∉ (hypIdeal k N).support := by
   rw [hypIdeal, ← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]
   refine fun h => h ((Proj.mem_basicOpen _ _ _).2 fun h1 => ?_)
@@ -110,6 +143,11 @@ theorem not_mem_support : hypPt' k N ∉ (hypIdeal k N).support := by
   rw [MvPolynomial.X_dvd_X] at h2
   exact absurd h2 (by simp)
 
+/- English proof (translation)
+Use `⟨inferInstance, Adelic.smoothOfRelativeDimension_pspace k _, ⟨_, 𝟙 _, inferInstance, Category.id_comp _⟩, fun e => not_mem_support k N ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Scheme.IdealSheafData.support_bot]`. Discharge the goal by the elementary cases of `trivial`. Use `mem_support k N` as an intermediate fact. Rewrite `this` using `[e, Scheme.IdealSheafData.support_top]`.
+
+Conclude with `this`.
+-/
 theorem hyp_proj : IsIntegral (PSpace k (N + 1)) ∧ SmoothOfRelativeDimension (N + 1) (PSpace.str k (N + 1)) ∧
     IsProjOver (PSpace.str k (N + 1)) ∧ hypIdeal k N ≠ ⊥ ∧ hypIdeal k N ≠ ⊤ := by
   refine ⟨inferInstance, Adelic.smoothOfRelativeDimension_pspace k _, ⟨_, 𝟙 _, inferInstance, Category.id_comp _⟩,
@@ -118,6 +156,9 @@ theorem hyp_proj : IsIntegral (PSpace k (N + 1)) ∧ SmoothOfRelativeDimension (
   · have := mem_support k N
     rw [e, Scheme.IdealSheafData.support_top] at this; exact this
 
+/- English proof (translation)
+The claim follows from `h k _ _ _ (hyp_proj k N).1 (hyp_proj k N).2.1 (hyp_proj k N).2.2.1 _ (hyp_proj k N).2.2.2.1`.
+-/
 theorem concl_proj [CharZero k] (h : Published.Principalisation) :
     Concl (N + 1) (PSpace.str k (N + 1)) (hypIdeal k N) :=
   h k _ _ _ (hyp_proj k N).1 (hyp_proj k N).2.1 (hyp_proj k N).2.2.1 _ (hyp_proj k N).2.2.2.1
@@ -132,6 +173,9 @@ abbrev origin : Sp k ⟶ Sp (Polynomial k) := spMap (Polynomial.evalRingHom 0)
 instance : IsClosedImmersion (origin k) :=
   IsClosedImmersion.spec_of_surjective _ fun a => ⟨Polynomial.C a, by simp⟩
 
+/- English proof (translation)
+Introduce `x` and use `by let e := (Scheme.ΓSpecIso (.of (Polynomial k))).commRingCatIsoToRingEquiv refine ⟨⟨⊤, isAffineOpen_top _⟩, e.symm Polynomial.X, trivial, ?_, ?_⟩ · exact mem_nonZeroDivisors_of_ne_zero (by simp) · rw [Scheme.Hom.ker_apply] ext a obtain ⟨p, rfl⟩ := e.symm.surjective a have h := …`.
+-/
 theorem effCartier_origin : FinalTheorems.EffCartier (origin k).ker := fun x => by
   let e := (Scheme.ΓSpecIso (.of (Polynomial k))).commRingCatIsoToRingEquiv
   refine ⟨⟨⊤, isAffineOpen_top _⟩, e.symm Polynomial.X, trivial, ?_, ?_⟩
@@ -147,6 +191,13 @@ theorem effCartier_origin : FinalTheorems.EffCartier (origin k).ker := fun x => 
     refine Iff.trans (by rw [← h']; rfl) (map_eq_zero_iff (Scheme.ΓSpecIso (.of k)).inv.hom
       (Scheme.ΓSpecIso (.of k)).symm.commRingCatIsoToRingEquiv.injective)
 
+/- English proof (translation)
+Establish `e : origin k ≫ spMap (Polynomial.C : k →+* Polynomial k) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `e' : (origin k).ker.subschemeι ≫ spMap (Polynomial.C : k →+* Polynomial k) = inv (origin k).toImage`. Rewrite using `[← cancel_epi (origin k).toImage, ← Category.assoc, IsIso.hom_inv_id, ← e]`. Use `congr 1`. Conclude with `(origin k).toImage_imageι`. Rewrite using `[e']`.
+
+Use `infer_instance`.
+-/
 theorem smooth_origin : Smooth ((origin k).ker.subschemeι ≫ spMap (Polynomial.C : k →+* Polynomial k)) := by
   have e : origin k ≫ spMap (Polynomial.C : k →+* Polynomial k) = 𝟙 _ := by
     rw [← Spec.map_comp, ← Spec.map_id]; congr 1; ext; simp
@@ -156,6 +207,9 @@ theorem smooth_origin : Smooth ((origin k).ker.subschemeι ≫ spMap (Polynomial
     exact (origin k).toImage_imageι
   rw [e']; infer_instance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨smooth_origin k, ⟨origin k (Nonempty.some inferInstance), (origin k).range_subset_ker_support ⟨_, rfl⟩⟩, blowup_id (effCartier_origin k)⟩`.
+-/
 theorem step_origin : Smooth ((origin k).ker.subschemeι ≫ spMap (Polynomial.C : k →+* Polynomial k)) ∧
     ((origin k).ker.support : Set (Sp (Polynomial k))).Nonempty ∧ FinalTheorems.Blowup (𝟙 _) (origin k).ker :=
   ⟨smooth_origin k, ⟨origin k (Nonempty.some inferInstance),

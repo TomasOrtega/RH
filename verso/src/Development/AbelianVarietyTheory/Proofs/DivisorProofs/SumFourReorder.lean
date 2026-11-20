@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory.FourTermSumReorder
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = ∑ q : α × β, ∑ p : β × α, f p.2 p.1 q.1 q.2 := Finset.sum_comm`. Use `_ = ∑ c : α, ∑ e : β, ∑ b : β, ∑ a : α, f a b c e := by`. Simplify using `only [Fintype.sum_prod_type]`.
+-/
 theorem sum_four_reorder {R α β : Type} [AddCommMonoid R] [Fintype α] [Fintype β]
     (f : α → β → α → β → R) :
     ∑ a : α, ∑ b : β, ∑ c : α, ∑ e : β, f a b c e

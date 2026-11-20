@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB
 open NumberField GlobalTheory.CuspRep PositivityTheory.RgBcC PositivityTheory.RgBcC.RealD PositivityTheory.RgBcC.Bridge PositivityTheory.Rg.BcB.Desc
 open PositivityTheory.Rg.BcB.E.E3.fintype in
+/- English proof (translation)
+Introduce `E _ _ _ n _ π _ K W hK hW`. Establish `hs : ∀ (τ : E →+* ℂ) (z : ℂ), ∃ c : ℂ, ∀ φ ∈ π.V, cap τ z φ = c • φ` using `fun τ z => π.exists_scalar (Algebra.subset_adjoin ⟨τ, z, rfl⟩) (by`. Introduce and unpack `(k | k | X)`. Use `exacts [commute_cap_finRep τ z k, GlobalTheory.CapAdInv.cap_commute_rt_infGL E n τ z _, commute_cap_lie τ z X])`. Use `choose c hc using hs`.
+
+Use `haveI := wl_fin W`. Use `haveI hF := PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E n K hK _ (sig W) (sig_cont W) c`. Use `⟨π.V ⊓ Submodule.span ℂ (GlobalTheory.Published.AutFinGL.forms K (sig W) c), inf_le_left, Submodule.finiteDimensional_inf_right _ _, fun ψ hψ ht => ⟨hψ, Submodule.subset_span ⟨(π.cusp ψ hψ).1, fun k hk => Subtype.ext (funext fun g => ht.1 k hk g), coeff_mem W ψ ht.2, fun τ z => h …` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.piAdm_pf :
     PiAdm := by
   intro E _ _ _ n _ π _ K W hK hW

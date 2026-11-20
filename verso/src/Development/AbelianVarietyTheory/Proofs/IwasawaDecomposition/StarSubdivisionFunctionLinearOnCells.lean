@@ -9,18 +9,53 @@ noncomputable section
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective s s.injective _ _ (fun i hi => ?_) fun j => by rw [s.injective.extend_apply]` and prove the remaining obligations. Rewrite using `[Function.extend_apply' _ _ _ hi]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_extend_smul_starLin {M : Type} [AddCommMonoid M] [Module ℝ M] {m m' : ℕ} (s : Fin m' ↪ Fin m)
     (d : Fin m' → ℝ) (f : Fin m → M) : ∑ i, Function.extend s d 0 i • f i = ∑ j, d j • f (s j) := by
   symm
   refine Fintype.sum_of_injective s s.injective _ _ (fun i hi => ?_) fun j => by rw [s.injective.extend_apply]
   rw [Function.extend_apply' _ _ _ hi]; simp
 
+/- English proof (translation)
+Distinguish the cases in `hi : ∃ j, s j = i`. Take `⟨j, rfl⟩` from `hi`. Rewrite using `[s.injective.extend_apply]`. Conclude with `hd j`. Rewrite using `[Function.extend_apply' _ _ _ hi]`.
+
+Both sides reduce to the same expression.
+-/
 theorem extend_nonneg_starLin {m m' : ℕ} (s : Fin m' ↪ Fin m) {d : Fin m' → ℝ} (hd : ∀ j, 0 ≤ d j) (i : Fin m) :
     0 ≤ Function.extend s d 0 i := by
   by_cases hi : ∃ j, s j = i
   · obtain ⟨j, rfl⟩ := hi; rw [s.injective.extend_apply]; exact hd j
   · rw [Function.extend_apply' _ _ _ hi]; rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H q ψ w K D hcent`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX m γ hγ hno`. Establish `ps0 : ∀ B ∈ rcone γ, evalR (starDepth H.bar ψ w) B = 0` using `fun B hB => le_antisymm (GlobalTheory.T.evalR_starDepth_le_of_centre_bound _ H.bar ψ w X m γ B 0 hγ hB le_rfl fun v hv hp hw hin _ _ _ => absurd (hno v hv hp hin) (by rw [hw]; norm_num)) (starDepth_eval_nonneg _)`. Establish `psγ : ∀ i, (starDepth H.bar ψ w).evalZ (γ i) = 0` using `fun i => by`.
+
+Rewrite using `[← evalR_toReal]`. Conclude with `ps0 _ (inRCone_self γ i)`. Rewrite using `[linearOn_iff]`. Introduce `c hc`. Rewrite using `[starFun_evalR, (linearOn_iff ψ γ).1 hγ.linear c hc, ps0 _ ⟨c, hc, rfl⟩, add_zero, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[starFun_evalZ, psγ i]`. Expand and normalize the polynomial expressions, which then agree. Introduce `X _ _ _ _ hX m γ hγ β₀ hβ₀ hp₀ hw₀ hin₀ m' s h hcut hh`. Take `⟨-, hC2, hC3⟩` from `hcent X hX`.
+
+Establish `uniq : ∀ v ∈ balForms H.bar X, (∀ y, 0 ≤ v y y) → w.evalZ v = 1 → InRCone γ v → v = β₀` using `fun v hv hp hw hin => hC3 m γ hγ v hv hp β₀ hβ₀ hp₀ hw hw₀ hin hin₀`. Establish `hne : β₀ ≠ 0`. Introduce and unpack `rfl`. Use `hC2 0 hβ₀ hp₀ hw₀ 2 0 (by simp)` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+
+Take `⟨e, he, hβe⟩` from `id hin₀`. Establish `coords : ∀ (a : ℝ) (d : Fin m' → ℝ), a • toReal β₀ + ∑ j, d j • toReal (γ (s j)) = ∑ i, (a * e i + Function.extend s d 0 i) • toReal (γ i)` using `fun a d => by`. Rewrite using `[hβe, Finset.smul_sum, ← sum_extend_smul_starLin s d (fun i => toReal (γ i))]`. Simplify using `only [add_smul, mul_smul, Finset.sum_add_distrib]`. Establish `hs0 : ∀ j, h (γ (s j)) = 0` using `fun j => (hcut.2 (s j)).2 ⟨j, rfl⟩`.
+
+Establish `psv : ∀ (a : ℝ) (d : Fin m' → ℝ), 0 ≤ a → (∀ j, 0 ≤ d j) → evalR (starDepth H.bar ψ w) (a • toReal β₀ + ∑ j, d j • toReal (γ (s j))) = a`. Introduce `a d ha hd`. Establish `hB : a • toReal β₀ + ∑ j, d j • toReal (γ (s j)) ∈ rcone γ` using `⟨fun i => a * e i + Function.extend s d 0 i, fun i => add_nonneg (mul_nonneg ha (he i)) (extend_nonneg_starLin s hd i), coords a d⟩`. Use `le_antisymm (GlobalTheory.T.evalR_starDepth_le_of_centre_bound _ H.bar ψ w X m γ _ a hγ hB ha fun v hv hp hw hin t ht hBt => ?_) (GlobalTheory.T.centreDepth_le_starDepth_of_cell _ H.bar ψ w X m γ _ β₀ a hγ hB hβ₀ hp₀ hw₀ hin₀ hne uniq ha ?_)` and prove the remaining obligations. Rewrite `hBt` using `[uniq v hv hp hw hin]`.
+
+Take `⟨g, hg, hBg⟩` from `hBt`. Establish `rel` using `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) h (β := Sum.elim (fun j => γ (s j)) (fun o : Option (Fin m) => o.elim β₀ γ)) (c := Sum.elim d (fun o : Option (Fin m) => o.elim (a - t) fun i => -g i)) (by`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_option, Sum.elim_inl, Sum.elim_inr, Option.elim, LinearMap.id_apply, neg_smul, Finset.sum_neg_distrib]`. Rewrite using `[← hBg, sub_smul]`. Use the proof step `abel)`.
+
+Simplify using `only [Fintype.sum_sum_type, Fintype.sum_option, Sum.elim_inl, Sum.elim_inr, Option.elim, hs0, Int.cast_zero, mul_zero, Finset.sum_const_zero, zero_add, neg_mul, Finset.sum_neg_distrib] at rel`. Establish `hpos : 0 ≤ ∑ i, g i * (h (γ i) : ℝ)` using `Finset.sum_nonneg fun i _ => mul_nonneg (hg i) (by exact_mod_cast hcut.1 i)`. Establish `hh' : (0 : ℝ) < h β₀` using `by exact_mod_cast hh`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨Function.extend s d 0, extend_nonneg_starLin s hd, by`.
+
+Rewrite using `[add_sub_cancel_left, sum_extend_smul_starLin]⟩`. Establish `psβ : (starDepth H.bar ψ w).evalZ β₀ = 1`. Use `psv 1 0 zero_le_one fun _ => le_rfl` as an intermediate fact. Simplify using `using this`. Establish `psγs : ∀ j, (starDepth H.bar ψ w).evalZ (γ (s j)) = 0` using `fun j => by`.
+
+Apply the tactic sequence `have := psv 0 (Pi.single j 1) le_rfl fun i => by by_cases hi : i = j <;> simp [Pi.single_apply, hi]`. Simplify `this` using `[Pi.single_apply]`. Establish `ψv : ∀ (a : ℝ) (d : Fin m' → ℝ), 0 ≤ a → (∀ j, 0 ≤ d j) → evalR ψ (a • toReal β₀ + ∑ j, d j • toReal (γ (s j))) = a * ψ.evalZ β₀ + ∑ j, d j * ψ.evalZ (γ (s j))`. Introduce `a d ha hd`. Establish `hψβ : ψ.evalZ β₀ = ∑ i, e i * ψ.evalZ (γ i)`.
+
+Rewrite using `[← evalR_toReal, hβe, (linearOn_iff ψ γ).1 hγ.linear e he]`. Establish `hx` using `sum_extend_smul_starLin s d fun i => ψ.evalZ (γ i)`. Simplify using `only [smul_eq_mul] at hx`. Rewrite using `[coords, (linearOn_iff ψ γ).1 hγ.linear _ (fun i => add_nonneg (mul_nonneg ha (he i)) (extend_nonneg_starLin s hd i)), hψβ, Finset.mul_sum, ← hx]`. Simplify using `only [add_mul, mul_assoc, Finset.sum_add_distrib]`.
+
+Rewrite using `[linearOn_iff]`. Introduce `c hc`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[starFun_evalR, ψv _ _ (hc 0) (fun j => hc _), psv _ _ (hc 0) (fun j => hc _), starFun_evalZ, psβ]`.
+
+Simplify using `only [starFun_evalZ, psγs, add_zero]`. Establish `e1 : ∑ j : Fin m', c j.succ * ((D : ℝ) * (K * ψ.evalZ (γ (s j)))) = D * K * ∑ j : Fin m', c j.succ * ψ.evalZ (γ (s j))`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem starFun_linearOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)) (K D : ℕ), IsCentreSet H.bar q ψ w → (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) → (starFun H.bar ψ w K D).LinearOn γ) ∧ (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ → ∀ β₀ ∈ balForms H.bar X, (∀ y, 0 ≤ β₀ y y) → w.evalZ β₀ = 1 → InRCone γ β₀ → ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → 0 < h β₀ → (starFun H.bar ψ w K D).LinearOn (Fin.cons β₀ fun j => γ (s j))) := by
   intro E _ _ _ H q ψ w K D hcent
   refine ⟨?_, ?_⟩

@@ -9,6 +9,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Xgn.finite_surjective_point_lift`.
+-/
 theorem exists_lift_algClosure : ∀ (Z' Z : Scheme.{0}) (π : Z' ⟶ Z), IsFinite π → Surjective π → ∀ (L : Type) [Field L] (zZ : Sp L ⟶ Z),
     ∃ x : Sp (AlgebraicClosure L) ⟶ Z', x ≫ π = spMap (algebraMap L (AlgebraicClosure L)) ≫ zZ :=
   PositivityTheory.Xgn.finite_surjective_point_lift

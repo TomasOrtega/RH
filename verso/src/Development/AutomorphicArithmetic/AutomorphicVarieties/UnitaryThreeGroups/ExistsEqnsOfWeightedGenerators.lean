@@ -1,6 +1,19 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.MopBase
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
+/- English proof (translation)
+Introduce `O A _ _ _ 𝒜 x r s r' s' m κ _ g w hg hx hw h1 h2 h3 h4 h5`. Establish `key : ∀ (j : ℤ) (n : ℕ), Nat.card {i // w i = j} = n → ∃ F : Fin n → A, (∀ k, F k ∈ 𝒜 j ∧ x (F k) = 0) ∧ Set.range F = g '' {i | w i = j}`. Introduce `j n hn`. Set `e` to `Finite.equivFinOfCardEq hn`. Use `⟨fun k => g (e.symm k).1, fun k => ⟨?_, hx _⟩, ?_⟩` and prove the remaining obligations.
+
+Use `hg (e.symm k).1` as an intermediate fact. Rewrite `this` using `[(e.symm k).2]`. Then use the resulting hypothesis. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+
+Conclude with `⟨(e.symm k).1, (e.symm k).2, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨e ⟨i, hi⟩, by simp⟩`. Take `⟨F, hF, rF⟩` from `key _ _ h1`. Take `⟨G, hG, rG⟩` from `key _ _ h2`.
+
+Take `⟨E, hE, rE⟩` from `key _ _ h3`. Take `⟨E', hE', rE'⟩` from `key _ _ h4`. Take `⟨Z, hZ, rZ⟩` from `key _ _ h5`. Use `⟨⟨F, G, E, E', Z, fun i => (hF i).1, fun i => (hG i).1, fun i => (hE i).1, fun i => (hE' i).1, hZ⟩, ?_⟩` and prove the remaining obligations. Use `show Ideal.span (Set.range F ∪ Set.range G ∪ Set.range E ∪ Set.range E' ∪ Set.range Z) = _`.
+
+Rewrite using `[rF, rG, rE, rE', rZ, ← Set.image_union, ← Set.image_union, ← Set.image_union, ← Set.image_union, ← Set.image_univ]`. Use `congr 2`. Use extensionality with `i`. Use `hw i` as an intermediate fact. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Set.mem_univ, iff_true]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.exists_eqns_of_weighted_generators :
     ∀ {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) (x : A →ₐ[O] O) (r s r' s' m : ℕ) {κ : Type} [Finite κ] (g : κ → A) (w : κ → ℤ),
           (∀ i, g i ∈ 𝒜 (w i)) → (∀ i, x (g i) = 0) → (∀ i, -2 ≤ w i ∧ w i ≤ 2) →

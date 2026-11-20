@@ -17,6 +17,11 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLattice
 
 namespace GlobalTheory.ConjExtend
 
+/- English proof (translation)
+Set `_ : Algebra M Qbar` to `(IntermediateField.inclusion hle).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ M Qbar` using `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `: Algebra.IsAlgebraic ℚ Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `: Algebra.IsAlgebraic M Qbar` using `Algebra.IsAlgebraic.tower_top (K := ℚ) M`. Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ) (L := M) (M := ℂ) (E := Qbar) ρ`.
+
+Use `⟨φ, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos hx, dif_pos (hle hx)]`. Both sides reduce to the same expression.
+-/
 theorem exists_extension_of_le (M : IntermediateField ℚ ℂ) (hle : M ≤ Qbar) (ρ : M →ₐ[ℚ] ℂ) :
     ∃ ρ' : Qbar →ₐ[ℚ] ℂ, ∀ x ∈ M, ρ' (TaylorLogMetric.liftM Qbar x) = ρ (TaylorLogMetric.liftM M x) := by
   let _ : Algebra M Qbar := (IntermediateField.inclusion hle).toRingHom.toAlgebra
@@ -31,6 +36,13 @@ theorem exists_extension_of_le (M : IntermediateField ℚ ℂ) (hle : M ≤ Qbar
   rw [dif_pos hx, dif_pos (hle hx)]
   rfl
 
+/- English proof (translation)
+Take `⟨hdata, htor⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 _ δ hc`. Establish `hwp : wpF (lamOf D D.host.ccK δ) t0 ∈ Qbar`. Use `(htor t0 ⟨2, two_pos, by exact_mod_cast ht.1⟩ fun h0 => ?_).1` and prove the remaining obligations. Take `⟨a, ha⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `h1` using `GlobalTheory.ArchNorm.mul_mem_lamOf D _ δ a h0`.
+
+Rewrite `h1` using `[ha, mul_comm]`. Conclude with `ht.2.1 h1`. Unfold `GlobalTheory.KerConjMean.fld`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `y (⟨x, rfl⟩ | rfl | rfl | rfl)`.
+
+Conclude with `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom D.what₂.embLL.toRatAlgHom)`. Conclude with `hdata.2.1`. Conclude with `hdata.2.2`. Conclude with `hwp`.
+-/
 theorem fld_le (D : D7) (hI : GlobalTheory.NormSum.Inp D) (δ t0 : ℂ) (hc : Crv D D.host.ccK δ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0) : GlobalTheory.KerConjMean.fld D δ t0 ≤ Qbar := by
   obtain ⟨hdata, htor⟩ := (GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hI.g1).2 _ δ hc
@@ -49,6 +61,13 @@ theorem fld_le (D : D7) (hI : GlobalTheory.NormSum.Inp D) (δ t0 : ℂ) (hc : Cr
   · exact hdata.2.2
   · exact hwp
 
+/- English proof (translation)
+Introduce `D hI δ t0 hc ht σ ρ hρ`. Take `⟨ρ', h⟩` from `exists_extension_of_le _ (fld_le D hI δ t0 hc ht) ρ`. Use `⟨ρ', fun x => ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.StandardLatticesGL3.cj`. Rewrite using `[h _ (GlobalTheory.KerConjMean.embLL_mem D δ t0 x), ← hρ x]`.
+
+Unfold `TaylorLogMetric.liftM`. Rewrite using `[dif_pos (GlobalTheory.KerConjMean.embLL_mem D δ t0 x)]`. Establish `h2 : g2 (lamOf D D.host.ccK δ) ∈ GlobalTheory.KerConjMean.fld D δ t0` using `IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp))`. Establish `h3 : g3 (lamOf D D.host.ccK δ) ∈ GlobalTheory.KerConjMean.fld D δ t0` using `IntermediateField.subset_adjoin ℚ _ (Or.inr (by simp))`. Unfold `lamConj`.
+
+Rewrite using `[h _ h2, h _ h3]`.
+-/
 theorem exists_extension_conj : ∀ (D : D7), GlobalTheory.NormSum.Inp D → ∀ (δ t0 : ℂ), Crv D D.host.ccK δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D D.host.ccK δ) t0 →
     ∀ (σ : D.what₂.LL →+* ℂ), ∀ ρ ∈ GlobalTheory.KerConjMean.ext D δ t0 σ, ∃ ρ' : Qbar →ₐ[ℚ] ℂ,
       (∀ x, Formalism.MainNotions.StandardLatticesGL3.cj Qbar ρ' (D.what₂.embLL x) = σ x) ∧

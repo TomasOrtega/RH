@@ -10,6 +10,11 @@ namespace GlobalTheory.ThetaSupBall
 open MeasureTheory Filter Set
 open scoped Pointwise
 
+/- English proof (translation)
+Use `haveI : VAddInvariantMeasure A (EuclideanSpace ℂ ι) volume := ⟨fun g s _ => measure_preimage_add volume (g : EuclideanSpace ℂ ι) s⟩`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hf0) hfc.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hf0) hfc.aestronglyMeasurable]`. Use `ENNReal.toReal_mono (Integrable.lintegral_lt_top hi).ne ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `(lintegral_iUnion₀ (fun y => ?_) ?_ _).symm` and prove the remaining obligations.
+
+Conclude with `(ht.const_vadd y).nullMeasurableSet.inter hD.nullMeasurableSet`. Introduce `y₁ y₂ h`. Conclude with `(((hd y₁ y₂ h).inf_left _).inf_right _).aedisjoint`. Use `_ ≤ ∫⁻ u in D, ENNReal.ofReal (f u) := lintegral_mono_set (iUnion_subset fun _ => inter_subset_right)`.
+-/
 theorem integral_le_of_disjoint_translates {ι : Type} [Fintype ι]
     (A : AddSubgroup (EuclideanSpace ℂ ι)) [Countable A]
     (D t : Set (EuclideanSpace ℂ ι)) (hD : IsAddFundamentalDomain A D volume)
@@ -35,6 +40,13 @@ theorem integral_le_of_disjoint_translates {ι : Type} [Fintype ι]
     _ ≤ ∫⁻ u in D, ENNReal.ofReal (f u) :=
         lintegral_mono_set (iUnion_subset fun _ => inter_subset_right)
 
+/- English proof (translation)
+Establish `hv0 : 0 < v` using `by linarith`. Establish `hpi` using `Real.pi_gt_three`. Rewrite using `[pow_mul, hr, ← mul_pow]`. Establish `h1 : (g.factorial : ℝ) ≤ (g : ℝ) ^ g` using `by exact_mod_cast Nat.factorial_le_pow g`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `pow_le_pow_left₀ (by positivity) ?_ g` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `h2 : (2 * (g : ℝ) * v + 1) * (Real.pi * (1 / (4 * v))) = Real.pi / 2 * g + Real.pi / (4 * v)` using `by field_simp; ring`. Rewrite using `[h2]`. Establish `h3 : 0 ≤ Real.pi / (4 * v)` using `by positivity`.
+
+Establish `h4 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg g`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem factorial_div_le (g : ℕ) {v r : ℝ} (hv : 1 ≤ v) (hr : r ^ 2 = 1 / (4 * v)) :
     (g.factorial : ℝ) / (Real.pi ^ g * r ^ (2 * g)) ≤ (2 * (g : ℝ) * v + 1) ^ g := by
   have hv0 : 0 < v := by linarith
@@ -54,6 +66,43 @@ theorem factorial_div_le (g : ℕ) {v r : ℝ} (hv : 1 ≤ v) (hr : r ^ 2 = 1 / 
         have h4 : (0 : ℝ) ≤ g := Nat.cast_nonneg g
         nlinarith
 
+/- English proof (translation)
+Introduce `ι _ A v Fd G hv hA hD _ hG hinv hint z`. Establish `hv0 : 0 < v` using `by linarith`. Use `set r : ℝ := Real.sqrt (1 / (4 * v)) with hrdef`. Establish `hr0 : 0 < r` using `Real.sqrt_pos.2 (by positivity)`. Establish `hr2 : r ^ 2 = 1 / (4 * v)` using `Real.sq_sqrt (by positivity)`.
+
+Use `set N : EuclideanSpace ℂ ι → ℝ := fun u => ‖G u‖ ^ 2 * Real.exp (-Real.pi * ‖u‖ ^ 2) with hN`. Establish `hN0 : ∀ u, 0 ≤ N u` using `fun u => by positivity`. Establish `hGc` using `hG.continuous`. Establish `hNc : Continuous N` using `by simp only [hN]; fun_prop`. Establish `hdisj : ∀ y₁ y₂ : A, y₁ ≠ y₂ → Disjoint (y₁ +ᵥ Metric.ball z r) (y₂ +ᵥ Metric.ball z r)`.
+
+Introduce `y₁ y₂ hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨p, hp, rfl⟩ ⟨q, hq, hpq⟩`. Establish `hpq' : (y₂ : EuclideanSpace ℂ ι) + q = (y₁ : EuclideanSpace ℂ ι) + p` using `hpq`. Establish `hy : ((y₁ - y₂ : A) : EuclideanSpace ℂ ι) = q - p`.
+
+Rewrite using `[AddSubgroup.coe_sub, sub_eq_sub_iff_add_eq_add, ← hpq', add_comm]`. Establish `hne' : ((y₁ - y₂ : A) : EuclideanSpace ℂ ι) ≠ 0` using `fun h0 => hne (sub_eq_zero.mp (Subtype.ext h0))`. Establish `h1` using `hA _ (y₁ - y₂ : A).2 hne'`. Rewrite `h1` using `[hy]`. Establish `h2 : ‖q - p‖ < 2 * r`.
+
+Establish `hp' : dist p z < r` using `hp`. Establish `hq' : dist q z < r` using `hq`. Rewrite using `[← dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖q - p‖ ^ 2 < (2 * r) ^ 2` using `by gcongr`.
+
+Establish `h4 : (2 * r) ^ 2 = 1 / v` using `by rw [mul_pow, hr2]; field_simp; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Use `haveI : Countable A := by`. Rewrite using `[← Set.countable_univ_iff]`. Use `Set.PairwiseDisjoint.countable_of_isOpen (s := fun y : A => y +ᵥ Metric.ball z r) (fun a _ b _ h => hdisj a b h) ?_ ?_` and prove the remaining obligations.
+
+Introduce `y _`. Conclude with `Metric.isOpen_ball.vadd (y : EuclideanSpace ℂ ι)`. Introduce `y _`. Conclude with `⟨y +ᵥ z, z, Metric.mem_ball_self hr0, rfl⟩`. Establish `hpk : ∫ u in Metric.ball z r, N u ≤ ∫ u in Fd, N u`.
+
+Use `integral_le_of_disjoint_translates A Fd _ hD measurableSet_ball hdisj N hN0 hNc ?_ hint` and prove the remaining obligations. Introduce `y u`. Establish `e : y +ᵥ u = u + (y : EuclideanSpace ℂ ι)`. Rewrite using `[AddSubgroup.vadd_def, vadd_eq_add, add_comm]`. Rewrite using `[e]`.
+
+Conclude with `hinv y y.2 u`. Use `set φ : EuclideanSpace ℂ ι → ℂ := fun u => G u * Complex.exp (-(Real.pi : ℂ) * innerSL ℂ z (u - z)) with hφ`. Establish `hφd : Differentiable ℂ φ`. Use `hG.mul (Differentiable.cexp (Differentiable.const_mul ?_ _))` and prove the remaining obligations. Conclude with `(innerSL ℂ z).differentiable.comp (differentiable_id.sub_const z)`.
+
+Establish `hφi : IntegrableOn (fun u => ‖φ u‖ ^ 2) (Metric.ball z r)` using `GlobalTheory.integrableOn_norm_pow_ball volume hφd.continuous.continuousOn 2`. Establish `hsub` using `GlobalTheory.norm_pow_le_factorial_div_mul_integral_ball hr0 hφd.differentiableOn 2 hφi`. Rewrite `hsub` using `[finrank_euclideanSpace]`. Establish `hφz : φ z = G z` using `by simp [hφ]`. Rewrite `hsub` using `[hφz]`.
+
+Establish `hpt : ∀ u ∈ Metric.ball z r, ‖φ u‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2) ≤ 3 * N u`. Introduce `u hu`. Establish `hu' : ‖u - z‖ < r` using `by rwa [Metric.mem_ball, dist_eq_norm] at hu`. Establish `h1 : ‖u - z‖ ^ 2 ≤ 1 / 4`. Establish `: ‖u - z‖ ^ 2 ≤ r ^ 2` using `by gcongr`.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[hr2]`. Conclude with `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Establish `h2 : ‖u‖ ^ 2 = ‖z‖ ^ 2 + 2 * (inner ℂ z (u - z)).re + ‖u - z‖ ^ 2`. Use `norm_add_sq (𝕜 := ℂ) z (u - z)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `h3 : Real.exp (Real.pi * ‖u - z‖ ^ 2) ≤ 3`. Establish `hpi` using `Real.pi_le_four`. Establish `hpi0` using `Real.pi_pos`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : ‖φ u‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2) = Real.exp (Real.pi * ‖u - z‖ ^ 2) * N u`. Simplify using `only [hφ, hN]`. Rewrite using `[norm_mul, Complex.norm_exp, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add, mul_left_comm, ← Real.exp_add, h2]`. Use `congr 2`. Simplify using `only [innerSL_apply_apply, neg_mul, Complex.neg_re, Complex.re_ofReal_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Conclude with `mul_le_mul_of_nonneg_right h3 (hN0 u)`. Establish `hNi : IntegrableOn N (Metric.ball z r)` using `(hNc.continuousOn.integrableOn_compact (isCompact_closedBall z r)).mono_set Metric.ball_subset_closedBall`.
+
+Establish `hb : (∫ u in Metric.ball z r, ‖φ u‖ ^ 2) * Real.exp (-Real.pi * ‖z‖ ^ 2) ≤ 3 * ∫ u in Metric.ball z r, N u`. Rewrite using `[← integral_mul_const, ← integral_const_mul]`. Conclude with `setIntegral_mono_on (hφi.mul_const _) (hNi.const_mul _) measurableSet_ball hpt`. Establish `hnum` using `factorial_div_le (Fintype.card ι) hv hr2`. Establish `hI0 : 0 ≤ ∫ u in Fd, N u` using `integral_nonneg hN0`.
+
+Use `set c : ℝ := ((Fintype.card ι).factorial : ℝ) / (Real.pi ^ Fintype.card ι * r ^ (2 * Fintype.card ι)) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hb hc0`.
+
+Use `_ ≤ c * (3 * ∫ u in Fd, N u) := by gcongr`. Use `_ ≤ (2 * (Fintype.card ι : ℝ) * v + 1) ^ Fintype.card ι * (3 * ∫ u in Fd, N u) := by gcongr`. Use `_ = _ := by ring`.
+-/
 theorem sup_le_mean_square : ∀ (ι : Type) [Fintype ι] (A : AddSubgroup (EuclideanSpace ℂ ι)) (v : ℝ) (Fd : Set (EuclideanSpace ℂ ι)) (G : EuclideanSpace ℂ ι → ℂ), 1 ≤ v → (∀ x ∈ A, x ≠ 0 → 1 / v ≤ ‖x‖ ^ 2) → MeasureTheory.IsAddFundamentalDomain A Fd MeasureTheory.volume → MeasureTheory.volume Fd = 1 → Differentiable ℂ G → (∀ x ∈ A, ∀ z, ‖G (z + x)‖ ^ 2 * Real.exp (-Real.pi * ‖z + x‖ ^ 2) = ‖G z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2)) → MeasureTheory.IntegrableOn (fun z => ‖G z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2)) Fd → ∀ z, ‖G z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2) ≤ 3 * (2 * (Fintype.card ι : ℝ) * v + 1) ^ Fintype.card ι * ∫ w in Fd, ‖G w‖ ^ 2 * Real.exp (-Real.pi * ‖w‖ ^ 2) := by
   intro ι _ A v Fd G hv hA hD _ hG hinv hint z
   have hv0 : 0 < v := by linarith

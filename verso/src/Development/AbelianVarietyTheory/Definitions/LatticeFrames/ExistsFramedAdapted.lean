@@ -20,6 +20,9 @@ section Frame
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D} {u : D.what₂.Word}
   {ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ} {A : Formalism.BasicNotions.TH.HSp D}
 
+/- English proof (translation)
+Introduce `h0` and use `by apply B.line.2 have e : B.L.gram *ᵥ B.ζ = (B.o.iBᴴ * (B.d.i₀ᴴ * (D.sp.Y 0).gram)) *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) := by rw [← B.o.isoB, ← B.d.iso] simp only [vecB, Matrix.mulVec_mulVec, Matrix.mul_assoc] rw [e, h0]; simp`.
+-/
 theorem besVec_ne_zero (B : SBes X h u ψ A) : B.d.i₀ *ᵥ vecB B.o B.ζ ≠ 0 := fun h0 => by
   apply B.line.2
   have e : B.L.gram *ᵥ B.ζ = (B.o.iBᴴ * (B.d.i₀ᴴ * (D.sp.Y 0).gram)) *ᵥ (B.d.i₀ *ᵥ vecB B.o B.ζ) := by
@@ -27,6 +30,9 @@ theorem besVec_ne_zero (B : SBes X h u ψ A) : B.d.i₀ *ᵥ vecB B.o B.ζ ≠ 0
     simp only [vecB, Matrix.mulVec_mulVec, Matrix.mul_assoc]
   rw [e, h0]; simp
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Function.ne_iff.1 (besVec_ne_zero B)`. Establish `hz : X.ιE (X.zR u (Fin.cast (rank_eq X h) k)) ≠ 0` using `fun h0 => hk (by rw [h₁, h0, mul_zero]; rfl)`. Conclude with `mul_right_cancel₀ hz ((h₁ k).symm.trans (h₂ k))`.
+-/
 theorem besScale_unique (B : SBes X h u ψ A) {μ μ' : D.host.E}
     (h₁ : ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = μ * X.ιE (X.zR u (Fin.cast (rank_eq X h) k)))
     (h₂ : ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = μ' * X.ιE (X.zR u (Fin.cast (rank_eq X h) k))) : μ = μ' := by
@@ -34,12 +40,22 @@ theorem besScale_unique (B : SBes X h u ψ A) {μ μ' : D.host.E}
   have hz : X.ιE (X.zR u (Fin.cast (rank_eq X h) k)) ≠ 0 := fun h0 => hk (by rw [h₁, h0, mul_zero]; rfl)
   exact mul_right_cancel₀ hz ((h₁ k).symm.trans (h₂ k))
 
+/- English proof (translation)
+Take `⟨μ, lam, -, -, -, he, he'⟩` from `hB`. Conclude with `⟨_, _, fun k => he k a, fun k => he' k a⟩`.
+-/
 theorem Framed.lines {B : SBes X h u ψ A} (hB : Framed B) (a : Fin D.R.rS) :
     ∃ s s' : D.host.E, (∀ k, B.d.e k a = s * X.ιE (X.eR a (Fin.cast (rank_eq X h) k))) ∧
       ∀ k, B.d.e' k a = s' * X.ιE (X.fR a (Fin.cast (rank_eq X h) k)) := by
   obtain ⟨μ, lam, -, -, -, he, he'⟩ := hB
   exact ⟨_, _, fun k => he k a, fun k => he' k a⟩
 
+/- English proof (translation)
+Take `⟨μ, lam, -, -, -, he, he'⟩` from `hB`. Take `⟨μ', lam', -, -, -, ge, ge'⟩` from `hB'`. Use extensionality with `k a`. Establish `hne : ∃ r, B.d.e r a ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Use `congrFun (congrFun B.d.e'e a) a` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `[hc] at this`. Take `⟨r, hr⟩` from `hne`.
+
+Establish `hz : X.ιE (X.eR a (Fin.cast (rank_eq X h) r)) ≠ 0` using `fun h0 => hr (by rw [he, h0, mul_zero])`. Establish `hs` using `mul_right_cancel₀ hz ((ge r a).symm.trans ((congrFun (congrFun e r) a).trans (he r a)))`. Rewrite using `[ge', he', hs]`.
+-/
 theorem Framed.e'_eq {A' : Formalism.BasicNotions.TH.HSp D} {u' : D.what₂.Word} {B : SBes X h u ψ A} {B' : SBes X h u' ψ A'}
     (hB : Framed B) (hB' : Framed B') (e : B'.d.e = B.d.e) : B'.d.e' = B.d.e' := by
   obtain ⟨μ, lam, -, -, -, he, he'⟩ := hB
@@ -56,12 +72,18 @@ theorem Framed.e'_eq {A' : Formalism.BasicNotions.TH.HSp D} {u' : D.what₂.Word
   have hs := mul_right_cancel₀ hz ((ge r a).symm.trans ((congrFun (congrFun e r) a).trans (he r a)))
   rw [ge', he', hs]
 
+/- English proof (translation)
+Establish `e1 : B.d.e * c = 0` using `by simpa [hB.e'_eq hB' e] using e'`. Use `congrArg (fun x => B.d.e'ᴴ * (D.sp.Y 0).gram * x) e1` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, B.d.e'e, Matrix.one_mul, Matrix.mul_zero]`.
+-/
 theorem Framed.shear_eq_zero {B B' : SBes X h u ψ A} (hB : Framed B) (hB' : Framed B')
     {c : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} (e : B'.d.e = B.d.e) (e' : B'.d.e' = B.d.e' + B.d.e * c) : c = 0 := by
   have e1 : B.d.e * c = 0 := by simpa [hB.e'_eq hB' e] using e'
   have := congrArg (fun x => B.d.e'ᴴ * (D.sp.Y 0).gram * x) e1
   simpa only [← Matrix.mul_assoc, B.d.e'e, Matrix.one_mul, Matrix.mul_zero] using this
 
+/- English proof (translation)
+Take `⟨lam, hl, H⟩` from `exists_sBes_scaled_dual D X h u ψ F₀ tr hE hψ`. Take `⟨B, ha, -, hz, he, he'⟩` from `H μ vA hμ`. Conclude with `⟨B, ⟨μ, lam, hμ, hl, hz, he, he'⟩, ha, hz⟩`.
+-/
 theorem exists_framed_adapted (F₀ : Formalism.L2.Forms.Forms0 D u) (tr : Formalism.L2.SG.ColDict.Transport X u F₀) (hE : IdE X)
     (hψ : IsStdChar D ψ (-1)) (μ : D.host.E) (hμ : μ ≠ 0) (vA : Vol (D.sp.X 0)) :
     ∃ B : SBes X h u ψ (D.sp.X 0), Framed B ∧ B.Adapted tr.wt ∧
@@ -80,14 +102,23 @@ def InPlace : Prop := Placed f B ∧ Framed B
 
 variable {f B}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hb⟩` from `h`. Conclude with `hb.adapted`.
+-/
 theorem Placed.adapted (h : Placed f B) : B.Adapted (W.S.tr u).wt := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hb⟩ := h
   exact hb.adapted
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hb⟩` from `h`. Conclude with `hb.trace`.
+-/
 theorem Placed.levTrace (h : Placed f B) : LevTrace f B := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hb⟩ := h
   exact hb.trace
 
+/- English proof (translation)
+Take `⟨⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, hb⟩, μ, s, hμ, hs, hz, he, he'⟩` from `h`. Take `⟨μ', lam, n1, n2, n3⟩` from `hb.norm`. Take `rfl : μ = μ'` from `besScale_unique B hz n2`. Conclude with `⟨k, i1, i2, i3, i4, ι, v, o, n, G, pl, h1, h2, h3, h4, h5, h6, hb, μ, lam, s, hμ, n1, hs, n3, hz, he, he'⟩`.
+-/
 theorem InPlace.common (h : InPlace f B) :
     ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (ι : Type)
       (v : VCom f.c) (o : TDat f.c k ι) (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg),
@@ -107,25 +138,40 @@ theorem InPlace.common (h : InPlace f B) :
 
 variable (f B)
 
+/- English proof (translation)
+Unfold `tOf`. Rewrite using `[mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem shift_tOf (a₀ a : GA D (D.sp.X 0)) :
     (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * tOf f B a₀ a =
       embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from f.g.b 0) := by
   unfold tOf
   rw [mul_assoc, mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[← shift_tOf, mul_right_inj]`.
+-/
 theorem tOf_eq_iff (a₀ a : GA D (D.sp.X 0)) (t : GA D (D.sp.Y 0)) :
     tOf f B a₀ a = t ↔ embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from f.g.b 0) =
       (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * t := by
   rw [← shift_tOf, mul_right_inj]
 
+/- English proof (translation)
+Unfold `tOf`. Rewrite using `[mul_one, map_one, mul_one]`.
+-/
 example : tOf f B 1 1 = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * (show GA D (D.sp.Y 0) from f.g.b 0) := by
   unfold tOf
   rw [mul_one, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[tOf_eq_iff, hb]`. Conclude with `hp.eq`.
+-/
 example (d : BotDat W u) {z : GA D (D.sp.Y 0)} (hp : d.Pin z) (hb : (show GA D (D.sp.Y 0) from f.g.b 0) = d.b) :
     tOf f d.B d.a₀ d.a = z * (show GA D (D.sp.Y 0) from W.Q.tS) * d.k := by
   rw [tOf_eq_iff, hb]; exact hp.eq
 
+/- English proof (translation)
+Introduce `h'` and use `hc (h.2.shear_eq_zero h'.2 e e')`.
+-/
 example (f' : FamCh W u) (B' : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (c : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E)
     (hc : c ≠ 0) (e : B'.d.e = B.d.e) (e' : B'.d.e' = B.d.e' + B.d.e * c) (h : InPlace f B) : ¬ InPlace f' B' :=
   fun h' => hc (h.2.shear_eq_zero h'.2 e e')

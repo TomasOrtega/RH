@@ -11,6 +11,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ io N c e hP he`. Use `set i := io.comp (algebraMap V (FractionRing V)) with hi`. Establish `hio : Function.Injective io` using `io.injective`. Establish `hinj : Function.Injective i` using `hio.comp (IsFractionRing.injective V (FractionRing V))`. Use `letI : Algebra V K := i.toAlgebra`.
+
+Establish `hcI : ∀ a, IsIntegral V (c a)` using `hP.1`. Establish `hsI : ∀ j, IsIntegral V (symTup c j)`. Introduce `j`. Establish `: symTup c j ∈ integralClosure V K`. Unfold `symTup`.
+
+Use `Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Rewrite using `[Finset.esymm_map_val]`. Conclude with `Subalgebra.sum_mem _ fun t _ => Subalgebra.prod_mem _ fun b _ => hcI b`. Conclude with `this`. Set `φ : FractionRing V →ₐ[V] K` to `{ io with commutes' := fun r => rfl }`.
+
+Establish `heI : ∀ j, IsIntegral V (e j)` using `fun j => (isIntegral_algHom_iff φ hio).1 (by rw [show φ (e j) = io (e j) from rfl, he j]; exact hsI j)`. Use `choose e' he' using fun j => IsIntegrallyClosed.isIntegral_iff.1 (heI j)`. Use `⟨e', he', ?_⟩` and prove the remaining obligations. Take `⟨a₀, hc0, hinv⟩` from `hP.2`. Take `⟨W, hle⟩` from `(LocalSubring.range i).exists_le_valuationSubring`.
+
+Take `⟨hle, hloc⟩` from `LocalSubring.le_def.1 hle`. Establish `memW : ∀ x : K, i.IsIntegralElem x → x ∈ W`. Introduce `x ⟨p, hp, hx⟩`. Establish `: IsIntegral W x`. Set `g : V →+* W` to `i.codRestrict W (fun v => hle ⟨v, rfl⟩)`.
+
+Use `⟨p.map g, hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hx`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 this`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Establish `hcW : ∀ a, c a ∈ W` using `fun a => memW _ (hP.1 a)`. Establish `hc0W : (c a₀)⁻¹ ∈ W` using `memW _ hinv`. Set `y : Fin N → W` to `fun a => ⟨c a * (c a₀)⁻¹, mul_mem (hcW a) hc0W⟩`. Establish `hy0 : y a₀ = 1` using `Subtype.ext (mul_inv_cancel₀ hc0)`.
+
+Take `⟨k, hk1, hkN, hu⟩` from `GlobalTheory.exists_isUnit_esymm_of_eq_one W (Fin N) y a₀ hy0`. Rewrite `hkN` using `[Fintype.card_fin]`. Use `set E := (Finset.univ.val.map y).esymm k with hE`. Set `u0 : W` to `⟨c a₀, hcW a₀⟩`. Establish `hu0 : IsUnit u0` using `isUnit_iff_exists_inv.2 ⟨⟨(c a₀)⁻¹, hc0W⟩, Subtype.ext (mul_inv_cancel₀ hc0)⟩`.
+
+Set `Z : W` to `(u0 ^ k * E) ^ (N.factorial / k)`. Establish `hZ : IsUnit Z` using `((hu0.pow k).mul hu).pow _`. Set `j : Fin N` to `⟨k - 1, by omega⟩`. Establish `hjk : (j : ℕ) + 1 = k` using `by simp only [j]; omega`. Establish `hZj : (Z : K) = i (e' j)`.
+
+Establish `: i (e' j) = io (e j)` using `by rw [hi, RingHom.comp_apply, he' j]`. Rewrite using `[this, he j]`. Simplify using `only [Z, symTup, hjk, hE, Finset.esymm_map_val]`. Use `push_cast`. Use `congr 1`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_powersetCard.1 ht).2.symm, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [y, u0]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨j, ?_⟩` and prove the remaining obligations. Establish `hmem : i (e' j) ∈ (LocalSubring.range i).toSubring` using `⟨e' j, rfl⟩`. Establish `h1 : IsUnit (Subring.inclusion hle ⟨i (e' j), hmem⟩)`. Establish `h0 : Subring.inclusion hle ⟨i (e' j), hmem⟩ = Z` using `by apply Subtype.ext; exact hZj.symm`.
+
+Rewrite using `[h0]`. Conclude with `hZ`. Take `⟨u, hu'⟩` from `hloc.map_nonunit _ h1`. Take `⟨w, hw⟩` from `((u⁻¹ : Units _) : (LocalSubring.range i).toSubring).2`. Use `isUnit_iff_exists_inv.2 ⟨w, hinj ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ((u : (LocalSubring.range i).toSubring) : K) * (((u⁻¹ : Units _) : (LocalSubring.range i).toSubring) : K) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv, Subring.coe_one]`. Rewrite using `[map_mul, map_one, hw, ← h3, hu']`.
+-/
 theorem symTup_unit_of_prim : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsIntegrallyClosed V] [Field K] (io : FractionRing V →+* K) (N : ℕ) (c : Fin N → K) (e : Fin N → FractionRing V), Prim (io.comp (algebraMap V (FractionRing V))) c → (∀ j, io (e j) = symTup c j) → ∃ e' : Fin N → V, (∀ j, algebraMap V (FractionRing V) (e' j) = e j) ∧ ∃ j, IsUnit (e' j) := by
   intro V K _ _ _ _ _ io N c e hP he
   set i := io.comp (algebraMap V (FractionRing V)) with hi

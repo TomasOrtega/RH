@@ -18,9 +18,17 @@ variable {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {χ : k[X]} {q : ℕ} (D 
   {x : Matrix (Fin N) (Fin N) k} (hZ : CR Z) (hx : x ∈ Bz Z) (hχ : aeval x χ = 0)
 include hZ hx hχ
 
+/- English proof (translation)
+The claim follows from `idem_mem D hZ hx hχ hf.1 hf.2.1`.
+-/
 theorem pz_mem_S {f : Matrix (Fin N) (Fin N) k} (hf : f ∈ primIdem Z) : f ∈ Sx D x :=
   idem_mem D hZ hx hχ hf.1 hf.2.1
 
+/- English proof (translation)
+Establish `hfS` using `pz_mem_S D hZ hx hχ hf`. Establish `hc : f * e = e * f` using `(sx_cr D hZ hx hχ).1 f hfS e he.1`. Apply `he.2.2.2 (e * f) (Subalgebra.mul_mem _ he.1 hfS)` to reduce the goal to its premises. Use `show e * f * (e * f) = e * f`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ef_cases {e f : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D x)) (hf : f ∈ primIdem Z) :
     e * f = 0 ∨ e * f = e := by
   have hfS := pz_mem_S D hZ hx hχ hf
@@ -35,6 +43,13 @@ theorem ef_cases {e f : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D x))
       _ = e * (e * f) := by rw [hc]
       _ = e * f := by rw [← mul_assoc, he.2.1.eq]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `he.2.2.1` to reduce the goal to its premises. Establish `hsum` using `pi_sum hZ`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : g ∈ primIdem Z` using `(Set.Finite.mem_toFinset _).1 hg`. Break down `ef_cases D hZ hx hχ he hg' with h0 | h0` into its components or cases. Conclude with `h0`.
+
+Conclude with `absurd h0 (hno g hg')`. Use `_ = 0 := Finset.sum_const_zero`.
+-/
 theorem ef_exists {e : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D x)) : ∃ f ∈ primIdem Z, e * f = e := by
   by_contra hno
   push_neg at hno
@@ -51,6 +66,9 @@ theorem ef_exists {e : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D x)) 
       · exact absurd h0 (hno g hg')
     _ = 0 := Finset.sum_const_zero
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hff`. Establish `h0` using `pi_orth hZ hf' hf (Ne.symm hff)`. Apply `he.2.2.1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ef_unique {e f f' : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D x)) (hf : f ∈ primIdem Z)
     (hf' : f' ∈ primIdem Z) (hef : e * f = e) (hef' : e * f' = e) : f = f' := by
   by_contra hff
@@ -62,6 +80,13 @@ theorem ef_unique {e f f' : Matrix (Fin N) (Fin N) k} (he : e ∈ primIdem (Sx D
     _ = 0 := by rw [h0, mul_zero]
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter]`. Establish `h1` using `pi_sum (sx_cr D hZ hx hχ)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `e he`.
+
+Establish `he' : e ∈ primIdem (Sx D x)` using `(Set.Finite.mem_toFinset _).1 he`. Use `split_ifs with h`. Conclude with `h.symm`. Break down `ef_cases D hZ hx hχ he' hf with h0 | h0` into its components or cases. Conclude with `h0.symm`.
+
+Conclude with `absurd h0 h`. Use `_ = (∑ e ∈ (pi_fin (sx_cr D hZ hx hχ)).toFinset, e) * f := (Finset.sum_mul _ _ _).symm`. Use `_ = f := by rw [h1, one_mul]`.
+-/
 theorem fib_sum {f : Matrix (Fin N) (Fin N) k} (hf : f ∈ primIdem Z) :
     ∑ e ∈ (pi_fin (sx_cr D hZ hx hχ)).toFinset with e * f = e, e = f := by
   rw [Finset.sum_filter]
@@ -83,6 +108,13 @@ def Tef (e f : Matrix (Fin N) (Fin N) k) : Submodule k (Matrix (Fin N) (Fin N) k
   (Z.toSubmodule.map (LinearMap.mulLeft k f)).map (LinearMap.mulLeft k e)
 
 omit hχ in
+/- English proof (translation)
+Break down `pi_field hZ hf hz with h0 | ⟨b, hb, hfb⟩` into its components or cases. Conclude with `h0`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Establish `hfzC : f * z ∈ Cx Z x` using `(Cx Z x).mul_mem (z_le_cx hf.1) (z_le_cx hz)`.
+
+Establish `hefz : e * (f * z) ∈ Cx Z x` using `(Cx Z x).mul_mem hC hfzC`. Establish `hcb : Commute (e * (f * z)) b` using `cx_comm hZ hx _ hefz b (z_le_cx hb)`. Establish `hnb : IsNilpotent (e * (f * z) * b)` using `Commute.isNilpotent_mul_right hcb hn`. Establish `heq : e * (f * z) * b = e`. Rewrite using `[mul_assoc, hfb, hef]`.
+
+Rewrite `hnb` using `[heq]`. Conclude with `heid.eq_zero_of_isNilpotent hnb`.
+-/
 theorem tef_zero {e f : Matrix (Fin N) (Fin N) k} (heid : IsIdempotentElem e) (hne : e ≠ 0) (hf : f ∈ primIdem Z)
     (hef : e * f = e) (hC : e ∈ Cx Z x) {z : Matrix (Fin N) (Fin N) k} (hz : z ∈ Z) (hn : IsNilpotent (e * (f * z))) :
     f * z = 0 := by

@@ -70,6 +70,9 @@ def FormsCl (X : RealSide D) (X' : RealSide D') (ι : D.what₂.LL →+* D'.what
   ∀ (j : Fin D.R.m) (j' : Fin D'.R.m) (h : (j : ℕ) = j') (x : (X.R.FW j).WK),
     SameMap (evidence X j x) (evidence X' j' ((forms j j' h).φ x))
 
+/- English proof (translation)
+The claim follows from `let ⟨forms, hr⟩ := s ⟨{ eK := eK, γ := γ, forms := forms, read := hr, Q := q, io := o, Pg := a.Pg, ψ := a.ψ, θ := a.θ, ΛV := a.ΛV, ΛW := a.ΛW, βV := a.βV, βW := a.βW, BV := a.BV, vacP := a.vacP, MW := a.MW, v₀ := a.v₀, eta := b.eta, mu0 := b.mu0, Cmu0 := b.Cmu0, delAt := b.delAt, …`.
+-/
 theorem realMove_of_parts {X : RealSide D} {X' : RealSide D'} {ι : D.what₂.LL →+* D'.what₂.LL} {eK : X.core.Q.c.F ≃+* X'.core.Q.c.F}
     {γ : X.Γ ≃* X'.Γ} (a : Frames X X') (b : Chars X X') (c : Grps X X' ι γ) (q : PlCl X X') (o : IoCl X X' ι)
     (s : FormsCl X X' ι eK γ) : Nonempty (RealMove X X' ι) :=
@@ -97,6 +100,9 @@ abbrev Geo (x : St P) := GlobalTheory.RealGeo.GeoHalf x.m.z.core x.m.z.R.toRealD
 
 abbrev datAt (x : St P) (g : Geo x) : Dat (w.st x.o.Z) w.I P.hX T P.Wt := { x.m.z with geo := g }
 
+/- English proof (translation)
+Establish `hs : ({τ | τ = (Formalism.L2.DIV.mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T P.Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T P.Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T P.Wt)).finite_toSet`. Conclude with `hs.to_subtype`.
+-/
 theorem finite_tup (P : Pre2 K w) : Finite (TupU w.I (usedOf w.I T P.Wt)) := by
   have hs : ({τ | τ = (Formalism.L2.DIV.mu0F (X := B.fields) (tuOf w.I (usedOf w.I T P.Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T P.Wt)} :
       Set _).Finite :=

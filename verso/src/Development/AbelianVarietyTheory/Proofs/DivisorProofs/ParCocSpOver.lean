@@ -13,6 +13,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ A B J _ a b n ha D _ _ D' _ _ φ x`. Use function extensionality and compare the values at `E _ _ E' _ _ ψ z`. Simplify using `only [parCoc, Fn1.pull, Fn1.add, sumMul]`. Establish `h1 : z ≫ (spOver φ ≫ x) ▷ B = (z ≫ spOver φ ▷ B) ≫ x ▷ B`. Rewrite using `[comp_whiskerRight, Category.assoc]`.
+
+Establish `h2 : (z ≫ spOver φ ▷ B) ≫ snd _ _ = z ≫ snd _ _`. Rewrite using `[Category.assoc, whiskerRight_snd]`. Establish `h3 : ptAlg ((z ≫ spOver φ ▷ B) ≫ fst _ _) = (ptAlg (z ≫ fst _ _)).comp φ`. Rewrite using `[Category.assoc, whiskerRight_fst, ← Category.assoc]`. Use `conv_lhs => rw [← spOver_ptAlg (z ≫ fst _ _)]`.
+
+Rewrite using `[spOver_comp, ptAlg_spOver]`. Rewrite using `[h1, h2, h3]`. Establish `hc : ∀ i, a i D E ((ptAlg (z ≫ fst _ _)).comp φ) x = ptAlg (z ≫ fst _ _) (a i D D' φ x) + a i D' E (ptAlg (z ≫ fst _ _)) (spOver φ ≫ x)` using `fun i ↦ ha i D D' E φ _ x (sm_whole x)`. Simplify using `only [hc, map_add, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem parCoc_spOver : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) (J : Type) [Fintype J] (a : J → Fn1 A) (b : J → Fn1 B) (n : Fn1 (A ⊗ B)), (∀ i, IsCoc (whole A) (a i)) → ∀ (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (x : Pt A D), parCoc a b n (spOver φ ≫ x) = ((parCoc a b n x).pull (spOver φ ▷ B)).add (sumMul (fun i ↦ a i D D' φ x) b) := by
   intro R _ A B J _ a b n ha D _ _ D' _ _ φ x
   funext E _ _ E' _ _ ψ z

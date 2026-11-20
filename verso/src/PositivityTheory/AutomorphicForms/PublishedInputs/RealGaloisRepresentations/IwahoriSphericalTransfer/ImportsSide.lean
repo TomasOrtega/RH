@@ -16,6 +16,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.AwayDescent
 
+/- English proof (translation)
+Introduce `L F Ω _ _ _ _ _ _ K _ _ _ _ _ _ _ l _ ι a π P hBC χ r wt HT hG v A h hdec hl`. Take `⟨w, h', i, hi⟩` from `GlobalTheory.T.exists_place_completion_iso F Ω K v A h hdec`. Establish `hlw : ((l : ℕ) : 𝓞 K) ∉ w.asIdeal`. Introduce `hw`. Apply `hl` to reduce the goal to its premises.
+
+Establish `e1` using `(h ((l : ℕ) : 𝓞 F))`. Establish `e2` using `(h' ((l : ℕ) : 𝓞 K))`. Simplify using `only [map_natCast] at e1 e2`. Conclude with `e1.1 (e2.2 hw)`. Establish `hL : GlobalTheory.Published.LocalLanglandsGL` using `GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein L.loc.llc L.loc.conv L.loc.dzc L.loc.dzi L.loc.brauer L.loc.chev L.aut.art L.loc.exh L.loc.multi L.loc.cos L.loc.zel L.loc.geo L.loc.bz`.
+
+Use `⟨fun rc hrc σ hσ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨⟨σ', hσ'⟩, -⟩` from `GlobalTheory.T.local_global_compatibility_complex L K a P w`. Take `⟨rc', hrc', -⟩` from `hL.1 K Ω A w h'`. Take `⟨e, he⟩` from `hBC.split v w i hi.cont hi.loc σ σ' hσ hσ'`. Establish `hx'` using `hG.away w hlw A h' rc' hrc' σ' hσ'`.
+
+Take `⟨x, hx, hxx⟩` from `GlobalTheory.T.galois_rep_restriction_local_completion F Ω K l ι a r A v w h h' i hi _ hx'`. Rewrite using `[← UpperTheory.V.Af.Cq.recTransport hL F K Ω A v w h h' _ i hi a σ σ' e he rc rc' hrc hrc' x hxx]` and apply the resulting hypothesis. Take `⟨x', hx', ht⟩` from `hG.pure w hlw A h'`. Take `⟨x, hx, hxx⟩` from `GlobalTheory.T.galois_rep_restriction_local_completion F Ω K l ι a r A v w h h' i hi x' hx'`. Conclude with `⟨x, hx, GlobalTheory.TemperedTransport.main F Ω K A v w h h' (algebraMap F K) i hi x x' hxx _ ht⟩`.
+-/
 theorem main : GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (P : CuspSub K a), IsBC π P → ∀ (χ : HChar (maximalRealSubfield K)) (r : G F Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (K →+* Qbar l) → Multiset ℤ), IsGalRepOf P χ ι (r.comp (res F Ω K)) wt HT → ∀ (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A v), Dec (F := F) A ≤ (res F Ω K).range → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → (∀ (rc : IrrGL (v.adicCompletion F) → WD h), IsRec h rc → ∀ σ, π.IsLocComp v σ → IsWDOf ι r (rc (algNorm σ))) ∧ ∃ x : WD h, IsWDOf ι r x ∧ (x.lpTw ((wt : ℝ) / 2)).tempered := by
   intro L F Ω _ _ _ _ _ _ K _ _ _ _ _ _ _ l _ ι a π P hBC χ r wt HT hG v A h hdec hl
   obtain ⟨w, h', i, hi⟩ := GlobalTheory.T.exists_place_completion_iso F Ω K v A h hdec

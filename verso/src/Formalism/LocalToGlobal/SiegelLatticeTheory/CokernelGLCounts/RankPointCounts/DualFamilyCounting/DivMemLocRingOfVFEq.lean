@@ -24,14 +24,29 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "κ" => algebraMap (𝓞 K) K
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem κι_eq (t : 𝓞 F) : κ (ι t) = algebraMap F K (t : F) := rfl
 
+/- English proof (translation)
+Introduce `h`. Apply `ha` to reduce the goal to its premises. Establish `h1 : ι a = 0` using `(FaithfulSMul.algebraMap_injective (𝓞 K) K) (by rw [h, map_zero])`. Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)) (by rw [h1, map_zero])`.
+-/
 theorem κι_ne_zero {a : 𝓞 F} (ha : a ≠ 0) : κ (ι a) ≠ 0 := by
   intro h
   apply ha
   have h1 : ι a = 0 := (FaithfulSMul.algebraMap_injective (𝓞 K) K) (by rw [h, map_zero])
   exact (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)) (by rw [h1, map_zero])
 
+/- English proof (translation)
+Establish `h1 : Ideal.span {a} ≤ 𝔭 ^ vF 𝔭 a` using `(Ideal.span_singleton_le_iff_mem _).2 (localValuationFiltration.mem_pow_vF h𝔭 ha)`. Take `⟨Q, hQ⟩` from `Ideal.dvd_iff_le.2 h1`. Establish `hQp : ¬ Q ≤ 𝔭`. Introduce `hle`. Apply `localValuationFiltration.notMem_pow_vF h𝔭 ha` to reduce the goal to its premises.
+
+Establish `: Ideal.span {a} ≤ 𝔭 ^ (vF 𝔭 a + 1)`. Rewrite using `[hQ, pow_succ]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `this (Ideal.subset_span rfl)`. Take `⟨t, htQ, htp⟩` from `Set.not_subset.1 hQp`.
+
+Use `⟨t, htp, ?_⟩` and prove the remaining obligations. Establish `ha'v : a' ∈ 𝔭 ^ vF 𝔭 a`. Rewrite using `[hv]`. Conclude with `localValuationFiltration.mem_pow_vF h𝔭 ha'`. Establish `h2 : a' * t ∈ Ideal.span {a}`.
+
+Rewrite using `[hQ]`. Conclude with `Ideal.mul_mem_mul ha'v htQ`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h2`. Conclude with `⟨c, by rw [mul_comm, hc]⟩`.
+-/
 theorem exists_mul_eq_of_vF_eq {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a a' : 𝓞 F}
     (ha : a ≠ 0) (ha' : a' ≠ 0) (hv : vF 𝔭 a = vF 𝔭 a') :
     ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ c : 𝓞 F, t * a' = c * a := by
@@ -59,6 +74,9 @@ theorem exists_mul_eq_of_vF_eq {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) 
 variable (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
 include hK hF
 
+/- English proof (translation)
+Establish `hp : (P.comap ι).IsPrime` using `Ideal.comap_isPrime _ _`. Rewrite using `[WA.mem_locRing, UnimodularLocalization.locR_eq_locF hK hF hP, LocF.mem_locF_iff hp]`. Use `exists_congr fun t => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one, Algebra.smul_def]`.
+-/
 theorem mem_locRing_iff {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (z : K) :
     z ∈ WA.locRing P ↔ ∃ t : 𝓞 F, t ∉ P.comap ι ∧ ∃ r : 𝓞 K, κ r = κ (ι t) * z := by
   have hp : (P.comap ι).IsPrime := Ideal.comap_isPrime _ _
@@ -66,6 +84,11 @@ theorem mem_locRing_iff {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (z : K) :
   refine exists_congr fun t => and_congr_right fun _ => ?_
   rw [Submodule.mem_one, Algebra.smul_def]
 
+/- English proof (translation)
+Establish `hpm : (P.comap ι).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P`. Take `⟨t, ht, c, hc⟩` from `exists_mul_eq_of_vF_eq hpm ha ha' hv`. Rewrite using `[mem_locRing_iff hK hF hP]`. Use `⟨t, ht, ι c, ?_⟩` and prove the remaining obligations. Establish `h0` using `κι_ne_zero (K := K) ha`.
+
+Establish `e : κ (ι t) * κ (ι a') = κ (ι c) * κ (ι a)`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_mul, hc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+-/
 theorem div_mem_locRing_of_vF_eq {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {a a' : 𝓞 F}
     (ha : a ≠ 0) (ha' : a' ≠ 0) (hv : vF (P.comap ι) a = vF (P.comap ι) a') :
     κ (ι a') / κ (ι a) ∈ WA.locRing P := by
@@ -79,6 +102,15 @@ theorem div_mem_locRing_of_vF_eq {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {a a' :
   field_simp
   rw [e]
 
+/- English proof (translation)
+Establish `hS` using `WA.isHermSemilocal_locRing hK hP`. Establish `h1 : star μ⁻¹ * μ⁻¹ ∈ WA.locRing P`. Rewrite using `[star_inv₀, ← mul_inv]`. Conclude with `hN'`. Take `⟨b, hb, hbm⟩` from `WA.exists_norm_one_mul_mem hS h1`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `hsb : star b = b⁻¹` using `eq_inv_of_mul_eq_one_left hb`. Use `⟨b, hb, by rw [mul_comm]; exact hbm, ?_⟩` and prove the remaining obligations.
+
+Establish `e : μ * b⁻¹ = star (μ⁻¹ * b) * (star μ * μ)`. Rewrite using `[star_mul', star_inv₀, hsb]`. Establish `hsμ : star μ ≠ 0` using `star_ne_zero.2 hμ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `(WA.locRing P).mul_mem (hS.star_mem _ hbm) hN`.
+-/
 theorem exists_norm_one_unit {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {μ : K} (hμ : μ ≠ 0)
     (hN : star μ * μ ∈ WA.locRing P) (hN' : (star μ * μ)⁻¹ ∈ WA.locRing P) :
     ∃ b : K, star b * b = 1 ∧ b * μ⁻¹ ∈ WA.locRing P ∧ μ * b⁻¹ ∈ WA.locRing P := by
@@ -103,6 +135,13 @@ section Line
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hp : (P.comap ι).IsPrime` using `Ideal.comap_isPrime _ _`. Rewrite using `[LocF.mem_locF_iff hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hz⟩`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hz`.
+
+Establish `ht0 : κ (ι t) ≠ 0` using `κι_ne_zero (fun h => ht (h ▸ Ideal.zero_mem _))`. Use `⟨κ r / κ (ι t), (mem_locRing_iff hK hF hP _).2 ⟨t, ht, r, by field_simp⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : r • x = κ r • x` using `(algebraMap_smul K r x).symm`. Establish `e2 : ι t • z = κ (ι t) • z` using `(algebraMap_smul K (ι t) z).symm`. Rewrite `hr` using `[e1, e2]`.
+
+Rewrite using `[div_eq_inv_mul, mul_smul, hr, smul_smul, inv_mul_cancel₀ ht0, one_smul]`. Introduce and unpack `⟨c, hc, rfl⟩`. Take `⟨t, ht, r, hr⟩` from `(mem_locRing_iff hK hF hP c).1 hc`. Use `⟨t, ht, Submodule.mem_span_singleton.2 ⟨r, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K r x, ← algebraMap_smul K (ι t) (c • x), smul_smul, hr]`.
+-/
 theorem mem_locF_span_iff {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (x z : V) :
     z ∈ locF (P.comap ι) (Submodule.span (𝓞 K) {x}) ↔ ∃ c ∈ WA.locRing P, z = c • x := by
   have hp : (P.comap ι).IsPrime := Ideal.comap_isPrime _ _
@@ -122,12 +161,36 @@ theorem mem_locF_span_iff {P : Ideal (𝓞 K)} (hP : P.IsMaximal) (x z : V) :
     rw [← algebraMap_smul K r x, ← algebraMap_smul K (ι t) (c • x), smul_smul, hr]
 
 omit hK hF in
+/- English proof (translation)
+Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.map_smul, smul_eq_mul, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_smul_smul (h : V →ₗ⋆[K] V →ₗ[K] K) (μ ν : K) (x y : V) :
     h (μ • x) (ν • y) = star μ * ν * h x y := by
   simp only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, LinearMap.map_smul, smul_eq_mul,
     starRingEnd_apply, RingHom.id_apply]
   ring
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Rewrite `hx`, `hx'` using `[← κι_eq]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [map_zero, LinearMap.zero_apply] at hx`.
+
+Conclude with `κι_ne_zero ha hx.symm`. Take `⟨μ, hμ⟩` from `(finrank_eq_one_iff_of_nonzero' x hx0).1 hV x'`. Establish `hμ0 : μ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hμ` using `[zero_smul]`.
+
+Rewrite `hx'` using `[← hμ]`. Simplify using `only [map_zero, LinearMap.zero_apply] at hx'`. Conclude with `κι_ne_zero ha' hx'.symm`. Establish `hN : star μ * μ = κ (ι a') / κ (ι a)`. Establish `e` using `h_smul_smul h μ μ x x`.
+
+Rewrite `e` using `[hμ, hx, hx']`. Rewrite using `[e]`. Clear denominators, using `[κι_ne_zero (K := K) ha]` for the nonvanishing conditions. Establish `hS1 : star μ * μ ∈ WA.locRing P`. Rewrite using `[hN]`.
+
+Conclude with `div_mem_locRing_of_vF_eq hK hF hP ha ha' hv`. Establish `hS2 : (star μ * μ)⁻¹ ∈ WA.locRing P`. Rewrite using `[hN, inv_div]`. Conclude with `div_mem_locRing_of_vF_eq hK hF hP ha' ha hv.symm`. Take `⟨b, hb, hb1, hb2⟩` from `exists_norm_one_unit hK hF hP hμ0 hS1 hS2`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Use `⟨LinearEquiv.smulOfNeZero K V b hb0, ?_, ?_⟩` and prove the remaining obligations. Introduce `y z`.
+
+Express the relevant statement in the definitionally equal form `h (b • y) (b • z) = h y z`. Rewrite using `[h_smul_smul, hb, one_mul]`. Use extensionality with `z`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.smulOfNeZero_apply]`. Rewrite using `[mem_locF_span_iff hK hF hP x' z]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨c, hc, rfl⟩` from `(mem_locF_span_iff hK hF hP x y).1 hy`. Use `⟨b * μ⁻¹ * c, (WA.locRing P).mul_mem hb1 hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hμ, smul_smul, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨(c * (μ * b⁻¹)) • x, (mem_locF_span_iff hK hF hP x _).2 ⟨_, (WA.locRing P).mul_mem hc hb2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hμ, smul_smul, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_isom_line {h : V →ₗ⋆[K] V →ₗ[K] K} (hV : finrank K V = 1) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {x x' : V} {a a' : 𝓞 F}
     (hx : h x x = algebraMap F K (a : F)) (hx' : h x' x' = algebraMap F K (a' : F))
@@ -184,6 +247,15 @@ theorem exists_isom_line {h : V →ₗ⋆[K] V →ₗ[K] K} (hV : finrank K V = 
       congr 1
       field_simp
 
+/- English proof (translation)
+Establish `hn : finrank K (⊤ : Submodule K V) = 1` using `by rw [finrank_top]; exact hV`. Set `i0 : Fin (finrank K (⊤ : Submodule K V))` to `⟨0, by omega⟩`. Establish `hr : ∀ c : Fin (finrank K (⊤ : Submodule K V)) → V, Set.range c = {c i0}`. Introduce `c`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Establish `hj` using `j.isLt`. Use `congr 1`.
+
+Conclude with `Fin.ext (by simp only [i0]; omega)`. Introduce and unpack `rfl`. Conclude with `⟨i0, rfl⟩`. Take `⟨-, hL, -, hbb, ha0⟩` from `hJ`. Take `⟨-, hL', -, hbb', ha0'⟩` from `hJ'`.
+
+Rewrite using `[← hL, ← hL', hr b, hr b']`. Conclude with `exists_isom_line hK hF hV h𝔭 (hbb i0) (hbb' i0) (ha0 i0) (ha0' i0) (hv i0)`.
+-/
 theorem jordanIsom_rank_one [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K} (hV : finrank K V = 1)
     {L L' : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {b b' : Fin (finrank K (⊤ : Submodule K V)) → V} {a a' : Fin (finrank K (⊤ : Submodule K V)) → 𝓞 F}
@@ -210,6 +282,19 @@ theorem jordanIsom_rank_one [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ
 
 end Line
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Establish `hcP : ι c ∉ P` using `fun h => hc (Ideal.mem_comap.2 h)`. Establish `hN` using `IdealNormInequalities.one_lt_absNorm hP`. Take `⟨h1, h2⟩` from `localDensity K hK P hP 1 k le_rfl hk (ι c) (idealPowerSpanBounds.conjO_map hF c) hcP`. Distinguish the cases in `hc' : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P`.
+
+Establish `h3` using `h1 hc'`. Establish `hs : 0 < Real.sqrt (Ideal.absNorm P : ℝ)` using `Real.sqrt_pos.2 (by linarith)`. Establish `hpos : (0 : ℝ) < (normRepCount K (P ^ k) 1 (ι c) : ℝ)`. Rewrite using `[h3]`. Use `mul_pos (pow_pos hs _) ?_` and prove the remaining obligations.
+
+Establish `: (0 : ℝ) < Real.sqrt (Ideal.absNorm P : ℝ) ^ (-((1 : ℕ) : ℤ))` using `zpow_pos hs _`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨α, hα⟩` from `Cell.exists_of_normRepCount_ne_zero (by exact_mod_cast hpos.ne')`. Use `⟨α, ?_⟩` and prove the remaining obligations. Rewrite using `[ThirdPropositionSlot.map_comap_eq_of_inert hK hF hP hc']`.
+
+Conclude with `hα`. Establish `h3` using `h2 hc'`. Establish `hpos : (0 : ℝ) < (normRepCount K ((P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P) ^ k) 1 (ι c) : ℝ) := by`. Rewrite using `[h3]`. Use `mul_pos (pow_pos (by linarith) _) ?_` and prove the remaining obligations.
+
+Establish `: (Ideal.absNorm P : ℝ) ^ (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[Nat.cast_one, zpow_neg_one]`. Conclude with `inv_lt_one_of_one_lt₀ hN`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨α, hα⟩` from `Cell.exists_of_normRepCount_ne_zero (by exact_mod_cast hpos.ne')`.
+
+Use `⟨α, ?_⟩` and prove the remaining obligations. Rewrite using `[ThirdPropositionSlot.extP_split hK hF hP hc']`. Conclude with `hα`.
+-/
 theorem exists_norm_congr_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {c : 𝓞 F} (hc : c ∉ 𝔭) {k : ℕ}
     (hk : 1 ≤ k) : ∃ α : 𝓞 K, conjO K α * α - ι c ∈ extP K 𝔭 ^ k := by
   obtain ⟨P, hP, rfl⟩ := exists_maximal_over hK hF h𝔭

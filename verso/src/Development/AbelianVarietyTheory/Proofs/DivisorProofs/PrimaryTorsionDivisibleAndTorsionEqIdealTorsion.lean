@@ -3,6 +3,33 @@ open NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ M _ _ g I hg hN hg2 hdiv`. Establish `hgI : (g : 𝓞 E) ∈ I`. Use `Ideal.absNorm_mem I` as an intermediate fact. Rewrite `this` using `[hN]`. Then use the resulting hypothesis. Establish `hIne : I ≠ ⊥`.
+
+Introduce and unpack `rfl`. Rewrite `hN` using `[Ideal.absNorm_bot]`. Conclude with `hg.ne_zero hN.symm`. Establish `hprime : I.IsPrime` using `Ideal.isPrime_of_irreducible_absNorm (by rw [hN]; exact hg)`. Establish `hmax : I.IsMaximal` using `hprime.isMaximal hIne`.
+
+Take `⟨J, hJ⟩` from `(Ideal.dvd_iff_le).2 ((Ideal.span_singleton_le_iff_mem I).2 hgI)`. Establish `hJI : ¬ J ≤ I`. Introduce `h`. Apply `hg2` to reduce the goal to its premises. Establish `h2 : Ideal.span {(g : 𝓞 E)} ≤ I ^ 2`.
+
+Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `h2 (Ideal.mem_span_singleton_self _)`. Establish `hsup : I ⊔ J = ⊤`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hJI (le_sup_right.trans (le_of_eq (hmax.eq_of_le h le_sup_left).symm))`. Establish `hpow : ∀ k : ℕ, I ^ k ⊔ J = ⊤` using `fun k => Ideal.pow_sup_eq_top hsup`. Use `⟨fun j x hx => ?_, fun j x hx hgx a ha => ?_⟩` and prove the remaining obligations. Take `⟨y0, hy0⟩` from `hdiv x`. Establish `h1 : (1 : 𝓞 E) ∈ I ^ j ⊔ J` using `by rw [hpow j]; exact Submodule.mem_top`.
+
+Take `⟨f, hf, e, he, hfe⟩` from `Submodule.mem_sup.1 h1`. Use `⟨e • y0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), smul_comm, Nat.cast_smul_eq_nsmul (𝓞 E), hy0]`. Establish `: e = 1 - f` using `by rw [← hfe]; ring`. Rewrite using `[this, sub_smul, one_smul, hx f hf, sub_zero]`.
+
+Introduce `a ha`. Establish `hae : a * e ∈ I ^ j * Ideal.span {(g : 𝓞 E)}`. Rewrite using `[hJ, ← mul_assoc, ← pow_succ]`. Conclude with `Ideal.mul_mem_mul ha he`. Establish `hker : I ^ j * Ideal.span {(g : 𝓞 E)} ≤ LinearMap.ker (LinearMap.toSpanSingleton (𝓞 E) M y0)`.
+
+Rewrite using `[Ideal.mul_le]`. Introduce `c hc s hs`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.1 hs`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← mul_assoc, mul_smul, Nat.cast_smul_eq_nsmul (𝓞 E), hy0]`. Conclude with `hx _ (Ideal.mul_mem_right _ _ hc)`.
+
+Use `hker hae` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Rewrite using `[smul_smul]`. Conclude with `this`. Establish `hker : I ^ j ⊔ Ideal.span {(g : 𝓞 E)} ≤ LinearMap.ker (LinearMap.toSpanSingleton (𝓞 E) M x)`.
+
+Use `sup_le (fun b hb => ?_) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hx b hb`. Use `(Ideal.span_singleton_le_iff_mem _).2 ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `hgx`. Establish `hIle : I ≤ I ^ j ⊔ Ideal.span {(g : 𝓞 E)}`. Consider the cases of `j with`. Consider the case `zero => rw [pow_zero, Ideal.one_eq_top]`. Conclude with `le_top.trans le_sup_left`.
+
+Consider the case `succ k`. Establish `h : I = I ^ (k + 1) ⊔ Ideal.span {(g : 𝓞 E)}`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h.le`. Use `hker (hIle ha)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Then use the resulting hypothesis.
+-/
 theorem primaryTorsion_divisible_and_gTorsion :
     ∀ (E : Type) [Field E] [NumberField E] (M : Type) [AddCommGroup M] [Module (𝓞 E) M] (g : ℕ) (I : Ideal (𝓞 E)), g.Prime → Ideal.absNorm I = g → (g : 𝓞 E) ∉ I ^ 2 → (∀ x : M, ∃ y : M, g • y = x) → (∀ (j : ℕ) (x : M), (∀ a ∈ I ^ j, a • x = 0) → ∃ y : M, g • y = x ∧ ∀ a ∈ I ^ (j + 1), a • y = 0) ∧ (∀ (j : ℕ) (x : M), (∀ a ∈ I ^ j, a • x = 0) → g • x = 0 → ∀ a ∈ I, a • x = 0) := by
   intro E _ _ M _ _ g I hg hN hg2 hdiv

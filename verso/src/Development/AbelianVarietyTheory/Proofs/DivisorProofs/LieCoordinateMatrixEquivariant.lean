@@ -5,6 +5,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.WigAlg
 
+/- English proof (translation)
+Unfold `coord atEmb`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = InfinitePlace.mk τ`. Apply the tactic sequence `subst hw split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_eq_of_ne hw]`.
+-/
 theorem mul_embeddingScalar_eq_coord_mul {E : Type} [Field E] (τ : E →+* ℂ) (c : Cinf E) (z : ℂ) :
     c * atEmb τ z = atEmb τ (coord τ c * z) := by
   classical

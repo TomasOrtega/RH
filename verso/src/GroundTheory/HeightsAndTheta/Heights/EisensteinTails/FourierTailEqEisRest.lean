@@ -7,9 +7,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.LeavesOrtho
 
 open Complex
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowSum_eq (m : ℤ) (τ : UpperHalfPlane) (s : ℂ) :
     rowSum m τ s = GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.rowSum m τ s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem freqIntegral_eq (k : ℤ) (Y : ℝ) (s : ℂ) :
     freqIntegral k Y s = GroundTheory.Heights₂.Heights.LeavesOrthogonalSum.freqIntegral k Y s := by
   rfl

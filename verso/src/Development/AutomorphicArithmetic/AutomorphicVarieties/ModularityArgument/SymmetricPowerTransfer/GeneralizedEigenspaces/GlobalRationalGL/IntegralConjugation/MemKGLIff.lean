@@ -9,6 +9,9 @@ open UpperTheory.V.W (Plc Lp)
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL, GlobalTheory.SplitFlip.mem_KO_iff]`. Establish `h : ∀ y : Kw w, y ∈ 𝒪[Kw w] ↔ y ∈ w.adicCompletionIntegers L` using `fun y => ((intsOv L w).2 y).symm`. Simplify using `only [h]`.
+-/
 private theorem mem_KGL_iff {L : Type} [Field L] [NumberField L] [IsCMField L] (w : Plc L) {n : ℕ}
     (x : GL (Fin n) (Kw w)) : x ∈ GlobalTheory.LFun.KGL w n ↔
       (∀ i j, (x : Matrix (Fin n) (Fin n) (Kw w)) i j ∈ w.adicCompletionIntegers L) ∧
@@ -17,6 +20,27 @@ private theorem mem_KGL_iff {L : Type} [Field L] [NumberField L] [IsCMField L] (
   have h : ∀ y : Kw w, y ∈ 𝒪[Kw w] ↔ y ∈ w.adicCompletionIntegers L := fun y => ((intsOv L w).2 y).symm
   simp only [h]
 
+/- English proof (translation)
+Introduce `L _ _ _ B`. Establish `hm : ∀ (g : GA B.Δ) (w : Plc L) (i j : Fin 3), (cLoc w (B.bG g : UA L 3) : Matrix (Fin 3) (Fin 3) (Kw w)) i j = B.ρ _ w rfl ((g.1 (un w) : Matrix (Fin 3) (Fin 3) _) i j)` using `fun g w i j => congrFun (congrFun (B.bG_loc g w) i) j`. Establish `hi : ∀ (g : GA B.Δ) (w : Plc L) (i j : Fin 3), (((cLoc w (B.bG g : UA L 3))⁻¹ : GL (Fin 3) (Kw w)) : Matrix (Fin 3) (Fin 3) (Kw w)) i j = B.ρ _ w rfl (star ((g.1 (un w) : Matrix (Fin 3) (Fin 3) _) j i))`. Introduce `g w i j`. Establish `h` using `hm g⁻¹ w i j`.
+
+Rewrite `h` using `[map_inv, InvMemClass.coe_inv, map_inv]`. Conclude with `h`. Use `⟨fun g v => ?_, fun g v => ?_, fun w S g => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hK w h`.
+
+Substitute `h` using the available equality. Rewrite using `[mem_KGL_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `(B.ρ_int _ _).1 (hK i j).1 w rfl`.
+
+Rewrite using `[hi]`. Conclude with `(B.ρ_int _ _).1 (hK j i).2 w rfl`. Introduce `H i j`. Use `⟨(B.ρ_int _ _).2 fun w h => ?_, (B.ρ_int _ _).2 fun w h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Use `((mem_KGL_iff _ _).1 (H w rfl)).1 i j` as an intermediate fact. Rewrite `this` using `[hm]`. Then use the resulting hypothesis. Substitute `h` using the available equality. Use `((mem_KGL_iff _ _).1 (H w rfl)).2 j i` as an intermediate fact. Rewrite `this` using `[hi]`. Then use the resulting hypothesis.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h1 w h`. Substitute `h` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Use `B.bG_loc g w` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Use `this.trans ?_` and prove the remaining obligations. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Introduce `H`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `B.ρ_inj` to reduce the goal to its premises. Introduce `w h`. Consider the cases of `h`.
+
+Establish `e2` using `hm g w i j`. Rewrite `e2` using `[H w rfl, Units.val_one]`. Establish `e3 : B.ρ _ w rfl ((1 : Matrix (Fin 3) (Fin 3) (Lsq (Kv (un w)) (cv (un w) B.Δ))) i j) = (1 : Matrix (Fin 3) (Fin 3) (Kw w)) i j` using `congrFun (congrFun (Matrix.map_one (B.ρ _ w rfl) (map_zero _) (map_one _)) i) j`. Rewrite using `[map_sub, ← e2]`. Conclude with `sub_eq_zero.2 e3.symm`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `(B.bG_loc g w).trans ?_` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `S.ρ_eq _`.
+-/
 theorem UpperTheory.V.Z.Sym.Dict.Br.okG :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (B : Bridge L), (∀ (g : GA B.Δ) v, g.1 v ∈ KU (Ov v) _ ↔ ∀ w, un w = v → cLoc w (B.bG g : UA L 3) ∈ GlobalTheory.LFun.KGL w 3) ∧ (∀ (g : GA B.Δ) v, g.1 v = 1 ↔ ∀ w, un w = v → cLoc w (B.bG g : UA L 3) = 1) ∧ ∀ w (S : B.toRingBr.Split w) (g : GA B.Δ), cLoc w (B.bG g : UA L 3) = GeneralLinearGroup.map (S.i : Kv (un w) →+* Kw w) (Sig.eU S.hs (g.1 (un w))) := by
   intro L _ _ _ B

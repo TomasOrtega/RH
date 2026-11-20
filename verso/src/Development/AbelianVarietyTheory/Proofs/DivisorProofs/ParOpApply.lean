@@ -29,12 +29,18 @@ structure Impl (ψ : AddChar (AF F) ℂ) (co : Darboux (sy σ JX JW) κ) (g : UA
   unit : ∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ φ ∈ schA F κ, ∫⁻ x, ‖S φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ
 
+/- English proof (translation)
+Simplify using `only [actAB, Prod.fst_mul, Prod.snd_mul, Subgroup.coe_mul, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem actAB_mul (g g' : UA σ JX × UA σ JW) (w : Matrix (Fin a) (Fin b) (AE F E)) :
     actAB (cA σ) (g * g') w = actAB (cA σ) g (actAB (cA σ) g' w) := by
   simp only [actAB, Prod.fst_mul, Prod.snd_mul, Subgroup.coe_mul, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]
 
 variable {ψ : AddChar (AF F) ℂ} {co : Darboux (sy σ JX JW) κ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun φ hφ => h.pres _ (h'.pres φ hφ), fun w φ hφ => by rw [Module.End.mul_apply, h'.Heisenberg₂ w φ hφ, h.Heisenberg₂ _ _ (h'.pres φ hφ), actAB_mul, Module.End.mul_apply], fun l hl => h'.adm _ (h.adm l hl), fun μ hμ φ hφ => by rw [Module.End.mul_apply, h.unit μ hμ _ (h'.pres φ hφ …`.
+-/
 theorem Impl.mul {g g' : UA σ JX × UA σ JW} {S S' : Module.End ℂ ((κ → AF F) → ℂ)} (h : Impl ψ co g S)
     (h' : Impl ψ co g' S') : Impl ψ co (g * g') (S * S') :=
   ⟨fun φ hφ => h.pres _ (h'.pres φ hφ),

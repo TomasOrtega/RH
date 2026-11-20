@@ -5,6 +5,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 
 namespace PositivityTheory.HtPt.Gamdel
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.Num.mulLat`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, huv⟩`. Rewrite using `[← huv]`.
+
+Simplify `hu` using `[inv_smul_smul₀ hw]`. Introduce `h`. Conclude with `⟨w⁻¹ • v, h, by simp [smul_inv_smul₀ hw]⟩`.
+-/
 theorem mem_mulLat_iff {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {w : Ω} (hw : w ≠ 0)
     (L : AddSubgroup V) (v : V) : v ∈ mulLat w L ↔ w⁻¹ • v ∈ L := by
   unfold GlobalTheory.CompanionTheory.Ar.Num.mulLat
@@ -16,6 +21,9 @@ theorem mem_mulLat_iff {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {
   · intro h
     exact ⟨w⁻¹ • v, h, by simp [smul_inv_smul₀ hw]⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.Num.stdLat at hv ⊢`. Rewrite `hv`, the goal using `[AddSubgroup.mem_pi]`. Introduce `j hj`. Establish `hvj : v j ∈ R` using `by simpa using hv j hj`. Simplify `R.mul_mem ha hvj` using `[smul_eq_mul]`.
+-/
 theorem smul_mem_stdLat {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     (ι : Type) {a : Ω} (ha : a ∈ R) {v : ι → Ω} (hv : v ∈ stdLat R ι) : a • v ∈ stdLat R ι := by
   unfold GlobalTheory.CompanionTheory.Ar.Num.stdLat at hv ⊢
@@ -49,10 +57,18 @@ def graphLat {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] [AddComm
       simp only [Prod.snd_neg, Prod.fst_neg, map_neg]
       abel
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_graphLat {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] [AddCommGroup V']
     [Module Ω V'] (w : Ω) (A : AddSubgroup V) (B : AddSubgroup V') (f : V →ₗ[Ω] V') (a : V)
     (b : V') : (a, b) ∈ graphLat w A B f ↔ w • a ∈ A ∧ b - f a ∈ B := Iff.rfl
 
+/- English proof (translation)
+Establish `hv'` using `(PositivityTheory.HtPt.Gamdel.mem_graphLat w A B f v.1 v.2).1 hv`. Use `(PositivityTheory.HtPt.Gamdel.mem_graphLat w A B f (a • v).1 (a • v).2).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, smul_smul, mul_comm, ← smul_smul]`. Conclude with `hA _ hv'.1`. Rewrite using `[Prod.smul_snd, Prod.smul_fst, map_smul, ← smul_sub]`.
+
+Conclude with `hB _ hv'.2`.
+-/
 theorem smul_mem_graphLat {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V]
     [AddCommGroup V'] [Module Ω V'] (w : Ω) (A : AddSubgroup V) (B : AddSubgroup V')
     (f : V →ₗ[Ω] V') (a : Ω) (hA : ∀ v ∈ A, a • v ∈ A) (hB : ∀ v ∈ B, a • v ∈ B)
@@ -64,6 +80,39 @@ theorem smul_mem_graphLat {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module �
   · rw [Prod.smul_snd, Prod.smul_fst, map_smul, ← smul_sub]
     exact hB _ hv'.2
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ R w hwR hw r s n W om hW hom i q hiW hqS hexW hexS hsurj`. Establish `hS : ∀ a ∈ R, ∀ v ∈ GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n), a • v ∈ GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n)` using `fun a ha v hv => PositivityTheory.HtPt.Gamdel.smul_mem_stdLat R (Fin n) ha hv`. Establish `hmem` using `fun {V : Type} [AddCommGroup V] [Module Ω V] (L : AddSubgroup V) (x : V) => PositivityTheory.HtPt.Gamdel.mem_mulLat_iff hw L x`. Use `⟨PositivityTheory.HtPt.Gamdel.graphLat w W (GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n)) i, PositivityTheory.HtPt.Gamdel.graphLat w (GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n)) om q, fun a b => PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _, fun b c => P …` and prove the remaining obligations. Introduce `a`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Conclude with `((PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).1 hb).1`. Introduce `ha`. Use `⟨i a, (PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).2 ⟨ha, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[sub_self]`. Conclude with `AddSubgroup.zero_mem _`. Introduce `b`. Rewrite using `[PositivityTheory.HtPt.Gamdel.mem_graphLat, smul_zero, map_zero, sub_zero]`. Conclude with `⟨fun h => h.2, fun h => ⟨W.zero_mem, h⟩⟩`.
+
+Introduce `a`. Rewrite using `[PositivityTheory.HtPt.Gamdel.mem_graphLat, zero_sub, neg_mem_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : i (w • a) ∈ GlobalTheory.CompanionTheory.Ar.Num.mulLat w (GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n))`.
+
+Rewrite using `[hmem, map_smul, inv_smul_smul₀ hw]`. Conclude with `h2`. Establish `h4` using `hexW _ h1 h3`. Rewrite `h4` using `[hmem, inv_smul_smul₀ hw]`. Then use the resulting hypothesis. Introduce `ha`.
+
+Conclude with `⟨hW w hwR a ha, hiW a ha⟩`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `((PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).1 hc).1`.
+
+Introduce `hb`. Use `⟨q b, (PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).2 ⟨hb, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[sub_self]`. Conclude with `AddSubgroup.zero_mem _`. Introduce `c`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Rewrite `hb` using `[PositivityTheory.HtPt.Gamdel.mem_graphLat]`. Establish `h1` using `hom w hwR _ hb.2`. Establish `h2` using `hqS _ hb.1`.
+
+Establish `hc : w • c = w • (c - q b) + q (w • b)`. Rewrite using `[map_smul, smul_sub, sub_add_cancel]`. Rewrite using `[hc]`. Conclude with `om.add_mem h1 h2`. Introduce `hc`.
+
+Take `⟨b0, hb0, h⟩` from `hsurj _ hc`. Rewrite `h` using `[hmem, smul_sub, inv_smul_smul₀ hw]`. Use `⟨w⁻¹ • b0, (PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[smul_inv_smul₀ hw]` and apply the resulting hypothesis. Rewrite using `[map_smul]` and apply the resulting hypothesis.
+
+Introduce `c`. Rewrite using `[PositivityTheory.HtPt.Gamdel.mem_graphLat, smul_zero, map_zero, sub_zero]`. Conclude with `⟨fun h => h.2, fun h => ⟨AddSubgroup.zero_mem _, h⟩⟩`. Introduce `b`. Rewrite using `[PositivityTheory.HtPt.Gamdel.mem_graphLat, zero_sub, neg_mem_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3 : q (w • b) ∈ GlobalTheory.CompanionTheory.Ar.Num.mulLat w om`. Rewrite using `[hmem, map_smul, inv_smul_smul₀ hw]`. Conclude with `h2`.
+
+Take `⟨a0, ha0, h4⟩` from `(hexS _ h1).1 h3`. Rewrite `h4` using `[hmem, smul_sub, inv_smul_smul₀ hw]`. Use `⟨w⁻¹ • a0, (PositivityTheory.HtPt.Gamdel.mem_graphLat _ _ _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[smul_inv_smul₀ hw]` and apply the resulting hypothesis. Rewrite using `[map_smul]` and apply the resulting hypothesis.
+
+Introduce and unpack `⟨a, ha⟩`. Rewrite `ha` using `[PositivityTheory.HtPt.Gamdel.mem_graphLat]`. Take `⟨h1, h2⟩` from `ha`. Establish `hwb : w • b ∈ GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n)`. Establish `e : w • b = w • (b - i a) + i (w • a)`.
+
+Rewrite using `[map_smul, smul_sub, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `AddSubgroup.add_mem _ (hS w hwR _ h2) (hiW _ h1)`. Use `⟨hwb, ?_⟩` and prove the remaining obligations. Establish `h3 : w • b - i (w • a) ∈ GlobalTheory.CompanionTheory.Ar.Num.mulLat w (GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n))`.
+
+Rewrite using `[hmem, map_smul, ← smul_sub, inv_smul_smul₀ hw]`. Conclude with `h2`. Establish `h4` using `(hexS _ hwb).2 ⟨w • a, h1, h3⟩`. Rewrite `h4` using `[hmem, map_smul, inv_smul_smul₀ hw]`. Then use the resulting hypothesis.
+-/
 theorem glue_gamdel : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) (w : Ω), w ∈ R → w ≠ 0 → ∀ (r s n : ℕ) (W : AddSubgroup (Fin r → Ω)) (om : AddSubgroup (Fin s → Ω)), (∀ a ∈ R, ∀ v ∈ W, a • v ∈ W) → (∀ a ∈ R, ∀ v ∈ om, a • v ∈ om) → ∀ (i : (Fin r → Ω) →ₗ[Ω] (Fin n → Ω)) (q : (Fin n → Ω) →ₗ[Ω] (Fin s → Ω)), (∀ a ∈ W, i a ∈ stdLat R (Fin n)) → (∀ b ∈ stdLat R (Fin n), q b ∈ om) → (∀ a ∈ W, i a ∈ mulLat w (stdLat R (Fin n)) → a ∈ mulLat w W) → (∀ b ∈ stdLat R (Fin n), q b ∈ mulLat w om ↔ ∃ a ∈ W, b - i a ∈ mulLat w (stdLat R (Fin n))) → (∀ c ∈ om, ∃ b ∈ stdLat R (Fin n), c - q b ∈ mulLat w om) → ∃ (Gam : AddSubgroup ((Fin r → Ω) × (Fin n → Ω))) (Del : AddSubgroup ((Fin n → Ω) × (Fin s → Ω))), (∀ a b, (a, b) ∈ Gam ↔ w • a ∈ W ∧ b - i a ∈ stdLat R (Fin n)) ∧ (∀ b c, (b, c) ∈ Del ↔ w • b ∈ stdLat R (Fin n) ∧ c - q b ∈ om) ∧ (∀ a ∈ R, (∀ v ∈ Gam, a • v ∈ Gam) ∧ ∀ v ∈ Del, a • v ∈ Del) ∧ ((∀ a, (∃ b, (a, b) ∈ Gam) ↔ w • a ∈ W) ∧ (∀ b, (0, b) ∈ Gam ↔ b ∈ stdLat R (Fin n)) ∧ ∀ a, (a, 0) ∈ Gam ↔ a ∈ W) ∧ ((∀ b, (∃ c, (b, c) ∈ Del) ↔ w • b ∈ stdLat R (Fin n)) ∧ (∀ c, (∃ b, (b, c) ∈ Del) ↔ w • c ∈ om) ∧ (∀ c, (0, c) ∈ Del ↔ c ∈ om) ∧ ∀ b, (b, 0) ∈ Del ↔ ∃ a, (a, b) ∈ Gam) := by
   intro o Ω _ _ _ R w hwR hw r s n W om hW hom i q hiW hqS hexW hexS hsurj
   have hS : ∀ a ∈ R, ∀ v ∈ GlobalTheory.CompanionTheory.Ar.Num.stdLat R (Fin n),

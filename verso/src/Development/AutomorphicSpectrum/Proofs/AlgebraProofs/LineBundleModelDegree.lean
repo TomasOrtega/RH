@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.LineCk
 
+/- English proof (translation)
+Set `J : Ideal R` to `{ carrier := {s | ∃ r, s * A = r * B} add_mem' := by`. Introduce and unpack `a b ⟨r, hr⟩ ⟨t, ht⟩`. Conclude with `⟨r + t, by rw [add_mul, add_mul, hr, ht]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c a ⟨r, hr⟩`. Conclude with `⟨c * r, by rw [smul_eq_mul, mul_assoc, hr, mul_assoc]⟩ }`. Establish `hw : w ∈ J.radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce and unpack `p ⟨hJp, hp⟩`.
+
+Assume the negation of the conclusion as `hwp`. Take `⟨U, V, hU, hUV⟩` from `h p hp hwp`. Conclude with `hU (hJp ⟨V, hUV⟩)`. Take `⟨n, r, hr⟩` from `hw`. Conclude with `⟨n, r, hr⟩`.
+-/
 theorem exists_pow_mul_eq {R : Type*} [CommRing R] (w A B : R)
     (h : ∀ p : Ideal R, p.IsPrime → w ∉ p → ∃ U V : R, U ∉ p ∧ U * A = V * B) :
     ∃ (n : ℕ) (r : R), w ^ n * A = r * B := by
@@ -39,6 +46,9 @@ section Forms
 
 variable {O : Type*} [CommRing O] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `h` using `congrFun (hf (mem_support_iff.mp hm)) k`. Rewrite using `[← h, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, blockWeight, Pi.single_apply]`. Rewrite using `[Fintype.sum_sigma]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_block_eq {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b) {m : (Σ k, ι k) →₀ ℕ}
     (hm : m ∈ f.support) (k : K) : ∑ i, m ⟨k, i⟩ = b k := by
   have h := congrFun (hf (mem_support_iff.mp hm)) k
@@ -47,6 +57,11 @@ theorem sum_block_eq {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b) {m
   rw [Fintype.sum_sigma]
   simp
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : ∏ p : Σ k, ι k, t p.1 ^ m p = ∏ k, t k ^ b k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∏ i, t k ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, sum_block_eq hf hm k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, mul_assoc]`.
+-/
 theorem aeval_scale {A : Type*} [CommRing A] [Algebra O A] (y : (Σ k, ι k) → A) (t : K → A)
     {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b) :
     aeval (fun p : Σ k, ι k => y p * t p.1) f = aeval y f * ∏ k, t k ^ b k := by
@@ -59,6 +74,9 @@ theorem aeval_scale {A : Type*} [CommRing A] [Algebra O A] (y : (Σ k, ι k) →
     rw [Finset.prod_pow_eq_pow_sum, sum_block_eq hf hm k]
   simp only [mul_pow, Finset.prod_mul_distrib, hX, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [hπ]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem map_aeval_of {A B : Type*} [CommRing A] [CommRing B] [Algebra O A] [Algebra O B] (π : A →+* B)
     (hπ : ∀ c : O, π (algebraMap O A c) = algebraMap O B c) (w : (Σ k, ι k) → A) (f : MRing ι O) :
     π (aeval w f) = aeval (fun p => π (w p)) f := by
@@ -74,6 +92,11 @@ section Chart
 variable {O : Type*} [CommRing O] {Ω : Type*} [Field Ω] [Algebra O Ω]
   {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `h0`. Apply `hP` to reduce the goal to its premises. Use `show f ∈ RingHom.ker (pointConeMap O x)`. Rewrite using `[RingHom.mem_ker]`. Establish `h1` using `aeval_scale (fun p => (C (x p) : MvPolynomial K Ω)) (fun k => (X k : MvPolynomial K Ω)) hf`.
+
+Establish `h2` using `map_aeval_of (O := O) (C : Ω →+* MvPolynomial K Ω) (fun c => by simp [MvPolynomial.algebraMap_apply]) x f`. Rewrite `h2` using `[h0, map_zero]`. Rewrite `h1` using `[← h2, zero_mul]`. Conclude with `h1`.
+-/
 theorem aeval_ne_zero (x : (Σ k, ι k) → Ω) {f : MRing ι O} {b : K → ℕ} (hf : IsMultiHomog f b)
     (hP : f ∉ pointIdeal O x) : aeval x f ≠ 0 := by
   intro h0
@@ -87,10 +110,20 @@ theorem aeval_ne_zero (x : (Σ k, ι k) → Ω) {f : MRing ι O} {b : K → ℕ}
   rw [← h2, zero_mul] at h1
   exact h1
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.mp hs k (Finset.mem_univ k)`.
+-/
 theorem coord_ne_zero (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) (k : K) :
     x ⟨k, s k⟩ ≠ 0 :=
   Finset.prod_ne_zero_iff.mp hs k (Finset.mem_univ k)
 
+/- English proof (translation)
+Establish `h1 : mseg x (Function.update s p.1 p.2) / mseg x s ∈ chartRing O (mseg x) s` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (mseg x) s (Function.update s p.1 p.2)`. Establish `h2 : mseg x (Function.update s p.1 p.2) / mseg x s = x p / x ⟨p.1, s p.1⟩`. Establish `hc` using `coord_ne_zero x hs p.1`. Rewrite using `[div_eq_div_iff hs hc]`. Unfold `mseg`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ p.1), ← Finset.mul_prod_erase Finset.univ (fun k => x ⟨k, s k⟩) (Finset.mem_univ p.1)]`. Establish `h3 : ∏ k ∈ Finset.univ.erase p.1, x ⟨k, Function.update s p.1 p.2 k⟩ = ∏ k ∈ Finset.univ.erase p.1, x ⟨k, s k⟩`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hk)]`. Rewrite using `[h3, Function.update_self]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem ratio_mem (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) (p : Σ k, ι k) :
     x p / x ⟨p.1, s p.1⟩ ∈ chartRing O (mseg x) s := by
   have h1 : mseg x (Function.update s p.1 p.2) / mseg x s ∈ chartRing O (mseg x) s :=
@@ -113,6 +146,9 @@ def chartHom (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) :
     MRing ι O →ₐ[O] chartRing O (mseg x) s :=
   aeval fun p => ⟨x p / x ⟨p.1, s p.1⟩, ratio_mem x hs p⟩
 
+/- English proof (translation)
+Use `map_aeval_of (O := O) (chartRing O (mseg x) s).val.toRingHom (fun c => rfl) (fun p => (⟨x p / x ⟨p.1, s p.1⟩, ratio_mem x hs p⟩ : chartRing O (mseg x) s)) h` as an intermediate fact. Conclude with `this`.
+-/
 theorem chartHom_coe (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) (h : MRing ι O) :
     ((chartHom (O := O) x hs h : chartRing O (mseg x) s) : Ω) =
       aeval (fun p : Σ k, ι k => x p / x ⟨p.1, s p.1⟩) h := by
@@ -120,6 +156,9 @@ theorem chartHom_coe (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s 
     (fun p => (⟨x p / x ⟨p.1, s p.1⟩, ratio_mem x hs p⟩ : chartRing O (mseg x) s)) h
   exact this
 
+/- English proof (translation)
+Rewrite using `[chartHom_coe, ← aeval_scale x (fun k => (x ⟨k, s k⟩)⁻¹) hf]`. Simplify using `only [div_eq_mul_inv]`.
+-/
 theorem chartHom_form (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) {f : MRing ι O}
     {b : K → ℕ} (hf : IsMultiHomog f b) :
     ((chartHom (O := O) x hs f : chartRing O (mseg x) s) : Ω) =
@@ -127,6 +166,11 @@ theorem chartHom_form (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s
   rw [chartHom_coe, ← aeval_scale x (fun k => (x ⟨k, s k⟩)⁻¹) hf]
   simp only [div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `h0 : pointConeMap O x h = 0` using `RingHom.mem_ker.mp hP`. Establish `h1` using `map_aeval_of (O := O) (eval fun k : K => (x ⟨k, s k⟩)⁻¹) (fun c => by simp [MvPolynomial.algebraMap_apply]) (fun p => C (x p) * X p.1) h`. Establish `h2 : (aeval (fun p : Σ k, ι k => C (x p) * X p.1) h : MvPolynomial K Ω) = 0` using `h0`. Rewrite `h1` using `[h2, map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[chartHom_coe]`. Simplify `h1.symm` using `[div_eq_mul_inv]`.
+-/
 theorem chartHom_eq_zero (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) {h : MRing ι O}
     (hP : h ∈ pointIdeal O x) : chartHom (O := O) x hs h = 0 := by
   have h0 : pointConeMap O x h = 0 := RingHom.mem_ker.mp hP
@@ -145,6 +189,11 @@ section Lines
 variable {O : Type*} [CommRing O] {Ω : Type*} [Field Ω] [Algebra O Ω]
   {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Unfold `chartMon`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hx` using `coord_ne_zero x hs k`. Rewrite using `[inv_pow, inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_neg, ← zpow_add₀ hx, ← zpow_add₀ hx]`.
+
+Use `congr 1`. Use `hb k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chartMon_relation (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) {a a' : K → ℤ}
     {bf bg : K → ℕ} (hb : ∀ k, (bf k : ℤ) - bg k = a k - a' k) :
     chartMon x s a * ∏ k, (x ⟨k, s k⟩)⁻¹ ^ bf k = chartMon x s a' * ∏ k, (x ⟨k, s k⟩)⁻¹ ^ bg k := by
@@ -158,6 +207,23 @@ theorem chartMon_relation (x : (Σ k, ι k) → Ω) {s : ∀ k, ι k} (hs : mseg
   have := hb k
   linarith
 
+/- English proof (translation)
+Take `⟨n, r, hr⟩` from `exists_pow_mul_eq (algebraMap O (chartRing O (mseg x) s) ϖ) (chartHom (O := O) x hs g) (chartHom (O := O) x hs f) (fun p hp hw => by`. Establish `hWp : (p.comap (chartHom (O` using `O) x hs)).IsPrime := Ideal.comap_isPrime _ p`. Take `⟨c, e, he, hce⟩` from `hU (p.comap (chartHom (O := O) x hs)) hWp (fun h hh => by`. Rewrite using `[Ideal.mem_comap, chartHom_eq_zero x hs hh]`. Conclude with `p.zero_mem)`.
+
+Use the proof step `(fun k => ⟨s k, by`. Establish `h1 : chartHom (O` using `O) x hs (X ⟨k, s k⟩ : MRing ι O) = 1 := by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[chartHom_coe]`. Simplify using `[div_self (coord_ne_zero x hs k)]`.
+
+Rewrite using `[Ideal.mem_comap, h1]`. Conclude with `(Ideal.ne_top_iff_one p).mp hp.ne_top⟩)`. Use the proof step `(fun h => hw (by`. Rewrite `h` using `[Ideal.mem_comap]`. Establish `h1 : chartHom (O` using `O) x hs (C ϖ : MRing ι O) = algebraMap O (chartRing O (mseg x) s) ϖ := (chartHom (O := O) x hs).commutes ϖ`.
+
+Rewrite using `[h1] at h))` and apply the resulting hypothesis. Use `⟨chartHom (O := O) x hs e, chartHom (O := O) x hs c, he, ?_⟩` and prove the remaining obligations. Establish `h2` using `chartHom_eq_zero x hs hce`. Rewrite `h2` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Conclude with `h2.symm)`.
+
+Take `⟨r₀, hr₀, rfl⟩` from `(hL s hs v).1 hv`. Use `⟨n, (hL' s hs _).2 ⟨r₀ * r, mul_mem hr₀ r.2, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : algebraMap O Ω ϖ ^ n * ((chartHom (O` using `O) x hs g : chartRing O (mseg x) s) : Ω) = (r : Ω) * ((chartHom (O := O) x hs f : chartRing O (mseg x) s) : Ω) := by`. Use `congrArg (chartRing O (mseg x) s).val hr` as an intermediate fact. Simplify `this` using `only [map_mul, map_pow, AlgHom.commutes, Subalgebra.coe_val]`.
+
+Rewrite `h1` using `[chartHom_form x hs hg, chartHom_form x hs hf]`. Establish `hM` using `chartMon_relation x hs hb`. Establish `hIf : ∏ k, (x ⟨k, s k⟩)⁻¹ ^ bf k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (inv_ne_zero (coord_ne_zero x hs k))`. Rewrite using `[smul_eq_mul]`. Apply `mul_right_cancel₀ (mul_ne_zero hG hIf)` to reduce the goal to its premises.
+
+Generalize the expression as in `(∏ k, (x ⟨k, s k⟩)⁻¹ ^ bf k) = If at *`. Generalize the expression as in `(∏ k, (x ⟨k, s k⟩)⁻¹ ^ bg k) = Ig at *`. Generalize the expression as in `chartMon x s a = Ma at *`. Generalize the expression as in `chartMon x s a' = Ma' at *`. Generalize the expression as in `aeval x f = F at *`.
+
+Generalize the expression as in `aeval x g = G at *`. Generalize the expression as in `algebraMap O Ω ϖ ^ n = Wn at *`. Take the linear combination `(r₀ : Ω) * ((Wn * u * G) * hM + (u * Ma') * h1 + ((r : Ω) * Ma' * If) * hgen)`.
+-/
 theorem line_step (ϖ : O) (x : (Σ k, ι k) → Ω) {u u' : Ω} {a a' : K → ℤ} {f g : MRing ι O}
     {bf bg : K → ℕ} (hf : IsMultiHomog f bf) (hg : IsMultiHomog g bg)
     (hb : ∀ k, (bf k : ℤ) - bg k = a k - a' k) (hG : aeval x g ≠ 0)
@@ -211,6 +277,13 @@ theorem line_step (ϖ : O) (x : (Σ k, ι k) → Ω) {u u' : Ω} {a a' : K → �
   generalize algebraMap O Ω ϖ ^ n = Wn at *
   linear_combination (r₀ : Ω) * ((Wn * u * G) * hM + (u * Ma') * h1 + ((r : Ω) * Ma' * If) * hgen)
 
+/- English proof (translation)
+Take `⟨m, e, c, he, hc, hsum, hl⟩` from `A.frame s hs`. Introduce and unpack `rfl`. Establish `hnz : ∃ l, e l ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Simplify using `[hn] at hsum`. Take `⟨l, hl0⟩` from `hnz`. Take `⟨b, hb, -, hiff⟩` from `hl l`. Take `⟨n, hn⟩` from `(hiff (b 0)).2 ⟨fun _ => 1, fun q => ⟨1, by simpa using he l⟩, by simp⟩`. Take `⟨r, -, hr⟩` from `(hA s hs _).1 hn`.
+
+Establish `h0 : e l ^ n • b 0 = 0` using `by rw [hr]; simp`. Conclude with `(smul_ne_zero (pow_ne_zero _ hl0) (hb.ne_zero 0)) h0`.
+-/
 theorem line_ne_zero (x : (Σ k, ι k) → Ω) (A : ChartBundle O (mseg x) 1 Ω) {u : Ω} {a : K → ℤ}
     (hA : IsLine O x u a A.lat) {s : ∀ k, ι k} (hs : mseg x s ≠ 0) : u ≠ 0 := by
   obtain ⟨m, e, c, he, hc, hsum, hl⟩ := A.frame s hs
@@ -229,12 +302,25 @@ theorem line_ne_zero (x : (Σ k, ι k) → Ω) (A : ChartBundle O (mseg x) 1 Ω)
 def lineBasis {u : Ω} (hu : u ≠ 0) : Module.Basis (Fin 1) Ω Ω :=
   (Module.Basis.singleton (Fin 1) Ω).unitsSMul fun _ => Units.mk0 u hu
 
+/- English proof (translation)
+Simplify using `[lineBasis, Units.smul_def]`.
+-/
 theorem lineBasis_repr {u : Ω} (hu : u ≠ 0) (v : Ω) (i : Fin 1) : (lineBasis hu).repr v i = u⁻¹ * v := by
   simp [lineBasis, Units.smul_def]
 
+/- English proof (translation)
+Simplify using `[lineBasis, Module.Basis.unitsSMul_apply, Units.smul_def]`.
+-/
 theorem lineBasis_apply {u : Ω} (hu : u ≠ 0) (i : Fin 1) : lineBasis hu i = u := by
   simp [lineBasis, Module.Basis.unitsSMul_apply, Units.smul_def]
 
+/- English proof (translation)
+Use `⟨fun c hc i => ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, -, rfl⟩`. Take `⟨r, hr, rfl⟩` from `(hA c hc _).1 hv`.
+
+Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[lineBasis_repr]`. Use `show _ = r * chartMon x c a`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨r, hr, rfl⟩`.
+
+Use `⟨r * (u * chartMon x c a), (hA c hc _).2 ⟨r, hr, rfl⟩, fun j hij => ?_, ?_⟩` and prove the remaining obligations. Conclude with `absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j)`. Rewrite using `[lineBasis_repr] show _ = r * chartMon x c a`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isFlagFrame_line (x : (Σ k, ι k) → Ω) (A : ChartBundle O (mseg x) 1 Ω) {u : Ω} (hu : u ≠ 0)
     {a : K → ℤ} (hA : IsLine O x u a A.lat) : IsFlagFrame x A (lineBasis hu) (fun _ => a) := by
   refine ⟨fun c hc i => ?_⟩
@@ -255,6 +341,21 @@ theorem isFlagFrame_line (x : (Σ k, ι k) → Ω) (A : ChartBundle O (mseg x) 1
 
 end Lines
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hM A A' u u' a a' hA hA' f g hD hgen`. Take `⟨hK, hModel⟩` from `(BundleExamples.isModelOver_iff O (mcIdeal O x) d).1 hM`. Take `⟨bf, bg, hf, hg, hb⟩` from `hD.degrees`. Establish `hb' : ∀ k, (bf k : ℤ) - bg k = a k - a' k` using `fun k => congrFun hb k`. Establish `hF : aeval x f ≠ 0` using `aeval_ne_zero x hf hD.num_not_mem`.
+
+Establish `hG : aeval x g ≠ 0` using `aeval_ne_zero x hg hD.den_not_mem`. Establish `hSF : SameGenericFibre ϖ A A'`. Introduce `c hc`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `line_step ϖ x hf hg hb' hG hgen (fun W h1 h2 h3 h4 => by`.
+
+Take `⟨c', e, hc', he, hce⟩` from `hD.unit_off_special W h1 h2 h3 h4`. Conclude with `⟨c', e, he, hce⟩) hA hA' hc hv`. Conclude with `line_step ϖ x hg hf (fun k => by have := hb' k; linarith) hF hgen.symm (fun W h1 h2 h3 h4 => by`. Take `⟨c', e, hc', he, hce⟩` from `hD.unit_off_special W h1 h2 h3 h4`. Use `⟨e, c', hc', ?_⟩` and prove the remaining obligations.
+
+Use `(pointIdeal O x).neg_mem hce` as an intermediate fact. Rewrite using `[neg_sub] at this) hA' hA hc hv` and apply the resulting hypothesis. Establish `hRel` using `hModel.multiProj.relevant`. Use `choose s hs using hRel`. Establish `hs0 : mseg x s ≠ 0`.
+
+Use `Finset.prod_ne_zero_iff.mpr fun k _ => fun h0 => hs k ?_` and prove the remaining obligations. Use `show _ ∈ RingHom.ker (pointConeMap O x)`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[pointConeMap, h0]`. Establish `hu : u ≠ 0` using `line_ne_zero x A hA hs0`.
+
+Establish `hu' : u' ≠ 0` using `line_ne_zero x A' hA' hs0`. Establish `hFP : IsFlagPair ϖ x A A' (lineBasis hu) (lineBasis hu') (fun _ => a) (fun _ => a') (fun _ => f) (fun _ => g)` using `{ flag := isFlagFrame_line x A hu hA flag' := isFlagFrame_line x A' hu' hA' sameFlag := fun i j hij => absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j) vertical := fun _ => hD generic := fun i => by`. Rewrite using `[lineBasis_repr, lineBasis_apply]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hgen }`.
+
+Use `⟨(BundleExamples.sameGeneric_iff hϖ x A A').2 hSF, fun k hk1 hk2 q L Q hQ => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.chern_class_on_flag_pair O ϖ hϖ Ω K ι x d hK hModel 1 Ω A A' hSF (lineBasis hu) (lineBasis hu') (fun _ => a) (fun _ => a') (fun _ => f) (fun _ => g) hFP).1 k hk1 hk2 (psumExpansion 1 k) (isPairExpansion_psum 1 k) q L Q hQ`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O), Irreducible ϖ → ∀ d : ℕ, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ (A A' : ChartBundle O (mseg x) 1 Ω) (u u' : Ω) (a a' : K → ℤ), IsLine O x u a A.lat → IsLine O x u' a' A'.lat → ∀ f g : MRing ι O, IsVerticalDivisor (pointIdeal O x) ϖ (a - a') f g → aeval x f * u = aeval x g * u' → SameGeneric O x A A' ∧ ∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O x d 1 A A' k L Q = ∑ μ ∈ Q.support, Q.coeff μ * pairNum (pointIdeal O x) (fun _ : Fin 1 => a) (fun _ => a') (fun _ => f) (fun _ => g) (psumExpansion 1 k) (classList L μ) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hM A A' u u' a a' hA hA' f g hD hgen
   obtain ⟨hK, hModel⟩ := (BundleExamples.isModelOver_iff O (mcIdeal O x) d).1 hM

@@ -7,24 +7,36 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.SameZeroScheme
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(f.appLE U V h ≫ Y.presheaf.map (homOfLE h').op).hom a = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+-/
 theorem resG_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) {U : X.Opens} {V W : Y.Opens} (h : V ≤ f ⁻¹ᵁ U)
     (h' : W ≤ V) (a : Γ(X, U)) :
     resG Y h' ((f.appLE U V h).hom a) = (f.appLE U W (h'.trans h)).hom a := by
   change (f.appLE U V h ≫ Y.presheaf.map (homOfLE h').op).hom a = _
   rw [Scheme.Hom.appLE_map]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op ≫ f.appLE U V h).hom a = _`. Rewrite using `[Scheme.Hom.map_appLE]`.
+-/
 theorem appLE_resG {X Y : Scheme.{0}} (f : Y ⟶ X) {U U' : X.Opens} {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U)
     (h' : U ≤ U') (h'' : V ≤ f ⁻¹ᵁ U') (a : Γ(X, U')) :
     (f.appLE U V h).hom (resG X h' a) = (f.appLE U' V h'').hom a := by
   change (X.presheaf.map (homOfLE h').op ≫ f.appLE U V h).hom a = _
   rw [Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(f.appLE U V h ≫ t.appLE V ⊤ h').hom a = _`. Rewrite using `[Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem appLE_appLE {X Y T : Scheme.{0}} (t : T ⟶ Y) (f : Y ⟶ X) {U : X.Opens} {V : Y.Opens}
     (h : V ≤ f ⁻¹ᵁ U) (h' : ⊤ ≤ t ⁻¹ᵁ V) (h'' : ⊤ ≤ (t ≫ f) ⁻¹ᵁ U) (a : Γ(X, U)) :
     (t.appLE V ⊤ h').hom ((f.appLE U V h).hom a) = ((t ≫ f).appLE U ⊤ h'').hom a := by
   change (f.appLE U V h ≫ t.appLE V ⊤ h').hom a = _
   rw [Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Establish `e` using `congrArg (f.appLE (L.U i ⊓ L.U j) W hij).hom (θ.compat i j)`. Rewrite `e` using `[map_mul]`. Conclude with `(appLE_resG f hij inf_le_left hi _).symm.trans (e.trans (congrArg₂ (· * ·) rfl (appLE_resG f hij inf_le_right hj _)))`.
+-/
 theorem appLE_compat {X Y : Scheme.{0}} {L : LB X} (θ : L.Sec) (f : Y ⟶ X) (i j : L.ι) {W : Y.Opens}
     (hi : W ≤ f ⁻¹ᵁ L.U i) (hj : W ≤ f ⁻¹ᵁ L.U j) (hij : W ≤ f ⁻¹ᵁ (L.U i ⊓ L.U j)) :
     (f.appLE (L.U i) W hi).hom (θ.f i) =
@@ -34,6 +46,11 @@ theorem appLE_compat {X Y : Scheme.{0}} {L : LB X} (θ : L.Sec) (f : Y ⟶ X) (i
   exact (appLE_resG f hij inf_le_left hi _).symm.trans
     (e.trans (congrArg₂ (· * ·) rfl (appLE_resG f hij inf_le_right hj _)))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `(mul_cancel_right_mem_nonZeroDivisors ha).1` to reduce the goal to its premises. Rewrite using `[← h, hb, h', zpow_one, zpow_neg_one, haa]`. Use `g₁.inv_mul` as an intermediate fact. Use `push_cast`.
+
+Take the linear combination `(-(g₀ * c' * a' : R)) * this`.
+-/
 theorem unit_eq_of_mul {R : Type*} [CommRing R] {a a' b b' : R} {c c' g₀ g₁ : Rˣ}
     (ha : a ∈ nonZeroDivisors R) (h : b = c * a) (h' : b' = c' * a') (hb : b = g₀ * b')
     (haa : a = g₁ * a') : c = g₀ ^ (1 : ℤ) * g₁ ^ (-1 : ℤ) * c' := by
@@ -44,6 +61,19 @@ theorem unit_eq_of_mul {R : Type*} [CommRing R] {a a' b b' : R} {c c' g₀ g₁ 
   push_cast
   linear_combination (-(g₀ * c' * a' : R)) * this
 
+/- English proof (translation)
+Introduce `X Y L θ φ ψ _ _ hψ H`. Establish `h0 : ∀ j : Fin 2 → L.ι, L.wchart ![φ, ψ] j ≤ φ ⁻¹ᵁ L.U (j 0)` using `fun j => LB.wchart_le L ![φ, ψ] j 0`. Establish `h1 : ∀ j : Fin 2 → L.ι, L.wchart ![φ, ψ] j ≤ ψ ⁻¹ᵁ L.U (j 1)` using `fun j => LB.wchart_le L ![φ, ψ] j 1`. Establish `hc : ∀ j : Fin 2 → L.ι, ∃ c : Γ(Y, L.wchart ![φ, ψ] j)ˣ, (φ.appLE _ _ (h0 j)).hom (θ.f (j 0)) = c * (ψ.appLE _ _ (h1 j)).hom (θ.f (j 1))`. Introduce `j`.
+
+Apply `exists_unit_mul` to reduce the goal to its premises. Introduce `V' h`. Rewrite using `[resG_appLE]`. Conclude with `hψ _ _ _`. Introduce `T t h`.
+
+Establish `k0 : ⊤ ≤ (t ≫ φ) ⁻¹ᵁ L.U (j 0)` using `fun x hx => h0 j (h hx)`. Establish `k1 : ⊤ ≤ (t ≫ ψ) ⁻¹ᵁ L.U (j 1)` using `fun x hx => h1 j (h hx)`. Rewrite using `[appLE_appLE t φ _ h k0, appLE_appLE t ψ _ h k1]`. Conclude with `(H T t _ _ k0 k1).symm`. Use `choose c hc using hc`.
+
+Use `⟨⟨c⟩, fun i j => ?_⟩` and prove the remaining obligations. Set `W : Y.Opens` to `L.wchart ![φ, ψ] i ⊓ L.wchart ![φ, ψ] j`. Establish `wi : W ≤ L.wchart ![φ, ψ] i` using `inf_le_left`. Establish `wj : W ≤ L.wchart ![φ, ψ] j` using `inf_le_right`. Establish `ei` using `congrArg (resG Y wi) (hc i)`.
+
+Establish `ej` using `congrArg (resG Y wj) (hc j)`. Rewrite `ei`, `ej` using `[map_mul, resG_appLE, resG_appLE]`. Establish `p0 : W ≤ φ ⁻¹ᵁ (L.U (i 0) ⊓ L.U (j 0))` using `le_inf (wi.trans (h0 i)) (wj.trans (h0 j))`. Establish `p1 : W ≤ ψ ⁻¹ᵁ (L.U (i 1) ⊓ L.U (j 1))` using `le_inf (wi.trans (h1 i)) (wj.trans (h1 j))`. Establish `key` using `unit_eq_of_mul (c := res wi (c i)) (c' := res wj (c j)) (hψ _ _ _) ei ej (appLE_compat θ φ (i 0) (j 0) _ _ p0) (appLE_compat θ ψ (i 1) (j 1) _ _ p1)`.
+
+Use `key.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(Fin.prod_univ_two (fun k : Fin 2 => (res (le_inf (wi.trans (LB.wchart_le L ![φ, ψ] i k)) (wj.trans (LB.wchart_le L ![φ, ψ] j k)) : W ≤ (![φ, ψ] k) ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k))) (pullU (![φ, ψ] k) (L.U (i k) ⊓ L.U (j k)) (L.g (i k) (j k)))) ^ ((![1, -1] : Fin 2 → ℤ) k))).symm`.
+-/
 theorem exists_isGen_linComb : ∀ (X Y : Scheme.{0}) (L : LB X) (θ : L.Sec) (φ ψ : Y ⟶ X), L.IsLB → (∀ (i : L.ι) (V : Y.Opens) (h : V ≤ φ ⁻¹ᵁ L.U i), (φ.appLE (L.U i) V h).hom (θ.f i) ∈ nonZeroDivisors Γ(Y, V)) → (∀ (i : L.ι) (V : Y.Opens) (h : V ≤ ψ ⁻¹ᵁ L.U i), (ψ.appLE (L.U i) V h).hom (θ.f i) ∈ nonZeroDivisors Γ(Y, V)) → (∀ (T : Scheme.{0}) (t : T ⟶ Y) (i j : L.ι) (h : ⊤ ≤ (t ≫ φ) ⁻¹ᵁ L.U i) (h' : ⊤ ≤ (t ≫ ψ) ⁻¹ᵁ L.U j), ((t ≫ φ).appLE (L.U i) ⊤ h).hom (θ.f i) = 0 ↔ ((t ≫ ψ).appLE (L.U j) ⊤ h').hom (θ.f j) = 0) → ∃ t : LB.Gen (LB.LinComb L (K := Fin 2) ![φ, ψ] ![1, -1]), t.IsGen := by
   intro X Y L θ φ ψ _ _ hψ H
   have h0 : ∀ j : Fin 2 → L.ι, L.wchart ![φ, ψ] j ≤ φ ⁻¹ᵁ L.U (j 0) :=

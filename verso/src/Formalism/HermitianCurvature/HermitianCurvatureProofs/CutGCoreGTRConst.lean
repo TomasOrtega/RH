@@ -10,12 +10,18 @@ noncomputable section
 
 open Formalism.FourierDecayAlt.P.CutMP.Gauge
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[B.hsVec]`.
+-/
 private theorem hsVec_finset_sum_smul {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {ι : Type} [Fintype ι]
     (c : ι → ℂ) (A : ι → Wq →L[ℂ] Wp) : B.hsVec (∑ i, c i • A i) = ∑ i, c i • B.hsVec (A i) := by
   ext j
   simp [B.hsVec]
 
+/- English proof (translation)
+Establish `h' : ∀ i, A (stdOrthonormalBasis ℂ Wq i) = C (stdOrthonormalBasis ℂ Wq i)` using `fun i => by`. Use `congrArg (fun v => v i) h` as an intermediate fact. Simplify `this` using `[B.hsVec]`. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises. Conclude with `(stdOrthonormalBasis ℂ Wq).toBasis.ext (fun i => by simpa using h' i)`.
+-/
 private theorem hsVec_injective_apply {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A C : Wq →L[ℂ] Wp)
     (h : B.hsVec A = B.hsVec C) : A = C := by
@@ -25,6 +31,13 @@ private theorem hsVec_injective_apply {Wp Wq : Type} [NormedAddCommGroup Wp] [In
   apply ContinuousLinearMap.coe_injective
   exact (stdOrthonormalBasis ℂ Wq).toBasis.ext (fun i => by simpa using h' i)
 
+/- English proof (translation)
+Unfold `MA.toSm`. Distinguish the cases in `hu : u ∈ MA.smSub P.r P.TT`. Rewrite using `[dif_pos hu, dif_pos (Subalgebra.smul_mem _ hu c)]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hu]`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[zero_smul, smul_zero, dif_pos (Subalgebra.zero_mem _)]`. Both sides reduce to the same expression. Rewrite using `[smul_zero, dif_neg]`.
+
+Introduce `hm`. Apply `hu` to reduce the goal to its premises. Use `Subalgebra.smul_mem _ hm c⁻¹` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem toSm_smul_hermitian_curvature (P : M.Par) (c : ℂ) (u : MA.Qp P.r P.TT → ℂ) :
     MA.toSm P (c • u) = c • MA.toSm P u := by
   unfold MA.toSm
@@ -42,6 +55,39 @@ private theorem toSm_smul_hermitian_curvature (P : M.Par) (c : ℂ) (u : MA.Qp P
       have := Subalgebra.smul_mem _ hm c⁻¹
       rwa [smul_smul, inv_mul_cancel₀ hc, one_smul] at this
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs X d h`. Take `⟨Qr, hQ⟩` from `hPt Wp Wq P Bs X d h`. Take `⟨e1, he1F, -⟩` from `gauge_kappa_of_point_line hPt hLine Wp Wq P Bs X d h`. Establish `hTT : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT`. Rewrite using `[h.1.2.2.2.1, h.1.2.2.2.2.1]`.
+
+Both sides reduce to the same expression. Use `set ζ0 : ℂ := ((|P.TT| + 1 : ℝ) : ℂ) with hζ0def`. Establish `hζ0 : P.TT < Complex.normSq ζ0`. Rewrite using `[hζ0def, Complex.normSq_ofReal]`. Use polynomial arithmetic with `[le_abs_self P.TT, abs_nonneg P.TT]`.
+
+Establish `hFib : ∀ ζ, P.TT < Complex.normSq ζ → NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ = NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0`. Introduce `ζ hζ`. Unfold `NF.Fib`. Rewrite using `[h.2.2.1.2 ζ ζ0 (hTT ▸ hζ) (hTT ▸ hζ0)]`. Use `choose E hEmem hEQ hEnorm hEuniq using fun ρ => hLine Wp Wq P Bs X d h Qr hQ ζ0 hζ0 ρ`.
+
+Establish `hEQ' : ∀ ρ σ, E ρ ∘SL Qr σ = if ρ = σ then E ρ else 0`. Introduce `ρ σ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ.1 ρ σ]`. Apply the tactic sequence `split_ifs <;> simp [hEQ ρ]`.
+
+Establish `hinQ : ∀ ρ σ (C : Wq →L[ℂ] Wp), inner ℂ (B.hsVec (E ρ)) (B.hsVec (C ∘SL Qr σ)) = if ρ = σ then inner ℂ (B.hsVec (E ρ)) (B.hsVec C) else 0`. Introduce `ρ σ C`. Rewrite using `[GTK.hs_comp_right _ _ _ (hQ.2.2.1 σ), hEQ' ρ σ]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[GTK.hs_expand]`. Simplify using the standard rewrite rules. Establish `horth : ∀ ρ σ, inner ℂ (B.hsVec (E ρ)) (B.hsVec (E σ)) = if ρ = σ then 1 else 0`. Introduce `ρ σ`. Establish `hh` using `hinQ ρ σ (E σ)`.
+
+Rewrite `hh` using `[hEQ σ]`. Rewrite using `[hh]`. Use `split_ifs with hρσ`. Substitute `hρσ` using the available equality. Conclude with `hEnorm ρ`.
+
+Both sides reduce to the same expression. Establish `hv : Orthonormal ℂ (fun σ => B.hsVec (E σ))` using `orthonormal_iff_ite.mpr horth`. Establish `hw : Orthonormal ℂ (fun σ => B.hsVec (e1 σ ζ0))` using `orthonormal_iff_ite.mpr (he1F.2 ζ0 hζ0).2.1`. Establish `hspan1 : ∀ Y ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0, B.hsVec Y ∈ Submodule.span ℂ (Set.range (fun σ => B.hsVec (e1 σ ζ0)))`. Introduce `Y hY`.
+
+Rewrite using `[(he1F.2 ζ0 hζ0).2.2 Y hY, hsVec_finset_sum_smul]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hle : Submodule.span ℂ (Set.range (fun σ => B.hsVec (E σ))) ≤ Submodule.span ℂ (Set.range (fun σ => B.hsVec (e1 σ ζ0)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨σ, rfl⟩`.
+
+Conclude with `hspan1 _ (hEmem σ)`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle (by`. Rewrite using `[finrank_span_eq_card hv.linearIndependent, finrank_span_eq_card hw.linearIndependent])`. Establish `hexp : ∀ Y ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0, Y = ∑ σ, inner ℂ (B.hsVec (E σ)) (B.hsVec Y) • E σ`. Introduce `Y hY`.
+
+Establish `hm : B.hsVec Y ∈ Submodule.span ℂ (Set.range (fun σ => B.hsVec (E σ)))` using `heq ▸ hspan1 Y hY`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hm`. Establish `hcoef : ∀ σ, inner ℂ (B.hsVec (E σ)) (B.hsVec Y) = c σ`. Introduce `σ`. Rewrite using `[← hc]`.
+
+Conclude with `hv.inner_right_fintype c σ`. Apply `hsVec_injective_apply` to reduce the goal to its premises. Rewrite using `[hsVec_finset_sum_smul]`. Simplify using `only [hcoef]`. Conclude with `hc.symm`.
+
+Use `⟨fun ρ _ => E ρ, ⟨fun ρ => contDiffOn_const, fun ζ hζ => ⟨fun ρ => (hFib ζ hζ).symm ▸ hEmem ρ, horth, fun Y hY => hexp Y (hFib ζ hζ ▸ hY)⟩⟩, ?_, fun ρ ζ ζ' => rfl⟩` and prove the remaining obligations. Introduce `f Φ`. Use function extensionality and compare the values at `ρ`. Unfold `trR MA.actA`. Simplify using `only [MA.kap, AlgHom.comp_apply, Matrix.diagonalAlgHom_apply, Matrix.diagonal_apply]`.
+
+Establish `hR : rawR P Bs.μsec (fun ρ _ => E ρ) (↑((d.κ f).1 Φ)) ρ = f ρ • rawR P Bs.μsec (fun ρ _ => E ρ) (↑Φ) ρ`. Use function extensionality and compare the values at `q`. Simplify using `only [rawR, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hQ.2.2.2 f Φ q, GTK.hs_comp_sum]`. Simplify using `only [hinQ, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `symm`. Use `(Finset.sum_eq_single ρ ?_ ?_).trans ?_` and prove the remaining obligations. Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb)]`.
+
+Both sides reduce to the same expression. Introduce `hρ`. Conclude with `absurd (Finset.mem_univ ρ) hρ`. Rewrite using `[if_pos rfl, hR, toSm_smul_hermitian_curvature]`. Both sides reduce to the same expression.
+-/
 theorem radial_constant_of_point_and_line (hPt : GTKPt) (hLine : GTKLine) : GTRConst := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d h
   obtain ⟨Qr, hQ⟩ := hPt Wp Wq P Bs X d h
@@ -139,6 +185,9 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.GTK
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `GTK.radial_constant_of_point_and_line gauge_kappa_pointwise_holds gauge_kappa_line_holds`.
+-/
 theorem radial_gauge_constant_holds : GTRConst := GTK.radial_constant_of_point_and_line gauge_kappa_pointwise_holds gauge_kappa_line_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

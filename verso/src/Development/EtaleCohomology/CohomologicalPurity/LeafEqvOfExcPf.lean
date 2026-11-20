@@ -39,6 +39,9 @@ instance i4 : PreservesColimitsOfShape WalkingSpan (ComplexShape.embeddingDownNa
 instance i5 : PreservesColimitsOfShape WalkingSpan (chains R) := by
   unfold chains; infer_instance
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Unfold `HK.pull HK.pre`. Simplify using `only [cpre]`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+-/
 theorem hkc (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -46,6 +49,9 @@ theorem hkc (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (
   simp only [cpre]
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp]
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Unfold `HK.pull HK.pre`. Simplify using `only [cpre]`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+-/
 theorem hki (R : Type) [CommRing R] {K : Cx R} (F : Shv R) (n : ℤ) (x : HK R K F n) :
     HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -54,6 +60,9 @@ theorem hki (R : Type) [CommRing R] {K : Cx R} (F : Shv R) (n : ℤ) (x : HK R K
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp]
 
+/- English proof (translation)
+The claim follows from `hkc R f g F n x`.
+-/
 theorem hkc' (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := hkc R f g F n x
 
@@ -71,25 +80,70 @@ def ss : dbl (Jr φ) ⟶ MM φ := pushout.desc (𝟙 _) (rr φ ≫ jj φ) (by
   change jj φ ≫ 𝟙 _ = jj φ ≫ rr φ ≫ jj φ
   rw [← Category.assoc, show jj φ ≫ rr φ = 𝟙 _ from pushout.inr_desc _ _ _]; simp)
 
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem jr : jj φ ≫ rr φ = 𝟙 _ := pushout.inr_desc _ _ _
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem j_gM : jj φ ≫ gM φ = dbl.inr P := pushout.inr_desc _ _ _
+/- English proof (translation)
+Apply `pushout.hom_ext` to reduce the goal to its premises. Use `show (pushout.inl _ _ ≫ gM φ) ≫ dbl.fold P = pushout.inl _ _ ≫ rr φ erw [pushout.inl_desc, pushout.inl_desc, Category.assoc, pushout.inl_desc, Category.comp_id]`. Use `show (pushout.inr _ _ ≫ gM φ) ≫ dbl.fold P = pushout.inr _ _ ≫ rr φ erw [pushout.inr_desc, pushout.inr_desc, pushout.inr_desc]`.
+-/
 theorem gM_fold : gM φ ≫ dbl.fold P = rr φ := by
   apply pushout.hom_ext
   · show (pushout.inl _ _ ≫ gM φ) ≫ dbl.fold P = pushout.inl _ _ ≫ rr φ
     erw [pushout.inl_desc, pushout.inl_desc, Category.assoc, pushout.inl_desc, Category.comp_id]
   · show (pushout.inr _ _ ≫ gM φ) ≫ dbl.fold P = pushout.inr _ _ ≫ rr φ
     erw [pushout.inr_desc, pushout.inr_desc, pushout.inr_desc]
+/- English proof (translation)
+Apply `pushout.hom_ext` to reduce the goal to its premises. Use `show (pushout.inl _ _ ≫ hh φ) ≫ gM φ = pushout.inl _ _ ≫ dbl.map φ erw [pushout.inl_desc, pushout.inl_desc, pushout.inl_desc]`. Both sides reduce to the same expression. Use `show (pushout.inr _ _ ≫ hh φ) ≫ gM φ = pushout.inr _ _ ≫ dbl.map φ erw [pushout.inr_desc, Category.assoc, pushout.inr_desc, pushout.inr_desc]`. Both sides reduce to the same expression.
+-/
 theorem h_gM : hh φ ≫ gM φ = dbl.map φ := by
   apply pushout.hom_ext
   · show (pushout.inl _ _ ≫ hh φ) ≫ gM φ = pushout.inl _ _ ≫ dbl.map φ
     erw [pushout.inl_desc, pushout.inl_desc, pushout.inl_desc]; rfl
   · show (pushout.inr _ _ ≫ hh φ) ≫ gM φ = pushout.inr _ _ ≫ dbl.map φ
     erw [pushout.inr_desc, Category.assoc, pushout.inr_desc, pushout.inr_desc]; rfl
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem inl_h : dbl.inl P' ≫ hh φ = ii φ := pushout.inl_desc _ _ _
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem inr_h : dbl.inr P' ≫ hh φ = φ.right ≫ jj φ := pushout.inr_desc _ _ _
+/- English proof (translation)
+The claim follows from `pushout.inl_desc _ _ _`.
+-/
 theorem etale_mapping_cylinder_double_section_inl_comp : dbl.inl (Jr φ) ≫ ss φ = 𝟙 _ := pushout.inl_desc _ _ _
+/- English proof (translation)
+The claim follows from `pushout.inr_desc _ _ _`.
+-/
 theorem etale_mapping_cylinder_double_section_inr_comp : dbl.inr (Jr φ) ≫ ss φ = rr φ ≫ jj φ := pushout.inr_desc _ _ _
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hR q i`. Establish `PO : IsPushout ((chains (ZMod q)).map P'.hom) ((chains (ZMod q)).map (P'.hom ≫ φ.right)) ((chains (ZMod q)).map (ii φ)) ((chains (ZMod q)).map (jj φ))` using `(IsPushout.of_hasPushout P'.hom (P'.hom ≫ φ.right)).map _`. Set `pM : (chains (ZMod q)).obj (MM φ) ⟶ cokernel ((chains (ZMod q)).map P'.hom)` to `PO.desc (cokernel.π ((chains (ZMod q)).map P'.hom)) 0 (by simp)`. Establish `pM1 : (chains (ZMod q)).map (ii φ) ≫ pM = cokernel.π _` using `PO.inl_desc _ _ _`. Establish `pM2 : (chains (ZMod q)).map (jj φ) ≫ pM = 0` using `PO.inr_desc _ _ _`.
+
+Establish `wκ : (chains (ZMod q)).map P'.hom ≫ (chains (ZMod q)).map (ii φ) ≫ cokernel.π ((chains (ZMod q)).map (jj φ)) = 0`. Establish `hc : P'.hom ≫ ii φ = (P'.hom ≫ φ.right) ≫ jj φ` using `pushout.condition`. Rewrite using `[← Category.assoc, ← (chains (ZMod q)).map_comp, hc, (chains (ZMod q)).map_comp, Category.assoc, cokernel.condition, comp_zero]`. Set `κ : cokernel ((chains (ZMod q)).map P'.hom) ⟶ cokernel ((chains (ZMod q)).map (Jr φ).hom)` to `cokernel.desc _ _ wκ`. Set `κ' : cokernel ((chains (ZMod q)).map (Jr φ).hom) ⟶ cokernel ((chains (ZMod q)).map P'.hom)` to `cokernel.desc ((chains (ZMod q)).map (jj φ)) pM pM2`.
+
+Establish `hπ : pM ≫ κ = cokernel.π ((chains (ZMod q)).map (Jr φ).hom)`. Apply `PO.hom_ext` to reduce the goal to its premises. Rewrite using `[← Category.assoc, pM1]`. Conclude with `cokernel.π_desc _ _ _`. Rewrite using `[← Category.assoc, pM2, zero_comp]`.
+
+Conclude with `(cokernel.condition _).symm`. Establish `hκ : κ' ≫ κ = 𝟙 _`. Apply `coequalizer.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.comp_id]`. Conclude with `(cokernel.π_desc_assoc _ _ _ _).trans hπ`.
+
+Set `s : Hs q (Jr φ) n i` to `⟨pull _ (ss φ) _ n y, by`. Express the relevant statement in the definitionally equal form `pull _ (dbl.inr (Jr φ)) _ n (pull _ (ss φ) _ n y) = 0`. Rewrite using `[← pull_comp, etale_mapping_cylinder_double_section_inr_comp, pull_comp, h1, map_zero]⟩`. Set `x` to `(e (Jr φ) n).symm s`. Establish `hx : (e (Jr φ) n x).1 = HK.pull _ ((chains (ZMod q)).map (ss φ) ≫ cokernel.π _) (tw q i) n x`.
+
+Apply `he` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← (chains (ZMod q)).map_comp, etale_mapping_cylinder_double_section_inl_comp, (chains (ZMod q)).map_id, Category.id_comp]`. Rewrite using `[← Category.assoc, ← (chains (ZMod q)).map_comp, etale_mapping_cylinder_double_section_inr_comp, (chains (ZMod q)).map_comp, Category.assoc] erw [cokernel.condition, comp_zero]`. Establish `hs : (e (Jr φ) n x).1 = pull _ (ss φ) _ n y` using `by simp [x, s]`. Establish `hy : y = pull _ (dbl.inl (Jr φ)) _ n (pull _ (ss φ) _ n y)`.
+
+Rewrite using `[← pull_comp, etale_mapping_cylinder_double_section_inl_comp, pull_id]`. Establish `hp : (e P' n (HK.pull _ κ (tw q i) n x)).1 = HK.pull _ ((chains (ZMod q)).map (hh φ) ≫ pM) (tw q i) n (HK.pull _ κ (tw q i) n x)`. Apply `he` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← (chains (ZMod q)).map_comp, inl_h, pM1]`. Rewrite using `[← Category.assoc, ← (chains (ZMod q)).map_comp, inr_h, (chains (ZMod q)).map_comp, Category.assoc, pM2, comp_zero]`.
+
+Establish `hh0 : pull _ (hh φ) _ n y = HK.pull _ ((chains (ZMod q)).map (hh φ) ≫ pM) (tw q i) n (HK.pull _ κ (tw q i) n x)`. Rewrite using `[← hkc', Category.assoc, hπ, hy, ← pull_comp, ← hs, hx]`. Express the relevant statement in the definitionally equal form `HK.pull _ ((chains (ZMod q)).map _) _ n _ = _`. Establish `hhs : hh φ ≫ dbl.inl (Jr φ) ≫ ss φ = hh φ` using `by rw [etale_mapping_cylinder_double_section_inl_comp]; exact Category.comp_id _`. Rewrite using `[← hkc', ← Category.assoc, ← (chains (ZMod q)).map_comp, Category.assoc, hhs]`.
+
+Establish `hz : HK.pull _ κ (tw q i) n x = 0`. Apply `(e P' n).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hp, ← hh0, h2]`.
+
+Both sides reduce to the same expression. Establish `hx0 : x = 0`. Rewrite using `[← hki _ (tw q i) n x, ← hκ, hkc', hz, map_zero]`. Rewrite using `[hy, ← hs, hx0, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem key (hR : LeafRel) (q : ℕ) (i n : ℤ) (y : Ht q (MM φ) n i)
     (h1 : pull _ (jj φ) (tw q i) n y = 0) (h2 : pull _ (hh φ) (tw q i) n y = 0) : y = 0 := by
   obtain ⟨e, he⟩ := hR q i
@@ -145,6 +199,21 @@ end LateralTheory.CohomologicalPurity.EquivalenceOfExcision
 namespace LateralTheory.CohomologicalPurity.TubeCut
 open LateralTheory.CohomologicalPurity.EquivalenceOfExcision
 
+/- English proof (translation)
+Introduce `q P' P φ hE i n`. Use `open LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut in`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Rewrite `hab`, the goal using `[← sub_eq_zero]`.
+
+Rewrite `hab` using `[← map_sub]`. Use `set x := a - b`. Establish `h1 : pull _ (dbl.inr P) (tw q i) n x = 0`. Rewrite using `[← j_gM φ, pull_comp, hab, map_zero]`. Establish `h2 : Hs.pull q φ n i ⟨x, h1⟩ = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map φ) _ n x = 0`. Rewrite using `[← h_gM φ, pull_comp, hab, map_zero]`. Use `(hE n i).1 (h2.trans (map_zero _).symm)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Introduce `y set y0 := y - pull _ (rr φ) (tw q i) n (pull _ (jj φ) (tw q i) n y)`. Establish `hy0 : pull _ (jj φ) (tw q i) n y0 = 0`. Simplify using `only [y0, map_sub]`. Rewrite using `[← pull_comp, jr, pull_id, sub_self]`. Set `z : Hs q P' n i` to `⟨pull _ (hh φ) _ n y0, by`.
+
+Express the relevant statement in the definitionally equal form `pull _ (dbl.inr P') _ n (pull _ (hh φ) _ n y0) = 0`. Rewrite using `[← pull_comp, inr_h, pull_comp, hy0, map_zero]⟩`. Take `⟨x, hx⟩` from `(hE n i).2 z`. Establish `hd : pull _ (gM φ) (tw q i) n x.1 - y0 = 0`. Apply `key φ hR q i n` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, ← pull_comp, j_gM, hy0, sub_zero]`. Conclude with `x.2`. Rewrite using `[map_sub, ← pull_comp, h_gM, sub_eq_zero]`. Conclude with `congrArg Subtype.val hx`. Use `⟨x.1 + pull _ (dbl.fold P) (tw q i) n (pull _ (jj φ) (tw q i) n y), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, ← pull_comp, gM_fold, sub_eq_zero.mp hd]`. Simplify using `[y0]`.
+-/
 theorem LeafEqvOfExc_of (hR : LeafRel) : LeafEqvOfExc := by
   intro q P' P φ hE i n
   open LateralTheory.CohomologicalPurity LateralTheory.CohomologicalPurity.TubeCut in

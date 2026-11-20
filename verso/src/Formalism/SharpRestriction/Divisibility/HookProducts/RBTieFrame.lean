@@ -13,12 +13,18 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
   {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, ← LinearMap.toMatrix_mulVec_repr b b' u x, Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul]`.
+-/
 theorem vecAt_map (b : Basis ι K V) (b' : Basis κ K W) (v : InfinitePlace K) (u : V →ₗ[K] W) (x : V) :
     Formalism.HermitianLatticesTheory.vecAt b' v (u x) = (LinearMap.toMatrix b b' u).map v.embedding *ᵥ Formalism.HermitianLatticesTheory.vecAt b v x := by
   funext i
   simp only [Formalism.HermitianLatticesTheory.vecAt, ← LinearMap.toMatrix_mulVec_repr b b' u x, Matrix.mulVec, dotProduct,
     Matrix.map_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`.
+-/
 theorem vecAt_std {d : ℕ} (v : InfinitePlace K) (x : Fin d → K) :
     Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin d)) v x = fun l => v.embedding (x l) := by
   funext l
@@ -26,6 +32,9 @@ theorem vecAt_std {d : ℕ} (v : InfinitePlace K) (x : Fin d → K) :
 
 end Vec
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem sum_star_mulVec_single {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] (C : Matrix m n ℂ) (i j : n) :
     ∑ k, star ((C *ᵥ Pi.single i 1) k) * (C *ᵥ Pi.single j 1) k = (Cᴴ * C) i j := by
   simp [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.mulVec, dotProduct, Pi.single_apply]
@@ -41,16 +50,25 @@ def cP (b : Basis ι K V) (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K) 
 def cQ (b : Basis ι K V) (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K) : Matrix (Fin d) ι ℂ :=
   (LinearMap.toMatrix b (Pi.basisFun K (Fin d)) e.symm.toLinearMap).map v.embedding
 
+/- English proof (translation)
+Unfold `cP cQ`. Rewrite using `[← Matrix.map_mul, ← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem basisChange_mul_basisChangeInv (b : Basis ι K V) (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K) : cP b e v * cQ b e v = 1 := by
   unfold cP cQ
   rw [← Matrix.map_mul, ← LinearMap.toMatrix_comp]
   simp
 
+/- English proof (translation)
+Unfold `cP cQ`. Rewrite using `[← Matrix.map_mul, ← LinearMap.toMatrix_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem cQ_mul_cP (b : Basis ι K V) (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K) : cQ b e v * cP b e v = 1 := by
   unfold cP cQ
   rw [← Matrix.map_mul, ← LinearMap.toMatrix_comp]
   simp
 
+/- English proof (translation)
+Use `show (XA v)⁻¹ *ᵥ Formalism.HermitianLatticesTheory.vecAt b v (e y) = _`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[show e y = e.toLinearMap y from rfl, vecAt_map (Pi.basisFun K (Fin d)) b v e.toLinearMap y, vecAt_std]`. Both sides reduce to the same expression.
+-/
 theorem fcoord_e (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K)
     (y : Fin d → K) :
     Formalism.HermitianLatticesTheory.fcoord b XA v (e y) = ((XA v)⁻¹ * cP b e v) *ᵥ (fun l => v.embedding (y l)) := by
@@ -60,11 +78,17 @@ theorem fcoord_e (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) 
   rw [show e y = e.toLinearMap y from rfl, vecAt_map (Pi.basisFun K (Fin d)) b v e.toLinearMap y, vecAt_std]
   rfl
 
+/- English proof (translation)
+Use `show (X v)⁻¹ *ᵥ Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin d)) v y = _`. Rewrite using `[vecAt_std]`.
+-/
 theorem fcoord_std (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (y : Fin d → K) :
     Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin d)) X v y = (X v)⁻¹ *ᵥ (fun l => v.embedding (y l)) := by
   show (X v)⁻¹ *ᵥ Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin d)) v y = _
   rw [vecAt_std]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem emb_single (v : InfinitePlace K) (k : Fin d) :
     (fun l => v.embedding ((Pi.single k (1 : K) : Fin d → K) l)) = Pi.single k (1 : ℂ) := by
   funext l
@@ -72,6 +96,11 @@ theorem emb_single (v : InfinitePlace K) (k : Fin d) :
   · subst h; simp
   · simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Use extensionality with `k l`. Establish `h1` using `h v (Pi.single k (1 : K) : Fin d → K) (Pi.single l (1 : K) : Fin d → K)`. Unfold `Formalism.HermitianLatticesTheory.majAt at h1`. Rewrite `h1` using `[fcoord_e, fcoord_e, fcoord_std, fcoord_std, emb_single, emb_single]`. Rewrite using `[← sum_star_mulVec_single, ← sum_star_mulVec_single]`.
+
+Conclude with `h1`.
+-/
 theorem gram_tie (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
     (e : (Fin d → K) ≃ₗ[K] V)
     (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
@@ -95,6 +124,11 @@ def cV (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) (X : Infin
 variable (b : Basis ι K V) (XA : InfinitePlace K → Matrix ι ι ℂ) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ)
   (e : (Fin d → K) ≃ₗ[K] V) (v : InfinitePlace K)
 
+/- English proof (translation)
+Establish `hg` using `gram_tie b XA X e h v`. Establish `hinv : (X v)⁻¹ * X v = 1` using `Matrix.nonsing_inv_mul _ hX`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cU, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (X v)ᴴ * (((X v)⁻¹)ᴴ * (X v)⁻¹) * X v := by rw [hg]`.
+
+Use `_ = ((X v)⁻¹ * X v)ᴴ * ((X v)⁻¹ * X v) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hinv, Matrix.conjTranspose_one, Matrix.mul_one]`.
+-/
 theorem cU_conj_mul (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
     (hX : IsUnit (X v).det) : (cU b XA X e v)ᴴ * cU b XA X e v = 1 := by
   have hg := gram_tie b XA X e h v
@@ -107,6 +141,9 @@ theorem cU_conj_mul (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = 1 := by rw [hinv, Matrix.conjTranspose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cU, cV, Matrix.mul_assoc]`. Use `_ = (XA v)⁻¹ * XA v := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hX, Matrix.mul_one, basisChange_mul_basisChangeInv, Matrix.mul_one]`. Use `_ = 1 := Matrix.nonsing_inv_mul _ hXA`.
+-/
 theorem cU_mul_cV (hXA : IsUnit (XA v).det) (hX : IsUnit (X v).det) : cU b XA X e v * cV b XA X e v = 1 := by
   calc cU b XA X e v * cV b XA X e v
       = (XA v)⁻¹ * (cP b e v * (X v * (X v)⁻¹) * cQ b e v) * XA v := by
@@ -115,6 +152,9 @@ theorem cU_mul_cV (hXA : IsUnit (XA v).det) (hX : IsUnit (X v).det) : cU b XA X 
         rw [Matrix.mul_nonsing_inv _ hX, Matrix.mul_one, basisChange_mul_basisChangeInv, Matrix.mul_one]
     _ = 1 := Matrix.nonsing_inv_mul _ hXA
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cU_mul_cV b XA X e v hXA hX, Matrix.mul_one]`. Use `_ = ((cU b XA X e v)ᴴ * cU b XA X e v) * cV b XA X e v := (Matrix.mul_assoc _ _ _).symm`. Use `_ = cV b XA X e v := by rw [cU_conj_mul b XA X e v h hX, Matrix.one_mul]`.
+-/
 theorem cU_conj_eq (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
     (hXA : IsUnit (XA v).det) (hX : IsUnit (X v).det) : (cU b XA X e v)ᴴ = cV b XA X e v := by
   calc (cU b XA X e v)ᴴ = (cU b XA X e v)ᴴ * (cU b XA X e v * cV b XA X e v) := by
@@ -122,20 +162,36 @@ theorem cU_conj_eq (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA 
     _ = ((cU b XA X e v)ᴴ * cU b XA X e v) * cV b XA X e v := (Matrix.mul_assoc _ _ _).symm
     _ = cV b XA X e v := by rw [cU_conj_mul b XA X e v h hX, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[cU_conj_eq b XA X e v h hXA hX, cU_mul_cV b XA X e v hXA hX]`.
+-/
 theorem cU_mul_conj (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
     (hXA : IsUnit (XA v).det) (hX : IsUnit (X v).det) : cU b XA X e v * (cU b XA X e v)ᴴ = 1 := by
   rw [cU_conj_eq b XA X e v h hXA hX, cU_mul_cV b XA X e v hXA hX]
 
+/- English proof (translation)
+Unfold `cU`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXA, Matrix.one_mul]`.
+-/
 theorem basisChange_mul_X (hXA : IsUnit (XA v).det) : cP b e v * X v = XA v * cU b XA X e v := by
   unfold cU
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXA, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[cU_conj_eq b XA X e v h hXA hX]`. Unfold `cV`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hX, Matrix.one_mul]`.
+-/
 theorem cQ_mul_XA (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
     (hXA : IsUnit (XA v).det) (hX : IsUnit (X v).det) : cQ b e v * XA v = X v * (cU b XA X e v)ᴴ := by
   rw [cU_conj_eq b XA X e v h hXA hX]
   unfold cV
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hX, Matrix.one_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hX`. Establish `hinv : (X v)⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit _ hX`. Establish `hg` using `gram_tie b XA X e h v`. Rewrite `hg` using `[hinv, Matrix.conjTranspose_zero, Matrix.zero_mul]`. Establish `hM : (XA v)⁻¹ * cP b e v = 0` using `by open scoped ComplexOrder in exact Matrix.conjTranspose_mul_self_eq_zero.mp hg`.
+
+Establish `hP : cP b e v = 0`. Establish `h2` using `congrArg (fun M => XA v * M) hM`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXA, Matrix.one_mul, Matrix.mul_zero] at h2`. Conclude with `h2`. Establish `h1` using `cQ_mul_cP b e v`.
+
+Rewrite `h1` using `[hP, Matrix.mul_zero]`. Take `rfl | hd` from `Nat.eq_zero_or_pos d`. Conclude with `hX (by simp)`. Establish `h3` using `congrFun (congrFun h1 ⟨0, hd⟩) ⟨0, hd⟩`. Simplify using `at h3`.
+-/
 theorem frame_unit_of_tie (h : ∀ v x y, Formalism.HermitianLatticesTheory.majAt b XA v (e x) (e y) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v x y)
     (hXA : IsUnit (XA v).det) : IsUnit (X v).det := by
   by_contra hX

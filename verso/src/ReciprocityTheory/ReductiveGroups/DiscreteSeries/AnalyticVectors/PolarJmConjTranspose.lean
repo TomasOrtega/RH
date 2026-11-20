@@ -11,56 +11,97 @@ variable {n : ℕ}
 
 namespace PolarDecomposition
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 lemma polar_Jm_mul_self (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
   congr 1
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [*]`.
+-/
 lemma polar_Jm_conjTranspose (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
   congr 1
   funext a
   split_ifs <;> simp [*]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Jm ε, Jm ε, polar_Jm_mul_self ε, polar_Jm_mul_self ε⟩, rfl⟩`.
+-/
 lemma polar_J_unit (ε : Fin n → Bool) : IsUnit (Jm ε) :=
   ⟨⟨Jm ε, Jm ε, polar_Jm_mul_self ε, polar_Jm_mul_self ε⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (polar_Jm_mul_self ε)`.
+-/
 lemma polar_Jinv (ε : Fin n → Bool) : (Jm ε)⁻¹ = Jm ε :=
   Matrix.inv_eq_left_inv (polar_Jm_mul_self ε)
 
+/- English proof (translation)
+Establish `h` using `Matrix.exp_conj (Jm ε) A (polar_J_unit ε)`. Rewrite `h` using `[polar_Jinv]`. Then use the resulting hypothesis.
+-/
 lemma polar_exp_Jconj (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (Jm ε * A * Jm ε) = Jm ε * NormedSpace.exp A * Jm ε := by
   have h := Matrix.exp_conj (Jm ε) A (polar_J_unit ε)
   rwa [polar_Jinv] at h
 
+/- English proof (translation)
+Conclude with `hA`.
+-/
 lemma polar_sa {A : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) : IsSelfAdjoint A := by
   exact hA
 
+/- English proof (translation)
+Rewrite using `[← CFC.log_exp A (polar_sa hA), ← CFC.log_exp B (polar_sa hB), h]`.
+-/
 lemma polar_exp_inj {A B : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) (hB : Bᴴ = B)
     (h : NormedSpace.exp A = NormedSpace.exp B) : A = B := by
   rw [← CFC.log_exp A (polar_sa hA), ← CFC.log_exp B (polar_sa hB), h]
 
+/- English proof (translation)
+Conclude with `Matrix.IsHermitian.exp hA`.
+-/
 lemma polar_exp_herm {A : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) :
     (NormedSpace.exp A)ᴴ = NormedSpace.exp A := by
   exact Matrix.IsHermitian.exp hA
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl A).neg_left), neg_add_cancel, NormedSpace.exp_zero]`.
+-/
 lemma polar_exp_neg_mul (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (-A) * NormedSpace.exp A = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ ((Commute.refl A).neg_left), neg_add_cancel, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl A).neg_right), add_neg_cancel, NormedSpace.exp_zero]`.
+-/
 lemma polar_exp_mul_neg (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp A * NormedSpace.exp (-A) = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ ((Commute.refl A).neg_right), add_neg_cancel, NormedSpace.exp_zero]
 
+/- English proof (translation)
+The claim follows from `Matrix.exp_add_of_commute A A (Commute.refl A)`.
+-/
 lemma polar_exp_two (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (A + A) = NormedSpace.exp A * NormedSpace.exp A :=
   Matrix.exp_add_of_commute A A (Commute.refl A)
 
+/- English proof (translation)
+Rewrite `h` using `[← two_smul ℂ A, ← two_smul ℂ B]`. Conclude with `smul_right_injective _ two_ne_zero h`.
+-/
 lemma polar_half {A B : Matrix (Fin n) (Fin n) ℂ} (h : A + A = B + B) : A = B := by
   rw [← two_smul ℂ A, ← two_smul ℂ B] at h
   exact smul_right_injective _ two_ne_zero h
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[hP.isHermitian.spectrum_real_eq_range_eigenvalues]`. Take `⟨i, rfl⟩` from `hx`. Establish `h0` using `hP.eigenvalues_nonneg i`. Establish `hne : hP.isHermitian.eigenvalues i ≠ 0`.
+
+Introduce `h`. Establish `hmem` using `hP.isHermitian.eigenvalues_mem_spectrum_real i`. Rewrite `hmem` using `[h, spectrum.zero_mem_iff]`. Conclude with `hmem hu`. Conclude with `lt_of_le_of_ne h0 (Ne.symm hne)`.
+-/
 lemma polar_spec_pos {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosSemidef) (hu : IsUnit P) :
     ∀ x ∈ spectrum ℝ P, 0 < x := by
   intro x hx
@@ -74,6 +115,11 @@ lemma polar_spec_pos {P : Matrix (Fin n) (Fin n) ℂ} (hP : P.PosSemidef) (hu : 
     exact hmem hu
   exact lt_of_le_of_ne h0 (Ne.symm hne)
 
+/- English proof (translation)
+Establish `hlogsa : IsSelfAdjoint (CFC.log P)` using `cfc_predicate Real.log P`. Rewrite using `[← CFC.real_exp_eq_normedSpace_exp hlogsa]`. Use `show cfc Real.exp (cfc Real.log P) = P`. Rewrite using `[← cfc_comp Real.exp Real.log P hP Real.continuous_exp.continuousOn (Real.continuousOn_log.mono fun x hx => (hs x hx).ne')]`. Use `conv_rhs => rw [← cfc_id' ℝ P hP]`.
+
+Conclude with `cfc_congr fun x hx => Real.exp_log (hs x hx)`.
+-/
 lemma polar_exp_log {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsSelfAdjoint P)
     (hs : ∀ x ∈ spectrum ℝ P, 0 < x) : NormedSpace.exp (CFC.log P) = P := by
   have hlogsa : IsSelfAdjoint (CFC.log P) := cfc_predicate Real.log P
@@ -84,6 +130,11 @@ lemma polar_exp_log {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsSelfAdjoint P)
   conv_rhs => rw [← cfc_id' ℝ P hP]
   exact cfc_congr fun x hx => Real.exp_log (hs x hx)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hJJ` using `polar_Jm_mul_self ε`. Establish `hleft : (Jm ε * gᴴ * Jm ε) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hright : g * (Jm ε * gᴴ * Jm ε) = 1` using `mul_eq_one_comm.1 hleft`.
+
+Use `⟨?_, ⟨⟨g, _, hright, hleft⟩, rfl⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hJJ, Matrix.mul_one]`. Use `_ = Jm ε := by rw [hright, Matrix.one_mul]`.
+-/
 lemma polar_gJgH {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     g * Jm ε * gᴴ = Jm ε ∧ IsUnit g := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -100,14 +151,23 @@ lemma polar_gJgH {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : in
 def polar_L (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   (1 / 2 : ℝ) • CFC.log (gᴴ * g)
 
+/- English proof (translation)
+Establish `h : IsSelfAdjoint (CFC.log (gᴴ * g))` using `cfc_predicate Real.log (gᴴ * g)`. Conclude with `(IsSelfAdjoint.all (1 / 2 : ℝ)).smul h`.
+-/
 lemma polar_L_herm (g : Matrix (Fin n) (Fin n) ℂ) : (polar_L g)ᴴ = polar_L g := by
   have h : IsSelfAdjoint (CFC.log (gᴴ * g)) := cfc_predicate Real.log (gᴴ * g)
   exact (IsSelfAdjoint.all (1 / 2 : ℝ)).smul h
 
+/- English proof (translation)
+Rewrite using `[polar_L, ← add_smul, show (1 / 2 : ℝ) + 1 / 2 = 1 by norm_num, one_smul]`.
+-/
 lemma polar_L_add (g : Matrix (Fin n) (Fin n) ℂ) :
     polar_L g + polar_L g = CFC.log (gᴴ * g) := by
   rw [polar_L, ← add_smul, show (1 / 2 : ℝ) + 1 / 2 = 1 by norm_num, one_smul]
 
+/- English proof (translation)
+Establish `hu : IsUnit g` using `(polar_gJgH hg).2`. Establish `hu2 : IsUnit (gᴴ * g)` using `hu.star.mul hu`. Conclude with `⟨Matrix.isHermitian_conjTranspose_mul_self g, hu2, polar_spec_pos (Matrix.posSemidef_conjTranspose_mul_self g) hu2⟩`.
+-/
 lemma polar_isSelfAdjoint_isUnit_spectrum_pos {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     IsSelfAdjoint (gᴴ * g) ∧ IsUnit (gᴴ * g) ∧ ∀ x ∈ spectrum ℝ (gᴴ * g), 0 < x := by
   have hu : IsUnit g := (polar_gJgH hg).2
@@ -115,12 +175,26 @@ lemma polar_isSelfAdjoint_isUnit_spectrum_pos {ε : Fin n → Bool} {g : Matrix 
   exact ⟨Matrix.isHermitian_conjTranspose_mul_self g, hu2,
     polar_spec_pos (Matrix.posSemidef_conjTranspose_mul_self g) hu2⟩
 
+/- English proof (translation)
+Establish `hf` using `polar_isSelfAdjoint_isUnit_spectrum_pos hg`. Rewrite using `[polar_L_add]`. Conclude with `polar_exp_log hf.1 hf.2.2`.
+-/
 lemma polar_exp_LL {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     NormedSpace.exp (polar_L g + polar_L g) = gᴴ * g := by
   have hf := polar_isSelfAdjoint_isUnit_spectrum_pos hg
   rw [polar_L_add]
   exact polar_exp_log hf.1 hf.2.2
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hLh` using `polar_L_herm g`. Establish `hJh` using `polar_Jm_conjTranspose ε`. Establish `hJJ` using `polar_Jm_mul_self ε`. Establish `hgJ` using `(polar_gJgH hg).1`.
+
+Establish `hA : (Jm ε * polar_L g * Jm ε + Jm ε * polar_L g * Jm ε)ᴴ = Jm ε * polar_L g * Jm ε + Jm ε * polar_L g * Jm ε`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hLh, hJh, Matrix.mul_assoc]`. Establish `hB : (-polar_L g + -polar_L g)ᴴ = -polar_L g + -polar_L g`. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_neg, hLh]`. Establish `hsplit : Jm ε * polar_L g * Jm ε + Jm ε * polar_L g * Jm ε = Jm ε * (polar_L g + polar_L g) * Jm ε`.
+
+Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Establish `h1 : NormedSpace.exp (Jm ε * polar_L g * Jm ε + Jm ε * polar_L g * Jm ε) = Jm ε * (gᴴ * g) * Jm ε`. Rewrite using `[hsplit, polar_exp_Jconj, polar_exp_LL hg]`. Establish `hM : (Jm ε * (gᴴ * g) * Jm ε) * (gᴴ * g) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Jm ε * (gᴴ * Jm ε * g) := by rw [hgJ]; simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hJJ]`. Establish `hN : NormedSpace.exp (-polar_L g + -polar_L g) * (gᴴ * g) = 1`. Rewrite using `[← polar_exp_LL hg, show -polar_L g + -polar_L g = -(polar_L g + polar_L g) by abel]`.
+
+Conclude with `polar_exp_neg_mul _`. Establish `h2 : NormedSpace.exp (-polar_L g + -polar_L g) = Jm ε * (gᴴ * g) * Jm ε`. Rewrite using `[← Matrix.inv_eq_left_inv hN, Matrix.inv_eq_left_inv hM]`. Conclude with `polar_half (polar_exp_inj hA hB (h1.trans h2.symm))`.
+-/
 lemma polar_JLJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     Jm ε * polar_L g * Jm ε = -polar_L g := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -151,6 +225,11 @@ lemma polar_JLJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inU
     rw [← Matrix.inv_eq_left_inv hN, Matrix.inv_eq_left_inv hM]
   exact polar_half (polar_exp_inj hA hB (h1.trans h2.symm))
 
+/- English proof (translation)
+Establish `h` using `polar_JLJ hg`. Establish `hJJ` using `polar_Jm_mul_self ε`. Establish `h2 : Jm ε * polar_L g = -(polar_L g * Jm ε)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Jm ε * polar_L g) (Jm ε) (Jm ε), hJJ, Matrix.mul_one]`.
+
+Use `_ = -polar_L g * Jm ε := by rw [h]`. Use `_ = -(polar_L g * Jm ε) := Matrix.neg_mul _ _`. Use `⟨?_, by rw [h2, neg_neg]⟩` and prove the remaining obligations. Use `show (polar_L g)ᴴ * Jm ε + Jm ε * polar_L g = 0`. Rewrite using `[polar_L_herm, h2, add_neg_cancel]`.
+-/
 lemma polar_L_inP {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     inP ε (polar_L g) := by
   have h := polar_JLJ hg
@@ -164,6 +243,21 @@ lemma polar_L_inP {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : i
   show (polar_L g)ᴴ * Jm ε + Jm ε * polar_L g = 0
   rw [polar_L_herm, h2, add_neg_cancel]
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `hJJ` using `polar_Jm_mul_self ε`. Establish `hEiE` using `polar_exp_neg_mul (polar_L g)`. Establish `hEEi` using `polar_exp_mul_neg (polar_L g)`. Establish `hgg : gᴴ * g = NormedSpace.exp (polar_L g) * NormedSpace.exp (polar_L g)`.
+
+Rewrite using `[← polar_exp_two, polar_exp_LL hg]`. Establish `hEih : (NormedSpace.exp (-polar_L g))ᴴ = NormedSpace.exp (-polar_L g)` using `polar_exp_herm (by rw [Matrix.conjTranspose_neg, polar_L_herm])`. Establish `hEiJ : NormedSpace.exp (-polar_L g) * Jm ε = Jm ε * NormedSpace.exp (polar_L g)`. Establish `h` using `polar_exp_Jconj ε (polar_L g)`. Rewrite `h` using `[polar_JLJ hg]`.
+
+Rewrite using `[h, Matrix.mul_assoc (Jm ε * NormedSpace.exp (polar_L g)), hJJ, Matrix.mul_one]`. Establish `hkk : (g * NormedSpace.exp (-polar_L g))ᴴ * (g * NormedSpace.exp (-polar_L g)) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, hEih]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (NormedSpace.exp (-polar_L g) * NormedSpace.exp (polar_L g)) * (NormedSpace.exp (polar_L g) * NormedSpace.exp (-polar_L g)) := by`. Rewrite using `[hgg]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hEiE, hEEi, Matrix.mul_one]`. Establish `hkJ : (g * NormedSpace.exp (-polar_L g))ᴴ * Jm ε * (g * NormedSpace.exp (-polar_L g)) = Jm ε`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, hEih]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = NormedSpace.exp (-polar_L g) * Jm ε * NormedSpace.exp (-polar_L g) := by rw [hg']`. Use `_ = Jm ε * NormedSpace.exp (polar_L g) * NormedSpace.exp (-polar_L g) := by rw [hEiJ]`.
+
+Use `_ = Jm ε := by rw [Matrix.mul_assoc, hEEi, Matrix.mul_one]`. Establish `hkk' : (g * NormedSpace.exp (-polar_L g)) * (g * NormedSpace.exp (-polar_L g))ᴴ = 1` using `mul_eq_one_comm.1 hkk`. Use `⟨Matrix.mem_unitaryGroup_iff'.2 hkk, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hkJ]`.
+
+Use `_ = ((g * NormedSpace.exp (-polar_L g)) * (g * NormedSpace.exp (-polar_L g))ᴴ) * Jm ε * (g * NormedSpace.exp (-polar_L g)) := by simp only [Matrix.mul_assoc]`. Use `_ = Jm ε * (g * NormedSpace.exp (-polar_L g)) := by rw [hkk', Matrix.one_mul]`.
+-/
 lemma polar_k_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     g * NormedSpace.exp (-polar_L g) ∈ Kset ε := by
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -204,6 +298,9 @@ lemma polar_k_mem {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : i
         (g * NormedSpace.exp (-polar_L g)) := by simp only [Matrix.mul_assoc]
     _ = Jm ε * (g * NormedSpace.exp (-polar_L g)) := by rw [hkk', Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, polar_exp_neg_mul, Matrix.mul_one]`.
+-/
 lemma eq_mul_exp_neg_polar_L_mul_exp_polar_L {g : Matrix (Fin n) (Fin n) ℂ} :
     g = g * NormedSpace.exp (-polar_L g) * NormedSpace.exp (polar_L g) := by
   rw [Matrix.mul_assoc, polar_exp_neg_mul, Matrix.mul_one]
@@ -211,6 +308,9 @@ lemma eq_mul_exp_neg_polar_L_mul_exp_polar_L {g : Matrix (Fin n) (Fin n) ℂ} :
 end PolarDecomposition
 
 open PolarDecomposition in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, polar_k_mem hg, polar_L g, polar_L_inP hg, eq_mul_exp_neg_polar_L_mul_exp_polar_L⟩`.
+-/
 theorem polar_UJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ∃ k ∈ Kset ε, ∃ Y, inP ε Y ∧ g = k * NormedSpace.exp Y :=
   ⟨_, polar_k_mem hg, polar_L g, polar_L_inP hg, eq_mul_exp_neg_polar_L_mul_exp_polar_L⟩

@@ -6,6 +6,9 @@ import Development.WeilBound.ThetaLifts.TowerModels.StabEx
 
 namespace GlobalTheory.ThK.Dbl
 
+/- English proof (translation)
+The claim follows from `badFactor_of dblX PositivityTheory.ThKG.Tow.stabEx vacFix2 bump`.
+-/
 theorem badFactor : BadFactor := badFactor_of dblX PositivityTheory.ThKG.Tow.stabEx vacFix2 bump
 
 end GlobalTheory.ThK.Dbl

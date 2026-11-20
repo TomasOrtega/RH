@@ -17,6 +17,17 @@ open PositivityTheory.RgTw (Mat G)
 open PositivityTheory.RgBcC
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨m, c, w, hc, hrep⟩` from `GlobalTheory.T.derivative_as_right_words n L`. Take `⟨-, hcm, -, -⟩` from `GlobalTheory.T.chart_and_right_words_smooth n`. Establish `hK : IsCompact ((fun t => 1 + cm t) '' Q)` using `hQc.image (continuous_const.add hcm)`. Establish `hKsub : (fun t => 1 + cm t) '' Q ⊆ GLs n`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Conclude with `hQ t ht`. Establish `hb : ∀ i, ∃ M, ∀ y ∈ (fun t => 1 + cm t) '' Q, ‖c i y‖ ≤ M` using `fun i => hK.exists_bound_of_continuousOn ((hc i).continuousOn.mono hKsub)`. Use `choose M hM using hb`. Use `⟨Finset.univ.image w, (∑ i, M i ^ 2) * m, by positivity, ?_⟩` and prove the remaining obligations. Introduce `V _ _ f hf t ht`.
+
+Establish `hy : 1 + cm t ∈ GLs n` using `hQ t ht`. Establish `hyK : 1 + cm t ∈ (fun t => 1 + cm t) '' Q` using `⟨t, ht, rfl⟩`. Rewrite using `[hrep V f hf _ hy]`. Establish `h1 : ‖∑ i, c i (1 + cm t) • Rw (w i) f (1 + cm t)‖ ≤ ∑ i, M i * ‖Rw (w i) f (1 + cm t)‖`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_right (hM i _ hyK) (norm_nonneg _)`. Establish `h3 : ∑ i, ‖Rw (w i) f (1 + cm t)‖ ^ 2 ≤ (m : ℝ) * ∑ u ∈ Finset.univ.image w, ‖Rw u f (1 + cm t)‖ ^ 2`. Establish `hi : ∀ i, ‖Rw (w i) f (1 + cm t)‖ ^ 2 ≤ ∑ u ∈ Finset.univ.image w, ‖Rw u f (1 + cm t)‖ ^ 2` using `fun i => Finset.single_le_sum (f := fun u => ‖Rw u f (1 + cm t)‖ ^ 2) (fun u _ => by positivity) (Finset.mem_image_of_mem w (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_on_cube (n : ℕ) (Q : Set (Idx n → ℝ)) (hQc : IsCompact Q) (hQ : ∀ t ∈ Q, 1 + cm t ∈ GLs n)
     (L : List (Idx n)) : ∃ (W : Finset (List (Idx n))) (B : ℝ), 0 ≤ B ∧
       ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) →
@@ -56,6 +67,41 @@ theorem bound_on_cube (n : ℕ) (Q : Set (Idx n → ℝ)) (hQc : IsCompact Q) (h
         mul_le_mul_of_nonneg_left h3 (by positivity)
     _ = (∑ i, M i ^ 2) * m * ∑ u ∈ Finset.univ.image w, ‖Rw u f (1 + cm t)‖ ^ 2 := by ring
 
+/- English proof (translation)
+Introduce `n _ _ μ _`. Take `⟨hGo, hcm, hcm0, hsm⟩` from `GlobalTheory.T.chart_and_right_words_smooth n`. Use `set U0 : Set (Idx n → ℝ) := {t | 1 + cm t ∈ GLs n} with hU0def`. Establish `hU0 : IsOpen U0` using `hGo.preimage (continuous_const.add hcm)`. Establish `h0 : (0 : Idx n → ℝ) ∈ U0` using `by show 1 + cm 0 ∈ GLs n`.
+
+Rewrite using `[hcm0, add_zero]`. Use `show Matrix.det (1 : Mat n) ≠ 0`. Simplify using the standard rewrite rules. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp hU0 0 h0`. Use `set ε : ℝ := δ / 2 with hε`.
+
+Establish `hεpos : 0 < ε` using `by positivity`. Use `set Q : Set (Idx n → ℝ) := Set.Icc 0 (fun _ => ε) with hQdef`. Establish `hQc : IsCompact Q` using `isCompact_Icc`. Establish `hQU : Q ⊆ U0`. Introduce `t ht`.
+
+Apply `hball` to reduce the goal to its premises. Rewrite using `[Metric.mem_ball, dist_zero_right]`. Use `lt_of_le_of_lt ((pi_norm_le_iff_of_nonneg hεpos.le).mpr fun i => ?_) (by linarith)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (ht.1 i)]`. Conclude with `ht.2 i`.
+
+Establish `hQG : ∀ t ∈ Q, 1 + cm t ∈ GLs n` using `fun t ht => hQU ht`. Take `⟨T, C1, hC1, hsob⟩` from `GlobalTheory.T.poincare_value_bound_on_cube (Idx n) ε hεpos`. Establish `hbd` using `fun L => bound_on_cube n Q hQc hQG L`. Use `choose W B hB hWB using hbd`. Establish `hK : IsCompact ((fun t => 1 + cm t) '' Q)` using `hQc.image (continuous_const.add hcm)`.
+
+Establish `hKsub : (fun t => 1 + cm t) '' Q ⊆ GLs n`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hQG t ht`. Take `⟨hlg, hlgc⟩` from `GlobalTheory.T.length_continuous_proper_sublevel n`. Take `⟨r, hr⟩` from `hK.exists_bound_of_continuousOn (hlg.mono hKsub)`.
+
+Use `set S : Set (G n) := {y | lg (y : Mat n) ≤ r} with hSdef`. Establish `hSc : IsCompact S` using `hlgc r`. Establish `hcov : ∀ t ∈ Q, ∃ y ∈ S, (y : Mat n) = 1 + cm t`. Introduce `t ht`. Establish `hdet : IsUnit (1 + cm t).det` using `isUnit_iff_ne_zero.mpr (hQG t ht)`.
+
+Use `⟨Matrix.nonsingInvUnit _ hdet, ?_, rfl⟩` and prove the remaining obligations. Use `show lg (1 + cm t) ≤ r`. Establish `h` using `hr _ ⟨t, ht, rfl⟩`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans h`.
+
+Take `⟨C2, hC2, hcmp⟩` from `GlobalTheory.T.haar_chart_integral_comparison n μ Q S hQc hSc hcov`. Use `⟨T.biUnion W, r, C1 * C2 * ∑ L ∈ T, B L, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ f hf x hx`. Take `⟨hgs, hgR⟩` from `GlobalTheory.T.left_translate_right_derivative n V f hf x hx`. Take `⟨hFs, hpd⟩` from `GlobalTheory.T.chart_partial_eq_right_word n V (fun y => f (x * y)) hgs`.
+
+Establish `hxmul : ∀ y ∈ GLs n, x * y ∈ GLs n`. Introduce `y hy`. Use `show Matrix.det (x * y) ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`.
+
+Establish `hRc : ∀ w, ContinuousOn (Rw w f) (GLs n)` using `fun w => ((hsm V f hf).1 w).continuousOn`. Set `φ : Mat n → ℝ` to `fun y => ∑ w ∈ T.biUnion W, ‖Rw w f (x * y)‖ ^ 2`. Establish `hφc : ContinuousOn φ (GLs n)`. Apply `continuousOn_finsetSum` to reduce the goal to its premises. Introduce `w _`.
+
+Conclude with `(((hRc w).comp (continuous_const.mul continuous_id).continuousOn (fun y hy => hxmul y hy)).norm).pow 2`. Establish `hφ0 : ∀ y, 0 ≤ φ y` using `fun y => Finset.sum_nonneg fun _ _ => by positivity`. Establish `hmain` using `hcmp φ hφc hφ0`. Establish `hF` using `hsob V U0 (fun t => f (x * (1 + cm t))) hU0 hQU hFs`. Establish `hstep : ∀ L ∈ T, ∫ t in Q, ‖pd L (fun t => f (x * (1 + cm t))) t‖ ^ 2 ≤ B L * (C2 * ∫ y in S, φ (y : Mat n) ∂μ)`.
+
+Introduce `L hL`. Establish `hcongr : ∫ t in Q, ‖pd L (fun t => f (x * (1 + cm t))) t‖ ^ 2 = ∫ t in Q, ‖Dw L (fun y => f (x * y)) (1 + cm t)‖ ^ 2` using `setIntegral_congr_fun measurableSet_Icc (fun t ht => by rw [hpd L t (hQG t ht)])`. Rewrite using `[hcongr]`. Establish `hle : ∀ t ∈ Q, ‖Dw L (fun y => f (x * y)) (1 + cm t)‖ ^ 2 ≤ B L * φ (1 + cm t)`. Introduce `t ht`.
+
+Use `(hWB L V (fun y => f (x * y)) hgs t ht).trans (mul_le_mul_of_nonneg_left ?_ (hB L))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hint : IntegrableOn (fun t => B L * φ (1 + cm t)) Q volume`. Use `ContinuousOn.integrableOn_compact hQc ?_` and prove the remaining obligations. Conclude with `continuousOn_const.mul (hφc.comp (continuous_const.add hcm).continuousOn (fun t ht => hQG t ht))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : ∫ y in S, φ (y : Mat n) ∂μ = ∑ w ∈ T.biUnion W, ∫ y in S, ‖Rw w f (x * (y : Mat n))‖ ^ 2 ∂μ`. Use `integral_finsetSum _ fun w _ => ?_` and prove the remaining obligations. Use `ContinuousOn.integrableOn_compact hSc (Continuous.continuousOn ?_)` and prove the remaining obligations. Establish `hval : ∀ y : G n, x * (y : Mat n) ∈ GLs n` using `fun y => hxmul _ ((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero`.
+
+Conclude with `(((hRc w).comp_continuous (continuous_const.mul Units.continuous_val) hval).norm).pow 2`. Establish `hF0 : f (x * (1 + cm 0)) = f x` using `by rw [hcm0, add_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = C1 * C2 * (∑ L ∈ T, B L) * ∑ w ∈ T.biUnion W, ∫ y in S, ‖Rw w f (x * (y : Mat n))‖ ^ 2 ∂μ := by rw [hsplit]`.
+-/
 theorem sobG : PositivityTheory.RgBcC.SobG := by
   intro n _ _ μ _
   obtain ⟨hGo, hcm, hcm0, hsm⟩ := GlobalTheory.T.chart_and_right_words_smooth n

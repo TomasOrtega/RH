@@ -5,6 +5,15 @@ open LateralTheory.E.t_E6Cut
 
 namespace LateralTheory.E.LeafRoofPf
 
+/- English proof (translation)
+Establish `hle : I.map α ≤ RingHom.ker h` using `Ideal.map_le_iff_le_comap.mpr fun x hx => by`. Simplify `(hI x).mpr hx` using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Simplify using `only [Ideal.quotientMap_mk] at hxy`. Rewrite `hxy`, the goal using `[Ideal.Quotient.eq]`. Apply `(hI _).mp` to reduce the goal to its premises. Use `hle (by simpa [map_sub] using hxy)` as an intermediate fact.
+
+Simplify `this` using `[RingHom.mem_ker, map_sub]`. Introduce `w`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Take `⟨x, hx⟩` from `hs w`. Use `⟨Ideal.Quotient.mk _ x, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Ideal.quotientMap_mk]`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `hk _ (by simp [map_sub, hx])`.
+-/
 theorem qiso_of {B W D : Type} [CommRing B] [CommRing W] [CommRing D] (α : B →+* W) (I : Ideal B) (h : W →+* D)
     (hI : ∀ x, h (α x) = 0 ↔ x ∈ I) (hs : ∀ w, ∃ x, h w = h (α x)) (hk : ∀ w, h w = 0 → w ∈ I.map α) :
     QIso α I := by
@@ -36,6 +45,11 @@ def LeafRoofEt : Prop := ∀ (d : ℕ) {C B : Type} [CommRing C] [CommRing B] (�
 def LeafKerC : Prop := ∀ (d : ℕ) (D : Type) [CommRing D] (p : MvPolynomial (Fin d) D),
   MvPolynomial.constantCoeff p = 0 → p ∈ varIdeal (RingHom.id (MvPolynomial (Fin d) D))
 
+/- English proof (translation)
+Introduce `d D _ p hp`. Establish `: p ∈ Ideal.span (MvPolynomial.X '' (Set.univ : Set (Fin d)))`. Rewrite using `[MvPolynomial.mem_ideal_span_X_image]`. Introduce `mo hmo`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `h0 : mo = 0` using `by ext i; simpa using hne i (Set.mem_univ i)`. Substitute `h0` using the available equality. Conclude with `(MvPolynomial.mem_support_iff.mp hmo) (by simpa [MvPolynomial.constantCoeff_eq] using hp)`. Simplify `this` using `[varIdeal, Set.image_univ]`.
+-/
 theorem kerC_of : LeafKerC := by
   intro d D _ p hp
   have : p ∈ Ideal.span (MvPolynomial.X '' (Set.univ : Set (Fin d))) := by
@@ -48,11 +62,37 @@ theorem kerC_of : LeafKerC := by
     exact (MvPolynomial.mem_support_iff.mp hmo) (by simpa [MvPolynomial.constantCoeff_eq] using hp)
   simpa [varIdeal, Set.image_univ] using this
 
+/- English proof (translation)
+Unfold `varIdeal`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_varIdeal {d : ℕ} {C B W : Type} [CommRing C] [CommRing B] [CommRing W]
     (φ : MvPolynomial (Fin d) C →+* B) (α : B →+* W) :
     (varIdeal φ).map α = Ideal.span (Set.range fun j => α (φ (MvPolynomial.X j))) := by
   unfold varIdeal; rw [Ideal.map_span, ← Set.range_comp]; rfl
 
+/- English proof (translation)
+Introduce `d C B _ _ φ hφ`. Take `⟨P, _, a, b, m, g, ha, hb, hab, hma, hmb, hg, hk⟩` from `h1 d φ hφ`. Establish `hu : IsUnit (m g)` using `by rw [hg]; exact isUnit_one`. Set `h : Localization.Away g →+* (B ⧸ varIdeal φ)` to `IsLocalization.Away.lift g hu`. Establish `hh : ∀ x, h (algebraMap P (Localization.Away g) x) = m x` using `fun x => IsLocalization.Away.lift_eq g hu x`.
+
+Establish `hJ : ∀ w : Localization.Away g, h w = 0 → w ∈ (Ideal.span (Set.range fun j => b (MvPolynomial.X j))).map (algebraMap P (Localization.Away g))`. Introduce `w hw`. Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers g) w`. Establish `hy : m y = 0`. Use `(IsLocalization.lift_mk'_spec (M := Submonoid.powers g) (S := Localization.Away g) _ y 0 s).mp hw` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨n, hn⟩` from `hk y hy`. Establish `hm` using `Ideal.mem_map_of_mem (algebraMap P (Localization.Away g)) hn`. Establish `hunit : IsUnit (algebraMap P (Localization.Away g) (g ^ n * s))`. Rewrite using `[map_mul]`.
+
+Conclude with `(IsLocalization.map_units _ (⟨g ^ n, Submonoid.pow_mem _ (Submonoid.mem_powers g) n⟩ : Submonoid.powers g)).mul (IsLocalization.map_units _ s)`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ hunit]`. Establish `e : IsLocalization.mk' (Localization.Away g) y s * algebraMap P _ (g ^ n * s) = algebraMap P _ (g ^ n * y)`. Rewrite using `[map_mul, map_mul, mul_comm (algebraMap P _ (g ^ n)), ← mul_assoc, IsLocalization.mk'_spec, mul_comm]`. Rewrite using `[e]`.
+
+Conclude with `hm`. Establish `hloc : (algebraMap P (Localization.Away g)).Etale`. Rewrite using `[RingHom.etale_algebraMap]`. Conclude with `Algebra.Etale.of_isLocalizationAway g`. Use `⟨B ⧸ varIdeal φ, Localization.Away g, inferInstance, inferInstance, Ideal.Quotient.mk _, (algebraMap P _).comp a, (algebraMap P _).comp b, RingHom.Etale.stableUnderComposition _ _ ha hloc, RingHom.Etale.stableUnderComposition _ _ hb hloc, fun j => by simp [hab], ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `qiso_of _ _ h` to reduce the goal to its premises. Introduce `x`. Rewrite using `[RingHom.comp_apply, hh, ← RingHom.comp_apply, hma, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `w`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (h w)`.
+
+Conclude with `⟨x, by rw [RingHom.comp_apply, hh, ← RingHom.comp_apply, hma, hx]⟩`. Introduce `w hw`. Use `hJ w hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_varIdeal, Ideal.map_span, ← Set.range_comp]`.
+
+Use `congr 1`. Use extensionality with `j`. Simplify using `[hab]`. Apply `qiso_of _ _ h` to reduce the goal to its premises. Introduce `p`.
+
+Rewrite using `[RingHom.comp_apply, hh, ← RingHom.comp_apply, hmb]`. Use `⟨kerC_of d _ p, fun hp => ?_⟩` and prove the remaining obligations. Establish `hle : varIdeal (RingHom.id (MvPolynomial (Fin d) (B ⧸ varIdeal φ))) ≤ RingHom.ker (MvPolynomial.constantCoeff (R` using `B ⧸ varIdeal φ) (σ := Fin d)) := by`. Conclude with `Ideal.span_le.mpr (by rintro _ ⟨j, rfl⟩; simp)`. Conclude with `hle hp`.
+
+Introduce `w`. Conclude with `⟨MvPolynomial.C (h w), by rw [RingHom.comp_apply, hh, ← RingHom.comp_apply, hmb]; simp⟩`. Introduce `w hw`. Use `hJ w hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_varIdeal, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem LeafRoof_of (h1 : LeafRoofEt) : LeafRoof := by
   intro d C B _ _ φ hφ
   obtain ⟨P, _, a, b, m, g, ha, hb, hab, hma, hmb, hg, hk⟩ := h1 d φ hφ

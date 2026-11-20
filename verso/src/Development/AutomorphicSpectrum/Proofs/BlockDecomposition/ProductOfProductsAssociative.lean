@@ -15,6 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 unseal GlobalTheory.ProdFlatten.Iso GlobalTheory.ProdFlatten.pr GlobalTheory.ProdFlatten.mp GlobalTheory.ProdFlatten.one in
 
+/- English proof (translation)
+The claim follows from `H`.
+-/
 theorem of_iso {d c M : ℕ} (len : Fin d → ℕ) (y : ∀ i, Fin (len i) → IrrGL k) (N : Fin d → ℕ)
     (hN : ∀ i, ∑ j, (y i j).1 = N i) (hM : ∑ i, N i = M) (z : Fin c → IrrGL k) (hz : ∑ p, (z p).1 = M)
     (H : Iso (mp N hM fun i => pr (y i) (hN i)) (pr z hz)) :

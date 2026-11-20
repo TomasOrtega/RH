@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.St.G.CyclicQuot
 
+/- English proof (translation)
+Take `⟨u, w, huw⟩` from `hc`. Use `⟨u • z + w • (T • y), H.add_mem (H.zsmul_mem hz u) (H.zsmul_mem hy w), fun b => ?_⟩` and prove the remaining obligations. Establish `h' : (u : K) * k + w * T = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) huw`. Simplify using `only [Pi.add_apply, Pi.smul_apply, map_add, map_zsmul, h b]`. Simplify using `only [zsmul_eq_mul]`.
+
+Take the linear combination `(p (y b)) * h'`.
+-/
 theorem match_of_coprime {A K ι : Type} [CommRing A] [CommRing K] (p : A →+* K) (H : AddSubgroup (ι → A))
     (T k : ℤ) (hc : IsCoprime k T) (y z : ι → A) (hy : T • y ∈ H) (hz : z ∈ H)
     (h : ∀ b, p (z b) = (k : K) * p (y b)) : ∃ z' ∈ H, ∀ b, p (z' b) = p (y b) := by
@@ -19,6 +24,11 @@ theorem match_of_coprime {A K ι : Type} [CommRing A] [CommRing K] (p : A →+* 
   simp only [zsmul_eq_mul]
   linear_combination (p (y b)) * h'
 
+/- English proof (translation)
+Establish `hp : Prime (T : ℤ)` using `Nat.prime_iff_prime_int.mp hT`. Use `(hp.irreducible.coprime_iff_not_dvd.mpr fun hd => hij ?_).symm` and prove the remaining obligations. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Apply the tactic sequence `have := Int.eq_zero_of_abs_lt_dvd hd (by rw [abs_lt]; constructor <;> omega)`.
+
+Conclude with `Fin.ext (by omega)`.
+-/
 theorem coprime_sub {T : ℕ} (hT : T.Prime) (i j : Fin T) (hij : i ≠ j) :
     IsCoprime (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ)) (T : ℤ) := by
   have hp : Prime (T : ℤ) := Nat.prime_iff_prime_int.mp hT
@@ -28,6 +38,25 @@ theorem coprime_sub {T : ℕ} (hT : T.Prime) (i j : Fin T) (hij : i ≠ j) :
   have := Int.eq_zero_of_abs_lt_dvd hd (by rw [abs_lt]; constructor <;> omega)
   exact Fin.ext (by omega)
 
+/- English proof (translation)
+Set `eO : O` to `⟨e, he⟩`. Set `d : ι → A` to `eO • y₁ + (1 - eO) • y₂`. Establish `hd : d ∈ D` using `D.add_mem (D.smul_mem _ hy₁) (D.smul_mem _ hy₂)`. Establish `hdb : ∀ b, sp (d b) = ((sp (y₁ b)).1, (sp (y₂ b)).2)`. Introduce `b`.
+
+Establish `: d b = e * y₁ b + (1 - e) * y₂ b` using `rfl`. Rewrite using `[this, map_add, map_mul, map_mul, map_sub, map_one, hsp]`. Apply the tactic sequence `ext <;> simp`. Set `a : Fin T × Fin T → O` to `fun ij => ((ij.1 : ℕ) : O) * eO + ((ij.2 : ℕ) : O) * (1 - eO)`. Establish `ha : ∀ ij, sp (a ij : A) = (((ij.1 : ℕ) : K), ((ij.2 : ℕ) : K))`.
+
+Introduce `ij`. Establish `: (a ij : A) = ((ij.1 : ℕ) : A) * e + ((ij.2 : ℕ) : A) * (1 - e)`. Simplify using `[a, eO]`. Rewrite using `[this, map_add, map_mul, map_mul, map_sub, map_one, hsp, map_natCast, map_natCast]`. Apply the tactic sequence `ext <;> simp`.
+
+Set `φ : Fin T × Fin T → D.toAddSubgroup ⧸ M.toAddSubgroup.addSubgroupOf D.toAddSubgroup` to `fun ij => QuotientAddGroup.mk ⟨a ij • d, D.smul_mem _ hd⟩`. Establish `hcard : Nat.card (D.toAddSubgroup ⧸ M.toAddSubgroup.addSubgroupOf D.toAddSubgroup) = T ^ 2` using `hidx`. Establish `hfin : Finite (D.toAddSubgroup ⧸ M.toAddSubgroup.addSubgroupOf D.toAddSubgroup)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hT.ne_zero)`. Establish `hinj : Function.Injective φ`. Introduce `s t hst`.
+
+Establish `hm : -(a s • d) + a t • d ∈ M` using `QuotientAddGroup.eq.mp hst`. Establish `hc : ∀ b, sp ((-(a s • d) + a t • d) b) = ((((t.1 : ℕ) : K) - ((s.1 : ℕ) : K)) * (sp (y₁ b)).1, (((t.2 : ℕ) : K) - ((s.2 : ℕ) : K)) * (sp (y₂ b)).2)`. Introduce `b`. Establish `: (-(a s • d) + a t • d) b = -((a s : A) * d b) + (a t : A) * d b` using `rfl`. Rewrite using `[this, map_add, map_neg, map_mul, map_mul, ha, ha, hdb]`.
+
+Apply the tactic sequence `ext <;> simp <;> ring`. Assume the negation of the conclusion as `hne`. Distinguish the cases in `h1 : t.1 = s.1`. Establish `h2 : t.2 ≠ s.2` using `fun h2 => hne (Prod.ext h1.symm h2.symm)`. Use `h₂ (match_of_coprime ((RingHom.snd K K).comp sp.toRingHom) M.toAddSubgroup T _ (coprime_sub hT _ _ h2) y₂ _ (hTD _ hy₂) hm fun b => ?_)` and prove the remaining obligations.
+
+Use `congrArg Prod.snd (hc b)` as an intermediate fact. Use `push_cast`. Conclude with `this`. Use `h₁ (match_of_coprime ((RingHom.fst K K).comp sp.toRingHom) M.toAddSubgroup T _ (coprime_sub hT _ _ h1) y₁ _ (hTD _ hy₁) hm fun b => ?_)` and prove the remaining obligations. Use `congrArg Prod.fst (hc b)` as an intermediate fact.
+
+Use `push_cast`. Conclude with `this`. Establish `hbij : Function.Bijective φ` using `hinj.bijective_of_nat_card_le (by rw [hcard]; simp [sq])`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hbij.2 (QuotientAddGroup.mk ⟨x, hx⟩)`.
+
+Establish `hm : -(a s • d) + x ∈ M` using `QuotientAddGroup.eq.mp hs`. Use `⟨a s, (a s).2, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_neg_add]`. Conclude with `hm`.
+-/
 theorem cyclic_of_components {A K ι : Type} [CommRing A] [CommRing K] (sp : A ≃+* K × K) (O : Subring A)
     (e : A) (he : e ∈ O) (hsp : sp e = (1, 0)) (M D : Submodule O (ι → A)) (T : ℕ) (hT : T.Prime)
     (hTD : ∀ y ∈ D, (T : ℤ) • y ∈ M)
@@ -89,6 +118,17 @@ theorem cyclic_of_components {A K ι : Type} [CommRing A] [CommRing K] (sp : A �
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hH : IsHerm (cm.sig : E →+* E) (1 : Matrix (Fin 1) (Fin 1) E)`. Use extensionality with `i j`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hi hj` using the available equality.
+
+Simplify using `[cT]`. Set `L : Submodule (𝓞 E) (Fin 1 → E)` to `Submodule.span (𝓞 E) {fun _ => 1}`. Establish `hL : ∀ x ∈ L, ∀ b, x b ∈ intOE E`. Introduce `x hx b`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`.
+
+Conclude with `⟨c, by simp [Algebra.smul_def]⟩`. Establish `hloc : ∀ y ∈ loc v L, ∀ b, y b ∈ intV E v`. Introduce `y hy b`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨x, hx, rfl⟩` from `hx`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨x b, hL x hx b⟩, rfl⟩)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx => exact mul_mem c.2 hx`.
+
+Establish `hone : (fun _ => 1 : Fin 1 → E ⊗[F] v.adicCompletion F) ∈ loc v L` using `Submodule.subset_span ⟨fun _ => 1, Submodule.subset_span rfl, by funext i; simp⟩`. Establish `hmem` using `((GlobalTheory.T.split_place_lattice_components F E cm 1 1 hH (by simp) v sp h1 h2).1 L (fun _ => sp.symm (1, 0))).mpr ⟨⟨_, hone, fun b => by simp⟩, ⟨0, zero_mem _, fun b => by simp⟩⟩`. Conclude with `⟨sp.symm (1, 0), hloc _ hmem 0, by simp⟩`.
+-/
 theorem exists_idem [StarRing E] (cm : CMData F E) (v : HeightOneSpectrum (𝓞 F))
     (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F)
     (h1 : ∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x))
@@ -120,6 +160,17 @@ theorem exists_idem [StarRing E] (cm : CMData F E) (v : HeightOneSpectrum (𝓞 
     ⟨⟨_, hone, fun b => by simp⟩, ⟨0, zero_mem _, fun b => by simp⟩⟩
   exact ⟨sp.symm (1, 0), hloc _ hmem 0, by simp⟩
 
+/- English proof (translation)
+Establish `h0 : ∀ x ∈ dualL σ J L, (T : ℤ) • x ∈ L`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Use `h x hx` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_smul_eq_nsmul, ← natCast_zsmul]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`.
+
+Conclude with `L.smul_mem c hx`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`.
+
+Use `Submodule.subset_span ⟨_, h0 x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, map_zsmul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem smul_mem_loc {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (T : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)) (h : ∀ y ∈ dualSet (σ : E →+* E) J L, (T : E) • y ∈ L)
     (v : HeightOneSpectrum (𝓞 F)) : ∀ y ∈ loc v (dualL σ J L), (T : ℤ) • y ∈ loc v L := by
@@ -143,6 +194,13 @@ theorem smul_mem_loc {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) 
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | smul c x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f L hT _ _ hL v hv sp h1 h2 hiff hidx`. Take `⟨e, he, hsp⟩` from `exists_idem cm v sp h1 h2`. Take `⟨x, hx, hxn⟩` from `hL.2.2.2.2 v hv`. Establish `crit` using `(GlobalTheory.T.split_place_lattice_components F E cm n J hJ hdet v sp h1 h2).1 L x`. Establish `n1 : ¬ ∀ y ∈ loc v (dualL cm.sig J L), ∃ z ∈ loc v L, ∀ b, (sp (z b)).1 = (sp (y b)).1` using `fun h => hxn (crit.mpr ⟨h x hx, hiff.mp h x hx⟩)`.
+
+Establish `n2 : ¬ ∀ y ∈ loc v (dualL cm.sig J L), ∃ z ∈ loc v L, ∀ b, (sp (z b)).2 = (sp (y b)).2` using `fun h => n1 (hiff.mpr h)`. Take `⟨y₁, hy₁⟩` from `not_forall.mp n1`. Take `⟨y₂, hy₂⟩` from `not_forall.mp n2`. Take `⟨hy₁, h₁⟩` from `Classical.not_imp.mp hy₁`. Take `⟨hy₂, h₂⟩` from `Classical.not_imp.mp hy₂`.
+
+Conclude with `cyclic_of_components sp (intV E v) e he hsp _ _ T hT (smul_mem_loc cm.sig J T L hL.2.2.1 v) y₁ hy₁ h₁ y₂ hy₂ h₂ hidx`.
+-/
 theorem local_dual_cyclic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → TLat cm.sig J T f L → ∀ (v : HeightOneSpectrum (𝓞 F)), (T : 𝓞 F) ∈ v.asIdeal → ∀ (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x)) → (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → ((∀ y ∈ loc v (dualL cm.sig J L), ∃ z ∈ loc v L, ∀ b, (sp (z b)).1 = (sp (y b)).1) ↔ (∀ y ∈ loc v (dualL cm.sig J L), ∃ z ∈ loc v L, ∀ b, (sp (z b)).2 = (sp (y b)).2)) → (loc v L).toAddSubgroup.relIndex (loc v (dualL cm.sig J L)).toAddSubgroup = T ^ 2 → ∃ d ∈ loc v (dualL cm.sig J L), ∀ x ∈ loc v (dualL cm.sig J L), ∃ a ∈ intV E v, x - a • d ∈ loc v L := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f L hT _ _ hL v hv sp h1 h2 hiff hidx
   obtain ⟨e, he, hsp⟩ := exists_idem cm v sp h1 h2

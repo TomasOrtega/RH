@@ -18,6 +18,11 @@ open NumberField GlobalTheory GlobalTheory.Ex
 
 namespace GlobalTheory.ArcValuationSetting
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `(isDiscreteValuationRing_and_finite_residueField_of_numberField (c.V W) hp ?_).1` and prove the remaining obligations. Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `hW with h | h` into its components or cases.
+
+Conclude with `absurd (by exact_mod_cast h) hp`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`.
+-/
 theorem isDiscreteValuationRing_place {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {l : Geo.Tor.Level H} (c : Coeff l) (W : ValuationSubring ℂ) {p : ℕ} (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) :
     IsDiscreteValuationRing (c.V W) := by

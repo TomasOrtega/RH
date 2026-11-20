@@ -8,6 +8,13 @@ namespace PositivityTheory.Xgp.sq_limit
 
 open GlobalTheory.CompanionTheory.Ar.Giv GlobalTheory.CompanionTheory.Ar.Giv.SignedConv ReciprocityTheory.AnForm.M.FinHolAtlas
 
+/- English proof (translation)
+Introduce `y hy`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hy' : v y y ≠ 0` using `hy`. Establish `h1 : ContinuousAt (v y) y` using `LeviFormBoundaryTopology.continuousAt_of_holoOn A (hv.1 y) (L.mem_U y)`. Establish `h2 : ContinuousAt (L.φ y) y` using `LeviFormBoundaryTopology.continuousAt_of_smoothOn A (L.isOpen_U y) (hL.1 y) (L.mem_U y)`.
+
+Establish `h3 : ContinuousAt (fun z => Real.log (‖v y z‖ * Real.exp (-L.φ y z))) y`. Use `ContinuousAt.log (h1.norm.mul (Real.continuous_exp.continuousAt.comp h2.neg)) ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (norm_ne_zero_iff.2 hy') (Real.exp_pos _).ne'`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(L.isOpen_U y).mem_nhds (L.mem_U y)] with z hz`.
+
+Unfold `logNormSec`. Rewrite using `[hv.2 y z z ⟨hz, L.mem_U z⟩]`.
+-/
 theorem continuousOn_logNormSec {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (L : LocPot X) (v : X → X → ℂ) (hL : IsPotential A L) (hv : IsSection A L v) :
     ContinuousOn (logNormSec L v) (bdry v)ᶜ := by
@@ -25,14 +32,41 @@ theorem continuousOn_logNormSec {e : ℕ} {X : Type} [TopologicalSpace X] (A : F
   unfold logNormSec
   rw [hv.2 y z z ⟨hz, L.mem_U z⟩]
 
+/- English proof (translation)
+Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hUV))`.
+-/
 theorem smoothOn_mono {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {U V : Set X} {f : X → ℝ} (hUV : U ⊆ V) (h : A.SmoothOn V f) : A.SmoothOn U f :=
   fun j => (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono hUV))
 
+/- English proof (translation)
+Introduce `x j y hy w` and use `h x j y ⟨hy.1, hy.2.1, hUV hy.2.2⟩ w`.
+-/
 theorem isPshOn_mono {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {U V : Set X} {P : LocPot X} (hUV : U ⊆ V) (h : IsPshOn A V P) : IsPshOn A U P :=
   fun x j y hy w => h x j y ⟨hy.1, hy.2.1, hUV hy.2.2⟩ w
 
+/- English proof (translation)
+Use `letI : MeasurableSpace X := borel X`. Use `haveI : BorelSpace X := ⟨rfl⟩`. Use `set g := logNormSec L' v with hg`. Establish `hΘpsh : IsPsh A Θ` using `isPsh_of_isPosPot A Θ hΘp`. Use `set U : Set X := (bdry s)ᶜ ∩ (bdry v)ᶜ with hUdef`.
+
+Establish `hUo : IsOpen U` using `(LeviFormBoundaryTopology.isClosed_bdry hS).isOpen_compl.inter (LeviFormBoundaryTopology.isClosed_bdry hv).isOpen_compl`. Establish `hUs : U ⊆ (bdry s)ᶜ` using `Set.inter_subset_left`. Establish `hnull : ∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Uᶜ) = 0`. Introduce `j`. Rewrite using `[hUdef, Set.compl_inter, Set.preimage_union, Set.inter_union_distrib_left]`.
+
+Conclude with `measure_union_null (chart_null A L s m W hS hSNC j) (chart_null A L' v _ _ hv hvS j)`. Establish `hgc : ContinuousOn g U` using `(continuousOn_logNormSec A L' v hL' hv).mono Set.inter_subset_right`. Establish `hmem : ∀ T : Finset (Fin e), (∀ i, IsSingWeight A L s (if i ∈ T then th i else LocPot.ofFun 0) (if i ∈ T then ph i else 0) |C₅|) ∧ (∀ i, IsRegFamily A Θ L s (if i ∈ T then th i else LocPot.ofFun 0) (if i ∈ T then ph i else 0) (fun t => if i ∈ T then phT i t else 0) |C| (min t₀ (R …`. Introduce `T`. Establish `hz : ∀ i : Fin e, IsSingWeight A L s (LocPot.ofFun 0) 0 |C₅| ∧ IsRegFamily A Θ L s (LocPot.ofFun 0) 0 (fun _ => 0) |C| (min t₀ (Real.exp (-Real.exp 1))) ∧ IsRegFamilyC2 A s 0 (fun _ => 0)` using `fun i => zero_member A Θ L s |C₅| |C| _ hΘ hΘp hs (abs_nonneg _) (abs_nonneg _) (lt_min (hRF i).1 (Real.exp_pos _)) (min_le_right _ _)`.
+
+Apply the tactic sequence `refine ⟨fun i => ?_, fun i => ?_, fun i => ?_⟩ <;> by_cases hi : i ∈ T <;>`. Simplify using `only [hi, ↓reduceIte]`. Conclude with `isSingWeight_abs A L s _ _ _ hs (hSW i)`. Conclude with `(hz i).1`. Conclude with `isRegFamily_mono A Θ L s (th i) (ph i) (phT i) C t₀ |C| _ hΘ hΘpsh (hSW i).1 hs (hRF i) le_rfl (lt_min (hRF i).1 (Real.exp_pos _)) (min_le_left _ _) (min_le_right _ _)`.
+
+Conclude with `(hz i).2.1`. Conclude with `hC2 i`. Conclude with `(hz i).2.2`. Establish `hconv : ∀ T : Finset (Fin e), Integrable g (maMeasure A (fun i => (if i ∈ T then th i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then ph i else 0) + Θ)) ∧ (∀ᶠ t in 𝓝[>] (0 : ℝ), Integrable g (maMeasure A (fun i => (if i ∈ T then th i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ …`. Introduce `T`.
+
+Take `⟨h1, h2, h3⟩` from `hU A Θ L s m W hΘ hΘp hL hS hSNC hs L' v Dg hL' hv hvS hsv hvn (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then ph i else 0) (fun i t => if i ∈ T then phT i t else 0) |C₅| |C| _ (hmem T).1 (hmem T).2.1 (hmem T).2.2`. Use `⟨integrable_neg_iff.1 h1, h2.mono fun t ht => integrable_neg_iff.1 ht, ?_⟩` and prove the remaining obligations. Simplify using `only [integral_neg] at h3`. Simplify `h3.neg` using `only [neg_neg]`. Establish `hlimT` using `fun T : Finset (Fin e) => GlobalTheory.T.mInt_eq_integral_maMeasure A U (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then ph i else 0) Θ hUo hnull (fun i => ((hmem T).1 i).1) hΘ hΘpsh (fun i => smoothOn_mono A hUs ((hmem T).1 i).2.1) (fun i => isPshOn_add_ …`.
+
+Establish `hexpL` using `expand_mInt A U th ph Θ g hUo hnull (fun i => (hSW i).1) hΘ (fun i => smoothOn_mono A hUs (hSW i).2.1) (fun T => (hlimT T).1)`. Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), (∀ i, A.Smooth (phT i t)) ∧ ∀ T : Finset (Fin e), (∀ i, A.Smooth (if i ∈ T then phT i t else 0) ∧ IsPsh A ((if i ∈ T then th i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then phT i t else 0) + Θ)) ∧ Integrable g (maMeasure A (fun i => (if i ∈ T then …`. Use `(eventually_all.2 fun i => ?_).and (eventually_all.2 fun T => ?_)` and prove the remaining obligations. Conclude with `(eventually_isPsh A Θ L s (th i) (ph i) (phT i) C t₀ hΘ hΘp (hSW i).1 (hRF i)).mono fun t ht => ht.1`. Use `(eventually_all.2 fun i => ?_).and (hconv T).2.1` and prove the remaining obligations.
+
+Conclude with `eventually_isPsh A Θ L s _ _ _ _ _ hΘ hΘp ((hmem T).1 i).1 ((hmem T).2.1 i)`. Establish `hreg : ∀ᶠ t in 𝓝[>] (0 : ℝ), MIntegrable A (fun i => th i + LocPot.ofFun (phT i t)) g ∧ ∑ T : Finset (Fin e), (-1 : ℝ) ^ (e - T.card) * ∫ y, g y ∂maMeasure A (fun i => (if i ∈ T then th i else LocPot.ofFun 0) + LocPot.ofFun (if i ∈ T then phT i t else 0) + Θ) = mInt A (fun i => t …` using `by filter_upwards [hev] with t ht`. Establish `hmt` using `fun T : Finset (Fin e) => GlobalTheory.T.mInt_eq_integral_maMeasure A U (fun i => if i ∈ T then th i else LocPot.ofFun 0) (fun i => if i ∈ T then phT i t else 0) Θ hUo hnull (fun i => ((hmem T).1 i).1) hΘ hΘpsh (fun i => smoothOn_of_smooth A _ _ ((ht.2 T).1 i).1) (fun i => isPshO …`. Establish `hx` using `expand_mInt A U th (fun i => phT i t) Θ g hUo hnull (fun i => (hSW i).1) hΘ (fun i => smoothOn_of_smooth A _ _ (ht.1 i)) (fun T => (hmt T).1)`. Use `⟨hx.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx.2]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[(hmt T).2]`. Use `⟨hexpL.1, hreg.mono fun t ht => ht.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hexpL.2]`.
+
+Use `Tendsto.congr' (hreg.mono fun t ht => ht.2) ?_` and prove the remaining obligations. Use `tendsto_finsetSum _ fun T _ => ?_` and prove the remaining obligations. Rewrite using `[(hlimT T).2]`. Conclude with `((hconv T).2.2).const_mul _`.
+-/
 theorem unifIntSigned (hU : UnifIntStatement) {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X]
     [T2Space X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ}
     (m : Fin n → ℕ) (W : Fin n → Set X) (hΘ : IsPotential A Θ) (hΘp : IsPosPot A Θ)
@@ -141,6 +175,9 @@ theorem unifIntSigned (hU : UnifIntStatement) {e : ℕ} {X : Type} [TopologicalS
   rw [(hlimT T).2]
   exact ((hconv T).2.2).const_mul _
 
+/- English proof (translation)
+The claim follows from `unifIntSigned hI.unifInt Q.SW.A Q.SW.Θ Q.SW.L Q.SW.s Q.SW.m Q.SW.W Q.SW.potΘ Q.SW.posΘ Q.SW.potL Q.SW.sec Q.SW.snc Q.SW.norm_le Q.L' Q.v Q.Dg Q.potL' Q.secv Q.sncv Q.sncsv Q.normv (fun r => Q.SW.th (w r)) (fun r => Q.SW.ph (w r)) (fun r => Q.SW.phT (w r)) Q.SW.C₅ Q.SW.C Q.SW.t₀ ( …`.
+-/
 theorem singular_part (hI : Inputs) {d : ℕ} {σ : Type} [Fintype σ] {SY : AnSys (d + 1) σ} {a₀ : σ}
     {ε : σ → ℤ} (Q : AnSq SY a₀ ε) (w : Fin (d + 2) → Option σ) :
     MIntegrable Q.SW.A (fun r => Q.SW.potH (w r)) (logNormSec Q.L' Q.v) ∧

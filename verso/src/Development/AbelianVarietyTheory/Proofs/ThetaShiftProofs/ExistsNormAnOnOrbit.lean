@@ -29,14 +29,27 @@ def normT (w : O) : A.X →+ A.X →+ ℂ :=
       simp only [map_add, A.H_add_left, Complex.add_im, AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]
       push_cast; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma normT_apply (w : O) (y y' : A.X) : normT A w y y' =
     -(A.H (A.ct y) (A.ct y') / (2 * Complex.I)) + ((A.H (A.F w (A.ct y)) (A.ct y')).im : ℂ) := rfl
 
+/- English proof (translation)
+Establish `h : A.F w (A.F a (A.ct y)) = A.F a (A.F w (A.ct y))`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`. Rewrite using `[normT_apply, normT_apply, A.ct_smul, A.ct_smul, h, A.H_F, A.H_F]`.
+-/
 lemma normT_adj (w a : O) (y x : A.X) : normT A w (a • y) x = normT A w y (star a • x) := by
   have h : A.F w (A.F a (A.ct y)) = A.F a (A.F w (A.ct y)) := by
     rw [← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]
   rw [normT_apply, normT_apply, A.ct_smul, A.ct_smul, h, A.H_F, A.H_F]
 
+/- English proof (translation)
+Establish `h1 : A.H (A.ct x) (A.ct y) = A.H (A.F w (A.ct x)) (A.ct y) + A.H (A.ct x) (A.F w (A.ct y))`. Establish `: A.H (A.ct x) (A.F w (A.ct y)) = A.H (A.F (star w) (A.ct x)) (A.ct y)` using `by rw [A.H_F, star_star]`. Rewrite using `[this, ← A.H_add_left, ← LinearMap.add_apply, ← map_add, hw, map_one, Module.End.one_apply]`. Establish `h2` using `congrArg Complex.im h1`. Rewrite `h2` using `[Complex.add_im]`.
+
+Rewrite using `[normT_apply, normT_apply, ← A.H_conj (A.ct x) (A.ct y), ← A.H_conj (A.ct x) (A.F w (A.ct y)), Complex.conj_im]`. Establish `h3` using `Complex.sub_conj (A.H (A.ct x) (A.ct y))`. Rewrite `h3` using `[h2]`. Move the coercions through the operations in `at h3 ⊢`. Use `Complex.I_ne_zero` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-h3`.
+-/
 lemma normT_symm {w : O} (hw : w + star w = 1) (x y : A.X) : normT A w x y = normT A w y x := by
   have h1 : A.H (A.ct x) (A.ct y) = A.H (A.F w (A.ct x)) (A.ct y) + A.H (A.ct x) (A.F w (A.ct y)) := by
     have : A.H (A.ct x) (A.F w (A.ct y)) = A.H (A.F (star w) (A.ct x)) (A.ct y) := by rw [A.H_F, star_star]
@@ -66,6 +79,9 @@ def normArc {w : O} (hw : w + star w = 1) : AnArc O :=
       simp only [smul_add, map_add, AddMonoidHom.add_apply]
       rw [← h]; ring }
 
+/- English proof (translation)
+Establish `h` using `A.Ef_eq_im (A.FLam w ⟨_, hn y⟩) ⟨_, hn y'⟩`. Rewrite `h` using `[AnArc.coe_FLam]`. Simplify using `only at h`. Rewrite using `[normT_apply, map_nsmul, map_nsmul, ← h, AnArc.e_add, AnArc.e_neg_div, Complex.ofReal_intCast, AnArc.e_intCast, _root_.mul_one, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 lemma normT_norm (w : O) (n : ℕ) (hn : ∀ y, n • A.ct y ∈ A.abelian₂) (y y' : A.X) :
     eTwoPi (normT A w (n • y) (n • y')) * Complex.exp (Real.pi * A.H (n • A.ct y) (n • A.ct y')) = 1 := by
   have h := A.Ef_eq_im (A.FLam w ⟨_, hn y⟩) ⟨_, hn y'⟩
@@ -80,16 +96,25 @@ def nnB (B : LinearMap.BilinForm ℤ A.X) (hB : ∀ (a : O) y x, B (a • y) x =
   map_add' v v' := by ext <;> simp
   map_smul' a v := by ext <;> simp [hB]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `-A.EF (AnArc.La.mk 0 _ 0) v' = _`. Rewrite using `[A.EF_n_left]`. Simplify using the standard rewrite rules.
+-/
 lemma EF_nnB (B : LinearMap.BilinForm ℤ A.X) (hB : ∀ (a : O) y x, B (a • y) x = B y (star a • x)) (v v' : A.La) :
     -A.EF (nnB A B hB v) v' = B v.y v'.y := by
   change -A.EF (AnArc.La.mk 0 _ 0) v' = _
   rw [A.EF_n_left]; simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ x, (A.Pw w (AnArc.La.mk 0 _ 0)).1 x = _) ∧ (A.Pw w (AnArc.La.mk 0 _ 0)).2 = 0`. Simplify using the standard rewrite rules.
+-/
 lemma Pw_nnB (B : LinearMap.BilinForm ℤ A.X) (hB : ∀ (a : O) y x, B (a • y) x = B y (star a • x)) (w : ℂ) (v : A.La) :
     (∀ x, (A.Pw w (nnB A B hB v)).1 x = B v.y x) ∧ (A.Pw w (nnB A B hB v)).2 = 0 := by
   change (∀ x, (A.Pw w (AnArc.La.mk 0 _ 0)).1 x = _) ∧ (A.Pw w (AnArc.La.mk 0 _ 0)).2 = 0
   simp
 
+/- English proof (translation)
+Use `(Module.forall_dual_apply_eq_zero_iff ℤ t.y).1 fun n => ?_` and prove the remaining obligations. Use `h (AnArc.La.mk 0 n.toAddMonoidHom 0)` as an intermediate fact. Simplify `this` using `[A.EF_apply]`.
+-/
 lemma y_eq_zero (t : A.La) (θ : Module.Dual ℤ A.X) (h : ∀ u : A.La, -A.EF t u = θ u.y) : t.y = 0 := by
   refine (Module.forall_dual_apply_eq_zero_iff ℤ t.y).1 fun n => ?_
   have := h (AnArc.La.mk 0 n.toAddMonoidHom 0)
@@ -97,6 +122,19 @@ lemma y_eq_zero (t : A.La) (θ : Module.Dual ℤ A.X) (h : ∀ u : A.La, -A.EF t
 
 end Model
 
+/- English proof (translation)
+Set `S' : X →ₗ[ℤ] X →ₗ[ℤ] ℂ` to `LinearMap.mk₂ ℤ (fun x y => S x y) (by simp) (by simp) (by simp) (by simp)`. Set `L` to `TensorProduct.lift S'`. Set `M` to `LinearMap.range L`. Use `haveI : Module.Finite ℤ M := inferInstance`. Use `haveI : Module.Free ℤ M := inferInstance`.
+
+Set `b` to `Module.finBasis ℤ M`. Set `f : X → X → M` to `fun x y => ⟨S x y, x ⊗ₜ y, by simp [L, S']⟩`. Use `⟨_, fun i => (b i : ℂ), fun i => LinearMap.mk₂ ℤ (fun x y => b.repr (f x y) i) ?_ ?_ ?_ ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x x' y`. Establish `: f (x + x') y = f x y + f x' y` using `Subtype.ext (by simp [f])`.
+
+Simplify using `[this]`. Introduce `k x y`. Establish `: f (k • x) y = k • f x y` using `Subtype.ext (by simp [f])`. Simplify using `[this]`. Introduce `x y y'`.
+
+Establish `: f x (y + y') = f x y + f x y'` using `Subtype.ext (by simp [f])`. Simplify using `[this]`. Introduce `k x y`. Establish `: f x (k • y) = k • f x y` using `Subtype.ext (by simp [f])`. Simplify using `[this]`.
+
+Introduce `x y`. Use `congrArg (fun m : M => (m : ℂ)) (b.sum_repr (f x y))` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, zsmul_eq_mul] at this`. Simplify using `only [LinearMap.mk₂_apply]`. Rewrite using `[show S x y = (f x y : ℂ) from rfl, ← this]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Introduce `x y x' y' h i`. Establish `: f x y = f x' y'` using `Subtype.ext h`. Simplify using `[this]`.
+-/
 lemma exists_comb {X : Type} [AddCommGroup X] [Module.Finite ℤ X] (S : X →+ X →+ ℂ) :
     ∃ (n : ℕ) (c : Fin n → ℂ) (B : Fin n → LinearMap.BilinForm ℤ X),
       (∀ x y, S x y = ∑ i, c i * B i x y) ∧ ∀ x y x' y', S x y = S x' y' → ∀ i, B i x y = B i x' y' := by
@@ -138,6 +176,13 @@ open GlobalTheory.ArcFlow ReciprocityTheory.ChartRestriction.G.FD.HermitianTrace
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `hiv : X.IsIsoV (X.embV ξ)` using `fun τ => ⟨by rw [Data.embV, hermC_emb, hξ.2.1, map_zero], fun h => hξ.2.2 (funext fun a => (map_eq_zero τ.1).mp (congrFun h a))⟩`. Use `((flowDomainCriterion_holds r X (X.embV ξ) hiv x hx _).1).2 fun τ => ?_` and prove the remaining obligations. Establish `ht : 0 < X.ttV (X.embV ξ) x τ`. Unfold `Data.ttV`. Use `one_div_pos.mpr (mul_pos ?_ ?_)` and prove the remaining obligations.
+
+Establish `: τ.1 X.ξ0 ≠ 0` using `(map_ne_zero τ.1).mpr X.ξ0_ne`. Unfold `Data.c`. Check the signs of the components of the expression. Conclude with `X.maj_pos hx τ (hiv τ).2`. Use `div_nonneg (hs τ) ht.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma flow_mem_of_im {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (s : X.Ψ → ℂ)
     (hs : ∀ τ, 0 ≤ (s τ).im) : X.flow ξ s x ∈ X.dom := by
   have hiv : X.IsIsoV (X.embV ξ) := fun τ => ⟨by rw [Data.embV, hermC_emb, hξ.2.1, map_zero],
@@ -159,6 +204,33 @@ variable {La Y : Type} [AddCommGroup La] [Module (𝓞 E) La] [AddCommGroup Y] [
 
 include iso in
 
+/- English proof (translation)
+Take `⟨p1, p2, p3, -⟩` from `pairE_properties E Y ξ`. Establish `hp` using `pairE_eq X φ EF iso y t ξ ht`. Establish `hpn : ∀ v v', pairE (be (y v)) (y v') = -X.ξ0 * herm X.Gm (φ v' : Fin r → E) (φ (nn v))` using `fun v => pairE_eq X φ EF iso y (nn v) (be (y v)) (hnn v)`. Establish `hξ0` using `X.ξ0_ne`. Establish `hc0` using `X.ξ0_im`.
+
+Establish `hcj` using `herm_conj X.Gm X.Gm_herm`. Establish `hΛ : ∀ w ∈ X.Λ, ∃ v, (φ v : Fin r → E) = w` using `fun w hw => ⟨φ.symm ⟨w, hw⟩, by simp⟩`. Establish `hsm : ∀ (β : 𝓞 E) v, (φ (β • v) : Fin r → E) = (β : E) • (φ v : Fin r → E)` using `fun β v => by`. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v₀, ξ (y v₀) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hξ (LinearMap.ext fun x => by obtain ⟨v, rfl⟩ := hy x; exact h v)`. Establish `hp₀ : pairE (E` using `E) ξ (y v₀) ≠ 0 := fun h => by`.
+
+Use `p3 (y v₀)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `hv₀ (by exact_mod_cast this.symm)`. Use `set ξ' : Fin r → E := (φ t).1 with hξ'`. Establish `hh₀ : herm X.Gm (φ v₀ : Fin r → E) ξ' ≠ 0` using `fun h => hp₀ (by rw [hp, h, mul_zero])`.
+
+Establish `hh₀' : herm X.Gm ξ' (φ v₀ : Fin r → E) ≠ 0` using `by rw [← hcj]; simpa using hh₀`. Establish `hskew : ∀ v v', herm X.Gm (φ (nn v) : Fin r → E) (φ v') = -herm X.Gm (φ v : Fin r → E) (φ (nn v'))`. Introduce `v v'`. Establish `: X.ξ0 * (herm X.Gm (φ (nn v) : Fin r → E) (φ v') + herm X.Gm (φ v : Fin r → E) (φ (nn v'))) = 0`. Use `eq_zero_of_trace_mul _ fun β => ?_` and prove the remaining obligations.
+
+Establish `e1 : ((EF (nn (β • v)) v' : ℤ) : ℚ) = EF (nn v') (β • v)`. Use `(hnn (β • v) v').trans ((hsym _ _).trans (hnn v' (β • v)).symm)` as an intermediate fact. Conclude with `neg_injective this` after adjusting the coercions. Rewrite `e1` using `[iso, iso, ← trace_cc (-X.ξ0 * herm X.Gm (φ (nn v') : Fin r → E) _), FD.cc_mul, cc_neg, hc0, hcj, map_smul nn, hsm, hsm, herm_smul_left, herm_smul_left, ← sub_eq_zero, ← map_sub]`. Rewrite using `[← neg_eq_zero, ← map_neg, ← e1]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `eq_neg_of_add_eq_zero_left ((mul_eq_zero.1 this).resolve_left hξ0)`. Establish `hmul : ∀ v, (φ (nn v) : Fin r → E) = (herm X.Gm (φ (nn v) : Fin r → E) (φ v₀) / herm X.Gm ξ' (φ v₀)) • ξ'`. Introduce `v`.
+
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_herm_lattice X _ fun w hw => ?_` and prove the remaining obligations. Take `⟨v', rfl⟩` from `hΛ w hw`. Establish `e` using `cross_eq (E := E) hY (be (y v)) ξ (y v') (y v₀)`. Rewrite `e` using `[hpn, hpn, hp, hp]`.
+
+Establish `e'` using `congrArg cc e`. Simplify using `only [FD.cc_mul, cc_neg, hc0, hcj, neg_neg] at e'`. Rewrite using `[herm_sub_left, herm_smul_left]`. Clear the denominators using the available nonvanishing facts. Apply `mul_left_cancel₀ (mul_ne_zero hξ0 hξ0)` to reduce the goal to its premises.
+
+Take the linear combination `e'`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α : E, ∀ v, (φ (nn v) : Fin r → E) = (α * herm X.Gm (φ v : Fin r → E) ξ') • ξ' := by`. Use `⟨-cc (herm X.Gm (φ (nn v₀) : Fin r → E) (φ v₀) / herm X.Gm ξ' (φ v₀)) / herm X.Gm ξ' (φ v₀), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul v, hskew v v₀]`. Use `conv_lhs => rw [hmul v₀, herm_smul_right]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hαc : cc α = -α`. Establish `e` using `hskew v₀ v₀`. Rewrite `e` using `[hα, herm_smul_left, herm_smul_right, FD.cc_mul, hcj]`.
+
+Apply `mul_left_cancel₀ (mul_ne_zero hh₀ hh₀')` to reduce the goal to its premises. Take the linear combination `e`. Establish `hκ0 : X.κ0 ≠ 0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] <;> simp [hξ0]`. Use `⟨-α / X.κ0, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_eq_mul_inv, FD.cc_mul, cc_neg, hαc, cc_inv, X.cc_kappa0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hα v]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rank_one_form [Module.Finite ℤ Y] (hY : Module.finrank (𝓞 E) Y = 1)
     (hy : Function.Surjective y) (be : LinearMap.BilinForm ℤ Y) (hsym : ∀ a b, be a b = be b a)
     (nn : La →ₗ[𝓞 E] La) (hnn : ∀ v v', -EF (nn v) v' = be (y v) (y v'))
@@ -236,6 +308,15 @@ end Lattice
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} (Uw : UnfWit U)
 
+/- English proof (translation)
+Take `⟨idx, hty, hlt, -⟩` from `GlobalTheory.ArcFlow.exists_idx Uw hσ hU k`. Take `⟨hp0, -⟩` from `hU.2.1 k`. Use `⟨fun j => (idx j).1, fun v j => relab c σ (Uw.e j).1 ((U.X k).κ0 * herm (U.X k).Gm (Uw.φ k v : Fin r → E) ξ') * perFr (U.X k) x.1 ξ' (relab c σ (Uw.e j).1) (Uw.e j).2, fun s hs v j => ?_, fun sE hs v u hu j => ?_⟩` and prove the remaining obligations. Rewrite using `[Uw.Pm_eq, Uw.Pm_eq] dsimp only`. Rewrite using `[hty j]`.
+
+Use `split_ifs with hj`. Establish `h` using `GlobalTheory.PerFlow.flow_conj (U.X k) ξ' s x.1 (Uw.φ k v : Fin r → E) (idx j).1 (Uw.e j).2 (hp0 ▸ hlt j hj)`. Rewrite using `[← _root_.mul_assoc]`. Conclude with `h`. Rewrite using `[GlobalTheory.PerFlow.flow_mem (U.X k) hξ', _root_.mul_assoc]`.
+
+Establish `h1 : relab c σ (Uw.e j).1 sE = (idx j).1.1 sE`. Rewrite using `[hty j]`. Use `split_ifs`. Use `GlobalTheory.ArcFlow.map_cc (idx j).1.1 sE` as an intermediate fact. Rewrite `this` using `[hs]`.
+
+Conclude with `this.symm`. Both sides reduce to the same expression. Rewrite using `[Uw.Pm_eq, hu, GlobalTheory.ArcFlow.perFr_smul, _root_.mul_assoc sE, map_neg, map_mul _ sE, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma flow_coord (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (ξ' : Fin r → E) (hξ' : herm (U.X k).Gm ξ' ξ' = 0)
     (x : (U.X k).dom) :
     ∃ (tau : Fin Uw.g → (U.X k).Ψ) (W : (Uw.F.Di (Uw.ik k)).La → Fin Uw.g → ℂ),
@@ -266,6 +347,33 @@ lemma flow_coord (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (ξ' : Fin r �
     rw [Uw.Pm_eq, hu, GlobalTheory.ArcFlow.perFr_smul, _root_.mul_assoc sE, map_neg, map_mul _ sE, h1]
     ring
 
+/- English proof (translation)
+Use `letI := H.starRing`. Introduce `A gam ξ ⟨hEF, ⟨t, htξ, ht⟩, T₀, hT₀⟩ hξ hrk S hSs hSa`. Take `⟨s₁, hs₁, h, hh⟩` from `hT₀ (((T₀ + 1 : ℝ) : ℂ) * Complex.I) (by simp)`. Use `set w₁ : ℂ := ((T₀ + 1 : ℝ) : ℂ) * Complex.I`. Use `set x₁ : (U.X k).dom := ⟨_, hs₁⟩ with hx₁`.
+
+Take `⟨tau, W, hW, hWn⟩` from `flow_coord Uw hσ hU k ξ' hiso.2.1 x₁`. Take `⟨n, cf, B, hSB, hB⟩` from `exists_comb S`. Set `y : (Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] A.X` to `A.yLin ∘ₗ gam.toLinearMap`. Establish `hy : Function.Surjective y` using `A.yLin_surjective.comp gam.surjective`. Establish `hEF' : ∀ u v, (Uw.F.Di (Uw.ik k)).EF (gam.symm u) v = A.EF u (gam v)` using `fun u v => by`.
+
+Rewrite using `[← hEF, gam.apply_symm_apply]`. Set `nn : ∀ Bf : LinearMap.BilinForm ℤ A.X, (∀ (a : 𝓞 E) y x, Bf (a • y) x = Bf y (star a • x)) → ((Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] (Uw.F.Di (Uw.ik k)).La)` to `fun Bf hBf => gam.symm.toLinearMap ∘ₗ nnB A Bf hBf ∘ₗ gam.toLinearMap`. Establish `hnn : ∀ Bf hBf v v', -(Uw.F.Di (Uw.ik k)).EF (nn Bf hBf v) v' = Bf (y v) (y v')` using `fun Bf hBf v v' => by`. Express the relevant statement in the definitionally equal form `-(Uw.F.Di (Uw.ik k)).EF (gam.symm (nnB A Bf hBf (gam v))) v' = _`. Rewrite using `[hEF', EF_nnB]`.
+
+Both sides reduce to the same expression. Establish `hP : ∀ Bf hBf v, h (Uw.Pm k x₁ (nn Bf hBf v)) = A.Pw w₁ (nnB A Bf hBf (gam v))` using `fun Bf hBf v => by`. Rewrite using `[hh]`. Conclude with `congrArg _ (gam.apply_symm_apply _)`. Establish `hyt : y t = 0` using `y_eq_zero A (gam t) ξ fun u => by`.
+
+Take `⟨v, rfl⟩` from `gam.surjective u`. Rewrite using `[hEF, ht]`. Establish `hr : 0 < r`. Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Conclude with `absurd (Subsingleton.elim _ _) hiso.2.2`. Conclude with `h`. Take `⟨-, -, -, -, Hm, hHm⟩` from `Uw.period k x₁`. Establish `hκ` using `(GlobalTheory.RiemMaj.riemann_eq_majorant E H Dw l Xo c σ r U Uw k x₁ Hm hσ hU hHm).2.1 hr`. Take `⟨sE, -, hbe, hsp, -, hform⟩` from `GlobalTheory.ArcFlow.rank_one (U.X k) (Uw.φ k) _ (Uw.iso k) y hrk hκ hy A.be A.be_symm A.be_pos (nn A.be A.be_adj) (hnn _ _) (fun θ => ⟨gam.symm (AnArc.La.mk 0 θ.toAddMonoidHom 0), fun v => by rw [hEF', A.EF_n_left]; simp [y]⟩) ξ hξ t ht hyt`.
+
+Establish `hBa : ∀ i (a : 𝓞 E) y x, B i (a • y) x = B i y (star a • x)` using `fun i a y x => hB _ _ _ _ (hSa a y x) i`. Use `choose sB hsB hsBf using fun i => rank_one_form (U.X k) (Uw.φ k) _ (Uw.iso k) y hrk hy (B i) (fun a b => hB _ _ _ _ (hSs a b) i) (nn (B i) (hBa i)) (hnn _ _) ξ hξ t ht`. Rewrite `hform` using `[htξ]`. Simplify using `only [htξ] at hsBf`. Take `⟨M, hM⟩` from `Finite.exists_le fun τ : (U.X k).Ψ => -(∑ i, cf i * τ.1 (sB i)).im / (τ.1 sE).re`.
+
+Use `⟨w₁.im + M, fun w hw => ?_⟩` and prove the remaining obligations. Set `s : (U.X k).Ψ → ℂ` to `fun τ => (w - w₁) * τ.1 sE + ∑ i, cf i * τ.1 (sB i)`. Establish `hs : (U.X k).flow ξ' s x₁.1 ∈ (U.X k).dom` using `flow_mem_of_im _ hiso x₁.2 s fun τ => by`. Establish `him : (τ.1 sE).im = 0`. Use `GlobalTheory.ArcFlow.map_cc τ.1 sE` as an intermediate fact.
+
+Rewrite `this` using `[hbe.1]`. Conclude with `Complex.conj_eq_iff_im.1 this.symm`. Establish `h1` using `(div_le_iff₀ (hsp τ.1)).1 (hM τ)`. Establish `h2` using `hsp τ.1`. Simplify using `only [s, Complex.add_im, Complex.mul_im, him, Complex.sub_im]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hfl : (U.X k).flow ξ' s x₁.1 = (U.X k).flow ξ' (s + s₁) x` using `EmbeddingHermitianPairs.flow_flow _ hiso.2.1 _ _ _`. Use `⟨s + s₁, hfl ▸ hs, h, fun v => ?_⟩` and prove the remaining obligations. Establish `e0 : (⟨_, hfl ▸ hs⟩ : (U.X k).dom) = ⟨_, hs⟩` using `Subtype.ext hfl.symm`. Establish `e1 : Uw.Pm k ⟨_, hs⟩ v = Uw.Pm k x₁ v + (w - w₁) • Uw.Pm k x₁ (nn A.be A.be_adj v) + ∑ i, cf i • Uw.Pm k x₁ (nn (B i) (hBa i) v)`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[hW, hWn sE hbe.1 v _ (hform v)]`. Simplify using `only [fun i => hWn (sB i) (hsB i) v _ (hsBf i v) j, s, add_mul, Finset.sum_mul, mul_neg, Finset.sum_neg_distrib, _root_.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e0, e1]`. Simplify using `only [map_add, map_smul, map_sum, hP, hh]`. Use `Prod.ext (AddMonoidHom.ext fun z => ?_) ?_` and prove the remaining obligations. Simplify using `only [Prod.fst_add, Prod.smul_fst, Prod.fst_sum, AddMonoidHom.add_apply, AddMonoidHom.smul_apply, AddMonoidHom.finset_sum_apply, (Pw_nnB A _ _ _ _).1, smul_eq_mul, hSB]`. Simplify using `only [AnArc.Pw_fst_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Prod.snd_add, Prod.smul_snd, Prod.snd_sum, (Pw_nnB A _ _ _ _).2, smul_zero, Finset.sum_const_zero, add_zero]`. Simplify using `only [AnArc.Pw_snd]`.
+-/
 lemma shift_periods [Algebra (FractionRing ℂ) ℂ] (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (ξ' : Fin r → E) (hiso : (U.X k).IsIso ξ')
     (x : Frame (U.X k).Ψ r) :
     letI := H.starRing
@@ -347,6 +455,13 @@ lemma shift_periods [Algebra (FractionRing ℂ) ℂ] (hσ : GoodEmb c σ) (hU : 
       add_zero]
     simp only [AnArc.Pw_snd]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x n' hσ hU hiso _ _`. Use `letI := H.starRing`. Introduce `A gam ξ hO hξ hrk hP hn`. Establish `hw : H.w0 + star H.w0 = 1` using `GlobalTheory.Ex.Arch.AbVal.cmField_host_element_add_conj_eq_one H`. Take `⟨T₀, hT⟩` from `shift_periods Uw hσ hU k ξ' hiso x A gam ξ hO hξ hrk (normT A H.w0 - A.T) (fun y y' => by simp only [AddMonoidHom.sub_apply]; rw [normT_symm A hw, A.T_symm]) (fun a y y' => by simp only [AddMonoidHom.sub_apply]; rw [normT_adj, A.T_adj])`.
+
+Use `⟨normArc A hw, gam, ξ, LinearEquiv.refl _ _, ⟨hO.1, hO.2.1, T₀, fun w hw' => ?_⟩, ⟨hP.1, fun _ => rfl⟩, ⟨hn, normT_norm A H.w0 n' hn⟩, fun _ => rfl, fun _ _ => rfl, fun DB h => h⟩` and prove the remaining obligations. Take `⟨s, hs, h, hh⟩` from `hT w hw'`. Use `⟨s, hs, h, fun v => (hh v).trans (Prod.ext (AddMonoidHom.ext fun z => ?_) (add_zero _))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.Pw w (gam v)).1 z + (normT A H.w0 (gam v).y z - A.T (gam v).y z) = normT A H.w0 (gam v).y z + (gam v).n z - A.H (A.ct z) (gam v).l / (2 * Complex.I) + w * A.be (gam v).y z`. Rewrite using `[AnArc.Pw_fst_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_normAn_onOrbit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin r → E) (x : Frame (U.X k).Ψ r) (n' : ℕ), GoodEmb c σ → IsUnf U → (U.X k).IsIso ξ' → x ∈ (U.X k).dom → 0 < n' → letI := H.starRing; ∀ (A : AnArc (𝓞 E)) (gam : (Uw.F.Di (Uw.ik k)).La ≃ₗ[𝓞 E] A.La) (ξ : Module.Dual ℤ A.X), OnOrbit Uw k ξ' x A gam ξ → ξ ≠ 0 → Module.finrank (𝓞 E) A.X = 1 → PrimAn H A → (∀ y, n' • A.ct y ∈ A.abelian₂) → ∃ (A' : AnArc (𝓞 E)) (gam' : (Uw.F.Di (Uw.ik k)).La ≃ₗ[𝓞 E] A'.La) (ξ₁ : Module.Dual ℤ A'.X) (eX : A'.X ≃ₗ[𝓞 E] A.X), OnOrbit Uw k ξ' x A' gam' ξ₁ ∧ PrimAn H A' ∧ NormAn A' n' ∧ (∀ y, ξ₁ y = ξ (eX y)) ∧ (∀ y y', A'.be y y' = A.be (eX y) (eX y')) ∧ ∀ DB : Datum H, (∃ tyB eB, AbDat H A DB tyB eB) → ∃ tyB eB, AbDat H A' DB tyB eB := by
   intro E _ _ _ H Dw l Xo c _ _ σ r U Uw k ξ' x n' hσ hU hiso _ _
   letI := H.starRing

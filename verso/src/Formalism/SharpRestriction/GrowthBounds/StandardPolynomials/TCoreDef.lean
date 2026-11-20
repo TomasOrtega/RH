@@ -12,6 +12,9 @@ def ioA (K : Type) [CommRing K] (p : ℕ) (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin 
   aeval (fun v => (MvPolynomial.X (symVar C0 CE1 CE2 X j v) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) K) ^
       symLev p C0 CE1 CE2 X j v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ioBlock_eq (K : Type) [CommRing K] (p : ℕ) (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT))
     (b : SegBlock (segS X.TT j) X.m) (u : MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) K) :
     ioBlock K p C0 CE1 CE2 X j b u =
@@ -64,6 +67,11 @@ def LvDat.word (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT))
       rename (chainEmb (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t) G *
       ∏ c, MvPolynomial.X (xiVar (2 * segS X.TT j + 1) X.m (BDk C0 CE1 CE2 mu X β j).T.t c) ^ L.γ j c
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `digitMon (KK O) C0 CE1 CE2 X j (β j) * sTopMon (KK O) X.p C0 CE1 CE2 X j (β j) * ioA (KK O) X.p C0 CE1 CE2 X j (L.word O j G) = _`. Simplify using `only [LvDat.word, LvDat.head, LvDat.stdPoly, ioD]`. Use `conv_rhs => rw [mul_comm, mul_assoc]`. Use `erw [← map_mul]`. Use `congrArg (fun w => digitMon (KK O) C0 CE1 CE2 X j (β j) * sTopMon (KK O) X.p C0 CE1 CE2 X j (β j) * ioA (KK O) X.p C0 CE1 CE2 X j w) ?_` and prove the remaining obligations.
+
+Establish `hcomm : ∀ (e ep z zp r xi : MvPolynomial (BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (KK O)), e * ep * z * zp * r * xi = z * zp * xi * (e * ep * r)` using `fun e ep z zp r xi => by ring`. Conclude with `hcomm _ _ _ _ _ _`.
+-/
 theorem LvDat.ioBlock_word (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT))
     (G : MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)) :
     ioBlock (KK O) X.p C0 CE1 CE2 X j (β j) (L.word O j G) = L.head O j (L.lv j) G * L.stdPoly O j := by

@@ -12,6 +12,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 
 namespace GlobalTheory.HerbrandAlg
 
+/- English proof (translation)
+Introduce `C _ v S _ _ a ha N Fil hF τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : lin a τ • x = 0` using `hx`. Use `show lin a τ • (Submodule.Quotient.mk x : (Fin N → RS a) ⧸ Fil) = 0`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, hx', Submodule.Quotient.mk_zero]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hk⟩`. Establish `hx' : lin a τ • x = 0` using `hx`.
+
+Establish `hxF : x ∈ Fil` using `(Submodule.Quotient.mk_eq_zero Fil).1 hk`. Use `⟨⟨x, hxF⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show lin a τ • (⟨x, hxF⟩ : Fil) = 0`. Conclude with `Subtype.ext hx'`. Introduce and unpack `⟨⟨y, hy⟩, hy', rfl⟩`.
+
+Establish `hy'' : lin a τ • (⟨y, hy⟩ : Fil) = 0` using `hy'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show lin a τ • y = 0`. Conclude with `congrArg Subtype.val hy''`. Use `show (Submodule.Quotient.mk y : (Fin N → RS a) ⧸ Fil) = 0`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero Fil).2 hy`.
+-/
 theorem kerId : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, KernelIdentity v a Fil τ := by
   intro C _ v S _ _ a ha N Fil hF τ
   refine ⟨?_, ?_⟩
@@ -35,6 +46,19 @@ theorem kerId : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S :
       · show (Submodule.Quotient.mk y : (Fin N → RS a) ⧸ Fil) = 0
         exact (Submodule.Quotient.mk_eq_zero Fil).2 hy
 
+/- English proof (translation)
+Introduce `C _ v S _ _ a ha N Fil hF τ`. Take `⟨r, hr, hR⟩` from `GlobalTheory.T.relLength_filtrationInterKerCofactor_linearFactor C v S a ha N Fil hF τ`. Take `⟨hd, hcP, hkerc, hsat, hAX, hHc, hcH, hprojX, hHX, hFX, htf, g, hg⟩` from `GlobalTheory.T.adjoinRootProdLinearFactors_lattice_facts C v S a ha N Fil hF τ`. Take `⟨fF, fX, fK, fH, -, -, -⟩` from `GlobalTheory.T.finite_eigenFiltration_pieces_addValInt C v S a ha N Fil hF τ`. Establish `tfO : ∀ (c : Int0 v) (x : Fin N → Int0 v), c ≠ 0 → c • x = 0 → x = 0`.
+
+Introduce `c x hc h`. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply, mul_eq_zero] at this`. Conclude with `this.resolve_left hc`.
+
+Establish `hKF : filKer a Fil τ ≤ Fil.restrictScalars (Int0 v)` using `inf_le_left`. Establish `fKs : Module.Finite (Int0 v) ↥(eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ)`. Rewrite `fH`, `fK`, the goal using `[Module.Finite.iff_fg]`. Conclude with `fH.sup fK`. Establish `hle : eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ ≤ preEig a Fil τ` using `sup_le hHX (hKF.trans hFX)`.
+
+Establish `hA : preEig a Fil τ ⊓ LinearMap.ker (mulR a N (lin a τ)) ≤ eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ` using `fun x hx => Submodule.mem_sup_left (LinearMap.mem_ker.1 hx.2)`. Establish `hmapH : (eigSub a τ (Fin N → RS a)).map (mulR a N (lin a τ)) = ⊥` using `eq_bot_iff.2 (by rintro _ ⟨x, hx, rfl⟩; exact (Submodule.mem_bot _).2 hx)`. Establish `e1 : (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ).map (mulR a N (lin a τ)) = (filKer a Fil τ).map (mulR a N (lin a τ))`. Rewrite using `[Submodule.map_sup, hmapH, bot_sup_eq]`. Establish `s1 : RelLen v (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ) (preEig a Fil τ) r` using `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf htf (mulR a N (lin a τ)) _ _ hle hA fX fKs r).2 (by rw [e1, hAX]; exact hR)`.
+
+Establish `hC : preEig a Fil τ ⊓ LinearMap.ker (comp a N τ) ≤ eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ` using `fun x hx => Submodule.mem_sup_right ⟨hsat hx, LinearMap.mem_ker.2 ((hcP x).1 (LinearMap.mem_ker.1 hx.2))⟩`. Establish `s2` using `(GlobalTheory.T.hasLatticeRelativeLength_map_iff C v _ _ htf tfO (comp a N τ) _ _ hle hC fX fKs r).1 s1`. Establish `hK0 : (filKer a Fil τ).map (comp a N τ) = ⊥` using `eq_bot_iff.2 (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(Submodule.mem_bot _).2 ((hcP x).2 (LinearMap.mem_ker.1 hx.2)))`.
+
+Establish `e2 : (eigSub a τ (Fin N → RS a) ⊔ filKer a Fil τ).map (comp a N τ) = (eigSub a τ (Fin N → RS a)).map (comp a N τ)`. Rewrite using `[Submodule.map_sup, hK0, sup_bot_eq]`. Conclude with `⟨r, hr, e2 ▸ s2⟩`.
+-/
 theorem core : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : Type) [Fintype S] [DecidableEq S] (a : S → Int0 v), Function.Injective a → ∀ (N : ℕ) (Fil : Submodule (RS a) (Fin N → RS a)), (∀ (c : Int0 v) (x : Fin N → RS a), c ≠ 0 → c • x ∈ Fil → x ∈ Fil) → ∀ τ : S, ∃ r : ℝ, (r : WithTop ℝ) = yExp v a Fil τ ∧ RelLen v ((eigSub a τ (Fin N → RS a)).map (comp a N τ)) ((preEig a Fil τ).map (comp a N τ)) r := by
   intro C _ v S _ _ a ha N Fil hF τ
   obtain ⟨r, hr, hR⟩ := GlobalTheory.T.relLength_filtrationInterKerCofactor_linearFactor C v S a ha N Fil hF τ
@@ -76,6 +100,9 @@ theorem core : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (S : 
     rw [Submodule.map_sup, hK0, sup_bot_eq]
   exact ⟨r, hr, e2 ▸ s2⟩
 
+/- English proof (translation)
+Introduce `C _ v S _ _ a ha N Fil hF τ`. Take `⟨r, hr, hR⟩` from `core C v S a ha N Fil hF τ`. Conclude with `⟨GlobalTheory.T.herbrand_determinant_identity_of_relativeLength C v S a ha N Fil hF τ r hr hR, kerId C v S a ha N Fil hF τ, GlobalTheory.T.herbrand_lengthIdentities_of_relativeLength C v S a ha N Fil hF τ r hr hR⟩`.
+-/
 theorem herbrandDet : HerbrandDet := by
   intro C _ v S _ _ a ha N Fil hF τ
   obtain ⟨r, hr, hR⟩ := core C v S a ha N Fil hF τ

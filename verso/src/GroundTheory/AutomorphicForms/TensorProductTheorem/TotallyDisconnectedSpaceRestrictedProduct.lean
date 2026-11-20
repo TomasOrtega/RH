@@ -35,10 +35,22 @@ def boxSubgroup (K' : ∀ v, Subgroup (G v)) : Subgroup (Πʳ v, [G v, K v]) whe
     rw [RestrictedProduct.inv_apply]
     exact (K' v).inv_mem (ha v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_boxSubgroup {K' : ∀ v, Subgroup (G v)} {g : Πʳ v, [G v, K v]} :
     g ∈ boxSubgroup K K' ↔ ∀ v, g v ∈ K' v :=
   Iff.rfl
 
+/- English proof (translation)
+Use `set F := (Filter.eventually_cofinite.1 hK').toFinset`. Establish `heq : (boxSubgroup K K' : Set (Πʳ v, [G v, K v])) = {g : Πʳ v, [G v, K v] | ∀ v, v ∉ F → g.1 v ∈ (K v : Set (G v))} ∩ ⋂ v ∈ F, (fun g : Πʳ v, [G v, K v] => g v) ⁻¹' (K' v : Set (G v))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_boxSubgroup, mem_inter_iff, mem_setOf_eq, mem_iInter, mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨fun v hv => ?_, fun v _ => h v⟩` and prove the remaining obligations. Establish `: K' v = K v` using `by simpa [F] using hv`. Rewrite using `[← this]`. Conclude with `h v`.
+
+Introduce and unpack `⟨h1, h2⟩ v`. Distinguish the cases in `hv : v ∈ F`. Conclude with `h2 v hv`. Establish `: K' v = K v` using `by simpa [F] using hv`. Rewrite using `[this]`.
+
+Conclude with `h1 v hv`. Rewrite using `[heq]`. Use `(RestrictedProduct.isOpen_forall_imp_mem hKo.out).inter ?_` and prove the remaining obligations. Conclude with `isOpen_biInter_finset fun v _ => (hK'o v).preimage (RestrictedProduct.continuous_eval v)`.
+-/
 theorem isOpen_boxSubgroup [hKo : Fact (∀ v, IsOpen (K v : Set (G v)))]
     {K' : ∀ v, Subgroup (G v)} (hK'o : ∀ v, IsOpen (K' v : Set (G v)))
     (hK' : ∀ᶠ v in cofinite, K' v = K v) :
@@ -67,6 +79,15 @@ theorem isOpen_boxSubgroup [hKo : Fact (∀ v, IsOpen (K v : Set (G v)))]
   refine (RestrictedProduct.isOpen_forall_imp_mem hKo.out).inter ?_
   exact isOpen_biInter_finset fun v _ => (hK'o v).preimage (RestrictedProduct.continuous_eval v)
 
+/- English proof (translation)
+Use `set S : Set ι := {v | K' v ≤ K v}`. Establish `hS : cofinite ≤ 𝓟 S` using `le_principal_iff.2 hK'`. Use `set C : Set (Πʳ v, [G v, K v]_[𝓟 S]) := ((↑) : (Πʳ v, [G v, K v]_[𝓟 S]) → ∀ v, G v) ⁻¹' (Set.pi univ fun v => (K' v : Set (G v)))`. Establish `hC : IsCompact C`. Use `(RestrictedProduct.isEmbedding_coe_of_principal.isInducing.isCompact_preimage_iff ?_).2 (isCompact_univ_pi hK'c)` and prove the remaining obligations.
+
+Rewrite using `[RestrictedProduct.range_coe_principal]`. Introduce `f hf v hv`. Conclude with `hv (hf v (mem_univ v))`. Establish `heq : (boxSubgroup K K' : Set (Πʳ v, [G v, K v])) = RestrictedProduct.inclusion G (fun v => (K v : Set (G v))) hS '' C`. Use extensionality with `g`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨⟨g.1, Filter.eventually_principal.2 fun v hv => hv (hg v)⟩, fun v _ => hg v, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Introduce and unpack `⟨h, hh, rfl⟩ v`.
+
+Conclude with `hh v (mem_univ v)`. Rewrite using `[heq]`. Conclude with `hC.image (RestrictedProduct.continuous_inclusion hS)`.
+-/
 theorem isCompact_boxSubgroup {K' : ∀ v, Subgroup (G v)}
     (hK'c : ∀ v, IsCompact (K' v : Set (G v))) (hK' : ∀ᶠ v in cofinite, K' v ≤ K v) :
     IsCompact (boxSubgroup K K' : Set (Πʳ v, [G v, K v])) := by
@@ -92,6 +113,23 @@ theorem isCompact_boxSubgroup {K' : ∀ v, Subgroup (G v)}
   rw [heq]
   exact hC.image (RestrictedProduct.continuous_inclusion hS)
 
+/- English proof (translation)
+Use `set x₁ : ∀ v, ((K v : Set (G v)) : Type _) := fun v => ⟨1, (K v).one_mem⟩`. Establish `h1 : RestrictedProduct.structureMap G (fun v => (K v : Set (G v))) cofinite x₁ = 1` using `Subtype.ext rfl`. Rewrite `hU` using `[← h1, RestrictedProduct.nhds_eq_map_structureMap hKo.out, Filter.mem_map, nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hIt⟩` from `hU`. Establish `hloc : ∀ v, ∃ L : Subgroup (G v), IsCompact (L : Set (G v)) ∧ IsOpen (L : Set (G v)) ∧ L ≤ K v ∧ (v ∈ I → ∀ g ∈ L, ∀ hg : g ∈ K v, (⟨g, hg⟩ : (K v : Set (G v))) ∈ t v)`.
+
+Introduce `v`. Distinguish the cases in `hv : v ∈ I`. Establish `hnhds : ((↑) : ((K v : Set (G v)) : Type _) → G v) '' t v ∈ 𝓝 (1 : G v)` using `(hKo.out v).isOpenEmbedding_subtypeVal.image_mem_nhds.2 (ht v)`. Take `⟨L, hLc, hLU⟩` from `exists_openSubgroup_isCompact_subset hnhds`. Use `⟨L, hLc, L.isOpen, fun g hg => ?_, fun _ g hg hgK => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, _, rfl⟩` from `hLU hg`. Conclude with `y.2`. Take `⟨y, hy, hyg⟩` from `hLU hg`. Establish `: y = ⟨g, hgK⟩` using `Subtype.ext hyg`. Rewrite using `[← this]`.
+
+Conclude with `hy`. Conclude with `⟨K v, hKc v, hKo.out v, le_rfl, fun h => absurd h hv⟩`. Use `choose L hLc hLo hLK hLt using hloc`. Use `set K' : ∀ v, Subgroup (G v) := fun v => if v ∈ I then L v else K v`. Use `⟨K', fun v => ?_, fun v => ?_, fun v => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases hv : v ∈ I <;> simp [K', hv, hLc v, hKc v]`. Apply the tactic sequence `by_cases hv : v ∈ I <;> simp [K', hv, hLo v, hKo.out v]`. Apply the tactic sequence `by_cases hv : v ∈ I <;> simp [K', hv, hLK v]`. Conclude with `Filter.eventually_cofinite.2 (hI.subset fun v hv => by`. Assume the negation of the conclusion as `hvI`.
+
+Conclude with `hv (by simp [K', hvI]))`. Introduce `g hg`. Establish `hgK : ∀ v, g v ∈ K v` using `fun v => by`. Distinguish the cases in `hv : v ∈ I`. Use `hg v` as an intermediate fact.
+
+Simplify using `only [K', hv, if_true] at this`. Conclude with `hLK v this`. Use `hg v` as an intermediate fact. Simplify `this` using `[K', hv]`. Establish `hx : RestrictedProduct.structureMap G (fun v => (K v : Set (G v))) cofinite (fun v => ⟨g v, hgK v⟩) = g` using `Subtype.ext rfl`.
+
+Rewrite using `[← hx]`. Use `hIt fun v hv => ?_` and prove the remaining obligations. Use `hg v` as an intermediate fact. Simplify using `only [K', hv, if_true] at this`. Conclude with `hLt v hv (g v) this (hgK v)`.
+-/
 theorem exists_boxSubgroup_subset [∀ v, IsTopologicalGroup (G v)]
     [∀ v, LocallyCompactSpace (G v)] [∀ v, T2Space (G v)] [∀ v, TotallyDisconnectedSpace (G v)]
     [hKo : Fact (∀ v, IsOpen (K v : Set (G v)))] (hKc : ∀ v, IsCompact (K v : Set (G v)))

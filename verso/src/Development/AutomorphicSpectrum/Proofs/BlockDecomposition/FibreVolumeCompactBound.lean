@@ -7,6 +7,25 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Free.FibreBound
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ _ _ μ lam Q Z m hQ h P hPc hPo hPZ`. Establish `hPm : MeasurableSet P` using `hPo.measurableSet`. Set `φ : V → ℝ` to `P.indicator fun _ => 1`. Establish `hφc : Continuous φ`. Use `continuous_indicator ?_ continuous_const.continuousOn` and prove the remaining obligations.
+
+Simplify using `[hPo.frontier_eq, hPc.isClosed.closure_eq]`. Establish `hφs : HasCompactSupport φ`. Use `HasCompactSupport.intro hPc fun x hx => ?_` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem hx _`. Establish `hts : tsupport φ ⊆ Z`.
+
+Use `subset_trans (closure_minimal (fun x hx => ?_) hPc.isClosed) hPZ` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (Set.indicator_of_notMem h _)`. Take `⟨hI, hC⟩` from `h.2.2 φ hφc hφs hts`. Establish `hint : ∀ s, ∫ x, φ x ∂(m s) = (m s P).toReal` using `fun s => by`.
+
+Simplify using `[φ, integral_indicator hPm, Measure.real]`. Establish `hfin : ∀ s, m s P ≠ ⊤` using `fun s => by`. Establish `h` using `hI s (Set.mem_univ s)`. Rewrite `h` using `[integrable_indicator_iff hPm]`. Break down `(integrableOn_const_iff (C := (1 : ℝ)) (by simp)).1 h with h | h` into its components or cases.
+
+Simplify using `at h`. Conclude with `h.ne`. Establish `hcont : ContinuousOn (fun s => (m s P).toReal) (Q '' P)`. Establish `h' : ContinuousOn (fun s => (m s P).toReal) Set.univ`. Simplify `hC` using `only [hint]`.
+
+Conclude with `h'.mono (Set.subset_univ _)`. Take `⟨C, hCb⟩` from `(hPc.image hQ).exists_bound_of_continuousOn hcont`. Establish `hoff : ∀ s, s ∉ Q '' P → m s P = 0` using `fun s hs => by`. Establish `hae` using `GlobalTheory.CompanionTheory.SiegelND.Coef.AvgV.ae_lift_eq h (g := Q) (fun _ => rfl) Function.injective_id s`. Use `measure_mono_null (t := {x | ¬ Q x = s}) ?_ hae` and prove the remaining obligations.
+
+Introduce `x hx hxs`. Conclude with `hs ⟨x, hx, hxs⟩`. Establish `hbd : ∀ s, m s P ≤ (C.toNNReal : ℝ≥0∞)` using `fun s => by`. Distinguish the cases in `hs : s ∈ Q '' P`. Establish `h1 : (m s P).toReal ≤ C` using `le_trans (le_abs_self _) (by simpa using hCb s hs)`.
+
+Rewrite using `[← ENNReal.ofReal_toReal (hfin s)]`. Conclude with `ENNReal.ofReal_le_ofReal h1`. Rewrite using `[hoff s hs]`. Conclude with `bot_le`. Use `⟨C.toNNReal, fun S hS => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CompanionTheory.SiegelND.Coef.AvgV.fibre_mass_on h (g := Q) (fun _ => rfl) Function.injective_id hQ.measurable hPm hS (fun x hx => hPZ hx.1)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem compactOpen_mass_le : ∀ (V K : Type) [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [T2Space V] [TopologicalSpace K] [MeasurableSpace K] [BorelSpace K] [T2Space K] (μ : Measure V) (lam : Measure K) (Q : V → K) (Z : Set V) (m : K → Measure V), Continuous Q → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ Q id Z lam Set.univ m → ∀ P : Set V, IsCompact P → IsOpen P → P ⊆ Z → ∃ c : ℝ≥0, ∀ S : Set K, MeasurableSet S → μ (P ∩ Q ⁻¹' S) ≤ (c : ℝ≥0∞) * lam S := by
   intro V K _ _ _ _ _ _ _ _ μ lam Q Z m hQ h P hPc hPo hPZ
   have hPm : MeasurableSet P := hPo.measurableSet

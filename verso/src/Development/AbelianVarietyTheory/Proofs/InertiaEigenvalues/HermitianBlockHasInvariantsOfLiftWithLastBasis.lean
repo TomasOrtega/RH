@@ -9,6 +9,9 @@ namespace GlobalTheory.JR.Step.MatchNotIm
 section Alg
 variable {r : ℕ} {k : Type} [CommRing k]
 
+/- English proof (translation)
+Simplify using `only [full, act, embHom, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use `congr 1`. Use `congr 1`. Apply the tactic sequence `all_goals (ext i j; simp [Matrix.mul_apply, Matrix.mulVec, Matrix.vecMul, dotProduct])`.
+-/
 theorem full_act (g : GL (Fin r) k) (Y : Gl r k) :
     full (act g Y) = embHom r k (g : Matrix (Fin r) (Fin r) k) * full Y *
       embHom r k ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) := by
@@ -19,9 +22,17 @@ theorem full_act (g : GL (Fin r) k) (Y : Gl r k) :
   congr 1
   all_goals (ext i j; simp [Matrix.mul_apply, Matrix.mulVec, Matrix.vecMul, dotProduct])
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem last_eq : (Fin.last r) = finSumFinEquiv (Sum.inr (0 : Fin 1)) := by
   ext; simp
 
+/- English proof (translation)
+Rewrite using `[last_eq]`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Break down `j with j | j` into its components or cases. Simplify using `[embHom, Matrix.reindex_apply, Fin.ext_iff, (Fin.is_lt _).ne]`. Rewrite using `[Subsingleton.elim j 0]`.
+
+Simplify using `[embHom, Matrix.reindex_apply]`.
+-/
 theorem embHom_last_row (g : Matrix (Fin r) (Fin r) k) (j : Fin (r + 1)) :
     embHom r k g (Fin.last r) j = if j = Fin.last r then 1 else 0 := by
   rw [last_eq]
@@ -30,6 +41,11 @@ theorem embHom_last_row (g : Matrix (Fin r) (Fin r) k) (j : Fin (r + 1)) :
   · simp [embHom, Matrix.reindex_apply, Fin.ext_iff, (Fin.is_lt _).ne]
   · rw [Subsingleton.elim j 0]; simp [embHom, Matrix.reindex_apply]
 
+/- English proof (translation)
+Rewrite using `[last_eq]`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `i with i | i` into its components or cases. Simplify using `[embHom, Matrix.reindex_apply, Fin.ext_iff, (Fin.is_lt _).ne]`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Simplify using `[embHom, Matrix.reindex_apply]`.
+-/
 theorem embHom_last_col (g : Matrix (Fin r) (Fin r) k) (i : Fin (r + 1)) :
     embHom r k g i (Fin.last r) = if i = Fin.last r then 1 else 0 := by
   rw [last_eq]
@@ -38,14 +54,23 @@ theorem embHom_last_col (g : Matrix (Fin r) (Fin r) k) (i : Fin (r + 1)) :
   · simp [embHom, Matrix.reindex_apply, Fin.ext_iff, (Fin.is_lt _).ne]
   · rw [Subsingleton.elim i 0]; simp [embHom, Matrix.reindex_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, embHom_last_row, embHom_last_col]`.
+-/
 theorem conj_last (g g' : Matrix (Fin r) (Fin r) k) (N : Matrix (Fin (r + 1)) (Fin (r + 1)) k) :
     (embHom r k g * N * embHom r k g') (Fin.last r) (Fin.last r) = N (Fin.last r) (Fin.last r) := by
   simp [Matrix.mul_apply, embHom_last_row, embHom_last_col]
 
+/- English proof (translation)
+Simplify using `[eL, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem eL_dot (N : Matrix (Fin (r + 1)) (Fin (r + 1)) k) :
     eL r k ⬝ᵥ (N *ᵥ eL r k) = N (Fin.last r) (Fin.last r) := by
   simp [eL, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [full, glMap, Matrix.reindex_apply]`.
+-/
 theorem full_glMap {k' : Type} [CommRing k'] (φ : k →+* k') (Y : Gl r k) :
     full (glMap φ Y) = (full Y).map φ := by
   ext i j
@@ -59,6 +84,9 @@ end GlobalTheory.JR.Step.MatchNotIm
 
 namespace GlobalTheory.JR.Step.MatchNotIm
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [hPQ]`. Consider the case `succ i ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_pow {n : Type} [Fintype n] [DecidableEq n] {k : Type} [CommRing k] (P Q N : Matrix n n k)
     (hPQ : P * Q = 1) (hQP : Q * P = 1) (i : ℕ) : (P * N * Q) ^ i = P * N ^ i * Q := by
   induction i with
@@ -68,6 +96,21 @@ theorem conj_pow {n : Type} [Fintype n] [DecidableEq n] {k : Type} [CommRing k] 
     calc P * N ^ i * Q * (P * N * Q) = P * N ^ i * (Q * P) * N * Q := by simp only [Matrix.mul_assoc]
       _ = P * (N ^ i * N) * Q := by rw [hQP, Matrix.mul_one, Matrix.mul_assoc P]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ r Z X μ l ν hν _ _ hΔ hX`. Establish `hΔ' : Delta (inv (glMap (algebraMap F E) Z)) ≠ 0`. Rewrite using `[InvMap.inv_glMap, InvMap.Delta_map]`. Conclude with `(map_ne_zero (algebraMap F E)).2 hΔ`. Establish `hX' : inv X.toGl = inv (glMap (algebraMap F E) Z)`.
+
+Rewrite using `[InvMap.inv_glMap]`. Conclude with `hX`. Take `⟨g, ⟨hg, -⟩, -⟩` from `(GlobalTheory.T.jacquetRallis_borderedMatrix_normalForm_invariants E r).2.2.2.2 _ _ hΔ' hX'`. Establish `hfull : full X.toGl = embHom r E (g : Matrix (Fin r) (Fin r) E) * (full Z).map (algebraMap F E) * embHom r E ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)`. Rewrite using `[← hg, full_act, full_glMap]`.
+
+Establish `hPQ : embHom r E (g : Matrix (Fin r) (Fin r) E) * embHom r E ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hQP : embHom r E ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) * embHom r E (g : Matrix (Fin r) (Fin r) E) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hs : star (ν • eL r E) = star ν • eL r E`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply, Pi.smul_apply, eL, Pi.single_apply, smul_eq_mul, star_mul']`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Use `replace hfull : full ((X.1.1, X.2.1, star X.2.1, algebraMap F E X.2.2) : Gl r E) = embHom r E (g : Matrix (Fin r) (Fin r) E) * (full Z).map (algebraMap F E) * embHom r E ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) := hfull`. Unfold `HasInv`.
+
+Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.JR.inv, Inv.map, Hn.toGl, liftH, lift]`. Rewrite using `[hfull]`. Rewrite using `[Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, hQP, Matrix.one_mul, Matrix.charpoly_map, Polynomial.coeff_map]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.JR.inv, Inv.map, Hn.toGl, liftH, lift, mom]`. Rewrite using `[hs, hfull, conj_pow _ _ _ hPQ hQP, Matrix.mulVec_smul, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, dotProduct_smul, eL_dot, eL_dot, conj_last]`. Establish `hp : ((full Z).map (algebraMap F E)) ^ (i : ℕ) = ((full Z) ^ (i : ℕ)).map (algebraMap F E)`. Use `map_pow (algebraMap F E).mapMatrix (full Z) (i : ℕ)` as an intermediate fact.
+
+Simplify `this.symm` using `only [RingHom.mapMatrix_apply]`. Rewrite using `[hp, Matrix.map_apply, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul, ← hν]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasInv_liftH : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (Z : Gl r F) (X : Hn r F E) (μ l : F) (ν : E),
     ν * star ν = algebraMap F E μ → μ ≠ 0 → Delta (inv (GlobalTheory.JR.Step.lift Z μ l)) ≠ 0 → Delta (inv Z) ≠ 0 →

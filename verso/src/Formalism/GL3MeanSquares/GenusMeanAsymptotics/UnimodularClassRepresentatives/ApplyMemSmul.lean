@@ -26,15 +26,24 @@ def glSub (A : Submodule (𝓞 K) V) : Subgroup (V ≃ₗ[K] V) where
     conv_lhs => rw [← show Formalism.HermitianLatticesTheory.gmap a A = A from ha]
     rw [← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_glSub {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} :
     X ∈ glSub A ↔ Formalism.HermitianLatticesTheory.gmap X A = A := Iff.rfl
 
+/- English proof (translation)
+Establish `hX' : Formalism.HermitianLatticesTheory.gmap X A = A` using `hX`. Rewrite using `[← hX']`. Conclude with `Submodule.mem_map_of_mem hx`.
+-/
 theorem apply_mem {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} (hX : X ∈ glSub A) {x : V} (hx : x ∈ A) :
     X x ∈ A := by
   have hX' : Formalism.HermitianLatticesTheory.gmap X A = A := hX
   rw [← hX']
   exact Submodule.mem_map_of_mem hx
 
+/- English proof (translation)
+Establish `h2 : A.map ((X : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hX`. Establish `h1 : X x ∈ (I • A).map ((X : V →ₗ[K] V).restrictScalars (𝓞 K))` using `Submodule.mem_map_of_mem hx`. Rewrite `h1` using `[Submodule.map_smul'', h2]`. Then use the resulting hypothesis.
+-/
 theorem apply_mem_smul {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} (hX : X ∈ glSub A) (I : Ideal (𝓞 K))
     {x : V} (hx : x ∈ I • A) : X x ∈ I • A := by
   have h2 : A.map ((X : V →ₗ[K] V).restrictScalars (𝓞 K)) = A := hX
@@ -76,10 +85,16 @@ def nSub (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) : Subgroup
       rfl
     simpa [e] using this
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sSub {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {k : ℕ}
     {X : V ≃ₗ[K] V} : X ∈ sSub h A 𝔭 k ↔
       X ∈ glSub A ∧ ∀ x ∈ A, ∀ y ∈ A, h (X x) (X y) - h x y ∈ pK K 𝔭 k := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_nSub {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {k : ℕ} {X : V ≃ₗ[K] V} :
     X ∈ nSub A 𝔭 k ↔ X ∈ glSub A ∧ ∀ x ∈ A, X x - x ∈ extP K 𝔭 ^ k • A := Iff.rfl
 

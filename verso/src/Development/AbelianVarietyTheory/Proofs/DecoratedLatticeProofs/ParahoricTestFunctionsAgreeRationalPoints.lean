@@ -16,13 +16,22 @@ variable {E K k : Type} [Field E] [NumberField E] [Field K]
 
 def lPos {κ l : ℕ} : Fin κ ⊕ Fin l → ℕ := Sum.elim (fun i => i.val) (fun i => κ + i.val)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with i | i <;> rfl`.
+-/
 theorem zPos_inl {κ l τ j : ℕ} (a : Fin κ ⊕ Fin l) :
     zPos (κ := κ) (τ := τ) (l := l) (j := j) (Sum.inl a) = lPos a := by
   rcases a with i | i <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with i | i <;> simp [lPos] <;> omega`.
+-/
 theorem lPos_lt {κ l : ℕ} (a : Fin κ ⊕ Fin l) : lPos a < κ + l := by
   rcases a with i | i <;> simp [lPos] <;> omega
 
+/- English proof (translation)
+Simplify using `only [zPos]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_zPos_inr {κ l τ j : ℕ} (p : Fin j × Fin τ) :
     κ + l ≤ zPos (κ := κ) (τ := τ) (l := l) (j := j) (Sum.inr p) := by
   simp only [zPos]; omega
@@ -30,15 +39,27 @@ theorem le_zPos_inr {κ l τ j : ℕ} (p : Fin j × Fin τ) :
 def enum (κ l τ j : ℕ) : Ix (Fin κ ⊕ Fin l) (Fin τ) j ≃ Fin (κ + l + j * τ) :=
   (Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with (i | i) | ⟨i, u⟩ <;> simp [enum, zPos, finProdFinEquiv] <;> ring`.
+-/
 theorem enum_val {κ l τ j : ℕ} (a : Ix (Fin κ ⊕ Fin l) (Fin τ) j) : ((enum κ l τ j a : Fin _) : ℕ) = zPos a := by
   rcases a with (i | i) | ⟨i, u⟩ <;> simp [enum, zPos, finProdFinEquiv] <;> ring
 
+/- English proof (translation)
+Rewrite using `[← enum_val]`. Conclude with `Fin.isLt _`.
+-/
 theorem zPos_lt {κ l τ j : ℕ} (a : Ix (Fin κ ⊕ Fin l) (Fin τ) j) : zPos a < κ + l + j * τ := by
   rw [← enum_val]; exact Fin.isLt _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(enum κ l τ j).symm ⟨p, hp⟩, by rw [← enum_val, Equiv.apply_symm_apply]⟩`.
+-/
 theorem exists_zPos {κ l τ j p : ℕ} (hp : p < κ + l + j * τ) : ∃ a : Ix (Fin κ ⊕ Fin l) (Fin τ) j, zPos a = p :=
   ⟨(enum κ l τ j).symm ⟨p, hp⟩, by rw [← enum_val, Equiv.apply_symm_apply]⟩
 
+/- English proof (translation)
+Establish `hT : (Matrix.of fun a b : Fin κ ⊕ Fin l => ι (M (lPos a) (lPos b))) = ((Matrix.of fun s t : Fin (κ + l) => M s.1 t.1).map ι).submatrix finSumFinEquiv finSumFinEquiv`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [lPos]`. Rewrite using `[hT, Matrix.det_submatrix_equiv_self, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_lPos (ι : E →+* k) (κ l : ℕ) (M : ℕ → ℕ → E) :
     (Matrix.of fun a b : Fin κ ⊕ Fin l => ι (M (lPos a) (lPos b))).det =
       ι (Matrix.of fun s t : Fin (κ + l) => M s.1 t.1).det := by
@@ -47,6 +68,21 @@ theorem det_lPos (ι : E →+* k) (κ l : ℕ) (M : ℕ → ℕ → E) :
     ext (a | a) (b | b) <;> simp [lPos]
   rw [hT, Matrix.det_submatrix_equiv_self, RingHom.map_det]; rfl
 
+/- English proof (translation)
+Set `e : Fin κ ⊕ Fin l ≃ Fin (κ + l)` to `finSumFinEquiv`. Apply the tactic sequence `have he : ∀ a, ((e a : Fin _) : ℕ) = lPos a := by rintro (i | i) <;> simp [e, lPos]`. Set `A : Matrix (Fin (κ + l)) (Fin (κ + l)) E` to `Matrix.of fun s t => M s.1 t.1`. Set `T : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) k` to `Matrix.of fun a b => ι (M (lPos a) (lPos b))`. Establish `hdet : T.det = ι A.det` using `det_lPos ι κ l M`.
+
+Establish `hint : ∀ x : k, valuation k x = 1 → x ∈ 𝒪[k]` using `fun x hx => (Valuation.mem_integer_iff (valuation k) x).2 hx.le`. Express the relevant statement in the definitionally equal form `(∃ g ∈ KO k (Fin κ ⊕ Fin l), g.val = T) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hgv⟩`. Establish `hI` using `intM_of_mem_KO hg`.
+
+Rewrite `hI` using `[hgv]`. Use `⟨fun p p' hp hp' => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hI (e.symm ⟨p, hp⟩) (e.symm ⟨p', hp'⟩)`. Simplify using `only [T, Matrix.of_apply] at h`. Rewrite `h` using `[← he, ← he, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+
+Conclude with `(hC.int _).1 h`. Establish `hv` using `valuation_det_of_mem_KO hg`. Rewrite `hv` using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, hdet]`. Conclude with `(ComplRes.v_eq_one_iff_red hC hU ((hC.int _).1 (hint _ hv))).1 hv`. Introduce and unpack `⟨hent, hunit⟩`.
+
+Establish `hTint : ∀ a b, T a b ∈ 𝒪[k]` using `fun a b => (hC.int _).2 (hent _ _ (he a ▸ (e a).2) (he b ▸ (e b).2))`. Set `B : Matrix (Fin κ ⊕ Fin l) (Fin κ ⊕ Fin l) 𝒪[k]` to `Matrix.of fun a b => ⟨T a b, hTint a b⟩`. Establish `hB : B.map (algebraMap 𝒪[k] k) = T` using `by ext a b; rfl`. Establish `hBdet : algebraMap 𝒪[k] k B.det = ι A.det`. Rewrite using `[RingHom.map_det]`.
+
+Express the relevant statement in the definitionally equal form `(B.map (algebraMap 𝒪[k] k)).det = _`. Rewrite using `[hB, hdet]`. Establish `hAint : IntAt P A.det` using `(hC.int _).1 (hBdet ▸ (B.det).2)`. Establish `hv : valuation k (ι A.det) = 1` using `(ComplRes.v_eq_one_iff_red hC hU hAint).2 hunit`. Establish `hBu : IsUnit B.det` using `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.2 (by rw [hBdet]; exact hv)`.
+
+Use `⟨Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) (B.nonsingInvUnit hBu), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.GeneralLinearGroup.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem mem_KO_iff (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : kˣ) (hC : IsCompl P q ι ϖ)
     (hU : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) (κ l : ℕ) (M : ℕ → ℕ → E) :
     (∃ g ∈ KO k (Fin κ ⊕ Fin l), g.val = Matrix.of fun a b => ι (M (lPos a) (lPos b))) ↔
@@ -88,6 +124,33 @@ theorem mem_KO_iff (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (
     rw [Matrix.GeneralLinearGroup.map_apply]
     rfl
 
+/- English proof (translation)
+Substitute `hr hb ha` using the available equality. Establish `h11 : Y.toBlocks₁₁ = Matrix.of fun x y : Fin κ ⊕ Fin l => ι (M (lPos x) (lPos y))`. Use extensionality with `x y`. Simplify using `only [toBlocks₁₁, of_apply, hY, zPos_inl]`. Establish `key : ((∃ g ∈ KO k (Fin κ ⊕ Fin l), g.val = Y.toBlocks₁₁) ∧ MaxM Y.toBlocks₂₁ ∧ IntM Y.toBlocks₁₂ ∧ IntM Y.toBlocks₂₂) ↔ (((∀ p p', p < κ + l + j * τ → p' < κ + l + j' * τ → IntAt P (M p p')) ∧ (∀ p p', κ + l ≤ p → p < κ + l + j * τ → p' < κ + l → IntAt P (M p p' / (q : E)))) ∧ I …`.
+
+Rewrite using `[h11, mem_KO_iff P q ι ϖ hC hU]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hI11, hu⟩, h21, h12, h22⟩`. Establish `hB11 : IntM Y.toBlocks₁₁`. Rewrite using `[h11]`.
+
+Introduce `x y`. Conclude with `(hC.int _).2 (hI11 _ _ (lPos_lt x) (lPos_lt y))`. Establish `hIY : IntM Y`. Rewrite using `[← fromBlocks_toBlocks Y]`. Conclude with `intM_fromBlocks.2 ⟨hB11, h12, h21.intM, h22⟩`.
+
+Use `⟨⟨fun p p' hp hp' => ?_, fun p p' hp1 hp2 hp' => ?_⟩, hu⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `exists_zPos hp`. Take `⟨y, rfl⟩` from `exists_zPos hp'`. Use `hIY x y` as an intermediate fact. Rewrite `this` using `[hY]`.
+
+Conclude with `(hC.int _).1 this`. Take `⟨x, rfl⟩` from `exists_zPos hp2`. Take `⟨y, rfl⟩` from `exists_zPos (j := j') (by nlinarith : p' < κ + l + j' * τ)`. Break down `x with x0 | x1` into its components or cases. Rewrite `hp1` using `[zPos_inl]`.
+
+Conclude with `absurd hp1 (not_le.2 (lPos_lt x0))`. Break down `y with y0 | y1` into its components or cases. Use `h21 x1 y0` as an intermediate fact. Simplify using `only [toBlocks₂₁, of_apply, hY] at this`. Conclude with `(ComplRes.v_div_q hC hU _).1 this`.
+
+Conclude with `absurd hp' (not_lt.2 (le_zPos_inr y1))`. Introduce and unpack `⟨⟨h1, h2⟩, hu⟩`. Establish `hIY : ∀ x y, Y x y ∈ 𝒪[k]` using `fun x y => by`. Rewrite using `[hY]`. Conclude with `(hC.int _).2 (h1 _ _ (zPos_lt x) (zPos_lt y))`.
+
+Use `⟨⟨fun p p' hp hp' => h1 p p' (by omega) (by omega), hu⟩, fun x y => ?_, fun x y => hIY _ _, fun x y => hIY _ _⟩` and prove the remaining obligations. Use `show valuation k (Y (Sum.inr x) (Sum.inl y)) < 1`. Rewrite using `[hY]`. Use `(ComplRes.v_div_q hC hU _).2 (h2 _ _ (le_zPos_inr x) (zPos_lt _) ?_)` and prove the remaining obligations. Rewrite using `[zPos_inl]`.
+
+Conclude with `lPos_lt y`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Distinguish the cases in `hu : IsUnit (redP P (Matrix.det (Matrix.of fun s t : Fin (κ + l) => M s.1 t.1)))`. Take `⟨⟨g, hg, hgv⟩, h21, h12, h22⟩` from `key.2 ⟨hc, hu⟩`.
+
+Rewrite using `[parPhi_of_mem δ hg hgv h21 h12 h22]`. Establish `hdet : ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = ι (Matrix.det (Matrix.of fun s t : Fin (κ + l) => M s.1 t.1))`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, h11, det_lPos]`. Establish `hv` using `valuation_det_of_mem_KO hg`. Rewrite `hv` using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, h11, det_lPos]`.
+
+Establish `hint : IntAt P (Matrix.det (Matrix.of fun s t : Fin (κ + l) => M s.1 t.1))` using `(hC.int _).1 ((Valuation.mem_integer_iff _ _).2 hv.le)`. Rewrite using `[Units.val_inv_eq_inv_val, hδ _ _ hint hu hdet, inv_inv]`. Establish `h0 : LocE.unitV ξ (Matrix.det (Matrix.of fun s t : Fin (κ + l) => M s.1 t.1)) = 0`. Unfold `LocE.unitV`. Rewrite using `[dif_neg hu]`.
+
+Rewrite using `[h0, map_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `hu (key.1 ((parPhi_ne_zero_iff δ).1 hne)).2`. Introduce `hc`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hc (key.1 ((parPhi_ne_zero_iff δ).1 hne)).1`.
+-/
 theorem core (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : kˣ) (σ₀ : K →+* ℂ)
     (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (δ : kˣ →* ℂˣ) (hC : IsCompl P q ι ϖ) (hU : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ)
     (hδ : ∀ a (u : kˣ), IntAt P a → IsUnit (redP P a) → (u : k) = ι a → (δ u : ℂ) = (σ₀ (LocE.unitV ξ a))⁻¹)
@@ -163,19 +226,31 @@ theorem core (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (ϖ : k
 
 end Core
 
+/- English proof (translation)
+Simplify using `[LatFrame.coords, plainFrame]`.
+-/
 theorem plain_coords {k : Type} [Field k] {ι ι' n n' : Type*} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
     {c c' : ℕ} (ord : ι ≃ n ⊕ Fin c) (ord' : ι' ≃ n' ⊕ Fin c') (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin c') k) (a : ι) (b : ι') :
     (plainFrame ord).coords (plainFrame ord') x a b = x (ord a) (ord' b) := by
   simp [LatFrame.coords, plainFrame]
 
+/- English proof (translation)
+Simplify using `[LatFrame.coords, LatFrame.refl, plainFrame]`.
+-/
 theorem refl_coords {k : Type} [Field k] {ι n' : Type*} [Fintype ι] [DecidableEq ι] [Fintype n'] [DecidableEq n']
     {ι' : Type*} {c' : ℕ} (ord' : ι' ≃ n' ⊕ Fin c') (x : Matrix ι (n' ⊕ Fin c') k) (a : ι) (b : ι') :
     (LatFrame.refl k ι).coords (plainFrame ord') x a b = x a (ord' b) := by
   simp [LatFrame.coords, LatFrame.refl, plainFrame]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold LocE.scE; split_ifs <;> simp`.
+-/
 theorem scE_zero (n l : ℕ) : LocE.scE n 0 l = 0 := by
   unfold LocE.scE; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold LocE.fIdx; split_ifs <;> omega`.
+-/
 theorem fIdx_zero (κ n v : ℕ) : LocE.fIdx κ 0 n v = v := by
   unfold LocE.fIdx; split_ifs <;> omega
 
@@ -186,6 +261,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k)
   (s : ℕ) (W : TwData k)
 
+/- English proof (translation)
+Establish `hm` using `hA.steps`. Establish `hPhi : PhiAt Ch mu cst.sharp j P.1 x = LocE.PhiQ (qOf P.1) (resChar (mu : Chr X.F X.E X.K) P.1) R.k R.r (cOf R j) (R.N j) (cOf R (j + 1)) (R.N (j + 1)) x`. Unfold `PhiAt`. Rewrite using `[if_neg hA.nmem]`. Establish `hT : (W.T s R).Phi j c h (toLoc ι e e' x) = parPhi W.δ ((plainFrame (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (j + 1) c (by omega))).coords (plainFrame (stdOrd (Fin R.k) (Fin R.t) (l := s + 1) j (c + 1) (by omega))) (toLoc ι e e' x)) := rfl`.
+
+Establish `hc1 : c = cOf R (j + 1)` using `by simp only [cOf]; omega`. Establish `hc2 : c + 1 = cOf R j` using `by simp only [cOf]; omega`. Establish `hY : ∀ a b, (plainFrame (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (j + 1) c (by omega))).coords (plainFrame (stdOrd (Fin R.k) (Fin R.t) (l := s + 1) j (c + 1) (by omega))) (toLoc ι e e' x) a b = ι (LocE.entB (qOf P.1) R.k (cOf R j) (R.N j) (cOf R (j + 1)) (R.N (j + 1)) 0 0 x (zPos a) (zPos b)) := by`. Introduce `a b`. Establish `ha1 : (e (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (j + 1) c (by omega) a)).val = LocE.fIdx R.k (cOf R (j + 1)) (R.N (j + 1)) (zPos a) := (EntryBases.stdOrd_place (l := s + 1) (by omega) rfl e he a).1.trans (by rw [← hc1]; rfl)`.
+
+Establish `hb1 : (e' (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) j (c + 1) (by omega) b)).val = LocE.fIdx R.k (cOf R j) (R.N j) (zPos b) := (EntryBases.stdOrd_place (l := s + 1) (by omega) rfl e' he' b).1.trans (by rw [← hc2]; rfl)`. Rewrite using `[plain_coords]`. Simplify using `only [toLoc, LocE.entB, scE_zero, sub_self, zpow_zero, mul_one]`. Rewrite using `[← ha1, ← hb1, EntryBases.eN_val, EntryBases.atN_val]`. Establish `hr : R.r = R.k + (s + 1)` using `by simp only [Ranks.r]; omega`.
+
+Establish `hb : R.N (j + 1) + cOf R (j + 1) = R.k + (s + 1) + (j + 1) * R.t`. Simplify using `only [Ranks.N, cOf, add_mul, mul_add, one_mul, mul_one]`. Use linear arithmetic over natural numbers and integers. Establish `ha : R.N j + cOf R j = R.k + (s + 1) + j * R.t`. Simplify using `only [Ranks.N, cOf, mul_add, mul_one]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcore` using `core P.1 (qOf P.1) ι W.ϖ σ₀ (resChar (mu : Chr X.F X.E X.K) P.1) W.δ hA.compl W.unif hA.del hr hb ha (fun p p' => LocE.entB (qOf P.1) R.k (cOf R j) (R.N j) (cOf R (j + 1)) (R.N (j + 1)) 0 0 x p p') _ hY`. Rewrite using `[hT, hPhi]`. Unfold `LocE.PhiQ`. Use `split_ifs with hc`.
+
+Conclude with `hcore.1 hc`. Rewrite using `[map_zero]`. Conclude with `hcore.2 hc`.
+-/
 theorem phi_steps (hA : AtTwist (R := R) sel mu cst σ₀ P ι s W) (j c : ℕ) (h : j + c = s)
     (e' : XIx (Fin R.k) (Fin R.t) j ⊕ Fin (c + 1) ≃ Fin (R.N j + cOf R j))
     (e : XIx (Fin R.k) (Fin R.t) (j + 1) ⊕ Fin c ≃ Fin (R.N (j + 1) + cOf R (j + 1)))
@@ -226,6 +314,19 @@ theorem phi_steps (hA : AtTwist (R := R) sel mu cst σ₀ P ι s W) (j c : ℕ) 
   · exact hcore.1 hc
   · rw [map_zero]; exact hcore.2 hc
 
+/- English proof (translation)
+Establish `hm` using `hA.steps`. Establish `hPhi : PhiTop Ch mu cst.sharp s P.1 x = LocE.PhiQ (qOf P.1) (resChar (mu : Chr X.F X.E X.K) P.1) R.k R.r (cOf R (s + 1)) (R.N (s + 1)) 0 (R.N R.m - 1) x`. Unfold `PhiTop`. Rewrite using `[if_neg hA.nmem]`. Establish `hT : (W.T s R).PhiTop (toLoc ι e e' x) = parPhi W.δ ((LatFrame.refl k (Ix (Fin R.k ⊕ Fin (s + 1)) (Fin R.t) (s + 2))).coords (plainFrame (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (s + 1) 0 rfl)) (toLoc ι e e' x)) := rfl`.
+
+Establish `hc2 : 0 = cOf R (s + 1)` using `by simp only [cOf]; omega`. Establish `hY : ∀ a b, (LatFrame.refl k (Ix (Fin R.k ⊕ Fin (s + 1)) (Fin R.t) (s + 2))).coords (plainFrame (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (s + 1) 0 rfl)) (toLoc ι e e' x) a b = ι (LocE.entB (qOf P.1) R.k (cOf R (s + 1)) (R.N (s + 1)) 0 (R.N R.m - 1) 0 0 x (zPos a) (zPos b)) := by`. Introduce `a b`. Establish `ha1 : (e a).val = LocE.fIdx R.k 0 (R.N R.m - 1) (zPos a)` using `by rw [fIdx_zero]; exact he a`. Establish `hb1 : (e' (stdOrd (Fin R.k) (Fin R.t) (l` using `s + 1) (s + 1) 0 rfl b)).val = LocE.fIdx R.k (cOf R (s + 1)) (R.N (s + 1)) (zPos b) := (EntryBases.stdOrd_place (κ := R.k) (τ := R.t) (j := s + 1) (c := 0) (l := s + 1) rfl rfl e' he' b).1.trans (by rw [← hc2]; rfl)`.
+
+Rewrite using `[refl_coords]`. Simplify using `only [toLoc, LocE.entB, scE_zero, sub_self, zpow_zero, mul_one]`. Rewrite using `[← ha1, ← hb1, EntryBases.eN_val, EntryBases.atN_val]`. Establish `hr : R.r = R.k + (s + 1)` using `by simp only [Ranks.r]; omega`. Establish `hb : R.N R.m - 1 + 0 = R.k + (s + 1) + (s + 2) * R.t`.
+
+Simplify using `only [Ranks.N, hm, add_mul, mul_add, one_mul, mul_one]`. Use linear arithmetic over natural numbers and integers. Establish `ha : R.N (s + 1) + cOf R (s + 1) = R.k + (s + 1) + (s + 1) * R.t`. Simplify using `only [Ranks.N, cOf, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hcore` using `core P.1 (qOf P.1) ι W.ϖ σ₀ (resChar (mu : Chr X.F X.E X.K) P.1) W.δ hA.compl W.unif hA.del hr hb ha (fun p p' => LocE.entB (qOf P.1) R.k (cOf R (s + 1)) (R.N (s + 1)) 0 (R.N R.m - 1) 0 0 x p p') _ hY`. Rewrite using `[hT, hPhi]`. Unfold `LocE.PhiQ`. Use `split_ifs with hc`. Conclude with `hcore.1 hc`.
+
+Rewrite using `[map_zero]`. Conclude with `hcore.2 hc`.
+-/
 theorem phi_top (hA : AtTwist (R := R) sel mu cst σ₀ P ι s W)
     (e' : XIx (Fin R.k) (Fin R.t) (s + 1) ⊕ Fin 0 ≃ Fin (R.N (s + 1) + cOf R (s + 1)))
     (e : Ix (Fin R.k ⊕ Fin (s + 1)) (Fin R.t) (s + 2) ≃ Fin (R.N R.m - 1 + 0)) (he' : IsOrdY e') (he : IsOrd zPos e)
@@ -265,6 +366,9 @@ theorem phi_top (hA : AtTwist (R := R) sel mu cst σ₀ P ι s W)
 
 end Main
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν _ _ hA`. Conclude with `⟨fun j c h e' e he' he x => phi_steps Ch sel mu cst σ₀ P ι s W hA j c h e' e he' he x, fun e' e he' he x => phi_top Ch sel mu cst σ₀ P ι s W hA e' e he' he x⟩`.
+-/
 theorem phiAgree_of_atTwist : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (W : TwData k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → cst.Ok → AtTwist (R := R) sel mu cst σ₀ P ι s W → PhiAgree Ch sel mu cst σ₀ P ι s W := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν _ _ hA
   exact ⟨fun j c h e' e he' he x => phi_steps Ch sel mu cst σ₀ P ι s W hA j c h e' e he' he x,

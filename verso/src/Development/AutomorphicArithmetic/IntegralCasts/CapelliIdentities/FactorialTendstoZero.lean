@@ -2,6 +2,11 @@ import Mathlib
 
 open Filter Topology NumberField IsDedekindDomain
 
+/- English proof (translation)
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `tendsto_order.2 ⟨fun a ha => Eventually.of_forall fun n => ha.trans_le (norm_nonneg _), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one ha hlt`. Use `filter_upwards [eventually_ge_atTop (N ^ k)] with n hn`. Take `⟨m, hm⟩` from `Nat.dvd_factorial (pow_pos hN k) hn`.
+
+Rewrite using `[hm, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow]`. Conclude with `(mul_le_of_le_one_right (by positivity) (h1 m)).trans_lt hk`.
+-/
 private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.factorial_tendsto_zero {K : Type*} [NormedField K]
     (h1 : ∀ n : ℕ, ‖(n : K)‖ ≤ 1) (N : ℕ) (hN : 0 < N) (hlt : ‖(N : K)‖ < 1) :
     Tendsto (fun n : ℕ => ((n.factorial : ℕ) : K)) atTop (𝓝 0) := by
@@ -14,6 +19,9 @@ private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.factorial_tendst
   rw [hm, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow]
   exact (mul_le_of_le_one_right (by positivity) (h1 m)).trans_lt hk
 
+/- English proof (translation)
+Use `UpperTheory.Reformulated.B.AdelicCharacterNormOne.factorial_tendsto_zero (K := v.adicCompletion F) (fun n => ?_) (Ideal.absNorm v.asIdeal) (zero_lt_one.trans (HeightOneSpectrum.one_lt_absNorm v)) ?_` and prove the remaining obligations. Use `FinitePlace.norm_le_one F v (n : 𝓞 F)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Use `(FinitePlace.norm_lt_one_iff_mem F v _).2 (Ideal.absNorm_mem v.asIdeal)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+-/
 private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.local_tendsto {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     Tendsto (fun n : ℕ => ((n.factorial : ℕ) : v.adicCompletion F)) atTop (𝓝 0) := by
@@ -24,6 +32,11 @@ private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.local_tendsto {F
   · have := (FinitePlace.norm_lt_one_iff_mem F v _).2 (Ideal.absNorm_mem v.asIdeal)
     rwa [map_natCast, map_natCast] at this
 
+/- English proof (translation)
+Establish `h : Tendsto (fun (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) => ((n.factorial : ℕ) : v.adicCompletionIntegers F)) atTop (𝓝 0)`. Rewrite using `[tendsto_pi_nhds]`. Introduce `v`. Rewrite using `[tendsto_subtype_rng]`. Simplify using `using UpperTheory.Reformulated.B.AdelicCharacterNormOne.local_tendsto v`.
+
+Establish `hc` using `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := cofinite)).continuous`. Conclude with `(hc.tendsto _).comp h`.
+-/
 private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.finite_tendsto {F : Type} [Field F] [NumberField F] :
     Tendsto (fun n : ℕ => ((n.factorial : ℕ) : FiniteAdeleRing (𝓞 F) F)) atTop (𝓝 0) := by
   have h : Tendsto (fun (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) =>
@@ -38,6 +51,9 @@ private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.finite_tendsto {
     (𝓕 := cofinite)).continuous
   exact (hc.tendsto _).comp h
 
+/- English proof (translation)
+Establish `hf : Tendsto Nat.factorial atTop atTop` using `tendsto_atTop_mono Nat.self_le_factorial tendsto_id`. Break down `lt_trichotomy r 1 with hlt | heq | hgt` into its components or cases. Conclude with `absurd (tendsto_nhds_unique ((tendsto_pow_atTop_nhds_zero_of_lt_one hr hlt).comp hf) h) zero_ne_one`. Conclude with `heq`. Conclude with `absurd h (not_tendsto_nhds_of_tendsto_atTop ((tendsto_pow_atTop_atTop_of_one_lt hgt).comp hf) 1)`.
+-/
 private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.eq_one_of_tendsto {r : ℝ} (hr : 0 ≤ r)
     (h : Tendsto (fun n : ℕ => r ^ n.factorial) atTop (𝓝 1)) : r = 1 := by
   have hf : Tendsto Nat.factorial atTop atTop :=
@@ -49,6 +65,17 @@ private lemma UpperTheory.Reformulated.B.AdelicCharacterNormOne.eq_one_of_tendst
   · exact absurd h (not_tendsto_nhds_of_tendsto_atTop
       ((tendsto_pow_atTop_atTop_of_one_lt hgt).comp hf) 1)
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ htriv`. Set `i : InfiniteAdeleRing F → AdeleRing (𝓞 F) F` to `fun x => (x, 0)`. Set `j : FiniteAdeleRing (𝓞 F) F → AdeleRing (𝓞 F) F` to `fun y => (0, y)`. Establish `hi : Continuous i` using `continuous_id.prodMk continuous_const`. Establish `hj : Continuous j` using `continuous_const.prodMk continuous_id`.
+
+Establish `hsplit : ∀ x : AdeleRing (𝓞 F) F, x = i x.1 + j x.2` using `fun x => Prod.ext (add_zero x.1).symm (zero_add x.2).symm`. Establish `hfin : ∀ y, ‖ψ (j y)‖ = 1`. Introduce `y`. Apply `UpperTheory.Reformulated.B.AdelicCharacterNormOne.eq_one_of_tendsto (norm_nonneg _)` to reduce the goal to its premises. Establish `h1` using `(UpperTheory.Reformulated.B.AdelicCharacterNormOne.finite_tendsto (F := F)).mul_const y`.
+
+Rewrite `h1` using `[zero_mul]`. Establish `h2` using `(((hψ.comp hj).norm).tendsto 0).comp h1`. Establish `h0 : j 0 = 0` using `rfl`. Establish `hs : ∀ n : ℕ, j ((n : FiniteAdeleRing (𝓞 F) F) * y) = n • j y` using `fun n => Prod.ext (nsmul_zero n).symm (nsmul_eq_mul n y).symm`. Simplify using `only [Function.comp_def, h0, hs, AddChar.map_zero_eq_one, norm_one, AddChar.map_nsmul_eq_pow, norm_pow] at h2`.
+
+Conclude with `h2`. Establish `hinf : ∀ x, ‖ψ (i x)‖ = 1`. Introduce `x`. Use `(InfiniteAdeleRing.denseRange_algebraMap F).induction_on x (isClosed_eq (hψ.comp hi).norm continuous_const) fun a => ?_` and prove the remaining obligations. Establish `h` using `congrArg norm (htriv a)`.
+
+Rewrite `h` using `[hsplit (algebraMap F _ a), AddChar.map_add_eq_mul, norm_mul, hfin, mul_one, norm_one]`. Conclude with `h`. Introduce `x`. Rewrite using `[hsplit x, AddChar.map_add_eq_mul, norm_mul, hfin, hinf, mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.AdelicCharacterNormOne.norm_eq_one :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
     (ψ : AddChar (NumberField.AdeleRing (NumberField.RingOfIntegers F) F) ℂ),

@@ -27,6 +27,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 open scoped Matrix
 namespace GlobalTheory.Mem.R3.DefLatBC
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hΛ' : Λ₂ = Λ₁.coefMap ι` using `funext fun w => hΛ w w.2`. Substitute `hΛ'` using the available equality. Establish `he' : e = fun τ => ι.comp (X.emb τ)` using `funext fun τ => (he τ).symm`. Substitute `he'` using the available equality.
+
+Take `⟨F⟩` from `Formalism.L2.Col.CoefFrame.nonempty ι`. Use `⟨Formalism.L2.Col.hfsFormBC ι F (Formalism.L2.Col.roundPk X lam fun d : Formalism.L2.Col.DecoSet X.E n ∅ _ => d.1.N) ((Formalism.L2.DIV.rhoVr (X.coefExt L ι).emb lam).comp (Formalism.L2.Col.ufGL X.E n)) (Formalism.L2.DIV.pairVr (X.coefExt L ι).emb lam 1) (fun d => Formalism.L2.DI …` and prove the remaining obligations. Take `rfl : d₂ = d₁` from `eq_of_heq hd`. Establish `hc' : c₂.comp ι = c₁` using `RingHom.ext hc`. Conclude with `heq_of_eq ((MvPolynomial.map_map ι c₂ _).trans (by rw [hc']; rfl))`.
+-/
 theorem gsdbc_round_reidx (X : Formalism.L2.Col.Fields) {L : Type} [Field L] [NumberField L] [StarRing L] (ι : X.K →+* L)
     (e : X.Tau → X.E →+* L) (he : ∀ τ, ι.comp (X.emb τ) = e τ) {n : ℕ} (lam : X.Tau → DomWeight n)
     {SG₁ SG₂ : Finset (HeightOneSpectrum (𝓞 X.E))} (hS : SG₂ = SG₁)
@@ -59,6 +64,25 @@ namespace GlobalTheory.Mem.R3.DefLatBC
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' hj φ hφ => ?_` and prove the remaining obligations. Generalize the expression as in `hk : (j : ℕ) + 1 = k`. Generalize the expression as in `hk' : (j' : ℕ) + 1 = k'`. Take `rfl : k' = k` from `by rw [← hk, ← hk', hj]`.
+
+Take `⟨hpre, -, -, -⟩` from `hE`. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality.
+
+Establish `hpx' : w'.px = w.px` using `eq_of_heq hpx`. Establish `hv : (Base.primes (baseOfColW w') w'.px).vGs = (Base.primes (baseOfColW w) w.px).vGs`. Rewrite using `[hpx']`. Both sides reduce to the same expression. Establish `hφ' : ∀ x, (baseOfColW w').embLL (φ x) = (baseOfColW w).embLL x` using `hφ`.
+
+Establish `hC : w'.I.C = w.I.C` using `w'.C_eq.trans ((eq_of_heq hf).trans w.C_eq.symm)`. Use `gsdbc_round_reidx (baseOfColW w).fields φ (baseOfColW w').tauLL ?_ _ ?_ _ _ ?_ (baseOfColW w).embLL (baseOfColW w').embLL hφ` and prove the remaining obligations. Introduce `τ`. Use extensionality with `x`. Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w) τ)`. Establish `h2` using `congrArg (fun g => g x) (Base.fields_embC (baseOfColW w') τ)`. Simplify using `only [Formalism.L2.Col.Fields.embC, RingHom.comp_apply] at h1 h2`. Conclude with `(hφ' _).trans (h1.trans h2.symm)`. Conclude with `(rowLevelPrimes_colTuples_eq_vGs w' _).trans (hv.trans (rowLevelPrimes_colTuples_eq_vGs w Wt).symm)`.
+
+Use `glue_inv_coefMap_of_empty φ (twistRamifiedPrimes_empty_colTuples w Wt) (twistRamifiedPrimes_empty_colTuples w' _) _ _ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Use `levKV_coefMap_of φ p.1 (fun s => w.I.Ch.chi s p) (fun s => w'.I.Ch.chi s ⟨p.1, hp⟩) ?_ _ _ _ _` and prove the remaining obligations. Introduce `s c`. Apply `(baseOfColW w').embLL.injective` to reduce the goal to its premises.
+
+Rewrite using `[hφ']`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c : 𝓞 (baseOfColW w).fields.E ⧸ p.1.asIdeal)`. Establish `hy0 : ((y : 𝓞 (baseOfColW w).fields.E) : (baseOfColW w).fields.E) ≠ 0`. Introduce `h0`. Establish `h0' : y = 0` using `RingOfIntegers.coe_injective (h0.trans (by simp))`.
+
+Rewrite `hy` using `[h0', map_zero]`. Conclude with `c.ne_zero hy.symm`. Establish `e1` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w' s ⟨p.1, hp⟩ c y (Units.mk0 _ hy0) rfl hy.symm`. Establish `e2` using `GlobalTheory.Mem.R3.Rw.ChiTr.embLL_chi w s p c y (Units.mk0 _ hy0) rfl hy.symm`. Rewrite `e1` using `[hC]`.
+
+Conclude with `e1.trans e2.symm`.
+-/
 theorem gsdbc_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

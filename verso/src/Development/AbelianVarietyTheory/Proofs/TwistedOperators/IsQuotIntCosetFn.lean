@@ -10,6 +10,35 @@ namespace GlobalTheory.CosetQuotInt
 
 open MeasureTheory ValuativeRel Matrix Topology in
 
+/- English proof (translation)
+Use `haveI : BorelSpace (GL (n ⊕ Fin c) k) := (_root_.GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν).1`. Use `haveI : SecondCountableTopology (GL (n ⊕ Fin c) k) := (_root_.GlobalTheory.SplitWeil.volGL_haar k (n ⊕ Fin c) ν).2.2.1`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCO at hJ`. Take `⟨hJo, hJc⟩` from `hJ`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCosetFn at hf`.
+
+Take `⟨hleft, hright, hsupp⟩` from `hf`. Establish `hv' : (v : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hv`. Establish `hembP : ∀ g : GL n k, _root_.GlobalTheory.RootEx.embX c g ∈ _root_.GlobalTheory.RootEx.R k n c 1`. Introduce `g`. Unfold `_root_.GlobalTheory.RootEx.R`.
+
+Conclude with `Subgroup.mem_sup_left ⟨g, rfl⟩`. Establish `hNP : ∀ u ∈ _root_.GlobalTheory.RootEx.N k n c 1, u ∈ _root_.GlobalTheory.RootEx.R k n c 1`. Introduce `u hu`. Unfold `_root_.GlobalTheory.RootEx.R`. Conclude with `Subgroup.mem_sup_right hu`.
+
+Take `⟨F, hFdef⟩ : ∃ F : GL (n ⊕ Fin c) k → ℂ, ∀ x, F x = if h⁻¹ * x ∈ J then f h / (v : ℂ) else 0` from `⟨_, fun _ => rfl⟩`. Unfold `_root_.GlobalTheory.RootEx.IsQuotInt`. Use `⟨F, ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `hSB` using `_root_.GlobalTheory.QuotInt.sb_of_quot J hJo hJc {(h : GL (n ⊕ Fin c) k ⧸ J)} (fun q => if q = (h : GL (n ⊕ Fin c) k ⧸ J) then f h / (v : ℂ) else 0) (fun q hq => by`. Simplify using `only [Finset.mem_singleton] at hq`.
+
+Simplify using `[hq])`. Establish `hFq : F = fun y : GL (n ⊕ Fin c) k => (fun q : GL (n ⊕ Fin c) k ⧸ J => if q = (h : GL (n ⊕ Fin c) k ⧸ J) then f h / (v : ℂ) else 0) (y : GL (n ⊕ Fin c) k ⧸ J)`. Use function extensionality and compare the values at `y`. Rewrite using `[hFdef]`. Simplify using `only`.
+
+Distinguish the cases in `hy : h⁻¹ * y ∈ J`. Rewrite using `[if_pos hy, if_pos (QuotientGroup.eq.2 hy).symm]`. Rewrite using `[if_neg hy, if_neg (fun (he : (y : GL (n ⊕ Fin c) k ⧸ J) = h) => hy (QuotientGroup.eq.1 he.symm))]`. Rewrite using `[hFq]`. Conclude with `hSB`.
+
+Distinguish the cases in `hx : DoubleCoset.mk (_root_.GlobalTheory.RootEx.R k n c 1) J h = DoubleCoset.mk (_root_.GlobalTheory.RootEx.R k n c 1) J x`. Take `⟨p, hp, j, hj, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 hx`. Take `⟨x₀, u', hu', rfl⟩` from `_root_.GlobalTheory.RootEx.VolN.exists_of_mem_R hp`. Take `⟨u₀, hu₀, hpeq⟩ : ∃ u₀ ∈ _root_.GlobalTheory.RootEx.N k n c 1, _root_.GlobalTheory.RootEx.embX c x₀ * u' = u₀ * _root_.GlobalTheory.RootEx.embX c x₀` from `⟨_, _root_.GlobalTheory.RootEx.Radical.conj_mem x₀ hu', by group⟩`. Rewrite using `[hpeq, hright _ j hj, hleft u₀ hu₀ x₀ h]`.
+
+Establish `hpt : ∀ (g : GL n k) (u : _root_.GlobalTheory.RootEx.N k n c 1), F (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀ * h * j)) = f h / (v : ℂ) * (_root_.GlobalTheory.StepData.Cgrp J h : Set (GL (n ⊕ Fin c) k)).indicator (fu …`. Introduce `g u`. Establish `hyP : _root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀) ∈ _root_.GlobalTheory.RootEx.R k n c 1` using `Subgroup.mul_mem _ (Subgroup.mul_mem _ (hembP g) (hNP _ u.2)) (Subgroup.mul_mem _ (hNP _ hu₀) (hembP x₀))`. Establish `hiff : h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀ * h * j)) ∈ J ↔ h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀)) * h ∈ J`. Establish `heq : h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀ * h * j)) = h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀)) * h * j` using `by group`.
+
+Rewrite using `[heq, J.mul_mem_cancel_right hj]`. Rewrite using `[hFdef]`. Distinguish the cases in `hin : h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * (u₀ * _root_.GlobalTheory.RootEx.embX c x₀)) * h ∈ J`. Rewrite using `[if_pos (hiff.2 hin), Set.indicator_of_mem (show _ ∈ _root_.GlobalTheory.StepData.Cgrp J h from _root_.GlobalTheory.StepData.mem_Cgrp.2 ⟨hyP, hin⟩), mul_one]`. Rewrite using `[if_neg (fun h' => hin (hiff.1 h')), Set.indicator_of_notMem (show _ ∉ _root_.GlobalTheory.StepData.Cgrp J h from fun h' => hin (_root_.GlobalTheory.StepData.mem_Cgrp.1 h').2), mul_zero]`.
+
+Repeatedly rewrite using `[hpt, integral_const_mul]`. Rewrite using `[hvol u₀ hu₀ x₀]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.deltaR`. Rewrite using `[Complex.ofReal_mul, div_mul_eq_mul_div, eq_div_iff hv']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfx : f x = 0` using `hsupp x (fun he => hx he.symm)`. Rewrite using `[hfx]`. Establish `hpt : ∀ (g : GL n k) (u : _root_.GlobalTheory.RootEx.N k n c 1), F (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * x) = 0`. Introduce `g u`. Rewrite using `[hFdef, if_neg]`.
+
+Introduce `hmem`. Apply `hx` to reduce the goal to its premises. Use `(DoubleCoset.eq _ _ _ _).2 ⟨(_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k))⁻¹, Subgroup.inv_mem _ (Subgroup.mul_mem _ (hembP g) (hNP _ u.2)), h⁻¹ * (_root_.GlobalTheory.RootEx.embX c g * (u : GL (n ⊕ Fin c) k) * x), hmem, by group⟩` and prove the remaining obligations. Repeatedly rewrite using `[hpt, integral_zero]`. Establish `hFind : F = ((fun y => h⁻¹ * y) ⁻¹' (J : Set (GL (n ⊕ Fin c) k))).indicator (fun _ => f h / (v : ℂ))`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hFdef]`. Distinguish the cases in `hy : h⁻¹ * y ∈ J`. Rewrite using `[if_pos hy, Set.indicator_of_mem (show y ∈ (fun y => h⁻¹ * y) ⁻¹' (J : Set _) from hy)]`. Rewrite using `[if_neg hy, Set.indicator_of_notMem (show y ∉ (fun y => h⁻¹ * y) ⁻¹' (J : Set _) from hy)]`.
+
+Rewrite using `[hFind, integral_indicator_const _ (hJo.measurableSet.preimage (measurable_const_mul h⁻¹)), measureReal_def, measure_preimage_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.CosetQuotInt.isQuotInt_cosetFn (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
     [ν.IsAddHaarMeasure] (n : Type) [Fintype n] [DecidableEq n] (c : ℕ)

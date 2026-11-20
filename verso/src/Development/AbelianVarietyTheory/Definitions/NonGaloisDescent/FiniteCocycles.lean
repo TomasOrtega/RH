@@ -54,6 +54,9 @@ namespace GDet
 
 variable {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
 
+/- English proof (translation)
+Consider the cases of `D`. Consider the cases of `D'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `B _ _`. Conclude with `MonoidHom.ext (h B)`.
+-/
 @[ext] theorem ext {D D' : GDet n A G} (h : ∀ (B : Type) [CommRing B] [Algebra A B] (x), D.D B x = D'.D B x) : D = D' := by
   cases D; cases D'; congr; funext B _ _; exact MonoidHom.ext (h B)
 
@@ -144,6 +147,17 @@ def PhiFin (l : ℕ) (G : Type) [Group G] [TopologicalSpace G] : Prop :=
 def TopFG (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] : Prop :=
   ∃ S : Finset G, (Subgroup.closure (S : Set G)).topologicalClosure = ⊤
 
+/- English proof (translation)
+Introduce `H hH`. Take `⟨S, hS⟩` from `h`. Use `set D := Subgroup.closure (S : Set G) with hD`. Establish `hDd : Dense (D : Set G)`. Rewrite using `[dense_iff_closure_eq, ← Subgroup.topologicalClosure_coe, hS]`.
+
+Both sides reduce to the same expression. Use `haveI : Group.FG D := (Group.fg_iff_subgroup_fg D).2 ⟨S, rfl⟩`. Use `haveI : Finite (G ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Use `haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `haveI : (H.subgroupOf D).FiniteIndex := inferInstance`.
+
+Use `haveI : Group.FG (H.subgroupOf D) := Subgroup.fg_of_index_ne_zero _`. Take `⟨T, hT⟩` from `Group.fg_def.1 ‹Group.FG (H.subgroupOf D)›`. Set `ι : H.subgroupOf D →* H` to `(D.subtype.comp (H.subgroupOf D).subtype).codRestrict H (fun x => x.2)`. Use `Set.Finite.of_finite_image (f := fun f => fun t : T => f (ι t)) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `f hf g hg e`.
+
+Establish `e1 : f.comp ι = g.comp ι` using `MonoidHom.eq_of_eqOn_dense hT (fun t ht => congrFun e ⟨t, ht⟩)`. Use extensionality with `x`. Establish `hU : IsOpen (Subtype.val '' ((fun y : H => x⁻¹ * y) ⁻¹' ((f.ker : Set H) ∩ (g.ker : Set H))))` using `hH.isOpenMap_subtype_val _ ((IsOpen.inter (show IsOpen (f.ker : Set H) from hf) (show IsOpen (g.ker : Set H) from hg)).preimage (by fun_prop))`. Take `⟨d, ⟨y, ⟨hy1, hy2⟩, rfl⟩, hd⟩` from `hDd.inter_open_nonempty _ hU ⟨x, x, by simp, rfl⟩`. Establish `e2 : f y = g y` using `DFunLike.congr_fun e1 ⟨⟨y, hd⟩, y.2⟩`.
+
+Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at hy1 hy2`. Rewrite using `[hy1, hy2, e2]`.
+-/
 theorem TopFG.phiFin (l : ℕ) [NeZero l] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] (h : TopFG G) : PhiFin l G := by
   intro H hH
@@ -171,6 +185,13 @@ theorem TopFG.phiFin (l : ℕ) [NeZero l] {G : Type} [Group G] [TopologicalSpace
   simp only [SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at hy1 hy2
   rw [hy1, hy2, e2]
 
+/- English proof (translation)
+Introduce `H hH`. Set `q : H.comap p →* H` to `p.subgroupComap H`. Establish `hq : Function.Surjective q` using `fun y => by`. Take `⟨x, hx⟩` from `hs y`. Conclude with `⟨⟨x, by simp [hx]⟩, Subtype.ext hx⟩`.
+
+Establish `hqc : Continuous q` using `(hc.comp continuous_subtype_val).subtype_mk _`. Use `Set.Finite.of_finite_image (f := fun f => f.comp q) ((h (H.comap p) (hH.preimage hc)).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `IsOpen.preimage hqc hf`. Introduce `f _ g _ e`.
+
+Conclude with `(MonoidHom.cancel_right hq).1 e`.
+-/
 theorem PhiFin.of_surjective {l : ℕ} {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G']
     (h : PhiFin l G) (p : G →* G') (hc : Continuous p) (hs : Function.Surjective p) : PhiFin l G' := by
   intro H hH
@@ -186,11 +207,25 @@ theorem PhiFin.of_surjective {l : ℕ} {G G' : Type} [Group G] [TopologicalSpace
   · intro f _ g _ e
     exact (MonoidHom.cancel_right hq).1 e
 
+/- English proof (translation)
+Introduce `H _`. Use `haveI : Finite (H →* Multiplicative (ZMod l)) := Finite.of_injective _ DFunLike.coe_injective`. Conclude with `Set.toFinite _`.
+-/
 theorem PhiFin.of_finite (l : ℕ) [NeZero l] (G : Type) [Group G] [Finite G] [TopologicalSpace G] : PhiFin l G := by
   intro H _
   haveI : Finite (H →* Multiplicative (ZMod l)) := Finite.of_injective _ DFunLike.coe_injective
   exact Set.toFinite _
 
+/- English proof (translation)
+Take `⟨_⟩ : Nonempty (Module (ZMod l) M)` from `⟨AddCommGroup.zmodModule hl⟩`. Use `haveI : Finite (G ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Use `haveI : Finite (Module.Dual (ZMod l) M) := Finite.of_injective (fun (φ : Module.Dual (ZMod l) M) (m : M) => φ m) fun _ _ e => LinearMap.ext (congrFun e)`. Use `haveI := (hG H hH).to_subtype`. Rewrite using `[← Set.finite_coe_iff]`.
+
+Set `res : {f : G → M | IsLocallyConstant f ∧ ∀ g h, f (g * h) = L g (f h) + R h (f g)} → Module.Dual (ZMod l) M → (H →* Multiplicative (ZMod l))` to `fun f φ => MonoidHom.mk' (fun h => Multiplicative.ofAdd (φ (f.1 h))) (fun a b => by`. Rewrite using `[Subgroup.coe_mul, f.2.2, hL _ a.2, hR _ b.2, map_add, add_comm, ofAdd_add])`. Establish `hres : ∀ f φ, IsOpen ((res f φ).ker : Set H)` using `fun f φ => ((f.2.1.comp fun m => Multiplicative.ofAdd (φ m)).comp_continuous continuous_subtype_val).isOpen_fiber 1`. Use `Finite.of_injective (β := (Module.Dual (ZMod l) M → {f : H →* Multiplicative (ZMod l) | IsOpen (f.ker : Set H)}) × (G ⧸ H → M)) (fun f => (fun φ => ⟨res f φ, hres f φ⟩, fun q => f.1 q.out)) ?_` and prove the remaining obligations. Introduce `f g e`.
+
+Take `⟨e1, e2⟩` from `Prod.ext_iff.1 e`. Establish `h1 : ∀ h : H, f.1 h = g.1 h` using `fun h => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff (ZMod l)]`. Introduce `φ`. Use `DFunLike.congr_fun (congrArg Subtype.val (congrFun e1 φ)) h` as an intermediate fact.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `Multiplicative.ofAdd.injective this`. Use extensionality with `x`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H x`. Establish `hx : x = (QuotientGroup.mk x : G ⧸ H).out * (h⁻¹ : H)` using `by rw [hh]; simp`.
+
+Establish `h2 : f.1 (QuotientGroup.mk x : G ⧸ H).out = g.1 (QuotientGroup.mk x : G ⧸ H).out` using `congrFun e2 _`. Rewrite using `[hx, f.2.2, g.2.2, h1, h2]`.
+-/
 theorem PhiFin.finite_cocycles {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] (hG : PhiFin l G) {M : Type} [AddCommGroup M] [Finite M]
     (hl : ∀ m : M, l • m = 0) (H : Subgroup G) (hH : IsOpen (H : Set G)) (L R : G → M → M)
@@ -308,10 +343,18 @@ structure PolGp (Φ : Frame) where
 
   fg : PhiFin Φ.l Γ
 
+/- English proof (translation)
+Use `(residue_eq_zero_iff _).2 Φ.l_mem` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem Frame.l_eq_zero (Φ : Frame) : (Φ.l : Φ.k) = 0 := by
   have := (residue_eq_zero_iff _).2 Φ.l_mem
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Use `haveI := Φ.k_fin`. Use `G.fg.finite_cocycles (fun m => by rw [nsmul_eq_mul, Φ.l_eq_zero, zero_mul]) ((G.chi i).ker ⊓ (G.chi i').ker) ((G.chi_open i).inter (G.chi_open i')) (fun g m => ((G.chi i g : Φ.kˣ) : Φ.k) * m) (fun g m => m * ((G.chi i' g : Φ.kˣ) : Φ.k)) ?_ ?_` and prove the remaining obligations. Introduce `h hh m`. Rewrite using `[MonoidHom.mem_ker.1 hh.1]`. Simplify using the standard rewrite rules.
+
+Introduce `h hh m`. Rewrite using `[MonoidHom.mem_ker.1 hh.2]`. Simplify using the standard rewrite rules.
+-/
 theorem PolGp.finite_cocycles {Φ : Frame} (G : PolGp Φ) (i i' : Fin Φ.n) :
     {b : G.Γ → Φ.k | IsLocallyConstant b ∧ ∀ g h, b (g * h) =
       ((G.chi i g : Φ.kˣ) : Φ.k) * b h + b g * ((G.chi i' h : Φ.kˣ) : Φ.k)}.Finite := by
@@ -389,22 +432,38 @@ variable {Φ : Frame} (G : PolGp Φ) {B : Type} [CommRing B]
 def star (j : Φ.O →+* B) (x : MonoidAlgebra B G.Γ) : MonoidAlgebra B G.Γ :=
   x.coeff.sum (fun g a => MonoidAlgebra.single (G.sig g)⁻¹ (a * j ((G.mu g : Φ.Oˣ) : Φ.O)))
 
+/- English proof (translation)
+Unfold `star`. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.sum_single_index]`. Simplify using the standard rewrite rules.
+-/
 theorem PolGp.star_single (j : Φ.O →+* B) (g : G.Γ) (a : B) : star G j (MonoidAlgebra.single g a) =
     MonoidAlgebra.single (G.sig g)⁻¹ (a * j ((G.mu g : Φ.Oˣ) : Φ.O)) := by
   unfold star
   rw [MonoidAlgebra.coeff_single, Finsupp.sum_single_index]
   simp
 
+/- English proof (translation)
+Unfold `star`. Conclude with `Finsupp.sum_zero_index`.
+-/
 theorem PolGp.star_zero (j : Φ.O →+* B) : star G j (0 : MonoidAlgebra B G.Γ) = 0 := by
   unfold star
   exact Finsupp.sum_zero_index
 
+/- English proof (translation)
+Unfold `star`. Rewrite using `[MonoidAlgebra.coeff_add, Finsupp.sum_add_index']`. Simplify using the standard rewrite rules. Introduce `a b c`. Rewrite using `[add_mul, MonoidAlgebra.single_add]`.
+-/
 theorem PolGp.star_add (j : Φ.O →+* B) (x y : MonoidAlgebra B G.Γ) : star G j (x + y) = star G j x + star G j y := by
   unfold star
   rw [MonoidAlgebra.coeff_add, Finsupp.sum_add_index']
   · simp
   · intro a b c; rw [add_mul, MonoidAlgebra.single_add]
 
+/- English proof (translation)
+Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [PolGp.star_zero]`. Consider the case `add a b ha hb => rw [add_mul, PolGp.star_add, PolGp.star_add, ha, hb, mul_add]`. Consider the case `single g r`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp [PolGp.star_zero]`. Consider the case `add a b ha hb => rw [mul_add, PolGp.star_add, PolGp.star_add, ha, hb, add_mul]`. Consider the case `single h s`. Rewrite using `[MonoidAlgebra.single_mul_single, PolGp.star_single, PolGp.star_single, PolGp.star_single, MonoidAlgebra.single_mul_single]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Simplify using `only [map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PolGp.star_mul (j : Φ.O →+* B) (x y : MonoidAlgebra B G.Γ) : star G j (x * y) = star G j y * star G j x := by
   induction x using MonoidAlgebra.induction_linear with
   | zero => simp [PolGp.star_zero]
@@ -419,6 +478,9 @@ theorem PolGp.star_mul (j : Φ.O →+* B) (x y : MonoidAlgebra B G.Γ) : star G 
       · simp
       · simp only [map_mul, Units.val_mul]; ring
 
+/- English proof (translation)
+Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [PolGp.star_zero]`. Consider the case `add a b ha hb => rw [PolGp.star_add, PolGp.star_add, ha, hb]`. Consider the case `single g r`. Rewrite using `[PolGp.star_single, PolGp.star_single, map_inv, G.sig_sig, inv_inv, map_inv, G.mu_sig, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`.
+-/
 theorem PolGp.star_star (j : Φ.O →+* B) (x : MonoidAlgebra B G.Γ) : star G j (star G j x) = x := by
   induction x using MonoidAlgebra.induction_linear with
   | zero => simp [PolGp.star_zero]
@@ -511,6 +573,9 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory.Pat.Example
 
+/- English proof (translation)
+Use extensionality with `B _ _ x`. Use `letI : Algebra A B := ((algebraMap A' B).comp f).toAlgebra`. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ B x).det = (GDet.repAlg (f.mapMatrix.toMonoidHom.comp ρ) B x).det`. Use `congr 1`.
+-/
 theorem map_ofRep {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (f : A →+* A') :
     (GDet.ofRep ρ).map f = GDet.ofRep (f.mapMatrix.toMonoidHom.comp ρ) := by
@@ -519,6 +584,13 @@ theorem map_ofRep {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G]
   change (GDet.repAlg ρ B x).det = (GDet.repAlg (f.mapMatrix.toMonoidHom.comp ρ) B x).det
   congr 1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ A[X] _).det = _`. Unfold `Matrix.charpoly Matrix.charmatrix`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using `[GDet.repAlg, Matrix.one_apply, Matrix.diagonal_apply]`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `single g r => ext i j`. Simplify using `[GDet.repAlg]`.
+-/
 theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
     (GDet.ofRep ρ).chi y = (GDet.repAlg ρ A y).charpoly := by
@@ -533,6 +605,9 @@ theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G]
     | add a b ha hb => simp only [map_add, ha, hb]
     | single g r => ext i j; simp [GDet.repAlg]
 
+/- English proof (translation)
+Unfold `GDet.tr GDet.lam`. Rewrite using `[chi_ofRep, Matrix.trace_eq_neg_charpoly_coeff]`. Simplify using the standard rewrite rules.
+-/
 theorem tr_ofRep {n : ℕ} {A G : Type} [CommRing A] [Nontrivial A] [Group G]
     (ρ : G →* Matrix (Fin (n+1)) (Fin (n+1)) A) (y : MonoidAlgebra A G) :
     (GDet.ofRep ρ).tr y = (GDet.repAlg ρ A y).trace := by
@@ -549,6 +624,9 @@ instance (G : Type) [Group G] [Finite G] : DiscreteTopology (finPG G) := ⟨rfl�
 
 instance (G : Type) [Group G] [Finite G] : Finite (finPG G) := inferInstanceAs (Finite G)
 
+/- English proof (translation)
+Introduce `_` and use `IsLocallyConstant.of_discrete _`.
+-/
 theorem adic {X R : Type} [TopologicalSpace X] [DiscreteTopology X] [CommRing R] (I : Ideal R) (f : X → R) :
     AdicCont I f := fun _ => IsLocallyConstant.of_discrete _
 
@@ -578,6 +656,9 @@ def rho (A : Type) [CommRing A] : S3 →* Matrix (Fin 2) (Fin 2) A :=
 
 def chs (A : Type) [CommRing A] : Fin 2 → (ℤˣ →* Aˣ) := ![1, Units.map (Int.castRingHom A).toMonoidHom]
 
+/- English proof (translation)
+Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem three_mem : ((3 : ℕ) : ℤ_[3]) ∈ maximalIdeal ℤ_[3] := by
   rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _
 
@@ -615,11 +696,17 @@ def frame : Frame where
     change MvPowerSeries.C 1 = MvPowerSeries.C ((chs ℤ_[3] i 1 : ℤ_[3]ˣ) : ℤ_[3])
     simp
 
+/- English proof (translation)
+Use `(residue_eq_zero_iff _).2 three_mem` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem three_k : (3 : ResidueField ℤ_[3]) = 0 := by
   have := (residue_eq_zero_iff _).2 three_mem
   rw [map_natCast] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `h`. Establish `h3` using `three_k`. Establish `: (1 : ResidueField ℤ_[3]) = 0` using `by linear_combination h3 + h`. Conclude with `one_ne_zero this`.
+-/
 theorem neg_one_ne : (-1 : ResidueField ℤ_[3]) ≠ 1 := by
   intro h
   have h3 := three_k
@@ -654,6 +741,13 @@ def pol : PolGp frame where
     · rfl
   fg := PhiFin.of_finite 3 _
 
+/- English proof (translation)
+Establish `h : ∀ g : S3, (3 : ℤ) ∣ rhoZ g 1 0 ∧ (3 : ℤ) ∣ rhoZ g 0 0 - 1 ∧ (3 : ℤ) ∣ rhoZ g 1 1 - sgn g` using `by decide`. Take `⟨⟨a, ha⟩, ⟨b, hb⟩, ⟨c, hc⟩⟩` from `h g`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Simplify using `[hB]`.
+
+Rewrite `hb` using `[sub_eq_iff_eq_add]`. Rewrite using `[hb]`. Simplify using `[hB]`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc]`.
+
+Simplify using `[hB]`.
+-/
 theorem tri (B : Type) [CommRing B] (hB : (3 : B) = 0) (g : S3) :
     ((rhoZ g 1 0 : ℤ) : B) = 0 ∧ ((rhoZ g 0 0 : ℤ) : B) = 1 ∧ ((rhoZ g 1 1 : ℤ) : B) = ((sgn g : ℤ) : B) := by
   have h : ∀ g : S3, (3 : ℤ) ∣ rhoZ g 1 0 ∧ (3 : ℤ) ∣ rhoZ g 0 0 - 1 ∧ (3 : ℤ) ∣ rhoZ g 1 1 - sgn g := by decide
@@ -663,6 +757,13 @@ theorem tri (B : Type) [CommRing B] (hB : (3 : B) = 0) (g : S3) :
   · rw [sub_eq_iff_eq_add] at hb; rw [hb]; simp [hB]
   · rw [sub_eq_iff_eq_add] at hc; rw [hc]; simp [hB]
 
+/- English proof (translation)
+Use extensionality with `B _ _ x`. Establish `hB : (3 : B) = 0`. Use `congrArg (algebraMap K B) h3` as an intermediate fact. Simplify `this` using `[map_ofNat]`. Express the relevant statement in the definitionally equal form `(GDet.repAlg (rho K) B x).det = (GDet.repAlg (diagRep fun i => (chs K i).comp sgn) B x).det`.
+
+Establish `: GDet.repAlg (rho K) B x 1 0 = 0 ∧ GDet.repAlg (diagRep fun i => (chs K i).comp sgn) B x 1 0 = 0 ∧ GDet.repAlg (rho K) B x 0 0 = GDet.repAlg (diagRep fun i => (chs K i).comp sgn) B x 0 0 ∧ GDet.repAlg (rho K) B x 1 1 = GDet.repAlg (diagRep fun i => (chs K i).comp sgn) B x 1 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `single g r`.
+
+Take `⟨h1, h2, h3⟩` from `tri B hB g`. Simplify using `[GDet.repAlg, rho, diagRep, chs, h1, h2, h3]`. Rewrite using `[Matrix.det_fin_two, Matrix.det_fin_two, this.1, this.2.1, this.2.2.1, this.2.2.2]`. Simplify using the standard rewrite rules.
+-/
 theorem det_char3 (K : Type) [CommRing K] (h3 : (3 : K) = 0) :
     GDet.ofRep (rho K) = GDet.ofRep (diagRep fun i => (chs K i).comp sgn) := by
   ext B _ _ x
@@ -682,17 +783,31 @@ theorem det_char3 (K : Type) [CommRing K] (h3 : (3 : K) = 0) :
   rw [Matrix.det_fin_two, Matrix.det_fin_two, this.1, this.2.1, this.2.2.1, this.2.2.2]
   simp
 
+/- English proof (translation)
+Simplify using `[GDet.repAlg]`.
+-/
 theorem rep_gp (A : Type) [CommRing A] (g : S3) : GDet.repAlg (rho A) A (gp A g) = rho A g := by
   simp [GDet.repAlg]
 
+/- English proof (translation)
+Simplify using `[GDet.repAlg]`.
+-/
 theorem rep_sc (A : Type) [CommRing A] (a : A) : GDet.repAlg (rho A) A (sc S3 a) = a • 1 := by
   simp [GDet.repAlg]
 
+/- English proof (translation)
+Establish `h1 : ∀ g : S3, (rhoZ g⁻¹).trace = (rhoZ g).trace` using `by decide`. Establish `h2 : ∀ g : S3, (rhoZ g⁻¹).det = (rhoZ g).det` using `by decide`. Rewrite using `[Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, h1, h2]`.
+-/
 theorem charpoly_inv (g : S3) : (rhoZ g⁻¹).charpoly = (rhoZ g).charpoly := by
   have h1 : ∀ g : S3, (rhoZ g⁻¹).trace = (rhoZ g).trace := by decide
   have h2 : ∀ g : S3, (rhoZ g⁻¹).det = (rhoZ g).det := by decide
   rw [Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, h1, h2]
 
+/- English proof (translation)
+Establish `h : rhoZ (inc (-1)) = !![1,1;0,-1]` using `by decide`. Break down `Int.units_eq_one_or a with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Break down `Int.units_eq_one_or b with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[rho, h, chs, Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply]`.
+-/
 theorem o_zero (A : Type) [CommRing A] (a b : ℤˣ) :
     (rho A (inc a) - ((chs A 0 a : Aˣ) : A) • 1) * (rho A (inc b) - ((chs A 1 b : Aˣ) : A) • 1) = 0 := by
   have h : rhoZ (inc (-1)) = !![1,1;0,-1] := by decide
@@ -703,6 +818,9 @@ theorem o_zero (A : Type) [CommRing A] (a b : ℤˣ) :
   ext i j; fin_cases i <;> fin_cases j <;>
     simp [rho, h, chs, Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `: oEl pol () (chs ℤ_[3]) g = (gp ℤ_[3] (inc (g 0)) - sc S3 ((chs ℤ_[3] 0 (g 0) : ℤ_[3]ˣ) : ℤ_[3])) * (gp ℤ_[3] (inc (g 1)) - sc S3 ((chs ℤ_[3] 1 (g 1) : ℤ_[3]ˣ) : ℤ_[3]))`. Express the relevant statement in the definitionally equal form `(List.ofFn (n := 2) fun i => gp ℤ_[3] (inc (g i)) - sc S3 ((chs ℤ_[3] i (g i) : ℤ_[3]ˣ) : ℤ_[3])).prod = _`. Simplify using `[List.ofFn_succ]`. Rewrite using `[this, map_mul, map_sub, map_sub, rep_gp, rep_gp, rep_sc, rep_sc, o_zero]`.
+-/
 theorem rep_oEl (g : Fin 2 → ℤˣ) :
     GDet.repAlg (rho ℤ_[3]) ℤ_[3] (oEl pol () (chs ℤ_[3]) g) = 0 := by
   have : oEl pol () (chs ℤ_[3]) g = (gp ℤ_[3] (inc (g 0)) - sc S3 ((chs ℤ_[3] 0 (g 0) : ℤ_[3]ˣ) : ℤ_[3])) *
@@ -711,19 +829,31 @@ theorem rep_oEl (g : Fin 2 → ℤˣ) :
     simp [List.ofFn_succ]
   rw [this, map_mul, map_sub, map_sub, rep_gp, rep_gp, rep_sc, rep_sc, o_zero]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem j_eq : (MvPowerSeries.constantCoeff : MvPowerSeries (Fin 0) ℤ_[3] →+* ℤ_[3]).comp MvPowerSeries.C =
     RingHom.id _ := by ext; simp
 
+/- English proof (translation)
+Unfold `star`. Express the relevant statement in the definitionally equal form `(MonoidAlgebra.single g (1 : ℤ_[3])).coeff.sum (fun (g : S3) (a : ℤ_[3]) => MonoidAlgebra.single g⁻¹ (a * j 1)) = _`. Apply the tactic sequence `rw [MonoidAlgebra.coeff_single, Finsupp.sum_single_index] <;> simp`.
+-/
 theorem star_gp (j : ℤ_[3] →+* ℤ_[3]) (g : S3) : star pol j (gp ℤ_[3] g) = gp ℤ_[3] g⁻¹ := by
   unfold star
   change (MonoidAlgebra.single g (1 : ℤ_[3])).coeff.sum
     (fun (g : S3) (a : ℤ_[3]) => MonoidAlgebra.single g⁻¹ (a * j 1)) = _
   rw [MonoidAlgebra.coeff_single, Finsupp.sum_single_index] <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [chs]`.
+-/
 theorem res_chs (i : Fin 2) (g : ℤˣ) : residue ℤ_[3] ((chs ℤ_[3] i g : ℤ_[3]ˣ) : ℤ_[3]) =
     ((chs (ResidueField ℤ_[3]) i g : (ResidueField ℤ_[3])ˣ) : ResidueField ℤ_[3]) := by
   fin_cases i <;> simp [chs]
 
+/- English proof (translation)
+Unfold `GDet.lam`. Rewrite using `[chi_ofRep, chi_ofRep, rep_gp, rep_gp]`. Establish `h : ∀ g : S3, (rho ℤ_[3] g).charpoly = (rhoZ g).charpoly.map (Int.castRingHom _)` using `fun g => Matrix.charpoly_map (rhoZ g) (Int.castRingHom ℤ_[3])`. Rewrite using `[h, h, charpoly_inv]`.
+-/
 theorem lam_inv (i : ℕ) (g : S3) :
     (GDet.ofRep (rho ℤ_[3])).lam i (gp ℤ_[3] g⁻¹) = (GDet.ofRep (rho ℤ_[3])).lam i (gp ℤ_[3] g) := by
   unfold GDet.lam
@@ -732,11 +862,20 @@ theorem lam_inv (i : ℕ) (g : S3) :
     Matrix.charpoly_map (rhoZ g) (Int.castRingHom ℤ_[3])
   rw [h, h, charpoly_inv]
 
+/- English proof (translation)
+The claim follows from `sub_self _`.
+-/
 theorem one_sub (A : Type) [CommRing A] : gp A (1 : S3) - 1 = 0 := sub_self _
 
+/- English proof (translation)
+Rewrite using `[one_sub, map_zero]`.
+-/
 theorem rep_one_sub (A : Type) [CommRing A] : GDet.repAlg (rho A) A (gp A (1 : S3) - 1) = 0 := by
   rw [one_sub, map_zero]
 
+/- English proof (translation)
+Rewrite using `[tr_ofRep (n := 1), map_mul, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem tr_zero (x y : MonoidAlgebra ℤ_[3] S3) (hy : GDet.repAlg (rho ℤ_[3]) ℤ_[3] y = 0) :
     (GDet.ofRep (rho ℤ_[3])).tr (x * y) = 0 := by
   rw [tr_ofRep (n := 1), map_mul, hy]
@@ -780,6 +919,9 @@ def pair : Pair pol where
   relO _ g h := tr_zero _ _ (rep_oEl g)
   relI _ _ h := tr_zero _ (gp ℤ_[3] (1 : S3) - 1) (rep_one_sub _)
 
+/- English proof (translation)
+Use `(?_ : (GDet.ofRep (rho ℤ_[3])).tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]))` and prove the remaining obligations. Establish `h : rhoZ (.r 1) = !![1,1;-3,-2]` using `by decide`. Rewrite using `[tr_ofRep (n := 1), rep_gp]`. Simplify using `[rho, h, Matrix.trace_fin_two]`. Evaluate the numerical expressions.
+-/
 example : pair.D.tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]) := by
   refine (?_ : (GDet.ofRep (rho ℤ_[3])).tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]))
   have h : rhoZ (.r 1) = !![1,1;-3,-2] := by decide
@@ -787,9 +929,15 @@ example : pair.D.tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]) := by
   simp [rho, h, Matrix.trace_fin_two]
   norm_num
 
+/- English proof (translation)
+The claim follows from `star_gp _ _`.
+-/
 example : star pol (RingHom.id ℤ_[3]) (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = gp ℤ_[3] (DihedralGroup.r 2 : S3) :=
   star_gp _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨frame, pol, rfl, ⟨()⟩, ⟨()⟩, DihedralGroup.nat_card (n := 3), ⟨pair⟩⟩`.
+-/
 theorem exists_pair : ∃ (Φ : Frame) (G : PolGp Φ), Φ.n = 2 ∧ Nonempty Φ.Vl ∧ Nonempty Φ.St ∧
     Nat.card G.Γ = 6 ∧ Nonempty (Pair G) :=
   ⟨frame, pol, rfl, ⟨()⟩, ⟨()⟩, DihedralGroup.nat_card (n := 3), ⟨pair⟩⟩

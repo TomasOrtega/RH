@@ -23,6 +23,9 @@ variable {k r : ℕ} {H E : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ
 
 def cf (σ : B.Mat k r → (H →L[ℂ] H)) (x₀ : E) (a b : H) (g : B.Mat k r) : E := ⟪a, σ g b⟫_ℂ • x₀
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _ => rfl | X :: v, hv, g, hg => by have hv' : LieW G v := fun Y hY => hv Y (List.mem_cons_of_mem _ hY) have hX := hv X List.mem_cons_self change deriv (fun t : ℝ => B.Rw v (cf σ x₀ a b) (g * ex X t)) 0 = _ have e : (fun t : ℝ => B.Rw v (cf σ x₀ a b) (g * ex X t)) = fu …`.
+-/
 theorem rw_cf (h : RepOn G σ) (x₀ : E) (a : H) {b : H} (hb : IsSm G σ b) :
     ∀ {v : List (B.Mat k r)}, LieW G v → ∀ g ∈ G,
       B.Rw v (cf σ x₀ a b) g = cf σ x₀ a (dsW σ v b) g
@@ -40,6 +43,9 @@ theorem rw_cf (h : RepOn G σ) (x₀ : E) (a : H) {b : H} (hb : IsSm G σ b) :
     let L : H →L[ℝ] E := (((innerSL ℂ a).comp (σ g)).smulRight x₀).restrictScalars ℝ
     exact (L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1).deriv
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg => hf g hg | X :: u, hu, g, hg => by have hu' : LieW G u := fun Y hY => hu Y (List.mem_cons_of_mem _ hY) have hX := hu X List.mem_cons_self change deriv (fun t : ℝ => u.foldr B.LdV f (NormedSpace.exp (-((t : ℂ) • X)) * g)) 0 = _ have e : (fun t : ℝ => u.foldr B.LdV …`.
+-/
 theorem lw_cf (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (x₀ : E) {a : H}
     (ha : IsSm G σ a) (b : H) {f : B.Mat k r → E} (hf : ∀ g ∈ G, f g = cf σ x₀ a b g) :
     ∀ {u : List (B.Mat k r)}, LieW G u → ∀ g ∈ G,
@@ -65,6 +71,9 @@ theorem lw_cf (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v�
     rw [h2.deriv]
     simp [cf, dsW_cons, ds]
 
+/- English proof (translation)
+The claim follows from `lw_cf h hiso x₀ ha _ (rw_cf h x₀ a hb hv) hu g hg`.
+-/
 theorem dLR_cf (h : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (x₀ : E) {a b : H}
     (ha : IsSm G σ a) (hb : IsSm G σ b) {u v : List (B.Mat k r)} (hu : LieW G u) (hv : LieW G v)
     {g : B.Mat k r} (hg : g ∈ G) :

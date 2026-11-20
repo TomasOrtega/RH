@@ -22,6 +22,17 @@ noncomputable section
 
 namespace GlobalTheory.TorsSpec
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Establish `key : x ≫ i₀ TF.Y Z ≫ (TF.Y.oF.eta (r • b)).left = x ≫ i₀ TF.Y Z ≫ (TF.Y.oF.eta b).left ≫ (TF.Y.oF.t.act.act r).left`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) from l.coprime ▸ Submodule.mem_top)`. Establish `ev : ∀ d : Dw.La, TF.Y.oF.eta d = TF.Y.oF.eta (v • d)` using `fun d => by conv_lhs => rw [← one_smul (𝓞 E) d, ← huv, add_smul, TF.Y.oF.eta_add, TF.Y.oF.eta_ker _ (Submodule.smul_mem_smul hu Submodule.mem_top), _root_.one_mul]`. Take `⟨-, I, -, -, hη⟩` from `TF.Y.oF.geom Ω (x ≫ i₀ TF.Y Z) (Spec.preimage ((x ≫ i₀ TF.Y Z) ≫ (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s))).hom (Spec.map_preimage _).symm`.
+
+Establish `e : toUnit (Over.mk (x ≫ i₀ TF.Y Z)) ≫ TF.Y.oF.eta (r • b) = (toUnit (Over.mk (x ≫ i₀ TF.Y Z)) ≫ TF.Y.oF.eta b) ≫ TF.Y.oF.t.act.act r`. Rewrite using `[ev (r • b), ev b, hη _ (Submodule.smul_mem_smul hv Submodule.mem_top), hη _ (Submodule.smul_mem_smul hv Submodule.mem_top), smul_comm v r b, I.lin]`. Establish `ht : (toUnit (Over.mk (x ≫ i₀ TF.Y Z))).left = x ≫ i₀ TF.Y Z`. Simplify using `using Over.w (toUnit (Over.mk (x ≫ i₀ TF.Y Z)))`. Establish `e'` using `congrArg (fun q => q.left) e`.
+
+Simplify using `only [Over.comp_left, ht] at e'`. Simplify `e'` using `only [Category.assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hB, Over.comp_left, hA, ← Submodule.Quotient.mk_smul]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Establish `h1` using `etaSecL_ψ TF Z φ ℓ hℓ b`. Establish `h2` using `etaSecL_ψ TF Z φ ℓ hℓ (r • b)`. Simplify using `only [Category.assoc]`. Rewrite using `[GlobalTheory.EqvAct.pullAct_pullψ, reassoc_of% h1, h2, ← TF.Y.m.act r, reassoc_of% key]`. Establish `w1` using `etaSecL_w TF Z φ ℓ hℓ (Submodule.Quotient.mk b)`.
+
+Establish `w2` using `etaSecL_w TF Z φ ℓ hℓ (Submodule.Quotient.mk (r • b))`. Establish `w3` using `Over.w ((GlobalTheory.EqvAct.pullAct TF Z φ).act r)`. Simplify using `only [Category.assoc]`. Use `erw [w2, w3, w1]`.
+-/
 theorem etaSecL_smul_geom {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}}
     (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X') (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ V₀ TF.Y Z) (a : LevelMod Dw l)

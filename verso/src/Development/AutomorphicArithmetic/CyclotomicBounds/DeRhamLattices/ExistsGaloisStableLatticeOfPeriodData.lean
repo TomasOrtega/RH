@@ -5,6 +5,29 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.ExistsL
 import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.ExistsLinearEquivQuotientOfLatticeSum
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct UpperTheory.KN
 
+/- English proof (translation)
+Establish `h0 : ∀ g, actA g 0 = 0` using `fun g => hj (by rw [hact, map_zero, map_zero])`. Establish `hker : ∀ g a, q a = 0 → q (actA g a) = 0`. Introduce `g a ha`. Establish `h1` using `hqa g a 0 (by rw [ha]; rfl)`. Establish `h2` using `hqa g 0 0 (by rw [map_zero]; rfl)`.
+
+Rewrite using `[h1, ← h2, h0, map_zero]`. Take `⟨μ, hμ, hcom⟩` from `UpperTheory.KN.admissible_lattices_commensurable (LL := LL) Λ.T (LinearMap.range j) Λ.fg c hc`. Establish `fg1 : (LinearMap.range j).FG`. Rewrite using `[← Submodule.map_top]`. Conclude with `Submodule.FG.map j Module.Finite.fg_top`.
+
+Establish `fg2 : ((LinearMap.ker q).map j).FG` using `Submodule.FG.map j (IsNoetherian.noetherian _)`. Take `⟨L₁, hL₁⟩` from `UpperTheory.KN.exists_lattice_eq_add_smul_of_stable_fg_submodule ρ Λ (LinearMap.range j) fg1 (by rintro g _ ⟨a, rfl⟩; exact ⟨actA g a, hact g a⟩) μ hμ`. Take `⟨L₂, hL₂⟩` from `UpperTheory.KN.exists_lattice_eq_add_smul_of_stable_fg_submodule ρ Λ ((LinearMap.ker q).map j) fg2 (by rintro g _ ⟨a, ha, rfl⟩; exact ⟨actA g a, hker g a ha, hact g a⟩) μ hμ`. Set `B : Submodule O V` to `Λ.T.map (μ • (LinearMap.id : V →ₗ[O] V))`. Establish `hB : ∀ b, b ∈ B ↔ ∃ u ∈ Λ.T, μ • u = b` using `fun b => Iff.rfl`.
+
+Take `⟨e, he⟩` from `UpperTheory.KN.exists_linearEquiv_quotient_of_lattice_sum j q B L₁.T L₂.T hj hq (by`. Introduce `a ha`. Take `⟨u, hu, hua⟩` from `(hB _).1 ha`. Take `⟨_, ⟨a', rfl⟩, h⟩` from `hcom u hu ⟨a, hua.symm⟩`. Establish `: a = c • a'` using `hj (by rw [map_smul, ← h, hua])`.
+
+Rewrite using `[this, map_smul, hcy])`. Use the proof step `(by`. Introduce `v`. Rewrite using `[hL₁]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨a, rfl⟩, u, hu, rfl⟩`. Conclude with `⟨a, _, (hB _).2 ⟨u, hu, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, b, hb, rfl⟩`. Take `⟨u, hu, rfl⟩` from `(hB _).1 hb`. Conclude with `⟨_, ⟨a, rfl⟩, u, hu, rfl⟩)`.
+
+Use the proof step `(by`. Introduce `v`. Rewrite using `[hL₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, u, hu, rfl⟩`.
+
+Conclude with `⟨a, ha, _, (hB _).2 ⟨u, hu, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Take `⟨u, hu, rfl⟩` from `(hB _).1 hb`. Conclude with `⟨_, ⟨a, ha, rfl⟩, u, hu, rfl⟩)`. Use `⟨L₁, L₂, ?_, e, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Take `⟨_, ⟨a, _, rfl⟩, u, hu, rfl⟩` from `(hL₂ v).1 hv`. Conclude with `(hL₁ _).2 ⟨_, ⟨a, rfl⟩, u, hu, rfl⟩`. Introduce `g x y hxy`. Take `⟨a, ha⟩` from `hq (Submodule.Quotient.mk x)`.
+
+Rewrite `hxy` using `[← ha]`. Take `⟨a', ha', b, hb, hy⟩` from `(he a y).1 hxy`. Take `⟨u, hu, rfl⟩` from `(hB _).1 hb`. Rewrite using `[← hqa g a' x (ha'.trans ha)]`. Use `(he _ _).2 ⟨actA g a', rfl, μ • ρ g u, (hB _).2 ⟨_, Λ.stable g u hu, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show ρ g y = _`. Rewrite using `[hy, map_add, hact, LinearMap.map_smul_of_tower]`.
+-/
 private theorem admissible_lattice_inclusion {G O LL V : Type} [Group G] [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     [Field LL] [Algebra O LL] [IsFractionRing O LL]
     [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] (ρ : Representation LL G V)
@@ -76,6 +99,9 @@ private theorem admissible_lattice_inclusion {G O LL V : Type} [Group G] [CommRi
     show ρ g y = _
     rw [hy, map_add, hact, LinearMap.map_smul_of_tower]
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ _ O _ _ _ _ _ nn emb lam jT cT m F Λ A _ _ _ j actA E _ _ act S q c hj hact hq hqa hc hcy`. Conclude with `⟨m, F, admissible_lattice_inclusion (tableLineDegreeTwo.piRep F) Λ j actA act S q c hj hact hq hqa hc hcy⟩`.
+-/
 theorem _root_.UpperTheory.KN.exists_galois_stable_lattice_of_period_data :
     ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
       [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

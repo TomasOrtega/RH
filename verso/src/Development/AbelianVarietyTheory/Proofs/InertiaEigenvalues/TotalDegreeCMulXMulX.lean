@@ -19,6 +19,9 @@ def intRing : Subring K where
   zero_mem' := by simp
   neg_mem' {a} ha := by simpa using ha
 
+/- English proof (translation)
+The claim follows from `mem_closedBall_zero_iff.1 x.2`.
+-/
 theorem norm_le_one (x : intRing K) : ‖(x : K)‖ ≤ 1 := mem_closedBall_zero_iff.1 x.2
 
 def maxIdeal : Ideal (intRing K) where
@@ -32,6 +35,9 @@ def maxIdeal : Ideal (intRing K) where
     rw [norm_mul]
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_le_one K c)).trans_lt hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_maxIdeal (x : intRing K) : x ∈ maxIdeal K ↔ ‖(x : K)‖ < 1 := Iff.rfl
 
 instance maxIdeal_isMaximal : (maxIdeal K).IsMaximal := by
@@ -44,6 +50,11 @@ instance maxIdeal_isMaximal : (maxIdeal K).IsMaximal := by
   have hyx : y * x = 1 := Subtype.ext (by simp [y, inv_mul_cancel₀ hx0])
   rw [← hyx]; exact J.mul_mem_left y hxJ
 
+/- English proof (translation)
+Use `haveI : ProperSpace K := ProperSpace.of_locallyCompactSpace K`. Use `haveI : CompactSpace (intRing K) := isCompact_iff_compactSpace.mp (isCompact_closedBall (0 : K) 1)`. Establish `hopen : IsOpen ((maxIdeal K : Set (intRing K)))`. Establish `e : ((maxIdeal K : Set (intRing K))) = Subtype.val ⁻¹' Metric.ball (0 : K) 1`. Use extensionality with `x`.
+
+Simplify using `[mem_maxIdeal]`. Rewrite using `[e]`. Conclude with `Metric.isOpen_ball.preimage continuous_subtype_val`. Conclude with `AddSubgroup.quotient_finite_of_isOpen (maxIdeal K).toAddSubgroup hopen`.
+-/
 theorem finite_res [LocallyCompactSpace K] : Finite (intRing K ⧸ maxIdeal K) := by
   haveI : ProperSpace K := ProperSpace.of_locallyCompactSpace K
   haveI : CompactSpace (intRing K) :=
@@ -65,6 +76,9 @@ abbrev Res : Type := intRing K ⧸ maxIdeal K
 
 instance : Field (Res K) := Ideal.Quotient.field _
 
+/- English proof (translation)
+Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `[totalDegree_X]`.
+-/
 theorem totalDegree_C_mul_X_mul_X {k : Type} [Field k] (r : k) (i j : Fin 3) :
     (C r * (X i * X j) : MvPolynomial (Fin 3) k).totalDegree ≤ 2 := by
   refine (totalDegree_mul _ _).trans ?_
@@ -72,6 +86,25 @@ theorem totalDegree_C_mul_X_mul_X {k : Type} [Field k] (r : k) (i j : Fin 3) :
   refine (totalDegree_mul _ _).trans ?_
   simp [totalDegree_X]
 
+/- English proof (translation)
+Use `haveI := finite_res K`. Use `letI : Fintype (Res K) := Fintype.ofFinite _`. Set `k` to `Res K`. Set `π : intRing K →+* k` to `Ideal.Quotient.mk _`. Set `S : intRing K` to `⟨s, mem_closedBall_zero_iff.2 hs⟩`.
+
+Set `T : intRing K` to `⟨t, mem_closedBall_zero_iff.2 ht⟩`. Set `Cc : intRing K` to `⟨c, mem_closedBall_zero_iff.2 hc⟩`. Use `set p := ringChar k`. Use `haveI : CharP k p := ringChar.charP k`. Take `⟨n, hpp, -⟩` from `FiniteField.card (K := k) p`.
+
+Set `f : MvPolynomial (Fin 3) k` to `C 1 * (X 0 * X 0) + C (π S) * (X 0 * X 1) + C (π T) * (X 1 * X 1) + C (-π Cc) * (X 2 * X 2)`. Establish `hdeg : f.totalDegree < Fintype.card (Fin 3)`. Establish `h1` using `totalDegree_C_mul_X_mul_X (1 : k) 0 0`. Establish `h2` using `totalDegree_C_mul_X_mul_X (π S) 0 1`. Establish `h3` using `totalDegree_C_mul_X_mul_X (π T) 1 1`.
+
+Establish `h4` using `totalDegree_C_mul_X_mul_X (-π Cc) 2 2`. Use `(totalDegree_add _ _).trans (max_le ((totalDegree_add _ _).trans (max_le ((totalDegree_add _ _).trans (max_le h1 h2)) h3)) h4)` as an intermediate fact. Simplify using `only [Fintype.card_fin]`. Conclude with `lt_of_le_of_lt this (by norm_num)`. Establish `hdvd` using `char_dvd_card_solutions p hdeg`.
+
+Establish `hpos : 0 < Fintype.card {x : Fin 3 → k // eval x f = 0}` using `Fintype.card_pos_iff.2 ⟨⟨0, by simp [f]⟩⟩`. Establish `h1lt : 1 < Fintype.card {x : Fin 3 → k // eval x f = 0}` using `lt_of_lt_of_le hpp.one_lt (Nat.le_of_dvd hpos hdvd)`. Take `⟨x, hx⟩` from `Fintype.exists_ne_of_one_lt_card h1lt ⟨0, by simp [f]⟩`. Establish `hx0 : x.1 ≠ 0` using `fun h => hx (Subtype.ext h)`. Use `choose l hl using fun i => Ideal.Quotient.mk_surjective (I := maxIdeal K) (x.1 i)`.
+
+Establish `hval : π (l 0 * l 0 + S * (l 0 * l 1) + T * (l 1 * l 1) + (-Cc) * (l 2 * l 2)) = 0`. Use `x.2` as an intermediate fact. Simplify using `only [f, map_add, map_mul, eval_C, eval_X, map_neg, one_mul] at this`. Simplify using `only [map_add, map_mul, map_neg, π, hl]`. Take the linear combination `this`.
+
+Establish `hmem` using `(Ideal.Quotient.eq_zero_iff_mem).1 hval`. Rewrite `hmem` using `[mem_maxIdeal]`. Establish `hunit : ∀ i, x.1 i ≠ 0 → ‖((l i : intRing K) : K)‖ = 1`. Introduce `i hi`. Use `le_antisymm (norm_le_one K _) (not_lt.1 fun h => hi ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hl i]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).2 ((mem_maxIdeal K _).2 h)`. Use `⟨l 0, l 1, l 2, norm_le_one K _, norm_le_one K _, norm_le_one K _, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx0 fin_cases i`. Conclude with `Or.inl (hunit 0 hi)`.
+
+Conclude with `Or.inr (Or.inl (hunit 1 hi))`. Conclude with `Or.inr (Or.inr (hunit 2 hi))`. Use `hmem using 2` and compare the differences between its conclusion and the goal. Simplify using `only [S, T, Cc, Subring.coe_add, Subring.coe_mul, Subring.coe_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_point_mod [LocallyCompactSpace K] (s t c : K) (hs : ‖s‖ ≤ 1) (ht : ‖t‖ ≤ 1) (hc : ‖c‖ ≤ 1) :
     ∃ a b z : K, ‖a‖ ≤ 1 ∧ ‖b‖ ≤ 1 ∧ ‖z‖ ≤ 1 ∧ (‖a‖ = 1 ∨ ‖b‖ = 1 ∨ ‖z‖ = 1) ∧
       ‖a ^ 2 + s * a * b + t * b ^ 2 - c * z ^ 2‖ < 1 := by
@@ -132,6 +165,17 @@ namespace GlobalTheory.NormUnits
 
 variable (K : Type) [NontriviallyNormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Use `haveI := finite_res K`. Use `letI : Fintype (Res K) := Fintype.ofFinite _`. Set `T : intRing K` to `⟨t, mem_closedBall_zero_iff.2 ht⟩`. Establish `h2k : (2 : Res K) = 0`. Establish `h11 : (((1 + 1 : intRing K)) : K) = 2`.
+
+Rewrite using `[Subring.coe_add, Subring.coe_one]`. Evaluate the numerical expressions. Establish `: (Ideal.Quotient.mk (maxIdeal K) (1 + 1) : Res K) = 0` using `(Ideal.Quotient.eq_zero_iff_mem).2 ((mem_maxIdeal K _).2 (by rw [h11]; exact h2))`. Rewrite `this` using `[map_add, map_one]`. Rewrite using `[← one_add_one_eq_two]`.
+
+Conclude with `this`. Establish `hchar : ringChar (Res K) = 2`. Establish `hd : ringChar (Res K) ∣ 2` using `ringChar.dvd (by exact_mod_cast h2k)`. Break down `(Nat.dvd_prime Nat.prime_two).1 hd with h | h` into its components or cases. Conclude with `absurd h (CharP.ringChar_ne_one)`.
+
+Conclude with `h`. Take `⟨y, hy⟩` from `FiniteField.isSquare_of_char_two hchar (Ideal.Quotient.mk (maxIdeal K) T)`. Take `⟨l, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨l, norm_le_one K l, ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk (maxIdeal K) (l * l - T) = 0`.
+
+Rewrite using `[map_sub, map_mul, ← hy, sub_self]`. Establish `hm` using `(mem_maxIdeal K _).1 ((Ideal.Quotient.eq_zero_iff_mem).1 h0)`. Simplify `hm` using `[sq, T]`.
+-/
 theorem exists_sqrt_mod [LocallyCompactSpace K] (t : K) (ht : ‖t‖ ≤ 1) (h2 : ‖(2 : K)‖ < 1) :
     ∃ r : K, ‖r‖ ≤ 1 ∧ ‖r ^ 2 - t‖ < 1 := by
   classical

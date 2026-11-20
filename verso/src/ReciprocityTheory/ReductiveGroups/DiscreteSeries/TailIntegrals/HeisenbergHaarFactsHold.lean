@@ -4,6 +4,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.HaarScaling
 
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.stabilizer_integration_formula, Formalism.FourierDecayAlt.P.rank_one_coordinates_formula, Formalism.FourierDecayAlt.P.stabilizer_one_parameter_mem, Formalism.FourierDecayAlt.P.unipotent_haar_recursion, Formalism.FourierDecayAlt.P.unipotent_haar_base_c …`.
+-/
 theorem heisenbergHaarFacts_hold : InductiveHeisenbergInputs :=
   ⟨Formalism.FourierDecayAlt.P.stabilizer_integration_formula,
     Formalism.FourierDecayAlt.P.rank_one_coordinates_formula,

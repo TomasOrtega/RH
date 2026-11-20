@@ -20,6 +20,13 @@ noncomputable section
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℚ K.1` using `K.2`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`. Take `⟨E, hE, hs⟩` from `hs`.
+
+Establish `hfin : FiniteDimensional ℚ ↥(E.restrictScalars ℚ)` using `(Module.Finite.trans (R := ℚ) ↥K.1 ↥E : FiniteDimensional ℚ ↥E)`. Establish `ho : IsOpen (Subtype.val ⁻¹' ((E.restrictScalars ℚ).fixingSubgroup : Set (ℚ̄ ≃ₐ[ℚ] ℚ̄)) : Set ↥K.1.fixingSubgroup)` using `(IntermediateField.fixingSubgroup_isOpen _).preimage continuous_subtype_val`. Rewrite using `[Filter.mem_map]`. Use `Filter.mem_of_superset (ho.mem_nhds (Subgroup.one_mem _)) fun σ hσ => hs ?_` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x hx`.
+-/
 theorem continuous_fixingEquiv (K : FiniteSubfield) :
     Continuous (IntermediateField.fixingSubgroupEquiv K.1) := by
   have : FiniteDimensional ℚ K.1 := K.2
@@ -48,18 +55,30 @@ abbrev Gs : Type := galUnramifiedOutside K.1 ℚ̄ (S : Set (HeightOneSpectrum (
 def resG : K.1.fixingSubgroup →* Gs K S :=
   (AlgEquiv.restrictNormalHom (Ls K S)).comp (IntermediateField.fixingSubgroupEquiv K.1).toMonoidHom
 
+/- English proof (translation)
+The claim follows from `(AlgEquiv.restrictNormalHom_surjective ℚ̄).comp (IntermediateField.fixingSubgroupEquiv K.1).surjective`.
+-/
 theorem resG_surjective : Function.Surjective (resG K S) :=
   (AlgEquiv.restrictNormalHom_surjective ℚ̄).comp (IntermediateField.fixingSubgroupEquiv K.1).surjective
 
+/- English proof (translation)
+The claim follows from `(InfiniteGalois.restrictNormalHom_continuous (Ls K S)).comp (continuous_fixingEquiv K)`.
+-/
 theorem continuous_resG : Continuous (resG K S) :=
   (InfiniteGalois.restrictNormalHom_continuous (Ls K S)).comp (continuous_fixingEquiv K)
 
+/- English proof (translation)
+The claim follows from `(continuous_resG K S).isClosedMap.isQuotientMap (continuous_resG K S) (resG_surjective K S)`.
+-/
 theorem isQuotientMap_resG : Topology.IsQuotientMap (resG K S) :=
   (continuous_resG K S).isClosedMap.isQuotientMap (continuous_resG K S) (resG_surjective K S)
 
 def liftE : Gs K S →* K.1.fixingSubgroup ⧸ (resG K S).ker :=
   (QuotientGroup.quotientKerEquivOfSurjective (resG K S) (resG_surjective K S)).symm.toMonoidHom
 
+/- English proof (translation)
+Apply `(QuotientGroup.quotientKerEquivOfSurjective (resG K S) (resG_surjective K S)).injective` to reduce the goal to its premises. Simplify using `[liftE]`. Both sides reduce to the same expression.
+-/
 theorem liftE_resG (g : K.1.fixingSubgroup) :
     liftE K S (resG K S g) = QuotientGroup.mk g := by
   apply (QuotientGroup.quotientKerEquivOfSurjective (resG K S) (resG_surjective K S)).injective
@@ -72,10 +91,16 @@ def descend (M : Rep ℤ K.1.fixingSubgroup) : Rep ℤ (Gs K S) :=
 def descendVal (M : Rep ℤ K.1.fixingSubgroup) : descend K S M →ₗ[ℤ] M :=
   (Representation.invariants (M.ρ.comp (resG K S).ker.subtype)).subtype
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem descendVal_injective (M : Rep ℤ K.1.fixingSubgroup) :
     Function.Injective (descendVal K S M) :=
   Subtype.val_injective
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ g hg`. Conclude with `y.2 ⟨g, hg⟩`. Introduce `h`. Conclude with `⟨⟨x, fun g => h g.1 g.2⟩, rfl⟩`.
+-/
 theorem mem_range_descendVal (M : Rep ℤ K.1.fixingSubgroup) (x : M) :
     x ∈ LinearMap.range (descendVal K S M) ↔ ∀ g ∈ (resG K S).ker, M.ρ g x = x := by
   constructor
@@ -84,6 +109,9 @@ theorem mem_range_descendVal (M : Rep ℤ K.1.fixingSubgroup) (x : M) :
   · intro h
     exact ⟨⟨x, fun g => h g.1 g.2⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h : (M.ρ.quotientToInvariants (resG K S).ker) (liftE K S (resG K S g)) = (M.ρ.quotientToInvariants (resG K S).ker) (QuotientGroup.mk g)` using `congrArg _ (liftE_resG K S g)`. Conclude with `congrArg Subtype.val (DFunLike.congr_fun h x)`.
+-/
 theorem descendVal_ρ (M : Rep ℤ K.1.fixingSubgroup) (g : K.1.fixingSubgroup) (x : descend K S M) :
     descendVal K S M ((descend K S M).ρ (resG K S g) x) = M.ρ g (descendVal K S M x) := by
   have h : (M.ρ.quotientToInvariants (resG K S).ker) (liftE K S (resG K S g)) =
@@ -106,6 +134,9 @@ instance isDiscreteRep_descend (M : Rep ℤ K.1.fixingSubgroup) [IsDiscreteRep M
 def descendMap {M M' : Rep ℤ K.1.fixingSubgroup} (f : M ⟶ M') : descend K S M ⟶ descend K S M' :=
   (Rep.resFunctor (liftE K S)).map ((Rep.quotientToInvariantsFunctor ℤ (resG K S).ker).map f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem descendVal_descendMap {M M' : Rep ℤ K.1.fixingSubgroup} (f : M ⟶ M') (x : descend K S M) :
     descendVal K S M' ((descendMap K S f).hom x) = f.hom (descendVal K S M x) :=
   rfl
@@ -120,6 +151,9 @@ def absHom (U : OpenSubgroup (Gs K S)) :
   ((resG K S).subgroupComap (U : Subgroup (Gs K S))).comp
     (openEquiv (preOpen K S U)).symm.toMonoidHom
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_resG K S).comp (continuous_subtype_val.comp (continuous_openEquiv_symm (preOpen K S U)))`.
+-/
 theorem continuous_absHom (U : OpenSubgroup (Gs K S)) : Continuous (absHom K S U) := by
   refine Continuous.subtype_mk ?_ _
   exact (continuous_resG K S).comp
@@ -157,6 +191,11 @@ def sIdeleLimit : Submodule ℤ (limitRep K) :=
   ⨆ p : GLevel K, (sIdelesSubmodule K.1 p.1.1 S).map
     ((levelMor K p.1).hom.toLinearMap)
 
+/- English proof (translation)
+Use `iSup_le fun p => ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨y, hy, hz⟩` from `Submodule.mem_map.1 hz`. Establish `hmem : (ideleRep K.1 p.1.1).ρ (restrictHom (F` using `K) (E := p.1) g) y ∈ sIdelesSubmodule K.1 p.1.1 S := Submodule.mem_comap.1 (sIdelesSubmodule_stable K.1 p.1.1 S (restrictHom (F := K) (E := p.1) g) hy)`. Establish `h' : (levelMor K p.1).hom ((ideleRep K.1 p.1.1).ρ (restrictHom (F` using `K) (E := p.1) g) y) ∈ sIdeleLimit K S := Submodule.mem_iSup_of_mem p (Submodule.mem_map_of_mem hmem)`.
+
+Establish `h : (limitRep K).ρ g z = (levelMor K p.1).hom ((ideleRep K.1 p.1.1).ρ (restrictHom (F` using `K) (E := p.1) g) y) := by`. Rewrite using `[← hz]`. Conclude with `(Rep.hom_comm_apply (levelMor K p.1) g y).symm`. Rewrite using `[Submodule.mem_comap, h]`. Conclude with `h'`.
+-/
 theorem sIdeleLimit_stable (g : K.1.fixingSubgroup) :
     sIdeleLimit K S ≤ (sIdeleLimit K S).comap ((limitRep K).ρ g) := by
   refine iSup_le fun p => ?_
@@ -176,6 +215,9 @@ theorem sIdeleLimit_stable (g : K.1.fixingSubgroup) :
 
 def SJ : Submodule ℤ (JsR K S) := (sIdeleLimit K S).comap (descendVal K S (limitRep K))
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `resG_surjective K S σ`. Introduce `x hx`. Rewrite using `[Submodule.mem_comap, SJ, Submodule.mem_comap, descendVal_ρ]`. Conclude with `sIdeleLimit_stable K S g hx`.
+-/
 theorem SJ_stable (σ : Gs K S) : SJ K S ≤ (SJ K S).comap ((JsR K S).ρ σ) := by
   obtain ⟨g, rfl⟩ := resG_surjective K S σ
   intro x hx
@@ -191,6 +233,9 @@ def diagS : UsR K S ⟶ JsR K S := descendMap K S (idelesShortComplexRes K).f
 
 def SO : Submodule ℤ (UsR K S) := (SJ K S).comap (diagS K S).hom.toLinearMap
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[Submodule.mem_comap, SO, Submodule.mem_comap]`. Establish `h : (diagS K S).hom ((UsR K S).ρ σ x) = (JsR K S).ρ σ ((diagS K S).hom x)` using `Rep.hom_comm_apply (diagS K S) σ x`. Conclude with `h ▸ SJ_stable K S σ hx`.
+-/
 theorem SO_stable (σ : Gs K S) : SO K S ≤ (SO K S).comap ((UsR K S).ρ σ) := by
   intro x hx
   rw [Submodule.mem_comap, SO, Submodule.mem_comap]
@@ -220,6 +265,9 @@ instance isDiscreteRep_res_JsR (U : Subgroup (Gs K S)) :
 def torSub {G : Type} [Group G] (O : Rep ℤ G) (l : ℕ) : Submodule ℤ O :=
   LinearMap.ker ((l : ℤ) • (LinearMap.id : O →ₗ[ℤ] O))
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : (l : ℤ) • x = 0` using `hx`. Express the relevant statement in the definitionally equal form `(l : ℤ) • O.ρ g x = 0`. Rewrite using `[← map_zsmul, hx', map_zero]`.
+-/
 theorem torSub_stable {G : Type} [Group G] (O : Rep ℤ G) (l : ℕ) (g : G) :
     torSub O l ≤ (torSub O l).comap (O.ρ g) := by
   intro x hx

@@ -19,6 +19,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagEx
 
+/- English proof (translation)
+Introduce `k _ B _ q d hq hB ι _ E r hE`. Use `hq.isLocallyNoetherian` as an intermediate fact. Use `hq.isNoetherianRing` as an intermediate fact. Take `⟨Y, π, fl, hfl⟩` from `GlobalTheory.T.exists_flag_bundle B ι E r hE`. Use `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hfl` as an intermediate fact.
+
+Establish `hs` using `GlobalTheory.T.flag_bundle_projection_surjective B Y π ι E r fl hE hfl`. Use `GlobalTheory.T.flag_bundle_total_space_irreducible B Y π ι E r fl hE hfl` as an intermediate fact. Establish `hN` using `GlobalTheory.T.normal_scheme_of_smooth_over_normal B Y π (∑ a, r a * (r a - 1) / 2) hB`. Establish `: IsReduced Y`. Establish `: ∀ y : Y, _root_.IsReduced (Y.presheaf.stalk y)` using `fun y =>`.
+
+Use `(hN y).1` as an intermediate fact. Use `inferInstance`. Conclude with `isReduced_of_isReduced_stalk Y`. Establish `hI : IsIntegral Y` using `isIntegral_of_irreducibleSpace_of_isReduced Y`. Use `⟨Y, hI, π, fl, hfl, ?_, hN⟩` and prove the remaining obligations.
+
+Use `SmoothOfRelativeDimension.smooth (∑ a, r a * (r a - 1) / 2) π` as an intermediate fact. Use `⟨hq.isDomain, hq.finite, hI, GlobalTheory.T.flag_bundle_projective_over_base k B Y q π ι E r fl hq.isProjOver hE hfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Use `hq.flat` as an intermediate fact. Use `infer_instance`.
+
+Conclude with `GlobalTheory.T.krull_dim_smooth_surjective_total B Y π _ d hs hq.dim_eq`.
+-/
 theorem main : ∀ (k : Type) [CommRing k] (B : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp k) (d : ℕ), IsArithVar q d →
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme B → ∀ (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ),
     (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) →

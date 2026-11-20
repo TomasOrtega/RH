@@ -11,6 +11,15 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi 
 
 namespace GlobalTheory.HtNefAbel
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => intro g n c _ _ _`. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `g n c hS hn hc`.
+
+Establish `h1` using `ih (fun a => g a.castSucc) (fun a => n a.castSucc) (n (Fin.last N)) (fun i hi => by`. Use `hS i (hi.trans (Nat.le_succ N))` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_castSucc, if_neg (by simpa using hi), add_zero]`. Simplify using `using this)`. Use the proof step `(fun a b hab => hn (by simpa using hab)) (fun a => hn (Fin.le_last _))`.
+
+Establish `h2 : ∑ a, g a ≤ 0`. Use `hS (N + 1) le_rfl` as an intermediate fact. Simplify `this` using `only [Fin.is_lt, if_true]`. Establish `h3` using `mul_le_mul_of_nonpos_right (hc (Fin.last N)) h2`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Use `le_trans ?_ h3` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_castSucc (f := g), mul_add]`. Conclude with `add_le_add h1 le_rfl`.
+-/
 theorem sum_mul_le (N : ℕ) : ∀ (g n : Fin N → ℤ) (c : ℤ),
     (∀ i : ℕ, i ≤ N → ∑ a : Fin N, (if a.val < i then g a else 0) ≤ 0) → Antitone n → (∀ a, c ≤ n a) →
     ∑ a, n a * g a ≤ c * ∑ a, g a := by
@@ -32,6 +41,17 @@ theorem sum_mul_le (N : ℕ) : ∀ (g n : Fin N → ℤ) (c : ℤ),
     rw [Fin.sum_univ_castSucc (f := g), mul_add]
     exact add_le_add h1 le_rfl
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_nonneg fun τ _ => ?_` and prove the remaining obligations. Establish `e₂ : 0 ≤ ∑ a, g (τ, a)`. Use `h₂ τ` as an intermediate fact. Rewrite `this` using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`.
+
+Simplify using `using this`. Establish `e₃ : ∑ a, g (τ, a) ≤ 0`. Use `h₃ τ` as an intermediate fact. Rewrite `this` using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `using this`.
+
+Take `⟨c, hc⟩` from `(Set.finite_range (n τ)).bddBelow`. Use `sum_mul_le N (fun a => g (τ, a)) (n τ) c (fun i hi => by` as an intermediate fact. Break down `hi.lt_or_eq with hi | rfl` into its components or cases. Use `h₁ τ i hi` as an intermediate fact. Rewrite `this` using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`.
+
+Rewrite using `[← neg_nonneg, ← Finset.sum_neg_distrib]`. Use `this.trans_eq (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h : a.val < i <;> simp [h]`. Simplify `e₃) (hn τ) (fun a => hc ⟨a, rfl⟩)` using `only [Fin.is_lt, if_true]`. Rewrite `this` using `[le_antisymm e₃ e₂, mul_zero]`.
+
+Simplify using `only [neg_mul, Finset.sum_neg_distrib, neg_nonneg]`. Conclude with `this`.
+-/
 theorem sum_neg_mul_nonneg (T : Type) [Fintype T] (N : ℕ) (g : T × Fin N → ℤ)
     (h₁ : ∀ τ : T, ∀ i : ℕ, i < N → 0 ≤ ∑ x : T × Fin N, (if x.1 = τ ∧ x.2.val < i then -1 else 0 : ℤ) * g x)
     (h₂ : ∀ τ : T, 0 ≤ ∑ x : T × Fin N, (if x.1 = τ then 1 else 0 : ℤ) * g x)
@@ -60,6 +80,17 @@ theorem sum_neg_mul_nonneg (T : Type) [Fintype T] (N : ℕ) (g : T × Fin N → 
   simp only [neg_mul, Finset.sum_neg_distrib, neg_nonneg]
   exact this
 
+/- English proof (translation)
+Introduce `k _ X p d hX T _ N M l h₁ h₂ n hn Z i _ _ κ _ _ _ _ hd`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`. Establish `hproj : IsProjOver (strHom κ Z)`. Establish `: IsFinite (spMap (Int.castRingHom k))`.
+
+Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))`. Rewrite using `[e]`.
+
+Use `infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`. Set `F₀ : HermLB.IsomClass p → ℤ` to `Quotient.lift (s := HermLB.isometrySetoid p) (fun L => topSelfIntersection κ (L.B.pull i) 1) fun L L' e => by`. Establish `⟨w, hw, _⟩` using `HermLB.Isometric.pull e i rfl`.
+
+Conclude with `interNum_congr_lbIso κ _ (fun _ => (L.restr i).isLB) (fun _ => (L'.restr i).isLB) fun _ => ⟨w, hw⟩`. Set `F : HermLB.IsomClass p →+ ℤ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨L'⟩`. Conclude with `HtTensCurve.topSelf_one_pull_tens hproj hd i L.isLB L'.isLB)`. Establish `key (e : T × Fin N → ℤ) : topSelfIntersection κ ((ArInt.comb M e).B.pull i) 1 = ∑ x, e x * F (M x).icls`.
+
+Express the relevant statement in the definitionally equal form `F (ArInt.comb M e).icls = _`. Rewrite using `[icls_comb, map_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [map_zsmul, smul_eq_mul]`. Rewrite using `[key]`. Conclude with `sum_neg_mul_nonneg T N _ (fun τ j hj => key _ ▸ h₁ τ j hj Z i κ hd) (fun τ => key _ ▸ (h₂ τ).1 Z i κ hd) (fun τ => key _ ▸ (h₂ τ).2 Z i κ hd) n hn`.
+-/
 theorem nefOver_comb_of_antitone : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {d : ℕ}, IsArithVar p d → ∀ (T : Type) [Fintype T] (N : ℕ) (M : T × Fin N → HermLB p) (l : ℕ), (∀ τ : T, ∀ i : ℕ, i < N → NefOver (ArInt.comb M fun x => if x.1 = τ ∧ x.2.val < i then -1 else 0) l) → (∀ τ : T, NefOver (ArInt.comb M fun x => if x.1 = τ then 1 else 0) l ∧ NefOver (ArInt.comb M fun x => if x.1 = τ then -1 else 0) l) → ∀ n : T → Fin N → ℤ, (∀ τ, Antitone (n τ)) → NefOver (ArInt.comb M fun x => -n x.1 x.2) l := by
   intro k _ X p d hX T _ N M l h₁ h₂ n hn Z i _ _ κ _ _ _ _ hd
   have : Module.Finite ℤ k := hX.finite

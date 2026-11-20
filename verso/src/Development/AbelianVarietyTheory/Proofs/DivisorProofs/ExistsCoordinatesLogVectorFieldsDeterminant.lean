@@ -18,6 +18,27 @@ open scoped Classical
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF U b x₀ hx₀`. Establish `hres : ∀ (V W : TF.Y.X.Opens) (hW : IsAffineOpen W) (h : W ≤ V) (hVU : V ≤ U.1) (f : Fin Dw.dim → Γ(TF.Y.X, U.1)), TopForm.IsFrame (TopForm.dOn TF.Y.s fun i => resG TF.Y.X hVU (f i)) → TopForm.IsFrame (TopForm.dOn TF.Y.s fun i => resG TF.Y.X (h.trans hVU) (f i))`. Introduce `V W hW h hVU f hf`. Establish `h'` using `hf.res hW h`. Rewrite `h'` using `[TopForm.resForm_dOn]`.
+
+Simplify `h'` using `only [LB.resG_resG]`. Take `⟨hreg, m, a, J, hRsp, hIa⟩` from `GlobalTheory.T.snc_stalk_regularParameters_from_affineOpen TF.Y.X (LogKS.boundary TF.Y) TF.snc U x₀ hx₀`. Use `haveI := TF.smooth`. Take `⟨hfp, hfree, hfin, hrank⟩` from `GlobalTheory.T.smooth_affineOpen_finitePresentation_stalkKaehler_free_rank c.F TF.Y.X TF.Y.s Dw.dim U x₀ hx₀`. Use `letI : Algebra c.F Γ(TF.Y.X, U.1) := (algX TF.Y.s U.1).toAlgebra`.
+
+Use `letI : Algebra Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) := TopCat.Presheaf.algebra_section_stalk TF.Y.X.presheaf ⟨x₀, hx₀⟩`. Use `letI : Algebra c.F (TF.Y.X.presheaf.stalk x₀) := ((TF.Y.X.presheaf.germ U.1 x₀ hx₀).hom.comp (algX TF.Y.s U.1)).toAlgebra`. Use `haveI : IsScalarTower c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI hloc := U.2.isLocalization_stalk ⟨x₀, hx₀⟩`. Use `haveI : IsNoetherianRing Γ(TF.Y.X, U.1) := Algebra.FiniteType.isNoetherianRing c.F _`.
+
+Use `haveI : IsNoetherianRing (TF.Y.X.presheaf.stalk x₀) := IsLocalization.isNoetherianRing (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal.primeCompl _ inferInstance`. Establish `h3` using `GlobalTheory.T.exists_coordinates_extending_regular_parameters c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal Dw.dim hrank m a hRsp`. Take `⟨x, e, hxe, bs, hbs⟩` from `h3`. Establish `hxe' : (fun j => x (e j)) = a` using `funext hxe`. Establish `hI : ((LogKS.boundary TF.Y).ideal U).map (algebraMap Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀)) = Ideal.span {algebraMap Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (∏ j ∈ J, x (e j))}`.
+
+Simplify using `only [hxe]`. Conclude with `hIa`. Establish `hspan : ∀ D : Derivation ℤ Γ(TF.Y.X, U.1) Γ(TF.Y.X, U.1), (∀ c', D (algebraMap c.F Γ(TF.Y.X, U.1) c') = 0) → (∀ f ∈ (LogKS.boundary TF.Y).ideal U, D f ∈ (LogKS.boundary TF.Y).ideal U) → ∃ cf : Fin Dw.dim → Γ(TF.Y.X, U.1), D = ∑ j, cf j • (b j).1`. Introduce `D h0 h1`. Set `D' : LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U` to `⟨D, h0, h1⟩`.
+
+Use `⟨b.repr D', ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (b.sum_repr D')` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Establish `h4` using `GlobalTheory.T.logDerivation_det_eq_unit_mul_prod_normalCrossings c.F Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx₀⟩).asIdeal Dw.dim m x e J (by simp only [hxe]; exact hRsp) ⟨bs, hbs⟩ ((LogKS.boundary TF.Y).ideal U) hI (fun j => (b j).1) (fun j c' => (b j). …`.
+
+Take `⟨u, hu⟩` from `h4`. Establish `hd : ((LogKS.boundary TF.Y).ideal U).map (TF.Y.X.presheaf.germ U.1 x₀ hx₀).hom = Ideal.span {(TF.Y.X.presheaf.germ U.1 x₀ hx₀).hom (logDet (fun j => (b j).1) x)}`. Express the relevant statement in the definitionally equal form `((LogKS.boundary TF.Y).ideal U).map (algebraMap Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀)) = Ideal.span {algebraMap Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk x₀) (logDet (fun j => (b j).1) x)}`. Conclude with `hI.trans ((Ideal.span_singleton_mul_left_unit u.isUnit _).symm.trans (congrArg (fun y => Ideal.span {y}) hu.symm))`. Establish `h5` using `GlobalTheory.T.idealSheaf_eq_span_on_basicOpens_of_stalk_principal TF.Y.X (LogKS.boundary TF.Y) U x₀ hx₀ _ inferInstance hd`.
+
+Take `⟨s₂, hs₂, hid⟩` from `h5`. Establish `h2` using `GlobalTheory.T.exists_basicOpen_topFormFrame_of_stalkKaehlerBasis c.F TF.Y.X TF.Y.s Dw.dim U x₀ hx₀ x ⟨bs, hbs⟩`. Take `⟨s₁, hs₁, hfr⟩` from `h2`. Establish `hle₁ : TF.Y.X.basicOpen (s₁ * s₂) ≤ TF.Y.X.basicOpen s₁`. Rewrite using `[Scheme.basicOpen_mul]`.
+
+Conclude with `inf_le_left`. Establish `hle₂ : TF.Y.X.basicOpen (s₁ * s₂) ≤ TF.Y.X.basicOpen s₂`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `inf_le_right`. Use `⟨x, TF.Y.X.affineBasicOpen (s₁ * s₂), TF.Y.X.basicOpen_le _, ?_, ?_, hid _ hle₂⟩` and prove the remaining obligations.
+
+Use `show x₀ ∈ TF.Y.X.basicOpen (s₁ * s₂)`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `⟨hs₁, hs₂⟩`. Conclude with `hres _ _ (U.2.basicOpen (s₁ * s₂)) hle₁ _ x hfr`.
+-/
 theorem GlobalTheory.LogPole.exists_coord_logDet : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (U : TF.Y.X.affineOpens) (b : Module.Basis (Fin Dw.dim) Γ(TF.Y.X, U.1) (LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U)) (x₀ : TF.Y.X), x₀ ∈ U.1 → ∃ (x : Fin Dw.dim → Γ(TF.Y.X, U.1)) (U' : TF.Y.X.affineOpens) (hU' : U'.1 ≤ U.1), x₀ ∈ U'.1 ∧ TopForm.IsFrame (TopForm.dOn TF.Y.s fun i => resG TF.Y.X hU' (x i)) ∧ (LogKS.boundary TF.Y).ideal U' = Ideal.span {resG TF.Y.X hU' (logDet (fun j => (b j).1) x)} := by
   intro E _ _ _ H Dw l Xo c TF U b x₀ hx₀
   classical

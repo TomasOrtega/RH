@@ -8,6 +8,11 @@ open NumberField KStar.Ram
 
 namespace KStar.Consta
 
+/- English proof (translation)
+Establish `: NeZero d` using `⟨hd.ne_zero⟩`. Establish `: NeZero (d : ℚ)` using `⟨by exact_mod_cast hd.ne_zero⟩`. Establish `: IsCyclotomicExtension {d} ℚ (CyclotomicField d ℚ)` using `CyclotomicField.isCyclotomicExtension d ℚ`. Take `⟨ψ, hψ⟩` from `exists_isImagQuad (N := d) hd h4 dvd_rfl`. Take `⟨E, hE⟩` from `(fieldChars_lattice (N := d) (K := CyclotomicField d ℚ)).1.2 (Subgroup.zpowers ψ)`.
+
+Conclude with `⟨E, inferInstance, inferInstance, (quadratic_discr_iff (N := d) E d).2 ⟨ψ, hψ, hE⟩⟩`.
+-/
 theorem exists_quadField {d : ℕ} (hd : d.Prime) (h4 : d % 4 = 3) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K),
       Module.finrank ℚ K = 2 ∧ discr K = -(d : ℤ) := by

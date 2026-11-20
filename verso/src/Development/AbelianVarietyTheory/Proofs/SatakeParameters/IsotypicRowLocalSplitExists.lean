@@ -15,6 +15,33 @@ namespace GlobalTheory.RowLocal
 
 open Formalism.IndefR.principalLevelFrame in
 
+/- English proof (translation)
+Introduce `D rep j X σ hne N hN`. Choose the witnesses or unpack the hypotheses as in `⟨Φ, ⟨hΦe, hΦC⟩, hΦne⟩ : ∃ Φ : (rep σ).S →ₗ[ℂ] X.A, (IsEqvA X.ρ (rep σ) Φ ∧ LinearMap.range Φ ≤ X.C) ∧ LinearMap.range Φ ≠ ⊥ := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hne` to reduce the goal to its premises.
+
+Unfold `Formalism.IndefR.principalLevelFrame.isotIn`. Conclude with `iSup_eq_bot.2 fun Φ => iSup_eq_bot.2 fun hΦ => hcon Φ hΦ`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot]`. Set `S' : Submodule ℂ (GAf D.host.E D.R.r → ℂ)` to `(LinearMap.ker Φ).map (rep σ).S.subtype`.
+
+Establish `hS'le : S' ≤ (rep σ).S`. Introduce and unpack `f ⟨k, _, rfl⟩`. Conclude with `k.2`. Establish `hS'st : ∀ h, ∀ f ∈ S', NG.rt D.host.E D.R.r h f ∈ S'`. Introduce and unpack `h f ⟨k, hk, rfl⟩`.
+
+Use `⟨⟨NG.rt D.host.E D.R.r h k, (rep σ).stable h k k.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show Φ _ = 0`. Rewrite using `[hΦe h k, LinearMap.mem_ker.1 hk, map_zero]`. Break down `(rep σ).irr S' hS'le hS'st with h0 | hall` into its components or cases. Rewrite using `[eq_bot_iff]`.
+
+Introduce `k hk`. Establish `: (k : GAf D.host.E D.R.r → ℂ) ∈ S'` using `⟨k, hk, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`. It suffices to derive a contradiction.
+
+Apply `hΦne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce and unpack `a ⟨y, rfl⟩`. Establish `: (y : GAf D.host.E D.R.r → ℂ) ∈ S'` using `by rw [hall]; exact y.2`. Take `⟨k, hk, hky⟩` from `this`.
+
+Rewrite using `[show y = k from Subtype.ext hky.symm]`. Conclude with `(Submodule.mem_bot ℂ).2 (LinearMap.mem_ker.1 hk)`. Use `set F := Submodule.span ℂ {f | f ∈ (rep σ).S ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → NG.rt D.host.E D.R.r κ f = f} with hF`. Use `set T := Submodule.span ℂ {x | x ∈ X.C ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → X.ρ κ x = x} with hT`. Use `X.adm N hN` as an intermediate fact.
+
+Establish `hFS : F ≤ (rep σ).S` using `Submodule.span_le.2 fun f hf => hf.1`. Establish `hFT : ∀ f (hf : f ∈ F), Φ ⟨f, hFS hf⟩ ∈ T`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Use `Submodule.subset_span ⟨hΦC ⟨_, rfl⟩, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦe κ]`. Use `congr 1`. Conclude with `Subtype.ext (hx.2 κ hκ)`. Consider the case `zero`.
+
+Establish `: (⟨0, hFS F.zero_mem⟩ : (rep σ).S) = 0` using `rfl`. Rewrite using `[this, map_zero]`. Conclude with `T.zero_mem`. Consider the case `add x y hx hy ihx ihy`. Establish `: (⟨x + y, hFS (F.add_mem hx hy)⟩ : (rep σ).S) = ⟨x, hFS hx⟩ + ⟨y, hFS hy⟩` using `rfl`.
+
+Rewrite using `[this, map_add]`. Conclude with `T.add_mem ihx ihy`. Consider the case `smul a x hx ih`. Establish `: (⟨a • x, hFS (F.smul_mem a hx)⟩ : (rep σ).S) = a • ⟨x, hFS hx⟩` using `rfl`. Rewrite using `[this, map_smul]`.
+
+Conclude with `T.smul_mem a ih`. Set `g : F →ₗ[ℂ] T` to `LinearMap.codRestrict T (Φ ∘ₗ Submodule.inclusion hFS) (fun f => hFT f f.2)`. Establish `hg : Function.Injective g`. Introduce `a b hab`. Establish `h1 : Φ (Submodule.inclusion hFS a) = Φ (Submodule.inclusion hFS b)` using `congrArg Subtype.val hab`.
+
+Conclude with `Submodule.inclusion_injective hFS (hinj h1)`. Conclude with `Module.Finite.of_injective g hg`.
+-/
 theorem finTyp_fixed_finiteDimensional : ∀ (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (j : ℕ) (X : RowMod D rep j) (σ : D.what₂.FT), Formalism.IndefR.principalLevelFrame.isotIn (D := D) X.ρ X.C (rep σ) ≠ ⊥ → ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ (rep σ).S ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → NG.rt D.host.E D.R.r κ f = f}) := by
   intro D rep j X σ hne N hN
   obtain ⟨Φ, ⟨hΦe, hΦC⟩, hΦne⟩ : ∃ Φ : (rep σ).S →ₗ[ℂ] X.A,
@@ -87,6 +114,9 @@ namespace GlobalTheory.RowLocal
 section Asm
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Introduce `v hv`. Establish `h1` using `hx v hv`. Establish `h2` using `hy v hv`. Use `show ((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1`. Rewrite using `[Units.val_mul, Matrix.map_mul, h1, h2, mul_one]`.
+-/
 theorem trivOutside_mul {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {x y : GAf L n}
     (hx : TrivOutside T x) (hy : TrivOutside T y) : TrivOutside T (x * y) := by
   intro v hv
@@ -95,6 +125,11 @@ theorem trivOutside_mul {T : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L
   show ((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1
   rw [Units.val_mul, Matrix.map_mul, h1, h2, mul_one]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.blockFieldPairProjections.exists_local_component`. Consider the case `exact _root_.GlobalTheory.blockFieldPairProjections.exists_local_component`. Consider the case `(apply _root_.GlobalTheory.blockFieldPairProjections.exists_local_component <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.blockFieldPairProjections.exists_local_component <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.blockFieldPairProjections.exists_local_component <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.blockFieldPairProjections.exists_local_component ..)`.
+-/
 theorem isLocS_of_irr (π : NG.FinTyp L n) (s : SplitPlace L) (W : Submodule ℂ (GAf L n → ℂ)) (hWS : W ≤ π.S)
     (hW0 : W ≠ ⊥) (hst : ∀ x : GAf L n, TrivOutside {s.v} x → ∀ f ∈ W, NG.rt L n x f ∈ W)
     (hirr : ∀ W' : Submodule ℂ (GAf L n → ℂ), W' ≤ W →
@@ -113,6 +148,15 @@ end GlobalTheory.RowLocal
 
 namespace GlobalTheory.RowLocal
 
+/- English proof (translation)
+Introduce `D rep j X σ hσ s`. Establish `hB00 : X.B 0 0 = 0`. Establish `h` using `X.lin 0 X.C.zero_mem 0 X.C.zero_mem 0 X.C.zero_mem 1`. Rewrite `h` using `[one_smul, add_zero, one_mul]`. Take the linear combination `-h`.
+
+Establish `hne : Formalism.IndefR.principalLevelFrame.isotIn (D` using `D) X.ρ X.C (rep σ) ≠ ⊥ := by`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `hmem` using `(X.isot σ y).1 hy`. Introduce `hbot`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`.
+
+Apply `hy0` to reduce the goal to its premises. Establish `h` using `X.φ_inner y y`. Rewrite `h` using `[hmem, hB00]`. Conclude with `inner_self_eq_zero.1 h`. Take `⟨B', hlin, hherm, hpos, hinv⟩` from `GlobalTheory.finTyp_invariant_form_of_isotIn D D.R.r X.A X.ρ X.C X.B X.lin X.herm X.pos X.stab X.inv (rep σ) hne`.
+
+Take `⟨W, hWS, hW0, hst, hirr⟩` from `GlobalTheory.T.exists_irreducible_subspace_trivialOutside_splitPlace D.host.E D.R.r (rep σ) B' hlin hherm hpos hinv (finTyp_fixed_finiteDimensional D rep j X σ hne) s`. Conclude with `isLocS_of_irr (rep σ) s W hWS hW0 hst hirr`.
+-/
 theorem finTyp_exists_isLocS : ∀ (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r) (j : ℕ) (_ : RowMod D rep j) (σ : D.what₂.FT), D.what₂.isot j σ ≠ ⊥ → ∀ s : SplitPlace D.host.E, ∃ τ, IsLocS (rep σ).S s τ := by
   intro D rep j X σ hσ s
   have hB00 : X.B 0 0 = 0 := by

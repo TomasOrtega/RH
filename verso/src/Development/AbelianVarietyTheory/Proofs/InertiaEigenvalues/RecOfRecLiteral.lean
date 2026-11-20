@@ -24,6 +24,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Introduce `hDZ hDI hEx hLM hSC hZP hGL hBZ E Ω _ _ _ _ _ A w h rc H`. Take `⟨a, ha, ε, hε, L⟩` from `H`. Use `⟨a, ha, ε, hε, ?_⟩` and prove the remaining obligations. Conclude with `{ bij := L.bij, dim := L.dim, one := L.one, eps := L.eps, cusp := L.cusp, langlands := L.langlands, twist := L.twist, central := L.central, dual := L.dual, det := GlobalTheory.T.determinant_rec_compatible hSC E Ω A w h a ha _ rc L prod := GlobalTheory.T.twist_rec_compatible hEx h …`.
+-/
 theorem isRec_of_isRecLit : DepthZeroCuspidalLL → DepthZeroInduction → LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL → ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRecLit h rc → IsRec h rc := by
   intro hDZ hDI hEx hLM hSC hZP hGL hBZ E Ω _ _ _ _ _ A w h rc H
   obtain ⟨a, ha, ε, hε, L⟩ := H

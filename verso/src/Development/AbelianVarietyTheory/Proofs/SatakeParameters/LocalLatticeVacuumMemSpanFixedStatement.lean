@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SelfDualOne
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacuumTranslateClassesIndependent
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.locVac_mem_span_vac | exact GlobalTheory.Hk3.locVac_mem_span_vac | (intros; apply GlobalTheory.Hk3.locVac_mem_span_vac <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.localLatticeVacuum_mem_span_fixed : ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L)
     (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M]
     (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M)

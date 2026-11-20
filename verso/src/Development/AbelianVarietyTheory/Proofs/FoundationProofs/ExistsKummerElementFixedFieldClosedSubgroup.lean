@@ -5,11 +5,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.KumFix
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_add, ← pow_add]`. Use `conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) n, pow_add, pow_mul, h, one_pow, mul_one]`.
+-/
 theorem pow_val_add {Ω : Type} [Field Ω] {n : ℕ} [NeZero n] {ζ : Ω} (h : ζ ^ n = 1) (a b : ZMod n) :
     ζ ^ (a + b).val = ζ ^ a.val * ζ ^ b.val := by
   rw [ZMod.val_add, ← pow_add]
   conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) n, pow_add, pow_mul, h, one_pow, mul_one]
 
+/- English proof (translation)
+Establish `h1 : IsOpen ((U.subgroupOf H : Subgroup H) : Set H)` using `hU.preimage continuous_subtype_val`. Establish `h2 : IsOpen ((N.subgroupOf H : Subgroup H) : Set H)` using `Subgroup.isOpen_mono (H₁ := U.subgroupOf H) (fun s hs => hUN s s.2 hs) h1`. Establish `h3 : IsClosed ((N.subgroupOf H : Subgroup H) : Set H)` using `Subgroup.isClosed_of_isOpen _ h2`. Establish `h4` using `hH.isClosedMap_subtype_val _ h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Conclude with `⟨⟨s, hNH hs⟩, hs, rfl⟩`. Introduce and unpack `⟨t, ht, rfl⟩`.
+
+Conclude with `ht`.
+-/
 theorem isClosed_of_le {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (H N U : Subgroup Γ)
     (hH : IsClosed (H : Set Γ)) (hU : IsOpen (U : Set Γ)) (hNH : N ≤ H) (hUN : ∀ s ∈ H, s ∈ U → s ∈ N) :
     IsClosed (N : Set Γ) := by
@@ -26,6 +36,33 @@ theorem isClosed_of_le {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologic
   · rintro ⟨t, ht, rfl⟩
     exact ht
 
+/- English proof (translation)
+Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow (NeZero.ne n)]`. Conclude with `zero_ne_one hζ`. Establish `h1 : χ 1 = 0`.
+
+Use `hχ 1 H.one_mem 1 H.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.mp this`. Establish `hinv : ∀ s ∈ H, χ s⁻¹ = -χ s`. Introduce `s hs`.
+
+Use `hχ s⁻¹ (H.inv_mem hs) s hs` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1]`. Conclude with `eq_neg_of_add_eq_zero_left this.symm`. Set `N : Subgroup (G ℚ Ω)` to `{ carrier := {s | s ∈ H ∧ χ s = 0} mul_mem' := fun {a b} ha hb => ⟨H.mul_mem ha.1 hb.1, by rw [hχ a ha.1 b hb.1, ha.2, hb.2, add_zero]⟩ one_mem' := ⟨H.one_mem, h1⟩ inv_mem' := fun {a} ha => ⟨H.inv_mem ha.1, by rw [hinv a ha.1, ha.2, neg_zero]⟩ }`. Establish `hNc : IsClosed (N : Set (G ℚ Ω))` using `isClosed_of_le H N U hH hU (fun s hs => hs.1) (fun s hs hsU => ⟨hs, hUχ s hs hsU⟩)`.
+
+Establish `hNfix : (IntermediateField.fixedField N).fixingSubgroup = N` using `InfiniteGalois.fixingSubgroup_fixedField ⟨N, hNc⟩`. Set `E` to `IntermediateField.fixedField N`. Set `ι` to `{k : ZMod n // ∃ g ∈ H, χ g = k}`. Use `choose r hrH hrχ using fun k : ι => k.2`. Set `f : ι → (E →* Ω)` to `fun k => { toFun := fun x => r k (x : Ω) map_one' := by simp map_mul' := fun x y => by simp }`.
+
+Establish `hf : Function.Injective f`. Introduce `j k hjk`. Establish `hm : (r j)⁻¹ * r k ∈ N`. Rewrite using `[← hNfix, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Establish `e : r j x = r k x` using `DFunLike.congr_fun hjk ⟨x, hx⟩`. Rewrite using `[AlgEquiv.mul_apply, ← e]`. Conclude with `(r j).symm_apply_apply x`. Establish `h2` using `hm.2`. Rewrite `h2` using `[hχ _ (H.inv_mem (hrH j)) _ (hrH k), hinv _ (hrH j), hrχ, hrχ]`.
+
+Conclude with `Subtype.ext (neg_add_eq_zero.mp h2)`. Establish `hli` using `(linearIndependent_monoidHom E Ω).comp f hf`. Establish `hex : ∃ x : E, ∑ k : ι, ζ ^ (-(k : ZMod n)).val * r k (x : Ω) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Use `Fintype.linearIndependent_iff.mp hli (fun k => ζ ^ (-(k : ZMod n)).val) (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Conclude with `hcon x) ⟨0, 1, H.one_mem, h1⟩`. Conclude with `pow_ne_zero _ hζ0 this`.
+
+Take `⟨x, hx⟩` from `hex`. Use `⟨_, hx, fun s hs => ?_⟩` and prove the remaining obligations. Set `e : ι ≃ ι` to `{ toFun := fun k => ⟨χ s + k, s * r k, H.mul_mem hs (hrH k), by rw [hχ _ hs _ (hrH k), hrχ]⟩ invFun := fun k => ⟨-χ s + k, s⁻¹ * r k, H.mul_mem (H.inv_mem hs) (hrH k), by`. Rewrite using `[hχ _ (H.inv_mem hs) _ (hrH k), hrχ, hinv s hs]⟩`. Use `left_inv := fun k => Subtype.ext (by simp)`.
+
+Use `right_inv := fun k => Subtype.ext (by simp) }`. Rewrite using `[map_sum, Finset.mul_sum, ← Equiv.sum_comp e (fun k : ι => ζ ^ (χ s).val * (ζ ^ (-(k : ZMod n)).val * r k (x : Ω)))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hm : (r (e k))⁻¹ * (s * r k) ∈ N`. Use `⟨H.mul_mem (H.inv_mem (hrH _)) (H.mul_mem hs (hrH k)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hχ _ (H.inv_mem (hrH _)) _ (H.mul_mem hs (hrH k)), hinv _ (hrH _), hχ _ hs _ (hrH k), hrχ, hrχ]`. Conclude with `neg_add_cancel _`. Establish `hx1 : ((r (e k))⁻¹ * (s * r k)) (x : Ω) = x` using `(IntermediateField.mem_fixedField_iff N x).mp x.2 _ hm`. Establish `hx2 : s (r k (x : Ω)) = r (e k) (x : Ω)`. Use `congrArg (r (e k)) hx1` as an intermediate fact.
+
+Rewrite `this` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply]`. Rewrite using `[← this]`. Conclude with `((r (e k)).apply_symm_apply _).symm`. Rewrite using `[map_mul, map_pow, hfix s hs, hx2, ← mul_assoc, ← pow_val_add hζ]`. Use `congr 3`.
+
+Express the relevant statement in the definitionally equal form `-(k : ZMod n) = χ s + -(χ s + k)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eigen {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {n : ℕ} [NeZero n] (H : Subgroup (G ℚ Ω))
     (hH : IsClosed (H : Set (G ℚ Ω))) (ζ : Ω) (hζ : ζ ^ n = 1) (hfix : ∀ s ∈ H, s ζ = ζ) (χ : G ℚ Ω → ZMod n)
     (hχ : ∀ s ∈ H, ∀ t ∈ H, χ (s * t) = χ s + χ t) (U : Subgroup (G ℚ Ω)) (hU : IsOpen (U : Set (G ℚ Ω)))
@@ -105,6 +142,9 @@ theorem exists_eigen {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ �
   change -(k : ZMod n) = χ s + -(χ s + k)
   ring
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ m H hH ζ hζ hfix χ hχ U hU hUχ`. Use `haveI : NeZero (l ^ m) := ⟨(pow_pos (Fact.out : l.Prime).pos m).ne'⟩`. Take `⟨w, hw0, hw⟩` from `exists_eigen H hH ζ hζ.pow_eq_one hfix χ hχ U hU hUχ`. Use `⟨w ^ (l ^ m), pow_ne_zero _ hw0, fun s hs => ?_, fun s hs => ⟨w, rfl, hw s hs⟩⟩` and prove the remaining obligations. Rewrite using `[map_pow, hw s hs, mul_pow, ← pow_mul, mul_comm (χ s).val, pow_mul, hζ.pow_eq_one, one_pow, one_mul]`.
+-/
 theorem exists_kumVal : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (m : ℕ) (H : Subgroup (G ℚ Ω)), IsClosed (H : Set (G ℚ Ω)) → ∀ ζ : Ω, IsPrimitiveRoot ζ (l ^ m) → (∀ s ∈ H, s ζ = ζ) → ∀ χ : G ℚ Ω → ZMod (l ^ m), (∀ s ∈ H, ∀ t ∈ H, χ (s * t) = χ s + χ t) → ∀ U : Subgroup (G ℚ Ω), IsOpen (U : Set (G ℚ Ω)) → (∀ s ∈ H, s ∈ U → χ s = 0) → ∃ u : Ω, u ≠ 0 ∧ (∀ s ∈ H, s u = u) ∧ ∀ s ∈ H, GlobalTheory.Col.KumVal (l := l) m ζ u s (χ s) := by
   intro l _ Ω _ _ _ m H hH ζ hζ hfix χ hχ U hU hUχ
   haveI : NeZero (l ^ m) := ⟨(pow_pos (Fact.out : l.Prime).pos m).ne'⟩

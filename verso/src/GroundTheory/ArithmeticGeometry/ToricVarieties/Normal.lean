@@ -20,13 +20,22 @@ noncomputable def degPart (f : AddMonoidAlgebra k G) (a : ℤ) : AddMonoidAlgebr
 
 variable {φ}
 
+/- English proof (translation)
+Introduce `m hm` and use `hab.trans (h m hm)`.
+-/
 theorem LowerBound.mono {f : AddMonoidAlgebra k G} {a b : ℤ} (h : LowerBound φ f a) (hab : b ≤ a) :
     LowerBound φ f b :=
   fun m hm => hab.trans (h m hm)
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem lowerBound_zero (a : ℤ) : LowerBound φ (0 : AddMonoidAlgebra k G) a := by
   intro m hm; simp at hm
 
+/- English proof (translation)
+Introduce `m hm`. Break down `Finset.mem_union.1 (Finsupp.support_add (by simpa using hm)) with h | h` into its components or cases. Conclude with `hf m h`. Conclude with `hg m h`.
+-/
 theorem LowerBound.add {f g : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a)
     (hg : LowerBound φ g a) : LowerBound φ (f + g) a := by
   classical
@@ -35,11 +44,17 @@ theorem LowerBound.add {f g : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound �
   · exact hf m h
   · exact hg m h
 
+/- English proof (translation)
+Introduce `m hm`. Conclude with `hf m (by simpa using hm)`.
+-/
 theorem LowerBound.neg {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a) :
     LowerBound φ (-f) a := by
   intro m hm
   exact hf m (by simpa using hm)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lowerBound_zero a`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `(hf i (Finset.mem_insert_self _ _)).add (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem LowerBound.sum {ι : Type*} (s : Finset ι) {f : ι → AddMonoidAlgebra k G} {a : ℤ}
     (hf : ∀ i ∈ s, LowerBound φ (f i) a) : LowerBound φ (∑ i ∈ s, f i) a := by
   classical
@@ -49,6 +64,9 @@ theorem LowerBound.sum {ι : Type*} (s : Finset ι) {f : ι → AddMonoidAlgebra
     rw [Finset.sum_insert hi]
     exact (hf i (Finset.mem_insert_self _ _)).add (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Introduce `m hm`. Take `⟨x, hx, y, hy, rfl⟩` from `Finset.mem_add.1 (support_coeff_mul_subset f g hm)`. Rewrite using `[map_add]`. Conclude with `add_le_add (hf x hx) (hg y hy)`.
+-/
 theorem LowerBound.mul {f g : AddMonoidAlgebra k G} {a b : ℤ} (hf : LowerBound φ f a)
     (hg : LowerBound φ g b) : LowerBound φ (f * g) (a + b) := by
   classical
@@ -57,12 +75,20 @@ theorem LowerBound.mul {f g : AddMonoidAlgebra k G} {a b : ℤ} (hf : LowerBound
   rw [map_add]
   exact add_le_add (hf x hx) (hg y hy)
 
+/- English proof (translation)
+Introduce `m hm`. Use `support_coeff_one_subset hm` as an intermediate fact. Simplify using `only [Finset.mem_zero] at this`. Rewrite using `[this, map_zero]`.
+-/
 theorem lowerBound_one : LowerBound φ (1 : AddMonoidAlgebra k G) 0 := by
   intro m hm
   have := support_coeff_one_subset hm
   simp only [Finset.mem_zero] at this
   rw [this, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using lowerBound_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Use `ih.mul hf` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LowerBound.pow {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a) (n : ℕ) :
     LowerBound φ (f ^ n) (n * a) := by
   induction n with
@@ -73,6 +99,9 @@ theorem LowerBound.pow {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ 
     convert this using 1
     push_cast; ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `absurd (hf m (Finsupp.mem_support_iff.2 h)) (not_le.2 hm)`.
+-/
 theorem LowerBound.coeff_eq_zero {f : AddMonoidAlgebra k G} {a : ℤ} (hf : LowerBound φ f a)
     {m : G} (hm : φ m < a) : f.coeff m = 0 := by
   by_contra h
@@ -94,10 +123,18 @@ noncomputable def natCombination : (ι →₀ ℕ) →+ G where
     congr 1
     exact Finsupp.mapRange_add (fun _ _ => Nat.cast_add _ _) c d
 
+/- English proof (translation)
+The claim follows from `b.repr_linearCombination _`.
+-/
 theorem repr_natCombination (c : ι →₀ ℕ) :
     b.repr (natCombination b c) = c.mapRange (Nat.cast : ℕ → ℤ) Nat.cast_zero :=
   b.repr_linearCombination _
 
+/- English proof (translation)
+Introduce `c d h`. Use `congrArg b.repr h` as an intermediate fact. Rewrite `this` using `[repr_natCombination, repr_natCombination]`. Use extensionality with `i`. Use `congrArg (fun f => f i) this` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem natCombination_injective : Function.Injective (natCombination b) := by
   intro c d h
   have := congrArg b.repr h

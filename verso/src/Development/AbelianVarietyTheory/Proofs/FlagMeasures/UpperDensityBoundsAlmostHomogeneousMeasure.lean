@@ -10,6 +10,11 @@ namespace GlobalTheory.UpperDensBounds
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `: Tendsto (fun r : ℝ => k * r) (𝓝 0) (𝓝 (k * 0))` using `(continuous_const.mul continuous_id).tendsto 0`. Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with r hr`.
+
+Conclude with `mul_pos hk hr`.
+-/
 theorem tendsto_const_mul_nhdsGT {k : ℝ} (hk : 0 < k) :
     Tendsto (fun r : ℝ => k * r) (𝓝[>] 0) (𝓝[>] 0) := by
   refine tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_
@@ -20,11 +25,17 @@ theorem tendsto_const_mul_nhdsGT {k : ℝ} (hk : 0 < k) :
   · filter_upwards [self_mem_nhdsWithin] with r hr
     exact mul_pos hk hr
 
+/- English proof (translation)
+Rewrite using `[Measure.addHaar_ball_of_pos l 0 (mul_pos hk hs), Measure.addHaar_closedBall l x hs.le, mul_pow, ENNReal.ofReal_mul (by positivity), mul_assoc]`.
+-/
 theorem ball_scale (l : Measure V) [l.IsAddHaarMeasure] (x : V) {k s : ℝ} (hk : 0 < k) (hs : 0 < s) :
     l (Metric.ball 0 (k * s)) = ENNReal.ofReal (k ^ Module.finrank ℝ V) * l (Metric.closedBall x s) := by
   rw [Measure.addHaar_ball_of_pos l 0 (mul_pos hk hs), Measure.addHaar_closedBall l x hs.le, mul_pow,
     ENNReal.ofReal_mul (by positivity), mul_assoc]
 
+/- English proof (translation)
+Establish `hp : ENNReal.ofReal (t ^ d) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Check the signs of the components of the expression. Rewrite using `[← mul_div_assoc, ENNReal.mul_div_mul_left _ _ hp ENNReal.ofReal_ne_top]`.
+-/
 theorem mul_div_scale (t : ℝ) (ht : 0 < t) (d : ℕ) (a b : ℝ≥0∞) :
     ENNReal.ofReal (t ^ d) * (a / (ENNReal.ofReal (t ^ d) * b)) = a / b := by
   have hp : ENNReal.ofReal (t ^ d) ≠ 0 := by
@@ -35,6 +46,21 @@ end GlobalTheory.UpperDensBounds
 
 open GlobalTheory.UpperDensBounds in
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ l ν _ _ c _ hc ε η h0 h1 H x hx`. Establish `he : 0 < 1 - ε` using `by linarith`. Establish `hp : 0 < 1 + ε` using `by linarith`. Use `set d := Module.finrank ℝ V`. Unfold `GlobalTheory.HaarDensChart.upperDens`.
+
+Prove the components needed by the constructor for the conclusion. Use `set u : ℝ := (1 + ε)⁻¹ with hu`. Establish `hu0 : 0 < u` using `inv_pos.mpr hp`. Establish `ht : Tendsto (fun s : ℝ => ENNReal.ofReal (u ^ d) * (ν (Metric.ball 0 (u * s)) / l (Metric.ball 0 (u * s)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (u ^ d) * c))` using `ENNReal.Tendsto.const_mul (hc.comp (tendsto_const_mul_nhdsGT hu0)) (Or.inr ENNReal.ofReal_ne_top)`. Rewrite using `[← ht.limsup_eq]`.
+
+Use `limsup_le_limsup ?_` and prove the remaining obligations. Use `filter_upwards [(tendsto_const_mul_nhdsGT hu0).eventually (H x hx), self_mem_nhdsWithin] with s hs hs0`. Establish `hs0 : 0 < s` using `hs0`. Rewrite using `[ball_scale l x hu0 hs0, mul_div_scale u hu0 d]`. Use `ENNReal.div_le_div_right ?_ _` and prove the remaining obligations.
+
+Establish `hr : (1 + ε) * (u * s) = s` using `by rw [hu, ← mul_assoc, mul_inv_cancel₀ hp.ne', one_mul]`. Use `hs.2` as an intermediate fact. Rewrite `this` using `[hr]`. Conclude with `this.trans (measure_mono Metric.ball_subset_closedBall)`. Use `set t : ℝ := (1 + ε) / (1 - ε) with htdef`.
+
+Establish `ht0 : 0 < t` using `div_pos hp he`. Establish `ht : Tendsto (fun s : ℝ => ENNReal.ofReal (t ^ d) * (ν (Metric.ball 0 (t * s)) / l (Metric.ball 0 (t * s)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (t ^ d) * c))` using `ENNReal.Tendsto.const_mul (hc.comp (tendsto_const_mul_nhdsGT ht0)) (Or.inr ENNReal.ofReal_ne_top)`. Rewrite using `[← ht.limsup_eq]`. Use `limsup_le_limsup ?_` and prove the remaining obligations. Use `filter_upwards [(tendsto_const_mul_nhdsGT ht0).eventually (H x hx), self_mem_nhdsWithin] with s hs hs0`.
+
+Establish `hs0 : 0 < s` using `hs0`. Rewrite using `[ball_scale l x ht0 hs0, mul_div_scale t ht0 d]`. Use `ENNReal.div_le_div_right ?_ _` and prove the remaining obligations. Establish `hr : (1 - ε) * (t * s) = (1 + ε) * s`. Rewrite using `[htdef, ← mul_assoc, mul_div_cancel₀ _ he.ne']`.
+
+Use `le_trans (measure_mono (Metric.closedBall_subset_ball ?_)) hs.1` and prove the remaining obligations. Rewrite using `[hr]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem GlobalTheory.upperDens_bounds_of_almost_homogeneous : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (l ν : Measure V) [l.IsAddHaarMeasure] [IsFiniteMeasure ν] (c : ℝ≥0∞), c ≠ ⊤ → Tendsto (fun r : ℝ => ν (Metric.ball 0 r) / l (Metric.ball 0 r)) (𝓝[>] 0) (𝓝 c) → ∀ ε η : ℝ, 0 < ε → ε < 1 → (∀ x : V, ‖x‖ < η → ∀ᶠ r in 𝓝[>] (0:ℝ), ν (Metric.ball x ((1 - ε) * r)) ≤ ν (Metric.ball 0 r) ∧ ν (Metric.ball 0 r) ≤ ν (Metric.ball x ((1 + ε) * r))) → ∀ x : V, ‖x‖ < η → ENNReal.ofReal ((1 + ε)⁻¹ ^ Module.finrank ℝ V) * c ≤ GlobalTheory.HaarDensChart.upperDens l ν x ∧ GlobalTheory.HaarDensChart.upperDens l ν x ≤ ENNReal.ofReal (((1 + ε) / (1 - ε)) ^ Module.finrank ℝ V) * c := by
   intro V _ _ _ _ _ l ν _ _ c _ hc ε η h0 h1 H x hx
   have he : 0 < 1 - ε := by linarith

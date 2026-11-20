@@ -7,6 +7,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E PositivityTheory.RgBcC PositivityTheory.Rg.BcB.CG PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.F
 open PositivityTheory.RgTw (Mat G)
 
+/- English proof (translation)
+Use `⟨?_, fun k hk x => ?_⟩` and prove the remaining obligations. Set `e : G ≃ₜ G` to `{ toFun := φ, invFun := φ, left_inv := hi, right_inv := hi, continuous_toFun := hc, continuous_invFun := hc }`. Conclude with `hh.1.comp_homeomorph e`. Simplify using `only [hm]`. Conclude with `hh.2 _ (hK k hk) _`.
+-/
 private theorem hecke_comp {G : Type} [Group G] [TopologicalSpace G] {K : Subgroup G} {φ : G → G} (hc : Continuous φ)
     (hi : ∀ g, φ (φ g) = g) (hm : ∀ a b, φ (a * b) = φ a * φ b) (hK : ∀ k ∈ K, φ k ∈ K) {h : G → ℂ}
     (hh : IsHecke K h) : IsHecke K (fun g => h (φ g)) := by
@@ -18,6 +21,33 @@ private theorem hecke_comp {G : Type} [Group G] [TopologicalSpace G] {K : Subgro
   · simp only [hm]
     exact hh.2 _ (hK k hk) _
 
+/- English proof (translation)
+Establish `h0 : IsHecke K (0 : G → ℂ)` using `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`. Establish `Sh` using `hS G V ρ K ho hc`. Establish `hI : IsHecke K ((K : Set G).indicator 1)` using `(Sh u hu 0 h0).2.2.1`. Establish `hu' : ∀ x, x ∈ K ↔ u⁻¹ * x * u⁻¹⁻¹ ∈ K` using `fun x => by`. Rewrite using `[hu (u⁻¹ * x * u⁻¹⁻¹)]`.
+
+Simplify using `[mul_assoc]`. Establish `a1 : ∀ v : G, (∀ x, x ∈ K ↔ v * x * v⁻¹ ∈ K) → ∀ y : Y, (r (fun g => (K : Set G).indicator 1 (v⁻¹ * g)) y : V) = ρ v y` using `fun v hv y => by`. Take `⟨-, hl, -, -⟩` from `Sh v hv _ hI`. Take `⟨-, -, e1, e2⟩` from `(Sh v hv _ hI).2.2.2 y (hY y.2)`. Rewrite using `[hact _ hl, e1, e2]`.
+
+Use `set Ru := r (fun g => (K : Set G).indicator 1 (u⁻¹ * g)) with hRu`. Use `set Ru' := r (fun g => (K : Set G).indicator 1 (u * g)) with hRu'`. Establish `b1 : ∀ y : Y, (Ru y : V) = ρ u y` using `a1 u hu`. Establish `b2 : ∀ y : Y, (Ru' y : V) = ρ u⁻¹ y` using `fun y => by`. Use `a1 u⁻¹ hu' y` as an intermediate fact.
+
+Simplify `this` using `only [inv_inv]`. Establish `hRR : Ru * Ru' = 1`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Use `show (Ru (Ru' y) : V) = y`. Rewrite using `[b1, b2, ← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hAR : A * Ru = Ru' * A`. Rewrite using `[hRu, hA _ (Sh u hu _ hI).2.1, hRu']`. Use `congr 2`. Use function extensionality and compare the values at `g`.
+
+Establish `e : u⁻¹ * θ g = θ (u * g)` using `by rw [hθm, hθu]`. Establish `m : θ (u * g) ∈ K ↔ u * g ∈ K` using `⟨fun h => by simpa only [hθi] using hθK _ h, hθK _⟩`. Rewrite using `[e]`. Distinguish the cases in `c : u * g ∈ K`. Rewrite using `[Set.indicator_of_mem (by exact_mod_cast m.2 c), Set.indicator_of_mem (by exact_mod_cast c)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (by exact_mod_cast fun d => c (m.1 d)), Set.indicator_of_notMem (by exact_mod_cast c)]`. Establish `hθu' : θ u⁻¹ = u` using `by rw [← hθu, hθi]`. Use `⟨?_, fun h hh => ?_, fun h hh => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hf : IsHecke K (fun g => h (θ g))` using `hecke_comp hθc hθi hθm hθK hh`. Establish `hf' : IsHecke K (fun g => h (u * θ g * u⁻¹))`. Use `hecke_comp (φ := fun g => u * θ g * u⁻¹) (by fun_prop) (fun g => ?_) (fun a b => ?_) (fun k hk => ?_) hh` and prove the remaining obligations. Use `show u * θ (u * θ g * u⁻¹) * u⁻¹ = g`. Rewrite using `[hθm, hθm, hθu, hθu', hθi]`.
+
+Use `group`. Use `show u * θ (a * b) * u⁻¹ = u * θ a * u⁻¹ * (u * θ b * u⁻¹)`. Rewrite using `[hθm]`. Use `group`. Conclude with `(hu _).1 (hθK k hk)`.
+
+Establish `e : Ru * r (fun g => h (θ g)) = r (fun g => h (u * θ g * u⁻¹)) * Ru`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Use `show (Ru (r (fun g => h (θ g)) y) : V) = (r (fun g => h (u * θ g * u⁻¹)) (Ru y) : V)`. Take `⟨p1, p2, -⟩` from `Sh u hu _ hf`. Take `⟨q1, q2, -⟩` from `Sh u hu _ hf'`.
+
+Take `⟨-, -, e1, -⟩` from `(Sh u hu _ hf).2.2.2 y (hY y.2)`. Take `⟨-, e2, -, -⟩` from `(Sh u hu _ hf').2.2.2 y (hY y.2)`. Establish `ef : (fun g => h (θ (u⁻¹ * g))) = fun g => h (u * θ (g * u⁻¹) * u⁻¹)`. Use function extensionality and compare the values at `g`. Rewrite using `[hθm, hθm, hθu']`.
+
+Use `congr 1`. Use `group`. Rewrite using `[b1, hact _ hf, hact _ hf', b1, ← e1, ← e2, ef]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨p1, -⟩` from `Sh u hu h hh`.
+
+Use `⟨p1, LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (r (fun g => h (g * u⁻¹)) y : V) = (r h (Ru y) : V)`. Take `⟨-, e2, -, -⟩` from `(Sh u hu h hh).2.2.2 y (hY y.2)`. Rewrite using `[hact _ p1, hact _ hh, b1, e2]`.
+-/
 private theorem core {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (hS : LvShift) (ρ : Representation ℂ G V) (K : Subgroup G) (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G))
     (u : G) (hu : ∀ x, x ∈ K ↔ u * x * u⁻¹ ∈ K) (θ : G → G)
@@ -103,6 +133,39 @@ private theorem core {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
     obtain ⟨-, e2, -, -⟩ := (Sh u hu h hh).2.2.2 y (hY y.2)
     rw [hact _ p1, hact _ hh, b1, e2]
 
+/- English proof (translation)
+Introduce `hSl hLT hTF hHS hLS E _ _ _ n S Z N hS hZ hG π u hu`. Take `⟨hO, hC, -, hNm⟩` from `hLT E n S Z N hS hZ hG`. Take `⟨t1, t2, κ, hκ, t3⟩` from `hTF E n u hu`. Establish `hinv` using `(hSl E n S hS).1`. Establish `hcont` using `(hSl E n S hS).2.1`.
+
+Establish `hthe : ∀ g, thetaF E n g = (ratF E n u)⁻¹ * thF E n g * ratF E n u`. Introduce `g`. Rewrite using `[t1 g]`. Use `group`. Establish `hnorm : ∀ x, x ∈ Lev S N ↔ ratF E n u * x * (ratF E n u)⁻¹ ∈ Lev S N`.
+
+Introduce `x`. Rewrite using `[t3 x]`. Use `⟨hNm κ hκ x, fun hx => ?_⟩` and prove the remaining obligations. Use `hNm κ⁻¹ ((Kf E n).inv_mem hκ) _ hx` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `hθK : ∀ k ∈ Lev S N, thetaF E n k ∈ Lev S N`. Introduce `k hk`. Use `(hnorm _).2 ?_` and prove the remaining obligations. Establish `e : ratF E n u * thetaF E n k * (ratF E n u)⁻¹ = thF E n k` using `(t1 k).symm`. Rewrite using `[e]`.
+
+Conclude with `(hLT E n S Z N hS hZ hG).2.2.1 k hk`. Use `⟨hθK, ?_⟩` and prove the remaining obligations. Introduce `μf hμ Y ρ A hYπ hfd hne hfix hAct hsim hAA hAθ`. Establish `hθm : ∀ a b, thetaF E n (a * b) = thetaF E n a * thetaF E n b`. Introduce `a b`.
+
+Simplify using `only [hthe, map_mul]`. Use `group`. Establish `hθi : ∀ g, thetaF E n (thetaF E n g) = g`. Introduce `g`. Simplify using `only [hthe, map_mul, map_inv, t2, hinv]`.
+
+Use `group`. Establish `hθu : thetaF E n (ratF E n u) = (ratF E n u)⁻¹`. Rewrite using `[hthe, t2]`. Use `group`. Establish `hθc : Continuous (thetaF E n)`.
+
+Establish `: thetaF E n = fun g => (ratF E n u)⁻¹ * thF E n g * ratF E n u` using `funext hthe`. Rewrite using `[this]`. Conclude with `(continuous_const.mul hcont).mul continuous_const`. Establish `hv : (μf (Lev S N : Set (GF E n))).toReal ≠ 0` using `by haveI := hμ`. Conclude with `(ENNReal.toReal_pos (hO.measure_pos μf ⟨1, (Lev S N).one_mem⟩).ne' hC.measure_lt_top.ne).ne'`.
+
+Take `⟨v, hvdef⟩ : ∃ v : ℂ, v = (((μf (Lev S N : Set (GF E n))).toReal : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hv0 : v ≠ 0`. Rewrite using `[hvdef]`. Conclude with `hv` after adjusting the coercions. Establish `toF : ∀ {h : GF E n → ℂ}, IsHecke (Lev S N) h → IsHeckeF (Lev S N) h` using `fun hh => ⟨hh.1, fun k₁ h₁ k₂ h₂ g => by rw [(hh.2 _ h₂ _).2, (hh.2 _ h₁ _).1]⟩`.
+
+Establish `toH : ∀ {h : GF E n → ℂ}, IsHeckeF (Lev S N) h → IsHecke (Lev S N) h` using `fun hh => ⟨hh.1, fun k hk x => ⟨by simpa using hh.2 k hk 1 (Lev S N).one_mem x, by simpa using hh.2 1 (Lev S N).one_mem k hk x⟩⟩`. Establish `hY : Y ≤ fixed (finRep E n) (Lev S N)` using `fun y hy k => by`. Simplify using `using hfix y hy k k.2`. Establish `hact : ∀ h, IsHecke (Lev S N) h → ∀ y : Y, (((v⁻¹ • ρ h : Module.End ℂ Y) y : Y) : Sm E n) = Lv (finRep E n) (Lev S N) h y`. Introduce `h hh y`.
+
+Establish `e : ((ρ h y : Y) : Sm E n) = v • Lv (finRep E n) (Lev S N) h y`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `e1` using `hAct h (toF hh) y`. Establish `e2` using `hHS E n (Lev S N) hO hC μf hμ h hh y (hY y.2)`. Rewrite using `[e1, e2, hvdef]`.
+
+Both sides reduce to the same expression. Use `show ((v⁻¹ • (ρ h y) : Y) : Sm E n) = _`. Rewrite using `[Submodule.coe_smul, e, inv_smul_smul₀ hv0]`. Take `⟨c1, c2, c3⟩` from `core hLS (finRep E n) (Lev S N) hO hC (ratF E n u) hnorm (thetaF E n) hθc hθi hθm hθK hθu Y hY (fun h => v⁻¹ • ρ h) hact A hAA (fun h hh => by`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hAθ h (toF hh)])`.
+
+Use `⟨⟨Y, fun h => v⁻¹ • ρ h, _, hYπ, hfd, hne, hY, hact, ?_, c1, ?_⟩, v, hvdef, fun h hh => ⟨toF (c3 h hh).1, ?_⟩⟩` and prove the remaining obligations. Introduce `W hW`. Use `hsim W fun h hh y hy => ?_` and prove the remaining obligations. Conclude with `(W.smul_mem_iff (inv_ne_zero hv0)).1 (hW h (toH hh) y hy)`. Introduce `h hh`.
+
+Establish `e : (fun g => h (thF E n g)) = fun g => h (ratF E n u * thetaF E n g * (ratF E n u)⁻¹)`. Use function extensionality and compare the values at `fun g => by rw [t1 g]`. Use `show _ * _ = (v⁻¹ • ρ (fun g => h (thF E n g))) * _`. Rewrite using `[e]`. Conclude with `c2 h hh`.
+
+Establish `e2 : v⁻¹ • ρ (fun g => h (g * (ratF E n u)⁻¹)) = (v⁻¹ • ρ h) * (v⁻¹ • ρ (fun g => (Lev S N : Set (GF E n)).indicator 1 ((ratF E n u)⁻¹ * g)))` using `(c3 h hh).2`. Establish `key : ρ (fun g => h (g * (ratF E n u)⁻¹)) * A = v • ((v⁻¹ • ρ h) * ((v⁻¹ • ρ (fun g => (Lev S N : Set (GF E n)).indicator 1 ((ratF E n u)⁻¹ * g))) * A))`. Rewrite using `[← mul_assoc, ← e2, smul_mul_assoc, smul_inv_smul₀ hv0]`. Establish `tr : LinearMap.trace ℂ Y (ρ (fun g => h (g * (ratF E n u)⁻¹)) * A) = v * LinearMap.trace ℂ Y ((v⁻¹ • ρ h) * ((v⁻¹ • ρ (fun g => (Lev S N : Set (GF E n)).indicator 1 ((ratF E n u)⁻¹ * g))) * A))`. Rewrite using `[key, LinearMap.map_smul, smul_eq_mul]`.
+
+Conclude with `tr`.
+-/
 theorem UpperTheory.V.Z.Mult.Pi.toYdA :
     SlotBasic → LevTop → TranslF → HeckeSum → LvShift → UpperTheory.V.Z.Mult.Pi.ToYdA := by
   intro hSl hLT hTF hHS hLS E _ _ _ n S Z N hS hZ hG π u hu

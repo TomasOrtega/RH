@@ -17,24 +17,39 @@ noncomputable section
 
 namespace GlobalTheory.Unf.VolExist
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V (Measure.haar : Measure (GA D V)) inferInstance`. Conclude with `⟨⟨Measure.haar, 𝓕, inferInstance, h𝓕⟩⟩`.
+-/
 theorem nonempty_vol {D : D7} (V : HSp D) : Nonempty (Vol V) := by
   obtain ⟨i1, i2, i3, i4, i5, -, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
   obtain ⟨-, 𝓕, h𝓕⟩ := GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V
     (Measure.haar : Measure (GA D V)) inferInstance
   exact ⟨⟨Measure.haar, 𝓕, inferInstance, h𝓕⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨ν, 𝓝, h⟩ := GlobalTheory.Per.UnitN.exists_isUnitN D S ρ d.e (isIsoSub_e d) ⟨⟨ν, 𝓝, h⟩⟩`.
+-/
 theorem nonempty_volN {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) : Nonempty (VolN d) :=
   let ⟨ν, 𝓝, h⟩ := GlobalTheory.Per.UnitN.exists_isUnitN D S ρ d.e (isIsoSub_e d)
   ⟨⟨ν, 𝓝, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨μ, 𝓕, h⟩ := exists_isCovolOne D m n ⟨⟨μ, 𝓕, h⟩⟩`.
+-/
 theorem nonempty_volM (D : D7) (m n : ℕ) : Nonempty (VolM D m n) :=
   let ⟨μ, 𝓕, h⟩ := exists_isCovolOne D m n
   ⟨⟨μ, 𝓕, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨ν, h⟩ := (GlobalTheory.UnitU.isUnitU_exists_unique_rightInvariant D ρ).1 ⟨⟨ν, h⟩⟩`.
+-/
 theorem nonempty_volU (D : D7) (ρ : ℕ) : Nonempty (VolU D ρ) :=
   let ⟨ν, h⟩ := (GlobalTheory.UnitU.isUnitU_exists_unique_rightInvariant D ρ).1
   ⟨⟨ν, h⟩⟩
 
+/- English proof (translation)
+Introduce `D` and use `⟨nonempty_vol, fun _ _ _ d => nonempty_volN d, nonempty_volM D, nonempty_volU D⟩`.
+-/
 theorem measures_exist : ∀ D : D7, (∀ V : HSp D, Nonempty (Vol V)) ∧
     (∀ (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), Nonempty (VolN d)) ∧ (∀ m n, Nonempty (VolM D m n)) ∧
     ∀ ρ, Nonempty (VolU D ρ) :=

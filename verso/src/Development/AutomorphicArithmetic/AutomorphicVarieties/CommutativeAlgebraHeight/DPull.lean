@@ -8,14 +8,25 @@ section
 variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) {E' : Type} [Ring E']
   [Algebra A E'] (f : E' →ₐ[A] E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pull_D (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E') :
     (D.pull f).D S y = D.D S (Algebra.TensorProduct.map (AlgHom.id S S) f y) := rfl
 
+/- English proof (translation)
+Simplify using `[Det.gen, map_sum]`.
+-/
 private theorem map_gen {ι : Type} [Fintype ι] (x : ι → E') :
     Algebra.TensorProduct.map (AlgHom.id (MvPolynomial ι A) (MvPolynomial ι A)) f (Det.gen (A := A) x) =
       Det.gen (A := A) (fun a => f (x a)) := by
   simp [Det.gen, map_sum]
 
+/- English proof (translation)
+Unfold `Det.chiS`. Rewrite using `[pull_D]`. Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private theorem pull_chiS (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E') :
     (D.pull f).chiS S y = D.chiS S (Algebra.TensorProduct.map (AlgHom.id S S) f y) := by
   unfold Det.chiS
@@ -29,6 +40,9 @@ private theorem pull_chiS (S : Type) [CommRing S] [Algebra A S] (y : S ⊗[A] E'
     | tmul a b => simp
     | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private theorem map_coeff {ι : Type} (α : ι →₀ ℕ) (y : MvPolynomial ι A ⊗[A] E') :
     f (TensorProduct.lid A E' ((MvPolynomial.lcoeff A α).rTensor E' y)) =
       TensorProduct.lid A E ((MvPolynomial.lcoeff A α).rTensor E
@@ -38,17 +52,46 @@ private theorem map_coeff {ι : Type} (α : ι →₀ ℕ) (y : MvPolynomial ι 
   | tmul a b => simp
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Unfold `Det.chElt`. Rewrite using `[map_coeff, pull_chiS, ← Polynomial.aeval_algHom_apply, map_gen]`.
+-/
 private theorem map_chElt {k : ℕ} (x : Fin k → E') (α : Fin k →₀ ℕ) :
     f ((D.pull f).chElt x α) = D.chElt (fun a => f (x a)) α := by
   unfold Det.chElt
   rw [map_coeff, pull_chiS, ← Polynomial.aeval_algHom_apply, map_gen]
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qk2.map_surj <;> assumption`.
+-/
 private theorem map_surj (hf : Function.Surjective f) (S : Type) [CommRing S] [Algebra A S] :
     Function.Surjective (Algebra.TensorProduct.map (AlgHom.id S S) f) :=
   by apply _root_.UpperTheory.Reformulated.B.Qk2.map_surj <;> assumption
 
 end
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D E' _ _ f`. Use `⟨fun x => ?_, fun x hx => ?_, fun x hx => ?_, fun hf => ⟨fun x hx => ?_, fun y hy => ?_⟩⟩` and prove the remaining obligations. Unfold `Det.chi`. Rewrite using `[pull_D]`. Simplify using the standard rewrite rules.
+
+Rewrite `hx`, the goal using `[Det.mem_ker]`. Introduce `S _ _ y u v`. Rewrite using `[pull_D, pull_D, map_add, map_mul, map_mul, Algebra.TensorProduct.map_tmul, map_one]`. Conclude with `hx S _ _ _`. Unfold `Det.CH at hx`.
+
+Proceed by induction on `hx using TwoSidedIdeal.span_induction with`. Consider the case `mem x h`. Take `⟨k, z, α, rfl⟩` from `h`. Conclude with `TwoSidedIdeal.subset_span ⟨k, _, α, map_chElt D f z α⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `D.CH.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `D.CH.add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `D.CH.neg_mem hx`.
+
+Consider the case `left_absorb a x _ hx => rw [map_mul]`. Conclude with `D.CH.mul_mem_left _ _ hx`. Consider the case `right_absorb b x _ hx => rw [map_mul]`. Conclude with `D.CH.mul_mem_right _ _ hx`. Rewrite `hx`, the goal using `[Det.mem_ker]`.
+
+Introduce `S _ _ y u v`. Take `⟨y, rfl⟩` from `map_surj f hf S y`. Take `⟨u, rfl⟩` from `map_surj f hf S u`. Take `⟨v, rfl⟩` from `map_surj f hf S v`. Use `hx S y u v` as an intermediate fact.
+
+Rewrite `this` using `[pull_D, pull_D, map_add, map_mul, map_mul, Algebra.TensorProduct.map_tmul, map_one]`. Then use the resulting hypothesis. Unfold `Det.CH at hy`. Proceed by induction on `hy using TwoSidedIdeal.span_induction with`. Consider the case `mem y h`. Take `⟨k, z, α, rfl⟩` from `h`.
+
+Use `choose w hw using fun a => hf (z a)`. Use `⟨(D.pull f).chElt w α, TwoSidedIdeal.subset_span ⟨k, w, α, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_chElt]`. Simplify using `only [hw]`. Consider the case `zero => exact ⟨0, (D.pull f).CH.zero_mem, map_zero f⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`. Conclude with `⟨x' + y', (D.pull f).CH.add_mem hx' hy', map_add f _ _⟩`. Consider the case `neg x _ hx`.
+
+Take `⟨x', hx', rfl⟩` from `hx`. Conclude with `⟨-x', (D.pull f).CH.neg_mem hx', map_neg f _⟩`. Consider the case `left_absorb a x _ hx`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨a, rfl⟩` from `hf a`.
+
+Conclude with `⟨a * x', (D.pull f).CH.mul_mem_left _ _ hx', map_mul f _ _⟩`. Consider the case `right_absorb a x _ hx`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨a, rfl⟩` from `hf a`. Conclude with `⟨x' * a, (D.pull f).CH.mul_mem_right _ _ hx', map_mul f _ _⟩`.
+-/
 theorem UpperTheory.V.CA.d_pull :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) {E' : Type} [Ring E'] [Algebra A E'] (f : E' →ₐ[A] E), (∀ x, (D.pull f).chi x = D.chi (f x)) ∧ (∀ x, f x ∈ D.ker → x ∈ (D.pull f).ker) ∧ (∀ x ∈ (D.pull f).CH, f x ∈ D.CH) ∧ (Function.Surjective f → (∀ x, x ∈ (D.pull f).ker → f x ∈ D.ker) ∧ ∀ y ∈ D.CH, ∃ x ∈ (D.pull f).CH, f x = y) := by
   intro n A E _ _ _ D E' _ _ f

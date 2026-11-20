@@ -3,6 +3,13 @@ import Formalism.HyperbolicPlaceProducts.DetIndexProductHyperbolicInequality
 namespace Formalism.SLP.GlobalBoundRefinements.P
 open Formalism.SLP.GlobalBoundRefinements
 
+/- English proof (translation)
+Establish `e00` using `congrFun (congrFun hM 0) 0`. Establish `e11` using `congrFun (congrFun hM 1) 1`. Establish `e01` using `congrFun (congrFun hM 0) 1`. Simplify using `[J, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply] at e00 e11 e01`. Rewrite `e00`, `e11` using `[Complex.conj_mul', Complex.conj_mul']`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `e00` after adjusting the coercions. Conclude with `e11` after adjusting the coercions. Establish `h : (starRingEnd ℂ) (M 0 0) * M 0 1 = (starRingEnd ℂ) (M 1 0) * M 1 1`. Take the linear combination `e01`.
+
+Use `congrArg norm h` as an intermediate fact. Simplify `this` using `[norm_mul]`.
+-/
 theorem matrix_entries_integral (M : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.conjTranspose * J * M = J) :
     ‖M 0 0‖ ^ 2 - ‖M 1 0‖ ^ 2 = 1 ∧ ‖M 0 1‖ ^ 2 - ‖M 1 1‖ ^ 2 = -1 ∧
       ‖M 0 0‖ * ‖M 0 1‖ = ‖M 1 0‖ * ‖M 1 1‖ := by
@@ -19,6 +26,15 @@ theorem matrix_entries_integral (M : Matrix (Fin 2) (Fin 2) ℂ) (hM : M.conjTra
     have := congrArg norm h
     simpa [norm_mul] using this
 
+/- English proof (translation)
+Introduce `M hM`. Take `⟨h1, h2, h3⟩` from `matrix_entries_integral M hM`. Establish `hsq : ‖M 0 0‖ ^ 2 * ‖M 0 1‖ ^ 2 = ‖M 1 0‖ ^ 2 * ‖M 1 1‖ ^ 2`. Rewrite using `[← mul_pow, ← mul_pow, h3]`. Establish `hbc : ‖M 0 1‖ ^ 2 = ‖M 1 0‖ ^ 2` using `by nlinarith`.
+
+Establish `had : ‖M 0 0‖ ^ 2 = ‖M 1 1‖ ^ 2` using `by linarith`. Establish `hbc' : ‖M 0 1‖ = ‖M 1 0‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 hbc`. Establish `had' : ‖M 0 0‖ = ‖M 1 1‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 had`. Use `⟨had', hbc', h1, ?_⟩` and prove the remaining obligations. Introduce `sh ch hsh hch hchsh hc`.
+
+Establish `hsh0 : sh ≠ 0` using `hsh.ne'`. Establish `key : ‖M 0 0‖ ^ 2 = (ch / sh) ^ 2`. Establish `: ‖M 0 0‖ ^ 2 = 1 + (1 / sh) ^ 2` using `by rw [← hc]; linarith`. Rewrite using `[this, div_pow, div_pow, hchsh]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `(pow_left_inj₀ (norm_nonneg _) (div_nonneg hch hsh.le) two_ne_zero).1 key`.
+-/
 theorem unipotent_upper_entries : EntriesOfSignaturePreserving := by
   intro M hM
   obtain ⟨h1, h2, h3⟩ := matrix_entries_integral M hM
@@ -37,6 +53,9 @@ theorem unipotent_upper_entries : EntriesOfSignaturePreserving := by
     field_simp
   exact (pow_left_inj₀ (norm_nonneg _) (div_nonneg hch hsh.le) two_ne_zero).1 key
 
+/- English proof (translation)
+Introduce `M sh ch u u' hM hsh hch hchsh hc hu`. Take `⟨_, hbc, _, hA⟩` from `unipotent_upper_entries M hM`. Establish `ha` using `hA sh ch hsh hch hchsh hc`. Establish `hb : ‖M 0 1‖ = 1 / sh` using `hbc.trans hc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem arithmetic_lattice_hypothesis : AlHyp := by
   intro M sh ch u u' hM hsh hch hchsh hc hu
   obtain ⟨_, hbc, _, hA⟩ := unipotent_upper_entries M hM

@@ -11,6 +11,9 @@ open scoped Classical
 open GlobalTheory.CovTestDR
 open GlobalTheory.BcEigen
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BcEigen.relabel_sums | exact GlobalTheory.BcEigen.relabel_sums | (intros; apply GlobalTheory.BcEigen.relabel_sums <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.relabel_root_power_sum_and_signs : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ), j ≤ N →
     rename (rootIdx ι N j) (∑ τ, pSum τ 2 : Pol ι N) = sq2 (rkB ι N j) ∧
     rename (rootIdx ι N j) (lamA ι N j) = linE (rkB ι N j) lamSign ∧

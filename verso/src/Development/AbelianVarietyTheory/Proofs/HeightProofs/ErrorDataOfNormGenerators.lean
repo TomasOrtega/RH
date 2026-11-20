@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.SplitGen
 
+/- English proof (translation)
+Establish `h1` using `Formalism.MainNotions.Gaps.LevGap.split_F H p hp (GlobalTheory.HostSplit.split_of_one_mod R H p hp hc).1`. Establish `hpos : 0 < Module.finrank ℚ H.F` using `Module.finrank_pos`. Establish `hfin : {v : HeightOneSpectrum (𝓞 H.F) | (p : 𝓞 H.F) ∈ v.asIdeal}.Finite` using `Set.finite_of_ncard_pos (by rw [h1]; exact hpos)`. Use `haveI := hfin.to_subtype`. Establish `h2 : Nat.card ι = Nat.card {v : HeightOneSpectrum (𝓞 H.F) | (p : 𝓞 H.F) ∈ v.asIdeal}`.
+
+Rewrite using `[Nat.card_coe_set_eq, h1, Formalism.MainNotions.Gaps.LevGap.finrank_F, Nat.card_eq_fintype_card, hι]`. Take `⟨e⟩` from `Finite.card_eq.1 h2`. Conclude with `⟨fun v => (e v).1, Subtype.val_injective.comp e.injective, fun v => (e v).2⟩`.
+-/
 theorem exists_places {R : Ranks} (H : Host R) {p : ℕ} (hp : p.Prime) (hc : p % (H.QS * H.q * H.d) = 1)
     (ι : Type) [Fintype ι] (hι : Fintype.card ι = R.f) :
     ∃ φ : ι → HeightOneSpectrum (𝓞 H.F), Function.Injective φ ∧ ∀ v, (p : 𝓞 H.F) ∈ (φ v).asIdeal := by
@@ -23,6 +28,13 @@ theorem exists_places {R : Ranks} (H : Host R) {p : ℕ} (hp : p.Prime) (hc : p 
   obtain ⟨e⟩ := Finite.card_eq.1 h2
   exact ⟨fun v => (e v).1, Subtype.val_injective.comp e.injective, fun v => (e v).2⟩
 
+/- English proof (translation)
+Introduce `X h`. Use `choose pG hG1 hG2 using h`. Use `choose pT hT1 hT2 hT3 using X.toD7.T_norm`. Establish `hv : ∀ u, ∃ φ : (X.toD7.mem u).A.vT → HeightOneSpectrum (𝓞 X.toD7.host.F), Function.Injective φ ∧ ∀ v, ((X.toD7.mem u).A.T : 𝓞 X.toD7.host.F) ∈ (φ v).asIdeal`. Introduce `u`.
+
+Use `letI := (X.toD7.mem u).A.vTFin`. Use `exists_places X.toD7.host (X.toD7.mem u).A.T_prime ?_ _ (X.toD7.mem u).A.card_vT` and prove the remaining obligations. Establish `h1 : (X.toD7.mem u).A.T = X.B.T u` using `X.C.A_T u`. Rewrite using `[h1]`. Conclude with `X.B.T_cond u`.
+
+Use `choose φ hφ1 hφ2 using hv`. Conclude with `⟨⟨pG, hG1, hG2, pT, hT1, hT2, hT3, φ, hφ1, hφ2⟩⟩`.
+-/
 theorem nonempty_errX : ∀ X : Stages, (∀ i, ∃ π : 𝓞 X.B.host.E, (π : X.B.host.E) ∈ X.B.host.K ∧
     (π : X.B.host.E) * X.B.host.conj (π : X.B.host.E) = (X.B.host.g i : X.B.host.E)) → Nonempty (ErrX X.toD7) := by
   intro X h

@@ -14,6 +14,11 @@ namespace GlobalTheory.MuBlock
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨A.lpZero_unr w, A.frobEig_zero w⟩`. Consider the case `cons k L ih`. Establish `hk` using `(A.unr_tw a (f k)).2 ha`. Use `⟨(A.unr_sum _ _).2 ⟨hk, ih.1⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.foldr_cons, List.map_cons, List.sum_cons]`. Rewrite using `[A.frobEig_sum _ _ hk ih.1, A.frobEig_tw a _ ha, ih.2]`.
+-/
 theorem frobEig_foldr {w : PlE H} (a : A.LP w) (ha : A.unr a) (f : ℝ → ℝ) (L : List ℝ) :
     A.unr (L.foldr (fun k acc => A.lpSum (A.lpTw a (f k)) acc) (A.lpZero w)) ∧
     A.frobEig (L.foldr (fun k acc => A.lpSum (A.lpTw a (f k)) acc) (A.lpZero w)) =
@@ -26,12 +31,20 @@ theorem frobEig_foldr {w : PlE H} (a : A.LP w) (ha : A.unr a) (f : ℝ → ℝ) 
     simp only [List.foldr_cons, List.map_cons, List.sum_cons]
     rw [A.frobEig_sum _ _ hk ih.1, A.frobEig_tw a _ ha, ih.2]
 
+/- English proof (translation)
+The claim follows from `frobEig_foldr N A _ h (fun k : ℝ => ((p.d : ℝ) - 1) / 2 - k) _`.
+-/
 theorem frobEig_spehLoc (p : Part A.CG) (w : PlE H) (h : A.unr (A.locG p.π w)) :
     A.unr (spehLoc N A p w) ∧ A.frobEig (spehLoc N A p w) =
       ((List.range p.d).map fun k => (A.frobEig (A.locG p.π w)).map
         (· * ((normV w : ℕ) : ℂ) ^ (((((p.d : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ))).sum :=
   frobEig_foldr N A _ h (fun k : ℝ => ((p.d : ℝ) - 1) / 2 - k) _
 
+/- English proof (translation)
+Proceed by induction on `Pa with`. Consider the case `nil => exact ⟨A.lpZero_unr w, A.frobEig_zero w⟩`. Consider the case `cons p Pa ih`. Establish `ih'` using `ih fun q hq => h q (List.mem_cons_of_mem _ hq)`. Establish `hp` using `frobEig_spehLoc N A p w (h p (List.mem_cons_self ..))`.
+
+Use `⟨(A.unr_sum _ _).2 ⟨hp.1, ih'.1⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.frobEig (A.lpSum (spehLoc N A p w) (isoLoc N A Pa w)) = _`. Rewrite using `[A.frobEig_sum _ _ hp.1 ih'.1, hp.2, ih'.2]`. Simplify using `only [List.map_cons, List.sum_cons]`.
+-/
 theorem frobEig_isoLoc (Pa : List (Part A.CG)) (w : PlE H) (h : ∀ p ∈ Pa, A.unr (A.locG p.π w)) :
     A.unr (isoLoc N A Pa w) ∧ A.frobEig (isoLoc N A Pa w) =
       (Pa.map fun p => ((List.range p.d).map fun k => (A.frobEig (A.locG p.π w)).map
@@ -46,13 +59,24 @@ theorem frobEig_isoLoc (Pa : List (Part A.CG)) (w : PlE H) (h : ∀ p ∈ Pa, A.
     rw [A.frobEig_sum _ _ hp.1 ih'.1, hp.2, ih'.2]
     simp only [List.map_cons, List.sum_cons]
 
+/- English proof (translation)
+The claim follows from `Multiset.card_eq_one.1 (by rw [A.frobEig_card a hu, hd])`.
+-/
 theorem frobEig_eq_single {w : PlE H} (a : A.LP w) (hu : A.unr a) (hd : A.lpDim a = 1) :
     ∃ c, A.frobEig a = {c} :=
   Multiset.card_eq_one.1 (by rw [A.frobEig_card a hu, hd])
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+-/
 theorem absNorm_eq_normV (w : PlE H) : (Ideal.absNorm w.asIdeal : ℕ) = normV w := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Establish `h` using `hC S hS`. Establish `he : {σ : G H.E N.Om | ∃ w ∉ S, IsSplitPl H w ∧ ∃ B : ValuationSubring N.Om, IsPlaceOver (F` using `H.E) B w ∧ IsFrob (F := H.E) B (normV w) σ} = ∅ := by`. Use extensionality with `σ`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨w, hw, hs, -⟩`. Conclude with `hn w hw hs`. Rewrite `h` using `[he, closure_empty]`. Conclude with `Set.empty_ne_univ h`.
+-/
 theorem exists_split_not_mem (hC : ∀ Sg : Set (PlE H), Sg.Finite →
     closure {σ : G H.E N.Om | ∃ w ∉ Sg, IsSplitPl H w ∧ ∃ B : ValuationSubring N.Om,
       IsPlaceOver (F := H.E) B w ∧ IsFrob (F := H.E) B (normV w) σ} = Set.univ)
@@ -73,6 +97,37 @@ end GlobalTheory.MuBlock
 
 namespace GlobalTheory.MuBlock
 
+/- English proof (translation)
+Establish `hLP` using `hT.1`. Establish `hAut` using `hT.2.1`. Establish `heu` using `D.naut.etaT_unr w`. Establish `hed : D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `D.naut.locG_dim _ _`. Take `⟨e, he⟩` from `frobEig_eq_single D.nd D.naut _ heu hed`.
+
+Establish `hen : ‖e‖ = 1` using `(D.naut.tempered_unr _ heu).1 (hAut.2.2.1 w) e (by rw [he]; exact Multiset.mem_singleton_self e)`. Establish `he0 : e ≠ 0` using `by intro h; rw [h] at hen; simp at hen`. Take `⟨hbu, hbe⟩` from `D.naut.etaTinv_def w`. Establish `hbd : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ _`. Establish `hb : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {e⁻¹}` using `by rw [hbe, he]; simp`.
+
+Establish `hbn : ‖e⁻¹‖ = 1` using `by rw [norm_inv, hen, inv_one]`. Take `⟨m, hm⟩` from `frobEig_eq_single D.nd D.naut _ hμ (D.naut.locG_dim _ _)`. Establish `hmn : ‖m‖ = 1` using `(D.naut.tempered_unr _ hμ).1 (hAut.2.2.2 i w) m (by rw [hm]; exact Multiset.mem_singleton_self m)`. Establish `htw : D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w) = {m * e⁻¹}`. Rewrite using `[D.naut.locG_tw, D.naut.frobEig_char _ _ (e⁻¹) hμ hbu hbd hb, hm]`.
+
+Simplify using the standard rewrite rules. Establish `hV` using `h3 i σ P hth w hs`. Establish `hiso` using `frobEig_isoLoc D.nd D.naut Pa w hPa`. Establish `hVu : D.naut.unr (D.naut.locV i P w)` using `by rw [← hB.2.2.2.1 w hs]; exact hiso.1`. Establish `hinv : D.naut.lpChar (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) = D.naut.lpUnr w {1}`.
+
+Establish `hu` using `D.naut.unr_char _ _ hed hbu heu`. Rewrite using `[D.naut.unr_eq_lpUnr _ hu, D.naut.frobEig_char _ _ e hbu heu hed he, hb]`. Simplify using `[he0]`. Establish `hX : D.naut.lpChar (D.naut.locV i P w) (D.naut.locG D.naut.etaT w) = D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w)`. Rewrite using `[hV, (hLP w (D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w)) (D.naut.locW i σ w) (D.naut.locG D.naut.etaTinv w) (D.naut.locG D.naut.etaT w) 0 hbd hed).2.2.2.1, hinv]`.
+
+Conclude with `(hLP w _ (D.naut.locW i σ w) (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaT w) 0 hed hed).2.2.2.2.1`. Establish `hXu : D.naut.unr (D.naut.lpSum (D.naut.locW i σ w) (spehLoc D.nd D.naut (muPart D.nd D.naut i) w))`. Rewrite using `[← hX]`. Conclude with `D.naut.unr_char _ _ hed hVu heu`. Take `⟨hWu, hSu⟩` from `(D.naut.unr_sum _ _).1 hXu`.
+
+Establish `hmu` using `frobEig_spehLoc D.nd D.naut (muPart D.nd D.naut i) w hμ`. Simplify using `only [muPart] at hmu`. Establish `hVe : D.naut.frobEig (D.naut.locV i P w) = (D.naut.frobEig (D.naut.locW i σ w)).map (· * e⁻¹) + ((List.range D.R.t).map fun k => ({(m * e⁻¹) * ((normV w : ℕ) : ℂ) ^ (((((D.R.t : ℝ) - 1) / 2 - (k : ℝ) : ℝ)) : ℂ)} : Multiset ℂ)).sum`. Rewrite using `[hV, D.naut.frobEig_char _ _ _ hXu hbu hbd hb, D.naut.frobEig_sum _ _ hWu hSu, Multiset.map_add]`. Simplify using `only [muPart]`.
+
+Rewrite using `[hmu.2, hm]`. Use `congr 1`. Rewrite using `[← Multiset.coe_mapAddMonoidHom, map_list_sum, List.map_map]`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+
+Introduce `k _`. Simplify using `only [Function.comp_apply, Multiset.coe_mapAddMonoidHom, Multiset.map_singleton]`. Put the polynomial expressions in normal form. Establish `key` using `GlobalTheory.T.segment_eigenvalue_sum_formula (normV w) D.R.t (Pa.map fun p => (p.d, D.naut.frobEig (D.naut.locG p.π w))) ((D.naut.frobEig (D.naut.locW i σ w)).map (· * e⁻¹)) (m * e⁻¹) (by exact_mod_cast GlobalTheory.LocalInv.one_lt_normV w) D.R.t_odd.pos (by rw [norm_mul, hmn, h …`. Introduce `x hx`.
+
+Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hx`. Rewrite using `[norm_mul, hbn, mul_one]`. Use `hRS i σ hσ w hs hWu α hα` as an intermediate fact. Rewrite using `[absNorm_eq_normV] at this)` and apply the resulting hypothesis. Use the proof step `(by`.
+
+Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Use `⟨(hB.1 p hp).2.1, ?_, GlobalTheory.T.unramified_frobenius_eigen_unit D hT h7 i P Pa hB p hp w (hPa p hp)⟩` and prove the remaining obligations. Introduce `h0`. Express the relevant statement in the definitionally equal form `D.naut.frobEig (D.naut.locG p.π w) = 0 at h0`.
+
+Establish `h1` using `D.naut.frobEig_card _ (hPa p hp)`. Rewrite `h1` using `[h0, D.naut.locG_dim]`. Use `(hB.1 p hp).1` as an intermediate fact. Simplify using `at h1`. Use the proof step `omega)`.
+
+Use the proof step `(by`. Establish `hiso2` using `hiso.2`. Simplify using `only [GlobalTheory.LocalInv.list_coe, List.map_map] at hiso2`. Rewrite using `[List.map_map]`. Conclude with `hiso2.symm.trans ((congrArg D.naut.frobEig (hB.2.2.2.1 w hs)).trans hVe))`.
+
+Use `⟨?_, fun p hp hpt => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxt⟩` from `key.1`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨p, hp, hxt⟩`. Take `⟨h1, h2⟩` from `key.2 _ (List.mem_map_of_mem (f := fun p : Part D.naut.CG => (p.d, D.naut.frobEig (D.naut.locG p.π w))) hp) hpt`.
+
+Conclude with `⟨h1, h2.trans htw.symm⟩`.
+-/
 theorem split_step (D : D7) (hT : SumRepresentations.tie0 D) (h3 : SumRepresentations.adm3 D) (h7 : SumRepresentations.adm7 D)
     (hRS : GlobalTheory.RowCopy.RowSize D) (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)) (hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥) (hth : thetaOf D.nd D.naut i σ P)
@@ -165,6 +220,19 @@ end GlobalTheory.MuBlock
 
 namespace GlobalTheory.MuBlock
 
+/- English proof (translation)
+Introduce `D hT h3 h5 h7 hRS hH i σ P Pa hσ hth hB`. Establish `hgood : ∀ᶠ w in Filter.cofinite, (∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w)`. Use `Filter.Eventually.and ?_ (D.naut.locG_unr_ae _)` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finite (List.finite_toSet Pa)).2 fun p _ => D.naut.locG_unr_ae p.π`. Take `⟨w0, hw0, hs0⟩` from `exists_split_not_mem D.nd h5.2.2.1 _ (Filter.eventually_cofinite.1 hgood)`.
+
+Establish `hg0 : (∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w0)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w0)`. Simplify using `using hw0`. Take `⟨⟨p0, hp0, hpt⟩, -⟩` from `split_step D hT h3 h7 hRS i σ P Pa hσ hth hB w0 hs0 hg0.1 hg0.2`. Establish `hall : ∀ w, ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w)) → IsSplitPl D.host w → p0.d = D.R.t ∧ D.naut.frobEig (D.naut.locG p0.π w) = D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w)` using `fun w hw hs => (split_step D hT h3 h7 hRS i σ P Pa hσ hth hB w hs hw.1 hw.2).2 p0 hp0 hpt`. Establish `htu : ∀ w, D.naut.unr (D.naut.locG (D.naut.muC i) w) → D.naut.unr (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w)` using `fun w h => by`.
+
+Rewrite using `[D.naut.locG_tw]`. Conclude with `D.naut.unr_char _ _ (D.naut.locG_dim _ _) h (D.naut.etaTinv_def w).1`. Take `⟨hd0, hf0⟩` from `hall w0 hg0 hs0`. Establish `ha0 : p0.a = 1`. Establish `h1` using `D.naut.frobEig_card _ (hg0.1 p0 hp0)`.
+
+Rewrite `h1` using `[hf0, D.naut.frobEig_card _ (htu w0 hg0.2), D.naut.locG_dim, D.naut.locG_dim]`. Conclude with `h1.symm`. Take `⟨a, π, d⟩` from `p0`. Simplify using `only at ha0 hd0 hall hp0`. Substitute `ha0 hd0` using the available equality.
+
+Establish `hν : π = D.naut.tw (D.naut.muC i) D.naut.etaTinv`. Use `hH π _ ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with w hw hs`. Rewrite using `[D.naut.unr_eq_lpUnr _ (hw.1 _ hp0), (hall w hw hs).2, ← D.naut.unr_eq_lpUnr _ (htu w hw.2)]`. Substitute `hν` using the available equality.
+
+Conclude with `hp0`.
+-/
 theorem mu_block_mem : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm3 D → SumRepresentations.adm5 D → SumRepresentations.adm7 D →
     GlobalTheory.RowCopy.RowSize D → GlobalTheory.RowCopy.HeckeSplitOne D →
     ∀ (i : D.nd.Loc) (σ : D.what₂.FT) (P : D.naut.AV i) (Pa : List (Part D.naut.CG)),

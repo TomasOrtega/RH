@@ -12,6 +12,41 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.SplitConst
 
+/- English proof (translation)
+Introduce `E _ _ _ r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ hNAZ hNCZ hcZ hwZ`. Establish `hZX : Z + 1 ≤ Real.exp Z` using `Real.add_one_le_exp Z`. Use `set X := Real.exp Z with hXdef`. Establish `hX : 2 ≤ X` using `by linarith`. Establish `le_of_log : ∀ a : ℝ, 0 < a → Real.log a ≤ Z → a ≤ X` using `fun a ha h => (Real.log_le_iff_le_exp ha).1 h`.
+
+Establish `hd : 1 ≤ dE E`. Unfold `dE`. Use `NumberField.discr_ne_zero E` as an intermediate fact. Establish `h2 : (1 : ℤ) ≤ |NumberField.discr E|` using `Int.one_le_abs this`. Conclude with `h2` after adjusting the coercions.
+
+Establish `hn : 2 ≤ Module.finrank ℚ E`. Establish `h1` using `Module.finrank_mul_finrank ℚ (NumberField.maximalRealSubfield E) E`. Establish `h2 : Module.finrank (NumberField.maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `h3 : 0 < Module.finrank ℚ (NumberField.maximalRealSubfield E)` using `Module.finrank_pos`. Rewrite `h1` using `[h2]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hf : (1 : ℝ) ≤ fdeg E`. Establish `: 1 ≤ fdeg E` using `by unfold fdeg; omega`. Conclude with `this` after adjusting the coercions. Establish `hg1 : (1 : ℝ) ≤ g` using `by exact_mod_cast hg`.
+
+Establish `hNA1 : (1 : ℝ) ≤ NA` using `by exact_mod_cast hNA`. Establish `hNC1 : (1 : ℝ) ≤ NC` using `by exact_mod_cast hNC`. Establish `hd'` using `le_of_log _ (by linarith) hdZ`. Establish `hg'` using `le_of_log _ (by linarith) hgZ`. Establish `hNA'` using `le_of_log _ (by linarith) hNAZ`.
+
+Establish `hNC'` using `le_of_log _ (by linarith) hNCZ`. Establish `hc'` using `le_of_log _ hc hcZ`. Establish `hw'` using `le_of_log _ (by linarith) hwZ`. Establish `hf' : (fdeg E : ℝ) ≤ X` using `by linarith`. Establish `pe` using `isBoundedByPowerOfAtLeastTwo_inv_d4ep0 hX hg1 hd hf hNA1 hNC1 hc hw hg' hd' hf' hNA' hNC' hc' hw'`.
+
+Establish `ph` using `rh_inv hX hc hw hc' hw'`. Establish `pd` using `PB.base hX (by linarith) hd'`. Establish `pf` using `PB.base hX (by linarith) hf'`. Establish `pNA` using `PB.base hX (by linarith) hNA'`. Establish `pNC` using `PB.base hX (by linarith) hNC'`.
+
+Establish `pr : PB X 1 ((r - 2 : ℕ) : ℝ)`. Use `PB.base hX (by positivity) ?_` and prove the remaining obligations. Establish `: ((r - 2 : ℕ) : ℝ) ≤ r` using `by exact_mod_cast Nat.sub_le r 2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `prd : PB X 1 (rdE E)` using `pd.of_le (Real.rpow_nonneg (by linarith) _) (rpow_le_self hd (by`.
+
+Establish `: 1 ≤ Module.finrank ℚ E` using `by omega`. Conclude with `this))` after adjusting the coercions. Establish `p1 : PB X 0 1` using `PB.const hX 0 (by norm_num) (by norm_num)`. Establish `p2 : PB X 1 2` using `PB.const hX 1 (by norm_num) (by norm_num)`. Establish `p4 : PB X 2 4` using `PB.const hX 2 (by norm_num) (by norm_num)`.
+
+Establish `p40 : PB X 6 40` using `PB.const hX 6 (by norm_num) (by norm_num)`. Establish `p1000 : PB X 10 1000` using `PB.const hX 10 (by norm_num) (by norm_num)`. Use `set ep := flowEpsilonBound g (dE E) (fdeg E) NA NC c w`. Use `set rh := d6rh c w`. Establish `hZ2 : Z ≤ Z ^ 2` using `by nlinarith`.
+
+Prove the components needed by the constructor for the conclusion. Establish `pm` using `(((pf.mul (((p2.mul pf).mul pr).pow 3)).mul pd).mul pNA).mul ((pNC.pow 2).mul prd |>.mul pe).sqrt`. Establish `py` using `(p1000.mul pm).mul ph`. Establish `hy : 1000 * frameIndexBound r (fdeg E) (dE E) (rdE E) NA NC ep / rh = 1000 * ((fdeg E : ℝ) * (2 * (fdeg E : ℝ) * ((r - 2 : ℕ) : ℝ)) ^ 3 * dE E * NA * √((NC : ℝ) ^ 2 * rdE E * ep⁻¹)) * rh⁻¹`. Unfold `frameIndexBound`.
+
+Rewrite using `[div_eq_mul_inv, div_eq_mul_inv, Nat.cast_mul, Nat.cast_mul, Nat.cast_ofNat]`. Rewrite `py` using `[← hy]`. Establish `pn : PB X 100 (nQ E r g NA NC c w : ℝ)`. Use `(((py.add p1).add p1).mono (by norm_num)).of_le (by positivity) ?_` and prove the remaining obligations. Unfold `nQ`.
+
+Use `push_cast`. Use `Nat.ceil_lt_add_one py.2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `pn.log_le (by unfold nQ; positivity)` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `pmu` using `((p4.mul ((pf.mul pr).pow 3)).mul pd).mul pe.sqrt`. Establish `pb` using `((p2.mul (((p4.mul pr.sqrt).mul pmu).mul (p40.mul ph))).mono (j := 100) (by norm_num)).pow (2 * p0 - 1)`. Establish `hy : d6La r p0 (fdeg E) (dE E) ep rh = (2 * (4 * √((r - 2 : ℕ) : ℝ) * (4 * ((fdeg E : ℝ) * ((r - 2 : ℕ) : ℝ)) ^ 3 * dE E * √(ep⁻¹)) * (40 * rh⁻¹))) ^ (2 * p0 - 1)`. Unfold `d6La ReciprocityTheory.MultiplicativeHeights.approxR d5mu`.
+
+Rewrite using `[div_eq_mul_inv _ (rh / 40), inv_div, div_eq_mul_inv 40, div_eq_mul_inv, ← Real.sqrt_inv]`. Rewrite `pb` using `[← hy]`. Establish `pL : PB X (100 * (2 * p0 - 1)) (LaQ E r p0 g NA NC c w)`. Unfold `LaQ`. Apply the tactic sequence `rcases max_choice (1 : ℝ) _ with h | h <;> rw [h]`.
+
+Conclude with `p1.mono (Nat.zero_le _)`. Conclude with `pb`. Establish `h1` using `pL.log_le (lt_of_lt_of_le one_pos (le_max_left _ _))`. Establish `h2 : ((100 * (2 * p0 - 1) : ℕ) : ℝ) ≤ 200 * r`. Establish `: 100 * (2 * p0 - 1) ≤ 200 * r` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Establish `h3 : ((100 * (2 * p0 - 1) : ℕ) : ℝ) * Z ≤ (200 * Z) * Z` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem constants_bounded_sq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r p0 g NA NC : ℕ) (c₁ w Z : ℝ), 3 ≤ r → 1 ≤ p0 → p0 ≤ r → 1 ≤ g → 1 ≤ NA → 1 ≤ NC → 0 < c₁ → 1 ≤ w → 1 ≤ Z → (fdeg E : ℝ) ≤ Z → (r : ℝ) ≤ Z → Real.log (dE E) ≤ Z → Real.log g ≤ Z → Real.log NA ≤ Z → Real.log NC ≤ Z → Real.log c₁ ≤ Z → Real.log w ≤ Z → Real.log (nQ E r g NA NC c₁ w) ≤ 200 * Z ^ 2 ∧ Real.log (LaQ E r p0 g NA NC c₁ w) ≤ 200 * Z ^ 2 := by
   intro E _ _ _ r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ hNAZ hNCZ hcZ hwZ
   have hZX : Z + 1 ≤ Real.exp Z := Real.add_one_le_exp Z
@@ -102,6 +137,11 @@ theorem constants_bounded_sq : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
       mul_le_mul_of_nonneg_right (by linarith) (by linarith)
     nlinarith
 
+/- English proof (translation)
+Introduce `E _ _ _ r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ hNAZ hNCZ hcZ hwZ`. Take `⟨h1, h2⟩` from `constants_bounded_sq E r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ hNAZ hNCZ hcZ hwZ`. Establish `h3 : Z ^ 2 ≤ Z ^ (4 : ℝ)`. Rewrite using `[← Real.rpow_two]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hZ (by norm_num)`.
+
+Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem constants_bounded_four : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r p0 g NA NC : ℕ) (c₁ w Z : ℝ), 3 ≤ r → 1 ≤ p0 → p0 ≤ r → 1 ≤ g → 1 ≤ NA → 1 ≤ NC → 0 < c₁ → 1 ≤ w → 1 ≤ Z → (fdeg E : ℝ) ≤ Z → (r : ℝ) ≤ Z → Real.log (dE E) ≤ Z → Real.log g ≤ Z → Real.log NA ≤ Z → Real.log NC ≤ Z → Real.log c₁ ≤ Z → Real.log w ≤ Z → Real.log (nQ E r g NA NC c₁ w) ≤ 200 * Z ^ (4 : ℝ) ∧ Real.log (LaQ E r p0 g NA NC c₁ w) ≤ 200 * Z ^ (4 : ℝ) := by
   intro E _ _ _ r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ hNAZ hNCZ hcZ hwZ
   obtain ⟨h1, h2⟩ := constants_bounded_sq E r p0 g NA NC c w Z hr hp hpr hg hNA hNC hc hw hZ hfZ hrZ hdZ hgZ
@@ -122,6 +162,63 @@ namespace GlobalTheory.ArcCM.Room
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set C : ℝ := 200 with hCdef`. Use `set A : ℝ := 4 with hAdef`. Establish `hC : 0 ≤ C` using `by norm_num [hCdef]`. Establish `hA : 1 ≤ A` using `by norm_num [hAdef]`. Establish `H` using `GlobalTheory.SplitConst.constants_bounded_four`.
+
+Rewrite `H` using `[← hCdef, ← hAdef]`. Use `⟨fun a b c => 17 + 2 * (20 + |a| + |b| * |a| + |c|) + C * (20 + |a| + |b| * |a| + |c|) ^ A, fun a b c => by positivity, ?_⟩` and prove the remaining obligations. Introduce `D large₂ j ka CA CR Ck Tt cc hpar hNC hj hjm hr3 hCR hka hT hcc hTc`. Take `⟨-, -, hdE, -, hg, -, hOm, -, -, -⟩` from `hpar`. Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`.
+
+Use `set K : ℝ := 20 + |CA| + |CR| * |CA| + |Ck| with hKdef`. Establish `ha0` using `abs_nonneg CA`. Establish `hb0` using `abs_nonneg CR`. Establish `hc0` using `abs_nonneg Ck`. Establish `hab0 : 0 ≤ |CR| * |CA|` using `mul_nonneg hb0 ha0`.
+
+Establish `hK : 20 ≤ K` using `by rw [hKdef]; linarith`. Establish `hL1 : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hfN : 1 ≤ D.R.f`. Unfold `Ranks.f Ranks.n`. Use `And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hfN`. Establish `hr1 : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 1 ≤ D.R.r)`. Establish `hm2` using `D.R.two_le_m`. Establish `hmk` using `D.R.m_add_three_le_k`.
+
+Establish `hkr : (D.R.k : ℝ) ≤ D.R.r`. Establish `: D.R.k ≤ D.R.r` using `by unfold Ranks.r; omega`. Conclude with `this` after adjusting the coercions. Establish `hp1 : 1 ≤ (D.R.sigW j).2` using `by unfold Ranks.sigW; simp only; omega`. Establish `hpr : (D.R.sigW j).2 ≤ D.R.r` using `by unfold Ranks.sigW Ranks.r; simp only; omega`.
+
+Use `set z : ℝ := zBase large₂ with hz`. Establish `hzdef : z = (D.R.f : ℝ) * D.R.r * large₂.sc.L` using `rfl`. Establish `hfr1 : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `one_le_mul_of_one_le_of_one_le hf1 hr1`. Establish `hfrz : (D.R.f : ℝ) * D.R.r ≤ z` using `le_mul_of_one_le_right (by linarith) hL1`. Establish `hLz : large₂.sc.L ≤ z` using `le_mul_of_one_le_left (by linarith) hfr1`.
+
+Establish `hz1 : 1 ≤ z` using `by linarith`. Establish `hfz : (D.R.f : ℝ) ≤ z` using `(le_mul_of_one_le_right (by linarith) hr1).trans hfrz`. Establish `hrz : (D.R.r : ℝ) ≤ z` using `(le_mul_of_one_le_left (by linarith) hf1).trans hfrz`. Establish `hzK : 20 * z ≤ K * z` using `mul_le_mul_of_nonneg_right hK (by linarith)`. Establish `hKz : K * z = 20 * z + |CA| * z + |CR| * |CA| * z + |Ck| * z` using `by rw [hKdef]; ring`.
+
+Establish `haz : 0 ≤ |CA| * z` using `by positivity`. Establish `habz : 0 ≤ |CR| * |CA| * z` using `by positivity`. Establish `hcz : 0 ≤ |Ck| * z` using `by positivity`. Establish `hd : Real.log |((discr D.host.E : ℤ) : ℝ)| ≤ |CA| * z`. Use `hdE.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← hzdef]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)`. Establish `hd1 : (1 : ℝ) ≤ |((discr D.host.E : ℤ) : ℝ)|`. Use `Int.one_le_abs (discr_ne_zero D.host.E)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `hd0 : 0 ≤ Real.log |((discr D.host.E : ℤ) : ℝ)|` using `Real.log_nonneg hd1`. Establish `hrd0 : 0 < D.host.rdE` using `(rdE_pos_le D).1`. Establish `hrd : Real.log D.host.rdE ≤ |CA| * z`. Establish `h1` using `logdE_eq_rd D`. Establish `h2 : logdE D = Real.log |((discr D.host.E : ℤ) : ℝ)|` using `rfl`.
+
+Rewrite `h1` using `[h2]`. Establish `h3 : 0 ≤ Real.log D.host.rdE`. Conclude with `nonneg_of_mul_nonneg_right (h1 ▸ hd0) (by linarith)`. Conclude with `(le_mul_of_one_le_left h3 (by linarith)).trans (h1 ▸ hd)`. Establish `hfdeg : fdeg D.host.E = D.R.f`.
+
+Unfold `fdeg`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Establish `hg0` using `(D.host.g_prime 0).one_le`.
+
+Establish `hg1` using `(D.host.g_prime 1).one_le`. Establish `hlg : Real.log ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≤ K * z`. Establish `e0 : ((D.host.g 0 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (by omega : D.host.g 0 ≠ 0)`. Establish `e1 : ((D.host.g 1 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (by omega : D.host.g 1 ≠ 0)`. Rewrite using `[Nat.cast_mul, Real.log_mul e0 e1]`.
+
+Use `hg 0` as an intermediate fact. Use `hg 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNA : (((discr D.host.E).natAbs : ℕ) : ℝ) = |((discr D.host.E : ℤ) : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+
+Establish `hNA1 : 1 ≤ (discr D.host.E).natAbs` using `Int.natAbs_pos.2 (discr_ne_zero D.host.E)`. Establish `hNC1 : 1 ≤ Ideal.absNorm D.host.ccK` using `Nat.one_le_iff_ne_zero.2 (fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h))`. Establish `hρ1 : (1 : ℝ) ≤ WeightFamilies.rho D j` using `by exact_mod_cast hp1`. Establish `hρr : (WeightFamilies.rho D j : ℝ) ≤ D.R.r` using `by exact_mod_cast hpr`. Establish `hdP : (WeightFamilies.dP D j : ℝ) = 2 * D.R.f * WeightFamilies.rho D j` using `by unfold WeightFamilies.dP; push_cast; ring`.
+
+Establish `hdP1 : (1 : ℝ) ≤ WeightFamilies.dP D j`. Rewrite using `[hdP]; exact one_le_mul_of_one_le_of_one_le (by linarith) hρ1`. Establish `hdPz : (WeightFamilies.dP D j : ℝ) ≤ 2 * z`. Use `mul_le_mul_of_nonneg_left hρr (by linarith : (0 : ℝ) ≤ D.R.f)` as an intermediate fact. Rewrite using `[hdP]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hRR : 0 < WeightFamilies.RRv D CR` using `Real.rpow_pos_of_pos hrd0 _`. Establish `hc1 : 0 < WeightFamilies.c1 D CR Tt cc j` using `by unfold WeightFamilies.c1; positivity`. Establish `hlc : Real.log (WeightFamilies.c1 D CR Tt cc j) ≤ K * z`. Establish `h1 : WeightFamilies.c1 D CR Tt cc j ≤ WeightFamilies.RRv D CR * (WeightFamilies.dP D j : ℝ) ^ 2 * (WeightFamilies.rho D j : ℝ)`.
+
+Establish `h0 : 0 < WeightFamilies.RRv D CR * (WeightFamilies.dP D j : ℝ) ^ 2 * (WeightFamilies.rho D j : ℝ)` using `by positivity`. Establish `: WeightFamilies.c1 D CR Tt cc j = (WeightFamilies.RRv D CR * (WeightFamilies.dP D j : ℝ) ^ 2 * (WeightFamilies.rho D j : ℝ)) * (Tt * cc) / 2`. Unfold `WeightFamilies.c1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Use `mul_le_of_le_one_right h0.le hTc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Real.log_le_log hc1 h1).trans ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Establish `h2 : Real.log (WeightFamilies.RRv D CR) = CR * Real.log D.host.rdE` using `Real.log_rpow hrd0 _`.
+
+Establish `h3 : CR * Real.log D.host.rdE ≤ |CR| * |CA| * z`. Rewrite using `[abs_of_nonneg hCR, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hrd hCR`. Establish `h4` using `log_le_self' (by linarith : (0 : ℝ) ≤ WeightFamilies.dP D j)`. Establish `h5` using `log_le_self' (by linarith : (0 : ℝ) ≤ WeightFamilies.rho D j)`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1` using `ka.one_le_size`. Establish `hlw : Real.log (ka.size + D.R.r) ≤ K * z`. Establish `hb1 : 1 ≤ large₂.sc.b` using `Real.one_le_exp (by linarith)`.
+
+Establish `h1 : Ck * (D.R.k : ℝ) * (D.R.f : ℝ) ≤ |Ck| * z`. Rewrite using `[mul_assoc]`. Use `mul_le_mul (le_abs_self _) ?_ (by positivity) hc0` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hkr (by linarith : (0 : ℝ) ≤ D.R.f)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : ka.size ≤ |Ck| * z * large₂.sc.b` using `hka.trans (mul_le_mul_of_nonneg_right h1 (by linarith))`. Establish `h3 : ka.size + D.R.r ≤ (|Ck| * z + z) * large₂.sc.b`. Use `le_mul_of_one_le_right (by linarith : (0 : ℝ) ≤ z) hb1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Real.log_le_log (by linarith) h3).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (by positivity) (by positivity)]`. Establish `h4 : Real.log large₂.sc.b = large₂.sc.L` using `Real.log_exp _`. Establish `h5` using `log_le_self' (by linarith : (0 : ℝ) ≤ |Ck| * z + z)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hn, hLa⟩` from `H D.host.E D.R.r (D.R.sigW j).2 (D.host.g 0 * D.host.g 1) (discr D.host.E).natAbs (Ideal.absNorm D.host.ccK) (WeightFamilies.c1 D CR Tt cc j) (ka.size + D.R.r) (K * z) hr3 hp1 hpr (Nat.mul_pos hg0 hg1) hNA1 hNC1 hc1 (by linarith) (by linarith) (by rw [hfdeg]; linarith) (by linari …`.
+
+Rewrite `hn`, `hLa` using `[Real.mul_rpow (by linarith) (by linarith), ← mul_assoc]`. Establish `hP : z ≤ z ^ A`. Use `Real.rpow_le_rpow_of_exponent_le hz1 hA` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hmax : Real.log (max 1 (WeightFamilies.c1 D CR Tt cc j)) ≤ K * z`.
+
+Apply the tactic sequence `rcases max_choice 1 (WeightFamilies.c1 D CR Tt cc j) with h | h <;> rw [h]`. Rewrite using `[Real.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hlc`. Establish `ho : |large₂.logOm| ≤ K * z`.
+
+Establish `: CA * large₂.sc.L ≤ |CA| * z` using `mul_le_mul (le_abs_self _) hLz (by linarith) ha0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : Real.log (D.R.r : ℝ) ≤ z` using `(log_le_self' (by linarith)).trans hrz`. Use `⟨hz1, ?_⟩` and prove the remaining obligations. Conclude with `assemble K (C * K ^ A) (z ^ A) z ka.size _ _ (Real.log D.host.rdE) _ _ _ _ hz1 hP (by linarith) (by positivity) hs1 hmax hLa (by linarith) hR ho (by linarith) hn`.
+-/
 theorem room_four : ∃ C₀ : ℝ → ℝ → ℝ → ℝ, (∀ a b c, 0 ≤ C₀ a b c) ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (j : ℕ) (ka : WeightFamilies.Wt D j) (CA CR Ck Tt cc : ℝ), WeightAlgebra.ParA large₂ CA → Real.log (Ideal.absNorm D.host.ccK) ≤ large₂.sc.L → InR D j → j < D.R.m → 3 ≤ D.R.r → 0 ≤ CR → ka.size ≤ Ck * (D.R.k : ℝ) * (D.R.f : ℝ) * large₂.sc.b → 0 < Tt → 0 < cc → Tt * cc ≤ 1 → 1 ≤ zBase large₂ ∧ RoomAt large₂ j ka CR Tt cc (C₀ CA CR Ck) 4 := by
   set C : ℝ := 200 with hCdef
   set A : ℝ := 4 with hAdef

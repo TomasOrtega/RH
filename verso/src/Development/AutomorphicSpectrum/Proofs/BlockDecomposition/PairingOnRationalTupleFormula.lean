@@ -22,6 +22,23 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairSingle
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J hJ n ψf c c₀ i₀ x s ρ`. Establish `hdet : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hJ.2`. Establish `key : ∀ a, hR (Af F) σ J (fun i => if i = i₀ then x else 0) (ratTuple J s ρ a) = sigR (Af F) σ x * inclR (Af F) ((s : E) * algebraMap (𝓞 E) E (ρ i₀ a))`. Introduce `a`. Establish `hv : ∑ j, J i₀ j * (J⁻¹ *ᵥ fun i => algebraMap (𝓞 E) E (ρ i a)) j = algebraMap (𝓞 E) E (ρ i₀ a)`.
+
+Establish `h1 : (J *ᵥ (J⁻¹ *ᵥ fun i => algebraMap (𝓞 E) E (ρ i a))) i₀ = algebraMap (𝓞 E) E (ρ i₀ a)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Simplify `h1` using `[Matrix.mulVec, dotProduct]`. Unfold `hR Formalism.UG.hform`. Rewrite using `[Finset.sum_eq_single i₀]`.
+
+Simplify using `only [if_true, JR, ratTuple, Matrix.map_apply]`. Rewrite using `[← hv]`. Simplify using `only [map_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules. Establish `hz : ∀ (c' : Fin n) (a : Fin n), c' ≠ c₀ → hR (Af F) σ J (fun i => if c' = c₀ ∧ i = i₀ then x else 0) (ratTuple J s ρ a) = 0`. Introduce `c' a hc`.
+
+Simplify using `[hR, Formalism.UG.hform, hc]`. Establish `hin : ∀ a b, ((hermIn (Af F) σ n c : HermR (Af F) σ n) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) a b = inclR (Af F) (c.1 a b)` using `fun a b => rfl`. Establish `htr : Matrix.trace (((hermIn (Af F) σ n c : HermR (Af F) σ n) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) * gram2 σ J (fun a i => if a = c₀ ∧ i = i₀ then x else 0) (ratTuple J s ρ)) = sigR (Af F) σ x * inclR (Af F) ((s : E) * ∑ a, c.1 a c₀ * algebraMap (𝓞 E) E (ρ i₀ a))`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, hin, gram2]`. Establish `h2 : ∀ a, ∑ c', inclR (Af F) (c.1 a c') * hR (Af F) σ J (fun i => if c' = c₀ ∧ i = i₀ then x else 0) (ratTuple J s ρ a) = inclR (Af F) (c.1 a c₀) * (sigR (Af F) σ x * inclR (Af F) ((s : E) * algebraMap (𝓞 E) E (ρ i₀ a)))`.
+
+Introduce `a`. Rewrite using `[Finset.sum_eq_single c₀]`. Simplify using `only [true_and]`. Rewrite using `[key a]`. Introduce `c' _ hc`.
+
+Rewrite using `[hz c' a hc, mul_zero]`. Simplify using the standard rewrite rules. Simplify using `only [h2]`. Rewrite using `[Finset.mul_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `pairB`. Rewrite using `[htr]`.
+-/
 theorem pair_single : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     ∀ (n : ℕ) (ψf : Af F → ℂ) (c : hermE σ n) (c₀ : Fin n) (i₀ : Fin M) (x : Af F ⊗[F] E) (s : ℕ)

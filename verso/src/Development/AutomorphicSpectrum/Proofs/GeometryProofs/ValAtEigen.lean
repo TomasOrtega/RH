@@ -13,6 +13,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 open LieTangent in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 L _ zL h g₀ hg s e v a he hv`. Take `⟨h', v₀, hext, rfl⟩` from `(𝔐.M.valAt_iff zL e v).1 hv`. Establish `hgen : genMap 𝔐.ξ ⟨centre zL, h⟩ (g₀ (labelEmb c s a)) = 𝔐.emb s a` using `DFunLike.congr_fun hg (labelEmb c s a)`. Establish `hρ : 𝔐.ρ a e = 𝔐.emb s a • e`. Establish `h1 : e ∈ LinearMap.ker (𝔐.ρ a - 𝔐.emb s a • LinearMap.id)` using `(Submodule.mem_iInf _).1 he a`.
+
+Rewrite `h1` using `[LinearMap.mem_ker]`. Simplify `h1` using `[sub_eq_zero]`. Establish `hext'` using `(𝔐.M.extends_iff _ _ _).1 hext`. Establish `h1 : 𝔐.M.Extends ⟨centre zL, h⟩ (𝔐.emb s a • e) (v₀ ≫ 𝔐.t.act.act a)`. Rewrite using `[LieModel.extends_iff]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isTanAt_iff, ← Category.assoc, (isTanAt_iff _).1 hext'.1] haveI := 𝔐.t.act.hom a`. Conclude with `one_comp _`. Rewrite using `[← hρ, 𝔐.act a e, hext'.2, Category.assoc]`. Establish `h2` using `hext.smul (g₀ (labelEmb c s a))`.
+
+Rewrite `h2` using `[hgen]`. Establish `key` using `h1.unique (𝔐.tie.gen.inj _) h2`. Establish `e1 : epsBase _ (spec_centre zL) ≫ v₀ ≫ 𝔐.t.act.act a = epsScale zL ((Scheme.stalkClosedPointTo zL).hom (g₀ (labelEmb c s a))) ≫ epsBase _ (spec_centre zL) ≫ v₀`. Rewrite using `[key, ← Category.assoc, base_scale, Category.assoc]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun q => q.left) ((Category.assoc _ _ _).trans e1)`.
+-/
 theorem valAt_eigen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (L : Type) [Field L] (zL : Sp L ⟶ 𝔐.X) (h : genPt 𝔐.ξ ⤳ centre zL) (g₀ : c.F →+* 𝔐.X.presheaf.stalk (centre zL)), (genMap 𝔐.ξ ⟨centre zL, h⟩).comp g₀ = 𝔐.cst → ∀ (s : CMType H ⊕ CMType H) (e : 𝔐.Li) (v : epsAt zL ⟶ 𝔐.t.G) (a : 𝓞 E), e ∈ 𝔐.Vgen s → 𝔐.M.ValAt zL e v → (v ≫ 𝔐.t.act.act a).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul ((Scheme.stalkClosedPointTo zL).hom (g₀ (labelEmb c s a))))) ≫ v.left := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 L _ zL h g₀ hg s e v a he hv
   obtain ⟨h', v₀, hext, rfl⟩ := (𝔐.M.valAt_iff zL e v).1 hv

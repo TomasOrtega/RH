@@ -11,10 +11,22 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 section SlopeTestRemainingChoices
 variable {X : Type} [CommRing X] {g n : ℕ}
 
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 private theorem sub_a (x y : DD X g) : (x - y).a = x.a - y.a := by simp [sub_eq_add_neg]
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 private theorem sub_ep (x y : DD X g) (j) : (x - y).ep j = x.ep j - y.ep j := by simp [sub_eq_add_neg]
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 private theorem sub_ep' (x y : DD X g) (j) : (x - y).ep' j = x.ep' j - y.ep' j := by simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Use `⟨map_sum (AddMonoidHom.mk' DD.a DD.add_a) f s, fun j => ?_, fun j => ?_, map_sum (AddMonoidHom.mk' DD.eta DD.add_eta) f s⟩` and prove the remaining obligations. Conclude with `map_sum (AddMonoidHom.mk' (fun x : DD X g => x.ep j) (fun x y => DD.add_ep x y j)) f s`. Conclude with `map_sum (AddMonoidHom.mk' (fun x : DD X g => x.ep' j) (fun x y => DD.add_ep' x y j)) f s`.
+-/
 private theorem sum_cmp {ι : Type} (s : Finset ι) (f : ι → DD X g) :
     (∑ i ∈ s, f i).a = ∑ i ∈ s, (f i).a ∧ (∀ j, (∑ i ∈ s, f i).ep j = ∑ i ∈ s, (f i).ep j) ∧
       (∀ j, (∑ i ∈ s, f i).ep' j = ∑ i ∈ s, (f i).ep' j) ∧ (∑ i ∈ s, f i).eta = ∑ i ∈ s, (f i).eta := by
@@ -29,6 +41,11 @@ private def II (X : Type) [CommRing X] (g : ℕ) : Ideal (DD X g) where
   zero_mem' := ⟨rfl, fun _ => rfl⟩
   smul_mem' := by rintro c x ⟨a, b⟩; exact ⟨by simp [a], fun j => by simp [a, b]⟩
 
+/- English proof (translation)
+Take `⟨xa, xe⟩` from `hx`. Take `⟨ya, ye⟩` from `hy`. Apply `DD.ext` to reduce the goal to its premises. Simplify using `[DD.mul_a, xa]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[DD.mul_ep, xa, ya]`. Use function extensionality and compare the values at `j`. Simplify using `[DD.mul_ep', xa, ya]`. Simplify using `[DD.mul_eta, xa, ya, xe, ye]`.
+-/
 private theorem II_mul {x y : DD X g} (hx : x ∈ II X g) (hy : y ∈ II X g) : x * y = 0 := by
   obtain ⟨xa, xe⟩ := hx
   obtain ⟨ya, ye⟩ := hy
@@ -38,17 +55,30 @@ private theorem II_mul {x y : DD X g} (hx : x ∈ II X g) (hy : y ∈ II X g) : 
   · funext j; simp [DD.mul_ep', xa, ya]
   · simp [DD.mul_eta, xa, ya, xe, ye]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => II_mul (hx _ _) (hy _ _)`.
+-/
 private theorem II_mat {M N : Matrix (Fin n) (Fin n) (DD X g)} (hx : ∀ i j, M i j ∈ II X g)
     (hy : ∀ i j, N i j ∈ II X g) : M * N = 0 := by
   refine Matrix.ext fun i j => ?_
   rw [Matrix.mul_apply, Matrix.zero_apply]
   exact Finset.sum_eq_zero fun c _ => II_mul (hx _ _) (hy _ _)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hx _ _)`.
+-/
 private theorem II_right {M : Matrix (Fin n) (Fin n) (DD X g)} (N : Matrix (Fin n) (Fin n) (DD X g))
     (hx : ∀ i j, M i j ∈ II X g) (i j) : (M * N) i j ∈ II X g := by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun c _ => Ideal.mul_mem_right _ _ (hx _ _)
 
+/- English proof (translation)
+Use `⟨3, ?_⟩` and prove the remaining obligations. Establish `e2 : (x * x).a = 0 ∧ ∀ j, (x * x).ep j = 0` using `⟨by simp [DD.mul_a, hx], fun j => by simp [DD.mul_ep, hx]⟩`. Establish `e3 : x ^ 3 = x * (x * x)` using `by ring`. Rewrite using `[e3]`. Apply `DD.ext` to reduce the goal to its premises.
+
+Simplify using `[DD.mul_a, hx]`. Use function extensionality and compare the values at `j`. Simplify using `[DD.mul_ep, hx, e2.1]`. Use function extensionality and compare the values at `j`. Simplify using `[DD.mul_ep', hx, e2.1]`.
+
+Simplify using `[DD.mul_eta, hx, e2.1, e2.2]`.
+-/
 private theorem aug_nil (x : DD X g) (hx : x.a = 0) : IsNilpotent x := by
   refine ⟨3, ?_⟩
   have e2 : (x * x).a = 0 ∧ ∀ j, (x * x).ep j = 0 := ⟨by simp [DD.mul_a, hx], fun j => by simp [DD.mul_ep, hx]⟩
@@ -63,6 +93,11 @@ private theorem aug_nil (x : DD X g) (hx : x.a = 0) : IsNilpotent x := by
 private def P0 (x : DD X g) : Prop := (∀ j, x.ep j = 0) ∧ x.eta = 0
 private def P1 (x : DD X g) : Prop := x.a = 0 ∧ ∀ j, x.ep' j = 0
 
+/- English proof (translation)
+Take `⟨-, he, -, ht⟩` from `sum_cmp s f`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he j]`. Conclude with `Finset.sum_eq_zero fun i _ => (h i).1 j`. Rewrite using `[ht]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => (h i).2`.
+-/
 private theorem zeroth_part_sum {ι : Type} (s : Finset ι) (f : ι → DD X g) (h : ∀ i, P0 (f i)) : P0 (∑ i ∈ s, f i) := by
   obtain ⟨-, he, -, ht⟩ := sum_cmp s f
   refine ⟨fun j => ?_, ?_⟩
@@ -71,6 +106,11 @@ private theorem zeroth_part_sum {ι : Type} (s : Finset ι) (f : ι → DD X g) 
   · rw [ht]
     exact Finset.sum_eq_zero fun i _ => (h i).2
 
+/- English proof (translation)
+Take `⟨ha, -, he, -⟩` from `sum_cmp s f`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `Finset.sum_eq_zero fun i _ => (h i).1`. Rewrite using `[he j]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => (h i).2 j`.
+-/
 private theorem first_part_sum {ι : Type} (s : Finset ι) (f : ι → DD X g) (h : ∀ i, P1 (f i)) : P1 (∑ i ∈ s, f i) := by
   obtain ⟨ha, -, he, -⟩ := sum_cmp s f
   refine ⟨?_, fun j => ?_⟩
@@ -79,18 +119,30 @@ private theorem first_part_sum {ι : Type} (s : Finset ι) (f : ι → DD X g) (
   · rw [he j]
     exact Finset.sum_eq_zero fun i _ => (h i).2 j
 
+/- English proof (translation)
+Take `⟨xe, xt⟩` from `hx`. Take `⟨ye, yt⟩` from `hy`. Conclude with `⟨fun j => by simp [DD.mul_ep, xe, ye], by simp [DD.mul_eta, xe, ye, xt, yt]⟩`.
+-/
 private theorem product_zeroth_terms {x y : DD X g} (hx : P0 x) (hy : P0 y) : P0 (x * y) := by
   obtain ⟨xe, xt⟩ := hx
   obtain ⟨ye, yt⟩ := hy
   exact ⟨fun j => by simp [DD.mul_ep, xe, ye], by simp [DD.mul_eta, xe, ye, xt, yt]⟩
+/- English proof (translation)
+Take `⟨xa, xe⟩` from `hx`. Take `⟨ya, ye⟩` from `hy`. Conclude with `⟨fun j => by simp [DD.mul_ep, xa, ya], by simp [DD.mul_eta, xa, ya, xe, ye]⟩`.
+-/
 private theorem product_first_partition {x y : DD X g} (hx : P1 x) (hy : P1 y) : P0 (x * y) := by
   obtain ⟨xa, xe⟩ := hx
   obtain ⟨ya, ye⟩ := hy
   exact ⟨fun j => by simp [DD.mul_ep, xa, ya], by simp [DD.mul_eta, xa, ya, xe, ye]⟩
+/- English proof (translation)
+Take `⟨xe, xt⟩` from `hx`. Take `⟨ya, ye⟩` from `hy`. Conclude with `⟨by simp [DD.mul_a, ya], fun j => by simp [DD.mul_ep', ya, ye]⟩`.
+-/
 private theorem product_zeroth_first_parts {x y : DD X g} (hx : P0 x) (hy : P1 y) : P1 (x * y) := by
   obtain ⟨xe, xt⟩ := hx
   obtain ⟨ya, ye⟩ := hy
   exact ⟨by simp [DD.mul_a, ya], fun j => by simp [DD.mul_ep', ya, ye]⟩
+/- English proof (translation)
+Take `⟨xa, xe⟩` from `hx`. Take `⟨ye, yt⟩` from `hy`. Conclude with `⟨by simp [DD.mul_a, xa], fun j => by simp [DD.mul_ep', xa, xe]⟩`.
+-/
 private theorem product_first_zeroth_parts {x y : DD X g} (hx : P1 x) (hy : P0 y) : P1 (x * y) := by
   obtain ⟨xa, xe⟩ := hx
   obtain ⟨ye, yt⟩ := hy
@@ -128,6 +180,11 @@ private def EE (X : Type) [CommRing X] (g n a : ℕ) : Subalgebra X (Matrix (Fin
     · rw [if_neg (by rintro rfl; exact e Iff.rfl)]
       exact ⟨rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.algebraMap_matrix_apply]`. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `hc`.
+
+Conclude with `⟨fun _ => rfl, rfl⟩`. Rewrite using `[if_neg (by rintro rfl; exact e Iff.rfl)]`. Conclude with `⟨rfl, fun _ => rfl⟩`.
+-/
 private theorem EE_scal {a : ℕ} {c : DD X g} (hc : P0 c) :
     algebraMap (DD X g) (Matrix (Fin n) (Fin n) (DD X g)) c ∈ EE X g n a := by
   intro i j
@@ -141,6 +198,11 @@ private theorem EE_scal {a : ℕ} {c : DD X g} (hc : P0 c) :
 
 variable {A : Type} [CommRing A] [Algebra A X] {a : ℕ}
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨h1, h2⟩` from `h i j`. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Take `⟨-, he, -, ht⟩` from `h1 e`. Conclude with `⟨fun k => congrFun (he rfl) k, ht rfl⟩`.
+
+Take `⟨ha, -, he, -⟩` from `h2 e`. Conclude with `⟨ha rfl, fun k => congrFun (he rfl) k⟩`.
+-/
 private theorem EE_of_even {M : Matrix (Fin n) (Fin n) (DD X g)}
     (h : M ∈ blkMat n a (ddPart A X g true false true false) (ddPart A X g false true false true)) : M ∈ EE X g n a := by
   intro i j
@@ -151,6 +213,11 @@ private theorem EE_of_even {M : Matrix (Fin n) (Fin n) (DD X g)}
   · obtain ⟨ha, -, he, -⟩ := h2 e
     exact ⟨ha rfl, fun k => congrFun (he rfl) k⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨h1, h2⟩` from `h i j`. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Take `⟨-, he, -, ht⟩` from `h1 e`. Conclude with `⟨fun k => congrFun (he rfl) k, ht rfl⟩`.
+
+Take `⟨ha, -, he, -⟩` from `h2 e`. Conclude with `⟨ha rfl, fun k => congrFun (he rfl) k⟩`.
+-/
 private theorem mem_even_entries_of_first_order {M : Matrix (Fin n) (Fin n) (DD X g)} (h : M ∈ W1 n A X g a) : M ∈ EE X g n a := by
   intro i j
   obtain ⟨h1, h2⟩ := h i j
@@ -160,6 +227,11 @@ private theorem mem_even_entries_of_first_order {M : Matrix (Fin n) (Fin n) (DD 
   · obtain ⟨ha, -, he, -⟩ := h2 e
     exact ⟨ha rfl, fun k => congrFun (he rfl) k⟩
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨h1, h2⟩` from `h i j`. Take `⟨ia, ie⟩` from `h' i j`. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Take `⟨pe, pt⟩` from `h1 e`.
+
+Conclude with `⟨fun _ => ia, fun _ => funext pe, nofun, fun _ => pt⟩`. Take `⟨pa, pe⟩` from `h2 e`. Conclude with `⟨fun _ => pa, fun _ => funext ie, fun _ => funext pe, nofun⟩`.
+-/
 private theorem mem_second_order_of_reductions {M : Matrix (Fin n) (Fin n) (DD X g)} (h : M ∈ EE X g n a) (h' : ∀ i j, M i j ∈ II X g) :
     M ∈ W2 n A X g a := by
   intro i j
@@ -173,6 +245,15 @@ private theorem mem_second_order_of_reductions {M : Matrix (Fin n) (Fin n) (DD X
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hC : ∀ c d, x.ρX (DD X k.g) γ c d = ⟨x.ρX X γ c d, 0, 0, 0⟩` using `fun _ _ => rfl`. Take `⟨s1, s2, s3, s4⟩` from `sum_cmp Finset.univ fun c => DD.epM (fun j => (k.κ j γ).map (algebraMap x.A X)) a c * x.ρX (DD X k.g) γ c b`. Establish `e : k.ρ1 X γ a b = x.ρX (DD X k.g) γ a b + ∑ c, DD.epM (fun j => (k.κ j γ).map (algebraMap x.A X)) a c * x.ρX (DD X k.g) γ c b`. Rewrite using `[Kap.ρ1, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]`. Rewrite using `[e]`.
+
+Apply `DD.ext` to reduce the goal to its premises. Rewrite using `[DD.add_a, s1]`. Simplify using `[hC, DD.epM, DD.mul_a]`. Use function extensionality and compare the values at `j`. Rewrite using `[DD.add_ep, s2]`.
+
+Simplify using `[hC, DD.epM, DD.mul_ep, Matrix.mul_apply]`. Use function extensionality and compare the values at `j`. Rewrite using `[DD.add_ep', s3]`. Simplify using `[hC, DD.epM, DD.mul_ep']`. Rewrite using `[DD.add_eta, s4]`.
+
+Simplify using `[hC, DD.epM, DD.mul_eta]`.
+-/
 private theorem first_order_lift_apply {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) (X : Type) [CommRing X]
     [Algebra x.A X] (γ : F.G₀) (a b : Fin n) :
     k.ρ1 X γ a b = ⟨x.ρX X γ a b, fun j => ((k.κ j γ).map (algebraMap x.A X) * x.ρX X γ) a b, 0, 0⟩ := by
@@ -195,9 +276,23 @@ private theorem first_order_lift_apply {l : ℕ} [Fact l.Prime] {F : GFrame l} {
   · rw [DD.add_eta, s4]
     simp [hC, DD.epM, DD.mul_eta]
 
+/- English proof (translation)
+Simplify using `[sub_eq_add_neg]`.
+-/
 private theorem dd_eta_sub {X : Type} [CommRing X] {g : ℕ} (x y : DD X g) : (x - y).eta = x.eta - y.eta := by
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Take `⟨hc, hop, hsum, -, -⟩` from `bndOps K G`. Establish `add : ∀ φ ψ : G → FractionRing (PowerSeries K), BndF (PowerSeries.X : PowerSeries K) φ → BndF (PowerSeries.X : PowerSeries K) ψ → BndF (PowerSeries.X : PowerSeries K) (fun g => φ g + ψ g)` using `fun φ ψ a b => (hop φ ψ a b).1`. Establish `mul : ∀ φ ψ : G → FractionRing (PowerSeries K), BndF (PowerSeries.X : PowerSeries K) φ → BndF (PowerSeries.X : PowerSeries K) ψ → BndF (PowerSeries.X : PowerSeries K) (fun g => φ g * ψ g)` using `fun φ ψ a b => (hop φ ψ a b).2.1`. Establish `sub : ∀ φ ψ : G → FractionRing (PowerSeries K), BndF (PowerSeries.X : PowerSeries K) φ → BndF (PowerSeries.X : PowerSeries K) ψ → BndF (PowerSeries.X : PowerSeries K) (fun g => φ g - ψ g)`. Introduce `φ ψ a b`.
+
+Simplify using `only [sub_eq_add_neg]`. Conclude with `add _ _ a (hop ψ ψ b b).2.2.1`. Establish `sm : ∀ {ι : Type} (s : Finset ι) (φ : ι → G → FractionRing (PowerSeries K)), (∀ i, BndF (PowerSeries.X : PowerSeries K) (φ i)) → BndF (PowerSeries.X : PowerSeries K) (fun g => ∑ i ∈ s, φ i g)` using `fun s φ h => hsum _ s φ fun i _ => h i`. Establish `sa : ∀ f : Fin n → DD (FractionRing (PowerSeries K)) e, (∑ c, f c).a = ∑ c, (f c).a` using `fun f => (sum_cmp _ f).1`. Establish `se : ∀ (f : Fin n → DD (FractionRing (PowerSeries K)) e) q, (∑ c, f c).ep q = ∑ c, (f c).ep q` using `fun f => (sum_cmp _ f).2.1`.
+
+Establish `se' : ∀ (f : Fin n → DD (FractionRing (PowerSeries K)) e) q, (∑ c, f c).ep' q = ∑ c, (f c).ep' q` using `fun f => (sum_cmp _ f).2.2.1`. Establish `st : ∀ f : Fin n → DD (FractionRing (PowerSeries K)) e, (∑ c, f c).eta = ∑ c, (f c).eta` using `fun f => (sum_cmp _ f).2.2.2`. Introduce `i j`. Use `⟨?_, fun q => ?_, fun q => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, sub_a, sa, DD.mul_a]`.
+
+Use `sub _ _ (sm _ _ fun c => mul _ _ (hu i c).1 (hr c j).1) (hc _)` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, sub_ep, se, DD.mul_ep]`. Use `sub _ _ (sm _ _ fun c => add _ _ (mul _ _ (hu i c).1 ((hr c j).2.1 q)) (mul _ _ ((hu i c).2.1 q) (hr c j).1)) (hc _)` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, sub_ep', se', DD.mul_ep']`. Use `sub _ _ (sm _ _ fun c => add _ _ (mul _ _ (hu i c).1 ((hr c j).2.2.1 q)) (mul _ _ ((hu i c).2.2.1 q) (hr c j).1)) (hc _)` and prove the remaining obligations.
+
+Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, dd_eta_sub, st, DD.mul_eta]`. Use `sub _ _ (sm _ _ fun c => add _ _ (add _ _ (mul _ _ (hu i c).1 (hr c j).2.2.2) (mul _ _ (hu i c).2.2.2 (hr c j).1)) (sm _ _ fun q => add _ _ (mul _ _ ((hu i c).2.1 q) ((hr c j).2.2.1 q)) (mul _ _ ((hu i c).2.2.1 q) ((hr c j).2.1 q)))) (hc _)` and prove the remaining obligations.
+-/
 private theorem bnd_mul {K G : Type} [Field K] [TopologicalSpace G] [Group G] [IsTopologicalGroup G] {n e : ℕ}
     {u r : G → Matrix (Fin n) (Fin n) (DD (FractionRing (PowerSeries K)) e)}
     (hu : BndD (PowerSeries.X : PowerSeries K) u) (hr : BndD (PowerSeries.X : PowerSeries K) r) :
@@ -241,6 +336,69 @@ private theorem bnd_mul {K G : Type} [Field K] [TopologicalSpace G] [Group G] [I
       (mul _ _ (hu i c).2.2.2 (hr c j).1)) (sm _ _ fun q => add _ _
         (mul _ _ ((hu i c).2.1 q) ((hr c j).2.2.1 q)) (mul _ _ ((hu i c).2.2.1 q) ((hr c j).2.1 q)))) (hc _)
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k u ψ hU hE`. Take `⟨Tmul, Tone, Tform, Tine, TW1, Tloc⟩` from `rho1Tri l L G G0 h n x k x.Fr`. Take `⟨-, -, Bconj, Bφ, BIu, Beps⟩` from `homBasic l L G G0 h`. Establish `rinv : ∀ γ : G.G₀, k.ρ1 x.Fr (h.p₀ γ) * k.ρ1 x.Fr (h.p₀ γ⁻¹) = 1`. Introduce `γ`.
+
+Rewrite using `[← Tmul, ← map_mul, mul_inv_cancel, map_one, Tone]`. Establish `rinv' : ∀ γ : G.G₀, k.ρ1 x.Fr (h.p₀ γ⁻¹) * k.ρ1 x.Fr (h.p₀ γ) = 1`. Introduce `γ`. Rewrite using `[← Tmul, ← map_mul, inv_mul_cancel, map_one, Tone]`. Establish `uinv : ∀ γ : G.G₀, u γ * u γ⁻¹ = 1`.
+
+Introduce `γ`. Rewrite using `[← hU.mul, mul_inv_cancel, hU.one]`. Establish `ρXh : ∀ g, x.ρX x.Fr g = ((algebraMap x.A x.Fr).mapMatrix.toMonoidHom.comp (mat x.ρ)) g` using `fun _ => rfl`. Establish `ρXinv : ∀ g : G0.G₀, x.ρX x.Fr g⁻¹ * x.ρX x.Fr g = 1`. Introduce `g`.
+
+Rewrite using `[ρXh, ρXh, ← map_mul, inv_mul_cancel, map_one]`. Establish `hep : ∀ γ q, (u γ).map (fun a => a.ep q) = (k.κ q (h.p₀ γ)).map (algebraMap x.A x.Fr) * x.ρX x.Fr (h.p₀ γ)`. Introduce `γ q`. Establish `e` using `congrFun (hE q) γ`. Simplify using `only [epC, kapF] at e`.
+
+Rewrite using `[← e, mul_assoc, map_inv, ρXinv, mul_one]`. Establish `hD : ∀ γ i j, (u γ - k.ρ1 x.Fr (h.p₀ γ)) i j ∈ II x.Fr k.g`. Introduce `γ i j`. Use `⟨?_, fun q => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (hU.red γ) i) j`.
+
+Simplify using `only [Matrix.map_apply] at e`. Rewrite using `[Matrix.sub_apply, sub_a, first_order_lift_apply]`. Simplify using `[e]`. Establish `e` using `congrFun (congrFun (hep γ q) i) j`. Simplify using `only [Matrix.map_apply] at e`.
+
+Rewrite using `[Matrix.sub_apply, sub_ep, first_order_lift_apply]`. Simplify using `[e]`. Establish `hZe : ∀ γ : G.G₀, u γ * k.ρ1 x.Fr (h.p₀ γ⁻¹) - 1 = (u γ - k.ρ1 x.Fr (h.p₀ γ)) * k.ρ1 x.Fr (h.p₀ γ⁻¹)`. Introduce `γ`. Rewrite using `[sub_mul, rinv]`.
+
+Establish `hZ : ∀ γ : G.G₀, ∀ i j, (u γ * k.ρ1 x.Fr (h.p₀ γ⁻¹) - 1) i j ∈ II x.Fr k.g`. Introduce `γ`. Rewrite using `[hZe]`. Conclude with `II_right _ (hD γ)`. Establish `hsq : ∀ γ : G.G₀, (u γ * k.ρ1 x.Fr (h.p₀ γ⁻¹) - 1) * (u γ * k.ρ1 x.Fr (h.p₀ γ⁻¹) - 1) = 0` using `fun γ => II_mat (hZ γ) (hZ γ)`.
+
+Use `⟨fun γ => u γ * k.ρ1 x.Fr (h.p₀ γ⁻¹) - 1, ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ`. Conclude with `mem_second_order_of_reductions (Subalgebra.sub_mem _ (Subalgebra.mul_mem _ (EE_of_even (hU.even γ)) (mem_even_entries_of_first_order (TW1 _))) (Subalgebra.one_mem _)) (hZ γ)`. Introduce `i j`. Establish `ht : IsUnit (algebraMap x.A (DD x.Fr k.g) x.t)`.
+
+Establish `e : algebraMap x.A (DD x.Fr k.g) x.t = DD.C (algebraMap x.A x.Fr x.t)` using `rfl`. Rewrite using `[e]`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective x.A x.Fr)).mpr PowerSeries.X_ne_zero)).map DD.C`. Rewrite using `[Ideal.span_singleton_eq_top.mpr ht]`. Introduce `N`.
+
+Conclude with `IsLocallyConstant.of_constant _ fun _ _ => Ideal.Quotient.eq.mpr (by rw [Ideal.top_pow]; exact Submodule.mem_top)`. Introduce `g g' dsimp only`. Rewrite using `[hU.mul, _root_.mul_inv_rev, map_mul, Tmul]`. Establish `key` using `II_mat (hD g) (hZ g')`. Rewrite using `[← sub_eq_zero]`.
+
+Establish `e : u g * u g' * (k.ρ1 x.Fr (h.p₀ g'⁻¹) * k.ρ1 x.Fr (h.p₀ g⁻¹)) - 1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1 + k.ρ1 x.Fr (h.p₀ g) * (u g' * k.ρ1 x.Fr (h.p₀ g'⁻¹) - 1) * k.ρ1 x.Fr (h.p₀ g⁻¹)) = (u g - k.ρ1 x.Fr (h.p₀ g)) * (u g' * k.ρ1 x.Fr (h.p₀ g'⁻¹) - 1) * k.ρ1 x.Fr (h.p₀ g⁻¹)` using `by noncomm_ring`. Rewrite using `[e, key, zero_mul]`. Introduce `g dsimp only`. Establish `hf1` using `hU.form g`. Establish `hf2` using `Tform (h.p₀ g)`.
+
+Rewrite `hf2` using `[← Bconj g, Beps ℤ_[l] x.A g]`. Establish `e1 : u (G.frame.conj g) = (u g⁻¹)ᵀ * ((u g)ᵀ * u (G.frame.conj g))`. Rewrite using `[← mul_assoc, ← Matrix.transpose_mul, uinv, Matrix.transpose_one, one_mul]`. Establish `e2 : (u g)ᵀ * u (G.frame.conj g) * k.ρ1 x.Fr (h.p₀ (G.frame.conj g)⁻¹) = (k.ρ1 x.Fr (h.p₀ g))ᵀ`. Rewrite using `[hf1, ← hf2, mul_assoc, rinv, mul_one]`.
+
+Establish `e4 : (1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1)) * (1 + (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1)) = 1`. Rewrite using `[show (1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1)) * (1 + (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1)) = 1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1) * (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1) by noncomm_ring, hsq, sub_zero]`. Establish `e3 : k.ρ1 x.Fr (h.p₀ g) * u g⁻¹ = 1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_sub_cancel]`.
+
+Simplify using `only [mul_assoc]`. Use `_ = 1 - (u g * k.ρ1 x.Fr (h.p₀ g⁻¹) - 1) := by rw [rinv', mul_one, uinv, mul_one]`. Rewrite using `[e1, mul_assoc, e2, ← Matrix.transpose_mul, e3, Matrix.transpose_sub, Matrix.transpose_one]`. Normalize the expressions using the abelian group laws. Introduce `w g hg dsimp only`.
+
+Rewrite using `[Tine w _ (BIu w _ (inv_mem hg)), hU.ine w g hg, mul_one, sub_self]`. Introduce `v haveI : Infinite x.Fr := by`. Establish `hA : Infinite x.A`. Use `Infinite.of_injective (fun m : ℕ => (PowerSeries.X : PowerSeries x.K) ^ m) fun m m' e => ?_` and prove the remaining obligations. Establish `e'` using `congrArg (PowerSeries.coeff m) e`.
+
+Simplify using `only [PowerSeries.coeff_X_pow, if_true] at e'`. Assume the negation of the conclusion as `hne`. Rewrite `e'` using `[if_neg hne]`. Conclude with `one_ne_zero e'`. Conclude with `Infinite.of_injective _ (IsFractionRing.injective x.A x.Fr)`.
+
+Take `⟨w1w, ww1, tri⟩` from `Tloc v`. Set `ρ₀ : L.Gv v →* Matrix (Fin n) (Fin n) (DD x.Fr k.g)` to `{ toFun := fun g => k.ρ1 x.Fr (h.p₀ (G.φ v g)) map_one' := by simp [Tone] map_mul' := by`. Introduce `a b`. Simplify using `[Tmul] }`. Set `ρ₁ : L.Gv v →* Matrix (Fin n) (Fin n) (DD x.Fr k.g)` to `{ toFun := fun g => u (G.φ v g) map_one' := by simp [hU.one] map_mul' := by`.
+
+Introduce `a b`. Simplify using `[hU.mul] }`. Set `ψ₀ : Fin n → L.Gv v →* DD x.Fr k.g` to `fun i => (algebraMap x.A (DD x.Fr k.g)).toMonoidHom.comp ((Units.coeHom x.A).comp (x.ψ v i))`. Set `ψ₁ : Fin n → L.Gv v →* DD x.Fr k.g` to `fun i => (Units.coeHom _).comp (ψ v i)`. Establish `hnil : ∀ a, DD.aug x.Fr k.g a = 0 → IsNilpotent a` using `fun a ha => aug_nil a ha`.
+
+Establish `hsqI : II x.Fr k.g * II x.Fr k.g = ⊥`. Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`. Rewrite using `[II_mul ha hb]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `htri : ∀ g, (∀ i j, j < i → (k.wi1 x.Fr v * ρ₀ g * k.w1 x.Fr v) i j = 0) ∧ ∀ i, (k.wi1 x.Fr v * ρ₀ g * k.w1 x.Fr v) i i = ψ₀ i g`. Introduce `g`. Establish `e : ρ₀ g = k.ρ1 x.Fr ((G0.φ v) g)` using `by show k.ρ1 x.Fr (h.p₀ (G.φ v g)) = _`. Rewrite using `[Bφ]`. Rewrite using `[e]`.
+
+Conclude with `tri g`. Establish `hd1 : ∀ g i j, ρ₁ g i j - ρ₀ g i j ∈ II x.Fr k.g` using `fun g i j => by`. Establish `e` using `hD (G.φ v g) i j`. Rewrite `e` using `[Matrix.sub_apply]`. Then use the resulting hypothesis. Establish `hd2 : ∀ i g, ψ₁ i g - ψ₀ i g ∈ II x.Fr k.g`.
+
+Introduce `i g`. Use `⟨?_, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_a]`. Conclude with `sub_eq_zero.mpr (hU.ψ_red v i g)`. Rewrite using `[sub_ep]`.
+
+Conclude with `sub_eq_zero.mpr (congrFun ((hU.ψ_even v i g).2.1 rfl) q)`. Establish `hdist : ∀ i j, i ≠ j → ∃ g, DD.aug x.Fr k.g (ψ₀ i g) ≠ DD.aug x.Fr k.g (ψ₀ j g)`. Introduce `i j hij`. Take `⟨g, hg⟩` from `DFunLike.ne_iff.mp ((x.N1 v).1 i j hij)`. Conclude with `⟨g, fun e => hg (Units.ext (IsFractionRing.injective x.A x.Fr e))⟩`.
+
+Establish `hE1 : ∀ g, ρ₀ g ∈ EE x.Fr k.g n x.a ∧ ρ₁ g ∈ EE x.Fr k.g n x.a` using `fun g => ⟨mem_even_entries_of_first_order (TW1 _), EE_of_even (hU.even _)⟩`. Establish `hE2 : ∀ i g, algebraMap (DD x.Fr k.g) (Matrix (Fin n) (Fin n) (DD x.Fr k.g)) (ψ₀ i g) ∈ EE x.Fr k.g n x.a ∧ algebraMap (DD x.Fr k.g) (Matrix (Fin n) (Fin n) (DD x.Fr k.g)) (ψ₁ i g) ∈ EE x.Fr k.g n x.a` using `fun i g => ⟨EE_scal ⟨fun _ => rfl, rfl⟩, EE_scal ⟨congrFun ((hU.ψ_even v i g).2.1 rfl), (hU.ψ_even v i g).2.2.2 rfl⟩⟩`. Take `⟨Y, hYE, hYI, hY⟩` from `locLemma x.Fr (DD x.Fr k.g) (L.Gv v) n (DD.aug x.Fr k.g) (II x.Fr k.g) (EE x.Fr k.g n x.a) ρ₀ ρ₁ ψ₀ ψ₁ (k.w1 x.Fr v) (k.wi1 x.Fr v) hnil hsqI w1w ww1 htri hd1 hd2 hdist (fun g => hU.ord v g) hE1 hE2`. Use `⟨Y, mem_second_order_of_reductions hYE hYI, fun g => ⟨fun i j hij => ?_, fun hg i => ?_⟩⟩` and prove the remaining obligations. Establish `hρ₀inv : ρ₀ g⁻¹ = k.ρ1 x.Fr (h.p₀ ((G.φ v g)⁻¹))` using `by show k.ρ1 x.Fr (h.p₀ (G.φ v g⁻¹)) = _`.
+
+Rewrite using `[map_inv (G.φ v)]`. Establish `e` using `(hY g).1 i j hij`. Rewrite `e` using `[hρ₀inv]`. Conclude with `e`. Establish `hρ₀inv : ρ₀ g⁻¹ = k.ρ1 x.Fr (h.p₀ ((G.φ v g)⁻¹))` using `by show k.ρ1 x.Fr (h.p₀ (G.φ v g⁻¹)) = _`.
+
+Rewrite using `[map_inv (G.φ v)]`. Establish `h0 : ψ₀ i g = 1` using `by show algebraMap x.A (DD x.Fr k.g) ↑(x.ψ v i g) = 1`. Rewrite using `[x.ψ_mu v i g hg]`. Simplify using the standard rewrite rules. Establish `h1 : ψ₁ i g = 1` using `by show ((ψ v i g : (DD x.Fr k.g)ˣ) : DD x.Fr k.g) = 1`.
+
+Rewrite using `[hU.ψ_mu v i g hg]`. Both sides reduce to the same expression. Establish `e` using `(hY g).2 i`. Rewrite `e` using `[hρ₀inv, h0, h1, mul_one, sub_self]`. Conclude with `e`.
+
+Take `⟨hc, hop, hsum, -, -⟩` from `bndOps x.K G.G₀`. Take `⟨-, bρi, bκ⟩` from `bndRho l L G G0 h n x k`. Use `bnd_mul hU.bnd fun i j => ?_` and prove the remaining obligations. Simplify using `only [first_order_lift_apply]`. Use `⟨bρi i j, fun q => ?_, fun q => hc 0, hc 0⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply]`. Conclude with `hsum _ _ _ fun c _ => (hop _ _ ((hop _ _ (bκ q i c) (bκ q i c)).2.2.2) (bρi c j)).2.1`. Introduce `j γ a b dsimp only`. Establish `h1 : ((1 : Matrix (Fin n) (Fin n) (DD x.Fr k.g)) a b).ep' j = 0`. Rewrite using `[Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.sub_apply, sub_ep', h1, sub_zero, Matrix.mul_apply, (sum_cmp _ _).2.2.1]`. Simplify using `only [epC', Matrix.mul_apply, Matrix.map_apply, DD.mul_ep', first_order_lift_apply]`. Use `clear Tmul Tone Tform Tine TW1 Tloc Bconj Bφ BIu Beps rinv rinv' uinv ρXh ρXinv hep hD hZe hZ hsq`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Pa.defULift :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (k : Kap x), ∀ (u : G.G₀ → Matrix (Fin n) (Fin n) (DD x.Fr k.g)) (ψ : ∀ v, Fin n → L.Gv v →* (DD x.Fr k.g)ˣ), DefU h x u ψ → (∀ j, epC h x u j = kapF h k j) → Lifts h k (epC' h x u) := by
   intro l _ L G G0 h n x k u ψ hU hE

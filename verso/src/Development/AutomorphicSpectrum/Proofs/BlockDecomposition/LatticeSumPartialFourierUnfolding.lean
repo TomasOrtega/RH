@@ -12,11 +12,19 @@ namespace GlobalTheory.CompanionTheory.EisUnfold.Period
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[rat]`.
+-/
 theorem rat_sub' {m n : ℕ} (p p₀ : Matrix (Fin m) (Fin n) D.host.E) :
     (rat (p - p₀) : Mx D m n) = rat p - rat p₀ := by
   ext i j
   simp [rat]
 
+/- English proof (translation)
+Establish `h : (inner V (rat q) (rat q₀) : Mx D s s) = rat (qᴴ * (V.gram * q₀))`. Express the relevant statement in the definitionally equal form `(adj (rat q) ⬝ (gA V ⬝ rat q₀) : Mx D s s) = rat (qᴴ * (V.gram * q₀))`. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, gA]`. Establish `ht : ∀ M : Matrix (Fin s) (Fin s) D.host.E, Matrix.trace (rat M : Mx D s s) = incA D (Matrix.trace M)` using `fun M => by`. Simplify using `only [rat, Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+
+Rewrite using `[h, ht, GlobalTheory.CompanionTheory.ThetaInv.trA_incA]`. Conclude with `hψ.2.2.1 _`.
+-/
 theorem psi_inner_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {s : ℕ}
     (q q₀ : Matrix (Fin V.rank) (Fin s) D.host.E) :
     ψ (trA (Matrix.trace (inner V (rat q) (rat q₀)))) = 1 := by
@@ -29,14 +37,25 @@ theorem psi_inner_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F 
   rw [h, ht, GlobalTheory.CompanionTheory.ThetaInv.trA_incA]
   exact hψ.2.2.1 _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(adj x ⬝ (gA V ⬝ (y + z)) : Mx D s s) = adj x ⬝ (gA V ⬝ y) + adj x ⬝ (gA V ⬝ z)`. Simplify using `[Matrix.mul_add]`.
+-/
 theorem inner_add_right' (V : HSp D) {s : ℕ} (x y z : Mx D V.rank s) :
     (inner V x (y + z) : Mx D s s) = inner V x y + inner V x z := by
   change (adj x ⬝ (gA V ⬝ (y + z)) : Mx D s s) = adj x ⬝ (gA V ⬝ y) + adj x ⬝ (gA V ⬝ z)
   simp [Matrix.mul_add]
 
+/- English proof (translation)
+Simplify using `[trA]`.
+-/
 theorem trA_add' (x y : AE D) : trA (x + y) = trA x + trA y := by
   simp [trA]
 
+/- English proof (translation)
+Establish `e₁ : y₁ + rat p₀ - rat p = y₁ - rat (p - p₀)` using `by rw [rat_sub']; abel`. Establish `e₂ : rat p - (y₁ + rat p₀) = rat (p - p₀) - y₁` using `by rw [rat_sub']; abel`. Establish `e₃ : ψ (trA (Matrix.trace (inner V (rat q) (y₂ + rat q₀)))) = ψ (trA (Matrix.trace (inner V (rat q) y₂)))`. Rewrite using `[inner_add_right', Matrix.trace_add, trA_add', AddChar.map_add_eq_mul, psi_inner_rat hψ, mul_one]`. Unfold `cellTerm`.
+
+Rewrite using `[e₁, e₂, e₃]`.
+-/
 theorem term_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {r s : ℕ}
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E)
     (Φ : Mx D V.rank (r + s) → ℂ)
@@ -51,6 +70,9 @@ theorem term_shift {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
   unfold cellTerm
   rw [e₁, e₂, e₃]
 
+/- English proof (translation)
+Introduce `D ψ hψ V r s b a Φ p₀ q₀ y₁ y₂`. Simplify using `only [term_shift hψ]`. Conclude with `(Equiv.prodCongr (Equiv.subRight p₀) (Equiv.refl _)).tsum_eq (fun pq => cellTerm ψ V b a Φ pq.1 pq.2 y₁ y₂)`.
+-/
 theorem tsum_cellTerm_add_rat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (V : HSp D) (r s : ℕ)
     (b : Matrix (Fin r) (Fin r) D.host.E) (a : Matrix (Fin (r + s)) (Fin (r + s)) D.host.E) (Φ : Mx D V.rank (r + s) → ℂ)
     (p₀ : Matrix (Fin V.rank) (Fin r) D.host.E) (q₀ : Matrix (Fin V.rank) (Fin s) D.host.E)

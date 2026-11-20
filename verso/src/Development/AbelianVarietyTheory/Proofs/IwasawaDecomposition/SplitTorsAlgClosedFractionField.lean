@@ -12,6 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LineNorm
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t R _ _ _ x q hq Ω _ io w hw`. Establish `hqf : LocallyQuasiFinite (torsion t.G q).hom` using `(GlobalTheory.T.torsion_flat_locallyQuasiFinite X t.G t.semi q hq).2`. Set `_ : Algebra (FractionRing R) Ω` to `io.toAlgebra`. Establish `hic : IsIntegrallyClosedIn (FractionRing R) Ω`. Rewrite using `[isIntegrallyClosedIn_iff]`.
+
+Use `⟨io.injective, fun {z} hz => ?_⟩` and prove the remaining obligations. Conclude with `(minpoly.degree_eq_one_iff.mp (IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible hz)))`. Set `l` to `GlobalTheory.KernelNoTorsion.torsionLift w hw`. Establish `hl : l ≫ torsion.ι t.G q = w` using `GlobalTheory.KernelNoTorsion.torsionLift_ι w hw`. Take `⟨x₀, h₀, -⟩` from `GlobalTheory.OnePoint.exists_point_of_locallyQuasiFinite (K := FractionRing R) (torsion t.G q).hom Ω l.left (spMap (algebraMap R (FractionRing R)) ≫ x) (by`.
+
+Rewrite using `[Over.w l]`. Express the relevant statement in the definitionally equal form `spMap _ ≫ x = spMap io ≫ spMap _ ≫ x`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use the proof step `rfl)`. Use `⟨x₀ ≫ (torsion.ι t.G q).left, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hl, Over.comp_left, ← h₀, Category.assoc]`.
+-/
 theorem splitTors_of_isAlgClosed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (R : Type) [CommRing R] [IsDomain R] [IsAlgClosed (FractionRing R)] (x : Sp R ⟶ X) (q : ℕ), q ≠ 0 → SplitTors t x q := by
   intro E _ _ _ H X _ t R _ _ _ x q hq Ω _ io w hw
   have hqf : LocallyQuasiFinite (torsion t.G q).hom := (GlobalTheory.T.torsion_flat_locallyQuasiFinite X t.G t.semi q hq).2

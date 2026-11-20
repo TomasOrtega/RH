@@ -16,6 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.DualScheme
 
+/- English proof (translation)
+The claim follows from `h.isLB add₁ := CubeNoeth.isAdditive_of_triv_axes hA hB h.isLB h.zero_left h.zero_right add₂ := CubeNoeth.isAdditive_swap_of_triv_axes hA hB h.isLB h.zero_left h.zero_right right := h.ker_right left k _ _ t := (Set.finite_singleton (1 : Over.mk t ⟶ A)).subset fun x hx ↦ h.ker_left …`.
+-/
 theorem preDual_of_isPerfect {S : Scheme.{0}} [IsLocallyNoetherian S] {A B : Over S} [GrpObj A] [GrpObj B]
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (h : IsPerfect A B P) :
     PreDual A B P where
@@ -25,6 +28,13 @@ theorem preDual_of_isPerfect {S : Scheme.{0}} [IsLocallyNoetherian S] {A B : Ove
   right := h.ker_right
   left k _ _ t := (Set.finite_singleton (1 : Over.mk t ⟶ A)).subset fun x hx ↦ h.ker_left _ x hx
 
+/- English proof (translation)
+Establish `hT : u ≫ T.hom = T'.hom`. Rewrite using `[← Over.w a, ← Category.assoc, ha, Over.w a']`. Establish `hab : u ≫ (a * b).left = (a' * b').left`. Rewrite using `[Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, ← Category.assoc]`. Use `congr 1`.
+
+Apply `GlobalTheory.AbDual.left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.AbDual.lift_left_fst, GlobalTheory.AbDual.lift_left_fst, ha]`. Rewrite using `[Category.assoc, GlobalTheory.AbDual.lift_left_snd, GlobalTheory.AbDual.lift_left_snd, hb]`. Establish `hu : ∀ X : Over S, (toUnit X).left = X.hom` using `fun X => by`. Simplify using `using Over.w (toUnit X)`.
+
+Establish `h1 : u ≫ (1 : T ⟶ G).left = (1 : T' ⟶ G).left`. Rewrite using `[Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, ← Category.assoc, hu, hu, hT]`. Simplify using `only [GlobalTheory.CechPic.lam, map_add, map_sub, ← GlobalTheory.CechPic.pull_comp, hab, h1, ha, hb]`.
+-/
 theorem pull_lam_of_left {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (c : Pic G.left) (u : T'.left ⟶ T.left)
     {a b : T ⟶ G} {a' b' : T' ⟶ G} (ha : u ≫ a.left = a'.left) (hb : u ≫ b.left = b'.left) :
     CechPic.pull u (lam c a b) = lam c a' b' := by
@@ -42,6 +52,9 @@ theorem pull_lam_of_left {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (c : Pic 
     rw [Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, ← Category.assoc, hu, hu, hT]
   simp only [GlobalTheory.CechPic.lam, map_add, map_sub, ← GlobalTheory.CechPic.pull_comp, hab, h1, ha, hb]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CechPic.lam_pull_of_isGrpPullback hp c (fst G' G') (snd G' G')]`. Conclude with `pull_lam_of_left (T := G ⊗ G) (T' := Over.mk ((G' ⊗ G').hom ≫ b)) (a := fst G G) (b := snd G G) (a' := ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp _ (fst G' G')) (b' := ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp _ (snd G' G')) c l (by rw [l₁]; rfl) (by rw …`.
+-/
 theorem pull_lam_sq {S S' : Scheme.{0}} {b : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G b φ) (c : Pic G.left) {l : (G' ⊗ G').left ⟶ (G ⊗ G).left}
     (l₁ : l ≫ (fst G G).left = (fst G' G').left ≫ φ) (l₂ : l ≫ (snd G G).left = (snd G' G').left ≫ φ) :
@@ -51,6 +64,13 @@ theorem pull_lam_sq {S S' : Scheme.{0}} {b : S' ⟶ S} {G : Over S} {G' : Over S
     (b := snd G G) (a' := ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp _ (fst G' G'))
     (b' := ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hp _ (snd G' G')) c l (by rw [l₁]; rfl) (by rw [l₂]; rfl)
 
+/- English proof (translation)
+Introduce `hM hF R _ A _ g hA hg L hL hK`. Take `⟨R₀, _, σ, A₀, _, φ, L₀, _, hA₀, hg₀, hp, hL₀, hK₀, hiso⟩` from `hM R A g hA hg L hL hK`. Use `haveI := hA₀.comm`. Establish `hperf : IsPerfect A₀ A₀ (abelian₂ A₀ L₀)` using `isPerfect_lam hL₀ hK₀`. Establish `hd : IsDual A₀ A₀ (abelian₂ A₀ L₀)` using `hF R₀ A₀ A₀ g hA₀ hA₀ hg₀ hg₀ _ (preDual_of_isPerfect hA₀ hA₀ hperf)`.
+
+Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback hp hp`. Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Use `IsDual.baseChange hp hp l₁ l₂ hP ?_ hd` and prove the remaining obligations. Use `(cls_eq_iff (pull_isLB hperf.isLB l) hP).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hperf.isLB, show cls _ hperf.isLB = lam (cls L₀ hL₀) (fst A₀ A₀) (snd A₀ A₀) from cls_cube_two hL₀ _ _ hperf.isLB, show cls _ hP = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hP, (cls_eq_iff hL (pull_isLB hL₀ φ)).2 hiso, cls_pull hL₀]`.
+
+Conclude with `pull_lam_sq hp _ l₁ l₂`.
+-/
 theorem ktrivDual : KTrivModel → FinDual → KTrivDual := by
   intro hM hF R _ A _ g hA hg L hL hK
   obtain ⟨R₀, _, σ, A₀, _, φ, L₀, _, hA₀, hg₀, hp, hL₀, hK₀, hiso⟩ := hM R A g hA hg L hL hK

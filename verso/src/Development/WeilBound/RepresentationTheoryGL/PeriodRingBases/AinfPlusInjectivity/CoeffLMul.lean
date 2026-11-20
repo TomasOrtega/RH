@@ -13,20 +13,32 @@ namespace BaseC
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `map_mem fun a => by rw [φ_aB]; exact aB_mem _`.
+-/
 theorem ainf_φ : ∀ x ∈ Ainf' l, φ l x ∈ Ainf' l :=
   map_mem fun a => by rw [φ_aB]; exact aB_mem _
 
+/- English proof (translation)
+The claim follows from `map_mem fun a => by obtain ⟨a', h⟩ := σ_aB g a rw [h]; exact aB_mem _`.
+-/
 theorem ainf_σ (g : GQ l) : ∀ x ∈ Ainf' l, σB g x ∈ Ainf' l :=
   map_mem fun a => by
     obtain ⟨a', h⟩ := σ_aB g a
     rw [h]; exact aB_mem _
 
+/- English proof (translation)
+Use `inv_uniq (c := (l : BdR l)) ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (ι l) l, ← map_mul, u_mul, map_one]`. Rewrite using `[← map_natCast (qQ l) l, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero), map_one]`.
+-/
 theorem ι_u : ι l (u l) = qQ l ((l : ℚ_[l])⁻¹) := by
   refine inv_uniq (c := (l : BdR l)) ?_ ?_
   · rw [← map_natCast (ι l) l, ← map_mul, u_mul, map_one]
   · rw [← map_natCast (qQ l) l, ← map_mul,
       inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero), map_one]
 
+/- English proof (translation)
+Introduce `x hx` and use `(Subring.closure_le (t := (Plus l).comap (ι l))).2 (by rintro y (⟨a, rfl⟩ | hy) · refine ⟨ACris.iota ℂ_[l] l (algebraMap (AInf ℂ_[l] l) (ACris.ACris ℂ_[l] l) a), ?_⟩ exact (Loc2.lift_mk₀ (iC l) (isUnit_iC_l l) (isUnit_image_period l) _).symm · rw [Set.mem_singleton_iff.1 hy] show …`.
+-/
 theorem ainf_plus : ∀ x ∈ Ainf' l, ι l x ∈ Plus l := fun x hx =>
   (Subring.closure_le (t := (Plus l).comap (ι l))).2 (by
     rintro y (⟨a, rfl⟩ | hy)
@@ -37,6 +49,9 @@ theorem ainf_plus : ∀ x ∈ Ainf' l, ι l x ∈ Plus l := fun x hx =>
       rw [ι_u]
       exact ⟨algebraMap ℚ_[l] (BdRp l) _, rfl⟩) hx
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, ih, φ_aB, Function.iterate_succ_apply']`.
+-/
 theorem φpow_aB (h : ℕ) (a : AInf ℂ_[l] l) :
     (φ l ^ h) (aB l a) = aB l ((WittVector.frobenius : AInf ℂ_[l] l →+* AInf ℂ_[l] l)^[h] a) := by
   induction h with
@@ -44,9 +59,17 @@ theorem φpow_aB (h : ℕ) (a : AInf ℂ_[l] l) :
   | succ n ih => rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, ih, φ_aB,
       Function.iterate_succ_apply']
 
+/- English proof (translation)
+Rewrite using `[← pow_u y N, ← pow_u z N, mul_comm y, mul_comm z, h]`.
+-/
 theorem cancel_l {N : ℕ} {y z : B l} (h : (l : B l) ^ N * y = (l : B l) ^ N * z) : y = z := by
   rw [← pow_u y N, ← pow_u z N, mul_comm y, mul_comm z, h]
 
+/- English proof (translation)
+Rewrite using `[WittVector.iterate_frobenius_coeff]`. Introduce `h0`. Apply `hb` to reduce the goal to its premises. Establish `hinj : Function.Injective (⇑(frobenius (PreTilt ↥(normInteger ℂ_[l]) l) l))^[h]` using `Function.Injective.iterate (PerfectRing.bijective_frobenius (R := PreTilt ↥(normInteger ℂ_[l]) l) (p := l)).1 h`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[iterate_frobenius, iterate_frobenius, h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`.
+-/
 theorem coeff_ne (b : AInf ℂ_[l] l) (hb : b.coeff 0 ≠ 0) (h : ℕ) :
     ((WittVector.frobenius : AInf ℂ_[l] l →+* AInf ℂ_[l] l)^[h] b).coeff 0 ≠ 0 := by
   rw [WittVector.iterate_frobenius_coeff]
@@ -58,11 +81,33 @@ theorem coeff_ne (b : AInf ℂ_[l] l) (hb : b.coeff 0 ≠ 0) (h : ℕ) :
   apply hinj
   rw [iterate_frobenius, iterate_frobenius, h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[show (l : AInf ℂ_[l] l) ^ (k + 1) * b = ((l : AInf ℂ_[l] l) ^ k * b) * (l : AInf ℂ_[l] l) by ring]`. Conclude with `WittVector.mul_charP_coeff_zero _`.
+-/
 theorem coeff_l_mul {n : ℕ} (hn : n ≠ 0) (b : AInf ℂ_[l] l) : ((l : AInf ℂ_[l] l) ^ n * b).coeff 0 = 0 := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
   rw [show (l : AInf ℂ_[l] l) ^ (k + 1) * b = ((l : AInf ℂ_[l] l) ^ k * b) * (l : AInf ℂ_[l] l) by ring]
   exact WittVector.mul_charP_coeff_zero _
 
+/- English proof (translation)
+Take `⟨a, k, rfl⟩` from `mem_rep hx`. Establish `hu : (φ l ^ h) (u l) = u l` using `map_u _`. Use `set F := (WittVector.frobenius : AInf ℂ_[l] l →+* AInf ℂ_[l] l)^[h] with hF`. Establish `he' : aB l (F a) * u l ^ k = (qB l ((l : ℚ_[l]) ^ m) * aB l a) * u l ^ k`. Use `he` as an intermediate fact.
+
+Rewrite `this` using `[Eig, map_mul, map_pow, hu, φpow_aB]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : aB l (F a) = qB l ((l : ℚ_[l]) ^ m) * aB l a`. Establish `k1 : ∀ y : B l, y * u l ^ k * (l : B l) ^ k = y` using `fun y => by`.
+
+Rewrite using `[mul_right_comm]`. Conclude with `pow_u y k`. Rewrite using `[← k1 (aB l (F a)), he', k1]`. Establish `hFl : F (l : AInf ℂ_[l] l) = l` using `Function.iterate_fixed (map_natCast _ l) h`. Establish `hFmul : ∀ (N : ℕ) (b : AInf ℂ_[l] l), F ((l : AInf ℂ_[l] l) ^ N * b) = (l : AInf ℂ_[l] l) ^ N * F b` using `fun N b => by`.
+
+Rewrite using `[hF, iterate_map_mul, iterate_map_pow, ← hF, hFl]`. Establish `haB : ∀ (N : ℕ) (b : AInf ℂ_[l] l), aB l ((l : AInf ℂ_[l] l) ^ N * b) = (l : B l) ^ N * aB l b` using `fun N b => by rw [map_mul, map_pow, map_natCast]`. It suffices to establish `ha : a = 0 by rw [ha, map_zero, zero_mul]`. Assume the negation of the conclusion as `ha`. Take `⟨N, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul a ha`.
+
+Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Establish `hn : n ≠ 0` using `by rintro rfl; exact hm rfl`. Establish `e1 : (l : B l) ^ N * aB l (F b) = (l : B l) ^ N * aB l ((l : AInf ℂ_[l] l) ^ n * b)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2` using `aB_injective (cancel_l e1)`.
+
+Establish `c` using `congrArg (fun w => WittVector.coeff w 0) e2`. Rewrite `c` using `[coeff_l_mul hn]`. Conclude with `coeff_ne b hb h c`. Establish `hn : n ≠ 0` using `by rintro rfl; exact hm (by simp)`. Establish `hq : qB l ((l : ℚ_[l]) ^ (-(n : ℤ))) * (l : B l) ^ n = 1`.
+
+Rewrite using `[← map_natCast (qB l) l, ← map_pow, ← map_mul, _root_.zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)), map_one]`. Establish `e1 : (l : B l) ^ N * aB l (F b * (l : AInf ℂ_[l] l) ^ n) = (l : B l) ^ N * aB l b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hFmul, map_mul, haB, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = qB l ((l : ℚ_[l]) ^ (-(n : ℤ))) * aB l ((l : AInf ℂ_[l] l) ^ N * b) * (l : B l) ^ n := by`. Rewrite using `[e]`. Use `_ = _ := by rw [mul_right_comm, hq, one_mul, haB]`. Establish `e2` using `aB_injective (cancel_l e1)`. Establish `c` using `congrArg (fun w => WittVector.coeff w 0) e2`.
+
+Rewrite `c` using `[mul_comm, coeff_l_mul hn]`. Conclude with `hb c.symm`.
+-/
 theorem ainf_eig (h : ℕ) (m : ℤ) (hm : m ≠ 0) (x : B l) (hx : x ∈ Ainf' l) (he : Eig h m x) : x = 0 := by
   obtain ⟨a, k, rfl⟩ := mem_rep hx
   have hu : (φ l ^ h) (u l) = u l := map_u _

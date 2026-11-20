@@ -6,6 +6,13 @@ open Matrix
 
 namespace GlobalTheory.TraceAnnCompact
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `AddChar.ne_one_iff.1 hψ`. Take `⟨ε, hε, hb⟩` from `Metric.mem_nhds_iff.1 hV`. Use `⟨‖y‖ / ε, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+
+Establish `hx0 : 0 < ‖x‖` using `lt_of_le_of_lt (div_nonneg (norm_nonneg _) hε.le) hlt`. Establish `hx1 : x ≠ 0` using `norm_pos_iff.1 hx0`. Establish `hmem : y / x ∈ V`. Apply `hb` to reduce the goal to its premises. Rewrite using `[mem_ball_zero_iff, norm_div, div_lt_iff₀ hx0]`.
+
+Rewrite `hlt` using `[div_lt_iff₀ hε]`. Combine the linear relations using `[mul_comm ε ‖x‖]`. Establish `h` using `hx _ hmem`. Rewrite `h` using `[div_mul_cancel₀ _ hx1]`. Conclude with `hy h`.
+-/
 theorem exists_bound {K : Type} [NormedField K] (ψ : AddChar K ℂ) (hψ : ψ ≠ 1) {V : Set K} (hV : V ∈ nhds (0 : K)) :
     ∃ C : ℝ, ∀ x : K, (∀ a ∈ V, ψ (a * x) = 1) → ‖x‖ ≤ C := by
   obtain ⟨y, hy⟩ := AddChar.ne_one_iff.1 hψ
@@ -24,6 +31,15 @@ theorem exists_bound {K : Type} [NormedField K] (ψ : AddChar K ℂ) (hψ : ψ �
   rw [div_mul_cancel₀ _ hx1] at h
   exact hy h
 
+/- English proof (translation)
+Use `haveI : ContinuousAdd A := IsModuleTopology.toContinuousAdd K A`. Establish `hclosed : IsClosed {l : A | ∀ t ∈ U, ψ (B t l) = 1}`. Establish `: {l : A | ∀ t ∈ U, ψ (B t l) = 1} = ⋂ t ∈ U, {l : A | ψ (B t l) = 1}`. Use extensionality with `l`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `isClosed_biInter fun t _ => isClosed_eq (hc.comp (IsModuleTopology.continuous_of_linearMap (B t))) continuous_const`. Establish `hV : ∀ i, (fun a : K => a • c i) ⁻¹' U ∈ nhds (0 : K)` using `fun i => by`. Establish `h : Continuous fun a : K => a • c i` using `continuous_id.smul continuous_const`. Conclude with `h.continuousAt.preimage_mem_nhds (by simpa using hU)`.
+
+Use `choose C hC using fun i => exists_bound ψ hψ (hV i)`. Establish `hK : IsCompact (b.equivFun.symm '' Set.univ.pi fun i => Metric.closedBall (0 : K) (C i))` using `(isCompact_univ_pi fun i => isCompact_closedBall _ _).image (IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap)`. Use `hK.of_isClosed_subset hclosed fun l hl => ⟨b.equivFun l, fun i _ => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`. Use `hC i _ fun a ha => ?_` and prove the remaining obligations.
+
+Establish `h` using `hl _ ha`. Rewrite `h` using `[map_smul, LinearMap.smul_apply, hB, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem isCompact_ann {K A ι : Type} [NormedField K] [ProperSpace K] [AddCommGroup A] [Module K A]
     [TopologicalSpace A] [IsModuleTopology K A] [Fintype ι] (b : Module.Basis ι K A) (c : ι → A)
     (B : A →ₗ[K] A →ₗ[K] K) (hB : ∀ i l, B (c i) l = b.repr l i) (ψ : AddChar K ℂ) (hc : Continuous ψ)
@@ -49,11 +65,17 @@ theorem isCompact_ann {K A ι : Type} [NormedField K] [ProperSpace K] [AddCommGr
   have h := hl _ ha
   rwa [map_smul, LinearMap.smul_apply, hB, smul_eq_mul] at h
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
     (R : Type) [CommRing R] [Algebra F R] (e : E) :
     Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
   rw [Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]
 
+/- English proof (translation)
+Establish `: Algebra.traceForm R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] b.traceDual i) = (Algebra.TensorProduct.basis R b).coord i`. Use `(Algebra.TensorProduct.basis R b).ext fun j => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_self, Algebra.TensorProduct.basis_apply, Algebra.traceForm_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, trace_one_tmul, Module.Basis.trace_traceDual_mul, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, Module.Basis.coord_apply]`.
+-/
 theorem trace_traceDual_mul {F E ι : Type} [Field F] [Field E] [Algebra F E] [Module.Finite F E]
     [Algebra.IsSeparable F E] [Fintype ι] [DecidableEq ι] (R : Type) [CommRing R] [Algebra F R]
     (b : Module.Basis ι F E) (i : ι) (l : R ⊗[F] E) :
@@ -67,6 +89,9 @@ theorem trace_traceDual_mul {F E ι : Type} [Field F] [Field E] [Algebra F E] [M
     split_ifs <;> simp
   rw [this, Module.Basis.coord_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v ψ hc hψ U hU`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Set `b` to `Module.finBasis F E`. Conclude with `isCompact_ann (Algebra.TensorProduct.basis (Fv F v) b) (fun i => (1 : Fv F v) ⊗ₜ[F] b.traceDual i) (Algebra.traceForm (Fv F v) (Fv F v ⊗[F] E)) (trace_traceDual_mul (Fv F v) b) ψ hc hψ hU`.
+-/
 theorem isCompact_trace_ann : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (ψ : AddChar (Fv F v) ℂ),
     Continuous ψ → ψ ≠ 1 → ∀ U ∈ nhds (0 : Fv F v ⊗[F] E),
       IsCompact {l : Fv F v ⊗[F] E | ∀ t ∈ U, ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (t * l)) = 1} := by

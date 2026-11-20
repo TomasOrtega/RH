@@ -20,6 +20,31 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `⟨(n : ℝ) / 2, fun z hz => ?_⟩` and prove the remaining obligations. Use `set r : ℝ≥0 := absA D (Matrix.GeneralLinearGroup.det a) with hr`. Establish `hr0 : r ≠ 0` using `((Group.isUnit (Matrix.GeneralLinearGroup.det a)).map (absA D)).ne_zero`. Use `set T : Mx D n n := adj a.1 * β.1.map (incA D) * a.1 with hT`. Use `set I : hermA D n → ℂ := fun c => npow (H (w * nb c * k)) (z - s0 V n) * Jt ψ V μ φ c * ψ (-halfTr (Matrix.trace (HMul.hMul T c.1 : Mx D n n))) with hI`.
+
+Use `set W := PositivityTheory.SiegelWeilFormula.Gen.whI (HeckeCharacterZeroLocus.SiegelWeilU.AF D.host.F) D.sp.cm.sig (HSpace.gram V) ψ (μ.map tupInv) (fun X => φ (HMul.hMul (tupOf X) a.1)) (PositivityTheory.SiegelWeilFormula.Gen.nuA θ (aTau θ a) lamS L₁ L₂) (β.1.map (HeckeCharacterZ …`. Establish `hzs : z - s0 V n ≠ 0`. Introduce `h0`. Establish `hre` using `congrArg Complex.re h0`. Simplify using `only [s0, Complex.sub_re, Complex.div_re, Complex.natCast_re, Complex.natCast_im, Complex.zero_re] at hre`.
+
+Establish `h2 : (V.rank : ℝ) ≤ 2 * n` using `by exact_mod_cast hrange.2.1`. Evaluate the numerical expressions using `at hre`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ∀ c : hermA D n, W (hermTo (conjH a c)) = npow r (-(V.rank : ℂ)) * I c`. Introduce `c`.
+
+Establish `h1` using `nu_conj hRc hstd.hθ a lamS L L₁ L₂ hnu2 c`. Rewrite `h1` using `[← hLnu lamS hlamS c]`. Establish `h2` using `jt_conj V ψ μ 𝓕μ hμ a φ c`. Establish `h3` using `char_conj ψ β a c`. Establish `h4 : H (w * nb c * k) = H (w * nb c)` using `hK D n H hstd.hH (w * nb c) k hk`.
+
+Establish `h5 : ((V.rank : ℂ) - n) / 2 = s0 V n` using `by unfold s0; ring`. Simplify using `only [hW, hI, PositivityTheory.SiegelWeilFormula.Gen.whI]`. Express the relevant statement in the definitionally equal form `(((PositivityTheory.SiegelWeilFormula.Gen.nuA θ (aTau θ a) lamS L₁ L₂ (conjH a c).1 : ℝ)) : ℂ) ^ (-(z - ((V.rank : ℂ) - n) / 2)) * PositivityTheory.PfSWUS.Loc.jtR (AF D.host.F) D.sp.cm.sig (HSpace.gram V) ψ (μ.map tupInv) (fun X => φ (HMul.hMul (tupOf X) a.1)) (hermTo (conjH a c) …`. Rewrite using `[h1, h2, h3, h4, h5, inv_cpow_neg' _ hzs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hHaar : lam.IsAddHaarMeasure` using `hcd.2.1`. Establish `hIint : Integrable I lam`. Establish `h` using `integrable_whit_of_unfold hU D n V ψ χ θ μ ω H l s ν Φ hstd hrange lam 𝓖 nb hcd w hw β hβ φ hsch hfock T z hz`. Use `h.congr (Filter.Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [hI, hK D n H hstd.hH (w * nb c) k hk]`.
+
+Establish `hWcomp : (fun b => W (hermTo b)) = fun b => npow r (-(V.rank : ℂ)) * I (conjH a⁻¹ b)`. Use function extensionality and compare the values at `b`. Use `conv_lhs => rw [← conjH_conjH_inv' a b]`. Conclude with `hpt _`. Establish `hrC : ((r : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr0`.
+
+Establish `key : npow r ((V.rank : ℂ) - n) * (((r : ℝ) : ℂ) ^ n * npow r (-(V.rank : ℂ))) = 1`. Unfold `npow`. Rewrite using `[← Complex.cpow_natCast, ← Complex.cpow_add _ _ hrC, ← Complex.cpow_add _ _ hrC]`. Establish `: ((V.rank : ℂ) - n) + ((n : ℂ) + -(V.rank : ℂ)) = 0` using `by ring`. Rewrite using `[this, Complex.cpow_zero]`.
+
+Establish `hwI : whitT ψ V μ lam nb w H φ T k z = ∫ c, I c ∂lam` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `integrable_map_hermTo lam W ?_` and prove the remaining obligations. Rewrite using `[hWcomp]`. Conclude with `(integrable_comp_conjH lam hHaar a⁻¹ hIint).const_mul _`.
+
+Rewrite using `[integral_map_hermTo lam W]`. Establish `hc` using `hM D n lam hHaar a (fun B => if h : B ∈ hermA D n then W (hermTo ⟨B, h⟩) else 0)`. Establish `e1 : ∫ b, (fun B => if h : B ∈ hermA D n then W (hermTo ⟨B, h⟩) else 0) b.1 ∂lam = ∫ b, W (hermTo b) ∂lam` using `integral_congr_ae (Filter.Eventually.of_forall fun b => by show (if h : b.1 ∈ hermA D n then W (hermTo ⟨b.1, h⟩) else 0) = W (hermTo b)`. Rewrite using `[dif_pos b.2])`. Establish `e2 : ∫ c, (fun B => if h : B ∈ hermA D n then W (hermTo ⟨B, h⟩) else 0) (a.1 * c.1 * adj a.1) ∂lam = ∫ c, W (hermTo (conjH a c)) ∂lam` using `integral_congr_ae (Filter.Eventually.of_forall fun c => by show (if h : a.1 * c.1 * adj a.1 ∈ hermA D n then W (hermTo ⟨_, h⟩) else 0) = W (hermTo (conjH a c))`.
+
+Rewrite using `[dif_pos (show a.1 * c.1 * adj a.1 ∈ hermA D n from (conjH a c).2)]`. Use the proof step `rfl)`. Rewrite using `[← e1, hc, e2]`. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, hwI]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key, one_mul]`. Use `_ = _ := by ring`.
+-/
 theorem whit_side (hRc : RealConj) (hM : ConjMod) (hU : Unfold) (hK : HeightKInv)
     {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}

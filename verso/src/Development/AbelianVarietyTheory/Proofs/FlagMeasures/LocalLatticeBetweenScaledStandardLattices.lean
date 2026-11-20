@@ -15,11 +15,19 @@ section general
 
 variable {R : Type} [CommRing R] {O : Subring R} {n : ℕ}
 
+/- English proof (translation)
+Use `Λ.smul_mem (⟨c, hc⟩ : O) hx` as an intermediate fact. Simplify `this` using `[Subring.smul_def]`.
+-/
 theorem smul_mem_of_mem' (Λ : Submodule O (Fin n → R)) {c : R} (hc : c ∈ O) {x : Fin n → R}
     (hx : x ∈ Λ) : c • x ∈ Λ := by
   have := Λ.smul_mem (⟨c, hc⟩ : O) hx
   simpa [Subring.smul_def] using this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem`. Consider the case `exact _root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem ..)`.
+-/
 theorem exists_nat_smul_mem (Λ : Submodule O (Fin n → R))
     (hd : ∀ y : R, ∃ m : ℕ, m ≠ 0 ∧ (m : R) * y ∈ O) {x : Fin n → R}
     (hx : x ∈ Submodule.span R (Λ : Set (Fin n → R))) : ∃ m : ℕ, m ≠ 0 ∧ (m : R) • x ∈ Λ := by
@@ -31,6 +39,27 @@ theorem exists_nat_smul_mem (Λ : Submodule O (Fin n → R))
   | (intros; apply @_root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NatSmulMem.exists_nat_smul_mem ..)
 
+/- English proof (translation)
+Use `choose md hmd0 hmd using hd`. Take `⟨S, hS⟩` from `hfg`. Use `set m1 : ℕ := ∏ s ∈ S, ∏ i, md (s i) with hm1`. Establish `hm10 : m1 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => Finset.prod_ne_zero_iff.2 fun i _ => hmd0 _`. Establish `hup : ∀ v ∈ Λ, ∀ i, (m1 : R) * v i ∈ O`.
+
+Introduce `v hv`. Rewrite `hv` using `[← hS]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem s hs`. Introduce `i`.
+
+Establish `hdvd : md (s i) ∣ m1` using `(Finset.dvd_prod_of_mem (fun j => md (s j)) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun t : Fin n → R => ∏ j, md (t j)) hs)`. Take `⟨k, hk⟩` from `hdvd`. Rewrite using `[hk, Nat.cast_mul, mul_comm (md (s i) : R), mul_assoc]`. Conclude with `O.mul_mem (natCast_mem O k) (hmd _)`. Consider the case `zero => intro i`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro i`. Simplify `O.add_mem (hx i) (hy i)` using `[mul_add]`. Consider the case `smul a x _ hx`. Introduce `i`.
+
+Establish `: (m1 : R) * (a • x) i = (a : R) * ((m1 : R) * x i)`. Simplify using `[Subring.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `O.mul_mem a.2 (hx i)`.
+
+Establish `hsingle : ∀ i : Fin n, ∃ m : ℕ, m ≠ 0 ∧ (m : R) • (Pi.single i 1 : Fin n → R) ∈ Λ` using `fun i => exists_nat_smul_mem Λ (fun y => ⟨md y, hmd0 y, hmd y⟩) (by rw [hsp]; exact Submodule.mem_top)`. Use `choose ms hms0 hms using hsingle`. Use `set m2 : ℕ := ∏ i, ms i with hm2`. Establish `hm20 : m2 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hms0 i`. Establish `hsing2 : ∀ i, (m2 : R) • (Pi.single i 1 : Fin n → R) ∈ Λ`.
+
+Introduce `i`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem ms (Finset.mem_univ i)`. Rewrite `hk` using `[← hm2]`. Rewrite using `[hk, Nat.cast_mul, mul_comm, ← smul_smul]`. Conclude with `smul_mem_of_mem' Λ (natCast_mem O k) (hms i)`.
+
+Establish `hlow : ∀ v : Fin n → R, (∀ i, v i ∈ O) → (m2 : R) • v ∈ Λ`. Introduce `v hv`. Establish `h : (m2 : R) • v = ∑ i, v i • ((m2 : R) • (Pi.single i 1 : Fin n → R))`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`.
+
+Rewrite using `[h]`. Conclude with `Λ.sum_mem fun i _ => smul_mem_of_mem' Λ (hv i) (hsing2 i)`. Use `⟨m1 * m2, mul_ne_zero hm10 hm20, fun v hv => ?_, fun v hv i => ?_⟩` and prove the remaining obligations. Establish `: ((m1 * m2 : ℕ) : R) • v = (m1 : R) • ((m2 : R) • v)` using `by push_cast; rw [smul_smul]`. Rewrite using `[this]`.
+
+Conclude with `smul_mem_of_mem' Λ (natCast_mem O m1) (hlow v hv)`. Establish `: ((m1 * m2 : ℕ) : R) * v i = (m2 : R) * ((m1 : R) * v i)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `O.mul_mem (natCast_mem O m2) (hup v hv i)`.
+-/
 theorem exists_nat_between (Λ : Submodule O (Fin n → R)) (hfg : Λ.FG)
     (hsp : Submodule.span R (Λ : Set (Fin n → R)) = ⊤)
     (hd : ∀ y : R, ∃ m : ℕ, m ≠ 0 ∧ (m : R) * y ∈ O) :
@@ -92,6 +121,9 @@ end general
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `exists_nat_between Λ hΛ.1 hΛ.2 hd`.
+-/
 theorem lat_between (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (n : ℕ)
     (Λ : Submodule (A.L p).O (Fin n → (A.loc p).Ep)) (hΛ : IsLat (A.L p) Λ)
     (hd : ∀ y : (A.loc p).Ep, ∃ m : ℕ, m ≠ 0 ∧ (m : (A.loc p).Ep) * y ∈ (A.L p).O) :

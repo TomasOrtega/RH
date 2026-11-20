@@ -19,11 +19,19 @@ def nablaToDeltaMaps (E : GLOps n (KK O) V) (lam : Fin n → ℤ) (v : V) : Subm
   add_mem' := fun {f g} hf hg x hx => by rw [LinearMap.add_apply]; exact Submodule.add_mem _ (hf x hx) (hg x hx)
   smul_mem' := fun c f hf x hx => by rw [LinearMap.smul_apply]; exact Submodule.smul_mem _ _ (hf x hx)
 
+/- English proof (translation)
+Introduce `u hu x hx u' hu'`. Conclude with `hx (u' * u) (Submonoid.mul_mem _ hu' (Submonoid.subset_closure hu))`.
+-/
 theorem nabla_integral_enveloping_stable (E : GLOps n (KK O) V) (lam : Fin n → ℤ) (v : V) :
     UZStable (O := O) E (NablaSub (O := O) E lam v) := by
   intro u hu x hx u' hu'
   exact hx (u' * u) (Submonoid.mul_mem _ hu' (Submonoid.subset_closure hu))
 
+/- English proof (translation)
+Introduce `u hu x hx`. Establish `hle : Delta (O` using `O) E v ≤ (Delta (O := O) E v).comap (u.restrictScalars O) := by`. Unfold `Delta`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u', hu', rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Conclude with `Submodule.subset_span ⟨u * u', Submonoid.mul_mem _ (Submonoid.subset_closure hu) hu', rfl⟩`. Conclude with `hle hx`.
+-/
 theorem delta_integral_enveloping_stable (E : GLOps n (KK O) V) (v : V) : UZStable (O := O) E (Delta (O := O) E v) := by
   intro u hu x hx
   have hle : Delta (O := O) E v ≤ (Delta (O := O) E v).comap (u.restrictScalars O) := by
@@ -34,6 +42,15 @@ theorem delta_integral_enveloping_stable (E : GLOps n (KK O) V) (v : V) : UZStab
     exact Submodule.subset_span ⟨u * u', Submonoid.mul_mem _ (Submonoid.subset_closure hu) hu', rfl⟩
   exact hle hx
 
+/- English proof (translation)
+Establish `hc : Commute (LinearMap.mulLeft (KK O) (E a b)) ((-1 : KK O) • LinearMap.mulRight (KK O) (E a b))` using `(LinearMap.commute_mulLeft_right _ _).smul_right _`. Establish `hsub : adjointEndAction E a b = LinearMap.mulLeft (KK O) (E a b) + (-1 : KK O) • LinearMap.mulRight (KK O) (E a b)`. Rewrite using `[adjointEndAction, neg_one_smul, sub_eq_add_neg]`. Simplify using `only [divPowE]`. Rewrite using `[hsub, hc.add_pow, LinearMap.smul_apply, LinearMap.sum_apply, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmk : m ≤ k` using `by simp at hm; omega`. Rewrite using `[smul_pow, LinearMap.pow_mulLeft, LinearMap.pow_mulRight]`. Simplify using `only [Module.End.mul_apply, Module.End.natCast_apply, LinearMap.smul_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply, map_nsmul, map_smul, smul_mul_assoc, mul_smul_comm, mul_assoc]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (KK O), smul_smul, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[Nat.cast_choose (KK O) hmk]`. Establish `h1 : ((m.factorial : ℕ) : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero m`. Establish `h2 : (((k - m).factorial : ℕ) : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero (k - m)`. Establish `h3 : ((k.factorial : ℕ) : KK O) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem adjoint_divided_power_expansion [CharZero (KK O)] (E : GLOps n (KK O) V) (a b : Fin n) (k : ℕ) (f : Module.End (KK O) V) :
     divPowE (adjointEndAction E) a b k f =
       ∑ m ∈ range (k + 1), ((-1 : KK O) ^ (k - m)) • (divPowE E a b m * f * divPowE E a b (k - m)) := by
@@ -57,6 +74,41 @@ theorem adjoint_divided_power_expansion [CharZero (KK O)] (E : GLOps n (KK O) V)
   have h3 : ((k.factorial : ℕ) : KK O) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero k
   field_simp
 
+/- English proof (translation)
+Introduce `u hu f hf x hx`. Establish `hN` using `nabla_integral_enveloping_stable (O := O) E lam v`. Establish `hD` using `delta_integral_enveloping_stable (O := O) E v`. Establish `htop : ∀ z : V, z ∈ ⨆ mu, ⨆ (_ : True), weightSp E mu`. Introduce `z`.
+
+Simplify using `only [iSup_true]`. Rewrite using `[hE.2.2]`. Conclude with `Submodule.mem_top`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Rewrite using `[adjoint_divided_power_expansion, LinearMap.sum_apply]`.
+
+Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Module.End.mul_apply, Module.End.mul_apply]`. Establish `h1 : divPowE E a b (k - m) x ∈ NablaSub (O` using `O) E lam v := hN _ (Or.inl ⟨a, b, k - m, hab, rfl⟩) x hx`. Establish `h2 : f (divPowE E a b (k - m) x) ∈ Delta (O` using `O) E v := hf _ h1`. Establish `h3` using `hD _ (Or.inl ⟨a, b, m, hab, rfl⟩) _ h2`.
+
+Establish `h4` using `intCast_smul_mem_submodule (Delta (O := O) E v) ((-1 : ℤ) ^ (k - m)) h3`. Simplify using `using h4`. Establish `hR : ∀ (m : ℕ) (μ ν : Fin n → ℤ) (z : V), z ∈ weightSp E μ → (((List.range m).map fun j : ℕ => E a a - ((ν a : KK O) + j) • (1 : Module.End (KK O) V)).prod) z = (∏ j ∈ range m, ((μ a : KK O) - ((ν a : KK O) + j))) • z`. Introduce `m μ ν z hz`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, List.map_singleton, List.prod_singleton, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, (mem_weightSpace_iff_diag_scalar.1 hz) a, ← sub_smul, map_smul, ih, smul_smul, Finset.prod_range_su …`. Establish `hw : ∀ (ν : Fin n → ℤ) (y : V), y ∈ weightSp E ν → (binomE (adjointEndAction E) a k f) y = ∑ ij ∈ antidiagonal k, (((Ring.choose (-(ν a)) ij.2 : ℤ) : KK O)) • binomE E a ij.1 (f y)`. Introduce `ν y hy`.
+
+Establish `hadx : ∀ (g : Module.End (KK O) V) (c : KK O), ((adjointEndAction E a a - c • (1 : Module.End (KK O) (Module.End (KK O) V))) g) y = (E a a - ((ν a : KK O) + c) • (1 : Module.End (KK O) V)) (g y)`. Introduce `g c`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, adjointEndAction_apply, Module.End.mul_apply, (mem_weightSpace_iff_diag_scalar.1 hy) a, map_smul, add_smul, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Establish `hprod : ∀ (m : ℕ) (g : Module.End (KK O) V), (((List.range m).map fun j : ℕ => adjointEndAction E a a - (j : KK O) • (1 : Module.End (KK O) (Module.End (KK O) V))).prod g) y = (((List.range m).map fun j : ℕ => E a a - ((ν a : KK O) + j) • (1 : Module.End (KK O) V)).prod) (g y)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro g`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `g`. Rewrite using `[List.range_succ, List.map_append, List.map_append, List.prod_append, List.prod_append, List.map_singleton, List.map_singleton, List.prod_singleton, List.prod_singleton]`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[ih, hadx]`. Take `⟨G, h, hh, hfy⟩` from `mem_weight_sup_exists_finset_sum E (fun _ => True) (htop (f y))`.
+
+Rewrite using `[binomE, LinearMap.smul_apply, LinearMap.smul_apply, hprod, hfy, map_sum, Finset.smul_sum]`. Simplify using `only [map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hμw` using `(hh μ hμ).2`.
+
+Rewrite using `[hR k μ ν _ hμw, smul_smul]`. Simplify using `only [binomial_diagonal_on_weight hμw, map_smul, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((Ring.choose (μ a + -(ν a)) k : ℤ) : KK O) := inv_factorial_prod_eq_choose _ _`.
+
+Use `_ = _ := by`. Rewrite using `[Ring.add_choose_eq k (Commute.all _ _)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨S, hSdef⟩ : ∃ S : ℕ → Module.End (KK O) V, S = fun j : ℕ => ((((j : ℤ).negOnePow : ℤˣ) : ℤ) : KK O) • shiftedBinomialOperator E a ((j : ℤ) - 1) j` from `⟨_, rfl⟩`. Establish `hS : ∀ (j : ℕ) (ν : Fin n → ℤ) (y : V), y ∈ weightSp E ν → S j y = ((Ring.choose (-(ν a)) j : ℤ) : KK O) • y`. Introduce `j ν y hy`. Rewrite using `[hSdef, LinearMap.smul_apply, shifted_binomial_on_weight hy, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[Ring.choose_neg, Units.smul_def, smul_eq_mul, add_sub_assoc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hop : binomE (adjointEndAction E) a k f = ∑ ij ∈ antidiagonal k, binomE E a ij.1 * f * S ij.2`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `z`. Take `⟨F, g, hg, rfl⟩` from `mem_weight_sup_exists_finset_sum E (fun _ => True) (htop z)`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun ν hν => ?_` and prove the remaining obligations. Rewrite using `[hw ν _ (hg ν hν).2, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hS _ _ _ (hg ν hν).2, map_smul, map_smul]`. Rewrite using `[hop, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`.
+
+Establish `h1 : S ij.2 x ∈ NablaSub (O` using `O) E lam v := by`. Rewrite using `[hSdef, LinearMap.smul_apply]`. Conclude with `intCast_smul_mem_submodule _ _ (shifted_binomial_preserves_lattice hN a _ _ hx)`. Establish `h2 : f (S ij.2 x) ∈ Delta (O` using `O) E v := hf _ h1`. Conclude with `hD _ (Or.inr ⟨a, ij.1, rfl⟩) _ h2`.
+-/
 theorem nabla_to_delta_maps_stable [CharZero (KK O)] [FiniteDimensional (KK O) V] {E : GLOps n (KK O) V} (hE : IsGLRep E)
     (lam : Fin n → ℤ) (v : V) : UZStable (O := O) (adjointEndAction E) (nablaToDeltaMaps (O := O) E lam v) := by
   intro u hu f hf x hx

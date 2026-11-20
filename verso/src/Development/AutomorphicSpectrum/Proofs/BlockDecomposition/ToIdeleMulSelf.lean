@@ -15,15 +15,24 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Global.IdeleGroup
 
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : HeckeCharacter k => f (IdeleClassGroup.mk k x)) hω`. Simplify `h` using `[HeckeCharacter.toIdele_apply]`.
+-/
 theorem toIdele_mul_self {ω : HeckeCharacter k} (hω : ω * ω = 1) (x : IdeleGroup k) :
     ω.toIdele x * ω.toIdele x = 1 := by
   have h := congrArg (fun f : HeckeCharacter k => f (IdeleClassGroup.mk k x)) hω
   simpa [HeckeCharacter.toIdele_apply] using h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensor_eq (φ : 𝓢(ι → mixedSpace k, ℂ)) (g : (ι → FiniteAdeleRing (𝓞 k) k) → ℂ)
     (x : ι → 𝔸[k]) :
     GJMatrix.schwartzBruhatTensorPi φ g x = rd φ (fun j => (x j).1) * g (fun j => (x j).2) := rfl
 
+/- English proof (translation)
+Establish `h : (a : InfiniteAdeleRing k) w * ((a⁻¹ : (InfiniteAdeleRing k)ˣ) : InfiniteAdeleRing k) w = 1` using `congrFun (Units.mul_inv a) w`. Establish `h2` using `congrArg norm h`. Rewrite `h2` using `[norm_mul, ha w, one_mul, norm_one]`. Conclude with `h2`.
+-/
 theorem norm_inv_units (a : (InfiniteAdeleRing k)ˣ) (ha : ∀ w, ‖(a : InfiniteAdeleRing k) w‖ = 1)
     (w : InfinitePlace k) : ‖((a⁻¹ : (InfiniteAdeleRing k)ˣ) : InfiniteAdeleRing k) w‖ = 1 := by
   have h : (a : InfiniteAdeleRing k) w * ((a⁻¹ : (InfiniteAdeleRing k)ˣ) : InfiniteAdeleRing k) w = 1 :=
@@ -32,6 +41,13 @@ theorem norm_inv_units (a : (InfiniteAdeleRing k)ˣ) (ha : ∀ w, ‖(a : Infini
   rw [norm_mul, ha w, one_mul, norm_one] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h1 : (((ofInfinite a * ofFinite u)⁻¹ : IdeleGroup k) : 𝔸[k]).1 = ((a⁻¹ : (InfiniteAdeleRing k)ˣ) : InfiniteAdeleRing k)`. Establish `: toInfinite k (ofInfinite a * ofFinite u)⁻¹ = a⁻¹` using `by simp`. Conclude with `congrArg Units.val this`. Establish `h2 : (((ofInfinite a * ofFinite u)⁻¹ : IdeleGroup k) : 𝔸[k]).2 = ((u⁻¹ : (FiniteAdeleRing (𝓞 k) k)ˣ) : FiniteAdeleRing (𝓞 k) k)`. Establish `: toFinite k (ofInfinite a * ofFinite u)⁻¹ = u⁻¹` using `by simp`.
+
+Conclude with `congrArg Units.val this`. Rewrite using `[tensor_eq]`. Simplify using `only [h1, h2]`. Rewrite using `[hφ _ (norm_inv_units a ha), hg _ (inv_mem hu), ← Circle.coe_mul, ← map_mul, map_inv, map_inv, ← mul_inv, map_inv]`. Establish `h3` using `toIdele_mul_self hω (ofInfinite a * ofFinite u)`.
+
+Rewrite using `[inv_eq_of_mul_eq_one_left h3]`.
+-/
 theorem line_inv {ω : HeckeCharacter k} (hω : ω * ω = 1) (φ₁ : 𝓢(Unit → mixedSpace k, ℂ))
     (g₁ : (Unit → FiniteAdeleRing (𝓞 k) k) → ℂ)
     (hφ : ∀ a : (InfiniteAdeleRing k)ˣ, (∀ w, ‖(a : InfiniteAdeleRing k) w‖ = 1) →
@@ -58,6 +74,15 @@ theorem line_inv {ω : HeckeCharacter k} (hω : ω * ω = 1) (φ₁ : 𝓢(Unit 
   have h3 := toIdele_mul_self hω (ofInfinite a * ofFinite u)
   rw [inv_eq_of_mul_eq_one_left h3]
 
+/- English proof (translation)
+Take `⟨-, hc, h1, -⟩` from `hCol k ι i₀`. Establish `hcc : Continuous fun u : (adStd k).kGL ι => col i₀ u.1 i₀` using `(continuous_apply i₀).comp (hc.comp continuous_subtype_val)`. Use `inter_mem hU (IsOpen.mem_nhds ?_ ?_)` and prove the remaining obligations. Establish `o1 : IsOpen {u : (adStd k).kGL ι | InM M₀ ((col i₀ u.1 i₀).2 - 1)}` using `((hTop k).1 M₀ hM).1.preimage ((continuous_snd.comp hcc).sub continuous_const)`. Establish `o2 : IsOpen {u : (adStd k).kGL ι | ∀ w, ‖(col i₀ u.1 i₀).1 w - 1‖ < 1}`.
+
+Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun w => isOpen_lt ((((continuous_apply w).comp (continuous_fst.comp hcc)).sub continuous_const).norm) continuous_const`. Conclude with `o1.inter o2`. Establish `e : col i₀ ((1 : (adStd k).kGL ι) : GL ι 𝔸[k]) i₀ = 1`. Establish `: col (k` using `k) i₀ ((1 : (adStd k).kGL ι) : GL ι 𝔸[k]) = Pi.single i₀ 1 := h1`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `⟨0, (OH k).zero_mem, by show (1 : FiniteAdeleRing (𝓞 k) k) - 1 = _ simp⟩`.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem near_one_nhds (hCol : ColLaw) (hTop : InMTop) (i₀ : ι) (M₀ : ℕ) (hM : M₀ ≠ 0)
     (U : Set ((adStd k).kGL ι)) (hU : U ∈ 𝓝 (1 : (adStd k).kGL ι)) :
     U ∩ {u : (adStd k).kGL ι | InM M₀ ((col i₀ u.1 i₀).2 - 1) ∧
@@ -85,6 +110,43 @@ theorem near_one_nhds (hCol : ColLaw) (hTop : InMTop) (i₀ : ι) (M₀ : ℕ) (
     · rw [e]
       simp
 
+/- English proof (translation)
+Introduce `hCol hTop hSupp hArch hFin hZS hZI hZP hZL hStd k _ _ ι _ _ i₀ ω hω U hU`. Take `⟨M₀, hM₀, hfin⟩` from `hFin k ω`. Establish `hU'` using `near_one_nhds hCol hTop i₀ M₀ hM₀ U hU`. Take `⟨M, δ, hM, hdvd, hδ, hS⟩` from `hSupp k ι i₀ ((hStd k).kcpt ι) _ hU' M₀ hM₀`. Take `⟨g, g₁, hg, hg₁, hg1, hg₁u, hg₁b, hg₁p, hgV⟩` from `hfin M hM hdvd ι i₀`.
+
+Take `⟨φ, φ₁, hφ1, hφ₁u, hφ₁p, hφV⟩` from `hArch k ι i₀ ω hω δ hδ`. Take `⟨hcolK, hcc, hcol1, hcolP⟩` from `hCol k ι i₀`. Establish `hΨ` using `GJMatrix.schwartzBruhatTensorPi_mem φ hg`. Establish `hΨ₁` using `GJMatrix.schwartzBruhatTensorPi_mem φ₁ hg₁`. Establish `hfac : ∀ (t : 𝔸[k]) (κ : (adStd k).kGL ι), GJMatrix.schwartzBruhatTensorPi φ g (t • col i₀ κ.1) = GJMatrix.schwartzBruhatTensorPi φ₁ g₁ (fun _ => t) * GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1)`.
+
+Introduce `t κ`. Take `⟨hu, hp⟩` from `hcolK κ.1 κ.2`. Establish `a1` using `(hφV _ hu).1 t.1`. Establish `a2` using `(hgV _ hp).1 t.2`. Rewrite using `[tensor_eq, tensor_eq, tensor_eq]`.
+
+Establish `e1 : (fun j => ((t • col i₀ κ.1) j).1) = t.1 • (fun j => (col i₀ κ.1 j).1)` using `rfl`. Establish `e2 : (fun j => ((t • col i₀ κ.1) j).2) = t.2 • (fun j => (col i₀ κ.1 j).2)` using `rfl`. Rewrite using `[e1, e2, a1, a2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hequiv : ∀ p κ : (adStd k).kGL ι, p.1 ∈ stab 𝔸[k] {i₀} → GJMatrix.schwartzBruhatTensorPi φ g (col i₀ (p * κ).1) = ω.toIdele (bdet {i₀} p.1) * GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1)`.
+
+Introduce `p κ hp`. Take `⟨hc, a, u, hb, ha, hu⟩` from `hcolP p.1 p.2 hp`. Establish `e : col i₀ (p * κ).1 = (((bdet {i₀} p.1)⁻¹ : 𝔸[k]ˣ) : 𝔸[k]) • col i₀ κ.1` using `hc κ.1`. Rewrite using `[e, hfac, hb, line_inv hω φ₁ g₁ hφ₁u hg₁u a u ha hu]`. Establish `hone : rd φ₁ (fun _ => (1 : InfiniteAdeleRing k)) ≠ 0`.
+
+Establish `h` using `hφ₁u 1 (fun w => by`. Rewrite using `[Units.val_one]`. Conclude with `norm_one (α := w.Completion))`. Rewrite `h` using `[Units.val_one]`. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Establish `hunit : ∀ x : ℝ, 1 < x → zInf φ₁ ω x ≠ 0` using `hZI k φ₁ ω hφ₁p hone`. Use `⟨GJMatrix.schwartzBruhatTensorPi φ g, GJMatrix.schwartzBruhatTensorPi φ₁ g₁, fun κ => GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1), hΨ, hΨ₁, (GJMatrix.continuous_of_mem_schwartzBruhatPi hΨ).comp (hcc.comp continuous_subtype_val), ?_, fun t κ => hfac t κ, ?_, fun p κ hp => heq …` and prove the remaining obligations. Establish `e : col (k` using `k) i₀ ((1 : (adStd k).kGL ι) : GL ι 𝔸[k]) = Pi.single i₀ 1 := hcol1 show GJMatrix.schwartzBruhatTensorPi φ g (col i₀ ((1 : (adStd k).kGL ι) : GL ι 𝔸[k])) = 1`. Rewrite using `[e, tensor_eq]`.
+
+Establish `e1 : (fun j => ((Pi.single i₀ (1 : 𝔸[k]) : ι → 𝔸[k]) j).1) = Pi.single i₀ 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`.
+
+Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h]`. Both sides reduce to the same expression. Establish `e2 : (fun j => ((Pi.single i₀ (1 : 𝔸[k]) : ι → 𝔸[k]) j).2) = Pi.single i₀ 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `h : j = i₀`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`. Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2, hφ1, hg1, one_mul]`. Introduce `κ hne`. Establish `hne' : GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1) ≠ 0` using `hne`. Rewrite `hne'` using `[tensor_eq]`.
+
+Take `⟨n1, n2⟩` from `mul_ne_zero_iff.1 hne'`. Take `⟨hu, hpr⟩` from `hcolK κ.1 κ.2`. Take `⟨p, hp, u, huU, hκ⟩` from `hS κ (fun j hj => (hgV _ hpr).2.1 n2 j hj) ((hφV _ hu).2.1 n1)`. Use `⟨p, hp, u, huU.1, hκ, ?_⟩` and prove the remaining obligations. Take `⟨hu', hpr'⟩` from `hcolK u.1 u.2`.
+
+Establish `hreal : ∃ r : ℝ, 0 ≤ r ∧ GJMatrix.schwartzBruhatTensorPi φ g (col i₀ u.1) = r`. Take `⟨r, hr, e⟩` from `(hφV _ hu').2.2 huU.2.2`. Break down `(hgV _ hpr').2.2 huU.2.1 with h | h` into its components or cases. Conclude with `⟨0, le_rfl, by rw [tensor_eq, h]; simp⟩`. Conclude with `⟨r, hr, by rw [tensor_eq, e, h, mul_one]⟩`.
+
+Take `⟨r, hr, e⟩` from `hreal`. Establish `h1 : GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1) = ω.toIdele (bdet {i₀} p.1) * r`. Rewrite using `[hκ, hequiv p u hp, e]`. Use `show GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1) = ω.toIdele (bdet {i₀} p.1) * (‖GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1)‖ : ℂ)`. Establish `h2 : ‖GJMatrix.schwartzBruhatTensorPi φ g (col i₀ κ.1)‖ = r`.
+
+Rewrite using `[h1, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_of_nonneg hr]`. Rewrite using `[h2, h1]`. Establish `hcard : 1 ≤ Fintype.card ι` using `Fintype.card_pos_iff.2 ⟨i₀⟩`. Establish `hcard' : (1 : ℝ) ≤ Fintype.card ι` using `by exact_mod_cast hcard`. Take `⟨x, hx, hz⟩` from `hZL k g₁ ω hg₁ hg₁b (fun u hu => by`.
+
+Rewrite using `[hg₁u u hu, ← Circle.coe_mul, toIdele_mul_self hω, Circle.coe_one]) ((Fintype.card ι : ℝ) + 1)`. Use `⟨x, by simpa using hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hZS k φ₁ g₁ ω x hg₁]`. Conclude with `mul_ne_zero (hunit x (by linarith)) hz`. Introduce and unpack `rfl x hx`.
+
+Rewrite using `[hZS k φ₁ g₁ 1 x hg₁]`. Use `mul_ne_zero (hunit x hx) (hZP k g₁ hg₁ (hg₁p rfl) ?_ x hx)` and prove the remaining obligations. Establish `h` using `hg₁u 1 (one_mem _)`. Rewrite `h` using `[Units.val_one]`. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem asm : ColLaw → InMTop → Supp → ArchFun → FinFun → ZSplit → ZInf → ZFinPos → ZFinLim →
     StdGood → TestFun := by
   intro hCol hTop hSupp hArch hFin hZS hZI hZP hZL hStd k _ _ ι _ _ i₀ ω hω U hU

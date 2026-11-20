@@ -10,6 +10,21 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 
 namespace GlobalTheory.TopFirstRow
 
+/- English proof (translation)
+Introduce `eps Fm`. Take `⟨x1, h1⟩` from `GlobalTheory.ShNums.size_rel Fm`. Take `⟨x2, h2⟩` from `GlobalTheory.TopRows.top_rows Fm`. Take `⟨x3, h3⟩` from `GlobalTheory.Ggeo.wPl_windows Fm`. Use `⟨max x1 (max x2 x3), fun x hx hx1 i u j hj z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hxa : x ≥ x1` using `le_trans (le_max_left _ _) hx`. Establish `hxb : x ≥ x2` using `le_trans ((le_max_left _ _).trans (le_max_right _ _)) hx`. Establish `hxc : x ≥ x3` using `le_trans ((le_max_right _ _).trans (le_max_right _ _)) hx`. Take `⟨-, -, -, -, -, h4, h2b, -, -, -⟩` from `h1 x hxa hx1 i`. Take `⟨e1, e2, e3, -⟩` from `h2 x hxb hx1 i u j hj z hz`.
+
+Take `⟨-, -, hw⟩` from `h3 x hxc hx1 i j hj z`. Take `⟨-, hw2⟩` from `hw hz`. Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`. Establish `hxp : 0 < L.sc.x` using `by linarith`.
+
+Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hxp hb) (Real.exp_pos _)`. Establish `ha : aL L z.2 = L.aT ⟨z.2, hz.2⟩` using `by unfold aL; rw [dif_pos hz.2]`. Establish `hbb : bL L z.2 = L.bT ⟨z.2, hz.2⟩` using `by unfold bL; rw [dif_pos hz.2]`. Establish `a1` using `(L.aT_win ⟨z.2, hz.2⟩).1`.
+
+Establish `a2` using `L.bT_ge ⟨z.2, hz.2⟩`. Establish `a3 : 4 * L.sc.b ≤ L.sc.a`. Unfold `Scale.a`. Conclude with `mul_le_mul_of_nonneg_right h4 hb.le`. Establish `hN : 0 < D.R.N j`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers. Rewrite using `[nuRowOK D u j hj z 0, if_pos hN, e1]`. Rewrite `e3` using `[e2, hbb]`.
+
+Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_w_le_first_row : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), IsTopPl (Fm.D x i) z → 2 * wPl (Fm.D x i) (j + 1) z ≤ (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) := by
   intro eps Fm
   obtain ⟨x1, h1⟩ := GlobalTheory.ShNums.size_rel Fm

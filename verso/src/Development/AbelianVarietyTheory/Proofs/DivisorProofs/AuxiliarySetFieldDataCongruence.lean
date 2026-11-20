@@ -29,6 +29,15 @@ namespace GlobalTheory.RealMult.PolScale
 
 open GlobalTheory.AbDual
 
+/- English proof (translation)
+Establish `C` using `cupSquare_of_free H.1 X.ab X.dim`. Establish `hD : ∀ d : 𝔠.elt, (X.diag d).IsLB` using `fun d ↦ pull_isLB (X.isLB d) _`. Take `⟨φ, hφ⟩` from `exists_corrForm H.1 X c`. Take `⟨φ₀, hφ₀⟩` from `exists_corrForm H.1 X c₀`. Take `⟨φn, hφn, kn⟩` from `exists_corrForm_smul X (n : 𝓞 F) c hφ`.
+
+Take `⟨φt, hφt, kt⟩` from `exists_corrForm_smul X t c₀ hφ₀`. Rewrite `hφn` using `[e]`. Establish `u` using `Published.AbelianDualCrystal.polForm_unique C (hD _) (isPolForm_diag X _ hφn) (isPolForm_diag X _ hφt)`. Establish `u₁` using `Published.AbelianDualCrystal.polForm_unique C (hD c) hψ (isPolForm_diag X c hφ)`. Establish `u₂` using `Published.AbelianDualCrystal.polForm_unique C (hD c₀) hψ₀ (isPolForm_diag X c₀ hφ₀)`.
+
+Introduce `x y`. Establish `v` using `LinearMap.congr_fun (LinearMap.congr_fun u x) y`. Rewrite using `[u₁, u₂]`. Simplify using `only [LinearMap.sub_apply, LinearMap.flip_apply, kn, kt, act_natCast, map_smul, LinearMap.smul_apply, smul_eq_mul] at v ⊢`. Establish `a₁` using `corrForm_antisymm H.1 X _ hφt y x`.
+
+Establish `a₂` using `corrForm_antisymm H.1 X c₀ hφ₀ (act (dp0 R) (𝟙 _) X.rm t y) x`. Rewrite `a₁` using `[kt, kt]`. Take the linear combination `v + a₂ - a₁`.
+-/
 theorem nat_mul_polForm_eq_of_smul_eq (H : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) (c c₀ : 𝔠.elt) (n : ℕ) (t : 𝓞 F) (e : (n : 𝓞 F) • c = t • c₀)
     (ψ ψ₀ : LinearMap.BilinForm R (HdR X.A)) (hψ : IsPolForm (dp0 R) (𝟙 _) X.A (X.diag c) ψ)
@@ -60,6 +69,73 @@ namespace GlobalTheory.RatioForm
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hPer hAdR hAdC hPM E _ _ _ _ I _ d φ hFD 𝔣 hB l _ Q hQ hQl y hy lam 𝔠 R _ hPR X₀ X U p cm hPB hcm hα j hj φK hφK e a hea hL n eH c₀ ψ₀ hc₀ hgen hpol hCM hdual D cv hD hcv e' f' hGens hval m hBC ψ hψ yv ev w hCMv hf he hw`. Establish `hφ : IsCMType φ` using `hFD.2.2.2.2.2.2.1`. Establish `hcQ : condQ 𝔣 Q ≠ ⊥`. Unfold `condQ`. Use `mul_ne_zero hB.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `q _`. Conclude with `q.ne_bot`. Establish `hUc : ((U.c : FR E)) ≠ 0`. Introduce `h0`.
+
+Take `⟨w⟩` from `(inferInstance : Nonempty (NumberField.InfinitePlace (FR E)))`. Establish `hw : w.IsReal` using `NumberField.IsTotallyReal.isReal w`. Use `U.pos (NumberField.InfinitePlace.embedding_of_isReal hw)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`.
+
+Take `⟨eR, heR⟩` from `GlobalTheory.CMTypeRestrict.exists_equiv_realEmbeddings E I φ hφ U.e`. Establish `hact : ∀ (a : 𝓞 (FR E)) w, U.u.ex (fun j ↦ (eR j (a : FR E) : ℂ) * w j) = U.u.ex w ≫ X.rm.act a`. Introduce `a w`. Use `U.act a w` as an intermediate fact. Simplify `this` using `[heR]`.
+
+Take `⟨χ, hχ⟩` from `U.ah`. Take `⟨P, hPanti, hPadd, hPsmul, hPim, hPdual, hPspan⟩` from `GlobalTheory.T.diagonal_appell_humbert_real_mult (FR E) 𝔠 X U.c U.pos U.u eR hact (fun j ↦ U.h (U.e j)) χ hχ`. Set `co : E → (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `fun x j ↦ φ (U.e j) x`. Establish `hcoΛ : ∀ x ∈ lattice (condQ 𝔣 Q) y, co x ∈ U.u.Λ` using `fun x hx ↦ (U.lat _).2 ⟨x, hx, by funext j; simp [co, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Establish `hΛco : ∀ w ∈ U.u.Λ, ∃ x ∈ lattice (condQ 𝔣 Q) y, w = co x` using `fun w hw ↦ by`.
+
+Take `⟨x, hx, rfl⟩` from `(U.lat w).1 hw`. Conclude with `⟨x, hx, by funext j; simp [co, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Set `toΛ : E → U.u.Λ` to `fun x ↦ if hx : co x ∈ U.u.Λ then ⟨co x, hx⟩ else 0`. Establish `htoΛ : ∀ x ∈ lattice (condQ 𝔣 Q) y, (toΛ x : Fin (Module.finrank ℚ (FR E)) → ℂ) = co x` using `fun x hx ↦ by`. Simplify using `[toΛ, hcoΛ x hx]`.
+
+Set `Qf : E → E → FR E` to `fun x x' ↦ P (toΛ x) (toΛ x')`. Set `fR : E → ℝ` to `fun z ↦ ∑ i, U.h i * (φ i z).im`. Establish `hsum : ∀ x x' : E, (∑ j, ((U.h (U.e j) : ℝ) : ℂ) * (co x j * starRingEnd ℂ (co x' j))).im = fR (x * IsCMField.complexConj E x')`. Introduce `x x'`. Simplify using `only [fR, co, Complex.im_sum, map_mul, IsCMField.complexEmbedding_complexConj, Complex.im_ofReal_mul]`.
+
+Conclude with `Equiv.sum_comp U.e (fun i ↦ U.h i * (φ i x * starRingEnd ℂ (φ i x')).im)`. Establish `hfrel : ∀ x ∈ lattice (condQ 𝔣 Q) y, ∀ x' ∈ lattice (condQ 𝔣 Q) y, fR (x * IsCMField.complexConj E x') = 2 * ((Algebra.trace ℚ (FR E) ((U.c : FR E) * Qf x x') : ℚ) : ℝ)`. Introduce `x hx x' hx'`. Rewrite using `[← hsum, ← hPim (toΛ x) (toΛ x'), htoΛ x hx, htoΛ x' hx']`. Set `gR : E →ₗ[ℚ] ℝ` to `{ toFun := fR map_add' := fun z z' ↦ by`.
+
+Simplify using `only [fR, map_add, Complex.add_im, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun q z ↦ by`. Simplify using `only [fR, RingHom.id_apply]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[Rat.smul_def, map_mul, map_ratCast, ← Complex.ofReal_ratCast, Complex.im_ofReal_mul, Rat.smul_def]`. Use `ring }`. Establish `hgR : ∀ z, gR z = fR z` using `fun z ↦ rfl`. Take `⟨N, hN0, hNL, -⟩` from `GlobalTheory.CMVal.LatBound.lattice_between E (condQ 𝔣 Q) hcQ y`. Establish `hrat : ∀ z, ∃ q : ℚ, gR z = q`.
+
+Introduce `z`. Choose the witnesses or unpack the hypotheses as in `⟨b, k, hk, hb⟩ : ∃ (b : 𝓞 E) (k : ℤ), k ≠ 0 ∧ (k : E) * z = algebraMap (𝓞 E) E b := by`. Take `⟨k, hk, hi⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic z))`. Conclude with `⟨⟨k • z, hi⟩, k, hk, by simp [zsmul_eq_mul]⟩`. Establish `hx : (N : E) * algebraMap (𝓞 E) E b ∈ lattice (condQ 𝔣 Q) y` using `hNL b`.
+
+Establish `hx' : (N : E) * algebraMap (𝓞 E) E 1 ∈ lattice (condQ 𝔣 Q) y` using `hNL 1`. Establish `e1` using `hfrel _ hx _ hx'`. Establish `e2 : (N : E) * algebraMap (𝓞 E) E b * IsCMField.complexConj E ((N : E) * algebraMap (𝓞 E) E 1) = (((N : ℚ) * N * k : ℚ) : E) * z`. Rewrite using `[map_one, _root_.mul_one, map_natCast]`. Use `push_cast`.
+
+Rewrite using `[← hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e1` using `[e2]`. Establish `e3 : gR ((((N : ℚ) * N * k : ℚ) : E) * z) = (((N : ℚ) * N * k : ℚ) : ℝ) * gR z`. Rewrite using `[← Rat.smul_def, map_smul, Rat.smul_def]`.
+
+Use `⟨2 * Algebra.trace ℚ (FR E) ((U.c : FR E) * Qf ((N : E) * algebraMap (𝓞 E) E b) ((N : E) * algebraMap (𝓞 E) E 1)) / ((N : ℚ) * N * k), ?_⟩` and prove the remaining obligations. Establish `hne : (((N : ℚ) * N * k : ℚ) : ℝ) ≠ 0`. Establish `: ((N : ℚ) * N * k : ℚ) ≠ 0`. Establish `: (N : ℚ) ≠ 0` using `by exact_mod_cast hN0.ne'`. Establish `: (k : ℚ) ≠ 0` using `by exact_mod_cast hk`.
+
+Check the signs of the components of the expression. Conclude with `this` after adjusting the coercions. Rewrite `e1` using `[← hgR, e3]`. Rewrite using `[Rat.cast_div, Rat.cast_mul, Rat.cast_ofNat]`. Conclude with `eq_div_of_mul_eq hne (by rw [mul_comm]; exact e1)`.
+
+Take `⟨mu, hmu⟩` from `GlobalTheory.T.rational_functional_trace_representation E gR hrat`. Establish `hmu' : ∀ z : E, ((Algebra.trace ℚ E (mu * z) : ℚ) : ℝ) = ∑ i, U.h i * (φ i z).im` using `fun z ↦ (hmu z).symm`. Establish `hmuh` using `GlobalTheory.T.cm_type_trace_imaginary_part E I φ hφ U.h mu hmu'`. Establish `hIne : Nonempty I`. Establish `: 2 ≤ Fintype.card I` using `hFD.2.2.2.2.2.1`.
+
+Conclude with `Fintype.card_pos_iff.1 (by omega)`. Take `⟨i₀⟩` from `hIne`. Establish `hbar : IsCMField.complexConj E mu = -mu`. Apply `(φ i₀).injective` to reduce the goal to its premises. Establish `h1` using `hmuh i₀`.
+
+Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Establish `h2 : starRingEnd ℂ (2 * Complex.I * φ i₀ mu) = starRingEnd ℂ (U.h i₀ : ℂ)` using `by rw [h1]`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat] at h2`. Establish `h3 : (2 : ℂ) * Complex.I ≠ 0` using `by simp`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises.
+
+Take the linear combination `-h2 + h1`. Establish `hQa : ∀ (a : OF E), ∀ x ∈ lattice (condQ 𝔣 Q) y, ∀ x' ∈ lattice (condQ 𝔣 Q) y, Qf (algebraMap (OF E) E a * x) x' = (a : FR E) * Qf x x'`. Introduce `a x hx x' hx'`. Establish `hax : algebraMap (OF E) E a * x ∈ lattice (condQ 𝔣 Q) y`. Establish `: algebraMap (OF E) E a ∈ orderC (condQ 𝔣 Q)` using `GlobalTheory.CMVal.algebraMap_mem_orderC _ a`.
+
+Conclude with `GlobalTheory.CMVal.mul_mem_lattice this hx`. Use `hPsmul a (toΛ x) (toΛ x') (toΛ (algebraMap (OF E) E a * x)) ?_` and prove the remaining obligations. Rewrite using `[htoΛ _ hax, htoΛ _ hx]`. Use function extensionality and compare the values at `k`. Simplify using `only [co, map_mul, heR]`.
+
+Both sides reduce to the same expression. Establish `htr : ∀ x ∈ lattice (condQ 𝔣 Q) y, ∀ x' ∈ lattice (condQ 𝔣 Q) y, Algebra.trace ℚ E (mu * x * IsCMField.complexConj E x') = 2 * Algebra.trace ℚ (FR E) ((U.c : FR E) * Qf x x')`. Introduce `x hx x' hx'`. Establish `h1` using `hmu (x * IsCMField.complexConj E x')`. Rewrite `h1` using `[hgR, hfrel x hx x' hx', ← _root_.mul_assoc]`.
+
+Conclude with `h1.symm` after adjusting the coercions. Establish `hdl : ∀ x ∈ lattice (condQ 𝔣 Q) y, ∀ x' ∈ lattice (condQ 𝔣 Q) y, Qf x x' ∈ dualLat 𝔠` using `fun x _ x' _ ↦ hPdual _ _`. Establish `hsp : ∀ t ∈ dualLat 𝔠, t ∈ Submodule.span (𝓞 (FR E)) {t | ∃ x ∈ lattice (condQ 𝔣 Q) y, ∃ x' ∈ lattice (condQ 𝔣 Q) y, t = Qf x x'}`. Introduce `t ht`. Use `Submodule.span_mono ?_ (hPspan t ht)` and prove the remaining obligations.
+
+Introduce and unpack `s ⟨l₁, l₂, rfl⟩`. Take `⟨x, hx, hx1⟩` from `hΛco l₁ l₁.2`. Take `⟨x', hx', hx2⟩` from `hΛco l₂ l₂.2`. Use `⟨x, hx, x', hx', ?_⟩` and prove the remaining obligations. Establish `e1 : toΛ x = l₁` using `Subtype.ext (by rw [htoΛ x hx, ← hx1])`.
+
+Establish `e2 : toΛ x' = l₂` using `Subtype.ext (by rw [htoΛ x' hx', ← hx2])`. Simplify using `only [Qf, e1, e2]`. Take `⟨hmu0, hGen⟩` from `GlobalTheory.T.cm_hermitian_trace_form_integral E (GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.latMod (condQ 𝔣 Q) y) 𝔠 mu (U.c : FR E) Qf l c₀ hUc hbar hQa htr hdl hsp hgen`. Take `⟨n₁, t, hn₁, het⟩` from `GlobalTheory.RealMult.PolScale.exists_nat_smul_eq c₀ U.c hUc`. Take `⟨ψc, hψc, hcorr⟩` from `GlobalTheory.LowerCx.polForm_bc' (algebraMap R ℂ) hPB m c₀ hpol`.
+
+Establish `hsc` using `GlobalTheory.RealMult.PolScale.nat_mul_polForm_eq_of_smul_eq hAdR X c₀ U.c n₁ t het ψc ψ hψc hψ`. Establish `hty : ∀ i, act (dp0 ℂ) (𝟙 _) X.rm t (yv i) = φ i ((t : FR E) : E) • yv i`. Introduce `i`. Use `haveI := X.rm.hom t`. Rewrite using `[act_apply]`.
+
+Conclude with `(hCMv i).1 ((t : FR E) : E) (X.rm.act t) (fun w' ↦ U.act t w')`. Establish `hkey : ∀ i, φ i ((t : FR E) : E) * ψ (ev i) (yv i) = (n₁ : ℂ) * (2 * ((ψ₀ (eH.symm (e' i)) (eH.symm (f' i)) : R) : ℂ))`. Introduce `i`. Establish `h1` using `hsc (ev i) (yv i)`. Rewrite `h1` using `[hty i, map_smul, smul_eq_mul, hcorr _ _ _ _ (he i) (hf i)]`.
+
+Rewrite using `[← h1, two_smul, LinearMap.add_apply, LinearMap.add_apply, map_add, two_mul]`. Both sides reduce to the same expression. Establish `hcF : ((c₀ : FR E)) * (n₁ : FR E) = ((t : FR E)) * (U.c : FR E)`. Use `congrArg (fun z : 𝔠.elt ↦ (z : FR E)) het` as an intermediate fact. Simplify using `only [Submodule.coe_smul, Algebra.smul_def, map_natCast] at this`.
+
+Rewrite using `[mul_comm]`. Conclude with `this`. Use `⟨(((c₀ : FR E) / (2 * (U.c : FR E)) : FR E) : E) * mu, hGen, fun i ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `hmuh i`.
+
+Rewrite `h1` using `[h0, Complex.ofReal_zero]`. Establish `h2 : φ i mu = 0`. Establish `h3 : (2 : ℂ) * Complex.I ≠ 0` using `by simp`. Conclude with `(mul_eq_zero.1 h1).resolve_left h3`. Conclude with `hmu0 ((map_eq_zero (φ i)).1 h2)`.
+
+Establish `hc : φ i ((c₀ : FR E) : E) * n₁ = φ i ((t : FR E) : E) * φ i ((U.c : FR E) : E)`. Use `congrArg (fun z : FR E ↦ φ i (z : E)) hcF` as an intermediate fact. Simplify using `using this`. Establish `hC1 : φ i ((U.c : FR E) : E) ≠ 0`. Introduce `h0`.
+
+Conclude with `hUc (by simpa using h0)`. Establish `hn₁' : (n₁ : ℂ) ≠ 0` using `by exact_mod_cast hn₁`. Establish `hk` using `hkey i`. Establish `hm` using `hmuh i`. Establish `hdiv : φ i ((((c₀ : FR E) / (2 * (U.c : FR E)) : FR E) : E)) = φ i ((c₀ : FR E) : E) / (2 * φ i ((U.c : FR E) : E))`.
+
+Express the relevant statement in the definitionally equal form `(φ i).comp (algebraMap (FR E) E) (_ / (2 * _)) = (φ i).comp (algebraMap (FR E) E) _ / (2 * (φ i).comp (algebraMap (FR E) E) _)`. Rewrite using `[map_div₀, map_mul, map_ofNat]`. Rewrite using `[map_mul, hdiv]`. Use `set A := ψ (ev i) (yv i)`. Use `set B := ((ψ₀ (eH.symm (e' i)) (eH.symm (f' i)) : R) : ℂ)`.
+
+Establish `e1 : A * (2 * Complex.I * (φ i ((c₀ : FR E) : E) / (2 * φ i ((U.c : FR E) : E)) * φ i mu)) = A * φ i ((c₀ : FR E) : E) * (2 * Complex.I * φ i mu) / (2 * φ i ((U.c : FR E) : E))` using `by ring`. Rewrite using `[e1, hm, div_eq_iff (mul_ne_zero two_ne_zero hC1)]`. Apply `mul_left_cancel₀ hn₁'` to reduce the goal to its premises. Take the linear combination `(A * (U.h i : ℂ)) * hc + (φ i ((U.c : FR E) : E) * (U.h i : ℂ)) * hk`.
+-/
 theorem form_ratio : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     GlobalTheory.IndefiniteRowSideFullHecke.PolarisationModuleIndex.PolarisationModule → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

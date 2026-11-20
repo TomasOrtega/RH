@@ -21,6 +21,9 @@ def qrefl (J : Matrix n n ℂ) (x y : n → ℂ) : Matrix n n ℂ :=
 
 open MeasureTheory Matrix in
 variable {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `hdot : (star (x - y) ᵥ* J) ⬝ᵥ x = _root_.GlobalTheory.QuadricSection.coef J x y`. Rewrite using `[_root_.GlobalTheory.QuadricSection.coef, dotProduct_mulVec]`. Rewrite using `[_root_.GlobalTheory.QuadricSection.qrefl, sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, hdot, op_smul_eq_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, sub_sub_cancel]`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.qrefl_mulVec (J : Matrix n n ℂ) (x y : n → ℂ)
     (hc : _root_.GlobalTheory.QuadricSection.coef J x y ≠ 0) :
     _root_.GlobalTheory.QuadricSection.qrefl J x y *ᵥ x = y := by
@@ -31,6 +34,9 @@ theorem _root_.GlobalTheory.QuadricSection.qrefl_mulVec (J : Matrix n n ℂ) (x 
 
 open MeasureTheory Matrix in
 variable {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, hJ, dotProduct_comm, dotProduct_mulVec]`. Conclude with `dotProduct_comm _ _`.
+-/
 private lemma star_dotProduct_mulVec_of_hermitian {J : Matrix n n ℂ} (hJ : Jᴴ = J) (a b : n → ℂ) :
     star (star a ⬝ᵥ (J *ᵥ b)) = star b ⬝ᵥ (J *ᵥ a) := by
   rw [← star_dotProduct_star, star_mulVec, star_star, hJ, dotProduct_comm, dotProduct_mulVec]
@@ -38,6 +44,19 @@ private lemma star_dotProduct_mulVec_of_hermitian {J : Matrix n n ℂ} (hJ : J�
 
 open MeasureTheory Matrix in
 variable {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Use `set c := _root_.GlobalTheory.QuadricSection.coef J x y with hcdef`. Use `set d := x - y with hd`. Use `set e := star d ᵥ* J with he`. Establish `hstar_e : star e = J *ᵥ d` using `by rw [he, star_vecMul, hJ, star_star]`. Establish `hq : e ⬝ᵥ d = star d ⬝ᵥ (J *ᵥ d)` using `by rw [he, dotProduct_mulVec]`.
+
+Establish `hsum : c + star c = star d ⬝ᵥ (J *ᵥ d)`. Establish `h1 : star c = star x ⬝ᵥ (J *ᵥ d)`. Rewrite using `[hcdef, _root_.GlobalTheory.QuadricSection.coef, star_dotProduct_mulVec_of_hermitian hJ]`. Rewrite using `[h1, hcdef, _root_.GlobalTheory.QuadricSection.coef, ← hd]`. Simplify using `only [hd, star_sub, mulVec_sub, dotProduct_sub, sub_dotProduct]`.
+
+Take the linear combination `hxy`. Establish `hcs : star c ≠ 0` using `star_ne_zero.mpr hc`. Establish `hJe : J * vecMulVec d e = vecMulVec (J *ᵥ d) e` using `mul_vecMulVec _ _ _`. Establish `heJ : vecMulVec (J *ᵥ d) (star d) * J = vecMulVec (J *ᵥ d) e`. Rewrite using `[vecMulVec_mul]`.
+
+Establish `hVV : vecMulVec (J *ᵥ d) e * vecMulVec d e = (e ⬝ᵥ d) • vecMulVec (J *ᵥ d) e`. Rewrite using `[vecMulVec_mul_vecMulVec]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_left_comm]`. Establish `hR : (_root_.GlobalTheory.QuadricSection.qrefl J x y)ᴴ = 1 - (star c)⁻¹ • vecMulVec (J *ᵥ d) (star d)`.
+
+Rewrite using `[_root_.GlobalTheory.QuadricSection.qrefl, ← hcdef, ← hd, ← he, conjTranspose_sub, conjTranspose_one, conjTranspose_smul, conjTranspose_vecMulVec, hstar_e, star_inv₀]`. Rewrite using `[hR, _root_.GlobalTheory.QuadricSection.qrefl, ← hcdef, ← hd, ← he]`. Establish `hexp : (1 - (star c)⁻¹ • vecMulVec (J *ᵥ d) (star d)) * J * (1 - c⁻¹ • vecMulVec d e) = J - (c⁻¹ + (star c)⁻¹ - (star c)⁻¹ * c⁻¹ * (e ⬝ᵥ d)) • vecMulVec (J *ᵥ d) e`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, heJ, hJe, hVV, smul_smul]`. Use `module`.
+
+Rewrite using `[hexp, hq, ← hsum]`. Establish `hzero : c⁻¹ + (star c)⁻¹ - (star c)⁻¹ * c⁻¹ * (c + star c) = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hzero, zero_smul, sub_zero]`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.qrefl_unitary (J : Matrix n n ℂ) (hJ : Jᴴ = J) (x y : n → ℂ)
     (hxy : star x ⬝ᵥ (J *ᵥ x) = star y ⬝ᵥ (J *ᵥ y))
     (hc : _root_.GlobalTheory.QuadricSection.coef J x y ≠ 0) :
@@ -78,6 +97,13 @@ theorem _root_.GlobalTheory.QuadricSection.qrefl_unitary (J : Matrix n n ℂ) (h
 
 open MeasureTheory Matrix in
 variable {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Establish `hd : Continuous fun y : n → ℂ => x - y` using `by fun_prop`. Establish `hcoef : Measurable fun y => _root_.GlobalTheory.QuadricSection.coef J x y`. Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.QuadricSection.coef`. Conclude with `(continuous_star.comp hd).dotProduct continuous_const`.
+
+Establish `hvec : Continuous fun y : n → ℂ => vecMulVec (x - y) (star (x - y) ᵥ* J) i j`. Simplify using `only [vecMulVec_apply]`. Use `((continuous_apply i).comp hd).mul ?_` and prove the remaining obligations. Conclude with `(continuous_apply j).comp ((continuous_star.comp hd).matrix_vecMul continuous_const)`. Simplify using `only [_root_.GlobalTheory.QuadricSection.qrefl, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `measurable_const.sub (hcoef.inv.mul hvec.measurable)`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.measurable_qrefl (J : Matrix n n ℂ) (x : n → ℂ) (i j : n) :
     Measurable fun y => _root_.GlobalTheory.QuadricSection.qrefl J x y i j := by
   have hd : Continuous fun y : n → ℂ => x - y := by fun_prop
@@ -97,12 +123,18 @@ end general
 open GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Unfold `_root_.Formalism.UG.Jpq`. Rewrite using `[fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.QuadricSection.jpq_conjTranspose (P Q : ℕ) : (_root_.Formalism.UG.Jpq P Q)ᴴ = _root_.Formalism.UG.Jpq P Q := by
   unfold _root_.Formalism.UG.Jpq
   rw [fromBlocks_conjTranspose]
   simp
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_self, _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_eq_hform]`. Unfold `_root_.Formalism.UG.hform`. Simplify using `[dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_add]`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.form_self {P Q : ℕ} (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) :
     star x ⬝ᵥ (_root_.Formalism.UG.Jpq P Q *ᵥ x) = (_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf x : ℂ) := by
   rw [← _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_self, _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_eq_hform]
@@ -110,6 +142,9 @@ theorem _root_.GlobalTheory.QuadricSection.form_self {P Q : ℕ} (x : _root_.Glo
   simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_add]
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf`. Use `fun_prop`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.measurable_qf {P Q : ℕ} :
     Measurable (_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q → ℝ) := by
   refine Continuous.measurable ?_
@@ -125,12 +160,28 @@ def sectMat {P Q : ℕ} (β : ℝ) (x₀ y : Sp P Q) : Matrix (Fin P ⊕ Fin Q) 
   else 1
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf`. Simplify using `[Complex.normSq_neg]`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.qf_neg {P Q : ℕ} (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf (-y) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf y := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf
   simp [Complex.normSq_neg]
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Establish `hJ` using `_root_.GlobalTheory.QuadricSection.jpq_conjTranspose P Q`. Distinguish the cases in `hy : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf y = β`. Establish `hxy : star x₀ ⬝ᵥ (_root_.Formalism.UG.Jpq P Q *ᵥ x₀) = star y ⬝ᵥ (_root_.Formalism.UG.Jpq P Q *ᵥ y)`. Rewrite using `[_root_.GlobalTheory.QuadricSection.form_self, _root_.GlobalTheory.QuadricSection.form_self, hx, hy]`. Distinguish the cases in `hc : _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ y = 0`.
+
+Establish `hxy' : star x₀ ⬝ᵥ (_root_.Formalism.UG.Jpq P Q *ᵥ x₀) = star (-y) ⬝ᵥ (_root_.Formalism.UG.Jpq P Q *ᵥ -y)`. Rewrite using `[hxy, mulVec_neg, star_neg, neg_dotProduct, dotProduct_neg, neg_neg]`. Establish `hc' : _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ (-y) ≠ 0`. Establish `hsum : _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ y + _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ (-y) = 2 * (β : ℂ)`. Rewrite using `[← hx, ← _root_.GlobalTheory.QuadricSection.form_self]`.
+
+Simplify using `only [_root_.GlobalTheory.QuadricSection.coef, sub_neg_eq_add, star_sub, star_add, sub_dotProduct, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[hc, zero_add]`. Rewrite using `[hsum]`. Conclude with `mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr hβ)`.
+
+Establish `hsect : _root_.GlobalTheory.QuadricSection.sectMat β x₀ y = -_root_.GlobalTheory.QuadricSection.qrefl (_root_.Formalism.UG.Jpq P Q) x₀ (-y)`. Simplify using `[_root_.GlobalTheory.QuadricSection.sectMat, hy, hc]`. Rewrite using `[hsect]`. Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_neg, neg_mul, neg_mul, mul_neg, neg_neg]`.
+
+Conclude with `_root_.GlobalTheory.QuadricSection.qrefl_unitary _ hJ x₀ (-y) hxy' hc'`. Rewrite using `[neg_mulVec, _root_.GlobalTheory.QuadricSection.qrefl_mulVec _ x₀ (-y) hc', neg_neg]`. Establish `hsect : _root_.GlobalTheory.QuadricSection.sectMat β x₀ y = _root_.GlobalTheory.QuadricSection.qrefl (_root_.Formalism.UG.Jpq P Q) x₀ y`. Simplify using `[_root_.GlobalTheory.QuadricSection.sectMat, hy, hc]`. Rewrite using `[hsect]`.
+
+Conclude with `⟨_root_.GlobalTheory.QuadricSection.qrefl_unitary _ hJ x₀ y hxy hc, fun _ => _root_.GlobalTheory.QuadricSection.qrefl_mulVec _ x₀ y hc⟩`. Establish `hsect : _root_.GlobalTheory.QuadricSection.sectMat β x₀ y = 1`. Simplify using `[_root_.GlobalTheory.QuadricSection.sectMat, hy]`. Rewrite using `[hsect]`. Conclude with `⟨by simp, fun h => absurd h hy⟩`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.sectMat_spec {P Q : ℕ} {β : ℝ} {x₀ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q}
     (hβ : β ≠ 0) (hx : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf x₀ = β) (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) :
     (_root_.GlobalTheory.QuadricSection.sectMat β x₀ y)ᴴ * _root_.Formalism.UG.Jpq P Q * _root_.GlobalTheory.QuadricSection.sectMat β x₀ y = _root_.Formalism.UG.Jpq P Q ∧
@@ -172,6 +223,13 @@ theorem _root_.GlobalTheory.QuadricSection.sectMat_spec {P Q : ℕ} {β : ℝ} {
     exact ⟨by simp, fun h => absurd h hy⟩
 
 open MeasureTheory Matrix in
+/- English proof (translation)
+Establish `hset1 : MeasurableSet {y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q | _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf y = β}` using `_root_.GlobalTheory.QuadricSection.measurable_qf (measurableSet_singleton β)`. Establish `hcoef : Measurable fun y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q => _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ y`. Use `Continuous.measurable ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.QuadricSection.coef`. Conclude with `(continuous_star.comp (continuous_const.sub continuous_id)).dotProduct continuous_const`.
+
+Establish `hset2 : MeasurableSet {y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q | _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ y = 0}` using `hcoef (measurableSet_singleton 0)`. Establish `heq : (fun y => _root_.GlobalTheory.QuadricSection.sectMat β x₀ y i j) = fun y => if _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf y = β then (if _root_.GlobalTheory.QuadricSection.coef (_root_.Formalism.UG.Jpq P Q) x₀ y = 0 then -_root_.GlobalTheory.Qu …`. Use function extensionality and compare the values at `y`. Unfold `_root_.GlobalTheory.QuadricSection.sectMat`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Rewrite using `[heq]`. Use `Measurable.ite hset1 (Measurable.ite hset2 ?_ ?_) measurable_const` and prove the remaining obligations. Conclude with `((_root_.GlobalTheory.QuadricSection.measurable_qrefl _ x₀ i j).comp measurable_neg).neg`. Conclude with `_root_.GlobalTheory.QuadricSection.measurable_qrefl _ x₀ i j`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.measurable_sectMat {P Q : ℕ} (β : ℝ) (x₀ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q)
     (i j : Fin P ⊕ Fin Q) :
     Measurable fun y => _root_.GlobalTheory.QuadricSection.sectMat β x₀ y i j := by
@@ -202,6 +260,21 @@ theorem _root_.GlobalTheory.QuadricSection.measurable_sectMat {P Q : ℕ} (β : 
 
 open MeasureTheory Matrix in
 
+/- English proof (translation)
+Introduce `P Q β x₀ hβ hx`. Establish `hspec` using `fun y => _root_.GlobalTheory.QuadricSection.sectMat_spec hβ hx y`. Establish `hunit : ∀ y, IsUnit (_root_.GlobalTheory.QuadricSection.sectMat β x₀ y).det`. Introduce `y`. Use `isUnit_det_of_left_inverse (B := _root_.Formalism.UG.Jpq P Q * (_root_.GlobalTheory.QuadricSection.sectMat β x₀ y)ᴴ * _root_.Formalism.UG.Jpq P Q) ?_` and prove the remaining obligations.
+
+Establish `hU : (_root_.GlobalTheory.QuadricSection.sectMat β x₀ y)ᴴ * (_root_.Formalism.UG.Jpq P Q * _root_.GlobalTheory.QuadricSection.sectMat β x₀ y) = _root_.Formalism.UG.Jpq P Q`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `(hspec y).1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hU, _root_.GlobalTheory.UpqTopology.jpq_sq]`.
+
+Establish `hcT : ∀ M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, _root_.Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ`. Introduce `M`. Unfold `_root_.Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`.
+
+Establish `hmem : ∀ y, Matrix.nonsingInvUnit _ (hunit y) ∈ _root_.Formalism.UG.Upq P Q`. Introduce `y`. Unfold `_root_.Formalism.UG.Upq _root_.Formalism.UG.UJ`. Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq]`. Rewrite using `[hcT]`.
+
+Conclude with `(hspec y).1`. Use `⟨fun y => (⟨Matrix.nonsingInvUnit _ (hunit y), hmem y⟩ : _root_.Formalism.UG.Upq P Q), ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.IsSection`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (_root_.Formalism.BasicNotions.UpqT P Q) := _root_.Formalism.BasicNotions.instMeasurableSpaceUpqT P Q haveI : BorelSpace (_root_.Formalism.BasicNotions.UpqT P Q) := ⟨rfl⟩`.
+
+Use `letI : MeasurableSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := MeasurableSpace.pi`. Use `haveI : BorelSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := inferInstanceAs (BorelSpace (Fin P ⊕ Fin Q → Fin P ⊕ Fin Q → ℂ))`. Apply `(_root_.GlobalTheory.UpqTopology.isClosedEmbedding_mat.measurableEmbedding.measurable_comp_iff).mp` to reduce the goal to its premises. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.QuadricSection.measurable_sectMat β x₀ i j`.
+
+Introduce `y hy`. Conclude with `(hspec y).2 hy`.
+-/
 theorem _root_.GlobalTheory.QuadricSection.exists_isSection : ∀ (P Q : ℕ) (β : ℝ) (x₀ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q), β ≠ 0 →
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf x₀ = β →
     ∃ s : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q → _root_.Formalism.BasicNotions.UpqT P Q, _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.IsSection β x₀ s := by

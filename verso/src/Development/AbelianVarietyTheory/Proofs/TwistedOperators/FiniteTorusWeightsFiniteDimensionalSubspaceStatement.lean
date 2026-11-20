@@ -10,5 +10,8 @@ open GlobalTheory.Dec (IsHaarSub HasInfChar UEquiv gelfVal)
 open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusWtFin.finite_weights | exact GlobalTheory.TorusWtFin.finite_weights | (intros; apply GlobalTheory.TorusWtFin.finite_weights <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_torusWeights_finiteDimensional_subspace : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H), FiniteDimensional ℂ S → ∃ F : Finset (Fin n → ℝ), ∀ (μ : Fin n → ℝ) (v : H), v ∈ S → v ≠ 0 → Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) ρ μ v → μ ∈ F := by
   first | exact @GlobalTheory.TorusWtFin.finite_weights | exact GlobalTheory.TorusWtFin.finite_weights | (intros; apply GlobalTheory.TorusWtFin.finite_weights <;> assumption)

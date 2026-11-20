@@ -15,11 +15,17 @@ abbrev qL : Lau p := HahnSeries.single (1 : ℤ) (1 : ℤ_[p])
 
 def thetaFun (f : Lau p) : Lau p := qL p * Formalism.L2.Th1.A.dL f
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.Th1.A.dL_uPow (R := ℤ_[p]) 1`. Simplify using `only [Formalism.L2.Th1.A.uPow] at h`. Simplify using `[thetaFun, h, HahnSeries.single_zero_one]`.
+-/
 theorem thetaFun_qL : thetaFun p (qL p) = qL p := by
   have h := Formalism.L2.Th1.A.dL_uPow (R := ℤ_[p]) 1
   simp only [Formalism.L2.Th1.A.uPow] at h
   simp [thetaFun, h, HahnSeries.single_zero_one]
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.Th1.A.dLDR ℤ_[p]).map_algebraMap r`.
+-/
 theorem dL_algebraMap (r : ℤ_[p]) : Formalism.L2.Th1.A.dL (algebraMap ℤ_[p] (Lau p) r) = 0 :=
   (Formalism.L2.Th1.A.dLDR ℤ_[p]).map_algebraMap r
 
@@ -40,10 +46,16 @@ def thetaO :=
         simp only [thetaFun, smul_eq_mul, Formalism.L2.Th1.A.dL_mul]
         ring }
 
+/- English proof (translation)
+Rewrite using `[thetaO, qO, GlobalTheory.BK.complDer_algebraMap]`. Conclude with `congrArg _ (thetaFun_qL p)`.
+-/
 theorem thetaO_qO : thetaO p (qO p) = qO p := by
   rw [thetaO, qO, GlobalTheory.BK.complDer_algebraMap]
   exact congrArg _ (thetaFun_qL p)
 
+/- English proof (translation)
+The claim follows from `(thetaO p).map_algebraMap r`.
+-/
 theorem thetaO_algebraMap (r : ℤ_[p]) : thetaO p (algebraMap ℤ_[p] (O0 p) r) = 0 :=
   (thetaO p).map_algebraMap r
 
@@ -55,6 +67,9 @@ def thetaZ : Derivation ℤ (O0 p) (O0 p) where
   map_one_eq_zero' := (thetaO p).map_one_eq_zero
   leibniz' := (thetaO p).leibniz
 
+/- English proof (translation)
+Introduce `p _` and use `⟨thetaZ p, thetaO_qO p, thetaO_algebraMap p⟩`.
+-/
 theorem exists_qDer : ∀ (p : ℕ) [Fact p.Prime], ∃ D : Derivation ℤ (O0 p) (O0 p), D (qO p) = qO p ∧
     ∀ r : ℤ_[p], D (algebraMap ℤ_[p] (O0 p) r) = 0 := fun p _ =>
   ⟨thetaZ p, thetaO_qO p, thetaO_algebraMap p⟩

@@ -17,6 +17,75 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I hG _ _ W hWf hWρ ν κ hν hκ hfix hproj gpt y Q hQW hQ`. Use `haveI := hν`. Use `haveI : FiniteDimensional ℂ W := hWf`. Take `⟨hKc, hmRc, hF0c, hdilex, hdilmat, hext⟩` from `hT hD n p q e`. Use `haveI := hKc`.
+
+Establish `hc0 : 0 < c` using `hL.cpos`. Establish `hIsec : ∀ Q1 Q2 : PX m n, (∀ y', sL Q1 y' = sL Q2 y') → I Q1 gpt = I Q2 gpt`. Introduce `Q1 Q2 h12`. Establish `hnull : NullSec ε c (Q1 - Q2)` using `(hS m n ε c t p q e sL ρ hL (Q1 - Q2)).2 (fun y' => by simp [map_sub, h12 y'])`. Establish `h0` using `hLC m n ε c hc0 ((LinearMap.proj gpt).comp I) (fun a b P => by simpa using hG.Iinv gpt a b P) (Q1 - Q2) hnull`.
+
+Establish `h1 : I Q1 gpt - I Q2 gpt = 0` using `by simpa [map_sub] using h0`. Conclude with `sub_eq_zero.1 h1`. Establish `hπ : ∀ f : GR n → ℂ, Continuous f → (∀ (y g : GR n), (mR y).toBlocks₂₁ = 0 → f (y * g) = F0 p q e y * f g) → ∃ Q1 ∈ W, ∀ y', ∫ k, κ k * f (y' * (k : GR n)) ∂ν = sL Q1 y'`. Introduce `f hf hlaw`. Take `⟨Q1, hQ1, h1⟩` from `hproj 0 f hf (fun y g hy => by rw [hlaw y g hy]; simp)`.
+
+Conclude with `⟨Q1, hQ1, fun y' => by rw [h1 y']; simp⟩`. Take `⟨k1, k2, a, X, hk1, hk2, ha, rfl⟩` from `hK n y`. Establish `hF2 : F0 p q e k2 ≠ 0` using `right_ne_zero_of_mul_eq_one (spherical_character_inv_mul hM n p q e k2 hk2)`. Establish `key : ∀ Q' ∈ W, (∀ y', ∫ k, κ k * F0 p q e (y' * (k : GR n) * (k1 * a)) ∂ν = sL Q' y') → ∫ k, κ k * I 1 (gpt * ι ((k : GR n) * (k1 * a))) ∂ν = I Q' gpt`. Introduce `Q' hQ'W hQ'`.
+
+Use `choose af haf using hdilex X`. Establish `ha1 : af 1 = a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mR (af 1) = mR a`.
+
+Rewrite using `[hdilmat X 1 (af 1) (haf 1), hdilmat X 1 a ha]`. Take `⟨U1, Fid, hU1o, hU1R, hFidc, hFid⟩` from `hG.Idil gpt X af haf`. Set `V : Submodule ℂ (GR n → ℂ)` to `W.map sL`. Take `⟨Bm, hBm⟩` from `LinearMap.exists_rightInverse_of_surjective (LinearMap.submoduleMap sL W) (LinearMap.range_eq_top.2 (LinearMap.submoduleMap_surjective sL W))`. Set `ℓ : Module.Dual ℂ V` to `((LinearMap.proj gpt).comp I).comp (W.subtype.comp Bm)`.
+
+Establish `hℓ : ∀ (v : V) (Q1 : PX m n), (∀ y', sL Q1 y' = (v : GR n → ℂ) y') → ℓ v = I Q1 gpt`. Introduce `v Q1 h1`. Establish `hv : (LinearMap.submoduleMap sL W) (Bm v) = v` using `LinearMap.congr_fun hBm v`. Establish `hv' : sL ((Bm v : W) : PX m n) = (v : GR n → ℂ)`. Use `congrArg (fun w : V => (w : GR n → ℂ)) hv` as an intermediate fact.
+
+Simplify `this` using `[LinearMap.submoduleMap]`. Use `show I ((Bm v : W) : PX m n) gpt = I Q1 gpt`. Conclude with `hIsec _ _ (fun y' => by rw [hv', h1 y'])`. Establish `hspan` using `GlobalTheory.dual_mem_span_eval_of_finiteDimensional V ℓ`. Take `⟨cf, hcf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hspan`.
+
+Establish `hℓeval : ∀ v : V, ℓ v = ∑ y ∈ cf.support, cf y * (v : GR n → ℂ) y`. Introduce `v`. Rewrite using `[← hcf]`. Simplify using `[Finsupp.sum, LinearMap.sum_apply]`. Use `set S := cf.support`.
+
+Set `C : Set (GR n)` to `⋃ y ∈ S, range (fun k : KR n => y * (k : GR n) * k1)`. Establish `hCc : IsCompact C` using `S.isCompact_biUnion fun y _ => isCompact_range (cont_KR_mul n y k1)`. Establish `hmemC : ∀ y ∈ S, ∀ k : KR n, y * (k : GR n) * k1 ∈ C` using `fun y hy k => mem_biUnion hy ⟨k, rfl⟩`. Take `⟨U2, hU2o, hU2R, hU2c, hU2d⟩` from `hext X C hCc`. Use `set U := U1 ∩ U2 with hUdef`.
+
+Establish `hUo : IsOpen U` using `hU1o.inter hU2o`. Establish `hUR : ∀ x : ℝ, (x : ℂ) ∈ U` using `fun x => ⟨hU1R x, hU2R x⟩`. Establish `hcomp : IsCompact (univ : Set (KR n))` using `isCompact_univ`. Establish `hnull : ν (univ : Set (KR n))ᶜ = 0` using `by simp`. Establish `hFlc : ContinuousOn (fun yz : KR n × ℂ => κ yz.1 * Fid ((yz.1 : GR n) * k1) yz.2) (univ ×ˢ U)` using `contOn_Fid k1 U U1 inter_subset_left κ hκ Fid hFidc`.
+
+Establish `hFld : ∀ k ∈ (univ : Set (KR n)), DifferentiableOn ℂ (fun z => κ k * Fid ((k : GR n) * k1) z) U`. Introduce `k _`. Conclude with `(((hFid ((k : GR n) * k1)).1.mono inter_subset_left).const_mul (κ k))`. Take `⟨hLd, hLr⟩` from `hH (KR n) ν univ hcomp hnull U (fun k z => κ k * Fid ((k : GR n) * k1) z) hUo hFlc hFld`. Establish `hFrc : ∀ y ∈ S, ContinuousOn (fun yz : KR n × ℂ => κ yz.1 * twistedScalarSection p q e (mR (y * (yz.1 : GR n) * k1) * aZ X yz.2)) (univ ×ˢ U)` using `fun y hy => continuousOn_twisted_section_compact p q e X y k1 U κ hκ C (hmemC y hy) (hU2c.mono (prod_mono subset_rfl inter_subset_right))`.
+
+Establish `hFrd : ∀ y ∈ S, ∀ k ∈ (univ : Set (KR n)), DifferentiableOn ℂ (fun z => κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z)) U`. Introduce `y hy k _`. Conclude with `(((hU2d _ (hmemC y hy k)).mono inter_subset_right).const_mul (κ k))`. Establish `hRy : ∀ y ∈ S, DifferentiableOn ℂ (fun z => ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) U ∧ ∀ z ∈ U, ∀ r : ℕ, iteratedDeriv r (fun z => ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) z = ∫ k, iteratedDeriv r (fun z …` using `fun y hy => hH (KR n) ν univ hcomp hnull U (fun k z => κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z)) hUo (hFrc y hy) (hFrd y hy)`. Set `Lt : ℂ → ℂ` to `fun z => ∫ k, κ k * Fid ((k : GR n) * k1) z ∂ν`.
+
+Set `Rt : ℂ → ℂ` to `fun z => ∑ y ∈ S, cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν`. Establish `hRd : DifferentiableOn ℂ Rt U`. Establish `h` using `DifferentiableOn.sum (u := S) (A := fun y z => cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) (fun y hy => (hRy y hy).1.const_mul (cf y))`. Establish `heq : (∑ y ∈ S, fun z => cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) = Rt`. Use extensionality with `z`.
+
+Simplify using `only [Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite `h` using `[heq]`. Then use the resulting hypothesis. Establish `h0U : (0 : ℂ) ∈ U` using `by simpa using hUR 0`. Establish `hder : ∀ r : ℕ, iteratedDeriv r Lt 0 = iteratedDeriv r Rt 0`.
+
+Introduce `r`. Use `set Q0 : PX m n := (dil c X ^ r) 1`. Take `⟨Wr, hWrf, hQ0Wr, hWrρ, hWrc⟩` from `hL.kfin Q0`. Use `haveI : FiniteDimensional ℂ Wr := hWrf`. Establish `hinK : ∀ k : KR n, InK (mR ((k : GR n) * k1))` using `fun k => inK_mul k k1 hk1`.
+
+Establish `hcont_l : ∀ l : PX m n →ₗ[ℂ] ℂ, Continuous (fun k : KR n => κ k * l (ρ ((k : GR n) * k1) Q0))`. Introduce `l`. Use `hκ.mul ?_` and prove the remaining obligations. Establish `h1` using `hWrc Q0 hQ0Wr l`. Conclude with `h1.comp_continuous (cont_KR_mul' n k1) (fun k => hinK k)`.
+
+Take `⟨Φ, hΦW, hΦ⟩` from `TSC.exists_int_elem ν Wr (fun k : KR n => κ k • ρ ((k : GR n) * k1) Q0) (fun k => Wr.smul_mem _ (hWrρ _ (hinK k) Q0 hQ0Wr)) (fun l => by`. Use `(hcont_l l).continuousOn.integrableOn_compact (μ := ν) hcomp` as an intermediate fact. Simplify `integrableOn_univ.1 this)` using `[map_smul, smul_eq_mul]`. Take `⟨Qr, hQrW, hQr⟩` from `hπ (fun y' => sL Q0 (y' * k1)) ((hL.cont Q0).comp (continuous_id.mul continuous_const)) (fun y g hy => by show sL Q0 (y * g * k1) = F0 p q e y * sL Q0 (g * k1)`. Rewrite using `[mul_assoc, hL.law Q0 y (g * k1) hy])`.
+
+Establish `hsecΦ : ∀ y', sL Φ y' = sL Qr y'`. Introduce `y'`. Establish `h1` using `hΦ ((LinearMap.proj y').comp sL)`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, map_smul, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[h1, ← hQr y']`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hL.kact Q0 y' _ (hinK k), mul_assoc]`. Establish `hIΦ : I Φ gpt = ∫ k, κ k * I (ρ ((k : GR n) * k1) Q0) gpt ∂ν`. Establish `h1` using `hΦ ((LinearMap.proj gpt).comp I)`.
+
+Simplify `h1` using `[map_smul, smul_eq_mul]`. Establish `hL0 : iteratedDeriv r Lt 0 = I Qr gpt`. Rewrite using `[show iteratedDeriv r Lt 0 = ∫ k, iteratedDeriv r (fun z => κ k * Fid ((k : GR n) * k1) z) 0 ∂ν from hLr 0 h0U r]`. Establish `e1 : ∀ k : KR n, iteratedDeriv r (fun z => κ k * Fid ((k : GR n) * k1) z) 0 = κ k * I (ρ ((k : GR n) * k1) Q0) gpt`. Introduce `k`.
+
+Rewrite using `[iteratedDeriv_const_mul_field, (hFid ((k : GR n) * k1)).2.2 r, hG.Ik _ gpt _ (hinK k)]`. Repeatedly rewrite using `[e1]`. Rewrite using `[← hIΦ]`. Conclude with `hIsec _ _ hsecΦ`. Establish `hR0 : iteratedDeriv r Rt 0 = I Qr gpt`.
+
+Establish `hsum` using `(TSC.iteratedDeriv_sum_on S hUo (fun y z => cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) (fun y hy => (hRy y hy).1.const_mul (cf y)) r).2 h0U`. Use `beta_reduce at hsum`. Rewrite using `[show Rt = fun w => ∑ y ∈ S, cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X w) ∂ν from rfl, hsum]`. Establish `e2 : ∀ y ∈ S, iteratedDeriv r (fun z => cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X z) ∂ν) 0 = cf y * sL Qr y`. Introduce `y hy`.
+
+Rewrite using `[iteratedDeriv_const_mul_field, (hRy y hy).2 0 h0U r, ← hQr y]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[iteratedDeriv_const_mul_field]`.
+
+Use `congr 1`. Establish `hreal` using `(TSA.iteratedDeriv_ofReal' hU2o (hU2d _ (hmemC y hy k)) hU2R (h := fun s : ℝ => F0 p q e (y * (k : GR n) * k1 * af s)) (fun s => by`. Rewrite using `[spherical_section_eq_extension, mR_mul (y * (k : GR n) * k1) (af s), hdilmat X s (af s) (haf s)]) r).2 0`. Simplify using `only [Complex.ofReal_zero] at hreal`. Rewrite using `[hreal, (hDF m n ε c t p q e sL ρ hL X af haf (y * (k : GR n) * k1) r).2]`.
+
+Rewrite using `[Finset.sum_congr rfl e2]`. Rewrite using `[← hℓ ⟨sL Qr, ⟨Qr, hQrW, rfl⟩⟩ Qr (fun _ => rfl), hℓeval]`. Rewrite using `[hL0, hR0]`. Establish `hLd' : DifferentiableOn ℂ Lt U` using `hLd`. Establish `hval : Lt 1 = Rt 1`.
+
+Establish `h` using `TSA.eq_of_iteratedDeriv (f := Lt) (g := Rt) hUo hUR hLd' hRd hder 1`. Simplify using `using h`. Establish `hLt1 : Lt 1 = ∫ k, κ k * I 1 (gpt * ι ((k : GR n) * (k1 * a))) ∂ν` using `by show ∫ k, κ k * Fid ((k : GR n) * k1) 1 ∂ν = _`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Use `(hFid ((k : GR n) * k1)).2.1 1` as an intermediate fact. Simplify using `only [Complex.ofReal_one] at this`. Rewrite using `[this, ha1, mul_assoc]`. Establish `hRt1 : Rt 1 = I Q' gpt`. Establish `e3 : ∀ y ∈ S, cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X 1) ∂ν = cf y * sL Q' y`.
+
+Introduce `y hy`. Rewrite using `[← hQ' y]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Establish `hm : aZ X (1 : ℂ) = mR a` using `by rw [hdilmat X 1 a ha]; simp`. Rewrite using `[hm, ← mR_mul, ← spherical_section_eq_extension, mul_assoc (y * (k : GR n)) k1 a]`. Use `show ∑ y ∈ S, cf y * ∫ k, κ k * twistedScalarSection p q e (mR (y * (k : GR n) * k1) * aZ X 1) ∂ν = I Q' gpt`. Rewrite using `[Finset.sum_congr rfl e3, ← hℓeval ⟨sL Q', ⟨Q', hQ'W, rfl⟩⟩]`. Conclude with `hℓ _ Q' (fun _ => rfl)`.
+
+Rewrite using `[← hLt1, hval, hRt1]`. Establish `hQ' : ∀ y', ∫ k, κ k * F0 p q e (y' * (k : GR n) * (k1 * a)) ∂ν = sL ((F0 p q e k2)⁻¹ • Q) y'`. Introduce `y'`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, ← hQ y', ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[show y' * (k : GR n) * (k1 * a * k2) = y' * (k : GR n) * (k1 * a) * k2 by group, ((hM n p q e).1 _ k2 hk2).1]`. Clear the denominators using the available nonvanishing facts. Establish `hkey` using `key _ (W.smul_mem _ hQW) hQ'`. Establish `hIk2 : ∀ k : KR n, I 1 (gpt * ι ((k : GR n) * (k1 * a * k2))) = F0 p q e k2 * I 1 (gpt * ι ((k : GR n) * (k1 * a)))`.
+
+Introduce `k`. Rewrite using `[show (k : GR n) * (k1 * a * k2) = (k : GR n) * (k1 * a) * k2 by group, map_mul, ← mul_assoc, hG.Ik 1 _ k2 hk2, hL.kvac k2 hk2, map_smul, Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hIk2 k]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = F0 p q e k2 * I ((F0 p q e k2)⁻¹ • Q) gpt := by rw [integral_const_mul, hkey]`. Use `_ = I Q gpt := by`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hF2, one_mul]`.
+-/
 theorem tsGenC_of (hD : CayleyBlocksInvertible) (hK : KAK) (hM : Mult) (hS : SecZero) (hDF : DerivativeVacuumDilations)
     (hH : HolParam) (hLC : LC) (hT : TSBFacts) : TSGenC := by
   intro m n ε c t p q e sL ρ hL G _ _ _ _ _ _ Pp Γ ι s₀ Ht sec I hG _ _ W hWf hWρ ν κ hν hκ hfix hproj gpt y Q hQW hQ

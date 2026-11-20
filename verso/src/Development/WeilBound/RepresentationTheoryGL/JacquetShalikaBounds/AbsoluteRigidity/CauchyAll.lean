@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.Absolut
 
 namespace PositivityTheory.RgJS
 
+/- English proof (translation)
+The claim follows from `cauchy_of_local_prime cauchy_local_inequality prime_sum_converges_and_diverges`.
+-/
 theorem cauchyAll : CAUCHY := cauchy_of_local_prime cauchy_local_inequality prime_sum_converges_and_diverges
 
 end PositivityTheory.RgJS

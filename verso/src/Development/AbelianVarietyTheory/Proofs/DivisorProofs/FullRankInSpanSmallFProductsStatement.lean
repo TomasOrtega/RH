@@ -10,6 +10,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FullRankCoinv.mem_span_smallF_mul_conj | exact GlobalTheory.FullRankCoinv.mem_span_smallF_mul_conj | (intros; apply GlobalTheory.FullRankCoinv.mem_span_smallF_mul_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fullRank_in_span_smallF_products : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (n d : ℕ) (ν : kˣ →* ℂˣ), n ≤ d → GlobalTheory.SmGL.IsSmoothChar ν →
     ∀ φ ∈ GlobalTheory.FullRankCoinv.fullRk k n d, φ ∈ Submodule.span ℂ {ψ : Matrix (Fin n) (Fin d) k → ℂ |

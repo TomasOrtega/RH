@@ -12,6 +12,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.PullbackInCellCone
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb φ htw X₀ _ _ _ m₀ δ₀ h₀ t ht X Y _ _ _ _ _ _ π hπ τ f hτ hf hsm u hu β hβ m δ hδ c hc hβc i hi`. Set `S : Finset (Fin m₀)` to `Finset.univ.filter fun j => 0 < t j`. Set `s : Fin S.card ↪ Fin m₀` to `(S.orderEmbOfFin rfl).toEmbedding`. Establish `hrange : Set.range s = (S : Set (Fin m₀))` using `Finset.range_orderEmbOfFin S rfl`. Establish `hs : ∀ j, 0 < t (s j)` using `fun j => by`.
+
+Establish `: s j ∈ (S : Set (Fin m₀))` using `hrange ▸ Set.mem_range_self j`. Simplify `this` using `[S]`. Establish `hmem : ∀ j, 0 < t j → j ∈ Set.range s` using `fun j hj => by`. Rewrite using `[hrange]`. Simplify `hj` using `[S]`.
+
+Establish `h1 : φ.LinearOn (fun j => δ₀ (s j))` using `linearOn_comp h₀.linear s`. Establish `e1 : (fun j => δ₀ (s j)) = fun j => pull π (u (s j))` using `funext fun j => ((hu _ (hs j)).1).symm`. Rewrite `h1` using `[e1]`. Establish `h2 : φ.LinearOn (fun j => u (s j))` using `(linearOn_pull_iff hπ).1 h1`. Establish `h3 : φ.LinearOn (fun j => pullAdd f (u (s j)))`.
+
+Introduce `a ha`. Establish `hz : ∀ j, φ.evalZ (pullAdd f (u (s j))) = φ.evalZ (u (s j))` using `fun j => GlobalTheory.T.eval_pullback_semilinear_surjective O bar w0 hb φ htw τ hτ f hf hsm fun x y => ((u (s j) x y : ℤ) : ℝ)`. Use `h2 a ha` as an intermediate fact. Simplify using `only [hz]`. Rewrite using `[← this]`.
+
+Conclude with `GlobalTheory.T.eval_pullback_semilinear_surjective O bar w0 hb φ htw τ hτ f hf hsm fun x y => ∑ j, a j * ((u (s j) x y : ℤ) : ℝ)`. Establish `hsum : toReal β = ∑ j, t (s j) • toReal (pullAdd f (u (s j)))`. Rewrite using `[hβ]`. Use `(Fintype.sum_of_injective s s.injective _ _ (fun j hj => ?_) (fun j => rfl)).symm` and prove the remaining obligations. Establish `: t j = 0` using `le_antisymm (not_lt.1 fun h => hj (hmem j h)) (ht j)`.
+
+Rewrite using `[this, zero_smul]`. Take `⟨j, rfl⟩` from `hmem i hi`. Conclude with `GlobalTheory.T.inRealCone_cell_of_linearPiece_through_cellPoint bar φ δ (fun j => pullAdd f (u (s j))) hδ (fun j => (hu _ (hs j)).2.1) (fun j => (hu _ (hs j)).2.2) h3 β c (fun j => t (s j)) hc hs hβc hsum j`.
+-/
 theorem inRCone_pullAdd_of_isCell : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (φ : InvFun O), IsTwG w0 φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module O X₀] [Module.Finite O X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀),
   IsCell bar φ δ₀ → ∀ t : Fin m₀ → ℝ, (∀ i, 0 ≤ t i) →

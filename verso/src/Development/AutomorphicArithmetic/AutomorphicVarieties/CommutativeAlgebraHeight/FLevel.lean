@@ -13,6 +13,41 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Establish `ho : IsOpen ((U : Set G) ∩ ⋂ i, ((χ i).ker : Set G))` using `U.toOpenSubgroup.isOpen.inter (isOpen_iInter_of_finite hχ.isOpen)`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ho ⟨one_mem U, Set.mem_iInter.2 fun i => one_mem (χ i).ker⟩`. Take `⟨π, hπs, hπg, hπk, hπc⟩` from `f_chars χ hχ.inj`. Use `set D := GDet.ofChars χ with hD`. Set `J : TwoSidedIdeal (MonoidAlgebra k G)` to `TwoSidedIdeal.span (D.CH ∪ {z | ∃ u ∈ H, z = MonoidAlgebra.single u 1 - 1})`.
+
+Set `f : MonoidAlgebra k G →ₐ[k] J.ringCon.Quotient` to `RingCon.mkₐ k J.ringCon`. Establish `hk : ∀ y, y ∈ D.toDet.ker ↔ D.Kills y` using `fun y => (d_ker D.toDet y).1.trans (d_toDet D y).2.2.2`. Establish `hJ : J ≤ D.toDet.ker`. Use `TwoSidedIdeal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z (hz | ⟨u, hu, rfl⟩)`.
+
+Use `d_ch_ker D.toDet ?_` and prove the remaining obligations. Rewrite using `[d_toDet_CH]`. Conclude with `TwoSidedIdeal.subset_span hz`. Use `(hk _).2 ((hπk _).2 ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Establish `: χ i u = 1` using `Set.mem_iInter.1 (hH hu).2 i`. Simplify using `[hπg, this]`. Establish `hmem : ∀ x, f x = 0 ↔ x ∈ J` using `fun x => by`. Rewrite using `[← map_zero f]`. Conclude with `(RingCon.eq _)`.
+
+Establish `hsurj : Function.Surjective f` using `fun q => Quotient.exists_rep q`. Take `⟨DE, hDE, -⟩` from `d_factor D.toDet f hsurj fun x hx => hJ ((hmem x).1 hx)`. Establish `hCH : DE.IsCH`. Use `eq_bot_iff.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `((d_pull DE f).2.2.2 hsurj).2 y hy`.
+
+Rewrite `hx` using `[hDE, d_toDet_CH]`. Rewrite using `[TwoSidedIdeal.mem_bot, hmem]`. Conclude with `TwoSidedIdeal.span_mono Set.subset_union_left hx`. Choose the witnesses or unpack the hypotheses as in `⟨π', hπ'⟩ : ∃ π' : J.ringCon.Quotient →ₐ[k] (Fin n → k), ∀ x, π' (f x) = π x := by`. Use `⟨RingCon.liftₐ _ π fun x y hxy => ?_, fun x => rfl⟩` and prove the remaining obligations.
+
+Use `(hπk _).1 ((hk _).1 (hJ ((TwoSidedIdeal.rel_iff _ _ _).1 hxy)))` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `ρ : G →* J.ringCon.Quotient` to `f.toMonoidHom.comp (MonoidAlgebra.of k G)`. Establish `hρ : ∀ g, ρ g = f (MonoidAlgebra.single g 1)` using `fun g => rfl`. Establish `hker : H.toSubgroup ≤ ρ.ker`.
+
+Introduce `u hu`. Rewrite using `[MonoidHom.mem_ker, hρ, ← sub_eq_zero, ← map_one f, ← map_sub, hmem]`. Conclude with `TwoSidedIdeal.subset_span (Or.inr ⟨u, hu, rfl⟩)`. Establish `hopen : IsOpen (ρ.ker : Set G)` using `Subgroup.isOpen_mono hker H.toOpenSubgroup.isOpen`. Establish `hspan : Submodule.span k (Set.range ρ) = ⊤`.
+
+Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj q`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`.
+
+Conclude with `add_mem (ha trivial) (hb trivial)`. Consider the case `single g a`. Establish `: MonoidAlgebra.single g a = a • MonoidAlgebra.single g (1 : k)` using `by simp`. Rewrite using `[this, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+
+Establish `hfr : (Set.range ρ).Finite` using `by haveI : Finite (G ⧸ ρ.ker) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `(Set.finite_range (QuotientGroup.lift ρ.ker ρ le_rfl)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨(g : G ⧸ ρ.ker), rfl⟩`. Use `haveI : Module.Finite k J.ringCon.Quotient := ⟨hspan ▸ Submodule.fg_span hfr⟩`.
+
+Use `haveI : IsAdicComplete (maximalIdeal k) k := by`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Use `infer_instance`. Take `⟨-, e, he, hπe⟩` from `f_gma DE π' hCH (fun v => by`. Take `⟨x, rfl⟩` from `hπs v; exact ⟨f x, hπ' x⟩) (fun q => by`.
+
+Take `⟨x, rfl⟩` from `hsurj q`. Rewrite using `[← (d_pull DE f).1, hDE, (d_toDet D x).1, hπc, hπ']`. Use the proof step `simp)`. Establish `hfin` using `f_cot χ ρ e π' hχ hopen hspan (fun g i => by rw [hρ, hπ', hπg]) he.idem hπe (fun i x => ⟨_, (d_corner DE (e i) hCH (he.idem.idem i) (he.rank i) (Nat.one_le_of_lt i.2 )).1 x⟩)`. Take `⟨c, hc, hcs, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq k (Set.range ρ)`.
+
+Use `choose g hg using hc`. Use `⟨Finset.univ.image g, Finset.card_image_le.trans ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin, hspan, finrank_top]`. Conclude with `hfin`. Establish `h1 : f y ∈ (Submodule.span k ((fun g => MonoidAlgebra.single g (1 : k)) '' ((Finset.univ.image g : Finset G) : Set G))).map f.toLinearMap`.
+
+Establish `: f y ∈ Submodule.span k (Set.range c)` using `by rw [hcs, hspan]; trivial`. Use `Submodule.span_le.2 ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨g i, by simp, rfl⟩, hg i⟩`. Take `⟨z, hz, hzy⟩` from `h1`.
+
+Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `h2 : y - z ∈ J`. Rewrite using `[← hmem, map_sub, sub_eq_zero]`. Conclude with `hzy.symm`. Use `TwoSidedIdeal.span_mono ?_ h2` and prove the remaining obligations.
+
+Introduce and unpack `w (hw | ⟨u, hu, rfl⟩)`. Conclude with `Or.inl hw`. Conclude with `Or.inr ⟨u, (hH hu).1, rfl⟩`.
+-/
 private theorem level_field {n h : ℕ} {k G : Type} [Field k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] [TotallyDisconnectedSpace G] (χ : Fin n → G →* kˣ) (hχ : MultFree χ h)
     (U : OpenNormalSubgroup G) : ∃ s : Finset G, s.card ≤ finBound n h ∧ ∀ y : MonoidAlgebra k G,
@@ -107,6 +142,47 @@ private theorem level_field {n h : ℕ} {k G : Type} [Field k] [Group G] [Topolo
     · exact Or.inl hw
     · exact Or.inr ⟨u, (hH hu).1, rfl⟩
 
+/- English proof (translation)
+Introduce `n h B G _ _ _ _ _ _ _ _ _ _ D χ _ hD hχ N U`. Take `⟨s, hs, hy⟩` from `level_field χ hχ U`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `set Q := TwoSidedIdeal.span (D.CH ∪ {z | ∃ a ∈ maximalIdeal B ^ N, z = MonoidAlgebra.single 1 a} ∪ {z : MonoidAlgebra B G | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1}) with hQ`. Use `set S := Submodule.span B ((fun g => MonoidAlgebra.single g (1 : B)) '' (s : Set G)) with hS`.
+
+Set `φ` to `MonoidAlgebra.mapRingHom G (residue B)`. Establish `hφs : ∀ (b : B) (x : MonoidAlgebra B G), φ (b • x) = residue B b • φ x`. Introduce `b x`. Use extensionality with `g`. Simplify using `[φ]`.
+
+Establish `hφ : Function.Surjective φ`. Introduce `x`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`.
+
+Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `single g a`. Take `⟨a, rfl⟩` from `residue_surjective a`.
+
+Conclude with `⟨MonoidAlgebra.single g a, MonoidAlgebra.mapRingHom_single _ _ _⟩`. Establish `lift : ∀ T : Set (MonoidAlgebra (ResidueField B) G), (∀ w ∈ T, ∃ x ∈ Q, φ x = w) → ∀ w ∈ TwoSidedIdeal.span T, ∃ x ∈ Q, φ x = w`. Introduce `T hT w hw`. Proceed by induction on `hw using TwoSidedIdeal.span_induction with`. Consider the case `mem x hx => exact hT x hx`.
+
+Consider the case `zero => exact ⟨0, Q.zero_mem, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, Q.add_mem ha hb, map_add _ _ _⟩`.
+
+Consider the case `neg x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨-a, Q.neg_mem ha, map_neg _ _⟩`. Consider the case `left_absorb c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Take `⟨c, rfl⟩` from `hφ c`. Conclude with `⟨c * a, Q.mul_mem_left _ _ ha, map_mul _ _ _⟩`. Consider the case `right_absorb c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨c, rfl⟩` from `hφ c`.
+
+Conclude with `⟨a * c, Q.mul_mem_right _ _ ha, map_mul _ _ _⟩`. Set `Q' : Submodule B (MonoidAlgebra B G)` to `{ carrier := Q add_mem' := Q.add_mem zero_mem' := Q.zero_mem smul_mem' := fun c x hx => by rw [Algebra.smul_def]; exact Q.mul_mem_left _ _ hx }`. Establish `step : (⊤ : Submodule B (MonoidAlgebra B G)) ≤ (S ⊔ Q') ⊔ maximalIdeal B • ⊤`. Introduce `y _`. Take `⟨z, hz, hyz⟩` from `hy (φ y)`.
+
+Take `⟨x, hx, hxe⟩` from `lift _ (by`. Introduce and unpack `w (hw | ⟨u, hu, rfl⟩)`. Use `lift (φ '' D.CH) ?_ w ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, TwoSidedIdeal.subset_span (Or.inl (Or.inl hx)), rfl⟩`.
+
+Rewrite using `[← g_chmap, hD]`. Conclude with `TwoSidedIdeal.subset_span hw`. Conclude with `⟨_, TwoSidedIdeal.subset_span (Or.inr ⟨u, hu, rfl⟩), by simp [φ]⟩) _ hyz`. Take `⟨z', hz', rfl⟩ : ∃ z' ∈ S, φ z' = z` from `by clear hyz hxe`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem w hw`. Take `⟨g, hg, rfl⟩` from `hw`. Conclude with `⟨_, Submodule.subset_span ⟨g, hg, rfl⟩, by simp [φ]⟩`. Consider the case `zero => exact ⟨0, S.zero_mem, map_zero _⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a + b, S.add_mem ha hb, map_add _ _ _⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Take `⟨c, rfl⟩` from `residue_surjective c`. Conclude with `⟨c • a, S.smul_mem c ha, hφs _ _⟩`. Establish `h0 : φ (y - z' - x) = 0` using `by rw [map_sub, map_sub, hxe, sub_self]`. Establish `h1 : y - z' - x ∈ maximalIdeal B • (⊤ : Submodule B (MonoidAlgebra B G))`. Generalize the expression as in `y - z' - x = w at h0`.
+
+Rewrite using `[← MonoidAlgebra.sum_coeff_single w]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations. Establish `h2 : MonoidAlgebra.single g (w.coeff g) = w.coeff g • MonoidAlgebra.single g (1 : B)` using `by simp`. Establish `h3` using `congrArg (fun v => v.coeff g) h0`. Simplify using `only [h2]`.
+
+Use `Submodule.smul_mem_smul ((residue_eq_zero_iff _).1 ?_) trivial` and prove the remaining obligations. Simplify `h3` using `[φ]`. Establish `: y = z' + x + (y - z' - x)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Submodule.add_mem_sup hz' hx) h1`.
+
+Establish `iter : ∀ j : ℕ, (⊤ : Submodule B (MonoidAlgebra B G)) ≤ (S ⊔ Q') ⊔ maximalIdeal B ^ j • ⊤`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+
+Use `ih.trans (sup_le le_sup_left ?_)` and prove the remaining obligations. Use `(Submodule.smul_mono le_rfl step).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_sup, pow_succ, mul_smul]`. Conclude with `sup_le_sup_right Submodule.smul_le_right _`. Establish `last : maximalIdeal B ^ N • (⊤ : Submodule B (MonoidAlgebra B G)) ≤ Q'`.
+
+Use `Submodule.smul_le.2 fun a ha x _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Q.mul_mem_right _ _ (TwoSidedIdeal.subset_span (Or.inl (Or.inr ⟨a, ha, by simp⟩)))`. Introduce `y`. Establish `: y ∈ S ⊔ Q'` using `((iter N).trans (sup_le le_rfl (last.trans le_sup_right))) trivial`.
+
+Take `⟨z, hz, x, hx, rfl⟩` from `Submodule.mem_sup.1 this`. Conclude with `⟨z, hz, by rw [add_sub_cancel_left]; exact hx⟩`.
+-/
 theorem UpperTheory.V.CA.f_level :
     ∀ {n h : ℕ} {B G : Type} [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Finite (ResidueField B)] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (D : GDet n B G) (χ : Fin n → G →* (ResidueField B)ˣ), D.IsCont (maximalIdeal B) → D.map (residue B) = GDet.ofChars χ → MultFree χ h → ∀ (N : ℕ) (U : OpenNormalSubgroup G), ∃ s : Finset G, s.card ≤ finBound n h ∧ ∀ y : MonoidAlgebra B G, ∃ z ∈ Submodule.span B ((fun g => MonoidAlgebra.single g (1 : B)) '' (s : Set G)), y - z ∈ TwoSidedIdeal.span (D.CH ∪ {z | ∃ a ∈ maximalIdeal B ^ N, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ u ∈ U, z = MonoidAlgebra.single u 1 - 1}) := by
   intro n h B G _ _ _ _ _ _ _ _ _ _ D χ _ hD hχ N U

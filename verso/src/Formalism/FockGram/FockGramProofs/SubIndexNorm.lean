@@ -4,6 +4,15 @@ open Matrix Module
 
 namespace Formalism.E
 
+/- English proof (translation)
+Introduce `S M ι _ _ _ _ _ _ _ b N bN`. Use `haveI : Module.Free S M := Module.Free.of_basis b`. Use `haveI : Module.Finite S M := Module.Finite.of_basis b`. Use `haveI : Module.Free ℤ M := Module.Free.of_basis ((Module.Free.chooseBasis ℤ S).smulTower b)`. Use `haveI : Module.Finite ℤ M := Module.Finite.of_basis ((Module.Free.chooseBasis ℤ S).smulTower b)`.
+
+Set `e0 : M ≃ₗ[S] N` to `b.equiv bN (Equiv.refl ι)`. Set `f : M →ₗ[S] M` to `N.subtype ∘ₗ e0.toLinearMap`. Establish `hS : b.det (fun i => (bN i : M)) = LinearMap.det f`. Rewrite using `[Basis.det_apply, ← LinearMap.det_toMatrix b]`. Use `congr 1`.
+
+Use extensionality with `x y`. Rewrite using `[Basis.toMatrix_apply, LinearMap.toMatrix_apply]`. Simplify using `[f, e0]`. Set `N' : Submodule ℤ M` to `N.restrictScalars ℤ`. Set `e : M ≃ₗ[ℤ] N'` to `(e0.trans (Submodule.restrictScalarsEquiv ℤ S M N).symm).restrictScalars ℤ`.
+
+Establish `h1` using `Submodule.natAbs_det_equiv N' e`. Establish `hcard : Nat.card (M ⧸ N') = Nat.card (M ⧸ N)` using `Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv ℤ N).toEquiv`. Rewrite using `[← hcard, ← h1, hS, ← LinearMap.det_restrictScalars]`. Use `congr 2`.
+-/
 theorem indexEqNormDet : SubIndexNorm := by
   intro S M ι _ _ _ _ _ _ _ b N bN
   classical

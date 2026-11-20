@@ -12,6 +12,19 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {E E' : Weierstr
 
 namespace Isogeny
 
+/- English proof (translation)
+Use `set K := E.toAffine.FunctionField`. Use `set Ω := AlgebraicClosure K`. Use `set ι := IsScalarTower.toAlgHom F K Ω`. Use `set σF := σ.restrictScalars F`. Establish `hσφ : σF.comp φ.comap = ι.comp φ.comap`.
+
+Use `AlgHom.ext fun f => ?_` and prove the remaining obligations. Use `σ.commutes ⟨φ.comap f, f, rfl⟩` as an intermediate fact. Simplify using `only [AlgHom.comp_apply]`. Conclude with `this`. Use `set G := genericPoint E`.
+
+Establish `hσg : IsGenPt E (Point.map σF G)` using `isGenPt_map_genericPoint E σF`. Establish `hιg : IsGenPt E (Point.map ι G)` using `isGenPt_map_genericPoint E ι`. Establish `happ : φ.app _ hσg = φ.app _ hιg`. Rewrite using `[φ.app_eq_map_comp, φ.app_eq_map_comp, ← eq_genEval E σF rfl hσg, ← eq_genEval E ι rfl hιg, hσφ]`. Use `set Z := Point.map σF G - Point.map ι G with hZ`.
+
+Establish `hsum : Point.map ι G + Z = Point.map σF G` using `by rw [hZ]; abel`. Distinguish the cases in `hZg : IsGenPt E Z`. It suffices to derive a contradiction. Establish `e` using `φ.app_add hιg hZg (hsum ▸ hσg)`. Rewrite `e` using `[φ.app_congr hsum _ hσg, happ, left_eq_add]`.
+
+Conclude with `isGenPt_ne_zero E' (φ.isGenPt_app Z hZg) e`. Take `⟨T, hT⟩` from `exists_map_eq_of_not_isGenPt E Z hZg`. Rewrite `hsum` using `[← hT]`. Establish `key` using `φ.app_add_constMap hιg T (hsum ▸ hσg)`. Rewrite `key` using `[φ.app_congr hsum _ hσg, happ, left_eq_add]`.
+
+Establish `hker : φ.pointMap T = 0` using `constMap_injective E' Ω (by rw [key, map_zero])`. Use `⟨T, hker, ?_⟩` and prove the remaining obligations. Apply `algHom_eq_of_map_genericPoint' E` to reduce the goal to its premises. Rewrite using `[← hsum, ← Point.map_map, map_translate_genericPoint, map_add]`. Conclude with `congrArg _ (map_constMap E ι T).symm`.
+-/
 theorem exists_ker_of_algHom (φ : Isogeny E E')
     (σ : E.toAffine.FunctionField →ₐ[φ.comap.fieldRange]
       AlgebraicClosure E.toAffine.FunctionField) :
@@ -52,6 +65,11 @@ theorem exists_ker_of_algHom (φ : Isogeny E E')
     rw [← hsum, ← Point.map_map, map_translate_genericPoint, map_add]
     exact congrArg _ (map_constMap E ι T).symm
 
+/- English proof (translation)
+Set `f : Field.Emb φ.comap.fieldRange E.toAffine.FunctionField → φ.pointHom.ker` to `fun σ => ⟨(φ.exists_ker_of_algHom σ).choose, (φ.exists_ker_of_algHom σ).choose_spec.1⟩`. Establish `hf : Function.Injective f`. Introduce `σ τ h`. Establish `e1` using `(φ.exists_ker_of_algHom σ).choose_spec.2`. Establish `e2` using `(φ.exists_ker_of_algHom τ).choose_spec.2`.
+
+Establish `hT : (φ.exists_ker_of_algHom σ).choose = (φ.exists_ker_of_algHom τ).choose` using `congrArg Subtype.val h`. Apply `AlgHom.restrictScalars_injective F` to reduce the goal to its premises. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Rewrite using `[hT]`. Conclude with `Nat.card_le_card_of_injective f hf`.
+-/
 theorem finSepDegree_le_card_ker (φ : Isogeny E E') :
     Field.finSepDegree φ.comap.fieldRange E.toAffine.FunctionField ≤ Nat.card φ.pointHom.ker := by
   classical
@@ -77,6 +95,9 @@ noncomputable def kerAut (φ : Isogeny E E') (T : φ.pointHom.ker) :
       rw [neg_neg] at this
       exact this)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kerAut_apply (φ : Isogeny E E') (T : φ.pointHom.ker) (f : E.toAffine.FunctionField) :
     φ.kerAut T f = translate E T f := rfl
 
@@ -91,6 +112,9 @@ noncomputable def kerAutHom (φ : Isogeny E E') :
     rw [AlgEquiv.mul_apply, kerAut_apply, kerAut_apply, kerAut_apply, toAdd_mul,
       AddSubgroup.coe_add, translate_translate]
 
+/- English proof (translation)
+Introduce `S T h`. Use `φ.kerTranslate_injective (a₁ := S.toAdd) (a₂ := T.toAdd) (AlgHom.ext fun f => DFunLike.congr_fun h f)` as an intermediate fact. Conclude with `this`.
+-/
 theorem kerAutHom_injective (φ : Isogeny E E') : Function.Injective φ.kerAutHom := by
   intro S T h
   have := φ.kerTranslate_injective (a₁ := S.toAdd) (a₂ := T.toAdd)
@@ -101,22 +125,36 @@ noncomputable def fixedKer (φ : Isogeny E E') :
     IntermediateField φ.comap.fieldRange E.toAffine.FunctionField :=
   fixedField φ.kerAutHom.range
 
+/- English proof (translation)
+Rewrite using `[fixedKer, mem_fixedField_iff]`. Introduce and unpack `_ ⟨T, rfl⟩`. Conclude with `h _ T.toAdd.2`.
+-/
 theorem mem_fixedKer_of_forall (φ : Isogeny E E') {g : E.toAffine.FunctionField}
     (h : ∀ T ∈ φ.pointHom.ker, translate E T g = g) : g ∈ φ.fixedKer := by
   rw [fixedKer, mem_fixedField_iff]
   rintro _ ⟨T, rfl⟩
   exact h _ T.toAdd.2
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_congr (MonoidHom.ofInjective φ.kerAutHom_injective).toEquiv]`. Both sides reduce to the same expression.
+-/
 theorem card_kerAutHom_range (φ : Isogeny E E') :
     Nat.card φ.kerAutHom.range = Nat.card φ.pointHom.ker := by
   rw [← Nat.card_congr (MonoidHom.ofInjective φ.kerAutHom_injective).toEquiv]
   rfl
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Rewrite using `[fixedKer, finrank_fixedField_eq_card, card_kerAutHom_range]`.
+-/
 theorem finrank_fixedKer (φ : Isogeny E E') :
     Module.finrank φ.fixedKer E.toAffine.FunctionField = Nat.card φ.pointHom.ker := by
   have := φ.finiteDimensional
   rw [fixedKer, finrank_fixedField_eq_card, card_kerAutHom_range]
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Rewrite using `[← card_kerAutHom_range]`. Set `ι` to `IsScalarTower.toAlgHom φ.fixedKer E.toAffine.FunctionField (AlgebraicClosure E.toAffine.FunctionField)`. Set `f : φ.kerAutHom.range → Field.Emb φ.fixedKer E.toAffine.FunctionField` to `fun h => ι.comp { (h.1 : E.toAffine.FunctionField ≃ₐ[φ.comap.fieldRange] _).toRingHom with commutes' := fun x => (mem_fixedField_iff _ _).mp x.2 h.1 h.2 }`. Establish `hf : Function.Injective f`.
+
+Introduce `h₁ h₂ e`. Use `Subtype.ext (AlgEquiv.ext fun x => ι.toRingHom.injective ?_)` and prove the remaining obligations. Conclude with `DFunLike.congr_fun e x`. Conclude with `Nat.card_le_card_of_injective f hf`.
+-/
 theorem card_ker_le_finSepDegree_fixedKer (φ : Isogeny E E') :
     Nat.card φ.pointHom.ker ≤ Field.finSepDegree φ.fixedKer E.toAffine.FunctionField := by
   have := φ.finiteDimensional
@@ -132,6 +170,13 @@ theorem card_ker_le_finSepDegree_fixedKer (φ : Isogeny E E') :
     exact DFunLike.congr_fun e x
   exact Nat.card_le_card_of_injective f hf
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Establish `hmul` using `Field.finSepDegree_mul_finSepDegree_of_isAlgebraic φ.comap.fieldRange φ.fixedKer E.toAffine.FunctionField`. Establish `h1` using `φ.finSepDegree_le_card_ker`. Establish `h2` using `φ.card_ker_le_finSepDegree_fixedKer`. Establish `h3 : 0 < Field.finSepDegree φ.fixedKer E.toAffine.FunctionField` using `Nat.pos_of_ne_zero (NeZero.ne _)`.
+
+Establish `h4 : 0 < Field.finSepDegree φ.comap.fieldRange φ.fixedKer` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `: Field.finSepDegree φ.comap.fieldRange φ.fixedKer * Field.finSepDegree φ.fixedKer E.toAffine.FunctionField ≤ 1 * Field.finSepDegree φ.fixedKer E.toAffine.FunctionField`. Rewrite using `[hmul, one_mul]`. Conclude with `h1.trans h2`. Use `Nat.le_of_mul_le_mul_right this h3` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem finSepDegree_fixedKer (φ : Isogeny E E') :
     Field.finSepDegree φ.comap.fieldRange φ.fixedKer = 1 := by
   have := φ.finiteDimensional
@@ -156,22 +201,40 @@ instance isPurelyInseparable_fixedKer (φ : Isogeny E E') :
 noncomputable def insepDeg (φ : Isogeny E E') : ℕ :=
   Module.finrank φ.comap.fieldRange φ.fixedKer
 
+/- English proof (translation)
+Use `haveI : Module.Free φ.comap.fieldRange φ.fixedKer := Module.Free.of_divisionRing _ _`. Use `haveI : Module.Free φ.fixedKer E.toAffine.FunctionField := Module.Free.of_divisionRing _ _`. Rewrite using `[degree, insepDeg, ← finrank_fixedKer, Module.finrank_mul_finrank]`.
+-/
 theorem degree_eq_insepDeg_mul (φ : Isogeny E E') :
     φ.degree = φ.insepDeg * Nat.card φ.pointHom.ker := by
   haveI : Module.Free φ.comap.fieldRange φ.fixedKer := Module.Free.of_divisionRing _ _
   haveI : Module.Free φ.fixedKer E.toAffine.FunctionField := Module.Free.of_divisionRing _ _
   rw [degree, insepDeg, ← finrank_fixedKer, Module.finrank_mul_finrank]
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Conclude with `Module.finrank_pos`.
+-/
 theorem insepDeg_pos (φ : Isogeny E E') : 0 < φ.insepDeg := by
   have := φ.finiteDimensional
   exact Module.finrank_pos
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Establish `: ExpChar φ.comap.fieldRange (ringExpChar F)` using `expChar_of_injective_algebraMap (algebraMap F φ.comap.fieldRange).injective (ringExpChar F)`. Conclude with `IsPurelyInseparable.finrank_eq_pow φ.comap.fieldRange φ.fixedKer (ringExpChar F)`.
+-/
 theorem exists_insepDeg_eq_pow (φ : Isogeny E E') : ∃ n, φ.insepDeg = ringExpChar F ^ n := by
   have := φ.finiteDimensional
   have : ExpChar φ.comap.fieldRange (ringExpChar F) :=
     expChar_of_injective_algebraMap (algebraMap F φ.comap.fieldRange).injective (ringExpChar F)
   exact IsPurelyInseparable.finrank_eq_pow φ.comap.fieldRange φ.fixedKer (ringExpChar F)
 
+/- English proof (translation)
+Use `φ.finiteDimensional` as an intermediate fact. Use `set x : φ.fixedKer := ⟨a, ha⟩`. Take `⟨n, y, hmin⟩` from `IsPurelyInseparable.minpoly_eq_X_pow_sub_C φ.comap.fieldRange (ringExpChar φ.comap.fieldRange) x`. Establish `hint : IsIntegral φ.comap.fieldRange x` using `Algebra.IsIntegral.isIntegral x`. Establish `hdvd` using `minpoly.degree_dvd hint`.
+
+Rewrite `hdvd` using `[hmin, natDegree_sub_C, natDegree_X_pow]`. Take `⟨c, hc⟩` from `hdvd`. Establish `hroot` using `minpoly.aeval φ.comap.fieldRange x`. Rewrite `hroot` using `[hmin, map_sub, map_pow, aeval_X, aeval_C, sub_eq_zero]`. Take `⟨f, hf⟩` from `(y ^ c).2`.
+
+Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `: x ^ φ.insepDeg = algebraMap φ.comap.fieldRange φ.fixedKer (y ^ c)`. Rewrite using `[insepDeg, hc, pow_mul, hroot, map_pow]`. Use `congrArg (fun z : φ.fixedKer => (z : E.toAffine.FunctionField)) this` as an intermediate fact. Simplify using `only [SubmonoidClass.coe_pow] at this`.
+
+Establish `hf' : φ.comap f = ((y ^ c : φ.comap.fieldRange) : E.toAffine.FunctionField)` using `hf`. Rewrite using `[hf']`. Conclude with `this.symm`.
+-/
 theorem exists_comap_eq_pow (φ : Isogeny E E') {a : E.toAffine.FunctionField} (ha : a ∈ φ.fixedKer) :
     ∃ f : E'.toAffine.FunctionField, φ.comap f = a ^ φ.insepDeg := by
   have := φ.finiteDimensional

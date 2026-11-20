@@ -25,6 +25,15 @@ def sp (ι : Type) (k r : ℕ) (y : ι → Yf k r) : Zb ι k r :=
 def sq (ι : Type) (k r : ℕ) (y : ι → Ys k r) : Zb ι k r :=
   (fun p w => (y w).1.1 p, fun a w => (y w).1.2 a, fun p w => (y w).2.1 p, fun a w => (y w).2.2 a)
 
+/- English proof (translation)
+Establish `h1` using `volume_measurePreserving_arrowProdEquivProdArrow ((UTr r → ℂ) × (Fin r → Fin (k + 1) → ℂ)) ((UTr r → ℂ) × (Fin r → ℝ)) ι`. Establish `h2` using `volume_measurePreserving_arrowProdEquivProdArrow (UTr r → ℂ) (Fin r → Fin (k + 1) → ℂ) ι`. Establish `h3` using `volume_measurePreserving_arrowProdEquivProdArrow (UTr r → ℂ) (Fin r → ℝ) ι`. Establish `s1 : MeasurePreserving (fun (f : ι → UTr r → ℂ) (p : UTr r) (i : ι) => f i p) volume volume` using `ReciprocityTheory.GeometryOfNumbersTheory.measurePreserving_swapPi (volume : Measure ℂ)`. Establish `s2 : MeasurePreserving (fun (f : ι → Fin r → Fin (k + 1) → ℂ) (p : Fin r) (i : ι) => f i p) volume volume` using `ReciprocityTheory.GeometryOfNumbersTheory.measurePreserving_swapPi (volume : Measure (Fin (k + 1) → ℂ))`.
+
+Establish `s3 : MeasurePreserving (fun (f : ι → Fin r → ℝ) (p : Fin r) (i : ι) => f i p) volume volume` using `ReciprocityTheory.GeometryOfNumbersTheory.measurePreserving_swapPi (volume : Measure ℝ)`. Use `haveI u0 : SigmaFinite (volume : Measure (Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI u1 : SigmaFinite (volume : Measure (Fin r → Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI u2 : SigmaFinite (volume : Measure (ι → Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI t1 : SigmaFinite (volume : Measure (ι → UTr r → ℂ)) := inferInstance`.
+
+Use `haveI t2 : SigmaFinite (volume : Measure (ι → Fin r → Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI t3 : SigmaFinite (volume : Measure (UTr r → ι → ℂ)) := inferInstance`. Use `haveI t4 : SigmaFinite (volume : Measure (Fin r → ι → Fin (k + 1) → ℂ)) := inferInstance`. Establish `a` using `s1.prod s2`. Establish `b` using `s1.prod s3`.
+
+Establish `c` using `(a.prod b).comp ((h2.prod h3).comp h1)`. Conclude with `(volume_preserving_prodAssoc).comp c`.
+-/
 theorem sq_mp (ι : Type) [Fintype ι] (k r : ℕ) : MeasurePreserving (sq ι k r) volume volume := by
   have h1 := volume_measurePreserving_arrowProdEquivProdArrow ((UTr r → ℂ) × (Fin r → Fin (k + 1) → ℂ))
     ((UTr r → ℂ) × (Fin r → ℝ)) ι
@@ -48,6 +57,11 @@ theorem sq_mp (ι : Type) [Fintype ι] (k r : ℕ) : MeasurePreserving (sq ι k 
   have c := (a.prod b).comp ((h2.prod h3).comp h1)
   exact (volume_preserving_prodAssoc).comp c
 
+/- English proof (translation)
+Use `haveI : SigmaFinite ((c : ℝ≥0∞) • ν) := by`. Establish `e : (c : ℝ≥0∞) • ν = c • ν`. Use extensionality with `s _`. Simplify using `[Measure.smul_apply]`. Rewrite using `[e]`.
+
+Use `infer_instance`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Simplify using `[Measure.smul_apply, Measure.pi_pi, Finset.prod_mul_distrib, smul_eq_mul]`.
+-/
 theorem pi_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν] (c : NNReal) :
     Measure.pi (fun _ : ι => (c : ℝ≥0∞) • ν) = ((c : ℝ≥0∞) ^ Fintype.card ι) • Measure.pi (fun _ : ι => ν) := by
   haveI : SigmaFinite ((c : ℝ≥0∞) • ν) := by
@@ -59,6 +73,9 @@ theorem pi_smul (ι : Type) [Fintype ι] {X : Type} [MeasurableSpace X] (ν : Me
   refine Measure.pi_eq fun s hs => ?_
   simp [Measure.smul_apply, Measure.pi_pi, Finset.prod_mul_distrib, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [Sum.forall, Set.mem_prod, Set.mem_univ_pi]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_iff (ι : Type) (k r : ℕ) (DU : UTr r → Set (ι → ℂ)) (DH : Fin r → Set (ι → Fin (k + 1) → ℂ))
     (DC : UTr r → Set (ι → ℂ)) (DG : Fin r → Set (ι → ℝ)) (x : ι → Mt k r) :
     (∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet ι k r DU DH DC DG β) ↔
@@ -67,6 +84,35 @@ theorem mem_iff (ι : Type) (k r : ℕ) (DU : UTr r → Set (ι → ℂ)) (DH : 
   simp only [Sum.forall, Set.mem_prod, Set.mem_univ_pi]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `ι _ k r DU DH DC DG hU hH hC hG`. Take `⟨⟨hσ, -, hnull, -⟩, -, -, hmap⟩` from `GlobalTheory.T.haar_lie_nilpotent_coordinates k r`. Use `set μ := haarLie (Nset k r) 1 with hμ`. Use `set e := r * (r - 1) + r * (k + 1) with he`. Use `set F : (ι → Mt k r) → (ι → Yf k r) := fun x w => nCoords k r (x w) with hFdef`.
+
+Use `set R : Set (Zb ι k r) := Set.univ.pi DU ×ˢ Set.univ.pi DH ×ˢ Set.univ.pi DC ×ˢ Set.univ.pi DG with hRdef`. Establish `hF : Measurable F` using `measurable_pi_lambda _ fun w => NEntry.cont_nCoords.measurable.comp (measurable_pi_apply w)`. Establish `hsp : Measurable (sp ι k r)`. Unfold `sp`. Use `fun_prop`.
+
+Establish `hR : MeasurableSet R` using `(MeasurableSet.univ_pi hU).prod ((MeasurableSet.univ_pi hH).prod ((MeasurableSet.univ_pi hC).prod (MeasurableSet.univ_pi hG)))`. Establish `hNm : MeasurableSet {x : Mt k r | Matrix.of x ∈ Nset k r}`. Establish `: IsClosed {x : Mt k r | Matrix.of x ∈ Nset k r}` using `GlobalTheory.Amp.NLie.closed_N`. Conclude with `this.measurableSet`. Establish `hNi : MeasurableSet {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r}`.
+
+Establish `: {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r} = Set.univ.pi fun _ => {x : Mt k r | Matrix.of x ∈ Nset k r}`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `MeasurableSet.univ_pi fun _ => hNm`.
+
+Establish `hS : {x : ι → Mt k r | (∀ w, Matrix.of (x w) ∈ Nset k r) ∧ ∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet ι k r DU DH DC DG β} = (sp ι k r ∘ F) ⁻¹' R ∩ {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, Function.comp_apply]`. Rewrite using `[mem_iff]`. Conclude with `and_comm`.
+
+Rewrite using `[hS]`. Use `⟨((hsp.comp hF) hR).inter hNi, ?_⟩` and prove the remaining obligations. Establish `hconull : (Measure.pi fun _ : ι => μ) {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r}ᶜ = 0`. Establish `: {x : ι → Mt k r | ∀ w, Matrix.of (x w) ∈ Nset k r}ᶜ ⊆ ⋃ w, Function.eval w ⁻¹' {x : Mt k r | Matrix.of x ∉ Nset k r}`. Introduce `x hx`.
+
+Simplify using `using hx`. Use `measure_mono_null this (measure_iUnion_null fun w => ?_)` and prove the remaining obligations. Conclude with `Measure.pi_eval_preimage_null _ hnull`. Rewrite using `[measure_inter_conull hconull]`. Establish `hc : ((2 : ℝ≥0∞) ^ e) = ((2 ^ e : NNReal) : ℝ≥0∞)`.
+
+Use `push_cast`. Both sides reduce to the same expression. Use `haveI : SigmaFinite (μ.map (nCoords k r)) := by`. Rewrite using `[hmap, hc]`. Establish `e' : ((2 ^ e : NNReal) : ℝ≥0∞) • (volume : Measure (Yf k r)) = (2 ^ e : NNReal) • volume`.
+
+Use extensionality with `s _`. Simplify using `[Measure.smul_apply]`. Rewrite using `[e']`. Use `infer_instance`. Establish `hpi : (Measure.pi fun _ : ι => μ).map F = Measure.pi fun _ : ι => μ.map (nCoords k r)` using `Measure.pi_map_pi (fun _ => NEntry.cont_nCoords.measurable.aemeasurable)`.
+
+Establish `hpre : (sp ι k r ∘ F) ⁻¹' R = F ⁻¹' (sp ι k r ⁻¹' R)` using `rfl`. Rewrite using `[hpre, ← Measure.map_apply hF (hsp hR), hpi, hmap, hc, pi_smul, Measure.smul_apply, smul_eq_mul]`. Establish `hΦ : MeasurePreserving (fun (y : ι → Ys k r) w => ((NEntry.glue (y w).1, (y w).2) : Yf k r)) volume volume` using `volume_preserving_pi (f := fun _ : ι => Prod.map (NEntry.glue (k := k) (r := r)) id) fun _ => (NEntry.glue_mp (k := k) (r := r)).1.prod (MeasurePreserving.id _)`. Establish `hcomp : (fun (y : ι → Ys k r) w => ((NEntry.glue (y w).1, (y w).2) : Yf k r)) ⁻¹' (sp ι k r ⁻¹' R) = sq ι k r ⁻¹' R`. Use extensionality with `y`.
+
+Establish `: sp ι k r (fun w => ((NEntry.glue (y w).1, (y w).2) : Yf k r)) = sq ι k r y`. Simplify using `[sp, sq, NEntry.glue]`. Simplify using `only [Set.mem_preimage, this]`. Establish `hvol : (Measure.pi fun _ : ι => (volume : Measure (Yf k r))) (sp ι k r ⁻¹' R) = volume R`. Establish `h1` using `hΦ.measure_preimage (hsp hR).nullMeasurableSet`.
+
+Rewrite `h1` using `[hcomp, (sq_mp ι k r).measure_preimage hR.nullMeasurableSet]`. Conclude with `h1.symm`. Use `haveI u0 : SigmaFinite (volume : Measure (Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI u2 : SigmaFinite (volume : Measure (ι → Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI t3 : SigmaFinite (volume : Measure (UTr r → ι → ℂ)) := inferInstance`.
+
+Use `haveI t4 : SigmaFinite (volume : Measure (Fin r → ι → Fin (k + 1) → ℂ)) := inferInstance`. Use `haveI t5 : SigmaFinite (volume : Measure (Fin r → ι → ℝ)) := inferInstance`. Establish `hpow : ((2 ^ e : NNReal) : ℝ≥0∞) ^ Fintype.card ι = (2 : ℝ≥0∞) ^ (Fintype.card ι * e)`. Rewrite using `[← hc, ← pow_mul, mul_comm]`. Rewrite using `[hvol, hRdef, Measure.volume_eq_prod, Measure.prod_prod, Measure.volume_eq_prod, Measure.prod_prod, Measure.volume_eq_prod, Measure.prod_prod, volume_pi_pi, volume_pi_pi, volume_pi_pi, volume_pi_pi, hpow]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem measure_blocks : ∀ (ι : Type) [Fintype ι] (k r : ℕ) (DU : UTr r → Set (ι → ℂ)) (DH : Fin r → Set (ι → Fin (k + 1) → ℂ)) (DC : UTr r → Set (ι → ℂ)) (DG : Fin r → Set (ι → ℝ)), (∀ p, MeasurableSet (DU p)) → (∀ a, MeasurableSet (DH a)) → (∀ p, MeasurableSet (DC p)) → (∀ a, MeasurableSet (DG a)) → MeasurableSet {x : ι → Mt k r | (∀ w, Matrix.of (x w) ∈ Nset k r) ∧ ∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet ι k r DU DH DC DG β} ∧ (Measure.pi fun _ : ι => haarLie (Nset k r) 1) {x : ι → Mt k r | (∀ w, Matrix.of (x w) ∈ Nset k r) ∧ ∀ β : Bk r, (fun w => cM k r β (x w)) ∈ blkSet ι k r DU DH DC DG β} = (2 : ℝ≥0∞) ^ (Fintype.card ι * (r * (r - 1) + r * (k + 1))) * ((∏ p, volume (DU p)) * (∏ a, volume (DH a)) * (∏ p, volume (DC p)) * ∏ a, volume (DG a)) := by
   intro ι _ k r DU DH DC DG hU hH hC hG
   obtain ⟨⟨hσ, -, hnull, -⟩, -, -, hmap⟩ := GlobalTheory.T.haar_lie_nilpotent_coordinates k r

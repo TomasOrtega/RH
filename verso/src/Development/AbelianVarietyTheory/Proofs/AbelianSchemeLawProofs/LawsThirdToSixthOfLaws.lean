@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h ht` and use `⟨laws3, uniformisationLaws_of_baseChange_laws h.polBaseChange h.globalFns h.secBaseChange ht, laws5 h.globalFns h.secBaseChange, lawsSixth_of_unifUniq h.globalFns h.secBaseChange h.ample⟩`.
+-/
 theorem laws_third_to_sixth_of_laws :
     Laws → DVR.TwistBaseChangeStatement → Laws3 ∧ Laws4 ∧ Laws5 ∧ Laws6 :=
   fun h ht =>

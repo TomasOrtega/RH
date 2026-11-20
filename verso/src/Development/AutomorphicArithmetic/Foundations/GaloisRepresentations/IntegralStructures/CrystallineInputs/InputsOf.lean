@@ -8,15 +8,42 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 
 namespace UpperTheory.Gal.Int.Inp
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity`.
+-/
 theorem js : GlobalTheory.Published.JacquetShalikaRigidity := PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity
+/- English proof (translation)
+The claim follows from `UpperTheory.Gal.AbelianGaloisNormality.gk_holds`.
+-/
 theorem gk : GlobalTheory.Published.GelfandKazhdanDual := UpperTheory.Gal.AbelianGaloisNormality.gk_holds
+/- English proof (translation)
+The claim follows from `UpperTheory.Zero.LLC.Pr.adm`.
+-/
 theorem adm : GlobalTheory.Published.IrreducibleAdmissibleGL := UpperTheory.Zero.LLC.Pr.adm
+/- English proof (translation)
+The claim follows from `PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top`.
+-/
 theorem len : GlobalTheory.Published.StandardFunctorsFiniteLength := PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top
+/- English proof (translation)
+The claim follows from `UpperTheory.Zero.LLC.Pr.exh`.
+-/
 theorem exh : GlobalTheory.Published.LanglandsExhaustionGL := UpperTheory.Zero.LLC.Pr.exh
+/- English proof (translation)
+The claim follows from `UpperTheory.Zero.LLC.Pr.zel`.
+-/
 theorem zel : GlobalTheory.Published.ZelevinskyPolynomialRing := UpperTheory.Zero.LLC.Pr.zel
+/- English proof (translation)
+The claim follows from `PositivityTheory.Gud.Fin.genericUnitaryDualGL_holds`.
+-/
 theorem gen : GlobalTheory.Published.GenericUnitaryDualGL := PositivityTheory.Gud.Fin.genericUnitaryDualGL_holds
+/- English proof (translation)
+The claim follows from `UpperTheory.Gal.AbelianGaloisNormality.strongTC_holds`.
+-/
 theorem ac : GlobalTheory.Published.ArthurClozelStrongTC := UpperTheory.Gal.AbelianGaloisNormality.strongTC_holds
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨js, gk, adm, len, exh, zel, gen, ac, hk, alg, pst⟩`.
+-/
 theorem inp_holds : Inp := ⟨js, gk, adm, len, exh, zel, gen, ac, hk, alg, pst⟩
 
 end UpperTheory.Gal.Int.Inp

@@ -17,12 +17,21 @@ variable {n : ℕ} {G : Set (Mat n)} {H H' : Type} [NormedAddCommGroup H] [Inner
 
 def nu (σ : Mat n → (H →L[ℂ] H)) (Ws : List (List (Mat n))) (v : H) : ℝ := (Ws.map fun W => ‖dsW σ W v‖).sum
 
+/- English proof (translation)
+The claim follows from `List.sum_nonneg fun _ h => by obtain ⟨W, -, rfl⟩ := List.mem_map.1 h; exact norm_nonneg _`.
+-/
 theorem nu_nonneg (Ws : List (List (Mat n))) (v : H) : 0 ≤ nu σ Ws v :=
   List.sum_nonneg fun _ h => by obtain ⟨W, -, rfl⟩ := List.mem_map.1 h; exact norm_nonneg _
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 theorem nu_append (Ws Ws' : List (List (Mat n))) (v : H) : nu σ (Ws ++ Ws') v = nu σ Ws v + nu σ Ws' v := by
   simp [nu]
 
+/- English proof (translation)
+Rewrite using `[nu, ← List.sum_ofFn]`. Use `conv_lhs => rw [← List.ofFn_get Ws, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem nu_eq_sum (Ws : List (List (Mat n))) (v : H) : nu σ Ws v = ∑ i : Fin Ws.length, ‖dsW σ (Ws.get i) v‖ := by
   rw [nu, ← List.sum_ofFn]
   conv_lhs => rw [← List.ofFn_get Ws, List.map_ofFn]
@@ -37,11 +46,19 @@ def Lin (G : Set (Mat n)) (σ : Mat n → (H →L[ℂ] H)) (T : H → H') : Prop
 
 variable {L : Mat n → Prop}
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `h`. Conclude with `⟨C, Ws, hW, fun v hv => by rw [e v hv]; exact hb v hv⟩`.
+-/
 theorem Bdd.congr {E : Type} [NormedAddCommGroup E] {T T' : H → E} (h : Bdd G L σ T)
     (e : ∀ v, IsSm G σ v → T' v = T v) : Bdd G L σ T' := by
   obtain ⟨C, Ws, hW, hb⟩ := h
   exact ⟨C, Ws, hW, fun v hv => by rw [e v hv]; exact hb v hv⟩
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `h`. Take `⟨C', Ws', hW', hb'⟩` from `h'`. Use `⟨|C| + |C'|, Ws ++ Ws', fun W hW0 => (List.mem_append.1 hW0).elim (hW W) (hW' W), fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[nu_append]`. Establish `h1` using `(hb v hv).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (nu_nonneg Ws v))`.
+
+Establish `h2` using `(hb' v hv).trans (mul_le_mul_of_nonneg_right (le_abs_self C') (nu_nonneg Ws' v))`. Use polynomial arithmetic with `[norm_add_le (T v) (T' v), mul_nonneg (abs_nonneg C) (nu_nonneg (σ := σ) Ws' v), mul_nonneg (abs_nonneg C') (nu_nonneg (σ := σ) Ws v)]`.
+-/
 theorem Bdd.add {E : Type} [NormedAddCommGroup E] {T T' : H → E} (h : Bdd G L σ T) (h' : Bdd G L σ T') :
     Bdd G L σ fun v => T v + T' v := by
   obtain ⟨C, Ws, hW, hb⟩ := h
@@ -53,9 +70,15 @@ theorem Bdd.add {E : Type} [NormedAddCommGroup E] {T T' : H → E} (h : Bdd G L 
   nlinarith [norm_add_le (T v) (T' v), mul_nonneg (abs_nonneg C) (nu_nonneg (σ := σ) Ws' v),
     mul_nonneg (abs_nonneg C') (nu_nonneg (σ := σ) Ws v)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, [], by simp, fun _ _ => by simp⟩`.
+-/
 theorem Bdd.zero {E : Type} [NormedAddCommGroup E] : Bdd G L σ fun _ => (0 : E) :=
   ⟨0, [], by simp, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `h`. Use `⟨‖a‖ * C, Ws, hW, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb v hv) (norm_nonneg _)`.
+-/
 theorem Bdd.smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {T : H → E} (h : Bdd G L σ T) (a : ℂ) :
     Bdd G L σ fun v => a • T v := by
   obtain ⟨C, Ws, hW, hb⟩ := h
@@ -63,6 +86,9 @@ theorem Bdd.smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {T : H �
   rw [norm_smul, mul_assoc]
   exact mul_le_mul_of_nonneg_left (hb v hv) (norm_nonneg _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Bdd.zero`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem Bdd.sum {E ι : Type} [NormedAddCommGroup E] {T : ι → H → E} (s : Finset ι) (h : ∀ i ∈ s, Bdd G L σ (T i)) :
     Bdd G L σ fun v => ∑ i ∈ s, T i v := by
   classical
@@ -72,8 +98,16 @@ theorem Bdd.sum {E ι : Type} [NormedAddCommGroup E] {T : ι → H → E} (s : F
     simp only [Finset.sum_insert hi]
     exact (h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+The claim follows from `List.foldr_append`.
+-/
 theorem dsW_append (W W' : List (Mat n)) (v : H) : dsW σ (W ++ W') v = dsW σ W (dsW σ W' v) := List.foldr_append
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `h`. Use `⟨C, Ws.map (· ++ W'), fun W hW0 X hX => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨W₀, hW₀, rfl⟩` from `List.mem_map.1 hW0`. Conclude with `(List.mem_append.1 hX).elim (hW W₀ hW₀ X) (hW' X)`. Use `(hb _ (hv.dsW hσ fun X hX => hL X (hW' X hX))).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [nu, List.map_map, Function.comp_def, dsW_append]`.
+-/
 theorem Bdd.comp_dsW {E : Type} [NormedAddCommGroup E] {T : H → E} (h : Bdd G L σ T) (hσ : RepOn G σ)
     (hL : ∀ X, L X → ∀ t, ex X t ∈ G) {W' : List (Mat n)} (hW' : ∀ X ∈ W', L X) :
     Bdd G L σ fun v => T (dsW σ W' v) := by
@@ -84,6 +118,19 @@ theorem Bdd.comp_dsW {E : Type} [NormedAddCommGroup E] {T : H → E} (h : Bdd G 
   · refine (hb _ (hv.dsW hσ fun X hX => hL X (hW' X hX))).trans (le_of_eq ?_)
     simp only [nu, List.map_map, Function.comp_def, dsW_append]
 
+/- English proof (translation)
+Set `S : Submodule ℂ H` to `{ carrier := {x | IsSm G σ x} add_mem' := fun ha hb => ha.add hb zero_mem' := IsSm.zero smul_mem' := fun c _ hx => hx.smul c }`. Set `J : S →ₗ[ℂ] PiLp 2 fun _ : ι => H` to `{ toFun := fun x => WithLp.toLp 2 fun i => dsW σ (W i) x map_add' := fun x y => PiLp.ext fun i => dsW_add hσ x.2 y.2 (hW i) map_smul' := fun c x => PiLp.ext fun i => dsW_smul hσ x.2 c (hW i) }`. Set `Tl : S →ₗ[ℂ] H'` to `{ toFun := fun x => T x map_add' := fun x y => hl.1 _ _ x.2 y.2 map_smul' := fun c x => hl.2 c _ x.2 }`. Set `K` to `(LinearMap.range J).topologicalClosure`. Establish `: CompleteSpace K` using `(LinearMap.range J).isClosed_topologicalClosure.completeSpace_coe`.
+
+Set `e : S →ₗ[ℂ] K` to `J.codRestrict K fun x => Submodule.le_topologicalClosure _ ⟨x, rfl⟩`. Establish `hd : DenseRange e`. Use `Subtype.dense_iff.2 fun y hy => closure_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨e x, ⟨x, rfl⟩, rfl⟩`.
+
+Establish `hn : ∃ D, ∀ x, ‖Tl x‖ ≤ D * ‖e x‖`. Use `⟨|C| * Fintype.card ι, fun x => (hb _ x.2).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul (le_abs_self C) ?_ (Finset.sum_nonneg fun _ _ => norm_nonneg _) (abs_nonneg _)` and prove the remaining obligations. Use `(Finset.sum_le_sum fun i _ => PiLp.norm_apply_le (J x) i).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Both sides reduce to the same expression. Set `Λ : PiLp 2 (fun _ : ι => H) →L[ℂ] H'` to `Tl.extendOfNorm e ∘L K.orthogonalProjectionOnto`. Set `s : ι → (H →L[ℂ] PiLp 2 fun _ : ι => H)` to `fun i => (PiLp.continuousLinearEquiv 2 ℂ fun _ : ι => H).symm.toContinuousLinearMap ∘L ContinuousLinearMap.single ℂ (fun _ : ι => H) i`. Use `⟨fun i => Λ ∘L s i, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Λ (J ⟨v, hv⟩) = T v` using `by show Tl.extendOfNorm e (K.orthogonalProjectionOnto (e ⟨v, hv⟩ : PiLp 2 fun _ : ι => H)) = Tl ⟨v, hv⟩`. Rewrite using `[Submodule.orthogonalProjectionOnto_mem_subspace_eq_self, LinearMap.extendOfNorm_eq hd hn]`. Rewrite using `[← h1]`. Simplify using `only [ContinuousLinearMap.comp_apply, ← map_sum]`. Use `congr 1`.
+
+Use `PiLp.ext fun j => ?_` and prove the remaining obligations. Use `show dsW σ (W j) v = (∑ i, s i (dsW σ (W i) v)).ofLp j`. Rewrite using `[WithLp.ofLp_sum, Finset.sum_apply, Finset.sum_eq_single j (fun i _ hij => Pi.single_eq_of_ne' hij _) (by simp)]`. Conclude with `(Pi.single_eq_same (M := fun _ : ι => H) j _).symm`.
+-/
 theorem exists_factor [CompleteSpace H] [CompleteSpace H'] {T : H → H'} (hl : Lin G σ T) (hσ : RepOn G σ) {C : ℝ}
     {ι : Type} [Fintype ι] {W : ι → List (Mat n)} (hW : ∀ i, LieW G (W i))
     (hb : ∀ v, IsSm G σ v → ‖T v‖ ≤ C * ∑ i, ‖dsW σ (W i) v‖) :
@@ -132,10 +179,16 @@ theorem exists_factor [CompleteSpace H] [CompleteSpace H'] {T : H → H'} (hl : 
   rw [WithLp.ofLp_sum, Finset.sum_apply, Finset.sum_eq_single j (fun i _ hij => Pi.single_eq_of_ne' hij _) (by simp)]
   exact (Pi.single_eq_same (M := fun _ : ι => H) j _).symm
 
+/- English proof (translation)
+Use `hasDerivAt_ex X 0` as an intermediate fact. Rewrite `this` using `[ex_zero, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem hasDerivAt_matrix_exp_zero (X : Mat n) : HasDerivAt (ex X) X 0 := by
   have := hasDerivAt_ex X 0
   rwa [ex_zero, Matrix.one_mul] at this
 
+/- English proof (translation)
+Establish `h1` using `SmOn.comp (smOn_dsW hσ (u := fun x => σ x w) (hw.smOn_mul hσ) hW) (φ := fun x : Mat n => ((1 : Mat n), x)) (B := G) (contDiff_const.prodMk contDiff_id) fun _ hg => ⟨hσ.one_mem, hg⟩`. Conclude with `h1.congr fun x _ => by simp [hσ.map_one]`.
+-/
 theorem smOn_orbit (hσ : RepOn G σ) {w : H} (hw : IsSm G σ w) {W : List (Mat n)} (hW : LieW G W) :
     SmOn G fun x => dsW σ W (σ x w) := by
   have h1 := SmOn.comp (smOn_dsW hσ (u := fun x => σ x w) (hw.smOn_mul hσ) hW)
@@ -143,9 +196,17 @@ theorem smOn_orbit (hσ : RepOn G σ) {w : H} (hw : IsSm G σ w) {W : List (Mat 
     fun _ hg => ⟨hσ.one_mem, hg⟩
   exact h1.congr fun x _ => by simp [hσ.map_one]
 
+/- English proof (translation)
+The claim follows from `(hv.differentiableAt hσ hX).hasDerivAt`.
+-/
 theorem hasDerivAt_ds (hσ : RepOn G σ) {v : H} (hv : IsSm G σ v) {X : Mat n} (hX : ∀ t, ex X t ∈ G) :
     HasDerivAt (fun t => σ (ex X t) v) (ds σ X v) 0 := (hv.differentiableAt hσ hX).hasDerivAt
 
+/- English proof (translation)
+Establish `h1` using `(hasDerivAt_ds hσ hu hX).inner ℂ (hasDerivAt_ds hσ hv hX)`. Establish `e : (fun t => ⟪σ (ex X t) u, σ (ex X t) v⟫_ℂ) = fun _ => ⟪u, v⟫_ℂ` using `funext fun t => (⟨(σ (ex X t) : H →ₗ[ℂ] H), hiso _ (hX t)⟩ : H →ₗᵢ[ℂ] H).inner_map_map u v`. Rewrite `h1` using `[e]`. Establish `h2` using `h1.unique (hasDerivAt_const _ _)`. Simplify using `only [ex_zero, hσ.map_one, ContinuousLinearMap.one_apply] at h2`.
+
+Rewrite using `[inner_neg_left]`. Take the linear combination `h2`.
+-/
 theorem inner_ds (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) {u v : H} (hu : IsSm G σ u)
     (hv : IsSm G σ v) {X : Mat n} (hX : ∀ t, ex X t ∈ G) : ⟪u, ds σ X v⟫_ℂ = ⟪-ds σ X u, v⟫_ℂ := by
   have h1 := (hasDerivAt_ds hσ hu hX).inner ℂ (hasDerivAt_ds hσ hv hX)
@@ -157,6 +218,11 @@ theorem inner_ds (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = �
   rw [inner_neg_left]
   linear_combination h2
 
+/- English proof (translation)
+Proceed by induction on `W generalizing u with`. Consider the case `nil => exact ⟨u, fun _ _ => rfl⟩`. Consider the case `cons X W ih`. Establish `hW' : LieW G W` using `fun Y hY => hW Y (List.mem_cons_of_mem _ hY)`. Establish `hX` using `hW X List.mem_cons_self`.
+
+Establish `h1 : IsSm G σ (ds σ X u)` using `hu.dsW hσ (W := [X]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX`. Take `⟨u', hu'⟩` from `ih hW' (u := -ds σ X u) (by simpa using h1.smul (-1))`. Conclude with `⟨u', fun v hv => by rw [dsW_cons, inner_ds hσ hiso hu (hv.dsW hσ hW') hX, hu' v hv]⟩`.
+-/
 theorem exists_adj (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) {W : List (Mat n)} (hW : LieW G W)
     {u : H} (hu : IsSm G σ u) : ∃ u', ∀ v, IsSm G σ v → ⟪u, dsW σ W v⟫_ℂ = ⟪u', v⟫_ℂ := by
   induction W generalizing u with
@@ -168,6 +234,13 @@ theorem exists_adj (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ =
     obtain ⟨u', hu'⟩ := ih hW' (u := -ds σ X u) (by simpa using h1.smul (-1))
     exact ⟨u', fun v hv => by rw [dsW_cons, inner_ds hσ hiso hu (hv.dsW hσ hW') hX, hu' v hv]⟩
 
+/- English proof (translation)
+Take `⟨U, F, hU, h1U, hF, hfF⟩` from `smOn_orbit hσ hv hW 1 hσ.one_mem`. Establish `h0` using `hasDerivAt_local (f := fun x => dsW σ W (σ x v)) hX (ex_zero X) (hasDerivAt_matrix_exp_zero X) hU h1U hF hfF`. Establish `hs : IsSm G σ (ds σ X v)` using `hv.dsW hσ (W := [X]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX`. Use `h0 using 1` and compare the differences between its conclusion and the goal. Use `hd.eq_of_inner_right (𝕜 := ℂ) fun u hu => ?_` and prove the remaining obligations.
+
+Take `⟨u', hu'⟩` from `exists_adj hσ hiso hW hu`. Establish `a1` using `(hasDerivAt_const (0 : ℝ) u).inner ℂ h0`. Establish `a2` using `(hasDerivAt_const (0 : ℝ) u').inner ℂ (hasDerivAt_ds hσ hv hX)`. Establish `e : (fun t => ⟪u, dsW σ W (σ (ex X t) v)⟫_ℂ) = fun t => ⟪u', σ (ex X t) v⟫_ℂ`. Use function extensionality and compare the values at `fun t => hu' _ (hv.apply hσ (hX t))`.
+
+Rewrite `a1` using `[e]`. Use `a1.unique a2` as an intermediate fact. Simplify using `only [inner_zero_left, add_zero] at this`. Rewrite using `[hu' _ hs, this]`.
+-/
 theorem hasDerivAt_dsW_orbit (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (hd : Dense {v | IsSm G σ v})
     {v : H} (hv : IsSm G σ v) {W : List (Mat n)} (hW : LieW G W) {X : Mat n} (hX : ∀ t, ex X t ∈ G) :
     HasDerivAt (fun t => dsW σ W (σ (ex X t) v)) (dsW σ W (ds σ X v)) 0 := by
@@ -187,6 +260,9 @@ theorem hasDerivAt_dsW_orbit (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖�
   simp only [inner_zero_left, add_zero] at this
   rw [hu' _ hs, this]
 
+/- English proof (translation)
+Introduce `a ha` and use `by obtain ⟨U, F, hU, haU, hF, hfF⟩ := hc a ha obtain ⟨U', F', hU', haU', hF', hfF'⟩ := hf a ha exact ⟨U ∩ U', fun x => F x • F' x, hU.inter hU', ⟨haU, haU'⟩, (hF.mono inter_subset_left).smul (hF'.mono inter_subset_right), fun g hg hgA => by simp only [hfF g hg.1 hgA, hfF' g hg.2 …`.
+-/
 theorem SmOn.smul' {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup V] [NormedSpace ℂ V]
     {A : Set E} {c : E → ℂ} {f : E → V} (hc : SmOn A c) (hf : SmOn A f) : SmOn A fun a => c a • f a := fun a ha => by
   obtain ⟨U, F, hU, haU, hF, hfF⟩ := hc a ha
@@ -195,6 +271,9 @@ theorem SmOn.smul' {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Nor
     (hF.mono inter_subset_left).smul (hF'.mono inter_subset_right),
     fun g hg hgA => by simp only [hfF g hg.1 hgA, hfF' g hg.2 hgA]⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SmoothOnAdditive.main s hf`.
+-/
 theorem SmOn.sum' {E V ι : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup V] [NormedSpace ℝ V]
     {A : Set E} {f : ι → E → V} (s : Finset ι) (hf : ∀ i ∈ s, SmOn A (f i)) : SmOn A fun a => ∑ i ∈ s, f i a :=
   _root_.UpperTheory.Reformulated.B.SmoothOnAdditive.main s hf
@@ -203,6 +282,9 @@ section Lift
 
 variable [CompleteSpace H] [CompleteSpace H']
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `hb`. Establish `hW' : ∀ i, LieW G (Ws.get i)` using `fun i X hX => hL X (hW _ (List.get_mem _ _) X hX)`. Take `⟨Λ, hΛ⟩` from `exists_factor hl hσ hW' (C := C) fun v hv => by rw [← nu_eq_sum]; exact hb v hv`. Conclude with `(SmOn.sum' Finset.univ fun i _ => (FinalFormK.smOn_orbit hσ hv (hW' i)).clm ((Λ i).restrictScalars ℝ)).congr fun g hg => hΛ _ (hv.apply hσ hg)`.
+-/
 theorem Bdd.smOn_orbit {T : H → H'} (hb : Bdd G L σ T) (hl : Lin G σ T) (hσ : RepOn G σ)
     (hL : ∀ X, L X → ∀ t, ex X t ∈ G) {v : H} (hv : IsSm G σ v) : SmOn G fun g => T (σ g v) := by
   obtain ⟨C, Ws, hW, hb⟩ := hb
@@ -211,6 +293,11 @@ theorem Bdd.smOn_orbit {T : H → H'} (hb : Bdd G L σ T) (hl : Lin G σ T) (hσ
   exact (SmOn.sum' Finset.univ fun i _ =>
     (FinalFormK.smOn_orbit hσ hv (hW' i)).clm ((Λ i).restrictScalars ℝ)).congr fun g hg => hΛ _ (hv.apply hσ hg)
 
+/- English proof (translation)
+Take `⟨C, Ws, hW, hb⟩` from `hb`. Establish `hW' : ∀ i, LieW G (Ws.get i)` using `fun i X hX => hL X (hW _ (List.get_mem _ _) X hX)`. Take `⟨Λ, hΛ⟩` from `exists_factor hl hσ hW' (C := C) fun v hv => by rw [← nu_eq_sum]; exact hb v hv`. Establish `hs : IsSm G σ (ds σ X v)` using `hv.dsW hσ (W := [X]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX`. Establish `e : (fun t => T (σ (ex X t) v)) = fun t => ∑ i, Λ i (dsW σ (Ws.get i) (σ (ex X t) v))`.
+
+Use function extensionality and compare the values at `fun t => hΛ _ (hv.apply hσ (hX t))`. Rewrite using `[e, hΛ _ hs]`. Conclude with `HasDerivAt.fun_sum fun i _ => ((Λ i).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dsW_orbit hσ hiso hd hv (hW' i) hX)`.
+-/
 theorem Bdd.hasDerivAt {T : H → H'} (hb : Bdd G L σ T) (hl : Lin G σ T) (hσ : RepOn G σ)
     (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (hd : Dense {v | IsSm G σ v})
     (hL : ∀ X, L X → ∀ t, ex X t ∈ G) {v : H} (hv : IsSm G σ v) {X : Mat n} (hX : ∀ t, ex X t ∈ G) :
@@ -234,11 +321,19 @@ structure TwInt (G : Set (Mat n)) (L : Mat n → Prop) (σ : Mat n → (H →L[�
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {M : Mat n → ι → ι → ℂ} {T : ι → H → H'}
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `(SmOn.sum' Finset.univ fun d _ => SmOn.smul' (hM c d) ((h.bdd d).smOn_orbit (h.lin d) hσ hL hv)).congr fun g hg => h.eqv g hg c v hv`.
+-/
 theorem TwInt.isSm (h : TwInt G L σ τ M T) (hσ : RepOn G σ) (hL : ∀ X, L X → ∀ t, ex X t ∈ G)
     (hM : ∀ c d, SmOn G fun g => M g c d) (c : ι) {v : H} (hv : IsSm G σ v) : IsSm G τ (T c v) :=
   (SmOn.sum' Finset.univ fun d _ => SmOn.smul' (hM c d) ((h.bdd d).smOn_orbit (h.lin d) hσ hL hv)).congr
     fun g hg => h.eqv g hg c v hv
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t => ∑ d, M (ex X t) c d • T d (σ (ex X t) v)) (∑ d, (M (ex X 0) c d • T d (ds σ X v) + M' c d • T d (σ (ex X 0) v))) 0` using `HasDerivAt.fun_sum fun d _ => (hM' c d).smul ((h.bdd d).hasDerivAt (h.lin d) hσ hiso hd hL hv hX)`. Establish `e : (fun t => τ (ex X t) (T c v)) = fun t => ∑ d, M (ex X t) c d • T d (σ (ex X t) v)`. Use function extensionality and compare the values at `fun t => h.eqv _ (hX t) c v hv`. Unfold `ds`. Rewrite using `[e, h1.deriv]`.
+
+Simplify using `[ex_zero, hM1, hσ.map_one, Finset.sum_add_distrib, ite_smul, ds]`.
+-/
 theorem TwInt.ds_eq (h : TwInt G L σ τ M T) (hσ : RepOn G σ) (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖)
     (hd : Dense {v | IsSm G σ v}) (hL : ∀ X, L X → ∀ t, ex X t ∈ G) (hM1 : ∀ c d, M 1 c d = if c = d then 1 else 0)
     {X : Mat n} (hX : ∀ t, ex X t ∈ G) {M' : ι → ι → ℂ}
@@ -253,6 +348,17 @@ theorem TwInt.ds_eq (h : TwInt G L σ τ M T) (hσ : RepOn G σ) (hiso : ∀ g �
   rw [e, h1.deriv]
   simp [ex_zero, hM1, hσ.map_one, Finset.sum_add_distrib, ite_smul, ds]
 
+/- English proof (translation)
+Proceed by induction on `W using List.reverseRecOn generalizing c with`. Consider the case `nil => exact h.bdd c`. Consider the case `append_singleton W X ih`. Establish `hW' : ∀ Y ∈ W, L Y` using `fun Y hY => hW Y (List.mem_append_left _ hY)`. Establish `hLX : L X` using `hW X (by simp)`.
+
+Establish `hX` using `hL X hLX`. Establish `hWG : LieW G W` using `fun Y hY => hL Y (hW' Y hY)`. Establish `hM' : ∀ c d, ∃ m, HasDerivAt (fun t => M (ex X t) c d) m 0` using `fun c d => by`. Take `⟨U, F, hU, h1U, hF, hfF⟩` from `hM c d 1 hσ.one_mem`. Conclude with `⟨_, hasDerivAt_local (f := fun g => M g c d) hX (ex_zero X) (hasDerivAt_matrix_exp_zero X) hU h1U hF hfF⟩`.
+
+Use `choose M' hM' using hM'`. Establish `h1` using `(ih hW' c).comp_dsW hσ hL (W' := [X]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact hLX`. Use `(h1.add (Bdd.sum Finset.univ fun d _ => (ih hW' d).smul (M' c d))).congr fun v hv => ?_` and prove the remaining obligations. Establish `hs : IsSm G σ (ds σ X v)` using `hv.dsW hσ (W := [X]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact hX`. Establish `hsum : ∀ s : Finset ι, IsSm G τ (∑ d ∈ s, M' c d • T d v) ∧ dsW τ W (∑ d ∈ s, M' c d • T d v) = ∑ d ∈ s, M' c d • dsW τ W (T d v)`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using IsSm.zero, by simpa using dsW_smul hτ (IsSm.zero (G := G) (σ := τ)) 0 hWG⟩`. Consider the case `insert i s hi ih'`. Establish `hi'` using `h.isSm hσ hL hM i hv`.
+
+Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, dsW_add hτ (hi'.smul _) ih'.1 hWG, ih'.2, dsW_smul hτ hi' _ hWG]`. Conclude with `⟨(hi'.smul _).add ih'.1, rfl⟩`. Rewrite using `[dsW_append]`. Use `show dsW τ W (ds τ X (T c v)) = dsW τ W (T c (ds σ X v)) + _`. Rewrite using `[h.ds_eq hσ hiso hd hL hM1 hX hM' c hv, dsW_add hτ (h.isSm hσ hL hM c hs) (hsum _).1 hWG, (hsum _).2]`.
+-/
 theorem TwInt.bdd_dsW (h : TwInt G L σ τ M T) (hσ : RepOn G σ) (hτ : RepOn G τ)
     (hiso : ∀ g ∈ G, ∀ v, ‖σ g v‖ = ‖v‖) (hd : Dense {v | IsSm G σ v}) (hL : ∀ X, L X → ∀ t, ex X t ∈ G)
     (hM : ∀ c d, SmOn G fun g => M g c d) (hM1 : ∀ c d, M 1 c d = if c = d then 1 else 0)

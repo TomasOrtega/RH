@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace LateralTheory.E.HasLimPf
 
+/- English proof (translation)
+Establish `: HasLimit (F ⋙ Scheme.Γ.rightOp)` using `inferInstance`. Establish `: PreservesLimitsOfSize.{0, 0} Scheme.Spec.{0}` using `ΓSpec.adjunction.rightAdjoint_preservesLimits`. Establish `: HasLimit (F ⋙ Scheme.Γ.rightOp ⋙ Scheme.Spec)` using `HasLimit.mk ⟨_, isLimitOfPreserves Scheme.Spec (limit.isLimit (F ⋙ Scheme.Γ.rightOp))⟩`. Establish `: ∀ k, IsIso ((Functor.whiskerLeft F ΓSpec.adjunction.unit).app k)` using `fun k => by`. Use `hF k` as an intermediate fact.
+
+Use `dsimp`. Use `infer_instance`. Establish `: IsIso (Functor.whiskerLeft F ΓSpec.adjunction.unit)` using `NatIso.isIso_of_isIso_app _`. Conclude with `hasLimit_of_iso (asIso (Functor.whiskerLeft F ΓSpec.adjunction.unit)).symm`.
+-/
 theorem hasLimit_of_affine {K : Type} [SmallCategory K] (F : K ⥤ Scheme.{0}) (hF : ∀ k, IsAffine (F.obj k)) :
     HasLimit F := by
   have : HasLimit (F ⋙ Scheme.Γ.rightOp) := inferInstance
@@ -22,6 +27,11 @@ def Loc : Prop := ∀ {J : Type} [SmallCategory J] [IsCofiltered J] (D : J ⥤ S
   (∀ {j k : J} (f : j ⟶ k), IsAffineHom (D.map f)) →
   (∀ U : (D.obj j₀).Opens, IsAffineOpen U → HasLimit (opensDiagram D j₀ U)) → HasLimit (Over.forget j₀ ⋙ D)
 
+/- English proof (translation)
+Introduce `J _ _ D hD`. Take `⟨j₀⟩` from `IsCofiltered.nonempty (C := J)`. Establish `: HasLimit (Over.forget j₀ ⋙ D)` using `hL D j₀ hD (fun U hU => by`. Use `hasLimit_of_affine _ (fun j => ?_)` and prove the remaining obligations. Use `hD j.hom` as an intermediate fact.
+
+Conclude with `hU.preimage (D.map j.hom))`. Establish `: HasLimit D` using `Functor.Initial.hasLimit_of_comp (Over.forget j₀)`. Conclude with `⟨limit.cone D, ⟨limit.isLimit D⟩⟩`.
+-/
 theorem HasLim_of (hL : Loc) : LateralTheory.E.SysPf.HasLim := by
   intro J _ _ D hD
   obtain ⟨j₀⟩ := IsCofiltered.nonempty (C := J)

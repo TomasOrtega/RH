@@ -9,6 +9,11 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : DataX E r)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← X.Λ_span, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : (X.NA : E) • x ∈ Submodule.span E (X.L' : Set (Fin r → E))` using `Submodule.subset_span (X.NA_sub x hx)`. Establish `hNA : (X.NA : E) ≠ 0` using `Nat.cast_ne_zero.mpr X.NA_pos.ne'`. Establish `h2` using `Submodule.smul_mem _ ((X.NA : E)⁻¹) h1`.
+
+Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hNA, one_smul]`. Then use the resulting hypothesis.
+-/
 lemma span_L' : Submodule.span E (X.L' : Set (Fin r → E)) = ⊤ := by
   rw [eq_top_iff, ← X.Λ_span, Submodule.span_le]
   intro x hx
@@ -20,6 +25,9 @@ lemma span_L' : Submodule.span E (X.L' : Set (Fin r → E)) = ⊤ := by
 
 variable {n : ℕ} (β : Fin n → Fin r → E) (ξ : Fin r → E)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`.
+-/
 lemma smul_O_E (a : 𝓞 E) (x : E) : a • x = (a : E) * x := by
   rw [Algebra.smul_def]
 
@@ -33,6 +41,11 @@ def Tmap : ((Fin n → E) × E) →ₗ[𝓞 E] (Fin r → E) where
     rw [integer_smul_eq_coe_smul a p.1, integer_smul_eq_coe_smul a (∑ k, p.1 k • β k + p.2 • ξ), smul_O_E]
     simp only [Pi.smul_apply, smul_eq_mul, smul_add, Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Use extensionality with `c`. Express the relevant statement in the definitionally equal form `(∃ e : E, ∑ k, c k • β k + e • ξ ∈ X.L') ↔ c ∈ (X.L'.comap (Tmap β ξ)).map (LinearMap.fst (𝓞 E) (Fin n → E) E)`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, LinearMap.fst_apply, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`.
+
+Conclude with `⟨c, e, he, rfl⟩`. Introduce and unpack `⟨c', e, hp, rfl⟩`. Conclude with `⟨e, hp⟩`.
+-/
 lemma LB_eq : LBsub X β ξ = (X.L'.comap (Tmap β ξ)).map (LinearMap.fst (𝓞 E) (Fin n → E) E) := by
   ext c
   change (∃ e : E, ∑ k, c k • β k + e • ξ ∈ X.L') ↔
@@ -44,6 +57,13 @@ lemma LB_eq : LBsub X β ξ = (X.L'.comap (Tmap β ξ)).map (LinearMap.fst (𝓞
   · rintro ⟨c', e, hp, rfl⟩
     exact ⟨e, hp⟩
 
+/- English proof (translation)
+Introduce `p q hpq`. Establish `e1 : ∑ k, p.1 k • β k + p.2 • ξ = ∑ k, q.1 k • β k + q.2 • ξ` using `hpq`. Rewrite `e1` using `[← sub_eq_zero]`. Establish `h` using `Fintype.linearIndependent_iff.mp hli (Fin.cons (p.2 - q.2) (p.1 - q.1) : Fin (n + 1) → E) (by`. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`.
+
+Rewrite using `[← e1]`. Use the proof step `abel)`. Use `Prod.ext (funext fun k => ?_) ?_` and prove the remaining obligations. Establish `h'` using `h k.succ`. Simplify using `only [Fin.cons_succ, Pi.sub_apply] at h'`.
+
+Conclude with `sub_eq_zero.mp h'`. Establish `h'` using `h 0`. Simplify using `only [Fin.cons_zero] at h'`. Conclude with `sub_eq_zero.mp h'`.
+-/
 lemma Tmap_inj (hli : LinearIndependent E (Fin.cons ξ β : Fin (n + 1) → Fin r → E)) :
     Function.Injective (Tmap β ξ) := by
   intro p q hpq
@@ -63,6 +83,17 @@ lemma Tmap_inj (hli : LinearIndependent E (Fin.cons ξ β : Fin (n + 1) → Fin 
     simp only [Fin.cons_zero] at h'
     exact sub_eq_zero.mp h'
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LB_eq]`. Apply `Submodule.FG.map` to reduce the goal to its premises. Apply `Submodule.fg_of_fg_map_injective (Tmap β ξ) (Tmap_inj β ξ hli)` to reduce the goal to its premises. Rewrite using `[Submodule.map_comap_eq]`.
+
+Establish `: IsNoetherian (𝓞 E) X.L'` using `isNoetherian_of_fg_of_noetherian _ X.L'_fg`. Establish `h1` using `IsNoetherian.noetherian ((LinearMap.range (Tmap β ξ) ⊓ X.L').comap X.L'.subtype)`. Establish `h2` using `h1.map X.L'.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr inf_le_right]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`.
+
+Introduce `c _`. Take `⟨d, hd, hdv⟩` from `HermitianTraceFormVanishing.exists_smul_mem (F := E) X.L' (x := ∑ k, c k • β k) (by rw [span_L' X]; trivial)`. Establish `hd' : (d : E) ≠ 0` using `by simpa using hd`. Establish `hdc : (d : E) • c ∈ LBsub X β ξ`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[zero_smul, add_zero]`. Establish `e1 : ∑ k, ((d : E) • c) k • β k = d • ∑ k, c k • β k`. Rewrite using `[integer_smul_eq_coe_smul d, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]`. Rewrite using `[e1]`.
+
+Conclude with `hdv`. Establish `h2` using `Submodule.smul_mem (Submodule.span E (LBsub X β ξ : Set (Fin n → E))) ((d : E)⁻¹) (Submodule.subset_span hdc)`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hd', one_smul]`. Then use the resulting hypothesis.
+-/
 lemma LB_lattice (hli : LinearIndependent E (Fin.cons ξ β : Fin (n + 1) → Fin r → E)) :
     ReciprocityTheory.MultiplicativeHeights.IsLattice (LBsub X β ξ) := by
   refine ⟨?_, ?_⟩
@@ -98,6 +129,9 @@ def Sform : ReciprocityTheory.MultiplicativeHeights.HermForm E n where
   G := Matrix.of fun a b => herm X.Gm (β b) (β a)
   G_herm a b := HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm (β b) (β a)
 
+/- English proof (translation)
+Unfold `herm`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_sum_smul_left' {m : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : Fin m → E)
     (v : Fin m → Fin r → E) (y : Fin r → E) :
     herm G (∑ k, c k • v k) y = ∑ k, c k * herm G (v k) y := by
@@ -111,6 +145,9 @@ private lemma herm_sum_smul_left' {m : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : 
           Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Unfold `herm cc`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_sum_smul_right' {m : ℕ} (G : Matrix (Fin r) (Fin r) E) (x : Fin r → E)
     (c : Fin m → E) (v : Fin m → Fin r → E) :
     herm G x (∑ k, c k • v k) = ∑ k, cc (c k) * herm G x (v k) := by
@@ -126,6 +163,11 @@ private lemma herm_sum_smul_right' {m : ℕ} (G : Matrix (Fin r) (Fin r) E) (x :
           Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Rewrite using `[herm_sum_smul_left']`. Simplify using `only [herm_sum_smul_right', Finset.mul_sum]`. Unfold `ReciprocityTheory.MultiplicativeHeights.HermForm.h`. Simplify using `only [Sform, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `try simp only [cc, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma Sform_h (c c' : Fin n → E) :
     (Sform X β).h c c' = herm X.Gm (∑ k, c' k • β k) (∑ k, c k • β k) := by
   rw [herm_sum_smul_left']
@@ -138,21 +180,33 @@ lemma Sform_h (c c' : Fin n → E) :
     AlgEquiv.coe_ringEquiv]
   ring
 
+/- English proof (translation)
+Rewrite using `[herm_sum_smul_left']`. Simplify using `[hβξ]`.
+-/
 lemma herm_perp (hβξ : ∀ k, herm X.Gm (β k) ξ = 0) (c : Fin n → E) :
     herm X.Gm (∑ k, c k • β k) ξ = 0 := by
   rw [herm_sum_smul_left']
   simp [hβξ]
 
+/- English proof (translation)
+Unfold `herm`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 private lemma herm_add_left_of_matrix (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
     herm G (x + y) z = herm G x z + herm G y z := by
   unfold herm
   simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `herm cc`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 private lemma herm_add_right_of_matrix (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
     herm G x (y + z) = herm G x y + herm G x z := by
   unfold herm cc
   simp only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `herm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_left_of_matrix (G : Matrix (Fin r) (Fin r) E) (e : E) (x y : Fin r → E) :
     herm G (e • x) y = e * herm G x y := by
   unfold herm
@@ -160,6 +214,9 @@ private lemma herm_smul_left_of_matrix (G : Matrix (Fin r) (Fin r) E) (e : E) (x
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `herm cc`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_right_lemma_6 (G : Matrix (Fin r) (Fin r) E) (e : E) (x y : Fin r → E) :
     herm G x (e • y) = cc e * herm G x y := by
   unfold herm cc
@@ -167,6 +224,13 @@ private lemma herm_smul_right_lemma_6 (G : Matrix (Fin r) (Fin r) E) (e : E) (x 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hξβ : ∀ k, herm X.Gm ξ (β k) = 0` using `fun k => by`. Establish `h` using `HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm (β k) ξ`. Rewrite `h` using `[hβξ k]`. Use `first`. Consider the case `simpa [cc] using h`.
+
+Consider the case `simpa [cc] using h.symm`. Establish `hB : herm X.Gm ξ (∑ k, c k • β k) = 0`. Rewrite using `[herm_sum_smul_right']`. Simplify using `[hξβ]`. Rewrite using `[herm_add_left_of_matrix, herm_add_right_of_matrix, herm_add_right_of_matrix, herm_smul_left_of_matrix, herm_smul_left_of_matrix, herm_smul_right_lemma_6, herm_smul_right_lemma_6, hB, herm_perp X β ξ hβξ c', hξξ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma herm_cross (hβξ : ∀ k, herm X.Gm (β k) ξ = 0) (hξξ : herm X.Gm ξ ξ = 0)
     (c c' : Fin n → E) (e e' : E) :
     herm X.Gm (∑ k, c' k • β k + e' • ξ) (∑ k, c k • β k + e • ξ) =
@@ -184,6 +248,15 @@ lemma herm_cross (hβξ : ∀ k, herm X.Gm (β k) ξ = 0) (hξξ : herm X.Gm ξ 
     herm_smul_left_of_matrix, herm_smul_right_lemma_6, herm_smul_right_lemma_6, hB, herm_perp X β ξ hβξ c', hξξ]
   ring
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `c ⟨e, he⟩ c' ⟨e', he'⟩`. Rewrite using `[Sform_h, ← herm_cross X β ξ hβξ hξ.2.1 c c' e e']`. Conclude with `⟨⟨_, X.L'_int _ he' _ he⟩, rfl⟩`. Introduce `c hc`.
+
+Take `⟨e, he⟩` from `hermitian_lattice_pairing_duality r X ξ hξ (∑ k, c k • β k) (herm_perp X β ξ hβξ c) (by`. Introduce `y hy hyξ`. Take `⟨c', e', rfl⟩` from `hspan y hyξ`. Establish `hc' : c' ∈ LBsub X β ξ` using `⟨e', hy⟩`. Take `⟨z, hz⟩` from `hc c' hc'`.
+
+Rewrite `hz` using `[Sform_h]`. Establish `h1 : herm X.Gm (∑ k, c k • β k) (∑ k, c' k • β k + e' • ξ) = cc (herm X.Gm (∑ k, c' k • β k) (∑ k, c k • β k))`. Rewrite using `[herm_add_right', HermitianTraceFormVanishing.herm_smul_right, herm_perp X β ξ hβξ c, mul_zero, add_zero, HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm]`. Rewrite using `[h1, ← hz]`. Conclude with `isIntegral_cc (RingOfIntegers.isIntegral_coe z))`.
+
+Conclude with `⟨e, he⟩`.
+-/
 lemma LB_selfDual (hξ : X.IsIso ξ) (hβξ : ∀ k, herm X.Gm (β k) ξ = 0)
     (hspan : ∀ x : Fin r → E, herm X.Gm x ξ = 0 →
       ∃ (c : Fin n → E) (e : E), x = ∑ k, c k • β k + e • ξ) :
@@ -207,6 +280,19 @@ lemma LB_selfDual (hξ : X.IsIso ξ) (hβξ : ∀ k, herm X.Gm (β k) ξ = 0)
       exact isIntegral_cc (RingOfIntegers.isIntegral_coe z))
     exact ⟨e, he⟩
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨c, hc0, hcG⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Use `set μ := ∑ a, cc (c a) • β a with hμdef`. Establish `hβμ : ∀ b, herm X.Gm (β b) μ = 0`. Introduce `b`.
+
+Establish `h1` using `congrFun hcG b`. Simplify using `only [Matrix.vecMul, dotProduct, Sform, Matrix.of_apply, Pi.zero_apply] at h1`. Rewrite using `[hμdef, herm_sum_right']`. Simplify using `only [HermitianTraceFormVanishing.herm_smul_right, HermitianTraceFormVanishing.cc_cc]`. Rewrite using `[← h1]`.
+
+Establish `hμξ : herm X.Gm ξ μ = 0`. Rewrite using `[← HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm, hμdef, herm_perp X β ξ hβξ, HermitianTraceFormVanishing.cc_zero]`. Establish `hperp : ∀ y, herm X.Gm y ξ = 0 → herm X.Gm μ y = 0`. Introduce `y hy`. Take `⟨c', e', rfl⟩` from `hspan y hy`.
+
+Rewrite using `[← HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm, HermitianTraceFormVanishing.herm_add_left, HermitianTraceFormVanishing.herm_smul_left, hμξ, herm_sum_left']`. Simplify using `only [HermitianTraceFormVanishing.herm_smul_left, hβμ, mul_zero, Finset.sum_const_zero, add_zero, HermitianTraceFormVanishing.cc_zero]`. Take `⟨e, he⟩` from `HermitianTraceFormVanishing.exists_eq_smul_of_herm X.Gm X.Gm_det X.Gm_herm ξ μ hξ.2.2 hperp`. Establish `h` using `Fintype.linearIndependent_iff.mp hli (Fin.cons (-e) (fun a => cc (c a))) (by`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Use `show -e • ξ + μ = 0`. Rewrite using `[he, neg_smul, neg_add_cancel])`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Use `h a.succ` as an intermediate fact. Simplify using `using this`.
+-/
 lemma detG_ne (hξ : X.IsIso ξ) (hβξ : ∀ k, herm X.Gm (β k) ξ = 0)
     (hli : LinearIndependent E (Fin.cons ξ β : Fin (n + 1) → Fin r → E))
     (hspan : ∀ x : Fin r → E, herm X.Gm x ξ = 0 →

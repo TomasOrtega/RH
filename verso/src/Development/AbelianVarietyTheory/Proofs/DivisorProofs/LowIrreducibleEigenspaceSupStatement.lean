@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockLowWt.lowOne_le_wt | exact GlobalTheory.FockLowWt.lowOne_le_wt | (intros; apply GlobalTheory.FockLowWt.lowOne_le_wt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.low_irreducible_eigenspace_sup : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k → x + Formalism.BasicNotions.TH.cPair R S = k' →
     ∀ (r : Fin R) (s : Fin S), GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') ≤ ⨆ n : ℕ × ℕ,
       Module.End.eigenspace (Formalism.BasicNotions.TH.fockAct2 P Q R S (Formalism.BasicNotions.TH.Eab (.inl r) (.inl r))) (((P : ℂ) - Q) / 2 + n.1) ⊓

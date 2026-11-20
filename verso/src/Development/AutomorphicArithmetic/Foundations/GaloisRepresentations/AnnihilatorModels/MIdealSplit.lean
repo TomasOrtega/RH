@@ -9,6 +9,17 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Proceed by induction on `J using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hJ`. Consider the case `h₂ u hu`. Use `⟨0, ⊤, Ideal.isCoprime_iff_sup_eq.mpr (sup_top_eq _), ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isUnit_iff.mp hu]`.
+
+Conclude with `le_top`. Consider the case `h₃ a p ha hp ih`. Establish `ha0 : a ≠ ⊥`. Introduce and unpack `rfl; exact hJ (by simp)`. Establish `hp0 : p ≠ ⊥`.
+
+Introduce and unpack `rfl; exact hJ (by simp)`. Take `⟨m, b, hcop, hle⟩` from `ih ha0`. Distinguish the cases in `hap : 𝔞 ≤ p`. Use `⟨m + 1, b, hcop, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hpm : p.IsMaximal` using `(Ideal.isPrime_of_prime hp).isMaximal hp0`. Establish `hc : IsCoprime 𝔞 p`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Establish `h2` using `hpm.eq_of_le h le_sup_right`.
+
+Conclude with `hap (h2 ▸ le_sup_left)`. Use `⟨m, p * b, IsCoprime.mul_right hc hcop, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_coprime_mul_le {A : Type} [CommRing A] [IsDedekindDomain A] (𝔞 J : Ideal A) (hJ : J ≠ ⊥) :
     ∃ (m : ℕ) (𝔟 : Ideal A), IsCoprime 𝔞 𝔟 ∧ 𝔞 ^ m * 𝔟 ≤ J := by
   classical
@@ -37,6 +48,11 @@ private theorem exists_coprime_mul_le {A : Type} [CommRing A] [IsDedekindDomain 
       calc 𝔞 ^ m * (p * b) = p * (𝔞 ^ m * b) := by ring
         _ ≤ p * a := Ideal.mul_mono_right hle
 
+/- English proof (translation)
+Introduce `A _ _ 𝔞 x hx ρ`. Establish `hJ : Ideal.span {x} ≠ ⊥` using `by simpa using hx`. Take `⟨m, 𝔟, hc, hle⟩` from `exists_coprime_mul_le 𝔞 (Ideal.span {x}) hJ`. Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.mp (hc.pow_left (m := ρ))`. Use `⟨m, j, ?_, fun a ha => hle (Ideal.mul_mem_mul ha hj)⟩` and prove the remaining obligations.
+
+Establish `: j - 1 = -i` using `by rw [← hij]; ring`. Rewrite using `[this]`. Conclude with `neg_mem hi`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.idealSplit_of :
     IdealSplit := by
   intro A _ _ 𝔞 x hx ρ

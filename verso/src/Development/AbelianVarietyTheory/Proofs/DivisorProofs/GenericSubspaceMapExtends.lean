@@ -14,6 +14,9 @@ open GlobalTheory.VB (IsVB IsSubbundle)
 
 namespace GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `X _ F G u N N' h`. Use `((GlobalTheory.VB.Sub.ofGeneric N').exists_comp_incl_iff _).2 fun V s hV => ?_` and prove the remaining obligations. Use `h _ ((GlobalTheory.VB.Sub.ofGeneric N).incl_app_mem s hV)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.QCoh.stalkLinear_germ]`. Conclude with `this`.
+-/
 theorem exists_ofGeneric_hom_of_mapsTo :
     ∀ (X : Scheme.{0}) [IsIntegral X] (F G : X.Modules) (u : F ⟶ G)
     (N : Submodule X.functionField (GlobalTheory.VB.genStalk F)) (N' : Submodule X.functionField (GlobalTheory.VB.genStalk G)),

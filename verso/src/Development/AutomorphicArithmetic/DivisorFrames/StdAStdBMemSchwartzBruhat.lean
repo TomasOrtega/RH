@@ -13,6 +13,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 section SlopeTestRemainingChoices
 open Filter Topology ValuativeRel GlobalTheory.StdPairSB GlobalTheory.StdPairCone
 
+/- English proof (translation)
+Establish `h0 : ∀ e : ℕ, ∀ i j, (0 : Matrix (Fin m) (Fin r) k) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ e)`. Introduce `e i j`. Rewrite using `[GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq]`. Simplify using the standard rewrite rules. Establish `hfac : ∀ (A : Matrix (Fin m) (Fin m) k) (B : Matrix (Fin m) (Fin r) k), gfun ν ϖ c A B = if (∀ i j, B i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) then gfun ν ϖ n A (0 : Matrix (Fin m) (Fin r) k) else 0`.
+
+Introduce `A B`. Distinguish the cases in `hB : ∀ i j, B i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`. Rewrite using `[if_pos hB]`. Unfold `gfun`. Distinguish the cases in `hA : A.det ≠ 0 ∧ IsGLO A`.
+
+Rewrite using `[dif_pos ⟨hA.1, hA.2, hB⟩, dif_pos ⟨hA.1, hA.2, h0 n⟩]`. Rewrite using `[dif_neg fun h => hA ⟨h.1, h.2.1⟩, dif_neg fun h => hA ⟨h.1, h.2.1⟩]`. Rewrite using `[if_neg hB]`. Unfold `gfun`. Rewrite using `[dif_neg fun h => hB h.2.2]`.
+
+Establish `h1 : IsLocallyConstant (fun q : Matrix (Fin m) (Fin m) k × Matrix (Fin m) (Fin r) k => gfun ν ϖ n q.1 (0 : Matrix (Fin m) (Fin r) k))` using `(isLocallyConstant_gfun hϖ hν m r).comp_continuous (f := fun q : Matrix (Fin m) (Fin m) k × Matrix (Fin m) (Fin r) k => (q.1, (0 : Matrix (Fin m) (Fin r) k))) (continuous_fst.prodMk continuous_const)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce and unpack `⟨A, B⟩`. Establish `hnh : ∀ x : k, ∀ᶠ y in 𝓝 x, valuation k (y - x) ≤ valuation k ((ϖ ^ c : kˣ) : k)`. Introduce `x`.
+
+Establish `ht : Tendsto (fun y : k => y - x) (𝓝 x) (𝓝 0)`. Simplify using `using (tendsto_id.sub_const x : Tendsto (fun y : k => y - x) (𝓝 x) (𝓝 (x - x)))`. Conclude with `ht (GlobalTheory.SplitWeil.cball_mem_nhds (ϖ ^ c))`. Establish `hev : ∀ᶠ q in 𝓝 (A, B), ∀ i j, valuation k ((q : Matrix (Fin m) (Fin m) k × Matrix (Fin m) (Fin r) k).2 i j - B i j) ≤ valuation k ((ϖ ^ c : kˣ) : k)`. Use `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations.
+
+Conclude with `((continuous_snd.matrix_elem i j).tendsto (A, B)).eventually (hnh (B i j))`. Use `filter_upwards [hev, h1 (A, B)] with q hq hq1`. Establish `hiff : (∀ i j, q.2 i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) ↔ ∀ i j, B i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+
+Rewrite using `[GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, ← sub_sub_cancel (q.2 i j) (B i j)]`. Conclude with `Valuation.map_sub_le _ (h i j) (hq i j)`. Introduce `h i j`. Rewrite using `[GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, ← sub_add_cancel (q.2 i j) (B i j)]`. Conclude with `Valuation.map_add_le _ (hq i j) (h i j)`.
+
+Use `show gfun ν ϖ c q.1 q.2 = gfun ν ϖ c A B`. Rewrite using `[hfac, hfac]`. Conclude with `if_congr hiff hq1 rfl`.
+-/
 private theorem gfun_lc {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ν : kˣ →* ℂˣ} {ϖ : kˣ} {n : ℕ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ)
     (hν : GlobalTheory.SplitFlip.CondLE ϖ n ν) (c m r : ℕ) :
@@ -67,6 +84,17 @@ private theorem gfun_lc {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   rw [hfac, hfac]
   exact if_congr hiff hq1 rfl
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hc1 : ∀ m : ℕ, Continuous fun X : Matrix (Fin m) (Fin (a + a')) k => blk₁ X`. Introduce `m`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_id.matrix_elem i (Fin.castAdd a' j)`. Establish `hc2 : ∀ m : ℕ, Continuous fun X : Matrix (Fin m) (Fin (a + a')) k => blk₂ X`.
+
+Introduce `m`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_id.matrix_elem i (Fin.natAdd a j)`. Establish `hK : ∀ m : ℕ, IsCompact (Set.univ.pi fun _ : Fin m => Set.univ.pi fun _ : Fin (a + a') => (𝒪[k] : Set k) : Set (Matrix (Fin m) (Fin (a + a')) k))` using `fun m => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => GlobalTheory.SplitWeil.isCompact_int k`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: stdA ν ϖ c a a' = (fun q => gfun ν ϖ c q.1 q.2) ∘ fun X => (blk₁ X, blk₂ X)` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `(gfun_lc hϖ hν c a a').comp_continuous ((hc1 a).prodMk (hc2 a))`. Use `HasCompactSupport.intro (hK a) fun X hX => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `integral_of_ne (A := blk₁ X) (B := blk₂ X) hϖ hne`.
+
+Conclude with `hX fun i _ j _ => Fin.addCases (motive := fun j => X i j ∈ 𝒪[k]) (fun j => h1 i j) (fun j => h2 i j) j`. Establish `: stdB ν ϖ c a a' = (fun q => gfun ν ϖ c q.1 q.2) ∘ fun Y => (blk₂ Y, blk₁ Y)` using `rfl`. Rewrite using `[this]`. Conclude with `(gfun_lc hϖ hν c a' a).comp_continuous ((hc2 a').prodMk (hc1 a'))`. Use `HasCompactSupport.intro (hK a') fun Y hY => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Take `⟨h2, h1⟩` from `integral_of_ne (A := blk₂ Y) (B := blk₁ Y) hϖ hne`. Conclude with `hY fun i _ j _ => Fin.addCases (motive := fun j => Y i j ∈ 𝒪[k]) (fun j => h1 i j) (fun j => h2 i j) j`.
+-/
 private theorem finiteRing_sq_sub_mul_sq_eq_of_card {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) {n : ℕ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ)
     (hν : GlobalTheory.SplitFlip.CondLE ϖ n ν) (c a a' : ℕ) :
@@ -98,6 +126,9 @@ private theorem finiteRing_sq_sub_mul_sq_eq_of_card {k : Type} [Field k] [Valuat
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ν ϖ hϖ hν c a a'`. Take `⟨n, hn⟩` from `hν`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card ν ϖ hϖ hn c a a'`.
+-/
 theorem UpperTheory.stdA_stdB_mem_schwartzBruhat :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → (∃ m, GlobalTheory.SplitFlip.CondLE ϖ m ν) → ∀ c a a' : ℕ,
         GlobalTheory.StdPairCone.stdA ν ϖ c a a' ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + a')) k) ∧

@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k D M _ _ _ _ ρ N hN z hz h0`. Establish `hidx : N.index ≠ 0` using `fun h => hN (by rw [h, Nat.cast_zero])`. Use `haveI : Fintype (D ⧸ N) := Subgroup.fintypeOfIndexNeZero hidx`. Establish `hcos : ∀ a b : D, (a : D ⧸ N) = (b : D ⧸ N) → z a = z b`. Introduce `a b hab`.
+
+Establish `hmem : a⁻¹ * b ∈ N` using `QuotientGroup.eq.mp hab`. Establish `h1` using `hz a (a⁻¹ * b)`. Rewrite `h1` using `[mul_inv_cancel_left, h0 _ hmem, map_zero, add_zero]`. Conclude with `h1.symm`. Establish `hcard : Fintype.card (D ⧸ N) = N.index`.
+
+Rewrite using `[Subgroup.index_eq_card, Nat.card_eq_fintype_card]`. Establish `key : ∀ g : D, ∑ q : D ⧸ N, z q.out = (N.index : k) • z g + ρ g (∑ q : D ⧸ N, z q.out)`. Introduce `g`. Establish `h1 : ∑ q : D ⧸ N, z (g • q).out = ∑ q : D ⧸ N, z q.out` using `Equiv.sum_comp (MulAction.toPerm g) (fun q : D ⧸ N => z q.out)`. Establish `h2 : ∀ q : D ⧸ N, z (g • q).out = z g + ρ g (z q.out)`.
+
+Introduce `q`. Rewrite using `[← hz]`. Apply `hcos` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, MulAction.Quotient.coe_smul_out]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, hcard, map_sum, Nat.cast_smul_eq_nsmul]`. Use `⟨-((N.index : k)⁻¹ • ∑ q : D ⧸ N, z q.out), fun g => ?_⟩` and prove the remaining obligations. Establish `h3 : (N.index : k) • z g = (∑ q : D ⧸ N, z q.out) - ρ g (∑ q : D ⧸ N, z q.out)` using `eq_sub_of_add_eq (key g).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, smul_sub, map_neg, map_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Reformulated.B.Qe18.hc_avg :
     ∀ {k D M : Type} [inst : Field k] [inst_1 : Group D]
     [inst_2 : AddCommGroup M] [inst_3 : _root_.Module k M] (ρ : Representation k D M) (N : Subgroup D),

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Establish `h1 : v.valuation K (a : K) = v.intValuation a` using `v.valuation_of_algebraMap a`. Establish `h2 : FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K) = ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)` using `(FractionalIdeal.coeIdeal_span_singleton a).symm`. Rewrite using `[h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]`.
+-/
 private theorem val_count_int {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) (ha : a ≠ 0) :
     v.valuation K (a : K) = WithZero.exp (-FractionalIdeal.count K v
       (FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K))) := by
@@ -12,6 +15,13 @@ private theorem val_count_int {K : Type} [Field K] [NumberField K] (v : HeightOn
     (FractionalIdeal.coeIdeal_span_singleton a).symm
   rw [h1, h2, v.intValuation_if_neg ha, FractionalIdeal.count_coe K v (by simpa using ha)]
 
+/- English proof (translation)
+Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (𝓞 K) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb0`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `[← e]`. Establish `e' : x * (b : K) = (a : K)`. Rewrite using `[← e]`. Conclude with `div_mul_cancel₀ _ hbK`.
+
+Establish `h1` using `val_count_int v a ha0`. Establish `h2` using `val_count_int v b hb0`. Rewrite `h1` using `[← e', map_mul, h2, ← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hbK), neg_add, WithZero.exp_add]`. Conclude with `mul_right_cancel₀ WithZero.exp_ne_zero h1`.
+-/
 private theorem val_count {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (x : K) (hx : x ≠ 0) :
     v.valuation K x = WithZero.exp (-FractionalIdeal.count K v
       (FractionalIdeal.spanSingleton (𝓞 K)⁰ x)) := by
@@ -31,6 +41,15 @@ private theorem val_count {K : Type} [Field K] [NumberField K] (v : HeightOneSpe
       (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hbK), neg_add, WithZero.exp_add] at h1
   exact mul_right_cancel₀ WithZero.exp_ne_zero h1
 
+/- English proof (translation)
+Introduce `M _ K _ _ _ b r v w X hX hv hw`. Establish `hX0 : X ≠ 0` using `left_ne_zero_of_mul_eq_one hX.1`. Set `P : (ZMod M)ˣ → HeightOneSpectrum (𝓞 K)` to `fun t => HeightOneSpectrum.comap (sgO M K t : 𝓞 K →+* 𝓞 K) (sgO M K t).surjective v`. Establish `hP : ∀ t, (P t).asIdeal = conjI M K v.asIdeal t` using `fun t => rfl`. Establish `hne : ∀ t, P t ≠ w`.
+
+Introduce `t h`. Apply `hw` to reduce the goal to its premises. Rewrite using `[← h, hP, mem_conjI, map_natCast]`. Conclude with `hv`. Rewrite using `[val_count w X hX0, hX.2, FractionalIdeal.count_prod]`.
+
+Rewrite using `[Finset.sum_eq_zero, neg_zero, WithZero.exp_zero]`. Introduce `t _`. Rewrite using `[FractionalIdeal.count_zpow, ← hP, FractionalIdeal.count_maximal_coprime K w (hne t), mul_zero]`. Introduce `t _`. Apply `zpow_ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← hP]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr (P t).ne_bot`.
+-/
 theorem UpperTheory.valuation_kummerElement_eq_one_of_not_over :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b r : ℕ) (v w : HeightOneSpectrum (𝓞 K)) (X : K), IsX M K b v.asIdeal X → (r : 𝓞 K) ∈ v.asIdeal → (r : 𝓞 K) ∉ w.asIdeal → w.valuation K X = 1 := by
   intro M _ K _ _ _ b r v w X hX hv hw

@@ -15,10 +15,24 @@ section Extremal
 
 variable (K : Type) [Field K]
 
+/- English proof (translation)
+Simplify using `[Formalism.GradedWeylDivisibility.rowAct]`.
+-/
 theorem rowAct_X (r n : ℕ) (M : Matrix (Fin r) (Fin r) K) (v : Fin r × Fin n) :
     Formalism.GradedWeylDivisibility.rowAct K M (X v) = ∑ b : Fin r, C (M v.1 b) * X (b, v.2) := by
   simp [Formalism.GradedWeylDivisibility.rowAct]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[AlgHom.map_det, AlgHom.mapMatrix_apply]`. Establish `hmat : (Matrix.of fun p q : Fin s => (X (Fin.castLE hs p, Fin.castLE hs q) : MvPolynomial (Fin n × Fin n) K)).map (Formalism.GradedWeylDivisibility.rowAct K (n` using `n) M) = (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) : MvPolynomial (Fin n × Fin n) K)) * Matrix.of fun p q : Fin s => (X (Fin.castLE hs p, Fin.castLE hs q) : MvPolynomial (Fin n × Fin n) K) := by`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply]`.
+
+Rewrite using `[rowAct_X]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb hs))), Finset.sum_map]`. Both sides reduce to the same expression. Introduce `b _ hb`. Establish `hbs : s ≤ b.val`.
+
+Assume the negation of the conclusion as `hlt`. Apply `hb` to reduce the goal to its premises. Conclude with `Finset.mem_map.mpr ⟨⟨b.val, by omega⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`. Simplify using `only`. Rewrite using `[hM _ _ (by rw [Fin.lt_def]; simp; omega), map_zero, zero_mul]`.
+
+Establish `hL : (Matrix.of fun p b : Fin s => (C (M (Fin.castLE hs p) (Fin.castLE hs b)) : MvPolynomial (Fin n × Fin n) K)).IsLowerTriangular`. Introduce `i j hij`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hM _ _ (by rw [Fin.lt_def]; simpa using hij), map_zero]`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_of_isLowerTriangular _ hL]`.
+
+Simplify using `[hd]`.
+-/
 theorem rowAct_lpMinor (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, i < j → M i j = 0)
     (hd : ∀ i, M i i = 1) (s : ℕ) (hs : s ≤ n) :
     Formalism.GradedWeylDivisibility.rowAct K (n := n) M (Formalism.GradedWeylDivisibility.lpMinor K s hs hs) = Formalism.GradedWeylDivisibility.lpMinor K s hs hs := by
@@ -50,6 +64,9 @@ theorem rowAct_lpMinor (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, i
   rw [hmat, Matrix.det_mul, Matrix.det_of_isLowerTriangular _ hL]
   simp [hd]
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.hw`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, rowAct_lpMinor K n M hM hd]`.
+-/
 theorem rowAct_hw (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, i < j → M i j = 0)
     (hd : ∀ i, M i i = 1) (ν : Fin n → ℕ) :
     Formalism.GradedWeylDivisibility.rowAct K (n := n) M (Formalism.GradedWeylDivisibility.hw K le_rfl ν) = Formalism.GradedWeylDivisibility.hw K le_rfl ν := by
@@ -58,6 +75,9 @@ theorem rowAct_hw (n : ℕ) (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, i < j 
   refine Finset.prod_congr rfl fun s _ => ?_
   rw [map_pow, rowAct_lpMinor K n M hM hd]
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular]`. Simplify using `[hd]`. Introduce `i j hij`. Conclude with `hl i j hij`.
+-/
 theorem det_unitri (n : ℕ) (g : GL (Fin n) K) (hl : ∀ i j, j < i → g i j = 0) (hd : ∀ i, g i i = 1) :
     Matrix.GeneralLinearGroup.det g = 1 := by
   ext
@@ -66,6 +86,11 @@ theorem det_unitri (n : ℕ) (g : GL (Fin n) K) (hl : ∀ i j, j < i → g i j =
   · intro i j hij
     exact hl i j hij
 
+/- English proof (translation)
+Unfold `sqAct detPow extremal`. Rewrite using `[det_unitri K n g hl hd, one_zpow, Units.val_one, one_smul]`. Apply `rowAct_hw` to reduce the goal to its premises. Introduce `i j hij`. Simplify using `only [Matrix.transpose_apply]`.
+
+Conclude with `hl j i hij`. Introduce `i`. Simplify using `only [Matrix.transpose_apply]`. Conclude with `hd i`.
+-/
 theorem sqAct_unitri (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) K) (hl : ∀ i j, j < i → g i j = 0)
     (hd : ∀ i, g i i = 1) : sqAct K n mu g (extremal K n mu) = extremal K n mu := by
   unfold sqAct detPow extremal
@@ -78,6 +103,15 @@ theorem sqAct_unitri (n : ℕ) (mu : DomWeight n) (g : GL (Fin n) K) (hl : ∀ i
     simp only [Matrix.transpose_apply]
     exact hd i
 
+/- English proof (translation)
+Unfold `sqAct detPow extremal`. Establish `hdiag : ((diagGL K n t : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).transpose = Matrix.diagonal fun a => (t a : K)`. Simplify using `[diagGL]`. Rewrite using `[hdiag, Formalism.GradedWeylDivisibility.rowActDiagWeight K n n _ _ _ (Formalism.GradedWeylDivisibility.hwRowWeight K n n le_rfl mu.natW (PI.WGB.natW_anti_A mu)), smul_smul]`. Use `congr 1`.
+
+Establish `hdet : Matrix.GeneralLinearGroup.det (diagGL K n t) = ∏ a, t a`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, diagGL, Matrix.det_diagonal]`. Establish `hrow : ∀ a : Fin n, Formalism.GradedWeylDivisibility.rowNu (r` using `n) mu.natW a = mu.natW a := by`. Introduce `a`.
+
+Simplify using `[Formalism.GradedWeylDivisibility.rowNu]`. Simplify using `only [hrow, hdet]`. Establish `key : (∏ a, t a) ^ mu.detShift * ∏ a, t a ^ ((mu.natW a : ℕ) : ℤ) = ∏ a, t a ^ mu.w a`. Rewrite using `[← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_add, add_comm, PI.WGB.natW_add_A]`. Rewrite using `[← key, Units.val_mul, Units.coe_prod]`. Simplify using `[zpow_natCast]`.
+-/
 theorem sqAct_diag (n : ℕ) (mu : DomWeight n) (t : Fin n → Kˣ) :
     sqAct K n mu (diagGL K n t) (extremal K n mu) = ((∏ j, t j ^ mu.w j : Kˣ) : K) • extremal K n mu := by
   unfold sqAct detPow extremal
@@ -101,6 +135,11 @@ theorem sqAct_diag (n : ℕ) (mu : DomWeight n) (t : Fin n → Kˣ) :
   rw [← key, Units.val_mul, Units.coe_prod]
   simp [zpow_natCast]
 
+/- English proof (translation)
+Establish `hm : Formalism.GradedWeylDivisibility.rowAct K (n` using `n) ((g * h : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ f = Formalism.GradedWeylDivisibility.rowAct K (n := n) (g : Matrix (Fin n) (Fin n) K)ᵀ (Formalism.GradedWeylDivisibility.rowAct K (n := n) (h : Matrix (Fin n) (Fin n) K)ᵀ f) := by`. Use `congrArg (fun φ => φ f) (Formalism.GradedWeylDivisibility.rowActMul K n n ((g : Matrix (Fin n) (Fin n) K)ᵀ) ((h : Matrix (Fin n) (Fin n) K)ᵀ))` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this, Units.val_mul, Matrix.transpose_mul]`. Unfold `sqAct`.
+
+Rewrite using `[hm, map_smul, smul_smul]`. Use `congr 1`. Simplify using `only [detPow, map_mul, mul_zpow, Units.val_mul]`.
+-/
 theorem sqAct_mul (n : ℕ) (mu : DomWeight n) (g h : GL (Fin n) K) (f : MvPolynomial (Fin n × Fin n) K) :
     sqAct K n mu (g * h) f = sqAct K n mu g (sqAct K n mu h f) := by
   have hm : Formalism.GradedWeylDivisibility.rowAct K (n := n) ((g * h : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ f =
@@ -115,6 +154,15 @@ theorem sqAct_mul (n : ℕ) (mu : DomWeight n) (g h : GL (Fin n) K) (f : MvPolyn
   congr 1
   simp only [detPow, map_mul, mul_zpow, Units.val_mul]
 
+/- English proof (translation)
+Establish `hdet : (B : Matrix (Fin n) (Fin n) K).det = ∏ i, (B : Matrix (Fin n) (Fin n) K) i i` using `Matrix.det_of_isUpperTriangular hB`. Establish `hne0 : (B : Matrix (Fin n) (Fin n) K).det ≠ 0`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(Matrix.GeneralLinearGroup.det B).ne_zero`. Establish `hne : ∀ i, (B : Matrix (Fin n) (Fin n) K) i i ≠ 0`.
+
+Rewrite `hne0` using `[hdet]`. Conclude with `fun i => (Finset.prod_ne_zero_iff.1 hne0) i (Finset.mem_univ i)`. Use `set t : Fin n → Kˣ := fun i => Units.mk0 _ (hne i) with ht`. Use `set U : GL (Fin n) K := (diagGL K n t)⁻¹ * B with hU`. Establish `hBU : B = diagGL K n t * U` using `by rw [hU, mul_inv_cancel_left]`.
+
+Establish `hUe : ∀ i j, (U : Matrix (Fin n) (Fin n) K) i j = ((t i)⁻¹ : Kˣ) * (B : Matrix (Fin n) (Fin n) K) i j`. Introduce `i j`. Establish `: ((diagGL K n t)⁻¹ : GL (Fin n) K).val = Matrix.diagonal fun a => (((t a)⁻¹ : Kˣ) : K)` using `rfl`. Rewrite using `[hU, Units.val_mul, this, Matrix.diagonal_mul]`. Use `conv_lhs => rw [hBU]`.
+
+Rewrite using `[sqAct_mul, sqAct_unitri K n mu U (fun i j hij => by rw [hUe, hB hij, mul_zero]) (fun i => by rw [hUe, ht, Units.val_inv_eq_inv_val, Units.val_mk0, inv_mul_cancel₀ (hne i)]), sqAct_diag]`. Use `congr 1`. Rewrite using `[Units.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, ht, Units.val_mk0]`.
+-/
 theorem sqAct_upper (n : ℕ) (mu : DomWeight n) (B : GL (Fin n) K)
     (hB : (B : Matrix (Fin n) (Fin n) K).BlockTriangular id) :
     sqAct K n mu B (extremal K n mu) = (∏ i, (B : Matrix (Fin n) (Fin n) K) i i ^ mu.w i) • extremal K n mu := by
@@ -150,6 +198,11 @@ variable {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K]
 def univ : Pol K ι n →ₐ[K] MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (ι × Fin n × Fin n) K) :=
   aeval fun v => ∑ b : Fin n, C (X (v.1, b, v.2.1)) * X (v.1, b, v.2.2)
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.map (eval fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2)).comp (univ (K` using `K) (ι := ι) (n := n)).toRingHom = (Formalism.GradedWeylDivisibility.blockAct K (n := n) fun τ => (M τ)ᵀ).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[univ, Formalism.GradedWeylDivisibility.blockAct]`. Introduce `v`.
+
+Simplify using `[univ, Formalism.GradedWeylDivisibility.blockAct, Matrix.transpose_apply]`. Conclude with `congrArg (fun f : Pol K ι n →+* Pol K ι n => f F) h`.
+-/
 theorem univ_map (M : ι → Matrix (Fin n) (Fin n) K) (F : Pol K ι n) :
     MvPolynomial.map (eval fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2) (univ F) =
       Formalism.GradedWeylDivisibility.blockAct K (fun τ => (M τ)ᵀ) F := by
@@ -166,6 +219,9 @@ def cf (ℓ : Pol K ι n →ₗ[K] K)
     (Q : MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (ι × Fin n × Fin n) K)) : MvPolynomial (ι × Fin n × Fin n) K :=
   ∑ m ∈ Q.support, coeff m Q * C (ℓ (monomial m 1))
 
+/- English proof (translation)
+Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, map_sum, cf, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, eval_mul, eval_C, show monomial m (eval y (coeff m Q)) = eval y (coeff m Q) • (monomial m 1 : Pol K ι n) by`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one], map_smul, smul_eq_mul]`.
+-/
 theorem cf_eval (ℓ : Pol K ι n →ₗ[K] K) (y : ι × Fin n × Fin n → K)
     (Q : MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (ι × Fin n × Fin n) K)) :
     eval y (cf ℓ Q) = ℓ (MvPolynomial.map (eval y) Q) := by
@@ -179,6 +235,9 @@ theorem cf_eval (ℓ : Pol K ι n →ₗ[K] K) (y : ι × Fin n × Fin n → K)
 def coord (lam : ι → DomWeight n) (i : VVIdx lam) : Pol K ι n →ₗ[K] K :=
   (LinearMap.exists_extend ((bVV K lam).coord i)).choose
 
+/- English proof (translation)
+Establish `h` using `(LinearMap.exists_extend ((bVV K lam).coord i)).choose_spec`. Use `LinearMap.congr_fun h F` as an intermediate fact. Simplify `this` using `[coord, Module.Basis.coord_apply]`.
+-/
 theorem coord_spec (lam : ι → DomWeight n) (i : VVIdx lam) (F : VV K lam) :
     coord lam i (F : Pol K ι n) = (bVV K lam).repr F i := by
   have h := (LinearMap.exists_extend ((bVV K lam).coord i)).choose_spec
@@ -188,11 +247,17 @@ theorem coord_spec (lam : ι → DomWeight n) (i : VVIdx lam) (F : VV K lam) :
 def coef (lam : ι → DomWeight n) (i j : VVIdx lam) : MvPolynomial (ι × Fin n × Fin n) K :=
   cf (coord lam i) (univ (bVVfun K lam j))
 
+/- English proof (translation)
+Rewrite using `[coef, cf_eval, univ_map]`.
+-/
 theorem coef_eval (lam : ι → DomWeight n) (M : ι → Matrix (Fin n) (Fin n) K) (i j : VVIdx lam) :
     eval (fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2) (coef lam i j) =
       coord lam i (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (M τ)ᵀ) (bVVfun K lam j)) := by
   rw [coef, cf_eval, univ_map]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp => simp only [map_mul, hp, aeval_X, eval_X]`.
+-/
 theorem eval_aeval' {σ ρ : Type} (f : σ → MvPolynomial ρ K) (d : ρ → K) (P : MvPolynomial σ K) :
     eval d (aeval f P) = eval (fun x => eval d (f x)) P := by
   induction P using MvPolynomial.induction_on with
@@ -208,11 +273,17 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type
 
 abbrev cL (L : Type) [Field L] [NumberField L] [IsCMField L] : L →+* L := (IsCMField.complexConj L : L →+* L)
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_apply L x`.
+-/
 theorem cL_cL (x : L) : cL L (cL L x) = x := IsCMField.complexConj_apply_apply L x
 
 def detP (σ : L →+* K) : MvPolynomial ((L →+* K) × Fin n × Fin n) K :=
   (Matrix.of fun a b => (X (σ, a, b) : MvPolynomial ((L →+* K) × Fin n × Fin n) K)).det
 
+/- English proof (translation)
+Rewrite using `[detP, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem eval_genericDeterminant (σ : L →+* K) (y : (L →+* K) × Fin n × Fin n → K) :
     eval y (detP (n := n) σ) = (Matrix.of fun a b => y (σ, a, b)).det := by
   rw [detP, RingHom.map_det]
@@ -220,6 +291,11 @@ theorem eval_genericDeterminant (σ : L →+* K) (y : (L →+* K) × Fin n × Fi
   ext a b
   simp
 
+/- English proof (translation)
+Establish `h1 : ((γ₀ : Matrix (Fin n) (Fin n) L) * conjT (cL L) γ₀).det = 1`. Rewrite using `[show (γ₀ : Matrix (Fin n) (Fin n) L) * conjT (cL L) γ₀ = 1 from hγ, Matrix.det_one]`. Establish `h2 : ((γ₀ : Matrix (Fin n) (Fin n) L).map (cL L)).det = (cL L) (γ₀ : Matrix (Fin n) (Fin n) L).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[Matrix.det_mul, conjT, Matrix.det_transpose, h2]`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, ← map_mul, h1, map_one]`.
+-/
 theorem det_conj (σ : L →+* K) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) :
     (σ.comp (cL L)) (γ₀ : Matrix (Fin n) (Fin n) L).det = (σ (γ₀ : Matrix (Fin n) (Fin n) L).det)⁻¹ := by
   have h1 : ((γ₀ : Matrix (Fin n) (Fin n) L) * conjT (cL L) γ₀).det = 1 := by
@@ -237,6 +313,13 @@ def twP (emb : ι → L →+* K) (lam : ι → DomWeight n) : MvPolynomial ((L �
 
 def pt (γ₀ : Matrix (Fin n) (Fin n) L) : (L →+* K) × Fin n × Fin n → K := fun p => p.1 (γ₀ p.2.1 p.2.2)
 
+/- English proof (translation)
+Simplify using `only [twP, detTwK, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hσ : ∀ σ : L →+* K, eval (pt (γ₀ : Matrix (Fin n) (Fin n) L)) (detP σ) = σ (γ₀ : Matrix (Fin n) (Fin n) L).det`. Introduce `σ`. Rewrite using `[eval_genericDeterminant, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hd : ((Matrix.GeneralLinearGroup.det (embGLF emb γ₀ τ) : Kˣ) : K) = emb τ (γ₀ : Matrix (Fin n) (Fin n) L).det`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, hd]`.
+
+Use `split_ifs with h`. Rewrite using `[map_pow, hσ, ← zpow_natCast, Int.toNat_of_nonneg h]`. Rewrite using `[map_pow, hσ, det_conj _ _ hγ, ← zpow_natCast, Int.toNat_of_nonneg (by omega), inv_zpow', neg_neg]`.
+-/
 theorem detTwistPolynomial_eval_point (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) :
     eval (pt (γ₀ : Matrix (Fin n) (Fin n) L)) (twP emb lam) = detTwK lam (embGLF emb γ₀) := by
   simp only [twP, detTwK, map_prod]
@@ -256,12 +339,18 @@ theorem detTwistPolynomial_eval_point (emb : ι → L →+* K) (lam : ι → Dom
 def tenPF (emb : ι → L →+* K) (lam : ι → DomWeight n) (i j : VVIdx lam) : MvPolynomial ((L →+* K) × Fin n × Fin n) K :=
   twP emb lam * aeval (fun y : ι × Fin n × Fin n => (X (emb y.1, y.2.1, y.2.2) : MvPolynomial _ K)) (coef (K := K) lam i j)
 
+/- English proof (translation)
+Rewrite using `[tenPF, eval_mul, eval_aeval', ← coef_eval]`. Simplify using the standard rewrite rules.
+-/
 theorem tenPF_eval (emb : ι → L →+* K) (lam : ι → DomWeight n) (i j : VVIdx lam) (y : (L →+* K) × Fin n × Fin n → K) :
     eval y (tenPF emb lam i j) = eval y (twP emb lam) *
       coord lam i (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (Matrix.of fun a b => y (emb τ, a, b))ᵀ) (bVVfun K lam j)) := by
   rw [tenPF, eval_mul, eval_aeval', ← coef_eval]
   simp
 
+/- English proof (translation)
+Take `rfl` from `ratHom_eq_of_match γ γ₀ hm`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ← coord_spec, show (fun p : (L →+* K) × Fin n × Fin n => p.1 (((ratHom γ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) p.2.1 p.2.2)) = pt (ratHom γ : Matrix (Fin n) (Fin n) L) from rfl, tenPF_eval, detTwistPolynomial_eval_point _ _ _ (ratHom_mem γ)]`. Simplify using `only [tenRepF, MonoidHom.comp_apply, rhoK, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.coe_restrict_apply, bVV_coe, actP, trAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_eq_mul]`. Use `congr 2`.
+-/
 theorem tenRepF_toMatrix (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ : GQ L n) (γ₀ : GL (Fin n) L)
     (hm : (((γ : GAf L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
       (γ₀ : Matrix (Fin n) (Fin n) L).map (Algebra.TensorProduct.includeLeftRingHom)) :
@@ -286,6 +375,9 @@ def bDD (lam : ι → DomWeight n) [DecidableEq (VVIdx lam)] :
     Module.Basis (VVIdx lam) K (Module.Dual K (Module.Dual K (VV K lam))) :=
   (bVV K lam).dualBasis.dualBasis
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, bDD, Module.Basis.dualBasis_repr]`. Simplify using `only [wtRepF, Representation.dual_apply, Module.Dual.transpose_apply, inv_inv, LinearMap.comp_apply, Module.Basis.dualBasis_apply, Module.Basis.dualBasis_repr]`.
+-/
 theorem dd_toMatrix (emb : ι → L →+* K) (lam : ι → DomWeight n) [DecidableEq (VVIdx lam)] (γ : GQ L n) :
     LinearMap.toMatrix (bDD lam) (bDD lam) ((wtRepF emb lam).dual γ) =
       LinearMap.toMatrix (bVV K lam) (bVV K lam) (tenRepF emb lam γ) := by
@@ -298,6 +390,11 @@ def hwV (lam : ι → DomWeight n) : VV K lam :=
   ⟨ten fun τ => extremal K n (lam τ), Submodule.subset_span ⟨fun τ => extremal K n (lam τ),
     fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (PI.WGB.natW_anti_A (lam τ)), rfl⟩⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : (ten fun τ => extremal K n (lam τ) : Pol K ι n) = 0` using `congrArg Subtype.val h`. Rewrite `h'` using `[ten, Finset.prod_eq_zero_iff]`. Take `⟨τ, _, hτ⟩` from `h'`. Establish `hinj : Function.Injective (Formalism.GradedWeylDivisibility.blockEmb K (k` using `n) (n := n) τ) := MvPolynomial.rename_injective _ fun a b hab => by simpa using hab`.
+
+Conclude with `Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _ ((map_eq_zero_iff _ hinj).1 hτ)`.
+-/
 theorem hwV_ne (lam : ι → DomWeight n) : hwV (K := K) lam ≠ 0 := by
   intro h
   have h' : (ten fun τ => extremal K n (lam τ) : Pol K ι n) = 0 := congrArg Subtype.val h
@@ -307,12 +404,22 @@ theorem hwV_ne (lam : ι → DomWeight n) : hwV (K := K) lam ≠ 0 := by
     MvPolynomial.rename_injective _ fun a b hab => by simpa using hab
   exact Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _ ((map_eq_zero_iff _ hinj).1 hτ)
 
+/- English proof (translation)
+Simplify using `only [ten, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n M).1 τ (f τ)`.
+-/
 theorem blockAct_ten (M : ι → Matrix (Fin n) (Fin n) K) (f : ι → MvPolynomial (Fin n × Fin n) K) :
     Formalism.GradedWeylDivisibility.blockAct K M (ten f) = ten fun τ => Formalism.GradedWeylDivisibility.rowAct K (M τ) (f τ) := by
   simp only [ten, map_prod]
   refine Finset.prod_congr rfl fun τ _ => ?_
   exact (Formalism.GradedWeylDivisibility.blockActTensor K K ι n n M).1 τ (f τ)
 
+/- English proof (translation)
+Establish `: Formalism.GradedWeylDivisibility.rowAct K (n` using `n) (1 : Matrix (Fin n) (Fin n) K) = AlgHom.id K _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.rowAct, aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rowAct_one (f : MvPolynomial (Fin n × Fin n) K) : Formalism.GradedWeylDivisibility.rowAct K (1 : Matrix (Fin n) (Fin n) K) f = f := by
   have : Formalism.GradedWeylDivisibility.rowAct K (n := n) (1 : Matrix (Fin n) (Fin n) K) = AlgHom.id K _ := by
     apply MvPolynomial.algHom_ext
@@ -326,26 +433,49 @@ theorem rowAct_one (f : MvPolynomial (Fin n × Fin n) K) : Formalism.GradedWeylD
   rw [this]
   rfl
 
+/- English proof (translation)
+Simplify using `only [ten, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.algHom_C, Finset.prod_mul_distrib, map_prod, MvPolynomial.algebraMap_eq]`.
+-/
 theorem ten_smul (c : ι → K) (f : ι → MvPolynomial (Fin n × Fin n) K) :
     ten (fun τ => c τ • f τ) = (∏ τ, c τ) • ten f := by
   simp only [ten, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.algHom_C, Finset.prod_mul_distrib, map_prod,
     MvPolynomial.algebraMap_eq]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.L2.NX.evPtF]`.
+-/
 theorem evPtF_self (c : L →+* L) (τ : L →+* K) (B : GL (Fin n) K) :
     (Matrix.of fun a b => Formalism.L2.NX.evPtF c τ B (τ, a, b)) = (B : Matrix (Fin n) (Fin n) K) := by
   ext a b
   simp [Formalism.L2.NX.evPtF]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.L2.NX.evPtF, h]`.
+-/
 theorem evPtF_conj (c : L →+* L) (τ : L →+* K) (B : GL (Fin n) K) (h : τ.comp c ≠ τ) :
     (Matrix.of fun a b => Formalism.L2.NX.evPtF c τ B (τ.comp c, a, b)) = ((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ := by
   ext a b
   simp [Formalism.L2.NX.evPtF, h]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.L2.NX.evPtF, h1, h2, Matrix.one_apply]`.
+-/
 theorem evPtF_other (c : L →+* L) (τ σ : L →+* K) (B : GL (Fin n) K) (h1 : σ ≠ τ) (h2 : σ ≠ τ.comp c) :
     (Matrix.of fun a b => Formalism.L2.NX.evPtF c τ B (σ, a, b)) = (1 : Matrix (Fin n) (Fin n) K) := by
   ext a b
   simp [Formalism.L2.NX.evPtF, h1, h2, Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨hinj, hcm⟩` from `hd`. Establish `hc : ∀ τ, (emb τ).comp (cL L) ≠ emb τ₀` using `fun τ h' => hcm τ₀ τ h'.symm`. Establish `hc' : ∀ τ, τ ≠ τ₀ → (emb τ).comp (cL L) ≠ (emb τ₀).comp (cL L)`. Introduce `τ hτ h'`. Apply `hτ` to reduce the goal to its premises.
+
+Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun f : L →+* K => f (cL L x)) h'` as an intermediate fact. Simplify `this` using `[cL_cL]`. Simplify using `only [twP, map_prod]`.
+
+Rewrite using `[Finset.prod_eq_single τ₀]`. Use `split_ifs with he`. Rewrite using `[map_pow, eval_genericDeterminant, evPtF_self, detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← zpow_natCast, Int.toNat_of_nonneg he]`. Rewrite using `[map_pow, eval_genericDeterminant, evPtF_conj _ _ _ (hc τ₀), Matrix.det_transpose, ← Matrix.GeneralLinearGroup.val_det_apply, map_inv, Units.val_inv_eq_inv_val, detPow, Units.val_zpow_eq_zpow_val, ← zpow_natCast, Int.toNat_of_nonneg (by omega), inv_zpow', neg_neg]`. Introduce `τ _ hτ`.
+
+Establish `h1 : emb τ ≠ emb τ₀` using `fun h' => hτ (hinj h')`. Use `split_ifs`. Rewrite using `[map_pow, eval_genericDeterminant, evPtF_other _ _ _ _ h1 (hcm τ τ₀), Matrix.det_one, one_pow]`. Rewrite using `[map_pow, eval_genericDeterminant, evPtF_other _ _ _ _ (hc τ) (hc' τ hτ), Matrix.det_one, one_pow]`. Introduce `h'`.
+
+Conclude with `absurd (Finset.mem_univ τ₀) h'`.
+-/
 theorem detTwistPolynomial_eval_embeddingPoint (emb : ι → L →+* K) (hd : CMDist emb) (lam : ι → DomWeight n) (τ₀ : ι) (B : GL (Fin n) K) :
     MvPolynomial.eval (Formalism.L2.NX.evPtF (cL L) (emb τ₀) B) (twP emb lam) = detPow K n B (lam τ₀).detShift := by
   obtain ⟨hinj, hcm⟩ := hd
@@ -377,6 +507,27 @@ end HW
 
 section Main
 
+/- English proof (translation)
+Introduce `L _ _ _ n ι _ K _ emb lam hd τ₀`. Establish `hinj` using `hd.1`. Establish `hcm` using `hd.2`. Use `⟨VVIdx lam, inferInstance, inferInstance, bDD lam, tenPF emb lam, fun γ γ₀ hm => by rw [dd_toMatrix]; exact tenRepF_toMatrix emb lam γ γ₀ hm, ⇑((bVV K lam).repr (hwV (K := K) lam)), ?_, ?_⟩` and prove the remaining obligations. Introduce `hv`.
+
+Apply `hwV_ne (K := K) lam` to reduce the goal to its premises. Apply `(bVV K lam).repr.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Finsupp.ext fun i => congrFun hv i`. Introduce `B hB set c : K := detPow K n B (lam τ₀).detShift with hc`.
+
+Establish `hc0 : c ≠ 0`. Rewrite using `[hc, detPow]`. Conclude with `Units.ne_zero _`. Use `set P : K := ∏ i, (B : Matrix (Fin n) (Fin n) K) i i ^ (lam τ₀).w i with hP`. Establish `hM : (fun τ => (Matrix.of fun a b => Formalism.L2.NX.evPtF (cL L) (emb τ₀) B (emb τ, a, b))ᵀ) = fun τ => if τ = τ₀ then (B : Matrix (Fin n) (Fin n) K)ᵀ else 1`.
+
+Use function extensionality and compare the values at `τ`. Use `split_ifs with hτ`. Rewrite using `[hτ, evPtF_self]`. Rewrite using `[evPtF_other _ _ _ _ (fun h' => hτ (hinj h')) (hcm τ τ₀), Matrix.transpose_one]`. Establish `hrow : ∀ τ, Formalism.GradedWeylDivisibility.rowAct K (n` using `n) (if τ = τ₀ then (B : Matrix (Fin n) (Fin n) K)ᵀ else 1) (extremal K n (lam τ)) = (if τ = τ₀ then c⁻¹ * P else 1) • extremal K n (lam τ) := by`.
+
+Introduce `τ`. Use `split_ifs with hτ`. Substitute `hτ` using the available equality. Establish `h2` using `sqAct_upper K n (lam τ) B hB`. Unfold `sqAct at h2`.
+
+Rewrite `h2` using `[← hc, ← hP]`. Rewrite using `[mul_smul, ← h2, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[rowAct_one, one_smul]`. Establish `hact : Formalism.GradedWeylDivisibility.blockAct K (fun τ => if τ = τ₀ then (B : Matrix (Fin n) (Fin n) K)ᵀ else 1) ((hwV (K` using `K) lam : VV K lam) : Pol K ι n) = (c⁻¹ * P) • ((hwV (K := K) lam : VV K lam) : Pol K ι n) := by show Formalism.GradedWeylDivisibility.blockAct K _ (ten fun τ => extremal K n (lam τ)) = _ • ten fun τ => extremal K n (lam τ)`. Rewrite using `[blockAct_ten]`.
+
+Simplify using `only [hrow]`. Rewrite using `[ten_smul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hsum : (∑ j, ((bVV K lam).repr (hwV (K` using `K) lam) j) • bVVfun K lam j) = ((hwV (K := K) lam : VV K lam) : Pol K ι n) := by`.
+
+Use `congrArg Subtype.val ((bVV K lam).sum_repr (hwV lam))` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, bVV_coe] at this`. Conclude with `this`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, tenPF_eval, detTwistPolynomial_eval_embeddingPoint emb hd lam τ₀ B, hM, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hc]`. Establish `hlin : ∑ j, c * coord lam i (Formalism.GradedWeylDivisibility.blockAct K (fun τ => if τ = τ₀ then (B : Matrix (Fin n) (Fin n) K)ᵀ else 1) (bVVfun K lam j)) * (bVV K lam).repr (hwV (K` using `K) lam) j = c * coord lam i (Formalism.GradedWeylDivisibility.blockAct K (fun τ => if τ = τ₀ then (B : Matrix (Fin n) (Fin n) K)ᵀ else 1) (∑ j, ((bVV K lam).repr (hwV (K := K) lam) j) • bVVfun K lam j)) := by`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlin, hsum, hact, map_smul, smul_eq_mul, coord_spec, ← mul_assoc, ← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`.
+-/
 theorem dd_hwAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K]
     (emb : ι → L →+* K) (lam : ι → DomWeight n), GlobalTheory.AlgWtF.CMDist emb → ∀ τ₀ : ι,
       Formalism.L2.NX.HWAtF (IsCMField.complexConj L : L →+* L) (GlobalTheory.AlgWtF.wtRepF emb lam).dual (emb τ₀) (lam τ₀).w := by

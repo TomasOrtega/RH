@@ -22,11 +22,17 @@ section Scale
 variable {C : Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat D A C.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
   (O : OMDat C R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1))
 
+/- English proof (translation)
+Use `show u * cc _ * _ * _ = u * (cc _ * _ * _)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_smul (u : ℂ) (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (f : C.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     O.phi (u • cc) f h = u * O.phi cc f h := by
   show u * cc _ * _ * _ = u * (cc _ * _ * _)
   ring
 
+/- English proof (translation)
+Introduce `g k hk f hf`. Take `⟨h1, h2⟩` from `h g k hk f hf`. Use `⟨h1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[phi_smul, phi_smul, h2 x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem equivAt_smul (u : ℂ) {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} (h : O.EquivAt κ cc) : O.EquivAt κ (u • cc) := by
   intro g k hk f hf
   obtain ⟨h1, h2⟩ := h g k hk f hf
@@ -34,6 +40,11 @@ theorem equivAt_smul (u : ℂ) {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} (h
   rw [phi_smul, phi_smul, h2 x]
   ring
 
+/- English proof (translation)
+Introduce `x`. Take `⟨n, a, f, hf⟩` from `h x`. Use `⟨n, a, f, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hf y, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[phi_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phRat_smul (u : ℂ) {v₀ : (R.MW i (sg0 D A)).Vec} {cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ} {ph : ℂ}
     (h : O.PhRat κ v₀ cc ph) : O.PhRat κ v₀ (u • cc) (u * ph) := by
   intro x
@@ -51,6 +62,9 @@ variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
   (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
   (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (i : Fin D.R.m)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cc, ph, hequiv, ⟨hpins.1.ge, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ (O i).hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ (O i).hle _ _ hpins.2.act.1).2, hid⟩, hrat⟩`.
+-/
 theorem oneMapRow0_of_rows (cc : (T.U ((i : ℕ) + 1) (O i).s0).Comp → ℂ) (ph : ℂ)
     (hpins : OMPins T R κ v₀ O i)
     (hequiv : (O i).EquivAt (κ i) cc)
@@ -64,6 +78,9 @@ theorem oneMapRow0_of_rows (cc : (T.U ((i : ℕ) + 1) (O i).s0).Comp → ℂ) (p
   ⟨cc, ph, hequiv, ⟨hpins.1.ge, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ (O i).hle).2 _ _,
     (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ (O i).hle _ _ hpins.2.act.1).2, hid⟩, hrat⟩
 
+/- English proof (translation)
+Establish `h1` using `equivAt_smul (O i) (κ i) u⁻¹ hequiv`. Establish `h2` using `phRat_smul (O i) (κ i) u'⁻¹ hrat`. Rewrite `h1` using `[inv_smul_smul₀ hu]`. Rewrite `h2` using `[inv_smul_smul₀ hu', inv_mul_cancel_left₀ hu']`. Conclude with `oneMapRow0_of_rows T R κ v₀ O i cc ph hpins h1 hid h2`.
+-/
 theorem oneMapRow0_of_rows_smul (cc : (T.U ((i : ℕ) + 1) (O i).s0).Comp → ℂ) (ph u u' : ℂ) (hu : u ≠ 0) (hu' : u' ≠ 0)
     (hpins : OMPins T R κ v₀ O i)
     (hequiv : (O i).EquivAt (κ i) (u • cc))

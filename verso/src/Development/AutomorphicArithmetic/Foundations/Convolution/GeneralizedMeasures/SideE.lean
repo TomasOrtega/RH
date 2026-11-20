@@ -27,6 +27,33 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.Spherical
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hgen hprime n hn μ _ θ hθ q w₀ hsplit νE _ aE hA L ν`. Take `⟨hsm, hlf, hpos, hnorm⟩` from `hA`. Take `⟨hFinS, hOpen, hCpt, hLe, hMax, hIw⟩` from `UpperTheory.baseChangeLevel_isOpen_isCompact_contains_iwahori F E σ n hn q w₀ L`. Take `⟨m, hm, hcompat⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx E n hn).2.1 μ νE`. Use `haveI := hm`.
+
+Take `⟨eU, heU, hOU⟩` from `UpperTheory.ConvolutionTheory.Tf.prjFix E n μ m (levE L.UE) hOpen hCpt`. Take `⟨e, hg, hU', hfac⟩` from `UpperTheory.exists_iwahori_factorizable_finite_vector_of_average F E σ n hn q w₀ L aE`. Establish `hrr` using `UpperTheory.ConvolutionTheory.Tf.rrTens E n hn μ νE m hcompat`. Establish `hIwOC : ∀ w : Pl E, IsOpen (GLnLocal.iwahori (w.adicCompletion E) n : Set (GL (Fin n) (w.adicCompletion E))) ∧ IsCompact (GLnLocal.iwahori (w.adicCompletion E) n : Set (GL (Fin n) (w.adicCompletion E)))` using `fun w =>`. Set `h` to `UpperTheory.ConvolutionTheory.Tf.uiwPow E n μ w 0 0 (fun _ _ _ => le_rfl) (fun _ _ _ => le_rfl)`.
+
+Use the proof step `⟨h.2.2.1, h.2.2.2.1⟩`. Establish `hOinf : ∀ (w : Pl E) (x : GL (Fin n) (w.adicCompletion E)), Commute (Oinf μ νE aE) (Hop μ w (GLnLocal.iwahori (w.adicCompletion E) n) x)` using `fun w x => ((UpperTheory.ConvolutionTheory.Tf.hopBasic E n μ w _ x (hIwOC w).1 (hIwOC w).2).2.2.2.2.1 _ fun g => (UpperTheory.ConvolutionTheory.Tf.opAlg E n μ νE m).2.2.2.2.2.2.2.2 aE _)`. Establish `hl : Fact (Module.finrank F E).Prime` using `⟨hprime⟩`. Establish `hσl : σ ^ Module.finrank F E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank F E]`.
+
+Conclude with `pow_card_eq_one'`. Set `pl : ZMod (Module.finrank F E) → PlacesOver E q` to `fun i => (σ ^ i.val) • w₀`. Establish `hpl : ∀ i, pl (i + 1) = σ • pl i`. Introduce `i`. Use `haveI : Fact (1 < Module.finrank F E) := ⟨hprime.one_lt⟩`.
+
+Establish `h1 : σ ^ (i + 1).val = σ ^ (i.val + 1)`. Rewrite using `[ZMod.val_add, ZMod.val_one]`. Use `conv_rhs => rw [← Nat.div_add_mod (i.val + 1) (Module.finrank F E), pow_add, pow_mul, hσl, one_pow, one_mul]`. Use `show (σ ^ (i + 1).val) • w₀ = σ • (σ ^ i.val) • w₀`. Rewrite using `[smul_smul, ← pow_succ', h1]`.
+
+Establish `hRop : ∀ (w : PlacesOver E q) (x : GL (Fin n) (w.1.adicCompletion E)), Commute (Hop μ w.1 (GLnLocal.iwahori (w.1.adicCompletion E) n) x) (Rop μ (tens aE e))`. Introduce `w x`. Take `⟨r, hr, hre⟩` from `hfac w`. Establish `c` using `UpperTheory.commute_heckeOperator_finiteConvolution_of_free_indicator E n hn μ m w.1 _ (hIwOC _).1 (hIwOC _).2 x r hr e hre`. Use `show Commute _ (RR μ (tens aE e))`.
+
+Rewrite using `[hrr]`. Conclude with `Commute.mul_right (hOinf _ _).symm c`. Set `amp : Amp μ` to `{ ν := νE, a₀ := aE, smooth := hsm, fin := hlf, S := {w : Pl E | w.under (𝓞 F) ∈ L.S ∨ w.under (𝓞 F) = q}, finS := hFinS, U := levE L.UE, le := hLe, isOpen := hOpen, max := hMax, pos := hpos, norm_le := hnorm }`. Establish `hA : amp.A = Oinf μ νE aE ∘L prj (fixF μ (levE L.UE))` using `rfl`. Use `⟨{ toAmp := amp, a := tens aE eU, a_op := ?_, a_smooth := ?_, g := tens aE e, g_smooth := UpperTheory.cuspidalProjection_ccStar_tens_isLeftSmooth E n hn aE e hsm hU', Uq := fun i => Uiw μ (pl i).1 ν, Uq_inner := ?_, Uq_comm := ?_, Uq_amp := ?_, Uq_perm := ?_ }, rfl, rfl, fun w => …` and prove the remaining obligations.
+
+Use `show RR μ (tens aE eU) = _`. Rewrite using `[hrr, hOU]`. Both sides reduce to the same expression. Use `((UpperTheory.ConvolutionTheory.Tf.leftSm E n hn aE eU).1 hsm ⟨levE L.UE, hOpen, fun u hu h => ?_⟩)` and prove the remaining obligations. Rewrite using `[heU, heU]`.
+
+Establish `hiff : u * h ∈ (levE L.UE : Set (AdelicGLn.FiniteAdelicGL E n)) ↔ h ∈ (levE L.UE : Set (AdelicGLn.FiniteAdelicGL E n))` using `Subgroup.mul_mem_cancel_left _ hu`. Distinguish the cases in `hh : h ∈ (levE L.UE : Set (AdelicGLn.FiniteAdelicGL E n))`. Rewrite using `[Set.indicator_of_mem (hiff.2 hh), Set.indicator_of_mem hh]`. Rewrite using `[Set.indicator_of_notMem (mt hiff.1 hh), Set.indicator_of_notMem hh]`. Introduce `i V hV hinv`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.Tf.innerOps E n μ).2.2.2.2.2 (pl i).1 _ _ (hIwOC _).1 (hIwOC _).2 V hV hinv`. Introduce `i k`. Distinguish the cases in `h : (pl i).1 = (pl k).1`. Use `show Commute (Uiw μ (pl i).1 ν) (Uiw μ (pl k).1 ν)`. Rewrite using `[h]`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.Tf.tsphComm E n μ (pl i).1 (pl k).1).2.1 h _ _ _ _ (hIwOC _).1 (hIwOC _).2 (hIwOC _).1 (hIwOC _).2`. Introduce `i`. Establish `h1` using `(UpperTheory.ConvolutionTheory.Tf.hopLevel E n μ m (pl i).1 _ (Cartan.diagPow ((pl i).1.adicCompletion E) n ν) (levE L.UE) (hIwOC _).1 (hIwOC _).2 hOpen hCpt (hIw (pl i)).1 (hIw (pl i)).2).1`. Conclude with `Commute.mul_right (hOinf _ _).symm h1`. Introduce `i`.
+
+Establish `hc1` using `UpperTheory.galoisTwist_comp_uOperator_eq_uOperator_smul_place F E σ n hn μ θ hθ (pl i).1 ν`. Establish `h3 : Uiw μ (pl (i + 1)).1 ν = Uiw μ (σ • (pl i).1) ν` using `by rw [hpl]; rfl`. Establish `h4 : Rop μ (tens aE e) ∘L Uiw μ (pl (i + 1)).1 ν = Uiw μ (pl (i + 1)).1 ν ∘L Rop μ (tens aE e)` using `(hRop (pl (i + 1)) _).symm.eq`. Use `show (Rop μ (tens aE e) ∘L θ.U) ∘L Uiw μ (pl i).1 ν = Uiw μ (pl (i + 1)).1 ν ∘L (Rop μ (tens aE e) ∘L θ.U)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show Uiw μ (pl 0).1 ν = Uiw μ w₀.1 ν`. Simplify using `[pl]`.
+-/
 theorem UpperTheory.ConvolutionTheory.GM.sideE :
     SideE := by
   intro F E _ _ _ _ _ _ _ _ σ hgen hprime n hn μ _ θ hθ q w₀ hsplit νE _ aE hA L ν

@@ -23,6 +23,9 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCenterGeometry
 
+/- English proof (translation)
+Establish `hfin : 𝒞.Finite` using `Set.Finite.subset (intersectionComponents_finite T hT J) h𝒞`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion (fun C hC => isClosed_of_mem_intersectionComponents T.boundary J C (h𝒞 hC))`.
+-/
 theorem isClosed_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
     (h𝒞 : 𝒞 ⊆ intersectionComponents T.boundary J) :
@@ -33,6 +36,9 @@ theorem isClosed_sUnion_intersectionComponents (T : MarkedIdealWithBoundary.{u})
   exact hfin.isClosed_biUnion
     (fun C hC => isClosed_of_mem_intersectionComponents T.boundary J C (h𝒞 hC))
 
+/- English proof (translation)
+Establish `hK : IsClosed (⋃₀ 𝒞)` using `isClosed_sUnion_intersectionComponents T hT J 𝒞 h𝒞`. Establish `h1 : IsOpen ((⇑(intersectionIdeal T.boundary J).subschemeι ⁻¹' ⋃₀ 𝒞)ᶜ)`. Rewrite using `[← Set.preimage_compl]`. Conclude with `((intersectionIdeal T.boundary J).subschemeι ⁻¹ᵁ ⟨(⋃₀ 𝒞)ᶜ, hK.isOpen_compl⟩).isOpen`. Conclude with `isOpen_compl_iff.mp h1`.
+-/
 theorem isClosed_componentUnionOpens (T : MarkedIdealWithBoundary.{u}) (hT : T.IsAdmissible)
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
     (h𝒞 : 𝒞 ⊆ intersectionComponents T.boundary J)
@@ -44,6 +50,9 @@ theorem isClosed_componentUnionOpens (T : MarkedIdealWithBoundary.{u}) (hT : T.I
     exact ((intersectionIdeal T.boundary J).subschemeι ⁻¹ᵁ ⟨(⋃₀ 𝒞)ᶜ, hK.isOpen_compl⟩).isOpen
   exact isOpen_compl_iff.mp h1
 
+/- English proof (translation)
+Rewrite using `[componentUnionIdeal_eq_ker, openSubschemeKer_eq_ker]`.
+-/
 theorem componentUnionIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u})
     (J : Finset (Fin T.boundary.length)) (𝒞 : Set (Set ↥T.scheme))
     (hop : IsOpen (⇑(intersectionIdeal T.boundary J).subschemeι ⁻¹' ⋃₀ 𝒞)) :
@@ -51,6 +60,9 @@ theorem componentUnionIdeal_eq_openSubschemeKer (T : MarkedIdealWithBoundary.{u}
       = openSubschemeKer (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) := by
   rw [componentUnionIdeal_eq_ker, openSubschemeKer_eq_ker]
 
+/- English proof (translation)
+Introduce `T hT J 𝒞 h𝒞 hop`. Establish `hsm : AlgebraicGeometry.Smooth ((intersectionIdeal T.boundary J).subschemeι ≫ T.structMap)` using `MonomialChart.smooth_intersectionIdeal_subscheme T hT J`. Rewrite using `[componentUnionIdeal_eq_openSubschemeKer T J 𝒞 hop]`. Conclude with `smooth_subschemeι_openSubschemeKer_comp (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) (isClosed_componentUnionOpens T hT J 𝒞 h𝒞 hop) T.structMap`.
+-/
 theorem smooth_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)),
       ∀ 𝒞 ⊆ intersectionComponents T.boundary J,
@@ -65,6 +77,29 @@ theorem smooth_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.Is
     (componentUnionOpens T.boundary J 𝒞 hop)
     (isClosed_componentUnionOpens T hT J 𝒞 h𝒞 hop) T.structMap
 
+/- English proof (translation)
+Introduce `T hT J 𝒞 h𝒞 hop`. Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hWcl : IsClosed ((componentUnionOpens T.boundary J 𝒞 hop : Set ↥(intersectionIdeal T.boundary J).subscheme))` using `isClosed_componentUnionOpens T hT J 𝒞 h𝒞 hop`. Establish `hce : componentUnionIdeal T.boundary J 𝒞 hop = openSubschemeKer (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop)` using `componentUnionIdeal_eq_openSubschemeKer T J 𝒞 hop`.
+
+Establish `hximg : x ∈ ⇑(intersectionIdeal T.boundary J).subschemeι.base '' ((componentUnionOpens T.boundary J 𝒞 hop : Set ↥(intersectionIdeal T.boundary J).subscheme))`. Rewrite using `[← support_openSubschemeKer (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) hWcl, ← hce]`. Conclude with `hx`. Take `⟨U₁, hxU₁, hU₁⟩` from `exists_opens_preimage_subschemeι_le (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) x hximg`. Take `⟨U₀, hxU₀, m, c₀, a, ha1, ha2, ha3⟩` from `(((inStrictNormalCrossingPosition_iff T.structMap T.boundary).mp hT.snc).2 x).exists_etaleChart`.
+
+Establish `hxV : x ∈ U₀ ⊓ U₁` using `⟨hxU₀, hxU₁⟩`. Establish `hxsupp : x ∈ ((intersectionIdeal T.boundary J).support : Set ↥T.scheme)`. Establish `hxs : x ∈ ⋃₀ 𝒞`. Rewrite using `[← componentUnionIdeal_support_eq_sUnion T hT J 𝒞 h𝒞 hop]`. Conclude with `hx`.
+
+Take `⟨C, hC, hxC⟩` from `hxs`. Conclude with `(h𝒞 hC).2.1 hxC`. Establish `hbs : restrictIdeal (intersectionIdeal T.boundary J) (U₀ ⊓ U₁) = ⨆ j ∈ J, restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁)` using `MonomialChart.restrictIdeal_biSup_finset (U₀ ⊓ U₁) (fun j => T.boundary.get j) J`. Establish `h4 : restrictIdeal (componentUnionIdeal T.boundary J 𝒞 hop) (U₀ ⊓ U₁) = restrictIdeal (intersectionIdeal T.boundary J) (U₀ ⊓ U₁)`. Rewrite using `[hce]`.
+
+Conclude with `restrictIdeal_openSubschemeKer_of_preimage_le (intersectionIdeal T.boundary J) (componentUnionOpens T.boundary J 𝒞 hop) hWcl (U₀ ⊓ U₁) (le_trans (Scheme.Hom.preimage_mono _ inf_le_right) hU₁)`. Establish `hJsome : ∀ j ∈ J, ∃ t : Fin m, a (j : ℕ) = some t`. Introduce `j hj`. Distinguish the cases in `hn : a (j : ℕ) = none`. It suffices to derive a contradiction.
+
+Establish `htop : restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁) = ⊤` using `restrictIdeal_eq_top_of_le (T.boundary.get j) inf_le_left (ha2 (j : ℕ) j.isLt hn)`. Establish `hle : restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁) ≤ ⨆ i ∈ J, restrictIdeal (T.boundary.get i) (U₀ ⊓ U₁)` using `le_iSup₂ (f := fun (i : Fin T.boundary.length) (_ : i ∈ J) => restrictIdeal (T.boundary.get i) (U₀ ⊓ U₁)) j hj`. Rewrite `hle` using `[htop]`. Establish `htop' : restrictIdeal (intersectionIdeal T.boundary J) (U₀ ⊓ U₁) = ⊤` using `hbs.trans (top_le_iff.mp hle)`. Conclude with `Scheme.IdealSheafData.notMem_support_of_comap_ι_eq_top (intersectionIdeal T.boundary J) htop' hxV hxsupp`.
+
+Conclude with `Option.ne_none_iff_exists'.mp hn`. Take `⟨S, hS⟩ : ∃ S : Finset (Fin m), ∀ t : Fin m, t ∈ S ↔ ∃ j ∈ J, a (j : ℕ) = some t` from `⟨Finset.univ.filter (fun t => ∃ j ∈ J, a (j : ℕ) = some t), by intro t; simp⟩`. Establish `key : ∀ j ∈ J, ∃ t : Fin m, t ∈ S ∧ restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁) = (c₀.restrict (inf_le_left : U₀ ⊓ U₁ ≤ U₀)).coordIdeal {t}`. Introduce `j hj`. Take `⟨t, hat⟩` from `hJsome j hj`.
+
+Conclude with `⟨t, (hS t).mpr ⟨j, hj, hat⟩, restrictIdeal_eq_restrict_coordIdeal_of_le inf_le_left c₀ (T.boundary.get j) {t} (ha3 (j : ℕ) j.isLt t hat)⟩`. Establish `key2 : ∀ t ∈ S, ∃ j ∈ J, (c₀.restrict (inf_le_left : U₀ ⊓ U₁ ≤ U₀)).coordIdeal {t} = restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁)`. Introduce `t ht`. Take `⟨j, hj, hat⟩` from `(hS t).mp ht`. Conclude with `⟨j, hj, (restrictIdeal_eq_restrict_coordIdeal_of_le inf_le_left c₀ (T.boundary.get j) {t} (ha3 (j : ℕ) j.isLt t hat)).symm⟩`.
+
+Use `⟨U₀ ⊓ U₁, hxV, m, c₀.restrict (inf_le_left : U₀ ⊓ U₁ ≤ U₀), a, S, ha1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi hin`. Conclude with `restrictIdeal_eq_top_of_le _ inf_le_left (ha2 i hi hin)`. Introduce `i hi t hit`. Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le inf_le_left c₀ _ {t} (ha3 i hi t hit)`.
+
+Rewrite using `[h4, hbs, MonomialChart.coordIdeal_eq_biSup_singleton T.structMap (U₀ ⊓ U₁) m (c₀.restrict (inf_le_left : U₀ ⊓ U₁ ≤ U₀)) S]`. Use `le_antisymm (iSup₂_le ?_) (iSup₂_le ?_)` and prove the remaining obligations. Introduce `j hj`. Take `⟨t, htS, heq⟩` from `key j hj`. Rewrite using `[heq]`.
+
+Conclude with `le_iSup₂ (f := fun (t : Fin m) (_ : t ∈ S) => (c₀.restrict (inf_le_left : U₀ ⊓ U₁ ≤ U₀)).coordIdeal {t}) t htS`. Introduce `t ht`. Take `⟨j, hj, heq⟩` from `key2 t ht`. Rewrite using `[heq]`. Conclude with `le_iSup₂ (f := fun (j : Fin T.boundary.length) (_ : j ∈ J) => restrictIdeal (T.boundary.get j) (U₀ ⊓ U₁)) j hj`.
+-/
 theorem hasStrictNormalCrossingsWith_componentUnionIdeal : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ (J : Finset (Fin T.boundary.length)),
       ∀ 𝒞 ⊆ intersectionComponents T.boundary J,

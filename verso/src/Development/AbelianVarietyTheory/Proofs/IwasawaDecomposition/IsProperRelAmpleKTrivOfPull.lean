@@ -18,6 +18,9 @@ namespace GlobalTheory.PolNormal
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Set `ι : FractionRing S →+* FractionRing T` to `IsLocalization.map (FractionRing T) i (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective i hi)`. Use `GlobalTheory.DatUniq.polAt_pull m hg (Out.jK T) (spMap ι) ?_` and prove the remaining obligations. Simplify using `only [spMap, Out.jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `IsLocalization.map_comp _`.
+-/
 theorem polAt_generic_pull {S T : Type} [CommRing S] [IsDomain S] [CommRing T] [IsDomain T] (i : S →+* T)
     (hi : Function.Injective i) {t : SAB H (Sp S)} {t' : SAB H (Sp T)} (m : SABMap t' t (spMap i))
     (hg : GlobalTheory.LN.PolAt t (Out.jK S)) : GlobalTheory.LN.PolAt t' (Out.jK T) := by
@@ -37,6 +40,15 @@ end GlobalTheory.PolNormal
 namespace GlobalTheory.PolNormal
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `key : ∀ q : PrimeSpectrum S, ∃ (tO : SAB H (Sp (Localization.AtPrime q.asIdeal))) (_ : SABMap tO t (spMap (algebraMap S (Localization.AtPrime q.asIdeal)))), Out.RelAmple tO.G tO.PP.L ∧ Out.KTriv tO.G tO.PP.L`. Introduce `q`. Set `O` to `Localization.AtPrime q.asIdeal`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap (algebraMap S O)) t`. Use `⟨_, m, ?_⟩` and prove the remaining obligations.
+
+Establish `hi : Function.Injective (algebraMap S O)` using `IsLocalization.injective O q.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `: CharZero O` using `charZero_of_injective_algebraMap hi`. Establish `hO : IsIntegrallyClosed O` using `isIntegrallyClosed_of_isLocalization O q.asIdeal.primeCompl q.asIdeal.primeCompl_le_nonZeroDivisors`. Conclude with `GlobalTheory.T.relative_ample_canonical_trivial_local E H O hO _ (MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hp) (polAt_generic_pull _ hi m hg)`. Establish `hA : Out.RelAmple t.G t.PP.L`.
+
+Use `t.semi.quasiCompact` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Use `GlobalTheory.AmpleLocal.relAmple_of_locally (Sp S) t.G t.PP.L t.PP.isLB inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨tO, m, hA, -⟩` from `key s`. Take `⟨w, hw, -⟩` from `m.lin`.
+
+Conclude with `GlobalTheory.T.relative_ample_spread_from_localization S s t.G t.PP.L hp t.PP.isLB tO.G m.φ tO.PP.L m.cart.1 tO.PP.isLB ⟨w, hw⟩ hA`. Use `⟨hA, GlobalTheory.KTrivGlob.kTriv_of_forall_point GlobalTheory.allSixLaws.1 E H (Sp S) t hp hA fun q => ?_⟩` and prove the remaining obligations. Take `⟨tO, m, -, hK⟩` from `key q`. Establish `: q.asIdeal.IsPrime` using `q.isPrime`. Conclude with `⟨_, _, tO, m, ⟨IsLocalRing.closedPoint _, PrimeSpectrum.ext Localization.AtPrime.under_maximalIdeal⟩, hK⟩`.
+-/
 theorem relAmple_kTriv_of_normal {S : Type} [CommRing S] [IsDomain S] [CharZero S] [IsNoetherianRing S]
     (hS : IsIntegrallyClosed S) (t : SAB H (Sp S)) (hp : IsProper t.G.hom) (hg : GlobalTheory.LN.PolAt t (Out.jK S)) :
     Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L := by

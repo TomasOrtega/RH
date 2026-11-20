@@ -5,6 +5,41 @@ namespace ReciprocityTheory.ChartRestriction.G.H1
 
 open Module
 
+/- English proof (translation)
+Introduce `E _ _ _ X _ _ M v hv hvX hvM`. Take `⟨u, hu⟩` from `RB.greedy X v hv hvX`. Establish `huX : ∀ k, u k ∈ X` using `fun k => (hu k).1`. Establish `huV : ∀ k : Fin (finrank ℝ E), u k ∉ RB.V u k.val` using `fun k => (hu k).2.1`. Establish `hli : LinearIndependent ℝ u` using `RB.indep_of_flag rfl u huV`.
+
+Establish `hmono : ∀ k j : Fin (finrank ℝ E), j < k → ‖u j‖ ≤ ‖u k‖`. Introduce `k j hjk`. Apply `(hu j).2.2.2 (u k) (huX k)` to reduce the goal to its premises. Introduce `hmem`. Conclude with `huV k (RB.V_mono u (Fin.lt_iff_val_lt_val.1 hjk).le hmem)`.
+
+Establish `hb` using `fun k => RB.exists_b u hli X huX k (fun j hj => hmono k j hj)`. Use `choose b hbX hbV hb0 hb1 hbmin hbnrm hbd using hb`. Establish `hspan` using `RB.span_flag u hli X b hbX hbV hb0 hb1 hbmin`. Establish `hVtop : RB.V u (finrank ℝ E) = ⊤`. Establish `h1 : RB.V u (finrank ℝ E) = Submodule.span ℝ (Set.range u)`.
+
+Simplify using `only [RB.V]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1]`.
+
+Use `first`. Consider the case `exact hli.span_eq_top_of_card_eq_finrank (by simp)`. Consider the case `exact hli.span_eq_top_of_card_eq_finrank' (by simp)`. Establish `hbnot : ∀ k : Fin (finrank ℝ E), b k ∉ RB.V b k.val`. Introduce `k hmem`.
+
+Establish `hsub : RB.V b k.val ≤ RB.V u k.val`. Rewrite using `[RB.V, Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `RB.V_mono u (show l.val + 1 ≤ k.val from hl) (hbV l)`. Establish `h0` using `RB.phi_V u k (hsub hmem)`.
+
+Conclude with `(hb0 k).ne' h0`. Establish `hliR : LinearIndependent ℝ b` using `RB.indep_of_flag rfl b hbnot`. Establish `hliZ : LinearIndependent ℤ b` using `by first`. Consider the case `exact hliR.restrict_scalars' ℤ`. Consider the case `exact hliR.restrict_scalars (fun a c h => by simpa using h)`.
+
+Set `bX : Fin (finrank ℝ E) → X` to `fun k => ⟨b k, hbX k⟩`. Establish `hliX : LinearIndependent ℤ bX` using `LinearIndependent.of_comp X.subtype hliZ`. Establish `hspX : ⊤ ≤ Submodule.span ℤ (Set.range bX)`. Introduce and unpack `x -`. Establish `hx` using `hspan (finrank ℝ E) le_rfl x.1 x.2 (by rw [hVtop]; exact Submodule.mem_top)`.
+
+Establish `hrange : Set.range b = X.subtype '' Set.range bX`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hx` using `[hrange, ← Submodule.map_span]`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hx`.
+
+Establish `hyx' : y = x` using `Subtype.ext hyx`. Rewrite using `[← hyx']`. Conclude with `hy`. Set `B` to `Basis.mk hliX hspX`. Establish `hBj : ∀ j, (B j : E) = b j` using `fun j => by`.
+
+Simplify using `only [B, Basis.mk_apply, bX]`. Use `⟨B, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Rewrite using `[hBj]`. Take `⟨i, hi⟩` from `(hu j).2.2.1`.
+
+Establish `h1` using `hbd j`. Establish `h2 : ‖u j‖ ^ 2 ≤ ‖v i‖ ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hi 2`. Establish `h3` using `hvM i`. Establish `hd0 : (0 : ℝ) ≤ finrank ℝ E` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hd0, mul_le_mul_of_nonneg_left h3 hd0]`.
+
+Introduce `j z hz`. Rewrite using `[hBj]`. Distinguish the cases in `hzV : z ∈ RB.V u j.val`. Establish `hzV1 : z ∈ RB.V u (j.val + 1)` using `RB.V_mono u (Nat.le_succ _) hzV`. Establish `hphz : RB.phi u j z = 0` using `RB.phi_V u j hzV`.
+
+Establish `hp : ‖b j‖ ≤ ‖b j + z‖` using `hbnrm j (b j + z) (X.add_mem (hbX j) hz) (Submodule.add_mem _ (hbV j) hzV1) (by rw [RB.phi_add, hphz, add_zero])`. Establish `hm : ‖b j‖ ≤ ‖b j - z‖` using `hbnrm j (b j - z) (X.sub_mem (hbX j) hz) (Submodule.sub_mem _ (hbV j) hzV1) (by rw [RB.phi_sub, hphz, sub_zero])`. Establish `hp2` using `pow_le_pow_left₀ (norm_nonneg _) hp 2`. Establish `hm2` using `pow_le_pow_left₀ (norm_nonneg _) hm 2`. Rewrite `hp2` using `[norm_add_sq_real]`.
+
+Rewrite `hm2` using `[norm_sub_sq_real]`. Establish `hz0 : 0 ≤ ‖z‖ ^ 2` using `by positivity`. Establish `hd1 : (1 : ℝ) ≤ Real.sqrt (finrank ℝ E)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Conclude with `Real.sqrt_le_sqrt (by exact_mod_cast Nat.succ_le_of_lt (Fin.pos j))`.
+
+Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith [mul_le_mul_of_nonneg_right hd1 hz0]`. Establish `hle : ‖u j‖ ≤ ‖z‖` using `(hu j).2.2.2 z hz hzV`. Establish `hb' : ‖b j‖ ≤ Real.sqrt (finrank ℝ E) * ‖u j‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem reducedBasis_holds : ReducedBasisStatement := by
   intro E _ _ _ X _ _ M v hv hvX hvM
   classical

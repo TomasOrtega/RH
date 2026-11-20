@@ -19,6 +19,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Unfold `letπ at h`. Establish `h' : (fun _ => PowerSeries.X) ^ k * a = (fun _ => PowerSeries.X) ^ k * b`. Use `congrArg (fun x => (↑w⁻¹ : LetA O n) * x) h` as an intermediate fact. Simplify `this` using `[← mul_assoc, Units.inv_mul]`. Use function extensionality and compare the values at `i`.
+
+Establish `hi` using `congrFun h' i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply] at hi`. Use extensionality with `m`. Establish `hm` using `congrArg (PowerSeries.coeff (m + k)) hi`. Rewrite `hm` using `[mul_comm, PowerSeries.coeff_mul_X_pow, mul_comm, PowerSeries.coeff_mul_X_pow]`. Then use the resulting hypothesis.
+-/
 theorem cancel_unit_mul_uniformizer_pow {w : (LetA O n)ˣ} {k : ℕ} {a b : LetA O n}
     (h : (w : LetA O n) * letπ ^ k * a = (w : LetA O n) * letπ ^ k * b) : a = b := by
   unfold letπ at h
@@ -32,6 +37,15 @@ theorem cancel_unit_mul_uniformizer_pow {w : (LetA O n)ˣ} {k : ℕ} {a b : LetA
   have hm := congrArg (PowerSeries.coeff (m + k)) hi
   rwa [mul_comm, PowerSeries.coeff_mul_X_pow, mul_comm, PowerSeries.coeff_mul_X_pow] at hm
 
+/- English proof (translation)
+Introduce `g`. Take `⟨t, ht⟩` from `Formalism.MainNotions.LiftingTheory.gamma_X_eq W g`. Take `⟨Uc, hUc⟩ : ∃ Uc : LetA O n, Uc = fun _ => PowerSeries.C ((W.χΓ g : Oˣ) : O) + PowerSeries.X * t` from `⟨_, rfl⟩`. Establish `hπ : W.γA g letπ = letπ * Uc`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hUc]`. Use `show W.γ₀ g PowerSeries.X = PowerSeries.X * (PowerSeries.C ((W.χΓ g : Oˣ) : O) + PowerSeries.X * t)`. Conclude with `ht`. Take `⟨u, hu⟩ : ∃ u : LetA O n, u = (↑w⁻¹ : LetA O n) * W.γA g (w : LetA O n) * Uc ^ k` from `⟨_, rfl⟩`. Establish `heq : W.γA g W.π₀ = W.π₀ * u`.
+
+Rewrite using `[h3, map_mul, map_pow, hπ, hu, show (↑w : LetA O n) * letπ ^ k * (↑w⁻¹ * W.γA g ↑w * Uc ^ k) = (↑w * ↑w⁻¹) * (W.γA g ↑w * (letπ * Uc) ^ k) by ring, Units.mul_inv, one_mul]`. Use `⟨u, ?_, heq⟩` and prove the remaining obligations. Establish `hmem : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀` using `h1`. Use `show ∀ δ ∈ W.DelF, W.γA δ u = u`. Introduce `δ hδ`.
+
+Establish `e1 : W.γA δ (W.γA g W.π₀) = W.γA g W.π₀`. Rewrite using `[Formalism.MainNotions.LiftingTheory.gammaA_comm W δ g, hmem δ hδ]`. Rewrite `e1` using `[heq, map_mul, hmem δ hδ, h3]`. Conclude with `cancel_unit_mul_uniformizer_pow e1`.
+-/
 theorem pi0Core_of (W : LocWach PD LL O v n) (w : (LetA O n)ˣ) (k : ℕ) (h1 : W.π₀ ∈ W.AΔ)
     (h3 : W.π₀ = (w : LetA O n) * letπ ^ k) : Pi0LatticeCondition W := by
   intro g
@@ -61,6 +75,11 @@ theorem pi0Core_of (W : LocWach PD LL O v n) (w : (LetA O n)ˣ) (k : ℕ) (h1 : 
 
 end CoreW
 
+/- English proof (translation)
+Unfold `K0`. Rewrite using `[finrank_eq_one_iff_of_nonzero' (1 : ↥K.1) one_ne_zero]`. Introduce `x`. Use `⟨⟨(x : Om l), IntermediateField.mem_inf.mpr ⟨x.2, hK x.2⟩⟩, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact Subtype.ext (mul_one _)`. Consider the case `exact Subtype.ext (by simp)`. Consider the case `rfl`.
+-/
 theorem finrank_K0_eq_one_of_le_Kur {l : ℕ} [Fact l.Prime] {K : FinExt l} (hK : K.1 ≤ MaximalUnramifiedExtension l) :
     Module.finrank ↥(K0 K) ↥K.1 = 1 := by
   unfold K0
@@ -72,6 +91,11 @@ theorem finrank_K0_eq_one_of_le_Kur {l : ℕ} [Fact l.Prime] {K : FinExt l} (hK 
     | exact Subtype.ext (by simp)
     | rfl
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `h9W` using `h9 l K 1 LL h.2.2`. Establish `hp` using `h9W _ (Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL h.2.2))`. Use `((hp ?_ ?_).2.2 ?_).1` and prove the remaining obligations. Conclude with `(HW l).W_s K 1 LL h.2.2`.
+
+Rewrite using `[(D.loc l).PD_p K]`. Conclude with `h.2.1`. Conclude with `finrank_K0_eq_one_of_le_Kur h.1`.
+-/
 theorem ring_condition_uniformizer_polynomial (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (h : CaseA K LL) :
     Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations ((HW l).W K 1 LL h.2.2) 1 (((D.loc l).PD K).p - 1) ((HW l).W K 1 LL h.2.2).π₀
@@ -85,6 +109,9 @@ theorem ring_condition_uniformizer_polynomial (D : D7) (HW : HWOf D.loc) (F : Fo
     exact h.2.1
   · exact finrank_K0_eq_one_of_le_Kur h.1
 
+/- English proof (translation)
+Introduce `h9 l _ K LL h _`. Take `⟨h1, -, ⟨w, hw⟩, -⟩` from `ring_condition_uniformizer_polynomial D HW F h9 l K LL h`. Conclude with `pi0Core_of _ w _ h1 hw`.
+-/
 theorem gamma_uniformizer_divisible_statement (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : UniformiserGammaTheorem D HW F := by
   intro h9 l _ K LL h _
   obtain ⟨h1, -, ⟨w, hw⟩, -⟩ := ring_condition_uniformizer_polynomial D HW F h9 l K LL h

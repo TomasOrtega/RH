@@ -17,10 +17,20 @@ namespace GlobalTheory.GLp.ParLabel
 section Abstract
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.single_apply]`.
+-/
 theorem eq_sum_single (e : MonoidAlgebra ℂ G) : e = ∑ x, MonoidAlgebra.single x (e.coeff x) := by
   ext y
   simp [MonoidAlgebra.coeff_sum, Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `hi : IsIdempotentElem (LinearMap.mulLeft ℂ D)`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Simplify using `[← mul_assoc, h]`. Establish `ht : LinearMap.trace ℂ _ (LinearMap.mulLeft ℂ D) = 0`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (MonoidAlgebra.basis G ℂ)]`.
+
+Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Express the relevant statement in the definitionally equal form `(D * MonoidAlgebra.basis G ℂ x).coeff x = 0`. Simplify using `[h0]`. Use `(LinearMap.IsIdempotentElem.trace_eq_zero_iff hi).1 ht` as an intermediate fact.
+
+Simplify using `using congrArg (fun φ => φ 1) this`.
+-/
 theorem idem_eq_zero (D : MonoidAlgebra ℂ G) (h : D * D = D) (h0 : D.coeff 1 = 0) : D = 0 := by
   have hi : IsIdempotentElem (LinearMap.mulLeft ℂ D) := by
     refine LinearMap.ext fun y => ?_
@@ -36,6 +46,11 @@ theorem idem_eq_zero (D : MonoidAlgebra ℂ G) (h : D * D = D) (h0 : D.coeff 1 =
 
 def mean (U : Subgroup G) : MonoidAlgebra ℂ G := ∑ u : U, MonoidAlgebra.single (u : G) (Fintype.card U : ℂ)⁻¹
 
+/- English proof (translation)
+Establish `h1 : ∀ (u : U) (c : ℂ), MonoidAlgebra.single (u : G) c * mean U = c • mean U`. Introduce `u c`. Simplify using `only [mean, Finset.mul_sum, Finset.smul_sum, MonoidAlgebra.single_mul_single, MonoidAlgebra.smul_single, smul_eq_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft u) _ _ (fun x => by simp)`. Use `nth_rewrite 1 [mean]`.
+
+Rewrite using `[Finset.sum_mul]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by simp), one_smul]`.
+-/
 theorem mean_idem (U : Subgroup G) : mean U * mean U = mean U := by
   have h1 : ∀ (u : U) (c : ℂ), MonoidAlgebra.single (u : G) c * mean U = c • mean U := by
     intro u c
@@ -47,6 +62,11 @@ theorem mean_idem (U : Subgroup G) : mean U * mean U = mean U := by
   simp only [h1, Finset.sum_const, Finset.card_univ]
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by simp), one_smul]
 
+/- English proof (translation)
+Set `φ : U → U` to `fun u => ⟨x * u * x⁻¹, hx u u.2⟩`. Establish `hφ : Function.Bijective φ` using `Finite.injective_iff_bijective.1 (fun u v h => by`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `only [φ, mul_left_inj, mul_right_inj] at this`. Conclude with `Subtype.ext this)`.
+
+Unfold `Commute SemiconjBy`. Simplify using `only [mean, Finset.mul_sum, Finset.sum_mul, MonoidAlgebra.single_mul_single]`. Conclude with `Fintype.sum_bijective φ hφ _ _ (fun u => by simp [φ, mul_comm])`.
+-/
 theorem mean_comm (U : Subgroup G) (x : G) (hx : ∀ u ∈ U, x * u * x⁻¹ ∈ U) (c : ℂ) :
     Commute (MonoidAlgebra.single x c) (mean U) := by
   let φ : U → U := fun u => ⟨x * u * x⁻¹, hx u u.2⟩
@@ -62,6 +82,9 @@ variable {A : Type} [Group A] [Fintype A]
 
 def push (i : A →* G) (e : MonoidAlgebra ℂ A) : MonoidAlgebra ℂ G := ∑ x, MonoidAlgebra.single (i x) (e.coeff x)
 
+/- English proof (translation)
+Establish `h : ∀ e, push i e = MonoidAlgebra.mapDomainAlgHom ℂ ℂ i e`. Introduce `e`. Use `conv_rhs => rw [eq_sum_single e]`. Simplify using `[push, map_sum]`. Simplify using `only [h, map_mul]`.
+-/
 theorem push_mul (i : A →* G) (e e' : MonoidAlgebra ℂ A) : push i (e * e') = push i e * push i e' := by
   have h : ∀ e, push i e = MonoidAlgebra.mapDomainAlgHom ℂ ℂ i e := by
     intro e
@@ -69,19 +92,43 @@ theorem push_mul (i : A →* G) (e e' : MonoidAlgebra ℂ A) : push i (e * e') =
     simp [push, map_sum]
   simp only [h, map_mul]
 
+/- English proof (translation)
+Simplify using `only [tr, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem tr_sum {ι : Type} (s : Finset ι) (e : ι → MonoidAlgebra ℂ G) (χ : G → ℂ) :
     tr (∑ i ∈ s, e i) χ = ∑ i ∈ s, tr (e i) χ := by
   simp only [tr, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `[tr, Finsupp.single_apply]`.
+-/
 theorem tr_single (x : G) (c : ℂ) (χ : G → ℂ) : tr (MonoidAlgebra.single x c) χ = c * χ x := by
   simp [tr, Finsupp.single_apply]
 
+/- English proof (translation)
+Simplify using `[zOf, MonoidAlgebra.coeff_sum, Finsupp.single_apply]`.
+-/
 theorem coeff_zOf (χ : G → ℂ) (x : G) : (zOf χ).coeff x = χ 1 / (Fintype.card G : ℂ) * χ x⁻¹ := by
   simp [zOf, MonoidAlgebra.coeff_sum, Finsupp.single_apply]
 
 variable {B : Type} [Group B] [Fintype B]
 
+/- English proof (translation)
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `c1 : Commute (push i (zOf α)) (mean U)` using `Commute.sum_left _ _ _ fun x _ => mean_comm U _ (hi x) _`. Establish `c2 : Commute (push j (zOf β)) (mean U)` using `Commute.sum_left _ _ _ fun x _ => mean_comm U _ (hj x) _`. Establish `c3 : Commute (push i (zOf α)) (push j (zOf β))` using `Commute.sum_left _ _ _ fun x _ => Commute.sum_right _ _ _ fun y _ => by`.
+
+Unfold `Commute SemiconjBy`. Simplify using `only [MonoidAlgebra.single_mul_single]`. Rewrite using `[(hc x y).eq, mul_comm]`. Establish `i1 : IsIdempotentElem (push i (zOf α))`. Unfold `IsIdempotentElem`.
+
+Rewrite using `[← push_mul, (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central A α α hα hα).1, if_pos rfl]`. Establish `i2 : IsIdempotentElem (push j (zOf β))`. Unfold `IsIdempotentElem`. Rewrite using `[← push_mul, (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central B β β hβ hβ).1, if_pos rfl]`. Establish `i3 : IsIdempotentElem (zOf ψ)`.
+
+Unfold `IsIdempotentElem`. Rewrite using `[(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G ψ ψ hψ hψ).1, if_pos rfl]`. Establish `hz` using `(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G ψ ψ hψ hψ).2.1`. Establish `i4 : IsIdempotentElem (zOf ψ * (push i (zOf α) * (push j (zOf β) * mean U)))` using `IsIdempotentElem.mul_of_commute (hz _) i3 (IsIdempotentElem.mul_of_commute (c3.mul_right c1) i1 (IsIdempotentElem.mul_of_commute c2 i2 (mean_idem U)))`. Apply `idem_eq_zero _ i4` to reduce the goal to its premises.
+
+Rewrite using `[hz, (GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree G _ ψ).2.2]`. Establish `: tr (push i (zOf α) * (push j (zOf β) * mean U)) ψ = (α 1 / (Fintype.card A : ℂ) * (β 1 / (Fintype.card B : ℂ)) * (Fintype.card U : ℂ)⁻¹) * ∑ p : A × B, (∑ u : U, ψ (i p.1 * j p.2 * u)) * (α p.1⁻¹ * β p.2⁻¹)`. Rewrite using `[Fintype.sum_prod_type, push, Finset.sum_mul, tr_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[push, Finset.sum_mul, Finset.mul_sum, tr_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[mean, Finset.mul_sum, Finset.mul_sum, tr_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [MonoidAlgebra.single_mul_single, tr_single, coeff_zOf, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, h0, mul_zero, mul_zero]`.
+-/
 theorem key (i : A →* G) (j : B →* G) (hc : ∀ x y, Commute (i x) (j y)) (U : Subgroup G)
     (hi : ∀ x, ∀ u ∈ U, i x * u * (i x)⁻¹ ∈ U) (hj : ∀ x, ∀ u ∈ U, j x * u * (j x)⁻¹ ∈ U)
     (α : A → ℂ) (β : B → ℂ) (ψ : G → ℂ) (hα : IsIrr α) (hβ : IsIrr β) (hψ : IsIrr ψ)
@@ -131,16 +178,30 @@ variable {g : ℕ} [Fact g.Prime] {a b : ℕ}
 
 def sp (M : Mt g (a + b)) : Matrix (Fin a ⊕ Fin b) (Fin a ⊕ Fin b) (ZMod g) := M.submatrix finSumFinEquiv finSumFinEquiv
 
+/- English proof (translation)
+Simplify using `[sp, Matrix.submatrix_mul_equiv]`.
+-/
 theorem sp_mul (M N : Mt g (a + b)) : sp (M * N) = sp M * sp N := by
   simp [sp, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Simplify using `[sp]`.
+-/
 theorem sp_one : sp (1 : Mt g (a + b)) = 1 := by simp [sp]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)` as an intermediate fact. Simplify `this` using `[sp]`.
+-/
 theorem sp_inj {M N : Mt g (a + b)} (h : sp M = sp N) : M = N := by
   ext i j
   have := congrFun (congrFun h (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)
   simpa [sp] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [tl, entN, sp, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tl_eq (M : Mt g (a + b)) : tl a M = (sp M).toBlocks₁₁ := by
   ext i j
   have hi := i.2
@@ -149,6 +210,11 @@ theorem tl_eq (M : Mt g (a + b)) : tl a M = (sp M).toBlocks₁₁ := by
   rw [dif_pos ⟨by omega, by omega⟩]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Simplify using `only [br, entN, sp, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_right]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+
+Both sides reduce to the same expression.
+-/
 theorem br_eq (M : Mt g (a + b)) : br a b M = (sp M).toBlocks₂₂ := by
   ext i j
   have hi := i.2
@@ -157,6 +223,11 @@ theorem br_eq (M : Mt g (a + b)) : br a b M = (sp M).toBlocks₂₂ := by
   rw [dif_pos ⟨by omega, by omega⟩]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Conclude with `h _ _ (by simp) (by simp)`. Introduce `h i j hj hi`.
+
+Establish `hi'` using `i.2`. Use `congrFun (congrFun h ⟨i - a, by omega⟩) ⟨j, hj⟩` as an intermediate fact. Simplify using `only [sp, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.zero_apply] at this`. Apply the tactic sequence `convert this using 2 <;> ext <;> simp <;> omega`.
+-/
 theorem inPar_iff (M : Mt g (a + b)) : InPar a M ↔ (sp M).toBlocks₂₁ = 0 := by
   constructor
   · intro h
@@ -169,6 +240,13 @@ theorem inPar_iff (M : Mt g (a + b)) : InPar a M ↔ (sp M).toBlocks₂₁ = 0 :
       finSumFinEquiv_apply_right, Matrix.zero_apply] at this
     convert this using 2 <;> ext <;> simp <;> omega
 
+/- English proof (translation)
+Use `set M : Mt g (a + b) := fun i j : Fin (a + b) => if (i : ℕ) < a ∧ (j : ℕ) < a then entN (x : Mt g a) i j else if a ≤ (i : ℕ) ∧ a ≤ (j : ℕ) then entN (y : Mt g b) (i - a) (j - a) else 0 with hM`. Establish `h1 : sp M = Matrix.fromBlocks (x : Mt g a) 0 0 (y : Mt g b)`. Apply the tactic sequence `ext (i | i) (j | j) <;> have hi := i.2 <;> have hj := j.2 <;> change M _ _ = _ <;> simp [hM, entN, hi, hj]`. Establish `h2 : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← Matrix.det_submatrix_equiv_self finSumFinEquiv]`.
+
+Express the relevant statement in the definitionally equal form `IsUnit (sp M).det`. Rewrite using `[h1, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `(Matrix.isUnits_det_units x).mul (Matrix.isUnits_det_units y)`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `sp (toG M : Mt g (a + b)) = _`.
+
+Rewrite using `[toG, dif_pos h2]`. Both sides reduce to the same expression.
+-/
 theorem sp_blk (x : Gn g a) (y : Gn g b) :
     sp (blk a b (a + b) x y : Mt g (a + b)) = Matrix.fromBlocks (x : Mt g a) 0 0 (y : Mt g b) := by
   set M : Mt g (a + b) := fun i j : Fin (a + b) =>
@@ -186,6 +264,9 @@ theorem sp_blk (x : Gn g a) (y : Gn g b) :
   rw [toG, dif_pos h2]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[Units.val_mul, sp_mul, sp_blk, sp_blk, sp_blk]`. Simplify using `[Matrix.fromBlocks_multiply]`.
+-/
 theorem blk_mul (x x' : Gn g a) (y y' : Gn g b) :
     blk a b (a + b) (x * x') (y * y') = blk a b (a + b) x y * blk a b (a + b) x' y' := by
   apply Units.ext
@@ -193,6 +274,9 @@ theorem blk_mul (x x' : Gn g a) (y y' : Gn g b) :
   rw [Units.val_mul, sp_mul, sp_blk, sp_blk, sp_blk]
   simp [Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `sp_inj` to reduce the goal to its premises. Rewrite using `[sp_blk, Units.val_one, Units.val_one, Units.val_one, sp_one, Matrix.fromBlocks_one]`.
+-/
 theorem blk_one : blk a b (a + b) (1 : Gn g a) 1 = 1 := by
   apply Units.ext
   apply sp_inj
@@ -201,6 +285,11 @@ theorem blk_one : blk a b (a + b) (1 : Gn g a) 1 = 1 := by
 def Over (p : Gn g (a + b)) (x : Gn g a) (y : Gn g b) : Prop :=
   InPar a (p : Mt g (a + b)) ∧ tl a (p : Mt g (a + b)) = (x : Mt g a) ∧ br a b (p : Mt g (a + b)) = (y : Mt g b)
 
+/- English proof (translation)
+Rewrite using `[Over, inPar_iff, tl_eq, br_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨_, by rw [← h1, ← h2, ← h3, Matrix.fromBlocks_toBlocks]⟩`. Introduce and unpack `⟨Z, h⟩`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem over_iff (p : Gn g (a + b)) (x : Gn g a) (y : Gn g b) :
     Over p x y ↔ ∃ Z, sp (p : Mt g (a + b)) = Matrix.fromBlocks (x : Mt g a) Z 0 (y : Mt g b) := by
   rw [Over, inPar_iff, tl_eq, br_eq]
@@ -211,6 +300,11 @@ theorem over_iff (p : Gn g (a + b)) (x : Gn g a) (y : Gn g b) :
     rw [h]
     simp
 
+/- English proof (translation)
+Rewrite `*` using `[over_iff]`. Take `⟨Z, h⟩` from `h`. Take `⟨Z', h'⟩` from `h'`. Use `⟨(x : Mt g a) * Z' + Z * (y' : Mt g b), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, sp_mul, h, h']`.
+
+Simplify using `[Matrix.fromBlocks_multiply]`.
+-/
 theorem Over.mul {p q : Gn g (a + b)} {x x' : Gn g a} {y y' : Gn g b} (h : Over p x y) (h' : Over q x' y') :
     Over (p * q) (x * x') (y * y') := by
   rw [over_iff] at *
@@ -220,6 +314,9 @@ theorem Over.mul {p q : Gn g (a + b)} {x x' : Gn g a} {y y' : Gn g b} (h : Over 
   rw [Units.val_mul, sp_mul, h, h']
   simp [Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+The claim follows from `(over_iff _ _ _).2 ⟨0, sp_blk x y⟩`.
+-/
 theorem over_blk (x : Gn g a) (y : Gn g b) : Over (blk a b (a + b) x y) x y := (over_iff _ _ _).2 ⟨0, sp_blk x y⟩
 
 def rad (g a b : ℕ) [Fact g.Prime] : Subgroup (Gn g (a + b)) where
@@ -242,6 +339,15 @@ def levi (g a b : ℕ) [Fact g.Prime] : Gn g a × Gn g b →* Gn g (a + b) where
   map_one' := blk_one
   map_mul' p q := blk_mul _ _ _ _
 
+/- English proof (translation)
+Unfold `res`. Use `congr 1`. Rewrite using `[← Finset.sum_filter]`. Use `symm`. Use `Finset.sum_bij (fun u _ => levi g a b (x, y) * u) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `u _`. Use `(over_blk x y).mul u.2` as an intermediate fact. Simplify using `only [mul_one] at this`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, this⟩`. Introduce `u _ v _ h`.
+
+Conclude with `Subtype.ext (mul_left_cancel h)`. Introduce `p hp`. Establish `h : Over p x y` using `(Finset.mem_filter.1 hp).2`. Use `(over_blk x⁻¹ y⁻¹).mul h` as an intermediate fact. Simplify using `only [inv_mul_cancel] at this`.
+
+Use `⟨⟨_, this⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `levi g a b (x, y) * (levi g a b (x, y)⁻¹ * p) = p`. Rewrite using `[map_inv, mul_inv_cancel_left]`. Introduce `u _`. Both sides reduce to the same expression.
+-/
 theorem res_eq (ψ : Gn g (a + b) → ℂ) (x : Gn g a) (y : Gn g b) :
     res a b ψ x y = ((g : ℂ) ^ (a * b))⁻¹ * ∑ u : rad g a b, ψ (levi g a b (x, y) * u) := by
   unfold res
@@ -271,6 +377,9 @@ section Main
 variable {g : ℕ} [Fact g.Prime] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   (π : Representation ℂ (GL (Fin n) ℚ_[g]) V)
 
+/- English proof (translation)
+Simplify using `[actK, Finsupp.single_apply]`.
+-/
 theorem actK_single (x : Gn g n) (c : ℂ) : actK π (MonoidAlgebra.single x c) = c • π (lift g n x) := by
   simp [actK, Finsupp.single_apply]
 

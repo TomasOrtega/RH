@@ -7,6 +7,21 @@ open scoped ComplexConjugate BigOperators Topology
 
 namespace GlobalTheory.EllipticModel
 
+/- English proof (translation)
+Take `⟨m, P, A, B, hP, h⟩` from `GlobalTheory.EllipticPoles.exists_mul_prod_eq M.L φ hφ`. Establish `hc : M.c ≠ 0` using `hM.1`. Use `set r : ℂ := M.ι.symm (M.W.b₂ / 12) with hr`. Use `set a₁ : ℂ := M.ι.symm M.W.a₁ with ha₁`. Use `set a₃ : ℂ := M.ι.symm M.W.a₃ with ha₃`.
+
+Establish `hx : ∀ z, M.L.weierstrassP z = M.c ^ 2 * (M.x z + r)`. Introduce `z`. Simplify using `only [Mdl.x, ← hr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy : ∀ z, M.L.derivWeierstrassP z = M.c ^ 3 * (2 * M.y z + a₁ * M.x z + a₃)`. Introduce `z`. Simplify using `only [Mdl.y, ← ha₁, ← ha₃]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Set `g : Polynomial ℂ` to `Polynomial.C (M.c ^ 2) * (Polynomial.X + Polynomial.C r)`. Set `k : ℂ` to `((M.c ^ 2) ^ m)⁻¹`. Use `⟨m, P, Polynomial.C k * (A.comp g + B.comp g * Polynomial.C (M.c ^ 3) * (Polynomial.C a₁ * Polynomial.X + Polynomial.C a₃)), Polynomial.C k * (B.comp g * Polynomial.C (2 * M.c ^ 3)), hP, fun z₀ => ?_⟩` and prove the remaining obligations. Use `filter_upwards [h z₀] with z hz`. Establish `hg : g.eval (M.x z) = M.L.weierstrassP z`.
+
+Rewrite using `[hx z]`. Simplify using `[g]`. Establish `hprod : ∏ i, (M.L.weierstrassP z - M.L.weierstrassP (P i)) = (M.c ^ 2) ^ m * ∏ i, (M.x z - M.x (P i))`. Establish `: ∀ i, M.L.weierstrassP z - M.L.weierstrassP (P i) = M.c ^ 2 * (M.x z - M.x (P i))`. Introduce `i`.
+
+Rewrite using `[hx z, hx (P i)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hk : k * (M.c ^ 2) ^ m = 1` using `inv_mul_cancel₀ (pow_ne_zero _ (pow_ne_zero _ hc))`. Rewrite `hz` using `[hprod, hy z]`.
+
+Simplify using `only [Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_add, Polynomial.eval_comp, hg]`. Take the linear combination `k * hz - (φ z * ∏ i, (M.x z - M.x (P i))) * hk`.
+-/
 theorem exists_mul_prod_eq_xy (q : ℕ) [Fact q.Prime] (M : Mdl q) (φ : ℂ → ℂ) (hM : M.Ok) (hφ : Ell M.L φ) :
     ∃ (m : ℕ) (P : Fin m → ℂ) (A B : Polynomial ℂ),
       (∀ i, P i ∉ M.L.lattice ∧ meromorphicOrderAt φ (P i) < 0) ∧

@@ -32,6 +32,11 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.FamEx
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Take `⟨Gam, Del, hG, hD, hst, hg, hd⟩` from `GlobalTheory.T.short_exact_standard_lattice o Ω R w hw hw0 r s n W om hW hom i q h1 h2 h3 h4 h5`. Establish `eG : Gam = gamLat R w W i`. Use extensionality with `⟨a, b⟩`. Conclude with `hG a b`.
+
+Establish `eD : Del = delLat R w om q`. Use extensionality with `⟨a, b⟩`. Conclude with `hD a b`. Substitute `eG eD` using the available equality. Conclude with `⟨hst, hg, hd⟩`.
+-/
 theorem gamDel_of_seqHyp {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) (w : Ω) (hw : w ∈ R)
     (hw0 : w ≠ 0) {r s n : ℕ} (W : AddSubgroup (Fin r → Ω)) (om : AddSubgroup (Fin s → Ω))
     (hW : ∀ a ∈ R, ∀ v ∈ W, a • v ∈ W) (hom : ∀ a ∈ R, ∀ v ∈ om, a • v ∈ om)
@@ -59,6 +64,25 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.FamEx
 open GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hF hQ hZ hH hOrd E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d ha hpq b hb p hpS hfree h2 hdisc φ hφ A _ _ _ m _ hm O _ _ _ _ _ _ _ t₀`. Use `haveI : Fact p.Prime := ⟨𝔐.S_prime p hpS⟩`. Take `⟨Sg, _, e, φ', F, _, _, _, pq, sc, w, σ, hO, hS⟩` from `GlobalTheory.T.arith_variety_hodge_prime_bound E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc φ hφ A m hm O t₀`. Take `⟨G⟩` from `GlobalTheory.T.arith_variety_hodge_prime_degree E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc`. Establish `hP` using `GlobalTheory.T.arith_variety_hodge_prime_height E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc A m hm O G`.
+
+Set `P : ∀ c' : ∀ k, J k, mseg y c' ≠ 0 → ChartPack G O c'` to `fun c' h => (hP c' h).some`. Establish `hcp : HT.IsCp p (algebraMap O Ω w)` using `hO.2.2.2.2.2.2.2`. Establish `hL` using `GlobalTheory.T.arith_variety_model_prime_bound hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb A m hm O w hcp`. Establish `hQs` using `fun (c' : ∀ k, J k) (h : mseg y c' ≠ 0) (τ : Sg) => GlobalTheory.T.arith_variety_model_prime_degree hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb A m hm O w hcp G c' h (P c' h) (e τ)`. Set `i : ∀ (c' : ∀ k, J k) (τ : Sg), (Fin (labelRk D (e τ)) → Ω) →ₗ[Ω] (Fin (D.p + D.q) → Ω)` to `fun c' τ => if h : mseg y c' ≠ 0 then (hQs c' h τ).choose else 0`.
+
+Establish `hi : ∀ (c' : ∀ k, J k) (h : mseg y c' ≠ 0) (τ : Sg), SeqHyp (CR O y c') (algebraMap O Ω w) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p (e τ).swap) (b (e τ).swap) c')) (i c' τ) (qMap (P c' h) (b (e τ).swap)) ∧ ∀ σE : E →+* Ω, (∀ a : 𝓞 E, σ …` using `fun c' h τ => by`. Establish `heq : i c' τ = (hQs c' h τ).choose` using `dif_pos h`. Rewrite using `[heq]`. Conclude with `(hQs c' h τ).choose_spec`. Establish `hw0 : algebraMap O Ω w ≠ 0`.
+
+Establish `h3` using `hcp`. Unfold `HT.IsCp at h3`. Rewrite `h3` using `[if_neg h2]`. Take `⟨ζ, hζ, e1⟩` from `h3`. Rewrite using `[e1]`.
+
+Conclude with `hζ.sub_one_ne_zero (Fact.out : p.Prime).one_lt`. Establish `hwR : ∀ c' : ∀ k, J k, algebraMap O Ω w ∈ CR O y c'` using `fun c' => Subalgebra.algebraMap_mem _ w`. Establish `hBase : ∀ (c' : ∀ k, J k) (h : mseg y c' ≠ 0), (chartD e b pq sc w (P c' h) (i c')).Base (CR O y c') p (algebraMap O Ω w)`. Introduce `c' h`. Take `⟨hf1, hf2, hf3, hf4, hf5⟩` from `GlobalTheory.T.arith_variety_hodge_prime_count E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb φ hφ A m hm O t₀ Sg e φ' F pq sc w σ hO hS G c' h (P c' h) (i c')`.
+
+Establish `hG` using `fun τ : Sg => gamDel_of_seqHyp (CR O y c') (algebraMap O Ω w) (hwR c') hw0 (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p (e τ).swap) (b (e τ).swap) c')) ((hL (e τ)).2.2.2.2 c' h).2.1.1 ((hL (e τ).swap).2.2.2.2 c' h).2.2.2.1.1 (i c' τ) (qMap …`. Conclude with `{ freeM := hf1 M_le := hf2 le_M := hf3 one_mem := hf4 free := fun τ => ⟨((hL (e τ)).2.2.2.2 c' h).1, ((hL (e τ)).2.2.2.2 c' h).2.1, ((hL (e τ).swap).2.2.2.2 c' h).2.2.1, ((hL (e τ).swap).2.2.2.2 c' h).2.2.2.1⟩ incl := fun τ => ⟨((hL (e τ)).2.2.2.2 c' h).2.2.2.2.1, ((hL (e τ)).2.2 …`. Establish `hFun` using `GlobalTheory.T.arith_variety_hodge_prime_total E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb φ hφ A m hm O t₀ Sg e φ' F pq sc w σ hO hS G P i`. Establish `hSf` using `GlobalTheory.T.arith_variety_model_prime_height hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb φ hφ A m hm O t₀ Sg e φ' F pq sc w σ hO hS G P i hi`. Establish `hpos` using `fun c' h => famD_pos (O := O) e b pq sc w P i c' h`.
+
+Use `⟨Sg, inferInstance, e, φ', F, inferInstance, inferInstance, inferInstance, w, σ, famD e b pq sc w P i, hO.1, hO.2.2.1, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hFun.1, fun τ => ⟨?_, ?_, ?_, ?_, (hSf τ).1, (hSf τ).2, hFun.2 τ⟩, hO.2.2.2.2.2.2.1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isLatFamily_congr (fun c' h => by rw [hpos c' h]; rfl) (hL (e τ)).1`. Conclude with `isLatFamily_congr (fun c' h => by rw [hpos c' h]; rfl) (hL (e τ)).2.1`. Conclude with `isLatFamily_congr (fun c' h => by rw [hpos c' h]; rfl) (hL (e τ).swap).2.2.1`.
+
+Conclude with `isLatFamily_congr (fun c' h => by rw [hpos c' h]; rfl) (hL (e τ).swap).2.2.2.1`. Introduce `c' h`. Rewrite using `[hpos c' h]`. Conclude with `hBase c' h`. Introduce `c' h C _ _ _ _ RC hRC χ hχ`.
+
+Rewrite using `[hpos c' h]`. Conclude with `GlobalTheory.T.ordinary_curve_hodge_prime hF hQ hZ hH hOrd E H D l Xo c O₀ β Y S Ω K J y 𝔐 d ha hpq p hpS hfree h2 hdisc b hb φ hφ A m hm O t₀ Sg e φ' F pq sc w σ hO hS G c' h (P c' h) (i c') (hi c' h) (hBase c' h) C RC hRC χ hχ`. Introduce `c' h τ`. Rewrite using `[hpos c' h]`. Conclude with `⟨rfl, rfl, rfl, rfl⟩`.
+-/
 theorem familyExistsPos_holds : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → GlobalTheory.CompanionTheory.Ar.GR.QuotientByFiniteFlatStatement → GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement → GlobalTheory.CompanionTheory.Ar.GR.HodgeTateDatumStatement → GlobalTheory.CompanionTheory.Ar.GR.OrdinaryCurveStatement → GlobalTheory.CompanionTheory.Ar.Num.FamilyExistsPos := by
   intro hF hQ hZ hH hOrd E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d ha hpq b hb p hpS hfree h2 hdisc φ hφ A _ _ _ m _ hm O _ _ _ _ _ _ _ t₀
   haveI : Fact p.Prime := ⟨𝔐.S_prime p hpS⟩

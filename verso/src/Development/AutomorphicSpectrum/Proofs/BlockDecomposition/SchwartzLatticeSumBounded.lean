@@ -12,6 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.EisUnfold
 
+/- English proof (translation)
+Take `⟨K0, hK0, hK0'⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele D.host.F`. Set `b` to `Module.finBasis D.host.F D.host.E`. Set `bA` to `Algebra.TensorProduct.basis (AF D.host.F) b`. Set `e : AE D ≃ₗ[AF D.host.F] (Fin (Module.finrank D.host.F D.host.E) → AF D.host.F)` to `bA.equivFun`. Establish `he : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap (e.symm : (Fin (Module.finrank D.host.F D.host.E) → AF D.host.F) →ₗ[AF D.host.F] AE D)`.
+
+Establish `h1 : ∀ x : Fin (Module.finrank D.host.F D.host.E) → D.host.F, e.symm (fun i => algebraMap D.host.F (AF D.host.F) (x i)) = incA D (∑ i, x i • b i)`. Introduce `x`. Rewrite using `[show incA D (∑ i, x i • b i) = (1 : AF D.host.F) ⊗ₜ[D.host.F] (∑ i, x i • b i) from rfl, TensorProduct.tmul_sum]`. Simplify using `only [e, Module.Basis.equivFun_symm_apply, bA, Algebra.TensorProduct.basis_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[algebraMap_smul, TensorProduct.tmul_smul]`. Use `⟨e.symm '' Set.univ.pi (fun _ => K0), (isCompact_univ_pi fun _ => hK0).image he, ?_⟩` and prove the remaining obligations. Introduce `z`. Use `choose x hx using fun i => hK0' (e z i)`. Use `⟨∑ i, x i • b i, fun i => e z i - algebraMap D.host.F (AF D.host.F) (x i), fun i _ => hx i, ?_⟩` and prove the remaining obligations.
+
+Establish `hv : (fun i => e z i - algebraMap D.host.F (AF D.host.F) (x i)) = e z - fun i => algebraMap D.host.F (AF D.host.F) (x i)` using `rfl`. Rewrite using `[hv, map_sub, LinearEquiv.symm_apply_apply, h1]`.
+-/
 private theorem exists_isCompact_sub_incA_mem (D : D7) :
     ∃ C : Set (AE D), IsCompact C ∧ ∀ z : AE D, ∃ x : D.host.E, z - incA D x ∈ C := by
   classical
@@ -38,6 +47,23 @@ private theorem exists_isCompact_sub_incA_mem (D : D7) :
       e z - fun i => algebraMap D.host.F (AF D.host.F) (x i) := rfl
   rw [hv, map_sub, LinearEquiv.symm_apply_apply, h1]
 
+/- English proof (translation)
+Introduce `D θ hθ m n φ hφ`. Establish `hSB` using `GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n φ hφ`. Take `⟨hcont, K, hK, hKb⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ m n φ hSB`. Use `⟨hcont, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n`.
+
+Take `⟨C, hC, hCz⟩` from `exists_isCompact_sub_incA_mem D`. Use `choose xf hxf using hCz`. Set `Q : Set (Mx D m n)` to `{w | ∀ i j, w i j ∈ C}`. Establish `hQ : IsCompact Q`. Establish `h` using `isCompact_univ_pi (fun (_ : Fin m) => isCompact_univ_pi (fun (_ : Fin n) => hC))`.
+
+Establish `hQeq : Q = (Set.univ.pi fun (_ : Fin m) => Set.univ.pi fun (_ : Fin n) => C)`. Use extensionality with `w`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Rewrite using `[hQeq]`. Conclude with `h`.
+
+Take `⟨b, hbs, hb⟩` from `hN K Q hK hQ`. Take `⟨c, hc⟩` from `hKb N`. Use `set c' : ℝ := max c 0 with hc'`. Use `⟨Real.toNNReal (c' * ∑' ξ, b ξ), fun w => ?_⟩` and prove the remaining obligations. Set `ξ0 : Matrix (Fin m) (Fin n) D.host.E` to `Matrix.of fun i j => xf (w i j)`.
+
+Set `x0 : Mx D m n` to `w - rat ξ0`. Establish `hx0 : x0 ∈ Q` using `fun i j => hxf (w i j)`. Establish `hb0 : ∀ ξ, 0 ≤ b ξ` using `fun ξ => (GlobalTheory.Unf.maj_nonneg θ K N _).trans (hb x0 hx0 ξ)`. Establish `hrat : ∀ ξ, rat ξ + w = x0 + rat (ξ + ξ0)`. Introduce `ξ`.
+
+Use extensionality with `i j`. Simplify using `only [x0, rat, Matrix.add_apply, Matrix.sub_apply, Matrix.map_apply, map_add]`. Normalize the expressions using the abelian group laws. Establish `hpt : ∀ ξ, ‖φ (rat ξ + w)‖ₑ ≤ ENNReal.ofReal (c' * b (ξ + ξ0))`. Introduce `ξ`.
+
+Rewrite using `[← ofReal_norm]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[hrat ξ]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[tsum_mul_left]`. Both sides reduce to the same expression.
+-/
 theorem schwartzA_continuous_and_tsum_enorm_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (φ : Mx D m n → ℂ), φ ∈ schwartzA θ m n →
     Continuous φ ∧ ∃ B : ℝ≥0, ∀ w : Mx D m n, ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, ‖φ (rat ξ + w)‖ₑ ≤ B := by
   intro D θ hθ m n φ hφ

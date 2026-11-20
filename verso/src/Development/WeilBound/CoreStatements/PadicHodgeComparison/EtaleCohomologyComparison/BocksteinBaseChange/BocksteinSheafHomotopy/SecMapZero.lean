@@ -17,10 +17,21 @@ namespace WeightedPowerFormIntegrability
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem secMap_zero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem secRes_zero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub]`. Use `((hS R X I (n - 1) n (n + 1) (by omega) rfl).2 (α - β)).2.2 ⟨0, ?_⟩` and prove the remaining obligations. Use `(secMap_zero _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Sec (I.X n) X) = GlobalTheory.EtC.CupSpec.evHom I n 0 n (by simp) X (𝟙 X) (α.1 - β.1)`. Rewrite using `[map_sub]`.
+
+Conclude with `(sub_eq_zero.2 h).symm`.
+-/
 theorem mk_eq_of_ev (hS : E.InSch) {X : Scheme.{0}} {I : GlobalTheory.EtC.Cx R} {n : ℤ} (α β : Cocycle ((chains R).obj (sch.obj X)) I n)
     (h : ev α.1 0 n (by simp) X (𝟙 X) = ev β.1 0 n (by simp) X (𝟙 X)) :
     CohomologyClass.mk α = CohomologyClass.mk β := by
@@ -31,6 +42,9 @@ theorem mk_eq_of_ev (hS : E.InSch) {X : Scheme.{0}} {I : GlobalTheory.EtC.Cx R} 
   rw [map_sub]
   exact (sub_eq_zero.2 h).symm
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EtC.CupSpec.ev_res]`. Use `(GlobalTheory.EtC.CupSpec.ev_pull (sch.map f) α.1 0 n _ Y (show Sx (sch.obj Y) 0 Y from 𝟙 Y)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem ev_pull_sch {X Y : Scheme.{0}} {I : GlobalTheory.EtC.Cx R} {n : ℤ} (f : Y ⟶ X) (α : Cocycle ((chains R).obj (sch.obj X)) I n) :
     ev (zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n)).1 0 n (by simp) Y (𝟙 Y) =
       Sec.res f (ev α.1 0 n (by simp) X (𝟙 X)) := by
@@ -42,6 +56,23 @@ end WeightedPowerFormIntegrability
 
 open WeightedPowerFormIntegrability in
 
+/- English proof (translation)
+Introduce `hF R _ F X r Y j hj n`. Establish `hS` using `hF.et.sch`. Prove the components needed by the constructor for the conclusion. Introduce `x x' h`. Rewrite using `[← sub_eq_zero]`.
+
+Take `⟨α, hα⟩` from `CohomologyClass.mk_surjective (x - x')`. Establish `hz : ∀ s, pull R (sch.map (j s)) F n (x - x') = 0` using `fun s => by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun h s`. Rewrite `hz`, the goal using `[← hα]`.
+
+Establish `key : ∀ s, ∃ y : Sec ((res R F).X (n - 1)) (Y s), Sec.map ((res R F).d (n - 1) n) y = Sec.res (j s) (ev α.1 0 n (by simp) X (𝟙 X))`. Introduce `s`. Take `⟨y, hy⟩` from `((hS R (Y s) (res R F) (n - 1) n (n + 1) (by omega) rfl).2 (zcomp (Cocycle.ofHom ((chains R).map (sch.map (j s)))) α (zero_add n))).2.1 (hz s)`. Conclude with `⟨y, hy.trans (ev_pull_sch (j s) α)⟩`. Use `choose y hy using key`.
+
+Take `⟨y0, hy0⟩` from `(sec_sum ((res R F).X (n - 1)) j hj).2 y`. Establish `hy0' : ∀ s, Sec.res (j s) y0 = y s` using `fun s => congrFun hy0 s`. Use `((hS R X (res R F) (n - 1) n (n + 1) (by omega) rfl).2 α).2.2 ⟨y0, ?_⟩` and prove the remaining obligations. Apply `(sec_sum ((res R F).X n) j hj).1` to reduce the goal to its premises. Use function extensionality and compare the values at `s`.
+
+Use `show Sec.res (j s) (Sec.map ((res R F).d (n - 1) n) y0) = Sec.res (j s) (ev α.1 0 n (by simp) X (𝟙 X))`. Rewrite using `[GlobalTheory.EtC.CupSpec.map_res, hy0' s, hy s]`. Introduce `x choose α hα using fun s => CohomologyClass.mk_surjective (x s)`. Take `⟨a0, ha0⟩` from `(sec_sum ((res R F).X n) j hj).2 fun s => ev (α s).1 0 n (by simp) (Y s) (𝟙 (Y s))`. Establish `ha0' : ∀ s, Sec.res (j s) a0 = ev (α s).1 0 n (by simp) (Y s) (𝟙 (Y s))` using `fun s => congrFun ha0 s`.
+
+Establish `hcl : Sec.map ((res R F).d n (n + 1)) a0 = 0`. Apply `(sec_sum ((res R F).X (n + 1)) j hj).1` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Use `show Sec.res (j s) (Sec.map ((res R F).d n (n + 1)) a0) = Sec.res (j s) 0`. Rewrite using `[GlobalTheory.EtC.CupSpec.map_res, ha0' s]`.
+
+Conclude with `(((hS R (Y s) (res R F) (n - 1) n (n + 1) (by omega) rfl).2 (α s)).1).trans (secRes_zero _).symm`. Take `⟨β, hβ0, -⟩` from `(hS R X (res R F) (n - 1) n (n + 1) (by omega) rfl).1 a0 hcl`. Use `⟨CohomologyClass.mk β, funext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← hα s]`. Use `show CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (sch.map (j s)))) β (zero_add n)) = _`.
+
+Apply `mk_eq_of_ev hS` to reduce the goal to its premises. Rewrite using `[ev_pull_sch, hβ0 X (𝟙 X), ← ha0' s]`. Use `congr 1`. Simplify using `[Sec.res]`.
+-/
 theorem sum : SumInputFromFormal := by
   intro hF R _ F X r Y j hj n
   have hS := hF.et.sch

@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IntegrableOnVerticalRayNormIntegralLe
 open MeasureTheory Filter Topology Set
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.vertRay_integral_expPow_bound | exact GlobalTheory.vertRay_integral_expPow_bound | (intros; apply GlobalTheory.vertRay_integral_expPow_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integrableOn_vertical_ray_norm_integral_le : ∀ (g : ℂ → ℂ) (K c : ℝ) (m : ℕ) (τ : ℂ), ContinuousOn g {z : ℂ | 0 < z.im} → 0 < c →
     (∀ z : ℂ, 1 ≤ z.im → ‖g z‖ ≤ K * Real.exp (-c * z.im) * (1 + ‖z‖) ^ m) → 1 ≤ τ.im →
     IntegrableOn (fun s : ℝ => g (τ + s * Complex.I)) (Ioi 0) ∧

@@ -26,6 +26,11 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.RowsSum3
 
+/- English proof (translation)
+Take `⟨hcore, hSF, hEE, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hC hE`. Simplify using `only [RealDat3.EEp3, Submodule.map_iSup]`. Use `iSup_le fun c => iSup_le fun hc => ?_` and prove the remaining obligations. Use `le_trans ?_ (le_iSup₂_of_le c hc le_rfl)` and prove the remaining obligations. Rewrite using `[hEE]`.
+
+Conclude with `GlobalTheory.RowPartStable.map_gE_le (s := 0) R.toRealDat F.lv2 hcore _ hSF c g`.
+-/
 theorem rowTypePart_map_finiteGroup_le {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (hC : R.WeakCharacterisation F) (hE : R.toRealDat.ExAt) (p : A3.fam3.base3.Ix) (g : G) :
@@ -37,6 +42,11 @@ theorem rowTypePart_map_finiteGroup_le {D : D7} {G : Type} [Group G] [Fintype G]
   rw [hEE]
   exact GlobalTheory.RowPartStable.map_gE_le (s := 0) R.toRealDat F.lv2 hcore _ hSF c g
 
+/- English proof (translation)
+Establish `hsup : (⨆ p, (R.toCx3 F).EEp p) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) x ∈ ⨆ p, R.EEp3 p := htop ▸ Submodule.mem_top`. Conclude with `Submodule.iSup_induction R.EEp3 (motive := fun y => (Tw.mk (twAt D.what₂.embLL A3.A.v0) y : (R.toCx3 F).EE) ∈ ⨆ p, (R.toCx3 F).EEp p) hx (fun p y hy => Submodule.mem_iSup_of_mem (p := (R.toCx3 F).EEp) p hy) (Submodule.zero_mem _) fun y z hy hz => Submodule.add_mem _ hy hz`. Establish `hst : ∀ p g, ((R.toCx3 F).EEp p).map (R.gEx F g) ≤ (R.toCx3 F).EEp p`.
+
+Introduce and unpack `p g _ ⟨x, hx, rfl⟩`. Conclude with `rowTypePart_map_finiteGroup_le R F hC hE p g ⟨_, hx, rfl⟩`. Establish `h` using `GlobalTheory.iSup_stable_inf_typeSpace (R.gEx F) P ((Units.map (A3.A.fam.v0.embedding : D.what₂.LL →+* ℂ).toMonoidHom).comp ψ) (R.toCx3 F).EEp (fun _ => True) hst`. Simplify using `only [iSup_pos, hsup, top_inf_eq] at h`. Conclude with `h.symm`.
+-/
 theorem iSup_EEp_inf_typeSp3 {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (hC : R.WeakCharacterisation F) (hE : R.toRealDat.ExAt) (htop : (⨆ p, R.EEp3 p) = ⊤) (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) :
@@ -56,6 +66,13 @@ theorem iSup_EEp_inf_typeSp3 {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T
   simp only [iSup_pos, hsup, top_inf_eq] at h
   exact h.symm
 
+/- English proof (translation)
+Introduce `hCR hHU D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hC hE hJ hOkH hPG hPos hkl hB b`. Establish `hcar` using `GlobalTheory.T.thetaLift_carrying_of_base_tuple_rows hCR hHU R F hLI hOk hC hE hJ hPG hPos`. Establish `htop` using `GlobalTheory.T.iSup_eEp3_eq_whole_space_of_weakCharacterisation R F hC hE (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCR R.toRealDat) hcar`. Establish `hor` using `GlobalTheory.T.orthogonal_rowParts_of_distinct_types R F hOk hC hOkH hkl hB`. Use `⟨fun p q hpq e he e' he' => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg (cj _) (hor p q hpq _ he.1 _ he'.1)).trans (map_zero _)`. Take `⟨h0, h1⟩` from `GlobalTheory.LevelRows3.eel_eq_typeSp3 R F hC`. Consider the cases of `b`. Rewrite using `[h0]`. Conclude with `iSup_EEp_inf_typeSp3 R F hC hE htop _ _`.
+
+Rewrite using `[h1]`. Conclude with `iSup_EEp_inf_typeSp3 R F hC hE htop _ _`.
+-/
 theorem partsE : GlobalTheory.Published.CuspRapidDecay → HoweUnram → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → (∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) → R.PGEquiv F → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → ∀ b, (R.toCx3 F).PartsE b := by
   intro hCR hHU D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hC hE hJ hOkH hPG hPos hkl hB b
   have hcar := GlobalTheory.T.thetaLift_carrying_of_base_tuple_rows hCR hHU R F hLI hOk hC hE hJ hPG hPos

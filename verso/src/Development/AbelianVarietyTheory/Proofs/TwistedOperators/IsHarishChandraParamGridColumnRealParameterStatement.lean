@@ -15,5 +15,8 @@ open GlobalTheory.Grid GlobalTheory.ChiGrid GlobalTheory.GridJoin
 open scoped Pointwise TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Grid.isHCParam_parP | exact GlobalTheory.Grid.isHCParam_parP | (intros; apply GlobalTheory.Grid.isHCParam_parP <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isHarishChandraParam_gridColumnRealParameter : ∀ (D : D7), HostHyp D → ∀ (i : ℕ), i ≤ D.R.m → ∀ (τ : D.what₂.Tau) (n : ℕ) (lam : Fin n → ℝ) (ε : Fin n → Bool), n = GlobalTheory.Grid.rkP D i → IsEnum (GlobalTheory.Grid.parP D i τ) lam ε → Formalism.QuantumDeterminants.IsHCParam lam := by
   first | exact @GlobalTheory.Grid.isHCParam_parP | exact GlobalTheory.Grid.isHCParam_parP | (intros; apply GlobalTheory.Grid.isHCParam_parP <;> assumption)

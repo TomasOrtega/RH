@@ -77,6 +77,13 @@ section Move
 
 variable {D : D7} (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (hh : D.what₂.Word → ℝ)
 
+/- English proof (translation)
+Take `⟨e, heH, heC⟩` from `sIso_reD D (New.ofDiv D N hh) P.X P.Y P.fin hF`. Set `hI' : SIso (reD D (New.ofDiv D N hh)).s (sOf (P.re (New.ofDiv D N hh) h hF).fin)` to `(by with_unfolding_all exact (SIso.trans S.hI e :))`. Set `aT : Formalism.MainNotions.S.AutTie (reD D (New.ofDiv D N hh)) (P.re (New.ofDiv D N hh) h hF).X.B (P.re (New.ofDiv D N hh) h hF).X.pl` to `⟨(by with_unfolding_all exact (S.autTie.n_eq :)), (by with_unfolding_all exact (S.autTie.f_eq :)), (by with_unfolding_all exact (S.autTie.rd_eq :)), (by with_unfolding_all exact (S.autTie.eps_eq :)), (by with_unfolding_all exact (S.autTie.lam_eq :)), (by with_unfolding_all exact …`. Set `jj : (reD D (New.ofDiv D N hh)).what₂.EE ≃ₗᵢ[ℂ] EEC (P.re (New.ofDiv D N hh) h hF).X (P.re (New.ofDiv D N hh) h hF).G` to `(by with_unfolding_all exact (S.j :))`. Establish `lT : Formalism.L2.SG.Pf.LocCP.LocTied (reD D (New.ofDiv D N hh))` using `(by with_unfolding_all exact (S.locTied :))`.
+
+Establish `cP : ∀ (u : (reD D (New.ofDiv D N hh)).what₂.Word) (x : (reD D (New.ofDiv D N hh)).s.Cu u), colDict (P.re (New.ofDiv D N hh) h hF).X ((P.re (New.ofDiv D N hh) h hF).tr u) (P.re (New.ofDiv D N hh) h hF).Y.hK ((P.re (New.ofDiv D N hh) h hF).into u) ((P.re (New.ofDiv D N hh) h hF).b …`. Introduce `u x`. Establish `hx : hI'.eCu u x = ((by with_unfolding_all exact (S.hI.eCu u x :)))` using `(by with_unfolding_all exact (congrArg (fun f => f (S.hI.eCu u x)) (eq_of_heq (heC u)) :))`. Rewrite using `[hx]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(by with_unfolding_all exact ((colDictL_reTr (New.ofDiv D N hh) (P.tr u) (h u).2.1 (h u).2.2 P.Y.hK (toCu (cs := P.Y.cs u) (hinj := P.fin.shInj u) P.X P.Y.hK (S.hI.eCu u x))).trans (congrArg Subtype.val (S.colPin u x)) :))`. Establish `rP : ∀ x : (reD D (New.ofDiv D N hh)).what₂.EE, hI'.eHH ((reD D (New.ofDiv D N hh)).sEE x) = conjHH (P.re (New.ofDiv D N hh) h hF).X (P.re (New.ofDiv D N hh) h hF).G (jj x)`. Introduce `x`. Conclude with `(by with_unfolding_all exact ((congrArg (fun f => f (S.hI.eHH (D.sEE x))) (eq_of_heq heH)).trans (S.rowPin x) :))`. Conclude with `⟨⟨hI', aT, cP, jj, rP, lT⟩, (by with_unfolding_all exact (HEq.refl S.j :))⟩`.
+-/
 theorem SRest.exists_re_ofDiv {F : ∀ u, Forms0 D u} {P : SPack D F} (S : SRest P)
     {F' : ∀ u, Forms0 (reD D (New.ofDiv D N hh)) u} (h : SameForms0LevelsAndValues (New.ofDiv D N hh) F F')
     (hF : FinX (reY (New.ofDiv D N hh) P.Y)) :

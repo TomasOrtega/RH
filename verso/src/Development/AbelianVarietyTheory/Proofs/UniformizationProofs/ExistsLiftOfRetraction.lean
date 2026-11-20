@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RatLift
 
+/- English proof (translation)
+Use `⟨Z.isoSpec.hom ≫ Spec.map (b.appLE V ⊤ hb) ≫ Spec.map r ≫ (hV.preimage q).fromSpec, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← hV.SpecMap_appLE_fromSpec q (hV.preimage q) le_rfl, Scheme.Hom.appLE_eq_app, ← Spec.map_comp_assoc (q.app V) r, hr, Spec.map_id, Category.id_comp, hV.SpecMap_appLE_fromSpec b (isAffineOpen_top Z) hb, IsAffineOpen.fromSpec_top, Iso.hom_inv_id_assoc]`.
+-/
 theorem exists_lift_of_retraction {X B Z : Scheme.{0}} [IsAffine Z] (q : X ⟶ B) [IsAffineHom q] {V : B.Opens}
     (hV : IsAffineOpen V) (r : Γ(X, q ⁻¹ᵁ V) ⟶ Γ(B, V)) (hr : q.app V ≫ r = 𝟙 _) (b : Z ⟶ B)
     (hb : ⊤ ≤ b ⁻¹ᵁ V) : ∃ x : Z ⟶ X, x ≫ q = b := by
@@ -19,6 +22,11 @@ theorem exists_lift_of_retraction {X B Z : Scheme.{0}} [IsAffine Z] (q : X ⟶ B
     Spec.map_id, Category.id_comp, hV.SpecMap_appLE_fromSpec b (isAffineOpen_top Z) hb, IsAffineOpen.fromSpec_top,
     Iso.hom_inv_id_assoc]
 
+/- English proof (translation)
+Set `e` to `RingEquiv.ofBijective _ h`. Set `a : AddMonoidAlgebra A X →+* A` to `AddMonoidAlgebra.liftNCRingHom (RingHom.id A) (1 : Multiplicative X →* A) (fun _ _ => Commute.all _ _)`. Use `⟨a.comp e.symm.toRingHom, RingHom.ext fun c => ?_⟩` and prove the remaining obligations. Establish `: e.symm (f c) = AddMonoidAlgebra.single 0 c`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+
+Simplify using `[e, AddMonoidAlgebra.liftNCRingHom]`. Simplify using `[this, a, AddMonoidAlgebra.liftNCRingHom]`.
+-/
 theorem exists_retraction {A C X : Type} [CommRing A] [CommRing C] [AddCommGroup X] (f : A →+* C)
     (g : Multiplicative X →* C)
     (h : Function.Bijective (AddMonoidAlgebra.liftNCRingHom f g (fun _ _ => Commute.all _ _))) :
@@ -34,6 +42,15 @@ theorem exists_retraction {A C X : Type} [CommRing A] [CommRing C] [AddCommGroup
 
 attribute [local instance] SplitExt.free SplitExt.finite
 
+/- English proof (translation)
+Introduce `F _ E G _ Dat b`. Set `b' : Spec (CommRingCat.of F) ⟶ E.B.left` to `b.left`. Set `p : Spec (CommRingCat.of F)` to `default`. Use `choose j hj using fun k => exists_chart (E.O (E.basis k)).isLB (b' p)`. Establish `hp : b' p ∈ E.chart j`.
+
+Establish `: ((E.chart j : E.B.left.Opens) : Set E.B.left) = ⋂ k, ((E.O (E.basis k)).L.U (j k) : Set E.B.left)` using `TopologicalSpace.Opens.coe_iInf _`. Conclude with `this.ge (Set.mem_iInter.2 hj)`. Take `⟨_, ⟨V, hV, rfl⟩, hpV, hVj⟩` from `E.B.left.isBasis_affineOpens.exists_subset_of_mem_open hp (E.chart j).2`. Take `⟨r, hr⟩` from `exists_retraction _ _ (Dat.coord j V hV hVj)`. Use `Dat.q_affine` as an intermediate fact.
+
+Take `⟨x, hx⟩` from `exists_lift_of_retraction Dat.q.left hV (CommRingCat.ofHom r) (CommRingCat.hom_ext hr) b' (fun y _ => by`. Take `rfl : y = p` from `Subsingleton.elim _ _`. Conclude with `hpV)`. Use `⟨Over.homMk x ?_, Over.OverMorphism.ext hx⟩` and prove the remaining obligations. Rewrite using `[← Over.w Dat.q, ← Category.assoc, hx]`.
+
+Conclude with `Over.w b`.
+-/
 theorem exists_point_over :
     ∀ (F : Type) [Field F] (E : SplitExt (Spec (CommRingCat.of F))) (G : Over (Spec (CommRingCat.of F))) [GrpObj G] (Dat : E.GtDatum G) (b : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ E.B), ∃ x : 𝟙_ (Over (Spec (CommRingCat.of F))) ⟶ G, x ≫ Dat.q = b := by
   intro F _ E G _ Dat b

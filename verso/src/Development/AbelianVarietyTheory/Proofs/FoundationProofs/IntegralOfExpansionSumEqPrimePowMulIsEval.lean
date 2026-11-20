@@ -12,6 +12,31 @@ noncomputable section
 
 namespace GlobalTheory.GeoFix.Divide
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ hc T n ψ h d e a he v o ho hsum`. Use `haveI := Basic.charZero_of_isClo hc`. Use `set c : ℤ → Ω := fun r => ∑ t, e t * zp Ω ((a t).coeff r) with hcdef`. Establish `hev : Ev ψ c (∑ t, e t * ψ (algebraMap (Lau p) (O0 p) (a t))) (∑ t, e t * ψ (algebraMap (Lau p) (O0 p) (thL (a t))))` using `⟨d, e, a, he, fun r => rfl, rfl, rfl⟩`. Establish `hcong : Cong p v (∑ t, e t * ψ (algebraMap (Lau p) (O0 p) (a t))) 0` using `⟨o, ho, by rw [sub_zero, hsum]⟩`.
+
+Establish `hcr` using `((GlobalTheory.T.evalSeries_cong_iff_coeff_and_isUnit p Ω hc T n ψ h v c _ _ hev).1.1 hcong)`. Use `choose y hy hcy using hcr`. Take `⟨m, f, hf, hlat⟩` from `GlobalTheory.T.exists_finite_padic_span_of_pow_p_mul_mem p Ω hc d e he v`. Establish `hμ : ∀ r, ∃ μ : Fin m → ℤ_[p], y r = ∑ j, zp Ω (μ j) * f j`. Introduce `r`.
+
+Use `hlat (fun t => (a t).coeff r) (y r) (hy r) ?_` and prove the remaining obligations. Use `hcy r` as an intermediate fact. Rewrite `this` using `[sub_zero]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun t _ => mul_comm _ _`.
+
+Use `choose μ hμ using hμ`. Set `μ' : ℤ → Fin m → ℤ_[p]` to `fun r => if ∀ t, (a t).coeff r = 0 then 0 else μ r`. Establish `hsupp : ∀ j, (Function.support fun r => μ' r j) ⊆ ⋃ t ∈ (Finset.univ : Finset (Fin d)), (a t).support`. Introduce `j r hr`. Simplify using `only [Function.mem_support] at hr`.
+
+Distinguish the cases in `h0 : ∀ t, (a t).coeff r = 0`. Conclude with `absurd (by simp [μ', h0]) hr`. Use `push_neg at h0`. Take `⟨t, ht⟩` from `h0`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ t)) ht`.
+
+Establish `hpwo : (⋃ t ∈ (Finset.univ : Finset (Fin d)), (a t).support).IsPWO` using `(Finset.univ.isPWO_bUnion).2 fun t _ => (a t).isPWO_support`. Set `Λ : Fin m → Lau p` to `fun j => ⟨fun r => μ' r j, hpwo.mono (hsupp j)⟩`. Establish `hΛ : ∀ j r, (Λ j).coeff r = μ' r j` using `fun _ _ => rfl`. Set `Λp : Fin m → Lau p` to `fun j => HahnSeries.C ((p : ℤ_[p]) ^ v) * Λ j`. Establish `hzpp : zp Ω ((p : ℤ_[p]) ^ v) = (p : Ω) ^ v`.
+
+Rewrite using `[← GlobalTheory.EvUniq.zpHom_apply, map_pow, map_natCast]`. Establish `hcoef : ∀ r, c r = ∑ j, f j * zp Ω ((Λp j).coeff r)`. Introduce `r`. Establish `hc1 : ∀ j, zp Ω ((Λp j).coeff r) = (p : Ω) ^ v * zp Ω (μ' r j)`. Introduce `j`.
+
+Simplify using `only [Λp, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul, hΛ]`. Rewrite using `[← GlobalTheory.EvUniq.zpHom_apply, map_mul, GlobalTheory.EvUniq.zpHom_apply, GlobalTheory.EvUniq.zpHom_apply, hzpp]`. Simplify using `only [hc1]`. Distinguish the cases in `h0 : ∀ t, (a t).coeff r = 0`. Establish `hμ0 : μ' r = 0` using `by simp [μ', h0]`.
+
+Establish `hz : zp Ω (0 : ℤ_[p]) = 0` using `by rw [← GlobalTheory.EvUniq.zpHom_apply, map_zero]`. Simplify using `[hcdef, h0, hμ0, hz]`. Establish `hμr : μ' r = μ r` using `by simp [μ', h0]`. Use `hcy r` as an intermediate fact. Rewrite `this` using `[sub_zero]`.
+
+Rewrite using `[this, hμ r, hμr, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hev2 : Ev ψ c (∑ j, f j * ψ (algebraMap (Lau p) (O0 p) (Λp j))) (∑ j, f j * ψ (algebraMap (Lau p) (O0 p) (thL (Λp j))))` using `⟨m, f, Λp, hf, hcoef, rfl, rfl⟩`. Establish `heq` using `(GlobalTheory.EvUniq.ev_unique p Ω hc T n ψ h c _ _ _ _ hev hev2).1`. Establish `hval : ∑ j, f j * ψ (algebraMap (Lau p) (O0 p) (Λp j)) = (p : Ω) ^ v * ∑ j, f j * ψ (algebraMap (Lau p) (O0 p) (Λ j))`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Λp, map_mul, GlobalTheory.EvUniq.psi_C h, hzpp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp0 : (p : Ω) ^ v ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+
+Establish `ho' : o = ∑ j, f j * ψ (algebraMap (Lau p) (O0 p) (Λ j))`. Rewrite `heq` using `[hsum, hval]`. Conclude with `mul_left_cancel₀ hp0 heq`. Conclude with `⟨fun r => ∑ j, f j * zp Ω ((Λ j).coeff r), _, m, f, Λ, hf, fun r => rfl, ho', rfl⟩`.
+-/
 theorem divide_ev : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (n : ℕ) (ψ : O0 p →+* Ω), IsReb T n ψ → ∀ (d : ℕ) (e : Fin d → Ω) (a : Fin d → Lau p),
     (∀ t, IsInt p (e t) ∧ IsAlgZp p (e t)) → ∀ (v : ℕ) (o : Ω), IsInt p o →

@@ -10,6 +10,9 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Establish `h'` using `(GlobalTheory.LieMet.isComb_iff (fun l => GlobalTheory.LieMet.tanOf (hu l)) cf _).2 rfl`. Establish `e` using `((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h).symm.trans ((isCombAtG_iff t _ (fun j => ovT (hu j)) _ _).1 h')`. Rewrite using `[e]`. Conclude with `GlobalTheory.LieMet.isTan_tv _`.
+-/
 private theorem isTan_of_comb {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hu : ∀ l, IsTanAtG t x (u l)) {cf : Fin m → S}
     {w : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x u cf w) : IsTanAtG t x w := by
@@ -25,6 +28,11 @@ variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type
 attribute [local instance] Over.cartesianMonoidalCategory in
 open MonoidalCategory CartesianMonoidalCategory MonObj ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.LieMet in
 
+/- English proof (translation)
+Establish `h1 : ∀ i, f.vec τ i = ∑ k, a k i • GlobalTheory.LieMet.tanOf (hB k)` using `fun i => (GlobalTheory.LieMet.isComb_iff (fun k => GlobalTheory.LieMet.tanOf (hB k)) _ (f.vec τ i)).1 (ha i)`. Use `funext (Fintype.linearIndependent_iff.1 (f.linearIndependent_vec τ) v ?_)` and prove the remaining obligations. Establish `h2 : ∑ i, v i • f.vec τ i = ∑ k, (a *ᵥ v) k • GlobalTheory.LieMet.tanOf (hB k)`. Simplify using `only [h1, Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul, mul_comm]`. Conclude with `Finset.sum_comm`.
+
+Rewrite using `[h2, hv]`. Simplify using the standard rewrite rules.
+-/
 private theorem eq_zero_of_mulVec {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x)
     (τ : E →+* ℂ) {g : ℕ} {B : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)} (hB : ∀ k, IsTanAtG Z.t x (B k))
     (a : Matrix (Fin g) (Fin (Dw.mult τ)) R) (ha : ∀ i, IsCombAtG Z.t x B (fun k => a k i) (f.v τ i))
@@ -38,6 +46,11 @@ private theorem eq_zero_of_mulVec {R : Type} [CommRing R] {φ : c.F →+* R} {x 
   rw [h2, hv]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hQ`. Establish `h0 : (Q.map (IsLocalRing.residue R)).det = 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hQ`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`.
+
+Take `⟨f', hf'⟩` from `f.exists_isMap (IsLocalRing.residue R) rfl rfl`. Use `hv0 (eq_zero_of_mulVec f' τ (fun k => GlobalTheory.LieMet.isTan_map (IsLocalRing.residue R) rfl (hB k)) ((S * Q).map (IsLocalRing.residue R)) (fun i => ?_) ?_)` and prove the remaining obligations. Rewrite using `[hf' τ i]`. Conclude with `GlobalTheory.GradedPieces.comb_map _ rfl (ha i)`. Rewrite using `[Matrix.map_mul, ← mulVec_mulVec, hv, mulVec_zero]`.
+-/
 private theorem isUnit_det_of_factor {R : Type} [CommRing R] [IsLocalRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f : EigFrame Z φ x) (τ : E →+* ℂ) {g : ℕ} {B : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)}
     (hB : ∀ k, IsTanAtG Z.t x (B k)) (S : Matrix (Fin g) (Fin (Dw.mult τ)) R)
@@ -57,6 +70,31 @@ private theorem isUnit_det_of_factor {R : Type} [CommRing R] [IsLocalRing R] {φ
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ hρ g₀ τ X j ρ' hj V P hS y hy`. Take `⟨hV, hξ, g, b, S, S', hb, hSS, -, hw⟩` from `hS`. Take `⟨φ, f₁, P₁, h₁⟩` from `exists_fits hρ g₀ τ y`. Take `⟨k, hk⟩` from `exists_isMap_toFn (e := e) f₁ h₁.1`. Establish `hP₁ : g₀.co k τ = P₁` using `(fits_iff h₁.1 hk).1 h₁`.
+
+Take `⟨α, hα0⟩ : ∃ α : Γ(X, V) →+* Y.X.presheaf.stalk y, α = evalPt (stalkPt Y y ≫ j) V (stalk_le j hy)` from `⟨_, rfl⟩`. Take `⟨ev, hev0⟩ : ∃ ev : Γ(X, V) →+* Y.Fn, ev = evalPt (genericPt Y ≫ j) V hξ` from `⟨_, rfl⟩`. Rewrite `hw` using `[← hev0]`. Establish `hα : spMap α ≫ hV.fromSpec ≫ ρ' = stalkPt Y y ≫ ρ ≫ genι Z`. Rewrite using `[← hj, ← Category.assoc, ← Category.assoc, hα0]`.
+
+Conclude with `congrArg (· ≫ ρ') (eq_spec_fromSpec hV _ _).symm`. Establish `hev : spMap ev ≫ hV.fromSpec ≫ ρ' = genericPt Y ≫ ρ ≫ genι Z`. Rewrite using `[← hj, ← Category.assoc, ← Category.assoc, hev0]`. Conclude with `congrArg (· ≫ ρ') (eq_spec_fromSpec hV _ _).symm`. Establish `hg : spMap (toFn y) ≫ stalkPt Y y ≫ j = genericPt Y ≫ j` using `by rw [← Category.assoc, spMap_toFn]`.
+
+Establish `hx : spMap (toFn y) ≫ stalkPt Y y ≫ ρ ≫ genι Z = genericPt Y ≫ ρ ≫ genι Z`. Rewrite using `[← Category.assoc, spMap_toFn]`. Establish `hc : (toFn y).comp α = ev` using `RingHom.ext fun s => by`. Establish `h' : ⊤ ≤ (spMap (toFn y) ≫ stalkPt Y y ≫ j) ⁻¹ᵁ V` using `hg.symm ▸ hξ`. Use `evalPt_spMap_comp (toFn y) (stalkPt Y y ≫ j) V (stalk_le j hy) h' s` as an intermediate fact.
+
+Rewrite using `[hα0, hev0, RingHom.comp_apply, ← this]`. Use `congr 1`. Simplify using `only [hg]`. Establish `hBα : ∀ i, IsTanAtG Z.t (stalkPt Y y ≫ ρ ≫ genι Z) (spMap (dualMap α) ≫ b i)` using `fun i => GlobalTheory.LieMet.isTan_map α hα (hb.1 i)`. Establish `hBev : ∀ i, IsTanAtG Z.t (genericPt Y ≫ ρ ≫ genι Z) (spMap (dualMap ev) ≫ b i)` using `fun i => GlobalTheory.LieMet.isTan_map ev hev (hb.1 i)`.
+
+Establish `h2` using `hb.2 _ α`. Establish `h3` using `hb.2 _ ev`. Rewrite `h2` using `[hα]`. Rewrite `h3` using `[hev]`. Use `choose a₀ ha₀ using fun i => (h2 (f₁.v τ i) (f₁.tan τ i)).exists`.
+
+Take `⟨a, ha⟩ : ∃ a : Matrix (Fin g) (Fin (Dw.mult τ)) (Y.X.presheaf.stalk y), ∀ i, IsCombAtG Z.t (stalkPt Y y ≫ ρ ≫ genι Z) (fun i => spMap (dualMap α) ≫ b i) (fun r => a r i) (f₁.v τ i)` from `⟨Matrix.of fun r i => a₀ i r, ha₀⟩`. Establish `ha' : ∀ i, IsCombAtG Z.t (genericPt Y ≫ ρ ≫ genι Z) (fun i => spMap (dualMap ev) ≫ b i) (fun r => a.map (toFn y) r i) (k.v τ i)` using `fun i => by`. Use `GlobalTheory.GradedPieces.comb_map (toFn y) hx (ha i)` as an intermediate fact. Simplify using `only [GlobalTheory.GradedPieces.dual_comp, hc] at this`. Rewrite using `[hk τ i]`.
+
+Conclude with `this`. Establish `hSC : S.map ev = a.map (toFn y) * (k.co g₀ τ * P)`. Use extensionality with `r i`. Take `⟨w, hw₁, hw₂⟩` from `hw i`. Establish `e₁` using `tanLinG _ (k.tan τ) _ _ _ w (k.co_spec g₀ τ) hw₁`.
+
+Establish `e₂` using `tanLinG _ hBev _ _ _ w ha' e₁`. Establish `e₃` using `congrFun ((h3 w (isTan_of_comb hBev hw₂)).unique hw₂ e₂) r`. Rewrite `e₃` using `[mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `e₃`.
+
+Establish `hα' : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) Γ(X, V)), (M.map α).map (toFn y) = M.map ev` using `fun M => by`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Establish `hQ : (S'.map α * a).map (toFn y) * (k.co g₀ τ * P) = 1`. Rewrite using `[Matrix.map_mul, hα', Matrix.mul_assoc, ← hSC, ← Matrix.map_mul, hSS, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hfac : S.map α * (S'.map α * a) = a` using `Matrix.map_injective (toFn_injective y) (by`. Express the relevant statement in the definitionally equal form `Matrix.map _ _ = Matrix.map _ _`. Rewrite using `[Matrix.map_mul, hα', hSC, Matrix.mul_assoc, mul_eq_one_comm.1 hQ, Matrix.mul_one])`. Establish `hu : IsUnit (S'.map α * a).det` using `isUnit_det_of_factor f₁ τ hBα (S.map α) _ (by rw [hfac]; exact ha)`. Take `⟨f', -, hf'⟩` from `h₁.exists_mul (isUnit_nonsing_inv_det _ hu)`.
+
+Use `⟨φ, f', ?_⟩` and prove the remaining obligations. Establish `hinv : ((S'.map α * a)⁻¹).map (toFn y) = k.co g₀ τ * P`. Rewrite using `[← Matrix.mul_one (Matrix.map _ _), ← hQ, ← Matrix.mul_assoc, ← Matrix.map_mul, nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Rewrite `hf'` using `[hinv, ← hP₁, ← Matrix.mul_assoc, EigFrame.co_mul, EigFrame.co_self, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.frame_generic_chart_norm :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (Y : Var F) (ρ : Y.X ⟶ gen Z) (_ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g₀ : GenFrame e ρ) (τ : E →+* ℂ) (X : Scheme.{0}) (j : Y.X ⟶ X) (ρ' : X ⟶ Z.X), j ≫ ρ' = ρ ≫ genι Z → ∀ (V : X.Opens) (P : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn), SplitOn g₀ τ j ρ' V P → FrOn g₀ τ j V P := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e Y ρ hρ g₀ τ X j ρ' hj V P hS y hy

@@ -14,6 +14,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hg : InG (x * cE X s)` using `inG_mul hx (inG_cE hX s)`. Establish `hd` using `det_first_cayley_block_ne_zero hg`. Establish `hmul : (u1 (x * cE X s)).det * (ub1 (x * cE X s)).det = ((Complex.normSq (u1 (x * cE X s)).det : ℝ) : ℂ)`. Rewrite using `[inverse_first_block_eq_adjoint hg, Matrix.det_conjTranspose]`. Conclude with `Complex.mul_conj _`.
+
+Establish `hpos : (0 : ℝ) < Complex.normSq (u1 (x * cE X s)).det` using `Complex.normSq_pos.mpr hd`. Unfold `fz`. Rewrite using `[hmul, Complex.cpow_def_of_ne_zero (by exact_mod_cast hpos.ne'), Complex.ofReal_log hpos.le]`.
+-/
 theorem fz_curve {X x : M2 n} (hX : IsLie X) (hx : InG x) (m : ℕ) (e : ℤ) (w : ℂ) (s : ℝ) :
     fz m e w (x * cE X s) = (x * cE X s).det ^ e * (u1 (x * cE X s)).det ^ (-(m : ℤ)) *
       Complex.exp (((Real.log (Complex.normSq (u1 (x * cE X s)).det) : ℝ) : ℂ) * (-w)) := by
@@ -27,6 +32,33 @@ theorem fz_curve {X x : M2 n} (hX : IsLie X) (hx : InG x) (m : ℕ) (e : ℤ) (w
   unfold fz
   rw [hmul, Complex.cpow_def_of_ne_zero (by exact_mod_cast hpos.ne'), Complex.ofReal_log hpos.le]
 
+/- English proof (translation)
+Establish `hd0 : det x ≠ 0` using `(isUnit_det_of_InG hx).ne_zero`. Establish `ha0 : (u1 x).det ≠ 0` using `det_first_cayley_block_ne_zero hx`. Establish `hfun : (fun s : ℝ => fz m e w (x * cE X s)) = fun s : ℝ => (x * cE X s).det ^ e * (u1 (x * cE X s)).det ^ (-(m : ℤ)) * Complex.exp (((Real.log (Complex.normSq (u1 (x * cE X s)).det) : ℝ) : ℂ) * (-w))`. Use function extensionality and compare the values at `fun s => fz_curve hX hx m e w s`. Establish `hf0 : fz m e w x = (det x) ^ e * (u1 x).det ^ (-(m : ℤ)) * Complex.exp (((Real.log (Complex.normSq (u1 x).det) : ℝ) : ℂ) * (-w))`.
+
+Establish `h` using `fz_curve hX hx m e w 0`. Rewrite `h` using `[cE_zero, mul_one]`. Conclude with `h`. Establish `hD : HasDerivAt (fun s : ℝ => det (x * cE X s)) ((fderiv ℂ (fun y : M2 n => det y) x) (x * X)) 0` using `curve_deriv (fun y : M2 n => det y) cd_det X x`. Establish `hA : HasDerivAt (fun s : ℝ => (u1 (x * cE X s)).det) ((fderiv ℂ (fun y : M2 n => (u1 y).det) x) (x * X)) 0` using `curve_deriv (fun y : M2 n => (u1 y).det) cd_detu1 X x`.
+
+Establish `hD0 : det (x * cE X 0) = det x` using `by rw [cE_zero, mul_one]`. Establish `hA0 : (u1 (x * cE X 0)).det = (u1 x).det` using `by rw [cE_zero, mul_one]`. Establish `hzD : HasDerivAt (fun z : ℂ => z ^ e) (↑e * det x ^ (e - 1)) (det (x * cE X 0))`. Rewrite using `[hD0]`. Conclude with `hasDerivAt_zpow e (det x) (Or.inl hd0)`.
+
+Establish `hzA : HasDerivAt (fun z : ℂ => z ^ (-(m : ℤ))) (↑(-(m : ℤ)) * (u1 x).det ^ (-(m : ℤ) - 1)) ((u1 (x * cE X 0)).det)`. Rewrite using `[hA0]`. Conclude with `hasDerivAt_zpow _ _ (Or.inl ha0)`. Establish `hDz` using `hzD.comp (0 : ℝ) hD`. Establish `hAz` using `hzA.comp (0 : ℝ) hA`.
+
+Establish `hre : HasDerivAt (fun s : ℝ => (u1 (x * cE X s)).det.re) ((fderiv ℂ (fun y : M2 n => (u1 y).det) x) (x * X)).re 0`. Establish `h2` using `Complex.reCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hA`. Conclude with `h2`. Establish `him : HasDerivAt (fun s : ℝ => (u1 (x * cE X s)).det.im) ((fderiv ℂ (fun y : M2 n => (u1 y).det) x) (x * X)).im 0`. Establish `h2` using `Complex.imCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hA`.
+
+Conclude with `h2`. Establish `hN` using `((hre.mul hre).add (him.mul him)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => Complex.normSq_apply (u1 (x * cE X s)).det)`. Establish `hNne : Complex.normSq (u1 (x * cE X 0)).det ≠ 0`. Rewrite using `[hA0]`. Conclude with `(Complex.normSq_pos.mpr ha0).ne'`.
+
+Establish `hL` using `hN.log hNne`. Establish `hE` using `(hL.ofReal_comp.mul_const (-w)).cexp`. Establish `hfin` using `(hDz.mul hAz).mul hE`. Rewrite using `[hfun]`. Use `⟨_, hfin, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hA0, hD0, Function.comp_apply]`. Establish `hd' : (fderiv ℂ (fun y : M2 n => det y) x) (x * X) = rD X x * det x`. Unfold `rD`. Clear the denominators using the available nonvanishing facts. Establish `ha' : (fderiv ℂ (fun y : M2 n => (u1 y).det) x) (x * X) = rA X x * (u1 x).det`.
+
+Unfold `rA`. Clear the denominators using the available nonvanishing facts. Establish `bound : ‖(det x ^ e * (u1 x).det ^ (-(m : ℤ)) * Complex.exp (((Real.log (Complex.normSq (u1 x).det) : ℝ) : ℂ) * (-w))) * ((e : ℂ) * rD X x + (-(m : ℂ)) * rA X x + ((2 * (rA X x).re : ℝ) : ℂ) * (-w))‖ ≤ ‖fz m e w x‖ * (|(e : ℝ)| * ‖rD X x‖ + ((m : ℝ) + 2 * ‖w‖) * ‖rA X x‖)`. Rewrite using `[norm_mul, hf0]`. Apply `mul_le_mul_of_nonneg_left _ (norm_nonneg _)` to reduce the goal to its premises.
+
+Use `norm_add₃_le.trans ?_` and prove the remaining obligations. Establish `h1 : |(rA X x).re| ≤ ‖rA X x‖` using `Complex.abs_re_le_norm _`. Establish `h2 : 0 ≤ ‖w‖` using `norm_nonneg _`. Simplify using `only [norm_mul, norm_neg, Complex.norm_intCast, Complex.norm_natCast, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_two]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 h2]`.
+
+Use `bound using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hd', ha']`. Establish `hq : ((rA X x * (u1 x).det).re * (u1 x).det.re + (u1 x).det.re * (rA X x * (u1 x).det).re + ((rA X x * (u1 x).det).im * (u1 x).det.im + (u1 x).det.im * (rA X x * (u1 x).det).im)) / Complex.normSq (u1 x).det = 2 * (rA X x).re`. Establish `hn : Complex.normSq (u1 x).det ≠ 0` using `(Complex.normSq_pos.mpr ha0).ne'`. Rewrite using `[div_eq_iff hn, Complex.normSq_apply]`.
+
+Simplify using `only [Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq]`. Simplify using `only [Pi.mul_apply, Function.comp_apply, cE_zero, mul_one]`. Rewrite using `[zpow_sub_one₀ hd0, zpow_sub_one₀ ha0]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fz_deriv {X x : M2 n} (hX : IsLie X) (hx : InG x) (m : ℕ) (e : ℤ) (w : ℂ) :
     ∃ R : ℂ, HasDerivAt (fun s : ℝ => fz m e w (x * cE X s)) R 0 ∧
       ‖R‖ ≤ ‖fz m e w x‖ * (|(e : ℝ)| * ‖rD X x‖ + ((m : ℝ) + 2 * ‖w‖) * ‖rA X x‖) := by

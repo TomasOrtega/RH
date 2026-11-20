@@ -30,6 +30,13 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 
 namespace GlobalTheory.PlaceShiftGlue
 
+/- English proof (translation)
+Introduce `h`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `h1` using `[h]`. Establish `h2 : φ (H.rt : E) ^ 2 = -(H.d : ℂ)`.
+
+Rewrite using `[← map_pow, RingOfIntegers.coe_eq_algebraMap, ← map_pow, H.rt_sq]`. Simplify using the standard rewrite rules. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h1.symm`. Rewrite `h2` using `[hr]`. Establish `h3 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h2`.
+
+Establish `h4 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+-/
 theorem bar_rt_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     IsCMField.complexConj E (H.rt : E) ≠ (H.rt : E) := by
   intro h
@@ -46,6 +53,11 @@ theorem bar_rt_ne {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Recipr
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Simplify using `only [finsum_eq_sum_of_fintype, mul_add, Finset.mul_sum]`. Establish `: ∑ i, (n i : ℝ) * κ i = ∑ i, (a : ℝ) * (if S i then κ i else 0) + ∑ i, (q : ℝ) * (if S i then 0 else κ i)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hn]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_two_weights {ι : Type} [Finite ι] (S : ι → Prop) (n : ι → ℕ) (κ : ι → ℝ) (κ₀ : ℝ) (a q : ℕ)
     (hn : ∀ i, n i = if S i then a else q) :
     ((a + q : ℕ) : ℝ) * κ₀ + ∑ᶠ i, (n i : ℝ) * κ i =
@@ -62,6 +74,9 @@ theorem sum_two_weights {ι : Type} [Finite ι] (S : ι → Prop) (n : ι → �
   push_cast
   ring
 
+/- English proof (translation)
+Use `haveI : Module.Free ℤ_[p] Λ := inferInstance`. Take `⟨N, -, hN, -⟩` from `GlobalTheory.DetInv.rep_free_charpoly p Λ h _ (Module.finBasis ℤ_[p] Λ) ρ`. Conclude with `⟨N, hN.trans (mul_comm _ _)⟩`.
+-/
 theorem exists_height_eq {p : ℕ} [Fact p.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ]
     [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] {h : ℕ}
     (ρ : Λ →ₐ[ℤ_[p]] Matrix (Fin h) (Fin h) ℤ_[p]) : ∃ N, h = Module.finrank ℤ_[p] Λ * N := by
@@ -71,6 +86,17 @@ theorem exists_height_eq {p : ℕ} [Fact p.Prime] {Λ : Type} [CommRing Λ] [IsD
 
 open Classical in
 
+/- English proof (translation)
+Establish `hv` using `P.integers`. Take `⟨hT, hH, hex, heig⟩` from `GlobalTheory.T.datum_tie_number_field_point p C v O E P ε h D φ hε hD`. Take `⟨h', D', iT, pT, iM, pM, hsp⟩` from `GlobalTheory.T.idempotent_quotient_datum_compat p C v O hv ε hε _ Λ π e he hπ hk h D`. Establish `hss` using `GlobalTheory.DetInv.part_rank_dim_shift p C v O hv ε hε _ Λ π e he hπ hk h h' D D' iT pT iM pM hsp hT hH`. Take `⟨N, hN⟩` from `exists_height_eq D'.ρT`.
+
+Take `⟨r, hr0, hr, hlog⟩` from `hκ N h' hN D'`. Establish `hdim` using `(GlobalTheory.eig_decomp_T_H p C v O hv ε hε Λ N h' hN D').1.2.2 ((γ : O →+* O).comp t₀)`. Take `⟨-, hd, hsh⟩` from `hss ((γ : O →+* O).comp t₀)`. Establish `ha : Module.finrank C (P.eigW (embO P.integers τ)) = a` using `by rw [hrank, if_pos rfl]`. Establish `hq : Module.finrank C (P.eigW ((embO P.integers τ).comp (starRingEnd (𝓞 E)))) = q`.
+
+Rewrite using `[hτ', hrank, if_neg hrt]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.datum_tie_hodge_tate_kernel p C v O E P ε h D φ hε hD _ τ r (RingHom.ext hτ) (hsh r hr) a q x y g g' ha hq hx hy hg hg'`. Establish `hNa : N = a + q` using `by rw [← hdim, hd, h3]`. Use `haveI := (GlobalTheory.card_ringHom_to_integers_eq_finrank p C v O hv Λ).1`. Establish `hlie : ∀ σ : Λ →+* O, D'.lieRank ((γ : O →+* O).comp σ) = if σ (π (1 ⊗ₜ rt)) = t₀ (π (1 ⊗ₜ rt)) then a else q` using `fun σ => by`.
+
+Take `⟨ψ, hψ⟩` from `hex (((γ : O →+* O).comp σ).comp (π : ℤ_[p] ⊗[ℤ] 𝓞 E →+* Λ))`. Rewrite using `[(hss _).1, (heig _ ψ hψ).2.2.2, hrank]`. Establish `e1 : γ (σ (π (1 ⊗ₜ rt))) = embO P.integers ψ rt` using `RingHom.congr_fun hψ rt`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[← algebraMap_embO P.integers ψ, ← algebraMap_embO P.integers τ, ← e1, ← hτ, hv.hom_inj.eq_iff, γ.injective.eq_iff]`.
+
+Establish `hg0 : ((v g'.det : NNReal) : ℝ) ≠ 0`. Conclude with `(Valuation.ne_zero_iff v).2 h2` after adjusting the coercions. Establish `hr0' : (r : ℝ) ≠ 0` using `by exact_mod_cast hr0`. Rewrite using `[h1, NNReal.coe_mul, Real.log_mul hr0' hg0, add_sub_cancel_right, hlog, hNa]`. Conclude with `sum_two_weights _ (fun σ => D'.lieRank ((γ : O →+* O).comp σ)) κ κ₀ a q hlie`.
+-/
 theorem shift_at_point (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
@@ -128,6 +154,19 @@ theorem shift_at_point (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClose
   rw [h1, NNReal.coe_mul, Real.log_mul hr0' hg0, add_sub_cancel_right, hlog, hNa]
   exact sum_two_weights _ (fun σ => D'.lieRank ((γ : O →+* O).comp σ)) κ κ₀ a q hlie
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ ℓ _ w`. Distinguish the cases in `hw : ∃ τ₀ : E →+* ℂ_[ℓ], ∀ a : 𝓞 E, a ∈ w.asIdeal ↔ ‖τ₀ (a : E)‖ < 1`. Use `swap`. Conclude with `⟨0, 0, fun τ hτ => (hw ⟨τ, hτ⟩).elim⟩`. Take `⟨τ₀, hτ₀⟩` from `hw`.
+
+Take `⟨i1, i2, ε, hv, hε⟩` from `PadicComplexHost.main ℓ`. Take `⟨Λ, _, _, _, _, _, _, π, e, t₀, he, hπ, hk, ht₀, hall⟩` from `GlobalTheory.PlaceRing.exists_placeRing E ℓ (embO hv τ₀)`. Take `⟨κ₀, κ, hκ⟩` from `GlobalTheory.T.dvr_embedding_determinant_value ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] hv ε hε Λ t₀`. Use `⟨κ₀ + ∑ᶠ σ : Λ →+* 𝓞_ℂ_[ℓ], @ite ℝ (σ (π (1 ⊗ₜ H.rt)) = t₀ (π (1 ⊗ₜ H.rt))) (Classical.propDecidable _) (κ σ) 0, κ₀ + ∑ᶠ σ : Λ →+* 𝓞_ℂ_[ℓ], @ite ℝ (σ (π (1 ⊗ₜ H.rt)) = t₀ (π (1 ⊗ₜ H.rt))) (Classical.propDecidable _) 0 (κ σ), fun τ hτ => ?_⟩` and prove the remaining obligations. Use `letI := H.starRing`.
+
+Use `letI := algPadicInt ℓ`. Use `letI := algPadicField ℓ`. Use `haveI := towerPadic ℓ`. Introduce `_ P a q hrank x x' g g' hx hx' hg hg'`. Establish `hc : ∀ (ψ : E →+* ℂ_[ℓ]) (b : 𝓞 E), ((embO hv ψ b : 𝓞_ℂ_[ℓ]) : ℂ_[ℓ]) = ψ b` using `fun ψ b => algebraMap_embO hv ψ b`.
+
+Take `⟨t, ht⟩` from `hall (embO hv τ) fun b => by rw [hc, hc, ← hτ, ← hτ₀]`. Take `⟨γ, hγ, rfl⟩` from `GlobalTheory.EmbConj.exists_isIsom_comp ℓ Λ t₀ t`. Establish `hε' : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε` using `Dieudonne.isPrimitiveRoot_untilt_root hε`. Establish `hS` using `GlobalTheory.T.hodgeTateSandwich_of_prismaticDieudonne hPD ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] hv ε hε'`. Establish `hP` using `(hK ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] (𝓞 E) P).2.2.2`.
+
+Take `⟨h, D, φ, hD⟩` from `GlobalTheory.T.hodge_tate_sandwich_star_rep ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] ε hε' hS (𝓞 E) P hP (GlobalTheory.T.hodge_tate_sandwich_lattice_rep hSW ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] ε hε' hS (𝓞 E) P hP)`. Rewrite using `[← PadicComplexHost.valuation_coe_eq_norm, ← PadicComplexHost.valuation_coe_eq_norm]`. Use `shift_at_point ℓ ℂ_[ℓ] Valued.v 𝓞_ℂ_[ℓ] E P ε hε h D φ hD Λ π e he hπ hk t₀ γ κ₀ κ (hκ γ hγ) τ (τ.comp (IsCMField.complexConj E).toAlgHom.toRingHom) ht ?_ H.rt ?_ a q hrank _ _ g g' hx hx' hg hg'` and prove the remaining obligations. Use `RingHom.ext fun b => hv.hom_inj ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, algebraMap_embO, algebraMap_embO]`.
+
+Conclude with `congrArg τ (H.bar_eq b)`. Conclude with `fun h0 => bar_rt_ne H (τ.injective h0)`.
+-/
 theorem placeShift (hSW : GlobalTheory.Published.ScholzeWeinsteinB) (hPD : GlobalTheory.Published.PrismaticDieudonneHodge)
     (hK : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint) : GlobalTheory.FlatCM.PlaceShiftSt := by
   classical

@@ -20,11 +20,17 @@ def reCo : (ι → κ → ℂ) ≃ₗ[ℝ] (ι × κ × Fin 2 → ℝ) where
     obtain ⟨i, c, t⟩ := p
     fin_cases t <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reCo_apply (a : ι → κ → ℂ) (p : ι × κ × Fin 2) :
     reCo a p = if p.2.2 = 0 then (a p.1 p.2.1).re else (a p.1 p.2.1).im := rfl
 
 def bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ) := (Pi.basisFun ℝ (ι × κ × Fin 2)).map reCo.symm
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [bstd]`.
+-/
 theorem bstd_repr (a : ι → κ → ℂ) (p : ι × κ × Fin 2) : (bstd : Module.Basis _ ℝ (ι → κ → ℂ)).repr a p = reCo a p := by
   first
   | rfl
@@ -32,6 +38,9 @@ theorem bstd_repr (a : ι → κ → ℂ) (p : ι × κ × Fin 2) : (bstd : Modu
 
 def Qf (g : κ → ℝ) (a b : ι → κ → ℂ) : ℝ := ∑ i, ∑ c, (a i c * star (b i c)).re * g c
 
+/- English proof (translation)
+Simplify using `only [Qf, Fintype.sum_prod_type, Fin.sum_univ_two, reCo_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im] <;> ring`.
+-/
 theorem Qf_eq (g : κ → ℝ) (a b : ι → κ → ℂ) :
     Qf g a b = ∑ p : ι × κ × Fin 2, reCo a p * reCo b p * g p.2.1 := by
   simp only [Qf, Fintype.sum_prod_type, Fin.sum_univ_two, reCo_apply]
@@ -40,6 +49,11 @@ theorem Qf_eq (g : κ → ℝ) (a b : ι → κ → ℂ) :
 
 def boxC : Set ℂ := {z | z.re ∈ Set.Ico (0 : ℝ) 1 ∧ z.im ∈ Set.Ico (0 : ℝ) 1}
 
+/- English proof (translation)
+Establish `h : boxC = Complex.measurableEquivRealProd ⁻¹' (Set.Ico (0 : ℝ) 1 ×ˢ Set.Ico (0 : ℝ) 1)`. Use extensionality with `z`. Use `first`. Consider the case `exact Iff.rfl`. Consider the case `simp [boxC, Complex.measurableEquivRealProd, Complex.equivRealProdCLM]`.
+
+Rewrite using `[h, Complex.volume_preserving_equiv_real_prod.measure_preimage_equiv, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Ico]`. Simplify using the standard rewrite rules.
+-/
 theorem volume_boxC : volume boxC = 1 := by
   have h : boxC = Complex.measurableEquivRealProd ⁻¹' (Set.Ico (0 : ℝ) 1 ×ˢ Set.Ico (0 : ℝ) 1) := by
     ext z
@@ -51,15 +65,26 @@ theorem volume_boxC : volume boxC = 1 := by
   simp
 
 omit [DecidableEq ι] [DecidableEq κ] in
+/- English proof (translation)
+Simplify using `[volume_pi_pi, volume_boxC]`.
+-/
 theorem volume_box : volume (Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : κ => boxC) = 1 := by
   simp [volume_pi_pi, volume_boxC]
 
 omit [DecidableEq ι] [DecidableEq κ] in
+/- English proof (translation)
+Use `first`. Consider the case `infer_instance`. Consider the case `exact Measure.pi.isAddHaarMeasure _`.
+-/
 theorem isAddHaar_vol : (volume : Measure (ι → κ → ℂ)).IsAddHaarMeasure := by
   first
   | infer_instance
   | exact Measure.pi.isAddHaarMeasure _
 
+/- English proof (translation)
+Rewrite using `[ZSpan.mem_fundamentalDomain]`. Use `first`. Consider the case `simp only [Module.Basis.repr_reindex_apply, Equiv.symm_symm, bstd_repr]`. Consider the case `simp only [Module.Basis.repr_reindex, Finsupp.mapDomain_equiv_apply, Equiv.symm_symm, bstd_repr]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h p`. Use `h (e.symm p)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h j`. Conclude with `h (e j)`.
+-/
 private theorem mem_fundamentalDomain_reindex_bstd_iff {N : ℕ} (e : Fin N ≃ ι × κ × Fin 2) (m : ι → κ → ℂ) :
     m ∈ ZSpan.fundamentalDomain ((bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ)).reindex e.symm) ↔
       ∀ p, reCo m p ∈ Set.Ico (0 : ℝ) 1 := by
@@ -74,6 +99,17 @@ private theorem mem_fundamentalDomain_reindex_bstd_iff {N : ℕ} (e : Fin N ≃ 
   · intro h j
     exact h (e j)
 
+/- English proof (translation)
+Establish `hset : ZSpan.fundamentalDomain ((bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ)).reindex e.symm) = Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : κ => boxC`. Use extensionality with `m`. Rewrite using `[mem_fundamentalDomain_reindex_bstd_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[Set.mem_pi]`. Introduce `i _`. Rewrite using `[Set.mem_pi]`. Introduce `c _`. Use `show (m i c).re ∈ Set.Ico (0 : ℝ) 1 ∧ (m i c).im ∈ Set.Ico (0 : ℝ) 1`.
+
+Conclude with `⟨by simpa [reCo_apply] using h (i, c, 0), by simpa [reCo_apply] using h (i, c, 1)⟩`. Introduce `h p`. Take `⟨i, c, t⟩` from `p`. Establish `hi` using `Set.mem_pi.1 h i (Set.mem_univ _)`. Establish `hic'` using `Set.mem_pi.1 hi c (Set.mem_univ _)`.
+
+Establish `hic : (m i c).re ∈ Set.Ico (0 : ℝ) 1 ∧ (m i c).im ∈ Set.Ico (0 : ℝ) 1` using `hic'`. Rewrite using `[reCo_apply]`. Use `fin_cases t`. Simplify using `using hic.1`. Simplify using `using hic.2`.
+
+Rewrite using `[hset, volume_box]`.
+-/
 theorem volume_fd_std {N : ℕ} (e : Fin N ≃ ι × κ × Fin 2) :
     volume (ZSpan.fundamentalDomain ((bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ)).reindex e.symm)) = 1 := by
   have hset : ZSpan.fundamentalDomain ((bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ)).reindex e.symm) =
@@ -99,6 +135,39 @@ theorem volume_fd_std {N : ℕ} (e : Fin N ≃ ι × κ × Fin 2) :
       · simpa using hic.2
   rw [hset, volume_box]
 
+/- English proof (translation)
+Establish `hEqW : (Submodule.span ℤ (Set.range w)).toAddSubgroup = AddSubgroup.closure (Set.range w)`. Use `le_antisymm ?_ ((AddSubgroup.closure_le _).2 Submodule.subset_span)` and prove the remaining obligations. Introduce `x hx`. Conclude with `Submodule.span_induction (p := fun x _ => x ∈ AddSubgroup.closure (Set.range w)) (fun y hy => AddSubgroup.subset_closure hy) (AddSubgroup.zero_mem _) (fun _ _ _ _ hx hy => AddSubgroup.add_mem _ hx hy) (fun a _ _ hx => AddSubgroup.zsmul_mem _ hx a) hx`. Establish `hL : ∀ x : ι → κ → ℂ, x ∈ AddSubgroup.closure (Set.range w) ↔ ∃ c : Fin N → ℤ, ∑ i, c i • w i = x`.
+
+Introduce `x`. Rewrite using `[← hEqW, Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun]`. Establish `hcount : Countable (AddSubgroup.closure (Set.range w))`. Use `Function.Surjective.countable (f := fun c : Fin N → ℤ => (⟨∑ i, c i • w i, (hL _).2 ⟨c, rfl⟩⟩ : AddSubgroup.closure (Set.range w))) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+
+Take `⟨c, rfl⟩` from `(hL x).1 hx`. Conclude with `⟨c, rfl⟩`. Take `⟨e⟩ : Nonempty (Fin N ≃ ι × κ × Fin 2)` from `⟨(Fintype.equivFinOfCardEq hN).symm⟩`. Take `⟨b0, hb0def⟩ : ∃ b0 : Module.Basis (Fin N) ℝ (ι → κ → ℂ), b0 = (bstd : Module.Basis (ι × κ × Fin 2) ℝ (ι → κ → ℂ)).reindex e.symm` from `⟨_, rfl⟩`. Establish `hb0 : ∀ v k, b0.repr v k = reCo v (e k)`.
+
+Introduce `v k`. Rewrite using `[hb0def]`. Use `first`. Consider the case `rw [Module.Basis.repr_reindex_apply, Equiv.symm_symm, bstd_repr]`. Consider the case `simp [bstd_repr]`.
+
+Establish `hvol0 : volume (ZSpan.fundamentalDomain b0) = 1`. Rewrite using `[hb0def]`. Conclude with `volume_fd_std e`. Establish `hGram : (Matrix.of fun i j => Qf g (w i) (w j)) = (b0.toMatrix w)ᵀ * Matrix.diagonal (fun k => g (e k).2.1) * b0.toMatrix w`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.of_apply, Module.Basis.toMatrix_apply, hb0, Qf_eq]`. Rewrite using `[← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hdetG : (Matrix.of fun i j => Qf g (w i) (w j)).det = (b0.toMatrix w).det * (b0.toMatrix w).det * ∏ k, g (e k).2.1`.
+
+Rewrite using `[hGram, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ∏ k, g (e k).2.1 = ∏ i : ι, ∏ c : κ, (g c * g c)` using `(e.prod_comp (fun p => g p.2.1)).trans (by simp only [Fintype.prod_prod_type, Fin.prod_univ_two])`. Use `set P : ℝ := ∏ i : ι, ∏ c : κ, |g c| with hPdef`. Establish `hP : 0 < P` using `Finset.prod_pos fun i _ => Finset.prod_pos fun c _ => abs_pos.mpr (hg c)`.
+
+Establish `habs : |∏ k, g (e k).2.1| = P * P`. Rewrite using `[hprod, hPdef]`. Simplify using `only [Finset.abs_prod, abs_mul, Finset.prod_mul_distrib]`. Establish `hval : √|(Matrix.of fun i j => Qf g (w i) (w j)).det| / P = |(b0.toMatrix w).det|`. Rewrite using `[hdetG, abs_mul, abs_mul, habs, show |(b0.toMatrix w).det| * |(b0.toMatrix w).det| * (P * P) = (|(b0.toMatrix w).det| * P) ^ 2 by ring, Real.sqrt_sq (mul_nonneg (abs_nonneg _) hP.le)]`.
+
+Conclude with `mul_div_cancel_right₀ _ hP.ne'`. Establish `hdetM : (b0.toMatrix w).det ≠ 0`. Introduce `h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hdetG, h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hli : LinearIndependent ℝ w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hMc : (b0.toMatrix w) *ᵥ c = 0`.
+
+Use extensionality with `k`. Establish `h1` using `congrArg (fun v => b0.repr v k) hc`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, Pi.zero_apply]`. Rewrite using `[← h1]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Conclude with `fun i => congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdetM hMc) i`. Establish `hcard : Fintype.card (Fin N) = Module.finrank ℝ (ι → κ → ℂ)` using `by first`. Consider the case `exact (Module.finrank_eq_card_basis b0).symm`. Consider the case `exact (FiniteDimensional.finrank_eq_card_basis b0).symm`.
+
+Establish `hsp : Submodule.span ℝ (Set.range w) = ⊤` using `by first`. Consider the case `exact Submodule.eq_top_of_finrank_eq ((finrank_span_eq_card hli).trans hcard)`. Consider the case `exact Submodule.eq_top_of_finrank_eq ((finrank_span_eq_card hli).trans (by simpa using hcard))`. Take `⟨b, hb⟩ : ∃ b : Module.Basis (Fin N) ℝ (ι → κ → ℂ), ⇑b = w` from `⟨Module.Basis.mk hli hsp.ge, by simp⟩`. Establish `hEq : (Submodule.span ℤ (Set.range ⇑b)).toAddSubgroup = AddSubgroup.closure (Set.range w)`.
+
+Rewrite using `[hb]`. Conclude with `hEqW`. Use `⟨hcount, ⟨ZSpan.fundamentalDomain b, ZSpan.fundamentalDomain_measurableSet b, fun v => ?_⟩, fun F hFm hF => ?_⟩` and prove the remaining obligations. Rewrite using `[← hEq]`. Take `⟨a, ha, huniq⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b v`.
+
+Use `⟨⟨a.1, a.2⟩, ha, fun a' ha' => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (congrArg Subtype.val (huniq ⟨a'.1, a'.2⟩ ha'))`. Use `haveI := hcount haveI : (volume : Measure (ι → κ → ℂ)).IsAddHaarMeasure := isAddHaar_vol`. Establish `h1 : IsAddFundamentalDomain (AddSubgroup.closure (Set.range w)) F volume` using `by first`. Consider the case `exact IsAddFundamentalDomain.mk' hFm.nullMeasurableSet hF`.
+
+Consider the case `exact IsAddFundamentalDomain.mk' hFm.nullMeasurableSet (by simpa only [AddSubgroup.vadd_def, vadd_eq_add] using hF)`. Establish `h2 : IsAddFundamentalDomain (AddSubgroup.closure (Set.range w)) (ZSpan.fundamentalDomain b) volume`. Rewrite using `[← hEq]`. Conclude with `ZSpan.isAddFundamentalDomain b volume`. Rewrite using `[h1.measure_eq h2, ZSpan.measure_fundamentalDomain b volume b0, hvol0, mul_one, hval, Module.Basis.det_apply, hb]`.
+-/
 theorem covol_of_gram {N : ℕ} (w : Fin N → (ι → κ → ℂ)) (g : κ → ℝ) (hg : ∀ c, g c ≠ 0)
     (hN : Fintype.card (ι × κ × Fin 2) = N)
     (hdet : (Matrix.of fun i j => Qf g (w i) (w j)).det ≠ 0) :

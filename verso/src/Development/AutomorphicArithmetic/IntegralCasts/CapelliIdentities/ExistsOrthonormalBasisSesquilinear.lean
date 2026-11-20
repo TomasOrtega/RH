@@ -1,5 +1,18 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `V _ _ _ B hs hp`. Set `c : InnerProductSpace.Core ℂ V` to `{ inner := fun x y => B y x conj_inner_symm := fun x y => (hs x y).symm re_inner_nonneg := fun x => by`. Distinguish the cases in `h : x = 0`. Simplify using `[h]`. Conclude with `(hp x h).le`.
+
+Use `add_left := fun x y z => map_add (B z) x y`. Use `smul_left := fun x y r => by simp`. Use `definite := fun x h => by`. Assume the negation of the conclusion as `hx`. Establish `h1` using `hp x hx`.
+
+Establish `h2 : B x x = 0` using `h`. Rewrite `h1` using `[h2]`. Simplify using `at h1 }`. Use `letI : NormedAddCommGroup V := c.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`.
+
+Establish `hB : ∀ x y : V, B x y = inner ℂ y x` using `fun _ _ => rfl`. Set `b` to `stdOrthonormalBasis ℂ V`. Use `⟨b, fun i => ?_, fun x y => ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hB]`. Conclude with `b.inner_eq_one i`.
+
+Simplify using `only [hB]`. Rewrite using `[← b.sum_inner_mul_inner y x]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Simplify using `only [hB]`. Establish `h` using `inner_mul_inner_self_le (𝕜 := ℂ) y x`.
+
+Rewrite `h` using `[norm_inner_symm x y]`. Rewrite using `[sq, mul_comm (inner ℂ x x).re]`. Conclude with `h`.
+-/
 theorem UpperTheory.Reformulated.B.Qh52.exists_orthonormal_basis_sesquilinear :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V]
     [FiniteDimensional ℂ V] (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ),

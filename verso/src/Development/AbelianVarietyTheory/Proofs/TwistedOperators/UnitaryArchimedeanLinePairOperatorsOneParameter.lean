@@ -15,6 +15,11 @@ open scoped Classical
 
 namespace GlobalTheory.LineGroupPair
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n d X W M ψ χX χW om _ _ _ _ _ _ _ _ _ _ γ _ T hA`. Take `⟨r₀, hR, hinj⟩` from `GlobalTheory.ArchUniq.exists_admissible_finite_factor (F := F) (Fin n × Fin d)`. Use `⟨fun s t f => hinj _ _ ?_, fun f => hinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hA (s + t) f r₀ (hR f), ← hA s (T t f) r₀ (hR _), ← hA t f r₀ (hR f), ofAdd_add, map_mul, show ((1 : UA σ X.J), γ (Multiplicative.ofAdd s) * γ (Multiplicative.ofAdd t)) = ((1 : UA σ X.J), γ (Multiplicative.ofAdd s)) * (1, γ (Multiplicative.ofAdd t)) by`. Simplify using `[Prod.mk_mul_mk], map_mul, Module.End.mul_apply]`.
+
+Rewrite using `[← hA 0 f r₀ (hR f), ofAdd_zero, map_one, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+-/
 theorem archOp_oneParam_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
       IsStd ψ → (∀ i j, σ (X.J j i) = X.J i j) → X.J.det ≠ 0 → (∀ i j, σ (W.J j i) = -W.J i j) → W.J.det ≠ 0 →

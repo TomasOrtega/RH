@@ -45,6 +45,17 @@ def SameSupp {Y' : Type} [AddCommGroup Y'] [Module ℂ Y'] (τ : Representation 
 def superSum (u : Matrix (Fin n) (Fin n) F) : F :=
   ∑ i : Fin n, ∑ j : Fin n, if (j : ℕ) = i + 1 then u i j else 0
 
+/- English proof (translation)
+Take `⟨hu, hu1⟩` from `(mem_unipB F).1 u.2`. Take `⟨hv, hv1⟩` from `(mem_unipB F).1 v.2`. Unfold `superSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `show ((u : GL (Fin n) F).val * (v : GL (Fin n) F).val) i j = _`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add i j (by intro e; rw [e] at h; omega), hu1, hv1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `l ⟨h1, h2⟩`. Break down `lt_or_gt_of_ne h1 with h3 | h3` into its components or cases. Rewrite using `[hu i l h3, zero_mul]`. Establish `h4 : j < l`.
+
+Establish `a1 : (i : ℕ) < l` using `h3`. Establish `a2 : (l : ℕ) ≠ j` using `fun e => h2 (Fin.ext e)`. Use `show (j : ℕ) < l`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv l j h4, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem superSum_mul (u v : unipB F (Fin n)) :
     superSum ((u * v : unipB F (Fin n)) : GL (Fin n) F).val =
       superSum (u : GL (Fin n) F).val + superSum (v : GL (Fin n) F).val := by
@@ -252,16 +263,27 @@ section Examples
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨isIrreducible_ofChar _, (isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar, (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩, hW, hV, ht, hr⟩`.
+-/
 theorem isDatum_detRep (r : ℕ) {χ χW χV : kˣ →* ℂˣ} (h : IsUnram χ) (hu : IsUnitaryChar χ)
     (hW : IsUnitaryChar χW) (hV : IsUnitaryChar χV) (ht : IsTame χW) (hr : IsUnram (χW * χV⁻¹)) :
     IsDatum (detRep (Fin r) χ) χW χV :=
   ⟨⟨isIrreducible_ofChar _, (isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar,
     (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩, hW, hV, ht, hr⟩
 
+/- English proof (translation)
+The claim follows from `isDatum_detRep r (fun _ _ => rfl) (fun _ => by simp) (fun _ => by simp) (fun _ => by simp) (fun _ _ => rfl) (fun _ _ => by simp)`.
+-/
 example (r : ℕ) : IsDatum (detRep (Fin r) (1 : kˣ →* ℂˣ)) 1 1 :=
   isDatum_detRep r (fun _ _ => rfl) (fun _ => by simp) (fun _ => by simp) (fun _ => by simp)
     (fun _ _ => rfl) (fun _ _ => by simp)
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Conclude with `zero_mem _`.
+
+Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 example (r t : ℕ) : HasBlocks (k := k) (r := r) (t := t) 1 1 1 := by
   refine ⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩
   · simp [Matrix.one_apply]

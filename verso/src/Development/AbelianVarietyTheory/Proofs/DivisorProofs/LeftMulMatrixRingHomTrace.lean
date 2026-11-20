@@ -5,6 +5,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ R Λ _ _ _ n b φ`. Use `⟨⟨{ toFun := fun a => ((Algebra.leftMulMatrix b a).transpose).map φ map_one' := ?_ map_mul' := ?_ map_zero' := ?_ map_add' := ?_ }, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, Matrix.transpose_one]`. Conclude with `Matrix.map_one φ (map_zero φ) (map_one φ)`. Introduce `x y`.
+
+Rewrite using `[mul_comm x y, map_mul, Matrix.transpose_mul, Matrix.map_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `x y`. Rewrite using `[map_add, Matrix.transpose_add]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[Algebra.trace_eq_matrix_trace b a, ← Matrix.trace_transpose (Algebra.leftMulMatrix b a)]`. Simplify using `[Matrix.trace, map_sum]`.
+-/
 theorem transposedRegularRep_ringHom_trace :
     ∀ (O : Type) [CommRing O] (R Λ : Type) [CommRing R] [CommRing Λ] [Algebra R Λ] (n : ℕ)
       (b : Module.Basis (Fin n) R Λ) (φ : R →+* O),

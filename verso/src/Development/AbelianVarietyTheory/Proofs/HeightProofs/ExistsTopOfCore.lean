@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinalJoin
 
+/- English proof (translation)
+Establish `hr1 : 1 ≤ D.R.r`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hU : ∀ σ, Formalism.L2.PjFree.GoodEmb T.Q.c σ → Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj (T.U j σ))` using `fun σ hσ => (Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj σ ((Formalism.L2.PjFree.goodEmb_iff σ).1 hσ))`.
+
+Conclude with `@GlobalTheory.Dict.thInCusp_cusp GlobalTheory.harmonicValue_chart_independent D.host.E _ _ _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hr1 hU inst nab hn`.
+-/
 theorem thInCusp_of_laws (D : D7) (T : Core D) (h : LawsM T) (j : ℕ)
     (hj : InR D j) (inst : StarRing (𝓞 D.host.E)) (nab : NabV (T.Q.Xo j) T.Q.c)
     (hn : IsNab (T.Q.Xo j) T.Q.c nab) : ThInCusp (T.Q.Xo j) T.Q.c nab (T.cuspA j) := by
@@ -25,6 +30,9 @@ theorem thInCusp_of_laws (D : D7) (T : Core D) (h : LawsM T) (j : ℕ)
   exact @GlobalTheory.Dict.thInCusp_cusp GlobalTheory.harmonicValue_chart_independent D.host.E _ _ _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r
     (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hr1 hU inst nab hn
 
+/- English proof (translation)
+Introduce `D C hC hpq hK`. Conclude with `GlobalTheory.Member.exists_completion_of_core_satisfying_laws GlobalTheory.harmonicValue_chart_independent D C hC hpq (hK C.Q hC.pins) (fun j hj inst nab hn => ⟨thInCusp_of_laws D C hC.toLawsM j hj inst nab hn, fun _ => GlobalTheory.ThetaNeZero.thNe0_of_lawsM GlobalTheory.harmoni …`.
+-/
 theorem exists_top_of_core : ∀ (D : D7) (C : Core D), LawsCore C → (∀ j, 1 ≤ (C.Q.Dw j).p + (C.Q.Dw j).q) → OKPsi D → ∃ T : Top D, LawsP T ∧ T.toCore = C := by
   intro D C hC hpq hK
   exact GlobalTheory.Member.exists_completion_of_core_satisfying_laws GlobalTheory.harmonicValue_chart_independent D C hC hpq (hK C.Q hC.pins) (fun j hj inst nab hn =>

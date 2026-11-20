@@ -12,6 +12,9 @@ def FlagIntMuProd.Statement : Prop :=
       ((dimN Ψ N j).factorial : ℚ) / ((j * (N - j)).factorial : ℚ) ^ Fintype.card Ψ *
         flagInt Unit N (muPoly Unit N j ^ (j * (N - j)) * monomial (rhoBlock Unit N j) 1) ^ Fintype.card Ψ
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : (1 : ℕ) ≤ 2 := by norm_num
 
 end GroundTheory.Heights₂.Heights.LowerBoundFree

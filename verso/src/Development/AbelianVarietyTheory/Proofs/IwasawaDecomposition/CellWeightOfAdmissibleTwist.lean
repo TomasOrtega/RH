@@ -31,10 +31,16 @@ open Formalism.L2.DIV GlobalTheory.CoefModel
 section Gen2
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(congrArg Units.val (Formalism.L2.Col.mtwInc_mtwRatFun γ)).symm`.
+-/
 theorem match_mtwRat (γ : GQ L n) : (((γ : GAf L n) : GL (Fin n) (ReciprocityTheory.Aut.AL L)) : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L)) =
     ((Formalism.L2.Col.mtwRat γ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).map Algebra.TensorProduct.includeLeftRingHom :=
   (congrArg Units.val (Formalism.L2.Col.mtwInc_mtwRatFun γ)).symm
 
+/- English proof (translation)
+Consider the cases of `a`. Consider the cases of `b`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem domWeight_ext {N : ℕ} {a b : DomWeight N} (h : a.w = b.w) : a = b := by
   cases a; cases b; subst h; rfl
 
@@ -42,6 +48,37 @@ end Gen2
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hN hL`. Use `StepW.of_all fun K B f T w _ _ _ P x l v i b ψ hA j hTw hl hok e hSR => ?_` and prove the remaining obligations. Establish `hemb : ∀ t, Formalism.L2.embT (Dof x) t = Formalism.BasicNotions.TH.tauE (Dof x) t` using `fun t => rfl`. Establish `hinj : Function.Injective (Formalism.L2.embT (Dof x))` using `GlobalTheory.StdRat.tauE_injective (Dof x)`. Establish `hcm : ∀ t t', Formalism.L2.embT (Dof x) t ≠ ComplexEmbedding.conjugate (Formalism.L2.embT (Dof x) t')`.
+
+Introduce `t t' h`. Establish `h1` using `(GlobalTheory.StdRat.tauE_cm (Dof x) (Formalism.L2.embT (Dof x) t')).1 ⟨t', rfl⟩`. Conclude with `h1 ⟨t, h⟩`. Establish `hcov : ∀ σ : (Dof x).host.E →+* ℂ, ∃ t, σ = Formalism.L2.embT (Dof x) t ∨ σ = ComplexEmbedding.conjugate (Formalism.L2.embT (Dof x) t)`. Introduce `σ`.
+
+Distinguish the cases in `h : ∃ t, Formalism.BasicNotions.TH.tauE (Dof x) t = σ`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨t, Or.inl ht.symm⟩`. Establish `h2 : ¬ ¬ ∃ t, Formalism.BasicNotions.TH.tauE (Dof x) t = ComplexEmbedding.conjugate σ` using `fun h' => h ((GlobalTheory.StdRat.tauE_cm (Dof x) σ).2 h')`. Take `⟨t, ht⟩` from `not_not.1 h2`.
+
+Use `⟨t, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[hemb, ht]`. Simplify using the standard rewrite rules. Establish `hcj : ∀ y, NX.cE (Dof x) y = IsCMField.complexConj (Dof x).host.E y`. Introduce `y`.
+
+Use `show (Dof x).host.conj y = _`. Use `symm`. Apply `(Dof x).host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Establish `hke : ∀ t, (e.comp (NX.toKk (Dof x) i (T.k v))).comp (NX.kEmb (Dof x) i b t) = Formalism.L2.embT (Dof x) t`.
+
+Introduce `t`. Use extensionality with `y`. Establish `h1` using `hSR (NX.embEL0 (Dof x) (((Dof x).host.sigmaOf ((Dof x).eTau t : (Dof x).R.GG)) y))`. Use `Eq.trans ?_ (h1.trans (NX.embLL_embEL0 (Dof x) t y))` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Take `⟨lamC, T', hT'⟩` from `GlobalTheory.T.algebraic_weight_dominant_iso_exists (Dof x).host.E (Dof x).R.nV (Dof x).what₂.Tau (Formalism.L2.embT (Dof x)) hinj hcm hcov (mtAt l.mt.M v j).wt`. Establish `hT'r : ∀ γ y, T' ((mtAt l.mt.M v j).wt.ρ γ y) = rhoVr (Formalism.L2.embT (Dof x)) lamC (Formalism.L2.Col.mtwRat γ) (T' y)` using `fun γ y => hT' γ _ (match_mtwRat γ) y`. Establish `hinj' : Function.Injective (Formalism.L2.Col.mtwConj (Formalism.L2.embT (Dof x)))`. Introduce `t t' h`. Apply `hinj` to reduce the goal to its premises.
+
+Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Simplify `this` using `[Formalism.L2.Col.mtwConj]`. Establish `hcm' : ∀ t t', Formalism.L2.Col.mtwConj (Formalism.L2.embT (Dof x)) t ≠ ComplexEmbedding.conjugate (Formalism.L2.Col.mtwConj (Formalism.L2.embT (Dof x)) t')`. Introduce `t t' h`. Establish `h2 : ComplexEmbedding.conjugate (Formalism.L2.embT (Dof x) t) = Formalism.L2.embT (Dof x) t'`.
+
+Simplify `h` using `[Formalism.L2.Col.mtwConj]`. Conclude with `hcm t' t (by rw [← h2])`. Establish `hten` using `Formalism.L2.Col.tenIrr_of' highest_weight_fixed_exists highest_weight_fixed_line (Formalism.L2.embT (Dof x)) hinj hcm lamC`. Establish `hten'` using `Formalism.L2.Col.tenIrr_of' highest_weight_fixed_exists highest_weight_fixed_line _ hinj' hcm' lamC`. Establish `hiso : (Formalism.L2.Col.mtWt (Formalism.L2.embT (Dof x)) lamC hten).Iso (mtAt l.mt.M v j).wt` using `⟨T'.symm, fun γ y => by`.
+
+Apply `T'.injective` to reduce the goal to its premises. Establish `hs : ∀ z, T' (T'.symm z) = z` using `fun z => T'.apply_symm_apply z`. Use `erw [hT'r, hs, hs]`. Use the proof step `rfl⟩`. Establish `hdual` using `GlobalTheory.WtDual.isDual_of_iso hiso (Formalism.L2.Col.mtWt_isDual _ lamC hten hten')`.
+
+Establish `hC : ∀ t, NG.infOf (lamC t).w = NG.paramV (Dof x).R ((Dof x).hc t) j (1 / 2)` using `fun t => l.mt.mt.wt _ j t _ _ hdual (Formalism.L2.Col.tenWt_hwAt _ hinj hcm lamC hten' t)`. Establish `hj1 : 1 ≤ j.1 + 1` using `by omega`. Establish `hj2 : j.1 + 1 ≤ (Dof x).R.m` using `by omega`. Use `choose lam0 hlam0 using fun t => l.b.Bs.exp.rhoW_hw i (j.1 + 1) b t hj1 hj2`. Take `⟨lamK, hlamK, TK, hTK⟩` from `GlobalTheory.T.irreducible_weight_descends_to_polynomial_module (Dof x).host.E (Dof x).R.nV (Dof x).what₂.Tau (FractionRing ((Dof x).ntw.O i)) (e.comp (NX.toKk (Dof x) i (T.k v))) (NX.kEmb (Dof x) i b) (by intro t t' h; beta_reduce at h; rw [hke, hke] at h; exact hinj h) (by intr …`.
+
+Establish `hK : ∀ t, NG.infOf (lam0 t) = NG.paramV (Dof x).R ((Dof x).hc t) j (1 / 2)`. Introduce `t`. Rewrite using `[l.b.Bs.exp.rhoW_wt i (j.1 + 1) b t hj1 hj2 _ (lam0 t) (GlobalTheory.FitHecke.infG_etaT l.a.A.chr t) (hlam0 t)]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlam : lamK = lamC`. Use function extensionality and compare the values at `t`. Apply `domWeight_ext` to reduce the goal to its premises. Apply `GlobalTheory.MtRead.eq_of_infOf_eq (lamK t).anti (lamC t).anti` to reduce the goal to its premises.
+
+Rewrite using `[hlamK t, hK t, hC t]`. Substitute `hlam` using the available equality. Establish `hTK' : ∀ γ y, TK (l.b.Bs.exp.rhoW i (j.1 + 1) b γ y) = rhoVr (NX.kEmb (Dof x) i b) lamK (Formalism.L2.Col.mtwRat γ) (TK y)` using `fun γ y => hTK γ _ (match_mtwRat γ) y`. Establish `hfun : (fun t => (e.comp (NX.toKk (Dof x) i (T.k v))).comp (NX.kEmb (Dof x) i b t)) = Formalism.L2.embT (Dof x)`. Use function extensionality and compare the values at `hke`.
+
+Establish `h1` using `GlobalTheory.T.weightMatrices_match_of_coeffSpace_iso (e.comp (NX.toKk (Dof x) i (T.k v))) (NX.kEmb (Dof x) i b) lamK _ (mtAt l.mt.M v j).wt.ρ TK hTK' T' (by rw [hfun]; exact hT'r)`. Unfold `CellWt`. Use `letI := (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).acg`. Use `letI := (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).mod`. Conclude with `GlobalTheory.T.matchingMatrices_of_baseChange_representation (NX.toKk (Dof x) i (T.k v)) e (l.b.Bs.exp.rhoW i (j.1 + 1) b) (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).ρ (mtAt l.mt.M v j).wt.ρ (GlobalTheory.LevCmp.cell l.b.Bs.exp b hA j).bc h1`.
+-/
 theorem cellWt_all : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ B _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → ∀ e, SideRead i b (T.k v) e → CellWt (D := Dof x) (mtAt (D := Dof x) l.mt.M v j) l.b.Bs.exp b hA j e := by
   intro hN hL
   refine StepW.of_all fun K B f T w _ _ _ P x l v i b ψ hA j hTw hl hok e hSR => ?_

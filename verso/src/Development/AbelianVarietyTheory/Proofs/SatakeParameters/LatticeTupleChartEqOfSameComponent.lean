@@ -6,6 +6,13 @@ namespace GlobalTheory.TwV.Xc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _ _ j hj c La Lb hLa hLb`. Unfold `Joint.chart`. Break down `j with _ | j` into its components or cases. Use `haveI := J.ch0`. Conclude with `Subsingleton.elim _ _`.
+
+Simplify using `only`. Rewrite using `[Formalism.MainNotions.G.KAat.clsAt_succ X H j hj c La, Formalism.MainNotions.G.KAat.clsAt_succ X H j hj c Lb]`. Establish `ea` using `Formalism.MainNotions.G.KAat.clsOf_chart (S := (I.at' j hj).st) (H.core j hj) c La hLa`. Establish `eb` using `Formalism.MainNotions.G.KAat.clsOf_chart (S := (I.at' j hj).st) (H.core j hj) c Lb hLb`. Establish `key : ∀ (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (h : (I.at' j hj).C = C) (St' : GlobalTheory.TwU.StepCharts C (j + 1) hj) (_ : St' = castSt h (GlobalTheory.TwU.StepCharts.ofStepIn (I.at' j hj).st)) (x y : (I.at' j hj).C.cls (j + 1)), (I.at' j hj).st.chOf x = (I.at' j hj).st.c …`.
+
+Introduce `C h St' hst x y e`. Substitute `h` using the available equality. Substitute `hst` using the available equality. Conclude with `e`. Conclude with `key _ (X.onCh j hj) _ (J.st j hj) _ _ (ea.trans eb.symm)`.
+-/
 theorem chart_eq_of_comp : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (hj : j ≤ D.R.m) (c : (sysS H X std).Lv.comp j) (La Lb : ((sysS H X std).Pj j).Tup), ((sysS H X std).Pj j).IsLatTup La → ((sysS H X std).Pj j).IsLatTup Lb → J.chart std j hj (c, La) = J.chart std j hj (c, Lb)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _ _ j hj c La Lb hLa hLb
   unfold Joint.chart

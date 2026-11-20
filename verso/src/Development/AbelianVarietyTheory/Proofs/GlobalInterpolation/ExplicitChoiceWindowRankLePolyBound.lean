@@ -5,6 +5,27 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hL : 1 ≤ L.sc.L` using `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`. Establish `hf : (1 : ℝ) ≤ D.R.f`. Establish `: 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := D.R.ord_pos; omega`. Conclude with `this` after adjusting the coercions. Establish `h2m` using `D.R.two_le_m`.
+
+Establish `hmk` using `D.R.m_add_three_le_k`. Establish `hr : (1 : ℝ) ≤ D.R.r`. Establish `: 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Conclude with `this` after adjusting the coercions. Establish `hm : (1 : ℝ) ≤ D.R.m`.
+
+Establish `: 1 ≤ D.R.m` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hmr : (D.R.m : ℝ) ≤ D.R.r`. Establish `: D.R.m ≤ D.R.r` using `by unfold Ranks.r; omega`. Conclude with `this` after adjusting the coercions.
+
+Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Establish `: 1 ≤ D.R.k` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hkr : (D.R.k : ℝ) ≤ D.R.r`. Establish `: D.R.k ≤ D.R.r` using `by unfold Ranks.r; omega`.
+
+Conclude with `this` after adjusting the coercions. Unfold `nWv zBase`. Use `push_cast`. Generalize the expression as in `(D.R.f : ℝ) = f at *`. Generalize the expression as in `(D.R.r : ℝ) = r at *`.
+
+Generalize the expression as in `(D.R.m : ℝ) = m at *`. Generalize the expression as in `(D.R.k : ℝ) = k at *`. Generalize the expression as in `L.sc.L = l at *`. Establish `hfr : 1 ≤ f * r` using `one_le_mul_of_one_le_of_one_le hf hr`. Establish `hfrZ : f * r ≤ f * r * l` using `le_mul_of_one_le_right (by positivity) hL`.
+
+Establish `hZ : 1 ≤ f * r * l` using `hfr.trans hfrZ`. Use `⟨hZ, le_trans (by gcongr) hfrZ, ?_⟩` and prove the remaining obligations. Establish `hk0 : 0 ≤ k - 1` using `by linarith`. Establish `hk3 : (k - 1) ^ 3 ≤ r ^ 3` using `pow_le_pow_left₀ hk0 (by linarith) 3`. Establish `hc` using `(Nat.ceil_lt_add_one (a := 10 * r * (f + f ^ 2 * (k - 1) ^ 3 * l ^ 2 / m) / 8) (by positivity)).le`.
+
+Establish `a1 : f ^ 2 * (k - 1) ^ 3 * l ^ 2 / m ≤ f ^ 2 * r ^ 3 * l ^ 2`. Use `(div_le_self (by positivity) hm).trans ?_` and prove the remaining obligations. Use `gcongr`. Establish `a2 : 10 * r * (f + f ^ 2 * (k - 1) ^ 3 * l ^ 2 / m) ≤ 10 * r * (f + f ^ 2 * r ^ 3 * l ^ 2)` using `by gcongr`. Establish `m0 : 1 ≤ (f * r * l) ^ 4` using `one_le_pow₀ hZ`.
+
+Establish `m1 : f * r * l ≤ (f * r * l) ^ 4` using `le_self_pow₀ hZ (by norm_num)`. Establish `m2 : f ^ 2 * r ^ 4 * l ^ 2 ≤ (f * r * l) ^ 4`. Establish `b1 : f ^ 2 ≤ f ^ 4` using `pow_le_pow_right₀ hf (by norm_num)`. Establish `b2 : l ^ 2 ≤ l ^ 4` using `pow_le_pow_right₀ hL (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : 10 * r * (f + f ^ 2 * r ^ 3 * l ^ 2) = 10 * (f * r) + 10 * (f ^ 2 * r ^ 4 * l ^ 2)` using `by ring`. Rewrite `a2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nWv_le_zBase_pow_four {D : D7} (L : SizeData₂ D) :
     1 ≤ zBase L ∧ (D.R.f : ℝ) * D.R.m ≤ zBase L ∧ ((nWv D.R L.sc : ℕ) : ℝ) ≤ 28 * zBase L ^ 4 := by
   have hL : 1 ≤ L.sc.L := Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le
@@ -57,6 +78,15 @@ theorem nWv_le_zBase_pow_four {D : D7} (L : SizeData₂ D) :
   rw [e] at a2
   linarith
 
+/- English proof (translation)
+Introduce `eps _ _ C hC`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun D L _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨hZ, hfm, hn⟩` from `nWv_le_zBase_pow_four L`. Take `⟨-, -, -, -, -, -, -, -, heP, -, -, -, -, hCP, -⟩` from `hC`. Establish `e : zBase L ^ C.T.eP = zBase L ^ (12 : ℕ)`.
+
+Rewrite using `[heP, ← Real.rpow_natCast]`. Evaluate the numerical expressions. Establish `hP : 1000 * zBase L ^ (12 : ℕ) ≤ C.T.CP * zBase L ^ C.T.eP`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right hCP (by positivity)`.
+
+Establish `h8 : zBase L ^ 8 ≤ zBase L ^ 12` using `pow_le_pow_right₀ hZ (by norm_num)`. Establish `h4 : zBase L ^ 4 ≤ zBase L ^ 12` using `pow_le_pow_right₀ hZ (by norm_num)`. Establish `h12 : 0 ≤ zBase L ^ 12` using `by positivity`. Use `⟨le_trans ?_ hP, le_trans ?_ hP⟩` and prove the remaining obligations. Establish `ha : 2 * (D.R.f : ℝ) * D.R.m ≤ 2 * zBase L` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_nW_le_PP : SzRow (fun C D L => ((2 * (D.R.f : ℝ) * D.R.m) ^ 4 * ((nWv D.R L.sc : ℕ) : ℝ) ≤ (C.T.CP * zBase L ^ C.T.eP)) ∧ (((nWv D.R L.sc : ℕ) : ℝ) ≤ (C.T.CP * zBase L ^ C.T.eP))) := by
   intro eps _ _ C hC
   refine ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun D L _ _ _ => ?_⟩⟩⟩

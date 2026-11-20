@@ -12,6 +12,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {O : Type} [CommRing
   (t : Wq l a →ₐ[ℤ_[l]] O) (K : Type) [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
   (e : ℕ)
 
+/- English proof (translation)
+Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Rewrite using `[coeff_ofW]`. Simplify using the standard rewrite rules.
+-/
 theorem zero_mem_QSet_goodU : (0 : ZMod a → K⟦X⟧⟦X⟧) ∈ QSet t K e := by
   refine ⟨0, ?_⟩
   funext τ
@@ -19,6 +22,15 @@ theorem zero_mem_QSet_goodU : (0 : ZMod a → K⟦X⟧⟦X⟧) ∈ QSet t K e :=
   rw [coeff_ofW]
   simp
 
+/- English proof (translation)
+Use `⟨fun p => if p = (0, m) then ((dpDen e 0 m : ℕ) : Wq l a) else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Rewrite using `[coeff_ofW, coeff_C]`. Distinguish the cases in `h : (i, n) = (0, m)`.
+
+Take `⟨rfl, rfl⟩` from `Prod.mk.inj h`. Establish `: (dpDen e 0 n : K) ≠ 0` using `Nat.cast_ne_zero.mpr (dpDen_pos e 0 n).ne'`. Simplify using `only [if_true, map_natCast, coeff_X_pow_self]`. Conclude with `div_self this`. Rewrite using `[if_neg h]`.
+
+Simplify using `only [map_zero, zero_div]`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Establish `hn : n ≠ m` using `fun hn => h (by rw [hn])`. Rewrite using `[if_pos rfl, coeff_X_pow, if_neg hn]`.
+
+Rewrite using `[if_neg hi, map_zero]`.
+-/
 theorem uPow_mem_QSet_goodU [CharZero K] (m : ℕ) :
     (fun _ => C (X ^ m) : ZMod a → K⟦X⟧⟦X⟧) ∈ QSet t K e := by
   refine ⟨fun p => if p = (0, m) then ((dpDen e 0 m : ℕ) : Wq l a) else 0, ?_⟩
@@ -40,6 +52,13 @@ theorem uPow_mem_QSet_goodU [CharZero K] (m : ℕ) :
 
 end
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ t φ₂ hC _`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hf : frob2 φ₂ (uFam a K) = (fun _ => C (X ^ l) : ZMod a → K⟦X⟧⟦X⟧)`. Use function extensionality and compare the values at `τ`. Use `show φ₂ (C X) = _`.
+
+Rewrite using `[hC, frob_X]`. Use `⟨?_, ?_, 0, zero_mem_QSet_goodU t K e, ?_⟩` and prove the remaining obligations. Use `uPow_mem_QSet_goodU t K e 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `this`.
+
+Rewrite using `[hf]`. Conclude with `uPow_mem_QSet_goodU t K e l`. Rewrite using `[hf, mul_zero, add_zero]`. Use function extensionality and compare the values at `τ`. Simplify using `[uFam]`.
+-/
 theorem uFam_mem_GoodSet : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ (φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ f : K⟦X⟧, φ₂ (C f) = C (frob K l f)) → φ₂ X = (C X + X) ^ l - C (X ^ l) → uFam a K ∈ GoodSet t e φ₂ := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ t φ₂ hC _
   haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective

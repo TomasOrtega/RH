@@ -23,13 +23,24 @@ def mulL (m : M ⊗[O] M' →ₗ[O] M'') : R ⊗[O] M →ₗ[R] R ⊗[O] M' →�
   (TensorProduct.mk R _ _).compr₂
     (m.baseChange R ∘ₗ (AlgebraTensorModule.distribBaseChange O R M M').symm.toLinearMap)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulL_apply (m : M ⊗[O] M' →ₗ[O] M'') (x : R ⊗[O] M) (y : R ⊗[O] M') :
     mulL R m x y = extMul R m x y := rfl
 
+/- English proof (translation)
+The claim follows from `extMul_tmul R m r r' a a'`.
+-/
 theorem mulL_tmul (m : M ⊗[O] M' →ₗ[O] M'') (r r' : R) (a : M) (a' : M') :
     mulL R m (r ⊗ₜ[O] a) (r' ⊗ₜ[O] a') = (r * r') ⊗ₜ[O] m (a ⊗ₜ[O] a') :=
   extMul_tmul R m r r' a a'
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul r u`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul r' u' => simp [mulL_tmul, h]`.
+-/
 theorem map_mulL (m : M ⊗[O] M' →ₗ[O] M'') (f : R →ₐ[O] R) (a : M →ₗ[O] M) (a' : M' →ₗ[O] M')
     (a'' : M'' →ₗ[O] M'') (h : ∀ x y, m (a x ⊗ₜ[O] a' y) = a'' (m (x ⊗ₜ[O] y)))
     (x : R ⊗[O] M) (y : R ⊗[O] M') :
@@ -47,13 +58,24 @@ theorem map_mulL (m : M ⊗[O] M' →ₗ[O] M'') (f : R →ₐ[O] R) (a : M →�
 def pairL (β : M →ₗ[O] M' →ₗ[O] O) : R ⊗[O] M →ₗ[R] R ⊗[O] M' →ₗ[R] R :=
   (mulL R (TensorProduct.lift β)).compr₂ (AlgebraTensorModule.rid O R R).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairL_apply (β : M →ₗ[O] M' →ₗ[O] O) (x : R ⊗[O] M) (y : R ⊗[O] M') :
     pairL R β x y = extPair R β x y := rfl
 
+/- English proof (translation)
+The claim follows from `extPair_tmul R β r r' a a'`.
+-/
 theorem pairL_tmul (β : M →ₗ[O] M' →ₗ[O] O) (r r' : R) (a : M) (a' : M') :
     pairL R β (r ⊗ₜ[O] a) (r' ⊗ₜ[O] a') = β a a' • (r * r') :=
   extPair_tmul R β r r' a a'
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul r u`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul r' u' => simp [pairL_tmul, h]`.
+-/
 theorem map_pairL (β : M →ₗ[O] M' →ₗ[O] O) (f : R →ₐ[O] R) (a : M →ₗ[O] M) (a' : M' →ₗ[O] M')
     (h : ∀ x y, β (a x) (a' y) = β x y) (x : R ⊗[O] M) (y : R ⊗[O] M') :
     f (pairL R β x y) =
@@ -67,6 +89,9 @@ theorem map_pairL (β : M →ₗ[O] M' →ₗ[O] O) (f : R →ₐ[O] R) (a : M �
     | add y y' hy hy' => simp only [map_add, hy, hy']
     | tmul r' u' => simp [pairL_tmul, h]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [smul_add, map_add, hx, hx']`. Consider the case `tmul r' u => simp [TensorProduct.smul_tmul']`.
+-/
 theorem map_smul_alg (f : R →ₐ[O] R) (a : M →ₗ[O] M) (r : R) (x : R ⊗[O] M) :
     TensorProduct.map f.toLinearMap a (r • x) = f r • TensorProduct.map f.toLinearMap a x := by
   induction x using TensorProduct.induction_on with
@@ -76,6 +101,11 @@ theorem map_smul_alg (f : R →ₐ[O] R) (a : M →ₗ[O] M) (r : R) (x : R ⊗[
 
 end Ext
 
+/- English proof (translation)
+Use `choose z hz using h`. Use `⟨e.constr E fun a => e'.constr E fun c => z a c, fun x y => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← e.sum_repr x, ← e'.sum_repr y]`. Simplify using `only [Module.Basis.constr_apply_fintype, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, hj, hj', hj'', hz, map_smul, Module.Basis.equivFun_apply, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+-/
 theorem exists_descend {E R D D' D'' M M' M'' : Type} [CommRing E] [CommRing R]
     [AddCommGroup D] [Module E D] [AddCommGroup D'] [Module E D'] [AddCommGroup D''] [Module E D'']
     [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] [AddCommGroup M''] [Module R M'']
@@ -112,10 +142,20 @@ def Descends : Prop :=
     (∀ g : G, W.resΓ g = 1 → ∀ i, gR g (w i) = w i) →
     (∀ i, w i = ∑ j, E.ioE (M i j) * φR (w j)) → ∀ i, ∃ e : W.EE, E.ioE e = w i
 
+/- English proof (translation)
+The claim follows from `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial W.EE_inj.nontrivial`.
+-/
 theorem nontrivial_EE (W : LocWach PD LL O v n) : Nontrivial W.EE :=
   haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial
   W.EE_inj.nontrivial
 
+/- English proof (translation)
+Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Use `haveI := nontrivial_EE W`. Use `haveI : Nontrivial RW := (ioE_injective E).nontrivial`. Use `haveI := T.L.free`. Establish `hsp : ⊤ ≤ Submodule.span RW (Set.range fun i => E.jD T (e i))`.
+
+Rewrite using `[← E.jD_span T, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← e.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[E.jD_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨basisOfTopLeSpanOfCardEqFinrank (fun i => E.jD T (e i)) hsp ?_, fun i => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank _ _ _) i⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_baseChange, ← (W.DD_free T).2, Module.finrank_eq_card_basis e]`.
+-/
 theorem exists_basis_jD (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
     (e : Module.Basis ι W.EE (W.DD T)) :
     ∃ c : Module.Basis ι RW (TW RW T), ∀ i, c i = E.jD T (e i) := by
@@ -136,6 +176,9 @@ theorem exists_basis_jD (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
   rw [Module.finrank_baseChange, ← (W.DD_free T).2, Module.finrank_eq_card_basis e]
 
 include E in
+/- English proof (translation)
+Use `haveI := nontrivial_EE W`. Use `haveI := (W.DD_free T).1`. Use `haveI := finite_DD E T`. Conclude with `⟨Module.finBasisOfFinrankEq _ _ (W.DD_free T).2⟩`.
+-/
 theorem exists_basis_DD (T : LocLat G Qp LL O) :
     Nonempty (Module.Basis (Fin (Module.finrank O ↥T.L.T)) W.EE (W.DD T)) := by
   haveI := nontrivial_EE W
@@ -143,10 +186,20 @@ theorem exists_basis_DD (T : LocLat G Qp LL O) :
   haveI := finite_DD E T
   exact ⟨Module.finBasisOfFinrankEq _ _ (W.DD_free T).2⟩
 
+/- English proof (translation)
+Rewrite using `[← E.jD_act, hg, W.γD_one]`.
+-/
 theorem jD_fixed (T : LocLat G Qp LL O) (g : G) (hg : W.resΓ g = 1) (x : W.DD T) :
     TWact (gR g) T g (E.jD T x) = E.jD T x := by
   rw [← E.jD_act, hg, W.γD_one]
 
+/- English proof (translation)
+Use `eq_top_DD E hm T _ ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_basis_jD E T e`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨x, rfl⟩ : ∃ x, TWmap φR T x = y` from `TensorProduct.map_surjective (g := φR.toLinearMap) hφ Function.surjective_id y`.
+
+Rewrite using `[← c.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TWmap, map_smul_alg]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨W.φD T (e i), Submodule.subset_span ⟨i, rfl⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[E.jD_φ, hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_frob_inv (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.toRingHom ≠ ⊤)
     (hφ : Function.Surjective φR) (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
     (e : Module.Basis ι W.EE (W.DD T)) :
@@ -165,6 +218,21 @@ theorem exists_frob_inv (hm : ∀ m : Ideal W.EE, m.IsMaximal → m.map E.ioE.to
   rw [E.jD_φ, hc]
   rfl
 
+/- English proof (translation)
+Take `⟨e⟩` from `exists_basis_DD E T`. Take `⟨c, hc⟩` from `exists_basis_jD E T e`. Establish `h` using `hd (ι × Fin (Module.finrank O ↥T.L.T)) (fun p q => U p.1 q.1 * e.repr (W.φD T (e q.2)) p.2) (fun p => c.repr (z p.1) p.2) ?_ ?_`. Use `choose u hu using h`. Use `⟨∑ k, u (a, k) • e k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum, ← c.sum_repr (z a)]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [E.jD_smul, hu, hc]`. Introduce and unpack `g hg ⟨a, k⟩`. Establish `h1` using `hz g hg a`. Use `conv_lhs at h1 => rw [← c.sum_repr (z a), map_sum]`.
+
+Simplify using `only [GlobalTheory.Cyc.Decomp.TWact_smul, hc, jD_fixed E T g hg] at h1`. Simplify using `only [← hc] at h1`. Use `conv_rhs => rw [← h1]`. Simplify using `[Finsupp.single_apply]`. Introduce and unpack `⟨a, k⟩`.
+
+Establish `h2 : ∀ q, TWmap φR T (c q) = ∑ r, E.ioE (e.repr (W.φD T (e q)) r) • c r`. Introduce `q`. Rewrite using `[hc, ← E.jD_φ]`. Use `conv_lhs => rw [← e.sum_repr (W.φD T (e q)), map_sum]`. Simplify using `only [E.jD_smul, hc]`.
+
+Establish `h3 : ∀ b, c.repr (TWmap φR T (z b)) k = ∑ q, E.ioE (e.repr (W.φD T (e q)) k) * φR (c.repr (z b) q)`. Introduce `b`. Use `conv_lhs => rw [← c.sum_repr (z b), map_sum, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[TWmap, map_smul_alg]`.
+
+Express the relevant statement in the definitionally equal form `c.repr (_ • TWmap φR T (c q)) k = _`. Rewrite using `[h2, map_smul, Finsupp.smul_apply, c.repr_sum_self, smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `c.repr (z a) k = _`. Use `conv_lhs => rw [hU a, map_sum, Finsupp.finset_sum_apply]`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, h3, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [map_mul, mul_assoc]`.
+-/
 theorem mem_range_jD (hd : Descends E) (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
     (U : ι → ι → W.EE) (z : ι → TW RW T)
     (hz : ∀ g : G, W.resΓ g = 1 → ∀ a, TWact (gR g) T g (z a) = z a)
@@ -207,6 +275,11 @@ theorem mem_range_jD (hd : Descends E) (T : LocLat G Qp LL O) {ι : Type} [Finty
     rw [map_smul, Finsupp.smul_apply, h3, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun q _ => by rw [map_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨e, e₀, h₀, hj, -⟩` from `E.one_e`. Take `⟨e₁, he₁, hT⟩` from `W.one_line`. Establish `he₁T : e₁ ∈ W.one.L.T` using `by rw [hT]; exact Submodule.mem_span_singleton_self e₁`. Establish `h1 : TWmap φR W.one ((1 : RW) ⊗ₜ[O] e₀) = (1 : RW) ⊗ₜ[O] e₀` using `by simp [TWmap]`. Establish `h2` using `E.jD_φ W.one (a • e)`.
+
+Rewrite `h2` using `[W.φD_smul, E.jD_smul, E.jD_smul, E.jD_φ, hj, h1, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Conclude with `GlobalTheory.Cyc.Decomp.tmul_gen_cancel hO W.one e₁ he₁ he₁T e₀ h₀ _ _ h2`.
+-/
 theorem ioE_φE (hO : Function.Injective (algebraMap O LL)) (a : W.EE) :
     E.ioE (W.φE a) = φR (E.ioE a) := by
   obtain ⟨e, e₀, h₀, hj, -⟩ := E.one_e
@@ -218,6 +291,11 @@ theorem ioE_φE (hO : Function.Injective (algebraMap O LL)) (a : W.EE) :
     TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one] at h2
   exact GlobalTheory.Cyc.Decomp.tmul_gen_cancel hO W.one e₁ he₁ he₁T e₀ h₀ _ _ h2
 
+/- English proof (translation)
+Take `⟨e, e₀, h₀, hj, -⟩` from `E.one_e`. Take `⟨e₁, he₁, hT⟩` from `W.one_line`. Establish `he₁T : e₁ ∈ W.one.L.T` using `by rw [hT]; exact Submodule.mem_span_singleton_self e₁`. Establish `hact : W.one.actT g e₀ = e₀` using `Subtype.ext (W.one_triv g e₀)`. Establish `h1 : TWact (gR g) W.one g ((1 : RW) ⊗ₜ[O] e₀) = (1 : RW) ⊗ₜ[O] e₀`.
+
+Simplify using `[TWact, hact]`. Establish `h2` using `E.jD_act W.one g (a • e)`. Rewrite `h2` using `[W.γD_smul, E.jD_smul, E.jD_smul, E.jD_act, hj, GlobalTheory.Cyc.Decomp.TWact_smul, h1, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Conclude with `GlobalTheory.Cyc.Decomp.tmul_gen_cancel hO W.one e₁ he₁ he₁T e₀ h₀ _ _ h2`.
+-/
 theorem ioE_γE (hO : Function.Injective (algebraMap O LL)) (g : G) (a : W.EE) :
     E.ioE (W.γE (W.resΓ g) a) = gR g (E.ioE a) := by
   obtain ⟨e, e₀, h₀, hj, -⟩ := E.one_e
@@ -232,6 +310,11 @@ theorem ioE_γE (hO : Function.Injective (algebraMap O LL)) (g : G) (a : W.EE) :
     mul_one, mul_one] at h2
   exact GlobalTheory.Cyc.Decomp.tmul_gen_cancel hO W.one e₁ he₁ he₁T e₀ h₀ _ _ h2
 
+/- English proof (translation)
+Establish `h1 : LinearIndependent O fun i => (t i : T.V)` using `t.linearIndependent.map' T.L.T.subtype (Submodule.ker_subtype _)`. Establish `h2 : LinearIndependent LL fun i => (t i : T.V)` using `(LinearIndependent.iff_fractionRing O LL).1 h1`. Use `⟨Module.Basis.mk h2 ?_, fun i => Module.Basis.mk_apply _ _ i⟩` and prove the remaining obligations. Rewrite using `[← T.L.span, Submodule.span_le]`. Introduce `x hx`.
+
+Establish `h3 : (⟨x, hx⟩ : ↥T.L.T) ∈ Submodule.span O (Set.range t)` using `by rw [t.span_eq]; trivial`. Establish `h4` using `Submodule.mem_map_of_mem (f := T.L.T.subtype) h3`. Rewrite `h4` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `Submodule.span_le_restrictScalars O LL _ h4`.
+-/
 theorem exists_basis_V [IsFractionRing O LL] (T : LocLat G Qp LL O) {ι : Type}
     (t : Module.Basis ι O ↥T.L.T) : ∃ b : Module.Basis ι LL T.V, ∀ i, b i = (t i : T.V) := by
   have h1 : LinearIndependent O fun i => (t i : T.V) :=
@@ -245,6 +328,11 @@ theorem exists_basis_V [IsFractionRing O LL] (T : LocLat G Qp LL O) {ι : Type}
   rw [Submodule.map_span, ← Set.range_comp] at h4
   exact Submodule.span_le_restrictScalars O LL _ h4
 
+/- English proof (translation)
+Use `haveI := T.L.free`. Set `t` to `Module.Free.chooseBasis O ↥T.L.T`. Take `⟨b, hb⟩` from `exists_basis_V T t`. Use `⟨b.constr LL fun i => g (t i), fun x => ?_⟩` and prove the remaining obligations. Establish `: ((b.constr LL fun i => g (t i)).restrictScalars O) ∘ₗ T.L.T.subtype = g` using `t.ext fun i => by simp [← hb]`.
+
+Conclude with `LinearMap.congr_fun this x`.
+-/
 theorem exists_extend [IsFractionRing O LL] (T : LocLat G Qp LL O) {U : Type} [AddCommGroup U]
     [Module LL U] [Module O U] [IsScalarTower O LL U] (g : ↥T.L.T →ₗ[O] U) :
     ∃ f : T.V →ₗ[LL] U, ∀ x : ↥T.L.T, f x = g x := by
@@ -256,15 +344,26 @@ theorem exists_extend [IsFractionRing O LL] (T : LocLat G Qp LL O) {U : Type} [A
     t.ext fun i => by simp [← hb]
   exact LinearMap.congr_fun this x
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext_on T.L.span fun x hx => h ⟨x, hx⟩`.
+-/
 theorem ext_lat (T : LocLat G Qp LL O) {U : Type} [AddCommGroup U] [Module LL U]
     {f g : T.V →ₗ[LL] U} (h : ∀ x : ↥T.L.T, f x = g x) : f = g :=
   LinearMap.ext_on T.L.span fun x hx => h ⟨x, hx⟩
 
+/- English proof (translation)
+Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
   rwa [algebraMap_smul, W.φE_ext, algebraMap_smul] at this
 
+/- English proof (translation)
+Establish `h : ∀ f : PowerSeries O, ∃ b, W.γ₀ g f - f = PowerSeries.X * b`. Introduce `f`. Rewrite using `[← dvd_def, PowerSeries.X_dvd_iff]`. Establish `hf` using `PowerSeries.eq_X_mul_shift_add_const f`. Establish `hC : ∀ c : O, W.γ₀ g (PowerSeries.C c) = PowerSeries.C c` using `fun c => (W.γ₀ g).commutes c`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Use `conv_lhs => rw [hf, map_add, map_mul, hC]`. Simplify using `[(W.γ₀_X g).1]`. Use `choose b hb using h`. Conclude with `⟨fun i => b (a i), funext fun i => hb (a i)⟩`.
+-/
 theorem γA_sub (W : LocWach PD LL O v n) (g : W.Gam) (a : LetA O n) :
     ∃ b : LetA O n, W.γA g a - a = letπ * b := by
   have h : ∀ f : PowerSeries O, ∃ b, W.γ₀ g f - f = PowerSeries.X * b := by

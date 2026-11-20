@@ -22,6 +22,9 @@ open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwartzTranslation.schA_add_const | exact GlobalTheory.SchwartzTranslation.schA_add_const | (intros; apply GlobalTheory.SchwartzTranslation.schA_add_const <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : κ → AF F),
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, (fun y => Φ (y + c)) ∈ GlobalTheory.WeilM.schA F κ := by
   first | exact @GlobalTheory.SchwartzTranslation.schA_add_const | exact GlobalTheory.SchwartzTranslation.schA_add_const | (intros; apply GlobalTheory.SchwartzTranslation.schA_add_const <;> assumption)

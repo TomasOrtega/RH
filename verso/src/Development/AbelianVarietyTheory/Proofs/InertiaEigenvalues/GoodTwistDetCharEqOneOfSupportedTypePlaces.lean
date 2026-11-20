@@ -11,6 +11,11 @@ namespace GlobalTheory.TwistTypeDet
 
 open Classical in
 
+/- English proof (translation)
+Introduce `D S T B hB _ A _ t ht hadm u κ hlift hsupp`. Establish `hst : Lev.finE T κ ∈ St B.F.βT` using `Formalism.L2.DIV.parLev_St hlift.2.1`. Rewrite using `[GlobalTheory.TwistDetStabAll.detChar_eq_prod_res B hB t ht hlift.1 hst]`. Use `Finset.prod_eq_one fun PP hPP => ?_` and prove the remaining obligations. Take `⟨P, hPg, hQ, hsplit⟩` from `hadm.1.split`.
+
+Establish `hnot : PP ∉ B.G.Pg` using `fun h => Finset.disjoint_left.mp hadm.1.disj h (Finset.mem_union_right _ hPP)`. Rewrite using `[GlobalTheory.ExportSeries.redFn_eq_one_of_suppAt B.F.βT hsplit hPg (hQ (Finset.mem_union_right _ hPP)) hnot hst hsupp, map_one, map_one]`.
+-/
 theorem detChar_eq_one_of_suppAt : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → S.SigOK → ∀ (A : Type) [CommGroup A] (t : Twist D A), t.Good → B.admitted t.Q → ∀ (u : G0 B.G.Pg T.rank) (κ : GA D T), Lev.IsLevelLift T B.F.βT B.G.levT u κ → SuppAt (idem B.G.Pg) T κ → detChar T t.chi κ = 1 := by
   intro D S T B hB _ A _ t ht hadm u κ hlift hsupp
   have hst : Lev.finE T κ ∈ St B.F.βT := Formalism.L2.DIV.parLev_St hlift.2.1

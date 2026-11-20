@@ -23,6 +23,9 @@ namespace GlobalTheory.LevelSeries
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Rewrite `h1` using `[Matrix.map_apply, Matrix.smul_apply, map_nsmul, ← Nat.cast_smul_eq_nsmul D.host.F]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hM)`.
+-/
 theorem map_infPart_of_nsmul {V W : HSp D} {y : WO V W} {M : ℕ} (hM : M ≠ 0) (h : (M • y).map (infPart D) = 0) :
     y.map (infPart D) = 0 := by
   ext i j
@@ -30,6 +33,13 @@ theorem map_infPart_of_nsmul {V W : HSp D} {y : WO V W} {M : ℕ} (hM : M ≠ 0)
   rw [Matrix.map_apply, Matrix.smul_apply, map_nsmul, ← Nat.cast_smul_eq_nsmul D.host.F] at h1
   exact (smul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hM)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Unfold `latO at hu`. Use `AddSubgroup.closure_induction (p := fun u _ => infPart D (u i j) = 0) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `w ⟨α, -, -, a, -, s, -, t, -, rfl⟩`.
+
+Rewrite using `[Matrix.of_apply]`. Conclude with `(show infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * V.gram k j)) = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * V.gram k j) from rfl).trans (TensorProduct.zero_tmul _ _)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[Matrix.add_apply, RingHom.map_add, hx, hy, add_zero]`.
+
+Introduce `x _ hx`. Rewrite using `[Matrix.neg_apply, RingHom.map_neg, hx, neg_zero]`.
+-/
 theorem map_infPart_of_mem_latO {V W : HSp D} {LV : Set (Fin V.rank → D.host.E)} {LW : Set (Fin W.rank → D.host.E)}
     {u : WO V W} (hu : u ∈ latO V W LV LW fun _ => True) : u.map (infPart D) = 0 := by
   ext i j
@@ -44,6 +54,11 @@ theorem map_infPart_of_mem_latO {V W : HSp D} {LV : Set (Fin V.rank → D.host.E
   · intro x y _ _ hx hy; rw [Matrix.add_apply, RingHom.map_add, hx, hy, add_zero]
   · intro x _ hx; rw [Matrix.neg_apply, RingHom.map_neg, hx, neg_zero]
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hv e M O₁ hM f hf`. Establish `hvac : IsVacO ψ θ V W (fun _ => 1) sW (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f₀` using `hv.2.2.2.2.2.2.2.2`. Set `Sp : Submodule ℂ (WO V W → ℂ)` to `Submodule.span ℂ (Set.range fun a : {a : WO V W // a.map (infPart D) = 0} => heisO ψ V W a f₀)`. Establish `hle : trSp ψ V W ΛV ΛW f₀ e M O₁ ≤ Sp.restrictScalars O₁`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, -, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨y, map_infPart_of_nsmul hM (map_infPart_of_mem_latO hy)⟩, rfl⟩`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (hle hf)`. Rewrite using `[← hc]`. Conclude with `⟨GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ V W hvac.1.1 f₀ hvac.2.theta _ c.support (fun a => a.1) c fun a _ => a.2, fun τ => GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ V W hvac.1.1 hvac.2.inf f₀ hvac.2.theta τ _ (hvac.2.fock τ) _ c.support (fun a => a.1) c fun a …`.
+-/
 theorem trSp_theta_fock : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)

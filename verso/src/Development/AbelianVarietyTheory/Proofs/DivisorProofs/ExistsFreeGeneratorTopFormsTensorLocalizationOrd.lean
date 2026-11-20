@@ -23,6 +23,11 @@ namespace GlobalTheory.GraphLocal
 variable {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ']
   [Algebra (K ⊗[ℂ] κ') L]
 
+/- English proof (translation)
+Use `letI := (toQ (L := L) 𝔭).toAlgebra`. Use `⟨fun s => isUnit_toQ 𝔭 hinj s.2, fun x => ?_, fun {a b} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, s, hs, e⟩` from `exists_mul_toQ 𝔭 x`. Conclude with `⟨(a, ⟨s, hs⟩), e⟩`. Establish `: a = b` using `Subtype.ext (hinj (congrArg Subtype.val h))`.
+
+Rewrite using `[this]`.
+-/
 theorem isLocalization_locAt {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := κ') A)) [𝔭.IsPrime]
     (hinj : Function.Injective (algebraMap (K ⊗[ℂ] κ') L)) :
     letI := (toQ (L := L) 𝔭).toAlgebra
@@ -34,6 +39,9 @@ theorem isLocalization_locAt {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := 
   · have : a = b := Subtype.ext (hinj (congrArg Subtype.val h))
     rw [this]
 
+/- English proof (translation)
+Use `letI := (toQ (L := L) 𝔭).toAlgebra`. Use `haveI := isLocalization_locAt (L := L) 𝔭 hinj`. Conclude with `Algebra.FormallyEtale.of_isLocalization 𝔭.primeCompl`.
+-/
 theorem formallyEtale_toQ {A : Subalgebra ℂ K} (𝔭 : Ideal (tens (κ' := κ') A)) [𝔭.IsPrime]
     (hinj : Function.Injective (algebraMap (K ⊗[ℂ] κ') L)) : (toQ (L := L) 𝔭).FormallyEtale := by
   letI := (toQ (L := L) 𝔭).toAlgebra
@@ -47,6 +55,17 @@ namespace GlobalTheory.GraphLocal
 variable {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ']
   [Algebra ℂ L] [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L]
 
+/- English proof (translation)
+Use `letI : Algebra ℂ E.ring := E.const.toAlgebra`. Set `f : E.ring ≃ₐ[ℂ] placeAlg E` to `{ toFun := fun a => ⟨a.1, a.2⟩ invFun := fun a => ⟨a.1, a.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_mul' := fun _ _ => rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Set `θ : E.ring ⊗[ℂ] κ' ≃ₐ[ℂ] tens (κ'` to `κ') (placeAlg E) := (Algebra.TensorProduct.congr f AlgEquiv.refl).trans (tensEquiv (placeAlg E))`. Establish `hθ (a : E.ring) (c : κ') : (θ (a ⊗ₜ c) : K ⊗[ℂ] κ') = (a : K) ⊗ₜ c` using `rfl`. Establish `hθe : (θ : E.ring ⊗[ℂ] κ' →+* tens (κ'` using `κ') (placeAlg E)).FormallyEtale := by`.
+
+Use `letI := (θ : E.ring ⊗[ℂ] κ' →+* tens (κ' := κ') (placeAlg E)).toAlgebra`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId (E.ring ⊗[ℂ] κ') (tens (κ' := κ') (placeAlg E))) θ.bijective)`. Set `ψ : E.ring ⊗[ℂ] κ' →+* locAt (L` to `L) 𝔭 := (toQ (L := L) 𝔭).comp (θ : E.ring ⊗[ℂ] κ' →+* tens (κ' := κ') (placeAlg E))`. Establish `hψ : ψ.FormallyEtale` using `RingHom.FormallyEtale.comp hθe (formallyEtale_toQ 𝔭 hinj)`. Set `ρ : E.ring →+* locAt (L` to `L) 𝔭 := ψ.comp Algebra.TensorProduct.includeLeftRingHom`.
+
+Establish `hg` using `formallyEtale_mvPolynomial_eval₂_tensor (R := E.ring) τ' (GlobalTheory.DiagLoc.formallyEtale_eval₂Hom_of_trBasis (algebraMap ℂ κ') hτ)`. Establish `hφ : (MvPolynomial.eval₂Hom ρ (fun i => toQ (L` using `L) 𝔭 ⟨1 ⊗ₜ τ' i, tmul_mem (one_mem _) _⟩)).FormallyEtale := by`. Use `RingHom.FormallyEtale.comp hg hψ using 1` and compare the differences between its conclusion and the goal. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+
+Simplify using `[ρ]`. Introduce `i`. Simplify using `only [MvPolynomial.eval₂Hom_X', RingHom.comp_apply]`. Both sides reduce to the same expression. Establish `hρ : ρ.comp E.const = (algebraMap ℂ L).codRestrict (locAt (L` using `L) 𝔭) hc := by`.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap (K ⊗[ℂ] κ') L (algebraMap ℂ K a ⊗ₜ[ℂ] (1 : κ')) = algebraMap ℂ L a`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Use `GlobalTheory.TopFrameEt.isFreeGen_dForm_of_formallyEtale_mvPolynomial E.const ((algebraMap ℂ L).codRestrict (locAt (L := L) 𝔭) hc) ρ hρ z b hb (fun i => toQ (L := L) 𝔭 ⟨1 ⊗ₜ τ' i, tmul_mem (one_mem _) _⟩) hφ` as an intermediate fact. Conclude with `this`.
+-/
 theorem isFreeGen_locAt {n k' : ℕ} (τ' : Fin k' → κ') (E : Place (algebraMap ℂ K))
     (𝔭 : Ideal (tens (κ' := κ') (placeAlg E))) [𝔭.IsPrime]
     (hc : ∀ a, algebraMap ℂ L a ∈ locAt (L := L) 𝔭)
@@ -102,6 +121,11 @@ namespace GlobalTheory.GraphLocal
 
 variable {K : Type} [Field K] [Algebra ℂ K]
 
+/- English proof (translation)
+Establish `ht0 : (t : K) ≠ 0` using `fun h => ht.ne_zero (Subtype.ext h)`. Use `set v : K := f * (t : K) ^ (-E.ord f) with hv`. Establish `hv0 : v ≠ 0` using `mul_ne_zero hf (zpow_ne_zero _ ht0)`. Establish `hvo : E.ord v = 0`. Rewrite using `[hv, E.ord_mul hf (zpow_ne_zero _ ht0), E.ord_zpow, E.ord_irreducible ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2⟩` from `(E.ord_eq_zero_iff hv0).1 hvo`. Use `⟨⟨v, h1⟩, IsUnit.of_mul_eq_one (⟨v⁻¹, h2⟩ : E.ring) (Subtype.ext (mul_inv_cancel₀ hv0)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f = v * _`. Rewrite using `[hv, mul_assoc, ← zpow_add₀ ht0, neg_add_cancel, zpow_zero, mul_one]`.
+-/
 theorem exists_unit_mul_zpow (E : Place (algebraMap ℂ K)) {t : E.ring} (ht : Irreducible t)
     {f : K} (hf : f ≠ 0) : ∃ u : E.ring, IsUnit u ∧ f = (u : K) * (t : K) ^ E.ord f := by
   have ht0 : (t : K) ≠ 0 := fun h => ht.ne_zero (Subtype.ext h)
@@ -119,6 +143,17 @@ end GlobalTheory.GraphLocal
 
 namespace GlobalTheory.GraphLocal
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨b', hb'⟩ : ∃ b' : Module.Basis (Fin n) K (Omega (c₀)), ∀ j, b' j = dFun (c₀) (z j : K) := by`. Use `letI := E.const.toAlgebra`. Use `letI := (c₀).toAlgebra`. Use `haveI : IsScalarTower ℂ E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `⟨fracKaehlerBasis K b, fun j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [fracKaehlerBasis_apply, hb, dFun, KaehlerDifferential.map_D]`. Both sides reduce to the same expression. Set `c : Matrix (Fin n) (Fin n) K` to `fun i j => b'.repr (dFun (c₀) (x i)) j`. Establish `hc : ∀ i, dFun (c₀) (x i) = ∑ j, c i j • dFun (c₀) (z j : K)` using `fun i => by`. Repeatedly rewrite using `[← hb']`.
+
+Conclude with `(b'.sum_repr _).symm`. Establish `hω` using `isFreeGen_dForm z b hb`. Establish `hdet : dForm (c₀) x = c.det • E.toRat n (dForm E.const z)`. Establish `hz : E.toRat n (dForm E.const z) = dForm c₀ (fun j => (z j : K))` using `formMap_dForm _ _ z`. Rewrite using `[dForm_eq_det_smul x (fun j => (z j : K)) c hc, hz]`.
+
+Establish `hc0 : c.det ≠ 0`. Introduce `h0`. Establish `hfree` using `isFreeGen_dForm_of_trBasis (c₀) hx`. Rewrite `hfree` using `[hdet, h0, zero_smul]`. Conclude with `one_ne_zero (hfree.1 (a₁ := 1) (a₂ := 0) (by simp))`.
+
+Conclude with `⟨c, hc, hc0, by rw [hdet]; exact E.formOrd_smul_toRat hω hc0⟩`.
+-/
 theorem exists_matrix_dFun {K : Type} [Field K] (c₀ : ℂ →+* K) {n : ℕ} (E : Place (c₀)) (z : Fin n → E.ring)
     (b : Module.Basis (Fin n) E.ring (Omega E.const)) (hb : ∀ i, b i = dFun E.const (z i))
     (x : Fin n → K) (hx : TrBasis (c₀) x) :
@@ -154,6 +189,11 @@ end GlobalTheory.GraphLocal
 
 namespace GlobalTheory.GraphLocal
 
+/- English proof (translation)
+Set `M : Matrix (Fin (r + n)) (Fin (r + n)) A` to `(Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) A) 0 0 c).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Establish `hM : M.det = c.det`. Simplify using `[M, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Rewrite using `[← hM]`. Use `dForm_eq_det_smul _ _ M fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_add]`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `[M, Fin.append_left, Fin.append_right, Matrix.one_apply]`. Simplify using `[M, Fin.append_left, Fin.append_right, h]`.
+-/
 theorem dForm_append_eq_det_smul {k A : Type*} [CommRing k] [CommRing A] (α : k →+* A)
     {r n : ℕ} (a : Fin r → A) (f w : Fin n → A) (c : Matrix (Fin n) (Fin n) A)
     (h : ∀ i, dFun α (f i) = ∑ j, c i j • dFun α (w j)) :
@@ -174,6 +214,29 @@ end GlobalTheory.GraphLocal
 
 namespace GlobalTheory.GraphLocal
 
+/- English proof (translation)
+Introduce `K κ' L _ _ _ _ _ _ _ _ _ n k' x τ' E 𝔭 _ t hc hx hτ _ ht`. Establish `hinj : Function.Injective (algebraMap (K ⊗[ℂ] κ') L)` using `IsFractionRing.injective _ _`. Choose the witnesses or unpack the hypotheses as in `⟨z, b, hb⟩ : ∃ (z : Fin n → E.ring) (b : Module.Basis (Fin n) E.ring (Omega E.const)), ∀ i, b i = dFun E.const (z i) := by`. Use `letI := E.const.toAlgebra`. Use `letI := (algebraMap ℂ K).toAlgebra`.
+
+Use `haveI : IsScalarTower ℂ E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType ℂ E.ring := E.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField ℂ E.ring`. Take `⟨m, z, b, -, hb⟩` from `exists_basis_kaehler_uniformiser ℂ ht`. Establish `h1` using `trdeg_eq_of_basis_kaehler ℂ K b`.
+
+Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hx`. Rewrite `h2` using `[h1, Cardinal.mk_fin]`. Take `rfl : n = m + 1` from `by exact_mod_cast h2`. Conclude with `⟨z, b, hb⟩`. Take `⟨c, hcx, hc0, hord⟩` from `exists_matrix_dFun (algebraMap ℂ K) E z b hb x hx`.
+
+Take `⟨u, hu, hfu⟩` from `exists_unit_mul_zpow E ht hc0`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Set `j : K →+* L` to `(algebraMap (K ⊗[ℂ] κ') L).comp Algebra.TensorProduct.includeLeftRingHom`. Establish `hj : j.comp (algebraMap ℂ K) = algebraMap ℂ L`. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `algebraMap (K ⊗[ℂ] κ') L (algebraMap ℂ K a ⊗ₜ[ℂ] (1 : κ')) = algebraMap ℂ L a`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Set `y : Fin (k' + n) → locAt (L` to `L) 𝔭 := Fin.append (fun i => toQ 𝔭 ⟨1 ⊗ₜ τ' i, tmul_mem (one_mem _) _⟩) (fun i => toQ 𝔭 ⟨(z i : K) ⊗ₜ 1, tmul_mem (z i).2 1⟩)`. Establish `hy : (fun i => (y i : L)) = Fin.append (fun i => algebraMap (K ⊗[ℂ] κ') L (1 ⊗ₜ τ' i)) (fun i => j (z i : K))`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `[y, Fin.append_left]`. Simplify using `[y, Fin.append_right, j]`. Use `⟨y, toQ 𝔭 ⟨(u : K) ⊗ₜ 1, tmul_mem u.2 1⟩, isFreeGen_locAt τ' E 𝔭 hc hinj hτ z b hb, IsUnit.of_mul_eq_one (toQ 𝔭 ⟨(v : K) ⊗ₜ 1, tmul_mem v.2 1⟩) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (toQ (L := L) 𝔭)]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_one, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[← Subring.coe_mul, hv]`. Both sides reduce to the same expression.
+
+Rewrite using `[hy, hord]`. Use `(dForm_append_eq_det_smul (algebraMap ℂ L) (fun i => algebraMap (K ⊗[ℂ] κ') L (1 ⊗ₜ τ' i)) (fun i => j (x i)) (fun i => j (z i : K)) (c.map j) fun i => ?_).trans ?_` and prove the remaining obligations. Use `letI := (algebraMap ℂ K).toAlgebra`. Use `letI := (algebraMap ℂ L).toAlgebra`. Use `letI := j.toAlgebra`.
+
+Use `haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq' hj.symm`. Establish `e` using `congrArg (KaehlerDifferential.map ℂ ℂ K L) (hcx i)`. Rewrite `e` using `[map_sum]`. Simplify using `only [map_smul, KaehlerDifferential.map_D] at e`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[show dFun (algebraMap ℂ L) (j (x i)) = KaehlerDifferential.D ℂ L (algebraMap K L (x i)) from rfl, e]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul L (c i l)]`. Both sides reduce to the same expression. Use `congr 1`.
+
+Rewrite using `[show (c.map j).det = j c.det from (RingHom.map_det j c).symm]`. Generalize the expression as in `E.ord c.det = a at hfu ⊢`. Rewrite using `[hfu, map_mul, map_zpow₀]`. Both sides reduce to the same expression.
+-/
 theorem exists_isFreeGen_locAt_formOrd : ∀ {K κ' L : Type} [Field K] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]
     (n k' : ℕ) (x : Fin n → K) (τ' : Fin k' → κ') (E : Place (algebraMap ℂ K))

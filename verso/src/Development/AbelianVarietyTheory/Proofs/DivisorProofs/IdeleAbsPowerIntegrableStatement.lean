@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocTateInt.integrableOn_absE_pow | exact GlobalTheory.LocTateInt.integrableOn_absE_pow | (intros; apply GlobalTheory.LocTateInt.integrableOn_absE_pow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_abs_power_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (μ : Measure (idelesAt E (evFin F v))), μ.IsHaarMeasure → ∀ C : Set (Fv F v ⊗[F] E), IsCompact C → ∀ e : ℕ, 1 ≤ e →
       IntegrableOn (fun l : idelesAt E (evFin F v) => (absE F E l.1 : ℝ) ^ e)

@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.Pf14
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Break down `le_or_gt A 1 with h | h` into its components or cases. Establish `h1 : (1 - A) * (1 - B) ≤ (1 - A) * u` using `mul_le_mul_of_nonneg_left hu (by linarith)`. Establish `h2` using `mul_nonneg hA hB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (A - 1) * u ≤ (A - 1) * 1` using `mul_le_mul_of_nonneg_left hu1 (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numeric_product_inequality (A B u : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B) (hu1 : u ≤ 1) (hu : 1 - B ≤ u) :
     1 - A - B ≤ (1 - A) * u := by
   rcases le_or_gt A 1 with h | h
@@ -15,6 +20,17 @@ theorem numeric_product_inequality (A B u : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B) (
   · have h1 : (A - 1) * u ≤ (A - 1) * 1 := mul_le_mul_of_nonneg_left hu1 (by linarith)
     linarith
 
+/- English proof (translation)
+Establish `hk3 : k ≤ k ^ 3` using `le_self_pow₀ hk (by norm_num)`. Establish `hr21 : (1 : ℝ) ≤ r ^ 2` using `one_le_pow₀ (by linarith)`. Establish `hQ5 : (1 : ℝ) ≤ Q ^ 5` using `one_le_pow₀ hQ`. Establish `hk0 : 0 ≤ k` using `by linarith`. Establish `hN0 : 0 ≤ N` using `by linarith`.
+
+Establish `e1 : k ≤ C * k ^ 3` using `le_trans hk3 (le_mul_of_one_le_left (by positivity) (by linarith))`. Establish `e2 : k ≤ C * k ^ 3 * r ^ 2` using `le_trans e1 (le_mul_of_one_le_right (by positivity) hr21)`. Establish `e3 : k * N ≤ C * k ^ 3 * r ^ 2 * N` using `mul_le_mul_of_nonneg_right e2 hN0`. Establish `hP : k * N ≤ C * k ^ 3 * r ^ 2 * N * Q ^ 5` using `le_trans e3 (le_mul_of_one_le_right (by positivity) hQ5)`. Establish `hkN : 1 ≤ k * N` using `one_le_mul_of_one_le_of_one_le hk hN`.
+
+Establish `hrN : 1 ≤ r * N` using `one_le_mul_of_one_le_of_one_le (by linarith) hN`. Establish `hom : c0 ≤ r * N * c0 + z`. Establish `: c0 ≤ r * N * c0` using `le_mul_of_one_le_left hc0 hrN`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS : 0 ≤ cS + (r * N * c0 + z)` using `by linarith`.
+
+Establish `ha0 : k * N * (cS + (r * N * c0 + z)) * Y ≤ a` using `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hP hS) (by linarith)) hsz`. Prove the components needed by the constructor for the conclusion. Establish `e4 : 1 ≤ k * N * (cS + (r * N * c0 + z))` using `one_le_mul_of_one_le_of_one_le hkN (by linarith)`. Establish `e5 : 1 ≤ k * N * (cS + (r * N * c0 + z)) * Y` using `one_le_mul_of_one_le_of_one_le e4 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `le_trans ?_ ha0` and prove the remaining obligations. Establish `e6 : k * N * c0 ≤ k * N * (cS + (r * N * c0 + z))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e7` using `mul_le_mul_of_nonneg_right e6 (show (0 : ℝ) ≤ Y by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem num_size (C k r N Q cS c0 z Y a : ℝ) (hC : 2 ≤ C) (hk : 1 ≤ k) (hr : 2 ≤ r) (hN : 1 ≤ N) (hQ : 1 ≤ Q)
     (hcS : 8 ≤ cS) (hc0 : 0 ≤ c0) (hz : 0 ≤ z) (hY : 2 ≤ Y)
     (hsz : C * k ^ 3 * r ^ 2 * N * Q ^ 5 * (cS + (r * N * c0 + z)) * Y ≤ a) :
@@ -47,6 +63,11 @@ theorem num_size (C k r N Q cS c0 z Y a : ℝ) (hC : 2 ≤ C) (hk : 1 ≤ k) (hr
     calc N * k * c0 * Y = k * N * c0 * Y := by ring
       _ ≤ _ := e7
 
+/- English proof (translation)
+Establish `hCr : Ct0 ≤ C * r` using `le_trans hC3 (le_mul_of_one_le_right (by linarith) (by linarith))`. Establish `hCr2 : r + 1 ≤ C * r`. Establish `: 2 * r ≤ C * r` using `mul_le_mul_of_nonneg_right hC2 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : Ct0 * N * X ≤ C * r * N * X` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCr hN) hX`.
+
+Establish `e2 : (r + 1) * (N * c0) ≤ C * r * (N * c0)` using `mul_le_mul_of_nonneg_right hCr2 (mul_nonneg hN hc0)`. Establish `e3 : C * r * N * (X + c0) = C * r * N * X + C * r * (N * c0)` using `by ring`. Establish `e4 : (r + 1) * (N * c0) = r * N * c0 + N * c0` using `by ring`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem level_bound_numeric (C Ct0 r N X c0 z : ℝ) (hC2 : 2 ≤ C) (hC3 : Ct0 ≤ C) (hr : 2 ≤ r) (hN : 0 ≤ N) (hX : 0 ≤ X)
     (hc0 : 0 ≤ c0) : Ct0 * N * X + N * c0 + (r * N * c0 + z) ≤ C * r * N * (X + c0) + z := by
   have hCr : Ct0 ≤ C * r := le_trans hC3 (le_mul_of_one_le_right (by linarith) (by linarith))
@@ -61,6 +82,21 @@ theorem level_bound_numeric (C Ct0 r N X c0 z : ℝ) (hC2 : 2 ≤ C) (hC3 : Ct0 
   rw [e3]
   linarith
 
+/- English proof (translation)
+Establish `hYpos : 0 < Y` using `by linarith`. Establish `hapos : 0 < a` using `by linarith`. Establish `hk0 : 0 ≤ k` using `by linarith`. Establish `hB0 : 0 ≤ (n : ℝ) * r ^ 2 * k / Y` using `by positivity`. Establish `hB1 : 1 / Y ≤ (n : ℝ) * r ^ 2 * k / Y`.
+
+Apply `div_le_div_of_nonneg_right _ hYpos.le` to reduce the goal to its premises. Establish `hr21 : (1 : ℝ) ≤ r ^ 2` using `one_le_pow₀ (by linarith)`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hn hr21) hk`. Establish `hy0 : 0 ≤ k * c0 / a` using `by positivity`. Establish `hNy : (n : ℝ) * (k * c0 / a) ≤ 1 / Y`.
+
+Rewrite using `[le_div_iff₀ hYpos]`. Establish `: (n : ℝ) * (k * c0 / a) * Y = ((n : ℝ) * k * c0 * Y) / a` using `by ring`. Rewrite using `[this, div_le_one hapos]`. Conclude with `ha2`. Establish `hy1 : k * c0 / a ≤ 1`.
+
+Establish `e1 : k * c0 / a ≤ (n : ℝ) * (k * c0 / a)` using `le_mul_of_one_le_left hy0 hn`. Establish `e2 : 1 / Y ≤ 1`. Rewrite using `[div_le_one hYpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hu1 : (1 - k * c0 / a) ^ n ≤ 1` using `pow_le_one₀ (by linarith) (by linarith)`. Establish `hu : 1 - (n : ℝ) * r ^ 2 * k / Y ≤ (1 - k * c0 / a) ^ n`. Establish `hb` using `one_add_mul_le_pow (a := -(k * c0 / a)) (by linarith) n`. Establish `e2 : (1 : ℝ) + -(k * c0 / a) = 1 - k * c0 / a` using `by ring`. Rewrite `hb` using `[e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAeq : Cr * n * r ^ 2 * k / Y = Cr * ((n : ℝ) * r ^ 2 * k / Y)` using `by ring`. Establish `hCeq : C * n * r ^ 2 * k / Y = C * ((n : ℝ) * r ^ 2 * k / Y)` using `by ring`. Rewrite using `[hAeq, hCeq]`. Establish `h3` using `numeric_product_inequality (Cr * ((n : ℝ) * r ^ 2 * k / Y)) ((n : ℝ) * r ^ 2 * k / Y) ((1 - k * c0 / a) ^ n) (mul_nonneg hCr.le hB0) hB0 hu1 hu`.
+
+Establish `h4 : (Cr + 1) * ((n : ℝ) * r ^ 2 * k / Y) ≤ C * ((n : ℝ) * r ^ 2 * k / Y)` using `mul_le_mul_of_nonneg_right hC5 hB0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem num_count (C Cr r k Y a c0 : ℝ) (n : ℕ) (hCr : 0 < Cr) (hC5 : Cr + 1 ≤ C) (hr : 2 ≤ r) (hk : 1 ≤ k)
     (hn : 1 ≤ (n : ℝ)) (hY : 2 ≤ Y) (hc0 : 0 ≤ c0) (ha : 1 ≤ a) (ha2 : (n : ℝ) * k * c0 * Y ≤ a) :
     1 - C * n * r ^ 2 * k / Y ≤ (1 - Cr * n * r ^ 2 * k / Y) * (1 - k * c0 / a) ^ n := by
@@ -98,6 +134,27 @@ theorem num_count (C Cr r k Y a c0 : ℝ) (n : ℕ) (hCr : 0 < Cr) (hC5 : Cr + 1
     mul_le_mul_of_nonneg_right hC5 hB0
   linarith
 
+/- English proof (translation)
+Introduce `C Ct0 CD1 Cr h0 h1 h2 hC2 hC3 hC4 hC5 p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hH`. Take `⟨hp, hr, _, hN1, _, hY, _, hk, _, hD, hc, hsz⟩` from `hH`. Establish `hN1pos : 1 ≤ orbitWindowCount r de h x` using `by unfold orbitWindowCount; omega`. Establish `hNnat : 1 ≤ TT.card`. Break down `Nat.eq_zero_or_pos TT.card with h0' | h0'` into its components or cases.
+
+Rewrite `hN1` using `[h0', Nat.mul_zero]`. Establish `: 0 < orbitWindowCount r de h x ^ 2` using `by positivity`. Use linear arithmetic over natural numbers and integers. Conclude with `h0'`. Establish `hN : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hNnat`.
+
+Establish `hk1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)`. Establish `: 1 ≤ m + 1` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hr2 : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hp1 : (1 : ℝ) < p`.
+
+Establish `: 1 < p` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hQ : (1 : ℝ) ≤ (p : ℝ) ^ goodG' r de h x` using `one_le_pow₀ hp1.le`. Establish `hY2 : (2 : ℝ) ≤ Y` using `le_trans hr2 hY`.
+
+Establish `hc0 : (0 : ℝ) ≤ c0` using `Nat.cast_nonneg _`. Establish `hz : (0 : ℝ) ≤ 2 * (r : ℝ) * n' * cpp` using `by positivity`. Establish `hcS : (8 : ℝ) ≤ cStar`. Establish `: 8 ≤ cStar` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Take `⟨ha1, ha2⟩` from `num_size C _ _ _ _ _ _ _ Y a hC2 hk1 hr2 hN hQ hcS hc0 hz hY2 hsz`. Establish `hapos : 0 < a` using `by linarith`. Establish `hlog : 0 ≤ Real.log a` using `Real.log_nonneg ha1`. Establish `hlogb : 0 ≤ Real.logb p a` using `Real.logb_nonneg hp1 ha1`. Use `⟨?_, mul_nonneg (by linarith) hc0, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `t0 om tableLineDegreeFive.tBound`. Establish `hLa : 0 ≤ tableLineDegreeFive.La C (orbitWindowCount r de h x) a`. Unfold `tableLineDegreeFive.La`. Establish `: 0 ≤ C` using `by linarith`. Check the signs of the components of the expression.
+
+Establish `hX0 : 0 ≤ tableLineDegreeFive.La C (orbitWindowCount r de h x) a * a / ((p : ℝ) * ((m + 1 : ℕ) : ℝ)) + a * (p : ℝ) ^ (-(L₁ : ℤ)) + ((m + 1 : ℕ) : ℝ) * (p : ℝ) ^ goodG' r de h x`. Establish `e1 : 0 ≤ tableLineDegreeFive.La C (orbitWindowCount r de h x) a * a / ((p : ℝ) * ((m + 1 : ℕ) : ℝ))` using `by positivity`. Establish `e2 : 0 ≤ a * (p : ℝ) ^ (-(L₁ : ℤ))` using `by positivity`. Establish `e3 : 0 ≤ ((m + 1 : ℕ) : ℝ) * (p : ℝ) ^ goodG' r de h x` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `key` using `level_bound_numeric C Ct0 r TT.card _ c0 (2 * (r : ℝ) * n' * cpp) hC2 hC3 hr2 (by linarith) hX0 hc0`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `le_trans ?_ hD` and prove the remaining obligations. Establish `e1 : CD1 * (TT.card : ℝ) ≤ C * (TT.card : ℝ)` using `mul_le_mul_of_nonneg_right hC4 (by linarith)`.
+
+Establish `e2 : CD1 * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2 ≤ C * (TT.card : ℝ) * ((m + 1 : ℕ) : ℝ) ^ 2` using `mul_le_mul_of_nonneg_right e1 (by positivity)`. Conclude with `mul_le_mul_of_nonneg_right e2 hlogb`. Conclude with `num_count C Cr r _ Y a c0 TT.card h2 hC5 hr2 hk1 hN hY2 hc0 ha1 ha2`.
+-/
 theorem num : Num := by
   intro C Ct0 CD1 Cr h0 h1 h2 hC2 hC3 hC4 hC5 p n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hH
   obtain ⟨hp, hr, _, hN1, _, hY, _, hk, _, hD, hc, hsz⟩ := hH

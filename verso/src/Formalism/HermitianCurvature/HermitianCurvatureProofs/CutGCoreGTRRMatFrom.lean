@@ -11,21 +11,33 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace RRMat
 
+/- English proof (translation)
+Rewrite using `[Complex.normSq_mul, Complex.normSq_eq_norm_sq (Complex.exp _), Complex.norm_exp_ofReal_mul_I]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_rot (ζ : ℂ) (φ : ℝ) :
     Complex.normSq (ζ * Complex.exp ((φ : ℂ) * Complex.I)) = Complex.normSq ζ := by
   rw [Complex.normSq_mul, Complex.normSq_eq_norm_sq (Complex.exp _), Complex.norm_exp_ofReal_mul_I]
   ring
 
+/- English proof (translation)
+Unfold `wR`. Rewrite using `[normSq_rot]`.
+-/
 theorem wR_rot (k : ℕ) (TT : ℝ) (ζ : ℂ) (φ : ℝ) :
     wR k TT (ζ * Complex.exp ((φ : ℂ) * Complex.I)) = wR k TT ζ := by
   unfold wR
   rw [normSq_rot]
 
+/- English proof (translation)
+Use `⟨((|P.TT| + 1 : ℝ) : ℂ), ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.normSq_ofReal]`. Use polynomial arithmetic with `[abs_nonneg P.TT, le_abs_self P.TT]`.
+-/
 theorem exists_ann (P : M.Par) : ∃ ζ : ℂ, P.TT < Complex.normSq ζ := by
   refine ⟨((|P.TT| + 1 : ℝ) : ℂ), ?_⟩
   rw [Complex.normSq_ofReal]
   nlinarith [abs_nonneg P.TT, le_abs_self P.TT]
 
+/- English proof (translation)
+Simplify using `using VLem.hsV_smul (Wp := Wp) (Wq := Wq) 0 0`.
+-/
 theorem hsVec_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   simpa using VLem.hsV_smul (Wp := Wp) (Wq := Wq) 0 0
@@ -38,23 +50,40 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 def rotA (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (φ : ℝ) (X : Wq →L[ℂ] Wp) : Wq →L[ℂ] Wp :=
   (Bs.π (hL P.k P.r Bs.z φ)).comp (X.comp (Bs.π' (hR P.k P.r Bs.z' φ)))
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[rotA, map_sum, map_smul]`.
+-/
 theorem rotA_sum (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (φ : ℝ) {ι : Type} (s : Finset ι) (a : ι → ℂ)
     (X : ι → (Wq →L[ℂ] Wp)) : rotA P Bs φ (∑ i ∈ s, a i • X i) = ∑ i ∈ s, a i • rotA P Bs φ (X i) := by
   ext v
   simp [rotA, map_sum, map_smul]
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[rotA]`.
+-/
 theorem rotA_smul (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (φ : ℝ) (a : ℂ) (X : Wq →L[ℂ] Wp) :
     rotA P Bs φ (a • X) = a • rotA P Bs φ X := by
   ext v
   simp [rotA]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rotM_eq (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (E : M.Ty P → (Wq →L[ℂ] Wp)) (φ : ℝ) (ρ ρ' : M.Ty P) :
     rotM P Bs.z Bs.z' Bs.π Bs.π' E φ ρ ρ' = inner ℂ (B.hsVec (E ρ)) (B.hsVec (rotA P Bs φ (E ρ'))) := rfl
 
+/- English proof (translation)
+Rewrite using `[SSTr.tz_eq P Bs hpl]`. Conclude with `hζ`.
+-/
 theorem ann_tz (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {ζ : ℂ}
     (hζ : P.TT < Complex.normSq ζ) : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ := by
   rw [SSTr.tz_eq P Bs hpl]; exact hζ
 
+/- English proof (translation)
+Establish `hB` using `SSTr.radBase P Bs hpl`. Establish `hS'` using `hS P.k P.r Bs.z Bs.z' hB.1 hB.2.1 hB.2.2.1 hB.2.2.2.1 hB.2.2.2.2.1`. Establish `hζ1` using `ann_tz P Bs hpl hζ`. Establish `hζ2 : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq (ζ * Complex.exp ((φ : ℂ) * Complex.I))`. Rewrite using `[normSq_rot]`.
+
+Conclude with `hζ1`. Establish `hrot` using `(hS'.2.2.2.2 ζ hζ1 φ).1`. Rewrite `hrot` using `[← hsec]`. Rewrite using `[hrot]`. Conclude with `Φ.2.2.2 (c, _) (Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hB.2.1 hB.2.2.1 hB.2.2.2.2.2.1 (q := (c, ζ * Complex.exp ((φ : ℂ) * Complex.I))) ⟨hc, hζ2⟩) _ (hS'.1 φ).1 _ (hS'.1 φ).2`.
+-/
 theorem rot_eqv (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (hsec : Bs.μsec = TheSec.theSection P.k P.r Bs.z Bs.z') (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (c : Fin P.r → ℂ) (hc : c ∈ OmX P.r) (ζ : ℂ) (hζ : P.TT < Complex.normSq ζ) (φ : ℝ) :
@@ -72,6 +101,13 @@ theorem rot_eqv (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) 
   exact Φ.2.2.2 (c, _) (Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hB.2.1 hB.2.2.1 hB.2.2.2.2.2.1
     (q := (c, ζ * Complex.exp ((φ : ℂ) * Complex.I))) ⟨hc, hζ2⟩) _ (hS'.1 φ).1 _ (hS'.1 φ).2
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨hp1, hp2, hp3⟩` from `hp`. Establish `hB` using `SSTr.radBase P Bs hpl`. Establish `hS'` using `hS P.k P.r Bs.z Bs.z' hB.1 hB.2.1 hB.2.2.1 hB.2.2.2.1 hB.2.2.2.2.1`. Establish `hζ1` using `ann_tz P Bs hpl hζ`.
+
+Establish `hD` using `(hS'.2.2.2.2 ζ hζ1 ψ).2 c hc`. Rewrite `hD` using `[← hsec]`. Use `(Φ.2.2.2 _ hD _ hp1 _ hp2).symm.trans ?_` and prove the remaining obligations. Simplify using `only`. Apply `congrArg` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rot_fib (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (hsec : Bs.μsec = TheSec.theSection P.k P.r Bs.z Bs.z') (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (c : Fin P.r → ℂ) (hc : c ∈ OmX P.r) (ζ : ℂ) (hζ : P.TT < Complex.normSq ζ) (ψ : ℝ) :
@@ -93,6 +129,11 @@ theorem rot_fib (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) 
     _ = (p.1 * NF.muZ P.k P.r Bs.μsec ζ * p.2) * zc P.k P.r ψ := by simp only [mul_assoc]
     _ = NF.muZ P.k P.r Bs.μsec ζ * zc P.k P.r ψ := by rw [hp3]
 
+/- English proof (translation)
+Establish `hB` using `SSTr.radBase P Bs hpl`. Establish `hS'` using `hS P.k P.r Bs.z Bs.z' hB.1 hB.2.1 hB.2.2.1 hB.2.2.2.1 hB.2.2.2.2.1`. Establish `hL' : hL P.k P.r Bs.z (φ + ψ) = hL P.k P.r Bs.z φ * hL P.k P.r Bs.z ψ` using `(hS'.2.2.1 φ ψ).1`. Establish `hR' : hR P.k P.r Bs.z' (φ + ψ) = hR P.k P.r Bs.z' ψ * hR P.k P.r Bs.z' φ`. Rewrite using `[add_comm]`.
+
+Conclude with `(hS'.2.2.1 ψ φ).2`. Unfold `rotA`. Rewrite using `[hL', hR', hB.2.2.2.2.2.2.1.2 _ (hS'.1 φ).1 _ (hS'.1 ψ).1, hB.2.2.2.2.2.2.2.1.2 _ (hS'.1 ψ).2 _ (hS'.1 φ).2]`. Use extensionality with `v`. Simplify using `[ContinuousLinearMap.comp_apply]`.
+-/
 theorem rotA_add (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (φ ψ : ℝ) (X : Wq →L[ℂ] Wp) : rotA P Bs (φ + ψ) X = rotA P Bs φ (rotA P Bs ψ X) := by
   have hB := SSTr.radBase P Bs hpl
@@ -105,6 +146,11 @@ theorem rotA_add (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
   ext v
   simp [ContinuousLinearMap.comp_apply]
 
+/- English proof (translation)
+Establish `hB` using `SSTr.radBase P Bs hpl`. Establish `hS'` using `hS P.k P.r Bs.z Bs.z' hB.1 hB.2.1 hB.2.2.1 hB.2.2.2.1 hB.2.2.2.2.1`. Unfold `rotA`. Rewrite using `[hS'.2.1.1, hS'.2.1.2.1, hB.2.2.2.2.2.2.1.1, hB.2.2.2.2.2.2.2.1.1]`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rotA_zero (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π')
     (X : Wq →L[ℂ] Wp) : rotA P Bs 0 X = X := by
   have hB := SSTr.radBase P Bs hpl
@@ -114,6 +160,11 @@ theorem rotA_zero (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq
   ext v
   simp
 
+/- English proof (translation)
+Establish `hB` using `SSTr.radBase P Bs hpl`. Establish `hS'` using `hS P.k P.r Bs.z Bs.z' hB.1 hB.2.1 hB.2.2.1 hB.2.2.2.1 hB.2.2.2.2.1`. Unfold `rotA`. Rewrite using `[hS'.2.1.2.2.1, hS'.2.1.2.2.2, hB.2.2.2.2.2.2.1.1, hB.2.2.2.2.2.2.2.1.1]`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rotA_two_pi (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (X : Wq →L[ℂ] Wp) : rotA P Bs (2 * Real.pi) X = X := by
   have hB := SSTr.radBase P Bs hpl
@@ -123,6 +174,9 @@ theorem rotA_two_pi (hS : GTRRSec) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp 
   ext v
   simp
 
+/- English proof (translation)
+Establish `h0` using `hC P.k P.r Bs.z Bs.z' Wp Wq Bs.π Bs.π' Φ x hx`. Establish `h1` using `(hsCLM (Wp := Wp) (Wq := Wq)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h0`. Establish `h2` using `((hasDerivAt_const (0 : ℝ) (B.hsVec E)).inner ℂ h1).const_mul w`. Simplify using `only [Function.comp_def, hsCLM_apply, inner_zero_left, add_zero, VLem.hsV_smul, inner_smul_right] at h2`. Conclude with `h2`.
+-/
 theorem hasDerivAt_pair (hC : GTRRCentre) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (x : (Fin P.r → ℂ) × Q.Mx P.k P.r)
     (hx : x ∈ Q.DomR P.k P.r Bs.z Bs.z') (E : Wq →L[ℂ] Wp) (w : ℂ) :
@@ -141,6 +195,49 @@ end
 end RRMat
 
 open RRMat in
+/- English proof (translation)
+Introduce `hC hS hO Wp Wq _ _ _ _ _ _ P Bs X d hyp hsec e he hk hc Rt s hRK hRt`. Take `⟨hpl, hk2, -⟩` from `hyp`. Establish `hB` using `SSTr.radBase P Bs hpl`. Take `⟨ζ₀, hζ₀⟩` from `exists_ann P`. Use `set c₀ : Fin P.r → ℂ := fun _ => 1 with hc₀def`.
+
+Establish `hc₀ : c₀ ∈ OmX P.r` using `fun _ => one_ne_zero`. Use `set E : M.Ty P → (Wq →L[ℂ] Wp) := fun σ => e σ 0 with hEdef`. Establish `heE : ∀ σ ζ, e σ ζ = E σ` using `fun σ ζ => hc σ ζ 0`. Use `set w₀ : ℂ := ((wR P.k P.TT ζ₀ : ℝ) : ℂ) with hw₀def`. Establish `hw₀ : w₀ ≠ 0` using `by simp only [hw₀def]; exact_mod_cast (SSTr.wR_pos P hζ₀).ne'`.
+
+Establish `hex : ∀ ρ' : M.Ty P, ∃ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', trR P Bs e Φ = (fun τ => if τ = ρ' then (1 : MA.SmQ P.r P.TT) else 0) ∧ ∀ q : MA.Qp P.r P.TT, (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 (NF.muZ P.k P.r Bs.μsec q.1.2) = ∑ ρ, ((((wR P.k P.TT q.1.2)⁻¹ : ℝ) : ℂ) * ((if ρ …` using `fun ρ' => SSTr.exists_tr P Bs hpl hk2 e he _`. Use `choose Φ hΦtr hΦv using hex`. Establish `hval : ∀ ρ' (φ : ℝ), (Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c₀ (NF.muZ P.k P.r Bs.μsec (ζ₀ * Complex.exp ((φ : ℂ) * Complex.I))) = w₀⁻¹ • E ρ'`. Introduce `ρ' φ`. Establish `hq : ((c₀, ζ₀ * Complex.exp ((φ : ℂ) * Complex.I)) : MA.E P.r) ∈ MA.Qset P.r P.TT` using `⟨hc₀, by rw [normSq_rot]; exact hζ₀⟩`.
+
+Establish `h` using `hΦv ρ' ⟨_, hq⟩`. Simplify using `only at h`. Rewrite using `[h, Finset.sum_eq_single ρ']`. Simplify using `[wR_rot, hw₀def, heE]`. Introduce `τ _ hτ`.
+
+Simplify using `[hτ]`. Simplify using the standard rewrite rules. Establish `hAE : ∀ ρ' (φ : ℝ), rotA P Bs φ (E ρ') = w₀ • (Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c₀ (NF.muZ P.k P.r Bs.μsec ζ₀ * zc P.k P.r φ)`. Introduce `ρ' φ`. Rewrite using `[rot_eqv hS P Bs hpl hsec (Φ ρ') c₀ hc₀ ζ₀ hζ₀ φ, hval, rotA_smul, smul_smul, mul_inv_cancel₀ hw₀, one_smul]`.
+
+Establish `hfib : ∀ ρ' (ψ : ℝ), rotA P Bs ψ (E ρ') ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ₀`. Introduce `ρ' ψ`. Rewrite using `[hAE]`. Introduce `p hp`. Establish `h` using `rot_fib hS P Bs hpl hsec (Φ ρ') c₀ hc₀ ζ₀ hζ₀ ψ p hp`.
+
+Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, h]`. Establish `hexp : ∀ Y ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ₀, Y = ∑ σ, inner ℂ (B.hsVec (E σ)) (B.hsVec Y) • E σ`. Introduce `Y hY`. Establish `h` using `(he.2 ζ₀ hζ₀).2.2 Y hY`. Simplify `h` using `only [heE]`.
+
+Establish `horth : ∀ ρ ρ', inner ℂ (B.hsVec (E ρ)) (B.hsVec (E ρ')) = if ρ = ρ' then (1 : ℂ) else 0`. Introduce `ρ ρ'`. Establish `h` using `(he.2 ζ₀ hζ₀).2.1 ρ ρ'`. Simplify `h` using `only [heE]`. Use `set Mf : ℝ → Matrix (M.Ty P) (M.Ty P) ℂ := fun φ => Matrix.of fun ρ ρ' => rotM P Bs.z Bs.z' Bs.π Bs.π' (fun σ => e σ 0) φ ρ ρ' with hMfdef`.
+
+Establish `hMf : ∀ φ ρ ρ', Mf φ ρ ρ' = inner ℂ (B.hsVec (E ρ)) (B.hsVec (rotA P Bs φ (E ρ')))` using `fun _ _ _ => rfl`. Use `set x₀ : (Fin P.r → ℂ) × Q.Mx P.k P.r := (c₀, NF.muZ P.k P.r Bs.μsec ζ₀) with hx₀def`. Establish `hx₀ : x₀ ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hB.2.1 hB.2.2.1 hB.2.2.2.2.2.1 (q := (c₀, ζ₀)) ⟨hc₀, ann_tz P Bs hpl hζ₀⟩`. Use `set Bm : Matrix (M.Ty P) (M.Ty P) ℂ := Matrix.of fun ρ ρ' => w₀ * (Complex.I * inner ℂ (B.hsVec (E ρ)) (B.hsVec (∑ a : Fin (Q.mdim P.k P.r (Fin.last P.r)), Q.EH P.k P.r (Q.posL P.k P.r (Fin.last P.r) a) (Q.posL P.k P.r (Fin.last P.r) a) ((Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x₀.1) …`. Establish `h0 : Mf 0 = 1`.
+
+Use extensionality with `ρ ρ'`. Rewrite using `[hMf, rotA_zero hS P Bs hpl, horth, Matrix.one_apply]`. Establish `h2π : Mf (2 * Real.pi) = 1`. Use extensionality with `ρ ρ'`. Rewrite using `[hMf, rotA_two_pi hS P Bs hpl, horth, Matrix.one_apply]`.
+
+Establish `hmul : ∀ φ ψ, Mf (φ + ψ) = Mf φ * Mf ψ`. Introduce `φ ψ`. Use extensionality with `ρ ρ'`. Rewrite using `[hMf, rotA_add hS P Bs hpl, hexp _ (hfib ρ' ψ), rotA_sum, SSTr.hsVec_sum, inner_sum, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[VLem.hsV_smul, inner_smul_right, hMf, hMf, mul_comm]`. Establish `hder : ∀ ρ ρ', HasDerivAt (fun φ => Mf φ ρ ρ') (Bm ρ ρ') 0`. Introduce `ρ ρ'`. Establish `h` using `hasDerivAt_pair hC P Bs (Φ ρ') x₀ hx₀ (E ρ) w₀`. Establish `hfun : (fun φ => Mf φ ρ ρ') = fun φ : ℝ => w₀ * inner ℂ (B.hsVec (E ρ)) (B.hsVec ((Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x₀.1 (x₀.2 * zc P.k P.r φ)))`.
+
+Use function extensionality and compare the values at `φ`. Rewrite using `[hMf, hAE, VLem.hsV_smul, inner_smul_right]`. Rewrite using `[hfun]`. Conclude with `h`. Establish `hoff : ∀ ρ ρ', ρ ≠ ρ' → Bm ρ ρ' = 0`.
+
+Introduce `ρ ρ' hne`. Use `set f : M.Ty P → ℂ := fun τ => if τ = ρ then 1 else 0 with hfdef`. Establish `hkz : (d.κ f).1 (Φ ρ') = 0`. Apply `SSTr.trR_inj P Bs hpl hk2 e he` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Rewrite using `[hk f (Φ ρ'), actA_kap, hΦtr ρ', SSTr.trR_apply P Bs hpl hk2 e he 0]`. Simplify using `only [rawR, ZeroMemClass.coe_zero, Pi.zero_apply, hsVec_zero, inner_zero_right, mul_zero]`. Distinguish the cases in `hτ : τ = ρ`.
+
+Substitute `hτ` using the available equality. Simplify using `[hne]`. Simplify using `[f, hτ]`. Establish `hRz : (d.κ f).1 (Rt (Φ ρ')) = 0`. Rewrite using `[← hRK f (Φ ρ'), hkz, map_zero]`.
+
+Use `set q₀ : MA.Qp P.r P.TT := ⟨(c₀, ζ₀), hc₀, hζ₀⟩ with hq₀def`. Establish `h1` using `congrArg (fun F : M.Ty P → MA.SmQ P.r P.TT => (F ρ : MA.Qp P.r P.TT → ℂ) q₀) (hk f (Rt (Φ ρ')))`. Rewrite `h1` using `[hRz, actA_kap, SSTr.trR_apply P Bs hpl hk2 e he 0]`. Simplify using `only [SetLike.val_smul, Pi.smul_apply, smul_eq_mul, hfdef, if_pos rfl, one_mul] at h1`. Rewrite `h1` using `[SSTr.trR_apply P Bs hpl hk2 e he]`.
+
+Simplify using `only [rawR, ZeroMemClass.coe_zero, Pi.zero_apply, hsVec_zero, inner_zero_right, mul_zero] at h1`. Establish `hwq : ((wR P.k P.TT ζ₀ : ℝ) : ℂ) ≠ 0` using `hw₀`. Establish `hRt0 : inner ℂ (B.hsVec (E ρ)) (B.hsVec ((Rt (Φ ρ') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c₀ (NF.muZ P.k P.r Bs.μsec ζ₀))) = 0`. Establish `h1'` using `h1.symm`. Rewrite `h1'` using `[heE]`.
+
+Conclude with `(mul_eq_zero.1 h1').resolve_left hwq`. Establish `hsum` using `hRt (Φ ρ') x₀ hx₀`. Establish `hS0 : (∑ a : Fin (Q.mdim P.k P.r (Fin.last P.r)), Q.EH P.k P.r (Q.posL P.k P.r (Fin.last P.r) a) (Q.posL P.k P.r (Fin.last P.r) a) ((Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x₀.1) x₀.2) = (Rt (Φ ρ') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x₀.1 x₀.2 - ((s : ℂ)) • (Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp …`. Rewrite using `[hsum]`. Normalize the expressions using the abelian group laws.
+
+Establish `hv0 : (Φ ρ' : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x₀.1 x₀.2 = w₀⁻¹ • E ρ'`. Establish `h` using `hval ρ' 0`. Simplify using `using h`. Use `show w₀ * (Complex.I * inner ℂ (B.hsVec (E ρ)) (B.hsVec _)) = 0`. Rewrite using `[hS0, hv0, sub_eq_add_neg, VLem.hsV_add, inner_add_right, ← neg_smul, smul_smul, VLem.hsV_smul, inner_smul_right, horth, if_neg hne, mul_zero, add_zero]`.
+
+Simplify using `only [hx₀def] at hRt0 ⊢`. Rewrite using `[hRt0]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `hO (M.Ty P) Mf Bm h0 hmul h2π hder hoff`. Conclude with `⟨n, fun φ ρ ρ' => hn φ ρ ρ'⟩`.
+-/
 theorem rotation_matrix_form_holds : GTRRMatFrom := by
   intro hC hS hO Wp Wq _ _ _ _ _ _ P Bs X d hyp hsec e he hk hc Rt s hRK hRt
   obtain ⟨hpl, hk2, -⟩ := hyp

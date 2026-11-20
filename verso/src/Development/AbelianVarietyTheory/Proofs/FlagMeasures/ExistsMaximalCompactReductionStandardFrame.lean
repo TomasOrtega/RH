@@ -14,6 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPi
 
 namespace GlobalTheory.LabPin
 
+/- English proof (translation)
+Introduce `D X h t PY hF hstd hι`. Take `⟨c, fr, hB⟩` from `GlobalTheory.T.exists_fixed_place_conjugator_lifts_act_by_reductions D X h t PY hF hstd hι (GlobalTheory.T.cmField_splitPlace_eq_of_place_eq D.host.E)`. Take `⟨ρ, hρ⟩` from `GlobalTheory.RowLev.exists_red_actsBy X.B.I D.R.r D.host.g D.nd.PlG (fun k v => Formalism.L2.SG.Pf.RowDictPf.wB X (D.naut.plGw k v)) fr X.n_eq (GlobalTheory.T.fixedTypePrimePlaces_choice_one_per_conjugate_pair D X)`. Establish `hg : X.B.g = D.host.g 0 * D.host.g 1` using `X.g_eq`. Use `⟨c, ρ.toFun, ⟨?_, ?_, ?_, ?_⟩, fun kv => GlobalTheory.T.exists_splitPlace_eq_fixedTypePrimePlace D kv, ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk kv`. Conclude with `(Formalism.L2.SG.Pf.RowDictPf.redMat_iff X _ _ k _).2 (GlobalTheory.T.reducedMatrix_of_actsAs_degree_one_prime_frame X.B.I D.R.r (D.host.g kv.1) _ (fr kv.1 kv.2) k hk _ (hρ k hk kv.1 kv.2))`. Conclude with `ρ.map_mul`. Conclude with `ρ.surj`. Introduce `k hk`.
+
+Rewrite using `[hg]`. Conclude with `ρ.ker k hk`. Introduce `kv s hs x γ hx`. Take `⟨hK, hact, hoth⟩` from `hB kv s hs x γ hx`. Use `set k := (Formalism.L2.SG.RowsJoinPinned.iotaX X h (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2 with hk`.
+
+Establish `hfin : (Formalism.L2.SG.RowsJoinPinned.iotaX X h (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).1 = 1`. Apply `GlobalTheory.T.rowsIdentification_fst_eq_one_of_finiteAdelic D X h` to reduce the goal to its premises. Establish `hn : (GfC (D.sp.Y 0)).Normal` using `by unfold GfC; infer_instance`. Conclude with `hn.conj_mem _ (PY.into _) t`. Use `⟨k, hK, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg'⟩ : ∃ g : Formalism.L2.Theta.GA D (D.sp.Y 0), g = PY.ψ (c * x * c⁻¹)` from `⟨_, rfl⟩`. Establish `e : (Formalism.L2.SG.RowsJoinPinned.iotaX X h).symm (1, k) = MulAut.conj t g`. Rewrite using `[ContinuousMulEquiv.symm_apply_eq, hg']`. Conclude with `Prod.ext hfin.symm rfl`. Use `show PY.ψ (c * x * c⁻¹) = (t⁻¹ * (Formalism.L2.SG.RowsJoinPinned.iotaX X h).symm (1, k) * t : Formalism.L2.Theta.GA D (D.sp.Y 0))`.
+
+Rewrite using `[e, MulAut.conj_apply, ← hg']`. Conclude with `(by group : g = t⁻¹ * (t * g * t⁻¹) * t)`. Conclude with `Units.ext (GlobalTheory.RowLev.PlFrame.ActsAs.unique (fr kv.1 kv.2) hK (hρ k hK kv.1 kv.2) hact)`. Introduce `kv' hne`. Conclude with `Units.ext (GlobalTheory.RowLev.PlFrame.ActsAs.unique (fr kv'.1 kv'.2) hK (hρ k hK kv'.1 kv'.2) (hoth kv' hne))`.
+-/
 theorem frameRed_exists : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) (PY : RowPsi (Yc D 0) D.R.r) (hF : D.host.F = maximalRealSubfield D.host.E), StdPsi hF PY → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∃ c red, FrameRed X h t PY c red := by
   intro D X h t PY hF hstd hι
   obtain ⟨c, fr, hB⟩ := GlobalTheory.T.exists_fixed_place_conjugator_lifts_act_by_reductions D X h t PY hF hstd hι (GlobalTheory.T.cmField_splitPlace_eq_of_place_eq D.host.E)

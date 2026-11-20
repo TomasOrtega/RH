@@ -4,11 +4,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Stick UpperTheory.V.FW
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Rewrite using `[mul_comm g x]`. Simplify using `[embT, map_mul, AlgEquiv.mul_apply]`.
+-/
 private theorem embT_mul (M : ℕ) [NeZero M] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {M} ℚ L]
     (φ : L →+* ℂ) (g x : (ZMod M)ˣ) (a : L) : embT M L φ (g * x) a = embT M L φ x (sg M L g a) := by
   rw [mul_comm g x]
   simp [embT, map_mul, AlgEquiv.mul_apply]
 
+/- English proof (translation)
+Introduce `M _ L _ _ _ _ φ`. Establish `: IsGalois ℚ L` using `IsCyclotomicExtension.isGalois {M} ℚ L`. Establish `hc : ∀ a : L, sg M L (-1) a = cE L a` using `fun a => by`. Establish `h` using `congrArg (fun e : L ≃+* L => e a) (conjEq M L).1`. Simplify using `using h`.
+
+Establish `hcomm : ∀ (g : (ZMod M)ˣ) (a : L), cE L (sg M L g a) = sg M L g (cE L a)`. Introduce `g a`. Rewrite using `[← hc, ← hc, ← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← map_mul, ← map_mul, mul_comm]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ`.
+
+Take `⟨σ, hσ⟩` from `NumberField.ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := ℚ) φ ψ (Subsingleton.elim _ _)`. Use `⟨(sg M L).symm σ.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ]`. Use extensionality with `x`. Simplify using `[embT]`.
+
+Introduce `a ha g`. Simplify using `only [sgn]`. Rewrite using `[embT_mul, hc, ha]`. Introduce `f hf g`. Proceed by induction on `hf using AddSubgroup.closure_induction with`.
+
+Consider the case `mem f hf`. Take `⟨u, hu, rfl⟩` from `hf`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Establish `hv : ((Units.map (sgO M L g).toMonoidHom u : 𝓞 L) : L) = sg M L g ((u : 𝓞 L) : L)`. Simplify using `[sgO, RingOfIntegers.mapRingEquiv_apply]`.
+
+Use `⟨Units.map (sgO M L g).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, hcomm, hu]`. Use function extensionality and compare the values at `x`. Simplify using `only [sgn, hv, embT_mul]`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add f h _ _ hf hh => exact add_mem hf hh`. Consider the case `neg f _ hf => exact neg_mem hf`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨-1, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use function extensionality and compare the values at `x`. Simplify using `[sgn]`.
+-/
 theorem UpperTheory.V.FW.sgnStab :
     ∀ (M : ℕ) [NeZero M] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {M} ℚ L] [IsCMField L] (φ : L →+* ℂ), Function.Surjective (embT M L φ) ∧ (∀ a : L, cE L a = a → sgn (embT M L φ) a ∈ evenF (-1 : (ZMod M)ˣ)) ∧ (∀ f ∈ sgnE (embT M L φ), ∀ g, (fun x => f (g * x)) ∈ sgnE (embT M L φ)) ∧ (fun _ => (1 : ZMod 2)) ∈ sgnE (embT M L φ) := by
   intro M _ L _ _ _ _ φ

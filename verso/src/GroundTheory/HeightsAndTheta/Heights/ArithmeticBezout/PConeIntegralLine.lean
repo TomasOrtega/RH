@@ -10,10 +10,16 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `HermNorm.pointOf`. Conclude with `Continuous.matrix_mulVec continuous_const (continuous_pi fun i => by fun_prop)`.
+-/
 theorem HermNorm.continuous_pointOf (h : HermNorm n) : Continuous h.pointOf := by
   unfold HermNorm.pointOf
   exact Continuous.matrix_mulVec continuous_const (continuous_pi fun i => by fun_prop)
 
+/- English proof (translation)
+Establish `hu : IsUnit h.matᵀ` using `(Matrix.isUnit_iff_isUnit_det _).mpr (by rw [det_transpose]; exact h.isUnit_det)`. Establish `hv : (fun i => y i) = 0` using `Matrix.mulVec_injective_iff_isUnit.mpr hu (by simpa [HermNorm.pointOf] using hy)`. Use extensionality with `i`. Simplify using `using congrFun hv i`.
+-/
 theorem HermNorm.pointOf_eq_zero (h : HermNorm n) {y : EuclideanSpace ℂ (Fin n)}
     (hy : h.pointOf y = 0) : y = 0 := by
   have hu : IsUnit h.matᵀ := (Matrix.isUnit_iff_isUnit_det _).mpr (by rw [det_transpose]; exact h.isUnit_det)
@@ -22,6 +28,17 @@ theorem HermNorm.pointOf_eq_zero (h : HermNorm n) {y : EuclideanSpace ℂ (Fin n
   ext i
   simpa using congrFun hv i
 
+/- English proof (translation)
+Introduce `n h W y₀ hline φ hφ`. Unfold `coneIntegral`. Use `set S := {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ ∀ q ∈ W, eval (h.pointOf y) q = 0} with hS`. Establish `hSm : MeasurableSet S`. Establish `hS' : S = {y | ‖y‖ < 1} ∩ ⋂ q ∈ W, {y | eval (h.pointOf y) q = 0}`.
+
+Use extensionality with `y`. Simplify using `[S]`. Rewrite using `[hS']`. Conclude with `(isOpen_lt continuous_norm continuous_const).measurableSet.inter (isClosed_biInter fun q _ => isClosed_eq ((continuous_eval q).comp h.continuous_pointOf) continuous_const).measurableSet`. Establish `h0 : Measure.hausdorffMeasure (((2 * (0 + 1) : ℕ) : ℝ)) ({0} : Set (EuclideanSpace ℂ (Fin n))) = 0`.
+
+Use `hausdorffMeasure_of_dimH_lt (X := EuclideanSpace ℂ (Fin n)) (s := {0}) (d := 2) (by rw [dimH_singleton]; norm_num)` as an intermediate fact. Simplify using `using this`. Establish `hne : ∀ᵐ y ∂(Measure.hausdorffMeasure (((2 * (0 + 1) : ℕ) : ℝ)) : Measure (EuclideanSpace ℂ (Fin n))), y ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `using h0`.
+
+Establish `hae : ∀ᵐ y ∂(Measure.hausdorffMeasure (((2 * (0 + 1) : ℕ) : ℝ)) : Measure (EuclideanSpace ℂ (Fin n))), y ∈ S → φ (h.pointOf y) = φ y₀` using `by filter_upwards [hne] with y hy hyS`. Take `⟨t, ht⟩` from `(hline _).1 hyS.2`. Establish `htne : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy (h.pointOf_eq_zero (by simpa using ht))`.
+
+Rewrite using `[ht, hφ t htne]`. Rewrite using `[setIntegral_congr_ae hSm hae, setIntegral_const, setIntegral_const]`. Simplify using `only [smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ConeIntegralLine.proof : ConeIntegralLine.Statement := by
   intro n h W y₀ hline φ hφ
   unfold coneIntegral

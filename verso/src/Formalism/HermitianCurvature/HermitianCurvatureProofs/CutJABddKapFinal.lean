@@ -7,11 +7,20 @@ open Formalism.FourierDecayAlt
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+The claim follows from `datumBd_of_chain SSn.ChainPf.chain_bound_holds`.
+-/
 theorem datum_bound_holds : DatumBd := datumBd_of_chain SSn.ChainPf.chain_bound_holds
 
+/- English proof (translation)
+The claim follows from `jABddKapQQ_of_typeProj datum_bound_holds hG hP`.
+-/
 theorem jABddKapQQ_of_leaves (hG : SSn.SSnGeom) (hP : TypeProj) : JABddKapQQ :=
   jABddKapQQ_of_typeProj datum_bound_holds hG hP
 
+/- English proof (translation)
+The claim follows from `jABddKapQQ_of_leaves hG (typeProj_of hPE hGL hDU hNW)`.
+-/
 theorem jABddKapQQ_of_cut (hG : SSn.SSnGeom) (hPE : PRho.PRhoExists) (hGL : PRho.GaugeLines)
     (hDU : SSn.Rep.DatumUnit) (hNW : NrmWFacts) : JABddKapQQ :=
   jABddKapQQ_of_leaves hG (typeProj_of hPE hGL hDU hNW)

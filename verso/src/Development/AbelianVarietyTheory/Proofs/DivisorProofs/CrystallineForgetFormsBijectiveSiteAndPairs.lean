@@ -13,6 +13,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm
 
+/- English proof (translation)
+The claim follows from `And.intro (GlobalTheory.T.forget_positive_h1_bijective C K h1.1 h1.2.1 h2.1) (GlobalTheory.T.forget_positive_h2_bijective C K h1.2.1 h1.2.2 h2.1 h2.2.1 h3.1)`.
+-/
 theorem fnMap_pullbackBijective12_of_acyclic {C : Type 1} [Category.{0} C] (K : Cx C)
     (h1 : K.M1.Ac0 ∧ K.M1.Ac1 ∧ K.M1.Ac2) (h2 : K.M2.Ac0 ∧ K.M2.Ac1 ∧ K.M2.Ac2) (h3 : K.M3.Ac0 ∧ K.M3.Ac1 ∧ K.M3.Ac2) :
     K.fnMap.PullbackBijectiveDegreesOneTwo :=
@@ -21,6 +24,9 @@ theorem fnMap_pullbackBijective12_of_acyclic {C : Type 1} [Category.{0} C] (K : 
 variable {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I} {X : Scheme.{0}} {t : X ⟶ Sp R}
   {Y : Scheme.{0}} {i : X ⟶ Y}
 
+/- English proof (translation)
+Introduce `p _`. Rewrite using `[← f.pt, Category.assoc]`. Conclude with `h (Set.mem_univ ((spMap f.φ₀).base p))`.
+-/
 theorem top_le_preimage_of_hom {T T' : Thick κ t} (f : T ⟶ T') (U : Y.Opens) (h : ⊤ ≤ (T.x ≫ i) ⁻¹ᵁ U) :
     ⊤ ≤ (T'.x ≫ i) ⁻¹ᵁ U := by
   intro p _
@@ -41,6 +47,9 @@ def liftT (S : Thick κ t ⥤ Thick κ t) (u v : 𝟭 _ ⟶ S) : 𝟭 (EE κ t i
 
 variable {κ t i}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.coefficients_acyclic_of_two_sections_retraction _ (M.res (pE κ t i)) (liftE κ t i S u) (liftT κ t i S u u) (liftT κ t i S u v) (fun a ↦ r a.obj.T) (fun a b f x ↦ h.1 a.obj.T b.obj.T f.hom.1 x) (fun a x ↦ h.2.1 a.obj.T x) (fun a x ↦ h.2.2 a.obj.T x)`.
+-/
 theorem acyc_res_pE (M : Coef (Thick κ t)) (S : Thick κ t ⥤ Thick κ t) (u v : 𝟭 _ ⟶ S)
     (r : ∀ T, M.obj (S.obj T) →+ M.obj T)
     (h : (∀ (T T' : Thick κ t) (φ : T ⟶ T') x, r T' (M.map (S.map φ) x) = M.map φ (r T x)) ∧
@@ -49,6 +58,9 @@ theorem acyc_res_pE (M : Coef (Thick κ t)) (S : Thick κ t ⥤ Thick κ t) (u v
   GlobalTheory.T.coefficients_acyclic_of_two_sections_retraction _ (M.res (pE κ t i)) (liftE κ t i S u) (liftT κ t i S u u) (liftT κ t i S u v) (fun a ↦ r a.obj.T)
     (fun a b f x ↦ h.1 a.obj.T b.obj.T f.hom.1 x) (fun a x ↦ h.2.1 a.obj.T x) (fun a x ↦ h.2.2 a.obj.T x)
 
+/- English proof (translation)
+Introduce `R _ I κ X t Y i`. Take `⟨S, u, v, r1, r2, r3, h1, h2, h3a, h3b, h3c⟩` from `GlobalTheory.T.exists_diagonal_firstNeighbourhood_retraction_forms R I κ X t`. Establish `h3` using `And.intro h3a (And.intro h3b h3c)`. Conclude with `⟨fnMap_pullbackBijective12_of_acyclic _ (GlobalTheory.T.coefficients_acyclic_of_two_sections_retraction _ _ S u v r1 h1.1 h1.2.1 h1.2.2) (GlobalTheory.T.coefficients_acyclic_of_two_sections_retraction _ _ S u v r2 h2.1 h2.2.1 h2.2.2) (GlobalTheory.T.coefficients_acyclic_of_two_se …`.
+-/
 theorem crystalline_forget_forms_bijective_site_and_pairs : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R) (Y : Scheme.{0}) (i : X ⟶ Y),
     (KK κ t).fnMap.PullbackBijectiveDegreesOneTwo ∧ ((KK κ t).res (pE κ t i)).fnMap.PullbackBijectiveDegreesOneTwo := by

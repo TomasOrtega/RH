@@ -24,6 +24,11 @@ section Char
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Rewrite using `[canMult, canMult, canMult, ← Complex.exp_add, ← Complex.exp_add, Complex.exp_eq_exp_iff_exists_int]`. Use `⟨∑ i, m (.inr i) * m' (.inl i), ?_⟩` and prove the remaining obligations. Simplify using `only [dotProduct, omegaStd, Pi.add_apply]`. Use `push_cast`. Simplify using `only [mul_add, add_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, mul_comm (m' (.inl _) : ℂ) (m (.inr _) : ℂ)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem canMult_add (a b : Fin g → ℝ) (m m' : Fin g ⊕ Fin g → ℤ) :
     canMult a b (fun i => (m + m') (.inl i)) (fun i => (m + m') (.inr i)) =
       canMult a b (fun i => m (.inl i)) (fun i => m (.inr i)) *
@@ -38,6 +43,25 @@ theorem canMult_add (a b : Fin g → ℝ) (m m' : Fin g ⊕ Fin g → ℤ) :
     mul_comm (m' (.inl _) : ℂ) (m (.inr _) : ℂ)]
   ring
 
+/- English proof (translation)
+Set `t : Fin g ⊕ Fin g → ℝ` to `fun j => if ε (Pi.single j 1) = 1 then 0 else 1 / 2`. Use `⟨fun i => t (.inl i), fun i => t (.inr i), ?_⟩` and prove the remaining obligations. Use `set C : (Fin g ⊕ Fin g → ℤ) → ℂ := fun m => canMult (fun i => t (.inl i)) (fun i => t (.inr i)) (fun i => m (.inl i)) (fun i => m (.inr i)) with hC`. Establish `hCadd : ∀ m m', C (m + m') = C m * C m' * cexp (π * I * (omegaStd m m' : ℤ))` using `canMult_add _ _`. Apply the tactic sequence `have hne : ∀ m, (ε m : ℂ) ≠ 0 := fun m => by rcases h1 m with h | h <;> simp [h]`.
+
+Establish `hC0 : C 0 = 1` using `by simp [hC, canMult, dotProduct]`. Establish `h0 : (ε 0 : ℂ) = 1`. Use `hadd 0 0` as an intermediate fact. Simplify using `only [add_zero, omegaStd, Pi.zero_apply, mul_zero, sub_zero, Finset.sum_const_zero, Int.cast_zero, Complex.exp_zero, mul_one] at this`. Conclude with `(mul_left_cancel₀ (hne 0) (this.symm.trans (mul_one _).symm))`.
+
+Set `S : AddSubgroup (Fin g ⊕ Fin g → ℤ)` to `{ carrier := {m | C m = ε m} add_mem' := fun {m m'} hm hm' => by`. Rewrite `hm`, `hm'`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[hCadd, hadd, hm, hm']`. Use the proof step `zero_mem' := hC0.trans h0.symm`. Use the proof step `neg_mem' := fun {m} hm => by`.
+
+Rewrite `hm`, the goal using `[Set.mem_setOf_eq]`. Establish `e1` using `hCadd m (-m)`. Establish `e2` using `hadd m (-m)`. Rewrite `e1`, `e2` using `[add_neg_cancel]`. Rewrite `e1` using `[hC0, hm]`.
+
+Rewrite `e2` using `[h0]`. Conclude with `mul_left_cancel₀ (hne m) (mul_right_cancel₀ (Complex.exp_ne_zero _) (e1.symm.trans e2)) }`. Establish `hgen : ∀ j, Pi.single j 1 ∈ S`. Introduce `j`. Express the relevant statement in the definitionally equal form `C _ = _`.
+
+Establish `e : C (Pi.single j 1) = cexp (2 * π * I * t j) ∨ C (Pi.single j 1) = cexp (-(2 * π * I * t j))`. Break down `j with j | j` into its components or cases. Use `left`. Simplify using `[hC, canMult, dotProduct, Pi.single_apply]`. Use `right`.
+
+Simplify using `[hC, canMult, dotProduct, Pi.single_apply]`. Break down `h1 (Pi.single j 1) with h | h` into its components or cases. Establish `: t j = 0` using `if_pos h`. Apply the tactic sequence `rcases e with e | e <;> simp [e, this, h]`. Establish `: t j = 1 / 2` using `if_neg (by rw [h]; decide)`.
+
+Establish `e2 : 2 * π * I * (t j : ℂ) = π * I` using `by rw [this]; push_cast; ring`. Apply the tactic sequence `rcases e with e | e <;> simp [e, e2, h, Complex.exp_neg]`. Introduce `m`. Establish `hm : m = ∑ j, m j • Pi.single j (1 : ℤ)`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Pi.single_apply]`. Establish `: m ∈ S` using `hm ▸ S.sum_mem fun j _ => S.zsmul_mem (hgen j) _`. Conclude with `this`.
+-/
 theorem exists_canMult_eq (ε : (Fin g ⊕ Fin g → ℤ) → ℤ) (h1 : ∀ m, ε m = 1 ∨ ε m = -1)
     (hadd : ∀ m m', (ε (m + m') : ℂ) = ε m * ε m' * cexp (π * I * (omegaStd m m' : ℤ))) :
     ∃ a b : Fin g → ℝ, ∀ m, canMult a b (fun i => m (.inl i)) (fun i => m (.inr i)) = ε m := by
@@ -96,6 +120,9 @@ section Conj
 variable {E : Type} [Field E] [NumberField E] (T : PT E) {ι : Type} [Fintype ι]
   (e : ι ≃ Idx T.dim)
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq, Hf]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => mul_conj' _`.
+-/
 theorem Hf_self' (v : EuclideanSpace ℂ ι) : Hf v v = ((‖v‖ ^ 2 : ℝ) : ℂ) := by
   rw [EuclideanSpace.norm_sq_eq, Hf]
   push_cast
@@ -109,8 +136,14 @@ def cj : Vsp T.dim ≃ₗ[ℝ] EuclideanSpace ℂ ι where
   left_inv y := by ext j; simp
   right_inv z := by ext i; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_apply (y : Vsp T.dim) (i : ι) : cj T e y i = conj (y (e i)) := rfl
 
+/- English proof (translation)
+Simplify using `only [Hf, cj_apply, map_sum, map_mul]`. Conclude with `e.sum_comp fun j => conj (v j) * conj (conj (w j))`.
+-/
 theorem Hf_cj (v w : Vsp T.dim) : Hf (cj T e v) (cj T e w) = conj (Hf v w) := by
   simp only [Hf, cj_apply, map_sum, map_mul]
   exact e.sum_comp fun j => conj (v j) * conj (conj (w j))
@@ -119,6 +152,9 @@ variable (Y : GT ι) (F : EuclideanSpace ℂ ι → ℂ)
 
 def cjFn (w : Fin 1 → Vsp T.dim) : ℂ := conj (F (cj T e (w 0)))
 
+/- English proof (translation)
+Establish `h` using `congrArg Complex.re (Hf_cj T e y y)`. Rewrite `h` using `[Hf_self', ofReal_re, conj_re]`. Simplify using `only [PT.ptN2, GT.ptN2, cjFn, HC, Fin.sum_univ_one, Complex.norm_conj, h]`.
+-/
 theorem pointwiseNorm_conjugateFunctionOnConjugateSpace (y : Vsp T.dim) :
     T.ptN2 1 (cjFn T e F) (fun _ => y) = Y.ptN2 1 F (cj T e y) := by
   have h := congrArg Complex.re (Hf_cj T e y y)
@@ -129,6 +165,11 @@ variable {T e Y F} (hL : ∀ y, y ∈ T.L ↔ cj T e y ∈ lat Y.b)
   (hka : ∀ y ∈ T.L, Y.ka (cj T e y) = T.eps y) (hF : F ∈ Y.Sec 1)
 include hL hka hF
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun γ hγ v => ?_⟩` and prove the remaining obligations. Establish `h1 : Differentiable ℂ fun z : ι → ℂ => F (WithLp.toLp 2 z)` using `hF.1.comp (PiLp.continuousLinearEquiv 2 ℂ (fun _ : ι => ℂ)).symm.differentiable`. Establish `h2 : Differentiable ℂ (star ∘ (fun z : ι → ℂ => F (WithLp.toLp 2 z)) ∘ star)` using `fun z => by`. Simplify using `using (h1 (star z)).star_star`. Establish `h3 : Differentiable ℂ fun w : Fin 1 → Vsp T.dim => fun i : ι => w 0 (e i)` using `by fun_prop`.
+
+Conclude with `(h2.comp h3) w`. Establish `h` using `hF.2 _ ((hL _).1 (hγ 0)) (cj T e (v 0))`. Simplify using `only [cjFn, Pi.add_apply, map_add, h, hka _ (hγ 0), Hf_cj, map_mul, ← Complex.exp_conj, HC, Fin.sum_univ_one, Fin.prod_univ_one, pow_one, map_div₀, conj_conj, map_intCast, map_natCast, conj_ofReal, map_ofNat]`.
+-/
 theorem cjFn_mem_Sec : cjFn T e F ∈ T.Sec 1 1 := by
   refine ⟨fun w => ?_, fun γ hγ v => ?_⟩
   · have h1 : Differentiable ℂ fun z : ι → ℂ => F (WithLp.toLp 2 z) :=
@@ -143,6 +184,15 @@ theorem cjFn_mem_Sec : cjFn T e F ∈ T.Sec 1 1 := by
       HC, Fin.sum_univ_one, Fin.prod_univ_one, pow_one, map_div₀, conj_conj, map_intCast,
       map_natCast, conj_ofReal, map_ofNat]
 
+/- English proof (translation)
+Establish `hG` using `cjFn_mem_Sec hL hka hF`. Set `f : Vsp T.dim ≃L[ℝ] EuclideanSpace ℂ ι` to `(cj T e).toContinuousLinearEquiv`. Establish `hev : ∀ v, f v = cj T e v` using `fun _ => rfl`. Set `b'` to `Y.b.map f.symm.toLinearEquiv`. Establish `hrepr : ∀ v i, b'.repr v i = Y.b.repr (cj T e v) i` using `fun v i => by`.
+
+Simplify using `only [b', Module.Basis.map_repr]`. Both sides reduce to the same expression. Establish `hfd : f ⁻¹' ZSpan.fundamentalDomain Y.b = ZSpan.fundamentalDomain b'`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, ZSpan.mem_fundamentalDomain, hrepr, hev]`.
+
+Establish `hle : Submodule.span ℤ (Set.range b') ≤ Submodule.span ℤ (Set.range T.b)`. Introduce `v hv`. Use `(hL v).2 ?_` and prove the remaining obligations. Rewrite `hv`, the goal using `[Module.Basis.mem_span_iff_repr_mem]`. Simplify `hv` using `only [hrepr]`.
+
+Establish `h` using `average_fundamentalDomain_eq_real volume T.b b' (fun y => T.ptN2 1 (cjFn T e F) (fun _ => y)) ((TiledBoundaries.continuous_pointNormSq_quotient T 1 hG.1.continuous).comp (continuous_pi fun _ => continuous_id)) (fun γ hγ v => pointwiseNormSq_add_period T hG (γ := fun _ => γ) (fun …`. Rewrite using `[l2_norm_fundamental_domain, GT.l2, TensorLat.setAverage_comp_equiv volume volume f, hfd, ← h]`. Simplify using `only [hev, pointwiseNorm_conjugateFunctionOnConjugateSpace T e Y, add_zero]`.
+-/
 theorem l2_cjFn_eq : T.l2 1 (cjFn T e F) = Y.l2 1 F := by
   have hG := cjFn_mem_Sec hL hka hF
   let f : Vsp T.dim ≃L[ℝ] EuclideanSpace ℂ ι := (cj T e).toContinuousLinearEquiv
@@ -166,6 +216,11 @@ theorem l2_cjFn_eq : T.l2 1 (cjFn T e F) = Y.l2 1 F := by
   rw [l2_norm_fundamental_domain, GT.l2, TensorLat.setAverage_comp_equiv volume volume f, hfd, ← h]
   simp only [hev, pointwiseNorm_conjugateFunctionOnConjugateSpace T e Y, add_zero]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `ThetaRho.exists_eq_smul T hs (cjFn_mem_Sec hL hka hF) hs0`. Establish `hl` using `l2_cjFn_eq hL hka hF`. Rewrite `hl` using `[hc, l2_smul]`. Establish `hc0 : ‖c‖ ^ 2 ≠ 0` using `left_ne_zero_of_mul (hl ▸ hF0)`. Establish `: T.ptN2 1 (c • s) (fun _ => y) = ‖c‖ ^ 2 * T.ptN2 1 s (fun _ => y)`.
+
+Simplify using `only [PT.ptN2, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, mul_assoc]`. Rewrite using `[← pointwiseNorm_conjugateFunctionOnConjugateSpace, hc, this, ← hl, mul_div_mul_left _ _ hc0]`.
+-/
 theorem ratio_cj (hF0 : Y.l2 1 F ≠ 0) {s : (Fin 1 → Vsp T.dim) → ℂ} (hs : s ∈ T.Sec 1 1)
     (hs0 : s ≠ 0) (y : Vsp T.dim) :
     T.ptN2 1 s (fun _ => y) / T.l2 1 s = Y.ptN2 1 F (cj T e y) / Y.l2 1 F := by
@@ -185,11 +240,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 open SemicharIndep in
 
+/- English proof (translation)
+Break down `EF_eq_or X with h | h` into its components or cases. Conclude with `⟨-1, Or.inr rfl, fun u v => by rw [h, EFf_eq]; simp⟩`. Conclude with `⟨1, Or.inl rfl, fun u v => by rw [h, EFf_eq]; simp⟩`.
+-/
 theorem exists_sign (X : Data E r) : ∃ σ : ℤ, (σ = 1 ∨ σ = -1) ∧ ∀ u v, EF X u v = σ * B X u v := by
   rcases EF_eq_or X with h | h
   · exact ⟨-1, Or.inr rfl, fun u v => by rw [h, EFf_eq]; simp⟩
   · exact ⟨1, Or.inl rfl, fun u v => by rw [h, EFf_eq]; simp⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `CMLattice.exists_basis_lattice E r X`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty X.Ψ := by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`.
+
+Conclude with `⟨⟨_, TorusCoord.conj_mem X h⟩⟩`. Set `f : X.Λ →+ Submodule.span ℤ (Set.range b)` to `{ toFun := fun v => ⟨fun τ => Data.emb τ.1 v, (hb _).2 ⟨v, v.2, rfl⟩⟩ map_zero' := by ext τ a; simp [Data.emb] map_add' := fun u v => by ext τ a; simp [Data.emb] }`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `u v h`.
+
+Use extensionality with `a`. Conclude with `τ.1.injective (congrFun (congrFun (congrArg Subtype.val h) τ) a)`. Introduce and unpack `⟨y, hy⟩`. Take `⟨v, hv, rfl⟩` from `(hb y).1 hy`. Conclude with `⟨⟨v, hv⟩, rfl⟩`.
+
+Set `c` to `(b.restrictScalars ℤ).map (LinearEquiv.ofBijective f.toIntLinearMap hf).symm`. Conclude with `⟨Module.Free.of_basis c, Module.Finite.of_basis c, by`. Rewrite using `[Module.finrank_eq_card_basis c, Fintype.card_fin]⟩`.
+-/
 theorem finrank_lattice (X : Data E r) : Module.Free ℤ X.Λ ∧ Module.Finite ℤ X.Λ ∧
     Module.finrank ℤ X.Λ = 2 * (X.Ψ.card * r) := by
   obtain ⟨b, hb⟩ := CMLattice.exists_basis_lattice E r X
@@ -216,6 +283,27 @@ theorem finrank_lattice (X : Data E r) : Module.Free ℤ X.Λ ∧ Module.Finite 
 
 open SemicharIndep in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `finrank_lattice X.toData`. Take `⟨σ, hσ, hE⟩` from `exists_sign X.toData`. Apply the tactic sequence `have hσ2 : σ * σ = 1 := by rcases hσ with rfl | rfl <;> rfl`. Use `choose k hk using fun u v : X.Λ => B_int X u.2 v.2`. Establish `hl (u u' v) : k (u + u') v = k u v + k u' v`.
+
+Use `B_add_left X.toData u u' v` as an intermediate fact. Rewrite `this` using `[← Submodule.coe_add, hk, hk, hk]`. Conclude with `this` after adjusting the coercions. Establish `hr (u v v') : k u (v + v') = k u v + k u v'`. Use `B_add_right X.toData u v v'` as an intermediate fact.
+
+Rewrite `this` using `[← Submodule.coe_add, hk, hk, hk]`. Conclude with `this` after adjusting the coercions. Establish `hsk (u v) : k u v = -k v u`. Use `B_skew X.toData u v` as an intermediate fact. Rewrite `this` using `[hk, hk]`.
+
+Conclude with `this` after adjusting the coercions. Set `β : LinearMap.BilinForm ℤ X.Λ` to `(AddMonoidHom.mk' (fun u => (AddMonoidHom.mk' (fun v => -σ * k u v) fun v v' => by`. Rewrite using `[hr, mul_add]).toIntLinearMap) fun u u' => by`. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `-σ * k (u + u') v = -σ * k u v + -σ * k u' v`.
+
+Rewrite using `[hl, mul_add]).toIntLinearMap`. Establish `hβ (u v) : β u v = -σ * k u v` using `rfl`. Establish `hsurj : Function.Surjective β`. Introduce `φ`. Take `⟨u, hu, h⟩` from `X.EF_perf (σ • φ).toAddMonoidHom`.
+
+Use `⟨⟨u, hu⟩, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h'` using `h v`. Rewrite `h'` using `[EFf_eq, hk ⟨u, hu⟩ v]`. Establish `h'' : σ * φ v = -k ⟨u, hu⟩ v` using `by exact_mod_cast h'`. Rewrite using `[hβ]`.
+
+Take the linear combination `(-σ) * h'' + φ v * hσ2`. Establish `hinj : Function.Injective β`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `(Module.forall_dual_apply_eq_zero_iff ℤ x).1 fun φ => ?_` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `hsurj φ`. Use `LinearMap.congr_fun hx u` as an intermediate fact. Rewrite `this` using `[hβ, LinearMap.zero_apply]`. Rewrite using `[hβ, hsk]`. Take the linear combination `-this`.
+
+Take `⟨bas, hbas⟩` from `unimodular_symplectic_coordinates_and_lattice_rank.1 X.Λ β _ ⟨hinj, hsurj⟩ (fun x => by`. Use `hsk x x` as an intermediate fact. Rewrite using `[hβ, show k x x = 0 by omega, mul_zero]) h3`. Use `⟨bas, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hE, hk, ← hbas, hβ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_isSympl (X : DataX E r) :
     ∃ bas : (Fin (X.Ψ.card * r) ⊕ Fin (X.Ψ.card * r) → ℤ) ≃ₗ[ℤ] X.Λ, IsSympl X.toData bas := by
   obtain ⟨h1, h2, h3⟩ := finrank_lattice X.toData
@@ -271,6 +359,13 @@ theorem exists_isSympl (X : DataX E r) :
 variable {X : Data E r} {g : ℕ} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
   (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Take `⟨n, hn, hv⟩` from `(LatDen.latDen r X).1 v`. Take `⟨m, hm⟩` from `bas.surjective ⟨_, hv⟩`. Use `⟨fun i => m (.inr i) / n, fun i => m (.inl i) / n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hMat_mulVec_per X bas idx (isUnit_det_perMat idx hs hx) m`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`.
+
+Establish `e : per X x v ∘ idx = (n : ℂ)⁻¹ • (per X x (bas m) ∘ idx)`. Use function extensionality and compare the values at `i`. Rewrite using `[hm]`. Simplify using `[per_smul, hn']`. Establish `e2 (s : Fin g → Fin g ⊕ Fin g) : (fun i => (((m (s i) : ℝ) / n : ℝ) : ℂ)) = (n : ℂ)⁻¹ • fun i => (m (s i) : ℂ)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[div_eq_inv_mul]`. Rewrite using `[e, mulVec_smul, h, e2, e2, mulVec_smul, smul_add]`.
+-/
 theorem exists_coord (hs : IsSympl X bas) (v : Fin r → E) : ∃ a b : Fin g → ℝ, ∀ x ∈ X.dom,
     hMat X bas idx x *ᵥ (per X x v ∘ idx) =
       (fun i => (b i : ℂ)) + tauMat X bas idx x *ᵥ fun i => (a i : ℂ) := by
@@ -289,6 +384,13 @@ theorem exists_coord (hs : IsSympl X bas) (v : Fin r → E) : ∃ a b : Fin g �
     simp [div_eq_inv_mul]
   rw [e, mulVec_smul, h, e2, e2, mulVec_smul, smul_add]
 
+/- English proof (translation)
+Establish `hx` using `mem_dom_of_isOrtho ho`. Establish `h` using `congrArg norm (canTh_translate (tauMat_isSymm idx hs hx) (tauMat_im_posDef idx hs hx) a b a' b' hz 0)`. Establish `h1` using `Hf_eq_normCoord idx hs ho (scaleUp X idx z) (scaleUp X idx z)`. Rewrite `h1` using `[normCoord_scaleUp, Hf_self']`. Rewrite `h` using `[← h1, norm_mul, norm_mul, norm_translConst, one_mul, zero_add, Complex.norm_exp]`.
+
+Establish `h2 : canTh (tauMat X bas idx x) (a + a') (b + b') 0 = thetaChar (tauMat X bas idx x) (fun i => ((a + a') i : ℂ)) (fun i => ((b + b') i : ℂ)) 0`. Simplify using `[canTh]`. Rewrite using `[← h2, ← h, GT.ptN2, canSec_scaleUp, canFn_eq_canTh, mul_pow, mul_comm, ← Real.exp_nat_mul]`. Use `congr 2`. Simplify using `only [hermForm, zero_dotProduct, mul_zero, neg_zero, zero_sub, neg_re]`.
+
+Rewrite using `[show (π : ℂ) / 2 = ((π / 2 : ℝ) : ℂ) by push_cast; ring, ← ofReal_mul, ofReal_re]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwiseNorm_canonicalTheta_eq_sq_thetaConstant (hs : IsSympl X bas) {x : Frame X.Ψ r} (ho : X.IsOrtho x)
     (a b a' b' : Fin g → ℝ) (z : Fin g → ℂ) (hz : hMat X bas idx x *ᵥ z =
       (fun i => (b' i : ℂ)) + tauMat X bas idx x *ᵥ fun i => (a' i : ℂ)) :
@@ -310,6 +412,9 @@ theorem pointwiseNorm_canonicalTheta_eq_sq_thetaConstant (hs : IsSympl X bas) {x
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[det_im_tauMat idx hs (mem_dom_of_isOrtho ho), det_Hm_of_isOrtho idx hs ho, ofReal_re, mul_div_assoc', mul_div_right_comm, Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem norm_det_hMat (hs : IsSympl X bas) {x : Frame X.Ψ r} (ho : X.IsOrtho x) :
     √(2 ^ g * ((tauMat X bas idx x).map Complex.im).det) =
       √(2 ^ g / ∏ τ, X.c τ ^ r) * ‖(hMat X bas idx x).det‖ := by
@@ -317,6 +422,11 @@ theorem norm_det_hMat (hs : IsSympl X bas) {x : Frame X.Ψ r} (ho : X.IsOrtho x)
     mul_div_assoc', mul_div_right_comm, Real.sqrt_mul' _ (sq_nonneg _),
     Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Rewrite using `[det_hMat_rmul bas idx x hu, mul_comm, bchar, Fintype.prod_prod_type]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : X.p0 ≤ (j : ℕ)`. Simplify using `[rowFac, h, not_lt.2 h]`.
+
+Simplify using `[rowFac, h, not_le.1 h]`.
+-/
 theorem det_hMat_weight (x : Frame X.Ψ r) {u : Frame X.Ψ r} (hu : u ∈ Bor X.Ψ r) :
     (hMat X bas idx (rmul x u)).det =
       bchar (fun _ j => if X.p0 ≤ (j : ℕ) then 1 else -1) u * (hMat X bas idx x).det := by
@@ -336,11 +446,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
 
 def adapted : Frame X.Ψ r := fun τ k a => A.e τ a k
 
+/- English proof (translation)
+Introduce `τ` and use `by ext a b rw [diagonal_apply] exact A.e_orth τ a b`.
+-/
 theorem isOrtho_adapted : X.IsOrtho (adapted A) := fun τ => by
   ext a b
   rw [diagonal_apply]
   exact A.e_orth τ a b
 
+/- English proof (translation)
+Establish `key : ∀ (τ : X.Ψ) (a : Fin r), ∃ β : Fin r → ℂ, (∀ c, a < c → β c = 0) ∧ A.e τ a = mat x τ *ᵥ β`. Introduce `τ a`. Establish `hm : A.e τ a ∈ Submodule.span ℂ (Set.range fun k : Fin (a + 1) => FD.col (mat x τ) (Fin.castLE a.2 k))`. Rewrite using `[← A.e_flag τ _ a.2]`. Conclude with `Submodule.subset_span ⟨Fin.last a, rfl⟩`.
+
+Generalize the expression as in `A.e τ a = y at hm`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Use `⟨Pi.single (Fin.castLE a.2 k) 1, fun c hc => Pi.single_eq_of_ne ?_ _, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Use `k.2` as an intermediate fact. Rewrite `hc` using `[Fin.lt_def]`. Simplify using `only [Fin.val_castLE] at hc`. Use linear arithmetic over natural numbers and integers.
+
+Use extensionality with `j`. Simplify using `[FD.col]`. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨β, h1, rfl⟩` from `hy`.
+
+Take `⟨γ, h2, rfl⟩` from `hz`. Conclude with `⟨β + γ, fun c hc => by simp [h1 c hc, h2 c hc], by rw [mulVec_add]⟩`. Consider the case `smul t y _ hy`. Take `⟨β, h1, rfl⟩` from `hy`. Conclude with `⟨t • β, fun c hc => by simp [h1 c hc], by rw [mulVec_smul]⟩`.
+
+Use `choose β h0 hβ using key`. Establish `h : adapted A = rmul x fun τ c a => β τ a c`. Use function extensionality and compare the values at `τ k a`. Conclude with `congrFun (hβ τ a) k`. Use `⟨fun τ c a => β τ a c, fun τ => ⟨fun hd => ?_, fun a c hc => h0 τ c a hc⟩, h⟩` and prove the remaining obligations.
+
+Apply `(mem_dom_of_isOrtho (isOrtho_adapted A) τ).1` to reduce the goal to its premises. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(mat x τ * mat (fun τ c a => β τ a c) τ).det = 0`. Rewrite using `[det_mul, hd, mul_zero]`.
+-/
 theorem exists_adapted_eq : ∃ u ∈ Bor X.Ψ r, adapted A = rmul x u := by
   have key : ∀ (τ : X.Ψ) (a : Fin r), ∃ β : Fin r → ℂ, (∀ c, a < c → β c = 0) ∧
       A.e τ a = mat x τ *ᵥ β := by
@@ -378,6 +506,23 @@ theorem exists_adapted_eq : ∃ u ∈ Bor X.Ψ r, adapted A = rmul x u := by
   change (mat x τ * mat (fun τ c a => β τ a c) τ).det = 0
   rw [det_mul, hd, mul_zero]
 
+/- English proof (translation)
+Set `f : X.Ψ × Fin r → Idx A.T.dim` to `fun p => if h : (p.2 : ℕ) < X.p0 then ⟨p.1.1, ⟨p.2, by rw [A.dim_pos]; exact h⟩⟩ else ⟨ComplexEmbedding.conjugate p.1.1, ⟨p.2 - X.p0, by`. Rewrite using `[A.dim_neg]`. Use `p.2.2` as an intermediate fact. Use the proof step `omega⟩⟩`. Establish `hp` using `X.p0_le`.
+
+Establish `hf : Function.Bijective f`. Use `(Fintype.bijective_iff_surjective_and_card _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨σ, a⟩`. Distinguish the cases in `h : σ ∈ X.Ψ`. Establish `ha : (a : ℕ) < X.p0` using `lt_of_lt_of_eq a.2 (A.dim_pos ⟨σ, h⟩)`.
+
+Conclude with `⟨(⟨σ, h⟩, ⟨a, by omega⟩), dif_pos ha⟩`. Take `⟨τ, rfl⟩ : ∃ τ : X.Ψ, σ = ComplexEmbedding.conjugate τ.1` from `⟨⟨_, TorusCoord.conj_mem X h⟩, (TorusAtDataPf.conj_conj_X σ).symm⟩`. Establish `ha : (a : ℕ) < r - X.p0` using `lt_of_lt_of_eq a.2 (A.dim_neg τ)`. Use `⟨(τ, ⟨X.p0 + a, by omega⟩), (dif_neg (by simp)).trans ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Rewrite using `[Fintype.card_sigma, TorusCoord.sum_emb_split X]`. Simplify using `[A.dim_pos, A.dim_neg, Nat.add_sub_cancel' hp]`. Use `⟨Equiv.ofBijective f hf, fun v ⟨τ, a⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.ofBijective_apply]`. Distinguish the cases in `h : (a : ℕ) < X.p0`.
+
+Rewrite using `[show f (τ, a) = _ from dif_pos h, A.coord_pos, map_mul, conj_ofReal, per_of_lt X _ _ _ h, hermC_conj τ.1 X.Gm_herm]`. Both sides reduce to the same expression. Rewrite using `[show f (τ, a) = _ from dif_neg h, A.coord_neg, map_mul, conj_ofReal, conj_conj, per_of_le X _ _ _ (not_lt.1 h)]`. Use `congr 1`. Establish `ha : (⟨X.p0 + (a - X.p0), by have` using `a.2; omega⟩ : Fin r) = a := Fin.ext (by`.
+
+Simplify using `only`. Use the proof step `omega)`. Establish `hd` using `(mem_dom_of_isOrtho (isOrtho_adapted A) τ).1`. Establish `hu : mat (adapted A) τ *ᵥ ((mat (adapted A) τ)⁻¹ *ᵥ Data.emb τ.1 v) = Data.emb τ.1 v`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ hd.isUnit, one_mulVec]`.
+
+Establish `hcol : A.e τ a = mat (adapted A) τ *ᵥ Pi.single a 1`. Use extensionality with `k`. Simplify using `[mat, adapted]`. Simplify using `only [ha]`. Use `conv_lhs => rw [hcol, ← hu]`.
+
+Rewrite using `[UnitFrame.hermC_mulVec, isOrtho_adapted A]`. Simplify using `[dotProduct, mulVec_diagonal, FD.sgn, h, Pi.single_apply, apply_ite]`.
+-/
 theorem exists_equiv : ∃ e : X.Ψ × Fin r ≃ Idx A.T.dim, ∀ v p,
     conj (A.φ v (e p)) = (√(X.c p.1) : ℂ) * per X (adapted A) v p := by
   let f : X.Ψ × Fin r → Idx A.T.dim := fun p =>
@@ -426,6 +571,15 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : DataX E r} {g : ℕ}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
 
+/- English proof (translation)
+Establish `hm (m) : A.φ (bas m) ∈ A.T.L` using `(A.lat _).2 ⟨_, (bas m).2, rfl⟩`. Use `exists_canMult_eq (fun m => A.T.eps (A.φ (bas m))) (fun m => A.T.eps_pm _ (hm m)) fun m m' => ?_` and prove the remaining obligations. Take `⟨σ, hσ, hE⟩` from `exists_sign X.toData`. Establish `h` using `A.T.eps_add _ (hm m) _ (hm m')`. Establish `h1` using `hE (bas m) (bas m')`.
+
+Rewrite `h1` using `[hs]`. Establish `h2 : Real.cos (π * (Hf (A.φ (bas m)) (A.φ (bas m'))).im) = Real.cos ((omegaStd m m' : ℤ) * π)`. Rewrite using `[A.im_eq _ (bas m).2 _ (bas m').2]`. Express the relevant statement in the definitionally equal form `Real.cos (π * (A.sg * ((SemicharIndep.B X.toData (bas m) (bas m') : ℚ) : ℝ))) = _`. Establish `h3 : ((omegaStd m m' : ℤ) : ℝ) = -(σ * ((SemicharIndep.B X.toData (bas m) (bas m') : ℚ) : ℝ))`.
+
+Rewrite using `[← neg_eq_iff_eq_neg]`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h3]`. Apply the tactic sequence `rcases hσ with rfl | rfl <;> rcases A.sg_pm with h4 | h4 <;> simp [h4, mul_comm]`. Rewrite `h` using `[h2, Real.cos_int_mul_pi]`.
+
+Rewrite using `[map_add, Submodule.coe_add, map_add, mul_comm (π * I : ℂ), Complex.exp_int_mul, Complex.exp_pi_mul_I]`. Establish `h5` using `congrArg ((↑) : ℝ → ℂ) h`. Move the coercions through the operations in `at h5`. Conclude with `h5`.
+-/
 theorem exists_char_at (hs : IsSympl X.toData bas) {x : Frame X.Ψ r} (A : TorusAt X.toData x) :
     ∃ a b : Fin g → ℝ, ∀ m, canMult a b (fun i => m (.inl i)) (fun i => m (.inr i)) =
       A.T.eps (A.φ (bas m)) := by
@@ -453,6 +607,15 @@ theorem exists_char_at (hs : IsSympl X.toData bas) {x : Frame X.Ψ r} (A : Torus
   push_cast at h5
   exact h5
 
+/- English proof (translation)
+Establish `ho` using `isOrtho_adapted A`. Take `⟨e, he⟩` from `exists_equiv A`. Establish `hcj (w) : cj A.T (idx.trans e) (A.φ w) = scaleUp X.toData idx (per X.toData (adapted A) w ∘ idx)`. Use extensionality with `i`. Conclude with `he w (idx i)`.
+
+Establish `hL : ∀ y, y ∈ A.T.L ↔ cj A.T (idx.trans e) y ∈ lat (frameTorus idx hs ho a b).b`. Introduce `y`. Rewrite using `[A.lat, mem_lat_frameTorus]`. Use `exists_congr fun w => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← hcj, (cj A.T (idx.trans e)).injective.eq_iff, eq_comm]`.
+
+Establish `hka : ∀ y ∈ A.T.L, (frameTorus idx hs ho a b).ka (cj A.T (idx.trans e) y) = A.T.eps y`. Introduce `y hy`. Take `⟨w, hw, rfl⟩` from `(A.lat y).1 hy`. Take `⟨m, hm⟩` from `bas.surjective ⟨w, hw⟩`. Take `rfl : w = bas m` from `by rw [hm]`.
+
+Rewrite using `[hcj, ← hab, ← frameTorus_ka idx hs ho a b]`. Use `congr 5`. Conclude with `congrArg bas (Sum.elim_comp_inl_inr m).symm`. Rewrite using `[ratio_cj hL hka (canSec_mem_Sec idx hs ho a b) (l2_canSec_pos idx hs ho a b).ne' A.s_mem A.s_ne, hcj, pointwiseNorm_canonicalTheta_eq_sq_thetaConstant idx hs ho a b a' b' _ hv, l2_canSec_eq_inv_sqrt_two_pow_mul_det_im, div_inv_eq_mul, norm_det_hMat idx hs ho]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ratio_eq_theta (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X.toData bas) {x : Frame X.Ψ r}
     (A : TorusAt X.toData x) {a b : Fin g → ℝ}
     (hab : ∀ m, canMult a b (fun i => m (.inl i)) (fun i => m (.inr i)) = A.T.eps (A.φ (bas m)))
@@ -489,6 +652,17 @@ theorem ratio_eq_theta (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X.toData ba
 
 end Main
 
+/- English proof (translation)
+Introduce `E _ _ _ r X hw`. Take `⟨bas, hs⟩` from `exists_isSympl X`. Set `idx : Fin (X.Ψ.card * r) ≃ X.Ψ × Fin r` to `(Fintype.equivFinOfCardEq (by simp)).symm`. Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab⟩ : ∃ a b : Fin (X.Ψ.card * r) → ℝ, ∀ x (A : TorusAt X.toData x) m, canMult a b (fun i => m (.inl i)) (fun i => m (.inr i)) = A.T.eps (A.φ (bas m)) := by`. Distinguish the cases in `h : ∃ x, Nonempty (TorusAt X.toData x)`.
+
+Take `⟨x₀, ⟨A₀⟩⟩` from `h`. Take `⟨a, b, hab⟩` from `exists_char_at hs A₀`. Use `⟨a, b, fun x A m => ?_⟩` and prove the remaining obligations. Establish `h1` using `torusAt_eps_indep E r X hw x₀ x A₀ A 1 ⟨by simp, by simp⟩ _ (bas m).2`. Rewrite `h1` using `[Units.val_one, one_mulVec]`.
+
+Rewrite using `[hab, h1]`. Conclude with `⟨0, 0, fun x A => (h ⟨x, ⟨A⟩⟩).elim⟩`. Use `choose a' b' hv using exists_coord idx hs`. Use `⟨fun v x => thetaChar (tauMat X.toData bas idx x) (fun i => ((a + a' v) i : ℂ)) (fun i => ((b + b' v) i : ℂ)) 0, fun x => (hMat X.toData bas idx x).det, √(2 ^ (X.Ψ.card * r) / ∏ τ, X.c τ ^ r), Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun τ _ => pow_pos (ThFr.c_po …` and prove the remaining obligations. Conclude with `differentiableOn_thetaChar (Z := fun _ => 0) (differentiableOn_tauMat idx hs) (differentiableOn_const _) (fun x hx => mem_thetaDomain (tauMat_im_posDef idx hs hx)) _ _`.
+
+Establish `ho` using `isOrtho_adapted A`. Take `⟨u, hu, hA⟩` from `exists_adapted_eq A`. Establish `h1` using `FrameDegreeData.pnorm_rmul X.toData _ (fun x => (hMat X.toData bas idx x).det) (fun y _ _ hb => det_hMat_weight idx y hb) x hx u hu`. Rewrite `h1` using `[← hA, AR.Up.IC.pnorm_orth X.toData _ _ ho]`. Rewrite using `[ratio_eq_theta idx hs A (hab x A) v _ _ (hv v _ (mem_dom_of_isOrtho ho)), h1, hA, tauMat_rmul bas idx x hu, mul_assoc _ ‖_‖]`.
+
+Both sides reduce to the same expression.
+-/
 theorem normalised_theta_norm_holomorphic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r), (∃ w0 : 𝓞 E, ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ, Algebra.trace ℚ E (X.ξ0 * herm X.Gm u (((w0 : E) - cc (w0 : E)) • v)) - Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v) = 2 * k) → ∃ (Θ : (Fin r → E) → Frame X.Ψ r → ℂ) (D : Frame X.Ψ r → ℂ) (κ : ℝ), 0 < κ ∧ (∀ v, DifferentiableOn ℂ (Θ v) X.dom) ∧ DifferentiableOn ℂ D X.dom ∧ (∀ x ∈ X.dom, D x ≠ 0) ∧ ∀ x ∈ X.dom, ∀ (A : TorusAt X.toData x) (v : Fin r → E), A.T.ptN2 1 A.s (fun _ => A.φ v) / A.T.l2 1 A.s = κ * ‖Θ v x‖ ^ 2 * ‖D x‖ * X.nfac (fun _ j => if X.p0 ≤ (j : ℕ) then 1 else -1) x := by
   intro E _ _ _ r X hw
   obtain ⟨bas, hs⟩ := exists_isSympl X

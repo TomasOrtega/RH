@@ -7,16 +7,27 @@ open NumberField Complex
 
 noncomputable section
 
+/- English proof (translation)
+Simplify using `only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem jof_Hf_smul_right {ι : Type} [Fintype ι] (x u : EuclideanSpace ℂ ι) (c : ℂ) :
     Hf x (c • u) = (starRingEnd ℂ) c * Hf x u := by
   simp only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Hf, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.star_def, mul_comm]`.
+-/
 theorem jof_Hf_conj {ι : Type} [Fintype ι] (v w : EuclideanSpace ℂ ι) : star (Hf v w) = Hf w v := by
   simp only [Hf, star_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp [Complex.star_def, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Hf, EuclideanSpace.single_apply]`. Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality. Simplify using `[Finset.sum_ite_eq']`. Rewrite using `[if_neg h]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : i = j`. Substitute `h1` using the available equality. Simplify using `[h]`. Simplify using `[h1]`.
+-/
 theorem Hf_single {ι : Type} [Fintype ι] [DecidableEq ι] (j j' : ι) :
     Hf (EuclideanSpace.single j (1 : ℂ)) (EuclideanSpace.single j' 1) = if j = j' then 1 else 0 := by
   simp only [Hf, EuclideanSpace.single_apply]
@@ -30,6 +41,13 @@ theorem Hf_single {ι : Type} [Fintype ι] [DecidableEq ι] (j j' : ι) :
       simp [h]
     · simp [h1]
 
+/- English proof (translation)
+Establish `key : ∀ M, ∑ k : Fin M, (if h' : k.val < ρ then f ⟨k, h'⟩ else 0) = ∑ k ∈ Finset.range M, (if h' : k < ρ then f ⟨k, h'⟩ else 0)` using `fun M => Fin.sum_univ_eq_sum_range (fun k => if h' : k < ρ then f ⟨k, h'⟩ else 0) M`. Rewrite using `[key N]`. Establish `hρ : ∑ s, f s = ∑ k ∈ Finset.range ρ, (if h' : k < ρ then f ⟨k, h'⟩ else 0)`. Rewrite using `[← key ρ]`. Conclude with `Finset.sum_congr rfl fun s _ => by simp [s.isLt]`.
+
+Rewrite using `[hρ]`. Use `symm`. Apply `Finset.sum_subset (Finset.range_mono h)` to reduce the goal to its premises. Introduce `k _ hk'`. Simplify using `only [Finset.mem_range] at hk'`.
+
+Simplify using `[hk']`.
+-/
 theorem sum_fin_le {M : Type*} [AddCommMonoid M] {ρ N : ℕ} (h : ρ ≤ N) (f : Fin ρ → M) :
     ∑ k : Fin N, (if h' : k.val < ρ then f ⟨k, h'⟩ else 0) = ∑ s, f s := by
   have key : ∀ M, ∑ k : Fin M, (if h' : k.val < ρ then f ⟨k, h'⟩ else 0) =
@@ -48,16 +66,25 @@ theorem sum_fin_le {M : Type*} [AddCommMonoid M] {ρ N : ℕ} (h : ρ ≤ N) (f 
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `PT.l2`. Rewrite using `[MeasureTheory.setAverage_eq]`. Conclude with `smul_nonneg (inv_nonneg.mpr ENNReal.toReal_nonneg) (MeasureTheory.integral_nonneg fun v => by unfold PT.ptN2; positivity)`.
+-/
 theorem l2NormSq_nonneg_gaussianTorus (X : PT E) (q : ℕ) {n : ℕ} (F : (Fin n → Vsp X.dim) → ℂ) : 0 ≤ X.l2 q F := by
   unfold PT.l2
   rw [MeasureTheory.setAverage_eq]
   exact smul_nonneg (inv_nonneg.mpr ENNReal.toReal_nonneg)
     (MeasureTheory.integral_nonneg fun v => by unfold PT.ptN2; positivity)
 
+/- English proof (translation)
+Unfold `PT.rd`. Check the signs of the components of the expression.
+-/
 theorem rd_nonneg : 0 ≤ PT.rd E := by
   unfold PT.rd
   positivity
 
+/- English proof (translation)
+Unfold `Par.ph PT.ph`. Use `rd_nonneg (E := E)` as an intermediate fact. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+-/
 theorem ph_nonneg {X : PT E} {DF : ℕ} (P : Par X DF) : 0 ≤ P.ph := by
   unfold Par.ph PT.ph
   have := rd_nonneg (E := E)
@@ -65,16 +92,111 @@ theorem ph_nonneg {X : PT E} {DF : ℕ} (P : Par X DF) : 0 ≤ P.ph := by
   · positivity
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `Cchi RR`. Use `rd_nonneg (E := E)` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem Cchi_nonneg (m : ℕ) : 0 ≤ Cchi (E := E) m := by
   unfold Cchi RR
   have := rd_nonneg (E := E)
   positivity
 
+/- English proof (translation)
+Unfold `Par.K6`. Check the signs of the components of the expression.
+-/
 theorem inv_constant_nonneg {X : PT E} {DF : ℕ} (P : Par X DF) : 0 ≤ P.K6⁻¹ := by
   unfold Par.K6
   positivity
 
 open Classical in
+/- English proof (translation)
+Take `⟨ρ, hρ⟩ : ∃ ρ, Module.finrank ℂ (Submodule.span ℂ (I : Set (Vsp X.dim)) ⊓ VP σ : Submodule ℂ (Vsp X.dim)) = ρ` from `⟨_, rfl⟩`. Take `⟨w, xx, u, R, ε, hw, hon, hxu, -, hεb, hc4, hc5, hc6, hc7⟩` from `hc E X DF P I hI σ ρ hρ`. Take `⟨N, bb, hNr, hρN, hbw, hin, hperp, hpars⟩` from `onb_data X I σ ρ hρ hI.stable w hw hon`. Use `set e : Fin i → Vsp X.dim := fun a => EuclideanSpace.single (⟨σ, Fin.castLE hi a⟩ : Idx X.dim) (1 : ℂ) with he`. Establish `he_in : ∀ a, InPart σ (e a)`.
+
+Introduce `a j hj`. Simplify using `only [he, PiLp.single_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hj rfl`.
+
+Establish `hee : ∀ a a', Hf (e a) (e a') = if a = a' then 1 else 0`. Introduce `a a'`. Simplify using `only [he]`. Rewrite using `[Hf_single]`. Distinguish the cases in `h : a = a'`.
+
+Simplify using `[h]`. Rewrite using `[if_neg, if_neg h]`. Introduce `h2`. Rewrite `h2` using `[Sigma.mk.inj_iff]`. Conclude with `h (Fin.castLE_injective hi (eq_of_heq h2.2))`.
+
+Set `M : Matrix (Fin i) (Fin N) ℂ` to `Matrix.of fun a k => Hf (e a) (bb k)`. Establish `hMM : M * M.conjTranspose = 1`. Use extensionality with `a a'`. Simplify using `only [M, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Matrix.one_apply, jof_Hf_conj]`. Rewrite using `[hpars (e a) (e a') (he_in a) (he_in a'), hee]`.
+
+Take `⟨s1, -, hs1⟩` from `hx.2.2.2.2.2.1 i N X.r M hMM hNr`. Use `haveI : Nonempty (Fin i → Fin N) := ⟨s1⟩`. Take `⟨s0, hs0⟩` from `Finite.exists_max (fun s : Fin i → Fin N => ‖(M.submatrix id s).det‖)`. Use `set Δ := ‖(M.submatrix id s0).det‖ with hΔ`. Establish `hΔr : (2 : ℝ) ^ (-(X.r : ℝ) / 2) ≤ Δ` using `hs1.trans (hs0 s1)`.
+
+Establish `hΔpos : 0 < Δ` using `lt_of_lt_of_le (by positivity) hΔr`. Establish `hinj : Function.Injective s0`. Introduce `j j' h`. Assume the negation of the conclusion as `hne`. Establish `h0 : (M.submatrix id s0).det = 0` using `Matrix.det_zero_of_column_eq hne (by intro a; simp [h])`.
+
+Rewrite `hΔpos` using `[hΔ, h0, norm_zero]`. Conclude with `lt_irrefl 0 hΔpos`. Establish `hRpos : ∀ t, 0 < R t`. Introduce `t`. Establish `h1` using `(hc5 t).2`.
+
+Establish `hp` using `Real.pi_pos`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `hT : ∀ t : Fin ρ, ∃ s' ∈ X.Sec P.q 1, ∃ ζ : ℂ, ‖ζ‖ = 1 ∧ (∀ xs : Fin c → Vsp X.dim, (∀ k, InPart σ (xs k) ∧ ‖xs k‖ = 1) → ‖d1 s' c xs - ζ * (2 * Real.pi) ^ c * ∏ k, Hf (xs k) (u t)‖ ≤ P.eps1 * (2 * Real.pi * R t) ^ c) ∧ P.K6⁻¹ * Real.exp (-(2 * Real.pi * ‖u t‖ ^ 2 / P.q)) * X.l2 …` using `fun t => ht E X DF P I hI c hcD σ (xx t) (u t) (hxu t).1 (hxu t).2 (2 * Real.pi * R t) (hc5 t).2 (by have h1 := (hc5 t).1; have hp := Real.pi_pos; nlinarith) (hc6 t)`.
+
+Use `choose sT hsT ζ hζ hζb hζl using hT`. Establish `hA : ∀ k : Fin N, ρ ≤ k.val → ∃ s' ∈ X.Sec P.q 1, (∀ xs : Fin c → Vsp X.dim, (∀ k, InPart σ (xs k) ∧ ‖xs k‖ = 1) → ‖d1 s' c xs - (c.factorial : ℂ) * ∏ k', Hf (xs k') (bb k)‖ ≤ P.eps1 * c.factorial) ∧ P.K6⁻¹ * X.l2 P.q s' ≤ (c.factorial : ℝ) ^ 2` using `fun k hk => ha E X DF P I hI c hcD σ (bb k) (hin k) (hperp k hk).1 (hperp k hk).2`. Use `choose sA hsA hAb hAl using hA`. Establish `hK6` using `inv_constant_nonneg P`. Establish `hexp1 : Real.exp (-(2 * Real.pi * Cchi (E` using `E) P.m * P.ph / P.q)) ≤ 1 := by`.
+
+Rewrite using `[Real.exp_le_one_iff, neg_nonpos]`. Use `Cchi_nonneg (E := E) P.m` as an intermediate fact. Use `ph_nonneg P` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hexp : ∀ t, Real.exp (-(2 * Real.pi * Cchi (E` using `E) P.m * P.ph / P.q)) ≤ Real.exp (-(2 * Real.pi * ‖u t‖ ^ 2 / P.q)) := by`. Introduce `t`. Rewrite using `[Real.exp_le_exp, neg_le_neg_iff]`. Apply `div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Use `hc7 t` as an intermediate fact.
+
+Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Set `y : Fin i → Vsp X.dim` to `fun j => if h : (s0 j).val < ρ then ((R ⟨_, h⟩ : ℂ))⁻¹ • u ⟨_, h⟩ else bb (s0 j)`. Set `s : Fin i → (Fin 1 → Vsp X.dim) → ℂ` to `fun j => if h : (s0 j).val < ρ then sT ⟨_, h⟩ else sA (s0 j) (not_lt.1 h)`. Set `μ : Fin i → ℂ` to `fun j => if h : (s0 j).val < ρ then ζ ⟨_, h⟩ * (((2 * Real.pi * R ⟨_, h⟩ : ℝ)) : ℂ) ^ c else (c.factorial : ℂ)`.
+
+Establish `hnμ : ∀ t, ‖ζ t * (((2 * Real.pi * R t : ℝ)) : ℂ) ^ c‖ = (2 * Real.pi * R t) ^ c`. Introduce `t`. Use `hRpos t` as an intermediate fact. Rewrite using `[norm_mul, hζ t, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Use `⟨y, s, μ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j`. Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [s, dif_pos h]`. Conclude with `hsT _`. Simplify using `only [s, dif_neg h]`.
+
+Conclude with `hsA _ _`. Introduce `j xs hxs`. Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [s, μ, y, dif_pos h]`. Establish `hR` using `hRpos ⟨_, h⟩`.
+
+Establish `e1 : ζ ⟨_, h⟩ * (((2 * Real.pi * R ⟨_, h⟩ : ℝ)) : ℂ) ^ c * ∏ k, Hf (xs k) (((R ⟨_, h⟩ : ℂ))⁻¹ • u ⟨_, h⟩) = ζ ⟨_, h⟩ * (2 * Real.pi) ^ c * ∏ k, Hf (xs k) (u ⟨_, h⟩)`. Simplify using `only [jof_Hf_smul_right, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_inv₀, Complex.conj_ofReal]`. Establish `hR' : (R ⟨_, h⟩ : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `push_cast`. Establish `key : (2 * (Real.pi : ℂ) * (R ⟨_, h⟩ : ℂ)) ^ c * (1 / (R ⟨_, h⟩ : ℂ)) ^ c = (2 * Real.pi) ^ c`.
+
+Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(ζ ⟨_, h⟩ * ∏ x, Hf (xs x) (u ⟨_, h⟩)) * key`. Rewrite using `[e1, hnμ]`.
+
+Conclude with `hζb _ xs hxs`. Simplify using `only [s, μ, y, dif_neg h]`. Rewrite using `[Complex.norm_natCast]`. Conclude with `hAb _ _ xs hxs`. Introduce `j`.
+
+Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [s, μ, dif_pos h]`. Rewrite using `[hnμ]`. Establish `hl` using `l2NormSq_nonneg_gaussianTorus X P.q (sT ⟨_, h⟩)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [s, μ, dif_neg h]`. Rewrite using `[Complex.norm_natCast]`. Establish `hl` using `l2NormSq_nonneg_gaussianTorus X P.q (sA (s0 j) (not_lt.1 h))`. Combine the equalities or inequalities in the displayed calculation. Introduce `j`.
+
+Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [y, dif_pos h]`. Establish `hR` using `hRpos ⟨_, h⟩`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hR, inv_mul_le_iff₀ hR]`. Use `(hc5 ⟨_, h⟩).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [y, dif_neg h]`. Rewrite using `[(hperp _ (not_lt.1 h)).1]`. Evaluate the numerical expressions. Establish `hDP` using `hx.2.2.2.2.2.2.1`.
+
+Establish `hDN` using `hx.2.2.2.2.2.2.2.1`. Set `wv : Fin N → Fin i → ℂ` to `fun k a => Hf (e a) (bb k)`. Set `εc : Fin i → Fin N → ℂ` to `fun j k => if h : (s0 j).val < ρ then (if hk : k.val < ρ then ε ⟨_, h⟩ ⟨_, hk⟩ else 0) else 0`. Apply the tactic sequence `have hentry : ∀ a j, Hf (e a) (y j) = wv (s0 j) a + ∑ k, εc j k * wv k a := by`. Introduce `a j`.
+
+Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [y, dif_pos h, jof_Hf_smul_right, map_inv₀, Complex.conj_ofReal]`. Establish `hR` using `hRpos ⟨_, h⟩`. Establish `hR' : (R ⟨_, h⟩ : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `h4` using `hc4 ⟨_, h⟩ (e a) (he_in a)`.
+
+Establish `hws : w ⟨_, h⟩ = bb (s0 j)` using `(hbw (s0 j) h).symm`. Establish `hsum : ∑ s', ε ⟨_, h⟩ s' * Hf (e a) (w s') = ∑ k, εc j k * wv k a`. Rewrite using `[← sum_fin_le hρN (fun s' => ε ⟨_, h⟩ s' * Hf (e a) (w s'))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k.val < ρ`.
+
+Simplify using `only [εc, wv, dif_pos h, dif_pos hk]`. Rewrite using `[hbw k hk]`. Simplify using `only [εc, dif_pos h, dif_neg hk, zero_mul]`. Rewrite using `[← hsum]`. Simplify using `only [wv]`.
+
+Rewrite using `[← hws, ← h4, div_eq_inv_mul]`. Simplify using `only [y, dif_neg h, εc, wv, zero_mul, Finset.sum_const_zero, add_zero]`. Establish `hmat : (Matrix.of fun a b => Hf (EuclideanSpace.single (⟨σ, Fin.castLE hi a⟩ : Idx X.dim) (1 : ℂ)) (y b)) = Matrix.of fun a j => (wv (s0 j) + ∑ k, εc j k • wv k) a`. Use extensionality with `a j`. Simplify using `only [Matrix.of_apply, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `exact hentry a j`. Establish `hold : (Matrix.of fun a j => wv (s0 j) a).det = (M.submatrix id s0).det` using `rfl`. Establish `hmax : ∀ σ' : Fin i → Fin N, ‖(Matrix.of fun a j => wv (σ' j) a).det‖ ≤ Δ` using `fun σ' => hs0 σ'`. Establish `hpert` using `hDP ℂ i (Fin N) wv s0 εc Δ hmax`. Use `set B : ℝ := Real.sqrt ρ / (30 * ρ ^ 2) with hB`.
+
+Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hrow : ∀ j, ∑ k, ‖εc j k‖ ≤ if (s0 j).val < ρ then B else 0`. Introduce `j`. Distinguish the cases in `h : (s0 j).val < ρ`. Rewrite using `[if_pos h]`.
+
+Use `(hεb ⟨_, h⟩).2` as an intermediate fact. Rewrite `this` using `[← sum_fin_le hρN (fun s' => ‖ε ⟨_, h⟩ s'‖)]`. Use `le_of_eq_of_le ?_ this` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k.val < ρ`.
+
+Simplify using `[εc, dif_pos h, dif_pos hk]`. Simplify using `[εc, dif_pos h, dif_neg hk]`. Rewrite using `[if_neg h]`. Simplify using `[εc, dif_neg h]`. Establish `hprod : ∏ j, (1 + ∑ k, ‖εc j k‖) ≤ (1 + B) ^ ρ`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun j _ => by positivity) fun j _ => ?_` and prove the remaining obligations. Use `hrow j` as an intermediate fact. Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [h, if_true] at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [h, if_false] at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (1 + B) ^ (Finset.univ.filter fun j => (s0 j).val < ρ).card := by`. Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const]`.
+
+Use `_ ≤ (1 + B) ^ ρ := by`. Apply `pow_le_pow_right₀ (by linarith)` to reduce the goal to its premises. Establish `: (Finset.univ.filter fun j => (s0 j).val < ρ).card ≤ (Finset.range ρ).card`. Apply `Finset.card_le_card_of_injOn (fun j => (s0 j).val)` to reduce the goal to its premises. Introduce `j hj`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hj`. Simplify using `using hj`. Introduce `j _ j' _ hjj`. Conclude with `hinj (Fin.ext hjj)`. Simplify using `using this`.
+
+Establish `hhalf : (1 + B) ^ ρ - 1 ≤ 1 / 2`. Break down `Nat.eq_zero_or_pos ρ with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Evaluate the numerical expressions. Establish `hρ1 : (1 : ℝ) ≤ ρ` using `by exact_mod_cast hpos`.
+
+Establish `hnum` using `hDN ρ hpos`. Establish `hBle : B ≤ (ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10`. Establish `hsq : Real.sqrt ρ * Real.sqrt ρ = ρ` using `Real.mul_self_sqrt (by positivity)`. Establish `hsp : 0 < Real.sqrt ρ` using `Real.sqrt_pos.2 (by linarith)`. Establish `hr : (ρ : ℝ) ^ (-(3 : ℝ) / 2) = 1 / (ρ * Real.sqrt ρ)`.
+
+Rewrite using `[show (-(3 : ℝ) / 2) = -((1 : ℝ) + 1 / 2) by norm_num, Real.rpow_neg (by positivity), Real.rpow_add (by linarith), Real.rpow_one, ← Real.sqrt_eq_rpow, one_div]`. Establish `hBeq : B = (ρ : ℝ) ^ (-(3 : ℝ) / 2) / 30`. Rewrite using `[hr, hB, div_div, div_eq_div_iff (by positivity) (by positivity)]`. Take the linear combination `(30 * (ρ : ℝ)) * hsq`. Establish `h0 : 0 ≤ (ρ : ℝ) ^ (-(3 : ℝ) / 2)` using `by positivity`.
+
+Rewrite using `[hBeq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (1 + B) ^ ρ ≤ (1 + (ρ : ℝ) ^ (-(3 : ℝ) / 2) / 10) ^ ρ` using `pow_le_pow_left₀ (by linarith) (by linarith) ρ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfac : ((∏ j, (1 + ∑ k, ‖εc j k‖)) - 1) * Δ ≤ Δ / 2`.
+
+Use `hΔpos.le` as an intermediate fact. Use polynomial arithmetic with `[hprod, hhalf]`. Rewrite using `[hmat]`. Establish `h2 : ‖(Matrix.of fun a j => wv (s0 j) a).det‖ = Δ` using `by rw [hold]`. Establish `h4 : Δ - ‖(Matrix.of fun a j => (wv (s0 j) + ∑ k, εc j k • wv k) a).det - (Matrix.of fun a j => wv (s0 j) a).det‖ ≤ ‖(Matrix.of fun a j => (wv (s0 j) + ∑ k, εc j k • wv k) a).det‖`.
+
+Use `norm_sub_norm_le (Matrix.of fun a j => wv (s0 j) a).det (Matrix.of fun a j => (wv (s0 j) + ∑ k, εc j k • wv k) a).det` as an intermediate fact. Rewrite `this` using `[h2, norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[hpert, hfac, h4, hΔr]`. Introduce `j`.
+
+Distinguish the cases in `h : (s0 j).val < ρ`. Simplify using `only [μ, dif_pos h]`. Rewrite using `[← norm_ne_zero_iff, hnμ]`. Use `hRpos ⟨_, h⟩` as an intermediate fact. Check the signs of the components of the expression.
+
+Simplify using `only [μ, dif_neg h]`. Conclude with `Nat.factorial_ne_zero c` after adjusting the coercions.
+-/
 theorem block_data (hx : Ext.All) (hc : CharStatement) (ht : ColTorusStatement)
     (ha : ColAbelStatement) [IsCMField E] (X : PT E) {DF : ℕ} (P : Par X DF)
     (I : Submodule ℤ (Vsp X.dim)) (hI : IsSplit P I) (σ : E →+* ℂ) (i : ℕ) (hi : i ≤ X.dim σ)

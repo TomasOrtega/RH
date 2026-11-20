@@ -9,6 +9,29 @@ namespace GlobalTheory.K5.OnDVR
 
 open Polynomial GlobalTheory.K5
 
+/- English proof (translation)
+Establish `huniq : ∀ M : Ideal S, M.IsMaximal → M = Ideal.span {π}` using `fun M hM => (hmax.eq_of_le hM.ne_top ((Ideal.span_singleton_le_iff_mem _).2 (hall M hM))).symm`. Use `haveI : IsLocalRing S := IsLocalRing.of_unique_max_ideal ⟨_, hmax, huniq⟩`. Establish `hm : IsLocalRing.maximalIdeal S = Ideal.span {π}` using `huniq _ inferInstance`. Establish `hfac : ∀ a : S, a ≠ 0 → ∃ (k : ℕ) (u : S), IsUnit u ∧ a = π ^ k * u`. Introduce `a ha`.
+
+Establish `hex : ∃ k : ℕ, ¬ π ^ k ∣ a`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (Ideal.span {π}) hmax.ne_top`. Establish `: a ∈ (⨅ i : ℕ, (Ideal.span {π}) ^ i)`.
+
+Rewrite using `[Ideal.mem_iInf]`. Introduce `i`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `hcon i`. Rewrite `this` using `[hb]`.
+
+Conclude with `ha this`. Establish `h0 : Nat.find hex ≠ 0`. Introduce `h`. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Simplify using `at this`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Establish `h1 : π ^ k ∣ a`. Assume the negation of the conclusion as `h`. Use `Nat.find_min' hex h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ π ^ (k + 1) ∣ a`. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[hk]`. Then use the resulting hypothesis. Take `⟨u, rfl⟩` from `h1`.
+
+Use `⟨k, u, ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `: u ∈ IsLocalRing.maximalIdeal S` using `hu`. Rewrite `this` using `[hm, Ideal.mem_span_singleton]`. Conclude with `h2 (by rw [pow_succ]; exact mul_dvd_mul_left _ this)`.
+
+Use `haveI : NoZeroDivisors S := ⟨fun {a b} hab => by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨k, u, hu, rfl⟩` from `hfac a hcon.1`. Take `⟨l, v, hv, rfl⟩` from `hfac b hcon.2`.
+
+Apply `hnil` to reduce the goal to its premises. Use `⟨k + l, ?_⟩` and prove the remaining obligations. Establish `: π ^ (k + l) * (u * v) = 0` using `by rw [← hab]; ring`. Conclude with `((hu.mul hv).mul_left_eq_zero).1 this⟩`. Use `haveI : IsDomain S := NoZeroDivisors.to_isDomain S`.
+
+Establish `hπ0 : π ≠ 0` using `fun h => hnil (h ▸ IsNilpotent.zero)`. Establish `hnf : ¬ IsField S`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, hm, Ideal.span_singleton_eq_bot]`. Conclude with `hπ0`. Establish `hp : (IsLocalRing.maximalIdeal S).IsPrincipal` using `⟨⟨π, hm⟩⟩`.
+
+Use `haveI : IsDiscreteValuationRing S := ((IsDiscreteValuationRing.TFAE S hnf).out 0 4).2 hp`. Conclude with `⟨inferInstance, inferInstance, (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2 hm⟩`.
+-/
 theorem dvr_of_span_maximal {S : Type*} [CommRing S] [IsNoetherianRing S] (π : S)
     (hmax : (Ideal.span {π}).IsMaximal) (hall : ∀ M : Ideal S, M.IsMaximal → π ∈ M)
     (hnil : ¬ IsNilpotent π) :
@@ -68,6 +91,17 @@ theorem dvr_of_span_maximal {S : Type*} [CommRing S] [IsNoetherianRing S] (π : 
   haveI : IsDiscreteValuationRing S := ((IsDiscreteValuationRing.TFAE S hnf).out 0 4).2 hp
   exact ⟨inferInstance, inferInstance, (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2 hm⟩
 
+/- English proof (translation)
+Establish `hmon : (X ^ N - C (PowerSeries.X : PowerSeries K)).Monic` using `monic_X_pow_sub_C _ (by omega)`. Establish `hP : (Ideal.span {(PowerSeries.X : PowerSeries K)}).IsPrime` using `PowerSeries.span_X_isPrime`. Establish `hirr : Irreducible (X ^ N - C (PowerSeries.X : PowerSeries K))`. Use `irreducible_of_eisenstein_criterion hP ?_ ?_ ?_ ?_ hmon.isPrimitive` and prove the remaining obligations. Rewrite using `[hmon.leadingCoeff]`.
+
+Conclude with `(Ideal.ne_top_iff_one _).1 hP.ne_top`. Introduce `i hi`. Rewrite `hi` using `[degree_X_pow_sub_C (by omega)]`. Establish `hi' : i ≠ N`. Establish `: i < N` using `by exact_mod_cast hi`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_sub, coeff_X_pow, if_neg hi', coeff_C]`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[degree_X_pow_sub_C (by omega)]`. Conclude with `hN` after adjusting the coercions. Rewrite using `[coeff_sub, coeff_X_pow, if_neg (by omega), coeff_C, if_pos rfl, zero_sub, neg_mem_iff, Ideal.span_singleton_pow, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Introduce `h`. Use `h 1 (by norm_num)` as an intermediate fact.
+
+Simplify using `at this`. Use `(hmon.irreducible_iff_irreducible_map_fraction_map (K := LaurentSeries K)).1 hirr` as an intermediate fact. Simplify using `using this`.
+-/
 theorem irreducible_X_pow_sub_param (K : Type*) [Field K] (N : ℕ) (hN : 1 ≤ N) :
     Irreducible (X ^ N - C (HahnSeries.single (1 : ℤ) (1 : K)) : Polynomial (LaurentSeries K)) := by
   have hmon : (X ^ N - C (PowerSeries.X : PowerSeries K)).Monic := monic_X_pow_sub_C _ (by omega)
@@ -106,6 +140,13 @@ def redLau : Lau p →+* LaurentSeries (ZMod p) where
   map_zero' := by ext i; simp
   map_add' x y := by ext i; simp
 
+/- English proof (translation)
+Establish `hp : ((p : ℕ) : LaurentSeries (ZMod p)) = 0`. Rewrite using `[← map_natCast (HahnSeries.C : ZMod p →+* LaurentSeries (ZMod p))]`. Simplify using the standard rewrite rules. Establish `hker : ∀ a ∈ pI p, redLau p a = 0`. Introduce `a ha`.
+
+Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton.1 ha`. Rewrite using `[map_mul, map_natCast, hp, zero_mul]`. Use `⟨(Ideal.Quotient.lift (pI p) (redLau p) hker).comp (AdicCompletion.evalOneₐ (pI p)).toRingHom, ?_, by rw [map_natCast, hp]⟩` and prove the remaining obligations. Establish `: AdicCompletion.evalOneₐ (pI p) (qO p) = Ideal.Quotient.mk (pI p) (HahnSeries.single (1 : ℤ) (1 : ℤ_[p]))` using `(AdicCompletion.evalOneₐ (pI p)).commutes _`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, this, Ideal.Quotient.lift_mk]`.
+
+Use extensionality with `i`. Use `show PadicInt.toZMod ((HahnSeries.single (1 : ℤ) (1 : ℤ_[p])).coeff i) = _`. Apply the tactic sequence `by_cases h : i = 1 <;> simp [h]`.
+-/
 theorem exists_red : ∃ φ : O0 p →+* LaurentSeries (ZMod p),
     φ (qO p) = HahnSeries.single (1 : ℤ) (1 : ZMod p) ∧ φ p = 0 := by
   have hp : ((p : ℕ) : LaurentSeries (ZMod p)) = 0 := by
@@ -126,6 +167,43 @@ theorem exists_red : ∃ φ : O0 p →+* LaurentSeries (ZMod p),
   show PadicInt.toZMod ((HahnSeries.single (1 : ℤ) (1 : ℤ_[p])).coeff i) = _
   by_cases h : i = 1 <;> simp [h]
 
+/- English proof (translation)
+Use `haveI : Nontrivial S := hinj.nontrivial`. Use `haveI : IsNoetherianRing S := IsNoetherianRing.of_finite R S`. Establish `hm : IsLocalRing.maximalIdeal R = Ideal.span {(ℓ : R)}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hp`. Establish `hdvd : (x - 1) ∣ (ℓ : S)`. Establish `h1` using `sub_dvd_eval_sub x 1 ((cyclotomic (ℓ ^ (m + 1)) R).map (algebraMap R S))`.
+
+Rewrite `h1` using `[eval_map_algebraMap, hx, map_cyclotomic, eval_one_cyclotomic_prime_pow, zero_sub, dvd_neg]`. Conclude with `h1`. Establish `hx1 : x ^ (ℓ ^ (m + 1)) = 1`. Take `⟨g, hg⟩` from `cyclotomic.dvd_X_pow_sub_one (ℓ ^ (m + 1)) R`. Use `congrArg (aeval x) hg` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hx, zero_mul]`. Simplify `this` using `[sub_eq_zero]`. Establish `hall : ∀ M : Ideal S, M.IsMaximal → x - 1 ∈ M`. Introduce `M hM`. Establish `hc : M.comap (algebraMap R S) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`.
+
+Establish `hpM : (ℓ : S) ∈ M`. Establish `: (ℓ : R) ∈ M.comap (algebraMap R S)`. Rewrite using `[hc, hm]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using this`.
+
+Use `haveI : IsDomain (S ⧸ M) := Ideal.Quotient.isDomain M`. Use `haveI : CharP (S ⧸ M) ℓ := by`. Use `(CharP.charP_iff_prime_eq_zero Fact.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpM`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Apply `eq_zero_of_pow_eq_zero (n := ℓ ^ (m + 1))` to reduce the goal to its premises. Rewrite using `[map_sub, map_one, sub_pow_char_pow, ← map_pow, hx1, map_one, one_pow, sub_self]`. Establish `hnil : ¬ IsNilpotent (x - 1)`. Introduce `h`.
+
+Take `⟨c, hc⟩` from `hdvd`. Establish `: IsNilpotent (ℓ : S)`. Rewrite using `[hc]`. Conclude with `(Commute.all _ _).isNilpotent_mul_right h`. Take `⟨k, hk⟩` from `this`.
+
+Establish `h2 : algebraMap R S ((ℓ : R) ^ k) = algebraMap R S 0` using `by simpa using hk`. Conclude with `hp.ne_zero (eq_zero_of_pow_eq_zero (hinj h2))`. Use `dvr_of_span_maximal (x - 1) ?_ hall hnil` and prove the remaining obligations. Take `⟨M, hM⟩` from `Ideal.exists_maximal S`. Establish `hne : Ideal.span {x - 1} ≠ ⊤` using `fun h => hM.ne_top (top_le_iff.1 (h ▸ (Ideal.span_singleton_le_iff_mem _).2 (hall M hM)))`.
+
+Use `set J : Ideal S := Ideal.span {x - 1} with hJ`. Use `haveI : Nontrivial (S ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hne`. Establish `hkF : ∀ a ∈ IsLocalRing.maximalIdeal R, φ a = 0`. Introduce `a ha`. Rewrite `ha` using `[hm]`.
+
+Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton.1 ha`. Rewrite using `[map_mul, hφ, zero_mul]`. Establish `hkS : ∀ a ∈ IsLocalRing.maximalIdeal R, ((Ideal.Quotient.mk J).comp (algebraMap R S)) a = 0`. Introduce `a ha`. Rewrite `ha` using `[hm]`.
+
+Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton.1 ha`. Establish `: ((Ideal.Quotient.mk J).comp (algebraMap R S)) (ℓ : R) = 0`. Rewrite using `[RingHom.comp_apply, map_natCast, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton.2 hdvd`. Rewrite using `[map_mul, this, zero_mul]`.
+
+Set `φ' : IsLocalRing.ResidueField R →+* F` to `Ideal.Quotient.lift _ φ hkF`. Set `ψ : IsLocalRing.ResidueField R →+* S ⧸ J` to `Ideal.Quotient.lift _ _ hkS`. Establish `hψ : ∀ r, ψ (IsLocalRing.residue R r) = Ideal.Quotient.mk J (algebraMap R S r)` using `fun r => rfl`. Set `f : Polynomial (IsLocalRing.ResidueField R)` to `X ^ N - C (IsLocalRing.residue R q)`. Establish `hf : Irreducible f`.
+
+Use `Monic.irreducible_of_irreducible_map φ' f (monic_X_pow_sub_C _ hN) ?_` and prove the remaining obligations. Establish `: φ' (IsLocalRing.residue R q) = φ q` using `rfl`. Simplify `hirr` using `[f, this]`. Use `haveI : Fact (Irreducible f) := ⟨hf⟩`. Establish `hroot : f.eval₂ ψ (Ideal.Quotient.mk J y) = 0`.
+
+Simplify using `only [f, eval₂_sub, eval₂_pow, eval₂_X_pow, eval₂_X, eval₂_C, hψ]`. Rewrite using `[← map_pow, hy, sub_self]`. Set `θ : AdjoinRoot f →+* S ⧸ J` to `AdjoinRoot.lift ψ _ hroot`. Establish `hsurj : Function.Surjective θ`. Introduce `t`.
+
+Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Establish `hs : s ∈ Algebra.adjoin R {x, y}` using `hgen ▸ Algebra.mem_top`. Use `show Ideal.Quotient.mk J s ∈ θ.range`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem z hz`.
+
+Break down `hz with rfl | rfl` into its components or cases. Establish `: Ideal.Quotient.mk J z = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk J), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[this]`.
+
+Conclude with `one_mem _`. Conclude with `⟨AdjoinRoot.root f, AdjoinRoot.lift_root hroot⟩`. Consider the case `algebraMap r => exact ⟨AdjoinRoot.of f (IsLocalRing.residue R r), AdjoinRoot.lift_of hroot⟩`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`. Establish `hfield : IsField (S ⧸ J)` using `(RingEquiv.ofBijective θ ⟨θ.injective, hsurj⟩).symm.toMulEquiv.isField (Field.toIsField _)`. Conclude with `Ideal.Quotient.maximal_of_isField J hfield`.
+-/
 theorem dvr_of_generators {R S F : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [CommRing S] [Algebra R S] [Module.Finite R S] [Field F] (ℓ m N : ℕ) [Fact ℓ.Prime]
     (hp : Irreducible (ℓ : R)) (hinj : Function.Injective (algebraMap R S)) (x y : S) (q : R)
@@ -225,6 +303,11 @@ theorem dvr_of_generators {R S F : Type*} [CommRing R] [IsDomain R] [IsDiscreteV
     (RingEquiv.ofBijective θ ⟨θ.injective, hsurj⟩).symm.toMulEquiv.isField (Field.toIsField _)
   exact Ideal.Quotient.maximal_of_isField J hfield
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `s _`. Establish `hs : s ∈ Submodule.span R (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`. Use `(Submodule.span_le (p := (Algebra.adjoin R {x, y}).toSubmodule)).2 ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`.
+
+Rewrite using `[hb]`. Use `show _ ∈ Algebra.adjoin R {x, y}`. Establish `hx : x ∈ Algebra.adjoin R {x, y}` using `Algebra.subset_adjoin (by simp)`. Establish `hy : y ∈ Algebra.adjoin R {x, y}` using `Algebra.subset_adjoin (by simp)`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hx _) (Subalgebra.pow_mem _ hy _)`.
+-/
 theorem adjoin_eq_top_of_basis {R S ι κ : Type*} [CommRing R] [CommRing S] [Algebra R S]
     (b : Module.Basis (ι × κ) R S) (x y : S) (u : ι → ℕ) (v : κ → ℕ)
     (hb : ∀ i j, b (i, j) = x ^ u i * y ^ v j) : Algebra.adjoin R {x, y} = ⊤ := by
@@ -239,6 +322,9 @@ theorem adjoin_eq_top_of_basis {R S ι κ : Type*} [CommRing R] [CommRing S] [Al
   have hy : y ∈ Algebra.adjoin R {x, y} := Algebra.subset_adjoin (by simp)
   exact Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hx _) (Subalgebra.pow_mem _ hy _)
 
+/- English proof (translation)
+Establish `: aeval (xn p n) g = ((Ideal.Quotient.mkₐ (O0 p) (towerIdeal p n)).comp (CAlgHom (R` using `O0 p))) (aeval X g) := by`. Rewrite using `[← aeval_algHom_apply]`. Both sides reduce to the same expression. Rewrite using `[this, aeval_X_left_apply]`. Both sides reduce to the same expression.
+-/
 theorem aeval_xn (n : ℕ) (g : Polynomial (O0 p)) :
     aeval (xn p n) g = Ideal.Quotient.mk (towerIdeal p n) (C g) := by
   have : aeval (xn p n) g =
@@ -246,6 +332,15 @@ theorem aeval_xn (n : ℕ) (g : Polynomial (O0 p)) :
     rw [← aeval_algHom_apply]; rfl
   rw [this, aeval_X_left_apply]; rfl
 
+/- English proof (translation)
+Introduce `p hpr n hn`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le' hn`. Take `⟨_, hdvr, hp⟩` from `GlobalTheory.T.completed_laurent_isDVR_statement p`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_basis_On_zeta_pow_mul_q_pow p (m + 1)`. Take `⟨φ, hφq, hφp⟩` from `exists_red p`.
+
+Establish `hpos : 0 < p ^ (m + 1)` using `pow_pos hpr.out.pos _`. Use `haveI : Module.Finite (O0 p) (On p (m + 1)) := Module.Finite.of_basis b`. Use `haveI : Module.Free (O0 p) (On p (m + 1)) := Module.Free.of_basis b`. Use `haveI : Nontrivial (On p (m + 1)) := nontrivial_of_ne _ _ (b.ne_zero (⟨0, Nat.totient_pos.2 hpos⟩, ⟨0, hpos⟩))`. Use `dvr_of_generators (R := O0 p) p m (p ^ (m + 1)) hp (FaithfulSMul.algebraMap_injective _ _) (xn p (m + 1)) (yn p (m + 1)) (qO p) ?_ ?_ ?_ φ hφp hpos.ne' ?_` and prove the remaining obligations.
+
+Rewrite using `[aeval_xn, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Establish `: algebraMap (O0 p) (On p (m + 1)) (qO p) = Ideal.Quotient.mk (towerIdeal p (m + 1)) (C (C (qO p)))` using `rfl`. Rewrite using `[this, yn, ← map_pow, Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`.
+
+Conclude with `adjoin_eq_top_of_basis b _ _ (fun i => (i : ℕ)) (fun j => (j : ℕ)) hb`. Rewrite using `[hφq]`. Conclude with `irreducible_X_pow_sub_param _ _ hpos`.
+-/
 theorem isDVR_On : ∀ (p : ℕ) [Fact p.Prime] (n : ℕ), 1 ≤ n →
     ∃ _ : IsDomain (On p n), IsDiscreteValuationRing (On p n) ∧ Irreducible (xn p n - 1) := by
   intro p hpr n hn

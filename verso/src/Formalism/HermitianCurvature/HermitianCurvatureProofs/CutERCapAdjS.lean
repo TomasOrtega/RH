@@ -19,6 +19,13 @@ variable {k r : ℕ}
 
 def TF (a : B.Mat k r → ℂ) : Prop := ContDiff ℝ ∞ a ∧ HasCompactSupport a
 
+/- English proof (translation)
+Apply `closure_minimal _ (isClosed_tsupport ψ)` to reduce the goal to its premises. Introduce `g hg`. Assume the negation of the conclusion as `hgs`. Apply `hg` to reduce the goal to its premises. Establish `hopen : IsOpen (tsupport ψ)ᶜ` using `(isClosed_tsupport ψ).isOpen_compl`.
+
+Establish `hcont : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `continuous_const.mul (Formalism.REAL.continuous_exp_real_smul X)`. Establish `hmem : (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) ⁻¹' (tsupport ψ)ᶜ ∈ 𝓝 (0 : ℝ)`. Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Apply `hopen.mem_nhds` to reduce the goal to its premises. Simplify using `using hgs`.
+
+Establish `hev : (fun t : ℝ => ψ (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun _ => 0` using `by filter_upwards [hmem] with t ht`. Conclude with `image_eq_zero_of_notMem_tsupport ht`. Use `show deriv _ 0 = 0`. Rewrite using `[hev.deriv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem tsupport_rdV {ψ : B.Mat k r → ℂ} (hψ : ContDiff ℝ ∞ ψ) (X : B.Mat k r) :
     tsupport (RdV X ψ) ⊆ tsupport ψ := by
   apply closure_minimal _ (isClosed_tsupport ψ)
@@ -39,31 +46,55 @@ theorem tsupport_rdV {ψ : B.Mat k r → ℂ} (hψ : ContDiff ℝ ∞ ψ) (X : B
   rw [hev.deriv_eq]
   simp
 
+/- English proof (translation)
+Conclude with `⟨rdV_contDiff ha.1 X, ha.2.mono' ((subset_tsupport _).trans (tsupport_rdV ha.1 X))⟩`.
+-/
 theorem tf_rdV {a : B.Mat k r → ℂ} (ha : TF a) (X : B.Mat k r) : TF (RdV X a) := by
   exact ⟨rdV_contDiff ha.1 X, ha.2.mono' ((subset_tsupport _).trans (tsupport_rdV ha.1 X))⟩
 
+/- English proof (translation)
+The claim follows from `| [] => ha | X :: w => tf_rdV (tf_rw ha w) X`.
+-/
 theorem tf_rw {a : B.Mat k r → ℂ} (ha : TF a) : ∀ w : List (B.Mat k r), TF (B.Rw w a)
   | [] => ha
   | X :: w => tf_rdV (tf_rw ha w) X
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [Q.Glev, Set.mem_setOf_eq, B.GV, Fin.val_zero, Nat.not_lt_zero, IsEmpty.forall_iff, implies_true, and_true]`.
+-/
 theorem level_zero_set_eq_group : Q.Glev k r 0 = B.GV k r := by
   ext g
   simp only [Q.Glev, Set.mem_setOf_eq, B.GV, Fin.val_zero, Nat.not_lt_zero, IsEmpty.forall_iff, implies_true,
     and_true]
 
+/- English proof (translation)
+Rewrite using `[level_zero_set_eq_group]`. Conclude with `h`.
+-/
 theorem haar0 {μ : Measure (Mt k r)} (h : B.IsHaarOn (B.GV k r) μ) : B.IsHaarOn (Q.Glev k r 0) μ := by
   rw [level_zero_set_eq_group]
   exact h
 
+/- English proof (translation)
+Conclude with `⟨hX, fun a ha => absurd ha (Nat.not_lt_zero _)⟩`.
+-/
 theorem lie0 {X : B.Mat k r} (hX : B.inLie k r X) : Q.inLieLev k r 0 X := by
   exact ⟨hX, fun a ha => absurd ha (Nat.not_lt_zero _)⟩
 
+/- English proof (translation)
+Conclude with `fun g₀ _ => ⟨Set.univ, a, isOpen_univ, trivial, ha.contDiffOn, fun _ _ _ => rfl⟩`.
+-/
 theorem smooth0 {a : B.Mat k r → ℂ} (ha : ContDiff ℝ ∞ a) : Q.SmoothLev k r 0 Set.univ a := by
   exact fun g₀ _ => ⟨Set.univ, a, isOpen_univ, trivial, ha.contDiffOn, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Conclude with `⟨tsupport a, ha, fun g _ hg => image_eq_zero_of_notMem_tsupport hg⟩`.
+-/
 theorem cpt0 {a : B.Mat k r → ℂ} (ha : HasCompactSupport a) : Q.CptOn k r 0 a := by
   exact ⟨tsupport a, ha, fun g _ hg => image_eq_zero_of_notMem_tsupport hg⟩
 
+/- English proof (translation)
+The claim follows from `| [], _, a, b, _, _ => by simp [B.Rw] | X :: w, hw, a, b, ha, hb => by have hX : B.inLie k r X := hw X (by simp) have hw' : ∀ Z ∈ w, B.inLie k r Z := fun Z hZ => hw Z (by simp [hZ]) have e1 : B.Rw (X :: w) a = RdV X (B.Rw w a) := rfl have e2 : B.Rw (X :: w).reverse b = B.Rw w.rev …`.
+-/
 theorem word_adj_scalar {μ : Measure (Mt k r)} (h : B.IsHaarOn (B.GV k r) μ) :
     ∀ (w : List (B.Mat k r)), (∀ X ∈ w, B.inLie k r X) → ∀ {a b : B.Mat k r → ℂ}, TF a → TF b →
       (∫ x : Mt k r, B.Rw w a (Matrix.of x) * star (b (Matrix.of x)) ∂μ) =
@@ -84,6 +115,23 @@ theorem word_adj_scalar {μ : Measure (Mt k r)} (h : B.IsHaarOn (B.GV k r) μ) :
 end CAS
 
 open CAS in
+/- English proof (translation)
+Introduce `k r Y μ h a b ha hac hb hbc`. Establish `ta : TF a` using `⟨ha, hac⟩`. Establish `tb : TF b` using `⟨hb, hbc⟩`. Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Take `⟨hLw, hCV⟩` from `Classical.choose_spec (Formalism.FourierDecayAlt.P.capelli_word_sum k r Y)`.
+
+Establish `hLie : ∀ cw ∈ capLw k r Y, ∀ X ∈ cw.2, B.inLie k r X` using `fun cw hc X hX => ((hLw cw hc).1 X hX).1`. Establish `hintA : ∀ v : B.Mat k r → ℂ, Continuous v → Integrable (fun x : Mt k r => a (Matrix.of x) * star (v (Matrix.of x))) μ`. Introduce `v hv`. Establish `hc : Continuous (fun x : Mt k r => a (Matrix.of x) * star (v (Matrix.of x)))` using `ha.continuous.mul (continuous_star.comp hv)`. Establish `hs : HasCompactSupport (fun x : Mt k r => a (Matrix.of x) * star (v (Matrix.of x)))` using `hac.mono fun x hx h0 => hx (by show a x * _ = 0; rw [h0, zero_mul])`.
+
+Conclude with `hc.integrable_of_hasCompactSupport hs`. Establish `hintB : ∀ v : B.Mat k r → ℂ, Continuous v → Integrable (fun x : Mt k r => v (Matrix.of x) * star (b (Matrix.of x))) μ`. Introduce `v hv`. Establish `hc : Continuous (fun x : Mt k r => v (Matrix.of x) * star (b (Matrix.of x)))` using `hv.mul (continuous_star.comp hb.continuous)`. Establish `hs : HasCompactSupport (fun x : Mt k r => v (Matrix.of x) * star (b (Matrix.of x)))` using `hbc.mono fun x hx h0 => hx (by show _ * star (b x) = 0; rw [h0, star_zero, mul_zero])`.
+
+Conclude with `hc.integrable_of_hasCompactSupport hs`. Establish `hH` using `Formalism.FourierDecayAlt.P.hermitian_haar_invariance k r 0 0 0 μ (haar0 h) (fun _ _ => rfl) (fun _ _ => rfl) a b (smooth0 ha) (smooth0 hb) (cpt0 hac) (cpt0 hbc) Y 0 0`. Establish `eT : ∀ (Y' : ℂ), Q.tL k r (E` using `ℂ) 0 0 0 Y' 0 0 = Q.CV k r Y' := fun _ => rfl`. Establish `eS : star Y = conj Y` using `rfl`. Rewrite `hH` using `[eT, eT, eS]`.
+
+Rewrite using `[← hH]`. Establish `e2 : (∫ x : Mt k r, Q.CV k r Y a (Matrix.of x) * star (b (Matrix.of x)) ∂μ) = ∫ x : Mt k r, ((capLw k r Y).map fun cw => cw.1 * (B.Rw cw.2 a (Matrix.of x) * star (b (Matrix.of x)))).sum ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.haar_ae h] with x hx`. Use `hCV ℂ (B.GV k r) a (ckOn_of_contDiff ha _ _) (Matrix.of x) hx hx` as an intermediate fact.
+
+Rewrite using `[this, ← List.sum_map_mul_right]`. Use `congrArg List.sum (List.map_congr_left fun cw _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_assoc]`. Establish `e1 : (∫ x : Mt k r, a (Matrix.of x) * star (wsAdj (capLw k r Y) b (Matrix.of x)) ∂μ) = ∫ x : Mt k r, ((capLw k r Y).map fun cw => cw.1 * ((-1 : ℂ) ^ cw.2.length * (a (Matrix.of x) * star (B.Rw cw.2.reverse b (Matrix.of x))))).sum ∂μ`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [wsAdj, Complex.star_def, map_list_sum, List.map_map, ← List.sum_map_mul_left]`. Use `congrArg List.sum (List.map_congr_left fun cw _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_mul, map_pow, map_neg, map_one, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, (Formalism.FourierDecayAlt.P.B5.integral_listSum μ _ _ fun cw _ => ((hintA _ (tf_rw tb _).1.continuous).const_mul _).const_mul _).2, (Formalism.FourierDecayAlt.P.B5.integral_listSum μ _ _ fun cw _ => (hintB _ (tf_rw ta _).1.continuous).const_mul _).2]`.
+
+Use `congrArg List.sum (List.map_congr_left fun cw hcw => ?_)` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, integral_const_mul, word_adj_scalar h cw.2 (hLie cw hcw) ta tb]`.
+-/
 theorem capacity_adjoint_scalar : CapAdjScalar := by
   intro k r Y μ h a b ha hac hb hbc
   have ta : TF a := ⟨ha, hac⟩

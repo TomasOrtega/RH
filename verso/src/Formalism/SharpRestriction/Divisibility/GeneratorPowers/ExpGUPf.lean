@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt FB)
 
 section Generic
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_map]`.
+-/
 theorem map_id_apply {S σ : Type} [CommRing S] (f : MvPowerSeries σ S) : MvPowerSeries.map (algebraMap S S) f = f := by
   ext n
   simp [MvPowerSeries.coeff_map]
@@ -18,23 +21,35 @@ theorem map_id_apply {S σ : Type} [CommRing S] (f : MvPowerSeries σ S) : MvPow
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {S : Type} [CommRing S] [Algebra ℚ S] {d n : ℕ} [StarRing (𝓞 E)] (B : FB S d (𝓞 E)) {h : PS S 2 d}
   (hg : B.IsCanonGauge S h)
 
+/- English proof (translation)
+Rewrite using `[sb_apply, sb_apply]`. Conclude with `TB.WickVanishing.gt_ev_expS _ (fun j => (b j).2) _ hf`.
+-/
 theorem sb_expS {m : ℕ} (b : Fin m → Q S d n) {f : PS S m d} (hf : constantCoeff f = 0) :
     sb b (FB.expS S f) = FB.expS S (sb b f) := by
   rw [sb_apply, sb_apply]; exact TB.WickVanishing.gt_ev_expS _ (fun j => (b j).2) _ hf
 
 include hg
 
+/- English proof (translation)
+Use `TB.LogPf.cc_ev (czQ ![(0 : Q S d 1), gen 0]) h` as an intermediate fact. Rewrite `this` using `[← sb_apply, show sb ![(0 : Q S d 1), gen 0] h = 0 from (formalSeriesValueAtTwoPoints_eq_ev h 0 (gen 0)).trans hg.ax0, map_zero]`. Conclude with `(congrArg constantCoeff (sb_apply _ _)).trans (TB.LogPf.constantCoeff_ev (czQ _) this.symm)`.
+-/
 theorem const_coeff_pair_form_zero (u v : Q S d n) : constantCoeff (E2 h u v) = 0 := by
   have := TB.LogPf.cc_ev (czQ ![(0 : Q S d 1), gen 0]) h
   rw [← sb_apply, show sb ![(0 : Q S d 1), gen 0] h = 0 from (formalSeriesValueAtTwoPoints_eq_ev h 0 (gen 0)).trans hg.ax0, map_zero] at this
   exact (congrArg constantCoeff (sb_apply _ _)).trans (TB.LogPf.constantCoeff_ev (czQ _) this.symm)
 
+/- English proof (translation)
+Establish `e : B.ph1 = FB.expS S (E2 h (gen 0) (gen 2) + E2 h (gen 1) (gen 2) - E2 h (op (FQ B.G) (gen 0) (gen 1)) (gen 2))`. Simplify using `only [formalSeriesValueAtTwoPoints_eq_ev, op_val]; exact (map_id_apply _).symm.trans (hg.ph1.trans (by rw [show B.FK S = B.G.F from funext fun _ => map_id_apply _]; rfl))`. Rewrite using `[e, E3, sb_expS _ (by simp [const_coeff_pair_form_zero B hg])]`. Simplify using `only [map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, sq_op, sq_gen]`. Both sides reduce to the same expression.
+-/
 theorem cocycle_first_face_exp (u v w : Q S d n) : E3 B.ph1 u v w = FB.expS S (E2 h u w + E2 h v w - E2 h (op (FQ B.G) u v) w) := by
   have e : B.ph1 = FB.expS S (E2 h (gen 0) (gen 2) + E2 h (gen 1) (gen 2) - E2 h (op (FQ B.G) (gen 0) (gen 1)) (gen 2)) := by
     simp only [formalSeriesValueAtTwoPoints_eq_ev, op_val]; exact (map_id_apply _).symm.trans (hg.ph1.trans (by rw [show B.FK S = B.G.F from funext fun _ => map_id_apply _]; rfl))
   rw [e, E3, sb_expS _ (by simp [const_coeff_pair_form_zero B hg])]
   simp only [map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, sq_op, sq_gen]; rfl
 
+/- English proof (translation)
+Establish `e : B.ph2 = FB.expS S (E2 h (gen 0) (gen 1) + E2 h (gen 0) (gen 2) - E2 h (gen 0) (op (FQ B.G) (gen 1) (gen 2)))`. Simplify using `only [formalSeriesValueAtTwoPoints_eq_ev, op_val]; exact (map_id_apply _).symm.trans (hg.ph2.trans (by rw [show B.FK S = B.G.F from funext fun _ => map_id_apply _]; rfl))`. Rewrite using `[e, E3, sb_expS _ (by simp [const_coeff_pair_form_zero B hg])]`. Simplify using `only [map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, sq_op, sq_gen]`. Both sides reduce to the same expression.
+-/
 theorem cocycle_second_face_exp (u v w : Q S d n) : E3 B.ph2 u v w = FB.expS S (E2 h u v + E2 h u w - E2 h u (op (FQ B.G) v w)) := by
   have e : B.ph2 = FB.expS S (E2 h (gen 0) (gen 1) + E2 h (gen 0) (gen 2) - E2 h (gen 0) (op (FQ B.G) (gen 1) (gen 2))) := by
     simp only [formalSeriesValueAtTwoPoints_eq_ev, op_val]; exact (map_id_apply _).symm.trans (hg.ph2.trans (by rw [show B.FK S = B.G.F from funext fun _ => map_id_apply _]; rfl))
@@ -42,12 +57,18 @@ theorem cocycle_second_face_exp (u v w : Q S d n) : E3 B.ph2 u v w = FB.expS S (
   simp only [map_sub, map_add, formalPointSubstitutionSeries_valueAtTwoPoints, sq_op, sq_gen]; rfl
 
 omit hg [Algebra ℚ S] in
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [FB.actK]; done)`. Consider the case `(unfold FB.actK; rfl)`.
+-/
 theorem actK_eq (a : 𝓞 E) : B.actK S a = B.A.act a := by
   first
   | rfl
   | (simp [FB.actK]; done)
   | (unfold FB.actK; rfl)
 
+/- English proof (translation)
+Establish `e : B.ad a = FB.expS S (E2 h (ac (AQ B.A a) (gen 0)) (gen 1) - E2 h (gen 0) (ac (AQ B.A (star a)) (gen 1)))`. Simplify using `only [formalSeriesValueAtTwoPoints_eq_ev, ac_val]; exact (map_id_apply _).symm.trans ((hg.ad a).trans (by rw [actK_eq, actK_eq]; rfl))`. Rewrite using `[e, E2, sb_expS _ (by simp [const_coeff_pair_form_zero B hg])]`. Simplify using `only [map_sub, formalPointSubstitutionSeries_valueAtTwoPoints, sq_ac, sq_gen]`. Both sides reduce to the same expression.
+-/
 theorem g_ad (a : 𝓞 E) (u v : Q S d n) :
     E2 (B.ad a) u v = FB.expS S (E2 h (ac (AQ B.A a) u) v - E2 h u (ac (AQ B.A (star a)) v)) := by
   have e : B.ad a = FB.expS S (E2 h (ac (AQ B.A a) (gen 0)) (gen 1) - E2 h (gen 0) (ac (AQ B.A (star a)) (gen 1))) := by
@@ -56,10 +77,18 @@ theorem g_ad (a : 𝓞 E) (u v : Q S d n) :
   simp only [map_sub, formalPointSubstitutionSeries_valueAtTwoPoints, sq_ac, sq_gen]; rfl
 
 omit hg in
+/- English proof (translation)
+Establish `e : B.hL S h w = E2 h (gen 0) (ac (AQ B.A w) (gen 0))` using `by rw [formalSeriesValueAtTwoPoints_eq_ev, ac_val, FB.hL, actK_eq]; rfl`. Rewrite using `[e, formalPointSubstitutionSeries_valueAtTwoPoints, sq_ac, sq_gen]`. Both sides reduce to the same expression.
+-/
 theorem g_hL (w : 𝓞 E) (u : Q S d n) : sb ![u] (B.hL S h w) = E2 h u (ac (AQ B.A w) u) := by
   have e : B.hL S h w = E2 h (gen 0) (ac (AQ B.A w) (gen 0)) := by rw [formalSeriesValueAtTwoPoints_eq_ev, ac_val, FB.hL, actK_eq]; rfl
   rw [e, formalPointSubstitutionSeries_valueAtTwoPoints, sq_ac, sq_gen]; rfl
 
+/- English proof (translation)
+Establish `g : ∀ c, ac (AQ B.A c) (gen 0 : Q S d 1) = AQ B.A c` using `fun c => Subtype.ext (funext fun i => (congrArg (sb · (B.A.act c i)) (funext fun j => by fin_cases j; rfl)).trans (sb_gen _))`. Establish `m : ∀ c c', ac (AQ B.A c) (AQ B.A c') = AQ B.A (c * c')` using `fun c c' => by rw [← g c', ← ac_mul, g]`. Establish `p : ∀ c c', op (FQ B.G) (AQ B.A c) (AQ B.A c') = AQ B.A (c + c')` using `fun c c' => by rw [← g c, ← g c', ← ac_add, g]`. Establish `cc` using `fun u v : Q S d 1 => const_coeff_pair_form_zero B hg u v`. Simplify using `only [cocycle_first_face_exp B hg, cocycle_second_face_exp B hg, g_ad B hg, g_hL, m, p, star_star, pow_two]`.
+
+Repeat the step `rw [← TB.WickVanishing.gt_expS_add _ _ (by simp [cc]) (by simp [cc])]` while it applies. Use `congr 1`. Put the polynomial expressions in normal form.
+-/
 theorem generic (w a : 𝓞 E) :
     FB.expS S (-sb ![AQ B.A (1 + a * star a)] (B.hL S h w)) * E2 (B.ad (star a)) (AQ B.A a) (AQ B.A w) =
       E3 B.ph1 (AQ B.A 1) (AQ B.A (a * star a)) (AQ B.A ((1 + a * star a) * w)) *
@@ -79,6 +108,15 @@ theorem generic (w a : 𝓞 E) :
 
 end Generic
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hs S _ _ _ y C φ hφ hact a`. Establish `hsub : HasSubst fun p : Fin 1 × Fin C.d => φ p.2` using `hasSubst_of_constantCoeff_zero fun p => hφ.const p.2`. Set `σ : PS S 1 C.d →ₐ[S] _` to `substAlgHom (R := S) hsub`. Establish `hσ : ∀ f, σ f = subst (fun p : Fin 1 × Fin C.d => φ p.2) f` using `fun f => congrFun (coe_substAlgHom hsub) f`. Establish `pa : ∀ b, φa c φ b = fun j => σ (C.B.A.act b j)` using `fun b => funext fun j => ((hσ _).trans (hact b j)).symm`.
+
+Establish `p1 : φ = fun j => σ (C.B.A.act 1 j)` using `funext fun j => by`. Rewrite using `[C.B.A.one_act, hσ]`. Conclude with `(subst_X hsub ((0 : Fin 1), j)).symm`. Establish `at' : ∀ {m} (b : Fin m → Q S C.d 1) (f : PS S m C.d), σ (sb b f) = subst (fun p : Fin m × Fin C.d => σ ((b p.1).1 p.2)) f` using `fun b f => by`. Rewrite using `[hσ, sb_apply, ev, subst_comp_subst_apply (czQ b).hasSubst hsub]`.
+
+Simplify using `only [hσ]`. Establish `ex : ∀ b, σ (FB.expS S (-sb ![AQ C.B.A b] (C.B.hL S C.h H.w0))) = FB.expS S (-(compL (fun j => σ (C.B.A.act b j)) (C.B.hL S C.h H.w0)))` using `fun b => by`. Establish `c0 : constantCoeff (-sb ![AQ C.B.A b] (C.B.hL S C.h H.w0)) = 0` using `by rw [g_hL, map_neg, const_coeff_pair_form_zero C.B C.gauge, neg_zero]`. Rewrite using `[hσ, FB.expS, TB.WickVanishing.subst_exp _ (fun p => hφ.const p.2) c0, ← hσ, map_neg, at']`. Conclude with `congrArg (fun q => FB.expS S (-subst q (C.B.hL S C.h H.w0))) (funext fun ⟨i, j⟩ => by fin_cases i; rfl)`.
+
+Apply the tactic sequence `have a2 : ∀ b b' f, σ (E2 f (AQ C.B.A b) (AQ C.B.A b')) = atP ![fun j => σ (C.B.A.act b j), fun j => σ (C.B.A.act b' j)] f := fun b b' f => (at' _ f).trans (congrArg (subst · f) (funext fun ⟨i, j⟩ => by fin_cases i <;> rfl))`. Apply the tactic sequence `have a3 : ∀ b b' b'' f, σ (E3 f (AQ C.B.A b) (AQ C.B.A b') (AQ C.B.A b'')) = atP ![fun j => σ (C.B.A.act b j), fun j => σ (C.B.A.act b' j), fun j => σ (C.B.A.act b'' j)] f := fun b b' b'' f => (at' _ f).trans (congrArg (subst · f) (funext fun ⟨i, j⟩ => by fin_cases i <;> rfl))`. Use `congrArg σ (generic C.B C.gauge H.w0 a)` as an intermediate fact. Simplify using `only [map_mul, map_pow, ex, a2, a3, ← pa, hs] at this`. Rewrite `this` using `[pa 1, ← p1]`. Then use the resulting hypothesis.
+-/
 theorem unitId : UnitIdSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C φ hφ hact a
   have hsub : HasSubst fun p : Fin 1 × Fin C.d => φ p.2 := hasSubst_of_constantCoeff_zero fun p => hφ.const p.2

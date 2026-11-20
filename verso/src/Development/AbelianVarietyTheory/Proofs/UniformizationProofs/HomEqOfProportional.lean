@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.ProjUniq
 
+/- English proof (translation)
+Introduce `R _ Z f H n s hH hs T φ ψ hf h`. Use `choose r hr hsurj using fun i => (hs.2 i).2`. Establish `hm : ∀ i z, φ z ∈ nonzeroLocus (s i) → ψ z ∈ nonzeroLocus (s i)` using `fun i z hz => by`. Take `⟨k, hk⟩` from `exists_chart hH (φ z)`. Take `⟨k', hk'⟩` from `exists_chart hH (ψ z)`.
+
+Take `⟨i', hi'⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show ψ z ∈ ⨆ i, nonzeroLocus (s i) by rw [hs.1]; trivial)`. Rewrite `hz` using `[AmpleSpan.mem_nonzeroLocus_iff_gs (s i) φ z hk]`. Rewrite `hi'` using `[AmpleSpan.mem_nonzeroLocus_iff_gs (s i') ψ z hk']`. Rewrite using `[AmpleSpan.mem_nonzeroLocus_iff_gs (s i) ψ z hk']`. Establish `hu` using `hz.mul hi'`.
+
+Rewrite `hu` using `[h z k k' i i' hk hk']`. Conclude with `isUnit_of_mul_isUnit_right hu`. Use `MapUniq.hom_ext_of_gs (fun i => nonzeroLocus (s i)) (fun i => (hs.2 i).1) hs.1 φ ψ hm fun i z hz a => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hH (φ z)`. Take `⟨k', hk'⟩` from `exists_chart hH (ψ z)`.
+
+Establish `hz'` using `hm i z hz`. Establish `hrr : ∀ j, gs φ z _ (r i j) = gs ψ z _ (r i j)` using `fun j => by`. Establish `e₁` using `AmpleSpan.IsRatio.gs (s := s j) (t := s i) (r := r i j) (hr i j) φ z hz hk`. Establish `e₂` using `AmpleSpan.IsRatio.gs (s := s j) (t := s i) (r := r i j) (hr i j) ψ z hz' hk'`. Establish `u₁` using `(AmpleSpan.mem_nonzeroLocus_iff_gs (s i) φ z hk).1 hz`.
+
+Establish `u₂` using `(AmpleSpan.mem_nonzeroLocus_iff_gs (s i) ψ z hk').1 hz'`. Establish `e` using `h z k k' j i hk hk'`. Rewrite `e` using `[e₁, e₂]`. Use `(u₁.mul u₂).mul_right_cancel ?_` and prove the remaining obligations. Take the linear combination `e`.
+
+Take `⟨p, rfl⟩` from `hsurj i a`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.eval₂Hom_C, MapUniq.gs_cst f φ z _ hz, MapUniq.gs_cst f ψ z _ hz', hf]`. Consider the case `add p q hp hq => rw [map_add, gs_add φ z _ hz, gs_add ψ z _ hz', hp, hq]`. Consider the case `mul_X p j hp => rw [map_mul, MvPolynomial.eval₂Hom_X', gs_mul φ z _ hz, gs_mul ψ z _ hz', hp, hrr]`.
+-/
 theorem hom_eq_of_proportional : ∀ (R : Type) [CommRing R] (Z : Scheme.{0}) (f : Z ⟶ Spec (CommRingCat.of R)) (H : LB Z) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ (T : Scheme.{0}) (φ ψ : T ⟶ Z), φ ≫ f = ψ ≫ f → (∀ z k k' i i', φ z ∈ H.U k → ψ z ∈ H.U k' → gs φ z (H.U k) ((s i).f k) * gs ψ z (H.U k') ((s i').f k') = gs φ z (H.U k) ((s i').f k) * gs ψ z (H.U k') ((s i).f k')) → φ = ψ := by
   intro R _ Z f H n s hH hs T φ ψ hf h
   choose r hr hsurj using fun i => (hs.2 i).2

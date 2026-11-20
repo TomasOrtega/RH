@@ -19,6 +19,9 @@ namespace GlobalTheory.ThKReV
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hSB, hvac, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ?_` and prove the remaining obligations. Use `filter_upwards [hvac, hM.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W)
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.2 ?_
@@ -27,6 +30,9 @@ theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F 
   filter_upwards [hvac, hM.std] with v h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+The claim follows from `hT f _ (GlobalTheory.MajTransport.rest_pure f φ hSB ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2))`.
+-/
 theorem acts_pure {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ)
     (Op : Module.End ℂ ((Fin n × Fin d → AF F) → ℂ)) (T : SInf F (Fin n × Fin d) → SInf F (Fin n × Fin d))
     (hT : ∀ f : SInf F (Fin n × Fin d), Acts (evI F) Op f (T f)) (f : SInf F (Fin n × Fin d))
@@ -34,6 +40,13 @@ theorem acts_pure {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M 
     Op (pure f φ) = pure (T f) φ :=
   hT f _ (GlobalTheory.MajTransport.rest_pure f φ hSB ((hvac.and hM.std).mono fun v hv => hv.1.trans hv.2))
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Establish `hle : PolData B (GlobalTheory.MajTransport.reM M Y Z) ≤ (PolData B M).comap Op`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, φ, hSB, hvac, rfl⟩`. Use `show Op (pure f φ) ∈ PolData B M`.
+
+Rewrite using `[acts_pure hM Op (fun f => T.symm f) hT f φ hSB hvac]`. Use `Submodule.subset_span ⟨T.symm f, ?_, φ, hSB, hvac, rfl⟩` and prove the remaining obligations. Rewrite `hf` using `[← hpol]`. Take `⟨f₀, hf₀, rfl⟩` from `hf`. Simplify using `using hf₀`.
+
+Conclude with `hle hΦ`.
+-/
 theorem polData_transport {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d} {B : Base F E} {M : Model σ X W}
     (hM : M.IsGood B.ψ) (Op : Module.End ℂ ((Fin n × Fin d → AF F) → ℂ))
     (T : SInf F (Fin n × Fin d) ≃ₗ[ℂ] SInf F (Fin n × Fin d))
@@ -53,6 +66,13 @@ theorem polData_transport {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d} {B : B
     simpa using hf₀
   exact hle hΦ
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' V V' W hT hT₂ ⟨Φ₂, hΦ₂, hne⟩`. Take `⟨g, hg, hθg⟩` from `GlobalTheory.T.cartan_involution_systems_conj_archimedean_unitary F E σ B a _ _ G.V V hT.base hT.geo.hV hT₂.geo.hV`. Take `⟨h, hh, hθh⟩` from `GlobalTheory.T.skewHermitian_cartanInvolutionSystems_conjugate_archimedean F E σ B (a + a') _ _ G.W W hT.base hT.geo.hW hT₂.geo.hW`. Take `⟨T, hT1, hT2⟩` from `GlobalTheory.T.weil_representation_unitary_equiv hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil g hg h hh`. Establish `hpol` using `GlobalTheory.MajTransport.pair_pol (Y := V) (Z := W) hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil hg hh hT1 hT2 hθg hθh`.
+
+Establish `hΦ : om (g⁻¹, h⁻¹) Φ₂ ∈ PolData B G.M` using `polData_transport hT.geo.hM (om (g⁻¹, h⁻¹)) T hT2 hpol Φ₂ hΦ₂`. Establish `hS : Φ₂ ∈ schA F (Fin a × Fin (a + a'))` using `polData_le_schA B (reG G V V' W).M hT₂.geo.hM hΦ₂`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne`. Use `⟨om (g⁻¹, h⁻¹) Φ₂, hΦ, fun h0 => hy ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.theta_integral_archimedean_invariant hKP.base F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ (GlobalTheory.ThK.Check.isPair_of_isTriple hT).1 g⁻¹ (GlobalTheory.MajTransport.uat_inv hg) h⁻¹ Φ₂ hS ((show UA σ G.W.J from y) * h)`.
+
+Rewrite `e` using `[mul_inv_cancel_right, h0]`. Conclude with `e.symm`.
+-/
 theorem nonZero_reV : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (V : Spc F E a) (V' : Spc F E a')
     (W : Spc F E (a + a')), IsTriple B G X om om' → IsTriple B (reG G V V' W) X om om' →

@@ -27,6 +27,11 @@ def chartPullComp {X X' Y' : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (h : Y' ⟶ X
     g := fun y J J' hj hj' => (gm_pull_g L (h ≫ F) (𝟙 _) y J J' hj hj').trans
       (by rw [Category.id_comp]; exact (gm_pull_g L F h y J J' (hm y J hj) (hm y J' hj')).symm) }
 
+/- English proof (translation)
+Establish `hp₀ : IsProper P₀.A.hom` using `P₀.isAb.proper`. Use `⟨exists_square_of_isGrpPullback _ _ _ _ h, inferInstance, IsPullback.of_hasPullback _ _, fun W hW => ?_, fun W W' hW hW' => ?_⟩` and prove the remaining obligations. Establish `: IsAffineHom m` using `MorphismProperty.of_isPullback (P := @IsAffineHom) h.1.flip inferInstance`. Conclude with `hW.preimage m`. Establish `: IsSeparated (terminal.from G.left)`.
+
+Rewrite using `[← terminal.comp_from G.hom]`. Use `infer_instance`. Conclude with `hW.inf hW'`.
+-/
 theorem square_fibre_affine_opens_grp (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)) (R : Type) [CommRing R]
     (x₀ : R →+* K) (G : Over (Sp R)) [GrpObj G] [IsSeparated G.hom] (m : P₀.A.left ⟶ G.left)
     (h : IsGrpPullback P₀.A G (spMap x₀) m) :
@@ -46,6 +51,15 @@ theorem square_fibre_affine_opens_grp (K : Type) [Field K] (P₀ : Out.PolAV (Sp
       rw [← terminal.comp_from G.hom]; infer_instance
     exact hW.inf hW'
 
+/- English proof (translation)
+Take `⟨⟨m₂, hsq, sq₀, sqb⟩, hsep, hpull, hpre, hinf⟩` from `square_fibre_affine_opens_grp K P₀ R x₀ G m hpb`. Take `⟨hc, hind⟩` from `(GlobalTheory.KS.DlogPol.dlog_independent K P₀ g v dd hv hdd _ m L hL hiso).2 φ hφ`. Establish `hm : m ≫ G.hom = P₀.A.hom ≫ spMap x₀` using `hpb.1.w`. Establish `prod` using `fun W W' hW hW' => GlobalTheory.KS.ProdLift.main K R x₀ G P₀.A m m₂ D W W' hm hsq hW hW' _ rfl`. Use `choose d₂ hd₂ c₁ c₂ using fun i j => (prod _ _ (haff i) (haff j)).1 (d i) (d j) (hks.der i) (hks.der j)`.
+
+Use `choose w a₁ a₂ a₃ a₄ w₀ w₁ w₂ using fun a => GlobalTheory.KS.SquareField.main K P₀.A (v a) (dd a) (hv.1 a) (hdd a) _ _ (Or.inl ⟨rfl, rfl⟩)`. Use `choose w' b₁ b₂ b₃ b₄ w₀' w₂' w₁' using fun a => GlobalTheory.KS.SquareField.main K P₀.A (v a) (dd a) (hv.1 a) (hdd a) _ _ (Or.inr ⟨rfl, rfl⟩)`. Establish `hw : ∀ a, IsVF _ (w a)` using `fun a => ⟨a₁ a, a₂ a, a₃ a, a₄ a⟩`. Establish `hw' : ∀ a, IsVF _ (w' a)` using `fun a => ⟨b₁ a, b₂ a, b₃ a, b₄ a⟩`. Establish `cov : ⨆ i, m ⁻¹ᵁ L.U i = ⊤` using `top_le_iff.1 ((le_iSup_inf_preimage m L.U hL.cover ⊤).trans (iSup_mono fun _ => inf_le_right))`.
+
+Take `⟨k, e, e', h₁, h₂, h₃, h₄, h₅⟩` from `exists_square_data (θ := θ) sq₀ hsq.1 hsq.2 hL hd₂ hφ hc hw hw' w₀ w₁ w₂ w₀' w₂' w₁' (fun i i' j O hO f => diff_prod x₀ (hks.der i) (hks.der i') (hks.der j) (haff i) (haff i') (haff j) sqb (hd₂ i j) (hd₂ i' j) hsq.1 hsq.2 inf_le_left inf_le_left inf_le_right inf_le_right (fun x h …`. Use `GlobalTheory.KS.exists_isSymm_of_square K _ _ P₀.A.hom _ _ L.ι _ g θ φ hsep hpull (fun i => hpre _ (haff i)) hind _ _ k e e' ?_ h₁ h₂ h₃ h₄ h₅` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `pt : ∀ y : P₀.A.left, ∃ i, y ∈ m ⁻¹ᵁ L.U i` using `fun y => TopologicalSpace.Opens.mem_iSup.1 (cov.ge trivial)`. Take `⟨i, hi⟩` from `pt ((fst P₀.A P₀.A * snd P₀.A P₀.A).left x)`.
+
+Take `⟨j, hj⟩` from `pt ((fst P₀.A P₀.A).left x)`. Take `⟨l, hl⟩` from `pt ((snd P₀.A P₀.A).left x)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, j, l), ⟨hi, hj⟩, hl⟩`.
+-/
 theorem exists_symm_of_ksCoc_grp (l₁ : Out.Laws) (l₂ : Out.Laws2)
     (hT : ∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen)
     (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)) (g : ℕ) (v : Fin g → (epsR K ⟶ P₀.A))
@@ -92,6 +106,21 @@ theorem exists_symm_of_ksCoc_grp (l₁ : Out.Laws) (l₂ : Out.Laws2)
 
 open GlobalTheory.LogKSBal in
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t V U n v hv hb K _ _ x₀ P₀ mm hpq hPL hUV D Θ hKS`. Use `letI : GrpObj ((Over.pullback (chart U)).obj t.G) := Functor.grpObjObj`. Set `G` to `(Over.pullback (chart U)).obj t.G`. Establish `hs` using `IsSemiAbelian.pullback (chart U) t.G t.semi`. Establish `: IsSeparated G.hom` using `hs.separated`.
+
+Establish `: QuasiCompact G.hom` using `hs.quasiCompact`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Use `P₀.isAb.comm` as an intermediate fact. Set `io : G.left ⟶ t.G.left` to `pullback.fst t.G.hom (chart U)`. Establish `hpb : IsGrpPullback G t.G (chart U) io` using `isGrpPullback_pullback t.G (chart U)`.
+
+Establish `hw : mm ≫ t.G.hom = (P₀.A.hom ≫ spMap x₀) ≫ chart U`. Rewrite using `[hpq.1.w, Category.assoc]`. Set `m : P₀.A.left ⟶ G.left` to `pullback.lift mm (P₀.A.hom ≫ spMap x₀) hw`. Establish `hmio : m ≫ io = mm` using `pullback.lift_fst _ _ _`. Establish `hmG : m ≫ G.hom = P₀.A.hom ≫ spMap x₀` using `pullback.lift_snd _ _ _`.
+
+Rewrite `hpq`, `hPL` using `[← hmio]`. Establish `hm : IsGrpPullback P₀.A G (spMap x₀) m` using `IsGrpPullback.cancel hpb hpq hmG`. Take `⟨b₁, b₂⟩` from `GlobalTheory.LocM.FrameBase.tanBasis_baseChange t x₀ _ n v hv hb`. Take `⟨u, hu, hbas, -⟩` from `exists_lieBasis t hpq _ b₁ b₂`. Use `choose dd hdd using fun a => (GlobalTheory.KS.InvField.main K P₀.A (u a) (hbas.1 a)).1`.
+
+Take `⟨L, hfin, hL, haff, hiso, d, hd⟩` from `exists_ksCoc t hUV hKS hpb.1 x₀ hpq hbas.1 hu hdd`. Establish `hI : LBIso P₀.L (L.pull m)` using `LBIso.trans P₀.isLB (pull_isLB t.PP.isLB _) (pull_isLB hL _) hPL (hiso.chartPull (chartPullComp t.PP.L io m) (Geo.Tor.chartPullPull _ _ _ rfl))`. Take `⟨⟨φ, hφ⟩, hφ'⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hbas hdd _ _ L hL hI`. Take `⟨Θ', hs', hΘ'⟩` from `exists_symm_of_ksCoc_grp GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.T.theorem_of_cube_polAbelianScheme K P₀ n u dd hbas hdd _ x₀ G m L _ d _ φ hm hL haff hI (hd φ hφ) hφ`. Establish `e : Θ' = -Θ.map x₀`.
+
+Rewrite using `[eq_comm, ← sub_eq_zero]`. Use function extensionality and compare the values at `b`. Use `(hφ' φ hφ).2 _ ?_` and prove the remaining obligations. Rewrite using `[lc_sub]`. Conclude with `hΘ' b`.
+
+Establish `h : Θ'ᵀ = Θ'` using `hs'`. Rewrite `h` using `[e, Matrix.transpose_neg, neg_inj]`. Then use the resulting hypothesis.
+-/
 theorem map_transpose_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (V : X.Opens) (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (chart U) (v i)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (K : Type) [Field K] [CharZero K] (x₀ : Γ(X, U.1) →+* K) (P₀ : Out.PolAV (Sp K)) (mm : P₀.A.left ⟶ t.G.left), IsGrpPullback P₀.A t.G (spMap x₀ ≫ chart U) mm → LBIso P₀.L (t.PP.L.pull mm) → U.1 ≤ V → ∀ (D : Γ(X, U.1) → Γ(X, U.1)) (Θ : Matrix (Fin n) (Fin n) Γ(X, U.1)), IsKS t V U v D Θ → (Θ.map x₀)ᵀ = Θ.map x₀ := by
   intro E _ _ _ H X t V U n v hv hb K _ _ x₀ P₀ mm hpq hPL hUV D Θ hKS
   letI : GrpObj ((Over.pullback (chart U)).obj t.G) := Functor.grpObjObj

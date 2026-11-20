@@ -14,6 +14,15 @@ variable {A : Type u} [CommRing A]
 def IsGenericallyFree (A : Type u) [CommRing A] (M : Type*) [AddCommGroup M] [Module A M] : Prop :=
   ∃ f : A, f ≠ 0 ∧ Module.Free (Localization.Away f) (LocalizedModule (Submonoid.powers f) M)
 
+/- English proof (translation)
+Set `e₁ : Localization.Away f ≃+* Rf` to `(IsLocalization.algEquiv (Submonoid.powers f) (Localization.Away f) Rf).toRingEquiv`. Set `e₂ : LocalizedModule (Submonoid.powers f) M ≃ₗ[A] N` to `IsLocalizedModule.iso _ g`. Establish `key : ∀ (r : Localization.Away f) (x : LocalizedModule (Submonoid.powers f) M), e₂ (r • x) = e₁ r • e₂ x`. Introduce `r x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers f) r`.
+
+Establish `hs` using `IsLocalizedModule.map_units g s`. Rewrite `hs` using `[Module.End.isUnit_iff]`. Apply `hs.1` to reduce the goal to its premises. Simplify using `only [Module.algebraMap_end_apply]`. Establish `h1 : (s : A) • IsLocalization.mk' (Localization.Away f) a s = algebraMap A _ a`.
+
+Rewrite using `[Algebra.smul_def, IsLocalization.mk'_spec']`. Establish `h2 : (s : A) • e₁ (IsLocalization.mk' (Localization.Away f) a s) = algebraMap A Rf a`. Establish `: e₁ (IsLocalization.mk' (Localization.Away f) a s) = IsLocalization.mk' Rf a s` using `IsLocalization.algEquiv_mk' _ _`. Rewrite using `[this, Algebra.smul_def, IsLocalization.mk'_spec']`. Rewrite using `[← map_smul, ← smul_assoc, h1, algebraMap_smul, ← smul_assoc, h2, algebraMap_smul, map_smul]`.
+
+Use `haveI := RingHomInvPair.of_ringEquiv e₁`. Use `haveI := RingHomInvPair.of_ringEquiv_symm e₁`. Set `e : LinearEquiv (e₁ : Localization.Away f →+* Rf) (LocalizedModule (Submonoid.powers f) M) N` to `{ e₂.toAddEquiv with map_smul' := fun r x ↦ key r x }`. Conclude with `(Module.Free.iff_of_equiv e).symm`.
+-/
 theorem free_iff_of_isLocalizedModule (f : A) {M N : Type*} [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module A N] (g : M →ₗ[A] N) [IsLocalizedModule (Submonoid.powers f) g]
     (Rf : Type*) [CommRing Rf] [Algebra A Rf] [IsLocalization.Away f Rf] [Module Rf N]
@@ -43,6 +52,23 @@ theorem free_iff_of_isLocalizedModule (f : A) {M N : Type*} [AddCommGroup M] [Mo
     { e₂.toAddEquiv with map_smul' := fun r x ↦ key r x }
   exact (Module.Free.iff_of_equiv e).symm
 
+/- English proof (translation)
+Establish `hh : IsLocalizedModule (Submonoid.powers c) (h.restrictScalars A)` using `IsLocalizedModule.restrictScalars_powers c h`. Establish `ha : IsUnit (algebraMap A (Module.End A P) a)`. Take `⟨u, hu⟩` from `IsLocalization.Away.algebraMap_isUnit (S := Ra) a`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hb : Function.Bijective (fun p : P ↦ (u : Ra) • p)`.
+
+Use `⟨fun p q hpq ↦ ?_, fun p ↦ ⟨(↑u⁻¹ : Ra) • p, ?_⟩⟩` and prove the remaining obligations. Use `congr_arg (fun x : P ↦ (↑u⁻¹ : Ra) • x) hpq` as an intermediate fact. Simplify `this` using `only [smul_smul, Units.inv_mul, one_smul]`. Use `show (u : Ra) • ((↑u⁻¹ : Ra) • p) = p`. Rewrite using `[smul_smul, Units.mul_inv, one_smul]`.
+
+Use `hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[hu]`. Establish `hc : IsUnit (algebraMap A (Module.End A P) c)` using `hh.map_units ⟨c, Submonoid.mem_powers c⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, k, rfl⟩ show IsUnit (algebraMap A (Module.End A P) ((a * c) ^ k))`. Rewrite using `[map_pow, map_mul]`. Conclude with `(ha.mul hc).pow k`. Introduce `y`. Take `⟨⟨n, ⟨_, j, rfl⟩⟩, hn⟩` from `hh.surj y`.
+
+Take `⟨⟨m, ⟨_, i, rfl⟩⟩, hm⟩` from `IsLocalizedModule.surj (Submonoid.powers a) g n`. Use `⟨⟨(a ^ j * c ^ i) • m, ⟨(a * c) ^ (i + j), i + j, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def] at hn hm ⊢`. Establish `e1 : (h.restrictScalars A ∘ₗ g) ((a ^ j * c ^ i) • m) = (a ^ j * c ^ i * a ^ i) • (h.restrictScalars A) n`. Rewrite using `[LinearMap.comp_apply, map_smul, ← hm, map_smul, map_smul, smul_smul]`.
+
+Rewrite using `[e1, ← hn, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `m₁ m₂ e`. Take `⟨⟨_, j, rfl⟩, hj⟩` from `hh.exists_of_eq e`.
+
+Simplify using `only [Submonoid.smul_def] at hj`. Rewrite `hj` using `[← map_smul, ← map_smul]`. Take `⟨⟨_, i, rfl⟩, hi⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers a) (f := g) hj`. Use `⟨⟨(a * c) ^ (i + j), i + j, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def] at hi ⊢`.
+
+Establish `: (a * c) ^ (i + j) = a ^ j * c ^ i * (a ^ i * c ^ j)` using `by ring`. Rewrite using `[this]`. Simplify using `only [mul_smul (a ^ j * c ^ i), mul_smul (a ^ i) (c ^ j), hi]`.
+-/
 theorem isLocalizedModule_powers_mul (a c : A) {M N P : Type*} [AddCommGroup M] [Module A M]
     {Ra : Type*} [CommRing Ra] [Algebra A Ra] [IsLocalization.Away a Ra]
     [AddCommGroup N] [Module A N] [Module Ra N] [IsScalarTower A Ra N]
@@ -93,6 +119,11 @@ theorem isLocalizedModule_powers_mul (a c : A) {M N P : Type*} [AddCommGroup M] 
     rw [this]
     simp only [mul_smul (a ^ j * c ^ i), mul_smul (a ^ i) (c ^ j), hi]
 
+/- English proof (translation)
+Set `Ra` to `Localization.Away f`. Set `N` to `LocalizedModule (Submonoid.powers f) M`. Set `T` to `Localization.Away (algebraMap A Ra g)`. Set `P` to `LocalizedModule (Submonoid.powers (algebraMap A Ra g)) N`. Establish `hP : Module.Free T P` using `Module.free_of_isLocalizedModule (Submonoid.powers (algebraMap A Ra g)) (LocalizedModule.mkLinearMap (Submonoid.powers (algebraMap A Ra g)) N)`.
+
+Use `haveI := isLocalizedModule_powers_mul f g (LocalizedModule.mkLinearMap (Submonoid.powers f) M) (LocalizedModule.mkLinearMap (Submonoid.powers (algebraMap A Ra g)) N)`. Conclude with `(free_iff_of_isLocalizedModule (f * g) ((LocalizedModule.mkLinearMap (Submonoid.powers (algebraMap A Ra g)) N).restrictScalars A ∘ₗ LocalizedModule.mkLinearMap (Submonoid.powers f) M) T).1 hP`.
+-/
 theorem free_away_mul {f : A} (g : A) {M : Type*} [AddCommGroup M] [Module A M]
     (hf : Module.Free (Localization.Away f) (LocalizedModule (Submonoid.powers f) M)) :
     Module.Free (Localization.Away (f * g)) (LocalizedModule (Submonoid.powers (f * g)) M) := by
@@ -109,6 +140,9 @@ theorem free_away_mul {f : A} (g : A) {M : Type*} [AddCommGroup M] [Module A M]
     ((LocalizedModule.mkLinearMap (Submonoid.powers (algebraMap A Ra g)) N).restrictScalars A ∘ₗ
       LocalizedModule.mkLinearMap (Submonoid.powers f) M) T).1 hP
 
+/- English proof (translation)
+Take `⟨f, hf, hfree⟩` from `hM`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Conclude with `(free_iff_of_isLocalizedModule f (LocalizedModule.mkLinearMap (Submonoid.powers f) M ∘ₗ e.symm.toLinearMap) (Localization.Away f)).1 hfree`.
+-/
 theorem IsGenericallyFree.of_linearEquiv {M M' : Type*} [AddCommGroup M] [Module A M] [AddCommGroup M']
     [Module A M'] (e : M ≃ₗ[A] M') (hM : IsGenericallyFree A M) : IsGenericallyFree A M' := by
   obtain ⟨f, hf, hfree⟩ := hM
@@ -116,6 +150,11 @@ theorem IsGenericallyFree.of_linearEquiv {M M' : Type*} [AddCommGroup M] [Module
   exact (free_iff_of_isLocalizedModule f
     (LocalizedModule.mkLinearMap (Submonoid.powers f) M ∘ₗ e.symm.toLinearMap) (Localization.Away f)).1 hfree
 
+/- English proof (translation)
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ x : LocalizedModule (Submonoid.powers a) M, x = 0` using `fun x ↦ by`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Conclude with `LocalizedModule.eq_zero_of_smul_eq_zero a (Submonoid.mem_powers a) _ (by rw [LocalizedModule.smul'_mk, h, LocalizedModule.zero_mk])`.
+
+Use `haveI : Subsingleton (LocalizedModule (Submonoid.powers a) M) := ⟨fun x y ↦ by rw [h0 x, h0 y]⟩`. Use `infer_instance`.
+-/
 theorem isGenericallyFree_of_smul_eq_zero {M : Type*} [AddCommGroup M] [Module A M] (a : A) (ha : a ≠ 0)
     (h : ∀ m : M, a • m = 0) : IsGenericallyFree A M := by
   refine ⟨a, ha, ?_⟩
@@ -127,11 +166,23 @@ theorem isGenericallyFree_of_smul_eq_zero {M : Type*} [AddCommGroup M] [Module A
   haveI : Subsingleton (LocalizedModule (Submonoid.powers a) M) := ⟨fun x y ↦ by rw [h0 x, h0 y]⟩
   infer_instance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_ne_zero, Module.free_of_isLocalizedModule (Submonoid.powers (1 : A)) (LocalizedModule.mkLinearMap (Submonoid.powers (1 : A)) M)⟩`.
+-/
 theorem isGenericallyFree_of_free [Nontrivial A] {M : Type*} [AddCommGroup M] [Module A M] [Module.Free A M] :
     IsGenericallyFree A M :=
   ⟨1, one_ne_zero, Module.free_of_isLocalizedModule (Submonoid.powers (1 : A))
     (LocalizedModule.mkLinearMap (Submonoid.powers (1 : A)) M)⟩
 
+/- English proof (translation)
+Take `⟨f, hf, hfree⟩` from `hN`. Establish `hfree'` using `free_away_mul a hfree`. Use `set F := f * a with hF`. Use `⟨F, mul_ne_zero hf ha, ?_⟩` and prove the remaining obligations. Use `haveI : IsLocalizedModule (Submonoid.powers F) (LocalizedModule.mkLinearMap (Submonoid.powers F) M ∘ₗ i) := by`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `IsLocalizedModule.map_units (LocalizedModule.mkLinearMap (Submonoid.powers F) M)`. Introduce `y`. Take `⟨⟨m, s⟩, hms⟩` from `IsLocalizedModule.surj (Submonoid.powers F) (LocalizedModule.mkLinearMap (Submonoid.powers F) M) y`. Take `⟨k, n, hn⟩` from `hsat m`.
+
+Use `⟨⟨f ^ k • n, ⟨F ^ k, k, rfl⟩ * s⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.smul_def, Submonoid.coe_mul, LinearMap.coe_comp, Function.comp_apply, map_smul, hn] at hms ⊢`. Rewrite using `[mul_smul, hms, ← map_smul, smul_smul, hF, mul_pow]`. Conclude with `map_smul _ _ _`. Introduce `n₁ n₂ e`.
+
+Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers F) (f := LocalizedModule.mkLinearMap (Submonoid.powers F) M) e`. Use `⟨c, hi ?_⟩` and prove the remaining obligations. Simplify `hc` using `only [Submonoid.smul_def, map_smul]`. Conclude with `(free_iff_of_isLocalizedModule F (LocalizedModule.mkLinearMap (Submonoid.powers F) M ∘ₗ i) (Localization.Away F)).2 hfree'`.
+-/
 theorem IsGenericallyFree.of_injective [IsDomain A] {N M : Type*} [AddCommGroup N] [Module A N] [AddCommGroup M]
     [Module A M] (i : N →ₗ[A] M) (hi : Function.Injective i) (a : A) (ha : a ≠ 0)
     (hsat : ∀ m : M, ∃ k : ℕ, a ^ k • m ∈ LinearMap.range i) (hN : IsGenericallyFree A N) :
@@ -160,6 +211,13 @@ theorem IsGenericallyFree.of_injective [IsDomain A] {N M : Type*} [AddCommGroup 
   exact (free_iff_of_isLocalizedModule F
     (LocalizedModule.mkLinearMap (Submonoid.powers F) M ∘ₗ i) (Localization.Away F)).2 hfree'
 
+/- English proof (translation)
+Take `⟨f₁, hf₁, hfree₁⟩` from `h₁`. Take `⟨f₃, hf₃, hfree₃⟩` from `h₃`. Establish `free₁` using `free_away_mul f₃ hfree₁`. Establish `free₃` using `free_away_mul f₁ hfree₃`. Rewrite `free₃` using `[mul_comm f₃ f₁]`.
+
+Use `set f := f₁ * f₃`. Use `⟨f, mul_ne_zero hf₁ hf₃, ?_⟩` and prove the remaining obligations. Set `S` to `Submonoid.powers f`. Set `iL : LocalizedModule S N₁ →ₗ[Localization.Away f] LocalizedModule S N₂` to `(IsLocalizedModule.map S (LocalizedModule.mkLinearMap S N₁) (LocalizedModule.mkLinearMap S N₂) i).extendScalarsOfIsLocalization S (Localization.Away f)`. Set `pL : LocalizedModule S N₂ →ₗ[Localization.Away f] LocalizedModule S N₃` to `(IsLocalizedModule.map S (LocalizedModule.mkLinearMap S N₂) (LocalizedModule.mkLinearMap S N₃) p).extendScalarsOfIsLocalization S (Localization.Away f)`.
+
+Establish `ex : Function.Exact iL pL` using `LocalizedModule.map_exact S i p hex`. Establish `hiL : Function.Injective iL` using `IsLocalizedModule.map_injective S _ _ i hi`. Establish `hpL : Function.Surjective pL` using `IsLocalizedModule.map_surjective S _ _ p hp`. Take `⟨s, hs⟩` from `Module.projective_lifting_property pL LinearMap.id hpL`. Conclude with `Module.Free.of_equiv (ex.splitSurjectiveEquiv hiL ⟨s, hs⟩).1.symm`.
+-/
 theorem IsGenericallyFree.of_exact [IsDomain A] {N₁ N₂ N₃ : Type*} [AddCommGroup N₁] [Module A N₁]
     [AddCommGroup N₂] [Module A N₂] [AddCommGroup N₃] [Module A N₃] (i : N₁ →ₗ[A] N₂) (p : N₂ →ₗ[A] N₃)
     (hi : Function.Injective i) (hp : Function.Surjective p) (hex : Function.Exact i p)

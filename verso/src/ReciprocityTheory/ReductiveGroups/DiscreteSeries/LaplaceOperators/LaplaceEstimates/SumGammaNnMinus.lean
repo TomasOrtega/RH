@@ -10,6 +10,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f v) (capelliCov (Module.End ℂ M) m E Q⁻¹ Q om hE hQ (Fin.last m) j₀)`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, Fin.val_last] at h`. Establish `hF : (fun a b => ∑ c', ∑ d', (Q⁻¹ c' a * Q b d') • E c' d') = frameE Q E` using `rfl`. Rewrite `h` using `[hF]`. Rewrite using `[mul_smul, h, Finset.sum_comm, Finset.smul_sum]`.
+
+Unfold `Capelli.nnMinus`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[add_comm (c : ℕ)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_gamma_nnMinus {M : Type*} [AddCommGroup M] [Module ℂ M] (m : ℕ)
     (E : Fin (m + 1) → Fin (m + 1) → Module.End ℂ M) (hE : IsGlRep E)
     (Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hQ : Q⁻¹ * Q = 1) (c₀ : ℂ) (j₀ : Fin (m + 1)) (om : ℂ) (v : M) :
@@ -28,6 +35,13 @@ theorem sum_gamma_nnMinus {M : Type*} [AddCommGroup M] [Module ℂ M] (m : ℕ)
   rw [add_comm (c : ℕ)]
   ring
 
+/- English proof (translation)
+Establish `e : (g₀⁻¹ * g * P⁻¹)⁻¹ = P * (g⁻¹ * g₀)`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hd, Matrix.nonsing_inv_nonsing_inv _ hPd]`. Establish `key : ∀ (c₀ : ℂ) (j : Fin (2 * r + k + 1)), g₀ *ᵥ (c₀ • Formalism.QuantumDeterminants.bvec j) = xOne k r z → ∀ d, (P *ᵥ (g⁻¹ *ᵥ xOne k r z)) d = c₀ * (g₀⁻¹ * g * P⁻¹)⁻¹ d j` using `fun c₀ j hj d => by`. Rewrite using `[e, ← hj, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_smul, Matrix.mul_assoc]`. Simplify using `[Formalism.QuantumDeterminants.bvec]`.
+
+Distinguish the cases in `hr : r = 0`. Use `⟨_, by exact_mod_cast (Real.sqrt_pos.mpr hTz).ne', key ((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) _ ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hr, xOne, if_pos hr]`. Establish `e2 : Fin.last (2 * r + k) = Formalism.QuantumDeterminants.wI k r (Fin.last k)` using `Fin.ext (by simp [Formalism.QuantumDeterminants.wI]; omega)`. Rewrite using `[e2]`.
+
+Conclude with `hg₀.2.2`. Use `⟨1, one_ne_zero, key 1 _ ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hr, xOne, if_neg hr, one_smul]`. Conclude with `(hg₀.2.1 ⟨0, Nat.pos_of_ne_zero hr⟩).1`.
+-/
 theorem gamma_formula {k r : ℕ} (P : Mat k r) (z : Fin (2 * r + k + 1) → ℂ)
     (hTz : 0 < Formalism.QuantumDeterminants.Tz k r z) (g g₀ : Mat k r) (hg₀ : Formalism.MainNotions.S.IsFrameW k r z g₀)
     (hd : IsUnit g₀.det) (hPd : IsUnit P.det) :
@@ -52,6 +66,71 @@ theorem gamma_formula {k r : ℕ} (P : Mat k r) (z : Fin (2 * r + k + 1) → ℂ
     exact (hg₀.2.1 ⟨0, Nat.pos_of_ne_zero hr⟩).1
 
 open CapelliMinorRestriction in
+/- English proof (translation)
+Introduce `k r ε u lam h H _ _ _ σ D E V T μ ι hσ hder hV hcas hK hμ hcoef hp hq hgap hHC hgapl z c Vp _ _ _ π μW μN P hP hB x₀ w v ξ s g hx₀ hg hu hne`. Take `⟨g₀, Dk, ψ', hfr, hlU, hψ0, hκ, hlW, hCD⟩` from `frameLaw k r ε u lam h H σ D E V T μ ι hσ hder hV hcas hK hμ hcoef hp hq hgap hHC hgapl z c Vp π μW μN P hP hB x₀ w ξ g hx₀ hg`. Establish `hPer` using `per_spec k r ε u h z c Vp π μW μN P hP hB hp hq hgap`. Take `⟨hWb, hTz, hc, hHCW, hW, hN⟩` from `hB`. Establish `hE : IsGlRep E` using `hder.glRep`.
+
+Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Establish `hH2` using `ExponentialSlopeDerivatives.hpk_mul_self k r`. Establish `hgd : IsUnit g.det` using `Matrix.isUnit_det_of_left_inverse (ExponentialSlopeDerivatives.inv_mul_of_UH hH2 hg)`. Establish `hg₀d : IsUnit g₀.det` using `Matrix.isUnit_det_of_left_inverse (ExponentialSlopeDerivatives.inv_mul_of_UH hH2 hfr.1)`. Use `set Q : Mat k r := g₀⁻¹ * g * P⁻¹ with hQdef`.
+
+Establish `hQd : IsUnit Q.det`. Rewrite using `[hQdef, Matrix.det_mul, Matrix.det_mul]`. Conclude with `((Matrix.isUnit_nonsing_inv_det g₀ hg₀d).mul hgd).mul (Matrix.isUnit_nonsing_inv_det P hPd)`. Establish `hQ1 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQd`. Establish `hQ2 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hQd`.
+
+Use `set j₀ : Fin (2 * r + k + 1) := if r = 0 then Fin.last _ else 0 with hj₀`. Take `⟨c₀, hc₀, hβ⟩` from `gamma_formula P z hTz g g₀ hfr hg₀d hPd`. Rewrite `hβ` using `[← hQdef, ← hj₀]`. Use `set ψ := Formalism.MainNotions.S.psiGen k r z c with hψdef`. Use `set wH : H := ((w : D) : H) with hwH`.
+
+Set `L : H → Vp` to `fun m => per P μW μN ψ π (coefX σ x₀ wH m) ξ g`. Establish `hInt : ∀ f : Fin (2 * r + k + 1) → D, (∀ c', f c' ∈ genSub E V) → Integrable (perI P ψ π (tMapD σ (xJ P z) x₀ wH (fun c' => ((f c' : D) : H))) ξ g) (μW.prod μN)`. Introduce `f hf`. Take `⟨hsm, -, hbd⟩` from `tMapD_spec k r ε lam h H σ D E V T μ ι hσ hder hV hcas hK hμ hcoef hp hq hgap hHC hgapl (xJ P z) x₀ w hx₀ f hf`. Take `⟨C, hC⟩` from `hbd []`.
+
+Conclude with `hPer.1 _ C (cont_of_smoothOnG hsm.1) (fun g' hg' => hC g' hg') g hg ξ`. Establish `hsing : ∀ (d : Fin (2 * r + k + 1)) (m : D), (fun c' => (((Pi.single d m : Fin (2 * r + k + 1) → D) c' : D) : H)) = Pi.single d (m : H)`. Introduce `d m`. Use function extensionality and compare the values at `c'`. Distinguish the cases in `hcd : c' = d`.
+
+Substitute `hcd` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hcd]`. Establish `hsingM : ∀ (d : Fin (2 * r + k + 1)) (m : D), m ∈ genSub E V → ∀ c', (Pi.single d m : Fin (2 * r + k + 1) → D) c' ∈ genSub E V`. Introduce `d m hm c'`.
+
+Distinguish the cases in `hcd : c' = d`. Substitute `hcd` using the available equality. Simplify using `using hm`. Simplify using `[Pi.single_eq_of_ne hcd]`. Establish `hper1 : ∀ (d : Fin (2 * r + k + 1)) (m : H), per P μW μN ψ π (tMapD σ (xJ P z) x₀ wH (Pi.single d m)) ξ g = (c₀ * Q⁻¹ d j₀) • L m`.
+
+Introduce `d m`. Rewrite using `[ConjugateTransportSingles.per_tMapD_single σ z hWb P hPd μW μN hW hN ψ π x₀ wH d m ξ g hg, hβ d]`. Establish `hIntS : ∀ (d : Fin (2 * r + k + 1)) (m : D), m ∈ genSub E V → Integrable (perI P ψ π (tMapD σ (xJ P z) x₀ wH (Pi.single d (m : H))) ξ g) (μW.prod μN)`. Introduce `d m hm`. Use `hInt _ (hsingM d m hm)` as an intermediate fact.
+
+Rewrite `this` using `[hsing]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨d₀, hd₀⟩ : ∃ d₀, Q⁻¹ d₀ j₀ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Use `congrFun (congrFun hQ1 j₀) j₀` as an intermediate fact.
+
+Simplify using `[Matrix.mul_apply, hcon] at this`. Establish `hβ0 : c₀ * Q⁻¹ d₀ j₀ ≠ 0` using `mul_ne_zero hc₀ hd₀`. Establish `hadd : ∀ m₁ m₂ : D, m₁ ∈ genSub E V → m₂ ∈ genSub E V → L ((m₁ : H) + (m₂ : H)) = L m₁ + L m₂`. Introduce `m₁ m₂ h₁ h₂`. Use `smul_right_injective Vp hβ0 ?_` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[smul_add, ← hper1, ← hper1, ← hper1]`. Establish `e : tMapD σ (xJ P z) x₀ wH (Pi.single d₀ ((m₁ : H) + (m₂ : H))) = fun G => tMapD σ (xJ P z) x₀ wH (Pi.single d₀ (m₁ : H)) G + tMapD σ (xJ P z) x₀ wH (Pi.single d₀ (m₂ : H)) G`. Use function extensionality and compare the values at `G`. Simplify using `only [ConjugateTransportSingles.tMapD_single, coefX_add, mul_add]`.
+
+Rewrite using `[e]`. Conclude with `per_add P μW μN ψ π _ _ ξ g (hIntS d₀ m₁ h₁) (hIntS d₀ m₂ h₂)`. Establish `hsmul : ∀ (a : ℂ) (m : H), L (a • m) = a • L m`. Introduce `a m`. Use `show per P μW μN ψ π (coefX σ x₀ wH (a • m)) ξ g = _`.
+
+Rewrite using `[show coefX σ x₀ wH (a • m) = fun G => a * coefX σ x₀ wH m G from funext (coefX_smul σ x₀ wH m a)]`. Conclude with `per_smul P μW μN ψ π _ a ξ g`. Set `lin : genSub E V →ₗ[ℂ] Vp` to `{ toFun := fun m => L ((m : D) : H) map_add' := fun m₁ m₂ => by`. Simplify using `only [Submodule.coe_add]`. Conclude with `hadd _ _ m₁.2 m₂.2`.
+
+Use the proof step `map_smul' := fun a m => by`. Simplify using `only [Submodule.coe_smul, RingHom.id_apply]`. Conclude with `hsmul a _ }`. Use `set om : ℂ := ((-(LemK.thV lam s) : ℝ) : ℂ) with hom`. Use `⟨Q (Fin.last _), ?_⟩` and prove the remaining obligations.
+
+Establish `hv : (v : D) ∈ genSub E V` using `le_gen E V v.2`. Establish `hnn : ∀ d, Capelli.nnMinus E (Q (Fin.last _)) om (v : D) d ∈ genSub E V`. Introduce `d`. Unfold `Capelli.nnMinus`. Conclude with `Submodule.sum_mem _ fun c' _ => Submodule.smul_mem _ _ (CapelliMinorMembership.cminor_mem (fun a b x hx => gen_stable E V a b hx) _ _ _ _ hv)`.
+
+Establish `hexp : per P μW μN ψ π (tMapD σ (xJ P z) x₀ wH (fun c' => ((Capelli.nnMinus E (Q (Fin.last _)) om (v : D) c' : D) : H))) ξ g = L (((∑ d, (c₀ * Q⁻¹ d j₀) • Capelli.nnMinus E (Q (Fin.last _)) om (v : D) d : D)) : H)`. Rewrite using `[show tMapD σ (xJ P z) x₀ wH (fun c' => ((Capelli.nnMinus E (Q (Fin.last _)) om (v : D) c' : D) : H)) = fun G => ∑ d, tMapD σ (xJ P z) x₀ wH (Pi.single d ((Capelli.nnMinus E (Q (Fin.last _)) om (v : D) d : D) : H)) G from funext (ConjugateTransportSingles.tMapD_sum σ (xJ P z) x₀ …`. Rewrite using `[per_sum P μW μN ψ π Finset.univ _ ξ g (fun d _ => hIntS d _ (hnn d))]`. Repeatedly rewrite using `[hper1]`. Establish `hco : (((∑ d, (c₀ * Q⁻¹ d j₀) • (⟨_, hnn d⟩ : genSub E V) : genSub E V)) : D) = ∑ d, (c₀ * Q⁻¹ d j₀) • Capelli.nnMinus E (Q (Fin.last _)) om (v : D) d`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hco]`. Use `show _ = lin _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hexp, sum_gamma_nnMinus (2 * r + k) E hE Q hQ2 c₀ j₀ om (v : D), Submodule.coe_smul, hsmul]`. Use `smul_ne_zero (mul_ne_zero hc₀ (pow_ne_zero _ (by norm_num))) ?_` and prove the remaining obligations. Establish `hinj : Function.Injective (capIdx k r)` using `fun a b hab => Fin.ext (by simpa [capIdx] using congrArg Fin.val hab)`. Establish `hS₃ : ∀ a b, ∀ x ∈ genSub E V, (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) a b x ∈ genSub E V` using `fun a b x hx => gen_stable_frame E V Q _ _ hx`.
+
+Establish `hfac : ∀ j : Fin k, (om - (r : ℂ)) + ((u j : ℝ) : ℂ) - ((k : ℂ) - 1) / 2 ≠ 0`. Introduce `j`. Establish `e : (om - (r : ℂ)) + ((u j : ℝ) : ℂ) - ((k : ℂ) - 1) / 2 = (((u j - lam s + 1 / 2) : ℝ) : ℂ)`. Simplify using `only [hom, LemK.thV]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.ofReal_ne_zero]`. Introduce `h0`. Conclude with `hu j (by linarith)`. Establish `hvL : lin ⟨(v : D), hv⟩ ≠ 0` using `hne`.
+
+Distinguish the cases in `hr : r = 0`. Establish `hj : j₀ = Fin.last _` using `by rw [hj₀, if_pos hr]`. Rewrite using `[hj]`. Establish `hk0 : k + 1 = 2 * r + k + 1` using `by omega`. Establish `hinj0 : Function.Injective (Fin.cast hk0)` using `Fin.cast_injective hk0`.
+
+Establish `hS₀ : ∀ a b, ∀ x ∈ genSub E V, (fun a b => frameE Q E (Fin.cast hk0 a) (Fin.cast hk0 b)) a b x ∈ genSub E V` using `fun a b x hx => gen_stable_frame E V Q _ _ hx`. Establish `hD0 : ∀ i j, lin ∘ₗ resE (fun a b => frameE Q E (Fin.cast hk0 a) (Fin.cast hk0 b)) (genSub E V) hS₀ (Fin.castSucc i) (Fin.castSucc j) = Dk i j ∘ₗ lin`. Introduce `i j`. Establish `ei : ∀ i : Fin k, Fin.cast hk0 (Fin.castSucc i) = capIdx k r (Capelli.wIdx k r i)`. Introduce `i`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[capIdx, Capelli.wIdx]`. Use linear arithmetic over natural numbers and integers. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `hlW i j (m : D) m.2` as an intermediate fact.
+
+Rewrite `this` using `[← ei, ← ei]`. Conclude with `this`. Establish `hB` using `Capelli.whittakerZeroStatement (genSub E V) Vp k (resE (fun a b => frameE Q E (Fin.cast hk0 a) (Fin.cast hk0 b)) (genSub E V) hS₀) Dk lin om hD0`. Establish `hB'` using `congrArg (fun f => f (⟨(v : D), hv⟩ : genSub E V)) hB`. Simplify using `only [LinearMap.comp_apply] at hB'`.
+
+Establish `eC : (Fin.cast hk0 ∘ Fin.castSucc : Fin k → Fin (2 * r + k + 1)) = (Fin.last (2 * r + k)).succAbove ∘ Fin.cast (by omega : k = 2 * r + k)`. Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Fin.succAbove_last]`. Establish `hLHS : L ((Capelli.cminor (frameE Q E) (Fin.last (2 * r + k)).succAbove (Fin.last (2 * r + k)).succAbove om (v : D) : D) : H) = lin (Capelli.cminor (resE (fun a b => frameE Q E (Fin.cast hk0 a) (Fin.cast hk0 b)) (genSub E V) hS₀) Fin.castSucc Fin.castSucc om ⟨(v : D), hv⟩)` using `by show _ = L (((Capelli.cminor (resE (fun a b => frameE Q E (Fin.cast hk0 a) (Fin.cast hk0 b)) (genSub E V) hS₀) Fin.castSucc Fin.castSucc om ⟨(v : D), hv⟩ : genSub E V) : D) : H)`.
+
+Rewrite using `[cminor_resE, cminor_reindex (frameE Q E) (Fin.cast hk0) hinj0, eC, cminor_cast]`. Rewrite using `[hLHS, hB', hCD]`. Use `smul_ne_zero (Finset.prod_ne_zero_iff.mpr fun j _ => ?_) hvL` and prove the remaining obligations. Use `hfac j` as an intermediate fact. Simplify `this` using `[hr]`.
+
+Establish `hj : j₀ = 0` using `by rw [hj₀, if_neg hr]`. Rewrite using `[hj]`. Establish `hrp : 0 < r` using `Nat.pos_of_ne_zero hr`. Establish `hl : ∀ a b, Capelli.blk k r a < Capelli.blk k r b → lin ∘ₗ resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃ a b = ψ' a b • lin` using `fun a b hab => LinearMap.ext fun m => hlU a b hab (m : D) m.2`. Establish `hD : ∀ i j, lin ∘ₗ resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃ (Capelli.wIdx k r i) (Capelli.wIdx k r j) = Dk i j ∘ₗ lin` using `fun i j => LinearMap.ext fun m => hlW i j (m : D) m.2`.
+
+Establish `hGl : IsGlRep (resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃)` using `isGlRep_resE _ _ _ (isGlRep_reindex (frameE Q E) (capIdx k r) hinj (frameGl Q E hQ1 hQ2 hE))`. Establish `hB` using `Capelli.capelliB (genSub E V) Vp k r (resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃) Dk ψ' lin om hGl hrp hl hψ0 hD`. Establish `hB'` using `congrArg (fun f => f (⟨(v : D), hv⟩ : genSub E V)) hB`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply] at hB'`. Establish `hcast : k + 2 * r = 2 * r + k` using `by omega`.
+
+Establish `eC : (capIdx k r ∘ Fin.castSucc : Fin (k + 2 * r) → Fin (2 * r + k + 1)) = (Fin.last (2 * r + k)).succAbove ∘ Fin.cast hcast`. Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[capIdx, Fin.succAbove_last]`. Establish `eS : (capIdx k r ∘ Fin.succ : Fin (k + 2 * r) → Fin (2 * r + k + 1)) = (0 : Fin (2 * r + k + 1)).succAbove ∘ Fin.cast hcast`.
+
+Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[capIdx, Fin.succAbove_zero]`. Establish `hLHS : L ((Capelli.cminor (frameE Q E) (Fin.last (2 * r + k)).succAbove (0 : Fin (2 * r + k + 1)).succAbove om (v : D) : D) : H) = lin (Capelli.cminor (resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃) Fin.castSucc Fin.succ om ⟨(v : D), hv⟩)` using `by show _ = L (((Capelli.cminor (resE (fun a b => frameE Q E (capIdx k r a) (capIdx k r b)) (genSub E V) hS₃) Fin.castSucc Fin.succ om ⟨(v : D), hv⟩ : genSub E V) : D) : H)`. Rewrite using `[cminor_resE, cminor_reindex (frameE Q E) (capIdx k r) hinj, eC, eS, cminor_cast]`.
+
+Rewrite using `[hLHS, hB', hCD]`. Conclude with `smul_ne_zero (mul_ne_zero (pow_ne_zero _ (by norm_num)) (hκ hrp)) (smul_ne_zero (Finset.prod_ne_zero_iff.mpr fun j _ => hfac j) hvL)`.
+-/
 theorem evalM : EvalMStatement := by
   intro k r ε u lam h H _ _ _ σ D E V T μ ι hσ hder hV hcas hK hμ hcoef hp hq hgap hHC hgapl z c Vp _ _ _
     π μW μN P hP hB x₀ w v ξ s g hx₀ hg hu hne

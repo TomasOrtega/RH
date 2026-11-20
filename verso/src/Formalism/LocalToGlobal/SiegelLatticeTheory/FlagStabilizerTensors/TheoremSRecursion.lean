@@ -105,6 +105,9 @@ def SplitAll : Prop :=
 
 def CardC : Prop := ∀ (D : D7) (T : STies D), Fintype.card (InfinitePlace T.X.B.I.F) = D.R.f
 
+/- English proof (translation)
+Introduce `D T`. Rewrite using `[Fintype.card_congr T.X.pl]`. Conclude with `D.what₂.card_Tau`.
+-/
 theorem cardC_holds : CardC := by
   intro D T
   rw [Fintype.card_congr T.X.pl]
@@ -163,8 +166,14 @@ def TypedAll : Prop :=
 
 def GSplitAll : Prop := ∀ (D : D7) (T : STies D), GSplitX T.X
 
+/- English proof (translation)
+Introduce `_ T` and use `Formalism.L2.SG.Pf.gSplitX_holds T.X`.
+-/
 theorem gSplitAll_holds : GSplitAll := fun _ T => Formalism.L2.SG.Pf.gSplitX_holds T.X
 
+/- English proof (translation)
+Introduce `D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hGap hCT hdet hC hTh _ _ hii hPt hNu hϖ`. Establish `hPs` using `hPos D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hSt hCT hdet hC hTh hϖ`. Establish `hH : HypX T.X T.hb (T.Y.FN u) (T.Y.FN u') u u'` using `⟨T.measTie, hCT.1, T.Y.FN_fund u, T.Y.FN_fund u'⟩`. Take `⟨hVo, hLS, hMs, hCo, hIx⟩` from `hV D T u u' X0 (supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p) C Th Q i0 i0' νq`. Conclude with `massDataInputs_Y T.X T.hb T.Y u u' X0 T.ψ _ C Th _ Q i0 i0' νq hPs (inFormC_bCF T.X T.hb T.Y.hK (T.Y.FN u) (T.Y.FN u') u u' X0 T.ψ (T.Y.tO u u') _ C Th _ Q T.Y.M T.Y.δ i0 i0' νq (ne_of_gt (pos_rho hPs))) (Formalism.L2.SG.Pf.realObj_inNuX T.X u u' 1) (hInf D hGap T.X u u') (Formal …`.
+-/
 theorem massDataInputsAll_of (hPos : MassDataPosAll) (hV : MassDataVolAll) (hP : ProdConvAll) (hTy : TypedAll)
     (hInf : ∀ D : D7, Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∀ (X : HidaSetting D) (u u' : D.what₂.Word), InInfinityX X u u' 1)
     (hPrim : _root_.PI.LocFramePrim.Statement) : MassDataHypAll := by

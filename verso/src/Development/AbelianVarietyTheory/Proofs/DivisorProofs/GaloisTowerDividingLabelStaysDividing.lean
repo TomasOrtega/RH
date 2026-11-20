@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.GSep.DeepDivG
 
+/- English proof (translation)
+Establish `key : X₁.M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) = CommRingCat.ofHom ev`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X₁.M.Z.fromSpecStalk z₁), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Unfold `RatModel.valLoc`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`.
+
+Conclude with `congrArg (fun q => q.hom s) key`.
+-/
 theorem valLoc_stalk (X₁ : GSet) {z₁ : X₁.M.Z} {V : Type} [CommRing V] [IsLocalRing V]
     (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (h) (s : X₁.M.Z.presheaf.stalk z₁) :
     RatModel.valLoc (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) z₁ h (X₁.M.stalkEquiv z₁ s) = ev s := by
@@ -34,6 +39,15 @@ variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A �
   {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
   {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X}
 
+/- English proof (translation)
+Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Take `⟨a, ha⟩` from `GlobalTheory.ThetaGeneric.exists_th_ne_zero hL.1 hL.2.1 _ _ X₁.S X₁.ρ (FractionRing V) 𝔪.yK`. Introduce `h0`. Apply `ha` to reduce the goal to its premises.
+
+Use `set y := jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy`. Establish `hs : y (closedPoint (FractionRing V)) ⤳ z₁`. Establish `: y (closedPoint (FractionRing V)) ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hw : ∀ w, y w ⤳ y (closedPoint (FractionRing V))` using `fun w => by`.
+
+Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) w (closedPoint _)]`. Establish `e : X₁.S.th a = X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀` using `(div_mul_cancel₀ _ hd.1).symm`. Rewrite `h0`, the goal using `[𝔪.yK_eq]`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th a) = 0`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th x₀) = 0 at h0`.
+
+Rewrite using `[e, RatModel.val_mul hw ((hd.of_specializes hs).2 a) (𝔪.reg _ (X₁.S.th_mem x₀)), h0, mul_zero]`.
+-/
 theorem yK_th_ne_zero (hd : X₁.M.Div X₁.S.th x₀ z₁) (𝔪 : GMem X₁ z₁ act V ev X t δ) :
     𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ ≠ 0 := by
   haveI : CharZero V := 𝔪.cn.2.2.2
@@ -53,6 +67,17 @@ theorem yK_th_ne_zero (hd : X₁.M.Div X₁.S.th x₀ z₁) (𝔪 : GMem X₁ z�
   change X₁.M.val y (X₁.S.th x₀) = 0 at h0
   rw [e, RatModel.val_mul hw ((hd.of_specializes hs).2 a) (𝔪.reg _ (X₁.S.th_mem x₀)), h0, mul_zero]
 
+/- English proof (translation)
+Use `set y' := spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy'`. Use `set y := jK V ≫ y' with hy`. Establish `hs' : y (closedPoint (FractionRing V)) ⤳ z₁`. Establish `: y (closedPoint (FractionRing V)) ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+
+Establish `hsp : y' (closedPoint V) ⤳ z₁`. Establish `: y' (closedPoint V) ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hw : ∀ w, y w ⤳ y (closedPoint (FractionRing V))` using `fun w => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) w (closedPoint _)]`.
+
+Establish `e : X₁.S.th a = X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀` using `(div_mul_cancel₀ _ hd.1).symm`. Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th a) = _ * X₁.M.val y (X₁.S.th x₀)`. Establish `h1 : X₁.M.val y (X₁.S.th a) = X₁.M.val y (X₁.S.th a / X₁.S.th x₀) * X₁.M.val y (X₁.S.th x₀)` using `by conv_lhs => rw [e]`. Conclude with `RatModel.val_mul hw ((hd.of_specializes hs').2 a) (𝔪.reg _ (X₁.S.th_mem x₀))`.
+
+Rewrite using `[h1]`. Use `congr 1`. Establish `h2` using `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) y' hsp ⟨_, hd.2 a⟩`. Use `h2.trans (congrArg _ ?_)` and prove the remaining obligations. Establish `h3 : (⟨X₁.S.th a / X₁.S.th x₀, hd.2 a⟩ : X₁.M.O z₁) = X₁.M.stalkEquiv z₁ s` using `Subtype.ext hs.symm`.
+
+Rewrite using `[h3]`. Conclude with `valLoc_stalk X₁ ev hsp s`.
+-/
 theorem yK_th_eq (hd : X₁.M.Div X₁.S.th x₀ z₁) (𝔪 : GMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam)
     (s : X₁.M.Z.presheaf.stalk z₁) (hs : X₁.M.stalkHom z₁ s = X₁.S.th a / X₁.S.th x₀) :
     𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩ = algebraMap V (FractionRing V) (ev s) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ := by
@@ -80,6 +105,9 @@ theorem yK_th_eq (hd : X₁.M.Div X₁.S.th x₀ z₁) (𝔪 : GMem X₁ z₁ ac
   rw [h3]
   exact valLoc_stalk X₁ ev hsp s
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(M.stalkEquiv z).surjective ⟨x, hx⟩`. Conclude with `⟨s, by rw [← RatModel.coe_stalkEquiv, hs]⟩`.
+-/
 theorem exists_stalk {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (z : M.Z) (x : Ω)
     (hx : x ∈ M.O z) : ∃ s : M.Z.presheaf.stalk z, M.stalkHom z s = x := by
   obtain ⟨s, hs⟩ := (M.stalkEquiv z).surjective ⟨x, hx⟩
@@ -89,6 +117,19 @@ end GlobalTheory.GSep.DeepDivG
 
 namespace GlobalTheory.GSep.DeepDivG
 
+/- English proof (translation)
+Set `f₂ : Sp 𝔗.X₂.Ω₁ ⟶ Sp 𝔗.X₂.S.R` to `spMap 𝔗.X₂.S.R.val.toRingHom`. Set `P₀` to `GlobalTheory.StrictPull.polPull 𝔗.X₂.ρ.P f₂`. Set `a' : P₀.A.left ⟶ 𝔗.X₂.ρ.P.A.left` to `pullback.fst 𝔗.X₂.ρ.P.A.hom f₂`. Establish `hring : (algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom = 𝔗.X₂.S.R.val.toRingHom.comp 𝔗.om`. Use extensionality with `x`.
+
+Conclude with `(𝔗.om_eq x).symm`. Establish `hsp : spMap ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom) = f₂ ≫ spMap 𝔗.om`. Rewrite using `[hring]`. Conclude with `Spec.map_comp (CommRingCat.ofHom 𝔗.om) (CommRingCat.ofHom 𝔗.X₂.S.R.val.toRingHom)`. Establish `ha' : IsGrpPullback P₀.A 𝔗.X₂.ρ.P.A f₂ a'` using `isGrpPullback_pullback _ _`.
+
+Establish `hr : LBIso P₀.L (𝔗.X₂.ρ.P.L.pull a')` using `⟨idIso _, idIso_isGen P₀.isLB⟩`. Use `⟨P₀, a' ≫ 𝔗.φ, a', fun _ => 𝟙 _, ?_, ha', ?_, hr, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(ha'.comp 𝔗.cart).congr hsp.symm rfl`. Conclude with `LBIso.trans P₀.isLB (pull_isLB 𝔗.X₂.ρ.P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hr (lbIso_pull_comp 𝔗.lb a')`. Introduce `E`.
+
+Conclude with `⟨by simp, by simp⟩`. Introduce `x`. Establish `hc : (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) ≫ 𝔗.X₂.ρ.P.A.hom = 𝟙 _ ≫ f₂`. Rewrite using `[Category.assoc, Over.w (𝔗.X₂.ρ.pt (𝔗.lam x))]`. Simplify using `[baseOver]`.
+
+Use `⟨pullback.lift (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) (𝟙 _) hc, ?_, ?_⟩` and prove the remaining obligations. Establish `hw : pullback.lift (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) (𝟙 _) hc ≫ a' = f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left` using `pullback.lift_fst _ _ _`. Establish `h3 : (f₂ ≫ (𝔗.X₂.ρ.pt (𝔗.lam x)).left) ≫ 𝔗.φ = spMap ((algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁).comp X₁.S.R.val.toRingHom) ≫ (X₁.ρ.pt x).left`. Rewrite using `[Category.assoc, 𝔗.lam_pt, hsp, Category.assoc]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ 𝔗.φ) hw).trans h3)`.
+
+Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem tower_same {I : Type} {X₁ : GlobalTheory.GSep.GSet} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (𝔗 : GlobalTheory.GSep.Tower X₁ act) :
     GlobalTheory.Poinc.Same X₁.ρ (fun _ => 𝟙 _) 𝔗.X₂.ρ (fun _ => 𝟙 _) 𝔗.lam (algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁) := by
   let f₂ : Sp 𝔗.X₂.Ω₁ ⟶ Sp 𝔗.X₂.S.R := spMap 𝔗.X₂.S.R.val.toRingHom
@@ -122,6 +163,21 @@ end GlobalTheory.GSep.DeepDivG
 
 open GlobalTheory.GSep.DeepDivG in
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act hact hunit 𝔗 z₂ hz₂ x₀ hx V _ _ _ ev X _ t δ _`. Establish `hk : 0 < X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)`. Establish `hdvd : X₁.S.r * X₁.S.N ∣ 𝔗.X₂.S.r * 𝔗.X₂.S.N` using `⟨𝔗.d, 𝔗.lev⟩`. Take `⟨a, ha, hdv⟩` from `GlobalTheory.GSep.exists_div_torsion 𝔗.X₂ z₂ _ (X₁.S.N_ge.trans (Nat.le_mul_of_pos_left _ X₁.S.r_pos)) hdvd`. Establish `hL : 0 < 𝔗.X₂.S.r * 𝔗.X₂.S.N` using `Nat.mul_pos 𝔗.X₂.S.r_pos (by have := 𝔗.X₂.S.N_ge; omega)`.
+
+Use `choose x hxa using fun s => DivDeep.exists_eq_smul_of_smul_eq_zero hL hdvd (a s) (congrFun ha s)`. Establish `hd : 𝔗.X₂.S.r * 𝔗.X₂.S.N / (X₁.S.r * X₁.S.N) = 𝔗.d`. Rewrite using `[𝔗.lev]`. Conclude with `Nat.mul_div_cancel_left _ hk`. Rewrite `hxa` using `[hd]`.
+
+Take `⟨b, hb⟩` from `𝔗.lam_range x`. Take `rfl : 𝔗.lam b = a` from `hb.trans (funext hxa)`. Take `⟨k, hk, e⟩` from `DivDeep.same_ratio (GlobalTheory.GSep.DeepDivG.tower_same 𝔗) x₀ b`. Use `set φ := algebraMap X₁.Ω₁ 𝔗.X₂.Ω₁`. Establish `h₁ : φ (X₁.S.th x₀) ≠ 0` using `(map_ne_zero φ).2 hx.1`.
+
+Establish `h₂` using `hdv.1`. Establish `h₃ : 𝔗.X₂.S.th (𝔗.lam x₀) * φ (X₁.S.th b) ≠ 0` using `fun h => by`. Rewrite `e` using `[h, zero_pow hk.ne']`. Conclude with `pow_ne_zero k (mul_ne_zero h₂ h₁) e.symm`. Establish `h₄` using `left_ne_zero_of_mul h₃`.
+
+Establish `h₅` using `right_ne_zero_of_mul h₃`. Establish `hN : IsIntegrallyClosed (𝔗.X₂.M.O z₂)` using `RatModel.isIntegrallyClosed_O (fun z => by haveI := 𝔗.X₂.normal`. Conclude with `⟨𝔗.X₂.normal.isDomain_stalk z, GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk z⟩) z₂`. Establish `m₁ : 𝔗.X₂.S.th (𝔗.lam b) * φ (X₁.S.th x₀) / (𝔗.X₂.S.th (𝔗.lam x₀) * φ (X₁.S.th b)) ∈ 𝔗.X₂.M.O z₂` using `DivDeep.root_mem_O hN hk (by rw [div_pow, e, div_self (pow_ne_zero k (mul_ne_zero h₂ h₁))])`. Establish `m₂ : φ (X₁.S.th b / X₁.S.th x₀) ∈ 𝔗.X₂.M.O z₂`.
+
+Take `⟨U, f, hU, hf⟩` from `hx.2 b`. Use `⟨𝔗.p ⁻¹ᵁ U, 𝔗.p.app U f, show 𝔗.p z₂ ∈ U from hz₂ ▸ hU, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Points.valR_comp 𝔗.X₂.M.pt 𝔗.p U f).symm.trans ?_` and prove the remaining obligations. Rewrite using `[𝔗.p_pt, ← hf]`. Conclude with `GlobalTheory.Points.valR_spMap_comp _ X₁.M.pt U (X₁.M.top_le_preimage_pt ⟨_, hU⟩) f`.
+
+Use `⟨h₄, fun j => ?_⟩` and prove the remaining obligations. Use `mul_mem (hdv.2 j) (mul_mem m₁ m₂)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.GSep.DeepDivG.div_lam : (∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), GlobalTheory.GSep.IsAct X₁ act → (∀ m : ℕ, m ≠ 0 → IsUnit (m : X₁.M.Z.presheaf.stalk z₁)) → ∀ (𝔗 : GlobalTheory.GSep.Tower X₁ act) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ), 𝔗.X₂.M.Div 𝔗.X₂.S.th (𝔗.lam x₀) z₂) := by
   intro I X₁ z₁ act hact hunit 𝔗 z₂ hz₂ x₀ hx V _ _ _ ev X _ t δ _
   have hk : 0 < X₁.S.r * X₁.S.N := Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)

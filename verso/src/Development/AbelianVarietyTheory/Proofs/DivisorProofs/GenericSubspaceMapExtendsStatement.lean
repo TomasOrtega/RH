@@ -15,6 +15,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VB.exists_ofGeneric_hom_of_mapsTo | exact GlobalTheory.VB.exists_ofGeneric_hom_of_mapsTo | (intros; apply GlobalTheory.VB.exists_ofGeneric_hom_of_mapsTo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_subspace_map_extends : ∀ (X : Scheme.{0}) [IsIntegral X] (F G : X.Modules) (u : F ⟶ G)
     (N : Submodule X.functionField (GlobalTheory.VB.genStalk F)) (N' : Submodule X.functionField (GlobalTheory.VB.genStalk G)),
     (∀ t ∈ N, GlobalTheory.QCoh.stalkLinear u (genericPoint X) t ∈ N') →

@@ -14,6 +14,9 @@ namespace GlobalTheory.LocM.StepFrame
 
 section Lin
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_injective_fintypeLinearCombination, ← Fintype.range_linearCombination, LinearMap.range_eq_top]`. Use `Iff.trans ?_ (Function.bijective_iff_existsUnique (Fintype.linearCombination R v)).symm` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, eq_comm]`.
+-/
 theorem uniq_iff {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {n : ℕ} (v : Fin n → N) :
     (∀ z : N, ∃! a : Fin n → R, z = ∑ i, a i • v i) ↔ LinearIndependent R v ∧ Submodule.span R (Set.range v) = ⊤ := by
   rw [linearIndependent_iff_injective_fintypeLinearCombination, ← Fintype.range_linearCombination,
@@ -21,6 +24,11 @@ theorem uniq_iff {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {n : �
   refine Iff.trans ?_ (Function.bijective_iff_existsUnique (Fintype.linearCombination R v)).symm
   simp only [Fintype.linearCombination_apply, eq_comm]
 
+/- English proof (translation)
+Set `B : Module.Basis (Fin n) R N` to `Module.Basis.mk hb.1 hb.2.ge`. Rewrite using `[B.is_basis_iff_det, Module.Basis.det_apply, ← Matrix.det_transpose]`. Establish `: (B.toMatrix V).transpose = Matrix.of A`. Use extensionality with `i j`. Establish `e : V i = ∑ j, A i j • B j` using `by simpa [B] using hA i`.
+
+Rewrite using `[Matrix.transpose_apply, Module.Basis.toMatrix_apply, e]`. Conclude with `congrFun (B.repr_sum_self (A i)) j`. Rewrite using `[this]`.
+-/
 theorem basis_iff_det {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {n : ℕ} {b V : Fin n → N}
     (hb : LinearIndependent R b ∧ Submodule.span R (Set.range b) = ⊤) (A : Fin n → Fin n → R)
     (hA : ∀ i, V i = ∑ j, A i j • b j) :
@@ -36,6 +44,9 @@ theorem basis_iff_det {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {n
 
 variable {k N : Type} [Field k] [AddCommGroup N] [Module k N]
 
+/- English proof (translation)
+The claim follows from `| 0, c, _ => ⟨fun i => i.elim0, linearIndependent_empty_type⟩ | m + 1, c, hc => by obtain ⟨s, hs⟩ := exists_choice m (fun i => c i.castSucc) fun i => hc _ obtain ⟨j, hj⟩ : ∃ j, c (Fin.last m) j ∉ Submodule.span k (Set.range fun i : Fin m => c i.castSucc (s i)) := by by_contra! h …`.
+-/
 theorem exists_choice : ∀ (m : ℕ) (c : ∀ i : Fin m, Fin (i + 1) → N), (∀ i, LinearIndependent k (c i)) →
     ∃ s : ∀ i : Fin m, Fin (i + 1), LinearIndependent k fun i => c i (s i)
   | 0, c, _ => ⟨fun i => i.elim0, linearIndependent_empty_type⟩
@@ -55,6 +66,11 @@ theorem exists_choice : ∀ (m : ℕ) (c : ∀ i : Fin m, Fin (i + 1) → N), (�
     rw [e]
     exact ⟨hs, by simpa using hj⟩
 
+/- English proof (translation)
+Establish `hl' : LinearIndependent k fun j : {j : Fin μ // (j : ℕ) < r} => u j` using `hu.comp _ Subtype.val_injective`. Establish `: FiniteDimensional k (head r v : Submodule k N)` using `FiniteDimensional.span_of_finite k (Set.finite_range _)`. Establish `h1 : Module.finrank k (head r u : Submodule k N) = r`. Rewrite using `[head, finrank_span_eq_card hl', Fintype.card_subtype, Fin.card_filter_val_lt, min_eq_right hr]`. Establish `h2 : Module.finrank k (head r v : Submodule k N) ≤ min n r`.
+
+Use `(finrank_range_le_card (R := k) _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_subtype, Fin.card_filter_val_lt]`. Establish `h3` using `Submodule.finrank_mono h`. Conclude with `⟨by omega, (Submodule.eq_of_le_of_finrank_le h (by omega)).ge⟩`.
+-/
 theorem head_le_head {μ n r : ℕ} {u : Fin μ → N} {v : Fin n → N} (hu : LinearIndependent k u) (hr : r ≤ μ)
     (h : (head r u : Submodule k N) ≤ head r v) : r ≤ n ∧ (head r v : Submodule k N) ≤ head r u := by
   have hl' : LinearIndependent k fun j : {j : Fin μ // (j : ℕ) < r} => u j := hu.comp _ Subtype.val_injective
@@ -67,9 +83,17 @@ theorem head_le_head {μ n r : ℕ} {u : Fin μ → N} {v : Fin n → N} (hu : L
   have h3 := Submodule.finrank_mono h
   exact ⟨by omega, (Submodule.eq_of_le_of_finrank_le h (by omega)).ge⟩
 
+/- English proof (translation)
+The claim follows from `linearIndependent_iff_injective_fintypeLinearCombination.2 ((isBas_iff M b).1 hb).1`.
+-/
 theorem IsBas.indep {m : ℕ} {M : Submodule k N} {b : Fin m → N} (hb : IsBas M b) : LinearIndependent k b :=
   linearIndependent_iff_injective_fintypeLinearCombination.2 ((isBas_iff M b).1 hb).1
 
+/- English proof (translation)
+Establish `e` using `((isBas_iff M b).1 hb).2`. Rewrite `e` using `[Fintype.range_linearCombination]`. Establish `: FiniteDimensional k M` using `e ▸ FiniteDimensional.span_of_finite k (Set.finite_range _)`. Rewrite using `[isBas_iff, Fintype.range_linearCombination]`. Use `⟨linearIndependent_iff_injective_fintypeLinearCombination.1 hc, Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 (Set.range_subset_iff.2 hm)) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[finrank_span_eq_card hc, ← e, finrank_span_eq_card (IsBas.indep hb)]`.
+-/
 theorem isBas_of_indep {m : ℕ} {M : Submodule k N} {b c : Fin m → N} (hb : IsBas M b) (hc : LinearIndependent k c)
     (hm : ∀ i, c i ∈ M) : IsBas M c := by
   have e := ((isBas_iff M b).1 hb).2
@@ -96,6 +120,9 @@ variable {X : Scheme.{0}} {t : SAB H X} {R S : Type} [CommRing R] [CommRing S]
 def Bas (t : SAB H X) (x : Sp R ⟶ X) {n : ℕ} (v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)) : Prop :=
   (∀ i, IsTanAtG t x (v i)) ∧ ∀ u, IsTanAtG t x u → ∃! cf, IsCombAtG t x v cf u
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h z => (existsUnique_congr fun a => LieMet.isComb_iff (fun i => LieMet.tanOf (hv i)) a z).1 (h.2 _ (LieMet.isTan_tv z)), fun h => ⟨hv, fun u hu => (existsUnique_congr fun a => LieMet.isComb_iff (fun i => LieMet.tanOf (hv i)) a (LieMet.tanOf hu)).2 (h _)⟩⟩`.
+-/
 theorem bas_iff_full {x : Sp R ⟶ X} {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)}
     (hv : ∀ i, IsTanAtG t x (v i)) : Bas t x v ↔ FrameBC.Full fun i => LieMet.tanOf (hv i) :=
   ⟨fun h z => (existsUnique_congr fun a => LieMet.isComb_iff (fun i => LieMet.tanOf (hv i)) a z).1
@@ -103,21 +130,33 @@ theorem bas_iff_full {x : Sp R ⟶ X} {n : ℕ} {v : Fin n → (Sp (DualNumber R
     fun h => ⟨hv, fun u hu => (existsUnique_congr fun a =>
       LieMet.isComb_iff (fun i => LieMet.tanOf (hv i)) a (LieMet.tanOf hu)).2 (h _)⟩⟩
 
+/- English proof (translation)
+Establish `h1` using `FrameBC.full_bc ψ ((bas_iff_full h.1).1 h)`. Conclude with `(bas_iff_full (v := fun i => spMap (Formalism.L2.Pj.dualMap ψ) ≫ v i) fun i => LieMet.isTan_map ψ rfl (h.1 i)).2 h1`.
+-/
 theorem Bas.bc {x : Sp R ⟶ X} {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (h : Bas t x v) (ψ : R →+* S) :
     Bas t (spMap ψ ≫ x) fun i => spMap (Formalism.L2.Pj.dualMap ψ) ≫ v i := by
   have h1 := FrameBC.full_bc ψ ((bas_iff_full h.1).1 h)
   exact (bas_iff_full (v := fun i => spMap (Formalism.L2.Pj.dualMap ψ) ≫ v i)
     fun i => LieMet.isTan_map ψ rfl (h.1 i)).2 h1
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem Bas.congr {x x' : Sp R ⟶ X} {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (h : Bas t x v)
     (e : x = x') : Bas t x' v := e ▸ h
 
+/- English proof (translation)
+Apply the tactic sequence `have e : (Formalism.L2.Pj.dualMap ψ).comp (Formalism.L2.Pj.dualMap φ) = Formalism.L2.Pj.dualMap (ψ.comp φ) := RingHom.ext fun z => by ext <;> simp [Formalism.L2.Pj.dualMap]`. Rewrite using `[← Category.assoc, sp_comp, e]`.
+-/
 theorem bc_bc {T : Type} [CommRing T] (φ : R →+* S) (ψ : S →+* T) (v : Sp (DualNumber R) ⟶ t.G.left) :
     spMap (Formalism.L2.Pj.dualMap ψ) ≫ spMap (Formalism.L2.Pj.dualMap φ) ≫ v = spMap (Formalism.L2.Pj.dualMap (ψ.comp φ)) ≫ v := by
   have e : (Formalism.L2.Pj.dualMap ψ).comp (Formalism.L2.Pj.dualMap φ) = Formalism.L2.Pj.dualMap (ψ.comp φ) :=
     RingHom.ext fun z => by ext <;> simp [Formalism.L2.Pj.dualMap]
   rw [← Category.assoc, sp_comp, e]
 
+/- English proof (translation)
+Establish `h1` using `(uniq_iff (R := R) fun i => LieMet.tanOf (hb.1 i)).1 ((bas_iff_full hb.1).1 hb)`. Establish `h2` using `basis_iff_det (V := fun i => LieMet.tanOf (hV i)) h1 A fun i => (LieMet.isComb_iff (fun i => LieMet.tanOf (hb.1 i)) (A i) (LieMet.tanOf (hV i))).1 (hA i)`. Conclude with `(bas_iff_full hV).trans ((uniq_iff (R := R) fun i => LieMet.tanOf (hV i)).trans h2)`.
+-/
 theorem bas_iff_det {x : Sp R ⟶ X} {n : ℕ} {b V : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} (hb : Bas t x b)
     (hV : ∀ i, IsTanAtG t x (V i)) (A : Fin n → Fin n → R) (hA : ∀ i, IsCombAtG t x b (A i) (V i)) :
     Bas t x V ↔ IsUnit (Matrix.of A).det := by
@@ -126,6 +165,19 @@ theorem bas_iff_det {x : Sp R ⟶ X} {n : ℕ} {b V : Fin n → (Sp (DualNumber 
     (LieMet.isComb_iff (fun i => LieMet.tanOf (hb.1 i)) (A i) (LieMet.tanOf (hV i))).1 (hA i)
   exact (bas_iff_full hV).trans ((uniq_iff (R := R) fun i => LieMet.tanOf (hV i)).trans h2)
 
+/- English proof (translation)
+Set `κ : Fin (n (Fin.last g)) → Fin (g + 1)` to `fun i => ⟨min (i + 1) g, by omega⟩`. Establish `hκ : ∀ i : Fin (n (Fin.last g)), (i : ℕ) + 1 ≤ n (κ i)` using `fun i => by`. Distinguish the cases in `h : (i : ℕ) + 1 ≤ g`. Conclude with `(min_eq_left h).ge.trans (hn (κ i))`. Establish `: κ i = Fin.last g` using `Fin.ext (min_eq_right (by omega))`.
+
+Rewrite using `[this]`. Conclude with `i.2`. Establish `hb` using `fun r => (uniq_iff (R := K) fun i => LieMet.tanOf (((hv r).bc φ).1 i)).1 ((bas_iff_full ((hv r).bc φ).1).1 ((hv r).bc φ))`. Take `⟨s, hs⟩` from `exists_choice (k := K) _ (fun i j => LieMet.tanOf (((hv (κ i)).bc φ).1 (Fin.castLE (hκ i) j))) fun i => (hb (κ i)).1.comp _ (Fin.castLE_injective (hκ i))`. Set `V : Fin (n (Fin.last g)) → (Sp (DualNumber R) ⟶ t.G.left)` to `fun i => v (κ i) (Fin.castLE (hκ i) (s i))`.
+
+Establish `hV : ∀ i, IsTanAtG t x (V i)` using `fun i => (hv _).1 _`. Use `choose A hA using fun i => ((hv (Fin.last g)).2 _ (hV i)).exists`. Establish `key : ∀ (S : Type) [CommRing S] (ψ : R →+* S), (Bas t (spMap ψ ≫ x) fun i => spMap (Formalism.L2.Pj.dualMap ψ) ≫ V i) ↔ IsUnit (ψ (Matrix.of A).det)`. Introduce `S _ ψ`. Rewrite using `[bas_iff_det ((hv _).bc ψ) (fun i => LieMet.isTan_map ψ rfl (hV i)) _ fun i => comb_bc ψ (hA i), RingHom.map_det]`.
+
+Both sides reduce to the same expression. Use `⟨(Matrix.of A).det, _, V, Fin.castLEEmb (hn (Fin.last g)), IsUnit.ne_zero ((key K φ).1 ?_), fun i => ?_, fun S _ ψ h => (key S ψ).2 h⟩` and prove the remaining obligations. Use `(bas_iff_full (v := fun i => spMap (Formalism.L2.Pj.dualMap φ) ≫ V i) fun i => LieMet.isTan_map φ rfl (hV i)).2 ((uniq_iff (R := K) fun i => LieMet.tanOf (LieMet.isTan_map φ rfl (hV i))).2 ⟨hs, ?_⟩)` and prove the remaining obligations. Set `B` to `Module.Basis.mk (hb (Fin.last g)).1 (hb (Fin.last g)).2.ge`. Use `Module.Finite.of_basis B` as an intermediate fact.
+
+Conclude with `hs.span_eq_top_of_card_eq_finrank' (Module.finrank_eq_card_basis B).symm`. Establish `e : κ (Fin.castLEEmb (hn (Fin.last g)) i) = i.succ` using `Fin.ext (min_eq_left (show (i : ℕ) + 1 ≤ g from i.2))`. Establish `: ∀ r (_ : r = i.succ) (j : Fin (n r)), (j : ℕ) < i + 1 → ∃ j' : Fin (n i.succ), (j' : ℕ) < i + 1 ∧ v r j = v i.succ j'`. Introduce and unpack `_ rfl j hj`. Conclude with `⟨j, hj, rfl⟩`.
+
+Conclude with `this _ e _ (s _).2`.
+-/
 theorem exists_select {x : Sp R ⟶ X} {g : ℕ} (n : Fin (g + 1) → ℕ)
     (v : ∀ r, Fin (n r) → (Sp (DualNumber R) ⟶ t.G.left)) (hv : ∀ r, Bas t x (v r)) (hn : ∀ r : Fin (g + 1), (r : ℕ) ≤ n r)
     {K : Type} [Field K] (φ : R →+* K) :
@@ -170,6 +222,11 @@ theorem exists_select {x : Sp R ⟶ X} {g : ℕ} (n : Fin (g + 1) → ℕ)
 
 variable {k : Type} [Field k] {x : Sp k ⟶ X} {l : Level H} {c : Coeff l} {f : c.F →+* k} {u : Vecs Dw t k}
 
+/- English proof (translation)
+Take `⟨N, xc, hx⟩` from `EigLoc.exists_chart t x`. Take `⟨b, rfl⟩` from `exists_coord hx u fun σ i => (hu.1 σ i).1`. Use `choose d hd using fun j => vec_exists hx (v j) (hv j)`. Take `rfl : v = fun j => vec t x xc (d j)` from `funext hd`. Rewrite `hu` using `[isFrame_iff hx]`.
+
+Simplify using `only [comb_iff hx, ← mem_head] at h ⊢`. Use `head_le_head (v := d) (IsBas.indep (hu σ)) hr (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => h i i.2))` as an intermediate fact. Conclude with `⟨this.1, fun j hj => this.2 (Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩)⟩`.
+-/
 theorem step_eq (hu : IsFrame t f x u) {σ : E →+* ℂ} {r n : ℕ} (hr : r ≤ Dw.mult σ)
     {v : Fin n → (Sp (DualNumber k) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x (v j))
     (h : ∀ i : Fin (Dw.mult σ), (i : ℕ) < r → ∃ cf : Fin n → k, (∀ j : Fin n, r ≤ (j : ℕ) → cf j = 0) ∧
@@ -186,6 +243,13 @@ theorem step_eq (hu : IsFrame t f x u) {σ : E →+* ℂ} {r n : ℕ} (hr : r �
     (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => h i i.2))
   exact ⟨this.1, fun j hj => this.2 (Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩)⟩
 
+/- English proof (translation)
+Use `⟨?_, fun σ r _ i hi => (hw σ i).imp fun cf h => ⟨fun j hj => h.1 j (by omega), h.2⟩⟩` and prove the remaining obligations. Take `⟨N, xc, hx⟩` from `EigLoc.exists_chart t x`. Take `⟨b, rfl⟩` from `exists_coord hx u fun σ i => (hu.1 σ i).1`. Use `choose n v e he hv using hb`. Use `choose d hd using fun σ j => vec_exists hx (v σ j) ((hv σ).1 j)`.
+
+Take `rfl : v = fun σ j => vec t x xc (d σ j)` from `funext fun σ => funext (hd σ)`. Take `rfl : w = fun σ i => vec t x xc (d σ (e σ i))` from `funext fun σ => funext fun i => (he σ i).symm`. Rewrite `hu`, the goal using `[isFrame_iff hx]`. Introduce `σ`. Use `isBas_of_indep (hu σ) (LinearIndependent.comp ((uniq_iff (d σ)).1 fun z => ?_).1 _ (e σ).injective) fun i => ?_` and prove the remaining obligations.
+
+Simplify `(hv σ).2 _ (vec_tan hx z)` using `only [comb_iff hx]`. Take `⟨cf, -, h⟩` from `hw σ i`. Rewrite using `[(comb_iff hx _ _ _).1 h]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ ((hu σ).1 j)`.
+-/
 theorem isFrame_of_steps (hu : IsFrame t f x u) {w : Vecs Dw t k} (ty : (E →+* ℂ) → Finset ℕ)
     (hw : ∀ σ (i : Fin (Dw.mult σ)), ∃ cf : Fin (Dw.mult σ) → k,
       (∀ j : Fin (Dw.mult σ), (i : ℕ) + 1 ≤ (j : ℕ) → cf j = 0) ∧ IsCombAtG t x (u σ) cf (w σ i))
@@ -213,6 +277,9 @@ variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ
 abbrev resR {X : Scheme.{0}} {U U' : X.Opens} (h : U' ≤ U) : Γ(X, U) →+* Γ(X, U') :=
   (X.presheaf.map (homOfLE h).op).hom
 
+/- English proof (translation)
+The claim follows from `hU.map_fromSpec hU' (homOfLE h).op`.
+-/
 theorem spMap_resR {X : Scheme.{0}} {U U' : X.Opens} (hU : IsAffineOpen U) (hU' : IsAffineOpen U') (h : U' ≤ U) :
     spMap (resR h) ≫ hU.fromSpec = hU'.fromSpec := hU.map_fromSpec hU' (homOfLE h).op
 
@@ -223,6 +290,11 @@ def Adapted (Z : Mdl Y i₀) (σ : E →+* ℂ) (r : ℕ) {U : Z.X.Opens} (hU : 
       (∀ j : Fin n, r ≤ (j : ℕ) → cf j = 0) ∧ IsCombAtG (Y Z.i).t ((spMap φ ≫ hU.fromSpec) ≫ Z.π)
         (fun j => spMap (Formalism.L2.Pj.dualMap φ) ≫ v j) cf (u σ i)
 
+/- English proof (translation)
+Establish `e` using `spMap_resR hU hU' hle`. Use `⟨?_, fun k _ φ u => ?_⟩` and prove the remaining obligations. Conclude with `(Bas.bc (R := Γ(Z.X, U)) h.1 (resR hle)).congr ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ Z.π) e))`. Use `h.2 k (φ.comp (resR hle)) u` as an intermediate fact. Establish `e' : spMap (φ.comp (resR hle)) ≫ hU.fromSpec = spMap φ ≫ hU'.fromSpec`.
+
+Rewrite using `[← sp_comp, Category.assoc, e]`. Rewrite `this` using `[e']`. Simplify `this` using `only [bc_bc]`.
+-/
 theorem Adapted.res {Z : Mdl Y i₀} {σ : E →+* ℂ} {r : ℕ} {U U' : Z.X.Opens} {hU : IsAffineOpen U} {n : ℕ}
     {v : Fin n → (Sp (DualNumber Γ(Z.X, U)) ⟶ (Y Z.i).t.G.left)} (h : Adapted Z σ r hU v) (hU' : IsAffineOpen U')
     (hle : U' ≤ U) : Adapted Z σ r hU' fun j => spMap (Formalism.L2.Pj.dualMap (resR hle)) ≫ v j := by
@@ -236,6 +308,9 @@ theorem Adapted.res {Z : Mdl Y i₀} {σ : E →+* ℂ} {r : ℕ} {U U' : Z.X.Op
     rw [e'] at this
     simpa only [bc_bc] using this
 
+/- English proof (translation)
+Establish `h2` using `h.2 k φ u hu`. Take `⟨a, ψ, -, fu, -⟩` from `hu`. Conclude with `step_eq fu hr (fun j => LieMet.isTan_map φ (Category.assoc _ _ _).symm (h.1.1 j)) h2`.
+-/
 theorem Adapted.step {Z : Mdl Y i₀} {σ : E →+* ℂ} {r : ℕ} {U : Z.X.Opens} {hU : IsAffineOpen U} {n : ℕ}
     {v : Fin n → (Sp (DualNumber Γ(Z.X, U)) ⟶ (Y Z.i).t.G.left)} (h : Adapted Z σ r hU v) (hr : r ≤ Dw.mult σ)
     {k : Type} [Field k] (φ : Γ(Z.X, U) →+* k) {u : Vecs Dw (Y Z.i).t k} (hu : Z.FlagAt (spMap φ ≫ hU.fromSpec) u) :
@@ -245,6 +320,13 @@ theorem Adapted.step {Z : Mdl Y i₀} {σ : E →+* ℂ} {r : ℕ} {U : Z.X.Open
   obtain ⟨a, ψ, -, fu, -⟩ := hu
   exact step_eq fu hr (fun j => LieMet.isTan_map φ (Category.assoc _ _ _).symm (h.1.1 j)) h2
 
+/- English proof (translation)
+Take `⟨y, hyU, hy⟩` from `Z.dense.inter_open_nonempty U U.2 ⟨x, hx⟩`. Establish `hr : Set.range (Z.X.fromSpecResidueField y) = {y}` using `Scheme.range_fromSpecResidueField y`. Use `hU.isOpenImmersion_fromSpec` as an intermediate fact. Establish `h' : Set.range (Z.X.fromSpecResidueField y) ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec, hr]`.
+
+Conclude with `Set.singleton_subset_iff.2 hyU`. Take `⟨a, ψ, ha⟩` from `Z.exists_chart (k := Z.X.residueField y) (Z.X.fromSpecResidueField y) (hr.le.trans (Set.singleton_subset_iff.2 hy))`. Use `⟨Z.X.residueField y, inferInstance, (Spec.preimage (IsOpenImmersion.lift hU.fromSpec (Z.X.fromSpecResidueField y) h')).hom, _, CommonMod.flagAt_chart Z (ha.trans ?_)⟩` and prove the remaining obligations. Use `show _ = Spec.map (Spec.preimage _) ≫ _`. Rewrite using `[Spec.map_preimage]`.
+
+Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`.
+-/
 theorem exists_flagAt (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U) {x : Z.X} (hx : x ∈ U) :
     ∃ (k : Type) (_ : Field k) (φ : Γ(Z.X, U) →+* k) (u : Vecs Dw (Y Z.i).t k), Z.FlagAt (spMap φ ≫ hU.fromSpec) u := by
   obtain ⟨y, hyU, hy⟩ := Z.dense.inter_open_nonempty U U.2 ⟨x, hx⟩
@@ -262,6 +344,19 @@ theorem exists_flagAt (Z : Mdl Y i₀) {U : Z.X.Opens} (hU : IsAffineOpen U) {x 
   rw [Spec.map_preimage]
   exact (IsOpenImmersion.lift_fac _ _ _).symm
 
+/- English proof (translation)
+Use `choose U₀ hU₀ n v₀ hx₀ hv₀ using h`. Establish `ho : IsOpen (⋂ q : Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1), (U₀ q.1 q.2 : Set Z.X))` using `isOpen_iInter_of_finite fun q => (U₀ q.1 q.2).2`. Take `⟨_, ⟨U, hU, rfl⟩, hx, hle⟩` from `Z.X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_iInter.2 fun q : Σ σ : E →+* ℂ, Fin (Dw.mult σ + 1) => hx₀ q.1 q.2) ho`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hle' : ∀ σ r, U ≤ U₀ σ r` using `fun σ r => fun y hy => Set.mem_iInter.1 (hle hy) ⟨σ, r⟩`.
+
+Take `⟨v, hv⟩ : ∃ v : ∀ σ r, Fin (n σ r) → (Sp (DualNumber Γ(Z.X, U)) ⟶ (Y Z.i).t.G.left), ∀ σ (r : Fin (Dw.mult σ + 1)), Adapted Z σ r hU (v σ r)` from `⟨_, fun σ r => (hv₀ σ r).res hU (hle' σ r)⟩`. Take `⟨k₀, _, φ₀, u₀, hu₀⟩` from `exists_flagAt Z hU hx`. Use `choose f m V e hf hV hB using fun σ => exists_select (n σ) (v σ) (fun r => (hv σ r).1) (fun r => ((hv σ r).step (Nat.lt_succ_iff.1 r.2) φ₀ hu₀).1) (K := Z.X.residueField x) (Z.X.evaluation U x hx).hom`. Establish `hU'` using `hU.basicOpen (∏ σ, f σ)`. Establish `hle₂` using `Z.X.basicOpen_le (∏ σ, f σ)`.
+
+Establish `e₂` using `spMap_resR hU hU' hle₂`. Establish `hu : ∀ σ, IsUnit (resR hle₂ (f σ))` using `fun σ => isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem f (Finset.mem_univ σ))) (Z.X.toRingedSpace.isUnit_res_basicOpen (∏ σ, f σ))`. Establish `hB' : ∀ σ, Bas (Y Z.i).t (hU'.fromSpec ≫ Z.π) fun i => spMap (Formalism.L2.Pj.dualMap (resR hle₂)) ≫ V σ i` using `fun σ => (hB σ _ _ (hu σ)).congr ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ Z.π) e₂))`. Use `⟨_, hU', fun σ i => spMap (Formalism.L2.Pj.dualMap (resR hle₂)) ≫ V σ (e σ i), ?_, fun σ => ⟨m σ, _, e σ, fun _ => rfl, hB' σ⟩, fun k _ φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.evaluation_ne_zero_iff_mem_basicOpen _ x hx, map_prod]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun σ _ => hf σ`. Take `⟨a, ψ, ha⟩` from `Z.exists_chart _ hφ`. Establish `fu` using `CommonMod.flagAt_chart Z ha`. Establish `e₃ : spMap (φ.comp (resR hle₂)) ≫ hU.fromSpec = spMap φ ≫ hU'.fromSpec`. Rewrite using `[← sp_comp, Category.assoc, e₂]`.
+
+Establish `fu'` using `fu`. Rewrite `fu'` using `[← e₃]`. Take `⟨b, χ, hb, fr, sf⟩` from `fu`. Establish `key` using `isFrame_of_steps fr Z.ty (w := Vecs.bc φ fun σ i => spMap (Formalism.L2.Pj.dualMap (resR hle₂)) ≫ V σ (e σ i)) (fun σ i => ?_) fun σ => ?_`. Conclude with `⟨b, χ, hb, key.1, sameFlag_trans (tan_chart Z hb) (fun σ j => (fr.1 σ j).1) (fun σ j => (key.1.1 σ j).1) sf key.2⟩`.
+
+Take `⟨j, hj, ej⟩` from `hV σ i`. Use `((hv σ i.succ).step (Nat.lt_succ_iff.1 i.succ.2) _ fu').2 j hj` as an intermediate fact. Rewrite `this` using `[e₃, ← ej, ← bc_bc]`. Conclude with `this`. Conclude with `⟨m σ, _, e σ, fun _ => rfl, ((hB' σ).bc φ).congr (Category.assoc _ _ _).symm⟩`.
+-/
 theorem exists_intFrame (Z : Mdl Y i₀) (x : Z.X)
     (h : ∀ σ (r : Fin (Dw.mult σ + 1)), ∃ (U : Z.X.Opens) (hU : IsAffineOpen U) (n : ℕ)
       (v : Fin n → (Sp (DualNumber Γ(Z.X, U)) ⟶ (Y Z.i).t.G.left)), x ∈ U ∧ Adapted Z σ r hU v) :
@@ -308,6 +403,9 @@ theorem exists_intFrame (Z : Mdl Y i₀) (x : Z.X)
       exact this
     · exact ⟨m σ, _, e σ, fun _ => rfl, ((hB' σ).bc φ).congr (Category.assoc _ _ _).symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W _ _ Y i₀ Z Z' hty h`. Use `⟨hty, fun x => exists_intFrame Z' x fun σ r => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, n, v, hx, h1, h2, h3⟩` from `GlobalTheory.T.step_holds_local_tangent_frames E H Dw Xo p W Y i₀ Z Z' σ r (Nat.lt_succ_iff.1 r.2) (h _ (mem_allSteps.2 ⟨σ, r, _, rfl⟩)) x`. Conclude with `⟨U, hU, n, v, hx, ⟨h1, h2⟩, h3⟩`.
+-/
 theorem hasDR_of_allSteps : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z Z' : Mdl Y i₀), (∀ σ, Z'.ty σ = Finset.range (Dw.mult σ + 1)) → (∀ t ∈ allSteps (Lat.top Z), Step.Holds t Z') → HasDR Z' := by
   intro E _ _ _ H Dw Xo p W _ _ Y i₀ Z Z' hty h
   refine ⟨hty, fun x => exists_intFrame Z' x fun σ r => ?_⟩

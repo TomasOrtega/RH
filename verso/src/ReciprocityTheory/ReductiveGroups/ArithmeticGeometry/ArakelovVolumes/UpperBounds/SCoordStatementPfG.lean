@@ -9,6 +9,63 @@ open MvPolynomial Filter Topology
 noncomputable section
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Substitute `hD` using the available equality. Simplify using `only [Fin.cast_eq_self] at hs ⊢`. Use `set U : Set Fr := dom ∩ W j0 ⁻¹' {0}ᶜ with hUdef`. Establish `hU : IsOpen U` using `(hW j0).continuousOn.isOpen_inter_preimage hdom isOpen_compl_singleton`. Establish `hUG : U ⊆ closure Gen` using `fun y hy => hGd hy.1`.
+
+Establish `hxU : x ∈ Gen ∩ U` using `⟨hx, hGs hx, hx0⟩`. Take `⟨v, hv⟩ : ∃ v : Fin (N + 1) → Fr → ℂ, v = fun j y => W j y / W j0 y` from `⟨_, rfl⟩`. Establish `hvd : ∀ j, ∀ y ∈ U, DifferentiableAt ℂ (v j) y` using `fun j y hy => by`. Establish `h : DifferentiableAt ℂ (fun y => W j y * (W j0 y)⁻¹) y` using `((hW j).differentiableAt (hdom.mem_nhds hy.1)).mul (((hW j0).differentiableAt (hdom.mem_nhds hy.1)).inv hy.2)`. Establish `hv' : v j = fun y => W j y * (W j0 y)⁻¹` using `by rw [hv]; exact funext fun y => div_eq_mul_inv _ _`.
+
+Rewrite using `[hv']`. Conclude with `h`. Establish `hvG : ∀ y ∈ Gen ∩ U, ∀ j, v j y = pt y (u j)` using `fun y hy j => by`. Rewrite using `[hv]`. Use `show W j y / W j0 y = _`.
+
+Rewrite using `[hWu y hy.1 j, mul_div_cancel_right₀ _ hy.2.2]`. Establish `hu0 : u j0 = 1`. Establish `h` using `hvG x hxU j0`. Rewrite `h` using `[hv]`. Express the relevant statement in the definitionally equal form `W j0 x / W j0 x = _ at h`.
+
+Rewrite `h` using `[div_self hx0]`. Conclude with `(pt x).injective (by rw [map_one]; exact h.symm)`. Set `u' : {j : Fin (N + 1) // j ≠ j0} → Ω` to `fun j => u j.1`. Take `⟨B, hB⟩` from `((AlgebraicIndependent.matroid K Ω).comap u').exists_isBasis Set.univ (by rw [Matroid.comap_ground_eq, AlgebraicIndependent.matroid_e, Set.preimage_univ])`. Rewrite `hB` using `[Matroid.comap_isBasis_iff]`.
+
+Take `⟨hB1, hBinj, -⟩` from `hB`. Use `haveI : Fintype B := Fintype.ofFinite B`. Set `yB : B → Ω` to `fun b => u b.1.1`. Establish `hyB : AlgebraicIndependent K yB`. Establish `h1` using `AlgebraicIndependent.matroid_indep_iff.mp hB1.indep`.
+
+Establish `h2` using `h1.comp (Equiv.Set.imageOfInjOn u' B hBinj) (Equiv.injective _)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Both sides reduce to the same expression. Establish `hrange : Set.range yB = u' '' B`.
+
+Use extensionality with `w`. Simplify using `[yB, u']`. Establish `halg : ∀ j : {j : Fin (N + 1) // j ≠ j0}, IsAlgebraic (Algebra.adjoin K (Set.range yB)) (u j.1)`. Introduce `j`. Establish `h1` using `hB1.subset_closure (Set.mem_image_of_mem u' (Set.mem_univ j))`.
+
+Rewrite `h1` using `[AlgebraicIndependent.matroid_closure_eq, SetLike.mem_coe, Subalgebra.mem_algebraicClosure]`. Rewrite using `[hrange]` and apply the resulting hypothesis. Establish `hrel : ∀ j : {j : Fin (N + 1) // j ≠ j0}, ∃ co : B → Ω, fderiv ℂ (fun z => v j.1 (c z)) 0 = ∑ b, pt x (co b) • fderiv ℂ (fun z => v b.1.1 (c z)) 0` using `fun j => SCoD.rel_deriv sg hU hUG pt hpt (fun b => v b.1.1) (v j.1) (fun b => hvd b.1.1) (hvd j.1) yB (u j.1) (fun y hy b => hvG y hy b.1.1) (fun y hy => hvG y hy j.1) hyB (halg j) c hc x hc0 hxU`. Use `choose co hco using hrel`. Set `a : {j : Fin (N + 1) // j ≠ j0} → B → Ω` to `fun j => by classical exact if hj : j ∈ B then Pi.single ⟨j, hj⟩ 1 else co j`.
+
+Establish `ha : ∀ b : B, a b.1 = Pi.single b 1` using `fun b => by simp [a, b.2]`. Set `Dv : Fin (N + 1) → (EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ)` to `fun j => fderiv ℂ (fun z => v j (c z)) 0`. Establish `hDa : ∀ j : {j : Fin (N + 1) // j ≠ j0}, Dv j.1 = ∑ b, pt x (a j b) • Dv b.1.1`. Introduce `j`. Distinguish the cases in `hj : j ∈ B`.
+
+Simplify using `only [a, dif_pos hj]`. Rewrite using `[Finset.sum_eq_single ⟨j, hj⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [a, dif_neg hj]`. Conclude with `hco j`. Establish `hxU' : c 0 ∈ U` using `by rw [hc0]; exact hxU.2`. Establish `hDv : ∀ j, HasFDerivAt (fun z => v j (c z)) (Dv j) 0` using `fun j => ((hvd j (c 0) hxU').comp 0 (hc 0)).hasFDerivAt`.
+
+Establish `hevU : ∀ᶠ z in 𝓝 (0 : EuclideanSpace ℂ (Fin n)), c z ∈ U` using `hc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds hxU')`. Establish `hD0 : Dv j0 = 0`. Establish `h1 : HasFDerivAt (fun z => v j0 (c z)) (0 : EuclideanSpace ℂ (Fin n) →L[ℂ] ℂ) 0` using `(hasFDerivAt_const (1 : ℂ) _).congr_of_eventuallyEq (hevU.mono fun z hz => by rw [hv]; exact div_self hz.2)`. Conclude with `(hDv j0).unique h1`. Establish `hall : ∀ ξ, (∀ b : B, Dv b.1.1 ξ = 0) → ∀ j, Dv j ξ = 0`.
+
+Introduce `ξ hξ j`. Distinguish the cases in `hj : j = j0`. Rewrite using `[hj, hD0]`. Both sides reduce to the same expression. Rewrite using `[hDa ⟨j, hj⟩, ContinuousLinearMap.sum_apply]`.
+
+Conclude with `Finset.sum_eq_zero fun b _ => by rw [ContinuousLinearMap.smul_apply, hξ b, smul_zero]`. Set `eqv` to `(EuclideanSpace.equiv (Fin n) ℂ).symm`. Set `Lc : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)` to `(eqv : (Fin n → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin n)).comp (ContinuousLinearMap.pi fun k => Dv (jj k))`. Establish `hLc : HasFDerivAt (fun z : EuclideanSpace ℂ (Fin n) => (WithLp.toLp 2 fun k => W (jj k) (c z) / W j0 (c z) : EuclideanSpace ℂ (Fin n))) Lc 0`. Establish `h1 : HasFDerivAt (fun z => fun k => v (jj k) (c z)) (ContinuousLinearMap.pi fun k => Dv (jj k)) 0` using `hasFDerivAt_pi.2 fun k => hDv (jj k)`.
+
+Establish `hfun : (fun z : EuclideanSpace ℂ (Fin n) => (WithLp.toLp 2 fun k => W (jj k) (c z) / W j0 (c z) : EuclideanSpace ℂ (Fin n))) = eqv ∘ fun z => fun k => v (jj k) (c z)`. Rewrite using `[hv]`. Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `eqv.hasFDerivAt.comp 0 h1`.
+
+Rewrite `hJ` using `[hLc.fderiv]`. Establish `hLc_inj : Function.Injective Lc`. Establish `h1 : IsUnit (Lc : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n))` using `(LinearMap.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hJ)`. Conclude with `((Module.End.isUnit_iff _).mp h1).injective`. Establish `key : ∀ ξ, (∀ b : B, Dv b.1.1 ξ = 0) → ξ = 0`.
+
+Introduce `ξ hξ`. Apply `hLc_inj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `h2 : (fun k => Dv (jj k) ξ) = 0` using `funext fun k => hall ξ hξ (jj k)`. Use `show eqv (fun k => Dv (jj k) ξ) = 0`.
+
+Rewrite using `[h2, map_zero]`. Establish `hcard1 : Fintype.card B ≤ n`. Establish `h` using `hyB.cardinalMk_le_trdeg`. Rewrite `h` using `[htr, Cardinal.mk_fintype]`. Conclude with `h` after adjusting the coercions.
+
+Establish `hcard2 : n ≤ Fintype.card B`. Set `Φ : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] (B → ℂ)` to `(ContinuousLinearMap.pi fun b : B => Dv b.1.1 : EuclideanSpace ℂ (Fin n) →L[ℂ] (B → ℂ)).toLinearMap`. Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `ξ hξ`.
+
+Conclude with `key ξ fun b => congrFun hξ b`. Establish `h` using `LinearMap.finrank_le_finrank_of_injective hinj`. Simplify using `using h`. Establish `hcardB : Fintype.card B = n` using `le_antisymm hcard1 hcard2`. Establish `hyT : IsTranscendenceBasis K yB` using `hyB.isTranscendenceBasis_of_trdeg_le_of_finite (by rw [htr, Cardinal.mk_fintype, hcardB])`.
+
+Set `e : Fin n ≃ B` to `(Fintype.equivFinOfCardEq hcardB).symm`. Establish `hrelx : ∀ i : Fin n, ∑ j, t (i.succ, j) * pt x (u j) = 0`. Introduce `i`. Establish `h` using `hs i`. Establish `h2 : ∑ j, t (i.succ, j) * W j x = (∑ j, t (i.succ, j) * pt x (u j)) * W j0 x`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hWu x hx j]; ring`. Rewrite `h` using `[h2]`. Conclude with `(mul_eq_zero.mp h).resolve_right hx0`. Establish `hdet` using `SCoE.det_ne sg (pt x) (hpt x hx) j0 u hu0 B hyT e a ha t ht hrelx`.
+
+Establish `hDv' : ∀ j, HasFDerivAt (fun z => W j (c z) / W j0 (c z)) (Dv j) 0`. Introduce `j`. Establish `h` using `hDv j`. Rewrite `h` using `[hv]`. Conclude with `h`.
+
+Use `clear_value e a Dv`. Use `⟨Dv, hDv', ?_⟩` and prove the remaining obligations. Use `⟨_, fun k => Dv (e k).1.1, hdet, ?_, ?_⟩` and prove the remaining obligations. Introduce `ξ hξ`. Apply `key` to reduce the goal to its premises.
+
+Introduce `b`. Establish `h1 : Dv (e (e.symm b)).1.1 ξ = 0` using `hξ (e.symm b)`. Rewrite `h1` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `i`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ j0, hD0, smul_zero, zero_add]`.
+
+Establish `hj : ∀ j : {j : Fin (N + 1) // j ≠ j0}, t (i.succ, j.1) • Dv j.1 = ∑ b, (t (i.succ, j.1) * pt x (a j b)) • Dv b.1.1` using `fun j => by`. Rewrite using `[hDa j, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => smul_smul _ _ _`. Rewrite using `[Finset.sum_congr rfl fun j _ => hj j, Finset.sum_comm]`. Simplify using `only [Matrix.of_apply, Finset.sum_smul]`.
+
+Conclude with `(e.sum_comp (fun b => ∑ j : {j : Fin (N + 1) // j ≠ j0}, (t (i.succ, j.1) * pt x (a j b)) • Dv b.1.1)).symm`.
+-/
 theorem part1 {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω]
     {Fr : Type} [NormedAddCommGroup Fr] [NormedSpace ℂ Fr] {n N D : ℕ} (hD : n = D) (sg : K →+* ℂ)
     {dom Gen : Set Fr} (hdom : IsOpen dom) (hGs : Gen ⊆ dom) (hGd : dom ⊆ closure Gen)
@@ -177,6 +234,13 @@ theorem part1 {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω]
     simp only [Matrix.of_apply, Finset.sum_smul]
     exact (e.sum_comp (fun b => ∑ j : {j : Fin (N + 1) // j ≠ j0}, (t (i.succ, j.1) * pt x (a j b)) • Dv b.1.1)).symm
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Take `⟨Dv, hDv, M, w, hM, key, hrow⟩` from `part1 rfl sg hdom hGs hGd pt hpt htr W hW u j0 hWu c hc hc0 hx hx0 jj hJ t ht hs`. Simplify using `only [Fin.cast_eq_self] at hrow hs ⊢`. Establish `hxd : c 0 ∈ dom` using `by rw [hc0]; exact hGs hx`. Establish `hcx : ContinuousAt (fun z => W j0 (c z)) 0` using `((hW j0).differentiableAt (hdom.mem_nhds hxd)).continuousAt.comp (hc 0).continuousAt`.
+
+Establish `hx0' : W j0 (c 0) ≠ 0` using `by rw [hc0]; exact hx0`. Establish `hev : ∀ᶠ z in 𝓝 (0 : EuclideanSpace ℂ (Fin n)), W j0 (c z) ≠ 0` using `hcx.eventually_ne hx0'`. Establish `hw' : ∑ j, t (0, j) * W j (c 0) ≠ 0` using `by rw [hc0]; exact hw`. Establish `hT` using `SCoG.target W c j0 hev Dv hDv t hx0' (by rw [hc0]; exact hs) hw'`. Rewrite using `[hT.fderiv]`.
+
+Conclude with `SCoG.finale Dv t M w hM key hrow _ (div_ne_zero hw' hx0')`.
+-/
 theorem core {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω]
     {Fr : Type} [NormedAddCommGroup Fr] [NormedSpace ℂ Fr] {n N D : ℕ} (hD : n = D) (sg : K →+* ℂ)
     {dom Gen : Set Fr} (hdom : IsOpen dom) (hGs : Gen ⊆ dom) (hGd : dom ⊆ closure Gen)

@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NilpotentExpInjecti
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exp_injective_of_commute | exact GlobalTheory.exp_injective_of_commute | (intros; apply GlobalTheory.exp_injective_of_commute <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nilpotent_exp_injective_commuting : ∀ (A : Type) [Ring A] [Algebra ℚ A] (a b : A), Commute a b → IsNilpotent a → IsNilpotent b → IsNilpotent.exp a = IsNilpotent.exp b → a = b := by
   first | exact @GlobalTheory.exp_injective_of_commute | exact GlobalTheory.exp_injective_of_commute | (intros; apply GlobalTheory.exp_injective_of_commute <;> assumption)

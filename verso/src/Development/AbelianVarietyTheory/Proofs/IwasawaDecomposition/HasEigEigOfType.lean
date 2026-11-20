@@ -27,6 +27,9 @@ def HasEig (R : RealDat3 D A3 Ks) (F : Face3 D A3) {X0 : BaseLevelRowSide D} (Y 
     (levChi _ (R.βW ⟨0, Y.hm⟩) (R.datWp ⟨0, Y.hm⟩ (R.toRealDat.levL F.lv2 false (sg0 D A3.A))))
     (SsetF R.toRealDat (Y.tupT D.what₂.mu0)) (principalLevelFrame.rowRepR R.θ (Y.eFT π)) c
 
+/- English proof (translation)
+Unfold `eigOfType principalLevelFrame.cOfT`. Unfold `HasEig at h ⊢`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem hasEig_eigOfType {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
     {Y : Read (A3 := A3) R.toRealDat F.lv2 X0} {π : D.what₂.FT} (h : ∃ c, HasEig R F Y π c) :
     HasEig R F Y π (eigOfType R F Y π) := by

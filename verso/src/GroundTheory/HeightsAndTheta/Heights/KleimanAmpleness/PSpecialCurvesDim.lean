@@ -18,6 +18,19 @@ section LocalRing
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
+/- English proof (translation)
+Establish `h1 : (1 : A) ∉ p` using `fun h => hp.ne_top ((Ideal.eq_top_iff_one p).2 h)`. Unfold `IndefiniteRowSideFullHecke.Kleiman2.locIn at hv`. Proceed by induction on `hv using Subring.closure_induction with`. Consider the case `mem u hu`. Take `⟨a, b, hb, rfl⟩` from `hu`.
+
+Establish `hb0 : (b : Ω) ≠ 0` using `fun h => hb (by rw [show b = 0 from Subtype.ext h]; exact p.zero_mem)`. Conclude with `⟨a, b, hb, div_mul_cancel₀ _ hb0⟩`. Consider the case `zero => exact ⟨0, 1, h1, by simp⟩`. Consider the case `one => exact ⟨1, 1, h1, by simp⟩`. Consider the case `add u v _ _ hu hv`.
+
+Take `⟨a, b, hb, hab⟩` from `hu`. Take `⟨a', b', hb', hab'⟩` from `hv`. Use `⟨a * b' + a' * b, b * b', fun h => (hp.mem_or_mem h).elim hb hb', ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hab, ← hab']`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `neg u _ hu`. Take `⟨a, b, hb, hab⟩` from `hu`. Conclude with `⟨-a, b, hb, by push_cast; rw [← hab]; ring⟩`. Consider the case `mul u v _ _ hu hv`.
+
+Take `⟨a, b, hb, hab⟩` from `hu`. Take `⟨a', b', hb', hab'⟩` from `hv`. Use `⟨a * a', b * b', fun h => (hp.mem_or_mem h).elim hb hb', ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hab, ← hab']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mul_eq_of_mem_locIn (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {v : Ω}
     (hv : v ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p) : ∃ a b : A, b ∉ p ∧ v * b = a := by
   have h1 : (1 : A) ∉ p := fun h => hp.ne_top ((Ideal.eq_top_iff_one p).2 h)
@@ -47,6 +60,11 @@ theorem exists_mul_eq_of_mem_locIn (A : Subalgebra S Ω) (p : Ideal A) [hp : p.I
     rw [← hab, ← hab']
     ring
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a', b', hb', hab'⟩` from `exists_mul_eq_of_mem_locIn A p hv`. Establish `hb : b' = a * a'` using `Subtype.ext (by`. Use `push_cast`. Rewrite using `[← hab', ← mul_assoc, h, one_mul])`.
+
+Conclude with `hb' (hb ▸ p.mul_mem_right _ ha)`.
+-/
 theorem mul_ne_one_of_mem (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {a : A} (ha : a ∈ p) {v : Ω}
     (hv : v ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p) : (a : Ω) * v ≠ 1 := by
   intro h
@@ -56,10 +74,16 @@ theorem mul_ne_one_of_mem (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {
     rw [← hab', ← mul_assoc, h, one_mul])
   exact hb' (hb ▸ p.mul_mem_right _ ha)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure ⟨⟨a, ha⟩, 1, fun h => hp.ne_top ((Ideal.eq_top_iff_one p).2 h), by simp⟩`.
+-/
 theorem mem_locIn (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {a : Ω} (ha : a ∈ A) :
     a ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p :=
   Subring.subset_closure ⟨⟨a, ha⟩, 1, fun h => hp.ne_top ((Ideal.eq_top_iff_one p).2 h), by simp⟩
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure ⟨1, b, hb, by simp⟩`.
+-/
 theorem inv_mem_locIn (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] {b : A} (hb : b ∉ p) :
     (b : Ω)⁻¹ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p :=
   Subring.subset_closure ⟨1, b, hb, by simp⟩
@@ -70,6 +94,15 @@ section Homogenize
 
 variable {O : Type} [CommRing O] {K : Type} [Fintype K] {ι : K → Type}
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨C a, 0, fun L _ χ v _ => by simp⟩`. Consider the case `add f g hf hg`. Take `⟨F, n, hF⟩` from `hf`. Take `⟨G, m, hG⟩` from `hg`.
+
+Use `⟨F * (∏ k, X ⟨k, c k⟩) ^ m + G * (∏ k, X ⟨k, c k⟩) ^ n, n + m, fun L _ χ v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_add, eval₂_mul, eval₂_pow, eval₂_prod, eval₂_X, hF L χ v hv, hG L χ v hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X f p hf`. Take `⟨F, n, hF⟩` from `hf`.
+
+Use `⟨F * X p * ∏ k ∈ Finset.univ.erase p.1, X ⟨k, c k⟩, n + 1, fun L _ χ v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_mul, eval₂_X, eval₂_prod, hF L χ v hv]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun k => v ⟨k, c k⟩) (Finset.mem_univ p.1)]`. Establish `h0` using `hv p.1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_clear_denominators (c : ∀ k, ι k) (f : MvPolynomial (Σ k, ι k) O) :
     ∃ (F : MvPolynomial (Σ k, ι k) O) (n : ℕ), ∀ (L : Type) [Field L] (χ : O →+* L) (v : (Σ k, ι k) → L),
       (∀ k, v ⟨k, c k⟩ ≠ 0) →
@@ -99,6 +132,21 @@ section Main
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type} [Fintype K] {ι : K → Type}
   {Ω : Type} [Field Ω] [Algebra O Ω]
 
+/- English proof (translation)
+Take `⟨F, n, hF⟩` from `exists_clear_denominators c f`. Set `χE : O →+* FractionRing (MvPolynomial K Ω)` to `(algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))).comp ((algebraMap Ω (MvPolynomial K Ω)).comp (algebraMap O Ω))`. Set `vE : (Σ k, ι k) → FractionRing (MvPolynomial K Ω)` to `fun p => algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y p) * X p.1)`. Establish `hinj : Function.Injective (algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)))` using `IsFractionRing.injective _ _`. Establish `hvE : ∀ k, vE ⟨k, c k⟩ ≠ 0` using `fun k h => mul_ne_zero (C_ne_zero.2 (hyc k)) (X_ne_zero _) ((map_eq_zero_iff _ hinj).1 h)`.
+
+Establish `hcone : ∀ g, eval₂ χE vE g = algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (mConeMapOver O y g)`. Introduce `g`. Establish `: eval₂Hom χE vE = (algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))).comp (mConeMapOver O y).toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[χE, mConeMapOver, MvPolynomial.algebraMap_eq]`.
+
+Simplify using `[vE, mConeMapOver]`. Conclude with `RingHom.congr_fun this g`. Establish `hv : (fun p : Σ k, ι k => vE p / vE ⟨p.1, c p.1⟩) = fun p => algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y p / y ⟨p.1, c p.1⟩))`. Use function extensionality and compare the values at `p`. Rewrite using `[div_eq_iff (hvE p.1)]`.
+
+Use `show algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y p) * X p.1) = algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y p / y ⟨p.1, c p.1⟩)) * algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y ⟨p.1, c p.1⟩) * X p.1)`. Rewrite using `[← map_mul, ← mul_assoc, ← C_mul, div_mul_cancel₀ _ (hyc p.1)]`. Establish `hratio : ∀ g, eval₂ χE (fun p => vE p / vE ⟨p.1, c p.1⟩) g = algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (aeval (fun p => y p / y ⟨p.1, c p.1⟩) g))`. Introduce `g`. Rewrite using `[hv]`.
+
+Establish `: eval₂Hom χE (fun p => algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω)) (C (y p / y ⟨p.1, c p.1⟩))) = ((algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))).comp C).comp (aeval (fun p => y p / y ⟨p.1, c p.1⟩)).toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[χE, MvPolynomial.algebraMap_eq]`. Simplify using the standard rewrite rules. Conclude with `RingHom.congr_fun this g`.
+
+Establish `hFI : F ∈ mIdealOver O y`. Establish `h` using `hF _ χE vE hvE`. Rewrite `h` using `[hratio, hf, map_zero, map_zero, mul_zero, hcone]`. Conclude with `(map_eq_zero_iff _ hinj).1 h`. Establish `hFW : MvPolynomial.map (IsLocalRing.residue O) F ∈ W` using `hW (Ideal.mem_map_of_mem _ hFI)`.
+
+Rewrite `hFW` using `[← ModelGenericPoint.aeval_genPt_eq_zero, aeval_def, eval₂_map]`. Establish `h` using `hF _ ((algebraMap (IsLocalRing.ResidueField O) _).comp (IsLocalRing.residue O)) (ModelGenericPoint.genPt W) hwc`. Rewrite `h` using `[hFW]`. Conclude with `(mul_eq_zero.1 h.symm).resolve_left (pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun k _ => hwc k))`.
+-/
 theorem eval₂_ratio_eq_zero (y : (Σ k, ι k) → Ω) (W : Ideal (NumbersDVR.MRing ι (IsLocalRing.ResidueField O)))
     [W.IsPrime] (hW : NumbersDVR.specialIdeal (mIdealOver O y) ≤ W) (c : ∀ k, ι k)
     (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hwc : ∀ k, ModelGenericPoint.genPt W ⟨k, c k⟩ ≠ 0)
@@ -163,6 +211,15 @@ section Chart
 
 variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 
+/- English proof (translation)
+Unfold `chartRingOver at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem u hu`. Take `⟨⟨⟨⟩, l⟩, rfl⟩` from `hu`. Use `⟨1, X l, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.oneBlock, aeval_X, pow_one]`. Rewrite using `[div_mul_div_comm, mul_comm (x l), mul_div_mul_left _ _ hj]`. Consider the case `algebraMap r => exact ⟨0, C r, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨D₁, g₁, h₁⟩` from `hu`.
+
+Take `⟨D₂, g₂, h₂⟩` from `hv`. Use `⟨D₁ + D₂, g₁ * X (j ()) ^ D₂ + g₂ * X (j ()) ^ D₁, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, aeval_X, ← h₁, ← h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul u v _ _ hu hv`.
+
+Take `⟨D₁, g₁, h₁⟩` from `hu`. Take `⟨D₂, g₂, h₂⟩` from `hv`. Use `⟨D₁ + D₂, g₁ * g₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, ← h₁, ← h₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mul_pow_eq_aeval {ι₀ : Type} (x : ι₀ → Ω) (j : Unit → ι₀) (c₀ : ι₀) (hj : x (j ()) ≠ 0) {a : Ω}
     (ha : a ∈ chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) j) :
     ∃ (D : ℕ) (g : MvPolynomial ι₀ O), a * (x (j ()) / x c₀) ^ D = aeval (fun l => x l / x c₀) g := by
@@ -189,6 +246,11 @@ theorem exists_mul_pow_eq_aeval {ι₀ : Type} (x : ι₀ → Ω) (j : Unit → 
 
 omit [Algebra O Ω] in
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => rw [eval₂_C]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add f g hf hg => rw [eval₂_add]`. Conclude with `add_mem hf hg`.
+
+Consider the case `mul_X f l hf => rw [eval₂_mul, eval₂_X]`. Conclude with `mul_mem hf (Algebra.subset_adjoin ⟨l, rfl⟩)`.
+-/
 theorem eval₂_mem_adjoin [IsLocalRing O] {ι₀ L : Type} [Field L] [Algebra (IsLocalRing.ResidueField O) L] (s : ι₀ → L)
     (g : MvPolynomial ι₀ O) :
     eval₂ ((algebraMap (IsLocalRing.ResidueField O) L).comp (IsLocalRing.residue O)) s g ∈
@@ -205,6 +267,39 @@ section Model
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type} [Fintype K] {ι : K → Type}
   {Ω : Type} [Field Ω] [Algebra O Ω]
 
+/- English proof (translation)
+Use `set w := ModelGenericPoint.genPt W`. Use `set u : (Σ k, ι k) → Ω := fun p => y p / y ⟨p.1, c p.1⟩ with hu_def`. Use `set χ : O →+* FractionRing (NumbersDVR.MRing ι (IsLocalRing.ResidueField O) ⧸ W) := (algebraMap (IsLocalRing.ResidueField O) _).comp (IsLocalRing.residue O)`. Use `set r := fun p : Σ k, ι k => w p / w ⟨p.1, c p.1⟩`. Use `set A := chartRingOver O y c`.
+
+Establish `hA : A = (aeval u).range` using `Algebra.adjoin_range_eq_range_aeval O u`. Establish `hA' : ∀ f, aeval u f ∈ A` using `fun f => by rw [hA]; exact ⟨f, rfl⟩`. Set `ev : MvPolynomial (Σ k, ι k) O →+* A` to `((aeval u).codRestrict A hA').toRingHom`. Establish `hev : ∀ f, (ev f : Ω) = aeval u f` using `fun f => rfl`. Establish `hsurj : Function.Surjective ev`.
+
+Introduce and unpack `⟨a, ha⟩`. Rewrite `ha` using `[hA]`. Take `⟨f, rfl⟩` from `ha`. Conclude with `⟨f, rfl⟩`. Establish `hker : RingHom.ker ev ≤ RingHom.ker (eval₂Hom χ r)`.
+
+Introduce `f hf`. Rewrite `hf`, the goal using `[RingHom.mem_ker]`. Establish `h0 : aeval u f = 0` using `by rw [← hev, hf]; rfl`. Conclude with `eval₂_ratio_eq_zero y W hW c hyc hwc h0`. Establish `hker' : ∀ a ∈ RingHom.ker ev, eval₂Hom χ r a = 0` using `fun a ha => hker ha`.
+
+Set `φ : A →+* FractionRing (NumbersDVR.MRing ι (IsLocalRing.ResidueField O) ⧸ W)` to `(Ideal.Quotient.lift _ (eval₂Hom χ r) hker').comp (RingHom.quotientKerEquivOfSurjective hsurj).symm.toRingHom`. Establish `hφ : ∀ f, φ (ev f) = eval₂ χ r f`. Introduce `f`. Establish `: (RingHom.quotientKerEquivOfSurjective hsurj).symm (ev f) = Ideal.Quotient.mk _ f`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+
+Both sides reduce to the same expression. Use `show Ideal.Quotient.lift _ (eval₂Hom χ r) hker' ((RingHom.quotientKerEquivOfSurjective hsurj).symm (ev f)) = _`. Rewrite using `[this, Ideal.Quotient.lift_mk, coe_eval₂Hom]`. Establish `hP : (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`. Establish `hz : IndefiniteRowSideFullHecke.Kleiman2.locIn A (RingHom.ker φ) ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts O y` using `⟨c, hyc, _, hP, rfl⟩`.
+
+Rewrite `hz` using `[hy.2]`. Take `⟨j, hj, q, hq, hzq⟩` from `hz`. Establish `hxj : y ⟨k₀, j ()⟩ ≠ 0` using `hj ()`. Use `set h : Ω := y ⟨k₀, j ()⟩ / y ⟨k₀, c k₀⟩ with hh`. Establish `hh0 : h ≠ 0` using `div_ne_zero hxj (hyc k₀)`.
+
+Establish `hup : u p ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) j) q`. Rewrite using `[← hzq]`. Conclude with `mem_locIn A _ (Algebra.subset_adjoin ⟨p, rfl⟩)`. Take `⟨a, b, hb, hab⟩` from `exists_mul_eq_of_mem_locIn (chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) j) q hup`. Establish `hb0 : (b : Ω) ≠ 0` using `fun h0 => hb (by rw [show b = 0 from Subtype.ext h0]; exact q.zero_mem)`.
+
+Take `⟨Da, ga, hga⟩` from `exists_mul_pow_eq_aeval (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) j (c k₀) hxj a.2`. Take `⟨Db, gb, hgb⟩` from `exists_mul_pow_eq_aeval (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) j (c k₀) hxj b.2`. Use `set ρ : ι k₀ → Σ k, ι k := fun l => ⟨k₀, l⟩`. Establish `hren : ∀ g : MvPolynomial (ι k₀) O, aeval u (rename ρ g) = aeval (fun l => IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ l / IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ (c k₀)) g`. Introduce `g`.
+
+Rewrite using `[aeval_rename]`. Both sides reduce to the same expression. Establish `hφren : ∀ g : MvPolynomial (ι k₀) O, φ (ev (rename ρ g)) ∈ Algebra.adjoin (IsLocalRing.ResidueField O) (Set.range fun l : ι k₀ => w ⟨k₀, l⟩ / w ⟨k₀, c k₀⟩)`. Introduce `g`. Rewrite using `[hφ, eval₂_rename]`.
+
+Conclude with `eval₂_mem_adjoin _ g`. Use `set Ga := rename ρ (ga * X (j ()) ^ Db)`. Use `set Gb := rename ρ (gb * X (j ()) ^ Da)`. Establish `hGa : (ev Ga : Ω) = a * h ^ (Da + Db)`. Rewrite using `[hev, hren, map_mul, map_pow, aeval_X, ← hga, pow_add]`.
+
+Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.blockVec, hh]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGb : (ev Gb : Ω) = b * h ^ (Da + Db)`. Rewrite using `[hev, hren, map_mul, map_pow, aeval_X, ← hgb, pow_add]`. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.blockVec, hh]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨φ (ev Ga), φ (ev Gb), hφren _, hφren _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hmem : ev Gb ∈ RingHom.ker φ` using `h0`. Establish `hinv : (b : Ω)⁻¹ * h⁻¹ ^ (Da + Db) ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A (RingHom.ker φ)`.
+
+Rewrite using `[hzq]`. Use `Subring.mul_mem _ (inv_mem_locIn (chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) j) q hb) (Subring.pow_mem _ (mem_locIn (chartRingOver O (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.K …` and prove the remaining obligations. Use `Algebra.subset_adjoin ⟨⟨(), c k₀⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec, hh, inv_div]`. Apply `mul_ne_one_of_mem A _ hmem hinv` to reduce the goal to its premises.
+
+Rewrite using `[hGb, inv_pow, mul_mul_mul_comm, mul_inv_cancel₀ hb0, mul_inv_cancel₀ (pow_ne_zero _ hh0), one_mul]`. Establish `hrel : ev (X p) * ev Gb = ev Ga`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hGa, hGb, hev, aeval_X, ← hab]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `congrArg φ hrel` as an intermediate fact. Rewrite `this` using `[map_mul, hφ, eval₂_X]`. Conclude with `this`.
+-/
 theorem exists_ratio_eq_div (y : (Σ k, ι k) → Ω) (k₀ : K) (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase O y k₀)
     (W : Ideal (NumbersDVR.MRing ι (IsLocalRing.ResidueField O))) [W.IsPrime]
     (hW : NumbersDVR.specialIdeal (mIdealOver O y) ≤ W) (c : ∀ k, ι k)
@@ -306,6 +401,11 @@ end Model
 
 section Dim
 
+/- English proof (translation)
+Break down `lt_or_ge n Cardinal.aleph0 with h | h` into its components or cases. Take `⟨k, rfl⟩` from `Cardinal.lt_aleph0.1 h`. Rewrite using `[← Nat.cast_add, Cardinal.toENat_nat, Cardinal.toENat_nat]`. Use `show WithBot.some (WithTop.some (((k + m : ℕ) : ℤ) - m)) = WithBot.some (WithTop.some ((k : ℕ) : ℤ))`. Rewrite using `[show (((k + m : ℕ) : ℤ) - m) = ((k : ℕ) : ℤ) by push_cast; ring]`.
+
+Rewrite using `[Cardinal.toENat_eq_top.2 h, Cardinal.toENat_eq_top.2 (h.trans le_self_add)]`. Both sides reduce to the same expression.
+-/
 theorem map_toENat_add_sub (n : Cardinal) (m : ℕ) :
     WithBot.map (fun d : ℕ∞ => WithTop.map (fun e : ℕ => (e : ℤ) - m) d) (((n + m).toENat : ℕ∞) : WithBot ℕ∞) =
       WithBot.map (fun d : ℕ∞ => WithTop.map (fun e : ℕ => (e : ℤ)) d) ((n.toENat : ℕ∞) : WithBot ℕ∞) := by
@@ -319,6 +419,33 @@ theorem map_toENat_add_sub (n : Cardinal) (m : ℕ) :
 
 end Dim
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ Ω _ _ _ _ y k₀ N e hy W hW hyW`. Use `haveI := hW.isPrime`. Use `choose c hc using hW.relevant`. Establish `hwc : ∀ k, ModelGenericPoint.genPt W ⟨k, c k⟩ ≠ 0` using `fun k => (ModelGenericPoint.genPt_ne_zero W _).2 (hc k)`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0`.
+
+Introduce `k h`. Apply `hc k` to reduce the goal to its premises. Apply `hyW` to reduce the goal to its premises. Establish `hX : (X ⟨k, c k⟩ : MvPolynomial (Σ k, ι k) O) ∈ mIdealOver O y` using `by show mConeMapOver O y (X _) = 0`. Simplify using `[mConeMapOver, h]`.
+
+Establish `h'` using `Ideal.mem_map_of_mem (MvPolynomial.map (IsLocalRing.residue O)) hX`. Rewrite `h'` using `[map_X]`. Conclude with `h'`. Use `set w := ModelGenericPoint.genPt W with hw_def`. Use `set x' : Fin (N + 1) → FractionRing (NumbersDVR.MRing ι (IsLocalRing.ResidueField O) ⧸ W) := IndefiniteRowSideFullHecke.Kleiman2.blockVec w k₀ ∘ e.symm`.
+
+Use `set c' : Unit → Fin (N + 1) := fun _ => e (c k₀)`. Establish `hxc' : ∀ k, IndefiniteRowSideFullHecke.Kleiman2.oneBlock x' ⟨k, c' k⟩ ≠ 0` using `fun _ => by`. Simplify `hwc k₀` using `[x', c', IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `hT₀ : Algebra.adjoin (IsLocalRing.ResidueField O) (Set.range fun l : ι k₀ => w ⟨k₀, l⟩ / w ⟨k₀, c k₀⟩) ≤ chartRingOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') c'`. Rewrite using `[Algebra.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨(), e l⟩, by simp [x', c', IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]⟩`. Establish `hle : chartRingOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') c' ≤ chartRingOver (IsLocalRing.ResidueField O) w c`. Unfold `chartRingOver`. Rewrite using `[Algebra.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `Algebra.subset_adjoin ⟨⟨k₀, e.symm q.2⟩, by simp [x', c', IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]⟩`. Establish `halg : ∀ t ∈ chartRingOver (IsLocalRing.ResidueField O) w c, IsAlgebraic (chartRingOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') c') t`. Introduce `t ht`. Use `isAlgebraic_of_mem_adjoin _ (fun t' ht' => ?_) ht` and prove the remaining obligations.
+
+Take `⟨p, rfl⟩` from `ht'`. Take `⟨a, b, ha, hb, hb0, hab⟩` from `exists_ratio_eq_div y k₀ hy W hyW c hyc hwc p`. Use `⟨Polynomial.C ⟨b, hT₀ hb⟩ * Polynomial.X - Polynomial.C ⟨a, hT₀ ha⟩, fun h0 => hb0 ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun P => Polynomial.coeff P 1) h0`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_C_mul_X, Polynomial.coeff_C, Polynomial.coeff_zero] at h1`.
+
+Simplify using `using congrArg Subtype.val h1`. Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X] show b * _ - a = 0`. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree. Establish `htr` using `trdeg_eq_of_le_of_isAlgebraic hle halg`.
+
+Establish `hWeq : W = mIdealOver (IsLocalRing.ResidueField O) w` using `(ModelGenericPoint.mIdealOver_genPt W hW.multiHomog).symm`. Establish `hW₀ : baseComap (IsLocalRing.ResidueField O) k₀ e W = mIdealOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')`. Establish `hcomp : (mConeMapOver (IsLocalRing.ResidueField O) w).comp (rename fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) = ((rename (R` using `FractionRing (NumbersDVR.MRing ι (IsLocalRing.ResidueField O) ⧸ W)) fun _ : Unit => k₀).restrictScalars (IsLocalRing.ResidueField O)).comp (mConeMapOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`.
+
+Simplify using `[mConeMapOver, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec, x']`. Establish `hinj : Function.Injective (rename (R` using `FractionRing (NumbersDVR.MRing ι (IsLocalRing.ResidueField O) ⧸ W)) fun _ : Unit => k₀) := rename_injective _ (fun _ _ _ => rfl)`. Use extensionality with `f`. Rewrite using `[baseComap, Ideal.mem_comap]`. Use `conv_lhs => rw [hWeq]`.
+
+Use `show mConeMapOver _ w _ = 0 ↔ mConeMapOver _ (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') f = 0`. Rewrite using `[← AlgHom.comp_apply, hcomp, AlgHom.comp_apply]`. Conclude with `map_eq_zero_iff _ hinj`. Use `haveI : (mIdealOver (IsLocalRing.ResidueField O) w).IsPrime := RingHom.ker_isPrime _`. Use `haveI : (mIdealOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')).IsPrime := RingHom.ker_isPrime _`.
+
+Use `haveI : Algebra.FiniteType (IsLocalRing.ResidueField O) (MvPolynomial (Σ k, ι k) (IsLocalRing.ResidueField O) ⧸ mIdealOver (IsLocalRing.ResidueField O) w) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ _ _) (Ideal.Quotient.mkₐ_surjective _ _)`. Use `haveI : Algebra.FiniteType (IsLocalRing.ResidueField O) (MvPolynomial (Σ _ : Unit, Fin (N + 1)) (IsLocalRing.ResidueField O) ⧸ mIdealOver (IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x')) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ _ _) ( …`. Establish `h1` using `trdeg_quotient_mIdealOver (F := IsLocalRing.ResidueField O) w c hwc`. Establish `h2` using `trdeg_quotient_mIdealOver (F := IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x') c' hxc'`. Rewrite using `[hW₀]`.
+
+Use `conv_rhs => rw [hWeq]`. Unfold `relDim`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg (IsLocalRing.ResidueField O), GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg (IsLocalRing.ResidueField O), h1, h2, htr, Fintype.card_unit]`. Rewrite using `[map_toENat_add_sub, map_toENat_add_sub]`.
+-/
 theorem proof : SpecialCurvesDim.Statement := by
   intro O _ _ _ K _ _ ι _ Ω _ _ _ _ y k₀ N e hy W hW hyW
   classical

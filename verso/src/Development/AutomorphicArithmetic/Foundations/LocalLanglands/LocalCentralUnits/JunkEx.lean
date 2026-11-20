@@ -21,6 +21,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Zero.LLC
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite K`. Take `⟨p, hpc⟩` from `CharP.exists K`. Take `⟨k, hp, hk⟩` from `FiniteField.card K p`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : ExpChar K p := ExpChar.prime hp`.
+
+Establish `hc : Fintype.card K = q ^ n` using `by rw [← Nat.card_eq_fintype_card]; exact hcard`. Establish `hd : q ∣ p ^ (k : ℕ)`. Rewrite using `[← hk, hc]`. Conclude with `dvd_pow_self q hn.ne'`. Take `⟨j, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 hd`.
+
+Set `f0 : K →+* K` to `iterateFrobenius K p j`. Establish `hinj : Function.Injective f0` using `f0.injective`. Set `f : RingAut K` to `RingEquiv.ofBijective f0 (Finite.injective_iff_bijective.1 hinj)`. Establish `hf : ∀ x, f x = x ^ p ^ j` using `fun x => iterateFrobenius_def p j x`. Establish `hpow : ∀ (m : ℕ) (x : K), (f ^ m) x = x ^ (p ^ j) ^ m`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `x`. Rewrite using `[pow_succ', RingAut.mul_apply, ih, hf, ← pow_mul, ← pow_succ]`. Use `⟨f, hf, (orderOf_eq_iff hn).2 ⟨?_, fun m hmn hm0 hone => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[hpow, ← hc, FiniteField.pow_card]`.
+
+Both sides reduce to the same expression. Take `⟨b, hb⟩` from `IsCyclic.exists_generator (α := Kˣ)`. Establish `hob : orderOf b = (p ^ j) ^ n - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hb, Nat.card_eq_fintype_card, Fintype.card_units, hc]`. Establish `hq1 : 1 ≤ (p ^ j) ^ m` using `Nat.one_le_pow _ _ (by omega)`.
+
+Establish `h1 : (b : K) ^ (p ^ j) ^ m = b`. Rewrite using `[← hpow, hone]`. Both sides reduce to the same expression. Establish `h2 : b ^ ((p ^ j) ^ m - 1) = 1`. Establish `h3 : b ^ (p ^ j) ^ m = b` using `Units.ext (by simpa using h1)`.
+
+Establish `h4 : b ^ ((p ^ j) ^ m - 1) * b = 1 * b`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq1, one_mul, h3]`. Conclude with `mul_right_cancel h4`. Establish `hdv` using `orderOf_dvd_of_pow_eq_one h2`. Rewrite `hdv` using `[hob]`.
+
+Establish `hlt : (p ^ j) ^ m < (p ^ j) ^ n` using `Nat.pow_lt_pow_right hq hmn`. Establish `h2m : 2 ≤ (p ^ j) ^ m` using `le_trans hq (Nat.le_self_pow hm0.ne' _)`. Use `Nat.le_of_dvd (by omega) hdv` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_frobAut (K : Type) [Field K] [Finite K] (q n : ℕ) (hq : 1 < q) (hn : 0 < n)
     (hcard : Nat.card K = q ^ n) : ∃ f : RingAut K, (∀ x, f x = x ^ q) ∧ orderOf f = n := by
   classical
@@ -66,6 +85,11 @@ private theorem exists_frobAut (K : Type) [Field K] [Finite K] (q n : ℕ) (hq :
     have := Nat.le_of_dvd (by omega) hdv
     omega
 
+/- English proof (translation)
+Break down `eq_or_ne γ 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem le_exp_neg_one {γ : WithZero (Multiplicative ℤ)} (h : γ < 1) : γ ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne γ 0 with rfl | h0
   · exact zero_le'
@@ -74,6 +98,9 @@ private theorem le_exp_neg_one {γ : WithZero (Multiplicative ℤ)} (h : γ < 1)
     rw [WithZero.exp_le_exp]
     omega
 
+/- English proof (translation)
+Establish `h0 : γ ≠ 0` using `by rintro rfl; exact h zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h`, the goal using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exp_neg_one_le {γ : WithZero (Multiplicative ℤ)} (h : ¬ γ ≤ WithZero.exp (-2 : ℤ)) :
     WithZero.exp (-1 : ℤ) ≤ γ := by
   have h0 : γ ≠ 0 := by rintro rfl; exact h zero_le'
@@ -81,6 +108,9 @@ private theorem exp_neg_one_le {γ : WithZero (Multiplicative ℤ)} (h : ¬ γ �
   rw [WithZero.exp_le_exp] at h ⊢
   omega
 
+/- English proof (translation)
+Establish `e : (Valued.v (algebraMap L (u.adicCompletion L) (c : L)) : WithZero (Multiplicative ℤ)) = u.intValuation c` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 L) u (c : L)).trans (HeightOneSpectrum.valuation_of_algebraMap u c)`. Rewrite using `[e]`. Use `(le_exp_neg_one hx).trans (exp_neg_one_le fun h2 => hc2 ?_)` and prove the remaining obligations. Conclude with `(u.intValuation_le_pow_iff_mem c 2).1 (by simpa using h2)` after adjusting the coercions.
+-/
 private theorem le_val_of_not_mem_sq {L : Type} [Field L] [NumberField L] (u : HeightOneSpectrum (𝓞 L)) (c : 𝓞 L)
     (hc1 : c ∈ u.asIdeal) (hc2 : c ∉ u.asIdeal ^ 2) (x : u.adicCompletion L) (hx : Valued.v x < 1) :
     Valued.v x ≤ Valued.v (algebraMap L (u.adicCompletion L) (c : L)) := by
@@ -91,6 +121,61 @@ private theorem le_val_of_not_mem_sq {L : Type} [Field L] [NumberField L] (u : H
   refine (le_exp_neg_one hx).trans (exp_neg_one_le fun h2 => hc2 ?_)
   exact_mod_cast (u.intValuation_le_pow_iff_mem c 2).1 (by simpa using h2)
 
+/- English proof (translation)
+Take `⟨c, hcw, hc2⟩ : ∃ c : 𝓞 E, c ∈ w.asIdeal ∧ c ∉ w.asIdeal ^ 2` from `SetLike.exists_of_lt (Ideal.pow_lt_self _ w.ne_bot w.isPrime.ne_top 2 le_rfl)`. Establish `hφ : IsFrob A (normV w) (frob h : G E Ω)` using `isFrob_frob`. Take `⟨L, _, _, _, _, _, _, u, hu, s, hs, hfix, hcu, hN⟩` from `UpperTheory.exists_numberField_extension_place_frobenius_degree E Ω A w h n hn _ hφ c hc2`. Take `⟨a, ha, -⟩` from `UpperTheory.Zero.LLC.artEx L Ω A u hu`. Establish `hsu : ∀ x : 𝓞 L, RingOfIntegers.mapRingHom (s.toRingEquiv : L →+* L) x ∈ u.asIdeal ↔ x ∈ u.asIdeal`.
+
+Introduce `x`. Rewrite using `[← hu, ← hu x]`. Establish `e : algebraMap L Ω ((RingOfIntegers.mapRingHom (s.toRingEquiv : L →+* L) x : 𝓞 L) : L) = (frob h : G E Ω) (algebraMap L Ω (x : L))` using `(hs _).symm`. Rewrite using `[e]`. Conclude with `valuation_apply_lt_one_iff hφ.1 _`.
+
+Take `⟨i, hic, hil, hiv⟩` from `UpperTheory.exists_adicCompletion_ringEquiv_extending_of_stable u s.toRingEquiv hsu`. Establish `hcL1 : algebraMap (𝓞 E) (𝓞 L) c ∈ u.asIdeal`. Rewrite using `[← hu]`. Establish `e : algebraMap L Ω ((algebraMap (𝓞 E) (𝓞 L) c : 𝓞 L) : L) = algebraMap E Ω (c : E)` using `(IsScalarTower.algebraMap_apply E L Ω (c : E)).symm`. Rewrite using `[e]`.
+
+Conclude with `(h c).2 hcw`. Use `set cL : 𝓞 L := algebraMap (𝓞 E) (𝓞 L) c with hcL`. Use `set ϖ : u.adicCompletion L := algebraMap L (u.adicCompletion L) (cL : L) with hϖdef`. Establish `hcL0 : cL ≠ 0` using `fun h0 => hcu (by rw [h0]; exact zero_mem _)`. Establish `hϖ0 : ϖ ≠ 0`.
+
+Rewrite using `[hϖdef, Ne, map_eq_zero]`. Conclude with `hcL0` after adjusting the coercions. Establish `hϖ1 : Valued.v ϖ < 1` using `DiscreteGroups.sglob.DzType.val_alg_lt_one_of_mem cL hcL1`. Establish `hϖ : ∀ x : u.adicCompletion L, Valued.v x < 1 → Valued.v x ≤ Valued.v ϖ` using `le_val_of_not_mem_sq u cL hcL1 hcu`. Set `O : ValuationSubring (u.adicCompletion L)` to `(Valued.v : Valuation (u.adicCompletion L) _).valuationSubring`.
+
+Set `K : Type` to `IsLocalRing.ResidueField O`. Set `ρ : O →+* K` to `IsLocalRing.residue O`. Establish `hcard : Nat.card K = normV w ^ n` using `(UpperTheory.card_residueField_adicCompletionIntegers_eq_absNorm u).trans hN`. Establish `hq1 : 1 < normV w` using `one_lt_normV w`. Establish `hQ : 4 ≤ normV w ^ n`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `haveI : Finite K := Nat.finite_of_card_ne_zero (by rw [hcard]; omega)`. Use `letI := Fintype.ofFinite K`. Establish `hcardF : Fintype.card K = normV w ^ n` using `by rw [← Nat.card_eq_fintype_card]; exact hcard`. Establish `hρ0 : ∀ x : O, ρ x = 0 ↔ Valued.v (x : u.adicCompletion L) < 1`.
+
+Introduce `x`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `(Valuation.isEquiv_valuation_valuationSubring _).lt_one_iff_lt_one.symm`. Establish `hNz : ∀ z : K, z ≠ 0 → z ^ (normV w ^ n - 1) = 1` using `fun z hz => by`. Rewrite using `[← hcardF]`.
+
+Conclude with `FiniteField.pow_card_sub_one_eq_one z hz`. Establish `hNK : (((normV w ^ n - 1 : ℕ)) : K) = -1`. Establish `h0 : ((normV w ^ n : ℕ) : K) = 0` using `by rw [← hcardF]; exact Nat.cast_card_eq_zero K`. Rewrite using `[Nat.cast_sub (by omega), h0, Nat.cast_one, zero_sub]`. Take `⟨abelian₂, hadd, hLs, hL0, hLi⟩` from `UpperTheory.exists_unit_residue_logarithm_of_roots_of_unity (K := K) Valued.v ϖ hϖ0 hϖ1 hϖ ρ IsLocalRing.residue_surjective hρ0 (normV w ^ n - 1) (by omega) hNz hNK`.
+
+Take `⟨f, hfx, hfo⟩` from `exists_frobAut K (normV w) n hq1 (by omega) hcard`. Establish `hρeq : ∀ x y : O, Valued.v ((x : u.adicCompletion L) - y) < 1 → ρ x = ρ y`. Introduce `x y hxy`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `(hρ0 _).2 (by simpa using hxy)`.
+
+Establish `hρi : ∀ x y : O, (y : u.adicCompletion L) = i x → ρ y = f (ρ x)`. Introduce `x y hyx`. Take `⟨z, hz⟩` from `DiscreteGroups.sglob.DzType.exists_int_approx_compl u (x : u.adicCompletion L) x.2`. Set `Z : O` to `⟨algebraMap L (u.adicCompletion L) (z : L), DiscreteGroups.sglob.DzType.val_le_one_int u z⟩`. Establish `h1 : ρ x = ρ Z` using `hρeq _ _ hz`.
+
+Establish `h2 : f (ρ x) = ρ (Z ^ normV w)`. Rewrite using `[h1, map_pow]`. Conclude with `hfx _`. Rewrite using `[h2]`. Apply `hρeq` to reduce the goal to its premises.
+
+Set `z' : 𝓞 L` to `RingOfIntegers.mapRingHom (s.toRingEquiv : L →+* L) z - z ^ normV w`. Establish `hz' : z' ∈ u.asIdeal`. Rewrite using `[← hu]`. Establish `e : algebraMap L Ω (z' : L) = (frob h : G E Ω) (algebraMap L Ω (z : L)) - (algebraMap L Ω (z : L)) ^ normV w`. Rewrite using `[hs]`.
+
+Simplify using `[z']`. Rewrite using `[e]`. Conclude with `hφ.2 _ (GlobalTheory.UnrCycExt.val_le_one_of_int A z)`. Establish `e : (y : u.adicCompletion L) - ((Z ^ normV w : O) : u.adicCompletion L) = i ((x : u.adicCompletion L) - algebraMap L _ (z : L)) + algebraMap L _ (z' : L)`. Rewrite using `[hyx, map_sub, hil]`.
+
+Simplify using `[z', Z]`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ (DiscreteGroups.sglob.DzType.val_alg_lt_one_of_mem z' hz')` and prove the remaining obligations. Rewrite using `[hiv]`. Conclude with `hz`.
+
+Establish `hfixA : ∀ t : Ine (F` using `E) A, ∀ x : L, (t : G E Ω) (algebraMap L Ω x) = algebraMap L Ω x := fun t => hfix t t.2`. Set `ι₀ : Ine (F` to `E) A → G L Ω := fun t => { (t : G E Ω).toRingEquiv with commutes' := hfixA t }`. Establish `hι₀ : ∀ (t : Ine (F` using `E) A) (x : Ω), ι₀ t x = (t : G E Ω) x := fun _ _ => rfl`. Establish `hι₀m : ∀ t, ι₀ t ∈ Ine (F` using `L) A := fun t => ⟨GlobalTheory.FunExt.ConjLift.mem_Dec_of_iff fun x => apply_mem_iff_of_mem_Dec t.2.1 x, fun x hx => t.2.2 x hx⟩`. Set `ι : Ine (F` to `E) A →* Ine (F := L) A := MonoidHom.mk' (fun t => ⟨ι₀ t, hι₀m t⟩) fun t t' => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Both sides reduce to the same expression. Establish `hι : ∀ (t : Ine (F` using `E) A) (x : Ω), (ι t : G L Ω) x = (t : G E Ω) x := fun _ _ => rfl`.
+
+Establish `hιs : ∀ t₁ : Ine (F` using `L) A, ∃ t : Ine (F := E) A, ι t = t₁ := by`. Introduce `t₁`. Establish `hd : AlgEquiv.restrictScalars E (t₁ : G L Ω) ∈ Ine (F` using `E) A := ⟨GlobalTheory.FunExt.ConjLift.mem_Dec_of_iff fun x => apply_mem_iff_of_mem_Dec t₁.2.1 x, fun x hx => t₁.2.2 x hx⟩`. Conclude with `⟨⟨_, hd⟩, Subtype.ext (AlgEquiv.ext fun _ => rfl)⟩`. Establish `hval : ∀ t : Ine (F` using `E) A, Valued.v ((a (ineIncl hu (ι t)) : (u.adicCompletion L)ˣ) : u.adicCompletion L) = 1 := fun t => DiscreteGroups.sglob.DzType.val_artin_ine ha (ι t)`.
+
+Set `π : Ine (F` to `E) A →* Multiplicative K := MonoidHom.mk' (fun t => Multiplicative.ofAdd (abelian₂ (a (ineIncl hu (ι t))))) fun t t' => by`. Rewrite using `[map_mul, map_mul, map_mul, hadd _ _ (hval t) (hval t')]`. Both sides reduce to the same expression. Establish `hπ : ∀ t, Multiplicative.toAdd (π t) = abelian₂ (a (ineIncl hu (ι t)))` using `fun _ => rfl`. Use `⟨K, inferInstance, inferInstance, f, π, hcard, hfo, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y`. Take `⟨b, hb1, hby⟩` from `hLs (Multiplicative.toAdd y)`. Take `⟨t₁, ht₁⟩` from `DiscreteGroups.sglob.DzType.exists_ine_of_v_eq_one ha b hb1`. Take `⟨t, rfl⟩` from `hιs t₁`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[hπ, ht₁, hby]`. Establish `hcont : Continuous fun t : Ine (F` using `E) A => a (ineIncl hu (ι t)) := ha.cont.comp (UpperTheory.continuous_inertia_restriction_of_compat A ι hι)`. Establish `hball : IsOpen {b : (u.adicCompletion L)ˣ | ((b : u.adicCompletion L) - 1) * (ϖ ^ 2)⁻¹ ∈ (O : Set (u.adicCompletion L))}` using `(Valued.isOpen_valuationSubring _).preimage (((Units.continuous_val).sub continuous_const).mul continuous_const)`. Establish `hU` using `hball.preimage hcont`.
+
+Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (hU.mem_nhds ?_) ?_)` and prove the remaining obligations. Simplify using `[O]`. Introduce `t ht`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use `hL0 _ ?_` and prove the remaining obligations.
+
+Establish `hv0 : Valued.v ϖ ≠ 0` using `(Valuation.ne_zero_iff _).2 hϖ0`. Establish `h1 : Valued.v ((((a (ineIncl hu (ι t)) : (u.adicCompletion L)ˣ) : u.adicCompletion L) - 1) * (ϖ ^ 2)⁻¹) ≤ 1` using `(Valuation.mem_valuationSubring_iff _ _).1 ht`. Rewrite `h1` using `[map_mul, map_inv₀, map_pow, mul_inv_le_iff₀ (pow_pos (zero_lt_iff.2 hv0) 2), one_mul]`. Use `lt_of_le_of_lt h1 ?_` and prove the remaining obligations. Rewrite using `[pow_two]`.
+
+Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.2 hv0) hϖ1`. Introduce `t t' htt`. Establish `hW : WeilRel (frob h : G E Ω).toRingEquiv (ineIncl hu (ι t)) (ineIncl hu (ι t'))`. Introduce `z`. Establish `e : (t' : G E Ω) = (frob h : G E Ω) * t * (frob h : G E Ω)⁻¹` using `congrArg Subtype.val htt`.
+
+Use `show (frob h : G E Ω) ((t : G E Ω) z) = (t' : G E Ω) ((frob h : G E Ω) z)`. Rewrite using `[e]`. Simplify using `[AlgEquiv.mul_apply]`. Establish `hP : PlaceIso A u A u (frob h : G E Ω).toRingEquiv (s.toRingEquiv : L →+* L) i` using `⟨fun z => apply_mem_iff_of_mem_Dec hφ.1 z, hs, hic, hil⟩`. Establish `e` using `isLocalArtin_transport GlobalTheory.globalArtinReciprocity_holds GlobalTheory.Published.chevalleyUnits' L Ω A u hu L Ω A u hu _ _ i hP a a ha ha _ _ hW`.
+
+Establish `hiϖ : i ϖ = ϖ`. Rewrite using `[hϖdef, hil]`. Use `congr 1`. Conclude with `s.commutes (c : E)`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises.
+
+Rewrite using `[hπ, e, toAdd_ofAdd, hπ]`. Conclude with `hLi i f hiϖ hiv hρi _ (hval t)`.
+-/
 private theorem junkData (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (n : ℕ) (hn : 2 ≤ n) :
     ∃ (K : Type) (_ : Field K) (_ : Finite K) (f : RingAut K) (π : Ine (F := E) A →* Multiplicative K),
@@ -254,6 +339,9 @@ private theorem junkData (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Alg
 
 end UpperTheory.Zero.LLC
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h n hn`. Take `⟨K, _, _, f, π, hc, ho, hs, hop, he⟩` from `UpperTheory.Zero.LLC.junkData E Ω A w h n hn`. Take `⟨J, h1, h2, h3, h4⟩` from `UpperTheory.tameInertiaCharacter_frobenius_conj_eq_pow h n hn K f π hc ho hs hop he`. Conclude with `⟨J, h1, h2, h3, fun _ V ξ hξ hV => h4 V ξ hξ hV⟩`.
+-/
 theorem UpperTheory.Zero.LLC.junkEx :
     UpperTheory.Zero.LLC.JunkEx := by
   intro E Ω _ _ _ _ _ A w h n hn

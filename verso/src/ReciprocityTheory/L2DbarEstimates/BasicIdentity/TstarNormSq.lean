@@ -9,6 +9,25 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `z hz ph₁ ph₂ g f _hph₁ hph₂ hg hf`. Establish `hE` using `ck_expNeg n z 1 ph₂ hph₂`. Establish `hF : ∀ j, Ck n z 1 (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j)` using `fun j => Ck.mul n z 1 _ _ hE (hf j).1`. Establish `hFc : ∀ j, HasCompactSupport (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j)` using `fun j => (hf j).2.mul_left`. Establish `hG : ∀ j, Ck n z 1 (fun y => conj ((Real.exp (-ph₂ y) : ℂ) * f y j))` using `fun j => Ck.conj n z 1 _ (hF j)`.
+
+Establish `hGc : ∀ j, HasCompactSupport (fun y => conj ((Real.exp (-ph₂ y) : ℂ) * f y j))` using `fun j => (hFc j).comp_left (map_zero (starRingEnd ℂ))`. Establish `hj : ∀ j, ∫ x, db n z j g x * conj ((Real.exp (-ph₂ x) : ℂ) * f x j) ∂vol n z = -∫ x, g x * conj (d n z j (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j) x) ∂vol n z`. Introduce `j`. Rewrite using `[integral_db_mul n z hz j g _ hg (hG j) (hGc j)]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[db_conj]`. Establish `hint1 : ∀ j ∈ (Finset.univ : Finset (Fin n)), Integrable (fun x => db n z j g x * conj ((Real.exp (-ph₂ x) : ℂ) * f x j)) (vol n z)`. Introduce `j _`. Apply `integrable_of_continuous n z hz` to reduce the goal to its premises.
+
+Conclude with `(Ck.continuous n z hz 0 _ (Ck.db n z 0 j g hg)).mul (Ck.continuous n z hz 1 _ (hG j))`. Conclude with `(hGc j).mul_left`. Establish `hint2 : ∀ j ∈ (Finset.univ : Finset (Fin n)), Integrable (fun x => g x * conj (d n z j (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j) x)) (vol n z)`. Introduce `j _`. Apply `integrable_of_continuous n z hz` to reduce the goal to its premises.
+
+Conclude with `(Ck.continuous n z hz 1 _ hg).mul (Ck.continuous n z hz 0 _ (Ck.conj n z 0 _ (Ck.d n z 0 j _ (hF j))))`. Conclude with `((hasCompactSupport_d n z j _ (hFc j)).comp_left (map_zero (starRingEnd ℂ))).mul_left`. Establish `lhs : ∫ x, (∑ j, db n z j g x * conj (f x j)) * (Real.exp (-ph₂ x) : ℂ) ∂vol n z = ∑ j, ∫ x, db n z j g x * conj ((Real.exp (-ph₂ x) : ℂ) * f x j) ∂vol n z`. Rewrite using `[← integral_finsetSum _ hint1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `rhs : ∫ x, g x * conj (tstar n z ph₁ ph₂ f x) * (Real.exp (-ph₁ x) : ℂ) ∂vol n z = ∑ j, -∫ x, g x * conj (d n z j (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j) x) ∂vol n z`. Rewrite using `[Finset.sum_neg_distrib, ← integral_finsetSum _ hint2, ← integral_neg]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `he : (Real.exp (ph₁ x) : ℂ) * (Real.exp (-ph₁ x) : ℂ) = 1`.
+
+Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one]`. Unfold `tstar`. Rewrite using `[← Finset.mul_sum]`. Simplify using `only [map_neg, map_mul, map_sum, Complex.conj_ofReal]`. Generalize the expression as in `(∑ j : Fin n, conj (d n z j (fun y => (Real.exp (-ph₂ y) : ℂ) * f y j) x)) = S`.
+
+Take the linear combination `(-(g x * S)) * he`. Rewrite using `[lhs, rhs]`. Conclude with `Finset.sum_congr rfl (fun j _ => hj j)`.
+-/
 theorem tStarIbp (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : TStarIbpStatement n M := by
   intro z hz ph₁ ph₂ g f _hph₁ hph₂ hg hf
@@ -66,6 +85,9 @@ theorem tStarIbp (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
   rw [lhs, rhs]
   exact Finset.sum_congr rfl (fun j _ => hj j)
 
+/- English proof (translation)
+Establish `h` using `d_add n z (fun y => f y - g y) g (Ck.sub n z 1 f g hf hg) hg j x`. Simplify using `only [sub_add_cancel] at h`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem d_sub_of_ck_one (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n) (f g : M → ℂ)
     (hf : Ck n z 1 f) (hg : Ck n z 1 g) (j : Fin n) (x : M) :
     d n z j (fun y => f y - g y) x = d n z j f x - d n z j g x := by
@@ -74,6 +96,19 @@ private theorem d_sub_of_ck_one (n : ℕ) {M : Type*} [TopologicalSpace M] (z : 
   rw [h]
   ring
 
+/- English proof (translation)
+Introduce `z hz ph ψ f hph hψ hf x`. Establish `hg : Ck n z 1 (fun y => (ψ y : ℂ) - (ph y : ℂ))` using `Ck.sub n z 1 _ _ hψ hph`. Establish `hE : Ck n z 1 (fun y => Complex.exp ((ψ y : ℂ) - (ph y : ℂ)))` using `Ck.cexp n z 1 _ hg`. Establish `hEfun : (fun y => (Real.exp (-(ph y - ψ y)) : ℂ)) = fun y => Complex.exp ((ψ y : ℂ) - (ph y : ℂ))`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdE : ∀ j, d n z j (fun y => Complex.exp ((ψ y : ℂ) - (ph y : ℂ))) x = Complex.exp ((ψ x : ℂ) - (ph x : ℂ)) * (d n z j (fun y => (ψ y : ℂ)) x - d n z j (fun y => (ph y : ℂ)) x)`.
+
+Introduce `j`. Rewrite using `[d_cexp n z _ hg j x, d_sub_of_ck_one n z _ _ hψ hph j x]`. Establish `key : ∀ j, d n z j (fun y => (Real.exp (-(ph y - ψ y)) : ℂ) * f y j) x = Complex.exp ((ψ x : ℂ) - (ph x : ℂ)) * (dTw n z ph j (fun y => f y j) x + f x j * d n z j (fun y => (ψ y : ℂ)) x)`. Introduce `j`. Establish `hfun : (fun y => (Real.exp (-(ph y - ψ y)) : ℂ) * f y j) = fun y => Complex.exp ((ψ y : ℂ) - (ph y : ℂ)) * f y j`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[congrFun hEfun y]`. Rewrite using `[hfun, d_mul n z _ _ hE (hf j) j x, hdE j]`. Simplify using `only [dTw]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show (Real.exp (ψ x) : ℂ) * -((Real.exp (ph x - 2 * ψ x) : ℂ) * ∑ j, d n z j (fun y => (Real.exp (-(ph y - ψ y)) : ℂ) * f y j) x) = _`. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j), ← Finset.mul_sum]`. Establish `hexp : (Real.exp (ψ x) : ℂ) * (Real.exp (ph x - 2 * ψ x) : ℂ) * Complex.exp ((ψ x : ℂ) - (ph x : ℂ)) = 1`. Rewrite using `[← Complex.ofReal_mul, ← Real.exp_add, Complex.ofReal_exp, ← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(-(∑ j, (dTw n z ph j (fun y => f y j) x + f x j * d n z j (fun y => (ψ y : ℂ)) x))) * hexp`.
+-/
 theorem tStarPoint (n : ℕ) (M : Type*) [TopologicalSpace M] : TStarPointStatement n M := by
   intro z hz ph ψ f hph hψ hf x
   have hg : Ck n z 1 (fun y => (ψ y : ℂ) - (ph y : ℂ)) := Ck.sub n z 1 _ _ hψ hph
@@ -114,6 +149,17 @@ theorem tStarPoint (n : ℕ) (M : Type*) [TopologicalSpace M] : TStarPointStatem
   linear_combination (-(∑ j, (dTw n z ph j (fun y => f y j) x +
     f x j * d n z j (fun y => (ψ y : ℂ)) x))) * hexp
 
+/- English proof (translation)
+Establish `hp` using `tStarPoint n M z hz ph ψ f hph hψ hf x`. Use `set S := ∑ j, (dTw n z ph j (fun y => f y j) x + f x j * d n z j (fun y => (ψ y : ℂ)) x) with hS`. Use `set T := tstar n z (fun y => ph y - 2 * ψ y) (fun y => ph y - ψ y) f x with hT`. Establish `he` using `Real.exp_pos (ψ x)`. Establish `hn : Real.exp (ψ x) * ‖T‖ = ‖S‖`.
+
+Establish `h1` using `congrArg (fun w : ℂ => ‖w‖) hp`. Simplify using `only [norm_mul, norm_neg] at h1`. Rewrite using `[← h1]`. Use `congr 1`. Use `first`.
+
+Consider the case `rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos he]`. Consider the case `simp [abs_of_pos he]`. Establish `hT' : ‖T‖ = ‖S‖ * Real.exp (-ψ x)`. Rewrite using `[Real.exp_neg, ← hn]`. Use `first`.
+
+Consider the case `rw [mul_comm (Real.exp (ψ x)), mul_assoc, mul_inv_cancel₀ he.ne', mul_one]`. Consider the case `field_simp`. Establish `hx : Real.exp (-ψ x) ^ 2 * Real.exp (-(ph x - 2 * ψ x)) = Real.exp (-ph x)`. Rewrite using `[sq, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT', mul_pow, mul_assoc, hx]`.
+-/
 theorem tstar_norm_sq (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     (hz : IsLocalHomeomorph z) (ph ψ : M → ℝ) (f : M → V n) (hph : CkR n z 1 ph)
     (hψ : CkR n z 1 ψ) (hf : ∀ j, Ck n z 1 (fun x => f x j)) (x : M) :

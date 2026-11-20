@@ -12,6 +12,9 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.P
 
 namespace GlobalTheory.Cong
 
+/- English proof (translation)
+Introduce `E _ _ _ a U hU`. Use `choose lam hlam using fun τ : E →+* ℂ => (GlobalTheory.DefU.AU.existsUnique_hasWt E a (GlobalTheory.DefU.AU.mk ⟨U, hU⟩) τ).exists`. Conclude with `⟨lam, hlam⟩`.
+-/
 theorem exists_weight_of_isAutRepU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ)
     (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∃ lam : (E →+* ℂ) → DomWeight a, ∀ τ, HasWeightAt U τ (lam τ) := by
   intro E _ _ _ a U hU

@@ -9,6 +9,17 @@ namespace GlobalTheory.UnitaryDetAbs
 
 open GlobalTheory.MixModel
 
+/- English proof (translation)
+Establish `hM` using `GlobalTheory.MixModel.mt_unitary W h`. Establish `hdet` using `congrArg Matrix.det hM`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hadj : (GlobalTheory.MixModel.adj (mt W h)).det = cA D (mt W h).det`. Rewrite using `[GlobalTheory.MixModel.adj, Matrix.det_transpose, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `hG : IsUnit (GlobalTheory.MixModel.gA W).det`. Establish `e : (GlobalTheory.MixModel.gA W).det = incA D W.gram.det`. Rewrite using `[GlobalTheory.MixModel.gA, GlobalTheory.MixModel.rat, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `(GlobalTheory.MixModel.gram_isUnit_det W).map _`. Rewrite `hdet` using `[hadj]`. Establish `key : cA D (mt W h).det * (mt W h).det = 1`. Establish `e2 : cA D (mt W h).det * (mt W h).det * (GlobalTheory.MixModel.gA W).det = 1 * (GlobalTheory.MixModel.gA W).det`.
+
+Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← hdet]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hG.mul_right_cancel e2`. Establish `hu : GlobalTheory.Doubling.conjUnit D.sp.cm.sig (Matrix.GeneralLinearGroup.det (matHom W h)) * Matrix.GeneralLinearGroup.det (matHom W h) = 1`.
+
+Use `ext`. Conclude with `key`. Establish `h2` using `congrArg (GlobalTheory.Doubling.absE D.host.F D.host.E) hu`. Rewrite `h2` using `[map_mul, GlobalTheory.Doubling.absE_conjUnit, map_one, ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2`.
+-/
 theorem absE_det_matHom (D : D7) (W : HSp D) (h : GA D W) :
     GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det (matHom W h)) = 1 := by
   have hM := GlobalTheory.MixModel.mt_unitary W h

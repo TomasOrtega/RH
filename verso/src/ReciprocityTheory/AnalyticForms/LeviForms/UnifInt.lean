@@ -35,6 +35,9 @@ def UnifExpandStatement : Prop :=
             mInt B (fun i => (Φ i).pullback Subtype.val continuous_subtype_val) (u ∘ Subtype.val) +
             mInt A (Fin.cons L' Φ) u
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs`. Simplify using `only [integralWith, mul_neg, neg_mul, integral_neg, Finset.sum_neg_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem mInt_neg_integrand {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (g : X → ℝ) : mInt A Φ (fun y => -g y) = -mInt A Φ g := by
   unfold mInt

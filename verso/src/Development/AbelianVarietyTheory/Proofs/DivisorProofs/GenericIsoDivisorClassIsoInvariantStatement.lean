@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.GenIso.cls_div_eq_of_iso | exact GlobalTheory.Vert.Model.GenIso.cls_div_eq_of_iso | (intros; apply GlobalTheory.Vert.Model.GenIso.cls_div_eq_of_iso <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_iso_divisor_class_iso_invariant : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (Z : GlobalTheory.Vert.Model O) (L L' M M' : Z.X.Modules) (r : ℕ) (hL : GlobalTheory.VB.IsVB L r)
     (hL' : GlobalTheory.VB.IsVB L' r) (hM : GlobalTheory.VB.IsVB M r) (hM' : GlobalTheory.VB.IsVB M' r)

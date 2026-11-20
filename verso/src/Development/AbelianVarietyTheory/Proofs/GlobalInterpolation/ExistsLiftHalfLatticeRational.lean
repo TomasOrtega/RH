@@ -7,14 +7,33 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.MomT
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem natCast_smul_eq_ring {E : Type} [Field E] [NumberField E] {a b : ℕ} (n : ℕ) (y : HomE E a b) :
     (n : 𝓞 E) • y = (n : E) • y := by
   rw [Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Rewrite using `[← natCast_smul_eq_ring]`. Conclude with `M.smul_mem _ hy`.
+-/
 theorem natCast_smul_mem {E : Type} [Field E] [NumberField E] {a b : ℕ} (M : Submodule (𝓞 E) (HomE E a b)) (n : ℕ)
     {y : HomE E a b} (hy : y ∈ M) : (n : E) • y ∈ M := by
   rw [← natCast_smul_eq_ring]; exact M.smul_mem _ hy
 
+/- English proof (translation)
+Introduce `X A a b S N N' cA c hfg hne _ hU hN hN' hcA hc x hx`. Take `⟨-, hfull, -, hloc⟩` from `GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hne hN hN'`. Establish `hF : GlobalTheory.ThetaMove.Full (per A N N')` using `fun y => by`. Take `⟨n, hn, hy⟩` from `hfull y`. Conclude with `⟨n, hn, by rwa [natCast_smul_eq_ring]⟩`.
+
+Establish `hD : ((cA * c : ℕ) : X.E) ≠ 0` using `by exact_mod_cast (Nat.mul_pos hcA hc).ne'`. Take `⟨t, h1, h2⟩` from `hF.approx S (((cA * c : ℕ) : X.E)⁻¹ • x)`. Establish `hx' : (cA : X.E) • x ∈ homAt S N N'`. Rewrite using `[← natCast_smul_eq_ring]`. Conclude with `hx`.
+
+Use `⟨((cA * c : ℕ) : X.E) • t, ?_, (cA : X.E) • (t - ((cA * c : ℕ) : X.E)⁻¹ • x), ?_, ?_⟩` and prove the remaining obligations. Unfold `halfAO twist₂`. Rewrite using `[Submodule.mem_iInf]`. Introduce `Q`. Rewrite using `[Submodule.mem_comap]`.
+
+Express the relevant statement in the definitionally equal form `((((cA * c : ℕ) : X.E) ^ (-expS S Q))⁻¹ • ((cA * c : ℕ) : X.E) • t) ∈ _`. Unfold `expS`. Use `split_ifs with hQ hQ'`. Establish `e : ((((cA * c : ℕ) : X.E) ^ (-(1 : ℤ)))⁻¹ • ((cA * c : ℕ) : X.E) • t) = ((cA * c : ℕ) : X.E) • ((cA * c : ℕ) : X.E) • (t - ((cA * c : ℕ) : X.E)⁻¹ • x) + (c : X.E) • (cA : X.E) • x`. Rewrite using `[smul_sub, smul_inv_smul₀ hD, smul_sub, zpow_neg, inv_inv, zpow_one, smul_smul (c : X.E), mul_comm (c : X.E), ← Nat.cast_mul, sub_add_cancel]`.
+
+Rewrite using `[e]`. Conclude with `add_mem (natCast_smul_mem _ _ (natCast_smul_mem _ _ (h1 Q hQ))) (natCast_smul_mem _ _ ((hloc Q (hU Q hQ) _).2 (hx' Q hQ)))`. Rewrite using `[neg_neg, zpow_one, inv_smul_smul₀ hD]`. Conclude with `h2 Q hQ`. Rewrite using `[neg_zero, zpow_zero, inv_one, one_smul]`.
+
+Conclude with `natCast_smul_mem _ _ (h2 Q hQ)`. Introduce `P hP`. Conclude with `(hloc P (hU P hP) _).1 (natCast_smul_mem _ _ (h1 P hP))`. Express the relevant statement in the definitionally equal form `(c : 𝓞 X.E) • (cA : X.E) • (t - ((cA * c : ℕ) : X.E)⁻¹ • x) = _`. Rewrite using `[natCast_smul_eq_ring, smul_smul, mul_comm (c : X.E), ← Nat.cast_mul, smul_sub, smul_inv_smul₀ hD]`.
+-/
 theorem exists_lift_halfAO : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA c : ℕ), A.AA.FG → A.AA ≠ ⊥ → (∀ P ∈ S, conjPrime₂ P ∉ S) → A.AAUnit S → IsSdLat N → IsSdLat N' → 0 < cA → 0 < c → ∀ x ∈ divLat cA (homAt S N N'), ∃ t ∈ halfAO S (per A N N') (cA * c), t - x ∈ mulLat c (homAt S N N') := by
   intro X A a b S N N' cA c hfg hne _ hU hN hN' hcA hc x hx
   obtain ⟨-, hfull, -, hloc⟩ := GlobalTheory.T.per_relIndex_ne_zero_and_mem_locP_iff X A a b N N' hfg hne hN hN'

@@ -31,26 +31,41 @@ def zt' (hT : V →ₗ⋆[E] V →ₗ[E] E) {r : ℕ} (e e' : Fin r → V) (z' :
 def yv (hT : V →ₗ⋆[E] V →ₗ[E] E) {r : ℕ} (e e' : Fin r → V) (a : Fin r) : V :=
   e a - ∑ b, (amat hT e e')⁻¹ b a • e' b
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+-/
 theorem sum_mul_comm_mulVec {n : Type} [Fintype n] (A : Matrix n n E) (w : n → E) (c : n) :
     ∑ b, w b * A c b = (A *ᵥ w) c := by
   simp only [Matrix.mulVec, dotProduct]
   exact Finset.sum_congr rfl fun b _ => mul_comm _ _
 
+/- English proof (translation)
+Simplify using `only [Matrix.vecMul, dotProduct]`.
+-/
 theorem sum_mul_vecMul {n : Type} [Fintype n] (A : Matrix n n E) (w : n → E) (c : n) :
     ∑ a, w a * A a c = (w ᵥ* A) c := by
   simp only [Matrix.vecMul, dotProduct]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (hS.eq y x).symm`. Consider the case `exact (hS y x).symm`.
+-/
 theorem herm {hT : V →ₗ⋆[E] V →ₗ[E] E} (hS : hT.IsSymm) (x y : V) : hT x y = star (hT y x) := by
   first
     | exact (hS.eq y x).symm
     | exact (hS y x).symm
 
+/- English proof (translation)
+Simplify using `only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply]`.
+-/
 theorem left_sub_sum (hT : V →ₗ⋆[E] V →ₗ[E] E) {ι : Type} [Fintype ι] (z : V) (c : ι → E)
     (f : ι → V) (x : V) :
     hT (z - ∑ a, c a • f a) x = hT z x - ∑ a, star (c a) * hT (f a) x := by
   simp only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply,
     LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply]
 
+/- English proof (translation)
+Simplify using `only [map_sub, map_sum, map_smul, smul_eq_mul]`.
+-/
 theorem right_sub_sum (hT : V →ₗ⋆[E] V →ₗ[E] E) {ι : Type} [Fintype ι] (z : V) (c : ι → E)
     (f : ι → V) (x : V) :
     hT x (z - ∑ a, c a • f a) = hT x z - ∑ a, c a * hT x (f a) := by
@@ -58,6 +73,9 @@ theorem right_sub_sum (hT : V →ₗ⋆[E] V →ₗ[E] E) {ι : Type} [Fintype �
 
 variable (hT : V →ₗ⋆[E] V →ₗ[E] E) {r : ℕ} (e e' : Fin r → V) (z z' : V)
 
+/- English proof (translation)
+Unfold `zt'`. Rewrite using `[right_sub_sum]`. Establish `h : ∑ b, ((amat hT e e')⁻¹ *ᵥ uvec hT e z') b * hT (e c) (e' b) = (amat hT e e' *ᵥ ((amat hT e e')⁻¹ *ᵥ uvec hT e z')) c` using `sum_mul_comm_mulVec (amat hT e e') _ c`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hA, Matrix.one_mulVec]`. Simplify using `[uvec]`.
+-/
 theorem e_zt' (hA : IsUnit (amat hT e e').det) (c : Fin r) : hT (e c) (zt' hT e e' z') = 0 := by
   unfold zt'
   rw [right_sub_sum]
@@ -67,6 +85,11 @@ theorem e_zt' (hA : IsUnit (amat hT e e').det) (c : Fin r) : hT (e c) (zt' hT e 
   rw [h, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hA, Matrix.one_mulVec]
   simp [uvec]
 
+/- English proof (translation)
+Unfold `zt`. Rewrite using `[left_sub_sum]`. Simplify using `only [star_star]`. Establish `h : ∑ a, (vvec hT z e' ᵥ* (amat hT e e')⁻¹) a * hT (e a) (e' c) = ((vvec hT z e' ᵥ* (amat hT e e')⁻¹) ᵥ* amat hT e e') c` using `sum_mul_vecMul (amat hT e e') _ c`. Rewrite using `[h, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]`.
+
+Simplify using `[vvec]`.
+-/
 theorem zt_e' (hA : IsUnit (amat hT e e').det) (c : Fin r) : hT (zt hT e e' z) (e' c) = 0 := by
   unfold zt
   rw [left_sub_sum]
@@ -77,18 +100,29 @@ theorem zt_e' (hA : IsUnit (amat hT e e').det) (c : Fin r) : hT (zt hT e e' z) (
   rw [h, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]
   simp [vvec]
 
+/- English proof (translation)
+Unfold `zt`. Rewrite using `[right_sub_sum, hez]`. Simplify using `[he]`.
+-/
 theorem e_zt (he : ∀ a b, hT (e a) (e b) = 0) (hez : ∀ a, hT (e a) z = 0) (c : Fin r) :
     hT (e c) (zt hT e e' z) = 0 := by
   unfold zt
   rw [right_sub_sum, hez]
   simp [he]
 
+/- English proof (translation)
+Unfold `zt'`. Rewrite using `[right_sub_sum, hez']`. Simplify using `[he']`.
+-/
 theorem e'_zt' (he' : ∀ a b, hT (e' a) (e' b) = 0) (hez' : ∀ a, hT (e' a) z' = 0) (c : Fin r) :
     hT (e' c) (zt' hT e e' z') = 0 := by
   unfold zt'
   rw [right_sub_sum, hez']
   simp [he']
 
+/- English proof (translation)
+Use `nth_rw 1 [zt]`. Rewrite using `[left_sub_sum]`. Simplify using `only [e_zt hT e e' z he hez, mul_zero, Finset.sum_const_zero, sub_zero]`. Establish `hze : ∀ a, hT z (e a) = 0` using `fun a => by rw [herm hS, hez, star_zero]`. Unfold `zt`.
+
+Rewrite using `[right_sub_sum]`. Simplify using `[hze]`.
+-/
 theorem zt_zt (hS : hT.IsSymm) (he : ∀ a b, hT (e a) (e b) = 0) (hez : ∀ a, hT (e a) z = 0) :
     hT (zt hT e e' z) (zt hT e e' z) = hT z z := by
   nth_rw 1 [zt]
@@ -99,6 +133,11 @@ theorem zt_zt (hS : hT.IsSymm) (he : ∀ a b, hT (e a) (e b) = 0) (hez : ∀ a, 
   rw [right_sub_sum]
   simp [hze]
 
+/- English proof (translation)
+Use `nth_rw 1 [zt']`. Rewrite using `[left_sub_sum]`. Simplify using `only [e'_zt' hT e e' z' he' hez', mul_zero, Finset.sum_const_zero, sub_zero]`. Establish `hze : ∀ a, hT z' (e' a) = 0` using `fun a => by rw [herm hS, hez', star_zero]`. Unfold `zt'`.
+
+Rewrite using `[right_sub_sum]`. Simplify using `[hze]`.
+-/
 theorem zt'_zt' (hS : hT.IsSymm) (he' : ∀ a b, hT (e' a) (e' b) = 0)
     (hez' : ∀ a, hT (e' a) z' = 0) :
     hT (zt' hT e e' z') (zt' hT e e' z') = hT z' z' := by
@@ -110,6 +149,11 @@ theorem zt'_zt' (hS : hT.IsSymm) (he' : ∀ a b, hT (e' a) (e' b) = 0)
   rw [right_sub_sum]
   simp [hze]
 
+/- English proof (translation)
+Rewrite using `[zt', right_sub_sum]`. Simplify using `only [zt_e' hT e e' z hA, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[zt, left_sub_sum]`. Simplify using `only [star_star]`. Unfold `sval`.
+
+Rewrite using `[Matrix.dotProduct_mulVec]`. Simplify using `[dotProduct, uvec]`.
+-/
 theorem zt_zt' (hA : IsUnit (amat hT e e').det) :
     hT (zt hT e e' z) (zt' hT e e' z') = sval hT e e' z z' := by
   rw [zt', right_sub_sum]
@@ -120,6 +164,17 @@ theorem zt_zt' (hA : IsUnit (amat hT e e').det) :
   rw [Matrix.dotProduct_mulVec]
   simp [dotProduct, uvec]
 
+/- English proof (translation)
+Establish `hAA : amat hT e e' * (amat hT e e')⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hA`. Establish `key : ∀ a c, ∑ d, hT (e a) (e' d) * (amat hT e e')⁻¹ d c = if a = c then 1 else 0`. Introduce `a c`. Establish `h` using `congrFun (congrFun hAA a) c`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `h`. Establish `h1 : ∑ d, (amat hT e e')⁻¹ d c * hT (e a) (e' d) = if a = c then 1 else 0`. Rewrite using `[← key a c]`. Conclude with `Finset.sum_congr rfl fun d _ => mul_comm _ _`. Establish `h2 : ∑ b, star ((amat hT e e')⁻¹ b a) * hT (e' b) (e c) = if a = c then 1 else 0`.
+
+Establish `h3 : ∑ b, star ((amat hT e e')⁻¹ b a) * hT (e' b) (e c) = star (∑ b, hT (e c) (e' b) * (amat hT e e')⁻¹ b a)`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul', herm hS (e' b) (e c), mul_comm]`. Rewrite using `[h3, key c a]`.
+
+Break down `eq_or_ne a c with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Unfold `yv`.
+
+Simplify using `only [left_sub_sum, right_sub_sum, he, he', mul_zero, Finset.sum_const_zero, sub_zero, zero_sub]`. Rewrite using `[h1, h2]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem yv_yv (hS : hT.IsSymm) (hA : IsUnit (amat hT e e').det) (he : ∀ a b, hT (e a) (e b) = 0)
     (he' : ∀ a b, hT (e' a) (e' b) = 0) (a c : Fin r) :
     hT (yv hT e e' a) (yv hT e e' c) = if a = c then -2 else 0 := by
@@ -148,6 +203,9 @@ theorem yv_yv (hS : hT.IsSymm) (hA : IsUnit (amat hT e e').det) (he : ∀ a b, h
   rw [h1, h2]
   split_ifs <;> ring
 
+/- English proof (translation)
+Unfold `yv`. Rewrite using `[left_sub_sum, e_zt hT e e' z he hez]`. Establish `h : ∀ b, hT (e' b) (zt hT e e' z) = 0` using `fun b => by`. Rewrite using `[herm hS, zt_e' hT e e' z hA, star_zero]`. Simplify using `[h]`.
+-/
 theorem yv_zt (hS : hT.IsSymm) (hA : IsUnit (amat hT e e').det) (he : ∀ a b, hT (e a) (e b) = 0)
     (hez : ∀ a, hT (e a) z = 0) (a : Fin r) : hT (yv hT e e' a) (zt hT e e' z) = 0 := by
   unfold yv
@@ -156,6 +214,9 @@ theorem yv_zt (hS : hT.IsSymm) (hA : IsUnit (amat hT e e').det) (he : ∀ a b, h
     rw [herm hS, zt_e' hT e e' z hA, star_zero]
   simp [h]
 
+/- English proof (translation)
+Unfold `yv`. Rewrite using `[left_sub_sum, e_zt' hT e e' z' hA]`. Simplify using `[e'_zt' hT e e' z' he' hez']`.
+-/
 theorem yv_zt' (hA : IsUnit (amat hT e e').det) (he' : ∀ a b, hT (e' a) (e' b) = 0)
     (hez' : ∀ a, hT (e' a) z' = 0) (a : Fin r) : hT (yv hT e e' a) (zt' hT e e' z') = 0 := by
   unfold yv

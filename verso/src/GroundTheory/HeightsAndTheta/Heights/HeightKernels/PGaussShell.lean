@@ -10,6 +10,9 @@ noncomputable section
 
 namespace PGaussShell
 
+/- English proof (translation)
+Establish `h2 : 3 * (m + 1) * (1 + 1 / δ) = 3 * (m + 1) + 3 * (m + 1) / δ` using `by ring`. Establish `h1 : 2 * (m + 1) / δ ≤ 3 * (m + 1) / δ` using `div_le_div_of_nonneg_right (by linarith) hδ.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem base_le (m δ : ℝ) (hm : 0 ≤ m) (hδ : 0 < δ) :
     1 + 2 * (m + 1) / δ ≤ 3 * (m + 1) * (1 + 1 / δ) := by
   have h2 : 3 * (m + 1) * (1 + 1 / δ) = 3 * (m + 1) + 3 * (m + 1) / δ := by ring
@@ -19,6 +22,25 @@ theorem base_le (m δ : ℝ) (hm : 0 ≤ m) (hδ : 0 < δ) :
 
 end PGaussShell
 
+/- English proof (translation)
+Introduce `n hn Λ δ hδ hmin F m`. Use `set T := F.filter (fun μ : Λ => ⌊‖(μ : EuclideanSpace ℝ (Fin n))‖⌋₊ = m) with hTdef`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg _`. Establish `hlow : ∀ μ ∈ T, (m : ℝ) ≤ ‖(μ : EuclideanSpace ℝ (Fin n))‖`. Introduce `μ hμ`.
+
+Rewrite using `[← (Finset.mem_filter.1 hμ).2]`. Conclude with `Nat.floor_le (norm_nonneg _)`. Establish `hup : ∀ μ ∈ T, ‖(μ : EuclideanSpace ℝ (Fin n))‖ ≤ (m : ℝ) + 1`. Introduce `μ hμ`. Establish `h` using `Nat.lt_floor_add_one ‖(μ : EuclideanSpace ℝ (Fin n))‖`.
+
+Rewrite `h` using `[(Finset.mem_filter.1 hμ).2]`. Conclude with `h.le`. Establish `hterm : ∀ μ ∈ T, Real.exp (-π * ‖(μ : EuclideanSpace ℝ (Fin n))‖ ^ 2) ≤ Real.exp (-π * (m : ℝ) ^ 2)`. Introduce `μ hμ`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Establish `: (m : ℝ) ^ 2 ≤ ‖(μ : EuclideanSpace ℝ (Fin n))‖ ^ 2` using `pow_le_pow_left₀ hm0 (hlow μ hμ) 2`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `hsum : ∑ μ ∈ T, Real.exp (-π * ‖(μ : EuclideanSpace ℝ (Fin n))‖ ^ 2) ≤ (T.card : ℝ) * Real.exp (-π * (m : ℝ) ^ 2)`. Establish `h` using `Finset.sum_le_sum hterm`. Rewrite `h` using `[Finset.sum_const, nsmul_eq_mul]`. Then use the resulting hypothesis.
+
+Establish `hcard : (T.card : ℝ) ≤ (1 + 2 * ((m : ℝ) + 1) / δ) ^ n`. Establish `h` using `hP n (T.map (Function.Embedding.subtype _)) δ ((m : ℝ) + 1) hδ (by linarith) ?_ ?_`. Rewrite `h` using `[Finset.card_map]`. Then use the resulting hypothesis. Introduce `x hx y hy hxy`. Take `⟨a, ha, rfl⟩` from `Finset.mem_map.1 hx`.
+
+Take `⟨b, hb, rfl⟩` from `Finset.mem_map.1 hy`. Simplify using `only [Function.Embedding.coe_subtype] at hxy ⊢`. Conclude with `hmin _ (Λ.sub_mem a.2 b.2) (sub_ne_zero.2 hxy)`. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `Finset.mem_map.1 hx`.
+
+Conclude with `hup a ha`. Establish `hδ' : (0 : ℝ) ≤ 1 + 1 / δ`. Establish `: 0 ≤ 1 / δ` using `le_of_lt (one_div_pos.2 hδ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb0 : (0 : ℝ) ≤ 1 + 2 * ((m : ℝ) + 1) / δ`.
+
+Establish `: 0 ≤ 2 * ((m : ℝ) + 1) / δ` using `div_nonneg (by linarith) hδ.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (1 + 2 * ((m : ℝ) + 1) / δ) ^ n ≤ 3 ^ n * ((m : ℝ) + 1) ^ n * (1 + 1 / δ) ^ n`. Rewrite using `[← mul_pow, ← mul_pow]`. Conclude with `pow_le_pow_left₀ hb0 (PGaussShell.base_le _ _ hm0 hδ) n`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `gaussShellConst`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GaussShell.proof (hP : GaussPacking.Statement) (hT : GaussTermBound.Statement) :
     GaussShell.Statement := by
   intro n hn Λ δ hδ hmin F m

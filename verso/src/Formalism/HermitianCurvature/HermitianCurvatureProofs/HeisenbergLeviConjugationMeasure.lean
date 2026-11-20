@@ -14,27 +14,53 @@ section Herm
 
 variable {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ)
 
+/- English proof (translation)
+Simplify using `only [herm, mulVec_add, dotProduct_add]`.
+-/
 lemma herm_add_left (u u' v : ι → ℂ) : herm H (u + u') v = herm H u v + herm H u' v := by
   simp only [herm, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [herm, mulVec_sub, dotProduct_sub]`.
+-/
 lemma herm_sub_left (u u' v : ι → ℂ) : herm H (u - u') v = herm H u v - herm H u' v := by
   simp only [herm, mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Simplify using `only [herm, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 lemma herm_smul_left (c : ℂ) (u v : ι → ℂ) : herm H (c • u) v = c * herm H u v := by
   simp only [herm, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [herm, mulVec_neg, dotProduct_neg]`.
+-/
 lemma herm_neg_left (u v : ι → ℂ) : herm H (-u) v = -herm H u v := by
   simp only [herm, mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `only [herm, star_add, add_dotProduct]`.
+-/
 lemma herm_add_right (u v v' : ι → ℂ) : herm H u (v + v') = herm H u v + herm H u v' := by
   simp only [herm, star_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [herm, star_neg, neg_dotProduct]`.
+-/
 lemma herm_neg_right (u v : ι → ℂ) : herm H u (-v) = -herm H u v := by
   simp only [herm, star_neg, neg_dotProduct]
 
+/- English proof (translation)
+Simplify using `[herm]`.
+-/
 lemma herm_zero_right (u : ι → ℂ) : herm H u 0 = 0 := by
   simp [herm]
 
+/- English proof (translation)
+Establish `h : ∀ i j, star (H i j) = H j i` using `fun i j => by`. Use `congrFun (congrFun hH j) i` as an intermediate fact. Rewrite `this` using `[conjTranspose_apply]`. Then use the resulting hypothesis. Simplify using `only [herm, dotProduct, mulVec, Pi.star_apply, starRingEnd_apply, star_sum, star_mul', star_star, h, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 lemma herm_conj (hH : Hᴴ = H) (u v : ι → ℂ) : conj (herm H u v) = herm H v u := by
   have h : ∀ i j, star (H i j) = H j i := fun i j => by
     have := congrFun (congrFun hH j) i
@@ -44,6 +70,9 @@ lemma herm_conj (hH : Hᴴ = H) (u v : ι → ℂ) : conj (herm H u v) = herm H 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `hg' : gᴴ * H * g = H` using `hg`. Simplify using `only [herm]`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hg']`.
+-/
 lemma herm_UH [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v : ι → ℂ) :
     herm H (g *ᵥ u) (g *ᵥ v) = herm H u v := by
   have hg' : gᴴ * H * g = H := hg
@@ -52,6 +81,9 @@ lemma herm_UH [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v : �
 
 end Herm
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, Pi.single_apply]`.
+-/
 lemma mat_ext {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (h : ∀ u, A *ᵥ u = B *ᵥ u) : A = B := by
   ext i j
   have := congrFun (h (Pi.single j 1)) i
@@ -63,14 +95,38 @@ def iL (k r' : ℕ) : Fin (2 * (1 + r') + k + 1) := esI k (1 + r') (a0 r')
 
 def res (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) : Fin (2 * r' + k + 1) → ℂ := fun j => u (levPos k 1 r' j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma first_index_val (k r' : ℕ) : (i0 k r').val = 0 := rfl
 
+/- English proof (translation)
+Use `show 2 * (1 + r') + k - 0 = 2 * r' + k + 2`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma iL_val (k r' : ℕ) : (iL k r').val = 2 * r' + k + 2 := by
   show 2 * (1 + r') + k - 0 = 2 * r' + k + 2
   omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma lev_val (k r' : ℕ) (j : Fin (2 * r' + k + 1)) : (levPos k 1 r' j).val = j.val + 1 := rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (levPos k 1 r')` using `fun a b h => by`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[lev_val, lev_val]`. Conclude with `Fin.ext (by omega)`. Establish `h1 : i0 k r' ∉ insert (iL k r') (Finset.univ.image (levPos k 1 r'))`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_image, Finset.mem_univ, true_and, not_or, not_exists]`. Use `⟨fun h => ?_, fun j h => ?_⟩` and prove the remaining obligations. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[first_index_val, iL_val]`. Use linear arithmetic over natural numbers and integers.
+
+Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[first_index_val, lev_val]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : iL k r' ∉ Finset.univ.image (levPos k 1 r')`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, not_exists]`.
+
+Introduce `j h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[iL_val, lev_val]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `huniv : (Finset.univ : Finset (Fin (2 * (1 + r') + k + 1))) = insert (i0 k r') (insert (iL k r') (Finset.univ.image (levPos k 1 r')))`. Use extensionality with `p`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_image, true_and, true_iff]`. Establish `hp` using `p.isLt`. Distinguish the cases in `h0 : p.val = 0`.
+
+Conclude with `Or.inl (Fin.ext h0)`. Distinguish the cases in `hL : p.val = 2 * r' + k + 2`. Conclude with `Or.inr (Or.inl (Fin.ext (by rw [hL, iL_val])))`. Use `Or.inr (Or.inr ⟨⟨p.val - 1, by omega⟩, Fin.ext ?_⟩)` and prove the remaining obligations. Rewrite using `[lev_val]`.
+
+Use `show p.val - 1 + 1 = p.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[huniv, Finset.sum_insert h1, Finset.sum_insert h2, Finset.sum_image (by intro a _ b _ h; exact hinj h)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sum_split (k r' : ℕ) (f : Fin (2 * (1 + r') + k + 1) → ℂ) :
     ∑ p, f p = f (i0 k r') + ∑ j, f (levPos k 1 r' j) + f (iL k r') := by
   have hinj : Function.Injective (levPos k 1 r') := fun a b h => by
@@ -110,6 +166,11 @@ lemma sum_split (k r' : ℕ) (f : Fin (2 * (1 + r') + k + 1) → ℂ) :
     Finset.sum_image (by intro a _ b _ h; exact hinj h)]
   ring
 
+/- English proof (translation)
+Establish `hp` using `p.isLt`. Distinguish the cases in `h0 : p.val = 0`. Conclude with `Or.inl (Fin.ext h0)`. Distinguish the cases in `hL : p.val = 2 * r' + k + 2`. Conclude with `Or.inr (Or.inr (Fin.ext (by rw [hL, iL_val])))`.
+
+Use `Or.inr (Or.inl ⟨⟨p.val - 1, by omega⟩, Fin.ext ?_⟩)` and prove the remaining obligations. Rewrite using `[lev_val]`. Use `show p.val = p.val - 1 + 1`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma idx_cases (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) :
     p = i0 k r' ∨ (∃ j, p = levPos k 1 r' j) ∨ p = iL k r' := by
   have hp := p.isLt
@@ -122,6 +183,11 @@ lemma idx_cases (k r' : ℕ) (p : Fin (2 * (1 + r') + k + 1)) :
     show p.val = p.val - 1 + 1
     omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Break down `idx_cases k r' p with h | ⟨j, h⟩ | h` into its components or cases. Substitute `h` using the available equality. Conclude with `h0`. Substitute `h` using the available equality.
+
+Conclude with `congrFun h1 j`. Substitute `h` using the available equality. Conclude with `h2`.
+-/
 lemma vec_ext (k r' : ℕ) {u v : Fin (2 * (1 + r') + k + 1) → ℂ} (h0 : u (i0 k r') = v (i0 k r'))
     (h1 : res k r' u = res k r' v) (h2 : u (iL k r') = v (iL k r')) : u = v := by
   funext p
@@ -130,28 +196,49 @@ lemma vec_ext (k r' : ℕ) {u v : Fin (2 * (1 + r') + k + 1) → ℂ} (h0 : u (i
   · subst h; exact congrFun h1 j
   · subst h; exact h2
 
+/- English proof (translation)
+Establish `hq` using `q.isLt`. Simplify using `only [Hpk, first_index_val, iL_val, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 lemma hermitian_form_first_basis (k r' : ℕ) (q : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') (i0 k r') q = if q = iL k r' then 1 else 0 := by
   have hq := q.isLt
   simp only [Hpk, first_index_val, iL_val, Fin.ext_iff]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Establish `hq` using `q.isLt`. Simplify using `only [Hpk, first_index_val, iL_val, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 lemma H_iL (k r' : ℕ) (q : Fin (2 * (1 + r') + k + 1)) :
     Hpk k (1 + r') (iL k r') q = if q = i0 k r' then 1 else 0 := by
   have hq := q.isLt
   simp only [Hpk, first_index_val, iL_val, Fin.ext_iff]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [Hpk, first_index_val, lev_val, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma hermitian_levi_entry_zero (k r' : ℕ) (i : Fin (2 * r' + k + 1)) : Hpk k (1 + r') (levPos k 1 r' i) (i0 k r') = 0 := by
   have hi := i.isLt
   simp only [Hpk, first_index_val, lev_val, Fin.ext_iff]
   split_ifs <;> first | rfl | omega | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [Hpk, iL_val, lev_val, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma H_lev_iL (k r' : ℕ) (i : Fin (2 * r' + k + 1)) : Hpk k (1 + r') (levPos k 1 r' i) (iL k r') = 0 := by
   have hi := i.isLt
   simp only [Hpk, iL_val, lev_val, Fin.ext_iff]
   split_ifs <;> first | rfl | omega | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Establish `hij : levPos k 1 r' i = levPos k 1 r' j ↔ i = j`. Rewrite using `[Fin.ext_iff, Fin.ext_iff, lev_val, lev_val]`. Conclude with `⟨fun h => by omega, fun h => by omega⟩`.
+
+Establish `e1 : ((levPos k 1 r' i).val < 1 + r' ∧ (levPos k 1 r' i).val + (levPos k 1 r' j).val = 2 * (1 + r') + k) ↔ (i.val < r' ∧ i.val + j.val = 2 * r' + k)`. Rewrite using `[lev_val, lev_val]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨by omega, by omega⟩, fun ⟨h1, h2⟩ => ⟨by omega, by omega⟩⟩`. Establish `e2 : ((levPos k 1 r' j).val < 1 + r' ∧ (levPos k 1 r' i).val + (levPos k 1 r' j).val = 2 * (1 + r') + k) ↔ (j.val < r' ∧ i.val + j.val = 2 * r' + k)`. Rewrite using `[lev_val, lev_val]`.
+
+Conclude with `⟨fun ⟨h1, h2⟩ => ⟨by omega, by omega⟩, fun ⟨h1, h2⟩ => ⟨by omega, by omega⟩⟩`. Establish `e3 : (1 + r' ≤ (levPos k 1 r' i).val ∧ (levPos k 1 r' i).val ≤ 1 + r' + k ∧ levPos k 1 r' i = levPos k 1 r' j) ↔ (r' ≤ i.val ∧ i.val ≤ r' + k ∧ i = j)`. Rewrite using `[hij, lev_val]`. Conclude with `⟨fun ⟨h1, h2, h3⟩ => ⟨by omega, by omega, h3⟩, fun ⟨h1, h2, h3⟩ => ⟨by omega, by omega, h3⟩⟩`. Establish `e4 : (levPos k 1 r' i).val = 1 + r' + k ↔ i.val = r' + k`.
+
+Rewrite using `[lev_val]`. Conclude with `⟨fun h => by omega, fun h => by omega⟩`. Conclude with `if_congr e1 rfl (if_congr e2 rfl (if_congr e3 (if_congr e4 rfl rfl) rfl))`.
+-/
 lemma H_lev_lev (k r' : ℕ) (i j : Fin (2 * r' + k + 1)) :
     Hpk k (1 + r') (levPos k 1 r' i) (levPos k 1 r' j) = Hpk k r' i j := by
   have hi := i.isLt
@@ -178,12 +265,21 @@ lemma H_lev_lev (k r' : ℕ) (i j : Fin (2 * r' + k + 1)) :
     exact ⟨fun h => by omega, fun h => by omega⟩
   exact if_congr e1 rfl (if_congr e2 rfl (if_congr e3 (if_congr e4 rfl rfl) rfl))
 
+/- English proof (translation)
+Simplify using `[mulVec, dotProduct, hermitian_form_first_basis]`.
+-/
 lemma hermitian_matrix_mul_first (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) : (Hpk k (1 + r') *ᵥ u) (i0 k r') = u (iL k r') := by
   simp [mulVec, dotProduct, hermitian_form_first_basis]
 
+/- English proof (translation)
+Simplify using `[mulVec, dotProduct, H_iL]`.
+-/
 lemma Hmul_iL (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) : (Hpk k (1 + r') *ᵥ u) (iL k r') = u (i0 k r') := by
   simp [mulVec, dotProduct, H_iL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [res, mulVec, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `[hermitian_levi_entry_zero, H_lev_iL, H_lev_lev]`.
+-/
 lemma Hmul_res (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
     res k r' (Hpk k (1 + r') *ᵥ u) = Hpk k r' *ᵥ res k r' u := by
   funext j
@@ -191,6 +287,9 @@ lemma Hmul_res (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
   rw [sum_split k r']
   simp [hermitian_levi_entry_zero, H_lev_iL, H_lev_lev]
 
+/- English proof (translation)
+Establish `hres : ∀ j, (Hpk k (1 + r') *ᵥ u) (levPos k 1 r' j) = (Hpk k r' *ᵥ res k r' u) j` using `fun j => congrFun (Hmul_res k r' u) j`. Simplify using `only [herm, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `only [Pi.star_apply, hermitian_matrix_mul_first, Hmul_iL, hres, starRingEnd_apply, res]`. Apply the tactic sequence `try ring`.
+-/
 lemma herm_split (k r' : ℕ) (u v : Fin (2 * (1 + r') + k + 1) → ℂ) :
     herm (Hpk k (1 + r')) u v =
       conj (v (i0 k r')) * u (iL k r') + herm (Hpk k r') (res k r' u) (res k r' v) + conj (v (iL k r')) * u (i0 k r') := by
@@ -201,18 +300,27 @@ lemma herm_split (k r' : ℕ) (u v : Fin (2 * (1 + r') + k + 1) → ℂ) :
   simp only [Pi.star_apply, hermitian_matrix_mul_first, Hmul_iL, hres, starRingEnd_apply, res]
   try ring
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[iL_val, first_index_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma last_ne_first_index (k r' : ℕ) : iL k r' ≠ i0 k r' := by
   intro h
   have := congrArg Fin.val h
   rw [iL_val, first_index_val] at this
   omega
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[lev_val, first_index_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma levi_position_ne_first (k r' : ℕ) (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ i0 k r' := by
   intro h
   have := congrArg Fin.val h
   rw [lev_val, first_index_val] at this
   omega
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[lev_val, iL_val]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma lev_ne_iL (k r' : ℕ) (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iL k r' := by
   intro h
   have := congrArg Fin.val h
@@ -220,32 +328,61 @@ lemma lev_ne_iL (k r' : ℕ) (j : Fin (2 * r' + k + 1)) : levPos k 1 r' j ≠ iL
   have := j.isLt
   omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma e0_eq (k r' : ℕ) : e0 k r' = Pi.single (i0 k r') 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma dual_base_vector_eq_single (k r' : ℕ) : es0 k r' = Pi.single (iL k r') 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[e0_eq, Pi.single_eq_same]`.
+-/
 lemma base_vector_first_one (k r' : ℕ) : e0 k r' (i0 k r') = 1 := by
   rw [e0_eq, Pi.single_eq_same]
 
+/- English proof (translation)
+Rewrite using `[e0_eq, Pi.single_eq_of_ne (last_ne_first_index k r')]`.
+-/
 lemma base_vector_last_zero (k r' : ℕ) : e0 k r' (iL k r') = 0 := by
   rw [e0_eq, Pi.single_eq_of_ne (last_ne_first_index k r')]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show e0 k r' (levPos k 1 r' j) = 0`. Rewrite using `[e0_eq, Pi.single_eq_of_ne (levi_position_ne_first k r' j)]`.
+-/
 lemma restriction_base_vector_zero (k r' : ℕ) : res k r' (e0 k r') = 0 := by
   funext j
   show e0 k r' (levPos k 1 r' j) = 0
   rw [e0_eq, Pi.single_eq_of_ne (levi_position_ne_first k r' j)]
 
+/- English proof (translation)
+Rewrite using `[dual_base_vector_eq_single, Pi.single_eq_of_ne (last_ne_first_index k r').symm]`.
+-/
 lemma dual_base_vector_first_zero (k r' : ℕ) : es0 k r' (i0 k r') = 0 := by
   rw [dual_base_vector_eq_single, Pi.single_eq_of_ne (last_ne_first_index k r').symm]
 
+/- English proof (translation)
+Rewrite using `[dual_base_vector_eq_single, Pi.single_eq_same]`.
+-/
 lemma dual_base_vector_last_one (k r' : ℕ) : es0 k r' (iL k r') = 1 := by
   rw [dual_base_vector_eq_single, Pi.single_eq_same]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show es0 k r' (levPos k 1 r' j) = 0`. Rewrite using `[dual_base_vector_eq_single, Pi.single_eq_of_ne (lev_ne_iL k r' j)]`.
+-/
 lemma restriction_dual_base_vector_zero (k r' : ℕ) : res k r' (es0 k r') = 0 := by
   funext j
   show es0 k r' (levPos k 1 r' j) = 0
   rw [dual_base_vector_eq_single, Pi.single_eq_of_ne (lev_ne_iL k r' j)]
 
+/- English proof (translation)
+Simplify using `only [liftVec]`. Use `split_ifs with h`. Use `h.1` as an intermediate fact. Rewrite `this` using `[first_index_val]`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression.
+-/
 lemma lifted_vector_first (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (i0 k r') = 0 := by
   simp only [liftVec]
   split_ifs with h
@@ -254,6 +391,11 @@ lemma lifted_vector_first (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : lift
     omega
   · rfl
 
+/- English proof (translation)
+Simplify using `only [liftVec]`. Use `split_ifs with h`. Use `h.2` as an intermediate fact. Rewrite `this` using `[iL_val]`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression.
+-/
 lemma lift_iL (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y (iL k r') = 0 := by
   simp only [liftVec]
   split_ifs with h
@@ -262,6 +404,11 @@ lemma lift_iL (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : liftVec k 1 r' y
     omega
   · rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show liftVec k 1 r' y (levPos k 1 r' j) = y j`. Establish `hj` using `j.isLt`. Simplify using `only [liftVec]`. Use `split_ifs with h`.
+
+Use `congr 1`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[lev_val]`. Apply the tactic sequence `constructor <;> omega`.
+-/
 lemma res_lift (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : res k r' (liftVec k 1 r' y) = y := by
   funext j
   show liftVec k 1 r' y (levPos k 1 r' j) = y j
@@ -274,33 +421,57 @@ lemma res_lift (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) : res k r' (liftV
     rw [lev_val]
     constructor <;> omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_add (k r' : ℕ) (u v : Fin (2 * (1 + r') + k + 1) → ℂ) : res k r' (u + v) = res k r' u + res k r' v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_sub (k r' : ℕ) (u v : Fin (2 * (1 + r') + k + 1) → ℂ) : res k r' (u - v) = res k r' u - res k r' v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_smul (k r' : ℕ) (c : ℂ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) : res k r' (c • u) = c • res k r' u := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [liftVec, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma lift_add (k r' : ℕ) (y y' : Fin (2 * r' + k + 1) → ℂ) :
     liftVec k 1 r' (y + y') = liftVec k 1 r' y + liftVec k 1 r' y' := by
   funext p
   simp only [liftVec, Pi.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [liftVec]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 lemma lift_zero (k r' : ℕ) : liftVec k 1 r' (0 : Fin (2 * r' + k + 1) → ℂ) = 0 := by
   funext p
   simp only [liftVec]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[herm_split, base_vector_first_one, base_vector_last_zero, restriction_base_vector_zero, herm_zero_right]`. Simplify using the standard rewrite rules.
+-/
 lemma hermitian_first_basis_right (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
     herm (Hpk k (1 + r')) u (e0 k r') = u (iL k r') := by
   rw [herm_split, base_vector_first_one, base_vector_last_zero, restriction_base_vector_zero, herm_zero_right]
   simp
 
+/- English proof (translation)
+Rewrite using `[herm_split, lifted_vector_first, lift_iL, res_lift]`. Simplify using the standard rewrite rules.
+-/
 lemma herm_lift_right (k r' : ℕ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) (y : Fin (2 * r' + k + 1) → ℂ) :
     herm (Hpk k (1 + r')) u (liftVec k 1 r' y) = herm (Hpk k r') (res k r' u) y := by
   rw [herm_split, lifted_vector_first, lift_iL, res_lift]
   simp
 
+/- English proof (translation)
+Simplify using `only [herm, bvec, dotProduct, mulVec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 lemma herm_sum {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u v : Fin m → ℂ) :
     ∑ j, herm H (bvec j) v * u j = herm H u v := by
   simp only [herm, bvec, dotProduct, mulVec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
@@ -308,6 +479,11 @@ lemma herm_sum {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (u v : Fin m → ℂ) 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Establish `key : ∀ (w c : Fin (2 * (1 + r') + k + 1) → ℂ), vecMulVec w c *ᵥ u = (∑ j, c j * u j) • w`. Introduce `w c`. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, vecMulVec, of_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Simplify using `only [heisG, sub_mulVec, add_mulVec, one_mulVec, key, herm_sum]`.
+-/
 lemma heis_act (k r' : ℕ) (v u : Fin (2 * (1 + r') + k + 1) → ℂ) (b : ℂ) :
     heisG k r' v b *ᵥ u = u - herm (Hpk k (1 + r')) u v • e0 k r' + herm (Hpk k (1 + r')) u (e0 k r') • (v + b • e0 k r') := by
   have key : ∀ (w c : Fin (2 * (1 + r') + k + 1) → ℂ), vecMulVec w c *ᵥ u = (∑ j, c j * u j) • w := by
@@ -318,11 +494,21 @@ lemma heis_act (k r' : ℕ) (v u : Fin (2 * (1 + r') + k + 1) → ℂ) (b : ℂ)
     exact Finset.sum_congr rfl fun j _ => by ring
   simp only [heisG, sub_mulVec, add_mulVec, one_mulVec, key, herm_sum]
 
+/- English proof (translation)
+Rewrite using `[heis_act, herm_lift_right, hermitian_first_basis_right]`.
+-/
 lemma heis_act' (k r' : ℕ) (y : Fin (2 * r' + k + 1) → ℂ) (u : Fin (2 * (1 + r') + k + 1) → ℂ) (b : ℂ) :
     heisG k r' (liftVec k 1 r' y) b *ᵥ u =
       u - herm (Hpk k r') (res k r' u) y • e0 k r' + u (iL k r') • (liftVec k 1 r' y + b • e0 k r') := by
   rw [heis_act, herm_lift_right, hermitian_first_basis_right]
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[← mulVec_mulVec, heis_act', heis_act', heis_act']`. Establish `hL : (w - herm (Hpk k r') (res k r' w) y' • e0 k r' + w (iL k r') • (liftVec k 1 r' y' + b' • e0 k r')) (iL k r') = w (iL k r')`. Simplify using `[base_vector_last_zero, lift_iL]`.
+
+Establish `hR : res k r' (w - herm (Hpk k r') (res k r' w) y' • e0 k r' + w (iL k r') • (liftVec k 1 r' y' + b' • e0 k r')) = res k r' w + w (iL k r') • y'`. Simplify using `only [res_add, res_sub, res_smul, restriction_base_vector_zero, res_lift, smul_zero, sub_zero, add_zero]`. Rewrite using `[hL, hR, herm_add_left, herm_smul_left, herm_add_right, lift_add]`. Use function extensionality and compare the values at `p`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma heisG_mul (k r' : ℕ) (y y' : Fin (2 * r' + k + 1) → ℂ) (b b' : ℂ) :
     heisG k r' (liftVec k 1 r' y) b * heisG k r' (liftVec k 1 r' y') b' =
       heisG k r' (liftVec k 1 r' (y + y')) (b + b' - herm (Hpk k r') y' y) := by
@@ -340,12 +526,18 @@ lemma heisG_mul (k r' : ℕ) (y y' : Fin (2 * r' + k + 1) → ℂ) (b b' : ℂ) 
   simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[heis_act', lift_zero, herm_zero_right]`. Simplify using the standard rewrite rules.
+-/
 lemma heisG_zero (k r' : ℕ) : heisG k r' (liftVec k 1 r' 0) 0 = 1 := by
   apply mat_ext
   intro w
   rw [heis_act', lift_zero, herm_zero_right]
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [conjTranspose_apply, Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 lemma Hherm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
   have hi := i.isLt
@@ -353,9 +545,19 @@ lemma Hherm (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   simp only [conjTranspose_apply, Hpk, Fin.ext_iff]
   split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Conclude with `Complex.conj_eq_iff_im.mp (herm_conj _ (Hherm k r) y y)`.
+-/
 lemma herm_self_im (k r : ℕ) (y : Fin (2 * r + k + 1) → ℂ) : (herm (Hpk k r) y y).im = 0 := by
   exact Complex.conj_eq_iff_im.mp (herm_conj _ (Hherm k r) y y)
 
+/- English proof (translation)
+Establish `h1 : herm (Hpk k r') (y + y') (y + y') = herm (Hpk k r') y y + herm (Hpk k r') y' y + (herm (Hpk k r') y y' + herm (Hpk k r') y' y')`. Rewrite using `[herm_add_left, herm_add_right, herm_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (herm (Hpk k r') y y').re = (herm (Hpk k r') y' y).re`. Rewrite using `[← herm_conj _ (Hherm k r') y' y, Complex.conj_re]`.
+
+Simplify using `only [hb]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_im, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_im, Complex.sub_im, Complex.ofReal_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_im]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma hb_add (k r' : ℕ) (y y' : Fin (2 * r' + k + 1) → ℂ) (s s' : ℝ) :
     hb k r' y s + hb k r' y' s' - herm (Hpk k r') y' y = hb k r' (y + y') (s + s' - (herm (Hpk k r') y' y).im) := by
   have h1 : herm (Hpk k r') (y + y') (y + y') =
@@ -373,29 +575,49 @@ lemma hb_add (k r' : ℕ) (y y' : Fin (2 * r' + k + 1) → ℂ) (s s' : ℝ) :
       Complex.ofReal_im]
     ring
 
+/- English proof (translation)
+Introduce `k r' x x'`. Simplify using `only [heis0]`. Rewrite using `[heisG_mul, hb_add]`.
+-/
 theorem heisMul : HeisMul := by
   intro k r' x x'
   simp only [heis0]
   rw [heisG_mul, hb_add]
 
+/- English proof (translation)
+Establish `h : hb k r' 0 0 = 0` using `by simp [hb, herm_zero_right]`. Simplify using `only [heis0, h]`. Conclude with `heisG_zero k r'`.
+-/
 lemma heisenberg_at_zero (k r' : ℕ) : heis0 k r' (0, 0) = 1 := by
   have h : hb k r' 0 0 = 0 := by simp [hb, herm_zero_right]
   simp only [heis0, h]
   exact heisG_zero k r'
 
+/- English proof (translation)
+Rewrite using `[heisMul k r' x (-x.1, -x.2)]`. Establish `h : (herm (Hpk k r') (-x.1) x.1).im = 0`. Rewrite using `[herm_neg_left, Complex.neg_im, herm_self_im, neg_zero]`. Apply the tactic sequence `convert heisenberg_at_zero k r' using 2 <;> simp [h]`.
+-/
 lemma heisenberg_mul_neg (k r' : ℕ) (x : HPar k r') : heis0 k r' x * heis0 k r' (-x.1, -x.2) = 1 := by
   rw [heisMul k r' x (-x.1, -x.2)]
   have h : (herm (Hpk k r') (-x.1) x.1).im = 0 := by
     rw [herm_neg_left, Complex.neg_im, herm_self_im, neg_zero]
   convert heisenberg_at_zero k r' using 2 <;> simp [h]
 
+/- English proof (translation)
+Introduce `k r' x`. Conclude with `Matrix.inv_eq_right_inv (heisenberg_mul_neg k r' x)`.
+-/
 theorem heisInv : HeisInv := by
   intro k r' x
   exact Matrix.inv_eq_right_inv (heisenberg_mul_neg k r' x)
 
+/- English proof (translation)
+Simplify using `[herm]`.
+-/
 lemma herm_zero_left {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) (v : ι → ℂ) : herm H 0 v = 0 := by
   simp [herm]
 
+/- English proof (translation)
+Establish `hcol : heis0 k r' x p (iL k r') = (heis0 k r' x *ᵥ es0 k r') p`. Simplify using `[dual_base_vector_eq_single, mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hcol]`. Simplify using `only [heis0]`. Rewrite using `[heis_act', restriction_dual_base_vector_zero, dual_base_vector_last_one, herm_zero_left]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma heis_col (k r' : ℕ) (x : HPar k r') (p : Fin (2 * (1 + r') + k + 1)) :
     heis0 k r' x p (iL k r') = (es0 k r' + (liftVec k 1 r' x.1 + hb k r' x.1 x.2 • e0 k r')) p := by
   have hcol : heis0 k r' x p (iL k r') = (heis0 k r' x *ᵥ es0 k r') p := by
@@ -408,6 +630,11 @@ lemma heis_col (k r' : ℕ) (x : HPar k r') (p : Fin (2 * (1 + r') + k + 1)) :
 def coord (k r' : ℕ) (g : Mat k (1 + r')) : HPar k r' :=
   (fun j => g (levPos k 1 r' j) (iL k r'), (g (i0 k r') (iL k r')).im)
 
+/- English proof (translation)
+Establish `h1 : ∀ j, es0 k r' (levPos k 1 r' j) = 0` using `fun j => congrFun (restriction_dual_base_vector_zero k r') j`. Establish `h2 : ∀ j, e0 k r' (levPos k 1 r' j) = 0` using `fun j => congrFun (restriction_base_vector_zero k r') j`. Establish `h3 : ∀ j, liftVec k 1 r' x.1 (levPos k 1 r' j) = x.1 j` using `fun j => congrFun (res_lift k r' x.1) j`. Simplify using `only [coord, heis_col]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Simplify using `[h1, h2, h3]`. Simplify using `[dual_base_vector_first_zero, lifted_vector_first, base_vector_first_one, hb]`.
+-/
 lemma coord_heis (k r' : ℕ) (x : HPar k r') : coord k r' (heis0 k r' x) = x := by
   have h1 : ∀ j, es0 k r' (levPos k 1 r' j) = 0 := fun j => congrFun (restriction_dual_base_vector_zero k r') j
   have h2 : ∀ j, e0 k r' (levPos k 1 r' j) = 0 := fun j => congrFun (restriction_base_vector_zero k r') j
@@ -418,6 +645,9 @@ lemma coord_heis (k r' : ℕ) (x : HPar k r') : coord k r' (heis0 k r' x) = x :=
     simp [h1, h2, h3]
   · simp [dual_base_vector_first_zero, lifted_vector_first, base_vector_first_one, hb]
 
+/- English proof (translation)
+Unfold `coord`. Use `first`. Consider the case `fun_prop`. Consider the case `exact Continuous.prodMk (continuous_pi fun j => (continuous_apply _).comp (continuous_apply _)) (Complex.continuous_im.comp ((continuous_apply _).comp (continuous_apply _)))`.
+-/
 lemma continuous_coord (k r' : ℕ) : Continuous (coord k r') := by
   unfold coord
   first
@@ -425,11 +655,19 @@ lemma continuous_coord (k r' : ℕ) : Continuous (coord k r') := by
   | exact Continuous.prodMk (continuous_pi fun j => (continuous_apply _).comp (continuous_apply _))
       (Complex.continuous_im.comp ((continuous_apply _).comp (continuous_apply _)))
 
+/- English proof (translation)
+Simplify using `only [herm, dotProduct, mulVec, Pi.star_apply]`. Use `fun_prop`.
+-/
 lemma continuous_herm {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ) :
     Continuous fun p : (ι → ℂ) × (ι → ℂ) => herm H p.1 p.2 := by
   simp only [herm, dotProduct, mulVec, Pi.star_apply]
   fun_prop
 
+/- English proof (translation)
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Distinguish the cases in `hp : 1 ≤ p.val ∧ p.val < 2 * r' + k + 1 + 1`. Simplify using `only [liftVec, dif_pos hp]`. Conclude with `continuous_apply _`.
+
+Simplify using `only [liftVec, dif_neg hp]`. Conclude with `continuous_const`.
+-/
 lemma continuous_lift (k r' : ℕ) : Continuous (liftVec k 1 r') := by
   apply continuous_pi
   intro p
@@ -439,6 +677,9 @@ lemma continuous_lift (k r' : ℕ) : Continuous (liftVec k 1 r') := by
   · simp only [liftVec, dif_neg hp]
     exact continuous_const
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1` using `(continuous_herm (Hpk k r')).comp (continuous_fst.prodMk continuous_fst)`. Simplify using `only [hb]`. Use `first`. Consider the case `fun_prop`. Consider the case `exact (Complex.continuous_ofReal.comp ((Complex.continuous_re.comp hc).neg.div_const 2)).add ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)`.
+-/
 lemma continuous_hb (k r' : ℕ) : Continuous fun x : HPar k r' => hb k r' x.1 x.2 := by
   have hc : Continuous fun x : HPar k r' => herm (Hpk k r') x.1 x.1 :=
     (continuous_herm (Hpk k r')).comp (continuous_fst.prodMk continuous_fst)
@@ -448,6 +689,13 @@ lemma continuous_hb (k r' : ℕ) : Continuous fun x : HPar k r' => hb k r' x.1 x
   | exact (Complex.continuous_ofReal.comp ((Complex.continuous_re.comp hc).neg.div_const 2)).add
       ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const)
 
+/- English proof (translation)
+Establish `hl : Continuous fun x : HPar k r' => liftVec k 1 r' x.1` using `(continuous_lift k r').comp continuous_fst`. Establish `hh : ∀ j, Continuous fun x : HPar k r' => herm (Hpk k (1 + r')) (bvec j) (liftVec k 1 r' x.1)` using `fun j => (continuous_herm _).comp (continuous_const.prodMk hl)`. Establish `hl' : ∀ p, Continuous fun x : HPar k r' => liftVec k 1 r' x.1 p` using `fun p => (continuous_apply p).comp hl`. Establish `hb'` using `continuous_hb k r'`. Unfold `heis0 heisG`.
+
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `q`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, vecMulVec, of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `fun_prop`.
+-/
 lemma continuous_heis0 (k r' : ℕ) : Continuous (heis0 k r') := by
   have hl : Continuous fun x : HPar k r' => liftVec k 1 r' x.1 := (continuous_lift k r').comp continuous_fst
   have hh : ∀ j, Continuous fun x : HPar k r' => herm (Hpk k (1 + r')) (bvec j) (liftVec k 1 r' x.1) :=
@@ -462,6 +710,11 @@ lemma continuous_heis0 (k r' : ℕ) : Continuous (heis0 k r') := by
   simp only [Matrix.add_apply, Matrix.sub_apply, vecMulVec, of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
   fun_prop
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨x, rfl⟩` from `(show g ∈ Set.range (heis0 k r') from hg)`. Use `show heis0 k r' (coord k r' (heis0 k r' x)) = heis0 k r' x`.
+
+Rewrite using `[coord_heis]`. Introduce `h show g ∈ Set.range (heis0 k r')`. Conclude with `⟨coord k r' g, h⟩`.
+-/
 lemma Hset_eq (k r' : ℕ) : Hset k r' = {g | heis0 k r' (coord k r' g) = g} := by
   ext g
   constructor
@@ -473,10 +726,20 @@ lemma Hset_eq (k r' : ℕ) : Hset k r' = {g | heis0 k r' (coord k r' g) = g} := 
     show g ∈ Set.range (heis0 k r')
     exact ⟨coord k r' g, h⟩
 
+/- English proof (translation)
+Rewrite using `[Hset_eq]`. Conclude with `isClosed_eq ((continuous_heis0 k r').comp (continuous_coord k r')) continuous_id`.
+-/
 lemma isClosed_Hset (k r' : ℕ) : IsClosed (Hset k r') := by
   rw [Hset_eq]
   exact isClosed_eq ((continuous_heis0 k r').comp (continuous_coord k r')) continuous_id
 
+/- English proof (translation)
+Introduce `k r'`. Use `⟨fun x y h => ?_, ⟨?_, ?_, ?_, ?_, isClosed_Hset k r'⟩⟩` and prove the remaining obligations. Use `congrArg (coord k r') h` as an intermediate fact. Rewrite `this` using `[coord_heis, coord_heis]`. Then use the resulting hypothesis. Conclude with `Set.mem_range.mpr ⟨(0, 0), heisenberg_at_zero k r'⟩`.
+
+Introduce `a ha b hb`. Take `⟨x, rfl⟩` from `Set.mem_range.mp ha`. Take `⟨y, rfl⟩` from `Set.mem_range.mp hb`. Conclude with `Set.mem_range.mpr ⟨_, (heisMul k r' x y).symm⟩`. Introduce `a ha`.
+
+Take `⟨x, rfl⟩` from `Set.mem_range.mp ha`. Conclude with `Set.mem_range.mpr ⟨_, (heisInv k r' x).symm⟩`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Set.mem_range.mp ha`. Conclude with `Matrix.isUnit_det_of_right_inverse (heisenberg_mul_neg k r' x)`.
+-/
 theorem heisClosed : HeisClosed := by
   intro k r'
   refine ⟨fun x y h => ?_, ⟨?_, ?_, ?_, ?_, isClosed_Hset k r'⟩⟩
@@ -494,18 +757,27 @@ theorem heisClosed : HeisClosed := by
     obtain ⟨x, rfl⟩ := Set.mem_range.mp ha
     exact Matrix.isUnit_det_of_right_inverse (heisenberg_mul_neg k r' x)
 
+/- English proof (translation)
+Simplify using `only [ιLev]`. Rewrite using `[dif_neg]`. Apply the tactic sequence `all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma levi_first_row (k r' : ℕ) (g : Mat k r') (q : Fin (2 * (1 + r') + k + 1)) :
     ιLev k 1 r' g (i0 k r') q = if i0 k r' = q then 1 else 0 := by
   simp only [ιLev]
   rw [dif_neg]
   all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Simplify using `only [ιLev]`. Rewrite using `[dif_neg]`. Apply the tactic sequence `all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma lev_row_iL (k r' : ℕ) (g : Mat k r') (q : Fin (2 * (1 + r') + k + 1)) :
     ιLev k 1 r' g (iL k r') q = if iL k r' = q then 1 else 0 := by
   simp only [ιLev]
   rw [dif_neg]
   all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [ιLev]`. Rewrite using `[dif_pos, dif_neg]`. Apply the tactic sequence `all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma levi_entry_first_zero (k r' : ℕ) (g : Mat k r') (i : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' i) (i0 k r') = 0 := by
   have hi := i.isLt
@@ -513,6 +785,9 @@ lemma levi_entry_first_zero (k r' : ℕ) (g : Mat k r') (i : Fin (2 * r' + k + 1
   rw [dif_pos, dif_neg]
   all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [ιLev]`. Rewrite using `[dif_pos, dif_neg]`. Apply the tactic sequence `all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma lev_lev_iL (k r' : ℕ) (g : Mat k r') (i : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' i) (iL k r') = 0 := by
   have hi := i.isLt
@@ -520,6 +795,9 @@ lemma lev_lev_iL (k r' : ℕ) (g : Mat k r') (i : Fin (2 * r' + k + 1)) :
   rw [dif_pos, dif_neg]
   all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [ιLev]`. Rewrite using `[dif_pos, dif_pos]`. Apply the tactic sequence `all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)`.
+-/
 lemma lev_lev_lev (k r' : ℕ) (g : Mat k r') (i j : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
   have hi := i.isLt
@@ -528,14 +806,23 @@ lemma lev_lev_lev (k r' : ℕ) (g : Mat k r') (i j : Fin (2 * r' + k + 1)) :
   rw [dif_pos, dif_pos]
   all_goals first | rfl | omega | (simp only [first_index_val, iL_val, lev_val]; omega) | (rw [lev_val]; constructor <;> omega) | (simp_all [Fin.ext_iff] <;> omega)
 
+/- English proof (translation)
+Simplify using `[mulVec, dotProduct, levi_first_row]`.
+-/
 lemma levi_action_first_coordinate (k r' : ℕ) (g : Mat k r') (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
     (ιLev k 1 r' g *ᵥ u) (i0 k r') = u (i0 k r') := by
   simp [mulVec, dotProduct, levi_first_row]
 
+/- English proof (translation)
+Simplify using `[mulVec, dotProduct, lev_row_iL]`.
+-/
 lemma lev_act_iL (k r' : ℕ) (g : Mat k r') (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
     (ιLev k 1 r' g *ᵥ u) (iL k r') = u (iL k r') := by
   simp [mulVec, dotProduct, lev_row_iL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [res, mulVec, dotProduct]`. Rewrite using `[sum_split k r']`. Simplify using `[levi_entry_first_zero, lev_lev_iL, lev_lev_lev]`.
+-/
 lemma lev_act_res (k r' : ℕ) (g : Mat k r') (u : Fin (2 * (1 + r') + k + 1) → ℂ) :
     res k r' (ιLev k 1 r' g *ᵥ u) = g *ᵥ res k r' u := by
   funext j
@@ -543,6 +830,11 @@ lemma lev_act_res (k r' : ℕ) (g : Mat k r') (u : Fin (2 * (1 + r') + k + 1) �
   rw [sum_split k r']
   simp [levi_entry_first_zero, lev_lev_iL, lev_lev_lev]
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[← mulVec_mulVec]`. Apply `vec_ext` to reduce the goal to its premises. Simplify using `only [levi_action_first_coordinate]`.
+
+Simplify using `only [lev_act_res]`. Rewrite using `[mulVec_mulVec]`. Simplify using `only [lev_act_iL]`.
+-/
 lemma lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' g * ιLev k 1 r' h = ιLev k 1 r' (g * h) := by
   apply mat_ext
   intro u
@@ -553,21 +845,38 @@ lemma lev_mul (k r' : ℕ) (g h : Mat k r') : ιLev k 1 r' g * ιLev k 1 r' h = 
     rw [mulVec_mulVec]
   · simp only [lev_act_iL]
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[one_mulVec]`. Apply the tactic sequence `apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL]`.
+-/
 lemma lev_one (k r' : ℕ) : ιLev k 1 r' (1 : Mat k r') = 1 := by
   apply mat_ext
   intro u
   rw [one_mulVec]
   apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL]
 
+/- English proof (translation)
+Apply the tactic sequence `apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL, restriction_base_vector_zero]`.
+-/
 lemma levi_fixes_base_vector (k r' : ℕ) (g : Mat k r') : ιLev k 1 r' g *ᵥ e0 k r' = e0 k r' := by
   apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL, restriction_base_vector_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL, res_lift, lifted_vector_first, lift_iL]`.
+-/
 lemma lev_lift (k r' : ℕ) (g : Mat k r') (y : Fin (2 * r' + k + 1) → ℂ) :
     ιLev k 1 r' g *ᵥ liftVec k 1 r' y = liftVec k 1 r' (g *ᵥ y) := by
   apply vec_ext <;> simp [levi_action_first_coordinate, lev_act_res, lev_act_iL, res_lift, lifted_vector_first, lift_iL]
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`.
+-/
 lemma isUnit_det_Hpk (k r : ℕ) : IsUnit (Hpk k r).det := Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
 
+/- English proof (translation)
+Establish `hH` using `isUnit_det_Hpk k r`. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `h4 : (gᴴ.det * g.det) * (Hpk k r).det = 1 * (Hpk k r).det`.
+
+Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hH.mul_right_cancel h4`. Conclude with `⟨⟨g.det, gᴴ.det, by rw [mul_comm]; exact h3, h3⟩, rfl⟩`.
+-/
 lemma isUnit_det_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : IsUnit g.det := by
   have hH := isUnit_det_Hpk k r
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -580,10 +889,16 @@ lemma isUnit_det_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : IsUnit g.det
   have h3 := hH.mul_right_cancel h4
   exact ⟨⟨g.det, gᴴ.det, by rw [mul_comm]; exact h3, h3⟩, rfl⟩
 
+/- English proof (translation)
+Apply `Matrix.isUnit_det_of_right_inverse (B := ιLev k 1 r' g⁻¹)` to reduce the goal to its premises. Rewrite using `[lev_mul, Matrix.mul_nonsing_inv _ hg, lev_one]`.
+-/
 lemma isUnit_det_lev {k r' : ℕ} {g : Mat k r'} (hg : IsUnit g.det) : IsUnit (ιLev k 1 r' g).det := by
   apply Matrix.isUnit_det_of_right_inverse (B := ιLev k 1 r' g⁻¹)
   rw [lev_mul, Matrix.mul_nonsing_inv _ hg, lev_one]
 
+/- English proof (translation)
+Apply `mat_ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, heis_act', heis_act', lev_act_res, lev_act_iL, herm_UH (H := Hpk k r') hg]`. Simplify using `only [mulVec_add, mulVec_sub, mulVec_smul, levi_fixes_base_vector, lev_lift]`.
+-/
 lemma lev_heisG (k r' : ℕ) {g : Mat k r'} (hg : g ∈ GV k r') (y : Fin (2 * r' + k + 1) → ℂ) (b : ℂ) :
     ιLev k 1 r' g * heisG k r' (liftVec k 1 r' y) b = heisG k r' (liftVec k 1 r' (g *ᵥ y)) b * ιLev k 1 r' g := by
   apply mat_ext
@@ -591,6 +906,11 @@ lemma lev_heisG (k r' : ℕ) {g : Mat k r'} (hg : g ∈ GV k r') (y : Fin (2 * r
   rw [← mulVec_mulVec, ← mulVec_mulVec, heis_act', heis_act', lev_act_res, lev_act_iL, herm_UH (H := Hpk k r') hg]
   simp only [mulVec_add, mulVec_sub, mulVec_smul, levi_fixes_base_vector, lev_lift]
 
+/- English proof (translation)
+Introduce `k r' g hg x`. Establish `hu : IsUnit (ιLev k 1 r' g).det` using `isUnit_det_lev (isUnit_det_GV hg)`. Establish `hb' : hb k r' (g *ᵥ x.1) x.2 = hb k r' x.1 x.2`. Simplify using `only [hb, herm_UH (H := Hpk k r') hg]`. Simplify using `only [heis0]`.
+
+Rewrite using `[lev_heisG k r' hg, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, hb']`.
+-/
 theorem heisConjLev : HeisConjLev := by
   intro k r' g hg x
   have hu : IsUnit (ιLev k 1 r' g).det := isUnit_det_lev (isUnit_det_GV hg)
@@ -601,12 +921,24 @@ theorem heisConjLev : HeisConjLev := by
 
 def heisT (k r' : ℕ) (x : HPar k r') : Mt k (1 + r') := heis0 k r' x
 
+/- English proof (translation)
+The claim follows from `continuous_heis0 k r'`.
+-/
 lemma continuous_heisT (k r' : ℕ) : Continuous (heisT k r') := continuous_heis0 k r'
 
+/- English proof (translation)
+The claim follows from `(continuous_heisT k r').measurable`.
+-/
 lemma measurable_heisT (k r' : ℕ) : Measurable (heisT k r') := (continuous_heisT k r').measurable
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma μHeis_eq (k r' : ℕ) : μHeis k r' = (volume : Measure (HPar k r')).map (heisT k r') := rfl
 
+/- English proof (translation)
+Rewrite using `[μHeis_eq, Measure.map_map hΦ (measurable_heisT k r')]`. Establish `hc : Φ ∘ heisT k r' = heisT k r' ∘ T` using `funext h`. Rewrite using `[hc, ← Measure.map_map (measurable_heisT k r') hT.measurable, hT.map_eq]`.
+-/
 lemma map_μHeis (k r' : ℕ) {Φ : Mt k (1 + r') → Mt k (1 + r')} (hΦ : Measurable Φ) {T : HPar k r' → HPar k r'}
     (hT : MeasurePreserving T volume volume) (h : ∀ x, Φ (heisT k r' x) = heisT k r' (T x)) :
     (μHeis k r').map Φ = μHeis k r' := by
@@ -614,6 +946,11 @@ lemma map_μHeis (k r' : ℕ) {Φ : Mt k (1 + r') → Mt k (1 + r')} (hΦ : Meas
   have hc : Φ ∘ heisT k r' = heisT k r' ∘ T := funext h
   rw [hc, ← Measure.map_map (measurable_heisT k r') hT.measurable, hT.map_eq]
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `j`.
+
+Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 lemma measurable_lmulM {k r : ℕ} (a : Mat k r) : Measurable (lmulM a) := by
   apply Continuous.measurable
   apply continuous_pi
@@ -623,6 +960,11 @@ lemma measurable_lmulM {k r : ℕ} (a : Mat k r) : Measurable (lmulM a) := by
   simp only [lmulM, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `j`.
+
+Simplify using `only [rmulF, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 lemma measurable_rmulF {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Measurable (rmulF a) := by
   apply Continuous.measurable
   apply continuous_pi
@@ -632,6 +974,11 @@ lemma measurable_rmulF {n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) : Measurable (
   simp only [rmulF, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `j`.
+
+Simplify using `only [conjM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 lemma measurable_conjM {k r : ℕ} (a : Mat k r) : Measurable (conjM a) := by
   apply Continuous.measurable
   apply continuous_pi
@@ -641,18 +988,42 @@ lemma measurable_conjM {k r : ℕ} (a : Mat k r) : Measurable (conjM a) := by
   simp only [conjM, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Conclude with `hf.skew_product (g := fun y s => s + c y) (μc := volume) (μd := volume) (measurable_snd.add (hc.comp measurable_fst)) (ae_of_all _ fun y => map_add_right_eq_self volume (c y))`.
+-/
 lemma shear (k r' : ℕ) {f : (Fin (2 * r' + k + 1) → ℂ) → (Fin (2 * r' + k + 1) → ℂ)}
     (hf : MeasurePreserving f volume volume) {c : (Fin (2 * r' + k + 1) → ℂ) → ℝ} (hc : Measurable c) :
     MeasurePreserving (fun p : HPar k r' => (f p.1, p.2 + c p.1)) volume volume := by
   exact hf.skew_product (g := fun y s => s + c y) (μc := volume) (μd := volume)
     (measurable_snd.add (hc.comp measurable_fst)) (ae_of_all _ fun y => map_add_right_eq_self volume (c y))
 
+/- English proof (translation)
+The claim follows from `(Complex.continuous_im.comp ((continuous_herm _).comp (continuous_id.prodMk continuous_const))).measurable`.
+-/
 lemma measurable_herm_im_left (k r : ℕ) (y₀ : Fin (2 * r + k + 1) → ℂ) :
     Measurable fun y : Fin (2 * r + k + 1) → ℂ => (herm (Hpk k r) y y₀).im := (Complex.continuous_im.comp ((continuous_herm _).comp (continuous_id.prodMk continuous_const))).measurable
 
+/- English proof (translation)
+The claim follows from `(Complex.continuous_im.comp ((continuous_herm _).comp (continuous_const.prodMk continuous_id))).measurable`.
+-/
 lemma measurable_herm_im_right (k r : ℕ) (y₀ : Fin (2 * r + k + 1) → ℂ) :
     Measurable fun y : Fin (2 * r + k + 1) → ℂ => (herm (Hpk k r) y₀ y).im := (Complex.continuous_im.comp ((continuous_herm _).comp (continuous_const.prodMk continuous_id))).measurable
 
+/- English proof (translation)
+Introduce `k r'`. Establish `hcl : @IsClosed (Mt k (1 + r')) _ (Hset k r')` using `isClosed_Hset k r'`. Establish `hmeasU : @MeasurableSet (Mt k (1 + r')) _ (Hset k r')ᶜ` using `hcl.measurableSet.compl`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[μHeis_eq]`.
+
+Conclude with `(Measure.map_apply (measurable_heisT k r') hmeasU).trans (measure_mono_null (fun x hx => hx (Set.mem_range.mpr ⟨x, rfl⟩)) measure_empty)`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Set.mem_range.mp ha`. Use `map_μHeis k r' (measurable_lmulM _) (shear k r' (measurePreserving_add_left volume x.1) ((measurable_herm_im_left k r' x.1).const_sub x.2)) ?_` and prove the remaining obligations. Introduce `y`.
+
+Use `show heis0 k r' x * heis0 k r' y = heis0 k r' (x.1 + y.1, y.2 + (x.2 - (herm (Hpk k r') y.1 x.1).im))`. Rewrite using `[heisMul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+
+Take `⟨x, rfl⟩` from `Set.mem_range.mp ha`. Use `map_μHeis k r' (measurable_rmulF _) (shear k r' (measurePreserving_add_left volume x.1) ((measurable_herm_im_right k r' x.1).const_sub x.2)) ?_` and prove the remaining obligations. Introduce `y`. Use `show heis0 k r' y * heis0 k r' x = heis0 k r' (x.1 + y.1, y.2 + (x.2 - (herm (Hpk k r') x.1 y.1).im))`. Rewrite using `[heisMul]`.
+
+Apply the tactic sequence `congr 2 <;> first | ring | abel`. Introduce `K hK`. Establish `hK' : IsCompact (coord k r' '' (K : Set (Mat k (1 + r'))))` using `hK.image (continuous_coord k r')`. Rewrite using `[μHeis_eq, Measure.map_apply (measurable_heisT k r') hK.measurableSet]`. Use `lt_of_le_of_lt (measure_mono ?_) hK'.measure_lt_top` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `⟨heisT k r' x, hx, coord_heis k r' x⟩`. Rewrite using `[μHeis_eq]`. Introduce `h`. Rewrite `h` using `[Measure.map_eq_zero_iff (measurable_heisT k r').aemeasurable]`.
+
+Use `first`. Consider the case `exact NeZero.ne _ h`. Consider the case `exact (IsOpenPosMeasure.open_pos (μ := (volume : Measure (HPar k r'))) Set.univ isOpen_univ Set.univ_nonempty) (by rw [h]; rfl)`.
+-/
 theorem heisHaar : HeisHaar := by
   intro k r'
   have hcl : @IsClosed (Mt k (1 + r')) _ (Hset k r') := isClosed_Hset k r'
@@ -692,6 +1063,13 @@ theorem heisHaar : HeisHaar := by
     | exact (IsOpenPosMeasure.open_pos (μ := (volume : Measure (HPar k r'))) Set.univ isOpen_univ
         Set.univ_nonempty) (by rw [h]; rfl)
 
+/- English proof (translation)
+Establish `hH` using `isUnit_det_Hpk k r`. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h4 : (star g.det * g.det) * (Hpk k r).det = 1 * (Hpk k r).det`.
+
+Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hH.mul_right_cancel h4`. Establish `h5 : ((Complex.normSq g.det : ℝ) : ℂ) = 1`.
+
+Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Conclude with `h3`. Conclude with `h5` after adjusting the coercions.
+-/
 lemma normSq_det_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : Complex.normSq g.det = 1 := by
   have hH := isUnit_det_Hpk k r
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -707,6 +1085,13 @@ lemma normSq_det_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) : Complex.norm
     exact h3
   exact_mod_cast h5
 
+/- English proof (translation)
+Establish `hn` using `normSq_det_GV hg`. Use `set f : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℝ] (Fin (2 * r + k + 1) → ℂ) := (Matrix.toLin' g).restrictScalars ℝ with hf`. Establish `hfg : (fun y : Fin (2 * r + k + 1) → ℂ => g *ᵥ y) = f`. Use function extensionality and compare the values at `y`. Simplify using `[hf, Matrix.toLin'_apply]`.
+
+Establish `hd : LinearMap.det f = 1`. Rewrite using `[hf, LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, hn]`. Rewrite using `[hfg]`. Use `⟨f.continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar volume (by rw [hd]; norm_num), hd]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma measurePreserving_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) :
     MeasurePreserving (fun y : Fin (2 * r + k + 1) → ℂ => g *ᵥ y) volume volume := by
   have hn := normSq_det_GV hg
@@ -722,6 +1107,9 @@ lemma measurePreserving_GV {k r : ℕ} {g : Mat k r} (hg : g ∈ GV k r) :
   rw [Measure.map_linearMap_addHaar_eq_smul_addHaar volume (by rw [hd]; norm_num), hd]
   simp
 
+/- English proof (translation)
+Introduce `k r' g hg`. Use `map_μHeis k r' (measurable_conjM _) (shear k r' (c := fun _ => (0 : ℝ)) (measurePreserving_GV hg) measurable_const) ?_` and prove the remaining obligations. Introduce `y`. Use `show ιLev k 1 r' g * heis0 k r' y * (ιLev k 1 r' g)⁻¹ = heis0 k r' (g *ᵥ y.1, y.2 + 0)`. Rewrite using `[heisConjLev k r' g hg y, add_zero]`.
+-/
 theorem heisConjLevMeas : HeisConjLevMeas := by
   intro k r' g hg
   refine map_μHeis k r' (measurable_conjM _)
@@ -734,16 +1122,34 @@ end Formalism.FourierDecayAlt.P.B2x5
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `B2x5.heisMul`.
+-/
 theorem heisMul_statement : Formalism.FourierDecayAlt.B2.HeisMul := B2x5.heisMul
 
+/- English proof (translation)
+The claim follows from `B2x5.heisInv`.
+-/
 theorem heisenberg_inverse : Formalism.FourierDecayAlt.B2.HeisInv := B2x5.heisInv
 
+/- English proof (translation)
+The claim follows from `B2x5.heisClosed`.
+-/
 theorem heisenberg_subgroup_closed : Formalism.FourierDecayAlt.B2.HeisClosed := B2x5.heisClosed
 
+/- English proof (translation)
+The claim follows from `B2x5.heisHaar`.
+-/
 theorem heisenberg_haar_measure : Formalism.FourierDecayAlt.B2.HeisHaar := B2x5.heisHaar
 
+/- English proof (translation)
+The claim follows from `B2x5.heisConjLev`.
+-/
 theorem heisenberg_conjugation_by_levi : Formalism.FourierDecayAlt.B2.HeisConjLev := B2x5.heisConjLev
 
+/- English proof (translation)
+The claim follows from `B2x5.heisConjLevMeas`.
+-/
 theorem heisenberg_levi_conjugation_measure : Formalism.FourierDecayAlt.B2.HeisConjLevMeas := B2x5.heisConjLevMeas
 
 end Formalism.FourierDecayAlt.P

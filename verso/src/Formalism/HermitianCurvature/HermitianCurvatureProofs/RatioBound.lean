@@ -15,6 +15,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
   (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) (ys : List ℝ) {ε : ℝ}
 
+/- English proof (translation)
+The claim follows from `PBG.pairJ_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x₁ x₂ y c (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂) (PBG.decV_of_nice hy)`.
+-/
 theorem pj_sl (x₁ x₂ : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (h₁ : NV (p.T.bs j) ε x₁) (h₂ : NV (p.T.bs j) ε x₂) (hy : NV (p.T.bs j) ε y) :
@@ -23,6 +26,9 @@ theorem pj_sl (x₁ x₂ : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r
   PBG.pairJ_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x₁ x₂ y c (PBG.decV_of_nice h₁)
     (PBG.decV_of_nice h₂) (PBG.decV_of_nice hy)
 
+/- English proof (translation)
+The claim follows from `PBG.pairJ_sesq_right P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x y₁ y₂ c (PBG.decV_of_nice hx) (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)`.
+-/
 theorem pj_sr (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (y₁ y₂ : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hx : NV (p.T.bs j) ε x) (h₁ : NV (p.T.bs j) ε y₁) (h₂ : NV (p.T.bs j) ε y₂) :
@@ -31,18 +37,29 @@ theorem pj_sr (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) �
   PBG.pairJ_sesq_right P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w ys x y₁ y₂ c (PBG.decV_of_nice hx)
     (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)
 
+/- English proof (translation)
+Establish `h` using `pj_sl p j hj w ys 0 0 y 1 nv_zero nv_zero hy`. Simplify using `only [one_smul, add_zero, one_mul] at h`. Take the linear combination `-h`.
+-/
 theorem pj_zero_l (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hy : NV (p.T.bs j) ε y) : KB.pairJ (p.form j hj w) ys 0 y = 0 := by
   have h := pj_sl p j hj w ys 0 0 y 1 nv_zero nv_zero hy
   simp only [one_smul, add_zero, one_mul] at h
   linear_combination -h
 
+/- English proof (translation)
+Establish `h` using `pj_sr p j hj w ys x 0 0 1 hx nv_zero nv_zero`. Simplify using `only [one_smul, add_zero, map_one, one_mul] at h`. Take the linear combination `-h`.
+-/
 theorem pj_zero_r (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hx : NV (p.T.bs j) ε x) : KB.pairJ (p.form j hj w) ys x 0 = 0 := by
   have h := pj_sr p j hj w ys x 0 0 1 hx nv_zero nv_zero
   simp only [one_smul, add_zero, map_one, one_mul] at h
   linear_combination -h
 
+/- English proof (translation)
+Establish `h1` using `pj_sl p j hj w ys 0 x (d • y) c nv_zero hx (nv_smul d hy)`. Establish `h2` using `pj_sr p j hj w ys x 0 y d hx nv_zero hy`. Rewrite `h1` using `[zero_add, pj_zero_l p j hj w ys _ (nv_smul d hy), zero_add]`. Rewrite `h2` using `[zero_add, pj_zero_r p j hj w ys x hx, zero_add]`. Rewrite using `[h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pj_smul (x : Wd.Ix (Fin (KB.plusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (y : Wd.Ix (Fin (KB.minusW ys w).length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c d : ℂ)
     (hx : NV (p.T.bs j) ε x) (hy : NV (p.T.bs j) ε y) :
@@ -63,6 +80,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Unfold `uB`. Rewrite using `[dif_pos hh]`.
+-/
 theorem uB_pos (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (h : C.LPt) (hh : D.IsLocPt h j) :
@@ -70,11 +90,17 @@ theorem uB_pos (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (
       KB.slv (p v).T (F v ε) j hj w (stdS S h) ((stdS_size S h).trans hh.2) := by
   unfold uB; rw [dif_pos hh]
 
+/- English proof (translation)
+Unfold `uB`. Rewrite using `[dif_neg hh]`.
+-/
 theorem uB_neg (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (h : C.LPt) (hh : ¬ D.IsLocPt h j) : uB S p F v ε j hj w h = 0 := by
   unfold uB; rw [dif_neg hh]
 
+/- English proof (translation)
+Use `PBG.waveG_add_smul Bs s w 0 x c` as an intermediate fact. Rewrite `this` using `[zero_add, PBG.waveG_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem waveG_smul' {k ρ : ℕ} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [InnerProductSpace ℂ Wp']
     [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] (Bs : B.RealPlaceData k ρ Wp' Wq') (s : ℂ) (w : List C.Letter)
     (x : Wd.Ix (Fin w.length) → B.Mat k ρ → (Wq' →L[ℂ] Wp')) (c : ℂ) :
@@ -82,6 +108,25 @@ theorem waveG_smul' {k ρ : ℕ} {Wp' Wq' : Type} [NormedAddCommGroup Wp'] [Inne
   have := PBG.waveG_add_smul Bs s w 0 x c
   rwa [zero_add, PBG.waveG_zero, zero_add] at this
 
+/- English proof (translation)
+Establish `hgpos` using `g_pos_of_built hB`. Distinguish the cases in `hloc : D.IsLocPt h j ∧ D.IsLocPt h' j`. Take `⟨hh, hh'⟩` from `hloc`. Establish `hH : D.IsLocPt (stdS S h) j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h 1 j).2 hh`. Establish `hH' : D.IsLocPt (stdS S h') j` using `(PBD.isLocPt_toStd_iff _ _ hgpos h' 1 j).2 hh'`.
+
+Establish `hdeg` using `hDW (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (F v ε) j hj a (stdS S h) (stdS S h') hH hH' K grid s LinearMap.id (fun ε x hx => hx) (hF v ε hε) hinj`. Simplify using `only [LinearMap.id_apply, onOld_id] at hdeg`. Use `set Dh : ℂ := (((√(nnS S h) / bS S h : ℝ) : ℂ)) with hDh`. Use `set Dh' : ℂ := (((√(nnS S h') / bS S h' : ℝ) : ℂ)) with hDh'`. Rewrite using `[uB_pos S p F v ε j hj a h hh, uB_pos S p F v ε j hj a h' hh', waveG_smul']`.
+
+Take `⟨ε2, hε2, hs, hs'⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj a (stdS S h) hH) (slv_nv (p v) (hF v ε hε) j hj a (stdS S h') hH')`. Establish `hws` using `PBFV.waveG_nice ((p v).T.bs j) ε2 s a _ hs`. Rewrite using `[form_smul_l (p v) j hj a _ _ _ hws (nv_smul _ hs'), form_smul_r (p v) j hj a _ _ _ hws hs']`. Establish `hL : s ^ K * (Dh * (conj Dh' * (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (KB.slv (p v).T (F v ε) j hj a (stdS S h) ((stdS_size S h).trans hh.2))) (KB.slv (p v).T (F v ε) j hj a (stdS S h') ((stdS_size S h').trans hh'.2)))) = Dh * conj Dh' * (s ^ K * (p v).form j hj a (KB.wav …`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hL, hdeg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `set ys := List.ofFn fun b => grid b (n b) with hys`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj (KB.plusW ys a) (stdS S h) hH) (slv_nv (p v) (hF v ε hε) j hj (KB.minusW ys a) (stdS S h') hH')`. Establish `hwp` using `PBFV.waveG_nice ((p v).T.bs j) ε3 s _ _ hp`.
+
+Rewrite using `[uB_pos S p F v ε j hj (KB.plusW ys a) h hh, uB_pos S p F v ε j hj (KB.minusW ys a) h' hh', waveG_smul', pj_smul (p v) j hj a ys _ _ _ _ hwp hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : uB S p F v ε j hj a h = 0 ∨ uB S p F v ε j hj a h' = 0`. Distinguish the cases in `hh : D.IsLocPt h j`. Conclude with `Or.inr (uB_neg S p F v ε j hj a h' fun hh' => hloc ⟨hh, hh'⟩)`.
+
+Conclude with `Or.inl (uB_neg S p F v ε j hj a h hh)`. Take `⟨ε1, hε1, hx, hx'⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj a h) (uB_nv hB F hF v ε hε j hj a h')`. Establish `hwx` using `PBFV.waveG_nice ((p v).T.bs j) ε1 s a _ hx`. Establish `lhs0 : (p v).form j hj a (KB.waveG ((p v).T.bs j) s a (uB S p F v ε j hj a h)) (uB S p F v ε j hj a h') = 0`. Break down `h0 with h0 | h0` into its components or cases.
+
+Rewrite using `[h0, PBG.waveG_zero, form_zero_l (p v) j hj a _ hx']`. Rewrite using `[h0, form_zero_r (p v) j hj a _ hwx]`. Rewrite using `[lhs0, mul_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations.
+
+Use `set ys := List.ofFn fun b => grid b (n b) with hys`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj (KB.plusW ys a) h) (uB_nv hB F hF v ε hε j hj (KB.minusW ys a) h')`. Establish `hwp` using `PBFV.waveG_nice ((p v).T.bs j) ε3 s _ _ hp`. Distinguish the cases in `hh : D.IsLocPt h j`. Rewrite using `[uB_neg S p F v ε j hj (KB.minusW ys a) h' fun hh' => hloc ⟨hh, hh'⟩, pj_zero_r (p v) j hj a ys _ hwp, mul_zero]`.
+
+Rewrite using `[uB_neg S p F v ε j hj (KB.plusW ys a) h hh, PBG.waveG_zero, pj_zero_l (p v) j hj a ys _ hm, mul_zero]`.
+-/
 theorem deg_uB (hDW : KB.DegWave) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)
@@ -153,6 +198,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Establish `hgpos` using `g_pos_of_built hB`. Establish `hrd` using `PBD.rd_pos' E`. Unfold `ΓS`. Conclude with `PBD.gamLev_pos _ _ _ _ (by unfold D.kapG; positivity) (by unfold D.deG; positivity) _`.
+-/
 theorem gam_pos (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (j : ℕ) : 0 < ΓS S j := by
   have hgpos := g_pos_of_built hB
   have hrd := PBD.rd_pos' E
@@ -165,6 +213,11 @@ def uY (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v))
     Wd.Ix (Fin w.length) → B.Mat S.G.k (S.G.r - j) → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :=
   if h ∈ Y then uB S p F v ε j hj w h else 0
 
+/- English proof (translation)
+Take `⟨ε0, hε0, hall⟩` from `nv_common Y (uB S p F v ε j hj w) (fun h _ => uB_nv hB F hF v ε hε j hj w h)`. Use `⟨ε0, hε0, fun h => ?_⟩` and prove the remaining obligations. Unfold `uY`. Use `split_ifs with hh`. Conclude with `hall h hh`.
+
+Conclude with `nv_zero`.
+-/
 theorem uY_nv (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)
@@ -177,12 +230,22 @@ theorem uY_nv (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
   · exact hall h hh
   · exact nv_zero
 
+/- English proof (translation)
+Unfold `uY`. Rewrite using `[if_pos hh]`.
+-/
 theorem uY_mem (S : C.HidaSetting E Wp Wq) (p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v)))
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (Y : Finset C.LPt) (h : C.LPt) (hh : h ∈ Y) :
     uY S p F v ε j hj w Y h = uB S p F v ε j hj w h := by
   unfold uY; rw [if_pos hh]
 
+/- English proof (translation)
+Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv⟩` from `hB'`. Take `⟨hl0, -, -, -, -⟩` from `hv v`. Establish `hw' : KB.CutWord (D.parOf S v) (p v).l0 w` using `by rw [hl0]; exact hw`. Take `⟨ε0, hε0, hu⟩` from `uY_nv hB F hF v ε hε j hj w Y`.
+
+Use `set c0 : ℝ := 1 / (ΓS S j * S.sizeAt v w) with hc0`. Establish `hc0n : 0 ≤ c0`. Use `gam_pos hB j` as an intermediate fact. Use `sizeAt_nonneg S v w` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `set Dv := NV ((p v).T.bs j) ε0 (S := Fin w.length) with hDv`. Establish `hG` using `gram_psd Dv (fun x y => (c0 : ℂ) * (p v).form j hj w x y) nv_zero (fun x y hx hy => nv_add hx hy) (fun c x hx => nv_smul c hx) (fun x₁ x₂ y c h₁ h₂ hy => by simp only [form_sl (p v) j hj w x₁ x₂ y c h₁ h₂ hy]; ring) (fun x y₁ y₂ c hx h₁ h₂ => by simp only [form_sr (p v) j hj w x …`. Use `psd_congr (fun x hx y hy => ?_) hG` and prove the remaining obligations. Use `show (c0 : ℂ) * (p v).form j hj w (uY S p F v ε j hj w Y x) (uY S p F v ε j hj w Y y) = _`. Rewrite using `[uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]`.
+-/
 theorem gN_psd (hA : P5.ThmPActual) (hFP : FormPos) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)
@@ -209,6 +272,13 @@ theorem gN_psd (hA : P5.ThmPActual) (hFP : FormPos) (hB : KB.IsLeadingFormSettin
   show (c0 : ℂ) * (p v).form j hj w (uY S p F v ε j hj w Y x) (uY S p F v ε j hj w Y y) = _
   rw [uY_mem S p F v ε j hj w Y x hx, uY_mem S p F v ε j hj w Y y hy, gN_uB hB F hF v ε hε j hj w x y]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[PBA.blockPSD_iff]`. Use `psd_congr (fun x hx y hy => ?_) h` and prove the remaining obligations. Consider the cases of `x with`. Consider the case `inl x`. Consider the cases of `y with`.
+
+Consider the case `inl y => exact ha x (Finset.inl_mem_disjSum.1 hx) y (Finset.inl_mem_disjSum.1 hy)`. Consider the case `inr y => exact hw x (Finset.inl_mem_disjSum.1 hx) y (Finset.inr_mem_disjSum.1 hy)`. Consider the case `inr x`. Consider the cases of `y with`. Consider the case `inl y => show conj (w y x) = conj (w' y x)`.
+
+Rewrite using `[hw y (Finset.inl_mem_disjSum.1 hy) x (Finset.inr_mem_disjSum.1 hx)]`. Consider the case `inr y => exact hb x (Finset.inr_mem_disjSum.1 hx) y (Finset.inr_mem_disjSum.1 hy)`.
+-/
 theorem blockPSD_congr {α : Type} {Y : Finset α} {a a' b b' w w' : α → α → ℂ}
     (ha : ∀ x ∈ Y, ∀ y ∈ Y, a x y = a' x y) (hw : ∀ x ∈ Y, ∀ y ∈ Y, w x y = w' x y)
     (hb : ∀ x ∈ Y, ∀ y ∈ Y, b x y = b' x y) (h : KB.BlockPSD Y Y a w b) : KB.BlockPSD Y Y a' w' b' := by
@@ -228,6 +298,9 @@ theorem blockPSD_congr {α : Type} {Y : Finset α} {a a' b b' w w' : α → α �
 
 end kern
 
+/- English proof (translation)
+The claim follows from `|∏ b, F7.lagCo (grid b) (n b)| / F7.thGrid grid n = ∏ b, ∑ i, |F7.lagCo (grid b) i| := by have hs : ∀ b, 0 < ∑ i, |F7.lagCo (grid b) i| := fun b => lt_of_lt_of_le (abs_pos.2 (PBD.lagCo_ne_zero _ (hinj b) (n b))) (Finset.single_le_sum (f := fun i => |F7.lagCo (grid b) i|) (fun i _ …`.
+-/
 theorem lam_div_theta {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj : ∀ b, Function.Injective (grid b))
     (n : Fin K → Fin (d + 1)) :
     0 < F7.thGrid grid n ∧
@@ -243,6 +316,13 @@ theorem lam_div_theta {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (hinj :
   refine Finset.prod_congr rfl fun b _ => ?_
   field_simp [(hl b).ne', (hs b).ne']
 
+/- English proof (translation)
+Establish `hQ : 0 < ∏ b, qv (ys b)` using `Finset.prod_pos fun b _ => hq b`. Establish `hPp : 0 < ∏ b, |Pv (ys b)|` using `Finset.prod_pos fun b _ => abs_pos.2 (hP b)`. Establish `hPm : 0 < ∏ b, |Pv (ys b + 1)|` using `Finset.prod_pos fun b _ => abs_pos.2 (hP' b)`. Establish `e : (Λ * T ^ K * (1 / (Γ * sa))) ^ 2 / ((∏ b, qv (ys b)) * (1 / (Γ * ((∏ b, |Pv (ys b)|) * sa))) * (1 / (Γ * ((∏ b, |Pv (ys b + 1)|) * sa)))) = (Λ * T ^ K) ^ 2 * ∏ b, (|Pv (ys b) * Pv (ys b + 1)| / qv (ys b))`. Rewrite using `[Finset.prod_div_distrib]`.
+
+Simplify using `only [abs_mul, Finset.prod_mul_distrib]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Establish `hprod : ∏ b, (|Pv (ys b) * Pv (ys b + 1)| / qv (ys b)) ≤ (B ^ 2) ^ K`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0 : 0 ≤ Λ * T ^ K * B ^ K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ratio_bound {K : ℕ} (ys : Fin K → ℝ) (Pv qv : ℝ → ℝ) (Λ T Γ sa B Xc : ℝ) (hΓ : 0 < Γ) (hsa : 0 < sa)
     (hq : ∀ b, 0 < qv (ys b)) (hP : ∀ b, Pv (ys b) ≠ 0) (hP' : ∀ b, Pv (ys b + 1) ≠ 0)
     (hnode : ∀ b, |Pv (ys b) * Pv (ys b + 1)| / qv (ys b) ≤ B ^ 2) (hΛ : 0 ≤ Λ) (hT : 0 ≤ T) (hB0 : 0 ≤ B)

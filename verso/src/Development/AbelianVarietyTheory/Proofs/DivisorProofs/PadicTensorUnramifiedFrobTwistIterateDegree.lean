@@ -6,6 +6,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LKRes
 
+/- English proof (translation)
+Use `set e := Algebra.TensorProduct.map (AlgHom.id R A) f`. Establish `ht : ∀ k (a : A) (b : B), (⇑e)^[k] (a ⊗ₜ[R] b) = a ⊗ₜ[R] (⇑f)^[k] b`. Introduce `k a b`. Proceed by induction on `k with`. Consider the case `zero => rfl`.
+
+Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, Function.iterate_succ_apply']`. Simplify using `[e]`. Establish `hadd : ∀ k (x y : A ⊗[R] B), (⇑e)^[k] (x + y) = (⇑e)^[k] x + (⇑e)^[k] y`. Introduce `k x y`.
+
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', ih, map_add, Function.iterate_succ_apply', Function.iterate_succ_apply']`. Establish `hzero : ∀ k, (⇑e)^[k] (0 : A ⊗[R] B) = 0`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', ih, map_zero]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact hzero r`.
+
+Consider the case `tmul a b => rw [ht, hf]`. Consider the case `add x y hx hy => rw [hadd, hx, hy]`.
+-/
 theorem tensorMap_id_iterate_eq_self {R A B : Type*} [CommRing R] [CommRing A] [CommRing B] [Algebra R A]
     [Algebra R B] (f : B →ₐ[R] B) (r : ℕ) (hf : ∀ b, (⇑f)^[r] b = b) (x : A ⊗[R] B) :
     (⇑(Algebra.TensorProduct.map (AlgHom.id R A) f))^[r] x = x := by
@@ -33,6 +44,9 @@ theorem tensorMap_id_iterate_eq_self {R A B : Type*} [CommRing R] [CommRing A] [
   | tmul a b => rw [ht, hf]
   | add x y hx hy => rw [hadd, hx, hy]
 
+/- English proof (translation)
+Introduce `p _ K r hr x`. Conclude with `tensorMap_id_iterate_eq_self (A := K) (frobQ p r) r (frobQ_iterate_self p r hr) x`.
+-/
 theorem sigKQ_iterate_self : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ),
     0 < r → ∀ x : KQ p K r, (⇑(sigKQ p K r))^[r] x = x := by
   intro p _ K r hr x
@@ -40,4 +54,7 @@ theorem sigKQ_iterate_self : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField
 
 end GlobalTheory.LKRes
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LKRes.sigKQ_iterate_self`.
+-/
 example : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (r : ℕ), 0 < r → ∀ x : KQ p K r, (⇑(sigKQ p K r))^[r] x = x := GlobalTheory.LKRes.sigKQ_iterate_self

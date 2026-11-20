@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasure
 
 namespace PI.AprimeInfW
 
+/- English proof (translation)
+The claim follows from `placeJacAll_of placeJac_holds`.
+-/
 theorem placeJacAll_holds : PlaceJacAll := placeJacAll_of placeJac_holds
 
 end PI.AprimeInfW

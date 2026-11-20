@@ -23,6 +23,9 @@ namespace GlobalTheory.ConjInfExp
 
 open GlobalTheory.FockCompare GlobalTheory.AdelicU
 
+/- English proof (translation)
+Establish `h0 : ((‖u‖ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hu)`. Rewrite using `[Complex.norm_conj, _root_.zpow_neg, ← _root_.inv_zpow]`. Use `congr 1`. Rewrite using `[inv_div, div_eq_div_iff ((map_ne_zero _).2 hu) h0, Complex.mul_conj', sq]`.
+-/
 theorem conj_div_norm_zpow (u : ℂ) (hu : u ≠ 0) (k : ℤ) :
     (starRingEnd ℂ u / ((‖starRingEnd ℂ u‖ : ℝ) : ℂ)) ^ (-k) = (u / ((‖u‖ : ℝ) : ℂ)) ^ k := by
   have h0 : ((‖u‖ : ℝ) : ℂ) ≠ 0 := Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 hu)
@@ -30,6 +33,17 @@ theorem conj_div_norm_zpow (u : ℂ) (hu : u ≠ 0) (k : ℤ) :
   congr 1
   rw [inv_div, div_eq_div_iff ((map_ne_zero _).2 hu) h0, Complex.mul_conj', sq]
 
+/- English proof (translation)
+Establish `hr : ∀ a : Ainf D.host.F, InfinitePlace.Completion.extensionEmbedding w (GlobalTheory.AutFunCompare.evW w a) = starRingEnd ℂ (θ τ (a ⊗ₜ[D.host.F] (1 : D.host.E)))`. Introduce `a`. Use `DenseRange.induction_on (InfiniteAdeleRing.denseRange_algebraMap D.host.F) a (isClosed_eq ?_ ?_) fun f => ?_` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`. Conclude with `Complex.continuous_conj.comp (hθ τ).2`.
+
+Rewrite using `[(GlobalTheory.AutFunCompare.evW w).commutes]`. Establish `e1` using `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm f)`. Establish `e2 : θ τ (algebraMap D.host.F (Ainf D.host.F) f ⊗ₜ[D.host.F] (1 : D.host.E)) = tauE D τ (algebraMap D.host.F D.host.E f)`. Rewrite using `[← (hθ τ).1, ← Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`. Rewrite using `[e2]`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Conclude with `(RingHom.congr_fun h f).symm`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, ha, hb, map_add (starRingEnd ℂ)]`.
+
+Consider the case `tmul a x`. Establish `e : θ τ (fstA D.host.F a ⊗ₜ[D.host.F] x) = θ τ (fstA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)) * tauE D τ x`. Rewrite using `[← (hθ τ).1 x, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `l1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (⟨(starRingEnd ℂ).comp (tauE D τ), h⟩ : EmbOver D.host.E w) (a ⊗ₜ[D.host.F] x) = infEmb (⟨(starRingEnd ℂ).comp (tauE D τ), h⟩ : EmbOver D.host.E w) (evInf D.host.F w a ⊗ₜ[D.host.F] x)`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf, compInf, RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`.
+
+Establish `l2 : infPart D (a ⊗ₜ[D.host.F] x) = fstA D.host.F a ⊗ₜ[D.host.F] x`. Simplify using `only [infPart, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Rewrite using `[l1, l2, infEmb_tmul, e, map_mul, ← hr]`. Both sides reduce to the same expression.
+-/
 theorem piInf_eq {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (τ : D.what₂.Tau) (w : InfinitePlace D.host.F)
     (h : ((starRingEnd ℂ).comp (tauE D τ)).comp (algebraMap D.host.F D.host.E) = w.embedding) (y : AE D) :
@@ -66,6 +80,15 @@ end GlobalTheory.ConjInfExp
 
 namespace GlobalTheory.ConjInfExp
 
+/- English proof (translation)
+Set `u : AF D.host.F` to `⟨0, 1⟩`. Establish `hu0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (0 : Ainf D.host.F) = 0`. Conclude with `map_zero _`. Establish `h1` using `hz u hu0`. Establish `key : ∀ y : AE D, finPart D (u • y) = finPart D y`.
+
+Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero]`. Consider the case `add a b ha hb => rw [smul_add, RingHom.map_add, RingHom.map_add, ha, hb]`. Consider the case `tmul a x`.
+
+Rewrite using `[TensorProduct.smul_tmul']`. Simplify using `only [finPart, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, smul_eq_mul, map_mul]`. Use `congr 1`. Use `show (1 : Af D.host.F) * sndA D.host.F a = sndA D.host.F a`. Conclude with `one_mul _`.
+
+Rewrite using `[← sub_eq_zero, ← RingHom.map_one (finPart D), ← RingHom.map_sub, ← key, h1, RingHom.map_zero]`.
+-/
 theorem finPart_eq_one {D : D7} (z : AE D) (hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (z - 1)) : finPart D z = 1 := by
   let u : AF D.host.F := ⟨0, 1⟩
   have hu0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F u = 0 := by
@@ -92,6 +115,31 @@ open GlobalTheory.FockCompare GlobalTheory.AdelicU
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D c a ha τf hτf`. Use `choose n hn hθ using ha`. Use `⟨fun w => -n (τf w), ?_, fun w => by push_cast; rw [hn]; ring⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hf : finPart D (z : AE D) = 1` using `finPart_eq_one _ hz`.
+
+Take `⟨⟨θ', hθ'⟩, -⟩` from `GlobalTheory.Member.infiniteAdele_bijective D`. Set `θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)` to `fun τ => θ' (tauE D τ)`. Establish `hθ0 : IsInfFam θ` using `fun τ => hθ' _`. Take `⟨ρ, hρ, r1, r0⟩` from `exists_real_chart D θ hθ0 (GlobalTheory.CMTypePlaces.places_bijective D)`. Take `⟨s, hs⟩` from `RealChart.exists_chart D θ hθ0 ρ hρ r1 r0`.
+
+Establish `ext : ∀ a b : AE D, finPart D a = finPart D b → (∀ τ, θ τ (infPart D a) = θ τ (infPart D b)) → a = b`. Introduce `a b h1 h2`. Rewrite using `[← sub_eq_zero]`. Conclude with `hs.ext _ (by rw [RingHom.map_sub, h1, sub_self]) fun τ => by`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, h2, sub_self]`.
+
+Set `t : (D.what₂.Tau → ℂˣ) → AE D` to `fun z => s (fun τ => (z τ : ℂ)) + (1 - s 1)`. Establish `tf : ∀ z, finPart D (t z) = 1` using `fun z => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.fin, zero_add, sub_zero]`. Establish `ti : ∀ z τ, θ τ (infPart D (t z)) = z τ` using `fun z τ => by`. Simplify using `only [t, RingHom.map_add, RingHom.map_sub, RingHom.map_one, hs.comp, Pi.one_apply, sub_self, add_zero]`.
+
+Set `T : (D.what₂.Tau → ℂˣ) →* AE D` to `{ toFun := t map_one' := ext _ _ (by rw [tf, RingHom.map_one]) fun τ => by`. Rewrite using `[ti, RingHom.map_one, RingHom.map_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun x y => ext _ _ (by rw [RingHom.map_mul, tf, tf, tf, mul_one]) fun τ => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, ti, ti, ti]`.
+
+Use `rfl }`. Set `zx : D.what₂.Tau → ℂˣ` to `fun τ => Units.map ((θ τ).comp (infPart D)).toMonoidHom z`. Establish `hzx : ∀ τ, ((zx τ : ℂˣ) : ℂ) = θ τ (infPart D (z : AE D))` using `fun τ => rfl`. Establish `hT : z = T.toHomUnits zx` using `Units.ext (ext _ _ (hf.trans (tf _).symm) fun τ => (ti zx τ).symm)`. Establish `single : ∀ τ (v : ℂˣ), ((c (T.toHomUnits (Pi.mulSingle τ v)) : Circle) : ℂ) = ((v : ℂ) / ((‖(v : ℂ)‖ : ℝ) : ℂ)) ^ n τ`.
+
+Introduce `τ v`. Establish `h` using `(hθ τ).2 θ hθ0 (T.toHomUnits (Pi.mulSingle τ v)) (tf _) fun τ' hτ' => by show θ τ' (infPart D (t _)) = 1`. Rewrite using `[ti, Pi.mulSingle_eq_of_ne hτ', Units.val_one]`. Rewrite using `[h]`. Use `show ((θ τ (infPart D (t _))) / ((‖θ τ (infPart D (t _))‖ : ℝ) : ℂ)) ^ n τ = _`.
+
+Rewrite using `[ti, Pi.mulSingle_eq_same]`. Establish `hprod : ((c z : Circle) : ℂ) = ∏ τ, ((zx τ : ℂ) / ((‖(zx τ : ℂ)‖ : ℝ) : ℂ)) ^ n τ`. Establish `e1 : T.toHomUnits zx = ∏ τ, T.toHomUnits (Pi.mulSingle τ (zx τ))`. Rewrite using `[← map_prod]`. Use `congr 1`.
+
+Conclude with `(Finset.univ_prod_mulSingle zx).symm`. Establish `e2 : ((c z : Circle) : ℂ) = Circle.coeHom (∏ τ, c (T.toHomUnits (Pi.mulSingle τ (zx τ))))`. Rewrite using `[← map_prod, ← e1, ← hT]`. Both sides reduce to the same expression. Rewrite using `[e2, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => single τ (zx τ)`. Establish `hinj : Function.Injective τf` using `fun w1 w2 h => by`. Establish `e : w1.embedding = w2.embedding` using `by rw [← hτf w1, ← hτf w2, h]`. Rewrite using `[← InfinitePlace.mk_embedding w1, ← InfinitePlace.mk_embedding w2, e]`. Establish `hbij : Function.Bijective τf` using `(Fintype.bijective_iff_injective_and_card τf).2 ⟨hinj, (Fintype.card_of_bijective (GlobalTheory.CMTypePlaces.places_bijective D)).symm⟩`.
+
+Rewrite using `[hprod]`. Use `symm`. Use `Fintype.prod_bijective τf hbij _ _ fun w => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[piInf_eq θ hθ0 (τf w) w (hτf w), ← hzx]`.
+
+Conclude with `conj_div_norm_zpow _ (zx (τf w)).ne_zero _`.
+-/
 theorem hasExp_conj_of_hasInfExp : ∀ {D : D7} (c : (AE D)ˣ →* Circle) (a : D.what₂.Tau → ℚ), (∀ τ, HasInfExp D c τ (a τ)) →
     ∀ (τf : InfinitePlace D.host.F → D.what₂.Tau)
     (hτf : ∀ w, ((starRingEnd ℂ).comp (tauE D (τf w))).comp (algebraMap D.host.F D.host.E) = w.embedding),

@@ -6,6 +6,9 @@ open Finset
 
 namespace UpperTheory.V.X
 
+/- English proof (translation)
+Rewrite using `[ZMod.coe_int_isUnit_iff_isCoprime]`. Use `push_cast`. Apply `IsCoprime.pow_left` to reduce the goal to its premises. Take `⟨t, rfl⟩` from `hx`. Conclude with `⟨-t, 1, by ring⟩`.
+-/
 private theorem unit_of_odd (n : ℕ) (x : ℤ) (hx : Odd x) : IsUnit (x : ZMod (2 ^ n)) := by
   rw [ZMod.coe_int_isUnit_iff_isCoprime]
   push_cast
@@ -13,11 +16,33 @@ private theorem unit_of_odd (n : ℕ) (x : ℤ) (hx : Odd x) : IsUnit (x : ZMod 
   obtain ⟨t, rfl⟩ := hx
   exact ⟨-t, 1, by ring⟩
 
+/- English proof (translation)
+Establish `: IsUnit ((u.val : ℕ) : ZMod (2 ^ n))` using `by simpa using hu`. Rewrite `this` using `[ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff (by omega), Nat.coprime_two_right]`. Conclude with `this` after adjusting the coercions.
+-/
 private theorem odd_of_unit (n : ℕ) (hn : 1 ≤ n) (u : ZMod (2 ^ n)) (hu : IsUnit u) : Odd (u.val : ℤ) := by
   have : IsUnit ((u.val : ℕ) : ZMod (2 ^ n)) := by simpa using hu
   rw [ZMod.isUnit_iff_coprime, Nat.coprime_pow_right_iff (by omega), Nat.coprime_two_right] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Apply `UpperTheory.two_pow_dvd_sub_one_or_add_one_of_pow_two_pow e m` to reduce the goal to its premises. Establish `hU : IsUnit u`. Assume the negation of the conclusion as `h`. Rewrite `hu` using `[hz u h, zero_pow (by positivity)]`. Conclude with `zero_ne_one hu`.
+
+Establish `hodd` using `odd_of_unit _ (by omega) u hU`. Use `set x : ℤ := (u.val : ℤ) with hx`. Assume the negation of the conclusion as `hnd`. Establish `hw0 : x ^ (2 ^ e) - 1 ≠ 0`. Introduce `h`.
+
+Rewrite `hnd` using `[h]`. Conclude with `hnd (dvd_zero _)`. Establish `h4 : (2 : ℤ) ^ 2 ∣ x ^ (2 ^ e) - 1`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`. Rewrite using `[pow_succ' 2 e', pow_mul]`.
+
+Use `dvd_trans ?_ (sub_one_dvd_pow_sub_one (x ^ 2) (2 ^ e'))` and prove the remaining obligations. Take `⟨t, ht⟩` from `hodd`. Conclude with `⟨t * t + t, by rw [ht]; ring⟩`. Take `⟨j, b, hb, hjb⟩` from `WfDvdMonoid.max_power_factor' hw0 (x := (2 : ℤ)) (by norm_num [Int.isUnit_iff])`. Establish `hbo : Odd b` using `by rwa [← Int.not_even_iff_odd, even_iff_two_dvd]`.
+
+Establish `hj2 : 2 ≤ j`. Assume the negation of the conclusion as `hlt`. Rewrite `h4` using `[hjb]`. Establish `hj : j = 0 ∨ j = 1` using `by omega`. Apply the tactic sequence `rcases hj with rfl | rfl <;> omega`.
+
+Establish `hjn : j ≤ m + e - 1`. Assume the negation of the conclusion as `hlt`. Apply `hnd` to reduce the goal to its premises. Rewrite using `[hjb]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow 2 (by omega)) b`.
+
+Take `⟨i, hi⟩` from `UpperTheory.exists_pow_dvd_sub_of_two_pow_dvd_sub_one (x ^ (2 ^ e)) b (1 + 2 ^ (m + e - 1)) j (m + e) hj2 hbo (by linear_combination hjb) (by simpa using pow_dvd_pow 2 hjn)`. Establish `hi' : ((((x ^ (2 ^ e)) ^ i - (1 + 2 ^ (m + e - 1)) : ℤ)) : ZMod (2 ^ (m + e))) = 0`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `hi` after adjusting the coercions. Move the coercions through the operations in `at hi'`.
+
+Establish `hxu : (x : ZMod (2 ^ (m + e))) = u` using `by simp [hx]`. Rewrite `hi'` using `[hxu, sub_eq_zero]`. Use `congrArg ξ hi'` as an intermediate fact. Rewrite `this` using `[map_pow, map_pow, hu, one_pow, hh]`. Apply `h2` to reduce the goal to its premises.
+
+Take the linear combination `this`.
+-/
 private theorem pm_of_pow {k : Type} [Field k] (h2 : (2 : k) ≠ 0) (e m : ℕ) (he : 2 ≤ e)
     (ξ : ZMod (2 ^ (m + e)) →* k) (hz : ∀ u, ¬ IsUnit u → ξ u = 0) (hh : ξ (1 + 2 ^ (m + e - 1)) = -1)
     (u : ZMod (2 ^ (m + e))) (hu : ξ u ^ (2 ^ e) = 1) :
@@ -62,6 +87,71 @@ private theorem pm_of_pow {k : Type} [Field k] (h2 : (2 : k) ≠ 0) (e m : ℕ) 
   apply h2
   linear_combination this
 
+/- English proof (translation)
+Introduce `h0`. Establish `h2 : (2 : k) ≠ 0`. Introduce `h`. Establish `: (l : ℕ) ∣ 2` using `(CharP.cast_eq_zero_iff k l 2).1 (by exact_mod_cast h)`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`.
+
+Establish `hzz : ∀ u, ξ u = 0 ∨ ξ u ^ (2 ^ (m + e)) = 1`. Introduce `u`. Distinguish the cases in `hu : IsUnit u`. Use `right`. Take `⟨v, rfl⟩` from `hu`.
+
+Establish `hv : v ^ (2 ^ (m + e)) = 1`. Establish `h` using `ZMod.pow_totient v`. Rewrite `h` using `[Nat.totient_prime_pow Nat.prime_two (by omega)]`. Establish `: 2 ^ (m + e) = 2 ^ (m + e - 1) * (2 - 1) * 2`. Rewrite using `[show 2 - 1 = 1 from rfl, mul_one, ← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hv, Units.val_one, map_one]`. Conclude with `Or.inl (hz u hu)`.
+
+Establish `hE : ∀ y : ZMod (2 ^ (m + e)), IsUnit y → ∑ x ∈ univ.filter (fun x => ξ x ^ (2 ^ e) = 1), ξ x * g (x * y) = 0`. Introduce `y hy`. Apply `UpperTheory.sum_filter_two_pow_roots_eq_zero_of_sum_eq_zero k l hl d e (m + e) a he ha hQ _ ξ (fun x => g (x * y)) hzz (fun x => hg _)` to reduce the goal to its premises. Take `⟨v, rfl⟩` from `hy`. Establish `hv : ξ v ≠ 0` using `((Units.isUnit v).map ξ).ne_zero`.
+
+Use `Equiv.sum_comp (Units.mulRight v) (fun u => ξ u * g u)` as an intermediate fact. Rewrite `this` using `[h0]`. Apply `mul_right_cancel₀ hv` to reduce the goal to its premises. Rewrite using `[Finset.sum_mul, zero_mul, ← this]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Units.mulRight_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : IsUnit (1 - (s : ZMod (2 ^ (m + e))))`. Use `unit_of_odd (m + e) (1 - s) (by` as an intermediate fact. Take `⟨t, rfl⟩` from `hse`.
+
+Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`. Conclude with `⟨-(2 ^ e' * t), by push_cast; ring⟩)`. Simplify using `using this`. Set `π : ZMod (2 ^ (m + e)) →+* ZMod (2 ^ m)` to `ZMod.castHom (pow_dvd_pow 2 (Nat.le_add_right m e)) _`. Establish `hπ : ∀ x : ZMod (2 ^ (m + e)), π x = (x.val : ZMod (2 ^ m))`.
+
+Introduce `x`. Simplify using `[π]`. Establish `hlt : 2 ^ m < 2 ^ (m + e)` using `Nat.pow_lt_pow_right (by norm_num) (by omega)`. Establish `hm4 : 4 ≤ 2 ^ m`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hker : ∀ x, π x = 0 → x * s = 0`. Introduce `x hx`. Rewrite `hx` using `[hπ, ZMod.natCast_eq_zero_iff]`. Take `⟨p, hp⟩` from `hx`. Take `⟨t, rfl⟩` from `hse`.
+
+Rewrite using `[← ZMod.natCast_zmod_val x, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff, hp]`. Conclude with `⟨p * t, by ring⟩`. Establish `hsmall : ∀ (x : ZMod (2 ^ (m + e))) (r : ℕ), r < 2 ^ m → x.val < 2 ^ m → π x = r → x.val = r`. Introduce `x r hr hx h`. Rewrite `h` using `[hπ, ZMod.natCast_eq_natCast_iff]`.
+
+Conclude with `Nat.ModEq.eq_of_lt_of_lt h hx hr`. Establish `hne : (-1 : ZMod (2 ^ m)) ≠ 1`. Introduce `h`. Establish `: ((2 : ℕ) : ZMod (2 ^ m)) = 0` using `by push_cast; linear_combination -h`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`.
+
+Use `Nat.le_of_dvd (by norm_num) this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hv1 : (1 : ZMod (2 ^ (m + e))).val = 1`. Rewrite using `[← Nat.cast_one, ZMod.val_natCast_of_lt (by omega)]`. Establish `hvs : (-1 + s : ZMod (2 ^ (m + e))).val = s - 1`.
+
+Establish `: (-1 + s : ZMod (2 ^ (m + e))) = ((s - 1 : ℕ) : ZMod (2 ^ (m + e)))`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[this, ZMod.val_natCast_of_lt (by omega)]`. Establish `hT : ∀ x ∈ univ.filter (fun x => ξ x ^ (2 ^ e) = 1), ξ x * g (x * 1) - ξ x * g (x * (1 - s)) = (if π x = 1 then 1 else -1) * ξ x * c - (if x = 1 then 1 else 0) - (if x = -1 then 1 else 0)`. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_filter]`. Distinguish the cases in `hp : π x = 1`. Establish `hxs : x * (1 - s) = x - s`. Use `hker (x - 1) (by rw [map_sub, hp, map_one, sub_self])` as an intermediate fact. Take the linear combination `-this`.
+
+Establish `hx' : x ≠ -1`. Introduce and unpack `rfl`. Rewrite `hp` using `[map_neg, map_one]`. Conclude with `hne hp`. Rewrite using `[mul_one, hxs, ← mul_sub, hd, if_pos hp, if_neg hx']`.
+
+Distinguish the cases in `hx1 : x = 1`. Substitute `hx1` using the available equality. Rewrite using `[hv1, if_pos hs1, if_pos rfl, h1, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hx1, if_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `hlt'`. Apply `hx1` to reduce the goal to its premises. Use `hsmall x 1 (by omega) (by omega) (by simpa using hp)` as an intermediate fact. Rewrite using `[← ZMod.natCast_zmod_val x, this, Nat.cast_one]`.
+
+Establish `hp' : π x = -1`. Break down `pm_of_pow h2 e m he ξ hz hh x hx.2 with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hp` to reduce the goal to its premises. Establish `: (((x.val : ℤ) - 1 : ℤ) : ZMod (2 ^ m)) = 0`.
+
+Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `h` after adjusting the coercions. Rewrite using `[hπ]`. Rewrite `this` using `[Int.cast_sub, Int.cast_natCast, Int.cast_one]`. Take the linear combination `this`.
+
+Establish `: (((x.val : ℤ) + 1 : ℤ) : ZMod (2 ^ m)) = 0`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `h` after adjusting the coercions. Rewrite using `[hπ]`. Rewrite `this` using `[Int.cast_add, Int.cast_natCast, Int.cast_one]`.
+
+Take the linear combination `this`. Establish `hxs : x * (1 - s) = x + s`. Use `hker (x + 1) (by rw [map_add, hp', map_one, neg_add_cancel])` as an intermediate fact. Take the linear combination `-this`. Establish `hx' : x ≠ 1`.
+
+Introduce and unpack `rfl`. Conclude with `hp (map_one π)`. Establish `hd'` using `hd (x + s)`. Rewrite `hd'` using `[add_sub_cancel_right]`. Rewrite using `[mul_one, hxs, ← mul_sub, ← neg_sub, hd', if_neg hp, if_neg hx']`.
+
+Distinguish the cases in `hx1 : x = -1`. Substitute `hx1` using the available equality. Rewrite using `[hvs, if_pos (by omega), if_pos rfl]`. Take the linear combination `hodd`. Rewrite using `[if_neg hx1, if_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `hlt'`. Apply `hx1` to reduce the goal to its premises. Use `hsmall (x + s) (s - 1) (by omega) (by omega) (by` as an intermediate fact. Rewrite using `[map_add, hp', map_natCast, Nat.cast_sub (by omega)]; push_cast; ring)`.
+
+Rewrite `this` using `[← hvs]`. Conclude with `add_right_cancel (ZMod.val_injective _ this)`. Establish `hS` using `Finset.sum_congr rfl hT`. Rewrite `hS` using `[Finset.sum_sub_distrib, hE _ isUnit_one, hE _ hy, Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', ← Finset.sum_mul]`. Establish `hev : Even (2 ^ e)` using `(Nat.even_pow.2 ⟨even_two, by omega⟩)`.
+
+Establish `hm1 : ξ (-1) ^ (2 ^ e) = 1`. Rewrite using `[← map_pow, hev.neg_one_pow, map_one]`. Rewrite `hS` using `[if_pos (by simp), if_pos (by simp [hm1])]`. Establish `hx0 : IsUnit (1 + 2 ^ (m + e - 1) : ZMod (2 ^ (m + e)))`. Assume the negation of the conclusion as `h`.
+
+Rewrite `hh` using `[hz _ h]`. Simplify using `at hh`. Establish `hπ0 : π (1 + 2 ^ (m + e - 1)) = 1`. Rewrite using `[map_add, map_one, map_pow, map_ofNat, add_eq_left]`. Establish `: ((2 ^ (m + e - 1) : ℕ) : ZMod (2 ^ m)) = 0`.
+
+Rewrite using `[ZMod.natCast_eq_zero_iff]; exact pow_dvd_pow 2 (by omega)`. Conclude with `this` after adjusting the coercions. Establish `hZ : ∑ x ∈ univ.filter (fun x => ξ x ^ (2 ^ e) = 1), (if π x = 1 then 1 else -1) * ξ x = 0`. Rewrite using `[Finset.sum_filter]`. Take `⟨v, hv⟩` from `hx0`.
+
+Use `Equiv.sum_comp (Units.mulRight v) (fun x => if ξ x ^ (2 ^ e) = 1 then (if π x = 1 then 1 else -1) * ξ x else 0)` as an intermediate fact. Simplify using `only [Units.mulRight_apply, hv, map_mul, hh, hπ0, mul_one, mul_pow, hev.neg_one_pow] at this`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Rewrite using `[mul_zero, two_mul]`. Use `nth_rewrite 1 [← this]`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite `hS` using `[hZ]`. Apply `h2` to reduce the goal to its premises.
+
+Take the linear combination `hS`.
+-/
 theorem lx_core {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (hl : l ≠ 2) (d e m s : ℕ) (a : ℤ) (he : 2 ≤ e) (ha : Odd a)
     (hQ : ((l ^ d : ℕ) : ℤ) = 1 + 2 ^ e * a) (hm : e ≤ m) (hs : s ≤ 2 ^ m) (hs1 : 1 < s) (hse : 2 ^ e ∣ s)
     (ξ : ZMod (2 ^ (m + e)) →* k) (hz : ∀ u, ¬ IsUnit u → ξ u = 0) (hh : ξ (1 + 2 ^ (m + e - 1)) = -1)

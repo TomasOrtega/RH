@@ -9,6 +9,11 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.CovComp
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b t`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy]`. Consider the case `tmul c k => simp [TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul, TensorProduct.smul_tmul']`.
+-/
 theorem cancel_lTensor (A : Type) [CommRing A] (B : Type) [CommRing B] [Algebra A B]
     (B₁ : Type) [CommRing B₁] [Algebra A B₁] [Algebra B B₁] [IsScalarTower A B B₁]
     {K₁ K₀ : Type} [AddCommGroup K₁] [Module A K₁] [AddCommGroup K₀] [Module A K₀]
@@ -24,6 +29,17 @@ theorem cancel_lTensor (A : Type) [CommRing A] (B : Type) [CommRing B] [Algebra 
     | add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy]
     | tmul c k => simp [TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Introduce `p _ A _ B _ _ B₁ _ _ _ _ r hA hB hr h1 h2`. Unfold `Cov at h1 h2 ⊢`. Introduce `K₁ K₀ _ _ _ _ hK₁ hK₀ d hd z hz k`. Establish `e1 : Pf p (B ⊗[A] K₁)` using `PerfectRing.pf_tensor p A B K₁ hA hB hK₁`. Establish `e0 : Pf p (B ⊗[A] K₀)` using `PerfectRing.pf_tensor p A B K₀ hA hB hK₀`.
+
+Establish `e2 : Good p (fun k => algebraMap A B (r k)) (d.baseChange B)` using `GoodBaseChange.good_baseChange p A B r K₁ K₀ d hd`. Establish `hz' : (1 : B₁) ⊗ₜ[B] ((1 : B) ⊗ₜ[A] z) ∈ (LinearMap.lTensor B₁ (d.baseChange B)).range`. Take `⟨w, hw⟩` from `hz`. Use `⟨(TensorProduct.AlgebraTensorModule.cancelBaseChange A B B₁ B₁ K₁).symm w, ?_⟩` and prove the remaining obligations. Apply `(TensorProduct.AlgebraTensorModule.cancelBaseChange A B B₁ B₁ K₀).injective` to reduce the goal to its premises.
+
+Rewrite using `[cancel_lTensor, LinearEquiv.apply_symm_apply, hw]`. Simplify using the standard rewrite rules. Establish `hB'` using `h2 _ _ e1 e0 (d.baseChange B) e2 _ hz' (k + 1)`. Establish `h3 : (1 : B) ⊗ₜ[A] (r (k + 1) • z) ∈ (LinearMap.lTensor B d).range`. Take `⟨v, hv⟩` from `hB'`.
+
+Use `⟨v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(d.baseChange B) v = _`. Rewrite using `[hv, algebraMap_smul, ← TensorProduct.tmul_smul]`. Establish `h4` using `h1 K₁ K₀ hK₁ hK₀ d hd (r (k + 1) • z) h3 (k + 1)`. Establish `hp : 2 ≤ p` using `(Fact.out : p.Prime).two_le`.
+
+Establish `hrk : r k = r (k + 1) ^ (p - 2) * (r (k + 1) * r (k + 1))`. Rewrite using `[← hr k, ← sq, ← pow_add, Nat.sub_add_cancel hp]`. Rewrite using `[hrk, mul_smul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ h4`.
+-/
 theorem cov_comp : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B](B₁ : Type) [CommRing B₁] [Algebra A B₁] [Algebra B B₁] [IsScalarTower A B B₁] (r : ℕ → A), Pf p A → Pf p B → IsRt p r → Cov p r B → Cov p (fun k => algebraMap A B (r k)) B₁ → Cov p r B₁ := by
   intro p _ A _ B _ _ B₁ _ _ _ _ r hA hB hr h1 h2
   unfold Cov at h1 h2 ⊢

@@ -7,6 +7,9 @@ namespace ChainScalarLemmas
 variable {𝕜 : Type} [RCLike 𝕜] {E : ℕ → Type} [∀ j, NormedAddCommGroup (E j)]
     [∀ j, InnerProductSpace 𝕜 (E j)] [∀ j, FiniteDimensional 𝕜 (E j)]
 
+/- English proof (translation)
+Use `show LinearMap.adjoint ((downChain T m).comp (T m)) x = _`. Rewrite using `[LinearMap.adjoint_comp]`. Both sides reduce to the same expression.
+-/
 theorem adjoint_downChain_succ_apply (T : ∀ j, E (j + 1) →ₗ[𝕜] E j) (m : ℕ) (x : E 0) :
     LinearMap.adjoint (downChain T (m + 1)) x =
       LinearMap.adjoint (T m) (LinearMap.adjoint (downChain T m) x) := by
@@ -14,6 +17,13 @@ theorem adjoint_downChain_succ_apply (T : ∀ j, E (j + 1) →ₗ[𝕜] E j) (m 
   rw [LinearMap.adjoint_comp]
   rfl
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `x hx`. Use `show LinearMap.adjoint (LinearMap.id : E 0 →ₗ[𝕜] E 0) x ∈ S 0`.
+
+Rewrite using `[LinearMap.adjoint_id]`. Conclude with `hx`. Consider the case `succ m ih`. Introduce `x hx`. Rewrite using `[adjoint_downChain_succ_apply]`.
+
+Conclude with `hS m _ (ih x hx)`.
+-/
 theorem mem (T : ∀ j, E (j + 1) →ₗ[𝕜] E j) (S : ∀ j, Submodule 𝕜 (E j))
     (hS : ∀ j, ∀ x ∈ S j, LinearMap.adjoint (T j) x ∈ S (j + 1)) :
     ∀ (m : ℕ), ∀ x ∈ S 0, LinearMap.adjoint (downChain T m) x ∈ S m := by

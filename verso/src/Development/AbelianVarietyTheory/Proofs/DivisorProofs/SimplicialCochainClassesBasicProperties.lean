@@ -7,6 +7,11 @@ namespace GlobalTheory.EtC.ClsBasic
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use extensionality with `p' q' h`. Distinguish the cases in `hp : p' = p`. Substitute `hp` using the available equality. Distinguish the cases in `hq : q' = q`. Substitute `hq` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Cochain.single_v_eq_zero' _ _ _ _ _ hq]`. Simplify using `[Cochain.single_v_eq_zero _ _ _ _ _ hp]`.
+-/
 theorem single_add' {C : Type*} [Category C] [Preadditive C] {K L : CochainComplex C ℤ} {p q : ℤ}
     (f g : K.X p ⟶ L.X q) (n : ℤ) : Cochain.single (f + g) n = Cochain.single f n + Cochain.single g n := by
   ext p' q' h
@@ -17,6 +22,11 @@ theorem single_add' {C : Type*} [Category C] [Preadditive C] {K L : CochainCompl
     · simp [Cochain.single_v_eq_zero' _ _ _ _ _ hq]
   · simp [Cochain.single_v_eq_zero _ _ _ _ _ hp]
 
+/- English proof (translation)
+Use extensionality with `p' q' h`. Rewrite using `[Cochain.comp_v _ _ (zero_add n) p' p' q' (add_zero p') h, Cochain.ofHom_v]`. Distinguish the cases in `hp : p' = p`. Substitute `hp` using the available equality. Distinguish the cases in `hq : q' = q`.
+
+Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Cochain.single_v_eq_zero' _ _ _ _ _ hq]`. Simplify using `[Cochain.single_v_eq_zero _ _ _ _ _ hp]`.
+-/
 theorem ofHom_comp_single {C : Type*} [Category C] [Preadditive C] {K K' L : CochainComplex C ℤ} {p q : ℤ}
     (g : K' ⟶ K) (f : K.X p ⟶ L.X q) (n : ℤ) :
     (Cochain.ofHom g).comp (Cochain.single f n) (zero_add n) = Cochain.single (g.f p ≫ f) n := by
@@ -29,6 +39,11 @@ theorem ofHom_comp_single {C : Type*} [Category C] [Preadditive C] {K K' L : Coc
     · simp [Cochain.single_v_eq_zero' _ _ _ _ _ hq]
   · simp [Cochain.single_v_eq_zero _ _ _ _ _ hp]
 
+/- English proof (translation)
+Establish `h` using `(injectiveResolution F).ι'.comm 0 1`. Establish `h0 : ((singleFunctor (Shv R) 0).obj F).d 0 1 = 0` using `by simp`. Rewrite `h` using `[h0, zero_comp]`. Express the relevant statement in the definitionally equal form `((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).inv ≫ (injectiveResolution F).ι'.f 0) ≫ (injectiveResolution F).cochainComplex.d 0 1 = 0`. Use `erw [Category.assoc, h]`.
+
+Apply the tactic sequence `all_goals first | rfl | exact comp_zero`.
+-/
 theorem resι_d (F : Shv R) : resι R F ≫ (res R F).d 0 1 = 0 := by
   have h := (injectiveResolution F).ι'.comm 0 1
   have h0 : ((singleFunctor (Shv R) 0).obj F).d 0 1 = 0 := by simp
@@ -37,6 +52,9 @@ theorem resι_d (F : Shv R) : resι R F ≫ (res R F).d 0 1 = 0 := by
   erw [Category.assoc, h]
   all_goals first | rfl | exact comp_zero
 
+/- English proof (translation)
+Establish `h` using `HomologicalComplex.extend_d_eq ((chainsN R).obj E) ComplexShape.embeddingDownNat (i := n + 1) (j := n) rfl rfl`. Establish `h2 : ((chainsN R).obj E).d (n + 1) n = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (E.δ i)` using `AlgebraicTopology.alternatingFaceMapComplex_obj_d _ n`. Rewrite using `[← h2]`. Conclude with `h`.
+-/
 theorem chains_d (E : Spc) (n : ℕ) :
     ((chains R).obj E).d (-((n + 1 : ℕ) : ℤ)) (-(n : ℤ)) =
       (chainsXIso R E (n + 1)).hom ≫ (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (E.δ i)) ≫
@@ -47,6 +65,11 @@ theorem chains_d (E : Spc) (n : ℕ) :
   rw [← h2]
   exact h
 
+/- English proof (translation)
+Establish `h` using `HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := n) (i' := -(n : ℤ)) rfl`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat).f (-(n : ℤ)) ≫ _ = _`. Rewrite using `[h]`. Simplify using `only [chainsXIso]`. Use `erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chainsXIso_nat {E E' : Spc} (f : E' ⟶ E) (n : ℕ) :
     ((chains R).map f).f (-(n : ℤ)) ≫ (chainsXIso R E n).hom = (chainsXIso R E' n).hom ≫ (free R).map (f.app (op ⦋n⦌)) := by
   have h := HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := n) (i' := -(n : ℤ)) rfl
@@ -56,6 +79,11 @@ theorem chainsXIso_nat {E E' : Spc} (f : E' ⟶ E) (n : ℕ) :
   erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Cochain.δ_single _ (n : ℤ) ((n + 1 : ℕ) : ℤ) (by push_cast; ring) (-((n + 1 : ℕ) : ℤ)) 1 (by push_cast; ring) rfl]`. Rewrite using `[Category.assoc, Category.assoc, resι_d, comp_zero, comp_zero, Cochain.single_zero, zero_add]`. Use `congr 2`. Rewrite using `[chains_d, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc]`. Use `congr 1`.
+
+Rewrite using `[← Category.assoc]`. Use `congr 1`. Rewrite using `[cobd, Preadditive.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Preadditive.zsmul_comp]`.
+-/
 theorem δ_cls {E : Spc} {F : Shv R} {n : ℕ} (s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) :
     δ (n : ℤ) ((n + 1 : ℕ) : ℤ) (Cochain.single (p := -(n : ℤ)) (q := 0) ((chainsXIso R E n).hom ≫ s ≫ resι R F) n) =
       (((n + 1 : ℕ) : ℤ)).negOnePow • Cochain.single (p := -((n + 1 : ℕ) : ℤ)) (q := 0)
@@ -75,6 +103,17 @@ end GlobalTheory.EtC.ClsBasic
 
 open GlobalTheory.EtC.ClsBasic in
 
+/- English proof (translation)
+Introduce `R _ F E n`. Use `⟨fun s hs => ?_, fun s s' x x' hx hx' => ?_, fun s x x' hx hx' => ?_, fun t x hx => ?_, fun E' f s x hx => ?_⟩` and prove the remaining obligations. Use `⟨CohomologyClass.mk (Cocycle.mk (Cochain.single (p := -(n : ℤ)) (q := 0) ((chainsXIso R E n).hom ≫ s ≫ resι R F) n) ((n + 1 : ℕ) : ℤ) (by push_cast; ring) ?_), _, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[δ_cls, hs, zero_comp, comp_zero, Cochain.single_zero, smul_zero]`. Take `⟨z, rfl, hz⟩` from `hx`.
+
+Take `⟨z', rfl, hz'⟩` from `hx'`. Use `⟨z + z', (CohomologyClass.mk_add z z').symm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1 + z'.1 = _`. Rewrite using `[hz, hz', ← single_add', Preadditive.add_comp, Preadditive.comp_add]`. Take `⟨z, rfl, hz⟩` from `hx`.
+
+Take `⟨z', rfl, hz'⟩` from `hx'`. Establish `: z = z'` using `Cocycle.ext (hz.trans hz'.symm)`. Rewrite using `[this]`. Take `⟨z, rfl, hz⟩` from `hx`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n : ℤ) (by push_cast; ring)]`.
+
+Use `⟨(((n + 1 : ℕ) : ℤ)).negOnePow • Cochain.single (p := -(n : ℤ)) (q := 0) ((chainsXIso R E n).hom ≫ t ≫ resι R F) n, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul, δ_cls, smul_smul, Int.units_mul_self, one_smul, hz]`. Take `⟨z, rfl, hz⟩` from `hx`. Use `⟨zcomp (Cocycle.ofHom ((chains R).map f)) z (zero_add _), rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Cochain.ofHom ((chains R).map f)).comp z.1 (zero_add _) = _`.
+
+Rewrite using `[hz, ofHom_comp_single, ← Category.assoc, chainsXIso_nat]`. Simplify using `only [Category.assoc]`.
+-/
 theorem GlobalTheory.EtC.isCls_basic : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc) (n : ℕ), (∀ s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F, cobd s = 0 → ∃ x : H R E F n, IsCls s x) ∧ (∀ (s s' : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) (x x' : H R E F n), IsCls s x → IsCls s' x' → IsCls (s + s') (x + x')) ∧ (∀ (s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) (x x' : H R E F n), IsCls s x → IsCls s x' → x = x') ∧ (∀ (t : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) (x : H R E F ((n + 1 : ℕ) : ℤ)), IsCls (cobd t) x → x = 0) ∧ ∀ (E' : Spc) (f : E' ⟶ E) (s : (free R).obj (E.obj (op ⦋n⦌)) ⟶ F) (x : H R E F n), IsCls s x → IsCls ((free R).map (f.app (op ⦋n⦌)) ≫ s) (pull R f F n x) := by
   intro R _ F E n
   refine ⟨fun s hs => ?_, fun s s' x x' hx hx' => ?_, fun s x x' hx hx' => ?_, fun t x hx => ?_, fun E' f s x hx => ?_⟩

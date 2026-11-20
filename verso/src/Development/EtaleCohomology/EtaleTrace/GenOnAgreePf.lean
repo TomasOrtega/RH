@@ -11,6 +11,13 @@ variable {k : Type} [Field k] {N : ℕ}
 instance isIso_stalkMap_ι (X : Scheme.{0}) (U : X.Opens) (x : U) : IsIso (U.ι.stalkMap x) :=
   (IsOpenImmersion.iff_isIso_stalkMap.1 inferInstance).2 _
 
+/- English proof (translation)
+Establish `htop` using `Proj.iSup_basicOpen_eq_top' (homogeneousSubmodule (Fin (N + 1)) k) (fun i : Fin (N + 1) => (X i : MvPolynomial (Fin (N + 1)) k)) (fun i => ⟨1, (isHomogeneous_X k i)⟩) (by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `p -`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`.
+
+Conclude with `Subalgebra.algebraMap_mem _ (⟨C c, isHomogeneous_C _ c⟩ : homogeneousSubmodule (Fin (N + 1)) k 0)`. Consider the case `add p q hp hq => exact add_mem hp hq`. Consider the case `mul_X p i hp => exact mul_mem hp (Algebra.subset_adjoin ⟨i, rfl⟩))`. Establish `: y ∈ (⊤ : (PN k N).Opens)` using `trivial`. Rewrite `this` using `[← htop]`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+-/
 lemma pn_cover (y : PN k N) : ∃ i : Fin (N + 1), y ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) (X i) := by
   have htop := Proj.iSup_basicOpen_eq_top' (homogeneousSubmodule (Fin (N + 1)) k) (fun i : Fin (N + 1) => (X i : MvPolynomial (Fin (N + 1)) k))
     (fun i => ⟨1, (isHomogeneous_X k i)⟩) (by
@@ -25,6 +32,13 @@ lemma pn_cover (y : PN k N) : ∃ i : Fin (N + 1), y ∈ Proj.basicOpen (homogen
   rw [← htop] at this
   exact TopologicalSpace.Opens.mem_iSup.1 this
 
+/- English proof (translation)
+Take `⟨_, ⟨f, rfl⟩, hyf, hfW⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 (Proj.isBasis_basicOpen (homogeneousSubmodule (Fin (N + 1)) k))) hy`. Rewrite `hyf` using `[Proj.basicOpen_eq_iSup_proj]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hyf`. Take `⟨i, hi⟩` from `pn_cover y`. Use `⟨1 + j, by omega, X i * GradedRing.proj (homogeneousSubmodule (Fin (N + 1)) k) j f, SetLike.mul_mem_graded (isHomogeneous_X k i) ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GradedRing.proj_apply]`. Conclude with `Submodule.coe_mem _`. Rewrite using `[Proj.basicOpen_mul]`. Conclude with `⟨hi, hj⟩`. Use `le_trans ?_ hfW` and prove the remaining obligations.
+
+Rewrite using `[Proj.basicOpen_mul, Proj.basicOpen_eq_iSup_proj _ f]`. Conclude with `inf_le_right.trans (le_iSup (fun i => Proj.basicOpen _ (GradedRing.proj _ i f)) j)`.
+-/
 lemma pn_nbhd (y : PN k N) (W : (PN k N).Opens) (hy : y ∈ W) :
     ∃ n, 0 < n ∧ ∃ F ∈ homogeneousSubmodule (Fin (N + 1)) k n,
       y ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) F ∧
@@ -42,6 +56,13 @@ lemma pn_nbhd (y : PN k N) (W : (PN k N).Opens) (hy : y ∈ W) :
     rw [Proj.basicOpen_mul, Proj.basicOpen_eq_iSup_proj _ f]
     exact inf_le_right.trans (le_iSup (fun i => Proj.basicOpen _ (GradedRing.proj _ i f)) j)
 
+/- English proof (translation)
+Establish `hy' : (⟨genericPoint X, hη⟩ : U) ∈ πU ⁻¹ᵁ Proj.basicOpen _ F` using `hy`. Take `⟨h1, h2⟩` from `hG hη n hn F hF`. Establish `hF0 : eval₂ (kHom p) w F ≠ 0` using `h1.1 hy'`. Establish `e` using `h2 m g hg hy'`. Use `set ψ := U.ι.stalkMap ⟨genericPoint X, hη⟩`.
+
+Establish `hinv : ∀ z, (inv ψ).hom (ψ.hom z) = z` using `fun z => by show (ψ ≫ inv ψ).hom z = z`. Rewrite using `[IsIso.hom_inv_id]`. Both sides reduce to the same expression. Establish `key` using `Scheme.Hom.germ_stalkMap_apply πU (Proj.basicOpen _ F) ⟨genericPoint X, hη⟩ hy (Proj.awayToSection _ F (HomogeneousLocalization.Away.mk _ hF m g hg))`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, key]`.
+
+Use `(eq_div_iff (G₀ := X.functionField) (pow_ne_zero _ hF0)).2 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma genOn_value {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) → X.functionField)
     (U : X.Opens) (πU : U.toScheme ⟶ PN k N) (hG : GenOn p w U πU) (hη : genericPoint X ∈ U)
     {n : ℕ} (hn : 0 < n) (F : MvPolynomial (Fin (N + 1)) k) (hF : F ∈ homogeneousSubmodule (Fin (N + 1)) k n)
@@ -68,6 +89,11 @@ lemma genOn_value {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 
     _ = (inv ψ).hom (ψ.hom (eval₂ (kHom p) w g)) := congrArg _ e
     _ = _ := hinv _
 
+/- English proof (translation)
+Substitute `hyy` using the available equality. Use `congr 2`. Apply `TopCat.Presheaf.stalk_hom_ext` to reduce the goal to its premises. Introduce `W hy`. Use extensionality with `s`.
+
+Conclude with `h W hy hy s`.
+-/
 lemma spec_ext {Y : Scheme.{0}} {R : CommRingCat.{0}} (y y' : Y) (hyy : y = y')
     (φ : Y.presheaf.stalk y ⟶ R) (φ' : Y.presheaf.stalk y' ⟶ R)
     (h : ∀ (W : Y.Opens) (hy : y ∈ W) (hy' : y' ∈ W) (s : Γ(Y, W)),
@@ -80,6 +106,9 @@ lemma spec_ext {Y : Scheme.{0}} {R : CommRingCat.{0}} (y y' : Y) (hyy : y = y')
   ext s
   exact h W hy hy s
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.fromSpecStalkOfMem, Spec.map_comp]`. Simplify using `only [Category.assoc]`. Use `Scheme.SpecMap_stalkMap_fromSpecStalk πU (x := (⟨x, hx⟩ : U.toScheme))` as an intermediate fact. Use `erw [this]`. Both sides reduce to the same expression.
+-/
 lemma gU_eq {X : Scheme.{0}} (U : X.Opens) (Y : Scheme.{0}) (πU : U.toScheme ⟶ Y) (x : X) (hx : x ∈ U) :
     U.fromSpecStalkOfMem x hx ≫ πU =
       Spec.map (πU.stalkMap ⟨x, hx⟩ ≫ inv (U.ι.stalkMap ⟨x, hx⟩)) ≫ Y.fromSpecStalk (πU ⟨x, hx⟩) := by
@@ -89,6 +118,9 @@ lemma gU_eq {X : Scheme.{0}} (U : X.Opens) (Y : Scheme.{0}) (πU : U.toScheme �
   erw [this]
   rfl
 
+/- English proof (translation)
+The claim follows from `(hG' hη' n hn F hF).1.2 ((hG hη n hn F hF).1.1 hy)`.
+-/
 lemma transfer {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) → X.functionField)
     (U U' : X.Opens) (πU : U.toScheme ⟶ PN k N) (πU' : U'.toScheme ⟶ PN k N)
     (hG : GenOn p w U πU) (hG' : GenOn p w U' πU') (hη : genericPoint X ∈ U) (hη' : genericPoint X ∈ U')
@@ -97,6 +129,9 @@ lemma transfer {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) 
     πU' ⟨genericPoint X, hη'⟩ ∈ Proj.basicOpen (homogeneousSubmodule (Fin (N + 1)) k) F :=
   (hG' hη' n hn F hF).1.2 ((hG hη n hn F hF).1.1 hy)
 
+/- English proof (translation)
+Use `Inseparable.eq (inseparable_iff_forall_isOpen.2 fun s hs => ⟨fun h => ?_, fun h => ?_⟩)` and prove the remaining obligations. Take `⟨n, hn, F, hF, hyF, hFW⟩` from `pn_nbhd _ ⟨s, hs⟩ h`. Conclude with `hFW (transfer p w U U' πU πU' hG hG' hη hη' hn F hF hyF)`. Take `⟨n, hn, F, hF, hyF, hFW⟩` from `pn_nbhd _ ⟨s, hs⟩ h`. Conclude with `hFW (transfer p w U' U πU' πU hG' hG hη' hη hn F hF hyF)`.
+-/
 lemma pt_eq {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) → X.functionField)
     (U U' : X.Opens) (πU : U.toScheme ⟶ PN k N) (πU' : U'.toScheme ⟶ PN k N)
     (hG : GenOn p w U πU) (hG' : GenOn p w U' πU') (hη : genericPoint X ∈ U) (hη' : genericPoint X ∈ U') :
@@ -107,6 +142,11 @@ lemma pt_eq {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) →
   · obtain ⟨n, hn, F, hF, hyF, hFW⟩ := pn_nbhd _ ⟨s, hs⟩ h
     exact hFW (transfer p w U' U πU' πU hG' hG hη' hη hn F hF hyF)
 
+/- English proof (translation)
+Take `⟨n, hn, F, hF, hyF, hFW⟩` from `pn_nbhd _ W hy`. Establish `hyF'` using `transfer p w U U' πU πU' hG hG' hη hη' hn F hF hyF`. Rewrite using `[← (PN k N).presheaf.germ_res_apply (homOfLE hFW) _ hyF s, ← (PN k N).presheaf.germ_res_apply (homOfLE hFW) _ hyF' s]`. Use `set t := (PN k N).presheaf.map (homOfLE hFW).op s`. Establish `ht : Proj.awayToSection _ F ((Proj.basicOpenIsoAway _ F hF hn).inv t) = t` using `by show ((Proj.basicOpenIsoAway _ F hF hn).inv ≫ (Proj.basicOpenIsoAway _ F hF hn).hom) t = t`.
+
+Rewrite using `[Iso.inv_hom_id]`. Both sides reduce to the same expression. Take `⟨m, g, hg, hmk⟩` from `HomogeneousLocalization.Away.mk_surjective _ hF ((Proj.basicOpenIsoAway _ F hF hn).inv t)`. Rewrite using `[← ht, ← hmk, genOn_value p w U πU hG hη hn F hF hyF m g hg, genOn_value p w U' πU' hG' hη' hn F hF hyF' m g hg]`.
+-/
 lemma germ_agree {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1) → X.functionField)
     (U U' : X.Opens) (πU : U.toScheme ⟶ PN k N) (πU' : U'.toScheme ⟶ PN k N)
     (hG : GenOn p w U πU) (hG' : GenOn p w U' πU') (hη : genericPoint X ∈ U) (hη' : genericPoint X ∈ U')
@@ -125,6 +165,19 @@ lemma germ_agree {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) (w : Fin (N + 1
   obtain ⟨m, g, hg, hmk⟩ := HomogeneousLocalization.Away.mk_surjective _ hF ((Proj.basicOpenIsoAway _ F hF hn).inv t)
   rw [← ht, ← hmk, genOn_value p w U πU hG hη hn F hF hyF m g hg, genOn_value p w U' πU' hG' hη' hn F hF hyF' m g hg]
 
+/- English proof (translation)
+Introduce `k _ X _ p N w U U' πU πU' hG hG'`. Distinguish the cases in `hE : IsEmpty ↥(pullback U.ι U'.ι : Scheme.{0})`. Conclude with `isInitialOfIsEmpty.hom_ext _ _`. Rewrite `hE` using `[not_isEmpty_iff]`. Take `⟨z⟩` from `hE`.
+
+Establish `hη : genericPoint X ∈ U` using `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 ⟨_, trivial, (pullback.fst U.ι U'.ι z).2⟩`. Establish `hη' : genericPoint X ∈ U'` using `((genericPoint_spec X).mem_open_set_iff U'.isOpen).2 ⟨_, trivial, (pullback.snd U.ι U'.ι z).2⟩`. Set `ι` to `pullback.lift (U.fromSpecStalkOfMem _ hη) (U'.fromSpecStalkOfMem _ hη') (by rw [Scheme.Opens.fromSpecStalkOfMem_ι, Scheme.Opens.fromSpecStalkOfMem_ι])`. Establish `: IsReduced (pullback U.ι U'.ι : Scheme.{0})` using `isReduced_of_isOpenImmersion (pullback.fst U.ι U'.ι ≫ U.ι)`. Establish `: IsDominant ι`.
+
+Prove the components needed by the constructor for the conclusion. Set `e` to `pullback.fst U.ι U'.ι ≫ U.ι`. Establish `he : Topology.IsEmbedding e.base` using `e.isOpenEmbedding.isEmbedding`. Set `c : Spec (X.presheaf.stalk (genericPoint X))` to `IsLocalRing.closedPoint _`. Establish `hc : e (ι c) = genericPoint X`.
+
+Establish `: ι ≫ e = X.fromSpecStalk (genericPoint X)` using `by show ι ≫ pullback.fst _ _ ≫ U.ι = _`. Rewrite using `[pullback.lift_fst_assoc, Scheme.Opens.fromSpecStalkOfMem_ι]`. Rewrite using `[show e (ι c) = (ι ≫ e) c from rfl, this]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Use `Dense.mono (Set.singleton_subset_iff.2 (Set.mem_range_self c)) ?_` and prove the remaining obligations.
+
+Rewrite using `[dense_iff_closure_eq, he.closure_eq_preimage_closure_image, Set.image_singleton]`. Use `erw [hc, (genericPoint_spec X).def]`. Both sides reduce to the same expression. Use `ext_of_isDominant ι ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc, gU_eq, gU_eq]`.
+
+Conclude with `spec_ext _ _ (pt_eq p w U U' πU πU' hG hG' hη hη') _ _ (fun W hy hy' s => germ_agree p w U U' πU πU' hG hG' hη hη' W hy hy' s)`.
+-/
 theorem GenOnAgree_of : GenOnAgree := by
   intro k _ X _ p N w U U' πU πU' hG hG'
   by_cases hE : IsEmpty ↥(pullback U.ι U'.ι : Scheme.{0})

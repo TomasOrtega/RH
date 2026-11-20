@@ -8,6 +8,19 @@ noncomputable section
 
 namespace GlobalTheory.multiplicity_linearCharacter_eq_characterSum
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ W _ _ _ τ H _ ψ`. Establish `hc : (Nat.card H : K) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := H)).ne'`. Use `set T : Module.End K W := ∑ h : H, (((ψ h)⁻¹ : Kˣ) : K) • τ (h : G) with hT`. Establish `hep : Formalism.IndefR.IndefiniteEpsilonOperator.epOp τ ⟨H, ψ⟩ = (Nat.card H : K)⁻¹ • T`. Unfold `Formalism.IndefR.IndefiniteEpsilonOperator.epOp`.
+
+Use `congr 1`. Rewrite using `[hT]`. Simplify using `only [map_inv]`. Use `congr!`. Establish `h1 : ∀ a : H, ((((ψ a)⁻¹ : Kˣ) : K) • τ (a : G)) * T = T`.
+
+Introduce `a`. Rewrite using `[hT, Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft a) _ _ fun h => ?_` and prove the remaining obligations. Simplify using `[smul_smul, mul_comm]`. Establish `h2 : T * T = (Nat.card H : K) • T` using `by conv_lhs => rw [hT, Finset.sum_mul, ← hT]`.
+
+Rewrite using `[Finset.sum_congr rfl fun a _ => h1 a]`. Simplify using `[Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul]`. Establish `hid : IsIdempotentElem (Formalism.IndefR.IndefiniteEpsilonOperator.epOp τ ⟨H, ψ⟩)`. Rewrite using `[IsIdempotentElem, hep, smul_mul_smul_comm, h2, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Establish `htr` using `(LinearMap.IsIdempotentElem.isProj_range _ hid).trace`.
+
+Unfold `Formalism.IndefR.IndefiniteEpsilonOperator.nOf Formalism.IndefR.IndefiniteEpsilonOperator.epSp`. Rewrite using `[← htr, hep, map_smul, map_sum, smul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nOf_eq_charSum : ∀ (K : Type) [Field K] [CharZero K] (G : Type) [Group G] [Fintype G] (W : Type) [AddCommGroup W] [Module K W] [FiniteDimensional K W] (τ : Representation K G W) (H : Subgroup G) [Fintype H] (ψ : H →* Kˣ), (Formalism.IndefR.IndefiniteEpsilonOperator.nOf τ ⟨H, ψ⟩ : K) = (Nat.card H : K)⁻¹ * ∑ h : H, Formalism.IndefR.TransferLatticeStatement.charOf τ (h : G) * (((ψ h)⁻¹ : Kˣ) : K) := by
   intro K _ _ G _ _ W _ _ _ τ H _ ψ
   classical

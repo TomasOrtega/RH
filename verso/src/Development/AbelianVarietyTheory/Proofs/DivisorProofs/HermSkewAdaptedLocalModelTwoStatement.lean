@@ -19,6 +19,9 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IsoAOrthLoc.isoA_orth_at | exact GlobalTheory.IsoAOrthLoc.isoA_orth_at | (intros; apply GlobalTheory.IsoAOrthLoc.isoA_orth_at <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.herm_skew_adapted_local_model_two : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (W : Spc F E d) (W₁ : Spc F E d₁)
     (H : Plane E n n₁) (H' : Plane E d d₁) (M : Model σ X W),

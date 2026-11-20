@@ -8,6 +8,9 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.CompanionTheory.CFin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J g hg`. Rewrite `hg` using `[← range_ratEmb σ J]`. Take `⟨η, rfl⟩` from `hg`. Conclude with `⟨η, rfl⟩`.
+-/
 theorem exists_ratEmb_eq_of_mem_ratPts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (g : GAd σ J), g ∈ ratPts σ J → ∃ η : GRat σ J, g = ratEmb σ J η := by
   intro F E _ _ _ _ _ σ n J g hg
   rw [← range_ratEmb σ J] at hg

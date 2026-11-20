@@ -44,6 +44,9 @@ def BtGen : Prop := BtStep Zd u u' F0 what₂ fun Λ₂ F' => IsGeneric Λ₂ (g
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ hn`. Establish `hs : BtSit Zd γ Z F'₂ φ φ' Λ₂` using `⟨hZ, hS, hΛ₂, hn⟩`. Conclude with `⟨⟨h1 hC γ Z F'₂ φ φ' Λ₂ hs, ⟨1, h2 hC γ Z F'₂ φ φ' Λ₂ hs⟩, h3 hC γ Z F'₂ φ φ' Λ₂ hs⟩, h2 hC γ Z F'₂ φ φ' Λ₂ hs, h5 hC γ Z F'₂ φ φ' Λ₂ hs, h4 hC γ Z F'₂ φ φ' Λ₂ hs⟩`.
+-/
 theorem bwdTerm'_of (h1 : BtLift Zd u u' F0 what₂) (h2 : BtAdm Zd u u' F0 what₂) (h3 : BtG Zd u u' F0 what₂)
     (h4 : BtOK Zd u u' F0 what₂) (h5 : BtGen Zd u u' F0 what₂) : BwdTerm' Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ hn
@@ -51,6 +54,11 @@ theorem bwdTerm'_of (h1 : BtLift Zd u u' F0 what₂) (h2 : BtAdm Zd u u' F0 what
   exact ⟨⟨h1 hC γ Z F'₂ φ φ' Λ₂ hs, ⟨1, h2 hC γ Z F'₂ φ φ' Λ₂ hs⟩, h3 hC γ Z F'₂ φ φ' Λ₂ hs⟩,
     h2 hC γ Z F'₂ φ φ' Λ₂ hs, h5 hC γ Z F'₂ φ φ' Λ₂ hs, h4 hC γ Z F'₂ φ φ' Λ₂ hs⟩
 
+/- English proof (translation)
+Introduce `_ γ Z F'₂ φ φ' Λ₂ hs`. Take `⟨⟨w, _, w', hGw', _, hZw'⟩, hS, _, _⟩` from `hs`. Establish `h1 : Gval (lf D F0) (liftF F'₂) = Formalism.L2.SG.CntLocal.GZ (((Tu D u : ℕ) : D.host.E)) (((Tu D u' : ℕ) : D.host.E)) Z`. Rewrite using `[← hS.1]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.Uniq.gz_atMat hZw' (Tu D u) (Tu D u')]`. Conclude with `hGw'`.
+-/
 theorem btG_holds : BtG Zd u u' F0 what₂ := by
   intro _ γ Z F'₂ φ φ' Λ₂ hs
   obtain ⟨⟨w, _, w', hGw', _, hZw'⟩, hS, _, _⟩ := hs
@@ -60,6 +68,11 @@ theorem btG_holds : BtG Zd u u' F0 what₂ := by
   rw [h1, Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.Uniq.gz_atMat hZw' (Tu D u) (Tu D u')]
   exact hGw'
 
+/- English proof (translation)
+Unfold `sgnP'`. Use `split`. Unfold `TermLoc.sgnP`. Use `split`. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem sgnP'_last (p : PlF D) : sgnP' D p (Fin.last D.R.rS) = 1 := by
   unfold sgnP'
   split
@@ -68,9 +81,15 @@ theorem sgnP'_last (p : PlF D) : sgnP' D p (Fin.last D.R.rS) = 1 := by
     · rfl
   · simp
 
+/- English proof (translation)
+Unfold `frFac`. Simplify using the standard rewrite rules.
+-/
 theorem frFac_last (p : PlF D) : frFac Zd.δ p (Fin.last D.R.rS) = 1 := by
   unfold frFac; simp
 
+/- English proof (translation)
+Unfold `locF'`. Rewrite using `[sgnP'_last, frFac_last, one_mul, one_smul]`. Use `congr 1`. Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem locF'_last (p : PlF D) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
     locF' Zd p F' (Fin.last D.R.rS) = baseChange₂ D p F'.fl.z := by
   unfold locF'
@@ -78,6 +97,9 @@ theorem locF'_last (p : PlF D) {T' : D.host.E} (F' : LFlag (VS D) D.R.rS T') :
   congr 1
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+Use `PI.UnitaryGroupMassFormula.UJClassMass.interLocF (F := D.host.F) Λ hΛ x fun v => ?_` and prove the remaining obligations. Use `haveI := v.isPrime`. Establish `h2` using `(Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd v hΛ x).1 (h v)`. Conclude with `(Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF v.asIdeal Λ x).1 h2`.
+-/
 theorem mem_of_baseChange_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ) {x : (VS D).V}
     (h : ∀ p, baseChange₂ D p x ∈ lattice₂ D Zd.M p Λ) : x ∈ Λ := by
   refine PI.UnitaryGroupMassFormula.UJClassMass.interLocF (F := D.host.F) Λ hΛ x fun v => ?_
@@ -85,6 +107,11 @@ theorem mem_of_baseChange_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : S
   have h2 := (Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd v hΛ x).1 (h v)
   exact (Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF v.asIdeal Λ x).1 h2
 
+/- English proof (translation)
+Introduce `_ γ Z F'₂ φ φ' Λ₂ hs`. Take `⟨_, _, ⟨hlat, hloc⟩, _⟩` from `hs`. Use `⟨mem_of_baseChange_mem Zd hlat fun p => ?_, rfl⟩` and prove the remaining obligations. Establish `hfr` using `(hloc p).1.1.2.2.1`. Establish `h1 : locF' Zd p F'₂ (Fin.last D.R.rS) ∈ lattice₂ D Zd.M p Λ₂` using `hfr.1.1 (Fin.last D.R.rS)`.
+
+Rewrite `h1` using `[locF'_last]`. Then use the resulting hypothesis.
+-/
 theorem btLift_holds : BtLift Zd u u' F0 what₂ := by
   intro _ γ Z F'₂ φ φ' Λ₂ hs
   obtain ⟨_, _, ⟨hlat, hloc⟩, _⟩ := hs

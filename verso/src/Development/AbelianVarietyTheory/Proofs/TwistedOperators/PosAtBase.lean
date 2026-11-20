@@ -18,6 +18,9 @@ namespace GlobalTheory.PosAtBase
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup₂_le fun c hc ↦ ((hU p c c0 hc h0).2 i).le`. Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p c) ↦ R.Wc' i c) c0 h0 le_rfl`.
+-/
 theorem Wp3_eq {R : RealDat3 D A3 Ks}
     (hU : ∀ p c c', R.Carries p c → R.Carries p c' → R.EEc c = R.EEc c' ∧ ∀ i, R.Wc' i c = R.Wc' i c')
     {p : A3.fam3.base3.Ix} {c0 : Pl D.host.E → List ℤ → ℂ} (h0 : R.Carries p c0) (i : Fin D.R.m) :
@@ -26,6 +29,9 @@ theorem Wp3_eq {R : RealDat3 D A3 Ks}
   · exact iSup₂_le fun c hc ↦ ((hU p c c0 hc h0).2 i).le
   · exact le_iSup₂_of_le (f := fun c (_ : R.Carries p c) ↦ R.Wc' i c) c0 h0 le_rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup₂_le fun c hc ↦ (hU p c c0 hc h0).1.le`. Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p c) ↦ R.EEc c) c0 h0 le_rfl`.
+-/
 theorem EEp3_eq {R : RealDat3 D A3 Ks}
     (hU : ∀ p c c', R.Carries p c → R.Carries p c' → R.EEc c = R.EEc c' ∧ ∀ i, R.Wc' i c = R.Wc' i c')
     {p : A3.fam3.base3.Ix} {c0 : Pl D.host.E → List ℤ → ℂ} (h0 : R.Carries p c0) :
@@ -34,16 +40,25 @@ theorem EEp3_eq {R : RealDat3 D A3 Ks}
   · exact iSup₂_le fun c hc ↦ (hU p c c0 hc h0).1.le
   · exact le_iSup₂_of_le (f := fun c (_ : R.Carries p c) ↦ R.EEc c) c0 h0 le_rfl
 
+/- English proof (translation)
+Unfold `RealDat3.Wp3`. Simplify using `[h]`.
+-/
 theorem Wp3_bot {R : RealDat3 D A3 Ks} {p : A3.fam3.base3.Ix} (h : ∀ c, ¬ R.Carries p c) (i : Fin D.R.m) :
     R.Wp3 i p = ⊥ := by
   unfold RealDat3.Wp3
   simp [h]
 
+/- English proof (translation)
+Unfold `RealDat3.EEp3`. Simplify using `[h]`.
+-/
 theorem EEp3_bot {R : RealDat3 D A3 Ks} {p : A3.fam3.base3.Ix} (h : ∀ c, ¬ R.Carries p c) :
     R.EEp3 p = ⊥ := by
   unfold RealDat3.EEp3
   simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (R : RealDat3 D A3 Ks) c : R.EEc c = GlobalTheory.Hk3.EEc R.toRealDat R.SF c := rfl
 
 end GlobalTheory.PosAtBase
@@ -52,6 +67,21 @@ namespace GlobalTheory.PosAtBase
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨lam, κ, hκ, hl, hA, hB⟩` from `hS`. Establish `hlam : ∀ i t p c, R.Carries p c → R.Wc' i c ≠ ⊥ → R.lam3 i t p A3.A.v0 = lam i t c`. Introduce `i t p c hc hne`. Establish `hW` using `Wp3_eq hU hc i`. Use `hC.scal.lam0 i t p _ (by rw [hW]; exact hne) fun x hx ↦ hA i t c x ?_` and prove the remaining obligations.
+
+Rewrite `hx` using `[hW]`. Conclude with `hx`. Establish `hpos : ∀ i t p, 0 < R.lam3 i t p A3.A.v0`. Introduce `i t p`. Distinguish the cases in `hW : R.Wp3 i p = ⊥`.
+
+Rewrite using `[hC.scal.abs0 i t p hW]`. Conclude with `Real.exp_pos _`. Distinguish the cases in `hc : ∃ c, R.Carries p c`. Take `⟨c, hc⟩` from `hc`. Rewrite using `[hlam i t p c hc (by rw [← Wp3_eq hU hc i]; exact hW)]`.
+
+Conclude with `hl i t c`. Conclude with `absurd (Wp3_bot (not_exists.1 hc) i) hW`. Use `⟨?_, hpos⟩` and prove the remaining obligations. Establish `hK : Lift.IsKap D.R.m (fun t ↦ R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp3 R.lamN κ`. Introduce `t p x hx`.
+
+Distinguish the cases in `hc : ∃ c, R.Carries p c`. Take `⟨c, hc⟩` from `hc`. Establish `hx' : x ∈ R.EEc c` using `EEp3_eq hU hc ▸ hx`. Establish `hpr : ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN t j p = ∏ j, lam j t c` using `(RealDat3.prod_lamN t p).trans (Finset.prod_congr rfl fun j _ ↦ hlam j t p c hc (hM c hc.1 j))`. Establish `h1` using `hB t c x hx'`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hb : R.EEp3 p = ⊥` using `EEp3_bot (not_exists.1 hc)`. Establish `hx0 : x = 0` using `(Submodule.mem_bot ℂ).1 (hb ▸ hx)`. Substitute `hx0` using the available equality. Rewrite using `[map_zero, smul_zero]`.
+
+Take `⟨p, hp⟩` from `hex`. Rewrite using `[hC.scal.kap κ hK ⟨A3.A.μ0, p, hp, ?_⟩]`. Conclude with `hκ`. Rewrite using `[RealDat3.prod_lamN]`. Conclude with `(Finset.prod_pos fun j _ ↦ hpos j _ p).ne'`.
+-/
 theorem pos_at_base {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ} (_hOk : A3.fam3.Ok3 s) (hC : R.WeakCharacterisation F) (_hE : R.toRealDat.ExAt)

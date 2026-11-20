@@ -8,6 +8,17 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Unfold `UpperTheory.Gal.G3.RelComp`. Introduce `p _ D G L R _ _ gb S s N₁ N₂ N₃ o₁ o₂ o₃ k _ t I₁ I₂ I₃ ψ₁ ψ₂ h₁ h₂ hψ₁ hψ₂ hint`. Unfold `UpperTheory.Gal.G3.Rel`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `n hn hcop x y`.
+
+Rewrite using `[Category.comp_id]`. Use `(HeckeRestrict.ev_eq_iff I₁ n hn x y).trans ((ForgetHecke.acts_one_iff L n hn hcop x y).symm.trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `r₁ r₂ n hn hcop x z`. Establish `htor : (I₁.ev n x ≫ ψ₁) ^ n = 1` using `by haveI := hψ₁`.
+
+Establish `e` using `map_pow (IsMonHom.monoidHom ψ₁ (Over.mk t)) (I₁.ev n x) n`. Simplify using `only [IsMonHom.monoidHom_apply] at e`. Rewrite using `[← e, (I₁.onto n hn (I₁.ev n x)).2 ⟨x, rfl⟩]`. Conclude with `(IsMonHom.monoidHom ψ₁ (Over.mk t)).map_one`. Take `⟨y, hy⟩` from `(I₂.onto n hn _).1 htor`.
+
+Take `⟨v₁, hv₁, e₁⟩` from `(r₁ n hn hcop x y).1 hy.symm`. Rewrite using `[← Category.assoc, ← hy, r₂ n hn hcop y z, map_mul, Module.End.mul_apply, e₁, map_add, map_nsmul]`. Establish `hw` using `hint v₁ hv₁`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, e⟩`.
+
+Use `⟨v + L.actG h₂ v₁, add_mem hv hw, ?_⟩` and prove the remaining obligations. Rewrite using `[e, smul_add, add_assoc]`. Introduce and unpack `⟨v, hv, e⟩`. Use `⟨v - L.actG h₂ v₁, sub_mem hv hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← add_sub_assoc, ← e, add_sub_cancel_right]`.
+-/
 theorem UpperTheory.Gal.G3.pRelComp :
     RelComp := by
   unfold UpperTheory.Gal.G3.RelComp

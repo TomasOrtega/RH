@@ -31,15 +31,34 @@ def globalSec {x : ι → Ω} {r : ℕ} {E : Type*} [AddCommGroup E] [Module Ω 
     (B : ChartBundle o x r E) : AddSubgroup E :=
   ⨅ (i) (_ : x i ≠ 0), B.lat i
 
+/- English proof (translation)
+Simplify using `[globalSec, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_globalSec {x : ι → Ω} {r : ℕ} {E : Type*} [AddCommGroup E] [Module Ω E]
     (B : ChartBundle o x r E) (e : E) :
     e ∈ globalSec B ↔ ∀ i, x i ≠ 0 → e ∈ B.lat i := by
   simp [globalSec, AddSubgroup.mem_iInf]
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨j, rfl⟩`.
+-/
 theorem div_mem_chartRing (x : ι → Ω) (i j : ι) :
     x j / x i ∈ chartRing o x i :=
   Algebra.subset_adjoin ⟨j, rfl⟩
 
+/- English proof (translation)
+Establish `hij : x i / x j ∈ chartRing o x j` using `div_mem_chartRing x j i`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Establish `: x i / x j * (x k / x i) = x k / x j` using `by field_simp`. Rewrite using `[pow_one, this]`. Conclude with `div_mem_chartRing x j k`. Consider the case `algebraMap r`. Conclude with `⟨0, by simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨m, hm⟩` from `hy`. Take `⟨n, hn⟩` from `hz`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `: (x i / x j) ^ (m + n) * (y + z) = (x i / x j) ^ n * ((x i / x j) ^ m * y) + (x i / x j) ^ m * ((x i / x j) ^ n * z)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (pow_mem hij _) hm) (mul_mem (pow_mem hij _) hn)`. Consider the case `mul y z _ _ hy hz`. Take `⟨m, hm⟩` from `hy`.
+
+Take `⟨n, hn⟩` from `hz`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `: (x i / x j) ^ (m + n) * (y * z) = ((x i / x j) ^ m * y) * ((x i / x j) ^ n * z)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `mul_mem hm hn`.
+-/
 theorem exists_pow_mul_mem_chartRing (x : ι → Ω) (i j : ι) (hi : x i ≠ 0)
     {a : Ω} (ha : a ∈ chartRing o x i) :
     ∃ m : ℕ, (x i / x j) ^ m * a ∈ chartRing o x j := by
@@ -78,6 +97,9 @@ def lineLat (x : ι → Ω) (d : ℕ) (i : ι) : AddSubgroup Ω :=
 
 variable {o}
 
+/- English proof (translation)
+Simplify using `[lineLat]`.
+-/
 theorem mem_lineLat (x : ι → Ω) (d : ℕ) (i : ι) (e : Ω) :
     e ∈ lineLat o x d i ↔ ∃ a ∈ chartRing o x i, a * x i ^ d = e := by
   simp [lineLat]

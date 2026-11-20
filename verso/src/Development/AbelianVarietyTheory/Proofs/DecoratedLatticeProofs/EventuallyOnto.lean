@@ -5,6 +5,15 @@ open Filter
 
 namespace GlobalTheory.ApproxOnto
 
+/- English proof (translation)
+Introduce `X W _ T hT`. Establish `hconv : ∀ ψ : W, Tendsto (fun i => T i ψ) atTop (𝓝 ψ)`. Introduce `ψ`. Rewrite using `[tendsto_subtype_rng]`. Conclude with `tendsto_pi_nhds.2 (fun x => hT ψ x)`.
+
+Set `b` to `Module.finBasis ℂ W`. Establish `hmat : Tendsto (fun i => LinearMap.toMatrix b b (T i)) atTop (𝓝 (LinearMap.toMatrix b b LinearMap.id))`. Use `tendsto_pi_nhds.2 fun k => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.toMatrix_apply]`. Establish `hc : Continuous (fun w : W => b.repr w k)` using `(b.coord k).continuous_of_finiteDimensional`.
+
+Conclude with `(hc.tendsto _).comp (hconv (b j))`. Establish `hdet : Tendsto (fun i => LinearMap.det (T i)) atTop (𝓝 1)`. Use `((continuous_id.matrix_det).tendsto _).comp hmat` as an intermediate fact. Simplify `this` using `[LinearMap.det_toMatrix, Function.comp_def]`. Take `⟨i, hi⟩` from `(hdet.eventually_ne one_ne_zero).exists`.
+
+Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (T i)` using `(LinearMap.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hi)`. Conclude with `((Module.End.isUnit_iff _).1 hu).2`.
+-/
 theorem eventually_onto : ∀ (X : Type) (W : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ W] (T : ℕ → W →ₗ[ℂ] W), (∀ (ψ : W) (x : X), Tendsto (fun i => (T i ψ).1 x) atTop (𝓝 (ψ.1 x))) → ∃ i, Function.Surjective (T i) := by
   intro X W _ T hT
   have hconv : ∀ ψ : W, Tendsto (fun i => T i ψ) atTop (𝓝 ψ) := by

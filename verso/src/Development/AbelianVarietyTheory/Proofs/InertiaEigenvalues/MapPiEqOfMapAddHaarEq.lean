@@ -3,6 +3,13 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hb : (MeasurableSpace.pi : MeasurableSpace (Fin m → G)) = borel _` using `BorelSpace.measurable_eq`. Use `revert μ hμ`. Rewrite using `[← hb]`. Introduce `μ hμ`. Set `ν : Measure G` to `Measure.addHaar`.
+
+Establish `hν : ν.IsAddHaarMeasure` using `inferInstance`. Establish `hp : MeasurePreserving φ ν ν` using `⟨hφ.measurable, h ν hν⟩`. Establish `hpi : MeasurePreserving (fun (x : Fin m → G) i => φ (x i)) (Measure.pi fun _ => ν) (Measure.pi fun _ => ν)` using `measurePreserving_pi _ _ (fun _ => hp)`. Establish `hH : (Measure.pi fun _ : Fin m => ν).IsAddHaarMeasure` using `inferInstance`. Establish `he` using `Measure.isAddLeftInvariant_eq_smul μ (Measure.pi fun _ : Fin m => ν)`.
+
+Generalize the expression as in `Measure.addHaarScalarFactor μ (Measure.pi fun _ : Fin m => ν) = c at he`. Substitute `he` using the available equality. Rewrite using `[Measure.map_smul, hpi.map_eq]`.
+-/
 theorem map_pi_eq_of_map_addHaar_eq (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (φ : G →+ G) (hφ : Continuous φ)

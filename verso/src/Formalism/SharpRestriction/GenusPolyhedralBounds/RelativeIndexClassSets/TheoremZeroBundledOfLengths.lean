@@ -15,9 +15,15 @@ def LenBaseAll (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Pr
 def LenPoleLAll (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) : Prop :=
   ∀ (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j), LenPoleL (X := X) (ka := ka) (wL := wL) (wF := wF)
 
+/- English proof (translation)
+The claim follows from `theorem_zero_split_of_local (localC_of_len hLB hLP)`.
+-/
 theorem theorem_zero_split_of_lengths (hLB : LenBaseAll D B P) (hLP : LenPoleLAll D B P) :
     Conclusion1OfComb (D := D) (B := B) (P := P) := theorem_zero_split_of_local (localC_of_len hLB hLP)
 
+/- English proof (translation)
+The claim follows from `theorem_zero_bundled_of_split hLf (theorem_zero_split_of_lengths hLB hLP)`.
+-/
 theorem theorem_zero_bundled_of_lengths (hLf : LiftAll D B P) (hLB : LenBaseAll D B P) (hLP : LenPoleLAll D B P) :
     Conclusion1Of2 (D := D) (B := B) (P := P) := theorem_zero_bundled_of_split hLf (theorem_zero_split_of_lengths hLB hLP)
 

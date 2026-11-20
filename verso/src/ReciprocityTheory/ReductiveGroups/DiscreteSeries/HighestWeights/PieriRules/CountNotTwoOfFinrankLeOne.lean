@@ -15,10 +15,18 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.mpr fun _ hS => hS.1`.
+-/
 theorem count_mem_kSpan_self {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (F : Fin n → Fin n → Module.End ℂ V) (x : V) : x ∈ Formalism.REAL.kSpan ε F x :=
   Submodule.mem_sInf.mpr fun _ hS => hS.1
 
+/- English proof (translation)
+Simplify using `only [khwSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero, Formalism.REAL.KHighest, Formalism.REAL.IsWeight]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b hab he => h2 a b ⟨hab, he⟩⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩`.
+-/
 theorem count_mem_khwSub_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ W) (ν : Fin n → ℝ) (v : W) :
     v ∈ khwSub ε E ν ↔ Formalism.REAL.KHighest ε E ν v := by
@@ -31,6 +39,9 @@ theorem count_mem_khwSub_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : �
   · rintro ⟨h1, h2⟩
     exact ⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩
 
+/- English proof (translation)
+Establish `hle : (⨆ k, A k) ≤ (ℂ ∙ x)ᗮ` using `iSup_le fun k z hz => (Submodule.mem_orthogonal_singleton_iff_inner_right).mpr (h k z hz)`. Rewrite `hle` using `[htop]`. Establish `hx : x ∈ (ℂ ∙ x)ᗮ` using `hle Submodule.mem_top`. Rewrite `hx` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `inner_self_eq_zero.mp hx`.
+-/
 theorem count_eq_zero_of_orth {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {m : ℕ}
     (A : Fin m → Submodule ℂ V) (htop : (⨆ k, A k) = ⊤) (x : V)
     (h : ∀ k, ∀ z ∈ A k, ⟪x, z⟫_ℂ = 0) : x = 0 := by
@@ -41,6 +52,15 @@ theorem count_eq_zero_of_orth {V : Type*} [NormedAddCommGroup V] [InnerProductSp
   rw [Submodule.mem_orthogonal_singleton_iff_inner_right] at hx
   exact inner_self_eq_zero.mp hx
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `finrank_le_one_iff.mp hS`. Take `⟨c, hc⟩` from `hv ⟨y, hy⟩`. Take `⟨d, hd⟩` from `hv ⟨z, hz⟩`. Establish `hc' : c • (v : V) = y` using `by rw [← Submodule.coe_smul, hc]`. Establish `hd' : d • (v : V) = z` using `by rw [← Submodule.coe_smul, hd]`.
+
+Establish `hc0 : c ≠ 0` using `by rintro rfl; rw [zero_smul] at hc'; exact hy0 hc'.symm`. Establish `hzy : z = (d / c) • y`. Rewrite using `[← hc', ← hd', smul_smul, div_mul_cancel₀ d hc0]`. Establish `hd0 : d / c ≠ 0`. Introduce `h0`.
+
+Rewrite `hzy` using `[h0, zero_smul]`. Conclude with `hz0 hzy`. Rewrite `hyz` using `[hzy, inner_smul_right]`. Break down `mul_eq_zero.mp hyz with h | h` into its components or cases. Conclude with `hd0 h`.
+
+Conclude with `hy0 (inner_self_eq_zero.mp h)`.
+-/
 theorem count_not_two_of_finrank_le_one {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     (S : Submodule ℂ V) [FiniteDimensional ℂ S] (hS : Module.finrank ℂ S ≤ 1) {y z : V} (hy : y ∈ S)
     (hz : z ∈ S) (hy0 : y ≠ 0) (hz0 : z ≠ 0) (hyz : ⟪y, z⟫_ℂ = 0) : False := by
@@ -59,22 +79,64 @@ theorem count_not_two_of_finrank_le_one {V : Type*} [NormedAddCommGroup V] [Inne
   · exact hd0 h
   · exact hy0 (inner_self_eq_zero.mp h)
 
+/- English proof (translation)
+Rewrite using `[(WithLp.linearEquiv 2 ℂ (ι → V)).finrank_eq, Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+-/
 theorem count_finrank_piLp {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] (ι : Type*) [Fintype ι] :
     Module.finrank ℂ (PiLp 2 (fun _ : ι => V)) = Fintype.card ι * Module.finrank ℂ V := by
   rw [(WithLp.linearEquiv 2 ℂ (ι → V)).finrank_eq, Module.finrank_pi_fintype, Finset.sum_const,
     Finset.card_univ, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `kType_finrank T`.
+-/
 theorem count_weylK_eq {n : ℕ} {ε : Fin n → Bool} {μ : Fin n → ℝ} (T : KType ε μ) :
     (Module.finrank ℂ T.V : ℝ) = weylK ε μ :=
   kType_finrank T
 
+/- English proof (translation)
+Rewrite using `[← count_weylK_eq T]`. Establish `: Nontrivial T.V` using `⟨⟨T.w, 0, KType.w_ne_zero T⟩⟩`. Conclude with `Module.finrank_pos` after adjusting the coercions.
+-/
 theorem count_weylK_pos {n : ℕ} {ε : Fin n → Bool} {μ : Fin n → ℝ} (T : KType ε μ) :
     0 < weylK ε μ := by
   rw [← count_weylK_eq T]
   have : Nontrivial T.V := ⟨⟨T.w, 0, KType.w_ne_zero T⟩⟩
   exact_mod_cast Module.finrank_pos
 
+/- English proof (translation)
+Introduce `n ε Λ T ι _ _ ρ dρ γ hρc hdρ hrelM hdiag hinj hsum hvan`. Take `⟨τ, D, hτc, hD, hunits⟩` from `ht n ε Λ T ι ρ dρ hρc hdρ`. Set `R : KRep ε` to `{ V := PiLp 2 (fun _ : ι => T.V), τ := τ, cont := hτc, dτ := D, hasDeriv := hD }`. Establish `hRu : R.units = tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))`. Use function extensionality and compare the values at `a b`.
+
+Conclude with `hunits a b`. Take `⟨hrelR, hunitR⟩` from `hr n ε R`. Take `⟨m, x, μ, hx, horth, htop, hfin, -, hT⟩` from `hc n ε R`. Rewrite `hrelR`, `hunitR`, `hx`, `horth`, `htop`, `hfin` using `[hRu]`. Establish `hTH` using `hh T.V n ε (kunits T) Λ T.w ι (fun a b => dρ (Matrix.single a b 1)) γ (KType.kRel T) (KType.kUnit T) (KType.kHighest_w T) (KType.kSpan_eq_top T) hrelM hdiag`.
+
+Establish `hdimk : ∀ k, (Module.finrank ℂ (Formalism.REAL.kSpan ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))) (x k)) : ℝ) = weylK ε (μ k)`. Introduce `k`. Take `⟨Tk, -, hfr, -⟩` from `hT k`. Rewrite `hfr` using `[hRu]`. Rewrite using `[← hfr]`.
+
+Conclude with `count_weylK_eq Tk`. Establish `hpos : ∀ k, 0 < weylK ε (μ k)` using `fun k => by`. Take `⟨Tk, -⟩` from `hT k`. Conclude with `count_weylK_pos Tk`. Use `choose idx hidx using fun k => hTH.1 (μ k) (x k) (hx k).1 (hx k).2`.
+
+Establish `hcard1 : ∀ i, Nat.card {j : ι // Λ + γ i = Λ + γ j} = 1`. Introduce `i`. Rewrite using `[Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨i, rfl⟩, fun j => Subtype.ext (hinj (add_left_cancel j.2)).symm⟩`. Establish `hidx_inj : Function.Injective idx`.
+
+Introduce `k k' hkk'`. Assume the negation of the conclusion as `hne`. Take `⟨hfd, hle⟩` from `hTH.2 (Λ + γ (idx k))`. Rewrite `hle` using `[hcard1]`. Establish `hk : x k ∈ khwSub ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))) (Λ + γ (idx k))`.
+
+Rewrite using `[count_mem_khwSub_iff, ← hidx k]`. Conclude with `(hx k).2`. Establish `hk' : x k' ∈ khwSub ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))) (Λ + γ (idx k))`. Rewrite using `[count_mem_khwSub_iff, hkk', ← hidx k']`. Conclude with `(hx k').2`.
+
+Conclude with `count_not_two_of_finrank_le_one _ hle hk hk' (hx k).1 (hx k').1 (horth k k' hne _ (count_mem_kSpan_self _ _ _) _ (count_mem_kSpan_self _ _ _))`. Establish `hpiece : ∀ (ν : Fin n → ℝ) (y : PiLp 2 (fun _ : ι => T.V)), y ≠ 0 → Formalism.REAL.KHighest ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))) ν y → ∃ k, μ k = ν`. Introduce `ν y hy0 hy`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`.
+
+Apply `hy0` to reduce the goal to its premises. Use `count_eq_zero_of_orth _ htop y fun k z hz => ?_` and prove the remaining obligations. Conclude with `Formalism.REAL.kOrth _ n ε _ ν (μ k) y (x k) hrelR hunitR hy (hx k).2 (hno k).symm y (count_mem_kSpan_self _ _ _) z hz`. Establish `hnn : ∀ i, 0 ≤ weylK ε (Λ + γ i)`. Introduce `i`.
+
+Distinguish the cases in `hd : KDom ε (Λ + γ i)`. Conclude with `(hw n ε _ hd).le`. Rewrite using `[hvan i hd]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i0 hd0`.
+
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hne : ∀ k, idx k ≠ i0` using `fun k h => hno (x k) (hx k).1 (by rw [← h, ← hidx k]; exact (hx k).2)`. Establish `hdimR : (Module.finrank ℂ (PiLp 2 (fun _ : ι => T.V)) : ℝ) = (Fintype.card ι : ℝ) * weylK ε Λ`. Rewrite using `[count_finrank_piLp, Nat.cast_mul, count_weylK_eq T]`.
+
+Establish `hdimR' : (Module.finrank ℂ (PiLp 2 (fun _ : ι => T.V)) : ℝ) = ∑ k, weylK ε (Λ + γ (idx k))`. Establish `hfin' : Module.finrank ℂ (PiLp 2 (fun _ : ι => T.V)) = ∑ k, Module.finrank ℂ (Formalism.REAL.kSpan ε (tensAct (kunits T) (fun a b => dρ (Matrix.single a b 1))) (x k))` using `hfin`. Rewrite using `[hfin', Nat.cast_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hdimk, hidx]`.
+
+Establish `hsub : univ.image idx ⊆ univ.erase i0`. Introduce `i hi`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.mp hi`. Conclude with `Finset.mem_erase.mpr ⟨hne k, Finset.mem_univ _⟩`. Establish `h1 : ∑ k, weylK ε (Λ + γ (idx k)) = ∑ i ∈ univ.image idx, weylK ε (Λ + γ i)` using `by rw [Finset.sum_image fun a _ b _ h => hidx_inj h]`.
+
+Establish `h2` using `Finset.sum_le_sum_of_subset_of_nonneg hsub (fun i _ _ => hnn i)`. Establish `h3` using `Finset.sum_erase_add univ (fun i => weylK ε (Λ + γ i)) (Finset.mem_univ i0)`. Establish `h4` using `hw n ε _ hd0`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `ν y hy0 hy`.
+
+Take `⟨i, hi⟩` from `hTH.1 ν y hy0 hy`. Take `⟨k, hk⟩` from `hpiece ν y hy0 hy`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnd`. Establish `hp` using `hpos k`.
+
+Rewrite `hp` using `[hk, hi, hvan i hnd]`. Conclude with `lt_irrefl (0 : ℝ) hp`.
+-/
 theorem pieriCount_of_st (hc : CompRedStatement) (hr : KRepRelStatement) (ht : TensRepStatement)
     (hh : TensHWStatement) (hw : WeylPosStatement) : PieriCountStatement := by
   intro n ε Λ T ι _ _ ρ dρ γ hρc hdρ hrelM hdiag hinj hsum hvan
@@ -173,6 +235,9 @@ theorem pieriCount_of_st (hc : CompRedStatement) (hr : KRepRelStatement) (ht : T
     rw [hk, hi, hvan i hnd] at hp
     exact lt_irrefl (0 : ℝ) hp
 
+/- English proof (translation)
+The claim follows from `pieriCount_of_st hc hr tensRep tensHW weylPos`.
+-/
 theorem pieriCount_of (hc : CompRedStatement) (hr : KRepRelStatement) : PieriCountStatement :=
   pieriCount_of_st hc hr tensRep tensHW weylPos
 

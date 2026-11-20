@@ -17,6 +17,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, hϖ]`. Conclude with `(uniformizer_lt_one (R := k)).le`.
+-/
 theorem _root_.GlobalTheory.BorelCosetSum.unif_mem {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) : (ϖ : k) ∈ 𝒪[k] := by
   rw [Valuation.mem_integer_iff, hϖ]
@@ -30,6 +33,11 @@ def cosetRep {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) {n j : ℕ}
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a l => ?_)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.GLDoubling.val_torusElt, _root_.Formalism.UG.P.satakeGL_apply]`. Distinguish the cases in `h : a = l`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases ha : a ∈ s <;> simp [_root_.GlobalTheory.ParHecke.indic, _root_.Formalism.UG.P.satakeN, ha]`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h, _root_.Formalism.UG.P.satakeN]`.
+-/
 private theorem torusElt_indic_eq_satakeGL {N : ℕ} (ϖ : kˣ) (s : Finset (Fin N)) :
     _root_.GlobalTheory.GLDoubling.torusElt k (Fin N) ϖ (_root_.GlobalTheory.ParHecke.indic s) =
       _root_.Formalism.UG.P.satakeGL 𝒪[k] (π := (ϖ : k)) ϖ.ne_zero s (fun _ => 0) := by
@@ -42,6 +50,15 @@ private theorem torusElt_indic_eq_satakeGL {N : ℕ} (ϖ : kˣ) (s : Finset (Fin
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `hint` using `Valuation.integer.integers (valuation k)`. Establish `hlt : uniformizer k < 1` using `uniformizer_lt_one`. Establish `hpos : 0 < uniformizer k` using `uniformizer_pos`. Use `⟨fun hu => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hint.isUnit_iff_valuation_eq_one]`.
+
+Conclude with `hlt.ne (by rw [← hϖ]; exact hu)`. Rewrite using `[hint.isUnit_iff_valuation_eq_one, hint.isUnit_iff_valuation_eq_one]`. Establish `hv : valuation k (a : k) * valuation k (b : k) = uniformizer k`. Rewrite using `[← hϖ, ← map_mul]`. Conclude with `congrArg (fun x : 𝒪[k] => valuation k (x : k)) hab.symm`.
+
+Establish `ha : valuation k (a : k) ≤ 1` using `a.2`. Establish `hb : valuation k (b : k) ≤ 1` using `b.2`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `ha'` using `le_uniformizer_iff.mpr (lt_of_le_of_ne ha h.1)`.
+
+Establish `hb'` using `le_uniformizer_iff.mpr (lt_of_le_of_ne hb h.2)`. Establish `h1 : uniformizer k ≤ uniformizer k * uniformizer k` using `hv.symm.le.trans (mul_le_mul' ha' hb')`. Establish `h2 : uniformizer k * uniformizer k < uniformizer k`. Simplify using `using mul_lt_mul_of_pos_left hlt hpos`. Conclude with `lt_irrefl _ (h1.trans_lt h2)`.
+-/
 private theorem irreducible_of_valuation_eq_uniformizer {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) :
     Irreducible (⟨ϖ, _root_.GlobalTheory.BorelCosetSum.unif_mem hϖ⟩ : 𝒪[k]) := by
@@ -68,6 +85,9 @@ private theorem irreducible_of_valuation_eq_uniformizer {ϖ : kˣ}
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `hx : valuation k (x : k) ≤ 1` using `x.2`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers _).isUnit_iff_valuation_eq_one, Valuation.mem_integer_iff, map_mul, map_inv₀, hϖ, inv_mul_le_iff₀ uniformizer_pos, mul_one, le_uniformizer_iff]`. Conclude with `⟨ne_of_lt, lt_of_le_of_ne hx⟩`.
+-/
 private theorem uniformizer_inv_mul_mem_integer_iff_residue_eq_zero {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) (x : 𝒪[k]) :
     (ϖ : k)⁻¹ * x ∈ 𝒪[k] ↔ IsLocalRing.residue 𝒪[k] x = 0 := by
@@ -79,6 +99,9 @@ private theorem uniformizer_inv_mul_mem_integer_iff_residue_eq_zero {ϖ : kˣ}
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, map_inv₀, hϖ, not_le]`. Conclude with `(one_lt_inv₀ uniformizer_pos).mpr uniformizer_lt_one`.
+-/
 private theorem uniformizer_inv_not_mem_integer {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     (ϖ : k)⁻¹ ∉ 𝒪[k] := by
   rw [Valuation.mem_integer_iff, map_inv₀, hϖ, not_le]
@@ -86,6 +109,9 @@ private theorem uniformizer_inv_not_mem_integer {ϖ : kˣ} (hϖ : valuation k (�
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `hone : _root_.GlobalTheory.SmGL.ord k 1 = 0` using `_root_.GlobalTheory.SmGL.ord_eq_zero (by simp)`. Apply the tactic sequence `rw [hψ.2 _ ((_root_.GlobalTheory.SmGL.mem_borel k).mpr fun a l h => _root_.Formalism.UG.P.satakeGL_lower _ _ _ _ _ _ h) (fun a => if a ∈ S then ϖ else 1) (fun a => by rw [_root_.Formalism.UG.P.satakeGL_diag]; split_ifs <;> simp)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem isBorelSph_apply_satakeGL_eq {N : ℕ} {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) {γ : Fin N → ℂ} {ψ : GL (Fin N) k → ℂ}
     (hψ : _root_.GlobalTheory.SatakeBound.IsBorelSph k γ ψ) (S : Finset (Fin N)) (c : _root_.Formalism.UG.P.satakePairs S → 𝒪[k]) :
@@ -101,6 +127,11 @@ private theorem isBorelSph_apply_satakeGL_eq {N : ℕ} {ϖ : kˣ}
 
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card]`. Use `show Nat.card {p : Fin N × Fin N // p.1 ∈ S ∧ p.2 ∉ S ∧ p.1 < p.2} = _`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `p`.
+
+Simplify using `[Finset.mem_product, and_assoc]`.
+-/
 private theorem card_satakePairs_eq_card_filter_lt {N : ℕ} (S : Finset (Fin N)) :
     Fintype.card (_root_.Formalism.UG.P.satakePairs S) = ((S ×ˢ Sᶜ).filter fun p : Fin N × Fin N => p.1 < p.2).card := by
   rw [← Nat.card_eq_fintype_card]
@@ -113,6 +144,61 @@ private theorem card_satakePairs_eq_card_filter_lt {N : ℕ} (S : Finset (Fin N)
 open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N ϖ hϖ γ ψ hψ _ s R hR`. Use `set π : 𝒪[k] := ⟨ϖ, _root_.GlobalTheory.BorelCosetSum.unif_mem hϖ⟩ with hπdef`. Use `set j := s.card with hj`. Use `set q := _root_.GlobalTheory.SplitWeil.resCard k with hqdef`. Use `set K := _root_.GlobalTheory.SplitWeil.KO k (Fin N) with hK`.
+
+Use `set dJ := _root_.Formalism.UG.P.tjcosets_dG N j (ϖ : k) ϖ.ne_zero with hdJ`. Use `set d := _root_.GlobalTheory.GLDoubling.torusElt k (Fin N) ϖ (_root_.GlobalTheory.ParHecke.indic s) with hddef`. Take `⟨hR1, hR2⟩` from `hR`. Set `P : GL (Fin N) k → Prop` to `fun g => ∃ a ∈ K, ∃ b ∈ K, g = a * dJ * b`. Establish `hPsat : ∀ (S : Finset (Fin N)) (c : _root_.Formalism.UG.P.satakePairs S → 𝒪[k]), S.card = j → P (_root_.Formalism.UG.P.satakeGL 𝒪[k] (π` using `(ϖ : k)) ϖ.ne_zero S c) := by`.
+
+Introduce `S c hS`. Take `⟨a, ha, b, hb, h⟩` from `_root_.Formalism.UG.P.satakeGL_mem_doset 𝒪[k] (π := (ϖ : k)) ϖ.ne_zero S c`. Use `⟨a, ha, b, hb, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h, Units.val_mul, Units.val_mul, hdJ, _root_.Formalism.UG.P.tjcosets_dG_val, hS]`. Establish `hPmul : ∀ g, P g → ∀ κ ∈ K, ∀ κ' ∈ K, P (κ * g * κ')`.
+
+Introduce and unpack `g ⟨a, ha, b, hb, rfl⟩ κ hκ κ' hκ'`. Conclude with `⟨κ * a, K.mul_mem hκ ha, b * κ', K.mul_mem hb hκ', by group⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀, b₀, hb₀, hd⟩ : P d := by`. Use `hPsat s (fun _ => 0) rfl` as an intermediate fact. Rewrite `this` using `[← torusElt_indic_eq_satakeGL]`. Then use the resulting hypothesis.
+
+Establish `hPiff : ∀ g, P g ↔ ∃ κ ∈ K, ∃ κ' ∈ K, g = κ * d * κ'`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨a * a₀⁻¹, K.mul_mem ha (K.inv_mem ha₀), b₀⁻¹ * b, K.mul_mem (K.inv_mem hb₀) hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hd]`. Use `group`. Introduce and unpack `⟨κ, hκ, κ', hκ', rfl⟩`. Rewrite using `[hd]`. Conclude with `⟨κ * a₀, K.mul_mem hκ ha₀, b₀ * κ', K.mul_mem hb₀ hκ', by group⟩`.
+
+Establish `hout : ∀ g : GL (Fin N) k, ∃ κ ∈ K, Quotient.out (QuotientGroup.mk g : GL (Fin N) k ⧸ K) = g * κ`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K g`. Conclude with `⟨h, h.2, hh⟩`. Establish `hmkP : ∀ g, P g → P (Quotient.out (QuotientGroup.mk g : GL (Fin N) k ⧸ K))`.
+
+Introduce `g hg`. Take `⟨κ, hκ, h⟩` from `hout g`. Rewrite using `[h]`. Use `hPmul g hg 1 K.one_mem κ hκ` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Establish `hirr` using `irreducible_of_valuation_eq_uniformizer hϖ`. Establish `hq1 : 1 < q` using `_root_.GlobalTheory.SplitWeil.one_lt_resCard k`. Establish `hcardres : Nat.card (_root_.Formalism.UG.P.satakeRes 𝒪[k] π) = q`. Use `_root_.GlobalTheory.SatakeBound.card_quot hirr 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`.
+
+Conclude with `this`. Use `haveI : Finite (_root_.Formalism.UG.P.satakeRes 𝒪[k] π) := Nat.finite_of_card_ne_zero (by rw [hcardres]; omega)`. Use `haveI : Fintype (_root_.Formalism.UG.P.satakeRes 𝒪[k] π) := Fintype.ofFinite _`. Establish `hcardres' : Fintype.card (_root_.Formalism.UG.P.satakeRes 𝒪[k] π) = q`. Rewrite using `[← Nat.card_eq_fintype_card, hcardres]`.
+
+Set `X` to `_root_.GlobalTheory.BorelCosetSum.RepIdx hϖ N j`. Set `f : X → GL (Fin N) k` to `fun i => _root_.GlobalTheory.BorelCosetSum.cosetRep hϖ i`. Establish `hf : ∀ i : X, f i = _root_.Formalism.UG.P.satakeGL 𝒪[k] (π` using `(ϖ : k)) ϖ.ne_zero i.1.1 (fun p => _root_.Formalism.UG.P.satakeSec 𝒪[k] π (i.2 p)) := fun i => rfl`. Establish `hcardX : Fintype.card X = ∑ S ∈ (Finset.univ : Finset (Fin N)).powersetCard j, q ^ _root_.Formalism.UG.P.satakeInv Finset.univ S`. Rewrite using `[Fintype.card_sigma]`.
+
+Simplify using `only [Fintype.card_fun, _root_.Formalism.UG.P.satakePairs_card]`. Rewrite using `[show Fintype.card (_root_.Formalism.UG.P.satakeRes 𝒪[k] ⟨(ϖ : k), _root_.GlobalTheory.BorelCosetSum.unif_mem hϖ⟩) = q from hcardres']`. Conclude with `(Finset.sum_subtype _ (fun S => by simp [Finset.mem_powersetCard]) (fun S => q ^ _root_.Formalism.UG.P.satakeInv Finset.univ S)).symm`. Use `haveI : Fintype (IsLocalRing.ResidueField 𝒪[k]) := Fintype.ofFinite _`. Establish `hqres : Fintype.card (IsLocalRing.ResidueField 𝒪[k]) = q`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Establish `hjN : j ≤ N` using `by simpa using s.card_le_univ`. Establish `hidx` using `_root_.Formalism.UG.P.tjcosets_ff_count (𝔽 := IsLocalRing.ResidueField 𝒪[k]) N j hjN`. Rewrite `hidx` using `[hqres]`.
+
+Establish `h1` using `_root_.Formalism.UG.P.tjcosets_arith q N j _ (by omega) hjN hidx`. Establish `h2` using `_root_.Formalism.UG.P.satake_qbinom (q : ℤ) (Finset.univ : Finset (Fin N)) j`. Rewrite `h2` using `[Finset.card_univ, Fintype.card_fin]`. Establish `hprod : ∏ i ∈ Finset.range j, ((q : ℤ) ^ (i + 1) - 1) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => sub_ne_zero.mpr ?_` and prove the remaining obligations.
+
+Conclude with `(one_lt_pow₀ (by exact_mod_cast hq1) (Nat.succ_ne_zero i)).ne'`. Establish `hindex : (_root_.Formalism.UG.P.tjcosets_par (𝔽` using `IsLocalRing.ResidueField 𝒪[k]) N j).index = Fintype.card X := by`. Use `mul_right_cancel₀ hprod (h1.trans h2.symm)` as an intermediate fact. Rewrite using `[hcardX]`. Conclude with `this` after adjusting the coercions.
+
+Set `Q` to `{x : GL (Fin N) k ⧸ K // ∃ a ∈ _root_.Formalism.UG.GLint (Fin N) 𝒪[k], ∃ b ∈ _root_.Formalism.UG.GLint (Fin N) 𝒪[k], Quotient.out x = a * dJ * b}`. Establish `hQcard : Nat.card Q = Fintype.card X`. Rewrite using `[← hindex]`. Conclude with `_root_.Formalism.UG.P.tjcosets_index (O := 𝒪[k]) N j (ϖ : k) (_root_.GlobalTheory.BorelCosetSum.unif_mem hϖ) ϖ.ne_zero (uniformizer_inv_mul_mem_integer_iff_residue_eq_zero hϖ)`. Establish `hmk : ∀ g : GL (Fin N) k, P g → ∃ a ∈ _root_.Formalism.UG.GLint (Fin N) 𝒪[k], ∃ b ∈ _root_.Formalism.UG.GLint (Fin N) 𝒪[k], Quotient.out (QuotientGroup.mk g : GL (Fin N) k ⧸ K) = a * dJ * b` using `fun g hg => hmkP g hg`.
+
+Set `FX : X → Q` to `fun i => ⟨QuotientGroup.mk (f i), hmk _ (by rw [hf]; exact hPsat _ _ i.1.2)⟩`. Establish `hFXinj : Function.Injective FX`. Introduce `i i' h`. Establish `h' : (QuotientGroup.mk (f i) : GL (Fin N) k ⧸ K) = QuotientGroup.mk (f i')` using `congrArg Subtype.val h`. Rewrite `h'` using `[QuotientGroup.eq]`.
+
+Conclude with `_root_.Formalism.UG.P.satakeRep_inj 𝒪[k] π ϖ.ne_zero (uniformizer_inv_not_mem_integer hϖ) j i i' h'`. Set `FR : R → Q` to `fun g => ⟨QuotientGroup.mk g.1, hmk _ ((hPiff _).mpr (hR1 g.1 g.2))⟩`. Establish `hFRinj : Function.Injective FR`. Introduce and unpack `⟨g, hg⟩ ⟨g', hg'⟩ h`. Establish `h' : (QuotientGroup.mk g : GL (Fin N) k ⧸ K) = QuotientGroup.mk g'` using `congrArg Subtype.val h`.
+
+Rewrite `h'` using `[QuotientGroup.eq]`. Take `⟨κ, hκ, κ', hκ', rfl⟩` from `hR1 g hg`. Take `⟨g₁, _, huniq⟩` from `hR2 κ hκ`. Establish `e1` using `huniq _ ⟨hg, by`. Rewrite using `[show (κ * d * κ')⁻¹ * (κ * d) = κ'⁻¹ by group]`.
+
+Conclude with `K.inv_mem hκ'⟩`. Establish `e2` using `huniq g' ⟨hg', by`. Rewrite using `[show g'⁻¹ * (κ * d) = ((κ * d * κ')⁻¹ * g')⁻¹ * κ'⁻¹ by group]`. Conclude with `K.mul_mem (K.inv_mem h') (K.inv_mem hκ')⟩`. Conclude with `Subtype.ext (e1.trans e2.symm)`.
+
+Establish `hFRsurj : Function.Surjective FR`. Introduce and unpack `⟨x, a, ha, b, hb, hx⟩`. Establish `hd' : dJ = a₀⁻¹ * d * b₀⁻¹` using `by rw [hd]; group`. Take `⟨g, ⟨hg, hgκ⟩, _⟩` from `hR2 (a * a₀⁻¹) (K.mul_mem ha (K.inv_mem ha₀))`. Use `⟨⟨g, hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show (QuotientGroup.mk g : GL (Fin N) k ⧸ K) = x`. Rewrite using `[← QuotientGroup.out_eq' x, QuotientGroup.eq, hx, hd', show g⁻¹ * (a * (a₀⁻¹ * d * b₀⁻¹) * b) = (g⁻¹ * (a * a₀⁻¹ * d)) * (b₀⁻¹ * b) by group]`. Conclude with `K.mul_mem hgκ (K.mul_mem (K.inv_mem hb₀) hb)`. Use `haveI : Nonempty X := ⟨⟨⟨s, rfl⟩, fun _ => (0 : 𝒪[k] ⧸ Ideal.span {π})⟩⟩`. Use `haveI : Finite Q := Nat.finite_of_card_ne_zero (by rw [hQcard]; exact Fintype.card_ne_zero)`.
+
+Establish `hFXbij : Function.Bijective FX`. Use `hFXinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hQcard, Nat.card_eq_fintype_card]`. Set `e : R ≃ X` to `(Equiv.ofBijective FR ⟨hFRinj, hFRsurj⟩).trans (Equiv.ofBijective FX hFXbij).symm`. Establish `he : ∀ g : R, ψ g.1 = ψ (f (e g))`.
+
+Introduce `g`. Establish `hfe : FX (e g) = FR g` using `Equiv.ofBijective_apply_symm_apply FX hFXbij (FR g)`. Establish `h' : (QuotientGroup.mk g.1 : GL (Fin N) k ⧸ K) = QuotientGroup.mk (f (e g))` using `(congrArg Subtype.val hfe).symm`. Rewrite `h'` using `[QuotientGroup.eq]`. Rewrite using `[show f (e g) = g.1 * (g.1⁻¹ * f (e g)) by group, hψ.1 _ _ h']`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hf]`. Conclude with `isBorelSph_apply_satakeGL_eq hϖ hψ _ _`. Use `_ = ∑ S : {S : Finset (Fin N) // S.card = j}, (q : ℂ) ^ Fintype.card (_root_.Formalism.UG.P.satakePairs S.1) * ∏ a ∈ S.1, γ a := by`. Rewrite using `[Fintype.sum_sigma]`.
+
+Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fun, nsmul_eq_mul]`. Rewrite using `[show Fintype.card (_root_.Formalism.UG.P.satakeRes 𝒪[k] ⟨(ϖ : k), _root_.GlobalTheory.BorelCosetSum.unif_mem hϖ⟩) = q from hcardres']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by`. Rewrite using `[Finset.sum_subtype ((Finset.univ : Finset (Fin N)).powersetCard j) (p := fun S => S.card = j) (fun S => by simp [Finset.mem_powersetCard])]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[card_satakePairs_eq_card_filter_lt]`.
+-/
 theorem _root_.GlobalTheory.BorelCosetSum.sum_cosets_eq : ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : kˣ),
     valuation k (ϖ : k) = uniformizer k → ∀ (γ : Fin N → ℂ) (ψ : GL (Fin N) k → ℂ),

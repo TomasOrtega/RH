@@ -22,6 +22,9 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hq : ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ≠ 0`. Simplify `w.ne_bot` using `[Ideal.absNorm_eq_zero_iff]`. Establish `e : ∀ (n : ℤ) (h : WithZero.exp n ≠ 0), Multiplicative.toAdd (WithZero.unzero h) = n` using `fun _ _ => rfl`. Rewrite using `[FinitePlace.norm_def, GlobalTheory.Idele.valued_idele, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero, e]`. Simplify using `[Real.log_zpow]`.
+-/
 private theorem log_norm_coord (t : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     Real.log ‖(t : Af E) w‖ = -((GlobalTheory.Idele.ord_vw t w : ℝ) * Real.log (Ideal.absNorm w.asIdeal : ℕ)) := by
   have hq : ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ≠ 0 := by
@@ -30,6 +33,17 @@ private theorem log_norm_coord (t : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
   rw [FinitePlace.norm_def, GlobalTheory.Idele.valued_idele, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero, e]
   simp [Real.log_zpow]
 
+/- English proof (translation)
+Establish `hfin` using `Filter.eventually_cofinite.1 (GlobalTheory.Idele.ord_vw_eventually_zero t)`. Establish `h1 : GlobalTheory.Idele.idealOf t = ∏ v ∈ hfin.toFinset, (v.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ GlobalTheory.Idele.ord_vw t v`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Introduce `h0`.
+
+Conclude with `hv (by simp [h0])`. Establish `h2 : ∑ᶠ w, Real.log ‖(t : Af E) w‖ = ∑ w ∈ hfin.toFinset, Real.log ‖(t : Af E) w‖`. Use `finsum_eq_sum_of_support_subset _ fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_coe, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Introduce `h0`.
+
+Apply `hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Real.log ‖(t : Af E) v‖ = 0`. Rewrite using `[log_norm_coord, h0]`. Simplify using the standard rewrite rules. Establish `hq : ∀ v : HeightOneSpectrum (𝓞 E), ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0` using `fun v => by`.
+
+Simplify `v.ne_bot` using `[Ideal.absNorm_eq_zero_iff]`. Rewrite using `[logFin, h1, map_prod, Rat.cast_prod, Real.log_prod, h2, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[log_norm_coord, neg_neg, map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`. Use `push_cast`.
+
+Rewrite using `[Real.log_zpow]`. Introduce `v _`. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`. Use `push_cast`. Conclude with `zpow_ne_zero _ (hq v)`.
+-/
 private theorem logFin_eq (t : (Af E)ˣ) : logFin E t = -∑ᶠ w, Real.log ‖(t : Af E) w‖ := by
   classical
   have hfin := Filter.eventually_cofinite.1 (GlobalTheory.Idele.ord_vw_eventually_zero t)
@@ -64,6 +78,9 @@ section Aux2
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[logNorm, logFin_eq, PositivityTheory.Rg.BcB.logAbs, logInf, sub_neg_eq_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow, DiscreteGroups.T1.G.norm_cV_eq, DiscreteGroups.T1.G.mult_eq_two]`. Both sides reduce to the same expression.
+-/
 private theorem logAbs_eq_logNorm (u : (Ad E)ˣ) : PositivityTheory.Rg.BcB.logAbs (u : Ad E) = logNorm E u := by
   rw [logNorm, logFin_eq, PositivityTheory.Rg.BcB.logAbs, logInf, sub_neg_eq_add]
   congr 1
@@ -79,6 +96,11 @@ open UpperTheory.V.Cj.S (Pl)
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hK.int x hx w`. Establish `e1 : ((GeneralLinearGroup.det x : (Af E)ˣ) : Af E) w = (GeneralLinearGroup.map (pLoc E w) x).val.det` using `RingHom.map_det (pLoc E w) x.val`. Rewrite using `[e1, ← ha]`. Establish `e2 : (bc (Ov E w).subtype a).val.det = (Ov E w).subtype a.val.det` using `(RingHom.map_det (Ov E w).subtype a.val).symm`. Rewrite using `[e2]`.
+
+Conclude with `a.val.det.2`.
+-/
 private theorem det_coord_le {bad : Set (Pl E)} {K : Subgroup (GL (Fin N) (Af E))} (hK : Lev bad K)
     {x : GL (Fin N) (Af E)} (hx : x ∈ K) (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v (((GeneralLinearGroup.det x : (Af E)ˣ) : Af E) w) ≤ 1 := by
@@ -91,6 +113,11 @@ private theorem det_coord_le {bad : Set (Pl E)} {K : Subgroup (GL (Fin N) (Af E)
   rw [e2]
   exact a.val.det.2
 
+/- English proof (translation)
+Establish `h0 : logFin E (GeneralLinearGroup.det u) = 0`. Use `GlobalTheory.CompanionTheory.LimV.logFin_eq_zero_of_integral _ (GroundTheory.Global.mem_integralFiniteAdeles.2 fun w => det_coord_le hK hu w) (GroundTheory.Global.mem_integralFiniteAdeles.2 fun w => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `det_coord_le hK (inv_mem hu) w`. Rewrite using `[PositivityTheory.Rg.Rs.ExponentTwist.chiDet_absC_val, det_finGL, GlobalTheory.CompanionTheory.LimV.logNorm_finId, h0]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem chi_fin {bad : Set (Pl E)} {K : Subgroup (GL (Fin N) (Af E))} (hK : Lev bad K) (z : ℂ)
     {u : GL (Fin N) (Af E)} (hu : u ∈ K) : ((chiDet N (Model.absC E z) (finGL E N u) : ℂˣ) : ℂ) = 1 := by
   have h0 : logFin E (GeneralLinearGroup.det u) = 0 := by
@@ -101,6 +128,9 @@ private theorem chi_fin {bad : Set (Pl E)} {K : Subgroup (GL (Fin N) (Af E))} (h
   rw [PositivityTheory.Rg.Rs.ExponentTwist.chiDet_absC_val, det_finGL, GlobalTheory.CompanionTheory.LimV.logNorm_finId, h0]
   simp
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.LimV.chiDet_absC_cf (E := E) N z k (c := 1) (one_mem _)`. Rewrite `h` using `[PositivityTheory.Rg.Rs.InducedTensorMap.cf, map_one, mul_one]`. Rewrite using `[h, Units.val_one]`.
+-/
 private theorem chi_inf (z : ℂ) (k : Kinf E N) :
     ((chiDet N (Model.absC E z) (infGL E N (Unitary.toUnits k)) : ℂˣ) : ℂ) = 1 := by
   have h := GlobalTheory.CompanionTheory.LimV.chiDet_absC_cf (E := E) N z k (c := 1) (one_mem _)
@@ -112,6 +142,23 @@ end Aux3
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp
 
 open GlobalTheory.Mem.Chr.CharModel in
+/- English proof (translation)
+Introduce `E _ _ _ N hN bad K W hK π φ m hφ hφ0 hT hm`. Take `⟨s, hs⟩` from `GlobalTheory.T.aux_statement_20 E N hN π fun τ => ⟨_, hm τ⟩`. Establish `hψ : mulChi N (Model.absC E s) φ ∈ (π.twist (Model.absC E s)).V` using `⟨φ, hφ, rfl⟩`. Establish `hψ0 : mulChi N (Model.absC E s) φ ≠ 0` using `fun e => hφ0 ((mulChi N (Model.absC E s)).map_eq_zero_iff.1 e)`. Establish `htw : ∀ t, (π.twist (Model.absC E s)).HasInfChar t ((m t).map (· + s))` using `fun t => by`.
+
+Establish `h1` using `(hm t).twist (Model.absC E s)`. Rewrite `h1` using `[Model.expo_absC]`. Then use the resulting hypothesis. Use `⟨π.twist (Model.absC E s), -s, hs, ?_, ⟨_, hψ, hψ0, ?_, ?_⟩, fun t => ?_, ?_, _, hψ, -s, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← CuspSub.twist_mul, ← PositivityTheory.Rg.Rs.StrStepB.absC_add, add_neg_cancel, PositivityTheory.Rg.Rs.StrStepB.absC_zero, CuspSub.twist_one]`. Introduce `u hu g`.
+
+Rewrite using `[mulChi_apply, mulChi_apply, hT.1 u hu g, map_mul, Units.val_mul, chi_fin hK s hu, mul_one]`. Introduce `g`. Establish `e : (fun k : Kinf E N => (mulChi N (Model.absC E s) φ).1 (g * infGL E N (Unitary.toUnits k))) = ((chiDet N (Model.absC E s) g : ℂˣ) : ℂ) • fun k : Kinf E N => φ.1 (g * infGL E N (Unitary.toUnits k))`. Use function extensionality and compare the values at `k`. Rewrite using `[mulChi_apply, map_mul, Units.val_mul, chi_inf, mul_one, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+
+Rewrite using `[e]`. Conclude with `W.smul_mem _ (hT.2 g)`. Simplify `htw t` using `only [sub_neg_eq_add]`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g, (mulChi N (Model.absC E s) φ).1 g ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hψ0 (Subtype.ext (funext hcon))`. Establish `hsum : ∀ τ : E →+* ℂ, (∑ i : Fin N, Eop τ i i) (mulChi N (Model.absC E s) φ) = ((m τ).sum + N * s) • mulChi N (Model.absC E s) φ` using `fun τ => by`. Rewrite using `[GlobalTheory.T.trace_operator_eigenvalue_sum E N _ τ _ (htw τ) _ hψ, Multiset.sum_map_add]`. Simplify using `[(hm τ).1]`.
+
+Establish `hlie : lie E N (oneL E N) (mulChi N (Model.absC E s) φ) = (∑ τ : E →+* ℂ, ((m τ).sum + N * s)) • mulChi N (Model.absC E s) φ`. Rewrite using `[GlobalTheory.T.lie_central_element_trace E N, LinearMap.sum_apply, Finset.sum_congr rfl fun τ _ => hsum τ, ← Finset.sum_smul]`. Establish `hz : ∑ τ : E →+* ℂ, ((m τ).sum + N * s) = 0`. Use `GlobalTheory.CompanionTheory.TotalTrace.eq_zero_of_exp_mul_eq_one fun t => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.central_eigen_exponential E N _ _ hlie t g₀`.
+
+Rewrite `h1` using `[hs _ hψ t g₀]`. Establish `h2 : Complex.exp ((∑ τ : E →+* ℂ, ((m τ).sum + N * s)) * t) * (mulChi N (Model.absC E s) φ).1 g₀ = 1 * (mulChi N (Model.absC E s) φ).1 g₀` using `by rw [one_mul]; exact h1.symm`. Conclude with `mul_right_cancel₀ hg₀ h2`. Rewrite `hz` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Take the linear combination `hz`.
+
+Establish `e : PositivityTheory.Rg.BcB.logAbs g.val.det = logNorm E (GeneralLinearGroup.det g)` using `logAbs_eq_logNorm (GeneralLinearGroup.det g)`. Rewrite using `[mulChi_apply, PositivityTheory.Rg.Rs.ExponentTwist.chiDet_absC_val, e, mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp.normTw :
     NormTw := by
   intro E _ _ _ N hN bad K W hK π φ m hφ hφ0 hT hm

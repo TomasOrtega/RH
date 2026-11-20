@@ -26,6 +26,9 @@ def galTilt : GQ l →* (OCb l ≃+* OCb l) where
   map_one' := RingEquiv.ext fun x => GlobalTheory.RingBasics.σF_one x
   map_mul' g h := RingEquiv.ext fun x => GlobalTheory.RingBasics.σF_mul g h x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galTilt_apply (g : GQ l) (x : OCb l) : galTilt l g x = Per.σF g x := rfl
 
 variable (l) in
@@ -39,28 +42,49 @@ def galW : GQ l →* (WCb l ≃ₐ[ℤ_[l]] WCb l) where
     ext x n
     simp [mapAlgEquivW, mapEquivW, WittVector.map_coeff, autCb_mul]
 
+/- English proof (translation)
+The claim follows from `WittVector.ext fun n => (autCb_alg l (galTilt l g) (a.coeff n)).trans (congrArg (algebraMap (OCb l) (Cb l)) (GlobalTheory.RingIface.sigA_coeff l g a n).symm)`.
+-/
 theorem galW_inclW (g : GQ l) (a : Ainf l) : galW l g (inclW l a) = inclW l (Per.σA g a) :=
   WittVector.ext fun n => (autCb_alg l (galTilt l g) (a.coeff n)).trans
     (congrArg (algebraMap (OCb l) (Cb l)) (GlobalTheory.RingIface.sigA_coeff l g a n).symm)
 
+/- English proof (translation)
+Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Conclude with `WittVector.ext fun n => (map_pow (algebraMap (OCb l) (Cb l)) (a.coeff n) l).symm`.
+-/
 theorem frobW_inclW (a : Ainf l) : frobW l (inclW l a) = inclW l (WittVector.frobenius a) := by
   rw [WittVector.frobenius_eq_map_frobenius]
   exact WittVector.ext fun n => (map_pow (algebraMap (OCb l) (Cb l)) (a.coeff n) l).symm
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g => RingEquiv.ext fun x => GlobalTheory.MemLoc.locAinf_actT AI g x`.
+-/
 theorem locAinf_actT_eq {P : LocPrime l} (AI : LocAinf l P) : AI.actT = galTilt l :=
   MonoidHom.ext fun g => RingEquiv.ext fun x => GlobalTheory.MemLoc.locAinf_actT AI g x
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g => by change mapAlgEquivW l (autCb l (AI.actT g)) = mapAlgEquivW l (autCb l (galTilt l g)) rw [locAinf_actT_eq]`.
+-/
 theorem locAinf_actWCbHom_eq {P : LocPrime l} (AI : LocAinf l P) : AI.actWCbHom = galW l :=
   MonoidHom.ext fun g => by
     change mapAlgEquivW l (autCb l (AI.actT g)) = mapAlgEquivW l (autCb l (galTilt l g))
     rw [locAinf_actT_eq]
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+-/
 theorem inclW_injective : Function.Injective (inclW l) :=
   WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
+/- English proof (translation)
+The claim follows from `WittVector.eq_zero_of_p_mul_eq_zero x (by rw [mul_comm, h])`.
+-/
 theorem ainf_torsionFree (x : Ainf l) (h : (l : Ainf l) * x = 0) : x = 0 :=
   WittVector.eq_zero_of_p_mul_eq_zero x (by rw [mul_comm, h])
 
+/- English proof (translation)
+Establish `h : WittVector.frobenius a - a ^ l ∈ RingHom.ker (WittVector.constantCoeff (p` using `l) (R := OCb l)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_pow, WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP, WittVector.constantCoeff_apply, sub_self]`. Rewrite `h` using `[WittVector.ker_constantCoeff, Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `h`. Conclude with `⟨b, by linear_combination hb⟩`.
+-/
 theorem frobenius_eq_pow_add (a : Ainf l) : ∃ b, WittVector.frobenius a = a ^ l + (l : Ainf l) * b := by
   have h : WittVector.frobenius a - a ^ l ∈ RingHom.ker (WittVector.constantCoeff (p := l) (R := OCb l)) := by
     rw [RingHom.mem_ker, map_sub, map_pow, WittVector.constantCoeff_apply,
@@ -76,6 +100,11 @@ def ainfDelta : Delta l (Ainf l) :=
 
 variable (l) in
 
+/- English proof (translation)
+Use `surjective_fontaineTheta fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : ℂ_[l]) hl.out.pos`. Establish `hy1 : y ∈ 𝓞_ℂ_[l]`. Use `(GlobalTheory.RingBasics.mem_OC _).1 x.2` as an intermediate fact.
+
+Rewrite `this` using `[← hy, norm_pow]`. Conclude with `(GlobalTheory.RingBasics.mem_OC _).2 ((pow_le_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 this)`. Use `⟨Ideal.Quotient.mk _ ⟨y, hy1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[frobenius_def, ← map_pow]`. Conclude with `congrArg _ (Subtype.ext hy)`.
+-/
 theorem theta_onto : Function.Surjective (Per.θ l) := by
   refine surjective_fontaineTheta fun x => ?_
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -90,6 +119,15 @@ theorem theta_onto : Function.Surjective (Per.θ l) := by
 
 variable (l) in
 
+/- English proof (translation)
+Take `⟨ζ, e, h0, -, h1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : e.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`.
+
+Establish `hE : GlobalTheory.MemLoc.IsEps e` using `⟨he, fun hh => h1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`. Establish `h : Per.θ l (WittVector.frobenius (GlobalTheory.MemLoc.xi e)) = (l : OC l)`.
+
+Establish `h2 : Per.θ l (WittVector.frobenius (Per.tm ((frobeniusEquiv (Per.Fl l) l).symm e))) = 1`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, frobeniusEquiv_symm_pow_p, WittVector.fontaineTheta_teichmuller, he]`. Simplify using `only [GlobalTheory.MemLoc.xi, map_sum, map_pow, h2]`. Simplify using the standard rewrite rules. Use `⟨GlobalTheory.MemLoc.xi e, GlobalTheory.MemLoc.ker_theta_eq_span_xi hE, fun h0 => ?_, h⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[h0, map_zero, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 hl.out.ne_zero) h.symm`.
+-/
 theorem exists_generator : ∃ ξ : Ainf l, RingHom.ker (Per.θ l) = Ideal.span {ξ} ∧ ξ ≠ 0 ∧
     Per.θ l (WittVector.frobenius ξ) = (l : OC l) := by
   obtain ⟨ζ, e, h0, -, h1, hr⟩ := GlobalTheory.MemLoc.exists_zeta_eps l
@@ -111,6 +149,17 @@ theorem exists_generator : ∃ ξ : Ainf l, RingHom.ker (Per.θ l) = Ideal.span 
   rw [h0, map_zero, map_zero] at h
   exact (Nat.cast_ne_zero.2 hl.out.ne_zero) h.symm
 
+/- English proof (translation)
+Use `WittVector.isUnit_of_coeff_zero_ne_zero _ fun h => ?_` and prove the remaining obligations. Establish `h0 : d ∈ RingHom.ker (WittVector.constantCoeff (p` using `l) (R := OCb l)) := IsFractionRing.injective (OCb l) (Cb l) (h.trans (map_zero _).symm)`. Rewrite `h0` using `[WittVector.ker_constantCoeff, Ideal.mem_span_singleton]`. Take `⟨a, ha⟩` from `h0`. Establish `h1 : Per.θ l d = 0`.
+
+Rewrite using `[← RingHom.mem_ker, ← hd]`. Conclude with `Ideal.mem_span_singleton_self d`. Establish `h2 : a ∈ Ideal.span {d}`. Rewrite `h1` using `[ha, map_mul, map_natCast]`. Rewrite using `[hd]`.
+
+Conclude with `(mul_eq_zero.1 h1).resolve_left (Nat.cast_ne_zero.2 hl.out.ne_zero)`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `h3 : (1 - (l : Ainf l) * b) * d = 0` using `by linear_combination ha - (l : Ainf l) * hb`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Use `congrArg (WittVector.constantCoeff (p := l) (R := OCb l)) h4` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, sub_zero, map_one, map_zero]`. Conclude with `one_ne_zero this`. Take `⟨ξ, h5, h6, -⟩` from `exists_generator l`. Apply `h6` to reduce the goal to its premises. Establish `h7` using `Ideal.mem_span_singleton_self ξ`.
+
+Rewrite `h7` using `[← h5, ← hd, h4, Ideal.span_singleton_zero, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_inclW_of_span {d : Ainf l} (hd : Ideal.span {d} = RingHom.ker (Per.θ l)) :
     IsUnit (inclW l d) := by
   refine WittVector.isUnit_of_coeff_zero_ne_zero _ fun h => ?_
@@ -140,6 +189,9 @@ variable (l) in
 def ainfQuot : (Ainf l ⧸ RingHom.ker (Per.θ l)) ≃+* OC l :=
   RingHom.quotientKerEquivOfSurjective (theta_onto l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ainfQuot_mk (a : Ainf l) : ainfQuot l (Ideal.Quotient.mk _ a) = Per.θ l a := rfl
 
 variable (l) in
@@ -173,6 +225,9 @@ def ainfC : Obj l (OC l) where
     exact (ainfQuot l).injective (h2.trans (map_zero _).symm)⟩
   str := (ainfQuot l).symm.toRingHom
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ_[l] ((x : ↥K.1) : Om l)` using `(isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).2 x.2`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic (Algebra.IsIntegral.isIntegral _))]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `((minpoly ℤ_[l] _).coeff n).2`.
+-/
 theorem norm_le_one_of_mem_OL (K : FinExt l) (x : ↥(OL K)) : ‖((x : ↥K.1) : Om l)‖ ≤ 1 := by
   have h : IsIntegral ℤ_[l] ((x : ↥K.1) : Om l) :=
     (isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).2 x.2
@@ -186,11 +241,17 @@ def intToOC (K : FinExt l) : ↥(OL K) →+* OC l :=
   ((algebraMap (Om l) ℂ_[l]).comp (K.1.val.toRingHom.comp (OL K).val.toRingHom)).codRestrict _ fun x =>
     (GlobalTheory.RingBasics.mem_OC _).2 ((PadicComplex.norm_extends l _).trans_le (norm_le_one_of_mem_OL K x))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_intToOC (K : FinExt l) (x : ↥(OL K)) :
     ((intToOC K x : OC l) : ℂ_[l]) = (((x : ↥K.1) : Om l) : ℂ_[l]) := rfl
 
 def ainfObj (K : FinExt l) : Obj l ↥(OL K) := (ainfC l).restrict (intToOC K)
 
+/- English proof (translation)
+The claim follows from `(WittVector.frobeniusEquiv l (OCb l)).bijective`.
+-/
 theorem ainfObj_φ_bijective (K : FinExt l) : Function.Bijective (ainfObj K).D.φ :=
   (WittVector.frobeniusEquiv l (OCb l)).bijective
 
@@ -202,6 +263,9 @@ structure IsAinf (K : FinExt l) (P : Obj l ↥(OL K)) (e : P.A ≃+* Ainf l) : P
 
 def ainfId (K : FinExt l) : (ainfObj K).A ≃+* Ainf l := RingEquiv.refl (Ainf l)
 
+/- English proof (translation)
+The claim follows from `rfl e_I _ := Iff.rfl e_str x a h := by have h1 : ainfQuot l (Ideal.Quotient.mk _ a) = ainfQuot l ((ainfQuot l).symm (intToOC K x)) := congrArg (ainfQuot l) h rw [RingEquiv.apply_symm_apply] at h1 exact congrArg Subtype.val h1`.
+-/
 theorem isAinf_ainfObj (K : FinExt l) : IsAinf K (ainfObj K) (ainfId K) where
   e_φ _ := rfl
   e_I _ := Iff.rfl
@@ -215,6 +279,9 @@ namespace IsAinf
 
 variable {K : FinExt l} {P : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l}
 
+/- English proof (translation)
+Use `⟨fun h => Subtype.ext (H.e_str x a h), fun h => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (P.str x)`. Rewrite using `[← hb, Ideal.Quotient.eq, H.e_I, map_sub, map_sub, h, sub_eq_zero]`. Conclude with `(Subtype.ext (H.e_str x b hb)).symm`.
+-/
 theorem mk_eq_str_iff (H : IsAinf K P e) (x : ↥(OL K)) (a : P.A) :
     Ideal.Quotient.mk P.I a = P.str x ↔ Per.θ l (e a) = intToOC K x := by
   refine ⟨fun h => Subtype.ext (H.e_str x a h), fun h => ?_⟩
@@ -222,11 +289,17 @@ theorem mk_eq_str_iff (H : IsAinf K P e) (x : ↥(OL K)) (a : P.A) :
   rw [← hb, Ideal.Quotient.eq, H.e_I, map_sub, map_sub, h, sub_eq_zero]
   exact (Subtype.ext (H.e_str x b hb)).symm
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨a, rfl⟩` from `e.surjective a`. Rewrite using `[Ideal.apply_mem_of_equiv_iff, H.e_I, RingHom.mem_ker]`.
+-/
 theorem map_I (H : IsAinf K P e) : P.I.map e = RingHom.ker (Per.θ l) := by
   ext a
   obtain ⟨a, rfl⟩ := e.surjective a
   rw [Ideal.apply_mem_of_equiv_iff, H.e_I, RingHom.mem_ker]
 
+/- English proof (translation)
+Take `⟨ξ, h, h0, -⟩` from `Prism.exists_generator l`. Take `⟨d, rfl⟩` from `e.surjective ξ`. Establish `key : ∀ a, a ∈ Ideal.span {d} ↔ a ∈ P.I` using `fun a => by`. Rewrite using `[H.e_I, ← RingHom.mem_ker, h, Ideal.mem_span_singleton, Ideal.mem_span_singleton, map_dvd_iff]`. Conclude with `⟨⟨d, (key d).1 (Ideal.mem_span_singleton_self d)⟩, Ideal.ext key, fun h1 => h0 (by rw [show d = 0 from h1, map_zero])⟩`.
+-/
 theorem exists_generator (H : IsAinf K P e) : ∃ d : ↥P.I, Ideal.span {(d : P.A)} = P.I ∧ (d : P.A) ≠ 0 := by
   obtain ⟨ξ, h, h0, -⟩ := Prism.exists_generator l
   obtain ⟨d, rfl⟩ := e.surjective ξ
@@ -235,6 +308,9 @@ theorem exists_generator (H : IsAinf K P e) : ∃ d : ↥P.I, Ideal.span {(d : P
   exact ⟨⟨d, (key d).1 (Ideal.mem_span_singleton_self d)⟩, Ideal.ext key,
     fun h1 => h0 (by rw [show d = 0 from h1, map_zero])⟩
 
+/- English proof (translation)
+The claim follows from `isUnit_inclW_of_span (by rw [← H.map_I, ← hd, Ideal.map_span, Set.image_singleton])`.
+-/
 theorem isUnit_inclW (H : IsAinf K P e) {d : P.A} (hd : Ideal.span {d} = P.I) : IsUnit (inclW l (e d)) :=
   isUnit_inclW_of_span (by rw [← H.map_I, ← hd, Ideal.map_span, Set.image_singleton])
 
@@ -262,16 +338,28 @@ def galHom (H : IsAinf K P e) (g : ↥(GK K)) : Hom P P where
     change Per.σC (g : GQ l) (((x : ↥K.1) : Om l) : ℂ_[l]) = (((x : ↥K.1) : Om l) : ℂ_[l])
     rw [GlobalTheory.RingBasics.σC_coe, (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 _ (x : ↥K.1).2]
 
+/- English proof (translation)
+The claim follows from `e.apply_symm_apply _`.
+-/
 theorem e_galHom (H : IsAinf K P e) (g : ↥(GK K)) (a : P.A) :
     e ((H.galHom g).f a) = Per.σA (g : GQ l) (e a) := e.apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `Hom.ext' (RingHom.ext fun a => e.injective ((hh a).trans (H.e_galHom g a).symm))`.
+-/
 theorem eq_galHom (H : IsAinf K P e) (g : ↥(GK K)) (h : Hom P P)
     (hh : ∀ a, e (h.f a) = Per.σA (g : GQ l) (e a)) : h = H.galHom g :=
   Hom.ext' (RingHom.ext fun a => e.injective ((hh a).trans (H.e_galHom g a).symm))
 
+/- English proof (translation)
+The claim follows from `(H.eq_galHom 1 _ fun a => (GlobalTheory.RingBasics.σA_one (e a)).symm).symm`.
+-/
 theorem galHom_one (H : IsAinf K P e) : H.galHom 1 = Hom.id P :=
   (H.eq_galHom 1 _ fun a => (GlobalTheory.RingBasics.σA_one (e a)).symm).symm
 
+/- English proof (translation)
+The claim follows from `(H.eq_galHom (g * h) _ fun a => by change e ((H.galHom g).f ((H.galHom h).f a)) = _ rw [e_galHom, e_galHom, ← GlobalTheory.RingBasics.σA_mul]; rfl).symm`.
+-/
 theorem galHom_mul (H : IsAinf K P e) (g h : ↥(GK K)) :
     H.galHom (g * h) = (H.galHom g).comp (H.galHom h) :=
   (H.eq_galHom (g * h) _ fun a => by
@@ -282,8 +370,14 @@ end IsAinf
 
 def ainfHom (K : FinExt l) (g : ↥(GK K)) : Hom (ainfObj K) (ainfObj K) := (isAinf_ainfObj K).galHom g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ainfHom_f (K : FinExt l) (g : ↥(GK K)) (a : Ainf l) : (ainfHom K g).f a = Per.σA (g : GQ l) a := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ainfObj K, ainfId K, isAinf_ainfObj K, fun g hg => ⟨ainfHom K ⟨g, hg⟩, fun _ => rfl⟩⟩`.
+-/
 theorem exists_isAinf (K : FinExt l) : ∃ (P : Obj l ↥(OL K)) (e : P.A ≃+* Ainf l), IsAinf K P e ∧
     ∀ g ∈ GK K, ∃ h : Hom P P, ∀ a, e (h.f a) = Per.σA g (e a) :=
   ⟨ainfObj K, ainfId K, isAinf_ainfObj K, fun g hg => ⟨ainfHom K ⟨g, hg⟩, fun _ => rfl⟩⟩
@@ -303,11 +397,19 @@ def IsRealisation (K : FinExt l) (E : FCrys l ↥(OL K)) (T : Type) [AddCommGrou
     (ρ : ↥(GK K) → (T →ₗ[ℤ_[l]] T)) : Prop :=
   ∃ j, Realises K E (ainfObj K) (ainfId K) T ρ j
 
+/- English proof (translation)
+The claim follows from `(h Q (w'.comp u)).unique hw fun _ => rfl`.
+-/
 theorem SemiBC.hom_ext {A B M N Q : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] [AddCommGroup Q] [Module B Q] {f : A →+* B} {u : M →ₛₗ[f] N}
     (h : SemiBC u) {w w' : N →ₗ[B] Q} (hw : ∀ x, w (u x) = w' (u x)) : w = w' :=
   (h Q (w'.comp u)).unique hw fun _ => rfl
 
+/- English proof (translation)
+Introduce `Q _ _ v`. Take `⟨w, hw, hu⟩` from `h Q v`. Use `⟨w.comp s.symm.toLinearMap, fun x => by simp [hw], fun w' hw' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu (w'.comp s.toLinearMap) hw']`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem SemiBC.comp_equiv {A B M N N' : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] [AddCommGroup N'] [Module B N'] {f : A →+* B} {u : M →ₛₗ[f] N}
     (h : SemiBC u) (s : N ≃ₗ[B] N') : SemiBC (s.toLinearMap.comp u) := by
@@ -317,6 +419,9 @@ theorem SemiBC.comp_equiv {A B M N N' : Type} [CommRing A] [CommRing B] [AddComm
   rw [← hu (w'.comp s.toLinearMap) hw']
   ext y; simp
 
+/- English proof (translation)
+Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `_ m s`. Take `⟨_, k, rfl⟩` from `s`. Conclude with `⟨m, k, rfl⟩`.
+-/
 theorem exists_isFrac {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (d : A)
     (y : LocalizedModule (Submonoid.powers d) M) : ∃ m k, IsFrac d y m k := by
   induction y using LocalizedModule.induction_on with
@@ -324,6 +429,9 @@ theorem exists_isFrac {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (d
     obtain ⟨_, k, rfl⟩ := s
     exact ⟨m, k, rfl⟩
 
+/- English proof (translation)
+Use `E.proj P` as an intermediate fact. Take `⟨r, hr⟩` from `E.Φ_nat (Hom.id P) d d₀ x m k n i h (by rw [E.tr_id]; exact hn)`. Rewrite `hr` using `[E.tr_id]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 hr).resolve_left (pow_ne_zero _ (mul_ne_zero hd h0)))`.
+-/
 theorem FCrys.frac_agree {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) (P : Obj l R) [IsDomain P.A] (d d₀ : ↥P.I)
     (hd : (d : P.A) ≠ 0) (h0 : (d₀ : P.A) ≠ 0) (x m n : E.M P) (k i : ℕ)
     (h : IsFrac (d : P.A) (E.Φ P d x) m k) (hn : IsFrac (d₀ : P.A) (E.Φ P d₀ x) n i) :
@@ -333,6 +441,9 @@ theorem FCrys.frac_agree {l : ℕ} {R : Type} [CommRing R] (E : FCrys l R) (P : 
   rw [E.tr_id] at hr
   exact sub_eq_zero.1 ((smul_eq_zero.1 hr).resolve_left (pow_ne_zero _ (mul_ne_zero hd h0)))
 
+/- English proof (translation)
+Establish `h2` using `congrArg u h`. Rewrite `h2` using `[u.map_smulₛₗ, u.map_smulₛₗ, map_pow, map_pow, ← hy, smul_comm]`. Conclude with `((hu.pow i).smul_left_cancel.1 h2).symm`.
+-/
 theorem smul_eq_of_isUnit {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} (u : M →ₛₗ[f] N) {d d₀ : A} (hu : IsUnit (f d₀)) {m n : M}
     {k i : ℕ} (h : d₀ ^ i • m = d ^ k • n) {y : N} (hy : f d₀ ^ i • y = u n) : f d ^ k • y = u m := by
@@ -340,6 +451,9 @@ theorem smul_eq_of_isUnit {A B M N : Type} [CommRing A] [CommRing B] [AddCommGro
   rw [u.map_smulₛₗ, u.map_smulₛₗ, map_pow, map_pow, ← hy, smul_comm] at h2
   exact ((hu.pow i).smul_left_cancel.1 h2).symm
 
+/- English proof (translation)
+Establish `h' : LocalizedModule.mk y (1 : Submonoid.powers d) = _` using `h`. Rewrite `h'` using `[LocalizedModule.mk_eq]`. Take `⟨⟨_, a, rfl⟩, ha⟩` from `h'`. Establish `h1 : d ^ a * (d ^ k * y) = d ^ a * m` using `by simpa [Submonoid.smul_def] using ha`. Conclude with `(mul_left_cancel₀ (pow_ne_zero _ hd) h1).symm`.
+-/
 theorem eq_of_isFrac {A : Type} [CommRing A] [IsDomain A] {d : A} (hd : d ≠ 0) (y m : A) (k : ℕ)
     (h : IsFrac d (algebraMap A (Localization.Away d) y) m k) : m = d ^ k * y := by
   have h' : LocalizedModule.mk y (1 : Submonoid.powers d) = _ := h
@@ -367,10 +481,20 @@ instance faithfullyFlat_WCb : Module.FaithfullyFlat ℤ_[l] (WCb l) := by
   rw [Submodule.restrictScalars_mem, RingHom.mem_ker, map_one] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+The claim follows from `Module.FaithfullyFlat.tensorProduct_mk_injective (A := ℤ_[l]) (B := WCb l) T`.
+-/
 theorem one_tmul_injective (T : Type) [AddCommGroup T] [Module ℤ_[l] T] :
     Function.Injective fun t : T => (1 : WCb l) ⊗ₜ[ℤ_[l]] t :=
   Module.FaithfullyFlat.tensorProduct_mk_injective (A := ℤ_[l]) (B := WCb l) T
 
+/- English proof (translation)
+Take `⟨n, p, s, -, -, hps⟩` from `Module.Finite.exists_comp_eq_id_of_projective A M`. Set `v : M →ₛₗ[f] (Fin n → B)` to `{ toFun := fun x i => f (s x i) map_add' := fun x y => by ext i; simp map_smul' := fun a x => by ext i; simp }`. Take `⟨S, hS, -⟩` from `h _ v`. Set `Q : (Fin n → B) →ₗ[B] N` to `Fintype.linearCombination B fun i => u (p (Pi.single i 1))`. Establish `hQ : Q.comp S = LinearMap.id` using `h.hom_ext fun x => by`.
+
+Rewrite using `[LinearMap.comp_apply, hS, LinearMap.id_apply, Fintype.linearCombination_apply]`. Establish `h1 : x = ∑ i, s x i • p (Pi.single i 1)` using `by conv_lhs => rw [← LinearMap.id_apply (R := A) x, ← hps, LinearMap.comp_apply, pi_eq_sum_univ' (s x)]`. Simplify using the standard rewrite rules. Use `conv_rhs => rw [h1, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (u.map_smulₛₗ _ _).symm`.
+
+Conclude with `⟨Module.Finite.of_surjective Q fun y => ⟨S y, LinearMap.congr_fun hQ y⟩, Module.Projective.of_split S Q hQ⟩`.
+-/
 theorem SemiBC.finite_projective {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) [Module.Finite A M]
     [Module.Projective A M] : Module.Finite B N ∧ Module.Projective B N := by
@@ -391,6 +515,13 @@ theorem SemiBC.finite_projective {A B M N : Type} [CommRing A] [CommRing B] [Add
   exact ⟨Module.Finite.of_surjective Q fun y => ⟨S y, LinearMap.congr_fun hQ y⟩,
     Module.Projective.of_split S Q hQ⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨z, hz⟩ => hz ▸ (frobW l).commutes z⟩` and prove the remaining obligations. Establish `h1 : ∀ n, ∃ c : ZMod l, ZMod.castHom (dvd_refl l) (Cb l) c = a.coeff n` using `fun n => by`. Establish `h2 : a.coeff n ^ l = a.coeff n` using `congrArg (fun w : WCb l => w.coeff n) h`. Establish `h3` using `(Subfield.mem_bot_iff_pow_eq_self (Cb l) l).2 h2`. Rewrite `h3` using `[← ZMod.fieldRange_castHom_eq_bot l]`.
+
+Conclude with `h3`. Use `choose c hc using h1`. Use `⟨WittVector.equiv l (WittVector.mk l c), WittVector.ext fun n => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ZMod.castHom (dvd_refl l) (Cb l) (((WittVector.equiv l).symm (WittVector.equiv l (WittVector.mk l c))).coeff n)`. Rewrite using `[RingEquiv.symm_apply_apply, ← hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frobW_fixed_iff (a : WCb l) : frobW l a = a ↔ ∃ z : ℤ_[l], a = algebraMap ℤ_[l] (WCb l) z := by
   refine ⟨fun h => ?_, fun ⟨z, hz⟩ => hz ▸ (frobW l).commutes z⟩
   have h1 : ∀ n, ∃ c : ZMod l, ZMod.castHom (dvd_refl l) (Cb l) c = a.coeff n := fun n => by
@@ -405,6 +536,13 @@ theorem frobW_fixed_iff (a : WCb l) : frobW l a = a ↔ ∃ z : ℤ_[l], a = alg
   rw [RingEquiv.symm_apply_apply, ← hc]
   rfl
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨t, ht⟩ => by` and prove the remaining obligations. Rewrite using `[ht, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply]⟩`. Set `b` to `Module.Free.chooseBasis ℤ_[l] T`. Establish `key : ∀ (y : WCb l ⊗[ℤ_[l]] T) i, (b.baseChange (WCb l)).repr (TensorProduct.map (frobW l).toLinearMap LinearMap.id y) i = frobW l ((b.baseChange (WCb l)).repr y i)` using `fun y i => by`. Proceed by induction on `y with`.
+
+Consider the case `zero => rw [map_zero, map_zero, Finsupp.zero_apply, map_zero]`. Consider the case `tmul a t`. Rewrite using `[TensorProduct.map_tmul, Module.Basis.baseChange_repr_tmul, Module.Basis.baseChange_repr_tmul, map_smul, AlgHom.toLinearMap_apply, LinearMap.id_apply]`. Consider the case `add y z hy hz => rw [map_add, map_add, map_add, Finsupp.add_apply, Finsupp.add_apply, map_add, hy, hz]`. Establish `h1 : ∀ i, ∃ z : ℤ_[l], (b.baseChange (WCb l)).repr y i = algebraMap ℤ_[l] (WCb l) z` using `fun i => (frobW_fixed_iff _).1 (by rw [← key, h])`.
+
+Use `choose z hz using h1`. Use `⟨b.equivFun.symm z, (b.baseChange (WCb l)).repr.injective (Finsupp.ext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[hz, Module.Basis.baseChange_repr_tmul, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem frobW_map_fixed_iff {T : Type} [AddCommGroup T] [Module ℤ_[l] T] [Module.Free ℤ_[l] T]
     [Module.Finite ℤ_[l] T] (y : WCb l ⊗[ℤ_[l]] T) :
     TensorProduct.map (frobW l).toLinearMap LinearMap.id y = y ↔ ∃ t : T, y = (1 : WCb l) ⊗ₜ[ℤ_[l]] t := by
@@ -433,6 +571,11 @@ variable {K : FinExt l} {E : FCrys l ↥(OL K)} {P : Obj l ↥(OL K)} {e : P.A �
   {T : Type} [AddCommGroup T] [Module ℤ_[l] T] {ρ ρ' : ↥(GK K) → (T →ₗ[ℤ_[l]] T)}
   {j : E.M P →ₛₗ[(inclW l).comp e.toRingHom] (WCb l ⊗[ℤ_[l]] T)}
 
+/- English proof (translation)
+Use `⟨H, bc, fun d hd0 x m k h => ?_, hact⟩` and prove the remaining obligations. Establish `: IsDomain P.A` using `e.toMulEquiv.isDomain`. Establish `hu` using `H.isUnit_inclW hd`. Establish `h0 : (d₀ : P.A) ≠ 0` using `fun h0 => hu.ne_zero (by rw [h0, map_zero, map_zero])`. Take `⟨n, i, hn⟩` from `exists_isFrac (d₀ : P.A) (E.Φ P d₀ x)`.
+
+Conclude with `smul_eq_of_isUnit j hu (E.frac_agree P d d₀ hd0 h0 x m n k i h hn) (hφ x n i hn)`.
+-/
 theorem of_generator (H : IsAinf K P e) (bc : SemiBC j) (d₀ : ↥P.I) (hd : Ideal.span {(d₀ : P.A)} = P.I)
     (hφ : ∀ (x m : E.M P) (k : ℕ), IsFrac (d₀ : P.A) (E.Φ P d₀ x) m k →
       inclW l (e d₀) ^ k • TensorProduct.map (frobW l).toLinearMap LinearMap.id (j x) = j m)
@@ -446,12 +589,20 @@ theorem of_generator (H : IsAinf K P e) (bc : SemiBC j) (d₀ : ↥P.I) (hd : Id
   obtain ⟨n, i, hn⟩ := exists_isFrac (d₀ : P.A) (E.Φ P d₀ x)
   exact smul_eq_of_isUnit j hu (E.frac_agree P d d₀ hd0 h0 x m n k i h hn) (hφ x n i hn)
 
+/- English proof (translation)
+Take `rfl` from `H.ainf.eq_galHom g h hh`. Conclude with `H.j_act g x`.
+-/
 theorem j_act_of (H : Realises K E P e T ρ j) (g : ↥(GK K)) (h : Hom P P)
     (hh : ∀ a, e (h.f a) = Per.σA (g : GQ l) (e a)) (x : E.M P) :
     j (E.tr h x) = TensorProduct.map (galW l (g : GQ l)).toLinearMap (ρ g) (j x) := by
   obtain rfl := H.ainf.eq_galHom g h hh
   exact H.j_act g x
 
+/- English proof (translation)
+Establish `key : ∀ (r : T →ₗ[ℤ_[l]] T) (y : WCb l ⊗[ℤ_[l]] T), TensorProduct.map s.symm.toLinearMap LinearMap.id (TensorProduct.map s.toLinearMap r y) = r.baseChange (WCb l) y` using `fun r y => by`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `tmul a t => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Establish `h1 : r.baseChange (WCb l) = r'.baseChange (WCb l)` using `bc.hom_ext fun x => by rw [← key, ← key, h]`. Use extensionality with `t`. Apply `one_tmul_injective (l := l) T` to reduce the goal to its premises. Simplify using `using LinearMap.congr_fun h1 (1 ⊗ₜ t)`.
+-/
 theorem end_ext (bc : SemiBC j) (s : WCb l ≃ₐ[ℤ_[l]] WCb l) {r r' : T →ₗ[ℤ_[l]] T}
     (h : ∀ x, TensorProduct.map s.toLinearMap r (j x) = TensorProduct.map s.toLinearMap r' (j x)) :
     r = r' := by
@@ -468,14 +619,23 @@ theorem end_ext (bc : SemiBC j) (s : WCb l ≃ₐ[ℤ_[l]] WCb l) {r r' : T →�
   apply one_tmul_injective (l := l) T
   simpa using LinearMap.congr_fun h1 (1 ⊗ₜ t)
 
+/- English proof (translation)
+The claim follows from `funext fun g => end_ext H.bc (galW l (g : GQ l)) fun x => (H.j_act g x).symm.trans (H'.j_act g x)`.
+-/
 theorem ρ_unique (H : Realises K E P e T ρ j) (H' : Realises K E P e T ρ' j) : ρ = ρ' :=
   funext fun g => end_ext H.bc (galW l (g : GQ l)) fun x => (H.j_act g x).symm.trans (H'.j_act g x)
 
+/- English proof (translation)
+The claim follows from `end_ext H.bc (galW l ((1 : ↥(GK K)) : GQ l)) fun x => by rw [← H.j_act_of 1 (Hom.id P) (fun a => (GlobalTheory.RingBasics.σA_one (e a)).symm), E.tr_id, OneMemClass.coe_one, map_one] exact (LinearMap.congr_fun TensorProduct.map_id _).symm`.
+-/
 theorem ρ_one (H : Realises K E P e T ρ j) : ρ 1 = LinearMap.id :=
   end_ext H.bc (galW l ((1 : ↥(GK K)) : GQ l)) fun x => by
     rw [← H.j_act_of 1 (Hom.id P) (fun a => (GlobalTheory.RingBasics.σA_one (e a)).symm), E.tr_id, OneMemClass.coe_one, map_one]
     exact (LinearMap.congr_fun TensorProduct.map_id _).symm
 
+/- English proof (translation)
+The claim follows from `end_ext H.bc (galW l ((g * h : ↥(GK K)) : GQ l)) fun x => by have h1 := H.j_act_of (g * h) ((H.ainf.galHom g).comp (H.ainf.galHom h)) (fun a => by rw [← H.ainf.galHom_mul, H.ainf.e_galHom]) x rw [← h1, E.tr_comp, H.j_act, H.j_act, ← LinearMap.comp_apply, ← TensorProduct.map_comp, …`.
+-/
 theorem ρ_mul (H : Realises K E P e T ρ j) (g h : ↥(GK K)) : ρ (g * h) = ρ g ∘ₗ ρ h :=
   end_ext H.bc (galW l ((g * h : ↥(GK K)) : GQ l)) fun x => by
     have h1 := H.j_act_of (g * h) ((H.ainf.galHom g).comp (H.ainf.galHom h))
@@ -484,12 +644,20 @@ theorem ρ_mul (H : Realises K E P e T ρ j) (g h : ↥(GK K)) : ρ (g * h) = ρ
       Subgroup.coe_mul, map_mul]
     rfl
 
+/- English proof (translation)
+Use `E.fin P` as an intermediate fact. Use `E.proj P` as an intermediate fact. Use `H.bc.finite_projective.1` as an intermediate fact. Conclude with `Module.Finite.of_finite_tensorProduct_of_faithfullyFlat (WCb l)`.
+-/
 theorem finite (H : Realises K E P e T ρ j) : Module.Finite ℤ_[l] T := by
   have := E.fin P
   have := E.proj P
   have := H.bc.finite_projective.1
   exact Module.Finite.of_finite_tensorProduct_of_faithfullyFlat (WCb l)
 
+/- English proof (translation)
+Use `E.fin P` as an intermediate fact. Use `E.proj P` as an intermediate fact. Use `H.bc.finite_projective.2` as an intermediate fact. Use `H.finite` as an intermediate fact. Establish `: Module.Flat (WCb l) (WCb l ⊗[ℤ_[l]] T)` using `Module.Flat.of_projective`.
+
+Establish `: Module.Flat ℤ_[l] T` using `Module.Flat.of_flat_tensorProduct ℤ_[l] T (WCb l)`. Conclude with `Module.free_of_flat_of_isLocalRing`.
+-/
 theorem free (H : Realises K E P e T ρ j) : Module.Free ℤ_[l] T := by
   have := E.fin P
   have := E.proj P
@@ -499,6 +667,9 @@ theorem free (H : Realises K E P e T ρ j) : Module.Free ℤ_[l] T := by
   have : Module.Flat ℤ_[l] T := Module.Flat.of_flat_tensorProduct ℤ_[l] T (WCb l)
   exact Module.free_of_flat_of_isLocalRing
 
+/- English proof (translation)
+Use `H.free` as an intermediate fact. Use `H.finite` as an intermediate fact. Conclude with `frobW_map_fixed_iff y`.
+-/
 theorem fixed_iff (H : Realises K E P e T ρ j) (y : WCb l ⊗[ℤ_[l]] T) :
     TensorProduct.map (frobW l).toLinearMap LinearMap.id y = y ↔ ∃ t : T, y = (1 : WCb l) ⊗ₜ[ℤ_[l]] t := by
   have := H.free
@@ -512,9 +683,15 @@ def unitMap {K : FinExt l} (P : Obj l ↥(OL K)) (e : P.A ≃+* Ainf l) :
   (TensorProduct.AlgebraTensorModule.rid ℤ_[l] (WCb l) (WCb l)).symm.toLinearMap.comp
     ((inclW l).comp e.toRingHom).toSemilinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitMap_apply {K : FinExt l} (P : Obj l ↥(OL K)) (e : P.A ≃+* Ainf l) (a : P.A) :
     unitMap P e a = inclW l (e a) ⊗ₜ[ℤ_[l]] (1 : ℤ_[l]) := rfl
 
+/- English proof (translation)
+The claim follows from `H bc := (semiBC_self _).comp_equiv _ j_φ d hd x m k h := by have : IsDomain P.A := e.toMulEquiv.isDomain have key : ∀ x m : P.A, m = (d : P.A) ^ k * P.D.φ x → inclW l (e d) ^ k • TensorProduct.map (frobW l).toLinearMap LinearMap.id (inclW l (e x) ⊗ₜ[ℤ_[l]] (1 : ℤ_[l])) = inclW l …`.
+-/
 theorem IsAinf.realises_unit {K : FinExt l} {P : Obj l ↥(OL K)} {e : P.A ≃+* Ainf l} (H : IsAinf K P e) :
     Realises K (FCrys.unit l ↥(OL K)) P e ℤ_[l] (fun _ => LinearMap.id) (unitMap P e) where
   ainf := H
@@ -539,21 +716,33 @@ theorem IsAinf.realises_unit {K : FinExt l} {P : Obj l ↥(OL K)} {e : P.A ≃+*
     congrArg (fun y : WCb l => y ⊗ₜ[ℤ_[l]] (1 : ℤ_[l]))
       ((congrArg (inclW l) (H.e_galHom g x)).trans (galW_inclW _ _).symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (isAinf_ainfObj K).realises_unit⟩`.
+-/
 theorem isRealisation_unit (K : FinExt l) :
     IsRealisation K (FCrys.unit l ↥(OL K)) ℤ_[l] fun _ => LinearMap.id :=
   ⟨_, (isAinf_ainfObj K).realises_unit⟩
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : (1 : WCb l) ⊗ₜ[ℤ_[l]] (1 : ℤ_[l]) = (1 : WCb l) ⊗ₜ[ℤ_[l]] (0 : ℤ_[l]) := by rw [TensorProduct.tmul_zero] exact (congrArg (fun y : WCb l => y ⊗ₜ[ℤ_[l]] (1 : ℤ_[l])) (map_one (inclW l)).symm).trans h exact one_ne_zero (one_tmul_injective (l := l) ℤ_[l] h1)`.
+-/
 example (K : FinExt l) : unitMap (ainfObj K) (ainfId K) (1 : Ainf l) ≠ 0 := fun h => by
   have h1 : (1 : WCb l) ⊗ₜ[ℤ_[l]] (1 : ℤ_[l]) = (1 : WCb l) ⊗ₜ[ℤ_[l]] (0 : ℤ_[l]) := by
     rw [TensorProduct.tmul_zero]
     exact (congrArg (fun y : WCb l => y ⊗ₜ[ℤ_[l]] (1 : ℤ_[l])) (map_one (inclW l)).symm).trans h
   exact one_ne_zero (one_tmul_injective (l := l) ℤ_[l] h1)
 
+/- English proof (translation)
+The claim follows from `congrFun (H.ρ_unique (isAinf_ainfObj K).realises_unit) g`.
+-/
 example (K : FinExt l) (ρ : ↥(GK K) → (ℤ_[l] →ₗ[ℤ_[l]] ℤ_[l]))
     (H : Realises K (FCrys.unit l ↥(OL K)) (ainfObj K) (ainfId K) ℤ_[l] ρ (unitMap _ _)) (g : ↥(GK K)) :
     ρ g = LinearMap.id :=
   congrFun (H.ρ_unique (isAinf_ainfObj K).realises_unit) g
 
+/- English proof (translation)
+Introduce and unpack `⟨j, H⟩`. Take `⟨w, hw, -⟩` from `H.bc (WCb l) ((inclW l).comp (ainfId K).toRingHom).toSemilinearMap`. Establish `h` using `hw (1 : Ainf l)`. Establish `h0 : ∀ y, w y = 0` using `fun y => by rw [Subsingleton.elim y 0, map_zero]`. Conclude with `zero_ne_one (((h0 _).symm.trans h).trans (map_one (inclW l)))`.
+-/
 example (K : FinExt l) (ρ : ↥(GK K) → (PUnit →ₗ[ℤ_[l]] PUnit)) :
     ¬ IsRealisation K (FCrys.unit l ↥(OL K)) PUnit ρ := by
   rintro ⟨j, H⟩
@@ -562,6 +751,9 @@ example (K : FinExt l) (ρ : ↥(GK K) → (PUnit →ₗ[ℤ_[l]] PUnit)) :
   have h0 : ∀ y, w y = 0 := fun y => by rw [Subsingleton.elim y 0, map_zero]
   exact zero_ne_one (((h0 _).symm.trans h).trans (map_one (inclW l)))
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : Per.θ l ((l : ℕ) : Ainf l) = 0 := h rw [map_natCast] at h1 exact (Nat.cast_ne_zero.2 hl.out.ne_zero) h1`.
+-/
 example (K : FinExt l) : ((l : ℕ) : Ainf l) ∉ (ainfObj K).I := fun h => by
   have h1 : Per.θ l ((l : ℕ) : Ainf l) = 0 := h
   rw [map_natCast] at h1

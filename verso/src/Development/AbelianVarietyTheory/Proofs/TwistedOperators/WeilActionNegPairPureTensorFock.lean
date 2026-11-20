@@ -22,17 +22,28 @@ noncomputable section
 
 namespace GlobalTheory.FockRealNeg
 
+/- English proof (translation)
+Unfold `gramAt`. Rewrite using `[GlobalTheory.ChiGrid.negSp_gram, Matrix.map_neg _ (map_neg _)]`.
+-/
 theorem gramAt_negSp {D : D7} (S : HSp D) (τ : D.what₂.Tau) :
     gramAt D (GlobalTheory.ChiGrid.negSp S) τ = -gramAt D S τ := by
   unfold gramAt
   rw [GlobalTheory.ChiGrid.negSp_gram, Matrix.map_neg _ (map_neg _)]
 
+/- English proof (translation)
+Take `⟨-, -, h3⟩` from `h`. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Simplify using `using h3`.
+-/
 theorem isCartanInv_neg_one {k : ℕ} {G : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G 1) :
     IsCartanInv (-G) (-1) := by
   obtain ⟨-, -, h3⟩ := h
   refine ⟨by simp, by simp, ?_⟩
   simpa using h3
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilParts.detPlus`. Establish `e : (1 : Matrix (Fin m) (Fin m) ℂ) ⊗ₖ (-1 : Matrix (Fin n) (Fin n) ℂ)ᵀ = -1`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Simplify using `only [Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.neg_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+
+Establish `e2 : (1 / 2 : ℂ) • ((1 + -1 : Matrix (Fin m × Fin n) (Fin m × Fin n) ℂ) * (b ⊗ₖ aᵀ)) + (1 / 2 : ℂ) • (1 - -1 : Matrix (Fin m × Fin n) (Fin m × Fin n) ℂ) = 1`. Rewrite using `[add_neg_cancel, Matrix.zero_mul, smul_zero, zero_add, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions. Rewrite using `[e, e2, Matrix.det_one]`.
+-/
 theorem detPlus_neg_one_one {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.WeilParts.detPlus (-1) 1 a b = 1 := by
   unfold GlobalTheory.WeilParts.detPlus
@@ -50,6 +61,23 @@ end GlobalTheory.FockRealNeg
 
 namespace GlobalTheory.FockRealNeg
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om hom hθ BS BT hBS hBT a b ha hb e₁ e₂ he₁ he₂ f hf hv g hg h hh P`. Establish `hS1 : ∀ τ, IsCartanInv (gramAt D S τ) 1` using `fun τ => GlobalTheory.FockCompactAction.isCartanInv_one (hBS τ)`. Establish `hT1 : ∀ τ, IsCartanInv (gramAt D T τ) 1` using `fun τ => GlobalTheory.FockCompactAction.isCartanInv_one (hBT τ)`. Establish `hSn : ∀ τ, IsCartanInv (gramAt D (GlobalTheory.ChiGrid.negSp S) τ) (-1)` using `fun τ => by`. Rewrite using `[gramAt_negSp]`.
+
+Conclude with `isCartanInv_neg_one (hS1 τ)`. Establish `hdet : ∀ {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ}, IsCartanInv G s → G.det ≠ 0` using `fun {k G s} hG => by`. Use `hG.2.2.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul this`.
+
+Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨x, hx, hxv⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ (GlobalTheory.ChiGrid.negSp S) (fun τ => hdet (hSn τ)) g hg`. Take `⟨y, hy, hyv⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ T (fun τ => hdet (hT1 τ)) h hh`. Establish `c1 : ∀ τ, (fun _ => (-1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) τ * compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g) = compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g) * (fun _ => (-1 : Matrix (Fin S.rank) (Fin S.rank) ℂ)) τ` using `fun τ => by simp`. Establish `c2 : ∀ τ, (fun _ => (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ)) τ * compAt θ τ (Formalism.L2.Theta.mt T h) = compAt θ τ (Formalism.L2.Theta.mt T h) * (fun _ => (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ)) τ` using `fun τ => by simp`.
+
+Establish `hvac` using `GlobalTheory.WeilVacChar.vacuum_character D ψ hom.std (GlobalTheory.ChiGrid.negSp S) T θ hθ χS χT om η hη hom (fun _ => -1) (fun _ => 1) hSn hT1 g hg h hh c1 c2 x y hx hy f hf hv`. Establish `b1 : ∀ τ, BS τ * (BS τ)⁻¹ = 1` using `fun τ => by`. Establish `hB : BS τ * ((BS τ)ᴴ * gramAt D S τ) = 1` using `mul_eq_one_comm.1 (hBS τ)`. Rewrite using `[Matrix.inv_eq_right_inv hB, hB]`. Establish `b2 : ∀ τ, BT τ * (BT τ)⁻¹ = 1` using `fun τ => by`.
+
+Establish `hB : BT τ * ((BT τ)ᴴ * gramAt D T τ) = 1` using `mul_eq_one_comm.1 (hBT τ)`. Rewrite using `[Matrix.inv_eq_right_inv hB, hB]`. Establish `hneg` using `GlobalTheory.T.fockVector_negSpace_frameChange_conjSubst D ψ θ S T hom.std hθ BS (fun τ => (BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g) * BS τ) BT (fun τ => (BT τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt T h) * BT τ) f hf P`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ (GlobalTheory.ChiGrid.negSp S) T χS χT om hom hθ (fun _ => -1) (fun _ => -1) BS (fun τ => BS τ * ((BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g) * BS τ)) (fun _ => 1) (fun _ => 1) BT (fun τ => BT τ * …`. Use `congr 1`.
+
+Simplify using `only [detPlus_neg_one_one, Finset.prod_const_one, mul_one]`. Establish `hx' : ∀ τ, HasInfExp D (χT * (η ^ T.rank)⁻¹) τ ((-e₂ τ : ℤ) : ℚ)` using `fun τ => by`. Establish `e : ((-e₂ τ : ℤ) : ℚ) = b τ - (T.rank : ℚ) / 2` using `by push_cast; rw [he₂]; ring`. Rewrite using `[e]`. Conclude with `GlobalTheory.VacuumCharacter.hasInfExp_twist (hb τ) (hη.2.2.2 τ) _`.
+
+Establish `hy' : ∀ τ, HasInfExp D (χS * (η ^ (GlobalTheory.ChiGrid.negSp S).rank)⁻¹) τ ((e₁ τ : ℤ) : ℚ)` using `fun τ => by`. Rewrite using `[he₁]`. Conclude with `GlobalTheory.VacuumCharacter.hasInfExp_twist (ha τ) (hη.2.2.2 τ) _`. Rewrite using `[Circle.coe_mul, Circle.coe_inv, hxv _ (fun τ => -e₂ τ) hx', hyv _ e₁ hy', ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.zpow_neg, inv_inv]`.
+-/
 theorem om_pureTensorO_neg : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D (GlobalTheory.ChiGrid.negSp S) × GA D T →* Module.End ℂ (WO (GlobalTheory.ChiGrid.negSp S) T → ℂ)), IsWeilDatumO ψ (GlobalTheory.ChiGrid.negSp S) T χS χT om → IsInfFam θ → ∀ (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1) → (∀ τ, (BT τ)ᴴ * gramAt D T τ * BT τ = 1) → ∀ (a b : D.what₂.Tau → ℚ), (∀ τ, HasInfExp D χS τ (a τ)) → (∀ τ, HasInfExp D χT τ (b τ)) → ∀ (e₁ e₂ : D.what₂.Tau → ℤ), (∀ τ, (e₁ τ : ℚ) = a τ - (S.rank : ℚ) / 2) → (∀ τ, (e₂ τ : ℚ) = -(b τ - (T.rank : ℚ) / 2)) → ∀ f, IsThetaFunO ψ (GlobalTheory.ChiGrid.negSp S) T f → (∀ τ, IsFockVacAt (heisO ψ (GlobalTheory.ChiGrid.negSp S) T) θ τ (cplxO (-1) 1) f) → ∀ g ∈ GinfC (GlobalTheory.ChiGrid.negSp S), ∀ h ∈ GinfC T, ∀ P : MvPolynomial (FVar D T.rank S.rank) ℂ, om (g, h) (pureTensorO ψ θ (GlobalTheory.ChiGrid.negSp S) T (fun _ => -1) (fun _ => 1) BS BT f P) = (∏ τ, (compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g)).det ^ e₂ τ * (compAt θ τ (Formalism.L2.Theta.mt T h)).det ^ e₁ τ) • pureTensorO ψ θ (GlobalTheory.ChiGrid.negSp S) T (fun _ => -1) (fun _ => 1) BS BT f (GlobalTheory.CompactHowe.substF (fun τ => ((BT τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt T h) * BT τ).map (starRingEnd ℂ)) (fun τ => ((((BS τ)⁻¹ * compAt θ τ (Formalism.L2.Theta.mt (GlobalTheory.ChiGrid.negSp S) g) * BS τ)⁻¹)ᵀ).map (starRingEnd ℂ)) P) := by
   intro D ψ θ S T χS χT om hom hθ BS BT hBS hBT a b ha hb e₁ e₂ he₁ he₂ f hf hv g hg h hh P
   have hS1 : ∀ τ, IsCartanInv (gramAt D S τ) 1 := fun τ => GlobalTheory.FockCompactAction.isCartanInv_one (hBS τ)

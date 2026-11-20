@@ -6,6 +6,9 @@ open MeasureTheory Topology
 open scoped NNReal ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NAK.lintegral_eq_nak | exact GlobalTheory.NAK.lintegral_eq_nak | (intros; apply GlobalTheory.NAK.lintegral_eq_nak <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.haar_measure_iwasawa_quotient : ∀ (G Λ : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] [Group Λ] [TopologicalSpace Λ] [IsTopologicalGroup Λ] [LocallyCompactSpace Λ]
     [SecondCountableTopology Λ] [T2Space Λ] [MeasurableSpace Λ] [BorelSpace Λ]

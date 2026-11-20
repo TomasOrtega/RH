@@ -6,6 +6,23 @@ open GlobalTheory.ConvSer
 
 namespace GlobalTheory.ConvSer
 
+/- English proof (translation)
+Establish `shift : ∀ a m, τ m = τ 0 → τ (a + m) = τ a`. Introduce `a m hm`. Rewrite using `[← hG a m, hm, hG a 0, Nat.add_zero]`. Establish `mulS : ∀ s, τ s = τ 0 → ∀ n, τ (s * n) = τ 0`. Introduce `s hs n`.
+
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.mul_zero]`. Consider the case `succ n ih => rw [Nat.mul_succ, shift _ _ hs, ih]`. Establish `cancel : ∀ a k, τ (a + k) = τ a → τ k = τ 0`. Introduce `a k hak`.
+
+Establish `e : (q - 1) * a + a = q * a`. Rewrite using `[← Nat.succ_mul, Nat.succ_eq_add_one, Nat.sub_add_cancel (Nat.succ_le_of_lt hq)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hex : ∃ r, 0 < r ∧ τ r = τ 0` using `⟨q, hq, h0⟩`. Take `⟨r, hr, hmin⟩ : ∃ r, (0 < r ∧ τ r = τ 0) ∧ ∀ m < r, ¬ (0 < m ∧ τ m = τ 0)` from `⟨Nat.find hex, Nat.find_spec hex, fun m hm => Nat.find_min hex hm⟩`.
+
+Establish `hdvd : ∀ d, τ d = τ 0 ↔ r ∣ d`. Introduce `d`. Prove the components needed by the constructor for the conclusion. Introduce `hd`. Establish `hmod : τ (d % r) = τ 0`.
+
+Establish `h` using `shift (d % r) (r * (d / r)) (mulS r hr.2 _)`. Rewrite `h` using `[Nat.mod_add_div]`. Rewrite using `[← h, hd]`. Assume the negation of the conclusion as `hnd`. Establish `hpos : 0 < d % r` using `Nat.pos_of_ne_zero (fun h => hnd (Nat.dvd_of_mod_eq_zero h))`.
+
+Conclude with `hmin _ (Nat.mod_lt d hr.1) ⟨hpos, hmod⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `mulS r hr.2 c`. Establish `hrq : r = q`. Establish `h` using `hord (M := ZMod r) (1 : ZMod r) (fun d => by`.
+
+Rewrite using `[nsmul_eq_mul, mul_one, CharP.cast_eq_zero_iff (ZMod r) r, hdvd])`. Rewrite `h` using `[ZMod.addOrderOf_one]`. Then use the resulting hypothesis. Establish `key : ∀ d, τ d = τ 0 ↔ q ∣ d`. Introduce `d`. Rewrite using `[hdvd, hrq]`.
+
+Use `wlog hij : i ≤ j generalizing i j with H`. Rewrite using `[eq_comm, Nat.ModEq.comm]; exact H j i (by omega)`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hij`. Rewrite using `[Nat.modEq_iff_dvd' hij, Nat.add_sub_cancel_left, ← key, eq_comm]`. Conclude with `⟨cancel i k, fun h => shift i k h⟩`.
+-/
 theorem seq_eq_iff_modEq_of_op {K : Type*} (G : K → K → K) (τ : ℕ → K)
     (hG : ∀ i j, G (τ i) (τ j) = τ (i + j)) (q : ℕ) (hq : 0 < q) (h0 : τ q = τ 0)
     (hord : ∀ {M : Type} [AddMonoid M] (x : M), (∀ d : ℕ, d • x = 0 ↔ τ d = τ 0) →
@@ -57,6 +74,21 @@ theorem seq_eq_iff_modEq_of_op {K : Type*} (G : K → K → K) (τ : ℕ → K)
   rw [Nat.modEq_iff_dvd' hij, Nat.add_sub_cancel_left, ← key, eq_comm]
   exact ⟨cancel i k, fun h => shift i k h⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ p _ F hF t ht ht0 ht1 htp`. Establish `base` using `(GlobalTheory.T.formalGroupNatMulSeries_eval_openDisc_properties K F hF).2`. Establish `hA : ∀ n j, ev1 (nMul F (p * j)) (t (n + 1)) = ev1 (nMul F j) (t n)`. Introduce `n j`. Rewrite using `[← htp n, (base (t (n + 1)) (ht _)).2.2.2.2.1 j p, Nat.mul_comm p j]`.
+
+Establish `hB : ∀ n m j, ev1 (nMul F (p ^ m * j)) (t (n + m)) = ev1 (nMul F j) (t n)`. Introduce `n m`. Proceed by induction on `m with`. Consider the case `zero => intro j`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `j`. Rewrite using `[← Nat.add_assoc, pow_succ', Nat.mul_assoc, hA, ih]`. Use `⟨hA, hB, fun n i j => ?_⟩` and prove the remaining obligations. Establish `hτ0 : ev1 (nMul F 0) (t n) = 0` using `(base (t n) (ht n)).1`.
+
+Establish `hpn : ev1 (nMul F (p ^ n)) (t n) = 0`. Establish `h` using `hB 0 n 1`. Rewrite `h` using `[Nat.mul_one, Nat.zero_add, (base (t 0) (ht 0)).2.1, ht0]`. Conclude with `h`. Use `seq_eq_iff_modEq_of_op (fun a b => ev F.toPowerSeries ![a, b]) (fun d => ev1 (nMul F d) (t n)) (base (t n) (ht n)).2.2.2.1 (p ^ n) (pow_pos (Fact.out : p.Prime).pos n) (by simp only [hpn, hτ0]) ?_ i j` and prove the remaining obligations.
+
+Introduce `M _ x hx`. Establish `hx' : ∀ d : ℕ, d • x = 0 ↔ ev1 (nMul F d) (t n) = 0`. Introduce `d`. Rewrite using `[hx d]`. Simplify using `only [hτ0]`.
+
+Break down `n with _ | k` into its components or cases. Establish `h` using `(hx' 1).2 (by rw [(base (t 0) (ht 0)).2.1, ht0])`. Rewrite `h` using `[one_nsmul]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h1k : ev1 (nMul F (p ^ k)) (t (k + 1)) = t 1`. Establish `h` using `hB 1 k 1`. Rewrite `h` using `[Nat.mul_one, Nat.add_comm 1 k, (base (t 1) (ht 1)).2.1]`. Conclude with `h`. Conclude with `addOrderOf_eq_prime_pow (fun h => ht1 (by rw [← h1k]; exact (hx' _).1 h)) ((hx' _).2 hpn)`.
+-/
 theorem tower_exact_order : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (p : ℕ) [Fact p.Prime] (F : FormalGroup K), Intg F.toPowerSeries → ∀ t : ℕ → K, (∀ n, ‖t n‖ < 1) → t 0 = 0 → t 1 ≠ 0 → (∀ n, ev1 (nMul F p) (t (n + 1)) = t n) → (∀ n j, ev1 (nMul F (p * j)) (t (n + 1)) = ev1 (nMul F j) (t n)) ∧ (∀ n m j, ev1 (nMul F (p ^ m * j)) (t (n + m)) = ev1 (nMul F j) (t n)) ∧ ∀ n i j, ev1 (nMul F i) (t n) = ev1 (nMul F j) (t n) ↔ i ≡ j [MOD p ^ n] := by
   intro K _ _ _ p _ F hF t ht ht0 ht1 htp
   have base := (GlobalTheory.T.formalGroupNatMulSeries_eval_openDisc_properties K F hF).2

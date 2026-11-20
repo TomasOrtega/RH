@@ -11,6 +11,9 @@ def OrbitChartRing.Statement : Prop :=
     (c : (k : ι) → Fin (n k + 1)), (∀ k, x k (c k) ≠ 0) →
       Algebra.FiniteType ℤ (chartRing x c) ∧ IsFractionRing (chartRing x c) (ratioField x)
 
+/- English proof (translation)
+The claim follows from `fun _ ↦ by simp [samplePoint]`.
+-/
 example : ∀ k, samplePoint k ((fun _ ↦ 0) k) ≠ 0 := fun _ ↦ by simp [samplePoint]
 
 end GroundTheory.Heights₂.Heights

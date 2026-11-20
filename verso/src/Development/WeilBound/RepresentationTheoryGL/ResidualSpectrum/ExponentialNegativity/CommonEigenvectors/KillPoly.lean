@@ -18,6 +18,9 @@ def tr {G : Type} [Group G] (a : ℝ → G) (t : ℝ) : (G → ℂ) →ₗ[ℂ] 
 end JKillPoly
 
 open JKillPoly in
+/- English proof (translation)
+The claim follows from `KillingPolynomialDegreeFour.killPoly4`.
+-/
 theorem killPoly_holds : KillPoly := KillingPolynomialDegreeFour.killPoly4
 
 end PositivityTheory.Rg.Rs

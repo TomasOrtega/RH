@@ -6,6 +6,19 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.GenUnfold
 
+/- English proof (translation)
+Establish `hmeas : ∀ a : G, Measurable (fun y : G => a * y)` using `fun a => measurable_const_mul a`. Unfold `covol`. Apply `le_antisymm` to reduce the goal to its premises. Use `iInf_le_of_le F (iInf_le_of_le hF (iInf_le_of_le ?_ le_rfl))` and prove the remaining obligations. Introduce `x _`.
+
+Take `⟨γ, hγ, -⟩` from `h x`. Conclude with `⟨γ, γ.2, hγ⟩`. Use `le_iInf fun D => le_iInf fun hD => le_iInf fun hcov => ?_` and prove the remaining obligations. Establish `hsub : F ⊆ ⋃ γ : Γ, F ∩ (fun y => (γ : G) * y) ⁻¹' D`. Introduce `x hx`.
+
+Take `⟨γ, hγ, hxD⟩` from `hcov x trivial`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, hx, hxD⟩`. Establish `hpiece : ∀ γ : Γ, μ (F ∩ (fun y => (γ : G) * y) ⁻¹' D) = μ ((fun y => (γ : G)⁻¹ * y) ⁻¹' F ∩ D)`. Introduce `γ`. Establish `hS : MeasurableSet ((fun y => (γ : G)⁻¹ * y) ⁻¹' F ∩ D)` using `(hmeas _ hF).inter hD`.
+
+Establish `e : (μ.map (fun y => (γ : G) * y)) ((fun y => (γ : G)⁻¹ * y) ⁻¹' F ∩ D) = μ ((fun y => (γ : G)⁻¹ * y) ⁻¹' F ∩ D)` using `by rw [hμ γ γ.2]`. Rewrite `e` using `[Measure.map_apply (hmeas _) hS]`. Rewrite using `[← e]`. Use `congr 1`. Use extensionality with `y`.
+
+Simplify using `[inv_mul_cancel_left]`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun γ : Γ => (fun y => (γ : G)⁻¹ * y) ⁻¹' F ∩ D)`. Introduce `γ₁ γ₂ hne`. Use `Set.disjoint_left.2 fun y hy₁ hy₂ => hne ?_` and prove the remaining obligations. Take `⟨δ, -, huniq⟩` from `h y`.
+
+Establish `e₁` using `huniq γ₁⁻¹ (by simpa using hy₁.1)`. Establish `e₂` using `huniq γ₂⁻¹ (by simpa using hy₂.1)`. Conclude with `inv_injective (e₁.trans e₂.symm)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem covol_eq_of_strict {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G)
     [Countable Γ] (μ : Measure G) (hμ : ∀ γ ∈ Γ, μ.map (fun y => γ * y) = μ) {F : Set G}
     (hF : MeasurableSet F) (h : ∀ g : G, ∃! γ : Γ, (γ : G) * g ∈ F) :
@@ -52,6 +65,17 @@ theorem covol_eq_of_strict {G : Type} [Group G] [MeasurableSpace G] [MeasurableM
           (measure_iUnion hdisj fun γ => (hmeas _ hF).inter hD).symm
       _ ≤ μ D := measure_mono (Set.iUnion_subset fun _ => Set.inter_subset_right)
 
+/- English proof (translation)
+Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hUo : IsOpen (interior K)` using `isOpen_interior`. Establish `hUpos : μ (interior K) ≠ 0` using `(hUo.measure_pos μ ⟨1, mem_interior_iff_mem_nhds.2 hK1⟩).ne'`. Establish `hUfin : μ (interior K) ≠ ⊤` using `(lt_of_le_of_lt (measure_mono interior_subset) hK.measure_lt_top).ne`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul μ.inv μ`.
+
+Use `set c := Measure.haarScalarFactor μ.inv μ`. Establish `key : ∀ s : Set G, MeasurableSet s → μ (Inv.inv ⁻¹' s) = (c : ENNReal) * μ s`. Introduce `s hs`. Establish `e : μ.inv s = (c • μ) s` using `by rw [← hc]`. Rewrite `e` using `[Measure.inv_def, Measure.map_apply measurable_inv hs, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+
+Conclude with `e`. Establish `h1` using `key (interior K) hUo.measurableSet`. Establish `h2` using `key (Inv.inv ⁻¹' interior K) (hUo.measurableSet.preimage measurable_inv)`. Establish `hUU : (Inv.inv ⁻¹' (Inv.inv ⁻¹' interior K) : Set G) = interior K`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[hUU, h1, ← mul_assoc]`. Establish `hcc : (c : ENNReal) * c = 1` using `(ENNReal.mul_left_inj hUpos hUfin).1 (h2.symm.trans (one_mul _).symm)`. Establish `hc1 : c = 1`. Establish `hnn : c * c = 1` using `by exact_mod_cast hcc`.
+
+Establish `hr : (c : ℝ) * c = 1` using `by exact_mod_cast hnn`. Establish `h0 : (0 : ℝ) ≤ c` using `c.2`. Conclude with `NNReal.eq (by push_cast; nlinarith)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hc, hc1, one_smul]`.
+-/
 theorem isInvInvariant {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant] : μ.IsInvInvariant := by
@@ -86,6 +110,11 @@ theorem isInvInvariant {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   constructor
   rw [hc, hc1, one_smul]
 
+/- English proof (translation)
+Establish `ho : IsOpen ({1} : Set Γ)` using `isOpen_discrete _`. Take `⟨t, ht, hpre⟩` from `isOpen_induced_iff.1 ho`. Establish `h1 : (1 : Γ) ∈ (Subtype.val ⁻¹' t : Set Γ)`. Rewrite using `[hpre]`. Conclude with `Set.mem_singleton _`.
+
+Use `⟨t, ht.mem_nhds h1, fun γ hγ hγt => ?_⟩` and prove the remaining obligations. Establish `h2 : (⟨γ, hγ⟩ : Γ) ∈ (Subtype.val ⁻¹' t : Set Γ)` using `hγt`. Rewrite `h2` using `[hpre]`. Establish `h3 : (⟨γ, hγ⟩ : Γ) = 1` using `h2`. Simplify using `using congrArg Subtype.val h3`.
+-/
 private lemma exists_nhds_one_inter_discrete_subgroup_eq_one {H : Type} [Group H] [TopologicalSpace H] (Γ : Subgroup H)
     [DiscreteTopology Γ] : ∃ V ∈ nhds (1 : H), ∀ γ ∈ Γ, γ ∈ V → γ = 1 := by
 
@@ -100,6 +129,11 @@ private lemma exists_nhds_one_inter_discrete_subgroup_eq_one {H : Type} [Group H
   have h3 : (⟨γ, hγ⟩ : Γ) = 1 := h2
   simpa using congrArg Subtype.val h3
 
+/- English proof (translation)
+Take `⟨V, hV, hVΓ⟩` from `exists_nhds_one_inter_discrete_subgroup_eq_one Γ`. Rewrite `hV` using `[hj.isInducing.nhds_eq_comap (1 : H), map_one]`. Take `⟨U, hU, hUV⟩` from `Filter.mem_comap.1 hV`. Use `⟨U, hU, fun γ hγ hγU => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `Subgroup.mem_map.1 hγ`.
+
+Rewrite using `[hVΓ x hx (hUV hγU), map_one]`.
+-/
 theorem exists_nhds_map {G H : Type} [Group G] [TopologicalSpace G] [Group H] [TopologicalSpace H]
     (j : H →* G) (hj : Topology.IsEmbedding j) (Γ : Subgroup H) [DiscreteTopology Γ] :
     ∃ U ∈ nhds (1 : G), ∀ γ ∈ Γ.map j, γ ∈ U → γ = 1 := by
@@ -110,6 +144,37 @@ theorem exists_nhds_map {G H : Type} [Group G] [TopologicalSpace G] [Group H] [T
   obtain ⟨x, hx, rfl⟩ := Subgroup.mem_map.1 hγ
   rw [hVΓ x hx (hUV hγU), map_one]
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ j hj Γ _ Φ b hΦ hb hΦinv hb1`. Establish `hjc : Continuous j` using `hj.continuous`. Establish `: ν.IsInvInvariant` using `isInvInvariant ν`. Take `⟨hcnt, F, hFm, hF⟩` from `GlobalTheory.exists_strict_measurable_fundamental_set_of_discrete G (Γ.map j) (exists_nhds_map j hj.toIsEmbedding Γ)`. Use `hcnt` as an intermediate fact.
+
+Establish `hcntH : Countable Γ` using `Function.Injective.countable (f := fun γ : Γ => (⟨j γ, Subgroup.mem_map_of_mem j γ.2⟩ : Γ.map j)) (fun a b hab => Subtype.ext (hj.injective (congrArg Subtype.val hab)))`. Establish `hL : covol ((Γ.map j : Subgroup G) : Set G) (μ.withDensity Φ) Set.univ = ∫⁻ g in F, Φ g ∂μ`. Rewrite using `[covol_eq_of_strict (Γ.map j) (μ.withDensity Φ) ?_ hFm hF, withDensity_apply _ hFm]`. Introduce `γ hγ`. Take `⟨x, -, rfl⟩` from `Subgroup.mem_map.1 hγ`.
+
+Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul _) hs, withDensity_apply _ (measurable_const_mul _ hs), withDensity_apply _ hs, ← lintegral_indicator (measurable_const_mul _ hs), ← lintegral_indicator hs, ← lintegral_mul_left_eq_self (s.indicator Φ) (j x)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_preimage, hΦinv]`. Establish `hfib : ∀ g : G, ν {x : H | (j x)⁻¹ * g ∈ F} = covol (Γ : Set H) ν Set.univ`.
+
+Introduce `g`. Establish `hT : MeasurableSet {x : H | j x * g ∈ F}` using `hFm.preimage (hjc.mul continuous_const).measurable`. Establish `e₁ : {x : H | (j x)⁻¹ * g ∈ F} = Inv.inv ⁻¹' {x : H | j x * g ∈ F}`. Use extensionality with `x`. Simplify using `[map_inv]`.
+
+Rewrite using `[e₁, Measure.measure_preimage_inv, covol_eq_of_strict Γ ν (fun γ _ => map_mul_left_eq_self ν γ) hT]`. Introduce `x`. Take `⟨δ, hδ, huniq⟩` from `hF (j x * g)`. Take `⟨γ, hγ, hδe⟩` from `Subgroup.mem_map.1 δ.2`. Use `⟨⟨γ, hγ⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show j (γ * x) * g ∈ F`. Rewrite using `[map_mul, mul_assoc, hδe]`. Conclude with `hδ`. Introduce and unpack `⟨γ', hγ'⟩ h'`. Establish `h'' : ((⟨j γ', Subgroup.mem_map_of_mem j hγ'⟩ : Γ.map j) : G) * (j x * g) ∈ F`.
+
+Establish `h3 : j (γ' * x) * g ∈ F` using `h'`. Simplify `h3` using `[map_mul, mul_assoc]`. Establish `e₂` using `huniq _ h''`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hj.injective` to reduce the goal to its premises.
+
+Use `show j γ' = j γ`. Rewrite using `[hδe]`. Conclude with `congrArg Subtype.val e₂`. Establish `hm₁ : Measurable (fun p : G × H => j p.2 * p.1)` using `((hjc.comp continuous_snd).mul continuous_fst).measurable`. Establish `hm₂ : Measurable (fun p : H × G => (j p.1)⁻¹ * p.2)` using `((hjc.comp continuous_fst).inv.mul continuous_snd).measurable`.
+
+Establish `hm₃ : ∀ g : G, Measurable (fun x : H => (j x)⁻¹ * g)` using `fun g => (hjc.inv.mul continuous_const).measurable`. Establish `hbm : ∀ g : G, Measurable (fun x : H => b (j x * g))` using `fun g => hb.comp (hjc.mul continuous_const).measurable`. Establish `hI : Measurable (F.indicator (1 : G → ENNReal))` using `measurable_one.indicator hFm`. Rewrite using `[hL]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← lintegral_indicator hFm]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[hb1 g, mul_one]`. Apply the tactic sequence `by_cases hg : g ∈ F <;> simp [hg]`. Use `_ = ∫⁻ g, ∫⁻ x, F.indicator 1 g * Φ g * b (j x * g) ∂ν ∂μ := by`.
+
+Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (hbm g)]`. Use `_ = ∫⁻ x, ∫⁻ g, F.indicator 1 g * Φ g * b (j x * g) ∂μ ∂ν := by`. Apply `lintegral_lintegral_swap` to reduce the goal to its premises. Conclude with `(((hI.comp measurable_fst).mul (hΦ.comp measurable_fst)).mul (hb.comp hm₁)).aemeasurable`.
+
+Use `_ = ∫⁻ x, ∫⁻ g, F.indicator 1 ((j x)⁻¹ * g) * Φ g * b g ∂μ ∂ν := by`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `e` using `lintegral_mul_left_eq_self (μ := μ) (fun g => F.indicator 1 ((j x)⁻¹ * g) * Φ g * b g) (j x)`. Simplify `e` using `only [inv_mul_cancel_left, hΦinv]`. Use `_ = ∫⁻ g, ∫⁻ x, F.indicator 1 ((j x)⁻¹ * g) * Φ g * b g ∂ν ∂μ := by`.
+
+Apply `lintegral_lintegral_swap` to reduce the goal to its premises. Conclude with `(((hI.comp hm₂).mul (hΦ.comp measurable_snd)).mul (hb.comp measurable_snd)).aemeasurable`. Use `_ = ∫⁻ g, ν {x : H | (j x)⁻¹ * g ∈ F} * (Φ g * b g) ∂μ := by`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hmg : MeasurableSet {x : H | (j x)⁻¹ * g ∈ F}` using `hFm.preimage (hm₃ g)`.
+
+Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[lintegral_mul_const (f := fun x => F.indicator 1 ((j x)⁻¹ * g)) _ (hI.comp (hm₃ g)), ← lintegral_indicator_one hmg]`. Both sides reduce to the same expression. Use `_ = ∫⁻ g, covol (Γ : Set H) ν Set.univ * (Φ g * b g) ∂μ := by`. Repeatedly rewrite using `[hfib]`.
+
+Use `_ = covol (Γ : Set H) ν Set.univ * ∫⁻ g, Φ g * b g ∂μ := lintegral_const_mul _ (hΦ.mul hb)`.
+-/
 theorem covol_withDensity_eq : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] (μ : Measure G) [μ.IsHaarMeasure] (ν : Measure H) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] (j : H →* G), Topology.IsClosedEmbedding j → ∀ (Γ : Subgroup H) [DiscreteTopology Γ] (Φ b : G → ENNReal), Measurable Φ → Measurable b → (∀ h g, Φ (j h * g) = Φ g) → (∀ g, ∫⁻ h, b (j h * g) ∂ν = 1) → covol ((Γ.map j : Subgroup G) : Set G) (μ.withDensity Φ) Set.univ = covol (Γ : Set H) ν Set.univ * ∫⁻ g, Φ g * b g ∂μ := by
   intro G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ j hj Γ _ Φ b hΦ hb hΦinv hb1
   classical

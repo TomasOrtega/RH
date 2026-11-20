@@ -38,6 +38,13 @@ def CohIota : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hP γ Z F'₂ φ' hH`. Use `((hLp hP γ Z F'₂ φ' hH).union (hIo hP γ Z F'₂ φ' hH)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, ne_eq] at hn`.
+
+Take `⟨h3, h5⟩` from `hn`. Apply `hp` to reduce the goal to its premises. Use `⟨?_, ?_, h3, (hH.2.2.2 p).2.2.2.2.2, h5⟩` and prove the remaining obligations. Conclude with `Set.image_id _`. Introduce `x x₂ hx hx₂`.
+
+Rewrite using `[one_smul, one_smul]`. Use `show (locH Zd p).mkW _ x = (locH Zd p).mkW _ x₂`. Conclude with `congrArg _ (Subtype.ext (hx.trans hx₂.symm))`.
+-/
 theorem cohResp_of (hLp : CohLp Zd u u' F0 what₂) (hIo : CohIota Zd u u' F0 what₂) : CohResp Zd u u' F0 what₂ := by
   intro hP γ Z F'₂ φ' hH
   refine ((hLp hP γ Z F'₂ φ' hH).union (hIo hP γ Z F'₂ φ' hH)).subset ?_
@@ -53,6 +60,9 @@ theorem cohResp_of (hLp : CohLp Zd u u' F0 what₂) (hIo : CohIota Zd u u' F0 wh
     show (locH Zd p).mkW _ x = (locH Zd p).mkW _ x₂
     exact congrArg _ (Subtype.ext (hx.trans hx₂.symm))
 
+/- English proof (translation)
+The claim follows from `starCoh_of_P Zd hGen (cohResp_of Zd hLp hIo) hGood`.
+-/
 theorem starCoh_of_P' (hGen : CohGen Zd u u' F0 what₂) (hLp : CohLp Zd u u' F0 what₂) (hIo : CohIota Zd u u' F0 what₂)
     (hGood : CohGood Zd u u' F0 what₂) : CtxP u u' F0 what₂ → StarCoh Zd u u' F0 what₂ :=
   starCoh_of_P Zd hGen (cohResp_of Zd hLp hIo) hGood

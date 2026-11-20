@@ -18,6 +18,9 @@ variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 def mvRow (L : Iof Y.TR) (r : Rw (Y.what₂ u) (Y.what₂ u') Y.TR) : Rw (Y.what₂ u) (Y.what₂ u') Y.TR :=
   (r.1, r.2.1, r.2.2 * L)
 
+/- English proof (translation)
+Unfold `row rowOf mvRow`. Rewrite using `[iota_act hIR q γ s hs]`. Both sides reduce to the same expression.
+-/
 theorem row_act (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC) (q : {Λ // Λ ∈ Y.what₂ u'})
     (γ : Formalism.L2.SG.Pf.Act.GamL (Y.cs u') q) (s : TT Y u u') (hs : s.lam' = q.1) :
     row Y (act Y q γ s) = mvRow (levi Y.TR (Formalism.L2.SG.Pf.SatGramActL.kB (Y.cs u') q.1 γ.1))⁻¹ (row Y s) := by
@@ -25,6 +28,11 @@ theorem row_act (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC) (q : {Λ // Λ �
   rw [iota_act hIR q γ s hs]
   rfl
 
+/- English proof (translation)
+Establish `h1 : row Y (act Y q γ a₁) = row Y b₂` using `by rw [← hγ]; exact hr'`. Establish `hrow : row Y (act Y q γ a₂) = row Y b₂` using `(row_act hIR q γ a₂ ha₂).trans ((congrArg (mvRow _) hr.symm).trans ((row_act hIR q γ a₁ ha₁).symm.trans h1))`. Establish `hb2 : act Y q γ a₂ = b₂` using `hRF u u' _ _ ((toTerm_act q γ a₂).trans h2) hrow`. Establish `hs : ((γ.1 : Gam X u') : X.B.I.GA).1 ∈ Hinf X u'` using `(Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.1.2).2).1`. Establish `hP : X.piU u' (((γ.1 : Gam X u') : X.B.I.GA).1)⁻¹ = cl (Formalism.L2.SG.Pf.SatGramActL.piUe u' (((γ.1 : Gam X u') : X.B.I.GA).1) hs).symm`.
+
+Use extensionality with `v`. Both sides reduce to the same expression. Rewrite using `[hγ, ← hb2, amp_act hB hAR hOI q γ a₁ ha₁, amp_act hB hAR hOI q γ a₂ ha₂, hP]`. Conclude with `(hsInner_comp_isom _ _ _).symm`.
+-/
 theorem pair_core (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC)
     (hAR : Formalism.L2.SG.Pf.SatGramRep.AmpRepNC) (hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll)
     (hOI : OOIntAll X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (q : {Λ // Λ ∈ Y.what₂ u'})
@@ -42,6 +50,9 @@ theorem pair_core (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y) (hIR : Form
   rw [hγ, ← hb2, amp_act hB hAR hOI q γ a₁ ha₁, amp_act hB hAR hOI q γ a₂ ha₂, hP]
   exact (hsInner_comp_isom _ _ _).symm
 
+/- English proof (translation)
+Introduce `u u' t₁ t₂ r r' hr hr'`. Establish `hab : r.1.1.toTerm = r'.1.1.toTerm` using `r.1.2.trans r'.1.2.symm`. Take `⟨γ, hγ⟩` from `fib_gam (hN u') hab`. Establish `hl` using `lam_eq_of_row hr`. Conclude with `pair_core hRF hIR hAR hB (hOI u u') _ γ r.1.1 r.2.1 r'.1.1 r'.2.1 rfl hl.2.symm hr hr' hγ (r.2.2.trans r'.2.2.symm)`.
+-/
 theorem pairAmpConst_of (hN : ∀ w, Formalism.L2.SG.PoincareInHH.Cut.NeatKu X w Y.hK)
     (hRF : Formalism.L2.SG.Pf.FibreCounting.RowFree Y) (hIR : Formalism.L2.SG.Pf.SatGramRep.IotaRepC)
     (hAR : Formalism.L2.SG.Pf.SatGramRep.AmpRepNC) (hB : Formalism.L2.SG.Pf.SatGramActL.ChiNBiAll)

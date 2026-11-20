@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.ColMatch
 
+/- English proof (translation)
+Establish `h1 : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a * GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a⁻¹ = 1`. Rewrite using `[← unitaryAdelicPointFiniteMatrix_base_space_mul, mul_inv_cancel, unitaryAdelicPointFiniteMatrix_base_space_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unitaryAdelicPointFiniteMatrix_inv_eq_of_mul_eq_one {D : D7} (a : GA D (D.sp.X 0)) (M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))
     (hM : M * GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a = 1) :
     GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a⁻¹ = M := by
@@ -26,6 +29,31 @@ theorem unitaryAdelicPointFiniteMatrix_inv_eq_of_mul_eq_one {D : D7} (a : GA D (
         GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a⁻¹ := by rw [hM, one_mul]
     _ = M := by rw [mul_assoc, h1, mul_one]
 
+/- English proof (translation)
+Introduce `D u F₀ S d h0 hE hB hLev B hBl hAd a₀ hH0 b hb`. Take `⟨y, hy⟩` from `GlobalTheory.AdForm.RdVal.finM_mem (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) rfl b`. Take `⟨hU, hchi⟩` from `hLev b hb y hy.symm`. Establish `hgf : a₀ * b * a₀⁻¹ ∈ GfC (D.sp.X 0)` using `mul_mem (mul_mem hH0.1 hb) (inv_mem hH0.1)`. Establish `hRep` using `GlobalTheory.Core.Mi.FinFrame.repM_toH D S.X S.inst u d.c.ψ B (F₀ u) (S.tr u) hE hAd (a₀ * b * a₀⁻¹)`.
+
+Establish `e0 : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀ = ((S.tr u).h0.1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))` using `hH0.2`. Establish `hh0 : (((S.tr u).h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D)) * ((S.tr u).h0.1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one]`. Establish `hfa : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a₀⁻¹ = (((S.tr u).h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))` using `unitaryAdelicPointFiniteMatrix_inv_eq_of_mul_eq_one a₀ _ (by rw [e0]; exact hh0)`. Establish `hfg : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (a₀ * b * a₀⁻¹) = (((S.tr u).h0 * y * (S.tr u).h0⁻¹).1.1 : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D))`.
+
+Use `(unitaryAdelicPointFiniteMatrix_base_space_mul _ _).trans ((congrArg₂ (· * ·) ((unitaryAdelicPointFiniteMatrix_base_space_mul _ _).trans (congrArg₂ (· * ·) e0 hy.symm)) hfa).trans ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Establish `hRF : Formalism.L2.SG.ColDict.RepF S.X (S.tr u).wt (S.tr u).ιA ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) ((S.tr u).h0 * y * (S.tr u).h0⁻¹)`. Establish `h` using `hRep`. Rewrite `h` using `[hfg]`.
+
+Conclude with `h`. Take `⟨hmemIff, hpsi⟩` from `(S.lev u).2 (B.toH (a₀ * b * a₀⁻¹)).2 _ hRF`. Establish `hconj : (S.tr u).h0⁻¹ * ((S.tr u).h0 * y * (S.tr u).h0⁻¹) * (S.tr u).h0 = y` using `by group`. Establish `hfinE : embA B.d B.o (a₀ * b * a₀⁻¹) ∈ GfC (D.sp.Y 0)` using `GlobalTheory.Core.Mi.CenAct.embA_mem_GfC B.d B.o hgf`. Establish `hfst : (iotaX S.X S.inst (embA B.d B.o (a₀ * b * a₀⁻¹))).1 = 1` using `GlobalTheory.Core.Mi.CenAct.iotaX_fst S.inst hfinE`.
+
+Establish `hio : iotaX S.X S.inst (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * b * a₀⁻¹) * (iotaX S.X S.inst).symm (1, S.X.xu u)) = (1, (S.X.xu u)⁻¹ * ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) * S.X.xu u)`. Rewrite using `[map_mul, map_mul, map_inv, (iotaX S.X S.inst).apply_symm_apply]`. Use `ext`. Simplify using `only [Prod.fst_mul, Prod.fst_inv, hfst, mul_one, inv_one]`. Both sides reduce to the same expression.
+
+Establish `hrow : ∀ k, k ∈ rowJ S.X S.inst ↔ (iotaX S.X S.inst k).1 = 1 ∧ (iotaX S.X S.inst k).2 ∈ S.X.K2` using `fun k => Iff.rfl`. Establish `hU' : ∀ hyU : (y : GL _ _) ∈ (F₀ u).cls0.lev.U, ((((S.tr u).h0⁻¹ * ((S.tr u).h0 * y * (S.tr u).h0⁻¹) * (S.tr u).h0 : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) : GL _ _) ∈ (F₀ u).cls0.lev.U …` using `fun hyU => by rw [hconj]; exact hyU`. Use `⟨⟨fun hk => ?_, fun hr => ?_⟩, fun hk => ?_⟩` and prove the remaining obligations. Establish `hm` using `hmemIff.2 (hU' (hU.2 hk))`. Rewrite using `[hrow, hio]`.
+
+Conclude with `⟨rfl, hm⟩`. Rewrite `hr` using `[hrow, hio]`. Establish `h2` using `hmemIff.1 hr.2`. Rewrite `h2` using `[hconj]`. Conclude with `hU.1 h2`.
+
+Establish `hyU` using `hU.2 hk`. Establish `hm` using `hmemIff.2 (hU' hyU)`. Establish `hp` using `hpsi hm (hU' hyU)`. Establish `hc` using `hchi hyU`. Establish `hchieq : (((F₀ u).cls0.lev.chi ⟨_, hU' hyU⟩ : ℂˣ) : ℂ) = (((F₀ u).cls0.lev.chi ⟨_, hyU⟩ : ℂˣ) : ℂ)`.
+
+Establish `key : ∀ (z : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (hz : z.1 ∈ (F₀ u).cls0.lev.U), z = y → (((F₀ u).cls0.lev.chi ⟨_, hz⟩ : ℂˣ) : ℂ) = (((F₀ u).cls0.lev.chi ⟨_, hyU⟩ : ℂˣ) : ℂ)`. Introduce and unpack `z hz rfl`. Both sides reduce to the same expression. Conclude with `key _ _ hconj`. Unfold `rowChi`.
+
+Rewrite using `[hio]`. Establish `hpv : ((psiK S.X u _ ⟨_, hm⟩ : ℂˣ) : ℂ) = S.X.chi2 ((S.X.xu u)⁻¹ * ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) * S.X.xu u)` using `rfl`. Establish `hn : ‖S.X.chi2 ((S.X.xu u)⁻¹ * ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) * S.X.xu u)‖ = 1` using `S.Y.hK.2.2.2.2 _ hm`. Establish `h1 : S.X.chi2 ((S.X.xu u)⁻¹ * ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) * S.X.xu u) * levChi (d.st 0).V (d.st 0).β (d.st 0).L ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0) = 1`. Rewrite using `[← hpv, hp, hchieq]`.
+
+Conclude with `hc`. Generalize the expression as in `S.X.chi2 ((S.X.xu u)⁻¹ * ((B.toH (a₀ * b * a₀⁻¹)).2 : S.X.B.I.Gf) * S.X.xu u) = c at hn h1 ⊢`. Generalize the expression as in `levChi (d.st 0).V (d.st 0).β (d.st 0).L ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0) = L at h1 ⊢`. Establish `hsc : star c * c = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hn]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem col_level_match : ∀ (D : D7) (u : D.what₂.Word) (F₀ : ∀ u, Formalism.L2.Forms.Forms0 D u) (S : STrue D F₀) (d : GlobalTheory.SeeSaw.Dat D u) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.Core.Mi.IdE S.X → d.Base → LevX (F₀ u) d h0 → ∀ (B : SBes S.X S.inst u d.c.ψ (D.sp.X 0)), B.lev = d.B 0 D.R.rS h0 → B.Adapted (S.tr u).wt → ∀ a₀ : GA D (D.sp.X 0), IsTransportAdelicCorrection (S.tr u) a₀ → ∀ b ∈ GfC (D.sp.X 0), ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0 ∈ d.lev 0 ↔ ((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * b * a₀⁻¹) * ((iotaX S.X S.inst).symm (1, S.X.xu u)) ∈ rowJ S.X S.inst) ∧ ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0 ∈ d.lev 0 → rowChi S.X S.inst (((iotaX S.X S.inst).symm (1, S.X.xu u))⁻¹ * embA B.d B.o (a₀ * b * a₀⁻¹) * ((iotaX S.X S.inst).symm (1, S.X.xu u))) = levChi (d.st 0).V (d.st 0).β (d.st 0).L ((d.t 0)⁻¹ * embA (d.bes 0 D.R.rS h0).d (d.bes 0 D.R.rS h0).o b * d.t 0)) := by
   intro D u F₀ S d h0 hE hB hLev B hBl hAd a₀ hH0 b hb
   obtain ⟨y, hy⟩ := GlobalTheory.AdForm.RdVal.finM_mem (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _))

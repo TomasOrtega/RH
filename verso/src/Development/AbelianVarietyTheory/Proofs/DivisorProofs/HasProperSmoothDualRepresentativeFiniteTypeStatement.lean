@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DualConFT.hasRep_of_finiteType | exact GlobalTheory.DualConFT.hasRep_of_finiteType | (intros; apply GlobalTheory.DualConFT.hasRep_of_finiteType <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasProperSmoothDualRepresentative_finiteType : ∀ (R : Type) [CommRing R] [Algebra.FiniteType ℤ R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → HasRep A g (𝟙_ _) := by
   first | exact @GlobalTheory.DualConFT.hasRep_of_finiteType | exact GlobalTheory.DualConFT.hasRep_of_finiteType | (intros; apply GlobalTheory.DualConFT.hasRep_of_finiteType <;> assumption)

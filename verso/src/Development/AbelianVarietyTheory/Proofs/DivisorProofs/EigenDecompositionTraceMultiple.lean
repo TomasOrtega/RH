@@ -6,6 +6,15 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ _ O _ _ Λ _ h h' m ρ ρ' hinj hind htop hind' htop' htr τ`. Take `⟨hf, hsum⟩` from `GlobalTheory.T.trace_eq_sum_eigen_multiplicities C O Λ h ρ hind htop`. Take `⟨hf', hsum'⟩` from `GlobalTheory.T.trace_eq_sum_eigen_multiplicities C O Λ h' ρ' hind' htop'`. Set `S : Finset (Λ →+* O)` to `insert τ (hf.toFinset ∪ hf'.toFinset)`. Establish `hS : ∀ σ, eig C ρ σ ≠ ⊥ → σ ∈ S` using `fun σ hσ => Finset.mem_insert_of_mem (Finset.mem_union_left _ (hf.mem_toFinset.2 hσ))`.
+
+Establish `hS' : ∀ σ, eig C ρ' σ ≠ ⊥ → σ ∈ S` using `fun σ hσ => Finset.mem_insert_of_mem (Finset.mem_union_right _ (hf'.mem_toFinset.2 hσ))`. Set `c : (Λ →+* O) → C` to `fun σ => (Module.finrank C (eig C ρ σ) : C) - (m : C) * (Module.finrank C (eig C ρ' σ) : C)`. Establish `key : ∀ a : Λ, ∑ σ ∈ S, c σ * algebraMap O C (σ a) = 0`. Introduce `a`. Establish `e1` using `hsum S hS a`.
+
+Establish `e2` using `hsum' S hS' a`. Simplify using `only [c, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[← e1, ← e2, htr a, map_mul, map_natCast, sub_self]`. Establish `hc` using `GlobalTheory.T.ring_homs_linearly_independent C O Λ hinj S c key τ (Finset.mem_insert_self _ _)`. Establish `: (Module.finrank C (eig C ρ τ) : C) = (m : C) * (Module.finrank C (eig C ρ' τ) : C)` using `sub_eq_zero.1 hc`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem finrank_eig_eq_mul_of_trace_eq_mul :
     ∀ (C : Type) [Field C] [CharZero C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ]
       (h h' m : ℕ) (ρ : Λ → Matrix (Fin h) (Fin h) O) (ρ' : Λ → Matrix (Fin h') (Fin h') O),

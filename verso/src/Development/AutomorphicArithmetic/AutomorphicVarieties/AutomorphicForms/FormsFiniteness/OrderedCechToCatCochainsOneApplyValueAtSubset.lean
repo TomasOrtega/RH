@@ -17,6 +17,9 @@ variable {a n : ℕ} (e : Fin a ↪ Fin n) (R : Type) [CommRing R]
 
 def inc : Matrix (Fin n) (Fin a) R := Matrix.of fun i k => if i = e k then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `[inc, Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+-/
 theorem inc_tr_mul : (inc e R)ᵀ * inc e R = 1 := by
   ext k l
   simp [inc, Matrix.mul_apply, Matrix.one_apply, eq_comm]
@@ -25,27 +28,51 @@ variable {R}
 
 def ext0 (X : Matrix (Fin a) (Fin a) R) : Matrix (Fin n) (Fin n) R := inc e R * X * (inc e R)ᵀ
 
+/- English proof (translation)
+Simplify using `only [ext0, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (inc e R)ᵀ, inc_tr_mul, Matrix.one_mul]`.
+-/
 theorem matrixExtendByZero_mul (X Y : Matrix (Fin a) (Fin a) R) : ext0 e X * ext0 e Y = ext0 e (X * Y) := by
   simp only [ext0, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (inc e R)ᵀ, inc_tr_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [ext0, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem matrixExtendByZero_add (X Y : Matrix (Fin a) (Fin a) R) : ext0 e (X + Y) = ext0 e X + ext0 e Y := by
   simp only [ext0, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [ext0, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem extension_zero_sub (X Y : Matrix (Fin a) (Fin a) R) : ext0 e (X - Y) = ext0 e X - ext0 e Y := by
   simp only [ext0, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Simplify using `[ext0]`.
+-/
 theorem matrixExtendByZero_zero : ext0 e (0 : Matrix (Fin a) (Fin a) R) = 0 := by simp [ext0]
 
+/- English proof (translation)
+Simplify using `[ext0, inc, Matrix.mul_apply]`.
+-/
 theorem matrixExtendByZero_apply (X : Matrix (Fin a) (Fin a) R) (i j : Fin a) : ext0 e X (e i) (e j) = X i j := by
   simp [ext0, inc, Matrix.mul_apply]
 
+/- English proof (translation)
+Simplify using `[ext0, inc, Matrix.mul_apply, hi]`.
+-/
 theorem extendByZero_apply_eq_zero_of_row_not_mem (X : Matrix (Fin a) (Fin a) R) {i : Fin n} (hi : ∀ k, i ≠ e k) (j : Fin n) : ext0 e X i j = 0 := by
   simp [ext0, inc, Matrix.mul_apply, hi]
 
+/- English proof (translation)
+Simplify using `[ext0, inc, Matrix.mul_apply, hj]`.
+-/
 theorem matrixExtendByZero_apply_of_outside_col (X : Matrix (Fin a) (Fin a) R) (i : Fin n) {j : Fin n} (hj : ∀ k, j ≠ e k) : ext0 e X i j = 0 := by
   simp [ext0, inc, Matrix.mul_apply, hj]
 
+/- English proof (translation)
+Establish `h : (inc e R).map f = inc e S`. Use extensionality with `i k`. Simplify using `[inc, apply_ite f]`. Simplify using `only [ext0, Matrix.map_mul, Matrix.transpose_map, h]`.
+-/
 theorem matrixExtendByZero_map {S : Type} [CommRing S] (f : R →+* S) (X : Matrix (Fin a) (Fin a) R) :
     (ext0 e X).map f = ext0 e (X.map f) := by
   have h : (inc e R).map f = inc e S := by
@@ -53,6 +80,11 @@ theorem matrixExtendByZero_map {S : Type} [CommRing S] (f : R →+* S) (X : Matr
     simp [inc, apply_ite f]
   simp only [ext0, Matrix.map_mul, Matrix.transpose_map, h]
 
+/- English proof (translation)
+Use extensionality with `k l`. Distinguish the cases in `hk : ∃ k', k = e k'`. Take `⟨k, rfl⟩` from `hk`. Distinguish the cases in `hl : ∃ l', l = e l'`. Take `⟨l, rfl⟩` from `hl`.
+
+Simplify using `[matrixExtendByZero_apply, Matrix.single_apply]`. Use `push Not at hl`. Rewrite using `[matrixExtendByZero_apply_of_outside_col e _ _ hl, Matrix.single_apply, if_neg fun h => hl j h.2.symm]`. Use `push Not at hk`. Rewrite using `[extendByZero_apply_eq_zero_of_row_not_mem e _ hk, Matrix.single_apply, if_neg fun h => hk i h.1.symm]`.
+-/
 theorem matrixExtendByZero_single (i j : Fin a) (x : R) : ext0 e (Matrix.single i j x) = Matrix.single (e i) (e j) x := by
   ext k l
   by_cases hk : ∃ k', k = e k'
@@ -75,8 +107,14 @@ def embM : Matrix (Fin a) (Fin a) R →* Matrix (Fin n) (Fin n) R where
 
 def emb : GL (Fin a) R →* GL (Fin n) R := Units.map (embM e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_emb (g : GL (Fin a) R) : (emb e g).val = 1 + ext0 e (g.val - 1) := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 + ext0 e (g.val - 1)).map f = 1 + ext0 e (g.val.map f - 1)`. Rewrite using `[Matrix.map_add _ (map_add f), matrixExtendByZero_map, Matrix.map_sub _ (map_sub f), Matrix.map_one _ (map_zero f) (map_one f), Matrix.map_one _ (map_zero f) (map_one f)]`.
+-/
 theorem emb_map {S : Type} [CommRing S] (f : R →+* S) (g : GL (Fin a) R) :
     Matrix.GeneralLinearGroup.map f (emb e g) = emb e (Matrix.GeneralLinearGroup.map f g) := by
   refine Units.ext ?_
@@ -90,13 +128,30 @@ def e1 (r s : ℕ) : Fin r ↪ Fin (r + s) := Fin.castAddEmb s
 
 def e2 (r s : ℕ) : Fin s ↪ Fin (r + s) := Fin.natAddEmb r
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem orderedCechToCatCochainsOne_apply_valueAtSubset {r s : ℕ} (i : Fin r) : e1 r s i = Fin.castAdd s i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem alternatingToOrderedCechDegreeTwo_apply_valueAtSubset {r s : ℕ} (i : Fin s) : e2 r s i = Fin.natAdd r i := rfl
 
 def blk {r s : ℕ} {R : Type} [CommRing R] (m₁ : GL (Fin r) R) (m₂ : GL (Fin s) R) : GL (Fin (r + s)) R :=
   emb (e1 r s) m₁ * emb (e2 r s) m₂
 
+/- English proof (translation)
+Establish `h : (inc (e1 r s) R)ᵀ * inc (e2 r s) R = 0`. Use extensionality with `k l`. Establish `: ¬ Fin.natAdd r l = Fin.castAdd s k` using `fun h => by have := congrArg Fin.val h; simp at this; omega`. Simplify using `only [inc, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h1 h2`. Conclude with `absurd (h2.symm.trans h1) this`. Conclude with `mul_zero _`. Conclude with `zero_mul _`. Conclude with `zero_mul _`.
+
+Establish `h' : (inc (e2 r s) R)ᵀ * inc (e1 r s) R = 0`. Rewrite using `[← Matrix.transpose_transpose (inc (e1 r s) R), ← Matrix.transpose_mul, h, Matrix.transpose_zero]`. Establish `h1 : ∀ X Y, ext0 (e1 r s) X * ext0 (e2 r s) (Y : Matrix _ _ R) = 0` using `fun X Y => by`. Simplify using `only [ext0, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (inc (e1 r s) R)ᵀ, h]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : ∀ X Y, ext0 (e2 r s) X * ext0 (e1 r s) (Y : Matrix _ _ R) = 0` using `fun X Y => by`. Simplify using `only [ext0, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (inc (e2 r s) R)ᵀ, h']`. Simplify using the standard rewrite rules.
+
+Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, coe_emb, add_mul, mul_add, one_mul, mul_one, h1, h2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem emb_comm {r s : ℕ} {R : Type} [CommRing R] (m₁ : GL (Fin r) R) (m₂ : GL (Fin s) R) :
     emb (e1 r s) m₁ * emb (e2 r s) m₂ = emb (e2 r s) m₂ * emb (e1 r s) m₁ := by
   have h : (inc (e1 r s) R)ᵀ * inc (e2 r s) R = 0 := by
@@ -142,12 +197,20 @@ def IsLie (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) : Prop := ∀ X Y, l X * 
 def unitMap (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (i j : Fin n) : ℂ ⊗[ℝ] R →ₗ[ℂ] A :=
   LinearMap.liftBaseChange ℂ (l ∘ₗ Matrix.singleLinearMap ℝ i j)
 
+/- English proof (translation)
+Simplify using `[unitMap]`.
+-/
 theorem unitMap_tmul (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (i j : Fin n) (c : ℂ) (x : R) :
     unitMap l i j (c ⊗ₜ x) = c • l (Matrix.single i j x) := by
   simp [unitMap]
 
 def gen (D : Idem R ι) (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (τ : ι) (i j : Fin n) : A := unitMap l i j (D.e τ)
 
+/- English proof (translation)
+Unfold `gen`. Proceed by induction on `D.e τ with`. Consider the case `zero => rw [map_zero]`. Conclude with `P.zero_mem`. Consider the case `tmul c x => rw [unitMap_tmul]`.
+
+Conclude with `P.smul_mem c (h x)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `P.add_mem hx hy`.
+-/
 theorem gen_mem (D : Idem R ι) (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (τ : ι) (i j : Fin n) (P : Submodule ℂ A)
     (h : ∀ x, l (Matrix.single i j x) ∈ P) : gen D l τ i j ∈ P := by
   unfold gen
@@ -156,6 +219,9 @@ theorem gen_mem (D : Idem R ι) (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (τ
   | tmul c x => rw [unitMap_tmul]; exact P.smul_mem c (h x)
   | add x y hx hy => rw [map_add]; exact P.add_mem hx hy
 
+/- English proof (translation)
+Unfold `gen`. Proceed by induction on `D.e τ with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul c x => simp only [unitMap_tmul, map_smul, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem gen_inter {m : ℕ} {B : Type} [Ring B] [Algebra ℂ B] [Algebra ℝ B] [IsScalarTower ℝ ℂ B] {N : Type}
     [AddCommGroup N] [Module ℂ N] (D : Idem R ι) (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A)
     (l' : Matrix (Fin m) (Fin m) R →ₗ[ℝ] B) (τ : ι) (i j : Fin n) (i' j' : Fin m) (f : A →ₗ[ℂ] N) (f' : B →ₗ[ℂ] N)
@@ -183,9 +249,15 @@ def lam : Matrix (Fin n) (Fin n) (mixedSpace K) →ₗ[ℝ] Module.End ℂ (arch
   (uAction (K := K) (n := n)).toLinearMap ∘ₗ
     (UniversalEnvelopingAlgebra.ι ℝ (L := (isExpLieAlgebra K n).lieSubalgebra)).toLinearMap ∘ₗ (toLie K n).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lam_apply (X : Matrix (Fin n) (Fin n) (mixedSpace K)) :
     lam K n X = uAction (UniversalEnvelopingAlgebra.ι ℝ (toLie K n X)) := rfl
 
+/- English proof (translation)
+Introduce `X Y` and use `by simp only [lam_apply] rw [← map_mul uAction, ← map_mul uAction, ← map_sub uAction, ← Ring.lie_def, ← LieHom.map_lie] rfl`.
+-/
 theorem isLie_lam : IsLie (lam K n) := fun X Y => by
   simp only [lam_apply]
   rw [← map_mul uAction, ← map_mul uAction, ← map_sub uAction, ← Ring.lie_def, ← LieHom.map_lie]
@@ -196,15 +268,24 @@ def Zc : Subalgebra ℂ (Module.End ℂ (archSmooth K n)) :=
 
 variable {K n}
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨z, hz, rfl⟩`.
+-/
 theorem uAction_mem_Zc {z : UEnv K n} (hz : z ∈ (isExpLieAlgebra K n).centerU) : uAction z ∈ Zc K n :=
   Algebra.subset_adjoin ⟨z, hz, rfl⟩
 
+/- English proof (translation)
+Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hx ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[Commute, SemiconjBy, ← map_mul, ← map_mul, Subalgebra.mem_center_iff.1 hz]`.
+-/
 theorem Zc_comm_uAction {x : Module.End ℂ (archSmooth K n)} (hx : x ∈ Zc K n) (u : UEnv K n) :
     Commute x (uAction u) := by
   refine (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hx ?_).symm
   rintro _ ⟨z, hz, rfl⟩
   rw [Commute, SemiconjBy, ← map_mul, ← map_mul, Subalgebra.mem_center_iff.1 hz]
 
+/- English proof (translation)
+Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hy ?_).eq` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `Zc_comm_uAction hx z`.
+-/
 theorem Zc_comm {x y : Module.End ℂ (archSmooth K n)} (hx : x ∈ Zc K n) (hy : y ∈ Zc K n) : x * y = y * x := by
   refine (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hy ?_).eq
   rintro _ ⟨z, -, rfl⟩
@@ -219,6 +300,9 @@ def archCapBlock {ι : Type} [Fintype ι] (D : Idem (mixedSpace K) ι) {a : ℕ}
 
 def rt (g : AdelicGLn.AdelicGL K n) : Module.End ℂ (archSmooth K n) := rtInf (archPart g) ∘ₗ rtFin (finPart g)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ.1 (x * infEmb K n (archPart g) * finEmb K n (finPart g)) = _`. Rewrite using `[mul_assoc, infEmb_archPart_mul_finEmb_finPart]`.
+-/
 theorem rt_apply (g : AdelicGLn.AdelicGL K n) (φ : archSmooth K n) (x : AdelicGLn.AdelicGL K n) :
     (rt g φ).1 x = φ.1 (x * g) := by
   change φ.1 (x * infEmb K n (archPart g) * finEmb K n (finPart g)) = _

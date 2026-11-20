@@ -9,6 +9,11 @@ open Metric Filter Topology Set
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `l`. Break down `eq_or_ne l i with rfl | h` into its components or cases. Simplify using `using hx`. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `hz l`.
+-/
 theorem RemovableHyperplane.update_mem_ball_one {m : ℕ} {z : Fin m → ℂ}
     (hz : z ∈ ball (0 : Fin m → ℂ) 1) (i : Fin m) {x : ℂ} (hx : ‖x‖ < 1) :
     Function.update z i x ∈ ball (0 : Fin m → ℂ) 1 := by
@@ -19,6 +24,35 @@ theorem RemovableHyperplane.update_mem_ball_one {m : ℕ} {z : Fin m → ℂ}
   · rw [Function.update_of_ne h]
     exact hz l
 
+/- English proof (translation)
+Introduce `k n R f hf hb`. Break down `le_or_gt R 0 with hR | hR` into its components or cases. Use `⟨f, ?_, fun t _ => rfl⟩` and prove the remaining obligations. Rewrite using `[ball_eq_empty.mpr hR]`. Conclude with `differentiableOn_empty`.
+
+Establish `hSo : IsOpen (ball (0 : Fin (k + 1) → ℂ) R ∩ {t | t 0 ≠ 0})` using `isOpen_ball.inter (isOpen_ne_fun (continuous_apply 0) continuous_const)`. Take `⟨C, hC⟩` from `hb.exists_norm_le`. Establish `hRc : (R : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hR.ne'`. Establish `hsc : ∀ z ∈ ball (0 : Fin (k + 1) → ℂ) 1, (R : ℂ) • z ∈ ball (0 : Fin (k + 1) → ℂ) R`. Introduce `z hz`.
+
+Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hR.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsc0 : ∀ z : Fin (k + 1) → ℂ, z 0 ≠ 0 → ((R : ℂ) • z) 0 ≠ 0` using `fun z hz0 => by`. Simplify using `[hRc, hz0]`.
+
+Establish `key : ∀ j : Fin n, ∃ G' : (Fin (k + 1) → ℂ) → ℂ, AnalyticOnNhd ℂ G' (ball 0 1) ∧ ∀ z ∈ ball (0 : Fin (k + 1) → ℂ) 1, z 0 ≠ 0 → G' z = f ((R : ℂ) • z) j`. Introduce `j`. Use `set G : (Fin (k + 1) → ℂ) → ℂ := fun z => f ((R : ℂ) • z) j with hG`. Establish `hGd : ∀ z ∈ ball (0 : Fin (k + 1) → ℂ) 1, z 0 ≠ 0 → DifferentiableAt ℂ G z`. Introduce `z hz hz0`.
+
+Establish `h1 : DifferentiableAt ℂ f ((R : ℂ) • z)` using `hf.differentiableAt (hSo.mem_nhds ⟨hsc z hz, hsc0 z hz0⟩)`. Conclude with `differentiableAt_pi.1 (h1.comp z (differentiableAt_id.const_smul (R : ℂ))) j`. Establish `hGb : ∀ z ∈ ball (0 : Fin (k + 1) → ℂ) 1, z 0 ≠ 0 → ‖G z‖ ≤ C` using `fun z hz hz0 => (norm_le_pi_norm _ j).trans (hC _ (mem_image_of_mem f ⟨hsc z hz, hsc0 z hz0⟩))`. Establish `hlim : ∀ z ∈ ball (0 : Fin (k + 1) → ℂ) 1, ∀ i : Fin (k + 1), (∀ j, j ≠ i → z j ≠ 0) → ∃ c : ℂ, Tendsto (fun x : ℂ => G (Function.update z i x)) (𝓝[≠] 0) (𝓝 c)`. Introduce `z hz i hi`.
+
+Distinguish the cases in `hi0 : i = 0`. Substitute `hi0` using the available equality. Use `⟨_, Complex.tendsto_limUnder_of_differentiable_on_punctured_nhds_of_bounded_under ?_ ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds (0 : ℂ) one_pos)] with x hx0 hx1`. Establish `hx1' : ‖x‖ < 1` using `mem_ball_zero_iff.mp hx1`.
+
+Use `(hGd _ (RemovableHyperplane.update_mem_ball_one hz 0 hx1') (by simpa using hx0)).comp x ?_` and prove the remaining obligations. Conclude with `(hasFDerivAt_update z x).differentiableAt`. Use `isBoundedUnder_of_eventually_le (a := C + ‖G (Function.update z 0 0)‖) ?_ filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds (0 : ℂ) one_pos)] with x hx0 hx1` and prove the remaining obligations. Establish `hx1' : ‖x‖ < 1` using `mem_ball_zero_iff.mp hx1`. Conclude with `norm_sub_le_of_le (hGb _ (RemovableHyperplane.update_mem_ball_one hz 0 hx1') (by simpa using hx0)) le_rfl`.
+
+Establish `hz0 : Function.update z i 0 0 ≠ 0`. Rewrite using `[Function.update_of_ne (Ne.symm hi0)]`. Conclude with `hi 0 (Ne.symm hi0)`. Establish `hm` using `RemovableHyperplane.update_mem_ball_one hz i (x := 0) (by simp)`. Use `⟨G (Function.update z i 0), ?_⟩` and prove the remaining obligations.
+
+Establish `hc : Continuous (fun x : ℂ => Function.update z i x)` using `(continuous_const (y := z)).update i continuous_id`. Conclude with `(((hGd _ hm hz0).continuousAt.tendsto).comp (hc.tendsto 0)).mono_left nhdsWithin_le_nhds`. Take `⟨G', hG'a, hG'G⟩` from `GroundTheory.Heights₂.Heights.Regular.RiemannExtensionSlices.proof (k + 1) G (fun z hz => (hGd z hz.1 (hz.2 0)).differentiableWithinAt) hlim`. Use `⟨G', hG'a, fun z hz hz0 => ?_⟩` and prove the remaining obligations. Establish `hWd : Dense {w : Fin (k + 1) → ℂ | ∀ i, w i ≠ 0}`.
+
+Establish `h` using `dense_pi (α := fun _ : Fin (k + 1) => ℂ) (s := fun _ => ({0}ᶜ : Set ℂ)) univ (fun i _ => dense_compl_singleton 0)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using the standard rewrite rules. Establish `: (𝓝[{w : Fin (k + 1) → ℂ | ∀ i, w i ≠ 0}] z).NeBot` using `mem_closure_iff_nhdsWithin_neBot.mp (hWd z)`.
+
+Establish `hev : G' =ᶠ[𝓝[{w : Fin (k + 1) → ℂ | ∀ i, w i ≠ 0}] z] G` using `by filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (isOpen_ball.mem_nhds hz)] with w hwW hwb`. Conclude with `hG'G w hwb hwW`. Conclude with `tendsto_nhds_unique (((hG'a z hz).continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' hev) ((hGd z hz hz0).continuousAt.tendsto.mono_left nhdsWithin_le_nhds)`. Use `choose G' hG'a hG'G using key`. Establish `hinv : ∀ t ∈ ball (0 : Fin (k + 1) → ℂ) R, (R : ℂ)⁻¹ • t ∈ ball (0 : Fin (k + 1) → ℂ) 1`.
+
+Introduce `t ht`. Rewrite `ht`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hR.le]`. Conclude with `(inv_mul_lt_one₀ hR).2 ht`. Use `⟨fun t j => G' j ((R : ℂ)⁻¹ • t), fun t ht => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Use `DifferentiableAt.differentiableWithinAt (differentiableAt_pi.2 fun j => ?_)` and prove the remaining obligations. Establish `hs : DifferentiableAt ℂ (fun x : Fin (k + 1) → ℂ => (R : ℂ)⁻¹ • x) t` using `by fun_prop`. Conclude with `((hG'a j _ (hinv t ht)).differentiableAt).comp t hs`. Use function extensionality and compare the values at `j`. Establish `h0 : ((R : ℂ)⁻¹ • t) 0 ≠ 0` using `by simpa [hRc] using ht.2`.
+
+Use `show G' j ((R : ℂ)⁻¹ • t) = f t j`. Rewrite using `[hG'G j _ (hinv t ht.1) h0, smul_inv_smul₀ hRc]`.
+-/
 theorem RemovableHyperplane.proof : RemovableHyperplane.Statement := by
   intro k n R f hf hb
   rcases le_or_gt R 0 with hR | hR

@@ -21,6 +21,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse
 open Matrix NumberField
 
+/- English proof (translation)
+Take `⟨c, Q, hQ⟩` from `Formalism.UG.P.sig_data _ _ _ h`. Use `GlobalTheory.FrameComplement.hasSignature_of_frame c (Q.map (starRingEnd ℂ)) ?_` and prove the remaining obligations. Establish `e1 : (Q.map (starRingEnd ℂ))ᴴ * J.map (starRingEnd ℂ) * Q.map (starRingEnd ℂ) = (Qᴴ * J * Q).map (starRingEnd ℂ)`. Rewrite using `[Matrix.map_mul (f := starRingEnd ℂ), Matrix.map_mul (f := starRingEnd ℂ)]`. Use `congr 2`.
+
+Rewrite using `[e1, hQ]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite (starRingEnd ℂ)]`.
+-/
 theorem hasSignature_map_conj {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) : Formalism.UG.HasSignature (J.map (starRingEnd ℂ)) p q := by
   obtain ⟨c, Q, hQ⟩ := Formalism.UG.P.sig_data _ _ _ h
@@ -32,6 +37,21 @@ theorem hasSignature_map_conj {n : Type} [Fintype n] [DecidableEq n] {J : Matrix
   rw [e1, hQ]
   ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite (starRingEnd ℂ)]
 
+/- English proof (translation)
+Set `e : Fin P ⊕ Fin N ≃ Fin n` to `finSumFinEquiv.trans (finCongr h)`. Set `s : Fin n → ℝ` to `fun i => (√|c i|)⁻¹`. Establish `hs : ∀ i, s i * c i * s i = if (i : ℕ) < P then 1 else -1` using `fun i => by`. Establish `h0 : c i ≠ 0`. Break down `lt_or_ge (i : ℕ) P with h | h` into its components or cases.
+
+Conclude with `((hc i).1 h).ne'`. Conclude with `((hc i).2 h).ne`. Establish `hp : 0 < |c i|` using `abs_pos.2 h0`. Establish `hq : √|c i| * √|c i| = |c i|` using `Real.mul_self_sqrt hp.le`. Establish `hq0 : √|c i| ≠ 0` using `(Real.sqrt_pos.2 hp).ne'`.
+
+Use `split_ifs with hi`. Establish `hh` using `(hc i).1 hi`. Rewrite `hq`, `hq0` using `[abs_of_pos hh]`. Simplify using `only [s, abs_of_pos hh]`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hh` using `(hc i).2 (not_lt.1 hi)`. Rewrite `hq`, `hq0` using `[abs_of_neg hh]`. Simplify using `only [s, abs_of_neg hh]`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `GlobalTheory.FrameComplement.hasSignature_of_frame (by simp [h]) ((Matrix.diagonal fun i => (s i : ℂ)).submatrix id e) ?_` and prove the remaining obligations. Establish `e1 : ((Matrix.diagonal fun i => (s i : ℂ)).submatrix id e)ᴴ * (Matrix.diagonal fun i => (c i : ℂ)) * (Matrix.diagonal fun i => (s i : ℂ)).submatrix id e = (Matrix.diagonal fun i : Fin n => (((if (i : ℕ) < P then 1 else -1 : ℝ)) : ℂ)).submatrix e e`. Establish `e2 : ((Matrix.diagonal fun i => (s i : ℂ)).submatrix id e)ᴴ * (Matrix.diagonal fun i => (c i : ℂ)) * (Matrix.diagonal fun i => (s i : ℂ)).submatrix id e = ((Matrix.diagonal fun i => (s i : ℂ))ᴴ * (Matrix.diagonal fun i => (c i : ℂ)) * (Matrix.diagonal fun i => (s i : ℂ))).submatr …`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`. Rewrite using `[e2, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[← hs i]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1]`. Establish `hl : ∀ a : Fin P, ((e (Sum.inl a) : Fin n) : ℕ) = a` using `fun a => by simp [e]`. Establish `hr : ∀ a : Fin N, ((e (Sum.inr a) : Fin n) : ℕ) = P + a` using `fun a => by simp [e]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, hl, hr, Fin.ext_iff] <;> split_ifs <;> simp`.
+-/
 theorem hasSignature_diagonal {n P N : ℕ} (c : Fin n → ℝ) (h : P + N = n)
     (hc : ∀ i : Fin n, ((i : ℕ) < P → 0 < c i) ∧ (P ≤ (i : ℕ) → c i < 0)) :
     Formalism.UG.HasSignature (Matrix.diagonal fun i => (c i : ℂ)) P N := by
@@ -78,6 +98,19 @@ theorem hasSignature_diagonal {n P N : ℕ} (c : Fin n → ℝ) (h : P + N = n)
   ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, hl, hr, Fin.ext_iff] <;>
     split_ifs <;> simp
 
+/- English proof (translation)
+Use `haveI : Finite (F →+* ℝ) := Finite.of_injective (fun σ => Complex.ofRealHom.comp σ) (fun σ τ h => by`. Use extensionality with `x`. Use `congrArg (fun g : F →+* ℂ => g x) h` as an intermediate fact. Simplify using `using this)`. Establish `hd` using `GlobalTheory.Shintani.denseRange_realEmbeddings F`.
+
+Establish `key : ∀ i : Fin n, ∃ x : F, ∀ σ : F →+* ℝ, ((i : ℕ) < P σ → 0 < σ x) ∧ (P σ ≤ (i : ℕ) → σ x < 0)`. Introduce `i`. Set `U : (F →+* ℝ) → Set ℝ` to `fun σ => if (i : ℕ) < P σ then Set.Ioi 0 else Set.Iio 0`. Establish `hU : IsOpen (Set.pi Set.univ U)` using `isOpen_set_pi Set.finite_univ fun σ _ => by`. Simplify using `only [U]`.
+
+Use `split_ifs`. Conclude with `isOpen_Ioi`. Conclude with `isOpen_Iio`. Establish `hne : (Set.pi Set.univ U).Nonempty` using `⟨fun σ => if (i : ℕ) < P σ then 1 else -1, fun σ _ => by`. Simplify using `only [U]`.
+
+Apply the tactic sequence `split_ifs <;> simp⟩`. Take `⟨x, hx⟩` from `hd.exists_mem_open hU hne`. Use `⟨x, fun σ => ?_⟩` and prove the remaining obligations. Use `hx σ (Set.mem_univ _)` as an intermediate fact. Simplify using `only [U] at this`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `this` using `[h]`. Introduce `h`. Simplify `this` using `[not_lt.2 h]`.
+
+Use `choose a ha using key`. Conclude with `⟨a, fun σ i => ha i σ⟩`.
+-/
 theorem exists_signs (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (n : ℕ) (P : (F →+* ℝ) → ℕ) :
     ∃ a : Fin n → F, ∀ (σ : F →+* ℝ) (i : Fin n),
       ((i : ℕ) < P σ → 0 < σ (a i)) ∧ (P σ ≤ (i : ℕ) → σ (a i) < 0) := by
@@ -109,6 +142,9 @@ theorem exists_signs (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (n :
   choose a ha using key
   exact ⟨a, fun σ i => ha i σ⟩
 
+/- English proof (translation)
+Use `haveI := cm.totReal`. Establish `hr : ComplexEmbedding.IsReal (τ.comp (algebraMap F E))` using `InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _)`. Conclude with `⟨hr.embedding, fun x => (hr.coe_embedding_apply x).symm⟩`.
+-/
 theorem exists_real_restrict {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (τ : E →+* ℂ) :
     ∃ σ : F →+* ℝ, ∀ x : F, τ (algebraMap F E x) = (σ x : ℂ) := by
@@ -117,6 +153,25 @@ theorem exists_real_restrict {F E : Type} [Field F] [NumberField F] [Field E] [N
     InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _)
   exact ⟨hr.embedding, fun x => (hr.coe_embedding_apply x).symm⟩
 
+/- English proof (translation)
+Use `haveI := cm.totReal`. Use `haveI := cm.cmUnram.1`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨cm.deg2⟩`. Use `haveI : IsCMField E := IsCMField.ofCMExtension F E`. Establish `hst : ∀ (φ : E →+* ℂ) x, φ (star x) = starRingEnd ℂ (φ x)` using `cm.cmUnram.2.1`.
+
+Establish `hcc : ∀ x : E, ReciprocityTheory.ChartRestriction.G.FD.cc x = star x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective ((GlobalTheory.Published.embedding_cc τ x).trans (hst τ x).symm)`. Take `⟨θ, h0, hθ⟩` from `GlobalTheory.Published.exists_cc_eq_neg E`. Rewrite `hθ` using `[hcc]`.
+
+Establish `hfix : ∀ x : E, star x = x → τ' x = τ x` using `fun x hx => by`. Take `⟨a, rfl⟩` from `(cm.fixed x).1 hx`. Conclude with `h a`. Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`. Establish `hdec : ∀ x : E, ∃ u v : E, star u = u ∧ star v = v ∧ x = u + v * θ` using `fun x => by`.
+
+Use `⟨(x + star x) / 2, (x - star x) / (2 * θ), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[star_div₀, add_comm]`. Rewrite using `[star_div₀, star_sub, star_star, star_mul', hθ]`. Simplify using `only [star_ofNat]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsq : τ' θ * τ' θ = τ θ * τ θ`. Establish `: star (θ * θ) = θ * θ` using `by rw [star_mul', hθ]; ring`.
+
+Use `hfix _ this` as an intermediate fact. Simplify using `using this`. Establish `hf : (τ' θ - τ θ) * (τ' θ + τ θ) = 0` using `by linear_combination hsq`. Break down `mul_eq_zero.1 hf with h3 | h3` into its components or cases. Use `left`.
+
+Use extensionality with `x`. Take `⟨u, v, hu, hv, rfl⟩` from `hdec x`. Simplify using `only [map_add, map_mul, hfix u hu, hfix v hv, sub_eq_zero.1 h3]`. Use `right`. Establish `hθ' : τ' θ = starRingEnd ℂ (τ θ)`.
+
+Rewrite using `[← hst, hθ, map_neg]`. Take the linear combination `h3`. Establish `hc : ∀ w : E, star w = w → starRingEnd ℂ (τ w) = τ w` using `fun w hw => by rw [← hst, hw]`. Use extensionality with `x`. Take `⟨u, v, hu, hv, rfl⟩` from `hdec x`.
+
+Simplify using `only [RingHom.comp_apply, map_add, map_mul, hfix u hu, hfix v hv, hc u hu, hc v hv, hθ']`.
+-/
 theorem eq_or_conj_of_restrict {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (τ τ' : E →+* ℂ)
     (h : ∀ x : F, τ' (algebraMap F E x) = τ (algebraMap F E x)) :
@@ -163,6 +218,19 @@ theorem eq_or_conj_of_restrict {F E : Type} [Field F] [NumberField F] [Field E] 
     obtain ⟨u, v, hu, hv, rfl⟩ := hdec x
     simp only [RingHom.comp_apply, map_add, map_mul, hfix u hu, hfix v hv, hc u hu, hc v hv, hθ']
 
+/- English proof (translation)
+Set `g : Fin t ⊕ Fin k → Fin t ⊕ ((Fin k ⊕ Fin k) ⊕ Fin n)` to `Sum.elim Sum.inl (fun j => Sum.inr (Sum.inl (Sum.inl j)))`. Establish `hg : Function.Injective g`. Apply the tactic sequence `rintro (a | a) (b | b) hab <;> simp_all [g]`. Set `c : Fin t ⊕ Fin k → Fin m` to `fun i => e.symm (g i)`. Use `⟨P.submatrix id c, le_antisymm ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using Matrix.rank_le_card_width (P.submatrix id c)`. Establish `hu : IsUnit P.det` using `isUnit_iff_ne_zero.2 hP`. Establish `h1 : (P⁻¹).submatrix c id * P.submatrix id c = 1`. Establish `: (P⁻¹).submatrix c id * P.submatrix id c = (P⁻¹ * P).submatrix c c`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`. Rewrite using `[this, Matrix.nonsing_inv_mul _ hu]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hc : Function.Injective c` using `e.symm.injective.comp hg`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, hij, hc.ne hij]`. Establish `h2` using `Matrix.rank_mul_le_right ((P⁻¹).submatrix c id) (P.submatrix id c)`. Rewrite `h2` using `[h1, Matrix.rank_one]`.
+
+Simplify using `using h2`. Establish `: (P.submatrix id c)ᴴ * G * P.submatrix id c = (Pᴴ * G * P).submatrix c c`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`. Rewrite using `[this, h]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [c, g]`.
+-/
 theorem frame_of_congr {E : Type} [Field E] [StarRing E] {m t k n : ℕ} (G P : Matrix (Fin m) (Fin m) E)
     (hP : P.det ≠ 0) (e : Fin m ≃ Fin t ⊕ ((Fin k ⊕ Fin k) ⊕ Fin n)) (B : Matrix (Fin t) (Fin t) E)
     (A : Matrix (Fin n) (Fin n) E)
@@ -196,6 +264,13 @@ theorem frame_of_congr {E : Type} [Field E] [StarRing E] {m t k n : ℕ} (G P : 
     refine Matrix.ext fun i j => ?_
     rcases i with i | i <;> rcases j with j | j <;> simp [c, g]
 
+/- English proof (translation)
+Use `set f : Fin t ⊕ Fin (r - t) ≃ Fin r := finSumFinEquiv.trans (finCongr htk) with hf`. Establish `h1 : ∀ a : Fin t, f (Sum.inl a) = Fin.castLE ht.le a` using `fun a => by`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[hf]`. Establish `h2 : ∀ a : Fin (r - t), t ≤ (f (Sum.inr a)).1` using `fun a => by`.
+
+Simplify using `[hf]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `f.surjective a`. Take `⟨b, rfl⟩` from `f.surjective b`. Rewrite using `[Matrix.submatrix_apply, f.symm_apply_apply, f.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `[h1]`. Simplify using `[hz _ _ (Or.inr (h2 b))]`. Simplify using `[hz _ _ (Or.inl (h2 a))]`. Simplify using `[hz _ _ (Or.inl (h2 a))]`.
+-/
 theorem block_submatrix {E : Type} [Field E] {r t : ℕ} (ht : t < r) (β : Matrix (Fin r) (Fin r) E)
     (hz : ∀ i j : Fin r, (t ≤ i.1 ∨ t ≤ j.1) → β i j = 0) (htk : t + (r - t) = r) :
     (fromBlocks (β.submatrix (Fin.castLE ht.le) (Fin.castLE ht.le)) 0 0 0 :
@@ -216,6 +291,27 @@ theorem block_submatrix {E : Type} [Field E] {r t : ℕ} (ht : t < r) (β : Matr
   · simp [hz _ _ (Or.inl (h2 a))]
   · simp [hz _ _ (Or.inl (h2 a))]
 
+/- English proof (translation)
+Establish `htk : t + (r - t) = r` using `by omega`. Establish `hZe` using `block_submatrix ht Z hZ htk`. Use `set f : Fin t ⊕ Fin (r - t) ≃ Fin r := finSumFinEquiv.trans (finCongr htk) with hf`. Use `set Zs := Z.submatrix (Fin.castLE ht.le) (Fin.castLE ht.le) with hZs`. Take `⟨-, Q, hQ⟩` from `Formalism.UG.P.sig_data _ _ _ hs`.
+
+Set `Q₁ : Matrix (Fin t) (Fin p) ℂ` to `Q.submatrix id Sum.inl`. Establish `hQ1 : Q₁ᴴ * Zs * Q₁ = 1`. Establish `h1 : Q₁ᴴ * Zs * Q₁ = (Qᴴ * Zs * Q).submatrix Sum.inl Sum.inl`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Q₁, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`.
+
+Rewrite using `[h1, hQ]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[Formalism.UG.Jpq]`. Set `C : Matrix (Fin t ⊕ Fin (r - t)) (Fin p ⊕ Fin (r - t)) ℂ` to `fromBlocks Q₁ 0 0 1`. Set `A : Matrix (Fin r) (Fin p ⊕ Fin (r - t)) ℂ` to `C.submatrix f.symm id`.
+
+Set `Lm : Matrix (Fin p ⊕ Fin (r - t)) (Fin t ⊕ Fin (r - t)) ℂ` to `fromBlocks (Q₁ᴴ * Zs) 0 0 1`. Establish `hLC : Lm * C = 1`. Simplify using `[Lm, C, fromBlocks_multiply, hQ1]`. Establish `hLA : Lm.submatrix id f.symm * A = 1`. Rewrite using `[show A = C.submatrix f.symm id from rfl, Matrix.submatrix_mul_equiv, hLC, Matrix.submatrix_id_id]`.
+
+Establish `hA : Aᴴ * Z * A = fromBlocks 1 0 0 0`. Establish `h1 : Aᴴ * Z * A = Cᴴ * (fromBlocks Zs 0 0 0 : Matrix (Fin t ⊕ Fin (r - t)) (Fin t ⊕ Fin (r - t)) ℂ) * C`. Rewrite using `[← hZe]`. Simplify using `only [A]`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`.
+
+Rewrite using `[h1]`. Simplify using `[C, fromBlocks_conjTranspose, fromBlocks_multiply, hQ1]`. Establish `hinj : Function.Injective A.mulVecLin` using `fun v w hvw => by`. Establish `h1 : A *ᵥ v = A *ᵥ w` using `hvw`. Use `congrArg (fun u => (Lm.submatrix id f.symm) *ᵥ u) h1` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec, hLA]`. Use `⟨LinearMap.range A.mulVecLin, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `e1 : star (A *ᵥ v) ⬝ᵥ (Z *ᵥ (A *ᵥ v)) = star v ⬝ᵥ ((Aᴴ * Z * A) *ᵥ v)`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← dotProduct_mulVec, Matrix.mul_assoc]`.
+
+Establish `e2 : star (A *ᵥ v) ⬝ᵥ (Z *ᵥ (A *ᵥ v)) = ∑ i, star (v (Sum.inl i)) * v (Sum.inl i)`. Rewrite using `[e1, hA]`. Simplify using `[fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]`. Use `show 0 ≤ 1 * (star (A *ᵥ v) ⬝ᵥ (Z *ᵥ (A *ᵥ v))).re`. Rewrite using `[e2, one_mul, Complex.re_sum]`.
+
+Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Establish `hc : star (v (Sum.inl i)) * v (Sum.inl i) = ((Complex.normSq (v (Sum.inl i)) : ℝ) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[hc, Complex.ofReal_re]`.
+
+Conclude with `Complex.normSq_nonneg _`. Rewrite using `[LinearMap.finrank_range_of_inj hinj]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_nonnegOn {r t : ℕ} (ht : t < r) (Z : Matrix (Fin r) (Fin r) ℂ)
     (hZ : ∀ i j : Fin r, (t ≤ i.1 ∨ t ≤ j.1) → Z i j = 0) {p q : ℕ}
     (hs : Formalism.UG.HasSignature (Z.submatrix (Fin.castLE ht.le) (Fin.castLE ht.le)) p q) :
@@ -269,6 +365,23 @@ theorem exists_nonnegOn {r t : ℕ} (ht : t < r) (Z : Matrix (Fin r) (Fin r) ℂ
   · rw [LinearMap.finrank_range_of_inj hinj]
     simp
 
+/- English proof (translation)
+Take `⟨c, Q, hQ⟩` from `Formalism.UG.P.sig_data _ _ _ hs`. Simplify using `only [Fintype.card_fin] at c`. Set `N : Matrix (Fin m) (Fin q) ℂ` to `Q.submatrix id Sum.inr`. Establish `hN : Nᴴ * G * N = -1`. Establish `h1 : Nᴴ * G * N = (Qᴴ * G * Q).submatrix Sum.inr Sum.inr`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [N, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`. Rewrite using `[h1, hQ]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[Formalism.UG.Jpq]`.
+
+Establish `hL : (-(Nᴴ * G)) * N = 1`. Rewrite using `[Matrix.neg_mul, hN, neg_neg]`. Establish `hinj : Function.Injective N.mulVecLin` using `fun v w hvw => by`. Establish `h1 : N *ᵥ v = N *ᵥ w` using `hvw`. Use `congrArg (fun u => (-(Nᴴ * G)) *ᵥ u) h1` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.mulVec_mulVec, hL, Matrix.one_mulVec]`. Establish `hdis : Disjoint T (LinearMap.range N.mulVecLin)`. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `x hx ⟨v, rfl⟩`. Assume the negation of the conclusion as `h0`.
+
+Establish `h1` using `hT _ hx h0`. Establish `e1 : star (N *ᵥ v) ⬝ᵥ (G *ᵥ (N *ᵥ v)) = star v ⬝ᵥ ((Nᴴ * G * N) *ᵥ v)`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← dotProduct_mulVec, Matrix.mul_assoc]`. Establish `h2 : 0 < 1 * (star (N *ᵥ v) ⬝ᵥ (G *ᵥ (N *ᵥ v))).re` using `h1`. Rewrite `h2` using `[e1, hN, one_mul]`.
+
+Simplify using `only [Matrix.neg_mulVec, Matrix.one_mulVec, dotProduct_neg, Complex.neg_re] at h2`. Establish `h3 : 0 ≤ (star v ⬝ᵥ v).re`. Rewrite using `[dotProduct, Complex.re_sum]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Establish `hc : star (v i) * v i = ((Complex.normSq (v i) : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Simplify using `only [Pi.star_apply]`. Rewrite using `[hc, Complex.ofReal_re]`. Conclude with `Complex.normSq_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `Submodule.finrank_add_finrank_le_of_disjoint hdis`. Rewrite `h1` using `[LinearMap.finrank_range_of_inj hinj]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_le_of_posOn {m p q : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (hs : Formalism.UG.HasSignature G p q)
     (T : Submodule ℂ (Fin m → ℂ)) (hT : PosOn 1 G T) : Module.finrank ℂ T ≤ p := by
   obtain ⟨c, Q, hQ⟩ := Formalism.UG.P.sig_data _ _ _ hs
@@ -311,6 +424,11 @@ theorem finrank_le_of_posOn {m p q : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (hs :
   simp at h1
   omega
 
+/- English proof (translation)
+Take `⟨c, Q, hQ⟩` from `Formalism.UG.P.sig_data _ _ _ h`. Set `s` to `Equiv.sumComm (Fin q) (Fin p)`. Use `GlobalTheory.FrameComplement.hasSignature_of_frame (by omega) (Q.submatrix id s) ?_` and prove the remaining obligations. Establish `e1 : (Q.submatrix id s)ᴴ * (-J) * Q.submatrix id s = -((Qᴴ * J * Q).submatrix s s)`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[e1, hQ]`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, s, Matrix.one_apply]`.
+-/
 theorem hasSig_neg {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature J p q) : Formalism.UG.HasSignature (-J) q p := by
   obtain ⟨c, Q, hQ⟩ := Formalism.UG.P.sig_data _ _ _ h
@@ -322,6 +440,13 @@ theorem hasSig_neg {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {
   rw [e1, hQ]
   ext (a | a) (b | b) <;> simp [Formalism.UG.Jpq, s, Matrix.one_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨S, hS, hd⟩` from `exists_nonnegOn ht Z hZ hB`. Take `⟨T, hT, hle⟩` from `hno 1 S (Or.inl rfl) hS`. Use `finrank_le_of_posOn G hG T hT` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨S, hS, hd⟩` from `exists_nonnegOn ht (-Z) (fun i j h => by simp [hZ i j h]) (q := p₁) (p := q₁) (hasSig_neg hB)`. Establish `hS' : NonnegOn (-1) Z S` using `fun w hw => by`. Use `hS w hw` as an intermediate fact. Simplify `this` using `[Matrix.neg_mulVec]`. Take `⟨T, hT, hle⟩` from `hno (-1) S (Or.inr rfl) hS'`.
+
+Establish `hT' : PosOn 1 (-G) T` using `fun w hw h0 => by`. Use `hT w hw h0` as an intermediate fact. Simplify `this` using `[Matrix.neg_mulVec]`. Use `finrank_le_of_posOn (-G) (hasSig_neg hG) T hT'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_bound {m r t : ℕ} (ht : t < r) (Z : Matrix (Fin r) (Fin r) ℂ)
     (hZ : ∀ i j : Fin r, (t ≤ i.1 ∨ t ≤ j.1) → Z i j = 0) (G : Matrix (Fin m) (Fin m) ℂ) {p₁ q₁ p q : ℕ}
     (hB : Formalism.UG.HasSignature (Z.submatrix (Fin.castLE ht.le) (Fin.castLE ht.le)) p₁ q₁)
@@ -350,6 +475,9 @@ def blockM {F E : Type} [Field F] [Field E] [Algebra F E] {t k n : ℕ} (B : Mat
     (a : Fin n → F) : Matrix (Fin t ⊕ ((Fin k ⊕ Fin k) ⊕ Fin n)) (Fin t ⊕ ((Fin k ⊕ Fin k) ⊕ Fin n)) E :=
   fromBlocks B 0 0 (fromBlocks (fromBlocks 0 1 1 0) 0 0 (diagonal fun i => algebraMap F E (a i)))
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | (i | i) | i) (j | (j | j) | j) <;>`. Simplify using `[blockM, Matrix.one_apply, Matrix.diagonal_apply, apply_ite τ, hσ]`.
+-/
 theorem blockM_map {F E : Type} [Field F] [Field E] [Algebra F E] {t k n : ℕ} (B : Matrix (Fin t) (Fin t) E)
     (a : Fin n → F) (τ : E →+* ℂ) (σ : F →+* ℝ) (hσ : ∀ x : F, τ (algebraMap F E x) = (σ x : ℂ)) :
     (blockM (k := k) B a).map τ = fromBlocks (B.map τ) 0 0 (fromBlocks (fromBlocks 0 1 1 0) 0 0
@@ -357,11 +485,17 @@ theorem blockM_map {F E : Type} [Field F] [Field E] [Algebra F E] {t k n : ℕ} 
   ext (i | (i | i) | i) (j | (j | j) | j) <;>
     simp [blockM, Matrix.one_apply, Matrix.diagonal_apply, apply_ite τ, hσ]
 
+/- English proof (translation)
+Rewrite using `[blockM, det_fromBlocks_zero₂₁, det_fromBlocks_zero₂₁, det_diagonal, mul_assoc]`.
+-/
 theorem blockM_det {F E : Type} [Field F] [Field E] [Algebra F E] {t k n : ℕ} (B : Matrix (Fin t) (Fin t) E)
     (a : Fin n → F) : (blockM (k := k) B a).det =
       B.det * (fromBlocks 0 1 1 0 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) E).det * ∏ i, algebraMap F E (a i) := by
   rw [blockM, det_fromBlocks_zero₂₁, det_fromBlocks_zero₂₁, det_diagonal, mul_assoc]
 
+/- English proof (translation)
+Establish `: (fromBlocks 0 1 1 0 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) E) * (fromBlocks 0 1 1 0 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) E) = 1`. Simplify using `[fromBlocks_multiply]`. Conclude with `(Matrix.isUnit_det_of_right_inverse this).ne_zero`.
+-/
 theorem hyp_det_ne {E : Type} [Field E] (k : ℕ) :
     (fromBlocks 0 1 1 0 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) E).det ≠ 0 := by
   have : (fromBlocks 0 1 1 0 : Matrix (Fin k ⊕ Fin k) (Fin k ⊕ Fin k) E) *
@@ -369,6 +503,9 @@ theorem hyp_det_ne {E : Type} [Field E] (k : ℕ) :
     simp [fromBlocks_multiply]
   exact (Matrix.isUnit_det_of_right_inverse this).ne_zero
 
+/- English proof (translation)
+Establish `hf : ∀ z : F, star (algebraMap F E z) = algebraMap F E z` using `fun z => (cm.fixed _).2 ⟨z, rfl⟩`. Simplify using `[blockM, fromBlocks_conjTranspose, hB, Matrix.diagonal_conjTranspose]`. Conclude with `fun i => hf _`.
+-/
 theorem blockM_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (cm : CMData F E) {t k n : ℕ} (B : Matrix (Fin t) (Fin t) E) (hB : Bᴴ = B) (a : Fin n → F) :
     (blockM (k := k) B a)ᴴ = blockM B a := by
@@ -376,6 +513,11 @@ theorem blockM_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   simp [blockM, fromBlocks_conjTranspose, hB, Matrix.diagonal_conjTranspose]
   exact fun i => hf _
 
+/- English proof (translation)
+Unfold `Formalism.UG.IsHerm`. Rewrite using `[Formalism.UG.P.cT_conj_eq]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Establish `: G i j = star (G j i)` using `by conv_lhs => rw [← hG]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, hτ]`. Both sides reduce to the same expression.
+-/
 theorem map_isHerm {E : Type} [Field E] [StarRing E] {n : Type} [Fintype n] [DecidableEq n] (G : Matrix n n E) (hG : Gᴴ = G)
     (τ : E →+* ℂ) (hτ : ∀ x, τ (star x) = starRingEnd ℂ (τ x)) : Formalism.UG.IsHerm (starRingEnd ℂ) (G.map τ) := by
   unfold Formalism.UG.IsHerm
@@ -388,22 +530,64 @@ theorem map_isHerm {E : Type} [Field E] [StarRing E] {n : Type} [Fintype n] [Dec
   rw [this, hτ]
   rfl
 
+/- English proof (translation)
+Rewrite using `[show (G.map τ).det = τ G.det from (RingHom.map_det τ G).symm]`. Conclude with `(isUnit_iff_ne_zero.2 hG).map _`.
+-/
 theorem map_isUnit_det {E : Type} [Field E] {n : Type} [Fintype n] [DecidableEq n] (G : Matrix n n E) (hG : G.det ≠ 0)
     (τ : E →+* ℂ) : IsUnit (G.map τ).det := by
   rw [show (G.map τ).det = τ G.det from (RingHom.map_det τ G).symm]
   exact (isUnit_iff_ne_zero.2 hG).map _
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`.
+-/
 theorem gram_submatrix {E : Type} [Field E] [StarRing E] {m a b : Type} [Fintype m] [Fintype a] [Fintype b] [DecidableEq a]
     (G : Matrix m m E) (x : Matrix m a E) (f : b ≃ a) :
     (x.submatrix id f)ᴴ * G * x.submatrix id f = (xᴴ * G * x).submatrix f f := by
   refine Matrix.ext fun i j => ?_
   simp only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension F E := ⟨cm.deg2⟩`. Conclude with `⟨ComplexEmbedding.lift E (Complex.ofRealHom.comp σ), fun x => ComplexEmbedding.lift_algebraMap_apply E _ x⟩`.
+-/
 theorem exists_lift {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (σ : F →+* ℝ) : ∃ τ : E →+* ℂ, ∀ x : F, τ (algebraMap F E x) = (σ x : ℂ) := by
   haveI : Algebra.IsQuadraticExtension F E := ⟨cm.deg2⟩
   exact ⟨ComplexEmbedding.lift E (Complex.ofRealHom.comp σ), fun x => ComplexEmbedding.lift_algebraMap_apply E _ x⟩
 
+/- English proof (translation)
+Use `haveI := cm.totReal`. Take `⟨n, hn⟩ : ∃ n, n = m - t - 2 * k` from `⟨_, rfl⟩`. Establish `hn0 : 0 < n` using `by omega`. Use `choose L hL using exists_lift cm`. Use `choose p₁ q₁ p q h1 h2 h3 h4 using fun σ => hs (L σ)`.
+
+Establish `c1 : ∀ σ, t = p₁ σ + q₁ σ` using `fun σ => by simpa using (Formalism.UG.P.sig_data _ _ _ (h1 σ)).1`. Establish `c2 : ∀ σ, m = p σ + q σ` using `fun σ => by simpa using (Formalism.UG.P.sig_data _ _ _ (h2 σ)).1`. Set `P : (F →+* ℝ) → ℕ` to `fun σ => p σ - p₁ σ - k`. Establish `sigM : ∀ a : Fin n → F, (∀ (σ : F →+* ℝ) (i : Fin n), ((i : ℕ) < P σ → 0 < σ (a i)) ∧ (P σ ≤ (i : ℕ) → σ (a i) < 0)) → ∀ τ : E →+* ℂ, ∃ u v : ℕ, Formalism.UG.HasSignature (G.map τ) u v ∧ Formalism.UG.HasSignature ((blockM (k` using `k) B a).map τ) u v := by`. Introduce `a ha τ`.
+
+Take `⟨σ, hσ⟩` from `exists_real_restrict cm τ`. Establish `key : Formalism.UG.HasSignature ((blockM (k` using `k) B a).map (L σ)) (p σ) (q σ) := by`. Establish `hc1` using `c1 σ`. Establish `hc2` using `c2 σ`. Establish `h3'` using `h3 σ`.
+
+Establish `h4'` using `h4 σ`. Establish `d` using `hasSignature_diagonal (P := P σ) (N := q σ - q₁ σ - k) (fun i => σ (a i)) (by simp only [P]; omega) (ha σ)`. Use `GlobalTheory.FrameComplement.hasSignature_fromBlocks (h1 σ) (GlobalTheory.FrameComplement.hasSignature_fromBlocks (GlobalTheory.WittSign.hasSignature_hyperbolic k) d)` as an intermediate fact. Rewrite using `[blockM_map B a (L σ) σ (hL σ)]`. Rewrite `this` using `[show p₁ σ + (k + P σ) = p σ by simp only [P]; omega, show q₁ σ + (k + (q σ - q₁ σ - k)) = q σ by omega]`. Then use the resulting hypothesis.
+
+Break down `eq_or_conj_of_restrict cm (L σ) τ (fun x => by rw [hσ, hL]) with rfl | rfl` into its components or cases. Conclude with `⟨_, _, h2 σ, key⟩`. Use `⟨p σ, q σ, ?_, ?_⟩` and prove the remaining obligations. Use `hasSignature_map_conj (h2 σ)` as an intermediate fact. Rewrite `this` using `[Matrix.map_map]`. Then use the resulting hypothesis.
+
+Use `hasSignature_map_conj key` as an intermediate fact. Rewrite `this` using `[Matrix.map_map]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `exists_signs F n P`. Take `⟨e⟩ : Nonempty (Fin m ≃ Fin t ⊕ ((Fin k ⊕ Fin k) ⊕ Fin n))` from `Fintype.card_eq.1 (by simp; omega)`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Take `⟨σ₀, -⟩` from `exists_real_restrict cm τ₀`. Establish `ha0 : ∀ i, a i ≠ 0` using `fun i h0 => by`. Use `ha σ₀ i` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Break down `lt_or_ge (i : ℕ) (P σ₀) with h | h` into its components or cases.
+
+Conclude with `lt_irrefl _ (this.1 h)`. Conclude with `lt_irrefl _ (this.2 h)`. Establish `hMd : ∀ b : Fin n → F, (∀ i, b i ≠ 0) → ((blockM (k` using `k) B b).submatrix e e).det ≠ 0 := fun b hb => by`. Rewrite using `[det_submatrix_equiv_self, blockM_det]`. Use `mul_ne_zero (mul_ne_zero hBd (hyp_det_ne k)) (Finset.prod_ne_zero_iff.2 fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(map_ne_zero _).2 (hb i)`. Establish `hMh : ∀ b : Fin n → F, ((blockM (k` using `k) B b).submatrix e e)ᴴ = (blockM (k := k) B b).submatrix e e := fun b => by rw [conjTranspose_submatrix, blockM_herm cm B hB]`. Establish `hsub : ∀ (b : Fin n → F) (τ : E →+* ℂ), ((blockM (k` using `k) B b).submatrix e e).map τ = ((blockM (k := k) B b).map τ).submatrix e e := fun _ _ => rfl`. Take `⟨c, hc⟩` from `(cm.fixed (G.det / ((blockM (k := k) B a).submatrix e e).det)).1 (by`. Rewrite using `[star_div₀, ← Matrix.det_conjTranspose, ← Matrix.det_conjTranspose, hG, hMh])`.
+
+Establish `hcpos : ∀ σ : F →+* ℝ, 0 < σ c` using `fun σ => by`. Take `⟨u, v, hu, hv⟩` from `sigM a ha (L σ)`. Take `⟨Q, hQ, hQe⟩` from `GlobalTheory.HermAdelicNorm.congr_of_hasSignature hu (GlobalTheory.StandardGramVectors.hasSignature_submatrix hv e)`. Use `GlobalTheory.Published.Landherr.re_det_div_pos (G' := (blockM (k := k) B a).submatrix e e) hGd (L σ) ⟨Q, hQ, hQe⟩` as an intermediate fact. Rewrite `this` using `[← hc, hL]`.
+
+Simplify using `using this`. Establish `hc0 : c ≠ 0` using `fun h => by`. Use `hcpos σ₀` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `lt_irrefl _ this`.
+
+Set `i₀ : Fin n` to `⟨0, hn0⟩`. Set `a' : Fin n → F` to `fun i => a i * (if i = i₀ then c else 1)`. Apply the tactic sequence `have ha'0 : ∀ i, a' i ≠ 0 := fun i => mul_ne_zero (ha0 i) (by split_ifs <;> simp [hc0])`. Establish `ha' : ∀ (σ : F →+* ℝ) (i : Fin n), ((i : ℕ) < P σ → 0 < σ (a' i)) ∧ (P σ ≤ (i : ℕ) → σ (a' i) < 0)`. Introduce `σ i`.
+
+Establish `hp : 0 < σ (if i = i₀ then c else 1)` using `by split_ifs`. Conclude with `hcpos σ`. Simplify using the standard rewrite rules. Simplify using `only [a', map_mul]`. Conclude with `⟨fun h => mul_pos ((ha σ i).1 h) hp, fun h => mul_neg_of_neg_of_pos ((ha σ i).2 h) hp⟩`.
+
+Establish `hdet : ((blockM (k` using `k) B a').submatrix e e).det = G.det := by`. Establish `h5` using `hMd a ha0`. Rewrite `h5`, the goal using `[det_submatrix_equiv_self]`. Establish `h6 : ∏ i, algebraMap F E (a' i) = (∏ i, algebraMap F E (a i)) * algebraMap F E c`. Simplify using `only [a', map_mul, Finset.prod_mul_distrib, apply_ite (algebraMap F E), map_one, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite `*` using `[hc, det_submatrix_equiv_self]`. Rewrite using `[blockM_det, h6, ← mul_assoc, ← blockM_det, mul_div_cancel₀ _ h5]`. Take `⟨R, hR, hRe⟩` from `GlobalTheory.HermAdelicNorm.congr_of_signature_of_adelic_norm F E cm m G ((blockM (k := k) B a').submatrix e e) hG (hMh a') hGd (hMd a' ha'0) (fun τ => by`. Take `⟨u, v, hu, hv⟩` from `sigM a' ha' τ`. Conclude with `⟨u, v, hu, GlobalTheory.StandardGramVectors.hasSignature_submatrix hv e⟩)`.
+
+Use the proof step `⟨1, by rw [hdet, div_self hGd]; simp⟩`. Conclude with `frame_of_congr G R hR e B _ hRe`.
+-/
 theorem exists_frame_of_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) {m t k : ℕ} (G : Matrix (Fin m) (Fin m) E) (B : Matrix (Fin t) (Fin t) E)
     (hG : Gᴴ = G) (hB : Bᴴ = B) (hGd : G.det ≠ 0) (hBd : B.det ≠ 0) (hm : t + 2 * k < m)
@@ -506,6 +690,25 @@ end GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse
 
 open GlobalTheory.CompanionTheory.WeilSiegel.NoFrame GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.Hasse in
 
+/- English proof (translation)
+Introduce `D r V h2r t β hNF hno`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨ht, hz, hdet⟩` from `hNF`. Apply `hno` to reduce the goal to its premises.
+
+Establish `hstar : ∀ x : D.host.E, D.sp.cm.sig x = star x` using `fun _ => rfl`. Establish `hβ : ∀ i j, star (β.1 j i) = β.1 i j` using `fun i j => by`. Use `congrFun (congrFun β.2 i) j` as an intermediate fact. Simplify `this` using `[hstar]`. Use `set B : Matrix (Fin t) (Fin t) D.host.E := β.1.submatrix (Fin.castLE ht.le) (Fin.castLE ht.le) with hBdef`.
+
+Establish `hBh : Bᴴ = B` using `Matrix.ext fun i j => hβ _ _`. Establish `hGh : V.gramᴴ = V.gram` using `Matrix.ext fun a b => V.herm.eq _ _`. Establish `hGd : V.gram.det ≠ 0` using `GlobalTheory.FrameComplement.gram_det_ne V`. Establish `hplace : ∀ ρ : D.what₂.Tau, ∃ p₁ q₁ p q : ℕ, Formalism.UG.HasSignature (B.map (tauE D ρ)) p₁ q₁ ∧ Formalism.UG.HasSignature (V.gram.map (tauE D ρ)) p q ∧ p₁ + (r - t) ≤ p ∧ q₁ + (r - t) ≤ q`. Introduce `ρ`.
+
+Establish `hτ : ∀ x, tauE D ρ (star x) = starRingEnd ℂ (tauE D ρ x)` using `fun x => D.sp.cm.cmUnram.2.1 _ x`. Take `⟨p₁, q₁, hB⟩` from `Formalism.UG.P.signature_exists _ (B.map (tauE D ρ)) (map_isHerm B hBh _ hτ) (map_isUnit_det B hdet _)`. Take `⟨p, q, hG⟩` from `Formalism.UG.P.signature_exists _ (V.gram.map (tauE D ρ)) (map_isHerm _ hGh _ hτ) (map_isUnit_det _ hGd _)`. Take `⟨h1, h2⟩` from `sig_bound ht (β.1.map (tauE D ρ)) (fun i j h => by simp [hz i j h]) (V.gram.map (tauE D ρ)) (p₁ := p₁) (q₁ := q₁) hB hG (fun ε S hε hS => by`. Take `⟨T, hT, hle⟩` from `hcon ρ ε S hε hS`.
+
+Conclude with `⟨T, hT, hle⟩)`. Conclude with `⟨p₁, q₁, p, q, hB, hG, h1, h2⟩`. Take `⟨x, hx1, hx2⟩` from `exists_frame_of_sig D.sp.cm (k := r - t) V.gram B hGh hBh hGd hdet (by omega) (fun τ => by`. Take `⟨ρ, rfl | rfl⟩` from `GlobalTheory.DefLiftMult.exists_tauE D τ`. Conclude with `hplace ρ`.
+
+Take `⟨p₁, q₁, p, q, h1, h2, h3, h4⟩` from `hplace ρ`. Use `⟨p₁, q₁, p, q, ?_, ?_, h3, h4⟩` and prove the remaining obligations. Use `hasSignature_map_conj h1` as an intermediate fact. Rewrite `this` using `[Matrix.map_map]`. Then use the resulting hypothesis. Use `hasSignature_map_conj h2` as an intermediate fact.
+
+Rewrite using `[Matrix.map_map] at this)` and apply the resulting hypothesis. Establish `htk : t + (r - t) = r` using `by omega`. Set `f : Fin t ⊕ Fin (r - t) ≃ Fin r` to `finSumFinEquiv.trans (finCongr htk)`. Use `⟨x.submatrix id f.symm, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.rank_submatrix x (Equiv.refl _) f.symm` as an intermediate fact.
+
+Rewrite `this` using `[hx1, htk]`. Conclude with `this`. Establish `e1 : gramQ V (x.submatrix id f.symm) = (x.submatrix id f.symm)ᴴ * V.gram * x.submatrix id f.symm`. Unfold `gramQ`. Rewrite using `[Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, gram_submatrix, hx2]`. Conclude with `block_submatrix ht β.1 hz htk`.
+-/
 theorem GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.exists_obstruction : ∀ (D : D7) (r : ℕ) (V : HSp D), 2 * r < V.rank → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → (¬ ∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = β.1) → ∃ (ρ : D.what₂.Tau) (ε : ℝ) (S : Submodule ℂ (Fin r → ℂ)), (ε = 1 ∨ ε = -1) ∧ GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.NonnegOn ε (β.1.map (tauE D ρ)) S ∧ ∀ T : Submodule ℂ (Fin V.rank → ℂ), GlobalTheory.CompanionTheory.WeilSiegel.NoFrame.PosOn ε (gramAt D V ρ) T → Module.finrank ℂ T < Module.finrank ℂ S := by
   intro D r V h2r t β hNF hno
   by_contra hcon

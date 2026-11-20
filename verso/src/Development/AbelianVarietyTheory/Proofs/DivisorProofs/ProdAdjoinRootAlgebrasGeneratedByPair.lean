@@ -5,6 +5,27 @@ open scoped Classical
 
 namespace GlobalTheory.KapLat
 
+/- English proof (translation)
+Introduce `E _ _ _ w K e Q₁ Q₂ B₁ B₂ u₁ u₂ hsep h₁ h₂`. Take `⟨ha₁, hr₁, hd₁, hs₁⟩` from `h₁`. Take `⟨ha₂, hr₂, hd₂, hs₂⟩` from `h₂`. Establish `hne : Q₁ * Q₂ ≠ 0` using `hsep.ne_zero`. Establish `hQ₁ : Q₁ ≠ 0` using `left_ne_zero_of_mul hne`.
+
+Establish `hQ₂ : Q₂ ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hcop : IsCoprime (Q₁.map e.symm.toRingHom) (Q₂.map e.symm.toRingHom)` using `hsep.isCoprime.map (Polynomial.mapRingHom e.symm.toRingHom)`. Establish `hfst : ∀ p : K.E[X], (aeval ((u₁, u₂) : B₁.A × B₂.A) p).1 = aeval u₁ p` using `fun p => by`. Simplify using `using (Polynomial.aeval_algHom_apply (AlgHom.fst K.E B₁.A B₂.A) ((u₁, u₂) : B₁.A × B₂.A) p).symm`. Establish `hsnd : ∀ p : K.E[X], (aeval ((u₁, u₂) : B₁.A × B₂.A) p).2 = aeval u₂ p` using `fun p => by`.
+
+Simplify using `using (Polynomial.aeval_algHom_apply (AlgHom.snd K.E B₁.A B₂.A) ((u₁, u₂) : B₁.A × B₂.A) p).symm`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Algebra.adjoin K.E {((u₁, u₂) : B₁.A × B₂.A)} = ⊤`. Take `⟨a, b, hab⟩` from `hcop`. Establish `e₁ : aeval u₁ b * aeval u₁ (Q₂.map e.symm.toRingHom) = 1`.
+
+Use `congrArg (aeval u₁) hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, hr₁, mul_zero, zero_add, map_one]`. Conclude with `this`. Establish `e₂ : aeval u₂ a * aeval u₂ (Q₁.map e.symm.toRingHom) = 1`. Use `congrArg (aeval u₂) hab` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_mul, map_mul, hr₂, mul_zero, add_zero, map_one]`. Conclude with `this`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, z⟩ -`. Establish `hy : y ∈ (aeval u₁ : K.E[X] →ₐ[K.E] B₁.A).range`.
+
+Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval, ha₁]`. Discharge the goal by the elementary cases of `trivial`. Establish `hz : z ∈ (aeval u₂ : K.E[X] →ₐ[K.E] B₂.A).range`. Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval, ha₂]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨p, rfl⟩` from `hy`. Take `⟨r, rfl⟩` from `hz`. Establish `key : ((aeval u₁ p, aeval u₂ r) : B₁.A × B₂.A) = aeval ((u₁, u₂) : B₁.A × B₂.A) (b * Q₂.map e.symm.toRingHom * p + a * Q₁.map e.symm.toRingHom * r)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hfst, map_add, map_mul, map_mul, map_mul, map_mul, hr₁, mul_zero, zero_mul, add_zero, e₁, one_mul]`.
+
+Rewrite using `[hsnd, map_add, map_mul, map_mul, map_mul, map_mul, hr₂, mul_zero, zero_mul, zero_add, e₂, one_mul]`. Conclude with `key ▸ Polynomial.aeval_mem_adjoin_singleton K.E _`. Use `show aeval ((u₁, u₂) : B₁.A × B₂.A) ((Q₁ * Q₂).map e.symm.toRingHom) = 0`. Rewrite using `[Polynomial.map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hfst, map_mul, hr₁, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[hsnd, map_mul, hr₂, mul_zero]`. Both sides reduce to the same expression. Use `show Module.finrank K.E (B₁.A × B₂.A) = (Q₁ * Q₂).natDegree`.
+
+Rewrite using `[Module.finrank_prod, hd₁, hd₂, natDegree_mul hQ₁ hQ₂]`. Conclude with `Prod.ext hs₁ hs₂`.
+-/
 theorem fits_prod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ)
     (e : K.E ≃+* w.adicCompletion E) (Q₁ Q₂ : (w.adicCompletion E)[X]) (B₁ B₂ : GlobalTheory.UnitLemma.InvAlg K)
     (u₁ : B₁.A) (u₂ : B₂.A), (Q₁ * Q₂).Separable → Fits w e B₁ Q₁ u₁ → Fits w e B₂ Q₂ u₂ →

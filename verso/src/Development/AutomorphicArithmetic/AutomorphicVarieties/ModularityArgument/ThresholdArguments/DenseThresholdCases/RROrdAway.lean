@@ -18,6 +18,27 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Hi
 open UpperTheory.Zero.LLC UpperTheory.V.Z.Win UpperTheory.Gal.SV
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `PH F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r H A hA`. Establish `P` using `PH.toClassicalTheorems`. Take `⟨p1, p2, p3, p4⟩` from `UpperTheory.V.Base.places F Ω l A`. Establish `triv : (∀ g ∈ Ine (F` using `F) A, r g = 1) → Ine (F := F) A ≤ ξ.ker → IsDiagOn r (Ine (F := F) A) ![1, ξ] := fun h1 h2 => ⟨1, fun g hg => by`. Establish `h3 : ξ g = 1` using `h2 hg`.
+
+Rewrite using `[h1 g hg]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h3]⟩`. Distinguish the cases in `hT : A = ⊤`. Rewrite `triv`, the goal using `[(p2 hT).1]`.
+
+Conclude with `triv (fun g hg => by rw [Subgroup.mem_bot.1 hg, map_one]) bot_le`. Take `⟨w, h⟩` from `p1 hT`. Establish `hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal` using `fun e => hA ((p3 w h).2 e)`. Take `⟨χ, hχ⟩` from `H.pol`. Take `⟨-, wt, HT, -, -, hall⟩` from `hX F Ω l ι 2 one_le_two π χ H.reg hχ`.
+
+Establish `hG` using `hall r H.cont H.att`. Take `⟨⟨σ, hσ⟩, hiso⟩` from `_root_.UpperTheory.V.Af.local_comp_real_of_printed_results P F 2 π w`. Distinguish the cases in `hc : c w = 0`. Take `⟨v, hv, hf⟩` from `H.sph w hc`. Take `⟨T, hT, hTv⟩` from `UpperTheory.V.Sd.OrdinaryAwayPlaces.rep_retr σ.ρ σ.irred (π.locRep w) (hiso σ hσ).2 v hv`.
+
+Take `⟨B, hB⟩` from `(_root_.UpperTheory.V.Af.satake_local_of_printed_results P F 2 w σ).1 ⟨T v, hTv, fun u hu => by rw [← hT, hf u (UpperTheory.V.Sd.OrdinaryAwayPlaces.iwahori_level_zero_eq w ▸ hu)]⟩`. Establish `hB' : π.HasSat w B` using `((_root_.UpperTheory.V.Af.satake_local_of_printed_results P F 2 w σ).2 _ π.finPart (hiso σ hσ) B).2 hB`. Conclude with `triv (hG.frob w hl B hB' A h).1 ((H.ram w A h).2 (Or.inl hc))`. Take `⟨lam, ⟨v, hv, hf, hU⟩, hlam⟩` from `H.away w hc hl`. Establish `hl0 : lam ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hlam`. Take `⟨T, hT, hTv⟩` from `UpperTheory.V.Sd.OrdinaryAwayPlaces.rep_retr σ.ρ σ.irred (π.locRep w) (hiso σ hσ).2 v hv`. Take `⟨μ₁, μ₂, L, hL, hμ, -, hlaw⟩` from `_root_.UpperTheory.V.Sd.jacqOfU_alt P F w σ (c w) (Units.mk0 lam hl0) hc ⟨T v, hTv, fun u hu => by rw [← hT, hf u hu], by`. Rewrite using `[Uop, ← UpperTheory.V.Sd.OrdinaryAwayPlaces.map_dc σ.ρ (π.locRep w) T hT hTv, ← Uop, hU, map_smul, Units.val_mk0]⟩`.
+
+Take `⟨ψ, hψ, hs, hψ0⟩` from `UpperTheory.V.Sd.OrdinaryAwayPlaces.exists_ps σ.smooth σ.irred μ₁ μ₂ L hL hlaw`. Take `⟨rc, hrc⟩` from `recTExists F Ω A w h`. Establish `hpl` using `(Birth.ordPlain F Ω l ι ξ s c m a π r H w σ hσ).elim id fun ⟨B, hB⟩ => hG.plain w B hB σ hσ`. Establish `hx` using `(((hG.loc w σ hσ hpl).1 A h rc hrc).1 hl).isWDOf (hGd F Ω A w h rc hrc 2 σ hpl)`. Use `UpperTheory.V.Sd.OrdinaryAwayPlaces.diag_of_wd hl ι r ξ hx (fun g => ?_) (fun g hg => ?_) fun e => ((H.ram w A h).1 e).elim hc hl` and prove the remaining obligations.
+
+Take `⟨b, hb, ε, hL⟩` from `toV' hrc`. Take `⟨e1, e2⟩` from `RR.ps_cls hL σ ψ hψ hs`. Rewrite using `[e1, UpperTheory.V.Sd.OrdinaryAwayPlaces.charPol_lpTw]`. Establish `h1` using `e2 (ineIncl h g)`. Establish `h2 : valuation (w.adicCompletion F) (b (ineIncl h g) : w.adicCompletion F) = 1` using `ord_eq_zero_iff.1 (by rw [hb.ord_eq, deg_ineIncl, neg_zero])`.
+
+Establish `: (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite `h1` using `[Fin.prod_univ_two, hψ0 _ h2, hμ _ ((isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one.1 h2)]`. Conclude with `⟨_, h1⟩`. Establish `h1` using `DFunLike.congr_fun H.det g`. Establish `h2 : cycZ F Ω l g = 1` using `p4 hA hg`.
+
+Simplify using `only [MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.zpow_apply, cycBar, h2, map_one, one_zpow, one_mul] at h1`. Conclude with `congrArg Units.val h1`.
+-/
 theorem UpperTheory.V.Z.Win.RR.ordAway_of_alt (hX : ExRS) (hGd : GdOf) :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Sd.OrdAway := by
   intro PH F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r H A hA

@@ -36,9 +36,17 @@ def ell (M : M3) (i j : Fin 3) : M3 →L[ℝ] ℂ :=
   Complex.ofRealCLM.comp (((ContinuousLinearMap.proj j).comp
     (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 3 => Fin 3 → ℝ) i)).comp (mul3 (minv M)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ell_apply (M : M3) (i j : Fin 3) (m : M3) :
     ell M i j m = ((((Matrix.of M)⁻¹ * Matrix.of m) i j : ℝ) : ℂ) := rfl
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_` and prove the remaining obligations. Establish `h1 : ‖ell M i j m‖ = ‖mul3 (minv M) m i j‖`. Rewrite using `[ell_apply, Complex.norm_real]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_ell_le (M : M3) (i j : Fin 3) : ‖ell M i j‖ ≤ ‖mul3‖ * ‖minv M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun m => ?_
   have h1 : ‖ell M i j m‖ = ‖mul3 (minv M) m i j‖ := by

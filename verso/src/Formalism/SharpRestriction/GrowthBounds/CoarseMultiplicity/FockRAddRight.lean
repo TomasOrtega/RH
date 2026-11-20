@@ -21,6 +21,9 @@ def MultDiv (O : Type) [CommRing O] (p κ : ℕ) {S : Type} [Fintype S] {k : ℕ
   ∀ α : S × Fin k →₀ ℕ, (∀ s, multideg α s = d s) →
     (((∏ s, (d s).factorial : ℕ) : ℕ) : O) ∣ (p : O) ^ κ * ((expFact α : ℕ) : O)
 
+/- English proof (translation)
+Unfold `scale`. Rewrite using `[Submodule.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_scale {O Kf X : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X] [Module O X]
     [IsScalarTower O Kf X] {c : Kf} {M : Submodule O X} {x : X} : x ∈ scale c M ↔ ∃ y ∈ M, c • y = x := by
   unfold scale
@@ -31,12 +34,25 @@ section Contra
 
 variable {S : Type} [Fintype S] [DecidableEq S] {R : Type} [CommRing R] {k : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fock_eq_fockR {τ : Type} (F G : MvPolynomial τ R) : fock F G = fockR F G := rfl
 
+/- English proof (translation)
+Simplify using `[Lin]`.
+-/
 theorem Lin_X (N : S → Matrix (Fin k) (Fin k) R) (v : S × Fin k) :
     Lin N (X v) = ∑ b : Fin k, C (N v.1 v.2 b) * X (v.1, b) := by
   simp [Lin]
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => simp [Lin]`. Consider the case `add p q hp hq => simp only [map_add, coeff_add, hp, hq]`. Consider the case `mul_X p v hp`. Establish `e1 : coeff 0 (p * X v) = 0`.
+
+Rewrite using `[← constantCoeff_eq]`. Simplify using the standard rewrite rules. Establish `e2 : coeff 0 (Lin N (p * X v)) = 0`. Rewrite using `[map_mul, Lin_X, ← constantCoeff_eq]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem Lin_coeff_zero (N : S → Matrix (Fin k) (Fin k) R) (h : MvPolynomial (S × Fin k) R) :
     coeff 0 (Lin N h) = coeff 0 h := by
   induction h using MvPolynomial.induction_on with
@@ -49,6 +65,17 @@ theorem Lin_coeff_zero (N : S → Matrix (Fin k) (Fin k) R) (h : MvPolynomial (S
       rw [map_mul, Lin_X, ← constantCoeff_eq]; simp
     rw [e1, e2]
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => simp [Lin]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, smul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p v hp`. Take `⟨t, c⟩` from `v`.
+
+Establish `hL : pderiv (s, b) (∑ d : Fin k, C (N t c d) * X (t, d) : MvPolynomial (S × Fin k) R) = if t = s then C (N t c b) else 0`. Rewrite using `[map_sum]`. Simplify using `only [pderiv_C_mul, pderiv_X, Pi.single_apply, Prod.mk.injEq]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality.
+
+Simplify using `[eq_comm]`. Establish `hts' : ¬ s = t` using `fun h => hts h.symm`. Simplify using `[hts, hts']`. Establish `hR : ∑ a : Fin k, N s a b • (Lin N p * Lin N (pderiv (s, a) (X (t, c)))) = Lin N p * (if t = s then C (N t c b) else 0)`. Simplify using `only [pderiv_X, Pi.single_apply, Prod.mk.injEq]`.
+
+Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using `[apply_ite, Finset.sum_ite_eq, smul_eq_C_mul, mul_comm]`. Establish `hts' : ¬ s = t` using `fun h => hts h.symm`. Simplify using `[hts, hts']`.
+
+Simplify using `only [map_mul, Derivation.leibniz, smul_eq_mul, map_add, Lin_X, hL, hp]`. Simplify using `only [smul_add, Finset.sum_add_distrib]`. Rewrite using `[hR]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_smul_comm]`.
+-/
 theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : MvPolynomial (S × Fin k) R) :
     pderiv (s, b) (Lin N h) = ∑ a : Fin k, N s a b • Lin N (pderiv (s, a) h) := by
   classical
@@ -79,6 +106,15 @@ theorem Lin_chain (N : S → Matrix (Fin k) (Fin k) R) (s : S) (b : Fin k) (h : 
     rw [hR]
     simp only [Finset.mul_sum, Finset.sum_mul, mul_smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `Q`. Establish `h1 : Lin N (C a : MvPolynomial (S × Fin k) R) = C a` using `by simp [Lin]`. Rewrite using `[h1, C_apply, tsact_monomial_left, tsact_monomial_left, Lin_coeff_zero]`.
+
+Consider the case `add p q hp hq`. Introduce `Q`. Rewrite using `[map_add, tsact_add_left, tsact_add_left, hp, hq]`. Consider the case `mul_X p v hp`. Introduce `Q`.
+
+Rewrite using `[map_mul, Lin_X, Finset.mul_sum, tsact_sum_left, tsact_X_mul, Lin_chain, tsact_sum_right]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e : Lin N p * (C (N v.1 v.2 b) * X (v.1, b)) = N v.1 v.2 b • (Lin N p * X (v.1, b))`. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]`.
+-/
 theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × Fin k) R) :
     ∀ Q : MvPolynomial (S × Fin k) R, fockR (Lin N P) Q = fockR P (Lin (fun s => (N s).transpose) Q) := by
   induction P using MvPolynomial.induction_on with
@@ -97,6 +133,9 @@ theorem fockR_Lin (N : S → Matrix (Fin k) (Fin k) R) (P : MvPolynomial (S × F
       rw [smul_eq_C_mul]; ring
     rw [e, tsact_smul_left, tsact_X_mul, hp, tsact_smul_right, Matrix.transpose_apply]
 
+/- English proof (translation)
+Rewrite using `[fockR_Lin, Lin_comp]`. Simplify using `only [h]`. Rewrite using `[Lin_one]`.
+-/
 theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * (A s).transpose = 1)
     (P Q : MvPolynomial (S × Fin k) R) : fockR (Lin A P) (Lin B Q) = fockR P Q := by
   rw [fockR_Lin, Lin_comp]
@@ -105,6 +144,11 @@ theorem fockR_Lin_dual (A B : S → Matrix (Fin k) (Fin k) R) (h : ∀ s, B s * 
 
 end Contra
 
+/- English proof (translation)
+Establish `hMi : IsUnit (M⁻¹).det` using `by rw [Matrix.det_nonsing_inv]; exact hM.ringInverse`. Establish `hMt : IsUnit ((M⁻¹).transpose).det` using `by rw [Matrix.det_transpose]; exact hMi`. Consider the cases of `vec`. Simplify using `only [Aa, Bool.false_eq_true, if_false]`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hMt, Matrix.nonsing_inv_nonsing_inv _ hM, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.nonsing_inv_mul _ hM]`.
+
+Simplify using `only [Aa, if_true]`. Conclude with `Matrix.nonsing_inv_mul _ hMt`.
+-/
 theorem Aa_dual {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hM : IsUnit M.det) : Aa vec ((M⁻¹).transpose)⁻¹ * (Aa vec M⁻¹).transpose = 1 := by
   have hMi : IsUnit (M⁻¹).det := by rw [Matrix.det_nonsing_inv]; exact hM.ringInverse
@@ -116,6 +160,31 @@ theorem Aa_dual {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m 
   · simp only [Aa, if_true]
     exact Matrix.nonsing_inv_mul _ hMt
 
+/- English proof (translation)
+Introduce `α hα`. Establish `h1 : ∀ s, (d s).factorial = Nat.multinomial Finset.univ (fun c : Fin k => α (s, c)) * ∏ c : Fin k, (α (s, c)).factorial`. Introduce `s`. Rewrite using `[mul_comm, Nat.multinomial_spec, ← hα s]`. Both sides reduce to the same expression.
+
+Establish `h2 : expFact α = ∏ s : S, ∏ c : Fin k, (α (s, c)).factorial`. Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => rfl), Fintype.prod_prod_type]`. Use `set Mn : ℕ := ∏ s : S, Nat.multinomial Finset.univ (fun c : Fin k => α (s, c)) with hMn`. Establish `h3 : (∏ s, (d s).factorial) = Mn * expFact α`.
+
+Rewrite using `[h2, hMn, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun s _ => h1 s`. Establish `hMn0 : Mn ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => (Nat.multinomial_pos _ _).ne'`. Establish `h4 : padicValNat p Mn ≤ kapFl p k d`. Rewrite using `[hMn, Formalism.CountingSumsFrames.fock_val_prod p _ _ (fun s _ => (Nat.multinomial_pos _ _).ne')]`.
+
+Unfold `kapFl`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Use `Formalism.CountingSumsFrames.fock_mult_val_le p (fun c : Fin k => α (s, c)) Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Establish `e : ∑ c : Fin k, α (s, c) = d s` using `hα s`.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Establish `hdv : p ^ padicValNat p Mn ∣ Mn` using `pow_padicValNat_dvd`. Establish `hnd : ¬ p ^ (padicValNat p Mn + 1) ∣ Mn` using `pow_succ_padicValNat_not_dvd hMn0`. Generalize the expression as in `padicValNat p Mn = v at h4 hdv hnd`.
+
+Take `⟨u, hu⟩` from `hdv`. Establish `hpu : ¬ p ∣ u`. Introduce `hd`. Apply `hnd` to reduce the goal to its premises. Rewrite using `[hu, pow_succ]`.
+
+Conclude with `Nat.mul_dvd_mul_left _ hd`. Establish `huO : IsUnit ((u : ℕ) : O)`. Establish `hco : Nat.Coprime u p` using `((Nat.Prime.coprime_iff_not_dvd hp.out).2 hpu).symm`. Assume the negation of the conclusion as `hnu`. Establish `hm : ((u : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`.
+
+Establish `hb` using `Nat.gcd_eq_gcd_ab u p`. Rewrite `hb` using `[hco]`. Establish `h5 : (1 : O) = (u : O) * ((Nat.gcdA u p : ℤ) : O) + (p : O) * ((Nat.gcdB u p : ℤ) : O)`. Use `congrArg (fun z : ℤ => (z : O)) hb` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `h6 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[h5]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ hm) (Ideal.mul_mem_right _ _ hpO)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h6)`.
+
+Take `⟨uu, huu⟩` from `huO`. Use `⟨(p : O) ^ (kapFl p k d - v) * (↑uu⁻¹ : O), ?_⟩` and prove the remaining obligations. Rewrite using `[h3, hu]`. Use `push_cast`. Rewrite using `[← huu]`.
+
+Establish `e1 : (p : O) ^ kapFl p k d = (p : O) ^ v * (p : O) ^ (kapFl p k d - v)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
+
+Establish `e2 : (uu : O) * (↑uu⁻¹ : O) = 1` using `Units.mul_inv uu`. Take the linear combination `(-(p : O) ^ v * (p : O) ^ (kapFl p k d - v) * (expFact α : O)) * e2`.
+-/
 theorem multDiv_kapFl (O : Type) [CommRing O] [IsLocalRing O] (p : ℕ) [hp : Fact p.Prime]
     (hpO : (p : O) ∈ IsLocalRing.maximalIdeal O) {S : Type} [Fintype S] {k : ℕ} (d : S → ℕ) :
     MultDiv O p (kapFl p k d) (k := k) d := by
@@ -185,6 +254,9 @@ def fockL {τ K : Type} [CommRing K] (Q : MvPolynomial τ K) : MvPolynomial τ K
   map_add' a b := tsact_add_left a b Q
   map_smul' c a := by simpa using tsact_smul_left c a Q
 
+/- English proof (translation)
+Rewrite using `[tsact_symm, tsact_add_left, tsact_symm f, tsact_symm f']`.
+-/
 theorem fockR_add_right {τ K : Type} [CommRing K] (g f f' : MvPolynomial τ K) :
     fockR g (f + f') = fockR g f + fockR g f' := by
   rw [tsact_symm, tsact_add_left, tsact_symm f, tsact_symm f']
@@ -198,6 +270,13 @@ def LatM (O : Type) {Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] {S : Type
     Submodule O (MvPolynomial (S × (Fin (m + 1) × Fin (m + 1))) Kf) :=
   tensorLat O Kf (fun s => nablaLTw O Kf m (letterWt m (d s) (vec s)) (M s))
 
+/- English proof (translation)
+Set `f : ↥(Pol Kf (ι` to `S) (m + 1) d) →ₗ[Kf] ↥(VS Kf m vec d) := LinearMap.codRestrict (VS Kf m vec d) ((Th0 Kf m vec).toLinearMap.comp (Pol Kf (ι := S) (m + 1) d).subtype) (fun P => (mem_tens_dw Kf m hm vec d _).2 ⟨P.1, P.2, rfl⟩)`. Establish `hinj : Function.Injective f`. Introduce `P Q hPQ`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Th0_inj Kf m hm vec d _ _ P.2 Q.2 (congrArg Subtype.val hPQ)`.
+
+Establish `hsurj : Function.Surjective f`. Introduce `y`. Establish `hy : (y : MvPolynomial (S × (Fin (m + 1) × Fin (m + 1))) Kf) ∈ VS Kf m vec d` using `y.2`. Take `⟨F, hF, hyF⟩` from `(mem_tens_dw Kf m hm vec d _).1 hy`. Conclude with `⟨⟨F, hF⟩, Subtype.ext hyF.symm⟩`.
+
+Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun P => rfl⟩`.
+-/
 theorem exists_thK (Kf : Type) [Field Kf] {S : Type} [Fintype S] [DecidableEq S] {m : ℕ} (hm : 1 ≤ m) (vec : S → Bool)
     (d : S → ℕ) :
     ∃ thK : ↥(Pol Kf (ι := S) (m + 1) d) ≃ₗ[Kf] ↥(VS Kf m vec d),
@@ -236,11 +315,23 @@ def TY (c : Kf) : ↥(VS Kf m vec d) →ₗ[Kf] Module.Dual Kf ↥(VS Kf m vec d
     rw [tsact_smul_right]
     ring
 
+/- English proof (translation)
+Simplify using `[TY, fockL]`.
+-/
 theorem TY_apply (c : Kf) (P Q : ↥(Pol Kf (ι := S) (m + 1) d)) :
     TY thK c (thK Q) (thK P) = c * fockR (P : MvPolynomial (S × Fin (m + 1)) Kf)
       (Q : MvPolynomial (S × Fin (m + 1)) Kf) := by
   simp [TY, fockL]
 
+/- English proof (translation)
+Distinguish the cases in `hD : (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf) = 0`. Conclude with `⟨0, by rw [hD, div_zero, zero_mul, map_zero]⟩`. Establish `hdvd : (((∏ s, (d s).factorial : ℕ) : ℕ) : O) ∣ (p : O) ^ κ * fockR G E`. Unfold `fockR`. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce `α hα`. Take `⟨q, hq⟩` from `hMD α (mem_Pol.1 hG α hα)`. Establish `hq' : (p : O) ^ κ * ((∏ k ∈ α.support, (α k).factorial : ℕ) : O) = (((∏ s, (d s).factorial : ℕ) : ℕ) : O) * q` using `hq`. Conclude with `⟨coeff α G * coeff α E * q, by linear_combination (coeff α G * coeff α E) * hq'⟩`.
+
+Take `⟨z, hz⟩` from `hdvd`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[fockR_map, div_mul_eq_mul_div, div_eq_iff hD]`. Use `congrArg (algebraMap O Kf) hz` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast] at this`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolynomial (S × Fin (m + 1)) O)
     (hG : G ∈ Pol O (m + 1) d) (E : MvPolynomial (S × Fin (m + 1)) O) :
     ∃ z : O, ((p : Kf) ^ κ / (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf)) *
@@ -264,6 +355,13 @@ theorem int_pair (p κ : ℕ) (hMD : MultDiv O p κ (k := m + 1) d) (G : MvPolyn
   rw [this]
   ring
 
+/- English proof (translation)
+Establish `hMt : ∀ s, IsUnit (((M s)⁻¹).transpose).det`. Introduce `s`. Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv]`. Conclude with `(hM s).ringInverse`. Take `⟨G, hG, hu'⟩` from `(mem_tens_nabla O Kf m hm vec d M hM _).1 hu`.
+
+Take `⟨G', hG', hy'⟩` from `(mem_tens_nabla O Kf m hm vec d _ hMt _).1 hy`. Set `P : ↥(Pol Kf (ι` to `S) (m + 1) d) := ⟨Lin (fun s => Aa (vec s) (M s)⁻¹) (map (algebraMap O Kf) G), Lin_Pol _ _ (map_Pol _ G hG)⟩`. Set `Q : ↥(Pol Kf (ι` to `S) (m + 1) d) := ⟨Lin (fun s => Aa (vec s) (((M s)⁻¹).transpose)⁻¹) (map (algebraMap O Kf) G'), Lin_Pol _ _ (map_Pol _ G' hG')⟩`. Establish `eu : u = thK P` using `Subtype.ext (by rw [hthK, hu'])`. Establish `ey : y = thK Q` using `Subtype.ext (by rw [hthK, hy'])`.
+
+Rewrite using `[eu, ey, TY_apply]`. Use `show _ * fockR (Lin _ _) (Lin _ _) ∈ _`. Rewrite using `[fockR_Lin_dual _ _ (fun s => Aa_dual (vec s) (M s) (hM s))]`. Take `⟨z, hz⟩` from `int_pair (Kf := Kf) p κ hMD G hG G'`. Conclude with `⟨z, hz.symm⟩`.
+-/
 theorem sandwich (hm : 1 ≤ m)
     (hthK : ∀ P, ((thK P : ↥(VS Kf m vec d)) : MvPolynomial (S × (Fin (m + 1) × Fin (m + 1))) Kf) =
       Th0 Kf m vec (P : MvPolynomial (S × Fin (m + 1)) Kf))

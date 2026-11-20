@@ -10,6 +10,21 @@ open ReciprocityTheory.ChartRestriction.DS.S7 ReciprocityTheory.ChartRestriction
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Establish `hU : ∀ (s : TriCo N) (a b : Fin N), upMat s a b = if a = b then ((s.1 a : ℝ) : ℂ) else if h : a < b then s.2 ⟨(a, b), h⟩ else 0` using `fun s a b => rfl`. Establish `hz : ∀ (s : TriCo N) (a b : Fin N), b < a → upMat s a b = 0`. Introduce `s a b h`. Rewrite using `[hU s a b, if_neg (ne_of_gt h), dif_neg (not_lt.mpr h.le)]`. Establish `hlow : ∀ a b : Fin N, b < a → (upMat t * upMat t0) a b = 0`.
+
+Introduce `a b hba`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hka : k < a`. Rewrite using `[hz t a k hka, zero_mul]`.
+
+Rewrite using `[hz t0 k b (lt_of_lt_of_le hba (not_lt.mp hka)), mul_zero]`. Establish `hdiag : ∀ a, (upMat t * upMat t0) a a = ((t.1 a * t0.1 a : ℝ) : ℂ)`. Introduce `a`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hU t a a, hU t0 a a, if_pos rfl, if_pos rfl, Complex.ofReal_mul]`.
+
+Introduce `k _ hka`. Break down `lt_or_gt_of_ne hka with h | h` into its components or cases. Rewrite using `[hz t a k h, zero_mul]`. Rewrite using `[hz t0 k a h, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ a) h`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[hU _ a b, if_neg (ne_of_lt h), dif_pos h]`.
+
+Both sides reduce to the same expression. Substitute `h` using the available equality. Rewrite using `[hU _ a a, if_pos rfl]`. Use `show (((upMat t * upMat t0) a a).re : ℂ) = (upMat t * upMat t0) a a`. Rewrite using `[hdiag, Complex.ofReal_re]`.
+
+Rewrite using `[hU _ a b, if_neg (ne_of_gt h), dif_neg (not_lt.mpr h.le), hlow a b h]`. Use `show ((upMat t * upMat t0) j j).re = t.1 j * t0.1 j`. Rewrite using `[hdiag, Complex.ofReal_re]`.
+-/
 theorem upMat_triCoOf_mul (t t0 : TriCo N) :
     upMat (triCoOf (upMat t * upMat t0)) = upMat t * upMat t0 ∧
       ∀ j, (triCoOf (upMat t * upMat t0)).1 j = t.1 j * t0.1 j := by
@@ -49,6 +64,25 @@ theorem upMat_triCoOf_mul (t t0 : TriCo N) :
   · show ((upMat t * upMat t0) j j).re = t.1 j * t0.1 j
     rw [hdiag, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `hfun : (fun t : TriCo N => triCoOf (upMat t * upMat t0)) = ⇑(rmulL (upMat t0))`. Use function extensionality and compare the values at `t`. Rewrite using `[rmulL_apply]`. Use `set L : TriCo N →ₗ[ℝ] TriCo N := rmulL (upMat t0) with hL`. Establish `hdet : LinearMap.det L = ∏ j : Fin N, t0.1 j ^ (2 * (j : ℕ) + 1)` using `det_rmulL_upMat t0 h0`.
+
+Use `set D : ℝ := ∏ j : Fin N, t0.1 j ^ (2 * (j : ℕ) + 1) with hD`. Establish `hDpos : 0 < D` using `Finset.prod_pos fun j _ => pow_pos (h0 j) _`. Establish `hLm : Measurable L` using `L.continuous_of_finiteDimensional.measurable`. Use `haveI hC : (volume : Measure ({ab : Fin N × Fin N // ab.1 < ab.2} → ℂ)).IsAddHaarMeasure := by first`. Consider the case `infer_instance`.
+
+Consider the case `exact Measure.pi.isAddHaarMeasure _`. Use `haveI hR : (volume : Measure (Fin N → ℝ)).IsAddHaarMeasure := by first`. Consider the case `infer_instance`. Consider the case `exact Measure.pi.isAddHaarMeasure _`. Use `haveI hT : (volume : Measure (TriCo N)).IsAddHaarMeasure := by first`.
+
+Consider the case `exact Measure.prod.instIsAddHaarMeasure volume volume`. Consider the case `infer_instance`. Establish `hvol : Measure.map L (volume : Measure (TriCo N)) = ENNReal.ofReal |D⁻¹| • volume`. Rewrite using `[← hdet]`. Conclude with `Measure.map_linearMap_addHaar_eq_smul_addHaar _ (by rw [hdet]; exact hDpos.ne')`.
+
+Establish `hP : MeasurableSet (triPos N)`. Establish `: triPos N = ⋂ j : Fin N, {t : TriCo N | 0 < t.1 j}`. Use extensionality with `t`. Simplify using `[triPos]`. Rewrite using `[this]`.
+
+Conclude with `MeasurableSet.iInter fun j => measurableSet_lt measurable_const ((measurable_pi_apply j).comp measurable_fst)`. Establish `hpre : ∀ S : Set (TriCo N), L ⁻¹' S ∩ triPos N = L ⁻¹' (S ∩ triPos N)`. Introduce `S`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage]`.
+
+Rewrite using `[hL, rmulL_mem_triPos t0 x h0]`. Rewrite using `[hfun]`. Use extensionality with `s hs`. Establish `hS : MeasurableSet (s ∩ triPos N)` using `hs.inter hP`. Rewrite using `[Measure.map_apply hLm hs, triMeas, withDensity_apply _ (hLm hs), withDensity_apply _ hs, Measure.restrict_restrict (hLm hs), Measure.restrict_restrict hs, hpre s]`.
+
+Establish `h1 : ∫⁻ x in L ⁻¹' (s ∩ triPos N), triDens x = ∫⁻ x in L ⁻¹' (s ∩ triPos N), ENNReal.ofReal D * triDens (L x)`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hL, hD, ← triDens_rmulL t0 x h0]`. Establish `h2 : ∫⁻ x in L ⁻¹' (s ∩ triPos N), ENNReal.ofReal D * triDens (L x) = ENNReal.ofReal D * ∫⁻ x, (s ∩ triPos N).indicator triDens (L x)`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_indicator (hLm hS)]`.
+
+Use `congr 1`. Establish `h3 : ∫⁻ x, (s ∩ triPos N).indicator triDens (L x) = ENNReal.ofReal |D⁻¹| * ∫⁻ y in s ∩ triPos N, triDens y`. Rewrite using `[← lintegral_map ((triDens_measurable).indicator hS) hLm, hvol, lintegral_smul_measure, lintegral_indicator hS]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, h3, ← mul_assoc, ← ENNReal.ofReal_mul hDpos.le, abs_of_pos (inv_pos.mpr hDpos), mul_inv_cancel₀ hDpos.ne', ENNReal.ofReal_one, one_mul]`.
+-/
 theorem triMeas_map_mul_right (t0 : TriCo N) (h0 : t0 ∈ triPos N) :
     Measure.map (fun t : TriCo N => triCoOf (upMat t * upMat t0)) (triMeas N) = triMeas N := by
   classical
@@ -108,6 +142,13 @@ theorem triMeas_map_mul_right (t0 : TriCo N) (h0 : t0 ∈ triPos N) :
   rw [h1, h2, h3, ← mul_assoc, ← ENNReal.ofReal_mul hDpos.le, abs_of_pos (inv_pos.mpr hDpos),
     mul_inv_cancel₀ hDpos.ne', ENNReal.ofReal_one, one_mul]
 
+/- English proof (translation)
+Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Unfold `triMeas`. Rewrite using `[withDensity_apply _ hKm, Measure.restrict_restrict hKm, Set.inter_eq_left.mpr hK0]`. Establish `hgc : ContinuousOn (fun t : TriCo N => ∏ j : Fin N, t.1 j ^ (-(2 * ((j : ℕ) : ℤ) + 1))) K`. Use `continuousOn_finset_prod _ (fun j _ => ?_)` and prove the remaining obligations.
+
+Conclude with `ContinuousOn.zpow₀ (by fun_prop : Continuous fun t : TriCo N => t.1 j).continuousOn _ (fun x hx => Or.inl (hK0 hx j).ne')`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hgc`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hKm (fun x hx => ?_)` and prove the remaining obligations. Conclude with `ENNReal.ofReal_le_ofReal ((Real.le_norm_self _).trans (hC x hx))`.
+
+Use `_ = ENNReal.ofReal C * volume K := setLIntegral_const _ _`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hK.measure_lt_top`.
+-/
 theorem triMeas_compact_lt_top (K : Set (TriCo N)) (hK : IsCompact K) (hK0 : K ⊆ triPos N) :
     triMeas N K < ⊤ := by
   have hKm : MeasurableSet K := hK.isClosed.measurableSet

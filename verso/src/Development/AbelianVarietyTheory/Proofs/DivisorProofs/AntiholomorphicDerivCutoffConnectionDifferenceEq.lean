@@ -11,6 +11,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Establish `c₀ : MContDiffAt 1 (fun x => conn G₀ x (coordVec a)) v` using `h₀.conn u₀ (by norm_num) _`. Establish `c₁ : MContDiffAt 1 (fun x => conn G₁ x (coordVec a)) v` using `h₁.conn u₁ (by norm_num) _`. Establish `hρ' : DifferentiableAt ℝ (fun x => (ρ x : ℂ)) v` using `Complex.ofRealCLM.differentiableAt.comp v hρ`. Establish `hs : mdbar (fun x => conn G₁ x (coordVec a) - conn G₀ x (coordVec a)) v (coordVec b) = mdbar (fun x => conn G₁ x (coordVec a)) v (coordVec b) - mdbar (fun x => conn G₀ x (coordVec a)) v (coordVec b)`.
+
+Simplify using `only [sub_eq_add_neg]`. Rewrite using `[mdbar_add c₁ c₀.neg, mdbar_neg]`. Rewrite using `[mdbar_neg (fun x => (ρ x : ℂ) • (conn G₁ x (coordVec a) - conn G₀ x (coordVec a))), mdbar_smul hρ' (c₁.sub c₀), hs]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, curvAt, cutForm, curv, smul_sub, smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mdbar_neg_cut_conn_sub {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {ρ : V n → ℝ}
     {G₀ G₁ : V n → Matrix r r ℂ} {v : V n} (hρ : DifferentiableAt ℝ ρ v) (h₀ : MContDiffAt 2 G₀ v)
     (u₀ : IsUnit (G₀ v).det) (h₁ : MContDiffAt 2 G₁ v) (u₁ : IsUnit (G₁ v).det) :

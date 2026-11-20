@@ -13,6 +13,13 @@ open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge Crystalline
 
 namespace CrystallineSemistableComparison.crystallineComparison
 
+/- English proof (translation)
+Introduce `l _ K _ M hM j`. Take `⟨d, hA⟩` from `GlueB'.atlas_of hM`. Take `⟨N, hN⟩` from `B.main l d j`. Take `⟨v, -, e⟩` from `ACris.exists_periodT_eq_mu_mul_unit (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one`. Establish `ht : tA l = (GlueBE.eps l).μ * v` using `by rw [GlueBE.eps_μ]; exact e`.
+
+Establish `hC` using `B.compat l`. Establish `hup` using `fun n : ℕ => (hN (B.schFn M.p) (okToOC l K) (GlueBE.eps l) hA.some n).1 true`. Use `⟨⟨2 * N, fun y => ?_, fun x hx => ?_⟩, fun x n => ?_, fun g x n => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `GlueBL.lim_surj (GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j) _ v (tA l) N ht hup y`. Conclude with `⟨x, fun n => congrArg (fun z => z.1 n) hx⟩`.
+
+Conclude with `GlueBL.lim_inj (GlueB'.βS hC (B.schFn M.p) (okToOC l K) true j) _ v (tA l) N ht hup x (Subtype.ext (funext hx))`. Conclude with `hC.phi (B.schFn M.p) (okToOC l K) n j _`. Conclude with `hC.gal (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K g) (galOC_okToOC _) true n j _`.
+-/
 theorem bInEx : BInEx := by
   intro l _ K _ M hM j
   obtain ⟨d, hA⟩ := GlueB'.atlas_of hM

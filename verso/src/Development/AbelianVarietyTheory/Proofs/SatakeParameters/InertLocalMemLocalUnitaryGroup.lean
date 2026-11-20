@@ -15,6 +15,9 @@ namespace GlobalTheory.InertLocUnitary
 
 open TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `[ReciprocityTheory.Aut.compAt, ReciprocityTheory.Aut.conjAL, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (a : ReciprocityTheory.Aut.AL L) :
     ReciprocityTheory.Aut.compAt L v (ReciprocityTheory.Aut.conjAL L a) =
@@ -26,6 +29,21 @@ theorem compAt_conjAL (L : Type) [Field L] [NumberField L] [IsCMField L]
     simp [ReciprocityTheory.Aut.compAt, ReciprocityTheory.Aut.conjAL, Formalism.UG.sigR, Algebra.TensorProduct.map_tmul]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use `set ψ : ReciprocityTheory.Aut.AL L →+* w.adicCompletion L := (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L).comp (ReciprocityTheory.Aut.compAt L v) with hψ`. Establish `hcomm : ∀ a, Dv.σw (ψ a) = ψ (ReciprocityTheory.Aut.conjAL L a)`. Introduce `a`. Simplify using `only [hψ, RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[compAt_conjAL, Dv.comm]`.
+
+Use `set M : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL L) := (x.1 : GL (Fin n) (ReciprocityTheory.Aut.AL L)).val with hM`. Establish `hx : M * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL L) M = 1` using `x.2`. Use `set X : Matrix (Fin n) (Fin n) (w.adicCompletion L) := M.map ψ with hX`. Establish `hXval : ((Formalism.UG.bc (n` using `Fin n) (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) (Matrix.GeneralLinearGroup.map (ReciprocityTheory.Aut.compAt L v) (x : GL (Fin n) (ReciprocityTheory.Aut.AL L))) : GL (Fin n) (w.adicCompletion L)) : Matrix (Fin n) (Fin n) …`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `hcTX : Formalism.UG.cT Dv.σw X = (ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL L) M).map ψ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, ReciprocityTheory.Aut.conjT, hX, hcomm]`. Establish `hXX : X * Formalism.UG.cT Dv.σw X = 1`.
+
+Rewrite using `[hcTX, hX, ← Matrix.map_mul, hx, Matrix.map_one _ (map_zero ψ) (map_one ψ)]`. Establish `hXX' : Formalism.UG.cT Dv.σw X * X = 1` using `mul_eq_one_comm.mp hXX`. Use `set P : Matrix (Fin n) (Fin n) (w.adicCompletion L) := (Dv.P : GL (Fin n) (w.adicCompletion L)).val with hP`. Use `set Q : Matrix (Fin n) (Fin n) (w.adicCompletion L) := (Dv.P⁻¹ : GL (Fin n) (w.adicCompletion L)).val with hQ`. Establish `hPQ : P * Q = 1` using `by rw [hP, hQ, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `hJ : Formalism.UG.cT Dv.σw P * P = Formalism.UG.antiJ (w.adicCompletion L) n` using `Dv.Panti`. Use `show Formalism.UG.cT Dv.σw (((Dv.loc x : GL (Fin n) _)) : Matrix _ _ _) * Formalism.UG.antiJ (w.adicCompletion L) n * ((Dv.loc x : GL (Fin n) _) : Matrix _ _ _) = Formalism.UG.antiJ (w.adicCompletion L) n`. Establish `hloc : ((Dv.loc x : GL (Fin n) _) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) = Q * X * P`. Simplify using `only [InertDatum.loc, Units.val_mul, hXval, hQ, hP]`. Establish `cQP : Formalism.UG.cT Dv.σw Q * Formalism.UG.cT Dv.σw P = 1`.
+
+Rewrite using `[← Formalism.UG.cT_mul, hPQ, Formalism.UG.cT_one]`. Rewrite using `[hloc, ← hJ, Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT Dv.σw P * P := by`.
+
+Rewrite using `[cQP, hPQ, Matrix.mul_one, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.UG.cT Dv.σw X), hXX', Matrix.one_mul]`.
+-/
 theorem loc_mem_GU (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))
     (Dv : InertDatum L n v w) (x : GAf L n) : Dv.loc x ∈ GU Dv.σw n := by
@@ -69,5 +87,8 @@ theorem loc_mem_GU (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
 
 end GlobalTheory.InertLocUnitary
 
+/- English proof (translation)
+Introduce `L _ _ _ n v w Dv x` and use `GlobalTheory.InertLocUnitary.loc_mem_GU L n v w Dv x`.
+-/
 theorem GlobalTheory.InertLocUnitary.main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), ∀ x : GAf L n, Dv.loc x ∈ GU Dv.σw n :=
   fun L _ _ _ n v w Dv x => GlobalTheory.InertLocUnitary.loc_mem_GU L n v w Dv x

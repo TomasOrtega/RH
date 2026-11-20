@@ -8,6 +8,17 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ _`. Establish `h1 : KK F = (M.Ks F : Set (G1 F))`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(InfOrth g ∧ ∀ v, IntAt v g) ↔ gl g ∈ Reduction.maxCompact (K := F) (n := 2)`. Rewrite using `[Reduction.mem_maxCompact, UpperTheory.ConvolutionTheory.R2.M.kkInf F g]`.
+
+Conclude with `and_congr_right fun _ => forall_congr' fun v => UpperTheory.ConvolutionTheory.R2.M.kkFin F g v`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hC` using `Reduction.isCompact_maxCompact (K := F) (n := 2)`. Establish `hD` using `hC.image (Units.continuous_val)`. Establish `h2` using `Matrix.SpecialLinearGroup.isClosedEmbedding_val.isCompact_preimage hD`.
+
+Establish `h3 : KK F = (fun g : G1 F => g.1) ⁻¹' (Units.val '' (Reduction.maxCompact (K` using `F) (n := 2) : Set (GL (Fin 2) (A F)))) := by`. Rewrite using `[h1]`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Conclude with `⟨gl g, hg, rfl⟩`. Introduce and unpack `⟨u, hu, huv⟩`. Establish `: u = gl g` using `Units.ext huv`. Substitute `this` using the available equality. Conclude with `hu`.
+
+Rewrite using `[h3]`. Conclude with `h2`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.M.kkCpt :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], KK F = (M.Ks F : Set (G1 F)) ∧ IsCompact (KK F) := by
   intro F _ _ _

@@ -12,6 +12,11 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.DualEigenSum
 
+/- English proof (translation)
+Establish `h1 : (E * Zb * A) * Zt = 1`. Rewrite using `[← hE]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h2 : Zt * (E * Zb * A) = 1` using `(Matrix.mul_eq_one_comm_of_card_eq m n ℂ h).1 h1`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Rewrite using `[← h2]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem inv_eq_of_mul {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (h : Fintype.card m = Fintype.card n) (E : Matrix m m ℂ) (Zb : Matrix m n ℂ)
     (A : Matrix n n ℂ) (Zt : Matrix n m ℂ) (hE : E * (Zb * A * Zt) = 1) :
@@ -22,6 +27,25 @@ theorem inv_eq_of_mul {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [Deci
   apply Matrix.inv_eq_left_inv
   rw [← h2]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `ι _ _ m g Hm _ hcard z G hG hGz horth c c'`. Set `Z : Matrix (Σ i, Fin (m i)) (Fin g) ℂ` to `Matrix.of fun p a => z p.1 p.2 a`. Set `Zb : Matrix (Σ i, Fin (m i)) (Fin g) ℂ` to `Matrix.of fun p a => star (z p.1 p.2 a)`. Set `A : Matrix (Fin g) (Fin g) ℂ` to `((Real.pi : ℂ) • Hm).transpose`. Establish `hc : Fintype.card (Σ i, Fin (m i)) = Fintype.card (Fin g)`.
+
+Simplify using `[Fintype.card_sigma, hcard]`. Establish `hent : ∀ p q : (Σ i, Fin (m i)), (Zb * A * Z.transpose) p q = (Real.pi : ℂ) * hermForm Hm (z q.1 q.2) (z p.1 p.2)`. Introduce `p q`. Simplify using `only [Z, Zb, A, hermForm, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.smul_apply, dotProduct, Matrix.mulVec, Pi.star_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+
+Establish `hD : Zb * A * Z.transpose = Matrix.blockDiagonal' G`. Use extensionality with `⟨i, b⟩ ⟨i', b'⟩`. Rewrite using `[hent]`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality.
+
+Rewrite using `[Matrix.blockDiagonal'_apply_eq, hGz]`. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ h, horth i' i b' b (Ne.symm h), mul_zero]`. Establish `hE : Matrix.blockDiagonal' (fun i => (G i)⁻¹) * (Zb * A * Z.transpose) = 1`. Rewrite using `[hD, ← Matrix.blockDiagonal'_mul, ← Matrix.blockDiagonal'_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (hG i).isUnit)`. Establish `hA` using `inv_eq_of_mul hc _ _ _ _ hE`. Establish `hdual : HermFrame.dualGram ((Real.pi : ℂ) • Hm) = Z.transpose * Matrix.blockDiagonal' (fun i => (G i)⁻¹) * Zb`. Rewrite using `[← hA, HermFrame.dualGram, Matrix.transpose_nonsing_inv]`.
+
+Establish `hZb : Zb.mulVec (star c') = fun p => star (∑ a, z p.1 p.2 a * c' a)`. Use function extensionality and compare the values at `p`. Simplify using `[Zb, Matrix.mulVec, dotProduct]`. Rewrite using `[hdual, HermFrame.form, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, hZb]`. Simplify using `only [HermFrame.form]`.
+
+Rewrite using `[dotProduct, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dotProduct]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[Matrix.mulVec, Matrix.mulVec, dotProduct, dotProduct, Fintype.sum_sigma, Finset.sum_eq_single i]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.blockDiagonal'_apply_eq]`. Both sides reduce to the same expression. Introduce `j _ hj`.
+
+Use `Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.blockDiagonal'_apply_ne _ _ _ (Ne.symm hj), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem form_dualGram_eq_sum : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.PosDef → ∑ i, m i = g → ∀ (z : ∀ i, Fin (m i) → Fin g → ℂ) (G : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ), (∀ i, (G i).PosDef) → (∀ i b b', G i b b' = (Real.pi : ℂ) * hermForm Hm (z i b') (z i b)) → (∀ i i' b b', i ≠ i' → hermForm Hm (z i b) (z i' b') = 0) → ∀ c c' : Fin g → ℂ, HermFrame.form (HermFrame.dualGram ((Real.pi : ℂ) • Hm)) c c' = ∑ i, HermFrame.form (G i)⁻¹ (fun b => ∑ a, z i b a * c a) (fun b => ∑ a, z i b a * c' a) := by
   intro ι _ _ m g Hm _ hcard z G hG hGz horth c c'
   let Z : Matrix (Σ i, Fin (m i)) (Fin g) ℂ := Matrix.of fun p a => z p.1 p.2 a

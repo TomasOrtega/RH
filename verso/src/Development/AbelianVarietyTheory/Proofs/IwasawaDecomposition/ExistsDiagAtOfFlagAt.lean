@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z B : Mdl Y i₀} {L : Lat B}
 
+/- English proof (translation)
+Introduce `z hz` and use `⟨q.le hz.1, by rw [hg]; exact q'.le hz.2⟩`.
+-/
 theorem inf_le_preimage (q q' : LatChart Z L) (hg : q.g = q'.g) : q.U ⊓ q'.U ≤ q.g ⁻¹ᵁ (q.V ⊓ q'.V) :=
   fun z hz => ⟨q.le hz.1, by rw [hg]; exact q'.le hz.2⟩
 
@@ -36,6 +39,9 @@ def extMat (q : LatChart Z L) (σ : E →+* ℂ) : GL (Fin q.n) Γ(Z.X, q.U) := 
 
 def extEmb (q : LatChart Z L) (σ : E →+* ℂ) : Fin (Dw.mult σ) ↪ Fin q.n := (q.ext σ).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(q.ext σ).choose_spec.choose_spec i l`.
+-/
 theorem extMat_apply (q : LatChart Z L) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (l : Fin q.n) :
     (q.extMat σ : Matrix (Fin q.n) (Fin q.n) Γ(Z.X, q.U)) (q.extEmb σ i) l = q.c σ i l :=
   (q.ext σ).choose_spec.choose_spec i l
@@ -53,6 +59,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z B : Mdl Y i₀} {L : Lat B}
 
+/- English proof (translation)
+Set `f : Γ(GlobalTheory.LieVB.omega t.G, V) →+ k` to `AddMonoidHom.mk' (tanEv t hv h) (tanEv_add t hv h)`. Express the relevant statement in the definitionally equal form `f (∑ j, a j • s j) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `tanEv t hv h (a j • s j) = _`.
+
+Rewrite using `[tanEv_smul, valR, dif_pos h]`.
+-/
 theorem tanEv_sum_smul {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : Sp k ⟶ X}
     {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsTanAtG t x v) {V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) {n : ℕ}
     (a : Fin n → Γ(X, V)) (s : Fin n → Γ(GlobalTheory.LieVB.omega t.G, V)) :
@@ -72,6 +83,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z B : Mdl Y i₀} {L : Lat B}
 
+/- English proof (translation)
+Take `⟨hU, hfl, hco⟩` from `hu`. Take `⟨hU', hfl', hco'⟩` from `hu'`. Rewrite `hco'` using `[← hg]`. Take `⟨τ, mu, hV, htr, hv⟩` from `hco`. Take `⟨τ', mu', hV', htr', hv'⟩` from `hco'`.
+
+Establish `hx : ⊤ ≤ x ⁻¹ᵁ (q.U ⊓ q'.U)` using `le_preimage_inf hU hU'`. Take `⟨a, φ, hφ, hfr, -⟩` from `hfl`. Take `⟨a', φ', hφ', hfr', -⟩` from `hfl'`. Take `⟨y, hy, -⟩` from `CommonMod.exists_lift_chart Z hφ`. Take `⟨rfl, hmu⟩` from `GlobalTheory.TransUniq.trans_unique E H Dw Xo p W Y B.i Z.i τ τ' mu mu' q.isMap.1.2.1 htr htr'`.
+
+Establish `hmu' : ∀ w : Sp (DualNumber k) ⟶ (Y Z.i).t.G.left, IsTanAtG (Y Z.i).t (x ≫ Z.π) w → w ≫ mu.φ = w ≫ mu'.φ` using `fun w hw => hmu k y _ (spMap (algebraMap k (DualNumber k))) w (by rw [hw.1, hy])`. Establish `hxτ : (x ≫ Z.π) ≫ τ = (x ≫ q.g) ≫ B.π`. Rewrite using `[Category.assoc, Category.assoc, CommonMod.comp_π_eq q.isMap htr]`. Use `choose v hvt hve hvc using hv σ i`. Use `choose v' hvt' hve' hvc' using hv' σ`.
+
+Establish `hcomb : IsCombAtG B.t (x ≫ q.g) v' cf v` using `StepBasis.isComb_corr mu B.tMap hxτ (fun b => (hfr'.1 σ b).1) hvt' (fun b => (hmu' _ (hfr'.1 σ b).1).trans (hve' b).symm) (hfr.1 σ i).1 hvt hve.symm hc`. Establish `hVV : ⊤ ≤ (x ≫ q.g) ⁻¹ᵁ (q.V ⊓ q'.V)` using `le_preimage_inf hV hV'`. Establish `key` using `GlobalTheory.LocM.tanEv_comb E H B.X B.t k (x ≫ q.g) _ hVV _ v' hvt' cf v hvt hcomb (L.N.incl.app (q.V ⊓ q'.V) (GlobalTheory.Twist.resM _ inf_le_right (q'.m l)))`. Establish `rhs : ∀ b, tanEv B.t (hvt' b) hVV (L.N.incl.app (q.V ⊓ q'.V) (GlobalTheory.Twist.resM _ inf_le_right (q'.m l))) = valR x q'.U (q'.c σ b l)` using `fun b => by`. Rewrite using `[GlobalTheory.Twist.app_resM, tanEv_resM]`.
+
+Conclude with `hvc' b l`. Establish `e : GlobalTheory.Twist.resM _ inf_le_right (q'.m l) = ∑ j, crd q q' l j • GlobalTheory.Twist.resM _ (inf_le_left : q.V ⊓ q'.V ≤ q.V) (q.m j)`. Use `((q.frame.basis inf_le_left).sum_repr _).symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.VB.IsFrame.basis_apply]`. Both sides reduce to the same expression.
+
+Establish `lhs : tanEv B.t hvt hVV (L.N.incl.app (q.V ⊓ q'.V) (GlobalTheory.Twist.resM _ inf_le_right (q'.m l))) = ∑ j, valR (x ≫ q.g) _ (crd q q' l j) * valR x q.U (q.c σ i j)`. Rewrite using `[e, map_sum]`. Simplify using `only [Scheme.Modules.Hom.app_smul]`. Rewrite using `[tanEv_sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Twist.app_resM, tanEv_resM]`. Conclude with `congrArg _ (hvc j)`. Establish `hval : valR x (q.U ⊓ q'.U) (crossC q q' hg σ i l) = ∑ j, valR (x ≫ q.g) _ (crd q q' l j) * valR x q.U (q.c σ i j)`. Rewrite using `[crossC, valR_eq x _ hx, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← valR_eq x _ hx, ← valR_eq x _ hx, pullInf, valR_appLE x q.g _ hx, valR_res x _ hx]`. Rewrite using `[hval, ← lhs, key]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [rhs]`.
+-/
 theorem valR_crossC (q q' : LatChart Z L) (hg : q.g = q'.g) {k : Type} [Field k] {x : Sp k ⟶ Z.X}
     {u u' : Vecs Dw (Y Z.i).t k} (hu : q.FrameAt x u) (hu' : q'.FrameAt x u') (σ : E →+* ℂ) (i : Fin (Dw.mult σ))
     (cf : Fin (Dw.mult σ) → k) (hc : IsCombAtG (Y Z.i).t (x ≫ Z.π) (u' σ) cf (u σ i)) (l : Fin q'.n) :
@@ -131,6 +159,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z B : Mdl Y i₀} {L : Lat B}
 
+/- English proof (translation)
+Take `⟨cf, hci, -, hc⟩` from `hd i`. Establish `hx : ⊤ ≤ x ⁻¹ᵁ (q.U ⊓ q'.U)` using `le_preimage_inf hu.1 hu'.1`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ q'.U` using `hu'.1`. Establish `hone : ∀ b, ∑ l, valR x q'.U (q'.c σ b l) * valR x q'.U ((((q'.extMat σ)⁻¹ : GL (Fin q'.n) Γ(Z.X, q'.U)) : Matrix (Fin q'.n) (Fin q'.n) Γ(Z.X, q'.U)) l (q'.extEmb σ i)) = if b = i then 1 else 0` using `fun b => by`. Repeatedly rewrite using `[← extMat_apply, valR_eq x _ hx', ← map_mul, ← map_sum, ← Matrix.mul_apply]`.
+
+Rewrite using `[Units.mul_inv, Matrix.one_apply]`. Simplify using `only [(q'.extEmb σ).injective.eq_iff]`. Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+
+Rewrite using `[diagFn, valR_eq x _ hx, map_sum]`. Repeatedly rewrite using `[map_mul, ← valR_eq x _ hx, valR_crossC q q' hg hu hu' σ i cf hc, valR_res x _ hx, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, hone, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `hci`.
+-/
 theorem valR_diagFn (q q' : LatChart Z L) (hg : q.g = q'.g) {k : Type} [Field k] {x : Sp k ⟶ Z.X}
     {u u' : Vecs Dw (Y Z.i).t k} (hu : q.FrameAt x u) (hu' : q'.FrameAt x u') (σ : E →+* ℂ)
     {d : Fin (Dw.mult σ) → k} (hd : DiagAt (Y Z.i).t (x ≫ Z.π) (u' σ) (u σ) d) (i : Fin (Dw.mult σ)) :
@@ -161,6 +196,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
   {Z B : Mdl Y i₀} {L : Lat B}
 
+/- English proof (translation)
+Take `⟨_, _, _, hf, _⟩` from `id h`. Take `⟨_, _, _, hf', _⟩` from `id h'`. Take `⟨d, hd⟩` from `exists_diag_of_flagAt Z hty h h' σ (fun i => (hf.1 σ i).1) (fun i => (hf'.1 σ i).1) (FJ.FlagIndep.linInd_of_frame hf' σ)`. Conclude with `⟨d, (diagAt_iff _ _ d).2 hd⟩`.
+-/
 theorem exists_diagAt_of_flagAt (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) {k : Type} [Field k] {x : Sp k ⟶ Z.X}
     {u u' : Vecs Dw (Y Z.i).t k} (h : Z.FlagAt x u) (h' : Z.FlagAt x u') (σ : E →+* ℂ) :
     ∃ d, DiagAt (Y Z.i).t (x ≫ Z.π) (u' σ) (u σ) d := by
@@ -170,6 +208,9 @@ theorem exists_diagAt_of_flagAt (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult �
     (FJ.FlagIndep.linInd_of_frame hf' σ)
   exact ⟨d, (diagAt_iff _ _ d).2 hd⟩
 
+/- English proof (translation)
+Take `⟨_, _, _, hf, _⟩` from `h`. Take `⟨_, _, _, hf', _⟩` from `h'`. Establish `t1` using `(diagAt_iff (fun i => (hf.1 σ i).1) (fun i => (hf'.1 σ i).1) d').1 hd'`. Establish `t2` using `(diagAt_iff (fun i => (hf'.1 σ i).1) (fun i => (hf.1 σ i).1) d).1 hd`. Conclude with `congrFun ((t1.trans t2).unique (FJ.FlagIndep.linInd_of_frame hf σ) (Diag.refl _)) a`.
+-/
 theorem diag_mul_eq_one {k : Type} [Field k] {x : Sp k ⟶ Z.X} {u u' : Vecs Dw (Y Z.i).t k} (h : Z.FlagAt x u)
     (h' : Z.FlagAt x u') {σ : E →+* ℂ} {d d' : Fin (Dw.mult σ) → k}
     (hd : DiagAt (Y Z.i).t (x ≫ Z.π) (u' σ) (u σ) d) (hd' : DiagAt (Y Z.i).t (x ≫ Z.π) (u σ) (u' σ) d')
@@ -180,6 +221,11 @@ theorem diag_mul_eq_one {k : Type} [Field k] {x : Sp k ⟶ Z.X} {u u' : Vecs Dw 
   have t2 := (diagAt_iff (fun i => (hf'.1 σ i).1) (fun i => (hf.1 σ i).1) d).1 hd
   exact congrFun ((t1.trans t2).unique (FJ.FlagIndep.linInd_of_frame hf σ) (Diag.refl _)) a
 
+/- English proof (translation)
+Use `IsUnit.of_mul_eq_one (resG _ (inf_comm q.U q'.U).le (diagFn q' q hg.symm σ a)) (fn_ext Z fun k _ x h ho => ?_)` and prove the remaining obligations. Take `⟨u, hu⟩` from `q.exists_frameAt (le_preimage_mono x inf_le_left h) ho`. Take `⟨u', hu'⟩` from `q'.exists_frameAt (le_preimage_mono x inf_le_right h) ho`. Take `⟨d, hd⟩` from `exists_diagAt_of_flagAt hty hu.2.1 hu'.2.1 σ`. Take `⟨d', hd'⟩` from `exists_diagAt_of_flagAt hty hu'.2.1 hu.2.1 σ`.
+
+Rewrite using `[valR_mul x _ h, valR_res x _ h, valR_one x _ h, valR_diagFn q q' hg hu hu' σ hd a, valR_diagFn q' q hg.symm hu' hu σ hd' a]`. Conclude with `diag_mul_eq_one hu.2.1 hu'.2.1 hd hd' a`.
+-/
 theorem isUnit_diagFn (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) (q q' : LatChart Z L) (hg : q.g = q'.g)
     (σ : E →+* ℂ) (a : Fin (Dw.mult σ)) : IsUnit (diagFn q q' hg σ a) := by
   refine IsUnit.of_mul_eq_one (resG _ (inf_comm q.U q'.U).le (diagFn q' q hg.symm σ a)) (fn_ext Z fun k _ x h ho => ?_)
@@ -195,6 +241,13 @@ end GlobalTheory.LocM.LatChart
 
 namespace GlobalTheory.LocM.LatChart
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W hp hW Y i₀ Z B L hty q q' e`. Establish `hg : q.g = q'.g` using `MapUniq.isMap_unique E H Dw Xo p W Y i₀ hp hW Z B q.g q'.g q.isMap q'.isMap`. Use `⟨∏ σ, ∏ i, (isUnit_diagFn hty q q' hg σ i).unit ^ e σ i, fun k _ x u u' d hu hu' hd => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hx : ⊤ ≤ x ⁻¹ᵁ (q.U ⊓ q'.U)` using `le_preimage_inf hu.1 hu'.1`. Rewrite using `[valR_prod_zpow x hx]`.
+
+Use `Finset.prod_congr rfl fun σ _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, valR_diagFn q q' hg hu hu' σ (hd σ) i]`. Use `Units.ext (fn_ext Z fun k _ x h ho => ?_)` and prove the remaining obligations. Take `⟨u, hu⟩` from `q.exists_frameAt (le_preimage_mono x inf_le_left h) ho`. Take `⟨u', hu'⟩` from `q'.exists_frameAt (le_preimage_mono x inf_le_right h) ho`.
+
+Use `choose d hd using fun σ => exists_diagAt_of_flagAt hty hu.2.1 hu'.2.1 σ`. Rewrite using `[hb k x u u' d hu hu' hd, valR_prod_zpow x h]`. Use `Finset.prod_congr rfl fun σ _ => Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, valR_diagFn q q' hg hu hu' σ (hd σ) i]`.
+-/
 theorem existsUnique_isTr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p), ∀ (Z B : Mdl Y i₀) (L : Lat B), (∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) →

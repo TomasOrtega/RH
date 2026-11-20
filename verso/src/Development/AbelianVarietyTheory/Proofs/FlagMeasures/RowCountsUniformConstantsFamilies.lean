@@ -22,6 +22,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 namespace GlobalTheory.RowCounts
 
+/- English proof (translation)
+Introduce `hM Cg cb Cu cT CT C0 A`. Take `⟨C1a, hC1⟩` from `GlobalTheory.T.mean_count_primitive_sublattices_over_genus 1 one_pos`. Take `⟨c3, hC3⟩` from `GlobalTheory.LoopC.PairMean.main Cg cb Cu cT CT C0 A 3 (max C1a 0) (le_max_right _ _)`. Take `⟨cH, -, hHH⟩` from `GlobalTheory.GramHeight.height_bounds Cg cb Cu cT CT C0 A`. Take `⟨cS, hSW⟩` from `GlobalTheory.LoopC.GenericMean.main Cg cb Cu cT CT C0 A`.
+
+Take `⟨c4, hC4⟩` from `GlobalTheory.LoopC.Partner.partners_le Cg cb Cu cT CT C0 A`. Use `⟨c3, cH, cS, c4, 1, fun eps Fm _ hl => ⟨fun C hC => ⟨0, fun x _ i u u' => ?_⟩, ⟨0, fun x _ i u u' => ?_⟩, ⟨0, fun x _ i u u' => ?_⟩, ⟨0, fun x _ i u u' => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `hC3 C hC _ _ u u' _ _ hl (GlobalTheory.T.rows_raw_mass_and_genus_mass _ u) (hC1 _ (le_max_left _ _) _ _ u u' _ _ Cg cb Cu cT CT C0 A hl)`. Conclude with `hHH _ _ u u' _ _ hl`. Conclude with `hSW _ _ u u' _ _ hl (GlobalTheory.T.mean_primitive_corank_one_sublattices_bound _ _ u u' _ _ Cg cb Cu cT CT C0 A (Formalism.MainNotions.BridgeLemma.mass_ratio_of_siegel_cm_unramified hM _))`.
+
+Conclude with `hC4 _ _ u u' _ _ hl`.
+-/
 theorem uniform_counts : Formalism.HermitianLatticesTheory.SiegelMassRatio → ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ c3 cH cS c4 thr : ℝ,
     ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm →
     (∀ C ≥ c3, (OwnEv Fm fun C' Cl x i => ∀ u u',

@@ -14,6 +14,9 @@ open scoped Classical
 open MvPolynomial Formalism.BasicNotions.DV
 open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowerSumVert.powerSum_vert_mul | exact GlobalTheory.PowerSumVert.powerSum_vert_mul | (intros; apply GlobalTheory.PowerSumVert.powerSum_vert_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_at_adelic_root_symbols : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ (c : O.s.Comp) (n : ℕ)
     (A : Fin n → (arIn O.s O.Φ O.met.hm).A c),

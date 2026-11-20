@@ -9,6 +9,9 @@ open GlobalTheory.PRep GlobalTheory.BZMir GlobalTheory.BZMir.Fun
 
 namespace GlobalTheory.CompanionTheory.BZMir
 
+/- English proof (translation)
+Introduce `ψ hψ n V₁ V₂ V₃ _ _ _ _ _ _ τ₁ τ₂ τ₃ h₁ h₂ h₃ f g hf hg hfg`. Establish `hopen : IsOpen ((mirChar k ψ n).ker : Set (MirUin k (n + 1)))`. Rewrite using `[GlobalTheory.T.mirabolic_character_eq k ψ n]`. Conclude with `GlobalTheory.T.theta_open_mirabolic k ψ hψ (n + 1) _`. Conclude with `GlobalTheory.T.twisted_jacquet_exact_smooth τ₁ τ₂ τ₃ h₁ h₂ h₃ (MirUin k (n + 1)) (mirChar k ψ n) hopen (GlobalTheory.T.mirabolic_filtration_exhaustive k (n + 1)) f g hf hg hfg`.
+-/
 theorem exPhiMinus (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     GlobalTheory.BZMir.Fun.ExPhiMinus k := by
   intro ψ hψ n V₁ V₂ V₃ _ _ _ _ _ _ τ₁ τ₂ τ₃ h₁ h₂ h₃ f g hf hg hfg

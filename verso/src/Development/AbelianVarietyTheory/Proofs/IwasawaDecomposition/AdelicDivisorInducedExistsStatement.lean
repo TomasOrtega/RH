@@ -20,5 +20,8 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.Geo GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueCx
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShFam.Pad.induced_adlOf_line | exact GlobalTheory.ShFam.Pad.induced_adlOf_line | (intros; apply GlobalTheory.ShFam.Pad.induced_adlOf_line <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adelic_divisor_induced_exists : HTBoundSt → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (R : ℝ), 2 ≤ R → ∀ w : Sym D.host.E →₀ ℤ, (∀ a ∈ w.support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R) → ∃ (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (L : GlobalTheory.HermLB M.p) (m : ℕ+), (adlOf (Φ.C k) (metsOf x Φ k) w).Induced M L m 0 := by
   first | exact @GlobalTheory.ShFam.Pad.induced_adlOf_line | exact GlobalTheory.ShFam.Pad.induced_adlOf_line | (intros; apply GlobalTheory.ShFam.Pad.induced_adlOf_line <;> assumption)

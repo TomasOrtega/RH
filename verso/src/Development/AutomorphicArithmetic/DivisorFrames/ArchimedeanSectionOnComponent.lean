@@ -22,6 +22,27 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsHomogeneousCompId
 import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.LawsFieldsSeparately
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
+/- English proof (translation)
+Establish `hU` using `hL.unf _ hσ`. Take `⟨W⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.nonempty_unfAt hU k w`. Take `⟨Wu⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.nonempty_unitAt W (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfSupAtUnit.dmin_ortho _ hort)`. Establish `hHm` using `GlobalTheory.OrthoHerm.hm_eq_smul_one E H Dw l Xo c _ r (U _) x hσ hU k w W Wu (hL.xi _ hσ k) hort`. Take `⟨hzx, hcomb, -⟩` from `hbor`.
+
+Use `choose C hCi hCup hCc using hcomb`. Establish `hp : Dw.mult τ.1 = Dw.p` using `by unfold Datum.mult; rw [if_pos τ.2]`. Establish `hq : Dw.mult (conjEmb τ.1) = Dw.q` using `by unfold Datum.mult; rw [if_neg (conj_not_mem τ)]`. Establish `hx : 0 < x`. Establish `hne : Nonempty (Σ ρ : E →+* ℂ, Fin (Dw.mult ρ))`.
+
+Break down `Nat.eq_zero_or_pos Dw.p with h0 | h0` into its components or cases. Establish `hq1 : 0 < Dw.q` using `by have := hL.pos; omega`. Conclude with `⟨⟨conjEmb τ.1, ⟨0, hq ▸ hq1⟩⟩⟩`. Conclude with `⟨⟨τ.1, ⟨0, hp ▸ h0⟩⟩⟩`. Take `⟨j0⟩` from `hne`.
+
+Establish `h1` using `Wu.pos (Pi.single (W.e.symm j0) 1) (by simp)`. Rewrite `h1` using `[hHm]`. Establish `h2 : hermForm (((2 * x : ℝ) : ℂ) • (1 : Matrix (Fin W.g) (Fin W.g) ℂ)) (Pi.single (W.e.symm j0) 1) (Pi.single (W.e.symm j0) 1) = ((2 * x : ℝ) : ℂ)`. Simplify using `[hermForm, Matrix.smul_mulVec, dotProduct, Pi.single_apply]`. Rewrite `h1` using `[h2, Complex.ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ (ρ : E →+* ℂ) (v : Fin (Dw.mult ρ) → (epsR K ⟶ t₀.G)), (∀ i, (v i).left ≫ m1.φ = y.u ρ i) → ∀ N : ℝ, EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v σ N → N = (2 * Real.pi * x) ^ (Dw.mult ρ) * (∏ i : Fin (Dw.mult ρ), ‖toC ((t (some ⟨ρ, i⟩) : CAt (σ.comp (algebraMap c.F K)))) …`. Introduce `ρ v hv N hN`. Rewrite using `[UpperTheory.tangent_vectors_at_frame_point_independent E H Dw l Xo c r U hL.pos K y t₀ m1 ρ v hv σ N hN φ hφ z hz k w W Wu hzx (C ρ) (hCc ρ), hHm, GlobalTheory.T.det_gram_lowerTriangular_re_eq_pi_mul_pow W.g (Dw.mult ρ) (fun l => W.e.symm ⟨ρ, l⟩) (fun a b e => by simpa using e) …`. Simplify using `only [hCi]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.T.homogeneousNormFactor_flatLine_orthonormalFrame E H Dw l Xo c _ r (U _) x τ k w hort, GlobalTheory.T.norm_diagonalTorusCharacter_flatLineWeight E H Dw l c _ τ t, key _ v hv N hN, key _ v' hv' N' hN']`. Establish `e1 : (2 * Real.pi * x) ^ (Dw.mult τ.1) = (2 * Real.pi * x) ^ Dw.p` using `by rw [hp]`. Establish `e2 : (2 * Real.pi * x) ^ (Dw.mult (conjEmb τ.1)) = (2 * Real.pi * x) ^ Dw.q` using `by rw [hq]`.
+
+Rewrite using `[e1, e2]`. Establish `hpos : ∀ ρ : E →+* ℂ, 0 < ∏ i : Fin (Dw.mult ρ), ‖toC ((t (some ⟨ρ, i⟩) : CAt (σ.comp (algebraMap c.F K))))‖` using `fun ρ => Finset.prod_pos fun i _ => norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) _)`. Establish `hP` using `hpos τ.1`. Establish `hP'` using `hpos (conjEmb τ.1)`. Generalize the expression as in `∏ i : Fin (Dw.mult τ.1), ‖toC ((t (some ⟨τ.1, i⟩) : CAt (σ.comp (algebraMap c.F K))))‖ = P at *`.
+
+Generalize the expression as in `∏ i : Fin (Dw.mult (conjEmb τ.1)), ‖toC ((t (some ⟨conjEmb τ.1, i⟩) : CAt (σ.comp (algebraMap c.F K))))‖ = P' at *`. Establish `ha : 0 < 2 * Real.pi * x` using `by positivity`. Establish `hs : ∀ n : ℕ, Real.sqrt ((2 * Real.pi * x) ^ n) = Real.exp ((n : ℝ) / 2 * Real.log (2 * Real.pi * x))`. Introduce `n`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul ha.le, Real.rpow_def_of_pos ha]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.sqrt_mul (pow_nonneg ha.le _), Real.sqrt_mul (pow_nonneg ha.le _), Real.sqrt_sq hP.le, Real.sqrt_sq hP'.le, hs, hs]`. Establish `hq2 : Real.exp (((Dw.p : ℝ) - Dw.q) / 2 * Real.log (2 * Real.pi * x)) * Real.exp ((Dw.q : ℝ) / 2 * Real.log (2 * Real.pi * x)) = Real.exp ((Dw.p : ℝ) / 2 * Real.log (2 * Real.pi * x))`. Rewrite using `[← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hq2]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem homFac_eq_archSq_ortho (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (hL : Laws U x) (τ : Psi H) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (v : Fin (Dw.mult τ.1) → (epsR K ⟶ t₀.G)) (v' : Fin (Dw.mult (conjEmb τ.1)) → (epsR K ⟶ t₀.G)) (hv : ∀ i, (v i).left ≫ m1.φ = y.u τ.1 i) (hv' : ∀ i, (v' i).left ≫ m1.φ = y.u (conjEmb τ.1) i) (σ : K →+* ℂ) (N N' : ℝ) (hN : EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v σ N) (hN' : EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v' σ N') (hσ : GoodEmb c (σ.comp (algebraMap c.F K))) (φ : K →ₐ[c.F] CAt (σ.comp (algebraMap c.F K))) (hφ : ∀ a, toC (φ a) = σ a) (z : FrPt Xo c (CAt (σ.comp (algebraMap c.F K)))) (hz : FrMap φ y z) (k : (U (σ.comp (algebraMap c.F K))).Comp) (w : ((U (σ.comp (algebraMap c.F K))).X k).dom) (t : Ix Dw → (CAt (σ.comp (algebraMap c.F K)))ˣ) (hort : ((U (σ.comp (algebraMap c.F K))).X k).IsOrtho w.1) (hbor : FrBor t ((U (σ.comp (algebraMap c.F K))).un k w) z) :
     GlobalTheory.CompHS.homFac (U (σ.comp (algebraMap c.F K))) x (flatWt Dw τ) k w = ‖GlobalTheory.CompHS.diagChar (exOf Dw (flatWt Dw τ) 0) t‖ * Real.sqrt N / Real.sqrt N' := by
   have hU := hL.unf _ hσ
@@ -82,6 +103,17 @@ private theorem homFac_eq_archSq_ortho (E : Type) [Field E] [NumberField E] [IsC
   rw [← hq2]
   field_simp
 
+/- English proof (translation)
+Use `set σ₀ := σ.comp (algebraMap c.F K) with hσ₀`. Set `φ : K →ₐ[c.F] CAt σ₀` to `{ σ with commutes' := fun a => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c K (CAt σ₀) φ y`. Take `⟨k, w, t, ho, hb⟩` from `GlobalTheory.LamT.exists_ortho_frBor E H Dw l Xo c σ₀ r (U σ₀) (hL.unf σ₀ hσ) z`. Establish `hon : (⟨k, w.1⟩ : Σ k, Frame ((U σ₀).X k).Ψ r) ∈ framesOn (U σ₀) Z` using `⟨w.2, liesOn_frBor hb (liesOn_frMap hz hy)⟩`.
+
+Establish `hgood : goodOf c σ₀ = σ₀` using `if_pos hσ`. Establish `hinf` using `s.norm_inf σ₀`. Rewrite `hinf` using `[hgood]`. Establish `h1 : homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig ⟨k, w.1⟩ = s.cInf σ₀`. Establish `: homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig ⟨k, w.1⟩ ∈ homN (U σ₀) x (wtOf Dw (flatWt Dw τ) 0) s.sig '' framesOn (U σ₀) Z` using `⟨_, hon, rfl⟩`.
+
+Rewrite `this` using `[hinf]`. Conclude with `this`. Rewrite `h1` using `[GlobalTheory.CompHS.homN_eq_homFac]`. Establish `h2` using `GlobalTheory.evR_frBor_of_mem_secZ GlobalTheory.lawsFieldsSeparately.2.1 Xo c _ s.sig_mem (CAt σ₀) t _ _ hb`. Establish `h3` using `GlobalTheory.FrameEval.evR_frMap_of_isReduced E H Dw l Xo c s.sig s.sig_mem.1 φ y z hz`.
+
+Establish `h4` using `homFac_eq_archSq_ortho E H Dw l Xo c r U x hL τ K y t₀ m1 v v' hv hv' σ N N' hN hN' hσ φ (fun _ => rfl) z hz k w t ho hb`. Rewrite using `[← h1, h4]`. Establish `h5 : ‖σ (evR Xo c s.sig y)‖ = ‖GlobalTheory.CompHS.diagChar (exOf Dw (flatWt Dw τ) 0) t‖ * ‖toC (evR Xo c s.sig ((U σ₀).un k w))‖`. Rewrite using `[← norm_mul]`. Use `show ‖toC (φ (evR Xo c s.sig y))‖ = _`.
+
+Rewrite using `[← h3, h2]`. Both sides reduce to the same expression. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem archSq_good_case (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (hL : Laws U x) (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (hy : LiesOn Z y) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (v : Fin (Dw.mult τ.1) → (epsR K ⟶ t₀.G)) (v' : Fin (Dw.mult (conjEmb τ.1)) → (epsR K ⟶ t₀.G)) (hv : ∀ i, (v i).left ≫ m1.φ = y.u τ.1 i) (hv' : ∀ i, (v' i).left ≫ m1.φ = y.u (conjEmb τ.1) i) (σ : K →+* ℂ) (N N' : ℝ) (hN : EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v σ N) (hN' : EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v' σ N') (hσ : GoodEmb c (σ.comp (algebraMap c.F K))) :
     s.cInf (σ.comp (algebraMap c.F K)) = ‖σ (evR Xo c s.sig y)‖ * Real.sqrt N / Real.sqrt N' := by
   set σ₀ := σ.comp (algebraMap c.F K) with hσ₀
@@ -111,6 +143,19 @@ private theorem archSq_good_case (E : Type) [Field E] [NumberField E] [IsCMField
   rw [h5]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ s K _ _ _ y hy t₀ m1 v v' hv hv' ht ht' σ N N' hN hN'`. Establish `h0 : 0 < N`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, h, _⟩` from `hN`. Conclude with `h`. Establish `h0' : 0 < N'`.
+
+Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, h, _⟩` from `hN'`. Conclude with `h`. Establish `main : s.cInf (σ.comp (algebraMap c.F K)) = ‖σ (evR Xo c s.sig y)‖ * Real.sqrt N / Real.sqrt N'`. Distinguish the cases in `hσ : GoodEmb c (σ.comp (algebraMap c.F K))`. Conclude with `archSq_good_case E H Dw l Xo c r U x hL Z τ s K y hy t₀ m1 v v' hv hv' σ N N' hN hN' hσ`.
+
+Use `set σ' := (starRingEnd ℂ).comp σ`. Establish `e0 : σ'.comp (algebraMap c.F K) = (starRingEnd ℂ).comp (σ.comp (algebraMap c.F K))` using `RingHom.comp_assoc _ _ _`. Establish `hσ' : GoodEmb c (σ'.comp (algebraMap c.F K))`. Use `goodEmb_goodOf c (σ.comp (algebraMap c.F K))` as an intermediate fact. Rewrite `this` using `[goodOf, if_neg hσ]`.
+
+Rewrite using `[e0]`. Conclude with `this`. Establish `hg` using `archSq_good_case E H Dw l Xo c r U x hL Z τ s K y hy t₀ m1 v v' hv hv' σ' N N' (UpperTheory.archimedean_square_conj_invariant K t₀.G t₀.PP.L _ v t₀.PP.isLB ht σ N hN) (UpperTheory.archimedean_square_conj_invariant K t₀.G t₀.PP.L _ v' t₀.PP.isLB ht' σ N' hN') hσ'`. Establish `hc : s.cInf (σ'.comp (algebraMap c.F K)) = s.cInf (σ.comp (algebraMap c.F K))`. Establish `i1` using `s.norm_inf (σ.comp (algebraMap c.F K))`.
+
+Establish `i2` using `s.norm_inf (σ'.comp (algebraMap c.F K))`. Rewrite `i2` using `[e0, GlobalTheory.CompHt.goodOf_conj, i1]`. Conclude with `(Set.singleton_eq_singleton_iff.1 i2).symm`. Rewrite using `[← hc, hg]`. Simplify using `only [σ', RingHom.comp_apply, Complex.norm_conj]`.
+
+Rewrite using `[main, div_pow, mul_pow, Real.sq_sqrt h0.le, Real.sq_sqrt h0'.le, mul_div_assoc]`.
+-/
 theorem UpperTheory.archimedean_section_on_component :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → ∀ (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (v : Fin (Dw.mult τ.1) → (epsR K ⟶ t₀.G)) (v' : Fin (Dw.mult (conjEmb τ.1)) → (epsR K ⟶ t₀.G)), (∀ i, (v i).left ≫ m1.φ = y.u τ.1 i) → (∀ i, (v' i).left ≫ m1.φ = y.u (conjEmb τ.1) i) → (∀ i, IsTangent (v i)) → (∀ i, IsTangent (v' i)) → ∀ (σ : K →+* ℂ) (N N' : ℝ), EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v σ N → EigenvectorLieDegree.IsArchSq t₀.G t₀.PP.L v' σ N' → s.cInf (σ.comp (algebraMap c.F K)) ^ 2 = ‖σ (evR Xo c s.sig y)‖ ^ 2 * (N / N') := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ s K _ _ _ y hy t₀ m1 v v' hv hv' ht ht' σ N N' hN hN'

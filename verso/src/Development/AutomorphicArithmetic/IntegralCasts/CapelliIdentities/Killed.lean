@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `l _ M _ _ _`. Establish `hN : ((Nat.card M : ℕ) : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Use `⟨((Nat.card M : ℕ) : ℤ_[l]).valuation + 1, Nat.succ_pos _, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ((Nat.card M : ℕ) : ℤ_[l]) • x = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `card_nsmul_eq_zero'`. Establish `h2 : ((PadicInt.unitCoeff hN : ℤ_[l]ˣ) : ℤ_[l]) • ((l : ℤ_[l]) ^ ((Nat.card M : ℕ) : ℤ_[l]).valuation • x) = 0`. Rewrite using `[← mul_smul, ← PadicInt.unitCoeff_spec hN]`. Conclude with `h1`. Establish `h3 : (l : ℤ_[l]) ^ ((Nat.card M : ℕ) : ℤ_[l]).valuation • x = 0` using `((PadicInt.unitCoeff hN).isUnit.smul_eq_zero).mp h2`.
+
+Rewrite using `[pow_succ', mul_smul, h3, smul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.Qe12.killed :
     ∀ (l : ℕ) [inst : Fact (Nat.Prime l)] (M : Type)
     [inst_1 : AddCommGroup M] [inst_2 : _root_.Module ℤ_[l] M] [Finite M],

@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.FrameM
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.FrameMatching.GelfandReading.FrameRead
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.USideFree
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Rg.BcB.Plug2.bci_of (UpperTheory.HeckeLevelFrameExistence.frameEx_of_fin UpperTheory.BaseChangeIdentities.uSide hCF) UpperTheory.BaseChangeIdentities.FrameWordIdentity.frameBound UpperTheory.BaseChangeIdentities.GelfandReading.frameRead`.
+-/
 theorem UpperTheory.BaseChangeIdentities.baseChangeN_of (hCF : PositivityTheory.Rg.BcB.F.FX.CandFin) : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=
   PositivityTheory.Rg.BcB.Plug2.bci_of (UpperTheory.HeckeLevelFrameExistence.frameEx_of_fin UpperTheory.BaseChangeIdentities.uSide hCF) UpperTheory.BaseChangeIdentities.FrameWordIdentity.frameBound
     UpperTheory.BaseChangeIdentities.GelfandReading.frameRead

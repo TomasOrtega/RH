@@ -13,16 +13,25 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type}
 
 end Rfl
 
+/- English proof (translation)
+Introduce `L _ _ _ n a J χ B hJo hB s ϖ k hs hu hk1 hk2`. Conclude with `h L n a.W a.ρ a.alg J χ B hJo hB s ϖ k hs hu hk1 hk2`.
+-/
 theorem heckeStdPlain_of_statement (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement) : HeckeStdPlain := by
   intro L _ _ _ n a J χ B hJo hB s ϖ k hs hu hk1 hk2
   exact h L n a.W a.ρ a.alg J χ B hJo hB s ϖ k hs hu hk1 hk2
 
+/- English proof (translation)
+The claim follows from `linkEtaTw_of_plain Fm (heckeStdPlain_of_statement h) hfam`.
+-/
 theorem linkEtaTw_of_statement {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement)
     (hfam : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ (M : MtFam (Fm.D x i)) (_ : NormalizedLocalCompatibility (Fm.D x i) M),
       HeckeTied (Fm.D x i) M ∧ SplitEx (Fm.D x i)) :
     LocsCoverTwF Fm :=
   linkEtaTw_of_plain Fm (heckeStdPlain_of_statement h) hfam
 
+/- English proof (translation)
+The claim follows from `etaN_eq_etaJ_of_plain T (heckeStdPlain_of_statement h) HT hex h1 h2 hw`.
+-/
 theorem etaN_eq_etaJ_of_statement {D : D7} {M : MtFam D} (T : NormalizedLocalCompatibility D M)
     (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement) (HT : HeckeTied D M) (hex : SplitEx D) {j : ℕ}
     {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :

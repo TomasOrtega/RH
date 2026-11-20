@@ -39,6 +39,11 @@ def torusExtBC (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExten
     i_hom := iB_hom f T.X T.i
     isKernel := iB_isKernel f T.X T.q T.i T.isKernel }
 
+/- English proof (translation)
+Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Use `AddMonoidAlgebra.ringHom_ext (fun b => ?_) w` and prove the remaining obligations. Establish `hb : b = ((b.down : ℤ) : ULift ℤ)` using `by ext; simp`. Establish `e : ∀ (n : ℤ) (r : torusRing ZU X ⟶ CommRingCat.of A), r.hom (AddMonoidAlgebra.single 0 ((n : ℤ) : ULift ℤ)) = (n : A)` using `fun n r => by`. Establish `: (AddMonoidAlgebra.single (0 : X) ((n : ℤ) : ULift ℤ) : AddMonoidAlgebra (ULift ℤ) X) = (n : AddMonoidAlgebra (ULift ℤ) X)`.
+
+Rewrite using `[AddMonoidAlgebra.intCast_def]`. Conclude with `(congrArg r.hom this).trans (map_intCast r.hom n)`. Rewrite using `[hb, e, e]`.
+-/
 theorem torusRing_hom_ext {X : Type} [AddCommGroup X] {A : Type} [CommRing A]
     (g h : torusRing ZU X ⟶ CommRingCat.of A)
     (w : ∀ χ : X, g.hom (AddMonoidAlgebra.single χ 1) = h.hom (AddMonoidAlgebra.single χ 1)) : g = h := by
@@ -55,14 +60,25 @@ theorem torusRing_hom_ext {X : Type} [AddCommGroup X] {A : Type} [CommRing A]
 def toZTorus (S : Scheme.{0}) (X : Type) [AddCommGroup X] : (splitTorus S X).left ⟶ Spec (torusRing ZU X) :=
   pullback.fst (splitTorusAff ZU X).hom (toZ S)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem hT_toZTorus {S S' : Scheme.{0}} (f : S' ⟶ S) (X : Type) [AddCommGroup X] :
     hT f X ≫ toZTorus S X = toZTorus S' X :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h₁ h₂`.
+-/
 theorem splitTorus_left_ext {S T : Scheme.{0}} {X : Type} [AddCommGroup X] {a b : T ⟶ (splitTorus S X).left}
     (h₁ : a ≫ toZTorus S X = b ≫ toZTorus S X) (h₂ : a ≫ (splitTorus S X).hom = b ≫ (splitTorus S X).hom) : a = b :=
   pullback.hom_ext h₁ h₂
 
+/- English proof (translation)
+Establish `key : (t'.left ≫ toZTorus (Sp L') X : Sp A ⟶ _) = (t.left ≫ toZTorus (Sp L) X : Sp A ⟶ _)`. Establish `p : Spec.preimage (t'.left ≫ toZTorus (Sp L') X : Sp A ⟶ _) = Spec.preimage (t.left ≫ toZTorus (Sp L) X : Sp A ⟶ _)` using `torusRing_hom_ext _ _ fun χ => (h χ).symm`. Use `congrArg Spec.map p` as an intermediate fact. Rewrite `this` using `[Spec.map_preimage, Spec.map_preimage]`. Then use the resulting hypothesis. Use `splitTorus_left_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hT_toZTorus]`. Conclude with `key`. Rewrite using `[Category.assoc, hT_snd, ← Category.assoc, Over.w t', Over.w t]`. Both sides reduce to the same expression.
+-/
 theorem point_hT {X : Type} [AddCommGroup X] (e : L →+* L') {A : Type} [CommRing A] (a : Sp A ⟶ Sp L')
     (t' : Over.mk a ⟶ splitTorus (Sp L') X) (t : Over.mk (a ≫ spMap e) ⟶ splitTorus (Sp L) X)
     (h : ∀ χ, charVal t χ = charVal t' χ) : t'.left ≫ hT (spMap e) X = t.left := by
@@ -80,6 +96,9 @@ def eBC (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExtension G)
     (e : T.B ≅ B') : (torusExtBC f T).B ≅ (Over.pullback f).obj B' :=
   (Over.pullback f).mapIso e
 
+/- English proof (translation)
+Use `letI := T.grpB`. Use `haveI := h`. Conclude with `(inferInstance : IsMonHom ((Over.pullback f).map e.hom))`.
+-/
 theorem eBC_hom (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExtension G) {B' : Over (Sp L)}
     [GrpObj B'] (e : T.B ≅ B') (h : letI := T.grpB; IsMonHom e.hom) :
     letI := (torusExtBC f T).grpB; IsMonHom (eBC f T e).hom := by
@@ -87,10 +106,16 @@ theorem eBC_hom (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExte
   haveI := h
   exact (inferInstance : IsMonHom ((Over.pullback f).map e.hom))
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem map_left_fst {S S' : Scheme.{0}} (f : S' ⟶ S) {X Y : Over S} (a : X ⟶ Y) :
     ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Over.pullback f).map T.q ≫ (Over.pullback f).map e.hom).left ≫ _ = _`. Rewrite using `[← Functor.map_comp]`. Conclude with `map_left_fst f _`.
+-/
 theorem quot_bc (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExtension G) {B' : Over (Sp L)}
     (e : T.B ≅ B') : ((torusExtBC f T).q ≫ (eBC f T e).hom).left ≫ pullback.fst B'.hom f =
       pullback.fst G.hom f ≫ (T.q ≫ e.hom).left := by
@@ -98,6 +123,9 @@ theorem quot_bc (f : Sp L' ⟶ Sp L) {G : Over (Sp L)} [GrpObj G] (T : TorusExte
   rw [← Functor.map_comp]
   exact map_left_fst f _
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, iB_h, ← Category.assoc, point_hT e a t' t h]`.
+-/
 theorem iB_point (e : L →+* L') {G : Over (Sp L)} [GrpObj G] {X : Type} [AddCommGroup X]
     (i : splitTorus (Sp L) X ⟶ G) {A : Type} [CommRing A] (a : Sp A ⟶ Sp L')
     (t' : Over.mk a ⟶ splitTorus (Sp L') X) (t : Over.mk (a ≫ spMap e) ⟶ splitTorus (Sp L) X)
@@ -105,11 +133,19 @@ theorem iB_point (e : L →+* L') {G : Over (Sp L)} [GrpObj G] {X : Type} [AddCo
     (t' ≫ iB (spMap e) X i).left ≫ pullback.fst G.hom (spMap e) = (t ≫ i).left := by
   rw [Over.comp_left, Over.comp_left, Category.assoc, iB_h, ← Category.assoc, point_hT e a t' t h]
 
+/- English proof (translation)
+Use `letI := T.addCommGroup`. Conclude with `⟨AddEquiv.refl _, fun A _ a t' t h => iB_point e T.i a t' t h⟩`.
+-/
 theorem torusOver_torusExtBC (e : L →+* L') {G : Over (Sp L)} [GrpObj G] (T : TorusExtension G) :
     TorusOver e T (torusExtBC (spMap e) T) (pullback.fst G.hom (spMap e)) := by
   letI := T.addCommGroup
   exact ⟨AddEquiv.refl _, fun A _ a t' t h => iB_point e T.i a t' t h⟩
 
+/- English proof (translation)
+Establish `a1 : LBIso (A.pull φ) ((B.pull β).pull ψ')` using `LBIso.chartPull (chartPullPull A φ φ rfl) (chartPullLinComb B β (fun _ : PUnit => ψ') (fun _ => ψ) (fun _ => 1) φ (fun _ => hc)) h`. Establish `a2 : LBIso (B'.pull ψ') ((B.pull β).pull ψ')` using `LBIso.chartPull (chartPullPull _ ψ' ψ' rfl) (chartPullPull _ ψ' ψ' rfl) b`. Establish `l1` using `pull_isLB hA φ`. Establish `l2` using `pull_isLB (pull_isLB hB β) ψ'`. Establish `l3` using `pull_isLB hB' ψ'`.
+
+Conclude with `LBIso.trans hA' l1 l3 a (LBIso.trans l1 l2 l3 a1 a2.symm)`.
+-/
 theorem lbIso_square {X X' Y Y' : Scheme.{0}} {φ : X' ⟶ X} {β : Y' ⟶ Y} {ψ : X ⟶ Y} {ψ' : X' ⟶ Y'}
     (hc : ψ' ≫ β = φ ≫ ψ) {A : LB X} {A' : LB X'} {B : LB Y} {B' : LB Y'} (hB : B.IsLB) (hA' : A'.IsLB)
     (hB' : B'.IsLB) (hA : A.IsLB) (a : LBIso A' (A.pull φ)) (b : LBIso B' (B.pull β)) (h : LBIso A (B.pull ψ)) :
@@ -124,6 +160,17 @@ theorem lbIso_square {X X' Y Y' : Scheme.{0}} {φ : X' ⟶ X} {β : Y' ⟶ Y} {�
   have l3 := pull_isLB hB' ψ'
   exact LBIso.trans hA' l1 l3 a (LBIso.trans l1 l2 l3 a1 a2.symm)
 
+/- English proof (translation)
+Introduce `E _ _ _ H S t L L' _ _ z P e`. Take `⟨PK, cK, sK, aK, rK, mK, hK⟩` from `sabPull Out.CubePf.cubePull (spMap e) P.tK`. Take `⟨PB, cB, sB, aB, rB, mB, hB⟩` from `sabPull Out.CubePf.cubePull (spMap e) P.tB`. Take `⟨mZ, hZ⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ P.m mK`. Set `tK' : SAB H (Sp L')` to `⟨(Over.pullback (spMap e)).obj P.tK.G, IsSemiAbelian.pullback (spMap e) P.tK.G P.tK.semi, OAct.pullback (spMap e) P.tK.G P.tK.act, PK, cK, sK, aK, rK⟩`.
+
+Set `tB' : SAB H (Sp L')` to `⟨(Over.pullback (spMap e)).obj P.tB.G, IsSemiAbelian.pullback (spMap e) P.tB.G P.tB.semi, OAct.pullback (spMap e) P.tB.G P.tB.act, PB, cB, sB, aB, rB⟩`. Set `τ' : TorusExtension tK'.G` to `torusExtBC (spMap e) P.τ`. Set `e' : τ'.B ≅ tB'.G` to `eBC (spMap e) P.τ P.e`. Establish `hψ : (τ'.q ≫ e'.hom).left ≫ mB.φ = mK.φ ≫ (P.τ.q ≫ P.e.hom).left`. Rewrite using `[hK, hB]`.
+
+Conclude with `quot_bc (spMap e) P.τ P.e`. Establish `act' : ∀ a, tK'.act.act a ≫ τ'.q ≫ e'.hom = τ'.q ≫ e'.hom ≫ tB'.act.act a` using `fun a => by`. Express the relevant statement in the definitionally equal form `(Over.pullback (spMap e)).map (P.tK.act.act a) ≫ (Over.pullback (spMap e)).map P.τ.q ≫ (Over.pullback (spMap e)).map P.e.hom = (Over.pullback (spMap e)).map P.τ.q ≫ (Over.pullback (spMap e)).map P.e.hom ≫ (Over.pullback (spMap e)).map (P.tB.act.act a)`. Simplify using `only [← Functor.map_comp]`. Rewrite using `[P.act a]`.
+
+Establish `pp' : LBIso tK'.PP.L (tB'.PP.L.pull (τ'.q ≫ e'.hom).left)`. Take `⟨wK, gK, -⟩` from `mK.lin`. Take `⟨wB, gB, -⟩` from `mB.lin`. Conclude with `lbIso_square hψ P.tB.PP.isLB tK'.PP.isLB tB'.PP.isLB P.tK.PP.isLB ⟨wK, gK⟩ ⟨wB, gB⟩ P.pp`. Establish `hT : TorusOver e P.τ τ' mK.φ`.
+
+Rewrite using `[hK]`. Conclude with `torusOver_torusExtBC e P.τ`. Conclude with `⟨⟨tK', mZ, τ', tB', e', eBC_hom (spMap e) P.τ P.e P.e_hom, act', pp'⟩, mK, mB, hZ.symm, hψ.symm, hT⟩`.
+-/
 theorem exists_abPart_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (L L' : Type) [Field L] [Field L'] (z : Sp L ⟶ S) (P : AbPart t z) (e : L →+* L'), ∃ (P' : AbPart t (spMap e ≫ z)) (mK : SABMap P'.tK P.tK (spMap e)) (mB : SABMap P'.tB P.tB (spMap e)), mK.φ ≫ P.m.φ = P'.m.φ ∧ mK.φ ≫ (P.τ.q ≫ P.e.hom).left = (P'.τ.q ≫ P'.e.hom).left ≫ mB.φ ∧ GlobalTheory.CompanionTheory.Ar.Cusp.PtHt.Arch.TorusOver e P.τ P'.τ mK.φ := by
   intro E _ _ _ H S t L L' _ _ z P e
   obtain ⟨PK, cK, sK, aK, rK, mK, hK⟩ := sabPull Out.CubePf.cubePull (spMap e) P.tK

@@ -41,11 +41,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `infer_instance`.
+-/
 private theorem contMul_UA (σ : E →ₐ[F] E) {m : ℕ} (J : Matrix (Fin m) (Fin m) E) : ContinuousMul (UA σ J) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens
   infer_instance
 
+/- English proof (translation)
+Use `haveI := contMul_UA σ X.J`. Establish `hb` using `(GlobalTheory.T.theta_basic_properties hK.base F E σ B n d X W M χX χW om r s r' s' hP).1`. Take `⟨N, hN⟩` from `UpperTheory.theta_function_polynomial_growth_bound hK F E σ B n d X W M χX χW om r s r' s' hP`. Establish `hreg` using `fun Ψ (hΨ : Ψ ∈ schA F (Fin n × Fin d)) => lift_reg hfc hdec hv N (hb Ψ hΨ).1 (hN Ψ hΨ)`. Use `set e := toGAd hσ X.J hc`.
+
+Establish `he : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Establish `hpres` using `(IsUWeilPair.isUSplitting hP.weil).pres`. Take `⟨l, -, hl⟩` from `GlobalTheory.WeilM.exists_adm_eq_thetaSum_of_locallyCompact F (Fin n × Fin d)`. Take `⟨hsm, hfold⟩` from `smooth_of_der hP.base.cm (c • X.J.map σ) (schA F (Fin n × Fin d)) (fun Ψ x => thLift om Ψ μ 𝓕 f (e.symm x)) (fun Ψ hΨ => (hreg Ψ hΨ).2.1.comp he) (fun {ι} t a Ψ hΨ x => by`. Establish `hs : ∑ i ∈ t, (a i : ℂ) • Ψ i ∈ schA F (Fin n × Fin d)` using `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (hΨ i hi)`.
+
+Simplify using `only [thLift_def, ← integral_const_mul]`. Rewrite using `[← integral_finset_sum _ fun i hi => ((hreg _ (hΨ i hi)).1 _).const_mul _]`. Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [theta]`. Rewrite using `[← hl _ (hpres _ _ hs), map_sum, map_sum, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hl _ (hpres _ _ (hΨ i hi)), smul_eq_mul, map_mul, Complex.conj_ofReal]`. Use the proof step `ring)`. Use the proof step `(fun w τ => by`. Take `⟨D, hD, hDd⟩` from `UpperTheory.archimedean_diagonal_matrix_exists hK F E σ B n d X W M χX χW om r s r' s' hP hσ c hc w τ`.
+
+Use `⟨D, hD, fun Z γ hγ hadd h1 h2 Ψ hΨ x => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Conclude with `(hreg _ (hD Z Ψ hΨ)).2.2.2 (theta om Ψ) (fun t => e.symm (γ t)) (he.comp hγ) (fun a b => by rw [hadd, map_mul]) (hreg Ψ hΨ).1 (hDd Z γ h1 h2 Ψ hΨ) (e.symm x)) hΦ`. Use `⟨fun γ hγ g => ?_, ?_, (hreg Φ hΦ).2.1.comp he, hsm, N, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hγ' : e.symm γ ∈ ratU σ X.J` using `(GlobalTheory.T.rational_unitary_iff_group_points F E σ hσ n X.J c hc _).2 (by rwa [MulEquiv.apply_symm_apply])`.
+
+Simplify using `only [thLift_def, map_mul]`. Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations. Use `(hb Φ hΦ).2.1 _ hγ' 1 (one_mem _) (e.symm g) h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Simplify using `only [this]`.
+
+Take `⟨U, hU, hfix⟩` from `UpperTheory.theta_invariant_under_open_subgroup hK F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Use `⟨U.comap e.symm.toMonoidHom, hU.preimage he, fun k hk hfin g => ?_⟩` and prove the remaining obligations. Establish `h1 : om (e.symm k, 1) Φ = Φ` using `hfix _ hk (congrArg Units.val (MonoidHom.mem_ker.1 hfin))`. Simplify using `only [thLift_def, map_mul, theta]`. Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[show ((e.symm g * e.symm k, h) : UA σ X.J × UA σ W.J) = (e.symm g, h) * (e.symm k, 1) by simp, map_mul, Module.End.mul_apply, h1]`. Take `⟨Ψ, hΨ, eq⟩` from `hfold l hl`. Take `⟨C, hC⟩` from `(hreg Ψ hΨ).2.2.1`. Conclude with `⟨C, fun g => by rw [eq]; exact hC _⟩`.
+-/
 private theorem smoothMod_thLift (hK : KP) (hP : IsPair B M χX χW om r s r' s') {f : UA σ W.J → ℂ} (hfc : Continuous f)
     (hdec : ∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖f h‖ * (qht h : ℝ) ^ N ≤ C) {μ : Measure (UA σ W.J)} {𝓕 : Set (UA σ W.J)} (hv : μ 𝓕 < ⊤)
     (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0) {Φ : Fn F n d} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
@@ -96,6 +116,29 @@ private theorem smoothMod_thLift (hK : KP) (hP : IsPair B M χX χW om r s r' s'
     obtain ⟨C, hC⟩ := (hreg Ψ hΨ).2.2.1
     exact ⟨C, fun g => by rw [eq]; exact hC _⟩
 
+/- English proof (translation)
+Establish `hcm` using `hP.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Take `⟨c₀, hc₀, hc₀s⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hJ` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hP.skew.skew hdet hc₀ hc₀s`. Use `haveI := hμ`.
+
+Establish `hv : μ 𝓕 < ⊤` using `GlobalTheory.ThKOrthVInt.measure_fundDom_lt_top_smul hK.siegelSetUnitary hcm hc₀ hJ h𝓕`. Establish `hY` using `GlobalTheory.UnitaryVol.isHermND_map hσ hP.herm`. Establish `hY1 : IsHermND σ ((1 : E) • Y.J.map σ)` using `by rwa [one_smul]`. Establish `hdY : Y.J.det ≠ 0` using `fun h => hY.2 (by`. Rewrite using `[show Y.J.map σ = (σ : E →+* E).mapMatrix Y.J from rfl, ← RingHom.map_det, h, map_zero])`.
+
+Establish `hb` using `(GlobalTheory.T.theta_basic_properties hK.base F E σ B _ _ Y _ Mo _ _ ω r s r' s' hP).1`. Establish `hpres` using `(IsUWeilPair.isUSplitting hP.weil).pres`. Establish `key : ∀ Ψ ∈ schA F (Fin n × Fin d), Continuous (thLift ω Ψ μ 𝓕 f) ∧ (∀ γ ∈ ratU σ Y.J, ∀ g, thLift ω Ψ μ 𝓕 f (γ * g) = thLift ω Ψ μ 𝓕 f g) ∧ ∃ C : ℝ, ∀ g, ‖thLift ω Ψ μ 𝓕 f g‖ ≤ C`. Introduce `Ψ hΨ`. Establish `hsm` using `smoothMod_thLift hK hP hfc hdec hv hσ one_ne_zero hΨ`.
+
+Establish `hcu` using `hK.rallisTowerUnitary F E σ hcm B.ψ (GlobalTheory.StdCharFromIsStd.isCharAF hP.base.std) n d Y.J W.J hP.herm.herm hdY hP.skew.skew hdet χX χW hP.hX hP.hW hP.resX hP.resW f hcusp hlz Mo.co hP.good.rat ω hP.weil Ψ hΨ μ 𝓕 hμ h𝓕 1 hY1 (fun x => thLift ω Ψ μ 𝓕 f ((toGAd hσ Y.J one_ne_ …`. Take `⟨C, hC⟩` from `GlobalTheory.SiegelSet.rapidDecay_qht hK.siegelSetUnitary F E σ hcm n Y.J 1 one_ne_zero hY1 (thLift ω Ψ μ 𝓕 f) _ (fun g g' hg => congrArg (thLift ω Ψ μ 𝓕 f) (Subtype.ext hg.symm)) hsm hcu 0`. Establish `he : Continuous (toGAd hσ Y.J (one_ne_zero (α` using `E))) := continuous_subtype_val.subtype_mk _`. Establish `hcont : Continuous (thLift ω Ψ μ 𝓕 f)`. Establish `h0` using `hsm.cont.comp he`.
+
+Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, MulEquiv.symm_apply_apply]`. Use `⟨hcont, fun γ hγ g => ?_, C, fun g => by simpa using hC g⟩` and prove the remaining obligations. Simplify using `only [thLift_def]`.
+
+Use `integral_congr_ae (.of_forall fun h => ?_)` and prove the remaining obligations. Use `(hb Ψ hΨ).2.1 _ hγ 1 (one_mem _) g h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Simplify using `only [this]`. Use `haveI := contMul_UA σ Y.J`.
+
+Use `haveI := hP.good.haar`. Use `haveI := GlobalTheory.HermUnimod.isMulRightInvariant_of_isHerm F E σ B n Y r s hP.base hP.herm Mo.μ hP.good.haar`. Establish `hr` using `GlobalTheory.SkewUnimod.isMulRightInvariant_of_isSkew F E σ B _ _ r' s' hP.base hP.skew μ hμ`. Use `unitary_of_bounded Mo.μ hP.good.dom (GlobalTheory.UnitaryVol.measure_fundDom_lt_top hK.siegelSetUnitary hcm hY hP.good.dom) _ _ fun φ hφ => ?_` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`.
+
+Consider the case `mem φ hφ`. Take `⟨Ψ, ⟨k, -, h, -, Φ', hΦ', rfl⟩, f', ⟨h₁, -, rfl⟩, rfl⟩` from `hφ`. Establish `hΦ'' : Φ' ∈ schA F (Fin n × Fin d)`. Break down `hΦ' with rfl | ⟨-, φ, φ', ρ, -, -, hρ, rfl⟩` into its components or cases. Use `exacts [hΦ, hρ.2]`.
+
+Establish `hS` using `hpres (1, h₁⁻¹) _ (hpres (k, h) _ hΦ'')`. Establish `e : thLift ω (ω (k, h) Φ') μ 𝓕 (rt h₁ f) = thLift ω (ω (1, h₁⁻¹) (ω (k, h) Φ')) μ 𝓕 f`. Use function extensionality and compare the values at `(GlobalTheory.ThK.LiftConst.thLift_mul_right ω _ μ 𝓕 hμ hr h𝓕 f hfl h₁ fun γ hγ g x => by`. Simplify using `using (hb _ hS).2.1 1 (one_mem _) γ hγ g x)`. Rewrite using `[e]`.
+
+Conclude with `key _ hS`. Consider the case `zero => exact ⟨continuous_const, fun _ _ _ => rfl, 0, fun _ => by simp⟩`. Consider the case `add φ ψ _ _ h1 h2`. Take `⟨a1, a2, C, a3⟩` from `h1`. Take `⟨b1, b2, C', b3⟩` from `h2`.
+
+Conclude with `⟨a1.add b1, fun γ hγ g => by simp only [Pi.add_apply, a2 γ hγ, b2 γ hγ], C + C', fun g => (norm_add_le _ _).trans (add_le_add (a3 g) (b3 g))⟩`. Consider the case `smul t φ _ h1`. Take `⟨a1, a2, C, a3⟩` from `h1`. Conclude with `⟨a1.const_smul t, fun γ hγ g => by simp only [Pi.smul_apply, a2 γ hγ], ‖t‖ * C, fun g => by rw [Pi.smul_apply, norm_smul]; exact mul_le_mul_of_nonneg_left (a3 g) (norm_nonneg _)⟩`.
+-/
 private theorem unitary_pair (hK : KP) {Y : Spc F E n} {Mo : Model σ Y W} {ω : Rep σ Y W}
     (hP : IsPair B Mo χX χW ω r s r' s') (hdet : W.J.det ≠ 0) {f : UA σ W.J → ℂ} (hfc : Continuous f)
     (hfl : ∀ γ ∈ ratU σ W.J, ∀ h, f (γ * h) = f h) (hdec : ∀ N : ℕ, ∃ C : ℝ, ∀ h, ‖f h‖ * (qht h : ℝ) ^ N ≤ C)
@@ -174,6 +217,21 @@ end GlobalTheory.ThK.LiftUnitV
 
 open GlobalTheory.ThK.SplitInv
 open GlobalTheory.ThK.TowerInt GlobalTheory.ThK.SquareIntegrability in
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi f hf hct hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Establish `hsm` using `GlobalTheory.T.theta_tower_descent_period hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi f hf hct hdec`. Establish `hT` using `hM.triple`. Establish `hB` using `hT.base`. Take `⟨hfc, hfr⟩` from `GlobalTheory.ThK.DescB.Nondeg.lev_reg hKP hM hH' hiso c hb0 hbj i hi f hf`.
+
+Establish `hHe : IsHecke F E (X.α / X.β)` using `⟨hT.chars.heckeα.1.div' hT.chars.heckeβ.1, fun x => by`. Rewrite using `[MonoidHom.div_apply, hT.chars.heckeα.2 x, hT.chars.heckeβ.2 x, div_one]⟩`. Establish `hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.α / X.β) (a + a')` using `fun x => by`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, hT.chars.resα x, hT.chars.resβ x]`. Use `split_ifs`.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ a with e | e <;> simp [pow_add, e, div_neg]`. Establish `hrk : a + a' = (d₁ - 2 * i) + 2 * (i + 1)`. Establish `h1` using `hH'.rank`. Establish `h2` using `(hiso i hi).1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hres₁ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.α / X.β) (d₁ - 2 * i)` using `fun x => by`. Rewrite using `[hres x, hrk, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Establish `hV' : IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q)` using `⟨hB, hT.geo.hV', hT.geo.hW, hT.geo.hM', hT.chars.heckeα, hHe, hT.chars.resα, hres, hT.weil'⟩`.
+
+Take `⟨Z, r₁, s₁, hZ⟩` from `GlobalTheory.ThK.SkewChain.skew_chain F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hV' d₁ H' i₀ i₁ sp pl G.p hH' hiso i hi`. Take `⟨M₀, hM₀⟩` from `GlobalTheory.ModelEx.model_exists F E σ B hB a' _ G.V' (reJ (sp i) Z) _ _ _ _ hT.geo.hV' hZ`. Take `⟨om₀, hom₀⟩` from `GlobalTheory.WeilExGen.exists_isWeil hKP.base F E σ B hB a' _ G.V' (reJ (sp i) Z) _ _ _ _ hT.geo.hV' hZ M₀ hM₀ X.α (X.α / X.β) hT.chars.heckeα hHe hT.chars.resα hres₁`. Establish `hP₀ : IsPair B M₀ X.α (X.α / X.β) om₀ G.q (a' - G.q) r₁ s₁` using `⟨hB, hT.geo.hV', hZ, hM₀, hT.chars.heckeα, hHe, hT.chars.resα, hres₁, hom₀⟩`. Take `⟨M₁, om₂, -, -, hco₁, hP₂, -, -⟩` from `GlobalTheory.T.darboux_coords_rational_points F E σ B a' _ G.V' (reJ (sp i) Z) M₀ _ _ om₀ _ _ _ _ hP₀ co hco`.
+
+Substitute `hco₁` using the available equality. Establish `hP₁ : IsPair B M₁ X.α (X.α / X.β) om₁ G.q (a' - G.q) r₁ s₁` using `⟨hB, hT.geo.hV', hZ, hP₂.good, hT.chars.heckeα, hHe, hT.chars.resα, hres₁, hom⟩`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨c₀, hc₀, hc₀s⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hB.cm`. Establish `hdet` using `GlobalTheory.ThK.DescB.Nondeg.det_ne_zero_of_cartan B (sp i) (hiso i hi).2.2.2.2.2.2.1`.
+
+Establish `hJ : IsHermND σ (c₀ • (sp i).J.map σ)` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hP₁.skew.skew hdet hc₀ hc₀s`. Establish `hφ : ∀ (g : UA σ (sp i).J) (g' : GAd σ (c₀ • (sp i).J.map σ)), g.1 = g'.1 → f ((toGAd hσ (sp i).J hc₀).symm g') = f g` using `fun g g' hg => congrArg f (Subtype.ext hg.symm)`. Take `⟨K, hK, hA⟩` from `GlobalTheory.T.matched_triple_witt_tower_descent hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi f hf c₀ hc₀ hJ _ hφ`. Establish `hC` using `GlobalTheory.T.theta_tower_descent_convergent hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi f hf hct c₀ hc₀ hJ _ hφ`. Conclude with `⟨∅, fun v _ _ => GlobalTheory.ThK.LiftUnitV.unitary_pair hKP hP₁ hdet hfc hfr hdec ⟨c₀, K, _, hJ, hK, hA, hC, hφ⟩ hsm hμ h𝓕 hΦ v⟩`.
+-/
 theorem _root_.GlobalTheory.T.matched_tower_adapted_planes_second : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

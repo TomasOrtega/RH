@@ -25,9 +25,15 @@ def KUS (j : ℕ) (S : Finset (Fin n)) (ξ : Fin n → k) : Submodule ℂ V :=
   Submodule.span ℂ {w | ∃ c : Fin n → k, (∀ r ∉ S, c r = 0) ∧ ∃ v : V,
     w = π (colU j c) v - ((ψ (dotj j ξ c) : Circle) : ℂ) • v}
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+-/
 theorem conj_apply (x g : GL (Fin n) k) (v : V) : π x (π g v) = π (x * g * x⁻¹) (π x v) := by
   rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+Use `(Submodule.span_le.2 ?_ : KN π ψ (j + 1) ≤ (KN π ψ (j + 1)).comap (π x)) hw` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, v, rfl⟩`. Take `⟨h1, h2⟩` from `good_conj x hx hy hg`. Use `Submodule.subset_span ⟨x * g * x⁻¹, h1, π x v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, conj_apply, chM, chM, h2]`.
+-/
 theorem KN_stable (j : ℕ) (x : GL (Fin n) k) (hx : Good j (x : Matrix (Fin n) (Fin n) k))
     (hy : Good j ((x⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) {w : V} (hw : w ∈ KN π ψ (j + 1)) :
     π x w ∈ KN π ψ (j + 1) := by
@@ -37,9 +43,15 @@ theorem KN_stable (j : ℕ) (x : GL (Fin n) k) (hx : Good j (x : Matrix (Fin n) 
   refine Submodule.subset_span ⟨x * g * x⁻¹, h1, π x v, ?_⟩
   rw [map_sub, map_smul, conj_apply, chM, chM, h2]
 
+/- English proof (translation)
+Rewrite using `[← colU_add, ← colU_add, add_comm]`.
+-/
 theorem colU_comm (j : ℕ) (c d : Fin n → k) : colU j c * colU j d = colU j d * colU j c := by
   rw [← colU_add, ← colU_add, add_comm]
 
+/- English proof (translation)
+Use `(Submodule.span_le.2 ?_ : KUS π ψ j S ξ ≤ (KUS π ψ j S ξ).comap (π (colU j d))) hw` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, v, rfl⟩`. Use `Submodule.subset_span ⟨c, hc, π (colU j d) v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, ← Module.End.mul_apply, ← map_mul, colU_comm, map_mul, Module.End.mul_apply]`.
+-/
 theorem KUS_stable (j : ℕ) (S : Finset (Fin n)) (ξ d : Fin n → k) {w : V} (hw : w ∈ KUS π ψ j S ξ) :
     π (colU j d) w ∈ KUS π ψ j S ξ := by
   refine (Submodule.span_le.2 ?_ : KUS π ψ j S ξ ≤ (KUS π ψ j S ξ).comap (π (colU j d))) hw
@@ -47,6 +59,9 @@ theorem KUS_stable (j : ℕ) (S : Finset (Fin n)) (ξ d : Fin n → k) {w : V} (
   refine Submodule.subset_span ⟨c, hc, π (colU j d) v, ?_⟩
   rw [map_sub, map_smul, ← Module.End.mul_apply, ← map_mul, colU_comm, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (KN_stable π ψ j _ (good_colU j d) (good_colU_inv j d) ha) (KUS_stable π ψ j S ξ d hb)`.
+-/
 theorem W_stable (j : ℕ) (S : Finset (Fin n)) (ξ d : Fin n → k) {w : V}
     (hw : w ∈ KN π ψ (j + 1) ⊔ KUS π ψ j S ξ) : π (colU j d) w ∈ KN π ψ (j + 1) ⊔ KUS π ψ j S ξ := by
   obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1 hw
@@ -54,6 +69,11 @@ theorem W_stable (j : ℕ) (S : Finset (Fin n)) (ξ d : Fin n → k) {w : V}
   exact Submodule.add_mem_sup (KN_stable π ψ j _ (good_colU j d) (good_colU_inv j d) ha)
     (KUS_stable π ψ j S ξ d hb)
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, v, rfl⟩`. Establish `hg1 : g = 1`. Use extensionality with `i l`. Rewrite using `[hg i l (Or.inr (by omega)), Units.val_one]`.
+
+Establish `hs : sdS m ((1 : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 0`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`. Rewrite using `[hg1, chM, hs, AddChar.map_zero_eq_one, Circle.coe_one, one_smul, map_one, Module.End.one_apply, sub_self]`.
+-/
 theorem KN_top (m : ℕ) (hm : n ≤ m) : KN π ψ m = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_
   rintro _ ⟨g, hg, v, rfl⟩

@@ -8,14 +8,29 @@ namespace GlobalTheory.Models.SupModel
 
 variable {k G : Type} [Field k] [Group G]
 
+/- English proof (translation)
+Introduce `s x` and use `by simp only [LinearMap.comp_apply]; rw [hf, hg]`.
+-/
 theorem isHom_comp {A B C : Ob k G} {f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)}
     {g : (Fin B.m → k) →ₗ[k] (Fin C.m → k)} (hf : IsHom A B f) (hg : IsHom B C g) : IsHom A C (g ∘ₗ f) :=
   fun s x => by simp only [LinearMap.comp_apply]; rw [hf, hg]
 
+/- English proof (translation)
+Introduce `s x` and use `by simp only [LinearMap.add_apply, map_add]; rw [hf, hg]`.
+-/
 theorem isHom_add {A B : Ob k G} {f g : (Fin A.m → k) →ₗ[k] (Fin B.m → k)}
     (hf : IsHom A B f) (hg : IsHom A B g) : IsHom A B (f + g) :=
   fun s x => by simp only [LinearMap.add_apply, map_add]; rw [hf, hg]
 
+/- English proof (translation)
+Take `⟨C, e, he⟩` from `exists_ob (A.ρ.prod B.ρ)`. Use `⟨C, e.toLinearMap ∘ₗ LinearMap.inl k _ _, e.toLinearMap ∘ₗ LinearMap.inr k _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← he]`.
+
+Use `congr 1`. Simplify using `[Representation.prod]`. Introduce `g x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← he]`.
+
+Use `congr 1`. Simplify using `[Representation.prod]`. Establish `: (e.toLinearMap ∘ₗ LinearMap.inl k _ _).coprod (e.toLinearMap ∘ₗ LinearMap.inr k _ _) = e.toLinearMap`. Rewrite using `[← LinearMap.comp_coprod, LinearMap.coprod_inl_inr, LinearMap.comp_id]`. Rewrite using `[this]`.
+
+Conclude with `e.bijective`.
+-/
 theorem exists_sum (A B : Ob k G) : ∃ (C : Ob k G) (i : (Fin A.m → k) →ₗ[k] (Fin C.m → k))
     (j : (Fin B.m → k) →ₗ[k] (Fin C.m → k)), IsHom A C i ∧ IsHom B C j ∧ Function.Bijective (i.coprod j) := by
   obtain ⟨C, e, he⟩ := exists_ob (A.ρ.prod B.ρ)
@@ -31,6 +46,17 @@ theorem exists_sum (A B : Ob k G) : ∃ (C : Ob k G) (i : (Fin A.m → k) →ₗ
       rw [← LinearMap.comp_coprod, LinearMap.coprod_inl_inr, LinearMap.comp_id]
     rw [this]; exact e.bijective
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective _ hb`. Establish `h1 : ∀ x y, e.symm (i x + j y) = (x, y)` using `fun x y => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `[e]`. Establish `h2 : ∀ x, i (e.symm x).1 + j (e.symm x).2 = x` using `fun x => by`.
+
+Conclude with `e.apply_symm_apply x`. Establish `h3 : ∀ g x, e.symm (C.ρ g x) = (A.ρ g (e.symm x).1, B.ρ g (e.symm x).2)` using `fun g x => by`. Rewrite using `[← h1, hi, hj, ← map_add, h2]`. Use `⟨LinearMap.fst k _ _ ∘ₗ e.symm.toLinearMap, LinearMap.snd k _ _ ∘ₗ e.symm.toLinearMap, fun g x => ?_, fun g x => ?_, fun x => ?_, fun x => ?_, fun x => ?_, fun x => ?_, fun x => h2 x⟩` and prove the remaining obligations. Simplify using `[h3]`.
+
+Simplify using `[h3]`. Use `h1 x 0` as an intermediate fact. Simplify using `at this`. Simplify using `[this]`. Use `h1 0 x` as an intermediate fact.
+
+Simplify using `at this`. Simplify using `[this]`. Use `h1 x 0` as an intermediate fact. Simplify using `at this`. Simplify using `[this]`.
+
+Use `h1 0 x` as an intermediate fact. Simplify using `at this`. Simplify using `[this]`.
+-/
 theorem exists_proj {A B C : Ob k G} {i : (Fin A.m → k) →ₗ[k] (Fin C.m → k)}
     {j : (Fin B.m → k) →ₗ[k] (Fin C.m → k)} (hi : IsHom A C i) (hj : IsHom B C j)
     (hb : Function.Bijective (i.coprod j)) :
@@ -55,6 +81,9 @@ theorem exists_proj {A B C : Ob k G} {i : (Fin A.m → k) →ₗ[k] (Fin C.m →
 
 variable {l n : ℕ} {R : RingPG k l}
 
+/- English proof (translation)
+Establish `: h = g ∘ₗ f` using `LinearMap.ext fun x => (hh x).symm`. Rewrite using `[this, F.map_comp A B C f g hA hB hC hf hg]`. Both sides reduce to the same expression.
+-/
 theorem map_comp_apply (F : DFun R n G) {A B C : Ob k G} {f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)}
     {g : (Fin B.m → k) →ₗ[k] (Fin C.m → k)} {h : (Fin A.m → k) →ₗ[k] (Fin C.m → k)}
     (hA : F.Obj A) (hB : F.Obj B) (hC : F.Obj C) (hf : IsHom A B f) (hg : IsHom B C g)
@@ -63,11 +92,41 @@ theorem map_comp_apply (F : DFun R n G) {A B C : Ob k G} {f : (Fin A.m → k) �
   have : h = g ∘ₗ f := LinearMap.ext fun x => (hh x).symm
   rw [this, F.map_comp A B C f g hA hB hC hf hg]; rfl
 
+/- English proof (translation)
+Use `F.map_smul A B 0 0 hA hB (fun g x => by simp) i x` as an intermediate fact. Simplify using `using this`.
+-/
 theorem map_zero' (F : DFun R n G) {A B : Ob k G} (hA : F.Obj A) (hB : F.Obj B) (i : ZMod n) (x : Vc k A.m) :
     F.map A B 0 i x = 0 := by
   have := F.map_smul A B 0 0 hA hB (fun g x => by simp) i x
   simpa using this
 
+/- English proof (translation)
+Introduce `k G _ _ l n _ _ _ R F r Dt M A N N' hN hN'`. Take `⟨B, Nb, A₁, j, p, hB, hj, hji, hp, hps, rfl⟩` from `hN`. Take `⟨B', Nb', A₂, j', p', hB', hj', hji', hp', hps', rfl⟩` from `hN'`. Take `⟨C, i, i', hi, hi', hb, hC⟩` from `M.base_sum B Nb B' Nb' hB hB'`. Take `⟨π, π', hπ, hπ', e1, e2, e3, e4, -⟩` from `exists_proj hi hi' hb`.
+
+Take `⟨S, a, a', ha, ha', hab⟩` from `exists_sum A₁ A₂`. Take `⟨q, q', hq, hq', d1, d2, d3, d4, d5⟩` from `exists_proj ha ha' hab`. Establish `oB` using `M.base_obj _ _ hB`. Establish `oB'` using `M.base_obj _ _ hB'`. Establish `oC` using `M.base_obj _ _ hC`.
+
+Establish `o1` using `F.obj_sub _ _ _ hj hji oB`. Establish `o2` using `F.obj_sub _ _ _ hj' hji' oB'`. Establish `oS` using `F.obj_sum _ _ _ _ _ ha ha' hab.2 o1 o2`. Establish `oA` using `F.obj_quot _ _ _ hp hps o1`. Establish `hJ : IsHom S C (i ∘ₗ j ∘ₗ q + i' ∘ₗ j' ∘ₗ q')` using `isHom_add (isHom_comp (isHom_comp hq hj) hi) (isHom_comp (isHom_comp hq' hj') hi')`.
+
+Establish `hP : IsHom S A (p ∘ₗ q + p' ∘ₗ q')` using `isHom_add (isHom_comp hq hp) (isHom_comp hq' hp')`. Use `⟨C, _, S, _, _, hC, hJ, ?_, hP, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1` using `congrArg π hx`.
+
+Establish `h2` using `congrArg π' hx`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, map_add, e1, e2, e3, e4, map_zero, add_zero, zero_add] at h1 h2`. Establish `h1' : q x = 0` using `hji (by simpa using h1)`. Establish `h2' : q' x = 0` using `hji' (by simpa using h2)`. Rewrite using `[← d5 x, h1', h2']`.
+
+Simplify using the standard rewrite rules. Introduce `y`. Take `⟨x, rfl⟩` from `hps y`. Conclude with `⟨a x, by simp [d1, d3]⟩`. Use function extensionality and compare the values at `t`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Apply `sup_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨F.map A₁ S a t y, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.map S C (i ∘ₗ j ∘ₗ q + i' ∘ₗ j' ∘ₗ q') t (F.map A₁ S a t y) ∈ F.push B C i Nb t ⊔ F.push B' C i' Nb' t`.
+
+Rewrite using `[map_comp_apply F (h := i ∘ₗ j) o1 oS oC ha hJ (fun x => by simp [d1, d3]), ← map_comp_apply F o1 oB oC hj hi (fun _ => rfl)]`. Conclude with `Submodule.mem_sup_left ⟨_, hy, rfl⟩`. Conclude with `map_comp_apply F o1 oS oA ha hP (fun x => by simp [d1, d3]) t y`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨F.map A₂ S a' t y, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F.map S C (i ∘ₗ j ∘ₗ q + i' ∘ₗ j' ∘ₗ q') t (F.map A₂ S a' t y) ∈ F.push B C i Nb t ⊔ F.push B' C i' Nb' t`. Rewrite using `[map_comp_apply F (h := i' ∘ₗ j') o2 oS oC ha' hJ (fun x => by simp [d2, d4]), ← map_comp_apply F o2 oB' oC hj' hi' (fun _ => rfl)]`. Conclude with `Submodule.mem_sup_right ⟨_, hy, rfl⟩`. Conclude with `map_comp_apply F o2 oS oA ha' hP (fun x => by simp [d2, d4]) t y`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `F.map S C (i ∘ₗ j ∘ₗ q + i' ∘ₗ j' ∘ₗ q') t s ∈ F.push B C i Nb t ⊔ F.push B' C i' Nb' t at hs`. Take `⟨_, ⟨u, hu, rfl⟩, _, ⟨u', hu', rfl⟩, h⟩` from `Submodule.mem_sup.1 hs`. Express the relevant statement in the definitionally equal form `F.map B C i t u + F.map B' C i' t u' = _ at h`. Establish `h1` using `congrArg (F.map C B π t) h`. Establish `h2` using `congrArg (F.map C B' π' t) h`.
+
+Rewrite `h1` using `[map_add, map_comp_apply F (h := LinearMap.id) oB oC oB hi hπ e1, map_comp_apply F (h := 0) oB' oC oB hi' hπ e2, F.map_id B oB, map_zero' F oB' oB, map_comp_apply F (h := j ∘ₗ q) oS oC oB hJ hπ (fun x => by simp [e1, e2]), ← map_comp_apply F oS o1 oB hq hj (fun _ => rfl), add_zer …`. Rewrite `h2` using `[map_add, map_comp_apply F (h := LinearMap.id) oB' oC oB' hi' hπ' e4, map_comp_apply F (h := 0) oB oC oB' hi hπ' e3, F.map_id B' oB', map_zero' F oB oB', map_comp_apply F (h := j' ∘ₗ q') oS oC oB' hJ hπ' (fun x => by simp [e3, e4]), ← map_comp_apply F oS o2 oB' hq' hj' (fun _ => …`. Express the relevant statement in the definitionally equal form `F.map S A _ t s ∈ _`. Rewrite using `[F.map_add S A _ _ oS oA (isHom_comp hq hp) (isHom_comp hq' hp'), ← map_comp_apply F oS o1 oA hq hp (fun _ => rfl), ← map_comp_apply F oS o2 oA hq' hp' (fun _ => rfl)]`. Use `Submodule.add_mem_sup ⟨_, ?_, rfl⟩ ⟨_, ?_, rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F.map A₁ B j t _ ∈ Nb t`. Rewrite using `[← h1]`. Conclude with `hu`. Express the relevant statement in the definitionally equal form `F.map A₂ B' j' t _ ∈ Nb' t`. Rewrite using `[← h2]`.
+
+Conclude with `hu'`.
+-/
 theorem model_sup : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) (A : Ob k G) (N N' : Lats k n A.m), M.Model A N → M.Model A N' → M.Model A (fun i => N i ⊔ N' i) := by
   intro k G _ _ l n _ _ _ R F r Dt M A N N' hN hN'
   obtain ⟨B, Nb, A₁, j, p, hB, hj, hji, hp, hps, rfl⟩ := hN

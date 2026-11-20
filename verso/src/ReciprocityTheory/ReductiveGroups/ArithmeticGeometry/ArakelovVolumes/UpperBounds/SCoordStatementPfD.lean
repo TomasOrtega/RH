@@ -10,6 +10,9 @@ variable {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω]
   {Fr : Type*} [NormedAddCommGroup Fr] [NormedSpace ℂ Fr]
   {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Establish `hsub : U ⊆ closure (G ∩ U)`. Introduce `y hy`. Use `hU.inter_closure ⟨hy, hUG hy⟩` as an intermediate fact. Rewrite `this` using `[Set.inter_comm]`. Then use the resulting hypothesis. Conclude with `Set.EqOn.of_subset_closure (f := F) (g := fun _ => 0) (fun y hy => h0 y hy) hF continuousOn_const Set.inter_subset_right hsub`.
+-/
 theorem zero_of_dense {U G : Set Fr} (hU : IsOpen U) (hUG : U ⊆ closure G) {F : Fr → ℂ}
     (hF : ContinuousOn F U) (h0 : ∀ y ∈ G ∩ U, F y = 0) : ∀ y ∈ U, F y = 0 := by
   have hsub : U ⊆ closure (G ∩ U) := by
@@ -19,6 +22,17 @@ theorem zero_of_dense {U G : Set Fr} (hU : IsOpen U) (hUG : U ⊆ closure G) {F 
   exact Set.EqOn.of_subset_closure (f := F) (g := fun _ => 0) (fun y hy => h0 y hy) hF
     continuousOn_const Set.inter_subset_right hsub
 
+/- English proof (translation)
+Take `⟨P, hP, hP'⟩` from `exists_rel hy ha`. Use `⟨coef yB a P, ?_⟩` and prove the remaining obligations. Use `set F : Fr → ℂ := fun y => P.eval₂ (eval₂Hom sg (fun b => vb b y)) (vj y) with hFdef`. Establish `hFcont : ContinuousOn F U` using `fun y hyU => (hasFDerivAt_eval₂ sg P (h := fun y b => vb b y) (fun b => (hvb b y hyU).hasFDerivAt) (hvj y hyU).hasFDerivAt).continuousAt.continuousWithinAt`. Establish `hF0 : ∀ y ∈ Gen ∩ U, F y = 0`.
+
+Introduce `y hyGU`. Establish `hb : (fun b => vb b y) = pt y ∘ yB` using `funext (hGb y hyGU)`. Use `show P.eval₂ (eval₂Hom sg (fun b => vb b y)) (vj y) = 0`. Rewrite using `[hb, hGa y hyGU, ← hpt y hyGU.1, eval₂Hom_comp, ← Polynomial.hom_eval₂, hP, map_zero]`. Establish `hFU` using `zero_of_dense hU hUG hFcont hF0`.
+
+Establish `hev : ∀ᶠ z in 𝓝 (0 : V), c z ∈ U` using `hc.continuous.continuousAt.preimage_mem_nhds (by rw [hc0]; exact hU.mem_nhds hx.2)`. Establish `hxU : c 0 ∈ U` using `by rw [hc0]; exact hx.2`. Use `deriv_rel (pt x) P hP' (h := fun z b => vb b (c z)) (g := fun z => vj (c z)) (fun b => ((hvb b (c 0) hxU).comp 0 (hc 0)).hasFDerivAt) ((hvj (c 0) hxU).comp 0 (hc 0)).hasFDerivAt ?_ ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Use `show vb b (c 0) = pt x (yB b)`.
+
+Rewrite using `[hc0]`. Conclude with `hGb x hx b`. Use `show vj (c 0) = pt x a`. Rewrite using `[hc0]`. Conclude with `hGa x hx`.
+
+Rewrite using `[hpt x hx.1]`. Conclude with `hev.mono fun z hz => hFU (c z) hz`.
+-/
 theorem rel_deriv {ιB : Type} [Fintype ιB] (sg : K →+* ℂ) {U Gen : Set Fr} (hU : IsOpen U)
     (hUG : U ⊆ closure Gen) (pt : Fr → Ω →+* ℂ) (hpt : ∀ y ∈ Gen, (pt y).comp (algebraMap K Ω) = sg)
     (vb : ιB → Fr → ℂ) (vj : Fr → ℂ) (hvb : ∀ b, ∀ y ∈ U, DifferentiableAt ℂ (vb b) y)

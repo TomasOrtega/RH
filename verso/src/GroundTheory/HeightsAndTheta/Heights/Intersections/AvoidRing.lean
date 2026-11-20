@@ -12,6 +12,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]`.
+-/
 theorem isMultiHomog_mul {f g : MRingOver R ι} {a b : K → ℕ} (hf : IsMultiHomog f a)
     (hg : IsMultiHomog g b) : IsMultiHomog (f * g) (a + b) := by
   classical
@@ -19,6 +22,11 @@ theorem isMultiHomog_mul {f g : MRingOver R ι} {a b : K → ℕ} (hf : IsMultiH
   obtain ⟨m1, hm1, m2, hm2, rfl⟩ := Finset.mem_add.mp (MvPolynomial.support_mul f g hm)
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `h1 : (1 : MRingOver R ι) = monomial 0 1` using `by rw [← C_1, C_apply]`. Rewrite `hm` using `[h1]`. Establish `: m = 0` using `Finset.mem_singleton.mp (support_monomial_subset hm)`. Substitute `this` using the available equality.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_one : IsMultiHomog (1 : MRingOver R ι) 0 := by
   classical
   intro m hm k
@@ -28,6 +36,11 @@ theorem isMultiHomog_one : IsMultiHomog (1 : MRingOver R ι) 0 := by
   subst this
   simp
 
+/- English proof (translation)
+Introduce `m hm k'`. Establish `hX : (X ⟨k, i⟩ : MRingOver R ι) = monomial (Finsupp.single ⟨k, i⟩ 1) 1` using `rfl`. Rewrite `hm` using `[hX]`. Establish `hm' : m = Finsupp.single ⟨k, i⟩ 1` using `Finset.mem_singleton.mp (support_monomial_subset hm)`. Substitute `hm'` using the available equality.
+
+Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`. Establish `: ∀ j : ι k', (⟨k, i⟩ : Σ k, ι k) ≠ ⟨k', j⟩` using `fun j e => h (congrArg Sigma.fst e).symm`. Simplify using `[h]`.
+-/
 theorem isMultiHomog_X [DecidableEq K] (k : K) (i : ι k) :
     IsMultiHomog (X ⟨k, i⟩ : MRingOver R ι) (Pi.single k 1) := by
   classical
@@ -42,6 +55,9 @@ theorem isMultiHomog_X [DecidableEq K] (k : K) (i : ι k) :
   · have : ∀ j : ι k', (⟨k, i⟩ : Σ k, ι k) ≠ ⟨k', j⟩ := fun j e => h (congrArg Sigma.fst e).symm
     simp [h]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (isMultiHomog_one (R := R) (ι := ι))`. Consider the case `succ n ih`. Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `isMultiHomog_mul ih hf`.
+-/
 theorem isMultiHomog_pow {f : MRingOver R ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f ^ n) (n • a) := by
   induction n with
@@ -50,6 +66,13 @@ theorem isMultiHomog_pow {f : MRingOver R ι} {a : K → ℕ} (hf : IsMultiHomog
     rw [pow_succ, succ_nsmul]
     exact isMultiHomog_mul ih hf
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRingOver R ι) ^ d k) (∑ k ∈ s, d k • Pi.single k 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isMultiHomog_one (R := R) (ι := ι))`. Consider the case `insert k s hk ih`.
+
+Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `isMultiHomog_mul (isMultiHomog_pow (isMultiHomog_X k (c k)) _) ih`. Establish `e : (∑ k, d k • (Pi.single k 1 : K → ℕ)) = d`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isMultiHomog_coordProd (c : ∀ k, ι k) (d : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRingOver R ι) ^ d k) d := by
   classical
@@ -67,6 +90,9 @@ theorem isMultiHomog_coordProd (c : ∀ k, ι k) (d : K → ℕ) :
   have := key Finset.univ
   rwa [e] at this
 
+/- English proof (translation)
+Introduce `h`. Take `⟨k, -, hk⟩` from `(hV.prod_mem_iff).mp h`. Conclude with `hc k (hV.mem_of_pow_mem _ hk)`.
+-/
 theorem coordProd_not_mem {V : Ideal (MRingOver R ι)} (hV : V.IsPrime) (c : ∀ k, ι k)
     (hc : ∀ k, (X ⟨k, c k⟩ : MRingOver R ι) ∉ V) (d : K → ℕ) :
     (∏ k, (X ⟨k, c k⟩ : MRingOver R ι) ^ d k) ∉ V := by
@@ -74,6 +100,9 @@ theorem coordProd_not_mem {V : Ideal (MRingOver R ι)} (hV : V.IsPrime) (c : ∀
   obtain ⟨k, -, hk⟩ := (hV.prod_mem_iff).mp h
   exact hc k (hV.mem_of_pow_mem _ hk)
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨b, hb, hmb⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Conclude with `h b hb m hmb k`.
+-/
 theorem isMultiHomog_sum {β : Type*} (s : Finset β) (f : β → MRingOver R ι) {a : K → ℕ}
     (h : ∀ b ∈ s, IsMultiHomog (f b) a) : IsMultiHomog (∑ b ∈ s, f b) a := by
   classical
@@ -81,6 +110,9 @@ theorem isMultiHomog_sum {β : Type*} (s : Finset β) (f : β → MRingOver R ι
   obtain ⟨b, hb, hmb⟩ := Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)
   exact h b hb m hmb k
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isMultiHomog_one (R := R) (ι := ι))`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.prod_insert hb, Finset.sum_insert hb]`. Conclude with `isMultiHomog_mul (h b (Finset.mem_insert_self b s)) (ih fun b' hb' => h b' (Finset.mem_insert_of_mem hb'))`.
+-/
 theorem isMultiHomog_prod {β : Type*} (s : Finset β) (f : β → MRingOver R ι) (a : β → K → ℕ)
     (h : ∀ b ∈ s, IsMultiHomog (f b) (a b)) : IsMultiHomog (∏ b ∈ s, f b) (∑ b ∈ s, a b) := by
   classical
@@ -91,6 +123,31 @@ theorem isMultiHomog_prod {β : Type*} (s : Finset β) (f : β → MRingOver R �
     exact isMultiHomog_mul (h b (Finset.mem_insert_self b s))
       (ih fun b' hb' => h b' (Finset.mem_insert_of_mem hb'))
 
+/- English proof (translation)
+Use `set T : Finset (Ideal (MRingOver R ι)) := hS.toFinset.filter (fun W => ∀ W' ∈ S, W ≤ W' → W' = W) with hT`. Establish `hTS : ∀ W ∈ T, W ∈ S` using `fun W hW => hS.mem_toFinset.mp (Finset.mem_filter.mp hW).1`. Establish `hTmax : ∀ W ∈ T, ∀ W' ∈ S, W ≤ W' → W' = W` using `fun W hW => (Finset.mem_filter.mp hW).2`. Establish `hle : ∀ W ∈ S, ∃ W' ∈ T, W ≤ W'`. Introduce `W hW`.
+
+Take `⟨W', hWW', hW'⟩` from `hS.exists_le_maximal hW`. Conclude with `⟨W', Finset.mem_filter.mpr ⟨hS.mem_toFinset.mpr hW'.prop, fun W'' hW'' h => le_antisymm (hW'.2 hW'' h) h⟩, hWW'⟩`. Establish `hgen : ∀ W ∈ T, ∀ W' ∈ T, W' ≠ W → ∃ g : MRingOver R ι, ∃ a : K → ℕ, IsMultiHomog g a ∧ g ∈ W' ∧ g ∉ W`. Introduce `W hW W' hW' hne`. Take `⟨S', hS'h, hS'eq⟩` from `(hS' W' (hTS W' hW')).2.1`.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [not_exists, not_and, not_not] at hc`. Apply `hne` to reduce the goal to its premises. Use `(hTmax W' hW' W (hTS W hW) ?_).symm` and prove the remaining obligations. Rewrite using `[hS'eq, Ideal.span_le]`.
+
+Introduce `g hg`. Take `⟨a, ha⟩` from `hS'h g hg`. Conclude with `hc g a ha (hS'eq ▸ Ideal.subset_span hg)`. Use `choose! gen degG hgenH hgenMem hgenNot using hgen`. Use `set a : Ideal (MRingOver R ι) → MRingOver R ι := fun W => ∏ W' ∈ T.erase W, gen W W' with ha`.
+
+Use `set δ : Ideal (MRingOver R ι) → K → ℕ := fun W => ∑ W' ∈ T.erase W, degG W W' with hδ`. Establish `haH : ∀ W ∈ T, IsMultiHomog (a W) (δ W)` using `fun W hW => isMultiHomog_prod _ _ _ fun W' hW' => hgenH W hW W' (Finset.mem_of_mem_erase hW') (Finset.ne_of_mem_erase hW')`. Establish `haNot : ∀ W ∈ T, a W ∉ W`. Introduce `W hW h`. Take `⟨W', hW', hg⟩` from `((hS' W (hTS W hW)).1.prod_mem_iff).mp h`.
+
+Conclude with `hgenNot W hW W' (Finset.mem_of_mem_erase hW') (Finset.ne_of_mem_erase hW') hg`. Establish `haMem : ∀ W ∈ T, ∀ W'' ∈ T, W'' ≠ W → a W ∈ W''`. Introduce `W hW W'' hW'' hne`. Establish `hmem : W'' ∈ T.erase W` using `Finset.mem_erase.mpr ⟨hne, hW''⟩`. Use `show (∏ W' ∈ T.erase W, gen W W') ∈ W''`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ hmem]`. Conclude with `Ideal.mul_mem_right _ _ (hgenMem W hW W'' hW'' hne)`. Use `⟨∑ W ∈ T, δ W, fun d hd => ?_⟩` and prove the remaining obligations. Establish `hδd : ∀ W ∈ T, δ W ≤ d` using `fun W hW => le_trans (Finset.single_le_sum (f := δ) (fun _ _ _ => Nat.zero_le _) hW) hd`. Establish `hrel : ∀ W ∈ T, IsRelevant W` using `fun W hW => (hS' W (hTS W hW)).2.2`.
+
+Use `set m : Ideal (MRingOver R ι) → MRingOver R ι := fun W => if h : IsRelevant W then ∏ k, (X ⟨k, (h k).choose⟩ : MRingOver R ι) ^ (d k - δ W k) else 0 with hm`. Establish `hmH : ∀ W ∈ T, IsMultiHomog (m W) (d - δ W)`. Introduce `W hW`. Simplify using `only [hm, dif_pos (hrel W hW)]`. Conclude with `isMultiHomog_coordProd _ _`.
+
+Establish `hmNot : ∀ W ∈ T, m W ∉ W`. Introduce `W hW`. Simplify using `only [hm, dif_pos (hrel W hW)]`. Conclude with `coordProd_not_mem (hS' W (hTS W hW)).1 _ (fun k => ((hrel W hW) k).choose_spec) _`. Use `⟨∑ W ∈ T, a W * m W, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `isMultiHomog_sum` to reduce the goal to its premises. Introduce `W hW`. Use `isMultiHomog_mul (haH W hW) (hmH W hW)` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le (hδd W hW)]`. Then use the resulting hypothesis. Establish `key : ∀ W₀ ∈ T, (∑ W ∈ T, a W * m W) ∉ W₀`.
+
+Introduce `W₀ hW₀ h`. Rewrite `h` using `[← Finset.add_sum_erase _ _ hW₀]`. Establish `hrest : (∑ W ∈ T.erase W₀, a W * m W) ∈ W₀` using `Ideal.sum_mem _ fun W hW => Ideal.mul_mem_right _ _ (haMem W (Finset.mem_of_mem_erase hW) W₀ hW₀ (Finset.ne_of_mem_erase hW).symm)`. Establish `h1` using `(Ideal.add_mem_iff_left _ hrest).mp h`. Break down `(hS' W₀ (hTS W₀ hW₀)).1.mem_or_mem h1 with h2 | h2` into its components or cases.
+
+Conclude with `haNot W₀ hW₀ h2`. Conclude with `hmNot W₀ hW₀ h2`. Introduce `W hW h`. Take `⟨W', hW', hle'⟩` from `hle W hW`. Conclude with `key W' hW' (hle' h)`.
+-/
 theorem exists_form_avoid (S : Set (Ideal (MRingOver R ι))) (hS : S.Finite)
     (hS' : ∀ W ∈ S, IsMultiProjPrime W) :
     ∃ d₀ : K → ℕ, ∀ d : K → ℕ, d₀ ≤ d →

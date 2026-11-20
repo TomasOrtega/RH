@@ -13,10 +13,26 @@ noncomputable def cxPtsFibreEquiv (X : Scheme.{0}) (x : X) :
     (Equiv.sigmaSubtype (β := fun z : X => X.residueField z ⟶ CommRingCat.of ℂ) x)).trans
     ⟨fun f => f.hom, fun f => CommRingCat.ofHom f, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.charZero ((Scheme.SpecToEquivOfField ℂ X y).2.hom)`.
+-/
 theorem charZero_residueField_pt (X : Scheme.{0}) (y : Sp ℂ ⟶ X) :
     CharZero (X.residueField (y (IsLocalRing.closedPoint ℂ))) :=
   RingHom.charZero ((Scheme.SpecToEquivOfField ℂ X y).2.hom)
 
+/- English proof (translation)
+Set `pt : (Sp ℂ ⟶ X) → X` to `fun y => y (IsLocalRing.closedPoint ℂ)`. Set `g : (Sp ℂ ⟶ X) → ℝ` to `fun y => m (pt y)`. Set `F : X → Set (Sp ℂ ⟶ X)` to `fun x => {y | pt y = x}`. Set `A : (k →+* ℂ) → Set (Sp ℂ ⟶ X)` to `fun σ => {y | y ≫ p = spMap σ}`. Establish `hF : ∀ x ∈ S, (F x).Finite` using `fun x hx => by`.
+
+Use `hS x hx` as an intermediate fact. Establish `: Finite (F x)` using `Finite.of_equiv _ (cxPtsFibreEquiv X x).symm`. Conclude with `Set.toFinite _`. Establish `hsupp : Function.support g ⊆ ⋃ x ∈ (S : Set X), F x` using `fun y hy => Set.mem_biUnion (hm _ (charZero_residueField_pt X y) hy) rfl`. Establish `hsf : (Function.support g).Finite` using `(S.finite_toSet.biUnion fun x hx => hF x hx).subset hsupp`.
+
+Establish `hdisj : (S : Set X).PairwiseDisjoint F` using `fun a _ b _ hab => Set.disjoint_left.2 fun y h1 h2 => hab (h1.symm.trans h2)`. Establish `h1 : ∑ᶠ y, g y = ∑ x ∈ S, m x * (Nat.card (X.residueField x →+* ℂ) : ℝ)`. Rewrite using `[← finsum_mem_support, ← Set.inter_eq_right.2 hsupp, finsum_mem_inter_support, finsum_mem_biUnion hdisj S.finite_toSet hF, finsum_mem_coe_finset]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `e : ∑ᶠ y ∈ F x, g y = ∑ᶠ y ∈ F x, m x` using `finsum_mem_congr rfl fun y hy => congrArg m hy`.
+
+Establish `hc : Nat.card (F x) = Nat.card (X.residueField x →+* ℂ)` using `Nat.card_congr (cxPtsFibreEquiv X x)`. Rewrite using `[e, finsum_mem_eq_finite_toFinset_sum _ (hF x hx), Finset.sum_const, nsmul_eq_mul, mul_comm, ← Set.ncard_eq_toFinset_card _ (hF x hx), ← Nat.card_coe_set_eq, hc]`. Establish `h2 : ∀ σ : k →+* ℂ, ∑ᶠ y : CxPts p σ, m y.pt = ∑ᶠ y ∈ A σ ∩ Function.support g, g y` using `fun σ => (finsum_set_coe_eq_finsum_mem (f := g) (A σ)).trans (finsum_mem_inter_support g (A σ)).symm`. Establish `hdisjA : Pairwise (Function.onFun Disjoint fun σ => A σ ∩ Function.support g)` using `fun σ τ hστ => Set.disjoint_left.2 fun y h1 h2 => hστ (by`. Establish `e : spMap σ = spMap τ` using `h1.1.symm.trans h2.1`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e))`. Establish `hU : ⋃ σ, A σ ∩ Function.support g = Function.support g`. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff]`. Use `⟨fun ⟨_, _, h⟩ => h, fun h => ⟨(Spec.preimage (y ≫ p)).hom, ?_, h⟩⟩` and prove the remaining obligations.
+
+Use `show y ≫ p = Spec.map (CommRingCat.ofHom _)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Rewrite using `[finsum_congr h2, ← finsum_mem_iUnion hdisjA fun σ => hsf.subset Set.inter_subset_right, hU, finsum_mem_support, h1]`.
+-/
 theorem finsum_cxPts_eq_sum_card (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [Finite (k →+* ℂ)] (S : Finset X) (m : X → ℝ)
     (hS : ∀ x ∈ S, Finite (X.residueField x →+* ℂ))

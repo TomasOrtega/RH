@@ -82,6 +82,9 @@ def LabCover.toPreCover {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D 
   lab := C.lab
   trait := C.trait
 
+/- English proof (translation)
+Take `⟨D, h1, h2, -, C, hC⟩` from `LabCover.exists_toric_rank_one`. Conclude with `⟨D, h1, h2, C.toPreCover, hC⟩`.
+-/
 theorem PreCover.exists_toric_rank_one : ∃ D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ)),
     Module.finrank ℤ D.toPre.X = 1 ∧ Has D ∧ ∃ C : PreCover D, C.n = 3 := by
   obtain ⟨D, h1, h2, -, C, hC⟩ := LabCover.exists_toric_rank_one

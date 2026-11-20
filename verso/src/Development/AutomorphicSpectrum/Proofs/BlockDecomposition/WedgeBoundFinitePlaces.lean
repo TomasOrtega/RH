@@ -9,17 +9,29 @@ namespace GlobalTheory.CompanionTheory.Wedge
 
 variable {K ι ι' κ κ' : Type} [NormedField K]
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+-/
 theorem nF_nonneg' [Fintype κ] [DecidableEq κ] (A : Matrix ι κ K) : 0 ≤ nF A :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `le_ciSup (f := fun s : κ → ι => ‖(A.submatrix s id).det‖) (Set.finite_range _).bddAbove s`.
+-/
 theorem minor_le_nF [Fintype ι] [Fintype κ] [DecidableEq κ] (A : Matrix ι κ K) (s : κ → ι) :
     ‖(A.submatrix s id).det‖ ≤ nF A :=
   le_ciSup (f := fun s : κ → ι => ‖(A.submatrix s id).det‖) (Set.finite_range _).bddAbove s
 
+/- English proof (translation)
+The claim follows from `Real.iSup_le h hc`.
+-/
 theorem nF_le_of_minors [Fintype κ] [DecidableEq κ] (A : Matrix ι κ K) {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ s : κ → ι, ‖(A.submatrix s id).det‖ ≤ c) : nF A ≤ c :=
   Real.iSup_le h hc
 
+/- English proof (translation)
+Establish `: Nonempty (κ → ι)`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`. Conclude with `h (Real.iSup_of_isEmpty _)`. Conclude with `exists_eq_ciSup_of_finite (f := fun s : κ → ι => ‖(A.submatrix s id).det‖)`.
+-/
 theorem exists_minor_eq_nF [Fintype ι] [Fintype κ] [DecidableEq κ] (A : Matrix ι κ K)
     (h : nF A ≠ 0) : ∃ s : κ → ι, ‖(A.submatrix s id).det‖ = nF A := by
   have : Nonempty (κ → ι) := by
@@ -28,11 +40,20 @@ theorem exists_minor_eq_nF [Fintype ι] [Fintype κ] [DecidableEq κ] (A : Matri
     exact h (Real.iSup_of_isEmpty _)
   exact exists_eq_ciSup_of_finite (f := fun s : κ → ι => ‖(A.submatrix s id).det‖)
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+-/
 theorem sz_nonneg' (g : Matrix ι κ K) : 0 ≤ sz g := Real.iSup_nonneg fun _ => norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `Real.iSup_le (fun p => h p.1 p.2) zero_le_one`.
+-/
 theorem sz_le_one {g : Matrix ι κ K} (h : ∀ i j, ‖g i j‖ ≤ 1) : sz g ≤ 1 :=
   Real.iSup_le (fun p => h p.1 p.2) zero_le_one
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (ha i k) (norm_nonneg _) (hb k j)`.
+-/
 theorem int_mul [IsUltrametricDist K] [Fintype κ] {a : Matrix ι κ K} {b : Matrix κ ι' K}
     (ha : ∀ i j, ‖a i j‖ ≤ 1) (hb : ∀ i j, ‖b i j‖ ≤ 1) : ∀ i j, ‖(a * b) i j‖ ≤ 1 := by
   intro i j
@@ -41,10 +62,16 @@ theorem int_mul [IsUltrametricDist K] [Fintype κ] {a : Matrix ι κ K} {b : Mat
   rw [norm_mul]
   exact mul_le_one₀ (ha i k) (norm_nonneg _) (hb k j)
 
+/- English proof (translation)
+Introduce `i j` and use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i j) (hb i j))`.
+-/
 theorem int_add [IsUltrametricDist K] {a b : Matrix ι κ K}
     (ha : ∀ i j, ‖a i j‖ ≤ 1) (hb : ∀ i j, ‖b i j‖ ≤ 1) : ∀ i j, ‖(a + b) i j‖ ≤ 1 := fun i j =>
   (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i j) (hb i j))
 
+/- English proof (translation)
+Introduce `i j` and use `by have h : (a - b) i j = a i j + -b i j := by simp [sub_eq_add_neg] rw [h] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i j) (by simpa using hb i j))`.
+-/
 theorem int_sub [IsUltrametricDist K] {a b : Matrix ι κ K}
     (ha : ∀ i j, ‖a i j‖ ≤ 1) (hb : ∀ i j, ‖b i j‖ ≤ 1) : ∀ i j, ‖(a - b) i j‖ ≤ 1 := fun i j =>
   by
@@ -52,11 +79,17 @@ theorem int_sub [IsUltrametricDist K] {a b : Matrix ι κ K}
   rw [h]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha i j) (by simpa using hb i j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem int_one [DecidableEq ι] : ∀ i j, ‖(1 : Matrix ι ι K) i j‖ ≤ 1 := by
   intro i j
   rw [one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `((hM K ι ι' κ A).1 g).trans ?_` and prove the remaining obligations. Establish `h1 : sz g ^ Fintype.card κ ≤ 1` using `pow_le_one₀ (sz_nonneg' g) (sz_le_one hg)`. Simplify using `using mul_le_mul_of_nonneg_right h1 (nF_nonneg' A)`.
+-/
 theorem nF_mul_le (hM : MulF) [IsUltrametricDist K] [Fintype ι] [Fintype ι'] [Fintype κ]
     [DecidableEq κ] (g : Matrix ι' ι K) (A : Matrix ι κ K) (hg : ∀ i j, ‖g i j‖ ≤ 1) :
     nF (g * A) ≤ nF A := by
@@ -64,16 +97,37 @@ theorem nF_mul_le (hM : MulF) [IsUltrametricDist K] [Fintype ι] [Fintype ι'] [
   have h1 : sz g ^ Fintype.card κ ≤ 1 := pow_le_one₀ (sz_nonneg' g) (sz_le_one hg)
   simpa using mul_le_mul_of_nonneg_right h1 (nF_nonneg' A)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[mul_apply, one_apply]`.
+-/
 theorem sel_mul [DecidableEq ι] [Fintype ι] (s : κ → ι) (M : Matrix ι ι' K) :
     (1 : Matrix ι ι K).submatrix s id * M = M.submatrix s id := by
   ext a b
   simp [mul_apply, one_apply]
 
+/- English proof (translation)
+Rewrite using `[det_permute]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign e) with h | h <;> simp [h]`.
+-/
 theorem norm_det_perm [Fintype κ] [DecidableEq κ] (M : Matrix κ κ K) (e : Equiv.Perm κ) :
     ‖(M.submatrix e id).det‖ = ‖M.det‖ := by
   rw [det_permute]
   rcases Int.units_eq_one_or (Equiv.Perm.sign e) with h | h <;> simp [h]
 
+/- English proof (translation)
+Use `set E := (1 : Matrix ι ι K).submatrix s id with hE`. Use `nF_le_of_minors _ (nF_nonneg' C) fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : ∀ k, ∃ x, u x = s k`. Use `swap`. Use `push_neg at hu`.
+
+Take `⟨k, hk⟩` from `hu`. Establish `: ((fromCols Eᵀ C).submatrix u id).det = 0`. Use `det_eq_zero_of_column_eq_zero (Sum.inl k) fun x => ?_` and prove the remaining obligations. Simplify `hk x` using `[hE, one_apply]`. Rewrite using `[this, norm_zero]`.
+
+Conclude with `nF_nonneg' C`. Distinguish the cases in `inj : Function.Injective u`. Use `swap`. Rewrite `inj` using `[Function.Injective] at inj push_neg`. Take `⟨x, y, hxy, hne⟩` from `inj`.
+
+Establish `: ((fromCols Eᵀ C).submatrix u id).det = 0` using `det_zero_of_row_eq hne (by ext j; simp [hxy])`. Rewrite using `[this, norm_zero]`. Conclude with `nF_nonneg' C`. Use `choose σ hσ using hu`. Establish `hσi : Function.Injective σ` using `fun a b h => hs (by rw [← hσ a, ← hσ b, h])`.
+
+Set `e0 : {x : κ ⊕ κ' // x ∈ Set.range (Sum.inl : κ → κ ⊕ κ')} ≃ {x // x ∈ Set.range σ}` to `(Equiv.ofInjective _ Sum.inl_injective).symm.trans (Equiv.ofInjective σ hσi)`. Set `e : Equiv.Perm (κ ⊕ κ')` to `e0.extendSubtype`. Establish `he : ∀ k, e (Sum.inl k) = σ k`. Introduce `k`. Establish `h` using `e0.extendSubtype_apply_of_mem (Sum.inl k) ⟨k, rfl⟩`.
+
+Establish `h2 : (Equiv.ofInjective _ Sum.inl_injective).symm (⟨Sum.inl k, ⟨k, rfl⟩⟩ : {x : κ ⊕ κ' // x ∈ Set.range (Sum.inl : κ → κ ⊕ κ')}) = k` using `Equiv.ofInjective_symm_apply Sum.inl_injective k`. Simplify `h` using `[e0, h2]`. Establish `hb : ((fromCols Eᵀ C).submatrix u id).submatrix e id = fromBlocks 1 0 (Eᵀ.submatrix (u ∘ e ∘ Sum.inr) id) (C.submatrix (u ∘ e ∘ Sum.inr) id)`. Use extensionality with `(a | a) (b | b)`. Simplify using `[he, hσ, hE, one_apply, hs.eq_iff, eq_comm]`.
+
+Simplify `congrFun (congrFun hC a) b` using `[he, hσ]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[← norm_det_perm _ e, hb, det_fromBlocks_zero₁₂, det_one, one_mul]`. Conclude with `minor_le_nF C _`.
+-/
 theorem nF_fromCols_sel_le [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (s : κ → ι) (C : Matrix ι κ' K)
     (hs : Function.Injective s) (hC : C.submatrix s id = 0) :
@@ -121,6 +175,11 @@ theorem nF_fromCols_sel_le [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] [
   rw [← norm_det_perm _ e, hb, det_fromBlocks_zero₁₂, det_one, one_mul]
   exact minor_le_nF C _
 
+/- English proof (translation)
+Establish `h : D.submatrix (Function.update s k i) id = (1 : Matrix κ κ K).updateRow k (D i)`. Use extensionality with `a b`. Distinguish the cases in `hak : a = k`. Substitute `hak` using the available equality. Simplify using the standard rewrite rules.
+
+Use `congrFun (congrFun hD a) b` as an intermediate fact. Simplify `this` using `[Function.update_of_ne hak, updateRow_ne hak]`. Rewrite using `[h, ← det_transpose, ← updateCol_transpose, transpose_one, ← cramer_apply, cramer_one]`. Both sides reduce to the same expression.
+-/
 theorem entry_eq_minor [Fintype κ] [DecidableEq κ] (D : Matrix ι κ K) (s : κ → ι)
     (hD : D.submatrix s id = 1) (i : ι) (k : κ) :
     D i k = (D.submatrix (Function.update s k i) id).det := by
@@ -134,6 +193,21 @@ theorem entry_eq_minor [Fintype κ] [DecidableEq κ] (D : Matrix ι κ K) (s : �
   rw [h, ← det_transpose, ← updateCol_transpose, transpose_one, ← cramer_apply, cramer_one]
   rfl
 
+/- English proof (translation)
+Establish `hs : Function.Injective s`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `h1` using `congrFun (congrFun hD a) a`. Establish `h2` using `congrFun (congrFun hD b) a`.
+
+Simplify using `only [submatrix_apply, id, hab, one_apply_eq] at h1`. Rewrite `h2` using `[submatrix_apply, id, one_apply_ne (Ne.symm hne)]`. Conclude with `one_ne_zero (h1.symm.trans h2)`. Use `set E := (1 : Matrix ι ι K).submatrix s id with hE`. Establish `hEE : E * Eᵀ = 1`.
+
+Rewrite using `[hE, sel_mul]`. Use extensionality with `a b`. Simplify using `[one_apply, hs.eq_iff, eq_comm]`. Establish `hEC : E * C = 0` using `by rw [hE, sel_mul, hC]`. Establish `hEint : ∀ i j, ‖E i j‖ ≤ 1` using `fun i j => int_one _ _`.
+
+Establish `hEtint : ∀ i j, ‖Eᵀ i j‖ ≤ 1` using `fun i j => int_one _ _`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hk : (1 + (D - Eᵀ) * E) * fromCols Eᵀ C = fromCols D C`. Rewrite using `[mul_fromCols]`. Use `congr 1`.
+
+Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hEE, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, hEC, Matrix.mul_zero, add_zero]`. Rewrite using `[← hk]`. Conclude with `(nF_mul_le hM _ _ (int_add int_one (int_mul (int_sub hint hEtint) hEint))).trans (nF_fromCols_sel_le s C hs hC)`.
+
+Use `nF_le_of_minors _ (nF_nonneg' _) fun t => ?_` and prove the remaining obligations. Establish `hb : (fromCols D C).submatrix (Sum.elim s t) id = fromBlocks 1 0 (D.submatrix t id) (C.submatrix t id)`. Use extensionality with `(a | a) (b | b)`. Simplify using `using congrFun (congrFun hD a) b`. Simplify using `using congrFun (congrFun hC a) b`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `minor_le_nF (fromCols D C) (Sum.elim s t)` as an intermediate fact. Rewrite `this` using `[hb, det_fromBlocks_zero₁₂, det_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem nF_fromCols_of_id (hM : MulF) [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (D : Matrix ι κ K) (C : Matrix ι κ' K)
     (s : κ → ι) (hD : D.submatrix s id = 1) (hint : ∀ i j, ‖D i j‖ ≤ 1)
@@ -175,6 +249,19 @@ theorem nF_fromCols_of_id (hM : MulF) [IsUltrametricDist K] [Fintype ι] [Decida
     have := minor_le_nF (fromCols D C) (Sum.elim s t)
     rwa [hb, det_fromBlocks_zero₁₂, det_one, one_mul] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨s, hs⟩` from `exists_minor_eq_nF A h`. Establish `hdet : ((A.submatrix s id)ᵀ).det ≠ 0`. Rewrite using `[det_transpose]`.
+
+Introduce `h0`. Rewrite `hs` using `[h0, norm_zero]`. Conclude with `h hs.symm`. Establish `hli` using `Matrix.linearIndependent_rows_of_det_ne_zero hdet`. Use `LinearIndependent.of_comp (LinearMap.funLeft K K s) ?_` and prove the remaining obligations.
+
+Conclude with `hli`. Introduce `h h0`. Establish `hinj : Function.Injective A.mulVecLin`. Use `(Matrix.vecMul_injective_iff (M := Aᵀ)).2 h` as an intermediate fact. Introduce `x y hxy`.
+
+Apply `this` to reduce the goal to its premises. Simplify `hxy` using `[vecMul_transpose]`. Take `⟨g, hg⟩` from `A.mulVecLin.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hinj)`. Establish `hL : LinearMap.toMatrix' g * A = 1`. Establish `: LinearMap.toMatrix' (g ∘ₗ A.mulVecLin) = 1`.
+
+Rewrite using `[hg, LinearMap.toMatrix'_id]`. Rewrite `this` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Conclude with `this`. Establish `h1` using `(hM K ι κ κ A).1 (LinearMap.toMatrix' g)`. Rewrite `h1` using `[hL, h0, mul_zero, (hM K κ κ κ 1).2.2 1, det_one, norm_one]`.
+
+Conclude with `absurd h1 (by norm_num)`.
+-/
 theorem nF_ne_zero_iff (hM : MulF) [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (A : Matrix ι κ K) : nF A ≠ 0 ↔ LinearIndependent K Aᵀ := by
   constructor
@@ -204,6 +291,11 @@ theorem nF_ne_zero_iff (hM : MulF) [IsUltrametricDist K] [Fintype ι] [Decidable
     rw [hL, h0, mul_zero, (hM K κ κ κ 1).2.2 1, det_one, norm_one] at h1
     exact absurd h1 (by norm_num)
 
+/- English proof (translation)
+Unfold `nF`. Use `(Equiv.arrowCongr e (Equiv.refl ι)).iSup_congr fun s => ?_` and prove the remaining obligations. Establish `: (A.submatrix (Equiv.arrowCongr e (Equiv.refl ι) s) id).submatrix e e = (A.submatrix id e).submatrix s id`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← this, det_submatrix_equiv_self]`.
+-/
 theorem nF_reindex [Fintype ι] [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ']
     (e : κ' ≃ κ) (A : Matrix ι κ K) : nF (A.submatrix id e) = nF A := by
   unfold nF
@@ -214,6 +306,25 @@ theorem nF_reindex [Fintype ι] [Fintype κ] [DecidableEq κ] [Fintype κ'] [Dec
     simp
   rw [← this, det_submatrix_equiv_self]
 
+/- English proof (translation)
+Establish `hne` using `(nF_ne_zero_iff hM B).2 hB`. Take `⟨s, hs⟩` from `exists_minor_eq_nF B hne`. Use `set Bs := B.submatrix s id with hBs`. Establish `hdet : Bs.det ≠ 0`. Introduce `h0`.
+
+Rewrite `hs` using `[h0, norm_zero]`. Conclude with `hne hs.symm`. Establish `hu : IsUnit Bs.det` using `isUnit_iff_ne_zero.2 hdet`. Use `set E := (1 : Matrix ι ι K).submatrix s id with hE`. Establish `hEint : ∀ i j, ‖E i j‖ ≤ 1` using `fun i j => int_one _ _`.
+
+Establish `hEB : E * B = Bs` using `by rw [hE, sel_mul]`. Use `set B0 := B * Bs⁻¹ with hB0`. Establish `hB0s : B0.submatrix s id = 1`. Establish `: B0.submatrix s id = Bs * Bs⁻¹`. Rewrite using `[← sel_mul, hB0, ← Matrix.mul_assoc, ← hE, hEB]`.
+
+Rewrite using `[this, mul_nonsing_inv _ hu]`. Establish `hEB0 : E * B0 = 1` using `by rw [hE, sel_mul, hB0s]`. Establish `hnB0 : nF B0 = 1`. Establish `h1 : ‖Bs.det‖ * ‖(Bs⁻¹).det‖ = 1`. Rewrite using `[← norm_mul, ← det_mul, mul_nonsing_inv _ hu, det_one, norm_one]`.
+
+Rewrite using `[hB0, (hM K ι ι κ B).2.1, ← hs, h1]`. Establish `hB0int : ∀ i j, ‖B0 i j‖ ≤ 1`. Introduce `i k`. Rewrite using `[entry_eq_minor B0 s hB0s i k, ← hnB0]`. Conclude with `minor_le_nF B0 _`.
+
+Establish `hBs1 : B0 * Bs = B`. Rewrite using `[hB0, Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one]`. Use `⟨Bs⁻¹ * E, fun κ' _ _ C => ?_⟩` and prove the remaining obligations. Establish `hBY : B * (Bs⁻¹ * E) = B0 * E` using `by rw [hB0, Matrix.mul_assoc]`. Rewrite using `[hBY]`.
+
+Use `set P := 1 - B0 * E with hP`. Establish `hPint : ∀ i j, ‖P i j‖ ≤ 1` using `int_sub int_one (int_mul hB0int hEint)`. Establish `hEP : E * P = 0`. Rewrite using `[hP, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hEB0, Matrix.one_mul, sub_self]`. Establish `hPC : (P * C).submatrix s id = 0`.
+
+Rewrite using `[← sel_mul, ← hE, ← Matrix.mul_assoc, hEP, Matrix.zero_mul]`. Establish `hfact : fromCols B C = fromCols B0 (P * C) * (fromBlocks Bs (E * C) 0 1 : Matrix (κ ⊕ κ') (κ ⊕ κ') K)`. Rewrite using `[fromCols_mul_fromBlocks, Matrix.mul_zero, add_zero, Matrix.mul_one, hBs1, ← Matrix.mul_assoc, hP, Matrix.sub_mul, Matrix.one_mul]`. Simplify using the standard rewrite rules. Use `⟨?_, nF_mul_le hM _ _ hPint, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfact, (hM K ι ι (κ ⊕ κ') _).2.1, det_fromBlocks_zero₂₁, det_one, mul_one, hs, nF_fromCols_of_id hM B0 (P * C) s hB0s hB0int hPC, mul_comm]`. Rewrite using `[hP, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hEB, hBs1, sub_self]`.
+-/
 theorem nF_quot (hM : MulF) [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (B : Matrix ι κ K) (hB : LinearIndependent K Bᵀ) :
     ∃ Y : Matrix κ ι K, ∀ (κ' : Type) [Fintype κ'] [DecidableEq κ'] (C : Matrix ι κ' K),
@@ -265,6 +376,9 @@ theorem nF_quot (hM : MulF) [IsUltrametricDist K] [Fintype ι] [DecidableEq ι] 
       nF_fromCols_of_id hM B0 (P * C) s hB0s hB0int hPC, mul_comm]
   · rw [hP, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hEB, hBs1, sub_self]
 
+/- English proof (translation)
+Introduce `hM K ι _ _ _ _`. Conclude with `{ nonneg := fun κ _ _ A => nF_nonneg' A ne_zero := fun κ _ _ A => nF_ne_zero_iff hM A reindex := fun κ κ' _ _ _ _ e A => nF_reindex e A quot := fun κ _ _ B hB => nF_quot hM B hB }`.
+-/
 theorem wedgeF_of_mulF : MulF → WedgeF := by
   intro hM K ι _ _ _ _
   exact

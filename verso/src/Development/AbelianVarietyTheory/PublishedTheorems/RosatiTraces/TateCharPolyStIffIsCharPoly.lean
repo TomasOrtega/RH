@@ -14,6 +14,9 @@ namespace GlobalTheory.Published
 
 def TateCharPolySt : Prop := EndCharPolySt
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tateCharPolySt_iff : TateCharPolySt ↔ EndCharPolySt := Iff.rfl
 
 end GlobalTheory.Published
@@ -29,6 +32,9 @@ def IsCharPoly (P : PolAV (Sp K)) (ψ : P.A ⟶ P.A) (χ : Polynomial ℤ) : Pro
     ∀ B : Matrix (Fin (2 * P.g)) (Fin (2 * P.g)) (ZMod (l ^ r)), Rep y ψ B →
       B.charpoly = χ.map (Int.castRingHom (ZMod (l ^ r)))
 
+/- English proof (translation)
+Use `⟨fun h K _ _ P ψ hψ => ?_, fun h K _ _ P ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨χ, hm, hd, hc⟩` from `h K P ψ hψ`. Conclude with `⟨χ, hm, hd, fun l r hl hK y hy B hB => hc l r hl hK y hy.1 hy.2 B hB⟩`. Take `⟨χ, hm, hd, hc⟩` from `h K P ψ hψ`. Conclude with `⟨χ, hm, hd, fun l r hl hK y h₁ h₂ B hB => hc l r hl hK y ⟨h₁, h₂⟩ B hB⟩`.
+-/
 theorem tateCharPolySt_iff_isCharPoly : Published.TateCharPolySt ↔
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (ψ : P.A ⟶ P.A), IsMonHom ψ →
       ∃ χ : Polynomial ℤ, χ.Monic ∧ χ.natDegree = 2 * P.g ∧ IsCharPoly P ψ χ := by
@@ -40,12 +46,18 @@ theorem tateCharPolySt_iff_isCharPoly : Published.TateCharPolySt ↔
 
 variable [IsAlgClosed K]
 
+/- English proof (translation)
+The claim follows from `Polynomial.ext fun n => int_eq_of_frames hL P fun l r hl hK y hy => by obtain ⟨B, hB⟩ := hy.exists_rep ψ simpa using congrArg (·.coeff n) ((h l r hl hK y hy B hB).symm.trans (h' l r hl hK y hy B hB))`.
+-/
 theorem IsCharPoly.unique (hL : Laws) {ψ : P.A ⟶ P.A} [IsMonHom ψ] {χ χ' : Polynomial ℤ} (h : IsCharPoly P ψ χ)
     (h' : IsCharPoly P ψ χ') : χ = χ' :=
   Polynomial.ext fun n => int_eq_of_frames hL P fun l r hl hK y hy => by
     obtain ⟨B, hB⟩ := hy.exists_rep ψ
     simpa using congrArg (·.coeff n) ((h l r hl hK y hy B hB).symm.trans (h' l r hl hK y hy B hB))
 
+/- English proof (translation)
+The claim follows from `Polynomial.ext fun n => int_eq_of_frames hL P fun l r hl hK y hy => by have : NeZero (l ^ r) := ⟨pow_ne_zero _ hl.ne_zero⟩ have h₁ := h l r hl hK y hy 1 (repRing (endAct P) hy.1).one_mem have h₂ : (1 : Matrix (Fin (2 * P.g)) (Fin (2 * P.g)) (ZMod (l ^ r))).charpoly = ((Polynomial …`.
+-/
 theorem IsCharPoly.eq_of_id (hL : Laws) {χ : Polynomial ℤ} (h : IsCharPoly P (𝟙 _) χ) :
     χ = (Polynomial.X - 1) ^ (2 * P.g) :=
   Polynomial.ext fun n => int_eq_of_frames hL P fun l r hl hK y hy => by

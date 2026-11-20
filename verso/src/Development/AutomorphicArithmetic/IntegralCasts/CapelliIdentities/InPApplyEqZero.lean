@@ -14,6 +14,11 @@ noncomputable def UpperTheory.Reformulated.B.Qh16.inP :
     fun {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) ↦
       UpperTheory.Reformulated.B.Qh16.inG ε X ∧ X * UpperTheory.Reformulated.B.Qh16.Jm ε = -(UpperTheory.Reformulated.B.Qh16.Jm ε * X)
 
+/- English proof (translation)
+Introduce `n ε X h a b hab`. Establish `h1` using `congrFun (congrFun h.2 a) b`. Unfold `UpperTheory.Reformulated.B.Qh16.Jm at h1`. Rewrite `h1` using `[Matrix.neg_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, hab]`. Use `split_ifs at h1`.
+
+Take the linear combination `(1 / 2 : ℂ) * h1`. Take the linear combination `(-1 / 2 : ℂ) * h1`.
+-/
 theorem UpperTheory.Reformulated.B.Qh16.inP_apply_eq_zero :
     ∀ {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ},
       UpperTheory.Reformulated.B.Qh16.inP ε X → ∀ {a b : Fin n}, ε a = ε b → X a b = (0 : ℂ) := by

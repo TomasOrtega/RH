@@ -28,6 +28,53 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.WeilSpec
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n hp hA R _ _ _ ξ y hy a κ hκ f wf hwf g hg x0 φ hφ yy hyy e σ he hσ`. Use `set χ : R →+* ℂ_[p] := (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp x0 with hχ`. Use `set q : Ideal R := RingHom.ker χ with hq`. Use `haveI : q.IsPrime := RingHom.ker_isPrime χ`. Use `haveI hj : IsOpenImmersion Y.j := GlobalTheory.LocM.BaseMdl.isOpenImmersion_j (Fact.out) hp Y`.
+
+Use `haveI hmono : Mono Y.j := GlobalTheory.PolArc.mono_j_of_valuationSubring _ Y`. Establish `hyy' : spMap χ ≫ ξ = yy ≫ Y.j` using `by rw [← hyy, sp_sp]`. Take `⟨yq, hyq⟩` from `GlobalTheory.T.lift_to_prime_localization (Xo'.XF c') Y.X Y.j R ξ ℂ_[p] χ yy hyy' q rfl`. Establish `hfq : f ∉ q`. Introduce `hf`.
+
+Establish `h1 : φ (algebraMap R (Localization.Away f) f) = χ f`. Rewrite using `[← RingHom.comp_apply, hφ]`. Establish `h2 : χ f = 0` using `RingHom.mem_ker.1 hf`. Establish `hu : IsUnit (algebraMap R (Localization.Away f) f)` using `IsLocalization.Away.algebraMap_isUnit f`. Conclude with `(hu.map φ).ne_zero (h1.trans h2)`.
+
+Set `Rq` to `Localization.AtPrime q`. Set `hf' : Localization.Away f →+* Rq` to `IsLocalization.Away.lift f (g := algebraMap R Rq) (IsLocalization.map_units Rq (⟨f, hfq⟩ : q.primeCompl))`. Establish `hhf' : hf'.comp (algebraMap R (Localization.Away f)) = algebraMap R Rq` using `IsLocalization.Away.lift_comp _ _`. Establish `hχu : ∀ s : q.primeCompl, IsUnit (χ s)` using `fun s => by`. Use `IsUnit.mk0 _ fun h0 => s.2 ?_` and prove the remaining obligations.
+
+Conclude with `RingHom.mem_ker.2 h0`. Set `ψq : Rq →+* ℂ_[p]` to `IsLocalization.lift (M := q.primeCompl) hχu`. Establish `hψq : ψq.comp (algebraMap R Rq) = χ` using `IsLocalization.lift_comp _`. Establish `hKu : ∀ s : q.primeCompl, IsUnit (algebraMap R (FractionRing R) s)` using `fun s => by`. Use `IsUnit.mk0 _ fun h0 => s.2 ?_` and prove the remaining obligations.
+
+Establish `: (s : R) = 0` using `(IsFractionRing.injective R (FractionRing R)) (by rw [h0, map_zero])`. Rewrite using `[this]`. Conclude with `q.zero_mem`. Set `ιK : Rq →+* FractionRing R` to `IsLocalization.lift (M := q.primeCompl) hKu`. Establish `hιK : ιK.comp (algebraMap R Rq) = algebraMap R (FractionRing R)` using `IsLocalization.lift_comp _`.
+
+Establish `hιinj : Function.Injective ιK`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `u v`. Rewrite using `[(IsLocalization.injective Rq q.primeCompl_le_nonZeroDivisors).eq_iff, (IsFractionRing.injective R (FractionRing R)).eq_iff]`. Establish `hK : spMap ιK ≫ yq = y`.
+
+Rewrite using `[← cancel_mono Y.j, Category.assoc, ← hyq, sp_sp, hιK, hy]`. Establish `hC : spMap ψq ≫ yq = yy`. Rewrite using `[← cancel_mono Y.j, Category.assoc, ← hyq, sp_sp, hψq, hyy']`. Establish `hgK : ιK.comp hf' = g` using `IsLocalization.ringHom_ext (Submonoid.powers f) (by`. Rewrite using `[RingHom.comp_assoc, hhf', hιK, hg])`.
+
+Establish `hgC : ψq.comp hf' = φ` using `IsLocalization.ringHom_ext (Submonoid.powers f) (by`. Rewrite using `[RingHom.comp_assoc, hhf', hψq, hφ])`. Establish `hwq : (spMap hf' ≫ wf.left) ≫ Y.t.G.hom = yq ≫ Y.j`. Rewrite using `[Category.assoc, Over.w wf]`. Express the relevant statement in the definitionally equal form `spMap hf' ≫ spMap (algebraMap R (Localization.Away f)) ≫ ξ = _`.
+
+Rewrite using `[sp_sp, hhf', hyq]`. Set `wq : Over.mk (yq ≫ Y.j) ⟶ Y.t.G` to `GlobalTheory.HTMap.mkPt (spMap hf' ≫ wf.left) hwq`. Establish `hwqt : wq ^ (p ^ n) = 1` using `GlobalTheory.HTMap.tors_of (g := spMap hf') (w := wf) rfl hwf`. Take `⟨σq, hσq, htq⟩` from `GlobalTheory.T.exists_torsion_section_pullback _ _ Y.oF.t.G Y.t.G _ Y.m.cm.F Y.m.cart (Over.mk yq) wq`. Establish `hσqt : σq ^ (p ^ n) = 1` using `htq _ hwqt`.
+
+Set `P` to `GlobalTheory.Obj.toPolAV Y.oF`. Establish `tu : ∀ {T : Scheme.{0}} (z : T ⟶ Xo'.XF c'), (toUnit (Over.mk z)).left = z` using `fun z => by`. Simplify using `using Over.w (toUnit (Over.mk z))`. Set `eq : Over.mk yq ⟶ Y.oF.t.G` to `toUnit _ ≫ Y.oF.etaA a`. Establish `heq : eq ^ (p ^ n) = 1`.
+
+Rewrite using `[← MonObj.comp_pow, ← hA, GlobalTheory.ArcExt.etaA_pow_eq_one, MonObj.comp_one]`. Take `⟨cq, hcq, -⟩` from `GlobalTheory.LevelCompare.weil_existsUnique P (p ^ n) eq σq heq hσqt`. Take `⟨uq, rfl⟩` from `GlobalTheory.Ex.Specialise.unitOn_bijective.2 cq`. Set `hKo : Over.mk y ⟶ Over.mk yq` to `Over.homMk (spMap ιK) hK`. Establish `hN` using `(GlobalTheory.LevelCompare.weil_skew_natural P (p ^ n) (Over.mk yq)).2 (Over.mk y) hKo eq σq (unitOn uq) hcq`.
+
+Establish `hKl : hKo.left = spMap ιK` using `rfl`. Rewrite `hN` using `[hKl, GlobalTheory.Ex.Specialise.map_unitOn]`. Establish `t1 : (hKo ≫ eq) ^ (p ^ n) = 1` using `by rw [← MonObj.comp_pow, heq, MonObj.comp_one]`. Establish `t2 : (hKo ≫ σq) ^ (p ^ n) = 1` using `by rw [← MonObj.comp_pow, hσqt, MonObj.comp_one]`. Establish `hKe : (hKo ≫ eq).left = y ≫ (Y.oF.etaA a).left`.
+
+Simplify using `only [eq, Over.comp_left, tu, hKo, Over.homMk_left]`. Rewrite using `[← Category.assoc, hK]`. Establish `hKσ : (hKo ≫ σq).left ≫ Y.m.φ = spMap g ≫ wf.left`. Rewrite using `[Over.comp_left, Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap ιK ≫ σq.left ≫ Y.m.cm.F = _`.
+
+Rewrite using `[hσq]`. Express the relevant statement in the definitionally equal form `spMap ιK ≫ spMap hf' ≫ wf.left = _`. Rewrite using `[sp_sp, hgK]`. Establish `hκK` using `hκ (hKo ≫ eq) (hKo ≫ σq) hKe t2`. Rewrite `hκK` using `[hKσ]`.
+
+Establish `huK` using `(GlobalTheory.LevelCompare.weil_existsUnique P (p ^ n) (hKo ≫ eq) (hKo ≫ σq) t1 t2).unique hN hκK`. Establish `huK'` using `GlobalTheory.Ex.Specialise.unitOn_bijective.1 huK`. Use `set κK := κ (spMap g ≫ wf.left) with hκKdef`. Establish `huq : uq = Units.map (algebraMap R Rq).toMonoidHom κK`. Use `ext`.
+
+Apply `hιinj` to reduce the goal to its premises. Use `congrArg (fun u : (FractionRing R)ˣ => (u : FractionRing R)) huK'` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe] at this ⊢`. Rewrite using `[this, ← RingHom.comp_apply, hιK]`. Set `hCo : Over.mk yy ⟶ Over.mk yq` to `Over.homMk (spMap ψq) hC`.
+
+Establish `hN2` using `(GlobalTheory.LevelCompare.weil_skew_natural P (p ^ n) (Over.mk yq)).2 (Over.mk yy) hCo eq σq (unitOn uq) hcq`. Establish `hCl : hCo.left = spMap ψq` using `rfl`. Rewrite `hN2` using `[hCl, GlobalTheory.Ex.Specialise.map_unitOn]`. Establish `hCe : hCo ≫ eq = e` using `by ext1`. Simplify using `only [eq, Over.comp_left, tu, hCo, Over.homMk_left]`.
+
+Rewrite using `[← Category.assoc, hC, he]`. Establish `hCσ : hCo ≫ σq = σ` using `by ext1`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc]`. Express the relevant statement in the definitionally equal form `spMap ψq ≫ σq.left ≫ Y.m.cm.F = σ.left ≫ Y.m.φ`.
+
+Rewrite using `[hσq, hσ]`. Express the relevant statement in the definitionally equal form `spMap ψq ≫ spMap hf' ≫ wf.left = _`. Rewrite using `[sp_sp, hgC]`. Rewrite using `[Over.w (hCo ≫ σq), Over.w σ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hCσ, ← MonObj.comp_pow, hσqt, MonObj.comp_one]`. Rewrite using `[← hCe, ← hCσ]`. Establish `hval : Units.map (ψq : Rq →* ℂ_[p]) uq = Units.map χ.toMonoidHom κK`. Rewrite using `[huq]`. Use `ext`.
+
+Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Rewrite using `[← RingHom.comp_apply, hψq]`. Establish `hN3 : Out.WeilIs P.A P.L ((p ^ n : ℕ) : ℤ) (hCo ≫ eq) (hCo ≫ σq) (unitOn (Units.map χ.toMonoidHom κK))`. Rewrite using `[← hval]`. Conclude with `hN2`.
+
+Conclude with `hN3`.
+-/
 theorem weil_spec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ)
     [Fact p.Prime] (n : ℕ), (p : ℂ) ∈ W.nonunits → l'.A = p ^ n →

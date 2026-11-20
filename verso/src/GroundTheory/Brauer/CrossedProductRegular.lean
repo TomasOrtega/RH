@@ -20,9 +20,17 @@ def monomial (π : Equiv.Perm G) (c : G → C) : Matrix G G C :=
   Matrix.of fun i k => if i = π k then c k else 0
 
 omit [Fintype G] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomial_apply (π : Equiv.Perm G) (c : G → C) (i k : G) :
     monomial π c i k = if i = π k then c k else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, monomial_apply, Equiv.Perm.mul_apply]`. Rewrite using `[Finset.sum_eq_single (π' k)]`. Apply the tactic sequence `by_cases h : i = π (π' k) <;> simp [h]`. Introduce `l _ hl`.
+
+Simplify using `[hl]`. Simplify using the standard rewrite rules.
+-/
 theorem monomial_mul_monomial (π π' : Equiv.Perm G) (c d : G → C) :
     monomial π c * monomial π' d = monomial (π * π') (fun k => c (π' k) * d k) := by
   ext i k
@@ -35,6 +43,9 @@ theorem monomial_mul_monomial (π π' : Equiv.Perm G) (c d : G → C) :
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[monomial_apply, Matrix.diagonal_apply, Equiv.Perm.one_apply]`. Use `split_ifs with h`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem monomial_one (c : G → C) : monomial 1 c = Matrix.diagonal c := by
   ext i k
   rw [monomial_apply, Matrix.diagonal_apply, Equiv.Perm.one_apply]
@@ -43,6 +54,9 @@ theorem monomial_one (c : G → C) : monomial 1 c = Matrix.diagonal c := by
   · rfl
 
 omit [Fintype G] in
+/- English proof (translation)
+Rewrite using `[hπ, funext hc]`.
+-/
 theorem monomial_congr {π π' : Equiv.Perm G} {c c' : G → C} (hπ : π = π') (hc : ∀ k, c k = c' k) :
     monomial π c = monomial π' c' := by
   rw [hπ, funext hc]
@@ -68,6 +82,9 @@ def diagHom (d : (L ≃ₐ[K] L) → (L →ₐ[K] C)) : L →ₐ[K] Matrix (L �
     ext ρ
     simp
 
+/- English proof (translation)
+Rewrite using `[monomial_one]`. Both sides reduce to the same expression.
+-/
 theorem diagHom_apply (d : (L ≃ₐ[K] L) → (L →ₐ[K] C)) (a : L) :
     diagHom d a = monomial 1 (fun ρ => d ρ a) := by
   rw [monomial_one]; rfl
@@ -85,6 +102,9 @@ def regularU (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (σ : L ≃ₐ[K] 
 
 omit [FiniteDimensional K L] [DecidableEq (L ≃ₐ[K] L)] in
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun x : Lˣ => θ (x : L)) (hf σ τ ρ)`. Simplify using `only [Units.val_mul, val_smul_units, map_mul] at h`. Take the linear combination `-h`.
+-/
 theorem cocycle_apply (hf : IsMulCocycle₂ f) (θ σ τ ρ : L ≃ₐ[K] L) :
     θ (f (σ, τ * ρ) : L) * θ (σ (f (τ, ρ) : L)) = θ (f (σ, τ) : L) * θ (f (σ * τ, ρ) : L) := by
   have h := congrArg (fun x : Lˣ => θ (x : L)) (hf σ τ ρ)
@@ -122,10 +142,16 @@ def toMatrix : CrossedProduct hf →ₐ[K] Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L
       simp only [AlgHom.comp_apply, AlgEquiv.coe_toAlgHom, one_mul]
       rw [map_one_fst_of_isMulCocycle₂ hf])
 
+/- English proof (translation)
+The claim follows from `lift_incl _ _ _ _ _ a`.
+-/
 @[simp] theorem toMatrix_incl (a : L) :
     toMatrix j hf (incl a) = diagHom (fun ρ => j.comp (ρ⁻¹ : L ≃ₐ[K] L).toAlgHom) a :=
   lift_incl _ _ _ _ _ a
 
+/- English proof (translation)
+The claim follows from `lift_u _ _ _ _ _ σ`.
+-/
 @[simp] theorem toMatrix_u (σ : L ≃ₐ[K] L) : toMatrix j hf (u σ) = regularU j f σ :=
   lift_u _ _ _ _ _ σ
 

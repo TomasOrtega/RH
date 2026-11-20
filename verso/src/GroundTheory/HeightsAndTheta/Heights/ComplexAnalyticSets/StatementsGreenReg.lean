@@ -22,6 +22,13 @@ def formInt (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ)) (e : ℕ)
       (vecCons b fun _ x => Real.log (h.dualNorm x))
   else 0
 
+/- English proof (translation)
+Establish `hc : (0 : ℝ) < h.dualNorm y ^ 2` using `by positivity`. Establish `hs : (0 : ℝ) < ‖∑ j, u j * y j‖` using `norm_pos_iff.mpr hu`. Establish `hcont : ContinuousAt (fun ε : ℝ => Real.log ((‖∑ j, u j * y j‖ ^ 2 + ε * h.dualNorm y ^ 2) / h.dualNorm y ^ 2) / 2) 0`. Use `ContinuousAt.div_const (ContinuousAt.log ?_ ?_) _` and prove the remaining obligations. Use `fun_prop`.
+
+Simplify using `only [zero_mul, add_zero]`. Check the signs of the components of the expression. Use `hcont.tendsto` as an intermediate fact. Simplify using `only [zero_mul, add_zero] at this`. Unfold `fsLogReg`.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[fsLog, ← div_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fsLogReg_tendsto (h : HermNorm n) (u y : Fin n → ℂ) (hy : 0 < h.dualNorm y)
     (hu : ∑ j, u j * y j ≠ 0) :
     Tendsto (fun ε => fsLogReg h u ε y) (𝓝 0) (𝓝 (fsLog h u y)) := by

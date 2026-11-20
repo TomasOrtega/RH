@@ -13,5 +13,8 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.Poinc.Sep
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Poinc.Sep.neg_mem_supI | exact GlobalTheory.Poinc.Sep.neg_mem_supI | (intros; apply GlobalTheory.Poinc.Sep.neg_mem_supI <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.neg_mem_dividing_labels_theta_model_point : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (a : X₁.S.Gam), a ∈ X₁.S.supI X₁.M z₁ → -a ∈ X₁.S.supI X₁.M z₁ := by
   first | exact @GlobalTheory.Poinc.Sep.neg_mem_supI | exact GlobalTheory.Poinc.Sep.neg_mem_supI | (intros; apply GlobalTheory.Poinc.Sep.neg_mem_supI <;> assumption)

@@ -30,6 +30,21 @@ end GlobalTheory.FiniteGKSum
 namespace GlobalTheory.FiniteGKSum
 open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.PointAtPlaceHom GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes GlobalTheory.SeriesToClosure
   GlobalTheory.FiniteGKSum in
+/- English proof (translation)
+Introduce `hPr D θ V S M hθ τ φ hφ hT ⟨W, hWf, hφW, hWK⟩`. Use `haveI := hWf`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Take `⟨H', i1, i2, σ', lam', ε', P', hE', hD', hP', hJ', hx⟩` from `hT`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique (M.enum τ) hE'`.
+
+Take `⟨U, hU⟩` from `hPr.discreteSeriesHermitianUnique _ (M.ε τ) (M.lam τ) (GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (M.enum τ).1 (M.ds τ)) _ (M.fr τ) P' (M.fr_unit τ) hP' (M.fr_gram τ) hJ' _ _ (M.σ τ) σ' (M.ds τ) hD'`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hσ : Std (M.ε τ) (M.σ τ)` using `std_of_isDS hPr.harishChandraModules (M.ds τ)`. Establish `hP` using `M.fr_unit τ`. Establish `hJ` using `M.fr_gram τ`.
+
+Establish `hx' : ∀ x, HasTypeAll (lieSet (M.ε τ)) (UJset (M.ε τ)) (M.σ τ) (res θ V τ (M.fr τ) φ x)` using `fun x => hasTypeAll_transport _ H' (M.H τ) _ (M.σ τ) (gramAt D V τ) (Jm (M.ε τ)) (M.fr τ) (isUnit_gram hP' hJ') hP hJ U hU (fun g => φ (x * atTau θ V τ g)) (hasTypeAll_iff.2 (hx x))`. Use `choose Sx hS hc v ℓ C h using hx'`. Establish `hZ : ∀ e, KFinFun (M.ε τ) e → avg θ V τ (M.ε τ) (M.fr τ) e φ ∈ gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ)`. Introduce `e he`. Take `⟨m, a, c, ha, hQ, hA⟩` from `exists_rank_one hθ hP hJ hσ he`.
+
+Use `choose T hT hTv using fun j => exists_gkMap hθ hP hJ hσ hφ hS hc h (hA j)`. Use `⟨m, T, fun j => ⟨a j, mem_kFin_iff.2 (ha j)⟩, hT, funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `(moves_avg hθ hP hJ hσ he φ x _ _ _ _ (hS x) (hc x) (h x)).1.2.2.2.2 1 (one_mem_UJ _)`. Simplify using `only [res_one hθ hP, sigma_one hσ.1, hQ, map_sum, map_smul, smul_eq_mul] at h1`. Establish `h2` using `h1.unique (hasSum_sum fun j _ => (Expn.summable_term (h x) (c j) (hσ.2.2.1 _ (ha j))).hasSum)`.
+
+Simplify using `only [Finset.sum_apply, hTv]`. Conclude with `h2`. Establish `hk : Continuous fun k : KG (M.ε τ) => atTau θ V τ ((M.fr τ)⁻¹ * toMK k * M.fr τ)` using `(continuousOn_atTau hθ V τ).comp_continuous continuous_conjK fun k => conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Establish `hmem : φ ∈ gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ) ⊓ W` using `by haveI : FiniteDimensional ℂ (gkSums θ V τ (M.ε τ) (M.σ τ) (M.fr τ) ⊓ W : Submodule ℂ _) := Submodule.finiteDimensional_of_le inf_le_right`. Use `mem_of_approx fun K hK δ hδ => ?_` and prove the remaining obligations.
+
+Take `⟨e, he, hap⟩` from `GlobalTheory.T.exists_compactFinite_approxIdentity _ (M.ε τ) (GA D V) (fun x k => φ (x * atTau θ V τ ((M.fr τ)⁻¹ * toMK k * M.fr τ))) (hφ.cont.comp (continuous_fst.mul (hk.comp continuous_snd))) K hK δ hδ`. Use `⟨avg θ V τ (M.ε τ) (M.fr τ) e φ, ⟨hZ e he, avg_mem hθ hP hJ hWK hφ.cont hφW he⟩, fun x hxK => ?_⟩` and prove the remaining obligations. Establish `h4 : φ (x * atTau θ V τ ((M.fr τ)⁻¹ * toMK (1 : KG (M.ε τ)) * M.fr τ)) = φ x` using `res_one hθ hP φ x`. Establish `h3` using `hap x hxK`. Rewrite `h3` using `[h4]`.
+
+Conclude with `h3`. Take `⟨m, T, p, hT, hsum⟩` from `hmem.1`. Conclude with `⟨m, T, p, hT, hsum⟩`.
+-/
 theorem finite_sum_of_gKModule_maps : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ (τ : D.what₂.Tau) (φ : GA D V → ℂ), IsAutFunSm θ V φ → IsTypeAt θ V τ (S τ) φ →
@@ -93,6 +108,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FiniteGKSum.finite_sum_of_gKModule_maps | exact _root_.GlobalTheory.FiniteGKSum.finite_sum_of_gKModule_maps | (intros; apply _root_.GlobalTheory.FiniteGKSum.finite_sum_of_gKModule_maps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gKModule_map_finite_sum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ (τ : D.what₂.Tau) (φ : GA D V → ℂ), IsAutFunSm θ V φ → IsTypeAt θ V τ (S τ) φ →

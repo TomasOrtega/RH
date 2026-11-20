@@ -8,6 +8,13 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Prove the components needed by the constructor for the conclusion. Introduce `h n`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, coeff_map]`. Conclude with `PadicInt.norm_le_one _`. Introduce `h`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+
+Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+-/
 private theorem cop_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
@@ -22,10 +29,18 @@ private theorem cop_intIff {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsInteg
     obtain ⟨q, hq, -, hqm⟩ := lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)
     exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha`.
+-/
 private theorem cop_norm_lt {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ_[l] R]
     (y : R →ₐ[ℤ_[l]] PadicAlgCl l) (a : R) (ha : a ∈ maximalIdeal R) : ‖y a‖ < 1 :=
   _root_.UpperTheory.Reformulated.B.MonicNormLtOne.mc_norm_lt y a ha
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `UpperTheory.V.abelian₂.dvr_intClosure l K`. Set `f : K →ₐ[ℤ_[l]] PadicAlgCl l` to `K.val.restrictScalars ℤ_[l]`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Set `e` to `(integralClosure ℤ_[l] K).equivMapOfInjective f hf`. Use `⟨⟨(integralClosure ℤ_[l] K).map f, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((cop_intIff _).2 h), rfl⟩`.
+-/
 private theorem cop_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O := by
   obtain ⟨h1, h2, -⟩ := UpperTheory.V.abelian₂.dvr_intClosure l K
@@ -36,11 +51,29 @@ private theorem cop_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l]
     Module.Finite.equiv e.toLinearEquiv⟩, fun x hx h => ?_⟩
   exact ⟨⟨x, hx⟩, (isIntegral_algHom_iff f hf).1 ((cop_intIff _).2 h), rfl⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CoproductGeometry.cop_geom m y h1 hm`.
+-/
 private theorem cop_geom {R κ : Type} [CommRing R] [IsNoetherianRing R] [NormedField κ] [IsUltrametricDist κ]
     (m : Ideal R) (y : R →+* κ) (h1 : ∀ x, ‖y x‖ ≤ 1) (hm : ∀ x ∈ m, ‖y x‖ < 1) :
     ∃ a : ℝ, a < 1 ∧ 0 ≤ a ∧ ∀ n, ∀ x ∈ m ^ n, ‖y x‖ ≤ a ^ n :=
   _root_.UpperTheory.Reformulated.B.CoproductGeometry.cop_geom m y h1 hm
 
+/- English proof (translation)
+Set `f : R →ₐ[ℤ_[l]] c.O` to `((TrivSqZeroExt.fstHom ℤ_[l] _ _).comp F).codRestrict c.O hc`. Use `haveI : Module.Finite ℤ_[l] f.range := Module.Finite.of_injective f.range.val.toLinearMap Subtype.val_injective`. Take `⟨r, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ_[l]) (M := f.range)`. Use `choose b hb using fun i => f.rangeRestrict_surjective (s i)`. Take `⟨P, hP⟩ : (RingHom.ker f).FG` from `IsNoetherian.noetherian _`.
+
+Set `C : NNReal` to `P.sup fun x => ‖(F x).snd‖₊`. Establish `h2 : ∀ a ∈ Ideal.span (P : Set R), ‖(F a).snd‖ ≤ C`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem z hz => exact Finset.le_sup (f := fun x => ‖(F x).snd‖₊) hz`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, TrivSqZeroExt.snd_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul c x hx0 hx`.
+
+Establish `h0 : (F x).fst = 0`. Establish `: x ∈ RingHom.ker f` using `hP ▸ hx0`. Conclude with `congrArg Subtype.val this`. Rewrite using `[smul_eq_mul, map_mul, DualNumber.snd_mul, h0, mul_zero, add_zero, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (h1 c)).trans hx`.
+
+Use `⟨C + ∑ i, ‖(F (b i)).snd‖, by positivity, fun a => ?_⟩` and prove the remaining obligations. Establish `hc : f.rangeRestrict a ∈ Submodule.span ℤ_[l] (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨u, hu⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hc`. Establish `h3 : f.rangeRestrict (a - ∑ i, u i • b i) = 0` using `by simp [hb, hu]`. Establish `h4 : a - ∑ i, u i • b i ∈ RingHom.ker f` using `congrArg Subtype.val h3`.
+
+Establish `h5` using `h2 _ (hP ▸ h4)`. Establish `h6 : ‖(F (∑ i, u i • b i)).snd‖ ≤ ∑ i, ‖(F (b i)).snd‖`. Rewrite using `[map_sum, TrivSqZeroExt.snd_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, TrivSqZeroExt.snd_smul, Algebra.smul_def, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) ((cop_intIff _).1 isIntegral_algebraMap)`. Establish `h7 : (F a).snd = (F (a - ∑ i, u i • b i)).snd + (F (∑ i, u i • b i)).snd`. Rewrite using `[← TrivSqZeroExt.snd_add, ← map_add, sub_add_cancel]`. Rewrite using `[h7]`. Conclude with `(norm_add_le _ _).trans (add_le_add h5 h6)`.
+-/
 private theorem cop_bdd {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsNoetherianRing R] [Algebra ℤ_[l] R]
     (F : R →ₐ[ℤ_[l]] DualNumber (PadicAlgCl l)) (c : Coef l) (h1 : ∀ x, ‖(F x).fst‖ ≤ 1)
     (hc : ∀ x, (F x).fst ∈ c.O) : ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖(F x).snd‖ ≤ C := by
@@ -80,6 +113,15 @@ private theorem cop_bdd {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [IsNoet
   rw [h7]
   exact (norm_add_le _ _).trans (add_le_add h5 h6)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro x _`. Simplify using `using h2 x`. Consider the case `succ n ih`. Introduce `x hx`.
+
+Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun u hu v hv => ?_) fun u v hu hv => ?_` and prove the remaining obligations. Rewrite using `[map_mul, DualNumber.snd_mul]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (h1 _ u hu) (h2 v) (norm_nonneg _) (by positivity)`. Rewrite using `[norm_mul]`. Establish `h3` using `h1 1 v (by rwa [pow_one])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, TrivSqZeroExt.snd_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)`.
+-/
 private theorem cop_snd {R κ : Type} [CommRing R] [NormedField κ] [IsUltrametricDist κ]
     (m : Ideal R) (F : R →+* DualNumber κ) {a C : ℝ} (ha : 0 ≤ a) (hC : 0 ≤ C)
     (h1 : ∀ n, ∀ x ∈ m ^ n, ‖(F x).fst‖ ≤ a ^ n) (h2 : ∀ x, ‖(F x).snd‖ ≤ C) (n : ℕ) :
@@ -100,6 +142,17 @@ private theorem cop_snd {R κ : Type} [CommRing R] [NormedField κ] [IsUltrametr
           _ = _ := by ring
     · rw [map_add, TrivSqZeroExt.snd_add]; exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)
 
+/- English proof (translation)
+Use `letI : Algebra ℤ_[l] R := ((algebraMap O R).comp (algebraMap ℤ_[l] O)).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] O R := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `f : R →ₐ[O] PadicAlgCl l` to `UpperTheory.V.U3.dualFst F`. Establish `hm : ∀ x ∈ maximalIdeal R, ‖(F x).fst‖ < 1` using `cop_norm_lt (f.restrictScalars ℤ_[l])`. Establish `h1 : ∀ x, ‖(F x).fst‖ ≤ 1`.
+
+Introduce `x`. Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) x`. Establish `h2 : f x = f (x - algebraMap O R c) + algebraMap O _ c` using `by simp`. Establish `h3 : IsIntegral ℤ_[l] (algebraMap O (PadicAlgCl l) c)` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) c).map (IsScalarTower.toAlgHom ℤ_[l] O (PadicAlgCl l))`. Use `show ‖f x‖ ≤ 1`.
+
+Rewrite using `[h2]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hm _ hc).le ((cop_intIff _).1 h3))`. Take `⟨E, hE⟩` from `UpperTheory.V.Loc.ptFin R F hm`. Use `haveI : FiniteDimensional ℚ_[l] E.1 := E.2`. Take `⟨c', hc'⟩` from `cop_coef E.1`.
+
+Establish `hc : ∀ x, (F x).fst ∈ c'.O` using `fun x => hc' _ (hE x).1 (h1 x)`. Take `⟨a, ha1, ha0, ha⟩` from `cop_geom (maximalIdeal R) (f : R →+* PadicAlgCl l) h1 hm`. Use `⟨⟨c', hc⟩, ⟨a, ha1, ha0, ha⟩, ⟨E.1, E.2, hE⟩, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `cop_bdd (F.restrictScalars ℤ_[l]) c' h1 hc`. Establish `ht` using `(tendsto_pow_atTop_nhds_zero_of_lt_one ha0 ha1).mul_const C`.
+
+Rewrite `ht` using `[zero_mul]`. Take `⟨k, hk⟩` from `(ht.eventually (gt_mem_nhds hε)).exists`. Conclude with `⟨k + 1, fun x hx => (cop_snd (maximalIdeal R) (F : R →+* DualNumber (PadicAlgCl l)) ha0 hC0 ha hC k x hx).trans hk.le⟩`.
+-/
 private theorem cop_main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O]
     [Algebra O (PadicAlgCl l)] [IsScalarTower ℤ_[l] O (PadicAlgCl l)] (R : Type) [CommRing R] [Algebra O R] [IsCO O R]
@@ -136,6 +189,11 @@ private theorem cop_main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDom
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ c R _ _ _`. Use `⟨fun y => ?_, fun y => (cop_main R y).2.2⟩` and prove the remaining obligations. Take `⟨⟨c', hc'⟩, h2, -⟩` from `cop_main R ((TrivSqZeroExt.inlAlgHom c.O (PadicAlgCl l) (PadicAlgCl l)).comp y)`. Use `⟨⟨c', fun x hx => ?_, hc'⟩, h2⟩` and prove the remaining obligations. Establish `h : y (algebraMap c.O R ⟨x, hx⟩) ∈ c'.O` using `hc' _`.
+
+Rewrite `h` using `[AlgHom.commutes]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.coPt :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R], (∀ y : R →ₐ[c.O] PadicAlgCl l, (∃ c' : Coef l, c.O ≤ c'.O ∧ ∀ x, y x ∈ c'.O) ∧ ∃ a : ℝ, a < 1 ∧ 0 ≤ a ∧ ∀ n, ∀ x ∈ maximalIdeal R ^ n, ‖y x‖ ≤ a ^ n) ∧ ∀ y : R →ₐ[c.O] DualNumber (PadicAlgCl l), (∃ K : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] K ∧ ∀ x, (y x).fst ∈ K ∧ (y x).snd ∈ K) ∧ ∀ ε : ℝ, 0 < ε → ∃ n, ∀ x ∈ maximalIdeal R ^ n, ‖(y x).snd‖ ≤ ε := by
   intro l _ c R _ _ _

@@ -12,6 +12,9 @@ def chartEquiv {Z : Scheme.{0}} {U : Z.Opens} (φ : Γ(Z, U) →+* K) (hi : Func
   (RingEquiv.ofBijective φ.rangeRestrict ⟨fun a b h => hi (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩).trans
     (RingEquiv.subringCongr hr)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartEquiv_apply {Z : Scheme.{0}} {U : Z.Opens} (φ : Γ(Z, U) →+* K) (hi : Function.Injective φ)
     (B : Subalgebra A K) (hr : φ.range = B.toSubring) (s : Γ(Z, U)) : ((chartEquiv φ hi B hr s : B) : K) = φ s := rfl
 
@@ -28,6 +31,11 @@ instance {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U) (φ : Γ(Z, U) →
     infer_instance
   infer_instance
 
+/- English proof (translation)
+Establish `: IsIso (Spec.map (CommRingCat.ofHom (chartEquiv φ hi B hr).toRingHom))`. Establish `: IsIso (CommRingCat.ofHom (chartEquiv φ hi B hr).toRingHom)` using `(RingEquiv.toCommRingCatIso (chartEquiv φ hi B hr)).isIso_hom`. Use `infer_instance`. Unfold `chartMap`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp]`.
+
+Rewrite using `[Set.range_eq_univ.mpr (Scheme.Hom.surjective _), Set.image_univ]`. Conclude with `hU.range_fromSpec`.
+-/
 theorem chartMap_range {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U) (φ : Γ(Z, U) →+* K)
     (hi : Function.Injective φ) (B : Subalgebra A K) (hr : φ.range = B.toSubring) :
     Set.range (chartMap hU φ hi B hr).base = (U : Set Z) := by
@@ -40,6 +48,11 @@ theorem chartMap_range {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U) (φ 
   rw [Set.range_eq_univ.mpr (Scheme.Hom.surjective _), Set.image_univ]
   exact hU.range_fromSpec
 
+/- English proof (translation)
+Establish `hp : p = Z.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop)`. Rewrite using `[Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Establish `hr2 : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop ≫ Z.presheaf.map (homOfLE le_top : U ⟶ ⊤).op ≫ CommRingCat.ofHom (chartEquiv φ hi B hr).toRingHom = CommRingCat.ofHom (algebraMap A B)`. Use extensionality with `a`. Use `hA a` as an intermediate fact.
+
+Simplify using `only [Scheme.Hom.appLE, ConcreteCategory.comp_apply] at this`. Simplify using `[chartEquiv_apply]`. Conclude with `this`. Rewrite using `[hp, chartMap, Category.assoc, ← Category.assoc hU.fromSpec, IsAffineOpen.fromSpec_toSpecΓ, ← Spec.map_comp, ← Spec.map_comp, ← hr2]`. Simplify using `only [Category.assoc]`.
+-/
 theorem chartMap_comp {Z : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)) {U : Z.Opens} (hU : IsAffineOpen U)
     (φ : Γ(Z, U) →+* K) (hi : Function.Injective φ) (B : Subalgebra A K) (hr : φ.range = B.toSubring)
     (hA : ∀ a : A, φ (p.appLE ⊤ U le_top ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a)) = algebraMap A K a) :
@@ -89,6 +102,9 @@ def Overlap : Prop := ∀ (A : Type) [CommRing A] [IsLocalRing A] (K : Type) [Fi
       (chartMap hU φU iU B rU).base x = (chartMap hV φV iV C rV).base y ↔
         ∃ Q : PrimeSpectrum (AdjoinInv B t), Restr B t Q B x ∧ Restr B t Q C y
 
+/- English proof (translation)
+Introduce `A _ _ K _ _ Z p B C t hc hd`. Take `⟨U, V, φU, φV, φW, hU, hV, hW, hUV, iU, iV, iW, rU, rV, rW, cU, cV, aU, aV⟩` from `hd`. Use `⟨⟨chartMap hU φU iU B rU, chartMap hV φV iV C rV, inferInstance, inferInstance, ?_, chartMap_comp p hU φU iU B rU aU, chartMap_comp p hV φV iV C rV aV, hO A K p B C t hc U V φU φV φW hU hV hW hUV iU iV iW rU rV rW cU cV⟩⟩` and prove the remaining obligations. Rewrite using `[chartMap_range, chartMap_range, ← TopologicalSpace.Opens.coe_sup, hUV, TopologicalSpace.Opens.coe_top]`.
+-/
 theorem coverOfData_of (hO : Overlap) : CoverOfData := by
   intro A _ _ K _ _ Z p B C t hc hd
   obtain ⟨U, V, φU, φV, φW, hU, hV, hW, hUV, iU, iV, iW, rU, rV, rW, cU, cV, aU, aV⟩ := hd
@@ -97,6 +113,9 @@ theorem coverOfData_of (hO : Overlap) : CoverOfData := by
     hO A K p B C t hc U V φU φV φW hU hV hW hUV iU iV iW rU rV rW cU cV⟩⟩
   rw [chartMap_range, chartMap_range, ← TopologicalSpace.Opens.coe_sup, hUV, TopologicalSpace.Opens.coe_top]
 
+/- English proof (translation)
+Introduce `A _ _ Z p hIL hZ`. Take `⟨K, hK, hA, B, C, t, hc, hint, hd⟩` from `hG A p hIL hZ`. Conclude with `⟨K, hK, hA, B, C, t, hc, hint, hC A K p B C t hc hd⟩`.
+-/
 theorem ChartsGeom_of' (hG : GeoData) (hC : CoverOfData) : LateralTheory.E.StdChartsProof.ChartsGeom := by
   intro A _ _ Z p hIL hZ
   obtain ⟨K, hK, hA, B, C, t, hc, hint, hd⟩ := hG A p hIL hZ

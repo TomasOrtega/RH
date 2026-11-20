@@ -24,6 +24,11 @@ namespace GlobalTheory.CompanionTheory.RkCoef
 
 variable {D : D7} {a b c n r t : ℕ}
 
+/- English proof (translation)
+Introduce `q hq a ha g`. Take `⟨g₁, g₂, b, rfl, h1, h2⟩` from `GlobalTheory.CompanionTheory.SiegelNM.unip_mul_levi D n q hq a ha`. Use `show (ω (g₁ * g₂ * g) Φ).1 0 = _`. Rewrite using `[map_mul, map_mul]`. Use `show (ω g₁ (ω g₂ (ω g Φ))).1 0 = _`.
+
+Rewrite using `[hω.unip g₁ b h1, hω.levi g₂ a h2, hs]`. Establish `e0 : GlobalTheory.StdUnn.inner V (0 : Mx D V.rank n) 0 = 0`. Simplify using `[GlobalTheory.StdUnn.inner, adj]`. Rewrite using `[e0]`. Simplify using `[halfTr]`.
+-/
 theorem weil_law {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (hψ : IsCharAF D.host.F ψ)
@@ -40,6 +45,13 @@ theorem weil_law {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →
   rw [e0]
   simp [halfTr]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Unfold `Rsec Wz`. Simplify using `only [mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `z`. Establish `: ω (M.w * M.nzx z 0 * (M.sh y * M.emb h * g)) Φ = ω (M.w * M.nzx z 0 * (M.sh y * M.emb h)) (ω g Φ)`. Rewrite using `[← mul_assoc (M.w * M.nzx z 0), map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem rsec_translate {V : HSp D} {ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ)
     (b₀ : HermE D ρ) {θ : InfFam D} (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)) (Φ : schwartzA θ V.rank n) (g : G D n)
     (Ω : G D p → Mx D ρ p → ℂ) :
@@ -57,11 +69,21 @@ theorem rsec_translate {V : HSp D} {ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn
     rfl
   rw [this]
 
+/- English proof (translation)
+Apply `GlobalTheory.CompanionTheory.FourierN.mat_injective` to reduce the goal to its premises. Establish `h0 : adj (0 : Mx D ρ p) = 0` using `by simp [adj]`. Rewrite using `[M.sh_mat, h0, neg_zero, GlobalTheory.CompanionTheory.WzHeis.blockRowSubstitution_one, GlobalTheory.StdUnn.LeftInvSect.mat_one, block_matrix_one]`.
+-/
 theorem sh_zero {ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) : M.sh 0 = 1 := by
   apply GlobalTheory.CompanionTheory.FourierN.mat_injective
   have h0 : adj (0 : Mx D ρ p) = 0 := by simp [adj]
   rw [M.sh_mat, h0, neg_zero, GlobalTheory.CompanionTheory.WzHeis.blockRowSubstitution_one, GlobalTheory.StdUnn.LeftInvSect.mat_one, block_matrix_one]
 
+/- English proof (translation)
+Set `aA : GL (Fin n) (AE D)` to `Matrix.GeneralLinearGroup.map (incA D) a`. Establish `h1 : aA.1 = rat a.1` using `rfl`. Establish `h2 : (aA⁻¹).1 = rat (a⁻¹).1` using `by show ((Matrix.GeneralLinearGroup.map (incA D) a)⁻¹).1 = _`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Establish `hd : Matrix.GeneralLinearGroup.det aA = Units.map (incA D).toMonoidHom (Matrix.GeneralLinearGroup.det a)`. Apply `Units.ext` to reduce the goal to its premises. Use `show aA.1.det = incA D a.1.det`. Rewrite using `[h1]`. Conclude with `(RingHom.map_det (incA D) a.1).symm`.
+
+Use `hω.levi q aA (by rw [h1, h2]; exact hq) Ψ x` as an intermediate fact. Rewrite using `[this, hd, hχ.2, show absA D (Units.map (incA D).toMonoidHom (Matrix.GeneralLinearGroup.det a)) = 1 from absE_inclR _]`. Simplify using `[npow]`. Both sides reduce to the same expression.
+-/
 theorem weil_rat {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (hχ : IsHeckeChar D χ) (a : GL (Fin n) D.host.E) {q : G D n}
@@ -87,6 +109,13 @@ section Transport
 variable {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [T2Space A] [LocallyCompactSpace A]
   [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
 
+/- English proof (translation)
+Establish `hAC : (μ.map T).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μ T`. Establish `hAC2 : (μ.map T.symm).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μ T.symm`. Establish `hsm : Measure.QuasiMeasurePreserving (T.symm.toAddEquiv.toEquiv) μ μ` using `⟨T.symm.continuous.measurable, Measure.absolutelyContinuous_isAddHaarMeasure _ _⟩`. Set `eΓ : Γ ≃ Γ` to `{ toFun := fun d => ⟨T.symm d.1, (hT _).1 (by simpa using d.2)⟩ invFun := fun c => ⟨T c.1, (hT _).2 c.2⟩ left_inv := fun d => Subtype.ext (by simp) right_inv := fun c => Subtype.ext (by simp) }`. Establish `hFD : IsAddFundamentalDomain Γ (T.toAddEquiv.toEquiv '' s) μ` using `hs.image_of_equiv T.toAddEquiv.toEquiv hsm eΓ (fun g x => by show T (T.symm g.1 + x) = g.1 + T x simp)`.
+
+Establish `h1 : μ (T.toAddEquiv.toEquiv '' s) = 1` using `by rw [hFD.measure_eq hs, hs1]`. Establish `hemb : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`. Establish `h2 : μ.map T (T.toAddEquiv.toEquiv '' s) = 1`. Rewrite using `[hemb.map_apply, show T ⁻¹' (T.toAddEquiv.toEquiv '' s) = s from Set.preimage_image_eq _ T.injective, hs1]`. Establish `h4` using `Measure.isAddLeftInvariant_eq_smul (μ.map T) μ`.
+
+Rewrite `h2` using `[h4]`. Establish `hc : Measure.addHaarScalarFactor (μ.map T) μ = 1`. Rewrite `h2` using `[Measure.smul_apply, h1, ENNReal.smul_def, smul_eq_mul, mul_one]`. Conclude with `h2` after adjusting the coercions. Rewrite using `[h4, hc, one_smul]`.
+-/
 theorem map_eq_self (Γ : AddSubgroup A) [Countable Γ] (T : A ≃ₜ+ A) (hT : ∀ a, T a ∈ Γ ↔ a ∈ Γ) (μ : Measure A)
     [μ.IsAddHaarMeasure] {s : Set A} (hs : IsAddFundamentalDomain Γ s μ) (hs1 : μ s = 1) : μ.map T = μ := by
   have hAC : (μ.map T).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map μ T
@@ -127,6 +156,15 @@ def rightT (t : ℕ) (a : GL (Fin n) D.host.E) : Mx D t n ≃ₜ+ Mx D t n where
   continuous_toFun := continuous_id.matrix_mul continuous_const
   continuous_invFun := continuous_id.matrix_mul continuous_const
 
+/- English proof (translation)
+Take `⟨𝓕, hHaar, hFD, hvol⟩` from `h`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D t n`. Use `haveI : BorelSpace (Mx D t n) := ⟨rfl⟩`. Use `haveI : DiscreteTopology (ratMx D t n) := i5`. Use `haveI : SecondCountableTopology (ratMx D t n) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI : Countable (ratMx D t n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `map_eq_self (ratMx D t n) (rightT t a) (fun x => ⟨fun hx => ?_, fun hx => ?_⟩) μ₁ hFD hvol` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hx`. Use `⟨γ * (a⁻¹).1, ?_⟩` and prove the remaining obligations. Establish `hγ' : rat γ = mm x (rat a.1)` using `hγ`.
+
+Use `show rat (γ * (a⁻¹).1) = x`. Rewrite using `[rat_mul, hγ']`. Use `show mm (mm x (rat a.1)) (rat (a⁻¹).1) = x`. Rewrite using `[mm, mm, Matrix.mul_assoc, rat_gl_mul_inv, Matrix.mul_one]`. Take `⟨γ, hγ⟩` from `hx`.
+
+Establish `hγ' : rat γ = x` using `hγ`. Use `⟨γ * a.1, ?_⟩` and prove the remaining obligations. Use `show rat (γ * a.1) = mm x (rat a.1)`. Rewrite using `[rat_mul, hγ']`.
+-/
 theorem map_right_rat {μ₁ : Measure (Mx D t n)} (h : ∃ 𝓕, IsCovolOne (ratMx D t n) μ₁ 𝓕) (a : GL (Fin n) D.host.E) :
     μ₁.map (rightT t a) = μ₁ := by
   obtain ⟨𝓕, hHaar, hFD, hvol⟩ := h
@@ -149,6 +187,11 @@ theorem map_right_rat {μ₁ : Measure (Mx D t n)} (h : ∃ 𝓕, IsCovolOne (ra
     show rat (γ * a.1) = mm x (rat a.1)
     rw [rat_mul, hγ']
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D t n) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D t n`. Establish `hemb : MeasurableEmbedding (rightT (D` using `D) t a) := (rightT t a).toHomeomorph.measurableEmbedding`. Use `conv_rhs => rw [← map_right_rat h a]`. Rewrite using `[hemb.integral_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integral_right_rat {μ₁ : Measure (Mx D t n)} (h : ∃ 𝓕, IsCovolOne (ratMx D t n) μ₁ 𝓕) (a : GL (Fin n) D.host.E)
     (f : Mx D t n → ℂ) : ∫ x, f (mm x (rat a.1)) ∂μ₁ = ∫ x, f x ∂μ₁ := by
   haveI : BorelSpace (Mx D t n) := ⟨rfl⟩
@@ -158,6 +201,13 @@ theorem integral_right_rat {μ₁ : Measure (Mx D t n)} (h : ∃ 𝓕, IsCovolOn
   rw [hemb.integral_map]
   rfl
 
+/- English proof (translation)
+Unfold `ikp ikS`. Establish `key : ∀ Z : Mx D B.rank n, projS I.νK (fun X => Ψ (mm X (rat a.1))) Z = projS I.νK Ψ (mm Z (rat a.1))`. Introduce `Z`. Unfold `projS`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [mm, Matrix.mul_assoc]`. Simplify using `only [key]`. Rewrite using `[← integral_right_rat I.cov₁ a (fun x => projS I.νK Ψ (d.jX ⬝ x + d.j0 ⬝ mm Y (rat a.1)))]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Use `congr 1`. Simplify using `only [mm, Matrix.add_mul, Matrix.mul_assoc]`.
+-/
 theorem ikp_rat {B W : HSp D} {d : HypDec B W t} (I : IkD d n) (Ψ : Mx D B.rank n → ℂ) (a : GL (Fin n) D.host.E)
     (Y : Mx D W.rank n) : ikp I (fun X => Ψ (mm X (rat a.1))) Y = ikp I Ψ (mm Y (rat a.1)) := by
   unfold ikp ikS
@@ -174,6 +224,9 @@ theorem ikp_rat {B W : HSp D} {d : HypDec B W t} (I : IkD d n) (Ψ : Mx D B.rank
   congr 1
   simp only [mm, Matrix.add_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `orb`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[rat_mul]`. Simplify using `only [mm, Matrix.mul_assoc]`.
+-/
 theorem orb_rat (W : HSp D) (m : Measure (GA D W)) (Ψ : Mx D W.rank n → ℂ) (a : GL (Fin n) D.host.E)
     (x : Matrix (Fin W.rank) (Fin n) D.host.E) :
     orb W m (fun Y => Ψ (mm Y (rat a.1))) x = orb W m Ψ (x * a.1) := by
@@ -185,6 +238,13 @@ theorem orb_rat (W : HSp D) (m : Measure (GA D W)) (Ψ : Mx D W.rank n → ℂ) 
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D r t`. Set `f : (Fin r → Mx D 1 t) → Mx D r t` to `fun u => Matrix.of fun i j => u i 0 j`. Establish `hf : Continuous f`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).matrix_elem 0 j`.
+
+Establish `hK : IsCompact (f '' Set.pi Set.univ fun i => tsupport (η i))` using `(isCompact_univ_pi fun i => h i).image hf`. Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises. Use `⟨fun i => y.submatrix (fun _ => i) id, fun i _ => ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `subset_tsupport` to reduce the goal to its premises. Introduce `h0`. Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ i) h0)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem hasCompactSupport_rows {η : Fin r → Mx D 1 t → ℂ} (h : ∀ i, HasCompactSupport (η i)) :
     HasCompactSupport (fun y : Mx D r t => ∏ i, η i (y.submatrix (fun _ => i) id)) := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.TowerResNonzero.lattice_ratMx D r t
@@ -204,6 +264,17 @@ theorem hasCompactSupport_rows {η : Fin r → Mx D 1 t → ℂ} (h : ∀ i, Has
   · ext i j
     rfl
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D r t`. Use `haveI : BorelSpace (Mx D r t) := ⟨rfl⟩`. Use `haveI : m.μ.IsAddHaarMeasure := m.hμ.1`. Establish `hz` using `hRT D θ hθ r t m.μ m.hμ.1 (fun y => A y - T y) (hA.sub hT) (fun η hη' => ?_)`. Use function extensionality and compare the values at `y`.
+
+Conclude with `sub_eq_zero.1 (congrFun hz y)`. Take `⟨Ω, hΩ, hΩ1⟩` from `hTP D r t m ψ hψ b₀ hb χ hχ hη hr θ hθ η (fun i => (hη' i).1)`. Establish `hΩf : Ω 1 = fun y => ∏ i, η i (y.submatrix (fun _ => i) id)` using `funext hΩ1`. Establish `hcs : HasCompactSupport (Ω 1)`. Rewrite using `[hΩf]`.
+
+Conclude with `hasCompactSupport_rows fun i => (hη' i).2`. Establish `hc1 : Continuous (Ω 1)` using `hΩ.cont.comp (Continuous.prodMk continuous_const continuous_id)`. Establish `hcc : Continuous fun y => conj (Ω 1 y)` using `Complex.continuous_conj.comp hc1`. Establish `hcsc : HasCompactSupport fun y => conj (Ω 1 y)` using `hcs.comp_left (g := fun z => conj z) (by simp)`. Establish `iA : Integrable (fun y => A y * conj (Ω 1 y)) m.μ` using `(hA.mul hcc).integrable_of_hasCompactSupport hcsc.mul_left`.
+
+Establish `iT : Integrable (fun y => T y * conj (Ω 1 y)) m.μ` using `(hT.mul hcc).integrable_of_hasCompactSupport hcsc.mul_left`. Establish `e : ∀ y, (A y - T y) * conj (∏ i, η i (y.submatrix (fun _ => i) id)) = A y * conj (Ω 1 y) - T y * conj (Ω 1 y)`. Introduce `y`. Rewrite using `[hΩ1, sub_mul]`. Simplify using `only [e]`.
+
+Rewrite using `[integral_sub iA iT, h Ω hΩ hcs, sub_self]`.
+-/
 theorem eq_of_pairing (hTP : ThProd) (hRT : RowTotal) (hr : 1 ≤ r) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : ResEta D χ r) {θ : InfFam D} (hθ : IsInfFam θ) (m : Meas D r t)
     (b₀ : HermE D r) (hb : IsDiagInv b₀) (A T : Mx D r t → ℂ) (hA : Continuous A) (hT : Continuous T)
@@ -235,6 +306,17 @@ theorem eq_of_pairing (hTP : ThProd) (hRT : RowTotal) (hr : 1 ≤ r) {ψ : AddCh
 
 section LinAlg
 
+/- English proof (translation)
+Set `U` to `Submodule.span K (Set.range fun i => c i)`. Take `⟨U', hU'⟩` from `Submodule.exists_isCompl U`. Establish `hdim : Module.finrank K U + Module.finrank K U' = n`. Simplify using `using Submodule.finrank_add_eq_of_isCompl hU'`. Establish `hUr : Module.finrank K U = r`.
+
+Simplify using `using finrank_span_eq_card hc`. Establish `hUt : Module.finrank K U' = t` using `by omega`. Set `b' : Module.Basis (Fin t) K U'` to `Module.finBasisOfFinrankEq K U' hUt`. Set `v : Fin r ⊕ Fin t → (Fin n → K)` to `Sum.elim (fun i => c i) (fun j => (b' j : Fin n → K))`. Establish `hb' : LinearIndependent K (fun j => (b' j : Fin n → K))` using `b'.linearIndependent.map' U'.subtype (Submodule.ker_subtype _)`.
+
+Establish `hsp : Submodule.span K (Set.range fun j => (b' j : Fin n → K)) ≤ U'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(b' j).2`. Establish `hv : LinearIndependent K v` using `hc.sum_type hb' (hU'.disjoint.mono_right hsp)`.
+
+Set `e` to `finSumFinEquiv.trans (finCongr hn)`. Set `A : Matrix (Fin n) (Fin n) K` to `fun i => v (e.symm i)`. Establish `hA : LinearIndependent K A.row` using `hv.comp e.symm e.symm.injective`. Establish `hu : IsUnit A` using `Matrix.linearIndependent_rows_iff_isUnit.1 hA`. Use `⟨hu.unit, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `show A (e (Sum.inl i)) j = c i j`. Simplify using `[A, v]`.
+-/
 theorem exists_complete {K : Type} [Field K] (hn : r + t = n) (c : Matrix (Fin r) (Fin n) K)
     (hc : LinearIndependent K (fun i => c i)) :
     ∃ a : GL (Fin n) K, ∀ (i : Fin r) j, a.1 (finSumFinEquiv.trans (finCongr hn) (Sum.inl i)) j = c i j := by
@@ -265,14 +347,23 @@ theorem exists_complete {K : Type} [Field K] (hn : r + t = n) (c : Matrix (Fin r
 
 end LinAlg
 
+/- English proof (translation)
+Simplify using `only [L.ext0, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromCols_apply_inl]`.
+-/
 theorem ext0_inl (hn : r + t = n) (x : Matrix (Fin a) (Fin r) D.host.E) (k : Fin a) (i : Fin r) :
     L.ext0 hn x k (finSumFinEquiv.trans (finCongr hn) (Sum.inl i)) = x k i := by
   simp only [L.ext0, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromCols_apply_inl]
 
+/- English proof (translation)
+Simplify using `only [L.ext0, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromCols_apply_inr, Matrix.zero_apply]`.
+-/
 theorem ext0_inr (hn : r + t = n) (x : Matrix (Fin a) (Fin r) D.host.E) (k : Fin a) (i : Fin t) :
     L.ext0 hn x k (finSumFinEquiv.trans (finCongr hn) (Sum.inr i)) = 0 := by
   simp only [L.ext0, Matrix.submatrix_apply, Equiv.symm_apply_apply, id, Matrix.fromCols_apply_inr, Matrix.zero_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← Equiv.sum_comp (finSumFinEquiv.trans (finCongr hn)), Fintype.sum_sum_type]`. Simplify using `only [ext0_inl, ext0_inr, h, zero_mul, Finset.sum_const_zero, add_zero]`.
+-/
 theorem matrixExtendByZero_mul (hn : r + t = n) (x : Matrix (Fin a) (Fin r) D.host.E) (A : Matrix (Fin n) (Fin n) D.host.E)
     (c : Matrix (Fin r) (Fin n) D.host.E)
     (h : ∀ (i : Fin r) j, A (finSumFinEquiv.trans (finCongr hn) (Sum.inl i)) j = c i j) : L.ext0 hn x * A = x * c := by
@@ -280,12 +371,23 @@ theorem matrixExtendByZero_mul (hn : r + t = n) (x : Matrix (Fin a) (Fin r) D.ho
   rw [Matrix.mul_apply, Matrix.mul_apply, ← Equiv.sum_comp (finSumFinEquiv.trans (finCongr hn)), Fintype.sum_sum_type]
   simp only [ext0_inl, ext0_inr, h, zero_mul, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gramQ_eq (W : HSp D) {p : ℕ} (x : Matrix (Fin W.rank) (Fin p) D.host.E) : gramQ W x = xᴴ * (W.gram * x) := rfl
 
+/- English proof (translation)
+Simplify using `only [gramQ_eq, Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem gramQ_mul (W : HSp D) {p q : ℕ} (x : Matrix (Fin W.rank) (Fin p) D.host.E) (c : Matrix (Fin p) (Fin q) D.host.E) :
     gramQ W (x * c) = cᴴ * gramQ W x * c := by
   simp only [gramQ_eq, Matrix.conjTranspose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i', rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective i`. Take `⟨j', rfl⟩` from `(finSumFinEquiv.trans (finCongr hn)).surjective j`. Apply the tactic sequence `rcases i' with i' | i' <;> rcases j' with j' | j'`. Use `all_goals`.
+
+Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, gramQ_eq, Matrix.mul_apply, Matrix.conjTranspose_apply, ext0_inl, ext0_inr, star_zero, zero_mul …`.
+-/
 theorem gram_extend_by_zero (W : HSp D) (hn : r + t = n) (x : Matrix (Fin W.rank) (Fin r) D.host.E) :
     gramQ W (L.ext0 hn x) = bl hn (gramQ W x) 0 0 0 := by
   ext i j
@@ -301,6 +403,19 @@ def ext0H (hn : r + t = n) (b₀ : HermE D r) : HermE D n := dsum hn b₀ ⟨0, 
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨hnb, hlam, hFD, hvol⟩` from `hC`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.TowerResNonzero.lattice_ratMx D n n`. Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D n) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (hermA D n) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Use `haveI : LocallyCompactSpace (hermA D n) := isClosed_hermA.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : DiscreteTopology (ratHerm D n) := discrete_ratHerm`. Use `haveI : SecondCountableTopology (ratHerm D n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : Countable (ratHerm D n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨q, hqF, hq⟩` from `exists_levi_rat (D := D) a`.
+
+Use `⟨q, hq, fun g => ?_⟩` and prove the remaining obligations. Set `f : hermA D n → ℂ` to `fun c => F (nb c * g) * ψ (-halfTr (Matrix.trace (HMul.hMul ((cg a β).1.map (incA D)) c.1 : Mx D n n)))`. Establish `hf : ∀ γ ∈ ratHerm D n, ∀ x, f (γ + x) = f x`. Introduce `γ hγ x`. Establish `e1 : F (nb (γ + x) * g) = F (nb x * g)`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.FourierN.nb_add hnb, mul_assoc]`. Conclude with `hinv _ (GlobalTheory.CompanionTheory.FourierN.nb_rat hnb γ hγ) _`. Establish `e2 : ψ (-pr (cg a β).1 (γ + x).1) = ψ (-pr (cg a β).1 x.1)`. Rewrite using `[show (γ + x).1 = γ.1 + x.1 from rfl, pr_add_right, neg_add, AddChar.map_add_eq_mul, ker_of_rat hψ γ hγ, one_mul]`. Use `show F (nb (γ + x) * g) * ψ (-pr (cg a β).1 (γ + x).1) = F (nb x * g) * ψ (-pr (cg a β).1 x.1)`.
+
+Rewrite using `[e1, e2]`. Establish `key` using `mean_transport (ratHerm D n) (ratHerm D n) (tauH a) (tauH_rat a) lam lam hFD hFD hvol hvol f hf`. Unfold `fc`. Use `Eq.trans (integral_congr_ae (.of_forall fun b => ?_)) key` and prove the remaining obligations. Use `show F (nb b * (q * g)) * ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) = F (nb (tauH a b) * g) * ψ (-halfTr (Matrix.trace (HMul.hMul ((cg a β).1.map (incA D)) (tauH a b).1 : Mx D n n)))`.
+
+Rewrite using `[trace_cg, ← mul_assoc, nb_levi hnb a hq b, mul_assoc, hinv q hqF]`.
+-/
 theorem fc_levi_mat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (F : G D n → ℂ)
     (hinv : LeftInv (GF D n) F) {nb : hermA D n → G D n} {lam : Measure (hermA D n)} {𝓖 : Set (hermA D n)}
     (hC : CoefData nb lam 𝓖) (a : GL (Fin n) D.host.E) (β : HermE D n) :
@@ -335,6 +450,15 @@ theorem fc_levi_mat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ
     F (nb (tauH a b) * g) * ψ (-halfTr (Matrix.trace (HMul.hMul ((cg a β).1.map (incA D)) (tauH a b).1 : Mx D n n)))
   rw [trace_cg, ← mul_assoc, nb_levi hnb a hq b, mul_assoc, hinv q hqF]
 
+/- English proof (translation)
+Establish `hc : ∀ t, (D.sp.cm.sig : D.host.E →+* D.host.E) ((D.sp.cm.sig : D.host.E →+* D.host.E) t) = t` using `fun x => star_star x`. Establish `hGs : W.gramᴴ = W.gram` using `Matrix.ext fun a b => GlobalTheory.LatVac.gram_star W b a`. Establish `hG : ∀ a b, (D.sp.cm.sig : D.host.E →+* D.host.E) (W.gram a b) = W.gram b a` using `fun a b => GlobalTheory.LatVac.gram_star W a b`. Establish `hdet : W.gram.det ≠ 0` using `(GlobalTheory.Doubling.isHermND_gram W).2`. Take `⟨P, d, hP, hPG, hfix, hd⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal two_ne_zero hc hG`.
+
+Establish `hG' : gramQ W (P.map (D.sp.cm.sig : D.host.E →+* D.host.E)) = Matrix.diagonal d`. Establish `hT : (P.map (D.sp.cm.sig : D.host.E →+* D.host.E))ᴴ = Pᵀ`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `hc (P j i)`. Rewrite using `[← hPG, gramQ_eq, hT, Matrix.mul_assoc]`.
+
+Use `⟨P.map (D.sp.cm.sig : D.host.E →+* D.host.E), ⟨Matrix.diagonal d, ?_⟩, ⟨Matrix.isDiag_diagonal d, ?_⟩, hG'⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using hfix i`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.diagonal_apply_ne _ (Ne.symm hij)]`. Use `show (Matrix.diagonal d).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hd hdet i`.
+-/
 theorem exists_orth (W : HSp D) : ∃ (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (b₀ : HermE D W.rank),
     IsDiagInv b₀ ∧ gramQ W x₀ = b₀.1 := by
   classical
@@ -359,6 +483,11 @@ theorem exists_orth (W : HSp D) : ∃ (x₀ : Matrix (Fin W.rank) (Fin W.rank) D
     rw [Matrix.det_diagonal]
     exact Finset.prod_ne_zero_iff.2 fun i _ => hd hdet i
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Establish `h1 : c.rank ≤ r` using `by simpa using c.rank_le_card_height`. Establish `h2` using `c.rank_eq_finrank_span_row`. Establish `h3 : Set.finrank K (Set.range fun i => c i) = c.rank`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rows_li {K : Type} [Field K] (c : Matrix (Fin r) (Fin n) K) (h : r ≤ c.rank) :
     LinearIndependent K (fun i => c i) := by
   rw [linearIndependent_iff_card_eq_finrank_span]
@@ -371,6 +500,13 @@ theorem rows_li {K : Type} [Field K] (c : Matrix (Fin r) (Fin n) K) (h : r ≤ c
   simp
   omega
 
+/- English proof (translation)
+Rewrite using `[gramQ_mul, gram_extend_by_zero, hx₁]`. Establish `h : bl hn b₁.1 0 0 0 = (cg a β).1`. Rewrite using `[hcg]`. Use `show _ = bl hn b₁.1 0 0 β'.1`. Rewrite using `[hβ']`.
+
+Rewrite using `[h]`. Use `show ((a⁻¹).1)ᴴ * (a.1ᴴ * β.1 * a.1) * (a⁻¹).1 = β.1`. Establish `e1 : a.1 * (a⁻¹).1 = 1` using `by simp`. Establish `e2 : ((a⁻¹).1)ᴴ * a.1ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Simplify using `only [Matrix.mul_assoc, e1, Matrix.mul_one]`.
+
+Rewrite using `[← Matrix.mul_assoc, e2, Matrix.one_mul]`.
+-/
 theorem rep_of_cg (W : HSp D) (hn : r + t = n) (a : GL (Fin n) D.host.E) (β : HermE D n) (b₁ : HermE D r) (β' : HermE D t)
     (hβ' : β'.1 = 0) (hcg : cg a β = dsum hn b₁ β') (x₁ : Matrix (Fin W.rank) (Fin r) D.host.E) (hx₁ : gramQ W x₁ = b₁.1) :
     gramQ W (L.ext0 hn x₁ * (a⁻¹).1) = β.1 := by
@@ -386,6 +522,11 @@ theorem rep_of_cg (W : HSp D) (hn : r + t = n) (a : GL (Fin n) D.host.E) (β : H
   simp only [Matrix.mul_assoc, e1, Matrix.mul_one]
   rw [← Matrix.mul_assoc, e2, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `ha : IsUnit a.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 a.isUnit`. Establish `hs : IsUnit (a.1ᴴ).det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `ha.star`. Use `show (a.1ᴴ * β.1 * a.1).rank = _`.
+
+Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ ha, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hs]`.
+-/
 theorem rank_cg (a : GL (Fin n) D.host.E) (β : HermE D n) : (cg a β).1.rank = β.1.rank := by
   have ha : IsUnit a.1.det := (Matrix.isUnit_iff_isUnit_det _).1 a.isUnit
   have hs : IsUnit (a.1ᴴ).det := by
@@ -394,12 +535,22 @@ theorem rank_cg (a : GL (Fin n) D.host.E) (β : HermE D n) : (cg a β).1.rank = 
   show (a.1ᴴ * β.1 * a.1).rank = _
   rw [Matrix.rank_mul_eq_left_of_isUnit_det _ _ ha, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hs]
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[gramQ_eq, Matrix.det_mul, Matrix.det_mul, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem det_ne_of_gram (W : HSp D) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h : (gramQ W x₀).det ≠ 0) : x₀.det ≠ 0 := by
   intro h0
   apply h
   rw [gramQ_eq, Matrix.det_mul, Matrix.det_mul, h0]
   simp
 
+/- English proof (translation)
+Establish `hu : IsUnit x₀.det` using `isUnit_iff_ne_zero.2 h0`. Establish `hui : IsUnit (x₀⁻¹).det`. Rewrite using `[Matrix.det_nonsing_inv]`. Conclude with `hu.ringInverse`. Establish `hr : W.rank ≤ x.rank`.
+
+Rewrite `hx` using `[gramQ_eq]`. Conclude with `hx.trans ((Matrix.rank_mul_le_right _ _).trans (Matrix.rank_mul_le_right _ _))`. Establish `hc : W.rank ≤ (x₀⁻¹ * x).rank`. Rewrite using `[Matrix.rank_mul_eq_right_of_isUnit_det _ _ hui]` and apply the resulting hypothesis. Take `⟨a, ha⟩` from `exists_complete hn _ (rows_li _ hc)`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[matrixExtendByZero_mul hn x₀ a.1 _ ha, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+-/
 theorem exists_frame (W : HSp D) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (h0 : x₀.det ≠ 0)
     (x : Matrix (Fin W.rank) (Fin n) D.host.E) (hx : W.rank ≤ (gramQ W x).rank) :
     ∃ a : GL (Fin n) D.host.E, L.ext0 hn x₀ * a.1 = x := by
@@ -416,6 +567,51 @@ theorem exists_frame (W : HSp D) (hn : W.rank + t = n) (x₀ : Matrix (Fin W.ran
   refine ⟨a, ?_⟩
   rw [matrixExtendByZero_mul hn x₀ a.1 _ ha, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `hPolar hResMu hMaps hCfFJ hPcB hPcFc hRSec hHt hThP hRT hWMaj hIkS hT2 hMuId`. Introduce `D n t B W d hn ψ χ θ μB μW ωB ωW hS I H hH Φ U dd E σ hC ε hε nb lam 𝓖 hCD`. Establish `hr1` using `hS.pos`. Establish `hlt` using `hS.lt`. Establish `hψ` using `hS.hψ`.
+
+Establish `hχ` using `hS.hχ`. Establish `hη` using `hS.hη`. Establish `hθ` using `hS.hθ`. Take `⟨⟨M⟩, ⟨m⟩⟩` from `hMaps D n W.rank t hn`. Take `⟨mu, hmu⟩` from `hResMu D t (by omega)`.
+
+Establish `hn0 : 0 < n` using `by omega`. Take `⟨𝓕B, h𝓕B⟩` from `hS.hμB`. Establish `hηB : ResEta D χ B.rank` using `GlobalTheory.RegSch.JointCont.resEta_of_isWeilSch hn0 hψ hθ h𝓕B hS.hB`. Establish `hcont : ∀ Φ' : schwartzA θ B.rank n, Continuous (fun g => (ωB g Φ').1 0)` using `fun Φ' => ((hWMaj D n B ψ hψ χ hχ hηB θ hθ μB hS.hμB ωB hS.hB Φ').1).comp (Continuous.prodMk continuous_id continuous_const)`. Establish `hlaw : ∀ Φ' : schwartzA θ B.rank n, IsLaw χ ((t : ℂ) / 2) (fun g => (ωB g Φ').1 0)` using `fun Φ' => weil_law hS.hB hψ _ (by`.
+
+Establish `hB' : (B.rank : ℂ) = W.rank + 2 * t` using `by exact_mod_cast d.rank_add.symm`. Establish `hnC : (n : ℂ) = W.rank + t` using `by exact_mod_cast hn.symm`. Rewrite using `[hB', hnC]`. Use the proof step `ring) Φ'`. Take `⟨hFc, hFi⟩` from `(hCfFJ D n H _ _ U dd E σ hC ε hε).1 1`.
+
+Establish `hpol` using `hPolar D n W.rank t hn hS.big ψ hψ χ hχ hη (by intro h; omega) θ hθ H hH _ (hcont Φ) (hlaw Φ) U dd E σ hC ε hε`. Establish `hrank` using `hpol.1 1 le_rfl`. Establish `hrho : ∀ b₀ : HermE D W.rank, b₀.1.det ≠ 0 → ∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → ∀ Φ' : schwartzA θ B.rank n, IsRho (Rsec M m ψ b₀ (fun g => (ωB g Φ').1 0) 1 Ω)`. Introduce `b₀ hb Ω hΩ Φ'`. Take `⟨h1, -, h3⟩` from `hRSec D n W.rank t hn M m ψ hψ b₀ hb χ χ hχ hχ θ hθ Ω hΩ H hH ((t : ℂ) / 2) _ (hcont Φ') (hlaw Φ') 1`.
+
+Establish `hz : ((W.rank : ℝ) - t) / 2 < ((t : ℂ) / 2).re`. Establish `h : (W.rank : ℝ) < t` using `by exact_mod_cast hlt`. Establish `e : ((t : ℂ) / 2).re = (t : ℝ) / 2` using `by simp`. Rewrite using `[e]`. Establish `ht : (0 : ℝ) ≤ W.rank` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfam : fam H (fun g => (ωB g Φ').1 0) ((t : ℂ) / 2) ((t : ℂ) / 2) = fun g => (ωB g Φ').1 0`. Use function extensionality and compare the values at `g`. Simplify using `[fam, npow]`. Establish `h3'` using `h3 _ hz`.
+
+Rewrite `h3'` using `[hfam, mul_inv_cancel]`. Use `⟨?_, h3'⟩` and prove the remaining obligations. Establish `hc` using `h1.comp_continuous (f := fun h : G D t => (((t : ℂ) / 2), h)) (Continuous.prodMk continuous_const continuous_id) (fun h => ⟨hz, Set.mem_univ _⟩)`. Use `hc.congr fun h => ?_` and prove the remaining obligations. Use `show Rsec M m ψ b₀ (fam H _ _ ((t : ℂ) / 2)) 1 Ω h = _`.
+
+Rewrite using `[hfam]`. Establish `key : ∀ b₀ : HermE D W.rank, IsDiagInv b₀ → ∀ β : HermE D n, IsExt hn b₀ β → ∀ (g : G D n) (T : Mx D W.rank t → ℂ), Continuous T → (∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → HasCompactSupport (Ω 1) → mu (Rsec M m ψ b₀ (fun g' => (ωB g' (ωB g Φ)).1 0) 1 Ω) = ∫ y, T y * conj (Ω 1 y) ∂m.μ) → fc ψ …`. Introduce `b₀ hb β hβ g T hT h`. Establish `hpf` using `(hPcFc D n W.rank t hn M m ψ hψ _ hFc hFi).2 hrank b₀ hb.2 β hβ nb lam 𝓖 hCD`. Establish `hpcc` using `(hPcB D n W.rank t hn M m ψ hψ b₀).1 _ hFc hFi`.
+
+Establish `hA : Continuous fun y => fc ψ lam 𝓖 nb (cf dd E ((t : ℂ) / 2) ε 1) β (M.sh y * g)`. Simplify using `only [← hpf]`. Conclude with `hpcc.comp (M.sh_cont.mul continuous_const)`. Establish `hAT` using `eq_of_pairing hThP hRT hS.pos hψ hχ hη hθ m b₀ hb _ T hA hT (fun Ω hΩ hcs => by`. Establish `h2` using `(hpol.2.2 mu hmu M m b₀ hb.2 β hβ nb lam 𝓖 hCD Ω hΩ g).2`.
+
+Rewrite using `[h2, rsec_translate M m ψ b₀ ωB Φ g Ω]`. Conclude with `h Ω hΩ hcs)`. Establish `h0` using `congrFun hAT 0`. Simplify `h0` using `only [sh_zero M, one_mul]`. Take `⟨x₀, b₀, hb₀, hx₀⟩` from `exists_orth W`.
+
+Establish `hmid` using `hMuId D n t B W d hn ψ χ θ μB μW ωB ωW hS mu hmu M m b₀ hb₀ (fun Ω hΩ Φ' => hrho b₀ hb₀.2 Ω hΩ Φ') I`. Take `⟨κ, hκ⟩` from `hmid.2 x₀ hx₀`. Take `⟨ν, -, -, hν⟩` from `hT2 D n t B W d hn I θ hθ m.μ m.hμ.1 b₀ hb₀.2 x₀ hx₀`. Establish `hx₀d : x₀.det ≠ 0` using `det_ne_of_gram W x₀ (by rw [hx₀]; exact hb₀.2)`. Use `⟨κ, fun β hβ g => ⟨fun hno => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨a, b₁, β', hb₁, hcg⟩` from `exists_cg_dsum hn β (le_of_eq hβ.symm)`. Establish `hβ'0 : β'.1 = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `rank_dsum_ge hn b₁ hb₁.2 β' hne`. Rewrite `h1` using `[← hcg, rank_cg, hβ]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hnr : ¬ ∃ x₁, gramQ W x₁ = b₁.1`. Introduce and unpack `⟨x₁, hx₁⟩`. Conclude with `hno ⟨_, rep_of_cg W hn a β b₁ β' hβ'0 hcg x₁ hx₁⟩`. Establish `hz` using `(hMuId D n t B W d hn ψ χ θ μB μW ωB ωW hS mu hmu M m b₁ hb₁ (fun Ω hΩ Φ' => hrho b₁ hb₁.2 Ω hΩ Φ') I).1 hnr`.
+
+Establish `hext : IsExt hn b₁ (dsum hn b₁ β')` using `by show bl hn b₁.1 0 0 β'.1 = _`. Rewrite using `[hβ'0]`. Establish `hzero : ∀ g', fc ψ lam 𝓖 nb (cf dd E ((t : ℂ) / 2) ε 1) (cg a β) g' = 0`. Introduce `g'`. Rewrite using `[hcg]`.
+
+Conclude with `key b₁ hb₁ _ hext g' (fun _ => 0) continuous_const (fun Ω hΩ hcs => by`. Rewrite using `[hz _ Ω hΩ hcs]`. Use the proof step `simp)`. Take `⟨q, hq⟩` from `fc_levi hψ _ hFc hFi hCD a β`. Establish `h1` using `hq (q⁻¹ * g)`.
+
+Rewrite `h1` using `[mul_inv_cancel_left]`. Rewrite using `[h1]`. Conclude with `hzero _`. Take `⟨a, hxa⟩` from `exists_frame W hn x₀ hx₀d x (by rw [hx]; exact hβ.ge)`. Establish `he : cg a (ext0H hn b₀) = β`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show a.1ᴴ * (bl hn b₀.1 0 0 0) * a.1 = β.1`. Rewrite using `[← hx, ← hxa, gramQ_mul, gram_extend_by_zero, hx₀]`. Take `⟨q, hqm, hq⟩` from `fc_levi_mat hψ _ hFi hCD a (ext0H hn b₀)`. Rewrite `hq` using `[he]`.
+
+Rewrite using `[← hq g]`. Establish `hTc : Continuous (fun y : Mx D W.rank t => κ * orb W I.m (ikp I fun X => (ωB (q * g) Φ).1 (mm X (bl hn 1 y 0 1))) (L.ext0 hn x₀))` using `continuous_const.mul (hν (ωB (q * g) Φ).1 (ωB (q * g) Φ).2 0 (zero_mem _)).2.1`. Establish `h1` using `key b₀ hb₀ (ext0H hn b₀) rfl (q * g) _ hTc (fun Ω hΩ hcs => by`. Rewrite using `[hκ (ωB (q * g) Φ) Ω hΩ hcs, ← integral_const_mul]`. Simplify using `only [mul_assoc])`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Use `show κ * orb W I.m (ikp I fun X => (ωB (q * g) Φ).1 (mm X (bl hn 1 0 0 1))) (L.ext0 hn x₀) = _`. Use `congr 1`. Establish `hfun : (fun X => (ωB (q * g) Φ).1 (mm X (bl hn 1 0 0 1))) = fun X => (ωB g Φ).1 (mm X (rat a.1))`. Use function extensionality and compare the values at `X`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.WzHeis.blockRowSubstitution_one, map_mul]`. Use `weil_rat hS.hB hχ a hqm (ωB g Φ) (mm X 1)` as an intermediate fact. Rewrite `this` using `[mm, Matrix.mul_one]`. Simplify `this` using `[mm, Matrix.mul_one]`. Rewrite using `[hfun, show ikp I (fun X => (ωB g Φ).1 (mm X (rat a.1))) = fun Y => ikp I (ωB g Φ).1 (mm Y (rat a.1)) from`.
+
+Use function extensionality and compare the values at `(ikp_rat I _ a), orb_rat W I.m _ a, hxa]`.
+-/
 theorem target : PositivityTheory.Rg.Rsw.Polar → PositivityTheory.Rg.Rsw.ResMu → PositivityTheory.Rg.Rsw.MapsExist → PositivityTheory.Rg.Rsw.CfFJ → PositivityTheory.Rg.Rsw.PcBound →
     PositivityTheory.Rg.Rsw.PcFc → PositivityTheory.Rg.Rsw.RSec → PositivityTheory.Rg.Rsw.HtExist → PositivityTheory.Rg.Rsw.L.ThProd → PositivityTheory.Rg.Rsw.L.RowTotal →
     PositivityTheory.Rg.Rsw.L.WMaj → PositivityTheory.Rg.Rsw.L.IkSch → PositivityTheory.Rg.Rsw.L.ThetaSideMeasure → PositivityTheory.Rg.Rsw.L.MuId → PositivityTheory.Rg.Rsw.L.CoefId := by

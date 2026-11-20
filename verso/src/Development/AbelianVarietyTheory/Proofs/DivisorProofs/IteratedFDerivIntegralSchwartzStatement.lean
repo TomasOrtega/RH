@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousIteratedFDerivApply
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwInt.iteratedFDeriv_integral_eq | exact GlobalTheory.SchwInt.iteratedFDeriv_integral_eq | (intros; apply GlobalTheory.SchwInt.iteratedFDeriv_integral_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iteratedFDeriv_integral_schwartz : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {P : Type} [TopologicalSpace P] [MeasurableSpace P] [BorelSpace P] [SecondCountableTopology P]
     (μ : Measure P) [IsFiniteMeasureOnCompacts μ]

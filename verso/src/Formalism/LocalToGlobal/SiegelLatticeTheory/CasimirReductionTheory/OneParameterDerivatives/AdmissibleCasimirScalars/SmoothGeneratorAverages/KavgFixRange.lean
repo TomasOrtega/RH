@@ -17,6 +17,17 @@ namespace ExponentialDecomposition
 
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hs : kavg hσ he (s : H) = s` using `hfix s s.2`. Establish `hval : ∀ x : H, kavg hσ he x = ∫ k, e k • σ (toMK k) x ∂muK ε` using `fun x => by`. Unfold `Formalism.MainNotions.BridgeCPX.kavg`. Both sides reduce to the same expression. Establish `hkS : ∀ k : KG ε, σ (toMK k) s ∈ S` using `fun k => hst _ k.2 _ s.2`.
+
+Set `F : KG ε → S` to `fun k => e k • ⟨σ (toMK k) s, hkS k⟩`. Establish `hΘF : ∀ k, Θ (F k) = e k • σ (toMK k) (Θ s)` using `fun k => by`. Simplify using `only [F, map_smul]`. Rewrite using `[hΘ k s ⟨σ (toMK k) s, hkS k⟩ rfl]`. Establish `hsub : ((∫ k, F k ∂muK ε : S) : H) = ∫ k, (F k : H) ∂muK ε` using `(S.subtypeₗᵢ.integral_comp_comm F).symm`.
+
+Establish `hint : (∫ k, F k ∂muK ε) = s`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hsub, ← hs, hval]`. Both sides reduce to the same expression. Rewrite using `[hval, integral_congr_ae (Filter.Eventually.of_forall fun k => (hΘF k).symm)]`.
+
+Distinguish the cases in `hFi : Integrable F (muK ε)`. Establish `h` using `(LinearMap.toContinuousLinearMap Θ).integral_comp_comm hFi`. Simplify using `only [LinearMap.coe_toContinuousLinearMap'] at h`. Rewrite using `[h, hint]`. Rewrite `hint` using `[integral_undef hFi]`.
+
+Substitute `hint` using the available equality. Establish `h0 : ∀ k, F k = 0` using `fun k => by`. Use `ext`. Simplify using `[F]`. Simplify using `only [h0, map_zero, integral_zero]`.
+-/
 theorem kavg_fix_range {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {S : Submodule ℂ H} [FiniteDimensional ℂ S] (hst : IsKStableOn ε σ S)
     {e : KG ε → ℂ} (he : Continuous e) (hfix : ∀ x ∈ S, kavg hσ he x = x) (Θ : S →ₗ[ℂ] H)
@@ -49,6 +60,11 @@ theorem kavg_fix_range {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h�
       simp [F]
     simp only [h0, map_zero, integral_zero]
 
+/- English proof (translation)
+Establish `hle : isoK ε σ S ≤ LinearMap.ker ((((kavg hσ he : H →L[ℂ] H) - ContinuousLinearMap.id ℂ H : H →L[ℂ] H)) : H →ₗ[ℂ] H)`. Use `sSup_le ?_` and prove the remaining obligations. Introduce and unpack `T ⟨Θ, hΘ, rfl⟩`. Introduce and unpack `x ⟨s, rfl⟩`. Simplify using `[LinearMap.mem_ker, sub_eq_zero, kavg_fix_range hσ hst he hfix Θ hΘ s]`.
+
+Establish `h` using `hle hv`. Simplify `h` using `[LinearMap.mem_ker, sub_eq_zero]`.
+-/
 theorem kavg_fix_isoK {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {S : Submodule ℂ H} [FiniteDimensional ℂ S] (hst : IsKStableOn ε σ S)
     {e : KG ε → ℂ} (he : Continuous e) (hfix : ∀ x ∈ S, kavg hσ he x = x) {v : H} (hv : v ∈ isoK ε σ S) :
@@ -64,6 +80,15 @@ theorem kavg_fix_isoK {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ
 
 end ExponentialDecomposition
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ hirr w hw S hfd hst v hv`. Take `⟨e, he, hfix, hrange⟩` from `compactProj (KG ε) (muK ε) H (fun k : KG ε => σ (toMK k)) hσ.1.1 (fun a b => hσ.1.2 _ (umat_mem (a : UJ ε)) _ (umat_mem (b : UJ ε))) (fun a v => hσ.2.1 _ (umat_mem (a : UJ ε)) v) (fun v => (cont_orbit hσ v).comp continuous_subtype_val) S hfd (fun a v hv => hst _ a.2 v hv)`. Establish `hfix' : ∀ x ∈ S, kavg hσ he x = x` using `fun x hx => by`. Rewrite using `[kavg_apply]`. Conclude with `hfix x hx`.
+
+Establish `hE : kavg hσ he v = v` using `ExponentialDecomposition.kavg_fix_isoK hσ hst he hfix' hv`. Establish `hvc : v ∈ closure (Vsub ε hσ w : Set H)`. Establish `h` using `Vsub_dense hσ hirr hw`. Establish `h2 : v ∈ (Vsub ε hσ w).topologicalClosure`. Rewrite using `[h]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `h2`. Establish `h3 : kavg hσ he v ∈ closure ((Vsub ε hσ w ⊓ isoK ε σ S : Submodule ℂ H) : Set H)`. Use `map_mem_closure (kavg hσ he).continuous hvc ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Φ, hΦ, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_inf]`. Use `⟨⟨kconv ε e Φ, test_kconv he hΦ, kavg_vec hσ w he hΦ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[kavg_apply]`. Conclude with `hrange _`. Rewrite `h3` using `[hE]`. Then use the resulting hypothesis.
+-/
 theorem c0 : SmoothVectorsDense := by
   intro n ε H _ _ _ σ hσ hirr w hw S hfd hst v hv
   obtain ⟨e, he, hfix, hrange⟩ := compactProj (KG ε) (muK ε) H (fun k : KG ε => σ (toMK k)) hσ.1.1

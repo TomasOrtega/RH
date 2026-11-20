@@ -8,6 +8,13 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `H hF hA hI E Ω _ _ _ _ _ l _ ι`. Take `⟨art, hart, hex⟩` from `H E Ω`. Establish `hL : ∀ (χ : HChar E) (n : (E →+* ℂ) → ℤ), IsAlgPos χ n → ∃ r : G E Ω →* (Qbar l)ˣ, Continuous r ∧ IsLAdicOf art ι χ n r` using `fun χ n h => (hex l ι χ n h).exists`. Set `L : HChar E → ((E →+* ℂ) → ℤ) → (G E Ω →* (Qbar l)ˣ)` to `fun χ n => if h : IsAlgPos χ n then (hL χ n h).choose else 1`. Establish `hspec : ∀ (χ : HChar E) (n : (E →+* ℂ) → ℤ), IsAlgPos χ n → Continuous (L χ n) ∧ IsLAdicOf art ι χ n (L χ n)`.
+
+Introduce `χ n h`. Establish `e : L χ n = (hL χ n h).choose` using `dif_pos h`. Rewrite using `[e]`. Conclude with `(hL χ n h).choose_spec`. Use `⟨L, fun χ n h => ⟨(hspec χ n h).1, fun w hw => ⟨fun hl => ?_, ?_⟩⟩, fun χ n χ' n' h h' e => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hF E Ω l ι art hart χ n (L χ n) (hspec χ n h).2 w hl hw`. Conclude with `hA E Ω l ι art hart χ n (L χ n) h (hspec χ n h).1 (hspec χ n h).2 w hw`. Conclude with `hI E Ω l ι art hart χ χ' n n' (L χ n) (hspec χ n h).2 (e ▸ (hspec χ' n' h').2)`.
+-/
 theorem UpperTheory.Gal.TP.Sub.charEx_holds :
     GlobalTheory.Published.HeckeLAdicCharacter → CharFrob → CharAbove → CharInj → CharEx := by
   classical

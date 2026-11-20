@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.CTSmallCone
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.schr_block_factor | exact GlobalTheory.schr_block_factor | (intros; apply GlobalTheory.schr_block_factor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_sum_composition : ∀ {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (a b c a' b' c' : (κ → R) × (κ → R)),
     (∀ φ : (κ → R) → ℂ, GlobalTheory.WeilM.schr ψ a φ = GlobalTheory.WeilM.schr ψ b (GlobalTheory.WeilM.schr ψ c φ)) →

@@ -14,6 +14,9 @@ private noncomputable def lamMap (W : C) (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {T T'
     ((T.unop ⟶ W) →₀ P.obj T) →ₗ[S] ((T'.unop ⟶ W) →₀ P.obj T') :=
   Finsupp.lsum ℕ fun g => (Finsupp.lsingle (h.unop ≫ g)).comp (P.map h).hom
 
+/- English proof (translation)
+Simplify using `[lamMap]`.
+-/
 private lemma lamMap_single (W : C) (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {T T' : Cᵒᵖ} (h : T ⟶ T')
     (g : T.unop ⟶ W) (m : P.obj T) :
     lamMap W P h (Finsupp.single g m) = Finsupp.single (h.unop ≫ g) ((P.map h).hom m) := by
@@ -33,11 +36,17 @@ private noncomputable def lam (W : C) (P : Cᵒᵖ ⥤ ModuleCat.{1} S) : Cᵒ�
     intro g m
     simp [lamMap_single]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private lemma mr_single {A : Type} {M N : Type 1} [AddCommGroup M] [AddCommGroup N] [Module S M]
     [Module S N] (f : M →ₗ[S] N) (a : A) (m : M) :
     Finsupp.mapRange.linearMap f (Finsupp.single a m) = Finsupp.single a (f m) := by
   simp
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun f : Z ⟶ X => (P.map f.op).hom m) h`. Simplify using `only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Conclude with `e`.
+-/
 private lemma pmap_op (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y Y' Z : C}
     (a : Y ⟶ X) (b : Z ⟶ Y) (c : Y' ⟶ X) (d : Z ⟶ Y') (h : b ≫ a = d ≫ c) (m : P.obj (op X)) :
     (P.map b.op).hom ((P.map a.op).hom m) = (P.map d.op).hom ((P.map c.op).hom m) := by
@@ -45,6 +54,9 @@ private lemma pmap_op (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y Y' Z : C}
   simp only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e
   exact e
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun f : X ⟶ X => (P.map f.op).hom m) h`. Simplify using `only [op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Simplify using `using e`.
+-/
 private lemma pmap_id (P : Cᵒᵖ ⥤ ModuleCat.{1} S) {X Y : C}
     (a : Y ⟶ X) (b : X ⟶ Y) (h : b ≫ a = 𝟙 X) (m : P.obj (op X)) :
     (P.map b.op).hom ((P.map a.op).hom m) = m := by
@@ -81,6 +93,9 @@ private noncomputable def lamF (W : C) : (Cᵒᵖ ⥤ ModuleCat.{1} S) ⥤ (Cᵒ
     rw [mr_single, mr_single, mr_single]
     rfl
 
+/- English proof (translation)
+The claim follows from `mr_single _ g m`.
+-/
 private lemma lamF_map_single (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S} (φ : P ⟶ Q) (T : Cᵒᵖ)
     (g : T.unop ⟶ W) (m : P.obj T) :
     (((lamF W).map φ).app T).hom (Finsupp.single g m) = Finsupp.single g ((φ.app T).hom m) :=
@@ -124,6 +139,9 @@ private noncomputable def adjTo (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S} (α 
     refine congrArg _ ?_
     exact pmap_op P h.unop prod.snd prod.snd ((prod.functor.obj W).map h.unop) (by simp) m
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma adjTo_app (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S} (α : lam W P ⟶ Q) (T : Cᵒᵖ) (m : P.obj T) :
     ((adjTo W α).app T).hom m = (α.app (op (W ⨯ T.unop))).hom (Finsupp.single (prod.fst : W ⨯ T.unop ⟶ W)
       ((P.map (prod.snd : W ⨯ T.unop ⟶ T.unop).op).hom m)) := rfl
@@ -134,6 +152,9 @@ private noncomputable def invApp (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S}
   Finsupp.lsum ℕ fun g => (Q.map (prod.lift g (𝟙 T.unop)).op).hom ∘ₗ (u.app T).hom
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Simplify using `only [invApp, Finsupp.lsum_single, LinearMap.comp_apply]`. Apply the tactic sequence `try rfl`.
+-/
 private lemma invApp_single (W : C) {P Q : Cᵒᵖ ⥤ ModuleCat.{1} S}
     (u : P ⟶ (prod.functor.obj W).op ⋙ Q) (T : Cᵒᵖ) (g : T.unop ⟶ W) (m : P.obj T) :
     invApp W u T (Finsupp.single g m) = (Q.map (prod.lift g (𝟙 T.unop)).op).hom ((u.app T).hom m) := by
@@ -223,6 +244,9 @@ private noncomputable def UpperTheory.PwInj.sheafAdj (R : Type) [CommRing R] (W 
     (Functor.leftUnitor _ ≪≫ ((prodW W).sheafPushforwardContinuousCompSheafToPresheafIso
       (ModuleCat.{1} (ULift.{1} R)) Scheme.etaleTopology.{0} Scheme.etaleTopology.{0}).symm)
 
+/- English proof (translation)
+Introduce `R _ W J _`. Conclude with `Injective.injective_of_adjoint (UpperTheory.PwInj.sheafAdj R W) J`.
+-/
 theorem UpperTheory.injective_productPushforward_of_injective :
     ∀ (R : Type) [CommRing R] (W : Scheme.{0}) (J : Shv R) [Injective J], Injective ((pw R W).obj J) := by
   intro R _ W J _

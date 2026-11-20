@@ -30,6 +30,9 @@ def permU (s : n ≃ n) : GL n R where
     ext i j
     simp [Matrix.one_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show s.symm.toPEquiv.toMatrix * (M : Matrix n n R) * s.symm.symm.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Both sides reduce to the same expression.
+-/
 theorem permU_conj (s : n ≃ n) (M : GL n R) :
     permU s.symm * M * (permU s.symm)⁻¹ = reindexGL s M := by
   apply Units.ext
@@ -41,6 +44,11 @@ end Perm
 section Gen
 variable {F G V W : Type} [Field F] [Group G] [AddCommGroup V] [Module F V] [AddCommGroup W] [Module F W]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨⟨_, hN u u.2⟩, ρ x v, ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use `congr 1`.
+
+Simplify using `[← Module.End.mul_apply, ← map_mul]`.
+-/
 theorem twKer_le (ρ : Representation F G V) {N N' : Subgroup G} (x : G)
     (hN : ∀ u ∈ N, x * u * x⁻¹ ∈ N') :
     twKer ρ N 1 ≤ (twKer ρ N' 1).comap (ρ x) := by
@@ -59,6 +67,9 @@ def jacConj (ρ : Representation F G V) {N N' : Subgroup G} (x : G)
     (by ext v; simp [← Module.End.mul_apply, ← map_mul])
     (by ext v; simp [← Module.End.mul_apply, ← map_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jacConj_mk (ρ : Representation F G V) {N N' : Subgroup G} (x : G)
     (hN : ∀ u ∈ N, x * u * x⁻¹ ∈ N') (hN' : ∀ u ∈ N', x⁻¹ * u * x⁻¹⁻¹ ∈ N) (v : V) :
     jacConj ρ x hN hN' (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ x v) := rfl
@@ -90,6 +101,15 @@ def indConj {H H' : Subgroup G} {σ : Representation F H V} {τ : Representation
   map_add' _ _ := Subtype.ext (Subtype.ext (funext fun _ => map_add J _ _))
   map_smul' _ _ := Subtype.ext (Subtype.ext (funext fun _ => map_smul J _ _))
 
+/- English proof (translation)
+Establish `h1 : ∀ q : H', ∃ p : H, (p : G) = y⁻¹ * q * y ∧ ∀ w, J.toLinearMap (σ p w) = τ q (J.toLinearMap w)`. Introduce `q`. Establish `hp : y⁻¹ * (q : G) * y ∈ H` using `(hH _).2 (by simp [mul_assoc])`. Conclude with `⟨⟨_, hp⟩, rfl, hJ ⟨_, hp⟩ q (by simp [mul_assoc])⟩`. Establish `h2 : ∀ p : H, ∃ q : H', (q : G) = y⁻¹⁻¹ * p * y⁻¹ ∧ ∀ w, J.symm.toLinearMap (τ q w) = σ p (J.symm.toLinearMap w)`.
+
+Introduce `p`. Use `⟨⟨_, (hH p).1 p.2⟩, by simp, fun w => ?_⟩` and prove the remaining obligations. Apply `J.injective` to reduce the goal to its premises. Use `hJ p ⟨_, (hH p).1 p.2⟩ rfl (J.symm w)` as an intermediate fact. Simplify using `using this.symm`.
+
+Use `⟨.mk (LinearEquiv.ofLinear (indConj y J.toLinearMap h1) (indConj y⁻¹ J.symm.toLinearMap h2) ?_ ?_) fun g => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show J (J.symm (f.1.1 (y⁻¹⁻¹ * (y⁻¹ * x)))) = f.1.1 x` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show J.symm (J (f.1.1 (y⁻¹ * (y⁻¹⁻¹ * x)))) = f.1.1 x` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show J (f.1.1 (y⁻¹ * x * g)) = J (f.1.1 (y⁻¹ * (x * g)))` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+-/
 theorem smInd_conj {H H' : Subgroup G} {σ : Representation F H V} {τ : Representation F H' W} (y : G)
     (J : V ≃ₗ[F] W) (hH : ∀ p, p ∈ H ↔ y * p * y⁻¹ ∈ H')
     (hJ : ∀ (p : H) (q : H'), (q : G) = y * p * y⁻¹ → ∀ w, J (σ p w) = τ q (J w)) :
@@ -128,12 +148,18 @@ def sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' 
 
 omit [Fintype n] [DecidableEq n] [Fintype α] [LinearOrder α] [∀ a, Fintype (d a)]
   [∀ a, DecidableEq (d a)] [∀ a, Fintype (d' a)] [∀ a, DecidableEq (d' a)] in
+/- English proof (translation)
+Simplify using `[sg]`.
+-/
 @[simp] theorem sg_apply (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a) (a : α)
     (i : d a) : sg e e' h (e ⟨a, i⟩) = e' ⟨a, h a i⟩ := by
   simp [sg]
 
 omit [Fintype α] [LinearOrder α] [∀ a, Fintype (d a)] [∀ a, DecidableEq (d a)]
   [∀ a, Fintype (d' a)] [∀ a, DecidableEq (d' a)] in
+/- English proof (translation)
+Establish `h1 : ∀ (a : α) (i : d a), (sg e e' h).symm (e' ⟨a, h a i⟩) = e ⟨a, i⟩` using `fun a i => by`. Rewrite using `[Equiv.symm_apply_eq, sg_apply]`. Rewrite using `[val_reindexGL, h1, h1]`.
+-/
 theorem reindex_sg_apply (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a)
     (g : GL n R) (a b : α) (i : d a) (j : d b) :
     (reindexGL (sg e e' h) g : Matrix n n R) (e' ⟨a, h a i⟩) (e' ⟨b, h b j⟩) =
@@ -145,12 +171,20 @@ theorem reindex_sg_apply (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : 
 def levR (R : Type) [CommRing R] (h : ∀ a, d a ≃ d' a) : Levi R d →* Levi R d' :=
   MonoidHom.pi fun a => (reindexGL (h a)).comp (Pi.evalMonoidHom (fun a => GL (d a) R) a)
 
+/- English proof (translation)
+Use `show (reindexGL (h a) (t a) : Matrix (d' a) (d' a) R) (h a i) (h a j) = _`. Rewrite using `[val_reindexGL]`. Simplify using the standard rewrite rules.
+-/
 theorem levR_apply (h : ∀ a, d a ≃ d' a) (t : Levi R d) (a : α) (i j : d a) :
     (levR R h t a : Matrix (d' a) (d' a) R) (h a i) (h a j) = (t a : Matrix (d a) (d a) R) i j := by
   show (reindexGL (h a) (t a) : Matrix (d' a) (d' a) R) (h a i) (h a j) = _
   rw [val_reindexGL]
   simp
 
+/- English proof (translation)
+Rewrite using `[mem_parab_iff, mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H a b i j hab`. Take `⟨i, rfl⟩` from `(h a).surjective i`. Take `⟨j, rfl⟩` from `(h b).surjective j`.
+
+Rewrite using `[reindex_sg_apply]`. Conclude with `H a b i j hab`. Introduce `H a b i j hab`. Rewrite using `[← reindex_sg_apply e e' h]`. Conclude with `H a b _ _ hab`.
+-/
 theorem mem_parab_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a) (g : GL n R) :
     g ∈ parab R e ↔ reindexGL (sg e e' h) g ∈ parab R e' := by
   rw [mem_parab_iff, mem_parab_iff]
@@ -164,6 +198,11 @@ theorem mem_parab_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ 
     rw [← reindex_sg_apply e e' h]
     exact H a b _ _ hab
 
+/- English proof (translation)
+Rewrite using `[mem_unipRad, mem_unipRad, ← mem_parab_sg e e' h]`. Use `and_congr Iff.rfl ⟨fun H a i j => ?_, fun H a i j => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(h a).surjective i`. Take `⟨j, rfl⟩` from `(h a).surjective j`. Rewrite using `[reindex_sg_apply, H a i j]`.
+
+Simplify using `[Matrix.one_apply]`. Rewrite using `[← reindex_sg_apply e e' h, H a]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem mem_unipRad_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a) (g : GL n R) :
     g ∈ unipRad R e ↔ reindexGL (sg e e' h) g ∈ unipRad R e' := by
   rw [mem_unipRad, mem_unipRad, ← mem_parab_sg e e' h]
@@ -175,6 +214,9 @@ theorem mem_unipRad_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : �
   · rw [← reindex_sg_apply e e' h, H a]
     simp [Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(h a).surjective i`. Take `⟨j, rfl⟩` from `(h a).surjective j`. Rewrite using `[levR_apply, leviProj_apply, leviProj_apply, hq, reindex_sg_apply]`.
+-/
 theorem leviProj_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a)
     (p : parab R e) (q : parab R e') (hq : (q : GL n R) = reindexGL (sg e e' h) p) :
     leviProj R e' q = levR R h (leviProj R e p) := by
@@ -184,6 +226,13 @@ theorem leviProj_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a
   obtain ⟨j, rfl⟩ := (h a).surjective j
   rw [levR_apply, leviProj_apply, leviProj_apply, hq, reindex_sg_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`. Take `⟨⟨a, i⟩, rfl⟩` from `e'.surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `e'.surjective y`. Take `⟨i, rfl⟩` from `(h a).surjective i`.
+
+Take `⟨j, rfl⟩` from `(h b).surjective j`. Rewrite using `[reindex_sg_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, leviEmb_apply_same, levR_apply]`.
+
+Rewrite using `[leviEmb_apply_ne R e _ hab, leviEmb_apply_ne R e' _ hab]`.
+-/
 theorem leviEmb_sg (e : (Σ a, d a) ≃ n) (e' : (Σ a, d' a) ≃ n) (h : ∀ a, d a ≃ d' a) (t : Levi R d) :
     reindexGL (sg e e' h) (leviEmb R e t) = leviEmb R e' (levR R h t) := by
   apply Units.ext
@@ -206,6 +255,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {d d' : α → Type} [∀ a, Fintype (d a)] [∀ a, DecidableEq (d a)] [∀ a, Fintype (d' a)]
   [∀ a, DecidableEq (d' a)]
 
+/- English proof (translation)
+Establish `hm : ∀ a, modExp d' a = modExp d a` using `fun a => by`. Simplify using `only [modExp, fun b => Fintype.card_congr (h b)]`. Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hm]`.
+
+Conclude with `congrArg _ (det_reindexGL (h a) (t a))`.
+-/
 theorem deltaHalf_levR (h : ∀ a, d a ≃ d' a) (t : Levi k d) :
     deltaHalf k d' (levR k h t) = deltaHalf k d t := by
   have hm : ∀ a, modExp d' a = modExp d a := fun a => by
@@ -233,20 +287,32 @@ def famR (k : Type) [Field k] (h : ∀ i j, c i j ≃ c' i j) :
 
 variable (f : ∀ i, (Σ j, c i j) ≃ m i) (f' : ∀ i, (Σ j, c' i j) ≃ m i) (h : ∀ i j, c i j ≃ c' i j)
 
+/- English proof (translation)
+The claim follows from `permU_conj _ _`.
+-/
 theorem xL_conj (a : Levi k m) (i : α) :
     (xL f f' h * a * (xL f f' h)⁻¹ : Levi k m) i = reindexGL (sg (f i) (f' i) (h i)) (a i) :=
   permU_conj _ _
 
+/- English proof (translation)
+Simplify using `only [relParab, Subgroup.mem_pi, xL_conj]`. Conclude with `forall₂_congr fun i _ => mem_parab_sg (f i) (f' i) (h i) (p i)`.
+-/
 theorem mem_relParab_conj (p : Levi k m) :
     p ∈ relParab k f ↔ xL f f' h * p * (xL f f' h)⁻¹ ∈ relParab k f' := by
   simp only [relParab, Subgroup.mem_pi, xL_conj]
   exact forall₂_congr fun i _ => mem_parab_sg (f i) (f' i) (h i) (p i)
 
+/- English proof (translation)
+Simplify using `only [relUnip, Subgroup.mem_pi, xL_conj]`. Conclude with `forall₂_congr fun i _ => mem_unipRad_sg (f i) (f' i) (h i) (p i)`.
+-/
 theorem mem_relUnip_conj (p : Levi k m) :
     p ∈ relUnip k f ↔ xL f f' h * p * (xL f f' h)⁻¹ ∈ relUnip k f' := by
   simp only [relUnip, Subgroup.mem_pi, xL_conj]
   exact forall₂_congr fun i _ => mem_unipRad_sg (f i) (f' i) (h i) (p i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `leviProj_sg (f i) (f' i) (h i) ⟨p.1 i, p.2 i trivial⟩ ⟨q.1 i, q.2 i trivial⟩ ((congrFun hq i).trans (xL_conj f f' h _ i))`.
+-/
 theorem relProj_conj (p : relParab k f) (q : relParab k f')
     (hq : (q : Levi k m) = xL f f' h * (p : Levi k m) * (xL f f' h)⁻¹) :
     relProj k f' q = famR k h (relProj k f p) := by
@@ -254,6 +320,9 @@ theorem relProj_conj (p : relParab k f) (q : relParab k f')
   exact leviProj_sg (f i) (f' i) (h i) ⟨p.1 i, p.2 i trivial⟩ ⟨q.1 i, q.2 i trivial⟩
     ((congrFun hq i).trans (xL_conj f f' h _ i))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[xL_conj]`. Conclude with `leviEmb_sg (f i) (f' i) (h i) (g i)`.
+-/
 theorem relEmb_conj (g : ∀ i, Levi k (c i)) :
     xL f f' h * relEmb k f g * (xL f f' h)⁻¹ = relEmb k f' (famR k h g) := by
   funext i
@@ -261,6 +330,9 @@ theorem relEmb_conj (g : ∀ i, Levi k (c i)) :
   exact leviEmb_sg (f i) (f' i) (h i) (g i)
 
 omit [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] in
+/- English proof (translation)
+Rewrite using `[relDeltaHalf_apply, relDeltaHalf_apply]`. Conclude with `Finset.prod_congr rfl fun i _ => deltaHalf_levR (h i) (g i)`.
+-/
 theorem relDeltaHalf_famR (h : ∀ i j, c i j ≃ c' i j) (g : ∀ i, Levi k (c i)) :
     relDeltaHalf k c' (famR k h g) = relDeltaHalf k c g := by
   rw [relDeltaHalf_apply, relDeltaHalf_apply]
@@ -273,6 +345,11 @@ def jacJ (ρ : Representation ℂ (Levi k m) W) :
   jacConj ρ (xL f f' h) (fun u hu => (mem_relUnip_conj f f' h u).1 hu)
     (fun u hu => (mem_relUnip_conj f f' h _).2 (by simpa [mul_assoc] using hu))
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Establish `hx : ρ (xL f f' h) (ρ (relEmb k f g) v) = ρ (relEmb k f' (famR k h g)) (ρ (xL f f' h) v)`. Rewrite using `[← relEmb_conj f f' h g, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Use `show jacJ f f' h ρ (relJac f ρ g (Submodule.Quotient.mk v)) = relJac f' ρ (famR k h g) (jacJ f f' h ρ (Submodule.Quotient.mk v))`.
+
+Rewrite using `[relJac_mk, map_smul, jacJ, jacConj_mk, jacConj_mk, relJac_mk, relDeltaHalf_famR, hx]`.
+-/
 theorem jacJ_relJac (ρ : Representation ℂ (Levi k m) W) (g : ∀ i, Levi k (c i))
     (w : Jacquet ρ (relUnip k f)) :
     jacJ f f' h ρ (relJac f ρ g w) = relJac f' ρ (famR k h g) (jacJ f f' h ρ w) := by
@@ -285,6 +362,9 @@ theorem jacJ_relJac (ρ : Representation ℂ (Levi k m) W) (g : ∀ i, Levi k (c
     relJac f' ρ (famR k h g) (jacJ f f' h ρ (Submodule.Quotient.mk v))
   rw [relJac_mk, map_smul, jacJ, jacConj_mk, jacConj_mk, relJac_mk, relDeltaHalf_famR, hx]
 
+/- English proof (translation)
+Use `smInd_conj (xL f f' h) J (mem_relParab_conj f f' h) fun p q hq w => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, twist_apply]`. Rewrite using `[relProj_conj f f' h p q hq, map_smul, hJ, relDeltaHalf_famR]`.
+-/
 theorem relInd_congr (σ : Representation ℂ (∀ i, Levi k (c i)) V)
     (τ : Representation ℂ (∀ i, Levi k (c' i)) W) (J : V ≃ₗ[ℂ] W)
     (hJ : ∀ g w, J (σ g w) = τ (famR k h g) (J w)) :
@@ -295,6 +375,9 @@ theorem relInd_congr (σ : Representation ℂ (∀ i, Levi k (c i)) V)
 
 end Family
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α β' _ _ _ _ m _ _ m' _ _ c c' _ _ _ _ hc f g f' g' W _ _ ρ`. Set `h : ∀ i j, c i j ≃ c' i j` to `fun i j => Fintype.equivOfCardEq (hc i j)`. Conclude with `relInd_congr (c := fun j i => c i j) (c' := fun j i => c' i j) g g' (fun j i => h i j) _ _ (jacJ f f' h ρ) fun t w => jacJ_relJac f f' h ρ _ w`.
+-/
 theorem cellFunctor_congr : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α β' : Type} [Fintype α] [LinearOrder α] [Fintype β'] [LinearOrder β'] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {m' : β' → Type} [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] {c c' : α → β' → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] [∀ i j, Fintype (c' i j)] [∀ i j, DecidableEq (c' i j)], (∀ i j, Fintype.card (c i j) = Fintype.card (c' i j)) → ∀ (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ m' j) (f' : ∀ i, (Σ j, c' i j) ≃ m i) (g' : ∀ j, (Σ i, c' i j) ≃ m' j) {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k m) W), Nonempty ((cellFunctor f g ρ).Equiv (cellFunctor f' g' ρ)) := by
   intro k _ _ _ _ α β' _ _ _ _ m _ _ m' _ _ c c' _ _ _ _ hc f g f' g' W _ _ ρ
   let h : ∀ i j, c i j ≃ c' i j := fun i j => Fintype.equivOfCardEq (hc i j)

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainLi
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero | exact GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero | (intros; apply GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fundamental_domain_line_derivative_integral : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ : Subgroup G) [Countable Γ] (D : Set G),
     IsFundamentalDomain Γ D μ → ∀ (f f' : G → ℂ) (γ : ℝ → G) (b : G → ℝ), (∀ s t, γ (s + t) = γ s * γ t) →

@@ -13,17 +13,28 @@ def NO (n j : ℕ) (l : List (Fin n × Fin n)) : Prop :=
       (l.idxOf (a, b) < l.idxOf (a, c) ∧ l.idxOf (a, c) < l.idxOf (b, c)) ∨
       (l.idxOf (b, c) < l.idxOf (a, c) ∧ l.idxOf (a, c) < l.idxOf (a, b))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Unfold `NO`. Conclude with `⟨h1, fun ab hab => ⟨Nat.zero_le _, h2 ab hab⟩, fun a b _ hab => h3 a b hab, fun a b c _ hab hbc => h4 a b c hab hbc⟩`.
+-/
 theorem cn_NO_of_normal {ord : List (Fin n × Fin n)} (h : NormalOrder n ord) : NO n 0 ord := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   unfold NO
   exact ⟨h1, fun ab hab => ⟨Nat.zero_le _, h2 ab hab⟩, fun a b _ hab => h3 a b hab,
     fun a b c _ hab hbc => h4 a b c hab hbc⟩
 
+/- English proof (translation)
+Introduce `heq`. Rewrite `heq` using `[Prod.mk.injEq]`. Conclude with `h ⟨congrArg Fin.val heq.1, congrArg Fin.val heq.2⟩`.
+-/
 theorem cn_ne {x1 x2 y1 y2 : Fin n} (h : ¬ (x1.val = y1.val ∧ x2.val = y2.val)) : (x1, x2) ≠ (y1, y2) := by
   intro heq
   rw [Prod.mk.injEq] at heq
   exact h ⟨congrArg Fin.val heq.1, congrArg Fin.val heq.2⟩
 
+/- English proof (translation)
+Establish `hu : ∀ v1 v2 : Fin n, u1.val = v1.val ∧ u2.val = v2.val → (u1, u2) = (v1, v2)` using `fun v1 v2 hh => Prod.ext (Fin.ext hh.1) (Fin.ext hh.2)`. Break down `cn_pos_swap l1 l2 (x1, x2) (y1, y2) hxy hx hy (u1, u2) with ⟨e, h2, h3⟩ | ⟨e, h2, h3⟩ | ⟨e1, e2, h3, h4⟩` into its components or cases. Rewrite `e` using `[Prod.mk.injEq]`. Conclude with `Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩`. Rewrite `e` using `[Prod.mk.injEq]`.
+
+Conclude with `Or.inr (Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩)`. Conclude with `Or.inr (Or.inr ⟨fun hh => e1 (hu _ _ hh), fun hh => e2 (hu _ _ hh), h3, h4⟩)`.
+-/
 theorem cn_posR_swap (l1 l2 : List (Fin n × Fin n)) (x1 x2 y1 y2 : Fin n) (hxy : (x1, x2) ≠ (y1, y2))
     (hx : (x1, x2) ∉ l1) (hy : (y1, y2) ∉ l1) (u1 u2 : Fin n) :
     (u1.val = x1.val ∧ u2.val = x2.val ∧ (l1 ++ (x1, x2) :: (y1, y2) :: l2).idxOf (u1, u2) = l1.length ∧
@@ -44,6 +55,11 @@ theorem cn_posR_swap (l1 l2 : List (Fin n × Fin n)) (x1 x2 y1 y2 : Fin n) (hxy 
     exact Or.inr (Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩)
   · exact Or.inr (Or.inr ⟨fun hh => e1 (hu _ _ hh), fun hh => e2 (hu _ _ hh), h3, h4⟩)
 
+/- English proof (translation)
+Establish `hu : ∀ v1 v2 : Fin n, u1.val = v1.val ∧ u2.val = v2.val → (u1, u2) = (v1, v2)` using `fun v1 v2 hh => Prod.ext (Fin.ext hh.1) (Fin.ext hh.2)`. Break down `cn_pos_braid l1 l2 (x1, x2) (y1, y2) (z1, z2) hxy hxz hyz hx hy hz (u1, u2) with ⟨e, h2, h3⟩ | ⟨e, h2, h3⟩ | ⟨e, h2, h3⟩ | ⟨e1, e2, e3, h3, h4⟩` into its components or cases. Rewrite `e` using `[Prod.mk.injEq]`. Conclude with `Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩`. Rewrite `e` using `[Prod.mk.injEq]`.
+
+Conclude with `Or.inr (Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩)`. Rewrite `e` using `[Prod.mk.injEq]`. Conclude with `Or.inr (Or.inr (Or.inl ⟨congrArg Fin.val e.1, congrArg Fin.val e.2, h2, h3⟩))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨fun hh => e1 (hu _ _ hh), fun hh => e2 (hu _ _ hh), fun hh => e3 (hu _ _ hh), h3, h4⟩))`.
+-/
 theorem cn_posR_braid (l1 l2 : List (Fin n × Fin n)) (x1 x2 y1 y2 z1 z2 : Fin n) (hxy : (x1, x2) ≠ (y1, y2))
     (hxz : (x1, x2) ≠ (z1, z2)) (hyz : (y1, y2) ≠ (z1, z2))
     (hx : (x1, x2) ∉ l1) (hy : (y1, y2) ∉ l1) (hz : (z1, z2) ∉ l1) (u1 u2 : Fin n) :
@@ -76,6 +92,9 @@ theorem cn_posR_braid (l1 l2 : List (Fin n × Fin n)) (x1 x2 y1 y2 z1 z2 : Fin n
       fun hh => e3 (hu _ _ hh), h3, h4⟩))
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Apply the tactic sequence `rcases p1 with h1' | h1' | h1' <;> rcases p2 with h2' | h2' | h2' <;>`. Apply the tactic sequence `rcases p3 with h3' | h3' | h3' <;> rcases o with o | o <;> omega`.
+-/
 theorem cn_ar_swap {p P Q R P' Q' R' x y z a b c d : ℕ} (hxy : x < y) (hyz : y < z) (h1 : a ≠ c) (h2 : a ≠ d)
     (h3 : b ≠ c) (h4 : b ≠ d) (o : (P < Q ∧ Q < R) ∨ (R < Q ∧ Q < P))
     (p1 : (x = a ∧ y = b ∧ P = p ∧ P' = p + 1) ∨ (x = c ∧ y = d ∧ P = p + 1 ∧ P' = p) ∨
@@ -89,6 +108,9 @@ theorem cn_ar_swap {p P Q R P' Q' R' x y z a b c d : ℕ} (hxy : x < y) (hyz : y
     rcases p3 with h3' | h3' | h3' <;> rcases o with o | o <;> omega
 
 set_option maxHeartbeats 3200000 in
+/- English proof (translation)
+Apply the tactic sequence `rcases p1 with h1' | h1' | h1' | h1' <;> rcases p2 with h2' | h2' | h2' | h2' <;>`. Apply the tactic sequence `rcases p3 with h3' | h3' | h3' | h3' <;> rcases o with o | o <;> omega`.
+-/
 theorem cn_ar_braid' {p P Q R P' Q' R' x y z a b c : ℕ} (hxy : x < y) (hyz : y < z) (hab : a < b) (hbc : b < c)
     (o : (P < Q ∧ Q < R) ∨ (R < Q ∧ Q < P))
     (p1 : (x = b ∧ y = c ∧ P = p ∧ P' = p + 2) ∨ (x = a ∧ y = c ∧ P = p + 1 ∧ P' = p + 1) ∨
@@ -104,6 +126,13 @@ theorem cn_ar_braid' {p P Q R P' Q' R' x y z a b c : ℕ} (hxy : x < y) (hyz : y
   rcases p1 with h1' | h1' | h1' | h1' <;> rcases p2 with h2' | h2' | h2' | h2' <;>
     rcases p3 with h3' | h3' | h3' | h3' <;> rcases o with o | o <;> omega
 
+/- English proof (translation)
+Unfold `NO at h ⊢`. Take `⟨hnd, hb, hc, ht⟩` from `h`. Establish `hperm : (l1 ++ (c, d) :: (a, b) :: l2).Perm (l1 ++ (a, b) :: (c, d) :: l2)` using `(List.Perm.swap (a, b) (c, d) l2).append_left l1`. Establish `hne : (a, b) ≠ (c, d)` using `fun e => h1 (congrArg Prod.fst e)`. Establish `hx : (a, b) ∉ l1` using `cn_notMem hnd (by simp)`.
+
+Establish `hy : (c, d) ∉ l1` using `cn_notMem hnd (by simp)`. Establish `v1 : a.val ≠ c.val` using `fun e => h1 (Fin.ext e)`. Establish `v2 : a.val ≠ d.val` using `fun e => h2 (Fin.ext e)`. Establish `v3 : b.val ≠ c.val` using `fun e => h3 (Fin.ext e)`. Establish `v4 : b.val ≠ d.val` using `fun e => h4 (Fin.ext e)`.
+
+Use `⟨hperm.nodup_iff.2 hnd, fun ab hab => hb ab (hperm.mem_iff.1 hab), fun x y hj hxy => hperm.mem_iff.2 (hc x y hj hxy), ?_⟩` and prove the remaining obligations. Introduce `x y z hj hxy hyz`. Conclude with `cn_ar_swap hxy hyz v1 v2 v3 v4 (ht x y z hj hxy hyz) (cn_posR_swap l1 l2 a b c d hne hx hy x y) (cn_posR_swap l1 l2 a b c d hne hx hy x z) (cn_posR_swap l1 l2 a b c d hne hx hy y z)`.
+-/
 theorem cn_NO_swap {j : ℕ} (l1 l2 : List (Fin n × Fin n)) (a b c d : Fin n) (h1 : a ≠ c) (h2 : a ≠ d)
     (h3 : b ≠ c) (h4 : b ≠ d) (h : NO n j (l1 ++ (a, b) :: (c, d) :: l2)) :
     NO n j (l1 ++ (c, d) :: (a, b) :: l2) := by
@@ -125,6 +154,17 @@ theorem cn_NO_swap {j : ℕ} (l1 l2 : List (Fin n × Fin n)) (a b c d : Fin n) (
     (cn_posR_swap l1 l2 a b c d hne hx hy x y) (cn_posR_swap l1 l2 a b c d hne hx hy x z)
     (cn_posR_swap l1 l2 a b c d hne hx hy y z)
 
+/- English proof (translation)
+Unfold `NO at h ⊢`. Take `⟨hnd, hb, hc, ht⟩` from `h`. Establish `hperm : (l1 ++ (a, b) :: (a, c) :: (b, c) :: l2).Perm (l1 ++ (b, c) :: (a, c) :: (a, b) :: l2)` using `((((List.Perm.swap (a, c) (a, b) ((b, c) :: l2)).trans ((List.Perm.swap (b, c) (a, b) l2).cons (a, c))).trans (List.Perm.swap (b, c) (a, c) ((a, b) :: l2)))).append_left l1`. Establish `hab' : a.val < b.val` using `hab`. Establish `hbc' : b.val < c.val` using `hbc`.
+
+Establish `hxy : ((b, c) : Fin n × Fin n) ≠ (a, c)` using `fun e => by`. Use `congrArg (fun p : Fin n × Fin n => p.1.val) e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hxz : ((b, c) : Fin n × Fin n) ≠ (a, b)` using `fun e => by`.
+
+Use `congrArg (fun p : Fin n × Fin n => p.1.val) e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hyz : ((a, c) : Fin n × Fin n) ≠ (a, b)` using `fun e => by`. Use `congrArg (fun p : Fin n × Fin n => p.2.val) e` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hx : (b, c) ∉ l1` using `cn_notMem hnd (by simp)`. Establish `hy : (a, c) ∉ l1` using `cn_notMem hnd (by simp)`. Establish `hz : (a, b) ∉ l1` using `cn_notMem hnd (by simp)`.
+
+Use `⟨hperm.nodup_iff.2 hnd, fun ab hab => hb ab (hperm.mem_iff.1 hab), fun x y hj hxy => hperm.mem_iff.2 (hc x y hj hxy), ?_⟩` and prove the remaining obligations. Introduce `x y z hj hxy' hyz'`. Conclude with `cn_ar_braid' hxy' hyz' hab' hbc' (ht x y z hj hxy' hyz') (cn_posR_braid l1 l2 b c a c a b hxy hxz hyz hx hy hz x y) (cn_posR_braid l1 l2 b c a c a b hxy hxz hyz hx hy hz x z) (cn_posR_braid l1 l2 b c a c a b hxy hxz hyz hx hy hz y z)`.
+-/
 theorem cn_NO_braid' {j : ℕ} (l1 l2 : List (Fin n × Fin n)) (a b c : Fin n) (hab : a < b) (hbc : b < c)
     (h : NO n j (l1 ++ (b, c) :: (a, c) :: (a, b) :: l2)) :
     NO n j (l1 ++ (a, b) :: (a, c) :: (b, c) :: l2) := by
@@ -153,6 +193,11 @@ theorem cn_NO_braid' {j : ℕ} (l1 l2 : List (Fin n × Fin n)) (a b c : Fin n) (
     (cn_posR_braid l1 l2 b c a c a b hxy hxz hyz hx hy hz x z)
     (cn_posR_braid l1 l2 b c a c a b hxy hxz hyz hx hy hz y z)
 
+/- English proof (translation)
+Unfold `NO at h ⊢`. Take `⟨hnd, hb, hc, ht⟩` from `h`. Use `⟨List.nodup_reverse.2 hnd, fun ab hab => hb ab (List.mem_reverse.1 hab), fun x y hj hxy => List.mem_reverse.2 (hc x y hj hxy), ?_⟩` and prove the remaining obligations. Introduce `x y z hj hxy hyz`. Establish `e1` using `cn_idx_rev hnd (hc x y hj hxy)`.
+
+Establish `e2` using `cn_idx_rev hnd (hc x z hj (hxy.trans hyz))`. Establish `e3` using `cn_idx_rev hnd (hc y z (hj.trans hxy.le) hyz)`. Establish `o` using `ht x y z hj hxy hyz`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cn_NO_rev {j : ℕ} {l : List (Fin n × Fin n)} (h : NO n j l) : NO n j l.reverse := by
   unfold NO at h ⊢
   obtain ⟨hnd, hb, hc, ht⟩ := h

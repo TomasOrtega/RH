@@ -7,6 +7,15 @@ namespace GlobalTheory.BadShare
 
 open Equiv Finset
 
+/- English proof (translation)
+Establish `hA` using `Equiv.Perm.card_of_cycleType_mul_eq (α := Fin N) (p ::ₘ m)`. Establish `hB` using `Equiv.Perm.card_of_cycleType_mul_eq (α := Fin (N - p)) m`. Rewrite `hA`, `hB` using `[Fintype.card_fin]`. Establish `hcA : (p ::ₘ m).sum ≤ N ∧ ∀ a ∈ p ::ₘ m, 2 ≤ a`. Use `⟨by rw [Multiset.sum_cons]; omega, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Break down `Multiset.mem_cons.1 ha with rfl | ha` into its components or cases. Conclude with `hp`. Conclude with `h2 a ha`. Rewrite `hA` using `[if_pos hcA]`. Rewrite `hB` using `[if_pos ⟨hs, h2⟩]`.
+
+Establish `hsum : N - (p ::ₘ m).sum = N - p - m.sum`. Rewrite using `[Multiset.sum_cons, Nat.sub_sub]`. Establish `hfac : ∏ n ∈ (p ::ₘ m).toFinset, ((p ::ₘ m).count n).factorial = ∏ n ∈ m.toFinset, (m.count n).factorial`. Rewrite using `[Multiset.toFinset_cons, Finset.prod_insert (by simpa using hpm), Multiset.count_cons_self, Multiset.count_eq_zero.2 hpm, zero_add, Nat.factorial_one, one_mul]`. Use `Finset.prod_congr rfl fun n hn => ?_` and prove the remaining obligations.
+
+Establish `hne : n ≠ p` using `fun h => hpm (h ▸ Multiset.mem_toFinset.1 hn)`. Rewrite using `[Multiset.count_cons_of_ne hne]`. Rewrite `hA` using `[hsum, Multiset.prod_cons, hfac]`. Rewrite using `[← hB, ← hA]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_cycleType_cons_mul (N p : ℕ) (hp : 2 ≤ p) (hpN : p ≤ N) (m : Multiset ℕ)
     (hpm : p ∉ m) (hs : m.sum ≤ N - p) (h2 : ∀ a ∈ m, 2 ≤ a) :
     (univ.filter fun σ : Perm (Fin N) => σ.cycleType = p ::ₘ m).card * p * (N - p).factorial
@@ -34,6 +43,23 @@ theorem card_cycleType_cons_mul (N p : ℕ) (hp : 2 ≤ p) (hpN : p ≤ N) (m : 
   rw [← hB, ← hA]
   ring
 
+/- English proof (translation)
+Establish `hTm : ∀ m ∈ (univ : Finset (Perm (Fin (N - p)))).image Perm.cycleType, m.sum ≤ N - p ∧ ∀ a ∈ m, 2 ≤ a`. Introduce `m hm`. Take `⟨τ, -, rfl⟩` from `Finset.mem_image.1 hm`. Use `⟨?_, fun a ha => Perm.two_le_of_mem_cycleType ha⟩` and prove the remaining obligations. Simplify using `using τ.sum_cycleType_le`.
+
+Establish `hpT : ∀ m ∈ (univ : Finset (Perm (Fin (N - p)))).image Perm.cycleType, p ∉ m`. Introduce `m hm hpm`. Establish `h1` using `Multiset.le_sum_of_mem hpm`. Establish `h2` using `(hTm m hm).1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfib : (univ.filter fun σ : Perm (Fin N) => p ∈ σ.cycleType).card = ∑ m ∈ (univ : Finset (Perm (Fin (N - p)))).image Perm.cycleType, (univ.filter fun σ : Perm (Fin N) => σ.cycleType = p ::ₘ m).card`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun σ : Perm (Fin N) => σ.cycleType.erase p) (t := (univ : Finset (Perm (Fin (N - p)))).image Perm.cycleType)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `σ`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[← h2, Multiset.cons_erase h1]`. Introduce `h`.
+
+Rewrite using `[h]`. Conclude with `⟨Multiset.mem_cons_self _ _, Multiset.erase_cons_head _ _⟩`. Introduce `σ hσ`. Establish `hσ' : p ∈ σ.cycleType` using `by simpa using hσ`. Establish `hsum` using `Multiset.sum_erase hσ'`.
+
+Establish `hle` using `σ.sum_cycleType_le`. Rewrite `hle` using `[Fintype.card_fin]`. Establish `hc : (σ.cycleType.erase p).sum ≤ Fintype.card (Fin (N - p)) ∧ ∀ a ∈ σ.cycleType.erase p, 2 ≤ a`. Use `⟨by rw [Fintype.card_fin]; omega, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `Perm.two_le_of_mem_cycleType (Multiset.mem_of_mem_erase ha)`.
+
+Take `⟨τ, hτ⟩` from `(Perm.exists_with_cycleType_iff (Fin (N - p))).2 hc`. Conclude with `Finset.mem_image.2 ⟨τ, Finset.mem_univ _, hτ⟩`. Establish `hmain : (univ.filter fun σ : Perm (Fin N) => p ∈ σ.cycleType).card * p * (N - p).factorial = N.factorial * (N - p).factorial`. Rewrite using `[hfib, Finset.sum_mul, Finset.sum_mul, Finset.sum_congr rfl fun m hm => card_cycleType_cons_mul N p hp hpN m (hpT m hm) (hTm m hm).1 (hTm m hm).2, ← Finset.mul_sum]`. Use `congr 1`.
+
+Establish `hc` using `Finset.card_eq_sum_card_image Perm.cycleType (univ : Finset (Perm (Fin (N - p))))`. Rewrite `hc` using `[Finset.card_univ, Fintype.card_perm, Fintype.card_fin]`. Conclude with `hc.symm`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.factorial_pos _) hmain`.
+-/
 theorem card_mem_cycleType_mul (N p : ℕ) (hp : 2 ≤ p) (hN : N < 2 * p) (hpN : p ≤ N) :
     (univ.filter fun σ : Perm (Fin N) => p ∈ σ.cycleType).card * p = N.factorial := by
   have hTm : ∀ m ∈ (univ : Finset (Perm (Fin (N - p)))).image Perm.cycleType,
@@ -85,6 +111,17 @@ theorem card_mem_cycleType_mul (N p : ℕ) (hp : 2 ≤ p) (hN : N < 2 * p) (hpN 
     exact hc.symm
   exact Nat.eq_of_mul_eq_mul_right (Nat.factorial_pos _) hmain
 
+/- English proof (translation)
+Introduce `N p hN hpN`. Break down `Nat.lt_or_ge p 2 with hp | hp` into its components or cases. Take `rfl : p = 1` from `by omega`. Take `rfl : N = 1` from `by omega`. Establish `hall : ∀ σ : Equiv.Perm (Fin 1), 1 ∈ σ.partition.parts`.
+
+Introduce `σ`. Establish `hs : σ.partition.parts.sum = 1` using `σ.partition.parts_sum.trans (Fintype.card_fin 1)`. Take `⟨a, ha⟩` from `Multiset.exists_mem_of_ne_zero (s := σ.partition.parts) (fun h => by rw [h, Multiset.sum_zero] at hs; exact absurd hs (by norm_num))`. Establish `h1` using `σ.partition.parts_pos ha`. Establish `h2` using `Multiset.le_sum_of_mem ha`.
+
+Take `rfl : a = 1` from `by omega`. Conclude with `ha`. Rewrite using `[Finset.filter_true_of_mem (fun σ _ => hall σ), Finset.card_univ, Fintype.card_perm]`. Simplify using the standard rewrite rules. Establish `hiff : ∀ σ : Equiv.Perm (Fin N), p ∈ σ.partition.parts ↔ p ∈ σ.cycleType`.
+
+Introduce `σ`. Rewrite using `[Equiv.Perm.parts_partition, Multiset.mem_add]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Conclude with `h`.
+
+Use `Multiset.eq_of_mem_replicate h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inl`. Repeatedly rewrite using `[hiff]`. Conclude with `card_mem_cycleType_mul N p hp hN hpN`.
+-/
 theorem card_perm_long_cycle : ∀ N p : ℕ, N < 2 * p → p ≤ N →
     (Finset.univ.filter fun σ : Equiv.Perm (Fin N) => p ∈ σ.partition.parts).card * p
       = N.factorial := by

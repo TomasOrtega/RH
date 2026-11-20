@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open Finset
 
+/- English proof (translation)
+Establish `hsum` using `Finset.sum_pow_eq_sum_piAntidiag (univ : Finset (Fin i)) (fun _ => (1 : ℕ)) (∑ j, a j)`. Simplify using `only [one_pow, prod_const_one, mul_one, sum_const, card_univ, Fintype.card_fin, smul_eq_mul] at hsum`. Establish `hmem : a ∈ piAntidiag (univ : Finset (Fin i)) (∑ j, a j)`. Rewrite using `[mem_piAntidiag]`. Conclude with `⟨rfl, fun j _ => mem_univ j⟩`.
+
+Establish `hle : Nat.multinomial univ a ≤ i ^ (∑ j, a j)`. Rewrite using `[hsum]`. Conclude with `Finset.single_le_sum (f := fun k => Nat.multinomial univ k) (fun _ _ => Nat.zero_le _) hmem`. Rewrite using `[← Nat.multinomial_spec]`. Conclude with `Nat.mul_le_mul_left _ hle`.
+-/
 theorem MonomialNormLowerBound.factorial_le_prod_mul_pow (i : ℕ) (a : Fin i → ℕ) :
     (∑ j, a j).factorial ≤ (∏ j, (a j).factorial) * i ^ (∑ j, a j) := by
   have hsum := Finset.sum_pow_eq_sum_piAntidiag (univ : Finset (Fin i)) (fun _ => (1 : ℕ))
@@ -21,6 +26,11 @@ theorem MonomialNormLowerBound.factorial_le_prod_mul_pow (i : ℕ) (a : Fin i �
   rw [← Nat.multinomial_spec]
   exact Nat.mul_le_mul_left _ hle
 
+/- English proof (translation)
+Establish `hk : n ≤ n + i - 1` using `by omega`. Establish `hsub : n + i - 1 - n = i - 1` using `by omega`. Establish `hspec` using `Nat.choose_mul_factorial_mul_factorial hk`. Rewrite `hspec` using `[hsub]`. Establish `hch : (n + i - 1).choose n ≤ (n + i) ^ i`.
+
+Rewrite using `[← Nat.choose_symm hk, hsub]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem MonomialNormLowerBound.factorial_le_pow_mul (i n : ℕ) (hi : 1 ≤ i) :
     (n + i - 1).factorial ≤ (n + i) ^ i * n.factorial * (i - 1).factorial := by
   have hk : n ≤ n + i - 1 := by omega
@@ -35,6 +45,13 @@ theorem MonomialNormLowerBound.factorial_le_pow_mul (i n : ℕ) (hi : 1 ≤ i) :
   calc (n + i - 1).factorial = (n + i - 1).choose n * n.factorial * (i - 1).factorial := hspec.symm
     _ ≤ (n + i) ^ i * n.factorial * (i - 1).factorial := by gcongr
 
+/- English proof (translation)
+Introduce `i hi n a ha`. Establish `hnat : (n + i - 1).factorial ≤ (∏ j, (a j).factorial) * (i - 1).factorial * (i ^ n * (n + i) ^ i)`. Establish `h1` using `MonomialNormLowerBound.factorial_le_prod_mul_pow i a`. Rewrite `h1` using `[ha]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hi' : (0 : ℝ) < i` using `by exact_mod_cast hi`. Establish `hA : (0 : ℝ) < (i : ℝ) ^ n * ((n : ℝ) + i) ^ i` using `by positivity`. Establish `hF : (0 : ℝ) < ((n + i - 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hreal : ((n + i - 1).factorial : ℝ) ≤ (∏ j, ((a j).factorial : ℝ)) * ((i - 1).factorial : ℝ) * ((i : ℝ) ^ n * ((n : ℝ) + i) ^ i)`. Conclude with `hnat` after adjusting the coercions.
+
+Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, ← mul_inv, inv_eq_one_div, div_le_div_iff₀ hA hF, one_mul]`. Conclude with `hreal`.
+-/
 theorem MonomialNormLowerBound.proof : MonomialNormLowerBound.Statement := by
   intro i hi n a ha
 

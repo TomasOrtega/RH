@@ -3,6 +3,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.CechOne
 
+/- English proof (translation)
+Use `⟨WidePullbackCone.IsLimit.mk _ (fun t => t.π 0) ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `t`. Rewrite using `[WidePullbackCone.mk_base]`. Conclude with `t.condition 0`. Introduce `t i`.
+
+Rewrite using `[WidePullbackCone.mk_π]`. Conclude with `(Category.comp_id (t.π 0)).trans (congrArg t.π (Fin.fin_one_eq_zero i).symm)`. Introduce `t m _ hπ`. Use `hπ 0` as an intermediate fact. Rewrite `this` using `[WidePullbackCone.mk_π]`.
+
+Conclude with `(Category.comp_id m).symm.trans this`.
+-/
 theorem isLimit_cone_one (A B : Type) [CommRing A] [CommRing B] [Algebra A B] :
     Nonempty (IsLimit (WidePullbackCone.mk (f := fun _ : Fin (0 + 1) => GlobalTheory.CechOne.fB A B)
       (GlobalTheory.CechOne.fB A B) (fun _ => 𝟙 _) (fun _ => Category.id_comp _))) := by

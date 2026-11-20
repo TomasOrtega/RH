@@ -16,6 +16,15 @@ namespace GlobalTheory.ZDual
 section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
 
+/- English proof (translation)
+Establish `hU : cT (sigR σ (v.adicCompletion F)) (bc (prV (E` using `E) v) x).val * J.map (inclE (F := F) (v.adicCompletion F)) * (bc (prV (E := E) v) x).val = J.map (inclE (F := F) (v.adicCompletion F)) := Formalism.UG.P.afsplit_bc_mem σ J v x hx`. Establish `hy : (fun k => prV (E` using `E) v (pullV (F := F) x l k)) = ((bc (prV (E := E) v) x)⁻¹).val *ᵥ (fun k => inclE (F := F) (v.adicCompletion F) (l k)) := by`. Rewrite using `[GlobalTheory.LocCarry.coe_bc_inv]`. Use function extensionality and compare the values at `k`. Unfold `pullV`.
+
+Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[hy]`. Use `GlobalTheory.St.G.Dual.bwd_loc σ J hJ.ne_zero Lb ⟨hfin, hspan⟩ v _ fun b hb => ?_` and prove the remaining obligations. Unfold `GlobalTheory.St.G.hR`.
+
+Establish `key` using `Formalism.UG.P.hform_mulVec (sigR σ (v.adicCompletion F)) (J.map (inclE (F := F) (v.adicCompletion F))) (bc (prV (E := E) v) x).val (fun k => inclE (F := F) (v.adicCompletion F) (b k)) (((bc (prV (E := E) v) x)⁻¹).val *ᵥ (fun k => inclE (F := F) (v.adicCompletion F) (l k)))`. Rewrite `key` using `[hU, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← key]`. Use `Formalism.L2.G.RelativeIndexFlags.pair_int v σ J (latAd x Lb) l hl _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocCarry.mem_latS_latAd_iff x Lb hfin hspan v, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `Submodule.subset_span ⟨b, hb, rfl⟩`.
+-/
 theorem pullV_dual_mem_latS_gen (σ : E →ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (hJ : IsUnit J.det)
     (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb)
     (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤)
@@ -50,6 +59,9 @@ end Gen
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
+/- English proof (translation)
+Introduce `D i hi T f bad lev x v l hl`. Conclude with `pullV_dual_mem_latS_gen (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) lev.Lb lev.Lb_fin lev.Lb_span x.1 x.2 v l hl`.
+-/
 theorem pullV_dual_mem_latS : ∀ {D : D7} (i : ℕ) (hi : i ≤ D.R.m) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T f bad) (x : UA D i hi) (v : HeightOneSpectrum (𝓞 D.host.F))
     (l : Fin (D.R.N i) → D.host.E), l ∈ dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) (latAd x.1 lev.Lb) →

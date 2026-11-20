@@ -12,6 +12,9 @@ def transposeInvFun (g : GL n R) : GL n R where
   val_inv := by rw [← transpose_mul, Units.mul_inv, transpose_one]
   inv_val := by rw [← transpose_mul, Units.inv_mul, transpose_one]
 
+/- English proof (translation)
+Introduce `g`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `transpose_transpose _`.
+-/
 theorem transposeInvFun_involutive :
     Function.Involutive (transposeInvFun : GL n R → GL n R) := by
   intro g
@@ -29,31 +32,55 @@ def transposeInv : GL n R ≃* GL n R where
       ((g⁻¹ : GL n R) : Matrix n n R)ᵀ * ((h⁻¹ : GL n R) : Matrix n n R)ᵀ
     rw [_root_.mul_inv_rev, Units.val_mul, transpose_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_transposeInv (g : GL n R) :
     ((transposeInv g : GL n R) : Matrix n n R) = ((g⁻¹ : GL n R) : Matrix n n R)ᵀ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_transposeInv_inv (g : GL n R) :
     (((transposeInv g)⁻¹ : GL n R) : Matrix n n R) = (g : Matrix n n R)ᵀ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transposeInv_apply (g : GL n R) (i j : n) :
     (transposeInv g : GL n R) i j = (g⁻¹ : GL n R) j i := rfl
 
+/- English proof (translation)
+The claim follows from `transposeInvFun_involutive g`.
+-/
 @[simp] theorem transposeInv_transposeInv (g : GL n R) :
     transposeInv (transposeInv g) = g := transposeInvFun_involutive g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem transposeInv_symm : (transposeInv : GL n R ≃* GL n R).symm = transposeInv := rfl
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [GeneralLinearGroup.val_det_apply, coe_transposeInv, det_transpose]`.
+-/
 theorem det_transposeInv (g : GL n R) :
     GeneralLinearGroup.det (transposeInv g) = (GeneralLinearGroup.det g)⁻¹ := by
   rw [← map_inv]
   apply Units.ext
   simp only [GeneralLinearGroup.val_det_apply, coe_transposeInv, det_transpose]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem map_transposeInv {S : Type*} [CommRing S] (f : R →+* S) (g : GL n R) :
     GeneralLinearGroup.map f (transposeInv g) = transposeInv (GeneralLinearGroup.map f g) := by
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Conclude with `⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_transposeInv [TopologicalSpace R] :
     Continuous (transposeInv : GL n R → GL n R) := by
   rw [Units.continuous_iff]

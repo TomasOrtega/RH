@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.EisensteinModularT
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
+/- English proof (translation)
+Rewrite using `[← ZMod.intCast_eq_intCast_iff]`. Use `congrArg (fun A : SL(2, ZMod M) => (A : Matrix (Fin 2) (Fin 2) (ZMod M)) i j) h` as an intermediate fact. Conclude with `this`.
+-/
 private theorem en_cg {M : ℕ} {g g' : SL(2, ℤ)}
     (h : Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) g' =
       Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) g) (i j : Fin 2) :
@@ -13,6 +16,11 @@ private theorem en_cg {M : ℕ} {g g' : SL(2, ℤ)}
   have := congrArg (fun A : SL(2, ZMod M) => (A : Matrix (Fin 2) (Fin 2) (ZMod M)) i j) h
   exact this
 
+/- English proof (translation)
+Establish `h` using `ModularGroup.coe_T_zpow (b : ℤ)`. Rewrite `h` using `[zpow_natCast]`. Unfold `en`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, h]`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem entries_mul_T_pow (g : SL(2, ℤ)) (b : ℕ) (i : Fin 2) :
     en (g * ModularGroup.T ^ b) i 0 = en g i 0 ∧
       en (g * ModularGroup.T ^ b) i 1 = en g i 1 + (b : ℤ) * en g i 0 := by
@@ -25,6 +33,11 @@ private theorem entries_mul_T_pow (g : SL(2, ℤ)) (b : ℕ) (i : Fin 2) :
   · simp [Matrix.mul_apply, Fin.sum_univ_two]
     ring
 
+/- English proof (translation)
+Unfold `cmul`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Rewrite using `[hf, hg, Nat.cast_sub hi', show e * (n : ℤ) = e * (i : ℤ) + e * ((n : ℤ) - (i : ℤ)) by ring, zpow_add₀ h0]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cmul_phase {K : Type} [Field K] [CharZero K] (ζ : K) (h0 : ζ ≠ 0) (e : ℤ) (f g f' g' : ℕ → K)
     (hf : ∀ n : ℕ, f' n = ζ ^ (e * (n : ℤ)) * f n) (hg : ∀ n : ℕ, g' n = ζ ^ (e * (n : ℤ)) * g n) (n : ℕ) :
     cmul f' g' n = ζ ^ (e * (n : ℤ)) * cmul f g n := by
@@ -36,6 +49,19 @@ private theorem cmul_phase {K : Type} [Field K] [CharZero K] (ζ : K) (h0 : ζ �
     zpow_add₀ h0]
   ring
 
+/- English proof (translation)
+Introduce `K _ _ ζ l L N x c d w M _ hN hl hζ hM b g g' h i`. Establish `hpos : 0 < N * l ^ L` using `Nat.mul_pos hN (pow_pos hl L)`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζ` using `[zero_pow hpos.ne']`.
+
+Conclude with `zero_ne_one hζ`. Establish `hc : ∀ i j, en g' i j ≡ en (g * ModularGroup.T ^ b) i j [ZMOD (N * l ^ L : ℕ)]` using `fun i j => (en_cg h i j).of_dvd (Int.natCast_dvd_natCast.mpr hM)`. Establish `h00` using `hc 0 0`. Establish `h01` using `hc 0 1`. Establish `h10` using `hc 1 0`.
+
+Establish `h11` using `hc 1 1`. Rewrite `h00`, `h10` using `[(entries_mul_T_pow g b _).1]`. Rewrite `h01`, `h11` using `[(entries_mul_T_pow g b _).2]`. Establish `e1 : smF (c : ℤ) (w + 1) (N * l ^ L) ζ (en g' 0 0 * ((N : ℤ) + (x.val : ℤ) * (topT l L N : ℤ) * (l : ℤ) ^ L)) ((N : ℤ) ^ 2 * en g' 0 1) = smF (c : ℤ) (w + 1) (N * l ^ L) ζ (en g 0 0 * ((N : ℤ) + (x.val : ℤ) * (topT l L N : ℤ) * (l : ℤ) ^ L)) ((N : ℤ) ^ 2 * en g 0 1 + ((N : ℤ) * b …`. Use `UpperTheory.smoothedEisenstein_congr_of_modEq _ _ _ ζ hpos hζ (h00.mul_right _) ((h01.mul_left _).trans ?_)` and prove the remaining obligations.
+
+Use `Int.modEq_iff_dvd.2 ⟨b * en g 0 0 * (x.val : ℤ) * (topT l L N : ℤ), ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : smF (d : ℤ) 1 (N * l ^ L) ζ (en g' 0 0 * (topT l L N : ℤ) * (l : ℤ) ^ L + en g' 1 0) ((N : ℤ) * en g' 1 1) = smF (d : ℤ) 1 (N * l ^ L) ζ (en g 0 0 * (topT l L N : ℤ) * (l : ℤ) ^ L + en g 1 0) ((N : ℤ) * en g 1 1 + ((N : ℤ) * b) * (en g 0 0 * (topT l L N : ℤ) * (l : ℤ) ^ L + …`. Use `UpperTheory.smoothedEisenstein_congr_of_modEq _ _ _ ζ hpos hζ (((h00.mul_right _).mul_right _).add h10) ((h11.mul_left _).trans ?_)` and prove the remaining obligations.
+
+Use `Int.modEq_iff_dvd.2 ⟨b * en g 0 0 * (topT l L N : ℤ), ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, cmul_phase ζ h0 ((N : ℤ) * b) _ _ _ _ (UpperTheory.smoothedEisensteinCoeff_shift_second_index _ _ _ ζ _ _ _ hpos hζ) (UpperTheory.smoothedEisensteinCoeff_shift_second_index _ _ _ ζ _ _ _ hpos hζ)]`. Establish `: ζ ^ ((N : ℤ) * b * ((l ^ L * i : ℕ) : ℤ)) = 1`.
+
+Rewrite using `[show (N : ℤ) * b * ((l ^ L * i : ℕ) : ℤ) = ((N * l ^ L * (b * i) : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul, hζ, one_pow]`. Rewrite using `[this, one_mul]`.
+-/
 theorem UpperTheory.cmul_smF_invariant_of_congruent_mul_T_pow :
     ∀ {K : Type} [Field K] [CharZero K] (ζ : K) (l L N : ℕ) (x : ZMod N) (c d w M : ℕ) [NeZero M], 0 < N → 0 < l → ζ ^ (N * l ^ L) = 1 → N * l ^ L ∣ M → ∀ (b : ℕ) (g g' : SL(2, ℤ)), Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) g' = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (g * ModularGroup.T ^ b) → ∀ i : ℕ, cmul (smF (c : ℤ) (w + 1) (N * l ^ L) ζ (en g' 0 0 * ((N : ℤ) + (x.val : ℤ) * (topT l L N : ℤ) * (l : ℤ) ^ L)) ((N : ℤ) ^ 2 * en g' 0 1)) (smF (d : ℤ) 1 (N * l ^ L) ζ (en g' 0 0 * (topT l L N : ℤ) * (l : ℤ) ^ L + en g' 1 0) ((N : ℤ) * en g' 1 1)) (l ^ L * i) = cmul (smF (c : ℤ) (w + 1) (N * l ^ L) ζ (en g 0 0 * ((N : ℤ) + (x.val : ℤ) * (topT l L N : ℤ) * (l : ℤ) ^ L)) ((N : ℤ) ^ 2 * en g 0 1)) (smF (d : ℤ) 1 (N * l ^ L) ζ (en g 0 0 * (topT l L N : ℤ) * (l : ℤ) ^ L + en g 1 0) ((N : ℤ) * en g 1 1)) (l ^ L * i) := by
   intro K _ _ ζ l L N x c d w M _ hN hl hζ hM b g g' h i

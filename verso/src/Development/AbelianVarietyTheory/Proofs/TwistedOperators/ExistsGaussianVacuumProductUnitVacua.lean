@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.FlipVac
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W ρ t i j M _ e Bs Γ X om om' h hT hti`. Establish `h₁` using `ρ.vX_is i (j + 1) i.2 j.2`. Establish `h₂` using `ρ.vT_is t (i + 1) j i.2 j.2`. Establish `hG : Γ.M.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM`. Take `⟨f, hf⟩` from `GlobalTheory.BigDat.exists_vac hL h hT hti h₁ h₂`.
+
+Use `⟨f, fun h0 => ?_, GlobalTheory.BigDat.isGauss (c := 1) h hT h₁ h₂ (by rw [hf, one_smul]), (isFinPart_vac hG ∅).fam.mem hG f, fun u => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `Function.ne_iff.1 (GlobalTheory.BigDat.vac_ne_zero h₁)`. Take `⟨y, hy⟩` from `Function.ne_iff.1 (GlobalTheory.BigDat.vac_ne_zero h₂)`. Use `congrFun hf (GlobalTheory.BigDat.ofMaps e (x, y))` as an intermediate fact. Rewrite `this` using `[h0, show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : SInf D.host.F (GlobalTheory.BigDat.Ix G i j)) Γ.M.vac = (0 : ℂ) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure 0 Γ.M.vac from funext fun _ => (zero_mul _).trans (zero_mul _).symm, Global …`.
+
+Conclude with `mul_ne_zero hx hy this.symm`. Use `(congrFun hf u).trans ?_ first` and prove the remaining obligations. Consider the case `exact (one_mul _).symm.trans (Finsupp.sum_single_index (h := fun d (c : ℂ) => c * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.boxA e d u) (zero_mul _)).symm`. Consider the case `(erw [Finsupp.sum_single_index (by exact zero_mul _), one_mul]; rfl)`. Consider the case `(simp only [Finsupp.sum_single_index, zero_mul, one_mul]; rfl)`.
+-/
 theorem exists_gauss_vac : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hst : SquareStanding G t) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X), IsTriple Bs Γ X om om' → IsTied t i j e Bs Γ X →
     ∃ f₀, f₀ ≠ 0 ∧ Γ.M.IsGauss Bs.ψ Bs.emb f₀ ∧

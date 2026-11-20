@@ -26,6 +26,9 @@ open scoped BigOperators
 
 namespace GlobalTheory.NormSum
 
+/- English proof (translation)
+Introduce `D` and use `{ g1 := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 perm := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).2 uni := GlobalTheory.T.intertwinerUnitary_all D mu := GlobalTheory.T.admissible_characters_exist D curve := GlobalTheory.T.conjugate_curveDatum_lattice_i …`.
+-/
 theorem inp_all : ∀ D, Inp D := fun D =>
   { g1 := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1
     perm := (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).2

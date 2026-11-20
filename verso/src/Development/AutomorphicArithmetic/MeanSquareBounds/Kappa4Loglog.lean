@@ -6,6 +6,19 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Establish `hs0 : 0 < s` using `by linarith`. Establish `hs1 : 1 ≤ s` using `by linarith`. Establish `hx3 : 3 ≤ x`. Rewrite using `[hx]; exact hs.trans (le_self_pow₀ hs1 (by norm_num))`. Establish `hx0 : 0 < x` using `by linarith`.
+
+Establish `hxa : x ^ ((2 / 5) / 4 : ℝ) = s`. Rewrite using `[hx, ← Real.rpow_natCast s 10, ← Real.rpow_mul hs0.le]`. Evaluate the numerical expressions. Apply `le_of_mul_le_mul_left _ hx0` to reduce the goal to its premises. Rewrite using `[Formalism.HermitianLattices.Ext.BoxTail.tail_num_rpow x (2 / 5) hx0, hxa, Formalism.HermitianLattices.Ext.BoxTail.tail_num_alg x Q K _ _ _ hx0 hQ]`.
+
+Establish `t3` using `Formalism.HermitianLattices.Ext.BoxTail.tail_num_third x hx3`. Establish `t1 : (s ^ 4) ^ 2 * s ≤ x`. Rewrite using `[hx]`. Combine the equalities or inequalities in the displayed calculation. Establish `t2 : s ^ 4 * x ^ 403 / Q ≤ x`.
+
+Rewrite using `[div_le_iff₀ hQ]`. Establish `e : s ^ 4 * x ^ 403 = x * (s ^ 4) ^ 1006`. Rewrite using `[hx, ← pow_mul, ← pow_mul, ← pow_add, ← pow_add]`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left hQs hx0.le`.
+
+Establish `u1` using `mul_le_mul_of_nonneg_left t1 hK`. Establish `u2` using `mul_le_mul_of_nonneg_left t2 hK`. Establish `u3 : (802 : ℝ) ≤ x * 802` using `by linarith`. Establish `e1 : K * (s ^ 4) ^ 2 * s = K * ((s ^ 4) ^ 2 * s)` using `mul_assoc _ _ _`. Establish `e2 : x * (2 * K + 802) = K * x + K * x + x * 802` using `by ring`.
+
+Rewrite using `[e1, e2]`. Conclude with `add_le_add (add_le_add u1 u2) (t3.trans u3)`.
+-/
 private theorem kappa4_num (K : ℝ) (hK : 0 ≤ K) (s Q : ℝ) (hs : 3 ≤ s) (hQ : 0 < Q)
     (hQs : (s ^ 4) ^ 1006 ≤ Q) (x : ℝ) (hx : x = s ^ 10) :
     ((K * s ^ 4 * (s ^ 4 * (1 / x ^ 2) * (x ^ 400) ^ (1 - 1 / 400 + (2 / 5) / 1600 : ℝ) + (x ^ 400) ^ 2 / Q)
@@ -41,6 +54,35 @@ private theorem kappa4_num (K : ℝ) (hK : 0 ≤ K) (s Q : ℝ) (hs : 3 ≤ s) (
   rw [e1, e2]
   exact add_le_add (add_le_add u1 u2) (t3.trans u3)
 
+/- English proof (translation)
+Take `⟨K, hK0, hK⟩` from `Formalism.HermitianLattices.Ext.BoxTail.tail_contour ((2 / 5) / 1600) (by positivity) (by norm_num)`. Establish `hev : ∀ᶠ l : ℝ in Filter.atTop, l ^ 1006 ≤ Real.exp l`. Establish `h` using `(Real.tendsto_exp_div_pow_atTop 1006).eventually_ge_atTop 1`. Use `filter_upwards [h, Filter.eventually_gt_atTop 0] with l hl hl0`. Rewrite `hl` using `[le_div_iff₀ (by positivity), one_mul]`. Then use the resulting hypothesis.
+
+Take `⟨l₀, hl₀⟩` from `Filter.eventually_atTop.1 (hev.and (Filter.eventually_ge_atTop 81))`. Use `⟨2 * K + 802 + 2, l₀, by linarith [(hl₀ l₀ le_rfl).2], ?_⟩` and prove the remaining obligations. Introduce `Q N _ χ hQlo hgood`. Take `⟨hχ, hNQ, hbox⟩` from `hgood`. Take `⟨hexp, h81⟩` from `hl₀ _ hQlo`.
+
+Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Establish `hQ0 : 0 < Q` using `by linarith`. Rewrite `hexp` using `[Real.exp_log hQ0]`. Establish `hQ2 : 2 ≤ Q`. Use `Real.log_le_self hQ0.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s, hs0, hs4⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ^ 4 = Real.log Q` from `⟨Real.log Q ^ ((4 : ℕ) : ℝ)⁻¹, Real.rpow_nonneg (by linarith) _, Real.rpow_inv_natCast_pow (by linarith) (by norm_num)⟩`. Establish `hs3 : 3 ≤ s`. Apply `le_of_pow_le_pow_left₀ (n := 4) (by norm_num) hs0` to reduce the goal to its premises. Rewrite using `[hs4]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x, hx⟩ : ∃ x : ℝ, x = s ^ 10` from `⟨_, rfl⟩`. Establish `hnum` using `kappa4_num K hK0 s Q hs3 hQ0 (by rw [hs4]; exact hexp) x hx`. Rewrite `hnum` using `[hs4]`. Establish `hx3 : 3 ≤ x`.
+
+Rewrite using `[hx]; exact hs3.trans (le_self_pow₀ (by linarith) (by norm_num))`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hlogz : Real.log (x ^ 400) = 1000 * Real.log (Real.log Q)`. Rewrite using `[← hs4, hx, Real.log_pow, Real.log_pow, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set z : ℝ := x ^ 400 with hz`. Use `set η : ℝ := 1 / x ^ 2 with hη`. Establish `hz1 : 1 ≤ z` using `one_le_pow₀ (by linarith)`. Establish `hη0 : 0 < η` using `by positivity`.
+
+Establish `hη1 : η ≤ 1`. Rewrite using `[hη, div_le_one (by positivity)]; nlinarith`. Establish `hzη : 0 < z * η` using `by positivity`. Establish `hC` using `hK N χ Q z η hχ hQ2 hNQ hbox hz1 hη0 hη1`. Establish `hD` using `Formalism.HermitianLattices.Ext.BoxTail.tail_diff_schi χ z (z * η) hz1 hzη`.
+
+Use `set P : ℂ := ∑ n ∈ Icc 1 ⌊z⌋₊, ((ArithmeticFunction.vonMangoldt n : ℝ) : ℂ) * χ (n : ZMod N) / (n : ℂ) with hP`. Establish `hkey : ((z * η : ℝ) : ℂ) * (Formalism.ZeroFreeDirichlet.negLD χ 1 - P) = -(Formalism.ZeroFreeDirichlet.Schi χ (z + z * η) - Formalism.ZeroFreeDirichlet.Schi χ z - ((z * η : ℝ) : ℂ) * Formalism.ZeroFreeDirichlet.negLD χ 1) + (Formalism.ZeroFreeDirichlet.Schi χ (z + z * η) - Formal …` using `by ring`. Establish `hnorm : ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ ≤ (K * Real.log Q * (Real.log Q * η * z ^ (1 - 1 / 400 + (2 / 5) / 1600 : ℝ) + z ^ 2 / Q) + z * η * (z * η + 1) * Real.log (z + z * η) / z) / (z * η)`. Rewrite using `[le_div_iff₀ hzη]`. Establish `h1` using `congrArg norm hkey`.
+
+Rewrite `h1` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hzη.le]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `add_le_add hC hD`.
+
+Establish `htail` using `hnorm.trans hnum`. Establish `hPle : ‖P‖ ≤ Real.log z + 2`. Establish `hM : ∑ n ∈ Icc 1 ⌊z⌋₊, (ArithmeticFunction.vonMangoldt n : ℝ) / (n : ℝ) ≤ Real.log z + 2`. Use `le_trans (Finset.sum_le_sum_of_subset_of_nonneg ?_ ?_) (Deduction.mertens_upper z hz1)` and prove the remaining obligations. Introduce `n hn`.
+
+Conclude with `Finset.mem_range.mpr (Nat.lt_succ_of_le (Finset.mem_Icc.mp hn).2)`. Introduce `n _ _`. Conclude with `div_nonneg ArithmeticFunction.vonMangoldt_nonneg (Nat.cast_nonneg n)`. Use `le_trans (norm_sum_le _ _) (le_trans ?_ hM)` and prove the remaining obligations. Use `Finset.sum_le_sum (fun n hn => ?_)` and prove the remaining obligations.
+
+Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (Finset.mem_Icc.mp hn).1`. Rewrite using `[norm_div, norm_mul, Complex.norm_real, Complex.norm_natCast, Real.norm_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Establish `hχn : ‖χ (n : ZMod N)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Establish `hΛ : 0 ≤ (ArithmeticFunction.vonMangoldt n : ℝ)` using `ArithmeticFunction.vonMangoldt_nonneg`. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hLD : logDerivLAtOne χ = -(Formalism.ZeroFreeDirichlet.negLD χ 1)`. Simplify using `only [logDerivLAtOne, Formalism.ZeroFreeDirichlet.negLD, neg_neg]`. Rewrite using `[hLD, norm_neg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem kappa4_loglog : ∃ C l₀ : ℝ, 1 ≤ l₀ ∧ ∀ (Q : ℝ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N),
     l₀ ≤ Real.log Q → GoodC Q χ → ‖logDerivLAtOne χ‖ ≤ 1000 * Real.log (Real.log Q) + C := by
   obtain ⟨K, hK0, hK⟩ := Formalism.HermitianLattices.Ext.BoxTail.tail_contour ((2 / 5) / 1600) (by positivity) (by norm_num)
@@ -123,6 +165,17 @@ private theorem kappa4_loglog : ∃ C l₀ : ℝ, 1 ≤ l₀ ∧ ∀ (Q : ℝ) (
     _ ≤ ‖P‖ + ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ := norm_add_le _ _
     _ ≤ _ := by rw [← hlogz]; linarith
 
+/- English proof (translation)
+Introduce `ε A hε hε1 hA`. Take `⟨C, l₀, hl₀, hC⟩` from `kappa4_loglog`. Establish `e1 : ∀ᶠ Y : ℝ in Filter.atTop, l₀ ≤ Y ^ (ε / 6)` using `(tendsto_rpow_atTop (by positivity : 0 < ε / 6)).eventually_ge_atTop _`. Establish `e2 : ∀ᶠ u : ℝ in Filter.atTop, ‖Real.log u‖ ≤ (1 / 26000) * ‖u‖` using `Real.isLittleO_log_id_atTop.bound (by norm_num)`. Establish `e3 : ∀ᶠ u : ℝ in Filter.atTop, 13 * (1000 * Real.log A + C) ≤ u` using `Filter.eventually_ge_atTop _`.
+
+Establish `e4` using `Real.tendsto_log_atTop.eventually (e2.and (e3.and (Filter.eventually_ge_atTop 1)))`. Take `⟨Y₀, hY₀⟩` from `Filter.eventually_atTop.1 (e1.and (e4.and (Filter.eventually_gt_atTop 0)))`. Use `⟨Y₀, ?_⟩` and prove the remaining obligations. Introduce `Y hY Q N _ χ hlo hhi hgood`. Take `⟨h1, ⟨h2, h3, h4⟩, hY0⟩` from `hY₀ Y hY`.
+
+Establish `hb` using `hC Q N χ (h1.trans hlo) hgood`. Establish `hu0 : 0 < Real.log Y` using `by linarith`. Establish `hp : 0 < Y ^ (ε / 5)` using `Real.rpow_pos_of_pos hY0 _`. Establish `hl : Real.log (Real.log Q) ≤ Real.log A + ε / 5 * Real.log Y + 2 * Real.log (Real.log Y)`. Use `(Real.log_le_log (by linarith) hhi).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul hA.ne' hp.ne', Real.log_rpow hY0, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[Real.norm_of_nonneg hu0.le, Real.norm_of_nonneg (Real.log_nonneg h4)]`. Establish `h5 : ε * Real.log Y ≤ 1 / 52 * Real.log Y` using `mul_le_mul_of_nonneg_right hε1.le hu0.le`.
+
+Establish `h6 : ε / 5 * Real.log Y = ε * Real.log Y / 5` using `by ring`. Rewrite `hl` using `[h6]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kappa4 :
     ∀ ε A : ℝ, 0 < ε → ε < 1 / 52 → 0 < A → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (Q : ℝ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N),
       Y ^ (ε / 6) ≤ Real.log Q → Real.log Q ≤ A * Y ^ (ε / 5) * Real.log Y ^ 2 → GoodC Q χ → ‖logDerivLAtOne χ‖ ≤ 4 * Real.log Y := by

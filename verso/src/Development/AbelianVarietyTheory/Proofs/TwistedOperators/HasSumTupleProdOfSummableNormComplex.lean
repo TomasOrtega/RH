@@ -7,6 +7,17 @@ namespace GlobalTheory
 
 open Filter Topology
 
+/- English proof (translation)
+Introduce `ι _ _ J f hf`. Establish `hnorm : Summable fun j : ∀ i, J i => ‖∏ i, f i (j i)‖`. Use `splitHeight_summable_pi_prod (α := J) (f := fun i x => ‖f i x‖) (fun i x => norm_nonneg (f i x)) hf` as an intermediate fact. Use `this.congr fun j => ?_` and prove the remaining obligations. Conclude with `(norm_prod _ _).symm`.
+
+Establish `hs : Summable fun j : ∀ i, J i => ∏ i, f i (j i)` using `hnorm.of_norm`. Establish `hcof : Tendsto (fun S : ∀ i, Finset (J i) => Fintype.piFinset S) atTop atTop`. Use `Filter.tendsto_atTop_atTop.2 fun t => ⟨fun i => t.image (· i), fun S hS => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `Fintype.mem_piFinset.2 fun i => hS i (Finset.mem_image_of_mem _ hx)`.
+
+Establish `h1 : Tendsto (fun S : ∀ i, Finset (J i) => ∑ x ∈ Fintype.piFinset S, ∏ i, f i (x i)) atTop (𝓝 (∑' j : ∀ i, J i, ∏ i, f i (j i)))` using `hs.hasSum.comp hcof`. Establish `hproj : ∀ i, Tendsto (fun S : ∀ i, Finset (J i) => S i) atTop atTop`. Introduce `i`. Use `Filter.tendsto_atTop_atTop.2 fun b => ⟨Function.update (fun j => (∅ : Finset (J j))) i b, fun S hS => ?_⟩` and prove the remaining obligations. Use `hS i` as an intermediate fact.
+
+Simplify using `using this`. Establish `h2 : Tendsto (fun S : ∀ i, Finset (J i) => ∏ i, ∑ x ∈ S i, f i x) atTop (𝓝 (∏ i, ∑' j, f i j))` using `tendsto_finset_prod _ fun i _ => ((hf i).of_norm.hasSum).comp (hproj i)`. Establish `h3 : (fun S : ∀ i, Finset (J i) => ∑ x ∈ Fintype.piFinset S, ∏ i, f i (x i)) = fun S => ∏ i, ∑ x ∈ S i, f i x`. Use function extensionality and compare the values at `S`. Conclude with `(Finset.prod_univ_sum S fun i x => f i x).symm`.
+
+Rewrite `h1` using `[h3]`. Use `tendsto_nhds_unique h1 h2` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hs.hasSum`.
+-/
 theorem hasSum_pi_prod_of_summable_norm : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (J : ι → Type) (f : ∀ i, J i → ℂ), (∀ i, Summable (fun j => ‖f i j‖)) → HasSum (fun j : ∀ i, J i => ∏ i, f i (j i)) (∏ i, ∑' j, f i j) := by
   intro ι _ _ J f hf
   classical

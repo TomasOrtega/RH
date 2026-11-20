@@ -25,12 +25,22 @@ section Gen
 
 variable {K : Type*} [Field K] {V : Type*} [AddCommGroup V] [Module K V] {m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]`.
+-/
 theorem sum_smul_sum (e : Fin m → V) (P Q : Matrix (Fin m) (Fin m) K) (b : Fin m) :
     ∑ a, P a b • ∑ c, Q c a • e c = ∑ c, (Q * P) c b • e c := by
   simp only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]
 
+/- English proof (translation)
+Introduce `b`. Establish `hτ' : ∀ a, τ (f a) = ∑ c, B c a • f c` using `hτ`. Apply `ψ.injective` to reduce the goal to its premises. Use `show ψ (ψ.symm (τ (ψ (e b)))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, hψ b, map_sum]`.
+
+Simplify using `only [map_smul, hτ']`. Rewrite using `[sum_smul_sum, map_sum]`. Simplify using `only [map_smul, hψ]`. Rewrite using `[sum_smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_assoc P⁻¹ B P, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`.
+-/
 theorem fm_conj {e f : Fin m → V} (ψ τ : V ≃ₗ[K] V) {P B : Matrix (Fin m) (Fin m) K} (hP : IsUnit P.det)
     (hψ : ∀ b, ψ (e b) = ∑ a, P a b • f a) (hτ : FM f τ B) :
     FM e (fun y => ψ.symm (τ (ψ y))) (P⁻¹ * B * P) := by
@@ -46,6 +56,9 @@ theorem fm_conj {e f : Fin m → V} (ψ τ : V ≃ₗ[K] V) {P B : Matrix (Fin m
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [Matrix.mul_assoc P⁻¹ B P, Matrix.mul_nonsing_inv_cancel_left _ _ hP]
 
+/- English proof (translation)
+Use extensionality with `c b`. Establish `h0 : ∑ i, (M i b - M' i b) • e i = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← h1 b, ← h2 b, sub_self]`. Conclude with `sub_eq_zero.1 ((Fintype.linearIndependent_iff.1 he) _ h0 c)`.
+-/
 theorem mat_eq_of_indep {e : Fin m → V} (he : LinearIndependent K e) (y : Fin m → V)
     {M M' : Matrix (Fin m) (Fin m) K} (h1 : ∀ b, y b = ∑ a, M a b • e a) (h2 : ∀ b, y b = ∑ a, M' a b • e a) :
     M = M' := by
@@ -62,6 +75,49 @@ namespace GlobalTheory.HL.CovDict
 
 open Formalism.L2.SG.Pf.VolPinAsm Formalism.L2.SG.Pf.StabilizerIndexVolumes Matrix
 
+/- English proof (translation)
+Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv _ γw s s' _ _ hs' hpt`. Take `⟨-, -, hU', -, hρ'⟩` from `hMv`. Establish `hrd : (0 : ℝ) < D.host.rdE` using `(Formalism.BasicNotions.rdE_pos_le D).1`. Establish `hrdc : (D.host.rdE : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hrd.ne'`. Establish `hU'u : IsUnit U'.det` using `by rw [up_det hU']; exact isUnit_one`.
+
+Use `choose S hSU hS using fun v => inS_frame (hs' v)`. Establish `hSu : ∀ v, IsUnit (S v).det` using `fun v => by rw [up_det (hSU v)]; exact isUnit_one`. Use `set N : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ := fun v => U'.map (phiV X v) * S v with hN`. Establish `hNU : ∀ v, IsUpUni (N v)` using `fun v => up_mul (upUni_map (phiV X v) hU') (hSU v)`. Establish `hNu : ∀ v, IsUnit (N v).det` using `fun v => by rw [up_det (hNU v)]; exact isUnit_one`.
+
+Use `⟨fun p => (D.host.rdE : ℂ) ^ (p.1.2.1 - p.1.1.1), fun p => ?_, fun v => Alin w (D.host.rdE : ℂ) (N v), fun v x x' p hxx => Alin_shear w _ (hNU v) hrdc x x' p hxx, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_of_nonneg hrd.le]`. Introduce `x n hxn hK v`. Use function extensionality and compare the values at `p`. Establish `hStm : c.grp ρ n ∈ G.St` using `fun q => by`.
+
+Take `⟨g', hg', he⟩` from `hK q`. Conclude with `⟨g', hg'.1.1, he⟩`. Take `⟨B, hBU, hBf, hBblk⟩` from `(GlobalTheory.T.rationalCommonStabiliser_unitriangular_coords D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c).1 _ hStm`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero`. Establish `hli : LinearIndependent D.host.E G.f'`.
+
+Establish `e : G.f' = fun a => c.e (frame F'0 a)` using `funext c.f'_eq`. Rewrite using `[e]`. Conclude with `(Formalism.L2.SG.Pf.TupLift.frame_li F'0 hT').map' _ (LinearEquiv.ker _)`. Establish `hB : GlobalTheory.HL.TraceConjugationCover.stMat G (c.grp ρ n) = B` using `mat_eq_of_indep hli _ (GlobalTheory.HL.TraceConjugationCover.stMat_spec G _ ⟨B, hBf⟩) hBf`. Rewrite using `[hB]`.
+
+Use `set τ : (VS D).V ≃ₗ[D.host.E] (VS D).V := ρ.symm.trans (n.trans ρ) with hτdef`. Establish `hτ : FM (frame F'0) τ B`. Introduce `b`. Apply `c.e.injective` to reduce the goal to its premises. Establish `e1 : c.e (τ (frame F'0 b)) = c.grp ρ n (G.f' b)`.
+
+Rewrite using `[c.f'_eq]`. Simplify using `[GCoord.grp, τ]`. Rewrite using `[e1, hBf b, map_sum]`. Simplify using `only [map_smul, c.f'_eq]`. Use `set ψ : (VS D).V ≃ₗ[D.host.E] (VS D).V := t₀.lin.trans ρ with hψdef`.
+
+Establish `hψ : ∀ b, ψ ((X.Fu u').fvec b) = ∑ a, U' a b • frame F'0 a`. Introduce `b`. Use `show ρ (t₀.lin _) = _`. Rewrite using `[← Formalism.L2.SG.Pf.FibreCounting.frame_apply]`. Conclude with `hρ' b`.
+
+Establish `hFMm` using `fm_conj ψ τ hU'u hψ hτ`. Establish `hFMm' : FM (X.Fu u').fvec (t₀.lin⁻¹ * n * t₀.lin) (U'⁻¹ * B * U')`. Introduce `b`. Rewrite using `[← hFMm b]`. Use `show t₀.lin.symm (n (t₀.lin _)) = _`.
+
+Simplify using `[ψ, τ]`. Establish `hγx : RatLink X t₀.pt t₀.lin` using `t₀.rep.2.1`. Use `set zz := t₀.pt⁻¹ * x * t₀.pt with hzz`. Establish `hzL : RatLink X zz (t₀.lin⁻¹ * n * t₀.lin)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hγx) hxn) hγx`. Establish `hgrp : γw⁻¹ * (s⁻¹ * x.1 * s) * γw = s'⁻¹ * zz.1 * s'`.
+
+Establish `e1 : zz.1 = t₀.pt.1⁻¹ * x.1 * t₀.pt.1` using `by simp only [hzz, Prod.fst_mul, Prod.fst_inv]`. Establish `e2 : γw = s⁻¹ * t₀.pt.1 * s'` using `by rw [hpt]; group`. Rewrite using `[e1, e2]`. Use `group`. Establish `hmi : ∀ a : Formalism.REAL.UJ (X.B.I.ε v), Formalism.MainNotions.S.uMat a * Formalism.MainNotions.S.uMat a⁻¹ = 1`.
+
+Introduce `a`. Use `show _ * (((a⁻¹ : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv]`. Establish `hu : Formalism.MainNotions.S.uMat ((s'⁻¹ * zz.1 * s') v) = (Formalism.MainNotions.S.uMat (s' v))⁻¹ * Formalism.MainNotions.S.uMat (zz.1 v) * Formalism.MainNotions.S.uMat (s' v)`. Establish `hi : Formalism.MainNotions.S.uMat ((s' v)⁻¹) = (Formalism.MainNotions.S.uMat (s' v))⁻¹` using `(Matrix.inv_eq_right_inv (hmi (s' v))).symm`.
+
+Use `show Formalism.MainNotions.S.uMat ((s' v)⁻¹ * zz.1 v * s' v) = _`. Use `show Formalism.MainNotions.S.uMat ((s' v)⁻¹) * Formalism.MainNotions.S.uMat (zz.1 v) * Formalism.MainNotions.S.uMat (s' v) = _`. Rewrite using `[hi]`. Establish `hs'u : IsUnit (Formalism.MainNotions.S.uMat (s' v)).det`. Use `congrArg Matrix.det (hmi (s' v))` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one this)`. Establish `hFM : FM (efr X u' v) (fun y => ((Formalism.MainNotions.S.uMat (s' v))⁻¹ * Formalism.MainNotions.S.uMat (zz.1 v) * Formalism.MainNotions.S.uMat (s' v)) *ᵥ y) ((S v)⁻¹ * (U'⁻¹ * B * U').map (phiV X v) * S v)` using `FMm_mul (FMm_mul (FMm_inv hs'u (hS v) (hSu v)) (realFM X hzL hFMm' v)) (hS v)`. Establish `hG : (S v)⁻¹ * (U'⁻¹ * B * U').map (phiV X v) * S v = (N v)⁻¹ * B.map (phiV X v) * N v`. Establish `hinv : (U'.map (phiV X v))⁻¹ = (U'⁻¹).map (phiV X v)` using `Matrix.inv_eq_left_inv (map_inv_mul (phiV X v) hU'u)`.
+
+Rewrite using `[show N v = U'.map (phiV X v) * S v from rfl, Matrix.mul_inv_rev, hinv, Matrix.map_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hY : Yhat w (D.host.rdE : ℂ) (fun q => (D.host.rdE : ℂ) ^ (q.1.2.1 - q.1.1.1) * phiV X v (B q.1.1 q.1.2)) = B.map (phiV X v) - 1`. Use extensionality with `c' d`. Rewrite using `[Matrix.sub_apply, Matrix.map_apply]`.
+
+Simplify using `only [Yhat]`. Use `split_ifs with hcd`. Rewrite using `[Matrix.one_apply_ne (ne_of_lt hcd.1), sub_zero]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hlt : c' < d`.
+
+Rewrite using `[hBblk c' d (fun he => hcd ⟨hlt, he⟩), map_zero, Matrix.one_apply_ne (ne_of_lt hlt), sub_zero]`. Break down `lt_or_eq_of_le (not_lt.1 hlt) with hgt | heq` into its components or cases. Rewrite using `[(hBU c' d).1 hgt, map_zero, Matrix.one_apply_ne (ne_of_gt hgt), sub_zero]`. Rewrite using `[heq, (hBU c' c').2 rfl, map_one, Matrix.one_apply_eq, sub_self]`. Establish `hab : p.1.1 < p.1.2` using `p.2.1`.
+
+Establish `har : p.1.1.1 < D.R.rS` using `lt_of_lt_of_le hab (Nat.lt_succ_iff.1 p.1.2.2)`. Use `show Formalism.L2.SG.RealObj.stCoord X u' w γw _ v p = Alin w (D.host.rdE : ℂ) (N v) _ p`. Unfold `Formalism.L2.SG.RealObj.stCoord`. Rewrite using `[hgrp, hu, Alin_apply, hY]`. Establish `hfrm : Formalism.L2.SG.RealObj.frm X u' D.host.rdE v p.1.2 = (((D.host.rdE : ℂ)) ^ (D.R.rS - p.1.2.1))⁻¹ • efr X u' v p.1.2` using `rfl`.
+
+Rewrite using `[hfrm, coef_efr X u' v hFM ⟨p.1.1.1, har⟩ p.1.2, hG]`. Establish `hcs : (Fin.castSucc (⟨p.1.1.1, har⟩ : Fin D.R.rS)) = p.1.1` using `Fin.ext rfl`. Rewrite using `[hcs, conj_off (hNu v) (ne_of_lt hab)]`. Establish `hpow : (D.host.rdE : ℂ) ^ (D.R.rS - p.1.1.1) = (D.host.rdE : ℂ) ^ (D.R.rS - p.1.2.1) * (D.host.rdE : ℂ) ^ (p.1.2.1 - p.1.1.1)`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Establish `: (p.1.2 : ℕ) ≤ D.R.rS` using `Nat.lt_succ_iff.1 p.1.2.2`. Establish `: (p.1.1 : ℕ) < p.1.2` using `hab`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hpow]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem dict_coords : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → ∀ (γw s s' : X.B.I.Ginf), Formalism.L2.SG.RealObj.IsPtRep X u u' w γw → s ∈ X.SinfU u → s' ∈ X.SinfU u' → t₀.pt.1 = s * γw * s'⁻¹ → ∃ σ : Formalism.L2.SG.RealObj.FreeE w → ℂ, (∀ p, ‖σ p‖ = (D.host.rdE : ℝ) ^ (p.1.2.val - p.1.1.val)) ∧ ∃ A : InfinitePlace X.B.I.F → (Formalism.L2.SG.RealObj.FreeE w → ℂ) →ₗ[ℂ] (Formalism.L2.SG.RealObj.FreeE w → ℂ), (∀ v x x' p, (∀ q : Formalism.L2.SG.RealObj.FreeE w, q.1.2.val - q.1.1.val < p.1.2.val - p.1.1.val → x q = x' q) → A v x p - x p = A v x' p - x' p) ∧ ∀ (x : X.B.I.GA) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V), RatLink X x n → c.grp ρ n ∈ G.K0 → ∀ v, Formalism.L2.SG.RealObj.stCoord X u' w γw (s⁻¹ * x.1 * s) v = A v (fun p => σ p * Formalism.L2.SG.Pf.VolPinAsm.phiV X v (GlobalTheory.HL.TraceConjugationCover.stMat G (c.grp ρ n) p.1.1 p.1.2)) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv _ γw s s' _ _ hs' hpt
   obtain ⟨-, -, hU', -, hρ'⟩ := hMv

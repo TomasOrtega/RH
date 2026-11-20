@@ -11,6 +11,9 @@ open scoped Matrix
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ V hV g hg`. Establish `hU : IsOpen ((fun x : Γ => g * x) ⁻¹' V)` using `hV.preimage (continuous_const_mul g)`. Establish `h1 : (1 : Γ) ∈ (fun x : Γ => g * x) ⁻¹' V` using `by simpa using hg`. Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hU h1`. Conclude with `⟨H.toSubgroup, H.isNormal', H.isOpen', fun h hh => hH hh⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Ga.coset :
     ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (V : Set Γ), IsOpen V → ∀ g ∈ V, ∃ H : Subgroup Γ, H.Normal ∧ IsOpen (H : Set Γ) ∧ ∀ h ∈ H, g * h ∈ V := by
   intro Γ _ _ _ _ _ V hV g hg

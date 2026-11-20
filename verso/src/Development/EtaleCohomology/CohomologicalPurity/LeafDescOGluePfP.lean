@@ -14,23 +14,60 @@ def LeafZcPull : Prop := ∀ {R : Type} [CommRing R] (K : Cx R) {X' X : Scheme.{
 def LeafZcIn : Prop := ∀ {R : Type} [CommRing R] (K : Cx R) {X : Scheme.{0}} (U W V : X.Opens) (h : V ≤ W), V ≤ U →
   ∀ (n : ℤ) (a : Sec (K.X n) W.toScheme), a ∈ Zc K (W.ι ⁻¹ᵁ U) n → rs h a = 0
 
+/- English proof (translation)
+Use `show (G.obj.map f.op).hom 0 = 0`. Conclude with `map_zero _`.
+-/
 private theorem sres_zero {R : Type} [CommRing R] {G : Shv R} {X Y : Scheme.{0}} (f : Y ⟶ X) :
     Sec.res f (0 : Sec G X) = 0 := by
   show (G.obj.map f.op).hom 0 = 0
   exact map_zero _
 
+/- English proof (translation)
+Use `show (φ.hom.app (op X)).hom 0 = 0`. Conclude with `map_zero _`.
+-/
 private theorem smap_zero {R : Type} [CommRing R] {G H : Shv R} (φ : G ⟶ H) {X : Scheme.{0}} :
     Sec.map φ (0 : Sec G X) = 0 := by
   show (φ.hom.app (op X)).hom 0 = 0
   exact map_zero _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, sres_zero _, smap_zero _⟩`.
+-/
 private theorem Bd_zero {R : Type} [CommRing R] (K : Cx R) {X : Scheme.{0}} (U : X.Opens) (n : ℤ) : Bd K U n 0 :=
   ⟨0, sres_zero _, smap_zero _⟩
 
+/- English proof (translation)
+The claim follows from `le_of_comp _ _ U rfl _ (Scheme.homOfLE_ι _ _) le_rfl`.
+-/
 private theorem leι {X : Scheme.{0}} {V W : X.Opens} (h : V ≤ W) (U : X.Opens) :
     V.ι ⁻¹ᵁ U ≤ X.homOfLE h ⁻¹ᵁ (W.ι ⁻¹ᵁ U) :=
   le_of_comp _ _ U rfl _ (Scheme.homOfLE_ι _ _) le_rfl
 
+/- English proof (translation)
+Introduce `hD hF q X U m i hL A V s hcov H`. Take `⟨cls, hon, hker, hnat⟩` from `hD q m i`. Establish `H1 : ∀ n < m, ∀ (W : X.Opens), ∀ a ∈ Zc (res _ (tw q i)) (W.ι ⁻¹ᵁ U) n, ∀ x ∈ W, ∃ (V : X.Opens) (h : V ≤ W), x ∈ V ∧ Bd (res _ (tw q i)) (V.ι ⁻¹ᵁ U) n (rs h a)`. Introduce `n hn W a ha x hx`. Distinguish the cases in `hxU : x ∈ U`.
+
+Use `⟨W ⊓ U, inf_le_left, ⟨hx, hxU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hI _ U W (W ⊓ U) _ inf_le_right n a ha]`. Conclude with `Bd_zero _ _ _`. Take `⟨V', hV'W, hxV', hsub⟩` from `hL x W hx`. Use `⟨V', hV'W, hxV', ?_⟩` and prove the remaining obligations.
+
+Take `⟨cn, -, hkern, -⟩` from `hD q n i`. Establish `hz` using `hP _ (X.homOfLE hV'W) (V'.ι ⁻¹ᵁ U) (W.ι ⁻¹ᵁ U) (leι hV'W U) n a ha`. Use `hsub n hn` as an intermediate fact. Conclude with `(hkern (V'.ι ⁻¹ᵁ U) ⟨_, hz⟩).1 (Subsingleton.elim _ _)`. Take `⟨-, hglue⟩` from `hF _ (res _ (tw q i)) (hK q i).1 (hK q i).2 X U m H1`.
+
+Use `choose l hl using fun a => hon ((V a).ι ⁻¹ᵁ U) (s a)`. Set `V' : Option A → X.Opens` to `fun o => Option.elim o U V`. Set `a' : ∀ k, Sec ((res _ (tw q i)).X m) (V' k).toScheme` to `fun`. Consider the case `none => 0`. Consider the case `some a => (l a).1`.
+
+Establish `hmem : ∀ k, a' k ∈ Zc (res _ (tw q i)) ((V' k).ι ⁻¹ᵁ U) m`. Introduce and unpack `(_ | a)`. Conclude with `zero_mem _`. Conclude with `(l a).2`. Establish `hcv : ∀ x : X, ∃ k, x ∈ V' k`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `⟨none, hx⟩`. Take `⟨a, ha⟩` from `hcov x hx`. Conclude with `⟨some a, ha⟩`.
+
+Establish `hcmp : ∀ k l', ∀ x ∈ V' k, x ∈ V' l' → ∃ (T : X.Opens) (hk : T ≤ V' k) (hl : T ≤ V' l'), x ∈ T ∧ Bd (res _ (tw q i)) (T.ι ⁻¹ᵁ U) m (rs hk (a' k) - rs hl (a' l'))`. Introduce `k l' x hk hl'`. Distinguish the cases in `hxU : x ∈ U`. Use `⟨V' k ⊓ V' l' ⊓ U, inf_le_left.trans inf_le_left, inf_le_left.trans inf_le_right, ⟨⟨hk, hl'⟩, hxU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hI _ U (V' k) _ _ inf_le_right m (a' k) (hmem k), hI _ U (V' l') _ _ inf_le_right m (a' l') (hmem l'), sub_zero]`.
+
+Conclude with `Bd_zero _ _ _`. Break down `k with _ | a` into its components or cases. Conclude with `absurd hk hxU`. Break down `l' with _ | b` into its components or cases. Conclude with `absurd hl' hxU`.
+
+Take `⟨T, ha, hb, ha', hb', hxT, heq⟩` from `H a b x hk hl' hxU`. Use `⟨T, ha, hb, hxT, ?_⟩` and prove the remaining obligations. Establish `za` using `hP _ (X.homOfLE ha) (T.ι ⁻¹ᵁ U) ((V a).ι ⁻¹ᵁ U) ha' m (l a).1 (l a).2`. Establish `zb` using `hP _ (X.homOfLE hb) (T.ι ⁻¹ᵁ U) ((V b).ι ⁻¹ᵁ U) hb' m (l b).1 (l b).2`. Establish `e1` using `hnat (X.homOfLE ha) (T.ι ⁻¹ᵁ U) ((V a).ι ⁻¹ᵁ U) ha' (l a) ⟨_, za⟩ rfl`.
+
+Establish `e2` using `hnat (X.homOfLE hb) (T.ι ⁻¹ᵁ U) ((V b).ι ⁻¹ᵁ U) hb' (l b) ⟨_, zb⟩ rfl`. Rewrite `e1` using `[hl a]`. Rewrite `e2` using `[hl b]`. Establish `h0 : cls (T.ι ⁻¹ᵁ U) (⟨_, za⟩ - ⟨_, zb⟩) = 0`. Rewrite using `[map_sub, ← e1, ← e2, heq, sub_self]`.
+
+Conclude with `(hker _ _).1 h0`. Take `⟨c, hc, hcb⟩` from `hglue (Option A) V' a' hmem hcv hcmp`. Use `⟨cls U ⟨c, hc⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `zc` using `hP _ (V a).ι ((V a).ι ⁻¹ᵁ U) U le_rfl m c hc`. Use `show Hs.pull q (opnMap (V a).ι ((V a).ι ⁻¹ᵁ U) U le_rfl) m i (cls U ⟨c, hc⟩) = s a`.
+
+Rewrite using `[hnat (V a).ι ((V a).ι ⁻¹ᵁ U) U le_rfl ⟨c, hc⟩ ⟨_, zc⟩ rfl, ← hl a, ← sub_eq_zero, ← map_sub]`. Conclude with `(hker _ _).2 (hcb (some a))`.
+-/
 private theorem descent_glue_of_residue_pullback_inclusion (hK : LeafResK) (hP : LeafZcPull) (hI : LeafZcIn) : LeafDescOGlue := by
   intro hD hF q X U m i hL A V s hcov H
   obtain ⟨cls, hon, hker, hnat⟩ := hD q m i
@@ -93,21 +130,33 @@ private theorem descent_glue_of_residue_pullback_inclusion (hK : LeafResK) (hP :
   rw [hnat (V a).ι ((V a).ι ⁻¹ᵁ U) U le_rfl ⟨c, hc⟩ ⟨_, zc⟩ rfl, ← hl a, ← sub_eq_zero, ← map_sub]
   exact (hker _ _).2 (hcb (some a))
 
+/- English proof (translation)
+Use `show (G.obj.map g.op).hom ((G.obj.map f.op).hom a) = (G.obj.map (g ≫ f).op).hom a`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem sres_comp {R : Type} [CommRing R] {G : Shv R} {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (a : Sec G X) :
     Sec.res g (Sec.res f a) = Sec.res (g ≫ f) a := by
   show (G.obj.map g.op).hom ((G.obj.map f.op).hom a) = (G.obj.map (g ≫ f).op).hom a
   rw [op_comp, Functor.map_comp]; rfl
 
+/- English proof (translation)
+Use `show (G.obj.map (𝟙 X).op).hom a = a`. Rewrite using `[op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 private theorem sres_id {R : Type} [CommRing R] {G : Shv R} {X : Scheme.{0}} (a : Sec G X) : Sec.res (𝟙 X) a = a := by
   show (G.obj.map (𝟙 X).op).hom a = a
   rw [op_id, CategoryTheory.Functor.map_id]; rfl
 
+/- English proof (translation)
+Use `show (φ.hom.app (op Y)).hom ((G.obj.map f.op).hom a) = (H.obj.map f.op).hom ((φ.hom.app (op X)).hom a)`. Establish `h` using `φ.hom.naturality f.op`. Conclude with `congrArg (fun t => t.hom a) h`.
+-/
 private theorem smap_res {R : Type} [CommRing R] {G H : Shv R} (φ : G ⟶ H) {X Y : Scheme.{0}} (f : Y ⟶ X) (a : Sec G X) :
     Sec.map φ (Sec.res f a) = Sec.res f (Sec.map φ a) := by
   show (φ.hom.app (op Y)).hom ((G.obj.map f.op).hom a) = (H.obj.map f.op).hom ((φ.hom.app (op X)).hom a)
   have h := φ.hom.naturality f.op
   exact congrArg (fun t => t.hom a) h
 
+/- English proof (translation)
+Introduce `R _ K X' X f U' U h n a ha`. Take `⟨h1, h2⟩` from `(mem_Zc a).1 ha`. Use `(mem_Zc _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sres_comp, ← Scheme.Hom.resLE_comp_ι f h, ← sres_comp, h1, sres_zero]`. Rewrite using `[smap_res, h2, sres_zero]`.
+-/
 private theorem LeafZcPull_pf : LeafZcPull := by
   intro R _ K X' X f U' U h n a ha
   obtain ⟨h1, h2⟩ := (mem_Zc a).1 ha
@@ -115,6 +164,11 @@ private theorem LeafZcPull_pf : LeafZcPull := by
   · rw [sres_comp, ← Scheme.Hom.resLE_comp_ι f h, ← sres_comp, h1, sres_zero]
   · rw [smap_res, h2, sres_zero]
 
+/- English proof (translation)
+Introduce `R _ K X U W V h hU n a ha`. Take `⟨h1, -⟩` from `(mem_Zc a).1 ha`. Establish `e : (⊤ : V.toScheme.Opens) ≤ X.homOfLE h ⁻¹ᵁ (W.ι ⁻¹ᵁ U)` using `le_of_comp _ _ U rfl _ (Scheme.homOfLE_ι _ _) ((Scheme.Opens.ι_preimage_self V).symm.le.trans (fun y hy => hU hy))`. Establish `h0 : Sec.res (⊤ : V.toScheme.Opens).ι (rs h a) = 0`. Rewrite using `[sres_comp, ← Scheme.Hom.resLE_comp_ι (X.homOfLE h) e, ← sres_comp, h1, sres_zero]`.
+
+Rewrite using `[← sres_id (rs h a), ← Scheme.toIso_inv_ι, ← sres_comp, h0, sres_zero]`.
+-/
 private theorem LeafZcIn_pf : LeafZcIn := by
   intro R _ K X U W V h hU n a ha
   obtain ⟨h1, -⟩ := (mem_Zc a).1 ha
@@ -124,11 +178,20 @@ private theorem LeafZcIn_pf : LeafZcIn := by
     rw [sres_comp, ← Scheme.Hom.resLE_comp_ι (X.homOfLE h) e, ← sres_comp, h1, sres_zero]
   rw [← sres_id (rs h a), ← Scheme.toIso_inv_ι, ← sres_comp, h0, sres_zero]
 
+/- English proof (translation)
+Unfold `GlobalTheory.EtC.res`. Use `infer_instance`.
+-/
 private theorem resK_inj (q : ℕ) (i : ℤ) (s : ℤ) : Injective ((res _ (tw q i)).X s) := by unfold GlobalTheory.EtC.res; infer_instance
+/- English proof (translation)
+Introduce `q i` and use `⟨resK_inj q i, fun s hs => by have : (res _ (tw q i)).IsStrictlyGE 0 := by unfold GlobalTheory.EtC.res; infer_instance exact CochainComplex.isZero_of_isStrictlyGE (res _ (tw q i)) 0 s hs⟩`.
+-/
 private theorem LeafResK_pf : LeafResK := fun q i => ⟨resK_inj q i, fun s hs => by
   have : (res _ (tw q i)).IsStrictlyGE 0 := by unfold GlobalTheory.EtC.res; infer_instance
   exact CochainComplex.isZero_of_isStrictlyGE (res _ (tw q i)) 0 s hs⟩
 
+/- English proof (translation)
+The claim follows from `descent_glue_of_residue_pullback_inclusion LeafResK_pf LeafZcPull_pf LeafZcIn_pf`.
+-/
 theorem LeafDescOGlue_of : LeafDescOGlue := descent_glue_of_residue_pullback_inclusion LeafResK_pf LeafZcPull_pf LeafZcIn_pf
 
 end LateralTheory.CohomologicalPurity.Cl

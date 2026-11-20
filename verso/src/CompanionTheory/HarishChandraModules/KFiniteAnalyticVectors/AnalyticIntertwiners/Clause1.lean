@@ -83,6 +83,9 @@ def Clause3 : Prop :=
   ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q) (πU : URep T) (M : GKMod p q) (io : M.V →ₗ[ℂ] πU.H),
     Formalism.MainNotions.SchurIrreducible.IsHCMod πU M io → Formalism.MainNotions.SchurIrreducible.AdmGK M → Formalism.MainNotions.SchurIrreducible.IrrGK M → Formalism.MainNotions.SchurIrreducible.IrrU πU
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun p q h T => ⟨h1 p q h T, h2 p q h T, h3 p q h T⟩, h4⟩`.
+-/
 theorem hcm_of (h1 : Clause1) (h2 : Clause2) (h3 : Clause3) (h4 : GlobalTheory.Published.KFiniteAnalyticUJ) :
     GlobalTheory.Published.HarishChandraModules :=
   ⟨fun p q h T => ⟨h1 p q h T, h2 p q h T, h3 p q h T⟩, h4⟩

@@ -25,12 +25,18 @@ noncomputable section
 
 namespace GlobalTheory.EvClose
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.pSerFrob_of_invariance @GlobalTheory.nEval_basic (GlobalTheory.nsmulF_add_sqZero_eq @GlobalTheory.nEval_basic (GlobalTheory.chart_fAdd_firstOrder @GlobalTheory.nEval_basic)) @GlobalTheory.coeff_dvd_of_aeval_add_sq_zero p K ch`.
+-/
 theorem pSerFrob {R₀ : Type} [CommRing R₀] (p : ℕ) [Fact p.Prime] {g : ℕ} {B : BX R₀}
     (K : LAlg R₀) (ch : FormalChartAtZero B K g) : PSerFrobStatement p K ch :=
   GlobalTheory.pSerFrob_of_invariance @GlobalTheory.nEval_basic
     (GlobalTheory.nsmulF_add_sqZero_eq @GlobalTheory.nEval_basic (GlobalTheory.chart_fAdd_firstOrder @GlobalTheory.nEval_basic))
     @GlobalTheory.coeff_dvd_of_aeval_add_sq_zero p K ch
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.WFrob.wFrob wd g`.
+-/
 theorem wFrob {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {Tw : ATowerL R₀ p}
     {K : LAlg R₀} (wd : WData Tw K) (g : ℕ) : WFrobStatement wd g :=
   GlobalTheory.WFrob.wFrob wd g
@@ -41,27 +47,48 @@ variable {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : B
   {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe]
   {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.evImg_isLat_subring D`.
+-/
 theorem evLat (D : Dat p g B Tw Dt Oe σ cp) : EvLatStatement D :=
   GlobalTheory.evImg_isLat_subring D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EvHopf.evHopf_of_tensorLocal GlobalTheory.isLocalRing_tensorProduct_of_finite_of_points D`.
+-/
 theorem evHopf (D : Dat p g B Tw Dt Oe σ cp) : EvHopfStatement D :=
   GlobalTheory.EvHopf.evHopf_of_tensorLocal GlobalTheory.isLocalRing_tensorProduct_of_finite_of_points D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EvAct.evImg_act_stable D`.
+-/
 theorem evAct (D : Dat p g B Tw Dt Oe σ cp) : EvActStatement D :=
   GlobalTheory.EvAct.evImg_act_stable D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.evHt_of_lam @GlobalTheory.localFactor_mod_p_nilOver D`.
+-/
 theorem evHt (D : Dat p g B Tw Dt Oe σ cp) : EvHtStatement D :=
   GlobalTheory.evHt_of_lam @GlobalTheory.localFactor_mod_p_nilOver D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.evBt_of_tangent_of_series (GlobalTheory.chart_p_smul_lift_eq_bt (GlobalTheory.chart_fAdd_firstOrder @GlobalTheory.nEval_basic)) (GlobalTheory.fAdd_nsmulF_eq_eval_poly_frob @GlobalTheory.nEval_basic @pSerFrob) @GlobalTheory.localFactor_mod_p_nilOver @wFrob D`.
+-/
 theorem evBt (D : Dat p g B Tw Dt Oe σ cp) : EvBtStatement D :=
   GlobalTheory.evBt_of_tangent_of_series
     (GlobalTheory.chart_p_smul_lift_eq_bt (GlobalTheory.chart_fAdd_firstOrder @GlobalTheory.nEval_basic))
     (GlobalTheory.fAdd_nsmulF_eq_eval_poly_frob @GlobalTheory.nEval_basic @pSerFrob)
     @GlobalTheory.localFactor_mod_p_nilOver @wFrob D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.signChar_mem_evImg D`.
+-/
 theorem periodDatum_signCharacters_mem_evalImage (D : Dat p g B Tw Dt Oe σ cp) : EvenTwoEvaluationSign D :=
   GlobalTheory.signChar_mem_evImg D
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.evCot_of_univDer (GlobalTheory.CotUniv.universal_derivation @GlobalTheory.CotPoints.points_eq_tangent) D`.
+-/
 theorem evCot (D : Dat p g B Tw Dt Oe σ cp) : EvCotStatement D :=
   GlobalTheory.evCot_of_univDer (GlobalTheory.CotUniv.universal_derivation @GlobalTheory.CotPoints.points_eq_tangent) D
 

@@ -22,6 +22,11 @@ def spanAlg (ρ : Representation K Γ V) : Subalgebra K (Module.End K V) :=
     exact this (Submodule.mul_mem_mul ha hb))
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T h => exact hS T h`. Consider the case `zero => intro w _`. Simplify using the standard rewrite rules. Consider the case `add T T' _ _ h h' => intro w hw`.
+
+Simplify using `using W.add_mem (h w hw) (h' w hw)`. Consider the case `smul c T _ h => intro w hw`. Simplify using `using W.smul_mem c (h w hw)`.
+-/
 private theorem apply_mem_of_mem_span_of_invariant {F U : Type} [Field F] [AddCommGroup U]
     [Module F U] (S : Set (Module.End F U)) (W : Submodule F U)
     (hS : ∀ T ∈ S, ∀ w ∈ W, T w ∈ W) {T : Module.End F U} (hT : T ∈ Submodule.span F S) :
@@ -33,6 +38,9 @@ private theorem apply_mem_of_mem_span_of_invariant {F U : Type} [Field F] [AddCo
   | smul c T _ h => intro w hw; simpa using W.smul_mem c (h w hw)
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Introduce `t ht`. Use `apply_mem_of_mem_span_of_invariant (Set.range ρ) W ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hs g`.
+-/
 theorem _root_.GlobalTheory.BlockDensity.stable_span (ρ : Representation K Γ V) (W : Submodule K V)
     (hs : _root_.Formalism.MainNotions.N.Stable ρ W) :
     ∀ t ∈ Submodule.span K (Set.range ρ), ∀ v ∈ W, t v ∈ W := by
@@ -48,6 +56,9 @@ def toSub (ρ : Representation K Γ V) (W : Submodule K V) (hs : Stable ρ W) : 
   smul_mem' := fun c _ hv => stable_span ρ W hs c.1 c.2 _ hv
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual F U, φ w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw ((Module.forall_dual_apply_eq_zero_iff F w).mp h)`. Conclude with `⟨(φ w)⁻¹ • φ.smulRight u, by simp [smul_smul, inv_mul_cancel₀ hφ]⟩`.
+-/
 private theorem exists_end_apply_eq_of_ne_zero {F U : Type} [Field F] [AddCommGroup U]
     [Module F U] {w : U} (hw : w ≠ 0) (u : U) : ∃ T : Module.End F U, T w = u := by
   obtain ⟨φ, hφ⟩ : ∃ φ : Module.Dual F U, φ w ≠ 0 := by
@@ -57,6 +68,11 @@ private theorem exists_end_apply_eq_of_ne_zero {F U : Type} [Field F] [AddCommGr
   exact ⟨(φ w)⁻¹ • φ.smulRight u, by simp [smul_smul, inv_mul_cancel₀ hφ]⟩
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Break down `eq_or_ne W ⊥ with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Take `⟨w, hwW, hw⟩` from `(Submodule.ne_bot_iff W).mp h`. Rewrite using `[Submodule.eq_top_iff']`.
+
+Introduce `u`. Take `⟨T, rfl⟩` from `exists_end_apply_eq_of_ne_zero (F := F) hw u`. Conclude with `apply_mem_of_mem_span_of_invariant S W hW (by rw [hS]; exact Submodule.mem_top) w hwW`.
+-/
 private theorem invariant_trivial_of_span_endomorphisms_full {F U : Type} [Field F] [AddCommGroup U]
     [Module F U] (S : Set (Module.End F U)) (hS : Submodule.span F S = ⊤) (W : Submodule F U)
     (hW : ∀ T ∈ S, ∀ w ∈ W, T w ∈ W) : W = ⊥ ∨ W = ⊤ := by
@@ -70,6 +86,9 @@ private theorem invariant_trivial_of_span_endomorphisms_full {F U : Type} [Field
   exact apply_mem_of_mem_span_of_invariant S W hW (by rw [hS]; exact Submodule.mem_top) w hwW
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T h => exact hS T h`. Consider the case `zero => simp`. Consider the case `add T T' _ _ h h' => rw [add_mul, mul_add, h, h']`. Consider the case `smul c T _ h => rw [smul_mul_assoc, mul_smul_comm, h]`.
+-/
 private theorem commute_of_mem_span_of_forall_commute {F U : Type} [Field F] [AddCommGroup U]
     [Module F U] (S : Set (Module.End F U)) (ψ : Module.End F U)
     (hS : ∀ T ∈ S, T * ψ = ψ * T) {T : Module.End F U} (hT : T ∈ Submodule.span F S) :
@@ -81,6 +100,55 @@ private theorem commute_of_mem_span_of_forall_commute {F U : Type} [Field F] [Ad
   | smul c T _ h => rw [smul_mul_assoc, mul_smul_comm, h]
 
 variable {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] in
+/- English proof (translation)
+Introduce `K Γ V _ _ _ _ _ ρ ι _ _ Vs hs hint hfull hdistinct f hf`. Set `p : ∀ k, V →ₗ[K] Vs k` to `fun k => (DirectSum.component K ι (fun i => Vs i) k).comp (LinearEquiv.ofBijective (DirectSum.coeLinearMap Vs) hint).symm.toLinearMap`. Establish `hp_self : ∀ i (y : V) (hy : y ∈ Vs i), p i y = ⟨y, hy⟩` using `fun i y hy => hint.ofBijective_coeLinearMap_of_mem hy`. Establish `hp_ne : ∀ i k, i ≠ k → ∀ y ∈ Vs i, p k y = 0` using `fun i k hik y hy => hint.ofBijective_coeLinearMap_of_mem_ne hik hy`. Establish `htop : ∀ y : V, y ∈ ⨆ i, Vs i` using `fun y => by`.
+
+Rewrite using `[hint.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Establish `hsum : ∀ y : V, ∑ k, (p k y : V) = y`. Introduce `y`. Use `Submodule.iSup_induction Vs (motive := fun y => ∑ k, (p k y : V) = y) (htop y) ?_ (by simp) ?_` and prove the remaining obligations.
+
+Introduce `i y hy`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hp_self i y hy]`. Introduce `k _ hk`. Rewrite using `[hp_ne i k (Ne.symm hk) y hy]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce `x y hx hy`. Simplify using `only [map_add, Submodule.coe_add, Finset.sum_add_distrib, hx, hy]`. Establish `hp_rho : ∀ k g y, p k (ρ g y) = (ρ g).restrict (hs k g) (p k y)`.
+
+Introduce `k g y`. Use `Submodule.iSup_induction Vs (motive := fun y => p k (ρ g y) = (ρ g).restrict (hs k g) (p k y)) (htop y) ?_ (by simp) ?_` and prove the remaining obligations. Introduce `i y hy`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+
+Rewrite using `[hp_self i _ (hs i g y hy), hp_self i y hy]`. Both sides reduce to the same expression. Rewrite using `[hp_ne i k hik _ (hs i g y hy), hp_ne i k hik y hy, map_zero]`. Introduce `x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+
+Establish `hcomm : ∀ φ : Module.End (_root_.GlobalTheory.BlockDensity.spanAlg ρ) V, ∀ v, f (φ v) = φ (f v)`. Introduce `φ`. Establish `hφρ : ∀ g v, φ (ρ g v) = ρ g (φ v)` using `fun g v => φ.map_smul (⟨ρ g, Submodule.subset_span ⟨g, rfl⟩⟩ : _root_.GlobalTheory.BlockDensity.spanAlg ρ) v`. Set `ψ : ∀ j k, Vs j →ₗ[K] Vs k` to `fun j k => (p k).comp ((φ.restrictScalars K).comp (Vs j).subtype)`. Establish `hψ : ∀ j k g x, ψ j k ((ρ g).restrict (hs j g) x) = (ρ g).restrict (hs k g) (ψ j k x)`.
+
+Introduce `j k g x`. Use `show p k (φ (ρ g x)) = _`. Rewrite using `[hφρ, hp_rho]`. Both sides reduce to the same expression. Establish `hzero : ∀ j k, j ≠ k → ψ j k = 0`.
+
+Introduce `j k hjk`. Assume the negation of the conclusion as `hne`. Establish `hker` using `invariant_trivial_of_span_endomorphisms_full _ (hfull j) (LinearMap.ker (ψ j k)) (by`. Introduce and unpack `_ ⟨g, rfl⟩ w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[hψ, hw, map_zero])`. Establish `hran` using `invariant_trivial_of_span_endomorphisms_full _ (hfull k) (LinearMap.range (ψ j k)) (by`. Introduce and unpack `_ ⟨g, rfl⟩ _ ⟨x, rfl⟩`. Conclude with `⟨(ρ g).restrict (hs j g) x, hψ j k g x⟩)`. Break down `hker with hker | hker` into its components or cases.
+
+Break down `hran with hran | hran` into its components or cases. Conclude with `hne (LinearMap.range_eq_bot.mp hran)`. Conclude with `hdistinct j k hjk (LinearEquiv.ofBijective (ψ j k) ⟨LinearMap.ker_eq_bot.mp hker, LinearMap.range_eq_top.mp hran⟩) fun g v => hψ j k g v`. Conclude with `hne (LinearMap.ker_eq_top.mp hker)`. Establish `hφv : ∀ j v (hv : v ∈ Vs j), φ v = (ψ j j ⟨v, hv⟩ : V)`.
+
+Introduce `j v hv`. Rewrite using `[← hsum (φ v), Finset.sum_eq_single j]`. Both sides reduce to the same expression. Introduce `k _ hkj show ((ψ j k ⟨v, hv⟩ : Vs k) : V) = 0`. Rewrite using `[hzero j k (Ne.symm hkj)]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hcj : ∀ j, f.restrict (hf j) * ψ j j = ψ j j * f.restrict (hf j)`. Introduce `j`. Use `commute_of_mem_span_of_forall_commute _ (ψ j j) ?_ (by rw [hfull j]; exact Submodule.mem_top)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Use extensionality with `x`. Conclude with `congrArg Subtype.val (hψ j j g x).symm`. Introduce `v`. Use `Submodule.iSup_induction Vs (motive := fun v => f (φ v) = φ (f v)) (htop v) ?_ (by simp) ?_` and prove the remaining obligations.
+
+Introduce `j v hv`. Rewrite using `[hφv j v hv, hφv j (f v) (hf j v hv)]`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun (hcj j) ⟨v, hv⟩)`. Introduce `x y hx hy`. Simplify using `only [map_add, hx, hy]`.
+
+Establish `hlift : ∀ j (E : Module.End K (Vs j)), ∃ a ∈ Submodule.span K (Set.range ρ), ∀ x : Vs j, a x = E x`. Introduce `j E`. Establish `hE : E ∈ Submodule.span K (Set.range fun g => (ρ g).restrict (hs j g))`. Rewrite using `[hfull j]`. Conclude with `Submodule.mem_top`.
+
+Proceed by induction on `hE using Submodule.span_induction with`. Consider the case `mem E h`. Take `⟨g, rfl⟩` from `h`. Conclude with `⟨ρ g, Submodule.subset_span ⟨g, rfl⟩, fun x => rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun x => by simp⟩`.
+
+Consider the case `add E E' _ _ h h'`. Take `⟨a, ha, hax⟩` from `h`. Take `⟨b, hb, hbx⟩` from `h'`. Conclude with `⟨a + b, add_mem ha hb, fun x => by simp [hax, hbx]⟩`. Consider the case `smul c E _ h`.
+
+Take `⟨a, ha, hax⟩` from `h`. Conclude with `⟨c • a, Submodule.smul_mem _ c ha, fun x => by simp [hax]⟩`. Use `haveI : IsSemisimpleModule (_root_.GlobalTheory.BlockDensity.spanAlg ρ) V := by`. Rewrite using `[← sSup_simples_eq_top_iff_isSemisimpleModule, eq_top_iff]`. Introduce `v _`.
+
+Use `Submodule.iSup_induction Vs (motive := fun v => v ∈ sSup {m : Submodule (_root_.GlobalTheory.BlockDensity.spanAlg ρ) V | IsSimpleModule (_root_.GlobalTheory.BlockDensity.spanAlg ρ) m}) (htop v) ?_ (zero_mem _) (fun _ _ => add_mem)` and prove the remaining obligations. Introduce `j v hv`. Break down `eq_or_ne v 0 with rfl | hv0` into its components or cases. Conclude with `zero_mem _`. Establish `hvT : v ∈ _root_.GlobalTheory.BlockDensity.toSub ρ (Vs j) (hs j)` using `hv`.
+
+Use `Submodule.mem_sSup_of_mem ?_ hvT` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, isSimpleModule_iff_isAtom]`. Use `⟨fun h => hv0 ((Submodule.mem_bot _).mp (h ▸ hvT)), fun N hN => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hN0`. Take `⟨w, hwN, hw0⟩` from `(Submodule.ne_bot_iff N).mp hN0`.
+
+Apply `hN.2` to reduce the goal to its premises. Introduce `u hu`. Establish `hwj : w ∈ Vs j` using `hN.le hwN`. Take `⟨E, hE⟩` from `exists_end_apply_eq_of_ne_zero (F := K) (show (⟨w, hwj⟩ : Vs j) ≠ 0 from fun h => hw0 (congrArg Subtype.val h)) (⟨u, hu⟩ : Vs j)`. Take `⟨a, ha, hax⟩` from `hlift j E`.
+
+Establish `hu' : u = (⟨a, ha⟩ : _root_.GlobalTheory.BlockDensity.spanAlg ρ) • w` using `by show u = a w`. Rewrite using `[hax ⟨w, hwj⟩, hE]`. Rewrite using `[hu']`. Conclude with `N.smul_mem _ hwN`. Set `f' : Module.End (Module.End (_root_.GlobalTheory.BlockDensity.spanAlg ρ) V) V` to `{ toFun := f map_add' := f.map_add map_smul' := fun φ v => hcomm φ v }`.
+
+Take `⟨r, hr⟩` from `jacobson_density f' (Finset.univ.image (Module.finBasis K V))`. Establish `hfr : f = (r : Module.End K V)` using `(Module.finBasis K V).ext fun i => hr _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Rewrite using `[hfr]`. Conclude with `r.2`.
+-/
 theorem _root_.GlobalTheory.BlockDensity.density : ∀ {K Γ V : Type} [Field K] [Group Γ] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (ρ : Representation K Γ V) (ι : Type) [Fintype ι] [DecidableEq ι] (Vs : ι → Submodule K V)
     (hs : ∀ j, _root_.Formalism.MainNotions.N.Stable ρ (Vs j)), DirectSum.IsInternal Vs →

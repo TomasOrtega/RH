@@ -21,6 +21,9 @@ noncomputable section
 namespace GlobalTheory.BotFormula.ClassSumMonotone
 open GlobalTheory.SqTop
 
+/- English proof (translation)
+Take `⟨CF0, h⟩` from `h`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h⟩` from `h ε CF hCF`. Conclude with `⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => H _ _ _ _ _ (h C hC D large₂ he hx hR T Lc μ₀ hL G)⟩`.
+-/
 theorem gbig_mono' {Q Q' : GP} (h : GBig Q) (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts}
     (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ), Q G μ₀ C x b → Q' G μ₀ C x b) : GBig Q' := by
   obtain ⟨CF0, h⟩ := h
@@ -28,6 +31,11 @@ theorem gbig_mono' {Q Q' : GP} (h : GBig Q) (H : ∀ {D : D7} {T : Type} {Lc : L
   obtain ⟨C0, x₀, h⟩ := h ε CF hCF
   exact ⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => H _ _ _ _ _ (h C hC D large₂ he hx hR T Lc μ₀ hL G)⟩
 
+/- English proof (translation)
+Take `⟨CF0, h⟩` from `h`. Take `⟨CF0', h'⟩` from `h'`. Use `⟨max CF0 CF0', fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h⟩` from `h ε CF (le_of_max_le_left hCF)`. Take `⟨C0', x₀', h'⟩` from `h' ε CF (le_of_max_le_right hCF)`.
+
+Conclude with `⟨max C0 C0', max x₀ x₀', fun C hC D large₂ he hx hR T Lc μ₀ hL G => ⟨h C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ₀ hL G, h' C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hL G⟩⟩`.
+-/
 theorem gbig_and' {Q Q' : GP} (h : GBig Q) (h' : GBig Q') : GBig fun G μ₀ C x b => Q G μ₀ C x b ∧ Q' G μ₀ C x b := by
   obtain ⟨CF0, h⟩ := h
   obtain ⟨CF0', h'⟩ := h'
@@ -40,6 +48,11 @@ theorem gbig_and' {Q Q' : GP} (h : GBig Q) (h' : GBig Q') : GBig fun G μ₀ C x
 
 end GlobalTheory.BotFormula.ClassSumMonotone
 
+/- English proof (translation)
+Introduce `hPr hTA hLM hInp hBS`. Use `GlobalTheory.BotFormula.ClassSumMonotone.gbig_mono' (GlobalTheory.BotFormula.ClassSumMonotone.gbig_and' (GlobalTheory.T.bottom_triangle_theta_eval hPr hTA hLM hInp hBS) (GlobalTheory.T.bottom_triangle_pair_compare hPr hTA hLM hInp hBS)) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b H`. Take `⟨H3, H4⟩` from `H`. Introduce `W hW i j A A' WW X δ t0 hX`.
+
+Take `⟨v, hv, hsum⟩` from `GlobalTheory.T.integral_fundamentalDomain_eq_vol_mul_classSum A hX.std.1 X.m X.fd hX.is.meas.1 hX.is.meas.2`. Use `⟨v, hv, fun s Q P P' hB ea ed g pt hpt T => ?_⟩` and prove the remaining obligations. Conclude with `hsum P.a ea pt hpt _ (GlobalTheory.T.definiteBottomTriple_thetaKernel_left_rational_invariant hX s _ g) (fun k hk y => H4 W hW i j A A' WW X hX s Q δ t0 P P' hB ea ed g T k hk y) (fun x k hx hk y => H3 W hW i j A A' WW X hX s _ g P.a x k hx hk y)`.
+-/
 theorem GlobalTheory.BotFormula.theta_integral_classSum : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

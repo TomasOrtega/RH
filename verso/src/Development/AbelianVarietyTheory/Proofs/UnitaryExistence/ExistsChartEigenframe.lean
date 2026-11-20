@@ -27,6 +27,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ModuliChart
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Establish `hFV : ∀ y : X', p (F y) ∈ V` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, hF.w, Scheme.Hom.comp_apply]`. Conclude with `hV _`. Establish `le : ∀ j, F ⁻¹ᵁ L.U j ≤ F ⁻¹ᵁ (p ⁻¹ᵁ V ⊓ L.U j)` using `fun j y hy => ⟨hFV y, hy⟩`.
+
+Establish `val : ∀ (y : X') j, F y ∈ L.U j → gs (𝟙 X') y _ ((F.appLE _ _ (le j)).hom (θ j)) = (F.stalkMap y).hom (gs (𝟙 X) (F y) _ (θ j))` using `fun y j h => by`. Rewrite using `[gs_appLE F _ _ (le j) (𝟙 X') y h, Category.id_comp, gs_stalkMap F y _ (le j h)]`. Take `⟨th, hth⟩` from `sec_down ((isGen_iff w).1 hw) hL hL' (fun j => (F.appLE _ _ (le j)).hom (θ j)) fun y j j' h h' => by`. Rewrite using `[val y j h, val y j' h', LBGerm.gs_secOn hθ (F y) j j' (hFV y) h h', map_mul]`. Use `congr 1`.
+
+Use `PushInv.gm_comp F (𝟙 X) y (L.U j ⊓ L.U j') ⟨h, h'⟩ (L.g j j')` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this.symm`. Use `⟨th, fun y => ?_⟩` and prove the remaining obligations. Take `⟨g, i, hg, hi⟩` from `hne (t y) (hV y)`.
+
+Take `⟨x, h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback hF g y hg`. Take `rfl : F x = g` from `h₁`. Take `⟨k, hk⟩` from `exists_chart hL' x`. Establish `hm : F x ∈ p ⁻¹ᵁ V ⊓ L.U i` using `X.basicOpen_le _ hi`. Use `⟨x, h₂, (SectionBaseChange.mem_nonzeroLocus th _).2 ⟨k, hk, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `e` using `hth _ (𝟙 _) x i k hm.2 hk`. Rewrite `e` using `[val x i hm.2]`. Establish `hu : IsUnit (gs (𝟙 X) (F x) _ (θ i))`. Rewrite using `[gs_eq (𝟙 X) (F x) _ hm]`. Conclude with `(X.mem_basicOpen _ _ hm).1 hi`.
+
+Conclude with `isUnit_of_mul_isUnit_right (e ▸ hu.map (F.stalkMap x).hom)`.
+-/
 theorem exists_sec_of_secOn {X X' S S' : Scheme.{0}} {p : X ⟶ S} {p' : X' ⟶ S'} {t : S' ⟶ S} {F : X' ⟶ X}
     (hF : IsPullback F p' p t) {L : LB X} {L' : LB X'} (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull F))
     {V : S.Opens} (hV : ∀ y, t y ∈ V) {θ : ∀ i, Γ(X, p ⁻¹ᵁ V ⊓ L.U i)} (hθ : θ ∈ secOn L (p ⁻¹ᵁ V))
@@ -60,6 +73,9 @@ theorem exists_sec_of_secOn {X X' S S' : Scheme.{0}} {p : X ⟶ S} {p' : X' ⟶ 
     exact (X.mem_basicOpen _ _ hm).1 hi
   exact isUnit_of_mul_isUnit_right (e ▸ hu.map (F.stalkMap x).hom)
 
+/- English proof (translation)
+Establish `h : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away r)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hr`. Conclude with `h`.
+-/
 theorem exists_away_point {R : Type} [CommRing R] (p : PrimeSpectrum R) {r : R} (hr : r ∉ p.asIdeal) :
     ∃ q : PrimeSpectrum (Localization.Away r), spMap (algebraMap R (Localization.Away r)) q = p := by
   have h : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away r))) := by
@@ -69,17 +85,34 @@ theorem exists_away_point {R : Type} [CommRing R] (p : PrimeSpectrum R) {r : R} 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+The claim follows from `ObjPull.objPull_of_pol pol_pull E H D l B B b b (RingHom.id B) S S' s s' f rfl rfl (h.trans ((Category.comp_id _).symm.trans (congrArg (s' ≫ ·) (Spec.map_id _).symm))) o`.
+-/
 theorem exists_pull {B : Type} [CommRing B] {b : Base l B} {S S' : Scheme.{0}} {s : S ⟶ Sp B} (s' : S' ⟶ Sp B)
     (f : S' ⟶ S) (h : f ≫ s = s') (o : Obj D l b s) : ∃ o' : Obj D l b s', Nonempty (ObjMap o' o f) :=
   ObjPull.objPull_of_pol pol_pull E H D l B B b b (RingHom.id B) S S' s s' f rfl rfl
     (h.trans ((Category.comp_id _).symm.trans (congrArg (s' ≫ ·) (Spec.map_id _).symm))) o
 
+/- English proof (translation)
+Take `⟨n, -⟩` from `((ObjMaps.id_comp_cancel E H D l B B B b b b S S' S'' s s' s'' o o' o'').2 f f' m).1 m'`. Conclude with `⟨n⟩`.
+-/
 theorem objMap_comp {B : Type} [CommRing B] {b : Base l B} {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B}
     {s'' : S'' ⟶ Sp B} {o : Obj D l b s} {o' : Obj D l b s'} {o'' : Obj D l b s''} {f : S' ⟶ S} {f' : S'' ⟶ S'}
     (m' : ObjMap o'' o' f') (m : ObjMap o' o f) : Nonempty (ObjMap o'' o (f' ≫ f)) := by
   obtain ⟨n, -⟩ := ((ObjMaps.id_comp_cancel E H D l B B B b b b S S' S'' s s' s'' o o' o'').2 f f' m).1 m'
   exact ⟨n⟩
 
+/- English proof (translation)
+Take `⟨r, hr, v₀, hv₀⟩` from `LieLoc.lie_locally_free R o.t.G _ (ObjDim.smoothOfRelativeDimension o) p`. Take `⟨p₁, hp₁⟩` from `exists_away_point p hr`. Set `R₁` to `Localization.Away r`. Set `f₁ : R →+* R₁` to `algebraMap R R₁`. Take `⟨o₁, ⟨m₁⟩⟩` from `exists_pull (spMap (f₁.comp j) ≫ spMap (IntermediateField.inclusion c.le).toRingHom) (spMap f₁) (by rw [spMap_comp j f₁, Category.assoc]) o`.
+
+Take `⟨e, he, -⟩` from `grpPullback_iso m₁.cart (isGrpPullback_pullback o.t.G (spMap f₁))`. Establish `hv₁ : IsLieBasis (fun i => v₀ i ≫ e.inv)` using `Chart.isLieBasis_iso e (by`. Simplify `hv₀)` using `only [Category.assoc, e.inv_hom_id, Category.comp_id]`. Take `⟨r', hr', Hv⟩` from `exists_isLieBasis_eigen E H D l c g ty hty R₁ (f₁.comp j) o₁ _ _ hv₁ p₁`. Take `⟨p₂, hp₂⟩` from `exists_away_point p₁ hr'`.
+
+Set `R₂` to `Localization.Away r'`. Set `f₂ : R₁ →+* R₂` to `algebraMap R₁ R₂`. Take `⟨o₂, ⟨m₂⟩⟩` from `exists_pull (spMap ((f₂.comp f₁).comp j) ≫ spMap (IntermediateField.inclusion c.le).toRingHom) (spMap f₂) (by rw [RingHom.comp_assoc, spMap_comp (f₁.comp j) f₂, Category.assoc]) o₁`. Take `⟨v, hv, hev⟩` from `Hv o₂.t ⟨m₂.toSABMap⟩`. Establish `i₁ : IsOpenImmersion (spMap f₁)` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away r)))))`.
+
+Establish `i₂ : IsOpenImmersion (spMap f₂)` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R₁ (Localization.Away r')))))`. Use `⟨R₂, inferInstance, f₂.comp f₁, o₂, v, ?_, ?_, ?_, hv, hev⟩` and prove the remaining obligations. Rewrite using `[spMap_comp f₁ f₂]`. Use `infer_instance`. Use `⟨p₂, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[spMap_comp f₁ f₂]`. Conclude with `(congrArg (spMap f₁) hp₂).trans hp₁`. Rewrite using `[spMap_comp f₁ f₂]`. Conclude with `objMap_comp m₂ m₁`.
+-/
 theorem exists_eigen_chart (c : Coeff l) {g : ℕ} {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H D.p D.q ty)
     {R : Type} [CommRing R] (j : c.F →+* R)
     (o : Obj D l (baseKA l) (spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom)) (p : Sp R) :
@@ -118,6 +151,21 @@ theorem exists_eigen_chart (c : Coeff l) {g : ℕ} {ty : Fin g → (E →+* ℂ)
     exact (congrArg (spMap f₁) hp₂).trans hp₁
   · rw [spMap_comp f₁ f₂]; exact objMap_comp m₂ m₁
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H D l Xo c g ty hty x`. Use `Xo.smooth` as an intermediate fact. Establish `hsm : Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Set `π : Xo.XF c ⟶ Xo.X` to `pullback.fst _ _`.
+
+Set `σ : Xo.XF c ⟶ Sp c.F` to `pullback.snd _ _`. Establish `hσ : Smooth σ` using `inferInstanceAs (Smooth (pullback.snd Xo.s _))`. Establish `hred : AlgebraicGeometry.IsReduced (Xo.XF c)` using `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field c.F _ σ hσ).1`. Take `⟨V, hV, θ, hθ, -, hne⟩` from `PushInv.pushInvertible hS Xo.X (Obj.toPolAV Xo.univ) (π x)`. Take `⟨B, j₀, hj₀, ⟨p, hp⟩, hsub⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := Xo.XF c) (x := x) (U := π ⁻¹ᵁ V) hV`.
+
+Set `j : c.F →+* B` to `(Spec.preimage (j₀ ≫ σ)).hom`. Establish `hj : j₀ ≫ σ = spMap j` using `(Spec.map_preimage (j₀ ≫ σ)).symm`. Take `⟨o₀, ⟨m₀⟩⟩` from `exists_pull (spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom) (j₀ ≫ π) (by rw [← hj, Category.assoc, Category.assoc]; exact congrArg (j₀ ≫ ·) pullback.condition) Xo.univ`. Take `⟨R, _, f, o, v, hf, ⟨q, hq⟩, ⟨m₁⟩, hv, hev⟩` from `exists_eigen_chart c hty j o₀ p`. Take `⟨m⟩` from `objMap_comp m₁ m₀`.
+
+Set `jR : Sp R ⟶ Xo.XF c` to `spMap f ≫ j₀`. Establish `hjR : IsOpenImmersion jR` using `IsOpenImmersion.comp (spMap f) j₀`. Establish `hs : jR ≫ σ = spMap (f.comp j)`. Rewrite using `[spMap_comp j f, ← hj]`. Conclude with `Category.assoc _ _ _`.
+
+Establish `hL : LBIso o.t.PP.L (Xo.univ.t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Take `⟨th, hth⟩` from `exists_sec_of_secOn m.cart.1 Xo.univ.t.PP.isLB o.t.PP.isLB hL (V := V) (fun y => hsub ⟨spMap f y, rfl⟩) hθ hne`. Use `letI : Algebra c.F R := (f.comp j).toAlgebra`.
+
+Use `⟨R, inferInstance, inferInstance, jR, o, v, th, ?_, ?_, hjR, ⟨q, ?_⟩, hs, ?_, hv, hev, hth, SectionBaseChange.generates hS (Obj.toPolAV Xo.univ) m.cart.1 o.t.PP.isLB hL th hth⟩` and prove the remaining obligations. Establish `h : LocallyOfFiniteType (spMap (f.comp j))` using `by rw [← hs]; infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (f.comp j))).1 h`. Establish `h : AlgebraicGeometry.IsReduced (Sp R)` using `isReduced_of_isOpenImmersion jR`. Conclude with `(affine_isReduced_iff (CommRingCat.of R)).1 h`.
+
+Conclude with `(congrArg j₀ hq).trans hp`. Establish `e : jR ≫ π = spMap f ≫ j₀ ≫ π` using `Category.assoc _ _ _`. Conclude with `(congrArg (fun u => Nonempty (ObjMap o Xo.univ u)) e).mpr ⟨m⟩`.
+-/
 theorem exists_chart_eigenframe : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H D.p D.q ty → ∀ x : Xo.XF c, ∃ (R : Type) (_ : CommRing R) (_ : Algebra c.F R) (jR : Sp R ⟶ Xo.XF c) (o : Obj D l (baseKA l) (spMap (algebraMap c.F R) ≫ spMap (IntermediateField.inclusion c.le).toRingHom)) (v : Fin g → (epsR R ⟶ o.t.G)) (th : o.t.PP.L.Sec), Algebra.FiniteType c.F R ∧ IsReduced R ∧ IsOpenImmersion jR ∧ x ∈ Set.range jR ∧ jR ≫ pullback.snd _ _ = spMap (algebraMap c.F R) ∧ Nonempty (ObjMap o Xo.univ (jR ≫ pullback.fst _ _)) ∧ IsLieBasis v ∧ (∀ i a, (v i ≫ o.t.act.act a).left = spMap (epsScaleR (algebraMap c.F R ⟨ty i (a : E), c.conj (ty i) a⟩)) ≫ (v i).left) ∧ (∀ y : Sp R, ∃ x : o.t.G.left, o.t.G.hom x = y ∧ x ∈ Out.nonzeroLocus th) ∧ (∀ s : o.t.PP.L.Sec, ∃! a : R, ∀ i, s.f i = constFn o.t.G.hom _ a * th.f i) := by
   intro hS E _ _ _ H D l Xo c g ty hty x
   have := Xo.smooth

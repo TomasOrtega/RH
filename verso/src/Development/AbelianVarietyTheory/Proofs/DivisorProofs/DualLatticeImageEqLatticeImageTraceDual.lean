@@ -13,12 +13,24 @@ namespace GlobalTheory.LipschitzTR
 section
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.trace_eq_sum_realEmbeddings, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[map_mul, mul_comm]`.
+-/
 theorem inner_remb_eq_trace (a b : F) :
     ⟪remb F a, remb F b⟫ = ((Algebra.trace ℚ F (a * b) : ℚ) : ℝ) := by
   rw [GlobalTheory.trace_eq_sum_realEmbeddings, PiLp.inner_apply]
   refine Finset.sum_congr rfl fun τ _ => ?_
   simp [map_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Formalism.H.dual, LinearMap.BilinForm.mem_dualSubmodule, FractionalIdeal.mem_dual hN]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Take `⟨z, hz⟩` from `Submodule.mem_one.mp (h (remb F a) ((mem_latOf N _).mpr ⟨a, ha, rfl⟩))`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.traceForm_apply]`. Establish `: ((z : ℚ) : ℝ) = ((Algebra.trace ℚ F (ν * a) : ℚ) : ℝ)`. Establish `h2 : ((z : ℤ) : ℝ) = ⟪remb F ν, remb F a⟫` using `by simpa using hz`. Rewrite `h2` using `[inner_remb_eq_trace]`. Conclude with `h2` after adjusting the coercions.
+
+Conclude with `this` after adjusting the coercions. Introduce `h y hy`. Take `⟨a, ha, rfl⟩` from `(mem_latOf N y).mp hy`. Take `⟨z, hz⟩` from `h a ha`. Rewrite `hz` using `[Algebra.traceForm_apply]`.
+
+Use `Submodule.mem_one.mpr ⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[show (innerₗ (RSp F)) (remb F ν) (remb F a) = ⟪remb F ν, remb F a⟫ from rfl, inner_remb_eq_trace, ← hz]`. Simplify using the standard rewrite rules.
+-/
 theorem remb_mem_dual_latOf_iff (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 0) (ν : F) :
     remb F ν ∈ Formalism.H.dual (latOf N) ↔ ν ∈ FractionalIdeal.dual ℤ ℚ N := by
   rw [Formalism.H.dual, LinearMap.BilinForm.mem_dualSubmodule, FractionalIdeal.mem_dual hN]
@@ -41,6 +53,23 @@ theorem remb_mem_dual_latOf_iff (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 
       inner_remb_eq_trace, ← hz]
     simp
 
+/- English proof (translation)
+Use `set B := Algebra.traceForm ℚ F`. Establish `hB : B.Nondegenerate` using `traceForm_nondegenerate ℚ F`. Use `set b' := B.dualBasis hB b`. Establish `hdel : ∀ i j, Algebra.trace ℚ F (b' j * b i) = if i = j then 1 else 0` using `fun i j => by`. Use `LinearMap.BilinForm.apply_dualBasis_left hB b j i` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.traceForm_apply]`. Then use the resulting hypothesis. Establish `hc : ∀ i, ∃ z : ℤ, ⟪μ, remb F (b i)⟫ = z` using `fun i => by`. Use `(LinearMap.BilinForm.mem_dualSubmodule _).mp hμ (remb F (b i)) ((mem_latOf N _).mpr ⟨b i, hbN i, rfl⟩)` as an intermediate fact. Take `⟨z, hz⟩` from `Submodule.mem_one.mp this`. Conclude with `⟨z, by simpa using hz.symm⟩`.
+
+Use `choose c hc using hc`. Use `set ν : F := ∑ j, (c j : ℚ) • b' j`. Establish `hνb : ∀ i, ⟪remb F ν, remb F (b i)⟫ = c i` using `fun i => by`. Rewrite using `[inner_remb_eq_trace]`. Establish `: Algebra.trace ℚ F (ν * b i) = c i`.
+
+Simplify using `only [ν, Finset.sum_mul, smul_mul_assoc, map_sum, map_smul, hdel, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `hind : LinearIndependent ℝ (fun i => remb F (b i))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg j`. Use `congrArg (fun w => ⟪w, remb F (b' j)⟫) hg` as an intermediate fact. Simplify using `only [sum_inner, real_inner_smul_left, inner_remb_eq_trace, inner_zero_left] at this`. Simplify using `only [mul_comm (b _) (b' j), hdel] at this`. Rewrite `this` using `[Finset.sum_eq_single j (fun i _ hi => by rw [if_neg hi]; simp) (by simp)]`.
+
+Simplify using `using this`. Establish `hcard : Fintype.card ι = Module.finrank ℝ (RSp F)`. Rewrite using `[finrank_euclideanSpace, GlobalTheory.card_realEmbeddings, Module.finrank_eq_card_basis b]`. Use `haveI : Nonempty ι := b.index_nonempty`. Set `E` to `basisOfLinearIndependentOfCardEqFinrank hind hcard`.
+
+Establish `hz : innerₛₗ ℝ (μ - remb F ν) = 0` using `E.ext fun i => by`. Simplify using `[E, inner_sub_left, hνb, hc]`. Establish `h0` using `LinearMap.congr_fun hz (μ - remb F ν)`. Establish `h1 : ⟪μ - remb F ν, μ - remb F ν⟫ = 0`. Rewrite `h0` using `[LinearMap.zero_apply]`.
+
+Conclude with `h0`. Rewrite `h1` using `[inner_self_eq_zero, sub_eq_zero]`. Conclude with `⟨ν, h1.symm⟩`.
+-/
 theorem exists_remb_eq_of_mem_dual {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℚ F)
     (N : FractionalIdeal (𝓞 F)⁰ F) (hbN : ∀ i, b i ∈ N) (μ : RSp F)
     (hμ : μ ∈ Formalism.H.dual (latOf N)) : ∃ ν : F, remb F ν = μ := by
@@ -85,6 +114,13 @@ theorem exists_remb_eq_of_mem_dual {ι : Type} [Fintype ι] [DecidableEq ι] (b 
 
 end
 
+/- English proof (translation)
+Use extensionality with `μ`. Prove the components needed by the constructor for the conclusion. Introduce `hμ`. Rewrite using `[mem_latOf]`. Set `I : (FractionalIdeal (𝓞 F)⁰ F)ˣ` to `Units.mk0 N hN`.
+
+Establish `hbN : ∀ i, basisOfFractionalIdeal F I i ∈ N` using `fun i => by`. Use `(mem_span_basisOfFractionalIdeal F (I := I) (x := basisOfFractionalIdeal F I i)).mp (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Simplify `this` using `[I]`. Take `⟨ν, hν⟩` from `exists_remb_eq_of_mem_dual (basisOfFractionalIdeal F I) N hbN μ hμ`. Substitute `hν` using the available equality.
+
+Conclude with `⟨ν, (remb_mem_dual_latOf_iff N hN ν).mp hμ, rfl⟩`. Introduce `hμ`. Take `⟨ν, hν, rfl⟩` from `(mem_latOf _ μ).mp hμ`. Conclude with `(remb_mem_dual_latOf_iff N hN ν).mpr hν`.
+-/
 theorem dual_latOf_eq_latOf_traceDual (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (N : FractionalIdeal (𝓞 F)⁰ F) (hN : N ≠ 0) :
     Formalism.H.dual (latOf N) = latOf (FractionalIdeal.dual ℤ ℚ N) := by

@@ -13,6 +13,9 @@ variable {A : Type} [CommRing A] {m : Type} [Fintype m] [DecidableEq m]
 
 def glueM (e : A) (M : Matrix m m A) : Matrix m m A := e • M + (1 - e) • (1 : Matrix m m A)
 
+/- English proof (translation)
+Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h2 : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Establish `h3 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, h1, sub_zero]`. Simplify using `only [glueM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_one, Matrix.one_mul, h1, h2, h3, he, zero_smul, add_zero, zero_add]`.
+-/
 theorem glueM_mul {e : A} (he : e * e = e) (X Y : Matrix m m A) :
     glueM e X * glueM e Y = glueM e (X * Y) := by
   have h1 : e * (1 - e) = 0 := by rw [mul_sub, mul_one, he, sub_self]
@@ -21,6 +24,9 @@ theorem glueM_mul {e : A} (he : e * e = e) (X Y : Matrix m m A) :
   simp only [glueM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_one,
     Matrix.one_mul, h1, h2, h3, he, zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[glueM, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem glueM_one (e : A) : glueM e (1 : Matrix m m A) = 1 := by
   rw [glueM, ← add_smul, add_sub_cancel, one_smul]
 
@@ -30,9 +36,17 @@ def glueU {e : A} (he : e * e = e) (g : GL m A) : GL m A where
   val_inv := by rw [glueM_mul he, Units.mul_inv, glueM_one]
   inv_val := by rw [glueM_mul he, Units.inv_mul, glueM_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glueU_val {e : A} (he : e * e = e) (g : GL m A) :
     ((glueU he g : GL m A) : Matrix m m A) = glueM e (g : Matrix m m A) := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, glueM, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hσ]`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem cT_glueM (σ : A →+* A) {e : A} (hσ : σ e = e) (M : Matrix m m A) :
     Formalism.UG.cT σ (glueM e M) = glueM e (Formalism.UG.cT σ M) := by
   ext a b
@@ -43,6 +57,9 @@ theorem cT_glueM (σ : A →+* A) {e : A} (hσ : σ e = e) (M : Matrix m m A) :
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Establish `hg' : Formalism.UG.cT σ (g : Matrix m m A) * 1 * (g : Matrix m m A) = 1` using `hg`. Use `show Formalism.UG.cT σ ((glueU he g : GL m A) : Matrix m m A) * 1 * ((glueU he g : GL m A) : Matrix m m A) = 1`. Rewrite using `[glueU_val, cT_glueM σ hσ, Matrix.mul_one, glueM_mul he]`. Rewrite `hg'` using `[Matrix.mul_one]`. Rewrite using `[hg', glueM_one]`.
+-/
 theorem glueU_mem (σ : A →+* A) {e : A} (he : e * e = e) (hσ : σ e = e) {g : GL m A}
     (hg : g ∈ Formalism.UG.UJ σ (1 : Matrix m m A)) : glueU he g ∈ Formalism.UG.UJ σ (1 : Matrix m m A) := by
   have hg' : Formalism.UG.cT σ (g : Matrix m m A) * 1 * (g : Matrix m m A) = 1 := hg
@@ -51,11 +68,17 @@ theorem glueU_mem (σ : A →+* A) {e : A} (he : e * e = e) (hσ : σ e = e) {g 
   rw [Matrix.mul_one] at hg'
   rw [hg', glueM_one]
 
+/- English proof (translation)
+Rewrite using `[glueM, add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul, smul_smul, hfe, zero_smul, zero_add, mul_sub, mul_one, hfe, sub_zero]`.
+-/
 theorem glue_smul_zero {f e : A} (hfe : f * e = 0) (M Y : Matrix m m A) :
     f • (glueM e M * Y) = f • Y := by
   rw [glueM, add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul, smul_smul,
     hfe, zero_smul, zero_add, mul_sub, mul_one, hfe, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[glueM, add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul, smul_smul, hfe, mul_sub, mul_one, hfe, sub_self, zero_smul, add_zero]`.
+-/
 theorem glue_smul_same {f e : A} (hfe : f * e = f) (M Y : Matrix m m A) :
     f • (glueM e M * Y) = f • (M * Y) := by
   rw [glueM, add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, smul_add, smul_smul, smul_smul,
@@ -67,11 +90,17 @@ section Idem
 
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hPQ : P = Q` using `funext fun v => propext (h v)`. Substitute `hPQ` using the available equality. Both sides reduce to the same expression.
+-/
 theorem eP_congr {P Q : HeightOneSpectrum (𝓞 F) → Prop} (h : ∀ v, P v ↔ Q v) : eP E P = eP E Q := by
   have hPQ : P = Q := funext fun v => propext (h v)
   subst hPQ
   rfl
 
+/- English proof (translation)
+Establish `h0 : ((Formalism.L2.DIV.idemAd (fun _ : HeightOneSpectrum (𝓞 F) => False) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) = 0`. Use extensionality with `v`. Rewrite using `[Formalism.L2.DIV.idemAd_neg (P := fun _ : HeightOneSpectrum (𝓞 F) => False) (v := v) (fun h => h)]`. Both sides reduce to the same expression. Rewrite using `[eP, h0, TensorProduct.tmul_zero]`.
+-/
 theorem eP_false : eP E (fun _ : HeightOneSpectrum (𝓞 F) => False) = 0 := by
   have h0 : ((Formalism.L2.DIV.idemAd (fun _ : HeightOneSpectrum (𝓞 F) => False) : Formalism.UG.intAd F)
       : Formalism.L2.Herm.Af F) = 0 := by
@@ -80,6 +109,9 @@ theorem eP_false : eP E (fun _ : HeightOneSpectrum (𝓞 F) => False) = 0 := by
     rfl
   rw [eP, h0, TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.sigR, eP]`. Simplify using the standard rewrite rules.
+-/
 theorem sigR_eP [StarRing E] (hc : Formalism.BasicNotions.CMData F E) (P : HeightOneSpectrum (𝓞 F) → Prop) :
     Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F) (eP E P) = eP E P := by
   rw [Formalism.UG.sigR, eP]
@@ -87,6 +119,31 @@ theorem sigR_eP [StarRing E] (hc : Formalism.BasicNotions.CMData F E) (P : Heigh
 
 end Idem
 
+/- English proof (translation)
+Introduce `hI F E _ _ _ _ _ _ hc n T γ`. Establish `hmul : ∀ P Q : HeightOneSpectrum (𝓞 F) → Prop, eP E P * eP E Q = eP E (fun v => P v ∧ Q v)` using `(hI F E).2.1`. Establish `hAt : ∀ v : HeightOneSpectrum (𝓞 F), eAt E v = eP E (fun w => w = v)` using `fun v => rfl`. It suffices to establish `key : ∃ y ∈ UAd hc n, (∀ v ∈ T, eAt E v • ((y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = eAt E v • ((Formalism.UG.bc (iA F E) ((γ v : GL (Fin n) E)⁻¹) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fi …`. Take `⟨y, hy, h1, h2⟩` from `key`.
+
+Use `⟨y⁻¹, inv_mem hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[inv_inv]`. Conclude with `h1 v hv`. Rewrite using `[inv_inv]`.
+
+Conclude with `h2`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, fun v hv => absurd hv (Finset.notMem_empty v), rfl⟩`. Consider the case `insert v T hv ih`. Take `⟨y, hy, h1, h2⟩` from `ih`.
+
+Establish `hgU : Formalism.UG.bc (iA F E) ((γ v : GL (Fin n) E)⁻¹) ∈ UAd hc n` using `(ratIn hc n (γ v)⁻¹).2`. Establish `hev : eAt E v * eAt E v = eAt E v`. Rewrite using `[hAt, hmul]`. Conclude with `eP_congr (fun u => and_self_iff)`. Establish `hσ : Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F) (eAt E v) = eAt E v` using `sigR_eP hc _`.
+
+Establish `hJ : (1 : Matrix (Fin n) (Fin n) E).map (Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F)) = 1 := Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hgU' : Formalism.UG.bc (iA F E) ((γ v : GL (Fin n) E)⁻¹) ∈ Formalism.UG.UJ (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F)) (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Establish `h` using `hgU`. Express the relevant statement in the definitionally equal form `_ ∈ Formalism.UG.UJ (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F)) ((1 : Matrix (Fin n) (Fin n) E).map (Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F))) at h`. Rewrite `h` using `[hJ]`. Then use the resulting hypothesis.
+
+Establish `hzU : glueU hev (Formalism.UG.bc (iA F E) ((γ v : GL (Fin n) E)⁻¹)) ∈ UAd hc n`. Express the relevant statement in the definitionally equal form `_ ∈ Formalism.UG.UJ (Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F)) ((1 : Matrix (Fin n) (Fin n) E).map (Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F)))`. Rewrite using `[hJ]`. Conclude with `glueU_mem _ hev hσ hgU'`. Use `⟨glueU hev (Formalism.UG.bc (iA F E) ((γ v : GL (Fin n) E)⁻¹)) * y, mul_mem hzU hy, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw`. Rewrite `hw` using `[Finset.mem_insert]`. Break down `hw with hwv | hw` into its components or cases. Rewrite using `[hwv, Units.val_mul, glueU_val, glue_smul_same hev]`. Establish `hvT : eAt E v * eP E (fun u => u ∉ T) = eAt E v`.
+
+Rewrite using `[hAt, hmul]`. Conclude with `eP_congr (fun u => ⟨fun h => h.1, fun h => ⟨h, by rw [h]; exact hv⟩⟩)`. Establish `hy1 : eAt E v • ((y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = eAt E v • (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_smul, hy1, Matrix.mul_smul, Matrix.mul_one]`.
+
+Establish `hwv : w ≠ v` using `fun h => hv (h ▸ hw)`. Establish `h0 : eAt E w * eAt E v = 0`. Rewrite using `[hAt w, hAt v, hmul, ← eP_false]`. Conclude with `eP_congr (fun u => ⟨fun h => hwv (h.1.symm.trans h.2), False.elim⟩)`. Rewrite using `[Units.val_mul, glueU_val, glue_smul_zero h0]`.
+
+Conclude with `h1 w hw`. Establish `hf0 : eP E (fun u => u ∉ insert v T) * eAt E v = 0`. Rewrite using `[hAt v, hmul, ← eP_false]`. Conclude with `eP_congr (fun u => ⟨fun h => h.1 (by rw [h.2]; exact Finset.mem_insert_self v T), False.elim⟩)`. Establish `hff : eP E (fun u => u ∉ insert v T) * eP E (fun u => u ∉ T) = eP E (fun u => u ∉ insert v T)`.
+
+Rewrite using `[hmul]`. Conclude with `eP_congr (fun u => ⟨fun h => h.1, fun h => ⟨h, fun hu => h (Finset.mem_insert_of_mem hu)⟩⟩)`. Rewrite using `[Units.val_mul, glueU_val, glue_smul_zero hf0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`.
+
+Use `_ = eP E (fun u => u ∉ insert v T) • (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by`. Rewrite using `[smul_smul, hff]`.
+-/
 theorem glueExists_of : IdemCalc → GlueExists := by
   intro hI F E _ _ _ _ _ _ hc n T γ
   classical

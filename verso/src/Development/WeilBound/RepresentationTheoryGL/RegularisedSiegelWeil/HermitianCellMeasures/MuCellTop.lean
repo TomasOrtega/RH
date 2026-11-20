@@ -16,6 +16,9 @@ namespace PositivityTheory.Rg.Rsw.Cell
 
 open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `hH hI` and use `have hU := GlobalTheory.CompanionTheory.UnitCell.unitCrit hI have hA := GlobalTheory.CompanionTheory.CellTop.cellAlg hI muCell_of GlobalTheory.CompanionTheory.RswCell.riesz (GlobalTheory.CompanionTheory.RswCell.NullCompl.nullC_of_invM GlobalTheory.CompanionTheory.RswCellInv.invM) …`.
+-/
 theorem muCell : HtExist → IdemEx → MuCell := fun hH hI =>
   have hU := GlobalTheory.CompanionTheory.UnitCell.unitCrit hI
   have hA := GlobalTheory.CompanionTheory.CellTop.cellAlg hI

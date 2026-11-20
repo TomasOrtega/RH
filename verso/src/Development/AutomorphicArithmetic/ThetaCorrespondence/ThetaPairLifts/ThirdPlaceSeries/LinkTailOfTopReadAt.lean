@@ -26,6 +26,9 @@ open Formalism.L2.Forms GlobalTheory.Core.Rk.Top
 variable {D : D7}
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word}
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih => show (f.t t).K i ((f.t t).col i ψ) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem tcol_alt (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (t : W.P.T) (i : ℕ) (ψ : (f.t t).Col 0) :
     (f.t t).col i ψ = Formalism.ThetaLiftIndependence.chainOpM (D.chTw u (W.P.I.tup t)).wt (D.chTw u (W.P.I.tup t)).Kmap i ψ := by
   induction i with
@@ -62,6 +65,17 @@ end GlobalTheory.MiTop.TailColumnRecursion
 namespace GlobalTheory.MiTop
 open Classical
 open GlobalTheory.MiTop.TailColumnRecursion Formalism.L2.Forms
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f hTR h0 n h t φ F F' hFF G hG`. Take `⟨hJ, -, hall⟩` from `hTR`. Establish `hR` using `(hall t).2 F F' hFF`. Establish `hex : ∃ G0, _root_.GlobalTheory.Fam.ReadsCoefficients W u f.j f.g.bT (W.P.I.tup t) G0 (_root_.GlobalTheory.Fam.leadingLinearMap W t F')` using `⟨_, hR⟩`. Establish `hspec` using `hex.choose_spec`.
+
+Use `show _root_.GlobalTheory.Fam.tailCoefficient W u f.j f.g.bT (W.P.I.tup t) (Eq.rec (motive := fun n _ => (D.chTw u (W.P.I.tup t)).cls n → (D.chTw u (W.P.I.tup t)).Y n → ℂ) ((f.t t).col (2 * n) (_root_.GlobalTheory.MiTop.col0_alt f t φ)) h) G.1 = _`. Rewrite using `[hG, _root_.GlobalTheory.MiTop.TailColumnRecursion.tcol_alt, rec_chain]`. Unfold `_root_.GlobalTheory.Fam.tailCoefficient`. Rewrite using `[dif_pos hex]`. Distinguish the cases in `hμ : W.P.I.tup t = D.what₂.mu0`.
+
+Rewrite using `[dif_pos hμ]`. Use `referenceTuple_familyPeriod_eq_period u _ hμ _ φ (h0 t hμ φ) _ _ ?_` and prove the remaining obligations. Establish `hv : ∀ z ∈ (D.fm u).ptC, ∀ c, (W.R.T.cols.forms u).valP.eW z c ∈ LinearMap.range f.j`. Introduce `z hz c`. Rewrite using `[hJ.range]`.
+
+Conclude with `fic_val _ _ _ _ (((W.R.T.cols.forms u).valP.ptC z).1 hz) c`. Conclude with `reads_uniq _ _ _ _ (W.R.T.cols.forms u).jM hv (W.R.T.cols.forms u).per.2.1 (W.R.T.cols.forms u).per.2.2 (pos_0 (W.R.T.cols.forms u)) (hspec.1 hμ) (hR.1 hμ)`. Rewrite using `[dif_neg hμ, D.perCol_tie u _ hμ, PeriodMap.PtilCol, PeriodMap.Ptil, PeriodMap.Ptil]`. Establish `hv : ∀ z ∈ (ex.tw.fm u (W.P.I.tup t)).ptC, ∀ c, (W.R.T.tw.pt.val u _ hμ).eW z c ∈ LinearMap.range f.j`. Introduce `z hz c`.
+
+Rewrite using `[hJ.range, ← sg_eq (W.R.T.tw.pt.val u _ hμ) (W.R.T.cols.forms u).valP]`. Conclude with `fic_val _ _ _ _ (((W.R.T.tw.pt.val u _ hμ).ptC z).1 hz) c`. Rewrite using `[reads_uniq _ _ _ _ (W.R.T.tw.ptE.jM u _) hv (W.R.T.tw.ptE.per u _ hμ).2.1 (W.R.T.tw.ptE.per u _ hμ).2.2 (pos_G (W.R.T.tw.pt.val u _ hμ)) (hspec.2 hμ) (hR.2 hμ)]`. Both sides reduce to the same expression.
+-/
 theorem linkTail_of_topReadAt_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), ∀ u (f : _root_.GlobalTheory.Fam.FamilyCharacter W u), _root_.GlobalTheory.Fam.LeadingReadAt W u f.j f.g.bT → (∀ t, W.P.I.tup t = D.what₂.mu0 → ∀ φ : D.what₂.Mu u, HEq (_root_.GlobalTheory.MiTop.col0_alt f t φ) (D.eMu u φ).1) → _root_.GlobalTheory.MiTop.LinkTailCondition f := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hTR h0 n h t φ F F' hFF G hG
   obtain ⟨hJ, -, hall⟩ := hTR

@@ -27,11 +27,17 @@ def ModelFunctionsMultiply : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (m₁ m₂ : Fin n → ℤ), NonnegDom ε m₁ → NonnegDom ε m₂ → ∀ k : KG ε,
     f0K ε (m₁ + m₂) k = f0K ε m₁ k * f0K ε m₂ k
 
+/- English proof (translation)
+Take `⟨φ, hφ, -, hw⟩` from `kType_unique T T'`. Unfold `cK`. Rewrite using `[← hw, ← hφ, LinearIsometryEquiv.inner_map_map]`.
+-/
 theorem cK_transport {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T T' : KType ε Λ) (k : KG ε) : cK T k = cK T' k := by
   obtain ⟨φ, hφ, -, hw⟩ := kType_unique T T'
   unfold cK
   rw [← hw, ← hφ, LinearIsometryEquiv.inner_map_map]
 
+/- English proof (translation)
+Take `⟨T', hT'⟩` from `hT n ε _ (modelKType ε hm) c`. Establish `e : (fun a => ((m a : ℝ)) + (c : ℝ)) = Λ` using `funext fun a => (hΛ a).symm`. Substitute `e` using the available equality. Rewrite using `[cK_transport T T' k, hT' k, hM n ε m hm k]`.
+-/
 theorem cK_eq_f0K (hM : CkModel) (hT : CkTwist) {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ)
     (m : Fin n → ℤ) (hm : NonnegDom ε m) (c : ℤ) (hΛ : ∀ a, Λ a = (m a : ℝ) + c) (k : KG ε) :
     cK T k = ‖f0K ε m k‖ := by
@@ -40,6 +46,13 @@ theorem cK_eq_f0K (hM : CkModel) (hT : CkTwist) {ε : Fin n → Bool} {Λ : Fin 
   subst e
   rw [cK_transport T T' k, hT' k, hM n ε m hm k]
 
+/- English proof (translation)
+Use `choose m hm using hint`. Use `⟨fun a => m a + ∑ b, |m b|, -∑ b, |m b|, ⟨fun a b hab he => ?_, fun a => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `hdom a b hab he`. Rewrite `h` using `[hm a, hm b]`. Establish `: m b ≤ m a` using `by exact_mod_cast h`.
+
+Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : |m a| ≤ ∑ b, |m b|` using `Finset.single_le_sum (f := fun b => |m b|) (fun b _ => abs_nonneg _) (Finset.mem_univ a)`. Establish `h2` using `neg_abs_le (m a)`. Simplify using `only`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hm a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_shift {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hint : ∀ a, ∃ m : ℤ, Λ a = m)
     (hdom : ∀ a b, a < b → ε a = ε b → Λ b ≤ Λ a) :
     ∃ (m : Fin n → ℤ) (c : ℤ), NonnegDom ε m ∧ ∀ a, Λ a = (m a : ℝ) + c := by
@@ -55,6 +68,9 @@ theorem exists_shift {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hint : ∀ a, �
     simp only; linarith
   · rw [hm a]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨m₁, c₁, hm₁, e₁⟩` from `exists_shift h1.1 h1.2`. Take `⟨m₂, c₂, hm₂, e₂⟩` from `exists_shift h2.1 h2.2`. Establish `hm : NonnegDom ε (m₁ + m₂)` using `⟨fun a b hab he => by simp only [Pi.add_apply]; linarith [hm₁.1 a b hab he, hm₂.1 a b hab he], fun a => by simp only [Pi.add_apply]; linarith [hm₁.2 a, hm₂.2 a]⟩`. Rewrite using `[cK_eq_f0K hM hT T₁ m₁ hm₁ c₁ e₁, cK_eq_f0K hM hT T₂ m₂ hm₂ c₂ e₂, cK_eq_f0K hM hT T₃ (m₁ + m₂) hm (c₁ + c₂) (fun a => by simp [e₁, e₂]; push_cast; ring), hF n ε m₁ m₂ hm₁ hm₂ k, norm_mul]`.
+-/
 theorem coefMul_dom (hM : CkModel) (hT : CkTwist) (hF : ModelFunctionsMultiply) {ε : Fin n → Bool} {Λ₁ Λ₂ : Fin n → ℝ}
     (h1 : (∀ a, ∃ m : ℤ, Λ₁ a = m) ∧ ∀ a b, a < b → ε a = ε b → Λ₁ b ≤ Λ₁ a)
     (h2 : (∀ a, ∃ m : ℤ, Λ₂ a = m) ∧ ∀ a b, a < b → ε a = ε b → Λ₂ b ≤ Λ₂ a)
@@ -69,6 +85,9 @@ theorem coefMul_dom (hM : CkModel) (hT : CkTwist) (hF : ModelFunctionsMultiply) 
     cK_eq_f0K hM hT T₃ (m₁ + m₂) hm (c₁ + c₂) (fun a => by simp [e₁, e₂]; push_cast; ring),
     hF n ε m₁ m₂ hm₁ hm₂ k, norm_mul]
 
+/- English proof (translation)
+Use `⟨fun a => ⟨(n : ℤ) - 1 - (a : ℕ), by simp [Dvec]⟩, fun a b hab _ => ?_⟩` and prove the remaining obligations. Simplify using `only [Dvec]`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dvec_int_dom (ε : Fin n → Bool) :
     (∀ a, ∃ m : ℤ, Dvec n a = m) ∧ ∀ a b, a < b → ε a = ε b → Dvec n b ≤ Dvec n a := by
   refine ⟨fun a => ⟨(n : ℤ) - 1 - (a : ℕ), by simp [Dvec]⟩, fun a b hab _ => ?_⟩
@@ -76,6 +95,17 @@ theorem dvec_int_dom (ε : Fin n → Bool) :
   have : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ) := by exact_mod_cast hab
   linarith
 
+/- English proof (translation)
+Introduce `n ε lam hl T TD t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `Tt k`. Establish `e : lowK ε (lamT lam 0) = lowK ε lam` using `by rw [lowK_lamT]; simp`.
+
+Rewrite using `[pow_zero, mul_one]`. Use `revert Tt`. Rewrite using `[e]`. Introduce `Tt`. Conclude with `cK_transport Tt T k`.
+
+Consider the case `succ t ih`. Introduce `Tt k`. Take `⟨Ts⟩` from `kType_exists ε (lamT lam t) (isHCParam_lamT hl t)`. Establish `e : lowK ε (lamT lam (t + 1)) = lowK ε (lamT lam t) + Dvec n`. Rewrite using `[lowK_lamT, lowK_lamT]`.
+
+Use `push_cast`. Rewrite using `[add_smul, one_smul, add_assoc]`. Use `revert Tt`. Rewrite using `[e]`. Introduce `Tt`.
+
+Rewrite using `[coefMul_dom hM hT hF (lowK_int_dom ε _ (isHCParam_lamT hl t)) (dvec_int_dom ε) Ts TD Tt k, ih Ts k, pow_succ, mul_assoc]`.
+-/
 theorem coefPow_of (hM : CkModel) (hT : CkTwist) (hF : ModelFunctionsMultiply) : CoefPow := by
   intro n ε lam hl T TD t
   induction t with

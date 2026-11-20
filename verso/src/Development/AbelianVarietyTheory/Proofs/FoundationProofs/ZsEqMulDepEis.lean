@@ -7,6 +7,17 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k l j u v A A' c c' hjk`. Use function extensionality and compare the values at `n`. Unfold `Zs mul`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l ∣ p.1 ∨ l ∣ p.2`.
+
+Establish `hz : dep l (eis (k - 1 - j) c A u) p.1 * dep l (eis (j + 1) c' (fun y => A' y * v y) fun _ => 1) p.2 = 0`. Apply the tactic sequence `rcases h with h | h <;> simp [dep, h]`. Rewrite using `[hz]`. Simplify using `[h]`. Use `push_neg at h`.
+
+Take `⟨h1, h2⟩` from `h`. Establish `p1 : p.1 ≠ 0` using `fun e => h1 (e ▸ dvd_zero l)`. Establish `p2 : p.2 ≠ 0` using `fun e => h2 (e ▸ dvd_zero l)`. Simplify using `only [dep, eis, h1, h2, p1, p2, if_false, or_self]`. Rewrite using `[Finset.sum_mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `hx0 : (x.1 : ℂ) ≠ 0`. Use `(Nat.mem_divisorsAntidiagonal.mp hx).1` as an intermediate fact. Establish `: x.1 ≠ 0` using `fun e => p1 (by rw [← this, e, zero_mul])`. Conclude with `this` after adjusting the coercions.
+
+Establish `hk : k - 2 = (k - 1 - j - 1) + j` using `by omega`. Establish `hj : j + 1 - 1 = j` using `by omega`. Rewrite using `[hk, hj, pow_add, div_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem zs_eq_mul_dep_eis : ∀ (k l j : ℕ) (u v A A' : ℤ → ℂ) (c c' : ℂ), j + 2 ≤ k → Zs k l u v (fun x y => A x * A' y * ((y : ℂ) / x) ^ j) = mul (dep l (eis (k - 1 - j) c A u)) (dep l (eis (j + 1) c' (fun y => A' y * v y) fun _ => 1)) := by
   intro k l j u v A A' c c' hjk
   funext n

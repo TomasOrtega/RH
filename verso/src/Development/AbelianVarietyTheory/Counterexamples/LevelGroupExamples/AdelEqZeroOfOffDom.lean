@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
   {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k x`. Distinguish the cases in `hx : x ∈ (U.X k).dom`. Conclude with `h k x hx`. Rewrite using `[dif_neg hx]`.
+-/
 theorem rdU_eq_zero (U : Unf Xo c σ r) (f : Rul Xo c) (h : ∀ k, ∀ x ∈ (U.X k).dom, rdU U f k x = 0) :
     rdU U f = 0 := by
   funext k x
@@ -22,36 +25,62 @@ theorem rdU_eq_zero (U : Unf Xo c σ r) (f : Rul Xo c) (h : ∀ k, ∀ x ∈ (U.
     show (if h : x ∈ (U.X k).dom then toC (evR Xo c f (U.un k ⟨x, h⟩)) else 0) = 0
     rw [dif_neg hx]
 
+/- English proof (translation)
+The claim follows from `linearIndependent_unique_iff.2 h`.
+-/
 theorem indep_one {K M : Type} [Field K] [AddCommGroup M] [Module K M] {f : M} (h : f ≠ 0) :
     LinearIndependent K (fun _ : Fin 1 => f) := linearIndependent_unique_iff.2 h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `h a n hd 1 (fun _ => f) (fun _ => hf) (indep_one hne)` as an intermediate fact. Conclude with `this.ne_zero 0 (rdU_eq_zero U f h0)`.
+-/
 theorem inj_of_indep (U : Unf Xo c σ r) (h : RdIndep1 U) (a n) (hd : Dom a n) (f) (hf : f ∈ sec Xo c a n)
     (h0 : ∀ k, ∀ x ∈ (U.X k).dom, rdU U f k x = 0) : f = 0 := by
   by_contra hne
   have := h a n hd 1 (fun _ => f) (fun _ => hf) (indep_one hne)
   exact this.ne_zero 0 (rdU_eq_zero U f h0)
 
+/- English proof (translation)
+Introduce `a n hd f hf _ h0` and use `inj_of_indep U h a n hd f hf h0`.
+-/
 theorem domInj_of_indep (U : Unf Xo c σ r) (h : RdIndep1 U) : RdDomInj1 U :=
   fun a n hd f hf _ h0 => inj_of_indep U h a n hd f hf h0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h a n hd f hf h0 => h a n hd f hf (h0 ▸ Submodule.zero_mem _) (fun k x _ => by rw [h0]; rfl), fun h a n hd f hf _ h0 => h a n hd f hf (rdU_eq_zero U f h0)⟩`.
+-/
 theorem domInj_iff (U : Unf Xo c σ r) : RdDomInj1 U ↔
     ∀ a n, Dom a n → ∀ f ∈ sec Xo c a n, rdU U f = 0 → f = 0 :=
   ⟨fun h a n hd f hf h0 => h a n hd f hf (h0 ▸ Submodule.zero_mem _) (fun k x _ => by rw [h0]; rfl),
    fun h a n hd f hf _ h0 => h a n hd f hf (rdU_eq_zero U f h0)⟩
 
+/- English proof (translation)
+The claim follows from `(domInj_iff U).1 h a n hd f hf (funext fun k => isEmptyElim k)`.
+-/
 theorem sec_eq_zero_of_isEmpty (U : Unf Xo c σ r) [IsEmpty U.Comp] (h : RdDomInj1 U) (a n) (hd : Dom a n)
     (f) (hf : f ∈ sec Xo c a n) : f = 0 :=
   (domInj_iff U).1 h a n hd f hf (funext fun k => isEmptyElim k)
 
 def copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.Unf Xo c σ r := ⟨U.Comp, U.X, U.un⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isUnf_copy (U : Unf Xo c σ r) : Formalism.L2.PjFree.IsUnf (copy U) ↔ IsUnf U := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `have h : RdIndep1 U := fun a n _ => (GlobalTheory.reading_linearIndependent_and_injective hS E H Dw l Xo c σ r (copy U) ((isUnf_copy U).2 hU) a n).1 ⟨h, domInj_of_indep U h⟩`.
+-/
 theorem indep_of_isUnf (hS : Out.SecBaseChangeSt) (U : Unf Xo c σ r) (hU : IsUnf U) : RdIndep1 U ∧ RdDomInj1 U :=
   have h : RdIndep1 U := fun a n _ =>
     (GlobalTheory.reading_linearIndependent_and_injective hS E H Dw l Xo c σ r (copy U) ((isUnf_copy U).2 hU) a n).1
   ⟨h, domInj_of_indep U h⟩
 
+/- English proof (translation)
+Establish `hi : Function.Injective (relab (E` using `E) c σ) := by`. Introduce `τ τ' h`. Use extensionality with `a`. Use `σ.injective (RingHom.congr_fun h a)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+
+Conclude with `(Function.rightInverse_invFun (Finite.injective_iff_surjective.1 hi)).injective`.
+-/
 theorem invFun_relab_injective (c : Coeff l) (σ : c.F →+* ℂ) :
     Function.Injective (Function.invFun (relab (E := E) c σ)) := by
   have hi : Function.Injective (relab (E := E) c σ) := by
@@ -61,6 +90,9 @@ theorem invFun_relab_injective (c : Coeff l) (σ : c.F →+* ℂ) :
     exact congrArg Subtype.val this
   exact (Function.rightInverse_invFun (Finite.injective_iff_surjective.1 hi)).injective
 
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `(starRingEnd ℂ).injective (RingHom.congr_fun h a)`.
+-/
 theorem conjEmb_inj {τ τ' : E →+* ℂ} (h : conjEmb τ = conjEmb τ') : τ = τ' := by
   ext a
   exact (starRingEnd ℂ).injective (RingHom.congr_fun h a)
@@ -69,11 +101,35 @@ open Classical in
 
 def step (ρ : E →+* ℂ) (m : ℕ) : (E →+* ℂ) × ℕ → ℕ := fun p => if p.1 = ρ ∧ p.2 < m then 1 else 0
 
+/- English proof (translation)
+Use `⟨fun τ i j hij => ?_, by simp⟩` and prove the remaining obligations. Simplify using `only [step]`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | omega | exact absurd ⟨h1.1, by omega⟩ h2`.
+-/
 theorem dom_step (ρ : E →+* ℂ) (m : ℕ) : Dom (step ρ m) 0 := by
   refine ⟨fun τ i j hij => ?_, by simp⟩
   simp only [step]
   split_ifs with h1 h2 <;> first | omega | exact absurd ⟨h1.1, by omega⟩ h2
 
+/- English proof (translation)
+Establish `hne : ∀ la, (U.X k).χ la γ ≠ 0` using `fun la e => by`. Take `⟨n, hn, h1⟩` from `(U.X k).χ_fin la`. Use `h1 γ hγ` as an intermediate fact. Rewrite `this` using `[e, zero_pow hn.ne']`. Conclude with `zero_ne_one this`.
+
+Establish `h0 : (U.X k).χ 0 γ = 1`. Use `(U.X k).χ_add 0 0 γ hγ` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left₀ (hne 0)).1 this.symm`. Set `S : AddSubgroup (Wt (U.X k).Ψ r)` to `{ carrier := {la | (U.X k).χ la γ = 1} zero_mem' := h0 add_mem' := fun {a b} ha hb => by show _ = _`.
+
+Rewrite using `[(U.X k).χ_add a b γ hγ, ha, hb, one_mul]`. Use the proof step `neg_mem' := fun {a} ha => by`. Use `(U.X k).χ_add a (-a) γ hγ` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, h0, show (U.X k).χ a γ = 1 from ha, one_mul]`. Conclude with `this.symm }`.
+
+Establish `hst : ∀ ρ m, laU U (step ρ m) 0 k ∈ S` using `fun ρ m => h _ _ (dom_step ρ m) k γ hγ`. Establish `hI` using `invFun_relab_injective (E := E) c σ`. Establish `hcn : ∀ τ τ' : (U.X k).Ψ, conjEmb τ.1 ≠ τ'.1` using `fun τ τ' e => ((U.X k).cmType τ.1).1 τ.2 (by show conjEmb τ.1 ∈ _`. Rewrite using `[e]`. Conclude with `τ'.2)`.
+
+Establish `hsing : ∀ (τ0 : (U.X k).Ψ) (j0 : Fin r), (Pi.single τ0 (Pi.single j0 1) : Wt (U.X k).Ψ r) ∈ S`. Introduce `τ0 j0`. Distinguish the cases in `hj : (U.X k).p0 ≤ (j0 : ℕ)`. Establish `e : (Pi.single τ0 (Pi.single j0 1) : Wt (U.X k).Ψ r) = laU U (step (Function.invFun (relab c σ) τ0.1) (j0 - (U.X k).p0 + 1)) 0 k - laU U (step (Function.invFun (relab c σ) τ0.1) (j0 - (U.X k).p0)) 0 k`. Use function extensionality and compare the values at `τ j`.
+
+Simplify using `only [Pi.sub_apply, laU, step, hI.eq_iff, hcn τ τ0, false_and, if_false, Subtype.val_inj]`. Distinguish the cases in `ht : τ = τ0`. Substitute `ht` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.single_apply, true_and, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> simp <;> omega`.
+
+Simplify using `[ht]`. Rewrite using `[e]`. Conclude with `S.sub_mem (hst _ _) (hst _ _)`. Establish `e : (Pi.single τ0 (Pi.single j0 1) : Wt (U.X k).Ψ r) = laU U (step (Function.invFun (relab c σ) (conjEmb τ0.1)) ((U.X k).p0 - 1 - j0)) 0 k - laU U (step (Function.invFun (relab c σ) (conjEmb τ0.1)) ((U.X k).p0 - j0)) 0 k`. Use function extensionality and compare the values at `τ j`.
+
+Simplify using `only [Pi.sub_apply, laU, step, hI.eq_iff, (hcn τ0 τ).symm, false_and, if_false]`. Distinguish the cases in `ht : τ = τ0`. Substitute `ht` using the available equality. Simplify using `only [Pi.single_eq_same, Pi.single_apply, true_and, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> simp <;> omega`.
+
+Establish `: conjEmb τ.1 ≠ conjEmb τ0.1` using `fun e => ht (Subtype.ext (conjEmb_inj e))`. Simplify using `[ht, this]`. Rewrite using `[e]`. Conclude with `S.sub_mem (hst _ _) (hst _ _)`. Establish `e : la = ∑ τ, ∑ j, la τ j • (Pi.single τ (Pi.single j 1) : Wt (U.X k).Ψ r)`.
+
+Use function extensionality and compare the values at `τ j`. Simplify using `[Finset.sum_apply, Pi.single_apply, ite_apply]`. Use `show la ∈ S`. Rewrite using `[e]`. Conclude with `S.sum_mem fun τ _ => S.sum_mem fun j _ => S.zsmul_mem (hsing τ j) _`.
+-/
 theorem chi_eq_one (U : Unf Xo c σ r)
     (h : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1)
     (k : U.Comp) (la : Wt (U.X k).Ψ r) (γ) (hγ : γ ∈ (U.X k).Γ) : (U.X k).χ la γ = 1 := by
@@ -140,6 +196,15 @@ section Adelic
 variable (U : Unf Xo c σ r) {V : HSp D} {dict : GA D V → Σ k, Frame (U.X k).Ψ r} {mu : GA D V → ℂ}
   {Kf : Subgroup (GA D V)} {th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {hr : V.rank = r}
 
+/- English proof (translation)
+Introduce `la P hP`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ', he⟩` from `hd.1 γ hγ g`. Establish `hE` using `(hP (dict g).1).1.1.2.2 γ' hγ' (dict g).2 (hd.2.2.2.1 g)`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`.
+
+Rewrite using `[he, hm.1, hm.2.2.1 γ hγ, one_mul]`. Use `show mu g * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[hE, chi_eq_one U hχ _ _ _ hγ', one_mul]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`.
+
+Take `⟨N, hN, k, x, hx, hs⟩` from `hL g₀`. Establish `hsec : (U.X k).IsSec (la k) (P k)` using `(hP k).1.1`. Establish `hc' : ContinuousOn (fun g => mu g * P k (x g)) N` using `hc.continuousOn.mul (hsec.1.continuousOn.comp hx fun g hg => (hs g hg).1)`. Establish `heq : (fun g => mu g * P k (x g)) =ᶠ[𝓝 g₀] adel V dict mu P` using `by filter_upwards [hN] with g hg`. Take `⟨hd, γ, hγ, he⟩` from `hs g hg`.
+
+Use `show mu g * P k (x g) = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he]`. Use `show mu g * P k (x g) = mu g * P k (lact γ (x g))`. Rewrite using `[hsec.2.2 γ hγ (x g) hd, chi_eq_one U hχ _ _ _ hγ, one_mul]`. Conclude with `(hc'.continuousAt hN).congr heq`.
+-/
 theorem adelAut_of_dominant
     (hχ : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1)
     (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu) (hc : Continuous mu)
@@ -168,6 +233,9 @@ theorem adelAut_of_dominant
       rw [hsec.2.2 γ hγ (x g) hd, chi_eq_one U hχ _ _ _ hγ, one_mul]
     exact (hc'.continuousAt hN).congr heq
 
+/- English proof (translation)
+Introduce `la P hP`. Take `⟨hL, hC⟩` from `h la P hP`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Rewrite using `[onQ_eq_lift _ hL]`. Conclude with `Measurable.aestronglyMeasurable (measurable_from_quotient.2 hC.measurable)`.
+-/
 theorem meas_of_aut (h : AdelAut V dict mu) : AdelMeas1 U V dict mu := by
   intro la P hP
   obtain ⟨hL, hC⟩ := h la P hP
@@ -175,6 +243,13 @@ theorem meas_of_aut (h : AdelAut V dict mu) : AdelMeas1 U V dict mu := by
   rw [onQ_eq_lift _ hL]
   exact Measurable.aestronglyMeasurable (measurable_from_quotient.2 hC.measurable)
 
+/- English proof (translation)
+Introduce `la P hP hae k x hx`. Establish `hA'` using `adelAut_holSub hA la hP`. Establish `hz : ∀ g, adel V dict mu P g = 0` using `hQ _ hA'.2 hA'.1 hae`. Establish `hEq` using `eqv_holSub U.X la hP`. Take `⟨g, γ, hγ, b, hb, hg⟩` from `hd.2.2.2.2.1 k x hx`.
+
+Establish `hdom` using `hd.2.2.2.1 g`. Establish `h0` using `hz g`. Express the relevant statement in the definitionally equal form `mu g * P (dict g).1 (dict g).2 = 0 at h0`. Rewrite `h0`, `hdom` using `[hg]`. Establish `hmu0 : mu g ≠ 0`.
+
+Introduce `h`. Use `hmu.2.1 g` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Conclude with `eq_zero_of_orbit _ (la k) (P k) (hEq.1 k) (hEq.2 k) hx hγ hb hdom ((mul_eq_zero.1 h0).resolve_left hmu0)`.
+-/
 theorem aeZero_of_aut (hA : AdelAut V dict mu) (hQ : QuotSupp V) (hmu : MuUnit V dict mu)
     (hd : DictIsUnif V dict Kf th hr) : AeDom1 U V dict mu := by
   intro la P hP hae k x hx
@@ -193,6 +268,9 @@ theorem aeZero_of_aut (hA : AdelAut V dict mu) (hQ : QuotSupp V) (hmu : MuUnit V
     exact zero_ne_one this
   exact eq_zero_of_orbit _ (la k) (P k) (hEq.1 k) (hEq.2 k) hx hγ hb hdom ((mul_eq_zero.1 h0).resolve_left hmu0)
 
+/- English proof (translation)
+The claim follows from `have hA := adelAut_of_dominant U hχ hd hm hc hL ⟨(indep_of_isUnf hS U hU).1, (indep_of_isUnf hS U hU).2, meas_of_aut U hA, aeZero_of_aut U hA (quotSupp_of V (finVol_of_volTie hT V hs) (volPair_of_tie hT V hs)) hm hd⟩`.
+-/
 theorem four_laws (hS : Out.SecBaseChangeSt) (hU : IsUnf U)
     (hχ : ∀ a n, Dom a n → ∀ k, ∀ γ ∈ (U.X k).Γ, (U.X k).χ (laU U a n k) γ = 1)
     (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu) (hc : Continuous mu)
@@ -204,24 +282,39 @@ theorem four_laws (hS : Out.SecBaseChangeSt) (hU : IsUnf U)
   ⟨(indep_of_isUnf hS U hU).1, (indep_of_isUnf hS U hU).2, meas_of_aut U hA,
     aeZero_of_aut U hA (quotSupp_of V (finVol_of_volTie hT V hs) (volPair_of_tie hT V hs)) hm hd⟩
 
+/- English proof (translation)
+Introduce `la P _`. Establish `: onQ V (adel V dict 0 P) = fun _ => 0` using `by funext q; exact zero_mul _`. Rewrite using `[this]`. Conclude with `aestronglyMeasurable_const`.
+-/
 theorem meas_zero : AdelMeas1 U V dict 0 := by
   intro la P _
   have : onQ V (adel V dict 0 P) = fun _ => 0 := by funext q; exact zero_mul _
   rw [this]; exact aestronglyMeasurable_const
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h la P hP => h la P hP (Filter.Eventually.of_forall fun _ => zero_mul _), fun h la P hP _ => h la P hP⟩`.
+-/
 theorem aeZero_zero_iff : AeDom1 U V dict 0 ↔ ∀ la, ∀ P ∈ holSub U.X la, ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0 :=
   ⟨fun h la P hP => h la P hP (Filter.Eventually.of_forall fun _ => zero_mul _), fun h la P hP _ => h la P hP⟩
 
+/- English proof (translation)
+The claim follows from `h (fun _ => 0) P fun k => (GlobalTheory.FJCheck.mem_SSgt_of_zero_on_dom (U.X k) 0 0 (hP k)).1`.
+-/
 theorem meas_off_dom (h : AdelMeas1 U V dict mu) (P : FDSec U.X) (hP : ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0) :
     AEStronglyMeasurable (onQ V (adel V dict mu P)) (muQ1 V) :=
   h (fun _ => 0) P fun k => (GlobalTheory.FJCheck.mem_SSgt_of_zero_on_dom (U.X k) 0 0 (hP k)).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `show mu g * P _ _ = 0`. Rewrite using `[hP _ _ (hd g), mul_zero]`.
+-/
 theorem adel_eq_zero_of_off_dom (hd : ∀ g, (dict g).2 ∈ (U.X (dict g).1).dom) (P : FDSec U.X)
     (hP : ∀ k, ∀ x ∈ (U.X k).dom, P k x = 0) : adel V dict mu P = 0 := by
   funext g
   show mu g * P _ _ = 0
   rw [hP _ _ (hd g), mul_zero]
 
+/- English proof (translation)
+Use `rdU_eq_zero U f (h la _ hf (Filter.Eventually.of_forall fun q => ?_))` and prove the remaining obligations. Use `show mu q.out * (if h : (dict q.out).2 ∈ (U.X _).dom then toC (evR Xo c f (U.un _ ⟨_, h⟩)) else 0) = 0`. Rewrite using `[dif_neg (hd _), mul_zero]`.
+-/
 theorem zero_of_dict_off_dom (hd : ∀ g, (dict g).2 ∉ (U.X (dict g).1).dom) (h : AeDom1 U V dict mu) (la)
     (f : Rul Xo c) (hf : rdU U f ∈ holSub U.X la) : rdU U f = 0 := by
   refine rdU_eq_zero U f (h la _ hf (Filter.Eventually.of_forall fun q => ?_))

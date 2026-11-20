@@ -4,6 +4,9 @@ universe u_1 u_2
 
 namespace Bl.DiscreteValuationQuotients
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def' u hϖ n, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+-/
 private lemma lenQuotSpan {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {x : O} (hx : x ≠ 0) :
     Module.length O (O ⧸ Ideal.span ({x} : Set O)) = IsDiscreteValuationRing.addVal O x := by
@@ -13,12 +16,18 @@ private lemma lenQuotSpan {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValua
     ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq,
     IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h` using `IsDiscreteValuationRing.addVal_def' u hϖ 0`. Rewrite `h` using `[pow_zero, mul_one, Nat.cast_zero]`. Then use the resulting hypothesis.
+-/
 private lemma addValUnit {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (u : Oˣ) : IsDiscreteValuationRing.addVal O (u : O) = 0 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
   have h := IsDiscreteValuationRing.addVal_def' u hϖ 0
   rwa [pow_zero, mul_one, Nat.cast_zero] at h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty, IsDiscreteValuationRing.addVal_one]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]`.
+-/
 private lemma addValProd {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ι : Type*} (s : Finset ι) (g : ι → O) :
     IsDiscreteValuationRing.addVal O (∏ i ∈ s, g i) =
@@ -29,6 +38,21 @@ private lemma addValProd {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuat
   | insert j s hj ih =>
     rw [Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]
 
+/- English proof (translation)
+Introduce `O M _ _ _ _ _ _ _ φ hφ`. Set `e0 : M ≃ₗ[O] LinearMap.range φ` to `LinearEquiv.ofInjective φ hφ`. Establish `h : Module.finrank O (LinearMap.range φ) = Module.finrank O M` using `e0.finrank_eq.symm`. Set `b` to `Module.Free.chooseBasis O M`. Set `a` to `Submodule.smithNormalFormCoeffs b h`.
+
+Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `ab` to `Submodule.smithNormalFormBotBasis b h`. Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `e' : M ≃ₗ[O] LinearMap.range φ` to `b'.equiv ab (Equiv.refl _)`. Set `f : M →ₗ[O] M` to `(LinearMap.range φ).subtype ∘ₗ (e' : M →ₗ[O] LinearMap.range φ)`.
+
+Establish `hφf : φ = (LinearMap.range φ).subtype ∘ₗ (e0 : M →ₗ[O] LinearMap.range φ)` using `LinearMap.ext fun x => rfl`. Establish `hassoc : Associated (LinearMap.det φ) (LinearMap.det f)`. Rewrite using `[hφf]`. Conclude with `LinearMap.associated_det_comp_equiv _ _ _`. Establish `ha : ∀ i, f (b' i) = a i • b' i`.
+
+Introduce `i`. Express the relevant statement in the definitionally equal form `((b'.equiv ab (Equiv.refl _) (b' i) : LinearMap.range φ) : M) = _`. Rewrite using `[Module.Basis.equiv_apply, Equiv.refl_apply]`. Conclude with `ab_eq i`. Establish `hdet : LinearMap.det f = ∏ i, a i`.
+
+Rewrite using `[← LinearMap.det_toMatrix b', ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ha, map_smul, Module.Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]`. Distinguish the cases in `hij : i = j`.
+
+Rewrite using `[hij, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij, Finsupp.single_eq_of_ne hij]`. Establish `hval : IsDiscreteValuationRing.addVal O (LinearMap.det φ) = IsDiscreteValuationRing.addVal O (∏ i, a i)`. Take `⟨u, hu⟩` from `hassoc`. Rewrite using `[← hdet, ← hu, IsDiscreteValuationRing.addVal_mul, addValUnit, add_zero]`.
+
+Rewrite using `[(Submodule.quotientEquivPiSpan (LinearMap.range φ) b h).length_eq, Module.length_pi_of_fintype, hval, addValProd]`. Conclude with `Finset.sum_congr rfl fun i _ => lenQuotSpan (Submodule.smithNormalFormCoeffs_ne_zero b h i)`.
+-/
 theorem goal1 :
   ∀ {O : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O]
   [inst_2 : IsDiscreteValuationRing.{u_1} O] [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} O M]

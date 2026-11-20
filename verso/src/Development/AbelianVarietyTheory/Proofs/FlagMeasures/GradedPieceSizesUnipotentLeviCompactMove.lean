@@ -14,12 +14,22 @@ section LinAlg
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `detOn`. Use `split_ifs`. Conclude with `norm_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem detOn_nonneg (g : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) : 0 ≤ detOn g W := by
   unfold detOn
   split_ifs
   · exact norm_nonneg _
   · exact le_rfl
 
+/- English proof (translation)
+Establish `hg' : ∀ y ∈ W, Matrix.toLin' g y ∈ W` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `hg y hy`. Establish `hh' : ∀ y ∈ W, Matrix.toLin' h y ∈ W` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`.
+
+Conclude with `hh y hy`. Establish `hgh : ∀ y ∈ W, Matrix.toLin' (g * h) y ∈ W` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply, ← Matrix.mulVec_mulVec]`. Conclude with `hg _ (hh y hy)`. Unfold `detOn`.
+
+Rewrite using `[dif_pos hgh, dif_pos hg', dif_pos hh', ← norm_mul, ← LinearMap.det_comp]`. Use `congr 2`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`.
+-/
 theorem detOn_mul (g h : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ))
     (hg : ∀ y ∈ W, g *ᵥ y ∈ W) (hh : ∀ y ∈ W, h *ᵥ y ∈ W) :
     detOn (g * h) W = detOn g W * detOn h W := by
@@ -35,6 +45,21 @@ theorem detOn_mul (g h : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n �
   refine LinearMap.ext fun y => Subtype.ext ?_
   simp [Matrix.toLin'_apply, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `hg' : ∀ y ∈ W, Matrix.toLin' g y ∈ W` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `hg y hy`. Unfold `detOn`. Rewrite using `[dif_pos hg']`.
+
+Use `set f := (Matrix.toLin' g).restrict hg' with hf`. Establish `key : ∀ k : ℕ, ∀ y : W, (((f - 1) ^ k) y : Fin n → ℂ) = ((Matrix.toLin' g - 1) ^ k) (y : Fin n → ℂ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro y`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `y`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, pow_succ, Module.End.mul_apply]`. Use `congr 1`.
+
+Establish `hN : IsNilpotent (f - 1)`. Use `⟨r, LinearMap.ext fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `using hr y y.2`. Establish `hc` using `hN.charpoly_eq_X_pow_finrank`.
+
+Establish `he` using `LinearMap.eval_charpoly (f - 1) (-1)`. Rewrite `he` using `[hc]`. Establish `h2 : algebraMap ℂ (Module.End ℂ W) (-1) - (f - 1) = (-1 : ℂ) • f`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Use `module`.
+
+Rewrite `he` using `[h2, LinearMap.det_smul]`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X] at he`. Establish `h3 : LinearMap.det f = 1`. Establish `hne : ((-1 : ℂ) ^ Module.finrank ℂ W) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Conclude with `mul_left_cancel₀ hne (he.symm.trans (mul_one _).symm)`.
+
+Rewrite using `[h3, norm_one]`.
+-/
 theorem detOn_unipotent (g : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ))
     (hg : ∀ y ∈ W, g *ᵥ y ∈ W) (r : ℕ) (hr : ∀ y ∈ W, ((Matrix.toLin' g - 1) ^ r) y = 0) :
     detOn g W = 1 := by
@@ -68,6 +93,19 @@ theorem detOn_unipotent (g : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin
     exact mul_left_cancel₀ hne (he.symm.trans (mul_one _).symm)
   rw [h3, norm_one]
 
+/- English proof (translation)
+Establish `hstep : ∀ k : Fin a, ∀ y ∈ W k.succ, uMat u *ᵥ y - y ∈ W k.castSucc` using `hu.1`. Establish `hstab : ∀ i : Fin (a + 1), ∀ y ∈ W i, uMat u *ᵥ y ∈ W i`. Introduce `i y hy`. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite `hy`, the goal using `[h0, Submodule.mem_bot]`.
+
+Simplify using `[hy]`. Establish `h1` using `hstep k y hy`. Establish `h2 : W k.castSucc ≤ W k.succ` using `hm (Fin.castSucc_lt_succ (i := k)).le`. Establish `h3` using `Submodule.add_mem _ (h2 h1) hy`. Simplify using `using h3`.
+
+Use `⟨hstab i, ?_⟩` and prove the remaining obligations. Establish `hnil : ∀ m : ℕ, ∀ i : Fin (a + 1), (i : ℕ) = m → ∀ y ∈ W i, ((Matrix.toLin' (uMat u) - 1) ^ m) y = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `i hi y hy`. Establish `hi0 : i = 0` using `Fin.ext hi`. Substitute `hi0` using the available equality. Rewrite `hy` using `[h0, Submodule.mem_bot]`. Simplify using `[hy]`.
+
+Consider the case `succ m ih`. Introduce `i hi y hy`. Establish `hlt` using `i.isLt`. Establish `hma : m < a` using `by omega`. Establish `hik : i = (⟨m, hma⟩ : Fin a).succ` using `Fin.ext (by simp [hi])`.
+
+Substitute `hik` using the available equality. Rewrite using `[pow_succ, Module.End.mul_apply]`. Apply `ih (⟨m, hma⟩ : Fin a).castSucc (by simp)` to reduce the goal to its premises. Simplify `hstep ⟨m, hma⟩ y hy` using `[Matrix.toLin'_apply]`. Conclude with `hnil i i rfl`.
+-/
 theorem flagN_nil {ε : Fin n → Bool} {a : ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     (h0 : W 0 = ⊥) (hm : Monotone W) {u : Formalism.REAL.UJ ε} (hu : u ∈ flagN ε W) (i : Fin (a + 1)) :
     (∀ y ∈ W i, uMat u *ᵥ y ∈ W i) ∧ ∀ y ∈ W i, ((Matrix.toLin' (uMat u) - 1) ^ (i : ℕ)) y = 0 := by
@@ -103,6 +141,35 @@ theorem flagN_nil {ε : Fin n → Bool} {a : ℕ} {W : Fin (a + 1) → Submodule
       simpa [Matrix.toLin'_apply] using hstep ⟨m, hma⟩ y hy
   exact hnil i i rfl
 
+/- English proof (translation)
+Use `set W := Submodule.span ℂ (Set.range c) with hWdef`. Establish `hW' : ∀ y ∈ W, Matrix.toLin' g y ∈ W` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `hW y hy`. Use `set f := (Matrix.toLin' g).restrict hW' with hf`.
+
+Use `set b := Module.Basis.span hc with hb`. Use `set A := LinearMap.toMatrix b b f with hA`. Establish `hdetA : LinearMap.det f = A.det` using `(LinearMap.det_toMatrix b f).symm`. Establish `hdetOn : detOn g W = ‖A.det‖`. Unfold `detOn`.
+
+Rewrite using `[dif_pos hW', hdetA]`. Use `set C : Matrix (Fin n) (Fin r) ℂ := Matrix.of fun i a => c a i with hC`. Establish `hcol : ∀ a, g *ᵥ c a = ∑ i, A i a • c i`. Introduce `a`. Establish `h1 : f (b a) = ∑ i, A i a • b i`.
+
+Rewrite using `[hA]`. Simplify using `only [LinearMap.toMatrix_apply]`. Conclude with `(b.sum_repr (f (b a))).symm`. Establish `h2` using `congrArg Subtype.val h1`. Simplify `h2` using `[hf, hb, Module.Basis.span_apply, Matrix.toLin'_apply]`.
+
+Establish `hgC : g * C = C * A`. Use extensionality with `i a`. Establish `h` using `congrFun (hcol a) i`. Rewrite `h` using `[Finset.sum_apply]`. Simplify using `only [Matrix.mul_apply, hC, Matrix.of_apply]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[h]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hCinj : ∀ z : Fin r → ℂ, C *ᵥ z = 0 → z = 0`. Introduce `z hz`.
+
+Establish `h0 : ∑ a, z a • c a = 0`. Use extensionality with `i`. Use `congrFun hz i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, hC, mul_comm]`. Conclude with `funext (Fintype.linearIndependent_iff.1 hc z h0)`.
+
+Establish `hAdet : A.det ≠ 0`. Introduce `h0`. Take `⟨z, hz0, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hz0` to reduce the goal to its premises. Apply `hCinj` to reduce the goal to its premises.
+
+Establish `h1 : g *ᵥ (C *ᵥ z) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hgC, ← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`. Establish `h3 : C *ᵥ z = g⁻¹ *ᵥ (g *ᵥ (C *ᵥ z))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]`. Rewrite using `[h3, h1, Matrix.mulVec_zero]`.
+
+Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hAdet`. Establish `hginvC : g⁻¹ * C = C * A⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hgram : ∀ N : Matrix (Fin n) (Fin n) ℂ, (Matrix.of fun a b => star (N *ᵥ c a) ⬝ᵥ (N *ᵥ c b)) = (N * C)ᴴ * (N * C)`. Introduce `N`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, hC, dotProduct, Matrix.conjTranspose_apply, Matrix.mulVec]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+
+Establish `hkinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hk`. Establish `hk1 : k * kᴴ = 1`. Rewrite using `[← hkinv]`. Conclude with `Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse hk)`. Establish `hG' : (Matrix.of fun a b => star ((g * k)⁻¹ *ᵥ c a) ⬝ᵥ ((g * k)⁻¹ *ᵥ c b)) = (A⁻¹)ᴴ * (Cᴴ * C) * A⁻¹`.
+
+Rewrite using `[hgram, Matrix.mul_inv_rev, hkinv, Matrix.mul_assoc, hginvC]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc k, hk1, Matrix.one_mul]`. Establish `hG : (Matrix.of fun a b => star (c a) ⬝ᵥ c b) = Cᴴ * C` using `by simpa using hgram 1`. Rewrite using `[hG', hG, hdetOn, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+
+Establish `hn : ‖A.det‖ ≠ 0` using `norm_ne_zero_iff.2 hAdet`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gram_move {r : ℕ} (c : Fin r → Fin n → ℂ) (hc : LinearIndependent ℂ c)
     (g k : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g.det) (hk : kᴴ * k = 1)
     (hW : ∀ y ∈ Submodule.span ℂ (Set.range c), g *ᵥ y ∈ Submodule.span ℂ (Set.range c)) :
@@ -183,6 +250,29 @@ variable (I : AutInst)
 
 def crd (v : InfinitePlace I.F) (y : Fin I.n → I.E) : Fin I.n → ℂ := (I.P v)⁻¹ *ᵥ fun l => I.φ v (y l)
 
+/- English proof (translation)
+Use `set v := w.comap (algebraMap I.F I.E) with hv`. Use `set U := uMat (x.1 v) with hU`. Use `set G : Matrix (Fin r) (Fin r) ℂ := Matrix.of fun a b => star (U⁻¹ *ᵥ crd I v (e a)) ⬝ᵥ (U⁻¹ *ᵥ crd I v (e b)) with hG`. Establish `hre : G.det.re = ‖G.det‖` using `by open ComplexOrder in`. Establish `hpsd : G.PosSemidef`.
+
+Establish `hGC : G = (Matrix.of fun i a => (U⁻¹ *ᵥ crd I v (e a)) i)ᴴ * (Matrix.of fun i a => (U⁻¹ *ᵥ crd I v (e a)) i)`. Use extensionality with `a b`. Simplify using `[hG, Matrix.mul_apply, dotProduct, Matrix.conjTranspose_apply]`. Rewrite using `[hGC]`. Conclude with `Matrix.posSemidef_conjTranspose_mul_self _`.
+
+Establish `h` using `Finset.prod_nonneg fun i (_ : i ∈ Finset.univ) => hpsd.eigenvalues_nonneg i`. Take `⟨t, ht0, htz⟩ : ∃ t : ℝ, 0 ≤ t ∧ G.det = (t : ℂ)` from `⟨∏ i, hpsd.1.eigenvalues i, h, by rw [hpsd.1.det_eq_prod_eigenvalues]; simp⟩`. Rewrite using `[htz, Complex.ofReal_re, Complex.norm_real, Real.norm_of_nonneg ht0]`. Rewrite using `[← hre]`. Establish `hvec : ∀ y : Fin I.n → I.E, Formalism.HermitianLatticesTheory.vecAt (bas I) w y = fun i => w.embedding (y i)`.
+
+Introduce `y`. Use extensionality with `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Distinguish the cases in `hw : w.embedding = I.φ v`. Establish `hfr : frm I x w = I.P v * U`.
+
+Simplify using `only [frm, hU, hv]`. Rewrite using `[if_pos hw]`. Establish `hf : ∀ y, Formalism.HermitianLatticesTheory.fcoord (bas I) (frm I x) w y = U⁻¹ *ᵥ crd I v y`. Introduce `y`. Rewrite using `[Formalism.HermitianLatticesTheory.fcoord, hfr, hvec, Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, crd, hw]`.
+
+Use `congr 2`. Use extensionality with `a b`. Simplify using `[Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, hf, hG, dotProduct]`. Establish `hw2 : w.embedding = ComplexEmbedding.conjugate (I.φ v)` using `(GlobalTheory.Count.Test.embedding_cases I w).resolve_left hw`. Establish `hfr : frm I x w = (I.P v * U).map (starRingEnd ℂ)`.
+
+Simplify using `only [frm, hU, hv]`. Rewrite using `[if_neg hw]`. Establish `hmap : ∀ A : Matrix (Fin I.n) (Fin I.n) ℂ, A.map (starRingEnd ℂ) = Aᴴᵀ`. Introduce `A`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Establish `hinv : ((I.P v * U).map (starRingEnd ℂ))⁻¹ = ((I.P v * U)⁻¹).map (starRingEnd ℂ)`. Rewrite using `[hmap, hmap, ← Matrix.transpose_nonsing_inv, Matrix.conjTranspose_nonsing_inv]`. Establish `hf : ∀ y, Formalism.HermitianLatticesTheory.fcoord (bas I) (frm I x) w y = fun i => starRingEnd ℂ ((U⁻¹ *ᵥ crd I v y) i)`. Introduce `y`.
+
+Use extensionality with `i`. Rewrite using `[Formalism.HermitianLatticesTheory.fcoord, hfr, hinv, hvec, crd, Matrix.mulVec_mulVec, ← Matrix.mul_inv_rev, RingHom.map_mulVec]`. Use `congr 1`. Use extensionality with `l`. Simplify using `[hw2, ComplexEmbedding.conjugate_coe_eq]`.
+
+Establish `hgr : Formalism.HN.gramPl (bas I) (frm I x) w e = G.map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `[Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, hf, hG, dotProduct, map_sum]`. Establish `hc` using `RingHom.map_det (starRingEnd ℂ) G`. Rewrite `hc` using `[RingHom.mapMatrix_apply]`.
+
+Rewrite using `[hgr, ← hc]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_det_gram (x : I.GA) (w : InfinitePlace I.E) {r : ℕ} (e : Fin r → Fin I.n → I.E) :
     (Formalism.HN.gramPl (bas I) (frm I x) w e).det.re =
       ‖(Matrix.of fun a b =>
@@ -242,6 +332,11 @@ theorem norm_det_gram (x : I.GA) (w : InfinitePlace I.E) {r : ℕ} (e : Fin r �
     rw [hgr, ← hc]
     simp
 
+/- English proof (translation)
+Establish `h : (fun l => I.φ v ((∑ a, t a • e a) l)) = ∑ a, I.φ v (t a) • fun l => I.φ v (e a l)`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, map_sum]`. Simplify using `only [crd]`. Rewrite using `[h, Matrix.mulVec_sum]`.
+
+Simplify using `[Matrix.mulVec_smul]`.
+-/
 private theorem crd_sum_smul' (v : InfinitePlace I.F) {r : ℕ} (e : Fin r → Fin I.n → I.E) (t : Fin r → I.E) :
     crd I v (∑ a, t a • e a) = ∑ a, I.φ v (t a) • crd I v (e a) := by
   have h : (fun l => I.φ v ((∑ a, t a • e a) l)) = ∑ a, I.φ v (t a) • fun l => I.φ v (e a l) := by
@@ -250,6 +345,21 @@ private theorem crd_sum_smul' (v : InfinitePlace I.F) {r : ℕ} (e : Fin r → F
   rw [h, Matrix.mulVec_sum]
   simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+Use `set M : Matrix (Fin I.n) (Fin r) I.E := Matrix.of fun l a => e a l with hM`. Establish `hinj : LinearMap.ker (Matrix.toLin' M) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `z hz`. Establish `h0 : ∑ a, z a • e a = 0`.
+
+Use extensionality with `l`. Use `congrFun hz l` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply, Matrix.mulVec, dotProduct, hM, mul_comm, Finset.sum_apply]`. Conclude with `funext (Fintype.linearIndependent_iff.1 he z h0)`. Take `⟨h, hh⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`.
+
+Use `set N := LinearMap.toMatrix' h with hN`. Establish `hNM : N * M = 1`. Establish `h1 : LinearMap.toMatrix' (h ∘ₗ Matrix.toLin' M) = 1` using `by rw [hh, LinearMap.toMatrix'_id]`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis. Establish `hNM' : N.map (I.φ v) * M.map (I.φ v) = 1`.
+
+Rewrite using `[← Matrix.map_mul, hNM, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `z hz`. Establish `hM' : M.map (I.φ v) *ᵥ z = ∑ a, z a • fun l => I.φ v (e a l)`. Use extensionality with `l`.
+
+Simplify using `[Matrix.mulVec, dotProduct, hM, Finset.sum_apply, mul_comm]`. Establish `h1 : (I.P v)⁻¹ *ᵥ (M.map (I.φ v) *ᵥ z) = 0`. Rewrite using `[hM', Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Conclude with `hz`.
+
+Establish `hPu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `h2 : M.map (I.φ v) *ᵥ z = 0`. Establish `h3 : M.map (I.φ v) *ᵥ z = I.P v *ᵥ ((I.P v)⁻¹ *ᵥ (M.map (I.φ v) *ᵥ z))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`. Rewrite using `[h3, h1, Matrix.mulVec_zero]`.
+
+Establish `h3 : z = N.map (I.φ v) *ᵥ (M.map (I.φ v) *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, hNM', Matrix.one_mulVec]`. Introduce `a`. Rewrite using `[h3, h2, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+-/
 private theorem linearIndependent_crd_of_linearIndependent (v : InfinitePlace I.F) {r : ℕ} (e : Fin r → Fin I.n → I.E)
     (he : LinearIndependent I.E e) : LinearIndependent ℂ (fun a => crd I v (e a)) := by
   set M : Matrix (Fin I.n) (Fin r) I.E := Matrix.of fun l a => e a l with hM
@@ -288,6 +398,13 @@ private theorem linearIndependent_crd_of_linearIndependent (v : InfinitePlace I.
   rw [h3, h2, Matrix.mulVec_zero]
   rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `Submodule.subset_span ⟨e b, he b, rfl⟩`. Simplify using `only [flagAt]`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨t, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun I.E).1 (hsp y hy)`. Express the relevant statement in the definitionally equal form `crd I v (∑ b, t b • e b) ∈ _`. Rewrite using `[crd_sum_smul']`.
+
+Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 private theorem span_crd_eq_flagAt_of_spanning {a : ℕ} (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (i : Fin (a + 1))
     (v : InfinitePlace I.F) {r : ℕ} (e : Fin r → Fin I.n → I.E) (he : ∀ b, e b ∈ S i)
     (hsp : ∀ y ∈ S i, y ∈ Submodule.span I.E (Set.range e)) :
@@ -304,6 +421,33 @@ private theorem span_crd_eq_flagAt_of_spanning {a : ℕ} (S : Fin (a + 1) → Su
     rw [crd_sum_smul']
     exact Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)
 
+/- English proof (translation)
+Take `⟨s, hsS, hspan, hli⟩` from `exists_linearIndependent I.E (S i : Set (Fin I.n → I.E))`. Establish `hsfin : s.Finite` using `hli.setFinite`. Use `haveI := hsfin.fintype`. Use `set σ : Fin (Fintype.card s) ≃ s := (Fintype.equivFin s).symm with hσ`. Use `set e : Fin (Fintype.card s) → Fin I.n → I.E := fun b => (σ b : Fin I.n → I.E) with he`.
+
+Establish `hrange : Set.range e = s`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `(σ b).2`.
+
+Introduce `hy; exact ⟨σ.symm ⟨y, hy⟩, by simp [he]⟩`. Establish `heli : LinearIndependent I.E e` using `hli.comp σ σ.injective`. Establish `heS : ∀ b, e b ∈ S i` using `fun b => hsS (σ b).2`. Establish `hsp : ∀ y ∈ S i, y ∈ Submodule.span I.E (Set.range e)`. Introduce `y hy`.
+
+Rewrite using `[hrange, hspan]`. Conclude with `Submodule.subset_span hy`. Establish `hrk : Formalism.HN.rkK (S i) = Fintype.card s`. Unfold `Formalism.HN.rkK`. Establish `h` using `finrank_span_eq_card heli`.
+
+Rewrite `h` using `[hrange]`. Rewrite using `[← hspan, h, Fintype.card_fin]`. Establish `hle : Submodule.span (𝓞 I.E) (Set.range e) ≤ S i`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Conclude with `heS b`. Establish `hTC : IsTotallyComplex I.E` using `(GlobalTheory.Count.FrameMajorant.frames_give_majorants I (1, xf)).1`. Establish `key : ∀ x : I.GA, Formalism.HN.ht (bas I) (frm I x) (S i) * (((Submodule.span (𝓞 I.E) (Set.range e)).toAddSubgroup.relIndex (S i).toAddSubgroup : ℕ) : ℝ) = ∏ w, (Formalism.HN.gramPl (bas I) (frm I x) w e).det.re ∧ 0 < ∏ w, (Formalism.HN.gramPl (bas I) (frm I x) w e).det.re`. Introduce `x`. Establish `hu : ∀ w, IsUnit (frm I x w).det` using `fun w => GlobalTheory.Count.FrameMajorant.frm_unit I x w`.
+
+Establish `h` using `Formalism.HN.htGram I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I x) hu _ e heli`. Establish `hp` using `(Formalism.HN.plLat I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I x) hu (Submodule.span (𝓞 I.E) (Set.range e)) (Submodule.fg_span (Set.finite_range e))).2.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1]`. Conclude with `h.2 (S i) hS hle hrk`.
+
+Rewrite using `[← h.1]`. Conclude with `hp`. Take `⟨k1, -⟩` from `key (g * k, xf)`. Take `⟨k2, hpos2⟩` from `key (1, xf)`. Establish `hidx0 : (((Submodule.span (𝓞 I.E) (Set.range e)).toAddSubgroup.relIndex (S i).toAddSubgroup : ℕ) : ℝ) ≠ 0`.
+
+Introduce `h0`. Rewrite `k2` using `[h0, mul_zero]`. Rewrite `hpos2` using `[← k2]`. Conclude with `lt_irrefl _ hpos2`. Establish `e1 : ∀ v, uMat ((g * k, xf).1 v) = uMat (g v) * uMat (k v)` using `fun v => rfl`.
+
+Establish `e2 : ∀ v, uMat (((1 : I.Ginf), xf).1 v) = 1` using `fun v => rfl`. Establish `hplace : ∀ w : InfinitePlace I.E, (Formalism.HN.gramPl (bas I) (frm I (g * k, xf)) w e).det.re * detOn (uMat (g (w.comap (algebraMap I.F I.E)))) (flagAt I S (w.comap (algebraMap I.F I.E)) i) ^ 2 = (Formalism.HN.gramPl (bas I) (frm I (1, xf)) w e).det.re`. Introduce `w`. Rewrite using `[norm_det_gram I (g * k, xf) w e, norm_det_gram I (1, xf) w e, e1, e2, inv_one]`. Simplify using `only [Matrix.one_mulVec]`.
+
+Establish `hfl` using `span_crd_eq_flagAt_of_spanning I S i (w.comap (algebraMap I.F I.E)) e heS hsp`. Rewrite using `[← hfl]`. Establish `hg1 : IsUnit (uMat (g (w.comap (algebraMap I.F I.E)))).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Establish `hW : ∀ y ∈ Submodule.span ℂ (Set.range fun b => crd I (w.comap (algebraMap I.F I.E)) (e b)), uMat (g (w.comap (algebraMap I.F I.E))) *ᵥ y ∈ Submodule.span ℂ (Set.range fun b => crd I (w.comap (algebraMap I.F I.E)) (e b))`. Rewrite using `[hfl]`.
+
+Conclude with `hg _`. Conclude with `gram_move _ (linearIndependent_crd_of_linearIndependent I _ e heli) _ _ hg1 (hk _) hW`. Establish `hbij` using `GlobalTheory.Count.FrameMajorant.comap_bijective I`. Establish `hprod : (∏ w, (Formalism.HN.gramPl (bas I) (frm I (g * k, xf)) w e).det.re) * (∏ v, detOn (uMat (g v)) (flagAt I S v i)) ^ 2 = ∏ w, (Formalism.HN.gramPl (bas I) (frm I (1, xf)) w e).det.re`. Rewrite using `[← Finset.prod_pow, ← Fintype.prod_bijective _ hbij (fun w => detOn (uMat (g (w.comap (algebraMap I.F I.E)))) (flagAt I S (w.comap (algebraMap I.F I.E)) i) ^ 2) (fun v => detOn (uMat (g v)) (flagAt I S v i) ^ 2) (fun w => rfl), ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun w _ => hplace w`. Apply `mul_right_cancel₀ hidx0` to reduce the goal to its premises. Rewrite using `[k2, ← hprod, ← k1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ht_move {a : ℕ} (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (i : Fin (a + 1))
     (hS : (S i).FG) (xf : I.Gf) (g k : I.Ginf)
     (hg : ∀ v, ∀ y ∈ flagAt I S v i, uMat (g v) *ᵥ y ∈ flagAt I S v i) (hk : ∀ v, k v ∈ maxK (I.ε v)) :
@@ -378,6 +522,13 @@ theorem ht_move {a : ℕ} (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n →
   rw [k2, ← hprod, ← k1]
   ring
 
+/- English proof (translation)
+Establish `hW' : ∀ y ∈ W, Matrix.toLin' g y ∈ W` using `fun y hy => by rw [Matrix.toLin'_apply]; exact hW y hy`. Unfold `detOn`. Rewrite using `[dif_pos hW']`. Apply `norm_pos_iff.2` to reduce the goal to its premises. Apply `IsUnit.ne_zero` to reduce the goal to its premises.
+
+Apply `(LinearMap.isUnit_iff_isUnit_det _).1` to reduce the goal to its premises. Rewrite using `[LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : g *ᵥ (y : Fin n → ℂ) = 0`.
+
+Simplify `congrArg Subtype.val hy` using `[Matrix.toLin'_apply]`. Establish `h3 : (y : Fin n → ℂ) = g⁻¹ *ᵥ (g *ᵥ (y : Fin n → ℂ))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]`. Rewrite using `[h3, h1, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+-/
 private theorem detOn_pos_of_isUnit_det_of_mapsTo {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g.det)
     (W : Submodule ℂ (Fin n → ℂ)) (hW : ∀ y ∈ W, g *ᵥ y ∈ W) : 0 < detOn g W := by
   have hW' : ∀ y ∈ W, Matrix.toLin' g y ∈ W := fun y hy => by rw [Matrix.toLin'_apply]; exact hW y hy
@@ -396,6 +547,11 @@ private theorem detOn_pos_of_isUnit_det_of_mapsTo {n : ℕ} (g : Matrix (Fin n) 
   rw [h3, h1, Matrix.mulVec_zero]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Real.mul_rpow hh (by positivity), mul_pow]`. Use `congr 1`. Rewrite using `[← Real.rpow_natCast ((q ^ 2) ^ ((1 : ℝ) / (2 * (f : ℝ) * (j : ℝ)))), ← Real.rpow_mul (by positivity), ← Real.rpow_natCast q 2, ← Real.rpow_mul hq]`. Use `congr 1`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem rpow_mul_sq_rpow_inv_pow_eq (f j : ℕ) (hf : (f : ℝ) ≠ 0) (hj : (j : ℝ) ≠ 0) (h0 q : ℝ) (hh : 0 ≤ h0)
     (hq : 0 ≤ q) :
     ((h0 * q ^ 2) ^ ((1 : ℝ) / (2 * (f : ℝ) * (j : ℝ)))) ^ f =
@@ -408,6 +564,37 @@ private theorem rpow_mul_sq_rpow_inv_pow_eq (f j : ℕ) (hf : (f : ℝ) ≠ 0) (
   push_cast
   field_simp
 
+/- English proof (translation)
+Introduce `I xf a j hj S hsat u m k hu hm hk i`. Unfold `IsSatFlag at hsat`. Take `⟨h0, hmono, hrk, hmem, -⟩` from `hsat`. Establish `hfgΛ : (lamX I (1, xf)).FG` using `(GlobalTheory.PointLattice.lamX_selfDual I (1, xf)).2.1`. Establish `hfg : ∀ l, (S l).FG` using `fun l => Submodule.FG.of_le hfgΛ fun y hy => ((hmem l y).1 hy).1`.
+
+Establish `hX : ∀ x : I.GA, ∀ w, IsUnit (frm I x w).det` using `fun x w => GlobalTheory.Count.FrameMajorant.frm_unit I x w`. Establish `hFM` using `GlobalTheory.Count.FrameMajorant.frames_give_majorants I (1, xf)`. Establish `hTC : IsTotallyComplex I.E` using `hFM.1`. Establish `hnPl : Formalism.HN.nPl I.E = I.f` using `hFM.2.1`. Establish `hsatQ : ∀ x : I.GA, Formalism.HN.IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (S i.succ) (S i.castSucc)`.
+
+Introduce `x`. Establish `h` using `GlobalTheory.Count.PerpStep.sat_inf (bas I) (frm I x) (hX x) (S i.succ) (hfg _) (Submodule.span I.E (S i.castSucc : Set (Fin I.n → I.E)))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨hmono (Fin.castSucc_lt_succ (i := i)).le hy, Submodule.subset_span hy⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `(hmem _ y).2 ⟨((hmem _ y).1 h1).1, h2⟩`.
+
+Establish `hhtpos : ∀ x : I.GA, ∀ l, 0 < Formalism.HN.ht (bas I) (frm I x) (S l)` using `fun x l => (Formalism.HN.plLat I.E (Fin I.n → I.E) (Fin I.n) (bas I) (frm I x) (hX x) (S l) (hfg l)).2.2`. Establish `hhtQ : ∀ x : I.GA, Formalism.HN.htQ (bas I) (frm I x) (S i.succ) (S i.castSucc) = Formalism.HN.ht (bas I) (frm I x) (S i.succ) / Formalism.HN.ht (bas I) (frm I x) (S i.castSucc)`. Introduce `x`. Rewrite using `[GlobalTheory.Count.PerpStep.htQ_eq (bas I) (frm I x) (hX x) _ _ (hfg _) (hsatQ x), GlobalTheory.Count.PerpStep.ht_eq (bas I) (frm I x) (hX x) _ (hfg _), GlobalTheory.Count.PerpStep.ht_eq (bas I) (frm I x) (hX x) _ (hfg _), ← Real.exp_sub]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hflag0 : ∀ v, flagAt I S v 0 = ⊥`. Introduce `v`. Simplify using `[flagAt, h0]`. Conclude with `Matrix.mulVec_zero _`.
+
+Establish `hmonoF : ∀ v, Monotone (flagAt I S v)` using `fun v l l' hll' => Submodule.span_mono (Set.image_mono (hmono hll'))`. Establish `hWm : ∀ v l, ∀ y ∈ flagAt I S v l, uMat (m v) *ᵥ y ∈ flagAt I S v l` using `fun v l y hy => (hm v l y hy).1`. Establish `hWu : ∀ v l, ∀ y ∈ flagAt I S v l, uMat (u v) *ᵥ y ∈ flagAt I S v l` using `fun v l => (flagN_nil (hflag0 v) (hmonoF v) (hu v) l).1`. Establish `hdu : ∀ v l, detOn (uMat (u v)) (flagAt I S v l) = 1` using `fun v l => detOn_unipotent _ _ (hWu v l) l (flagN_nil (hflag0 v) (hmonoF v) (hu v) l).2`. Establish `hdet : ∀ v l, detOn (uMat ((u * m) v)) (flagAt I S v l) = detOn (uMat (m v)) (flagAt I S v l)`.
+
+Introduce `v l`. Rewrite using `[show uMat ((u * m) v) = uMat (u v) * uMat (m v) from rfl, detOn_mul _ _ _ (hWu v l) (hWm v l), hdu, one_mul]`. Establish `hWum : ∀ v l, ∀ y ∈ flagAt I S v l, uMat ((u * m) v) *ᵥ y ∈ flagAt I S v l`. Introduce `v l y hy`. Rewrite using `[show uMat ((u * m) v) = uMat (u v) * uMat (m v) from rfl, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `hWu v l _ (hWm v l y hy)`. Establish `hmove : ∀ l, Formalism.HN.ht (bas I) (frm I (u * m * k, xf)) (S l) * (∏ v, detOn (uMat (m v)) (flagAt I S v l)) ^ 2 = Formalism.HN.ht (bas I) (frm I (1, xf)) (S l)`. Introduce `l`. Establish `h` using `ht_move I S l (hfg l) xf (u * m) k (fun v => hWum v l) hk`. Simplify `h` using `only [hdet]`.
+
+Establish `hDpos : ∀ l, 0 < ∏ v, detOn (uMat (m v)) (flagAt I S v l)` using `fun l => Finset.prod_pos fun v _ => detOn_pos_of_isUnit_det_of_mapsTo _ ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)) _ (hWm v l)`. Establish `hls : ∏ v, locSize j (flagAt I S v) (uMat (m v)) i = ((∏ v, detOn (uMat (m v)) (flagAt I S v i.castSucc)) / ∏ v, detOn (uMat (m v)) (flagAt I S v i.succ)) ^ ((1 : ℝ) / j i)`. Unfold `locSize`. Rewrite using `[Real.finsetProd_rpow _ _ (fun v _ => div_nonneg (detOn_nonneg _ _) (detOn_nonneg _ _)), Finset.prod_div_distrib, neg_div, Real.rpow_neg (div_nonneg (hDpos _).le (hDpos _).le), ← Real.inv_rpow (div_nonneg (hDpos _).le (hDpos _).le), inv_div]`. Establish `hjr : ((Formalism.HN.rkK (S i.succ) : ℝ) - Formalism.HN.rkK (S i.castSucc)) = (j i : ℝ)`.
+
+Rewrite using `[hrk i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsz : ∀ x : I.GA, Formalism.HN.sizeQ (bas I) (frm I x) (S i.succ) (S i.castSucc) = Formalism.HN.htQ (bas I) (frm I x) (S i.succ) (S i.castSucc) ^ ((1 : ℝ) / (2 * (I.f : ℝ) * (j i : ℝ)))`. Introduce `x`.
+
+Unfold `Formalism.HN.sizeQ`. Rewrite using `[hnPl, hjr]`. Establish `hQ1 : Formalism.HN.htQ (bas I) (frm I (u * m * k, xf)) (S i.succ) (S i.castSucc) = Formalism.HN.htQ (bas I) (frm I (1, xf)) (S i.succ) (S i.castSucc) * ((∏ v, detOn (uMat (m v)) (flagAt I S v i.castSucc)) / ∏ v, detOn (uMat (m v)) (flagAt I S v i.succ)) ^ 2`. Rewrite using `[hhtQ, hhtQ, ← hmove i.succ, ← hmove i.castSucc]`. Establish `h1` using `hhtpos (u * m * k, xf) i.succ`.
+
+Establish `h2` using `hhtpos (u * m * k, xf) i.castSucc`. Establish `h3` using `hDpos i.succ`. Establish `h4` using `hDpos i.castSucc`. Clear the denominators using the available nonvanishing facts. Establish `hf0 : (I.f : ℝ) ≠ 0`.
+
+Rewrite using `[← hnPl]`. Unfold `Formalism.HN.nPl`. Conclude with `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hj0 : (j i : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := hj i; omega)`. Rewrite using `[hsz, hsz, hQ1, hls]`.
+
+Apply `rpow_mul_sq_rpow_inv_pow_eq _ _ hf0 hj0` to reduce the goal to its premises. Rewrite using `[hhtQ]`. Conclude with `div_nonneg (hhtpos _ _).le (hhtpos _ _).le`. Conclude with `div_nonneg (hDpos _).le (hDpos _).le`.
+-/
 theorem size_move : ∀ (I : AutInst) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ), (∀ i, 1 ≤ j i) → ∀ (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)), IsSatFlag I (lamX I (1, xf)) j S → ∀ u m k : I.Ginf, (∀ v, u v ∈ flagN (I.ε v) (flagAt I S v)) → (∀ v, m v ∈ flagM (I.ε v) (flagAt I S v)) → (∀ v, k v ∈ maxK (I.ε v)) → ∀ i : Fin a, Formalism.HN.sizeQ (bas I) (frm I (u * m * k, xf)) (S i.succ) (S i.castSucc) ^ I.f = Formalism.HN.sizeQ (bas I) (frm I (1, xf)) (S i.succ) (S i.castSucc) ^ I.f * ∏ v, locSize j (flagAt I S v) (uMat (m v)) i := by
   intro I xf a j hj S hsat u m k hu hm hk i
   unfold IsSatFlag at hsat

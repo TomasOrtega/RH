@@ -9,13 +9,26 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P (c : 𝓞 E)`.
+-/
 theorem intAt_nat (P : HeightOneSpectrum (𝓞 E)) (c : ℕ) : IntAt P (c : E) := by
   simpa using IntAt.coe P (c : 𝓞 E)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) (by simpa using intAt_nat P 0) h`.
+-/
 theorem intAt_sum {ι : Type} (P : HeightOneSpectrum (𝓞 E)) (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     IntAt P (∑ i ∈ s, f i) :=
   Finset.sum_induction f (IntAt P) (fun _ _ ha hb => ha.add hb) (by simpa using intAt_nat P 0) h
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hv : f.symm y ∈ stdAt E a P` using `(hf _).1 (by simpa using hy)`. Establish `hv' : ∀ i, IntAt P (f.symm y i)` using `(mem_localization_standardLattice P _).1 hv`. Establish `e : (c : E) • x y = f' ((c : E) • inFr f f' x (f.symm y))` using `by simp [inFr]`. Rewrite using `[e, hf']`.
+
+Use `(mem_localization_standardLattice P _).2 fun l => ?_` and prove the remaining obligations. Establish `e2 : inFr f f' x (f.symm y) = ∑ s, f.symm y s • inFr f f' x (Pi.single s 1)` using `by conv_lhs => rw [pi_eq_sum_univ' (f.symm y)]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[e2]`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`.
+
+Use `intAt_sum P _ _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `(hv' s).mul (h s l)`.
+-/
 theorem smul_mem_of_inFr {a b : ℕ} (P : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E a))
     (N' : Submodule (𝓞 E) (Sp E b)) (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b)
     (hf : ∀ y, f y ∈ localization₂ P.asIdeal N ↔ y ∈ stdAt E a P) (hf' : ∀ y, f' y ∈ localization₂ P.asIdeal N' ↔ y ∈ stdAt E b P)
@@ -36,6 +49,11 @@ theorem smul_mem_of_inFr {a b : ℕ} (P : HeightOneSpectrum (𝓞 E)) (N : Submo
   rw [mul_left_comm]
   exact (hv' s).mul (h s l)
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `h1 : ∀ m s, LocE.fIdx k₀ 0 m s = s`. Introduce `m s`. Unfold `LocE.fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Simplify using `[LocE.entB, h1, LocE.scE, hp, hp']`.
+-/
 theorem entB_zero {N' N : ℕ} (q k₀ c' n' n : ℕ) (hc : c' = 0) (ex' ex : ℕ → ℕ) (x : HomE E N' N) (p p' : ℕ) (hp : p < n)
     (hp' : p' < n') :
     LocE.entB q k₀ c' n' 0 n ex' ex x p p' = Loc.atN (x (Loc.eN E N' p')) p := by
@@ -54,6 +72,19 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Establish `hc : cOf R (m2 + 1) = 0` using `by unfold cOf; omega`. Establish `ha : p' < R.r + (R.m - 1) * R.t`. Establish `: R.m - 1 = m2 + 1` using `by omega`. Unfold `Ranks.N at hp'`. Unfold `Ranks.r`.
+
+Rewrite using `[this]`. Establish `: (m2 + 1) * (R.t + 1) = (m2 + 1) * R.t + (m2 + 1)` using `by ring`. Use linear arithmetic over natural numbers and integers. Unfold `PhiTop at hz`. Use `split_ifs at hz`.
+
+Unfold `LocE.PhiGS at hz`. Simplify using `only at hz`. Use `split_ifs at hz with h`. Use `h.1 p p' hp ha` as an intermediate fact. Rewrite `this` using `[entB_zero _ _ _ _ _ hc _ _ _ _ _ hp hp']`. Then use the resulting hypothesis.
+
+Conclude with `absurd rfl hz`. Unfold `LocE.PhiG at hz`. Simplify using `only at hz`. Use `split_ifs at hz with h`. Use `h.1 p p' hp ha` as an intermediate fact.
+
+Rewrite `this` using `[entB_zero _ _ _ _ _ hc _ _ _ _ _ hp hp']`. Then use the resulting hypothesis. Conclude with `absurd rfl hz`. Unfold `LocE.PhiQ at hz split_ifs at hz with h`. Use `h.1 p p' hp (by omega)` as an intermediate fact. Rewrite `this` using `[entB_zero _ _ _ _ _ hc _ _ _ _ _ hp hp']`. Then use the resulting hypothesis.
+
+Conclude with `absurd rfl hz`.
+-/
 theorem intAt_of_phiTop (sharp : Bool) (m2 : ℕ) (hm : R.m = m2 + 2) (P : HeightOneSpectrum (𝓞 X.E))
     (z : HomE X.E (R.N (m2 + 1) + cOf R (m2 + 1)) ((R.N R.m - 1) + 0)) (hz : PhiTop Ch mu sharp m2 P z ≠ 0)
     (p p' : ℕ) (hp : p < R.N R.m - 1) (hp' : p' < R.N (m2 + 1)) :
@@ -86,6 +117,11 @@ theorem intAt_of_phiTop (sharp : Bool) (m2 : ℕ) (hm : R.m = m2 + 2) (P : Heigh
       rwa [entB_zero _ _ _ _ _ hc _ _ _ _ _ hp hp'] at this
     · exact absurd rfl hz
 
+/- English proof (translation)
+Unfold `ftY at h`. Use `split_ifs at h with h1 h2 h3`. Use `(intAt_nat P.1 (qOf P.1 ^ cst.M)).mul (h2 s)` as an intermediate fact. Simplify using `using this`. Conclude with `absurd rfl h`.
+
+Conclude with `h3 s`. Conclude with `absurd rfl h`.
+-/
 theorem intAt_of_ftY {n : ℕ} (P : rowSG Pr sel mu) (η : Sp X.E n →ₗ[X.E] X.E) (y' : Sp X.E n)
     (h : ftY sel mu cst P η y' ≠ 0) (s : Fin n) : IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * η (Pi.single s 1)) := by
   unfold ftY at h

@@ -10,6 +10,19 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.ChernReg
 open scoped TensorProduct ContDiff
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ k`. Establish `hO : (FlagMod.detOm s.T.Z).IsLB` using `(S.tor.isRec _ _ _).isLB_detOm`. Establish `hB : s.T.BD.lb.IsLB` using `s.T.BD.isLB_lb`. Establish `hP : (polLB s.T).IsLB` using `CechPic.isLB_tens (LB.isLB_linComb hO _ _) (CechPic.isLB_dual hB)`. Rewrite using `[← CechPic.cls_eq_iff (isLB_toLB _) (pull_isLB hP _), ← toPic_apply, CechPic.cls_pull hP]`.
+
+Establish `e1 : CechPic.cls (polLB s.T) hP = s.T.m0 • CechPic.cls _ hO - CechPic.cls _ hB`. Establish `h` using `CechPic.cls_tens (A := lbPow (FlagMod.detOm s.T.Z) s.T.m0) (B := CechPic.dual s.T.BD.lb) (LB.isLB_linComb hO _ _) (CechPic.isLB_dual hB) hP`. Rewrite `h` using `[CechPic.cls_lbPow hO, CechPic.cls_dual hB, ← sub_eq_add_neg]`. Conclude with `h`. Establish `e2 : CechPic.pull ((Φ.C k).π ≫ genι s.T.Z) (CechPic.cls _ hO) = toPic (-∑ x : Letter S.Dw, (Φ.C k).gr x.1 x.2)`.
+
+Rewrite using `[← CechPic.cls_pull hO _ (pull_isLB hO _), toPic_apply]`. Conclude with `((CechPic.cls_eq_iff _ _).2 (GlobalTheory.T.flag_determinant_iso D A N j S κ s Φ k)).symm`. Establish `e3 : CechPic.pull ((Φ.C k).π ≫ genι s.T.Z) (CechPic.cls _ hB) = toPic (bdPull Φ k)`. Rewrite using `[← CechPic.cls_pull hB _ (pull_isLB hB _), toPic_apply]`. Conclude with `((CechPic.cls_eq_iff _ _).2 (GlobalTheory.T.flag_boundary_iso D A N j S κ s Φ k)).symm`.
+
+Establish `e4 : (∑ x : DV.Rt D.what₂.Tau N, (if (x.2 : ℕ) < j then 0 else 2 * s.T.m0 : ℕ) • divOf (Φ.C k) (rootExp S x)) = s.T.m0 • ∑ x : DV.Rt D.what₂.Tau N, (if (x.2 : ℕ) < j then 0 else 2 : ℤ) • divOf (Φ.C k) (rootExp S x)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using the standard rewrite rules.
+
+Simplify using `only [← natCast_zsmul, smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : toPic (∑ x : DV.Rt D.what₂.Tau N, divOf (Φ.C k) (rootExp S x)) = 0`.
+
+Rewrite using `[Fintype.sum_prod_type, map_sum]`. Conclude with `Finset.sum_eq_zero fun τ _ => GlobalTheory.T.root_divisor_sum_trivial D A N j S κ s Φ k τ`. Rewrite using `[e1, map_sub, map_sub, map_nsmul, e2, e3, e4, map_nsmul, GlobalTheory.T.flag_root_divisor_relation D A N j S κ s Φ k, map_add, e5, add_zero]`.
+-/
 theorem GlobalTheory.ShFam.lbIso_polPull : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp), LBIso ((Φ.C k).Y.lb ((∑ x : DV.Rt D.what₂.Tau N, (if (x.2 : ℕ) < j then 0 else 2 * s.T.m0 : ℕ) • divOf (Φ.C k) (rootExp S x)) - bdPull Φ k)) ((polLB s.T).pull ((Φ.C k).π ≫ genι s.T.Z)) := by
   intro D A N j S κ s Φ k
   have hO : (FlagMod.detOm s.T.Z).IsLB := (S.tor.isRec _ _ _).isLB_detOm

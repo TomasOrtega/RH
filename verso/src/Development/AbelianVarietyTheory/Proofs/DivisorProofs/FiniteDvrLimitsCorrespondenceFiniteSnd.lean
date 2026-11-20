@@ -4,6 +4,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.ES
 
+/- English proof (translation)
+Introduce `X Y₀ S q U s₀ t₀ gt hq hS _ hgt hfin z hz`. Use `((gt.finite_preimage_singleton ⟨z, hz⟩).image s₀).subset ?_` and prove the remaining obligations. Introduce and unpack `u ⟨V, K, _, _, _, _, _, _, y', z', x, h1, h2, rfl, rfl⟩`. Establish `hr : Set.range z' ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint w).map z'.continuous).mem_open U.isOpen hz`. Use `set z'' := IsOpenImmersion.lift U.ι z' hr with hz''`. Establish `hfac : z'' ≫ U.ι = z'` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hsq : x ≫ gt = spMap (algebraMap V K) ≫ z''`.
+
+Rewrite using `[← cancel_mono U.ι, Category.assoc, hgt, Category.assoc, hfac, h2]`. Establish `hE : ValuativeCriterion.Existence gt` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed gt) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) gt).1`. Take `⟨l, hl1, hl2⟩` from `(hE { R := V, K := K, i₁ := x, i₂ := z'', commSq := ⟨hsq⟩ }).exists_lift`. Simplify using `only at hl1 hl2`. Establish `hU` using `IsSeparated.valuativeCriterion (q ≫ terminal.from S)`.
+
+Establish `hsq' : (x ≫ s₀) ≫ (q ≫ terminal.from S) = spMap (algebraMap V K) ≫ terminal.from _` using `terminal.hom_ext _ _`. Establish `hy : y' = l ≫ s₀`. Use `hU { R := V, K := K, i₁ := x ≫ s₀, i₂ := terminal.from _, commSq := ⟨hsq'⟩ }` as an intermediate fact. Establish `e` using `this.elim ⟨y', h1, terminal.hom_ext _ _⟩ ⟨l ≫ s₀, by change spMap (algebraMap V K) ≫ l ≫ s₀ = x ≫ s₀; rw [← Category.assoc, hl1], terminal.hom_ext _ _⟩`. Conclude with `congrArg CommSq.LiftStruct.l e`.
+
+Use `⟨l (IsLocalRing.closedPoint V), ?_, ?_⟩` and prove the remaining obligations. Use `show gt (l _) = _`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(l ≫ gt ≫ U.ι) _ = z' _`. Rewrite using `[← Category.assoc, hl2, hfac]`.
+
+Rewrite using `[hy]`. Both sides reduce to the same expression.
+-/
 theorem finite_dvr_limits_of_finite_snd : ∀ (X Y₀ S : Scheme.{0}) (q : X ⟶ S) (U : X.Opens) (s₀ t₀ : Y₀ ⟶ X)
     (gt : Y₀ ⟶ U.toScheme), IsSeparated q → IsAffine S → s₀ ≫ q = t₀ ≫ q → gt ≫ U.ι = t₀ → IsFinite gt →
     ∀ z : X, z ∈ U → {u : X | ∃ (V K : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V)

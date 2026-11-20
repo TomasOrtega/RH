@@ -20,6 +20,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
 variable {Rc : _root_.Formalism.L2.RecTAlt ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)}
   {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)} {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
   {S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
+/- English proof (translation)
+The claim follows from `congrFun (dW_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0) i`.
+-/
 theorem finrank_WL_eq_dW (Q : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     Module.finrank D.what₂.LL (Q.Rl.toRealDat.WL Q.F.lv2 false i) = (P.A3.indefDown P.S0).dW i :=
   congrFun (dW_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0) i
@@ -57,12 +60,23 @@ structure IndefiniteRealisationRecursion (Q : _root_.Formalism.IndefR.Indefinite
     (fun i y => P.I.jW i y) (_root_.Formalism.IndefR.indefiniteDownJoin Q)
 namespace RealRec
 variable {Q : _root_.Formalism.IndefR.IndefiniteRealisation Rc P Dcf Spf Zscf S Ks} (Qr : _root_.Formalism.IndefR.IndefiniteRealisationRecursion Q)
+/- English proof (translation)
+Apply `Qr.Tp.xi_inj` to reduce the goal to its premises. Rewrite using `[← Qr.recR.tupXi μ hμ, ← Qr.recR.tupXi μ' hμ', h]`.
+-/
 theorem _root_.Formalism.IndefR.IndefiniteRealisationRecursion.tupT_inj_used {μ μ' : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (hμ' : Formalism.IndefR.RecTie.Used0 D μ')
     (h : Qr.tupT μ = Qr.tupT μ') : μ = μ' := by
   apply Qr.Tp.xi_inj
   rw [← Qr.recR.tupXi μ hμ, ← Qr.recR.tupXi μ' hμ', h]
+/- English proof (translation)
+The claim follows from `Q.charW.base.lev.xi_inj (by rw [Qr.recR.tupXi D.what₂.mu0 (Or.inl rfl), Qr.Tp.trueColumnChoices_heckeChar_reference_eq_one, Q.charW.base.lev.xi_base])`.
+-/
 theorem _root_.Formalism.IndefR.IndefiniteRealisationRecursion.tupleRead_baseTuple_eq_family : Qr.tupT D.what₂.mu0 = P.A3.A.μ0 :=
   Q.charW.base.lev.xi_inj (by rw [Qr.recR.tupXi D.what₂.mu0 (Or.inl rfl), Qr.Tp.trueColumnChoices_heckeChar_reference_eq_one, Q.charW.base.lev.xi_base])
+/- English proof (translation)
+Establish `h0` using `Qr.tupleRead_baseTuple_eq_family`. Prove the components needed by the constructor for the conclusion. Introduce `hw he`. Apply `Q.charW.tup.mu_ne (D.plEq w) hw` to reduce the goal to its premises. Rewrite using `[← Qr.recR.tupAt w, he, h0]`.
+
+Introduce `hne`. Assume the negation of the conclusion as `hw`. Apply `hne` to reduce the goal to its premises. Apply `Qr.tupT_inj_used (Or.inr ⟨w, rfl⟩) (Or.inl rfl)` to reduce the goal to its premises. Rewrite using `[Qr.recR.tupAt w, Q.charW.tup.mu_off (D.plEq w) hw, h0]`.
+-/
 theorem _root_.Formalism.IndefR.IndefiniteRealisationRecursion.tw_iff (Qr : _root_.Formalism.IndefR.IndefiniteRealisationRecursion Q) (w : D.what₂.places.Pl) : D.plEq w ∈ Q.Rl.twPl ↔ D.what₂.muAt w ≠ D.what₂.mu0 := by
   have h0 := Qr.tupleRead_baseTuple_eq_family
   constructor

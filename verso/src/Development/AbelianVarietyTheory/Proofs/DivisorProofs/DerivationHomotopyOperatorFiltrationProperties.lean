@@ -7,6 +7,29 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm.HotFil
 
+/- English proof (translation)
+Introduce `R B _ _ _ J δ v e N hv he`. Take `⟨hc0, -, -, -, -, hcdeg⟩` from `(GlobalTheory.T.derivationContraction_lieDerivative_deRham_rules).1 R B v`. Take `⟨-, -, -, -, -, hldeg⟩` from `(GlobalTheory.T.derivationContraction_lieDerivative_deRham_rules).2 R B v`. Establish `hrel` using `(GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules).1`. Establish `hfil` using `(GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules).2`.
+
+Take `⟨-, -, -, -, hfil0, hanti, hsmul⟩` from `(GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base).1 R B J δ`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [hot, map_add, smul_add, Finset.sum_add_distrib]`. Introduce `b`.
+
+Simplify using `only [hot, hc0, map_zero, smul_zero, Finset.sum_const_zero]`. Introduce `j x hx`. Establish `hc` using `hcdeg j x hx`. Establish `hk : ∀ k, (lie v ^ k) (ctr v x) ∈ ⋀[B]^j Ω[B⁄R]`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simpa using hc`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hldeg j _ ih`.
+
+Conclude with `Submodule.sum_mem _ fun k _ ↦ Submodule.smul_mem _ _ (hk k)`. Introduce `x hx`. Establish `hc` using `(hrel R B J δ v hv x hx).1`. Establish `hk : ∀ k, (lie v ^ k) (ctr v x) ∈ rel R δ`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simpa using hc`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `(hrel R B J δ v hv _ ih).2`.
+
+Use `Ideal.sum_mem _ fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (hk k)`. Introduce `n x hx`. Establish `hc` using `(hfil R B J δ v hv n).1 x hx`.
+
+Establish `hk : ∀ k, (lie v ^ k) (ctr v x) ∈ filDR R δ (n - k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hc`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Break down `Nat.eq_zero_or_pos (n - k) with h0 | hpos` into its components or cases. Establish `: n - (k + 1) = 0` using `by omega`. Rewrite using `[this, hfil0]`. Conclude with `Submodule.mem_top`.
+
+Establish `h1 : n - k = (n - (k + 1)) + 1` using `by omega`. Rewrite `ih` using `[h1]`. Conclude with `(hfil R B J δ v hv (n - (k + 1))).2.2 _ ih`. Use `Ideal.sum_mem _ fun k _ ↦ ?_` and prove the remaining obligations. Establish `hek : (-1) ^ k * e (k + 1) ∈ fil δ (k + 1)` using `Ideal.mul_mem_left _ _ (he (k + 1))`.
+
+Conclude with `hanti (n + 1) ((k + 1) + (n - k)) (by omega) (hsmul (k + 1) (n - k) _ hek _ (hk k))`.
+-/
 theorem hot_fil : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J) (v : Derivation R B B) (e : ℕ → B) (N : ℕ), (∀ n, ∀ a ∈ J, v (δ.dpow (n + 1) a) = δ.dpow n a * v a) → (∀ k, e k ∈ fil δ k) → (∀ x y, hot v e N (x + y) = hot v e N x + hot v e N y) ∧ (∀ b, hot v e N (algebraMap B (DR R B) b) = 0) ∧ (∀ (j : ℕ), ∀ x ∈ ⋀[B]^(j + 1) Ω[B⁄R], hot v e N x ∈ ⋀[B]^j Ω[B⁄R]) ∧ (∀ x ∈ rel R δ, hot v e N x ∈ rel R δ) ∧ ∀ n, ∀ x ∈ filDR R δ n, hot v e N x ∈ filDR R δ (n + 1) := by
   intro R B _ _ _ J δ v e N hv he
   obtain ⟨hc0, -, -, -, -, hcdeg⟩ := (GlobalTheory.T.derivationContraction_lieDerivative_deRham_rules).1 R B v

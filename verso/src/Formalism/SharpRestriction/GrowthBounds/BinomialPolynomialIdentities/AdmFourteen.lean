@@ -4,6 +4,9 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.LieP
 
 namespace Formalism.MainNotions.G.ColumnFamilies
 
+/- English proof (translation)
+The claim follows from `joint_components_paths_of_joint_dimension D (isotypic_projections_commute_holds D) (lower_set_types_span D) restJointDim`.
+-/
 theorem adm_fourteen (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.JointComponentsPaths D :=
   joint_components_paths_of_joint_dimension D (isotypic_projections_commute_holds D) (lower_set_types_span D) restJointDim
 

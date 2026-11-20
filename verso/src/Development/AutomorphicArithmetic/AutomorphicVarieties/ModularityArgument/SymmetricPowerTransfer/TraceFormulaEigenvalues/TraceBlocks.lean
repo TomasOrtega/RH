@@ -6,6 +6,23 @@ namespace UpperTheory.V.Z.Sym.Tf
 
 variable {Γ Y V : Type} [Group Γ] [MulAction Γ Y] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hfibfin : ∀ b, F' b ≠ 0 → {a | m a = b}.Finite`. Introduce `b hb`. Establish `h1` using `hc b hb`. Establish `hne : Nat.card {a // m a = b} ≠ 0` using `by rw [h1.2]; exact h1.1`. Conclude with `Set.finite_coe_iff.mp (Nat.finite_of_card_ne_zero hne)`.
+
+Establish `hsuppF : Function.support F ⊆ ⋃ b ∈ Function.support F', {a | m a = b}`. Introduce `a ha`. Use `Set.mem_iUnion₂.mpr ⟨m a, fun h0 => ha ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hF, h0, smul_zero]`. Establish `hfin : (Function.support F).Finite` using `(hB.biUnion fun b hb => hfibfin b hb).subset hsuppF`.
+
+Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `set s := hfin.toFinset with hs`. Use `set T := hB.toFinset with hT`. Rewrite using `[finsum_eq_sum_of_support_subset F (s := s) (by simp [s]), finsum_eq_sum_of_support_subset F' (s := T) (by simp [T])]`. Establish `hmaps : ∀ a ∈ s, m a ∈ T`.
+
+Introduce `a ha`. Establish `ha' : F a ≠ 0` using `by simpa [s] using ha`. Establish `: F' (m a) ≠ 0` using `fun h0 => ha' (by rw [hF, h0, smul_zero])`. Simplify `this` using `[T]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`.
+
+Use `Finset.sum_congr rfl fun b hbT => ?_` and prove the remaining obligations. Establish `hb' : F' b ≠ 0` using `by simpa [T] using hbT`. Take `⟨hcb, hcard⟩` from `hc b hb'`. Establish `hset : (↑(s.filter (fun a => m a = b)) : Set A) = {a | m a = b}`. Use extensionality with `a`.
+
+Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, s, Set.Finite.mem_toFinset, Function.mem_support]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations.
+
+Rewrite using `[hF, h]`. Conclude with `smul_ne_zero (inv_ne_zero (Nat.cast_ne_zero.mpr hcb)) hb'`. Establish `hcard' : (s.filter (fun a => m a = b)).card = c b`. Rewrite using `[← Set.ncard_coe_finset, hset, ← Nat.card_coe_set_eq]`. Conclude with `hcard`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun _ => (c b : ℂ)⁻¹ • F' b)]`. Rewrite using `[Finset.sum_const, hcard', ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (Nat.cast_ne_zero.mpr hcb), one_smul]`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_filter]`. Rewrite using `[hF, ha.2]`.
+-/
 theorem sum_fib {A B : Type} (m : A → B) (F : A → V) (F' : B → V) (c : B → ℕ) (hB : (Function.support F').Finite)
     (hc : ∀ b, F' b ≠ 0 → c b ≠ 0 ∧ Nat.card {a // m a = b} = c b) (hF : ∀ a, F a = (c (m a) : ℂ)⁻¹ • F' (m a)) :
     (Function.support F).Finite ∧ ∑ᶠ a, F a = ∑ᶠ b, F' b := by
@@ -54,12 +71,40 @@ theorem sum_fib {A B : Type} (m : A → B) (F : A → V) (F' : B → V) (c : B �
     rw [Finset.mem_filter] at ha
     rw [hF, ha.2]
 
+/- English proof (translation)
+Rewrite using `[stabilizer_smul_eq_stabilizer_map_conj]`. Use `conv_lhs => rw [← Subgroup.Normal.map_conj_eq Γ₀ g]`. Conclude with `Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective`.
+-/
 theorem rel_smul (Γ₀ : Subgroup Γ) [Γ₀.Normal] (g : Γ) (y : Y) :
     Γ₀.relIndex (stabilizer Γ (g • y)) = Γ₀.relIndex (stabilizer Γ y) := by
   rw [stabilizer_smul_eq_stabilizer_map_conj]
   conv_lhs => rw [← Subgroup.Normal.map_conj_eq Γ₀ g]
   exact Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective
 
+/- English proof (translation)
+Use `set y0 := b.out with hy0`. Use `set O0 : orbitRel.Quotient Γ Y := Quotient.mk'' y0 with hO0`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Γ, t • y0 = O0.out := by`. Establish `h1 : (orbitRel Γ Y) O0.out y0` using `Quotient.exact' (Quotient.out_eq' O0)`. Rewrite `h1` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+
+Conclude with `h1`. Establish `hbq : (Quotient.mk'' y0 : orbitRel.Quotient H Y) = b` using `Quotient.out_eq' b`. Establish `hinv : ∀ s : stabilizer Γ y0, (s : Γ)⁻¹ • y0 = y0` using `fun s => inv_smul_eq_iff.mpr (MulAction.mem_stabilizer_iff.mp s.2).symm`. Establish `hmem : ∀ s : stabilizer Γ y0, (Quotient.mk'' ((((t * (s : Γ) : Γ) : Γ ⧸ H)).out⁻¹ • O0.out) : orbitRel.Quotient H Y) = b`. Introduce `s`.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H (t * (s : Γ))`. Rewrite using `[hh, ← ht, smul_smul]`. Establish `e1 : (t * (s : Γ) * (h : Γ))⁻¹ * t = (h : Γ)⁻¹ * (s : Γ)⁻¹` using `by group`. Rewrite using `[e1, mul_smul, hinv s, ← hbq]`. Conclude with `Quotient.sound' (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨h⁻¹, rfl⟩))`.
+
+Set `Fib` to `{a : orbitRel.Quotient Γ Y × (Γ ⧸ H) // (Quotient.mk'' (a.2.out⁻¹ • a.1.out) : orbitRel.Quotient H Y) = b}`. Set `F : stabilizer Γ y0 → Fib` to `fun s => ⟨(O0, ((t * (s : Γ) : Γ) : Γ ⧸ H)), hmem s⟩`. Establish `hF : ∀ s1 s2 : stabilizer Γ y0, F s1 = F s2 ↔ s1⁻¹ * s2 ∈ H.subgroupOf (stabilizer Γ y0)`. Introduce `s1 s2`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Establish `e2 : (t * (s1 : Γ))⁻¹ * (t * (s2 : Γ)) = ((s1⁻¹ * s2 : stabilizer Γ y0) : Γ)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Prove the components needed by the constructor for the conclusion. Introduce `h12`.
+
+Establish `h3 : ((t * (s1 : Γ) : Γ) : Γ ⧸ H) = ((t * (s2 : Γ) : Γ) : Γ ⧸ H)` using `congrArg (fun z : Fib => z.1.2) h12`. Establish `h4` using `QuotientGroup.eq.mp h3`. Rewrite `h4` using `[e2]`. Conclude with `h4`. Introduce `h12`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext rfl (QuotientGroup.eq.mpr ?_)` and prove the remaining obligations. Use `show (t * (s1 : Γ))⁻¹ * (t * (s2 : Γ)) ∈ H`. Rewrite using `[e2]`. Conclude with `h12`.
+
+Establish `hsurj : Function.Surjective F`. Introduce and unpack `⟨⟨O, q⟩, hq⟩`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h : H, (h : Γ) • y0 = q.out⁻¹ • O.out := by`. Establish `h1 : (orbitRel H Y) (q.out⁻¹ • O.out) y0` using `Quotient.exact' (hq.trans hbq.symm)`. Rewrite `h1` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+
+Conclude with `h1`. Establish `hO : O = O0`. Rewrite using `[← Quotient.out_eq' O]`. Conclude with `Quotient.sound' (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨q.out * h, by rw [mul_smul, hh, smul_inv_smul]⟩))`. Substitute `hO` using the available equality.
+
+Use `⟨⟨t⁻¹ * q.out * h, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hh, smul_inv_smul, ← ht, inv_smul_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show ((t * (t⁻¹ * q.out * (h : Γ)) : Γ) : Γ ⧸ H) = q`.
+
+Rewrite using `[show t * (t⁻¹ * q.out * (h : Γ)) = q.out * (h : Γ) by group, QuotientGroup.mk_mul_of_mem _ h.2, QuotientGroup.out_eq']`. Rewrite using `[Subgroup.relIndex, Subgroup.index]`. Use `Nat.card_congr (Equiv.ofBijective (Quotient.lift F fun a b hab => (hF a b).mpr (QuotientGroup.leftRel_apply.mp hab)) ⟨?_, ?_⟩).symm` and prove the remaining obligations. Introduce `x y hxy`. Proceed by induction on `x using Quotient.inductionOn'`.
+
+Proceed by induction on `y using Quotient.inductionOn'`. Conclude with `Quotient.sound' (QuotientGroup.leftRel_apply.mpr ((hF _ _).mp hxy))`. Introduce `z`. Take `⟨s, rfl⟩` from `hsurj z`. Conclude with `⟨Quotient.mk'' s, rfl⟩`.
+-/
 theorem card_fib (H : Subgroup Γ) (b : orbitRel.Quotient H Y) :
     Nat.card {a : orbitRel.Quotient Γ Y × (Γ ⧸ H) // (Quotient.mk'' (a.2.out⁻¹ • a.1.out) : orbitRel.Quotient H Y) = b} =
       H.relIndex (stabilizer Γ b.out) := by
@@ -132,6 +177,17 @@ theorem card_fib (H : Subgroup Γ) (b : orbitRel.Quotient H Y) :
     obtain ⟨s, rfl⟩ := hsurj z
     exact ⟨Quotient.mk'' s, rfl⟩
 
+/- English proof (translation)
+Establish `hmul : ∀ y : Y, Γ₀.relIndex (H ⊓ stabilizer Γ y) * H.relIndex (stabilizer Γ y) = Γ₀.relIndex (stabilizer Γ y)`. Introduce `y`. Rewrite using `[Subgroup.relIndex_inf_mul_relIndex, inf_eq_left.mpr hH]`. Establish `hcne : ∀ y : Y, H.relIndex (stabilizer Γ y) ≠ 0` using `fun y h => hs y (by rw [← hmul y, h, mul_zero])`. Set `m : orbitRel.Quotient Γ Y × (Γ ⧸ H) → orbitRel.Quotient H Y` to `fun a => Quotient.mk'' (a.2.out⁻¹ • a.1.out)`.
+
+Establish `key : ∀ a : orbitRel.Quotient Γ Y × (Γ ⧸ H), (Γ₀.relIndex (stabilizer Γ a.1.out) : ℂ)⁻¹ • k (a.2.out⁻¹ • a.1.out) = ((H.relIndex (stabilizer Γ (m a).out) : ℕ) : ℂ)⁻¹ • ((Γ₀.relIndex (H ⊓ stabilizer Γ (m a).out) : ℂ)⁻¹ • k (m a).out)`. Introduce `a`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h : H, (h : Γ) • (a.2.out⁻¹ • a.1.out) = (m a).out := by`. Establish `h1 : (orbitRel H Y) (m a).out (a.2.out⁻¹ • a.1.out)` using `Quotient.exact' (Quotient.out_eq' (m a))`. Rewrite `h1` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`.
+
+Conclude with `h1`. Establish `hk' : k (m a).out = k (a.2.out⁻¹ • a.1.out)`. Rewrite using `[← hh]`. Conclude with `hk h h.2 _`. Establish `hidx : Γ₀.relIndex (stabilizer Γ (m a).out) = Γ₀.relIndex (stabilizer Γ a.1.out)`.
+
+Rewrite using `[← hh, rel_smul, rel_smul]`. Rewrite using `[smul_smul, ← mul_inv, ← Nat.cast_mul, mul_comm, hmul, hidx, hk']`. Establish `hF'fin : (Function.support fun b : orbitRel.Quotient H Y => (Γ₀.relIndex (H ⊓ stabilizer Γ b.out) : ℂ)⁻¹ • k b.out).Finite`. Use `fin.subset ?_` and prove the remaining obligations. Introduce `b hb hkb`.
+
+Conclude with `hb (by simp only [hkb, smul_zero])`. Conclude with `sum_fib m (fun a => (Γ₀.relIndex (stabilizer Γ a.1.out) : ℂ)⁻¹ • k (a.2.out⁻¹ • a.1.out)) (fun b => (Γ₀.relIndex (H ⊓ stabilizer Γ b.out) : ℂ)⁻¹ • k b.out) (fun b => H.relIndex (stabilizer Γ b.out)) hF'fin (fun b _ => ⟨hcne _, card_fib H b⟩) key`.
+-/
 theorem countC (Γ₀ H : Subgroup Γ) [Γ₀.Normal] (h0 : ∀ z ∈ Γ₀, ∀ y : Y, z • y = y) (hH : Γ₀ ≤ H)
     (hs : ∀ y : Y, Γ₀.relIndex (stabilizer Γ y) ≠ 0) (k : Y → V) (hk : ∀ h ∈ H, ∀ y, k (h • y) = k y)
     (fin : {b : orbitRel.Quotient H Y | k b.out ≠ 0}.Finite) :
@@ -171,6 +227,15 @@ theorem countC (Γ₀ H : Subgroup Γ) [Γ₀.Normal] (h0 : ∀ z ∈ Γ₀, ∀
     (fun b => (Γ₀.relIndex (H ⊓ stabilizer Γ b.out) : ℂ)⁻¹ • k b.out)
     (fun b => H.relIndex (stabilizer Γ b.out)) hF'fin (fun b _ => ⟨hcne _, card_fib H b⟩) key
 
+/- English proof (translation)
+Use `set s := h.toFinset with hs`. Set `t` to `s.image Sigma.fst`. Set `u : ∀ i, Finset (A i)` to `fun i => s.preimage (Sigma.mk i) sigma_mk_injective.injOn`. Establish `hsub : Function.support F ⊆ ↑(t.sigma u)`. Introduce `a ha`.
+
+Establish `ha' : a ∈ s` using `by simpa [s] using ha`. Simplify using `only [Finset.coe_sigma, Set.mem_sigma_iff, Finset.mem_coe, t, u, Finset.mem_image, Finset.mem_preimage]`. Conclude with `⟨⟨a, ha', rfl⟩, ha'⟩`. Rewrite using `[finsum_eq_sum_of_support_subset F hsub, Finset.sum_sigma]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := t)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(finsum_eq_sum_of_support_subset _ ?_).symm` and prove the remaining obligations. Introduce `x hx`. Simplify `hx` using `[u, s]`. Introduce `i hi`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, F ⟨i, x⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hi (by simp [hc])`. Conclude with `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨⟨i, x⟩, by simpa [s] using hx, rfl⟩)`.
+-/
 theorem finsum_sig {I : Type} {A : I → Type} (F : (Σ i, A i) → ℂ) (h : (Function.support F).Finite) :
     ∑ᶠ a, F a = ∑ᶠ i, ∑ᶠ x, F ⟨i, x⟩ := by
   classical
@@ -196,6 +261,15 @@ theorem finsum_sig {I : Type} {A : I → Type} (F : (Σ i, A i) → ℂ) (h : (F
       exact hi (by simp [hc])
     exact Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨⟨i, x⟩, by simpa [s] using hx, rfl⟩)
 
+/- English proof (translation)
+Establish `hL : L = ∑ o', ∑ o, LinearMap.single ℂ (fun _ : Q => V) o' ∘ₗ (E o' o ∘ₗ LinearMap.proj o)`. Use `LinearMap.ext fun w => funext fun p => ?_` and prove the remaining obligations. Simplify using `only [h, LinearMap.sum_apply, Finset.sum_apply, LinearMap.comp_apply, LinearMap.coe_proj, Function.eval, LinearMap.coe_single, Pi.single_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hL, map_sum]`. Use `Finset.sum_congr rfl fun o' _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Establish `hterm : ∀ o, LinearMap.trace ℂ (Q → V) (LinearMap.single ℂ (fun _ : Q => V) o' ∘ₗ (E o' o ∘ₗ LinearMap.proj o)) = if o = o' then LinearMap.trace ℂ V (E o' o) else 0`. Introduce `o`.
+
+Rewrite using `[LinearMap.trace_comp_comm', LinearMap.comp_assoc]`. Use `split_ifs with hoo`. Substitute `hoo` using the available equality. Rewrite using `[LinearMap.proj_comp_single_same, LinearMap.comp_id]`. Rewrite using `[LinearMap.proj_comp_single_ne ℂ _ _ _ hoo, LinearMap.comp_zero, map_zero]`.
+
+Simplify using `only [hterm, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem trace_blocks {Q : Type} [Fintype Q] [FiniteDimensional ℂ V] (E : Q → Q → Module.End ℂ V) (L : Module.End ℂ (Q → V))
     (h : ∀ w o', L w o' = ∑ o, E o' o (w o)) : LinearMap.trace ℂ _ L = ∑ o, LinearMap.trace ℂ V (E o o) := by
   classical
@@ -219,6 +293,13 @@ theorem trace_blocks {Q : Type} [Fintype Q] [FiniteDimensional ℂ V] (E : Q →
     · rw [LinearMap.proj_comp_single_ne ℂ _ _ _ hoo, LinearMap.comp_zero, map_zero]
   simp only [hterm, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hrel : ∀ y y' : Y, (orbitRel Γ₀ Y) y y' → y = y'`. Introduce `y y' h`. Rewrite `h` using `[MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Take `⟨g, hg⟩` from `h`. Rewrite using `[← hg, Subgroup.smul_def]`.
+
+Conclude with `h0 g g.2 y'`. Set `e : Y ≃ orbitRel.Quotient Γ₀ Y` to `{ toFun := fun y => Quotient.mk'' y invFun := fun b => b.out left_inv := fun y => hrel _ _ (Quotient.exact' (Quotient.out_eq' (Quotient.mk'' y : orbitRel.Quotient Γ₀ Y))) right_inv := fun b => Quotient.out_eq' b }`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(hk.image e).subset ?_` and prove the remaining obligations. Introduce `b hb`.
+
+Conclude with `⟨b.out, hb, Quotient.out_eq' b⟩`. Establish `hcoef : ∀ b : orbitRel.Quotient Γ₀ Y, Γ₀.relIndex (Γ₀ ⊓ stabilizer Γ b.out) = 1` using `fun b => Subgroup.relIndex_eq_one.mpr inf_le_left`. Simplify using `only [hcoef, Nat.cast_one, inv_one, one_smul]`. Conclude with `finsum_comp_equiv e.symm (f := k)`.
+-/
 theorem finsum_triv (Γ₀ : Subgroup Γ) (h0 : ∀ z ∈ Γ₀, ∀ y : Y, z • y = y) (k : Y → V) (hk : (Function.support k).Finite) :
     {b : orbitRel.Quotient Γ₀ Y | k b.out ≠ 0}.Finite ∧
     ∑ᶠ b : orbitRel.Quotient Γ₀ Y, (Γ₀.relIndex (Γ₀ ⊓ stabilizer Γ b.out) : ℂ)⁻¹ • k b.out = ∑ᶠ y, k y := by

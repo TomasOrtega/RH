@@ -22,6 +22,13 @@ namespace GlobalTheory.SingleDatum.BasePair
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨α, rfl, h1, h2⟩` from `h`. Take `⟨α', rfl, h1', h2'⟩` from `h'`. Establish `e : α' * α = 0` using `GlobalTheory.SplitIdem.af_ext _ fun w => by`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Rewrite using `[h2' w hne.symm, zero_mul]`. Rewrite using `[h2 w hw, mul_zero]`. Use `show pairA D.host.F 0 α' * pairA D.host.F 0 α = 0`. Establish `e2 : pairA D.host.F 0 α' * pairA D.host.F 0 α = pairA D.host.F 0 (α' * α)` using `Prod.ext (mul_zero _) rfl`.
+
+Rewrite using `[e2, e]`. Both sides reduce to the same expression.
+-/
 theorem placeIdem_mul_eq_zero {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.host.F} (h : IsPlaceIdem D v ε)
     (h' : IsPlaceIdem D v' ε') (hne : v' ≠ v) : ε' * ε = 0 := by
   obtain ⟨α, rfl, h1, h2⟩ := h
@@ -36,6 +43,13 @@ theorem placeIdem_mul_eq_zero {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε ε'
   rw [e2, e]
   rfl
 
+/- English proof (translation)
+Take `⟨-, -, v', ε', h', he'⟩` from `id he`. Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality. Establish `: ε' = ε`. Take `⟨α, rfl, h1, h2⟩` from `hv.1`.
+
+Take `⟨α', rfl, h1', h2'⟩` from `h'`. Establish `: α' = α` using `GlobalTheory.SplitIdem.af_ext _ fun w => by`. Distinguish the cases in `hw : w = v'`. Substitute `hw` using the available equality. Rewrite using `[h1, h1']`.
+
+Rewrite using `[h2 w hw, h2' w hw]`. Rewrite using `[this]`. Substitute `this` using the available equality. Conclude with `absurd ⟨e, he, he'⟩ hv.2`. Rewrite using `[he', ← map_mul, placeIdem_mul_eq_zero hv.1 h' hvv, map_zero]`.
+-/
 theorem split_mul_nonSplit {e : AE D} (he : IsSplitIdem D e) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
     (hv : GlobalTheory.WeilParts.NonSplitAt D v ε) : (e + cA D e) * algebraMap (AF D.host.F) (AE D) ε = 0 := by
   obtain ⟨-, -, v', ε', h', he'⟩ := id he
@@ -53,6 +67,15 @@ theorem split_mul_nonSplit {e : AE D} (he : IsSplitIdem D e) {v : HeightOneSpect
     exact absurd ⟨e, he, he'⟩ hv.2
   · rw [he', ← map_mul, placeIdem_mul_eq_zero hv.1 h' hvv, map_zero]
 
+/- English proof (translation)
+Introduce `x hx i1 i2`. Establish `hinf : infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0`. Take `⟨α, rfl, -⟩` from `hv.1`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `hx1 : infPart D (x : AE D) = 1`.
+
+Use `congrArg (infPart D) hx` as an intermediate fact. Rewrite `this` using `[map_mul, hinf, zero_mul, map_sub, map_one]`. Conclude with `sub_eq_zero.1 this.symm`. Use `hu x hx1 i1 i2 ?_` and prove the remaining obligations. Establish `h0 : (idem Q + cA D (idem Q)) * algebraMap (AF D.host.F) (AE D) ε = 0`.
+
+Rewrite using `[idem, map_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun PP hPP => split_mul_nonSplit (hs.isIdemAt hPP).1 hv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, hx]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = idem Q + cA D (idem Q) := by rw [h0, zero_mul, zero_add]`.
+-/
 theorem unramAt_of_unramOutside {χ : (AE D)ˣ →* Circle} {Q : Finset (Formalism.L2.DIV.Pl D.host.E)} (hs : GlobalTheory.ExportSeries.SplitSet Q)
     (hu : GlobalTheory.ExportSeries.UnramOutside χ Q) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
     (hv : GlobalTheory.WeilParts.NonSplitAt D v ε) : GlobalTheory.WeilParts.UnramAt ε χ := by
@@ -73,10 +96,16 @@ theorem unramAt_of_unramOutside {χ : (AE D)ˣ →* Circle} {Q : Finset (Formali
         rw [mul_assoc, hx]; ring
     _ = idem Q + cA D (idem Q) := by rw [h0, zero_mul, zero_add]
 
+/- English proof (translation)
+Introduce `x a b c` and use `by rw [MonoidHom.mul_apply, h x a b c, h' x a b c, one_mul]`.
+-/
 theorem unramAt_mul {ε : AF D.host.F} {χ χ' : (AE D)ˣ →* Circle} (h : GlobalTheory.WeilParts.UnramAt ε χ)
     (h' : GlobalTheory.WeilParts.UnramAt ε χ') : GlobalTheory.WeilParts.UnramAt ε (χ * χ') := fun x a b c => by
   rw [MonoidHom.mul_apply, h x a b c, h' x a b c, one_mul]
 
+/- English proof (translation)
+Introduce `x a b c` and use `by rw [MonoidHom.inv_apply, h x a b c, inv_one]`.
+-/
 theorem unramAt_inv {ε : AF D.host.F} {χ : (AE D)ˣ →* Circle} (h : GlobalTheory.WeilParts.UnramAt ε χ) :
     GlobalTheory.WeilParts.UnramAt ε χ⁻¹ := fun x a b c => by
   rw [MonoidHom.inv_apply, h x a b c, inv_one]
@@ -85,6 +114,21 @@ end GlobalTheory.SingleDatum.BasePair
 
 open GlobalTheory.SingleDatum.BasePair in
 
+/- English proof (translation)
+Introduce `D V W B hB hS ω hω`. Take `⟨hg, hsig, hV, hW, hstd⟩` from `hS`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ = W.rank` using `fun τ => by`. Use `(GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hB.sigOK (tauE D τ))).1` as an intermediate fact. Rewrite `this` using `[← hB.sig τ]`.
+
+Conclude with `this`. Take `⟨s, hs⟩` from `hB.odd`. Establish `expMu : ∀ τ, ∃ a : ℤ, HasInfExp D (B.mu * 1) τ a` using `fun τ => by`. Use `⟨B.w.c τ - s + B.w.q τ, ?_⟩` and prove the remaining obligations. Establish `e : (((B.w.c τ - s + B.w.q τ : ℤ)) : ℚ) = (B.w.c τ : ℚ) - ((B.w.p τ : ℚ) - B.w.q τ) / 2 + 1 / 2`.
+
+Establish `h1 : (B.w.p τ : ℚ) + B.w.q τ = 2 * s + 1` using `by exact_mod_cast (hpq τ).trans hs`. Use `push_cast`. Take the linear combination `(1 / 2 : ℚ) * h1`. Rewrite using `[mul_one, e]`. Conclude with `GlobalTheory.RealFockAction.hasInfExp_mul_of_isOpen_ker (hB.inf τ) hB.de.isOpen`.
+
+Establish `hPg : GlobalTheory.ExportSeries.SplitSet B.G.Pg`. Take `⟨P, h1, -, h3⟩` from `hB.places.split`. Conclude with `h3.mono h1`. Use `⟨⟨hω, hB.frame.vac.2.inf, hg, hB.even, hsig, hB.sigOK, expMu, fun τ => ?_, fun v ε hv => ?_, ⟨_, hB.eta⟩⟩, ?_, hV, hW, hB.frame.sdS, hB.frame.sdT, hstd, hB.frame.cartT, hB.frame.vac⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `expMu τ`.
+
+Use `⟨a - s - 1, ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.Mem.HeckeExp.hasInfExp_mul ha (GlobalTheory.Mem.HeckeExp.hasInfExp_inv (hB.eta.2.2.2 τ))`. Establish `e : ((a - s - 1 : ℤ) : ℚ) + (W.rank : ℚ) / 2 = (a : ℚ) + -(1 / 2)`. Rewrite using `[hs]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`. Establish `u1 : GlobalTheory.WeilParts.UnramAt ε (B.mu * 1)`. Rewrite using `[mul_one]`.
+
+Conclude with `unramAt_mul (unramAt_of_unramOutside hPg hB.unram hv) (unramAt_of_unramOutside hB.de.split hB.de.unram hv)`. Conclude with `⟨u1, unramAt_mul u1 (unramAt_inv (GlobalTheory.AdTh.PairModel.unramAt_of_everywhere hB.eta.2.1 hv.1))⟩`. Establish `h1 : 0 < W.rank` using `by rw [hs]; omega`. Conclude with `(lt_of_lt_of_le h1 B.hr).ne'`.
+-/
 theorem GlobalTheory.SingleDatum.vacPair_of_good : ∀ (D : D7) (V W : HSp D) (B : Base V W), B.Good → StdBase B → ∀ ω : PairRep V W, B.IsWeil 1 ω → VacPair B.F.ψ B.F.θ V W (B.mu * 1) (B.mu * 1 * B.eta⁻¹) ω B.F.ΛS B.F.ΛT B.F.sT B.F.f₀ := by
   intro D V W B hB hS ω hω
   obtain ⟨hg, hsig, hV, hW, hstd⟩ := hS

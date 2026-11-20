@@ -41,11 +41,21 @@ def chMap {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) : (chains R).obj (sch.obj 
 def trH {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ) : H R (sch.obj Y) F n →+ H R (sch.obj X) F n :=
   HK.pull R (chMap τ) F n
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `z.mk_surjective`. Conclude with `congrArg CohomologyClass.mk (Cocycle.ext (Cochain.comp_smul _ _ _ (zero_add n)))`.
+-/
 theorem trH_smul {X Y : Scheme.{0}} (τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ) (r : R) (z : H R (sch.obj Y) F n) :
     trH τ F n (r • z) = r • trH τ F n z := by
   obtain ⟨z, rfl⟩ := z.mk_surjective
   exact congrArg CohomologyClass.mk (Cocycle.ext (Cochain.comp_smul _ _ _ (zero_add n)))
 
+/- English proof (translation)
+Establish `h : chMap (σ + τ) = chMap σ + chMap τ`. Establish `: (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 (σ + τ)) = (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 σ) + (AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (simp0 τ)`. Use extensionality with `n : 1`. Both sides reduce to the same expression. Conclude with `(congrArg (ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map this).trans (Functor.map_add _)`.
+
+Take `⟨z, rfl⟩` from `z.mk_surjective`. Unfold `trH`. Rewrite using `[h]`. Use `Eq.trans ?_ (CohomologyClass.mk_add _ _)` and prove the remaining obligations. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations.
+
+Simplify using `[zcomp, Cochain.ofHom_add]`.
+-/
 theorem trH_add {X Y : Scheme.{0}} (σ τ : fr R X ⟶ fr R Y) (F : Shv R) (n : ℤ)
     (z : H R (sch.obj Y) F n) : trH (σ + τ) F n z = trH σ F n z + trH τ F n z := by
   have h : chMap (σ + τ) = chMap σ + chMap τ := by

@@ -34,6 +34,11 @@ def subH {k m : ℕ} (b : HermE D m) (e : Fin k → Fin m) : HermE D k :=
     funext i j
     exact congrFun (congrFun h (e i)) (e j)⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hb`. Establish `hd : ∀ i, b.1 i i ≠ 0`. Introduce `i h0`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← h1.diagonal_diag, Matrix.det_diagonal]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) h0`. Establish `hs : (subH b e).1.IsDiag` using `h1.submatrix he`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs.diagonal_diag, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hd (e i)`.
+-/
 theorem subH_isDiagInv {k m : ℕ} {b : HermE D m} (hb : IsDiagInv b) {e : Fin k → Fin m} (he : Function.Injective e) :
     IsDiagInv (subH b e) := by
   obtain ⟨h1, h2⟩ := hb
@@ -47,6 +52,11 @@ theorem subH_isDiagInv {k m : ℕ} {b : HermE D m} (hb : IsDiagInv b) {e : Fin k
   rw [← hs.diagonal_diag, Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.2 fun i _ => hd (e i)
 
+/- English proof (translation)
+Establish `hne : ∀ (i : Fin ρ) (j : Fin 1), Fin.castAdd 1 i ≠ Fin.natAdd ρ j`. Introduce `i j h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨fun _ _ => rfl, fun _ _ => rfl, fun i j => hb.1 (hne i j), fun i j => hb.1 (hne i j).symm⟩`.
+-/
 theorem diagonal_invertible_block_form {ρ : ℕ} {b : HermE D (ρ + 1)} (hb : IsDiagInv b) :
     IsBlockSL2Embedding b (subH b (Fin.castAdd 1)) (subH b (Fin.natAdd ρ)) := by
   have hne : ∀ (i : Fin ρ) (j : Fin 1), Fin.castAdd 1 i ≠ Fin.natAdd ρ j := by
@@ -56,6 +66,21 @@ theorem diagonal_invertible_block_form {ρ : ℕ} {b : HermE D (ρ + 1)} (hb : I
     omega
   exact ⟨fun _ _ => rfl, fun _ _ => rfl, fun i j => hb.1 (hne i j), fun i j => hb.1 (hne i j).symm⟩
 
+/- English proof (translation)
+Introduce `ρ`. Proceed by induction on `ρ with`. Consider the case `zero`. Introduce `p μ 𝓕 hμ ψ hψ b₀ _ χ _ _ h1' θ hθ`. Take `rfl` from `h1' rfl`.
+
+Conclude with `h0 D p μ 𝓕 hμ ψ hψ b₀ θ hθ`. Consider the case `succ ρ ih`. Introduce `p μ 𝓕 hμ ψ hψ b₀ hb χ hχ hr _ θ hθ`. Choose the witnesses or unpack the hypotheses as in `⟨χ₁, hχ₁, hr₁, he⟩ : ∃ χ₁, IsHeckeChar D χ₁ ∧ ResEta D χ₁ 1 ∧ (ρ = 0 → χ₁ = χ) := by`. Distinguish the cases in `h : ρ = 0`.
+
+Substitute `h` using the available equality. Conclude with `⟨χ, hχ, hr, fun _ => rfl⟩`. Take `⟨χ₁, a, b⟩` from `hH D 1`. Conclude with `⟨χ₁, a, b, fun h' => absurd h' h⟩`. Establish `hχ' : IsHeckeChar D (χ * χ₁⁻¹)`.
+
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `c1` using `hχ.1`. Establish `c2` using `hχ₁.1`. Conclude with `c1.mul c2.inv`. Establish `a1` using `hχ.2 x`.
+
+Establish `a2` using `hχ₁.2 x`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, a1, a2, inv_one, mul_one]`. Establish `hr' : ResEta D (χ * χ₁⁻¹) ρ`. Use `⟨hr.1, fun η hη a => ?_⟩` and prove the remaining obligations. Establish `e1` using `hr.2 η hη a`.
+
+Establish `e2` using `hr₁.2 η hη a`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, e1, e2, pow_one, pow_succ]`. Conclude with `mul_inv_cancel_right _ _`. Take `⟨μr, 𝓕r, hμr⟩` from `GlobalTheory.CompanionTheory.RatMxCovol.exists_isCovolOne_ratMx D ρ p`. Take `⟨μs, 𝓕s, hμs⟩` from `GlobalTheory.CompanionTheory.RatMxCovol.exists_isCovolOne_ratMx D 1 p`.
+
+Establish `hinj1 : Function.Injective (Fin.castAdd 1 : Fin ρ → Fin (ρ + 1))` using `Fin.castAdd_injective _ _`. Establish `hinj2 : Function.Injective (Fin.natAdd ρ : Fin 1 → Fin (ρ + 1))` using `Fin.natAdd_injective _ _`. Establish `hd2` using `subH_isDiagInv hb hinj2`. Establish `T` using `hS D ρ 1 p μr 𝓕r μs 𝓕s μ 𝓕 hμr hμs hμ ψ hψ (χ * χ₁⁻¹) χ₁ θ hθ _ _ b₀ (diagonal_invertible_block_form hb) (ih p μr 𝓕r hμr ψ hψ _ (subH_isDiagInv hb hinj1) _ hχ' hr' (fun h => by rw [he h]; exact mul_inv_cancel χ) θ hθ) (h1 D p μs 𝓕s hμs ψ hψ _ hd2.2 χ₁ hχ₁ hr₁ θ hθ)`. Rewrite `T` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem core (h0 : ZeroTotal) (h1 : OneTotal) (hS : StepTotal) (hH : HeckeEta) (D : D7) :
     ∀ (ρ p : ℕ) (μ : Measure (Mx D ρ p)) (𝓕 : Set (Mx D ρ p)), IsCovolOne (ratMx D ρ p) μ 𝓕 →
     ∀ ψ, IsCharAF D.host.F ψ → ∀ b₀ : HermE D ρ, IsDiagInv b₀ → ∀ χ, IsHeckeChar D χ → ResEta D χ ρ → (ρ = 0 → χ = 1) →
@@ -99,10 +124,16 @@ theorem core (h0 : ZeroTotal) (h1 : OneTotal) (hS : StepTotal) (hH : HeckeEta) (
       (h1 D p μs 𝓕s hμs ψ hψ _ hd2.2 χ₁ hχ₁ hr₁ θ hθ)
     rwa [inv_mul_cancel_right] at T
 
+/- English proof (translation)
+Introduce `hH D ρ p m ψ hψ b₀ hb χ hχ hr h0' θ hθ`. Conclude with `core h0 h1 hS hH D ρ p m.μ m.𝓕 m.hμ ψ hψ b₀ hb χ hχ hr h0' θ hθ`.
+-/
 theorem thTotal_of (h0 : ZeroTotal) (h1 : OneTotal) (hS : StepTotal) : HeckeEta → ThTotal := by
   intro hH D ρ p m ψ hψ b₀ hb χ hχ hr h0' θ hθ
   exact core h0 h1 hS hH D ρ p m.μ m.𝓕 m.hμ ψ hψ b₀ hb χ hχ hr h0' θ hθ
 
+/- English proof (translation)
+The claim follows from `thTotal_of GlobalTheory.T.zero_coefficient_total (GlobalTheory.T.rank_one_theta_total GlobalTheory.T.weil_representation_continuity (GlobalTheory.T.rank_one_majorant GlobalTheory.T.weil_representation_continuity GlobalTheory.T.weil_representation_K_finite GlobalTheory.T.orbit_maj …`.
+-/
 theorem thTotal : HeckeEta → ThTotal :=
   thTotal_of GlobalTheory.T.zero_coefficient_total
     (GlobalTheory.T.rank_one_theta_total GlobalTheory.T.weil_representation_continuity (GlobalTheory.T.rank_one_majorant GlobalTheory.T.weil_representation_continuity GlobalTheory.T.weil_representation_K_finite GlobalTheory.T.orbit_majorant GlobalTheory.T.iwasawa_compactness)

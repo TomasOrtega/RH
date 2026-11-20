@@ -14,6 +14,9 @@ variable {F : Type u} [Field F] [DecidableEq F] [IsAlgClosed F] (W : Weierstrass
 
 local notation "ι" => algebraMap F W.toAffine.FunctionField
 
+/- English proof (translation)
+Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[map_translate_genericPoint, ← Point.map_map, map_translate_genericPoint, map_add (Point.map (translate W R)), map_translate_genericPoint, map_constPoint, map_add (constPoint W), add_assoc]`.
+-/
 theorem translate_add (R S : W.toAffine.Point) :
     translate W (R + S) = (translate W R).comp (translate W S) := by
   apply algHom_eq_of_map_genericPoint
@@ -21,25 +24,43 @@ theorem translate_add (R S : W.toAffine.Point) :
     map_add (Point.map (translate W R)), map_translate_genericPoint, map_constPoint,
     map_add (constPoint W), add_assoc]
 
+/- English proof (translation)
+Rewrite using `[translate_add]`. Both sides reduce to the same expression.
+-/
 theorem translate_translate (R S : W.toAffine.Point) (f : W.toAffine.FunctionField) :
     translate W R (translate W S f) = translate W (R + S) f := by
   rw [translate_add]
   rfl
 
+/- English proof (translation)
+The claim follows from `(translate W R).commutes c`.
+-/
 theorem translate_algebraMap (R : W.toAffine.Point) (c : F) : translate W R (ι c) = ι c :=
   (translate W R).commutes c
 
+/- English proof (translation)
+The claim follows from `(translate W R).toRingHom.injective`.
+-/
 theorem translate_injective (R : W.toAffine.Point) : Function.Injective (translate W R) :=
   (translate W R).toRingHom.injective
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (translate_injective W R)).mpr hf`.
+-/
 theorem translate_ne_zero (R : W.toAffine.Point) {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     translate W R f ≠ 0 :=
   (map_ne_zero_iff _ (translate_injective W R)).mpr hf
 
+/- English proof (translation)
+Rewrite using `[← valuationInfty_translate, ← valuationInfty_translate, translate_translate]`.
+-/
 theorem valuationPoint_translate (P R : W.toAffine.Point) (f : W.toAffine.FunctionField) :
     valuationPoint W P (translate W R f) = valuationPoint W (P + R) f := by
   rw [← valuationInfty_translate, ← valuationInfty_translate, translate_translate]
 
+/- English proof (translation)
+Establish `h` using `valuationPoint_translate W P R f`. Rewrite `h` using `[valuationPoint_eq_exp W P (translate_ne_zero W R hf), valuationPoint_eq_exp W (P + R) hf, exp_inj]`. Conclude with `neg_injective h`.
+-/
 theorem ordPoint_translate (P R : W.toAffine.Point) {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     ordPoint W P (translate W R f) = ordPoint W (P + R) f := by
   have h := valuationPoint_translate W P R f
@@ -47,12 +68,18 @@ theorem ordPoint_translate (P R : W.toAffine.Point) {f : W.toAffine.FunctionFiel
     exp_inj] at h
   exact neg_injective h
 
+/- English proof (translation)
+Rewrite using `[divisorOf_apply, divisorOf_apply, ordPoint_translate W P R hf]`.
+-/
 theorem divisorOf_translate_apply (R : W.toAffine.Point) {f : W.toAffine.FunctionField} (hf : f ≠ 0)
     (P : W.toAffine.Point) : divisorOf W (translate W R f) P = divisorOf W f (P + R) := by
   rw [divisorOf_apply, divisorOf_apply, ordPoint_translate W P R hf]
 
 omit [DecidableEq F] [IsAlgClosed F] in
 
+/- English proof (translation)
+Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[map_mulPullback_genericPoint, ← Point.map_map, map_mulPullback_genericPoint, map_zsmul, map_mulPullback_genericPoint, mul_comm, mul_zsmul]`.
+-/
 theorem mulPullback_mul {m n : ℤ} (hm : m ≠ 0) (hn : n ≠ 0) :
     mulPullback W (m * n) (mul_ne_zero hm hn) = (mulPullback W m hm).comp (mulPullback W n hn) := by
   apply algHom_eq_of_map_genericPoint
@@ -60,18 +87,30 @@ theorem mulPullback_mul {m n : ℤ} (hm : m ≠ 0) (hn : n ≠ 0) :
     map_mulPullback_genericPoint, mul_comm, mul_zsmul]
 
 omit [DecidableEq F] [IsAlgClosed F] in
+/- English proof (translation)
+The claim follows from `(mulPullback W n hn).commutes c`.
+-/
 theorem mulPullback_algebraMap {n : ℤ} (hn : n ≠ 0) (c : F) : mulPullback W n hn (ι c) = ι c :=
   (mulPullback W n hn).commutes c
 
 omit [DecidableEq F] [IsAlgClosed F] in
+/- English proof (translation)
+The claim follows from `(mulPullback W n hn).toRingHom.injective`.
+-/
 theorem mulPullback_injective {n : ℤ} (hn : n ≠ 0) : Function.Injective (mulPullback W n hn) :=
   (mulPullback W n hn).toRingHom.injective
 
 omit [DecidableEq F] [IsAlgClosed F] in
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (mulPullback_injective W hn)).mpr hf`.
+-/
 theorem mulPullback_ne_zero {n : ℤ} (hn : n ≠ 0) {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
     mulPullback W n hn f ≠ 0 :=
   (map_ne_zero_iff _ (mulPullback_injective W hn)).mpr hf
 
+/- English proof (translation)
+Establish `h` using `DFunLike.congr_fun (translate_comp_mulPullback W hn S) f`. Simplify using `only [AlgHom.comp_apply, hS, translate_zero, AlgHom.id_apply] at h`. Conclude with `h`.
+-/
 theorem translate_mulPullback_of_zsmul_eq_zero {n : ℤ} (hn : n ≠ 0) {S : W.toAffine.Point}
     (hS : n • S = 0) (f : W.toAffine.FunctionField) :
     translate W S (mulPullback W n hn f) = mulPullback W n hn f := by
@@ -81,12 +120,30 @@ theorem translate_mulPullback_of_zsmul_eq_zero {n : ℤ} (hn : n ≠ 0) {S : W.t
 
 omit [DecidableEq F] [W.IsElliptic] in
 
+/- English proof (translation)
+Apply `exists_algebraMap_eq_of_isAlgebraic W` to reduce the goal to its premises. Use `⟨X ^ n - C c, X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero hn) c, ?_⟩` and prove the remaining obligations. Simplify using `[h]`.
+-/
 theorem exists_algebraMap_eq_of_pow_eq {u : W.toAffine.FunctionField} {n : ℕ} (hn : n ≠ 0) {c : F}
     (h : u ^ n = ι c) : ∃ d : F, ι d = u := by
   apply exists_algebraMap_eq_of_isAlgebraic W
   refine ⟨X ^ n - C c, X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero hn) c, ?_⟩
   simp [h]
 
+/- English proof (translation)
+Establish `hint : f ∈ (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField).range`. Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `v`. Establish `h0 : ordAtIdeal W v f = 0`. Rewrite using `[← divisorOf_pointOfIdeal, h, Finsupp.zero_apply]`.
+
+Rewrite using `[valuation_eq_exp_neg_ordAtIdeal W v hf, h0, neg_zero, exp_zero]`. Take `⟨a, rfl⟩` from `hint`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf (map_zero _)`.
+
+Establish `hinf : ordInfty W (algebraMap _ W.toAffine.FunctionField a) = 0`. Rewrite using `[← ordPoint_zero, ← divisorOf_apply, h, Finsupp.zero_apply]`. Rewrite `hinf` using `[ordInfty_algebraMap W ha, neg_eq_zero, Nat.cast_eq_zero]`. Take `⟨p, q, rfl⟩` from `CoordinateRing.exists_smul_basis_eq a`. Distinguish the cases in `hq : q = 0`.
+
+Substitute `hq` using the available equality. Establish `h2` using `natDegree_norm_smul_basis_of_q_eq_zero (W := W) (p := p)`. Rewrite `h2` using `[hinf]`. Establish `hp0 : p.natDegree = 0` using `by omega`. Rewrite `hp0` using `[natDegree_eq_zero]`.
+
+Take `⟨c, rfl⟩` from `hp0`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul_basis, map_zero, zero_mul, add_zero, ← algebraMap_C_functionField]`. It suffices to derive a contradiction. Distinguish the cases in `hp : p = 0`.
+
+Substitute `hp` using the available equality. Establish `h2` using `natDegree_norm_smul_basis_of_p_eq_zero (W := W) hq`. Establish `h3 : 2 * q.natDegree + 3 = 0` using `h2.symm.trans hinf`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `natDegree_norm_smul_basis_of_ne_zero (W := W) hp hq`.
+
+Establish `h3 : max (2 * p.natDegree) (2 * q.natDegree + 3) = 0` using `h2.symm.trans hinf`. Establish `h4` using `le_max_right (2 * p.natDegree) (2 * q.natDegree + 3)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_algebraMap_eq_of_divisorOf_eq_zero {f : W.toAffine.FunctionField} (hf : f ≠ 0)
     (h : divisorOf W f = 0) : ∃ c : F, ι c = f := by
   have hint : f ∈ (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField).range := by
@@ -123,6 +180,13 @@ theorem exists_algebraMap_eq_of_divisorOf_eq_zero {f : W.toAffine.FunctionField}
       have h4 := le_max_right (2 * p.natDegree) (2 * q.natDegree + 3)
       omega
 
+/- English proof (translation)
+Establish `hq : g / f ≠ 0` using `div_ne_zero hg hf`. Establish `hd : divisorOf W (g / f) = 0`. Use `divisorOf_mul W hq hf` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ g hf, h]`. Conclude with `add_eq_right.mp this.symm`.
+
+Take `⟨c, hc⟩` from `exists_algebraMap_eq_of_divisorOf_eq_zero W hq hd`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `hq hc.symm`.
+
+Rewrite using `[hc, div_mul_cancel₀ g hf]`.
+-/
 theorem exists_algebraMap_mul_eq_of_divisorOf_eq {f g : W.toAffine.FunctionField} (hf : f ≠ 0)
     (hg : g ≠ 0) (h : divisorOf W f = divisorOf W g) : ∃ c : F, c ≠ 0 ∧ ι c * f = g := by
   have hq : g / f ≠ 0 := div_ne_zero hg hf
@@ -137,6 +201,25 @@ theorem exists_algebraMap_mul_eq_of_divisorOf_eq {f g : W.toAffine.FunctionField
     exact hq hc.symm
   · rw [hc, div_mul_cancel₀ g hf]
 
+/- English proof (translation)
+Consider the cases of `Q with`. Consider the case `zero => exact ⟨0, smul_zero n⟩`. Consider the case `some xQ yQ hQ => set p : F[X] := W.Φ n - C xQ * W.ΨSq n with hpdef`. Establish `hlt : (C xQ * W.ΨSq n).natDegree < (W.Φ n).natDegree`. Rewrite using `[natDegree_Φ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: 0 < n.natAbs ^ 2` using `pow_pos (Int.natAbs_pos.mpr hn) 2`. Use linear arithmetic over natural numbers and integers. Establish `hdeg : p.natDegree = n.natAbs ^ 2`. Rewrite using `[hpdef, natDegree_sub_eq_left_of_natDegree_lt hlt, natDegree_Φ]`.
+
+Establish `hpos : 0 < p.natDegree` using `by rw [hdeg]; exact pow_pos (Int.natAbs_pos.mpr hn) 2`. Establish `hdeg0 : p.degree ≠ 0` using `(natDegree_pos_iff_degree_pos.mp hpos).ne'`. Take `⟨x₀, hx₀⟩` from `IsAlgClosed.exists_root p hdeg0`. Establish `hx₀' : (W.Φ n).eval x₀ = xQ * (W.ΨSq n).eval x₀`. Rewrite `hx₀` using `[IsRoot, hpdef, eval_sub, eval_mul, eval_C, sub_eq_zero]`.
+
+Conclude with `hx₀`. Establish `hψ : (W.ΨSq n).eval x₀ ≠ 0`. Introduce `h0`. Take `⟨a, b, hab⟩` from `isCoprime_Φ_ΨSq W n`. Use `congrArg (eval x₀) hab` as an intermediate fact.
+
+Rewrite `this` using `[eval_add, eval_mul, eval_mul, h0, hx₀', h0, mul_zero, mul_zero, mul_zero, add_zero, eval_one]`. Conclude with `zero_ne_one this`. Take `⟨y₀, hy₀⟩` from `exists_equation W x₀`. Establish `h₀ : W.toAffine.Nonsingular x₀ y₀` using `equation_iff_nonsingular.mp hy₀`. Establish `hne : n • Point.some x₀ y₀ h₀ ≠ 0` using `fun h => hψ ((zsmul_eq_zero_iff W h₀ n).mp h)`.
+
+Establish `hx : xOf W (n • Point.some x₀ y₀ h₀) = xQ`. Rewrite using `[xOf_zsmul W h₀ n hψ, hx₀', mul_div_cancel_right₀ _ hψ]`. Establish `key : ∀ {x y : F} (h : W.toAffine.Nonsingular x y), x = xQ → Point.some x y h = Point.some xQ yQ hQ ∨ Point.some x y h = -Point.some xQ yQ hQ`. Introduce and unpack `x y h rfl`. Break down `Y_eq_of_X_eq h.1 hQ.1 rfl with hy | hy` into its components or cases.
+
+Use `left`. Substitute `hy` using the available equality. Both sides reduce to the same expression. Use `right`. Rewrite using `[Point.neg_some]`.
+
+Substitute `hy` using the available equality. Both sides reduce to the same expression. Take `⟨y', h', he⟩` from `exists_eq_some_xOf W hne`. Break down `key h' hx with e | e` into its components or cases. Conclude with `⟨_, he.trans e⟩`.
+
+Use `⟨-Point.some x₀ y₀ h₀, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, he, e, neg_neg]`.
+-/
 theorem exists_zsmul_eq {n : ℤ} (hn : n ≠ 0) (Q : W.toAffine.Point) : ∃ P, n • P = Q := by
   classical
   cases Q with

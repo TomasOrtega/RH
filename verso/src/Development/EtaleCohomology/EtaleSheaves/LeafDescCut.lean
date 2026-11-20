@@ -41,6 +41,9 @@ def tmap (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) : (U.B �
 def LeafZMap : Prop := ∀ (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (u : (U.B ⊗[A] U.B)ˣ),
   u ∈ Z1 A U → tmap A U V g u ∈ Z1 A V
 
+/- English proof (translation)
+Rewrite using `[Z1, MonoidHom.mem_ker, cob1, MonoidHom.div_apply, div_eq_one, MonoidHom.mul_apply, Units.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_Z1_iff_cocycle (A : Type) [CommRing A] (U : Cov A) (u : (U.B ⊗[A] U.B)ˣ) :
     u ∈ Z1 A U ↔ p13 A U (u : U.B ⊗[A] U.B) = p12 A U u * p23 A U u := by
   rw [Z1, MonoidHom.mem_ker, cob1, MonoidHom.div_apply, div_eq_one, MonoidHom.mul_apply, Units.ext_iff]
@@ -50,6 +53,9 @@ abbrev g3 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) :
     U.B ⊗[A] (U.B ⊗[A] U.B) →ₐ[A] V.B ⊗[A] (V.B ⊗[A] V.B) :=
   Algebra.TensorProduct.map g (Algebra.TensorProduct.map g g)
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p12]`.
+-/
 theorem p12_tensorProduct_map_eq_g3_p12 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p12 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p12 A U x) := by
   rw [← AlgHom.comp_apply, ← AlgHom.comp_apply]
@@ -58,6 +64,9 @@ theorem p12_tensorProduct_map_eq_g3_p12 (A : Type) [CommRing A] (U V : Cov A) (g
   intro a b
   simp [p12]
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p13]`.
+-/
 theorem p13_tensorProduct_map_eq_g3_p13 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p13 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p13 A U x) := by
   rw [← AlgHom.comp_apply, ← AlgHom.comp_apply]
@@ -66,6 +75,9 @@ theorem p13_tensorProduct_map_eq_g3_p13 (A : Type) [CommRing A] (U V : Cov A) (g
   intro a b
   simp [p13]
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `[p23]`.
+-/
 theorem p23_tensorProduct_map_eq_g3_p23 (A : Type) [CommRing A] (U V : Cov A) (g : U.B →ₐ[A] V.B) (x : U.B ⊗[A] U.B) :
     p23 A V (Algebra.TensorProduct.map g g x) = g3 A U V g (p23 A U x) := by
   rw [← AlgHom.comp_apply, ← AlgHom.comp_apply]
@@ -74,6 +86,9 @@ theorem p23_tensorProduct_map_eq_g3_p23 (A : Type) [CommRing A] (U V : Cov A) (g
   intro a b
   simp [p23]
 
+/- English proof (translation)
+Introduce `A _ U V g u hu`. Rewrite `hu`, the goal using `[mem_Z1_iff_cocycle]`. Establish `ht : ((tmap A U V g u : (V.B ⊗[A] V.B)ˣ) : V.B ⊗[A] V.B) = Algebra.TensorProduct.map g g (u : U.B ⊗[A] U.B)` using `rfl`. Rewrite using `[ht, p12_tensorProduct_map_eq_g3_p12, p13_tensorProduct_map_eq_g3_p13, p23_tensorProduct_map_eq_g3_p23, hu, map_mul]`.
+-/
 theorem zmap : LeafZMap := by
   intro A _ U V g u hu
   rw [mem_Z1_iff_cocycle] at hu ⊢
@@ -88,6 +103,15 @@ def LeafDescP : Prop := ∀ (A : Type) [CommRing A], ∃ c : ∀ U : Cov A, Cech
   ∀ (U V : Cov A) (g : U.B →ₐ[A] V.B) (u : Z1 A U) (v : Z1 A V), (v : (V.B ⊗[A] V.B)ˣ) = tmap A U V g u →
     (c V (cls A V v) : Additive (CommRing.Pic A)) = c U (cls A U u)
 
+/- English proof (translation)
+Introduce `hy A _`. Take `⟨cH, hcH⟩` from `hH hy A`. Take `⟨cP, hcP⟩` from `hP A`. Use `⟨fun U => (cH U).symm.trans (cP U), ?_⟩` and prove the remaining obligations. Introduce `U V g x hU hV`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : Z1 A U, cls A U u = (cH U).symm ⟨x, hU⟩ := by`. Take `⟨u, hu⟩` from `QuotientGroup.mk_surjective (Additive.toMul ((cH U).symm ⟨x, hU⟩))`. Conclude with `⟨u, by rw [cls, hu]; rfl⟩`. Set `v : Z1 A V` to `⟨tmap A U V g u, zmap A U V g u u.2⟩`. Establish `h1` using `hcH U V g u v rfl`.
+
+Establish `h2` using `hcP U V g u v rfl`. Establish `hv : (cH V).symm ⟨x, hV⟩ = cls A V v`. Apply `(cH V).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[h1, hu, AddEquiv.apply_symm_apply]`. Simplify using `only [AddEquiv.trans_apply]`. Rewrite using `[← hu, hv, h2]`.
+-/
 theorem goal_of (hH : LeafDescH) (hP : LeafDescP) : LateralTheory.E.H1MultiplicativeGroup.LeafDesc := by
   intro hy A _
   obtain ⟨cH, hcH⟩ := hH hy A

@@ -12,6 +12,43 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.TrueGeo
 namespace GlobalTheory.ImageModel
+/- English proof (translation)
+Introduce `_ K V Ω _ _ _ _ _ _ _ _ Nm W ev D hK hG hcj hW hs hR hD`. Take `⟨N, n, b, w, A, hF⟩` from `GlobalTheory.CompHt.exists_isFrame hK hcj hG hW hs`. Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m, n = m + 1 := by`. Break down `n with _ | m` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hW0 : W = ⊥` using `by rw [← hF.span]; simp`. Establish `htop : (⊤ : Submodule K V) = ⊥` using `by rw [← hs, hW0]; simp`. Use `hR.1 (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `hx : x ∈ (⊥ : Submodule K V)` using `htop ▸ Submodule.mem_top`. Rewrite `hx` using `[Submodule.mem_bot]`.
+
+Simplify using `[hx]`. Conclude with `⟨m, rfl⟩`. Use `set u : Fin (m + 1) → V := fun k => ∑ j, w j k • b j with hu_def`. Establish `huW : ∀ k, u k ∈ W` using `fun k => hF.span ▸ Submodule.subset_span ⟨k, rfl⟩`. Set `gw : Fin (m + 1) → W` to `fun k => ⟨u k, huW k⟩`.
+
+Establish `hspan : Submodule.span K (Set.range u) = ⊤`. Rewrite using `[← hs, ← hF.span, Submodule.span_span_of_tower]`. Use `choose cc hcc using fun j => (Submodule.mem_span_range_iff_exists_fun K).1 (hspan ▸ Submodule.mem_top : b j ∈ Submodule.span K (Set.range u))`. Set `c : Matrix (Fin (m + 1)) (Fin N) K` to `Matrix.of fun k j => cc j k`. Use `set y : Fin (m + 1) → Ω := fun k => ev (u k) with hy_def`.
+
+Establish `hy0 : y ≠ 0` using `fun h0 => hR.1 (LinearMap.ext_on_range hspan fun k => by`. Simplify using `using congrFun h0 k)`. Take `⟨Y, _, q, B₀, hB₀, t, ψ₀, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_integral_projective_closure_of_linearSystem_point K V Ω ev D m u hspan hR hD`. Take `⟨X₀, _, p₀, g₀, ψ₁, e⟩` from `GlobalTheory.T.exists_flat_projective_model_over_ringOfIntegers K Ω D m y Y q B₀ hB₀ t ψ₀ h1 h2 h3 h4 h5 h6`. Take `⟨X, _, p, g, ψ, hgp, har, hnorm, hbij, hbase, hrat⟩` from `GlobalTheory.T.exists_normal_arithmeticVariety_model_projectiveSpace K Ω D m y X₀ p₀ g₀ ψ₁ e`.
+
+Set `B` to `(ProjSpace.O1 (𝓞 K) m).pull g`. Establish `hB : B.IsLB` using `LB.isLB_pull (ProjSpace.O1_isLB _ m) g`. Set `sk : Fin (m + 1) → B.Sec` to `fun k => secPull (ProjSpace.coord (𝓞 K) m k) g`. Take `⟨hlin, hrel⟩` from `GlobalTheory.T.pulledBack_coordinate_combination_ratio_and_vanish K Ω m y X p g ψ hbase hrat`. Establish `hev : ∀ lam : Fin (m + 1) → 𝓞 K, ev (∑ k, lam k • u k) = ∑ k, algebraMap K Ω (lam k : K) * y k`.
+
+Introduce `lam`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (lam k) (u k), LinearMap.map_smul, Algebra.smul_def]`. Establish `hrelV : ∀ lam : Fin (m + 1) → 𝓞 K, ∑ k, lam k • u k = 0 → ∑ k, algX p ⊤ (lam k) • sk k = 0` using `fun lam h0 => hrel hy0 lam (by rw [← hev, h0, map_zero])`.
+
+Use `choose coef hcoef using fun x : W => (Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 (hF.span.symm ▸ x.2 : (x : V) ∈ Submodule.span (𝓞 K) (Set.range u))`. Set `s : W → B.Sec` to `fun x => ∑ k, algX p ⊤ (coef x k) • sk k`. Establish `sg : ∀ k, s (gw k) = sk k`. Introduce `k`. Establish `e1 : ∑ l, (Pi.single k (1 : 𝓞 K) : Fin (m + 1) → 𝓞 K) l • u l = u k`.
+
+Rewrite using `[Finset.sum_eq_single k (fun l _ hl => by rw [Pi.single_eq_of_ne hl, zero_smul]) (by simp)]`. Rewrite using `[Pi.single_eq_same, one_smul]`. Establish `e3 : ∑ l, algX p ⊤ ((Pi.single k (1 : 𝓞 K) : Fin (m + 1) → 𝓞 K) l) • sk l = sk k`. Rewrite using `[Finset.sum_eq_single k (fun l _ hl => by rw [Pi.single_eq_of_ne hl, map_zero, zero_smul]) (by simp)]`. Rewrite using `[Pi.single_eq_same, map_one, one_smul]`.
+
+Establish `h0` using `hrelV (coef (gw k) - Pi.single k 1) (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, hcoef, e1]`. Conclude with `sub_eq_zero.2 (hcoef (gw k)))`. Simplify using `only [Pi.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib, e3, sub_eq_zero] at h0`. Conclude with `h0`.
+
+Establish `hbpf : ⨆ k, nonzeroLocus (sk k) = ⊤` using `ProjSpace.iSup_nonzeroLocus_secPull (ProjSpace.iSup_nonzeroLocus_coord (𝓞 K) m) g`. Set `A' : (𝓞 K →+* ℂ) → Matrix (Fin (m + 1)) (Fin N) ℂ` to `fun τ => c.map (OfLattice.extEmb τ) * A (OfLattice.extEmb τ)`. Establish `hnz` using `GlobalTheory.T.fubiniStudy_coordinate_combinations_noCommonZero K V m N X p g u b c A hgp hrelV (fun j => (hcc j).symm) hF.herm`. Establish `hcU : ∀ τ : 𝓞 K →+* ℂ, ∃ U ∈ Matrix.unitaryGroup (Fin N) ℂ, A' ((starRingEnd ℂ).comp τ) = (A' τ).map (starRingEnd ℂ) * U`. Introduce `τ`.
+
+Take `⟨U, hU, eU⟩` from `GlobalTheory.T.frame_conjugate_embedding_eq_conj_mul_unitary K N A hF.conj hF.herm (OfLattice.extEmb τ)`. Establish `he : OfLattice.extEmb ((starRingEnd ℂ).comp τ) = (starRingEnd ℂ).comp (OfLattice.extEmb τ)` using `OfLattice.extEmb_eq (by rw [RingHom.comp_assoc, OfLattice.extEmb_comp])`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations. Simplify using `only [A', he, eU, Matrix.map_mul, Matrix.map_map, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+
+Set `L : HermLB p` to `OfLattice.combHerm hB sk A' hnz hcU`. Use `⟨X, inferInstance, p, L, ψ, s, har, hnorm, hbij, hbase, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₀, hk₀⟩ : ∃ k, y k ≠ 0` from `by by_contra! h; exact hy0 (funext h)`. Introduce `x x' i h`. Establish `hψ : ψ (y k₀) ≠ 0` using `(map_ne_zero ψ).2 hk₀`.
+
+Establish `ha : ψ (y k₀) * fnOf _ h ((s x).f i) = ψ (ev x) * fnOf _ h ((sk k₀).f i)`. Use `hlin (coef x) k₀ i h` as an intermediate fact. Rewrite `this` using `[← hev, hcoef]`. Then use the resulting hypothesis. Establish `hb : ψ (y k₀) * fnOf _ h ((s x').f i) = ψ (ev x') * fnOf _ h ((sk k₀).f i)`. Use `hlin (coef x') k₀ i h` as an intermediate fact.
+
+Rewrite `this` using `[← hev, hcoef]`. Then use the resulting hypothesis. Use `mul_left_cancel₀ hψ ?_` and prove the remaining obligations. Take the linear combination `(ψ (ev x)) * hb - (ψ (ev x')) * ha`. Use `top_le_iff.1 ?_` and prove the remaining obligations. Rewrite using `[← hbpf]`.
+
+Conclude with `iSup_le fun k => by`. Rewrite using `[← sg k]`. Conclude with `le_iSup (fun x => nonzeroLocus (s x)) (gw k)`. Use `⟨N, m + 1, b, w, A, c, gw, hF, fun k => rfl, fun j => (hcc j).symm, fun σ i z => ?_⟩` and prove the remaining obligations. Establish `he : OfLattice.extEmb (σ.comp (algebraMap (𝓞 K) K)) = σ` using `OfLattice.extEmb_eq rfl`.
+
+Use `(OfLattice.combWeight_φ hB sk _ (hnz _) i z).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sg k]`. Simplify using `only [A', he, Matrix.mul_apply, Matrix.map_apply, c, Matrix.of_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_model_of_image : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ), (∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → HasGram Nm → (∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) → W.FG → Submodule.span K (W : Set V) = ⊤ → GlobalTheory.DegVal.GenRatios ev → 0 < imageDeg ev D → ∃ (X : AlgebraicGeometry.Scheme.{0}) (_ : AlgebraicGeometry.IsIntegral X) (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s := by
   intro _ K V Ω _ _ _ _ _ _ _ _ Nm W ev D hK hG hcj hW hs hR hD
   classical
@@ -117,6 +154,9 @@ section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ImageModel.exists_model_of_image | exact _root_.GlobalTheory.ImageModel.exists_model_of_image | (intros; apply _root_.GlobalTheory.ImageModel.exists_model_of_image <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.image_admits_model : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ), (∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → HasGram Nm → (∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) → W.FG → Submodule.span K (W : Set V) = ⊤ → GlobalTheory.DegVal.GenRatios ev → 0 < imageDeg ev D → ∃ (X : AlgebraicGeometry.Scheme.{0}) (_ : AlgebraicGeometry.IsIntegral X) (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s := by
   first | exact @_root_.GlobalTheory.ImageModel.exists_model_of_image | exact _root_.GlobalTheory.ImageModel.exists_model_of_image | (intros; apply _root_.GlobalTheory.ImageModel.exists_model_of_image <;> assumption)
 end

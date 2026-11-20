@@ -13,10 +13,16 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   (Γ : Subgroup G) [DiscreteTopology Γ] [CompactSpace (RightCosetSpace Γ)]
   (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
+/- English proof (translation)
+The claim follows from `isCompactOperator_integrated_rightRegularRep Γ μ f`.
+-/
 theorem isCompactOperator_integrated (f : CompactlySupportedContinuousMap G ℂ) :
     IsCompactOperator ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)) :=
   isCompactOperator_integrated_rightRegularRep Γ μ f
 
+/- English proof (translation)
+Establish `hcpt` using `isCompactOperator_integrated Γ μ`. Take `⟨s, hcomp, hinv, hsum, hirr⟩` from `UnitaryRep.exists_isHilbertSum_isIrreducible hcpt`. Conclude with `⟨s, hcomp, hinv, hsum, hirr, fun σ hσ => UnitaryRep.finite_setOf_isEquivalent hcpt hinv hsum.OrthogonalFamily hσ⟩`.
+-/
 theorem exists_isHilbertSum_isIrreducible_finite :
     ∃ s : Set (Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ))),
       ∃ _ : ∀ V : s, CompleteSpace (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ μ))),
@@ -32,6 +38,9 @@ theorem exists_isHilbertSum_isIrreducible_finite :
   exact ⟨s, hcomp, hinv, hsum, hirr, fun σ hσ =>
     UnitaryRep.finite_setOf_isEquivalent hcpt hinv hsum.OrthogonalFamily hσ⟩
 
+/- English proof (translation)
+The claim follows from `UnitaryRep.finiteDimensional_intertwiners (isCompactOperator_integrated Γ μ) hσ`.
+-/
 theorem finiteDimensional_intertwiners {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     [CompleteSpace K] {σ : UnitaryRep G K} (hσ : σ.IsIrreducible) :
     FiniteDimensional ℂ (σ.intertwiners (rightRegularRep Γ μ)) :=

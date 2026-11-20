@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CenTheta
 
+/- English proof (translation)
+Establish `h : ∀ v, om0 (twM M Sv m x v) (Ad3.R.lc v z) = om0 (M v) (Ad3.R.lc v z)`. Introduce `v`. Simplify using `only [twM]`. Apply the tactic sequence `cases M v <;> rfl`. Simplify using `only [u0, h]`.
+-/
 theorem centralScalar_twisted_data {K : Type} [Field K] [NumberField K] {c : HeckeCharacter K} (n : ℤ) (t : ℝ)
     (M : ∀ v : Pl, LM c v) (Sv : Finset Pl) (m : Pl →₀ ℤ) (x : ∀ v : Sv, (Qv v.1)ˣ) (z : Jd) :
     u0 n t (twM M Sv m x) z = u0 n t M z := by
@@ -28,6 +31,11 @@ theorem centralScalar_twisted_data {K : Type} [Field K] [NumberField K] {c : Hec
     cases M v <;> rfl
   simp only [u0, h]
 
+/- English proof (translation)
+Simplify using `only [th0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `GlobalTheory.T.theta_central_character_at_zero K h2 c n t (twM M Sv m x) (GlobalTheory.CompanionTheory.TorusAverage.admissible_twisted_local_data hM Sv m x) z g` as an intermediate fact.
+
+Rewrite `this` using `[centralScalar_twisted_data]`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_central_character {K : Type} [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K}
     (n : ℤ) (t : ℝ) (M : ∀ v : Pl, LM c v) (hM : AdmM M) (R : Finset (Pl →₀ ℤ)) (Sv : Finset Pl)
     (z : Jd) (g : G2) : th0 R Sv n t M (dg2 z z * g) = u0 n t M z * th0 R Sv n t M g := by

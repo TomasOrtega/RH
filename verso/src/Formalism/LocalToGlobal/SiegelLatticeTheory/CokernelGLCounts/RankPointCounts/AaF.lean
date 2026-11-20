@@ -19,6 +19,27 @@ variable (D : D7)
 abbrev aaF (a : Fin (D.R.rS + 1)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E :=
   ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))
 
+/- English proof (translation)
+Establish `hc : c.val < D.R.rS` using `by have := b.isLt; omega`. Establish `hf : fmat D G n c b = G.fl.coefX (n (frame G b) - frame G b) ⟨c.val, hc⟩`. Simplify using `only [fmat, dif_pos hc]`. Rewrite using `[if_neg (ne_of_lt hcb), zero_add]`. Rewrite using `[hf]`.
+
+Establish `hXSΛ : ∀ v, v ∈ XS D G.fl → v ∈ Λ`. Introduce `v hv`. Rewrite `hv` using `[← hXS, XLam, Submodule.mem_inf]`. Conclude with `hv.1`. Establish `haF : aaF D c = aaI D ⟨c.val, hc⟩` using `rfl`.
+
+Rewrite using `[haF]`. Introduce `x hx`. Distinguish the cases in `hb : b.val < D.R.rS`. Establish `hfi : frame G b = G.fl.e ⟨b.val, hb⟩`. Establish `h0` using `frame_castSucc G ⟨b.val, hb⟩`.
+
+Rewrite `h0` using `[show (⟨b.val, hb⟩ : Fin D.R.rS).castSucc = b from Fin.ext rfl]`. Then use the resulting hypothesis. Rewrite using `[hfi]`. Establish `hxe : x • G.fl.e ⟨b.val, hb⟩ ∈ XS D G.fl` using `Submodule.subset_span ⟨⟨b.val, hb⟩, x, hx, rfl⟩`. Establish `hn1 : n (x • G.fl.e ⟨b.val, hb⟩) ∈ XS D G.fl`. Rewrite using `[← hXS, XLam, Submodule.mem_inf]`.
+
+Conclude with `⟨nlam_mem hn (hXSΛ _ hxe), nlam_X hn (Submodule.smul_mem _ x (e_mem_X _ _))⟩`. Establish `hcx` using `(coefX_of_mem_XS D G.fl hn1).2 ⟨c.val, hc⟩`. Establish `hd : n (G.fl.e ⟨b.val, hb⟩) - G.fl.e ⟨b.val, hb⟩ ∈ G.fl.X` using `Xa_le_X _ _ ((nlam_frame_mem G hn).1 _)`. Establish `hsplit : n (x • G.fl.e ⟨b.val, hb⟩) = x • (G.fl.e ⟨b.val, hb⟩ + (n (G.fl.e ⟨b.val, hb⟩) - G.fl.e ⟨b.val, hb⟩))`. Rewrite using `[map_smul]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hne : (⟨b.val, hb⟩ : Fin D.R.rS) ≠ ⟨c.val, hc⟩`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Rewrite `hcx` using `[hsplit, coefX_smul _ (add_mem (e_mem_X _ _) hd), coefX_add _ (e_mem_X _ _) hd, coefX_e, if_neg hne, zero_add]`. Conclude with `hcx`. Establish `hfz : frame G b = G.fl.z`.
+
+Establish `h0` using `frame_last G`. Rewrite `h0` using `[show Fin.last D.R.rS = b from Fin.ext (by have := b.isLt; simp; omega)]`. Then use the resulting hypothesis. Rewrite using `[hfz]`. Establish `hb0 : aaF D b = 1`. Establish `: (D.R.rS : ℤ) - (b : ℕ) = 0` using `by have := b.isLt; push_cast; omega`.
+
+Simplify using `only [aaF, this, neg_zero, zpow_zero]`. Rewrite `hx` using `[hb0]`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hx`. Establish `hv : n G.fl.z - G.fl.z ∈ XS D G.fl`. Rewrite using `[← hXS, XLam, Submodule.mem_inf]`.
+
+Conclude with `⟨sub_mem (nlam_mem hn hz) hz, (nlam_frame_mem G hn).2⟩`. Establish `hcx` using `(coefX_of_mem_XS D G.fl hv).2 ⟨c.val, hc⟩`. Rewrite using `[← Algebra.smul_def]`. Conclude with `fi_smul _ o hcx`.
+-/
 theorem entry_mem (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NLam Λ G) (hXS : XLam Λ G = XS D G.fl) (hz : G.fl.z ∈ Λ)
     (c b : Fin (D.R.rS + 1)) (hcb : c < b) : ∀ x ∈ aaF D b, x * fmat D G n c b ∈ aaF D c := by

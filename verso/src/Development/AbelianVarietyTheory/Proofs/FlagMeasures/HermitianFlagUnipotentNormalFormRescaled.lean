@@ -16,18 +16,30 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `only [eich, Eichler.hf_smul_r, Eichler.hf_smul_l, hc]`. Use `module`.
+-/
 theorem eich_smul_base (c : E) (hc : L.cj c = c) (x u : Fin n → E) (s : E) (v : Fin n → E) :
     eich L Hm (c • x) u s v = eich L Hm x (c • u) (c ^ 2 * s) v := by
   simp only [eich, Eichler.hf_smul_r, Eichler.hf_smul_l, hc]
   module
 
+/- English proof (translation)
+The claim follows from `L.cj.commutes a`.
+-/
 theorem cj_alg (a : F) : L.cj (algebraMap F E a) = algebraMap F E a := L.cj.commutes a
 
 omit [TopologicalSpace E] in
+/- English proof (translation)
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+-/
 theorem alg_inv_mul (a : Fˣ) : algebraMap F E ((a⁻¹ : Fˣ) : F) * algebraMap F E (a : F) = 1 := by
   rw [← map_mul, Units.inv_mul, map_one]
 
 omit [TopologicalSpace E] in
+/- English proof (translation)
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+-/
 theorem alg_mul_inv (a : Fˣ) : algebraMap F E (a : F) * algebraMap F E ((a⁻¹ : Fˣ) : F) = 1 := by
   rw [← map_mul, Units.mul_inv, map_one]
 
@@ -37,6 +49,37 @@ end GlobalTheory.HL.NormalFormRescaled
 
 open GlobalTheory.HL.NormalFormRescaled in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S g gs hsel a X Y hX hY`. Establish `hgg : ∀ i j : Fin r, hf L S.Hm (g i.castSucc) (g j.castSucc) = 0`. Introduce `i j`. Apply the tactic sequence `rcases hsel with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> subst h1 h2`. Rewrite using `[S.gram]`.
+
+Simplify using `[Fin.castSucc_ne_last]`. Rewrite using `[S.gram']`. Simplify using `[Fin.castSucc_ne_last]`. Establish `hgs : ∀ i j : Fin r, hf L S.Hm (g i.castSucc) (gs j) = if i = j then 1 else 0`. Introduce `i j`.
+
+Apply the tactic sequence `rcases hsel with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> subst h1 h2`. Rewrite using `[S.dual]`. Simplify using `[Fin.castSucc_inj]`. Rewrite using `[S.dual']`. Simplify using `[Fin.castSucc_inj]`.
+
+Establish `hss : ∀ i j : Fin r, hf L S.Hm (gs i) (gs j) = 0`. Introduce `i j`. Apply the tactic sequence `rcases hsel with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> subst h1 h2`. Conclude with `S.iso i j`. Conclude with `S.iso' i j`.
+
+Establish `hg : ∀ i, g i.castSucc = algebraMap F E ((a i)⁻¹ : Fˣ) • X i`. Introduce `i`. Rewrite using `[← hX i, smul_smul, alg_inv_mul, one_smul]`. Establish `hY' : ∀ i, Y i = algebraMap F E ((a i)⁻¹ : Fˣ) • gs i`. Introduce `i`.
+
+Rewrite using `[hY i, smul_smul, alg_inv_mul, one_smul]`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_, fun n => ?_⟩` and prove the remaining obligations. Simplify using `only [Frames.h]`. Rewrite using `[← hX i, hY' j, Eichler.hf_smul_l, Eichler.hf_smul_r, cj_alg, hgs]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[mul_one, alg_mul_inv]`. Simplify using the standard rewrite rules. Simplify using `only [Frames.h]`. Rewrite using `[← hX i, ← hX j, Eichler.hf_smul_l, Eichler.hf_smul_r, hgg]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Frames.h]`. Rewrite using `[hY' i, hY' j, Eichler.hf_smul_l, Eichler.hf_smul_r, hss]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.T.mem_flagUnipotent_iff_orderedEichlerProduct L r k S g gs hsel n]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, s, e, he, hn⟩`. Use `⟨fun i => algebraMap F E ((a i)⁻¹ : Fˣ) • u i, fun i => algebraMap F E ((a i)⁻¹ : Fˣ) ^ 2 * s i, e, fun i => ?_, hn⟩` and prove the remaining obligations. Take `⟨ho, hs, hev⟩` from `he i`. Use `⟨fun j hj => ?_, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `ho j hj`. Simplify using `only [Frames.h] at h1 h2 ⊢`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← hX j, Eichler.hf_smul_l, Eichler.hf_smul_r, h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hY' j, Eichler.hf_smul_l, Eichler.hf_smul_r, h2]`. Simplify using the standard rewrite rules. Simplify using `only [Frames.h] at hs ⊢`. Rewrite using `[map_mul, map_pow, cj_alg, Eichler.hf_smul_l, Eichler.hf_smul_r, cj_alg, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hev v, hg i, eich_smul_base L _ _ (cj_alg L _)]`. Introduce and unpack `⟨u, s, e, he, hn⟩`. Use `⟨fun i => algebraMap F E (a i : F) • u i, fun i => algebraMap F E (a i : F) ^ 2 * s i, e, fun i => ?_, hn⟩` and prove the remaining obligations. Take `⟨ho, hs, hev⟩` from `he i`. Use `⟨fun j hj => ?_, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `ho j hj`. Simplify using `only [Frames.h] at h1 h2 ⊢`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hg j, Eichler.hf_smul_l, Eichler.hf_smul_r, h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hY j, Eichler.hf_smul_l, Eichler.hf_smul_r, h2]`. Simplify using the standard rewrite rules. Simplify using `only [Frames.h] at hs ⊢`. Rewrite using `[map_mul, map_pow, cj_alg, Eichler.hf_smul_l, Eichler.hf_smul_r, cj_alg, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hev v, hg i, eich_smul_base L _ _ (cj_alg L _), smul_smul, ← mul_assoc, ← mul_pow, alg_inv_mul, one_pow, one_mul, one_smul]`.
+-/
 theorem GlobalTheory.HL.nof_normal_form_rescaled : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (g : Fin (r + 1) → S.V) (gs : Fin r → S.V) (hsel : (g = S.f ∧ gs = S.es) ∨ (g = S.f' ∧ gs = S.es')) (a : Fin r → Fˣ) (X Y : Fin r → S.V) (hX : ∀ i, algebraMap F E (a i) • g i.castSucc = X i) (hY : ∀ i, gs i = algebraMap F E (a i) • Y i), (∀ i j, S.h (X i) (Y j) = if i = j then 1 else 0) ∧ (∀ i j, S.h (X i) (X j) = 0) ∧ (∀ i j, S.h (Y i) (Y j) = 0) ∧ ∀ n : S.GLV, n ∈ S.Nof g ↔ ∃ (u : Fin r → S.V) (s : Fin r → E) (e : Fin r → S.GLV), (∀ i, (∀ j, j ≤ i → S.h (u i) (X j) = 0 ∧ S.h (u i) (Y j) = 0) ∧ s i + L.cj (s i) = S.h (u i) (u i) ∧ ∀ v, e i v = eich L S.Hm (X i) (u i) (s i) v) ∧ n = (List.ofFn e).prod := by
   intro F _ _ _ _ _ E _ _ _ L r k S g gs hsel a X Y hX hY
   have hgg : ∀ i j : Fin r, hf L S.Hm (g i.castSucc) (g j.castSucc) = 0 := by

@@ -14,6 +14,11 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Set `a : Matrix (Fin 2) (Fin 2) (Formalism.UG.Ov K v)` to `fun i j => ⟨x i j, h i j⟩`. Establish `ha : a.det = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx` using `x.det_coe`. Rewrite `hx`, the goal using `[Matrix.det_fin_two]`.
+
+Simplify `hx` using `[a]`. Conclude with `⟨Matrix.SpecialLinearGroup.toGL ⟨a, ha⟩, Units.ext (Matrix.ext fun i j => rfl)⟩`.
+-/
 private theorem memK {K : Type} [Field K] [NumberField K] (v : P K)
     (x : Matrix.SpecialLinearGroup (Fin 2) (Kv v)) (h : ∀ i j, IsInt (x i j)) :
     Matrix.SpecialLinearGroup.toGL x ∈ GlobalTheory.LFun.KGL v 2 := by
@@ -25,11 +30,17 @@ private theorem memK {K : Type} [Field K] [NumberField K] (v : P K)
     simpa [a] using hx
   exact ⟨Matrix.SpecialLinearGroup.toGL ⟨a, ha⟩, Units.ext (Matrix.ext fun i j => rfl)⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p, Formalism.UG.IsUnifV K v p` from `v.valuedAdicCompletion_surjective K _`. Establish `hp0 : p ≠ 0` using `fun h0 => by simp [Formalism.UG.IsUnifV, h0] at hp`. Conclude with `⟨Units.mk0 p hp0, hp⟩`.
+-/
 private theorem exU {K : Type} [Field K] [NumberField K] (v : P K) : ∃ ϖ : (Kv v)ˣ, IsU ϖ := by
   obtain ⟨p, hp⟩ : ∃ p, Formalism.UG.IsUnifV K v p := v.valuedAdicCompletion_surjective K _
   have hp0 : p ≠ 0 := fun h0 => by simp [Formalism.UG.IsUnifV, h0] at hp
   exact ⟨Units.mk0 p hp0, hp⟩
 
+/- English proof (translation)
+Establish `hq : q v ≠ 0`. Unfold `q`. Conclude with `Nat.cast_ne_zero.2 (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)`. Introduce `h0`. Conclude with `hq ((Complex.cpow_eq_zero_iff _ _).1 h0).1`.
+-/
 private theorem q_ne {K : Type} [Field K] [NumberField K] (v : P K) : q v ^ (1 / 2 : ℂ) ≠ 0 := by
   have hq : q v ≠ 0 := by
     unfold q
@@ -37,12 +48,21 @@ private theorem q_ne {K : Type} [Field K] [NumberField K] (v : P K) : q v ^ (1 /
   intro h0
   exact hq ((Complex.cpow_eq_zero_iff _ _).1 h0).1
 
+/- English proof (translation)
+The claim follows from `(map_one (Valued.v : Valuation (Kv v) _)).le`.
+-/
 private theorem int_one {K : Type} [Field K] [NumberField K] (v : P K) : IsInt (1 : Kv v) :=
   (map_one (Valued.v : Valuation (Kv v) _)).le
+/- English proof (translation)
+Unfold `IsInt`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+-/
 private theorem int_zero {K : Type} [Field K] [NumberField K] (v : P K) : IsInt (0 : Kv v) := by
   unfold IsInt
   rw [map_zero]
   exact zero_le'
+/- English proof (translation)
+Unfold `IsInt`. Rewrite using `[Valuation.map_neg, map_one]`.
+-/
 private theorem int_neg_one {K : Type} [Field K] [NumberField K] (v : P K) : IsInt (-1 : Kv v) := by
   unfold IsInt
   rw [Valuation.map_neg, map_one]
@@ -65,6 +85,15 @@ private noncomputable def xC {K : Type} [Field K] [NumberField K] {v : P K} (ϖ 
     rw [e]
     exact hx⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `hm` using `ϖ.mul_inv`. Establish `e1 : ((1 : (Kv v)ˣ) : Kv v) = 1` using `Units.val_one`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k`. Use `show x 0 0 * (ϖ : Kv v) + x 0 1 * 0 = (ϖ : Kv v) * x 0 0 + 0 * ((ϖ : Kv v) * x 1 0)`. Expand and normalize the polynomial expressions, which then agree. Use `show x 0 0 * 0 + x 0 1 * ((1 : (Kv v)ˣ) : Kv v) = (ϖ : Kv v) * (((ϖ⁻¹ : (Kv v)ˣ) : Kv v) * x 0 1) + 0 * x 1 1`. Rewrite using `[e1]`.
+
+Take the linear combination `(-x 0 1) * hm`. Use `show x 1 0 * (ϖ : Kv v) + x 1 1 * 0 = 0 * x 0 0 + ((1 : (Kv v)ˣ) : Kv v) * ((ϖ : Kv v) * x 1 0)`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Use `show x 1 0 * 0 + x 1 1 * ((1 : (Kv v)ˣ) : Kv v) = 0 * (((ϖ⁻¹ : (Kv v)ˣ) : Kv v) * x 0 1) + ((1 : (Kv v)ˣ) : Kv v) * x 1 1`.
+
+Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem xC_conj {K : Type} [Field K] [NumberField K] {v : P K} (ϖ : (Kv v)ˣ) (x : Matrix.SpecialLinearGroup (Fin 2) (Kv v)) :
     Matrix.SpecialLinearGroup.toGL x * dL ϖ 1 = dL ϖ 1 * Matrix.SpecialLinearGroup.toGL (xC ϖ x) := by
   apply Units.ext
@@ -85,6 +114,13 @@ private theorem xC_conj {K : Type} [Field K] [NumberField K] {v : P K} (ϖ : (Kv
     rw [e1]
     ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e1 : ((1 : (Kv v)ˣ) : Kv v) = 1` using `Units.val_one`. Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases k`.
+
+Use `show ((1 : (Kv v)ˣ) : Kv v) * 0 + 0 * (-1) = 0 * (ϖ : Kv v) + 1 * 0`. Expand and normalize the polynomial expressions, which then agree. Use `show ((1 : (Kv v)ˣ) : Kv v) * 1 + 0 * 0 = 0 * 0 + 1 * ((1 : (Kv v)ˣ) : Kv v)`. Expand and normalize the polynomial expressions, which then agree. Use `show 0 * 0 + (ϖ : Kv v) * (-1) = (-1) * (ϖ : Kv v) + 0 * 0`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show 0 * 1 + (ϖ : Kv v) * 0 = (-1) * 0 + 0 * ((1 : (Kv v)ˣ) : Kv v)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem w_conj {K : Type} [Field K] [NumberField K] {v : P K} (ϖ : (Kv v)ˣ) :
     dL 1 ϖ * Matrix.SpecialLinearGroup.toGL (xW v) = Matrix.SpecialLinearGroup.toGL (xW v) * dL ϖ 1 := by
   apply Units.ext
@@ -101,6 +137,39 @@ private theorem w_conj {K : Type} [Field K] [NumberField K] {v : P K} (ϖ : (Kv 
   · show 0 * 1 + (ϖ : Kv v) * 0 = (-1) * 0 + 0 * ((1 : (Kv v)ˣ) : Kv v)
     ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π v hG hA f hf φ hφ h α β hE hK hL`. Establish `hE₁ : EigAt v {α, β} (fun g => f.1 (g * dM (nu F h)))` using `(fixTr F v f.1 _ hK).2 _ hE`. Take `⟨ϖ, hϖ⟩` from `exU v`. Take `⟨R, -, hRi, hR⟩` from `heckeExpl F v ϖ hϖ`. Take `⟨⟨j, hj⟩, hjj⟩` from `jEx F v`.
+
+Take `⟨-, hAt, hInt, -⟩` from `hjj j hj`. Establish `hFix : ∀ (G : GL (Fin 2) (A F)), ∀ z ∈ GlobalTheory.LFun.KGL v 2, f.1 (G * lc v z * dM (nu F h)) = f.1 (G * dM (nu F h))`. Introduce `G z hz`. Establish `h1 : f.1 (G * lc v (1 * z) * dM (nu F h)) = f.1 (G * lc v 1 * dM (nu F h))` using `(hE₁ G).inv 1 z hz`. Rewrite `h1` using `[one_mul, map_one, mul_one]`. Then use the resulting hypothesis.
+
+Establish `hgl : ∀ (g : G1 F) x, gl (g * j x) = gl g * lc v (Matrix.SpecialLinearGroup.toGL x)` using `fun g x => (map_mul Matrix.SpecialLinearGroup.toGL g (j x)).trans (congrArg (fun t => gl g * t) (hj x))`. Establish `hOm : ∀ (g : G1 F) x, (∀ i k, IsInt (x i k)) → W.Om (g * j x) (W.L h φ) = W.Om g (W.L h φ)`. Introduce `g x hx`. Rewrite using `[map_mul, Module.End.mul_apply, hL _ (hAt x) (hInt x hx)]`. Establish `hrow : ∀ γ (φ' : S4 F), ThRow 0 0 (W.Om (ratS F γ) φ').1 = ThRow 0 0 φ'.1`.
+
+Introduce `γ φ'`. Simplify using `using (hatSt F E D W).row γ 0 φ'`. Establish `hl1 : ∀ γ (g : G1 F), f.1 (gl (ratS F γ * g) * lc v (dL ϖ 1) * dM (nu F h)) = f.1 (gl g * lc v (dL ϖ 1) * dM (nu F h))`. Introduce `γ g`. Establish `e : gl (ratS F γ * g) = ratGL F 2 (Matrix.SpecialLinearGroup.toGL γ) * gl g` using `(map_mul Matrix.SpecialLinearGroup.toGL (ratS F γ) g).trans (congrArg (· * gl g) (Units.ext rfl))`.
+
+Rewrite using `[e, mul_assoc (ratGL F 2 _), mul_assoc (ratGL F 2 _), (π.cusp f hf).1.left, mul_assoc]`. Set `U : G1 F → ℂ` to `fun g => f.1 (gl g * lc v (dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1`. Establish `hlU : ∀ γ g, U (ratS F γ * g) = U g`. Introduce `γ g`. Use `show f.1 (gl (ratS F γ * g) * lc v (dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om (ratS F γ * g) (W.L h φ)).1 = f.1 (gl g * lc v (dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1`.
+
+Rewrite using `[hl1, map_mul, Module.End.mul_apply, hrow]`. Establish `hlaw` using `(lcLaws F v).2.2.2.2.2.2 (dM (nu F h)) (dL ϖ 1)`. Establish `hUi : IntegrableOn U M.D M.μ`. Establish `hc` using `(conv F E D W M π _ (π.stable (.fin (locGL F 2 v ((Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h)))⁻¹ * dL ϖ 1 * Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h))))) f hf) φ hφ h).2.1`. Establish `e : U = fun g => (TR.act (.fin (locGL F 2 v ((Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h)))⁻¹ * dL ϖ 1 * Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h))))) f).1 (gl g * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1` using `funext fun g => by show f.1 (gl g * lc v (dL ϖ 1) * dM (nu F h)) * _ = f.1 (gl g * dM (nu F h) * lc v ((Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h)))⁻¹ * dL ϖ 1 * Matrix.GeneralLinearGroup.map (cp v) (dM (nu F h)))) * _`.
+
+Rewrite using `[mul_assoc (gl g), hlaw, mul_assoc (gl g)]`. Rewrite using `[e]`. Conclude with `hc`. Establish `hI : ∫ g in M.D, U g ∂M.μ = 0`. Use `integral_thetaRowZero_eq_zero_of_iwahori_invariant F E D W M v ϖ hϖ hG hA j hj (fun g => f.1 (gl g * lc v (dL ϖ 1) * dM (nu F h))) (W.L h φ) hl1 ?_ hUi` and prove the remaining obligations.
+
+Introduce `g x h00 h11 h01 h10`. Establish `hz : Matrix.SpecialLinearGroup.toGL (xC ϖ x) ∈ GlobalTheory.LFun.KGL v 2`. Use `memK v _ fun i k => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases k`. Use `exacts [h00, h01, h10, h11]`.
+
+Use `show f.1 (gl (g * j x) * lc v (dL ϖ 1) * dM (nu F h)) = _`. Rewrite using `[hgl, mul_assoc (gl g), ← map_mul, xC_conj, map_mul, ← mul_assoc]`. Conclude with `hFix _ _ hz`. Establish `hk : ∀ x, ∫ g in M.D, U (g * j x) ∂M.μ = 0` using `fun x => ((rightInv F M U hlU hUi (j x)).2).trans hI`. Establish `hki : ∀ x, IntegrableOn (fun g => U (g * j x)) M.D M.μ` using `fun x => (rightInv F M U hlU hUi (j x)).1`.
+
+Establish `hpt : ∀ g : G1 F, q v ^ (1 / 2 : ℂ) * ((α : ℂ) + β) * (f.1 (gl g * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1) = ∑ b ∈ R, U (g * j (xN b)) + U (g * j (xW v))`. Introduce `g`. Establish `hEig : Eig v {α, β} (fun y => f.1 (gl g * lc v y * dM (nu F h)))` using `hE₁ (gl g)`. Establish `h1` using `(hR α β _ hEig 1).1`. Use `beta_reduce at h1`.
+
+Establish `a0 : f.1 (gl g * lc v 1 * dM (nu F h)) = f.1 (gl g * dM (nu F h))` using `by rw [map_one, mul_one]`. Establish `hwI : ∀ i k, IsInt (xW v i k)`. Introduce `i k`. Apply the tactic sequence `fin_cases i <;> fin_cases k`. Use `exacts [int_zero v, int_one v, int_neg_one v, int_zero v]`.
+
+Establish `ab : ∀ b ∈ R, f.1 (gl g * lc v (1 * UpperTheory.ConvolutionTheory.R2.H.nL b * dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1 = U (g * j (xN b))`. Introduce `b hb`. Establish `hbI : ∀ i k, IsInt (xN b i k)`. Introduce `i k`. Apply the tactic sequence `fin_cases i <;> fin_cases k`.
+
+Use `exacts [int_one v, hRi b hb, int_zero v, int_one v]`. Establish `hN : Matrix.SpecialLinearGroup.toGL (xN b) = UpperTheory.ConvolutionTheory.R2.H.nL b` using `Units.ext rfl`. Use `show _ = f.1 (gl (g * j (xN b)) * lc v (dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om (g * j (xN b)) (W.L h φ)).1`. Rewrite using `[hOm _ _ hbI, hgl, hN, one_mul, map_mul]`. Simplify using `only [mul_assoc]`.
+
+Establish `aw : f.1 (gl g * lc v (1 * dL 1 ϖ) * dM (nu F h)) * ThRow 0 0 (W.Om g (W.L h φ)).1 = U (g * j (xW v))` using `by show _ = f.1 (gl (g * j (xW v)) * lc v (dL ϖ 1) * dM (nu F h)) * ThRow 0 0 (W.Om (g * j (xW v)) (W.L h φ)).1`. Establish `e1 : gl g * lc v (dL 1 ϖ) * lc v (Matrix.SpecialLinearGroup.toGL (xW v)) = gl g * lc v (Matrix.SpecialLinearGroup.toGL (xW v)) * lc v (dL ϖ 1)`. Rewrite using `[mul_assoc, ← map_mul, w_conj, map_mul, mul_assoc]`. Rewrite using `[hOm _ _ hwI, hgl, one_mul, ← hFix (gl g * lc v (dL 1 ϖ)) _ (memK v (xW v) hwI), e1]`. Rewrite using `[← a0, ← mul_assoc, h1, add_mul, Finset.sum_mul, Finset.sum_congr rfl ab, aw]`.
+
+Establish `hq` using `q_ne v`. Establish `key : q v ^ (1 / 2 : ℂ) * (((α : ℂ) + β) * T0 W M f.1 φ h) = 0`. Rewrite using `[← mul_assoc]`. Unfold `T0`. Rewrite using `[← integral_const_mul]`.
+
+Simplify using `only [hpt]`. Rewrite using `[integral_add (integrable_finset_sum _ fun b _ => hki _) (hki _), integral_finset_sum _ fun b _ => hki _]`. Simplify using `[hk]`. Conclude with `(mul_eq_zero.1 key).resolve_left hq`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.eigenvalue_sum_mul_thetaConstantTerm_eq_zero_of_anisotropic :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (v : P F), Gd D.δ v → Aniso D.δ v →
       ∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, ∀ (h : GL (Fin 2) (A E)) (α β : ℂˣ), EigAt v {α, β} f.1 → KAt v (dM (nu F h)) →

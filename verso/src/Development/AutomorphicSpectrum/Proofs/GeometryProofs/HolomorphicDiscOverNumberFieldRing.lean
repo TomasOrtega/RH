@@ -10,11 +10,17 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.ConstEmbedding
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage x).hom, by show Spec.map (CommRingCat.ofHom (Spec.preimage x).hom) = x simp⟩`.
+-/
 theorem exists_spMap {A : Type} [CommRing A] (x : Sp ℂ ⟶ Sp A) : ∃ ψ : A →+* ℂ, spMap ψ = x :=
   ⟨(Spec.preimage x).hom, by
     show Spec.map (CommRingCat.ofHom (Spec.preimage x).hom) = x
     simp⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ψ` using `GlobalTheory.CompanionTheory.Ar.GrNorm.injective_of_algebraic (algebraMap (𝓞 F) F) (IsFractionRing.injective (𝓞 F) F) ψ`. Use `⟨IsFractionRing.lift hinj, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem exists_extend (F : Type) [Field F] [NumberField F] (ψ : 𝓞 F →+* ℂ) :
     ∃ τ : F →+* ℂ, τ.comp (algebraMap (𝓞 F) F) = ψ := by
   have hinj : Function.Injective ψ :=
@@ -23,6 +29,13 @@ theorem exists_extend (F : Type) [Field F] [NumberField F] (ψ : 𝓞 F →+* �
   refine ⟨IsFractionRing.lift hinj, RingHom.ext fun a => ?_⟩
   simp
 
+/- English proof (translation)
+Use `choose ψ hψ using fun u => exists_spMap (p u ≫ q)`. Use `choose κ hκ using fun u => exists_extend F (ψ u)`. Establish `hd : ∀ a : 𝓞 F, DifferentiableOn ℂ (fun b => κ b (a : F)) (Metric.ball 0 1)`. Introduce `a`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp hol q`.
+
+Establish `h3` using `(h2 ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv a)).2`. Establish `hset : Metric.ball (0 : Fin n → ℂ) 1 ⊆ {b ∈ Metric.ball (0 : Fin n → ℂ) 1 | ⊤ ≤ (p b ≫ q) ⁻¹ᵁ ⊤}` using `fun b hb => ⟨hb, le_top⟩`. Use `(h3.mono hset).congr fun b _ => ?_` and prove the remaining obligations. Use `show κ b (a : F) = valAt' (p b ≫ q) ⊤ _`. Rewrite using `[← hψ b, ← hκ b]`.
+
+Conclude with `(ReciprocityTheory.ChartRestriction.G.PullbackSections.valAt'_spMap ((κ b).comp (algebraMap (𝓞 F) F)) a).symm`. Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Use `⟨κ 0, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hc` using `GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.embedding_const_preconnected (convex_ball (0 : Fin n → ℂ) 1).isPreconnected κ hd hu h0`. Rewrite using `[← hc, hκ u, hψ u]`.
+-/
 theorem exists_embedding (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (q : X ⟶ Sp (𝓞 F)) (n : ℕ)
     (p : (Fin n → ℂ) → (Sp ℂ ⟶ X)) (hol : IsHolTo (Metric.ball 0 1) p) :
     ∃ τ : F →+* ℂ, ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, p u ≫ q = spMap (τ.comp (algebraMap (𝓞 F) F)) := by

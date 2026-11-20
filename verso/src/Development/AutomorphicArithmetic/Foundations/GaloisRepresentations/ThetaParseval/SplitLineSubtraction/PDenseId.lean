@@ -9,6 +9,15 @@ open Formalism.MainNotions.SumRepresentations.At (sumRep)
 
 namespace UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `_ _ Γ _ _ l _ m m' t t' r r' a a' hr hr' ha ha' D hD hEq g`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `key : ∀ {n : ℕ} (s : Γ →* GL (Fin n) (Qbar l)), Continuous s → Continuous fun g => (cp s g).eval x`. Introduce `n s hs`.
+
+Simplify using `only [cp, Matrix.eval_charpoly]`. Conclude with `(continuous_const.sub (Units.continuous_val.comp hs)).matrix_det`. Establish `keyl : ∀ {n : ℕ} (b : Fin n → Γ →* (Qbar l)ˣ), (∀ i, Continuous (b i)) → Continuous fun g => (lin b g).eval x`. Introduce `n b hb`. Simplify using `only [lin, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+
+Conclude with `continuous_finset_prod _ fun i _ => continuous_const.sub (Units.continuous_val.comp (hb i))`. Establish `h` using `Continuous.ext_on hD ((key r hr).mul (keyl a' ha')) ((key r' hr').mul (keyl a ha)) (fun g hg => by`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← Polynomial.eval_mul, ← Polynomial.eval_mul, hEq g hg])`. Establish `hg` using `congrFun h g`.
+
+Simplify using `only [Pi.mul_apply] at hg`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_mul]`. Conclude with `hg`.
+-/
 theorem denseId_holds : CpFacts → DgFacts → DenseId := by
   intro _ _ Γ _ _ l _ m m' t t' r r' a a' hr hr' ha ha' D hD hEq g
   apply Polynomial.funext

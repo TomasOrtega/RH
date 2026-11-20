@@ -63,6 +63,9 @@ variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X 
   {i : X.Tw} {b : Bool} {ρ : Reading X i b} {s : X.Sig i} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GalE D →* GL (Fin D.R.r) (Qbar (X.l i))} {ν : GalE D →* (X.O0 i)ˣ} {w : D.what₂.places.Pl}
   {red : Zbar (X.l i) →+* FbAt D w}
+/- English proof (translation)
+Use `⟨σ, π, (MulAut.conj A).toMonoidHom.comp r, ν, w, red, good, occurs, param, _root_.GlobalTheory.Triple.isGaloisRepOfN_of_conj gal A fun _ => rfl, shift, rho, hecke, induces, residual.ss, fun g => ?_, residual.teich⟩` and prove the remaining obligations. Take `⟨p, h1, h2⟩` from `residual.charpoly g`. Use `⟨p, h1.trans ?_, h2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).charpoly`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 theorem isTripleAt_of_conj_alt (good : D.nd.goodRow σ) (occurs : D.what₂.isot (X.jS i s) σ ≠ ⊥) (param : IsParam σ π)
     (gal : _root_.UpperTheory.GalS.IsGaloisRepOfN D π (X.l i) ρ.ι r) (shift : ∃ n, IsGal art ρ.κ ρ.ι (shiftChar C) n ν)
     (A : GL (Fin D.R.r) (Qbar (X.l i)))
@@ -78,19 +81,34 @@ theorem isTripleAt_of_conj_alt (good : D.nd.goodRow σ) (occurs : D.what₂.isot
   refine ⟨p, h1.trans ?_, h2⟩
   change _ = ((A * r g * A⁻¹ : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).charpoly
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
+/- English proof (translation)
+Take `⟨x, h1, h2⟩` from `h.hecke 0 P (Nat.zero_le _) hP hS`. Rewrite `h2` using `[heckeVal_zero, ← map_one ρ.toC]`. Rewrite using `[← h1, ρ.toC_injective h2, map_one]`.
+-/
 theorem IsGaloisTripleWithReduction.hEig_zero (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) {P : PlE D.host} (hP : IsSplitPl D.host P)
     (hS : P ∉ X.S0 i) : X.hEig i s 0 P = 1 := by
   obtain ⟨x, h1, h2⟩ := h.hecke 0 P (Nat.zero_le _) hP hS
   rw [heckeVal_zero, ← map_one ρ.toC] at h2
   rw [← h1, ρ.toC_injective h2, map_one]
+/- English proof (translation)
+The claim follows from `h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)`.
+-/
 theorem IsGaloisTripleWithReduction.unr_of_notMem (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) {P : PlE D.host} (hS : P ∉ X.S0 i) :
     D.naut.unr (D.naut.locG π P) := h.param.unr P fun k hk => hS (X.placesOver_subset_exceptional i k hk)
 variable {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X}
+/- English proof (translation)
+The claim follows from `let ⟨ρ, h1, h2⟩ := h.evidence i hi (X.side i s) ⟨ρ, h1, h2 s rfl⟩`.
+-/
 theorem IsGaloisTripleForExpansion.triple (h : _root_.GlobalTheory.Triple.IsGaloisTripleForExpansion C art Y) {i : X.Tw} (hi : X.NonzeroIndexPlace i) (s : X.Sig i) :
     ∃ ρ : Reading X i (X.side i s), IsChars C art ρ ∧ _root_.GlobalTheory.Triple.IsGaloisTripleAtSignature C art ρ s :=
   let ⟨ρ, h1, h2⟩ := h.evidence i hi (X.side i s)
   ⟨ρ, h1, h2 s rfl⟩
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.vec`.
+-/
 theorem IsGaloisTripleOfExpansion.allGood (h : _root_.GlobalTheory.Triple.IsGaloisTripleOfExpansion Y) : GlobalTheory.TwSys.AllGood Y := let ⟨_, _, h⟩ := h; h.vec
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h; h.all`.
+-/
 theorem IsGaloisTripleOfExpansion.sig_all (h : _root_.GlobalTheory.Triple.IsGaloisTripleOfExpansion Y) : Y.sig_all := let ⟨_, _, h⟩ := h; h.all
 end API
 end GlobalTheory.Triple

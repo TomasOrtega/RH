@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.HubX
 
+/- English proof (translation)
+Introduce `hF D L X hgood ht0 ha2 ha5 hG2 hpar hmu i _ hg hR _`. Take `⟨h23, hqd, -⟩` from `hR`. Establish `hchi` using `GlobalTheory.T.chi_one_away_from_type hF D ht0 ha2 ha5 hpar hmu i hg`. Establish `hg0 : D.nd.l i ≠ D.host.g 0` using `fun h => hg (by simp [TwistedPlaces.gset, h])`. Establish `hg1 : D.nd.l i ≠ D.host.g 1` using `fun h => hg (by simp [TwistedPlaces.gset, h])`.
+
+Use `⟨GlobalTheory.T.hostCompletion_le_maxUnramified_padic D i (fun h => h23 (Or.inl h)) (fun h => hqd (Or.inl h)) (fun h => hqd (Or.inr h)), ?_⟩` and prove the remaining obligations. Introduce `w hw C _ x`. Conclude with `GlobalTheory.T.crystalline_local_coefficients hF D i (X.r i) (hgood i) (hG2 i (X.r i) (hgood i)) hg0 hg1 hchi w hw C x`.
+-/
 theorem unrCrysAtRangePrime : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (L : SizeData₂ D) (X : KillingConditions.HubData D), (∀ i, GoodR D.nd i (X.r i)) → SumRepresentations.tie0 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → AdmissibleParameterJ.DeRhamFamilyAway D → GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D → GlobalTheory.HubX.MuUnr D → ∀ i : D.nd.Loc, TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D → KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.SplitK D (D.nd.l i) → (∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)), (D.nbr i w hw).Kw.1 ≤ Loc.MaximalUnramifiedExtension (D.nd.l i)) ∧ ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw), C.IsGood → ∀ x : D.nd.X i, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i (X.r i) x))) := by
   intro hF D L X hgood ht0 ha2 ha5 hG2 hpar hmu i _ hg hR _
   obtain ⟨h23, hqd, -⟩ := hR

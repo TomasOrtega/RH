@@ -12,6 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DefFree
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n J L β hU hβ u x hu`. Establish `hfin` using `Formalism.UG.Final.AdelicStabFiniteL F E (Fin n) hc.sig J (cm_comp hc) hU.herm hU.unit hU.tdef L (Module.Finite.iff_fg.2 hU.lat.fg) hU.lat.span_eq_top x`. Establish `hb` using `base_level_eq_adelic_level F E hc n J L β hβ`. Set `H : Subgroup (UR hc J)` to `(Formalism.UG.levelAfL hc.sig J L).comap (conjIn hc J (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)))`. Establish `hH : Finite H`.
+
+Set `f : H → Formalism.UG.stabAt (UQ hc J) ((Formalism.UG.levelAfL hc.sig J L).subgroupOf (UA hc J)) x` to `fun γ => ⟨ratEl γ.1, (ratEl_mem_stabAt x γ.1).2 γ.2⟩`. Use `Finite.of_injective f ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (ratEl_injective (congrArg Subtype.val hab))`. Establish `huH : u ∈ H` using `by show conjIn hc J (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) u ∈ Formalism.UG.levelAfL hc.sig J L`.
+
+Rewrite using `[← hb]`. Use `⟨?_, hu⟩` and prove the remaining obligations. Rewrite using `[conjIn_apply]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ x.2) (ratEl u).1.2) x.2`. Use `isOfFinOrder_of_finite (⟨u, huH⟩ : H)` as an intermediate fact.
+
+Conclude with `H.subtype.isOfFinOrder this`.
+-/
 theorem isOfFinOrder_of_conjIn_mem_St :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E)) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)), IsDefUnimod hc J Λ → IsFrame β Λ → ∀ (u : UR hc J) (x : UA hc J), conjIn hc J (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) u ∈ St β → IsOfFinOrder u := by
   intro F E _ _ _ _ _ _ hc n J L β hU hβ u x hu

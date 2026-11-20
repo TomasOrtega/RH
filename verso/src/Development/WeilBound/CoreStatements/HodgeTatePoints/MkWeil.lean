@@ -13,6 +13,11 @@ noncomputable section
 
 namespace PositivityTheory.HtPt.Mk
 
+/- English proof (translation)
+Establish `: Flat (Spec.map (CommRingCat.ofHom a))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Set `_` to `a.toAlgebra`. Conclude with `(inferInstance : Module.Flat Ω K)`. Establish `: Surjective (Spec.map (CommRingCat.ofHom a))` using `⟨fun z => ⟨IsLocalRing.closedPoint K, Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩⟩`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_fieldMap {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (Spec.map (CommRingCat.ofHom a)) := by
   have : Flat (Spec.map (CommRingCat.ofHom a)) := by
     rw [HasRingHomProperty.Spec_iff (P := @Flat)]
@@ -22,10 +27,18 @@ theorem epi_fieldMap {Ω K : Type} [Field Ω] [Field K] (a : Ω →+* K) : Epi (
     ⟨fun z => ⟨IsLocalRing.closedPoint K, Subsingleton.elim (α := PrimeSpectrum Ω) _ _⟩⟩
   exact Flat.epi_of_flat_of_surjective _
 
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spec_map_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f) := by
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Use `Fintype.ofFinite T` as an intermediate fact. Establish `hinj : Function.Injective (fun χ : T →* Kˣ => (Units.coeHom K).comp χ)` using `fun a b h => MonoidHom.ext fun t => Units.ext (DFunLike.congr_fun h t)`. Establish `hli` using `(linearIndependent_monoidHom T K).comp _ hinj`. Establish `hf : Finite (T →* Kˣ)` using `hli.finite`. Use `⟨hf, ?_⟩` and prove the remaining obligations.
+
+Use `Fintype.ofFinite (T →* Kˣ)` as an intermediate fact. Establish `h` using `hli.fintype_card_le_finrank`. Rewrite `h` using `[Module.finrank_fintype_fun_eq_card]`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]` and apply the resulting hypothesis.
+-/
 theorem card_char_le (T K : Type) [Group T] [Finite T] [Field K] :
     Finite (T →* Kˣ) ∧ Nat.card (T →* Kˣ) ≤ Nat.card T := by
   classical
@@ -40,6 +53,13 @@ theorem card_char_le (T K : Type) [Group T] [Finite T] [Field K] :
   rw [Module.finrank_fintype_fun_eq_card] at h
   rwa [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `card_char_le T K`. Take `⟨h2, c2⟩` from `card_char_le T K'`. Take `⟨h3, c3⟩` from `card_char_le (T →* Kˣ) K`. Set `ev : T →* ((T →* Kˣ) →* Kˣ)` to `MonoidHom.mk' (fun t => MonoidHom.mk' (fun χ => χ t) fun _ _ => rfl) fun a b => MonoidHom.ext fun χ => map_mul χ a b`. Establish `hev : Function.Injective ev` using `(injective_iff_map_eq_one ev).2 fun t h => hsep t fun χ => DFunLike.congr_fun h χ`.
+
+Establish `c4` using `Nat.card_le_card_of_injective _ hev`. Set `m : (T →* Kˣ) → (T →* K'ˣ)` to `fun χ => (Units.map i.toMonoidHom).comp χ`. Establish `hm : Function.Injective m` using `fun a b h => MonoidHom.ext fun t => Units.ext (i.injective (congrArg Units.val (DFunLike.congr_fun h t)))`. Establish `hb` using `hm.bijective_of_nat_card_le (c2.trans (c4.trans c3))`. Take `⟨χ, rfl⟩` from `hb.2 χ'`.
+
+Conclude with `⟨χ, fun t => rfl⟩`.
+-/
 theorem char_descend {T K K' : Type} [Group T] [Finite T] [Field K] [Field K'] (i : K →+* K')
     (hsep : ∀ t : T, (∀ χ : T →* Kˣ, χ t = 1) → t = 1) (χ' : T →* K'ˣ) :
     ∃ χ : T →* Kˣ, ∀ t, (χ' t : K') = i (χ t) := by
@@ -58,6 +78,45 @@ theorem char_descend {T K K' : Type} [Group T] [Finite T] [Field K] [Field K'] (
   obtain ⟨χ, rfl⟩ := hb.2 χ'
   exact ⟨χ, fun t => rfl⟩
 
+/- English proof (translation)
+Introduce `X X' Ω Ω' _ _ ξ ξ' f i hd G _ _ G' _ φ hp L L' hL hL' hw n hF`. Establish `hd' : spMap i ≫ ξ = ξ' ≫ f` using `hd.symm`. Establish `hsp : ∀ {k : Type} [Field k] (a : Ω' →+* k), spMap (a.comp i) = spMap a ≫ spMap i` using `fun a => spec_map_comp i a`. Establish `hdk : ∀ {k : Type} [Field k] (a : Ω' →+* k), spMap (a.comp i) ≫ ξ = (spMap a ≫ ξ') ≫ f` using `fun a => by`. Rewrite using `[hsp, Category.assoc, hd', Category.assoc]`.
+
+Take `⟨E, hE⟩` from `GlobalTheory.LiePull.exists_pushEquiv hp (Over.mk ξ') (spMap i ≫ ξ) hd'`. Set `ψ : Over.mk (spMap i ≫ ξ) ⟶ Over.mk ξ` to `Over.homMk (spMap i) rfl`. Set `inc : (Over.mk ξ ⟶ G) →* (Over.mk ξ' ⟶ G')` to `E.symm.toMonoidHom.comp (MonoidHom.mk' (fun x => ψ ≫ x) fun x y => MonObj.comp_mul ψ x y)`. Establish `hinc : ∀ x, (inc x).left ≫ φ = spMap i ≫ x.left` using `fun x => by`. Rewrite using `[← hE]`.
+
+Conclude with `congrArg (·.left) (E.apply_symm_apply (ψ ≫ x))`. Establish `hext : ∀ {T : Over X'} (a b : T ⟶ G'), a.left ≫ φ = b.left ≫ φ → a = b` using `fun a b h => Over.OverMorphism.ext (hp.1.hom_ext h ((Over.w a).trans (Over.w b).symm))`. Establish `hepi` using `epi_fieldMap i`. Establish `hinj : Function.Injective inc` using `fun a b h => Over.OverMorphism.ext ((cancel_epi (spMap i)).1 (by rw [← hinc, ← hinc, h]))`. Establish `hsurj : ∀ x', x' ^ n = 1 → ∃ x, x ^ n = 1 ∧ inc x = x'` using `fun x' hx' => by`.
+
+Take `⟨x, hx⟩` from `hF Ω' i (E x') (by rw [← map_pow, hx', map_one])`. Establish `e : inc x = x'` using `hext _ _ (by rw [hinc, ← hx, hE])`. Conclude with `⟨x, hinj (by rw [map_pow, e, hx', map_one]), e⟩`. Establish `hpow : ∀ x, x ^ n = 1 → inc x ^ n = 1` using `fun x hx => by rw [← map_pow, hx, map_one]`. Use `⟨fun k _ a g hg => ?_, fun e hW => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Ek, hEk⟩` from `GlobalTheory.LiePull.exists_pushEquiv hp (Over.mk (spMap a ≫ ξ')) (spMap (a.comp i) ≫ ξ) (hdk a)`. Take `⟨x, hx⟩` from `hF k (a.comp i) (Ek g) (by rw [← map_pow, hg, map_one])`. Use `⟨inc x, hp.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← hEk, hx, Category.assoc, hinc, hsp, Category.assoc]`. Rewrite using `[Category.assoc, Over.w, Over.w]`.
+
+Both sides reduce to the same expression. Set `r` to `Function.invFun inc`. Establish `hr : ∀ x, r (inc x) = x` using `Function.leftInverse_invFun hinj`. Use `⟨fun x' g' => Units.map i.toMonoidHom (e (r x') (r g')), ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hW.finite` as an intermediate fact.
+
+Use `Finite.of_surjective (fun x : {x : Over.mk ξ ⟶ G // x ^ n = 1} => (⟨inc x, hpow _ x.2⟩ : {x : Over.mk ξ' ⟶ G' // x ^ n = 1})) fun x' => ?_` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hsurj _ x'.2`. Conclude with `⟨⟨x, hx⟩, Subtype.ext e⟩`. Introduce `x y g hx hy hg`. Take `⟨x, hx₀, rfl⟩` from `hsurj x hx`.
+
+Use `replace hx := hx₀`. Take `⟨y, hy₀, rfl⟩` from `hsurj y hy`. Use `replace hy := hy₀`. Take `⟨g, hg₀, rfl⟩` from `hsurj g hg`. Use `replace hg := hg₀`.
+
+Simplify using `only [← map_mul, hr]`. Rewrite using `[hW.mul_left x y g hx hy hg]`. Introduce `x y g hx hy hg`. Take `⟨x, hx₀, rfl⟩` from `hsurj x hx`. Use `replace hx := hx₀`.
+
+Take `⟨y, hy₀, rfl⟩` from `hsurj y hy`. Use `replace hy := hy₀`. Take `⟨g, hg₀, rfl⟩` from `hsurj g hg`. Use `replace hg := hg₀`. Simplify using `only [← map_mul, hr]`.
+
+Rewrite using `[hW.mul_right x y g hx hy hg]`. Introduce `χ' hχ'`. Set `T : Subgroup (Over.mk ξ ⟶ G)` to `(powMonoidHom n : (Over.mk ξ ⟶ G) →* (Over.mk ξ ⟶ G)).ker`. Establish `hT : ∀ t : T, t.1 ^ n = 1` using `fun t => t.2`. Establish `: Finite T` using `hW.finite`.
+
+Take `⟨χ, hχ⟩` from `char_descend (T := T) i (fun t ht => Subtype.ext (hW.nondeg t.1 (hT t) fun x hx => ht (MonoidHom.mk' (fun s => e x s.1) fun s s' => hW.mul_right x _ _ hx (hT s) (hT s')))) (MonoidHom.mk' (fun t => χ' (inc t.1)) fun s t => by`. Rewrite using `[← hχ' _ _ (hpow _ (hT s)) (hpow _ (hT t)), ← map_mul]`. Use the proof step `rfl)`. Take `⟨x, hx, hxe⟩` from `hW.perfect (fun g => if h : g ^ n = 1 then χ ⟨g, h⟩ else 1) fun g g' hg hg' => by`. Establish `hgg : (g * g') ^ n = 1` using `by rw [mul_pow, hg, hg', _root_.one_mul]`.
+
+Rewrite using `[dif_pos hg, dif_pos hg', dif_pos hgg, ← map_mul]`. Both sides reduce to the same expression. Use `⟨inc x, hpow x hx, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨g, hg₀, rfl⟩` from `hsurj g hg`. Use `replace hg := hg₀`.
+
+Establish `h1` using `hxe g hg`. Rewrite `h1` using `[dif_pos hg]`. Rewrite using `[hr, hr, ← h1]`. Conclude with `Units.ext (hχ ⟨g, hg⟩)`. Introduce `g hg h`.
+
+Take `⟨g, hg₀, rfl⟩` from `hsurj g hg`. Use `replace hg := hg₀`. Rewrite using `[hW.nondeg g hg fun x hx => ?_, map_one]`. Establish `h1` using `congrArg Units.val (h (inc x) (hpow x hx))`. Rewrite `h1` using `[hr, hr]`.
+
+Conclude with `Units.ext (i.injective (h1.trans (map_one i).symm))`. Introduce `x g hx hg k _ _ a xk gk c hxk hgk`. Take `⟨x, hx₀, rfl⟩` from `hsurj x hx`. Use `replace hx := hx₀`. Take `⟨g, hg₀, rfl⟩` from `hsurj g hg`.
+
+Use `replace hg := hg₀`. Rewrite using `[hr, hr]`. Take `⟨Ek, hEk⟩` from `GlobalTheory.LiePull.exists_pushEquiv hp (Over.mk (spMap a ≫ ξ')) (spMap (a.comp i) ≫ ξ) (hdk a)`. Establish `key : ∀ (z : Spec (CommRingCat.of k) ⟶ X) (hz : z = (spMap a ≫ ξ') ≫ f) (x₀ g₀ : Over.mk z ⟶ G), x₀.left = xk.left ≫ φ → g₀.left = gk.left ≫ φ → (Out.WeilIs G' L' n xk gk (unitOn c) ↔ Out.WeilIs G L n x₀ g₀ (unitOn c))`. Introduce `z hz x₀ g₀ h1 h2`.
+
+Substitute `hz` using the available equality. Conclude with `GlobalTheory.weilIs_grpPullback_of_comm _ _ G G' f φ L L' hL hL' hp hw _ n xk gk x₀ g₀ _ h1 h2`. Rewrite using `[key _ (hdk a) (Ek xk) (Ek gk) (hEk _) (hEk _)]`. Establish `hcomp : ∀ (y : Over.mk ξ ⟶ G) (yk : Over.mk (spMap a ≫ ξ') ⟶ G'), yk.left = spMap a ≫ (inc y).left → (Ek yk).left = spMap (a.comp i) ≫ y.left` using `fun y yk h => (hEk yk).trans ((congrArg (· ≫ φ) h).trans ((Category.assoc _ _ _).trans ((congrArg (spMap a ≫ ·) (hinc y)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ y.left) (hsp a).symm)))))`. Conclude with `hW.weil x g hx hg k (a.comp i) (Ek xk) (Ek gk) c (hcomp x xk hxk) (hcomp g gk hgk)`.
+
+Introduce `x g x' g' _ _ h1 h2`. Take `rfl : inc x = x'` from `hext _ _ ((hinc x).trans h1.symm)`. Take `rfl : inc g = g'` from `hext _ _ ((hinc g).trans h2.symm)`. Simplify using `only [hr]`. Both sides reduce to the same expression.
+-/
 theorem ht_weil_pull : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω'), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] (G' : Over X') [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → LBIso L' (L.pull φ) → ∀ n : ℕ, FullTorsion G ξ n → FullTorsion G' ξ' n ∧ ∀ e, GenWeil G L ξ n e → ∃ e', GenWeil G' L' ξ' n e' ∧ ∀ (x g : Over.mk ξ ⟶ G) (x' g' : Over.mk ξ' ⟶ G'), x ^ n = 1 → g ^ n = 1 → x'.left ≫ φ = spMap i ≫ x.left → g'.left ≫ φ = spMap i ≫ g.left → (e' x' g' : Ω') = i (e x g) := by
   intro X X' Ω Ω' _ _ ξ ξ' f i hd G _ _ G' _ φ hp L L' hL hL' hw n hF
   have hd' : spMap i ≫ ξ = ξ' ≫ f := hd.symm

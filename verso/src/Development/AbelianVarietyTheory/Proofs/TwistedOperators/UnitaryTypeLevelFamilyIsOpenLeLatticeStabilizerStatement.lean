@@ -15,5 +15,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.TrIdem
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrIdem.levelFam_open_le | exact GlobalTheory.TrIdem.levelFam_open_le | (intros; apply GlobalTheory.TrIdem.levelFam_open_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitaryTypeLevelFamily_isOpen_le_latticeStabilizer : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V), U.u ∉ T.S → ∀ v, IsOpen (levelFam T U v : Set (GLoc D.sp.cm.sig V.gram v)) ∧ levelFam T U v ≤ Kv V v := by
   first | exact @GlobalTheory.TrIdem.levelFam_open_le | exact GlobalTheory.TrIdem.levelFam_open_le | (intros; apply GlobalTheory.TrIdem.levelFam_open_le <;> assumption)

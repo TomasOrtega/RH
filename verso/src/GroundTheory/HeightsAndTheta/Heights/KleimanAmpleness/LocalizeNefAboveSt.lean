@@ -23,11 +23,17 @@ abbrev LocalizeNefAbove.exΩ : Type := FractionRing LocalizeNefAbove.exO
 instance LocalizeNefAbove.exTower : @IsScalarTower ℤ LocalizeNefAbove.exO LocalizeNefAbove.exΩ Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
   IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)
 
+/- English proof (translation)
+Introduce `pp _ _` and use `by rw [Kleiman.interNum_twistSys_zero]`.
+-/
 theorem LocalizeNefAbove.hyps₂ :
     Kleiman.NefAbove (Kleiman.twistSys ℤ (![1, 1] : Fin 2 → LocalizeNefAbove.exΩ) 0)
       ((Ideal.span {(2 : ℤ)}).map (C : ℤ →+* Kleiman.Poly ℤ 1)) :=
   fun pp _ _ => by rw [Kleiman.interNum_twistSys_zero]
 
+/- English proof (translation)
+The claim follows from `h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ LocalizeNefAbove.hyps₂`.
+-/
 example (h : LocalizeNefAbove.Statement) :=
   h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ LocalizeNefAbove.hyps₂
 

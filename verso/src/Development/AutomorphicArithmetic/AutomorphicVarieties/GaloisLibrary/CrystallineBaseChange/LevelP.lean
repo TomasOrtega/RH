@@ -32,6 +32,9 @@ open UpperTheory.V.Af
 variable {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
   {l : ℕ} [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r R : G K Ω →* GL (Fin n) (Qbar l)} {π : CuspSub K n}
 
+/- English proof (translation)
+Establish `h2` using `congrArg (Multiset.map fun z : ℂ => ((n : ℂ) - 1) / 2 - z) h`. Simplify using `only [Multiset.map_map, Function.comp_def, sub_sub_cancel, Multiset.map_id'] at h2`. Rewrite using `[← h2, infOf]`. Conclude with `Multiset.map_congr rfl fun i _ => by push_cast; ring`.
+-/
 private theorem infOf_of_weights {m : Fin n → ℤ} {x : Multiset ℂ}
     (h : (Finset.univ.val.map fun i => -m i).map (fun k : ℤ => (k : ℂ)) = x.map fun z => ((n : ℂ) - 1) / 2 - z) :
     x = infOf m := by
@@ -43,6 +46,9 @@ private theorem infOf_of_weights {m : Fin n → ℤ} {x : Multiset ℂ}
 end UpperTheory.V.Br
 
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Br in
+/- English proof (translation)
+Introduce `P K _ _ _ hK n hn m hm M hM l _ hl Ω _ _ _ ι r π hL` and use `UpperTheory.V.Lev.levelPS P (UpperTheory.V.Br.compatP P) (UpperTheory.V.Lev.fixedAll P) UpperTheory.V.Lev.unlGap K hK n hn m hm M hM l hl Ω ι r π ⟨hL.cont, hL.away, hL.above⟩ hL.safe`.
+-/
 theorem UpperTheory.V.Br.levelP :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Br.LevelP := fun P K _ _ _ hK n hn m hm M hM l _ hl Ω _ _ _ ι r π hL =>
   UpperTheory.V.Lev.levelPS P (UpperTheory.V.Br.compatP P) (UpperTheory.V.Lev.fixedAll P) UpperTheory.V.Lev.unlGap K hK n hn m hm M hM l hl Ω ι r π

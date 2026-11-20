@@ -14,10 +14,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Introduce `c hc j hj s hs u B hu`. Conclude with `GlobalTheory.LiftPole.Bounded.mono (h c hc j hj s hs u B hu) (by linarith)`.
+-/
 theorem parBoundW_of_parBound {D : D7} (h : ParBound D) : ParBoundW D := by
   intro c hc j hj s hs u B hu
   exact GlobalTheory.LiftPole.Bounded.mono (h c hc j hj s hs u B hu) (by linarith)
 
+/- English proof (translation)
+The claim follows from `parBoundW_of_parBound (GlobalTheory.T.thetaChain_heckeParams_trivialBound_rapidDecay hP D hL)`.
+-/
 theorem parBoundW (hP : GlobalTheory.Published.CuspRapidDecay) (D : D7) (hL : LevFacts D) : ParBoundW D :=
   parBoundW_of_parBound (GlobalTheory.T.thetaChain_heckeParams_trivialBound_rapidDecay hP D hL)
 

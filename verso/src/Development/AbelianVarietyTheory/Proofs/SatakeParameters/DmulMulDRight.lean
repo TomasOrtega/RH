@@ -33,12 +33,20 @@ def mulB : ((Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) →ₗ[ℚ_[l]] End ℚ_[l] (
   TensorProduct.lift ((TensorProduct.mapBilinear (RingHom.id ℚ_[l]) V (Bst P) V (Bst P)).compl₁₂ (smulEnd V)
     (LinearMap.mul ℚ_[l] (Bst P)))
 
+/- English proof (translation)
+Simplify using `[mulB, smulEnd]`.
+-/
 @[simp] theorem mulB_tmul (v' : Fin 1 → ↥L.1) (b' : Bst P) (v : V) (b : Bst P) :
     mulB P V (v' ⊗ₜ b') (v ⊗ₜ b) = (v' 0 • v) ⊗ₜ (b' * b) := by
   simp [mulB, smulEnd]
 
 variable {P V}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[TensorProduct.smul_tmul', mulB_tmul, mulB_tmul, TensorProduct.smul_tmul', smul_smul, smul_smul, mul_comm]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem mulB_smul (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     mulB P V y (a • x) = a • mulB P V y x := by
   induction y using TensorProduct.induction_on with
@@ -51,6 +59,11 @@ theorem mulB_smul (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : 
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[TensorProduct.smul_tmul', mulB_tmul, mulB_tmul, TensorProduct.smul_tmul', Pi.smul_apply, smul_eq_mul, mul_smul]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem mulB_smul_left (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     mulB P V (a • y) x = a • mulB P V y x := by
   induction y using TensorProduct.induction_on with
@@ -63,6 +76,11 @@ theorem mulB_smul_left (a : ↥L.1) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) 
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[mulV_tmul, mulB_tmul, mulB_tmul, mulV_tmul, mul_left_comm]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem mulB_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     mulB P V y (mulV P ↥L.1 V c x) = mulV P ↥L.1 V c (mulB P V y x) := by
   induction y using TensorProduct.induction_on with
@@ -75,6 +93,11 @@ theorem mulB_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[mulV_tmul, mulB_tmul, mulB_tmul, mulV_tmul, mul_assoc]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem mulV_mulB (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     mulB P V (mulV P ↥L.1 (Fin 1 → ↥L.1) c y) x = mulV P ↥L.1 V c (mulB P V y x) := by
   induction y using TensorProduct.induction_on with
@@ -87,6 +110,11 @@ theorem mulV_mulB (c : ↥(MaximalUnramifiedExtension l)) (y : (Fin 1 → ↥L.1
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[mulB_tmul, phiV_tmul, phiV_tmul, phiV_tmul, mulB_tmul, map_mul]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem phiV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     phiV P ↥L.1 V (mulB P V y x) = mulB P V (phiV P ↥L.1 (Fin 1 → ↥L.1) y) (phiV P ↥L.1 V x) := by
   induction y using TensorProduct.induction_on with
@@ -99,6 +127,13 @@ theorem phiV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[mulB_tmul, monV_tmul, monV_tmul, monV_tmul, mulB_tmul, mulB_tmul, ← TensorProduct.tmul_add]`. Use `congr 1`. Simplify using `only [monSt_apply, derivative_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem monV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     monV P ↥L.1 V (mulB P V y x) = mulB P V (monV P ↥L.1 (Fin 1 → ↥L.1) y) x +
       mulB P V y (monV P ↥L.1 V x) := by
@@ -118,6 +153,11 @@ theorem monV_mulB (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]
 variable {K : FinExt l} (ρs ρt : Representation ↥L.1 ↥(GK K) V)
   (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v' b'`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b`. Rewrite using `[mulB_tmul, stRep_tmul, stRep_tmul, stRep_tmul, mulB_tmul, map_mul, ht, hm, map_smul, Pi.smul_apply, smul_eq_mul, smul_smul, mul_smul]`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel`.
+-/
 theorem stRep_mulB (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v) (g : ↥(GK K))
     (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (x : V ⊗[ℚ_[l]] Bst P) :
     stRep P ρt g (mulB P V y x) = mulB P V (stRep P ρm g y) (stRep P ρs g x) := by
@@ -132,6 +172,9 @@ theorem stRep_mulB (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v =
     | add x x' hx hx' => simp only [map_add, LinearMap.add_apply, smul_add, hx, hx'] <;> abel
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, smul_add, hy, hy'] <;> abel
 
+/- English proof (translation)
+Take `⟨K₁, h₁⟩` from `(mem_Dpst P ρs).mp hx`. Take `⟨K₂, h₂⟩` from `(mem_Dpst P ρm).mp hy`. Use `(mem_Dpst P ρt).mpr ⟨supExt K₁ K₂, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[stRep_mulB ρs ρt ρm χ hm ht, h₁ g (GK_le (K' := supExt K₁ K₂) le_sup_left hg), h₂ g (GK_le (K' := supExt K₁ K₂) le_sup_right hg)]`.
+-/
 theorem mulB_mem_Dpst (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v)
     {x : V ⊗[ℚ_[l]] Bst P} {y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P} (hx : x ∈ Dpst P ρs) (hy : y ∈ Dpst P ρm) :
     mulB P V y x ∈ Dpst P ρt := by
@@ -153,26 +196,44 @@ def dmul (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • 
 
 variable (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_dmul (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     (dmul P ρs ρt ρm χ hm ht x y : V ⊗[ℚ_[l]] Bst P) = mulB P V y.1 x.1 := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [mulB_mulV])`.
+-/
 theorem dmul_mulD_left (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     dmul P ρs ρt ρm χ hm ht (mulD P ρs c x) y = mulD P ρt c (dmul P ρs ρt ρm χ hm ht x y) :=
   Subtype.ext (by simp [mulB_mulV])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [mulV_mulB])`.
+-/
 theorem dmul_mulD_right (c : ↥(MaximalUnramifiedExtension l)) (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     dmul P ρs ρt ρm χ hm ht x (mulD P ρm c y) = mulD P ρt c (dmul P ρs ρt ρm χ hm ht x y) :=
   Subtype.ext (by simp [mulV_mulB])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [phiV_mulB])`.
+-/
 theorem phiD_dmul (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     phiD P ρt (dmul P ρs ρt ρm χ hm ht x y) = dmul P ρs ρt ρm χ hm ht (phiD P ρs x) (phiD P ρm y) :=
   Subtype.ext (by simp [phiV_mulB])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [monV_mulB, add_comm])`.
+-/
 theorem monD_dmul (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     monD P ρt (dmul P ρs ρt ρm χ hm ht x y) =
       dmul P ρs ρt ρm χ hm ht (monD P ρs x) y + dmul P ρs ρt ρm χ hm ht x (monD P ρm y) :=
   Subtype.ext (by simp [monV_mulB, add_comm])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [stRep_mulB ρs ρt ρm χ hm ht])`.
+-/
 theorem actD_dmul (g : ↥(GK K)) (x : ↥(Dpst P ρs)) (y : ↥(Dpst P ρm)) :
     actD P ρt g (dmul P ρs ρt ρm χ hm ht x y) = dmul P ρs ρt ρm χ hm ht (actD P ρs g x) (actD P ρm g y) :=
   Subtype.ext (by simp [stRep_mulB ρs ρt ρm χ hm ht])

@@ -14,6 +14,11 @@ namespace GlobalTheory.CMRam
 
 open WeierstrassCurve
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DiscUniformisation.main`. Consider the case `exact _root_.GlobalTheory.DiscUniformisation.main`. Consider the case `(apply _root_.GlobalTheory.DiscUniformisation.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DiscUniformisation.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DiscUniformisation.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DiscUniformisation.main ..)`.
+-/
 theorem exists_conj_lattice (σ : ℂ ≃+* ℂ) (L : PeriodPair) :
     ∃ L' : PeriodPair, L'.g₂ = σ L.g₂ ∧ L'.g₃ = σ L.g₃ := by
   first

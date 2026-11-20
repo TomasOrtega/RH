@@ -24,26 +24,41 @@ def wMi (b : GL (Fin d) K) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K :=
   (2 : K)⁻¹ • fromBlocks ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K)
     ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) (-((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K))
 
+/- English proof (translation)
+Establish `: fromBlocks (1 + 1 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (1 + 1 : Matrix (Fin d) (Fin d) K) = (2 : K) • fromBlocks (1 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) 0 1`. Rewrite using `[fromBlocks_smul, smul_zero, ← one_add_one_eq_two, add_smul, one_smul]`. Rewrite using `[this, smul_smul, inv_mul_cancel₀ h2, one_smul, fromBlocks_one]`.
+-/
 lemma two_blocks (h2 : (2 : K) ≠ 0) :
     (2 : K)⁻¹ • fromBlocks (1 + 1 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (1 + 1 : Matrix (Fin d) (Fin d) K) = 1 := by
   have : fromBlocks (1 + 1 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) (1 + 1 : Matrix (Fin d) (Fin d) K) = (2 : K) • fromBlocks (1 : Matrix (Fin d) (Fin d) K) (0 : Matrix (Fin d) (Fin d) K) 0 1 := by
     rw [fromBlocks_smul, smul_zero, ← one_add_one_eq_two, add_smul, one_smul]
   rw [this, smul_smul, inv_mul_cancel₀ h2, one_smul, fromBlocks_one]
 
+/- English proof (translation)
+Establish `h1 : (b : Matrix (Fin d) (Fin d) K) * ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) = 1` using `Units.mul_inv b`. Simplify using `only [wM, wMi, Matrix.mul_smul, fromBlocks_multiply, h1, neg_mul, mul_neg, neg_neg, add_neg_cancel]`. Conclude with `two_blocks h2`.
+-/
 lemma wM_mul_wMi (b : GL (Fin d) K) (h2 : (2 : K) ≠ 0) : wM b * wMi b = 1 := by
   have h1 : (b : Matrix (Fin d) (Fin d) K) * ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) = 1 := Units.mul_inv b
   simp only [wM, wMi, Matrix.mul_smul, fromBlocks_multiply, h1, neg_mul, mul_neg, neg_neg, add_neg_cancel]
   exact two_blocks h2
 
+/- English proof (translation)
+Establish `h1 : ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) * (b : Matrix (Fin d) (Fin d) K) = 1` using `Units.inv_mul b`. Simplify using `only [wM, wMi, Matrix.smul_mul, fromBlocks_multiply, h1, neg_mul, mul_neg, neg_neg, add_neg_cancel]`. Conclude with `two_blocks h2`.
+-/
 lemma wMi_mul_wM (b : GL (Fin d) K) (h2 : (2 : K) ≠ 0) : wMi b * wM b = 1 := by
   have h1 : ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) * (b : Matrix (Fin d) (Fin d) K) = 1 := Units.inv_mul b
   simp only [wM, wMi, Matrix.smul_mul, fromBlocks_multiply, h1, neg_mul, mul_neg, neg_neg, add_neg_cancel]
   exact two_blocks h2
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> simp [Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 lemma fromBlocks_mul_fromRows_eq {ι κ : Type} [Fintype ι] (A B C D : Matrix ι ι K) (X Y : Matrix ι κ K) :
     fromBlocks A B C D * fromRows X Y = fromRows (A * X + B * Y) (C * X + D * Y) := by
   ext (i | i) j <;> simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Simplify using `only [wM, dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, Matrix.transpose_neg, Matrix.map_neg _ (map_neg c), Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, neg_neg, Matrix.mul_assoc]`. Rewrite using `[fromBlocks_inj]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> abel`.
+-/
 lemma gram_wM (c : K →+* K) (J : Matrix (Fin d) (Fin d) K) (b : GL (Fin d) K) :
     (wM b)ᵀ * dbl J * (wM b).map c =
       fromBlocks 0 ((b : Matrix (Fin d) (Fin d) K)ᵀ * J * (b : Matrix (Fin d) (Fin d) K).map c +
@@ -56,6 +71,11 @@ lemma gram_wM (c : K →+* K) (J : Matrix (Fin d) (Fin d) K) (b : GL (Fin d) K) 
   rw [fromBlocks_inj]
   refine ⟨?_, ?_, ?_, ?_⟩ <;> abel
 
+/- English proof (translation)
+Rewrite using `[wMi, show (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) K) = fromRows 1 1 from rfl, Matrix.smul_mul, fromBlocks_mul_fromRows_eq]`. Simplify using `only [Matrix.mul_one, Matrix.neg_mul, add_neg_cancel]`. Use extensionality with `(i | i) j`. Simplify using `only [Matrix.smul_apply, fromRows_apply_inl, Matrix.add_apply, smul_eq_mul]`. Rewrite using `[← two_mul, inv_mul_cancel_left₀ h2]`.
+
+Simplify using `only [Matrix.smul_apply, fromRows_apply_inr, Matrix.zero_apply, smul_eq_mul, mul_zero]`.
+-/
 lemma wMi_diagCols (b : GL (Fin d) K) (h2 : (2 : K) ≠ 0) :
     wMi b * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) K) =
       fromRows ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) 0 := by
@@ -67,6 +87,9 @@ lemma wMi_diagCols (b : GL (Fin d) K) (h2 : (2 : K) ≠ 0) :
     rw [← two_mul, inv_mul_cancel_left₀ h2]
   · simp only [Matrix.smul_apply, fromRows_apply_inr, Matrix.zero_apply, smul_eq_mul, mul_zero]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks Y]`. Establish `hs : ∀ (r : K) (Z : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K), (r • Z).toBlocks₁₁ = r • Z.toBlocks₁₁` using `fun _ _ => rfl`. Simplify using `only [wM, wMi, hs, Matrix.smul_mul, fromBlocks_multiply, toBlocks_fromBlocks₁₁, Matrix.mul_smul, Matrix.mul_add, Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, Matrix.mul_assoc, Matrix.smul_apply]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 lemma toBlocks₁₁_conj (b : GL (Fin d) K) (Y : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K) :
     (wMi b * Y * wM b).toBlocks₁₁ = ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) *
       ((2 : K)⁻¹ • (Y.toBlocks₁₁ + Y.toBlocks₁₂ + Y.toBlocks₂₁ + Y.toBlocks₂₂)) * (b : Matrix (Fin d) (Fin d) K) := by
@@ -77,10 +100,16 @@ lemma toBlocks₁₁_conj (b : GL (Fin d) K) (Y : Matrix (Fin d ⊕ Fin d) (Fin 
   congr 1
   abel
 
+/- English proof (translation)
+Introduce `i` and use `sum_mem fun j _ => mul_mem (hY i j) (hv j)`.
+-/
 lemma intMulVec {ι κ : Type} [Fintype κ] (O : ValuationSubring K) (Y : Matrix ι κ K) (v : κ → K)
     (hY : ∀ i j, Y i j ∈ O) (hv : ∀ j, v j ∈ O) : ∀ i, (Y *ᵥ v) i ∈ O :=
   fun i => sum_mem fun j _ => mul_mem (hY i j) (hv j)
 
+/- English proof (translation)
+Establish `h1 : ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) * (b : Matrix (Fin d) (Fin d) K) = 1` using `Units.inv_mul b`. Apply the tactic sequence `refine ⟨fun i => ?_, fun i => ?_⟩ <;>`. Simplify using `only [wM, fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.mulVec_add, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, Matrix.neg_mulVec, Matrix.mulVec_neg, Pi.add_apply, Pi.neg_apply]`. Conclude with `add_mem (hy _) (hy _)`. Conclude with `add_mem (hy _) (neg_mem (hy _))`.
+-/
 lemma inLat2_wM (O : ValuationSubring K) (b : GL (Fin d) K) (y : Fin d ⊕ Fin d → K) (hy : ∀ i, y i ∈ O) :
     InLat2 O b (wM b *ᵥ y) := by
   have h1 : ((b⁻¹ : GL (Fin d) K) : Matrix (Fin d) (Fin d) K) * (b : Matrix (Fin d) (Fin d) K) = 1 := Units.inv_mul b
@@ -90,6 +119,11 @@ lemma inLat2_wM (O : ValuationSubring K) (b : GL (Fin d) K) (y : Fin d ⊕ Fin d
   · exact add_mem (hy _) (hy _)
   · exact add_mem (hy _) (neg_mem (hy _))
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[wMi, Matrix.smul_mulVec, fromBlocks_mulVec, Pi.smul_apply, smul_eq_mul]`. Use `mul_mem h2i ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.add_apply, Matrix.neg_mulVec, Pi.neg_apply]`.
+
+Conclude with `add_mem (hz.1 i) (hz.2 i)`. Conclude with `add_mem (hz.1 i) (neg_mem (hz.2 i))`.
+-/
 lemma int_wMi (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻¹ ∈ O) (z : Fin d ⊕ Fin d → K)
     (hz : InLat2 O b z) : ∀ i, (wMi b *ᵥ z) i ∈ O := by
   intro i
@@ -100,6 +134,11 @@ lemma int_wMi (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻¹ �
   · exact add_mem (hz.1 i) (hz.2 i)
   · exact add_mem (hz.1 i) (neg_mem (hz.2 i))
 
+/- English proof (translation)
+Introduce `i j`. Establish `he : ∀ k, (Pi.single j (1 : K) : Fin d ⊕ Fin d → K) k ∈ O`. Introduce `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `int_wMi O b h2i _ (hQ _ (inLat2_wM O b _ he)) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Conclude with `this`.
+-/
 lemma int_conj_of_keeps (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻¹ ∈ O)
     (Q : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K) (hQ : ∀ z, InLat2 O b z → InLat2 O b (Q *ᵥ z)) :
     ∀ i j, (wMi b * Q * wM b) i j ∈ O := by
@@ -113,6 +152,11 @@ lemma int_conj_of_keeps (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : 
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h` using `inLat2_wM O b _ (intMulVec O _ _ hQ (int_wMi O b h2i z hz))`. Establish `e : wM b * (wMi b * Q * wM b) * wMi b = Q`. Simplify using `only [← Matrix.mul_assoc, wM_mul_wMi b h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, wM_mul_wMi b h2, Matrix.mul_one]`.
+
+Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e]`. Then use the resulting hypothesis.
+-/
 lemma keeps_of_int (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻¹ ∈ O) (h2 : (2 : K) ≠ 0)
     (Q : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K) (hQ : ∀ i j, (wMi b * Q * wM b) i j ∈ O) :
     ∀ z, InLat2 O b z → InLat2 O b (Q *ᵥ z) := by
@@ -123,6 +167,11 @@ lemma keeps_of_int (O : ValuationSubring K) (b : GL (Fin d) K) (h2i : (2 : K)⁻
     rw [Matrix.mul_assoc, wM_mul_wMi b h2, Matrix.mul_one]
   rwa [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e] at h
 
+/- English proof (translation)
+Establish `e1 : ∀ X : Matrix n n K, Wiᵀ * (Wᵀ * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, h1, Matrix.transpose_one, Matrix.one_mul]`. Establish `e2 : ∀ X : Matrix n n K, W.map c * (Wi.map c * X) = X`. Introduce `X`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero c) (map_one c), Matrix.one_mul]`. Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc, e1, e2]`.
+-/
 lemma conj_form (c : K →+* K) {n : Type} [Fintype n] [DecidableEq n] (W Wi Q D : Matrix n n K) (h1 : W * Wi = 1) :
     (Wi * Q * W)ᵀ * (Wᵀ * D * W.map c) * (Wi * Q * W).map c = Wᵀ * (Qᵀ * D * Q.map c) * W.map c := by
   have e1 : ∀ X : Matrix n n K, Wiᵀ * (Wᵀ * X) = X := by
@@ -131,10 +180,18 @@ lemma conj_form (c : K →+* K) {n : Type} [Fintype n] [DecidableEq n] (W Wi Q D
     intro X; rw [← Matrix.mul_assoc, ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero c) (map_one c), Matrix.one_mul]
   simp only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc, e1, e2]
 
+/- English proof (translation)
+Simplify using `only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 lemma conj_form' (c : K →+* K) {n : Type} [Fintype n] [DecidableEq n] (W Wi U D : Matrix n n K) :
     (W * U * Wi)ᵀ * D * (W * U * Wi).map c = Wiᵀ * (Uᵀ * (Wᵀ * D * W.map c) * U.map c) * Wi.map c := by
   simp only [Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : ∀ X : Matrix n n K, Wiᵀ * (Wᵀ * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, h1, Matrix.transpose_one, Matrix.one_mul]`. Establish `e2 : W.map c * Wi.map c = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero c) (map_one c)]`.
+
+Simplify using `only [Matrix.mul_assoc, e1, e2, Matrix.mul_one]`.
+-/
 lemma back_form (c : K →+* K) {n : Type} [Fintype n] [DecidableEq n] (W Wi D : Matrix n n K) (h1 : W * Wi = 1) :
     Wiᵀ * (Wᵀ * D * W.map c) * Wi.map c = D := by
   have e1 : ∀ X : Matrix n n K, Wiᵀ * (Wᵀ * X) = X := by
@@ -143,6 +200,11 @@ lemma back_form (c : K →+* K) {n : Type} [Fintype n] [DecidableEq n] (W Wi D :
     rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero c) (map_one c)]
   simp only [Matrix.mul_assoc, e1, e2, Matrix.mul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (i | i) (j | j) <;>`. Simplify using `only [fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `hX i j`. Conclude with `zero_mem O`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma intU (O : ValuationSubring K) (X : Matrix (Fin d) (Fin d) K) (hX : ∀ i j, X i j ∈ O) :
     ∀ i j, (fromBlocks 1 X 0 1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) K) i j ∈ O := by
   rintro (i | i) (j | j) <;>
@@ -155,6 +217,9 @@ lemma intU (O : ValuationSubring K) (X : Matrix (Fin d) (Fin d) K) (hX : ∀ i j
 
 end GlobalTheory.InertCellLocal
 
+/- English proof (translation)
+The claim follows from `open Matrix GlobalTheory.InertBigCell GlobalTheory.InertCellLocal in by intro H K _ O c hc hcO h2i h2 d J hJ b δ hδ hG hdet hdeti M M' hMM' hMu hMl obtain ⟨cO, hcO'⟩ : ∃ cO : O →+* O, ∀ x, O.subtype (cO x) = c (O.subtype x) := ⟨(c.comp O.subtype).codRestrict O (fun x => hcO x x.2 …`.
+-/
 theorem GlobalTheory.InertCellLocal.bigCell_local_step : (∀ {O : Type} [CommRing O] [IsLocalRing O] (c : O →+* O), (∀ x, c (c x) = x) → IsUnit (2 : O) →
     ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) O), IsUnit S.det → Sᵀ = -S.map c →
     ∀ (A B C D : Matrix (Fin n) (Fin n) O), IsUnit (Matrix.fromBlocks A B C D).det →

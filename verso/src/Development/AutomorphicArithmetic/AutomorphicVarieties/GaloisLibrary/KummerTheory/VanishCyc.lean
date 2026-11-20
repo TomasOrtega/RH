@@ -2,6 +2,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hu` to reduce the goal to its premises. Establish `hK : 0 < l ^ a * (l - 1)` using `Nat.mul_pos (pow_pos hl.out.pos a) (Nat.sub_pos_of_lt hl.out.one_lt)`. Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨l ^ a * (l - 1), hK, ?_⟩` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `PadicInt.ext_of_toZModPow.mp` to reduce the goal to its premises. Introduce `j`. Take `⟨m, hm, hnd⟩` from `h j`. Take `⟨w, hwdef⟩ : ∃ w : (ZMod (l ^ j))ˣ, w = Units.map (PadicInt.toZModPow j).toMonoidHom u` from `⟨_, rfl⟩`.
+
+Establish `hw : ∀ n : ℤ, ((w ^ n : (ZMod (l ^ j))ˣ) : ZMod (l ^ j)) = PadicInt.toZModPow j ((u ^ n : ℤ_[l]ˣ) : ℤ_[l])`. Introduce `n`. Rewrite using `[hwdef, ← map_zpow]`. Both sides reduce to the same expression. Establish `hwm : w ^ m = 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hw, hm, Units.val_one]`. Establish `hom : (orderOf w : ℤ) ∣ m` using `orderOf_dvd_iff_zpow_eq_one.mpr hwm`. Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `hcard : orderOf w ∣ (l ^ j).totient`.
+
+Rewrite using `[← ZMod.card_units_eq_totient]`. Conclude with `orderOf_dvd_card`. Establish `hdiv : orderOf w ∣ l ^ a * (l - 1)`. Break down `j with _ | i` into its components or cases. Simplify using `only [pow_zero, Nat.totient_one, Nat.dvd_one] at hcard`.
+
+Rewrite using `[hcard]`. Conclude with `one_dvd _`. Rewrite `hcard` using `[Nat.totient_prime_pow_succ hl.out]`. Rewrite `hcard` using `[← Nat.dvd_gcd_mul_iff_dvd_mul]`. Take `⟨b, -, hb⟩` from `(Nat.dvd_prime_pow hl.out).mp (Nat.gcd_dvd_right (orderOf w) (l ^ i))`.
+
+Establish `hba : b ≤ a`. Assume the negation of the conclusion as `hba`. Use `push_neg at hba`. Apply `hnd` to reduce the goal to its premises. Establish `h1 : (l : ℤ) ^ b ∣ m`.
+
+Establish `: l ^ b ∣ orderOf w` using `hb ▸ Nat.gcd_dvd_left _ _`. Conclude with `dvd_trans (by exact_mod_cast this) hom`. Conclude with `dvd_trans (pow_dvd_pow _ hba) h1`. Rewrite `hcard` using `[hb]`. Conclude with `hcard.trans (Nat.mul_dvd_mul_right (pow_dvd_pow l hba) _)`.
+
+Establish `hwK : w ^ (l ^ a * (l - 1)) = 1` using `orderOf_dvd_iff_pow_eq_one.mp hdiv`. Use `hw ((l ^ a * (l - 1) : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[zpow_natCast, zpow_natCast, hwK, Units.val_one]`. Rewrite using `[← this, Units.val_one, map_one]`.
+-/
 private theorem exists_level_pow_dvd_of_not_finOrder (l : ℕ) [hl : Fact l.Prime] (u : ℤ_[l]ˣ) (hu : ¬ IsOfFinOrder u) (a : ℕ) :
     ∃ j : ℕ, ∀ m : ℤ, PadicInt.toZModPow j ((u ^ m : ℤ_[l]ˣ) : ℤ_[l]) = 1 → (l : ℤ) ^ (a + 1) ∣ m := by
   by_contra h
@@ -52,6 +71,17 @@ private theorem exists_level_pow_dvd_of_not_finOrder (l : ℕ) [hl : Fact l.Prim
   rw [zpow_natCast, zpow_natCast, hwK, Units.val_one] at this
   rw [← this, Units.val_one, map_one]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ j)`.
+
+Use `haveI : FiniteDimensional F (IntermediateField.adjoin F ({ζ} : Set Ω)) := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ζ)`. Use `⟨(IntermediateField.adjoin F ({ζ} : Set Ω)).fixingSubgroup, IntermediateField.fixingSubgroup_isOpen _, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgζ : g ζ = ζ` using `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hg ζ (IntermediateField.mem_adjoin_simple_self F ζ)`. Establish `hspec` using `cyclotomicCharacter.spec l (n := j) (MulSemiringAction.toRingAut (G F Ω) Ω g) ζ hζ.pow_eq_one`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow j ((cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G F Ω) Ω g) : ℤ_[l]ˣ) : ℤ_[l]) = 1`.
+
+Generalize the expression as in `PadicInt.toZModPow j ((cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G F Ω) Ω g) : ℤ_[l]ˣ) : ℤ_[l]) = z at hspec ⊢`. Establish `h1 : ζ ^ 1 = ζ ^ z.val`. Rewrite using `[pow_one, ← hspec]`. Conclude with `hgζ.symm`. Establish `hu` using `hζ.isUnit_unit (NeZero.ne (l ^ j))`.
+
+Establish `h1' : (hζ.isUnit (NeZero.ne (l ^ j))).unit ^ 1 = (hζ.isUnit (NeZero.ne (l ^ j))).unit ^ z.val`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h1`. Rewrite `h1'` using `[pow_eq_pow_iff_modEq, ← hu.eq_orderOf]`. Establish `h2` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr h1'.symm`.
+
+Rewrite `h2` using `[ZMod.natCast_val, ZMod.cast_id', id, Nat.cast_one]`. Conclude with `h2`.
+-/
 private theorem exists_open_subgroup_cycZ_trivial_mod_pow (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] (j : ℕ) :
     ∃ H : Subgroup (G F Ω), IsOpen (H : Set (G F Ω)) ∧
@@ -82,6 +112,37 @@ private theorem exists_open_subgroup_cycZ_trivial_mod_pow (F Ω : Type) [Field F
   rw [ZMod.natCast_val, ZMod.cast_id', id, Nat.cast_one] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l hl M _ φ γ hφ hmul htor hγ x hx`. Establish `h1 : φ 1 = 0` using `by simpa using hmul 1 1`. Establish `hpow : ∀ y : Uinf F Ω l, ∀ n : ℕ, φ (y ^ n) = n • φ y`. Introduce `y n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ, hmul, ih, succ_nsmul]`. Take `⟨W, hWo, hWeq⟩` from `isOpen_induced_iff.mp (hφ.isOpen_fiber 0)`. Establish `hW1 : (1 : G F Ω) ∈ W`. Establish `: (1 : Uinf F Ω l) ∈ Subtype.val ⁻¹' W`.
+
+Rewrite using `[hWeq]`. Conclude with `h1`. Conclude with `this`. Take `⟨E, hE, hEW⟩` from `(krullTopology_mem_nhds_one_iff F Ω W).mp (hWo.mem_nhds hW1)`. Use `haveI := hE`.
+
+Establish `hN : IsOpen (E.fixingSubgroup : Set (G F Ω))` using `IntermediateField.fixingSubgroup_isOpen E`. Establish `hNφ : ∀ y : Uinf F Ω l, y.1 ∈ E.fixingSubgroup → φ y = 0`. Introduce `y hy`. Establish `: y ∈ Subtype.val ⁻¹' W` using `hEW hy`. Rewrite `this` using `[hWeq]`.
+
+Conclude with `this`. Use `haveI : Finite (G F Ω ⧸ E.fixingSubgroup) := Subgroup.quotient_finite_of_isOpen _ hN`. Take `⟨d, hd0, -, hdN⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := E.fixingSubgroup)) γ`. Take `⟨a, d', hd'l, hdd⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hd0.ne' l hl.out.ne_one`. Take `⟨j, hj⟩` from `exists_level_pow_dvd_of_not_finOrder l (cycZ F Ω l γ) hγ a`.
+
+Take `⟨H, hHo, hH⟩` from `exists_open_subgroup_cycZ_trivial_mod_pow F Ω l j`. Establish `ho : IsOpen ((fun g => x.1⁻¹ * g) ⁻¹' ((E.fixingSubgroup : Set (G F Ω)) ∩ (H : Set (G F Ω))))` using `(hN.inter hHo).preimage (continuous_const.mul continuous_id)`. Establish `hxo : x.1 ∈ (fun g => x.1⁻¹ * g) ⁻¹' ((E.fixingSubgroup : Set (G F Ω)) ∩ (H : Set (G F Ω)))`. Simplify using `only [Set.mem_preimage, inv_mul_cancel, Set.mem_inter_iff, SetLike.mem_coe]`. Conclude with `⟨one_mem _, one_mem _⟩`.
+
+Establish `hx' : x.1 ∈ closure ((Subgroup.zpowers γ : Subgroup (G F Ω)) : Set (G F Ω))`. Rewrite using `[← Subgroup.topologicalClosure_coe]`. Conclude with `hx`. Take `⟨g, hgo, hgz⟩` from `mem_closure_iff.mp hx' _ ho hxo`. Take `⟨m, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hgz`.
+
+Take `⟨hνN, hνH⟩` from `hgo`. Establish `hcx : cycZ F Ω l x.1 = 1` using `(Subgroup.mem_inf.mp x.2).2`. Establish `hcyc : PadicInt.toZModPow j ((cycZ F Ω l γ ^ m : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Use `hH _ hνH` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, hcx, inv_one, one_mul, map_zpow]`. Then use the resulting hypothesis.
+
+Establish `hma : (l : ℤ) ^ a ∣ m` using `(pow_dvd_pow _ (Nat.le_succ a)).trans (hj m hcyc)`. Establish `hcl : closure ((Subgroup.zpowers γ : Subgroup (G F Ω)) : Set (G F Ω)) ⊆ {y | y * γ = γ * y}`. Apply `closure_minimal` to reduce the goal to its premises. Introduce `y hy`. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hy`.
+
+Conclude with `(Commute.self_zpow γ i).symm.eq`. Conclude with `isClosed_eq (continuous_id.mul continuous_const) (continuous_const.mul continuous_id)`. Establish `hxγ : Commute x.1 γ` using `hcl hx'`. Establish `hxν : Commute x.1 (x.1⁻¹ * γ ^ m)` using `(Commute.refl x.1).inv_right.mul_right (hxγ.zpow_right m)`. Establish `hexp : (γ ^ m) ^ d' = x.1 ^ d' * (x.1⁻¹ * γ ^ m) ^ d'`.
+
+Rewrite using `[← hxν.mul_pow, mul_inv_cancel_left]`. Establish `hγN : (γ ^ m) ^ d' ∈ E.fixingSubgroup`. Take `⟨t, ht⟩` from `hma`. Establish `: (γ ^ m) ^ d' = (γ ^ d) ^ t`. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_natCast, ← zpow_mul, ht, hdd]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `zpow_mem hdN t`.
+
+Establish `hxN : (x ^ d').1 ∈ E.fixingSubgroup`. Establish `: (x ^ d').1 = (γ ^ m) ^ d' * ((x.1⁻¹ * γ ^ m) ^ d')⁻¹`. Rewrite using `[hexp, mul_inv_cancel_right]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `mul_mem hγN (inv_mem (pow_mem hνN d'))`. Establish `h0 : d' • φ x = 0`. Rewrite using `[← hpow]`. Conclude with `hNφ _ hxN`. Take `⟨k, hk⟩` from `htor (φ x)`.
+
+Establish `ho1 : addOrderOf (φ x) ∣ d'` using `addOrderOf_dvd_of_nsmul_eq_zero h0`. Establish `ho2 : addOrderOf (φ x) ∣ l ^ k` using `addOrderOf_dvd_of_nsmul_eq_zero hk`. Establish `hcop : Nat.Coprime d' (l ^ k)` using `Nat.Coprime.pow_right _ (Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hl.out).mpr hd'l))`. Conclude with `AddMonoid.addOrderOf_eq_one_iff.mp (Nat.eq_one_of_dvd_one (by rw [← hcop.gcd_eq_one]; exact Nat.dvd_gcd ho1 ho2))`.
+-/
 theorem UpperTheory.V.Kum.vanishCyc :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] (φ : Uinf F Ω l → M) (γ : G F Ω), IsLocallyConstant φ → (∀ a b, φ (a * b) = φ a + φ b) → (∀ m : M, ∃ k : ℕ, l ^ k • m = 0) → ¬ IsOfFinOrder (cycZ F Ω l γ) →
     ∀ x : Uinf F Ω l, x.1 ∈ (Subgroup.zpowers γ).topologicalClosure → φ x = 0 := by

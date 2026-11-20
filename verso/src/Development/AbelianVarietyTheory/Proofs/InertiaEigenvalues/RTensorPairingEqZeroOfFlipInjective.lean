@@ -3,6 +3,15 @@ open TensorProduct Module
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ B _ _ V V' _ _ _ _ _ m hm y hy`. Establish `hinj : Function.Injective m.flip` using `(injective_iff_map_eq_zero m.flip).2 fun z h => hm z fun x => by simpa using LinearMap.congr_fun h x`. Establish `hsurj : Function.Surjective m` using `LinearMap.flip_injective_iff₂.1 hinj`. Set `b` to `Module.finBasis F V'`. Establish `key : ∀ z : V' ⊗[F] B, z = ∑ j, b j ⊗ₜ (TensorProduct.lid F B (LinearMap.rTensor B (b.coord j) z))`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w`. Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply]`.
+
+Repeatedly rewrite using `[← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, b.sum_repr]`. Consider the case `add z₁ z₂ h₁ h₂ => conv_lhs => rw [h₁, h₂]`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`. Rewrite using `[key y]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `hsurj (b.coord j)`. Rewrite using `[← hv, hy v, TensorProduct.tmul_zero]`.
+-/
 theorem rTensor_pairing_eq_zero_of_flip_injective : ∀ (F : Type) [Field F] (B : Type) [AddCommGroup B] [Module F B] (V V' : Type) [AddCommGroup V] [Module F V] [AddCommGroup V'] [Module F V'] [FiniteDimensional F V'] (m : V →ₗ[F] V' →ₗ[F] F), (∀ y, (∀ x, m x y = 0) → y = 0) → ∀ y : V' ⊗[F] B, (∀ v : V, TensorProduct.lid F B (LinearMap.rTensor B (m v) y) = 0) → y = 0 := by
   intro F _ B _ _ V V' _ _ _ _ _ m hm y hy
   have hinj : Function.Injective m.flip :=

@@ -8,6 +8,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.LimV
 
+/- English proof (translation)
+The claim follows from `_root_.Bl.FirstLemmaH.goal1 W`.
+-/
 theorem exists_finset_separating_points {A : Type} (W : Submodule ℂ (A → ℂ)) :
     FiniteDimensional ℂ W → ∃ S : Finset A, ∀ w ∈ W, (∀ a ∈ S, w a = 0) → w = 0 :=
   _root_.Bl.FirstLemmaH.goal1 W

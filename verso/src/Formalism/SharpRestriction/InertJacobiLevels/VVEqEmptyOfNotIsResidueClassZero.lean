@@ -12,6 +12,11 @@ section Places
 
 variable (D : D7)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hnm`. Establish `hn0 : (n : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Rewrite `h` using `[D.val_eq w _ hn0]`. Establish `hv : (D.plEq w).valuation D.what₂.LL (n : D.what₂.LL) = 1`. Establish `e : algebraMap (𝓞 D.what₂.LL) D.what₂.LL (n : 𝓞 D.what₂.LL) = (n : D.what₂.LL)` using `map_natCast _ n`.
+
+Rewrite using `[← e, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm ((D.plEq w).intValuation_le_one _) (not_lt.mp (fun hlt => hnm (((D.plEq w).intValuation_lt_one_iff_mem _).1 hlt)))`. Unfold `vAdd at h`. Rewrite `h` using `[hv, WithZero.log_one, neg_zero]`. Evaluate the numerical expressions using `at h`.
+-/
 theorem natCast_mem_of_val_pos (w : D.what₂.places.Pl) (n : ℕ) (hn : n ≠ 0)
     (h : (0 : WithTop ℤ) < D.what₂.places.val w (n : D.what₂.LL)) :
     (n : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
@@ -27,11 +32,21 @@ theorem natCast_mem_of_val_pos (w : D.what₂.places.Pl) (n : ℕ) (hn : n ≠ 0
   rw [hv, WithZero.log_one, neg_zero] at h
   norm_num at h
 
+/- English proof (translation)
+Conclude with `natCast_mem_of_val_pos D w _ (D.what₂.places.resChar_prime w).ne_zero (by rw [D.what₂.places.val_resChar]; exact_mod_cast D.what₂.places.ramIdx_pos w)`.
+-/
 theorem resChar_mem (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
   exact natCast_mem_of_val_pos D w _ (D.what₂.places.resChar_prime w).ne_zero
     (by rw [D.what₂.places.val_resChar]; exact_mod_cast D.what₂.places.ramIdx_pos w)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hl` using `resChar_mem D w`. Establish `hcop : Nat.Coprime (D.what₂.places.resChar w) p` using `(Nat.coprime_primes (D.what₂.places.resChar_prime w) hp).2 hne`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `h1 : ((u : 𝓞 D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) + (v : 𝓞 D.what₂.LL) * (p : 𝓞 D.what₂.LL)) ∈ (D.plEq w).asIdeal` using `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hl) (Ideal.mul_mem_left _ _ h)`.
+
+Establish `h2 : ((u : 𝓞 D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) + (v : 𝓞 D.what₂.LL) * (p : 𝓞 D.what₂.LL)) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 D.what₂.LL) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite `h1` using `[h2]`.
+
+Conclude with `(D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem eq_resChar_of_mem (w : D.what₂.places.Pl) (p : ℕ) (hp : p.Prime)
     (h : (p : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal) : D.what₂.places.resChar w = p := by
   by_contra hne
@@ -50,6 +65,9 @@ theorem eq_resChar_of_mem (w : D.what₂.places.Pl) (p : ℕ) (hp : p.Prime)
   rw [h2] at h1
   exact (D.plEq w).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Apply `eq_resChar_of_mem D _ _ (D.what₂.places.resChar_prime w)` to reduce the goal to its premises. Apply `natCast_mem_of_val_pos D _ _ (D.what₂.places.resChar_prime w).ne_zero` to reduce the goal to its premises. Rewrite using `[D.conj_val, star_natCast, D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions.
+-/
 theorem resChar_conj (w : D.what₂.places.Pl) :
     D.what₂.places.resChar (D.what₂.places.conj w) = D.what₂.places.resChar w := by
   apply eq_resChar_of_mem D _ _ (D.what₂.places.resChar_prime w)
@@ -57,6 +75,13 @@ theorem resChar_conj (w : D.what₂.places.Pl) :
   rw [D.conj_val, star_natCast, D.what₂.places.val_resChar]
   exact_mod_cast D.what₂.places.ramIdx_pos w
 
+/- English proof (translation)
+Establish `hM0 : ((Nat.factorial ⌊B⌋₊ : ℕ) : 𝓞 D.what₂.LL) ≠ 0`. Introduce `h0`. Use `congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `Nat.factorial_ne_zero _ (by exact_mod_cast this)`.
+
+Establish `hfin : {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.what₂.LL) | v.asIdeal ∣ Ideal.span {((Nat.factorial ⌊B⌋₊ : ℕ) : 𝓞 D.what₂.LL)}}.Finite` using `Ideal.finite_factors (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])`. Use `(hfin.preimage D.plEq.injective.injOn).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage] at hw ⊢`. Rewrite using `[Ideal.dvd_span_singleton]`.
+
+Establish `hl` using `resChar_mem D w`. Establish `hle : D.what₂.places.resChar w ≤ ⌊B⌋₊` using `Nat.le_floor hw`. Take `⟨k, hk⟩` from `Nat.dvd_factorial (D.what₂.places.resChar_prime w).pos hle`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hl`.
+-/
 theorem finite_resChar_le (B : ℝ) :
     {w : D.what₂.places.Pl | ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ B}.Finite := by
   have hM0 : ((Nat.factorial ⌊B⌋₊ : ℕ) : 𝓞 D.what₂.LL) ≠ 0 := by
@@ -77,12 +102,24 @@ theorem finite_resChar_le (B : ℝ) :
   rw [hk, Nat.cast_mul]
   exact Ideal.mul_mem_right _ _ hl
 
+/- English proof (translation)
+Use `(finite_resChar_le D ((S.sup id : ℕ) : ℝ)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Conclude with `Finset.le_sup (f := id) hw` after adjusting the coercions.
+-/
 theorem finite_resChar_mem (S : Finset ℕ) : {w : D.what₂.places.Pl | D.what₂.places.resChar w ∈ S}.Finite := by
   refine (finite_resChar_le D ((S.sup id : ℕ) : ℝ)).subset ?_
   intro w hw
   simp only [Set.mem_setOf_eq] at hw ⊢
   exact_mod_cast Finset.le_sup (f := id) hw
 
+/- English proof (translation)
+Establish `hp0 : (p : 𝓞 D.what₂.LL) ≠ 0`. Introduce `h0`. Use `congrArg (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+
+Establish `hnu : ¬ IsUnit (p : 𝓞 D.what₂.LL)`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ (S := 𝓞 D.what₂.LL))`. Rewrite `h1` using `[show (p : 𝓞 D.what₂.LL) = algebraMap ℤ (𝓞 D.what₂.LL) (p : ℤ) by simp, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff]`. Use `hp.one_lt` as an intermediate fact.
+
+Apply the tactic sequence `rcases h1 with h1 | h1 <;> omega`. Take `⟨M, hM, hpM⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 D.what₂.LL)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.what₂.LL)` to `⟨M, hM.isPrime, fun hb => hp0 ((Ideal.mem_bot).1 (hb ▸ hpM (Ideal.mem_span_singleton_self _)))⟩`. Use `⟨D.plEq.symm v, eq_resChar_of_mem D _ p hp ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`.
+
+Conclude with `hpM (Ideal.mem_span_singleton_self _)`.
+-/
 theorem exists_place_over (p : ℕ) (hp : p.Prime) : ∃ w : D.what₂.places.Pl, D.what₂.places.resChar w = p := by
   have hp0 : (p : 𝓞 D.what₂.LL) ≠ 0 := by
     intro h0
@@ -110,24 +147,36 @@ section Base
 
 variable {N : ℕ} [NeZero N]
 
+/- English proof (translation)
+Rewrite using `[show t + i • h = ((t.val + i * h.val : ℕ) : ZMod N) by`. Simplify using `[nsmul_eq_mul, ZMod.natCast_zmod_val], ZMod.val_natCast]`.
+-/
 theorem val_orbit (h t : ZMod N) (i : ℕ) : (t + i • h).val = (t.val + i * h.val) % N := by
   rw [show t + i • h = ((t.val + i * h.val : ℕ) : ZMod N) by
     simp [nsmul_eq_mul, ZMod.natCast_zmod_val], ZMod.val_natCast]
 
 def bsVal (N h t : ℕ) : ℕ := sInf {v | ∃ i : ℕ, (t + i * h) % N = v}
 
+/- English proof (translation)
+Unfold `bsVal`. Conclude with `Nat.sInf_mem (s := {v | ∃ i : ℕ, (t + i * h) % N = v}) ⟨(t + 0 * h) % N, 0, rfl⟩`.
+-/
 theorem bsVal_mem (N h t : ℕ) : ∃ i : ℕ, (t + i * h) % N = bsVal N h t := by
   unfold bsVal
   exact Nat.sInf_mem (s := {v | ∃ i : ℕ, (t + i * h) % N = v}) ⟨(t + 0 * h) % N, 0, rfl⟩
 
 def bsC (h t : ZMod N) : ZMod N := (bsVal N h.val t.val : ℕ)
 
+/- English proof (translation)
+Unfold `bsC`. Rewrite using `[ZMod.val_natCast]`. Take `⟨i, hi⟩` from `bsVal_mem N h.val t.val`. Rewrite using `[← hi, Nat.mod_mod]`.
+-/
 theorem bsC_val (h t : ZMod N) : (bsC h t).val = bsVal N h.val t.val := by
   unfold bsC
   rw [ZMod.val_natCast]
   obtain ⟨i, hi⟩ := bsVal_mem N h.val t.val
   rw [← hi, Nat.mod_mod]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsVal_mem N h.val t.val`. Use `⟨i, ?_⟩` and prove the remaining obligations. Unfold `bsC`. Rewrite using `[← hi, ZMod.natCast_mod]`. Simplify using `[nsmul_eq_mul, ZMod.natCast_zmod_val]`.
+-/
 theorem bsC_eq (h t : ZMod N) : ∃ i : ℕ, bsC h t = t + i • h := by
   obtain ⟨i, hi⟩ := bsVal_mem N h.val t.val
   refine ⟨i, ?_⟩
@@ -135,9 +184,17 @@ theorem bsC_eq (h t : ZMod N) : ∃ i : ℕ, bsC h t = t + i • h := by
   rw [← hi, ZMod.natCast_mod]
   simp [nsmul_eq_mul, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Rewrite using `[nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+-/
 theorem card_nsmul_zmod (h : ZMod N) : N • h = 0 := by
   rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsC_eq h t`. Use `⟨(N - 1) * i, ?_⟩` and prove the remaining obligations. Rewrite using `[hi]`. Establish `hN : 1 ≤ N` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Simplify using `only [nsmul_eq_mul, Nat.cast_mul, Nat.cast_sub hN, ZMod.natCast_self, Nat.cast_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bsC_orb (h t : ZMod N) : ∃ i : ℕ, bsC h t + i • h = t := by
   obtain ⟨i, hi⟩ := bsC_eq h t
   refine ⟨(N - 1) * i, ?_⟩
@@ -146,6 +203,15 @@ theorem bsC_orb (h t : ZMod N) : ∃ i : ℕ, bsC h t + i • h = t := by
   simp only [nsmul_eq_mul, Nat.cast_mul, Nat.cast_sub hN, ZMod.natCast_self, Nat.cast_one]
   ring
 
+/- English proof (translation)
+Establish `hN : 1 ≤ N` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Unfold `bsC`. Use `congr 1`. Unfold `bsVal`. Use `congr 1`.
+
+Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, ← val_orbit]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Use `⟨i + 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[add_nsmul, one_nsmul, add_comm (i • h) h, ← add_assoc]`. Introduce and unpack `⟨i, rfl⟩`. Use `⟨i + (N - 1), ?_⟩` and prove the remaining obligations. Use `congr 1`. Simplify using `only [nsmul_eq_mul, Nat.cast_add, Nat.cast_sub hN, ZMod.natCast_self, Nat.cast_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bsC_step (h t : ZMod N) : bsC h (t + h) = bsC h t := by
   have hN : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   unfold bsC
@@ -166,12 +232,22 @@ theorem bsC_step (h t : ZMod N) : bsC h (t + h) = bsC h t := by
 
 end Base
 
+/- English proof (translation)
+Establish `hx : 0 < sc.x` using `by linarith [sc.one_lt_alt]`. Establish `hb : 0 < sc.b` using `Real.exp_pos _`. Establish `hX : 0 < sc.X'` using `Real.exp_pos _`. Conclude with `div_nonneg (mul_nonneg hx.le hb.le) hX.le`.
+-/
 theorem scale_b'_nonneg (sc : Scale) : 0 ≤ sc.b' := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
   have hb : 0 < sc.b := Real.exp_pos _
   have hX : 0 < sc.X' := Real.exp_pos _
   exact div_nonneg (mul_nonneg hx.le hb.le) hX.le
 
+/- English proof (translation)
+Establish `hx : 0 < sc.x` using `by linarith [sc.one_lt_alt]`. Establish `hb : 0 < sc.b` using `Real.exp_pos _`. Establish `hX : 1 ≤ sc.X'` using `Real.one_le_exp (Real.rpow_nonneg hx.le _)`. Establish `hb' : 0 ≤ sc.b'` using `scale_b'_nonneg sc`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `h1 : sc.w'' n ≤ sc.b' / sc.x` using `by show sc.b' / (sc.x * n) ≤ sc.b' / sc.x`. Rewrite using `[← div_div]`. Conclude with `div_le_self (div_nonneg hb' hx.le) hn'`. Establish `h2 : sc.b' / sc.x ≤ sc.b`. Rewrite using `[div_le_iff₀ hx]`.
+
+Use `show sc.x * sc.b / sc.X' ≤ sc.b * sc.x`. Rewrite using `[mul_comm sc.b]`. Conclude with `div_le_self (mul_nonneg hx.le hb.le) hX`. Conclude with `⟨h1, h1.trans h2⟩`.
+-/
 theorem scale_w''_le (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : sc.w'' n ≤ sc.b' / sc.x ∧ sc.w'' n ≤ sc.b := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
   have hb : 0 < sc.b := Real.exp_pos _
@@ -189,6 +265,13 @@ theorem scale_w''_le (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : sc.w'' n ≤ sc.b' 
     exact div_le_self (mul_nonneg hx.le hb.le) hX
   exact ⟨h1, h1.trans h2⟩
 
+/- English proof (translation)
+Establish `hx : 0 < sc.x` using `by linarith [sc.one_lt_alt]`. Establish `hb : 0 < sc.b` using `Real.exp_pos _`. Establish `hX0 : 0 < sc.X'` using `Real.exp_pos _`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hxn : 1 ≤ sc.x * n` using `by nlinarith [sc.one_lt_alt]`.
+
+Establish `hw : 0 < sc.w'' n` using `by show 0 < sc.x * sc.b / sc.X' / (sc.x * n)`. Conclude with `div_pos (div_pos (mul_pos hx hb) hX0) (by linarith)`. Use `show sc.X' ≤ sc.a / sc.w'' n`. Rewrite using `[le_div_iff₀ hw]`. Use `show sc.X' * (sc.x * sc.b / sc.X' / (sc.x * n)) ≤ sc.x * sc.b`.
+
+Rewrite using `[div_div, mul_div_assoc', mul_div_mul_left _ _ hX0.ne']`. Conclude with `div_le_self (mul_nonneg hx.le hb.le) hxn`.
+-/
 theorem scale_X'_le_X'' (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : sc.X' ≤ sc.X'' n := by
   have hx : 0 < sc.x := by linarith [sc.one_lt_alt]
   have hb : 0 < sc.b := Real.exp_pos _
@@ -204,6 +287,9 @@ theorem scale_X'_le_X'' (sc : Scale) (n : ℕ) (hn : 1 ≤ n) : sc.X' ≤ sc.X''
   rw [div_div, mul_div_assoc', mul_div_mul_left _ _ hX0.ne']
   exact div_le_self (mul_nonneg hx.le hb.le) hxn
 
+/- English proof (translation)
+Conclude with `R.toFrame.ord_pos`.
+-/
 theorem ranks_one_le_n (R : Ranks) : 1 ≤ R.n := by
   exact R.toFrame.ord_pos
 
@@ -213,12 +299,20 @@ variable {φ : Formalism.HC.Frame}
 
 def bsVA (h t : φ.A) : ℕ := sInf {v | ∃ i : ℕ, (t + i • h).val = v}
 
+/- English proof (translation)
+Unfold `bsVA`. Conclude with `Nat.sInf_mem (s := {v | ∃ i : ℕ, (t + i • h).val = v}) ⟨(t + 0 • h).val, 0, rfl⟩`.
+-/
 theorem bsVA_mem (h t : φ.A) : ∃ i : ℕ, (t + i • h).val = bsVA h t := by
   unfold bsVA
   exact Nat.sInf_mem (s := {v | ∃ i : ℕ, (t + i • h).val = v}) ⟨(t + 0 • h).val, 0, rfl⟩
 
 def bsA (h t : φ.A) : φ.A := φ.ofNat (bsVA h t)
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsVA_mem h t`. Use `⟨i, ?_⟩` and prove the remaining obligations. Apply `Fin.ext (n := φ.ord)` to reduce the goal to its premises. Use `show bsVA h t % φ.ord = Fin.val (n := φ.ord) (t + i • h)`. Rewrite using `[← hi]`.
+
+Conclude with `Nat.mod_eq_of_lt (Fin.isLt (n := φ.ord) (t + i • h))`.
+-/
 theorem bsA_eq (h t : φ.A) : ∃ i : ℕ, bsA h t = t + i • h := by
   obtain ⟨i, hi⟩ := bsVA_mem h t
   refine ⟨i, ?_⟩
@@ -227,12 +321,18 @@ theorem bsA_eq (h t : φ.A) : ∃ i : ℕ, bsA h t = t + i • h := by
   rw [← hi]
   exact Nat.mod_eq_of_lt (Fin.isLt (n := φ.ord) (t + i • h))
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsVA_mem h t`. Use `show bsVA h t % φ.ord = bsVA h t`. Rewrite using `[← hi]`. Conclude with `Nat.mod_eq_of_lt (Fin.isLt (n := φ.ord) (t + i • h))`.
+-/
 theorem bsA_val (h t : φ.A) : (bsA h t).val = bsVA h t := by
   obtain ⟨i, hi⟩ := bsVA_mem h t
   show bsVA h t % φ.ord = bsVA h t
   rw [← hi]
   exact Nat.mod_eq_of_lt (Fin.isLt (n := φ.ord) (t + i • h))
 
+/- English proof (translation)
+Establish `h2 : Nat.card φ.A = φ.ord` using `by show Nat.card (Fin φ.ord) = φ.ord`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fin]`. Rewrite using `[← h2]`. Conclude with `card_nsmul_eq_zero'`.
+-/
 private theorem ord_nsmul_eq_zero (h : φ.A) : φ.ord • h = 0 := by
   have h2 : Nat.card φ.A = φ.ord := by
     show Nat.card (Fin φ.ord) = φ.ord
@@ -240,6 +340,13 @@ private theorem ord_nsmul_eq_zero (h : φ.A) : φ.ord • h = 0 := by
   rw [← h2]
   exact card_nsmul_eq_zero'
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `bsA_eq h t`. Take `⟨m, hm⟩ : ∃ m, φ.ord = m + 1` from `⟨φ.ord - 1, by have := φ.ord_pos; omega⟩`. Establish `hk` using `ord_nsmul_eq_zero h`. Rewrite `hk` using `[hm, succ_nsmul]`. Use `⟨m * i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hi]`. Establish `key : ∀ k : ℕ, (k + m * k) • h = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Establish `e : (k + 1 + m * (k + 1)) • h = (k + m * k) • h + (m • h + h)`. Rewrite using `[show k + 1 + m * (k + 1) = (k + m * k) + (m + 1) by ring, add_nsmul, succ_nsmul]`. Rewrite using `[e, ih, hk, add_zero]`. Rewrite using `[add_assoc, ← add_nsmul, key, add_zero]`.
+-/
 theorem bsA_orb (h t : φ.A) : ∃ i : ℕ, bsA h t + i • h = t := by
   obtain ⟨i, hi⟩ := bsA_eq h t
   obtain ⟨m, hm⟩ : ∃ m, φ.ord = m + 1 := ⟨φ.ord - 1, by have := φ.ord_pos; omega⟩
@@ -257,6 +364,15 @@ theorem bsA_orb (h t : φ.A) : ∃ i : ℕ, bsA h t + i • h = t := by
       rw [e, ih, hk, add_zero]
   rw [add_assoc, ← add_nsmul, key, add_zero]
 
+/- English proof (translation)
+Take `⟨m, hm⟩ : ∃ m, φ.ord = m + 1` from `⟨φ.ord - 1, by have := φ.ord_pos; omega⟩`. Establish `hk` using `ord_nsmul_eq_zero h`. Rewrite `hk` using `[hm, succ_nsmul]`. Unfold `bsA`. Use `congr 1`.
+
+Unfold `bsVA`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Use `⟨i + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[succ_nsmul, add_comm (i • h) h, ← add_assoc]`. Introduce and unpack `⟨i, rfl⟩`. Use `⟨i + m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[add_nsmul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bsA_step (h t : φ.A) : bsA h (t + h) = bsA h t := by
   obtain ⟨m, hm⟩ : ∃ m, φ.ord = m + 1 := ⟨φ.ord - 1, by have := φ.ord_pos; omega⟩
   have hk := ord_nsmul_eq_zero h
@@ -278,11 +394,17 @@ theorem bsA_step (h t : φ.A) : bsA h (t + h) = bsA h t := by
     calc t + h + (i • h + m • h) = t + i • h + (m • h + h) := by abel
       _ = t + i • h := by rw [hk, add_zero]
 
+/- English proof (translation)
+Rewrite using `[bsA_val]`. Unfold `bsVA`. Conclude with `Nat.sInf_le ⟨i, rfl⟩`.
+-/
 theorem bsA_val_le (h t : φ.A) (i : ℕ) : (bsA h t).val ≤ (t + i • h).val := by
   rw [bsA_val]
   unfold bsVA
   exact Nat.sInf_le ⟨i, rfl⟩
 
+/- English proof (translation)
+Conclude with `ord_nsmul_eq_zero h`.
+-/
 theorem ord_nsmul_A (h : φ.A) : φ.ord • h = 0 := by
   exact ord_nsmul_eq_zero h
 
@@ -323,14 +445,23 @@ section InstW
 
 variable (D : D7)
 
+/- English proof (translation)
+Unfold `G.plGG`. Simplify using the standard rewrite rules.
+-/
 theorem plGG_false (t : G.HH D) : G.plGG D (false, t) = D.R.tau1 t := by
   unfold G.plGG
   simp
 
+/- English proof (translation)
+Unfold `G.plGG`. Simplify using the standard rewrite rules.
+-/
 theorem plGG_true (t : G.HH D) : G.plGG D (true, t) = D.R.tau2 t := by
   unfold G.plGG
   simp
 
+/- English proof (translation)
+Unfold `G.plGG Formalism.HC.Frame.Psi`. Rewrite using `[MonoidHom.mem_ker]`. Apply the tactic sequence `split <;> first`. Consider the case `rfl`. Consider the case `simp [Formalism.HC.Frame.chD, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2]`.
+-/
 theorem plGG_mem_Psi (z : Bool × G.HH D) : G.plGG D z ∈ D.R.Psi := by
   unfold G.plGG Formalism.HC.Frame.Psi
   rw [MonoidHom.mem_ker]
@@ -340,24 +471,45 @@ theorem plGG_mem_Psi (z : Bool × G.HH D) : G.plGG D z ∈ D.R.Psi := by
 
 def tauOf (z : Bool × G.HH D) : D.what₂.Tau := D.eTau.symm ⟨G.plGG D z, plGG_mem_Psi D z⟩
 
+/- English proof (translation)
+Unfold `tauOf`. Simplify using the standard rewrite rules.
+-/
 theorem eTau_tauOf (z : Bool × G.HH D) : (D.eTau (tauOf D z) : D.R.GG) = G.plGG D z := by
   unfold tauOf
   simp
 
+/- English proof (translation)
+Unfold `tauOf`. Rewrite using `[Equiv.eq_symm_apply]`. Conclude with `Subtype.ext h`.
+-/
 theorem eq_tauOf (τ : D.what₂.Tau) (z : Bool × G.HH D) (h : (D.eTau τ : D.R.GG) = G.plGG D z) :
     τ = tauOf D z := by
   unfold tauOf
   rw [Equiv.eq_symm_apply]
   exact Subtype.ext h
 
+/- English proof (translation)
+Introduce `s t hst`. Conclude with `Multiplicative.ofAdd.injective (congrArg Prod.snd hst)`.
+-/
 theorem tau1_injective (φ : Formalism.HC.Frame) : Function.Injective φ.tau1 := by
   intro s t hst
   exact Multiplicative.ofAdd.injective (congrArg Prod.snd hst)
 
+/- English proof (translation)
+Introduce `s t hst`. Conclude with `Multiplicative.ofAdd.injective (congrArg Prod.snd hst)`.
+-/
 theorem doubling_injective (φ : Formalism.HC.Frame) : Function.Injective φ.tau2 := by
   intro s t hst
   exact Multiplicative.ofAdd.injective (congrArg Prod.snd hst)
 
+/- English proof (translation)
+Take `⟨b, t⟩` from `z`. Unfold `G.IsTopPl Formalism.BasicNotions.Host.topPlaces`. Consider the cases of `b with`. Consider the case `false`. Simplify using `only [plGG_false, Finset.mem_image, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hst⟩`. Rewrite using `[← tau1_injective D.R.toFrame hst]`. Conclude with `hs`. Introduce `h`.
+
+Conclude with `⟨t, h, rfl⟩`. Consider the case `true`. Simplify using `only [plGG_true, Finset.mem_image, Bool.true_eq_false, false_and, iff_false, not_exists, not_and]`. Introduce `s _ hst`. Establish `h1 : ((1 : ℤˣ), (1 : ℤˣ)) = ((-1 : ℤˣ), (1 : ℤˣ))` using `congrArg Prod.fst hst`.
+
+Establish `h2 : (1 : ℤˣ) = -1` using `congrArg Prod.fst h1`. Conclude with `absurd (congrArg Units.val h2) (by norm_num)`.
+-/
 theorem plGG_top_iff (z : Bool × G.HH D) : G.plGG D z ∈ D.host.topPlaces ↔ G.IsTopPl D z := by
   obtain ⟨b, t⟩ := z
   unfold G.IsTopPl Formalism.BasicNotions.Host.topPlaces
@@ -377,11 +529,23 @@ theorem plGG_top_iff (z : Bool × G.HH D) : G.plGG D z ∈ D.host.topPlaces ↔ 
     have h2 : (1 : ℤˣ) = -1 := congrArg Prod.fst h1
     exact absurd (congrArg Units.val h2) (by norm_num)
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.thickPlaces`. Rewrite using `[Finset.mem_image]`.
+-/
 theorem mem_thickPlaces (g : D.R.GG) :
     g ∈ D.host.thickPlaces ↔ ∃ s ∈ D.host.T2, D.R.tau2 (D.R.dig s + D.host.u0) = g := by
   unfold Formalism.BasicNotions.Host.thickPlaces
   rw [Finset.mem_image]
 
+/- English proof (translation)
+Take `⟨b, t⟩` from `z`. Unfold `G.IsThickPl Formalism.BasicNotions.Host.thickPlaces`. Consider the cases of `b with`. Consider the case `false`. Simplify using `only [plGG_false, Finset.mem_image, Bool.false_eq_true, false_and, iff_false, not_exists, not_and]`.
+
+Introduce `s _ hst`. Establish `h1 : ((-1 : ℤˣ), (1 : ℤˣ)) = ((1 : ℤˣ), (1 : ℤˣ))` using `congrArg Prod.fst hst`. Establish `h2 : (-1 : ℤˣ) = 1` using `congrArg Prod.fst h1`. Conclude with `absurd (congrArg Units.val h2) (by norm_num)`. Consider the case `true`.
+
+Simplify using `only [plGG_true, Finset.mem_image, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hst⟩`. Conclude with `⟨s, hs, doubling_injective D.R.toFrame hst⟩`. Introduce and unpack `⟨s, hs, hst⟩`.
+
+Conclude with `⟨s, hs, by rw [hst]⟩`.
+-/
 theorem plGG_thick_iff (z : Bool × G.HH D) : G.plGG D z ∈ D.host.thickPlaces ↔ G.IsThickPl D z := by
   obtain ⟨b, t⟩ := z
   unfold G.IsThickPl Formalism.BasicNotions.Host.thickPlaces
@@ -460,6 +624,9 @@ def instW (kapI : ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) �
   kapI := kapI
   ep := ep
 
+/- English proof (translation)
+Introduce `j hj τ z hτ`. Establish `e` using `eq_tauOf D τ z hτ`. Substitute `e` using the available equality. Simplify using `only [G.fill, instW, offW, if_pos hj]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem instW_fill (kapI : ℕ → (n' : ℕ) → Finset (Fin n') → (Fin n' → ℤ) → (Fin n' → ℤ) → ℝ) (ep : ℕ → ℕ) :
     ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D), (D.eTau τ : D.R.GG) = G.plGG D z →
       G.fill (instW L kapI ep) (G.bL L) j z = wj D j τ := by
@@ -475,6 +642,15 @@ section Comparison₂
 
 variable {D : D7} (L0 : SizeData₂ D) (X0 : G.Inst D L0) (K : G.Consts)
 
+/- English proof (translation)
+Establish `hs` using `scale_w''_le L0.sc D.R.n (ranks_one_le_n D.R)`. Establish `hb'` using `scale_b'_nonneg L0.sc`. Unfold `G.fill`. Distinguish the cases in `htop : G.IsTopPl D z`. Establish `ho` using `(X0.off_top j z htop).1`.
+
+Establish `hc : z.1 = false ∧ z.2 ∈ D.host.TT` using `htop`. Rewrite using `[if_pos hc]`. Establish `hbl : (0 : ℝ) ≤ (G.bL L0 z.2 : ℝ)`. Unfold `G.bL`. Rewrite using `[dif_pos hc.2]`.
+
+Conclude with `hb'.trans (L0.bT_ge _)`. Combine the linear relations using `[hs.1]`. Establish `hc : ¬ (z.1 = false ∧ z.2 ∈ D.host.TT)` using `htop`. Rewrite using `[if_neg hc, zero_add]`. Distinguish the cases in `hthick : G.IsThickPl D z`.
+
+Combine the linear relations using `[(X0.off_thick j z hthick).1, hs.2]`. Combine the linear relations using `[(X0.off_thin j z ⟨htop, hthick⟩).1]`.
+-/
 theorem one_le_fill (hw : 1 ≤ L0.sc.w'' D.R.n) (j : ℕ) (z : Bool × G.HH D) :
     1 ≤ G.fill X0 (G.bL L0) j z := by
   have hs := scale_w''_le L0.sc D.R.n (ranks_one_le_n D.R)
@@ -495,6 +671,9 @@ theorem one_le_fill (hw : 1 ≤ L0.sc.w'' D.R.n) (j : ℕ) (z : Bool × G.HH D) 
     · linarith [(X0.off_thick j z hthick).1, hs.2]
     · linarith [(X0.off_thin j z ⟨htop, hthick⟩).1]
 
+/- English proof (translation)
+Introduce `t ht`. Unfold `G.TTP at ht`. Use `split at ht`. Conclude with `ht`. Conclude with `(Finset.mem_filter.1 ht).1`.
+-/
 theorem TTP_subset (a b : G.HH D → ℤ) (p : ℕ) : ∀ t ∈ G.TTP X0 K a b p, t ∈ D.host.TT := by
   intro t ht
   unfold G.TTP at ht
@@ -504,6 +683,9 @@ theorem TTP_subset (a b : G.HH D → ℤ) (p : ℕ) : ∀ t ∈ G.TTP X0 K a b p
 
 def belowSupp : Finset D.what₂.places.Pl := (finite_resChar_le D (L0.sc.X'' D.R.n)).toFinset
 
+/- English proof (translation)
+Unfold `belowSupp`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+-/
 theorem mem_belowSupp (w : D.what₂.places.Pl) :
     w ∈ belowSupp L0 ↔ ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L0.sc.X'' D.R.n := by
   unfold belowSupp
@@ -512,6 +694,9 @@ theorem mem_belowSupp (w : D.what₂.places.Pl) :
 def specSupp (D : D7) : Finset D.what₂.places.Pl :=
   (finite_resChar_mem D {D.host.d, D.host.g 0, D.host.g 1}).toFinset
 
+/- English proof (translation)
+Unfold `specSupp`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+-/
 theorem mem_specSupp (w : D.what₂.places.Pl) :
     w ∈ specSupp D ↔ D.what₂.places.resChar w ∈ ({D.host.d, D.host.g 0, D.host.g 1} : Finset ℕ) := by
   unfold specSupp
@@ -522,16 +707,27 @@ open Classical in
 def tieSupp : Finset D.what₂.places.Pl := belowSupp L0 ∪ specSupp D ∪ L0.supp
 
 open Classical in
+/- English proof (translation)
+Unfold `tieSupp`. Rewrite using `[Finset.mem_union, Finset.mem_union, mem_belowSupp, mem_specSupp, or_assoc]`.
+-/
 theorem mem_tieSupp (w : D.what₂.places.Pl) : w ∈ tieSupp L0 ↔
     ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ L0.sc.X'' D.R.n ∨
       D.what₂.places.resChar w ∈ ({D.host.d, D.host.g 0, D.host.g 1} : Finset ℕ) ∨ w ∈ L0.supp := by
   unfold tieSupp
   rw [Finset.mem_union, Finset.mem_union, mem_belowSupp, mem_specSupp, or_assoc]
 
+/- English proof (translation)
+Conclude with `not_le.mp (fun h' => h ((mem_tieSupp L0 w).2 (Or.inl h')))`.
+-/
 theorem lt_of_not_mem_tieSupp (w : D.what₂.places.Pl) (h : w ∉ tieSupp L0) :
     L0.sc.X'' D.R.n < ((D.what₂.places.resChar w : ℕ) : ℝ) := by
   exact not_le.mp (fun h' => h ((mem_tieSupp L0 w).2 (Or.inl h')))
 
+/- English proof (translation)
+Establish `hlt` using `lt_of_not_mem_tieSupp L0 w h`. Establish `hns : D.what₂.places.resChar w ∉ ({D.host.d, D.host.g 0, D.host.g 1} : Finset ℕ)` using `fun h' => h ((mem_tieSupp L0 w).2 (Or.inr (Or.inl h')))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hns`. Establish `hg : D.what₂.places.resChar w ∉ L0.gTypes`. Unfold `Formalism.BasicNotions.SizeData₂.gTypes`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or]`. Conclude with `⟨hns.2.1, hns.2.2⟩`. Unfold `Fval`. Conclude with `FvalP_above L0 j hlt hg hns.1`.
+-/
 theorem Fval_off_tieSupp (j : ℕ) (w : D.what₂.places.Pl) (h : w ∉ tieSupp L0) : Fval L0 j w = 0 := by
   have hlt := lt_of_not_mem_tieSupp L0 w h
   have hns : D.what₂.places.resChar w ∉ ({D.host.d, D.host.g 0, D.host.g 1} : Finset ℕ) :=
@@ -544,6 +740,11 @@ theorem Fval_off_tieSupp (j : ℕ) (w : D.what₂.places.Pl) (h : w ∉ tieSupp 
   unfold Fval
   exact FvalP_above L0 j hlt hg hns.1
 
+/- English proof (translation)
+Unfold `G.VV`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hc, -⟩`. Unfold `G.Cand at hc`. Use `scale_X'_le_X'' L0.sc D.R.n (ranks_one_le_n D.R)` as an intermediate fact.
+
+Combine the linear relations using `[hc.2.1]`.
+-/
 theorem VV_above (a b : G.HH D → ℤ) (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) : G.VV X0 K a b p = ∅ := by
   unfold G.VV
   rw [if_neg]
@@ -552,6 +753,9 @@ theorem VV_above (a b : G.HH D → ℤ) (p : ℕ) (h : L0.sc.X'' D.R.n < (p : �
   have := scale_X'_le_X'' L0.sc D.R.n (ranks_one_le_n D.R)
   linarith [hc.2.1]
 
+/- English proof (translation)
+Unfold `G.VV`. Rewrite using `[if_neg]`. Introduce and unpack `⟨hc, -⟩`. Unfold `G.Cand at hc`. Conclude with `h hc.2.2.1`.
+-/
 theorem VV_eq_empty_of_not_isResidueClassZero (a b : G.HH D → ℤ) (p : ℕ) (h : ¬ G.IsResidueClassZero D p) : G.VV X0 K a b p = ∅ := by
   unfold G.VV
   rw [if_neg]
@@ -559,10 +763,18 @@ theorem VV_eq_empty_of_not_isResidueClassZero (a b : G.HH D → ℤ) (p : ℕ) (
   unfold G.Cand at hc
   exact h hc.2.2.1
 
+/- English proof (translation)
+Unfold `G.tauP`. Rewrite using `[if_pos h]`.
+-/
 theorem tau_eq_zero_of_eq_empty (a b : G.HH D → ℤ) (p : ℕ) (h : G.VV X0 K a b p = ∅) : G.tauP X0 K a b p = 0 := by
   unfold G.tauP
   rw [if_pos h]
 
+/- English proof (translation)
+Unfold `G.ioP`. Use `split`. Name the introduced variables `h'`. Rewrite `h'` using `[h]`. Conclude with `absurd h' Finset.not_nonempty_empty`.
+
+Both sides reduce to the same expression.
+-/
 theorem ioP_eq_zero_of_VV_eq_empty (a b : G.HH D → ℤ) (p : ℕ) (h : G.VV X0 K a b p = ∅) : G.ioP X0 K a b p = 0 := by
   unfold G.ioP
   split
@@ -571,9 +783,15 @@ theorem ioP_eq_zero_of_VV_eq_empty (a b : G.HH D → ℤ) (p : ℕ) (h : G.VV X0
     exact absurd h' Finset.not_nonempty_empty
   · rfl
 
+/- English proof (translation)
+Conclude with `tau_eq_zero_of_eq_empty L0 X0 K a b p (VV_above L0 X0 K a b p h)`.
+-/
 theorem tauP_above (a b : G.HH D → ℤ) (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) : G.tauP X0 K a b p = 0 := by
   exact tau_eq_zero_of_eq_empty L0 X0 K a b p (VV_above L0 X0 K a b p h)
 
+/- English proof (translation)
+Conclude with `ioP_eq_zero_of_VV_eq_empty L0 X0 K a b p (VV_above L0 X0 K a b p h)`.
+-/
 theorem ioP_eq_zero_of_lt (a b : G.HH D → ℤ) (p : ℕ) (h : L0.sc.X'' D.R.n < (p : ℝ)) : G.ioP X0 K a b p = 0 := by
   exact ioP_eq_zero_of_VV_eq_empty L0 X0 K a b p (VV_above L0 X0 K a b p h)
 
@@ -636,18 +854,36 @@ def tieInst : G.Inst D (tieWeightData L0 X0 K dr len hw hg hu) where
   kapI := X0.kapI
   ep := X0.ep
 
+/- English proof (translation)
+Conclude with `(mem_tieSupp L0 w).2 (Or.inl h)`.
+-/
 theorem tie_supp_sat (w : D.what₂.places.Pl)
     (h : ((D.what₂.places.resChar w : ℕ) : ℝ) ≤ (tieWeightData L0 X0 K dr len hw hg hu).sc.X'' D.R.n) :
     w ∈ (tieWeightData L0 X0 K dr len hw hg hu).supp := by
   exact (mem_tieSupp L0 w).2 (Or.inl h)
 
+/- English proof (translation)
+Conclude with `(mem_tieSupp L0 w).2 (Or.inr (Or.inr h))`.
+-/
 theorem tie_supp_old (w : D.what₂.places.Pl) (h : w ∈ L0.supp) : w ∈ (tieWeightData L0 X0 K dr len hw hg hu).supp := by
   exact (mem_tieSupp L0 w).2 (Or.inr (Or.inr h))
 
+/- English proof (translation)
+Introduce `j _ w`. Both sides reduce to the same expression.
+-/
 theorem tie_FDef : (tieWeightData L0 X0 K dr len hw hg hu).FDef := by
   intro j _ w
   rfl
 
+/- English proof (translation)
+Unfold `G.ParametersFill`. Introduce `p`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hf`. Introduce `j t e`.
+
+Both sides reduce to the same expression. Simplify using `only [tieWeightData]`. Rewrite using `[Finset.subtype_map, Finset.filter_true_of_mem (TTP_subset L0 X0 K _ _ _)]`. Both sides reduce to the same expression. Introduce `h1 h2 j _ dsimp only [tieWeightData] split`.
+
+Both sides reduce to the same expression. Name the introduced variables `hc`. Conclude with `(hc ⟨h1, h2⟩).elim`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 theorem tie_fills
     (hf : ∀ j ∈ SizeData₂.lifts D, ∀ (τ : D.what₂.Tau) (z : Bool × G.HH D),
       (D.eTau τ : D.R.GG) = G.plGG D z → G.fill X0 (G.bL L0) j z = wj D j τ)

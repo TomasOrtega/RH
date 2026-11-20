@@ -10,6 +10,15 @@ open ReciprocityTheory.L2DbarEstimates MeasureTheory Topology Metric Set Filter
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[Filter.not_frequently]`. Establish `hz0 : ∀ᶠ y in 𝓝 z, g y = 0` using `by filter_upwards [hcon, hU.mem_nhds hz] with y hy hyU`. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨hyU, h⟩`.
+
+Establish `hsub : U ⊆ {y | ∀ᶠ x in 𝓝 y, g x = 0}`. Use `hUc.subset_of_closure_inter_subset isOpen_setOf_eventually_nhds ⟨z, hz, hz0⟩ ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hycl, hyU⟩`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU y hyU`. Take `⟨b, hb, hdist⟩` from `Metric.mem_closure_iff.mp hycl ε hε`.
+
+Establish `hbb : b ∈ ball y ε`. Rewrite using `[mem_ball, dist_comm]`. Conclude with `hdist`. Establish `hEq` using `ReciprocityTheory.L2DbarEstimates.C.ident n (ball y ε) g b isOpen_ball (convex_ball y ε) (hg.mono hball) hbb hb`. Conclude with `Filter.eventually_of_mem (ball_mem_nhds y hε) (fun w hw => by simpa using hEq hw)`.
+
+Take `⟨w, hwU, hw⟩` from `hg0`. Conclude with `hw (hsub hwU).self_of_nhds`.
+-/
 theorem dense_nonzero {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : V n → ℂ}
     (hg : DifferentiableOn ℂ g U) (hg0 : ∃ z ∈ U, g z ≠ 0) {z : V n} (hz : z ∈ U) :
     ∃ᶠ y in 𝓝 z, y ∈ U ∧ g y ≠ 0 := by
@@ -33,6 +42,17 @@ theorem dense_nonzero {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {
   obtain ⟨w, hwU, hw⟩ := hg0
   exact hw (hsub hwU).self_of_nhds
 
+/- English proof (translation)
+Use `choose! r hr hrU hint using hloc`. Establish `hE : ∀ z ∈ U, ∃ E : V n → ℂ, DifferentiableOn ℂ E (ball z (r z)) ∧ EqOn E H (ball z (r z) \ {y | g y = 0})`. Introduce `z hz`. Conclude with `ReciprocityTheory.L2DbarEstimates.C.ext n (ball z (r z)) g H isOpen_ball (hg.mono (hrU z hz)) (hH.mono (fun y hy => ⟨hrU z hz hy.1, hy.2⟩)) (hint z hz)`. Use `choose! E hEd hEe using hE`.
+
+Establish `hagree : ∀ y ∈ U, ∀ z ∈ U, ∀ w ∈ ball y (r y) ∩ ball z (r z), E y w = E z w`. Introduce `y hy z hz w hw`. Establish `hwU : w ∈ U` using `hrU y hy hw.1`. Establish `hopen : IsOpen (ball y (r y) ∩ ball z (r z))` using `isOpen_ball.inter isOpen_ball`. Establish `hc1 : ContinuousAt (E y) w` using `(hEd y hy).continuousOn.continuousAt (isOpen_ball.mem_nhds hw.1)`.
+
+Establish `hc2 : ContinuousAt (E z) w` using `(hEd z hz).continuousOn.continuousAt (isOpen_ball.mem_nhds hw.2)`. Establish `hfreq : ∃ᶠ v in 𝓝 w, E y v - E z v ∈ ({0} : Set ℂ)`. Establish `h1` using `(dense_nonzero hU hUc hg hg0 hwU).and_eventually (hopen.mem_nhds hw : ∀ᶠ v in 𝓝 w, v ∈ ball y (r y) ∩ ball z (r z))`. Use `h1.mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨⟨-, hgv⟩, hv1, hv2⟩`.
+
+Rewrite using `[Set.mem_singleton_iff, sub_eq_zero, hEe y hy ⟨hv1, hgv⟩, hEe z hz ⟨hv2, hgv⟩]`. Establish `h0` using `isClosed_singleton.mem_of_frequently_of_tendsto hfreq (hc1.sub hc2)`. Simplify `h0` using `[sub_eq_zero]`. Use `⟨fun w => E w w, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hev : (fun w => E w w) =ᶠ[𝓝 z] E z` using `by filter_upwards [isOpen_ball.mem_nhds (mem_ball_self (hr z hz)), hU.mem_nhds hz] with w hw hwU`. Conclude with `hagree w hwU z hz w ⟨mem_ball_self (hr w hwU), hw⟩`. Conclude with `(((hEd z hz).differentiableAt (isOpen_ball.mem_nhds (mem_ball_self (hr z hz)))).congr_of_eventuallyEq hev).differentiableWithinAt`. Introduce and unpack `w ⟨hwU, hgw⟩`. Conclude with `hEe w hwU ⟨mem_ball_self (hr w hwU), hgw⟩`.
+-/
 theorem ext_glue {U : Set (V n)} (hU : IsOpen U) (hUc : IsPreconnected U) {g : V n → ℂ}
     (hg : DifferentiableOn ℂ g U) (hg0 : ∃ z ∈ U, g z ≠ 0) {H : V n → ℂ}
     (hH : DifferentiableOn ℂ H (U ∩ {z | g z ≠ 0}))

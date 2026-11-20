@@ -24,6 +24,9 @@ noncomputable def cochainsMapShortComplex (f : G →* H) {X : ShortComplex (Rep 
     refine funext fun g => ?_
     exact congrArg (fun φ => φ.hom (x (f ∘ g))) F.comm₂₃
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.HomologySequence.δ_naturality (cochainsMapShortComplex f F) (map_cochainsFunctor_shortExact hX) (map_cochainsFunctor_shortExact hY) i j hij`.
+-/
 theorem δ_comp_map (f : G →* H) {X : ShortComplex (Rep k H)} {Y : ShortComplex (Rep k G)}
     (hX : X.ShortExact) (hY : Y.ShortExact) (F : X.map (resFunctor f) ⟶ Y)
     (i j : ℕ) (hij : i + 1 = j) :
@@ -31,6 +34,9 @@ theorem δ_comp_map (f : G →* H) {X : ShortComplex (Rep k H)} {Y : ShortComple
   HomologicalComplex.HomologySequence.δ_naturality (cochainsMapShortComplex f F)
     (map_cochainsFunctor_shortExact hX) (map_cochainsFunctor_shortExact hY) i j hij
 
+/- English proof (translation)
+The claim follows from `δ_comp_map f hX ((shortExact_res f).2 hX) (𝟙 _) i j hij`.
+-/
 theorem δ_comp_map_res (f : G →* H) {X : ShortComplex (Rep k H)} (hX : X.ShortExact)
     (i j : ℕ) (hij : i + 1 = j) :
     δ hX i j hij ≫ map f (𝟙 (res f X.X₁)) j =

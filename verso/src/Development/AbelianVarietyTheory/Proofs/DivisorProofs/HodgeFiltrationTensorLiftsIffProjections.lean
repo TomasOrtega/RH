@@ -14,6 +14,9 @@ namespace GlobalTheory.SqLift.ProdFil
 
 variable {R : Type} [CommRing R] {I : Ideal R}
 
+/- English proof (translation)
+Establish `w : h ≫ (X ⊗ Y).hom = g ≫ (X ⊗ Y).hom`. Rewrite using `[← Over.w (fst X Y), ← Category.assoc, ← Category.assoc, h1]`. Use `CartesianMonoidalCategory.hom_ext (Over.homMk g rfl : Over.mk (g ≫ (X ⊗ Y).hom) ⟶ X ⊗ Y) (Over.homMk h w) (Over.OverMorphism.ext (by simpa using h1)) (Over.OverMorphism.ext (by simpa using h2))` as an intermediate fact. Conclude with `congrArg (fun f => f.left) this`.
+-/
 theorem left_ext {B : Scheme.{0}} {X Y : Over B} {T : Scheme.{0}} (g h : T ⟶ (X ⊗ Y).left)
     (h1 : g ≫ (fst X Y).left = h ≫ (fst X Y).left) (h2 : g ≫ (snd X Y).left = h ≫ (snd X Y).left) :
     g = h := by
@@ -23,6 +26,11 @@ theorem left_ext {B : Scheme.{0}} {X Y : Over B} {T : Scheme.{0}} (g h : T ⟶ (
     (Over.homMk h w) (Over.OverMorphism.ext (by simpa using h1)) (Over.OverMorphism.ext (by simpa using h2))
   exact congrArg (fun f => f.left) this
 
+/- English proof (translation)
+Take `⟨a, ha, hac⟩` from `Submodule.mem_map.1 (Submodule.mem_comap.1 hc)`. Establish `hmor : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R) (X'.hom ≫ 𝟙 _) (RingHom.id R) m` using `IsMor.of_over (dp0 R) (by rw [← Category.assoc, hm])`. Use `Submodule.mem_comap.2 (Submodule.mem_map.2 ⟨hmor.pull1 a, hmor.pullback1_mem_hodgeFiltration ha, ?_⟩)` and prove the remaining obligations. Establish `hfi : IsMor (dp0 R) (X.hom ≫ 𝟙 _) κ (A'.hom ≫ t) (RingHom.id R) (f.left ≫ i)` using `IsMor.of_dividedPowersZeroIdeal κ (by rw [Cris.spMap_id, Category.comp_id, Category.comp_id, Category.assoc, w, ← Category.assoc, Over.w f])`. Rewrite using `[IsMor.pullback1_comp _ _ hfi (fun _ ↦ rfl) e.symm]`.
+
+Express the relevant statement in the definitionally equal form `_ = (homMor κ t f).isMor.pull1 c.1`. Rewrite using `[show (c : Cris.H1 κ (A.hom ≫ t)) = _ from hac.symm]`. Conclude with `(IsMor.pullback1_comp _ _ hfi (fun _ ↦ rfl) rfl a).symm`.
+-/
 theorem primitive_pullback_mem_hodgeFiltration_of_monHom (κ : DividedPowers I) {S : Scheme.{0}} {t : S ⟶ Sp R} {A A' : Over S} [GrpObj A]
     [GrpObj A'] (f : A' ⟶ A) [IsMonHom f] {X X' : Over (Sp R)} {i : A.left ⟶ X.left} {i' : A'.left ⟶ X'.left}
     (w : i ≫ X.hom = A.hom ≫ t) (w' : i' ≫ X'.hom = A'.hom ≫ t) (m : X'.left ⟶ X.left) (hm : m ≫ X.hom = X'.hom)
@@ -40,6 +48,29 @@ theorem primitive_pullback_mem_hodgeFiltration_of_monHom (κ : DividedPowers I) 
   rw [show (c : Cris.H1 κ (A.hom ≫ t)) = _ from hac.symm]
   exact (IsMor.pullback1_comp _ _ hfi (fun _ ↦ rfl) rfl a).symm
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I κ π A₀ B₀ _ _ X Y i j wi wj e e' he he' h1 h1' l hl1 hl2 wl d`. Establish `hAB : IsMonHom (1 : A₀ ⟶ B₀)` using `inferInstanceAs (IsMonHom (toUnit A₀ ≫ η[B₀]))`. Establish `hBA : IsMonHom (1 : B₀ ⟶ A₀)` using `inferInstanceAs (IsMonHom (toUnit B₀ ≫ η[A₀]))`. Establish `one_left : ∀ (C D : Over (Sp R₀)) [GrpObj C] [GrpObj D], (1 : C ⟶ D).left = C.hom ≫ (1 : Over.mk (𝟙 (Sp R₀)) ⟶ D).left`. Introduce `C D _ _`.
+
+Establish `: (1 : C ⟶ D) = (Over.homMk C.hom (by simp) : C ⟶ Over.mk (𝟙 (Sp R₀))) ≫ 1` using `by simp`. Rewrite using `[this]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Prove the components needed by the constructor for the conclusion. Use `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ ?_` and prove the remaining obligations. Rewrite using `[push_apply]`. Conclude with `(Submodule.mem_dualAnnihilator _).1 H _ (primitive_pullback_mem_hodgeFiltration_of_monHom κ (fst A₀ B₀) wi wl (fst X Y).left (Over.w _) hl1.symm hc)`. Use `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[push_apply]`. Conclude with `(Submodule.mem_dualAnnihilator _).1 H _ (primitive_pullback_mem_hodgeFiltration_of_monHom κ (snd A₀ B₀) wj wl (snd X Y).left (Over.w _) hl2.symm hc)`. Introduce and unpack `⟨H1, H2⟩`. Use `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ ?_` and prove the remaining obligations. Set `ι₁ : A₀ ⟶ A₀ ⊗ B₀` to `lift (𝟙 A₀) 1`.
+
+Set `ι₂ : B₀ ⟶ A₀ ⊗ B₀` to `lift 1 (𝟙 B₀)`. Establish `hmul : (fst A₀ B₀ ≫ ι₁) * (snd A₀ B₀ ≫ ι₂) = 𝟙 _`. Use `ext`. Rewrite using `[MonObj.mul_comp]`. Simplify using `[ι₁, ι₂]`.
+
+Rewrite using `[MonObj.mul_comp]`. Simplify using `[ι₁, ι₂]`. Establish `hdec : c = primPull κ _ (fst A₀ B₀) (primPull κ _ ι₁ c) + primPull κ _ (snd A₀ B₀) (primPull κ _ ι₂ c)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `c.2 (A₀ ⊗ B₀) (fst A₀ B₀ ≫ ι₁) (snd A₀ B₀ ≫ ι₂)` as an intermediate fact.
+
+Rewrite `this` using `[hmul, ← pullOver_pullOver, ← pullOver_pullOver]`. Establish `hid : pullOver κ (spMap π) (𝟙 (A₀ ⊗ B₀)) (c : Cris.H1 κ ((A₀ ⊗ B₀).hom ≫ spMap π)) = c` using `IsMor.pullCohomologyOne_id _ _`. Rewrite using `[← hid, this]`. Both sides reduce to the same expression. Set `mX : X ⟶ X ⊗ Y` to `lift (𝟙 X) (Over.homMk (X.hom ≫ e') (by simp [he']))`.
+
+Set `mY : Y ⟶ X ⊗ Y` to `lift (Over.homMk (Y.hom ≫ e) (by simp [he])) (𝟙 Y)`. Establish `eX : ι₁.left ≫ l = i ≫ mX.left`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl1, Category.assoc, ← Over.comp_left, ← Category.assoc, ← Over.comp_left]`. Simplify using `[ι₁, mX]`.
+
+Rewrite using `[Category.assoc, hl2, Category.assoc, ← Over.comp_left, ← Category.assoc, ← Over.comp_left]`. Simplify using `only [ι₁, mX, lift_snd, Over.homMk_left]`. Rewrite using `[one_left, Category.assoc, h1', ← Category.assoc, ← wi, Category.assoc]`. Establish `eY : ι₂.left ≫ l = j ≫ mY.left`. Apply `left_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hl1, Category.assoc, ← Over.comp_left, ← Category.assoc, ← Over.comp_left]`. Simplify using `only [ι₂, mY, lift_fst, Over.homMk_left]`. Rewrite using `[one_left, Category.assoc, h1, ← Category.assoc, ← wj, Category.assoc]`. Rewrite using `[Category.assoc, hl2, Category.assoc, ← Over.comp_left, ← Category.assoc, ← Over.comp_left]`. Simplify using `[ι₂, mY]`.
+
+Establish `k1` using `primitive_pullback_mem_hodgeFiltration_of_monHom κ ι₁ wl wi mX.left (Over.w _) eX hc`. Establish `k2` using `primitive_pullback_mem_hodgeFiltration_of_monHom κ ι₂ wl wj mY.left (Over.w _) eY hc`. Rewrite using `[hdec, map_add, ← push_apply κ _ (fst A₀ B₀) d, ← push_apply κ _ (snd A₀ B₀) d, (Submodule.mem_dualAnnihilator _).1 H1 _ k1, (Submodule.mem_dualAnnihilator _).1 H2 _ k2, add_zero]`.
+-/
 theorem schemeFil_tensor_iff : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I) (π : R →+* R₀)
     (A₀ B₀ : Over (Sp R₀)) [GrpObj A₀] [GrpObj B₀] (X Y : Over (Sp R)) (i : A₀.left ⟶ X.left) (j : B₀.left ⟶ Y.left)
     (wi : i ≫ X.hom = A₀.hom ≫ spMap π) (wj : j ≫ Y.hom = B₀.hom ≫ spMap π)

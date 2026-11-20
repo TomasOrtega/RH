@@ -15,17 +15,28 @@ namespace GlobalTheory.CompanionTheory.CtS.Tr
 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact (Ov E w).sum_mem fun k _ => (Ov E w).mul_mem (hM i k) (hN k j)`.
+-/
 theorem isInt_mul {r s t : Type} [Fintype s] {M : Matrix r s (w.adicCompletion E)}
     {N : Matrix s t (w.adicCompletion E)} (hM : IsInt w M) (hN : IsInt w N) : IsInt w (M * N) := fun i j => by
   rw [Matrix.mul_apply]
   exact (Ov E w).sum_mem fun k _ => (Ov E w).mul_mem (hM i k) (hN k j)
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `hg`. Introduce `i j`. Conclude with `(f.val i j).2`.
+-/
 theorem isInt_of_GLint {n : ℕ} {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ GLint (Fin n) (Ov E w)) :
     IsInt w g.val := by
   obtain ⟨f, rfl⟩ := hg
   intro i j
   exact (f.val i j).2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `key` using `isInt_mul (isInt_mul (isInt_of_GLint (inv_mem hu)) h) (isInt_of_GLint (inv_mem hv))`. Establish `h1 : (u⁻¹).val * u.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2 : v.val * (v⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `e : (u⁻¹).val * (u.val * M * v.val) * (v⁻¹).val = M`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `isInt_mul (isInt_mul (isInt_of_GLint hu) h) (isInt_of_GLint hv)`.
+-/
 theorem isInt_sandwich {r s : ℕ} {u : GL (Fin r) (w.adicCompletion E)} {v : GL (Fin s) (w.adicCompletion E)}
     (hu : u ∈ GLint (Fin r) (Ov E w)) (hv : v ∈ GLint (Fin s) (Ov E w))
     (M : Matrix (Fin r) (Fin s) (w.adicCompletion E)) : IsInt w (u.val * M * v.val) ↔ IsInt w M := by
@@ -60,6 +71,11 @@ def phi {a b : ℕ} {L : Type} [Field L] (p : GL (Fin a) L) (q : GL (Fin b) L) :
       _ = Y := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
   map_add' X Y := by rw [Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Establish `key : ∀ (P : AddSubgroup A) (P' : AddSubgroup B), (∀ X, X ∈ P ↔ φ X ∈ P') → P.map φ.toAddMonoidHom = P'`. Introduce `P P' h`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, rfl⟩`.
+
+Conclude with `(h X).1 hX`. Introduce `hY`. Conclude with `⟨φ.symm Y, (h _).2 (by simpa using hY), by simp⟩`. Rewrite using `[← key H H' hH, ← key K K' hK]`. Conclude with `(AddSubgroup.relIndex_map_map_of_injective _ _ φ.injective).symm`.
+-/
 theorem relIndex_of_equiv {A B : Type} [AddGroup A] [AddGroup B] (φ : A ≃+ B) (H K : AddSubgroup A)
     (H' K' : AddSubgroup B) (hH : ∀ X, X ∈ H ↔ φ X ∈ H') (hK : ∀ X, X ∈ K ↔ φ X ∈ K') :
     H.relIndex K = H'.relIndex K' := by
@@ -75,21 +91,49 @@ theorem relIndex_of_equiv {A B : Type} [AddGroup A] [AddGroup B] (φ : A ≃+ B)
   rw [← key H H' hH, ← key K K' hK]
   exact (AddSubgroup.relIndex_map_map_of_injective _ _ φ.injective).symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latD {ϖ : w.adicCompletion E} {a b i j : ℕ} {W : Matrix (Fin a) (Fin b) (w.adicCompletion E)} :
     W ∈ latD ϖ a b i j ↔
       ∀ (r : Fin a) (s : Fin b), (if (r : ℕ) < i ∧ j ≤ (s : ℕ) then ϖ * W r s else W r s) ∈ Ov E w := Iff.rfl
 
+/- English proof (translation)
+Establish `: Valued.v ϖ ≤ 1`. Rewrite using `[h]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1)` after adjusting the coercions. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 this`.
+-/
 theorem unif_mem {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ ∈ Ov E w := by
   have : Valued.v ϖ ≤ 1 := by
     rw [h]
     exact_mod_cast (by decide : (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1)
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 this
 
+/- English proof (translation)
+Introduce `h0`. Rewrite `h` using `[IsUnifV, h0, map_zero]`. Conclude with `WithZero.zero_ne_coe h`.
+-/
 theorem unif_ne {ϖ : w.adicCompletion E} (h : IsUnifV E w ϖ) : ϖ ≠ 0 := by
   intro h0
   rw [IsUnifV, h0, map_zero] at h
   exact WithZero.zero_ne_coe h
 
+/- English proof (translation)
+Establish `hm` using `unif_mem hϖ`. Establish `h0` using `unif_ne hϖ`. Establish `hc : ∀ x : w.adicCompletion E, ϖ * (x * ϖ⁻¹) = x` using `fun x => by field_simp`. Rewrite using `[mem_latD]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩ r s`. Establish `a1` using `h1 r s`. Establish `a2` using `h2 r s`. Simplify using `only [diagJ, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul] at a1 a2`. Apply the tactic sequence `by_cases hr : (r : ℕ) < i <;> by_cases hs : (s : ℕ) < j`.
+
+Rewrite using `[if_neg (by omega)]`. Rewrite `a2` using `[if_pos hs, hc]`. Conclude with `a2`. Rewrite using `[if_pos ⟨hr, by omega⟩]`. Rewrite `a1` using `[if_pos hr]`.
+
+Conclude with `a1`. Rewrite using `[if_neg (by omega)]`. Rewrite `a1` using `[if_neg hr, one_mul]`. Conclude with `a1`. Rewrite using `[if_neg (by omega)]`.
+
+Rewrite `a1` using `[if_neg hr, one_mul]`. Conclude with `a1`. Introduce `h`. Use `⟨fun r s => ?_, fun r s => ?_⟩` and prove the remaining obligations. Establish `a` using `h r s`.
+
+Simplify using `only [diagJ, Matrix.diagonal_mul]`. Distinguish the cases in `hr : (r : ℕ) < i`. Rewrite using `[if_pos hr]`. Distinguish the cases in `hs : j ≤ (s : ℕ)`. Rewrite `a` using `[if_pos ⟨hr, hs⟩]`. Then use the resulting hypothesis.
+
+Rewrite `a` using `[if_neg (by omega)]`. Conclude with `(Ov E w).mul_mem hm a`. Rewrite using `[if_neg hr, one_mul]`. Rewrite `a` using `[if_neg (by omega)]`. Then use the resulting hypothesis. Establish `a` using `h r s`.
+
+Simplify using `only [diagJ, Matrix.mul_diagonal, Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `hs : (s : ℕ) < j`. Rewrite using `[if_pos hs, hc]`. Rewrite `a` using `[if_neg (by omega)]`. Then use the resulting hypothesis. Rewrite using `[if_neg hs, mul_one]`.
+
+Distinguish the cases in `hr : (r : ℕ) < i`. Rewrite `a` using `[if_pos ⟨hr, by omega⟩]`. Then use the resulting hypothesis. Rewrite `a` using `[if_neg (by omega)]`. Conclude with `(Ov E w).mul_mem hm a`.
+-/
 theorem diag_iff_latD {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {a b : ℕ} (i j : ℕ)
     (W : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     (IsInt w (diagJ a ϖ i * W) ∧ IsInt w (ϖ • (W * diagJ b ϖ⁻¹ j))) ↔ W ∈ latD ϖ a b i j := by
@@ -138,6 +182,9 @@ theorem diag_iff_latD {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {a b : �
         · rw [if_neg (by omega)] at a
           exact (Ov E w).mul_mem hm a
 
+/- English proof (translation)
+Rewrite using `[diagJ, diagJ, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Apply the tactic sequence `split_ifs <;> simp [h0]`.
+-/
 theorem diagJ_mul_inv {L : Type} [Field L] {ϖ : L} (h0 : ϖ ≠ 0) (n j : ℕ) :
     diagJ n ϖ j * diagJ n ϖ⁻¹ j = 1 := by
   rw [diagJ, diagJ, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -145,6 +192,25 @@ theorem diagJ_mul_inv {L : Type} [Field L] {ϖ : L} (h0 : ϖ ≠ 0) (n j : ℕ) 
   funext r
   split_ifs <;> simp [h0]
 
+/- English proof (translation)
+Use `set W := phi p q X with hW`. Establish `hX : X = (p⁻¹).val * W * q.val` using `((phi p q).symm_apply_apply X).symm`. Establish `hpp : p.val * (p⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hqq : q.val * (q⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hkk : k₂.val * (k₂⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Establish `hD` using `diagJ_mul_inv (unif_ne hϖ) b j`. Establish `f₁ : m.1.val * X = k₁.val * (diagJ a ϖ i * W) * q.val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e₁, hX]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = k₁.val * (diagJ a ϖ i * W) * q.val := by`. Rewrite using `[hpp, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hx : m.2.val * ((q⁻¹).val * diagJ b ϖ⁻¹ j * (k₂⁻¹).val) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e₂]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = k₂.val * (diagJ b ϖ j * diagJ b ϖ⁻¹ j) * (k₂⁻¹).val := by`. Rewrite using `[hqq, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hD, Matrix.mul_one, hkk]`. Establish `hinv : (m.2⁻¹).val = (q⁻¹).val * diagJ b ϖ⁻¹ j * (k₂⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx, Matrix.mul_one]`. Use `_ = ((m.2⁻¹).val * m.2.val) * ((q⁻¹).val * diagJ b ϖ⁻¹ j * (k₂⁻¹).val) := by`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (q⁻¹).val * diagJ b ϖ⁻¹ j * (k₂⁻¹).val := by`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `f₂ : ϖ • (X * (m.2⁻¹).val) = (p⁻¹).val * (ϖ • (W * diagJ b ϖ⁻¹ j)) * (k₂⁻¹).val`. Establish `: X * (m.2⁻¹).val = (p⁻¹).val * (W * diagJ b ϖ⁻¹ j) * (k₂⁻¹).val`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, hX]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (p⁻¹).val * (W * diagJ b ϖ⁻¹ j) * (k₂⁻¹).val := by`. Rewrite using `[hqq, Matrix.mul_one]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`. Establish `s₁` using `isInt_sandwich hk₁ hq (diagJ a ϖ i * W)`. Establish `s₂` using `isInt_sandwich (inv_mem hp) (inv_mem hk₂) (ϖ • (W * diagJ b ϖ⁻¹ j))`. Rewrite using `[← diag_iff_latD hϖ i j W, ← s₁, ← s₂, ← f₁, ← f₂]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem mem_latM_iff {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {a b i j : ℕ}
     {m : GL (Fin a) (w.adicCompletion E) × GL (Fin b) (w.adicCompletion E)}
     {k₁ p : GL (Fin a) (w.adicCompletion E)} {k₂ q : GL (Fin b) (w.adicCompletion E)}
@@ -191,6 +257,11 @@ theorem mem_latM_iff {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {a b i j :
   rw [← diag_iff_latD hϖ i j W, ← s₁, ← s₂, ← f₁, ← f₂]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w ϖ hϖ i j _ _ m h₁ h₂`. Take `⟨k₁, hk₁, p, hp, e₁⟩` from `Set.mem_of_indicator_ne_zero h₁`. Take `⟨k₂, hk₂, q, hq, e₂⟩` from `Set.mem_of_indicator_ne_zero h₂`. Use `relIndex_of_equiv (phi p q) _ _ _ _ (fun X => ?_) (mem_latM_iff hϖ hk₁ hp hk₂ hq e₁ e₂)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `(isInt_sandwich hp (inv_mem hq) X).2 h`. Introduce `h`. Conclude with `(isInt_sandwich hp (inv_mem hq) X).1 h`.
+-/
 theorem latM_relIndex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (i j : ℕ), i ≤ a → j ≤ b → ∀ m : GLw a w × GLw b w, Tj ℂ a (Ov E w) ϖ i m.1 ≠ 0 → Tj ℂ b (Ov E w) ϖ j m.2 ≠ 0 → (intSub a b w).relIndex (latM ϖ m) = (intSub a b w).relIndex (latD ϖ a b i j) := by
   intro E _ _ _ a b w ϖ hϖ i j _ _ m h₁ h₂
   obtain ⟨k₁, hk₁, p, hp, e₁⟩ := Set.mem_of_indicator_ne_zero h₁

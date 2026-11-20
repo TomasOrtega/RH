@@ -17,6 +17,17 @@ open Formalism.UG GlobalTheory.PRep GlobalTheory.LFun
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G}
   {h : G → ℂ} {x y : V}
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.LGrp.mem_fixed.1 hx`. Establish `hg` using `GlobalTheory.LGrp.mem_fixed.1 hy`. Establish `bi : ∀ a ∈ K, ∀ b ∈ K, ∀ t, β (ρ (a * t * b) x) y = β (ρ t x) y` using `fun a ha b hb t => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hf b hb]`. Conclude with `(congrArg (β _) (hg a ha).symm).trans ((hi a _ _).trans (by rw [hd a ha, one_mul]))`.
+
+Establish `bi' : ∀ a ∈ K, ∀ b ∈ K, ∀ t, β x (ρ (a * t * b) y) = β x (ρ t y)` using `fun a ha b hb t => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hg b hb]`. Conclude with `(congrArg (fun u => β u _) (hf a ha).symm).trans ((hi a _ _).trans (by rw [hd a ha, one_mul]))`. Establish `inv : ∀ t, d t * β (ρ t⁻¹ x) y = β x (ρ t y)` using `fun t => by`. Rewrite using `[← hi t]`.
+
+Simplify using the standard rewrite rules. Establish `e1` using `(z • β.flip y).toAddMonoidHom.map_finsum (finite_heckeVec hK hh (ρ.comp θ) x)`. Establish `e2` using `(β x).toAddMonoidHom.map_finsum (finite_heckeVec hK hh ρ y)`. Use `e1.trans (Eq.trans (finsum_congr fun c => ?_) e2.symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z * β (h c.out • ρ (θ c.out) x) y = β x (h c.out • ρ c.out y)`.
+
+Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `h0 : h c.out = 0`. Simplify using `[h0]`. Take `⟨a, ha, b, hb, t, htt, e, hz⟩` from `ht _ h0`. Rewrite using `[mul_left_comm]`.
+
+Use `congr 1`. Rewrite using `[e, map_mul θ, map_mul θ, bi _ (hθ a ha) _ (hθ b hb), bi' _ ha _ hb, htt, ← hz, inv]`.
+-/
 private theorem pair_heckeVec_comp (hK : IsCommensurated K) (hh : h ∈ Hecke ℂ K) (hx : x ∈ fixed ρ K)
     (hy : y ∈ fixed ρ K) (β : V →ₗ[ℂ] V →ₗ[ℂ] ℂ) (d : G → ℂ) (hd : ∀ k ∈ K, d k = 1)
     (hi : ∀ g v w, β (ρ g v) (ρ g w) = d g * β v w) (θ : G →* G) (hθ : ∀ k ∈ K, θ k ∈ K) (z : ℂ)
@@ -44,6 +55,13 @@ private theorem pair_heckeVec_comp (hK : IsCommensurated K) (hh : h ∈ Hecke �
   congr 1
   rw [e, map_mul θ, map_mul θ, bi _ (hθ a ha) _ (hθ b hb), bi' _ ha _ hb, htt, ← hz, inv]
 
+/- English proof (translation)
+Use `open GlobalTheory.OrbitAvg in`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hfi : (GlobalTheory.OrbitAvg.stab ρ K y).FiniteIndex`. Establish `ho : IsOpen (GlobalTheory.OrbitAvg.stab ρ K y : Set K)` using `(hρ y).preimage continuous_subtype_val`. Use `haveI := (GlobalTheory.OrbitAvg.stab ρ K y).quotient_finite_of_isOpen ho`.
+
+Conclude with `Subgroup.finiteIndex_of_finite_quotient`. Use `⟨GlobalTheory.OrbitAvg.avg ρ K y, GlobalTheory.LGrp.mem_fixed.2 fun u hu => GlobalTheory.OrbitAvg.avg_invariant ρ K hfi ⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Use `haveI := Fintype.ofFinite (K ⧸ GlobalTheory.OrbitAvg.stab ρ K y)`. Establish `hc : ((GlobalTheory.OrbitAvg.stab ρ K y).index : ℂ) ≠ 0` using `by exact_mod_cast hfi.index_ne_zero`. Establish `h1 : ∀ q : K ⧸ GlobalTheory.OrbitAvg.stab ρ K y, l (ρ (q.out : K) y) = l y` using `fun q => hl _ q.out.2 y`.
+
+Simplify using `only [GlobalTheory.OrbitAvg.avg, GlobalTheory.OrbitAvg.avgH, GlobalTheory.OrbitAvg.cv, finsum_eq_sum_of_fintype, map_smul, map_sum]`. Rewrite using `[Finset.sum_congr rfl fun q _ => h1 q, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Subgroup.index, nsmul_eq_mul, smul_eq_mul, inv_mul_cancel_left₀ hc]`.
+-/
 private theorem exists_fixed_pair [TopologicalSpace G] [IsTopologicalGroup G] (hρ : IsSmooth ρ)
     (hK : IsCompact (K : Set G)) (l : V →ₗ[ℂ] ℂ) (hl : ∀ k ∈ K, ∀ v, l (ρ k v) = l v) (y : V) :
     ∃ y' ∈ fixed ρ K, l y' = l y := by
@@ -66,6 +84,21 @@ private theorem exists_fixed_pair [TopologicalSpace G] [IsTopologicalGroup G] (h
 end General
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.LFun.ConjPlace in
+/- English proof (translation)
+Introduce `E _ _ n w V _ _ ρ hρ χ hχ β hβ hi B hB`. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hd : ∀ k ∈ KGL w n, ((χ.loc w (Matrix.GeneralLinearGroup.det k) : ℂˣ) : ℂ) = 1` using `fun k hk => by`. Rewrite using `[hχ _ (GlobalTheory.SphGal.isUnitAt_det_of_mem hk), Units.val_one]`. Establish `hKc : IsCompact (KGL w n : Set (GL (Fin n) (w.adicCompletion E)))` using `GlobalTheory.LFun.IntPtsUnitary.isCompact_GLint _ (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers E w)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y, β x y ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Conclude with `hx.1 (hβ x fun y => by_contra fun h => hn ⟨y, h⟩)`. Take `⟨y, hyK, hy⟩` from `exists_fixed_pair hρ hKc (β x) (fun k hk v => by`. Use `hi k x v` as an intermediate fact.
+
+Rewrite using `[GlobalTheory.LGrp.mem_fixed.1 hx.2.1 k hk, hd k hk, one_mul] at this) y₀` and apply the resulting hypothesis. Establish `hne : β x y ≠ 0` using `hy ▸ hy₀`. Establish `hy'` using `hB.2 y hyK fun h0 => hne (by rw [h0, map_zero])`. Set `c` to `RingEquiv.refl (w.adicCompletion E)`. Establish `hc : ∀ a, Valued.v (c a) = Valued.v a` using `fun _ => rfl`.
+
+Establish `hx'` using `isSatVecGL_invT c hc rfl hx`. Establish `hK` using `mem_iff_invT (n := n) c (map_mem_Ov_iff c hc)`. Take `⟨p, hp⟩` from `exists_isUnifV w`. Take `⟨ϖ, rfl⟩ : ∃ ϖ : (w.adicCompletion E)ˣ, ϖ = p` from `⟨Units.mk0 p fun e => by simp [IsUnifV, e] at hp, rfl⟩`. Use `eq_of_satEig_eq (qV_ne_zero w) (by simpa using hx.2.2.1) hx.2.2.1 fun j hj => ?_` and prove the remaining obligations.
+
+Establish `key` using `pair_heckeVec_comp (Final.GLintComm E w n) (Tj_mem_hecke hp j) hx.2.1 hyK β _ hd hi (GlobalTheory.LFun.ConjPlace.invT c n).symm.toMonoidHom (fun k hk => (hK _).2 (by simpa using hk)) ((χ.val w : ℂ) ^ j) (fun g hg => by`. Rewrite `hg` using `[Tj_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, b, hb, e⟩ : ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), g = a * dGL n ϖ j * b := by`. Assume the negation of the conclusion as `hn`. Conclude with `hg (if_neg hn)`.
+
+Use `⟨a, ha, b, hb, _, (GlobalTheory.LFun.ConjPlace.invT c n).symm_apply_eq.2 (invT_dGL c ϖ j).symm, e, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SphGal.loc_det_of_Tj hχ hp hj, Units.val_pow_eq_pow_val]`. Rewrite using `[Tj_apply, if_pos ⟨1, one_mem _, 1, one_mem _, by rw [one_mul, mul_one]; rfl⟩]`. Conclude with `one_ne_zero)`. Rewrite `key` using `[hx'.2.2.2 _ hp j hj, hy'.2.2.2 _ hp j hj, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc]`.
+
+Rewrite using `[GlobalTheory.SphGal.satEig_map_mul]`. Conclude with `mul_right_cancel₀ hne key`.
+-/
 theorem UpperTheory.satake_inv_mul_char_eq_of_similitude_pairing :
     ∀ (F : Type) [Field F] [NumberField F] (n : ℕ) (w : HeightOneSpectrum (𝓞 F)) (V : Type) [AddCommGroup V] [Module ℂ V]
         (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion F)) V), GlobalTheory.PRep.IsSmooth ρ → ∀ (χ : HChar F), χ.UnrAt w →

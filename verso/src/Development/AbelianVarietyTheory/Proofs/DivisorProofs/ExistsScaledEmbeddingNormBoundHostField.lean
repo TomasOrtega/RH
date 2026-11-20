@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Proof.GNorm
 
+/- English proof (translation)
+Establish `hmap : σ τ ((T * ξ) k j) = (T.map (σ τ) * ξ.map (σ τ)) k j`. Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression. Establish `key : ((s k : ℝ) : ℂ)⁻¹ * σ τ ((T * ξ) k j) = (T.map (σ τ) * (B τ * ξ.map (σ τ))) k j`. Rewrite using `[hmap, ← Matrix.mul_assoc, hB τ, Matrix.mul_assoc, Matrix.diagonal_mul]`.
+
+Establish `hnorm : ‖σ τ ((T * ξ) k j)‖ / s k = ‖((s k : ℝ) : ℂ)⁻¹ * σ τ ((T * ξ) k j)‖`. Rewrite using `[norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (hs k).le, div_eq_inv_mul]`. Rewrite using `[hnorm, key, Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl (fun i _ => norm_mul _ _)`.
+-/
 theorem entry_bound {ι κ E : Type} [Fintype κ] [DecidableEq κ] [Ring E] {m n : ℕ}
     (σ : ι → E →+* ℂ) (T : Matrix κ (Fin m) E) (s : κ → ℝ) (hs : ∀ k, 0 < s k)
     (B : ι → Matrix (Fin m) (Fin m) ℂ)
@@ -24,6 +29,21 @@ theorem entry_bound {ι κ E : Type} [Fintype κ] [DecidableEq κ] [Ring E] {m n
   refine (norm_sum_le _ _).trans (le_of_eq ?_)
   exact Finset.sum_congr rfl (fun i _ => norm_mul _ _)
 
+/- English proof (translation)
+Use `set c : ℝ := ∑ τ, ∑ k, ∑ i, ‖T.map (σ τ) k i‖ with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Establish `hac : ∀ τ k i, ‖T.map (σ τ) k i‖ ≤ c`. Introduce `τ k i`. Establish `h1 : ‖T.map (σ τ) k i‖ ≤ ∑ i', ‖T.map (σ τ) k i'‖` using `Finset.single_le_sum (f := fun i' => ‖T.map (σ τ) k i'‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+
+Establish `h2 : ∑ i', ‖T.map (σ τ) k i'‖ ≤ ∑ k', ∑ i', ‖T.map (σ τ) k' i'‖` using `Finset.single_le_sum (f := fun k' => ∑ i', ‖T.map (σ τ) k' i'‖) (fun _ _ => by positivity) (Finset.mem_univ k)`. Establish `h3 : ∑ k', ∑ i', ‖T.map (σ τ) k' i'‖ ≤ c` using `Finset.single_le_sum (f := fun τ' => ∑ k', ∑ i', ‖T.map (σ τ') k' i'‖) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨1 + Fintype.card κ * c, by nlinarith [hc0, (Nat.cast_nonneg (Fintype.card κ) : (0:ℝ) ≤ _)], ?_⟩` and prove the remaining obligations. Introduce `s hs B hB ξ`.
+
+Use `set b : ι → Fin m → Fin n → ℝ := fun τ i j => ‖(B τ * ξ.map (σ τ)) i j‖ with hb`. Establish `hb0 : ∀ τ i j, 0 ≤ b τ i j` using `fun _ _ _ => norm_nonneg _`. Establish `S0 : 0 ≤ ∑ τ, ∑ i, ∑ j, b τ i j` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.sum_div]`.
+
+Use `_ ≤ ∑ p : κ × Fin n, ∑ τ, ∑ i, c * b τ i p.2 := by gcongr with p _ τ _`. Use `(entry_bound σ T s hs B hB ξ τ p.1 p.2).trans ?_` and prove the remaining obligations. Use `gcongr with i _`. Conclude with `hac τ p.1 i`. Use `_ = ∑ _k : κ, ∑ j : Fin n, ∑ τ, ∑ i, c * b τ i j := by`.
+
+Rewrite using `[Fintype.sum_prod_type]`. Use `_ = Fintype.card κ * (c * ∑ j, ∑ τ, ∑ i, b τ i j) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Simplify using `only [Finset.mul_sum]`. Use `_ = Fintype.card κ * c * ∑ τ, ∑ i, ∑ j, b τ i j := by`.
+
+Rewrite using `[mul_assoc]`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `_ ≤ (1 + Fintype.card κ * c) * ∑ τ, ∑ i, ∑ j, b τ i j := by nlinarith`.
+-/
 theorem gnorm_gen {ι κ E : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] [Ring E] (m n : ℕ)
     (σ : ι → E →+* ℂ) (T : Matrix κ (Fin m) E) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ (s : κ → ℝ), (∀ k, 0 < s k) → ∀ B : ι → Matrix (Fin m) (Fin m) ℂ,
@@ -72,6 +92,9 @@ end GlobalTheory.Proof.GNorm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D κ _ _ m n T`. Conclude with `GlobalTheory.Proof.GNorm.gnorm_gen m n (tauE D) T`.
+-/
 theorem tGnorm : ∀ (D : D7) (κ : Type) [Fintype κ] [DecidableEq κ] (m n : ℕ) (T : Matrix κ (Fin m) D.host.E), ∃ C : ℝ, 1 ≤ C ∧ ∀ (s : κ → ℝ), (∀ k, 0 < s k) → ∀ B : D.what₂.Tau → Matrix (Fin m) (Fin m) ℂ, (∀ τ, T.map (tauE D τ) * B τ = Matrix.diagonal (fun k => ((s k : ℝ) : ℂ)⁻¹) * T.map (tauE D τ)) → ∀ ξ : Matrix (Fin m) (Fin n) D.host.E, ∑ p : κ × Fin n, (∑ τ, ‖tauE D τ ((T * ξ) p.1 p.2)‖) / s p.1 ≤ C * ∑ τ, ∑ i, ∑ j, ‖(B τ * ξ.map (tauE D τ)) i j‖ := by
   intro D κ _ _ m n T
   exact GlobalTheory.Proof.GNorm.gnorm_gen m n (tauE D) T

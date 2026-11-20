@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.DenseAvoid
 
+/- English proof (translation)
+Set `Φ : B ⊗[F] E →+* K ⊗[F] E` to `(Algebra.TensorProduct.map ρ (AlgHom.id F E)).toRingHom`. Establish `hΦ : Function.Surjective Φ` using `Algebra.TensorProduct.map_surjective ρ (AlgHom.id F E) hρ (fun y => ⟨y, rfl⟩)`. Use `haveI : IsArtinianRing (K ⊗[F] E) := IsArtinianRing.of_finite K (K ⊗[F] E)`. Use `((IsArtinianRing.setOfPred_isMaximal_finite (K ⊗[F] E)).image (Ideal.comap Φ)).subset ?_` and prove the remaining obligations. Introduce and unpack `m ⟨hm, hfm⟩`.
+
+Establish `h1 : 1 - algebraMap B (B ⊗[F] E) f ∈ m`. Establish `h0 : algebraMap B (B ⊗[F] E) f * (1 - algebraMap B (B ⊗[F] E) f) ∈ m`. Rewrite using `[mul_sub, mul_one, ← map_mul, hf, sub_self]`. Conclude with `m.zero_mem`. Conclude with `(hm.isPrime.mem_or_mem h0).resolve_left hfm`.
+
+Establish `hker : RingHom.ker Φ ≤ m`. Establish `h` using `Algebra.TensorProduct.rTensor_ker (R := F) (C := E) ρ hρ`. Express the relevant statement in the definitionally equal form `RingHom.ker (Algebra.TensorProduct.map ρ (AlgHom.id F E)) ≤ m`. Rewrite using `[h, Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+
+Establish `hx' : f * x = 0` using `hk x hx`. Express the relevant statement in the definitionally equal form `x ⊗ₜ[F] (1 : E) ∈ m`. Establish `e1 : algebraMap B (B ⊗[F] E) f * (x ⊗ₜ[F] (1 : E)) = 0`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, hx', TensorProduct.zero_tmul]`. Establish `e2 : x ⊗ₜ[F] (1 : E) = (1 - algebraMap B (B ⊗[F] E) f) * (x ⊗ₜ[F] (1 : E))`.
+
+Rewrite using `[sub_mul, one_mul, e1, sub_zero]`. Rewrite using `[e2]`. Conclude with `m.mul_mem_right _ h1`. Establish `hc : Ideal.comap Φ (m.map Φ) = m`. Rewrite using `[Ideal.comap_map_of_surjective' Φ hΦ, sup_eq_left.2 hker]`.
+
+Use `⟨m.map Φ, ?_, hc⟩` and prove the remaining obligations. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective Φ hΦ hm with h | h` into its components or cases. Conclude with `absurd (by rw [← hc, h, Ideal.comap_top]) hm.ne_top`. Conclude with `h`.
+-/
 theorem finite_maximal_not_mem {F B E K : Type} [Field F] [CommRing B] [Algebra F B] [Field E] [Algebra F E]
     [FiniteDimensional F E] [CommRing K] [Algebra F K] [IsArtinianRing K]
     (ρ : B →ₐ[F] K) (hρ : Function.Surjective ρ) (f : B) (hf : f * f = f)
@@ -54,6 +67,11 @@ open GlobalTheory.LocalGlobalChar
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hext : ∀ a b : AF F, fstA F a = fstA F b → sndA F a = sndA F b → a = b` using `fun a b h1 h2 => Prod.ext h1 h2`. Use `hext _ _ ?_ (fin_ext fun u => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_sum]`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) = 1 + ∑ v ∈ S, (0 : Ainf F)`. Rewrite using `[Finset.sum_const_zero, add_zero]`.
+
+Rewrite using `[map_add, map_sum, map_add, map_sum]`. Express the relevant statement in the definitionally equal form `evalV F u (ind S) = evalV F u 0 + ∑ v ∈ S, evalV F u (ind {v})`. Repeatedly rewrite using `[ev_ind, Finset.mem_singleton, map_zero, zero_add]`. Rewrite using `[Finset.sum_ite_eq]`.
+-/
 theorem eps_eq_sum (S : Finset (HeightOneSpectrum (𝓞 F))) :
     eps S = pairA F 1 0 + ∑ v ∈ S, pairA F 0 (ind {v}) := by
   classical
@@ -69,6 +87,17 @@ theorem eps_eq_sum (S : Finset (HeightOneSpectrum (𝓞 F))) :
 
 variable {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing (Ainf F) := inferInstanceAs (IsArtinianRing ((w : InfinitePlace F) → w.Completion))`. Establish `hinf` using `finite_maximal_not_mem (E := E) (fstA F) (fun y => ⟨pairA F y 0, rfl⟩) (pairA F 1 0) (Prod.ext (mul_one _) (mul_zero _)) (fun x hx => Prod.ext (by`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) * x.1 = 0`. Rewrite using `[one_mul]`. Conclude with `hx) (zero_mul _))`.
+
+Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 F), {m : Ideal (AF F ⊗[F] E) | m.IsMaximal ∧ algebraMap (AF F) (AF F ⊗[F] E) (pairA F 0 (ind {v})) ∉ m}.Finite` using `fun v => finite_maximal_not_mem (E := E) ((evalV F v).comp (sndA F)) (fun y => ⟨pairA F 0 (singleV F v y), GlobalTheory.SplitCoord.evalV_single v y⟩) (pairA F 0 (ind {v})) (pl_mul_self v) (fun x hx => Prod.ext (zero_mul _) (fin_ext fun u => by`. Express the relevant statement in the definitionally equal form `evalV F u (ind {v} * x.2) = evalV F u 0`. Rewrite using `[map_mul, ev_ind, map_zero]`. Use `split_ifs with h`. Rewrite `h` using `[Finset.mem_singleton]`.
+
+Substitute `h` using the available equality. Express the relevant statement in the definitionally equal form `evalV F u x.2 = 0 at hx`. Rewrite using `[hx, mul_zero]`. Conclude with `zero_mul _))`. Use `(hinf.union (S.finite_toSet.biUnion fun v _ => hfin v)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `m ⟨hm, hem⟩`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_and, not_not, not_exists] at hn`. Apply `hem` to reduce the goal to its premises. Rewrite using `[eps_eq_sum, map_add, map_sum]`.
+
+Conclude with `m.add_mem (hn.1 hm) (m.sum_mem fun v hv => hn.2 v hv hm)`.
+-/
 theorem finite_maximal_not_mem_eps (S : Finset (HeightOneSpectrum (𝓞 F))) :
     {m : Ideal (AF F ⊗[F] E) | m.IsMaximal ∧ algebraMap (AF F) (AF F ⊗[F] E) (eps S) ∉ m}.Finite := by
   classical
@@ -102,6 +131,23 @@ end GlobalTheory.DenseAvoid
 
 open GlobalTheory.DenseAvoid in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ S ψ hψ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : Infinite F := Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`. Use `set e := algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) with he_def`. Establish `he : e * e = e` using `by rw [he_def, ← map_mul, GlobalTheory.LocalGlobalChar.eps_mul_self]`.
+
+Establish `hone : ∀ m : Ideal (AE F E), m.IsPrime → e ∉ m → 1 - e ∈ m` using `fun m hm hem => by`. Establish `h0 : e * (1 - e) ∈ m` using `by rw [mul_sub, mul_one, he, sub_self]; exact m.zero_mem`. Conclude with `(hm.mem_or_mem h0).resolve_left hem`. Establish `hM` using `finite_maximal_not_mem_eps (E := E) S`. Set `bad : Set F` to `⋃ m ∈ {m : Ideal (AE F E) | m.IsMaximal ∧ e ∉ m}, {t : F | Ideal.Quotient.mk m (ψ.eval (algebraMap F (AE F E) t)) = 0}`.
+
+Establish `hbad : bad.Finite`. Use `hM.biUnion fun m hm => ?_` and prove the remaining obligations. Use `haveI := hm.1`. Use `letI := Ideal.Quotient.field m`. Establish `h1 : Ideal.Quotient.mk m e = 1`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk m), Ideal.Quotient.eq, ← neg_sub]`. Conclude with `m.neg_mem (hone m hm.1.isPrime hm.2)`. Establish `hne` using `hψ (AE F E ⧸ m) (Ideal.Quotient.mk m) h1`. Set `j : F →+* AE F E ⧸ m` to `(Ideal.Quotient.mk m).comp (algebraMap F (AE F E))`. Use `((Polynomial.finite_setOf_isRoot hne).preimage j.injective.injOn).subset fun t ht => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk m (ψ.eval (algebraMap F (AE F E) t)) = 0 at ht`. Express the relevant statement in the definitionally equal form `Polynomial.IsRoot _ (j t)`. Rewrite using `[Polynomial.IsRoot.def, Polynomial.eval_map, RingHom.comp_apply, Polynomial.eval₂_hom, ht]`. Take `⟨t, ht⟩` from `hbad.infinite_compl.nonempty`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hn)`. Distinguish the cases in `hem : e ∈ m`. Establish `h2 : 1 - e ∈ m`. Use `m.sub_mem hxm (m.mul_mem_right (ψ.eval (algebraMap F (AE F E) t)) hem)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 (by simpa using m.add_mem hem h2))`. Establish `h2 : e * ψ.eval (algebraMap F (AE F E) t) ∈ m`. Use `m.sub_mem hxm (hone m hm.isPrime hem)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `h3` using `(hm.isPrime.mem_or_mem h2).resolve_left hem`. Apply `ht` to reduce the goal to its premises. Simplify using `only [bad, Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨m, ⟨hm, hem⟩, Ideal.Quotient.eq_zero_iff_mem.2 h3⟩`.
+-/
 theorem GlobalTheory.DenseAvoid.exists_unit_eval : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (S : Finset (HeightOneSpectrum (𝓞 F))) (ψ : Polynomial (AE F E)), (∀ (Ω : Type) [Field Ω] (φ : AE F E →+* Ω), φ (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) = 1 → ψ.map φ ≠ 0) → ∃ t : F, IsUnit (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) * ψ.eval (algebraMap F (AE F E) t) + (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S))) := by
   intro F E _ _ _ _ _ S ψ hψ
   classical

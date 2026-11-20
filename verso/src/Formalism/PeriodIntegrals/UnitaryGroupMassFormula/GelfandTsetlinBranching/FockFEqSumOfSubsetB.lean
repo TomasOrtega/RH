@@ -9,6 +9,9 @@ namespace PI.WGB
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0]`.
+-/
 private theorem fockF_eq_sum_lemma {σ : Type} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
     Formalism.REAL.fockF f g =
@@ -18,6 +21,11 @@ private theorem fockF_eq_sum_lemma {σ : Type} (f g : MvPolynomial σ ℂ) (S : 
   have h0 : f.coeff m = 0 := by simpa [MvPolynomial.mem_support_iff] using hm
   simp [h0]
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_lemma (c • f) g f.support MvPolynomial.support_smul]`. Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_smul_left_B {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) g = c * Formalism.REAL.fockF f g := by
   rw [fockF_eq_sum_lemma (c • f) g f.support MvPolynomial.support_smul]
@@ -27,6 +35,9 @@ theorem fockF_smul_left_B {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
   rw [MvPolynomial.coeff_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_smul_right_B {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (c • g) = star c * Formalism.REAL.fockF f g := by
   unfold Formalism.REAL.fockF
@@ -35,6 +46,9 @@ theorem fockF_smul_right_B {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
   rw [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']
   ring
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_lemma (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add, fockF_eq_sum_lemma f g (f.support ∪ f'.support) Finset.subset_union_left, fockF_eq_sum_lemma f' g (f.support ∪ f'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_add_left_B {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f + f') g = Formalism.REAL.fockF f g + Formalism.REAL.fockF f' g := by
   rw [fockF_eq_sum_lemma (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add,
@@ -44,6 +58,9 @@ theorem fockF_add_left_B {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ 
   rw [MvPolynomial.coeff_add]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_nonneg fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show star (f.coeff m) = (starRingEnd ℂ) (f.coeff m) from rfl, Complex.mul_conj, Complex.re_ofReal_mul, Complex.natCast_re]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem fockF_self_re_nonneg_B {σ : Type} (f : MvPolynomial σ ℂ) : 0 ≤ (Formalism.REAL.fockF f f).re := by
   unfold Formalism.REAL.fockF
   rw [Complex.re_sum]
@@ -75,6 +92,13 @@ def coreB {N : ℕ} (lam : DomWeight N) : InnerProductSpace.Core ℂ (nablaSq �
     have hx' : Formalism.REAL.fockF (x : MvPolynomial (Fin N × Fin N) ℂ) x = 0 := hx
     rw [hx'] at this; simp at this
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hw` using `(Submodule.mem_inf.mp hf).1`. Rewrite `hw` using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`. Rewrite using `[MvPolynomial.mem_homogeneousSubmodule]`. Introduce `d hd`.
+
+Establish `h1` using `hw hd`. Rewrite using `[← h1]`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, Formalism.GradedWeylDivisibility.colW, Pi.one_apply, smul_eq_mul, mul_one]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem dualWeyl_le_homog_B (r n : ℕ) (ν : Fin n → ℕ) :
     Formalism.GradedWeylDivisibility.dualWeyl ℂ r n ν ≤ homogeneousSubmodule (Fin r × Fin n) ℂ (∑ s, ν s) := by
   intro f hf
@@ -91,6 +115,15 @@ theorem dualWeyl_le_homog_B (r n : ℕ) (ν : Fin n → ℕ) :
   rw [← Finset.mul_sum]
   simp
 
+/- English proof (translation)
+Establish `hle` using `dualWeyl_le_homog_B N N lam.natW`. Establish `hfin : {d : (Fin N × Fin N) →₀ ℕ | d.degree = ∑ s, lam.natW s}.Finite`. Use `(Finset.finsuppAntidiag Finset.univ (∑ s, lam.natW s)).finite_toSet.subset fun d hd => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Finset.mem_finsuppAntidiag]`. Use `⟨?_, Finset.subset_univ _⟩` and prove the remaining obligations.
+
+Rewrite using `[← hd, Finsupp.degree_eq_sum]`. Establish `hsub : homogeneousSubmodule (Fin N × Fin N) ℂ (∑ s, lam.natW s) ≤ Submodule.span ℂ ((fun d => (MvPolynomial.monomial d (1 : ℂ))) '' {d : (Fin N × Fin N) →₀ ℕ | d.degree = ∑ s, lam.natW s})`. Introduce `f hf`. Rewrite `hf` using `[MvPolynomial.mem_homogeneousSubmodule]`. Rewrite using `[f.as_sum]`.
+
+Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = ∑ s, lam.natW s`. Establish `h2` using `hf (MvPolynomial.mem_support_iff.mp hd)`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `h2`.
+
+Rewrite using `[show MvPolynomial.monomial d (f.coeff d) = f.coeff d • MvPolynomial.monomial d (1 : ℂ) by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, hdeg, rfl⟩)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ ((fun d => (MvPolynomial.monomial d (1 : ℂ))) '' {d : (Fin N × Fin N) →₀ ℕ | d.degree = ∑ s, lam.natW s})) := FiniteDimensional.span_of_finite ℂ (hfin.image _)`. Conclude with `Submodule.finiteDimensional_of_le (hle.trans hsub)`.
+-/
 theorem fd_B (N : ℕ) (lam : DomWeight N) : FiniteDimensional ℂ (nablaSq ℂ N lam) := by
   have hle := dualWeyl_le_homog_B N N lam.natW
   have hfin : {d : (Fin N × Fin N) →₀ ℕ | d.degree = ∑ s, lam.natW s}.Finite := by
@@ -123,32 +156,64 @@ def gStarB {N : ℕ} (g : GL (Fin N) ℂ) : GL (Fin N) ℂ where
   val_inv := by rw [← Matrix.conjTranspose_mul]; simp
   inv_val := by rw [← Matrix.conjTranspose_mul]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gStarB_val {N : ℕ} (g : GL (Fin N) ℂ) :
     ((gStarB g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = Matrix.conjTranspose (g : Matrix (Fin N) (Fin N) ℂ) := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [embGL, Units.coe_map, gStarB_val, MonoidHom.comp_apply]`. Simplify using `[blkHom, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem embGL_gStarB {n N : ℕ} (h : n + 1 = N) (g : GL (Fin n) ℂ) :
     embGL ℂ n N h (gStarB g) = gStarB (embGL ℂ n N h g) := by
   apply Units.ext
   simp only [embGL, Units.coe_map, gStarB_val, MonoidHom.comp_apply]
   simp [blkHom, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, gStarB_val, Matrix.det_conjTranspose, star_zpow₀]`.
+-/
 theorem detPow_gStarB {N : ℕ} (g : GL (Fin N) ℂ) (k : ℤ) :
     detPow ℂ N (gStarB g) k = star (detPow ℂ N g k) := by
   unfold detPow
   rw [Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply,
     Matrix.GeneralLinearGroup.val_det_apply, gStarB_val, Matrix.det_conjTranspose, star_zpow₀]
 
+/- English proof (translation)
+Unfold `sqAct`. Conclude with `(nablaSq ℂ N lam).smul_mem _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)`.
+-/
 theorem sqAct_mem_B {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ nablaSq ℂ N lam) : sqAct ℂ N lam g f ∈ nablaSq ℂ N lam := by
   unfold sqAct
   exact (nablaSq ℂ N lam).smul_mem _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)
 
+/- English proof (translation)
+Unfold `sqAct`. Rewrite using `[fockF_smul_left_B, fockF_smul_right_B, detPow_gStarB, star_star, Formalism.GradedWeylDivisibility.fockRowAdj]`. Use `congr 2`.
+-/
 theorem fock_sqAct_adj_B {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (x y : MvPolynomial (Fin N × Fin N) ℂ) :
     Formalism.REAL.fockF (sqAct ℂ N lam g x) y = Formalism.REAL.fockF x (sqAct ℂ N lam (gStarB g) y) := by
   unfold sqAct
   rw [fockF_smul_left_B, fockF_smul_right_B, detPow_gStarB, star_star, Formalism.GradedWeylDivisibility.fockRowAdj]
   congr 2
 
+/- English proof (translation)
+Introduce `n N h lam W hW hstab`. Set `W' : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ)` to `{ carrier := {f | f ∈ nablaSq ℂ N lam ∧ ∀ w ∈ W, Formalism.REAL.fockF f w = 0} add_mem' := fun {a b} ha hb => ⟨(nablaSq ℂ N lam).add_mem ha.1 hb.1, fun w hw => by`. Rewrite using `[fockF_add_left_B, ha.2 w hw, hb.2 w hw, add_zero]⟩`. Use the proof step `zero_mem' := ⟨(nablaSq ℂ N lam).zero_mem, fun w _ => by simp [Formalism.REAL.fockF]⟩`. Use the proof step `smul_mem' := fun c a ha => ⟨(nablaSq ℂ N lam).smul_mem c ha.1, fun w hw => by`.
+
+Rewrite using `[fockF_smul_left_B, ha.2 w hw, mul_zero]⟩ }`. Establish `hW'V : W' ≤ nablaSq ℂ N lam` using `fun f hf => hf.1`. Use `⟨W', hW'V, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g f hf`. Use `⟨sqAct_mem_B lam _ f hf.1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[fock_sqAct_adj_B, ← embGL_gStarB]`. Conclude with `hf.2 _ (hstab (gStarB g) w hw)`. Apply `le_antisymm (sup_le hW hW'V)` to reduce the goal to its premises. Introduce `f hf`. Use `letI := coreB lam`.
+
+Use `letI : NormedAddCommGroup (nablaSq ℂ N lam) := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ (nablaSq ℂ N lam) := InnerProductSpace.ofCore (coreB lam).toCore`. Use `haveI : FiniteDimensional ℂ (nablaSq ℂ N lam) := fd_B N lam`. Set `K : Submodule ℂ (nablaSq ℂ N lam)` to `W.comap (nablaSq ℂ N lam).subtype`. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq K K.orthogonal`.
+
+Rewrite `h1` using `[Submodule.inf_orthogonal_eq_bot, finrank_bot, add_zero, Submodule.finrank_add_finrank_orthogonal]`. Establish `hs : K ⊔ K.orthogonal = ⊤` using `Submodule.eq_top_of_finrank_eq h1`. Establish `hmem : (⟨f, hf⟩ : nablaSq ℂ N lam) ∈ K ⊔ K.orthogonal`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hmem`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(a : MvPolynomial (Fin N × Fin N) ℂ), ha, (b : MvPolynomial (Fin N × Fin N) ℂ), ⟨b.2, fun w hw => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_orthogonal K b).mp hb ⟨w, hW hw⟩ hw`. Establish `hv` using `congrArg Subtype.val hab`.
+
+Simplify using `using hv`. Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Take `⟨hfW, hfW'⟩` from `Submodule.mem_inf.mp hf`. Establish `h0 : Formalism.REAL.fockF f f = 0` using `hfW'.2 f hfW`.
+
+Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hne`. Establish `hpos` using `(Formalism.GradedWeylDivisibility.fockPos _ f hne).1`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`.
+-/
 theorem stableCompl_B : StableCompl := by
   intro n N h lam W hW hstab
   classical

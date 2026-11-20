@@ -18,6 +18,9 @@ namespace GlobalTheory.CompanionTheory.MPDict.TensRep
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+The claim follows from `DVR.res_res' _ _ _`.
+-/
 theorem res_blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W W' : (MP ℤ m n).Opens} (h : W' ≤ W)
     (h' : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) :
     Semi.res h (blockUnit i j h') = blockUnit i j (h.trans h') :=
@@ -27,6 +30,9 @@ def mulUnit {P Q C : (MP ℤ m n).Opens} (u : Γ(MP ℤ m n, P ⊓ C)ˣ) (v : Γ
     Γ(MP ℤ m n, P ⊓ Q ⊓ C)ˣ :=
   Semi.res (inf_le_inf_right _ inf_le_left) u * Semi.res (inf_le_inf_right _ inf_le_right) v
 
+/- English proof (translation)
+Rewrite using `[mulUnit, Units.val_mul, CxPts.ev_mul]`. Conclude with `congrArg₂ (· * ·) (CxPts.ev_res _ hy _) (CxPts.ev_res _ hy _)`.
+-/
 theorem ev_mulUnit {P Q C : (MP ℤ m n).Opens} (u : Γ(MP ℤ m n, P ⊓ C)ˣ) (v : Γ(MP ℤ m n, Q ⊓ C)ˣ)
     {y : CxPts (mpStr ℤ m n) σ₀} (hy : y ∈ ptsIn (mpStr ℤ m n) σ₀ (P ⊓ Q ⊓ C)) :
     CxPts.ev (mpStr ℤ m n) σ₀ (P ⊓ Q ⊓ C) (mulUnit u v : Γ(MP ℤ m n, P ⊓ Q ⊓ C)ˣ) y =
@@ -35,6 +41,11 @@ theorem ev_mulUnit {P Q C : (MP ℤ m n).Opens} (u : Γ(MP ℤ m n, P ⊓ C)ˣ) 
   rw [mulUnit, Units.val_mul, CxPts.ev_mul]
   exact congrArg₂ (· * ·) (CxPts.ev_res _ hy _) (CxPts.ev_res _ hy _)
 
+/- English proof (translation)
+Establish `l₁ : P ⊓ Q ⊓ (P' ⊓ Q') ⊓ C ≤ P ⊓ P' ⊓ C` using `inf_le_inf_right _ (inf_le_inf inf_le_left inf_le_left)`. Establish `l₂ : P ⊓ Q ⊓ (P' ⊓ Q') ⊓ C ≤ Q ⊓ Q' ⊓ C` using `inf_le_inf_right _ (inf_le_inf inf_le_right inf_le_right)`. Establish `e₁` using `congrArg (Semi.res l₁) hu`. Establish `e₂` using `congrArg (Semi.res l₂) hv`. Simplify using `only [map_mul, DVR.res_res'] at e₁ e₂`.
+
+Simplify using `only [mulUnit, map_mul, DVR.res_res']`. Conclude with `(congrArg₂ (· * ·) e₁ e₂).trans (mul_mul_mul_comm _ _ _ _)`.
+-/
 theorem frame_mulUnit {P P' Q Q' C : (MP ℤ m n).Opens} (g : Γ(MP ℤ m n, P ⊓ P')ˣ) (g' : Γ(MP ℤ m n, Q ⊓ Q')ˣ)
     (u : Γ(MP ℤ m n, P ⊓ C)ˣ) (u' : Γ(MP ℤ m n, P' ⊓ C)ˣ) (v : Γ(MP ℤ m n, Q ⊓ C)ˣ) (v' : Γ(MP ℤ m n, Q' ⊓ C)ˣ)
     (a₁ : P ⊓ P' ⊓ C ≤ P' ⊓ C) (a₂ : P ⊓ P' ⊓ C ≤ P ⊓ P') (a₃ : P ⊓ P' ⊓ C ≤ P ⊓ C)
@@ -51,6 +62,11 @@ theorem frame_mulUnit {P P' Q Q' C : (MP ℤ m n).Opens} (g : Γ(MP ℤ m n, P �
   simp only [mulUnit, map_mul, DVR.res_res']
   exact (congrArg₂ (· * ·) e₁ e₂).trans (mul_mul_mul_comm _ _ _ _)
 
+/- English proof (translation)
+Establish `l₁ : P ⊓ Q ⊓ (mchart c ⊓ mchart c') ≤ P ⊓ (mchart c ⊓ mchart c')` using `inf_le_inf_right _ inf_le_left`. Establish `l₂ : P ⊓ Q ⊓ (mchart c ⊓ mchart c') ≤ Q ⊓ (mchart c ⊓ mchart c')` using `inf_le_inf_right _ inf_le_right`. Establish `e₁` using `congrArg (Semi.res l₁) hu`. Establish `e₂` using `congrArg (Semi.res l₂) hv`. Simplify using `only [map_mul, map_prod, map_zpow, DVR.res_res'] at e₁ e₂`.
+
+Simplify using `only [mulUnit, map_mul, DVR.res_res']`. Use `((congrArg₂ (· * ·) e₁ e₂).trans (mul_mul_mul_comm _ _ _ _)).trans (congrArg (HMul.hMul _) ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[res_blockUnit, res_blockUnit, ← zpow_add]`.
+-/
 theorem mono_mulUnit {P Q : (MP ℤ m n).Opens} {c c' : ∀ k, Bk n k} (a b : Fin (m + 1) → ℤ)
     (u : Γ(MP ℤ m n, P ⊓ mchart c)ˣ) (u' : Γ(MP ℤ m n, P ⊓ mchart c')ˣ)
     (v : Γ(MP ℤ m n, Q ⊓ mchart c)ˣ) (v' : Γ(MP ℤ m n, Q ⊓ mchart c')ˣ)
@@ -80,6 +96,15 @@ namespace GlobalTheory.CompanionTheory.MPDict
 
 open TensRep
 
+/- English proof (translation)
+Introduce and unpack `m n M N A B ⟨u, hu₁, hu₂, hu₃⟩ ⟨v, hv₁, hv₂, hv₃⟩`. Use `⟨fun p c => mulUnit (u p.1 c) (v p.2 c), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i, i'⟩ ⟨j, j'⟩ c`. Conclude with `frame_mulUnit _ _ _ _ _ _ _ _ _ _ _ _ (hu₁ i j c) (hv₁ i' j' c) _ _ _ _ _`. Introduce and unpack `⟨i, i'⟩ c c'`.
+
+Conclude with `mono_mulUnit A.a B.a _ _ _ _ _ _ _ _ _ _ (hu₂ i c c') (hv₂ i' c c') _ _ _`. Introduce and unpack `⟨i, i'⟩ c y z hz hy`. Establish `hy'` using `mem_ptsIn_inf.1 hy`. Establish `h₁` using `mem_ptsIn_inf.1 hy'.1`. Establish `e₁` using `hu₃ i c y z hz (mem_ptsIn_inf.2 ⟨h₁.1, hy'.2⟩)`.
+
+Establish `e₂` using `hv₃ i' c y z hz (mem_ptsIn_inf.2 ⟨h₁.2, hy'.2⟩)`. Establish `hz0 : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k => (hz k (c k)).1.1 (ptsIn_mono (mchart_le c k) hy'.2)`. Establish `hp : ∏ k, ‖z ⟨k, c k⟩‖ ^ (A.a k + B.a k) = (∏ k, ‖z ⟨k, c k⟩‖ ^ A.a k) * ∏ k, ‖z ⟨k, c k⟩‖ ^ B.a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (norm_ne_zero_iff.2 (hz0 k)) _ _`.
+
+Establish `hev` using `ev_mulUnit (u i c) (v i' c) hy`. Express the relevant statement in the definitionally equal form `A.h z * B.h z = (∏ k, ‖z ⟨k, c k⟩‖ ^ (A.a k + B.a k)) * ‖CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U i ⊓ N.B.U i' ⊓ mchart c) (mulUnit (u i c) (v i' c) : Γ(MP ℤ m n, M.B.U i ⊓ N.B.U i' ⊓ mchart c)ˣ) y‖ * Real.exp (((M.φ σ₀).φ i y + (N.φ σ₀).φ i' y) / 2)`. Rewrite using `[e₁, e₂, hev, hp, norm_mul, add_div, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHermRep_tens : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M N : HermLB (mpStr ℤ m n)) (A B : Geo.HermLine (Bk n)),
     IsHermRep M A → IsHermRep N B → IsHermRep (M.tens N) (A.tensor B) := by
   rintro m n M N A B ⟨u, hu₁, hu₂, hu₃⟩ ⟨v, hv₁, hv₂, hv₃⟩

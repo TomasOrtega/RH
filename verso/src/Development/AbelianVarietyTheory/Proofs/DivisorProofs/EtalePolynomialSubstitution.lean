@@ -4,6 +4,9 @@ namespace GlobalTheory
 
 open MvPolynomial in
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Use `letI : Algebra (MvPolynomial N B) (MvPolynomial N A) := MvPolynomial.algebraMvPolynomial`. Conclude with `RingHom.Etale.isStableUnderBaseChange B A (MvPolynomial N B) (MvPolynomial N A) hg`.
+-/
 theorem _root_.GlobalTheory.etale_mvPolynomial_map_of_etale {B A N : Type} [CommRing B] [CommRing A] (g : B →+* A)
     (hg : g.Etale) : (MvPolynomial.map (σ := N) g).Etale := by
   letI := g.toAlgebra
@@ -12,6 +15,19 @@ theorem _root_.GlobalTheory.etale_mvPolynomial_map_of_etale {B A N : Type} [Comm
 
 open MvPolynomial in
 
+/- English proof (translation)
+Set `ι : MvPolynomial (Fin (d+1)) k →+* MvPolynomial N (MvPolynomial (Fin 1) k)` to `eval₂Hom (C.comp C) (fun j => (e j).elim (C (X 0)) X)`. Set `κ : MvPolynomial N (MvPolynomial (Fin 1) k) →+* MvPolynomial (Fin (d+1)) k` to `eval₂Hom (eval₂Hom C (fun _ => X (e.symm none))) (fun i => X (e.symm (some i)))`. Establish `h1 : κ.comp ι = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using `[ι, κ]`. Introduce `j`. Take `⟨o, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `cases o <;> simp [ι, κ]`. Establish `h2 : ι.comp κ = RingHom.id _`.
+
+Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι, κ]`. Introduce `j`.
+
+Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `[ι, κ]`. Introduce `j`. Simplify using `[ι, κ]`. Establish `hι : Function.Bijective ι` using `Function.bijective_iff_has_inverse.2 ⟨κ, fun x => DFunLike.congr_fun h1 x, fun x => DFunLike.congr_fun h2 x⟩`.
+
+Establish `key : MvPolynomial.eval₂Hom (f.comp α) (fun j => (e j).elim (f t) n) = (MvPolynomial.eval₂Hom f n).comp ((MvPolynomial.map (MvPolynomial.eval₂Hom α (fun _ : Fin 1 => t))).comp ι)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι]`. Introduce `j`.
+
+Take `⟨o, rfl⟩` from `e.symm.surjective j`. Apply the tactic sequence `cases o <;> simp [ι]`. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (etale_mvPolynomial_map_of_etale _ hg)) (RingHom.Etale.of_bijective hΦ)`.
+-/
 theorem etale_eval₂Hom_option_of_bijective {k A R N : Type} [CommRing k] [CommRing A] [CommRing R] (α : k →+* A) (t : A) (f : A →+* R) (n : N → R) {d : ℕ} (e : Fin (d + 1) ≃ Option N)
     (hg : (MvPolynomial.eval₂Hom α (fun _ : Fin 1 => t)).Etale) (hΦ : Function.Bijective (MvPolynomial.eval₂Hom f n)) : (MvPolynomial.eval₂Hom (f.comp α) (fun j => (e j).elim (f t) n)).Etale := by
   let ι : MvPolynomial (Fin (d+1)) k →+* MvPolynomial N (MvPolynomial (Fin 1) k) :=

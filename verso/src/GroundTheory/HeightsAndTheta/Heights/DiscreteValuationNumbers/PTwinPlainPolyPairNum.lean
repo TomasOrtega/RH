@@ -14,6 +14,9 @@ namespace plainPolynomialPairNumber
 
 open plainPairNumber (term rename_divDiff_eq_sum)
 
+/- English proof (translation)
+Rewrite using `[rename_divDiff_eq_sum l (A + B) support_add, rename_divDiff_eq_sum l A Finset.subset_union_left, rename_divDiff_eq_sum l B Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, map_add, add_mul]`.
+-/
 theorem rename_divDiff_add {r : ℕ} (l : Fin r) (A B : MvPolynomial (Fin r) ℤ) :
     rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff l (A + B)) =
       rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff l A) +
@@ -25,6 +28,17 @@ theorem rename_divDiff_add {r : ℕ} (l : Fin r) (A B : MvPolynomial (Fin r) ℤ
   refine Finset.sum_congr rfl fun μ _ => ?_
   rw [coeff_add, map_add, add_mul]
 
+/- English proof (translation)
+Establish `hlt : ∀ j : Fin q, ¬ Fin.natAdd N j < Fin.castAdd q i`. Introduce `j h`. Rewrite `h` using `[Fin.lt_def, Fin.val_natAdd, Fin.val_castAdd]`. Use linear arithmetic over natural numbers and integers. Establish `hgt : ∀ j : Fin q, Fin.castAdd q i < Fin.natAdd N j`.
+
+Introduce `j`. Rewrite using `[Fin.lt_def, Fin.val_natAdd, Fin.val_castAdd]`. Use linear arithmetic over natural numbers and integers. Establish `hcc : ∀ j k : Fin N, (Fin.castAdd q j < Fin.castAdd q k ↔ j < k)`. Introduce `j k`.
+
+Simplify using `only [Fin.lt_def, Fin.val_castAdd]`. Establish `h1 : (∏ j ∈ Finset.univ.filter (fun j => j < Fin.castAdd q i), (X (Sum.inr j) : MvPolynomial (Fin (N + q) ⊕ Fin (N + q)) ℤ) ^ ν j) = ∏ j ∈ Finset.univ.filter (fun j => j < i), X (Sum.inr (Fin.castAdd q j)) ^ μ j`. Rewrite using `[Finset.prod_filter, Finset.prod_filter, Fin.prod_univ_add]`. Simplify using `only [hlt, if_false, Finset.prod_const_one, mul_one, hcc, hc]`. Establish `h3 : (∏ j ∈ Finset.univ.filter (fun j => Fin.castAdd q i < j), (X (Sum.inl j) : MvPolynomial (Fin (N + q) ⊕ Fin (N + q)) ℤ) ^ ν j) = (∏ j ∈ Finset.univ.filter (fun j => i < j), X (Sum.inl (Fin.castAdd q j)) ^ μ j) * ∏ j : Fin q, X (Sum.inl (Fin.natAdd N j)) ^ t j`.
+
+Rewrite using `[Finset.prod_filter, Finset.prod_filter, Fin.prod_univ_add]`. Simplify using `only [hgt, if_true, hcc, hc, hn]`. Unfold `term`. Rewrite using `[h1, h3, hc i]`. Simplify using `only [map_mul, map_prod, map_pow, map_sum, rename_X, Sum.map_inl, Sum.map_inr]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_tail {N q : ℕ} (i : Fin N) (μ : Fin N →₀ ℕ) (t : Fin q →₀ ℕ) (ν : Fin (N + q) →₀ ℕ)
     (hc : ∀ j, ν (Fin.castAdd q j) = μ j) (hn : ∀ j, ν (Fin.natAdd N j) = t j) :
     term (Fin.castAdd q i) ν =
@@ -57,12 +71,30 @@ theorem term_tail {N q : ℕ} (i : Fin N) (μ : Fin N →₀ ℕ) (t : Fin q →
   simp only [map_mul, map_prod, map_pow, map_sum, rename_X, Sum.map_inl, Sum.map_inr]
   ring
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [map_mul, map_prod, map_pow, rename_X, rename_C]`.
+-/
 theorem rename_monomial_tail {N q : ℕ} (t : Fin q →₀ ℕ) (c : ℤ) :
     rename (fun j : Fin q => (Sum.inl (Fin.natAdd N j) : Fin (N + q) ⊕ Fin (N + q))) (monomial t c) =
       C c * ∏ j : Fin q, X (Sum.inl (Fin.natAdd N j)) ^ t j := by
   rw [monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]
   simp only [map_mul, map_prod, map_pow, rename_X, rename_C]
 
+/- English proof (translation)
+Use `set T : Fin (N + q) →₀ ℕ := t.mapDomain (Fin.natAdd N) with hT`. Establish `hinj : Function.Injective (fun μ : Fin N →₀ ℕ => Finsupp.mapDomain (Fin.castAdd q) μ + T)` using `fun a b h => Finsupp.mapDomain_injective (Fin.castAdd_injective _ _) (add_right_cancel h)`. Establish `hsub : (rename (Fin.castAdd q) G * monomial T c).support ⊆ G.support.image (fun μ => Finsupp.mapDomain (Fin.castAdd q) μ + T)`. Introduce `ν hν`. Rewrite `hν` using `[mem_support_iff, coeff_mul_monomial']`.
+
+Use `split_ifs at hν with hle`. Establish `hmem : ν - T ∈ (rename (Fin.castAdd q) G).support` using `mem_support_iff.mpr (left_ne_zero_of_mul hν)`. Rewrite `hmem` using `[support_rename_of_injective (Fin.castAdd_injective _ _), Finset.mem_image]`. Take `⟨μ, hμ, he⟩` from `hmem`. Conclude with `Finset.mem_image.mpr ⟨μ, hμ, by rw [he, tsub_add_cancel_of_le hle]⟩`.
+
+Conclude with `absurd rfl hν`. Rewrite using `[rename_monomial, ← hT, rename_divDiff_eq_sum (Fin.castAdd q i) _ hsub, Finset.sum_image fun a _ b _ h => hinj h, rename_divDiff_eq_sum i G subset_rfl, map_sum, Finset.sum_mul, rename_monomial_tail]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `hc : ∀ j, (Finsupp.mapDomain (Fin.castAdd q) μ + T) (Fin.castAdd q j) = μ j`. Introduce `j`.
+
+Establish `hj : Fin.castAdd q j ∉ Set.range (Fin.natAdd N : Fin q → Fin (N + q))`. Introduce and unpack `⟨k, hk⟩`. Use `congrArg Fin.val hk` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply (Fin.castAdd_injective _ _), hT, Finsupp.mapDomain_of_notMem_range _ _ hj, add_zero]`. Establish `hn : ∀ j, (Finsupp.mapDomain (Fin.castAdd q) μ + T) (Fin.natAdd N j) = t j`. Introduce `j`. Establish `hj : Fin.natAdd N j ∉ Set.range (Fin.castAdd q : Fin N → Fin (N + q))`. Introduce and unpack `⟨k, hk⟩`.
+
+Use `congrArg Fin.val hk` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_of_notMem_range _ _ hj, hT, Finsupp.mapDomain_apply (Fin.natAdd_injective _ _), zero_add]`. Rewrite using `[coeff_mul_monomial, coeff_rename_mapDomain _ (Fin.castAdd_injective _ _), term_tail i μ t _ hc hn, C_mul]`.
+
+Simplify using `only [map_mul, rename_C]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rename_divDiff_castAdd_monomial {N q : ℕ} (i : Fin N) (G : MvPolynomial (Fin N) ℤ)
     (t : Fin q →₀ ℕ) (c : ℤ) :
     rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff (Fin.castAdd q i)
@@ -114,6 +146,9 @@ theorem rename_divDiff_castAdd_monomial {N q : ℕ} (i : Fin N) (G : MvPolynomia
   simp only [map_mul, rename_C]
   ring
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial t c => exact rename_divDiff_castAdd_monomial i G t c`. Consider the case `add A B hA hB => rw [map_add, mul_add, rename_divDiff_add, hA, hB, map_add, mul_add]`.
+-/
 theorem rename_divDiff_castAdd_mul {N q : ℕ} (i : Fin N) (G : MvPolynomial (Fin N) ℤ)
     (Q : MvPolynomial (Fin q) ℤ) :
     rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff (Fin.castAdd q i)
@@ -128,6 +163,9 @@ theorem rename_divDiff_castAdd_mul {N q : ℕ} (i : Fin N) (G : MvPolynomial (Fi
 variable {K : Type} [DecidableEq K] {ι : K → Type}
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Establish `hadd : ∀ H : MvPolynomial σ ℤ, classNum cls H [] W = classNumAddHom cls [] W H` using `fun _ => rfl`. Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum, Finset.mul_sum, hadd, map_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[rename_monomial, show monomial (μ.mapDomain z) (Q.coeff μ) = Q.coeff μ • monomial (μ.mapDomain z) (1 : ℤ) by rw [smul_monomial, smul_eq_mul, mul_one], mul_smul_comm, map_zsmul, smul_eq_mul, ← hadd, plainPairNumber.classNum_mul_monomial, classList_mapDomain, hz, List.append_nil]`.
+-/
 theorem classNum_mul_tail {σ : Type*} [DecidableEq σ] {q : ℕ} (cls : σ → K → ℤ)
     (L : Fin q → K → ℤ) (z : Fin q → σ) (hz : cls ∘ z = L) (A : MvPolynomial σ ℤ)
     (Q : MvPolynomial (Fin q) ℤ) (W : Ideal (MRing ι O)) :
@@ -141,6 +179,19 @@ theorem classNum_mul_tail {σ : Type*} [DecidableEq σ] {q : ℕ} (cls : σ → 
     mul_smul_comm, map_zsmul, smul_eq_mul, ← hadd, plainPairNumber.classNum_mul_monomial,
     classList_mapDomain, hz, List.append_nil]
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ P d N x x' f g m G hG hm q L Q hQ`. Establish `hH : (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q : MvPolynomial (Fin (N + q)) ℤ).IsHomogeneous (d + 1)`. Establish `h3` using `(hG.rename_isHomogeneous (f := Fin.castAdd q)).mul (hQ.rename_isHomogeneous (f := Fin.natAdd N))`. Rewrite `h3` using `[show m + (d + 1 - m) = d + 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[BundleExamples.pairNum_eq P d _ _ _ _ hH]`.
+
+Unfold `pairNum`. Establish `hr : ratDiv P 1 1 = fun _ => 0` using `funext fun W => sub_self _`. Establish `hz : ∀ n : Ideal (MRing ι O) → ℤ, cycEval n (fun _ => 0) = 0`. Introduce `n`. Simplify using `[cycEval]`.
+
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, hr, hz, Finset.sum_const_zero, add_zero]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hZ` using `ratDiv_finite_support P (f i) (g i)`. Simplify using `only [cycEval_eq_sum hZ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Establish `hcls : Sum.elim (Fin.append x L) (Fin.append x' L) ∘ Sum.map (Fin.castAdd q) (Fin.castAdd q) = Sum.elim x x'`.
+
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `cases p <;> simp [Fin.append_left]`. Establish `hL : Sum.elim (Fin.append x L) (Fin.append x' L) ∘ (fun j : Fin q => (Sum.inl (Fin.natAdd N j) : Fin (N + q) ⊕ Fin (N + q))) = L`. Use function extensionality and compare the values at `j`. Simplify using `[Fin.append_right]`.
+
+Rewrite using `[rename_divDiff_castAdd_mul, classNum_mul_tail _ L _ hL, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[plainPairNumber.classNum_rename _ (Sum.map_injective.mpr ⟨Fin.castAdd_injective _ _, Fin.castAdd_injective _ _⟩), hcls]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof : plainPolynomialPairNumber.Statement := by
   intro O _ _ _ K _ _ ι _ P d N x x' f g m G hG hm q L Q hQ
   have hH : (rename (Fin.castAdd q) G * rename (Fin.natAdd N) Q :

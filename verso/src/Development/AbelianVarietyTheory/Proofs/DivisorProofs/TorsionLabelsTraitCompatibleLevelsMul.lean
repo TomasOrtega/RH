@@ -19,6 +19,21 @@ open GlobalTheory.Mum
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A lab hO k d hk hd p q hy hg`. Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, _, em, hW, -, -, hG', ⟨ga, hga, hcart, -⟩, hc, hind⟩` from `hO`. Use `hW.1` as an intermediate fact. Use `haveI : CharZero W := hW.2.2`. Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`.
+
+Establish `hB` using `D.tau_bimult`. Establish `hB'` using `D'.tau_bimult`. Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `hN1 : 1 ≤ k * d` using `Nat.mul_pos hk hd`.
+
+Establish `hem : em.toRingHom.comp (algebraMap (FractionRing R) (Kb R)) = algebraMap (FractionRing R) (Kb W)` using `RingHom.ext em.commutes`. Establish `hsq : spMap em.toRingHom ≫ jFK (R` using `R) (Kb R) = (TFK (R := W) (Kb W)).hom ≫ spMap ga := by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hem]`. Use `congrArg (fun f => Spec.map (CommRingCat.ofHom f)) (IsLocalization.ringHom_ext (nonZeroDivisors R) (RingHom.ext fun r => ?_))` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[hga r]`. Conclude with `hc r`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv hcart (TFK (R := W) (Kb W)) _ hsq`. Set `s : Over.mk (spMap em.toRingHom ≫ jFK (R` to `R) (Kb R)) ⟶ TFK (R := R) (Kb R) := Over.homMk (spMap em.toRingHom) rfl`. Establish `hcomp : ∀ {m : ℕ} (r : QkPt D.toPre (Kb R) m), 1 ≤ m → QkToAkU U'.toUnifPre (Kb W) m (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qkExt hB em.toRingHom hem r)) (e.symm (s ≫ lab m r))`.
+
+Introduce `m r hm`. Use `hind m hm r _ _ _ ((GlobalTheory.TorusExt.qkExt_iff hB _ hem _ _).2 rfl) rfl ((GlobalTheory.ArcPull.eq_pullQk_iff hD hG hc hB hB' _ _).1 rfl).2 ?_` and prove the remaining obligations. Rewrite using `[← he, e.apply_symm_apply]`. Both sides reduce to the same expression. Establish `h₁` using `hcomp p hk`.
+
+Establish `h₂` using `((GlobalTheory.LevelCompat.qkToAkU_level hL W (maximalIdeal W) hW' D' A' G' hG' U' (Kb W) k d (k * d) hk hd rfl (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qkExt hB em.toRingHom hem p)) (GlobalTheory.ArcPull.pullQk hD hG hc hB hB' (GlobalTheory.TorusExt.qk …`. Rewrite using `[hg])).2 (hcomp q hN1)`. Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL W (maximalIdeal W) hW' D' A' G' hG' U' (Kb W) k hk`. Establish `hx` using `((hf _ _).1 h₂).trans ((hf _ _).1 h₁).symm`. Establish `hs : s ≫ lab (k * d) q = s ≫ lab k p` using `e.symm.injective hx`.
+
+Establish `: Epi (spMap em.toRingHom)` using `Flat.epi_of_flat_of_surjective _`. Conclude with `Over.OverMorphism.ext ((cancel_epi (spMap em.toRingHom)).1 (congrArg (fun z => z.left) hs))`.
+-/
 theorem GlobalTheory.Mum.lab_level_mul : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (lab : Labels D.toPre A),
     OneTrait D.toPre A lab → ∀ k d : ℕ, 1 ≤ k → 1 ≤ d →

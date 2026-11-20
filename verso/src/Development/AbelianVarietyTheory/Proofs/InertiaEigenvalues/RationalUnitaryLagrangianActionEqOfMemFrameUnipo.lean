@@ -19,16 +19,33 @@ open GlobalTheory.MixModel GlobalTheory.RallisCusp
 
 variable {D : D7}
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_fix {n s : ℕ} (A B : Matrix (Fin n) (Fin n) (AE D)) (M : Matrix (Fin n) (Fin s) (AE D))
     (hBA : B * A = 1) (h : A ⬝ M = M) : B ⬝ M = M := by
   calc B ⬝ M = B ⬝ (A ⬝ M) := by rw [h]
     _ = M := by rw [← Matrix.mul_assoc, hBA, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, hBA, Matrix.mul_one, neg_sub]`.
+-/
 theorem inv_sub_one {n : ℕ} (A B : Matrix (Fin n) (Fin n) (AE D)) (hBA : B * A = 1) : B - 1 = -(B * (A - 1)) := by
   rw [Matrix.mul_sub, hBA, Matrix.mul_one, neg_sub]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem g hg`. Use `⟨?_, fun x hx => hg.2.2 x hx⟩` and prove the remaining obligations. Establish `h1 : (Formalism.L2.Theta.mt W g - 1) ⬝ I.map (incA D) = 0` using `hg.1`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`.
+
+Conclude with `h1`. Consider the case `one`. Use `⟨by rw [GlobalTheory.MixModel.mt_one, Matrix.one_mul], fun x _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixModel.mt_one, sub_self, Matrix.zero_mulVec, Matrix.mulVec_zero]`. Consider the case `mul x y _ _ hx hy`.
+
+Use `⟨by rw [GlobalTheory.MixModel.mt_mul, Matrix.mul_assoc, hy.1, hx.1], fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hx.2 v hv`. Take `⟨b, hb⟩` from `hy.2 v hv`. Use `⟨b + a, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.L2.Theta.mt W (x * y) - 1 = Formalism.L2.Theta.mt W x * (Formalism.L2.Theta.mt W y - 1) + (Formalism.L2.Theta.mt W x - 1)`.
+
+Rewrite using `[GlobalTheory.MixModel.mt_mul, Matrix.mul_sub, Matrix.mul_one, sub_add_sub_cancel]`. Rewrite using `[e, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, hb, ha, Matrix.mulVec_mulVec, hx.1, Matrix.mulVec_add]`. Consider the case `inv x _ hx`. Take `⟨hx1, hx2⟩` from `hx`. Establish `hinv` using `inv_fix _ _ _ (GlobalTheory.MixModel.mt_inv_mul W x) hx1`.
+
+Use `⟨hinv, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hx2 v hv`. Use `⟨-a, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_sub_one _ _ (GlobalTheory.MixModel.mt_inv_mul W x), Matrix.neg_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, hinv, Matrix.mulVec_neg]`.
+-/
 theorem ni_prop (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E) (g : GA D W) (hg : g ∈ NI W I) :
     Formalism.L2.Theta.mt W g ⬝ I.map (incA D) = I.map (incA D) ∧
     ∀ x : Fin W.rank → D.host.E, (Iᴴ * W.gram) *ᵥ x = 0 →
@@ -59,6 +76,11 @@ theorem ni_prop (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E)
     refine ⟨-a, ?_⟩
     rw [inv_sub_one _ _ (GlobalTheory.MixModel.mt_inv_mul W x), Matrix.neg_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, hinv, Matrix.mulVec_neg]
 
+/- English proof (translation)
+Establish `hB : Function.Injective I.mulVec`. Rewrite using `[Matrix.mulVec_injective_iff]`. Conclude with `hI`. Establish `hker : LinearMap.ker (Matrix.toLin' I) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`.
+
+Introduce `x y h`. Conclude with `hB (by simpa [Matrix.toLin'_apply] using h)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' I) hker`. Conclude with `⟨LinearMap.toMatrix' g, by`. Rewrite using `[← LinearMap.toMatrix'_toLin' I, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]⟩`.
+-/
 theorem exists_leftInv {m s : ℕ} (I : Matrix (Fin m) (Fin s) D.host.E) (hI : LinearIndependent D.host.E I.transpose) :
     ∃ L : Matrix (Fin s) (Fin m) D.host.E, L * I = 1 := by
   have hB : Function.Injective I.mulVec := by
@@ -72,6 +94,13 @@ theorem exists_leftInv {m s : ℕ} (I : Matrix (Fin m) (Fin s) D.host.E) (hI : L
   exact ⟨LinearMap.toMatrix' g, by
     rw [← LinearMap.toMatrix'_toLin' I, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]⟩
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_leftInv I hI`. Use `⟨L *ᵥ v, ?_⟩` and prove the remaining obligations. Establish `ha : a = fun j => incA D ((L *ᵥ v) j)`. Establish `h1 : L.map (incA D) *ᵥ (fun i => incA D (v i)) = a`. Rewrite using `[h, Matrix.mulVec_mulVec, ← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+
+Rewrite using `[← h1]`. Use function extensionality and compare the values at `j`. Conclude with `(RingHom.map_mulVec (incA D) L v j).symm`. Use function extensionality and compare the values at `i`. Apply `incA_injective` to reduce the goal to its premises.
+
+Use `congrFun h i` as an intermediate fact. Rewrite using `[this, ha]`. Conclude with `(RingHom.map_mulVec (incA D) I (L *ᵥ v) i).symm`.
+-/
 theorem descend {m s : ℕ} (I : Matrix (Fin m) (Fin s) D.host.E) (hI : LinearIndependent D.host.E I.transpose)
     (v : Fin m → D.host.E) (a : Fin s → AE D) (h : (fun i => incA D (v i)) = I.map (incA D) *ᵥ a) :
     ∃ b : Fin s → D.host.E, v = I *ᵥ b := by
@@ -89,6 +118,11 @@ theorem descend {m s : ℕ} (I : Matrix (Fin m) (Fin s) D.host.E) (hI : LinearIn
   rw [this, ha]
   exact (RingHom.map_mulVec (incA D) I (L *ᵥ v) i).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `hcol : ((I.transpose a, 0) : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) ∈ Y.1`. Establish `h : I.transpose a ∈ Y.1.comap (LinearMap.inl D.host.E _ _)` using `hY ▸ Submodule.subset_span ⟨a, rfl⟩`. Conclude with `h`. Establish `hiso` using `Y.2.2 _ hcol y hy`.
+
+Simplify using `only [star_zero, zero_dotProduct] at hiso`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `show _ = (0 : D.host.E)`. Rewrite using `[← hiso]`. Both sides reduce to the same expression.
+-/
 theorem fst_perp (W : HSp D) (Y : Lag W) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E)
     (hY : Submodule.span D.host.E (Set.range I.transpose) = Y.1.comap (LinearMap.inl D.host.E _ _))
     (y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) (hy : y ∈ Y.1) : (Iᴴ * W.gram) *ᵥ y.1 = 0 := by
@@ -103,6 +137,19 @@ theorem fst_perp (W : HSp D) (Y : Lag W) {s : ℕ} (I : Matrix (Fin W.rank) (Fin
   rw [← hiso]
   rfl
 
+/- English proof (translation)
+Introduce `D W Y s I hI hY n hn`. Establish `hn' : ((n⁻¹ : GQ W) : GA D W) ∈ NI W I`. Rewrite using `[InvMemClass.coe_inv]`. Conclude with `inv_mem hn`. Take `⟨-, hP⟩` from `ni_prop W I _ hn'`.
+
+Establish `hc : Formalism.L2.Theta.mt W ((n⁻¹ : GQ W) : GA D W) - 1 = (gqMat W n⁻¹ - 1).map (incA D)`. Rewrite using `[← rat_gqMat, ← rat_one, ← rat_sub]`. Both sides reduce to the same expression. Establish `hle : Y.1 ≤ (lagAct W n Y).1`. Introduce `y hy`.
+
+Rewrite using `[mem_lagAct]`. Take `⟨a, ha⟩` from `hP y.1 (fst_perp W Y I hY y hy)`. Take `⟨b, hb⟩` from `descend I hI.2.1 ((gqMat W n⁻¹ - 1) *ᵥ y.1) a (by`. Rewrite using `[← ha, hc]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `RingHom.map_mulVec (incA D) _ _ i)`. Establish `hIb : ((I *ᵥ b, 0) : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) ∈ Y.1`. Establish `h : I *ᵥ b ∈ Submodule.span D.host.E (Set.range I.col)`. Rewrite using `[← Matrix.range_mulVecLin]`. Conclude with `⟨b, rfl⟩`.
+
+Establish `h' : I *ᵥ b ∈ Y.1.comap (LinearMap.inl D.host.E _ _)`. Rewrite using `[← hY]`. Conclude with `h`. Conclude with `h'`. Establish `e : ((gqMat W n⁻¹ *ᵥ y.1, y.2) : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) = y + (I *ᵥ b, 0)`.
+
+Rewrite using `[← hb, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `Prod.ext (by simp) (by simp)`. Rewrite using `[e]`. Conclude with `Y.1.add_mem hy hIb`. Conclude with `Subtype.ext (Submodule.eq_of_le_of_finrank_eq hle (by rw [Y.2.1, (lagAct W n Y).2.1])).symm`.
+-/
 theorem lagAct_eq_of_mem_NI : ∀ (D : D7) (W : HSp D) (Y : Lag W) (s : ℕ) (I : Matrix (Fin W.rank) (Fin s) D.host.E),
     IsIsoFrame W I → Submodule.span D.host.E (Set.range I.transpose) = Y.1.comap (LinearMap.inl D.host.E _ _) →
     ∀ n : GQ W, (n : GA D W) ∈ NI W I → GlobalTheory.RallisCusp.lagAct W n Y = Y := by

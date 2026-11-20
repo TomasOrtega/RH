@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.CuspDescent
 
+/- English proof (translation)
+Take `⟨n, z, v, hv⟩` from `Submodule.mem_span_set'.1 hP`. Use `choose g hg hgv using fun k => (v k).2`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `hsm : ∀ (a : K) (x : ℂ), a • x = σ a * x` using `fun a x => by rw [Algebra.smul_def]; rfl`. Set `W : Submodule K ℂ` to `Submodule.span K (Set.range z)`.
+
+Establish `hzW : ∀ k, z k ∈ W` using `fun k => Submodule.subset_span ⟨k, rfl⟩`. Use `haveI : FiniteDimensional K W := FiniteDimensional.span_of_finite K (Set.finite_range z)`. Set `ζ` to `Module.finBasis K W`. Set `β : Fin n → Fin (Module.finrank K W) → K` to `fun k m => ζ.repr ⟨z k, hzW k⟩ m`. Establish `hzexp : ∀ k, z k = ∑ m, σ (β k m) * (ζ m : ℂ)`.
+
+Introduce `k`. Establish `h2` using `congrArg Subtype.val (ζ.sum_repr ⟨z k, hzW k⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hsm] at h2`. Conclude with `h2.symm`. Establish `hlin : LinearIndependent K (fun m => (ζ m : ℂ))` using `ζ.linearIndependent.map' W.subtype (Submodule.ker_subtype _)`.
+
+Use `⟨_, fun m => (ζ m : ℂ), fun m => ∑ k, β k m • g k, fun m => Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hg k), fun c hc => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Conclude with `(Fintype.linearIndependent_iff.1 hlin) c (by simpa only [hsm] using hc) m`. Rewrite using `[← hv]`. Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul, hgv]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, hzexp k]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+-/
 theorem exists_indep_comb {K R V : Type} [Field K] [AddCommGroup R] [Module K R] [AddCommGroup V] [Module ℂ V]
     (σ : K →+* ℂ) (ρ : R →ₛₗ[σ] V) (S : Submodule K R) {P : V} (hP : P ∈ Submodule.span ℂ (ρ '' (S : Set R))) :
     ∃ (m : ℕ) (e : Fin m → ℂ) (f : Fin m → R), (∀ i, f i ∈ S) ∧
@@ -48,12 +59,18 @@ section Geometric
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih => rw [Fin.prod_univ_castSucc, GlobalTheory.CuspAllEmb.rd_mul, ih, ← Fin.prod_univ_castSucc fun t => rdU U (f t)]`.
+-/
 theorem rd_prod {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (N : ℕ) (f : Fin (N + 1) → Rul Xo c) :
     rdU U (∏ t, f t) = ∏ t, rdU U (f t) := by
   induction N with
   | zero => simp
   | succ N ih => rw [Fin.prod_univ_castSucc, GlobalTheory.CuspAllEmb.rd_mul, ih, ← Fin.prod_univ_castSucc fun t => rdU U (f t)]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simpa using hf 0`. Consider the case `succ N ih`. Rewrite using `[succ_nsmul, add_mul _ 1, one_mul, Fin.prod_univ_castSucc]`. Conclude with `sec_mul Xo c _ _ _ _ (ih _ fun t => hf _) (hf _)`.
+-/
 theorem prod_mem_sec {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (N : ℕ) (f : Fin (N + 1) → Rul Xo c)
     (hf : ∀ t, f t ∈ sec Xo c a n) : ∏ t, f t ∈ sec Xo c ((N + 1) • a) ((N + 1) * n) := by
   induction N with
@@ -62,6 +79,9 @@ theorem prod_mem_sec {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (N : ℕ) (f :
     rw [succ_nsmul, add_mul _ 1, one_mul, Fin.prod_univ_castSucc]
     exact sec_mul Xo c _ _ _ _ (ih _ fun t => hf _) (hf _)
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_pow]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[rd_prod, Finset.prod_smul]`.
+-/
 theorem pow_comb {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (N : ℕ) {ι : Type} [Fintype ι] (e : ι → ℂ) (f : ι → Rul Xo c) :
     (∑ i, e i • rdU U (f i)) ^ (N + 1) =
       ∑ p : Fin (N + 1) → ι, (∏ t, e (p t)) • rdU U (∏ t, f (p t)) := by
@@ -70,6 +90,9 @@ theorem pow_comb {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (N : ℕ) {ι : Type} 
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [rd_prod, Finset.prod_smul]
 
+/- English proof (translation)
+Use `⟨DifferentiableOn.sum fun i _ => (hQ i).1.const_smul (e i), fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [(hQ i).2.1 x hx b hb]; ring`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [(hQ i).2.2 γ hγ x hx]; ring`.
+-/
 theorem isSec_comb (X : Data E r) (la : Wt X.Ψ r) {ι : Type} [Fintype ι] (e : ι → ℂ) (Q : ι → Frame X.Ψ r → ℂ)
     (hQ : ∀ i, X.IsSec la (Q i)) : X.IsSec la (∑ i, e i • Q i) := by
   refine ⟨DifferentiableOn.sum fun i _ => (hQ i).1.const_smul (e i), fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩
@@ -78,6 +101,25 @@ theorem isSec_comb (X : Data E r) (la : Wt X.Ψ r) {ι : Type} [Fintype ι] (e :
   · simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by rw [(hQ i).2.2 γ hγ x hx]; ring
 
+/- English proof (translation)
+Introduce and unpack `P ⟨hP, hPs⟩`. Take `⟨m, e, f, hfs, he, rfl⟩` from `exists_indep_comb σ (rdU U) _ hPs`. Establish `hoff : ∀ e' : Fin m → ℂ, ∑ i, e' i • rdU U (f i) ∈ offZero U.X` using `fun e' => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (rdU_mem_offZero _ _)`. Establish `hpow : (∑ i, e i • rdU U (f i)) ^ (N + 1) ∈ holSub0 U.X (laU U ((N + 1) • a) ((N + 1) * n))`. Use `⟨(GlobalTheory.CuspAllEmb.mem_holSub _ _ _).2 fun k => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(GlobalTheory.CuspAllEmb.mem_holSub _ _ _).1 hP.1 k`. Rewrite using `[GlobalTheory.CuspAllEmb.la_smul _ _ hd.2]`. Break down `N with _ | N` into its components or cases. Simplify using `using h1`. Establish `h2` using `GlobalTheory.CuspAllEmb.ss_mul _ hf h1 (GlobalTheory.CuspAllEmb.isSec_pow _ h1.1.1 N)`.
+
+Rewrite `h2` using `[← pow_succ', ← succ_nsmul']`. Conclude with `h2`. Rewrite using `[pow_comb]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (rdU_mem_offZero _ _)`. Take `⟨q, z, v, hv⟩` from `Submodule.mem_span_set'.1 (hspan hpow)`.
+
+Use `choose g hg hgv using fun k => (v k).2`. Establish `conj : ∀ φ : ℂ ≃+* ℂ, (∀ x, φ (σ x) = σ x) → ∑ i, φ (e i) • rdU U (f i) ∈ holSub0 U.X (laU U a n)`. Introduce `φ hφ`. Establish `tr` using `GlobalTheory.CuspAllEmb.transfer (φ : ℂ →+* ℂ) hφ (rdU U) (rdU U) _ hI (fun p : Fin (N + 1) → Fin m => ∏ t, f (p t)) g (fun p => prod_mem_sec N _ fun t => hfs _) (fun k => (hg k).1) (fun p => ∏ t, e (p t)) z (by rw [← pow_comb, ← hv]; simp only [hgv])`. Simplify using `only [map_prod, RingHom.coe_coe] at tr`.
+
+Rewrite `tr` using `[← pow_comb U N (fun i => φ (e i)) f]`. Establish `hm : (∑ i, φ (e i) • rdU U (f i)) ^ (N + 1) ∈ holSub0 U.X (laU U ((N + 1) • a) ((N + 1) * n))`. Rewrite using `[tr]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hg k).2`. Use `⟨(GlobalTheory.CuspAllEmb.mem_holSub _ _ _).2 fun k => ?_, hoff _⟩` and prove the remaining obligations.
+
+Establish `h1` using `(GlobalTheory.CuspAllEmb.mem_holSub _ _ _).1 hm.1 k`. Rewrite `h1` using `[GlobalTheory.CuspAllEmb.la_smul _ _ hd.2]`. Use `GlobalTheory.CuspAllEmb.ss_of_pow _ hf ?_ N h1` and prove the remaining obligations. Use `isSec_comb (U.X k) (laU U a n k) (fun i => φ (e i)) (fun i => rdU U (f i) k) (fun i => hU.2.2.2.2.1 a n hd _ (hfs i) k)` as an intermediate fact. Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply]`.
+
+Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Establish `htop` using `GlobalTheory.T.span_automorphismConjugates_of_numberField_independent_eq_top c.F σ (Fin m) e he`. Set `L : (Fin m → ℂ) →ₗ[ℂ] FDSec U.X` to `Fintype.linearCombination ℂ fun i => rdU U (f i)`. Establish `hle : (⊤ : Submodule ℂ (Fin m → ℂ)) ≤ (holSub0 U.X (laU U a n)).comap L`.
+
+Rewrite using `[← htop, Submodule.span_le]`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `conj φ hφ`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨f i, ⟨hfs i, ?_⟩, rfl⟩)` and prove the remaining obligations. Use `hle (Submodule.mem_top (x := Pi.single i 1))` as an intermediate fact.
+
+Simplify `this` using `[L]`.
+-/
 theorem descent (hf : 1 < Module.finrank ℚ E / 2) {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hU : IsUnf U)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hd : Dom a n) (N : ℕ)
     (hI : ∀ (m : ℕ) (b : Fin m → Rul Xo c), (∀ i, b i ∈ sec Xo c ((N + 1) • a) ((N + 1) * n)) →
@@ -139,6 +181,15 @@ end Geometric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ hσ w hw hn`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f` using `Formalism.L2.Pj.hostSize_finrank D`. Establish `h8` using `D.eight_le_f`. Use `set N := 8 * D.R.f * D.R.r + 3 with hN`. Establish `hA : wtA (WeightAlgebra.wsmul (N + 1) w) = (N + 1) • wtA w`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Unfold `wtA`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [WeightAlgebra.wsmul, ext0]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hd : Dom ((N + 1) • wtA w) ((N + 1) * w.n)` using `hA ▸ dom_wtA (WeightAlgebra.wsmul (N + 1) w)`. Use `descent (by omega) (T.U j σ) (h.unf j hj σ hσ) (dom_wtA w) N (GlobalTheory.rdIndep_of_lawsM D T.toCore h.toLawsM j hj σ hσ _ _ hd) ?_` and prove the remaining obligations. Establish `key` using `GlobalTheory.OntoCore.holSub0_le_span_cuspA D T h j hj (WeightAlgebra.wsmul (N + 1) w) (fun τ i hi => Nat.mul_pos (Nat.succ_pos N) (hw τ i hi)) (Nat.le_mul_of_pos_right _ hn) σ hσ`.
+
+Rewrite `key` using `[hA]`. Use `key.trans (Submodule.span_mono (Set.image_mono fun g hg => ?_))` and prove the remaining obligations. Conclude with `⟨cusp_le_sec _ _ _ _ _ hg, ((mem_cusp _ _ _ _ _ _).1 hg).2 σ hσ, rdU_mem_offZero _ _⟩`.
+-/
 theorem cusp_descends : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ w : WeightFamilies.Wt D j, w.LastPos → 0 < w.n → holSub0 (T.U j σ).X (laU (T.U j σ) (wtA w) w.n) ⊓ Submodule.span ℂ (rdU (T.U j σ) '' (sec (T.Q.Xo j) T.Q.c (wtA w) w.n : Set (Rul (T.Q.Xo j) T.Q.c))) ≤ Submodule.span ℂ (rdU (T.U j σ) '' {f | f ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n ∧ rdU (T.U j σ) f ∈ holSub0 (T.U j σ).X (laU (T.U j σ) (wtA w) w.n)}) := by
   intro D T h j hj σ hσ w hw hn
   have hfr : Module.finrank ℚ D.host.E = 2 * D.R.f := Formalism.L2.Pj.hostSize_finrank D

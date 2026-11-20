@@ -7,6 +7,15 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.DivDescent
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hle : I.map φ ≤ Ideal.span {h} * maximalIdeal R`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+
+Establish `hm : φ a ∈ Ideal.span {h}` using `hI ▸ Ideal.mem_map_of_mem φ ha`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hm`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton_mul]`. Use `⟨r, ?_, by rw [mul_comm]; exact hr⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Conclude with `hne a ha (Associated.symm ⟨hu.unit, by rw [IsUnit.unit_spec, mul_comm]; exact hr⟩)`. Establish `hmem : h ∈ Ideal.span {h} * maximalIdeal R` using `hle (hI ▸ Ideal.mem_span_singleton_self h)`. Take `⟨x, hx, hxe⟩` from `Ideal.mem_span_singleton_mul.mp hmem`. Establish `: x = 1` using `mul_left_cancel₀ hh (by rw [hxe, mul_one])`.
+
+Conclude with `(mem_maximalIdeal x).mp hx (this ▸ isUnit_one)`.
+-/
 theorem exists_mem_associated_of_map_eq {A R : Type} [CommRing A] [CommRing R] [IsDomain R] [IsLocalRing R]
     (φ : A →+* R) (I : Ideal A) {h : R} (hh : h ≠ 0) (hI : I.map φ = Ideal.span {h}) :
     ∃ a ∈ I, Associated (φ a) h := by
@@ -27,6 +36,9 @@ theorem exists_mem_associated_of_map_eq {A R : Type} [CommRing A] [CommRing R] [
   have : x = 1 := mul_left_cancel₀ hh (by rw [hxe, mul_one])
   exact (mem_maximalIdeal x).mp hx (this ▸ isUnit_one)
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := GlobalTheory.SchemeWords.isProper_of_isProjOver Z.proj`. Use `haveI : IsLocallyNoetherian Z.X := LocallyOfFiniteType.isLocallyNoetherian Z.s`. Use `infer_instance`.
+-/
 theorem isNoetherianRing_stalk {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (x : Z.X) :
     IsNoetherianRing (Z.X.presheaf.stalk x) := by

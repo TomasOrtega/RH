@@ -32,6 +32,9 @@ def one {N : Type} [AddCommGroup N] [Module K N] {M H : Type 1} [AddCommGroup M]
       simp only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, hl, map_smul, smul_eq_mul, map_mul]
       ring)
 
+/- English proof (translation)
+Unfold `one`. Rewrite using `[TensorProduct.liftAddHom_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem one_tmul {N : Type} [AddCommGroup N] [Module K N] {M H : Type 1} [AddCommGroup M] [Module K M] [AddCommGroup H] [Module K H]
     (lam : N →+ E) (hl : ∀ (k : K) n, lam (k • n) = θ (algebraMap K B k) * lam n) (e : H ≃ₗ[K] M) (n : N) (y : H)
     (φ : Module.Dual K H) : one θ lam hl e (n ⊗ₜ e y) φ = lam n * θ (algebraMap K B (φ y)) := by
@@ -39,6 +42,29 @@ theorem one_tmul {N : Type} [AddCommGroup N] [Module K N] {M H : Type 1} [AddCom
   rw [TensorProduct.liftAddHom_tmul]
   simp
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hT`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `P h0 hadd hgen w`. Establish `key : ∀ (i : Fin m) (t : N i ⊗[K] M i), P (g (Pi.single i t))`. Introduce `i t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero, map_zero]`. Conclude with `h0`. Consider the case `tmul n x`. Distinguish the cases in `hi : r < (i : ℕ)`.
+
+Use `hz i hi` as an intermediate fact. Rewrite using `[Subsingleton.elim x 0, TensorProduct.tmul_zero, Pi.single_zero, map_zero]`. Conclude with `h0`. Take `⟨a, ha, rfl⟩ : ∃ a, ∃ ha : a ≤ r, i = ⟨r - a, Nat.lt_of_le_of_lt (Nat.sub_le r a) hr⟩` from `⟨r - (i : ℕ), by omega, Fin.ext (show (i : ℕ) = r - (r - (i : ℕ)) by omega)⟩`. Take `⟨b, hb⟩` from `h1 _ n`.
+
+Rewrite using `[hg, ← (e a ha).apply_symm_apply x, he a ha n b _ hb]`. Conclude with `hgen a ha b _`. Consider the case `add t t' ht ht' => rw [Pi.single_add, map_add]`. Conclude with `hadd _ _ ht ht'`. Rewrite using `[← g.apply_symm_apply w, ← Finset.univ_sum_single (g.symm w), map_sum]`.
+
+Conclude with `Finset.sum_induction _ P hadd h0 (fun i _ => key i _)`. Set `coT : (∀ i, N i ⊗[K] M i) →+ ∀ a, Module.Dual K (H a) →+ E` to `{ toFun := fun T a => if ha : a ≤ r then one θ (lam ⟨r - a, by omega⟩) (hl _) (e a ha) (T ⟨r - a, by omega⟩) else 0 map_zero' := by`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases ha : a ≤ r <;> simp [ha]`. Use the proof step `map_add' := fun T T' => by`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases ha : a ≤ r <;> simp [ha] }`. Use `⟨coT.comp g.symm.toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b y φ`. Take `⟨n, hn⟩` from `h2 ⟨r - a, by omega⟩ b`.
+
+Establish `hw : g.symm (b • μ a y) = Pi.single (⟨r - a, by omega⟩ : Fin m) (n ⊗ₜ e a ha y)`. Rewrite using `[AddEquiv.symm_apply_eq, hg, he a ha n b y hn]`. Use `show coT (g.symm (b • μ a y)) a φ = _`. Rewrite using `[hw]`. Simplify using `only [coT, AddMonoidHom.coe_mk, ZeroHom.coe_mk, dif_pos ha, Pi.single_eq_same, one_tmul, h3 _ n b hn]`.
+
+Introduce `a' ha' a hne b y`. Take `⟨n, hn⟩` from `h2 ⟨r - a', by omega⟩ b`. Establish `hw : g.symm (b • μ a' y) = Pi.single (⟨r - a', by omega⟩ : Fin m) (n ⊗ₜ e a' ha' y)`. Rewrite using `[AddEquiv.symm_apply_eq, hg, he a' ha' n b y hn]`. Use `show coT (g.symm (b • μ a' y)) a = 0`.
+
+Rewrite using `[hw]`. Simplify using `only [coT, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Use `split_ifs with ha`. Rewrite using `[Pi.single_eq_of_ne, map_zero]`. Introduce `h`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite `h` using `[Fin.mk.injEq]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Introduce `a ha w show coT (g.symm w) a = 0`.
+
+Simplify using `only [coT, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[dif_neg (by omega)]`.
+-/
 theorem co_abs {W : Type 1} [AddCommGroup W] [Module B W] {m r : ℕ} (hr : r < m) (N : Fin m → Type) [∀ i, AddCommGroup (N i)]
     [∀ i, Module K (N i)] (M : Fin m → Type 1) [∀ i, AddCommGroup (M i)] [∀ i, Module K (M i)] (H : ℕ → Type 1)
     [∀ a, AddCommGroup (H a)] [∀ a, Module K (H a)] (μ : ∀ a, H a → W) (f : ∀ i, N i → M i → W) (hT : Tens K f)

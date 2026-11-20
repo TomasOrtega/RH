@@ -27,6 +27,17 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
   {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `CrdCalc.crd_exists (H := C.O1.pull (C.P.hom ⁻¹ᵁ C.W l).ι) (LB.isLB_linComb C.isLB _ _) (C.σ l) x`. Establish `h1` using `C.rel l K x w hw`. Rewrite `h1` using `[hx]`. Take `⟨u, hu⟩` from `CrdCalc.crd_unique hs h1`. Establish `hc : (C.c l).map (valR (spMap β ≫ M.pt) (C.W l)) = ((C.c l).map (valF M.pt (C.W l))).map β`.
+
+Use extensionality with `i j`. Conclude with `valR_spMap_comp β M.pt _ (M.top_le_preimage_pt (C.ne l)) _`. Rewrite `hu` using `[hc]`. Establish `h2 : (((C.c l).map (valF M.pt (C.W l))).map β).mulVec w = (u : K) • s` using `funext hu`. Establish `h3 : (b.map β).mulVec s = d • t` using `funext ht`.
+
+Establish `h4 : w = ((u : K) * d) • m'.mulVec t`. Use `congrArg (fun n => n.mulVec w) hm` as an intermediate fact. Simplify using `only [Matrix.one_mulVec] at this`. Rewrite using `[← this, Matrix.map_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_smul, h3, smul_smul, Matrix.mulVec_smul]`. Establish `h5 : (u : K) * d ≠ 0` using `mul_ne_zero u.ne_zero hd`.
+
+Establish `h6` using `CrdCalc.crd_smul (Units.mk0 _ h5)⁻¹ hw`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Rewrite using `[h4]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[inv_mul_cancel_left₀ h5]`.
+-/
 theorem Clos.crd_chart_of_generic (C : Clos ρ M U₀ EE) (l : C.Λ) {K : Type} [Field K] (β : Ω →+* K)
     (x : Sp K ⟶ (C.P.hom ⁻¹ᵁ C.W l).toScheme) (hx : x ≫ (C.P.hom ⁻¹ᵁ C.W l).ι ≫ C.P.hom = spMap β ≫ M.pt)
     (s : S.J → K) (hs : Crd C.O1 C.st (x ≫ (C.P.hom ⁻¹ᵁ C.W l).ι) s) (b : Matrix S.J S.J Ω) (m' : Matrix S.J S.J K)
@@ -57,6 +68,11 @@ theorem Clos.crd_chart_of_generic (C : Clos ρ M U₀ EE) (l : C.Λ) {K : Type} 
   simp only [Units.val_inv_eq_inv_val, Units.val_mk0, Pi.smul_apply, smul_eq_mul]
   rw [inv_mul_cancel_left₀ h5]
 
+/- English proof (translation)
+Set `k : Type` to `X.residueField x`. Set `K : Type` to `AlgebraicClosure k`. Set `g : Sp K ⟶ X` to `spMap (algebraMap k K) ≫ X.fromSpecResidueField x`. Establish `hg : ∀ w, g w = x` using `fun w => (Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _)`. Take `⟨i, j, hij⟩` from `h K g hg`.
+
+Establish `hU : ⊤ ≤ g ⁻¹ᵁ U j`. Assume the negation of the conclusion as `h0`. Conclude with `hij (dif_neg h0)`. Use `(le_preimage_basicOpen_iff g hU (σ i j)).2 (Ne.isUnit hij) (x := IsLocalRing.closedPoint K) trivial` as an intermediate fact. Conclude with `⟨i, j, hg (IsLocalRing.closedPoint K) ▸ this⟩`.
+-/
 theorem exists_mem_basicOpen_of_geometric {X : Scheme.{0}} {J I : Type} {U : I → X.Opens} (σ : J → ∀ j, Γ(X, U j))
     (x : X) (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (g : Sp K ⟶ X), (∀ w, g w = x) → ∃ i j, valF g _ (σ i j) ≠ 0) :
     ∃ i j, x ∈ X.basicOpen (σ i j) := by
@@ -71,6 +87,49 @@ theorem exists_mem_basicOpen_of_geometric {X : Scheme.{0}} {J I : Type} {U : I �
   have := (le_preimage_basicOpen_iff g hU (σ i j)).2 (Ne.isUnit hij) (x := IsLocalRing.closedPoint K) trivial
   exact ⟨i, j, hg (IsLocalRing.closedPoint K) ▸ this⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩ : ∃ m, Fintype.card S.J = m + 1` from `Nat.exists_eq_succ_of_ne_zero Fintype.card_ne_zero`. Set `e : Fin (m + 1) ≃ S.J` to `(Fintype.equivFinOfCardEq hm).symm`. Take `⟨π, hπ, hcl, hπc⟩` from `GlobalTheory.T.exists_projSpace_map_of_local_sections_no_common_zero o _ _ Q.G.hom M.s _ _ _ σ m e (fun i => (hσ i).1) hz`. Use `⟨m, e, π, hπ, ?_, hcl⟩` and prove the remaining obligations. Set `V` to `Q.G.hom ⁻¹ᵁ W`.
+
+Establish `: IsReduced V.toScheme` using `isReduced_of_isOpenImmersion V.ι`. Use `GlobalTheory.T.isImmersion_projSpace_of_local_linearChange o _ _ M.s (V.ι ≫ Q.G.hom) m π hπ fun y => ?_` and prove the remaining obligations. Establish `hyW : (V.ι ≫ Q.G.hom) y ∈ W`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `y.2`.
+
+Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (C.cover.ge (Set.mem_univ ((V.ι ≫ Q.G.hom) y)))`. Establish `hne : ((W ⊓ C.W l : M.Z.Opens) : Set M.Z).Nonempty` using `⟨_, hyW, hl⟩`. Take `⟨n, n', hn, hn'⟩` from `exists_matrix_mul_eq_one_of_span_eq o Ω M S.J W (C.W l) b (C.B l) (C.c l) (fun z hz => (hb z hz.1).2.symm.trans (C.basis l z hz.2)) (C.c_inv l)`. Use `replace hn' := hn' hne`. Set `Y` to `(V.ι ≫ Q.G.hom) ⁻¹ᵁ (W ⊓ C.W l)`.
+
+Establish `hr : Set.range (Y.ι ≫ V.ι ≫ k) ⊆ Set.range (C.P.hom ⁻¹ᵁ C.W l).ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `C.P.hom ((Y.ι ≫ V.ι ≫ k) w) ∈ C.W l`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, Category.assoc, hk, Scheme.Hom.comp_apply]`.
+
+Conclude with `w.2.2`. Set `κ` to `IsOpenImmersion.lift (C.P.hom ⁻¹ᵁ C.W l).ι (Y.ι ≫ V.ι ≫ k) hr`. Establish `hκ : κ ≫ (C.P.hom ⁻¹ᵁ C.W l).ι = Y.ι ≫ V.ι ≫ k` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (κ ≫ (C.P.hom ⁻¹ᵁ C.W l).ι)` using `by rw [hκ]; infer_instance`. Establish `: IsOpenImmersion κ` using `IsOpenImmersion.of_comp κ (C.P.hom ⁻¹ᵁ C.W l).ι`.
+
+Take `⟨ψ, hψ1, hψ2, hψ3⟩` from `GlobalTheory.T.exists_closedImmersion_projSpace_of_sections _ _ _ _ _ (C.σ l) m e (C.imm l)`. Take `⟨K, _, β, g, r, jP, h1, h2, h3, h4⟩` from `Q.exists_generic hU`. Establish `hgen : ∀ T : Q.G.left.Opens, ∀ p ∈ T, Set.range (g ≫ Q.φ) ⊆ T`. Introduce and unpack `T p hp _ ⟨w, rfl⟩`. Rewrite using `[h4]`.
+
+Conclude with `(genericPoint_specializes p).mem_open T.isOpen hp`. Establish `hgG : g ≫ Q.φ ≫ Q.G.hom = spMap β ≫ M.pt`. Rewrite using `[← h1]`. Conclude with `congrArg (g ≫ ·) Q.cart.1.w`. Establish `hr' : Set.range (g ≫ Q.φ) ⊆ Set.range (Y.ι ≫ V.ι)`.
+
+Use `hgen (Y.ι ≫ V.ι).opensRange _ ⟨⟨y, hyW, hl⟩, rfl⟩` as an intermediate fact. Conclude with `this`. Set `ξ` to `IsOpenImmersion.lift (Y.ι ≫ V.ι) (g ≫ Q.φ) hr'`. Establish `hξ : ξ ≫ Y.ι ≫ V.ι = g ≫ Q.φ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hξf : ξ ≫ Y.ι ≫ V.ι ≫ Q.G.hom = spMap β ≫ M.pt`.
+
+Rewrite using `[← hgG, ← reassoc_of% hξ]`. Take `⟨jL, hj⟩` from `exists_le_preimage_of_iSup_eq_top (g ≫ Q.φ) Q.L.isLB.cover`. Establish `hL` using `(top_le_preimage_iff _ _).1 hj`. Establish `hgV : Set.range (g ≫ Q.φ) ⊆ V` using `hgen V _ y.2`. Set `t : S.J → K` to `fun i => valF (g ≫ Q.φ) _ (σ i fun _ => jL)`.
+
+Establish `hpt` using `M.top_le_preimage_pt hne`. Set `ev : Γ(M.Z, W ⊓ C.W l) →+* K` to `β.comp (M.res _ hne)`. Establish `hev : valF (ξ ≫ Y.ι ≫ V.ι ≫ Q.G.hom) (W ⊓ C.W l) = ev`. Rewrite using `[hξf]`. Use function extensionality and compare the values at `a`.
+
+Conclude with `(valR_spMap_comp β M.pt _ hpt a).trans (congrArg β (M.res_apply _ hne a).symm)`. Use `⟨W ⊓ C.W l, Γ(M.Z, C.W l), inferInstance, M.Z.homOfLE inf_le_right ≫ (C.aff l).isoSpec.hom, κ ≫ ψ, n'.submatrix e e, K, inferInstance, ξ, fun i => t (e i), ⟨hyW, hl⟩, inferInstance, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ2, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono (C.W l).ι]`.
+
+Simplify using `only [Category.assoc, morphismRestrict_ι, Scheme.homOfLE_ι]`. Rewrite using `[reassoc_of% hκ, hk]`. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `Matrix.isUnit_det_of_left_inverse hn`. Use `⟨fun p => ?_⟩` and prove the remaining obligations.
+
+Set `w₀ : Sp K` to `IsLocalRing.closedPoint K`. Establish `h5 : (Y.ι ≫ V.ι) (ξ w₀) ⤳ (Y.ι ≫ V.ι) p`. Rewrite using `[← Scheme.Hom.comp_apply ξ, hξ, h4]`. Conclude with `genericPoint_specializes _`. Establish `h6` using `(Y.ι ≫ V.ι).isOpenEmbedding.isInducing.specializes_iff.1 h5`.
+
+Conclude with `closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self w₀)) h6.mem_closure`. Establish `h5` using `hπc K (ξ ≫ Y.ι) (fun _ => jL) (by`. Rewrite using `[Category.assoc, hξ]`. Conclude with `fun w _ => Set.mem_iInter.2 fun _ => hL ⟨w, rfl⟩)`. Simplify using `only [Category.assoc] at h5`.
+
+Rewrite `h5` using `[hξ]`. Conclude with `h5`. Establish `hw : ⊤ ≤ g ⁻¹ᵁ (LB.div (ρ.P.L.pull (pullback.fst ρ.P.A.hom Q.u₀)) (Q.L.L.pull Q.φ)).U (fun _ => jP, fun _ => jL)` using `fun w _ => ⟨Set.mem_iInter.2 fun _ => h3 ⟨w, Scheme.Hom.comp_apply _ _ _⟩, Set.mem_iInter.2 fun _ => hL ⟨w, Scheme.Hom.comp_apply _ _ _⟩⟩`. Establish `hω : valF g _ (Q.w.s (fun _ => jP, fun _ => jL)).val ≠ 0`. Use `IsUnit.ne_zero ?_` and prove the remaining obligations.
+
+Rewrite using `[valF_eq_valR, valR_eq g _ hw]`. Conclude with `(Units.isUnit _).map _`. Establish `hth : β (S.th x₀) ≠ 0` using `(map_ne_zero β).2 (hb _ hyW).1.1`. Establish `hs : ρ.Crd (g ≫ pullback.fst _ _) fun j => valF r _ ((ρ.s j).f fun _ => jP)` using `⟨r, h2, fun _ => jP, 1, fun w _ => Set.mem_iInter.2 fun _ => by`. Establish `h7 : (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) w ∈ ρ.P.L.U jP` using `h2 ▸ h3 ⟨w, rfl⟩`.
+
+Rewrite `h7` using `[Scheme.Hom.comp_apply]`. Conclude with `h7, fun j => by rw [Units.val_one, _root_.one_mul]; rfl⟩`. Establish `hx : (ξ ≫ κ) ≫ (C.P.hom ⁻¹ᵁ C.W l).ι = g ≫ Q.φ ≫ k`. Rewrite using `[Category.assoc, hκ, reassoc_of% hξ]`. Establish `h5` using `C.crd_chart_of_generic l β (ξ ≫ κ) (by rw [← Category.assoc, hx, Category.assoc, Category.assoc, hk, hgG]) _ (hx ▸ hcrd K g _ hs) b (n'.map ev) (by`.
+
+Establish `h8 : (b * (C.c l).map (valF M.pt (C.W l))).map β = n.map ev`. Rewrite using `[← hn']`. Use extensionality with `i j`. Conclude with `congrArg β (M.res_apply _ hne _).symm`. Rewrite using `[h8, ← Matrix.map_mul, mul_eq_one_comm.1 hn, Matrix.map_one _ (map_zero _) (map_one _)])`.
+
+Use `_ (mul_ne_zero hth (zpow_ne_zero (S.N : ℤ) hω)) t (fun i => by`. Rewrite using `[_root_.mul_assoc, ← (hσ i).2 K β g r jP jL h1 h2 h3 hL hgV, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_div₀, ← _root_.mul_assoc, mul_div_cancel₀ _ hth])`. Establish `h6` using `hψ3 K _ _ h5`.
+
+Rewrite `h6` using `[Category.assoc]`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hev]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.submatrix_apply]`.
+
+Conclude with `e.sum_comp fun j => ev (n' (e i) j) * t j`.
+-/
 theorem ZHPre.immersedBy_of_clos (Q : ZHPre ρ M U₀) (C : Clos ρ M U₀ EE) (hU : (U₀ : Set M.Z).Nonempty)
     (k : Q.G.left ⟶ C.P.left) [IsOpenImmersion k] (hk : k ≫ C.P.hom = Q.G.hom)
     (hcrd : ∀ (K : Type) [Field K] (x : Sp K ⟶ pullback ρ.P.A.hom Q.u₀) (v : S.J → K),
@@ -191,6 +250,11 @@ theorem ZHPre.immersedBy_of_clos (Q : ZHPre ρ M U₀) (C : Clos ρ M U₀ EE) (
     simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.submatrix_apply]
     exact e.sum_comp fun j => ev (n' (e i) j) * t j
 
+/- English proof (translation)
+Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩`. Establish `: Finite S.Gam` using `inferInstance`. Use `isOpen_iff_forall_mem_open.2 fun z hz => ⟨⋂ x ∈ S.supI M z, {w | M.Div S.th x w}, fun w hw => ?_, (Set.toFinite _).isOpen_biInter fun x _ => M.isOpen_setOf_div S.th x, Set.mem_iInter₂.2 fun x hx => hx⟩` and prove the remaining obligations. Establish `hsup : S.supI M z ⊆ S.supI M w` using `fun x hx => Set.mem_iInter₂.1 hw x hx`. Establish `h : S.TT M w ≤ S.TT M z` using `fun a ha x hx => ha x (AddSubgroup.closure_mono hsup hx)`.
+
+Conclude with `le_bot_iff.1 (h.trans (le_of_eq hz))`.
+-/
 theorem ThetaSys.isOpen_setOf_TT_eq_bot {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
     (M : RatModel o Ω) : IsOpen {z | S.TT M z = ⊥} := by
   have : NeZero (S.r * S.N) := ⟨Nat.mul_ne_zero (by have := S.r_pos; omega) (by have := S.N_ge; omega)⟩
@@ -201,6 +265,17 @@ theorem ThetaSys.isOpen_setOf_TT_eq_bot {o Ω : Type} [CommRing o] [Field Ω] [A
   have h : S.TT M w ≤ S.TT M z := fun a ha x hx => ha x (AddSubgroup.closure_mono hsup hx)
   exact le_bot_iff.1 (h.trans (le_of_eq hz))
 
+/- English proof (translation)
+Introduce `hExt hUnif hSS hU hL hL2 hT o Ω _ _ _ _ S ρ M U₀ EE Q C ex ⟨e, he1, he2, he3⟩ hBig hO hEE hSec hLoc hSecO hAb`. Take `⟨hS, hEndo, hIso⟩` from `GlobalTheory.T.endo_lbIso_symmetryHypothesis_extend_normalModel hExt o Ω S ρ M U₀ Q hO`. Establish `hPol` using `GlobalTheory.T.thetaModel_relAmple_and_principal_abelianLocus o Ω S ρ M U₀ EE Q hL hO hSecO hAb`. Establish `hOpen : IsOpen (abLocus Q.G)`. Rewrite using `[hAb.1]`.
+
+Conclude with `S.isOpen_setOf_TT_eq_bot M`. Establish `hS'` using `GlobalTheory.T.exists_sections_pow_line_bundle_from_local_basis hSS hU hL hL2 hT o Ω S ρ M U₀ EE Q hO hEE hSecO`. Establish `hcrd : ∀ (u : U₀.toScheme ⟶ Sp S.R) (a : pullback ρ.P.A.hom u ⟶ C.G.toScheme), u = C.u₀ → HEq a ex.a → ∀ (K : Type) [Field K] (x : Sp K ⟶ pullback ρ.P.A.hom u) (v : S.J → K), ρ.Crd (x ≫ pullback.fst _ _) v → Crd C.O1 C.st (x ≫ a ≫ C.G.ι) v`. Introduce and unpack `_ a rfl h K _ x v hv`. Rewrite using `[eq_of_heq h, ex.a_eq]`.
+
+Conclude with `C.crd K x v hv`. Conclude with `⟨{ u₀ := Q.u₀ u₀_gen := Q.u₀_gen G := Q.G grp := Q.grp comm := Q.comm semi := Q.semi dim := Q.dim qproj := Q.qproj φ := Q.φ cart := Q.cart L := Q.L cub := Q.cub sym := Q.sym w := Q.w w_gen := Q.w_gen w_rig := Q.w_rig hypS := hS endo := hEndo isoExt := hIso split := Q.split ab := …`. Take `⟨σ', h1, h2⟩` from `hS' W x₀ b hb`. Take `rfl : σ = σ'` from `funext fun i => Q.eq_of_genVal hO.ne _ _ _ _ _ _ (hσ i).2 (h1 i).2`. Use `Q.immersedBy_of_clos C hO.ne (e.hom ≫ C.G.ι) ((Category.assoc _ _ _).trans he1) (fun K _ x v hv => ?_) W x₀ b hb σ hσ fun x hx => exists_mem_basicOpen_of_geometric σ x fun K _ _ g hg => ?_` and prove the remaining obligations.
+
+Use `hcrd _ _ he2 he3 K x v hv` as an intermediate fact. Rewrite `this` using `[Category.assoc]`. Then use the resulting hypothesis. Use `(h2 K (g ≫ Q.G.hom) ?_).1 g rfl` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, hg]`.
+
+Conclude with `hx }⟩`.
+-/
 theorem ZHPre.nonempty_out : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → (∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R], IsNoetherianRing R → IsIntegrallyClosed R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (_ : CubicalStr G L) (W : (Sp R).Opens), IsSemiAbelian G → L.IsSymmetric → HypS G L.L → (∃ E : SplitExt (Sp (IsLocalRing.ResidueField R)), E.IsGt ((Over.pullback (spMap (IsLocalRing.residue R))).obj G)) → (∃ θ : LB.Sec L.L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R) → (W : Set (Sp R)).Nonempty → (W : Set (Sp R)) = abLocus G → IsProper (pullback.snd G.hom W.ι) → RelAmple ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → KTriv ((Over.pullback W.ι).obj G) (L.L.pull (pullback.fst G.hom W.ι)) → ∃ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (IsLocalRing.maximalIdeal R) D A G), U.LG = L ∧ ∀ y, PsiUnitOn D.toPre y W) → GlobalTheory.Published.SemistableReductionSt → ThmUSt → Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Q : ZHPre ρ M U₀) (C : Clos ρ M U₀ EE) (ex : C.Ext), (∃ e : Q.G.left ≅ C.G.toScheme, e.hom ≫ C.G.ι ≫ C.P.hom = Q.G.hom ∧ Q.u₀ = C.u₀ ∧ HEq (Q.φ ≫ e.hom) ex.a) → S.Big → S.Over₀ M U₀ → S.IsEE M U₀ EE → Q.Sec → Q.LocTheta → Q.SecO EE → Q.Ab → Nonempty (ZHOut ρ M U₀ EE) := by
   intro hExt hUnif hSS hU hL hL2 hT o Ω _ _ _ _ S ρ M U₀ EE Q C ex ⟨e, he1, he2, he3⟩ hBig hO hEE hSec hLoc hSecO hAb
   obtain ⟨hS, hEndo, hIso⟩ := GlobalTheory.T.endo_lbIso_symmetryHypothesis_extend_normalModel hExt o Ω S ρ M U₀ Q hO

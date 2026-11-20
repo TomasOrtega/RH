@@ -5,6 +5,11 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.DensityIntegral
 
+/- English proof (translation)
+Rewrite using `[volume_pi, Measure.restrict_pi_pi, integral_fintype_prod_eq_prod (fun (i : Fin a) (t : ℝ) => (c i : ℝ) * t ^ (c i - 1))]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_const_mul, integral_pow]`. Take `⟨m, hm⟩ : ∃ m, c i = m + 1` from `⟨c i - 1, by have := hc i; omega⟩`. Rewrite using `[hm]`.
+
+Simplify using `only [Nat.add_sub_cancel, one_pow, ne_eq, Nat.add_eq_zero_iff, one_ne_zero, and_false, not_false_eq_true, zero_pow, sub_zero]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_cube (a : ℕ) (c : Fin a → ℕ) (hc : ∀ i, 1 ≤ c i) :
     ∫ τ in Set.pi Set.univ (fun _ : Fin a => Set.Icc (0 : ℝ) 1), ∏ i, (c i : ℝ) * τ i ^ (c i - 1) = 1 := by
   rw [volume_pi, Measure.restrict_pi_pi,
@@ -19,6 +24,13 @@ theorem integral_cube (a : ℕ) (c : Fin a → ℕ) (hc : ∀ i, 1 ≤ c i) :
   push_cast
   field_simp
 
+/- English proof (translation)
+Establish `h2` using `(GlobalTheory.Count.layerProd_count_mul_density_le_two n f (∑ i, j i) a j τ 0 le_rfl (by omega) hτ.1 hτ.2 le_rfl (by norm_num)).2`. Establish `h3 : 0 ≤ ∏ i, 2 * (f : ℝ) * j i / τ i` using `Finset.prod_nonneg fun i _ => by have := (hτ.2 i).1; positivity`. Use `(mul_le_mul_of_nonneg_right h2 h3).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => by have := (hτ.2 i).1; positivity) fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨h0, h1⟩` from `hτ.2 i`. Establish `hc : 1 ≤ 2 * f * j i` using `Nat.mul_pos (by omega) (hj i)`. Establish `he : 2 * f * j i ≤ 2 * j i * (n - 2 * ∑ l, j l) * f`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : τ i ^ (2 * j i * (n - 2 * ∑ l, j l) * f) ≤ τ i ^ (2 * f * j i - 1) * τ i`.
+
+Rewrite using `[← pow_succ]`. Conclude with `pow_le_pow_of_le_one h0.le (by linarith) (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dens_le (n f a : ℕ) (j : Fin a → ℕ) (hf : 1 ≤ f) (hj : ∀ i, 1 ≤ j i) (hn : 2 * ∑ i, j i + 1 ≤ n)
     (τ : Fin a → ℝ) (hτ : τ ∈ simplexH a) :
     FlagMeas.dens n f j τ ≤ ∏ i, ((2 * f * j i : ℕ) : ℝ) * τ i ^ (2 * f * j i - 1) := by
@@ -41,6 +53,17 @@ theorem dens_le (n f a : ℕ) (j : Fin a → ℕ) (hf : 1 ≤ f) (hj : ∀ i, 1 
         mul_le_mul_of_nonneg_right h4 (by positivity)
     _ = _ := by push_cast; field_simp
 
+/- English proof (translation)
+Introduce `n f a j hf hj hn`. Use `set box : Set (Fin a → ℝ) := Set.pi Set.univ (fun _ : Fin a => Set.Icc (0 : ℝ) 1) with hbox`. Establish `hc : IsCompact box` using `isCompact_univ_pi fun _ => isCompact_Icc`. Establish `hsub : simplexH a ⊆ box` using `fun τ hτ i _ => ⟨(hτ.2 i).1.le, by linarith [(hτ.2 i).2]⟩`. Establish `hm : MeasurableSet (simplexH a)`.
+
+Establish `: simplexH a = (⋂ i : Fin a, ⋂ k : Fin a, ⋂ _ : i < k, {τ : Fin a → ℝ | τ i < τ k}) ∩ ⋂ i : Fin a, ({τ : Fin a → ℝ | 0 < τ i} ∩ {τ : Fin a → ℝ | τ i < 1 / 2})`. Use extensionality with `τ`. Simplify using `[simplexH, StrictMono]`. Rewrite using `[this]`. Use `MeasurableSet.inter (MeasurableSet.iInter fun i => MeasurableSet.iInter fun k => MeasurableSet.iInter fun _ => measurableSet_lt (measurable_pi_apply i) (measurable_pi_apply k)) (MeasurableSet.iInter fun i => (measurableSet_lt measurable_const (measurable_pi_apply i)).inter (measu …` and prove the remaining obligations.
+
+Use `set g : (Fin a → ℝ) → ℝ := fun τ => ∏ i, ((2 * f * j i : ℕ) : ℝ) * τ i ^ (2 * f * j i - 1) with hg`. Establish `hcont : Continuous g` using `by rw [hg]; fun_prop`. Establish `hint : IntegrableOn g box` using `hcont.continuousOn.integrableOn_compact hc`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hint]`.
+
+Use `(ae_restrict_iff' hc.measurableSet).2 (Filter.Eventually.of_forall fun τ hτ => ?_)` and prove the remaining obligations. Use `Finset.prod_nonneg fun i _ => ?_` and prove the remaining obligations. Use `(hτ i trivial).1` as an intermediate fact. Check the signs of the components of the expression. Use `_ = 1 := by`.
+
+Rewrite using `[integral_cube a (fun i => 2 * f * j i) fun i => Nat.mul_pos (by omega) (hj i), ENNReal.ofReal_one]`.
+-/
 theorem lintegral_dens_le_one : ∀ (n f a : ℕ) (j : Fin a → ℕ), 1 ≤ f → (∀ i, 1 ≤ j i) → 2 * ∑ i, j i + 1 ≤ n → ∫⁻ τ in simplexH a, ENNReal.ofReal (dens n f j τ) ≤ 1 := by
   intro n f a j hf hj hn
   set box : Set (Fin a → ℝ) := Set.pi Set.univ (fun _ : Fin a => Set.Icc (0 : ℝ) 1) with hbox

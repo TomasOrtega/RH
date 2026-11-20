@@ -12,11 +12,17 @@ namespace GlobalTheory.CompanionTheory.ExtTensorFixed
 variable {G H V W X ι : Type} [DecidableEq ι] [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
   [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X]
 
+/- English proof (translation)
+Use `show (∀ h : K, ρ (h : G) v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v) ↔ _`. Simplify using the standard rewrite rules.
+-/
 theorem mem_fixed_iff (ρ : Representation ℂ G V) (K : Subgroup G) (v : V) :
     v ∈ fixed ρ K ↔ ∀ k : K, ρ (k : G) v = v := by
   show (∀ h : K, ρ (h : G) v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v) ↔ _
   simp
 
+/- English proof (translation)
+Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.tmul_add, map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul x w => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`.
+-/
 theorem coord_lTensor (b : Module.Basis ι ℂ X) (f : W →ₗ[ℂ] W) (y : X ⊗[ℂ] W) (i : ι) :
     TensorProduct.equivFinsuppOfBasisLeft b (f.lTensor X y) i =
       f (TensorProduct.equivFinsuppOfBasisLeft b y i) := by
@@ -25,6 +31,13 @@ theorem coord_lTensor (b : Module.Basis ι ℂ X) (f : W →ₗ[ℂ] W) (y : X �
   | add x y hx hy => simp only [TensorProduct.tmul_add, map_add, Finsupp.add_apply, hx, hy]
   | tmul x w => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace ℂ X`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := W) b`. Establish `hc : ∀ i, e y i ∈ fixed σ K` using `fun i => (mem_fixed_iff σ K _).2 fun k => by`. Establish `h` using `coord_lTensor b (σ (k : G)) y i`. Rewrite `h` using `[hy k]`.
+
+Conclude with `h.symm`. Establish `hy' : y = (e y).sum fun i n => b i ⊗ₜ[ℂ] n`. Establish `h : e.symm (e y) = _` using `TensorProduct.equivFinsuppOfBasisLeft_symm_apply b (e y)`. Conclude with `(e.symm_apply_apply y).symm.trans h`. Rewrite using `[hy']`.
+
+Use `Submodule.sum_mem _ fun i _ => ⟨b i ⊗ₜ[ℂ] (⟨e y i, hc i⟩ : fixed σ K), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem mem_range_lTensor_fixed (σ : Representation ℂ G W) (K : Subgroup G) (y : X ⊗[ℂ] W)
     (hy : ∀ k : K, (σ (k : G)).lTensor X y = y) :
     y ∈ LinearMap.range ((fixed σ K).subtype.lTensor X) := by
@@ -42,6 +55,29 @@ theorem mem_range_lTensor_fixed (σ : Representation ℂ G W) (K : Subgroup G) (
   refine Submodule.sum_mem _ fun i _ => ⟨b i ⊗ₜ[ℂ] (⟨e y i, hc i⟩ : fixed σ K), ?_⟩
   simp
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx'` using `(mem_fixed_iff _ _ _).1 hx`. Establish `act : ∀ (g : G × H) (z : V ⊗[ℂ] W), extTensor ρ σ g z = TensorProduct.map (ρ g.1) (σ g.2) z`. Introduce `g z`. Proceed by induction on `z with`.
+
+Consider the case `zero => simp`. Consider the case `add a c ha hc => simp [ha, hc]`. Consider the case `tmul v w => simp`. Establish `h1 : ∀ k : K₁, (ρ (k : G)).lTensor W (TensorProduct.comm ℂ V W x) = TensorProduct.comm ℂ V W x`. Introduce `k`.
+
+Establish `hk` using `hx' ⟨((k : G), 1), ⟨k.2, one_mem _⟩⟩`. Rewrite `hk` using `[act]`. Use `conv_rhs => rw [← hk]`. Simplify using `only [map_one]`. Generalize the expression as in `x = z`.
+
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v w => simp`. Take `⟨y', hy'⟩` from `mem_range_lTensor_fixed ρ K₁ _ h1`.
+
+Set `y : (fixed ρ K₁) ⊗[ℂ] W` to `TensorProduct.comm ℂ W (fixed ρ K₁) y'`. Establish `hy : (fixed ρ K₁).subtype.rTensor W y = x`. Establish `: (fixed ρ K₁).subtype.rTensor W y = TensorProduct.comm ℂ W V ((fixed ρ K₁).subtype.lTensor W y')`. Simplify using `only [y]`. Generalize the expression as in `y' = z`.
+
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v w => simp`. Rewrite using `[this, hy']`.
+
+Simplify using the standard rewrite rules. Establish `hinj : Function.Injective ((fixed ρ K₁).subtype.rTensor W)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (Submodule.injective_subtype _)`. Establish `h2 : ∀ k : K₂, (σ (k : H)).lTensor (fixed ρ K₁) y = y`. Introduce `k`. Apply `hinj` to reduce the goal to its premises.
+
+Establish `hk` using `hx' ⟨(1, (k : H)), ⟨one_mem _, k.2⟩⟩`. Rewrite `hk` using `[act]`. Rewrite using `[hy]`. Use `conv_rhs => rw [← hk, ← hy]`. Simplify using `only [map_one]`.
+
+Generalize the expression as in `y = z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v w => simp`.
+
+Take `⟨z, hz⟩` from `mem_range_lTensor_fixed σ K₂ y h2`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← hz]`. Generalize the expression as in `z = t`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v w => simp`.
+-/
 theorem fixed_le_range (ρ : Representation ℂ G V) (σ : Representation ℂ H W)
     (K₁ : Subgroup G) (K₂ : Subgroup H) :
     fixed (extTensor ρ σ) (K₁.prod K₂) ≤
@@ -106,6 +142,9 @@ theorem fixed_le_range (ρ : Representation ℂ G V) (σ : Representation ℂ H 
   | add a c ha hc => simp only [map_add, ha, hc]
   | tmul v w => simp
 
+/- English proof (translation)
+Introduce `G H V W _ _ _ _ _ _ ρ σ K₁ K₂ h₁ h₂`. Conclude with `Submodule.finiteDimensional_of_le (fixed_le_range ρ σ K₁ K₂)`.
+-/
 theorem finiteDimensional_fixed_extTensor : ∀ (G H V W : Type) [Group G] [Group H] [AddCommGroup V]
     [Module ℂ V] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V)
     (σ : Representation ℂ H W) (K₁ : Subgroup G) (K₂ : Subgroup H),

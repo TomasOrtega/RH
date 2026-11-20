@@ -26,9 +26,17 @@ open Ad3.K.GL2LocalData (rotR kR)
 
 instance : IsFiniteMeasure rho := ⟨by rw [rho, Measure.restrict_apply_univ]; exact measure_Ioc_lt_top⟩
 
+/- English proof (translation)
+Simplify using `[rho]`.
+-/
 theorem rho_univ : rho Set.univ = ENNReal.ofReal (2 * Real.pi) := by
   simp [rho]
 
+/- English proof (translation)
+Establish `hd : (!![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Use `Real.sin_sq_add_cos_sq θ` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Unfold `rotR`.
+
+Rewrite using `[dif_pos hd]`. Both sides reduce to the same expression.
+-/
 theorem rotR_val (θ : ℝ) :
     (rotR θ).val = !![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] := by
   have hd : (!![Real.cos θ, Real.sin θ; -Real.sin θ, Real.cos θ] : Matrix (Fin 2) (Fin 2) ℝ).det ≠ 0 := by
@@ -41,6 +49,9 @@ theorem rotR_val (θ : ℝ) :
 
 def dd (ε : Bool) : ℝ := if ε then -1 else 1
 
+/- English proof (translation)
+Apply the tactic sequence `cases ε <;>`. Simplify using `only [kR, Units.val_mul, rotR_val, dg2, dd]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Units.val_one]`.
+-/
 theorem kR_val (θ : ℝ) (ε : Bool) :
     (kR θ ε).val = !![Real.cos θ, dd ε * Real.sin θ; -Real.sin θ, dd ε * Real.cos θ] := by
   cases ε <;>
@@ -48,6 +59,9 @@ theorem kR_val (θ : ℝ) (ε : Bool) :
     ext i j
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Units.val_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, kR_val, kR_val, kR_val]`. Apply the tactic sequence `cases ε <;> cases ε' <;>`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, dd, Real.cos_add, Real.sin_add, Real.cos_sub, Real.sin_sub, ← sub_eq_add_neg] <;> ring`.
+-/
 theorem kR_mul (θ θ' : ℝ) (ε ε' : Bool) : kR θ ε * kR θ' ε' = kR (θ + dd ε * θ') (xor ε ε') := by
   apply Units.ext
   rw [Units.val_mul, kR_val, kR_val, kR_val]
@@ -56,14 +70,25 @@ theorem kR_mul (θ θ' : ℝ) (ε ε' : Bool) : kR θ ε * kR θ' ε' = kR (θ +
     fin_cases i <;> fin_cases j <;>
       simp [Matrix.mul_apply, Fin.sum_univ_two, dd, Real.cos_add, Real.sin_add, Real.cos_sub, Real.sin_sub, ← sub_eq_add_neg] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[kR_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dd]`.
+-/
 theorem kR_zero : kR 0 false = 1 := by
   apply Units.ext
   rw [kR_val]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dd]
 
+/- English proof (translation)
+Apply the tactic sequence `cases ε <;> simp [dd]`.
+-/
 theorem dd_mul_self (ε : Bool) : dd ε * dd ε = 1 := by cases ε <;> simp [dd]
 
+/- English proof (translation)
+Rewrite using `[inv_eq_iff_mul_eq_one, kR_mul]`. Establish `: θ + dd ε * -(dd ε * θ) = 0`. Use `dd_mul_self ε` as an intermediate fact. Take the linear combination `(-θ) * this`. Rewrite using `[this]`.
+
+Simplify using `[kR_zero]`.
+-/
 theorem kR_inv (θ : ℝ) (ε : Bool) : (kR θ ε)⁻¹ = kR (-(dd ε * θ)) ε := by
   rw [inv_eq_iff_mul_eq_one, kR_mul]
   have : θ + dd ε * -(dd ε * θ) = 0 := by
@@ -72,6 +97,13 @@ theorem kR_inv (θ : ℝ) (ε : Bool) : (kR θ ε)⁻¹ = kR (-(dd ε * θ)) ε 
   rw [this]
   simp [kR_zero]
 
+/- English proof (translation)
+Establish `hv : Continuous fun θ => (kR θ ε).val`. Simplify using `only [kR_val]`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun θ => ((kR θ ε)⁻¹ : GL (Fin 2) ℝ).val) = (fun θ => (kR θ ε).val) ∘ fun θ => -(dd ε * θ)`. Use function extensionality and compare the values at `θ`. Rewrite using `[kR_inv]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Continuous (fun θ => ((kR θ ε)⁻¹ : GL (Fin 2) ℝ).val)`.
+
+Rewrite using `[this]`. Conclude with `hv.comp (by fun_prop)`.
+-/
 theorem continuous_kR (ε : Bool) : Continuous fun θ => kR θ ε := by
   have hv : Continuous fun θ => (kR θ ε).val := by
     simp only [kR_val]
@@ -108,9 +140,15 @@ section Local
 
 variable (v : Pl)
 
+/- English proof (translation)
+The claim follows from `(GLnLocal.isOpen_integralGL (Qv v) 2).measure_ne_zero _ ⟨1, one_mem _⟩`.
+-/
 theorem haar_maxCompact_ne_zero : LFS.hG (GP.psiF v) (GL2LocalData.K2 (Qv v)) ≠ 0 :=
   (GLnLocal.isOpen_integralGL (Qv v) 2).measure_ne_zero _ ⟨1, one_mem _⟩
 
+/- English proof (translation)
+The claim follows from `(GLnLocal.isCompact_integralGL (Qv v) 2).measure_ne_top`.
+-/
 theorem haar_maxCompact_ne_top : LFS.hG (GP.psiF v) (GL2LocalData.K2 (Qv v)) ≠ ⊤ :=
   (GLnLocal.isCompact_integralGL (Qv v) 2).measure_ne_top
 

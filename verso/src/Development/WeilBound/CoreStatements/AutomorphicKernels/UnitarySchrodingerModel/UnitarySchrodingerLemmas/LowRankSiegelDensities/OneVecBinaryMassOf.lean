@@ -15,6 +15,9 @@ def SharpCount : Prop :=
     |(Nat.card {x : ι → k // (2 : k)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) = s} : ℝ) - (Fintype.card k : ℝ) ^ (2 * M - 1)| ≤
       (Fintype.card k : ℝ) ^ (M - 1)
 
+/- English proof (translation)
+The claim follows from `|N * (q⁻¹) ^ (2 * M - 1) - 1| ≤ 1 / q ^ M + 1 / q ^ (2 * M - 1) := by obtain ⟨m, rfl⟩ : ∃ m, M = m + 1 := ⟨M - 1, by omega⟩ have e1 : 2 * (m + 1) - 1 = 2 * m + 1 := by omega have e2 : m + 1 - 1 = m := by omega rw [e1] at h ⊢ rw [e2] at h have hQ : q ^ (2 * m + 1) = q ^ (m + 1) * …`.
+-/
 theorem real_bound2 (q N Nf : ℝ) (hq : 0 < q) (M : ℕ) (hM : 1 ≤ M)
     (h : |Nf - q ^ (2 * M - 1)| ≤ q ^ (M - 1)) (h1 : N ≤ Nf) (h2 : Nf ≤ N + 1) :
     |N * (q⁻¹) ^ (2 * M - 1) - 1| ≤ 1 / q ^ M + 1 / q ^ (2 * M - 1) := by
@@ -47,6 +50,65 @@ local notation "𝒪" => HeightOneSpectrum.adicCompletionIntegers F v
 local notation "𝓴" => IsLocalRing.ResidueField (HeightOneSpectrum.adicCompletionIntegers F v)
 local notation "res" => IsLocalRing.residue (HeightOneSpectrum.adicCompletionIntegers F v)
 
+/- English proof (translation)
+Establish `hLoc` using `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI : SecondCountableTopology (Fv F v) := hLoc.2.2.1`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨-, -, -, hcard⟩` from `GlobalTheory.T.standard_local_haar_properties F v lam hlam`. Establish `hq0 : Ideal.absNorm v.asIdeal ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Use `haveI : Finite 𝓴 := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq0)`. Use `letI : Fintype 𝓴 := Fintype.ofFinite _`. Establish `hcardk : Fintype.card 𝓴 = Ideal.absNorm v.asIdeal`.
+
+Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `hcard`. Take `⟨BO, rfl⟩ : ∃ BO : Matrix ι ι 𝒪, BO.map phi = B` from `⟨Matrix.of fun i j => ⟨B i j, hBint i j⟩, by ext i j; rfl⟩`. Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h0`.
+
+Rewrite `h2` using `[h0, map_zero]`. Conclude with `zero_ne_one h2`. Set `c : 𝒪` to `⟨2⁻¹, by show Valued.v ((2 : Fv F v)⁻¹) ≤ 1; rw [map_inv₀, h2, inv_one]⟩`. Establish `hc : (c : Fv F v) = 2⁻¹` using `rfl`. Establish `hc2 : c * 2 = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : (phi : 𝒪 →+* Fv F v) (c * 2) = phi c * phi 2` using `map_mul _ _ _`. Establish `e2 : (phi : 𝒪 →+* Fv F v) 2 = 2` using `map_ofNat _ 2`. Establish `e3 : phi c = (2 : Fv F v)⁻¹` using `hc`. Rewrite `e` using `[e2, e3, inv_mul_cancel₀ h20]`.
+
+Conclude with `e`. Establish `hr1 : res c * 2 = 1`. Use `congrArg res hc2` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, map_ofNat]`. Then use the resulting hypothesis. Establish `hr : res c = 2⁻¹` using `eq_inv_of_mul_eq_one_left hr1`.
+
+Establish `hchar : ringChar 𝓴 ≠ 2`. Introduce `h`. Establish `h0 : (2 : 𝓴) = 0`. Use `ringChar.Nat.cast_ringChar (R := 𝓴)` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Conclude with `this` after adjusting the coercions. Rewrite `hr1` using `[h0, mul_zero]`. Conclude with `zero_ne_one hr1`. Establish `hBO : BO.IsSymm`. Conclude with `Matrix.IsSymm.ext fun i j => Subtype.ext (congrFun (congrFun hBs i) j)`.
+
+Establish `hBks : (BO.map res).IsSymm` using `hBO.map _`. Establish `hBkdet : (BO.map res).det ≠ 0`. Introduce `h0`. Establish `e : res BO.det = (BO.map res).det` using `RingHom.map_det res BO`. Rewrite `h0` using `[← e]`.
+
+Establish `h3` using `(res_eq_zero_iff _).1 h0`. Establish `e2 : ((BO.det : 𝒪) : Fv F v) = (BO.map phi).det` using `RingHom.map_det phi BO`. Rewrite `h3` using `[e2, hBdet]`. Conclude with `lt_irrefl _ h3`. Use `set sb : 𝓴 := res (⟨s, hs⟩ : 𝒪) with hsb`.
+
+Establish `hsb0 : sb ≠ 0`. Introduce `h0`. Establish `h'` using `(res_eq_zero_iff _).1 h0`. Express the relevant statement in the definitionally equal form `Valued.v s < 1 at h'`. Rewrite `h'` using `[hsu]`.
+
+Conclude with `lt_irrefl _ h'`. Establish `hcount` using `hSC 𝓴 hchar ι M hM hM1 (BO.map res) hBks hBkdet sb hsb0`. Set `qk : (ι → 𝓴) → 𝓴` to `fun y => (2 : 𝓴)⁻¹ * (y ⬝ᵥ ((BO.map res) *ᵥ y))`. Set `Fl : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => qk y = sb`. Set `T : Finset (ι → 𝓴)` to `Fl.filter fun y => y ≠ 0`.
+
+Establish `hN : Nat.card {x : ι → 𝓴 // (2 : 𝓴)⁻¹ * (x ⬝ᵥ ((BO.map res) *ᵥ x)) = sb} = Fl.card` using `Nat.subtype_card Fl (fun x => by simp [Fl, qk])`. Rewrite `hcount` using `[hN, hcardk]`. Establish `hle1 : T.card ≤ Fl.card` using `Finset.card_filter_le _ _`. Establish `hle2 : Fl.card ≤ T.card + 1`. Establish `hsub : Fl ⊆ insert 0 T`.
+
+Introduce `y hy`. Distinguish the cases in `h0 : y = 0`. Simplify using `[h0]`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_filter.2 ⟨hy, h0⟩)`. Conclude with `(Finset.card_le_card hsub).trans (Finset.card_insert_le _ _)`.
+
+Establish `hqpos : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hq0`. Use `⟨(T.card : ℝ≥0) * ((Ideal.absNorm v.asIdeal : ℝ≥0)⁻¹) ^ (2 * M - 1), ?_, fun A hA hAs => ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `real_bound2 _ _ (Fl.card : ℝ) hqpos M hM1 hcount (by exact_mod_cast hle1) (by exact_mod_cast hle2)`. Use `set Qf : (ι → Fv F v) → Fv F v := fun x => (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) with hQf`.
+
+Establish `hQc : Continuous Qf`. Use `continuous_const.mul ?_` and prove the remaining obligations. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_id)`. Set `P : (ι → 𝓴) → Set (ι → Fv F v)` to `fun y => {x | (∀ i, Valued.v (x i - lf y i) < 1) ∧ Qf x ∈ A}`. Set `T0 : Finset (ι → 𝓴)` to `Finset.univ.filter fun y => y ≠ 0`.
+
+Establish `hS : {x : ι → Fv F v | (∀ i, x i ∈ v.adicCompletionIntegers F) ∧ (∃ i, Valued.v (x i) = 1) ∧ (2 : Fv F v)⁻¹ * (x ⬝ᵥ ((BO.map phi) *ᵥ x)) ∈ A} = ⋃ y ∈ T0, P y`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h3, h4⟩`.
+
+Take `⟨y, hy, h⟩` from `(cover x).1 ⟨h1, h3⟩`. Conclude with `⟨y, Finset.mem_filter.2 ⟨Finset.mem_univ _, hy⟩, h, h4⟩`. Introduce and unpack `⟨y, hy, h, h4⟩`. Take `⟨h1, h3⟩` from `(cover x).2 ⟨y, (Finset.mem_filter.1 hy).2, h⟩`. Conclude with `⟨h1, h3, h4⟩`.
+
+Establish `hball : MeasurableSet {a : Fv F v | Valued.v a < 1}`. Establish `h` using `(Valued.isOpen_ball (Fv F v) 1).measurableSet`. Simplify `h` using `[Valuation.restrict_lt_iff_lt_embedding]`. Establish `hmeas : ∀ y ∈ T0, MeasurableSet (P y)`. Introduce `y _`.
+
+Establish `e : P y = (⋂ i, (fun x : ι → Fv F v => x i - lf y i) ⁻¹' {a | Valued.v a < 1}) ∩ Qf ⁻¹' A`. Use extensionality with `x`. Simplify using `[P]`. Rewrite using `[e]`. Use `(MeasurableSet.iInter fun i => ?_).inter (hQc.measurable hA)` and prove the remaining obligations.
+
+Conclude with `((continuous_apply i).sub continuous_const).measurable hball`. Establish `hdisj : Set.PairwiseDisjoint (↑T0) P`. Introduce `y _ y' _ hne`. Conclude with `Set.disjoint_left.2 fun x hx hx' => hne (eq_of_close x y y' hx.1 hx'.1)`. Establish `hclass : ∀ y ∈ T0, (Measure.pi fun _ : ι => lam) (P y) = if qk y = sb then ((Ideal.absNorm v.asIdeal : ℝ≥0∞)⁻¹ ^ (2 * M - 1)) * lam A else 0`.
+
+Introduce `y hy`. Establish `hy0 : y ≠ 0` using `(Finset.mem_filter.1 hy).2`. Take `⟨hint, hprim⟩` from `(cover (lf y)).2 ⟨y, hy0, fun i => by simp⟩`. Take `⟨a, haQ, har⟩` from `res_Q c hc hr BO y`. Establish `key` using `GlobalTheory.T.primitive_vector_quadratic_level_measure F v lam hlam h2 ι (BO.map phi) hBs hBint hBdet (lf y) hint hprim A hA`.
+
+Establish `hkey : (Measure.pi fun _ : ι => lam) (P y) = _` using `key`. Rewrite using `[hkey, hM]`. Establish `hcl : Valued.v (s - Qf (lf y)) < 1 ↔ qk y = sb`. Use `res_eq_iff (⟨s, hs⟩ : 𝒪) a` as an intermediate fact. Rewrite `this` using `[har]`.
+
+Rewrite using `[show Qf (lf y) = (a : Fv F v) from haQ.symm]`. Conclude with `⟨fun h => (this.2 h).symm, fun h => this.1 h.symm⟩`. Use `split_ifs with he`. Establish `hlt` using `hcl.2 he`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = A`.
+
+Use `Set.inter_eq_left.2 fun z hz => ?_` and prove the remaining obligations. Establish `h5 : Valued.v (z - s) < 1` using `hAs hz`. Establish `h6` using `Valuation.map_add_lt _ h5 hlt`. Establish `e : z - s + (s - Qf (lf y)) = z - Qf (lf y)` using `by ring`. Rewrite `h6` using `[e]`.
+
+Conclude with `h6`. Rewrite using `[this]`. Establish `: A ∩ {s' | Valued.v (s' - (2 : Fv F v)⁻¹ * (lf y ⬝ᵥ ((BO.map phi) *ᵥ lf y))) < 1} = ∅`. Use `Set.eq_empty_iff_forall_notMem.2 fun z hz => he (hcl.1 ?_)` and prove the remaining obligations. Establish `h5 : Valued.v (z - s) < 1` using `hAs hz.1`.
+
+Establish `h6 : Valued.v (z - Qf (lf y)) < 1` using `hz.2`. Establish `h7` using `Valuation.map_sub_lt _ h6 h5`. Establish `e : z - Qf (lf y) - (z - s) = s - Qf (lf y)` using `by ring`. Rewrite `h7` using `[e]`. Conclude with `h7`.
+
+Rewrite using `[this, measure_empty, mul_zero]`. Rewrite using `[hS, measure_biUnion_finset hdisj hmeas, Finset.sum_congr rfl hclass, ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hT : T0.filter (fun y => qk y = sb) = T`. Use extensionality with `y`. Simplify using `[T0, T, Fl, and_comm]`.
+
+Rewrite using `[hT]`. Establish `hq0' : (Ideal.absNorm v.asIdeal : ℝ≥0) ≠ 0` using `by exact_mod_cast hq0`. Move the coercions through the operations in `[ENNReal.coe_inv hq0']`. Rewrite using `[mul_assoc]`.
+-/
 theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (h2 : Valued.v (2 : Fv F v) = 1)
     (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v)) (hBs : B.IsSymm)
     (hBint : ∀ i j, B i j ∈ v.adicCompletionIntegers F) (hBdet : Valued.v B.det = 1)
@@ -211,6 +273,21 @@ theorem coreSharp (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v l
     push_cast [ENNReal.coe_inv hq0']
     rw [mul_assoc]
 
+/- English proof (translation)
+Establish `hs : s ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hsu.le`. Take `⟨Dp, hDp, hprim⟩` from `coreSharp hSC lam hlam h2 ι B hBs hBint hBdet M hM hM1 s hs hsu`. Take `⟨π, hπ⟩` from `GlobalTheory.CompanionTheory.SW.GBall.exists_unif v`.
+
+Establish `hqN : 1 < Ideal.absNorm v.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Establish `hq : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast hqN.le`. Use `⟨Dp, ?_, fun A hA hsub => ?_⟩` and prove the remaining obligations. Use `hDp.trans ?_` and prove the remaining obligations. Establish `h3 : 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ (2 * M - 1) ≤ 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ M` using `one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ hq (by omega))`.
+
+Establish `h4 : 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ M = 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ M + 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ M` using `by ring`. Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hball : A ⊆ {z | Valued.v (z - s) < 1}` using `fun z hz => by`. Use `hsub hz` as an intermediate fact.
+
+Rewrite `this` using `[hsu]`. Conclude with `this`. Rewrite using `[← hprim A hA hball]`. Use `congr 1`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hQ⟩`. Use `⟨hx, ?_, hQ⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnp`. Establish `h5` using `GlobalTheory.CompanionTheory.SW.GBall.q_nonprim h2 hBint hπ hx hnp`.
+
+Establish `hlt : Valued.v ((2 : Fv F v)⁻¹ * (x ⬝ᵥ (B *ᵥ x)) - s) < Valued.v s` using `hsub hQ`. Establish `hv` using `Valuation.map_eq_of_sub_lt Valued.v hlt`. Rewrite `h5` using `[hv, hsu]`. Establish `hlt1 : WithZero.exp (-2 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero]`.
+
+Conclude with `WithZero.exp_lt_exp.2 (by norm_num)`. Conclude with `absurd h5 (not_le.2 hlt1)`. Introduce and unpack `⟨hx, -, hQ⟩`. Conclude with `⟨hx, hQ⟩`.
+-/
 theorem dens_unit (hSC : SharpCount) (lam : Measure (Fv F v)) (hlam : IsStdV v lam)
     (h2 : Valued.v (2 : Fv F v) = 1) (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι (Fv F v))
     (hBs : B.IsSymm) (hBint : ∀ i j, B i j ∈ v.adicCompletionIntegers F) (hBdet : Valued.v B.det = 1)
@@ -260,6 +337,21 @@ end Loc
 
 section Lat
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ h3 d b`. Take `⟨B, hBs, hBd, hBt⟩` from `GlobalTheory.CompanionTheory.SW.trace_form_coords F E σ hCM M J hJ d b`. Take `⟨-, hun⟩` from `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ hCM d b`. Establish `hd : d = 2`. Establish `h1` using `Module.finrank_eq_card_basis b`.
+
+Rewrite `h1` using `[hCM.2.2.1, Fintype.card_fin]`. Conclude with `h1.symm`. Establish `hcard : Fintype.card (Fin M × Fin d) = 2 * M`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, hd, mul_comm]`. Establish `hent : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j, algebraMap F (Fv F v) (B i j) ∈ v.adicCompletionIntegers F`.
+
+Use `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : B i j = 0`. Use `Filter.Eventually.of_forall fun v => ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`.
+
+Use `(hun _ h0).mono fun v hv => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hv.le`. Use `filter_upwards [hun 2 two_ne_zero, hun _ hBd, hent] with v hv2 hvd hve lam hlam m hm s hsu`. Establish `hs0 : s ≠ 0`.
+
+Introduce `h0`. Rewrite `hsu` using `[h0, map_zero]`. Conclude with `zero_ne_one hsu`. Establish `hv2' : Valued.v (2 : Fv F v) = 1` using `by rwa [map_ofNat] at hv2`. Establish `hdet : Valued.v (B.map (algebraMap F (Fv F v))).det = 1`.
+
+Establish `h1` using `(algebraMap F (Fv F v)).map_det B`. Rewrite `hvd` using `[h1]`. Conclude with `hvd`. Take `⟨D, hD1, hD⟩` from `dens_unit hSC lam hlam hv2' (Fin M × Fin d) (B.map (algebraMap F (Fv F v))) (hBs.map _) (fun i j => hve i j) hdet M hcard h3 s hsu`. Rewrite using `[GlobalTheory.CompanionTheory.SW.LocGood.local_mass σ hCM M J hJ d b v (B.map (algebraMap F (Fv F v))) (fun x y => hBt (Fv F v) x y) lam hlam m hm s hs0 D hD]`.
+
+Conclude with `hD1`.
+-/
 theorem lattice_unit (hSC : SharpCount) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 1 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ (lam : Measure (Fv F v)), IsStdV v lam → ∀ m, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b lam 1 M) (coordHerm (Fv F v) σ b lam 1) m → ∀ s : Fv F v, Valued.v s = 1 → |(m (hermScal (Fv F v) σ s) (latV b v)).toReal - 1| ≤ 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ M := by
   intro F E _ _ _ _ _ σ hCM M J hJ h3 d b
   classical
@@ -299,6 +391,9 @@ theorem lattice_unit (hSC : SharpCount) : ∀ (F E : Type) [Field F] [NumberFiel
 
 end Lat
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hM2 d b`. Substitute `hM2` using the available equality. Use `⟨2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [lattice_unit hSC F E σ hCM 2 J hJ (by norm_num) d b] with v hv lam hl m hm s hs`. Conclude with `hv lam hl m hm s hs`.
+-/
 theorem oneVecBinaryMass_of (hSC : SharpCount) : OneVecBinaryMass := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM2 d b
   subst hM2

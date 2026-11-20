@@ -16,6 +16,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
 omit [SecondCountableTopology G] [T2Space G] [BorelSpace G] in
+/- English proof (translation)
+Take `⟨K, hK, h1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `h2` using `congrArg (fun m : Measure G => m K) h`. Simplify using `only [Measure.coe_nnreal_smul_apply] at h2`. Conclude with `(ENNReal.mul_left_inj (Measure.measure_pos_of_mem_nhds μ h1).ne' hK.measure_lt_top.ne).1 h2` after adjusting the coercions.
+-/
 theorem smul_inj {μ : Measure G} [μ.IsHaarMeasure] {a b : ℝ≥0} (h : a • μ = b • μ) : a = b := by
   obtain ⟨K, hK, h1⟩ := exists_compact_mem_nhds (1 : G)
   have h2 := congrArg (fun m : Measure G => m K) h
@@ -23,12 +26,20 @@ theorem smul_inj {μ : Measure G} [μ.IsHaarMeasure] {a b : ℝ≥0} (h : a • 
   exact_mod_cast (ENNReal.mul_left_inj (Measure.measure_pos_of_mem_nhds μ h1).ne' hK.measure_lt_top.ne).1 h2
 
 omit [T2Space G] in
+/- English proof (translation)
+The claim follows from `Measure.map_right_mul_eq_modularCharacterFun_smul μ g`.
+-/
 theorem map_mul_right_eq (μ : Measure G) [μ.IsHaarMeasure] (g : G) :
     μ.map (fun x => x * g) = Measure.modularCharacter g • μ :=
   Measure.map_right_mul_eq_modularCharacterFun_smul μ g
 
 omit [T2Space G] in
 
+/- English proof (translation)
+Set `μ : Measure G` to `Measure.haar`. Use `haveI : (μ.map e).IsHaarMeasure := e.isHaarMeasure_map μ hc hc'`. Use `smul_inj (μ := μ.map e) ?_` and prove the remaining obligations. Rewrite using `[← map_mul_right_eq, ← Measure.map_smul, ← map_mul_right_eq, Measure.map_map (measurable_mul_const _) hc.measurable, Measure.map_map hc.measurable (measurable_mul_const _)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem modular_aut (e : G ≃* G) (hc : Continuous e) (hc' : Continuous e.symm) (g : G) :
     Measure.modularCharacter (e g) = Measure.modularCharacter g := by
   let μ : Measure G := Measure.haar
@@ -40,6 +51,13 @@ theorem modular_aut (e : G ≃* G) (hc : Continuous e) (hc' : Continuous e.symm)
   funext x
   simp
 
+/- English proof (translation)
+Set `μ : Measure G` to `Measure.haar`. Take `⟨K, hK, h1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `h0 : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ h1).ne'`. Establish `ht : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `ht2 : μ (K * K⁻¹) ≠ ⊤` using `(hK.mul hK.inv).measure_lt_top.ne`.
+
+Use `⟨K, h1, (μ (K * K⁻¹) / μ K).toNNReal, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun m : Measure G => m K) (map_mul_right_eq μ g)`. Simplify using `only [Measure.coe_nnreal_smul_apply] at h2`. Rewrite `h2` using `[Measure.map_apply (measurable_mul_const _) hK.isClosed.measurableSet]`. Establish `h3 : μ ((fun x => x * g) ⁻¹' K) ≤ μ (K * K⁻¹)` using `measure_mono fun x hx => ⟨x * g, hx, g⁻¹, Set.inv_mem_inv.2 hg, by simp⟩`.
+
+Rewrite `h3` using `[h2]`. Rewrite using `[← ENNReal.coe_le_coe, ENNReal.coe_toNNReal (ENNReal.div_ne_top ht2 h0)]`. Conclude with `(ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl ht)).2 h3`.
+-/
 theorem modular_bdd : ∃ K ∈ nhds (1 : G), ∃ C : ℝ≥0, ∀ g ∈ K, Measure.modularCharacter g ≤ C := by
   let μ : Measure G := Measure.haar
   obtain ⟨K, hK, h1⟩ := exists_compact_mem_nhds (1 : G)
@@ -56,6 +74,13 @@ theorem modular_bdd : ∃ K ∈ nhds (1 : G), ∃ C : ℝ≥0, ∀ g ∈ K, Meas
   rw [← ENNReal.coe_le_coe, ENNReal.coe_toNNReal (ENNReal.div_ne_top ht2 h0)]
   exact (ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl ht)).2 h3
 
+/- English proof (translation)
+Take `⟨K, hK, C, hC⟩` from `modular_bdd (G := G)`. Establish `hb : ∀ x : G, Measure.modularCharacter x ≤ C` using `fun x => by`. Take `⟨e, h1, h2⟩` from `h x K hK`. Rewrite using `[← h2]`. Conclude with `hC _ h1`.
+
+Establish `hle : ∀ x : G, Measure.modularCharacter x ≤ 1` using `fun x => by`. Assume the negation of the conclusion as `hx`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt C (not_le.1 hx)`. Rewrite `hk` using `[← map_pow]`. Conclude with `absurd (hb _) (not_le.2 hk)`.
+
+Use `le_antisymm (hle g) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Use `_ ≤ Measure.modularCharacter g * 1 := by gcongr; exact hle _`. Use `_ = _ := mul_one _`.
+-/
 theorem modular_eq_one
     (h : ∀ g : G, ∀ U ∈ nhds (1 : G), ∃ g' ∈ U, Measure.modularCharacter g' = Measure.modularCharacter g) (g : G) :
     Measure.modularCharacter g = 1 := by
@@ -77,6 +102,9 @@ theorem modular_eq_one
 
 end General
 
+/- English proof (translation)
+Set `e : S ≃* S` to `{ toFun := fun x => ⟨E x, h1 x x.2⟩ invFun := fun x => ⟨E.symm x, h2 x x.2⟩ left_inv := fun x => Subtype.ext (by simp) right_inv := fun x => Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by simp) }`. Establish `: g' = e g` using `Subtype.ext h`. Rewrite using `[this]`. Conclude with `modular_aut e (Continuous.subtype_mk (hc.comp continuous_subtype_val) _) (Continuous.subtype_mk (hc'.comp continuous_subtype_val) _) g`.
+-/
 theorem modular_restrict {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (S : Subgroup G)
     [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S]
     (E : G ≃* G) (hc : Continuous E) (hc' : Continuous E.symm) (h1 : ∀ g ∈ S, E g ∈ S)
@@ -103,9 +131,15 @@ def levDiag (lev : ι → ℕ) (t : kˣ) : GL ι k where
   val_inv := by simp [diagonal_mul_diagonal, ← mul_pow]
   inv_val := by simp [diagonal_mul_diagonal, ← mul_pow]
 
+/- English proof (translation)
+Use `ext1`. Both sides reduce to the same expression.
+-/
 theorem levDiag_inv (lev : ι → ℕ) (t : kˣ) : (levDiag lev t)⁻¹ = levDiag lev t⁻¹ := by
   ext1; rfl
 
+/- English proof (translation)
+Rewrite using `[levDiag_inv, Units.val_mul, Units.val_mul]`. Simplify using `only [levDiag, mul_diagonal, diagonal_mul]`.
+-/
 theorem conj_levDiag (lev : ι → ℕ) (t : kˣ) (g : GL ι k) (r s : ι) :
     ((levDiag lev t)⁻¹ * g * levDiag lev t).val r s =
       ((t⁻¹ : kˣ) : k) ^ lev r * g.val r s * (t : k) ^ lev s := by
@@ -133,6 +167,9 @@ def flipAut (σ : ι ≃ ι) (hσ : ∀ r, σ (σ r) = r) : GL ι k ≃* GL ι k
       (g⁻¹ : GL ι k).valᵀ.submatrix σ σ * (h⁻¹ : GL ι k).valᵀ.submatrix σ σ
     rw [submatrix_mul_equiv, ← transpose_mul, _root_.mul_inv_rev, Units.val_mul]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(Units.continuous_coe_inv.matrix_transpose).matrix_submatrix σ σ, (Units.continuous_val.matrix_transpose).matrix_submatrix σ σ⟩`.
+-/
 theorem continuous_flipInv [TopologicalSpace k] (σ : ι ≃ ι) : Continuous (flipInv (k := k) σ) :=
   Units.continuous_iff.2 ⟨(Units.continuous_coe_inv.matrix_transpose).matrix_submatrix σ σ,
     (Units.continuous_val.matrix_transpose).matrix_submatrix σ σ⟩
@@ -143,6 +180,11 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+
+Conclude with `NormedField.nhdsNE_neBot (0 : k)`.
+-/
 theorem neBot_punctured : (𝓝[≠] (0 : k)).NeBot := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
   haveI := isUniformAddGroup_of_addCommGroup (G := k)
@@ -153,12 +195,18 @@ theorem neBot_punctured : (𝓝[≠] (0 : k)).NeBot := by
   open scoped Valued in
   exact NormedField.nhdsNE_neBot (0 : k)
 
+/- English proof (translation)
+Use `haveI := neBot_punctured (k := k)`. Use `Filter.comap_neBot fun U hU => ?_` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Filter.nonempty_of_mem (inter_mem_nhdsWithin ({0}ᶜ : Set k) hU)`. Conclude with `⟨Units.mk0 x hx, hx0⟩`.
+-/
 theorem neBot_units : (Filter.comap (Units.val : kˣ → k) (𝓝 0)).NeBot := by
   haveI := neBot_punctured (k := k)
   refine Filter.comap_neBot fun U hU => ?_
   obtain ⟨x, hx, hx0⟩ := Filter.nonempty_of_mem (inter_mem_nhdsWithin ({0}ᶜ : Set k) hU)
   exact ⟨Units.mk0 x hx, hx0⟩
 
+/- English proof (translation)
+Use `haveI := neBot_punctured (k := k)`. Use `haveI := t2Space k`. Assume the negation of the conclusion as `h`. Use `haveI : Finite k := not_infinite_iff_finite.1 h`. Conclude with `(neBot_punctured (k := k)).ne (discreteTopology_iff_nhds_ne.1 inferInstance 0)`.
+-/
 theorem infinite_field : Infinite k := by
   haveI := neBot_punctured (k := k)
   haveI := t2Space k
@@ -168,6 +216,19 @@ theorem infinite_field : Infinite k := by
 
 variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
+/- English proof (translation)
+Use `set lev : n ⊕ Fin c → ℕ := Sum.elim (fun _ => l) L with hlev`. Use `tendsto_pi_nhds.2 fun r => tendsto_pi_nhds.2 fun s => ?_` and prove the remaining obligations. Simplify using `only [conj_levDiag]`. Establish `hcan : ∀ (t : kˣ) (a : ℕ) (x : k), ((t⁻¹ : kˣ) : k) ^ a * x * (t : k) ^ a = x` using `fun t a x => by`. Rewrite using `[mul_right_comm, ← mul_pow, Units.inv_mul, one_pow, one_mul]`.
+
+Distinguish the cases in `hR : r.isRight ∨ s.isRight`. Establish `hlim : fromBlocks g.val.toBlocks₁₁ 0 0 1 r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp_all [one_apply]`. Rewrite using `[hlim]`. Distinguish the cases in `hle : lev s ≤ lev r`.
+
+Rewrite using `[hg r s hR hle]`. Distinguish the cases in `e : r = s`. Substitute `e` using the available equality. Simplify using `only [hcan]`. Conclude with `tendsto_const_nhds`.
+
+Simplify using `only [one_apply_ne e, mul_zero, zero_mul]`. Conclude with `tendsto_const_nhds`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_lt (not_le.1 hle)`. Establish `e : r ≠ s` using `fun e => hle (e ▸ le_rfl)`. Establish `h2 : ∀ t : kˣ, ((t⁻¹ : kˣ) : k) ^ lev r * g.val r s * (t : k) ^ lev s = g.val r s * (t : k) ^ (d + 1)` using `fun t => by`.
+
+Rewrite using `[hd, add_assoc, pow_add, ← mul_assoc, hcan]`. Simplify using `only [h2, one_apply_ne e]`. Establish `h3 : Continuous fun x : k => g.val r s * x ^ (d + 1)` using `by fun_prop`. Establish `h4` using `(h3.tendsto 0).comp (Filter.tendsto_comap (f := (Units.val : kˣ → k)) (x := 𝓝 0))`. Simplify `h4` using `[Function.comp_def]`.
+
+Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp only [Sum.isRight_inl, Sum.isRight_inr, or_true, true_or, not_true] at hR`. Simplify using `only [hlev, Sum.elim_inl, hcan]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem tendsto_conj (l : ℕ) (L : Fin c → ℕ) (g : GL (n ⊕ Fin c) k)
     (hg : ∀ r s : n ⊕ Fin c, (r.isRight ∨ s.isRight) → Sum.elim (fun _ => l) L s ≤ Sum.elim (fun _ => l) L r →
       g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s) :
@@ -207,6 +268,43 @@ theorem tendsto_conj (l : ℕ) (L : Fin c → ℕ) (g : GL (n ⊕ Fin c) k)
 
 end Local
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c l L hL S hS m hm`. Use `haveI := t2Space k`. Use `haveI := infinite_field (k := k)`. Use `haveI := neBot_units (k := k)`. Take `⟨i1, i2, i3, -⟩` from `volGL_haar k (n ⊕ Fin c) Measure.addHaar`.
+
+Use `set lev : n ⊕ Fin c → ℕ := Sum.elim (fun _ => l) L with hlev`. Establish `hcl : IsClosed (S : Set (GL (n ⊕ Fin c) k))`. Establish `: (S : Set (GL (n ⊕ Fin c) k)) = ⋂ (r) (s) (_ : r.isRight ∨ s.isRight) (_ : lev s ≤ lev r), {g | g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, hS, Set.mem_iInter, Set.mem_setOf_eq]`.
+
+Rewrite using `[this]`. Use `isClosed_iInter fun r => isClosed_iInter fun s => isClosed_iInter fun _ => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Conclude with `isClosed_eq (Units.continuous_val.matrix_elem r s) continuous_const`. Use `haveI : LocallyCompactSpace S := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology S := TopologicalSpace.Subtype.secondCountableTopology (S : Set (GL (n ⊕ Fin c) k))`.
+
+Establish `hX : ∀ x : GL n k, embX c x ∈ S` using `fun x => by`. Rewrite using `[hS]`. Introduce `r s hR _`. Express the relevant statement in the definitionally equal form `fromBlocks x.val 0 0 1 r s = _`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp_all [one_apply]`.
+
+Set `σ : n ⊕ Fin c ≃ n ⊕ Fin c` to `Equiv.sumCongr (Equiv.refl n) Fin.revPerm`. Apply the tactic sequence `have hσ : ∀ r, σ (σ r) = r := fun r => by rcases r with r | r <;> simp [σ]`. Establish `hσl : ∀ r, lev (σ r) + lev r = 2 * l` using `fun r => by`. Break down `r with r | r` into its components or cases. Simplify using `[σ, hlev, two_mul]`.
+
+Simplify `hL r` using `[σ, hlev]`. Apply the tactic sequence `have hσR : ∀ r, (σ r).isRight = r.isRight := fun r => by rcases r with r | r <;> simp [σ]`. Establish `hflip : ∀ g ∈ S, flipInv σ g ∈ S` using `fun g hg => by`. Rewrite using `[hS]`. Introduce `r s hR hle`.
+
+Express the relevant statement in the definitionally equal form `(g⁻¹ : GL (n ⊕ Fin c) k).val (σ s) (σ r) = _`. Rewrite using `[(hS _).1 (S.inv_mem hg) (σ s) (σ r) (by rw [hσR, hσR]; exact hR.symm) (by have := hσl r; have := hσl s; omega)]`. Simplify using `only [one_apply, σ.apply_eq_iff_eq, eq_comm]`. Establish `hchar : ∀ x : GL n k, Measure.modularCharacter (⟨embX c x, hX x⟩ : S) = 1`. Use `GlobalTheory.gl_character_eq_one_of_transpose_inv k n (Measure.modularCharacter.comp ((embX c).codRestrict S hX)) fun g g' h => ?_` and prove the remaining obligations.
+
+Use `modular_restrict S (flipAut σ hσ) (continuous_flipInv σ) (continuous_flipInv σ) hflip hflip _ _ ?_` and prove the remaining obligations. Use extensionality with `r s`. Express the relevant statement in the definitionally equal form `fromBlocks g'.val 0 0 1 r s = ((embX c g)⁻¹ : GL (n ⊕ Fin c) k).val (σ s) (σ r)`. Rewrite using `[← map_inv, h]`. Express the relevant statement in the definitionally equal form `_ = fromBlocks (g⁻¹ : GL n k).val 0 0 1 (σ s) (σ r)`.
+
+Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp [σ, one_apply, eq_comm]`. Establish `hconj : ∀ (t : kˣ), ∀ g ∈ S, (levDiag lev t)⁻¹ * g * levDiag lev t ∈ S` using `fun t g hg => by`. Rewrite using `[hS]`. Introduce `r s hR hle`. Rewrite using `[conj_levDiag, (hS _).1 hg r s hR hle]`.
+
+Distinguish the cases in `e : r = s`. Substitute `e` using the available equality. Rewrite using `[mul_right_comm, ← mul_pow, Units.inv_mul, one_pow, one_mul]`. Simplify using `only [one_apply_ne e, mul_zero, zero_mul]`. Establish `hone : ∀ g : S, Measure.modularCharacter g = 1`.
+
+Use `modular_eq_one fun g U hU => ?_` and prove the remaining obligations. Establish `t1` using `tendsto_conj l L g.1 ((hS _).1 g.2)`. Establish `t2` using `tendsto_conj l L (g.1)⁻¹ ((hS _).1 (S.inv_mem g.2))`. Rewrite `t1`, `t2` using `[← hlev]`. Establish `key : ∀ a b : GL (n ⊕ Fin c) k, a * b = 1 → a ∈ S → b ∈ S → a.val.toBlocks₁₁ * b.val.toBlocks₁₁ = 1` using `fun a b hab ha hb => by`.
+
+Establish `u` using `(tendsto_conj l L a ((hS _).1 ha)).mul (tendsto_conj l L b ((hS _).1 hb))`. Establish `e : ∀ d : GL (n ⊕ Fin c) k, (d⁻¹ * a * d).val * (d⁻¹ * b * d).val = 1` using `fun d => by`. Rewrite using `[← Units.val_mul, show d⁻¹ * a * d * (d⁻¹ * b * d) = d⁻¹ * (a * b) * d by group, hab]`. Simplify using the standard rewrite rules. Simplify using `only [e] at u`.
+
+Use `tendsto_nhds_unique u tendsto_const_nhds` as an intermediate fact. Rewrite `this` using `[fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Simplify using `using this.1`. Set `x : GL n k` to `⟨g.1.val.toBlocks₁₁, (g.1)⁻¹.val.toBlocks₁₁, key _ _ (mul_inv_cancel _) g.2 (S.inv_mem g.2), key _ _ (inv_mul_cancel _) (S.inv_mem g.2) g.2⟩`. Establish `t3 : Filter.Tendsto (fun t : kˣ => (levDiag lev t)⁻¹ * g.1 * levDiag lev t) (Filter.comap (Units.val : kˣ → k) (𝓝 0)) (𝓝 (embX c x))`.
+
+Rewrite using `[Units.isInducing_embedProduct.tendsto_nhds_iff]`. Use `Filter.Tendsto.prodMk_nhds t1 ((MulOpposite.continuous_op.tendsto _).comp ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Use `t2.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, mul_assoc]`.
+
+Establish `t4 : Filter.Tendsto (fun t : kˣ => (⟨(levDiag lev t)⁻¹ * g.1 * levDiag lev t, hconj t _ g.2⟩ : S) * (⟨embX c x, hX x⟩ : S)⁻¹) (Filter.comap (Units.val : kˣ → k) (𝓝 0)) (𝓝 1)`. Rewrite using `[← mul_inv_cancel (⟨embX c x, hX x⟩ : S)]`. Conclude with `(tendsto_subtype_rng.2 t3).mul tendsto_const_nhds`. Take `⟨t, ht⟩` from `(t4.eventually_mem hU).exists`. Use `⟨_, ht, ?_⟩` and prove the remaining obligations.
+
+Establish `hi : Measure.modularCharacter (⟨embX c x, hX x⟩ : S)⁻¹ = 1`. Rewrite using `[← hchar x⁻¹]`. Use `congr 1`. Rewrite using `[map_mul, hi, mul_one]`. Use `modular_restrict S (MulAut.conj (levDiag lev t)⁻¹) ?_ ?_ ?_ ?_ _ _ ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`. Introduce `a ha`. Simplify using `using hconj t a ha`. Introduce `a ha`.
+
+Use `hconj t⁻¹ a ha` as an intermediate fact. Rewrite `this` using `[← levDiag_inv]`. Simplify using `using this`. Simplify using the standard rewrite rules. Conclude with `⟨fun g => by rw [map_mul_right_eq, hone, one_smul]⟩`.
+-/
 theorem unimodular : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c l : ℕ) (L : Fin c → ℕ) (_ : ∀ i, L (Fin.rev i) + L i = 2 * l) (S : Subgroup (GL (n ⊕ Fin c) k)) (_ : ∀ g : GL (n ⊕ Fin c) k, g ∈ S ↔ ∀ r s : n ⊕ Fin c, (r.isRight ∨ s.isRight) → Sum.elim (fun _ => l) L s ≤ Sum.elim (fun _ => l) L r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s) (m : Measure S), m.IsHaarMeasure → m.IsMulRightInvariant := by
   intro k _ _ _ _ _ _ n _ _ c l L hL S hS m hm
   haveI := t2Space k

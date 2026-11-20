@@ -13,6 +13,9 @@ noncomputable instance fintypeDoubleCosetQuotient [Finite G] :
     Fintype (DoubleCoset.Quotient (T : Set G) S) :=
   @Fintype.ofFinite _ (Quotient.finite (DoubleCoset.setoid (T : Set G) S))
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_inf, Subgroup.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, MulAut.smul_def, MulAut.conj_apply, inv_inv]`.
+-/
 lemma mem_inf_conj_smul_iff (g x : G) :
     x ∈ T ⊓ (MulAut.conj g • S : Subgroup G) ↔ x ∈ T ∧ g⁻¹ * x * g ∈ S := by
   rw [Subgroup.mem_inf, Subgroup.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, MulAut.smul_def,
@@ -29,6 +32,9 @@ def doubleCosetMap (g : G) : T ⧸ (T ⊓ MulAut.conj g • S).subgroupOf T → 
     exact h.2
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma doubleCosetMap_mk (g : G) (t : T) :
     doubleCosetMap T S g (t : T ⧸ (T ⊓ MulAut.conj g • S).subgroupOf T) = ((t * g : G) : G ⧸ S) :=
   rfl

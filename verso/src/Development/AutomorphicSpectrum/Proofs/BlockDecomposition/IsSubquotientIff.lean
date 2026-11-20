@@ -18,6 +18,9 @@ namespace GlobalTheory.CompanionTheory.OnePart
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hτ h⟩` and prove the remaining obligations. Take `⟨α, hαB, hα⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp π h hτ`. Rewrite using `[← hαB]`. Conclude with `GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake E w n _ _ _ hα`.
+-/
 theorem hasSat_iff {π : CuspSub E n} {w : HeightOneSpectrum (𝓞 E)} {τ : SmIrr (GL (Fin n) (w.adicCompletion E))}
     (hτ : π.IsLocComp w τ) (B : Multiset ℂˣ) : (CG.mk π).HasSat w B ↔ GlobalTheory.LFun.HasSatGL w τ.ρ B := by
   refine ⟨fun h => ?_, fun h => GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hτ h⟩
@@ -25,6 +28,11 @@ theorem hasSat_iff {π : CuspSub E n} {w : HeightOneSpectrum (𝓞 E)} {τ : SmI
   rw [← hαB]
   exact GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake E w n _ _ _ hα
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨e, he⟩` from `GroundTheory.Automorphic.IsSubquotient.exists_bijective (π := π) (ρ := ρ) h`. Conclude with `⟨GlobalTheory.LocGL.equivOfBijective e he⟩`. Introduce and unpack `⟨e⟩`.
+
+Conclude with `.of_surjective e.symm.toIntertwiningMap e.symm.toLinearEquiv.surjective`.
+-/
 theorem isSubquotient_iff {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {π : Representation ℂ G W} [ρ.IsIrreducible] [π.IsIrreducible] :
     GlobalTheory.SmGL.IsSubquotient π ρ ↔ Nonempty (π.Equiv ρ) := by
@@ -35,6 +43,21 @@ theorem isSubquotient_iff {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ 
   · rintro ⟨e⟩
     exact .of_surjective e.symm.toIntertwiningMap e.symm.toLinearEquiv.surjective
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn π D hD`. Take `⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩` from `D`. Take `⟨hc, hv⟩` from `hD`. Simplify using `only at hc hv`. Substitute `hc` using the available equality.
+
+Take `⟨e, he⟩` from `hv 0`. Take `⟨M, rfl⟩ : ∃ M, N = fun _ => M` from `⟨N 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `e' : M = n` using `e`. Substitute `e'` using the available equality. Establish `he' : V 0 = π.V` using `he`.
+
+Take `⟨s, rfl⟩ : ∃ s : ∀ w : HeightOneSpectrum (𝓞 E), SmIrr (GL (Fin M) (w.adicCompletion E)), σ = fun _ => s` from `⟨σ 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `hl : ∀ w, π.IsLocComp w (s w)` using `fun w => ((cuspSub_iff π).2.1 w _).1 (he' ▸ loc 0 w)`. Use `⟨fun w B => ?_, fun w => ⟨_, hl w⟩, fun w τ hτ P => ?_⟩` and prove the remaining obligations. Rewrite using `[hasSat_iff (hl w)]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hB`. Conclude with `⟨fun _ => B, fun _ => ⟨hB.1, hB⟩, by simp⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Simplify using `using (hb 0).2`. Take `⟨φ⟩` from `GlobalTheory.LocGL.nonempty_equiv_multiProd_one (s w).smooth (GlobalTheory.SmGL.stdBlocks (fun _ : Fin 1 => M) h) fun a i => Fin.ext (by rw [GlobalTheory.SmGL.stdBlocks_val, Subsingleton.elim a 0]; simp)`.
+
+Take `⟨u⟩` from `LocUniq.isLocComp_unique π w _ _ (hl w) hτ`. Use `(s w).irred` as an intermediate fact. Use `P.irred` as an intermediate fact. Establish `hφ : ∀ {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GL (Fin M) (w.adicCompletion E)) X), GlobalTheory.SmGL.IsSubquotient ρ (s w).ρ → GlobalTheory.SmGL.IsSubquotient ρ (GlobalTheory.UnitaryBC.locProd h w fun _ => s w)` using `fun ρ hρ => hρ.trans (.of_surjective φ.symm.toIntertwiningMap φ.symm.toLinearEquiv.surjective)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hP`. Establish `h1 : GlobalTheory.SmGL.IsSubquotient P.ρ (s w).ρ` using `hP.trans (.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective)`. Take `⟨e₁⟩` from `isSubquotient_iff.1 h1`. Conclude with `⟨e₁.trans u⟩`. Introduce and unpack `⟨e₁⟩`.
+
+Conclude with `hφ _ (isSubquotient_iff.2 ⟨e₁.trans u.symm⟩)`.
+-/
 theorem oneRead : OneRead := by
   intro E _ _ _ n hn π D hD
   obtain ⟨c, N, h, V, σ, m, pos, disc, loc, inf⟩ := D

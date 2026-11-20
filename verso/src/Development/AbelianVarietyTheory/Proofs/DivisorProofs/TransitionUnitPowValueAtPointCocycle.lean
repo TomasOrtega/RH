@@ -9,6 +9,11 @@ open GlobalTheory.MBLow.TanGauge
 noncomputable section
 namespace GlobalTheory.MBLow.TanGauge
 
+/- English proof (translation)
+Introduce `X L hL A _ y a b c n ha hb hc`. Establish `hT : ⊤ ≤ y ⁻¹ᵁ (L.U a ⊓ L.U b ⊓ L.U c)` using `fun q hq => ⟨⟨ha hq, hb hq⟩, hc hq⟩`. Establish `e` using `congrArg (fun u => ((u ^ n : Γ(X, L.U a ⊓ L.U b ⊓ L.U c)ˣ) : Γ(X, L.U a ⊓ L.U b ⊓ L.U c))) (hL.cocycle a b c)`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul] at e`. Establish `e'` using `congrArg (valR y (L.U a ⊓ L.U b ⊓ L.U c)) e`.
+
+Rewrite `e'` using `[GlobalTheory.ZH.CrdCalc.valR_mul y _ hT]`. Unfold `trV`. Rewrite using `[← GlobalTheory.ZH.CrdCalc.valR_res y (inf_le_left : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U a ⊓ L.U b) hT, ← GlobalTheory.ZH.CrdCalc.valR_res y (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U b ⊓ L.U c) hT, ← GlobalTheory.ZH.CrdCalc.valR_res y (le_inf (in …`. Conclude with `e'`.
+-/
 theorem trV_cocycle : ∀ {X : Scheme.{0}} (L : LB X), L.IsLB → ∀ {A : Type} [CommRing A] (y : Sp A ⟶ X) (a b c : L.ι) (n : ℤ),
     ⊤ ≤ y ⁻¹ᵁ L.U a → ⊤ ≤ y ⁻¹ᵁ L.U b → ⊤ ≤ y ⁻¹ᵁ L.U c →
     trV L y a b n * trV L y b c n = trV L y a c n := by

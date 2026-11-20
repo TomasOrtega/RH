@@ -18,6 +18,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `PsiAllStatement`. Introduce `ε lam h T hHC hgap hq`. Take `⟨μ, hμ⟩` from `exists_mu hHC`. Use `⟨PsiM T μ, fun k₁ k₂ g hg => psiM_equiv T μ k₁ k₂ hg, psiM_one T μ, psiM_smooth T μ hμ, fun g hg => psiM_casimir T μ hμ hg, fun k X hX => psiM_dec T μ hμ hHC hgap hq k hX, fun ν hν => ?_, fun k g hg => psiM_gelfand T μ hμ k hg, fun μ' hμ' X hX => ?_⟩` and prove the remaining obligations. Use `haveI := hν`.
+
+Conclude with `psiM_integrable T μ hμ hHC hgap hq ν`. Rewrite using `[isMu_unique hμ hμ']`. Conclude with `psiM_exp_formula T μ hX`.
+-/
 theorem psiAll : PsiAllStatement n := by
   unfold PsiAllStatement
   intro ε lam h T hHC hgap hq
@@ -30,6 +35,11 @@ theorem psiAll : PsiAllStatement n := by
   · rw [isMu_unique hμ hμ']
     exact psiM_exp_formula T μ hX
 
+/- English proof (translation)
+Establish `hA : PsiAllStatement n` using `psiAll`. Unfold `PsiAllStatement at hA`. Unfold `PsiExistsStatement`. Introduce `ε lam h T hHC hgap hq`. Take `⟨Ψ, h1, h2, h3, h4, h5, h6, -, -⟩` from `hA ε lam h T hHC hgap hq`.
+
+Conclude with `⟨Ψ, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem psiExists : PsiExistsStatement n := by
   have hA : PsiAllStatement n := psiAll
   unfold PsiAllStatement at hA

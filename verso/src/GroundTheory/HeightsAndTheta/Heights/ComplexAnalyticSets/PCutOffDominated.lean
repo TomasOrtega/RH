@@ -15,6 +15,9 @@ namespace CutOffDominated
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `chartDens sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Simplify using `only [h x hx.1]`.
+-/
 theorem chartDens_congr_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {f g : (Fin n → ℂ) → ℝ} (h : ∀ x ∈ zeroSet J, f x = g x) (φ : Fin d → (Fin n → ℂ) → ℝ) :
     chartDens J A f φ = chartDens J A g φ := by
@@ -25,12 +28,20 @@ theorem chartDens_congr_zeroSet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matr
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `finsum_mem_eq_finite_toFinset_sum _ hfin`.
+-/
 theorem sheetSum_eq_sum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (F : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) {y : Fin d → ℂ} (hfin : (fibre J A y).Finite) :
     sheetSum J A F y =
       ∑ x ∈ hfin.toFinset, if h : ∃ s, IsSheetAt J A x s then F x h.choose else 0 :=
   finsum_mem_eq_finite_toFinset_sum _ hfin
 
+/- English proof (translation)
+Establish `hU : (⋃ r : ℕ, LogInt.polydisc ι r) = Set.univ`. Use `Set.eq_univ_of_forall fun u => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_nat_ge ‖u‖`. Use `Set.mem_iUnion.mpr ⟨r, Set.mem_univ_pi.mpr fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Conclude with `(norm_le_pi_norm u i).trans hr`. Establish `h` using `(ae_restrict_iUnion_iff (fun r : ℕ => LogInt.polydisc ι r) (fun u => eval u g ≠ 0)).mpr fun r => LogInt.ae_eval_ne_zero g hg r`. Rewrite `h` using `[hU, Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 theorem ae_eval_ne_zero {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (hg : g ≠ 0) :
     ∀ᵐ u : ι → ℂ, eval u g ≠ 0 := by
   have hU : (⋃ r : ℕ, LogInt.polydisc ι r) = Set.univ := by
@@ -45,6 +56,17 @@ theorem ae_eval_ne_zero {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (hg 
 
 end CutOffDominated
 
+/- English proof (translation)
+Introduce `n d J A P χ f ψ hJ hdim hA hP hχm hχ01 hlim hf hψ hint`. Establish `hfin : ∀ y, (fibre J A y).Finite` using `fun y => (ComplexSets.FibreBound.proof n d J A hJ hdim hA y).2.1`. Use `set g : (Fin n → ℂ) → ℝ := (zeroSet J).piecewise f 0 with hgdef`. Establish `hg : Measurable g` using `hf.measurable_piecewise continuousOn_const (SheetSumMeasurable.isClosed_zeroSet J).measurableSet`. Establish `hmeas : ∀ k, Measurable (chartDens J A (fun x => χ k x * f x) ψ)` using `fun k => by`.
+
+Rewrite using `[CutOffDominated.chartDens_congr_zeroSet (g := fun x => χ k x * g x) (fun x hx => by rw [hgdef, Set.piecewise_eq_of_mem _ _ _ hx])]`. Conclude with `(SheetSumMeasurable.proof n d J A _ ψ hJ hdim hA ((hχm k).mul hg) hψ).1`. Use `tendsto_integral_of_dominated_convergence (chartAbsDens J A f ψ) (fun k => (hmeas k).aestronglyMeasurable) hint (fun k => Eventually.of_forall fun y => ?_) ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens`.
+
+Rewrite using `[CutOffDominated.sheetSum_eq_sum _ (hfin y), CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[mul_assoc, abs_mul, abs_of_nonneg (hχ01 k x).1]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) (hχ01 k x).2`.
+
+Simplify using the standard rewrite rules. Use `filter_upwards [CutOffDominated.ae_eval_ne_zero P hP] with y hy`. Unfold `chartDens`. Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `tendsto_finsetSum _ fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Establish `hxl` using `hlim x hx.1 (by rw [show A *ᵥ x = y from hx.2]; exact hy)`. Use `split_ifs with h`. Simplify using `using (hxl.mul_const (f x)).mul_const (ReciprocityTheory.AnForm.maDens (fun k => ψ k ∘ h.choose) y)`. Conclude with `tendsto_const_nhds`.
+-/
 theorem CutOffDominated.proof : CutOffDominated.Statement := by
   classical
   intro n d J A P χ f ψ hJ hdim hA hP hχm hχ01 hlim hf hψ hint

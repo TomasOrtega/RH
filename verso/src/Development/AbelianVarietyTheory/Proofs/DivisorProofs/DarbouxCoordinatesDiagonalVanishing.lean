@@ -12,6 +12,23 @@ namespace GlobalTheory.DblEvalLeft
 
 open GlobalTheory.DblEvalLaw
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d J X₂ hX₂ W co hΔ χ₁ χ om₂ hom`. Take `⟨-, ⟨d', hd', hsplB, dd, omd, hdc, ⟨-, hus, hSR⟩, hbox⟩, hcont⟩` from `hom`. Establish `hJB : incM F X₂.J = blkMat finSumFinEquiv (incM F J) (-(incM F J))`. Rewrite using `[hX₂, dblGram, incM, incM, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Establish `hΔ' : ∀ u : Matrix (Fin d) (Fin (n + n)) (AE F E), (∀ i, u i ∈ diagSub (AE F E) finSumFinEquiv) → (d'.e u).1 = 0` using `fun u hu => by`.
+
+Establish `h` using `hd' uᵀ`. Rewrite `h` using `[Matrix.transpose_transpose]`. Rewrite using `[h]`. Conclude with `hΔ uᵀ (by simpa only [Matrix.transpose_transpose] using hu)`. Establish `hev` using `proj_mem_adm F (Fin (n + n) × Fin d ⊕ Fin (n + n) × Fin d) 0`.
+
+Establish `law : ∀ p : siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype, ∀ φ ∈ schA F (Fin (n + n) × Fin d), om₂ ((p : UA σ X₂.J), 1) φ 0 = (χ (aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype p) : ℂ) * GlobalTheory.Doubling.npow (absE F E (aOf finSumFinEquiv (UG (cA σ) (incM F …`. Introduce `p φ hφ`. Establish `hk` using `apply_zero_of_keepsDiag finSumFinEquiv hJB hdc hus.toIsSplitting hSR hbox hΔ' hev (fun φ₁ h₁ φ₂ h₂ => GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂) (GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F _) (p : UA σ X₂.J) p.2 φ hφ`. Rewrite `hk` using `[MonoidHom.comp_apply, MonoidHom.inl_apply]`. Establish `hsc : ∀ u : (AE F E)ˣ, ((((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) u) : ℝ) ^ ((Fintype.card (Fin d) : ℝ) / 2) : ℝ) : ℂ) = GlobalTheory.Doubling.npow (absE F E u) ((d : ℂ) / 2)`.
+
+Introduce `u`. Rewrite using `[GlobalTheory.ModuAdele.modu_norm_eq_absE, GlobalTheory.Doubling.npow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Fintype.card_fin]`.
+
+Rewrite using `[hk, hsc]`. Both sides reduce to the same expression. Use `⟨law, fun K Φ hΦ hfin => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_degPSOf]`. Use `⟨fun p g => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hφ : om₂ (g, 1) Φ ∈ schA F (Fin (n + n) × Fin d)` using `hsplB.pres g Φ hΦ`. Establish `hmul : om₂ ((p : UA σ X₂.J) * g, 1) Φ = om₂ ((p : UA σ X₂.J), 1) (om₂ (g, 1) Φ)`. Rewrite using `[show ((p : UA σ X₂.J) * g, (1 : UA σ W.J)) = ((p : UA σ X₂.J), 1) * (g, 1) by simp, map_mul, Module.End.mul_apply]`. Establish `he : ((d : ℂ) - (n : ℂ)) / 2 + (Fintype.card (Fin n) : ℂ) / 2 = (d : ℂ) / 2`. Simplify using `only [Fintype.card_fin]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmul, law p _ hφ, ← he]`. Conclude with `(hcont _ (proj_mem_adm F _ 0) Φ hΦ).comp (continuous_id.prodMk continuous_const)`. Set `L : ((Fin (n + n) × Fin d → AF F) → ℂ) →ₗ[ℂ] (UA σ X₂.J → ℂ)` to `{ toFun := fun Ψ g => om₂ (g, 1) Ψ 0 map_add' := fun Ψ Ψ' => funext fun g => by simp map_smul' := fun a Ψ => funext fun g => by simp } haveI := hfin`. Use `isKFinite_iff.2 ⟨(Submodule.span ℂ {Ψ | ∃ k ∈ K, Ψ = om₂ (k, 1) Φ}).map L, inferInstance, fun k hk => ?_⟩` and prove the remaining obligations.
+
+Use `⟨om₂ (k, 1) Φ, Submodule.subset_span ⟨k, hk, rfl⟩, funext fun g => ?_⟩` and prove the remaining obligations. Use `show om₂ (g, 1) (om₂ (k, 1) Φ) 0 = om₂ (g * k, 1) Φ 0`. Rewrite using `[show (g * k, (1 : UA σ W.J)) = (g, 1) * (k, 1) by simp, map_mul, Module.End.mul_apply]`.
+-/
 theorem siegel_law_and_mem_degPSOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (J : Matrix (Fin n) (Fin n) E) (X₂ : Spc F E (n + n)), X₂.J = dblGram finSumFinEquiv J →
     ∀ (W : Spc F E d) (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F X₂.J) (incM F W.J)) (Fin (n + n) × Fin d)),
     (∀ u, (∀ j, uᵀ j ∈ diagSub (AE F E) finSumFinEquiv) → (co.e u).1 = 0) →

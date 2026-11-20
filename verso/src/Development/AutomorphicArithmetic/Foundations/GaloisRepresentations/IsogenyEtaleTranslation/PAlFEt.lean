@@ -11,12 +11,24 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace UpperTheory.Gal.FixZ
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [KS.Model.act_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, _root_.pow_succ]`.
+-/
 private theorem act_nat {S : Scheme.{0}} {O : Type} [Ring O] {A : Over S} [GrpObj A] (act : OActN O A) (n : ℕ) :
     act.act (n : O) = (𝟙 A) ^ n := by
   induction n with
   | zero => simp [KS.Model.act_zero]
   | succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, _root_.pow_succ]
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro f i`. Conclude with `i.elim0`. Consider the case `succ m ih`.
+
+Introduce `f i hf`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[List.prod_eq_one, _root_.mul_one]`.
+
+Introduce `x hx`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hf _ (Fin.succ_ne_zero j)`. Consider the case `succ i`. Rewrite using `[hf 0 (Fin.succ_ne_zero i).symm, _root_.one_mul]`.
+
+Conclude with `ih (fun j => f j.succ) i (fun j hj => hf _ (fun h => hj (Fin.succ_injective _ h)))`.
+-/
 private theorem list_prod_ofFn_eq_of_eq_one_of_ne' {M : Type*} [Monoid M] :
     ∀ {m : ℕ} (f : Fin m → M) (i : Fin m), (∀ j, j ≠ i → f j = 1) → (List.ofFn f).prod = f i := by
   intro m
@@ -35,6 +47,9 @@ private theorem list_prod_ofFn_eq_of_eq_one_of_ne' {M : Type*} [Monoid M] :
       rw [hf 0 (Fin.succ_ne_zero i).symm, _root_.one_mul]
       exact ih (fun j => f j.succ) i (fun j hj => hf _ (fun h => hj (Fin.succ_injective _ h)))
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.KS.matEnd, GlobalTheory.KS.pr, Pi.lift_π]`. Rewrite using `[list_prod_ofFn_eq_of_eq_one_of_ne' _ i]`. Simplify using `[Matrix.diagonal_apply_eq]`. Introduce `j hj`. Rewrite using `[Matrix.diagonal_apply_ne d (Ne.symm hj), KS.Model.act_zero, comp_one]`.
+-/
 private theorem matEnd_diagonal_pr {S : Scheme.{0}} {O : Type} [Ring O] {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ}
     (d : Fin m → O) (i : Fin m) :
     GlobalTheory.KS.matEnd act (Matrix.diagonal d) ≫ GlobalTheory.KS.pr A i = GlobalTheory.KS.pr A i ≫ act.act (d i) := by
@@ -47,6 +62,17 @@ private theorem matEnd_diagonal_pr {S : Scheme.{0}} {O : Type} [Ring O] {A : Ove
 end UpperTheory.Gal.FixZ
 
 open UpperTheory.Gal.FixZ in
+/- English proof (translation)
+Introduce `hIsog hPow p _ D G L gb k T N α hα`. Establish `hc : ∀ a : 𝓞 D.toG.F, a ≠ 0 → ∃ b : 𝓞 D.toG.F, ∃ d : ℕ, 0 < d ∧ a * b = (d : 𝓞 D.toG.F)`. Introduce `a ha`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Use `⟨b, Ideal.absNorm (Ideal.span {a}), Nat.pos_of_ne_zero ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Rewrite using `[← hb, mul_comm]`. Use `set U := (T.M N).univ with hU`. Use `letI := U.grp`.
+
+Use `letI := U.comm`. Establish `key : ∀ x y : 𝓞 D.toG.F, ∀ d : ℕ, x * y = d → U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O y) ≫ U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O x) = 𝟙 U.A ^ d`. Introduce `x y d h`. Rewrite using `[← U.act.mul, ← map_mul, h, map_natCast, act_nat]`. Establish `hf : ∀ s : Fin k, IsFinite (Over.Hom.left (U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O (α s)))) ∧ Etale (Over.Hom.left (U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O (α s)))) ∧ Surjective (Over.Hom.left (U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O (α s))))`.
+
+Introduce `s`. Take `⟨b, d, hd, hab⟩` from `hc (α s) (hα s)`. Establish `e1` using `key b (α s) d ((mul_comm b (α s)).trans hab)`. Establish `e2` using `key (α s) b d hab`. Conclude with `hIsog ℂ (T.M N).X (T.M N).s U.A U.A U.ab U.ab _ _ d hd (U.act.hom _) (U.act.hom _) e1 e2`.
+
+Establish `hg` using `hPow _ U.A k (fun s => U.act.act (algebraMap (𝓞 D.toG.F) D.toG.O (α s))) hf (KS.matEnd U.act (LocalSmoothExtension.diagO D α)) (fun i => matEnd_diagonal_pr U.act _ i)`. Take `⟨h1, h2, -⟩` from `hg`. Use `show IsFinite ((T.e N).hom ≫ _ ≫ (T.e N).inv) ∧ Etale ((T.e N).hom ≫ _ ≫ (T.e N).inv)`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem UpperTheory.Gal.FixZ.alFEt_of :
     UpperTheory.Gal.G3.IsogFEt → UpperTheory.Gal.FixZ.PowFEt → UpperTheory.Gal.FixZ.AlFEt := by
   intro hIsog hPow p _ D G L gb k T N α hα

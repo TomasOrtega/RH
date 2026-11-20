@@ -14,6 +14,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev addOf)
 
 variable {V : Type} [CommRing V] {G : Over (Spec (CommRingCat.of V))} [GrpObj G] {d : ℕ}
 
+/- English proof (translation)
+Take `⟨C⟩` from `exists_chart G`. Take `⟨h, hh, hqh⟩` from `exists_pt_of_aug C q hq hJ y hy`. Take `⟨k, hk, hqk⟩` from `exists_pt_of_aug C (jetAug V (Fin d) m) (fun r => ⟨algebraMap _ _ r, AlgHom.commutes _ r⟩) (ker_jetAug_pow _ m) (x m) (chart_aug hx m)`. Set `h₀` to `fibLift q (eps C) h hqh`. Take `⟨ψ₀, ⟨ha, hψ₀⟩, hu⟩` from `hx.2.2 (fib q) (fibFst q) m (fib_ker q hJ) (ReciprocityTheory.ChartRestriction.G.Chart.pt C h₀) (by`.
+
+Rewrite using `[spMap_pt]`. Conclude with `pt_eps_self C)`. Use `⟨(fibSnd q).comp ψ₀, ⟨fun j => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show q (fibSnd q (ψ₀ (zR m j))) = 0`. Rewrite using `[fib_cond, show fibFst q (ψ₀ (zR m j)) = 0 from (AlgHom.congr_fun ha _).trans (jetAug_zR m j), map_zero]`.
+
+Rewrite using `[← spMap_comp, Category.assoc, ← hψ₀, spMap_pt, hh]`. Both sides reduce to the same expression. Introduce and unpack `v ⟨hψa, hψ⟩`. Establish `hv : q.comp v = (Algebra.ofId V B).comp (jetAug V (Fin d) m)`. Use `jet_ext fun j => ?_` and prove the remaining obligations.
+
+Use `show q (v (zR _ j)) = algebraMap V B (jetAug V _ m (zR m j))`. Rewrite using `[hψa, jetAug_zR, map_zero]`. Establish `hvk : h = v.comp k`. Apply `pt_injective C` to reduce the goal to its premises. Rewrite using `[← hh, hψ, hk, spMap_pt]`.
+
+Establish `e` using `hu (fibLift q (jetAug V (Fin d) m) v hv) ⟨rfl, by`. Rewrite using `[hk, spMap_pt]`. Use `congr 1`. Use `AlgHom.ext fun s => Subtype.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(AlgHom.congr_fun hqk s).symm`.
+
+Conclude with `AlgHom.congr_fun hvk s⟩`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem existsUnique_jet [IsLocalRing V] {x : Fam G (Fin d)} (hx : IsUnivChart G d x) {A B : Type} [CommRing A]
     [Algebra V A] [CommRing B] [Algebra V B] (q : A →ₐ[V] B) (hq : Function.Surjective q) {m : ℕ}
     (hJ : (RingHom.ker q) ^ (m + 1) = ⊥) (y : sp (R₀ := V) A ⟶ G) (hy : spMap q ≫ y = 1) :
@@ -55,6 +68,9 @@ variable (V O d) in
 def jetIn (m : ℕ) : JetR V (Fin d) m →ₐ[V] JetR O (Fin 1 × Fin d) m :=
   jetLift V (RingHom.ker (jetAug O _ m)) (ker_jetAug_pow _ m) (fun j => zR m (0, j)) (fun _ => zR_mem_ker m _)
 
+/- English proof (translation)
+The claim follows from `jetLift_zR _ _ _ _ j`.
+-/
 theorem jetIn_zR (m : ℕ) (j : Fin d) : jetIn V d O m (zR m j) = zR m (0, j) :=
   jetLift_zR _ _ _ _ j
 
@@ -70,6 +86,9 @@ def HasVal (x : Fam G (Fin d)) (u : PS O 1 d) {A : Type} [CommRing A] [Algebra O
 variable {x : Fam G (Fin d)} {u : PS O 1 d} {A : Type} [CommRing A] [Algebra O A]
 
 omit [GrpObj G] in
+/- English proof (translation)
+Take `⟨m, z, ψ, h1, h2, h3⟩` from `h`. Use `⟨m, fun j => θ (z j), θ.comp ψ, fun q => congrArg θ (h1 q), ?_, congrArg θ h3⟩` and prove the remaining obligations. Rewrite using `[h2, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem HasVal.map {g : Spec (CommRingCat.of A) ⟶ G.left} {k : A} (h : HasVal x u g k) {B : Type} [CommRing B]
     [Algebra O B] (θ : A →ₐ[O] B) : HasVal x u (Spec.map (CommRingCat.ofHom θ.toRingHom) ≫ g) (θ k) := by
   obtain ⟨m, z, ψ, h1, h2, h3⟩ := h
@@ -77,6 +96,11 @@ theorem HasVal.map {g : Spec (CommRingCat.of A) ⟶ G.left} {k : A} (h : HasVal 
   rw [h2, ← Category.assoc, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨ψ, h1, h2, h3⟩` from `h`. Use `⟨ψ.comp (jetTruncR O _ m), fun q => h1 q, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((jetTruncR O (Fin 1 × Fin d) m).restrictScalars V).comp (jetIn V d O (m + 1)) = (jetIn V d O m).comp (jetTruncR V (Fin d) m)` using `jet_ext fun j => by show jetTruncR O _ m (jetIn V d O (m + 1) (zR _ j)) = jetIn V d O m (zR _ j)`. Rewrite using `[jetIn_zR, jetIn_zR]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2, ← hx.1 m, Over.comp_left, ← Category.assoc, spMap_left, ← Spec.map_comp]`. Use `congrArg (fun φ => Spec.map (CommRingCat.ofHom φ) ≫ (x (m + 1)).left) ?_` and prove the remaining obligations. Conclude with `RingHom.ext fun a => congrArg ψ (AlgHom.congr_fun e a).symm`. Rewrite using `[h3, AlgHom.comp_apply, ((jetAlg O _).2.1 m u).1]`.
+-/
 theorem ValAt.succ (hx : IsUnivChart G d x) {m : ℕ} {g : Spec (CommRingCat.of A) ⟶ G.left} {z : Fin d → A} {k : A}
     (h : ValAt x u m g z k) : ValAt x u (m + 1) g z k := by
   obtain ⟨ψ, h1, h2, h3⟩ := h
@@ -91,6 +115,9 @@ theorem ValAt.succ (hx : IsUnivChart G d x) {m : ℕ} {g : Spec (CommRingCat.of 
     exact RingHom.ext fun a => congrArg ψ (AlgHom.congr_fun e a).symm
   · rw [h3, AlgHom.comp_apply, ((jetAlg O _).2.1 m u).1]
 
+/- English proof (translation)
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ n _ ih => exact ih.succ hx`.
+-/
 theorem ValAt.mono (hx : IsUnivChart G d x) {m n : ℕ} (hmn : m ≤ n) {g : Spec (CommRingCat.of A) ⟶ G.left}
     {z : Fin d → A} {k : A} (h : ValAt x u m g z k) : ValAt x u n g z k := by
   induction n, hmn using Nat.le_induction with
@@ -98,6 +125,11 @@ theorem ValAt.mono (hx : IsUnivChart G d x) {m n : ℕ} (hmn : m ≤ n) {g : Spe
   | succ n _ ih => exact ih.succ hx
 
 omit [GrpObj G] in
+/- English proof (translation)
+Take `⟨ψ, h1, -, -⟩` from `h`. Use `⟨m + 1, eq_bot_iff.2 ?_⟩` and prove the remaining obligations. Establish `: Ideal.span (Set.range z) ≤ (RingHom.ker (jetAug O (Fin 1 × Fin d) m)).map ψ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Rewrite using `[← h1 (0, j)]`. Conclude with `Ideal.mem_map_of_mem _ (zR_mem_ker m _)`. Use `(Ideal.pow_right_mono this _).trans ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, ker_jetAug_pow, Ideal.map_bot]`.
+-/
 theorem ValAt.nilpotent {m : ℕ} {g : Spec (CommRingCat.of A) ⟶ G.left}
     {z : Fin d → A} {k : A} (h : ValAt x u m g z k) : IsNilpotent (Ideal.span (Set.range z)) := by
   obtain ⟨ψ, h1, -, -⟩ := h
@@ -110,6 +142,9 @@ theorem ValAt.nilpotent {m : ℕ} {g : Spec (CommRingCat.of A) ⟶ G.left}
   refine (Ideal.pow_right_mono this _).trans ?_
   rw [← Ideal.map_pow, ker_jetAug_pow, Ideal.map_bot]
 
+/- English proof (translation)
+Take `⟨m, z, h⟩` from `h`. Take `⟨m', z', h'⟩` from `h'`. Take `⟨n, hn⟩` from `(Commute.all _ _).isNilpotent_add h.nilpotent h'.nilpotent`. Use `⟨m + m' + n, z, z', Ideal.span (Set.range z) + Ideal.span (Set.range z'), ?_, fun j => Ideal.mem_sup_left (Ideal.subset_span ⟨j, rfl⟩), fun j => Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩), h.mono hx (by omega), h'.mono hx (by omega)⟩` and prove the remaining obligations. Conclude with `pow_eq_zero_of_le (by omega) hn`.
+-/
 theorem exists_common (hx : IsUnivChart G d x) {g g' : Spec (CommRingCat.of A) ⟶ G.left} {k k' : A}
     (h : HasVal x u g k) (h' : HasVal x u g' k') :
     ∃ (m : ℕ) (z z' : Fin d → A) (J : Ideal A), J ^ (m + 1) = ⊥ ∧ (∀ j, z j ∈ J) ∧ (∀ j, z' j ∈ J) ∧
@@ -122,6 +157,15 @@ theorem exists_common (hx : IsUnivChart G d x) {g g' : Spec (CommRingCat.of A) �
     h.mono hx (by omega), h'.mono hx (by omega)⟩
   exact pow_eq_zero_of_le (by omega) hn
 
+/- English proof (translation)
+Take `⟨m, z, z', J, hJ, hz, hz', ⟨ψ, h1, h2, h3⟩, ⟨ψ', h1', h2', h3'⟩⟩` from `exists_common hx h h'`. Set `_ : Algebra V A` to `((algebraMap O A).comp (algebraMap V O)).toAlgebra`. Establish `: IsScalarTower V O A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `φ` to `(ψ.restrictScalars V).comp (jetIn V d O m)`. Set `φ'` to `(ψ'.restrictScalars V).comp (jetIn V d O m)`.
+
+Set `q` to `Ideal.Quotient.mkₐ V J`. Establish `hφ : ∀ j, φ (zR m j) = z j` using `fun j => (congrArg ψ (jetIn_zR m j)).trans (h1 _)`. Establish `hφ' : ∀ j, φ' (zR m j) = z' j` using `fun j => (congrArg ψ' (jetIn_zR m j)).trans (h1' _)`. Establish `hq : ∀ j, q (φ (zR m j)) = 0` using `fun j => by rw [hφ]; exact Ideal.Quotient.eq_zero_iff_mem.2 (hz j)`. Establish `hq' : ∀ j, q (φ' (zR m j)) = 0` using `fun j => by rw [hφ']; exact Ideal.Quotient.eq_zero_iff_mem.2 (hz' j)`.
+
+Establish `e : φ = φ'` using `(existsUnique_jet hx q Ideal.Quotient.mk_surjective (m := m) ((congrArg (· ^ (m + 1)) (Ideal.mk_ker (I := J))).trans hJ) (spMap φ ≫ x m) (by`. Establish `: q.comp φ = (Algebra.ofId V _).comp (jetAug V (Fin d) m)` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, hq, AlgHom.comp_apply, jetAug_zR, map_zero]`. Rewrite using `[← Category.assoc, spMap_comp, this, ← spMap_comp, Category.assoc, chart_aug hx, MonObj.comp_one])).unique`. Use the proof step `⟨hq, rfl⟩ ⟨hq', Over.OverMorphism.ext (h2.symm.trans h2')⟩`.
+
+Establish `e' : ψ = ψ'` using `jet_ext fun r => by rw [h1, h1', ← hφ, ← hφ', e]`. Rewrite using `[h3, h3', e']`.
+-/
 theorem HasVal.unique [IsLocalRing V] (hx : IsUnivChart G d x) {g : Spec (CommRingCat.of A) ⟶ G.left} {k k' : A}
     (h : HasVal x u g k) (h' : HasVal x u g k') : k = k' := by
   obtain ⟨m, z, z', J, hJ, hz, hz', ⟨ψ, h1, h2, h3⟩, ⟨ψ', h1', h2', h3'⟩⟩ := exists_common hx h h'
@@ -143,6 +187,13 @@ theorem HasVal.unique [IsLocalRing V] (hx : IsUnivChart G d x) {g : Spec (CommRi
   have e' : ψ = ψ' := jet_ext fun r => by rw [h1, h1', ← hφ, ← hφ', e]
   rw [h3, h3', e']
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hJ`. Establish `hJ : J ^ (m + 1) = ⊥` using `pow_eq_zero_of_le (Nat.le_succ m) hm`. Set `_ : Algebra V A` to `((algebraMap O A).comp (algebraMap V O)).toAlgebra`. Establish `: IsScalarTower V O A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `q` to `Ideal.Quotient.mkₐ V J`.
+
+Take `⟨φ, ⟨h1, h2⟩, -⟩` from `existsUnique_jet hx q Ideal.Quotient.mk_surjective (m := m) ((congrArg (· ^ (m + 1)) (Ideal.mk_ker (I := J))).trans hJ) g (by`. Rewrite using `[← MonObj.comp_one (spMap q)]`. Conclude with `Over.OverMorphism.ext hg)`. Set `ψ : JetR O (Fin 1 × Fin d) m →ₐ[O] A` to `jetLift O J hJ (fun r => φ (zR m r.2)) (fun r => Ideal.Quotient.eq_zero_iff_mem.1 (h1 r.2))`. Establish `e : φ = (ψ.restrictScalars V).comp (jetIn V d O m)` using `jet_ext fun j => by show _ = ψ (jetIn V d O m _)`.
+
+Rewrite using `[jetIn_zR, jetLift_zR]`. Use `⟨_, m, fun j => φ (zR m j), ψ, fun r => jetLift_zR _ _ _ _ r, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[h2, e]`. Both sides reduce to the same expression.
+-/
 theorem exists_hasVal [IsLocalRing V] (hx : IsUnivChart G d x) (u : PS O 1 d) (J : Ideal A) (hJ : IsNilpotent J)
     (g : specV (algebraMap V O) A ⟶ G)
     (hg : Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ g.left =
@@ -166,6 +217,13 @@ theorem exists_hasVal [IsLocalRing V] (hx : IsUnivChart G d x) (u : PS O 1 d) (J
   rw [h2, e]
   rfl
 
+/- English proof (translation)
+Set `_ : Algebra V A` to `((algebraMap O A).comp (algebraMap V O)).toAlgebra`. Establish `: IsScalarTower V O A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `ψ : JetR O (Fin 1 × Fin d) 0 →ₐ[O] A` to `(Algebra.ofId O A).comp (jetAug O _ 0)`. Establish `hψ : ∀ r, ψ (zR 0 r) = 0` using `fun r => by show algebraMap O A (jetAug O _ 0 _) = 0`. Rewrite using `[jetAug_zR, map_zero]`.
+
+Use `⟨0, 0, ψ, hψ, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (ψ.restrictScalars V).comp (jetIn V d O 0) = (Algebra.ofId V A).comp (jetAug V _ 0)` using `jet_ext fun j => by show ψ (jetIn V d O 0 _) = algebraMap V A (jetAug V _ 0 _)`. Rewrite using `[jetIn_zR, hψ, jetAug_zR, map_zero]`. Establish `: spMap ((ψ.restrictScalars V).comp (jetIn V d O 0)) ≫ x 0 = 1`. Rewrite using `[e, ← spMap_comp, Category.assoc, chart_aug hx, MonObj.comp_one]`.
+
+Conclude with `(congrArg (·.left) this).symm`. Use `show 1 = algebraMap O A (jetAug O _ 0 _)`. Rewrite using `[((jetAlg O _).2.1 0 u).2, hu, map_one]`.
+-/
 theorem hasVal_one (hx : IsUnivChart G d x) (hu : MvPowerSeries.constantCoeff u = 1) :
     HasVal x u (1 : specV (algebraMap V O) A ⟶ G).left (1 : A) := by
   let _ : Algebra V A := ((algebraMap O A).comp (algebraMap V O)).toAlgebra
@@ -184,6 +242,25 @@ theorem hasVal_one (hx : IsUnivChart G d x) (hu : MvPowerSeries.constantCoeff u 
   · show 1 = algebraMap O A (jetAug O _ 0 _)
     rw [((jetAlg O _).2.1 0 u).2, hu, map_one]
 
+/- English proof (translation)
+Take `⟨m, z, z', J, hJ, hz, hz', ⟨ψ, h1, h2, h3⟩, ⟨ψ', h1', h2', h3'⟩⟩` from `exists_common hx h h'`. Set `_ : Algebra V A` to `((algebraMap O A).comp (algebraMap V O)).toAlgebra`. Establish `: IsScalarTower V O A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `Θ : JetR O (Fin 2 × Fin d) m →ₐ[O] A` to `jetLift O J hJ (fun r => ![z, z'] r.1 r.2) (by`. Introduce and unpack `⟨i, j⟩`.
+
+Use `fin_cases i`. Use `exacts [hz j, hz' j])`. Establish `hΘ : ∀ r, Θ (zR m r) = ![z, z'] r.1 r.2` using `jetLift_zR _ _ _ _`. Set `Θv` to `(Θ.restrictScalars V).comp (jetCoeff V O (Fin 2 × Fin d) m)`. Establish `sub : ∀ a : Pt O 2 d, (∀ j, MvPowerSeries.constantCoeff (a j) = 0) → ∃ ρ : JetR O (Fin 1 × Fin d) m →ₐ[O] JetR O (Fin 2 × Fin d) m, (∀ r, ρ (zR m r) = toJet m (a r.2)) ∧ ρ (toJet m u) = toJet m (ev ![a] u)` using `fun a ha => by`.
+
+Establish `H` using `(jetAlg O (Fin 2 × Fin d)).2.2.2.2 (Fin 1 × Fin d) (fun r => (![a] : Fin 1 → Pt O 2 d) r.1 r.2) (fun r => by rw [Subsingleton.elim r.1 0]; exact ha _) m`. Take `⟨ρ, hρ⟩` from `H.1`. Conclude with `⟨ρ, fun r => (hρ r).trans (by rw [Subsingleton.elim r.1 0]; rfl), H.2 ρ hρ u⟩`. Take `⟨ρ, hρ, hρu⟩` from `sub (fun i => MvPowerSeries.map (algebraMap V O) (L i)) (fun i => const_map (hL.1 i))`. Take `⟨ρ₀, hρ₀, hρ₀u⟩` from `sub (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 0) (gp_pt 0)`.
+
+Take `⟨ρ₁, hρ₁, hρ₁u⟩` from `sub (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 1) (gp_pt 1)`. Establish `e₀ : ψ = Θ.comp ρ₀` using `jet_ext fun r => by`. Rewrite using `[h1, AlgHom.comp_apply, hρ₀, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, toJet_X, hΘ]`. Both sides reduce to the same expression. Establish `e₁ : ψ' = Θ.comp ρ₁` using `jet_ext fun r => by`.
+
+Rewrite using `[h1', AlgHom.comp_apply, hρ₁, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt, toJet_X, hΘ]`. Both sides reduce to the same expression. Take `⟨t, ht⟩` from `exists_test jetAlg x 2`. Take `⟨χ, hχ, hχ'⟩` from `(hL.2 2 _ _ _ _ (ht 0) (ht 1)).2 m`. Establish `key : ∀ (a : Pt V 2 d) (χ : JetR V (Fin d) m →ₐ[V] JetR V (Fin 2 × Fin d) m) (ρ : JetR O (Fin 1 × Fin d) m →ₐ[O] JetR O (Fin 2 × Fin d) m), (∀ j, χ (zR m j) = toJet m (a j)) → (∀ r, ρ (zR m r) = toJet m (MvPowerSeries.map (algebraMap V O) (a r.2))) → spMap (((Θ.comp ρ).restrictSc …` using `fun a χ ρ hχ hρ => by`.
+
+Rewrite using `[← Category.assoc, spMap_comp]`. Use `congr 2`. Use `jet_ext fun j => ?_` and prove the remaining obligations. Use `show Θ (ρ (jetIn V d O m _)) = Θ (jetCoeff V O _ m (χ _))`. Rewrite using `[jetIn_zR, hρ, hχ, jetCoeff_toJet]`.
+
+Establish `hg : ∀ (i : Fin 2) (ρ : JetR O (Fin 1 × Fin d) m →ₐ[O] JetR O (Fin 2 × Fin d) m), (∀ r, ρ (zR m r) = toJet m (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d i r.2)) → spMap (((Θ.comp ρ).restrictScalars V).comp (jetIn V d O m)) ≫ x m = spMap Θv ≫ t i m` using `fun i ρ hρ => by`. Take `⟨χ, hχ, hχ'⟩` from `(ht i).2 m`. Rewrite using `[hχ']`. Conclude with `key _ χ ρ hχ fun r => (hρ r).trans (by`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt`.
+
+Rewrite using `[MvPowerSeries.map_X])`. Establish `g0 : g = spMap Θv ≫ t 0 m` using `(Over.OverMorphism.ext (by rw [h2, e₀]; rfl)).trans (hg 0 ρ₀ hρ₀)`. Establish `g1 : g' = spMap Θv ≫ t 1 m` using `(Over.OverMorphism.ext (by rw [h2', e₁]; rfl)).trans (hg 1 ρ₁ hρ₁)`. Use `⟨m, fun j => Θ (toJet m (MvPowerSeries.map (algebraMap V O) (L j))), Θ.comp ρ, fun r => congrArg Θ (hρ r), ?_, ?_⟩` and prove the remaining obligations. Use `key _ χ ρ hχ fun r => (hρ r).trans (by unfold addOf; rw [eval_standard_points_two])` as an intermediate fact.
+
+Rewrite `this` using `[← hχ', MonObj.comp_mul, ← g0, ← g1]`. Conclude with `(congrArg (·.left) this).symm`. Take `⟨τ, hτ, -⟩` from `(jetAlg O (Fin 2 × Fin d)).1 m`. Rewrite using `[h3, h3', e₀, e₁, AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, hρu, hρ₀u, hρ₁u, hu, ← hτ (_ * _), map_mul, map_mul, hτ, hτ]`.
+-/
 theorem HasVal.mul (hx : IsUnivChart G d x) {L : Fin d → PS V 2 d} (hL : IsLawOf x L)
     (hu : ev (n := 2) ![fun i => MvPowerSeries.map (algebraMap V O) (L i)] u =
       ev (n := 2) ![ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 0] u * ev (n := 2) ![ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 1] u)
@@ -242,6 +319,17 @@ theorem HasVal.mul (hx : IsUnivChart G d x) {L : Fin d → PS V 2 d} (hL : IsLaw
     rw [h3, h3', e₀, e₁, AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, hρu, hρ₀u, hρ₁u, hu, ← hτ (_ * _),
       map_mul, map_mul, hτ, hτ]
 
+/- English proof (translation)
+Use `choose a ha using fun e => Ideal.Quotient.mk_surjective (x e)`. Establish `step : ∀ e, a e - a (e + 1) ∈ I ^ (e + 1)` using `fun e => by`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[ha, ← hx e, ← ha (e + 1), Ideal.Quotient.factor_mk]`. Establish `cau : ∀ m n, m ≤ n → a m - a n ∈ I ^ (m + 1)` using `fun m n hmn => by`.
+
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rw [sub_self]`. Conclude with `zero_mem _`. Consider the case `succ n hmn ih`. Use `add_mem ih (Ideal.pow_le_pow_right (Nat.succ_le_succ hmn) (step n))` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := I) a (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ m) (cau m n hmn))`. Use `⟨L, fun e => ?_⟩` and prove the remaining obligations.
+
+Use `hL (e + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h₂` using `add_mem (step e) this`. Rewrite `h₂` using `[sub_add_sub_cancel]`. Rewrite using `[← ha e]`.
+
+Conclude with `(Ideal.Quotient.eq.2 h₂).symm`.
+-/
 theorem exists_lim {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (x : ∀ e : ℕ, R ⧸ I ^ (e + 1))
     (hx : ∀ e, Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) (x (e + 1)) = x e) :
     ∃ y : R, ∀ e, Ideal.Quotient.mk (I ^ (e + 1)) y = x e := by
@@ -282,6 +370,9 @@ def LimVal (x : Fam G (Fin d)) (u : PS O 1 d) (p : O) (g : Spec (CommRingCat.of 
 variable {p : O}
 
 omit [GrpObj G] in
+/- English proof (translation)
+Introduce `R _ _ θ' hp`. Use `h R (θ'.comp θ) hp` as an intermediate fact. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Conclude with `this`.
+-/
 theorem LimVal.map {g : Spec (CommRingCat.of A) ⟶ G.left} {k : A} (h : LimVal x u p g k) {B : Type} [CommRing B]
     [Algebra O B] (θ : A →ₐ[O] B) : LimVal x u p (Spec.map (CommRingCat.ofHom θ.toRingHom) ≫ g) (θ k) := by
   intro R _ _ θ' hp
@@ -289,6 +380,11 @@ theorem LimVal.map {g : Spec (CommRingCat.of A) ⟶ G.left} {k : A} (h : LimVal 
   rw [← Category.assoc, ← Spec.map_comp]
   exact this
 
+/- English proof (translation)
+Introduce `R _ _ θ _`. Establish `e : (res V θ ≫ (1 : specV (algebraMap V O) A ⟶ G)).left = (1 : specV (algebraMap V O) R ⟶ G).left`. Rewrite using `[MonObj.comp_one]`. Rewrite using `[map_one]`. Establish `h` using `hasVal_one (A := R) hx hu`.
+
+Rewrite `h` using `[← e]`. Conclude with `h`.
+-/
 theorem limVal_one (hx : IsUnivChart G d x) (hu : MvPowerSeries.constantCoeff u = 1) :
     LimVal x u p (1 : specV (algebraMap V O) A ⟶ G).left (1 : A) := by
   intro R _ _ θ _
@@ -299,6 +395,9 @@ theorem limVal_one (hx : IsUnivChart G d x) (hu : MvPowerSeries.constantCoeff u 
   rw [← e] at h
   exact h
 
+/- English proof (translation)
+Introduce `R _ _ θ hp`. Use `HasVal.mul hx hL hu (g := res V θ ≫ g) (g' := res V θ ≫ g') (h R θ hp) (h' R θ hp)` as an intermediate fact. Rewrite `this` using `[← MonObj.comp_mul, ← map_mul]`. Conclude with `this`.
+-/
 theorem LimVal.mul (hx : IsUnivChart G d x) {L : Fin d → PS V 2 d} (hL : IsLawOf x L)
     (hu : ev (n := 2) ![fun i => MvPowerSeries.map (algebraMap V O) (L i)] u =
       ev (n := 2) ![ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 0] u * ev (n := 2) ![ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt O d 1] u)
@@ -309,12 +408,18 @@ theorem LimVal.mul (hx : IsUnivChart G d x) {L : Fin d → PS V 2 d} (hL : IsLaw
   rw [← MonObj.comp_mul, ← map_mul] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, by rw [← Ideal.Quotient.mk_algebraMap, ← map_pow] exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n)⟩`.
+-/
 theorem nilpotent_quot (p : O) (n : ℕ) :
     IsNilpotent (algebraMap O (A ⧸ Ideal.span {algebraMap O A p} ^ n) p) :=
   ⟨n, by
     rw [← Ideal.Quotient.mk_algebraMap, ← map_pow]
     exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n)⟩
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {algebraMap O A p}) _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.Quotient.eq.1 ((h _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot p n)).unique hx (h' _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot p n)))`.
+-/
 theorem LimVal.unique [IsLocalRing V] (hx : IsUnivChart G d x) [IsHausdorff (Ideal.span {algebraMap O A p}) A]
     {g : Spec (CommRingCat.of A) ⟶ G.left} {k k' : A} (h : LimVal x u p g k) (h' : LimVal x u p g k') : k = k' := by
   refine sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {algebraMap O A p}) _ fun n => ?_)
@@ -322,6 +427,17 @@ theorem LimVal.unique [IsLocalRing V] (hx : IsUnivChart G d x) [IsHausdorff (Ide
   exact Ideal.Quotient.eq.1 ((h _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot p n)).unique hx
     (h' _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot p n)))
 
+/- English proof (translation)
+Set `P : Ideal A` to `Ideal.span {algebraMap O A p}`. Establish `ex : ∀ e : ℕ, ∃ k, HasVal x u (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mkₐ O (P ^ (e + 1))).toRingHom) ≫ g.left) k` using `fun e => by`. Set `θ` to `Ideal.Quotient.mkₐ O (P ^ (e + 1))`. Use `exists_hasVal hx u (I.map θ) ⟨m * (e + 1), eq_bot_iff.2 ?_⟩ (res V θ ≫ g) ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap, pow_mul]`.
+
+Conclude with `(Ideal.pow_right_mono hI _).trans fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `e1 : Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map θ))) ≫ (res V θ).left = Spec.map (CommRingCat.ofHom (Ideal.quotientMap (I.map θ) θ.toRingHom Ideal.le_comap_map)) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))` using `by show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← MonObj.comp_one (res V θ), Over.comp_left, Over.comp_left, ← Category.assoc, ← Category.assoc, e1, Category.assoc, Category.assoc, hg]`.
+
+Use `choose k hk using ex`. Take `⟨k₀, hk₀⟩` from `exists_lim P k fun e => by`. Use `(hk (e + 1)).map (Ideal.Quotient.factorₐ O (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))))` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ← Spec.map_comp]`. Conclude with `this.unique hx (hk e)`.
+
+Use `⟨k₀, fun R _ _ θ ⟨n, hn⟩ => ?_⟩` and prove the remaining obligations. Set `θ' : (A ⧸ P ^ (n + 1)) →ₐ[O] R` to `Ideal.Quotient.liftₐ _ θ fun a ha => by`. Rewrite `ha` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `ha`. Rewrite using `[map_mul, map_pow, θ.commutes, pow_succ, hn, zero_mul, mul_zero]`.
+
+Use `(hk n).map θ'` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ← Spec.map_comp, ← hk₀]`. Conclude with `this`.
+-/
 theorem exists_limVal [IsLocalRing V] (hx : IsUnivChart G d x) (u : PS O 1 d) (p : O)
     [IsPrecomplete (Ideal.span {algebraMap O A p}) A] (I : Ideal A) {m : ℕ}
     (hI : I ^ m ≤ Ideal.span {algebraMap O A p}) (g : specV (algebraMap V O) A ⟶ G)

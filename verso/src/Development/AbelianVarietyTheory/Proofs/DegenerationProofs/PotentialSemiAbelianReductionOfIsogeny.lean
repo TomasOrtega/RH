@@ -25,9 +25,19 @@ namespace GlobalTheory.SS.Isog
 
 open IsLocalRing
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ModelDescent.spMap_comp_eq rfl`.
+-/
 theorem spMap_comp {R R₁ R₂ : Type} [CommRing R] [CommRing R₁] [CommRing R₂] (a : R →+* R₁) (b : R₁ →+* R₂) :
     spMap b ≫ spMap a = spMap (b.comp a) := GlobalTheory.ModelDescent.spMap_comp_eq rfl
 
+/- English proof (translation)
+Take `⟨e₀, he₀⟩` from `h`. Establish `hW : spMap (algebraMap W' L') ≫ spMap c = spMap b ≫ spMap (algebraMap W L)`. Rewrite using `[spMap_comp, spMap_comp, e]`. Establish `hK : spMap (algebraMap K L') = spMap b ≫ spMap (algebraMap K L)`. Rewrite using `[spMap_comp, e']`.
+
+Establish `key : ∀ (φ : Sp L' ⟶ Sp W) (ψ : Sp L' ⟶ Sp K), φ = spMap b ≫ spMap (algebraMap W L) → ψ = spMap b ≫ spMap (algebraMap K L) → ∃ f : (Over.pullback φ).obj G ≅ (Over.pullback ψ).obj A, IsMonHom f.hom`. Introduce and unpack `φ ψ rfl rfl`. Use `⟨pullCompIso _ _ G ≪≫ (Over.pullback (spMap b)).mapIso e₀ ≪≫ (pullCompIso _ _ A).symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Functor.mapIso_hom]`. Use `infer_instance`.
+
+Take `⟨f, hf⟩` from `key _ _ hW hK`. Use `show ∃ e : _ ≅ _, IsMonHom e.hom`. Use `⟨(pullCompIso _ _ G).symm ≪≫ f, ?_⟩` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Iso.symm_hom]`. Use `infer_instance`.
+-/
 theorem isModel_pullback {K W L W' L' : Type} [Field K] [CommRing W] [Field L] [CommRing W'] [Field L']
     [Algebra K L] [Algebra W L] [Algebra K L'] [Algebra W' L'] (c : W →+* W') (b : L →+* L')
     (e : (algebraMap W' L').comp c = b.comp (algebraMap W L)) (e' : b.comp (algebraMap K L) = algebraMap K L')
@@ -51,10 +61,22 @@ theorem isModel_pullback {K W L W' L' : Type} [Field K] [CommRing W] [Field L] [
   dsimp only [Iso.trans_hom, Iso.symm_hom]
   infer_instance
 
+/- English proof (translation)
+Simplify using `using map_pow ((Over.pullback f).homMonoidHom) (𝟙 B) m`.
+-/
 theorem pullback_map_id_pow {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Over S) [GrpObj B] (m : ℕ) :
     (Over.pullback f).map (𝟙 B ^ m) = 𝟙 ((Over.pullback f).obj B) ^ m := by
   simpa using map_pow ((Over.pullback f).homMonoidHom) (𝟙 B) m
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hmod`. Use `haveI := he`. Establish `hbc : ∀ (X : Over (Sp K)), SmoothOfRelativeDimension g X.hom → SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap K K'))).obj X).hom` using `fun X hX => (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback X.hom (spMap (algebraMap K K'))) hX`. Establish `hA' : IsAbelianScheme ((Over.pullback (spMap (algebraMap K K'))).obj A)`. Take `⟨h1, h2, h3, h4⟩` from `hA`.
+
+Conclude with `⟨inferInstance, inferInstanceAs (Smooth (pullback.snd A.hom (spMap (algebraMap K K')))), MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsProper) (IsPullback.of_hasPullback A.hom (spMap (algebraMap K K'))) h3, inferInstanceAs (GeometricallyConnected (pullback.snd A …`. Establish `hP' : GlobalTheory.AbLaw.IsProjBy ((Over.pullback (spMap (algebraMap K K'))).obj A).hom` using `GlobalTheory.AbLaw.isProjBy_baseChange K K' (algebraMap K K') A.left _ A.hom _ _ (IsPullback.of_hasPullback A.hom (spMap (algebraMap K K'))) hP`. Establish `hgA' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap K K'))).obj A).hom` using `hbc A hgA`. Use `haveI hgB' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap K K'))).obj B).hom := hbc B hgB`. Establish `hgG : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap R K'))).obj G').hom` using `by haveI : IsIso e.hom.left := ⟨e.inv.left, by simp [← Over.comp_left], by simp [← Over.comp_left]⟩`.
+
+Establish `h : SmoothOfRelativeDimension (0 + g) (e.hom.left ≫ ((Over.pullback (spMap (algebraMap K K'))).obj B).hom)` using `inferInstance`. Rewrite `h` using `[zero_add, Over.w e.hom]`. Conclude with `h`. Establish `hri' : (e.hom ≫ (Over.pullback (spMap (algebraMap K K'))).map r) ≫ ((Over.pullback (spMap (algebraMap K K'))).map i ≫ e.inv) = 𝟙 _ ^ m`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← Functor.map_comp_assoc, hri, pullback_map_id_pow, MonObj.pow_comp, MonObj.comp_pow]`. Simplify using the standard rewrite rules. Take `⟨G, _, e₂, hsc, he₂, ht⟩` from `GlobalTheory.T.semiAbelian_reduction_along_isogeny_strict_henselian R K' hSH ((Over.pullback (spMap (algebraMap K K'))).obj A) G' g m hA' hP' hG' hgA' hgG ((Over.pullback (spMap (algebraMap K K'))).map i ≫ e.inv) (e.hom ≫ (Over.pullback (spMap (algebraMap K K'))).map r) inferInst …`. Conclude with `⟨G, inferInstance, hsc, show ∃ _, _ from ⟨e₂, he₂⟩, ht⟩`.
+-/
 theorem exists_model_of_isogeny (K R K' : Type) [Field K] [CommRing R] [IsDomain R] [IsLocalRing R] [Field K']
     [Algebra R K'] [Algebra K K'] (hSH : SH R K') (A B : Over (Sp K)) [GrpObj A] [GrpObj B] (g m : ℕ)
     (hA : IsAbelianScheme A) (hP : GlobalTheory.AbLaw.IsProjBy A.hom) (hgA : SmoothOfRelativeDimension g A.hom)
@@ -98,6 +120,31 @@ namespace GlobalTheory.SS
 
 open Isog IsLocalRing in
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ _ _ A B _ _ g m hA hP hgA hgB i r hi hr hm hri hB`. Use `haveI := hi`. Use `haveI := hr`. Take `⟨W, L, _, _, _, _, _, _, _, _, hc, hfin, hloc, hcomp, G, _, hmod, hG⟩` from `hB`. Establish `hG' : IsSemiAbelian G` using `hG`.
+
+Use `haveI : IsAdicComplete (maximalIdeal W) W := hcomp`. Use `haveI : CharZero L := (RingHom.charZero_iff (algebraMap K L).injective).1 inferInstance`. Use `haveI : CharZero W := (RingHom.charZero_iff (IsFractionRing.injective W L)).2 inferInstance`. Use `haveI : CharZero V := (RingHom.charZero_iff (IsFractionRing.injective V K)).2 inferInstance`. Take `⟨R, _, _, _, _, hinj, hint, hac⟩` from `GlobalTheory.T.exists_integral_ext_isAlgClosed_residueField' W`.
+
+Take `⟨-, hhen, -⟩` from `GlobalTheory.T.henselian_iUnion_complete_of_integral_over_complete_dvr W R hinj hint`. Establish `hWK : Function.Injective ((algebraMap R (FractionRing R)).comp (algebraMap W R))` using `(IsFractionRing.injective R (FractionRing R)).comp hinj`. Take `⟨b, hbW⟩ : ∃ b : L →+* FractionRing R, (algebraMap R (FractionRing R)).comp (algebraMap W R) = b.comp (algebraMap W L)` from `⟨IsFractionRing.lift hWK, RingHom.ext fun x => (IsFractionRing.lift_algebraMap (K := L) hWK x).symm⟩`. Use `letI : Algebra K (FractionRing R) := (b.comp (algebraMap K L)).toAlgebra`. Establish `hSH : SH R (FractionRing R)` using `by show _ ∧ _ ∧ _ ∧ _`.
+
+Conclude with `⟨inferInstance, hhen, hac, inferInstance⟩`. Establish `hmodR : IsModel (L` using `FractionRing R) B ((Over.pullback (spMap (algebraMap W R))).obj G) := isModel_pullback (algebraMap W R) b hbW rfl B G hmod`. Establish `hsemiR : IsSemiAbelian ((Over.pullback (spMap (algebraMap W R))).obj G)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback (spMap (algebraMap W R)) G hG'`. Take `⟨GR, _, hsc, hmodA, ht⟩` from `exists_model_of_isogeny K R (FractionRing R) hSH A B g m hA hP hgA hgB i r hm hri _ hsemiR hmodR`. Use `letI : Algebra V R := ((algebraMap W R).comp (algebraMap V W)).toAlgebra`.
+
+Establish `hVR : (algebraMap R (FractionRing R)).comp (algebraMap V R) = (algebraMap K (FractionRing R)).comp (algebraMap V K)`. Express the relevant statement in the definitionally equal form `(algebraMap R (FractionRing R)).comp ((algebraMap W R).comp (algebraMap V W)) = (b.comp (algebraMap K L)).comp (algebraMap V K)`. Rewrite using `[← RingHom.comp_assoc, hbW, RingHom.comp_assoc, hc, RingHom.comp_assoc]`. Take `⟨s, hs⟩` from `GlobalTheory.smConn_model_descends V K R (FractionRing R) hVR A hA GR hsc hmodA`. Establish `hVW : Function.Injective (algebraMap V W)`.
+
+Establish `h2 : Function.Injective ((algebraMap K L).comp (algebraMap V K))` using `(algebraMap K L).injective.comp (IsFractionRing.injective V K)`. Rewrite `h2` using `[← hc, RingHom.coe_comp]`. Conclude with `h2.of_comp`. Use `haveI : Algebra.IsIntegral V W := Algebra.IsIntegral.of_finite V W`. Establish `hVRi : (algebraMap V R).IsIntegral` using `RingHom.IsIntegral.trans (f := algebraMap V W) (g := algebraMap W R) (fun x => Algebra.IsIntegral.isIntegral (R := V) x) (fun x => hint.isIntegral x)`.
+
+Establish `hVRinj : Function.Injective (algebraMap V R)` using `hinj.comp hVW`. Take `⟨hlocVR, -, hdescV⟩` from `GlobalTheory.T.henselian_iUnion_complete_of_integral_over_complete_dvr V R hVRinj ⟨fun x => hVRi x⟩`. Take `⟨W', _, hsW, hcW, hfW, hlW⟩` from `hdescV s`. Take `⟨GW, _, _, ε, hscW, hε, hcompW, hmodW⟩` from `hs W' inferInstance hsW hlW`. Use `haveI := hε`.
+
+Establish `hlVW : IsLocalHom (algebraMap V W')`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (W'.val.toRingHom (algebraMap V W' x))` using `hx.map _`. Conclude with `IsLocalHom.map_nonunit (f := algebraMap V R) x h1`. Set `ρ : W' →+* ResidueField R` to `(residue R).comp W'.val.toRingHom`.
+
+Establish `hker : RingHom.ker ρ = maximalIdeal W'`. Rewrite using `[← RingHom.comap_ker, ker_residue, maximalIdeal_comap]`. Establish `hρi : ρ.IsIntegral` using `RingHom.IsIntegral.trans (f := W'.val.toRingHom) (g := residue R) (RingHom.IsIntegral.tower_top (f := algebraMap V W') (g := W'.val.toRingHom) hVRi) (RingHom.isIntegral_of_surjective _ residue_surjective)`. Establish `htor : Nonempty (TorusExtension ((Over.pullback (spMap ρ)).obj GW))`. Take `⟨T⟩` from `ht`.
+
+Establish `hρ : spMap ρ = spMap (residue R) ≫ spMap W'.val.toRingHom` using `(Isog.spMap_comp _ _).symm`. Rewrite using `[hρ]`. Set `Z` to `pullCompIso (spMap (residue R)) (spMap W'.val.toRingHom) GW ≪≫ (Over.pullback _).mapIso ε`. Use `haveI : IsMonHom Z.symm.hom := by dsimp only [Z, Iso.symm_hom, Iso.trans_inv, Functor.mapIso_inv] infer_instance`. Conclude with `⟨torusExtOfIso Z.symm T⟩`.
+
+Establish `hprop : IsProper ((Over.pullback (spMap (algebraMap W' (FractionRing W')))).obj GW).hom`. Take `⟨e, -⟩` from `hmodW`. Use `haveI : IsProper A.hom := hA.proper`. Use `haveI : IsProper ((Over.pullback (spMap (algebraMap K (FractionRing W')))).obj A).hom := MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsProper) (IsPullback.of_hasPullback A.hom (spMap (algebraMap K (FractionRing W')))) (inferInstanceAs (IsProper A.hom))`. Use `haveI : IsIso e.hom.left := ⟨e.inv.left, by simp [← Over.comp_left], by simp [← Over.comp_left]⟩`.
+
+Rewrite using `[← Over.w e.hom]`. Use `infer_instance`. Establish `hsemiW : IsSemiAbelian GW` using `isSemiAbelian_of_proper_generic_of_torusExtension W' (FractionRing W') GW hscW hprop (ResidueField R) ρ hker hρi htor`. Unfold `PotModel`. Conclude with `⟨W', FractionRing W', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hcompW, hfW, hlVW, hcW, GW, inferInstance, hmodW, hsemiW⟩`.
+-/
 theorem potModel_semiAbelian_of_isogeny : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A B : Over (Sp K)) [GrpObj A] [GrpObj B] (g m : ℕ), IsAbelianScheme A → GlobalTheory.AbLaw.IsProjBy A.hom → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ (i : A ⟶ B) (r : B ⟶ A), IsMonHom i → IsMonHom r → 1 ≤ m → r ≫ i = 𝟙 _ ^ m → PotModel V K B (fun _ _ _ G _ => IsSemiAbelian G) → PotModel V K A (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V K _ _ _ _ _ _ _ _ A B _ _ g m hA hP hgA hgB i r hi hr hm hri hB
   haveI := hi

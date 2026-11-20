@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
+/- English proof (translation)
+Introduce `K _ d n g`. Rewrite using `[trace_blocks n (sbs g).toLinearMap (mRep d n g) (fun P => rfl)]`. Simplify using `only [AlgHom.toLinearMap_apply]`. Repeatedly rewrite using `[coeff_sbs_glue, symPowTrace_eq_sum_coeff]`. Rewrite using `[Finset.prod_univ_sum]`.
+-/
 theorem UpperTheory.V.Z.Sym.Wt.trProd :
     UpperTheory.V.Z.Sym.Wt.TrProd := by
   classical

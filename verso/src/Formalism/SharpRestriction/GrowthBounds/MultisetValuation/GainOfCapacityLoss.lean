@@ -10,17 +10,31 @@ section Idx
 
 variable {n' ν : ℕ} [NeZero ν] (hn : n' = 2 * ν)
 
+/- English proof (translation)
+Use `show (((s.val : ℕ) : ZMod (2 * ν))).val = s.val`. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (hn ▸ s.isLt)]`.
+-/
 theorem ea_eS_val (s : Fin n') : (ea_eS hn s).val = s.val := by
   show (((s.val : ℕ) : ZMod (2 * ν))).val = s.val
   rw [ZMod.val_natCast, Nat.mod_eq_of_lt (hn ▸ s.isLt)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ea_eS_symm_val (x : ZMod (2 * ν)) : ((ea_eS hn).symm x).val = x.val := rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `show (((s.val + k) % (2 * ν) : ℕ) : ZMod (2 * ν)) = (s.val : ZMod (2 * ν)) + k`. Rewrite using `[ZMod.natCast_mod, Nat.cast_add]`.
+-/
 theorem ea_eS_posAdd (s : Fin n') (k : ℕ) : ea_eS hn (posAdd s k) = ea_eS hn s + (k : ZMod (2 * ν)) := by
   subst hn
   show (((s.val + k) % (2 * ν) : ℕ) : ZMod (2 * ν)) = (s.val : ZMod (2 * ν)) + k
   rw [ZMod.natCast_mod, Nat.cast_add]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hle : s.val ≤ s'.val + 2 * ν` using `by have := s.isLt; omega`. Use `show (((s'.val : ℕ) : ZMod (2 * ν)) - ((s.val : ℕ) : ZMod (2 * ν))).val = _`. Rewrite using `[← ZMod.val_natCast (n := 2 * ν) (s'.val + 2 * ν - s.val)]`. Use `congr 1`.
+
+Rewrite using `[Nat.cast_sub hle, Nat.cast_add, ZMod.natCast_self, add_zero]`.
+-/
 theorem ea_eS_sub_val (s s' : Fin n') : (ea_eS hn s' - ea_eS hn s).val = (s'.val + n' - s.val) % n' := by
   subst hn
   have hle : s.val ≤ s'.val + 2 * ν := by have := s.isLt; omega
@@ -31,6 +45,11 @@ theorem ea_eS_sub_val (s s' : Fin n') : (ea_eS hn s' - ea_eS hn s).val = (s'.val
 
 end Idx
 
+/- English proof (translation)
+Rewrite using `[← Finset.card_map Fin.valEmbedding]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply, mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c.isLt, hc⟩`. Introduce and unpack `⟨hx, hP⟩`. Conclude with `⟨⟨x, hx⟩, hP, rfl⟩`.
+-/
 theorem ea_card_fin (N : ℕ) (P : ℕ → Prop) [DecidablePred P] :
     (univ.filter fun c : Fin N => P c.val).card = ((range N).filter P).card := by
   rw [← Finset.card_map Fin.valEmbedding]
@@ -43,6 +62,9 @@ theorem ea_card_fin (N : ℕ) (P : ℕ → Prop) [DecidablePred P] :
   · rintro ⟨hx, hP⟩
     exact ⟨⟨x, hx⟩, hP, rfl⟩
 
+/- English proof (translation)
+Unfold `Formalism.InvariantFactorPaths.G7.lgN lgp`. Break down `Nat.eq_zero_or_pos x with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem ea_lg (p x : ℕ) : Formalism.InvariantFactorPaths.G7.lgN p x = lgp p (x : ℤ) := by
   unfold Formalism.InvariantFactorPaths.G7.lgN lgp
   rcases Nat.eq_zero_or_pos x with rfl | hx
@@ -63,6 +85,9 @@ def ea_hT (t : ℕ) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n'
 
 def ea_tT (TT : Finset (Fin n')) : Finset (ZMod (2 * ν)) := TT.map (ea_eS hn).toEmbedding
 
+/- English proof (translation)
+Unfold `ea_tT`. Rewrite using `[Finset.mem_map_equiv]`.
+-/
 theorem ea_mem_tT (s : ZMod (2 * ν)) : s ∈ ea_tT hn TT ↔ (ea_eS hn).symm s ∈ TT := by
   unfold ea_tT
   rw [Finset.mem_map_equiv]
@@ -71,6 +96,11 @@ variable (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ :
 
 include h hJ1 hJ
 
+/- English proof (translation)
+Unfold `Formalism.InvariantFactorPaths.G7.alG al`. Distinguish the cases in `hs : (ea_eS hn).symm s ∈ TT`. Rewrite using `[if_pos ((ea_mem_tT hn s).2 hs), if_pos hs]`. Establish `e` using `ea_card_fin (ea_cN hn t lam0 w J s) (fun x => ea_colH t lam0 w J ((ea_eS hn).symm s) x = 1)`. Unfold `ea_hT`.
+
+Rewrite using `[e]`. Conclude with `ea_card_one h hJ1 hJ _`. Rewrite using `[if_neg (fun h' => hs ((ea_mem_tT hn s).1 h')), if_neg hs]`. Both sides reduce to the same expression.
+-/
 theorem ea_alG (s : ZMod (2 * ν)) :
     ((Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℤ) =
       al TT lam0 ((ea_eS hn).symm s) := by
@@ -84,10 +114,18 @@ theorem ea_alG (s : ZMod (2 * ν)) :
   · rw [if_neg (fun h' => hs ((ea_mem_tT hn s).1 h')), if_neg hs]
     rfl
 
+/- English proof (translation)
+The claim follows from `Int.toNat_of_nonneg (ea_nu_nonneg h hJ1 hJ _ 1)`.
+-/
 theorem ea_cN_cast (s : ZMod (2 * ν)) :
     ((ea_cN hn t lam0 w J s : ℕ) : ℤ) = nu t lam0 w J ((ea_eS hn).symm s) 1 :=
   Int.toNat_of_nonneg (ea_nu_nonneg h hJ1 hJ _ 1)
 
+/- English proof (translation)
+Establish `hk : 2 ≤ k1 + 1`. Use `h.two_r` as an intermediate fact. Use `h.r_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `al`.
+
+Rewrite using `[if_pos hs, ea_nu_head J s le_rfl (by omega), ea_nu_head J s (by omega : 1 ≤ 2) hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ea_al_eq (s : Fin n') (hs : s ∈ TT) : al TT lam0 s = nu t lam0 w J s 1 - nu t lam0 w J s 2 := by
   have hk : 2 ≤ k1 + 1 := by
     have := h.two_r
@@ -97,6 +135,15 @@ theorem ea_al_eq (s : Fin n') (hs : s ∈ TT) : al TT lam0 s = nu t lam0 w J s 1
   rw [if_pos hs, ea_nu_head J s le_rfl (by omega), ea_nu_head J s (by omega : 1 ≤ 2) hk]
   ring
 
+/- English proof (translation)
+Establish `hA` using `ea_alG hn h hJ1 hJ s`. Establish `hC` using `ea_cN_cast hn h hJ1 hJ s`. Unfold `Formalism.InvariantFactorPaths.G7.capG cap`. Distinguish the cases in `hs : (ea_eS hn).symm s ∈ TT`. Rewrite using `[if_pos hs]`.
+
+Establish `hal` using `ea_al_eq h hJ1 hJ _ hs`. Establish `h2` using `ea_nu_nonneg h hJ1 hJ ((ea_eS hn).symm s) 2`. Establish `hle : Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s ≤ ea_cN hn t lam0 w J s`. Establish `: ((Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℤ) ≤ ((ea_cN hn t lam0 w J s : ℕ) : ℤ)` using `by rw [hA, hC, hal]; omega`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[Nat.cast_sub hle, hA, hC, hal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hs]`. Establish `h0 : Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s = 0`. Unfold `Formalism.InvariantFactorPaths.G7.alG`.
+
+Rewrite using `[if_neg (mt (ea_mem_tT hn s).1 hs)]`. Rewrite using `[h0, Nat.sub_zero, hC]`.
+-/
 theorem ea_capG (s : ZMod (2 * ν)) :
     ((Formalism.InvariantFactorPaths.G7.capG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℤ) =
       cap t TT lam0 w J ((ea_eS hn).symm s) := by
@@ -120,6 +167,13 @@ theorem ea_capG (s : ZMod (2 * ν)) :
       rw [if_neg (mt (ea_mem_tT hn s).1 hs)]
     rw [h0, Nat.sub_zero, hC]
 
+/- English proof (translation)
+Establish `hle : Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s ≤ ∑ c : Fin (ea_cN hn t lam0 w J s), ea_hT hn t lam0 w J s c`. Unfold `Formalism.InvariantFactorPaths.G7.alG`. Use `split_ifs`. Rewrite using `[Finset.card_filter]`. Apply the tactic sequence `exact Finset.sum_le_sum fun c _ => by split_ifs with h1 <;> omega`.
+
+Conclude with `Nat.zero_le _`. Unfold `Formalism.InvariantFactorPaths.G7.lsG lsz`. Rewrite using `[Nat.cast_sub hle, ea_alG hn h hJ1 hJ s, ← ea_sum_colH h hJ1 hJ]`. Use `congr 2`. Unfold `ea_hT ea_cN`.
+
+Conclude with `Fin.sum_univ_eq_sum_range (fun x => ea_colH t lam0 w J ((ea_eS hn).symm s) x) _`.
+-/
 theorem ea_lsG (s : ZMod (2 * ν)) :
     ((Formalism.InvariantFactorPaths.G7.lsG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℤ) =
       lsz t TT lam0 w J ((ea_eS hn).symm s) := by
@@ -143,6 +197,11 @@ section Num2
 variable {n' k1 : ℕ} {p t m c r : ℕ} {TT : Finset (Fin n')} {a b : Fin n' → ℤ}
   {lam0 : Fin n' → Fin (k1 + 1) → ℤ} {w : ℕ → Fin n' → ℤ} {ν : ℕ} [NeZero ν] (hn : n' = 2 * ν)
 
+/- English proof (translation)
+Unfold `Formalism.InvariantFactorPaths.G7.dSet dSet ea_tT`. Rewrite using `[Finset.filter_map, Finset.map_eq_image, Finset.image_image]`. Use `congr 1`. Use function extensionality and compare the values at `s'`. Simplify using `only [Function.comp_apply, Equiv.coe_toEmbedding]`.
+
+Rewrite using `[ea_eS_sub_val]`. Use extensionality with `s'`. Simplify using `only [Finset.mem_filter, Function.comp_apply, Equiv.coe_toEmbedding, ea_eS_val]`.
+-/
 theorem ea_dSet (s : Fin n') : Formalism.InvariantFactorPaths.G7.dSet (ea_tT hn TT) (ea_eS hn s) = dSet TT s := by
   unfold Formalism.InvariantFactorPaths.G7.dSet dSet ea_tT
   rw [Finset.filter_map, Finset.map_eq_image, Finset.image_image]
@@ -153,6 +212,9 @@ theorem ea_dSet (s : Fin n') : Formalism.InvariantFactorPaths.G7.dSet (ea_tT hn 
   · ext s'
     simp only [Finset.mem_filter, Function.comp_apply, Equiv.coe_toEmbedding, ea_eS_val]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_map _ _ _`.
+-/
 theorem ea_sum_tT {M : Type} [AddCommMonoid M] (f : ZMod (2 * ν) → M) :
     ∑ s ∈ ea_tT hn TT, f s = ∑ s ∈ TT, f (ea_eS hn s) := Finset.sum_map _ _ _
 
@@ -160,16 +222,29 @@ variable (h : Std p n' k1 t m c r TT a b lam0 w) {J : ℕ} (hJ1 : 1 ≤ J) (hJ :
 
 include h hJ1 hJ
 
+/- English proof (translation)
+Conclude with `congrArg (fun z : ℤ => (z : ℝ)) (ea_alG hn h hJ1 hJ s)` after adjusting the coercions.
+-/
 theorem ea_alG_R (s : ZMod (2 * ν)) :
     ((Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℝ) =
       (al TT lam0 ((ea_eS hn).symm s) : ℝ) := by
   exact_mod_cast congrArg (fun z : ℤ => (z : ℝ)) (ea_alG hn h hJ1 hJ s)
 
+/- English proof (translation)
+Conclude with `congrArg (fun z : ℤ => (z : ℝ)) (ea_capG hn h hJ1 hJ s)` after adjusting the coercions.
+-/
 theorem ea_capG_R (s : ZMod (2 * ν)) :
     ((Formalism.InvariantFactorPaths.G7.capG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℕ) : ℝ) =
       (cap t TT lam0 w J ((ea_eS hn).symm s) : ℝ) := by
   exact_mod_cast congrArg (fun z : ℤ => (z : ℝ)) (ea_capG hn h hJ1 hJ s)
 
+/- English proof (translation)
+Establish `hal : ∀ s, ((Formalism.InvariantFactorPaths.G7.lgN p (Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s) : ℕ) : ℝ) = (lgp p (al TT lam0 ((ea_eS hn).symm s)) : ℝ)`. Introduce `s`. Rewrite using `[ea_lg, ea_alG hn h hJ1 hJ s]`. Establish `hls : ∀ s, ((Formalism.InvariantFactorPaths.G7.lgN p (Formalism.InvariantFactorPaths.G7.lsG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s) : ℕ) : ℝ) = (lgp p (lsz t TT lam0 w J ((ea_eS hn).symm s)) : ℝ)`. Introduce `s`.
+
+Rewrite using `[ea_lg, ea_lsG hn h hJ1 hJ s]`. Unfold `Formalism.InvariantFactorPaths.G7.deLoss de`. Use `congr 1`. Rewrite using `[← (ea_eS hn).sum_comp]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hal, hls, Equiv.symm_apply_apply]`. Rewrite using `[ea_sum_tT hn]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hal, Equiv.symm_apply_apply]`.
+-/
 theorem ea_deLoss :
     Formalism.InvariantFactorPaths.G7.deLoss p (NN k1 t (J - 1)) (NN k1 t J) (ea_tT hn TT)
       (Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J))
@@ -189,6 +264,9 @@ theorem ea_deLoss :
     refine Finset.sum_congr rfl fun s _ => ?_
     rw [hal, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `Formalism.GrowthSums.excessGain gA`. Rewrite using `[ea_deLoss hn h hJ1 hJ, ea_sum_tT hn]`. Simplify using `only [← ea_eS_posAdd hn, ea_dSet hn, ea_alG_R hn h hJ1 hJ, ea_capG_R hn h hJ1 hJ, Equiv.symm_apply_apply]`.
+-/
 theorem gain_of_capacity_loss :
     Formalism.GrowthSums.excessGain (p : ℝ) (ea_tT hn TT) (Formalism.InvariantFactorPaths.G7.dSet (ea_tT hn TT))
       (fun s => (Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℝ))
@@ -201,6 +279,13 @@ theorem gain_of_capacity_loss :
   simp only [← ea_eS_posAdd hn, ea_dSet hn, ea_alG_R hn h hJ1 hJ, ea_capG_R hn h hJ1 hJ,
     Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Establish `hodd : Formalism.InvariantFactorPaths.G7.oddT (ea_tT hn TT) = (TT.filter fun s => IsOddPos s).map (ea_eS hn).toEmbedding`. Unfold `Formalism.InvariantFactorPaths.G7.oddT ea_tT`. Rewrite using `[Finset.filter_map]`. Use `congr 1`. Use extensionality with `s`.
+
+Rewrite using `[Finset.mem_filter, Finset.mem_filter]`. Simplify using `only [Function.comp_apply, Equiv.coe_toEmbedding, ea_eS_val]`. Conclude with `Iff.rfl`. Establish `hg : Formalism.GrowthSums.gamP (p : ℝ) = gam p`. Unfold `Formalism.GrowthSums.gamP Formalism.GrowthSums.rhoP gam`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.GrowthSums.gainG gB`. Rewrite using `[ea_deLoss hn h hJ1 hJ, ea_sum_tT hn, hodd, Finset.sum_map, hg]`. Simplify using `only [Equiv.coe_toEmbedding, ← ea_eS_posAdd hn, ea_alG_R hn h hJ1 hJ, ea_capG_R hn h hJ1 hJ, Equiv.symm_apply_apply]`.
+-/
 theorem ea_gainG :
     Formalism.GrowthSums.gainG (p : ℝ) (ea_tT hn TT) (Formalism.InvariantFactorPaths.G7.oddT (ea_tT hn TT))
       (fun s => (Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℝ))
@@ -223,6 +308,15 @@ theorem ea_gainG :
   simp only [Equiv.coe_toEmbedding, ← ea_eS_posAdd hn, ea_alG_R hn h hJ1 hJ, ea_capG_R hn h hJ1 hJ,
     Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Establish `hodd : Formalism.InvariantFactorPaths.G7.oddT (ea_tT hn TT) = (TT.filter fun s => IsOddPos s).map (ea_eS hn).toEmbedding`. Unfold `Formalism.InvariantFactorPaths.G7.oddT ea_tT`. Rewrite using `[Finset.filter_map]`. Use `congr 1`. Use extensionality with `s`.
+
+Rewrite using `[Finset.mem_filter, Finset.mem_filter]`. Simplify using `only [Function.comp_apply, Equiv.coe_toEmbedding, ea_eS_val]`. Conclude with `Iff.rfl`. Establish `hev : ea_tT hn TT \ Formalism.InvariantFactorPaths.G7.oddT (ea_tT hn TT) = (TT.filter fun s => ¬ IsOddPos s).map (ea_eS hn).toEmbedding`. Rewrite using `[hodd]`.
+
+Unfold `ea_tT`. Rewrite using `[← Finset.map_sdiff]`. Use `congr 1`. Use extensionality with `s`. Simplify using `only [Finset.mem_sdiff, Finset.mem_filter]`.
+
+The claim follows by propositional logic. Rewrite using `[hev, Finset.sum_map, Int.cast_sum]`. Simplify using `only [Equiv.coe_toEmbedding, ea_alG_R hn h hJ1 hJ, Equiv.symm_apply_apply]`.
+-/
 theorem ea_sumEven :
     ∑ s ∈ ea_tT hn TT \ Formalism.InvariantFactorPaths.G7.oddT (ea_tT hn TT),
       (Formalism.InvariantFactorPaths.G7.alG (ea_tT hn TT) (ea_cN hn t lam0 w J) (ea_hT hn t lam0 w J) s : ℝ) =
@@ -249,6 +343,9 @@ theorem ea_sumEven :
 
 end Num2
 
+/- English proof (translation)
+Introduce `v j hj`. Conclude with `⟨gain_of_capacity_loss (ea_hn X v) (X.std v) (J := j + 1) (by omega) hj, ea_gainG (ea_hn X v) (X.std v) (J := j + 1) (by omega) hj, ea_sumEven (ea_hn X v) (X.std v) (J := j + 1) (by omega) hj⟩`.
+-/
 theorem ea_brNum {p : ℕ} [Fact p.Prime] (X : Sys p) : ea_BrNum X := by
   intro v j hj
   exact ⟨gain_of_capacity_loss (ea_hn X v) (X.std v) (J := j + 1) (by omega) hj,

@@ -20,6 +20,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.DefIrred
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Establish `hth : IsThetaFunO ψ (GlobalTheory.Grid.sgn false M) X Φ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`.
+
+Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ hθ _ _ _ _ hf.1 P`. Consider the case `zero => exact GlobalTheory.OrientedHeis.theta_zero`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`. Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx`. Conclude with `(GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D ψ false M X χ χ' ω ν 𝓕 Φ hω (fun τ => GlobalTheory.IndefiniteRowSideFullHecke.MassFormulaPositivity.posDef_of_hasSignature (hs τ)) hν.1 hν.2 hth).1`.
+-/
 theorem integrable_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {M X : HSp D} (A : GlobalTheory.ChainFr.Fr M) (B : GlobalTheory.ChainFr.Fr X) {χ χ' : (AE D)ˣ →* Circle} {ω : GlobalTheory.Grid.WRep M X}
     (hω : GlobalTheory.Grid.IsWeil ψ false M X χ χ' ω) (hs : ∀ τ, Formalism.UG.HasSignature (gramAt D M τ) M.rank 0)
@@ -37,6 +42,55 @@ theorem integrable_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D
   exact (GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D ψ false M X χ χ' ω ν 𝓕 Φ hω (fun τ => GlobalTheory.IndefiniteRowSideFullHecke.MassFormulaPositivity.posDef_of_hasSignature (hs τ)) hν.1 hν.2
     hth).1
 
+/- English proof (translation)
+Introduce `_ hP _ _ hTA D ψ θ hψ hθ W W₁ X A A₁ B α β hT _ hs₁ _ ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm Φ₁ hΦ₁ hp₁ hz₁ Φ₂ hΦ₂`. Use `set S := algF ψ θ false A₁ B with hSdef`. Establish `hint` using `integrable_algF hψ hθ A₁ B hm.weilB hs₁ hν₁`. Establish `tr : ∀ (Φ : WO W₁ X → ℂ) (g : GA D W₁) (h k : GA D X), thetaKO ωB g h (ωB (1, k) Φ) = thetaKO ωB g (h * k) Φ`. Introduce `Φ g h k`.
+
+Use `show (ωB (g, h) * ωB (1, k)) Φ 0 = _`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Both sides reduce to the same expression. Establish `tsub : ∀ Φ Ψ, (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) → (∀ h, IntegrableOn (fun g => thetaKO ωB g h Ψ) 𝓕₁ ν₁) → thetaInt ωB ν₁ 𝓕₁ (Φ - Ψ) = thetaInt ωB ν₁ 𝓕₁ Φ - thetaInt ωB ν₁ 𝓕₁ Ψ`. Introduce `Φ Ψ hΦ hΨ`.
+
+Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωB g h (Φ - Ψ)) = fun g => thetaKO ωB g h Φ - thetaKO ωB g h Ψ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_sub]`. Simplify using `only [thetaInt, Pi.sub_apply]`.
+
+Rewrite using `[e]`. Conclude with `integral_sub (hΦ h) (hΨ h)`. Establish `tadd : ∀ Φ Ψ, (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) → (∀ h, IntegrableOn (fun g => thetaKO ωB g h Ψ) 𝓕₁ ν₁) → thetaInt ωB ν₁ 𝓕₁ (Φ + Ψ) = thetaInt ωB ν₁ 𝓕₁ Φ + thetaInt ωB ν₁ 𝓕₁ Ψ`. Introduce `Φ Ψ hΦ hΨ`. Use function extensionality and compare the values at `h`.
+
+Establish `e : (fun g => thetaKO ωB g h (Φ + Ψ)) = fun g => thetaKO ωB g h Φ + thetaKO ωB g h Ψ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_add]`. Simplify using `only [thetaInt, Pi.add_apply]`. Rewrite using `[e]`.
+
+Conclude with `integral_add (hΦ h) (hΨ h)`. Establish `tsmul : ∀ (c : ℂ) Φ, thetaInt ωB ν₁ 𝓕₁ (c • Φ) = c • thetaInt ωB ν₁ 𝓕₁ Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωB g h (c • Φ)) = fun g => c * thetaKO ωB g h Φ`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_smul]`. Simplify using `only [thetaInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `integral_const_mul c _`.
+
+Set `Kint : Submodule ℂ (WO W₁ X → ℂ)` to `{ carrier := {Φ | (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) ∧ thetaInt ωB ν₁ 𝓕₁ Φ = 0} add_mem' := fun {a b} ha hb => ⟨fun h => by`. Establish `e : (fun g => thetaKO ωB g h (a + b)) = fun g => thetaKO ωB g h a + thetaKO ωB g h b`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_add]`. Rewrite using `[e]`.
+
+Conclude with `(ha.1 h).add (hb.1 h),`. Use `by rw [tadd a b ha.1 hb.1, ha.2, hb.2, add_zero]⟩`. Use the proof step `zero_mem' := ⟨fun h => by simp [thetaKO], by funext h; simp [thetaInt, thetaKO]⟩`. Use the proof step `smul_mem' := fun c a ha => ⟨fun h => by`. Establish `e : (fun g => thetaKO ωB g h (c • a)) = fun g => c * thetaKO ωB g h a`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_smul]`. Rewrite using `[e]`. Conclude with `(ha.1 h).const_mul c,`. Use `by rw [tsmul, ha.2, smul_zero]⟩ }`.
+
+Set `K : Submodule ℂ (WO W₁ X → ℂ)` to `S ⊓ Kint`. Take `⟨c, hc0, hc⟩` from `hTA D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm`. Establish `hrel` using `GlobalTheory.T.theta_integral_finite_relation hP D ψ θ hψ hθ W₁ X A₁ B α (α / β) ωB hm.weilB hs₁ ν₁ 𝓕₁ hν₁`. Establish `kerp' : finRel ωB S ≤ LinearMap.ker p'`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Simplify using `[map_sub, hm.mapB.invf u hu Ψ hΨ]`. Establish `kill : ∀ Ψ ∈ S, p' Ψ = 0 → thetaInt ωB ν₁ 𝓕₁ Ψ = 0`. Introduce `Ψ hΨ hp0`. Take `⟨Φ₀, hΦ₀, hd, -, hI⟩` from `hc Ψ hΨ`.
+
+Establish `hp00 : p' Φ₀ = 0`. Use `kerp' hd` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, hp0, zero_sub, neg_eq_zero]`. Conclude with `this`. Establish `h1` using `hI 0 (zero_mem _) (by rw [map_zero, hp00])`.
+
+Establish `h2 : thetaInt ωA ν 𝓕 0 = 0` using `by funext h; simp [thetaInt, thetaKO]`. Rewrite `h1` using `[h2]`. Establish `h3 : thetaInt ωB ν₁ 𝓕₁ Φ₀ = 0` using `(smul_eq_zero.1 h1.symm).resolve_left hc0`. Establish `h4` using `hrel _ hd`. Rewrite `h4` using `[tsub Ψ Φ₀ (hint Ψ hΨ) (hint Φ₀ hΦ₀), h3, sub_zero]`.
+
+Conclude with `h4`. Establish `stf : ∀ g ∈ GfC X, ∀ x ∈ K.map p', rf g x ∈ K.map p'`. Introduce and unpack `g hg _ ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, rfl⟩`. Use `⟨ωB (1, g) Ψ, ⟨hm.mapB.stabX.1 g hg Ψ hΨS, fun h => ?_, ?_⟩, hm.mapB.eqf g hg Ψ hΨS⟩` and prove the remaining obligations. Simplify using `only [tr]`.
+
+Conclude with `hΨi (h * g)`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, tr]`. Conclude with `congrFun hΨ0 (h * g)`. Establish `stl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ K.map p', rl τ Y x ∈ K.map p'`.
+
+Introduce and unpack `τ Y hY _ ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, rfl⟩`. Take `⟨Φ', hΦ'S, hder⟩` from `hm.mapB.stabX.2 τ Y hY Ψ hΨS`. Use `⟨Φ', ⟨hΦ'S, ?_⟩, hm.mapB.eql τ Y hY Ψ hΨS Φ' hΦ'S hder⟩` and prove the remaining obligations. Take `⟨V, hVfd, hV⟩` from `GlobalTheory.T.oneParamSubgroup_fockOrbit_finiteDimensional D ψ θ hψ hθ W₁ X A₁ B α (α / β) ωB hm.weilB (fun τ => by`. Take `⟨a, b, ha, hb, -⟩` from `hT.gap τ`.
+
+Conclude with `⟨a, a - b, ha, by rw [div_eq_mul_inv]; exact GlobalTheory.Chain.hasInfExp_div ha hb⟩)`. Use the proof step `‹_› τ Y hY Ψ hΨS`. Use `set F : ℝ → (WO W₁ X → ℂ) := fun t => ωB (1, oneP θ X τ Y t) Ψ with hF`. Use `set V' := Submodule.span ℂ (Set.range F) with hV'`. Establish `hV'le : V' ≤ V` using `Submodule.span_le.2 (by rintro _ ⟨t, rfl⟩; exact hV t)`.
+
+Use `haveI : FiniteDimensional ℂ V' := Submodule.finiteDimensional_of_le hV'le`. Establish `hV'K : V' ≤ Kint`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hF, tr]`. Conclude with `hΨi (h * oneP θ X τ Y t)`. Use function extensionality and compare the values at `h`. Simplify using `only [thetaInt, hF, tr]`. Conclude with `congrFun hΨ0 (h * oneP θ X τ Y t)`.
+
+Establish `hlim : Filter.Tendsto (fun s : ℝ => s⁻¹ • (F (0 + s) - F 0)) (nhdsWithin 0 {0}ᶜ) (nhds Φ')`. Rewrite using `[tendsto_pi_nhds]`. Introduce `z`. Use `(hder z).tendsto_slope_zero` as an intermediate fact. Simplify `this` using `[hF]`.
+
+Establish `hmem : ∀ s : ℝ, s⁻¹ • (F (0 + s) - F 0) ∈ V'` using `fun s => V'.smul_of_tower_mem _ (V'.sub_mem (Submodule.subset_span ⟨0 + s, rfl⟩) (Submodule.subset_span ⟨0, rfl⟩))`. Establish `hΦ'V : Φ' ∈ V'` using `(Submodule.closed_of_finiteDimensional V').mem_of_tendsto hlim (Filter.Eventually.of_forall hmem)`. Conclude with `hV'K hΦ'V`. Break down `hm.irred.2 (K.map p') stf stl with hbot | htop` into its components or cases. It suffices to derive a contradiction.
+
+Establish `: p' Φ₁ ∈ K.map p'` using `⟨Φ₁, ⟨hΦ₁, hint Φ₁ hΦ₁, hz₁⟩, rfl⟩`. Rewrite `this` using `[hbot, Submodule.mem_bot]`. Conclude with `hp₁ this`. Establish `: p' Φ₂ ∈ K.map p'` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, hΨp⟩` from `this`.
+
+Establish `h0` using `kill (Φ₂ - Ψ) (S.sub_mem hΦ₂ hΨS) (by rw [map_sub, hΨp, sub_self])`. Rewrite `h0` using `[tsub Φ₂ Ψ (hint Φ₂ hΦ₂) hΨi, hΨ0, sub_zero]`. Conclude with `h0`.
+-/
 theorem vanish_all : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (W W₁ X : HSp D) (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁) (B : GlobalTheory.ChainFr.Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β → (∀ τ, Formalism.UG.HasSignature (gramAt D W τ) W.rank 0) → (∀ τ, Formalism.UG.HasSignature (gramAt D W₁ τ) W₁.rank 0) → (∀ τ, Formalism.UG.HasSignature (gramAt D X τ) X.rank 0) → ∀ (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁)) (𝓕₁ : Set (GA D W₁)), IsHaarFD W ν 𝓕 → IsHaarFD W₁ ν₁ 𝓕₁ → ∀ ωA ωB Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' → ∀ Φ' ∈ algF ψ θ false A₁ B, p' Φ' ≠ 0 → thetaInt ωB ν₁ 𝓕₁ Φ' = 0 → ∀ Φ'' ∈ algF ψ θ false A₁ B, thetaInt ωB ν₁ 𝓕₁ Φ'' = 0 := by
   intro _ hP _ _ hTA D ψ θ hψ hθ W W₁ X A A₁ B α β hT _ hs₁ _ ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm Φ₁ hΦ₁ hp₁ hz₁ Φ₂ hΦ₂
   set S := algF ψ θ false A₁ B with hSdef

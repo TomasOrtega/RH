@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.MixXDblInt
 
+/- English proof (translation)
+Use extensionality with `i j`. Break down `j with j | j` into its components or cases. Simplify using `[dblEmb, Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks, Matrix.vecMulVec_apply, Matrix.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[dblEmb, Matrix.fromBlocks_transpose, Matrix.fromCols_mul_fromBlocks, Matrix.vecMulVec_apply, Matrix.mul_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbl_decomp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n n₁ d : ℕ} (H : Plane E n n₁)
     (a₁ a₂ : Fin d → AE F E) (z₁ z₂ : Matrix (Fin n₁) (Fin d) (AE F E)) : Matrix.fromCols z₁ᵀ z₂ᵀ * (dblEmb (F := F) H.ι)ᵀ +
       (Matrix.vecMulVec a₁ (Sum.elim (incV F H.x) 0) + Matrix.vecMulVec a₂ (Sum.elim 0 (incV F H.x))) =
@@ -37,6 +42,11 @@ def dblV {F : Type} [Field F] {κ : Type} (L : Submodule F ((κ → F) × (κ �
   map_smul' c p := by
     ext i <;> cases i <;> simp
 
+/- English proof (translation)
+Introduce `p q h`. Simplify using `only [dblV, LinearMap.coe_mk, AddHom.coe_mk, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `a1` using `congrArg (fun f => f ∘ Sum.inl) h1`. Establish `a2` using `congrArg (fun f => f ∘ Sum.inr) h1`.
+
+Establish `b1` using `congrArg (fun f => f ∘ Sum.inl) h2`. Establish `b2` using `congrArg (fun f => f ∘ Sum.inr) h2`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr, neg_inj] at a1 a2 b1 b2`. Conclude with `Prod.ext (Subtype.ext (Prod.ext a1 b1)) (Subtype.ext (Prod.ext a2 b2))`.
+-/
 theorem dblV_injective {F : Type} [Field F] {κ : Type} (L : Submodule F ((κ → F) × (κ → F))) :
     Function.Injective (dblV L) := by
   intro p q h
@@ -49,6 +59,15 @@ theorem dblV_injective {F : Type} [Field F] {κ : Type} (L : Submodule F ((κ �
   simp only [Sum.elim_comp_inl, Sum.elim_comp_inr, neg_inj] at a1 a2 b1 b2
   exact Prod.ext (Subtype.ext (Prod.ext a1 b1)) (Subtype.ext (Prod.ext a2 b2))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ dd omd dd₁ omd₁ hD hD₁`. Take `⟨L₀, hiso, hrk, hre⟩` from `GlobalTheory.T.pair_descends_along_adapted_plane F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁`. Take `⟨d', hd', hdc, -⟩` from `hD`. Take `⟨d₁', hd₁', hdc₁, -⟩` from `hD₁`. Use `⟨LinearMap.range (dblV L₀), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨⟨p, q⟩, rfl⟩ _ ⟨⟨p', q'⟩, rfl⟩`. Simplify using `only [dblV, LinearMap.coe_mk, AddHom.coe_mk, sumElim_dotProduct_sumElim, dotProduct_neg]`. Rewrite using `[hiso _ p.2 _ p'.2, hiso _ q.2 _ q'.2]`. Rewrite using `[LinearMap.finrank_range_of_inj (dblV_injective L₀), Module.finrank_prod, hrk, Fintype.card_sum]`. Introduce and unpack `t _ ⟨⟨p, q⟩, rfl⟩`.
+
+Take `⟨a₁, z₁, hz₁, he₁⟩` from `hre t p.1 p.2`. Take `⟨a₂, z₂, hz₂, he₂⟩` from `hre t q.1 q.2`. Use `⟨Matrix.vecMulVec a₁ (Sum.elim (incV F H.x) 0) + Matrix.vecMulVec a₂ (Sum.elim 0 (incV F H.x)), ⟨a₁, a₂, rfl⟩, Matrix.fromCols z₁ᵀ z₂ᵀ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdc₁, hd₁', hd₁', hz₁, hz₂]`. Apply the tactic sequence `funext i; cases i <;> rfl`.
+
+Use `(congrArg dd.e (dbl_decomp (F := F) H a₁ a₂ z₁ z₂)).trans ?_` and prove the remaining obligations. Rewrite using `[hdc, hd', hd', he₁, he₂]`. Apply the tactic sequence `ext i <;> cases i <;> simp [dblV]`.
+-/
 theorem dblLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),
@@ -80,6 +99,9 @@ theorem dblLagr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
       rw [hdc, hd', hd', he₁, he₂]
       ext i <;> cases i <;> simp [dblV]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm]`.
+-/
 theorem vecMulVec_mul_transpose {α β γ R : Type} [Fintype β] [CommSemiring R] (z : α → R) (v : β → R)
     (A : Matrix γ β R) : Matrix.vecMulVec z v * Aᵀ = Matrix.vecMulVec z (A *ᵥ v) := by
   ext i j
@@ -87,6 +109,17 @@ theorem vecMulVec_mul_transpose {α β γ R : Type} [Fintype β] [CommSemiring R
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨-, -, -, hW, -⟩` from `hD`. Take `⟨-, -, -, hW₁, -⟩` from `hD₁`. Establish `hs` using `hW.2.1`. Establish `hs₁` using `hW₁.2.1`. Use `⟨fun Φ hΦ => ?_, fun w u hu Φ hΦ => ?_, fun l hl' => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply]`. Conclude with `hs₁.pres _ _ (hm _ (hs.pres _ _ hΦ))`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl md _ Φ hΦ]`. Establish `ea : actB (cA σ) md (w * (dblEmb H.ι)ᵀ + u) = (w * (gd₁.1.1 : Matrix (Fin n₁ ⊕ Fin n₁) (Fin n₁ ⊕ Fin n₁) (AE F E))ᵀ) * (dblEmb H.ι)ᵀ + u`.
+
+Take `⟨z₁, z₂, rfl⟩` from `hu`. Establish `h3 : (md.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * dblEmb H.ι = dblEmb H.ι * gd₁.1.1` using `hL.2.2`. Use `show (w * (dblEmb H.ι)ᵀ + _) * (md.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))ᵀ = _`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, vecMulVec_mul_transpose, vecMulVec_mul_transpose, hL.1, hL.2.1]`. Use `congr 1`.
+
+Establish `h4 : (dblEmb H.ι)ᵀ * (md.1.1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))ᵀ = (gd₁.1.1 : Matrix (Fin n₁ ⊕ Fin n₁) (Fin n₁ ⊕ Fin n₁) (AE F E))ᵀ * (dblEmb H.ι)ᵀ` using `(Matrix.transpose_mul _ _).symm.trans ((congrArg Matrix.transpose h3).trans (Matrix.transpose_mul _ _))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ea, hl _ u hu _ (hs.pres _ _ hΦ), hs₁.impl gd₁⁻¹ _ _ (hm _ (hs.pres _ _ hΦ))]`. Use `congr 1`. Use `show w * (gd₁.1.1 : Matrix (Fin n₁ ⊕ Fin n₁) (Fin n₁ ⊕ Fin n₁) (AE F E))ᵀ * (((gd₁⁻¹ : UG (cA σ) (dbl (incM F X₁.J))) : GL (Fin n₁ ⊕ Fin n₁) (AE F E)) : Matrix (Fin n₁ ⊕ Fin n₁) (Fin n₁ ⊕ Fin n₁) (AE F E))ᵀ = w`.
+
+Establish `hi : (((gd₁⁻¹ : UG (cA σ) (dbl (incM F X₁.J))) : GL (Fin n₁ ⊕ Fin n₁) (AE F E)) : Matrix (Fin n₁ ⊕ Fin n₁) (Fin n₁ ⊕ Fin n₁) (AE F E)) * gd₁.1.1 = 1`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `Units.inv_mul _`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hi, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `hs.adm md _ (ha _ (hs₁.adm gd₁⁻¹ l hl'))`.
+-/
 theorem twist {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χW : Chr F E}
     {om : Rep σ X W} {n₁ : ℕ} {X₁ : Spc F E n₁} {H : Plane E n n₁} {M₁ : Model σ X₁ W} {om₁ : Rep σ X₁ W}
     {dd omd dd₁ omd₁} (hD : IsDblOf B.ψ M χW om dd omd) (hD₁ : IsDblOf B.ψ M₁ χW om₁ dd₁ omd₁)
@@ -136,6 +169,17 @@ theorem twist {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Mo
     rw [Matrix.mul_assoc, ← Matrix.transpose_mul, hi, Matrix.transpose_one, Matrix.mul_one]
   · exact hs.adm md _ (ha _ (hs₁.adm gd₁⁻¹ l hl'))
 
+/- English proof (translation)
+Take `⟨L, hiso, hrk, hre⟩` from `dblLagr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ dd omd dd₁ omd₁ hD hD₁`. Establish `hψ` using `hP.base.std`. Establish `hδ` using `GlobalTheory.LagrUniq.proj_zero_mem_adm (F := F) ((Fin n₁ × Fin d) ⊕ (Fin n₁ × Fin d))`. Establish `h0 : (0 : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E)) ∈ isoD d H` using `⟨0, 0, by simp⟩`. Establish `key : ∀ R : ((((Fin n × Fin d) ⊕ (Fin n × Fin d)) → AF F) → ℂ) →ₗ[ℂ] ((((Fin n₁ × Fin d) ⊕ (Fin n₁ × Fin d)) → AF F) → ℂ), (∀ w : Matrix (Fin d) (Fin n₁ ⊕ Fin n₁) (AE F E), ∀ u ∈ isoD d H, ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), R (dd.rho B.ψ (w * (dblEmb H.ι)ᵀ + u) Φ) …`.
+
+Introduce `R hR t w hw φ hφ`. Take `⟨u, hu, z, hz, he⟩` from `hre t w hw`. Establish `e1 : schr B.ψ (t • ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i)))) φ = dd.rho B.ψ (z * (dblEmb H.ι)ᵀ + u) φ` using `by rw [Darboux.rho, he]`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[e1, hR z u hu φ hφ]`.
+
+Simplify using `[Darboux.rho, schr, hz]`. Establish `hval : ∀ R : ((((Fin n × Fin d) ⊕ (Fin n × Fin d)) → AF F) → ℂ) →ₗ[ℂ] ((((Fin n₁ × Fin d) ⊕ (Fin n₁ × Fin d)) → AF F) → ℂ), (∀ w : Matrix (Fin d) (Fin n₁ ⊕ Fin n₁) (AE F E), ∀ u ∈ isoD d H, ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), R (dd.rho B.ψ (w * (dblEmb H.ι)ᵀ + u) Φ) …`. Introduce `R hR x Φ hΦ`. Rewrite using `[hR _ 0 h0 Φ hΦ]`. Simplify using `[Darboux.rho, schr]`.
+
+Establish `hmem : ∀ x, ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), dd.rho B.ψ (dd₁.e.symm (x, 0) * (dblEmb H.ι)ᵀ + 0) Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `fun x Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hψ _ L hiso hrk _ (hSa _ hδ) _ (hTa _ hδ) (key S hSl) (key T hTl) (by`. Take `⟨Φ, hΦ, h⟩` from `hT0`. Take `⟨x, hx⟩` from `Function.ne_iff.1 h`. Use `⟨_, hmem x Φ hΦ, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[hval T hTl x Φ hΦ]`. Simplify using `using hx)`. Use `⟨c, fun Φ hΦ => funext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, hval S hSl x Φ hΦ, hval T hTl x Φ hΦ, smul_eq_mul]`. Simplify using `using hc _ (hmem x Φ hΦ)`.
+-/
 theorem uniq {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') {n₁ : ℕ} {X₁ : Spc F E n₁} {H : Plane E n n₁}
     {j₀ j₁ : ℕ} {M₁ : Model σ X₁ W} {om₁ : Rep σ X₁ W} {r₁ s₁ : ℕ} (hH : H.IsAdapted σ B X X₁ j₀ j₁)
@@ -189,6 +233,13 @@ theorem uniq {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Mod
   rw [Pi.smul_apply, hval S hSl x Φ hΦ, hval T hTl x Φ hΦ, smul_eq_mul]
   simpa using hc _ (hmem x Φ hΦ)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e _ dd omd dd₁ omd₁ hD hD₁ et hm hl ha gd₁ md hL`. Distinguish the cases in `h0 : ∃ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), et Φ ≠ 0`. Take `⟨-, h2, h3⟩` from `twist hD hD₁ et hm hl ha gd₁ md hL`. Take `⟨c, hc⟩` from `uniq hP hH hP₁ hD hD₁ _ et h2 hl h3 ha h0`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Establish `hinv : ∀ y, omd₁ gd₁ (omd₁ gd₁⁻¹ y) = y` using `fun y => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at h0`. Take `⟨-, -, -, hW, -⟩` from `hD`.
+
+Conclude with `⟨0, fun Φ hΦ => by rw [h0 _ (hW.2.1.pres md Φ hΦ), zero_smul]⟩`.
+-/
 theorem intertwine : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

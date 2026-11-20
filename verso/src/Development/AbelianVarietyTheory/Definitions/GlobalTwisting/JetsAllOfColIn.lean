@@ -17,6 +17,17 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNoti
 
 namespace GlobalTheory.KerT
 
+/- English proof (translation)
+Take `⟨c₀, hc₀⟩` from `GlobalTheory.CharValCompare.exists_cst hZ ht sel (1 : Tup Z.X.F Z.X.E Z.X.K S)`. Establish `hq : ∀ P : rowSG Z.Pr sel (1 : Tup Z.X.F Z.X.E Z.X.K S), ∃ k, qOf P.1 = Z.Pr.g k`. Introduce `P`. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Take `⟨k, hk⟩` from `(GlobalTheory.Mem.DatHecke.mem_vGs P.1).1 h`.
+
+Conclude with `⟨k, hZ.primes.vG_norm k P.1 hk⟩`. Establish `h0 : Qprime ((1 : Tup Z.X.F Z.X.E Z.X.K S) : Chr Z.X.F Z.X.E Z.X.K) = ∅`. Use extensionality with `v`. Simplify using `[Qprime]`. Unfold `QE at h`.
+
+Simplify using `only [h0] at h`. Simplify using `at h`. Use `choose k hk using hq`. Use `choose r hr using hsq`. Use `choose ω hω using hω`.
+
+Establish `h1 : ∀ P : HeightOneSpectrum (𝓞 Z.X.E), IntAt P (1 : Z.X.E) ∧ redP P (1 : Z.X.E) ≠ 0` using `fun P => by`. Use `P.isPrime` as an intermediate fact. Use `⟨by simpa using IntAt.coe P 1, ?_⟩` and prove the remaining obligations. Establish `h` using `reduction_coe P 1`. Rewrite `h` using `[map_one, map_one]`.
+
+Rewrite using `[h]`. Conclude with `one_ne_zero`. Use `choose ψ hadd hint hne _ using fun P : rowSG Z.Pr sel (1 : Tup Z.X.F Z.X.E Z.X.K S) => GlobalTheory.Mem.Col2.exists_psi Z.sig0 (GlobalTheory.Mem.Col2.degOneUnram_rowSG hZ.fields hZ.primes hsel 1 P) (le_refl 1) (h1 P.1).1 (h1 P.1).2 (ω := ω (k P)) (by rw [hω, pow_one, hk])`. Conclude with `⟨⟨ψ, fun _ => 1, fun P => r (k P), c₀.muq, 1, 1, 1, true⟩, ⟨hadd, hint, hne, fun _ => le_rfl, fun P => by rw [hk]; exact hr _, le_rfl, le_rfl, le_rfl, le_rfl⟩, hc₀⟩`.
+-/
 theorem exists_cst_one {Z : Dat} (hZ : Z.Ok) {sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)} (hsel : IsSel Z.X sel)
     (S : Set ℕ) {m0 : Fin Z.R.m → Formalism.L2.Host.HChar Z.X.E} {eta : Formalism.L2.Host.HChar Z.X.E}
     (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (hsq : ∀ k, ∃ r : Z.X.K, r ^ 2 = (Z.Pr.g k : Z.X.K))
@@ -54,6 +65,17 @@ theorem exists_cst_one {Z : Dat} (hZ : Z.Ok) {sel : HeightOneSpectrum (𝓞 Z.X.
 
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
+/- English proof (translation)
+Take `⟨P, hP, ⟨X⟩, h2⟩` from `StagesInhab.exists_pre_hasLetters`. Use `choose r hr using fun k : Fin 2 => IsAlgClosed.exists_pow_nat_eq (P.host.g k : ℂ) (n := 2) (by norm_num)`. Set `e : Fin 2 → ℂ` to `fun k => Complex.exp (2 * Real.pi * Complex.I / (P.host.g k : ℂ))`. Establish `hg : ∀ k, P.host.g k ≠ 0` using `fun k => (P.host.g_prime k).ne_zero`. Take `⟨B, rfl, Ch, hZ, -, -, hS⟩` from `DatHecke.exists_base_dat_ok P X ∅ ∅ (Finset.univ.image r ∪ Finset.univ.image e) (by simp) (by simp) (fun z hz => by`.
+
+Apply the tactic sequence `rcases Finset.mem_union.1 hz with h | h <;> obtain ⟨k, -, rfl⟩ := Finset.mem_image.1 h`. Conclude with `IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_nat _)`. Conclude with `IsAlgebraic.of_pow (Nat.pos_of_ne_zero (hg k)) (by rw [(Complex.isPrimitiveRoot_exp _ (hg k)).pow_eq_one]; exact isAlgebraic_one))`. Take `⟨⟨B', C, W, V, S, N, G⟩, rfl, -⟩` from `StagesInhab.exists_stages_over B hP 1`. Take `⟨J, hJ⟩` from `exists_ambIn_ok B'.host`.
+
+Take `⟨m0, eta, ht⟩` from `hZ.hecke`. Take `⟨sel, hsel⟩` from `GlobalTheory.CharValCompare.exists_isSel B'.fields`. Establish `heta : Formalism.L2.Host.IsEtaT B'.host eta` using `⟨ht.etaT.unitary, ht.etaT.unr, ht.etaT.res, by`. Establish `h` using `ht.etaT.inf`. Rewrite using `[show B'.fields.embC B'.embLL = Formalism.L2.Host.embPsi B'.host from funext B'.fields_embC] at h⟩` and apply the resulting hypothesis.
+
+Take `⟨cst, hc, htie⟩` from `exists_cst_one hZ hsel Set.univ ht (fun k => by`. Take `⟨x, hx⟩` from `hS (r k) (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ _)))`. Conclude with `⟨x, B'.embLL.injective (by rw [map_pow, hx, hr, map_natCast])⟩)`. Use the proof step `(fun k => hS (e k) (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))))`. Establish `hJ'` using `(J.ok_iff B' C W V S N G).1 hJ`.
+
+Use `⟨B'.dat X Ch, assemble B' C W V S N G, seamOf B' C W V S N G, J.δ, chiId (eta * eta), J.cD, sel, Set.univ, cst, h2, ⟨J.toRec B' C W V S N G⟩, fun u => ⟨hZ, ⟨seamOf_ok B' C W V S N G, rfl, ⟨top_ne_bot, by simp⟩, hJ'.1, ChiIdeal.isChi_chiId _ _ heta.sq_chiPsi, hJ'.2⟩, fun 𝔞 _ => ?_ …` and prove the remaining obligations. Use `ChiVal.chiId_mem (eta * eta) B'.embLL.fieldRange (fun w => ?_) 𝔞` and prove the remaining obligations. Rewrite using `[Formalism.L2.Host.HChar.val_mul, Units.val_mul, ChiVal.val_sq_eq]`. Establish `h3 : eta.valTw (1 / 2) w ∈ B'.embLL.fieldRange` using `⟨_, ht.etaVal w⟩`. Conclude with `mul_mem (pow_mem h3 2) (natCast_mem _ _)`.
+-/
 theorem exists_hyp : ∃ (Z : Dat) (H : D7) (s : Seam H Z.X) (δ : ℂ) (χ : TaylorLogMetric.IdE H → ℂ) (cD : H.what₂.Tau → ℂ)
     (sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)) (S : Set ℕ)
     (cst : LocCst Z.X (rowSG Z.Pr sel (1 : Tup Z.X.F Z.X.E Z.X.K S))),
@@ -93,6 +115,9 @@ theorem exists_hyp : ∃ (Z : Dat) (H : D7) (s : Seam H Z.X) (δ : ℂ) (χ : Ta
 
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
+/- English proof (translation)
+Establish `hJ` using `(I.J.ok_iff B C W V S N G).1 h.amb_ok`. Use `⟨GlobalTheory.T.definiteBaseData_admissible B X I.Ch h.ch_ok h.fromHecke, ⟨seamOf_ok B C W V S N G, rfl, ⟨top_ne_bot, by simp⟩, hJ.1, ChiIdeal.isChi_chiId _ _ I.C.isChi, hJ.2⟩, fun 𝔞 _ => (ChiVal.chi_values B X I h).2 𝔞, h.sel_ok, ?_, fun _ hl => h.small_mem hl, fun _ _ => by sim …` and prove the remaining obligations. Introduce and unpack `p ((rfl | rfl | rfl | rfl | rfl) | ⟨u, rfl⟩)`. Use `exacts [h.two_q_d_mem.1, h.two_q_d_mem.2.1, h.two_q_d_mem.2.2, h.g_mem 0, h.g_mem 1, h.T_mem u]`.
+-/
 theorem hyp_of_colIn (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W)
     (G : GJStage B C) {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (a : I.ι) (u : B.Word) :
     Hyp I.dat (seamOf B C W V S N G) ⊤ I.J.δ I.chi I.J.cD I.sel I.S (I.tup a) (I.cst a) u := by
@@ -105,6 +130,9 @@ theorem hyp_of_colIn (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest B C)
 
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
+/- English proof (translation)
+Establish `hP` using `(hyp_of_colIn B C W V S N G I h a u).ok.primes`. Rewrite using `[← AmbIn.amb_eq_ambOf]`. Introduce `L L' hL hL'`. Conclude with `(GlobalTheory.MoveCompare.jetsIn_iff _ _ _ _ _ _ _ (GlobalTheory.MoveCompare.degNu_eq (Pr := B.primes X) B.wts u hi) L L').2 (GlobalTheory.MoveCompare.jetsAll_of_deg _ _ _ _ _ (hJ a u i hi) (GlobalTheory.MoveCompare.cBof_pos hP _ _ _ u) hL hL')`.
+-/
 theorem jetsAll_of_colIn (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W)
     (G : GJStage B C) {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (hJ : I.JetsIn) (a : I.ι) (u : B.Word) {i : ℕ} (hi : i < B.R.m) :
     JetsAll (Pr := B.primes X) B.wts I.sel (I.tup a) (I.cst a)

@@ -16,6 +16,9 @@ open Classical
 namespace GlobalTheory.ValUnit
 open GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing GlobalTheory.ChiUnit Formalism.L2.Host
 
+/- English proof (translation)
+Establish `hv0 : v.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 L))` using `mem_nonZeroDivisors_of_ne_zero v.ne_bot`. Use `⟨orderOf (ClassGroup.mk0 ⟨v.asIdeal, hv0⟩), orderOf_pos _, ?_⟩` and prove the remaining obligations. Rewrite using `[← ClassGroup.mk0_eq_one_iff (pow_mem hv0 _)]`. Establish `h1` using `pow_orderOf_eq_one (ClassGroup.mk0 ⟨v.asIdeal, hv0⟩)`. Rewrite `h1` using `[← map_pow, SubmonoidClass.mk_pow]`. Then use the resulting hypothesis.
+-/
 private theorem exists_pow_eq_span_lemma {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) :
     ∃ h : ℕ, 0 < h ∧ (v.asIdeal ^ h).IsPrincipal := by
   have hv0 : v.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 L)) := mem_nonZeroDivisors_of_ne_zero v.ne_bot
@@ -24,6 +27,11 @@ private theorem exists_pow_eq_span_lemma {L : Type} [Field L] [NumberField L] (v
   have h1 := pow_orderOf_eq_one (ClassGroup.mk0 ⟨v.asIdeal, hv0⟩)
   rwa [← map_pow, SubmonoidClass.mk_pow] at h1
 
+/- English proof (translation)
+Take `⟨h, hh, hp⟩` from `exists_pow_eq_span_lemma v`. Take `⟨a, ha⟩` from `hp.principal`. Establish `hne : v.asIdeal ^ h ≠ ⊥` using `nonZeroDivisors.ne_zero (pow_mem (mem_nonZeroDivisors_of_ne_zero v.ne_bot) h)`. Use `⟨h, a, hh, ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `hne (by rw [ha]; exact Ideal.span_singleton_eq_bot.2 rfl)`.
+-/
 theorem exists_pow_eq_span {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) :
     ∃ (h : ℕ) (a : 𝓞 L), 0 < h ∧ a ≠ 0 ∧ v.asIdeal ^ h = Ideal.span {a} := by
   obtain ⟨h, hh, hp⟩ := exists_pow_eq_span_lemma v
@@ -34,6 +42,11 @@ theorem exists_pow_eq_span {L : Type} [Field L] [NumberField L] (v : HeightOneSp
   rintro rfl
   exact hne (by rw [ha]; exact Ideal.span_singleton_eq_bot.2 rfl)
 
+/- English proof (translation)
+Use `haveI := w.isMaximal`. Use `letI : Field (𝓞 L ⧸ w.asIdeal) := Ideal.Quotient.field w.asIdeal`. Use `haveI : Finite (𝓞 L ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Use `letI : Fintype (𝓞 L ⧸ w.asIdeal) := Fintype.ofFinite _`. Establish `hne : Ideal.Quotient.mk w.asIdeal a ≠ 0`.
+
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Use `⟨Fintype.card (𝓞 L ⧸ w.asIdeal) - 1, Nat.sub_pos_of_lt Fintype.one_lt_card, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one, pow_mul, FiniteField.pow_card_sub_one_eq_one _ hne, one_pow, sub_self]`.
+-/
 private theorem exists_pow_sub_one_lemma {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L))
     (a : 𝓞 L) (hw : a ∉ w.asIdeal) : ∃ m : ℕ, 0 < m ∧ ∀ k : ℕ, a ^ (m * k) - 1 ∈ w.asIdeal := by
   haveI := w.isMaximal
@@ -46,6 +59,11 @@ private theorem exists_pow_sub_one_lemma {L : Type} [Field L] [NumberField L] (w
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one, pow_mul,
     FiniteField.pow_card_sub_one_eq_one _ hne, one_pow, sub_self]
 
+/- English proof (translation)
+Establish `key : ∀ w : HeightOneSpectrum (𝓞 L), a ∉ w.asIdeal → ∃ m : ℕ, 0 < m ∧ ∀ k : ℕ, a ^ (m * k) - 1 ∈ w.asIdeal` using `fun w hw => exists_pow_sub_one_lemma w a hw`. Use `choose! m hm0 hmk using key`. Use `⟨∏ w ∈ S, m w, Finset.prod_pos fun w hw => hm0 w (ha w hw), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m hw`. Rewrite using `[hk]`.
+
+Conclude with `hmk w (ha w hw) k`.
+-/
 theorem exists_pow_sub_one {L : Type} [Field L] [NumberField L] (S : Finset (HeightOneSpectrum (𝓞 L))) (a : 𝓞 L)
     (ha : ∀ w ∈ S, a ∉ w.asIdeal) : ∃ M : ℕ, 0 < M ∧ ∀ w ∈ S, a ^ M - 1 ∈ w.asIdeal := by
   have key : ∀ w : HeightOneSpectrum (𝓞 L), a ∉ w.asIdeal →
@@ -57,10 +75,18 @@ theorem exists_pow_sub_one {L : Type} [Field L] [NumberField L] (S : Finset (Hei
   rw [hk]
   exact hmk w (ha w hw) k
 
+/- English proof (translation)
+Establish `h` using `(isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ ℂ (q : ℤ)))`. Simplify using `using h`.
+-/
 private theorem isIntegral_natCast_lemma (q : ℕ) : IsIntegral ℤ (q : ℂ) := by
   have h := (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ ℂ (q : ℤ)))
   simpa using h
 
+/- English proof (translation)
+Unfold `UnitOff`. Use `⟨one_ne_zero, 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one]`. Conclude with `isIntegral_one`. Rewrite using `[pow_zero, inv_one, mul_one]`.
+
+Conclude with `isIntegral_one`.
+-/
 private theorem unitOff_one_lemma {q : ℕ} : UnitOff q 1 := by
   unfold UnitOff
   refine ⟨one_ne_zero, 0, ?_, ?_⟩
@@ -69,6 +95,13 @@ private theorem unitOff_one_lemma {q : ℕ} : UnitOff q 1 := by
   · rw [pow_zero, inv_one, mul_one]
     exact isIntegral_one
 
+/- English proof (translation)
+Unfold `UnitOff at hu hw ⊢`. Take `⟨hu0, m, hu1, hu2⟩` from `hu`. Take `⟨hw0, n, hw1, hw2⟩` from `hw`. Use `⟨mul_ne_zero hu0 hw0, m + n, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (q : ℂ) ^ (m + n) * (u * w) = ((q : ℂ) ^ m * u) * ((q : ℂ) ^ n * w)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `hu1.mul hw1`. Establish `e : (q : ℂ) ^ (m + n) * (u * w)⁻¹ = ((q : ℂ) ^ m * u⁻¹) * ((q : ℂ) ^ n * w⁻¹)`. Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `hu2.mul hw2`.
+-/
 private theorem unitOff_mul_lemma {q : ℕ} {u w : ℂ} (hu : UnitOff q u) (hw : UnitOff q w) :
     UnitOff q (u * w) := by
   unfold UnitOff at hu hw ⊢
@@ -84,11 +117,21 @@ private theorem unitOff_mul_lemma {q : ℕ} {u w : ℂ} (hu : UnitOff q u) (hw :
     rw [e]
     exact hu2.mul hw2
 
+/- English proof (translation)
+Unfold `UnitOff at hu ⊢`. Take `⟨hu0, m, hu1, hu2⟩` from `hu`. Conclude with `⟨inv_ne_zero hu0, m, hu2, by rwa [inv_inv]⟩`.
+-/
 private theorem unitOff_inv_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : UnitOff q u⁻¹ := by
   unfold UnitOff at hu ⊢
   obtain ⟨hu0, m, hu1, hu2⟩ := hu
   exact ⟨inv_ne_zero hu0, m, hu2, by rwa [inv_inv]⟩
 
+/- English proof (translation)
+Unfold `UnitOff at hu ⊢`. Take `⟨hu0, m, hu1, hu2⟩` from `hu`. Take `⟨N', rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Establish `hu0' : u ≠ 0` using `fun h => hu0 (by rw [h, zero_pow (Nat.succ_ne_zero N')])`. Use `⟨hu0', m, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `IsIntegral.of_pow (Nat.succ_pos N')` to reduce the goal to its premises. Establish `e : ((q : ℂ) ^ m * u) ^ (N' + 1) = (q : ℂ) ^ (m * N') * ((q : ℂ) ^ m * u ^ (N' + 1))` using `by ring`. Rewrite using `[e]`. Conclude with `((isIntegral_natCast_lemma q).pow _).mul hu1`. Apply `IsIntegral.of_pow (Nat.succ_pos N')` to reduce the goal to its premises.
+
+Establish `e : ((q : ℂ) ^ m * u⁻¹) ^ (N' + 1) = (q : ℂ) ^ (m * N') * ((q : ℂ) ^ m * (u ^ (N' + 1))⁻¹)`. Rewrite using `[← inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((isIntegral_natCast_lemma q).pow _).mul hu2`.
+-/
 private theorem unitOff_of_pow_lemma {q : ℕ} {u : ℂ} {N : ℕ} (hN : 0 < N) (hu : UnitOff q (u ^ N)) :
     UnitOff q u := by
   unfold UnitOff at hu ⊢
@@ -108,6 +151,11 @@ private theorem unitOff_of_pow_lemma {q : ℕ} {u : ℂ} {N : ℕ} (hN : 0 < N) 
     rw [e]
     exact ((isIntegral_natCast_lemma q).pow _).mul hu2
 
+/- English proof (translation)
+Unfold `UnitOff at hu ⊢`. Take `⟨hu0, m, hu1, hu2⟩` from `hu`. Use `⟨(map_ne_zero _).2 hu0, m, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `map_isIntegral_int (starRingEnd ℂ) hu1`. Simplify `h` using `[map_mul, map_pow, map_natCast]`.
+
+Establish `h` using `map_isIntegral_int (starRingEnd ℂ) hu2`. Simplify `h` using `[map_mul, map_pow, map_natCast, map_inv₀]`.
+-/
 private theorem unitOff_conj_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : UnitOff q (starRingEnd ℂ u) := by
   unfold UnitOff at hu ⊢
   obtain ⟨hu0, m, hu1, hu2⟩ := hu
@@ -117,6 +165,11 @@ private theorem unitOff_conj_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : Unit
   · have h := map_isIntegral_int (starRingEnd ℂ) hu2
     simpa [map_mul, map_pow, map_natCast, map_inv₀] using h
 
+/- English proof (translation)
+Establish `hsq : ((‖u‖ : ℝ) : ℂ) ^ 2 = u * starRingEnd ℂ u`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : UnitOff q (((‖u‖ : ℝ) : ℂ) ^ 2)`.
+
+Rewrite using `[hsq]`. Conclude with `unitOff_mul_lemma hu (unitOff_conj_lemma hu)`. Conclude with `unitOff_of_pow_lemma (by norm_num) h2`.
+-/
 private theorem unitOff_norm_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : UnitOff q ((‖u‖ : ℝ) : ℂ) := by
   have hsq : ((‖u‖ : ℝ) : ℂ) ^ 2 = u * starRingEnd ℂ u := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
@@ -127,10 +180,20 @@ private theorem unitOff_norm_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) : Unit
     exact unitOff_mul_lemma hu (unitOff_conj_lemma hu)
   exact unitOff_of_pow_lemma (by norm_num) h2
 
+/- English proof (translation)
+Rewrite using `[div_eq_mul_inv]`. Conclude with `unitOff_mul_lemma hz (unitOff_inv_lemma (unitOff_norm_lemma hz))`.
+-/
 theorem unitOff_div_norm {q : ℕ} {z : ℂ} (hz : UnitOff q z) : UnitOff q (z / (‖z‖ : ℂ)) := by
   rw [div_eq_mul_inv]
   exact unitOff_mul_lemma hz (unitOff_inv_lemma (unitOff_norm_lemma hz))
 
+/- English proof (translation)
+Establish `hpow : ∀ n : ℕ, UnitOff q (u ^ n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `unitOff_one_lemma`.
+
+Consider the case `succ n ih => rw [pow_succ]`. Conclude with `unitOff_mul_lemma ih hu`. Consider the cases of `k with`. Consider the case `ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hpow n`.
+
+Consider the case `negSucc n => rw [zpow_negSucc]`. Conclude with `unitOff_inv_lemma (hpow _)`.
+-/
 private theorem unitOff_zpow_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) (k : ℤ) : UnitOff q (u ^ k) := by
   have hpow : ∀ n : ℕ, UnitOff q (u ^ n) := by
     intro n
@@ -141,10 +204,18 @@ private theorem unitOff_zpow_lemma {q : ℕ} {u : ℂ} (hu : UnitOff q u) (k : �
   | ofNat n => rw [Int.ofNat_eq_natCast, zpow_natCast]; exact hpow n
   | negSucc n => rw [zpow_negSucc]; exact unitOff_inv_lemma (hpow _)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (UnitOff q) (fun _ _ => unitOff_mul_lemma) unitOff_one_lemma hf`.
+-/
 private theorem unitOff_prod_lemma {q : ℕ} {I : Type} (s : Finset I) (f : I → ℂ)
     (hf : ∀ i ∈ s, UnitOff q (f i)) : UnitOff q (∏ i ∈ s, f i) :=
   Finset.prod_induction f (UnitOff q) (fun _ _ => unitOff_mul_lemma) unitOff_one_lemma hf
 
+/- English proof (translation)
+Establish `hφb : φ (algebraMap (𝓞 L) L b) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff φ φ.injective, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 L) L)]`. Conclude with `hb`. Establish `hint : ∀ x : 𝓞 L, IsIntegral ℤ (φ (algebraMap (𝓞 L) L x))` using `fun x => map_isIntegral_int φ (RingOfIntegers.isIntegral_coe x)`. Establish `hrel : φ (algebraMap (𝓞 L) L c) * φ (algebraMap (𝓞 L) L b) = (q : ℂ) ^ N`.
+
+Rewrite using `[← map_mul, ← map_mul, hc, map_pow, map_pow, map_natCast, map_natCast]`. Unfold `UnitOff`. Use `⟨hφb, N, ((isIntegral_natCast_lemma q).pow N).mul (hint b), ?_⟩` and prove the remaining obligations. Rewrite using `[← hrel, mul_assoc, mul_inv_cancel₀ hφb, mul_one]`. Conclude with `hint c`.
+-/
 private theorem unitOff_val_lemma {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) (b c : 𝓞 L) (q N : ℕ)
     (hb : b ≠ 0) (hc : c * b = (q : 𝓞 L) ^ N) : UnitOff q (φ (algebraMap (𝓞 L) L b)) := by
   have hφb : φ (algebraMap (𝓞 L) L b) ≠ 0 := by
@@ -159,6 +230,45 @@ private theorem unitOff_val_lemma {L : Type} [Field L] [NumberField L] (φ : L �
   rw [← hrel, mul_assoc, mul_inv_cancel₀ hφb, mul_one]
   exact hint c
 
+/- English proof (translation)
+Introduce `L _ _ χ I _ φ n v q hinf hfin htame hunr hq`. Take `⟨S, hSmem⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 L)), ∀ w, w ∈ S ↔ ¬ χ.UnrAt w` from `⟨hfin.toFinset, fun w => by simp⟩`. Establish `hS : ∀ w, w ∉ S → χ.UnrAt w` using `fun w hw => by`. Assume the negation of the conclusion as `hc`. Conclude with `hw ((hSmem w).2 hc)`.
+
+Establish `hvS : v ∉ S` using `fun hv => (hSmem v).1 hv hunr`. Take `⟨h, a, hh, ha0, hspan⟩` from `exists_pow_eq_span v`. Establish `hav : ∀ w : HeightOneSpectrum (𝓞 L), a ∈ w.asIdeal → w = v`. Introduce `w haw`. Establish `h1 : v.asIdeal ^ h ≤ w.asIdeal`.
+
+Rewrite using `[hspan, Ideal.span_singleton_le_iff_mem]`. Conclude with `haw`. Establish `h2 : v.asIdeal ≤ w.asIdeal` using `fun x hx => w.isPrime.mem_of_pow_mem h (h1 (Ideal.pow_mem_pow hx h))`. Conclude with `(HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top h2)).symm`. Establish `haS : ∀ w ∈ S, a ∉ w.asIdeal` using `fun w hw haw => hvS (hav w haw ▸ hw)`.
+
+Take `⟨M, hM, hMS⟩` from `exists_pow_sub_one S a haS`. Take `⟨b, hb⟩ : ∃ b : 𝓞 L, b = a ^ M` from `⟨_, rfl⟩`. Establish `hb0 : b ≠ 0`. Rewrite using `[hb]`. Conclude with `pow_ne_zero _ ha0`.
+
+Establish `hbL : algebraMap (𝓞 L) L b ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 L) L)]`. Conclude with `hb0`. Take `⟨k, hkL⟩ : ∃ k : Lˣ, (k : L) = algebraMap (𝓞 L) L b` from `⟨Units.mk0 _ hbL, rfl⟩`. Establish `hbw : ∀ w : HeightOneSpectrum (𝓞 L), w ≠ v → b ∉ w.asIdeal` using `fun w hw hbw' => hw (hav w (w.isPrime.mem_of_pow_mem M (hb ▸ hbw')))`.
+
+Establish `hord : ∀ w : HeightOneSpectrum (𝓞 L), w ≠ v → ordF w k = 0`. Introduce `w hw`. Unfold `ordF`. Rewrite using `[hkL, (HeightOneSpectrum.valuation_eq_one_iff_notMem (v := w) (K := L)).2 (hbw w hw)]`. Simplify using the standard rewrite rules.
+
+Establish `hbv : b ∈ v.asIdeal`. Establish `hav' : a ∈ v.asIdeal`. Establish `h3 : a ∈ v.asIdeal ^ h`. Rewrite using `[hspan]`. Conclude with `Ideal.mem_span_singleton_self a`.
+
+Conclude with `Ideal.pow_le_self hh.ne' h3`. Rewrite using `[hb]`. Conclude with `Ideal.pow_mem_of_mem _ hav' _ hM`. Establish `hordv : 0 < ordF v k`. Unfold `ordF`.
+
+Rewrite using `[hkL]`. Establish `hlt : v.valuation L (algebraMap (𝓞 L) L b) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (v := v) (K := L) b).2 hbv`. Establish `hne : v.valuation L (algebraMap (𝓞 L) L b) ≠ 0` using `(Valuation.ne_zero_iff _).2 hbL`. Establish `hlog : WithZero.log (v.valuation L (algebraMap (𝓞 L) L b)) < 0`. Rewrite using `[WithZero.log_lt_iff_lt_exp hne]`.
+
+Simplify using `using hlt`. Use linear arithmetic over natural numbers and integers. Establish `hfp : (∏ᶠ (w : HeightOneSpectrum (𝓞 L)) (_ : w ∉ S), χ.val w ^ ordF w k) = χ.val v ^ ordF v k`. Rewrite using `[finprod_eq_single _ v (fun w hw => by simp only [hord w hw, zpow_zero, finprod_one]), finprod_eq_if, if_pos hvS]`. Establish `e1 : ∀ (w : HeightOneSpectrum (𝓞 L)) (x : L), Valued.v (algebraMap L (w.adicCompletion L) x) = w.valuation L x` using `fun w x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := w) x`.
+
+Establish `hloc : ∏ w ∈ S, χ.locK w k = 1`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `w hw`. Establish `hwv : w ≠ v` using `fun e => hvS (e ▸ hw)`. Establish `hunit : Valued.v ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) = 1`.
+
+Establish `e2 : ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) = algebraMap L _ (algebraMap (𝓞 L) L b)`. Rewrite using `[← hkL]`. Both sides reduce to the same expression. Rewrite using `[e2, e1, HeightOneSpectrum.valuation_eq_one_iff_notMem (v := w) (K := L)]`. Conclude with `hbw w hwv`.
+
+Establish `hsub : Valued.v (((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) - 1) ≤ WithZero.exp (-((1 : ℕ) : ℤ))`. Establish `e3 : ((atFin w k : (w.adicCompletion L)ˣ) : w.adicCompletion L) - 1 = algebraMap L _ (algebraMap (𝓞 L) L (b - 1))`. Rewrite using `[map_sub, map_one, map_sub, map_one, ← hkL]`. Both sides reduce to the same expression. Rewrite using `[e3, e1, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_le_pow_iff_mem, pow_one, hb]`.
+
+Conclude with `hMS w hw`. Conclude with `htame w (atFin w k) hunit hsub`. Establish `hPR : χ.inf k * (∏ w ∈ S, χ.locK w k) * (∏ᶠ (w : HeightOneSpectrum (𝓞 L)) (_ : w ∉ S), χ.val w ^ ordF w k) = 1` using `by first`. Consider the case `exact GlobalTheory.HeckeProduct.productRule χ S hS k`. Consider the case `exact hecke_product_rule L χ S hS k`.
+
+Consider the case `exact PI.HeckeProdW.productRule χ S hS k`. Consider the case `exact GlobalTheory.TypeValues.productRule χ S hS k`. Consider the case `exact GlobalTheory.HeckeProduct.hchar_productRule L χ S hS k`. Rewrite `hPR` using `[hfp, hloc, mul_one]`. Take `⟨N, hN⟩ : ∃ N : ℕ, ordF v k = N` from `⟨(ordF v k).toNat, (Int.toNat_of_nonneg hordv.le).symm⟩`.
+
+Establish `hNpos : 0 < N` using `by omega`. Rewrite `hPR` using `[hN, zpow_natCast]`. Establish `hPR2` using `eq_inv_of_mul_eq_one_right hPR`. Establish `hValPow : ((χ.val v : ℂˣ) : ℂ) ^ N = ((χ.inf k : ℂˣ) : ℂ)⁻¹`. Rewrite using `[← Units.val_pow_eq_pow_val, hPR2, Units.val_inv_eq_inv_val]`.
+
+Establish `hqb : (q : 𝓞 L) ^ (h * M) ∈ Ideal.span {b}`. Establish `e4 : Ideal.span {b} = v.asIdeal ^ (h * M)`. Rewrite using `[hb, ← Ideal.span_singleton_pow, ← hspan, pow_mul]`. Rewrite using `[e4]`. Conclude with `Ideal.pow_mem_pow hq _`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hqb`. Apply `unitOff_of_pow_lemma hNpos` to reduce the goal to its premises. Rewrite using `[hValPow]`. Apply `unitOff_inv_lemma` to reduce the goal to its premises. Rewrite using `[hinf k]`.
+
+Use `unitOff_prod_lemma Finset.univ _ (fun i _ => ?_)` and prove the remaining obligations. Apply `unitOff_zpow_lemma` to reduce the goal to its premises. Apply `unitOff_div_norm` to reduce the goal to its premises. Rewrite using `[hkL]`. Conclude with `unitOff_val_lemma (φ i) b c q (h * M) hb0 hc`.
+-/
 theorem unitOff_val : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (I : Type) [Fintype I] (φ : I → L →+* ℂ) (n : I → ℤ) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 L)) (q : ℕ), χ.HasInf φ n → {w | ¬ χ.UnrAt w}.Finite → (∀ w, χ.TameAt w) → χ.UnrAt v → (q : 𝓞 L) ∈ v.asIdeal → GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff q ((χ.val v : ℂˣ) : ℂ) := by
   intro L _ _ χ I _ φ n v q hinf hfin htame hunr hq
   classical

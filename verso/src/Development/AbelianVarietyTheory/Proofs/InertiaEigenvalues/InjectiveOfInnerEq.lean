@@ -20,6 +20,13 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.UpInj
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i hTL`. Use `choose B hBn hBp using fun γ : GfC (Wc D i) => hTL.2.2.1 γ γ.2`. Use `⟨B, fun γ x y => hBp γ x y, hBn, ?_, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[← hBp 1 x y, ContinuousLinearMap.one_apply]`.
+
+Conclude with `hTL.2.2.2.2.2 x y`. Introduce `γ k hk`. Use `ContinuousLinearMap.ext fun y => ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[← hBp, ← hBp]`. Use `hTL.2.2.2.1 γ γ.2 1 (Subgroup.one_mem _) k (Subgroup.mem_subgroupOf.1 hk) x y` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ops_exist : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m), TransLaws R i → ∃ B : GfC (Wc D i) → ((R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H), (∀ (γ : GfC (Wc D i)) x y, trPair R i (γ : GA D (Wc D i)) x y = ⟪x, B γ y⟫_ℂ) ∧ (∀ γ, ‖B γ‖ ≤ 1) ∧ B 1 = 1 ∧ ∀ γ k, k ∈ GlobalTheory.UpInj.KR R i → B (γ * k) = B γ := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i hTL
   choose B hBn hBp using fun γ : GfC (Wc D i) => hTL.2.2.1 γ γ.2
@@ -33,6 +40,15 @@ theorem ops_exist : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     have := hTL.2.2.2.1 γ γ.2 1 (Subgroup.one_mem _) k (Subgroup.mem_subgroupOf.1 hk) x y
     rwa [one_mul] at this
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i t hFM hLS μ 𝓕 hμ`. Use `⟨fun v g h hg hh => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hFM μ 𝓕 hμ v _ (GlobalTheory.UpInj.isFinIdem_fE v) g g.2 (GlobalTheory.UpInj.trivAt_of_cf_eq_one _ v g hg) h ((GlobalTheory.UpInj.cf_eq_self_iff _ v h).1 hh)`. Take `⟨s, hs, hs1, hsb⟩` from `hLS μ 𝓕 hμ`. Use `⟨s, hs, hs1, fun v C hC hCd => ?_⟩` and prove the remaining obligations.
+
+Use `hsb v _ (GlobalTheory.UpInj.isFinIdem_fE v) (C.map (Function.Embedding.subtype _)) ?_ ?_` as an intermediate fact. Simplify `this` using `[Finset.sum_map]`. Introduce `g hg`. Take `⟨g, hgC, rfl⟩` from `Finset.mem_map.1 hg`. Conclude with `⟨(GlobalTheory.UpInj.cf_eq_self_iff _ v g).1 (hC g hgC).1, fun h => (hC g hgC).2 (Subgroup.mem_subgroupOf.2 h)⟩`.
+
+Introduce `g hg g' hg' hgg`. Take `⟨g, hgC, rfl⟩` from `Finset.mem_map.1 hg`. Take `⟨g', hgC', rfl⟩` from `Finset.mem_map.1 hg'`. Use `congrArg _ (hCd g hgC g' hgC' (Subgroup.mem_subgroupOf.2 ?_))` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Conclude with `hgg`.
+-/
 theorem coef_mult_small : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T), FinMult R i t → LocSmall R i t → ∀ μ 𝓕, IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → (∀ v (g h : GfC (Wc D i)), GlobalTheory.UpInj.cf (Wc D i) v g = 1 → GlobalTheory.UpInj.cf (Wc D i) v h = h → coef R i t μ 𝓕 ((g * h : GfC (Wc D i)) : GA D (Wc D i)) = coef R i t μ 𝓕 g * coef R i t μ 𝓕 h) ∧ ∃ s : HeightOneSpectrum (𝓞 D.host.F) → ℝ, Summable s ∧ (∀ v, s v < 1) ∧ ∀ v (C : Finset (GfC (Wc D i))), (∀ g ∈ C, GlobalTheory.UpInj.cf (Wc D i) v g = g ∧ g ∉ GlobalTheory.UpInj.KR R i) → (∀ g ∈ C, ∀ g' ∈ C, g⁻¹ * g' ∈ GlobalTheory.UpInj.KR R i → g = g') → ∑ g ∈ C, ‖coef R i t μ 𝓕 g‖ ≤ s v := by
   intro D G _ _ Pl0 T A Ks _ _ _ R i t hFM hLS μ 𝓕 hμ
   refine ⟨fun v g h hg hh => ?_, ?_⟩
@@ -54,6 +70,13 @@ theorem coef_mult_small : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t hLF hVN μ 𝓕 hμ`. Establish `hv : ∀ k ∈ levW R i, R.ωP i t (1, k) (R.vP i t) = R.vP i t` using `fun k hk => by`. Use `hLF k hk 1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.RawLift.Model.pureTensor_one]`. Then use the resulting hypothesis. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`.
+
+Use `hL.thP.pt_theta i t 1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.RawLift.Model.pureTensor_one]`. Then use the resulting hypothesis. Establish `hW` using `hL.thP.ωP i t`. Use `⟨fun g k k' hk hk' => ?_, GlobalTheory.RawLift.Model.coef_one R i t hVN μ 𝓕 hμ⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RawLift.Model.coef_mul_lev R i t hLF μ 𝓕 _ _ hk']`.
+
+Unfold `coef`. Use `congr 1`. Establish `e : R.ωP i t (1, k * g) = R.ωP i t (1, k) * R.ωP i t (1, g)` using `by rw [← map_mul]; simp`. Rewrite using `[e, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_biinv : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i t, LevFix R i t → VecNe R i t → ∀ μ 𝓕, IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 → (∀ g k k', k ∈ levW R i → k' ∈ levW R i → coef R i t μ 𝓕 (k * g * k') = coef R i t μ 𝓕 g) ∧ coef R i t μ 𝓕 1 = 1 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t hLF hVN μ 𝓕 hμ
   have hv : ∀ k ∈ levW R i, R.ωP i t (1, k) (R.vP i t) = R.vP i t := fun k hk => by
@@ -74,6 +97,13 @@ theorem coef_biinv : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type
     _ = thetaIP μ 𝓕 (R.ωP i t (1, g) (R.vP i t)) (R.vP i t) :=
       GlobalTheory.WeilPairing.thetaInner_weilRep D R.ψ _ _ _ _ (R.ωP i t) μ 𝓕 hW hμ (1, k) _ _ (hW.om_pres _ _ hth) hth
 
+/- English proof (translation)
+Establish `ha0' : (a0 : ℂ) ≠ 0` using `by exact_mod_cast ha0.ne'`. Establish `sym : ∀ x y, ⟪x, W y⟫_ℂ = ⟪W x, y⟫_ℂ`. Introduce `x y`. Establish `h2 : (a0 : ℂ) * ⟪x, W y⟫_ℂ = (a0 : ℂ) * ⟪W x, y⟫_ℂ`. Rewrite using `[← key, ← inner_conj_symm, key, map_mul, Complex.conj_ofReal, inner_conj_symm]`.
+
+Conclude with `mul_left_cancel₀ ha0' h2`. Introduce `x x' hxx'`. Establish `hz : L (x - x') = 0` using `by rw [map_sub, hxx', sub_self]`. Establish `h3` using `key (x - x') (W (x - x'))`. Rewrite `h3` using `[hz, inner_zero_left]`.
+
+Establish `h4 : ⟪x - x', W (W (x - x'))⟫_ℂ = 0` using `(mul_eq_zero.1 h3.symm).resolve_left ha0'`. Rewrite `h4` using `[sym]`. Establish `hWz : W (x - x') = 0` using `inner_self_eq_zero.1 h4`. Conclude with `sub_eq_zero.1 (hW (hWz.trans (map_zero W).symm))`.
+-/
 theorem injective_of_inner_eq {E H : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (L : H →ₗ[ℂ] E) (W : H →L[ℂ] H) (a0 : ℝ) (ha0 : 0 < a0)
     (key : ∀ x y, ⟪L x, L y⟫_ℂ = (a0 : ℂ) * ⟪x, W y⟫_ℂ) (hW : Function.Injective W) : Function.Injective L := by
@@ -93,6 +123,21 @@ theorem injective_of_inner_eq {E H : Type} [NormedAddCommGroup E] [InnerProductS
   exact sub_eq_zero.1 (hW (hWz.trans (map_zero W).symm))
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t hFS hFM hLF hVN hLS _ hTL`. Take `⟨⟨p, hp⟩, -⟩` from `(hL.thP.vP i t).1.2.norm`. Take `⟨hinv, h1⟩` from `coef_biinv D G Pl0 T A Ks R F hL i t hLF hVN p.1 p.2 hp`. Take `⟨hmul, s, hs, hs1, hsm⟩` from `coef_mult_small D G Pl0 T A Ks R i t hFM hLS p.1 p.2 hp`. Take `⟨B, hB, hBn, hB1, hBK⟩` from `ops_exist D G Pl0 T A Ks R i hTL`.
+
+Take `⟨hrep, hhk⟩` from `GlobalTheory.T.exists_heckeRepresentatives_rightTranslate_identity D G Pl0 T A Ks R i hTL B hB`. Set `a : GfC (Wc D i) → ℂ` to `fun g => coef R i t p.1 p.2 g`. Establish `hmem` using `GlobalTheory.UpInj.kr_mem_iff R i`. Establish `hfin` using `GlobalTheory.UpInj.kr_finite R i`. Establish `hidem : ∀ v g, GlobalTheory.UpInj.cf (Wc D i) v (GlobalTheory.UpInj.cf (Wc D i) v g) = GlobalTheory.UpInj.cf (Wc D i) v g` using `fun v g => GlobalTheory.UpInj.cf_cf (Wc D i) v g`.
+
+Establish `horth : ∀ v w g, v ≠ w → GlobalTheory.UpInj.cf (Wc D i) w (GlobalTheory.UpInj.cf (Wc D i) v g) = 1` using `fun v w g h => GlobalTheory.UpInj.cf_orth (Wc D i) h g`. Take `⟨e, he⟩` from `GlobalTheory.T.quotient_equiv_restrictedComponentFamilies _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) hmem hfin hidem horth`. Establish `ha_bi : ∀ g k k', k ∈ GlobalTheory.UpInj.KR R i → k' ∈ GlobalTheory.UpInj.KR R i → a (k * g * k') = a g`. Introduce `g k k' hk hk'`. Conclude with `hinv g k k' (Subgroup.mem_subgroupOf.1 hk) (Subgroup.mem_subgroupOf.1 hk')`.
+
+Establish `ha_right : ∀ g k, k ∈ GlobalTheory.UpInj.KR R i → a (g * k) = a g`. Introduce `g k hk`. Use `ha_bi g 1 k (Subgroup.one_mem _) hk` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hfac` using `GlobalTheory.T.rightInvariant_mul_eq_finprod_components _ _ _ _ a hmem hfin hidem horth ha_right h1 hmul`.
+
+Establish `hloc` using `fun v => GlobalTheory.T.hasSum_localEulerFactor_heckeOperators _ (GlobalTheory.UpInj.KR R i) (GlobalTheory.UpInj.cf (Wc D i) v) _ a B (s v) (hidem v) ha_bi hBK hBn (hsm v) (hrep v) (hhk v)`. Take `⟨W, hWi, hW⟩` from `GlobalTheory.T.hasSum_inner_eulerProduct_quotient_injective _ (GlobalTheory.UpInj.KR R i) _ (GlobalTheory.UpInj.cf (Wc D i)) _ a B s e he hmem hidem horth ha_right h1 hfac hBn hB1 hBK hs hs1 hsm hloc`. Introduce `th hth`. Take `⟨a0, ha0, hsum⟩` from `hFS th hth p.1 p.2 hp`. Establish `ha0' : (a0 : ℂ) ≠ 0` using `by exact_mod_cast ha0.ne'`.
+
+Establish `key : ∀ x y, ⟪LinearMap.adjoint th x, LinearMap.adjoint th y⟫_ℂ = (a0 : ℂ) * ⟪x, W y⟫_ℂ`. Introduce `x y`. Establish `h2` using `(hW x y).mul_left (a0 : ℂ)`. Establish `e : (fun q : GfC (Wc D i) ⧸ GlobalTheory.UpInj.KR R i => (a0 : ℂ) * (a (Quotient.out q) * ⟪x, B (Quotient.out q) y⟫_ℂ)) = fun q => (a0 : ℂ) * (coef R i t p.1 p.2 (Quotient.out q : GfC (Wc D i)) * trPair R i (Quotient.out q : GfC (Wc D i)) x y)`. Use function extensionality and compare the values at `q`.
+
+Rewrite using `[hB]`. Rewrite `h2` using `[e]`. Conclude with `(hsum x y).unique h2`. Conclude with `injective_of_inner_eq _ W a0 ha0 key hWi`.
+-/
 theorem upInj_holds : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, FinSum R i t → FinMult R i t → LevFix R i t → VecNe R i t → LocSmall R i t → LevProd R i → TransLaws R i → UpInj R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL _ i t hFS hFM hLF hVN hLS _ hTL
   classical

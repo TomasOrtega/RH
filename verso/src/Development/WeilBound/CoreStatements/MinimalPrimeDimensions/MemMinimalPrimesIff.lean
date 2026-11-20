@@ -14,6 +14,11 @@ variable {R A : Type} [CommRing R] [CommRing A] {m : ℕ} (c : R →+* A) (t : F
 def cone : MvPolynomial (Fin m) R →+* Polynomial A :=
   eval₂Hom (Polynomial.C.comp c) fun k => Polynomial.X * Polynomial.C (t k)
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [cone, map_sum, eval₂Hom_monomial, Finset.mul_sum, map_mul]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hg (mem_support_iff.1 ha)`.
+
+Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_prod, map_pow]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm, RingHom.comp_apply]`.
+-/
 theorem cone_of_homog {d : ℕ} {g : MvPolynomial (Fin m) R} (hg : g.IsHomogeneous d) :
     cone c t g = Polynomial.X ^ d * Polynomial.C (eval₂Hom c t g) := by
   conv_lhs => rw [g.as_sum]
@@ -24,6 +29,9 @@ theorem cone_of_homog {d : ℕ} {g : MvPolynomial (Fin m) R} (hg : g.IsHomogeneo
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, map_prod, map_pow]
   rw [← this, Finsupp.degree_apply, mul_left_comm, RingHom.comp_apply]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← g.sum_homogeneousComponent, map_sum]`. Simplify using `only [cone_of_homog c t (homogeneousComponent_isHomogeneous _ g), Polynomial.finsetSum_coeff, Polynomial.X_pow_mul_C, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_range]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero _ _ (by omega), map_zero]`.
+-/
 theorem coeff_cone (g : MvPolynomial (Fin m) R) (d : ℕ) :
     (cone c t g).coeff d = eval₂Hom c t (homogeneousComponent d g) := by
   conv_lhs => rw [← g.sum_homogeneousComponent, map_sum]
@@ -34,6 +42,9 @@ theorem coeff_cone (g : MvPolynomial (Fin m) R) (d : ℕ) :
   · rfl
   · rw [homogeneousComponent_eq_zero _ _ (by omega), map_zero]
 
+/- English proof (translation)
+Establish `e : (Polynomial.evalRingHom a).comp (cone c t) = eval₂Hom c fun j => t j * a` using `MvPolynomial.ringHom_ext (fun r => by simp [cone]) fun j => by simp [cone]`. Rewrite using `[← e, RingHom.comp_apply, cone_of_homog c t hg]`. Simplify using the standard rewrite rules.
+-/
 theorem eval₂Hom_mul {d : ℕ} {g : MvPolynomial (Fin m) R} (hg : g.IsHomogeneous d) (a : A) :
     eval₂Hom c (fun j => t j * a) g = eval₂Hom c t g * a ^ d := by
   have e : (Polynomial.evalRingHom a).comp (cone c t) = eval₂Hom c fun j => t j * a :=
@@ -45,10 +56,18 @@ def pr (q : Ideal A) : Ideal (MvPolynomial (Fin m) R) := (q.map Polynomial.C).co
 
 variable {c t}
 
+/- English proof (translation)
+Simplify using `only [pr, Ideal.mem_comap, Ideal.mem_map_C_iff, coeff_cone]`.
+-/
 theorem mem_pr {q : Ideal A} {g : MvPolynomial (Fin m) R} :
     g ∈ pr c t q ↔ ∀ d, eval₂Hom c t (homogeneousComponent d g) ∈ q := by
   simp only [pr, Ideal.mem_comap, Ideal.mem_map_C_iff, coeff_cone]
 
+/- English proof (translation)
+Rewrite using `[mem_pr]`. Use `⟨fun h => by simpa [homogeneousComponent_of_mem hg] using h d, fun h e => ?_⟩` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem hg]`. Use `split_ifs`. Conclude with `h`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mem_pr_homog {q : Ideal A} {d : ℕ} {g : MvPolynomial (Fin m) R} (hg : g.IsHomogeneous d) :
     g ∈ pr c t q ↔ eval₂Hom c t g ∈ q := by
   rw [mem_pr]
@@ -58,6 +77,9 @@ theorem mem_pr_homog {q : Ideal A} {d : ℕ} {g : MvPolynomial (Fin m) R} (hg : 
   · exact h
   · simp
 
+/- English proof (translation)
+Introduce `_ hg d` and use `(mem_pr_homog (homogeneousComponent_isHomogeneous d _)).2 (mem_pr.1 hg d)`.
+-/
 theorem isHomog_pr (q : Ideal A) : IsHomogIdeal (pr c t q) := fun _ hg d =>
   (mem_pr_homog (homogeneousComponent_isHomogeneous d _)).2 (mem_pr.1 hg d)
 
@@ -65,20 +87,37 @@ instance isPrime_pr (q : Ideal A) [q.IsPrime] : (pr c t q).IsPrime :=
   have : (q.map (Polynomial.C : A →+* Polynomial A)).IsPrime := Ideal.isPrime_map_C_of_isPrime
   Ideal.comap_isPrime _ _
 
+/- English proof (translation)
+The claim follows from `Ideal.comap_mono (Ideal.map_mono h)`.
+-/
 theorem pr_mono {q q' : Ideal A} (h : q ≤ q') : pr c t q ≤ pr c t q' := Ideal.comap_mono (Ideal.map_mono h)
 
+/- English proof (translation)
+The claim follows from `IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X R j).C_mul _`.
+-/
 theorem isHomog_linForm (u : Fin m → R) : (linForm u).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X R j).C_mul _
 
 variable {k : Fin m}
 
+/- English proof (translation)
+Rewrite using `[mem_pr_homog (isHomogeneous_X R k), eval₂Hom_X', hk]`. Conclude with `(Ideal.ne_top_iff_one q).1 hq.ne_top`.
+-/
 theorem X_notMem_pr (hk : t k = 1) (q : Ideal A) [hq : q.IsPrime] : X k ∉ pr c t q := by
   rw [mem_pr_homog (isHomogeneous_X R k), eval₂Hom_X', hk]
   exact (Ideal.ne_top_iff_one q).1 hq.ne_top
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, isHomog_pr q, k, X_notMem_pr hk q⟩`.
+-/
 theorem isProjPrime_pr (hk : t k = 1) (q : Ideal A) [q.IsPrime] : IsProjPrime (pr c t q) :=
   ⟨inferInstance, isHomog_pr q, k, X_notMem_pr hk q⟩
 
+/- English proof (translation)
+Use `⟨∑ d ∈ Finset.range (g.totalDegree + 1), homogeneousComponent d g * X k ^ (N - d), IsHomogeneous.sum _ _ _ fun d hd => ?_, ?_, fun W hW hg => W.sum_mem fun d _ => W.mul_mem_right _ (hW g hg d)⟩` and prove the remaining obligations. Establish `h` using `(homogeneousComponent_isHomogeneous d g).mul ((isHomogeneous_X R k).pow (N - d))`. Establish `hd'` using `Finset.mem_range.1 hd`. Rewrite `h` using `[one_mul, show d + (N - d) = N by omega]`. Then use the resulting hypothesis. Use `conv_rhs => rw [← g.sum_homogeneousComponent]`.
+
+Simplify using `only [map_sum, map_mul, map_pow, eval₂Hom_X', hk, one_pow, mul_one]`.
+-/
 theorem exists_homog (hk : t k = 1) (g : MvPolynomial (Fin m) R) {N : ℕ} (hN : g.totalDegree ≤ N) :
     ∃ G : MvPolynomial (Fin m) R, G.IsHomogeneous N ∧ eval₂Hom c t G = eval₂Hom c t g ∧
       ∀ W : Ideal (MvPolynomial (Fin m) R), IsHomogIdeal W → g ∈ W → G ∈ W := by
@@ -91,18 +130,35 @@ theorem exists_homog (hk : t k = 1) (g : MvPolynomial (Fin m) R) {N : ℕ} (hN :
   · conv_rhs => rw [← g.sum_homogeneousComponent]
     simp only [map_sum, map_mul, map_pow, eval₂Hom_X', hk, one_pow, mul_one]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hs a`. Take `⟨G, h1, h2, -⟩` from `exists_homog (c := c) hk g le_rfl`. Conclude with `⟨_, G, h1, h2⟩`.
+-/
 theorem exists_homog' (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) (a : A) :
     ∃ (N : ℕ) (G : MvPolynomial (Fin m) R), G.IsHomogeneous N ∧ eval₂Hom c t G = a := by
   obtain ⟨g, rfl⟩ := hs a
   obtain ⟨G, h1, h2, -⟩ := exists_homog (c := c) hk g le_rfl
   exact ⟨_, G, h1, h2⟩
 
+/- English proof (translation)
+Use `⟨fun h a ha => ?_, pr_mono⟩` and prove the remaining obligations. Take `⟨N, G, h1, rfl⟩` from `exists_homog' hs hk a`. Conclude with `(mem_pr_homog h1).1 (h ((mem_pr_homog h1).2 ha))`.
+-/
 theorem pr_le_iff (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) {q q' : Ideal A} :
     pr c t q ≤ pr c t q' ↔ q ≤ q' := by
   refine ⟨fun h a ha => ?_, pr_mono⟩
   obtain ⟨N, G, h1, rfl⟩ := exists_homog' hs hk a
   exact (mem_pr_homog h1).1 (h ((mem_pr_homog h1).2 ha))
 
+/- English proof (translation)
+Establish `key {d : ℕ} {G : MvPolynomial (Fin m) R} (hG : G.IsHomogeneous d) : eval₂Hom c t G ∈ W.map (eval₂Hom c t) ↔ G ∈ W`. Use `⟨fun h => ?_, Ideal.mem_map_of_mem _⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 h`. Take `⟨w', h1, h2, h3⟩` from `exists_homog (c := c) hk w (N := d + w.totalDegree) (Nat.le_add_left _ _)`. Establish `h4 : (G * X k ^ w.totalDegree).IsHomogeneous (d + w.totalDegree)`.
+
+Simplify using `using hG.mul ((isHomogeneous_X R k).pow w.totalDegree)`. Establish `h5 : G * X k ^ w.totalDegree - w' ∈ W` using `hle ((mem_pr_homog (h4.sub h1)).2 (by`. Rewrite using `[map_sub, h2, e, map_mul, map_pow, eval₂Hom_X', hk, one_pow, mul_one, sub_self]`. Conclude with `Ideal.zero_mem _))`. Establish `h6` using `W.add_mem h5 (h3 W hh hw)`.
+
+Rewrite `h6` using `[sub_add_cancel]`. Conclude with `(hp.mem_or_mem h6).resolve_right fun h => hX (hp.mem_of_pow_mem _ h)`. Use `⟨W.map (eval₂Hom c t), ⟨fun h => hX ?_, fun {a b} hab => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(key (isHomogeneous_X R k)).1 (h ▸ Submodule.mem_top)`. Take `⟨N, G, h1, rfl⟩` from `exists_homog' hs hk a`.
+
+Take `⟨N', G', h1', rfl⟩` from `exists_homog' hs hk b`. Rewrite `hab` using `[← map_mul, key (h1.mul h1')]`. Rewrite using `[key h1, key h1']`. Conclude with `hp.mem_or_mem hab`. Use extensionality with `g`.
+
+Rewrite using `[mem_pr]`. Simplify using `only [key (homogeneousComponent_isHomogeneous _ g)]`. Use `⟨fun h => ?_, hh g⟩` and prove the remaining obligations. Rewrite using `[← g.sum_homogeneousComponent]`. Conclude with `W.sum_mem fun d _ => h d`.
+-/
 theorem exists_eq_pr (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) {W : Ideal (MvPolynomial (Fin m) R)}
     (hp : W.IsPrime) (hh : IsHomogIdeal W) (hX : X k ∉ W) (hle : pr c t ⊥ ≤ W) :
     ∃ q : Ideal A, q.IsPrime ∧ pr c t q = W := by
@@ -132,6 +188,11 @@ theorem exists_eq_pr (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) 
     rw [← g.sum_homogeneousComponent]
     exact W.sum_mem fun d _ => h d
 
+/- English proof (translation)
+Establish `e (g : MvPolynomial (Fin m) R) : eval₂Hom ((Ideal.Quotient.mk W).comp C) (fun j => Ideal.Quotient.mk W (X j)) g = Ideal.Quotient.mk W g`. Use `RingHom.congr_fun (f := eval₂Hom _ _) (MvPolynomial.ringHom_ext (fun r => ?_) fun j => ?_) g` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `h (g : MvPolynomial (Fin m) R) : g ∈ pr ((Ideal.Quotient.mk W).comp C) (fun j => Ideal.Quotient.mk W (X j)) ⊥ ↔ ∀ d, homogeneousComponent d g ∈ W`.
+
+Simplify using `only [mem_pr, e, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Use `⟨_, isPrime_pr ⊥, isHomog_pr _, fun g hg => ?_, fun g => (h g).2⟩` and prove the remaining obligations. Rewrite using `[← g.sum_homogeneousComponent]`. Conclude with `W.sum_mem fun d _ => (h g).1 hg d`.
+-/
 theorem exists_core (W : Ideal (MvPolynomial (Fin m) R)) [W.IsPrime] :
     ∃ W' : Ideal (MvPolynomial (Fin m) R), W'.IsPrime ∧ IsHomogIdeal W' ∧ W' ≤ W ∧
       ∀ g, (∀ d, homogeneousComponent d g ∈ W) → g ∈ W' := by
@@ -148,6 +209,13 @@ theorem exists_core (W : Ideal (MvPolynomial (Fin m) R)) [W.IsPrime] :
   rw [← g.sum_homogeneousComponent]
   exact W.sum_mem fun d _ => (h g).1 hg d
 
+/- English proof (translation)
+Establish `hJ (q' : Ideal A) : pr c t ⊥ ⊔ Ideal.span {linForm u} ≤ pr c t q' ↔ Ideal.span {eval₂Hom c t (linForm u)} ≤ q'`. Rewrite using `[sup_le_iff, Ideal.span_singleton_le_iff_mem, Ideal.span_singleton_le_iff_mem, mem_pr_homog (isHomog_linForm u), and_iff_right (pr_mono bot_le)]`. Use `⟨fun h => ⟨⟨hq, (hJ q).1 h.1.2⟩, fun q' hq' hle => ?_⟩, fun h => ⟨⟨inferInstance, (hJ q).2 h.1.2⟩, fun W hW hle => ?_⟩⟩` and prove the remaining obligations. Use `hq'.1` as an intermediate fact. Conclude with `(pr_le_iff hs hk).1 (h.2 ⟨inferInstance, (hJ q').2 hq'.2⟩ (pr_mono hle))`.
+
+Use `hW.1` as an intermediate fact. Take `⟨W', h1, h2, h3, h4⟩` from `exists_core W`. Establish `h5 : pr c t ⊥ ≤ W'` using `fun g hg => h4 g fun d => hW.2 (Ideal.mem_sup_left (isHomog_pr _ g hg d))`. Establish `h6 : linForm u ∈ W'` using `h4 _ fun d => by`. Rewrite using `[homogeneousComponent_of_mem (isHomog_linForm u)]`.
+
+Use `split_ifs`. Conclude with `hW.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Conclude with `W.zero_mem`. Take `⟨q', hq', rfl⟩` from `exists_eq_pr hs hk h1 h2 (fun hX => X_notMem_pr hk q (hle (h3 hX))) h5`. Conclude with `(pr_mono (h.2 ⟨hq', (hJ q').1 (sup_le h5 ((Ideal.span_singleton_le_iff_mem _).2 h6))⟩ ((pr_le_iff hs hk).1 (h3.trans hle)))).trans h3`.
+-/
 theorem mem_minimalPrimes_iff (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) (u : Fin m → R)
     (q : Ideal A) [hq : q.IsPrime] :
     pr c t q ∈ (pr c t ⊥ ⊔ Ideal.span {linForm u}).minimalPrimes ↔
@@ -172,6 +240,27 @@ theorem mem_minimalPrimes_iff (hs : Function.Surjective (eval₂Hom c t)) (hk : 
     exact (pr_mono (h.2 ⟨hq', (hJ q').1 (sup_le h5 ((Ideal.span_singleton_le_iff_mem _).2 h6))⟩
       ((pr_le_iff hs hk).1 (h3.trans hle)))).trans h3
 
+/- English proof (translation)
+Establish `hW : (W'.comap φ).IsPrime` using `Ideal.comap_isPrime _ _`. Rewrite using `[localMult, localMult, dif_pos hW, dif_pos ‹W'.IsPrime›]`. Use `congr 1`. Use `set SW := Localization.AtPrime (W'.comap φ)`. Use `set LW := Localization.AtPrime W'`.
+
+Set `ψ : SW →+* LW` to `Localization.localRingHom (W'.comap φ) W' φ rfl`. Establish `hψ (a : S) : ψ (algebraMap S SW a) = algebraMap L LW (φ a)` using `Localization.localRingHom_to_map _ _ _ _ a`. Establish `hu (s : S) (h : φ s ∉ W') : IsUnit (algebraMap S SW s)` using `IsLocalization.map_units SW (⟨s, h⟩ : (W'.comap φ).primeCompl)`. Establish `h1 (b : L) : algebraMap L LW b ∈ ψ.range`. Take `⟨a, s, h, e⟩` from `hs b`.
+
+Take `⟨v, hv⟩` from `(hu s h).exists_right_inv`. Use `⟨algebraMap S SW a * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hψ, ← e, map_mul, ← hψ, mul_assoc, ← map_mul, hv, map_one, mul_one]`. Establish `hsurj : Function.Surjective ψ` using `fun x => by`. Take `⟨⟨b, b'⟩, e⟩` from `IsLocalization.surj W'.primeCompl x`.
+
+Take `⟨a, s, h, e'⟩` from `hs b'`. Establish `ha : φ a ∉ W'` using `e' ▸ fun hm => (‹W'.IsPrime›.mem_or_mem hm).elim b'.2 h`. Take `⟨v, hv⟩` from `(hu a ha).exists_right_inv`. Take `⟨y, hy⟩` from `h1 b`. Use `⟨y * algebraMap S SW s * v, ?_⟩` and prove the remaining obligations.
+
+Establish `hv'` using `congrArg ψ hv`. Rewrite `hv'` using `[map_mul, hψ, ← e', map_mul, map_one]`. Rewrite using `[map_mul, map_mul, hy, hψ, ← e]`. Take the linear combination `x * hv'`. Set `` to `ψ.toAlgebra`.
+
+Establish `hJ' : (J.map φ).map (algebraMap L LW) = (J.map (algebraMap S SW)).map ψ`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun a => (hψ a).symm`. Establish `hker : RingHom.ker ψ ≤ J.map (algebraMap S SW)` using `fun x hx => by`.
+
+Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj (W'.comap φ).primeCompl x`. Establish `h0 : algebraMap L LW (φ a) = 0`. Rewrite using `[← hψ, ← e, map_mul, (RingHom.mem_ker).1 hx, zero_mul]`. Take `⟨b, hb⟩` from `(IsLocalization.map_eq_zero_iff W'.primeCompl LW _).1 h0`. Take `⟨a', s', h, e'⟩` from `hs b`.
+
+Establish `ha : φ a' ∉ W'` using `e' ▸ fun hm => (‹W'.IsPrime›.mem_or_mem hm).elim b.2 h`. Establish `h2 : a' * a ∈ J` using `hJ ((RingHom.mem_ker).2 (by`. Rewrite using `[map_mul, ← e']`. Take the linear combination `φ s' * hb))`. Establish `h3` using `Ideal.mem_map_of_mem (algebraMap S SW) h2`.
+
+Rewrite `h3` using `[map_mul, ← e]`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ (IsLocalization.map_units SW s)).1 ((Ideal.unit_mul_mem_iff_mem _ (hu a' ha)).1 h3)`. Rewrite using `[hJ', ← Module.length_eq_of_surjective (S := SW) (R := LW) hsurj]`. Set `χ : SW →ₗ[SW] LW ⧸ (J.map (algebraMap S SW)).map ψ` to `(Ideal.Quotient.mkₐ SW _).toLinearMap ∘ₗ Algebra.linearMap SW LW`. Establish `hχ : Function.Surjective χ` using `Ideal.Quotient.mk_surjective.comp hsurj`.
+
+Establish `hk : LinearMap.ker χ = J.map (algebraMap S SW)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (ψ x) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, ← Ideal.mem_comap, Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, sup_eq_left.2 hker]`. Rewrite using `[← (χ.quotKerEquivOfSurjective hχ).length_eq, hk]`.
+-/
 theorem localMult_map {S L : Type} [CommRing S] [CommRing L] (φ : S →+* L) (W' : Ideal L) [W'.IsPrime] (J : Ideal S)
     (hs : ∀ b, ∃ a s, φ s ∉ W' ∧ b * φ s = φ a) (hJ : RingHom.ker φ ≤ J) :
     localMult (J.map φ) W' = localMult J (W'.comap φ) := by
@@ -229,6 +318,23 @@ theorem localMult_map {S L : Type} [CommRing S] [CommRing L] (φ : S →+* L) (W
       ← RingHom.ker_eq_comap_bot, sup_eq_left.2 hker]
   rw [← (χ.quotKerEquivOfSurjective hχ).length_eq, hk]
 
+/- English proof (translation)
+Establish `hp : (q.map (Polynomial.C : A →+* Polynomial A)).IsPrime` using `Ideal.isPrime_map_C_of_isPrime`. Establish `hX : (Polynomial.X : Polynomial A) ∉ q.map (Polynomial.C : A →+* Polynomial A)` using `fun h => by`. Use `Ideal.mem_map_C_iff.1 h 1` as an intermediate fact. Rewrite `this` using `[Polynomial.coeff_X_one]`. Conclude with `(Ideal.ne_top_iff_one q).1 hq.ne_top this`.
+
+Establish `hXk : cone c t (X k) = Polynomial.X` using `by simp [cone, hk]`. Establish `hker : pr c t ⊥ = RingHom.ker (cone c t)` using `by rw [pr, Ideal.map_bot]; rfl`. Establish `h1` using `localMult_map (cone c t) (q.map Polynomial.C) (pr c t ⊥ ⊔ Ideal.span {linForm u}) (fun b => by`. It suffices to establish `h : ∃ (n : ℕ) (a : MvPolynomial (Fin m) R), b * Polynomial.X ^ n = cone c t a by`. Take `⟨n, a, h⟩` from `h`.
+
+Conclude with `⟨a, X k ^ n, by rw [map_pow, hXk]; exact fun h => hX (hp.mem_of_pow_mem _ h), by rw [map_pow, hXk, h]⟩`. Proceed by induction on `b using Polynomial.induction_on' with`. Consider the case `add b b' h h'`. Take `⟨n, a, h⟩` from `h`. Take `⟨n', a', h'⟩` from `h'`.
+
+Conclude with `⟨n + n', a * X k ^ n' + a' * X k ^ n, by`. Simplify using `only [map_add, map_mul, map_pow, hXk, ← h, ← h']`. Use the proof step `ring⟩`. Consider the case `monomial n a`. Take `⟨N, G, h1, rfl⟩` from `exists_homog' hs hk a`.
+
+Conclude with `⟨N, G * X k ^ n, by`. Rewrite using `[map_mul, map_pow, hXk, cone_of_homog c t h1, ← Polynomial.C_mul_X_pow_eq_monomial]`. Use the proof step `ring⟩)`. Use the proof step `(hker ▸ le_sup_left)`. Use `h1.symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_sup, hker, (Ideal.map_eq_bot_iff_le_ker _).2 le_rfl, bot_sup_eq, Ideal.map_span, Set.image_singleton, cone_of_homog c t (isHomog_linForm u), pow_one]`. Establish `: (q.map (Polynomial.C : A →+* Polynomial A)).LiesOver q` using `⟨by`. Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Polynomial.algebraMap_eq, Ideal.mem_map_C_iff]`. Use `⟨fun h n => ?_, fun h => by simpa using h 0⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.coeff_C]`. Use `split_ifs`. Conclude with `h`. Conclude with `q.zero_mem⟩`. Establish `h2` using `GroundTheory.Heights₂.Heights.localMult_map_of_flat (B := Polynomial A) (Ideal.span {eval₂Hom c t (linForm u)}) q (q.map Polynomial.C) Localization.AtPrime.map_eq_maximalIdeal`.
+
+Rewrite using `[← h2, Ideal.map_span, Set.image_singleton, Polynomial.algebraMap_eq, localMult, localMult, dif_pos hp, dif_pos hp]`. Use `congrArg (fun I : Ideal (Localization.AtPrime (q.map (Polynomial.C : A →+* Polynomial A))) => (Module.length (Localization.AtPrime (q.map (Polynomial.C : A →+* Polynomial A))) (_ ⧸ I)).toNat) ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, map_mul, Ideal.span_singleton_mul_left_unit (IsLocalization.map_units _ (⟨_, hX⟩ : (q.map Polynomial.C).primeCompl))]`.
+-/
 theorem localMult_pr (hs : Function.Surjective (eval₂Hom c t)) (hk : t k = 1) (u : Fin m → R)
     (q : Ideal A) [hq : q.IsPrime] :
     localMult (pr c t ⊥ ⊔ Ideal.span {linForm u}) (pr c t q) =

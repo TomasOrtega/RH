@@ -9,9 +9,17 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 
 namespace GlobalTheory.KZ.GamComm
 
+/- English proof (translation)
+Simplify `congrArg (ZMod.castHom hK (ZMod K)) h` using `only [map_intCast]`.
+-/
 theorem intCast_eq_of_dvd {K M : ℕ} (hK : K ∣ M) {x y : ℤ} (h : (x : ZMod M) = y) : (x : ZMod K) = y := by
   simpa only [map_intCast] using congrArg (ZMod.castHom hK (ZMod K)) h
 
+/- English proof (translation)
+Introduce `γ hγ`. Take `⟨h1, h2, h3, h4⟩` from `CongruenceSubgroup.Gamma_mem.1 hγ`. Use `CongruenceSubgroup.Gamma_mem.2 ⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1)` using `using intCast_eq_of_dvd hK (y := 1) (by simpa`. Simplify `h2)` using `using intCast_eq_of_dvd hK (y := 0) (by simpa`.
+
+Simplify `h3)` using `using intCast_eq_of_dvd hK (y := 0) (by simpa`. Simplify `h4)` using `using intCast_eq_of_dvd hK (y := 1) (by simpa`.
+-/
 theorem gamma_le_of_dvd {K M : ℕ} (hK : K ∣ M) : CongruenceSubgroup.Gamma M ≤ CongruenceSubgroup.Gamma K := by
   intro γ hγ
   obtain ⟨h1, h2, h3, h4⟩ := CongruenceSubgroup.Gamma_mem.1 hγ
@@ -21,6 +29,21 @@ theorem gamma_le_of_dvd {K M : ℕ} (hK : K ∣ M) : CongruenceSubgroup.Gamma M 
   · simpa using intCast_eq_of_dvd hK (y := 0) (by simpa using h3)
   · simpa using intCast_eq_of_dvd hK (y := 1) (by simpa using h4)
 
+/- English proof (translation)
+Use `Subgroup.mem_inf.2 ⟨?_, mul_mem (Subgroup.mem_inf.1 hg).2 (inv_mem (Subgroup.mem_inf.1 hδ).2)⟩` and prove the remaining obligations. Establish `a1 : (en g 1 0 : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.1 (Subgroup.mem_inf.1 hg).1`. Establish `a2 : (en δ 1 0 : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.1 (Subgroup.mem_inf.1 hδ).1`. Establish `hdet : (en δ 0 0 : ZMod N) * en δ 1 1 - en δ 0 1 * en δ 1 0 = 1`. Establish `h` using `δ.det_coe`.
+
+Rewrite `h` using `[Matrix.det_fin_two]`. Use `congrArg (Int.cast : ℤ → ZMod N) h` as an intermediate fact. Simplify `this` using `[en]`. Establish `e00 : en (g * δ⁻¹) 0 0 = en g 0 0 * en δ 1 1 - en g 0 1 * en δ 1 0`. Simplify using `[en, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e10 : en (g * δ⁻¹) 1 0 = en g 1 0 * en δ 1 1 - en g 1 1 * en δ 1 0`. Simplify using `[en, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `e11 : en (g * δ⁻¹) 1 1 = en g 1 1 * en δ 0 0 - en g 1 0 * en δ 0 1`.
+
+Simplify using `[en, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Use `(CongruenceSubgroup.Gamma1_mem N _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((en (g * δ⁻¹) 0 0 : ℤ) : ZMod N) = 1`. Rewrite using `[e00]`.
+
+Use `push_cast`. Take the linear combination `hdet - (en δ 1 1 : ZMod N) * h00 + ((en δ 0 1 : ZMod N) - en g 0 1) * a2`. Express the relevant statement in the definitionally equal form `((en (g * δ⁻¹) 1 1 : ℤ) : ZMod N) = 1`. Rewrite using `[e11]`. Use `push_cast`.
+
+Take the linear combination `hdet - (en δ 0 0 : ZMod N) * h11 + (en δ 0 1 : ZMod N) * a2 - (en δ 0 1 : ZMod N) * a1`. Express the relevant statement in the definitionally equal form `((en (g * δ⁻¹) 1 0 : ℤ) : ZMod N) = 0`. Rewrite using `[e10]`. Use `push_cast`. Rewrite using `[a1, a2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_inv_mem_Gam (N l : ℕ) (g δ : SL(2, ℤ))
     (hg : g ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l)
     (hδ : δ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l)
@@ -53,6 +76,21 @@ theorem mul_inv_mem_Gam (N l : ℕ) (g δ : SL(2, ℤ))
     rw [e10]; push_cast
     rw [a1, a2]; ring
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X N l w _ hN b hb δ hδ s`. Use function extensionality and compare the values at `u`. Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Establish `hcls` using `GlobalTheory.KZ.H3.cls_props Ω ε X l n`. Establish `hF` using `hcls.2.2.2.2.2.1`.
+
+Take `⟨f, hf⟩` from `hcls.1 (AdicCompletion.eval (idl l) (X.Kl l) n (b ![(mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1]))`. Take `⟨M₀, hM₀, hlev⟩` from `X.level (f : X.K)`. Establish `hlp : 0 < l` using `(Fact.out : l.Prime).pos`. Take `⟨M, hM, hM0, hMN, hMl, hMn⟩ : ∃ M : ℕ, 0 < M ∧ M₀ ∣ M ∧ N ∣ M ∧ l ∣ M ∧ l ^ n ∣ M` from `⟨M₀ * N * l * l ^ n, by positivity, ⟨N * l * l ^ n, by ring⟩, ⟨M₀ * l * l ^ n, by ring⟩, ⟨M₀ * N * l ^ n, by ring⟩, ⟨M₀ * N * l, by ring⟩⟩`. Take `⟨ζ, hζ, i, hi, hs, hχ⟩` from `GlobalTheory.exists_primitiveRoot_pow_cyclotomicCharacter l n M hM hMn s`.
+
+Take `⟨g, h00, h01, h10, h11⟩` from `GlobalTheory.exists_sl2_conj_diag_zmod M i hi δ`. Establish `hc : (en δ 0 0 : ZMod M) = en g 0 0 ∧ (en δ 0 1 : ZMod M) = ((i : ℤ) : ZMod M) * en g 0 1 ∧ ((i : ℤ) : ZMod M) * en δ 1 0 = en g 1 0 ∧ (en δ 1 1 : ZMod M) = en g 1 1` using `⟨h00, by simpa only [Int.cast_natCast] using h01, by simpa only [Int.cast_natCast] using h10, h11⟩`. Establish `hrec` using `X.recip M f hM (fun γ hγ => hlev γ (gamma_le_of_dvd hM0 hγ)) ζ hζ s i (by rw [zpow_natCast, hs]) g δ hc`. Establish `h10' : (((i : ℤ) * en δ 1 0 : ℤ) : ZMod M) = en g 1 0` using `by push_cast; exact h10`. Establish `hg0 : ∀ K : ℕ, K ∣ M → δ ∈ CongruenceSubgroup.Gamma0 K → g ∈ CongruenceSubgroup.Gamma0 K` using `fun K hK h => by`.
+
+Establish `a : (en δ 1 0 : ZMod K) = 0` using `CongruenceSubgroup.Gamma0_mem.1 h`. Use `CongruenceSubgroup.Gamma0_mem.2 ((intCast_eq_of_dvd hK h10').symm.trans ?_)` and prove the remaining obligations. Rewrite using `[Int.cast_mul, a, mul_zero]`. Establish `hgam : g * δ⁻¹ ∈ Gam N l` using `mul_inv_mem_Gam N l g δ (Subgroup.mem_inf.2 ⟨hg0 N hMN (Subgroup.mem_inf.1 hδ).1, hg0 l hMl (Subgroup.mem_inf.1 hδ).2⟩) hδ (intCast_eq_of_dvd hMN h00) (intCast_eq_of_dvd hMN h11)`. Establish `hact : X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) b = X.act l (g : Matrix (Fin 2) (Fin 2) ℤ) b`.
+
+Establish `e : (g : Matrix (Fin 2) (Fin 2) ℤ) = ((g * δ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) * (δ : Matrix (Fin 2) (Fin 2) ℤ)`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_right]`. Rewrite using `[e, ← Tower.act_act Ω ε X l _ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos) (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos), hb.2 _ hgam]`. Establish `hpol` using `StabGal.eval_Pol_congr X l w b hb.1 n _ _ (StabGal.twist_congr l n M hMn δ g i (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) hc (by simpa only [Int.cast_natCast] using hχ) u)`. Rewrite using `[hact]`.
+
+Establish `hL` using `hF (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv _ _ (hF (X.gal s) _ _ hf.symm)`. Establish `hR` using `hF (X.gal s) _ _ (hF (X.sl (toGQ (g : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv _ _ (hpol.symm.trans hf.symm))`. Use `hL.trans (Eq.trans ?_ hR.symm)` and prove the remaining obligations. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ)) (X.gal s f) = X.gal s (X.sl (toGQ (g : Matrix (Fin 2) (Fin 2) ℤ)) f)`. Rewrite using `[StabGal.toGQ_SL, StabGal.toGQ_SL, hrec]`.
+-/
 theorem act_galB_comm : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (N l w : ℕ) [Fact l.Prime], 1 ≤ N → ∀ b ∈ X.BSet N l w, ∀ δ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l, ∀ s : Ω ≃ₐ[ℚ] Ω, X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) (X.galB l s b) = X.galB l s (X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) b) := by
   intro Ω _ _ _ ε X N l w _ hN b hb δ hδ s
   funext u

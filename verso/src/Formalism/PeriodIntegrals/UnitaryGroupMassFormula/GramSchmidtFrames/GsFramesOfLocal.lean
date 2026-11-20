@@ -5,6 +5,9 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.GsFr
 open PI.UnitaryGroupMassFormula.DLm.Gram
 
+/- English proof (translation)
+The claim follows from `gsFrames_of_gf gfBase gfSat gfStab hL`.
+-/
 theorem gsFrames_of_local (hL : GfLocal) : GsFrames :=
   gsFrames_of_gf gfBase gfSat gfStab hL
 

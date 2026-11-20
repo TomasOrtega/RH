@@ -8,6 +8,11 @@ namespace GlobalTheory.CompanionTheory.KOneFactor
 
 open GlobalTheory.LocGL GlobalTheory.LocGL.IwahoriFactor
 
+/- English proof (translation)
+Take `⟨hP, hD⟩` from `(GlobalTheory.SmGL.mem_unipRadLower k).1 hc`. Establish `hB` using `(GlobalTheory.SmGL.mem_parabLower_iff k).1 hP`. Take `⟨⟨a, p⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, q⟩, rfl⟩` from `e.surjective j`. Simplify using `only [Equiv.symm_apply_apply] at hij`.
+
+Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Break down `(not_lt.1 hij).lt_or_eq with hab | rfl` into its components or cases. Rewrite using `[hB a b p q hab, GlobalTheory.LocGL.IwahoriFactor.one_ne e hab.ne p q]`. Rewrite using `[hD a p q, GlobalTheory.LocGL.IwahoriFactor.one_same e a p q]`.
+-/
 theorem sub_one_apply_eq_zero {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n s : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin n)
     {c : GL (Fin n) k} (hc : c ∈ unipRadLower k e) (i j : Fin n)
@@ -22,6 +27,23 @@ theorem sub_one_apply_eq_zero {k : Type} [Field k] [ValuativeRel k] [Topological
   · rw [hB a b p q hab, GlobalTheory.LocGL.IwahoriFactor.one_ne e hab.ne p q]
   · rw [hD a p q, GlobalTheory.LocGL.IwahoriFactor.one_same e a p q]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s d e g hg`. Take `⟨c, hc, hgc⟩` from `GlobalTheory.LocGL.IwahoriFactor.exists_mul_mem_parab e hg`. Establish `hcP : c ∈ GlobalTheory.SplitWeil.KOne k (Fin n)` using `by first`. Consider the case `exact hc.2`. Consider the case `exact hc.1`.
+
+Consider the case `exact (Subgroup.mem_inf.1 hc).2`. Consider the case `exact (Subgroup.mem_inf.1 hc).1`. Establish `hcl : c⁻¹ ∈ GlobalTheory.SmGL.unipRadLower k e`. Establish `hci` using `inv_mem hc`. Use `first`.
+
+Consider the case `exact hci.1`. Consider the case `exact hci.2`. Consider the case `exact (Subgroup.mem_inf.1 hci).1`. Consider the case `exact (Subgroup.mem_inf.1 hci).2`. Consider the case `exact hci`.
+
+Take `⟨p, hp, u, hu, hpu⟩` from `GlobalTheory.LocGL.IwahoriFactor.exists_jLevi_mul_jPlus e hgc (mul_mem hg hcP)`. Establish `hpP : p ∈ GlobalTheory.SplitWeil.KOne k (Fin n)` using `GlobalTheory.LocGL.jLevi_le_KOne e hp`. Take `⟨m, rfl⟩ : ∃ m, GlobalTheory.SmGL.leviEmb k e m = p` from `by first`. Consider the case `exact hp.1`. Consider the case `exact hp.2`.
+
+Consider the case `exact hp`. Consider the case `(obtain ⟨m, -, hm⟩ := hp; exact ⟨m, hm⟩)`. Consider the case `(obtain ⟨⟨m, hm⟩, -⟩ := hp; exact ⟨m, hm⟩)`. Consider the case `(obtain ⟨-, ⟨m, hm⟩⟩ := hp; exact ⟨m, hm⟩)`. Use `⟨m, hpP, u, ?_, c⁻¹, ?_, eq_mul_inv_of_mul_eq hpu⟩` and prove the remaining obligations.
+
+Establish `hug : (GlobalTheory.SmGL.leviEmb k e m)⁻¹ * (g * c) = u` using `inv_mul_eq_iff_eq_mul.2 hpu`. Establish `huP : u ∈ GlobalTheory.SplitWeil.KOne k (Fin n)`. Rewrite using `[← hug]`. Conclude with `mul_mem (inv_mem hpP) (mul_mem hg hcP)`. Establish `hur : u ∈ GlobalTheory.SmGL.unipRad k e` using `by first`.
+
+Consider the case `exact hu`. Consider the case `exact hu.1`. Consider the case `exact hu.2`. Consider the case `exact (Subgroup.mem_inf.1 hu).1`. Consider the case `exact (Subgroup.mem_inf.1 hu).2`.
+
+Conclude with `Subgroup.mem_inf.2 ⟨hur, huP⟩`. Use `show _ ∧ _`. Conclude with `⟨inv_mem hcP, fun i j hij => GlobalTheory.CompanionTheory.KOneFactor.sub_one_apply_eq_zero e hcl i j hij⟩`.
+-/
 theorem kone_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ∀ g ∈ KOne k (Fin n),
     ∃ m : Levi k (fun a => Fin (d a)), leviEmb k e m ∈ KOne k (Fin n) ∧
       ∃ x ∈ unipRad k e ⊓ KOne k (Fin n), ∃ c ∈ lowC k e, g = leviEmb k e m * x * c := by

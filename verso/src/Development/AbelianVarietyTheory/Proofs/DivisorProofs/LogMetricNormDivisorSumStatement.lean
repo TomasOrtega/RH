@@ -24,6 +24,9 @@ open CategoryTheory AlgebraicGeometry IsDedekindDomain GlobalTheory.TrueGeo Glob
 open Classical GlobalTheory.HtAdd
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HtAddCx.log_pn_comb | exact GlobalTheory.HtAddCx.log_pn_comb | (intros; apply GlobalTheory.HtAddCx.log_pn_comb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_metric_norm_divisor_sum : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) {ι : Type} (s : Finset ι) (a : ι → Sym D.host.E)
     (n : ι → ℤ), (∀ i ∈ s, (a i).2.1 = none) → ∀ (x : (O.var c).X) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ),
     under z = x →

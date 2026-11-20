@@ -18,16 +18,28 @@ def lRoot (m : ℕ) : Om l :=
   Nat.rec (motive := fun _ => Om l) (l : Om l)
     (fun _ x => (IsAlgClosed.exists_pow_nat_eq x (Fact.out : l.Prime).pos).choose) m
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lRoot_zero : lRoot l 0 = (l : Om l) := rfl
 
+/- English proof (translation)
+The claim follows from `(IsAlgClosed.exists_pow_nat_eq (lRoot l m) (Fact.out : l.Prime).pos).choose_spec`.
+-/
 theorem lRoot_succ (m : ℕ) : lRoot l (m + 1) ^ l = lRoot l m :=
   (IsAlgClosed.exists_pow_nat_eq (lRoot l m) (Fact.out : l.Prime).pos).choose_spec
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', pow_mul, lRoot_succ, ih]`.
+-/
 theorem lRoot_pow (m : ℕ) : lRoot l m ^ (l ^ m) = (l : Om l) := by
   induction m with
   | zero => simp
   | succ m ih => rw [pow_succ', pow_mul, lRoot_succ, ih]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `lRoot_pow l m`. Rewrite `h` using `[h0, zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero) h.symm`.
+-/
 theorem lRoot_ne_zero (m : ℕ) : lRoot l m ≠ 0 := by
   intro h0
   have h := lRoot_pow l m
@@ -36,6 +48,15 @@ theorem lRoot_ne_zero (m : ℕ) : lRoot l m ≠ 0 := by
 
 variable {l} (P : LocPrime l)
 
+/- English proof (translation)
+Establish `hp : ∀ k, P.ζQ k ^ l ^ k = 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+
+Establish `h1 : ∀ k, P.ζQ (k + 1) ^ l ^ k = P.ζQ 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+
+Consider the cases of `m with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ m`. Establish `h` using `orderOf_eq_prime_pow (x := P.ζQ (m + 1)) (p := l) (n := m) (by rw [h1]; exact P.ζQ_one) (hp _)`. Rewrite using `[← h]`.
+
+Conclude with `IsPrimitiveRoot.orderOf _`.
+-/
 theorem isPrimitiveRoot_zeta (m : ℕ) : IsPrimitiveRoot (P.ζQ m) (l ^ m) := by
   have hp : ∀ k, P.ζQ k ^ l ^ k = 1 := by
     intro k
@@ -55,6 +76,9 @@ theorem isPrimitiveRoot_zeta (m : ℕ) : IsPrimitiveRoot (P.ζQ m) (l ^ m) := by
     rw [← h]
     exact IsPrimitiveRoot.orderOf _
 
+/- English proof (translation)
+Establish `hz` using `isPrimitiveRoot_zeta P m`. Establish `hf : IsOfFinOrder (P.ζQ m)` using `hz.isOfFinOrder (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`. Rewrite using `[hf.pow_eq_pow_iff_modEq, ← hz.eq_orderOf, ZMod.natCast_eq_natCast_iff]`.
+-/
 theorem zeta_pow_eq_iff (m a b : ℕ) :
     P.ζQ m ^ a = P.ζQ m ^ b ↔ (a : ZMod (l ^ m)) = (b : ZMod (l ^ m)) := by
   have hz := isPrimitiveRoot_zeta P m
@@ -64,6 +88,15 @@ theorem zeta_pow_eq_iff (m a b : ℕ) :
 def IsKummer (g : GQ l) (c : ℤ_[l]) : Prop :=
   ∀ m, g (lRoot l m) = P.ζQ m ^ (PadicInt.toZModPow m c).val * lRoot l m
 
+/- English proof (translation)
+Establish `hne : ∀ m, NeZero (l ^ m)` using `fun m => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h1 : ∀ m, ∃ a : ℕ, g (lRoot l m) = P.ζQ m ^ a * lRoot l m`. Introduce `m`. Take `⟨a, -, ha⟩` from `(isPrimitiveRoot_zeta P m).eq_pow_of_pow_eq_one (ξ := g (lRoot l m) / lRoot l m) (by`. Rewrite using `[div_pow, ← map_pow, lRoot_pow, map_natCast, div_self (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)])`.
+
+Conclude with `⟨a, by rw [ha, div_mul_cancel₀ _ (lRoot_ne_zero l m)]⟩`. Use `choose a ha using h1`. Establish `hd : ∀ i, (l : ℤ) ^ i ∣ (a (i + 1) : ℤ) - (a i : ℤ)`. Introduce `i`. Establish `h2` using `congrArg (· ^ l) (ha (i + 1))`.
+
+Simplify using `only [← map_pow, mul_pow, lRoot_succ] at h2`. Rewrite `h2` using `[← pow_mul, mul_comm (a (i + 1)), pow_mul, P.ζQ_succ, ha i]`. Establish `h3` using `(zeta_pow_eq_iff P i _ _).mp (mul_right_cancel₀ (lRoot_ne_zero l i) h2)`. Rewrite `h3` using `[ZMod.natCast_eq_natCast_iff]`. Conclude with `h3.dvd` after adjusting the coercions.
+
+Use `⟨PadicInt.ofIntSeq (fun i => (a i : ℤ)) (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub _ l hd), fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ l hd, ha m]`. Use `congr 1`. Rewrite using `[zeta_pow_eq_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isKummer (g : GQ l) : ∃ c, IsKummer P g c := by
   have hne : ∀ m, NeZero (l ^ m) := fun m => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
   have h1 : ∀ m, ∃ a : ℕ, g (lRoot l m) = P.ζQ m ^ a * lRoot l m := by
@@ -89,6 +122,9 @@ theorem exists_isKummer (g : GQ l) : ∃ c, IsKummer P g c := by
   rw [zeta_pow_eq_iff]
   simp
 
+/- English proof (translation)
+Use `PadicInt.ext_of_toZModPow.mp fun m => ?_` and prove the remaining obligations. Establish `: NeZero (l ^ m)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h3` using `(zeta_pow_eq_iff P m _ _).mp (mul_right_cancel₀ (lRoot_ne_zero l m) ((h m).symm.trans (h' m)))`. Simplify using `using h3`.
+-/
 theorem IsKummer.unique {P : LocPrime l} {g : GQ l} {c c' : ℤ_[l]} (h : IsKummer P g c)
     (h' : IsKummer P g c') : c = c' := by
   refine PadicInt.ext_of_toZModPow.mp fun m => ?_
@@ -99,8 +135,16 @@ theorem IsKummer.unique {P : LocPrime l} {g : GQ l} {c c' : ℤ_[l]} (h : IsKumm
 
 def kummer (g : GQ l) : ℤ_[l] := (exists_isKummer P g).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isKummer P g).choose_spec`.
+-/
 theorem isKummer_kummer (g : GQ l) : IsKummer P g (kummer P g) := (exists_isKummer P g).choose_spec
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h m`. Use `isKummer_kummer P g m` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`.
+
+Introduce `h`. Conclude with `(isKummer_kummer P g).unique fun m => by simpa using h m`.
+-/
 theorem kummer_eq_zero_iff (g : GQ l) : kummer P g = 0 ↔ ∀ m, g (lRoot l m) = lRoot l m := by
   constructor
   · intro h m
@@ -110,8 +154,20 @@ theorem kummer_eq_zero_iff (g : GQ l) : kummer P g = 0 ↔ ∀ m, g (lRoot l m) 
   · intro h
     exact (isKummer_kummer P g).unique fun m => by simpa using h m
 
+/- English proof (translation)
+The claim follows from `(kummer_eq_zero_iff P 1).mpr fun _ => rfl`.
+-/
 @[simp] theorem kummer_one : kummer P 1 = 0 := (kummer_eq_zero_iff P 1).mpr fun _ => rfl
 
+/- English proof (translation)
+Establish `hx : ‖(P.χQ g : ℚ_[l])‖ ≤ 1`. Take `⟨a, ha, -⟩` from `P.χQ_cyc g 0 1 (by simp)`. Establish `e : (P.χQ g : ℚ_[l]) = ((P.χQ g : ℚ_[l]) - a) + a` using `by ring`. Rewrite using `[e]`. Use `(Padic.nonarchimedean _ _).trans (max_le (by simpa using ha) ?_)` and prove the remaining obligations.
+
+Conclude with `Padic.norm_int_le_one (p := l) (a : ℤ)` after adjusting the coercions. Set `x : ℤ_[l]` to `⟨P.χQ g, hx⟩`. Establish `key : IsKummer P (g * h) (kummer P g + x * kummer P h)`. Introduce `m`. Establish `: NeZero (l ^ m)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Take `⟨a, ha, hg⟩` from `P.χQ_cyc g m (P.ζQ m) (isPrimitiveRoot_zeta P m).pow_eq_one`. Establish `hxa : PadicInt.toZModPow m x = a`. Rewrite using `[← sub_eq_zero, ← map_natCast (PadicInt.toZModPow m), ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Conclude with `ha`. Rewrite using `[AlgEquiv.mul_apply, isKummer_kummer P h m, map_mul, map_pow, hg, isKummer_kummer P g m, ← mul_assoc, ← pow_mul, ← pow_add]`.
+
+Use `congr 1`. Rewrite using `[zeta_pow_eq_iff]`. Simplify using `[hxa, add_comm]`. Rewrite using `[(isKummer_kummer P (g * h)).unique key]`. Both sides reduce to the same expression.
+-/
 theorem kummer_mul (g h : GQ l) :
     (kummer P (g * h) : ℚ_[l]) = kummer P g + (P.χQ g : ℚ_[l]) * kummer P h := by
   have hx : ‖(P.χQ g : ℚ_[l])‖ ≤ 1 := by
@@ -137,6 +193,13 @@ theorem kummer_mul (g h : GQ l) :
   rw [(isKummer_kummer P (g * h)).unique key]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: IsGalois ℚ_[l] (Om l)` using `{}`. Take `⟨x, hx⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := ℚ_[l]) (lRoot l 1)).2 fun g => (kummer_eq_zero_iff P g).mp (hc g) 1`. Establish `h1 : x ^ l = (l : ℚ_[l])`.
+
+Apply `(algebraMap ℚ_[l] (Om l)).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hx, lRoot_succ, lRoot_zero, map_natCast]`. Establish `h2` using `congrArg Padic.valuation h1`. Rewrite `h2` using `[Padic.valuation_pow, Padic.valuation_p]`. Establish `h3 : (l : ℤ) ∣ 1` using `⟨_, h2.symm⟩`.
+
+Conclude with `(Fact.out : l.Prime).not_dvd_one (by exact_mod_cast h3)`.
+-/
 theorem exists_kummer_ne_zero : ∃ g, kummer P g ≠ 0 := by
   by_contra hc
   push Not at hc
@@ -159,26 +222,47 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
 
 def botExt (l : ℕ) [Fact l.Prime] : FinExt l := ⟨⊥, inferInstance⟩
 
+/- English proof (translation)
+Simplify using `[GK, botExt]`.
+-/
 theorem mem_GK_botExt (g : GQ l) : g ∈ GK (botExt l) := by
   simp [GK, botExt]
 
+/- English proof (translation)
+Establish `h` using `(P.PD (botExt l)).t_act ⟨g, mem_GK_botExt g⟩`. Rewrite `h` using `[P.PD_actB, P.period_datum_t_eq, P.PD_χ]`. Then use the resulting hypothesis.
+-/
 theorem localPrime_galoisAction_periodT (g : GQ l) : P.actQ g P.tB = (P.χQ g : ℚ_[l]) • P.tB := by
   have h := (P.PD (botExt l)).t_act ⟨g, mem_GK_botExt g⟩
   rwa [P.PD_actB, P.period_datum_t_eq, P.PD_χ] at h
 
+/- English proof (translation)
+Establish `h` using `(P.PD (botExt l)).t_φ`. Rewrite `h` using `[P.PD_φ, P.period_datum_t_eq, P.PD_p]`. Then use the resulting hypothesis.
+-/
 theorem localPrime_frobenius_periodT : P.φB P.tB = (l : ℚ_[l]) • P.tB := by
   have h := (P.PD (botExt l)).t_φ
   rwa [P.PD_φ, P.period_datum_t_eq, P.PD_p] at h
 
+/- English proof (translation)
+Establish `h` using `(P.PD (botExt l)).φ_comm ⟨g, mem_GK_botExt g⟩ b`. Rewrite `h` using `[P.PD_actB, P.PD_actB, P.PD_φ, P.PD_φ]`. Then use the resulting hypothesis.
+-/
 theorem phiB_actQ (g : GQ l) (b : P.R.B) : P.φB (P.actQ g b) = P.actQ g (P.φB b) := by
   have h := (P.PD (botExt l)).φ_comm ⟨g, mem_GK_botExt g⟩ b
   rwa [P.PD_actB, P.PD_actB, P.PD_φ, P.PD_φ] at h
 
+/- English proof (translation)
+Introduce `a b hab` and use `(P.PD (botExt l)).φ_inj (by rw [P.PD_φ, P.PD_φ, hab])`.
+-/
 theorem phiB_injective : Function.Injective P.φB := fun a b hab =>
   (P.PD (botExt l)).φ_inj (by rw [P.PD_φ, P.PD_φ, hab])
 
+/- English proof (translation)
+The claim follows from `P.period_datum_t_eq (botExt l) ▸ (P.PD (botExt l)).t_unit`.
+-/
 theorem isUnit_tB : IsUnit P.tB := P.period_datum_t_eq (botExt l) ▸ (P.PD (botExt l)).t_unit
 
+/- English proof (translation)
+Use `⟨⟨(P.PD (botExt l)).t, 0, fun h0 => (P.PD (botExt l)).not_mem_filtration_two ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`.
+-/
 theorem nontrivial_B : Nontrivial P.R.B := by
   refine ⟨⟨(P.PD (botExt l)).t, 0, fun h0 => (P.PD (botExt l)).not_mem_filtration_two ?_⟩⟩
   rw [h0, map_zero]
@@ -189,19 +273,34 @@ abbrev Bst : Type := Polynomial P.R.B
 def stHom (f : P.R.B →ₐ[ℚ_[l]] P.R.B) (y : Bst P) : Bst P →ₐ[ℚ_[l]] Bst P :=
   eval₂AlgHom (CAlgHom.comp f) y fun _ => Commute.all _ _
 
+/- English proof (translation)
+The claim follows from `eval₂_C _ _`.
+-/
 @[simp] theorem stHom_C (f : P.R.B →ₐ[ℚ_[l]] P.R.B) (y : Bst P) (b : P.R.B) :
     stHom P f y (C b) = C (f b) := eval₂_C _ _
 
+/- English proof (translation)
+The claim follows from `eval₂_X _ _`.
+-/
 @[simp] theorem stHom_X (f : P.R.B →ₐ[ℚ_[l]] P.R.B) (y : Bst P) : stHom P f y X = y := eval₂_X _ _
 
+/- English proof (translation)
+Rewrite using `[comp, eval₂_map]`. Both sides reduce to the same expression.
+-/
 theorem stHom_apply (f : P.R.B →ₐ[ℚ_[l]] P.R.B) (y p : Bst P) :
     stHom P f y p = (p.map (f : P.R.B →+* P.R.B)).comp y := by
   rw [comp, eval₂_map]; rfl
 
+/- English proof (translation)
+Rewrite using `[stHom_apply, stHom_apply, derivative_comp, derivative_map]`.
+-/
 theorem derivative_stHom (f : P.R.B →ₐ[ℚ_[l]] P.R.B) (y p : Bst P) :
     derivative (stHom P f y p) = derivative y * stHom P f y (derivative p) := by
   rw [stHom_apply, stHom_apply, derivative_comp, derivative_map]
 
+/- English proof (translation)
+The claim follows from `algHom_ext' (AlgHom.ext hC) hX`.
+-/
 theorem stHom_ext {F G : Bst P →ₐ[ℚ_[l]] Bst P} (hC : ∀ b, F (C b) = G (C b)) (hX : F X = G X) :
     F = G := algHom_ext' (AlgHom.ext hC) hX
 
@@ -213,21 +312,39 @@ def actSt : GQ l →* (Bst P →ₐ[ℚ_[l]] Bst P) where
     simp only [AlgHom.mul_apply, stHom_X, map_add, stHom_C, map_smul, e,
       kummer_mul, add_smul, smul_smul, add_assoc, mul_comm])
 
+/- English proof (translation)
+The claim follows from `stHom_C _ _ _ _`.
+-/
 @[simp] theorem actSt_C (g : GQ l) (b : P.R.B) : actSt P g (C b) = C (P.actQ g b) := stHom_C _ _ _ _
 
+/- English proof (translation)
+The claim follows from `stHom_X _ _ _`.
+-/
 @[simp] theorem actSt_X (g : GQ l) : actSt P g X = X + C ((kummer P g : ℚ_[l]) • P.tB) :=
   stHom_X _ _ _
 
 def phiSt : Bst P →ₐ[ℚ_[l]] Bst P := stHom P P.φB ((l : Bst P) * X)
 
+/- English proof (translation)
+The claim follows from `stHom_C _ _ _ _`.
+-/
 @[simp] theorem phiSt_C (b : P.R.B) : phiSt P (C b) = C (P.φB b) := stHom_C _ _ _ _
 
+/- English proof (translation)
+The claim follows from `stHom_X _ _ _`.
+-/
 @[simp] theorem phiSt_X : phiSt P X = (l : Bst P) * X := stHom_X _ _ _
 
 def monSt : Bst P →ₗ[ℚ_[l]] Bst P := -(derivative.restrictScalars ℚ_[l])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem monSt_apply (p : Bst P) : monSt P p = -derivative p := rfl
 
+/- English proof (translation)
+Establish `: (phiSt P).comp (actSt P g) = (actSt P g).comp (phiSt P)` using `stHom_ext P (fun b => by simp [phiB_actQ]) (by`. Simplify using `only [AlgHom.comp_apply, actSt_X, phiSt_X, map_add, phiSt_C, map_smul, localPrime_frobenius_periodT, map_mul, map_natCast, mul_add]`. Rewrite using `[smul_comm, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, map_mul, map_natCast])`. Conclude with `AlgHom.congr_fun this p`.
+-/
 theorem phiSt_actSt (g : GQ l) (p : Bst P) : phiSt P (actSt P g p) = actSt P g (phiSt P p) := by
   have : (phiSt P).comp (actSt P g) = (actSt P g).comp (phiSt P) :=
     stHom_ext P (fun b => by simp [phiB_actQ]) (by
@@ -236,21 +353,35 @@ theorem phiSt_actSt (g : GQ l) (p : Bst P) : phiSt P (actSt P g p) = actSt P g (
       rw [smul_comm, Nat.cast_smul_eq_nsmul, nsmul_eq_mul, map_mul, map_natCast])
   exact AlgHom.congr_fun this p
 
+/- English proof (translation)
+Use `derivative_stHom P (P.actQ g) (X + C ((kummer P g : ℚ_[l]) • P.tB)) p` as an intermediate fact. Simplify using `only [derivative_add, derivative_X, derivative_C, add_zero, one_mul] at this`. Rewrite using `[monSt_apply, monSt_apply, map_neg]`. Conclude with `congrArg Neg.neg this`.
+-/
 theorem monSt_actSt (g : GQ l) (p : Bst P) : monSt P (actSt P g p) = actSt P g (monSt P p) := by
   have := derivative_stHom P (P.actQ g) (X + C ((kummer P g : ℚ_[l]) • P.tB)) p
   simp only [derivative_add, derivative_X, derivative_C, add_zero, one_mul] at this
   rw [monSt_apply, monSt_apply, map_neg]
   exact congrArg Neg.neg this
 
+/- English proof (translation)
+Use `derivative_stHom P P.φB ((l : Bst P) * X) p` as an intermediate fact. Simplify using `only [derivative_mul, derivative_natCast, zero_mul, derivative_X, mul_one, zero_add] at this`. Rewrite using `[monSt_apply, monSt_apply, map_neg, smul_neg, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Conclude with `congrArg Neg.neg this`.
+-/
 theorem monSt_phiSt (p : Bst P) : monSt P (phiSt P p) = (l : ℚ_[l]) • phiSt P (monSt P p) := by
   have := derivative_stHom P P.φB ((l : Bst P) * X) p
   simp only [derivative_mul, derivative_natCast, zero_mul, derivative_X, mul_one, zero_add] at this
   rw [monSt_apply, monSt_apply, map_neg, smul_neg, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
   exact congrArg Neg.neg this
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem monSt_C_mul (b : P.R.B) (p : Bst P) : monSt P (C b * p) = C b * monSt P p := by
   simp
 
+/- English proof (translation)
+Establish `h : ∀ (n : ℕ) (q : Bst P), (monSt P ^ n) q = (-1) ^ n * derivative^[n] q`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => intro q`.
+
+Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Simplify using `[pow_succ]`. Conclude with `⟨p.natDegree + 1, by rw [h, iterate_derivative_eq_zero (Nat.lt_succ_self _), mul_zero]⟩`.
+-/
 theorem exists_monSt_pow_eq_zero (p : Bst P) : ∃ n : ℕ, (monSt P ^ n) p = 0 := by
   have h : ∀ (n : ℕ) (q : Bst P), (monSt P ^ n) q = (-1) ^ n * derivative^[n] q := by
     intro n
@@ -259,6 +390,11 @@ theorem exists_monSt_pow_eq_zero (p : Bst P) : ∃ n : ℕ, (monSt P ^ n) p = 0 
     | succ n ih => intro q; rw [pow_succ, Module.End.mul_apply, ih]; simp [pow_succ]
   exact ⟨p.natDegree + 1, by rw [h, iterate_derivative_eq_zero (Nat.lt_succ_self _), mul_zero]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: IsAddTorsionFree P.R.B` using `⟨fun n hn a b hab => by`. Establish `h1 : (n : ℚ_[l]) • a = (n : ℚ_[l]) • b` using `by simpa only [Nat.cast_smul_eq_nsmul] using hab`. Conclude with `smul_right_injective _ (Nat.cast_ne_zero.mpr hn) h1⟩`.
+
+Rewrite `h` using `[monSt_apply, neg_eq_zero]`. Conclude with `⟨_, eq_C_of_derivative_eq_zero h⟩`. Introduce and unpack `⟨b, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 theorem monSt_eq_zero_iff (p : Bst P) : monSt P p = 0 ↔ ∃ b, p = C b := by
   constructor
   · intro h
@@ -269,6 +405,11 @@ theorem monSt_eq_zero_iff (p : Bst P) : monSt P p = 0 ↔ ∃ b, p = C b := by
     exact ⟨_, eq_C_of_derivative_eq_zero h⟩
   · rintro ⟨b, rfl⟩; simp
 
+/- English proof (translation)
+Introduce `p q hpq`. Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `e : ∀ r : Bst P, (phiSt P r).comp (C (algebraMap ℚ_[l] P.R.B (l : ℚ_[l])⁻¹) * X) = r.map (P.φB : P.R.B →+* P.R.B)`. Introduce `r`. Rewrite using `[phiSt, stHom_apply, comp_assoc, mul_comp, natCast_comp, X_comp, ← mul_assoc, ← map_natCast C, ← map_mul, ← map_natCast (algebraMap ℚ_[l] P.R.B), ← map_mul, mul_inv_cancel₀ hl, map_one, map_one, one_mul, comp_X]`.
+
+Conclude with `map_injective (P.φB : P.R.B →+* P.R.B) (phiB_injective P) (by rw [← e, ← e, hpq])`.
+-/
 theorem phiSt_injective : Function.Injective (phiSt P) := by
   intro p q hpq
   have hl : (l : ℚ_[l]) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero
@@ -280,6 +421,9 @@ theorem phiSt_injective : Function.Injective (phiSt P) := by
       map_one, one_mul, comp_X]
   exact map_injective (P.φB : P.R.B →+* P.R.B) (phiB_injective P) (by rw [← e, ← e, hpq])
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : monSt P X = -1 := by simp
 
 end Ring

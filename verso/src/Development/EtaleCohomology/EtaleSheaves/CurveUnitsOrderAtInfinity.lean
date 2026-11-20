@@ -7,6 +7,11 @@ open Polynomial IntermediateField.algebraAdjoinAdjoin
 
 namespace LateralTheory.E.CurveUnitsOrderAtInfinity
 
+/- English proof (translation)
+Introduce `k L _ _ _ s hs F hF x hx i`. Substitute `hF` using the available equality. Establish `: UniqueFactorizationMonoid (Algebra.adjoin k {s})` using `hs.uniqueFactorizationMonoid_adjoin`. Establish `: IsIntegrallyClosed (Algebra.adjoin k {s})` using `inferInstance`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' (IntermediateField.adjoin k {s}) hx, coeff_map]`.
+
+Conclude with `((minpoly (Algebra.adjoin k {s}) x).coeff i).2`.
+-/
 theorem minpolyCoeff : LateralTheory.E.E4.LeafMinpolyCoeff := by
   intro k L _ _ _ s hs F hF x hx i
   subst hF
@@ -15,9 +20,15 @@ theorem minpolyCoeff : LateralTheory.E.E4.LeafMinpolyCoeff := by
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' (IntermediateField.adjoin k {s}) hx, coeff_map]
   exact ((minpoly (Algebra.adjoin k {s}) x).coeff i).2
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.E4.LeafOrdInfHom_of_local (LateralTheory.E.E4.LeafOrdInfLocal_of' LateralTheory.E.E4.LeafFinInf_of LateralTheory.E.E4.LeafFinVal_of)`.
+-/
 theorem ordInfHom : LateralTheory.E.E4.LeafOrdInfHom :=
   LateralTheory.E.E4.LeafOrdInfHom_of_local (LateralTheory.E.E4.LeafOrdInfLocal_of' LateralTheory.E.E4.LeafFinInf_of LateralTheory.E.E4.LeafFinVal_of)
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.E4.LeafUnits_of (LateralTheory.E.E4.LeafUnitsFG_of_dim LateralTheory.E.E4.LeafNoetherDim_of (LateralTheory.E.E4.LeafOrdAtInfinity_of_cut ordInfHom minpolyCoeff))`.
+-/
 theorem LeafUnits_of : LateralTheory.E.E4.LeafUnits :=
   LateralTheory.E.E4.LeafUnits_of (LateralTheory.E.E4.LeafUnitsFG_of_dim LateralTheory.E.E4.LeafNoetherDim_of
     (LateralTheory.E.E4.LeafOrdAtInfinity_of_cut ordInfHom minpolyCoeff))

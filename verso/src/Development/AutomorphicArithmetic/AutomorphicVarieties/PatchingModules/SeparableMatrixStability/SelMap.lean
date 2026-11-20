@@ -6,6 +6,13 @@ section
 
 variable {A R R' : Type} [CommRing A] [CommRing R] [Algebra A R] [CommRing R'] [Algebra A R'] (f : R →ₐ[A] R') {n : ℕ}
 
+/- English proof (translation)
+Introduce `N`. Establish `hmap : Ideal.map f ((Ideal.span {algebraMap A R t}) ^ N) = (Ideal.span {algebraMap A R' t}) ^ N`. Rewrite using `[Ideal.map_pow, Ideal.map_span, Set.image_singleton, AlgHom.commutes]`. Establish `hle : (Ideal.span {algebraMap A R t}) ^ N ≤ ((Ideal.span {algebraMap A R' t}) ^ N).comap (f : R →+* R')`. Rewrite using `[← Ideal.map_le_iff_le_comap]`.
+
+Conclude with `hmap.le`. Establish `e : (fun g => Ideal.Quotient.mk ((Ideal.span {algebraMap A R' t}) ^ N) (f (u g))) = (Ideal.quotientMap _ (f : R →+* R') hle) ∘ (fun g => Ideal.Quotient.mk ((Ideal.span {algebraMap A R t}) ^ N) (u g))`. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`. Express the relevant statement in the definitionally equal form `IsLocallyConstant (fun g => Ideal.Quotient.mk ((Ideal.span {algebraMap A R' t}) ^ N) (f (u g)))`.
+
+Rewrite using `[e]`. Conclude with `(hu N).comp _`.
+-/
 private theorem adic_map {G : Type} [TopologicalSpace G] (t : A) (u : G → R)
     (hu : AdicCont (Ideal.span {algebraMap A R t}) u) :
     AdicCont (Ideal.span {algebraMap A R' t}) fun g => f (u g) := by
@@ -26,18 +33,33 @@ private theorem adic_map {G : Type} [TopologicalSpace G] (t : A) (u : G → R)
   rw [e]
   exact (hu N).comp _
 
+/- English proof (translation)
+The claim follows from `map_mul f.mapMatrix M N`.
+-/
 private theorem mm_mul (M N : Matrix (Fin n) (Fin n) R) : (M * N).map f = M.map f * N.map f :=
   map_mul f.mapMatrix M N
 
+/- English proof (translation)
+The claim follows from `map_add f.mapMatrix M N`.
+-/
 private theorem mm_add (M N : Matrix (Fin n) (Fin n) R) : (M + N).map f = M.map f + N.map f :=
   map_add f.mapMatrix M N
 
+/- English proof (translation)
+The claim follows from `map_sub f.mapMatrix M N`.
+-/
 private theorem mm_sub (M N : Matrix (Fin n) (Fin n) R) : (M - N).map f = M.map f - N.map f :=
   map_sub f.mapMatrix M N
 
+/- English proof (translation)
+The claim follows from `map_neg f.mapMatrix M`.
+-/
 private theorem mm_neg (M : Matrix (Fin n) (Fin n) R) : (-M).map f = -M.map f :=
   map_neg f.mapMatrix M
 
+/- English proof (translation)
+Unfold `dY`. Rewrite using `[mm_sub, mm_mul, mm_mul]`.
+-/
 private theorem dY_map {l : ℕ} [Fact l.Prime] (F : GFrame l) (ρ : F.G₀ → Matrix (Fin n) (Fin n) R)
     (Y : Matrix (Fin n) (Fin n) R) (g : F.G₀) :
     (dY F ρ Y g).map f = dY F (fun g => (ρ g).map f) (Y.map f) g := by
@@ -46,6 +68,19 @@ private theorem dY_map {l : ℕ} [Fact l.Prime] (F : GFrame l) (ρ : F.G₀ → 
 
 end
 
+/- English proof (translation)
+Introduce `l _ F n A R R' _ _ _ _ _ f t ρ w wi V V' hV z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5, h6⟩`. Use `⟨fun g => hV _ (h1 g), fun i j => ?_, fun g k => ?_, fun g => ?_, fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `adic_map f t (fun g => z g i j) (h2 i j)`.
+
+Use `beta_reduce`. Rewrite using `[h3, mm_add, mm_mul, mm_mul]`. Use `beta_reduce`. Rewrite using `[h4, mm_neg, Matrix.transpose_map]`. Use `beta_reduce`.
+
+Rewrite using `[h5 u g hg]`. Conclude with `Matrix.map_zero _ (map_zero f)`. Take `⟨Y, hY, hloc⟩` from `h6 v`. Use `⟨Y.map f, hV _ hY, fun g => ?_⟩` and prove the remaining obligations. Establish `key : (wi v).map f * ((z ((F.φ v) g)).map f - dY F (fun g => (ρ g).map f) (Y.map f) ((F.φ v) g)) * (w v).map f = (wi v * (z ((F.φ v) g) - dY F ρ Y ((F.φ v) g)) * w v).map f`.
+
+Rewrite using `[mm_mul, mm_mul, mm_sub, dY_map]`. Take `⟨hl1, hl2⟩` from `hloc g`. Use `⟨fun i j hij => ?_, fun hg i => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[key, Matrix.map_apply, hl1 i j hij, map_zero]`.
+
+Use `beta_reduce`. Rewrite using `[key, Matrix.map_apply, hl2 hg i, map_zero]`. Introduce and unpack `⟨Y, hY, hT, rfl⟩`. Use `⟨Y.map f, hV _ hY, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.transpose_map, hT, mm_neg]`.
+
+Use function extensionality and compare the values at `g`. Conclude with `dY_map f F ρ Y g`.
+-/
 theorem UpperTheory.V.Pa.sel_map :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (A R R' : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing R'] [Algebra A R'] (f : R →ₐ[A] R') (t : A) (ρ : F.G₀ → Matrix (Fin n) (Fin n) R) (w wi : F.Vl → Matrix (Fin n) (Fin n) R) (V : Submodule A (Matrix (Fin n) (Fin n) R)) (V' : Submodule A (Matrix (Fin n) (Fin n) R')), (∀ Z ∈ V, Z.map f ∈ V') → ∀ z, (z ∈ SelZ F t ρ w wi V → (fun g => (z g).map f) ∈ SelZ F t (fun g => (ρ g).map f) (fun v => (w v).map f) (fun v => (wi v).map f) V') ∧ (z ∈ Bd F ρ V → (fun g => (z g).map f) ∈ Bd F (fun g => (ρ g).map f) V') := by
   intro l _ F n A R R' _ _ _ _ _ f t ρ w wi V V' hV z

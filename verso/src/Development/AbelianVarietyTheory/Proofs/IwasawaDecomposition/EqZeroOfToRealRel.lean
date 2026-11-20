@@ -11,6 +11,11 @@ section ConeFacts
 
 variable {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Establish `h0 : ∑ i : Fin (m + 1), (Fin.cons (-1) c : Fin (m + 1) → ℝ) i • toReal ((LinearMap.id : LinearMap.BilinForm ℤ X →ₗ[ℤ] LinearMap.BilinForm ℤ X) ((Fin.cons β γ : Fin (m + 1) → LinearMap.BilinForm ℤ X) i)) = 0`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, LinearMap.id_apply, neg_one_smul, ← h, neg_add_cancel]`. Establish `key` using `sum_mul_eq_zero_of_sum_toReal (fun _ _ hab => hab) ℓ h0`. Rewrite `key` using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ] at key`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem apply_eq_of_toReal_eq {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {c : Fin m → ℝ}
     {β : LinearMap.BilinForm ℤ X} (h : toReal β = ∑ i, c i • toReal (γ i)) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) :
     (ℓ β : ℝ) = ∑ i, c i * ℓ (γ i) := by
@@ -24,6 +29,11 @@ theorem apply_eq_of_toReal_eq {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ 
   simp only [Fin.cons_zero, Fin.cons_succ] at key
   linarith
 
+/- English proof (translation)
+Take `⟨c, hc, hβ⟩` from `h`. Establish `e` using `apply_eq_of_toReal_eq hβ ℓ`. Establish `hr : (0 : ℝ) ≤ ℓ β`. Rewrite using `[e]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hℓ i)`.
+
+Conclude with `hr` after adjusting the coercions.
+-/
 theorem InRCone.apply_nonneg {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {β : LinearMap.BilinForm ℤ X}
     (h : InRCone γ β) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (hℓ : ∀ i, 0 ≤ ℓ (γ i)) : 0 ≤ ℓ β := by
   obtain ⟨c, hc, hβ⟩ := h
@@ -33,6 +43,11 @@ theorem InRCone.apply_nonneg {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X
     exact Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hℓ i)
   exact_mod_cast hr
 
+/- English proof (translation)
+Use `choose a ha hδe using hδ`. Take `⟨b, hb, hβe⟩` from `hβ`. Use `⟨fun i => ∑ j, b j * a j i, fun i => Finset.sum_nonneg fun j _ => mul_nonneg (hb j) (ha j i), ?_⟩` and prove the remaining obligations. Rewrite using `[hβe]`. Simplify using `only [hδe, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`.
+-/
 theorem inRCone_trans {m n : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {δ : Fin n → LinearMap.BilinForm ℤ X}
     (hδ : ∀ j, InRCone γ (δ j)) {β : LinearMap.BilinForm ℤ X} (hβ : InRCone δ β) : InRCone γ β := by
   choose a ha hδe using hδ
@@ -42,6 +57,27 @@ theorem inRCone_trans {m n : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} {δ
   simp only [hδe, Finset.smul_sum, smul_smul, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hpt : ∀ x y : X, ∑ j, r j * (u j x y : ℝ) = ∑ k, s k * (v k x y : ℝ)`. Introduce `x y`. Establish `hxy` using `congrArg (fun B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ => B x y) h`. Simplify `hxy` using `[LinearMap.sum_apply, toReal_apply]`. It suffices to establish `hf : ∀ (f : Module.Dual ℚ ℝ) (j : Fin a), f (r j) = 0 by`.
+
+Use function extensionality and compare the values at `j`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℚ (r j)).mp fun f => hf f j`. Introduce `f`. Establish `e : ∀ (t : ℝ) (n : ℤ), f (t * n) = n * f t`. Introduce `t n`.
+
+Rewrite using `[mul_comm, ← zsmul_eq_mul, map_zsmul, zsmul_eq_mul]`. Establish `hq : ∀ x y : X, ∑ j, ((u j x y : ℤ) : ℚ) * f (r j) = ∑ k, ((v k x y : ℤ) : ℚ) * f (s k)`. Introduce `x y`. Establish `hxy` using `congrArg f (hpt x y)`. Rewrite `hxy` using `[map_sum, map_sum]`.
+
+Simplify `hxy` using `only [e]`. Set `N : ℕ` to `(∏ j, (f (r j)).den) * ∏ k, (f (s k)).den`. Establish `hN : (N : ℚ) ≠ 0`. Establish `: N ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun j _ => (f (r j)).den_nz) (Finset.prod_ne_zero_iff.mpr fun k _ => (f (s k)).den_nz)`. Conclude with `this` after adjusting the coercions.
+
+Establish `key : ∀ q : ℚ, q.den ∣ N → ((((N / q.den : ℕ) : ℤ) * q.num : ℤ) : ℚ) = N * q`. Introduce `q hq'`. Establish `hd : (q.den : ℚ) ≠ 0` using `by exact_mod_cast q.den_nz`. Rewrite using `[Int.cast_mul, Int.cast_natCast, Nat.cast_div hq' hd]`. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc, Rat.num_div_den]`.
+
+Establish `hdr : ∀ j, (f (r j)).den ∣ N` using `fun j => dvd_mul_of_dvd_left (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)) _`. Establish `hds : ∀ k, (f (s k)).den ∣ N` using `fun k => dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ k)) _`. Set `c : Fin a → ℤ` to `fun j => ((N / (f (r j)).den : ℕ) : ℤ) * (f (r j)).num`. Set `d : Fin b → ℤ` to `fun k => ((N / (f (s k)).den : ℕ) : ℤ) * (f (s k)).num`. Establish `hc : ∀ j, (c j : ℚ) = N * f (r j)` using `fun j => key _ (hdr j)`.
+
+Establish `hd : ∀ k, (d k : ℚ) = N * f (s k)` using `fun k => key _ (hds k)`. Establish `hrel : ∑ j, c j • u j = ∑ k, d k • v k`. Use extensionality with `x y`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Use `push_cast`. Simplify using `only [hc, hd]`. Use `hq x y` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+
+Use `_ = N * ∑ k, ((v k x y : ℤ) : ℚ) * f (s k) := by rw [this]`. Use `_ = ∑ k, (N : ℚ) * f (s k) * (v k x y : ℚ) := by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Establish `h0` using `hind d c hrel`. Introduce `j`.
+
+Establish `hcj : (c j : ℚ) = 0` using `by rw [h0]; simp`. Rewrite `hcj` using `[hc j]`. Establish `: (f (r j) : ℚ) = 0` using `(mul_eq_zero.mp hcj).resolve_left hN`. Conclude with `this` after adjusting the coercions.
+-/
 theorem eq_zero_of_toReal_rel {a b : ℕ} {u : Fin a → LinearMap.BilinForm ℤ X} {v : Fin b → LinearMap.BilinForm ℤ X}
     (hind : ∀ (d : Fin b → ℤ) (c : Fin a → ℤ), ∑ j, c j • u j = ∑ k, d k • v k → c = 0)
     {r : Fin a → ℝ} {s : Fin b → ℝ} (h : ∑ j, r j • toReal (u j) = ∑ k, s k • toReal (v k)) : r = 0 := by
@@ -108,6 +144,13 @@ section CellFacts
 variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X]
 
+/- English proof (translation)
+Take `⟨hmem, hnn, hlin, hstr⟩` from `h`. Use `⟨fun i => hmem (e i), fun i y => hnn (e i) y, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Use `hlin (fun i => c (e.symm i)) (fun i => hc _) using 1` and compare the differences between its conclusion and the goal. Use `congr 1`.
+
+Use function extensionality and compare the values at `x y`. Conclude with `Fintype.sum_equiv e _ _ (fun i => by simp)`. Conclude with `Fintype.sum_equiv e _ _ (fun i => by simp)`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hstr`. Use `⟨N, ℓ, hN, fun i => h1 (e i), h2, ?_⟩` and prove the remaining obligations.
+
+Introduce `β hβ hβn heq`. Take `⟨k, c, hk, hkc⟩` from `h3 β hβ hβn heq`. Use `⟨k, fun i => c (e i), hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hkc]`. Conclude with `(Fintype.sum_equiv e _ _ (fun _ => rfl)).symm`.
+-/
 theorem IsCell.reindex {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (h : IsCell bar φ γ) (e : Fin m' ≃ Fin m) :
     IsCell bar φ fun i => γ (e i) := by
   obtain ⟨hmem, hnn, hlin, hstr⟩ := h
@@ -128,6 +171,9 @@ theorem IsCell.reindex {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (
 
 end CellFacts
 
+/- English proof (translation)
+The claim follows from `inRCone_trans (δ := ![mulForm]) (fun j => by fin_cases j exact ⟨![1, 0], fun i => by fin_cases i <;> norm_num, LinearMap.ext₂ fun a b => by simp [Fin.sum_univ_two]⟩) ⟨![2], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩`.
+-/
 example : InRCone (fun i : Fin 2 => (![mulForm, mulForm] : Fin 2 → LinearMap.BilinForm ℤ ℤ) (Equiv.swap 0 1 i))
     ((2 : ℤ) • mulForm) :=
   inRCone_trans (δ := ![mulForm]) (fun j => by

@@ -11,6 +11,15 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory.KeyOriginEnlarge
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP q hq0 hqT A _ _ _ _ _ _ i hi hil hqA EA _ _ _ _ _ QA _ hQA jA hjA ψA hψA DA _ _ actA htor`. Establish `hF : GlobalTheory.KeyOriginEnlarge.Fits T O q A i EA QA jA ψA DA actA` using `⟨hi, hil, hqA, hQA, hjA, hψA, htor⟩`. Take `⟨A₁, _, _, _, _, _, _, i₁, EA₁, _, _, _, _, _, QA₁, _, jA₁, ψA₁, DA₁, _, _, act₁, hF₁, ⟨ρ₁, hR₁, -⟩, β₁, h₁, hβ₁, hh₁⟩` from `GlobalTheory.T.enlarge_strictHenselisation_retract_mod T O hT P φ hφ hsh hP q hq0 hqT A i EA QA jA ψA DA actA hF`. Take `⟨A₂, _, _, _, _, _, _, i₂, EA₂, _, _, _, _, _, QA₂, _, jA₂, ψA₂, DA₂, _, _, act₂, hF₂, ⟨ρ₂, hR₂, hpt₂⟩, β₂, h₂, hβ₂, hh₂⟩` from `GlobalTheory.T.enlarge_base_separable_point_integralClosure T O hT P φ hφ hsh hP q hq0 hqT A₁ i₁ EA₁ QA₁ jA₁ ψA₁ DA₁ act₁ hF₁ ρ₁ hR₁`. Take `⟨A₃, _, _, _, _, _, _, i₃, EA₃, _, _, _, _, _, QA₃, _, jA₃, ψA₃, DA₃, _, _, act₃, hF₃, ⟨ρ₃, hR₃, hgood⟩, β₃, h₃, hβ₃, hh₃⟩` from `GlobalTheory.T.etale_enlarge_by_uniformiser_roots T O hT P φ hφ hsh hP q hq0 hqT A₂ i₂ EA₂ QA₂ jA₂ ψA₂ DA₂ act₂ hF₂ ρ₂ hR₂ hpt₂`.
+
+Use `⟨A₃, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, EA₃, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA₃, inferInstance, hF₃.2.2.2.1, hF₃.2.2.1, ρ₃, hR₃.1, hR₃.2.1, jA₃, ψA₃, hF₃.2.2.2.2.2.1, DA₃, inferInst …` and prove the remaining obligations. Use extensionality with `x`. Establish `a1` using `RingHom.congr_fun hβ₁ x`. Establish `a2` using `RingHom.congr_fun hβ₂ (β₁ x)`. Establish `a3` using `RingHom.congr_fun hβ₃ (β₂ (β₁ x))`.
+
+Simplify using `only [RingHom.comp_apply] at a1 a2 a3 ⊢`. Rewrite using `[a3, a2, a1]`. Use extensionality with `x`. Establish `a1` using `RingHom.congr_fun hh₁ x`. Establish `a2` using `RingHom.congr_fun hh₂ (β₁ x)`.
+
+Establish `a3` using `RingHom.congr_fun hh₃ (β₂ (β₁ x))`. Simplify using `only [RingHom.comp_apply] at a1 a2 a3 ⊢`. Rewrite using `[a1, a2, a3]`.
+-/
 theorem enlarge_good : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (P : Ideal (Polynomial T)) [P.IsPrime] (φ : Localization.AtPrime P →+* O),

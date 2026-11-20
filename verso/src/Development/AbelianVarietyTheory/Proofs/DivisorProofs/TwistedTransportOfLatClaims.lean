@@ -18,6 +18,9 @@ namespace GlobalTheory.TwistedTransportProof
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `modF`. Use `finprod_induction (fun x : ℝ => ∃ q : ℚ, (q : ℝ) = x) ⟨1, by simp⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩; exact ⟨a * b, by push_cast; ring⟩`. Introduce `v`. Conclude with `⟨((Ideal.absNorm v.asIdeal : ℕ) : ℚ) ^ (WithZero.log (Valued.v ((y : Af E) v))), by push_cast; rfl⟩`.
+-/
 theorem modF_rat (y : (Af E)ˣ) : ∃ q : ℚ, (q : ℝ) = modF y := by
   unfold modF
   refine finprod_induction (fun x : ℝ => ∃ q : ℚ, (q : ℝ) = x) ⟨1, by simp⟩ ?_ ?_
@@ -25,12 +28,20 @@ theorem modF_rat (y : (Af E)ˣ) : ∃ q : ℚ, (q : ℝ) = modF y := by
   · intro v
     exact ⟨((Ideal.absNorm v.asIdeal : ℕ) : ℚ) ^ (WithZero.log (Valued.v ((y : Af E) v))), by push_cast; rfl⟩
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `modF_rat y`. Rewrite using `[← hq]`. Establish `: ((((q : ℝ) ^ s : ℝ)) : ℂ) = algebraMap ℚ ℂ (q ^ s)` using `by simp`. Rewrite using `[this]`. Conclude with `isAlgebraic_algebraMap _`.
+-/
 theorem isAlgebraic_modF_pow (y : (Af E)ˣ) (s : ℕ) : IsAlgebraic ℚ (((modF y ^ s : ℝ)) : ℂ) := by
   obtain ⟨q, hq⟩ := modF_rat y
   rw [← hq]
   have : ((((q : ℝ) ^ s : ℝ)) : ℂ) = algebraMap ℚ ℂ (q ^ s) := by simp
   rw [this]; exact isAlgebraic_algebraMap _
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `⟨(a : E)⁻¹ * z, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[← mul_mem_lattice_princ c y a]`.
+
+Simplify using `using hz`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mul_mem_lattice_princ c y a x).2 hx`.
+-/
 theorem lattice_princ_mul (c : Ideal (OF E)) (y : (Af E)ˣ) (a : Eˣ) :
     lattice c (Units.map (algebraMap E (Af E)).toMonoidHom a * y) = (fun x => (a : E) * x) '' lattice c y := by
   ext z
@@ -42,6 +53,11 @@ theorem lattice_princ_mul (c : Ideal (OF E)) (y : (Af E)ˣ) (a : Eˣ) :
   · rintro ⟨x, hx, rfl⟩
     exact (mul_mem_lattice_princ c y a x).2 hx
 
+/- English proof (translation)
+Rewrite `h` using `[QuotientGroup.eq]`. Take `⟨p, ⟨a, rfl⟩, u, hu, hpu⟩` from `Subgroup.mem_sup.1 h`. Establish `e1 : y * (Units.map (algebraMap E (Af E)).toMonoidHom a * u) = y'` using `by rw [hpu, mul_inv_cancel_left]`. Establish `e : y' = Units.map (algebraMap E (Af E)).toMonoidHom a * y * u` using `by rw [← e1]; ac_rfl`. Rewrite using `[e, lattice_mul_unit _ hu, lattice_princ_mul]`.
+
+Conclude with `⟨_, (GlobalTheory.HomothetyLatSum.homothety E I φ hφ s (lattice c y) κ a S hS).1⟩`.
+-/
 theorem exists_isLatSum_of_mk_eq [IsCMField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} (hφ : IsCMType φ) (s : ℕ)
     (κ : I → ℕ) {c : Ideal (OF E)} {y y' : (Af E)ˣ} (h : (QuotientGroup.mk y : PicO c) = QuotientGroup.mk y')
     {S : ℂ → ℂ} (hS : IsLatSum φ (2 * s) κ (lattice c y) S) : ∃ S', IsLatSum φ (2 * s) κ (lattice c y') S' := by
@@ -53,24 +69,41 @@ theorem exists_isLatSum_of_mk_eq [IsCMField E] {I : Type} [Fintype I] {φ : I �
   rw [e, lattice_mul_unit _ hu, lattice_princ_mul]
   exact ⟨_, (GlobalTheory.HomothetyLatSum.homothety E I φ hφ s (lattice c y) κ a S hS).1⟩
 
+/- English proof (translation)
+Unfold `coordIn`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coordIn_eq {I : Type} [Fintype I] (d s : ℕ) (κ : I → ℕ) (Ω T : ℂ) :
     coordIn E d s κ Ω T = coordIn E d s κ Ω 1 * T := by
   unfold coordIn; ring
 
 abbrev lv (χ : HChar E) (s : ℕ) (y : (Af E)ˣ) : ℂ := (finPart χ y : ℂ) * ((modF y ^ s : ℝ) : ℂ)
 
+/- English proof (translation)
+Simplify using `only [lv, map_mul, Units.val_mul, (GlobalTheory.CMVal.modF_mul_pos_principal E).1, mul_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lv_mul (χ : HChar E) (s : ℕ) (y z : (Af E)ˣ) : lv χ s (y * z) = lv χ s y * lv χ s z := by
   simp only [lv, map_mul, Units.val_mul, (GlobalTheory.CMVal.modF_mul_pos_principal E).1, mul_pow]
   push_cast; ring
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.lamF_ne_zero s χ y`.
+-/
 theorem lv_ne_zero (χ : HChar E) (s : ℕ) (y : (Af E)ˣ) : lv χ s y ≠ 0 :=
   GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.lamF_ne_zero s χ y
 
+/- English proof (translation)
+Establish `h` using `lv_mul χ s (y * z⁻¹) z`. Rewrite `h` using `[inv_mul_cancel_right]`. Rewrite using `[h, mul_inv_cancel_right₀ (lv_ne_zero χ s z)]`.
+-/
 theorem lv_mul_inv (χ : HChar E) (s : ℕ) (y z : (Af E)ˣ) : lv χ s (y * z⁻¹) = lv χ s y * (lv χ s z)⁻¹ := by
   have h := lv_mul χ s (y * z⁻¹) z
   rw [inv_mul_cancel_right] at h
   rw [h, mul_inv_cancel_right₀ (lv_ne_zero χ s z)]
 
+/- English proof (translation)
+Establish `hu0` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 ∅ χ hU h𝔣 (fun q hq => by simp at hq) hV`. Establish `hle : condQ 𝔣 Q ≤ condQ 𝔣 ∅`. Unfold `condQ`. Rewrite using `[Finset.prod_empty, mul_one]`. Conclude with `Ideal.mul_le_left`.
+
+Establish `hu : ∀ u ∈ hatOUnits (condQ 𝔣 Q), finPart χ u = 1` using `fun u hu => hu0 u (hatOUnits_mono hle hu)`. Establish `h1` using `GlobalTheory.ToricRatioBridge.isAlgebraic_finPart hV.2.2.1 hu y`. Conclude with `h1.mul (isAlgebraic_modF_pow y s)`.
+-/
 theorem isAlgebraic_lv [IsCMField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ} (hφ : IsCMType φ) {s : ℕ} {κ : I → ℕ}
     {𝔣 : Ideal (OF E)} {Q : Finset (HeightOneSpectrum (OF E))} {χ : HChar E} (hU : UnramFin E) (h𝔣 : IsBaseCond 𝔣)
     (hQ : IsFinSetSplitPlacesCoprimeConductor 𝔣 Q) (hV : IsValChar φ s κ 𝔣 ∅ χ) [Finite (PicO (condQ 𝔣 Q))] (y : (Af E)ˣ) :
@@ -88,11 +121,21 @@ end GlobalTheory.TwistedTransportProof
 
 namespace GlobalTheory.TwistedTransportProof
 
+/- English proof (translation)
+Establish `h : ((ψ q : ℂˣ) : ℂ) ^ (Nat.card G) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Conclude with `IsAlgebraic.of_pow Nat.card_pos (by rw [h]; exact isAlgebraic_one)`.
+-/
 theorem isAlgebraic_unit_val {G : Type} [Group G] [Finite G] (ψ : G →* ℂˣ) (q : G) : IsAlgebraic ℚ ((ψ q : ℂˣ) : ℂ) := by
   have h : ((ψ q : ℂˣ) : ℂ) ^ (Nat.card G) = 1 := by
     rw [← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]
   exact IsAlgebraic.of_pow Nat.card_pos (by rw [h]; exact isAlgebraic_one)
 
+/- English proof (translation)
+Take `⟨hU, hφ, hι, hs, -, h𝔣, hQ, hV⟩` from `hD`. Take `⟨hfin, S, hS, rfl⟩` from `hT`. Establish `: Fintype (PicO (condQ 𝔣 Q))` using `Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype, coordIn_eq, Finset.mul_sum]`. Use `(mem_algebraicClosure_iff (F := ℚ) (E := ℂ)).1 (sum_mem fun q _ => ?_)` and prove the remaining obligations.
+
+Establish `e : coordIn E d s κ Ω₀ 1 * (((ψ q : ℂˣ) : ℂ)⁻¹ * (GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.lamF χ s q.out)⁻¹ * S q 0) = ((ψ q : ℂˣ) : ℂ)⁻¹ * (lv χ s q.out)⁻¹ * coordIn E d s κ Ω₀ (S q 0)`. Rewrite using `[coordIn_eq d s κ Ω₀ (S q 0)]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.lamF, lv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Establish `h1` using `hA K d δ ι h2 hd hδ Λ₀ Ω₀ hΛ₀ hΩ₀ E I φ s 𝔣 Q ⟨hU, hφ, hι, hs, h𝔣, hQ⟩ κ q.out (S q) (hS q)`. Establish `h2` using `isAlgebraic_lv hφ hU h𝔣 hQ hV q.out`. Establish `h3` using `isAlgebraic_unit_val ψ q`. Apply the tactic sequence `refine mul_mem (mul_mem (inv_mem ?_) (inv_mem ?_)) ?_ <;> rw [mem_algebraicClosure_iff] <;> assumption`.
+-/
 theorem alg_part {K : Type} [Field K] [NumberField K] {d : ℕ} {δ : K} {ι : K →+* ℂ} (h2 : Module.finrank ℚ K = 2)
     (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) {Λ₀ : PeriodPair} {Ω₀ : ℂ} (hΛ₀ : IsLatOf ι 1 Λ₀) (hΩ₀ : Ω₀ ^ 12 = latDisc Λ₀)
     (hA : LatAlg) (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I]
@@ -117,6 +160,9 @@ theorem alg_part {K : Type} [Field K] [NumberField K] {d : ℕ} {δ : K} {ι : K
 end GlobalTheory.TwistedTransportProof
 
 namespace GlobalTheory.TwistedTransportProof
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem key_alg (a b l1 l2 lu C N S : ℂ) (ha : a ≠ 0) (hb : b ≠ 0) (h1 : l1 ≠ 0) (h2 : l2 ≠ 0) (hu : lu ≠ 0) :
     a⁻¹ * l1⁻¹ * (C * (N⁻¹ * S)) = C * (N⁻¹ * (lu * b)⁻¹ * ((a * b⁻¹)⁻¹ * l2⁻¹ * (l2 * ((l1 * lu⁻¹)⁻¹ * S)))) := by
   field_simp
@@ -124,6 +170,25 @@ end GlobalTheory.TwistedTransportProof
 
 namespace GlobalTheory.TwistedTransportProof
 
+/- English proof (translation)
+Take `⟨hU, hφ, hι, hs, -, h𝔣, hQ, hV⟩` from `hD`. Take `⟨hfin, S, hS, rfl⟩` from `hT`. Take `⟨-, S', hS', rfl⟩` from `hT'`. Establish `: Fintype (PicO (condQ 𝔣 Q))` using `Fintype.ofFinite _`. Take `⟨ct, hct⟩ : ∃ ct, classOf K (condQ 𝔣 Q) t = ct` from `⟨_, rfl⟩`.
+
+Rewrite using `[hct]`. Establish `hct' : ct = QuotientGroup.mk (upIdele K E t)` using `by rw [← hct, GlobalTheory.ToricRatioBridge.upIdele_eq]; rfl`. Use `set N : ℂ := ((modF t : ℝ) : ℂ) ^ (∑ i, κ i) with hN`. Establish `hu0` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one E I φ hφ s κ 𝔣 ∅ χ hU h𝔣 (fun q hq => by simp at hq) hV`. Establish `hle : condQ 𝔣 Q ≤ condQ 𝔣 ∅`.
+
+Unfold `condQ`. Rewrite using `[Finset.prod_empty, mul_one]`. Conclude with `Ideal.mul_le_left`. Establish `hχu : ∀ w ∈ hatOUnits (condQ 𝔣 Q), finPart χ w = 1` using `fun w hw => hu0 w (hatOUnits_mono hle hw)`. Establish `hχ'u : ∀ w ∈ hatOUnits (condQ 𝔣 Q), finPart χ' w = 1` using `fun w hw => by`.
+
+Establish `h1` using `hcc.1 w`. Establish `hm` using `GlobalTheory.CMVal.LUnit.modF_of_mem_hatOUnits hw`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.lamF, hχu w hw, hm] at h1`. Simplify using `using h1`. Establish `hmk : ∀ q : PicO (condQ 𝔣 Q), (QuotientGroup.mk (q * ct⁻¹).out : PicO (condQ 𝔣 Q)) = QuotientGroup.mk (q.out * (upIdele K E t)⁻¹)` using `fun q => by`.
+
+Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.mk_inv, QuotientGroup.out_eq', hct']`. Use `choose S'' hS'' using fun q : PicO (condQ 𝔣 Q) => exists_isLatSum_of_mk_eq hφ s κ' (hmk q) (hS' (q * ct⁻¹))`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, coordIn_eq d s κ Ω₀, coordIn_eq d s κ Ω₁]`. Simplify using `only [Finset.mul_sum, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight ct⁻¹) _ _ fun q => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_mulRight]`. Establish `hg1 : g (GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.lamF χ s q.out) = lv χ' s q.out` using `(hcc.1 q.out).symm`. Establish `hg2` using `hC K d δ ι h2 hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ₀ hTT E I φ s 𝔣 Q ⟨hU, hφ, hι, hs, h𝔣, hQ⟩ κ κ' hw q.out (S q) (S'' q) (hS q) (hS'' q)`. Establish `h' : (lv χ' s (q.out * (upIdele K E t)⁻¹))⁻¹ * S'' q 0 = (lv χ' s (q * ct⁻¹).out)⁻¹ * S' (q * ct⁻¹) 0` using `GlobalTheory.ClassInvAny.classInv_of_unit_trivial E I φ hφ s κ' (condQ 𝔣 Q) χ' hcc.2 hχ'u (q.out * (upIdele K E t)⁻¹) (q * ct⁻¹).out (S'' q) (S' (q * ct⁻¹)) (hmk q).symm (hS'' q) (hS' (q * ct⁻¹))`. Rewrite `h'` using `[lv_mul_inv, eq_inv_mul_iff_mul_eq₀ (lv_ne_zero _ _ _)]`.
+
+Establish `hsplit : ∀ a b : ℂ, coordIn E d s κ Ω₀ 1 * (a * b * S q 0) = a * b * coordIn E d s κ Ω₀ (S q 0)` using `fun a b => by`. Rewrite using `[coordIn_eq d s κ Ω₀ (S q 0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ((conjChar g ψ (q * ct⁻¹) : ℂˣ) : ℂ) = g (ψ q) * (g (ψ ct))⁻¹`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.coe_conjChar, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`.
+
+Rewrite using `[hsplit, map_mul, map_mul, map_inv₀, map_inv₀, hg1, hg2, coordIn_eq d s κ Ω₁ (N⁻¹ * S'' q 0), ← h', e1, GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.coe_conjChar]`. Establish `n1` using `lv_ne_zero χ' s q.out`. Establish `n2` using `lv_ne_zero χ' s (q * ct⁻¹).out`. Establish `n3` using `lv_ne_zero χ' s (upIdele K E t)`. Establish `n4 : g (ψ q) ≠ 0` using `(map_ne_zero g).2 (Units.ne_zero _)`.
+
+Establish `n5 : g (ψ ct) ≠ 0` using `(map_ne_zero g).2 (Units.ne_zero _)`. Conclude with `key_alg _ _ _ _ _ _ _ _ n4 n5 n1 n2 n3`.
+-/
 theorem conj_part {K : Type} [Field K] [NumberField K] {d : ℕ} {δ : K} {ι : K →+* ℂ} (h2 : Module.finrank ℚ K = 2)
     (hd : 0 < d) (hδ : δ ^ 2 = -(d : K)) {g : ℂ ≃+* ℂ} {t : (Af K)ˣ} {Λ₀ Λ₁ : PeriodPair} {Ω₀ Ω₁ : ℂ}
     (hΩ₀ : Ω₀ ^ 12 = latDisc Λ₀) (hTT : TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁) (hC : LatConj)
@@ -186,6 +251,13 @@ end GlobalTheory.TwistedTransportProof
 
 namespace GlobalTheory.TwistedTransportProof
 
+/- English proof (translation)
+Introduce `K _ _ d δ ι h2 hd hδ`. Use `haveI : IsTotallyComplex K := GlobalTheory.Published.isTotallyComplex_of_sq_eq_neg hd hδ`. Take `⟨Λ₀, hΛ₀⟩` from `GlobalTheory.LatVal.Model.exists_isLatOf d δ ι h2 hd hδ`. Take `⟨Ω₀, hΩ₀⟩` from `IsAlgClosed.exists_pow_nat_eq (latDisc Λ₀) (by norm_num : 0 < 12)`. Establish `hΩ₀0 : Ω₀ ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `latDisc_ne_zero Λ₀ (by rw [← hΩ₀]; norm_num)`. Use `⟨Ω₀, hΩ₀0, fun E _ _ _ _ I _ φ s κ 𝔣 Q χ hD ψ T hT => alg_part h2 hd hδ hΛ₀ hΩ₀ hA E I φ s κ 𝔣 Q χ hD ψ T hT, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ j art hj hart g σ t hσ hsym`. Take `⟨Λ₁, Ω₁, hTT⟩` from `hP K ι h2 Λ₀ Ω₀ hΛ₀ hΩ₀0 Ω j art hj hart g σ t hσ hsym`.
+
+Conclude with `⟨Ω₁, hTT.2.1, fun E _ _ _ _ I _ φ s κ 𝔣 Q χ hD κ' χ' hw hcc ψ T T' hT hT' => conj_part h2 hd hδ hΩ₀ hTT hC E I φ s κ 𝔣 Q χ hD κ' χ' hw hcc ψ T T' hT hT'⟩`.
+-/
 theorem twistedTransport_of_latClaims (hP : PeriodEx) (hA : LatAlg) (hC : LatConj) : TwistedTransport := by
   intro K _ _ d δ ι h2 hd hδ
   haveI : IsTotallyComplex K := GlobalTheory.Published.isTotallyComplex_of_sq_eq_neg hd hδ
@@ -205,5 +277,8 @@ end GlobalTheory.TwistedTransportProof
 
 open GlobalTheory.TwistedTransportProof in
 
+/- English proof (translation)
+The claim follows from `twistedTransport_of_latClaims`.
+-/
 theorem GlobalTheory.TwistedTransportProof.main : PeriodEx → LatAlg → LatConj → GlobalTheory.ToricTransport.TwistedTransport :=
   twistedTransport_of_latClaims

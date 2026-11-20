@@ -14,6 +14,11 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
+/- English proof (translation)
+Take `⟨hadd, hsm, -, -⟩` from `GlobalTheory.T.lie_algebra_of_linear_group_closed hG`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨h0, GlobalTheory.GKLie.dRep_zero π u⟩`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`.
+
+Establish `h1` using `hsm (c x) _ (ha x)`. Use `⟨hadd _ _ h1 ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.derived_action_additive hG hrep hu hu h1 ih.1).1, ih.2, GlobalTheory.GKLie.dRep_smul]`.
+-/
 theorem dRep_realSum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {u : H} (hu : IsSmoothVec G π u) {ι : Type} (s : Finset ι)
@@ -31,6 +36,13 @@ theorem dRep_realSum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type}
     refine ⟨hadd _ _ h1 ih.1, ?_⟩
     rw [(GlobalTheory.T.derived_action_additive hG hrep hu hu h1 ih.1).1, ih.2, GlobalTheory.GKLie.dRep_smul]
 
+/- English proof (translation)
+Take `⟨hadd, hsm, -⟩` from `GlobalTheory.T.smooth_vectors_invariant_subspace hG hrep`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, by simp [dRep]⟩` and prove the remaining obligations. Conclude with `⟨fun _ => 0, contDiff_const, fun z _ => by simp⟩`.
+
+Consider the case `insert x s hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`. Establish `h1 : IsSmoothVec G π (c x • u x)`. Rewrite using `[← Complex.coe_smul]`. Conclude with `hsm _ _ (hu x)`.
+
+Use `⟨hadd _ _ h1 ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.derived_action_additive hG hrep h1 ih.1 hX hX).2.1, ih.2, ← Complex.coe_smul, (GlobalTheory.T.derived_action_additive hG hrep (hu x) (hu x) hX hX).2.2, Complex.coe_smul]`.
+-/
 theorem dRep_vecSum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G)
@@ -52,6 +64,17 @@ theorem dRep_vecSum {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} 
     rw [(GlobalTheory.T.derived_action_additive hG hrep h1 ih.1 hX hX).2.1, ih.2, ← Complex.coe_smul,
       (GlobalTheory.T.derived_action_additive hG hrep (hu x) (hu x) hX hX).2.2, Complex.coe_smul]
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin d) with hd | ⟨⟨i0⟩⟩` into its components or cases. Simplify using `[Finset.univ_eq_empty]`. Establish `h0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ HCSS.lieOf G`. Simplify using `using (GlobalTheory.T.lie_algebra_of_linear_group_closed hG).2.1 0 _ (hb i0)`. Establish `hw : IsSmoothVec G π (π k v)` using `(GlobalTheory.T.smooth_vectors_invariant_subspace hG hrep).2.2 k hk v hv`.
+
+Establish `hT : ∀ m, IsSmoothVec G π (dRep π (b m) (π k v))` using `fun m => (GlobalTheory.T.derived_action_of_smooth_vector hG hrep hw (hb m)).2`. Establish `step : ∀ i, π k (dRep π (b i) (dRep π (b i) v)) = ∑ l, ∑ m, (O l i * O m i) • dRep π (b l) (dRep π (b m) (π k v))`. Introduce `i`. Establish `hsm` using `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep hv (hb i)).2`. Rewrite using `[GlobalTheory.T.derived_action_conjugation hG hrep hsm (hb i) hk, GlobalTheory.T.derived_action_conjugation hG hrep hv (hb i) hk, hkb i, (dRep_realSum hG hrep hw Finset.univ (fun m => O m i) b hb h0).2, (dRep_realSum hG hrep (dRep_vecSum hG hrep (hb i0) Finset.univ (fun m => O m …`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[(dRep_vecSum hG hrep (hb l) Finset.univ (fun m => O m i) _ hT).2, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Establish `hOO : O * Oᵀ = 1` using `mul_eq_one_comm.1 hO`.
+
+Establish `hdelta : ∀ l m, ∑ i, O l i * O m i = (1 : Matrix (Fin d) (Fin d) ℝ) l m` using `fun l m => by`. Rewrite using `[← hOO]`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun i _ => step i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hdelta, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem sumSquares_comm {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {d : ℕ} (b : Fin d → Matrix (Fin n) (Fin n) ℂ)

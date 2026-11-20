@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.ProjOverBase
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo cf C X κ h`. Establish `hs : X.M.s ≫ spMap κ = X.π ≫ C.z`. Use `ext_of_isDominant X.M.pt ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, X.M.pt_s, ← Category.assoc, X.comp]`. Simplify using `only [USetup.uΩ, UCompact.i, Category.assoc] at h ⊢`.
+
+Rewrite using `[h]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom κ) (CommRingCat.ofHom (algebraMap X.o₁ X.Ω₁))).symm`. Use `haveI := C.ded`. Conclude with `GlobalTheory.FiniteOverProj.isProjOver_of_isFinite_over C.o X.o₁ κ X.M.Z C.Z C.z X.π X.M.s C.proj X.fin inferInstance hs`.
+-/
 theorem isProjOver_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (κ : C.o →+* X.o₁), X.uΩ ≫ C.i ≫ C.z = spMap ((algebraMap X.o₁ X.Ω₁).comp κ) → IsProjOver X.M.s := by
   intro E _ _ _ H Dw l Xo cf C X κ h
   have hs : X.M.s ≫ spMap κ = X.π ≫ C.z := by

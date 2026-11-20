@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
+/- English proof (translation)
+Introduce `O _ _ _ _ R _ _ _ _ hcl hdim hinj`. Take `⟨d, φ, -, hφ, -, hd⟩` from `(UpperTheory.V.CA.cl_nn O R hcl).1 hinj`. Rewrite `hd` using `[hdim]`. Establish `hd1 : d + 1 = 1` using `by exact_mod_cast hd.symm`. Take `rfl : d = 0` from `by omega`.
+
+Establish `hsurj : Function.Surjective (algebraMap O (MvPowerSeries (Fin 0) O))`. Introduce `g`. Use `⟨MvPowerSeries.constantCoeff g, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Take `rfl : n = 0` from `Subsingleton.elim _ _`.
+
+Simplify using `[MvPowerSeries.algebraMap_apply]`. Establish `hcomp : algebraMap O R = (φ : MvPowerSeries (Fin 0) O →+* R).comp (algebraMap O (MvPowerSeries (Fin 0) O))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hfin : (algebraMap O R).Finite`.
+
+Rewrite using `[hcomp]`. Conclude with `RingHom.Finite.comp hφ (RingHom.Finite.of_surjective _ hsurj)`. Conclude with `RingHom.finite_algebraMap.mp hfin`.
+-/
 theorem UpperTheory.V.CA.cl_norm0 :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsLocalRing R] [IsDomain R], IsCL O R → ringKrullDim R = 1 → Function.Injective (algebraMap O R) → Module.Finite O R := by
   intro O _ _ _ _ R _ _ _ _ hcl hdim hinj

@@ -13,6 +13,15 @@ namespace GlobalTheory.MemLoc.TiedRegular
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `FitsEx.exists_fits l P AI T`. Use `⟨fun K b hb hg => ?_, fun u => ?_, fun K w => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (T.eB b)`. Use `h.regular C K (T.eB b) (fun h0 => hb (T.eB.injective (h0.trans (map_zero _).symm))) fun g hgK => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hg g hgK`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← T.actB, hx, Algebra.smul_def, map_mul, IsScalarTower.algebraMap_apply ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B, hC.u]`. Both sides reduce to the same expression. Simplify using `using hu.map T.eB.symm`. Take `⟨x, hx⟩` from `GlobalTheory.Published.FontaineBcris.oneSubPhiOnto_of_filZero (h.ontoFilZero C) (T.eB u)`.
+
+Use `⟨T.eB.symm x, T.eB.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, T.frob, RingEquiv.apply_symm_apply, hx]`. Take `⟨x, hx, hF⟩` from `h.fundOnto C (T.eD w)`. Use `⟨T.eB.symm x, T.eB.injective ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.frob, RingEquiv.apply_symm_apply, hx]`.
+
+Rewrite using `[T.fil, map_sub, hC.ι, RingEquiv.apply_symm_apply]`. Conclude with `hF`.
+-/
 theorem regular_onto (h : GlobalTheory.Published.FontaineBcris) (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (T : LocTied l P AI) :
     (∀ (K : FinExt l) (b : P.R.B), b ≠ 0 → (∀ g ∈ GK K, ∃ x : ℚ_[l], P.actQ g b = x • b) → IsUnit b) ∧

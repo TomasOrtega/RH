@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PartitionFracId.exists_partition | exact GlobalTheory.PartitionFracId.exists_partition | (intros; apply GlobalTheory.PartitionFracId.exists_partition <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fractional_ideal_partition_of_unity : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F), ∃ (n : ℕ) (d : Fin n → 𝔠.elt) (a : Fin n → 𝓞 F),
     (∀ j (e : 𝔠.elt), ∃ b : 𝓞 F, a j • e = b • d j) ∧ ∑ j, a j = 1 := by
   first | exact @GlobalTheory.PartitionFracId.exists_partition | exact GlobalTheory.PartitionFracId.exists_partition | (intros; apply GlobalTheory.PartitionFracId.exists_partition <;> assumption)

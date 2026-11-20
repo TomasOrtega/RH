@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `h T.card (fun k => a (T.orderEmbOfFin rfl k)) ?_ (fun k => ha _)` and prove the remaining obligations. Introduce `k k' hk`. Conclude with `hT _ (T.orderEmbOfFin_mem rfl k') _ ((T.orderEmbOfFin rfl).strictMono hk)`.
+-/
 theorem card_record_indices_le_of_chain_bound {α : Type} [Preorder α] (Q : α → Prop) (L : ℕ)
     (h : ∀ (r : ℕ) (N : Fin r → α), StrictMono N → (∀ i, Q (N i)) → r ≤ L)
     {r : ℕ} (a : Fin r → α) (ha : ∀ i, Q (a i)) (T : Finset (Fin r))
@@ -10,6 +13,15 @@ theorem card_record_indices_le_of_chain_bound {α : Type} [Preorder α] (Q : α 
   intro k k' hk
   exact hT _ (T.orderEmbOfFin_mem rfl k') _ ((T.orderEmbOfFin rfl).strictMono hk)
 
+/- English proof (translation)
+Set `Ta : Finset (Fin r)` to `Finset.univ.filter fun j => ∀ i < j, N i ⊓ C < N j ⊓ C`. Set `Tb : Finset (Fin r)` to `Finset.univ.filter fun j => ∀ i < j, N i ⊔ C < N j ⊔ C`. Establish `hA : Ta.card ≤ L1` using `card_record_indices_le_of_chain_bound Q1 L1 h1 (fun i => N i ⊓ C) (fun i => hQ1 _ (hQ i)) Ta (fun j hj => (Finset.mem_filter.1 hj).2)`. Establish `hB : Tb.card ≤ L2` using `card_record_indices_le_of_chain_bound Q2 L2 h2 (fun i => N i ⊔ C) (fun i => hQ2 _ (hQ i)) Tb (fun j hj => (Finset.mem_filter.1 hj).2)`. Establish `hU : (Finset.univ : Finset (Fin r)) ⊆ Ta ∪ Tb`.
+
+Introduce `j _`. Assume the negation of the conclusion as `hj`. Simplify using `only [Ta, Tb, Finset.mem_union, Finset.mem_filter, Finset.mem_univ, true_and, not_or, not_forall] at hj`. Take `⟨⟨i, hi, hia⟩, ⟨i', hi', hib⟩⟩` from `hj`. Establish `hk : max i i' < j` using `max_lt hi hi'`.
+
+Establish `ea : N i ⊓ C = N j ⊓ C` using `eq_of_le_of_not_lt (inf_le_inf_right C (hN hi).le) hia`. Establish `eb : N i' ⊔ C = N j ⊔ C` using `eq_of_le_of_not_lt (sup_le_sup_right (hN hi').le C) hib`. Establish `e : N (max i i') = N j` using `eq_of_le_of_inf_le_of_sup_le (hN hk).le (ea ▸ inf_le_inf_right C (hN.monotone (le_max_left i i'))) (eb ▸ sup_le_sup_right (hN.monotone (le_max_right i i')) C)`. Conclude with `(hN hk).ne e`. Use `(Finset.card_le_card hU).trans (Finset.card_union_le Ta Tb)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem modular_chain_bound_add {α : Type} [Lattice α] [IsModularLattice α] (C : α)
     (Q Q1 Q2 : α → Prop) (L1 L2 : ℕ)
     (hQ1 : ∀ x, Q x → Q1 (x ⊓ C)) (hQ2 : ∀ x, Q x → Q2 (x ⊔ C))

@@ -8,6 +8,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.sumC_of_deepGood_alt | exact _root_.GlobalTheory.CovTop.sumC_of_deepGood_alt | (intros; apply _root_.GlobalTheory.CovTop.sumC_of_deepGood_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sum_c_of_deep_good : _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SumBoundCondition := by
   first | exact @_root_.GlobalTheory.CovTop.sumC_of_deepGood_alt | exact _root_.GlobalTheory.CovTop.sumC_of_deepGood_alt | (intros; apply _root_.GlobalTheory.CovTop.sumC_of_deepGood_alt <;> assumption)
 end

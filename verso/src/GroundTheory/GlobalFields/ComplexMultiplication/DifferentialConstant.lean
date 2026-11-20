@@ -15,6 +15,9 @@ section Const
 
 variable [DecidableEq F] (E : WeierstrassCurve F) {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
 
+/- English proof (translation)
+Break down `R with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `omegaAt_zero E`. Apply the tactic sequence `refine omegaAt_some_eq E _ ?_ ?_ <;> rw [smul_zero] <;> exact (D_coeff _).symm`.
+-/
 theorem omegaAt_constMap (R : E.toAffine.Point) : omegaAt E (constMap E L R) = 0 := by
   rcases R with _ | ⟨x, y, h⟩
   · exact omegaAt_zero E
@@ -26,6 +29,13 @@ section Points
 
 variable (E : WeierstrassCurve F) [E.IsElliptic]
 
+/- English proof (translation)
+Establish `key : ∀ x : F, ∃ y : F, E.toAffine.Equation x y`. Introduce `x`. Use `set q : F[X] := X ^ 2 + C (E.a₁ * x + E.a₃) * X - C (x ^ 3 + E.a₂ * x ^ 2 + E.a₄ * x + E.a₆)`. Establish `hq : q.degree = 2` using `by simp only [q]; compute_degree!`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_root q (by rw [hq]; decide)`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[equation_iff]`. Simplify using `only [q, IsRoot, eval_sub, eval_add, eval_mul, eval_pow, eval_X, eval_C] at hy`. Take the linear combination `hy`. Use `choose y hy using key`.
+
+Use `Infinite.of_injective (fun x => (Point.some x (y x) (WeierstrassCurve.Affine.equation_iff_nonsingular.mp (hy x)) : E.toAffine.Point)) ?_` and prove the remaining obligations. Introduce `a b h`. Simplify using `only [Point.some.injEq] at h`. Conclude with `h.1`.
+-/
 theorem infinite_points [IsAlgClosed F] : Infinite E.toAffine.Point := by
   have key : ∀ x : F, ∃ y : F, E.toAffine.Equation x y := by
     intro x
@@ -50,6 +60,11 @@ section AlgClosed
 
 variable [IsAlgClosed F] [DecidableEq F] {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
+/- English proof (translation)
+Establish `h1` using `isogenyPullback_invariantDifferential_eq_smul φ`. Rewrite `h1` using `[isogenyPullback_invariantDifferential]`. Establish `h2` using `congrArg (kpush (translate E R)) h1`. Rewrite `h2` using `[kpush_omegaAt, Isogeny.map_translate, omegaAt_add, omegaAt_constMap, add_zero, h1, kpush_smul, invariantDifferential, kpush_omegaAt, map_translate_genericPoint, omegaAt_add]`. Establish `h3 : omegaAt E (constPoint E R) = 0` using `omegaAt_constMap E R`.
+
+Rewrite `h2` using `[h3, add_zero]`. Conclude with `(smul_left_injective _ (invariantDifferential_ne_zero E) h2).symm`.
+-/
 theorem translate_isogCoeff (φ : Isogeny E E') (R : E.toAffine.Point) :
     translate E R (isogCoeff φ) = isogCoeff φ := by
   have h1 := isogenyPullback_invariantDifferential_eq_smul φ
@@ -61,6 +76,15 @@ theorem translate_isogCoeff (φ : Isogeny E E') (R : E.toAffine.Point) :
   rw [h3, add_zero] at h2
   exact (smul_left_injective _ (invariantDifferential_ne_zero E) h2).symm
 
+/- English proof (translation)
+Use `set K := E.toAffine.FunctionField`. Use `set c := isogCoeff φ`. Assume the negation of the conclusion as `hne`. Establish `hc : Transcendental F c` using `fun halg => hne (exists_algebraMap_eq_of_isAlgebraic' halg)`. Establish `: FiniteDimensional F⟮c⟯ K` using `finiteDimensional_adjoin_of_transcendental E hc`.
+
+Establish `hfix : ∀ R : E.toAffine.Point, ∀ z ∈ F⟮c⟯, translate E R z = z`. Introduce `R z hz`. Proceed by induction on `hz using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => rw [Set.mem_singleton_iff.mp hx]`. Conclude with `translate_isogCoeff φ R`.
+
+Consider the case `algebraMap x => exact (translate E R).commutes x`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `inv x _ hx => rw [map_inv₀, hx]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy]`. Set `T : E.toAffine.Point → (K →ₐ[F⟮c⟯] K)` to `fun R => { (translate E R).toRingHom with commutes' := fun r => hfix R r r.2 }`.
+
+Establish `hT : Function.Injective T`. Introduce `R S h`. Conclude with `translate_inj E (AlgHom.ext fun f => DFunLike.congr_fun h f)`. Establish `hfin : Finite E.toAffine.Point` using `Finite.of_injective T hT`. Conclude with `(not_finite_iff_infinite.mpr (infinite_points E)) hfin`.
+-/
 theorem exists_isogCoeff_eq_algebraMap (φ : Isogeny E E') :
     ∃ a : F, algebraMap F E.toAffine.FunctionField a = isogCoeff φ := by
   set K := E.toAffine.FunctionField
@@ -88,14 +112,23 @@ theorem exists_isogCoeff_eq_algebraMap (φ : Isogeny E E') :
 noncomputable def isogConst (φ : Isogeny E E') : F :=
   (exists_isogCoeff_eq_algebraMap φ).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isogCoeff_eq_algebraMap φ).choose_spec`.
+-/
 theorem algebraMap_isogConst (φ : Isogeny E E') :
     algebraMap F E.toAffine.FunctionField (isogConst φ) = isogCoeff φ :=
   (exists_isogCoeff_eq_algebraMap φ).choose_spec
 
+/- English proof (translation)
+Rewrite using `[isogenyPullback_invariantDifferential_eq_smul, ← algebraMap_isogConst, algebraMap_smul]`.
+-/
 theorem isogenyPullback_invariantDifferential_eq_const_smul (φ : Isogeny E E') :
     isogenyPullback φ (invariantDifferential E') = isogConst φ • invariantDifferential E := by
   rw [isogenyPullback_invariantDifferential_eq_smul, ← algebraMap_isogConst, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `(algebraMap F E.toAffine.FunctionField).injective (by rw [map_add, algebraMap_isogConst, algebraMap_isogConst, algebraMap_isogConst, isogCoeff_add h])`.
+-/
 theorem isogConst_add {φ ψ χ : Isogeny E E'} (h : χ.1 = φ.1 + ψ.1) :
     isogConst χ = isogConst φ + isogConst ψ :=
   (algebraMap F E.toAffine.FunctionField).injective (by
@@ -103,15 +136,24 @@ theorem isogConst_add {φ ψ χ : Isogeny E E'} (h : χ.1 = φ.1 + ψ.1) :
 
 variable (E) in
 
+/- English proof (translation)
+The claim follows from `(algebraMap F E.toAffine.FunctionField).injective (by rw [algebraMap_isogConst, isogCoeff_mulIsogeny, map_intCast])`.
+-/
 theorem isogConst_mulIsogeny (n : ℤ) (hn : n ≠ 0) : isogConst (mulIsogeny E n hn) = n :=
   (algebraMap F E.toAffine.FunctionField).injective (by
     rw [algebraMap_isogConst, isogCoeff_mulIsogeny, map_intCast])
 
+/- English proof (translation)
+Rewrite using `[isSeparable_iff_isogCoeff_ne_zero, ← algebraMap_isogConst, ne_eq, ne_eq, map_eq_zero_iff _ (algebraMap F E.toAffine.FunctionField).injective]`.
+-/
 theorem isSeparable_iff_isogConst_ne_zero (φ : Isogeny E E') :
     φ.IsSeparable ↔ isogConst φ ≠ 0 := by
   rw [isSeparable_iff_isogCoeff_ne_zero, ← algebraMap_isogConst, ne_eq, ne_eq,
     map_eq_zero_iff _ (algebraMap F E.toAffine.FunctionField).injective]
 
+/- English proof (translation)
+Distinguish the cases in `hQ : Q = 0`. Conclude with `⟨0, by rw [hQ, map_zero, map_zero]⟩`. Conclude with `exists_isogCoeff_eq_algebraMap (isogOfHom Q hQ)`.
+-/
 theorem exists_homCoeff_eq_algebraMap (Q : isogHom E E') :
     ∃ a : F, algebraMap F E.toAffine.FunctionField a = homCoeff E E' Q := by
   by_cases hQ : Q = 0
@@ -128,10 +170,16 @@ noncomputable def homConst : isogHom E E' →+ F where
     rw [(exists_homCoeff_eq_algebraMap (Q₁ + Q₂)).choose_spec, map_add, map_add,
       (exists_homCoeff_eq_algebraMap Q₁).choose_spec, (exists_homCoeff_eq_algebraMap Q₂).choose_spec])
 
+/- English proof (translation)
+The claim follows from `(exists_homCoeff_eq_algebraMap Q).choose_spec`.
+-/
 theorem algebraMap_homConst (Q : isogHom E E') :
     algebraMap F E.toAffine.FunctionField (homConst E E' Q) = homCoeff E E' Q :=
   (exists_homCoeff_eq_algebraMap Q).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← homCoeff_smul, ← algebraMap_homConst, algebraMap_smul]`.
+-/
 theorem omegaAt_eq_homConst_smul (Q : isogHom E E') :
     omegaAt E' Q.1 = homConst E E' Q • invariantDifferential E := by
   rw [← homCoeff_smul, ← algebraMap_homConst, algebraMap_smul]

@@ -33,6 +33,9 @@ end Real
 open Formalism.REAL (UJ KG)
 open Formalism.MainNotions.S (IsDS)
 
+/- English proof (translation)
+The claim follows from `hD.1; IsPCG (ujMat ε) μ (ujRep hD.2.2.1) f := haveI := hD.1 ⟨h.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩`.
+-/
 theorem IsPC'.isPCG {r : ℕ} {ε : Fin r → Bool} {lam : Fin r → ℤ} {μ : Measure (UJ ε)} {X : Type} [NormedAddCommGroup X]
     [InnerProductSpace ℂ X] {D : Matrix (Fin r) (Fin r) ℂ → (X →L[ℂ] X)} {hD : IsDS ε (fun a => (lam a : ℝ)) D}
     {f : UJ ε → ℂ} (h : IsPC' ε lam μ D hD f) : haveI := hD.1; IsPCG (ujMat ε) μ (ujRep hD.2.2.1) f :=
@@ -85,12 +88,18 @@ def IsTestFnGX (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μa : ∀
   ∃ fa ff, IsTestArchGX M μa fa ∧ IsTestFin T U μf ff ∧ f = tensor D.sp.cm.sig V.gram fa ff
 variable {M} {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
 
+/- English proof (translation)
+Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Use `(M.ds ρ).1` as an intermediate fact. Conclude with `ccArch_eq (isCMExt_host D) (embOverOf D ρ) ▸ (h ρ).mem`.
+-/
 theorem IsTestArchGX.mem {fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ} (h : IsTestArchGX M μa fa)
     (w : InfinitePlace D.host.F) : fa w ∈ CcArch D.sp.cm.sig V.gram w := by
   obtain ⟨ρ, rfl⟩ := (placeOf_bijective D).2 w
   have := (M.ds ρ).1
   exact ccArch_eq (isCMExt_host D) (embOverOf D ρ) ▸ (h ρ).mem
 
+/- English proof (translation)
+Take `⟨fa, ff, ha, hf, rfl⟩` from `h`. Conclude with `⟨⟨fa, ff, ha.mem, hf.isFinFamily, rfl⟩, tensor_mem_ccAd ha.mem hf.isFinFamily⟩`.
+-/
 theorem IsTestFnGX.isPureTensor {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} {f : GA D V → ℂ} (h : IsTestFnGX M T U μa μf f) :
     IsPureTensor D.sp.cm.sig V.gram (frameLat V) f ∧ f ∈ CcGA V := by
   obtain ⟨fa, ff, ha, hf, rfl⟩ := h
@@ -155,6 +164,9 @@ def NonFieldTypeVanishingX : Prop :=
     ProductClause μa μf μ fa ff (ratEmb D.sp.cm.sig V.gram γ) ∧
     ZeroClause μ (tensor D.sp.cm.sig V.gram fa ff) (ratEmb D.sp.cm.sig V.gram γ)
 
+/- English proof (translation)
+Take `⟨fa, ff, ha, hb, rfl⟩` from `hf`. Conclude with `(h D V hr S M T U hH μa μf μ hμ fa ff ha hb γ hγ).2.2`.
+-/
 theorem NonFieldTypeVanishingX.zero (h : NonFieldTypeVanishingX) (hr : Odd V.rank) {S : D.what₂.Tau → SPar}
     {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V} (hH : HypH (k := fun v : T.S => ResF v.1) T.τ)
     {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}

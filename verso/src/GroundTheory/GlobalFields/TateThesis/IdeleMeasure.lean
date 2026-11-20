@@ -113,6 +113,13 @@ end SecondCountable
 
 section Borel
 
+/- English proof (translation)
+Establish `h : ∀ x ∈ U, ∃ t ∈ 𝓝 x, t ⊆ U ∧ IsCompact t` using `fun x hx ↦ local_compact_nhds (hU.mem_nhds hx)`. Use `choose! t ht using h`. Take `⟨T, hTU, hTc, hT⟩` from `isOpen_biUnion_countable U (fun x ↦ interior (t x)) fun _ _ ↦ isOpen_interior`. Establish `hcov : ⋃ x ∈ T, t x = U`. Use `subset_antisymm (Set.iUnion₂_subset fun x hx ↦ (ht x (hTU hx)).2.1) fun y hy ↦ ?_` and prove the remaining obligations.
+
+Establish `hy' : y ∈ ⋃ x ∈ U, interior (t x)` using `Set.mem_biUnion hy (mem_interior_iff_mem_nhds.2 (ht y hy).1)`. Rewrite `hy'` using `[← hT]`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 hy'`. Conclude with `Set.mem_biUnion hx (interior_subset hyx)`. Rewrite using `[← hcov]`.
+
+Conclude with `isSigmaCompact_biUnion hTc fun x hx ↦ (ht x (hTU hx)).2.2.isSigmaCompact`.
+-/
 theorem isSigmaCompact_of_isOpen {X : Type*} [TopologicalSpace X]
     [SecondCountableTopology X] [LocallyCompactSpace X] {U : Set X} (hU : IsOpen U) :
     IsSigmaCompact U := by
@@ -131,6 +138,13 @@ theorem isSigmaCompact_of_isOpen {X : Type*} [TopologicalSpace X]
   rw [← hcov]
   exact isSigmaCompact_biUnion hTc fun x hx ↦ (ht x (hTU hx)).2.2.isSigmaCompact
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h` using `hf.borel_measurable`. Rewrite `h` using `[← BorelSpace.measurable_eq (α := Y)]`. Conclude with `h.comap_le`. Use `MeasurableSpace.generateFrom_le fun U hU ↦ ?_` and prove the remaining obligations.
+
+Take `⟨k, hk, hkU⟩` from `isSigmaCompact_of_isOpen hU`. Establish `: U = f ⁻¹' ⋃ n, f '' k n`. Rewrite using `[Set.preimage_iUnion, ← hkU]`. Conclude with `Set.iUnion_congr fun n ↦ (hinj.preimage_image _).symm`. Rewrite using `[this]`.
+
+Conclude with `⟨_, MeasurableSet.iUnion fun n ↦ ((hk n).image hf).isClosed.measurableSet, rfl⟩`.
+-/
 theorem comap_eq_borel_of_continuous_injective {X Y : Type*}
     [TopologicalSpace X] [SecondCountableTopology X] [LocallyCompactSpace X]
     [TopologicalSpace Y] [T2Space Y] [MeasurableSpace Y] [BorelSpace Y] {f : X → Y}
@@ -148,6 +162,9 @@ theorem comap_eq_borel_of_continuous_injective {X Y : Type*}
     rw [this]
     exact ⟨_, MeasurableSet.iUnion fun n ↦ ((hk n).image hf).isClosed.measurableSet, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨comap_eq_borel_of_continuous_injective Units.continuous_val Units.val_injective⟩`.
+-/
 theorem borelSpace_units {M : Type*} [Monoid M] [TopologicalSpace M]
     [T2Space M] [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology Mˣ]
     [LocallyCompactSpace Mˣ] : BorelSpace Mˣ :=
@@ -178,6 +195,9 @@ instance locallyCompactSpace_units_of_locallyCompact :
 instance borelSpace_units_of_locallyCompact : BorelSpace Fˣ :=
   borelSpace_units
 
+/- English proof (translation)
+The claim follows from `Units.isOpenEmbedding_val.measurableEmbedding`.
+-/
 theorem measurableEmbedding_units_val :
     MeasurableEmbedding (Units.val : Fˣ → F) :=
   Units.isOpenEmbedding_val.measurableEmbedding
@@ -187,16 +207,33 @@ def unitsMeasure (μ : Measure F) (m : ℕ) : Measure Fˣ :=
 
 variable (μ : Measure F) (m : ℕ)
 
+/- English proof (translation)
+Rewrite using `[unitsMeasure, measurableEmbedding_units_val.comap_apply, withDensity_apply _ (measurableEmbedding_units_val.measurableSet_image' hs)]`.
+-/
 theorem unitsMeasure_apply {s : Set Fˣ} (hs : MeasurableSet s) :
     unitsMeasure μ m s = ∫⁻ x in Units.val '' s, ENNReal.ofReal (‖x‖ ^ m)⁻¹ ∂μ := by
   rw [unitsMeasure, measurableEmbedding_units_val.comap_apply, withDensity_apply _
     (measurableEmbedding_units_val.measurableSet_image' hs)]
 
 omit [LocallyCompactSpace F] [SecondCountableTopology F] in
+/- English proof (translation)
+The claim follows from `ENNReal.measurable_ofReal.comp ((measurable_norm.pow_const m).inv)`.
+-/
 theorem measurable_density_unitsMeasure :
     Measurable fun x : F ↦ ENNReal.ofReal (‖x‖ ^ m)⁻¹ :=
   ENNReal.measurable_ofReal.comp ((measurable_norm.pow_const m).inv)
 
+/- English proof (translation)
+Use `⟨fun g ↦ Measure.ext fun s hs ↦ ?_⟩` and prove the remaining obligations. Establish `hmul : Measurable (fun u : Fˣ ↦ g * u)` using `measurable_const_mul g`. Rewrite using `[Measure.map_apply hmul hs, unitsMeasure_apply _ _ (hmul hs), unitsMeasure_apply _ _ hs]`. Establish `himg : Units.val '' ((fun u : Fˣ ↦ g * u) ⁻¹' s) = (fun x : F ↦ (g : F) * x) ⁻¹' (Units.val '' s)`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨g * u, hu, rfl⟩`. Introduce and unpack `⟨v, hv, hvx⟩`. Use `⟨g⁻¹ * v, by simpa using hv, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_mul, hvx, Units.inv_mul_cancel_left]`. Rewrite using `[himg]`. Establish `hT : MeasurableSet (Units.val '' s)` using `measurableEmbedding_units_val.measurableSet_image' hs`. Establish `hf : Measurable (fun x : F ↦ (g : F) * x)` using `measurable_const_mul _`. Establish `hρ` using `measurable_density_unitsMeasure (F := F) m`.
+
+Establish `key : ∫⁻ x in (fun x : F ↦ (g : F) * x) ⁻¹' (Units.val '' s), ENNReal.ofReal (‖x‖ ^ m)⁻¹ ∂μ = ∫⁻ x in (fun x : F ↦ (g : F) * x) ⁻¹' (Units.val '' s), (fun y : F ↦ ENNReal.ofReal (‖((g⁻¹ : Fˣ) : F) * y‖ ^ m)⁻¹) ((g : F) * x) ∂μ` using `setLIntegral_congr_fun (hf hT) fun x _ ↦ by`. Simplify using `only [← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Rewrite using `[key, ← setLIntegral_map (g := fun x : F ↦ (g : F) * x) (f := fun y : F ↦ ENNReal.ofReal (‖((g⁻¹ : Fˣ) : F) * y‖ ^ m)⁻¹) hT (hρ.comp (measurable_const_mul _)) hf, hμ _ g.ne_zero, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, ← lintegral_const_mul' _ _ ENNReal.ofReal …`. Use `setLIntegral_congr_fun hT fun y _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (inv_nonneg.2 (pow_nonneg (norm_nonneg _) _))]`.
+
+Use `congr 1`. Establish `hg : ‖(g : F)‖ ≠ 0` using `norm_ne_zero_iff.2 g.ne_zero`. Rewrite using `[norm_mul, mul_pow, mul_inv, ← mul_assoc, ← mul_inv, Units.val_inv_eq_inv_val, norm_inv, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hg), inv_one, one_mul]`.
+-/
 theorem isMulLeftInvariant_unitsMeasure
     (hμ : ∀ a : F, a ≠ 0 → Measure.map (a * ·) μ = ENNReal.ofReal (‖a‖ ^ m)⁻¹ • μ) :
     (unitsMeasure μ m).IsMulLeftInvariant := by
@@ -234,6 +271,11 @@ theorem isMulLeftInvariant_unitsMeasure
   rw [norm_mul, mul_pow, mul_inv, ← mul_assoc, ← mul_inv, Units.val_inv_eq_inv_val, norm_inv,
     inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hg), inv_one, one_mul]
 
+/- English proof (translation)
+Use `⟨fun C hC ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[unitsMeasure_apply _ _ hC.isClosed.measurableSet]`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn (f := fun u : Fˣ ↦ (‖(u : F)‖ ^ m)⁻¹) ((continuous_norm.comp Units.continuous_val).pow m |>.inv₀ fun u ↦ pow_ne_zero _ (norm_ne_zero_iff.2 u.ne_zero)).continuousOn`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono measurable_const fun x hx ↦ ?_` and prove the remaining obligations.
+
+Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `ENNReal.ofReal_le_ofReal ((le_abs_self _).trans ((Real.norm_eq_abs _).symm.le.trans (hB u hu)))`. Use `_ = ENNReal.ofReal B * μ (Units.val '' C) := setLIntegral_const _ _`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top ((hC.image Units.continuous_val).measure_lt_top)`.
+-/
 theorem isFiniteMeasureOnCompacts_unitsMeasure
     [IsFiniteMeasureOnCompacts μ] : IsFiniteMeasureOnCompacts (unitsMeasure μ m) := by
   refine ⟨fun C hC ↦ ?_⟩
@@ -251,6 +293,11 @@ theorem isFiniteMeasureOnCompacts_unitsMeasure
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top
         ((hC.image Units.continuous_val).measure_lt_top)
 
+/- English proof (translation)
+Use `⟨fun U hU hne ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[unitsMeasure, measurableEmbedding_units_val.comap_apply, ne_eq, withDensity_apply_eq_zero' (measurable_density_unitsMeasure m).aemeasurable]`. Establish `h : {x : F | ENNReal.ofReal (‖x‖ ^ m)⁻¹ ≠ 0} ∩ Units.val '' U = Units.val '' U`. Use `Set.inter_eq_right.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, rfl⟩`.
+
+Simplify using `[pow_pos (norm_pos_iff.2 u.ne_zero) m]`. Rewrite using `[h]`. Conclude with `(Units.isOpenEmbedding_val.isOpenMap U hU).measure_ne_zero μ (hne.image _)`.
+-/
 theorem isOpenPosMeasure_unitsMeasure [μ.IsOpenPosMeasure] :
     (unitsMeasure μ m).IsOpenPosMeasure := by
   refine ⟨fun U hU hne ↦ ?_⟩
@@ -263,6 +310,9 @@ theorem isOpenPosMeasure_unitsMeasure [μ.IsOpenPosMeasure] :
   rw [h]
   exact (Units.isOpenEmbedding_val.isOpenMap U hU).measure_ne_zero μ (hne.image _)
 
+/- English proof (translation)
+The claim follows from `haveI := isMulLeftInvariant_unitsMeasure μ m hμ haveI := isFiniteMeasureOnCompacts_unitsMeasure μ m haveI := isOpenPosMeasure_unitsMeasure μ m { }`.
+-/
 theorem isHaarMeasure_unitsMeasure [μ.IsAddHaarMeasure]
     (hμ : ∀ a : F, a ≠ 0 → Measure.map (a * ·) μ = ENNReal.ofReal (‖a‖ ^ m)⁻¹ • μ) :
     (unitsMeasure μ m).IsHaarMeasure :=
@@ -286,11 +336,17 @@ def infinitePlaceMeasure (w : InfinitePlace K) : Measure w.Completion :=
     ((2 : ℝ≥0∞) • volume)
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `dif_pos hw`.
+-/
 theorem infinitePlaceMeasure_of_isReal {w : InfinitePlace K} (hw : w.IsReal) :
     infinitePlaceMeasure w = Measure.map (isometryEquivRealOfIsReal hw).symm volume :=
   dif_pos hw
 
 omit [NumberField K] in
+/- English proof (translation)
+Rewrite using `[infinitePlaceMeasure, dif_neg (not_isReal_iff_isComplex.2 hw)]`.
+-/
 theorem infinitePlaceMeasure_of_isComplex {w : InfinitePlace K} (hw : w.IsComplex) :
     infinitePlaceMeasure w =
       Measure.map (isometryEquivComplexOfIsComplex hw).symm ((2 : ℝ≥0∞) • volume) := by
@@ -310,6 +366,11 @@ instance isAddHaarMeasure_infinitePlaceMeasure (w : InfinitePlace K) :
       (isometryEquivComplexOfIsComplex hc).symm.continuous
       (isometryEquivComplexOfIsComplex hc).continuous
 
+/- English proof (translation)
+Establish `hdet : LinearMap.det (LinearMap.mulLeft ℝ z) = ‖z‖ ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Algebra.norm_complex_apply, Algebra.norm_apply]`. Both sides reduce to the same expression. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) (f := LinearMap.mulLeft ℝ z) (by rw [hdet]; positivity)`. Rewrite `h` using `[hdet, abs_of_nonneg (by positivity)]`.
+
+Conclude with `h`.
+-/
 theorem map_mul_left_volume_complex {z : ℂ} (hz : z ≠ 0) :
     Measure.map (z * ·) (volume : Measure ℂ) = ENNReal.ofReal (‖z‖ ^ 2)⁻¹ • volume := by
   have hdet : LinearMap.det (LinearMap.mulLeft ℝ z) = ‖z‖ ^ 2 := by
@@ -322,6 +383,21 @@ theorem map_mul_left_volume_complex {z : ℂ} (hz : z ≠ 0) :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Distinguish the cases in `hw : w.IsReal`. Rewrite using `[infinitePlaceMeasure_of_isReal hw] set e := isometryEquivRealOfIsReal hw`. Establish `he : ∀ y, a * e.symm y = e.symm (e a * y)` using `fun y ↦ by`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [e, IsometryEquiv.apply_symm_apply]`.
+
+Express the relevant statement in the definitionally equal form `ringEquivRealOfIsReal hw (a * (ringEquivRealOfIsReal hw).symm y) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hea : e a ≠ 0`. Express the relevant statement in the definitionally equal form `ringEquivRealOfIsReal hw a ≠ 0`.
+
+Conclude with `(map_ne_zero_iff _ (ringEquivRealOfIsReal hw).injective).2 ha`. Rewrite using `[Measure.map_map (measurable_const_mul a) e.symm.continuous.measurable]`. Establish `: (a * ·) ∘ e.symm = e.symm ∘ (e a * ·)` using `funext he`. Rewrite using `[this, ← Measure.map_map e.symm.continuous.measurable (measurable_const_mul _), Real.map_volume_mul_left hea, Measure.map_smul]`. Use `congr 2`.
+
+Establish `h0 : e 0 = 0` using `map_zero (ringEquivRealOfIsReal hw)`. Rewrite using `[abs_inv, ← Real.norm_eq_abs, e.isometry.norm_map_of_map_zero h0, mult, if_pos hw, pow_one]`. Establish `hc` using `not_isReal_iff_isComplex.1 hw`. Rewrite using `[infinitePlaceMeasure_of_isComplex hc]`. Use `set e := isometryEquivComplexOfIsComplex hc`.
+
+Establish `he : ∀ y, a * e.symm y = e.symm (e a * y)` using `fun y ↦ by`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [e, IsometryEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `ringEquivComplexOfIsComplex hc (a * (ringEquivComplexOfIsComplex hc).symm y) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Establish `hea : e a ≠ 0`. Express the relevant statement in the definitionally equal form `ringEquivComplexOfIsComplex hc a ≠ 0`. Conclude with `(map_ne_zero_iff _ (ringEquivComplexOfIsComplex hc).injective).2 ha`. Rewrite using `[Measure.map_map (measurable_const_mul a) e.symm.continuous.measurable]`.
+
+Establish `: (a * ·) ∘ e.symm = e.symm ∘ (e a * ·)` using `funext he`. Rewrite using `[this, ← Measure.map_map e.symm.continuous.measurable (measurable_const_mul _), Measure.map_smul, map_mul_left_volume_complex hea, smul_comm, Measure.map_smul]`. Use `congr 2`. Establish `h0 : e 0 = 0` using `map_zero (ringEquivComplexOfIsComplex hc)`. Rewrite using `[e.isometry.norm_map_of_map_zero h0, mult, if_neg hw]`.
+-/
 theorem map_mul_left_infinitePlaceMeasure (w : InfinitePlace K) {a : w.Completion} (ha : a ≠ 0) :
     Measure.map (a * ·) (infinitePlaceMeasure w) =
       ENNReal.ofReal (‖a‖ ^ w.mult)⁻¹ • infinitePlaceMeasure w := by
@@ -396,6 +472,9 @@ def finiteIntegralUnits : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ :=
   (IdeleGroup.standardOpenSubgroup K).comap
     ((IdeleGroup.prodEquiv K).symm.toMulEquiv.toMonoidHom.comp (MonoidHom.inr _ _))
 
+/- English proof (translation)
+The claim follows from `IdeleGroup.mem_standardOpenSubgroup K (x := (IdeleGroup.prodEquiv K).symm (1, x))`.
+-/
 theorem mem_finiteIntegralUnits {x : (FiniteAdeleRing (𝓞 K) K)ˣ} :
     x ∈ finiteIntegralUnits K ↔ ∀ v : HeightOneSpectrum (𝓞 K),
       (x : FiniteAdeleRing (𝓞 K) K) v ∈ v.adicCompletionIntegers K ∧
@@ -403,11 +482,21 @@ theorem mem_finiteIntegralUnits {x : (FiniteAdeleRing (𝓞 K) K)ˣ} :
           v.adicCompletionIntegers K :=
   IdeleGroup.mem_standardOpenSubgroup K (x := (IdeleGroup.prodEquiv K).symm (1, x))
 
+/- English proof (translation)
+The claim follows from `(IdeleGroup.isOpen_standardOpenSubgroup K).preimage ((IdeleGroup.prodEquiv K).symm.continuous.comp (Continuous.prodMk_right 1))`.
+-/
 theorem isOpen_finiteIntegralUnits :
     IsOpen (finiteIntegralUnits K : Set (FiniteAdeleRing (𝓞 K) K)ˣ) :=
   (IdeleGroup.isOpen_standardOpenSubgroup K).preimage
     ((IdeleGroup.prodEquiv K).symm.continuous.comp (Continuous.prodMk_right 1))
 
+/- English proof (translation)
+Set `φ : (Π v : HeightOneSpectrum (𝓞 K), (v.adicCompletionIntegers K)ˣ) → (FiniteAdeleRing (𝓞 K) K)ˣ` to `fun p ↦ IdeleGroup.toFinite K (IdeleGroup.ofIntegerUnits 1 p)`. Establish `hφ : Continuous φ` using `(IdeleGroup.continuous_toFinite K).comp (IdeleGroup.continuous_ofIntegerUnits.comp (Continuous.prodMk_right 1))`. Establish `h : (finiteIntegralUnits K : Set (FiniteAdeleRing (𝓞 K) K)ˣ) = Set.range φ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `⟨fun v ↦ IdeleGroup.localIntegerUnit v ⟨_, hx⟩, Units.ext ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Introduce and unpack `⟨p, rfl⟩`. Express the relevant statement in the definitionally equal form `(IdeleGroup.prodEquiv K).symm (1, φ p) ∈ IdeleGroup.standardOpenSubgroup K`.
+
+Use `IdeleGroup.ofIntegerUnits_mem 1 p using 1` and compare the differences between its conclusion and the goal. Conclude with `Units.ext rfl`. Rewrite using `[h]`. Conclude with `isCompact_range hφ`.
+-/
 theorem isCompact_finiteIntegralUnits :
     IsCompact (finiteIntegralUnits K : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by
   let φ : (Π v : HeightOneSpectrum (𝓞 K), (v.adicCompletionIntegers K)ˣ) →
@@ -442,6 +531,9 @@ instance isHaarMeasure_finiteIdeleMeasure : (finiteIdeleMeasure K).IsHaarMeasure
   unfold finiteIdeleMeasure
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Measure.haarMeasure_self`.
+-/
 theorem finiteIdeleMeasure_finiteIntegralUnits :
     finiteIdeleMeasure K (finiteIntegralUnits K) = 1 :=
   Measure.haarMeasure_self
@@ -457,6 +549,11 @@ end IdeleMeasure
 
 section Preserving
 
+/- English proof (translation)
+Establish `h1 : Measurable (IdeleGroup.prodEquiv K)` using `(map_continuous _).measurable`. Establish `h2 : Measurable (IdeleGroup.prodEquiv K).symm` using `(map_continuous _).measurable`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleMeasure, Measure.map_map h1 h2]`. Use `Measure.map_id` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Conclude with `(IdeleGroup.prodEquiv K).apply_symm_apply x`.
+-/
 theorem measurePreserving_prodEquiv :
     MeasurePreserving (IdeleGroup.prodEquiv K) (ideleMeasure K)
       ((infiniteIdeleMeasure K).prod (finiteIdeleMeasure K)) := by
@@ -468,6 +565,9 @@ theorem measurePreserving_prodEquiv :
   funext x
   exact (IdeleGroup.prodEquiv K).apply_symm_apply x
 
+/- English proof (translation)
+Rewrite using `[(measurePreserving_prodEquiv K).measure_preimage (hA.prod hB).nullMeasurableSet, Measure.prod_prod]`.
+-/
 theorem ideleMeasure_preimage_prod {A : Set (InfiniteAdeleRing K)ˣ}
     {B : Set (FiniteAdeleRing (𝓞 K) K)ˣ} (hA : MeasurableSet A) (hB : MeasurableSet B) :
     ideleMeasure K (IdeleGroup.prodEquiv K ⁻¹' (A ×ˢ B)) =
@@ -475,12 +575,18 @@ theorem ideleMeasure_preimage_prod {A : Set (InfiniteAdeleRing K)ˣ}
   rw [(measurePreserving_prodEquiv K).measure_preimage (hA.prod hB).nullMeasurableSet,
     Measure.prod_prod]
 
+/- English proof (translation)
+Conclude with `integral_map_equiv (IdeleGroup.prodEquiv K).symm.toHomeomorph.toMeasurableEquiv f`.
+-/
 theorem integral_ideleMeasure {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : IdeleGroup K → E) :
     ∫ x, f x ∂ideleMeasure K = ∫ p, f ((IdeleGroup.prodEquiv K).symm p)
       ∂(infiniteIdeleMeasure K).prod (finiteIdeleMeasure K) := by
   exact integral_map_equiv (IdeleGroup.prodEquiv K).symm.toHomeomorph.toMeasurableEquiv f
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_preimage, Set.mem_prod, Set.mem_univ, true_and]`. Rewrite using `[mem_finiteIntegralUnits, IdeleGroup.mem_standardOpenSubgroup]`. Both sides reduce to the same expression.
+-/
 theorem standardOpenSubgroup_eq_preimage :
     (IdeleGroup.standardOpenSubgroup K : Set (IdeleGroup K)) =
       IdeleGroup.prodEquiv K ⁻¹' (Set.univ ×ˢ (finiteIntegralUnits K : Set _)) := by

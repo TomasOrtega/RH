@@ -13,6 +13,9 @@ section Chart
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `h` using `hP.1 ((A.chart j).symm y) j`. Establish `hmem : (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U ((A.chart j).symm y) ∈ 𝓝 y` using `((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U _)).mem_nhds ⟨hy, P.mem_U _⟩`. Conclude with `(h.contDiffAt hmem).of_le (by norm_cast)`.
+-/
 theorem potential_contDiffAt (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotential A P)
     (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) :
     ContDiffAt ℝ 2 (fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y')) y := by
@@ -21,6 +24,9 @@ theorem potential_contDiffAt (A : FinHolAtlas e X) (P : LocPot X) (hP : IsPotent
     ((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U _)).mem_nhds ⟨hy, P.mem_U _⟩
   exact (h.contDiffAt hmem).of_le (by norm_cast)
 
+/- English proof (translation)
+Unfold `locDens maDens`. Use `congr 3`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) k <;> simp`.
+-/
 theorem locDens_cons (A : FinHolAtlas (e + 1) X) (P : LocPot X) (Φ : Fin e → LocPot X)
     (j : Fin A.n) (y : Fin (e + 1) → ℂ) :
     locDens A (Fin.cons P Φ) j y = ((e + 1).factorial : ℝ) * (2 / Real.pi) ^ (e + 1) *
@@ -32,6 +38,9 @@ theorem locDens_cons (A : FinHolAtlas (e + 1) X) (P : LocPot X) (Φ : Fin e → 
   funext k
   refine Fin.cases ?_ (fun i => ?_) k <;> simp
 
+/- English proof (translation)
+Rewrite using `[locDens_cons, locDens_cons]`. Establish `: (fun y' => (P.rsmul c).φ ((A.chart j).symm y) ((A.chart j).symm y')) = fun y' => c * P.φ ((A.chart j).symm y) ((A.chart j).symm y')` using `rfl`. Rewrite using `[this, hessC_const_mul', mdisc_cons_smul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDens_cons_rsmul (A : FinHolAtlas (e + 1) X) (c : ℝ) (P : LocPot X)
     (Φ : Fin e → LocPot X) (j : Fin A.n) (y : Fin (e + 1) → ℂ) :
     locDens A (Fin.cons (P.rsmul c) Φ) j y = c * locDens A (Fin.cons P Φ) j y := by
@@ -41,6 +50,9 @@ theorem locDens_cons_rsmul (A : FinHolAtlas (e + 1) X) (c : ℝ) (P : LocPot X)
   rw [this, hessC_const_mul', mdisc_cons_smul, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[locDens_cons, locDens_cons, locDens_cons]`. Establish `: (fun y' => (P + Q).φ ((A.chart j).symm y) ((A.chart j).symm y')) = fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y') + Q.φ ((A.chart j).symm y) ((A.chart j).symm y')` using `rfl`. Rewrite using `[this, hessC_add' _ _ _ (potential_contDiffAt A P hP j hy) (potential_contDiffAt A Q hQ j hy), mdisc_cons_add, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDens_cons_add (A : FinHolAtlas (e + 1) X) (P Q : LocPot X) (Φ : Fin e → LocPot X)
     (hP : IsPotential A P) (hQ : IsPotential A Q) (j : Fin A.n) {y : Fin (e + 1) → ℂ}
     (hy : y ∈ (A.chart j).target) :
@@ -54,6 +66,9 @@ theorem locDens_cons_add (A : FinHolAtlas (e + 1) X) (P Q : LocPot X) (Φ : Fin 
     mdisc_cons_add, Complex.add_re]
   ring
 
+/- English proof (translation)
+Unfold `locDens`. Use `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ _ fun k => ?_` and prove the remaining obligations. Conclude with `hessC_posSemidef _ _ (potential_contDiffAt A (Φ k) (hΦ k) j hy) fun w => hψ k ((A.chart j).symm y) j y ⟨hy, (Φ k).mem_U _⟩ w`.
+-/
 theorem locDens_nonneg (A : FinHolAtlas e X) (Φ : Fin e → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) (hψ : ∀ i, IsPsh A (Φ i)) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) : 0 ≤ locDens A Φ j y := by
@@ -62,6 +77,13 @@ theorem locDens_nonneg (A : FinHolAtlas e X) (Φ : Fin e → LocPot X)
   exact hessC_posSemidef _ _ (potential_contDiffAt A (Φ k) (hΦ k) j hy)
     fun w => hψ k ((A.chart j).symm y) j y ⟨hy, (Φ k).mem_U _⟩ w
 
+/- English proof (translation)
+Use `set K := (A.chart j) '' tsupport (P.χ j)`. Establish `hKc : IsCompact K` using `(isClosed_tsupport _).isCompact.image_of_continuousOn ((A.chart j).continuousOn.mono (P.tsupport_subset j))`. Establish `hKt : K ⊆ (A.chart j).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart j).map_source (P.tsupport_subset j hx)`.
+
+Establish `hχc : ContinuousOn (fun y => P.χ j ((A.chart j).symm y)) (A.chart j).target`. Use `(P.smooth j j).continuousOn` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Conclude with `this`. Establish `h1 : IntegrableOn (fun y => P.χ j ((A.chart j).symm y) * (g ((A.chart j).symm y) * locDens A Φ j y)) K` using `(hg j K hKt hKc).continuousOn_mul (hχc.mono hKt) hKc`.
+
+Establish `h2` using `h1.of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet (by`. Introduce and unpack `y ⟨hy, hyK⟩`. Establish `: (A.chart j).symm y ∉ tsupport (P.χ j)` using `fun h => hyK ⟨_, h, (A.chart j).right_inv hy⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport this])`. Simplify `h2` using `only [mul_assoc]`.
+-/
 theorem integrableOn_weight [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (P : ChartPartition A) (Φ : Fin e → LocPot X) (g : X → ℝ) (hg : MIntegrable A Φ g)
     (j : Fin A.n) :
@@ -88,6 +110,9 @@ theorem integrableOn_weight [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
 
 end Chart
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.AnForm.mdisc`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun S => ?_` and prove the remaining obligations. Simplify using `[Equiv.finsetCongr_apply, Finset.card_map, Finset.sum_map]`.
+-/
 private theorem mdisc_comp_perm_potential {D : ℕ} (B : Fin D → Matrix (Fin D) (Fin D) ℂ) (σ : Equiv.Perm (Fin D)) :
     ReciprocityTheory.AnForm.mdisc (B ∘ σ) = ReciprocityTheory.AnForm.mdisc B := by
   classical
@@ -96,6 +121,11 @@ private theorem mdisc_comp_perm_potential {D : ℕ} (B : Fin D → Matrix (Fin D
   refine Fintype.sum_equiv (Equiv.finsetCongr σ) _ _ fun S => ?_
   simp [Equiv.finsetCongr_apply, Finset.card_map, Finset.sum_map]
 
+/- English proof (translation)
+Introduce `e X _ A Φ σ g`. Establish `hloc : ∀ j y, locDens A (Φ ∘ σ) j y = locDens A Φ j y`. Introduce `j y`. Unfold `locDens maDens`. Use `congr 2`.
+
+Conclude with `mdisc_comp_perm_potential (fun k => ReciprocityTheory.AnForm.hessC (fun y' => (Φ k).φ ((A.chart j).symm y) ((A.chart j).symm y')) y) σ`. Unfold `mInt integralWith`. Simplify using `only [hloc]`.
+-/
 theorem mIntSymm : MIntSymmStatement := by
   intro e X _ A Φ σ g
   have hloc : ∀ j y, locDens A (Φ ∘ σ) j y = locDens A Φ j y := by
@@ -107,6 +137,13 @@ theorem mIntSymm : MIntSymmStatement := by
   unfold mInt integralWith
   simp only [hloc]
 
+/- English proof (translation)
+Introduce `e X _ _ _ A P Q Φ hP hQ hΦ g hgP hgQ`. Unfold `mInt integralWith`. Use `split_ifs with h`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `i1` using `integrableOn_weight A h.some (Fin.cons P Φ) g hgP j`. Establish `i2` using `integrableOn_weight A h.some (Fin.cons Q Φ) g hgQ j`. Rewrite using `[← integral_add i1 i2]`. Use `setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Use `show _ = _ + _`.
+
+Rewrite using `[locDens_cons_add A P Q Φ hP hQ j hy]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem mIntAdd : MIntAddStatement := by
   intro e X _ _ _ A P Q Φ hP hQ hΦ g hgP hgQ
   unfold mInt integralWith
@@ -122,6 +159,13 @@ theorem mIntAdd : MIntAddStatement := by
     ring
   · simp
 
+/- English proof (translation)
+Introduce `e X _ A c P Φ hP hΦ g`. Unfold `mInt integralWith`. Use `split_ifs with h`. Simplify using `only [locDens_cons_rsmul]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mIntRsmul : MIntRsmulStatement := by
   intro e X _ A c P Φ hP hΦ g
   unfold mInt integralWith
@@ -135,10 +179,20 @@ theorem mIntRsmul : MIntRsmulStatement := by
     ring
   · simp
 
+/- English proof (translation)
+Introduce `e X _ A m P Φ hP hΦ g`. Conclude with `mIntRsmul A (m : ℝ) P Φ hP hΦ g`.
+-/
 theorem mIntZsmul : MIntZsmulStatement := by
   intro e X _ A m P Φ hP hΦ g
   exact mIntRsmul A (m : ℝ) P Φ hP hΦ g
 
+/- English proof (translation)
+Introduce `e X _ _ _ A Φ hΦ c g g' hg hg'`. Unfold `mInt integralWith`. Use `split_ifs with h`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `i1` using `integrableOn_weight A h.some Φ g hg j`. Establish `i2` using `integrableOn_weight A h.some Φ g' hg' j`. Rewrite using `[← integral_const_mul, ← integral_add (i1.const_mul c) i2]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem mIntLinear : MIntLinearStatement := by
   intro e X _ _ _ A Φ hΦ c g g' hg hg'
   unfold mInt integralWith
@@ -153,6 +207,9 @@ theorem mIntLinear : MIntLinearStatement := by
     ring
   · simp
 
+/- English proof (translation)
+Introduce `e X _ A Φ hΦ hψ g hg`. Unfold `mInt integralWith`. Use `split_ifs with h`. Conclude with `Finset.sum_nonneg fun j _ => setIntegral_nonneg (A.chart j).open_target.measurableSet fun y hy => mul_nonneg (mul_nonneg (h.some.nonneg j _) (hg _)) (locDens_nonneg A Φ hΦ hψ j hy)`. Conclude with `le_rfl`.
+-/
 theorem mIntNonneg : MIntNonnegStatement := by
   intro e X _ A Φ hΦ hψ g hg
   unfold mInt integralWith

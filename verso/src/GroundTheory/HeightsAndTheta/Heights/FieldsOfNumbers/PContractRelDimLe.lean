@@ -17,6 +17,19 @@ section Chain
 
 variable {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
 
+/- English proof (translation)
+Use `choose i hi using hrel`. Establish `hmono : ∀ {T T' : Finset K}, T ⊆ T' → killIdeal Q T ≤ killIdeal Q T'`. Introduce `T T' h q hq`. Express the relevant statement in the definitionally equal form `killBlocks T' q ∈ Q`. Rewrite using `[← killBlocks_comp h]`.
+
+Conclude with `hQ T' _ hq`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `: killIdeal Q (∅ : Finset K) = Q`. Use extensionality with `q`.
+
+Simplify using `[killIdeal, killBlocks_empty]`. Rewrite using `[this, Finset.card_empty, Nat.cast_zero, add_zero]`. Consider the case `insert k T hk ih`. Establish `: (killIdeal Q T).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hstep` using `ringKrullDim_add_one_le (P := killIdeal Q T) (Q := killIdeal Q (insert k T)) (hmono (Finset.subset_insert k T)) (f := X ⟨k, i k⟩) (by`.
+
+Express the relevant statement in the definitionally equal form `killBlocks T (X ⟨k, i k⟩) ∉ Q`. Rewrite using `[killBlocks_X, if_neg hk]`. Conclude with `hi k)`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `killBlocks (insert k T) (X ⟨k, i k⟩) ∈ Q`.
+
+Rewrite using `[killBlocks_X, if_pos (Finset.mem_insert_self k T)]`. Conclude with `Q.zero_mem)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_assoc, add_comm (1 : WithBot ℕ∞)]`. Use `_ ≤ ringKrullDim (MRing ι F ⧸ killIdeal Q T) + (T.card : WithBot ℕ∞) := by gcongr`.
+
+Use `_ ≤ _ := ih`.
+-/
 theorem ringKrullDim_killIdeal_add_card_le {Q : Ideal (MRing ι F)} [Q.IsPrime]
     (hQ : ∀ (T : Finset K) (q : MRing ι F), q ∈ Q → killBlocks T q ∈ Q) (hrel : IsRelevant Q)
     (T : Finset K) :
@@ -62,6 +75,9 @@ variable {K K' : Type*} [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K'
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[killBlocks_X, blockIncl]`.
+-/
 theorem killBlocks_compl_rename :
     (killBlocks (ι := ι') (F := F) (Finset.univ.map j)ᶜ).comp (rename (blockIncl j ι')) =
       rename (blockIncl j ι') := by
@@ -71,6 +87,15 @@ theorem killBlocks_compl_rename :
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Proceed by induction on `x using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨C c, by simp [killBlocks]⟩`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`.
+
+Conclude with `⟨a + b, by rw [map_add, ha, hb, map_add]⟩`. Consider the case `mul_X p v hp`. Take `⟨a, ha⟩` from `hp`. Take `⟨k', i⟩` from `v`. Rewrite using `[map_mul, killBlocks_X, ← ha]`.
+
+Distinguish the cases in `h : k' ∈ (Finset.univ.map j)ᶜ`. Conclude with `⟨0, by rw [if_pos h, mul_zero, map_zero]⟩`. Rewrite using `[if_neg h]`. Simplify using `only [Finset.mem_compl, Finset.mem_map, Finset.mem_univ, true_and, not_not] at h`. Take `⟨k, rfl⟩` from `h`.
+
+Conclude with `⟨a * X ⟨k, i⟩, by rw [map_mul, rename_X]; rfl⟩`.
+-/
 theorem exists_rename_eq_killBlocks_compl (x : MRing ι' F) :
     ∃ a : MRing (fun k => ι' (j k)) F,
       rename (blockIncl j ι') a = killBlocks (Finset.univ.map j)ᶜ x := by
@@ -91,6 +116,15 @@ theorem exists_rename_eq_killBlocks_compl (x : MRing ι' F) :
       obtain ⟨k, rfl⟩ := h
       exact ⟨a * X ⟨k, i⟩, by rw [map_mul, rename_X]; rfl⟩
 
+/- English proof (translation)
+Use `set f : MRing (fun k => ι' (j k)) F →+* MRing ι' F ⧸ killIdeal P' (Finset.univ.map j)ᶜ := (Ideal.Quotient.mk _).comp (rename (blockIncl j ι')).toRingHom`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, ha⟩` from `exists_rename_eq_killBlocks_compl j ι' (F := F) x`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (rename (blockIncl j ι') a) = _`. Rewrite using `[Ideal.Quotient.eq, ha]`. Express the relevant statement in the definitionally equal form `killBlocks _ (killBlocks _ x - x) ∈ P'`. Rewrite using `[map_sub, ← AlgHom.comp_apply, killBlocks_comp le_rfl, sub_self]`.
+
+Conclude with `P'.zero_mem`. Establish `hker : RingHom.ker f = contractPrime j P'`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (rename (blockIncl j ι') a) = 0 ↔ rename (blockIncl j ι') a ∈ P'`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+
+Express the relevant statement in the definitionally equal form `killBlocks _ (rename (blockIncl j ι') a) ∈ P' ↔ _`. Rewrite using `[← AlgHom.comp_apply, killBlocks_compl_rename]`. Rewrite using `[← hker]`. Conclude with `ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hsurj)`.
+-/
 theorem ringKrullDim_contract_eq_killIdeal (P' : Ideal (MRing ι' F)) :
     ringKrullDim (MRing (fun k => ι' (j k)) F ⧸ contractPrime j P') =
       ringKrullDim (MRing ι' F ⧸ killIdeal P' (Finset.univ.map j)ᶜ) := by
@@ -117,6 +151,13 @@ theorem ringKrullDim_contract_eq_killIdeal (P' : Ideal (MRing ι' F)) :
 
 end Contract
 
+/- English proof (translation)
+Introduce `F _ K K' _ _ _ _ j ι' _ P' hP'`. Use `hP'.isPrime` as an intermediate fact. Establish `hstab : ∀ (T : Finset K') (q : MRing ι' F), q ∈ P' → killBlocks T q ∈ P'` using `fun T _ hq => killBlocks_mem_of_isMultiHomogIdeal hP'.multiHomog T hq`. Take `⟨D', -, hD'⟩` from `exists_ringKrullDim_eq hstab hP'.relevant`. Take `⟨D, -, hD⟩` from `exists_ringKrullDim_eq (Q := contractPrime j P') (contractPrime_killStable j ι' hP'.multiHomog) (contractPrime_isRelevant j ι' hP'.relevant)`.
+
+Establish `hchain` using `ringKrullDim_killIdeal_add_card_le hstab hP'.relevant (Finset.univ.map j)ᶜ`. Rewrite `hchain` using `[← ringKrullDim_contract_eq_killIdeal, hD, hD', ← Nat.cast_add]`. Establish `hle : D + ((Finset.univ.map j)ᶜ).card ≤ D'` using `by exact_mod_cast hchain`. Establish `hcard : ((Finset.univ.map j)ᶜ).card + Fintype.card K = Fintype.card K'`. Rewrite using `[Finset.card_compl, Finset.card_map, Finset.card_univ]`.
+
+Use `Fintype.card_le_of_embedding j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[relDim_eq_int hD, relDim_eq_int hD']`. Conclude with `WithBot.coe_le_coe.mpr (WithTop.coe_le_coe.mpr (by omega))`.
+-/
 theorem proof : ContractRelDimLe.Statement.{u} := by
   intro F _ K K' _ _ _ _ j ι' _ P' hP'
   have := hP'.isPrime

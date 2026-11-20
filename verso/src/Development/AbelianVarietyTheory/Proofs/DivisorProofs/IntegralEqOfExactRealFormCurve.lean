@@ -12,6 +12,11 @@ open GlobalTheory
 
 namespace GlobalTheory.ExactIntegral
 
+/- English proof (translation)
+Take `⟨u, w, hu, hw, e⟩` from `h`. Establish `alg` using `(HolAtlas.isForm_algebra M n A).2`. Establish `hdu : A.IsForm (A.del u)` using `(A.isForm_del_dbar hu).1`. Establish `hdw : A.IsForm (A.dbar w)` using `(A.isForm_del_dbar hw).2`. Establish `h1 : A.IsForm (α - A.del u)`.
+
+Use `(alg 0 _ _ hα (alg (-1) _ _ hdu hdu).2.2).1` as an intermediate fact. Rewrite `this` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `eβ : β = α - A.del u - A.dbar w`. Rewrite using `[sub_sub, ← e, sub_sub_cancel]`. Rewrite using `[eβ, HolAtlas.integral_sub_of_isForm A _ _ h1 hdw, HolAtlas.integral_sub_of_isForm A _ _ hα hdu, (GlobalTheory.T.integral_del_dbar_zero M n A u hu).1, (GlobalTheory.T.integral_del_dbar_zero M n A w hw).2, sub_zero, sub_zero]`.
+-/
 theorem integral_eq_of_isExact {M : Type} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M]
     [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : HolAtlas M n) (α β : A.Fld) (hα : A.IsForm α)
     (h : A.IsExact (α - β)) : A.integral α = A.integral β := by
@@ -27,6 +32,9 @@ theorem integral_eq_of_isExact {M : Type} [TopologicalSpace M] [T2Space M] [Seco
   rw [eβ, HolAtlas.integral_sub_of_isForm A _ _ h1 hdw, HolAtlas.integral_sub_of_isForm A _ _ hα hdu,
     (GlobalTheory.T.integral_del_dbar_zero M n A u hu).1, (GlobalTheory.T.integral_del_dbar_zero M n A w hw).2, sub_zero, sub_zero]
 
+/- English proof (translation)
+Introduce `k _ X p h σ α β hα hex`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ h.isProjOver`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ h.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver`. Conclude with `integral_eq_of_isExact (h.atlas σ) α β hα.1 hex`.
+-/
 theorem integral_eq_of_isExact_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1)
     (σ : k →+* ℂ) (α β : (h.atlas σ).Fld), (h.atlas σ).IsRealForm 1 α → (h.atlas σ).IsExact (α - β) →
     (h.atlas σ).integral α = (h.atlas σ).integral β := by

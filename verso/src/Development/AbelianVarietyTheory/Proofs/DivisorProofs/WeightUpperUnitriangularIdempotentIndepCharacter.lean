@@ -13,9 +13,15 @@ open Formalism.L2.SG.Pf.AllRowsWt Formalism.L2.SG.Pf.AllRowsTr
 
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} (c : ZMod g)
 
+/- English proof (translation)
+Unfold `posN`. Simplify using `[h]`.
+-/
 theorem posN_lt {a : ℕ} (h : a < N) : posN 0 N a = a := by
   unfold posN; simp [h]
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[entN_conj, pair 0 N c hc (by rw [posN_lt (by omega), posN_lt (by omega)])]`.
+-/
 theorem sdg_conj (hc : c ≠ 0) (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     ∑ i ∈ Finset.range (N - 1), entN (diagonal (fun i : Fin N => (tN 0 N c i)⁻¹) * u *
       diagonal (fun i : Fin N => tN 0 N c i)) i (i + 1) = c * ∑ i ∈ Finset.range (N - 1), entN u i (i + 1) := by
@@ -24,6 +30,9 @@ theorem sdg_conj (hc : c ≠ 0) (u : Matrix (Fin N) (Fin N) (ZMod g)) :
   rw [Finset.mem_range] at hi
   rw [entN_conj, pair 0 N c hc (by rw [posN_lt (by omega), posN_lt (by omega)])]
 
+/- English proof (translation)
+Establish `h` using `PJ_conj 0 N c hc u`. Unfold `PJ at h`. Establish `hv : ∀ M : Matrix (Fin N) (Fin N) (ZMod g), ∀ a, N ≤ a → a < N → entN M a N = 0` using `fun _ a h1 h2 => absurd h2 (by omega)`. Conclude with `⟨fun x => (h.1 ⟨x, hv _⟩).1, fun x => (h.2 ⟨x, hv _⟩).1⟩`.
+-/
 theorem uniUp_conj (hc : c ≠ 0) (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     IsUniUp (diagonal (fun i : Fin N => (tN 0 N c i)⁻¹) * u * diagonal (fun i : Fin N => tN 0 N c i)) ↔ IsUniUp u := by
   have h := PJ_conj 0 N c hc u
@@ -32,6 +41,9 @@ theorem uniUp_conj (hc : c ≠ 0) (u : Matrix (Fin N) (Fin N) (ZMod g)) :
     fun _ a h1 h2 => absurd h2 (by omega)
   exact ⟨fun x => (h.1 ⟨x, hv _⟩).1, fun x => (h.2 ⟨x, hv _⟩).1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Fact.out : g.Prime).ne_zero⟩ MonoidAlgebra.single (T 0 N c hc) 1 * eU g N ψ * MonoidAlgebra.single (T 0 N c hc)⁻¹ 1 = eU g N (ψ.mulShift c) := by classical have : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩ unfold eU eDat rw [mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset …`.
+-/
 theorem eU_conj (hc : c ≠ 0) (ψ : AddChar (ZMod g) ℂ) :
     haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
     MonoidAlgebra.single (T 0 N c hc) 1 * eU g N ψ * MonoidAlgebra.single (T 0 N c hc)⁻¹ 1 =
@@ -71,6 +83,13 @@ namespace GlobalTheory.BadCount
 
 open Formalism.L2.SG.Pf.AllRowsWt Formalism.L2.SG.Pf.AllRowsTr GlobalTheory.BadCount.WtPsi
 
+/- English proof (translation)
+Introduce `D k ψ ψ' h h' f`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨c, hc0, rfl⟩` from `exists_shift ψ ψ' h h'`. Establish `hconj : eUk D k (ψ.mulShift c) = MonoidAlgebra.single (T 0 D.R.r c hc0) 1 * eUk D k ψ * MonoidAlgebra.single (T 0 D.R.r c hc0)⁻¹ 1`. Unfold `eUk`.
+
+Conclude with `(eU_conj c hc0 ψ).symm`. Establish `h1 : (eUk D k (ψ.mulShift c) * D.ntypes.eSer k f).coeff 1 = (eUk D k ψ * D.ntypes.eSer k f).coeff 1`. Rewrite using `[hconj]`. Establish `e1 : MonoidAlgebra.single (T 0 D.R.r c hc0) 1 * eUk D k ψ * MonoidAlgebra.single (T 0 D.R.r c hc0)⁻¹ 1 * D.ntypes.eSer k f = MonoidAlgebra.single (T 0 D.R.r c hc0) 1 * (eUk D k ψ * D.ntypes.eSer k f) * MonoidAlgebra.single (T 0 D.R.r c hc0)⁻¹ 1`. Rewrite using `[mul_assoc _ (MonoidAlgebra.single (T 0 D.R.r c hc0)⁻¹ 1) (D.ntypes.eSer k f), ← D.ntypes.eSer_central, mul_assoc, mul_assoc, mul_assoc]`.
+
+Rewrite using `[e1, tau_conj]`. Establish `h2 : (eUk D k (ψ.mulShift c)).coeff 1 = (eUk D k ψ).coeff 1`. Rewrite using `[hconj, tau_conj]`. Unfold `wtOf`. Rewrite using `[h1, h2]`.
+-/
 theorem wtOf_eUk_indep : ∀ (D : D7) (k : Fin 2) (ψ ψ' : AddChar (ZMod (D.host.g k)) ℂ), ψ ≠ 1 → ψ' ≠ 1 →
     ∀ f, wtOf D k (eUk D k ψ) f = wtOf D k (eUk D k ψ') f := by
   intro D k ψ ψ' h h' f

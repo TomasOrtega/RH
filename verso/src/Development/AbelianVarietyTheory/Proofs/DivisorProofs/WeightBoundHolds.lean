@@ -19,10 +19,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Rewrite using `[← ent_cast, ← laOf_read p i τ t ht n, Rat.cast_intCast]`.
+-/
 theorem laOf_real (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEmb D t) (n : Fin ((dat p i).p + (dat p i).q)) :
     (laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ n : ℝ) = entR D i t n := by
   rw [← ent_cast, ← laOf_read p i τ t ht n, Rat.cast_intCast]
 
+/- English proof (translation)
+Establish `h : D.R.k - 1 - 1 < (dat p i).p + (dat p i).q`. Use `D.R.m_add_three_le_k` as an intermediate fact. Rewrite using `[dat_p]`. Use linear arithmetic over natural numbers and integers. Unfold `anchor`.
+
+Rewrite using `[dif_pos h, laOf_real p i τ t ht]`.
+-/
 theorem anchor_real (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEmb D t) :
     (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ) = entR D i t (D.R.k - 1 - 1) := by
   have h : D.R.k - 1 - 1 < (dat p i).p + (dat p i).q := by
@@ -31,17 +39,78 @@ theorem anchor_real (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEm
   unfold anchor
   rw [dif_pos h, laOf_real p i τ t ht]
 
+/- English proof (translation)
+Rewrite using `[← laOf_real p i τ t ht n, ← anchor_real p i τ t ht, ← Int.cast_sub]`. Both sides reduce to the same expression.
+-/
 theorem uW_real (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEmb D t) (n : Fin ((dat p i).p + (dat p i).q)) :
     (uW p i τ n : ℝ) = entR D i t n - entR D i t (D.R.k - 1 - 1) := by
   rw [← laOf_real p i τ t ht n, ← anchor_real p i τ t ht, ← Int.cast_sub]
   rfl
 
+/- English proof (translation)
+Establish `hm : (0 : ℝ) < D.R.m` using `by exact_mod_cast p.hm`. Unfold `LevelStarExponents.h0`. Rewrite using `[p.hh0]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem h0_eq : LevelStarExponents.h0 L = (p.h0 : ℝ) := by
   have hm : (0 : ℝ) < D.R.m := by exact_mod_cast p.hm
   unfold LevelStarExponents.h0
   rw [p.hh0]
   field_simp
 
+/- English proof (translation)
+Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hi` using `i.2`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `e1` using `dat_p p i`.
+
+Establish `e2` using `dat_q p i`. Establish `e3` using `dat_rank p i`. Establish `hD : dimFlag (dat p i) = T.Dp` using `(dim_eq p i).trans T.Dp_eq.symm`. Establish `hlx : 2 ≤ Real.log L.sc.x`. Establish `h1 : Real.log 8 ≤ Real.log L.sc.x` using `Real.log_le_log (by norm_num) hx8`.
+
+Rewrite `h1` using `[show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]`. Use `Real.log_two_gt_d9` as an intermediate fact. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL3 : 3 ≤ L.sc.L` using `hy.trans (Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith [L.sc.eps_pos]))`.
+
+Establish `hwin` using `size_window D L hS hlx ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2`. Establish `hP` using `forty_le_PP T`. Establish `hPt` using `(parameterPrecision_le_length_and_rank D L P T (by linarith) (one_le_nWn D L P T)).2`. Establish `hwid` using `mul_widths_le D L T.PP (by linarith) hS (by linarith) hy`. Establish `hS0` using `L.Sc_pos`.
+
+Establish `hη0` using `L.etaSz_pos`. Establish `h40 : 40 * (L.Sc + L.etaSz) ≤ L.sc.w'' D.R.n` using `le_trans (mul_le_mul_of_nonneg_right hP (by linarith)) hwid`. Establish `hrη : (D.R.r : ℝ) ≤ L.etaSz`. Use `le_trans ?_ P.t_le_eta` and prove the remaining obligations. Conclude with `(by have := D.R.rank_add_five_le; omega : D.R.r ≤ D.R.t)` after adjusting the coercions.
+
+Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `hlen : lenT p i T.PP ≤ T.TO`. Unfold `lenT`. Rewrite using `[hD]`. Conclude with `Nat.ceil_le.2 (len_le D L P T)`.
+
+Establish `hlen' : 4 * T.Dp + 4 ≤ lenT p i T.PP`. Unfold `lenT`. Rewrite using `[hD]`. Conclude with `len_ge T`. Take `⟨s1, s2, s3⟩` from `spacing_ge T ((i : ℕ) + 1) _ hlen`.
+
+Take `⟨q1, q2, q3⟩` from `prod_bounds T _ hlen`. Take `⟨g1, g2⟩` from `gap_le D L P T (lenT p i T.PP) (Nat.cast_nonneg _) (by exact_mod_cast hlen)`. Establish `hh : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self hη0.le (by exact_mod_cast (by omega : 1 ≤ D.R.m))`. Establish `hstep : ∀ t a, a + 1 < D.R.r → ((lenT p i T.PP : ℝ) + T.Dp + 2) * (lenT p i T.PP + T.Dp + 2 + 2 * (D.R.r : ℝ)) + 1 ≤ sgR D t a - sgR D t (a + 1)` using `fun t a ha => sgR_step D L P t _ g1 g2 (fun hm => le_trans g2 (minimalGap_le_first_lowerRowParameter D L P _ (Nat.le_add_left _ _) i.2 t (hwin t).1 hm)) a ha`. Establish `hstep1 : ∀ t a, a + 1 < D.R.r → 1 ≤ sgR D t a - sgR D t (a + 1)` using `fun t a ha => le_trans (le_add_of_nonneg_left (by positivity)) (hstep t a ha)`.
+
+Establish `hent : ∀ t n, n < D.R.r → |entR D i t n| ≤ 3 * L.sc.b`. Introduce `t n hn`. Take `⟨w1, w2⟩` from `hwin t`. Distinguish the cases in `h : n < D.R.k - 1`. Take `⟨a1, a2⟩` from `entR_cloud L i t n h`.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Use `entR_node L i t n (by omega) hn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hanc : ∀ t, L.sc.w'' D.R.n - D.R.r ≤ entR D i t (D.R.k - 1 - 1)` using `fun t => by`. Use `(entR_cloud L i t (D.R.k - 1 - 1) (by omega)).1` as an intermediate fact.
+
+Combine the linear relations using `[(hwin t).1]`. Establish `hc0 : (0 : ℝ) ≤ cZeroN D ((i : ℕ) + 1)` using `Nat.cast_nonneg _`. Establish `hT0 : (0 : ℝ) ≤ lenT p i T.PP` using `Nat.cast_nonneg _`. Establish `hD0 : (0 : ℝ) ≤ T.Dp` using `Nat.cast_nonneg _`. Establish `eN : ((((dat p i).p + (dat p i).q : ℕ)) : ℝ) = D.R.r` using `by rw [e3]`.
+
+Establish `eZ : ((((dat p i).p + (dat p i).q : ℕ)) : ℤ) = D.R.r` using `by rw [e3]`. Use `⟨⟨e1, e2, e3⟩, card_psi p, dim_eq p i, cols_eq p i, dom_wtA _, unit_eq p, ?_, ?_, ?_, ?_, fun him => ?_⟩` and prove the remaining obligations. Rewrite using `[ofRecord_logOm]`. Conclude with `abs_logOm_le hS hL3`. Introduce `τ n`.
+
+Take `⟨t, ht⟩` from `exists_tau p τ`. Rewrite using `[laOf_real p i τ t ht]`. Use `hent t n (e3 ▸ n.2)` as an intermediate fact. Use `abs_nonneg (entR D i t n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `τ`. Take `⟨t, ht⟩` from `exists_tau p τ`. Rewrite using `[anchor_real p i τ t ht]`. Combine the linear relations using `[hanc t]`. Rewrite using `[hD]`.
+
+Conclude with `⟨q2, q3⟩`. Rewrite `s1`, `s2`, `s3`, `q1`, `hh` using `[h0_eq p]`. Use `⟨p.h0, L.Sc, L.etaSz, hS0.le, hη0.le, by linarith, by exact_mod_cast s3, by rw [hD]; exact_mod_cast q1, fun u1 => ?_⟩` and prove the remaining obligations. Use `⟨show 1 ≤ D.R.k - 1 by omega, show D.R.k - 1 < (dat p i).p by omega, show (dat p i).p < _ by omega, show _ - (dat p i).p < (dat p i).p by omega, Int.natCast_nonneg _, fun τ a ha => uWt_anchor _ _ _ _ τ a ha, show 4 * dimFlag (dat p i) + 4 ≤ lenT p i T.PP by omega, ?_, ?_, ?_, ?_, …` and prove the remaining obligations. Use `show 4 * ((cZeroN D ((i : ℕ) + 1) : ℤ) + 2 * ((dat p i).p + (dat p i).q : ℕ) + lenT p i T.PP + dimFlag (dat p i) + 1) ≤ p.h0 ∧ 24 * (((dat p i).p + (dat p i).q : ℕ) : ℤ) * lenT p i T.PP ≤ p.h0`.
+
+Rewrite using `[hD, eZ]`. Conclude with `⟨by exact_mod_cast s1, by exact_mod_cast s2⟩`. Introduce `τ a ha`. Take `⟨t, ht⟩` from `exists_tau p τ`. Use `show |(uW p i τ a : ℝ) + (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ)| ≤ L.etaSz + L.Sc + ((dat p i).p + (dat p i).q : ℕ)`.
+
+Rewrite using `[uW_real p i τ t ht, anchor_real p i τ t ht, sub_add_cancel, eN]`. Use `entR_node L i t a ha (e3 ▸ a.2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ a ha`. Take `⟨t, ht⟩` from `exists_tau p τ`.
+
+Use `show 0 ≤ uW p i τ a ∧ (uW p i τ a : ℝ) ≤ L.Sc`. Take `⟨a1, a2⟩` from `entR_cloud_sub L i t (hstep1 t) a ha`. Rewrite `a1`, `a2` using `[← uW_real p i τ t ht]`. Conclude with `⟨by exact_mod_cast a1, a2⟩`. Introduce `τ`.
+
+Take `⟨t, ht⟩` from `exists_tau p τ`. Use `show 4 * ((L.etaSz + L.Sc + ((dat p i).p + (dat p i).q : ℕ)) + L.Sc + ((cZeroN D ((i : ℕ) + 1) : ℤ) : ℝ) + 2 * ((dat p i).p + (dat p i).q : ℕ)) + 20 * ((dat p i).p + (dat p i).q : ℕ) * (lenT p i T.PP : ℝ) ≤ (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ)`. Rewrite using `[anchor_real p i τ t ht, eN, Int.cast_natCast]`. Use `hanc t` as an intermediate fact. Establish `h5 : 0 ≤ (D.R.r : ℝ) * lenT p i T.PP` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `τ a b hab`. Take `⟨t, ht⟩` from `exists_tau p τ`. Establish `hb` using `b.2`. Establish `hd : ((uW p i τ a - uW p i τ b : ℤ) : ℝ) = sgR D t a - sgR D t (a + 1) - 1 + if (a : ℕ) + 1 = D.R.k + i then (D.R.r : ℝ) else 0`.
+
+Rewrite using `[Int.cast_sub, uW_real p i τ t ht, uW_real p i τ t ht, hab, ← entR_step]`. Expand and normalize the polynomial expressions, which then agree. Establish `hge : sgR D t a - sgR D t (a + 1) - 1 ≤ ((uW p i τ a - uW p i τ b : ℤ) : ℝ)`. Apply the tactic sequence `rw [hd]; split_ifs <;> linarith`. Use `⟨fun _ => ?_, fun ha => ?_, fun hp => ?_⟩` and prove the remaining obligations.
+
+Use `show ((lenT p i T.PP : ℤ) + dimFlag (dat p i) + 2) * ((lenT p i T.PP : ℤ) + dimFlag (dat p i) + 2 + 2 * ((dat p i).p + (dat p i).q : ℕ)) ≤ uW p i τ a - uW p i τ b + 2`. Rewrite using `[hD, eZ]`. Use `hstep t a (by omega)` as an intermediate fact. Establish `h2 : ((lenT p i T.PP : ℝ) + T.Dp + 2) * (lenT p i T.PP + T.Dp + 2 + 2 * (D.R.r : ℝ)) ≤ ((uW p i τ a - uW p i τ b : ℤ) : ℝ) + 2` using `by linarith`. Conclude with `h2` after adjusting the coercions.
+
+Use `show (p.h0 : ℤ) - 1 ≤ uW p i τ a - uW p i τ b`. Use `sgR_step_low D L P t a ha (by omega)` as an intermediate fact. Rewrite `this` using `[h0_eq p]`. Establish `h2 : (p.h0 : ℝ) - 1 ≤ ((uW p i τ a - uW p i τ b : ℤ) : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions.
+
+Use `show (p.h0 : ℤ) ≤ uW p i τ a - uW p i τ b`. Establish `hp' : (b : ℕ) = (dat p i).p` using `hp`. Use `sgR_step_low D L P t a (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[h0_eq p]`. Rewrite `hd` using `[if_pos (by omega)]`.
+
+Establish `c6 : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast six_le_r D.R`. Establish `h2 : (p.h0 : ℝ) ≤ ((uW p i τ a - uW p i τ b : ℤ) : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Introduce `τ a`. Take `⟨t, ht⟩` from `exists_tau p τ`.
+
+Use `show |(uW p i τ a : ℝ)| + ((cZeroN D ((i : ℕ) + 1) : ℤ) : ℝ) + 4 * ((dat p i).p + (dat p i).q : ℕ) ≤ 2 * (4 * L.sc.b)`. Rewrite using `[uW_real p i τ t ht, eN, Int.cast_natCast]`. Establish `a1` using `hent t a (e3 ▸ a.2)`. Establish `a2` using `hent t (D.R.k - 1 - 1) (by omega)`. Establish `a3` using `abs_sub (entR D i t a) (entR D i t (D.R.k - 1 - 1))`.
+
+Take `⟨w1, w2⟩` from `hwin t`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wtNum_at (P : ParameterChoice' D L) (T : ParamsT D L P) (hS : SizesAt L) (hx8 : 8 ≤ L.sc.x)
     (hy : 3 ≤ L.sc.x ^ (L.sc.eps / 4)) : WtNum p i T.PP := by
   have hk := D.R.m_add_three_le_k
@@ -184,6 +253,11 @@ theorem wtNum_at (P : ParameterChoice' D L) (T : ParamsT D L P) (hS : SizesAt L)
     obtain ⟨w1, w2⟩ := hwin t
     linarith
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, le_rfl, max 8 ((3 : ℝ) ^ (4 / eps)), fun x hx hle ι p _ i => ?_⟩⟩⟩` and prove the remaining obligations. Use `wtNum_at p i (Fm.params x hx ι) (Fm.parT x hx ι) (Fm.sizes x hx ι) ?_ ?_` and prove the remaining obligations. Rewrite using `[Fm.L_x x ι hx]`. Conclude with `(le_max_left _ _).trans hle`. Rewrite using `[Fm.L_x x ι hx, Fm.L_eps x ι]`.
+
+Establish `h3 : ((3 : ℝ) ^ (4 / eps)) ^ (eps / 4) = 3`. Rewrite using `[← Real.rpow_mul (by norm_num)]`. Establish `: 4 / eps * (eps / 4) = 1` using `by field_simp`. Rewrite using `[this, Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wtN : WtN := by
   refine ⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ =>
     ⟨0, le_rfl, max 8 ((3 : ℝ) ^ (4 / eps)), fun x hx hle ι p _ i => ?_⟩⟩⟩

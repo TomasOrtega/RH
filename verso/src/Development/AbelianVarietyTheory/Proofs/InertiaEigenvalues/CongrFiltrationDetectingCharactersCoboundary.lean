@@ -9,11 +9,39 @@ namespace GlobalTheory
 noncomputable def padicClampInt (l : ℕ) [Fact l.Prime] (x : ℚ_[l]) : ℤ_[l] :=
   ⟨if ‖x‖ ≤ 1 then x else 0, by split_ifs with h <;> simp [h]⟩
 
+/- English proof (translation)
+Use `show (if ‖x‖ ≤ 1 then x else 0) = x`. Rewrite using `[if_pos h]`.
+-/
 theorem padicClampInt_coe (l : ℕ) [Fact l.Prime] {x : ℚ_[l]} (h : ‖x‖ ≤ 1) :
     ((padicClampInt l x : ℤ_[l]) : ℚ_[l]) = x := by
   show (if ‖x‖ ≤ 1 then x else 0) = x
   rw [if_pos h]
 
+/- English proof (translation)
+Introduce `l _ n _ _ K ρ M hM N hN r`. Take `⟨b, hb, hcob⟩` from `GlobalTheory.T.galoisRep_entries_coboundary_complexPadic l n K ρ M hM`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Take `⟨k₀, hk₀⟩` from `pow_unbounded_of_one_lt (b * (l : ℝ) ^ r) hl1`.
+
+Use `⟨k₀, fun k hk => ?_⟩` and prove the remaining obligations. Use `set L : ℝ := (l : ℝ) ^ (k + 2) with hL`. Establish `hLpos : 0 < L` using `by positivity`. Use `set t : ℝ := (l : ℝ) ^ (-((k : ℤ) + 2)) with htdef`. Establish `ht : t = L⁻¹`.
+
+Rewrite using `[htdef, hL, ← zpow_natCast, ← zpow_neg]`. Use `push_cast`. Both sides reduce to the same expression. Establish `htpos : 0 < t` using `by rw [ht]; positivity`. Establish `hH : ∀ g ∈ N k, ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ t` using `fun g hg => (hN k g).1 hg`.
+
+Use `choose y hy using hcob (N k) t htpos hH`. Use `set c : ℚ_[l] := ((l : ℚ_[l]) ^ (k + 2))⁻¹ with hc`. Establish `hcnorm : ‖c‖ = L`. Rewrite using `[hc, norm_inv, norm_pow, Padic.norm_p, inv_pow, inv_inv]`. Establish `hnorm : ∀ g ∈ N k, ∀ i j, ‖c * ((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ 1`.
+
+Introduce `g hg i j`. Rewrite using `[norm_mul, hcnorm]`. Combine the equalities or inequalities in the displayed calculation. Set `a : n × n → ↥(GK K) → ℤ_[l]` to `fun p g => padicClampInt l (c * ((ρ g : Matrix n n ℚ_[l]) - 1) p.1 p.2)`. Establish `ha : ∀ p, ∀ σ ∈ N k, ((a p σ : ℤ_[l]) : ℚ_[l]) = c * ((ρ σ : Matrix n n ℚ_[l]) - 1) p.1 p.2`.
+
+Introduce `p σ hσ`. Conclude with `padicClampInt_coe l (hnorm σ hσ p.1 p.2)`. Set `x : n × n → ℂ_[l]` to `fun p => algebraMap ℚ_[l] ℂ_[l] c * y p.1 p.2`. Establish `hbt : b * t ≤ ((l : ℝ)⁻¹) ^ r`. Establish `h1 : (l : ℝ) ^ k₀ ≤ L` using `pow_le_pow_right₀ hl1.le (by omega)`.
+
+Establish `h2 : b * (l : ℝ) ^ r ≤ L` using `by linarith`. Rewrite using `[ht, inv_pow, ← div_eq_mul_inv, div_le_iff₀ hLpos, ← div_eq_inv_mul, le_div_iff₀ (by positivity)]`. Conclude with `h2`. Use `⟨n × n, inferInstance, x, a, ?_, ?_⟩` and prove the remaining obligations. Introduce `p σ hσ`.
+
+Establish `hfix : Formalism.Per.σC (σ : GQ l) (algebraMap ℚ_[l] ℂ_[l] c) = algebraMap ℚ_[l] ℂ_[l] c`. Simplify using `only [hc, map_inv₀, map_pow, map_natCast]`. Simplify using `only [x]`. Rewrite using `[ha p σ hσ, map_mul (Formalism.Per.σC (σ : GQ l)), hfix, map_mul]`. Rewrite using `[show ∀ u v w : ℂ_[l], u * v - u * w - u * algebraMap ℚ_[l] ℂ_[l] (((ρ σ : Matrix n n ℚ_[l]) - 1) p.1 p.2) = u * (v - w - algebraMap ℚ_[l] ℂ_[l] (((ρ σ : Matrix n n ℚ_[l]) - 1) p.1 p.2)) by intros; ring]`.
+
+Rewrite using `[norm_mul, norm_algebraMap', hcnorm]`. Combine the equalities or inequalities in the displayed calculation. Introduce `σ hσ hdiv`. Rewrite using `[hN]`. Introduce `i j`.
+
+Take `⟨q, hq⟩` from `hdiv (i, j)`. Establish `h1 : ‖((a (i, j) σ : ℤ_[l]) : ℚ_[l])‖ ≤ ((l : ℝ)⁻¹) ^ r`. Rewrite using `[← PadicInt.norm_def, hq, norm_mul, norm_pow, PadicInt.norm_p]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[ha (i, j) σ hσ, norm_mul, hcnorm]`.
+
+Establish `h3 : (l : ℝ) ^ (-(((k + r : ℕ) : ℤ) + 2)) = ((l : ℝ)⁻¹) ^ r * L⁻¹`. Rewrite using `[hL, ← zpow_natCast, ← zpow_natCast, inv_zpow', ← zpow_neg, ← zpow_add₀ hl0.ne']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h3, le_mul_inv_iff₀ hLpos, mul_comm]`. Conclude with `h1`.
+-/
 theorem congrFiltration_detectingCharacters_coboundary : ∀ (l : ℕ) [Fact l.Prime] (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (ρ : ↥(GK K) →* GL n ℚ_[l]) (M : GL n ℂ_[l]), (∀ g : ↥(GK K), (ρ g : Matrix n n ℚ_[l]).map (algebraMap ℚ_[l] ℂ_[l]) * (M : Matrix n n ℂ_[l]).map (Formalism.Per.σC (g : GQ l)) = M) → ∀ N : ℕ → Subgroup ↥(GK K), (∀ k g, g ∈ N k ↔ ∀ i j, ‖((ρ g : Matrix n n ℚ_[l]) - 1) i j‖ ≤ (l : ℝ) ^ (-((k : ℤ) + 2))) → ∀ r : ℕ, ∃ k₀ : ℕ, ∀ k ≥ k₀, ∃ (ι : Type) (_ : Finite ι) (x : ι → ℂ_[l]) (a : ι → ↥(GK K) → ℤ_[l]), (∀ i, ∀ σ ∈ N k, ‖Formalism.Per.σC (σ : GQ l) (x i) - x i - algebraMap ℚ_[l] ℂ_[l] (a i σ : ℚ_[l])‖ ≤ ((l : ℝ)⁻¹) ^ r) ∧ ∀ σ ∈ N k, (∀ i, (l : ℤ_[l]) ^ r ∣ a i σ) → σ ∈ N (k + r) := by
   intro l _ n _ _ K ρ M hM N hN r
   obtain ⟨b, hb, hcob⟩ := GlobalTheory.T.galoisRep_entries_coboundary_complexPadic l n K ρ M hM

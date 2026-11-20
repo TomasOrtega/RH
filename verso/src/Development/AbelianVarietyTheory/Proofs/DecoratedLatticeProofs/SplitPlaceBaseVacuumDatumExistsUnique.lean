@@ -23,18 +23,27 @@ namespace GlobalTheory.FinPl.OverProof
 
 open GlobalTheory.PlaceModel GlobalTheory.PlaceDatum GlobalTheory.SchrTheta
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_nat_mul_splitHalf_latticeCoordinates_integral`.
+-/
 theorem rd_bounded : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT →
     ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v), IsHalf p.e u →
       ∀ i j, (N : k) * rd α β u i j ∈ 𝒪[k] := GlobalTheory.T.exists_nat_mul_splitHalf_latticeCoordinates_integral
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_nsmul_mem_homLattice_of_integral_frameCoords`.
+-/
 theorem nsmul_mem_of_rd_int : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT →
     ∃ N : ℕ, 0 < N ∧ ∀ t : WO S T, IsHalf p.e t → (∀ i j, rd α β t i j ∈ 𝒪[k]) →
       N • t ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v) := GlobalTheory.T.exists_nsmul_mem_homLattice_of_integral_frameCoords
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schwartzBruhat_matrix_uniformly_locallyConstant_bounded`.
+-/
 theorem sb_uniform : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (Ψ : Matrix n n' k → ℂ), Ψ ∈ SB (Matrix n n' k) →
     ∃ N : ℕ, 0 < N ∧ (∀ X Y : Matrix n n' k, (∀ i j, Y i j ∈ 𝒪[k]) → Ψ (X + (N : k) • Y) = Ψ X) ∧
@@ -44,10 +53,16 @@ section Rd
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {p : SplitPt D k} {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {S T : HSp D}
 
+/- English proof (translation)
+Unfold `rd`. Rewrite using `[Matrix.map_add p.pr (map_add p.pr), Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem rd_add (α : Frame p S n') (β : Frame p T n) (t s : WO S T) : rd α β (t + s) = rd α β t + rd α β s := by
   unfold rd
   rw [Matrix.map_add p.pr (map_add p.pr), Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `rd`. Establish `: (N • t).map p.pr = (N : k) • t.map p.pr`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, nsmul_eq_mul, map_mul, map_natCast]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem rd_nsmul (α : Frame p S n') (β : Frame p T n) (N : ℕ) (t : WO S T) : rd α β (N • t) = (N : k) • rd α β t := by
   unfold rd
   have : (N • t).map p.pr = (N : k) • t.map p.pr := by
@@ -57,6 +72,21 @@ theorem rd_nsmul (α : Frame p S n') (β : Frame p T n) (N : ℕ) (t : WO S T) :
 
 end Rd
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT Ψ hΨ`. Take `⟨Na, hNa, ha⟩` from `rd_bounded D k p n n' S T α β LS LT hS hT`. Take `⟨Nb, hNb, hb⟩` from `nsmul_mem_of_rd_int D k p n n' S T α β LS LT hS hT`. Take `⟨Nc, hNc, hc1, hc2⟩` from `sb_uniform k n n' Ψ hΨ`. Establish `hhalf_add : ∀ {t u : WO S T}, IsHalf p.e u → (IsHalf p.e (t + u) ↔ IsHalf p.e t)` using `fun {t u} hu => forall_congr' fun i => forall_congr' fun j => by`.
+
+Rewrite using `[Matrix.add_apply, mul_add, hu i j, add_left_inj]`. Establish `hhalf_nsmul : ∀ (N : ℕ) {t : WO S T}, IsHalf p.e t → IsHalf p.e (N • t)` using `fun N t ht i j => by`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, ht i j]`. Use `⟨fun t ht => ?_, Na * Nb * Nc, Nat.mul_pos (Nat.mul_pos hNa hNb) hNc, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by simp [extFun, h])`. Establish `hu' : IsHalf p.e ((Na * Nb * Nc) • u)` using `hhalf_nsmul _ hh`. Unfold `extFun`. Rewrite using `[if_congr (hhalf_add hu') rfl rfl]`. Use `split_ifs with h`.
+
+Rewrite using `[rd_add, rd_nsmul, show ((Na * Nb * Nc : ℕ) : k) • rd α β u = (Nc : k) • (((Nb : k) * Na) • rd α β u) by`. Rewrite using `[smul_smul]`. Use `push_cast`. Use the proof step `ring_nf]`. Use `hc1 _ _ fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `mul_mem (by exact_mod_cast (algebraMap ℤ 𝒪[k] Nb).2) (ha u hu hh i j)`. Both sides reduce to the same expression. Establish `hth : IsHalf p.e t`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by simp [extFun, h])`. Establish `hΨt : Ψ (rd α β t) ≠ 0` using `by simpa [extFun, hth] using ht`. Establish `h1` using `hb (Nc • t) (hhalf_nsmul _ hth) fun i j => by`. Rewrite using `[rd_nsmul, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hc2 _ hΨt i j`.
+
+Rewrite using `[show (Na * Nb * Nc) • t = Na • (Nb • (Nc • t)) by rw [smul_smul, smul_smul, mul_assoc]]`. Conclude with `nsmul_mem h1 Na`.
+-/
 theorem isSBHalf_extFun : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT →
@@ -94,16 +124,25 @@ theorem isSBHalf_extFun : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [To
     rw [show (Na * Nb * Nc) • t = Na • (Nb • (Nc • t)) by rw [smul_smul, smul_smul, mul_assoc]]
     exact nsmul_mem h1 Na
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.symplecticPairing_latticeAway_supportedAt_place_eq_zero`.
+-/
 theorem symplO_off_eq_zero : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S T : HSp D) (MS : Set (Fin S.rank → D.host.E)) (MT : Set (Fin T.rank → D.host.E)) (P : Pl D → Prop),
     ¬ P p.v → ∀ u ∈ latO S T MS MT P, ∀ x : WO S T, (∀ i j, (p.e + cA D p.e) * x i j = x i j) → symplO S T u x = 0 := GlobalTheory.T.symplecticPairing_latticeAway_supportedAt_place_eq_zero
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.homLatticeIndicator_on_split_half_eq_half_indicator`.
+-/
 theorem extFun_latInd : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → p.UnitAA →
     ∀ (ΛS : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule 𝒪[k] (n → k)), α.IsLat LS ΛS → β.IsLat LT ΛT →
       extFun α β (latInd ΛS ΛT) = halfInd p.e (latO S T (LS : Set _) (LT : Set _) (· = p.v)) := GlobalTheory.T.homLatticeIndicator_on_split_half_eq_half_indicator
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.indicator_hom_selfDual_components_schwartzBruhat`.
+-/
 theorem latInd_mem_SB : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D)
     (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT →
@@ -112,6 +151,17 @@ theorem latInd_mem_SB : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topo
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `Λ`. Establish `he` using `hs.1`. Establish `hec` using `hs.2.1`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← map_mul, he]`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * e = e` using `by rw [← heq]; linear_combination he + hec`.
+
+Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D e = cA D e` using `by rw [← heq]; linear_combination he' + hec`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T LS LT hψ hS hT).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T LS LT hS.1.fg hT.1.fg fun w => w = v`. Use `⟨fun u hu y hy => (hdual u (infPart_half hε heε hu.2)).1 (latO_le_top _ hu.1) y (latO_le_top _ hy.1), mem_of_dual hε hdual he heε heε', fun y hy h => ?_, fun k hk => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `mem_of_dual hε hdual he' heε' (by rwa [cA_cA]) y hy fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite `hu` using `[cA_cA]`. Rewrite using `[symplO_skew, AddChar.map_neg_eq_inv, h u hu, inv_one]`. Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`.
+
+Use `⟨_, ⟨r, hr, rfl⟩, e • u, idem_smul_mem hε he heε (latO_le_top _ hu), ?_⟩` and prove the remaining obligations. Use `(mem_half S T).1 ht.2` as an intermediate fact. Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Take `⟨k, hk, hky⟩` from `exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_half hε heε' hy)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+
+Use `(idem_smul_mem hε he' heε' hky).1` as an intermediate fact. Rewrite `this` using `[smul_comm, (mem_half S T).1 hy]`. Then use the resulting hypothesis.
+-/
 theorem dualPair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : Lat T}
     (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT) {e : AE D} {v : Pl D} (hs : IsSplitIdem D e) {ε : AF D.host.F}
     (hε : IsPlaceIdem D v ε) (heq : e + cA D e = algebraMap (AF D.host.F) (AE D) ε) :
@@ -145,13 +195,26 @@ theorem dualPair {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S
     have := (idem_smul_mem hε he' heε' hky).1
     rwa [smul_comm, (mem_half S T).1 hy] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `[heisO]`.
+-/
 theorem heisO_zero_fun (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : heisO ψ S T u 0 = 0 := by
   funext t; simp [heisO]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u _ => heisO_zero_fun ψ S T _, fun _ _ u _ _ => heisO_zero_fun ψ S T u⟩`.
+-/
 theorem isLatVac_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) :
     IsLatVac (heisO ψ S T) Λ 0 :=
   ⟨fun u _ => heisO_zero_fun ψ S T _, fun _ _ u _ _ => heisO_zero_fun ψ S T u⟩
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Use `(heisL S T ψ (2 • u)).map_add f g` as an intermediate fact. Express the relevant statement in the definitionally equal form `heisO ψ S T (2 • u) (f + g) = _ at this`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `heisO ψ S T (2 • u) f + heisO ψ S T (2 • u) g = _`.
+
+Rewrite using `[hf.1 u hu, hg.1 u hu]`. Use `(heisL S T ψ u).map_add f g` as an intermediate fact. Express the relevant statement in the definitionally equal form `heisO ψ S T u (f + g) = _ at this`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `heisO ψ S T u f + heisO ψ S T u g = _`.
+
+Rewrite using `[hf.2 e he u hu hh, hg.2 e he u hu hh]`.
+-/
 theorem isLatVac_add {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSubgroup (WO S T)} {f g : WO S T → ℂ}
     (hf : IsLatVac (heisO ψ S T) Λ f) (hg : IsLatVac (heisO ψ S T) Λ g) : IsLatVac (heisO ψ S T) Λ (f + g) := by
   refine ⟨fun u hu => ?_, fun e he u hu hh => ?_⟩
@@ -162,6 +225,13 @@ theorem isLatVac_add {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSub
     change heisO ψ S T u (f + g) = _ at this
     rw [this]; change heisO ψ S T u f + heisO ψ S T u g = _; rw [hf.2 e he u hu hh, hg.2 e he u hu hh]
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Use `(heisL S T ψ (2 • u)).map_smul c f` as an intermediate fact. Express the relevant statement in the definitionally equal form `heisO ψ S T (2 • u) (c • f) = _ at this`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `c • heisO ψ S T (2 • u) f = _`.
+
+Rewrite using `[hf.1 u hu]`. Use `(heisL S T ψ u).map_smul c f` as an intermediate fact. Express the relevant statement in the definitionally equal form `heisO ψ S T u (c • f) = _ at this`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `c • heisO ψ S T u f = _`.
+
+Rewrite using `[hf.2 e he u hu hh]`.
+-/
 theorem isLatVac_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSubgroup (WO S T)} (c : ℂ) {f : WO S T → ℂ}
     (hf : IsLatVac (heisO ψ S T) Λ f) : IsLatVac (heisO ψ S T) Λ (c • f) := by
   refine ⟨fun u hu => ?_, fun e he u hu hh => ?_⟩
@@ -172,6 +242,11 @@ theorem isLatVac_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSu
     change heisO ψ S T u (c • f) = _ at this
     rw [this]; change c • heisO ψ S T u f = _; rw [hf.2 e he u hu hh]
 
+/- English proof (translation)
+Establish `key : ∀ u ∈ Λ, heisO ψ S T u f = f → heisO ψ S T u (heisO ψ S T x f) = heisO ψ S T x f`. Introduce `u hu h`. Use `heisL_comm S T ψ u x f` as an intermediate fact. Express the relevant statement in the definitionally equal form `heisO ψ S T u (heisO ψ S T x f) = ψ (symplO S T u x) • heisO ψ S T x (heisO ψ S T u f) at this`. Rewrite using `[this, hx u hu, AddChar.map_zero_eq_one, one_smul, h]`.
+
+Conclude with `⟨fun u hu => key _ (nsmul_mem hu 2) (hf.1 u hu), fun e he u hu hh => key u hu (hf.2 e he u hu hh)⟩`.
+-/
 theorem isLatVac_heis {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSubgroup (WO S T)} {x : WO S T}
     (hx : ∀ u ∈ Λ, symplO S T u x = 0) {f : WO S T → ℂ} (hf : IsLatVac (heisO ψ S T) Λ f) :
     IsLatVac (heisO ψ S T) Λ (heisO ψ S T x f) := by
@@ -182,6 +257,23 @@ theorem isLatVac_heis {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Λ : AddSu
     rw [this, hx u hu, AddChar.map_zero_eq_one, one_smul, h]
   exact ⟨fun u hu => key _ (nsmul_mem hu 2) (hf.1 u hu), fun e he u hu hh => key u hu (hf.2 e he u hu hh)⟩
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n n' _ _ _ _ ψ hψ S T α β LS LT hS hT f₀ hvac`. Take `⟨ε, hε, heq⟩` from `p.above`. Establish `hs` using `p.split`. Establish `he` using `hs.1`. Establish `hec` using `hs.2.1`.
+
+Establish `he' : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, he]`. Establish `hs' : IsSplitIdem D (cA D p.e)` using `⟨he', by rw [cA_cA, mul_comm, hec], p.v, ε, hε, by rw [cA_cA, add_comm, heq]⟩`. Establish `heε : algebraMap (AF D.host.F) (AE D) ε * p.e = p.e` using `by rw [← heq]; linear_combination he + hec`. Establish `heε' : algebraMap (AF D.host.F) (AE D) ε * cA D p.e = cA D p.e` using `by rw [← heq]; linear_combination he' + hec`. Take `⟨hLL', hX, hY, hfin, hden⟩` from `dualPair hψ hS hT hs hε heq`.
+
+Use `set Λ := latO S T (LS : Set _) (LT : Set _) (· = p.v) with hΛ`. Establish `hex : ∃ Tm, IsPlaceModel ψ (symplO S T) (heisO ψ S T) p.e Λ 1 f₀ Tm` using `exists_placeModel ψ hec Λ hLL' hX hY hfin one_ne_zero f₀ (fun u hu => hvac.2.2 p.e hs u hu.1 ((isHalf_iff S T).2 hu.2)) (fun u hu => hvac.2.2 _ hs' u hu.1 ((isHalf_iff S T).2 hu.2))`. Take `⟨Tm, hTm⟩` from `hex`. Establish `huniq` using `fun {T₁ T₂} (h₁ : IsPlaceModel ψ (symplO S T) (heisO ψ S T) p.e Λ 1 f₀ T₁) (h₂ : IsPlaceModel ψ (symplO S T) (heisO ψ S T) p.e Λ 1 f₀ T₂) {Φ} (hΦ : IsSBHalf p.e Λ Φ) => placeModel_unique_of_dual ψ Λ hLL' hX hfin hden h₁ h₂ hΦ`. Establish `hfX : ∀ x ∈ half S T p.e, ∀ i j, (p.e + cA D p.e) * x i j = x i j` using `fun x hx i j => by`.
+
+Establish `h1` using `(isHalf_iff S T).2 hx i j`. Take the linear combination `(1 - cA D p.e) * h1 + x i j * hec`. Establish `hfY : ∀ y ∈ half S T (cA D p.e), ∀ i j, (p.e + cA D p.e) * y i j = y i j` using `fun y hy i j => by`. Establish `h1` using `(isHalf_iff S T).2 hy i j`. Take the linear combination `(1 - p.e) * h1 + y i j * hec`.
+
+Use `⟨fun Ψ hΨ => ?_, fun Ψ f hf => ?_, fun hU ΛS ΛT hLS hLT => ?_⟩` and prove the remaining obligations. Establish `hΦ` using `isSBHalf_extFun D k p n n' S T α β LS LT hS hT Ψ hΨ`. Use `⟨Tm (extFun α β Ψ), ⟨hS, hT, hvac, hΨ, ⟨Tm, hTm⟩, fun T' hT' => huniq hTm hT' hΦ⟩, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `hf.2.2.2.2.2 Tm hTm`. Establish `hΦ` using `isSBHalf_extFun D k p n n' S T α β LS LT hS hT Ψ hf.2.2.2.1`.
+
+Establish `hfe : f = Tm (extFun α β Ψ)` using `hf.2.2.2.2.2 Tm hTm`. Rewrite using `[hfe]`. Use `⟨placeModel_induction ψ Λ hLL' hX hfin hden hTm (IsThetaFunO ψ S T) GlobalTheory.WeilVacMove.isTheta_zero (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) (fun c _ => GlobalTheory.WeilVacMove.isTheta_smul c) (fun x hx g hg => isTheta_heis_fin hψ hg (infPart_half hε heε hx)) (fun …` and prove the remaining obligations. Conclude with `placeModel_induction ψ Λ hLL' hX hfin hden hTm (IsThetaFunO ψ S T) GlobalTheory.WeilVacMove.isTheta_zero (fun _ _ => GlobalTheory.WeilVacMove.isTheta_add) (fun c _ => GlobalTheory.WeilVacMove.isTheta_smul c) (fun x hx g hg => isTheta_heis_fin hψ hg (infPart_half hε heε hx)) (fun …`. Establish `hv2 : IsLatVac (heisO ψ S T) (latO S T (MS : Set (Fin S.rank → D.host.E)) (MT : Set (Fin T.rank → D.host.E)) P) f₀` using `hv.2`.
+
+Conclude with `placeModel_induction ψ Λ hLL' hX hfin hden hTm (IsLatVac (heisO ψ S T) (latO S T (MS : Set (Fin S.rank → D.host.E)) (MT : Set (Fin T.rank → D.host.E)) P)) (isLatVac_zero ψ S T _) (fun _ _ => isLatVac_add) (fun c _ => isLatVac_smul c) (fun x hx g hg => isLatVac_heis (fun u hu => s …`. Establish `hE` using `extFun_latInd D k p n n' S T α β LS LT hS hT hU ΛS ΛT hLS hLT`. Use `⟨hS, hT, hvac, latInd_mem_SB D k p n n' S T α β LS LT hS hT ΛS ΛT hLS hLT, ⟨Tm, hTm⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Use `hT'.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+
+Express the relevant statement in the definitionally equal form `f₀ = T' (extFun α β (latInd ΛS ΛT))`. Rewrite using `[hE, this]`.
+-/
 theorem overBasic : ∀ D : D7, GlobalTheory.FinPl.OverBasic D := by
   intro D k _ _ _ _ p n n' _ _ _ _ ψ hψ S T α β LS LT hS hT f₀ hvac
   obtain ⟨ε, hε, heq⟩ := p.above
@@ -242,4 +334,7 @@ theorem overBasic : ∀ D : D7, GlobalTheory.FinPl.OverBasic D := by
 
 end GlobalTheory.FinPl.OverProof
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FinPl.OverProof.overBasic`.
+-/
 theorem GlobalTheory.FinPl.overBasic : ∀ D : D7, GlobalTheory.FinPl.OverBasic D := GlobalTheory.FinPl.OverProof.overBasic

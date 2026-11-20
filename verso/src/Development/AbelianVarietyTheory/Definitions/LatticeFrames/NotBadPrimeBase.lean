@@ -17,6 +17,9 @@ namespace GlobalTheory.Fam
 
 variable {D : D7}
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem idx_top {j m : ℕ} (h : j + 2 * 0 + 2 = m) : m - 1 = j + 1 := by omega
 
 set_option maxHeartbeats 1000000 in
@@ -178,6 +181,13 @@ structure GeoMeas : Prop where
 
 variable {R g} in
 
+/- English proof (translation)
+Establish `hv : volLev R g t j ≠ 0` using `fun h0 => by`. Break down `Nat.lt_or_ge (j + 1) D.R.m with h1 | h1` into its components or cases. Use `(g.vol (j + 1)).haar` as an intermediate fact. Use `NeZero.ne (g.vol (j + 1)).μ ?_` and prove the remaining obligations. Rewrite using `[h.vol t j h1, h0, mul_zero, ENNReal.ofReal_zero, zero_smul]`.
+
+Use `g.volT.haar` as an intermediate fact. Use `NeZero.ne g.volT.μ ?_` and prove the remaining obligations. Rewrite using `[h.volT t, show D.R.m - 1 = j by omega, h0, mul_zero, ENNReal.ofReal_zero, zero_smul]`. Establish `hf : ∀ PP : R.Pg, Finite (kP PP.1)` using `fun PP => Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot`. Establish `hc : Nat.card P.H ≠ 0` using `Nat.card_pos.ne'`.
+
+Conclude with `mul_ne_zero (mul_ne_zero (Nat.cast_ne_zero.2 hc) (Complex.ofReal_ne_zero.2 (h.κ _).ne')) (Complex.ofReal_ne_zero.2 hv)`.
+-/
 theorem GeoMeas.cIOf_ne_zero (h : GeoMeas R g) (t : T) (j : ℕ) (hj : j < D.R.m) : cIOf R P g t j ≠ 0 := by
   have hv : volLev R g t j ≠ 0 := fun h0 => by
     rcases Nat.lt_or_ge (j + 1) D.R.m with h1 | h1
@@ -227,6 +237,11 @@ def ReadsG {S : D.what₂.Tau → SPar} {MX : DSModel D.sp.X' S} (eW : Pm.Wrow �
   ∀ (c : M.clsP) (v : SmT MX) (h : GA D D.sp.X'), GlobalTheory.Core.Rk.Top.HasMat h (K.y c).1 →
     f v (h * x) = (Nat.card (M.stabilizer₂ c) : ℂ) * Pm.period (eW.symm (Pi.single c (j v))) G
 
+/- English proof (translation)
+Establish `h1 : GlobalTheory.Core.Rk.Top.HasMat (1 : GA D D.sp.X') (1 : K.lev.U).1`. Use `⟨Subgroup.one_mem _, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Establish `e : x⁻¹ * 1 * x = 1` using `by group`. Use `⟨e ▸ (h.1 1).2 ⟨1, h1⟩, ?_⟩` and prove the remaining obligations.
+
+Use `h.2 1 1 h1` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `using this`.
+-/
 theorem LevG.one_mem {x : GA D D.sp.X'} {J : Set (GA D D.sp.X')} {χ : GA D D.sp.X' → ℂ} (h : LevG K x J χ) : 1 ∈ J ∧ χ 1 = 1 := by
   have h1 : GlobalTheory.Core.Rk.Top.HasMat (1 : GA D D.sp.X') (1 : K.lev.U).1 := by
     refine ⟨Subgroup.one_mem _, fun i j => ?_⟩
@@ -237,13 +252,22 @@ theorem LevG.one_mem {x : GA D D.sp.X'} {J : Set (GA D D.sp.X')} {χ : GA D D.sp
   rw [e] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `h` and use `(h.one_mem K).1`.
+-/
 example (x : GA D D.sp.X') (χ : GA D D.sp.X' → ℂ) : ¬ LevG K x ∅ χ := fun h => (h.one_mem K).1
 
+/- English proof (translation)
+Simplify using `only [LevG, GlobalTheory.Core.Rk.Top.TopLev, inv_one, one_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem levG_one_iff (K₀ : ClsPTied u) (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) :
     LevG K₀.toG 1 J χ ↔ GlobalTheory.Core.Rk.Top.TopLev K₀ J χ := by
   simp only [LevG, GlobalTheory.Core.Rk.Top.TopLev, inv_one, one_mul, mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `c v h _` and use `by simp`.
+-/
 theorem readsG_zero {S : D.what₂.Tau → SPar} {MX : DSModel D.sp.X' S} (eW : Pm.Wrow ≃ₗ[ℂ] (M.clsP → FrP D → ℂ))
     (j : SmT MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') : ReadsG K eW j x 0 0 := fun c v h _ => by simp
 
@@ -308,6 +332,9 @@ abbrev FamCh.t (t : W.P.T) : Tup f.c :=
 def badPrime (W : RealPack ex) (_u : D.what₂.Word) (t : W.P.T) (p : ℕ) : Prop :=
   ∃ PP ∈ (pk W).Q t, ((p : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal
 
+/- English proof (translation)
+Introduce and unpack `⟨PP, hP, -⟩`. Establish `lev` using `W.Q.charW.base.lev`. Use `(lev.Q_ram _ PP).2 (Or.inl hP) fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]`. Both sides reduce to the same expression.
+-/
 theorem not_badPrime_base (W : RealPack ex) (u : D.what₂.Word) (p : ℕ) : ¬ badPrime W u W.P.A3.A.μ0 p := by
   rintro ⟨PP, hP, -⟩
   have lev := W.Q.charW.base.lev
@@ -315,6 +342,9 @@ theorem not_badPrime_base (W : RealPack ex) (u : D.what₂.Word) (p : ℕ) : ¬ 
   rw [show W.Q.Rl.xiH W.P.A3.A.μ0 = 1 from lev.xi_base]
   rfl
 
+/- English proof (translation)
+Take `⟨PP, hP⟩` from `h`. Use `⟨Formalism.EigenvalueLevelCeiling.plc PP, Formalism.EigenvalueLevelCeiling.plc_prime PP, PP, hP, ?_⟩` and prove the remaining obligations. Use `(ringChar.spec ((𝓞 D.host.E) ⧸ PP.asIdeal) (Formalism.EigenvalueLevelCeiling.plc PP)).2 dvd_rfl` as an intermediate fact. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using this)`.
+-/
 theorem exists_badPrime (W : RealPack ex) (u : D.what₂.Word) (t : W.P.T) (h : ((pk W).Q t).Nonempty) :
     ∃ p : ℕ, p.Prime ∧ badPrime W u t p := by
   obtain ⟨PP, hP⟩ := h
@@ -324,6 +354,19 @@ theorem exists_badPrime (W : RealPack ex) (u : D.what₂.Word) (t : W.P.T) (h : 
 
 open Formalism.L2.Host Formalism.L2 Formalism.L2.Rows in
 
+/- English proof (translation)
+Take `⟨PP, hP, h1⟩` from `h`. Introduce `h2`. Establish `lev` using `W.Q.charW.base.lev`. Establish `hr : ¬ (W.Q.Rl.xiH (W.Q.Rl.mu w)).UnrAt PP` using `(lev.Q_ram _ PP).2 (Or.inl hP)`. Establish `hl : Formalism.EigenvalueLevelCeiling.plc w = p` using `(Nat.prime_dvd_prime_iff_eq (Formalism.EigenvalueLevelCeiling.plc_prime w) hp).1 ((ringChar.spec _ p).1 (by simpa using Ideal.Quotient.eq_zero_iff_mem.2 h2))`.
+
+Distinguish the cases in `hw : w ∈ W.Q.Rl.twPl`. Take `⟨ψ, Q, hψ, e⟩` from `W.Q.charW.tup.mu_on w hw`. Establish `e' : W.Q.Rl.xiH (W.Q.Rl.mu w) = W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w) * ψ` using `e`. Establish `key : ∀ q : ℕ, q.Prime → OverP D.host q PP → q = p` using `fun q hq ho => by`. Assume the negation of the conclusion as `hne`.
+
+Establish `hc : IsCoprime ((q : ℕ) : 𝓞 D.host.E) ((p : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes hq hp).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Establish `ho' : ((q : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `ho`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ ho') (PP.asIdeal.mul_mem_left _ h1)))`. Establish `hd : (W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).UnrAt PP`.
+
+Unfold `CharFrame.delAt`. Use `split_ifs with hh`. Use `W.Q.Rl.C.isDel'.unr PP fun ho => D.host.pde_ne ?_` and prove the remaining obligations. Rewrite using `[← hh, hl, key _ D.host.pde'_prime ho]`. Conclude with `W.Q.Rl.C.isDel.unr PP fun ho => hh (by rw [hl, key _ D.host.pde_prime ho])`.
+
+Use `hr fun x hx => ?_` and prove the remaining obligations. Establish `a1` using `hd x hx`. Establish `a2` using `hψ.atl PP (hl ▸ h1) x`. Rewrite using `[e']`. Express the relevant statement in the definitionally equal form `(W.Q.Rl.C.delAt (Formalism.EigenvalueLevelCeiling.plc w)).loc PP x * ψ.loc PP x = 1`.
+
+Rewrite using `[a1, a2, mul_one]`. Establish `e : W.Q.Rl.mu w = W.P.A3.A.μ0` using `W.Q.charW.tup.mu_off w hw`. Conclude with `not_badPrime_base W u p ⟨PP, e ▸ hP, h1⟩`.
+-/
 theorem badPrime_notMem (W : RealPack ex) (u : D.what₂.Word) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ) (hp : p.Prime)
     (h : badPrime W u (W.Q.Rl.mu w) p) : (p : 𝓞 D.what₂.LL) ∉ w.asIdeal := by
   obtain ⟨PP, hP, h1⟩ := h
@@ -359,9 +402,17 @@ theorem badPrime_notMem (W : RealPack ex) (u : D.what₂.Word) (w : HeightOneSpe
   · have e : W.Q.Rl.mu w = W.P.A3.A.μ0 := W.Q.charW.tup.mu_off w hw
     exact not_badPrime_base W u p ⟨PP, e ▸ hP, h1⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (W : RealPack ex) (t : W.P.T) :
     (W.P.A3.side3 W.P.Ps W.P.ψs W.P.Zs).nV t = (W.Q.F.fc (cxW W).zs).Df1.nV t := rfl
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Rewrite using `[map_zero]`. Conclude with `readsG_zero _ _ _ _`. Rewrite using `[map_zero]`.
+
+Conclude with `readsG_zero _ _ _ _`.
+-/
 theorem reads_zero (W : RealPack ex) (u : D.what₂.Word) (j : SmT (pk W).MX →ₗ[ℂ] (FrP D → ℂ)) (x : GA D D.sp.X') (μ : D.what₂.Tup) :
     Reads W u j x μ 0 0 := by
   refine ⟨fun h => ?_, fun h => ?_⟩

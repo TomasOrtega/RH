@@ -69,54 +69,104 @@ variable (G : GlobalFamilyData X ka wL wF) (rz : ℕ) (alz : Fin rz → Fin (Wei
 def LocalPointData.tr {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) : LocalPointData (G.setZQ rz alz th0 zc rq th) la :=
   ⟨Q.y, Q.g0, Q.c⟩
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_InBasis (la : HeightOneSpectrum (𝓞 B.KO)) (h : InBasis G la) : InBasis (G.setZQ rz alz th0 zc rq th) la := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_InCurve {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (h : Q.InCurve) :
     (Q.tr G rz alz th0 zc rq th).InCurve := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_InTie {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (S : Scal B) (h : Q.InTie S) :
     (Q.tr G rz alz th0 zc rq th).InTie S := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_InLift {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (T : ℕ) (h : Q.InLift T) :
     (Q.tr G rz alz th0 zc rq th).InLift T := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_InLiftC {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (S : Scal B) (Gc Prw : ℝ) (T : ℕ) (h : Q.InLiftC S Gc Prw T) :
     (Q.tr G rz alz th0 zc rq th).InLiftC S Gc Prw T := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_Heights (Qf : ∀ la, LocalPointData G la) (Gc PH Prw Pet : ℝ) (h : Heights Qf Gc PH Prw Pet) :
     Heights (fun la => (Qf la).tr G rz alz th0 zc rq th) Gc PH Prw Pet := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem tr_CombBound (S : Scal B) (c : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (h : CombBound G S c nus) :
     CombBound (G.setZQ rz alz th0 zc rq th) S c nus := h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tr_TiedW (S : Scal B) (Gc Prw : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedW S Gc Prw ↔ G.TiedW S Gc Prw := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tr_TiedTh (S : Scal B) (Gc : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedTh S Gc ↔ G.TiedTh S Gc := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tr_TiedEt (large₂ : SizeData₂ D) (Cf Af : ℝ) : (G.setZQ rz alz th0 zc rq th).TiedEt large₂ Cf Af ↔ G.TiedEt large₂ Cf Af := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tr_InContainMR (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ) :
     InContainMR (G.setZQ rz alz th0 zc rq th) la S CRm T c ↔ InContainMR G la S CRm T c := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tr_ShareRhoR (S : Scal B) (T d : ℕ) : ShareRhoR (G.setZQ rz alz th0 zc rq th) S T d ↔ ShareRhoR G S T d := Iff.rfl
 
 end Tr
 
+/- English proof (translation)
+Unfold `ShortG at h ⊢`. Take `⟨Sh, h1, h2, h3⟩` from `h`. Conclude with `⟨Sh, h1, h2, fun g hg => (h3 g hg).trans hb⟩`.
+-/
 theorem ShortG.mono {w : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)} {β β' : ℝ} (h : ShortG X w N β) (hb : β ≤ β') :
     ShortG X w N β' := by
   unfold ShortG at h ⊢
   obtain ⟨Sh, h1, h2, h3⟩ := h
   exact ⟨Sh, h1, h2, fun g hg => (h3 g hg).trans hb⟩
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 K)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField K)⟩⟩`.
+-/
 theorem exists_prime (K : Type) [Field K] [NumberField K] : Nonempty (HeightOneSpectrum (𝓞 K)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 K)
   exact ⟨⟨M, hM.isPrime,
     Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField K)⟩⟩
 
+/- English proof (translation)
+Unfold `WeightFamilies.Wt.size`. Check the signs of the components of the expression.
+-/
 private theorem size_nonneg_lemma (w : WeightFamilies.Wt D j) : 0 ≤ w.size := by
   unfold WeightFamilies.Wt.size
   positivity
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, po, hpo, -, PLam, hPL, -, -, hs0, hsK⟩` from `hS`. Establish `hG'` using `hG`. Unfold `GrowthConstantBound at hG'`. Establish `hle : Formalism.MainNotions.WeightAlgebra.Gc large₂ B PLam po ≤ Gc`. Use `le_trans ?_ (hG' po hpo)` and prove the remaining obligations.
+
+Unfold `Formalism.MainNotions.WeightAlgebra.Gc`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨ShortG.mono hs0 (mul_le_mul_of_nonneg_right hle (size_nonneg_lemma _)), ShortG.mono hsK (mul_le_mul_of_nonneg_right hle (size_nonneg_lemma _))⟩`.
+-/
 theorem shortG_of_scalB {large₂ : SizeData₂ D} {C1 A1 : ℝ} {S : Scal B} {T : ℕ} {Gc : ℝ}
     (hS : ScalB large₂ X C1 A1 S ka wL wF T) (hG : GrowthConstantBound large₂ B Gc) :
     ShortG X (X.wF0 wL wF) (X.Thc S.s0 (X.wF0 wL wF)) (Gc * (X.wF0 wL wF).size) ∧
@@ -131,6 +181,11 @@ theorem shortG_of_scalB {large₂ : SizeData₂ D} {C1 A1 : ℝ} {S : Scal B} {T
   exact ⟨ShortG.mono hs0 (mul_le_mul_of_nonneg_right hle (size_nonneg_lemma _)),
     ShortG.mono hsK (mul_le_mul_of_nonneg_right hle (size_nonneg_lemma _))⟩
 
+/- English proof (translation)
+Use `le_trans hM ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `v (hv | hv)`. Conclude with `Submodule.subset_span (Or.inl hv)`. Establish `h1 : v ∈ Submodule.span (Kp X la G.N) (Set.range (zK G la))` using `hZ (Submodule.subset_span hv)`.
+
+Conclude with `Submodule.span_mono Set.subset_union_right h1`.
+-/
 theorem inContainM_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (CRm : ℝ) (T : ℕ) (c : ℝ)
     (hM : InContainMR G la S CRm T c) (hZ : InContainZ G la S T) : InContainM G la CRm T c := by
   refine le_trans hM ?_
@@ -141,6 +196,25 @@ theorem inContainM_of (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum 
       hZ (Submodule.subset_span hv)
     exact Submodule.span_mono Set.subset_union_right h1
 
+/- English proof (translation)
+Unfold `Conclusion1OfCombR`. Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hC hLat hSup hLAM hQ G Gc PH Prw Pet Pd Qf hW hTh hEt hDH hDS hDL hPd hG4 hGq hRd hRho hRhoP hPoly hB hCu hTie hLC hIM hCB hHt`. Take `⟨-, hSet, hScal, -, hH2, -, -, -⟩` from `id hC`. Take `⟨hkn, -, -, -, -, -, -, -, -, -, -, -, -, hnV, hL, hF, -, -, hDT, -, -, -, -, -, -, -⟩` from `hSet`. Take `⟨hLn, -, -⟩` from `hL`.
+
+Take `⟨-, -, hH2c, hH2d⟩` from `hH2`. Establish `hwt` using `(iterated_weight_at_vanishingOrder (X j h1 h2) wL wF T hDT).trans (ka_eq_addL hF hLn (hkn.trans hnV)).symm`. Take `⟨hs0, hsK⟩` from `shortG_of_scalB hScal hG4`. Unfold `ShortG at hs0 hsK`. Take `⟨Sh0, hSh0sub, hSh0span, hSh0bd⟩` from `hs0`.
+
+Take `⟨ShK, hShKsub, hShKspan, hShKbd⟩` from `hsK`. Take `⟨rz, alz, th0, zc, hal, hth0, hzc, hdet, hspan⟩` from `exists_zChoice (X j h1 h2) ka wL wF T hwt G.w Sh0`. Take `⟨e, heSh, heTop⟩` from `exists_sub_basis (K := B.KO) ShK hShKspan (WeightFamilies.MggK B K.CRm T (cc D large₂ C2 A2 CR wL) j ka)`. Establish `hMtop : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤`. Establish `hL0 : Submodule.IsLattice B.KO (B.Mlat j ka)` using `hLat`.
+
+Take `⟨-, hsp⟩` from `hL0`. Conclude with `hsp`. Establish `heM : ∀ i, e i ∈ B.Mlat j ka` using `fun i => hH2d (hShKsub (Finset.mem_coe.2 (heSh i)))`. Set `th : Fin (finrank B.KO (B.Cusp j ka ⧸ WeightFamilies.MggK B K.CRm T (cc D large₂ C2 A2 CR wL) j ka)) → B.Mlat j ka` to `fun i => ⟨e i, heM i⟩`. Establish `hGq' : Gc ≤ WeightFamilies.PPv D large₂ Ch Ah` using `hGq`.
+
+Establish `hTZ : (G.setZQ rz alz th0 zc _ th).TiedZ S T Gc`. Unfold `GlobalFamilyData.TiedZ`. Conclude with `⟨fun k => ⟨hSh0sub (Finset.mem_coe.2 (hth0 k)), hH2c (hSh0sub (Finset.mem_coe.2 (hth0 k))), hSh0bd _ (hth0 k), hal k⟩, hzc, hdet⟩`. Establish `hTQ : (G.setZQ rz alz th0 zc _ th).TiedQ large₂ S K.CRm T (cc D large₂ C2 A2 CR wL) Ch Ah`. Unfold `GlobalFamilyData.TiedQ`.
+
+Conclude with `⟨(rhoP_eq_finrank B K.CRm T (cc D large₂ C2 A2 CR wL) j ka hMtop).symm, fun i => hShKsub (Finset.mem_coe.2 (heSh i)), heTop, fun i => (hShKbd _ (heSh i)).trans (mul_le_mul_of_nonneg_right hGq' (size_nonneg_lemma ka))⟩`. Establish `hIZ : ∀ la, InContainZ (G.setZQ rz alz th0 zc _ th) la S T`. Introduce `la`. Unfold `InContainZ`. Use `le_trans (Submodule.span_mono ?_) (hspan la)` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨al, θ, hsum, -, hv⟩`. Conclude with `⟨al, θ, hsum, by rw [hSh0span]; exact Submodule.mem_top, hv⟩`. Take `⟨la0⟩` from `exists_prime B.KO`. Establish `hR` using `hRho`. Unfold `ShareRhoR at hR`.
+
+Establish `hRz : ShareRho (D` using `D) (j := j) T (G.setZQ rz alz th0 zc _ th).rz ((X j h1 h2).rk ka (B.Mlat j ka)) := by`. Unfold `ShareRho`. Conclude with `(congrArg (fun n : ℕ => (n : ℝ)) (rz_eq_finrank (G.setZQ rz alz th0 zc _ th) S T Gc la0 hTZ (hIZ la0)).symm).trans_le (hR la0)`. Establish `hRq : ShareRhoP (D` using `D) (j := j) T (G.setZQ rz alz th0 zc _ th).rq ((X j h1 h2).rk ka (B.Mlat j ka)) := by`. Establish `hq` using `rhoP_eq_finrank B K.CRm T (cc D large₂ C2 A2 CR wL) j ka hMtop`.
+
+Unfold `ShareRhoP at hRhoP ⊢`. Rewrite `hRhoP` using `[hq]`. Conclude with `hRhoP`. Conclude with `theorem_zero_of_named_inputs (D := D) (B := B) (P := P) large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hC hLat hSup hLAM hQ (G.setZQ rz alz th0 zc _ th) Gc PH Prw Pet Pd (fun la => (Qf la).tr G rz alz th0 zc _ th) ((tr_TiedW G rz alz th0 zc _ th S Gc Prw). …`.
+-/
 theorem theorem_zero_of_reduced_inputs : Conclusion1OfCombR (D := D) (B := B) (P := P) := by
   unfold Conclusion1OfCombR
   intro large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hC hLat hSup hLAM hQ

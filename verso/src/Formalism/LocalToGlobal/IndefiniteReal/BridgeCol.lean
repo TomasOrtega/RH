@@ -27,6 +27,9 @@ variable {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G} {J : Subgroup G}
 
 def stabJ {y : G} (γ : stab ι J y) : J := ⟨y⁻¹ * ι (γ : Γ) * y, (mem_stab ι).1 γ.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stabK_eq_inv {y : G} (γ : stab ι J y) : stabK ι γ = (stabJ γ)⁻¹ := rfl
 
 def stabHom (y : G) : stab ι J y →* Γ × J where
@@ -43,14 +46,25 @@ namespace AdPts
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {S : GSD K} {G Γ : Type} [Group G] [Group Γ]
   {ι : Γ →* G} {J : Subgroup G} (A : AdPts S ι J)
 
+/- English proof (translation)
+Establish `h` using `A.q_eqv γ k⁻¹ x`. Simplify using `using h`.
+-/
 theorem q_mul (γ : Γ) (x : G) (k : J) : A.q (ι γ * x * (k : G)) = A.gl (γ, k⁻¹) • A.q x := by
   have h := A.q_eqv γ k⁻¹ x
   simpa using h
 
 def y (c : S.Cl) : G := Function.surjInv A.q_surj (S.outSec.rep c)
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq A.q_surj _`.
+-/
 theorem q_y (c : S.Cl) : A.q (A.y c) = S.outSec.rep c := Function.surjInv_eq A.q_surj _
 
+/- English proof (translation)
+Introduce `h`. Use `⟨S.cls (A.q h), ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `S.outSec.exists_mv (A.q h)`. Take `⟨⟨γ, k⟩, rfl⟩` from `A.gl_surj g`. Rewrite `hg` using `[← A.q_y, ← A.q_eqv]`.
+
+Take `⟨k1, hk1, e⟩` from `(A.q_fib _ _).1 hg`. Use `⟨γ, k⁻¹ * ⟨k1, A.principal_congruence_le hk1⟩, e.trans ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`. Introduce and unpack `c ⟨γ, k, rfl⟩`. Rewrite using `[A.q_mul, S.cls_smul, A.q_y, S.outSec.spec]`.
+-/
 theorem isReps : IsReps ι J A.y := by
   intro h
   refine ⟨S.cls (A.q h), ?_, ?_⟩
@@ -72,9 +86,25 @@ def toStab (c : S.Cl) : stab ι J (A.y c) →* MulAction.stabilizer S.G (S.outSe
     show ι (γ : Γ) * A.y c * ((A.y c)⁻¹ * ι (γ : Γ) * A.y c)⁻¹ = A.y c
     group)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toStab_coe (c : S.Cl) (γ : stab ι J (A.y c)) :
     ((A.toStab c γ : MulAction.stabilizer S.G (S.outSec.rep c)) : S.G) = A.gl ((γ : Γ), stabJ γ) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_one _).2 fun γ hγ => ?_` and prove the remaining obligations. Establish `h1 : A.gl ((γ : Γ), stabJ γ) = 1`. Rewrite using `[← A.toStab_coe, hγ]`. Both sides reduce to the same expression.
+
+Conclude with `Subtype.ext ((A.gl_ker _ _).1 h1).1`. Introduce `g`. Take `⟨⟨γ, k⟩, hg⟩` from `A.gl_surj g`. Establish `hfix : A.gl (γ, k) • S.outSec.rep c = S.outSec.rep c`. Rewrite using `[hg]`.
+
+Conclude with `g.2`. Rewrite `hfix` using `[← A.q_y, ← A.q_eqv]`. Take `⟨k1, hk1, e⟩` from `(A.q_fib _ _).1 hfix.symm`. Establish `hmem : (A.y c)⁻¹ * ι γ * A.y c = k1 * (k : G)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hs : γ ∈ stab ι J (A.y c)`. Rewrite using `[mem_stab, hmem]`. Conclude with `J.mul_mem (A.principal_congruence_le hk1) k.2`. Use `⟨⟨γ, hs⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[toStab_coe, ← hg]`.
+
+Establish `hJ : (stabJ (⟨γ, hs⟩ : stab ι J (A.y c)) : J) = ⟨k1, A.principal_congruence_le hk1⟩ * k` using `Subtype.ext hmem`. Establish `h1 : A.gl ((1 : Γ), (⟨k1, A.principal_congruence_le hk1⟩ : J)) = 1` using `(A.gl_ker _ _).2 ⟨rfl, hk1⟩`. Establish `e2 : ((γ, stabJ (⟨γ, hs⟩ : stab ι J (A.y c))) : Γ × J) = ((1 : Γ), (⟨k1, A.principal_congruence_le hk1⟩ : J)) * (γ, k)`. Rewrite using `[hJ]`. Conclude with `Prod.ext (one_mul γ).symm rfl`.
+
+Rewrite using `[e2, map_mul, h1, one_mul]`.
+-/
 theorem toStab_bij (c : S.Cl) : Function.Bijective (A.toStab c) := by
   constructor
   · refine (injective_iff_map_eq_one _).2 fun γ hγ => ?_
@@ -142,6 +172,9 @@ variable {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Sub
 variable {G' Γ' : Type} [Group G'] [Group Γ'] {ι' : Γ' →* G'} {ρ' : Γ' →* Module.End ℂ W} {J' : Subgroup G'}
   {χ' : J' →* ℂˣ}
 
+/- English proof (translation)
+Rewrite using `[mem_stab, mem_stab, hJ, hι]`. Simplify using `only [map_mul, map_inv, MulEquiv.symm_apply_apply]`.
+-/
 theorem mem_stab_transport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ))
     (hJ : ∀ x, x ∈ J' ↔ eG.symm x ∈ J) (y : G) (γ : Γ) : eΓ γ ∈ stab ι' J' (eG y) ↔ γ ∈ stab ι J y := by
   rw [mem_stab, mem_stab, hJ, hι]
@@ -155,6 +188,9 @@ def stabTransport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ �
   right_inv γ' := Subtype.ext (eΓ.apply_symm_apply _)
   map_mul' a b := Subtype.ext (map_mul eΓ _ _)
 
+/- English proof (translation)
+Use `show ((eG y)⁻¹ * ι' (eΓ (γ : Γ)) * eG y)⁻¹ = eG ((y⁻¹ * ι (γ : Γ) * y)⁻¹)`. Rewrite using `[hι]`. Simplify using `only [map_mul, map_inv]`.
+-/
 theorem stabK_transport (eG : G ≃* G') (eΓ : Γ ≃* Γ') (hι : ∀ γ, ι' (eΓ γ) = eG (ι γ))
     (hJ : ∀ x, x ∈ J' ↔ eG.symm x ∈ J) (y : G) (γ : stab ι J y) :
     ((stabK ι' (stabTransport eG eΓ hι hJ y γ) : J') : G') = eG (stabK ι γ : G) := by

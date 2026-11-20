@@ -15,11 +15,23 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Take `⟨c, sm, se, qc, gc, -⟩` from `hG`. Conclude with `⟨c, sm, se, qc, gc⟩`.
+-/
 private theorem smConn_of_semiAbelian {S : Scheme.{0}} (G : Over S) [GrpObj G]
     (hG : IsSemiAbelian G) : SmConn G := by
   obtain ⟨c, sm, se, qc, gc, -⟩ := hG
   exact ⟨c, sm, se, qc, gc⟩
 
+/- English proof (translation)
+Take `⟨F, ⟨hF, hFe⟩, huniq⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr W L G G hG hG (b ≫ a) inferInstance`. Establish `hFF : F ≫ F = F` using `huniq (F ≫ F) ⟨inferInstance, by`. Simplify using `only [CategoryTheory.Functor.map_comp, hFe, Category.assoc, reassoc_of% hab]⟩`. Take `⟨G₁, _, i, r, hSm₁, hi, hr, hir, hri⟩` from `GlobalTheory.T.exists_retract_of_smConn_idempotent (Sp W) G (smConn_of_semiAbelian G hG) F hF hFF`. Establish `hG₁ : IsSemiAbelian G₁` using `GlobalTheory.T.isSemiAbelian_of_retract' (Sp W) G G₁ hG hSm₁ i r hr hir`.
+
+Substitute `hri` using the available equality. Use `⟨G₁, inferInstance, hG₁, { hom := (Over.pullback (spMap (algebraMap W L))).map i ≫ b inv := a ≫ (Over.pullback (spMap (algebraMap W L))).map r hom_inv_id := ?_ inv_hom_id := ?_ }, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hFe]`. Simplify using `only [Category.assoc]`.
+
+Use `_ = (Over.pullback (spMap (algebraMap W L))).map (i ≫ r ≫ i ≫ r) := by simp only [CategoryTheory.Functor.map_comp, Category.assoc]`. Use `_ = 𝟙 _ := by rw [reassoc_of% hir, hir, CategoryTheory.Functor.map_id]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [CategoryTheory.Functor.map_comp, Category.assoc]`. Use `_ = 𝟙 C := by rw [hFe, Category.assoc, reassoc_of% hab, hab]`.
+
+Use `show IsMonHom ((Over.pullback (spMap (algebraMap W L))).map i ≫ b) infer_instance`.
+-/
 theorem exists_semiAbelian_model_of_retract (W L : Type) [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L]
     (G : Over (Sp W)) [GrpObj G] (hG : IsSemiAbelian G) (C : Over (Sp L)) [GrpObj C]
@@ -54,6 +66,11 @@ theorem exists_semiAbelian_model_of_retract (W L : Type) [CommRing W] [IsDomain 
   · show IsMonHom ((Over.pullback (spMap (algebraMap W L))).map i ≫ b)
     infer_instance
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ _ _ B Q _ _ i r hi hr hir hQ`. Take `⟨W, L, _, _, _, _, _, _, _, _, hcomp, hfin, hloc, hcompl, G, _, ⟨e, he⟩, hG⟩` from `hQ`. Establish `hab : ((Over.pullback (spMap (algebraMap K L))).map i ≫ e.inv) ≫ e.hom ≫ (Over.pullback (spMap (algebraMap K L))).map r = 𝟙 ((Over.pullback (spMap (algebraMap K L))).obj B)`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, ← CategoryTheory.Functor.map_comp, hir, CategoryTheory.Functor.map_id]`. Take `⟨G₁, _, hG₁, e₁, he₁⟩` from `exists_semiAbelian_model_of_retract W L G hG ((Over.pullback (spMap (algebraMap K L))).obj B) ((Over.pullback (spMap (algebraMap K L))).map i ≫ e.inv) (e.hom ≫ (Over.pullback (spMap (algebraMap K L))).map r) hab`.
+
+Conclude with `⟨W, L, ‹_›, ‹_›, ‹_›, ‹_›, ‹_›, ‹_›, ‹_›, ‹_›, hcomp, hfin, hloc, hcompl, G₁, ‹_›, ⟨e₁, he₁⟩, hG₁⟩`.
+-/
 theorem potModel_semiAbelian_of_retract : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (B Q : Over (Sp K)) [GrpObj B] [GrpObj Q] (i : B ⟶ Q) (r : Q ⟶ B), IsMonHom i → IsMonHom r → i ≫ r = 𝟙 B → PotModel V K Q (fun _ _ _ G _ => IsSemiAbelian G) → PotModel V K B (fun _ _ _ G _ => IsSemiAbelian G) := by
   intro V K _ _ _ _ _ _ _ _ B Q _ _ i r hi hr hir hQ
   obtain ⟨W, L, _, _, _, _, _, _, _, _, hcomp, hfin, hloc, hcompl, G, _, ⟨e, he⟩, hG⟩ := hQ

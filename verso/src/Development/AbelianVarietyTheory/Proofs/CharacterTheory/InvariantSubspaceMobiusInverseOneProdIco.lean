@@ -10,6 +10,15 @@ namespace GlobalTheory.CuspGL
 noncomputable def oneValue (q a : ℕ) : ℂ :=
   if a = 0 then 0 else ∏ i ∈ Finset.Ico 1 a, (1 - (q : ℂ) ^ i)
 
+/- English proof (translation)
+Establish `hq : 2 ≤ Nat.card F` using `Finite.one_lt_card`. Establish `h` using `GlobalTheory.QBinomialSum.sum_gaussian_mul_prod (Nat.card F) (Module.finrank F V) (fun a => Nat.card {W : Submodule F V // Module.finrank F W = a}) hq (fun a ha => GlobalTheory.T.card_subspaces_of_finrank_mul_card_bases F V a ha)`. Rewrite using `[← h, ← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.Icc 0 (Module.finrank F V)) (g := fun W : Submodule F V => Module.finrank F W) (fun W _ => Finset.mem_Icc.2 ⟨Nat.zero_le _, W.finrank_le⟩)]`. Establish `h2 : ∀ a : ℕ, ∑ W ∈ Finset.univ.filter (fun W : Submodule F V => Module.finrank F W = a), oneValue (Nat.card F) (Module.finrank F W) = (Nat.card {W : Submodule F V // Module.finrank F W = a} : ℂ) * oneValue (Nat.card F) a`. Introduce `a`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun _ => oneValue (Nat.card F) a) (fun W hW => by rw [(Finset.mem_filter.1 hW).2]), Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card (α := {W : Submodule F V // Module.finrank F W = a}), Fintype.card_subtype]`. Simplify using `only [h2]`. Use `symm`. Use `Finset.sum_subset_zero_on_sdiff (Finset.Icc_subset_Icc_left (Nat.zero_le 1)) ?_ ?_` and prove the remaining obligations. Introduce `a ha`.
+
+Establish `: a = 0`. Simplify using `only [Finset.mem_sdiff, Finset.mem_Icc] at ha`. Use linear arithmetic over natural numbers and integers. Simplify using `[this, oneValue]`. Introduce `a ha`.
+
+Establish `: a ≠ 0`. Simplify using `only [Finset.mem_Icc] at ha`. Use linear arithmetic over natural numbers and integers. Simplify using `[this, oneValue]`.
+-/
 theorem sum_oneValue_finrank (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] [Fintype (Submodule F V)] :
     ∑ W : Submodule F V, oneValue (Nat.card F) (Module.finrank F W) = (Module.finrank F V : ℂ) := by
@@ -42,6 +51,15 @@ theorem sum_oneValue_finrank (F : Type) [Field F] [Finite F] (V : Type) [AddComm
       omega
     simp [this, oneValue]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ hn`. Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Fintype (Submodule F V) := Fintype.ofFinite _`.
+
+Establish `hc : LinearMap.charpoly (1 : Module.End F V) = (X - C 1) ^ n`. Rewrite using `[LinearMap.charpoly_one, hn, C_1]`. Rewrite using `[psi_eq, hc, hs]`. Establish `h1 : ∀ W : {W : Submodule F V // W ≠ ⊤ ∧ ∀ x ∈ W, (1 : Module.End F V) x ∈ W}, psi s W.1 ((1 : Module.End F V).restrict W.2.2) = oneValue (Nat.card F) (Module.finrank F W.1)`. Introduce `W`.
+
+Establish `: (1 : Module.End F V).restrict W.2.2 = (1 : Module.End F W.1)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `ih _ (hn ▸ Submodule.finrank_lt W.2.1) _ rfl`.
+
+Rewrite using `[finsum_congr h1, finsum_eq_sum_of_fintype, ← Finset.sum_subtype (Finset.univ.erase (⊤ : Submodule F V)) (by intro W; simp) (fun W : Submodule F V => oneValue (Nat.card F) (Module.finrank F W))]`. Establish `h2` using `sum_oneValue_finrank F V`. Rewrite `h2` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (⊤ : Submodule F V)), finrank_top, hn]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_one_eq_oneValue (F : Type) [Field F] [Finite F] (s : F[X] → ℂ)
     (hs : ∀ j : ℕ, s ((X - C 1) ^ j) = j) (n : ℕ) :
     ∀ (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V], Module.finrank F V = n →
@@ -71,6 +89,9 @@ theorem psi_one_eq_oneValue (F : Type) [Field F] [Finite F] (s : F[X] → ℂ)
     rw [← h2]
     ring
 
+/- English proof (translation)
+Rewrite using `[psi_one_eq_oneValue F s hs _ V rfl, oneValue, if_neg h.ne']`.
+-/
 theorem psi_one (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V] [FiniteDimensional F V]
     (s : F[X] → ℂ) (hs : ∀ j : ℕ, s ((X - C 1) ^ j) = j) (h : 0 < Module.finrank F V) :
     psi s V 1 = ∏ i ∈ Finset.Ico 1 (Module.finrank F V), (1 - (Nat.card F : ℂ) ^ i) := by

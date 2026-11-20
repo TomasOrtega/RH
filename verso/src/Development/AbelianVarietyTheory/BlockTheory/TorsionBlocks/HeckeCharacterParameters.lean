@@ -158,10 +158,16 @@ def HarmonicModule : Prop :=
       ∃ (io : W ⊗[ℂ] M.V →ₗ[ℂ] Pol p q n 0) (I : D.HK.V ⊗[ℂ] M.V →ₗ[ℂ] Pol p q n 0),
         HarmonicMaps F D W τ M j (delta hn ap am) e0 v0 io I
 
+/- English proof (translation)
+Simplify using `[delta, minorProd, nextRow, zPlus, zMinus, topRows, botRows]`.
+-/
 example (a b : ℕ) : delta (p := 1) (q := 1) (n := 3) (by norm_num) (fun _ => a) (fun _ => b) =
     MvPolynomial.X (Sum.inl 0, Sum.inl 0) ^ a * MvPolynomial.X (Sum.inr 0, Sum.inl 2) ^ b := by
   simp [delta, minorProd, nextRow, zPlus, zMinus, topRows, botRows]
 
+/- English proof (translation)
+Establish `: (0 : Mat p q).toBlocks₁₂ = 0` using `rfl`. Simplify using `[decay, this]`.
+-/
 example (p q n : ℕ) : decay n (0 : Mat p q) = 1 := by
   have : (0 : Mat p q).toBlocks₁₂ = 0 := rfl
   simp [decay, this]

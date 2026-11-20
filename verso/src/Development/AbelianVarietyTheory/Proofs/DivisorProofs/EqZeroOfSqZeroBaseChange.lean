@@ -15,10 +15,16 @@ noncomputable section
 
 namespace GlobalTheory.CechPic
 
+/- English proof (translation)
+The claim follows from `unit_ext fun y hy => by rw [gm_res _ y _ hy, gm_res _ y _ (h1 hy), gm_res _ y _ hy]`.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h1 : W ≤ V) (h2 : V ≤ U) (x : Γ(X, U)ˣ) :
     res h1 (res h2 x) = res (h1.trans h2) x :=
   unit_ext fun y hy => by rw [gm_res _ y _ hy, gm_res _ y _ (h1 hy), gm_res _ y _ hy]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun q => q.hom x) (i.naturality (homOfLE h).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Conclude with `e`.
+-/
 theorem app_restrict {X X₀ : Scheme.{0}} (i : X₀ ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)) :
     (i.app V).hom ((X.presheaf.map (homOfLE h).op).hom x) =
       (X₀.presheaf.map (homOfLE (fun y (hy : y ∈ i ⁻¹ᵁ V) => (h hy : i y ∈ U))).op).hom ((i.app U).hom x) := by

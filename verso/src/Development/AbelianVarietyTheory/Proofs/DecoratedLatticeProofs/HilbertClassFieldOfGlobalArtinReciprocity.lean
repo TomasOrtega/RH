@@ -25,12 +25,30 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {art : Ideles E →* Gab E Ω}
 
 omit [IsAlgClosure E Ω] in
+/- English proof (translation)
+Establish `hk : diagUnits E k ∈ art.ker`. Rewrite using `[ha.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)`. Conclude with `hk`.
+-/
 theorem art_diag (ha : IsGlobalArtin art) (k : Eˣ) : art (diagUnits E k) = 1 := by
   have hk : diagUnits E k ∈ art.ker := by
     rw [ha.ker]
     exact Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left ⟨k, rfl⟩)
   exact hk
 
+/- English proof (translation)
+Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed E, Algebra.IsAlgebraic.tower_top (K := E) K⟩`. Take `⟨k, hk⟩` from `exists_unif v`. Generalize the expression as in `atFin v k = p at hk`. Set `θ : (v.adicCompletion E)ˣ →* B` to `χ.comp (art.comp (localIdele E v))`. Establish `hf : ∀ w : HeightOneSpectrum (𝓞 K), w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal → θ p ^ w.asIdeal.inertiaDeg (𝓞 E) = 1` using `fun w hwv => by`.
+
+Take `⟨A, hAw⟩` from `exists_isPlaceOver (F := K) Ω w`. Take `⟨hAv, -, -, hfrob⟩` from `GlobalTheory.FrobRestrict.frob_restrict E Ω K v w hwv A hAw`. Take `⟨σ, hσ⟩` from `exists_isFrob hAw`. Take `⟨φ, hφ, e'⟩` from `(ha.frob v A hAv _).mp ⟨p, hk, rfl⟩`. Take `⟨u, hu, e⟩` from `(ha.ine v A hAv _).mpr ⟨_, hfrob σ φ hσ hφ, rfl⟩`.
+
+Establish `hm` using `hv u hu`. Rewrite `hm` using `[e, map_mul, map_mul, hK, one_mul, map_inv, map_inv, map_pow, map_pow]`. Use `show χ (art (localIdele E v p)) ^ _ = 1`. Rewrite using `[← e', map_inv, map_inv, inv_pow, hm]`. Take `⟨s, hs⟩` from `GlobalTheory.PlacesOver.places_over_finset E K {v}`.
+
+Establish `hsum` using `GlobalTheory.NormValuation.log_valuation_norm_eq_sum E K v a s (fun w => by simp [hs])`. Use `set x : (v.adicCompletion E)ˣ := Units.map (algebraMap E (v.adicCompletion E)).toMonoidHom (Units.map (Algebra.norm E (S := K)) a) with hx`. Establish `hxv : Valued.v (x : v.adicCompletion E) = v.valuation E (Algebra.norm E (a : K))` using `GlobalTheory.RayFromArtin.valued_algebraMap v _`. Establish `hx0 : Valued.v (x : v.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).mpr x.ne_zero`. Establish `hk' : Valued.v (p : v.adicCompletion E) = WithZero.exp (-1 : ℤ)` using `hk`.
+
+Establish `hu : IsUnitAt v (x * p ^ WithZero.log (Valued.v (x : v.adicCompletion E)))` using `by show Valued.v _ = _`. Rewrite using `[Units.val_mul, map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, hk', ← WithZero.exp_zsmul]`. Use `nth_rewrite 1 [← WithZero.exp_log hx0]`. Rewrite using `[← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : θ (x * p ^ WithZero.log (Valued.v (x : v.adicCompletion E))) = 1` using `hv _ hu`. Establish `h2 : θ p ^ WithZero.log (Valued.v (x : v.adicCompletion E)) = 1`. Rewrite using `[← orderOf_dvd_iff_zpow_eq_one, hxv, hsum]`. Use `Finset.dvd_sum fun w hw => Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Rewrite using `[Int.natCast_dvd_natCast, orderOf_dvd_iff_pow_eq_one]`.
+
+Conclude with `hf w (by simpa [hs] using hw)`. Rewrite `h1` using `[map_mul, map_zpow, h2, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem chi_norm_local (ha : IsGlobalArtin art) {B : Type} [CommGroup B] (χ : Gab E Ω →* B)
     (K : IntermediateField E Ω) [FiniteDimensional E K] [NumberField K]
     (hK : ∀ σ : G K Ω, χ (GlobalTheory.HeckeGal.toAb E Ω (σ.restrictScalars E)) = 1) (v : HeightOneSpectrum (𝓞 E))
@@ -74,9 +92,27 @@ theorem chi_norm_local (ha : IsGlobalArtin art) {B : Type} [CommGroup B] (χ : G
   rwa [map_mul, map_zpow, h2, mul_one] at h1
 
 omit [IsAlgClosure E Ω] in
+/- English proof (translation)
+The claim follows from `Units.ext (Prod.ext (mul_one _) (one_mul _))`.
+-/
 theorem infPart_mul_finPart (a : Ideles E) : Units.map (infPart E) a * Units.map (finPart E) a = a :=
   Units.ext (Prod.ext (mul_one _) (one_mul _))
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (Gab E Ω ⧸ U) := QuotientGroup.discreteTopology hU`. Set `χ : Gab E Ω →* Gab E Ω ⧸ U` to `QuotientGroup.mk' U`. Establish `hχ : ∀ g, χ g = 1 ↔ g ∈ U` using `fun g => QuotientGroup.eq_one_iff g`. Set `ψ : Ideles E →* Gab E Ω ⧸ U` to `χ.comp art`. Establish `hψ : Continuous ψ` using `QuotientGroup.continuous_mk.comp ha.quot.continuous`.
+
+Take `⟨L, _, _, hL⟩` from `GlobalTheory.RayFromArtin.exists_field (χ.comp (GlobalTheory.HeckeGal.toAb E Ω)) ((isOpen_discrete {1}).preimage (QuotientGroup.continuous_mk.comp QuotientGroup.continuous_mk))`. Use `haveI : NumberField L := NumberField.of_module_finite E L`. Establish `hK : ∀ σ : G L Ω, χ (GlobalTheory.HeckeGal.toAb E Ω (σ.restrictScalars E)) = 1` using `fun σ => (hL _).1 (AlgEquiv.ext fun x => (algebraMap L Ω).injective (((σ.restrictScalars E).restrictNormal_commutes L x).trans (σ.commutes x)))`. Establish `hj : ComplexEmbedding.IsReal (j.comp (algebraMap L Ω))`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Use `c.restrictNormal_commutes L x` as an intermediate fact. Rewrite `this` using `[show c.restrictNormal L = 1 from (hL c).2 ((hχ _).2 hcU)]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, ← this]`. Both sides reduce to the same expression.
+
+Take `⟨S, M, -, hSu, hSc⟩` from `GlobalTheory.OpenIdeleCongr.open_subgroup_contains_congr E ψ.ker ((isOpen_discrete {1}).preimage hψ) ∅`. Take `⟨T, hT⟩` from `GlobalTheory.PlacesOver.places_over_finset E L S`. Use `choose M' hM' using fun v : HeightOneSpectrum (𝓞 E) => GlobalTheory.NormCompat.NormCont.norm_close_to_one E L v M`. Establish `e0 : (j.comp (algebraMap L Ω)).comp (algebraMap E L) = j.comp (algebraMap E Ω)` using `RingHom.ext fun _ => rfl`. Take `⟨a, ha1, ha2⟩` from `GlobalTheory.T.exists_norm_near_neg_one_at_real_place E L _ hj T (S.sup M') (ψ ⁻¹' {ψ _}) (hψ.continuousAt.preimage_mem_nhds ((isOpen_discrete _).mem_nhds rfl))`.
+
+Rewrite `ha2` using `[e0, Set.mem_preimage, Set.mem_singleton_iff]`. Establish `hfin : ψ (Units.map (finPart E) (diagUnits E (Units.map (Algebra.norm E (S` using `L)) a))) = 1 := by`. Use `GlobalTheory.FrobDense.eq_one_of_local ψ hψ _ rfl fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (locUnit E v (Units.map (Algebra.norm E (S := L)) a)) = 1`. Distinguish the cases in `hv : v ∈ S`.
+
+Use `hSc v hv _ (hM' v (a : L) fun w hw => (ha1 w ((hT w).2 ⟨v, hv, hw⟩)).trans ?_)` and prove the remaining obligations. Establish `: M' v ≤ S.sup M'` using `Finset.le_sup hv`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Conclude with `chi_norm_local ha χ L hK v (hSu v hv) a`.
+
+Establish `h` using `congrArg ψ (infPart_mul_finPart (diagUnits E (Units.map (Algebra.norm E (S := L)) a)))`. Rewrite `h` using `[map_mul, hfin, mul_one, ha2]`. Use `(hχ _).1 (h.trans ?_)` and prove the remaining obligations. Use `show χ (art _) = 1`. Rewrite using `[art_diag ha, map_one]`.
+-/
 theorem art_sign_mem (ha : IsGlobalArtin art) (U : Subgroup (Gab E Ω)) (hU : IsOpen (U : Set (Gab E Ω)))
     (j : Ω →+* ℂ) (c : G E Ω) (hc : ∀ x, j (c x) = starRingEnd ℂ (j x)) (hcU : GlobalTheory.HeckeGal.toAb E Ω c ∈ U) :
     art (infIdele E (InfinitePlace.mk (j.comp (algebraMap E Ω))) (-1)) ∈ U := by
@@ -122,12 +158,30 @@ theorem art_sign_mem (ha : IsGlobalArtin art) (U : Subgroup (Gab E Ω)) (hU : Is
   rw [art_diag ha, map_one]
 
 omit [NumberField E] [IsAlgClosure E Ω] in
+/- English proof (translation)
+Rewrite using `[InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, c.commutes]`.
+-/
 theorem isReal_of_conj (j : Ω →+* ℂ) (c : G E Ω) (hc : ∀ x, j (c x) = starRingEnd ℂ (j x)) :
     (InfinitePlace.mk (j.comp (algebraMap E Ω))).IsReal := by
   rw [InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]
   ext x
   rw [ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, c.commutes]
 
+/- English proof (translation)
+Establish `hg1 : art (infIdele E (InfinitePlace.mk (j.comp (algebraMap E Ω))) (-1)) ≠ 1` using `fun h => GlobalTheory.T.infIdele_neg_one_not_mem_closure_principal_identityComponent E _ (isReal_of_conj j c hc) (ha.ker ▸ h)`. Establish `hmem` using `fun U hU => art_sign_mem ha U hU j c hc`. Generalize the expression as in `art (infIdele E (InfinitePlace.mk (j.comp (algebraMap E Ω))) (-1)) = g at hg1 hmem`. Establish `hcc : c * c = 1` using `AlgEquiv.ext fun x => j.injective (by`. Rewrite using `[AlgEquiv.mul_apply, hc, hc, Complex.conj_conj, AlgEquiv.one_apply])`.
+
+Establish `hd : GlobalTheory.HeckeGal.toAb E Ω c * GlobalTheory.HeckeGal.toAb E Ω c = 1` using `by rw [← map_mul, hcc, map_one]`. Generalize the expression as in `GlobalTheory.HeckeGal.toAb E Ω c = d at hd hmem`. Assume the negation of the conclusion as `hne`. Establish `hg2 : g * d ≠ 1` using `fun h => hne (mul_right_cancel (h.trans hd.symm))`. Take `⟨U₁, h₁, g₁⟩ : ∃ U : Subgroup (Gab E Ω), IsOpen (U : Set (Gab E Ω)) ∧ g ∉ U` from `by by_contra! h`.
+
+Conclude with `hg1 (GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup E Ω g h)`. Take `⟨U₂, h₂, g₂⟩ : ∃ U : Subgroup (Gab E Ω), IsOpen (U : Set (Gab E Ω)) ∧ g * d ∉ U` from `by by_contra! h`. Conclude with `hg2 (GlobalTheory.GabSep.eq_one_of_forall_isOpen_subgroup E Ω _ h)`. Set `V` to `U₁ ⊓ U₂`. Set `U : Subgroup (Gab E Ω)` to `{ carrier := {x | x ∈ V ∨ x * d ∈ V} one_mem' := Or.inl V.one_mem mul_mem' := by`.
+
+Introduce and unpack `a b (ha | ha) (hb | hb)`. Conclude with `Or.inl (V.mul_mem ha hb)`. Conclude with `Or.inr (mul_assoc a b d ▸ V.mul_mem ha hb)`. Conclude with `Or.inr (mul_right_comm a d b ▸ V.mul_mem ha hb)`. Use `Or.inl ?_` and prove the remaining obligations.
+
+Use `V.mul_mem ha hb` as an intermediate fact. Rewrite `this` using `[mul_mul_mul_comm, hd, mul_one]`. Then use the resulting hypothesis. Use the proof step `inv_mem' := by`. Introduce and unpack `a (ha | ha)`. Conclude with `Or.inl (V.inv_mem ha)`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Use `V.inv_mem ha` as an intermediate fact. Rewrite using `[mul_inv, inv_eq_of_mul_eq_one_right hd] at this }` and apply the resulting hypothesis. Establish `hU : IsOpen (U : Set (Gab E Ω))` using `Subgroup.isOpen_mono (H₁ := V) (fun _ h => Or.inl h) (h₁.inter h₂)`. Break down `hmem U hU (Or.inr (hd ▸ V.one_mem)) with h | h` into its components or cases.
+
+Conclude with `g₁ h.1`. Conclude with `g₂ h.2`.
+-/
 theorem art_sign_eq (ha : IsGlobalArtin art) (j : Ω →+* ℂ) (c : G E Ω) (hc : ∀ x, j (c x) = starRingEnd ℂ (j x)) :
     art (infIdele E (InfinitePlace.mk (j.comp (algebraMap E Ω))) (-1)) = GlobalTheory.HeckeGal.toAb E Ω c := by
   have hg1 : art (infIdele E (InfinitePlace.mk (j.comp (algebraMap E Ω))) (-1)) ≠ 1 := fun h =>
@@ -169,6 +223,11 @@ theorem art_sign_eq (ha : IsGlobalArtin art) (j : Ω →+* ℂ) (c : G E Ω) (hc
   · exact g₁ h.1
   · exact g₂ h.2
 
+/- English proof (translation)
+Use `haveI : IsGalois E Ω := {}`. Set `j : Ω →+* ℂ` to `ComplexEmbedding.lift Ω w.embedding`. Establish `hj : j.comp (algebraMap E Ω) = w.embedding` using `ComplexEmbedding.lift_comp_algebraMap _ _`. Take `⟨σ, hσ⟩` from `ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := E) j (ComplexEmbedding.conjugate j) (by`. Rewrite using `[ComplexEmbedding.conjugate_comp, hj, ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hw)])`.
+
+Conclude with `⟨j, σ.symm, fun x => DFunLike.congr_fun hσ x, by rw [hj, InfinitePlace.mk_embedding]⟩`.
+-/
 theorem exists_conj (w : InfinitePlace E) (hw : w.IsReal) : ∃ (j : Ω →+* ℂ) (c : G E Ω),
     (∀ x, j (c x) = starRingEnd ℂ (j x)) ∧ InfinitePlace.mk (j.comp (algebraMap E Ω)) = w := by
   haveI : IsGalois E Ω := {}
@@ -178,6 +237,17 @@ theorem exists_conj (w : InfinitePlace E) (hw : w.IsReal) : ∃ (j : Ω →+* �
     rw [ComplexEmbedding.conjugate_comp, hj, ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hw)])
   exact ⟨j, σ.symm, fun x => DFunLike.congr_fun hσ x, by rw [hj, InfinitePlace.mk_embedding]⟩
 
+/- English proof (translation)
+Use `haveI : IsGalois E Ω := {}`. Use `haveI : DiscreteTopology (Gab E Ω ⧸ U) := QuotientGroup.discreteTopology hU`. Use `haveI : Finite (Gab E Ω ⧸ U) := U.quotient_finite_of_isOpen hU`. Set `ψ : Ideles E →* Gab E Ω ⧸ U` to `(QuotientGroup.mk' U).comp art`. Establish `hψU : ∀ y, ψ y = 1 ↔ art y ∈ U` using `fun y => QuotientGroup.eq_one_iff _`.
+
+Establish `hψ : Continuous ψ` using `QuotientGroup.continuous_mk.comp ha.quot.continuous`. Use `(hψU x).1 ((sup_le (fun u hu => ?_) ?_ : _ ≤ ψ.ker) (GlobalTheory.Mem.UnitIndex.ker_classHom_le E hx))` and prove the remaining obligations. Rewrite using `[← infPart_mul_finPart u]`. Use `mul_mem (mem_of_pow E ψ.ker (Nat.card (Gab E Ω ⧸ U)) Nat.card_pos (fun y => ?_) (fun w hw => ?_) _ rfl) ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_pow, pow_card_eq_one']`.
+
+Take `⟨j, c, hc, rfl⟩` from `exists_conj (Ω := Ω) w hw`. Rewrite using `[MonoidHom.mem_ker, hψU, art_sign_eq ha j c hc]`. Conclude with `hC c ⟨j, hc⟩`. Use `GlobalTheory.FrobDense.eq_one_of_local ψ hψ _ rfl fun v => ?_` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`.
+
+Take `⟨σ, hσ, e⟩` from `(ha.ine v A hA _).1 ⟨Units.map (GlobalTheory.Mem.LocTriv.ev v) (Units.map (finPart E) u), hu v, rfl⟩`. Rewrite using `[hψU, ← e]`. Conclude with `hI A σ hσ`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, hψU, art_diag ha]`.
+
+Conclude with `U.one_mem`.
+-/
 theorem art_mem_of_class (ha : IsGlobalArtin art) (U : Subgroup (Gab E Ω)) (hU : IsOpen (U : Set (Gab E Ω)))
     (hI : ∀ (A : ValuationSubring Ω), ∀ σ ∈ Ine (F := E) A, GlobalTheory.HeckeGal.toAb E Ω σ ∈ U)
     (hC : ∀ c : G E Ω, IsComplexConjugation c → GlobalTheory.HeckeGal.toAb E Ω c ∈ U)
@@ -204,6 +274,11 @@ theorem art_mem_of_class (ha : IsGlobalArtin art) (U : Subgroup (Gab E Ω)) (hU 
     rw [MonoidHom.mem_ker, hψU, art_diag ha]
     exact U.one_mem
 
+/- English proof (translation)
+Establish `key : (QuotientGroup.mk' (GlobalTheory.Mem.UnitIndex.classHom E).range).comp (MonoidHom.id _) = 1`. Use `ReciprocityTheory.Neutral.Bridge.HCF.classGroup_hom_ext _ _ fun v => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_unif v`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.id_apply, MonoidHom.one_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `⟨_, GlobalTheory.IdeleClass.classHom_localIdele_unif E v _ hk⟩`.
+
+Introduce `c`. Use `DFunLike.congr_fun key c` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, MonoidHom.id_apply, MonoidHom.one_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `this`.
+-/
 theorem classHom_surjective : Function.Surjective (GlobalTheory.Mem.UnitIndex.classHom E) := by
   have key : (QuotientGroup.mk' (GlobalTheory.Mem.UnitIndex.classHom E).range).comp (MonoidHom.id _) = 1 := by
     refine ReciprocityTheory.Neutral.Bridge.HCF.classGroup_hom_ext _ _ fun v => ?_
@@ -218,12 +293,22 @@ theorem classHom_surjective : Function.Surjective (GlobalTheory.Mem.UnitIndex.cl
   exact this
 
 omit [IsAlgClosure E Ω] in
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.Neutral.Bridge.HCF.mem_inertia_map_iff]`. Conclude with `⟨fun h => ⟨h.1, fun x hx => A.mem_nonunits_iff.1 (h.2 x ((A.valuation_le_one_iff x).1 hx))⟩, fun h => ⟨h.1, fun x hx => A.mem_nonunits_iff.2 (h.2 x ((A.valuation_le_one_iff x).2 hx))⟩⟩`.
+-/
 theorem mem_ine_iff (A : ValuationSubring Ω) (σ : G E Ω) :
     σ ∈ (A.inertiaSubgroup E).map (A.decompositionSubgroup E).subtype ↔ σ ∈ Ine (F := E) A := by
   rw [ReciprocityTheory.Neutral.Bridge.HCF.mem_inertia_map_iff]
   exact ⟨fun h => ⟨h.1, fun x hx => A.mem_nonunits_iff.1 (h.2 x ((A.valuation_le_one_iff x).1 hx))⟩,
     fun h => ⟨h.1, fun x hx => A.mem_nonunits_iff.2 (h.2 x ((A.valuation_le_one_iff x).2 hx))⟩⟩
 
+/- English proof (translation)
+Use `haveI : IsGalois E Ω := {}`. Set `N : ClosedSubgroup (G E Ω)` to `⟨hilbertSubgroup E Ω, Subgroup.isClosed_topologicalClosure _⟩`. Establish `hN : (IntermediateField.fixedField (hilbertSubgroup E Ω)).fixingSubgroup = hilbertSubgroup E Ω` using `InfiniteGalois.fixingSubgroup_fixedField N`. Rewrite using `[← hN, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`.
+
+Set `V` to `MulAction.stabilizer (G E Ω) y`. Establish `hV : IsOpen (V : Set (G E Ω))` using `stabilizer_isOpen_of_isIntegral y`. Establish `hHV : hilbertSubgroup E Ω ≤ V` using `fun g hg => (IntermediateField.mem_fixedField_iff _ y).1 hy g hg`. Establish `hgen : ∀ g ∈ ((commutator (G E Ω) : Set (G E Ω)) ∪ {σ | ∃ A : ValuationSubring Ω, σ ∈ (A.inertiaSubgroup E).map (A.decompositionSubgroup E).subtype} ∪ {c | IsComplexConjugation c}), g ∈ V` using `fun g hg => hHV (Subgroup.le_topologicalClosure _ (Subgroup.subset_closure hg))`. Establish `hker : (GlobalTheory.HeckeGal.toAb E Ω).ker ≤ V`.
+
+Rewrite using `[GlobalTheory.HeckeGal.toAb, QuotientGroup.ker_mk']`. Conclude with `Subgroup.topologicalClosure_minimal _ (fun g hg => hgen g (Or.inl (Or.inl hg))) (V.isClosed_of_isOpen hV)`. Establish `h` using `art_mem_of_class ha (V.map (GlobalTheory.HeckeGal.toAb E Ω)) (QuotientGroup.isOpenMap_coe _ hV) (fun A τ hτ => ⟨τ, hgen τ (Or.inl (Or.inr ⟨A, (mem_ine_iff A τ).2 hτ⟩)), rfl⟩) (fun c hc => ⟨c, hgen c (Or.inr hc), rfl⟩) x hx`. Rewrite `h` using `[hσ, ← Subgroup.mem_comap, Subgroup.comap_map_eq_self hker]`. Conclude with `h`.
+-/
 theorem mem_hilbertSubgroup (ha : IsGlobalArtin art) (σ : G E Ω) (x : Ideles E)
     (hσ : art x = GlobalTheory.HeckeGal.toAb E Ω σ) (hx : GlobalTheory.Mem.UnitIndex.classHom E x = 1) : σ ∈ hilbertSubgroup E Ω := by
   haveI : IsGalois E Ω := {}
@@ -252,6 +337,27 @@ end GlobalTheory.HilbertFromArtin
 
 open GlobalTheory.HilbertFromArtin in
 
+/- English proof (translation)
+Introduce `H E Ω _ _ _ _ _`. Take `⟨art, ha⟩` from `H E Ω`. Set `cl` to `GlobalTheory.Mem.UnitIndex.classHom E`. Establish `hclo : IsOpen (cl.ker : Set (Ideles E))` using `Subgroup.isOpen_mono (GlobalTheory.IdeleClass.unitIdl_le_ker E) GlobalTheory.Mem.UnitOpen.isOpen_unitIdl`. Establish `hker : art.ker ≤ cl.ker`.
+
+Rewrite using `[ha.ker]`. Conclude with `Subgroup.topologicalClosure_minimal _ (sup_le (GlobalTheory.IdeleClass.diagUnits_range_le_ker E) ((GlobalTheory.IdeleClass.infConn_le_unitIdl E).trans (GlobalTheory.IdeleClass.unitIdl_le_ker E))) (Subgroup.isClosed_of_isOpen _ hclo)`. Set `ρ` to `art.liftOfSurjective ha.quot.surjective ⟨cl, hker⟩`. Establish `hρ : ∀ x, ρ (art x) = cl x` using `fun x => art.liftOfRightInverse_comp_apply _ _ ⟨cl, hker⟩ x`. Establish `hρo : IsOpen (ρ.ker : Set (Gab E Ω))`.
+
+Rewrite using `[← ha.quot.isQuotientMap.isOpen_preimage]`. Use `hclo using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Rewrite using `[Set.mem_preimage, SetLike.mem_coe, SetLike.mem_coe, MonoidHom.mem_ker, hρ, MonoidHom.mem_ker]`. Set `ψ : (Ω ≃ₐ[E] Ω) →* ClassGroup (𝓞 E)` to `ρ.comp (GlobalTheory.HeckeGal.toAb E Ω)`.
+
+Establish `hlies : ∀ (v : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), LiesAbove A v → IsPlaceOver A v` using `fun v A h x => by rw [← h x, A.mem_nonunits_iff]`. Establish `hk : ∀ σ, σ ∈ (ψ⁻¹).ker ↔ ρ (GlobalTheory.HeckeGal.toAb E Ω σ) = 1` using `fun σ => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.inv_apply, inv_eq_one]`. Both sides reduce to the same expression. Use `⟨ψ⁻¹, fun b => ?_, le_antisymm (fun σ hσ => ?_) ?_, fun v A φ hv hφ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `classHom_surjective (E := E) b⁻¹`. Take `⟨σ, hσ⟩` from `toAb_surjective (art x)`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, inv_eq_iff_eq_inv, ← hx, MonoidHom.comp_apply, hσ, hρ]`. Take `⟨x, hx⟩` from `ha.quot.surjective (GlobalTheory.HeckeGal.toAb E Ω σ)`.
+
+Use `mem_hilbertSubgroup ha σ x hx ?_` and prove the remaining obligations. Rewrite `hσ` using `[hk, ← hx, hρ]`. Conclude with `hσ`. Establish `ho : IsOpen ((ψ⁻¹).ker : Set (Ω ≃ₐ[E] Ω))`. Use `hρo.preimage (QuotientGroup.continuous_mk (N := (commutator (G E Ω)).topologicalClosure)) using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `Set.ext hk`. Use `Subgroup.topologicalClosure_minimal _ ((Subgroup.closure_le _).2 ?_) (Subgroup.isClosed_of_isOpen _ ho)` and prove the remaining obligations. Introduce and unpack `g ((hg | ⟨A, hg⟩) | ⟨j, hg⟩)`. Conclude with `Abelianization.commutator_subset_ker _ hg`. Establish `hg'` using `(ReciprocityTheory.Neutral.Bridge.HCF.mem_inertia_map_iff E A g).1 hg`.
+
+Break down `GlobalTheory.inertiaEl_eq_one_or_liesAbove E Ω A g hg' with rfl | ⟨v, hv⟩` into its components or cases. Conclude with `one_mem _`. Take `⟨x, hu, hx⟩` from `(ha.ine v A (hlies v A hv) _).2 ⟨g, (mem_ine_iff A g).1 hg, rfl⟩`. Rewrite using `[SetLike.mem_coe, hk, ← hx, hρ]`. Conclude with `GlobalTheory.IdeleClass.classHom_eq_one_of_mem_unitIdl E (GlobalTheory.IdeleClass.localIdele_mem_unitIdl E v x hu)`.
+
+Rewrite using `[SetLike.mem_coe, hk, ← art_sign_eq ha j g hg, hρ]`. Conclude with `GlobalTheory.IdeleClass.classHom_eq_one_of_mem_unitIdl E fun v => map_one (Valued.v : Valuation (v.adicCompletion E) _)`. Establish `hF : IsFrob (F` using `E) A (normV v) φ := ⟨hφ.1, fun x hx => by`. Rewrite using `[← A.mem_nonunits_iff]`. Conclude with `hφ.2 x ((A.valuation_le_one_iff x).1 hx)⟩`.
+
+Take `⟨x, hxu, hx⟩` from `(ha.frob v A (hlies v A hv) (GlobalTheory.HeckeGal.toAb E Ω φ⁻¹)).2 ⟨φ, hF, rfl⟩`. Rewrite using `[MonoidHom.inv_apply, ← map_inv]`. Use `show ρ (GlobalTheory.HeckeGal.toAb E Ω φ⁻¹) = _`. Rewrite using `[← hx, hρ]`. Conclude with `GlobalTheory.IdeleClass.classHom_localIdele_unif E v x hxu`.
+-/
 theorem GlobalTheory.Published.GlobalArtinReciprocity.hilbertClassField :
     GlobalTheory.Published.GlobalArtinReciprocity → Neutral.HilbertClassField.Statement := by
   intro H E Ω _ _ _ _ _

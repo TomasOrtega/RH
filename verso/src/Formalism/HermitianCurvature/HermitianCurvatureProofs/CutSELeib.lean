@@ -12,6 +12,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 
 def wl (A B : ℂ) : ℂ →L[ℝ] ℂ := A • ContinuousLinearMap.id ℝ ℂ + B • Complex.conjCLE.toContinuousLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wl_apply (A B h : ℂ) : wl A B h = A * h + B * conj h := rfl
 
 section Slice

@@ -16,15 +16,30 @@ section Galois
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`.
+-/
 theorem mem_smul_iff (A : ValuationSubring Ω) (g : G F Ω) (y : Ω) :
     y ∈ g • A ↔ (g⁻¹ : G F Ω) y ∈ A := by
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', mem_smul_iff, mem_smul_iff, map_inv₀, map_eq_zero_iff _ (g⁻¹ : G F Ω).injective]`.
+-/
 theorem valuation_smul_lt_one_iff (A : ValuationSubring Ω) (g : G F Ω) (y : Ω) :
     (g • A).valuation y < 1 ↔ A.valuation ((g⁻¹ : G F Ω) y) < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', mem_smul_iff, mem_smul_iff, map_inv₀,
     map_eq_zero_iff _ (g⁻¹ : G F Ω).injective]
 
+/- English proof (translation)
+Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : σ • g • A = g • A` using `hσ.1 show (g⁻¹ * σ * g) • A = A`. Rewrite using `[mul_smul, mul_smul, h, inv_smul_smul]`. Establish `hx' : (g • A).valuation (g x) ≤ 1`. Rewrite using `[ValuationSubring.valuation_le_one_iff, mem_smul_iff]`.
+
+Establish `: (g⁻¹ : G F Ω) (g x) = x` using `by show (g⁻¹ * g) x = x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(A.valuation_le_one_iff x).1 hx`. Establish `h` using `(valuation_smul_lt_one_iff A g _).1 (hσ.2 _ hx')`.
+
+Establish `e : (g⁻¹ : G F Ω) (σ (g x) - g x) = (g⁻¹ * σ * g) x - x`. Rewrite using `[map_sub]`. Use `congr 1`. Use `show (g⁻¹ * g) x = x`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem conj_mem_Ine_of_smul {A : ValuationSubring Ω} {g σ : G F Ω} (hσ : σ ∈ Ine (F := F) (g • A)) :
     g⁻¹ * σ * g ∈ Ine (F := F) A := by
   refine ⟨?_, fun x hx => ?_⟩
@@ -46,6 +61,9 @@ theorem conj_mem_Ine_of_smul {A : ValuationSubring Ω} {g σ : G F Ω} (hσ : σ
       simp
     rwa [e] at h
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver hA hB`. Introduce `σ hσ`. Use `hn.conj_mem _ (h (conj_mem_Ine_of_smul hσ)) g` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem Ine_le_of_normal [IsAlgClosure F Ω] {A B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)}
     (hA : IsPlaceOver A w) (hB : IsPlaceOver B w) (Hs : Subgroup (G F Ω)) [hn : Hs.Normal]
     (h : Ine (F := F) A ≤ Hs) : Ine (F := F) B ≤ Hs := by
@@ -60,6 +78,11 @@ section Hyps
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Establish `h : ∀ l : List ℝ, A.lpDim (l.foldr (fun k acc => A.lpSum (A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - k)) acc) (A.lpZero w)) = p.a * l.length`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp [A.lpDim_zero]`. Consider the case `cons a l ih => simp only [List.foldr_cons, A.lpDim_sum, A.lpDim_tw, A.locG_dim, ih, List.length_cons]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `spehLoc`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem lpDim_spehLoc (p : Part A.CG) (w : PlE H) : A.lpDim (spehLoc N A p w) = p.a * p.d := by
   have h : ∀ l : List ℝ, A.lpDim (l.foldr
       (fun k acc => A.lpSum (A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - k)) acc) (A.lpZero w)) =
@@ -72,6 +95,11 @@ theorem lpDim_spehLoc (p : Part A.CG) (w : PlE H) : A.lpDim (spehLoc N A p w) = 
   rw [h]
   simp
 
+/- English proof (translation)
+Proceed by induction on `P with`. Consider the case `nil => simp [isoLoc, rankIso, A.lpDim_zero]`. Consider the case `cons p P ih`. Establish `: isoLoc N A (p :: P) w = A.lpSum (spehLoc N A p w) (isoLoc N A P w)` using `rfl`. Rewrite using `[this, A.lpDim_sum, ih, lpDim_spehLoc]`.
+
+Simplify using `[rankIso]`.
+-/
 theorem lpDim_isoLoc (P : List (Part A.CG)) (w : PlE H) : A.lpDim (isoLoc N A P w) = rankIso N A P := by
   induction P with
   | nil => simp [isoLoc, rankIso, A.lpDim_zero]
@@ -80,6 +108,11 @@ theorem lpDim_isoLoc (P : List (Part A.CG)) (w : PlE H) : A.lpDim (isoLoc N A P 
     rw [this, A.lpDim_sum, ih, lpDim_spehLoc]
     simp [rankIso]
 
+/- English proof (translation)
+Take `⟨P, -, h1, -, h3, -⟩` from `h`. Use `⟨fun p hp => ?_, ?_⟩` and prove the remaining obligations. Use `h1 ⟨p.a, A.tw p.π A.etaTinv, p.d⟩ (List.mem_map.2 ⟨p, List.mem_append_left _ hp, rfl⟩)` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Simplify using `only [rankIso, twistIso, muPart, List.map_map, List.map_append, List.sum_append, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, Ranks.nV] at h3 ⊢`.
+
+Establish `e : List.map ((fun p : Part A.CG => p.a * p.d) ∘ fun p : Part A.CG => (⟨p.a, A.tw p.π A.etaTinv, p.d⟩ : Part A.CG)) Sig = List.map (fun p : Part A.CG => p.a * p.d) Sig` using `rfl`. Rewrite `h3` using `[e]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_of_hasParamX {i : N.Loc} {x : N.X i} {Sig : List (Part A.CG)} (h : HasParamX N A i x Sig) :
     (∀ p ∈ Sig, 1 ≤ p.a ∧ 1 ≤ p.d) ∧ rankIso N A Sig = R.r := by
   obtain ⟨P, -, h1, -, h3, -⟩ := h
@@ -99,6 +132,9 @@ def FullLabels (Sig : List (Part A.CG)) : Prop :=
   ∀ (k : Fin 2) (v : N.PlG k),
     (A.items₂ k (A.plGw k v) (isoLoc N A Sig (A.plGw k v))).natDegree = A.lpDim (isoLoc N A Sig (A.plGw k v))
 
+/- English proof (translation)
+Introduce `k v` and use `by rw [lpDim_isoLoc, (rank_of_hasParamX N A h).2] exact ((hg k).1.1 v).2.1`.
+-/
 theorem fullLabels_of_good {i : N.Loc} {x : N.X i} {Sig : List (Part A.CG)} (h : HasParamX N A i x Sig)
     (hg : goodSig N A Sig) : FullLabels N A Sig := fun k v => by
   rw [lpDim_isoLoc, (rank_of_hasParamX N A h).2]

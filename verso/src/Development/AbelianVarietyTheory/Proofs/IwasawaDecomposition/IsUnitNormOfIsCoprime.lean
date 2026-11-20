@@ -5,6 +5,17 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.NormSquareRamified
 
+/- English proof (translation)
+Establish `hpp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Assume the negation of the conclusion as `hD`. Establish `hden : (B.den : ℚ) ≠ 0` using `by exact_mod_cast B.den_nz`. Establish `h1 : q * p * B.num ^ 2 = D * (B.den : ℤ) ^ 2`. Establish `hB : (B.num : ℚ) = B * B.den`.
+
+Rewrite using `[Rat.mul_den_eq_num]`. Establish `: ((q * p * B.num ^ 2 : ℤ) : ℚ) = ((D * (B.den : ℤ) ^ 2 : ℤ) : ℚ)`. Move the coercions through the operations in `at h ⊢`. Rewrite using `[hB, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `this` after adjusting the coercions. Establish `h2 : (p : ℤ) ∣ (B.den : ℤ)`. Establish `: (p : ℤ) ∣ D * (B.den : ℤ) ^ 2` using `⟨q * B.num ^ 2, by rw [← h1]; ring⟩`. Conclude with `hpp.dvd_of_dvd_pow ((hpp.dvd_or_dvd this).resolve_left hD)`. Take `⟨c, hc⟩` from `h2`.
+
+Establish `h3 : q * B.num ^ 2 = p * (D * c ^ 2)`. Apply `mul_left_cancel₀ hpp.ne_zero` to reduce the goal to its premises. Rewrite `h1` using `[hc]`. Take the linear combination `h1`. Establish `h4 : (p : ℤ) ∣ B.num` using `hpp.dvd_of_dvd_pow ((hpp.dvd_or_dvd ⟨_, h3⟩).resolve_left hq)`.
+
+Establish `h5 : IsCoprime B.num (B.den : ℤ)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Simplify `B.reduced` using `[Int.gcd]`. Conclude with `hpp.not_isUnit (h5.isUnit_of_dvd' h4 ⟨c, hc⟩)`.
+-/
 theorem dvd_of_mul_sq {p : ℕ} (hp : p.Prime) {q D : ℤ} (hq : ¬ (p : ℤ) ∣ q) (B : ℚ)
     (h : ((q * p : ℤ) : ℚ) * B ^ 2 = D) : (p : ℤ) ∣ D := by
   have hpp : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp
@@ -32,6 +43,15 @@ theorem dvd_of_mul_sq {p : ℕ} (hp : p.Prime) {q D : ℤ} (hq : ¬ (p : ℤ) �
     simpa [Int.gcd] using B.reduced
   exact hpp.not_isUnit (h5.isUnit_of_dvd' h4 ⟨c, hc⟩)
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Set `b` to `RingOfIntegers.basis F`. Establish `h1 : u * y = 1 - (n : ℤ) • v`. Rewrite using `[← huv]`. Simplify using `[mul_comm]`.
+
+Establish `h2 : ((Algebra.norm ℤ (u * y) : ℤ) : ZMod n) = 1`. Rewrite using `[Algebra.norm_eq_matrix_det b, h1, map_sub, map_one, map_zsmul]`. Use `(Int.castRingHom (ZMod n)).map_det (1 - (n : ℤ) • Algebra.leftMulMatrix b v)` as an intermediate fact. Rewrite `this` using `[eq_intCast]`. Rewrite using `[this, map_sub, map_one, map_zsmul]`.
+
+Establish `h0 : (n : ℤ) • (Int.castRingHom (ZMod n)).mapMatrix (Algebra.leftMulMatrix b v) = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h0, sub_zero, Matrix.det_one]`. Rewrite `h2` using `[map_mul, Int.cast_mul, mul_comm]`.
+
+Conclude with `IsUnit.of_mul_eq_one _ h2`.
+-/
 theorem isUnit_norm_of_isCoprime {F : Type*} [Field F] [NumberField F] (n : ℕ) (y : 𝓞 F)
     (h : IsCoprime y (n : 𝓞 F)) : IsUnit ((Algebra.norm ℤ y : ℤ) : ZMod n) := by
   classical
@@ -51,6 +71,23 @@ theorem isUnit_norm_of_isCoprime {F : Type*} [Field F] [NumberField F] (n : ℕ)
   rw [map_mul, Int.cast_mul, mul_comm] at h2
   exact IsUnit.of_mul_eq_one _ h2
 
+/- English proof (translation)
+Establish `hpp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `set m : ℚ := ((q * p : ℤ) : ℚ) with hm`. Establish `hm0 : m ≠ 0`. Rewrite using `[hm, Int.cast_ne_zero]`. Conclude with `mul_ne_zero (fun h => hq (h ▸ dvd_zero _)) hpp.ne_zero`.
+
+Establish `: Fact (∀ r : ℚ, r ^ 2 ≠ m + 0 * r)` using `⟨fun r hr => by`. Rewrite `hr` using `[zero_mul, add_zero]`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm0 (by rw [← hr]; simp)`.
+
+Establish `: m * r⁻¹ ^ 2 = ((1 : ℤ) : ℚ)`. Rewrite using `[← hr]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Conclude with `hpp.not_dvd_one (dvd_of_mul_sq hp hq _ this)⟩`.
+
+Set `K` to `QuadraticAlgebra ℚ m 0`. Set `φ : K →ₐ[ℚ] F` to `QuadraticAlgebra.lift ⟨s, by`. Rewrite using `[hs, zero_smul, add_zero, hm, Algebra.smul_def, mul_one, map_intCast]⟩`. Set `: Algebra K F` to `φ.toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ K F` using `IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`.
+
+Establish `: Module.Finite ℚ K` using `Module.Finite.of_basis (QuadraticAlgebra.basis m 0)`. Use `set w : K := Algebra.norm K (y : F) with hw`. Establish `hwi : IsIntegral ℤ w` using `Algebra.isIntegral_norm K y.isIntegral_coe`. Establish `hn : ((Algebra.norm ℤ y : ℤ) : ℚ) = w.norm`. Rewrite using `[Algebra.coe_norm_int, ← Algebra.norm_norm (S := K), ← hw, ← QuadraticAlgebra.det_toLinearMap_eq_norm, Algebra.norm_apply]`.
+
+Both sides reduce to the same expression. Establish `hst : IsIntegral ℤ (star w)` using `hwi.map (starRingEnd K).toIntAlgHom`. Establish `htr : IsIntegral ℤ (QuadraticAlgebra.trace w)`. Use `hwi.add hst` as an intermediate fact. Rewrite `this` using `[← QuadraticAlgebra.algebraMap_trace_eq_add_star]`.
+
+Conclude with `(isIntegral_algebraMap_iff (algebraMap ℚ K).injective).mp this`. Take `⟨A, hA⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).mp htr`. Use `⟨A, dvd_of_mul_sq hp hq (2 * w.im) ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Rewrite `hA` using `[eq_intCast]`.
+
+Use `push_cast`. Rewrite using `[hA, hn, QuadraticAlgebra.trace_def, QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_sq_sub_norm {F : Type*} [Field F] [NumberField F] {p : ℕ} (hp : p.Prime) {q : ℤ}
     (hq : ¬ (p : ℤ) ∣ q) (s : F) (hs : s * s = ((q * p : ℤ) : F)) (y : 𝓞 F) :
     ∃ A : ℤ, (p : ℤ) ∣ A ^ 2 - 4 * Algebra.norm ℤ y := by
@@ -92,6 +129,13 @@ theorem exists_sq_sub_norm {F : Type*} [Field F] [NumberField F] {p : ℕ} (hp :
   rw [hA, hn, QuadraticAlgebra.trace_def, QuadraticAlgebra.norm_def]
   ring
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Take `⟨A, hA⟩` from `exists_sq_sub_norm hp hq s hs y`. Establish `hu` using `isUnit_norm_of_isCoprime p y hy`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym.eq_one_iff p hu.ne_zero]`. Establish `h2 : (2 : ZMod p) ≠ 0`.
+
+Introduce `h`. Establish `: ((2 : ℕ) : ZMod p) = 0` using `by exact_mod_cast h`. Rewrite `this` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hp2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).mp this)`. Rewrite `hA` using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Move the coercions through the operations in `at hA`. Use `⟨(A : ZMod p) / 2, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hA`.
+-/
 theorem jacobiSym_norm_eq_one {F : Type*} [Field F] [NumberField F] {p : ℕ} (hp : p.Prime)
     (hp2 : p ≠ 2) {q : ℤ} (hq : ¬ (p : ℤ) ∣ q) (s : F) (hs : s * s = ((q * p : ℤ) : F)) (y : 𝓞 F)
     (hy : IsCoprime y (p : 𝓞 F)) : jacobiSym (Algebra.norm ℤ y) p = 1 := by
@@ -110,6 +154,19 @@ theorem jacobiSym_norm_eq_one {F : Type*} [Field F] [NumberField F] {p : ℕ} (h
   field_simp
   linear_combination -hA
 
+/- English proof (translation)
+Introduce `R H y hy`. Take `⟨hq, hd, hqd, -, hd2⟩` from `H.hypOdd`. Establish `hneg : ∀ (z : ℂ) (n : ℕ), 0 < n → z ^ 2 = -(n : ℂ) → star z = -z`. Introduce `z n hn h`. Establish `hr : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+
+Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `[sq, Complex.mul_re, Complex.mul_im] at h1 h2`. Establish `hre : z.re = 0`. Establish `h3 : z.re * z.im = 0` using `by linarith`.
+
+Break down `mul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `h4`. Rewrite `h1` using `[h4]`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+
+Establish `hmem : H.sqq * H.sqd ∈ H.F`. Introduce `φ`. Establish `ha : star (φ H.sqq) = -φ H.sqq` using `hneg _ H.q hq.pos (by rw [← map_pow, H.sqq_sq]; simp)`. Establish `hb : star (φ H.sqd) = -φ H.sqd` using `hneg _ H.d hd.pos (by rw [← map_pow, H.sqd_sq]; simp)`. Rewrite using `[map_mul, star_mul, ha, hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `jacobiSym_norm_eq_one hd hd2 (q := (H.q : ℤ)) ?_ ⟨_, hmem⟩ ?_ y hy` and prove the remaining obligations. Introduce `h`. Conclude with `hqd ((Nat.prime_dvd_prime_iff_eq hd hq).mp (by exact_mod_cast h)).symm`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `(H.sqq * H.sqd) * (H.sqq * H.sqd) = _`. Establish `: (H.sqq * H.sqd) * (H.sqq * H.sqd) = H.sqq ^ 2 * H.sqd ^ 2` using `by ring`. Rewrite using `[this, H.sqq_sq, H.sqd_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem host_jacobiSym_norm : ∀ (R : Formalism.BasicNotions.Ranks) (H : Formalism.BasicNotions.Host R) (y : 𝓞 H.F),
     IsCoprime y ((H.d : ℕ) : 𝓞 H.F) → jacobiSym (Algebra.norm ℤ y) H.d = 1 := by
   intro R H y hy

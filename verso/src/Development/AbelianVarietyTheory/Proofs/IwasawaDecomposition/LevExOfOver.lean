@@ -12,6 +12,9 @@ open scoped nonZeroDivisors IntermediateField
 
 namespace GlobalTheory.Mem.HD
 
+/- English proof (translation)
+Introduce `p`. Rewrite using `[hlev, hS]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, hg, ha, hb, hc, Fin.exists_fin_two]`. The claim follows by propositional logic.
+-/
 private theorem levEx_of_levelPrimes_eq (D : D7) (S : Finset ℕ) (g : Fin 2 → ℕ) (a b c : ℕ) (hS : S = {g 0, g 1, a, b, c})
     (hlev : ∀ p, p ∈ D.host.levelPrimes ↔ p ∈ S ∨ ∃ u, p = (D.mem u).A.T)
     (hg : ∀ i, D.host.g i = g i) (ha : D.host.pde = a) (hb : D.host.pde' = b) (hc : q0Av D = c) : LevEx D := by
@@ -20,6 +23,13 @@ private theorem levEx_of_levelPrimes_eq (D : D7) (S : Finset ℕ) (g : Fin 2 →
   simp only [Finset.mem_insert, Finset.mem_singleton, hg, ha, hb, hc, Fin.exists_fin_two]
   tauto
 
+/- English proof (translation)
+Introduce `D P Lv hO hlev`. Take `⟨sp, hT, hY, hA, hV, hz, X, hX, rfl⟩` from `hO`. Use `(fun hD => ⟨hD, fun _ _ => hD⟩) ?_` and prove the remaining obligations. Take `⟨B, C, W, V, S, Ns, G⟩` from `X`. Consider the cases of `B`.
+
+Simplify using `only at hX`. Substitute `hX` using the available equality. Use `levEx_of_levelPrimes_eq _ P.H.levelPrimes P.H.g P.H.pde P.H.pde' (DC.q0H P.H) hlev ?_ (fun _ => rfl) rfl rfl ?_` and prove the remaining obligations. Introduce `p`. Establish `hT'` using `C.A_T`.
+
+Use `show p ∈ P.H.levelPrimes ∪ Finset.univ.image Lv.T ↔ _`. Rewrite using `[Finset.mem_union, Finset.mem_image]`. Conclude with `or_congr Iff.rfl ⟨fun ⟨u, _, hu⟩ => ⟨u, hu.symm.trans (hT' u).symm⟩, fun ⟨u, hu⟩ => ⟨u, Finset.mem_univ _, (hT' u).symm.trans hu.symm⟩⟩`. Unfold `q0Av DC.q0H rPrAv DC.rPrH LevelStarExponents.condE`. Both sides reduce to the same expression.
+-/
 theorem levEx_of_over : ∀ (D : D7) (P : PreCh) (Lv : LevCh P), Over D P Lv →
     P.H.levelPrimes = {P.H.g 0, P.H.g 1, P.H.pde, P.H.pde', DC.q0H P.H} → LevEx D ∧ ∀ N h, LevEx (setDiv D N h) := by
   intro D P Lv hO hlev

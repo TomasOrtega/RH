@@ -7,6 +7,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Set `B : Matrix ι ι R₀` to `Matrix.of fun i j => ⟨A i j, hA i j⟩`. Establish `hB : A = R₀.subtype.mapMatrix B`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hB, ← RingHom.map_adjugate]`.
+
+Conclude with `(B.adjugate i j).2`.
+-/
 theorem adjugate_entry_mem_subring {ι : Type} [Fintype ι] [DecidableEq ι] {R : Type} [CommRing R]
     (R₀ : Subring R) (A : Matrix ι ι R) (hA : ∀ i j, A i j ∈ R₀) (i j : ι) : A.adjugate i j ∈ R₀ := by
   let B : Matrix ι ι R₀ := Matrix.of fun i j => ⟨A i j, hA i j⟩

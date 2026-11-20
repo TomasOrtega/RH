@@ -18,6 +18,15 @@ namespace GlobalTheory.OneBasis
 variable {R : Type} [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (F : Type) [Field F]
   [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Set `T` to `TFK (R := R) F`. Establish `: Subsingleton T.left` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Take `⟨p⟩ : Nonempty T.left` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`. Establish `hu : IsUnit ((n ^ 2 : ℕ) : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤))`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).commRingCatIsoToRingEquiv.symm`.
+
+Rewrite using `[← map_natCast e]`. Use `(IsUnit.mk0 _ ?_).map e` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap R (FractionRing R))]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 (Nat.cast_ne_zero.2 (pow_ne_zero 2 hn.pos.ne'))`. Take `⟨y, hy⟩ : ∃ y : T ⟶ A.A, y ^ n = x` from `TorusExt.exists_pow_eq_of_noetherian (S := Sp (FractionRing R)) (k := F) T.hom hLaw.mulN A hn.pos.ne' x`.
+
+Establish `hy' : y ^ (n ^ 2) = 1` using `by rw [sq, pow_mul, hy, hx]`. Take `⟨hex, -⟩` from `hLaw.symLift _ A (n ^ 2) hn.pow hu T y hy'`. Take `⟨V, hV, θ₀, hθ₀⟩` from `hex p`. Take `⟨h, hh⟩` from `GlobalLift.exists_section (T := T) hV`. Take `⟨θ, hθ⟩` from `GlobalLift.exists_symLift_pull A.isLB h hθ₀`.
+
+Rewrite `hθ` using `[← Category.assoc, hh, Category.id_comp]`. Conclude with `exists_isTorsFrame_of_symLift hLaw _ A ρ hρ n hn T y x hy' hy θ hθ`.
+-/
 theorem exists_isTorsFrame_closed [CharZero R] [IsAlgClosed F] (hLaw : Laws) {ρ : LB.Gen (A.L.pull (eSec A.A))}
     (hρ : ρ.IsGen) {n : ℕ} (hn : Odd n) (x : TFK (R := R) F ⟶ A.A) (hx : x ^ n = 1) :
     ∃ e, IsTorsFrame A ρ n x e := by
@@ -43,6 +52,11 @@ theorem exists_isTorsFrame_closed [CharZero R] [IsAlgClosed F] (hLaw : Laws) {ρ
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Take `⟨v, hv, -⟩` from `hLaw.evVal _ A k x e he t`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 v`. Use `⟨c, fun z J hJ => ?_⟩` and prove the remaining obligations. Use `FrameMove.sval_valueAt hv (𝟙 _) hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+
+Conclude with `this`.
+-/
 theorem exists_valAt (hLaw : Laws) {k : ℕ} (t : SecA A F k) (x : TFK (R := R) F ⟶ A.A) {e} (he : LB.Gen.IsGen e) :
     ∃ c, ValAt t x e c := by
   obtain ⟨v, hv, -⟩ := hLaw.evVal _ A k x e he t
@@ -56,6 +70,15 @@ end GlobalTheory.OneBasis
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hLL R _ _ _ A F _ _ _ ρ hρ m n r hm hn th τ hτ`. Establish `H` using `existsUnique_thetaConst hLL R A F ρ hρ`. Use `⟨⟨fun x hx => ?_, fun j x hx => ?_, fun j x hx => ?_⟩, fun x a ha => ?_, fun j x c hc => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, -⟩` from `H m hm th x hx`. Take `⟨a, ha, -⟩` from `hτ q.1`.
+
+Conclude with `⟨a, hx, q.1, q.2, hq, ha⟩`. Take `⟨q, hq, -⟩` from `H (n ^ j) hn.pow th x hx`. Conclude with `⟨q.2, hx, q.1, hq⟩`. Take `⟨e, he⟩` from `exists_isTorsFrame_closed A F hLL.1 hρ (hn.pow (n := j)) x hx choose l hl using fun i => exists_valAt A F hLL.1 (τ i) x he.2.1`. Conclude with `⟨l, e, he, hl⟩`.
+
+Take `⟨hx, t, c, ht, ha⟩` from `ha`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Introduce and unpack `a' ⟨-, t', c', ht', ha'⟩`. Establish `e : t' = t` using `congrArg Prod.fst ((H m hm th x hx).unique (y₁ := (t', c')) (y₂ := (t, c)) ht' ht)`. Substitute `e` using the available equality.
+
+Conclude with `(hτ t').unique ha' ha`. Take `⟨hx, t, ht⟩` from `hc`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨-, t', ht'⟩`. Conclude with `congrArg Prod.snd ((H (n ^ j) hn.pow th x hx).unique (y₁ := (t', c')) (y₂ := (t, c)) ht' ht)`.
+-/
 theorem tab_full_uniq : LL → ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (A : PolAV (Sp (FractionRing R))) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (ρ : LB.Gen (A.L.pull (eSec A.A))), ρ.IsGen → ∀ (m n r : ℕ), Odd m → Odd n → ∀ (th : SecA A F 1) (τ : Fin r → SecA A F (m ^ 2)), (∀ t, ∃! a, Cmb τ a t) → (tab ρ m th τ).Full (m ^ 2) n ∧ (tab ρ m th τ).Uniq (m ^ 2) n := by
   intro hLL R _ _ _ A F _ _ _ ρ hρ m n r hm hn th τ hτ
   have H := existsUnique_thetaConst hLL R A F ρ hρ

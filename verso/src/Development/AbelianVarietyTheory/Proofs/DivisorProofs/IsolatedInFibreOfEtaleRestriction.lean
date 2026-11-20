@@ -13,6 +13,15 @@ open GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M W f U hE z hz`. Use `haveI : LocallyQuasiFinite (f ∣_ U) := by`. Use `⟨fun {U'} hU {V} hV e => ?_⟩` and prove the remaining obligations. Establish `h` using `Scheme.Hom.etale_appLE (f ∣_ U) hU hV e`. Use `algebraize [((f ∣_ U).appLE U' V e).hom]`.
+
+Conclude with `RingHom.quasiFinite_algebraMap.mpr inferInstance`. Set `z' : (f ⁻¹ᵁ U : M.Opens)` to `⟨z, hz⟩`. Take `⟨u, hu, huz⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.mp ((f ∣_ U).isDiscrete_preimage_singleton ((f ∣_ U) z')) z' rfl`. Use `⟨⟨Subtype.val '' u, (f ⁻¹ᵁ U).isOpen.isOpenMap_subtype_val u hu⟩, ⟨z', ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: z' ∈ u ∩ (f ∣_ U) ⁻¹' {(f ∣_ U) z'}` using `by rw [huz]; rfl`.
+
+Conclude with `this.1`. Introduce and unpack `y ⟨y', hy'u, rfl⟩ hy`. Establish `hmem : y' ∈ u ∩ (f ∣_ U) ⁻¹' {(f ∣_ U) z'}`. Use `⟨hy'u, ?_⟩` and prove the remaining obligations. Establish `h1` using `morphismRestrict_base_coe f U y'`.
+
+Establish `h2` using `morphismRestrict_base_coe f U z'`. Conclude with `Subtype.ext (h1.trans (hy.trans h2.symm))`. Rewrite `hmem` using `[huz]`. Conclude with `congrArg Subtype.val hmem`.
+-/
 theorem isolated_in_fibre_of_etale_restrict :
     ∀ (M W : Scheme.{0}) (f : M ⟶ W) (U : W.Opens), Etale (f ∣_ U) → ∀ z : M, f z ∈ U →
       ∃ V : M.Opens, z ∈ V ∧ ∀ y ∈ V, f y = f z → y = z := by

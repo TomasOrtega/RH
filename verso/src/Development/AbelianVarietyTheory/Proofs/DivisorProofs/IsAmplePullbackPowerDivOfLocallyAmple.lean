@@ -9,6 +9,21 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.AmpleTwistLB
 
+/- English proof (translation)
+Introduce `W S _ _ f A hA N M hN hM hcls hV`. Establish `: CompactSpace S` using `hA.compactSpace`. Use `choose V hzV hVa hVL using hV`. Establish `loc : ∀ z : S, ∃ n, 1 ≤ n ∧ ∃ s : (lbPow A n).Sec, z ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s ∧ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s ≤ V z ∧ IsAffineOpen (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s)` using `fun z => hA.exists_affine_le (hzV z)`. Use `choose n hn s hzs hsV hsa using loc`.
+
+Take `⟨T₀, hT₀⟩` from `exists_finset_iSup_eq_top (fun z => ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s z)) hzs`. Take `⟨K, hK, t, ht⟩` from `exists_common_pow (fun z : T₀ => n z) (fun z => hn z) (fun z => s z)`. Establish `hAK` using `isLB_lbPow hA.isLB K`. Establish `hG : ((lbPow A K).pull f).IsLB` using `LB.isLB_pull hAK f`. Establish `hGgen : IsGenerated ((lbPow A K).pull f)` using `(isGenerated_of_finite t (by simp only [ht]; exact hT₀)).pull f`.
+
+Establish `hMK` using `isLB_lbPow hM K`. Take `⟨c, hc⟩` from `RelAmpleQProj.exists_isAmpleLB_tw hMK hG fun y => by`. Take `⟨z, hz⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hT₀.ge (Set.mem_univ (f y)))`. Use `⟨secPull (t z) f, f ⁻¹ᵁ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s z), by rw [nonzeroLocus_secPull, ht], hz, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ZH.CombLocus.isAffineHom_homOfLE f (hsV z) (hsa z) (hVa z)` as an intermediate fact.
+
+Establish `h₁ : IsAmpleLB ((M.pull (f ⁻¹ᵁ V z).ι).pull (W.homOfLE (f.preimage_mono (hsV z))))` using `(hVL z).pull_of_isAffineHom _`. Establish `h₂ : IsAmpleLB (M.pull (f ⁻¹ᵁ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s z)).ι)` using `h₁.of_lbIso (LB.isLB_pull hM _) (GenSpread.lbIso_pull_pull hM _ (Scheme.homOfLE_ι _ _).symm)`. Conclude with `((isAmpleLB_pow_iff (LB.isLB_pull hM _) hK).2 h₂).of_lbIso (LB.isLB_pull hMK _) (lbIso_lbPow_pull hM _ K).symm`. Use `⟨c, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`.
+
+Establish `hAf : (A.pull f).IsLB` using `LB.isLB_pull hA.isLB f`. Establish `hD : (LB.div (lbPow (A.pull f) (c + k)) N).IsLB` using `LB.isLB_div (isLB_lbPow hAf (c + k)) hN`. Use `(isAmpleLB_pow_iff hD hK).1 ?_` and prove the remaining obligations. Establish `hT` using `AbLaw.isLB_tw hMK hG (c : ℤ)`. Establish `hGk` using `isLB_lbPow hG k`.
+
+Establish `eG : CechPic.cls _ hG = K • CechPic.cls _ hAf`. Rewrite using `[CechPic.cls_pull hAK f, CechPic.cls_lbPow hA.isLB, map_nsmul, ← CechPic.cls_pull hA.isLB f]`. Establish `eT : CechPic.cls _ hT = CechPic.cls _ hMK + (c : ℤ) • CechPic.cls _ hG`. Establish `e` using `CechPic.cls_div hMK (AbLaw.isLB_pw hG (-(c : ℤ))) hT`. Rewrite `e` using `[AmpleStabFinite.cls_pw]`.
+
+Conclude with `e.trans (by rw [neg_smul, sub_neg_eq_add])`. Use `hc.tensor_isGenerated (hGgen.pow k) (isLB_lbPow hD K) ((CechPic.cls_eq_zero_iff (LB.isLB_div (LB.isLB_div (isLB_lbPow hD K) hT) hGk)).1 ?_)` and prove the remaining obligations. Rewrite using `[CechPic.cls_div (LB.isLB_div (isLB_lbPow hD K) hT) hGk, CechPic.cls_div (isLB_lbPow hD K) hT, CechPic.cls_lbPow hD, CechPic.cls_lbPow hG, eT, CechPic.cls_lbPow hM, eG, CechPic.cls_div (isLB_lbPow hAf (c + k)) hN hD, CechPic.cls_lbPow hAf, hcls]`. Use `module`.
+-/
 theorem ample_pow_div : ∀ {W S : Scheme.{0}} [CompactSpace W] [QuasiSeparatedSpace W] (f : W ⟶ S) (A : LB S), IsAmpleLB A → ∀ (N M : LB W) (hN : N.IsLB) (hM : M.IsLB), GlobalTheory.CechPic.cls M hM = -GlobalTheory.CechPic.cls N hN → (∀ z : S, ∃ V : S.Opens, z ∈ V ∧ IsAffineOpen V ∧ IsAmpleLB (M.pull (f ⁻¹ᵁ V).ι)) → ∃ n₀ : ℕ, ∀ n : ℕ, n₀ ≤ n → IsAmpleLB (LB.div (lbPow (A.pull f) n) N) := by
   intro W S _ _ f A hA N M hN hM hcls hV
   have : CompactSpace S := hA.compactSpace

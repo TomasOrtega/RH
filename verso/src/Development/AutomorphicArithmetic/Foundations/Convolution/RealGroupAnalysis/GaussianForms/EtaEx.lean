@@ -8,6 +8,23 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ D`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨by rw [Module.finrank_eq_card_basis D.b]; simp⟩`. Establish `h0 : D.b 0 = 1` using `D.b0`. Establish `h1 : D.b 1 * D.b 1 = algebraMap F E D.δ`. Rewrite using `[D.b1, ← pow_two, D.sq]`.
+
+Take `⟨η, hq, hη⟩` from `UpperTheory.ConvolutionTheory.R2.C.etaQuad F E`. Establish `hone : ∀ a, GlobalTheory.IdeleNormChar.normSign E a = 1 → η.1 a = 1`. Introduce `a ha`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hη a, ha]`.
+
+Simplify using the standard rewrite rules. Establish `hsign : ∀ a, η.1 a = 1 → GlobalTheory.IdeleNormChar.normSign E a = 1`. Introduce `a ha`. Establish `h` using `hη a`. Rewrite `h` using `[ha]`.
+
+Break down `Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E a) with e | e` into its components or cases. Conclude with `e`. Rewrite `h` using `[e]`. Evaluate the numerical expressions using `at h`. Establish `hmem : ∀ z : (A E)ˣ, ideleNorm F E z ∈ GlobalTheory.QuadSymbol.normGroup F E (A F)`.
+
+Introduce `z`. Take `⟨s, t, hst⟩` from `(UpperTheory.ConvolutionTheory.R2.C.normForm F E D (ideleNorm F E z)).2 ⟨z, rfl⟩`. Conclude with `(GlobalTheory.QuadSymbol.mem_normGroup_iff_form D.b h0 h1).2 ⟨s, t, hst⟩`. Use `⟨η, hq, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hη a]`. Apply the tactic sequence `rcases Int.units_eq_one_or (GlobalTheory.IdeleNormChar.normSign E a) with e | e <;> rw [e] <;> simp`. Introduce `z`. Conclude with `hone _ (GlobalTheory.IdeleNormChar.normSign_of_mem E (hmem z))`.
+
+Introduce `a ha`. Take `⟨t, ht⟩` from `(GlobalTheory.IdeleNormChar.normSign_eq_one_iff E a).1 (hsign a ha)`. Take `⟨s, u, hsu⟩` from `(GlobalTheory.QuadSymbol.mem_normGroup_iff_form D.b h0 h1).1 ht`. Take `⟨z, hz⟩` from `(UpperTheory.ConvolutionTheory.R2.C.normForm F E D _).1 ⟨s, u, hsu⟩`. Use `⟨(t : F), z, t.ne_zero, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz]`. Establish `: a = GlobalTheory.QuadSymbol.toUnits F (A F) t * (a / GlobalTheory.QuadSymbol.toUnits F (A F) t)`. Rewrite using `[mul_div_cancel]`. Conclude with `congrArg Units.val this`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.etaEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E), ∃ η : HChar F, IsQuadCharOf E η ∧ (∀ a, η.1 a ^ 2 = 1) ∧ (∀ z : (A E)ˣ, η.1 (ideleNorm F E z) = 1) ∧
     ∀ a, η.1 a = 1 → ∃ (t : F) (z : (A E)ˣ), t ≠ 0 ∧ (a : A F) = rt t * (ideleNorm F E z : (A F)ˣ) := by

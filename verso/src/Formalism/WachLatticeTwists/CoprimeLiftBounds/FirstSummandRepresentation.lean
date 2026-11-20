@@ -11,11 +11,17 @@ open Formalism.NG
 section Lattices
 variable {A T' G : Type*} [Ring A] [CommRing T'] [Algebra T' A] [Group G]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((((χ 1)⁻¹ : T'ˣ) : T') • r 1 - 1) * E = 0`. Rewrite using `[map_one, map_one, inv_one, Units.val_one, one_smul, sub_self, zero_mul]`.
+-/
 theorem yY_one (r : G →* A) (χ : G →* T'ˣ) (E : A) : yY r χ E 1 = 0 := by
   apply Subtype.ext
   show ((((χ 1)⁻¹ : T'ˣ) : T') • r 1 - 1) * E = 0
   rw [map_one, map_one, inv_one, Units.val_one, one_smul, sub_self, zero_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc : ∀ k, ycoc r χ E k = (uElt r χ k - 1) * E` using `fun k => rfl`. Use `show ycoc r χ E (g * h) = ycoc r χ E g + uElt r χ g * ycoc r χ E h`. Rewrite using `[hc, hc, hc, uElt_mul, sub_mul, sub_mul, sub_mul, mul_sub, one_mul, mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem yY_mul (r : G →* A) (χ : G →* T'ˣ) (E : A) (g h : G) :
     yY r χ E (g * h) = yY r χ E g + uElt r χ g • yY r χ E h := by
   apply Subtype.ext

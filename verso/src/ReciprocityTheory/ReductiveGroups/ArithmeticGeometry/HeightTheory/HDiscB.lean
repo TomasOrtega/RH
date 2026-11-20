@@ -21,6 +21,21 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Take `⟨haG0, ⟨a, b, hab⟩, Om, hOm, hOm0, hOmH⟩` from `d.om_poly hd h`. Take `⟨hs1, hs2, heq⟩` from `d.disc_product hd h hI2be a b hab Om hOm`. Use `⟨hs1, hs2, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Establish `ha4 : ∀ c, hd.a4.choose c ∈ 𝒜 c d.wF ∧ hd.a4.choose c ≠ 0` using `by first`.
+
+Consider the case `exact hd.a4.choose_spec`. Consider the case `exact hd.a4.choose_spec.1`. Consider the case `exact fun c => hd.a4.choose_spec.1 c`. Consider the case `exact fun c => ⟨hd.a4.choose_spec.1 c, hd.a4.choose_spec.2 c⟩`. Establish `hH : d.Hgt h d.wF hd.a4.choose = d.Hgt h d.wF ta'` using `(d.h_ind hd h hI2be).1 d.wF hd.a4.choose ta' (by simp) ha4 hta'`.
+
+Establish `haG : d.aG h d.wF hd.a4.choose = d.aG h d.wF ta'` using `(d.arithDegree_additive hd h).1 d.wF hd.a4.choose ta' ha4 hta'`. Establish `hcard : (0 : ℝ) < (Fintype.card (K →+* ℂ) : ℝ)`. Establish `hc : 0 < Fintype.card (K →+* ℂ)` using `by first`. Consider the case `(rw [NumberField.Embeddings.card]; exact Module.finrank_pos)`. Consider the case `exact Fintype.card_pos`.
+
+Consider the case `exact Fintype.card_pos_iff.mpr inferInstance`. Conclude with `hc` after adjusting the coercions. Establish `hmean : meanK (fun sg => d.mSgP sg a b - 2 * d.Nsg d.wF hd.a4.choose sg) ≤ d.del * Real.log d.del + 2 * ∑ k, meanK (fun sg => Real.log (d.supN sg d.wF (d.thp (hd.sel k))))`. Unfold `meanK`. Rewrite using `[div_le_iff₀ hcard]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum, Finset.sum_comm, add_mul, mul_assoc (2 : ℝ), div_mul_cancel₀ _ hcard.ne']`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [Finset.sum_div]`. Establish `hh0 : -(ReciprocityTheory.MultiplicativeHeights.h0 Om) ≤ 2 * d.D * d.aG h d.wF hd.a4.choose * (Real.log (d.N + 1 : ℕ) + 1 / 2)`.
+
+Establish `h1` using `ReciprocityTheory.MultiplicativeHeights.Closed.sphere_height_lower_bound K (d.D + 1) (d.N + 1) _ Om (Nat.succ_pos _) hOm0 hOmH`. Establish `ht : ((d.aG h d.wF hd.a4.choose).toNat : ℝ) = (d.aG h d.wF hd.a4.choose : ℝ)`. Conclude with `Int.toNat_of_nonneg haG0` after adjusting the coercions. Simplify using `only [Fin.sum_univ_succ, Fin.succ_ne_zero, eq_self_iff_true, if_true, if_false, ite_true, ite_false, Nat.cast_zero, zero_mul, zero_add, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_mul, Nat.cast_ofNat] at h1`. Rewrite `h1` using `[ht]`.
+
+Take the linear combination `h1`. Rewrite using `[hH, ← haG]`. Combine the linear relations using `[hmean, hh0]`.
+-/
 theorem disc_global (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (ta' : ∀ c, A c)
     (hta' : ∀ c, ta' c ∈ 𝒜 c d.wF ∧ ta' c ≠ 0) :
     (Function.support fun la => d.gOrd la (d.De hd h)).Finite ∧

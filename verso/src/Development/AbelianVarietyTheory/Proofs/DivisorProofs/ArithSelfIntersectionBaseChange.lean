@@ -22,6 +22,13 @@ open GlobalTheory.Points ReciprocityTheory.ChartRestriction.G ReciprocityTheory.
 
 namespace GlobalTheory.ProjCurveZero
 
+/- English proof (translation)
+Introduce `hC _hD k _ X _ p D hX k' _ _ _ ρ hρ M hk' hM ι _ L Φ hΦ n`. Take `⟨e, he, t, ht⟩` from `GlobalTheory.T.exists_pow_line_bundle_generating_section k k' hk' M.B M.isLB`. Take `⟨c, hc, hcc, hiso⟩` from `GlobalTheory.T.hermitian_line_bundle_smooth_metric k (Sp k') (spMap (algebraMap k k')) (M.pow e) t ht`. Establish `h1` using `GlobalTheory.T.self_intersection_pow_scales hC k (Sp k') (spMap (algebraMap k k')) 0 hk' M 0 hM e`. Establish `h2` using `hiso.symm.isSelfInter hk' h1`.
+
+Establish `h3` using `GlobalTheory.T.self_intersection_eq_half_sum_weights k k' hk' c hc hcc _ h2`. Establish `hsum : ∑ᶠ σ, ∑ᶠ y, c σ y = 0`. Simplify using `only [mul_zero] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `GlobalTheory.T.arithmetic_self_intersection_weight_formula hC k X p D hX k' ρ hρ hk' c hc hcc hsum ι L n`.
+
+Establish `h5` using `GlobalTheory.T.arithmetic_self_intersection_twist_pow hC k X p D hX k' ρ hρ M e c hc hcc hiso ι L Φ hΦ n`. Rewrite `h5` using `[h4, mul_zero]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Conclude with `(mul_eq_zero.1 h5).resolve_left he'`.
+-/
 theorem projection_degree_zero : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')
     (hρ : ρ ≫ spMap (algebraMap k k') = p) (M : HermLB (spMap (algebraMap k k'))),

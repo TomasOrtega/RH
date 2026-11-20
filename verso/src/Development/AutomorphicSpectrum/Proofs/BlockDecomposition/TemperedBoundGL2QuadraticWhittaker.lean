@@ -43,6 +43,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E]
   [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)]
 
+/- English proof (translation)
+Establish `h` using `ContinuousOn.measurable_piecewise (f := f) (g := fun _ => (0 : ℂ)) hf continuousOn_const hs`. Establish `e : s.piecewise f (fun _ => (0 : ℂ)) = s.indicator f`. Use extensionality with `g`. Apply the tactic sequence `by_cases hg : g ∈ s <;> simp [Set.piecewise, Set.indicator, hg]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem measurable_indicator_of_continuousOn {f : GL (Fin 2) F → ℂ} {s : Set (GL (Fin 2) F)}
     (hf : ContinuousOn f s) (hs : MeasurableSet s) : Measurable (s.indicator f) := by
   classical
@@ -53,6 +56,15 @@ theorem measurable_indicator_of_continuousOn {f : GL (Fin 2) F → ℂ} {s : Set
     by_cases hg : g ∈ s <;> simp [Set.piecewise, Set.indicator, hg]
   rwa [e] at h
 
+/- English proof (translation)
+Use `set Gp : Set (GL (Fin 2) F) := {g | ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det} with hGp`. Establish `hdet : Continuous fun g : GL (Fin 2) F => (g.val).det` using `Continuous.matrix_det Units.continuous_val`. Establish `hent : Continuous fun g : GL (Fin 2) F => g.val 1 0` using `(continuous_id.matrix_elem 1 0).comp Units.continuous_val`. Establish `hGo : IsOpen Gp` using `(GlobalTheory.T.isOpen_norm_image_units F E).1.preimage hdet`. Establish `hA0 : IsClosed {g : GL (Fin 2) F | g.val 1 0 = 0}` using `isClosed_eq hent continuous_const`.
+
+Establish `hA1 : IsOpen {g : GL (Fin 2) F | g.val 1 0 ≠ 0}` using `isOpen_ne_fun hent continuous_const`. Establish `c1 : ContinuousOn (GL2LocalData.Wc χ σ μ lam c Φ) ({g : GL (Fin 2) F | g.val 1 0 ≠ 0} ∩ Gp)` using `GlobalTheory.T.weil_whittaker_central_twist F E χ σ μ lam c Φ hΦ _ (GlobalTheory.T.weil_whittaker_continuous_quadratic F E χ hχ hal σ hσ μ lam c hc Φ hΦ.1 hΦ.2.1)`. Establish `c0 : ContinuousOn (GL2LocalData.Wc χ σ μ lam c Φ) ({g : GL (Fin 2) F | g.val 1 0 = 0} ∩ Gp)` using `GlobalTheory.T.weil_whittaker_central_twist F E χ σ μ lam c Φ hΦ _ (GlobalTheory.T.weil_whittaker_support_bound_quadratic F E χ σ μ lam c Φ hχ hal hc hΦ.1)`. Establish `m1` using `measurable_indicator_of_continuousOn c1 (hA1.measurableSet.inter hGo.measurableSet)`. Establish `m0` using `measurable_indicator_of_continuousOn c0 (hA0.measurableSet.inter hGo.measurableSet)`.
+
+Establish `e : GL2LocalData.Wc χ σ μ lam c Φ = ({g : GL (Fin 2) F | g.val 1 0 ≠ 0} ∩ Gp).indicator (GL2LocalData.Wc χ σ μ lam c Φ) + ({g : GL (Fin 2) F | g.val 1 0 = 0} ∩ Gp).indicator (GL2LocalData.Wc χ σ μ lam c Φ)`. Use extensionality with `g`. Distinguish the cases in `hg : g ∈ Gp`. Distinguish the cases in `h0 : g.val 1 0 = 0`. Simplify using `[Set.indicator, hg, h0]`.
+
+Simplify using `[Set.indicator, hg, h0]`. Establish `: GL2LocalData.Wc χ σ μ lam c Φ g = 0` using `Wc_eq_zero χ σ μ lam c Φ g hg`. Simplify using `[Set.indicator, hg, this]`. Rewrite using `[e]`. Conclude with `m1.add m0`.
+-/
 theorem measurable_Wc (χ : AddChar F Circle) (hχ : Continuous χ) (hal : Continuous (algebraMap F E))
     (σ : E ≃ₐ[F] E) (hσ : σ ≠ AlgEquiv.refl) (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ)
     (c : Eˣ →* ℂˣ) (hc : IsUnit1 c) (Φ : E → ℂ) (hΦ : Φ ∈ GL2LocalData.SBc F E c) :
@@ -88,6 +100,23 @@ theorem measurable_Wc (χ : AddChar F Circle) (hχ : Continuous χ) (hal : Conti
 
 end Meas
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ h2 hal σ hσ lam c hc Φ hΦ h₀`. Use `haveI : ValuativeExtension F E := GlobalTheory.LBC.Inh.valuativeExtension hal`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := inferInstance`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`.
+
+Use `set μ := selfDualMeasure (GL2LocalData.chE E χ) with hμ`. Establish `hmeas` using `measurable_Wc χ hχ hal σ hσ μ lam c hc Φ hΦ`. Use `⟨hmeas.comp (continuous_mul_right h₀).measurable, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C0, B0, hC0, hB0, H0⟩` from `GlobalTheory.T.weil_whittaker_diag_norm_le_sqrt_modulus_and_support F E χ σ μ lam c Φ hc hΦ.1 hΦ.2.1 h₀`. Take `⟨C1, B1, hC1, hB1, H1⟩` from `GlobalTheory.T.weil_whittaker_nontrivial_character_extension F E χ hχ hχ1 σ hσ μ lam c hc Φ hΦ.1 hΦ.2.1 h₀`.
+
+Establish `hB : 0 < max B0 B1` using `lt_max_of_lt_left hB0`. Establish `hC : 0 ≤ max C0 C1` using `le_max_of_le_left hC0`. Use `⟨max C0 C1 * (max B0 B1) ^ ε, max B0 B1, fun x y k hk => ?_⟩` and prove the remaining obligations. Use `show ‖GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀)‖ ≤ _ ∧ (GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀) ≠ 0 → _)`. Establish `hr : 0 < (modulus ((x / y : Fˣ) : F) : ℝ)`.
+
+Conclude with `modulus_pos (Units.ne_zero _)` after adjusting the coercions. Establish `key : ‖GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀)‖ ≤ max C0 C1 * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) ∧ (GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀) ≠ 0 → (modulus ((x / y : Fˣ) : F) : ℝ) ≤ max B0 B1)`. Distinguish the cases in `hz : (k * h₀).val 1 0 = 0`. Take `⟨a, b⟩` from `H0 x y k hk hz`. Conclude with `⟨a.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hr.le _)), fun h => (b h).trans (le_max_left _ _)⟩`.
+
+Take `⟨a, b⟩` from `H1 x y k hk hz`. Conclude with `⟨a.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg hr.le _)), fun h => (b h).trans (le_max_right _ _)⟩`. Use `⟨?_, key.2⟩` and prove the remaining obligations. Distinguish the cases in `hW : GL2LocalData.Wc χ σ μ lam c Φ (dg2 x y * k * h₀) = 0`. Rewrite using `[hW, norm_zero]`.
+
+Conclude with `mul_nonneg (mul_nonneg hC (Real.rpow_nonneg hB.le _)) (Real.rpow_nonneg hr.le _)`. Establish `hle` using `key.2 hW`. Establish `e : (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 : ℝ) = (modulus ((x / y : Fˣ) : F) : ℝ) ^ ε * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 - ε)`. Rewrite using `[← Real.rpow_add hr]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpow : (modulus ((x / y : Fˣ) : F) : ℝ) ^ ε ≤ (max B0 B1) ^ ε` using `Real.rpow_le_rpow hr.le hle h0.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Use `_ ≤ max C0 C1 * ((max B0 B1) ^ ε * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 - ε)) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hpow (Real.rpow_nonneg hr.le _)) hC`.
+
+Use `_ = max C0 C1 * (max B0 B1) ^ ε * (modulus ((x / y : Fˣ) : F) : ℝ) ^ (1 / 2 - ε) := by ring`.
+-/
 theorem temperedBoundGL2_compact_whittaker : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (lam : ℂ) (c : Eˣ →* ℂˣ), IsUnit1 c → ∀ Φ ∈ GL2LocalData.SBc F E c, ∀ h₀ : GL (Fin 2) F, TemperedBoundGL2 (fun g => GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) lam c Φ (g * h₀)) := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ h2 hal σ hσ lam c hc Φ hΦ h₀
   haveI : ValuativeExtension F E := GlobalTheory.LBC.Inh.valuativeExtension hal

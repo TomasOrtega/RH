@@ -13,6 +13,11 @@ section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N ValuativeRel
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(isEquiv (valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one]`. Establish `h : Valued.v (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h2 : w.valuation F (algebraMap (𝓞 F) F (M : 𝓞 F)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).mpr hw`. Rewrite `h2` using `[← h]`.
+
+Establish `e : (((algebraMap (𝓞 F) F (M : 𝓞 F) : F)) : w.adicCompletion F) = ((M : ℕ) : w.adicCompletion F)`. Rewrite using `[map_natCast]`. Conclude with `map_natCast (algebraMap F (w.adicCompletion F)) M`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.Z.Win.T2.val_lt_one {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) {M : ℕ}
     (hw : (M : 𝓞 F) ∈ w.asIdeal) : valuation (w.adicCompletion F) (M : w.adicCompletion F) < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -27,12 +32,36 @@ private theorem UpperTheory.V.Z.Win.T2.val_lt_one {F : Type} [Field F] [NumberFi
     rw [map_natCast]
     exact map_natCast (algebraMap F (w.adicCompletion F)) M
   rwa [e] at h2
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{IrrGL.ofChar χ hχ}, hasSupport_self (IrrGL.isCusp_ofChar χ hχ), fun y hy => Or.inl (by rw [Multiset.mem_singleton.1 hy] rfl)⟩`.
+-/
 private theorem UpperTheory.V.Z.Win.T2.good_ofChar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (χ : kˣ →* ℂˣ) (hχ : GlobalTheory.SmGL.IsSmoothChar χ) :
     UpperTheory.Zero.LLC.Good (IrrGL.ofChar χ hχ) :=
   ⟨{IrrGL.ofChar χ hχ}, hasSupport_self (IrrGL.isCusp_ofChar χ hχ), fun y hy => Or.inl (by
     rw [Multiset.mem_singleton.1 hy]
     rfl)⟩
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ n M hM w A h rc hrc σ hL`. Take `⟨a, ha, ε, H⟩` from `_root_.UpperTheory.V.Z.Win.toV' hrc`. Distinguish the cases in `hw : (M : 𝓞 F) ∈ w.asIdeal`. Establish `hv : valuation (w.adicCompletion F) (M : w.adicCompletion F) < 1` using `UpperTheory.V.Z.Win.T2.val_lt_one w hw`. Establish `hM0 : (M : w.adicCompletion F) ≠ 0`.
+
+Rewrite using `[← map_natCast (algebraMap F (w.adicCompletion F)), map_ne_zero]`. Conclude with `Nat.cast_ne_zero.2 (by omega)`. Establish `hu0 : uniformizer (w.adicCompletion F) ≠ 0` using `by simp`. Establish `hv0 : valuation (w.adicCompletion F) (M : w.adicCompletion F) ≠ 0` using `by simpa using hM0`. Set `γ : (ValueGroupWithZero (w.adicCompletion F))ˣ` to `Units.mk0 (valuation _ (M : w.adicCompletion F) / uniformizer (w.adicCompletion F)) (div_ne_zero hv0 hu0)`.
+
+Establish `hlt : ∀ x : ValueGroupWithZero (w.adicCompletion F), x < γ ↔ x ≤ valuation _ (M : w.adicCompletion F)` using `fun x => by show x < _ / _ ↔ _`. Rewrite using `[lt_div_iff₀ (zero_lt_iff.2 hu0)]`. Use `⟨fun h1 => not_lt.1 fun h2 => h1.not_ge ?_, fun h1 => (mul_le_mul_left h1 _).trans_lt (mul_lt_of_lt_one_right (zero_lt_iff.2 hv0) uniformizer_lt_one)⟩` and prove the remaining obligations. Establish `hx : 0 < x` using `(zero_lt_iff.2 hv0).trans h2`. Rewrite using `[← div_le_iff₀' hx, le_uniformizer_iff, div_lt_one₀ hx]` and apply the resulting hypothesis.
+
+Establish `hγ : γ ≤ 1` using `by show _ / _ ≤ (1 : ValueGroupWithZero (w.adicCompletion F))`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hu0), le_uniformizer_iff]`. Conclude with `hv`. Take `⟨s, hs⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport P.litN.loc.zel (algNorm σ)`. Establish `hch : ∀ y ∈ s, ∃ χ hχ, y = IrrGL.ofChar χ hχ ∧ ∀ u : (w.adicCompletion F)ˣ, valuation (w.adicCompletion F) ((u : w.adicCompletion F) - 1) < γ → χ u = 1` using `fun y hy => by`.
+
+Take `⟨ξ, hξ, e, hξ1⟩` from `UpperTheory.irreducible_constituent_of_level_weilDeligne_eq_character F Ω w A h M n hM _ (rc y) hL ((H.cusp y).1 (hs.isCusp hy)) fun τ => by`. Rewrite using `[H.supp _ s hs τ]`. Conclude with `Multiset.dvd_prod (Multiset.mem_map_of_mem (fun y => (rc y).charPol τ) hy)`. Take `⟨χ, hχ, rfl⟩` from `ha.factor ξ hξ`. Use `⟨χ, hχ, H.inj _ _ (UpperTheory.V.Z.Win.T2.good_ofChar χ hχ) (e.trans (H.one χ hχ).symm), fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨τ, rfl⟩` from `ha.surj u`. Establish `h1 : valuation (w.adicCompletion F) (a τ : w.adicCompletion F) = 1`. Use `(valuation (w.adicCompletion F)).map_one_add_of_lt (hu.trans_le (Units.val_le_val.2 hγ))` as an intermediate fact. Simplify using `using this`. Take `⟨h2, h3⟩` from `UpperTheory.inertia_fixes_roots_of_unity_of_artin_congruence P.litN.aut.art F Ω w A h a ha M hM τ h1 ((hlt _).1 hu)`.
+
+Conclude with `hξ1 ⟨τ, h2⟩ h3`. Establish `hne` using `UpperTheory.jacquet_borel_nontrivial_of_character_support P.litN.loc.geo P.litN.loc.zel _ _ _ (algNorm σ).rep s hs fun y hy => by`. Take `⟨χ, hχ, rfl, -⟩` from `hch y hy`. Both sides reduce to the same expression. Take `⟨y, hy0, hy⟩` from `UpperTheory.jacquet_borel_exists_torus_congruence_fixed P.litN.loc.geo P.litN.loc.zel _ _ _ (algNorm σ).rep s γ hγ hs hch hne`.
+
+Establish `hf` using `UpperTheory.fixed_congruence_ne_bot_of_jacquet_torus_fixed _ _ _ (algNorm σ).rep γ hγ ((P.litN.loc.bz _).1 _ _ _ (algNorm σ).2.rep.smooth (algNorm σ).2.rep.irr) y hy0 hy`. Use `UpperTheory.hasFixed_of_algNorm_fixed_ne_bot F w n σ _ (fun g hg => (UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g hg).1) ?_` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hf`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun g => hv ⟨g.1, fun i j => (hlt _).2 ((UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g.1 g.2).2 i j)⟩, hv0⟩`. Take `⟨χ, b, hχ, e, hN, hb⟩` from `hL`.
+
+Establish `hu : (rc (algNorm σ)).unr`. Rewrite using `[← e, WD.unr_mk]`. Use `⟨hN, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hb s]`. Simplify using `[fun i => hχ i s (UpperTheory.inertia_fixes_roots_of_unity_prime_to_residue_char F Ω w A h M hw s s.2), Module.End.one_eq_id]`.
+
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 ((H.sph _).2 hu)`. Use `UpperTheory.hasFixed_of_algNorm_fixed_ne_bot F w n σ _ (fun g hg => (UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g hg).1) ?_` and prove the remaining obligations. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun g => hv ⟨g.1, (UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence F w n M g.1 g.2).1⟩, hv0⟩`.
+-/
 theorem UpperTheory.V.Z.Win.T2.local_fixed_vectors_statement :
     _root_.UpperTheory.V.Af.locFixed_s_ty := by
   intro P F Ω _ _ _ _ _ n M hM w A h rc hrc σ hL

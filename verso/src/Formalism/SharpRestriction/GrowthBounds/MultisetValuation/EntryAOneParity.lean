@@ -12,6 +12,19 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 def ea_geR {K : Type} [Field K] (p : ℕ) (R : Subring K) (x : K) (g : ℝ) : Prop :=
   ∀ (a : ℤ) (b : ℕ), 0 < b → (a : ℝ) ≤ g * b → x ^ b * (p : K) ^ (-a) ∈ R
 
+/- English proof (translation)
+Set `V : ValuationSubring Kc` to `⟨Oc, hval⟩`. Take `⟨B, hle, hloc⟩` from `LocalSubring.exists_le_valuationSubring (V.toLocalSubring.map (algebraMap Kc K'))`. Use `⟨B.toSubring, B.mem_or_inv_mem, fun x => ⟨fun hx => ?_, fun hx => hle ⟨x, hx, rfl⟩⟩⟩` and prove the remaining obligations. Break down `hval x with h | h` into its components or cases. Conclude with `h`.
+
+Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Conclude with `Oc.zero_mem`. Set `a : (V.toLocalSubring.map (algebraMap Kc K')).toSubring` to `⟨algebraMap Kc K' x⁻¹, ⟨x⁻¹, h, rfl⟩⟩`. Establish `hu : IsUnit (Subring.inclusion hle a)`.
+
+Use `IsUnit.of_mul_eq_one (⟨algebraMap Kc K' x, hx⟩ : B.toLocalSubring.toSubring) (Subtype.ext ?_)` and prove the remaining obligations. Use `show algebraMap Kc K' x⁻¹ * algebraMap Kc K' x = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hx0, map_one]`. Establish `hua : IsUnit a` using `hloc.map_nonunit a hu`. Take `⟨b, hb⟩` from `hua.exists_right_inv`.
+
+Take `⟨y, hy, hyb⟩` from `b.2`. Establish `h1 : algebraMap Kc K' x⁻¹ * algebraMap Kc K' y = 1`. Use `congrArg Subtype.val hb` as an intermediate fact. Rewrite using `[hyb]`. Conclude with `this`.
+
+Rewrite `h1` using `[← map_mul, ← map_one (algebraMap Kc K')]`. Establish `h2` using `(algebraMap Kc K').injective h1`. Establish `h3 : y = x`. Clear denominators, using `at h2` for the nonvanishing conditions. Conclude with `h2`.
+
+Rewrite using `[← h3]`. Conclude with `hy`.
+-/
 theorem ea_ext_gen {Kc : Type} [Field Kc] (Oc : Subring Kc) (hval : ∀ x : Kc, x ∈ Oc ∨ x⁻¹ ∈ Oc) (K' : Type)
     [Field K'] [Algebra Kc K'] :
     ∃ R' : Subring K', (∀ x : K', x ∈ R' ∨ x⁻¹ ∈ R') ∧ ∀ x : Kc, algebraMap Kc K' x ∈ R' ↔ x ∈ Oc := by
@@ -46,6 +59,19 @@ variable {p : ℕ} [Fact p.Prime] {X : Sys p}
 
 abbrev ea_K (Y : Pend X) : Type := AlgebraicClosure Y.Kc
 
+/- English proof (translation)
+Take `⟨R', hv, htr⟩` from `ea_ext_gen Y.Oc Y.Oc_val (ea_K Y)`. Establish `hn : 0 < p ^ 2 - 1`. Use `(Fact.out : p.Prime).two_le` as an intermediate fact. Establish `: 4 ≤ p ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨vp, hvp⟩` from `IsAlgClosed.exists_pow_nat_eq (p : ea_K Y) hn`. Use `⟨R', vp, hvp, ?_, hv, htr⟩` and prove the remaining obligations. Unfold `Rp`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (⟨y, rfl⟩ | hx)`.
+
+Use `show algebraMap (K0 p) (ea_K Y) (algebraMap (WW p) (K0 p) y) ∈ R'`. Rewrite using `[IsScalarTower.algebraMap_apply (K0 p) Y.Kc (ea_K Y)]`. Conclude with `(htr _).2 (Y.witt_mem_integers_Cp y)`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+
+Break down `hv x with h | h` into its components or cases. Conclude with `h`. Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `R'.zero_mem`.
+
+Establish `e : x = (p : ea_K Y) * x⁻¹ ^ (p ^ 2 - 1 - 1)`. Rewrite using `[← hvp]`. Establish `: x ^ (p ^ 2 - 1) = x ^ (p ^ 2 - 1 - 1) * x`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hn]`. Rewrite using `[this, inv_pow, mul_comm (x ^ (p ^ 2 - 1 - 1)), mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ h0), mul_one]`.
+
+Use `show x ∈ R'`. Rewrite using `[e]`. Conclude with `R'.mul_mem (natCast_mem R' p) (R'.pow_mem h _)`.
+-/
 theorem ea_ext (Y : Pend X) : ∃ (R' : Subring (ea_K Y)) (vp : ea_K Y), vp ^ (p ^ 2 - 1) = (p : ea_K Y) ∧
     Rp p (ea_K Y) vp ≤ R' ∧ (∀ x : ea_K Y, x ∈ R' ∨ x⁻¹ ∈ R') ∧
     ∀ x : Y.Kc, algebraMap Y.Kc (ea_K Y) x ∈ R' ↔ x ∈ Y.Oc := by
@@ -77,6 +103,9 @@ theorem ea_ext (Y : Pend X) : ∃ (R' : Subring (ea_K Y)) (vp : ea_K Y), vp ^ (p
       rw [e]
       exact R'.mul_mem (natCast_mem R' p) (R'.pow_mem h _)
 
+/- English proof (translation)
+Introduce `a b hb hab`. Establish `h1` using `h a b hb hab`. Rewrite using `[← (htr _)]`. Rewrite using `[map_mul, map_pow, map_zpow₀, map_natCast]` and apply the resulting hypothesis.
+-/
 theorem ea_geC_of (Y : Pend X) {K' : Type} [Field K'] [Algebra Y.Kc K'] (R' : Subring K')
     (htr : ∀ x : Y.Kc, algebraMap Y.Kc K' x ∈ R' ↔ x ∈ Y.Oc) {x : Y.Kc} {g : ℝ}
     (h : ea_geR p R' (algebraMap Y.Kc K' x) g) : Y.geC x g := by
@@ -85,6 +114,11 @@ theorem ea_geC_of (Y : Pend X) {K' : Type} [Field K'] [Algebra Y.Kc K'] (R' : Su
   rw [← (htr _)]
   rwa [map_mul, map_pow, map_zpow₀, map_natCast]
 
+/- English proof (translation)
+Unfold `applyD`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `e : φ.comp (Int.castRingHom K) = Int.castRingHom K'` using `RingHom.ext_int _ _`. Establish `e2 : φ (∏ x ∈ n.support, ((n x).factorial : K)) = ∏ x ∈ n.support, ((n x).factorial : K')`.
+
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun x _ => map_natCast φ _`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul (MvPolynomial.map φ), MvPolynomial.map_C, MvPolynomial.map_map, e, MvPowerSeries.coeff_map, map_mul φ, e2]`.
+-/
 theorem ea_applyD_map {σ τ K K' : Type} [Field K] [Field K'] (φ : K →+* K')
     (P : MvPolynomial σ (MvPolynomial τ ℤ)) (f : MvPowerSeries σ K) :
     applyD P (MvPowerSeries.map φ f) = MvPolynomial.map φ (applyD P f) := by
@@ -134,6 +168,11 @@ def ea_RestKerB (X : Sys p) : Prop :=
     (vp : K') (F : MvPowerSeries (X.ZA j) K'), ea_Cls X j v K' R' vp F → ∀ (I : X.ColCh j) (n : X.FrI j →₀ ℕ),
       ea_geR p R' (MvPolynomial.coeff n (applyD (PIvS X j I (fun _ => i) v) F)) (X.gv v (j + 1))
 
+/- English proof (translation)
+Introduce `U hU I n`. Take `⟨R', vp, hvp, hRp, hval, htr⟩` from `ea_ext Y`. Establish `hcls` using `hS (hA.1 p) hA.2.2.2.1 v j U hU (ea_K Y) R' vp hvp hRp fun x hx => (htr x).2 hx`. Establish `h1` using `hK (ea_K Y) R' vp _ ⟨hvp, hRp, hval, hcls⟩ I n`. Rewrite `h1` using `[ea_applyD_map, MvPolynomial.coeff_map]`.
+
+Conclude with `ea_geC_of Y R' htr h1`.
+-/
 theorem ea_low (D : Formalism.BasicNotions.D7) (Y : Pend X) (hS : ea_RestSU X Y) (hA : admitted D X Y) (v : X.Pl) (j : ℕ)
     (P : X.ColCh j → MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) (g : ℝ)
     (hK : ∀ (K' : Type) [Field K'] [Algebra (K0 p) K'] (R' : Subring K') (vp : K')
@@ -150,12 +189,21 @@ theorem ea_low (D : Formalism.BasicNotions.D7) (Y : Pend X) (hS : ea_RestSU X Y)
   rw [ea_applyD_map, MvPolynomial.coeff_map] at h1
   exact ea_geC_of Y R' htr h1
 
+/- English proof (translation)
+Introduce `hA v j hj` and use `ea_low D Y hS hA v j (fun I => X.PIv j I v) _ (hK v j hj)`.
+-/
 theorem first_theorem_place_of_series (D : Formalism.BasicNotions.D7) (Y : Pend X) (hS : ea_RestSU X Y) (hK : SeriesGaussValuationFirst X) : EntryBoundOfHypotheses X Y D :=
   fun hA v j hj => ea_low D Y hS hA v j (fun I => X.PIv j I v) _ (hK v j hj)
 
+/- English proof (translation)
+Introduce `hA v j hj` and use `ea_low D Y hS hA v j (fun I => X.PIv j I v) _ (hK v j hj)`.
+-/
 theorem second_lemma_place_of_series (D : Formalism.BasicNotions.D7) (Y : Pend X) (hS : ea_RestSU X Y) (hK : SeriesGaussValuationSecond X) : PlacewiseLowerBoundEvenShift X Y D :=
   fun hA v j hj => ea_low D Y hS hA v j (fun I => X.PIv j I v) _ (hK v j hj)
 
+/- English proof (translation)
+Introduce `hA v j hj i hi` and use `ea_low D Y hS hA v j (fun I => PIvS X j I (fun _ => i) v) _ (hK v j hj i hi)`.
+-/
 theorem ea_restBU (D : Formalism.BasicNotions.D7) (Y : Pend X) (hS : ea_RestSU X Y) (hK : ea_RestKerB X) : RestBU X Y D :=
   fun hA v j hj i hi => ea_low D Y hS hA v j (fun I => PIvS X j I (fun _ => i) v) _ (hK v j hj i hi)
 

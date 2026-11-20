@@ -13,6 +13,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => hc x)`.
+-/
 theorem cab_emb_sep {σ τ : E →+* ℂ} (h : σ ≠ τ) : ∃ α : 𝓞 E, σ (α : E) ≠ τ (α : E) := by
   by_contra hc
   push Not at hc
@@ -20,12 +23,18 @@ theorem cab_emb_sep {σ τ : E →+* ℂ} (h : σ ≠ τ) : ∃ α : 𝓞 E, σ 
   exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => hc x)
 
 omit [IsCMField E] in
+/- English proof (translation)
+Introduce `h`. Establish `hr : ComplexEmbedding.IsReal σ` using `ComplexEmbedding.isReal_iff.2 h`. Establish `hc` using `IsTotallyComplex.isComplex (InfinitePlace.mk σ)`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)`.
+-/
 theorem cab_conjugate_ne [IsTotallyComplex E] (σ : E →+* ℂ) : ComplexEmbedding.conjugate σ ≠ σ := by
   intro h
   have hr : ComplexEmbedding.IsReal σ := ComplexEmbedding.isReal_iff.2 h
   have hc := IsTotallyComplex.isComplex (InfinitePlace.mk σ)
   exact (InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [actE_apply, PiLp.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : j.1 = σ`. Rewrite using `[h]`. Rewrite using `[hv j h, mul_zero, mul_zero]`.
+-/
 theorem cab_actE_inPart {σ : E →+* ℂ} {v : Vsp X.dim} (hv : InPart σ v) (β : E) :
     actE β v = σ β • v := by
   ext j
@@ -34,6 +43,11 @@ theorem cab_actE_inPart {σ : E →+* ℂ} {v : Vsp X.dim} (hv : InPart σ v) (�
   · rw [h]
   · rw [hv j h, mul_zero, mul_zero]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Col.proj_one_of_mem hK hu]`. Simplify using `only [Col.p1, Col.Hf_sum_r, Col.Hf_smul_r]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hr : (starRingEnd ℂ) (Col.z K j u) = Col.z K j u`. Apply `Complex.conj_eq_iff_im.mpr` to reduce the goal to its premises.
+
+Conclude with `hK u hu _ (Col.e_mem K j)`. Rewrite using `[hr]`. Both sides reduce to the same expression.
+-/
 theorem cab_Hf_K (K : Submodule ℝ (Vsp X.dim)) (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0)
     (v u : Vsp X.dim) (hu : u ∈ K) : Hf v u = ∑ j, Col.z K j u * Col.z K j v := by
   conv_lhs => rw [← Col.proj_one_of_mem hK hu]
@@ -44,6 +58,29 @@ theorem cab_Hf_K (K : Submodule ℝ (Vsp X.dim)) (hK : ∀ a ∈ K, ∀ b ∈ K,
     exact hK u hu _ (Col.e_mem K j)
   rw [hr]; rfl
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `cab_emb_sep (σ := σ) (τ := ComplexEmbedding.conjugate σ) (cab_conjugate_ne σ).symm`. Use `set a : E := (α : E) with ha`. Use `set b : E := IsCMField.complexConj E a with hb`. Establish `hba : IsCMField.complexConj E b = a` using `by simp [hb]`. Establish `hKa : ∀ u ∈ K, actE a u ∈ K` using `fun u hu => hst α u hu`.
+
+Establish `hKb : ∀ u ∈ K, actE b u ∈ K` using `fun u hu => hst (IsCMField.ringOfIntegersComplexConj E α) u hu`. Establish `hσb : σ b = (starRingEnd ℂ) (σ a)`. Simplify using `[hb, IsCMField.complexEmbedding_complexConj]`. Establish `hent : ∀ j k, Col.z K j (actE b (Col.e K k)) = Col.z K k (actE a (Col.e K j))`. Introduce `j k`.
+
+Simplify using `only [Col.z]`. Rewrite using `[Hf_actE, hba, Col.Hf_swap (actE a (Col.e K j))]`. Apply `Complex.conj_eq_iff_im.mpr` to reduce the goal to its premises. Conclude with `hK _ (hKa _ (Col.e_mem K j)) _ (Col.e_mem K k)`. Establish `h1 : σ a * Col.S K v = ∑ k, ∑ j, Col.z K j (actE b (Col.e K k)) * Col.z K j v * Col.z K k v`.
+
+Establish `: ∀ k, Col.z K k (actE a v) = ∑ j, Col.z K j (actE b (Col.e K k)) * Col.z K j v`. Introduce `k`. Simplify using `only [Col.z]`. Rewrite using `[Hf_actE, ← hb]`. Conclude with `cab_Hf_K K hK v _ (hKb _ (Col.e_mem K k))`.
+
+Establish `h2 : ∀ k, Col.z K k (actE a v) = σ a * Col.z K k v`. Introduce `k`. Simplify using `only [Col.z]`. Rewrite using `[cab_actE_inPart hv, Col.Hf_smul_l]`. Simplify using `only [Col.S, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← this k, h2 k]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (starRingEnd ℂ) (σ a) * Col.S K v = ∑ j, ∑ k, Col.z K k (actE a (Col.e K j)) * Col.z K k v * Col.z K j v`. Establish `: ∀ j, Col.z K j (actE b v) = ∑ k, Col.z K k (actE a (Col.e K j)) * Col.z K k v`.
+
+Introduce `j`. Simplify using `only [Col.z]`. Rewrite using `[Hf_actE, hba]`. Conclude with `cab_Hf_K K hK v _ (hKa _ (Col.e_mem K j))`. Establish `h2 : ∀ j, Col.z K j (actE b v) = (starRingEnd ℂ) (σ a) * Col.z K j v`.
+
+Introduce `j`. Simplify using `only [Col.z]`. Rewrite using `[cab_actE_inPart hv, Col.Hf_smul_l, hσb]`. Simplify using `only [Col.S, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_mul, ← this j, h2 j]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : σ a * Col.S K v = (starRingEnd ℂ) (σ a) * Col.S K v`. Rewrite using `[h1, h3, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hent]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : σ a - (starRingEnd ℂ) (σ a) ≠ 0`. Rewrite using `[sub_ne_zero]`. Simplify `hα` using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Establish `h5 : (σ a - (starRingEnd ℂ) (σ a)) * Col.S K v = 0` using `by rw [sub_mul, h4, sub_self]`. Conclude with `(mul_eq_zero.mp h5).resolve_left hne`.
+-/
 theorem cab_S_zero (K : Submodule ℝ (Vsp X.dim)) (hK : ∀ a ∈ K, ∀ b ∈ K, (Hf a b).im = 0)
     (hst : ∀ (α : 𝓞 E) a, a ∈ K → act α a ∈ K) (σ : E →+* ℂ) (v : Vsp X.dim) (hv : InPart σ v) :
     Col.S K v = 0 := by
@@ -115,6 +152,11 @@ def cabVP {dim : (E →+* ℂ) → ℕ} (σ : E →+* ℂ) : Submodule ℂ (Vsp 
   zero_mem' := fun j _ => rfl
   smul_mem' := fun c v hv j hj => by simp [hv j hj]
 
+/- English proof (translation)
+Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hξ x hx`. Consider the case `zero => simp [Hf]`. Consider the case `add x y _ _ hx hy => rw [Col.Hf_add_r, hx, hy, add_zero]`.
+
+Consider the case `smul r x _ hx => rw [Col.Hf_rsmul_r, hx, mul_zero]`.
+-/
 theorem cab_Hf_IR {I : Submodule ℤ (Vsp X.dim)} {ξ : Vsp X.dim} (hξ : ∀ a ∈ I, Hf ξ a = 0) :
     ∀ a ∈ IR I, Hf ξ a = 0 := by
   intro a ha
@@ -124,10 +166,18 @@ theorem cab_Hf_IR {I : Submodule ℤ (Vsp X.dim)} {ξ : Vsp X.dim} (hξ : ∀ a 
   | add x y _ _ hx hy => rw [Col.Hf_add_r, hx, hy, add_zero]
   | smul r x _ hx => rw [Col.Hf_rsmul_r, hx, mul_zero]
 
+/- English proof (translation)
+The claim follows from `cab_Hf_IR hξ _ (Col.e_mem _ k)`.
+-/
 theorem cab_z_xi {I : Submodule ℤ (Vsp X.dim)} {ξ : Vsp X.dim} (hξ : ∀ a ∈ I, Hf ξ a = 0)
     (k : Fin (Col.dK (IR I))) : Col.z (IR I) k ξ = 0 :=
   cab_Hf_IR hξ _ (Col.e_mem _ k)
 
+/- English proof (translation)
+Establish `hp1 : Col.p1 (IR I) ξ = 0`. Simplify using `[Col.p1, cab_z_xi hξ]`. Establish `hp2 : Col.p2 (IR I) ξ = ξ` using `by rw [Col.p2, hp1, sub_zero]`. Rewrite using `[Col.Hf_wmap hK, hp2, Col.p2, Col.Hf_sub_l]`. Establish `: Hf (Col.p1 (IR I) x) ξ = 0`.
+
+Simplify using `only [Col.p1, Col.Hf_sum_l, Col.Hf_smul_l]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Col.Hf_swap, ← Col.z, cab_z_xi hξ, map_zero, mul_zero]`. Rewrite using `[this, sub_zero]`.
+-/
 theorem cab_Hf_wmap_xi {I : Submodule ℤ (Vsp X.dim)} (hK : ∀ a ∈ IR I, ∀ b ∈ IR I, (Hf a b).im = 0)
     {ξ : Vsp X.dim} (hξ : ∀ a ∈ I, Hf ξ a = 0) (x : Vsp X.dim) : Hf (Col.wmap (IR I) x) (Col.wmap (IR I) ξ) = Hf x ξ := by
   have hp1 : Col.p1 (IR I) ξ = 0 := by
@@ -140,6 +190,9 @@ theorem cab_Hf_wmap_xi {I : Submodule ℤ (Vsp X.dim)} (hK : ∀ a ∈ IR I, ∀
     rw [Col.Hf_swap, ← Col.z, cab_z_xi hξ, map_zero, mul_zero]
   rw [this, sub_zero]
 
+/- English proof (translation)
+Establish `hp1 : Col.p1 (IR I) ξ = 0`. Simplify using `[Col.p1, cab_z_xi hξ]`. Rewrite using `[Col.norm_wmap hK, Col.p2, hp1, sub_zero]`.
+-/
 theorem cab_norm_wmap_xi {I : Submodule ℤ (Vsp X.dim)} (hK : ∀ a ∈ IR I, ∀ b ∈ IR I, (Hf a b).im = 0)
     {ξ : Vsp X.dim} (hξ : ∀ a ∈ I, Hf ξ a = 0) :
     ‖Col.wmap (IR I) ξ‖ = ‖ξ‖ := by
@@ -147,6 +200,19 @@ theorem cab_norm_wmap_xi {I : Submodule ℤ (Vsp X.dim)} (hK : ∀ a ∈ IR I, �
     simp [Col.p1, cab_z_xi hξ]
   rw [Col.norm_wmap hK, Col.p2, hp1, sub_zero]
 
+/- English proof (translation)
+Use `set W := Col.wmap (IR I)`. Use `set η := W ξ`. Establish `hg : Differentiable ℂ (β ∘ W)` using `hβ.comp W.differentiable`. Establish `h1 : iteratedFDeriv ℂ c F0 0 xs = iteratedFDeriv ℂ c (β ∘ W) 0 xs` using `cab_restrict (cabVP σ) (contDiff_of_differentiable_fd hF0d c) (contDiff_of_differentiable_fd hg c) (fun v hv => hF0 v hv) xs hxs`. Establish `hβc : ContDiff ℂ (⊤ : WithTop ℕ∞) β` using `cab_contDiff_top hβ`.
+
+Establish `h2 : iteratedFDeriv ℂ c (β ∘ W) 0 xs = iteratedFDeriv ℂ c β 0 (fun k => W (xs k))`. Rewrite using `[W.iteratedFDeriv_comp_right (hβc.of_le le_top) 0 (by exact_mod_cast le_top)]`. Simplify using `[ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Set `ℓ : EuclideanSpace ℂ (Fin (Col.gB (IR I))) →L[ℂ] ℂ` to `innerSL ℂ η`. Establish `hℓ : ∀ t, ℓ t = Hf t η`.
+
+Introduce `t`. Rewrite using `[Col.Hf_eq_inner]`. Both sides reduce to the same expression. Establish `hP : (fun t : EuclideanSpace ℂ (Fin (Col.gB (IR I))) => MvPolynomial.eval (fun i => t i) (cabPoly η c)) = fun t => (ℓ t) ^ c`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[cabPoly_eval, hℓ]`. Establish `hPd : ContDiff ℂ (⊤ : WithTop ℕ∞) (fun t : EuclideanSpace ℂ (Fin (Col.gB (IR I))) => MvPolynomial.eval (fun i => t i) (cabPoly η c))`. Rewrite using `[hP]`. Conclude with `cab_contDiff_top (ℓ.differentiable.pow c)`. Set `_` to `inst`.
+
+Establish `h3` using `cab_jet_eq hβc hPd hjet`. Rewrite using `[h1, h2, h3, hP, cab_iter_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hℓ]`.
+
+Conclude with `cab_Hf_wmap_xi hK hξ (xs k)`.
+-/
 theorem cab_main {I : Submodule ℤ (Vsp X.dim)} (hK : ∀ a ∈ IR I, ∀ b ∈ IR I, (Hf a b).im = 0)
     {c : ℕ} (σ : E →+* ℂ) {ξ : Vsp X.dim}
     (hξ : ∀ a ∈ I, Hf ξ a = 0) (β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ)
@@ -198,6 +264,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] {X : PT E}
 
+/- English proof (translation)
+Introduce `α a ha`. Rewrite using `[act_eq_actE]`. Conclude with `actE_mem_of_span (α : E) (I : Set (Vsp X.dim)) (IR I) (fun v hv => Submodule.subset_span (hI.stable α v hv)) a ha`.
+-/
 theorem cab_IR_stable {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I) :
     ∀ (α : 𝓞 E) a, a ∈ IR I → act α a ∈ IR I := by
   intro α a ha
@@ -205,12 +274,22 @@ theorem cab_IR_stable {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)} 
   exact actE_mem_of_span (α : E) (I : Set (Vsp X.dim)) (IR I)
     (fun v hv => Submodule.subset_span (hI.stable α v hv)) a ha
 
+/- English proof (translation)
+Establish `: (fun v => Col.z K k v) = fun v => innerSL ℂ (Col.e K k) v`. Use function extensionality and compare the values at `v`. Simplify using `only [Col.z]`. Rewrite using `[Col.Hf_eq_inner]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(innerSL ℂ (Col.e K k)).differentiable`.
+-/
 theorem cab_z_diff (K : Submodule ℝ (Vsp X.dim)) (k : Fin (Col.dK K)) :
     Differentiable ℂ (fun v => Col.z K k v) := by
   have : (fun v => Col.z K k v) = fun v => innerSL ℂ (Col.e K k) v := by
     funext v; simp only [Col.z]; rw [Col.Hf_eq_inner]; rfl
   rw [this]; exact (innerSL ℂ (Col.e K k)).differentiable
 
+/- English proof (translation)
+Establish `hS : Differentiable ℂ (fun v => Col.S (IR I) v)`. Establish `: (fun v => Col.S (IR I) v) = fun v => ∑ k, (Col.z (IR I) k v) ^ 2` using `rfl`. Rewrite using `[this]`. Conclude with `Differentiable.fun_sum fun k _ => (cab_z_diff _ k).pow 2`. Establish `: Col.F0 I q β = fun v => cexp ((q * Real.pi / 2 : ℂ) * Col.S (IR I) v) * β (Col.wmap (IR I) v)` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `((hS.const_mul _).cexp).mul (hβ.comp (Col.wmap (IR I)).differentiable)`.
+-/
 theorem differentiable_zeroModeLift (I : Submodule ℤ (Vsp X.dim)) (q : ℕ) (β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ)
     (hβ : Differentiable ℂ β) : Differentiable ℂ (Col.F0 I q β) := by
   have hS : Differentiable ℂ (fun v => Col.S (IR I) v) := by
@@ -221,6 +300,9 @@ theorem differentiable_zeroModeLift (I : Submodule ℤ (Vsp X.dim)) (q : ℕ) (�
   rw [this]
   exact ((hS.const_mul _).cexp).mul (hβ.comp (Col.wmap (IR I)).differentiable)
 
+/- English proof (translation)
+Establish `h0` using `cab_S_zero (IR I) (Col.hK_of hI) (cab_IR_stable hI) σ v hv`. Simplify using `only [Col.F0, h0, mul_zero, Complex.exp_zero, one_mul]`.
+-/
 theorem zeroModeLift_on_part [IsCMField E] {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)} (hI : IsSplit P I)
     (q : ℕ) (β : EuclideanSpace ℂ (Fin (Col.gB (IR I))) → ℂ) (σ : E →+* ℂ) (v : Vsp X.dim)
     (hv : InPart σ v) : Col.F0 I q β v = β (Col.wmap (IR I) v) := by

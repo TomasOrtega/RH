@@ -7,6 +7,17 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `key : ∀ u0 u1 : F, u0 * b 0 + u1 * b 1 = 1 → ∃ m : GL (Fin 2) F, Matrix.vecMulVec b d = (m⁻¹ : GL (Fin 2) F).val * Matrix.single 0 1 1 * m.val`. Introduce `u0 u1 hu`. Establish `hdet : (!![u0, u1; d 0, d 1] : Matrix (Fin 2) (Fin 2) F).det ≠ 0`. Rewrite using `[Matrix.det_fin_two_of]`. Introduce `h0`.
+
+Apply `hd` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use `show d 0 = 0`. Take the linear combination `(-d 0) * hu + u0 * h - b 1 * h0`.
+
+Use `show d 1 = 0`. Take the linear combination `(-d 1) * hu + u1 * h + b 0 * h0`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Units.eq_inv_mul_iff_mul_eq]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMulVec_apply, Matrix.single_apply]`. Take the linear combination `d 0 * hu`. Take the linear combination `d 1 * hu`. Take the linear combination `d 0 * h`.
+
+Take the linear combination `d 1 * h`. Distinguish the cases in `h0 : b 0 = 0`. Apply the tactic sequence `have h1 : b 1 ≠ 0 := fun h1 => hb (by funext i; fin_cases i <;> simpa)`. Conclude with `key 0 (b 1)⁻¹ (by simp [h1])`. Conclude with `key (b 0)⁻¹ 0 (by simp [h0])`.
+-/
 private theorem rankOne {F : Type} [Field F] (b d : Fin 2 → F) (hb : b ≠ 0) (hd : d ≠ 0)
     (h : d 0 * b 0 + d 1 * b 1 = 0) :
     ∃ m : GL (Fin 2) F, Matrix.vecMulVec b d = (m⁻¹ : GL (Fin 2) F).val * Matrix.single 0 1 1 * m.val := by
@@ -37,6 +48,25 @@ private theorem rankOne {F : Type} [Field F] (b d : Fin 2 → F) (hb : b ≠ 0) 
     exact key 0 (b 1)⁻¹ (by simp [h1])
   · exact key (b 0)⁻¹ 0 (by simp [h0])
 
+/- English proof (translation)
+Use `set l := (γ⁻¹ : GL (Fin (2 + 2)) F).val.mulVec p with hl`. Use `set v := Matrix.vecMul q γ.val with hv`. Apply the tactic sequence `have hX : blockEntry (fun s : UPos (2 + 2) r => l s.1.1 * v s.1.2) = Matrix.vecMulVec l v := by`. Use extensionality with `i j`. Rewrite using `[blockEntry_apply, Matrix.vecMulVec_apply]`.
+
+Use `split_ifs with hij`. Both sides reduce to the same expression. Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[hq j (by omega), mul_zero]`. Rewrite using `[hp i (by omega), zero_mul]`.
+
+Apply the tactic sequence `have hE : (γ : Matrix (Fin (2 + 2)) (Fin (2 + 2)) F) * blockEntry (fun s : UPos (2 + 2) r => l s.1.1 * v s.1.2) * (γ⁻¹ : GL (Fin (2 + 2)) F).val = Matrix.vecMulVec p q := by`. Rewrite using `[hX, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, hl, hv, Matrix.mulVec_mulVec, Matrix.vecMul_vecMul, Units.mul_inv, Matrix.one_mulVec, Matrix.vecMul_one]`. Establish `hdot : q ⬝ᵥ p = 0`. Establish `h1 : v ⬝ᵥ l = q ⬝ᵥ p`. Rewrite using `[hl, hv, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[hq i hi, zero_mul]`. Rewrite using `[hp i (by omega), mul_zero]`.
+
+Rewrite `hdot` using `[dotProduct, Fin.sum_univ_add, Fin.sum_univ_two, Fin.sum_univ_two]`. Break down `h with ⟨h1, h2, h3⟩ | ⟨h1, h2, h3⟩` into its components or cases. Establish `h1' : ∀ i, q (Fin.castAdd 2 i) = 0` using `congrFun h1`. Take `⟨m, hm⟩` from `rankOne _ _ h3 h2 (by simpa only [h1', zero_mul, zero_add] using hdot)`. Use `⟨_, m, Matrix.vecMulVec (fun i => p (Fin.castAdd 2 i)) (fun i => q (Fin.natAdd 2 i)), Or.inl (hE.trans ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.vecMulVec_apply, h1', mul_zero, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`. Establish `h1' : ∀ i, p (Fin.natAdd 2 i) = 0` using `congrFun h1`. Take `⟨m, hm⟩` from `rankOne _ _ h2 h3 (by simpa only [h1', mul_zero, add_zero] using hdot)`. Use `⟨_, m, Matrix.vecMulVec (fun i => p (Fin.castAdd 2 i)) (fun i => q (Fin.natAdd 2 i)), Or.inr (hE.trans ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.vecMulVec_apply, h1', zero_mul, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]`.
+-/
 private theorem core {F : Type} [Field F] (γ : GL (Fin (2 + 2)) F) (r : ℕ) (p q : Fin (2 + 2) → F)
     (hp : ∀ i : Fin (2 + 2), r ≤ (i : ℕ) → (γ⁻¹ : GL (Fin (2 + 2)) F).val.mulVec p i = 0)
     (hq : ∀ j : Fin (2 + 2), (j : ℕ) < r → Matrix.vecMul q γ.val j = 0)
@@ -94,6 +124,11 @@ private theorem core {F : Type} [Field F] (γ : GL (Fin (2 + 2)) F) (r : ℕ) (p
         Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂,
         Matrix.zero_apply]
 
+/- English proof (translation)
+Use `⟨![a 1, -a 0], fun h => ha ?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun h 0`. Establish `h1` using `congrFun h 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using `using h1`. Simplify using `using h0`. Simplify using `[Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem perp {F : Type} [Field F] (a : Fin 2 → F) (ha : a ≠ 0) :
     ∃ c : Fin 2 → F, c ≠ 0 ∧ ∑ i, c i * a i = 0 := by
   refine ⟨![a 1, -a 0], fun h => ha ?_, ?_⟩
@@ -106,11 +141,41 @@ private theorem perp {F : Type} [Field F] (a : Fin 2 → F) (ha : a ≠ 0) :
   · simp [Fin.sum_univ_two]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `Fin.addCases (fun i => congrFun h1 i) (fun i => congrFun h2 i) i`.
+-/
 private theorem halves {F : Type} [Field F] (p : Fin (2 + 2) → F) (h1 : (fun i => p (Fin.castAdd 2 i)) = 0)
     (h2 : (fun i => p (Fin.natAdd 2 i)) = 0) : p = 0 := by
   funext i
   exact Fin.addCases (fun i => congrFun h1 i) (fun i => congrFun h2 i) i
 
+/- English proof (translation)
+Introduce `F _ γ r hr`. Establish `hcol : ∀ k i : Fin (2 + 2), (γ⁻¹ : GL (Fin (2 + 2)) F).val.mulVec (fun s => γ.val s k) i = (1 : Matrix (Fin (2 + 2)) (Fin (2 + 2)) F) i k` using `fun k i => by`. Rewrite using `[← Units.inv_mul γ]`. Both sides reduce to the same expression. Establish `hrow : ∀ k j : Fin (2 + 2), Matrix.vecMul (fun s => (γ⁻¹ : GL (Fin (2 + 2)) F).val k s) γ.val j = (1 : Matrix (Fin (2 + 2)) (Fin (2 + 2)) F) k j` using `fun k j => by`.
+
+Rewrite using `[← Units.inv_mul γ]`. Both sides reduce to the same expression. Break down `hr with rfl | rfl | ⟨rfl, hne, hdet⟩` into its components or cases. Establish `hp : ∀ i : Fin (2 + 2), 1 ≤ (i : ℕ) → (γ⁻¹ : GL (Fin (2 + 2)) F).val.mulVec (fun s => γ.val s 0) i = 0` using `fun i hi => by`. Rewrite using `[hcol, Matrix.one_apply_ne]`.
+
+Introduce and unpack `rfl`. Simplify using `at hi`. Establish `h0 : ∀ j : Fin (2 + 2), (j : ℕ) < 1 → j = 0` using `fun j hj => Fin.ext (by simpa using hj)`. Distinguish the cases in `hb : (fun i => γ.val (Fin.natAdd 2 i) 0) = 0`. Establish `ha : (fun i => γ.val (Fin.castAdd 2 i) 0) ≠ 0` using `fun ha => by`.
+
+Use `hcol 0 0` as an intermediate fact. Rewrite `this` using `[halves (fun s => γ.val s 0) ha hb]`. Simplify using `at this`. Take `⟨c, hc, hs⟩` from `perp _ ha`. Use `core γ 1 _ (Fin.append c 0) hp (fun j hj => ?_) (Or.inr ⟨hb, ha, by simpa only [Fin.append_left] using hc⟩)` and prove the remaining obligations.
+
+Rewrite using `[h0 j hj, Matrix.vecMul, dotProduct, Fin.sum_univ_add]`. Simplify `hs` using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, zero_mul, Finset.sum_const_zero, add_zero]`. Take `⟨c, hc, hs⟩` from `perp _ hb`. Use `core γ 1 _ (Fin.append 0 c) hp (fun j hj => ?_) (Or.inl ⟨by funext i; simp only [Fin.append_left], by simpa only [Fin.append_right] using hc, hb⟩)` and prove the remaining obligations. Rewrite using `[h0 j hj, Matrix.vecMul, dotProduct, Fin.sum_univ_add]`.
+
+Simplify `hs` using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`. Establish `hq : ∀ j : Fin (2 + 2), (j : ℕ) < 3 → Matrix.vecMul (fun s => (γ⁻¹ : GL (Fin (2 + 2)) F).val 3 s) γ.val j = 0` using `fun j hj => by`. Rewrite using `[hrow, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hj`.
+
+Establish `h0 : ∀ j : Fin (2 + 2), 3 ≤ (j : ℕ) → j = 3` using `fun j hj => Fin.ext (by`. Use `j.2` as an intermediate fact. Use `show (j : ℕ) = 3`. Use the proof step `omega)`. Distinguish the cases in `ha : (fun i => (γ⁻¹ : GL (Fin (2 + 2)) F).val 3 (Fin.castAdd 2 i)) = 0`.
+
+Establish `hb : (fun i => (γ⁻¹ : GL (Fin (2 + 2)) F).val 3 (Fin.natAdd 2 i)) ≠ 0` using `fun hb => by`. Use `hrow 3 3` as an intermediate fact. Rewrite `this` using `[halves (fun s => (γ⁻¹ : GL (Fin (2 + 2)) F).val 3 s) ha hb, Matrix.zero_vecMul, Matrix.one_apply_eq]`. Conclude with `zero_ne_one this`. Take `⟨c, hc, hs⟩` from `perp _ hb`.
+
+Use `core γ 3 (Fin.append 0 c) _ (fun j hj => ?_) hq (Or.inl ⟨ha, hb, by simpa only [Fin.append_right] using hc⟩)` and prove the remaining obligations. Rewrite using `[h0 j hj, Matrix.mulVec, dotProduct, Fin.sum_univ_add]`. Simplify `hs` using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, mul_comm]`. Take `⟨c, hc, hs⟩` from `perp _ ha`. Use `core γ 3 (Fin.append c 0) _ (fun j hj => ?_) hq (Or.inr ⟨by funext i; simp only [Fin.append_right], by simpa only [Fin.append_left] using hc, ha⟩)` and prove the remaining obligations.
+
+Rewrite using `[h0 j hj, Matrix.mulVec, dotProduct, Fin.sum_univ_add]`. Simplify `hs` using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_comm]`. Take `⟨c, hc, hs⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 hdet`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin 2, (fun i => γ.val (Fin.natAdd 2 i) (Fin.castAdd 2 k)) ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+
+Apply `hne` to reduce the goal to its premises. Use extensionality with `i k`. Assume the negation of the conclusion as `hik`. Conclude with `hall ⟨k, fun h => hik (congrFun h i)⟩`. Use `core γ 2 (fun s => γ.val s (Fin.castAdd 2 k)) (Fin.append 0 c) (fun i hi => ?_) (fun j hj => ?_) (Or.inl ⟨by funext i; simp only [Fin.append_left], by simpa only [Fin.append_right] using hc, hk⟩)` and prove the remaining obligations.
+
+Rewrite using `[hcol, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Use `k.2` as an intermediate fact. Simplify using `only [Fin.val_castAdd] at hi`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hj' : j = Fin.castAdd 2 ⟨j, hj⟩` using `rfl`. Rewrite using `[hj', Matrix.vecMul, dotProduct, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.zero_apply, zero_mul, Finset.sum_const_zero, zero_add]`. Conclude with `congrFun hs ⟨j, hj⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.linAlg :
     ∀ {F : Type} [Field F] (γ : GL (Fin (2 + 2)) F) (r : ℕ), (r = 1 ∨ r = 3 ∨ (r = 2 ∧
         (γ : Matrix (Fin (2 + 2)) (Fin (2 + 2)) F).submatrix (Fin.natAdd 2) (Fin.castAdd 2) ≠ 0 ∧ ((γ : Matrix (Fin (2 + 2)) (Fin (2 + 2)) F).submatrix (Fin.natAdd 2) (Fin.castAdd 2)).det = 0)) →

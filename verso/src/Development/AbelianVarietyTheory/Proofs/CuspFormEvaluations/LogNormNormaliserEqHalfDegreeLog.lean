@@ -11,11 +11,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Simplify `EX.piG_norm i` using `[piBarO, NumberField.RingOfIntegers.mapRingHom_apply]`.
+-/
 theorem normaliser_factor_mul_bar {D : D7} (EX : ErrX D) (i : Fin 2) :
     EX.piG i * piBarO EX i = ((D.host.g i : ℕ) : 𝓞 D.host.E) := by
   apply NumberField.RingOfIntegers.ext
   simpa [piBarO, NumberField.RingOfIntegers.mapRingHom_apply] using EX.piG_norm i
 
+/- English proof (translation)
+Set `ψ : D.host.E →+* ℂ` to `IsFractionRing.lift hρ`. Establish `hψ : ∀ x : 𝓞 D.host.E, ψ (x : D.host.E) = ρ x` using `fun x => IsFractionRing.lift_algebraMap hρ x`. Rewrite using `[← hψ (piBarO EX i), ← hψ (EX.piG i), piBarO, NumberField.RingOfIntegers.mapRingHom_apply]`. Conclude with `D.host.toHostAx.conjE_apply ψ _`.
+-/
 theorem map_piBar_eq_conj {D : D7} (EX : ErrX D) (i : Fin 2) (ρ : 𝓞 D.host.E →+* ℂ)
     (hρ : Function.Injective ρ) : ρ (piBarO EX i) = starRingEnd ℂ (ρ (EX.piG i)) := by
   let ψ : D.host.E →+* ℂ := IsFractionRing.lift hρ
@@ -23,6 +29,17 @@ theorem map_piBar_eq_conj {D : D7} (EX : ErrX D) (i : Fin 2) (ρ : 𝓞 D.host.E
   rw [← hψ (piBarO EX i), ← hψ (EX.piG i), piBarO, NumberField.RingOfIntegers.mapRingHom_apply]
   exact D.host.toHostAx.conjE_apply ψ _
 
+/- English proof (translation)
+Introduce `D B hinj EX j w σ`. Use `set ρ : 𝓞 D.host.E →+* ℂ := σ.comp ((algebraMap (𝓞 B.KO) B.KO).comp (iE D hinj B)) with hρdef`. Establish `hρ : Function.Injective ρ` using `σ.injective.comp ((IsFractionRing.injective (𝓞 B.KO) B.KO).comp (iE_injective D hinj B))`. Establish `hg : ∀ i : Fin 2, (0 : ℝ) < (D.host.g i : ℝ)` using `fun i => by`. Conclude with `(D.host.g_prime i).pos` after adjusting the coercions.
+
+Establish `hval : σ ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) = ∏ i : Fin 2, ρ (EX.piG i ^ Dplus w * piBarO EX i ^ Dminus w)`. Simplify using `[nnW, hρdef, map_prod, map_mul, map_pow]`. Establish `hnorm : ‖σ ((nnW B hinj EX w : 𝓞 B.KO) : B.KO)‖ = ∏ i : Fin 2, (D.host.g i : ℝ) ^ (((Dplus w : ℝ) + Dminus w) / 2)`. Rewrite using `[hval, norm_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `norm_map_pow_mul_pow_of_mul_conj ρ _ _ _ (normaliser_factor_mul_bar EX i) (map_piBar_eq_conj EX i ρ hρ) _ _`. Establish `hDF : WeightAlgebra.DF w = Dplus w + Dminus w`. Simplify using `only [WeightAlgebra.DF, WeightAlgebra.degP, Dplus, Dminus, Finset.sum_add_distrib]`. Establish `h0` using `Real.rpow_pos_of_pos (hg 0) (((Dplus w : ℝ) + Dminus w) / 2)`. Establish `h1` using `Real.rpow_pos_of_pos (hg 1) (((Dplus w : ℝ) + Dminus w) / 2)`.
+
+Use `⟨fun hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hz' : ‖σ ((nnW B hinj EX w : 𝓞 B.KO) : B.KO)‖ = 0` using `by rw [hz]; simp`. Rewrite `hz'` using `[hnorm, Fin.prod_univ_two]`. Use polynomial arithmetic with `[mul_pos h0 h1]`. Rewrite using `[hnorm, Fin.prod_univ_two, Real.log_mul h0.ne' h1.ne', Real.log_rpow (hg 0), Real.log_rpow (hg 1), Real.log_mul (hg 0).ne' (hg 1).ne', hDF]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_norm_normaliser : ∀ (D : D7) (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (j : ℕ) (w : WeightFamilies.Wt D j) (σ : B.KO →+* ℂ), nnW B hinj EX w ≠ 0 ∧ Real.log ‖σ (nnW B hinj EX w : B.KO)‖ = (WeightAlgebra.DF w : ℝ) / 2 * Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) := by
   intro D B hinj EX j w σ
   set ρ : 𝓞 D.host.E →+* ℂ := σ.comp ((algebraMap (𝓞 B.KO) B.KO).comp (iE D hinj B)) with hρdef

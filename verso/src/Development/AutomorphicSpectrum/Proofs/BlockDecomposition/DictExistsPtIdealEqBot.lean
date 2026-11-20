@@ -31,6 +31,9 @@ open GlobalTheory
 
 namespace GlobalTheory.CompanionTheory.MPDict
 
+/- English proof (translation)
+Introduce `x y h` and use `(((GlobalTheory.T.specializes_iff_point_ideal_le m n x y).2 h.le).antisymm ((GlobalTheory.T.specializes_iff_point_ideal_le m n y x).2 h.ge)).eq`.
+-/
 theorem dict_ptIdeal_injective {m : ℕ} (n : Fin (m + 1) → ℕ) :
     Function.Injective (ptIdeal : MP ℤ m n → Ideal (Geo.MRing (Bk n))) := fun x y h =>
   (((GlobalTheory.T.specializes_iff_point_ideal_le m n x y).2 h.le).antisymm ((GlobalTheory.T.specializes_iff_point_ideal_le m n y x).2 h.ge)).eq

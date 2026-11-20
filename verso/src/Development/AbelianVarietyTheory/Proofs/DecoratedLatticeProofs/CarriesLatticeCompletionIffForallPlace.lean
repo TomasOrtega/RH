@@ -25,12 +25,18 @@ namespace GlobalTheory.FinPlMovesLoc
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `idAt at ha ⊢`. Take `⟨h0, hw⟩` from `Ideal.mem_inf.1 ha`. Use `Ideal.mem_inf.2 ⟨h0, (Submodule.mem_iInf _).2 fun w => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).1 hw ⟨w.1, fun hq => w.2 (h _ hq)⟩`.
+-/
 theorem idAt_mono {P Q : Pl D → Prop} (h : ∀ w, Q w → P w) {a : AE D} (ha : a ∈ idAt D Q) : a ∈ idAt D P := by
   unfold idAt at ha ⊢
   obtain ⟨h0, hw⟩ := Ideal.mem_inf.1 ha
   refine Ideal.mem_inf.2 ⟨h0, (Submodule.mem_iInf _).2 fun w => ?_⟩
   exact (Submodule.mem_iInf _).1 hw ⟨w.1, fun hq => w.2 (h _ hq)⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul at hy ⊢`. Use `AddSubgroup.closure_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `z ⟨α, hαi, hα, a, ha, x, hx, rfl⟩`. Conclude with `⟨α, hαi, fun w hw => hα w (fun hq => hw (h w hq)), a, ha, x, hx, rfl⟩`.
+-/
 theorem latV_mono {S : HSp D} {L : Lat S} {P Q : Pl D → Prop} (h : ∀ w, Q w → P w) {y : Fin S.rank → AE D}
     (hy : y ∈ GlobalTheory.FinPl.latV S L Q) : y ∈ GlobalTheory.FinPl.latV S L P := by
   unfold GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul at hy ⊢
@@ -38,12 +44,20 @@ theorem latV_mono {S : HSp D} {L : Lat S} {P Q : Pl D → Prop} (h : ∀ w, Q w 
   rintro z ⟨α, hαi, hα, a, ha, x, hx, rfl⟩
   exact ⟨α, hαi, fun w hw => hα w (fun hq => hw (h w hq)), a, ha, x, hx, rfl⟩
 
+/- English proof (translation)
+Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+-/
 theorem mulVec_idAt {S : HSp D} (g : GA D S) {Q : Pl D → Prop} {y : Fin S.rank → AE D} (hy : ∀ i, y i ∈ idAt D Q) :
     ∀ i, (mt S g *ᵥ y) i ∈ idAt D Q := by
   intro i
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `latV_mono (fun w hw => hw ▸ hv)`. Introduce `h`. Establish `h1` using `GlobalTheory.FinPlLoc.smul_latV v (GlobalTheory.FinPlLoc.idem_mem_intAt (· = v)) h`. Establish `h2 : GlobalTheory.FinPlLoc.idem D (· = v) • y = y`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (hy i)`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem latV_at_iff {S : HSp D} {L : Lat S} {P : Pl D → Prop} {v : Pl D} (hv : P v) {y : Fin S.rank → AE D}
     (hy : ∀ i, y i ∈ idAt D (· = v)) : y ∈ GlobalTheory.FinPl.latV S L (· = v) ↔ y ∈ GlobalTheory.FinPl.latV S L P := by
   constructor
@@ -56,6 +70,17 @@ theorem latV_at_iff {S : HSp D} {L : Lat S} {P : Pl D → Prop} {v : Pl D} (hv :
       exact (GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (hy i)
     rwa [h2] at h1
 
+/- English proof (translation)
+Introduce `D S g L hL P`. Prove the components needed by the constructor for the conclusion. Introduce `hM v hv y hy`. Establish `hyP : ∀ i, y i ∈ idAt D P` using `fun i => idAt_mono (fun w hw => hw ▸ hv) (hy i)`. Rewrite using `[latV_at_iff hv hy, latV_at_iff hv (mulVec_idAt g hy)]`.
+
+Conclude with `hM y hyP`. Introduce `hM y hy`. Rewrite using `[GlobalTheory.FinPlLoc.part_lat P S L y hL, GlobalTheory.FinPlLoc.part_lat P S L _ hL]`. Establish `hsupp : ∀ v, ∀ e ∈ intAt D (· = v), ∀ i, (e • y) i ∈ idAt D (· = v)` using `fun v e he i => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ he.1`. Establish `hcomm : ∀ e : AE D, e • (mt S g *ᵥ y) = mt S g *ᵥ (e • y)` using `fun e => (Matrix.mulVec_smul _ _ _).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use `⟨mulVec_idAt g hy, fun v hv e he => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcomm]`. Conclude with `(hM v hv (e • y) (hsupp v e he)).1 (h v hv e he)`. Introduce and unpack `⟨-, h⟩`. Use `⟨hy, fun v hv e he => ?_⟩` and prove the remaining obligations. Use `(hM v hv (e • y) (hsupp v e he)).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hcomm]`. Conclude with `h v hv e he`.
+-/
 theorem moves_iff : ∀ {D : D7} (S : HSp D) (g : GA D S) (L : GlobalTheory.FinPl.Lat S), Submodule.IsLattice D.host.E L →
     ∀ (P : GlobalTheory.FinPl.Pl D → Prop), GlobalTheory.FinPl.Moves S g L L P ↔ ∀ v, P v → GlobalTheory.FinPl.Moves S g L L (· = v) := by
   intro D S g L hL P

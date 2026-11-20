@@ -7,6 +7,19 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry ReciprocityTheory.GeometryOfNumbersTheory Filter Asymptotics MeasureTheory
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D A P0 II hD1 hII har hb hA hc`. Take `⟨m, N, v, d, μ, hm, hdy, hk, hv, hgen, hmet, hlat, hμ, hnull, hZ, hnorm⟩` from `hDat K ι Ω y D A P0 hD1 har hb hA hc`. Establish `htop : II (Option K) (addIdx ι N) (mCoordIdeal d.y) (D + 1) (fun _ => d.A) = (m : ℝ) ^ (D + 1) * II K ι (mCoordIdeal y) (D + 1) (fun _ => A)`. Rewrite using `[hdy]`. Use `hTop K ι Ω y D A m N v d.A II hII har hA.semipos.1 hm hv hgen (by rw [d.deg, hk]) d.semipos.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hdy]`. Conclude with `hmet`. Take `⟨hdef, -⟩` from `hHS D (Option K) (addIdx ι N) Ω II d hII`. Use `⟨μ, m, hμ, hnull, hZ, hm, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hfac : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`.
+
+Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ (D + 1)` using `pow_pos (by exact_mod_cast hm) _`. Establish `hc' : 0 < ε * (m : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `by positivity`. Use `filter_upwards [hdef.bound hc', hlat] with q hq hl`. Introduce `r ψ hψ hiso _ _`. Establish `hcov` using `hChi D (Option K) (addIdx ι N) Ω d q (chartLat y A.a (m * q)) (by rw [hk]; exact hl) r ψ hψ (fun s f hf hs => by`.
+
+Rewrite `hf` using `[hk]`. Rewrite using `[hiso, ← hs]`. Conclude with `hnorm q f hf)`. Rewrite using `[hcov]`. Rewrite `hq` using `[htop]`.
+
+Simplify using `only [hsDefect, pw, Real.norm_eq_abs] at hq`. Establish `hq'` using `(abs_le.mp hq).2`. Rewrite `hq'` using `[abs_of_nonneg (by positivity)]`. Use `push_cast`. Rewrite using `[mul_pow]`.
+
+Establish `key : (II K ι (mCoordIdeal y) (D + 1) (fun _ => A) + ε) * ((m : ℝ) ^ (D + 1) * (q : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) = (m : ℝ) ^ (D + 1) * II K ι (mCoordIdeal y) (D + 1) (fun _ => A) * (q : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ) + ε * (m : ℝ) ^ (D + 1) / ((D + 1).factorial …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem TensorPowerL2Degree.proof (hDat : PowerBlockDatum.Statement) (hTop : PowerBlockTop.Statement)
     (hChi : BlockChiCovolume.Statement) (hHS : TheoremHSMBlock.Statement) : TensorPowerL2Degree.Statement := by
   intro K _ ι _ Ω _ _ y D A P0 II hD1 hII har hb hA hc

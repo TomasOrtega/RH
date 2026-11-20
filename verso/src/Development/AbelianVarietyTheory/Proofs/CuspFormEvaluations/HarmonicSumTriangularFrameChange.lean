@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.TriangularFrame
 
+/- English proof (translation)
+Establish `hdet : ∀ τ, IsUnit (Matrix.of (cf τ)).det` using `fun τ => by`. Rewrite using `[Matrix.det_of_lowerTriangular (Matrix.of (cf τ)) (fun i j hij => h0 τ i j (by simpa using hij))]`. Conclude with `IsUnit.prod_iff.2 fun i _ => h1 τ i`. Establish `key : ∀ (a : (Σ τ : T, Fin (r τ)) → S) e, ∑ ℓ, a ℓ * (∑ j, cf ℓ.1 ℓ.2 j * u ⟨ℓ.1, j⟩ e) = ∑ ℓ : (Σ τ : T, Fin (r τ)), Matrix.vecMul (fun i => a ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1)) ℓ.2 * u ℓ e`. Introduce `a e`.
+
+Rewrite using `[Fintype.sum_sigma, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [_root_.mul_assoc]`. Conclude with `Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun (i j : Fin (r τ)) => a ⟨τ, i⟩ * (cf τ i j * u ⟨τ, j⟩ e))`.
+
+Simplify using `only [key]`. Take `⟨b, hb1, hb2⟩` from `hb v`. Establish `back : ∀ a : (Σ τ : T, Fin (r τ)) → S, (∀ e, ∑ ℓ : (Σ τ : T, Fin (r τ)), Matrix.vecMul (fun i => a ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1)) ℓ.2 * u ℓ e = v e) → a = fun ℓ => Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1))⁻¹ ℓ.2`. Introduce `a ha`. Use `hb2 _ ha` as an intermediate fact.
+
+Substitute `this` using the available equality. Use function extensionality and compare the values at `ℓ`. Use `show _ = Matrix.vecMul (Matrix.vecMul (fun i => a ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1))) _ _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (hdet _), Matrix.vecMul_one]`. Use `⟨fun ℓ => Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1))⁻¹ ℓ.2, fun e => ?_, back⟩` and prove the remaining obligations.
+
+Rewrite using `[← hb1 e]`. Use `Finset.sum_congr rfl fun ℓ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show Matrix.vecMul (Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1))⁻¹) _ _ = _`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (hdet _), Matrix.vecMul_one]`.
+-/
 theorem basis_of_triangular {T : Type} [Fintype T] {r : T → ℕ} {S : Type} [CommRing S] {d : ℕ}
     (u : (Σ τ : T, Fin (r τ)) → Fin d → S) (cf : ∀ τ : T, Fin (r τ) → Fin (r τ) → S)
     (h0 : ∀ τ i j, i < j → cf τ i j = 0) (h1 : ∀ τ i, IsUnit (cf τ i i))
@@ -54,6 +65,9 @@ theorem basis_of_triangular {T : Type} [Fintype T] {r : T → ℕ} {S : Type} [C
   show Matrix.vecMul (Matrix.vecMul (fun i => b ⟨ℓ.1, i⟩) (Matrix.of (cf ℓ.1))⁻¹) _ _ = _
   rw [Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (hdet _), Matrix.vecMul_one]
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use `show TrivSqZeroExt.fst (MvPolynomial.aeval (fun i => if i = ℓ then (DualNumber.eps : DualNumber S) else 0) (MvPolynomial.X i : MvPolynomial κ S)) = MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.X i : MvPolynomial κ S)`. Apply the tactic sequence `by_cases h : i = ℓ <;> simp [h]`.
+-/
 theorem fst_comp_jetTan {S : Type} [CommRing S] {κ : Type} [DecidableEq κ] (ℓ : κ) :
     (TrivSqZeroExt.fstHom S S S).comp (jetTan ℓ : Jet S κ (0 + 1) →ₐ[S] DualNumber S) = jetAug := by
   apply Ideal.Quotient.algHom_ext
@@ -64,6 +78,9 @@ theorem fst_comp_jetTan {S : Type} [CommRing S] {κ : Type} [DecidableEq κ] (�
     MvPolynomial.aeval (fun _ => (0 : S)) (MvPolynomial.X i : MvPolynomial κ S)
   by_cases h : i = ℓ <;> simp [h]
 
+/- English proof (translation)
+Use `show (toUnit X ≫ η[M]).left = _`. Rewrite using `[Over.comp_left]`. Both sides reduce to the same expression.
+-/
 theorem left_one {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   show (toUnit X ≫ η[M]).left = _
   rw [Over.comp_left]
@@ -72,6 +89,11 @@ theorem left_one {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] : (1 : X 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `⟨Over.w _, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun f => f.left) hx`. Simplify using `only [Over.comp_left, left_one] at h1 ⊢`. Establish `e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (homAt x0 (jetTan ℓ : Jet S κ (0 + 1) →ₐ[S] DualNumber S)).left = (homAt x0 (jetAug : Jet S κ (0 + 1) →ₐ[S] S)).left`. Rewrite using `[← fst_comp_jetTan ℓ]`.
+
+Conclude with `(Spec.map_comp _ _).symm`. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ x.left) e)).trans (h1.trans ?_)` and prove the remaining obligations. Establish `e' : spMap (algebraMap S S) = 𝟙 _` using `Spec.map_id _`. Use `show (spMap (algebraMap S S) ≫ x0) ≫ _ = x0 ≫ _`. Rewrite using `[e', Category.id_comp]`.
+-/
 theorem isTanAt_jetTan {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {κ : Type} [DecidableEq κ]
     (x : overAt x0 (Jet S κ (0 + 1)) ⟶ Xo.univ.t.G)
     (hx : homAt x0 (jetAug : Jet S κ (0 + 1) →ₐ[S] S) ≫ x = 1) (ℓ : κ) :
@@ -89,6 +111,13 @@ theorem isTanAt_jetTan {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {κ : Type} 
   show (spMap (algebraMap S S) ≫ x0) ≫ _ = x0 ≫ _
   rw [e', Category.id_comp]
 
+/- English proof (translation)
+Establish `key : ∀ (g : T ⊗ A ⟶ T ⊗ A) (hg : g ≫ snd T A = snd T A), g = 𝟙 _ → IsPullSec A L k g hg F F' → F' = F`. Introduce `g hg e h`. Substitute `e` using the available equality. Take `⟨f, hf⟩` from `F`. Take `⟨f', hf'⟩` from `F'`.
+
+Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `j`. Use `(h j).trans ?_` and prove the remaining obligations. Use `show ((T ⊗ A).left.presheaf.map (𝟙 _)).hom (f j) = f j`. Rewrite using `[CategoryTheory.Functor.map_id]`.
+
+Both sides reduce to the same expression. Conclude with `key _ _ (MonoidalCategory.id_whiskerRight _ _) h`.
+-/
 theorem eq_of_isPullSec_id {X : Scheme.{0}} (A : Over X) [GrpObj A] (L : LB A.left) (k : ℤ) (T : Over X)
     (F F' : LB.Sec (LPow A L k T)) (h : IsPullSec A L k (𝟙 T ▷ A) (whiskerRight_snd _ _) F F') : F' = F := by
   have key : ∀ (g : T ⊗ A ⟶ T ⊗ A) (hg : g ≫ snd T A = snd T A), g = 𝟙 _ → IsPullSec A L k g hg F F' → F' = F := by
@@ -104,6 +133,19 @@ theorem eq_of_isPullSec_id {X : Scheme.{0}} (A : Over X) [GrpObj A] (L : LB A.le
     rfl
   exact key _ _ (MonoidalCategory.id_whiskerRight _ _) h
 
+/- English proof (translation)
+Use `letI : Algebra ℚ S := ((algebraMap c.F S).comp (algebraMap ℚ c.F)).toAlgebra`. Use `set y' : FrPt Xo c S := ⟨y.x, ho, u', h1, h2, h3, s', h4⟩ with hy'`. Take `⟨C, hex, hpin⟩` from `hnab.2 S y`. Take `⟨C', hex', hpin'⟩` from `hnab.2 S y'`. Use `choose f hf using fun b => hex k (F b)`.
+
+Use `choose f' hf' using fun b => hex' k (F b)`. Set `uv : Lt1 Dw → Fin C.d → S` to `fun ℓ e => ∑ j, cf ℓ.1 ℓ.2 j * C.uvec ⟨ℓ.1, j⟩ e`. Set `D : ChartAt Xo c y'` to `⟨C.d, C.B, uv, C.x, C.e, C.wP, C.h, ⟨C.chart.zero, C.chart.trunc, C.chart.law, C.chart.act, fun ℓ => by`. Use `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S y.x _ (fun j => isTanAt_jetTan y.x (C.x 1) (C.chart.zero 1) ((0 : Fin 1), j)) (y.u ℓ.1) (Matrix.of fun e j => C.uvec ⟨ℓ.1, j⟩ e) (cf ℓ.1 ℓ.2) (u' ℓ.1 ℓ.2) (fun i => C.chart.tan ⟨ℓ.1, i⟩) (hcomb ℓ.1 ℓ.2)` as an intermediate fact. Establish `e : (Matrix.of fun e j => C.uvec ⟨ℓ.1, j⟩ e).mulVec (cf ℓ.1 ℓ.2) = uv ℓ`.
+
+Use function extensionality and compare the values at `e`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, uv]`. Conclude with `Finset.sum_congr rfl fun j _ => _root_.mul_comm _ _`. Rewrite `this` using `[e]`. Conclude with `this,`.
+
+Use `basis_of_triangular C.uvec cf h0 hu C.chart.basis⟩,`. Use the proof step `⟨C.frame.gen, C.frame.ph1, C.frame.ph2, C.frame.sy, C.frame.ad⟩, C.prim, C.gauge, C.rig0⟩`. Take `⟨N, hN, hNP, hsupp⟩` from `GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c a n P hP`. Establish `hI` using `hC E H Dw l Xo c hnab.1 S y' C' D k n F f' f hf' hf a _ hNP`. Establish `hNu : IsUnit (algebraMap c.F S (N : c.F))` using `(IsUnit.mk0 (N : c.F) (Nat.cast_ne_zero.2 hN.ne')).map _`.
+
+Establish `hsc : ∀ (C₀ : ChartAt Xo c y') (g : Fin n → MvPowerSeries (Fin 1 × Fin C₀.d) S), chartVal C₀ k g ((N : c.F) • P) = algebraMap c.F S (N : c.F) * chartVal C₀ k g P`. Introduce `C₀ g`. Simplify using `only [chartVal, hsupp, MvPolynomial.coeff_smul, smul_eq_mul, map_mul, Finset.mul_sum, _root_.mul_assoc]`. Rewrite `hI` using `[hsc, hsc]`. Establish `hI'` using `hNu.mul_left_cancel hI`.
+
+Establish `e₁ : ∀ m, ∏ b, nab y k (F b) (colOf m b) = ∏ b, C.B.nabVal S C.h H.w0 k (f b) C.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin k (F b) (f b) (hf b) (colOf m b)`. Establish `e₂ : ∀ m, ∏ b, nab y' k (F b) (colOf m b) = ∏ b, C'.B.nabVal S C'.h H.w0 k (f' b) C'.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin' k (F b) (f' b) (hf' b) (colOf m b)`. Simplify using `only [e₁]`. Conclude with `(Finset.sum_congr rfl fun m _ => congrArg _ (e₂ m)).trans <| hI'.trans (GlobalTheory.T.invariantOperator_value_triangular_change E H Dw l c S C.d C.B C.h C.gauge k n f C.uvec uv cf h0 (fun _ _ _ => rfl) hu a P hP)`.
+-/
 theorem sum_eq (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (ho u' h1 h2 h3 s' h4)
     (cf : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → S)
@@ -157,6 +199,15 @@ theorem sum_eq (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab 
   simp only [e₁]
   exact (Finset.sum_congr rfl fun m _ => congrArg _ (e₂ m)).trans <| hI'.trans (GlobalTheory.T.invariantOperator_value_triangular_change E H Dw l c S C.d C.B C.h C.gauge k n f C.uvec uv cf h0 (fun _ _ _ => rfl) hu a P hP)
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c _ nab hnab S _ _ y y' t hb h hh n a P hP N`. Take `⟨x', ho, u', h1, h2, h3, s', h4⟩` from `y'`. Take `⟨hx, hcf, -⟩` from `hb`. Simplify using `only at hx`. Substitute `hx` using the available equality.
+
+Use `choose cf hd h0 hcomb using hcf`. Establish `e : h = 𝟙 _` using `Over.OverMorphism.ext hh`. Substitute `e` using the available equality. Establish `hk : ((N : ℤ) ^ 2) = ((N ^ 2 : ℕ) : ℤ)` using `(Nat.cast_pow N 2).symm`. Generalize the expression as in `((N : ℤ) ^ 2) = K at hk`.
+
+Substitute `hk` using the available equality. Introduce `F F' hF`. Establish `hFF : F' = F` using `funext fun b => eq_of_isPullSec_id _ _ _ _ _ _ (hF b)`. Substitute `hFF` using the available equality. Use `sum_eq hC nab hnab y ho u' h1 h2 h3 s' h4 cf h0 (fun τ i => by rw [hd]; exact Units.isUnit _) hcomb n a P hP (N ^ 2) F'` as an intermediate fact.
+
+Simplify using `only [hd] at this`. Conclude with `this`.
+-/
 theorem harmonic_sum_frBor : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) (t : Ix Dw → Sˣ), FrBor t y y' → ∀ (h : ptO Xo y'.x ⟶ ptO Xo y.x), h.left = 𝟙 _ → ∀ (n : ℕ), ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∀ (N : ℕ) (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))) (F' : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y'.x))), (∀ b, IsPullSec Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F b) (F' b)) → ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab y' ((N : ℤ) ^ 2) (F' b) (colOf m b) = (∏ ℓ : Lt1 Dw, ((t (some ℓ) : Sˣ) : S) ^ a (ℓ.1, ℓ.2)) * ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F b) (colOf m b) := by
   intro hC E _ _ _ H Dw l Xo c _ nab hnab S _ _ y y' t hb h hh n a P hP N
   obtain ⟨x', ho, u', h1, h2, h3, s', h4⟩ := y'

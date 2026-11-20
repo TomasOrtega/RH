@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.Herm.Herm0 D}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((D.fm u).emb 0)`. Conclude with `(D.fm u).emb_inj 0`. Introduce `x y h`. Simplify using `only [embFr, LinearMap.coe_mk, AddHom.coe_mk] at h`. Apply `hinj` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `cl z`. Establish `h4` using `congrFun (congrFun h cl) ((T u).val0.eY z)`. Simplify using `using h4`.
+-/
 theorem embFr_inj (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) : Function.Injective (embFr T u) := by
   have hinj : Function.Injective ((D.fm u).emb 0) := by
     exact (D.fm u).emb_inj 0
@@ -48,6 +53,9 @@ structure CmpHyp0 (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I :
   latM : ∀ u w hg, Submodule.span (D.gat u w hg).O
     (cmpRec T Gt I u w hg '' (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)) = (D.gat u w hg).M
 
+/- English proof (translation)
+The claim follows from `H.ex uniq := fun u w hg => valUniq_of (embT_conj D) (H.evInj u w hg) (H.ptEx u w hg) pos := H.pos chi := H.chi li := fun u w hg => cmpC_li (e := I.embW u w hg) (embT_conj D) (H.ex u w hg) (valUniq_of (embT_conj D) (H.evInj u w hg) (H.ptEx u w hg)) (H.ptAll u w hg) (embFr_inj T u) …`.
+-/
 theorem CmpHyp0.toHyp {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X} (H : CmpHyp0 T Gt I) :
     CmpHyp T Gt I where
   ex := H.ex

@@ -14,6 +14,13 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨hWs, -, hWc, -⟩` from `hW`. Take `⟨hNs, -, hNc, -⟩` from `hN`. Use `hWs` as an intermediate fact. Use `hNs` as an intermediate fact. Rewrite using `[ae_iff]`.
+
+Establish `hsub : {p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r | ¬ (Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z ∧ Matrix.of p.2 ∈ Formalism.QuantumDeterminants.Nset k r)} ⊆ ({x | Matrix.of x ∉ Formalism.QuantumDeterminants.UWset k r z} ×ˢ Se …`. Introduce `p hp`. Distinguish the cases in `h1 : Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z`. Conclude with `Or.inr ⟨Set.mem_univ _, fun h2 => hp ⟨h1, h2⟩⟩`. Conclude with `Or.inl ⟨h1, Set.mem_univ _⟩`.
+
+Use `measure_mono_null hsub (measure_union_null ?_ ?_)` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hWc, zero_mul]`. Rewrite using `[Measure.prod_prod, hNc, mul_zero]`.
+-/
 theorem prod_ae {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hW : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
     (hN : PI.BesselPeriodGGP.IsHaarOn (Formalism.QuantumDeterminants.Nset k r) μN) :
@@ -34,6 +41,13 @@ theorem prod_ae {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Formalism.
   · rw [Measure.prod_prod, hWc, zero_mul]
   · rw [Measure.prod_prod, hNc, mul_zero]
 
+/- English proof (translation)
+Establish `hhn : Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hp.1.1 hp.2.1`. Establish `hσ : σ (Matrix.of p.1 * Matrix.of p.2 * g) x = σ (Matrix.of p.1 * Matrix.of p.2) (σ g x)`. Rewrite using `[sigma_mul' hds hhn hg]`. Both sides reduce to the same expression. Establish `hi` using `(MatrixMultiplicationContinuity.uw_inv hp.1).1`.
+
+Establish `hπn : ‖π (Matrix.of p.1)⁻¹‖ ≤ 1` using `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun w => by rw [MatrixMultiplicationContinuity.piW_unitary hT hπ _ hi w, one_mul])`. Establish `hψ : ‖star (Formalism.QuantumDeterminants.psi k r z c (Matrix.of p.2))‖ = 1`. Rewrite using `[norm_star]`. Unfold `Formalism.QuantumDeterminants.psi`. Rewrite using `[mul_comm]`.
+
+Conclude with `Complex.norm_exp_ofReal_mul_I _`. Unfold `beInt`. Rewrite using `[norm_smul, norm_mul, hψ, mul_one, hσ]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) hπn`.
+-/
 theorem beInt_norm_le {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {σ : Mx k r → (H →L[ℂ] H)} (hds : PI.UpqRep.IsDSHpk k r ε lam σ)
@@ -57,6 +71,9 @@ theorem beInt_norm_le {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k 
   rw [norm_smul, norm_mul, hψ, mul_one, hσ]
   exact mul_le_of_le_one_right (norm_nonneg _) hπn
 
+/- English proof (translation)
+Unfold `be`. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono_ae ?_)` and prove the remaining obligations. Use `filter_upwards [prod_ae hW hN] with p hp`. Rewrite using `[← ofReal_norm, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (beInt_norm_le hds hT hπ hg hp)`.
+-/
 theorem be_enorm_le {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp]
@@ -75,6 +92,25 @@ theorem be_enorm_le {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 
   rw [← ofReal_norm, ← ofReal_norm]
   exact ENNReal.ofReal_le_ofReal (beInt_norm_le hds hT hπ hg hp)
 
+/- English proof (translation)
+Take `⟨e, he, hee⟩` from `coef_ext hds v x`. Use `set U : Set (Formalism.QuantumDeterminants.Mt k r) := {y | Matrix.of y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} with hU`. Use `set f : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := U.indicator (fun y => ‖e (Matrix.of y)‖ₑ) with hf`. Establish `hfm : Measurable f`. Establish `hc : Continuous (fun y : Formalism.QuantumDeterminants.Mt k r => e (Matrix.of y))` using `he.comp (show Continuous (fun y : Formalism.QuantumDeterminants.Mt k r => (Matrix.of y : Mx k r)) from continuous_id)`.
+
+Establish `: Measurable (fun y : Formalism.QuantumDeterminants.Mt k r => ‖e (Matrix.of y)‖ₑ)` using `hc.measurable.enorm`. Conclude with `this.indicator uh_mem_measurableSet`. Establish `hφ : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mx k r))` using `continuous_fst`. Establish `h2 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.2 : Mx k r))` using `continuous_snd`.
+
+Conclude with `h1.matrix_mul h2`. Establish `hmul : ∀ g : Formalism.QuantumDeterminants.Mt k r, Measurable (fun s : Formalism.QuantumDeterminants.Mt k r => f (fun i j => (Matrix.of s * Matrix.of g) i j))`. Introduce `g`. Establish `: Continuous (fun s : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of s * Matrix.of g) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous (fun s : Formalism.QuantumDeterminants.Mt k r => (Matrix.of s : Mx k r))` using `continuous_id`.
+
+Conclude with `h1.matrix_mul continuous_const`. Conclude with `hfm.comp this.measurable`. Establish `hfacts` using `DDSmoothness.muSof_facts hW hN`. Establish `hae` using `DDSmoothness.ae_UH_of_quot hGm.2.2.1 hfacts.1 hfacts.2 hq`. Establish `step1 : ∀ᵐ g ∂νq, (∫⁻ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * Matrix.of g) x⟫_ℂ‖ₑ ∂(μW.prod μN)) = ∫⁻ s, f (fun i j => (Matrix.of s * Matrix.of g) i j) ∂(muSof μW μN)` using `by filter_upwards [hae] with g hg`.
+
+Unfold `muSof`. Rewrite using `[lintegral_map (hmul g) hφ.measurable]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [prod_ae hW hN] with p hp`. Establish `hhn : Matrix.of p.1 * Matrix.of p.2 ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hp.1.1 hp.2.1`.
+
+Establish `hin : Matrix.of p.1 * Matrix.of p.2 * Matrix.of g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul hhn hg`. Establish `key : (fun i j => (Matrix.of (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) * Matrix.of g) i j : Formalism.QuantumDeterminants.Mt k r) ∈ U` using `hin`. Use `show ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * Matrix.of g) x⟫_ℂ‖ₑ = f (fun i j => (Matrix.of (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) * Matrix.of g) i j)`. Rewrite using `[hf, Set.indicator_of_mem key]`. Use `show _ = ‖e (Matrix.of p.1 * Matrix.of p.2 * Matrix.of g)‖ₑ`.
+
+Rewrite using `[hee _ hin]`. Rewrite using `[lintegral_congr_ae step1, ← hq f hfm]`. Establish `hb : ∀ᵐ y ∂μG, f y ≤ ‖C * B.gN (Matrix.of y) ^ (-a)‖ₑ`. Establish `hGc : ∀ᵐ y ∂μG, Matrix.of y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)`. Rewrite using `[ae_iff]`.
+
+Simplify using `using hGm.2.2.1`. Use `filter_upwards [hGc] with y hy`. Simplify using `only [hf]`. Rewrite using `[Set.indicator_of_mem (show y ∈ U from hy), hee _ hy, ← ofReal_norm, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal ((hC _ hy).trans (le_abs_self _) |>.trans (le_of_eq (Real.norm_eq_abs _).symm))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem l1_quotient_integral_bound {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Mx k r → (H →L[ℂ] H)} (hds : PI.UpqRep.IsDSHpk k r ε lam σ)

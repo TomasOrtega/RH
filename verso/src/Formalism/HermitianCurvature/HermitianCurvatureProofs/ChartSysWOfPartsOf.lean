@@ -75,15 +75,26 @@ def CovL : Prop :=
 
 def opOne {d : ℕ} (V : (Fin d → ℝ) → (Fin d → ℝ)) (c : ℂ) : WOp d := [(1, [V]), (-c, [])]
 
+/- English proof (translation)
+Simplify using `[opOne, WOp.app, vfW]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem opOne_app {d : ℕ} (V : (Fin d → ℝ) → (Fin d → ℝ)) (c : ℂ) (v : (Fin d → ℝ) → ℂ) (x : Fin d → ℝ) :
     WOp.app (opOne V c) v x = vfD V v x - c * v x := by
   simp [opOne, WOp.app, vfW]
   ring
 
+/- English proof (translation)
+Simplify using `[opOne, WOp.symb]`.
+-/
 theorem opOne_symb {d : ℕ} (V : (Fin d → ℝ) → (Fin d → ℝ)) (c : ℂ) (x ξ : Fin d → ℝ) :
     WOp.symb (opOne V c) 1 x ξ = ((ξ ⬝ᵥ V x : ℝ) : ℂ) := by
   simp [opOne, WOp.symb]
 
+/- English proof (translation)
+Introduce `t ht`. Simplify using `only [opOne, List.mem_cons, List.not_mem_nil, or_false] at ht`. Break down `ht with rfl | rfl` into its components or cases. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Introduce `W hW`.
+
+Simplify using `only [List.mem_singleton] at hW`. Rewrite using `[hW]`. Conclude with `hV`. Conclude with `⟨by simp, by simp⟩`.
+-/
 theorem opOne_ok {d : ℕ} {O : Set (Fin d → ℝ)} {V : (Fin d → ℝ) → (Fin d → ℝ)} (c : ℂ) (hV : ContDiffOn ℝ ∞ V O) :
     FamOK O (opOne V c) 1 := by
   intro t ht
@@ -95,6 +106,9 @@ theorem opOne_ok {d : ℕ} {O : Set (Fin d → ℝ)} {V : (Fin d → ℝ) → (F
     rw [hW]; exact hV
   · exact ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sum, Matrix.trace_sum, Complex.re_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.re_ofReal_mul, h i, mul_zero]`.
+-/
 theorem re_trace_span {k r q : ℕ} (A : B.Mat k r) (Xs : Fin q → B.Mat k r) (a : Fin q → ℝ)
     (h : ∀ i, (Matrix.trace (A * Xs i)).re = 0) :
     (Matrix.trace (A * ∑ i, ((a i : ℝ) : ℂ) • Xs i)).re = 0 := by
@@ -102,11 +116,57 @@ theorem re_trace_span {k r q : ℕ} (A : B.Mat k r) (Xs : Fin q → B.Mat k r) (
   refine Finset.sum_eq_zero (fun i _ => ?_)
   rw [Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.re_ofReal_mul, h i, mul_zero]
 
+/- English proof (translation)
+Introduce `j h1 h2`. Use `h ⟨j - 1, by omega⟩` as an intermediate fact. Simplify `this` using `[Nat.sub_add_cancel h1]`.
+-/
 theorem fin_shift {n : ℕ} {p : ℕ → Prop} (h : ∀ j : Fin n, p ((j : ℕ) + 1)) : ∀ j, 1 ≤ j → j ≤ n → p j := by
   intro j h1 h2
   have := h ⟨j - 1, by omega⟩
   simpa [Nat.sub_add_cancel h1] using this
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 h8 k r z z' d O U κ Φ u hk hz hz' hT hT' hC hOm hG`. Take `⟨hCk, hNR, hNL, hCLe, hCRe, hCVe⟩` from `hG`. Take `⟨huc, hfld, hw⟩` from `h2 k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨q, Xs, hXs, hspan⟩` from `h3 k r`. Take `⟨Bs, hBs⟩` from `h8 k r z hz hT`.
+
+Take `⟨Bs', hBs'⟩` from `h8 k r z' hz' hT'`. Establish `oCV` using `hCV h2 h4 k r z z' d O U κ Φ u hC hOm hCk hCVe`. Establish `oCR` using `hCR h2 h5 k r z z' d O U κ Φ u Bs' hC hOm hCk hBs' (hCRe Bs' hBs')`. Establish `oCL` using `hCL h2 h6 k r z z' d O U κ Φ u Bs hC hOm hCk hBs (hCLe Bs hBs)`. Establish `hXin : ∀ i, B.inLie k r (Xs i)` using `fun i => (hspan (Xs i) (hXs i)).1`.
+
+Use `choose cR hcR using fun i => hNR (Xs i) (hXs i)`. Use `choose cL hcL using fun i => hNL (Xs i) (hXs i)`. Use `choose PV cV hcV0 hPVok hPVapp hPVsym using fun j : Fin (2 * r + k + 1) => oCV ((j : ℕ) + 1) (Nat.le_add_left 1 _) (Nat.succ_le_of_lt j.isLt)`. Use `choose PR cRR hcR0 hPRok hPRapp hPRsym using fun j : Fin k => oCR ((j : ℕ) + 1) (Nat.le_add_left 1 _) (Nat.succ_le_of_lt j.isLt)`. Use `choose PL cLL hcL0 hPLok hPLapp hPLsym using fun j : Fin k => oCL ((j : ℕ) + 1) (Nat.le_add_left 1 _) (Nat.succ_le_of_lt j.isLt)`.
+
+Establish `hOmx : ∀ x ∈ O, κ x ∈ JF.Om k r z z'` using `fun x hx => ⟨(hC.2.2.2.2.1 x hx).1, hOm x hx⟩`. Use `⟨Fin q ⊕ Fin q ⊕ Fin (2 * r + k + 1) ⊕ Fin k ⊕ Fin k, inferInstance, Sum.elim (fun i => opOne (VR κ Φ (Xs i)) (cR i)) (Sum.elim (fun i => opOne (VL κ Φ (Xs i)) (cL i)) (Sum.elim PV (Sum.elim PR PL))), Sum.elim (fun _ => 1) (Sum.elim (fun _ => 1) (Sum.elim (fun j => (j : ℕ) + 1) ( …` and prove the remaining obligations. Introduce and unpack `(i | i | j | j | j)`. Use `show 1 ≤ 2 * r + k + 1`. Use linear arithmetic over natural numbers and integers.
+
+Use `show 1 ≤ 2 * r + k + 1`. Use linear arithmetic over natural numbers and integers. Use `show (j : ℕ) + 1 ≤ 2 * r + k + 1`. Conclude with `Nat.succ_le_of_lt j.isLt`. Use `show (j : ℕ) + 1 ≤ 2 * r + k + 1`.
+
+Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show (j : ℕ) + 1 ≤ 2 * r + k + 1`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `(i | i | j | j | j)`. Conclude with `opOne_ok _ (hfld _).1`. Conclude with `opOne_ok _ (hfld _).2`. Conclude with `hPVok j`. Conclude with `hPRok j`.
+
+Conclude with `hPLok j`. Introduce and unpack `(i | i | j | j | j) x hx`. Use `show WOp.app (opOne (VR κ Φ (Xs i)) (cR i)) (fun y => u (κ y)) x = 0`. Rewrite using `[opOne_app]`. Establish `e` using `(hw [Xs i] (by simpa using hXin i) (by simp only [List.length_singleton]; omega) x hx).1`.
+
+Simplify using `only [B.Rw, List.foldr_cons, List.foldr_nil, List.map_cons, List.map_nil, vfW] at e`. Rewrite using `[← e, hcR i _ (hOmx x hx), smul_eq_mul, sub_self]`. Use `show WOp.app (opOne (VL κ Φ (Xs i)) (cL i)) (fun y => u (κ y)) x = 0`. Rewrite using `[opOne_app]`. Establish `e` using `(hw [Xs i] (by simpa using hXin i) (by simp only [List.length_singleton]; omega) x hx).2`.
+
+Simplify using `only [List.foldr_cons, List.foldr_nil, List.map_cons, List.map_nil, vfW] at e`. Rewrite using `[← e, hcL i _ (hOmx x hx), smul_eq_mul, sub_self]`. Conclude with `hPVapp j x hx`. Conclude with `hPRapp j x hx`. Conclude with `hPLapp j x hx`.
+
+Introduce `x hx ξ hξ hall`. Take `⟨Ξ₀, hΞ₀, hΞ₀0, hcov⟩` from `h1 k r d O U κ Φ hC x hx ξ`. Establish `hg : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Take `⟨cLie, cNil, cNe, cTr⟩` from `hConj k r (κ x) hg`. Establish `hcovL` using `hCovL k r d O U κ Φ hC x hx ξ Ξ₀ hΞ₀ hcov`.
+
+Establish `hΞ : B.inLie k r (κ x * Ξ₀ * (κ x)⁻¹)` using `cLie Ξ₀ hΞ₀`. Establish `hNRz : ∀ i, (Matrix.trace (Ξ₀ * Xs i)).re = 0`. Introduce `i`. Establish `h0` using `hall (Sum.inl i)`. Express the relevant statement in the definitionally equal form `WOp.symb (opOne (VR κ Φ (Xs i)) (cR i)) 1 x ξ = 0 at h0`.
+
+Rewrite `h0` using `[opOne_symb]`. Rewrite using `[← hcov _ (hXin i)]`. Conclude with `h0` after adjusting the coercions. Establish `hNLz : ∀ i, (Matrix.trace ((κ x * Ξ₀ * (κ x)⁻¹) * Xs i)).re = 0`. Introduce `i`.
+
+Establish `h0` using `hall (Sum.inr (Sum.inl i))`. Express the relevant statement in the definitionally equal form `WOp.symb (opOne (VL κ Φ (Xs i)) (cL i)) 1 x ξ = 0 at h0`. Rewrite `h0` using `[opOne_symb]`. Rewrite using `[← hcovL _ (hXin i)]`. Conclude with `h0` after adjusting the coercions.
+
+Establish `hVF : ∀ j : Fin (2 * r + k + 1), Ξ₀.charpoly.coeff (2 * r + k + 1 - ((j : ℕ) + 1)) = 0`. Introduce `j`. Establish `h0` using `hall (Sum.inr (Sum.inr (Sum.inl j)))`. Express the relevant statement in the definitionally equal form `WOp.symb (PV j) ((j : ℕ) + 1) x ξ = 0 at h0`. Rewrite `h0` using `[hPVsym j x hx ξ Ξ₀ hΞ₀ hcov]`.
+
+Conclude with `(mul_eq_zero.mp h0).resolve_left (hcV0 j)`. Establish `hRF : ∀ j : Fin k, (cmp Ξ₀ Bs').charpoly.coeff (k - ((j : ℕ) + 1)) = 0`. Introduce `j`. Establish `h0` using `hall (Sum.inr (Sum.inr (Sum.inr (Sum.inl j))))`. Express the relevant statement in the definitionally equal form `WOp.symb (PR j) ((j : ℕ) + 1) x ξ = 0 at h0`.
+
+Rewrite `h0` using `[hPRsym j x hx ξ Ξ₀ hΞ₀ hcov]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (hcR0 j)`. Establish `hLF : ∀ j : Fin k, (cmp (κ x * Ξ₀ * (κ x)⁻¹) Bs).charpoly.coeff (k - ((j : ℕ) + 1)) = 0`. Introduce `j`. Establish `h0` using `hall (Sum.inr (Sum.inr (Sum.inr (Sum.inr j))))`.
+
+Express the relevant statement in the definitionally equal form `WOp.symb (PL j) ((j : ℕ) + 1) x ξ = 0 at h0`. Rewrite `h0` using `[hPLsym j x hx ξ _ hΞ hcovL]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (hcL0 j)`. Establish `hnil0 : IsNilpotent Ξ₀` using `hNil _ Ξ₀ (fin_shift (p := fun j => Ξ₀.charpoly.coeff (2 * r + k + 1 - j) = 0) hVF)`. Establish `hUW'` using `h7 k r z' Bs' hz' hT' hBs' Ξ₀ hΞ₀ (fin_shift (p := fun j => (cmp Ξ₀ Bs').charpoly.coeff (k - j) = 0) hRF)`.
+
+Establish `hUW` using `h7 k r z Bs hz hT hBs _ hΞ (fin_shift (p := fun j => (cmp (κ x * Ξ₀ * (κ x)⁻¹) Bs).charpoly.coeff (k - j) = 0) hLF)`. Use `⟨κ x * Ξ₀ * (κ x)⁻¹, hΞ, cNe Ξ₀ (hΞ₀0 hξ), cNil Ξ₀ hnil0, ?_, ?_⟩` and prove the remaining obligations. Introduce `X hX`. Break down `hX with hX | hX` into its components or cases. Conclude with `hUW X hX`.
+
+Take `⟨_, a, rfl⟩` from `hspan X hX`. Conclude with `re_trace_span _ Xs a hNLz`. Introduce `X hX`. Rewrite using `[cTr Ξ₀ X]`. Break down `hX with hX | hX` into its components or cases.
+
+Conclude with `hUW' X hX`. Take `⟨_, a, rfl⟩` from `hspan X hX`. Conclude with `re_trace_span Ξ₀ Xs a hNRz`.
+-/
 theorem chartSysWOfParts_of (hCV : OpCVOf) (hCR : OpCapROf) (hCL : OpCapLOf) (hNil : NilOfCharpoly)
     (hConj : ConjAlg) (hCovL : CovL) : ChartSysWOfParts := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 k r z z' d O U κ Φ u hk hz hz' hT hT' hC hOm hG
@@ -216,6 +276,9 @@ theorem chartSysWOfParts_of (hCV : OpCVOf) (hCR : OpCapROf) (hCL : OpCapLOf) (hN
       · obtain ⟨_, a, rfl⟩ := hspan X hX
         exact re_trace_span Ξ₀ Xs a hNRz
 
+/- English proof (translation)
+The claim follows from `chartEqs_of_all (chartSysWOfParts_of hCV hCR hCL hNil hConj hCovL) h1 h2 h3 h4 h5 h6 h7 h8 hS s1 s2 s3`.
+-/
 theorem chartEqs_of_J (hCV : OpCVOf) (hCR : OpCapROf) (hCL : OpCapLOf) (hNil : NilOfCharpoly) (hConj : ConjAlg)
     (hCovL : CovL) (h1 : ChartCov) (h2 : RwChart) (h3 : LieNFin) (h4 : CapWords) (h5 : CapRWords) (h6 : CapLWords)
     (h7 : CmpZero) (h8 : FrameEx) (hS : VOpToSOpOfSteps) (s1 : SOpField) (s2 : SOpLift) (s3 : SOpLin) : ChartEqs :=

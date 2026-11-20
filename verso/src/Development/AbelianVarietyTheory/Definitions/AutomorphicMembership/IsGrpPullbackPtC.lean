@@ -36,6 +36,9 @@ def torsSub (n : ℕ) : Subgroup (Over.mk x ⟶ t.G) where
   mul_mem' := fun {a b} ha hb => ⟨by rw [mul_pow, ha.1, hb.1, _root_.mul_one], fun h => by rw [ha.2 h, hb.2 h, _root_.mul_one]⟩
   inv_mem' := fun {a} ha => ⟨by rw [inv_pow, ha.1, inv_one], fun h => by rw [ha.2 h, inv_one]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.1, fun h => ⟨h, fun e => absurd e hn⟩⟩`.
+-/
 theorem mem_torsSub {n : ℕ} (hn : n ≠ 0) (a : Over.mk x ⟶ t.G) : a ∈ torsSub t x n ↔ a ^ n = 1 :=
   ⟨fun h => h.1, fun h => ⟨h, fun e => absurd e hn⟩⟩
 
@@ -43,11 +46,17 @@ abbrev Tors (n : ℕ) : Type := Additive (torsSub t x n)
 
 def thSub (n : ℕ) : Subgroup (ThetaGrp t.G t.PP.L n (Over.mk x)) := (torsSub t x n).comap (ptHom (n : ℤ) (Over.mk x) t.PP)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_thSub {n : ℕ} (θ : ThetaGrp t.G t.PP.L n (Over.mk x)) : θ ∈ thSub t x n ↔ θ.pt ∈ torsSub t x n := Iff.rfl
 
 def ovr (n : ℕ) : thSub t x n →* Multiplicative (Tors t x n) :=
   MonoidHom.mk' (fun θ => Multiplicative.ofAdd (Additive.ofMul ⟨θ.1.pt, θ.2⟩)) fun a b => Subtype.ext (pt_mul a.1 b.1)
 
+/- English proof (translation)
+Introduce `a` and use `by obtain ⟨θ, h⟩ := exists_lift t.cub x a.toAdd.toMul.2.1 exact ⟨⟨θ, (mem_thSub t x θ).2 (h ▸ a.toAdd.toMul.2)⟩, Subtype.ext h⟩`.
+-/
 theorem ovr_surjective [IsLocalRing R] (n : ℕ) : Function.Surjective (ovr t x n) := fun a => by
   obtain ⟨θ, h⟩ := exists_lift t.cub x a.toAdd.toMul.2.1
   exact ⟨⟨θ, (mem_thSub t x θ).2 (h ▸ a.toAdd.toMul.2)⟩, Subtype.ext h⟩
@@ -56,10 +65,16 @@ def scal (n : ℕ) : Rˣ →* thSub t x n :=
   ((scalar (n : ℤ) (Over.mk x) t.PP).comp (Units.map (fn R).toMonoidHom)).codRestrict _ fun a =>
     (mem_thSub t x _).2 (by rw [MonoidHom.comp_apply, pt_scalar]; exact (torsSub t x n).one_mem)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Units.map_injective (f := (fn R).toMonoidHom) (fn R).injective (scalar_injective (k := (n : ℤ)) (T := Over.mk x) (L := t.PP) (congrArg (fun q : thSub t x n => q.1) h))`.
+-/
 theorem scal_injective (n : ℕ) : Function.Injective (scal t x n) := fun _ _ h =>
   Units.map_injective (f := (fn R).toMonoidHom) (fn R).injective
     (scalar_injective (k := (n : ℤ)) (T := Over.mk x) (L := t.PP) (congrArg (fun q : thSub t x n => q.1) h))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (scalar_comm _ _)`.
+-/
 theorem scal_comm (n : ℕ) (a : Rˣ) (g : thSub t x n) : scal t x n a * g = g * scal t x n a :=
   Subtype.ext (scalar_comm _ _)
 
@@ -99,12 +114,18 @@ def Sec.pull {R' : Type} [CommRing R'] (f : R →+* R') {x' : Sp R' ⟶ X} (h : 
 
 def Sec.IsBasis {k : ℤ} (θ : Sec t x k) : Prop := ∀ s : Sec t x k, ∃! c : R, s = c • θ
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `h θ'`. Take `⟨b, hb, -⟩` from `h' θ`. Establish `e : b * a = 1` using `(h θ).unique (by rw [mul_smul, ← ha, ← hb]) (one_smul _ _).symm`. Conclude with `⟨⟨a, b, by rw [mul_comm, e], e⟩, ha⟩`.
+-/
 theorem Sec.IsBasis.exists_unit {k : ℤ} {θ θ' : Sec t x k} (h : θ.IsBasis) (h' : θ'.IsBasis) : ∃ u : Rˣ, θ' = u • θ := by
   obtain ⟨a, ha, -⟩ := h θ'
   obtain ⟨b, hb, -⟩ := h' θ
   have e : b * a = 1 := (h θ).unique (by rw [mul_smul, ← ha, ← hb]) (one_smul _ _).symm
   exact ⟨⟨a, b, by rw [mul_comm, e], e⟩, ha⟩
 
+/- English proof (translation)
+Introduce `e` and use `zero_ne_one ((h θ).unique (by rw [zero_smul, e]) (one_smul _ _).symm)`.
+-/
 theorem Sec.IsBasis.ne_zero [Nontrivial R] {k : ℤ} {θ : Sec t x k} (h : θ.IsBasis) : θ ≠ 0 := fun e =>
   zero_ne_one ((h θ).unique (by rw [zero_smul, e]) (one_smul _ _).symm)
 
@@ -119,10 +140,18 @@ def act (n : ℕ) : thSub t x n →* Module.End R (Sec t x n) where
   map_one' := LinearMap.ext fun s => DFunLike.congr_fun (map_one (action (n : ℤ) (Over.mk x) t.PP)) s
   map_mul' a b := LinearMap.ext fun s => DFunLike.congr_fun (map_mul (action (n : ℤ) (Over.mk x) t.PP) a.1 b.1) s
 
+/- English proof (translation)
+The claim follows from `action_scalar _ s`.
+-/
 theorem act_scal (n : ℕ) (a : Rˣ) (s : Sec t x n) : act t x n (scal t x n a) s = (a : R) • s := action_scalar _ s
 
 variable {t x}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_scalar_eq hp (θ := g.1) (congrArg (fun q => q.toAdd.toMul.1) h)`. Use `⟨Units.map (fn R).symm.toMonoidHom c, Subtype.ext (Eq.trans (congrArg (scalar (n : ℤ) (Over.mk x) t.PP) ?_) hc)⟩` and prove the remaining obligations. Conclude with `Units.ext ((fn R).apply_symm_apply _)`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `Subtype.ext (pt_scalar _)`.
+-/
 theorem ovr_eq_one_iff (hp : ConstFn t x) (n : ℕ) (g : thSub t x n) : ovr t x n g = 1 ↔ ∃ a, scal t x n a = g := by
   refine ⟨fun h => ?_, ?_⟩
   · obtain ⟨c, hc⟩ := exists_scalar_eq hp (θ := g.1) (congrArg (fun q => q.toAdd.toMul.1) h)
@@ -142,6 +171,11 @@ def dl (hp : ConstFn t x) (n : ℕ) : thSub t x n ≃* thSub t x n :=
 
 variable (t)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `t.act.hom α` as an intermediate fact. Establish `g` using `PullGenG.hasGen_pull t.PP t.cub t.act.toRingAct H.w0 α n h (t.adj α) t.prim 1`. Rewrite `g` using `[Nat.one_mul]`. Take `⟨β, hβ⟩` from `g.gen t.PP.isLB (K' := Fin 2) ![𝟙 t.G.left, (t.act.act α).left] ![(n : ℤ), -((1 : ℕ) : ℤ)] rfl`.
+
+Conclude with `TransPullCompare.exists_norm_gen _ _ _ β hβ`.
+-/
 theorem exists_normGen {α : 𝓞 E} {n : ℕ} (h : α * H.bar α = n) :
     ∃ u : LB.Gen (LB.LinComb t.PP.L (K := Fin 2) ![𝟙 t.G.left, (t.act.act α).left] ![(n : ℤ), -((1 : ℕ) : ℤ)]),
       u.IsGen ∧ PullbackSections.IsNormEnd t.G t.PP (t.act.act α) n ((1 : ℕ) : ℤ) u := by
@@ -171,6 +205,11 @@ structure AbFibre (g : ℕ) : Prop where
 
 variable {t x} {g : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂⟩`. Rewrite using `[← h.isoPullback_hom_snd]`. Conclude with `⟨inferInstance, by simpa using (inferInstance : SmoothOfRelativeDimension (0 + g) (h.isoPullback.hom ≫ pullback.snd t.G.hom x))⟩`. Introduce and unpack `⟨h₁, h₂⟩`.
+
+Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [← h.isoPullback_inv_snd]`. Use `infer_instance`. Simplify using `using (inferInstance : SmoothOfRelativeDimension (0 + g) (h.isoPullback.inv ≫ q))`.
+-/
 theorem abFibre_iff {B : Scheme.{0}} {φ : B ⟶ t.G.left} {q : B ⟶ Z} (h : IsPullback φ q t.G.hom x) :
     AbFibre t x g ↔ IsProper q ∧ SmoothOfRelativeDimension g q := by
   constructor
@@ -183,17 +222,26 @@ theorem abFibre_iff {B : Scheme.{0}} {φ : B ⟶ t.G.left} {q : B ⟶ Z} (h : Is
     · infer_instance
     · simpa using (inferInstance : SmoothOfRelativeDimension (0 + g) (h.isoPullback.inv ≫ q))
 
+/- English proof (translation)
+Take `⟨t', ⟨m⟩⟩` from `exists_sab x t`. Take `⟨h₁, h₂⟩` from `(abFibre_iff m.cart.1).1 h`. Conclude with `(abFibre_iff (tens.map Λ m).cart.1).2 ⟨tens.isProper t' Λ, tens.smoothOfRelativeDimension t' Λ h₂⟩`.
+-/
 theorem AbFibre.tens (h : AbFibre t x g) (Λ : Unim E) : AbFibre (tens t Λ) x (Λ.n * g) := by
   obtain ⟨t', ⟨m⟩⟩ := exists_sab x t
   obtain ⟨h₁, h₂⟩ := (abFibre_iff m.cart.1).1 h
   exact (abFibre_iff (tens.map Λ m).cart.1).2 ⟨tens.isProper t' Λ, tens.smoothOfRelativeDimension t' Λ h₂⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance smooth := by have := t.semi.smooth; show Smooth (pullback.snd _ _); infer_instance proper := h.proper geomConnected := by have := t.semi.geomConnected; show GeometricallyConnected (pullback.snd _ _); infer_instance`.
+-/
 theorem AbFibre.isAbelianScheme (h : AbFibre t x g) : IsAbelianScheme ((Over.pullback x).obj t.G) where
   comm := inferInstance
   smooth := by have := t.semi.smooth; show Smooth (pullback.snd _ _); infer_instance
   proper := h.proper
   geomConnected := by have := t.semi.geomConnected; show GeometricallyConnected (pullback.snd _ _); infer_instance
 
+/- English proof (translation)
+Establish `hb : Function.Surjective (pullback.snd t.G.hom x).appTop.hom` using `(GlobalTheory.firstFiveLaws.1.globalFns _ _ h.isAbelianScheme).2`. Apply the tactic sequence `have e : (fst (Over.mk x) t.G).left = (pullbackSymmetry x t.G.hom).hom ≫ pullback.snd t.G.hom x := (pullbackSymmetry_hom_comp_snd _ _).symm`. Apply the tactic sequence `have : IsIso (pullbackSymmetry x t.G.hom).hom.appTop := inferInstanceAs (IsIso ((pullbackSymmetry x t.G.hom).hom.app ⊤))`. Rewrite using `[ConstFn, e]`. Apply the tactic sequence `exact surj_comp (ConcreteCategory.bijective_of_isIso (pullbackSymmetry x t.G.hom).hom.appTop).2 hb`.
+-/
 theorem AbFibre.constFn {R : Type} [CommRing R] {x : Sp R ⟶ X} (h : AbFibre t x g) : ConstFn t x := by
   have hb : Function.Surjective (pullback.snd t.G.hom x).appTop.hom :=
     (GlobalTheory.firstFiveLaws.1.globalFns _ _ h.isAbelianScheme).2
@@ -205,12 +253,18 @@ theorem AbFibre.constFn {R : Type} [CommRing R] {x : Sp R ⟶ X} (h : AbFibre t 
 
 variable {K : Type} [Field K] [IsAlgClosed K] [CharZero K] {x : Sp K ⟶ X}
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `GlobalTheory.LiePull.exists_pushEquiv (isGrpPullback_pullback t.G x) (𝟙_ (Over (Sp K))) x (Category.id_comp _).symm`. Use `Eq.trans (Nat.card_congr (Additive.toMul.trans (e.toEquiv.subtypeEquiv fun a => ?_).symm)) (GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional K _ g n h.isAbelianScheme h.dim (Nat.cast_ne_zero.2 hn))` and prove the remaining obligations. Rewrite using `[mem_torsSub t x hn, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, ← map_pow, MulEquiv.map_eq_one_iff]`.
+-/
 theorem AbFibre.card_tors (h : AbFibre t x g) {n : ℕ} (hn : n ≠ 0) : Nat.card (Tors t x n) = n ^ (2 * g) := by
   obtain ⟨e, -⟩ := GlobalTheory.LiePull.exists_pushEquiv (isGrpPullback_pullback t.G x) (𝟙_ (Over (Sp K))) x (Category.id_comp _).symm
   refine Eq.trans (Nat.card_congr (Additive.toMul.trans (e.toEquiv.subtypeEquiv fun a => ?_).symm))
     (GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional K _ g n h.isAbelianScheme h.dim (Nat.cast_ne_zero.2 hn))
   rw [mem_torsSub t x hn, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, ← map_pow, MulEquiv.map_eq_one_iff]
 
+/- English proof (translation)
+Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Establish `: Subsingleton (Tors t x 0)` using `⟨fun a b => Subtype.ext ((a.toMul.2.2 rfl).trans (b.toMul.2.2 rfl).symm)⟩ infer_instance`. Conclude with `Nat.finite_of_card_ne_zero (by rw [h.card_tors hn]; exact pow_ne_zero _ hn)`.
+-/
 theorem AbFibre.finite_tors (h : AbFibre t x g) (n : ℕ) : Finite (Tors t x n) := by
   rcases eq_or_ne n 0 with rfl | hn
   · have : Subsingleton (Tors t x 0) := ⟨fun a b => Subtype.ext ((a.toMul.2.2 rfl).trans (b.toMul.2.2 rfl).symm)⟩
@@ -228,15 +282,30 @@ def ptO : Sp ↥(intO ↥C.S) ⟶ Sp A.R := spMap A.f
 
 def ptC : Sp ↥C.S ⟶ Sp A.R := spMap ((algebraMap ↥(intO ↥C.S) ↥C.S).comp A.f)
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom A.f) (CommRingCat.ofHom (algebraMap ↥(intO ↥C.S) ↥C.S))).symm`.
+-/
 theorem gen_ptO : spMap (algebraMap ↥(intO ↥C.S) ↥C.S) ≫ ptO A = ptC A :=
   (Spec.map_comp (CommRingCat.ofHom A.f) (CommRingCat.ofHom (algebraMap ↥(intO ↥C.S) ↥C.S))).symm
 
+/- English proof (translation)
+The claim follows from `A.fac`.
+-/
 theorem ptO_ι : ptO A ≫ A.ι = P.yt := A.fac
 
+/- English proof (translation)
+The claim follows from `dat_fac A`.
+-/
 theorem ptC_ι : ptC A ≫ A.ι = P.y ≫ Y.j := dat_fac A
 
+/- English proof (translation)
+The claim follows from `isGrpPullback_abToDat A`.
+-/
 theorem isGrpPullback_ptC : IsGrpPullback (abVar P).A A.t.G (ptC A) (abToDat A) := isGrpPullback_abToDat A
 
+/- English proof (translation)
+The claim follows from `(abFibre_iff (isGrpPullback_ptC A).1).2 ⟨(abVar P).isAb.proper, (abVar P).smoothDim⟩`.
+-/
 theorem abFibre_ptC : AbFibre A.t (ptC A) (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) :=
   (abFibre_iff (isGrpPullback_ptC A).1).2 ⟨(abVar P).isAb.proper, (abVar P).smoothDim⟩
 
@@ -248,6 +317,9 @@ section Record
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ModuliIntegralCharts Formalism.MainNotions.BoundaryLocalData GlobalTheory.ShFam
 
+/- English proof (translation)
+Take `⟨-, -, ⟨m, rfl⟩ | ⟨π, h₁, h₂⟩⟩` from `h`. Use `⟨m, ?_, Or.inl ⟨m, rfl, rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E m * D.host.conj (algebraMap (𝓞 D.host.E) D.host.E m) = _`. Rewrite using `[map_natCast, map_natCast, Nat.cast_pow, sq]`. Conclude with `⟨π, h₂, Or.inr h₁⟩`.
+-/
 theorem exists_alp {D : D7} {p n : ℕ} (h : NHyp D p n) : ∃ α : 𝓞 D.host.E,
     (α : D.host.E) * D.host.conj (α : D.host.E) = (n : D.host.E) ∧
       ((∃ mm : ℕ, n = mm ^ 2 ∧ α = (mm : 𝓞 D.host.E)) ∨ (α : D.host.E) ∈ D.host.K) := by
@@ -261,6 +333,9 @@ open Classical in
 
 def alpOf (D : D7) (p n : ℕ) : 𝓞 D.host.E := if h : NHyp D p n then (exists_alp h).choose else 0
 
+/- English proof (translation)
+Rewrite using `[alpOf, dif_pos h]`. Conclude with `(exists_alp h).choose_spec`.
+-/
 theorem alpOf_spec {D : D7} {p n : ℕ} (h : NHyp D p n) :
     (alpOf D p n : D.host.E) * D.host.conj (alpOf D p n : D.host.E) = (n : D.host.E) ∧
       ((∃ mm : ℕ, n = mm ^ 2 ∧ alpOf D p n = (mm : 𝓞 D.host.E)) ∨ (alpOf D p n : D.host.E) ∈ D.host.K) := by
@@ -269,6 +344,9 @@ theorem alpOf_spec {D : D7} {p n : ℕ} (h : NHyp D p n) :
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ}
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (by have e := (alpOf_spec h).1 rw [← complexConj_eq_conj, ← A.H.bar_eq] at e exact (map_mul (algebraMap (𝓞 D.host.E) D.host.E) _ _).trans (e.trans (map_natCast _ n).symm))`.
+-/
 theorem alpOf_mul_bar (A : Amb D) {n : ℕ} (h : NHyp D p n) : alpOf D p n * A.H.bar (alpOf D p n) = n :=
   RingOfIntegers.ext (by
     have e := (alpOf_spec h).1
@@ -285,6 +363,9 @@ abbrev ptC : Sp ↥y.C.S ⟶ Sp (ct.dat y).R := Thg.ptC (ct.dat y)
 
 abbrev ptO : Sp ↥(intO ↥y.C.S) ⟶ Sp (ct.dat y).R := Thg.ptO (ct.dat y)
 
+/- English proof (translation)
+Establish `h` using `(Thg.abFibre_ptC (ct.dat y)).tens Λ`. Rewrite `h` using `[S.rank_eq, finrank_host_eq, Nat.mul_div_cancel_left _ two_pos, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem abFibre_tensAt : Thg.AbFibre (ct.tensAt y Λ) (ct.ptC y) (D.R.f * N * Λ.n) := by
   have h := (Thg.abFibre_ptC (ct.dat y)).tens Λ
   rwa [S.rank_eq, finrank_host_eq, Nat.mul_div_cancel_left _ two_pos, mul_comm] at h
@@ -344,15 +425,27 @@ variable (ct : At S κ p) (y : ct.Pt ct.Xm) (Λ : (uniTrue ct).Unim)
 def elt {n : ℕ} (g : (thgTrue ct).Th y Λ n) : ThetaGrp (ct.tensAt y Λ).G (ct.tensAt y Λ).PP.L n (Over.mk (ct.ptC y)) :=
   Subtype.val g
 
+/- English proof (translation)
+The claim follows from `(ct.abFibre_tensAt y Λ).card_tors hn.ne'`.
+-/
 theorem card_Tors {n : ℕ} (hn : 0 < n) : Nat.card ((thgTrue ct).Tors y Λ n) = n ^ (2 * (D.R.f * N * Unim.n Λ)) :=
   (ct.abFibre_tensAt y Λ).card_tors hn.ne'
 
+/- English proof (translation)
+The claim follows from `((thgTrue ct).ker_ovr y Λ 1 g).1 (Subtype.ext ((pow_one _).symm.trans (Subtype.property g).1))`.
+-/
 example (g : (thgTrue ct).Th y Λ 1) : ∃ a, (thgTrue ct).scal y Λ 1 a = g :=
   ((thgTrue ct).ker_ovr y Λ 1 g).1 (Subtype.ext ((pow_one _).symm.trans (Subtype.property g).1))
 
+/- English proof (translation)
+The claim follows from `(card_Tors ct y _ three_pos).trans (by rw [show (Unim.std D.host.E 1).n = 1 from rfl, Nat.mul_one])`.
+-/
 example : Nat.card ((thgTrue ct).Tors y (Unim.std _ 1) 3) = 3 ^ (2 * (D.R.f * N)) :=
   (card_Tors ct y _ three_pos).trans (by rw [show (Unim.std D.host.E 1).n = 1 from rfl, Nat.mul_one])
 
+/- English proof (translation)
+Use `⟨fun h => ?_, (thgTrue ct).dl_scal y Λ n _, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Units.val ((thgTrue ct).scal_inj y Λ n (h.trans (map_one _).symm))`. Evaluate the numerical expressions using `at e`. Rewrite using `[(thgTrue ct).act_scal, Units.val_neg, Units.val_one, neg_one_smul]`.
+-/
 example (n : ℕ) (s : (thgTrue ct).Sn y Λ n) : (thgTrue ct).scal y Λ n (-1) ≠ 1 ∧
     (thgTrue ct).dl y Λ n ((thgTrue ct).scal y Λ n (-1)) = (thgTrue ct).scal y Λ n (-1) ∧
     (thgTrue ct).act y Λ n ((thgTrue ct).scal y Λ n (-1)) s = -s := by
@@ -361,6 +454,9 @@ example (n : ℕ) (s : (thgTrue ct).Sn y Λ n) : (thgTrue ct).scal y Λ n (-1) �
     norm_num at e
   · rw [(thgTrue ct).act_scal, Units.val_neg, Units.val_one, neg_one_smul]
 
+/- English proof (translation)
+The claim follows from `(alpOf_spec ⟨odd_one, Nat.coprime_one_left p, Or.inl ⟨1, rfl⟩⟩).1.trans Nat.cast_one`.
+-/
 example (D : D7) (p : ℕ) : (alpOf D p 1 : D.host.E) * D.host.conj (alpOf D p 1 : D.host.E) = 1 :=
   (alpOf_spec ⟨odd_one, Nat.coprime_one_left p, Or.inl ⟨1, rfl⟩⟩).1.trans Nat.cast_one
 

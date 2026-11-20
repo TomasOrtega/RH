@@ -6,12 +6,20 @@ open Matrix Filter Topology
 
 namespace PI.UnitaryGroupMassFormula.HwConjInf
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ x in 𝓝 (0 : ℂ), x ∉ F \ {0}` using `(hF.subset Set.diff_subset).isClosed.isOpen_compl.mem_nhds (by simp)`. Use `filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with x hx hx0`. Conclude with `fun hxF => hx ⟨hxF, hx0⟩`.
+-/
 theorem eventually_not_mem_of_finite {F : Set ℂ} (hF : F.Finite) : ∀ᶠ x in 𝓝[≠] (0 : ℂ), x ∉ F := by
   have h1 : ∀ᶠ x in 𝓝 (0 : ℂ), x ∉ F \ {0} :=
     (hF.subset Set.diff_subset).isClosed.isOpen_compl.mem_nhds (by simp)
   filter_upwards [nhdsWithin_le_nhds h1, self_mem_nhdsWithin] with x hx hx0
   exact fun hxF => hx ⟨hxF, hx0⟩
 
+/- English proof (translation)
+Establish `hp : (-A).charpoly ≠ 0` using `(Matrix.charpoly_monic _).ne_zero`. Use `filter_upwards [eventually_not_mem_of_finite (Polynomial.finite_setOf_isRoot hp)] with x hx`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use `show Polynomial.IsRoot _ x`.
+
+Rewrite using `[Polynomial.IsRoot, Matrix.eval_charpoly, Matrix.scalar_apply, sub_neg_eq_add, add_comm, ← Matrix.smul_one_eq_diagonal]`. Conclude with `h0`.
+-/
 theorem det_add_smul_eventually {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) :
     ∀ᶠ x in 𝓝[≠] (0 : ℂ), (A + x • (1 : Matrix (Fin k) (Fin k) ℂ)).det ≠ 0 := by
   have hp : (-A).charpoly ≠ 0 := (Matrix.charpoly_monic _).ne_zero
@@ -23,6 +31,11 @@ theorem det_add_smul_eventually {k : ℕ} (A : Matrix (Fin k) (Fin k) ℂ) :
     ← Matrix.smul_one_eq_diagonal]
   exact h0
 
+/- English proof (translation)
+Establish `hsub : ∀ (x : ℂ) (m : ℕ) (hm : m ≤ n), (g + x • (1 : Matrix (Fin n) (Fin n) ℂ)).submatrix (Fin.castLE hm) (Fin.castLE hm) = g.submatrix (Fin.castLE hm) (Fin.castLE hm) + x • (1 : Matrix (Fin m) (Fin m) ℂ)`. Introduce `x m hm`. Simplify using `only [Matrix.submatrix_add, Matrix.submatrix_smul, Pi.add_apply, Pi.smul_apply]`. Rewrite using `[Matrix.submatrix_one _ (Fin.castLE_injective hm)]`. Establish `hmin : ∀ᶠ x in 𝓝[≠] (0 : ℂ), ∀ m : Fin (n + 1), (g.submatrix (Fin.castLE (Nat.lt_succ_iff.mp m.2)) (Fin.castLE (Nat.lt_succ_iff.mp m.2)) + x • (1 : Matrix (Fin m) (Fin m) ℂ)).det ≠ 0` using `Filter.eventually_all.2 fun m => det_add_smul_eventually _`.
+
+Use `filter_upwards [det_add_smul_eventually g, hmin] with x hdet hm`. Use `⟨hdet, PI.UnitaryGroupMassFormula.HwConjInf.exists_LU n _ (fun k hk => ?_)⟩` and prove the remaining obligations. Rewrite using `[hsub]`. Conclude with `hm ⟨_, by omega⟩`.
+-/
 theorem dense_LU {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     ∀ᶠ x in 𝓝[≠] (0 : ℂ), (g + x • (1 : Matrix (Fin n) (Fin n) ℂ)).det ≠ 0 ∧
       ∃ L U : Matrix (Fin n) (Fin n) ℂ, LowUni L ∧ UpTri U ∧ g + x • (1 : Matrix (Fin n) (Fin n) ℂ) = L * U := by
@@ -41,6 +54,9 @@ theorem dense_LU {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   rw [hsub]
   exact hm ⟨_, by omega⟩
 
+/- English proof (translation)
+Establish `h : Tendsto (fun x : ℂ => g + x • (1 : Matrix (Fin n) (Fin n) ℂ)) (𝓝 0) (𝓝 (g + (0 : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)))` using `tendsto_const_nhds.add (tendsto_id.smul_const _)`. Rewrite `h` using `[zero_smul, add_zero]`. Conclude with `h.mono_left nhdsWithin_le_nhds`.
+-/
 theorem tendsto_add_smul {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     Tendsto (fun x : ℂ => g + x • (1 : Matrix (Fin n) (Fin n) ℂ)) (𝓝[≠] 0) (𝓝 g) := by
   have h : Tendsto (fun x : ℂ => g + x • (1 : Matrix (Fin n) (Fin n) ℂ)) (𝓝 0)

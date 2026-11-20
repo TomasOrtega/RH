@@ -10,6 +10,11 @@ noncomputable section
 
 namespace ChartKernel
 
+/- English proof (translation)
+Simplify using `only [aeval_def, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hs' : ∑ i ∈ s.support, s i = d`. Rewrite using `[← hφ (mem_support_iff.mp hs)]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hs']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_smul_of_isHomogeneous {F σ S : Type*} [Field F] [CommRing S] [Algebra F S]
     {φ : MvPolynomial σ F} {d : ℕ} (hφ : φ.IsHomogeneous d) (a : S) (x : σ → S) :
     aeval (a • x) φ = a ^ d * aeval x φ := by
@@ -21,6 +26,9 @@ theorem aeval_smul_of_isHomogeneous {F σ S : Type*} [Field F] [CommRing S] [Alg
   simp only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hs']
   ring
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.ext_iff, coeff_map, coeff_zero]`. Conclude with `forall_congr' fun s => by rw [← RingHom.mem_ker, ← RingHom.mem_ker, h]`.
+-/
 theorem map_eq_zero_iff_of_ker_eq {A B B' σ : Type*} [CommRing A] [CommRing B] [CommRing B']
     {f : A →+* B} {f' : A →+* B'} (h : RingHom.ker f = RingHom.ker f') (x : MvPolynomial σ A) :
     map f x = 0 ↔ map f' x = 0 := by
@@ -29,6 +37,11 @@ theorem map_eq_zero_iff_of_ker_eq {A B B' σ : Type*} [CommRing A] [CommRing B] 
 
 variable {F : Type} [Field F] {n : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => arg 2`. Rewrite using `[← sum_homogeneousComponent g]`. Rewrite using `[map_sum, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd' : d ≤ g.totalDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)`.
+
+Establish `key` using `aeval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous d g) (aeval ξ (linForm t)) ((aeval ξ (linForm t))⁻¹ • ξ)`. Rewrite `key` using `[smul_smul, mul_inv_cancel₀ hτ, one_smul]`. Rewrite using `[map_mul, map_pow, key, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hd']`.
+-/
 theorem pow_mul_aeval_eq {K : Type*} [Field K] [Algebra F K] (t : Fin n → F) (ξ : Fin n → K)
     (hτ : aeval ξ (linForm t) ≠ 0) (g : MvPolynomial (Fin n) F) :
     aeval ξ (linForm t) ^ g.totalDegree * aeval ((aeval ξ (linForm t))⁻¹ • ξ) g =
@@ -43,6 +56,23 @@ theorem pow_mul_aeval_eq {K : Type*} [Field K] [Algebra F K] (t : Fin n → F) (
   rw [smul_smul, mul_inv_cancel₀ hτ, one_smul] at key
   rw [map_mul, map_pow, key, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hd']
 
+/- English proof (translation)
+Use `set ξ := genPt I`. Use `set τ := aeval ξ (linForm t)`. Establish `hξ : ∀ g, aeval ξ g = 0 ↔ g ∈ I`. Introduce `g`. Establish `: aeval ξ g = algebraMap (MvPolynomial (Fin n) F ⧸ I) (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (Ideal.Quotient.mk I g)`.
+
+Establish `h : (aeval ξ : MvPolynomial (Fin n) F →ₐ[F] FractionRing (MvPolynomial (Fin n) F ⧸ I)) = (IsScalarTower.toAlgHom F (MvPolynomial (Fin n) F ⧸ I) (FractionRing (MvPolynomial (Fin n) F ⧸ I))).comp (Ideal.Quotient.mkₐ F I)`. Use extensionality with `j`. Simplify using `[ξ, genPt]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Rewrite `hg` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `aeval (τ⁻¹ • ξ) g = 0 at hg`.
+
+Establish `hG` using `pow_mul_aeval_eq t ξ hτ g`. Rewrite `hG` using `[hg, mul_zero, eq_comm, hξ]`. Establish `hGg : (∑ d ∈ Finset.range (g.totalDegree + 1), linForm t ^ (g.totalDegree - d) * homogeneousComponent d g) - g ∈ Ideal.span {linForm t - 1}`. Rewrite using `[show (∑ d ∈ Finset.range (g.totalDegree + 1), linForm t ^ (g.totalDegree - d) * homogeneousComponent d g) - g = ∑ d ∈ Finset.range (g.totalDegree + 1), (linForm t ^ (g.totalDegree - d) * homogeneousComponent d g - homogeneousComponent d g) by`. Rewrite using `[Finset.sum_sub_distrib, sum_homogeneousComponent]]`.
+
+Use `Ideal.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton, ← sub_one_mul]`. Conclude with `(sub_one_dvd_pow_sub_one _ _).mul_right _`. Establish `: g = (∑ d ∈ Finset.range (g.totalDegree + 1), linForm t ^ (g.totalDegree - d) * homogeneousComponent d g) - ((∑ d ∈ Finset.range (g.totalDegree + 1), linForm t ^ (g.totalDegree - d) * homogeneousComponent d g) - g)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hG) (Ideal.mem_sup_right hGg)`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `aeval (τ⁻¹ • ξ) g = 0`.
+
+Establish `hG` using `pow_mul_aeval_eq t ξ hτ g`. Establish `hmem : (∑ d ∈ Finset.range (g.totalDegree + 1), linForm t ^ (g.totalDegree - d) * homogeneousComponent d g) ∈ I` using `Ideal.sum_mem _ fun d _ => Ideal.mul_mem_left _ _ (hI g hg d)`. Rewrite `hmem` using `[← hξ]`. Rewrite `hG` using `[hmem]`. Conclude with `(mul_eq_zero.mp hG).resolve_left (pow_ne_zero _ hτ)`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `aeval (τ⁻¹ • ξ) (linForm t - 1) = 0`. Establish `: aeval (τ⁻¹ • ξ) (linForm t) = τ⁻¹ * τ`. Simplify using `[τ, linForm, Finset.mul_sum, mul_left_comm]`. Rewrite using `[map_sub, this, inv_mul_cancel₀ hτ, map_one, sub_self]`.
+-/
 theorem ker_aeval_chart (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (hI : IsHomogIdeal I)
     (t : Fin n → F) (hτ : aeval (genPt I) (linForm t) ≠ 0) :
     RingHom.ker (aeval ((aeval (genPt I) (linForm t))⁻¹ • genPt I)).toRingHom =
@@ -100,6 +130,11 @@ theorem ker_aeval_chart (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (hI : I
         simp [τ, linForm, Finset.mul_sum, mul_left_comm]
       rw [map_sub, this, inv_mul_cancel₀ hτ, map_one, sub_self]
 
+/- English proof (translation)
+Establish `h : (aeval (genPt I) : MvPolynomial (Fin n) F →ₐ[F] FractionRing (MvPolynomial (Fin n) F ⧸ I)) = (IsScalarTower.toAlgHom F (MvPolynomial (Fin n) F ⧸ I) (FractionRing (MvPolynomial (Fin n) F ⧸ I))).comp (Ideal.Quotient.mkₐ F I)`. Use extensionality with `j`. Simplify using `[genPt]`. Establish `h' : aeval (genPt I) g = algebraMap (MvPolynomial (Fin n) F ⧸ I) (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (Ideal.Quotient.mk I g)`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Rewrite using `[h', map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem aeval_genPt_eq_zero_iff (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (g : MvPolynomial (Fin n) F) :
     aeval (genPt I) g = 0 ↔ g ∈ I := by
   have h : (aeval (genPt I) : MvPolynomial (Fin n) F →ₐ[F] FractionRing (MvPolynomial (Fin n) F ⧸ I)) =
@@ -113,12 +148,20 @@ theorem aeval_genPt_eq_zero_iff (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime]
     rfl
   rw [h', map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Simplify using `[genSubst, map_sum]`.
+-/
 theorem map_genSubst_X {B : Type*} [CommRing B] {e : ℕ} (q : MvPolynomial (Fin n) F →+* B) (t : Fin n → F)
     (ij : Fin e × Fin n) :
     map q (genSubst (fun m => (X m : MvPolynomial (Fin n) F)) (fun m => C (t m)) ij) =
       genSubst (fun m => q (X m)) (fun m => q (C (t m))) ij := by
   simp [genSubst, map_sum]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext fun r => by`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, MvPolynomial.algebraMap_apply, map_C, MvPolynomial.algebraMap_eq]`. Use function extensionality and compare the values at `ij`.
+
+Conclude with `(map_genSubst_X q t ij).symm`.
+-/
 theorem eval₂_genSubst_eq_map {B : Type*} [CommRing B] {e : ℕ} (q : MvPolynomial (Fin n) F →+* B)
     (t : Fin n → F) (g : MvPolynomial (Fin e × Fin n) F) :
     eval₂ (C.comp (q.comp C)) (genSubst (fun m => q (X m)) (fun m => q (C (t m)))) g =
@@ -131,6 +174,9 @@ theorem eval₂_genSubst_eq_map {B : Type*} [CommRing B] {e : ℕ} (q : MvPolyno
   · funext ij
     exact (map_genSubst_X q t ij).symm
 
+/- English proof (translation)
+Simplify using `only [genSubst, Pi.smul_apply, smul_eq_mul, C_mul, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem genSubst_scale {K : Type*} [Field K] {e : ℕ} (ξ s : Fin n → K) (τ : K) (ij : Fin e × Fin n) :
     genSubst ξ (fun m => τ⁻¹ * s m) ij = genSubst (τ⁻¹ • ξ) s ij := by
   simp only [genSubst, Pi.smul_apply, smul_eq_mul, C_mul, Finset.sum_mul]
@@ -138,6 +184,11 @@ theorem genSubst_scale {K : Type*} [Field K] {e : ℕ} (ξ s : Fin n → K) (τ 
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h1 : (genSubst ξ (fun m => τ⁻¹ * algebraMap F K (t m)) : Fin e × Fin n → MvPolynomial (Fin e × Fin n) K) = genSubst (τ⁻¹ • ξ) (fun m => algebraMap F K (t m))` using `funext fun ij => genSubst_scale _ _ _ ij`. Establish `h2 : (fun m => (aeval (τ⁻¹ • ξ)).toRingHom (X m : MvPolynomial (Fin n) F)) = τ⁻¹ • ξ` using `funext fun m => by simp`. Establish `h3 : (fun m => (aeval (τ⁻¹ • ξ)).toRingHom (C (t m) : MvPolynomial (Fin n) F)) = fun m => algebraMap F K (t m)`. Use function extensionality and compare the values at `fun m => by simp`. Establish `h4 : C.comp ((aeval (τ⁻¹ • ξ)).toRingHom.comp C) = algebraMap F (MvPolynomial (Fin e × Fin n) K)` using `RingHom.ext fun r => by simp [MvPolynomial.algebraMap_apply]`.
+
+Rewrite using `[← eval₂_genSubst_eq_map, h2, h3, h4, h1, aeval_def]`.
+-/
 theorem aeval_genSubst_scale {K : Type*} [Field K] [Algebra F K] {e : ℕ} (ξ : Fin n → K) (τ : K) (t : Fin n → F)
     (g : MvPolynomial (Fin e × Fin n) F) :
     aeval (genSubst ξ (fun m => τ⁻¹ * algebraMap F K (t m))) g =
@@ -162,6 +213,11 @@ def chartSubst : MvPolynomial (Fin n ⊕ Fin e × Fin n) F →+* MvPolynomial (F
 def chartEv : MvPolynomial (Fin e × Fin n) (ChartInc I t e) →+* ChartInc I t e :=
   eval₂Hom (RingHom.id _) (fun ij => chartIncHom I t e (X ij))
 
+/- English proof (translation)
+Establish `h : (chartSubst I t e).comp (rename Sum.inl).toRingHom = C.comp (chartX I t e)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[chartSubst]`. Introduce `m`.
+
+Simplify using `[chartSubst]`. Conclude with `RingHom.congr_fun h g`.
+-/
 theorem chartSubst_inl (g : MvPolynomial (Fin n) F) :
     chartSubst I t e (rename Sum.inl g) = C (chartX I t e g) := by
   have h : (chartSubst I t e).comp (rename Sum.inl).toRingHom = C.comp (chartX I t e) := by
@@ -172,15 +228,30 @@ theorem chartSubst_inl (g : MvPolynomial (Fin n) F) :
       simp [chartSubst]
   exact RingHom.congr_fun h g
 
+/- English proof (translation)
+Rewrite using `[← eval₂_genSubst_eq_map, chartSubst, coe_eval₂Hom, eval₂_rename, Sum.elim_comp_inr]`.
+-/
 theorem chartSubst_inr (g : MvPolynomial (Fin e × Fin n) F) :
     chartSubst I t e (rename Sum.inr g) =
       map (chartX I t e) (aeval (genSubst (fun m => (X m : MvPolynomial (Fin n) F)) (fun m => C (t m))) g) := by
   rw [← eval₂_genSubst_eq_map, chartSubst, coe_eval₂Hom, eval₂_rename, Sum.elim_comp_inr]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))`.
+-/
 theorem chartX_eq_zero {g : MvPolynomial (Fin n) F} (hg : g ∈ I ⊔ Ideal.span {linForm t - 1}) :
     chartX I t e g = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))
 
+/- English proof (translation)
+Establish `h1 : ∑ m, chartX I t e (C (t m)) * chartX I t e (X m) = 1`. Use `chartX_eq_zero I t e (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (linForm t - 1)))` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Simplify `this` using `[linForm, map_sum]`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[chartSubst_inl, chartX_eq_zero I t e hg, map_zero]`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `hC : ∑ l, C (chartX I t e (C (t l))) * C (chartX I t e (X l)) = (1 : MvPolynomial (Fin e × Fin n) (ChartInc I t e))`. Rewrite using `[← C_1, ← h1, map_sum]`. Simplify using `only [C_mul]`.
+
+Simplify using `only [chartSubst, map_sum, map_mul, eval₂Hom_X', Sum.elim_inr, Sum.elim_inl]`. Simplify using `only [genSubst, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hC, mul_one, sub_self]`.
+-/
 theorem chartIncIdeal_le_ker : chartIncIdeal I t e ≤ RingHom.ker (chartSubst I t e) := by
   have h1 : ∑ m, chartX I t e (C (t m)) * chartX I t e (X m) = 1 := by
     have := chartX_eq_zero I t e (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (linForm t - 1)))
@@ -201,6 +272,17 @@ theorem chartIncIdeal_le_ker : chartIncIdeal I t e ≤ RingHom.ker (chartSubst I
     simp only [chartSubst, map_sum, map_mul, eval₂Hom_X', Sum.elim_inr, Sum.elim_inl]
     simp only [genSubst, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hC, mul_one, sub_self]
 
+/- English proof (translation)
+Establish `hXl : ∀ m, chartX I t e (X m) = Ideal.Quotient.mk (chartIncIdeal I t e) (X (Sum.inl m))` using `fun m => congrArg (Ideal.Quotient.mk (chartIncIdeal I t e)) (rename_X Sum.inl m)`. Establish `hU : ∀ ij, chartIncHom I t e (X ij) = Ideal.Quotient.mk (chartIncIdeal I t e) (X (Sum.inr ij))` using `fun ij => congrArg (Ideal.Quotient.mk (chartIncIdeal I t e)) (rename_X Sum.inr ij)`. Establish `hCr : ∀ r, chartX I t e (C r) = Ideal.Quotient.mk (chartIncIdeal I t e) (C r)` using `fun r => congrArg (Ideal.Quotient.mk (chartIncIdeal I t e)) (rename_C Sum.inl r)`. Establish `h0 : ∀ i : Fin e, ∑ l, chartIncHom I t e (X (i, l)) * chartX I t e (X l) = 0`. Introduce `i`.
+
+Establish `: ∑ l, chartIncHom I t e (X (i, l)) * chartX I t e (X l) = Ideal.Quotient.mk (chartIncIdeal I t e) (∑ m, X (Sum.inr (i, m)) * X (Sum.inl m))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hU, hXl]`. Conclude with `(map_mul _ _ _).symm`.
+
+Rewrite using `[this]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`. Establish `h : (chartEv I t e).comp (chartSubst I t e) = Ideal.Quotient.mk (chartIncIdeal I t e)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using `only [RingHom.comp_apply, chartEv, chartSubst, coe_eval₂Hom, eval₂_C, RingHom.id_apply]`. Conclude with `hCr r`. Introduce and unpack `(m | ij)`. Simplify using `only [RingHom.comp_apply, chartEv, chartSubst, coe_eval₂Hom, eval₂_C, eval₂_X, RingHom.id_apply, Sum.elim_inl]`. Conclude with `hXl m`.
+
+Simplify using `only [RingHom.comp_apply, chartEv, chartSubst, coe_eval₂Hom, eval₂_X, Sum.elim_inr, genSubst, eval₂_sub, eval₂_mul, eval₂_sum, eval₂_C, RingHom.id_apply, h0, zero_mul, sub_zero]`. Conclude with `hU ij`. Conclude with `RingHom.congr_fun h p`.
+-/
 theorem chartEv_chartSubst (p : MvPolynomial (Fin n ⊕ Fin e × Fin n) F) :
     chartEv I t e (chartSubst I t e p) = Ideal.Quotient.mk (chartIncIdeal I t e) p := by
   have hXl : ∀ m, chartX I t e (X m) = Ideal.Quotient.mk (chartIncIdeal I t e) (X (Sum.inl m)) := fun m =>
@@ -235,6 +317,15 @@ theorem chartEv_chartSubst (p : MvPolynomial (Fin n ⊕ Fin e × Fin n) F) :
 
 variable {I t e}
 
+/- English proof (translation)
+Introduce `F _ n e I t hI ht`. Use `haveI := hI.isPrime`. Take `⟨-, hX⟩` from `h₂ F n e I t hI ht`. Establish `hτ : aeval (genPt I) (linForm t) ≠ 0` using `fun h => ht ((aeval_genPt_eq_zero_iff I _).mp h)`. Establish `hc : ∑ j, (aeval (genPt I) (linForm t))⁻¹ * algebraMap F (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (t j) * genPt I j = 1`.
+
+Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Rewrite using `[show ∑ j, algebraMap F (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (t j) * genPt I j = aeval (genPt I) (linForm t) by simp [linForm], inv_mul_cancel₀ hτ]`. Use extensionality with `g`. Rewrite using `[RingHom.mem_ker, h₁ F n e I _ hc g, aeval_genSubst_scale, ← map_eq_zero_iff_of_ker_eq (hX.trans (ker_aeval_chart I hI.isHomog t hτ).symm), ← chartSubst_inr]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (chartIncIdeal I t e) (rename Sum.inr g) = 0 ↔ _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `chartIncIdeal_le_ker I t e h`. Introduce `h`.
+
+Use `chartEv_chartSubst I t e (rename Sum.inr g)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm`.
+-/
 theorem proof (h₁ : IncidenceGeneric.Statement) (h₂ : ChartIncDomain.Statement) : ChartKernel.Statement := by
   intro F _ n e I t hI ht
   haveI := hI.isPrime

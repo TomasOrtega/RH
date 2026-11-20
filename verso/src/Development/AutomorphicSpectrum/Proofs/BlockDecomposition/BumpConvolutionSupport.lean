@@ -15,11 +15,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) T) fun x hx => hg.2.2 x ?_` and prove the remaining obligations. Rewrite `hx` using `[Metric.mem_closedBall, Real.dist_eq, sub_zero, not_le]`. Conclude with `hx`.
+-/
 theorem hasCompactSupport_of_isBump {g : ℝ → ℝ} {T : ℝ} (hg : IsBump g T) : HasCompactSupport g := by
   refine HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) T) fun x hx => hg.2.2 x ?_
   rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, not_le] at hx
   exact hx
 
+/- English proof (translation)
+Introduce `g g' T T' hg hg'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hconv : gconv g g' = MeasureTheory.convolution g g' (ContinuousLinearMap.mul ℝ ℝ) volume`. Use function extensionality and compare the values at `r`. Simplify using `[gconv, MeasureTheory.convolution]`.
+
+Rewrite using `[hconv]`. Conclude with `(hasCompactSupport_of_isBump hg').contDiff_convolution_right (ContinuousLinearMap.mul ℝ ℝ) hg.1.continuous.locallyIntegrable hg'.1`. Introduce `r`. Unfold `gconv`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hg.2.1 t, show -r - -t = -(r - t) by ring, hg'.2.1]`. Introduce `r hr`. Establish `hzero : ∀ t, g t * g' (r - t) = 0`.
+
+Introduce `t`. Distinguish the cases in `ht : T < |t|`. Rewrite using `[hg.2.2 t ht, zero_mul]`. Rewrite using `[hg'.2.2 (r - t) ?_, mul_zero]`. Establish `h1` using `abs_sub_abs_le_abs_sub r t`.
+
+Establish `ht'` using `not_lt.mp ht`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[gconv, hzero]`.
+-/
 theorem isBump_gconv : ∀ (g g' : ℝ → ℝ) (T T' : ℝ), IsBump g T → IsBump g' T' → IsBump (gconv g g') (T + T') := by
   intro g g' T T' hg hg'
   refine ⟨?_, ?_, ?_⟩

@@ -5,6 +5,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 
 open UpperTheory.V UpperTheory.V.PropA
 
+/- English proof (translation)
+Introduce `l _ X _ _ R g hgen hu`. Take `⟨N, hN⟩` from `hu`. Set `p : Submodule ℤ_[l] X` to `LinearMap.range ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] X))`. Establish `memp : ∀ v : X, v ∈ p ↔ ∃ y, v = (l : ℤ_[l]) ^ 1 • y`. Introduce `v`.
+
+Simplify using `only [p, LinearMap.mem_range, LinearMap.smul_apply, Module.End.one_apply, pow_one]`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, hy.symm⟩, fun ⟨y, hy⟩ => ⟨y, hy.symm⟩⟩`. Establish `hp : p ≤ p.comap (g - 1)`. Introduce `v hv`. Take `⟨y, rfl⟩` from `(memp v).mp hv`.
+
+Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `(memp _).mpr ⟨(g - 1) y, rfl⟩`. Set `F : Module.End ℤ_[l] (X ⧸ p)` to `p.mapQ p (g - 1) hp`. Establish `hFx : ∀ x : X, F (Submodule.Quotient.mk x) = Submodule.Quotient.mk ((g - 1) x)` using `fun x => Submodule.mapQ_apply _ _ _ x`. Establish `key : ∀ (k : ℕ) (x : X), (F ^ k) (Submodule.Quotient.mk x) = Submodule.Quotient.mk (((g - 1) ^ k) x)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, Module.End.mul_apply, hFx, ih, pow_succ, Module.End.mul_apply]`. Establish `hnil : IsNilpotent F`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective p z`. Rewrite using `[Submodule.mkQ_apply, key, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero, memp]`. Conclude with `hN x`.
+
+Establish `hlen : Module.length ℤ_[l] (X ⧸ p) ≤ R` using `cokL l X R hgen`. Establish `hF0` using `nilLen ℤ_[l] (X ⧸ p) F R hnil hlen`. Introduce `x`. Establish `hk` using `key R x`. Rewrite `hk` using `[hF0, LinearMap.zero_apply, eq_comm, Submodule.Quotient.mk_eq_zero, memp]`.
+
+Conclude with `hk`.
+-/
 theorem UpperTheory.V.PropA.unipPow :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (R : ℕ) (g : Module.End ℤ_[l] X), GenBy l R X → Unip g → InPow 1 ((g - 1) ^ R) := by
   intro l _ X _ _ R g hgen hu

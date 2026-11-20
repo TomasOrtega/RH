@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 open scoped Formalism.Per
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PMon.period_resScalars | exact GlobalTheory.PMon.period_resScalars | (intros; apply GlobalTheory.PMon.period_resScalars <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.periodMatrix_restrictionScalars_blockDiagonal : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (r : ℕ)
     (σ : ↥(GK K) →* GL n ↥(MaximalUnramifiedExtension l)) (Q : GL n (Bst P)) (ρ₀ : ↥(GK K) →* GL (n × Fin r) ℚ_[l])
     (p : GL (n × Fin r) ↥(MaximalUnramifiedExtension l)),

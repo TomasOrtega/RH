@@ -57,6 +57,13 @@ def cuspOn {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.
 
 section Slices
 
+/- English proof (translation)
+Set `ev : X → Module.Dual ℂ A` to `fun x => (LinearMap.proj x).comp A.subtype`. Establish `hfg : (Submodule.span ℂ (Set.range ev)).FG` using `IsNoetherian.noetherian _`. Take `⟨s, hs, e⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Take `⟨s', -, rfl⟩` from `Finset.subset_set_image_iff.1 (by rwa [Set.image_univ] : (s : Set (Module.Dual ℂ A)) ⊆ ev '' Set.univ)`. Use `⟨s', fun f hf h0 => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∀ l ∈ Submodule.span ℂ ((s'.image ev : Finset _) : Set (Module.Dual ℂ A)), l ⟨f, hf⟩ = 0` using `fun l hl => by`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem l h`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `h0 x hx`.
+
+Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul a b _ hb => simp [hb]`. Use function extensionality and compare the values at `x`. Conclude with `h1 (ev x) (e ▸ Submodule.subset_span ⟨x, rfl⟩)`.
+-/
 theorem exists_finset_sep {X : Type} (A : Submodule ℂ (X → ℂ)) [FiniteDimensional ℂ A] :
     ∃ S : Finset X, ∀ f ∈ A, (∀ x ∈ S, f x = 0) → f = 0 := by
   classical
@@ -76,6 +83,17 @@ theorem exists_finset_sep {X : Type} (A : Submodule ℂ (X → ℂ)) [FiniteDime
   funext x
   exact h1 (ev x) (e ▸ Submodule.subset_span ⟨x, rfl⟩)
 
+/- English proof (translation)
+Set `P : Submodule ℂ ((∀ i, X i) → ℂ)` to `{ carrier := {f | ∀ i x, (fun t => f (Function.update x i t)) ∈ A i} add_mem' := fun {a b} ha hb i x => (A i).add_mem (ha i x) (hb i x) zero_mem' := fun i _ => (A i).zero_mem smul_mem' := fun a f hf i x => (A i).smul_mem a (hf i x) }`. Use `choose S hS using fun i => exists_finset_sep (A i)`. Set `ev : P →ₗ[ℂ] ((∀ i, S i) → ℂ)` to `{ toFun := fun f s => f.1 fun i => (s i).1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `key : ∀ f : P, ev f = 0 → ∀ I : Finset ι, ∀ x : ∀ i, X i, (∀ i, i ∉ I → x i ∈ S i) → f.1 x = 0`. Introduce `f hf I`.
+
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx`. Conclude with `congrFun hf fun i => ⟨x i, hx i (by simp)⟩`. Consider the case `insert a I _ ih`.
+
+Introduce `x hx`. Use `hS a _ (f.2 a x) fun t ht => ih _ fun i hi => by` as an intermediate fact. Distinguish the cases in `e : i = a`. Substitute `e` using the available equality. Simplify using `using ht`.
+
+Rewrite using `[Function.update_of_ne e]`. Conclude with `hx i (by simp [e, hi])`. Simplify using `using congrFun this (x a)`. Establish `hinj : Function.Injective ev` using `(injective_iff_map_eq_zero ev).2 fun f hf => Subtype.ext (funext fun x => key f hf Finset.univ x (by simp))`. Use `haveI : FiniteDimensional ℂ P := FiniteDimensional.of_injective ev hinj`.
+
+Conclude with `Submodule.finiteDimensional_of_le (S₂ := P) (Submodule.span_le.2 fun f hf i x => h f hf i x)`.
+-/
 theorem finiteDimensional_of_slices {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} (A : ∀ i, Submodule ℂ (X i → ℂ))
     [∀ i, FiniteDimensional ℂ (A i)] (𝓕 : Set ((∀ i, X i) → ℂ))
     (h : ∀ f ∈ 𝓕, ∀ i x, (fun t => f (Function.update x i t)) ∈ A i) :

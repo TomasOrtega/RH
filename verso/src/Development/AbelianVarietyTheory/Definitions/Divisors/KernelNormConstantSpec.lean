@@ -23,11 +23,19 @@ def wtOf (n : ℕ) (E : Finset ℚ) : DomWeight n :=
     ⟨fun a => ⌊highestWeight E h.1 a⌋, fun _ _ hab => Int.floor_mono (highestWeight_antitone h.1 h.2 hab)⟩
   else ⟨0, antitone_const⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `highestWeight_int h hE a`. Simplify using `[wtOf, dif_pos (And.intro h hE), hz]`.
+-/
 theorem wtOf_cast {n : ℕ} {E : Finset ℚ} (h : E.card = n) (hE : InCoset (((n : ℚ) - 1) / 2) E) (a : Fin n) :
     ((wtOf n E).w a : ℚ) = highestWeight E h a := by
   obtain ⟨z, hz⟩ := highestWeight_int h hE a
   simp [wtOf, dif_pos (And.intro h hE), hz]
 
+/- English proof (translation)
+Establish `e : entries (Node.par D C (.top 0) τ) = (num D C τ).weightX 0` using `entries_plus _`. Establish `h : InCoset (((rankP D D.R.m : ℚ) - 1) / 2) ((num D C τ).weightX 0)` using `fun x hx => by`. Take `⟨y, rfl⟩` from `inCoset_weightX_zero (G := num D C τ) (odd_sLen D) x hx`. Take `⟨u, hu⟩` from `even_rankP D D.R.m`. Conclude with `⟨y + 1 - u, by rw [hu]; push_cast; ring⟩`.
+
+Rewrite using `[e, wtOf, dif_pos ⟨card_weight D C τ, h⟩]`. Both sides reduce to the same expression.
+-/
 theorem wtOf_top_zero (C : ℝ) (τ : D.what₂.Tau) :
     wtOf (rankP D D.R.m) (entries (Node.par D C (.top 0) τ)) = La D C τ := by
   have e : entries (Node.par D C (.top 0) τ) = (num D C τ).weightX 0 := entries_plus _
@@ -56,6 +64,9 @@ def DefPair (m : ℕ) : Pair T → Prop
   | .chi i j => i + 1 ≤ m ∧ j = m
   | _ => False
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp only [DefPair, DefNode] at h ⊢ <;> omega`.
+-/
 theorem DefPair.nodes {m : ℕ} {p : Pair T} (h : DefPair m p) : DefNode m p.small ∧ DefNode m p.big := by
   cases p <;> simp only [DefPair, DefNode] at h ⊢ <;> omega
 
@@ -75,6 +86,9 @@ def wt : ∀ X : Node, D.what₂.Tau → DomWeight (G.V X).rank
   | .core i, τ => listedWt G (.core i) τ
   | .top j, τ => listedWt G (.top j) τ
 
+/- English proof (translation)
+Establish `key : ∀ n (h : n = rankP D D.R.m) (a : Fin n), (wtOf n (entries (Node.par D sc.cGap (.top 0) τ))).w a = (La D sc.cGap τ).w (Fin.cast h a)`. Introduce and unpack `_ rfl a`. Rewrite using `[wtOf_top_zero]`. Both sides reduce to the same expression. Conclude with `key _ h a`.
+-/
 theorem wt_top_zero (h : (G.V (.top 0)).rank = rankP D D.R.m) (τ : D.what₂.Tau) (a : Fin (G.V (.top 0)).rank) :
     (wt G (.top 0) τ).w a = (La D sc.cGap τ).w (Fin.cast h a) := by
   have key : ∀ n (h : n = rankP D D.R.m) (a : Fin n),
@@ -123,6 +137,9 @@ structure FinDatum (t : T) (p : Pair T) where
   z_supp : ∃ (P' : Finset (Pl D.host.E)) (e' : AE D), IsIdemSum e' P' ∧ SuppAt e' _ z ∧ ∀ w ∈ P',
     FractionalIdeal.count D.host.E w D.host.AA ≠ 0 ∨ FractionalIdeal.count D.host.E w D.host.AAbar ≠ 0
 
+/- English proof (translation)
+Unfold `halfInd`. Distinguish the cases in `h1 : x ∈ Λ ∧ IsHalf e x`. Rewrite using `[if_pos h1, if_pos (h.1 h1)]`. Rewrite using `[if_neg h1, if_neg (h.not.1 h1)]`.
+-/
 theorem halfInd_congr {m n : ℕ} {e : AE D} {Λ Λ' : AddSubgroup (Mx D m n)} {x y : Mx D m n}
     (h : (x ∈ Λ ∧ IsHalf e x) ↔ (y ∈ Λ' ∧ IsHalf e y)) : halfInd e Λ x = halfInd e Λ' y := by
   unfold halfInd
@@ -163,6 +180,9 @@ def FinDatum.vec {t : T} {p : Pair T} (d : FinDatum G t p) (ΛS : Submodule (�
     (ΛT : Submodule (𝓞 D.host.E) (Fin (G.pT p).rank → D.host.E)) (f₀ : WO (G.pS p) (G.pT p) → ℂ) : WO (G.pS p) (G.pT p) → ℂ :=
   W.om p (d.z, 1) (Classical.epsilon (d.IsTheta W ΛS ΛT f₀))
 
+/- English proof (translation)
+Take `⟨Tm, hT⟩` from `h.1`. Rewrite using `[FinDatum.vec, (Classical.epsilon_spec (p := d.IsTheta W ΛS ΛT f₀) ⟨f, h⟩).2 Tm hT, h.2 Tm hT]`.
+-/
 theorem FinDatum.vec_eq {t : T} {p : Pair T} {d : FinDatum G t p} {ΛS ΛT f₀ f} (h : d.IsTheta W ΛS ΛT f₀ f) :
     d.vec W ΛS ΛT f₀ = W.om p (d.z, 1) f := by
   obtain ⟨Tm, hT⟩ := h.1
@@ -174,6 +194,9 @@ def fockIn (B : VertexFrames G) (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) 
     PolF D (G.pT p).rank (G.pS p).rank →ₗ[ℂ] (WO (G.pS p) (G.pT p) → ℂ) :=
   pureTensorO W.ψ W.θ _ _ (G.cartS W.cart p) (G.onT W.cart p) (G.onS B p) (G.onT B p) f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockIn_onb (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) : fockIn W W.onb p f = W.fock p f := rfl
 
 def jetTab (B : VertexFrames G) (p : Pair T) (f : WO (G.pS p) (G.pT p) → ℂ) (x : FinPt G p.small) (y : FinPt G p.big)
@@ -314,6 +337,9 @@ def IsRatIn (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.smal
 
 def IsRatAt (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) : Prop := Z.IsRatIn 1 d x y
 
+/- English proof (translation)
+Rewrite using `[kk, kkIn, kkIn, ← map_smul, kkMap, kkMap, smul_smul]`. Use `congr 2`. Simplify using `only [scal, div_eq_mul_inv, map_mul, mul_pow, Finset.prod_mul_distrib, Pi.one_apply, map_one, one_pow, Finset.prod_const_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kkIn_eq (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.small) (y : FinPt G p.big) :
     Z.kkIn c d x y = (∏ τ, opp p (c τ) ^ fockDeg G p τ) • Z.kk d x y := by
   rw [kk, kkIn, kkIn, ← map_smul, kkMap, kkMap, smul_smul]
@@ -322,6 +348,15 @@ theorem kkIn_eq (c : D.what₂.Tau → ℂ) (d : FinDatum G t p) (x : FinPt G p.
     Finset.prod_const_one]
   ring
 
+/- English proof (translation)
+Establish `h0 : ∀ x : WO (G.pS p) (G.pT p), IsHalf (0 : AE D) x → x = 0` using `fun x hx => Matrix.ext fun i j => by rw [← hx i j, zero_mul]; rfl`. Establish `hi : ∀ Λ Λ' : AddSubgroup (WO (G.pS p) (G.pT p)), halfInd (0 : AE D) Λ = halfInd 0 Λ'` using `fun Λ Λ' => funext fun x => by`. Establish `: (x ∈ Λ ∧ IsHalf (0 : AE D) x) ↔ (x ∈ Λ' ∧ IsHalf (0 : AE D) x)` using `and_congr_left fun hx => by rw [h0 x hx]; simp`. Conclude with `halfInd_congr this`. Establish `hz : ∀ f, heisO W.ψ (G.pS p) (G.pT p) 0 f = f` using `fun f => funext fun w => by simp [heisO, symplOH, symplO, hO]`.
+
+Use `⟨⟨(LinearMap.proj 0 : (_ → ℂ) →ₗ[ℂ] ℂ).smulRight (Z.vac p), fun Φ _ x hx => ?_, fun Φ _ y hy => ?_, ?_⟩, fun Tm hT => ?_⟩` and prove the remaining obligations. Take `rfl` from `h0 x hx`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Take `rfl` from `h0 y (by simpa [FinDatum.vacuum, FinDatum.ind] using hy)`.
+
+Rewrite using `[hz]`. Simplify using `[symplO, hO]`. Simplify using `[halfInd, IsHalf]`. Use `hT.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+
+Conclude with `this.symm.trans (congrArg Tm (hi _ _))`.
+-/
 theorem isTheta_vacuum (t : T) (p : Pair T) :
     (FinDatum.vacuum G t p).IsTheta W (N.latS p) (N.latT p) (Z.vac p) (Z.vac p) := by
   have h0 : ∀ x : WO (G.pS p) (G.pT p), IsHalf (0 : AE D) x → x = 0 := fun x hx =>
@@ -342,6 +377,9 @@ theorem isTheta_vacuum (t : T) (p : Pair T) :
     rw [one_smul] at this
     exact this.symm.trans (congrArg Tm (hi _ _))
 
+/- English proof (translation)
+Apply the tactic sequence `have h1 : G.toPair p 1 1 = 1 := by cases p <;> simp [GridData.toPair, Prod.ext_iff]`. Establish `h2 : W.om p (1, 1) = 1` using `map_one _`. Rewrite using `[← Z.kernelNorm_constant_spec p hp, vec, FinDatum.vec_eq W (Z.isTheta_vacuum t p), inv_mul_cancel, inv_mul_cancel]`. Simplify using `[jetTab, kerFin, GridData.Weil.ker, thetaKO, h1, h2, FinDatum.vacuum, FinDatum.ind]`.
+-/
 theorem jetTab_vacuum (t : T) (hp : DefPair D.R.m p) (k : DVar D.what₂.Tau (G.V p.small).rank (G.V p.big).rank →₀ ℕ) :
     jetTab W N.frC p (Z.vec (FinDatum.vacuum G t p)) ((N.u _)⁻¹ * N.u _) ((N.u _)⁻¹ * N.u _) k =
       Z.c0 p * opp p (((k.mapDomain (fvar G p)).prod fun v n => period Z.δ v.1 ^ n) *
@@ -353,6 +391,11 @@ theorem jetTab_vacuum (t : T) (hp : DefPair D.R.m p) (k : DVar D.what₂.Tau (G.
 
 end Normal
 
+/- English proof (translation)
+Establish `h : ({3 / 2, -1 / 2} : Finset ℚ).card = 2` using `by decide +kernel`. Rewrite using `[wtOf_cast h (by`. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `⟨1, by norm_num⟩`.
+
+Conclude with `⟨-1, by rw [Finset.mem_singleton.1 hx]; norm_num⟩), highestWeight,`. Use `descEnum_unique h (f := ![3 / 2, -1 / 2]) (by decide +kernel) (by decide +kernel)]`. Evaluate the numerical expressions.
+-/
 example : ((wtOf 2 {3 / 2, -1 / 2}).w 0 : ℚ) = 1 := by
   have h : ({3 / 2, -1 / 2} : Finset ℚ).card = 2 := by decide +kernel
   rw [wtOf_cast h (by
@@ -363,6 +406,9 @@ example : ((wtOf 2 {3 / 2, -1 / 2}).w 0 : ℚ) = 1 := by
     descEnum_unique h (f := ![3 / 2, -1 / 2]) (by decide +kernel) (by decide +kernel)]
   norm_num
 
+/- English proof (translation)
+The claim follows from `Complex.conj_I`.
+-/
 example (i j : ℕ) : opp (.chi i j : Pair T) Complex.I = -Complex.I := Complex.conj_I
 
 end GlobalTheory.FunObj

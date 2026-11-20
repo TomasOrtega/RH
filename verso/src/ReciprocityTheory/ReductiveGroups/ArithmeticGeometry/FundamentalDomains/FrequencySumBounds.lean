@@ -12,6 +12,51 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {r : ℕ
 def IsFreq (X : Data E r) (la : Wt X.Ψ r) (ν : X.Ψ → ℝ) : Prop :=
   (∀ τ, 0 ≤ ν τ) ∧ ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k
 
+/- English proof (translation)
+Establish `hsingle : ∀ τ : X.Ψ, ∃ T : Finset (X.Ψ → ℝ), (∀ p ∈ T, p ∈ X.periods la) ∧ (Pi.single τ (1 : ℝ) : X.Ψ → ℝ) ∈ Submodule.span ℝ (T : Set (X.Ψ → ℝ))`. Introduce `τ`. Establish `hmem : (Pi.single τ (1 : ℝ) : X.Ψ → ℝ) ∈ (⊤ : Submodule ℝ (X.Ψ → ℝ))` using `Submodule.mem_top`. Rewrite `hmem` using `[← realFlowPeriods_span_eq_top X la]`. Take `⟨T, hT, hT'⟩` from `Submodule.mem_span_finite_of_mem_span hmem`.
+
+Conclude with `⟨T, fun p hp => AddSubgroup.subset_closure (hT (Finset.mem_coe.mpr hp)), hT'⟩`. Use `choose T hTsub hTmem using hsingle`. Take `⟨U, hUdef⟩ : ∃ U : Finset (X.Ψ → ℝ), U = Finset.univ.biUnion T` from `⟨_, rfl⟩`. Establish `hUsub : ∀ p ∈ U, p ∈ X.periods la`. Introduce `p hp`.
+
+Rewrite `hp` using `[hUdef, Finset.mem_biUnion]`. Take `⟨τ, -, hp⟩` from `hp`. Conclude with `hTsub τ p hp`. Establish `hU_sep : ∀ d : X.Ψ → ℝ, (∀ p ∈ U, ∑ τ, d τ * p τ = 0) → d = 0`. Introduce `d hd`.
+
+Use function extensionality and compare the values at `τ`. Set `φ : (X.Ψ → ℝ) →ₗ[ℝ] ℝ` to `{ toFun := fun x => ∑ σ, d σ * x σ map_add' := fun x y => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib] map_smul' := fun c x => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring }`. Establish `hle : Submodule.span ℝ (T τ : Set (X.Ψ → ℝ)) ≤ LinearMap.ker φ`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `p hp`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Conclude with `hd p (by rw [hUdef]; exact Finset.mem_biUnion.mpr ⟨τ, Finset.mem_univ _, Finset.mem_coe.mp hp⟩)`. Establish `h1 : φ (Pi.single τ (1 : ℝ)) = 0` using `LinearMap.mem_ker.mp (hle (hTmem τ))`.
+
+Establish `h2 : ∑ σ, d σ * (Pi.single τ (1 : ℝ) : X.Ψ → ℝ) σ = 0` using `h1`. Simplify `h2` using `[Pi.single_apply]`. Take `⟨g, hgdef⟩ : ∃ g : (X.Ψ → ℝ) → U → ℤ, g = fun (ν : X.Ψ → ℝ) (p : U) => round (2 * ∑ τ, ν τ * (p : X.Ψ → ℝ) τ)` from `⟨_, rfl⟩`. Establish `hg : ∀ ν, IsFreq X la ν → ∀ p (hp : p ∈ U), ((g ν ⟨p, hp⟩ : ℤ) : ℝ) = 2 * ∑ τ, ν τ * p τ`. Introduce `ν hν p hp`.
+
+Take `⟨k, hk⟩` from `hν.2 p (hUsub p hp)`. Rewrite using `[hgdef]`. Use `show ((round (2 * ∑ τ, ν τ * p τ) : ℤ) : ℝ) = _`. Rewrite using `[hk, round_intCast]`. Establish `hinj : ∀ ν, IsFreq X la ν → ∀ ν', IsFreq X la ν' → g ν = g ν' → ν = ν'`.
+
+Introduce `ν hν ν' hν' he`. Establish `hd` using `hU_sep (ν - ν') (fun p hp => by`. Establish `h1` using `hg ν hν p hp`. Establish `h2` using `hg ν' hν' p hp`. Rewrite `h1` using `[he]`.
+
+Establish `h3 : ∑ τ, ν τ * p τ = ∑ τ, ν' τ * p τ` using `by linarith`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, h3, sub_self])`. Conclude with `sub_eq_zero.mp hd`. Take `⟨M, hMdef⟩ : ∃ M : ℝ, M = ∑ p ∈ U, ∑ τ, |p τ|` from `⟨_, rfl⟩`. Establish `hM0 : 0 ≤ M`.
+
+Rewrite using `[hMdef]`. Conclude with `Finset.sum_nonneg fun p _ => Finset.sum_nonneg fun τ _ => abs_nonneg _`. Establish `hM : ∀ p ∈ U, ∀ τ, |p τ| ≤ M`. Introduce `p hp τ`. Rewrite using `[hMdef]`.
+
+Conclude with `(Finset.single_le_sum (f := fun σ => |p σ|) (fun σ _ => abs_nonneg _) (Finset.mem_univ τ)).trans (Finset.single_le_sum (f := fun q => ∑ σ, |q σ|) (fun q _ => Finset.sum_nonneg fun σ _ => abs_nonneg _) hp)`. Establish `hbd : ∀ ν, IsFreq X la ν → ∀ p (hp : p ∈ U), |((g ν ⟨p, hp⟩ : ℤ) : ℝ)| ≤ 2 * M * ∑ τ, ν τ`. Introduce `ν hν p hp`. Rewrite using `[hg ν hν p hp, abs_mul, abs_two]`. Establish `h1 : |∑ τ, ν τ * p τ| ≤ ∑ τ, ν τ * M`.
+
+Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_of_nonneg (hν.1 τ)]`. Conclude with `mul_le_mul_of_nonneg_left (hM p hp τ) (hν.1 τ)`. Rewrite `h1` using `[← Finset.sum_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hsumbd : ∀ ν, IsFreq X la ν → ∑ p : U, |((g ν p : ℤ) : ℝ)| ≤ (U.card : ℝ) * (2 * M * ∑ τ, ν τ)`. Introduce `ν hν`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : 0 ≤ (U.card : ℝ) * (2 * M)` using `mul_nonneg (Nat.cast_nonneg _) (by linarith)`. Establish `hB : 0 < (U.card : ℝ) * (2 * M) + 1` using `by linarith`.
+
+Take `⟨b, hbdef⟩ : ∃ b : ℝ, b = a / ((U.card : ℝ) * (2 * M) + 1)` from `⟨_, rfl⟩`. Establish `hb : 0 < b` using `by rw [hbdef]; exact div_pos ha hB`. Take `⟨w, hwdef⟩ : ∃ w : ℤ → ℝ, w = fun (j : ℤ) => Real.exp (-b * |(j : ℝ)|)` from `⟨_, rfl⟩`. Establish `hw0 : ∀ j, 0 ≤ w j` using `fun j => by rw [hwdef]; exact (Real.exp_pos _).le`. Establish `hgeo : Summable (fun n : ℕ => Real.exp (-b) ^ n)` using `summable_geometric_of_lt_one (Real.exp_pos _).le ((Real.exp_lt_exp.mpr (by linarith : -b < 0)).trans_eq Real.exp_zero)`.
+
+Establish `hw : Summable w`. Rewrite using `[hwdef]`. Use `Summable.of_nat_of_neg ?_ ?_` and prove the remaining obligations. Use `hgeo.congr fun n => ?_ show Real.exp (-b) ^ n = Real.exp (-b * |(((n : ℤ)) : ℝ)|)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`.
+
+Use `congr 1`. Use `push_cast`. Rewrite using `[abs_of_nonneg (Nat.cast_nonneg n)]`. Expand and normalize the polynomial expressions, which then agree. Use `hgeo.congr fun n => ?_ show Real.exp (-b) ^ n = Real.exp (-b * |((-(n : ℤ) : ℤ) : ℝ)|)` and prove the remaining obligations.
+
+Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hexp : ∀ ν, IsFreq X la ν → Real.exp (-a * ∑ τ, ν τ) ≤ ∏ p : U, w (g ν p)`. Introduce `ν hν`. Establish `hs : 0 ≤ ∑ τ, ν τ` using `Finset.sum_nonneg fun τ _ => hν.1 τ`. Establish `h2 : b * ∑ p : U, |((g ν p : ℤ) : ℝ)| ≤ a * ∑ τ, ν τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hbdef, div_mul_eq_mul_div, div_le_iff₀ hB]`. Use polynomial arithmetic with `[mul_nonneg ha.le hs, mul_nonneg hc hs]`. Simplify using `only [hwdef]`. Rewrite using `[← Real.exp_sum]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Rewrite using `[← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨Z, hZ⟩ : ∃ Z : ℝ, Z = ∑' j : ℤ, w j` from `⟨_, rfl⟩`. Use `⟨Z ^ U.card, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hinjF : Set.InjOn g (F : Set (X.Ψ → ℝ))`.
+
+Introduce `x hx y hy h`. Conclude with `hinj x (hF x hx) y (hF y hy) h`. Take `⟨I, hIdef⟩ : ∃ I : Finset ℤ, I = (F.image g).biUnion (fun k => Finset.univ.image k)` from `⟨_, rfl⟩`. Establish `hsub : F.image g ⊆ Fintype.piFinset (fun _ : U => I)`. Introduce `k hk`.
+
+Rewrite using `[Fintype.mem_piFinset]`. Introduce `p`. Rewrite using `[hIdef]`. Conclude with `Finset.mem_biUnion.mpr ⟨k, hk, Finset.mem_image_of_mem k (Finset.mem_univ p)⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem freq_sum_bound (X : Data E r) (la : Wt X.Ψ r) (a : ℝ) (ha : 0 < a) :
     ∃ K : ℝ, ∀ F : Finset (X.Ψ → ℝ), (∀ ν ∈ F, IsFreq X la ν) →
       ∑ ν ∈ F, Real.exp (-a * ∑ τ, ν τ) ≤ K := by

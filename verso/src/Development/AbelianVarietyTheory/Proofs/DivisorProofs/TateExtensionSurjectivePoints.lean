@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ R K _ _ _ _ _ _ _ _ GG GG₀ e L _ τ₀ τ hτ h0 n k _ _ _ φ`. Take `⟨hfin, hsep, -⟩` from `GlobalTheory.T.finite_hopf_points_separate R K (GG.A n)`. Take `⟨s, hs⟩` from `finiteAlg_fieldPoint_factors_through_base R K (GG.A n) hsep k φ`. Set `σ : K ⊗[R] GG.A n →ₐ[K] K` to `Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s) fun _ _ => .all _ _`. Take `⟨x, hx⟩` from `h0 n (σ.comp (e.inv.app n : GG₀.A n →ₐ[K] K ⊗[R] GG.A n))`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `key : (τ x).pt n = s`. Use `AlgHom.ext fun a => IsFractionRing.injective R K ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun t : (GG.baseChange K).Tate => t.pt n ((1 : K) ⊗ₜ[R] a)) (hτ x)`. Establish `h2` using `DFunLike.congr_fun hx (e.hom.app n ((1 : K) ⊗ₜ[R] a))`.
+
+Establish `h3 : e.inv.app n (e.hom.app n ((1 : K) ⊗ₜ[R] a)) = (1 : K) ⊗ₜ[R] a` using `congrArg (fun f : GG.baseChange K ⟶ GG.baseChange K => f.app n ((1 : K) ⊗ₜ[R] a)) e.inv_hom_id`. Establish `h4 : ((τ₀ x).pt n) (e.hom.app n ((1 : K) ⊗ₜ[R] a)) = σ (e.inv.app n (e.hom.app n ((1 : K) ⊗ₜ[R] a)))` using `h2`. Establish `h5 : ((τ₀ x).pt n) (e.hom.app n ((1 : K) ⊗ₜ[R] a)) = 1 * algebraMap R K ((τ x).pt n a)` using `h1`. Establish `h6 : σ ((1 : K) ⊗ₜ[R] a) = 1 * algebraMap R K (s a)` using `rfl`. Rewrite `h4` using `[h3, h6, h5, _root_.one_mul, _root_.one_mul]`.
+
+Conclude with `h4`. Rewrite using `[hs, tatePt, key]`.
+-/
 theorem tatePt_surjective_of_generic : ∀ (p : ℕ) [Fact p.Prime] (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (GG : PDivGroup p R) (GG₀ : PDivGroup p K) (e : GG₀ ≅ GG.baseChange K) (L : Type) [AddCommGroup L] (τ₀ : L →+ GG₀.Tate) (τ : L →+ GG.Tate), (∀ x, tateMap _ _ K e.hom (τ₀ x) = bcTate K (τ x)) → (∀ (n : ℕ) (φ : GG₀.A n →ₐ[K] K), ∃ x, tatePt (τ₀ x) n K = φ) → ∀ (n : ℕ) (k : Type) [Field k] [Algebra R k], (p : k) ≠ 0 → ∀ φ : GG.A n →ₐ[R] k, ∃ x, tatePt (τ x) n k = φ := by
   intro p _ R K _ _ _ _ _ _ _ _ GG GG₀ e L _ τ₀ τ hτ h0 n k _ _ _ φ
   obtain ⟨hfin, hsep, -⟩ := GlobalTheory.T.finite_hopf_points_separate R K (GG.A n)

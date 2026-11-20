@@ -31,6 +31,19 @@ noncomputable section
 
 namespace GlobalTheory.SepPer.PerNe
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `hF`. Proceed by induction on `hT using Submodule.span_induction generalizing v with`. Consider the case `mem T hT`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r w`.
+
+Introduce `k hk g`. Simplify using `only [map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hT.lev w k hk g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`.
+
+Introduce `k hk g`. Simplify using `only [map_add, Pi.add_apply]`. Rewrite using `[hx k hk g, hy k hk g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => intro k hk g`.
+
+Simplify using the standard rewrite rules. Consider the case `add T₁ T₂ _ _ h₁ h₂`. Introduce `k hk g`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply]`. Rewrite using `[h₁ v k hk g, h₂ v k hk g]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c T _ h`. Introduce `k hk g`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h v k hk g]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem multT_apply_mul_lev {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S}
     {J : Set (GA D V)} {χ : GA D V → ℂ} {F : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hF : F ∈ MultT θ M J χ) (v : SmT M) :
     ∀ k ∈ J, ∀ g, F v (g * k) = χ k * F v g := by
@@ -56,6 +69,9 @@ theorem multT_apply_mul_lev {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {�
     simp only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]
     rw [h v k hk g]; ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [← PiTensorProduct.lift.apply_symm_apply y]`. Conclude with `PiTensorProduct.lift.tprod _`.
+-/
 theorem apply_tprod_eq {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)]
     {X : Type} [AddCommGroup X] [Module ℂ X] (y : (⨂[ℂ] i, E i) →ₗ[ℂ] X) (a : ∀ i, E i) :
     y (PiTensorProduct.tprod ℂ a) = PiTensorProduct.lift.symm y a := by

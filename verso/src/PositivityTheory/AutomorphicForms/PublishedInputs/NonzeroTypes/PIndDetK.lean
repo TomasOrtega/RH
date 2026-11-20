@@ -11,6 +11,9 @@ namespace UpperTheory.TNZ
 
 namespace P_indDetK
 
+/- English proof (translation)
+Establish `hfun : F.1.1 = F'.1.1`. Use function extensionality and compare the values at `x`. Take `⟨p, w, hw, rfl⟩` from `GlobalTheory.SmGL.MultiIrr.exists_parab_mul (GlobalTheory.SmGL.stdBlocks d hd) x`. Rewrite using `[GlobalTheory.SmGL.parInd_law, GlobalTheory.SmGL.parInd_law, h w hw]`. Conclude with `Subtype.ext (Subtype.ext hfun)`.
+-/
 theorem eq_of_eqOn_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {s n : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a = n) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (F F' : IndSp (stdBlocks d hd) ρ)
@@ -25,6 +28,9 @@ theorem eq_of_eqOn_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
 
 end P_indDetK
 
+/- English proof (translation)
+Introduce `k _ _ _ _ s n d hd W _ _ ρ F F' h`. Conclude with `P_indDetK.eq_of_eqOn_KO d hd ρ F F' h`.
+-/
 theorem step_indDetK : InducedDeterminantTwist := by
   intro k _ _ _ _ s n d hd W _ _ ρ F F' h
   exact P_indDetK.eq_of_eqOn_KO d hd ρ F F' h

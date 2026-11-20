@@ -12,12 +12,40 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Establish `: IsClosedImmersion (spMap σ)` using `IsClosedImmersion.spec_of_surjective _ hσ`. Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) k.flip this`.
+-/
 theorem isClosedImmersion_of_isPullback_surj {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
     (hσ : Function.Surjective σ) {Y Y' : Scheme.{0}} {q : Y ⟶ Sp R} {q' : Y' ⟶ Sp R'} {χ : Y' ⟶ Y}
     (k : IsPullback χ q' q (spMap σ)) : IsClosedImmersion χ := by
   have : IsClosedImmersion (spMap σ) := IsClosedImmersion.spec_of_surjective _ hσ
   exact MorphismProperty.of_isPullback (P := @IsClosedImmersion) k.flip this
 
+/- English proof (translation)
+Introduce `R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ Y Y' Y₀ q q' q₀ χ χ₀ k k₀ ψ ψ' ψ₀ w w' w₀ _hψ' hψ₀ hE _hs hq hC u y hT hy`. Take `⟨hσ, hker, hσ₀, hker₀⟩` from `hE`. Use `haveI : IsClosedImmersion χ := isClosedImmersion_of_isPullback_surj hσ k`. Use `haveI : IsClosedImmersion χ₀ := isClosedImmersion_of_isPullback_surj hσ₀ k₀`. Use `haveI : IsClosedImmersion φ₀ := isClosedImmersion_of_isPullback_surj hσ₀ h₀`.
+
+Establish `ht : σ t = 0` using `by rw [← RingHom.mem_ker, hker]; exact Ideal.mem_span_singleton_self t`. Take `⟨f, c, hcf, hcy, hred⟩` from `hT`. Establish `h1 : (pairPull w).pull1 y = 0`. Establish `e` using `isPullO_pullHO1 w y`. Unfold `IsPullO at e`.
+
+Rewrite using `[e, hy, map_zero]`. Rewrite `h1` using `[← hcy, CoefMap.pullCohomologyOne_class, GlobalTheory.CatCoh.H1.mk_eq_zero]`. Take `⟨g, hg⟩` from `h1`. Take `⟨f₁, hf₁⟩ : ∃ f₁ : C1 (OPair ψ q), ∀ T T' (a : T ⟶ T'), f₁ T T' a = (pairPull w).α T' (f _ _ ((pairPull w).G.map a))` from `⟨_, fun _ _ _ ↦ rfl⟩`. Establish `hg' : ∀ (T T' : (Pair ψ)ᵒᵖ) (a : T ⟶ T'), g T' - mp (OPair ψ q) a (g T) = t • f₁ T T' a`.
+
+Introduce `T T' a`. Establish `e` using `congrFun (congrFun (congrFun hg T) T') a`. Rewrite `e` using `[amitsur_d0_apply, CoefMap.pullCocycleOne_apply]`. Rewrite using `[e, hf₁, hcf, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, (pairPull w).smul, RingHom.id_apply]`. Set `gb : C0 (pairFst ψ ⋙ OPre χ q')` to `fun T ↦ preα χ q q' ((pairFst ψ).obj T) (g T)`.
+
+Establish `hgb : d0 _ gb = 0`. Use function extensionality and compare the values at `T T' a`. Rewrite using `[amitsur_d0_apply]`. Establish `nat : preα χ q q' _ (mp (OAff q) ((pairFst ψ).map a) (g T)) = mp (OPre χ q') ((pairFst ψ).map a) (preα χ q q' _ (g T))` using `(preCoef k.w).naturality _ _`. Express the relevant statement in the definitionally equal form `preα χ q q' _ (g T') - mp (OPre χ q') ((pairFst ψ).map a) (preα χ q q' _ (g T)) = 0`.
+
+Rewrite using `[← nat]`. Express the relevant statement in the definitionally equal form `preα χ q q' _ (g T') - preα χ q q' _ (mp (OPair ψ q) a (g T)) = 0`. Establish `sm : ∀ U (r0 : R) b, preα χ q q' U (r0 • b) = σ r0 • preα χ q q' U b` using `(preCoef k.w).smul`. Rewrite using `[← map_sub, hg', sm, ht, zero_smul]`. Take `⟨r', hr', -⟩` from `(GlobalTheory.T.pairFst_preimage_restriction_bijective_closedImmersion R' X Y Y' ψ χ q').2.2 hC gb hgb`.
+
+Take `⟨r, rfl⟩` from `hσ r'`. Establish `hsec` using `GlobalTheory.T.surjective_deformation_affine_sections R R' R₀ t σ σ₀ Y Y' Y₀ q q' q₀ χ χ₀ k k₀ ⟨hσ, hker, hσ₀, hker₀⟩ hq`. Establish `hex : ∀ T : (Pair ψ)ᵒᵖ, ∃ e, g T - algebraMap R _ r = t • e`. Introduce `T`. Use `((hsec ((pairFst ψ).obj T)).2.1 _).1 ?_` and prove the remaining obligations.
+
+Establish `e : preα χ q q' ((pairFst ψ).obj T) (algebraMap R ((OPair ψ q).obj T) r) = algebraMap R' ((pairFst ψ ⋙ OPre χ q').obj T) (σ r)` using `SemiHom.map_algebraMap ((preCoef k.w).smul _) r`. Rewrite using `[map_sub, e]`. Conclude with `sub_eq_zero.2 (hr' T)`. Use `choose g₁ hg₁ using hex`. Establish `hkill : ∀ (T T' : (Pair ψ)ᵒᵖ) (a : T ⟶ T'), t • (f₁ T T' a - (g₁ T' - mp (OPair ψ q) a (g₁ T))) = 0`.
+
+Introduce `T T' a`. Rewrite using `[smul_sub, smul_sub, ← map_smul (mp (OPair ψ q) a), ← hg₁ T', ← hg₁ T, map_sub, AlgHom.commutes, ← hg' T T' a]`. Normalize the expressions using the abelian group laws. Take `⟨c₀, hc₀, hc₀'⟩` from `(GlobalTheory.T.cohomologyClass_pullback_reduction_pairs R R₀ σ₀ X X₀ Y Y₀ s s₀ q q₀ φ₀ χ₀ h₀.w ψ ψ₀ w w₀ hψ₀ inferInstance).1 f u hred`. Establish `hz : (CoefMap.restrict (OAff q₀) (pairFst ψ ⋙ preAff χ₀)).pull1 (pullHO1 w₀ u) = 0`.
+
+Rewrite using `[← hc₀', GlobalTheory.CatCoh.H1.mk_eq_zero]`. Use `⟨fun T ↦ preα χ₀ q q₀ ((pairFst ψ).obj T) (g₁ T), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' a`. Rewrite using `[hc₀, amitsur_d0_apply, ← hf₁]`. Establish `e1` using `((hsec ((pairFst ψ).obj T')).2.2.2 _).2 (hkill T T' a)`.
+
+Rewrite `e1` using `[map_sub, map_sub, sub_eq_zero]`. Establish `nat : preα χ₀ q q₀ _ (mp (OAff q) ((pairFst ψ).map a) (g₁ T)) = mp (OPre χ₀ q₀) ((pairFst ψ).map a) (preα χ₀ q q₀ _ (g₁ T))` using `(preCoef k₀.w).naturality _ _`. Express the relevant statement in the definitionally equal form `_ - mp (OPre χ₀ q₀) ((pairFst ψ).map a) (preα χ₀ q q₀ _ (g₁ T)) = _`. Rewrite using `[← nat]`. Conclude with `e1.symm`.
+
+Conclude with `(GlobalTheory.T.pairFst_preimage_restriction_bijective_closedImmersion R₀ X Y Y₀ ψ χ₀ q₀).1.1 (hz.trans (map_zero _).symm)`.
+-/
 theorem tmul_pull_eq_zero : ∀ (R R' R₀ : Type) [CommRing R] [CommRing R'] [CommRing R₀] (t : R) (σ : R →+* R') (σ₀ : R →+* R₀) (X X' X₀ : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (s₀ : X₀ ⟶ Sp R₀) (φ : X' ⟶ X) (φ₀ : X₀ ⟶ X) (h : IsPullback φ s' s (spMap σ)) (h₀ : IsPullback φ₀ s₀ s (spMap σ₀)) (Y Y' Y₀ : Scheme.{0}) (q : Y ⟶ Sp R) (q' : Y' ⟶ Sp R') (q₀ : Y₀ ⟶ Sp R₀) (χ : Y' ⟶ Y) (χ₀ : Y₀ ⟶ Y) (k : IsPullback χ q' q (spMap σ)) (k₀ : IsPullback χ₀ q₀ q (spMap σ₀)) (ψ : Y ⟶ X) (ψ' : Y' ⟶ X') (ψ₀ : Y₀ ⟶ X₀) (w : ψ ≫ s = q ≫ spMap (RingHom.id R)) (w' : ψ' ≫ s' = q' ≫ spMap (RingHom.id R')) (w₀ : ψ₀ ≫ s₀ = q₀ ≫ spMap (RingHom.id R₀)), ψ' ≫ φ = χ ≫ ψ → ψ₀ ≫ φ₀ = χ₀ ≫ ψ → SmallExt t σ σ₀ → Flat s → Flat q → CohomZeroIsConstants (OAff q') → ∀ (u : HO1 s₀) (y : HO1 s), TMul h₀.w t u y → pullHO1 w y = 0 → pullHO1 w₀ u = 0 := by
   intro R R' R₀ _ _ _ t σ σ₀ X X' X₀ s s' s₀ φ φ₀ h h₀ Y Y' Y₀ q q' q₀ χ χ₀ k k₀ ψ ψ' ψ₀ w w' w₀
     _hψ' hψ₀ hE _hs hq hC u y hT hy

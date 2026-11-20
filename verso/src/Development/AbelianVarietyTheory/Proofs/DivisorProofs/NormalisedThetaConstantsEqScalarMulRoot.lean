@@ -14,6 +14,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.USep
 
+/- English proof (translation)
+Introduce `n hn hodd`. Use `⟨1, fun j hj V₁ _ _ _ hV hunit D X C _ e u mo hmo hT K _ _ ev ρ₀ hρ₀ th hth => ?_⟩` and prove the remaining obligations. Establish `hn3 : 3 ≤ n`. Establish `h2` using `hn.two_le`. Break down `hodd with ⟨k, rfl⟩` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Establish `hm3 : 3 ≤ n ^ j` using `le_trans hn3 (Nat.le_self_pow (by omega) n)`. Take `⟨M, lam, hM, H⟩` from `GlobalTheory.T.thetaGenerator_torsionFrame_value_eq_scalar_mul_root (n ^ j) (hodd.pow) hm3 V₁ hV hunit D X C e u mo hmo hT K ev ρ₀ hρ₀ th hth`. Use `⟨M, lam, hM, fun y c hc => ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherianRing V₁ := hV.1`.
+
+Take `⟨τ, hτ, hv⟩` from `GlobalTheory.T.exists_torsionFrame_isValueAt_thetaConstant (Sp V₁) D.P ρ₀ hρ₀ (n ^ j) (hodd.pow) _ th y _ hc`. Conclude with `H (y ^ n ^ j) τ c (GlobalTheory.T.isTorsionFrame_sq_of_torsion _ D.P ρ₀ (n ^ j) _ (y ^ n ^ j) τ hτ) hv`.
+-/
 theorem GlobalTheory.USep.thetaConst_eq_lam_root_mul : ∀ (n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j, j₀ ≤ j → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁), (∀ mu, mo mu ≠ 0 ∧ ∃ c, IsUnit (u mu c)) → GlobalTheory.Poinc.Sep.IsThetaTerms D ((n ^ j) ^ 2) e (fun mu c => u mu c * mo mu) → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (ρ₀ : LB.Gen (D.P.L.pull (eSec D.P.A))), ρ₀.IsGen → ∀ (th : LB.Sec (LPow D.P.A D.P.L ((1 : ℕ) : ℤ) (Over.mk (spMap ev)))), IsGenSec D.P.A D.P.L ((1 : ℕ) : ℤ) th → ∃ (M : ℕ) (lam : K), 1 ≤ M ∧ ∀ (y : Over.mk (spMap ev) ⟶ D.P.A) (c : K), GlobalTheory.Ex.OneGen.ThG D.P.A D.P.L ρ₀ (n ^ j) th y (GlobalTheory.Ex.fnOf c) → ∃ (c₀ : C) (ζ : K), ζ ^ M = 1 ∧ c = lam * ζ * ev (u 0 c₀) := by
   intro n hn hodd
   refine ⟨1, fun j hj V₁ _ _ _ hV hunit D X C _ e u mo hmo hT K _ _ ev ρ₀ hρ₀ th hth => ?_⟩

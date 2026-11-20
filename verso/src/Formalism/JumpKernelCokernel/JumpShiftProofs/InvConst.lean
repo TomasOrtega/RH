@@ -2,6 +2,13 @@ import Formalism.JumpKernelCokernel.Statement
 
 namespace Formalism.KernelCokernelLengths
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `j _ hjk`. Simplify using `only [Nat.cast_zero, add_zero] at hjk`.
+
+Rewrite using `[hjk]`. Consider the case `succ k ih`. Introduce `j hjb hjk`. Establish `hlt : j < -(η : ℤ)` using `by push_cast at hjk; omega`. Rewrite using `[hj j hjb hlt]`.
+
+Conclude with `ih (j + 1) (by omega) (by push_cast at hjk ⊢; omega)`.
+-/
 theorem fil_eq_of_noJump {K D : Type} [Field K] [AddCommGroup D] [Module K D]
     (Fil : ℤ → Submodule K D) (b η : ℕ)
     (hj : ∀ j : ℤ, -(b : ℤ) < j → j < -(η : ℤ) → Fil j = Fil (j + 1)) :
@@ -18,6 +25,13 @@ theorem fil_eq_of_noJump {K D : Type} [Field K] [AddCommGroup D] [Module K D]
     rw [hj j hjb hlt]
     exact ih (j + 1) (by omega) (by push_cast at hjk ⊢; omega)
 
+/- English proof (translation)
+Introduce `K _ D _ _ Fil hA χ hχ b η w hj hw`. Establish `h1 : ∀ i : ℤ, i ≠ 0 → w i ∈ Fil (-i)`. Introduce `i hi`. Establish `hne : χ ^ i - 1 ≠ 0` using `sub_ne_zero.mpr (hχ i hi)`. Establish `h2` using `(Fil (-i)).smul_mem (χ ^ i - 1)⁻¹ (hw i)`.
+
+Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Use `⟨h1, fun i hi hib => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hη : (η : ℤ) ≤ i`. Take `⟨k, hk⟩ : ∃ k : ℕ, -i + k = -(η : ℤ)` from `⟨(i - η).toNat, by omega⟩`. Rewrite using `[← fil_eq_of_noJump Fil b η hj k (-i) (by omega) hk]`.
+
+Conclude with `h1 i hi`. Conclude with `hA (by omega : -(η : ℤ) ≤ -i) (h1 i hi)`.
+-/
 theorem exists_fixed_add_of_sub_mem : InvConst := by
   intro K _ D _ _ Fil hA χ hχ b η w hj hw
   have h1 : ∀ i : ℤ, i ≠ 0 → w i ∈ Fil (-i) := by

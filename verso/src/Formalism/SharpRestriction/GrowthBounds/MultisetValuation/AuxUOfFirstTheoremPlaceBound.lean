@@ -15,16 +15,28 @@ def PIvS (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) : MvPolynomial
   ∏ s : Fin (X.G.P.n' v), ∏ c ∈ range (X.nuv v (j + 1) s 1).toNat,
     (p : MvPolynomial (X.ZA j) (MvPolynomial (X.FrI j) ℤ)) ^ (X.colExp j I i0 v s c) * X.colFac j I v s c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PI_eq_prod (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) : X.PI j I i0 = ∏ v, PIvS X j I i0 v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PIvS_congr (j : ℕ) (I : X.ColCh j) (i0 : X.Pl → ℕ) (v : X.Pl) :
     PIvS X j I i0 v = PIvS X j I (fun _ => i0 v) v := rfl
 
+/- English proof (translation)
+Unfold `Sys.colExp`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem colExp_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (c : ℕ) :
     X.colExp j I (fun _ => 0) v s c = 0 := by
   unfold Sys.colExp
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `PIvS Sys.PIv`. Simplify using `only [colExp_zero, pow_zero, one_mul]`.
+-/
 theorem PIvS_zero (j : ℕ) (I : X.ColCh j) (v : X.Pl) : PIvS X j I (fun _ => 0) v = X.PIv j I v := by
   unfold PIvS Sys.PIv
   simp only [colExp_zero, pow_zero, one_mul]
@@ -37,10 +49,16 @@ def LowAtI (j : ℕ) (v : X.Pl) (i : ℕ) (g : ℝ) : Prop :=
 
 variable {X Y}
 
+/- English proof (translation)
+Unfold `LowAtI Pend.LowAt`. Simplify using `only [PIvS_zero]`.
+-/
 theorem lowAtI_zero {j : ℕ} {v : X.Pl} {g : ℝ} : LowAtI X Y j v 0 g ↔ Y.LowAt j v g := by
   unfold LowAtI Pend.LowAt
   simp only [PIvS_zero]
 
+/- English proof (translation)
+Introduce `U hU I n` and use `Y.geC_mono h (hg U hU I n)`.
+-/
 theorem LowAtI.mono {j : ℕ} {v : X.Pl} {i : ℕ} {g g' : ℝ} (h : g' ≤ g) (hg : LowAtI X Y j v i g) :
     LowAtI X Y j v i g' :=
   fun U hU I n => Y.geC_mono h (hg U hU I n)
@@ -61,8 +79,16 @@ def RestPlaces (D : Formalism.BasicNotions.D7) : Prop :=
 
 variable {X Y}
 
+/- English proof (translation)
+The claim follows from `h hA`.
+-/
 theorem auxU_of_firstTheoremPlaceBound (D : Formalism.BasicNotions.D7) (h : EntryBoundOfHypotheses X Y D) (hA : admitted D X Y) : VolumeRatio₂ D X Y := h hA
 
+/- English proof (translation)
+Introduce `j hj i0 gP hPl`. Use `hP hA j hj i0 gP fun v => ?_` and prove the remaining obligations. Break down `hPl v with ⟨h0, h1 | h1⟩ | ⟨h0, h1, h3⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `lowAtI_zero.2 h1`.
+
+Rewrite using `[h0]`. Conclude with `lowAtI_zero.2 (Pend.LowAt.mono Y h1 (h2 hA v j hj))`. Conclude with `LowAtI.mono h3 (hB hA v j hj (i0 v) (Finset.mem_Icc.2 ⟨h0, h1⟩))`.
+-/
 theorem restEnt_of_rest (D : Formalism.BasicNotions.D7) (hP : RestPlaces X Y D) (h2 : PlacewiseLowerBoundEvenShift X Y D) (hB : RestBU X Y D)
     (hA : admitted D X Y) : EntCondition X Y := by
   intro j hj i0 gP hPl

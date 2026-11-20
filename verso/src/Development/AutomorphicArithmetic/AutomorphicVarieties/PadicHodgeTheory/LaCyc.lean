@@ -8,6 +8,15 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsPadicA
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
+/- English proof (translation)
+Introduce `H F Ω _ _ _ _ _ l _ A w h _`. Use `⟨by simp, fun a ha σ => ?_⟩` and prove the remaining obligations. Take `⟨art, hart⟩` from `H F Ω`. Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨μ, hμ, hL⟩` from `hart.exists_isLAdicOf ι (CharAboveModel.absPow_isAlgPos F 1)`.
+
+Establish `e : μ = cycBar F Ω l ^ 1` using `CharAboveModel.eq_cyc_pow hart hμ hL`. Rewrite `e` using `[pow_one]`. Substitute `e` using the available equality. Establish `h1` using `hL.loc (a (ineIncl h σ)) _ (ha.glob art hart (ineIncl h σ))`. Establish `hu : Formalism.L2.Host.IsUnitAt w (a (ineIncl h σ))`.
+
+Establish `h2` using `ha.ord_eq (ineIncl h σ)`. Rewrite `h2` using `[deg_ineIncl, neg_zero]`. Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one.1 (GlobalTheory.SmGL.ord_eq_zero_iff.1 h2)`. Rewrite `h1` using `[(Model.absPow_isAbsPow F (1 : ℕ)).1 w _ hu]`.
+
+Simplify using `only [Units.val_one, map_one, one_mul, locPow] at h1`. Simplify using `using h1`.
+-/
 theorem UpperTheory.V.Loc.laCyc :
     GlobalArtinReciprocity → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → IsWtPart h ((cycBar F Ω l).comp (Dec (F := F) A).subtype) (fun _ => -1) 1 := by
   intro H F Ω _ _ _ _ _ l _ A w h _

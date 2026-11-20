@@ -10,6 +10,13 @@ section Transport
 
 variable {R X Y : Type} [Field R] [AddCommGroup X] [AddCommGroup Y] [Module R X] [Module R Y] {ι : Type}
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[h, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, hy]`. Introduce `hy`. Use `congrArg e hy` as an intermediate fact.
+
+Rewrite `this` using `[h, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem iInf_ker_map_equiv (e : X ≃ₗ[R] Y) (S : ι → X →ₗ[R] X) (S' : ι → Y →ₗ[R] Y)
     (h : ∀ g x, e (S g x) = S' g (e x)) :
     (⨅ g, LinearMap.ker (S' g - LinearMap.id) : Submodule R Y)
@@ -26,6 +33,9 @@ theorem iInf_ker_map_equiv (e : X ≃ₗ[R] Y) (S : ι → X →ₗ[R] X) (S' : 
     have := congrArg e hy
     rwa [h, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this
 
+/- English proof (translation)
+Rewrite using `[iInf_ker_map_equiv e S S' h, LinearEquiv.finrank_map_eq]`.
+-/
 theorem finrank_iInf_ker_equiv (e : X ≃ₗ[R] Y) (S : ι → X →ₗ[R] X) (S' : ι → Y →ₗ[R] Y)
     (h : ∀ g x, e (S g x) = S' g (e x)) :
     Module.finrank R (⨅ g, LinearMap.ker (S' g - LinearMap.id) : Submodule R Y)
@@ -43,10 +53,16 @@ noncomputable def coefEquiv : LL' ⊗[LL] ((Fin k → LL) ⊗[Qp] BB) ≃ₗ[LL'
   (AlgebraTensorModule.assoc Qp LL LL' LL' (Fin k → LL) BB).symm ≪≫ₗ
     AlgebraTensorModule.congr (piScalarRight LL LL' LL' (Fin k)) (LinearEquiv.refl Qp BB)
 
+/- English proof (translation)
+Simplify using `[coefEquiv, piScalarRightHom_tmul]`.
+-/
 theorem coefEquiv_tmul (c : LL') (v : Fin k → LL) (b : BB) :
     coefEquiv (c ⊗ₜ[LL] (v ⊗ₜ[Qp] b)) = (fun i => v i • c) ⊗ₜ[Qp] b := by
   simp [coefEquiv, piScalarRightHom_tmul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def, map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulVec_map_smul (A : Matrix (Fin k) (Fin k) LL) (v : Fin k → LL) (c : LL') :
     (A.map (algebraMap LL LL')).mulVec (fun i => v i • c) = fun i => (A.mulVec v) i • c := by
   funext i
@@ -58,6 +74,13 @@ noncomputable def actT (A : Matrix (Fin k) (Fin k) LL) (β : BB →ₗ[Qp] BB) :
     (Fin k → LL) ⊗[Qp] BB →ₗ[LL] (Fin k → LL) ⊗[Qp] BB :=
   AlgebraTensorModule.map (Matrix.toLin' A) β
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [tmul_add, map_add, hy, hz]`. Consider the case `tmul v b`. Rewrite using `[LinearMap.baseChange_tmul]`. Simplify using `only [actT, AlgebraTensorModule.map_tmul, coefEquiv_tmul, Matrix.toLin'_apply]`.
+
+Rewrite using `[mulVec_map_smul]`.
+-/
 theorem coefEquiv_comm (A : Matrix (Fin k) (Fin k) LL) (β : BB →ₗ[Qp] BB)
     (x : LL' ⊗[LL] ((Fin k → LL) ⊗[Qp] BB)) :
     coefEquiv ((actT A β).baseChange LL' x) = actT (A.map (algebraMap LL LL')) β (coefEquiv x) := by
@@ -73,6 +96,9 @@ theorem coefEquiv_comm (A : Matrix (Fin k) (Fin k) LL) (β : BB →ₗ[Qp] BB)
       simp only [actT, AlgebraTensorModule.map_tmul, coefEquiv_tmul, Matrix.toLin'_apply]
       rw [mulVec_map_smul]
 
+/- English proof (translation)
+Rewrite using `[finrank_iInf_ker_equiv coefEquiv (fun g => (actT (M g) (β g)).baseChange LL') (fun g => actT ((M g).map (algebraMap LL LL')) (β g)) (fun g x => coefEquiv_comm _ _ x)]`. Conclude with `hI LL LL' _ G (fun g => actT (M g) (β g))`.
+-/
 theorem finrank_fix_coef (hI : InvBaseChange) {G : Type} (M : G → Matrix (Fin k) (Fin k) LL)
     (β : G → BB →ₗ[Qp] BB) :
     Module.finrank LL' (⨅ g, LinearMap.ker (actT ((M g).map (algebraMap LL LL')) (β g) - LinearMap.id) :
@@ -85,6 +111,11 @@ theorem finrank_fix_coef (hI : InvBaseChange) {G : Type} (M : G → Matrix (Fin 
 
 end Coef
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL LL' _ _ _ _ f k M hM`. Use `letI : Algebra LL LL' := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower Qp LL LL' := IsScalarTower.of_algebraMap_eq (fun x => (f.commutes x).symm)`. Establish `key` using `finrank_fix_coef (LL' := LL') (BB := B) hI (fun g => M g) (fun g => ((PD.actB g).toAlgHom.toLinearMap).restrictScalars Qp)`. Unfold `Formalism.WeaklyAdmissibleFiltrations.IsCrys at hM ⊢`.
+
+Rewrite `hM`, the goal using `[Module.finrank_fin_fun]`. Rewrite using `[← hM]`. Conclude with `key`.
+-/
 theorem coefCrysGen_of (hI : InvBaseChange) : Formalism.MainNotions.N.GlobalTheory.CoefCrysGen := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL LL' _ _ _ _ f k M hM
   letI : Algebra LL LL' := f.toRingHom.toAlgebra

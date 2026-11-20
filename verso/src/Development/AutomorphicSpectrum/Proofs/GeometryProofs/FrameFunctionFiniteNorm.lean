@@ -20,6 +20,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Br.FinGood
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat GlobalTheory.CompanionTheory.Ar.Br
 
+/- English proof (translation)
+Introduce `hRes hGaga E _ _ _ H D l Xo c O _ β Y U Z τ φ p κ hβ hpq hrt hU hZ hφ hgood`. Take `⟨O', _, _, _, β', Y', hβ', hκ, hsplit, hN3⟩` from `GlobalTheory.T.good_reduction_dvr_model_exists E H D l Xo c p κ hpq hgood`. Take `⟨-, hne, hgeom⟩` from `GlobalTheory.T.irreducible_component_clopen E H D l Xo c U hU`. Take `⟨Z'⟩` from `hne O' β' Y' hβ'`. Establish `hZ' : Z'.IsGeom` using `hgeom O β Y O' β' Y' Z Z' hβ hβ' hZ`.
+
+Take `⟨φ', hline', hflat', -⟩` from `GlobalTheory.T.flat_zero_from_resolution_and_gaga hRes hGaga E H D l Xo c O' β' Y' U Z' τ hβ' hpq hrt hZ'`. Take `⟨t', ht'⟩` from `GlobalTheory.T.finite_constant_all_holds E H D l Xo c O' β' Y' U Z' τ p κ φ' hrt hβ'.1 hκ hsplit hN3 hZ' hflat' hline'`. Take `⟨x, hx0, hx⟩` from `GlobalTheory.T.frame_function_two_models_relay hRes hGaga E H D l Xo c O β Y O' β' Y' U Z Z' τ φ φ' hβ hβ' hpq hrt hZ hZ' hφ hflat'`. Use `⟨t' - Real.log ‖κ x‖, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.Ar.Fl.HasFinNorm`.
+
+Introduce `V K _ _ _ _ _ _ j β₁ y v w T tK m m' hj hjβ hfr hv hw`. Establish `h1` using `ht' V K j β₁ y v w T tK m m' hj hjβ hfr hv hw`. Establish `hjx : j (β₁ x) = κ x` using `by rw [← hjβ]; rfl`. Establish `hφne : j (φ K y v w) ≠ 0` using `(map_ne_zero j).mpr (hφ.1.ne K β₁ y v w hfr)`. Establish `hxne : j (β₁ x) ≠ 0` using `(map_ne_zero j).mpr ((map_ne_zero β₁).mpr hx0)`.
+
+Rewrite `h1` using `[hx K β₁ y v w hfr, map_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hxne) (norm_ne_zero_iff.mpr hφne), hjx]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finGood : Geo.ResK.ResKStatement → GagaSections → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (φ : FrameFn Xo c) (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), FracBase β → 1 ≤ D.p + D.q → τ (H.rt : E) = H.rt0 → U ∈ irreducibleComponents (Xo.XF c) → Z.IsGeom → FlatOnModel Z τ φ → l.GoodAt p → ∃ t : ℝ, HasFinNorm U τ φ p κ t := by
   intro hRes hGaga E _ _ _ H D l Xo c O _ β Y U Z τ φ p κ hβ hpq hrt hU hZ hφ hgood
   obtain ⟨O', _, _, _, β', Y', hβ', hκ, hsplit, hN3⟩ := GlobalTheory.T.good_reduction_dvr_model_exists E H D l Xo c p κ hpq hgood

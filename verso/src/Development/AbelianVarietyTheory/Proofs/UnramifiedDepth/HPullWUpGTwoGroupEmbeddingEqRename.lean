@@ -9,14 +9,25 @@ noncomputable section
 
 namespace GlobalTheory.MainTerm
 
+/- English proof (translation)
+Simplify using `[toW]`.
+-/
 theorem toW_same {C : Type} [Field C] {I : Fin 2 → Type} (g : Fin 2) (u : I g → C) (x : I g) :
     toW g u ⟨g, x⟩ = u x := by
   simp [toW]
 
+/- English proof (translation)
+Simplify using `[toW, h]`.
+-/
 theorem toW_other {C : Type} [Field C] {I : Fin 2 → Type} {g g' : Fin 2} (h : g' ≠ g) (u : I g → C)
     (x : I g') : toW g u ⟨g', x⟩ = 0 := by
   simp [toW, h]
 
+/- English proof (translation)
+Establish `hb : MvPowerSeries.HasSubst (fun w : WV I => (∑ c, a c w • MvPowerSeries.X (Sum.inl c) + ∑ c, b c w • MvPowerSeries.X (Sum.inr c) : MvPowerSeries (ι ⊕ ι') C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Establish `ha : MvPowerSeries.HasSubst (fun x : I g => (MvPowerSeries.X ⟨g, x⟩ : MvPowerSeries (WV I) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Unfold `hPullW upG`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[MvPowerSeries.subst_X hb]`.
+-/
 theorem hPullW_upG {C : Type} [Field C] {I : Fin 2 → Type} [∀ g, Fintype (I g)] {ι ι' : Type}
     [Fintype ι] [Fintype ι'] (g : Fin 2) (F : MvPowerSeries (I g) C) (a : ι → WV I → C)
     (b : ι' → WV I → C) :
@@ -35,6 +46,11 @@ theorem hPullW_upG {C : Type} [Field C] {I : Fin 2 → Type} [∀ g, Fintype (I 
   funext x
   rw [MvPowerSeries.subst_X hb]
 
+/- English proof (translation)
+Establish `ha : MvPowerSeries.HasSubst (fun x : σ => (∑ c : ι, e c x • MvPowerSeries.X c : MvPowerSeries ι C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by simp`. Unfold `linPull`. Rewrite using `[MvPowerSeries.rename_eq_subst, MvPowerSeries.subst_comp_subst_apply ha (MvPowerSeries.HasSubst.X_comp f)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← MvPowerSeries.rename_eq_subst]`. Simplify using the standard rewrite rules.
+-/
 theorem rename_linPull {C : Type} [Field C] {σ ι τ : Type} [Fintype σ] [Fintype ι] (f : ι → τ)
     (e : ι → σ → C) (F : MvPowerSeries σ C) :
     MvPowerSeries.rename f (linPull e F) = MvPowerSeries.subst (fun x : σ =>
@@ -50,6 +66,11 @@ theorem rename_linPull {C : Type} [Field C] {σ ι τ : Type} [Fintype σ] [Fint
   rw [← MvPowerSeries.rename_eq_subst]
   simp
 
+/- English proof (translation)
+Introduce `C _ I _ g ι ι' _ _ e v'`. Apply the tactic sequence `have h : g ≠ 1 - g := by fin_cases g <;> decide`. Use `⟨fun F => ?_, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[hPullW_upG, rename_linPull]`. Simplify using `[toW_same, toW_other h]`.
+
+Rewrite using `[hPullW_upG, rename_linPull]`. Simplify using `[toW_same, toW_other h.symm]`.
+-/
 theorem hPullW_upG_toW : ∀ (C : Type) [Field C] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (g : Fin 2) (ι ι' : Type) [Fintype ι] [Fintype ι'] (e : ι → I g → C) (v' : ι' → I (1 - g) → C), (∀ F : MvPowerSeries (I g) C, hPullW (upG g F) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b)) = MvPowerSeries.rename Sum.inl (linPull e F)) ∧ ∀ F : MvPowerSeries (I (1 - g)) C, hPullW (upG (1 - g) F) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b)) = MvPowerSeries.rename Sum.inr (linPull v' F) := by
   intro C _ I _ g ι ι' _ _ e v'
   have h : g ≠ 1 - g := by fin_cases g <;> decide

@@ -10,6 +10,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnPer.Charts
 
+/- English proof (translation)
+Introduce `I _ g Λ _ F K hK f hf`. Establish `indep : ∀ k₁ k₂ p, p ∈ K.W k₁ → p ∈ K.W k₂ → (f k₁).fn p = (f k₂).fn p`. Introduce `k₁ k₂ p h₁ h₂`. Take `⟨k, hk, hl₁, hl₂⟩` from `hK.2 0 k₁ k₂ p h₁ (by rw [F.shift_zero]; exact h₂)`. Establish `e₁` using `Charts.fn_sh hl₁ (f k₁) hk`.
+
+Establish `e₂` using `Charts.fn_sh hl₂ (f k₂) hk`. Rewrite `e₁` using `[hf k₁ k hl₁, F.shift_zero]`. Rewrite `e₂` using `[hf k₂ k hl₂, F.shift_zero]`. Rewrite using `[← e₁, ← e₂]`. Set `G : Tot I g → ℂ` to `fun p ↦ if h : ∃ k, p ∈ K.W k then (f h.choose).fn p else 0`.
+
+Establish `hG : ∀ k, ∀ p ∈ K.W k, (f k).fn p = G p`. Introduce `k p hp`. Establish `h : ∃ k, p ∈ K.W k` using `⟨k, hp⟩`. Simplify using `only [G, dif_pos h]`. Conclude with `indep _ _ _ hp h.choose_spec`.
+
+Establish `hGev : ∀ k, ∀ p ∈ K.W k, G =ᶠ[𝓝 p] (f k).fn` using `fun k p hp ↦ by filter_upwards [(K.W k).isOpen.mem_nhds hp] with q hq using (hG k q hq).symm`. Use `⟨G, ?_, hG, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨k, hk⟩` from `hK.1 p hp`. Conclude with `((f k).analytic p hk).congr (hGev k p hk).symm`.
+
+Introduce `l q hq p hp`. Take `⟨k₁, h₁⟩` from `hK.1 p hp`. Take `⟨k₂, h₂⟩` from `hK.1 (F.shift l p) hp`. Take `⟨k, hk, -, hl⟩` from `hK.2 l k₁ k₂ p h₁ h₂`. Establish `e` using `congrArg (fun u ↦ Hol.fn u p) (hq k₂ k hl)`.
+
+Rewrite `e` using `[Charts.fn_sh hl _ hk, Hol.fn_add _ _ hk, Charts.fn_cst K k q hk]`. Rewrite using `[← hG k₂ _ h₂, ← hG k p hk, e]`. Introduce `h0 z hz w`. Establish `hder : ∀ w' : Fin g → ℂ, HasFDerivAt (fun u ↦ G (z, u)) (0 : (Fin g → ℂ) →L[ℂ] ℂ) w'`. Introduce `w'`.
+
+Take `⟨k, hk⟩` from `hK.1 (z, w') hz`. Establish `hfd : HasFDerivAt (fun u : Fin g → ℂ ↦ ((z, u) : Tot I g)) (ContinuousLinearMap.inr ℂ (I → ℂ) (Fin g → ℂ)) w'` using `(hasFDerivAt_const z w').prodMk (hasFDerivAt_id w')`. Establish `hGd : HasFDerivAt G (fderiv ℂ (f k).fn (z, w')) (z, w')`. Rewrite using `[← (hGev k _ hk).fderiv_eq]`. Conclude with `(((f k).analytic _ hk).differentiableAt.congr_of_eventuallyEq (hGev k _ hk)).hasFDerivAt`.
+
+Establish `hL : (fderiv ℂ (f k).fn (z, w')).comp (ContinuousLinearMap.inr ℂ (I → ℂ) (Fin g → ℂ)) = 0`. Establish `hs : ∀ a : Fin g, fderiv ℂ (f k).fn (z, w') ((0, Pi.single a 1) : Tot I g) = 0`. Introduce `a`. Use `Hol.fn_der ((0, Pi.single a 1) : Tot I g) (f k) hk` as an intermediate fact. Rewrite `this` using `[show Hol.der _ (f k) = dw a (f k) from rfl, h0 k a, ← Hol.ev_apply _ hk, map_zero]`.
+
+Conclude with `this.symm`. Use `ContinuousLinearMap.ext fun v ↦ ?_` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single v, map_sum, ContinuousLinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun a _ ↦ ?_` and prove the remaining obligations. Establish `e : Pi.single a (v a) = v a • (Pi.single a 1 : Fin g → ℂ)`.
+
+Rewrite using `[← Pi.single_smul]`. Simplify using the standard rewrite rules. Rewrite using `[e, map_smul, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inr_apply, hs a, smul_zero]`. Use `hGd.comp w' hfd` as an intermediate fact. Rewrite `this` using `[hL]`.
+
+Conclude with `this`. Conclude with `is_const_of_fderiv_eq_zero (fun w' ↦ (hder w').differentiableAt) (fun w' ↦ (hder w').fderiv) w 0`.
+-/
 theorem glue : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F), K.Rich → ∀ f : ∀ k, Hol (K.W k), (∀ k k' (h : K.le 0 k' k), Charts.sh h (f k) = f k') → ∃ G : Tot I g → ℂ, AnalyticOnNhd ℂ G {p | p.1 ∈ F.V} ∧ (∀ k, ∀ p ∈ K.W k, (f k).fn p = G p) ∧ (∀ (l : Λ) (q : Hol F.V), (∀ k k' (h : K.le l k' k), Charts.sh h (f k) = f k' + K.cst k' q) → ∀ p : Tot I g, p.1 ∈ F.V → G (F.shift l p) = G p + q.fn p.1) ∧ ((∀ k a, dw a (f k) = 0) → ∀ z ∈ F.V, ∀ w, G (z, w) = G (z, 0)) := by
   intro I _ g Λ _ F K hK f hf
   classical

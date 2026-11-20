@@ -26,10 +26,16 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [e2r, uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem second_row_unipotent_invariant (x : F) (h : GL (Fin 2) F) : e2r (uni2 x * h) = e2r h := by
   ext i
   fin_cases i <;> simp [e2r, uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `hc : (ψ x : ℂ) * (ψ⁻¹ x : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, AddChar.inv_apply', mul_inv_cancel, Circle.coe_one]`. Unfold `Bq`. Rewrite using `[h₀ x h, mul_assoc (uni2 x) h g, h₁ x (h * g), second_row_unipotent_invariant, map_mul, GlobalTheory.CompanionTheory.DampedZetaMajorant.Iter.det_unipotent_adele, one_mul]`. Take the linear combination `(W₀ h * W' (h * g) * pFT ψ Φ g.val (e2r h) * mp (GeneralLinearGroup.det h) s) * hc`.
+-/
 theorem Bq_uni (ψ : AddChar F Circle) {W₀ W' : GL (Fin 2) F → ℂ} (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ)
     (h₀ : ∀ x g, W₀ (uni2 x * g) = (ψ x : ℂ) * W₀ g) (h₁ : ∀ x g, W' (uni2 x * g) = (ψ⁻¹ x : ℂ) * W' g)
     (g : GL (Fin 2) F) (x : F) (h : GL (Fin 2) F) :
@@ -41,11 +47,19 @@ theorem Bq_uni (ψ : AddChar F Circle) {W₀ W' : GL (Fin 2) F → ℂ} (Φ : Ma
   linear_combination (W₀ h * W' (h * g) * pFT ψ Φ g.val (e2r h) * mp (GeneralLinearGroup.det h) s) * hc
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[wR, mp, Complex.cpow_neg_one]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem wR_eq (p : Fˣ × Fˣ × GL (Fin 2) F) : ((wR p : ℝ) : ℂ) = mp p.1 (-1) := by
   rw [wR, mp, Complex.cpow_neg_one]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `e : mp p.1 (s - 1) = mp p.1 (-1) * mp p.1 s`. Rewrite using `[← GlobalTheory.CompanionTheory.DampedZetaMajorant.Iter.mp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[z2I, Bq, GlobalTheory.CompanionTheory.DampedZetaMajorant.Iter.mp_det_hI p hp, wR_eq, e, tr2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zeta_integrand_iwasawa_eq_bilinear (ψ : AddChar F Circle) (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ)
     (g : GL (Fin 2) F) (p : Fˣ × Fˣ × GL (Fin 2) F) (hp : p.2.2 ∈ K2 F) :
     z2I W₀ (tr2 W' g) (pFT ψ Φ g.val) s p = ((wR p : ℝ) : ℂ) * Bq ψ W₀ W' Φ s g (hI p) := by
@@ -55,6 +69,9 @@ theorem zeta_integrand_iwasawa_eq_bilinear (ψ : AddChar F Circle) (W₀ W' : GL
   ring
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `hc : Continuous fun h : Fˣ => (((modulus (h : F) : ℝ)) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Simplify using `only [mp]`. Use `hc.cpow continuous_const fun h => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) < (modulus (h : F) : ℝ)` using `by exact_mod_cast modulus_pos h.ne_zero`. Conclude with `Complex.ofReal_mem_slitPlane.2 h0`.
+-/
 theorem cont_mp (s : ℂ) : Continuous fun h : Fˣ => mp h s := by
   have hc : Continuous fun h : Fˣ => (((modulus (h : F) : ℝ)) : ℂ) :=
     Complex.continuous_ofReal.comp
@@ -65,6 +82,11 @@ theorem cont_mp (s : ℂ) : Continuous fun h : Fˣ => mp h s := by
   exact Complex.ofReal_mem_slitPlane.2 h0
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)).matrix_det`. Establish `: (fun h : GL (Fin 2) F => (((GeneralLinearGroup.det h)⁻¹ : Fˣ) : F)) = fun h : GL (Fin 2) F => ((h⁻¹ : GL (Fin 2) F).val).det`. Use function extensionality and compare the values at `h`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Conclude with `this ▸ ((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)).comp continuous_inv).matrix_det`.
+-/
 theorem cont_det : Continuous fun h : GL (Fin 2) F => (GeneralLinearGroup.det h : Fˣ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · exact (Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)).matrix_det
@@ -76,6 +98,9 @@ theorem cont_det : Continuous fun h : GL (Fin 2) F => (GeneralLinearGroup.det h 
     exact this ▸ ((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)).comp continuous_inv).matrix_det
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `hv` using `Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)`. Use `fin_cases i`. Conclude with `hv.matrix_elem 1 0`. Conclude with `hv.matrix_elem 1 1`.
+-/
 theorem continuous_second_vector_GL2 : Continuous (e2r : GL (Fin 2) F → Fin 2 → F) := by
   refine continuous_pi fun i => ?_
   have hv := Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)
@@ -83,6 +108,9 @@ theorem continuous_second_vector_GL2 : Continuous (e2r : GL (Fin 2) F → Fin 2 
   · exact hv.matrix_elem 1 0
   · exact hv.matrix_elem 1 1
 
+/- English proof (translation)
+Use `show Continuous fun h => W₀ h * W' (h * g) * pFT ψ Φ g.val (e2r h) * mp (GeneralLinearGroup.det h) s`. Establish `a1 : Continuous fun h : GL (Fin 2) F => pFT ψ Φ g.val (e2r h)` using `cP.comp (continuous_const.prodMk continuous_second_vector_GL2)`. Conclude with `((c₀.mul (c₁.comp (continuous_id.mul continuous_const))).mul a1).mul ((cont_mp s).comp cont_det)`.
+-/
 theorem cont_Bq (ψ : AddChar F Circle) {W₀ W' : GL (Fin 2) F → ℂ} {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (s : ℂ)
     (c₀ : Continuous W₀) (c₁ : Continuous W')
     (cP : Continuous (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2)) (g : GL (Fin 2) F) :
@@ -92,6 +120,11 @@ theorem cont_Bq (ψ : AddChar F Circle) {W₀ W' : GL (Fin 2) F → ℂ} {Φ : M
     cP.comp (continuous_const.prodMk continuous_second_vector_GL2)
   exact ((c₀.mul (c₁.comp (continuous_id.mul continuous_const))).mul a1).mul ((cont_mp s).comp cont_det)
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.T.iwasawa_integral_translate_invariance F ψ hψ (Bq ψ W₀ W' Φ s g) (cont_Bq ψ s c₀ c₁ cP g) (Bq_uni ψ Φ s h₀ h₁ g) g⁻¹`. Establish `e : ∫ p, Aq ψ W₀ W' Φ s (p, g) ∂mIw ψ = mp (GeneralLinearGroup.det g) (s + 1 / 2) * ∫ p, ((wR p : ℝ) : ℂ) * Bq ψ W₀ W' Φ s g (hI p * g⁻¹) ∂mIw ψ`. Simplify using `only [Aq]`. Conclude with `integral_const_mul _ _`. Rewrite using `[e, key]`.
+
+Use `congr 1`. Conclude with `integral_congr_ae ((GlobalTheory.CompanionTheory.LocalTestVectors.ae_mem_maximal_compact ψ).mono fun p hp => (zeta_integrand_iwasawa_eq_bilinear ψ W₀ W' Φ s g p hp).symm)`.
+-/
 theorem fixg (ψ : AddChar F Circle) (hψ : IsStd ψ) {W₀ W' : GL (Fin 2) F → ℂ} {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (s : ℂ)
     (c₀ : Continuous W₀) (c₁ : Continuous W')
     (cP : Continuous (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2))
@@ -109,16 +142,41 @@ theorem fixg (ψ : AddChar F Circle) (hψ : IsStd ψ) {W₀ W' : GL (Fin 2) F �
   exact integral_congr_ae ((GlobalTheory.CompanionTheory.LocalTestVectors.ae_mem_maximal_compact ψ).mono fun p hp => (zeta_integrand_iwasawa_eq_bilinear ψ W₀ W' Φ s g p hp).symm)
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < (modulus (a : F) : ℝ)` using `by exact_mod_cast modulus_pos a.ne_zero`. Rewrite using `[← ofReal_norm, mp, Complex.norm_cpow_eq_rpow_re_of_pos h0]`.
+-/
 theorem enorm_mp (a : Fˣ) (z : ℂ) :
     ‖mp a z‖ₑ = ENNReal.ofReal ((modulus (a : F) : ℝ) ^ z.re) := by
   have h0 : (0 : ℝ) < (modulus (a : F) : ℝ) := by exact_mod_cast modulus_pos a.ne_zero
   rw [← ofReal_norm, mp, Complex.norm_cpow_eq_rpow_re_of_pos h0]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `h0 : 0 ≤ wR p` using `inv_nonneg.2 (by positivity)`. Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg h0]`.
+-/
 theorem enorm_wR (p : Fˣ × Fˣ × GL (Fin 2) F) : ‖((wR p : ℝ) : ℂ)‖ₑ = ENNReal.ofReal (wR p) := by
   have h0 : 0 ≤ wR p := inv_nonneg.2 (by positivity)
   rw [← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg h0]
 
+/- English proof (translation)
+Use `haveI : SFinite (LFS.hG ψ) := by unfold LFS.hG; infer_instance`. Use `haveI : SFinite (mIw ψ) := by unfold mIw; infer_instance`. Take `⟨h₀, hcen, c₀, hb₀⟩` from `GlobalTheory.T.godement_vector_decay_bound F ψ hψ ν hν W₀ hW₀`. Take `⟨c₁, hb₁⟩` from `GlobalTheory.T.whittaker_vector_gauge_bound F ψ hψ ω G V' hω H W' hW'`. Take `⟨cP, C₂, R, hC₂, hbP⟩` from `GlobalTheory.T.partial_fourier_continuous_bounded_support F ψ hψ Φ hΦ`.
+
+Take `⟨ε, hε, hε2, hσ⟩ : ∃ ε : ℝ, 0 < ε ∧ ε < 1 / 2 ∧ 2 * ε < s.re` from `⟨min (s.re / 4) (1 / 4), lt_min (by positivity) (by norm_num), lt_of_le_of_lt (min_le_right _ _) (by norm_num), by have := min_le_left (s.re / 4) (1 / 4); linarith⟩`. Take `⟨C₀, B, hC₀, hW⟩` from `hb₀ ε hε`. Take `⟨C₁, hC₁, hWb⟩` from `hb₁ ε hε`. Establish `hptb` using `GlobalTheory.T.outer_zeta_integrand_bound F ψ hψ W₀ W' Φ s C₀ C₁ C₂ B R ε hC₀ hC₁ hC₂ hε hε2 hcen hW hWb hbP`. Establish `hbnd` using `GlobalTheory.T.lintegral_iwasawa_majorant_finite F ψ hψ R B s.re ε hε hσ hε2`.
+
+Establish `hc` using `GlobalTheory.T.continuous_outer_zeta_integrand F ψ hψ W₀ W' Φ s c₀ c₁ cP`. Establish `hm : Measurable (fun q => ‖Aq ψ W₀ W' Φ s q‖ₑ)` using `hc.enorm.measurable`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod_symm _ hm.aemeasurable]`. Use `set CC : ENNReal := ENNReal.ofReal (C₀ * C₁ * C₂) with hCC`.
+
+Establish `step : ∀ g : GL (Fin 2) F, ∫⁻ p, ‖Aq ψ W₀ W' Φ s (p, g)‖ₑ ∂mIw ψ ≤ CC * (ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (s.re + 1 / 2)) * ∫⁻ p, ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B s.re ε g p) ∂mIw ψ)`. Introduce `g`. Use `set D : ENNReal := ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ (s.re + 1 / 2)) with hD`. Establish `hdet : ‖mp (GeneralLinearGroup.det g) (s + 1 / 2)‖ₑ = D`. Rewrite using `[enorm_mp, hD]`.
+
+Simplify using `[Matrix.GeneralLinearGroup.val_det_apply]`. Establish `hf : Measurable fun h => ‖Bq ψ W₀ W' Φ s g h‖ₑ` using `(cont_Bq ψ s c₀ c₁ cP g).enorm.measurable`. Establish `hr` using `GlobalTheory.T.iwasawa_integral_right_translate_invariant F ψ hψ (fun h => ‖Bq ψ W₀ W' Φ s g h‖ₑ) hf (fun x h => by simp only [Bq_uni ψ Φ s h₀ (H.psi W' hW') g x h]) g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun p => ?_` and prove the remaining obligations.
+
+Simplify using `only [Aq]`. Rewrite using `[enorm_mul, enorm_mul, hdet, enorm_wR]`. Use `_ = D * ∫⁻ p, ENNReal.ofReal (wR p) * ‖Bq ψ W₀ W' Φ s g (hI p * g⁻¹)‖ₑ ∂mIw ψ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ = D * ∫⁻ p, ENNReal.ofReal (wR p) * ‖Bq ψ W₀ W' Φ s g (hI p)‖ₑ ∂mIw ψ := by rw [hr]`. Use `_ ≤ D * ∫⁻ p, CC * (ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B s.re ε g p)) ∂mIw ψ := by`.
+
+Use `mul_le_mul' le_rfl ?_` and prove the remaining obligations. Use `lintegral_mono_ae ((GlobalTheory.CompanionTheory.LocalTestVectors.ae_mem_maximal_compact ψ).mono fun p hp => ?_)` and prove the remaining obligations. Establish `hb` using `hptb g p hp`. Establish `: ‖Bq ψ W₀ W' Φ s g (hI p)‖ₑ ≤ CC * ENNReal.ofReal (Mj R B s.re ε g p)`. Rewrite using `[hCC, ← ENNReal.ofReal_mul (by positivity), ← ofReal_norm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hb`. Combine the equalities or inequalities in the displayed calculation. Use `_ = CC * (D * ∫⁻ p, ENNReal.ofReal (wR p) * ENNReal.ofReal (Mj R B s.re ε g p) ∂mIw ψ) := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem aqi (ψ : AddChar F Circle) (hψ : IsStd ψ) (ω : Fˣ →* ℂˣ) (G : (Fˣ →* ℂˣ) → ℂ → ℂ)
     (V' : Submodule ℂ (GL (Fin 2) F → ℂ)) (hω : IsUnit1 ω) (H : WhT ψ⁻¹ ω G V') (ν : Fˣ →* ℂˣ) (hν : IsUnit1 ν)
     (W₀ : GL (Fin 2) F → ℂ) (hW₀ : W₀ ∈ V2 ψ ν ν⁻¹) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (hΦ : Φ ∈ LFS.SB F)
@@ -185,6 +243,15 @@ theorem aqi (ψ : AddChar F Circle) (hψ : IsStd ψ) (ω : Fˣ →* ℂˣ) (G : 
 
 end D
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ ω G V' hω H ν hν W₀ hW₀ Φ hΦ W' hW' s hs0 hs1`. Use `haveI : SFinite (LFS.hG ψ) := by unfold LFS.hG; infer_instance`. Use `haveI : SFinite (mIw ψ) := by unfold mIw; infer_instance`. Establish `hA` using `aqi ψ hψ ω G V' hω H ν hν W₀ hW₀ Φ hΦ W' hW' s hs0`. Take `⟨h1, h2, h3, _⟩` from `GlobalTheory.T.godement_vector_decay_bound F ψ hψ ν hν W₀ hW₀`.
+
+Establish `hc'` using `(GlobalTheory.T.whittaker_vector_gauge_bound F ψ hψ ω G V' hω H W' hW').1`. Establish `hP` using `(GlobalTheory.T.partial_fourier_continuous_bounded_support F ψ hψ Φ hΦ).1`. Establish `hpt : ∀ᵐ p ∂mIw ψ, iw (LFS.Wp ψ W₀ Φ) W' s p = ∫ g, Aq ψ W₀ W' Φ s (p, g) ∂LFS.hG ψ` using `(GlobalTheory.CompanionTheory.LocalTestVectors.ae_mem_maximal_compact ψ).mono fun p hp => GlobalTheory.T.iwasawa_integral_eq_group_integral F ψ hψ W₀ W' Φ s hΦ p hp`. Establish `hg` using `fixg ψ hψ (W₀ := W₀) (W' := W') (Φ := Φ) s h3 hc' hP h1 (H.psi W' hW')`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hA.integral_prod_left.congr (hpt.mono fun _ h => h.symm)`. Use `hA.integral_prod_right` as an intermediate fact. Simplify `this` using `only [hg]`. Unfold `zetaGL3GL2`. Rewrite using `[integral_congr_ae hpt, integral_integral_swap (f := fun p g => Aq ψ W₀ W' Φ s (p, g)) hA]`.
+
+Simplify using `only [hg]`.
+-/
 theorem main : A1 := by
   intro F _ _ _ _ _ _ ψ hψ ω G V' hω H ν hν W₀ hW₀ Φ hΦ W' hW' s hs0 hs1
   haveI : SFinite (LFS.hG ψ) := by unfold LFS.hG; infer_instance

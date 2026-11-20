@@ -75,6 +75,9 @@ def CenUsed (D : D7) (M : MtFam D) : Prop :=
       (M μ j h1 h2).real (D.ntypes.cenMt μ j z x) =
         GlobalTheory.PendOf.actSum D L (z : MonoidAlgebra ℂ (G0g D.nd)) ((M μ j h1 h2).real x)
 
+/- English proof (translation)
+Introduce `μ _` and use `h μ`.
+-/
 theorem cenUsed_of_cenReal {D : D7} {M : MtFam D} (h : GlobalTheory.PendOf.CenReal D M) : CenUsed D M := fun μ _ => h μ
 
 def SumUsed (D : D7) (M : MtFam D) : Prop :=

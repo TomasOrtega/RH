@@ -31,20 +31,34 @@ include hdec in
 def dec (f : A) : X →₀ A := (hdec f).exists.choose
 
 include hdec in
+/- English proof (translation)
+The claim follows from `(hdec f).exists.choose_spec`.
+-/
 theorem dec_spec (f : A) : (∀ χ, P χ (dec P hdec f χ)) ∧ f = (dec P hdec f).sum (fun _ t => t) :=
   (hdec f).exists.choose_spec
 
 include hdec in
+/- English proof (translation)
+The claim follows from `(hdec f).unique (dec_spec P hdec f) ⟨hF, hs⟩`.
+-/
 theorem dec_eq {f : A} {F : X →₀ A} (hF : ∀ χ, P χ (F χ)) (hs : f = F.sum (fun _ t => t)) : dec P hdec f = F :=
   (hdec f).unique (dec_spec P hdec f) ⟨hF, hs⟩
 
 include hadd hdec in
+/- English proof (translation)
+Use `dec_eq P hdec (fun χ => ?_) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.add_apply]`. Conclude with `hadd _ _ _ ((dec_spec P hdec a).1 χ) ((dec_spec P hdec b).1 χ)`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), ← (dec_spec P hdec a).2, ← (dec_spec P hdec b).2]`.
+-/
 theorem dec_add (a b : A) : dec P hdec (a + b) = dec P hdec a + dec P hdec b := by
   refine dec_eq P hdec (fun χ => ?_) ?_
   · rw [Finsupp.add_apply]; exact hadd _ _ _ ((dec_spec P hdec a).1 χ) ((dec_spec P hdec b).1 χ)
   · rw [Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), ← (dec_spec P hdec a).2, ← (dec_spec P hdec b).2]
 
 include hzero hdec in
+/- English proof (translation)
+Use `dec_eq P hdec (fun χ => ?_) ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply]`. Use `split_ifs with h`. Conclude with `h ▸ hf`. Conclude with `hzero χ`.
+
+Rewrite using `[Finsupp.sum_single_index rfl]`.
+-/
 theorem dec_single {α : X} {f : A} (hf : P α f) : dec P hdec f = Finsupp.single α f := by
   classical
   refine dec_eq P hdec (fun χ => ?_) ?_
@@ -54,10 +68,20 @@ theorem dec_single {α : X} {f : A} (hf : P α f) : dec P hdec f = Finsupp.singl
   · rw [Finsupp.sum_single_index rfl]
 
 include hzero hdec in
+/- English proof (translation)
+Rewrite using `[dec_single P hzero hdec (hzero 0), Finsupp.single_zero]`.
+-/
 theorem dec_zero : dec P hdec (0 : A) = 0 := by
   rw [dec_single P hzero hdec (hzero 0), Finsupp.single_zero]
 
 include hzero hmul hdec in
+/- English proof (translation)
+Use `set G : X →₀ A := Finsupp.mapDomain (fun ψ => χ + ψ) ((dec P hdec h).mapRange (f * ·) (mul_zero f)) with hG`. Establish `hinj : Function.Injective (fun ψ : X => χ + ψ)` using `add_right_injective χ`. Establish `hGv : ∀ ψ, G (χ + ψ) = f * dec P hdec h ψ` using `fun ψ => by`. Rewrite using `[hG, Finsupp.mapDomain_apply hinj, Finsupp.mapRange_apply]`. Establish `key : dec P hdec (f * h) = G`.
+
+Use `dec_eq P hdec (fun ω => ?_) ?_` and prove the remaining obligations. Establish `e : ω = χ + (ω - χ)` using `by abel`. Rewrite using `[e, hGv]`. Conclude with `hmul _ _ _ _ hf ((dec_spec P hdec h).1 _)`. Rewrite using `[hG, Finsupp.sum_mapDomain_index (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_mapRange_index (fun _ => rfl), ← Finsupp.mul_sum, ← (dec_spec P hdec h).2]`.
+
+Rewrite using `[key, hGv]`.
+-/
 theorem dec_mul {χ : X} {f : A} (hf : P χ f) (h : A) (ψ : X) :
     dec P hdec (f * h) (χ + ψ) = f * dec P hdec h ψ := by
   set G : X →₀ A := Finsupp.mapDomain (fun ψ => χ + ψ) ((dec P hdec h).mapRange (f * ·) (mul_zero f)) with hG
@@ -77,6 +101,11 @@ variable (δ₀ : A → A)
 def proj (f : A) : A := (dec P hdec f).sum (fun χ t => dec P hdec (δ₀ t) χ)
 
 include hadd hzero hdec in
+/- English proof (translation)
+Establish `hz : δ₀ 0 = 0`. Use `h0 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Conclude with `left_eq_add.mp this`. Unfold `proj`.
+
+Rewrite using `[dec_add P hadd hdec, Finsupp.sum_add_index']`. Introduce `χ`. Rewrite using `[hz, dec_zero P hzero hdec, Finsupp.zero_apply]`. Introduce `χ s t`. Rewrite using `[h0, dec_add P hadd hdec, Finsupp.add_apply]`.
+-/
 theorem proj_add (h0 : ∀ a b, δ₀ (a + b) = δ₀ a + δ₀ b) (a b : A) :
     proj P hdec δ₀ (a + b) = proj P hdec δ₀ a + proj P hdec δ₀ b := by
   have hz : δ₀ 0 = 0 := by
@@ -87,18 +116,35 @@ theorem proj_add (h0 : ∀ a b, δ₀ (a + b) = δ₀ a + δ₀ b) (a b : A) :
   · intro χ s t; rw [h0, dec_add P hadd hdec, Finsupp.add_apply]
 
 include hzero hdec in
+/- English proof (translation)
+Unfold `proj`. Rewrite using `[dec_single P hzero hdec hf, Finsupp.sum_single_index]`. Rewrite using `[hz, dec_zero P hzero hdec]`. Both sides reduce to the same expression.
+-/
 theorem proj_of_wt (hz : δ₀ 0 = 0) {α : X} {f : A} (hf : P α f) : proj P hdec δ₀ f = dec P hdec (δ₀ f) α := by
   unfold proj; rw [dec_single P hzero hdec hf, Finsupp.sum_single_index]
   rw [hz, dec_zero P hzero hdec]; rfl
 
 include hzero hdec in
 
+/- English proof (translation)
+Rewrite using `[(dec_spec P hdec f).2, Finsupp.sum]`. Conclude with `Finset.sum_induction _ Qp qadd q0 (fun χ _ => qw χ _ ((dec_spec P hdec f).1 χ))`.
+-/
 theorem induction_wt (Qp : A → Prop) (q0 : Qp 0) (qadd : ∀ a b, Qp a → Qp b → Qp (a + b))
     (qw : ∀ χ a, P χ a → Qp a) (f : A) : Qp f := by
   rw [(dec_spec P hdec f).2, Finsupp.sum]
   exact Finset.sum_induction _ Qp qadd q0 (fun χ _ => qw χ _ ((dec_spec P hdec f).1 χ))
 
 include hadd hzero hmul hdec in
+/- English proof (translation)
+Establish `hz : δ₀ 0 = 0`. Use `h0 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Conclude with `left_eq_add.mp this`. Establish `pz : proj P hdec δ₀ 0 = 0`.
+
+Unfold `proj`. Rewrite using `[dec_zero P hzero hdec, Finsupp.sum_zero_index]`. Establish `hom : ∀ χ ψ x y, P χ x → P ψ y → proj P hdec δ₀ (x * y) = x * proj P hdec δ₀ y + y * proj P hdec δ₀ x`. Introduce `χ ψ x y hx hy`. Rewrite using `[proj_of_wt P hzero hdec δ₀ hz (hmul _ _ _ _ hx hy), proj_of_wt P hzero hdec δ₀ hz hy, proj_of_wt P hzero hdec δ₀ hz hx, h1, dec_add P hadd hdec, Finsupp.add_apply, dec_mul P hzero hmul hdec hx, add_comm χ ψ, dec_mul P hzero hmul hdec hy]`.
+
+Establish `padd` using `proj_add P hadd hzero hdec δ₀ h0`. Establish `step : ∀ ψ y, P ψ y → ∀ x, proj P hdec δ₀ (x * y) = x * proj P hdec δ₀ y + y * proj P hdec δ₀ x`. Introduce `ψ y hy`. Use `induction_wt P hzero hdec _ ?_ ?_ (fun χ x hx => hom χ ψ x y hx hy)` and prove the remaining obligations. Rewrite using `[zero_mul, pz, zero_mul, mul_zero, add_zero]`.
+
+Introduce `x x' ex ex'`. Rewrite using `[add_mul, padd, padd, ex, ex']`. Expand and normalize the polynomial expressions, which then agree. Use `revert b`. Introduce `b`.
+
+Use `induction_wt P hzero hdec (fun y => proj P hdec δ₀ (a * y) = a * proj P hdec δ₀ y + y * proj P hdec δ₀ a) ?_ ?_ (fun ψ y hy => step ψ y hy a) b` and prove the remaining obligations. Simplify using `only [mul_zero, pz, zero_mul, add_zero]`. Introduce `y y' ey ey'`. Rewrite using `[mul_add, padd, ey, ey', padd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proj_mul (h0 : ∀ a b, δ₀ (a + b) = δ₀ a + δ₀ b) (h1 : ∀ a b, δ₀ (a * b) = a * δ₀ b + b * δ₀ a) (a b : A) :
     proj P hdec δ₀ (a * b) = a * proj P hdec δ₀ b + b * proj P hdec δ₀ a := by
   have hz : δ₀ 0 = 0 := by
@@ -126,6 +172,9 @@ theorem proj_mul (h0 : ∀ a b, δ₀ (a + b) = δ₀ a + δ₀ b) (h1 : ∀ a b
   · intro y y' ey ey'; rw [mul_add, padd, ey, ey', padd]; ring
 
 include hzero hdec in
+/- English proof (translation)
+Rewrite using `[proj_of_wt P hzero hdec δ₀ hz hf]`. Conclude with `(dec_spec P hdec _).1 α`.
+-/
 theorem proj_wt (hz : δ₀ 0 = 0) {α : X} {f : A} (hf : P α f) : P α (proj P hdec δ₀ f) := by
   rw [proj_of_wt P hzero hdec δ₀ hz hf]; exact (dec_spec P hdec _).1 α
 
@@ -133,6 +182,13 @@ end GlobalTheory.WtLift
 
 namespace GlobalTheory.WtLift
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y V D δ₀ h0 h1 hc`. Establish `hadd : ∀ (χ : Q.X) (a b : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1)), IsWt Y χ _ a → IsWt Y χ _ b → IsWt Y χ _ (a + b)` using `fun χ a b ha hb => WtAlg.isWt_add ha hb`. Establish `hzero : ∀ χ : Q.X, IsWt Y χ (Y.q.left ⁻¹ᵁ V.1) 0` using `fun χ => WtAlg.isWt_zero (Y := Y) χ _`. Establish `hmul : ∀ (χ ψ : Q.X) (a b : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1)), IsWt Y χ _ a → IsWt Y ψ _ b → IsWt Y (χ + ψ) _ (a * b)` using `fun χ ψ a b ha hb => GlobalTheory.T.isRaynaudTorusWeightFunction_mul R Q O oa Y _ χ ψ a b ha hb`. Establish `hdec` using `GlobalTheory.T.existsUnique_weightDecomposition_raynaud_affine R Q O oa Y V.1 V.2`.
+
+Establish `hz : δ₀ 0 = 0`. Use `h0 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Conclude with `left_eq_add.mp this`. Use `⟨proj (fun χ f => IsWt Y χ _ f) hdec δ₀, proj_add _ hadd hzero hdec δ₀ h0, proj_mul _ hadd hzero hmul hdec δ₀ h0 h1, fun r => ?_, fun α f hf => proj_wt _ hzero hdec δ₀ hz hf⟩` and prove the remaining obligations.
+
+Rewrite using `[proj_of_wt _ hzero hdec δ₀ hz (WtAlg.isWt_constFn (Y := Y) _ r), hc, dec_single _ hzero hdec (WtAlg.isWt_constFn (Y := Y) _ (D r)), Finsupp.single_eq_same]`.
+-/
 theorem exists_isWt_lift : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (V : Q.P.A.left.affineOpens) (D : Derivation ℤ R R) (δ₀ : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1) → Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1)), (∀ a b, δ₀ (a + b) = δ₀ a + δ₀ b) → (∀ a b, δ₀ (a * b) = a * δ₀ b + b * δ₀ a) → (∀ r, δ₀ (constFn Y.H.hom _ r) = constFn Y.H.hom _ (D r)) → ∃ δ : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1) → Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1), (∀ a b, δ (a + b) = δ a + δ b) ∧ (∀ a b, δ (a * b) = a * δ b + b * δ a) ∧ (∀ r, δ (constFn Y.H.hom _ r) = constFn Y.H.hom _ (D r)) ∧ ∀ (α : Q.X) f, IsWt Y α _ f → IsWt Y α _ (δ f) := by
   intro R _ _ Q O _ _ _ oa Y V D δ₀ h0 h1 hc
   have hadd : ∀ (χ : Q.X) (a b : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V.1)), IsWt Y χ _ a → IsWt Y χ _ b → IsWt Y χ _ (a + b) :=

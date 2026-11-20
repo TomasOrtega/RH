@@ -10,6 +10,11 @@ section CentralSimple
 
 variable (K L A : Type*) [Field K] [Field L] [Algebra K L] [Ring A] [Algebra K A]
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx ↦ ?_) bot_le` and prove the remaining obligations. Establish `hx' : x ∈ Subalgebra.center K (L ⊗[K] A)`. Rewrite `hx`, the goal using `[Subalgebra.mem_center_iff]`. Conclude with `hx`. Rewrite `hx'` using `[center_tensorProduct_eq_map_includeLeft]`.
+
+Take `⟨l, -, rfl⟩` from `hx'`. Conclude with `Algebra.mem_bot.mpr ⟨l, by simp [Algebra.TensorProduct.algebraMap_apply]⟩`.
+-/
 theorem center_baseChange_eq_bot [Algebra.IsCentral K A] :
     Subalgebra.center L (L ⊗[K] A) = ⊥ := by
   refine le_antisymm (fun x hx ↦ ?_) bot_le
@@ -27,9 +32,15 @@ instance isSimpleRing_baseChange [Algebra.IsCentral K A] [IsSimpleRing A] :
     IsSimpleRing (L ⊗[K] A) :=
   isSimpleRing_tensorProduct_of_right (K := K) (A := A) (B := L)
 
+/- English proof (translation)
+The claim follows from `Module.finrank_baseChange`.
+-/
 theorem finrank_baseChange_eq : Module.finrank L (L ⊗[K] A) = Module.finrank K A :=
   Module.finrank_baseChange
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example [FiniteDimensional K A] : FiniteDimensional L (L ⊗[K] A) := inferInstance
 
 end CentralSimple
@@ -43,6 +54,9 @@ noncomputable def baseChangeCSA {K : Type u} [Field K] (L : Type w) [Field L] [A
   toAlgCat := AlgCat.of L (L ⊗[K] A)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeCSA_carrier {K : Type u} [Field K] (L : Type w) [Field L] [Algebra K L]
     (A : CSA.{u, v} K) : (baseChangeCSA L A : Type (max w v)) = (L ⊗[K] A) := rfl
 
@@ -60,10 +74,16 @@ noncomputable def baseChangeTower : M ⊗[L] (L ⊗[K] A) ≃ₐ[M] M ⊗[K] A :
       LinearMap.map_mul_of_map_mul_tmul (fun _ _ _ _ ↦ by simp)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem baseChangeTower_tmul (m : M) (l : L) (a : A) :
     baseChangeTower K L M A (m ⊗ₜ (l ⊗ₜ a)) = (l • m) ⊗ₜ a := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeTower_symm_tmul (m : M) (a : A) :
     (baseChangeTower K L M A).symm (m ⊗ₜ a) = m ⊗ₜ (1 ⊗ₜ a) := rfl
 
@@ -90,6 +110,9 @@ noncomputable def baseChangeMatrix : L ⊗[K] Matrix n n A ≃ₐ[L] Matrix n n 
       (D := Matrix n n K)).symm.trans (matrixEquivTensorBaseChange K L A n).symm
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[baseChangeMatrix, matrixEquivTensorBaseChange, tmul_sum, map_sum, Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[Fintype.sum_eq_single (i, j) fun p hp ↦ if_neg fun h ↦ hp (Prod.ext h.1 h.2)]`. Simplify using the standard rewrite rules.
+-/
 theorem baseChangeMatrix_tmul (l : L) (x : Matrix n n A) :
     baseChangeMatrix K L A n (l ⊗ₜ x) = Matrix.of fun i j ↦ l ⊗ₜ x i j := by
   ext i j
@@ -111,6 +134,9 @@ noncomputable def baseChangeTensor : L ⊗[K] (A ⊗[K] B) ≃ₐ[L] (L ⊗[K] A
     ((LinearMap.map_mul_iff _).mpr <| by ext; simp)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChangeTensor_tmul (l : L) (a : A) (b : B) :
     baseChangeTensor K L A B (l ⊗ₜ (a ⊗ₜ b)) = (l ⊗ₜ a) ⊗ₜ (1 ⊗ₜ b) := rfl
 

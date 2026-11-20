@@ -26,6 +26,11 @@ variable {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensio
 private noncomputable def ee (t : ℝ) : ℂ :=
   Complex.exp ((2 : ℂ) * (↑Real.pi : ℂ) * Complex.I * (↑t : ℂ))
 
+/- English proof (translation)
+Rewrite using `[Real.fourier_eq']`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [ee, inner_neg_right, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma integral_mul_ee (f : E → ℂ) (w : E) :
     ∫ u, f u * ee (inner ℝ u w) = 𝓕 f (-w) := by
   rw [Real.fourier_eq']
@@ -36,6 +41,11 @@ private lemma integral_mul_ee (f : E → ℂ) (w : E) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Real.fourierInv_eq']`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [ee, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma integral_mul_ee' (f : E → ℂ) (w : E) :
     ∫ u, f u * ee (inner ℝ u w) = 𝓕⁻ f w := by
   rw [Real.fourierInv_eq']
@@ -46,9 +56,15 @@ private lemma integral_mul_ee' (f : E → ℂ) (w : E) :
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `T.symm.toHomeomorph.measurableEmbedding`.
+-/
 private lemma emb (T : V ≃L[ℝ] E) : MeasurableEmbedding (T.symm : E → V) :=
   T.symm.toHomeomorph.measurableEmbedding
 
+/- English proof (translation)
+Rewrite using `[(emb T).integral_map, ← integral_mul_ee]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[hb]`.
+-/
 private lemma inner_eq (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
     (hb : ∀ x y, b x y = inner ℝ (T x) (S y)) (Φ : V → ℂ) (y : V) :
     ∫ x, Φ x * ee (b x y) ∂(Measure.map (T.symm : E → V) volume) =
@@ -57,6 +73,9 @@ private lemma inner_eq (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
   refine integral_congr_ae (.of_forall fun u => ?_)
   simp [hb]
 
+/- English proof (translation)
+Rewrite using `[(emb S).integral_map, ← integral_mul_ee', ← integral_neg_eq_self (fun u => H u * ee (inner ℝ u (-(T z))))]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `[hs _ z, hb, real_inner_comm]`.
+-/
 private lemma outer_eq (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
     (hb : ∀ x y, b x y = inner ℝ (T x) (S y)) (hs : ∀ x y, b x y = b y x)
     (H : E → ℂ) (z : V) :
@@ -67,6 +86,19 @@ private lemma outer_eq (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
   refine integral_congr_ae (.of_forall fun u => ?_)
   simp [hs _ z, hb, real_inner_comm]
 
+/- English proof (translation)
+Use `set G : E → ℂ := fun u => Φ (T.symm u) with hG`. Establish `h1 : ∀ y, ∫ x, Φ x * ee (b x y) ∂(a • Measure.map (T.symm : E → V) volume) = (a : ℂ) * 𝓕 G (-(S y))`. Introduce `y`. Rewrite using `[integral_smul_nnreal_measure, inner_eq T S b hb, NNReal.smul_def, Complex.real_smul]`. Establish `hμ : a • Measure.map (T.symm : E → V) volume = (a / k) • Measure.map (S.symm : E → V) volume`.
+
+Rewrite using `[hk, smul_smul, div_mul_cancel₀ _ hk0]`. Establish `hak : ((a / k : ℝ≥0) : ℝ≥0∞) ≠ 0`. Simplify using `using div_ne_zero ha hk0`. Simplify using `only [h1]`. Rewrite using `[hμ]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Integrable (fun y => (a : ℂ) * 𝓕 G (-(S y))) ((a / k) • Measure.map (S.symm : E → V) volume) ↔ Integrable (fun y => (a : ℂ) * 𝓕 G (-(S y))) (Measure.map (S.symm : E → V) volume)` using `integrable_smul_measure hak ENNReal.coe_ne_top`. Rewrite using `[this, (emb S).integrable_map_iff]`. Establish `ha' : IsUnit (a : ℂ)` using `by simpa using ha`. Establish `e1 : ((fun y => (a : ℂ) * 𝓕 G (-(S y))) ∘ (S.symm : E → V)) = fun w => (a : ℂ) * (fun w => 𝓕 G (-w)) w`.
+
+Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[e1, integrable_const_mul_iff ha']`. Conclude with `⟨fun h => by simpa using h.comp_neg, fun h => h.comp_neg⟩`. Introduce `hint z`.
+
+Establish `e2 : ∀ y, (a : ℂ) * 𝓕 G (-(S y)) * ee (b y z) = (a : ℂ) * (𝓕 G (-(S y)) * ee (b y z))` using `fun y => mul_assoc _ _ _`. Simplify using `only [e2]`. Establish `hGc : Continuous G` using `hc.comp T.symm.continuous`. Establish `hGs : HasCompactSupport G` using `hcs.comp_homeomorph T.symm.toHomeomorph`. Establish `hinv : 𝓕⁻ (𝓕 G) = G` using `hGc.fourierInv_fourier_eq (hGc.integrable_of_hasCompactSupport hGs) hint`.
+
+Rewrite using `[integral_smul_nnreal_measure, integral_const_mul, outer_eq T S b hb hs, hinv, NNReal.smul_def, Complex.real_smul]`. Establish `e3 : G (-(T z)) = Φ (-z)` using `by simp [hG]`. Rewrite using `[e3]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma main (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
     (hb : ∀ x y, b x y = inner ℝ (T x) (S y)) (hs : ∀ x y, b x y = b y x)
     (k a : ℝ≥0) (hk0 : k ≠ 0) (ha : a ≠ 0)
@@ -116,6 +148,11 @@ private lemma main (T S : V ≃L[ℝ] E) (b : V → V → ℝ)
     push_cast
     field_simp
 
+/- English proof (translation)
+Set `f : ContDiffBump (0 : E)` to `default`. Establish `hd : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => ((f x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp f.contDiff`. Establish `hcs : HasCompactSupport (fun x => ((f x : ℝ) : ℂ))` using `f.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Use `⟨fun x => ((f x : ℝ) : ℂ), hd.continuous, hcs, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : f 0 = 1` using `f.one_of_mem_closedBall (by simp [f.rIn_pos.le])`.
+
+Simplify using `[h1]`. Conclude with `(𝓕 (hcs.toSchwartzMap hd)).integrable`.
+-/
 private lemma exists_bump : ∃ G : E → ℂ, Continuous G ∧ HasCompactSupport G ∧ G 0 ≠ 0 ∧
     Integrable (𝓕 G) volume := by
   let f : ContDiffBump (0 : E) := default

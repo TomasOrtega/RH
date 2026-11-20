@@ -9,6 +9,21 @@ namespace GlobalTheory.MomT.LatFin
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Introduce `X A a b N N' hAfg hA hN hN'`. Take `⟨hNl, -⟩` from `hN`. Take `⟨hN'l, -⟩` from `hN'`. Establish `hfull : _root_.GlobalTheory.ThetaMove.Full (_root_.Formalism.L2.Ker.perO A.AA N N')` using `_root_.GlobalTheory.ThetaMove.PeriodComp.full A.AA N N' hNl.fg hN'l hA`. Establish `hfg : (_root_.GlobalTheory.MomT.per A N N').FG` using `_root_.GlobalTheory.ThetaMove.VolumePos.perO_fg hAfg (_root_.GlobalTheory.ThetaMove.VolumePos.homO_fg hNl.fg hN'l.fg hNl.span_eq_top)`.
+
+Establish `hmult : ∀ x : _root_.Formalism.L2.Col.HomE X.E a b, ∃ n : ℕ, 0 < n ∧ (n : X.E) • x ∈ _root_.GlobalTheory.MomT.per A N N'`. Introduce `x`. Take `⟨n, hn, hx⟩` from `hfull x`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.MomT.per`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Rewrite `hx` using `[Nat.cast_smul_eq_nsmul]`. Then use the resulting hypothesis. Use `⟨hfg, hmult, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Use `_root_.GlobalTheory.ThetaMove.VolumePos.relIndex_ne_zero ?_ hfg` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨n, hn, hx⟩` from `hmult ((r : X.E)⁻¹ • x)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.MomT.mem_smulLat]`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations.
+
+Establish `hr' : (r : X.E) ≠ 0` using `by exact_mod_cast hr`. Rewrite using `[smul_smul, smul_smul, mul_comm (r : X.E), mul_assoc, mul_inv_cancel₀ hr', mul_one, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Introduce `P hP y`. Unfold `_root_.GlobalTheory.MomT.per`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy v hv`. Take `⟨s, hs, hsy⟩` from `(_root_.Formalism.L2.Col.mem_locP P _ y).mp hy`. Use `_root_.GlobalTheory.MomT.IdxBound.mem_localization_of_smul_mem P N' hs ?_` and prove the remaining obligations. Simplify using `using _root_.GlobalTheory.MomT.IdxBound.per_apply_mem hP hsy hv`. Introduce `hy`.
+
+Conclude with `_root_.GlobalTheory.MomT.IdxBound.mem_localization_perO hP hNl.fg fun v hv => hy v (_root_.GlobalTheory.ThetaMove.mem_localization_of_mem P hv)`.
+-/
 theorem _root_.GlobalTheory.MomT.LatFin.per_lattice_facts : ∀ (X : _root_.Formalism.L2.Col.Fields) (A : _root_.Formalism.L2.Ker.Amb X) (a b : ℕ)
     (N : Submodule (𝓞 X.E) (_root_.Formalism.L2.Col.Sp X.E a)) (N' : Submodule (𝓞 X.E) (_root_.Formalism.L2.Col.Sp X.E b)),
     A.AA.FG → A.AA ≠ ⊥ → _root_.Formalism.L2.Col.IsSdLat N → _root_.Formalism.L2.Col.IsSdLat N' → (_root_.GlobalTheory.MomT.per A N N').FG ∧

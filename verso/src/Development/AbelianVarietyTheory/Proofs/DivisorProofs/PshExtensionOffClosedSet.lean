@@ -13,14 +13,27 @@ noncomputable section
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+The claim follows from `WithTop.coe_le_coe.mpr le_top`.
+-/
 theorem two_le_inf' : (2 : WithTop ℕ∞) ≤ ∞ := WithTop.coe_le_coe.mpr le_top
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun y => f y + k) = fderiv ℝ f` using `funext fun y => fderiv_add_const k`. Unfold `levi`. Rewrite using `[h]`.
+-/
 theorem levi_add_const (f : (ι → ℂ) → ℝ) (k : ℝ) (z w : ι → ℂ) :
     levi (fun y => f y + k) z w = levi f z w := by
   have h : fderiv ℝ (fun y => f y + k) = fderiv ℝ f := funext fun y => fderiv_add_const k
   unfold levi
   rw [h]
 
+/- English proof (translation)
+Establish `hf' : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hgd : Differentiable ℝ g` using `hg.differentiable (by norm_num)`. Establish `hg1 : ContDiff ℝ 1 (deriv g)` using `((contDiff_succ_iff_deriv (n := 1)).1 hg).2.2`. Establish `hg2 : HasDerivAt (deriv g) (deriv (deriv g) (f z)) (f z)` using `((hg1.differentiable (by norm_num)) (f z)).hasDerivAt`. Establish `hfd : HasFDerivAt f (fderiv ℝ f z) z` using `(hf.differentiableAt (by norm_num)).hasFDerivAt`.
+
+Establish `hc : HasFDerivAt (deriv g ∘ f) (deriv (deriv g) (f z) • fderiv ℝ f z) z` using `hg2.comp_hasFDerivAt z hfd`. Establish `hev : fderiv ℝ (g ∘ f) =ᶠ[𝓝 z] (deriv g ∘ f) • fderiv ℝ f` using `by filter_upwards [hf.eventually (by simp)] with y hy`. Conclude with `((hgd (f y)).hasDerivAt.comp_hasFDerivAt y (hy.differentiableAt (by norm_num)).hasFDerivAt).fderiv`. Establish `hD` using `((hc.smul hf').congr_of_eventuallyEq hev).fderiv`. Unfold `levi`.
+
+Rewrite using `[hD]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_real_comp {f : (ι → ℂ) → ℝ} {g : ℝ → ℝ} {z : ι → ℂ} (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiff ℝ 2 g) (w : ι → ℂ) :
     levi (g ∘ f) z w = deriv g (f z) * levi f z w +
@@ -45,6 +58,11 @@ theorem levi_real_comp {f : (ι → ℂ) → ℝ} {g : ℝ → ℝ} {z : ι → 
     ContinuousLinearMap.smulRight_apply, smul_eq_mul, Function.comp_apply]
   ring
 
+/- English proof (translation)
+Establish `hGF : ContDiffAt ℝ 2 (G ∘ F) z` using `hG.contDiffAt.comp z hF`. Establish `e1` using `levi_add_smul 1 hφ hGF w`. Establish `e2` using `levi_add_smul 1 hφ hF w`. Simplify using `only [one_mul, Function.comp_apply] at e1 e2`. Rewrite using `[e1, levi_real_comp hF hG w]`.
+
+Rewrite `h1` using `[e2]`. Establish `hq : 0 ≤ (fderiv ℝ F z w) ^ 2 + (fderiv ℝ F z (Complex.I • w)) ^ 2` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hG1') h0, mul_nonneg hG1 h1, mul_nonneg hG2 hq]`.
+-/
 theorem levi_nonneg_add_comp {φ F : (ι → ℂ) → ℝ} {G : ℝ → ℝ} {z w : ι → ℂ}
     (hφ : ContDiffAt ℝ 2 φ z) (hF : ContDiffAt ℝ 2 F z) (hG : ContDiff ℝ 2 G)
     (hG1 : 0 ≤ deriv G (F z)) (hG1' : deriv G (F z) ≤ 1) (hG2 : 0 ≤ deriv (deriv G) (F z))
@@ -59,6 +77,21 @@ theorem levi_nonneg_add_comp {φ F : (ι → ℂ) → ℝ} {G : ℝ → ℝ} {z 
   have hq : 0 ≤ (fderiv ℝ F z w) ^ 2 + (fderiv ℝ F z (Complex.I • w)) ^ 2 := by positivity
   nlinarith [mul_nonneg (sub_nonneg.2 hG1') h0, mul_nonneg hG1 h1, mul_nonneg hG2 hq]
 
+/- English proof (translation)
+Use `set G : ℝ → ℝ := fun t => m (t, c) - k with hG`. Establish `hGC : ContDiff ℝ (⊤ : ℕ∞) G` using `(hmC.comp (contDiff_id.prodMk contDiff_const)).sub contDiff_const`. Establish `hGd : Differentiable ℝ G` using `hGC.differentiable (by simp)`. Establish `hGm : Monotone G`. Introduce `a b hab`.
+
+Use `hmono (show ((a, c) : ℝ × ℝ) ≤ (b, c) from ⟨hab, le_rfl⟩)` as an intermediate fact. Simplify using `only [hG]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGl : Monotone (fun t => t - G t)`. Introduce `a b hab`.
+
+Establish `h1` using `hmono (show ((b, c) : ℝ × ℝ) ≤ (a + (b - a), c + (b - a)) from ⟨by simp, by simp; linarith⟩)`. Establish `h2` using `htr a c (b - a)`. Simplify using `only [hG]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGconv : ConvexOn ℝ Set.univ G`.
+
+Use `⟨convex_univ, fun x _ y _ a b ha hb hab => ?_⟩` and prove the remaining obligations. Establish `h` using `hconv.2 (Set.mem_univ (x, c)) (Set.mem_univ (y, c)) ha hb hab`. Establish `e : a • ((x, c) : ℝ × ℝ) + b • (y, c) = (a • x + b • y, c)`. Use `ext`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Prod.snd_add, Prod.smul_snd, smul_eq_mul]`. Rewrite using `[← add_mul, hab, one_mul]`. Rewrite `h` using `[e]`. Simplify using `only [hG, smul_eq_mul] at h ⊢`. Establish `hk : a * k + b * k = k` using `by rw [← add_mul, hab, one_mul]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `⟨hGC, fun t => hGm.deriv_nonneg, fun t => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `(hGl.deriv_nonneg (x := t))`. Establish `e : deriv (fun t => t - G t) t = 1 - deriv G t` using `deriv_sub differentiableAt_id (hGd t) |>.trans (by simp)`. Rewrite `h` using `[e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmd : Monotone (deriv G)`. Use `hGconv.monotoneOn_deriv (fun x _ => hGd x)` as an intermediate fact. Conclude with `monotoneOn_univ.1 this`. Conclude with `hmd.deriv_nonneg`.
+-/
 theorem regMax_slice {m : ℝ × ℝ → ℝ} (hmC : ContDiff ℝ (⊤ : ℕ∞) m) (hconv : ConvexOn ℝ Set.univ m)
     (hmono : Monotone m) (htr : ∀ a b c, m (a + c, b + c) = m (a, b) + c) (c k : ℝ) :
     ContDiff ℝ (⊤ : ℕ∞) (fun t => m (t, c) - k) ∧ (∀ t, 0 ≤ deriv (fun t => m (t, c) - k) t) ∧
@@ -101,6 +134,41 @@ theorem regMax_slice {m : ℝ × ℝ → ℝ} (hmC : ContDiff ℝ (⊤ : ℕ∞)
       exact monotoneOn_univ.1 this
     exact hmd.deriv_nonneg
 
+/- English proof (translation)
+Introduce `e X _ _ _ A Om Z u M hM hZ hpot hpsh hsm hneg hlevi hcl`. Take `⟨m, hmC, hmconv, hmmono, hmb, hm1, hm2, hmtr⟩` from `GlobalTheory.RegularisedMaxTwo.exists_regMaxTwo (1 / 4) (by norm_num)`. Use `set c : ℝ := -M + 1 with hc`. Use `set G : ℝ → ℝ := fun t => m (t, c) - 1 / 4 with hG`. Take `⟨hGC, hG1, hG1', hG2⟩` from `regMax_slice hmC hmconv hmmono hmtr c (1 / 4)`.
+
+Establish `hGC2 : ContDiff ℝ 2 G` using `hGC.of_le two_le_inf'`. Establish `hGlow : ∀ t, t + 1 / 2 ≤ c → G t = c - 1 / 4`. Introduce `t ht`. Simplify using `only [hG]`. Rewrite using `[hm2 t c (by linarith)]`.
+
+Set `v : X → ℝ` to `fun x => if x ∈ Z then c - 1 / 4 else G (u x)`. Use `set K := closure {x | x ∈ Zᶜ ∧ -M ≤ u x} with hKdef`. Establish `hK : K ⊆ Zᶜ` using `hcl M`. Establish `hKc : IsOpen Kᶜ` using `isClosed_closure.isOpen_compl`. Establish `hvK : ∀ x ∈ Kᶜ, v x = c - 1 / 4`.
+
+Introduce `x hx`. Distinguish the cases in `hxZ : x ∈ Z`. Simplify using `[v, hxZ]`. Establish `hux : u x < -M`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hx (subset_closure ⟨hxZ, h⟩)`. Simplify using `only [v, hxZ, if_false]`. Conclude with `hGlow _ (by linarith)`. Establish `hvZ : ∀ x ∈ Zᶜ, v x = G (u x)`.
+
+Introduce `x hx`. Establish `hx' : x ∉ Z` using `hx`. Simplify using `[v, hx']`. Use `⟨v, 1 / 4, ?_, ?_, ?_, by norm_num, le_rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `j y hy`.
+
+Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`. Distinguish the cases in `hp : (A.chart j).symm y ∈ Z`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hKc`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Kᶜ` using `⟨hyt, fun h => hK h hp⟩`.
+
+Establish `hev : (v ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun _ => c - 1 / 4` using `by filter_upwards [hO.mem_nhds hyO] with y' hy' using hvK _ hy'.2`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ` using `⟨hyt, hp⟩`. Establish `hu : ContDiffAt ℝ ∞ (u ∘ (A.chart j).symm) y` using `(hsm j).contDiffAt (hO.mem_nhds hyO)`.
+
+Establish `hev : (v ∘ (A.chart j).symm) =ᶠ[𝓝 y] G ∘ (u ∘ (A.chart j).symm)` using `by filter_upwards [hO.mem_nhds hyO] with y' hy' using hvZ _ hy'.2`. Conclude with `(hGC.contDiffAt.comp y hu).congr_of_eventuallyEq hev`. Introduce `x j y hy w`. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`. Establish `hyU : (A.chart j).symm y ∈ Om.U x` using `hy.2.1`.
+
+Establish `hOφ` using `(A.chart j).isOpen_inter_preimage_symm (Om.isOpen_U x)`. Establish `hφ : ContDiffAt ℝ 2 (Om.φ x ∘ (A.chart j).symm) y` using `((hpot.1 x j).contDiffAt (hOφ.mem_nhds ⟨hyt, hyU⟩)).of_le two_le_inf'`. Establish `hφ0 : 0 ≤ levi (Om.φ x ∘ (A.chart j).symm) y w` using `hpsh x j y ⟨hyt, hyU⟩ w`. Use `show 0 ≤ levi ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) y w`. Distinguish the cases in `hp : (A.chart j).symm y ∈ Z`.
+
+Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hKc`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Kᶜ` using `⟨hyt, fun h => hK h hp⟩`. Establish `hev : ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (Om.φ x ∘ (A.chart j).symm) z + (c - 1 / 4)` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`. Simplify using `only [Function.comp_apply, hvK _ hy'.2]`. Rewrite using `[levi_congr hev, levi_add_const]`.
+
+Conclude with `hφ0`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ` using `⟨hyt, hp⟩`. Establish `hu : ContDiffAt ℝ 2 (u ∘ (A.chart j).symm) y` using `((hsm j).contDiffAt (hO.mem_nhds hyO)).of_le two_le_inf'`. Establish `hev : ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (Om.φ x ∘ (A.chart j).symm) z + G ((u ∘ (A.chart j).symm) z)` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`.
+
+Simplify using `only [Function.comp_apply, hvZ _ hy'.2]`. Rewrite using `[levi_congr hev]`. Conclude with `levi_nonneg_add_comp hφ hu hGC2 (hG1 _) (hG1' _) (hG2 _) hφ0 (hlevi x j y ⟨hyt, hyU, hp⟩ w)`. Introduce `x`. Distinguish the cases in `hx : x ∈ Z`.
+
+Simplify using `only [v, hx, if_true]`. Apply the tactic sequence `constructor <;> linarith`. Simplify using `only [v, hx, if_false, hG]`. Establish `hb` using `hmb (u x) c`. Establish `hu` using `hneg x hx`.
+
+Establish `hmx : max (u x) c ≤ 0` using `max_le hu (by linarith)`. Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[le_max_right (u x) c, hb.1]`. Combine the linear relations using `[hb.2]`. Introduce `x hx hux`.
+
+Rewrite using `[hvZ x hx]`. Simplify using `only [hG]`. Rewrite using `[hm1 (u x) c (by linarith)]`. Introduce `x hx`. Rewrite using `[hvZ x hx]`.
+
+Simplify using `only [hG]`. Combine the linear relations using `[le_max_left (u x) c, (hmb (u x) c).1]`.
+-/
 theorem exists_truncation : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas e X) (Om : LocPot X) (Z : Set X) (u : X → ℝ) (M : ℝ), 2 ≤ M → IsClosed Z →
     IsPotential A Om → IsPsh A Om → A.SmoothOn Zᶜ u → (∀ x ∈ Zᶜ, u x ≤ 0) →

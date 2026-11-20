@@ -21,6 +21,23 @@ open GlobalTheory.TauTwist ReciprocityTheory.ChartRestriction.G.DVR
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dm : Datum H} {l : Level H} {c : Coeff l}
   {O : Type} [CommRing O] {T : Formalism.L2.Pj.CDVR}
 
+/- English proof (translation)
+Introduce `F _ _ _ z hz`. Use `letI := H.starRing`. Take `⟨I, hζ, e₂, e₃⟩` from `h F z hz`. Establish `hw` using `GlobalTheory.ArcBuild.cmIdempotent_add_star_eq_one (H := H)`. Establish `ht` using `isScalarForm_tF D oD hϖ`.
+
+Establish `hq` using `psiRel0 (H := H) D hϖ`. Establish `hR` using `isRootForm_rF D oD hϖ (dvd_of_dvd D hϖ (dvd_refl l.M') hdiv)`. Set `s : D.toPre.X → D.toPre.X → Fˣ` to `fun y x => Units.map (algebraMap (FractionRing T.V) F).toMonoidHom (rF D hϖ l.M' y x)`. Establish `hs : IsRootForm (𝓞 E) l.M' (tF D hϖ) s` using `⟨hR.1.map _, fun y x => by show (Units.map _ _) ^ _ = _`. Rewrite using `[← map_pow, hR.2 y x]`.
+
+Use the proof step `rfl⟩`. Take `⟨s', I', s₁, -, s₃, s₄, s₅⟩` from `exists_tateIsoQ_twist D.tau_bimult hw ht oD l.M' s hs I`. Establish `lev : ∀ {k : ℕ} (hk : 0 < k) (hd : k ∣ l.M') (p : QkPt D.toPre (FractionRing T.V) k) (v : Dm.La), (∀ q, QkExt (algebraMap _ F) p q → QkPt.Equiv D.toPre F q (I.ev k v)) → ∀ q', QkExt (algebraMap _ F) (qkScale hw ht hq (isRootForm_rF D oD hϖ (dvd_of_dvd D hϖ hd hdiv)) _ p) q' → QkP …` using `H) D hϖ) F q' (I'.ev k v) := by`. Introduce `k hk hd p v he q' hq'`. Take `⟨q, rfl⟩` from `(qkScaleEquiv hw ht hq (s₁ k hk) _).surjective q'`.
+
+Establish `e` using `qkRel_qkScaleEquiv (D := D.toPre) (hψ := (D0 (H := H) D hϖ).psi_gen) hw ht hq (s₁ k hk) q`. Use `e.equiv hw ht hq (s₁ k hk) (s₅ k hk v) (he q (QkRel.qkExt_of (fun y x => ?_) (qkRel_qkScale hw ht hq (isRootForm_rF D oD hϖ (dvd_of_dvd D hϖ hd hdiv)) p) e hq'))` and prove the remaining obligations. Rewrite using `[s₃ k hk hd]`. Use `show (Units.map _ _) ^ _ = _`. Rewrite using `[← map_pow]`.
+
+Use `congr 1`. Take `⟨j, hj⟩` from `dvd_of_dvd D hϖ (dvd_refl l.M') hdiv y x`. Take `⟨i, hi⟩` from `hd`. Establish `hk0 : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by decide) l.three_le) l.A_pos`.
+
+Establish `hi0 : (i : ℤ) ≠ 0`. Introduce and unpack `h`. Establish `: i = 0` using `by exact_mod_cast h`. Rewrite `hi` using `[this, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [rF, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Rewrite using `[hj, hi, Nat.mul_div_cancel_left _ hk]`. Use `push_cast`. Rewrite using `[Int.mul_ediv_cancel_left _ (mul_ne_zero hk0 hi0), _root_.mul_assoc, Int.mul_ediv_cancel_left _ hk0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨I', by rw [s₄]; exact hζ, fun v => lev l.A_pos (Nat.dvd_lcm_right l.M l.A) _ v (e₂ v), fun v _ q hq => lev (lt_of_lt_of_le (by decide) l.three_le) (Nat.dvd_lcm_left l.M l.A) _ v (e₃ v) q hq⟩`.
+-/
 theorem tateCl_of (β : O →+* c.F) (b : O →+* T.V) (D : DegData T.V (maximalIdeal T.V)) [Module (𝓞 E) D.toPre.X]
     (oD : letI := H.starRing; D.toPre.OAct (𝓞 E)) {ϖ : T.V} (hϖ : Irreducible ϖ)
     (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ beF D hϖ a a') (pA : Dm.La → QkPt D.toPre (FractionRing T.V) l.A)
@@ -81,6 +98,17 @@ end GlobalTheory.TraitArc
 
 open GlobalTheory.TraitArc in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR E _ _ _ H Dm D _ o hX hP l c O _ β hβ V₁ _ _ _ ρ₁ b₁ hV₁ hρ₁ hf₁ hl₁ hb₁`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by decide) l.three_le) l.A_pos`. Take `⟨T, ρ, b, ϖ, D', hρ, hρf, hb, hϖ, ⟨hD⟩, hdvd, hrat⟩` from `GlobalTheory.T.exists_traitExtension_divisible_valuationForm R D O V₁ ρ₁ b₁ hV₁ hρ₁ hf₁ hl₁ hb₁ (2 * l.M') (by omega)`. Establish `hBase : Base R` using `⟨by haveI := hR.1; exact ⟨inferInstance, inferInstance, inferInstance, hR.2.1⟩, hR.2.2⟩`. Take `⟨inst, o', hP'⟩` from `GlobalTheory.Mum.pelOK_of_isPullDeg R hBase E H Dm D o hP T.V ρ hρ D' ⟨hD⟩`.
+
+Use `letI := inst`. Establish `hX' : Nontrivial D'.toPre.X` using `hD.xe.toEquiv.nontrivial`. Establish `hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ beF D' hϖ a a'` using `fun a a' => by`. Use `hdvd _ (isQ_qv D' hϖ) a a'` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Take `⟨pA, pM, hT⟩` from `GlobalTheory.T.exists_rational_tate_pairs_unitaryType E H Dm l c O β hβ T b hb D' o' hP' (fun k hk => hrat k (hk.mul_left 2))`. Establish `hLie : LieCl D' o' Dm β b`. Introduce `F _ _ _ r _ τ`. Take `⟨n, h₁, h₂⟩` from `(hP'.2.2.2 F).1 τ`. Use `⟨n, h₁, ?_⟩` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `h₂`. Conclude with `h₂.trans hP'.1`. Establish `hTate` using `tateCl_of β b D' o' hϖ hdiv pA pM hT`. Use `⟨T.V, T.cr, T.dom, inferInstance, ρ, b, ϖ, arc D' o' hϖ β b hX' hP'.2.2.1 hdiv pA pM hLie hTate, ⟨T.dvr, T.cpl, T.ch0⟩, hρ, hρf, hϖ, ?_⟩` and prove the remaining obligations.
+
+Introduce `Xo Y y hy`. Take `⟨t, m, P, ⟨hD₂⟩⟩` from `GlobalTheory.T.exists_pullDeg_arcData_at_uniformiser E H Dm l c O β T b D' o' ϖ hϖ hX' hP'.2.2.1 hdiv pA pM hLie hTate Xo Y y hy`. Use `⟨t, m, P, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Mum.nonempty_isPullDeg_comp_of_injective R T.V T.V ρ (RingHom.id T.V) D.toPre D'.toPre P.D.toPre Function.injective_id ⟨hD⟩ ⟨hD₂⟩` as an intermediate fact. Rewrite `this` using `[RingHom.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.TraitArc.exists_input_recovering : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.CDvr R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dm : Datum H) (D : DegData R (maximalIdeal R)) [Module (𝓞 E) D.toPre.X] (o : letI := H.starRing; D.toPre.OAct (𝓞 E)), Nontrivial D.toPre.X → PelOK Dm D.toPre o → ∀ (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F), Function.Injective β → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁] (ρ₁ : R →+* V₁) (b₁ : O →+* V₁), GlobalTheory.LN.CDvr V₁ → Function.Injective ρ₁ → ρ₁.Finite → IsLocalHom ρ₁ → Function.Injective b₁ → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (ρ : R →+* V) (b : O →+* V) (ϖ : V) (a : ArcIn Dm l β V b), GlobalTheory.LN.CDvr V ∧ Function.Injective ρ ∧ ρ.Finite ∧ Irreducible ϖ ∧ ∀ (Xo : Moduli Dm l) (Y : Model Xo c β) (y : Sp V ⟶ Y.X), Y.HasArcData a (maximalIdeal V) (RingHom.id V) ϖ y → ∃ (t : SAB H (Sp V)) (_ : SABMap t Y.t y) (P : PELUnif (maximalIdeal V) t), Nonempty (IsPullDeg ρ D.toPre P.D.toPre) := by
   intro R _ _ _ hR E _ _ _ H Dm D _ o hX hP l c O _ β hβ V₁ _ _ _ ρ₁ b₁ hV₁ hρ₁ hf₁ hl₁ hb₁
   have hM' : 0 < l.M' := Nat.lcm_pos (lt_of_lt_of_le (by decide) l.three_le) l.A_pos

@@ -8,6 +8,19 @@ open GlobalTheory.WeilM Matrix
 
 namespace GlobalTheory.RankChart
 
+/- English proof (translation)
+Use `set Y₁ := Y.toRows₁ with hY₁`. Establish `hA : LinearIndependent k (fun i : R => fun j : R => Y (Sum.inl i) (τ j))`. Establish `hu : IsUnit (Y.submatrix Sum.inl τ)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hdet)`. Conclude with `Matrix.linearIndependent_rows_of_isUnit hu`. Establish `hli : LinearIndependent k (fun i : R => Y₁ i)`.
+
+Apply `LinearIndependent.of_comp (LinearMap.funLeft k k τ)` to reduce the goal to its premises. Conclude with `hA`. Establish `hfin₁ : Module.finrank k (Submodule.span k (Set.range fun i : R => Y₁ i)) = Fintype.card R` using `finrank_span_eq_card hli`. Establish `hle : Submodule.span k (Set.range fun i : R => Y₁ i) ≤ Submodule.span k (Set.range Y.row)`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Sum.inl i, rfl⟩`. Establish `heq : Submodule.span k (Set.range fun i : R => Y₁ i) = Submodule.span k (Set.range Y.row)`. Apply `Submodule.eq_of_le_of_finrank_le hle` to reduce the goal to its premises. Rewrite using `[hfin₁, ← Matrix.rank_eq_finrank_span_row]`.
+
+Conclude with `hrank`. Establish `hmem : ∀ t : T, ∃ c : R → k, ∑ i, c i • Y₁ i = Y (Sum.inr t)`. Introduce `t`. Establish `: Y (Sum.inr t) ∈ Submodule.span k (Set.range fun i : R => Y₁ i)`. Rewrite using `[heq]`.
+
+Conclude with `Submodule.subset_span ⟨Sum.inr t, rfl⟩`. Conclude with `(Submodule.mem_span_range_iff_exists_fun k).1 this`. Use `choose C hC using hmem`. Use `⟨Matrix.of fun t i => C t i, ?_⟩` and prove the remaining obligations. Use extensionality with `(i | t) j`.
+
+Simplify using `[stack, hY₁]`. Use `congrFun (hC t) j` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [stack, fromRows_apply_inr, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[← this]`.
+-/
 theorem exists_eq_stack (k : Type) [Field k] (R T D : Type) [Fintype R] [DecidableEq R] [Fintype T]
     [DecidableEq T] [Fintype D] [DecidableEq D] (τ : R → D) (Y : Matrix (R ⊕ T) D k)
     (hrank : Y.rank ≤ Fintype.card R) (hdet : (Y.submatrix Sum.inl τ).det ≠ 0) :

@@ -18,6 +18,17 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ X p hp L q hq s t t' h h'`. Use `haveI := hp`. Establish `key : ∀ j, t.f j = t'.f j`. Introduce `j`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations.
+
+Establish `e1` using `GlobalTheory.secIsMul_gs h (𝟙 X) x j hx`. Establish `e2` using `GlobalTheory.secIsMul_gs h' (𝟙 X) x j hx`. Rewrite `e1`, `e2` using `[Category.id_comp]`. Establish `h0 : cst p x q * (gs (𝟙 X) x (L.U j) (t.f j) - gs (𝟙 X) x (L.U j) (t'.f j)) = 0`. Rewrite using `[mul_sub, ← e1, ← e2, sub_self]`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.cst_dvd_of_cst_mul_eq_zero p x (a := q) (b := 0) (fun c hc => by`. Break down `mul_eq_zero.1 hc with h1 | h1` into its components or cases. Conclude with `absurd h1 hq`. Rewrite using `[h1]) h0`. Establish `hz : cst p x (0 : R) = 0`.
+
+Rewrite using `[cst, map_zero, gs_eq _ _ ⊤ trivial, map_zero, map_zero]`. Rewrite `hu` using `[hz, zero_mul, sub_eq_zero]`. Conclude with `hu`. Consider the cases of `t`. Consider the cases of `t'`.
+
+Use `congr 1`. Conclude with `funext key`.
+-/
 theorem secIsMul_cancel : ∀ (R : Type) [CommRing R] [IsDomain R] (X : Scheme.{0}) (p : X ⟶ Spec (CommRingCat.of R)), Flat p → ∀ (L : LB X) (q : R), q ≠ 0 → ∀ s t t' : LB.Sec L, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul p q s t → ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul p q s t' → t = t' := by
   intro R _ _ X p hp L q hq s t t' h h'
   haveI := hp

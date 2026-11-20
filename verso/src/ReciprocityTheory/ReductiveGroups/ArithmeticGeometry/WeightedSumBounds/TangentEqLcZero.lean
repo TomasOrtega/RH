@@ -18,9 +18,15 @@ def intRing (v : AddValuation C (WithTop ℝ)) : Subring C where
   zero_mem' := by show 0 ≤ v 0; rw [v.map_zero]; exact le_top
   neg_mem' {x} hx := by show 0 ≤ v (-x); rw [v.map_neg]; exact hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intRing {v : AddValuation C (WithTop ℝ)} {x : C} :
     x ∈ intRing v ↔ IsIntV v x := Iff.rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact hasSubst_of_constantCoeff_zero ha0`. Consider the case `exact HasSubst.of_constantCoeff_zero' ha0`. Consider the case `exact hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)`. Consider the case `exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)`.
+-/
 private theorem hs_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
   first
@@ -29,6 +35,19 @@ private theorem hs_lemma_2 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries 
   | exact hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
   | exact HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
 
+/- English proof (translation)
+Establish `hS : HasSubst a` using `hs_lemma_2 ha0`. Establish `hmul : ∀ p q : MvPowerSeries τ C, MvIsInt v p → MvIsInt v q → MvIsInt v (p * q)`. Introduce `p q hp hq e`. Rewrite using `[coeff_mul]`. Conclude with `mem_intRing.mp (Subring.sum_mem _ fun x _ => Subring.mul_mem _ (mem_intRing.mpr (hp _)) (mem_intRing.mpr (hq _)))`.
+
+Establish `hone : MvIsInt v (1 : MvPowerSeries τ C)`. Introduce `e`. Rewrite using `[coeff_one]`. Use `split_ifs`. Conclude with `mem_intRing.mp (Subring.one_mem _)`.
+
+Conclude with `mem_intRing.mp (Subring.zero_mem _)`. Establish `hpow : ∀ (p : MvPowerSeries τ C) (n : ℕ), MvIsInt v p → MvIsInt v (p ^ n)`. Introduce `p n hp`. Proceed by induction on `n with`. Consider the case `zero => simpa using hone`.
+
+Consider the case `succ n ih => rw [pow_succ]`. Conclude with `hmul _ _ ih hp`. Establish `hprod : ∀ d : σ →₀ ℕ, MvIsInt v (d.prod fun s e => a s ^ e)`. Introduce `d`. Use `show MvIsInt v (∏ s ∈ d.support, a s ^ d s)`.
+
+Conclude with `Finset.prod_induction _ (MvIsInt v) hmul hone (fun s _ => hpow _ _ (ha s))`. Introduce `e`. Rewrite using `[coeff_subst hS]`. Apply `mem_intRing.mp` to reduce the goal to its premises. Use `finsum_induction (fun x => x ∈ intRing v) (Subring.zero_mem _) (fun x y hx hy => Subring.add_mem _ hx hy) (fun d => ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul]`. Conclude with `Subring.mul_mem _ (mem_intRing.mpr (hf d)) (mem_intRing.mpr (hprod d e))`.
+-/
 theorem mvIsInt_subst {σ τ : Type} [Finite σ] (v : AddValuation C (WithTop ℝ))
     {f : MvPowerSeries σ C} (hf : MvIsInt v f) {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvIsInt v (a s)) (ha0 : ∀ s, constantCoeff (a s) = 0) :
@@ -63,9 +82,17 @@ theorem mvIsInt_subst {σ τ : Type} [Finite σ] (v : AddValuation C (WithTop �
   rw [smul_eq_mul]
   exact Subring.mul_mem _ (mem_intRing.mpr (hf d)) (mem_intRing.mpr (hprod d e))
 
+/- English proof (translation)
+Conclude with `Finsupp.ext fun u => by cases u; simp`.
+-/
 theorem unit_finsupp (e : Unit →₀ ℕ) : e = Finsupp.single () (e ()) := by
   exact Finsupp.ext fun u => by cases u; simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h α`. Rewrite using `[unit_finsupp α]`. Conclude with `h (α ())`. Introduce `h n`.
+
+Conclude with `h (Finsupp.single () n)`.
+-/
 theorem psIsInt_iff {v : AddValuation C (WithTop ℝ)} {f : PowerSeries C} :
     PsIsInt v f ↔ MvIsInt v (σ := Unit) f := by
   constructor
@@ -77,13 +104,26 @@ theorem psIsInt_iff {v : AddValuation C (WithTop ℝ)} {f : PowerSeries C} :
 
 variable {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `hs_lemma_2 G.F_const`.
+-/
 theorem hasSubst_F (G : LogFGL v d) : HasSubst G.F := hs_lemma_2 G.F_const
 
+/- English proof (translation)
+Introduce `a`. Use `⟨by simp, fun n => ?_⟩` and prove the remaining obligations. Simplify using `[IsIntV]`.
+-/
 theorem isCurve_zero : IsCurve v (0 : Fin d → PowerSeries C) := by
   intro a
   refine ⟨by simp, fun n => ?_⟩
   simp [IsIntV]
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_subst (hs_lemma_2 ha0)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `e`. Distinguish the cases in `he : e = 0`. Rewrite using `[he, coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext fun s => by simpa using h s)`. Establish `hp : constantCoeff (e.prod fun s n => a s ^ n) = 0`.
+
+Rewrite using `[Finsupp.prod, map_prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [map_pow, ha0 s, zero_pow hs])`. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hp, smul_zero]`.
+-/
 private theorem cc_lemma_3 {σ τ : Type} [Finite σ] {f : MvPowerSeries σ C}
     (hf : constantCoeff f = 0) {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, constantCoeff (a s) = 0) : constantCoeff (subst a f) = 0 := by
@@ -102,6 +142,11 @@ private theorem cc_lemma_3 {σ τ : Type} [Finite σ] {f : MvPowerSeries σ C}
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [map_pow, ha0 s, zero_pow hs])
     rw [coeff_zero_eq_constantCoeff_apply, hp, smul_zero]
 
+/- English proof (translation)
+Introduce `a`. Establish `hs0 : ∀ s, constantCoeff (Sum.elim ga gb s) = 0`. Introduce and unpack `(s | s)`. Conclude with `(ha s).1`. Conclude with `(hb s).1`.
+
+Establish `hsI : ∀ s, MvIsInt v (Sum.elim ga gb s)`. Introduce and unpack `(s | s)`. Conclude with `psIsInt_iff.mp (ha s).2`. Conclude with `psIsInt_iff.mp (hb s).2`. Conclude with `⟨cc_lemma_3 (G.F_const a) hs0, psIsInt_iff.mpr (mvIsInt_subst v (G.F_int a) hsI hs0)⟩`.
+-/
 theorem isCurve_add (G : LogFGL v d) {ga gb : Fin d → PowerSeries C}
     (ha : IsCurve v ga) (hb : IsCurve v gb) : IsCurve v (G.add ga gb) := by
   intro a
@@ -115,6 +160,13 @@ theorem isCurve_add (G : LogFGL v d) {ga gb : Fin d → PowerSeries C}
     · exact psIsInt_iff.mp (hb s).2
   exact ⟨cc_lemma_3 (G.F_const a) hs0, psIsInt_iff.mpr (mvIsInt_subst v (G.F_int a) hsI hs0)⟩
 
+/- English proof (translation)
+Establish `hE0 : ∀ s, constantCoeff (Sum.elim ga gb s) = 0`. Introduce and unpack `(s | s)`. Conclude with `ha s`. Conclude with `hb s`. Establish `hE : HasSubst (Sum.elim ga gb)` using `hs_lemma_2 hE0`.
+
+Establish `hl : HasSubst (fun b : Fin d => (X (Sum.inl b) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hs_lemma_2 (fun b => constantCoeff_X _)`. Establish `hr : HasSubst (fun b : Fin d => (X (Sum.inr b) : MvPowerSeries (Fin d ⊕ Fin d) C))` using `hs_lemma_2 (fun b => constantCoeff_X _)`. Use `show subst (fun b => subst (Sum.elim ga gb) (G.F b)) (G.lg a) =`. Substitute `ga (G.lg a) + subst gb (G.lg a)` using the available equality. Rewrite using `[← subst_comp_subst_apply (hasSubst_F G) hE, G.lg_F a, subst_add hE, subst_comp_subst_apply hl hE, subst_comp_subst_apply hr hE]`.
+
+Simplify using `only [subst_X hE, Sum.elim_inl, Sum.elim_inr]`.
+-/
 theorem lgCurve_add (G : LogFGL v d) {ga gb : Fin d → PowerSeries C}
     (ha : ∀ b, PowerSeries.constantCoeff (ga b) = 0)
     (hb : ∀ b, PowerSeries.constantCoeff (gb b) = 0) (a : Fin d) :
@@ -134,6 +186,15 @@ theorem lgCurve_add (G : LogFGL v d) {ga gb : Fin d → PowerSeries C}
     subst_comp_subst_apply hl hE, subst_comp_subst_apply hr hE]
   simp only [subst_X hE, Sum.elim_inl, Sum.elim_inr]
 
+/- English proof (translation)
+Establish `h0 : HasSubst (0 : Fin d → PowerSeries C)` using `hs_lemma_2 (fun _ => by simp)`. Use `show subst (0 : Fin d → PowerSeries C) (G.lg a) = 0`. Use `MvPowerSeries.ext fun e => ?_` and prove the remaining obligations. Rewrite using `[coeff_subst h0, map_zero]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+
+Introduce `n`. Distinguish the cases in `hn : n = 0`. Rewrite using `[hn, coeff_zero_eq_constantCoeff_apply, G.lg_const a, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, n s ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hn (Finsupp.ext fun s => by simpa using h s)`. Establish `hp : (n.prod fun s k => (0 : Fin d → PowerSeries C) s ^ k) = 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [Pi.zero_apply, zero_pow hs])`.
+
+Rewrite using `[hp, map_zero, smul_zero]`.
+-/
 theorem lgCurve_zero (G : LogFGL v d) (a : Fin d) : G.lgCurve 0 a = 0 := by
   classical
   have h0 : HasSubst (0 : Fin d → PowerSeries C) := hs_lemma_2 (fun _ => by simp)
@@ -153,12 +214,18 @@ theorem lgCurve_zero (G : LogFGL v d) (a : Fin d) : G.lgCurve 0 a = 0 := by
       exact Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by rw [Pi.zero_apply, zero_pow hs])
     rw [hp, map_zero, smul_zero]
 
+/- English proof (translation)
+The claim follows from `| [], _ => isCurve_zero | g :: l, h => isCurve_add G (h g (by simp)) (isCurve_sumList G l fun g' hg' => h g' (by simp [hg']))`.
+-/
 theorem isCurve_sumList (G : LogFGL v d) :
     ∀ l : List (Fin d → PowerSeries C), (∀ g ∈ l, IsCurve v g) → IsCurve v (G.sumList l)
   | [], _ => isCurve_zero
   | g :: l, h => isCurve_add G (h g (by simp))
       (isCurve_sumList G l fun g' hg' => h g' (by simp [hg']))
 
+/- English proof (translation)
+The claim follows from `| [], _, a => by simp [LogFGL.sumList, lgCurve_zero] | g :: l, h, a => by have hl : ∀ g' ∈ l, IsCurve v g' := fun g' hg' => h g' (by simp [hg']) rw [LogFGL.sumList, lgCurve_add G (fun b => (h g (by simp) b).1) (fun b => (isCurve_sumList G l hl b).1), lgCurve_sumList G l hl a] sim …`.
+-/
 theorem lgCurve_sumList (G : LogFGL v d) :
     ∀ l : List (Fin d → PowerSeries C), (∀ g ∈ l, IsCurve v g) → ∀ a,
       G.lgCurve (G.sumList l) a = (l.map fun g => G.lgCurve g a).sum
@@ -169,12 +236,18 @@ theorem lgCurve_sumList (G : LogFGL v d) :
         (fun b => (isCurve_sumList G l hl b).1), lgCurve_sumList G l hl a]
       simp
 
+/- English proof (translation)
+The claim follows from `isCurve_sumList G (List.ofFn g) (fun g' hg' => by obtain ⟨u, rfl⟩ := List.mem_ofFn.mp hg' exact h u)`.
+-/
 theorem isCurve_sumF (G : LogFGL v d) {m : ℕ} (g : Fin m → Fin d → PowerSeries C)
     (h : ∀ u, IsCurve v (g u)) : IsCurve v (G.sumF g) :=
   isCurve_sumList G (List.ofFn g) (fun g' hg' => by
     obtain ⟨u, rfl⟩ := List.mem_ofFn.mp hg'
     exact h u)
 
+/- English proof (translation)
+Rewrite using `[show G.sumF g = G.sumList (List.ofFn g) from rfl, lgCurve_sumList G _ (fun g' hg' => by`. Take `⟨u, rfl⟩` from `List.mem_ofFn.mp hg'`. Conclude with `h u) a]`. Simplify using `[List.map_ofFn, List.sum_ofFn]`.
+-/
 theorem lgCurve_sumF (G : LogFGL v d) {m : ℕ} (g : Fin m → Fin d → PowerSeries C)
     (h : ∀ u, IsCurve v (g u)) (a : Fin d) :
     G.lgCurve (G.sumF g) a = ∑ u, G.lgCurve (g u) a := by
@@ -184,6 +257,11 @@ theorem lgCurve_sumF (G : LogFGL v d) {m : ℕ} (g : Fin m → Fin d → PowerSe
       exact h u) a]
   simp [List.map_ofFn, List.sum_ofFn]
 
+/- English proof (translation)
+Introduce `a`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Use `show PowerSeries.constantCoeff (PowerSeries.rescale x (ga a)) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, (h a).1]`. Use `show IsIntV v (PowerSeries.coeff n (PowerSeries.rescale x (ga a)))`.
+
+Rewrite using `[PowerSeries.coeff_rescale]`. Conclude with `mem_intRing.mp (Subring.mul_mem _ (Subring.pow_mem _ (mem_intRing.mpr hx) n) (mem_intRing.mpr ((h a).2 n)))`.
+-/
 theorem isCurve_rescale {x : C} (hx : IsIntV v x) {ga : Fin d → PowerSeries C}
     (h : IsCurve v ga) : IsCurve v (rescaleCurve x ga) := by
   intro a
@@ -196,6 +274,9 @@ theorem isCurve_rescale {x : C} (hx : IsIntV v x) {ga : Fin d → PowerSeries C}
     exact mem_intRing.mp (Subring.mul_mem _ (Subring.pow_mem _ (mem_intRing.mpr hx) n)
       (mem_intRing.mpr ((h a).2 n)))
 
+/- English proof (translation)
+Establish `hX : HasSubst (fun _ : Unit => (x • PowerSeries.X : PowerSeries C))` using `(PowerSeries.HasSubst.smul_X' x).const`. Use `show subst (fun b => PowerSeries.rescale x (ga b)) (G.lg a) = PowerSeries.rescale x (subst ga (G.lg a))`. Simplify using `only [PowerSeries.rescale_eq_subst, PowerSeries.subst_def]`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h0) hX]`.
+-/
 theorem lgCurve_rescale (G : LogFGL v d) (x : C) {ga : Fin d → PowerSeries C}
     (h0 : ∀ b, PowerSeries.constantCoeff (ga b) = 0) (a : Fin d) :
     G.lgCurve (rescaleCurve x ga) a = PowerSeries.rescale x (G.lgCurve ga a) := by
@@ -205,6 +286,17 @@ theorem lgCurve_rescale (G : LogFGL v d) (x : C) {ga : Fin d → PowerSeries C}
   simp only [PowerSeries.rescale_eq_subst, PowerSeries.subst_def]
   rw [subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h0) hX]
 
+/- English proof (translation)
+Establish `hd : ∑ i ∈ e.support, e i = 1` using `by first`. Consider the case `exact he`. Consider the case `simpa [Finsupp.degree] using he`. Establish `hne : e.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`.
+
+Introduce `h`. Rewrite `hd` using `[h, Finset.sum_empty]`. Conclude with `zero_ne_one hd`. Take `⟨b, hb⟩` from `hne`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hd` using `[← Finset.add_sum_erase _ _ hb]`. Establish `hb1 : 1 ≤ e b` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hb)`. Establish `hrest : ∑ i ∈ e.support.erase b, e i = 0` using `by omega`. Establish `heb : e b = 1` using `by omega`. Use extensionality with `i`.
+
+Distinguish the cases in `hi : i = b`. Rewrite using `[hi, heb, Finsupp.single_eq_same]`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hi)]`. Distinguish the cases in `his : i ∈ e.support`. Conclude with `(Finset.sum_eq_zero_iff.mp hrest) i (Finset.mem_erase.mpr ⟨hi, his⟩)`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `his (Finsupp.mem_support_iff.mpr hc)`.
+-/
 theorem degree_eq_one {σ : Type} {e : σ →₀ ℕ} (he : e.degree = 1) :
     ∃ b, e = Finsupp.single b 1 := by
   classical
@@ -232,6 +324,13 @@ theorem degree_eq_one {σ : Type} {e : σ →₀ ℕ} (he : e.degree = 1) :
     · by_contra hc
       exact his (Finsupp.mem_support_iff.mpr hc)
 
+/- English proof (translation)
+Apply `MvPowerSeries.le_order` to reduce the goal to its premises. Introduce `e he`. Establish `he' : e.degree < 2` using `by exact_mod_cast he`. Rewrite using `[map_sub]`. Break down `(show e.degree = 0 ∨ e.degree = 1 by omega) with h0 | h1` into its components or cases.
+
+Establish `hz : e = 0` using `by first`. Consider the case `exact Finsupp.degree_eq_zero_iff.mp h0`. Consider the case `exact (Finsupp.degree_eq_zero_iff e).mp h0`. Rewrite using `[hz, coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, G.lg_const, constantCoeff_X, sub_zero]`. Take `⟨b, rfl⟩` from `degree_eq_one h1`.
+
+Rewrite using `[G.lg_lin, coeff_X]`. Distinguish the cases in `hab : a = b`. Rewrite using `[hab, if_pos rfl, if_pos rfl, sub_self]`. Rewrite using `[if_neg hab, if_neg (fun h => hab ((Finsupp.single_left_injective one_ne_zero h).symm)), sub_zero]`.
+-/
 theorem order_lg_sub_X (G : LogFGL v d) (a : Fin d) : ((2 : ℕ) : ℕ∞) ≤ (G.lg a - X a).order := by
   classical
   apply MvPowerSeries.le_order
@@ -252,6 +351,15 @@ theorem order_lg_sub_X (G : LogFGL v d) (a : Fin d) : ((2 : ℕ) : ℕ∞) ≤ (
     · rw [if_neg hab, if_neg (fun h => hab ((Finsupp.single_left_injective one_ne_zero h).symm)),
         sub_zero]
 
+/- English proof (translation)
+Establish `h0 : ∀ b, constantCoeff (ga b) = 0` using `fun b => by`. Use `hk b 0 hk1` as an intermediate fact. Rewrite `this` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Establish `hs : HasSubst ga` using `hasSubst_of_constantCoeff_zero h0`. Establish `hsplit : G.lgCurve ga a = ga a + subst ga (G.lg a - X a)`.
+
+Rewrite using `[LogFGL.lgCurve, subst_sub hs, subst_X hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hord : ((k : ℕ∞)) ≤ ⨅ b, MvPowerSeries.order (ga b)` using `le_iInf fun b => nat_le_order fun e he => by`. Rewrite `he`, the goal using `[unit_finsupp e]`. Rewrite `he` using `[Finsupp.degree_single]`.
+
+Conclude with `hk b _ he`. Establish `hR` using `le_order_subst hs (G.lg a - X a)`. Establish `hlt : ((Finsupp.single () j).degree : ℕ∞) < (subst ga (G.lg a - X a)).order`. Rewrite using `[Finsupp.degree_single]`. Use `lt_of_lt_of_le ?_ (le_trans (mul_le_mul' hord (order_lg_sub_X G a)) hR)` and prove the remaining obligations.
+
+Conclude with `(show j < k * 2 by omega)` after adjusting the coercions. Rewrite using `[hsplit, map_add]`. Use `coeff_of_lt_order hlt` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ + coeff (Finsupp.single () j) _ = _`. Rewrite using `[this, add_zero]`.
+-/
 theorem coeff_lgCurve_low (G : LogFGL v d) {ga : Fin d → PowerSeries C} {k : ℕ} (hk1 : 1 ≤ k)
     (hk : ∀ b, ∀ i < k, PowerSeries.coeff i (ga b) = 0) (a : Fin d) {j : ℕ} (hj : j < 2 * k) :
     PowerSeries.coeff j (G.lgCurve ga a) = PowerSeries.coeff j (ga a) := by
@@ -275,6 +383,11 @@ theorem coeff_lgCurve_low (G : LogFGL v d) {ga : Fin d → PowerSeries C} {k : �
   change _ + coeff (Finsupp.single () j) _ = _
   rw [this, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use `show PowerSeries.coeff 1 (ga a) = PowerSeries.coeff (p ^ 0) (G.lgCurve ga a)`. Rewrite using `[pow_zero]`. Conclude with `(coeff_lgCurve_low G le_rfl (fun b i hi => by`. Rewrite using `[Nat.lt_one_iff.mp hi, PowerSeries.coeff_zero_eq_constantCoeff_apply, h0 b]) a`.
+
+Use the proof step `(by norm_num)).symm`.
+-/
 theorem tangent_eq_lc_zero (G : LogFGL v d) (p : ℕ) {ga : Fin d → PowerSeries C}
     (h0 : ∀ b, PowerSeries.constantCoeff (ga b) = 0) : tangent ga = G.lc p ga 0 := by
   funext a

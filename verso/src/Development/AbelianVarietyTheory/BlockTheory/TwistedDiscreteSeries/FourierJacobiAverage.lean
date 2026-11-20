@@ -48,6 +48,9 @@ open Classical in
 
 def app (l : SB X →ₗ[ℂ] V) (f : X → ℂ) : V := if h : f ∈ SB X then l ⟨f, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[app, dif_pos f.2]`.
+-/
 theorem app_coe (l : SB X →ₗ[ℂ] V) (f : SB X) : app l (f : X → ℂ) = l f := by
   rw [app, dif_pos f.2]
 
@@ -271,6 +274,9 @@ def FourierJacobiBessel : Prop :=
     [MeasurableSpace k] [BorelSpace k],
     Heisenberg k ∧ UniqueBessel k ∧ Exponents k ∧ LocalSign k ∧ Target k ∧ Source k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `β`. Simplify using `only [schM, schT, Pi.smul_apply, smul_eq_mul, dotProduct_add, ← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example {k n : Type} [Field k] [Fintype n] [DecidableEq n] (ψ : AddChar k Circle) (u β₀ : n → k)
     (Φ₀ : (n → k) → ℂ) : schM ψ u (schT β₀ Φ₀) = (ψ (-(u ⬝ᵥ β₀)) : ℂ) • schT β₀ (schM ψ u Φ₀) := by
   funext β
@@ -279,6 +285,9 @@ example {k n : Type} [Field k] [Fintype n] [DecidableEq n] (ψ : AddChar k Circl
   congr 3
   ring
 
+/- English proof (translation)
+Simplify using `[ch, colM, rowM]`.
+-/
 example {k n n' : Type} [Field k] {c p : ℕ} (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (ξ : n → k) (u' : n' → k) :
     ch (x + colM c p ξ) = ch x ∧ ch (x + rowM n c p u') = ch x := by
   simp [ch, colM, rowM]

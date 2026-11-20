@@ -12,6 +12,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 def ctau (S : HSpace E) (τ : E →+* ℂ) (x : S.V) : Fin S.rank → ℂ := fun i => τ (S.frame.repr x i)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, starRingEnd_apply]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [HSpace.gram, RingHom.id_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_coord (S : HSpace E) (x y : S.V) :
     S.hT x y = ∑ i, ∑ j, star (S.frame.repr x i) * (S.gram i j * S.frame.repr y j) := by
   conv_lhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]
@@ -22,12 +27,20 @@ theorem hT_coord (S : HSpace E) (x y : S.V) :
   simp only [HSpace.gram, RingHom.id_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[hT_coord]`. Simplify using `only [dotProduct, mulVec, ctau, map_sum, map_mul, hτ, Pi.star_apply, Matrix.map_apply, Finset.mul_sum, Complex.star_def]`.
+-/
 theorem tau_hT (S : HSpace E) (τ : E →+* ℂ) (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)) (x y : S.V) :
     τ (S.hT x y) = star (ctau S τ x) ⬝ᵥ ((S.gram.map τ) *ᵥ ctau S τ y) := by
   rw [hT_coord]
   simp only [dotProduct, mulVec, ctau, map_sum, map_mul, hτ, Pi.star_apply, Matrix.map_apply,
     Finset.mul_sum, Complex.star_def]
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `h i`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`.
+-/
 theorem hT_span_zero (S : HSpace E) {ι : Type} (f : ι → S.V) (y : S.V) (h : ∀ i, S.hT (f i) y = 0) :
     ∀ x ∈ Submodule.span E (Set.range f), S.hT x y = 0 := by
   intro x hx
@@ -39,6 +52,15 @@ theorem hT_span_zero (S : HSpace E) {ι : Type} (f : ι → S.V) (y : S.V) (h : 
   | add a b _ _ ha hb => simp [ha, hb]
   | smul c a _ ha => simp [ha]
 
+/- English proof (translation)
+Apply `WbDefC.sigNeg_card_le (S.gram.map τ) _ _ hsig (fun a => ctau S τ (v a))` to reduce the goal to its premises. Establish `hc : LinearIndependent E (fun a => fun i => S.frame.repr (v a) i)`. Use `hv.map' S.frame.equivFun.toLinearMap S.frame.equivFun.ker` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Conclude with `WbDefC.linIndep_map τ _ hc`.
+
+Introduce `d`. Establish `h1 : ∀ a b, star (ctau S τ (v a)) ⬝ᵥ ((S.gram.map τ) *ᵥ ctau S τ (v b)) = τ (S.hT (v a) (v b))` using `fun a b => (tau_hT S τ hτ (v a) (v b)).symm`. Establish `hexp : star (∑ a, d a • ctau S τ (v a)) ⬝ᵥ ((S.gram.map τ) *ᵥ ∑ a, d a • ctau S τ (v a)) = ∑ a, star (d a) * d a * τ (S.hT (v a) (v a))`. Simplify using `only [star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, h1]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by rw [horth b a hb, map_zero, mul_zero]) (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp, Complex.re_sum]`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `a _`.
+
+Establish `key : (star (d a) * d a * τ (S.hT (v a) (v a))).re = ((d a).re ^ 2 + (d a).im ^ 2) * (τ (S.hT (v a) (v a))).re`. Simplify using `only [Complex.star_def, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) (hnp a)`.
+-/
 theorem card_le_of_nonpos (S : HSpace E) (τ : E →+* ℂ) (hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a))
     (hsig : Formalism.UG.HasSignature (S.gram.map τ) (S.sig τ).1 (S.sig τ).2)
     {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → S.V) (hv : LinearIndependent E v)
@@ -70,6 +92,23 @@ theorem card_le_of_nonpos (S : HSpace E) (τ : E →+* ℂ) (hτ : ∀ a, τ (st
     rw [key]
     exact mul_nonpos_of_nonneg_of_nonpos (by positivity) (hnp a)
 
+/- English proof (translation)
+Set `ψ : S.V →ₗ[E] (Fin r → E)` to `LinearMap.pi (fun i => S.hT (e i))`. Establish `hker : LinearMap.ker ψ = Formalism.MainNotions.S.perpS S (Submodule.span E (Set.range e))`. Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy x hx`. Use `hT_span_zero S e y (fun i => ?_) x hx` and prove the remaining obligations. Use `congrFun hy i` as an intermediate fact. Simplify `this` using `[ψ]`. Introduce `hy`.
+
+Use function extensionality and compare the values at `i`. Simplify `hy (e i) (Submodule.subset_span ⟨i, rfl⟩)` using `[ψ]`. Establish `hsurj : LinearMap.range ψ = ⊤`. Rewrite using `[LinearMap.range_eq_top, ← LinearMap.dualMap_injective_iff]`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `φ hφ`. Set `c : Fin r → E` to `fun i => φ (fun j => if i = j then 1 else 0)`. Establish `hφy : ∀ y, φ (ψ y) = S.hT (∑ i, star (c i) • e i) y`. Introduce `y`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ (ψ y)]`.
+
+Simplify using `[ψ, map_sum, LinearMap.sum_apply, c, mul_comm, starRingEnd_apply, star_star]`. Establish `hzero : ∑ i, star (c i) • e i = 0`. Apply `S.nondeg.1` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hφy]`.
+
+Use `LinearMap.congr_fun hφ y` as an intermediate fact. Simplify `this` using `[LinearMap.dualMap_apply]`. Establish `hc : ∀ i, c i = 0`. Introduce `i`. Use `Fintype.linearIndependent_iff.1 he (fun i => star (c i)) hzero i` as an intermediate fact.
+
+Simplify using `using this`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ x]`. Simplify using `[show ∀ i, φ (fun j => if i = j then 1 else 0) = 0 from hc]`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker ψ`.
+
+Rewrite `h` using `[hsurj, hker, finrank_top, Module.finrank_fin_fun, S.rank_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_perp_add (S : HSpace E) {r : ℕ} (e : Fin r → S.V) (he : LinearIndependent E e) :
     finrank E (Formalism.MainNotions.S.perpS S (Submodule.span E (Set.range e))) + r = S.rank := by
   let ψ : S.V →ₗ[E] (Fin r → E) := LinearMap.pi (fun i => S.hT (e i))

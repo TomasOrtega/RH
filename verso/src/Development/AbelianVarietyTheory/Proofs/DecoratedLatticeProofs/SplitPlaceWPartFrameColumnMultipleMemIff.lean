@@ -9,6 +9,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ColsWPart
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q S L Y _ _ F u m₀ c₀ hI hc hcol a`. Establish `hc0 : c₀ ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`. Conclude with `zero_ne_one hc`.
+
+Establish `heq : (fun i => q.sec ((F.β *ᵥ Pi.single m₀ (q.pr a / c₀)) i)) = fun r => q.e * (a * incA D (u r))`. Use function extensionality and compare the values at `r`. Establish `h1 : (F.β *ᵥ Pi.single m₀ (q.pr a / c₀)) r = F.β r m₀ * (q.pr a / c₀)`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[h1, hcol r, ← q.sec_pr, map_mul q.pr]`.
+
+Use `congr 1`. Use `show c₀ * q.pr (incA D (u r)) * (q.pr a / c₀) = q.pr a * q.pr (incA D (u r))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← heq, ← hI (Pi.single m₀ (q.pr a / c₀))]`. Establish `hdiv : q.pr a / c₀ ∈ 𝒪[k] ↔ q.pr a ∈ 𝒪[k]`.
+
+Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_div₀, hc, div_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h m₀` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same]`.
+
+Conclude with `hdiv.1 this`. Introduce `h i`. Distinguish the cases in `hi : i = m₀`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `hdiv.2 h`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `zero_mem _`.
+-/
 theorem wpart_mem_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (Y : Type) [Fintype Y] [DecidableEq Y] (F : Frame k S.rank Y) (u : Fin S.rank → D.host.E) (m₀ : Y) (c₀ : k), IntIn q S F L → valuation k c₀ = 1 → (∀ r, F.β r m₀ = c₀ * (ofSplit q).pr (u r)) → ∀ a : AE D, ((fun r => q.e * (a * incA D (u r))) ∈ GlobalTheory.FinPl.latV S L (· = q.v) ↔ q.pr a ∈ 𝒪[k]) := by
   intro D k _ _ _ _ q S L Y _ _ F u m₀ c₀ hI hc hcol a
   have hc0 : c₀ ≠ 0 := by

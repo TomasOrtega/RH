@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.CharConductor
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IterationConvergence.main`. Consider the case `exact _root_.GlobalTheory.IterationConvergence.main`. Consider the case `(apply _root_.GlobalTheory.IterationConvergence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IterationConvergence.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IterationConvergence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IterationConvergence.main ..)`.
+-/
 theorem eq_one_of_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   first
   | exact @_root_.GlobalTheory.IterationConvergence.main
@@ -17,6 +22,11 @@ theorem eq_one_of_pow_near_one {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 /
   | (intros; apply @_root_.GlobalTheory.IterationConvergence.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IterationConvergence.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CharacterConductorBall.exists_conductor`. Consider the case `exact _root_.GlobalTheory.CharacterConductorBall.exists_conductor`. Consider the case `(apply _root_.GlobalTheory.CharacterConductorBall.exists_conductor <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CharacterConductorBall.exists_conductor <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CharacterConductorBall.exists_conductor <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CharacterConductorBall.exists_conductor ..)`.
+-/
 theorem exists_exponent_of_valued {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hψ : Continuous ψ) (hne : ∃ t, ψ t ≠ 1) :
     ∃ n : ℤ, ∀ t : K, (∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1) ↔
@@ -29,6 +39,11 @@ theorem exists_exponent_of_valued {K : Type} [Field K] [Valued K (WithZero (Mult
   | (intros; apply @_root_.GlobalTheory.CharacterConductorBall.exists_conductor <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.CharacterConductorBall.exists_conductor ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion`. Consider the case `exact _root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion`. Consider the case `(apply _root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion ..)`.
+-/
 theorem exists_conductor_exponent : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ψ : AddChar (v.adicCompletion F) ℂ), Continuous ψ → (∀ t, ‖ψ t‖ = 1) → (∃ t, ψ t ≠ 1) → ∃ n : ℤ, ∀ t : v.adicCompletion F, (∀ s ∈ v.adicCompletionIntegers F, ψ (t * s) = 1) ↔ Valued.v t ≤ WithZero.exp n := by
   first
   | exact @_root_.GlobalTheory.ConductorAdicCompletion.exists_conductor_adicCompletion

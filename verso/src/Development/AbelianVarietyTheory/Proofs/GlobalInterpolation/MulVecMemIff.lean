@@ -11,20 +11,38 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)}
   {s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F} {k : ℕ}
 
+/- English proof (translation)
+Use `show (s (s.symm (a, b))).1 = a`. Rewrite using `[s.apply_symm_apply]`.
+-/
 theorem prP_symm (a b : v.adicCompletion F) : prP s (s.symm (a, b)) = a := by
   show (s (s.symm (a, b))).1 = a
   rw [s.apply_symm_apply]
 
+/- English proof (translation)
+Use `show (s (s.symm (a, b))).2 = b`. Rewrite using `[s.apply_symm_apply]`.
+-/
 theorem prPbar_symm (a b : v.adicCompletion F) : prPbar s (s.symm (a, b)) = b := by
   show (s (s.symm (a, b))).2 = b
   rw [s.apply_symm_apply]
 
+/- English proof (translation)
+The claim follows from `funext fun _ => RingHom.map_mulVec p _ _ _`.
+-/
 theorem map_mulVec_bc {A K : Type} [CommRing A] [CommRing K] (p : A →+* K) (g : GL (Fin k) A)
     (x : Fin k → A) :
     (fun i => p (((g : Matrix (Fin k) (Fin k) A) *ᵥ x) i)) =
       ((bc p g : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) *ᵥ fun j => p (x j) :=
   funext fun _ => RingHom.map_mulVec p _ _ _
 
+/- English proof (translation)
+Rewrite using `[mem_partOf _ (sur_prP hs), mem_partOf _ (sur_prPbar hs)]`. Use `⟨fun hx => ⟨⟨x, hx, rfl⟩, ⟨x, hx, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, ha, ha'⟩, ⟨b, hb, hb'⟩⟩`. Establish `h1 : s.symm (1, 0) ∈ intV E v` using `(hs.2.2 _).2 (by rw [s.apply_symm_apply]; exact ⟨one_mem _, zero_mem _⟩)`. Establish `h2 : s.symm (0, 1) ∈ intV E v` using `(hs.2.2 _).2 (by rw [s.apply_symm_apply]; exact ⟨zero_mem _, one_mem _⟩)`.
+
+Establish `hx : x = (⟨_, h1⟩ : intV E v) • a + (⟨_, h2⟩ : intV E v) • b`. Use function extensionality and compare the values at `i`. Use `show x i = s.symm (1, 0) * a i + s.symm (0, 1) * b i`. Apply `s.injective` to reduce the goal to its premises. Establish `e1 : (s (a i)).1 = (s (x i)).1` using `congrFun ha' i`.
+
+Establish `e2 : (s (b i)).2 = (s (x i)).2` using `congrFun hb' i`. Rewrite using `[map_add, map_mul, map_mul, s.apply_symm_apply, s.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_add, Prod.fst_mul, Prod.fst_mul, one_mul, zero_mul, add_zero, e1]`. Rewrite using `[Prod.snd_add, Prod.snd_mul, Prod.snd_mul, one_mul, zero_mul, zero_add, e2]`.
+
+Rewrite using `[hx]`. Conclude with `Λ.add_mem (Λ.smul_mem _ ha) (Λ.smul_mem _ hb)`.
+-/
 theorem mem_iff (hs : IsSplitting σ v s)
     (Λ : Submodule (intV E v) (Fin k → E ⊗[F] v.adicCompletion F))
     (x : Fin k → E ⊗[F] v.adicCompletion F) :
@@ -50,6 +68,9 @@ theorem mem_iff (hs : IsSplitting σ v s)
   rw [hx]
   exact Λ.add_mem (Λ.smul_mem _ ha) (Λ.smul_mem _ hb)
 
+/- English proof (translation)
+Rewrite using `[mem_iff hs, map_mulVec_bc, map_mulVec_bc]`. Simplify using `only [prP_symm, prPbar_symm]`.
+-/
 theorem mulVec_mem_iff (hs : IsSplitting σ v s)
     (Λ : Submodule (intV E v) (Fin k → E ⊗[F] v.adicCompletion F))
     (g : GL (Fin k) (E ⊗[F] v.adicCompletion F)) (y z : Fin k → v.adicCompletion F) :
@@ -59,6 +80,9 @@ theorem mulVec_mem_iff (hs : IsSplitting σ v s)
   rw [mem_iff hs, map_mulVec_bc, map_mulVec_bc]
   simp only [prP_symm, prPbar_symm]
 
+/- English proof (translation)
+Rewrite using `[mem_iff hs]`. Simplify using `only [prP_symm, prPbar_symm]`.
+-/
 theorem symm_mem_iff (hs : IsSplitting σ v s)
     (Λ : Submodule (intV E v) (Fin k → E ⊗[F] v.adicCompletion F))
     (y z : Fin k → v.adicCompletion F) :
@@ -66,6 +90,15 @@ theorem symm_mem_iff (hs : IsSplitting σ v s)
   rw [mem_iff hs]
   simp only [prP_symm, prPbar_symm]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ v s hs k Λ`. Use `⟨mem_iff hs Λ, fun g => ⟨fun hg => ⟨fun y => ?_, fun z => ?_⟩, fun hg x => ?_⟩, fun B hB => ⟨fun y => ?_, fun z => ?_⟩⟩` and prove the remaining obligations. Establish `h : _ ↔ _` using `hg (fun i => s.symm (y i, (0 : Fin k → v.adicCompletion F) i))`. Rewrite `h` using `[mulVec_mem_iff hs, symm_mem_iff hs, Matrix.mulVec_zero]`. Simplify `h` using `only [zero_mem, and_true]`.
+
+Establish `h : _ ↔ _` using `hg (fun i => s.symm ((0 : Fin k → v.adicCompletion F) i, z i))`. Rewrite `h` using `[mulVec_mem_iff hs, symm_mem_iff hs, Matrix.mulVec_zero]`. Simplify `h` using `only [zero_mem, true_and]`. Rewrite using `[mem_iff hs Λ x, mem_iff hs Λ (_ *ᵥ x), map_mulVec_bc, map_mulVec_bc]`. Conclude with `and_congr (hg.1 _) (hg.2 _)`.
+
+Establish `h` using `hB (fun i => s.symm (y i, (0 : Fin k → v.adicCompletion F) i))`. Rewrite `h` using `[mulVec_mem_iff hs, Matrix.mulVec_zero]`. Simplify `h` using `only [zero_mem, and_true, hs.2.2, RingEquiv.apply_symm_apply, Pi.zero_apply]`. Establish `h` using `hB (fun i => s.symm ((0 : Fin k → v.adicCompletion F) i, z i))`. Rewrite `h` using `[mulVec_mem_iff hs, Matrix.mulVec_zero]`.
+
+Simplify `h` using `only [zero_mem, true_and, hs.2.2, RingEquiv.apply_symm_apply, Pi.zero_apply]`.
+-/
 theorem stabPart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), IsSplitting σ v s → ∀ (k : ℕ) (Λ : Submodule (intV E v) (Fin k → E ⊗[F] v.adicCompletion F)), (∀ x, x ∈ Λ ↔ (fun i => prP s (x i)) ∈ partOf (prP s) Λ ∧ (fun i => prPbar s (x i)) ∈ partOf (prPbar s) Λ) ∧ (∀ g : GL (Fin k) (E ⊗[F] v.adicCompletion F), g ∈ stabGL Λ ↔ bc (prP s) g ∈ stabGL (partOf (prP s) Λ) ∧ bc (prPbar s) g ∈ stabGL (partOf (prPbar s) Λ)) ∧ ∀ B : GL (Fin k) (E ⊗[F] v.adicCompletion F), (∀ y : Fin k → E ⊗[F] v.adicCompletion F, (B : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) *ᵥ y ∈ Λ ↔ ∀ i, y i ∈ intV E v) → GlobalTheory.OverCompare.IsFrame (partOf (prP s) Λ) (bc (prP s) B) ∧ GlobalTheory.OverCompare.IsFrame (partOf (prPbar s) Λ) (bc (prPbar s) B) := by
   intro F E _ _ _ _ _ σ v s hs k Λ
   refine ⟨mem_iff hs Λ, fun g => ⟨fun hg => ⟨fun y => ?_, fun z => ?_⟩, fun hg x => ?_⟩,

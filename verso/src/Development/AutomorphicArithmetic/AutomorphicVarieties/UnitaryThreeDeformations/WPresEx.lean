@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Establish `k : ∀ g, (r g).mat = (r' g).mat → r g = r' g` using `fun g hg => SemidirectProduct.ext (Units.ext hg) (h g)`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Break down `Int.units_eq_one_or (η g) with hg | hg` into its components or cases. Conclude with `k g (h' g hg)`. Establish `h1 : η (g * c⁻¹) = 1` using `by rw [map_mul, map_inv, hg, hc]; rfl`.
+
+Rewrite using `[← inv_mul_cancel_right g c, map_mul r, map_mul r', k _ (h' _ h1), k c e]`.
+-/
 private theorem hom_ext_ker {Γ R : Type} [Group Γ] [CommRing R] {η : Γ →* ℤˣ} {c : Γ} (hc : η c = -1)
     {r r' : Γ →* GG 3 R} (h : ∀ g, (r g).right = (r' g).right) (e : (r c).mat = (r' c).mat)
     (h' : ∀ g, η g = 1 → (r g).mat = (r' g).mat) : r = r' := by
@@ -16,6 +21,9 @@ private theorem hom_ext_ker {Γ R : Type} [Group Γ] [CommRing R] {η : Γ →* 
   · have h1 : η (g * c⁻¹) = 1 := by rw [map_mul, map_inv, hg, hc]; rfl
     rw [← inv_mul_cancel_right g c, map_mul r, map_mul r', k _ (h' _ h1), k c e]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[wt]`. Simplify using `[GG.mat, tor_val, Matrix.diagonal_apply_ne _ h]`.
+-/
 private theorem scale_const {O R R' Γ : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R']
     [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ) (f f' : R →ₐ[O] R') (t : R'ˣ) (g : Γ) (a b : Fin 3) :
     f' (algebraMap O R ((r0 η Ψ g).mat a b)) = ((t ^ wt a b : R'ˣ) : R') * f (algebraMap O R ((r0 η Ψ g).mat a b)) := by
@@ -25,6 +33,19 @@ private theorem scale_const {O R R' Γ : Type} [CommRing O] [CommRing R] [Algebr
     simp [wt]
   · simp [GG.mat, tor_val, Matrix.diagonal_apply_ne _ h]
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ _ R _ _ _ u hu`. Set `x : {g // F.η g = 1} × Fin 3 × Fin 3 → R` to `fun s => (u s.1).mat s.2.1 s.2.2 - algebraMap O R ((r0 F.η F.Ψ s.1).mat s.2.1 s.2.2)`. Set `w : {g // F.η g = 1} × Fin 3 × Fin 3 → ℤ` to `fun s => wt s.2.1 s.2.2`. Establish `hpush : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R'), F.IsPt g₁ (push f u)`. Introduce `R' _ _ _ f`.
+
+Use `haveI : IsLocalHom f := ⟨fun a ha => by_contra fun hn => algHom_mem_max f (x := a) hn ha⟩`. Conclude with `isPt_push F f g₁ u hu.pt`. Establish `hiff : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f f' : R →ₐ[O] R') (t : R'ˣ), (∀ s, f' (x s) = ((t ^ w s : R'ˣ) : R') * f (x s)) ↔ push f' u = conjBy (tor R' t) (push f u)`. Introduce `R' _ _ _ f f' t`. Use `⟨fun h => hom_ext_ker hF.ηc (fun g => ((conjBy_tor (push f u) t).2.1 g).symm) ?_ fun g hg => ?_, fun h s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hpush R' f').norm.atc, (isPt_tor F g₁ _ t (hpush R' f)).norm.atc]`. Use extensionality with `a b`. Rewrite using `[(conjBy_tor (push f u) t).1]`. Use `h (⟨g, hg⟩, a, b)` as an intermediate fact. Simplify using `only [x, w, map_sub, mul_sub] at this`.
+
+Rewrite `this` using `[scale_const F.η F.Ψ f f' t, sub_left_inj]`. Conclude with `this`. Simplify using `only [x, w, map_sub, mul_sub]`. Rewrite using `[scale_const F.η F.Ψ f f' t, entry_mem u _ _ _ R' f f' t h]`. Take `⟨W, h1, h2, h3⟩` from `exists_wpres_of_coord (O := O) x w (fun s => hu.pt.red s.1 s.2.1 s.2.2) (fun R' _ _ _ f f' h => by`.
+
+Establish `e` using `(hiff R' f' f 1).1 fun s => by simp [h s]`. Establish `e' : push f u = push f' u` using `e.trans (MonoidHom.ext fun g => by simp [conjBy])`. Conclude with `(hu.univ R' _ (hpush R' f')).unique e' rfl)`. Use the proof step `(fun R' _ _ _ f t => by`. Take `⟨f', hf', -⟩` from `hu.univ R' _ (isPt_tor F g₁ _ t (hpush R' f))`.
+
+Conclude with `⟨f', (hiff R' f f' t).2 hf'⟩)`. Use `⟨W, ⟨fun i => ?_, fun j => Submodule.ext fun y => (h2 j y).trans ?_⟩, h3⟩` and prove the remaining obligations. Take `⟨s, e1, e2⟩` from `h1 i`. Conclude with `⟨s.1, s.2.1, s.2.2, s.1.2, e1, e2⟩`. Conclude with `⟨fun h R' _ _ _ f f' t e => h R' f f' t ((hiff R' f f' t).2 e), fun h R' _ _ _ f f' t e => h R' f f' t ((hiff R' f f' t).1 e)⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.exists_adapted :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]
       {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]

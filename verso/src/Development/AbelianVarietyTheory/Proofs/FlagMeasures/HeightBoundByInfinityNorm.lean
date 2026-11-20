@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TauNorm
 
+/- English proof (translation)
+Use `set c : ℝ := ∑ i, ∑ j, ‖L (Matrix.single i j (1 : ℂ))‖ with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`. Use `⟨c, hc0, fun B => ?_⟩` and prove the remaining obligations. Establish `hB : L B = ∑ i, ∑ j, B i j • L (Matrix.single i j (1 : ℂ))` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single B]`. Simplify using `[map_sum, ← map_smul, Matrix.smul_single]`.
+
+Establish `hle : ∀ i j, ‖L (Matrix.single i j (1 : ℂ))‖ ≤ c` using `fun i j => (Finset.single_le_sum (f := fun j => ‖L (Matrix.single i j (1 : ℂ))‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖L (Matrix.single i j (1 : ℂ))‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_un …`. Rewrite using `[hB]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem exists_bound {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] E) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ B, ‖L B‖ ≤ c * ∑ i, ∑ j, ‖B i j‖ := by
@@ -38,6 +45,13 @@ theorem exists_bound {n : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace �
         rw [Finset.mul_sum]
         exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))` to `{ toFun := fun B => LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (P * B * Q)) map_add' := fun B B' => by simp [Matrix.mul_add, Matrix.add_mul] map_smul' := fun a B => by simp }`. Take `⟨c, hc, h⟩` from `exists_bound L`. Use `⟨c, hc, fun B hB => ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (P * B * Q))‖`. Rewrite using `[norm_pos_iff]`.
+
+Introduce `h0`. Apply `hB` to reduce the goal to its premises. Establish `h1 : Matrix.toEuclideanLin (P * B * Q) = 0` using `LinearMap.toContinuousLinearMap.injective (h0.trans (map_zero _).symm)`. Conclude with `Matrix.toEuclideanLin.injective (h1.trans (map_zero _).symm)`. Unfold `GlobalTheory.Count.dOp`.
+
+Rewrite using `[Real.exp_log hpos]`. Conclude with `h B`.
+-/
 theorem exp_dOp_le {n : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ B, P * B * Q ≠ 0 → Real.exp (GlobalTheory.Count.dOp (P * B * Q)) ≤ c * ∑ i, ∑ j, ‖B i j‖ := by
   let L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :=
@@ -57,6 +71,11 @@ theorem exp_dOp_le {n : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) :
   rw [Real.exp_log hpos]
   exact h B
 
+/- English proof (translation)
+Take `⟨v₀, hv₀⟩` from `Finite.exists_max d`. Establish `hcard : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `hmean : (∑ v, d v) / Fintype.card ι ≤ d v₀`. Rewrite using `[div_le_iff₀ hcard]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(Real.exp_le_exp.2 hmean).trans (h v₀)`.
+-/
 theorem exp_mean_le {ι : Type} [Fintype ι] [Nonempty ι] (d : ι → ℝ) (K : ℝ) (h : ∀ v, Real.exp (d v) ≤ K) :
     Real.exp ((∑ v, d v) / Fintype.card ι) ≤ K := by
   obtain ⟨v₀, hv₀⟩ := Finite.exists_max d
@@ -67,6 +86,11 @@ theorem exp_mean_le {ι : Type} [Fintype ι] [Nonempty ι] (d : ι → ℝ) (K :
       _ = d v₀ * Fintype.card ι := by simp [Finset.sum_const, nsmul_eq_mul, mul_comm]
   exact (Real.exp_le_exp.2 hmean).trans (h v₀)
 
+/- English proof (translation)
+Use `I.cm.totReal` as an intermediate fact. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Establish `h2` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := I.F)`. Rewrite `h1`, `h2` using `[NumberField.IsTotallyReal.nrComplexPlaces_eq_zero]`. Simplify using `only [AutInst.f]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_places (I : AutInst) : Fintype.card (InfinitePlace I.F) = I.f := by
   have := I.cm.totReal
   have h1 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F
@@ -75,6 +99,15 @@ theorem card_places (I : AutInst) : Fintype.card (InfinitePlace I.F) = I.f := by
   simp only [AutInst.f]
   omega
 
+/- English proof (translation)
+Establish `hK1 : g.2 ∈ I.Kset`. Rewrite using `[hg]`. Use `show ((1 : I.Gf) : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) ∈ Formalism.UG.stabGL I.Lf`. Simplify using `only [OneMemClass.coe_one]`. Conclude with `one_mem _`.
+
+Establish `hlog` using `GlobalTheory.TauLipschitz.log_trunc_le I hn x g hK1`. Establish `hx` using `GlobalTheory.TauLipschitz.trunc_pos I hn x`. Establish `hxg` using `GlobalTheory.TauLipschitz.trunc_pos I hn (x * g)`. Establish `hmean : Real.exp (GlobalTheory.Dec.dSum I g.1 / I.f) ≤ K`. Use `exp_mean_le (fun v => GlobalTheory.Count.dOp (uMat (g.1 v))) K h` as an intermediate fact.
+
+Rewrite `this` using `[card_places]`. Simplify `this` using `only [GlobalTheory.Dec.dSum]`. Establish `hdiv : GlobalTheory.Count.tau1 I x / GlobalTheory.Count.tau1 I (x * g) ≤ K`. Rewrite using `[← Real.exp_log (div_pos hx hxg), Real.log_div hx.ne' hxg.ne']`. Conclude with `(Real.exp_le_exp.2 (by linarith)).trans hmean`.
+
+Rewrite using `[inv_mul_eq_div, le_div_iff₀ hx, inv_mul_eq_div]`. Conclude with `hdiv`.
+-/
 theorem inv_tau_mul_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 = 1) (K : ℝ)
     (h : ∀ v, Real.exp (GlobalTheory.Count.dOp (uMat (g.1 v))) ≤ K) :
     (GlobalTheory.Count.tau1 I (x * g))⁻¹ ≤ (GlobalTheory.Count.tau1 I x)⁻¹ * K := by
@@ -96,6 +129,9 @@ theorem inv_tau_mul_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 = 1
   rw [inv_mul_eq_div, le_div_iff₀ hx, inv_mul_eq_div]
   exact hdiv
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.normInf`. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ))` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => le_add_of_nonneg_right (norm_nonneg _)`.
+-/
 theorem sum_le_normInf {D : D7} {V : HSp D}
     (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (g : GA D V) (τ : D.what₂.Tau) :
     ∑ i, ∑ j, ‖Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) g i j‖ ≤ normInf θ V g := by
@@ -107,6 +143,9 @@ theorem sum_le_normInf {D : D7} {V : HSp D}
   exact Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ =>
     le_add_of_nonneg_right (norm_nonneg _)
 
+/- English proof (translation)
+Establish `: Nonempty (Fin I.n)` using `⟨⟨0, hn⟩⟩`. Conclude with `Units.ne_zero _`.
+-/
 theorem uMat_ne_zero (I : AutInst) (hn : 1 ≤ I.n) (g : I.GA) (v : InfinitePlace I.F) : uMat (g.1 v) ≠ 0 := by
   have : Nonempty (Fin I.n) := ⟨⟨0, hn⟩⟩
   exact Units.ne_zero _

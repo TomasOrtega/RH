@@ -22,6 +22,11 @@ def GermPartsC : Prop :=
     KB.IsLeadingFormSetting Cb Cc S p f χ A₀ →
     ∀ n v, GermRealisation.GermFibres (PBL.setC S p (cutSeq S p f χ n)) v ∧ GermRealisation.GermCont (PBL.setC S p (cutSeq S p f χ n)) v
 
+/- English proof (translation)
+Introduce `Cb`. Take `⟨c1, h1⟩` from `hI Cb`. Take `⟨c2, h2⟩` from `hG Cb`. Use `⟨max c1 c2, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`.
+
+Establish `hI'` using `h1 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_left _ _) hB) n v`. Take `⟨hF, hC⟩` from `h2 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_right _ _) hB) n v`. Conclude with `GermRealisation.germLoc_of_fibres hI' hB.1 hB.2.1 hF hC`.
+-/
 theorem germLocB_of (hI : IntB) (hG : GermPartsC) : GermLocB := by
   intro Cb
   obtain ⟨c1, h1⟩ := hI Cb

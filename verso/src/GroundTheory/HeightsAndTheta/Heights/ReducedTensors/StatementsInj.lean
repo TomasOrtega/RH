@@ -61,6 +61,11 @@ end SectionsLattice
 
 namespace ProjScheme
 
+/- English proof (translation)
+Rewrite `h` using `[ComplexAt.smul_def]`. Establish `h'` using `congrArg (ofComplex σ).symm h`. Rewrite `h'` using `[map_mul, AlgEquiv.symm_apply_apply, map_zero, mul_eq_zero]`. Break down `h' with h' | h'` into its components or cases. Conclude with `absurd h' ((map_ne_zero σ).mpr (RingOfIntegers.coe_ne_zero_iff.mpr ha))`.
+
+Conclude with `(ofComplex σ).symm.injective (h'.trans (map_zero _).symm)`.
+-/
 theorem complexAt_smul_eq_zero {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ} {a : 𝓞 K}
     (ha : a ≠ 0) {z : ComplexAt σ} (h : a • z = 0) : z = 0 := by
   rw [ComplexAt.smul_def] at h
@@ -70,6 +75,9 @@ theorem complexAt_smul_eq_zero {K : Type} [Field K] [NumberField K] {σ : K →+
   · exact absurd h' ((map_ne_zero σ).mpr (RingOfIntegers.coe_ne_zero_iff.mpr ha))
   · exact (ofComplex σ).symm.injective (h'.trans (map_zero _).symm)
 
+/- English proof (translation)
+The claim follows from `LinearIndependent.of_subsingleton' () fun r hr ↦ by by_contra h have h1 := congrArg (ofComplex σ).symm (complexAt_smul_eq_zero h hr) rw [map_one, map_zero] at h1 exact one_ne_zero h1`.
+-/
 theorem linearIndependent_one {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) :
     LinearIndependent (𝓞 K) (fun _ : Unit ↦ (1 : ComplexAt σ)) :=
   LinearIndependent.of_subsingleton' () fun r hr ↦ by
@@ -78,21 +86,48 @@ theorem linearIndependent_one {K : Type} [Field K] [NumberField K] (σ : K →+*
     rw [map_one, map_zero] at h1
     exact one_ne_zero h1
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsReduced (base (𝓞 ℚ) 1).X := inferInstance
+/- English proof (translation)
+The claim follows from `(baseBundle (𝓞 ℚ) 1).invertible`.
+-/
 example : IsInvertibleSheaf (baseBundle (𝓞 ℚ) 1).L := (baseBundle (𝓞 ℚ) 1).invertible
+/- English proof (translation)
+The claim follows from `linearIndependent_one _`.
+-/
 example : LinearIndependent (𝓞 ℚ) (fun _ : Unit ↦ (1 : ComplexAt (Rat.castHom ℂ))) :=
   linearIndependent_one _
+/- English proof (translation)
+The claim follows from `fun x ↦ by simp`.
+-/
 example : ∀ x : (base (𝓞 ℚ) 1).complexPoints (intEmb (Rat.castHom ℂ)),
     ∑ _i : Unit, (ofComplex (Rat.castHom ℂ)).symm 1 •
       (base (𝓞 ℚ) 1).evalGlobalSection (baseBundle (𝓞 ℚ) 1).L x 0 = 0 := fun x ↦ by simp
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra.FiniteType (𝓞 ℚ) (𝓞 ℚ) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsReduced (𝓞 ℚ) := inferInstance
+/- English proof (translation)
+The claim follows from `fun φ _ ↦ by simp`.
+-/
 example : ∀ φ : 𝓞 ℚ →+* ℂ, φ.comp (algebraMap (𝓞 ℚ) (𝓞 ℚ)) = intEmb (Rat.castHom ℂ) →
     ∑ _i : Unit, (ofComplex (Rat.castHom ℂ)).symm 1 * φ 0 = 0 := fun φ _ ↦ by simp
 
+/- English proof (translation)
+Discharge the goal by the elementary cases of `trivial`.
+-/
 example (p : (base (𝓞 ℚ) 1).X) : p ∈ (⊤ : (base (𝓞 ℚ) 1).X.Opens) := trivial
 
+/- English proof (translation)
+The claim follows from `fun p ↦ ⟨⊤, trivial, 1, one_ne_zero, by rw [smul_zero]; exact resM_zero _ _⟩`.
+-/
 example : ∀ p : (base (𝓞 ℚ) 1).X, ∃ U : (base (𝓞 ℚ) 1).X.Opens, p ∈ U ∧ ∃ d : 𝓞 ℚ, d ≠ 0 ∧
     resM ((preMod (base (𝓞 ℚ) 1).X).obj (baseBundle (𝓞 ℚ) 1).L) (le_top : U ≤ ⊤)
       (d • (0 : (base (𝓞 ℚ) 1).H0 (baseBundle (𝓞 ℚ) 1).L)) = 0 :=

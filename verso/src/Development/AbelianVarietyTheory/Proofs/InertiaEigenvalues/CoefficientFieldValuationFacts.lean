@@ -18,6 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.GalLoc.FieldAt
 
+/- English proof (translation)
+Introduce `hP _ hL`. Establish `h1` using `GlobalTheory.TwInputs.SmallField.evLgG_fieldOk hP`. Establish `h2` using `(evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).inter (evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev)`. Use `(h1.inter h2).imp fun K _ _ _ _ hK => ?_` and prove the remaining obligations. Take `⟨hF, hH, hV⟩` from `hK`.
+
+Use `hF.imp fun B f T hO hF' => ?_` and prove the remaining obligations. Introduce `hKP w Z Wt p0 t nch n xd c _ _ _`. Take `⟨hX, -⟩` from `hF' hKP T w Z`. Establish `hHH` using `(hH (w.st Z) hO).1`. Take `⟨hVs, hs⟩` from `hV (w.st Z) hO`.
+
+Establish `F` using `hX (GlobalTheory.TwInputs.JoinModel.realOf t hHH hVs hs) t.r.z.lev.C`. Use `⟨?_, F.roots, F.star⟩` and prove the remaining obligations. Establish `v : ValLL0 (w.D Z) t.r.z.R.C` using `F.vals`. Establish `e : t.r.z.R.C = TC.cf w.I w.l Z` using `t.r.z.lev.C`. Rewrite using `[← e]`.
+
+Conclude with `v`.
+-/
 theorem field_at : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     ValLL0 (w.D Z) (TC.cf w.I w.l Z) ∧ (∀ (k : Fin 2) (z : ℂ), z ^ ((w.D Z).host.g k * ((w.D Z).host.g k - 1)) = 1 → z ∈ (embLL0 (w.D Z)).fieldRange) ∧ (∀ x : (w.D Z).LL0, star (x : (w.D Z).what₂.LL) ∈ (w.D Z).LL0) := by
   intro hP _ hL

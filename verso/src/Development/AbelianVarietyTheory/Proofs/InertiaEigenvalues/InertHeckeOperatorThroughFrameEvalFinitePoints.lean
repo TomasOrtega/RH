@@ -21,17 +21,28 @@ namespace GlobalTheory.InertTransfer
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Introduce `v' _`. Use `show ((1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v') = 1`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 private theorem tOne (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : TrivOutside {v} (1 : GAf L n) := by
   intro v' _
   show ((1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v') = 1
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Introduce `v' hv'`. Use `show (((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') = 1`. Rewrite using `[Units.val_mul, Matrix.map_mul, hx v' hv', hy v' hv', Matrix.one_mul]`.
+-/
 private theorem tMul {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x y : GAf L n}
     (hx : TrivOutside {v} x) (hy : TrivOutside {v} y) : TrivOutside {v} (x * y) := by
   intro v' hv'
   show (((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') = 1
   rw [Units.val_mul, Matrix.map_mul, hx v' hv', hy v' hv', Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `v' hv'`. Establish `e : (((x⁻¹ : GAf L n).1 : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') * ((x.1 : Matrix (Fin n) (Fin n) (AL L))).map (compAt L v') = 1`. Rewrite using `[← Matrix.map_mul]`. Establish `: ((x⁻¹ : GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) * (x.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `e` using `[hx v' hv', Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 private theorem tInv {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x : GAf L n}
     (hx : TrivOutside {v} x) : TrivOutside {v} x⁻¹ := by
   intro v' hv'
@@ -49,6 +60,37 @@ def trivSub (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) : Subgroup (G
   one_mem' := tOne v
   inv_mem' := fun hx => tInv hx
 
+/- English proof (translation)
+Introduce `L _ _ _ n F v w hwv D U0 hU0 b hb p hp hloc h hh W _ _ f hf lam φ hφ g`. Establish `hvw : w.under (𝓞 (maximalRealSubfield L)) = v` using `HeightOneSpectrum.ext hwv`. Set `T : Subgroup (GAf L n)` to `trivSub v`. Set `ψ : T →* locU n w` to `{ toFun := fun t => ⟨F.j t, GlobalTheory.T.trivOutside_place_mem_definiteUnitaryLocalPoints L n F v w hwv t t.2⟩ map_one' := Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by simp) }`. Establish `hψv : ∀ t : T, ((ψ t : locU n w) : UA L n) = F.j t` using `fun t => rfl`.
+
+Establish `hsurj : Function.Surjective ψ`. Introduce `y`. Take `⟨x, hx⟩` from `F.onto y.1 (Subgroup.mem_inf.1 y.2).1`. Establish `hxl : F.j x ∈ locU n w` using `hx ▸ y.2`. Establish `ht : TrivOutside {v} x` using `hvw ▸ GlobalTheory.UnramDict.trivOutside F hxl`.
+
+Conclude with `⟨⟨x, ht⟩, Subtype.ext hx⟩`. Use `set K' : Subgroup (locU n w) := (Formalism.UG.KU D.σw n).comap p with hK'`. Establish `hiff : ∀ t : T, ψ t ∈ K' ↔ (t : GAf L n) ∈ U0`. Introduce `t`. Rewrite using `[Subgroup.mem_comap, GlobalTheory.T.integralFrame_conj_unitaryIntegral_iff_GL_integral L n w D.σw b hb p hp (ψ t), hψv, GlobalTheory.T.localComponent_mem_maxCompactGL_iff_mem_maxCompact L n F w t (GlobalTheory.T.trivOutside_place_mem_definiteUnitaryLocalPoints L n F v w hwv t t.2 …`.
+
+Establish `hRi : ∀ (a : Formalism.UG.GU D.σw n) (c : Formalism.UG.KU D.σw n), h (a * c) = h a` using `fun a c => by simpa using hh.1 1 c a`. Establish `haK : ∀ x, ∀ k ∈ K', h (p (x * k)) = h (p x)`. Introduce `x k hk`. Rewrite using `[map_mul]`. Conclude with `hRi (p x) ⟨p k, hk⟩`.
+
+Establish `hfinU` using `Formalism.UG.P.finite_support_cosets (Formalism.UG.P.isCommensurated_integral_unitary_of_unramified D.unram n) hh.2`. Set `e : locU n w ⧸ K' → Formalism.UG.GU D.σw n ⧸ Formalism.UG.KU D.σw n` to `fun d => (p d.out : _)`. Establish `he : Function.Injective e`. Introduce `d d' hdd`. Establish `h1` using `QuotientGroup.eq.1 hdd`.
+
+Rewrite `h1` using `[← map_inv, ← map_mul]`. Rewrite using `[← QuotientGroup.out_eq' d, ← QuotientGroup.out_eq' d']`. Conclude with `QuotientGroup.eq.2 h1`. Establish `heq : ∀ d : locU n w ⧸ K', h (p d.out) = h (e d).out`. Introduce `d`.
+
+Establish `hk : (p d.out)⁻¹ * (e d).out ∈ Formalism.UG.KU D.σw n` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (e d)).symm`. Use `hRi (p d.out) ⟨_, hk⟩` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`.
+
+Establish `hsupp : (Function.support fun d : locU n w ⧸ K' => h (p d.out)).Finite`. Use `(hfinU.preimage he.injOn).subset ?_` and prove the remaining obligations. Introduce `d hd`. Use `show h (e d).out ≠ 0`. Rewrite using `[← heq]`.
+
+Conclude with `hd`. Establish `hβ : ∀ x, ∀ u ∈ U0, f (g * (x * u)) = f (g * x)`. Introduce `x u hu`. Use `congrFun (hf u hu) (g * x)` as an intermediate fact. Rewrite using `[← mul_assoc]`.
+
+Conclude with `this`. Establish `hφ' : ∀ t : T, φ (F.j g * ((ψ t : locU n w) : UA L n)) = lam (f (g * t))`. Introduce `t`. Rewrite using `[hψv, ← map_mul]`. Conclude with `hφ _`.
+
+Establish `key` using `GlobalTheory.T.cosetSum_transfer_along_surjection_preimage U0 K' T ψ hsurj hiff (fun x => h (p x)) (fun d => φ (F.j g * (d : UA L n))) (fun x => f (g * x)) lam haK hsupp hβ hφ'`. Establish `hv : ∀ x (hx : TrivOutside {v} x), D.hval h (D.loc x) = h (p (ψ ⟨x, hx⟩))`. Introduce `x hx`. Establish `e1 : D.loc x = (p (ψ ⟨x, hx⟩)).val` using `by rw [hloc, hp]; rfl`. Rewrite using `[InertDatum.hval, dif_pos (e1 ▸ (p (ψ ⟨x, hx⟩)).2)]`.
+
+Use `congr 1`. Conclude with `Subtype.ext e1`. Establish `hL : GlobalTheory.LFun.heckeVec ((RU L n).comp (locU n w).subtype) K' (fun x => h (p x)) φ (F.j g) = ∑ᶠ d : locU n w ⧸ K', h (p d.out) * φ (F.j g * (d.out : UA L n))`. Unfold `GlobalTheory.LFun.heckeVec`. Establish `hfin' : (Function.support fun c : locU n w ⧸ K' => (fun x => h (p x)) c.out • ((RU L n).comp (locU n w).subtype) c.out φ).Finite` using `hsupp.subset fun c hc h0 => hc (by simp only [h0, zero_smul])`.
+
+Express the relevant statement in the definitionally equal form `(Pi.evalAddMonoidHom (fun _ : UA L n => ℂ) (F.j g)) (∑ᶠ c : locU n w ⧸ K', (fun x => h (p x)) c.out • ((RU L n).comp (locU n w).subtype) c.out φ) = _`. Rewrite using `[AddMonoidHom.map_finsum _ hfin']`. Both sides reduce to the same expression. Rewrite using `[hL, key]`. Use `congr 1`.
+
+Unfold `heckeFunI`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`. Rewrite using `[hv h2.choose h2.choose_spec.2]`. Both sides reduce to the same expression.
+
+Conclude with `absurd h1 h2`. Conclude with `absurd h2 h1`. Both sides reduce to the same expression.
+-/
 theorem heckeVec_frame_eval : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → ∀ (D : InertDatum L n v w) (U0 : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U0 ↔ κ ∈ Umax L n)) → ∀ (b : GL (Fin n) (w.adicCompletion L)), b ∈ GlobalTheory.LFun.KGL w n → ∀ p : locU n w →* Formalism.UG.GU D.σw n, (∀ x, (p x).val = b⁻¹ * cLoc w x.val * b) → (∀ y, D.loc y = b⁻¹ * cLoc w (F.j y) * b) → ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU D.σw n), ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (f : GAf L n → W), (∀ κ ∈ U0, NG.rt L n κ f = f) → ∀ (lam : W →ₗ[ℂ] ℂ) (φ : UA L n → ℂ), (∀ g, φ (F.j g) = lam (f g)) → ∀ g, GlobalTheory.LFun.heckeVec ((RU L n).comp (locU n w).subtype) ((Formalism.UG.KU D.σw n).comap p) (fun x => h (p x)) φ (F.j g) = lam (heckeFunI L n U0 D h f g) := by
   intro L _ _ _ n F v w hwv D U0 hU0 b hb p hp hloc h hh W _ _ f hf lam φ hφ g
   have hvw : w.under (𝓞 (maximalRealSubfield L)) = v := HeightOneSpectrum.ext hwv

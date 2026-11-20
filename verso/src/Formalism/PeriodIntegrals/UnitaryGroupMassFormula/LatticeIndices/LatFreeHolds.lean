@@ -12,6 +12,9 @@ open NumberField
 variable {E K : Type} [Field E] [NumberField E] [Field K] (O : ValuationSubring K) (ι : E →+* K)
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (ι (a : E))` using `(RingOfIntegers.isIntegral_coe a).map ι.toIntAlgHom`. Establish `h2 : IsIntegral O (ι (a : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem int_mem (a : 𝓞 E) : ι (a : E) ∈ O := by
   have h1 : IsIntegral ℤ (ι (a : E)) := (RingOfIntegers.isIntegral_coe a).map ι.toIntAlgHom
   have h2 : IsIntegral O (ι (a : E)) := h1.tower_top
@@ -22,6 +25,21 @@ theorem int_mem (a : 𝓞 E) : ι (a : E) ∈ O := by
 def Mι (L : Submodule (𝓞 E) (n → E)) : Submodule O (n → K) :=
   Submodule.span O ((fun l : n → E => fun j => ι (l j)) '' (L : Set (n → E)))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hL`. Use `⟨S.image (fun l : n → E => fun j => ι (l j)), ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨l, hl, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `Submodule.subset_span ⟨l, hS ▸ Submodule.subset_span hl, rfl⟩`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Rewrite `hl` using `[← hS]`.
+
+Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (by simpa using ⟨x, hx, rfl⟩)`. Consider the case `zero`. Establish `: (fun j => ι ((0 : n → E) j)) = 0` using `by funext j; simp`. Use `beta_reduce`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun j => ι ((x + y) j)) = (fun j => ι (x j)) + (fun j => ι (y j))`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Use `beta_reduce`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Establish `: (fun j => ι ((a • x) j)) = (⟨ι (a : E), int_mem O ι a⟩ : O) • (fun j => ι (x j))`. Use function extensionality and compare the values at `j`. Simplify using `[Algebra.smul_def]`. Use `beta_reduce`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem fg (L : Submodule (𝓞 E) (n → E)) (hL : L.FG) : (Mι O ι L).FG := by
   classical
   obtain ⟨S, hS⟩ := hL
@@ -49,6 +67,9 @@ theorem fg (L : Submodule (𝓞 E) (n → E)) (hL : L.FG) : (Mι O ι L).FG := b
           simp [Algebra.smul_def]
         beta_reduce; rw [this]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.SpanTopFamily.span_top <;> assumption`.
+-/
 theorem span_top (L : Submodule (𝓞 E) (n → E)) (hL : Submodule.span E (L : Set (n → E)) = ⊤) :
     Submodule.span K (Mι O ι L : Set (n → K)) = ⊤ :=
   by apply _root_.UpperTheory.Reformulated.B.SpanTopFamily.span_top <;> assumption
@@ -60,6 +81,9 @@ namespace MassDataIdxSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets NumberField IsDedekindDomain Formalism.BasicNotions
   Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+The claim follows from `MassDataIdxLatFree.exists_gl (OpX X p) (Mlat1 X p θ) (MassDataIdxLatFree.fg (OpX X p) (iota1 X p θ) X.B.I.L X.B.I.L_fg) (MassDataIdxLatFree.span_top (OpX X p) (iota1 X p θ) X.B.I.L X.B.I.L_span)`.
+-/
 theorem latFree_holds {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) :
     LatFreeP X p θ :=
   MassDataIdxLatFree.exists_gl (OpX X p) (Mlat1 X p θ)

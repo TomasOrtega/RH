@@ -5,6 +5,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 
 namespace UpperTheory.V.Hi
 
+/- English proof (translation)
+Establish `h : φ (detPow R n g lam.detShift) = detPow S n (GeneralLinearGroup.map φ g) lam.detShift`. Unfold `detPow`. Rewrite using `[GeneralLinearGroup.map_det, ← map_zpow (Units.map (φ : R →* S))]`. Both sides reduce to the same expression. Unfold `sqAct`.
+
+Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul, h, ldtwist_map_rowAct, Matrix.transpose_map]`. Both sides reduce to the same expression.
+-/
 private theorem map_sqAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} (lam : DomWeight n)
     (g : GL (Fin n) R) (f : MvPolynomial (Fin n × Fin n) R) :
     MvPolynomial.map φ (sqAct R n lam g f) = sqAct S n lam (GeneralLinearGroup.map φ g) (MvPolynomial.map φ f) := by
@@ -16,6 +21,15 @@ private theorem map_sqAct {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S
   rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul, h, ldtwist_map_rowAct, Matrix.transpose_map]
   rfl
 
+/- English proof (translation)
+Set `π` to `Ideal.Quotient.mk (Ideal.span {c})`. Establish `h1 : GeneralLinearGroup.map π g = 1`. Use extensionality with `i j`. Use `(Ideal.Quotient.eq_zero_iff_dvd c _).2 (hg i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply, Units.val_one]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : MvPolynomial.map π (sqAct O n lam g f - f.1) = 0`. Rewrite using `[map_sub, map_sqAct, h1, sub_eq_zero]`.
+
+Conclude with `congrArg Subtype.val (LinearMap.congr_fun (sqRep _ n lam).map_one ⟨_, dualWeylMap _ _ π n n _ _ f.2⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : C c ∣ sqAct O n lam g f - f.1 := by`. Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `m`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_dvd, ← coeff_map, h2, coeff_zero]`.
+
+Rewrite `hh` using `[← smul_eq_C_mul]`. Use `⟨h, dualWeylSat O n n _ c h hc ?_, by rw [← hh]; abel⟩` and prove the remaining obligations. Rewrite using `[← hh]`. Conclude with `sub_mem (sqRep O n lam g f).2 f.2`.
+-/
 private theorem cong {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (lam : DomWeight n) {c : O} (hc : c ≠ 0)
     (g : GL (Fin n) O) (hg : ∀ i j, c ∣ (g.val - 1) i j) (f : nablaSq O n lam) :
     ∃ h ∈ nablaSq O n lam, sqAct O n lam g f = f + c • h := by
@@ -40,11 +54,17 @@ private theorem cong {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (lam : DomWe
   rw [← hh]
   exact sub_mem (sqRep O n lam g f).2 f.2
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [zpow_add₀ (ht i), zpow_natCast, mul_comm]`.
+-/
 private theorem prod_wt {K : Type} [Field K] {n : ℕ} (t : Fin n → K) (ht : ∀ i, t i ≠ 0) (s : ℤ) (μ : Fin n → ℕ) :
     (∏ i, t i) ^ s * ∏ i, t i ^ μ i = ∏ i, t i ^ ((μ i : ℤ) + s) := by
   rw [← Finset.prod_zpow, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun i _ => by rw [zpow_add₀ (ht i), zpow_natCast, mul_comm]
 
+/- English proof (translation)
+Establish `h : g.val.det = ∏ i, g.val i i` using `det_of_upperTriangular fun i j h => hg i j h`. Use `⟨?_, fun i => Finset.prod_ne_zero_iff.1 (h.symm.trans_ne g.det_ne_zero) i (Finset.mem_univ _)⟩` and prove the remaining obligations. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, ← h]`. Both sides reduce to the same expression.
+-/
 private theorem detPow_eq {K : Type} [Field K] {n : ℕ} (g : GL (Fin n) K) (hg : ∀ i j, j < i → g.val i j = 0) (s : ℤ) :
     detPow K n g s = (∏ i, g.val i i) ^ s ∧ ∀ i, g.val i i ≠ 0 := by
   have h : g.val.det = ∏ i, g.val i i := det_of_upperTriangular fun i j h => hg i j h
@@ -53,6 +73,49 @@ private theorem detPow_eq {K : Type} [Field K] {n : ℕ} (g : GL (Fin n) K) (hg 
   rw [Units.val_zpow_eq_zpow_val, ← h]
   rfl
 
+/- English proof (translation)
+Take `⟨bO, hb, hb'⟩` from `sSBasis O n n lam.natW`. Use `haveI : Finite (ssIdx n n lam.natW) := (sSIdxFinite n n _).to_subtype`. Use `letI := Fintype.ofFinite (ssIdx n n lam.natW)`. Establish `hli` using `ldlat_linInd_base hinj hb.1`. Establish `hsp` using `span_map_weightBasis_eq_dualWeyl (K := K) hb`.
+
+Set `b : Module.Basis (ssIdx n n lam.natW) K (nablaSq K n lam)` to `(Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hsp)`. Establish `hbc : ∀ j, (b j : MvPolynomial (Fin n × Fin n) K) = MvPolynomial.map (algebraMap O K) (bO j)` using `fun j => by`. Simplify using `only [b, Module.Basis.map_apply]`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply hli j)`. Use `choose N sz hsz I hsh hI hbI using fun m => (hb' m).2.2`.
+
+Establish `hexp : ∀ m, bidetExp (sz m) (hsz m) (I m) = m.1` using `fun m => by`. Rewrite using `[← (column_lex_bideterminant O n n _ _ (hsz m) _ (hI m)).1, ← hbI, (hb' m).1]`. Establish `hbK : ∀ j, (b j : MvPolynomial (Fin n × Fin n) K) = bideterminant K (sz j) (hsz j) (I j)` using `fun j => by`. Rewrite using `[hbc, hbI, ldlat_map_bidet]`. Set `J : Fin n × Fin n → K` to `fun v => if v.1 = Fin.rev v.2 then 1 else 0`.
+
+Set `ℓ : nablaSq K n lam →ₗ[K] K` to `(aeval J).toLinearMap ∘ₗ (nablaSq K n lam).subtype`. Establish `hℓ : ∀ f, ℓ f = eval J f` using `fun f => by simp [ℓ, coe_aeval_eq_eval]`. Establish `hne : Nonempty (ssIdx n n lam.natW)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`.
+
+Establish `h1` using `hwMem O n n le_rfl _ (factNatW n lam).1`. Rewrite `h1` using `[← hb.2.1, Set.range_eq_empty, Submodule.span_empty]`. Conclude with `hwNe O n n le_rfl _ h1`. Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k0, ℓ (b k0) ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Take `⟨m⟩` from `hne`. Set `I' : ∀ k, Fin (sz m k) → Fin n` to `fun k p => ⟨n - sz m k + p, by have := hsz m k; have := p.2; omega⟩`. Establish `h0 : ℓ = 0` using `b.ext h`. Establish `h1` using `(UpperTheory.bideterminant_antidiag_eval_weight_unit_support K n _ (sz m) (hsz m) I').2.1 fun k p => by have := hsz m k; simp only [I']; omega`.
+
+Establish `h2` using `hℓ ⟨bideterminant K (sz m) (hsz m) I', by`. Use `bidetMem K n n _ (sz m) (hsz m) I'` as an intermediate fact. Rewrite using `[hsh] at this⟩` and apply the resulting hypothesis. Rewrite `h2` using `[h0]`. Conclude with `h1.ne_zero h2.symm`.
+
+Establish `hbot : ∀ m, ℓ (b m) ≠ 0 → ∀ k p, (I m k p : ℕ) + sz m k = n + p` using `fun m hm => (UpperTheory.bideterminant_antidiag_eval_weight_unit_support K n _ (sz m) (hsz m) (I m)).2.2 (hI m) (by rwa [hℓ, hbK] at hm)`. Establish `hW` using `fun m => UpperTheory.bideterminant_row_weight_dominance n _ (sz m) (hsz m) (I m) (hI m)`. Establish `huniq : ∀ m, (∀ k p, (I m k p : ℕ) + sz m k = n + p) → m = k0` using `fun m hm => Subtype.ext (by`. Rewrite using `[← hexp, ← hexp]`. Conclude with `((hW k0).2.2 (hbot k0 hk0)).2 _ _ _ _ hm (by rw [hsh, hsh]))`.
+
+Establish `hw0 : ∀ i, rowWt k0.1 i = lam.natW i.rev` using `fun i => by`. Rewrite using `[← hexp, ((hW k0).2.2 (hbot k0 hk0)).1, hsh]`. Establish `hco : ∀ f, b.repr f k0 = ℓ f / ℓ (b k0)` using `fun f => by`. Establish `: b.coord k0 = (ℓ (b k0))⁻¹ • ℓ` using `b.ext fun j => by`. Distinguish the cases in `hj : j = k0`.
+
+Substitute `hj` using the available equality. Simplify using `[hk0]`. Establish `: ℓ (b j) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hj (huniq j (hbot j h))`.
+
+Simplify using `[this, hj]`. Rewrite using `[← Module.Basis.coord_apply, this, LinearMap.smul_apply, smul_eq_mul, div_eq_inv_mul]`. Use `⟨_, inferInstance, inferInstance, k0, b, fun m i => (rowWt m.1 i : ℤ) + lam.detShift, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc g hg i j`. Take `⟨h, hh, e⟩` from `cong lam hc g hg ⟨bO j, by`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ dualWeyl _ _ _ _`. Rewrite using `[← hb.2.1]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩⟩`. Express the relevant statement in the definitionally equal form `_ ∈ dualWeyl _ _ _ _ at hh`. Rewrite `hh` using `[← hb.2.1, Submodule.mem_span_range_iff_exists_fun]`.
+
+Take `⟨x, rfl⟩` from `hh`. Use `⟨x i, ?_⟩` and prove the remaining obligations. Establish `: sqRep K n lam (GeneralLinearGroup.map (algebraMap O K) g) (b j) = b j + ∑ i, algebraMap O K (c * x i) • b i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[sqRep_coe, hbc, ← map_sqAct, e]`.
+
+Simplify using `[hbc, smul_eq_C_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[this, map_add, b.repr_self, Finsupp.add_apply, congrFun (b.repr_sum_self _) i, Finsupp.single_apply]`. Simplify using `only [eq_comm]`. Introduce `g hg j`. Establish `: ℓ (sqRep K n lam g (b j)) = (∏ i, g.val i i ^ ((rowWt k0.1 i : ℤ) + lam.detShift)) * ℓ (b j)`.
+
+Rewrite using `[hℓ, hℓ, sqRep_coe, sqAct, smul_eval, hbK, (UpperTheory.bideterminant_antidiag_eval_weight_unit_support K n _ _ (hsz j) (I j)).1 _ hg, (detPow_eq g hg _).1, ← mul_assoc, hsh, ← prod_wt _ (detPow_eq g hg 0).2]`. Simplify using `only [hw0]`. Both sides reduce to the same expression. Rewrite using `[hco, this, mul_div_assoc, ← hco]`. Simplify using `[Finsupp.single_apply]`.
+
+Introduce `g t hg j`. Establish `hu : ∀ i j, j < i → g.val i j = 0` using `fun i j h => by rw [hg, diagonal_apply_ne _ h.ne']`. Establish `hd` using `detPow_eq g hu lam.detShift`. Simplify using `only [hg, diagonal_apply_eq] at hd`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hwt : IsWeightedHomogeneous (rowW n n) (b j : MvPolynomial (Fin n × Fin n) K) (rowWt j.1)`. Rewrite using `[hbc]`. Introduce `d hd`. Use `hb.2.2 j fun h0 => hd ?_` and prove the remaining obligations. Rewrite using `[coeff_map, h0, map_zero]`.
+
+Rewrite using `[sqRep_coe, sqAct, hg, diagonal_transpose, rowActDiagWeight K n n t _ _ hwt, smul_smul, hd.1, prod_wt _ hd.2]`. Both sides reduce to the same expression. Introduce `i`. Simplify using `only [hw0]`. Conclude with `(factNatW n lam).2.1 _`.
+
+Introduce `j a ha`. Use `(hW j).1 a ha` as an intermediate fact. Rewrite `this` using `[hexp, hsh]`. Simplify using `only [mul_add, Finset.sum_add_distrib, hw0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `j hj`. Assume the negation of the conclusion as `h`. Use `hj (huniq j ((hW j).2.1 ?_))` and prove the remaining obligations. Rewrite using `[hexp, hsh]`. Simplify using `only [mul_add, Finset.sum_add_distrib, hw0] at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sqBasis (O K : Type) [CommRing O] [IsDomain O] [Field K] [Algebra O K] (hinj : Function.Injective (algebraMap O K))
     (n : ℕ) (lam : DomWeight n) :
     ∃ (κ : Type) (_ : Fintype κ) (_ : DecidableEq κ) (k0 : κ) (b : Module.Basis κ K (nablaSq K n lam)) (μ : κ → Fin n → ℤ),

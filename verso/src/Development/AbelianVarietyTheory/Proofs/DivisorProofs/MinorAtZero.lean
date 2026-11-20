@@ -13,6 +13,9 @@ namespace GlobalTheory.WholeFlag
 def minorAt {K : Type} [CommRing K] {n g : ℕ} (H : Matrix (Fin n) (Fin g) K) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) : K :=
   (Matrix.of fun r l : Fin k => H (σ r) (Fin.castLE hk l)).det
 
+/- English proof (translation)
+The claim follows from `Matrix.det_isEmpty`.
+-/
 theorem minorAt_zero {K : Type} [CommRing K] {n g : ℕ} (H : Matrix (Fin n) (Fin g) K) (σ : Fin 0 → Fin n) :
     minorAt H 0 (Nat.zero_le g) σ = 1 :=
   Matrix.det_isEmpty

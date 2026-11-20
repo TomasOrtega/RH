@@ -17,6 +17,9 @@ def EtaleAugInjAt : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (
     ∀ t : T.unop, ∃ V : T.unop.Opens, t ∈ V ∧
       Bdy _ n (op (V : Scheme.{0})) (((((chainsP R).obj (hoc (D ⋙ yoneda))).X n).map V.ι.op).hom x)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `h`. Use `⟨((K.X (n + 1)).map g.op).hom y, ?_⟩` and prove the remaining obligations. Use `(K.d (n + 1) n).naturality g.op` as an intermediate fact. Conclude with `(ConcreteCategory.congr_hom this y).symm.trans rfl |>.symm ▸ rfl`.
+-/
 theorem bdy_res {R : Type} [CommRing R] (K : PCx R) (n : ℕ) {U V : Scheme.{0}} (g : V ⟶ U) (x : (K.X n).obj (op U))
     (h : Bdy K n (op U) x) : Bdy K n (op V) (((K.X n).map g.op).hom x) := by
   obtain ⟨y, rfl⟩ := h
@@ -31,12 +34,20 @@ def bdySieve {R : Type} [CommRing R] (K : PCx R) (n : ℕ) (T : Scheme.{0}) (x :
       rw [op_comp, Functor.map_comp]; rfl
     rw [e]; exact bdy_res K n g _ hf
 
+/- English proof (translation)
+Introduce `J _ D X c ho hcov hdir hc R _ n T x hx hb`. Use `⟨bdySieve _ n T.unop x, hc0 _ _ fun t => ?_, fun U f hf => hf⟩` and prove the remaining obligations. Take `⟨V, hV, h⟩` from `ha J D X c ho hcov hdir hc R n T x hx hb t`. Conclude with `⟨V, hV, h⟩`.
+-/
 theorem EtaleAugInj_of_openCovSieve (hc0 : EtaleOpenCovSieve) (ha : EtaleAugInjAt) : LeafAugInj := by
   intro J _ D X c ho hcov hdir hc R _ n T x hx hb
   refine ⟨bdySieve _ n T.unop x, hc0 _ _ fun t => ?_, fun U f hf => hf⟩
   obtain ⟨V, hV, h⟩ := ha J D X c ho hcov hdir hc R n T x hx hb t
   exact ⟨V, hV, h⟩
 
+/- English proof (translation)
+Introduce `T S h`. Use `choose V hV hS using h`. Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises. Rewrite using `[Scheme.zariskiTopology, Scheme.mem_grothendieckTopology_iff]`. Use `⟨Scheme.Cover.mkOfCovers T (fun t => (V t : Scheme.{0})) (fun t => (V t).ι) (fun x => ⟨x, ⟨x, hV x⟩, by simp⟩), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `Y g ⟨i⟩`. Conclude with `hS i`.
+-/
 theorem etaleOpenCovSieve : EtaleOpenCovSieve := by
   intro T S h
   choose V hV hS using h
@@ -47,6 +58,9 @@ theorem etaleOpenCovSieve : EtaleOpenCovSieve := by
   rintro Y g ⟨i⟩
   exact hS i
 
+/- English proof (translation)
+The claim follows from `EtaleAugInj_of_openCovSieve etaleOpenCovSieve ha`.
+-/
 theorem EtaleAugInj_of_augInjAt (ha : EtaleAugInjAt) : LeafAugInj := EtaleAugInj_of_openCovSieve etaleOpenCovSieve ha
 
 end LateralTheory.CohomologicalPurity.TubeCut

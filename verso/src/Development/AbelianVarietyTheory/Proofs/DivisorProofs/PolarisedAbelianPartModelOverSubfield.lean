@@ -16,6 +16,9 @@ open GlobalTheory GlobalTheory.USep
 
 namespace GlobalTheory.USep.DescentBaseChange
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [ZM.unitS, unitOn, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (k₀.subtype.comp (RingHom.id k₀)))` as an intermediate fact. Conclude with `(congrArg (fun f => f.hom (u : k₀)) this).symm`.
+-/
 theorem unitS_subfield {K : Type} [Field K] (k₀ : Subfield K) (u : k₀ˣ) :
     ZM.unitS (spMap k₀.subtype ≫ spMap (RingHom.id k₀)) u = unitOn (Units.map k₀.subtype.toMonoidHom u) := by
   ext
@@ -24,6 +27,13 @@ theorem unitS_subfield {K : Type} [Field K] (k₀ : Subfield K) (u : k₀ˣ) :
   have := Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (k₀.subtype.comp (RingHom.id k₀)))
   exact (congrArg (fun f => f.hom (u : k₀)) this).symm
 
+/- English proof (translation)
+Introduce `V₁ _ _ D K _ _ ev k₀ N hN J b`. Take `⟨L1, -⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨P, φ, hφ, hg, hm, w, hw⟩` from `L1.polBaseChange _ _ (spMap ev) D.P`. Establish `hpb : IsGrpPullback P.A D.P.A (spMap ev) φ`. Use `⟨hφ, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(Over.OverMorphism.ext hx : x₀ = toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = toBase hφ.w y), ← hm]`. Both sides reduce to the same expression. Set `ze : Kˣ` to `Units.map k₀.subtype.toMonoidHom b.ζ`. Establish `hze : IsPrimitiveRoot ze N` using `IsPrimitiveRoot.coe_units_iff.1 (b.prim K k₀.subtype)`. Take `⟨pt, hpt, hpw⟩` from `GlobalTheory.EllipticLevel.exists_symplectic_system L1 P N hN ze hze`.
+
+Establish `hu` using `unitS_subfield k₀ b.ζ`. Establish `key : ∀ g', P.g = g' → ∃ (t : ZM.TObj g' N J b (spMap k₀.subtype ≫ spMap (RingHom.id k₀))) (π₁ : t.A.left ⟶ D.P.A.left), IsGrpPullback t.A D.P.A (spMap ev) π₁ ∧ LBIso t.L (D.P.L.pull π₁)`. Introduce and unpack `_ rfl`. Conclude with `⟨{ A := P.A, ab := P.isAb, dim := P.smoothDim, L := P.L, isLB := P.isLB, rigid := P.rigid, sym := P.sym ample := P.ample, ktriv := P.ktriv, pt := pt, torsion := hpt bij := GlobalTheory.symplectic_system_torsion_basis L1 K P N ze pt hN hze hpt hpw pairing := hu ▸ hpw act := fun _ …`. Conclude with `key _ hg`.
+-/
 theorem tObj_of_baseChange : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (k₀ : Subfield K) (N : ℕ), (N : K) ≠ 0 → ∀ (J : Type) (b : ZM.TBase k₀ N), ∃ (t : ZM.TObj D.P.g N J b (spMap k₀.subtype ≫ spMap (RingHom.id k₀))) (π₁ : t.A.left ⟶ D.P.A.left), IsGrpPullback t.A D.P.A (spMap ev) π₁ ∧ LBIso t.L (D.P.L.pull π₁) := by
   intro V₁ _ _ D K _ _ ev k₀ N hN J b
   obtain ⟨L1, -⟩ := GlobalTheory.abelianSchemeLaws_all
@@ -46,6 +56,9 @@ theorem tObj_of_baseChange : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] (
              act := fun _ => 𝟙 _, hom := fun _ => inferInstance }, φ, hpb, LBIso.symm ⟨w, hw⟩⟩
   exact key _ hg
 
+/- English proof (translation)
+Use `haveI : NeZero (N : k₀) := ⟨Nat.cast_ne_zero.2 hN⟩`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic N k₀) (Polynomial.degree_cyclotomic_pos N k₀ (Nat.pos_of_ne_zero hN)).ne'`. Establish `hp : IsPrimitiveRoot z N` using `(Polynomial.isRoot_cyclotomic_iff).1 hz`. Conclude with `⟨⟨(hp.isUnit (Nat.pos_of_ne_zero hN).ne').unit, (Nat.cast_ne_zero.2 hN : (N : k₀) ≠ 0).isUnit, fun K _ β => hp.map_of_injective β.injective⟩⟩`.
+-/
 theorem tBase_of_isAlgClosed (k₀ : Type) [Field k₀] [IsAlgClosed k₀] [CharZero k₀] (N : ℕ) (hN : N ≠ 0) : Nonempty (ZM.TBase k₀ N) := by
   haveI : NeZero (N : k₀) := ⟨Nat.cast_ne_zero.2 hN⟩
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_root (Polynomial.cyclotomic N k₀)
@@ -54,6 +67,25 @@ theorem tBase_of_isAlgClosed (k₀ : Type) [Field k₀] [IsAlgClosed k₀] [Char
   exact ⟨⟨(hp.isUnit (Nat.pos_of_ne_zero hN).ne').unit, (Nat.cast_ne_zero.2 hN : (N : k₀) ≠ 0).isUnit,
     fun K _ β => hp.map_of_injective β.injective⟩⟩
 
+/- English proof (translation)
+Introduce `g n hn hodd`. Take `⟨L1, L2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨j₁, hj₁⟩` from `GlobalTheory.T.exists_theta_family_from_very_dense_points L1 L2 g Empty (fun x => x.elim) 0 n hn hodd`. Take `⟨j₂, hj₂⟩` from `GlobalTheory.T.geometric_fibre_thetaConstants_ratios_mem_subfield g n hn hodd`. Use `⟨max (max j₁ j₂) 1, ?_⟩` and prove the remaining obligations.
+
+Introduce `j hj V₁ _ _ _ hCN hunit D hDg X C _ e u mo hmo hT K _ _ ev k₀ hk₀ hu`. Establish `hj1 : j₁ ≤ j` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hj`. Establish `hj2 : j₂ ≤ j` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hj`. Establish `hj3 : 1 ≤ j` using `le_trans (le_max_right _ _) hj`. Establish `hK : ∀ m : ℕ, m ≠ 0 → (m : K) ≠ 0` using `fun m hm => by`.
+
+Rewrite using `[← map_natCast ev]`. Conclude with `((hunit m hm).map ev).ne_zero`. Use `haveI : CharZero k₀ := charZero_of_inj_zero fun m hm => by`. Assume the negation of the conclusion as `h`. Conclude with `hK m h (by simpa using congrArg k₀.subtype hm)`.
+
+Establish `hN0 : (n ^ j) ^ 2 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)`. Take `⟨b⟩` from `tBase_of_isAlgClosed k₀ ((n ^ j) ^ 2) hN0`. Take `⟨t, π₁, hπ, hL⟩` from `tObj_of_baseChange V₁ D K ev k₀ ((n ^ j) ^ 2) (hK _ hN0) Empty b`. Substitute `hDg` using the available equality. Take `⟨v, hv⟩` from `ZM.TObj.exists_hasTh_of_isLocalRing L1 L2 (hodd.pow) t`.
+
+Establish `hspan` using `ZM.FamilyScheme.span_theta L1 L2 t n v hn.two_le (dvd_pow_self n (by omega)) hv`. Choose the witnesses or unpack the hypotheses as in `⟨a', ha'⟩ : ∃ a', v a' ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: Set.range v ⊆ {0}` using `by rintro _ ⟨a, rfl⟩; exact h a`.
+
+Rewrite `hspan` using `[Ideal.span_eq_bot.2 (fun x hx => this hx)]`. Conclude with `bot_ne_top hspan`. Establish `hr` using `hj₂ j hj2 V₁ hCN hunit D rfl X C e u mo hmo hT K ev k₀ hk₀ hu k₀ Empty b _ t π₁ hπ hL v hv`. Use `choose r hrk hr using fun a => hr a a' ha'`. Set `w : ZM.Ix D.P.g ((n ^ j) ^ 2) → k₀` to `fun a => ⟨r a, hrk a⟩`.
+
+Establish `hw : t.HasTh (𝟙 _) (fun a => k₀.subtype (w a))` using `GlobalTheory.GenericObject.hasTh_unit_mul t _ v _ (v a')⁻¹ (isUnit_iff_ne_zero.2 (inv_ne_zero ha')) (fun a => by show r a = (v a')⁻¹ * v a`. Rewrite using `[hr a, mul_comm (r a), ← _root_.mul_assoc, inv_mul_cancel₀ ha', _root_.one_mul]) hv`. Establish `hd : ZM.VeryDense (ZM.objPrimes b (fun x : Empty => x.elim) 0 (RingHom.id k₀) w)`. Introduce `q f hq hf`. Establish `hq0 : q = ⊥`.
+
+Break down `Ideal.eq_bot_or_top q with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hq.ne_top`. Substitute `hq0` using the available equality. Conclude with `⟨⊥, ⟨K, inferInstance, inferInstance, k₀.subtype, t, (RingHom.injective_iff_ker_eq_bot _).1 k₀.subtype_injective, fun x => x.elim, hw⟩, hq, le_rfl, hf⟩`.
+
+Take `⟨t₀, -, hmap⟩` from `hj₁ j hj1 k₀ b k₀ (RingHom.id k₀) w hd`. Take `⟨φ, hφ, hφL, -, -⟩` from `hmap K k₀.subtype t (fun x => x.elim) hw`. Take `⟨w', hw'⟩` from `LBIso.trans (pull_isLB D.P.isLB π₁) t.isLB (pull_isLB t₀.isLB φ) (LBIso.symm hL) hφL`. Conclude with `⟨t₀.A, inferInstance, t₀.ab.comm, t₀.L, t.A, inferInstance, π₁, φ, w', t₀.ab, t₀.isLB, hπ, hφ, hw'⟩`.
+-/
 theorem polarised_part_model : ∀ (g n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j, j₀ ≤ j → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁), D.P.g = g → ∀ (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁), (∀ mu, mo mu ≠ 0 ∧ ∃ c, IsUnit (u mu c)) → GlobalTheory.Poinc.Sep.IsThetaTerms D ((n ^ j) ^ 2) e (fun mu c => u mu c * mo mu) → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∀ mu c c', IsUnit (u mu c') → ∃ r ∈ k₀, ev (u mu c) = r * ev (u mu c')) → ∃ (B₀ : Over (Sp k₀)) (_ : GrpObj B₀) (_ : IsCommMonObj B₀) (M₀ : LB B₀.left) (B' : Over (Sp K)) (_ : GrpObj B') (π₁ : B'.left ⟶ D.P.A.left) (π₀ : B'.left ⟶ B₀.left) (w : LB.Iso (D.P.L.pull π₁) (M₀.pull π₀)), IsAbelianScheme B₀ ∧ M₀.IsLB ∧ IsGrpPullback B' D.P.A (spMap ev) π₁ ∧ IsGrpPullback B' B₀ (spMap k₀.subtype) π₀ ∧ w.IsGen := by
   intro g n hn hodd
   obtain ⟨L1, L2⟩ := GlobalTheory.abelianSchemeLaws_all

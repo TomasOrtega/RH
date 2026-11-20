@@ -166,6 +166,9 @@ def OneFinitePartIsotypic : Prop :=
   HidaSetting R F → ∀ (t : T) (b : Option Bool),
     Common R t (rowLev R F b) ∧ IsoOrth R t (rowLev R F b) ∧ IsoKept R t (rowLev R F b)
 
+/- English proof (translation)
+Introduce `⟨_, _, _, _, h⟩` and use `h rfl`.
+-/
 example (P : LevelP R.Pg D.R.r ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (c : Sys D) : ¬ Differ R P Sb c c :=
   fun ⟨_, _, _, _, h⟩ => h rfl
 

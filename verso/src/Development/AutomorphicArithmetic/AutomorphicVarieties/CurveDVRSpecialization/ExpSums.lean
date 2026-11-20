@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Mathlib.Combinatorics.HalesJewett
 import Mathlib.LinearAlgebra.Vandermonde
 
+/- English proof (translation)
+Introduce `κ ι σ _ _ _ α c hα hc`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose C hC using hne`. Take `⟨a, ha, b, s, hs⟩` from `Combinatorics.exists_mono_homothetic_copy (Finset.range (Fintype.card ι)) C`.
+
+Set `e` to `(Fintype.equivFin ι).symm`. Establish `hinj : Function.Injective fun j : Fin (Fintype.card ι) => ((α s (e j) : κˣ) : κ) ^ a`. Introduce `i j hij`. Assume the negation of the conclusion as `h`. Use `hα s (e i) (e j) (fun h' => h (e.injective h')) a ha ?_` and prove the remaining obligations.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hij`. Establish `h0` using `Matrix.eq_zero_of_forall_pow_sum_mul_pow_eq_zero (v := fun j => c s (e j) * ((α s (e j) : κˣ) : κ) ^ b) hinj (by`. Introduce `i`. Establish `h1` using `hC (a • (i : ℕ) + b)`.
+
+Rewrite `h1` using `[hs i (Finset.mem_range.2 i.2), ← e.sum_comp]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, pow_add, pow_mul]`. Use the proof step `ring)`.
+
+Take `⟨i, hi⟩` from `hc s`. Establish `h2` using `congrFun h0 (e.symm i)`. Simplify using `only [Equiv.apply_symm_apply, Pi.zero_apply, mul_eq_zero] at h2`. Break down `h2 with h2 | h2` into its components or cases. Conclude with `hi h2`.
+
+Conclude with `pow_ne_zero _ (α s i).ne_zero h2`.
+-/
 theorem UpperTheory.V.Pr.expSums :
     UpperTheory.V.Pr.ExpSums := by
   intro κ ι σ _ _ _ α c hα hc

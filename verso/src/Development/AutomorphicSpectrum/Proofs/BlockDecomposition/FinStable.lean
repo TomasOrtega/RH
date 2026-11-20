@@ -54,6 +54,15 @@ def FinStable (U : Submodule ℂ (Sm E N)) : Prop := ∀ (g : GL (Fin N) (Af E))
 def indSpan (U₁ : Submodule ℂ (Sm E r)) (U₂ : Submodule ℂ (Sm E s)) : Submodule ℂ (Sm E (r + s)) :=
   Submodule.span ℂ {φ | MemInd2 U₁ U₂ φ}
 
+/- English proof (translation)
+Take `⟨b, hb, k, hy⟩` from `GlobalTheory.IwasawaAdelic.exists_upper_mul_unitary_inf E (r + s) (GeneralLinearGroup.map (pInf E) x)`. Establish `hb' : (((b⁻¹ : GL (Fin (r + s)) (Cinf E))) : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)).BlockTriangular id`. Use `letI : Invertible (b : Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E)) := Units.invertible b`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`.
+
+Take `⟨xi, mi, hbi⟩` from `IwaFin.exists_unip_mul_lev r s b (fun i j hi hj => hb (show j < i from Fin.lt_def.2 (lt_of_lt_of_le hj hi))) (fun i j hi hj => hb' (show j < i from Fin.lt_def.2 (lt_of_lt_of_le hj hi)))`. Take `⟨xf, mf, c, hc, hf⟩` from `IwaFin.exists_unip_lev_integral E r s (GeneralLinearGroup.map (pFin E) x)`. Establish `e1 : ∀ p, pInf E (sInf E (xi p) + sFin E (xf p)) = xi p` using `fun p => by`. Rewrite using `[map_add, show pInf E (sInf E (xi p)) = xi p from (infEq E).symm_apply_apply _, show pInf E (sFin E (xf p)) = 0 from map_zero (infEq E).symm, add_zero]`. Establish `e2 : ∀ p, pFin E (sInf E (xi p) + sFin E (xf p)) = xf p` using `fun p => by`.
+
+Rewrite using `[map_add, show pFin E (sInf E (xi p)) = 0 from rfl, show pFin E (sFin E (xf p)) = xf p from rfl, zero_add]`. Use `⟨fun p => sInf E (xi p) + sFin E (xf p), (infGL E r mi.1 * finGL E r mf.1, infGL E s mi.2 * finGL E s mf.2), k, c, hc, ga_ext ?_ ?_⟩` and prove the remaining obligations. Simplify using `only [cf, map_mul, IwaAd.map_unip, IwaAd.map_lev, e1, pInf_infGL, pInf_finGL, mul_one, one_mul]`. Rewrite using `[hy, hbi]`. Simplify using `only [cf, map_mul, IwaAd.map_unip, IwaAd.map_lev, e2, pFin_infGL, pFin_finGL, mul_one, one_mul]`.
+
+Rewrite using `[hf]`.
+-/
 theorem exists_iw (x : GA E (r + s)) : ∃ (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s))
     (c : GL (Fin (r + s)) (Af E)), c ∈ KO E (r + s) ∧ x = unip u * lev (Ad E) r s m * cf (r + s) k c := by
   obtain ⟨b, hb, k, hy⟩ := GlobalTheory.IwasawaAdelic.exists_upper_mul_unitary_inf E (r + s)

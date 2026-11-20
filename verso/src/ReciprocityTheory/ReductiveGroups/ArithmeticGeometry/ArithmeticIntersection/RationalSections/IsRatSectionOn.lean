@@ -25,6 +25,9 @@ def IsRFamily (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) �
       (∀ k, A.a k = a k) → IsMultiHomog s a → s ∉ P →
       I P (n + 1) (Fin.snoc L A) = recR I P L A s)
 
+/- English proof (translation)
+The claim follows from `h.2`.
+-/
 theorem IsIntersectionFamily.isRFamily {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (h : IsIntersectionFamily I) : IsRFamily I :=
   h.2
@@ -36,6 +39,9 @@ def cycR (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ
   ∑ᶠ W ∈ divSupp P s, (multAt (P ⊔ Ideal.span {s}) W : ℝ) *
     (if IsHorizontal W then I W n L else (geoNum n W (fun j => (L j).a) : ℝ) * Real.log (charOf W))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem recR_eq (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (P : Ideal (MRing ι))
     {n : ℕ} (L : Fin n → HermLine ι) (A : HermLine ι) (s : MRing ι) :
     recR I P L A s = cycR I P L s - arInt P s A L :=

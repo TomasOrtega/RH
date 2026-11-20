@@ -11,6 +11,21 @@ def LeafOrdInfHom : Prop := ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing
 def LeafIntBoth : Prop := ∀ (k L : Type) [Field k] [Field L] [Algebra k L] (t : L), Transcendental k t → ∀ x : L,
   IsIntegral (Algebra.adjoin k {t}) x → IsIntegral (Algebra.adjoin k {t⁻¹}) x → IsIntegral k x
 
+/- English proof (translation)
+Introduce `k B _ _ _ _ _ _ g hg hf`. Take `⟨n, φ, hφ⟩` from `hV k B g hg hf`. Use `⟨n, φ, fun u hu => ?_⟩` and prove the remaining obligations. Use `set L := FractionRing B`. Use `set T : L := algebraMap B L (g Polynomial.X)`.
+
+Establish `hinjL : Function.Injective (algebraMap B L)` using `IsFractionRing.injective B L`. Set `G : Polynomial k →ₐ[k] L` to `(IsScalarTower.toAlgHom k B L).comp g`. Establish `hG : Function.Injective G` using `hinjL.comp hg`. Establish `hT : Transcendental k T`. Introduce `⟨p, hp0, hp⟩`.
+
+Apply `hp0` to reduce the goal to its premises. Apply `hG` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `: G p = Polynomial.aeval T p`. Rewrite using `[show G p = G (Polynomial.aeval Polynomial.X p) by simp, ← Polynomial.aeval_algHom_apply]; rfl`.
+
+Rewrite using `[this]`. Conclude with `hp`. Establish `hint : IsIntegral (Algebra.adjoin k {T}) (algebraMap B L (u : B))`. Take `⟨p, hpm, hp⟩` from `(RingHom.IsIntegral.of_finite hf) (u : B)`. Set `f : Polynomial k →ₐ[k] Algebra.adjoin k {T}` to `Polynomial.aeval ⟨T, Algebra.subset_adjoin rfl⟩`.
+
+Establish `hfG : ((algebraMap (Algebra.adjoin k {T}) L).comp f.toRingHom) = (algebraMap B L).comp g.toRingHom`. Establish `: (IsScalarTower.toAlgHom k (Algebra.adjoin k {T}) L).comp f = G`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[f, G, T]`. Conclude with `congrArg AlgHom.toRingHom this`.
+
+Use `⟨p.map f.toRingHom, hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hfG, ← Polynomial.hom_eval₂]`. Express the relevant statement in the definitionally equal form `algebraMap B L (Polynomial.eval₂ g.toRingHom (u : B) p) = 0`. Rewrite using `[hp, map_zero]`. Use `hI k L T hT _ hint (hφ u hu)` as an intermediate fact.
+
+Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom k B L) hinjL).mp this`.
+-/
 theorem LeafOrdAtInfinity_of (hV : LeafOrdInfHom) (hI : LeafIntBoth) : LeafOrdAtInfinity := by
   intro k B _ _ _ _ _ _ g hg hf
   obtain ⟨n, φ, hφ⟩ := hV k B g hg hf

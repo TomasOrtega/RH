@@ -9,17 +9,34 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open Formalism.IncomingBounds MvPowerSeries
 
+/- English proof (translation)
+Unfold `rho`. Establish `h2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Apply `div_pos one_pos` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem asmS_rho_pos {l : ℕ} (hl : l.Prime) : 0 < rho l := by
   unfold rho
   have h2 : (2 : ℝ) ≤ l := by exact_mod_cast hl.two_le
   apply div_pos one_pos
   nlinarith
 
+/- English proof (translation)
+Introduce `K _ _ _ l d _ hl hpi g hg0 hgl x`. Establish `hb` using `(hB K l d 0 0).1`. Conclude with `hG K l hl hpi (V2 d) (fun y => (y.1, y.2 - 2)) g hg0 (fun x => by rw [← hb x]; exact hgl x) x`.
+-/
 theorem lemmaSt_of (hG : GenLogWeight.{u, 0}) (hB : LogBridges.{u}) : LemmaSt.{u} := by
   intro K _ _ _ l d _ hl hpi g hg0 hgl x
   have hb := (hB K l d 0 0).1
   exact hG K l hl hpi (V2 d) (fun y => (y.1, y.2 - 2)) g hg0 (fun x => by rw [← hb x]; exact hgl x) x
 
+/- English proof (translation)
+Introduce `n`. Unfold `MonoWtGe`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Establish `h00 : coeff 0 (E - 1) = 0`.
+
+Rewrite using `[map_sub, coeff_zero_eq_constantCoeff_apply, hc, coeff_one, if_pos rfl, sub_self]`. Rewrite using `[h00, norm_zero]`. Conclude with `(Real.rpow_pos_of_pos h0 _).le`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, n i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hn (Finsupp.ext h)`. Establish `hd : ρ ≤ dot n (fun _ => ρ)`. Unfold `dot Finsupp.sum`. Establish `hmem : i ∈ n.support` using `Finsupp.mem_support_iff.mpr hi`.
+
+Establish `h1' : (1 : ℝ) ≤ n i` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hi`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : coeff n (E - 1) = coeff n E`. Rewrite using `[map_sub, coeff_one, if_neg hn, sub_zero]`. Rewrite using `[hc1]`.
+
+Conclude with `(hE n).trans (Real.one_le_rpow_of_pos_of_le_one_of_nonpos h0 h1 (by linarith))`.
+-/
 theorem asmS_integral_sub_one {K : Type u} [NormedField K] {ι : Type} {pi ρ : ℝ} (h0 : 0 < pi)
     (h1 : pi ≤ 1) (hρ : 0 ≤ ρ) {E : MvPowerSeries ι K} (hE : Integral E)
     (hc : constantCoeff E = 1) : WtGe pi (fun _ => ρ) ρ (E - 1) := by
@@ -49,12 +66,24 @@ theorem asmS_integral_sub_one {K : Type u} [NormedField K] {ι : Type} {pi ρ : 
     rw [hc1]
     exact (hE n).trans (Real.one_le_rpow_of_pos_of_le_one_of_nonpos h0 h1 (by linarith))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `(h 0 (by rwa [coeff_zero_eq_constantCoeff_apply])).1` as an intermediate fact. Simplify using `[degE] at this`.
+-/
 theorem asmS_cc_be {K : Type u} [Field K] {d : ℕ} [NeZero d] {be : MvPowerSeries (ZMod d) K}
     (h : NoLowBidegree be) : constantCoeff be = 0 := by
   by_contra hne
   have := (h 0 (by rwa [coeff_zero_eq_constantCoeff_apply])).1
   simp [degE] at this
 
+/- English proof (translation)
+Establish `ha' : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[constantCoeff_subst ha']`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `n`. Distinguish the cases in `hn : n = 0`.
+
+Substitute `hn` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hbe0, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, n s ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hn (Finsupp.ext h)`. Establish `hp : constantCoeff (n.prod fun s e => a s ^ e) = 0`. Simplify using `only [Finsupp.prod, map_prod]`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)` to reduce the goal to its premises. Rewrite using `[map_pow, ha s, zero_pow hs]`.
+
+Rewrite using `[hp, smul_zero]`.
+-/
 theorem asmS_cc_subst {K : Type u} [Field K] {d : ℕ} [NeZero d] {be : MvPowerSeries (ZMod d) K}
     (hbe0 : constantCoeff be = 0) (a : ZMod d → MvPowerSeries (V2 d) K)
     (ha : ∀ s, constantCoeff (a s) = 0) : constantCoeff (subst a be) = 0 := by
@@ -75,6 +104,9 @@ theorem asmS_cc_subst {K : Type u} [Field K] {d : ℕ} [NeZero d] {be : MvPowerS
       rw [map_pow, ha s, zero_pow hs]
     rw [hp, smul_zero]
 
+/- English proof (translation)
+Establish `c0 : constantCoeff (subst (s0 (K` using `K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp [s0])`. Apply the tactic sequence `have c1 : constantCoeff (subst (s1 (K := K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp only [s1]; split_ifs <;> simp)`. Apply the tactic sequence `have c2 : constantCoeff (subst (s2 (K := K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp only [s2]; split_ifs <;> simp)`. Simplify using `only [de1, map_sub, c0, c1, c2, sub_zero]`.
+-/
 theorem constantCoeff_evenDerivative_eq_zero {K : Type u} [Field K] {d : ℕ} [NeZero d] {be : MvPowerSeries (ZMod d) K}
     (hbe0 : constantCoeff be = 0) : constantCoeff (de1 be) = 0 := by
   have c0 : constantCoeff (subst (s0 (K := K) (d := d)) be) = 0 :=
@@ -85,6 +117,9 @@ theorem constantCoeff_evenDerivative_eq_zero {K : Type u} [Field K] {d : ℕ} [N
     asmS_cc_subst hbe0 _ (fun s => by simp only [s2]; split_ifs <;> simp)
   simp only [de1, map_sub, c0, c1, c2, sub_zero]
 
+/- English proof (translation)
+Establish `c0 : constantCoeff (subst (s0 (K` using `K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp [s0])`. Apply the tactic sequence `have c1 : constantCoeff (subst (s1' (K := K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp only [s1']; split_ifs <;> simp)`. Apply the tactic sequence `have c2 : constantCoeff (subst (s2' (K := K) (d := d)) be) = 0 := asmS_cc_subst hbe0 _ (fun s => by simp only [s2']; split_ifs <;> simp)`. Simplify using `only [de2, map_sub, c0, c1, c2, sub_zero]`.
+-/
 theorem constantCoeff_oddDerivative_eq_zero {K : Type u} [Field K] {d : ℕ} [NeZero d] {be : MvPowerSeries (ZMod d) K}
     (hbe0 : constantCoeff be = 0) : constantCoeff (de2 be) = 0 := by
   have c0 : constantCoeff (subst (s0 (K := K) (d := d)) be) = 0 :=
@@ -95,6 +130,27 @@ theorem constantCoeff_oddDerivative_eq_zero {K : Type u} [Field K] {d : ℕ} [Ne
     asmS_cc_subst hbe0 _ (fun s => by simp only [s2']; split_ifs <;> simp)
   simp only [de2, map_sub, c0, c1, c2, sub_zero]
 
+/- English proof (translation)
+Establish `hl0 : (l : K) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Establish `hpi0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr hl0`. Establish `hρ : 0 ≤ rho l` using `(asmS_rho_pos hl).le`. Establish `hLL : ∀ x : V2 d, letterLog (K` using `K) l x = genLog l (fun y : V2 d => (y.1, y.2 - 2)) x := (hB K l d 0 0).1`. Take `⟨g, hg0, hgl, -⟩` from `hGI K l hl (V2 d) (fun y : V2 d => (y.1, y.2 - 2))`.
+
+Establish `hgl' : ∀ x, subst g (letterLog (K` using `K) l x) = X x := fun x => by rw [hLL x]; exact hgl x`. Establish `hgw : ∀ x, WtGe ‖(l : K)‖ (fun _ => rho l) (rho l) (g x)` using `lemmaSt_of hGW hB K l d hl hpi g hg0 hgl'`. Establish `hE1` using `asmS_integral_sub_one hpi0 hpi.le hρ hEi hEc`. Establish `hW` using `hSW K ‖(l : K)‖ hpi0 hpi (V2 d) (V2 d) g (fun _ => rho l) (fun _ => rho l) (rho l) _ hg0 hgw hE1`. Establish `hLL0 : ∀ x, constantCoeff (letterLog (K` using `K) l x) = 0 := fun x => by`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Use `show letterLog (K := K) l x 0 = 0`. Unfold `letterLog`. Use `Finset.sum_eq_zero fun e _ => if_neg ?_` and prove the remaining obligations. Introduce `h`.
+
+Establish `h'` using `congrArg (fun f : V2 d →₀ ℕ => f (x.1, x.2 - 2 * (e : ZMod d))) h`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Finsupp.single_eq_same] at h'`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hl.ne_zero) h'.symm`. Establish `hLa : HasSubst (letterLog (K` using `K) l : V2 d → MvPowerSeries (V2 d) K) := hasSubst_of_constantCoeff_zero hLL0`. Establish `hga : HasSubst g` using `hasSubst_of_constantCoeff_zero hg0`.
+
+Establish `hcomp : subst g (subst (letterLog (K` using `K) l) (mvExp D)) = mvExp D := by`. Rewrite using `[subst_comp_subst_apply hLa hga, show (fun s => subst g (letterLog (K := K) l s)) = X from`. Use function extensionality and compare the values at `hgl', subst_self]`. Both sides reduce to the same expression. Establish `hsub1 : subst g (subst (letterLog (K` using `K) l) (mvExp D) - 1) = mvExp D - 1 := by`.
+
+Rewrite using `[← coe_substAlgHom hga, map_sub, map_one, coe_substAlgHom, hcomp]`. Rewrite `hW` using `[hsub1]`. Establish `hQ' : WtGe ‖(l : K)‖ (fun _ => rho l) (1 / ((l : ℝ) - 1)) (mvExp D - 1)`. Introduce `n`. Distinguish the cases in `hz : coeff n (mvExp D - 1) = 0`.
+
+Unfold `MonoWtGe`. Rewrite using `[hz, norm_zero]`. Conclude with `(Real.rpow_pos_of_pos hpi0 _).le`. Establish `hmem : coeff n (mvExp D - 1) ∈ K0`. Rewrite using `[map_sub, coeff_one]`.
+
+Use `split_ifs`. Conclude with `K0.sub_mem (hK n) K0.one_mem`. Conclude with `K0.sub_mem (hK n) K0.zero_mem`. Establish `hdiv : ((l ^ d - 1 : ℕ) : ℤ) ∣ ∑ x ∈ n.support, (n x : ℤ) * lw l x.2`. Distinguish the cases in `hn : n = 0`.
+
+Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Apply `hcong` to reduce the goal to its premises. Introduce `h0`. Apply `hz` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, coeff_one, if_neg hn, h0, sub_zero]`. Conclude with `hQ K l d hl hd hde hpi hpi0 K0 hK0 _ hmem n hdiv (hW n)`. Conclude with `hLS K l hl hpi (V2 d) _ D hD0 hQ'`.
+-/
 theorem asmS_diff (hGW : GenLogWeight.{u, 0}) (hGI : GenLogInverse.{u, 0}) (hB : LogBridges.{u})
     (hSW : SubstWt.{u, 0, 0}) (hQ : Quant.{u}) (hLS : LogStep.{u, 0})
     {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K] {l d : ℕ} [NeZero d]
@@ -162,6 +218,11 @@ theorem asmS_diff (hGW : GenLogWeight.{u, 0}) (hGI : GenLogInverse.{u, 0}) (hB :
     exact hQ K l d hl hd hde hpi hpi0 K0 hK0 _ hmem n hdiv (hW n)
   exact hLS K l hl hpi (V2 d) _ D hD0 hQ'
 
+/- English proof (translation)
+Introduce `K _ _ _ l d _ hl hlo hd hde hpi K0 hK0 ζ hζ be hBh`. Take `⟨hK, htor, hlow, ⟨hEi1, hEc1⟩, ⟨hEi2, hEc2⟩⟩` from `hBh`. Establish `hbe0` using `asmS_cc_be hlow`. Establish `hX'` using `hX K l d hl hd hde K0 ζ hζ be hK htor hbe0`. Take `⟨hK1, hc1⟩` from `hX' (de1 be) (by simp)`.
+
+Take `⟨hK2, hc2⟩` from `hX' (de2 be) (by simp)`. Establish `w1` using `asmS_diff hGW hGI hB hSW hQ hLS hl hd hde hpi hK0 (de1 be) (constantCoeff_evenDerivative_eq_zero hbe0) hK1 hc1 hEi1 hEc1`. Establish `w2` using `asmS_diff hGW hGI hB hSW hQ hLS hl hd hde hpi hK0 (de2 be) (constantCoeff_oddDerivative_eq_zero hbe0) hK2 hc2 hEi2 hEc2`. Conclude with `hBE K l d hl hlo hd hde hpi ζ hζ be htor hlow w1 w2`.
+-/
 theorem lemmaS_of (hGW : GenLogWeight.{u, 0}) (hGI : GenLogInverse.{u, 0}) (hB : LogBridges.{u})
     (hSW : SubstWt.{u, 0, 0}) (hX : ExpDeInv.{u}) (hQ : Quant.{u}) (hLS : LogStep.{u, 0})
     (hBE : BinomExtract.{u}) : LemmaS.{u} := by

@@ -12,6 +12,11 @@ open PositivityTheory.Rg.Sw.WR PositivityTheory.Rg.Sw.WR.Z
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hB`. Establish `hu` using `entAn_inv (entAn_X (Complex.I * s) B₀) h1`. Establish `hv` using `entAn_inv (entAn_Y (Complex.I * s) B₀) h2`. Establish `hf : ∀ k : Bool × Fin n × Fin n, AnalyticAt ℂ (fun B => vals s B k) B₀`. Introduce and unpack `⟨_ | _, a, b⟩`.
+
+Conclude with `hu a b`. Conclude with `hv a b`. Conclude with `(an_clsC s z m 0 1 B₀ ⟨h1, h2, h3⟩).mul (an_eval (fun k B => vals s B k) B₀ hf _)`.
+-/
 theorem an_fQ (s z : ℂ) (m : ℕ) (Q : Fm n) (B₀ : MC n) (hB : B₀ ∈ OmS s) : AnalyticAt ℂ (fQ s z m Q) B₀ := by
   obtain ⟨h1, h2, h3⟩ := hB
   have hu := entAn_inv (entAn_X (Complex.I * s) B₀) h1
@@ -22,8 +27,14 @@ theorem an_fQ (s z : ℂ) (m : ℕ) (Q : Fm n) (B₀ : MC n) (hB : B₀ ∈ OmS 
     · exact hv a b
   exact (an_clsC s z m 0 1 B₀ ⟨h1, h2, h3⟩).mul (an_eval (fun k B => vals s B k) B₀ hf _)
 
+/- English proof (translation)
+Introduce `x hx` and use `an_fQ s z m Q x hx`.
+-/
 theorem anN_fQ (s z : ℂ) (m : ℕ) (Q : Fm n) : AnalyticOnNhd ℂ (fQ s z m Q) (OmS s) := fun x hx => an_fQ s z m Q x hx
 
+/- English proof (translation)
+Establish `hd` using `(an_fQ s z m Q x hx).differentiableAt.hasFDerivAt`. Establish `hl : HasDerivAt (fun t : ℂ => x + t • eU k l) (eU k l) 0` using `hasDerivAt_line x (eU k l)`. Establish `h1 : HasDerivAt (fun t : ℂ => fQ s z m Q (x + t • eU k l)) (fderiv ℂ (fQ s z m Q) x (eU k l)) 0` using `hd.comp_hasDerivAt_of_eq (0 : ℂ) hl (by simp)`. Conclude with `h1.unique (line_fQ s hs z m Q x hx k l)`.
+-/
 theorem fderiv_fQ (s : ℂ) (hs : s = 1 ∨ s = -1) (z : ℂ) (m : ℕ) (Q : Fm n) (x : MC n) (hx : x ∈ OmS s) (k l : Fin n) :
     fderiv ℂ (fQ s z m Q) x (eU k l) = fQ s z m (opD s m k l Q) x := by
   have hd := (an_fQ s z m Q x hx).differentiableAt.hasFDerivAt
@@ -36,6 +47,9 @@ def opsSeq (s : ℂ) (m : ℕ) : (k : ℕ) → (Fin k → Fin n × Fin n) → Fm
   | 0, _, Q => Q
   | k + 1, dirs, Q => opD s m (dirs 0).1 (dirs 0).2 (opsSeq s m k (Fin.tail dirs) Q)
 
+/- English proof (translation)
+The claim follows from `| 0, dirs, Q, x, hx => by simp [opsSeq] | k + 1, dirs, Q, x, hx => by have hdiff : DifferentiableAt ℂ (iteratedFDeriv ℂ k (fQ s z m Q)) x := ((anN_fQ s z m Q).iteratedFDeriv k x hx).differentiableAt rw [hdiff.iteratedFDeriv_succ_apply_left'] have heq : (fun y => iteratedFDeriv ℂ …`.
+-/
 theorem iter_fQ (s : ℂ) (hs : s = 1 ∨ s = -1) (z : ℂ) (m : ℕ) :
     ∀ (k : ℕ) (dirs : Fin k → Fin n × Fin n) (Q : Fm n) (x : MC n), x ∈ OmS s →
       iteratedFDeriv ℂ k (fQ s z m Q) x (fun i => eU (dirs i).1 (dirs i).2) = fQ s z m (opsSeq s m k dirs Q) x
@@ -51,6 +65,9 @@ theorem iter_fQ (s : ℂ) (hs : s = 1 ∨ s = -1) (z : ℂ) (m : ℕ) :
     rw [heq.fderiv_eq]
     exact fderiv_fQ s hs z m _ x hx (dirs 0).1 (dirs 0).2
 
+/- English proof (translation)
+The claim follows from `| 0, dirs, Q => by simp [opsSeq] | k + 1, dirs, Q => by rw [opsSeq, opsSeq_eq s m k (Fin.tail dirs) Q, List.finRange_succ, List.foldr_cons, List.foldr_map] rfl`.
+-/
 theorem opsSeq_eq (s : ℂ) (m : ℕ) : ∀ (k : ℕ) (dirs : Fin k → Fin n × Fin n) (Q : Fm n),
     opsSeq s m k dirs Q = (List.finRange k).foldr (fun i g => opD s m (dirs i).1 (dirs i).2 ∘ₗ g) LinearMap.id Q
   | 0, dirs, Q => by simp [opsSeq]
@@ -58,15 +75,30 @@ theorem opsSeq_eq (s : ℂ) (m : ℕ) : ∀ (k : ℕ) (dirs : Fin k → Fin n ×
     rw [opsSeq, opsSeq_eq s m k (Fin.tail dirs) Q, List.finRange_succ, List.foldr_cons, List.foldr_map]
     rfl
 
+/- English proof (translation)
+Rewrite using `[smulC, evQ_mul, evQ_CC]`.
+-/
 theorem evQ_smul (s z a : ℂ) (P : Fm n) (B : MC n) : evQ s z (a • P) B = a * evQ s z P B := by
   rw [smulC, evQ_mul, evQ_CC]
 
+/- English proof (translation)
+Simplify using `only [fQ, evQ_sum, evQ_smul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fQ_linear (s z : ℂ) (m : ℕ) {ι : Type} (t : Finset ι) (a : ι → ℂ) (P : ι → Fm n) (B : MC n) :
     fQ s z m (∑ i ∈ t, a i • P i) B = ∑ i ∈ t, a i * fQ s z m (P i) B := by
   simp only [fQ, evQ_sum, evQ_smul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hc : ContDiffAt ℂ ω (fQ s z m Q) x` using `(an_fQ s z m Q x hx).contDiffAt`. Establish `hperm : ∀ σ : Equiv.Perm (Fin n), iteratedFDeriv ℂ n (fQ s z m Q) x (fun k => eU (σ k) k) = iteratedFDeriv ℂ n (fQ s z m Q) x (fun k => eU k (σ⁻¹ k))`. Introduce `σ`. Use `hc.iteratedFDeriv_comp_perm (fun k => eU k (σ⁻¹ k)) σ` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Simplify using `only [cay, hperm]`. Rewrite using `[← Equiv.sum_comp (Equiv.inv (Equiv.Perm (Fin n)))]`.
+
+Simplify using `only [Equiv.inv_apply, inv_inv, Equiv.Perm.sign_inv]`. Establish `hI : ∀ σ : Equiv.Perm (Fin n), iteratedFDeriv ℂ n (fQ s z m Q) x (fun k => eU k (σ k)) = fQ s z m (opsSeq s m n (fun k => (k, σ k)) Q) x` using `fun σ => iter_fQ s hs z m n (fun k => (k, σ k)) Q x hx`. Simplify using `only [hI, opsSeq_eq]`. Rewrite using `[cayF, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply]`.
+
+Rewrite using `[fQ_linear]`.
+-/
 theorem cay_fQ (s : ℂ) (hs : s = 1 ∨ s = -1) (z : ℂ) (m : ℕ) (Q : Fm n) (x : MC n) (hx : x ∈ OmS s) :
     cay (fQ s z m Q) x = fQ s z m (cayF s m Q) x := by
   have hc : ContDiffAt ℂ ω (fQ s z m Q) x := (an_fQ s z m Q x hx).contDiffAt
@@ -88,9 +120,21 @@ theorem cay_fQ (s : ℂ) (hs : s = 1 ∨ s = -1) (z : ℂ) (m : ℕ) (Q : Fm n) 
   simp only [LinearMap.smul_apply]
   rw [fQ_linear]
 
+/- English proof (translation)
+Simplify using `[fQ, evQ]`.
+-/
 theorem fQ_one (s z : ℂ) (m : ℕ) (B : MC n) : fQ s z m 1 B = clsC s z m 0 1 B := by
   simp [fQ, evQ]
 
+/- English proof (translation)
+Introduce `n s hs m N z B hB`. Establish `key : ∀ N : ℕ, ∀ B : MC n, B ∈ OmS s → (cay^[N] (clsC s z m 0 1)) B = fQ s z m ((cayF s m)^[N] 1) B`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Introduce `B _`. Simplify using `[fQ_one]`. Consider the case `succ N ih`. Introduce `B hB`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`.
+
+Establish `heq : (cay^[N] (clsC s z m 0 1)) =ᶠ[𝓝 B] fQ s z m ((cayF s m)^[N] 1)` using `by filter_upwards [(isOpen_OmS s).mem_nhds hB] with y hy`. Conclude with `ih y hy`. Establish `e : cay (cay^[N] (clsC s z m 0 1)) B = cay (fQ s z m ((cayF s m)^[N] 1)) B`. Simplify using `only [cay]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(heq.iteratedFDeriv ℂ n).eq_of_nhds]`. Rewrite using `[e, cay_fQ s hs z m _ B hB]`. Rewrite using `[key N B hB]`. Both sides reduce to the same expression.
+-/
 theorem bridge : Bridge := by
   intro n s hs m N z B hB
   have key : ∀ N : ℕ, ∀ B : MC n, B ∈ OmS s → (cay^[N] (clsC s z m 0 1)) B = fQ s z m ((cayF s m)^[N] 1) B := by

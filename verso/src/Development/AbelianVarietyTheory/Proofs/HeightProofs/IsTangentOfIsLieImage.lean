@@ -19,6 +19,13 @@ section General
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
+/- English proof (translation)
+Establish `hσ : σ = π ≫ T.hom`. Establish `e : eSec D.P.A ≫ D.P.A.hom = 𝟙 (Sp R)` using `Over.w η[D.P.A]`. Rewrite using `[← Over.w b, ← Category.assoc, hb, Category.assoc]`. Conclude with `((congrArg (σ ≫ ·) e).trans (Category.comp_id _)).symm`. Set `FinalForm : Over (Sp R)` to `Over.mk (π ≫ T.hom)`.
+
+Set `π' : FinalForm ⟶ T` to `Over.homMk π rfl`. Establish `h1 : π' ≫ b = 1` using `Over.OverMorphism.ext (hb.trans (by`. Rewrite using `[hσ]`. Use `show _ = (toUnit FinalForm ≫ η[D.P.A]).left`. Simplify using `[eSec, FinalForm]))`.
+
+Establish `e : ∀ k, π ≫ D.Oφ b χ k = D.Oφ (1 : FinalForm ⟶ D.P.A) χ k` using `fun k => (WeightPf.Oφ_comp π' b χ k).trans (by rw [h1])`. Simplify using `only [e]`. Rewrite using `[Fin.prod_univ_four]`. Use `show h ((1 : FinalForm ⟶ D.P.A) * (toUnit FinalForm ≫ D.c χ)).left ^ (-1 : ℤ) * h (toUnit FinalForm ≫ D.c χ).left ^ (1 : ℤ) * h (1 : FinalForm ⟶ D.P.A).left ^ (1 : ℤ) * h (1 : FinalForm ⟶ D.P.A).left ^ (-1 : ℤ) = 1`. Simplify using the standard rewrite rules.
+-/
 theorem prod_Oφ_zero {T : Over (Sp R)} (b : T ⟶ D.P.A) {Z : Scheme.{0}} (π : Z ⟶ T.left) (σ : Z ⟶ Sp R)
     (hb : π ≫ b.left = σ ≫ eSec D.P.A) (χ : D.X) {U : Type} [CommGroup U] (h : (Z ⟶ D.P.A.left) → U) :
     ∏ k, h (π ≫ D.Oφ b χ k) ^ Oinvε k = 1 := by
@@ -40,6 +47,13 @@ theorem prod_Oφ_zero {T : Over (Sp R)} (b : T ⟶ D.P.A) {Z : Scheme.{0}} (π :
     h (1 : FinalForm ⟶ D.P.A).left ^ (1 : ℤ) * h (1 : FinalForm ⟶ D.P.A).left ^ (-1 : ℤ) = 1
   simp
 
+/- English proof (translation)
+Establish `hF : ∀ χ, FormEq (PEmpty.elim : PEmpty → (T.left ⟶ D.P.A.left)) PEmpty.elim (DegPre.gtφT D T 1 χ) DegPre.gtε` using `fun χ U _ h => by`. Use `prod_Oφ_zero (D := D) (1 : T ⟶ D.P.A) (𝟙 _) T.hom (by show 𝟙 _ ≫ (toUnit T ≫ η[D.P.A]).left = _` as an intermediate fact. Simplify using `[eSec]) χ h`. Simplify using `only [Category.id_comp] at this`. Rewrite using `[TorusCoord.gtφT_eq]`.
+
+Conclude with `(Fintype.prod_empty _).trans this.symm`. Use `choose s hs vs using fun χ => exists_gen D.P.isLB (hF χ) (LB.oneGen D.P.L) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Establish `v1 : ∀ χ y J, Good D.P.L y J → val (s χ) (𝟙 _) y J = 1` using `fun χ y J hJ => (vs χ _ _ y J hJ).trans (val_one _)`. Use `⟨⟨1, s, hs, corr_of_val D.P.isLB fun y J hJ => vs 0 _ _ y J hJ, fun χ χ' => corr_of_val D.P.isLB fun y J hJ => ?_⟩, rfl, fun χ => corr_of_val D.P.isLB fun y J hJ => vs χ _ _ y J hJ⟩` and prove the remaining obligations. Establish `c` using `val_cub D.cub (𝟙 T) hJ (DegPre.cT D T χ) (DegPre.cT D T χ') 1`.
+
+Rewrite `c` using `[MonObj.comp_one, (isCub_cubV D.cub hJ).face₃]`. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v1 _ y J hJ) c)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v1 _ y J hJ) (v1 _ y J hJ))).symm`.
+-/
 theorem exists_isZero (T : Over (Sp R)) : ∃ g : GtPt D T, g.IsZero := by
   have hF : ∀ χ, FormEq (PEmpty.elim : PEmpty → (T.left ⟶ D.P.A.left)) PEmpty.elim
       (DegPre.gtφT D T 1 χ) DegPre.gtε := fun χ U _ h => by
@@ -62,6 +76,11 @@ theorem exists_isZero (T : Over (Sp R)) : ∃ g : GtPt D T, g.IsZero := by
   exact ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v1 _ y J hJ) c)).trans
     ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v1 _ y J hJ) (v1 _ y J hJ))).symm
 
+/- English proof (translation)
+Establish `hz : (DegPre.zeroT D (Over.mk (𝟙 (Sp R)))).left = eSec D.P.A`. Simplify using `[eSec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, h₀, hp⟩`. Use `⟨hp.1.symm.trans (by rw [h₀.1]; exact hz), fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(val_corr hJ (hp.2 χ) _).symm.trans (val_corr hJ (h₀.2 χ) _)`. Introduce `h`. Take `⟨g₀, h₀⟩` from `exists_isZero (D := D) (Over.mk (𝟙 (Sp R)))`. Use `⟨g₀, h₀, Eq.trans (by rw [h₀.1]; exact hz) h.1.symm, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(val_corr hJ (h₀.2 χ) _).trans (val_corr hJ (h.2 χ) _).symm`.
+-/
 theorem exists_zero_pull_iff (ν : GtPt D (epsR R)) :
     (∃ g₀ : GtPt D (Over.mk (𝟙 (Sp R))), g₀.IsZero ∧ GtPt.IsPull (epsRed R) ν g₀) ↔ IsGtTangent ν := by
   have hz : (DegPre.zeroT D (Over.mk (𝟙 (Sp R)))).left = eSec D.P.A := by
@@ -77,12 +96,18 @@ theorem exists_zero_pull_iff (ν : GtPt D (epsR R)) :
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+The claim follows from `(cubeMapOf (isGrpPullback_pullback G (thick R I e))).e_comm`.
+-/
 theorem eSec_fstG (I : Ideal R) (e : ℕ) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] :
     eSec (thickObj R I e G) ≫ (fstG I e G).left = thick R I e ≫ eSec G :=
   (cubeMapOf (isGrpPullback_pullback G (thick R I e))).e_comm
 
 variable {I : Ideal R} {e : ℕ} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Establish `h : eSec (thickObj R I e G) ≫ g.q.left = eSec (thickObj R I e D.P.A)` using `congrArg (·.left) (IsMonHom.one_hom g.q)`. Rewrite using `[← eSec_fstG I e D.P.A, ← h, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem eSec_pG : eSec (thickObj R I e G) ≫ g.pG.left = thick R I e ≫ eSec D.P.A := by
   have := g.q_hom
   have h : eSec (thickObj R I e G) ≫ g.q.left = eSec (thickObj R I e D.P.A) :=
@@ -90,6 +115,9 @@ theorem eSec_pG : eSec (thickObj R I e G) ≫ g.pG.left = thick R I e ≫ eSec D
   rw [← eSec_fstG I e D.P.A, ← h, Category.assoc]
   rfl
 
+/- English proof (translation)
+The claim follows from `TorusCoord.ext_of_val g x _ (hx.trans (eSec_pG g).symm) fun χ z J hJ => by have h := (val_corr hJ (g.t_unit χ) (𝟙 _)).trans (val_one _) rw [val_pull hJ, Category.id_comp] at h exact (ht χ z J hJ).trans h.symm`.
+-/
 theorem eq_eSec (x : Sp (R ⧸ I ^ (e + 1)) ⟶ (thickObj R I e G).left)
     (hx : x ≫ g.pG.left = thick R I e ≫ eSec D.P.A)
     (ht : ∀ χ z J, Good D.P.L z J → val (g.t χ) x z J = 1) : x = eSec (thickObj R I e G) :=
@@ -98,6 +126,9 @@ theorem eq_eSec (x : Sp (R ⧸ I ^ (e + 1)) ⟶ (thickObj R I e G).left)
     rw [val_pull hJ, Category.id_comp] at h
     exact (ht χ z J hJ).trans h.symm
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hM₀ z`. Establish `v₁` using `CubTransport.val_pmaps (fun k => (h.1 k).trans (Category.id_comp _).symm) (ConstGrp.pmaps_of_genRelR ((isGen_iff w).1 hw) hM hM₀ ht ht₀ h) r hJ hJ'`. Rewrite `v₁` using `[Category.comp_id, h₀ J hJ, hz (fun q => gw w q z (J (q ≫ φ)) (J' q)), _root_.one_mul]`. Conclude with `v₁.symm`.
+-/
 theorem val_eq_one_of_genRelR {A : Type} [CommRing A] [IsLocalRing A] {B B₀ Z : Scheme.{0}} {M : LB B} {M₀ : LB B₀}
     {φ : B ⟶ B₀} {w : LB.Iso M (M₀.pull φ)} (hw : w.IsGen) (hM : M.IsLB) (hM₀ : M₀.IsLB) {K : Type} [Fintype K]
     {ε : K → ℤ} {pt : K → (Sp A ⟶ B)} {pt₀ : K → (Sp A ⟶ B₀)} {t : LB.Gen (LB.LinComb M pt ε)}
@@ -112,16 +143,25 @@ theorem val_eq_one_of_genRelR {A : Type} [CommRing A] [IsLocalRing A] {B B₀ Z 
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext fun x => ConstTan.fst_dualMapR _ x)`.
+-/
 theorem epsRed_dualMapR {R' : Type} [CommRing R'] (f : R →+* R') :
     epsRed R' ≫ spMap (dualMapR f) = spMap f ≫ epsRed R := by
   rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]
   exact congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext fun x => ConstTan.fst_dualMapR _ x)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (f' : B →+* C) :
     spMap (f'.comp f) = spMap f' ≫ spMap f := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 omit [IsDomain R] in
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h3 : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R` using `RingHom.ext fun r => (TrivSqZeroExt.fstHom R R R).commutes r`. Rewrite using `[h3]`. Conclude with `Spec.map_id _`.
+-/
 theorem epsRed_hom : epsRed R ≫ (epsR R).hom = 𝟙 _ := by
   show Spec.map _ ≫ Spec.map _ = _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -140,9 +180,29 @@ section ThetaShiftProofs
 variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {K₁ : Type} [Field K₁] {b : O →+* K₁}
   {a : ArcIn Dw l β K₁ b} {χ : Sp (PowerSeries K₁) ⟶ Y.X}
 
+/- English proof (translation)
+The claim follows from `exists_zero_pull_iff ν`.
+-/
 theorem gtTan_iff (ν : GtPt a.D₀ (epsR K₁)) : GtTan (a := a) ν ↔ IsGtTangent ν :=
   exists_zero_pull_iff ν
 
+/- English proof (translation)
+Set `I : Ideal (PowerSeries K₁)` to `Ideal.span {PowerSeries.X}`. Establish `hI : I ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Conclude with `PowerSeries.X_prime.not_isUnit`. Establish `: IsAdicComplete I (PowerSeries K₁)` using `inferInstance`.
+
+Use `hom_ext_of_isHausdorff I fun e => ?_` and prove the remaining obligations. Establish `: IsLocalRing (PowerSeries K₁ ⧸ I ^ (e + 1))` using `isLocalRing_quotient_pow hI e`. Use `ConstTan.isLocalRing_dual (PowerSeries K₁ ⧸ I ^ (e + 1))` as an intermediate fact. Set `m : PowerSeries K₁ →+* PowerSeries K₁ ⧸ I ^ (e + 1)` to `Ideal.Quotient.mk _`. Set `κ` to `dualMapR (m.comp (PowerSeries.C (R := K₁)))`.
+
+Set `s` to `(epsR (PowerSeries K₁ ⧸ I ^ (e + 1))).hom`. Set `r` to `epsRed (PowerSeries K₁ ⧸ I ^ (e + 1))`. Establish `hs : s ≫ thick (PowerSeries K₁) I e = spMap (dualMapR m) ≫ (epsR (PowerSeries K₁)).hom` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext fun r => (ConstTan.dualMapR_inl m r).symm)`.
+
+Set `xe : Sp (DualNumber (PowerSeries K₁ ⧸ I ^ (e + 1))) ⟶ (thickObj (PowerSeries K₁) I e W.t.G).left` to `pullback.lift (spMap (dualMapR m) ≫ v.left) s (by rw [Category.assoc, Over.w v, hs])`. Establish `hx : xe ≫ (fstG I e W.t.G).left = spMap (dualMapR m) ≫ v.left` using `pullback.lift_fst _ _ _`. Establish `hx' : xe ≫ (thickObj (PowerSeries K₁) I e W.t.G).hom = s` using `pullback.lift_snd _ _ _`. Establish `h'` using `hv e (dualMapR m) κ xe (ConstTan.dualMapR_inl _) (ConstTan.dualMapR_eps _) (ConstTan.dualMapR_inl _) (ConstTan.dualMapR_eps _) hx' hx`. Establish `hκ : r ≫ spMap κ = (thick (PowerSeries K₁) I e ≫ spMap (PowerSeries.C (R` using `K₁))) ≫ epsRed K₁ := (epsRed_dualMapR (m.comp (PowerSeries.C (R := K₁)))).trans (congrArg (· ≫ epsRed K₁) (spMap_comp (PowerSeries.C (R := K₁)) m))`.
+
+Establish `hp : (r ≫ xe) ≫ (W.P.U.gt e).pG.left = thick (PowerSeries K₁) I e ≫ eSec W.P.D.toPre.P.A`. Use `W.spec.1.1.hom_ext ?_ ?_` and prove the remaining obligations. Establish `h2 : (xe ≫ (W.P.U.gt e).pG.left) ≫ W.φ = spMap κ ≫ ν.b.left` using `(h' 0).1 2`. Establish `h3` using `congrArg (r ≫ ·) h2`. Simplify using `only [← Category.assoc] at h3`.
+
+Use `h3.trans ((congrArg (· ≫ ν.b.left) hκ).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hν.1).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) W.he.symm).trans (Category.assoc _ _ _).symm)))))` and prove the remaining obligations. Establish `e₁ : eSec W.P.D.toPre.P.A ≫ W.P.D.toPre.P.A.hom = 𝟙 _` using `Over.w η[W.P.D.toPre.P.A]`. Establish `e₂ : (W.P.U.gt e).pG.left ≫ W.P.D.toPre.P.A.hom = (thickObj (PowerSeries K₁) I e W.t.G).hom ≫ thick (PowerSeries K₁) I e` using `Over.w _`. Establish `e₃ : r ≫ s = 𝟙 _` using `epsRed_hom`. Use `((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e₂).trans ?_)).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e₁).trans (Category.comp_id _))).symm` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, Category.assoc r, hx', e₃, Category.id_comp]`. Establish `key : r ≫ xe = eSec (thickObj (PowerSeries K₁) I e W.t.G)`. Use `eq_eSec (W.P.U.gt e) _ hp fun y z J' hJ' => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `W.e.surjective y`. Use `(val_pull hJ' _ _ _).symm.trans (val_eq_one_of_genRelR W.spec.2.1 W.P.D.toPre.P.isLB a.D₀.P.isLB (DVR.pullGen_isGen _ _ _ _ ((W.P.U.gt e).t_gen _) xe) (DVR.pullGen_isGen _ _ _ _ (ν.isGen x) _) (h' x) r z (fun f => ?_) (fun J hJ => ?_) hJ')` and prove the remaining obligations.
+
+Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (prod_Oφ_zero (W.P.U.gt e).pG (r ≫ xe) _ hp (W.e x) f)` and prove the remaining obligations. Conclude with `congrArg (fun q => f q ^ Oinvε k) (Category.assoc _ _ _).symm`. Conclude with `(val_pull hJ _ _ _).trans ((congrArg (fun q => val (ν.s x) q z J) hκ).trans ((val_pull hJ _ _ _).symm.trans ((val_corr hJ (hν.2 x) _).trans (val_one _))))`. Establish `h₁ : r ≫ spMap (dualMapR m) = thick (PowerSeries K₁) I e ≫ epsRed (PowerSeries K₁)` using `epsRed_dualMapR m`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v.left) h₁.symm).trans ((Category.assoc _ _ _).trans ((congrArg (r ≫ ·) hx.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) key).trans (eSec_fstG I e W.t.G))))))` and prove the remaining obligations.
+-/
 theorem isTangent_of_isLieImage
     (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := K₁)) PowerSeries.X χ)
     {ν : GtPt a.D₀ (epsR K₁)} (hν : IsGtTangent ν) {v : epsR (PowerSeries K₁) ⟶ W.t.G} (hv : IsLieImage W ν v) :
@@ -201,12 +261,18 @@ theorem isTangent_of_isLieImage
     ((congrArg (r ≫ ·) hx.symm).trans ((Category.assoc _ _ _).symm.trans
       ((congrArg (· ≫ _) key).trans (eSec_fstG I e W.t.G))))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨isTangent_of_isLieImage W hν h, h⟩, fun h => h.2⟩`.
+-/
 theorem isLieImage_iff
     (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := K₁)) PowerSeries.X χ)
     {ν : GtPt a.D₀ (epsR K₁)} (hν : IsGtTangent ν) (v : epsR (PowerSeries K₁) ⟶ W.t.G) :
     IsLieImage W ν v ↔ IsTangent v ∧ IsLieImage W ν v :=
   ⟨fun h => ⟨isTangent_of_isLieImage W hν h, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun ν => ⟨fun h hν => (h ((gtTan_iff ν).2 hν)).imp fun v => (isLieImage_iff W hν v).1, fun h hν => (h ((gtTan_iff ν).1 hν)).imp fun _ => And.right⟩`.
+-/
 theorem lieLifts_iff
     (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := K₁)) PowerSeries.X χ) :
     (∀ ν : GtPt a.D₀ (epsR K₁), GtTan (a := a) ν → ∃ v : epsR (PowerSeries K₁) ⟶ W.t.G, IsLieImage W ν v) ↔
@@ -216,6 +282,9 @@ theorem lieLifts_iff
 
 end ThetaShiftProofs
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ _ _ a χ W => (lieLifts_iff W).1 (h a χ W), fun h _ _ _ a χ W => (lieLifts_iff W).2 (h _ _ a χ W)⟩`.
+-/
 theorem lieArcSt_iff {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     LieArcSt Y ↔ ∀ (K₁ : Type) [Field K₁] (b : O →+* K₁) (a : ArcIn Dw l β K₁ b) (χ : Sp (PowerSeries K₁) ⟶ Y.X)
       (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := K₁)) PowerSeries.X χ), LieLifts W :=
@@ -223,6 +292,9 @@ theorem lieArcSt_iff {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c 
 
 variable (Xo c) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h O _ β Y => (lieArcSt_iff Y).1 (h O β Y), fun h O _ β Y => (lieArcSt_iff Y).2 (h O β Y)⟩`.
+-/
 theorem main : (∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), LieArcSt Y) ↔ ArcLieLift Xo c :=
   ⟨fun h O _ β Y => (lieArcSt_iff Y).1 (h O β Y), fun h O _ β Y => (lieArcSt_iff Y).2 (h O β Y)⟩
 

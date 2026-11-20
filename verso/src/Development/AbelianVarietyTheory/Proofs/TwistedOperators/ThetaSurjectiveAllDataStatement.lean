@@ -22,5 +22,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems | exact GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems | (intros; apply GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_surjective_all_data : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → ∀ D : D7, OntoAll D := by
   first | exact @GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems | exact GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems | (intros; apply GlobalTheory.EvenOnto.ontoAll_of_classicalTheorems <;> assumption)

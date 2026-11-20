@@ -4,6 +4,15 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.CompanionTheory.Ar.LieIntertwining
 
+/- English proof (translation)
+Introduce `E _ _ _ H g Ω _ X X' ξ ξ' t t' tΩ m m' V V' _ _ _ _ M M' ρ ρ' φ hM hM' tie a v`. Take `⟨w, hw, hw'⟩` from `tie v`. Take `⟨w₃, hw₃, hw₃'⟩` from `tie (ρ (g.s a) v)`. Establish `h1 : (M.pt (ρ (g.s a) v)).left = (M.pt v).left ≫ (t.act.act (g.s a)).left`. Rewrite using `[hM (g.s a) v]`.
+
+Both sides reduce to the same expression. Establish `h2 : (w.left ≫ (tΩ.act.act (g.s a)).left) ≫ m.φ = w₃.left ≫ m.φ`. Rewrite using `[hw₃, h1, ← hw, Category.assoc, Category.assoc, m.act]`. Establish `h3 : (w.left ≫ (tΩ.act.act (g.s a)).left) ≫ tΩ.G.hom = w₃.left ≫ tΩ.G.hom`. Rewrite using `[Category.assoc, Over.w, Over.w, Over.w]`.
+
+Establish `h4 : w.left ≫ (tΩ.act.act (g.s a)).left = w₃.left` using `m.cart.1.hom_ext h2 h3`. Establish `h5 : (M'.pt (φ (ρ (g.s a) v))).left = (M'.pt (ρ' a (φ v))).left`. Establish `h6 : (tΩ.act.act (g.s a)).left ≫ m'.φ = m'.φ ≫ (t'.act.act a).left` using `m'.act a`. Rewrite using `[← hw₃', ← h4, hM' a (φ v), Over.comp_left, ← hw']`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (w.left ≫ ·) h6).trans (Category.assoc _ _ _).symm)`.
+
+Conclude with `M'.inj (Over.OverMorphism.ext h5)`.
+-/
 theorem act_intertwine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (g : HostAut H) (Ω : Type) [Field Ω]
     (X X' : Scheme.{0}) (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω ⟶ X') (t : SAB H X) (t' : SAB H X') (tΩ : SAB H (Sp Ω))
     (m : SABMap tΩ t ξ) (m' : SABMap (twistSAB tΩ g) t' ξ') (V V' : Type) [AddCommGroup V] [Module Ω V]

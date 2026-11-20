@@ -25,6 +25,17 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v} {a' : ∀ v, Rep.res (φ v).toMonoidHom A' ⟶ A'ᵥ v}
   {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v} {c' : ∀ v, Rep.res (φ v).toMonoidHom C' ⟶ C'ᵥ v}
 
+/- English proof (translation)
+Use `LeibnizPairing.homologyMap_homology (compactCupLeibniz φ μ μᵥ hμ) (compactCupLeibniz φ (μ ≫ g) (fun v => μᵥ v ≫ gᵥ v) hμ') (compactCochainsMap φ g gᵥ hg) ?_ h x y` and prove the remaining obligations. Introduce `r s n h p z`. Use `revert p`. Introduce `(p : (cochainsComplex A).X r × shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) r)`. Take `⟨x0, b⟩` from `p`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Both sides reduce to the same expression. Consider the cases of `r with`. Consider the case `zero`.
+
+Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ m`. Express the relevant statement in the definitionally equal form `((piMap fun v => cochainsMap (gᵥ v)).f m).hom 0 = 0`. Conclude with `map_zero _`.
+
+Consider the case `succ r`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ m => revert b`. Introduce `(b : (piComplex fun v => cochainsComplex (Aᵥ v)).X r)`.
+
+Use `funext fun v => ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem compactCohomologyMap_compactCup (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Rep.res (φ v).toMonoidHom B ⟶ Cᵥ v)
     (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ ≫ c v =
       resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μᵥ v)
@@ -61,6 +72,17 @@ theorem compactCohomologyMap_compactCup (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, A�
         apply cochainOf_injective
         rfl
 
+/- English proof (translation)
+Establish `e` using `LeibnizPairing.homology_homologyMap (compactCupLeibniz φ ((g ⊗ₘ 𝟙 B) ≫ μ') (fun v => (gᵥ v ⊗ₘ 𝟙 _) ≫ μ'ᵥ v) hμ) (compactCupLeibniz φ μ' μ'ᵥ hμ') (compactCochainsMap φ g gᵥ hg) (𝟙 (cochainsComplex B)) ?_ h x y`. Rewrite `e` using `[HomologicalComplex.homologyMap_id]`. Conclude with `e.symm`. Introduce `r s n h p z`. Use `revert p`.
+
+Introduce `(p : (cochainsComplex A).X r × shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) r)`. Take `⟨x0, b⟩` from `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
+
+Conclude with `cupCochain_tensorHom_eq' ((g ⊗ₘ 𝟙 B) ≫ μ') μ' g rfl h (cochainOf _ x0) (cochainOf _ z) σ`. Consider the cases of `r with`. Consider the case `zero => rfl`. Consider the case `succ r`. Consider the cases of `n with`.
+
+Consider the case `zero => rfl`. Consider the case `succ m => revert b`. Introduce `(b : (piComplex fun v => cochainsComplex (Aᵥ v)).X r)`. Use `funext fun v => ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_tensorHom_eq' ((gᵥ v ⊗ₘ 𝟙 _) ≫ μ'ᵥ v) (μ'ᵥ v) (gᵥ v) rfl (show r + s = m by omega) (cochainOf _ (b v)) (fun τ => cochainOf B z (⇑(φ v).toMonoidHom ∘ τ)) σ`.
+-/
 theorem compactCup_compactCohomologyMap (g : A ⟶ A') (gᵥ : ∀ v, Aᵥ v ⟶ A'ᵥ v)
     (hg : ∀ v, a v ≫ gᵥ v = (Rep.resFunctor (φ v).toMonoidHom).map g ≫ a' v)
     (μ' : A' ⊗ B ⟶ C) (μ'ᵥ : ∀ v, A'ᵥ v ⊗ Rep.res (φ v).toMonoidHom B ⟶ Cᵥ v)

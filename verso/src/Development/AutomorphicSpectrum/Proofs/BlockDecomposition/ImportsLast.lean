@@ -39,6 +39,15 @@ open GlobalTheory.CompanionTheory.ColumnSplitting
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
+/- English proof (translation)
+Introduce `_ hLat hQK hIk D n t B W d hn I θ hθ μ hμ b₀ hb x₀ hx`. Establish `hdx` using `GlobalTheory.T.det_ne_zero_of_gram_nondegenerate D W b₀ hb x₀ hx`. Establish `hDom` using `GlobalTheory.T.fundamental_domain_property`. Establish `hOF` using `GlobalTheory.T.orbit_finiteness_of_lattice_bound hLat`. Establish `hZ` using `GlobalTheory.T.zeta_polynomial_identity`.
+
+Establish `hA` using `GlobalTheory.T.abscissa_convergence_identity`. Establish `hJ` using `GlobalTheory.T.joined_projection_formula`. Establish `hB` using `GlobalTheory.T.joined_block_formula`. Establish `hE` using `GlobalTheory.T.extension_by_zero_orbit_formula`. Establish `hS` using `GlobalTheory.T.unipotent_shift_invariance`.
+
+Establish `hL` using `GlobalTheory.T.induced_section_local_integrability`. Establish `hF` using `GlobalTheory.T.iterated_integrals_four_factors`. Use `⟨nuT hn I μ x₀, ⟨GlobalTheory.T.finite_on_compacts_orbit_measure D n t B W d hn I μ hμ b₀ hb x₀ hx, GlobalTheory.T.orbit_measure_concentrated_on_quadric hZ hA D n t B W d hn I μ hμ b₀ hb x₀ hx, fun h _ => GlobalTheory.T.orbit_measure_unitary_group_invariant hQK GlobalTheory.T.law …` and prove the remaining obligations. Establish `hc` using `GlobalTheory.T.integrable_theta_kernel_product hIk hDom hOF hS hL hF hB D n t B W d hn I θ hθ μ hμ x₀ hdx Φ hΦ η hη`. Take `⟨h1, h2⟩` from `GlobalTheory.T.integrable_theta_kernel_fibers hZ hA hJ hE hF D n t B W d hn I θ hθ μ hμ b₀ hb x₀ hx Φ hΦ η hη hc`.
+
+Conclude with `⟨h1, GlobalTheory.T.continuous_orbital_integral_unipotent hIk hDom hOF hS hB hE D n t B W d hn I θ hθ x₀ hdx Φ hΦ, h2⟩`.
+-/
 theorem main : IdemEx → LatBound → QK → IkSch → ThetaSideMeasure := by
   intro _ hLat hQK hIk D n t B W d hn I θ hθ μ hμ b₀ hb x₀ hx
   have hdx := GlobalTheory.T.det_ne_zero_of_gram_nondegenerate D W b₀ hb x₀ hx

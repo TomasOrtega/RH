@@ -6,6 +6,13 @@ open scoped ComplexConjugate
 namespace PI.UnitaryGroupMassFormula.UnimodLocStd
 open PI.ULS
 
+/- English proof (translation)
+Establish `hs : (0 : ℝ) < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`. Establish `ha' : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `him` using `congrArg Complex.im h`. Establish `hre` using `congrArg Complex.re h`. Simplify using `[cmTheta] at him hre`.
+
+Establish `hqs : q = s`. Break down `him with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 (by omega)`. Substitute `hqs` using the available equality.
+
+Use `⟨?_, rfl⟩` and prove the remaining obligations. Establish `h3 : p * a = r * a` using `by linarith`. Conclude with `mul_right_cancel₀ ha'.ne' h3`.
+-/
 theorem rep_coord (a : ℕ) (ha : 0 < a) (b : ℤ) (d : ℕ) (hd : 0 < d) (p q r s : ℝ)
     (h : (p : ℂ) * a + q * cmTheta b d = r * a + s * cmTheta b d) : p = r ∧ q = s := by
   have hs : (0 : ℝ) < Real.sqrt d := Real.sqrt_pos.mpr (by exact_mod_cast hd)
@@ -22,6 +29,47 @@ theorem rep_coord (a : ℕ) (ha : 0 < a) (b : ℤ) (d : ℕ) (hd : 0 < d) (p q r
   have h3 : p * a = r * a := by linarith
   exact mul_right_cancel₀ ha'.ne' h3
 
+/- English proof (translation)
+Take `⟨hOK, hΛ, hθ, h1, h2, hl, hQ, hi₀, hT⟩` from `h`. Use `set L := cmL a b d ha hd lam hlam with hL`. Use `set f := fvec a b d lam x y i₀ with hfdef`. Establish `hfstd : f ∈ stdLat L m` using `rep_fvec_mem a b d ha hd lam hlam m x y i₀`. Unfold `relIdx at h1 h2`.
+
+Use `set Df := (Λ.relIndex (stdLat L m)).factorial with hDf`. Use `set Nf := ((stdLat L m).relIndex Λ).factorial with hNf`. Establish `hDfΛ : Df • f ∈ Λ` using `(AddSubgroup.nsmul_mem_of_relIndex_ne_zero_of_dvd h2 hfstd (fun j hj hle => Nat.dvd_factorial hj hle)).1`. Establish `hl0 : (l : ℂ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hlam0` using `hlam`.
+
+Use `set P : ℕ → Prop := fun j => ((l : ℂ) ^ j)⁻¹ • (Df • f) ∈ Λ with hPdef`. Establish `hex : ∃ j, ¬ P j`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Use `set K : ℕ := Nf * Df with hK`.
+
+Establish `hK0 : K ≠ 0` using `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`. Establish `hdvd : ∀ j : ℕ, (l : ℤ) ^ j ∣ K * x ∧ (l : ℤ) ^ j ∣ K * y`. Introduce `j`. Establish `hmem : Nf • (((l : ℂ) ^ j)⁻¹ • (Df • f)) ∈ stdLat L m` using `(AddSubgroup.nsmul_mem_of_relIndex_ne_zero_of_dvd h1 (hall j) (fun j hj hle => Nat.dvd_factorial hj hle)).1`. Take `⟨p, q, hpq⟩` from `PeriodPair.mem_lattice.mp (hmem i₀ (Set.mem_univ i₀))`.
+
+Rewrite `hpq` using `[rep_omega1, rep_omega2]`. Simplify using `only [hfdef, fvec, Pi.smul_apply, Pi.single_eq_same, nsmul_eq_mul, smul_eq_mul, Pi.mul_apply, Pi.natCast_apply] at hpq`. Establish `hlj : ((l : ℂ) ^ j) ≠ 0` using `pow_ne_zero _ hl0`. Establish `e : ((p : ℝ) : ℂ) * a + ((q : ℝ) : ℂ) * cmTheta b d = (((K * x : ℤ) / (l : ℝ) ^ j : ℝ) : ℂ) * a + (((K * y : ℤ) / (l : ℝ) ^ j : ℝ) : ℂ) * cmTheta b d`. Apply `mul_left_cancel₀ hlam` to reduce the goal to its premises.
+
+Use `push_cast`. Rewrite using `[hK]`. Use `push_cast`. Take the linear combination `hpq`. Take `⟨ep, eq'⟩` from `rep_coord a ha b d hd _ _ _ _ e`.
+
+Establish `hlj' : ((l : ℝ) ^ j) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hl.ne_zero)`. Use `⟨⟨p, ?_⟩, ⟨q, ?_⟩⟩` and prove the remaining obligations. Rewrite `ep` using `[eq_div_iff hlj']`. Establish `: ((K * x : ℤ) : ℝ) = ((l ^ j * p : ℤ) : ℝ)` using `by push_cast at ep ⊢; linear_combination -ep`. Conclude with `this` after adjusting the coercions.
+
+Rewrite `eq'` using `[eq_div_iff hlj']`. Establish `: ((K * y : ℤ) : ℝ) = ((l ^ j * q : ℤ) : ℝ)` using `by push_cast at eq' ⊢; linear_combination -eq'`. Conclude with `this` after adjusting the coercions. Use `set J := K * (x.natAbs + y.natAbs) + 1`. Establish `hJ : K * (x.natAbs + y.natAbs) < l ^ J` using `lt_of_lt_of_le (Nat.lt_succ_self _) ((Nat.lt_pow_self hl.one_lt).le)`.
+
+Establish `hx0 : K * x = 0`. Apply `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (hdvd J).1` to reduce the goal to its premises. Rewrite using `[Int.natAbs_mul, Int.natAbs_pow]`. Simplify using `only [Int.natAbs_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hy0 : K * y = 0`. Apply `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (hdvd J).2` to reduce the goal to its premises. Rewrite using `[Int.natAbs_mul, Int.natAbs_pow]`. Simplify using `only [Int.natAbs_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hK0' : (K : ℤ) ≠ 0` using `by exact_mod_cast hK0`. Establish `hx : x = 0` using `(mul_eq_zero.mp hx0).resolve_left hK0'`. Establish `hy : y = 0` using `(mul_eq_zero.mp hy0).resolve_left hK0'`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[hx, hy]`.
+
+Simplify using the standard rewrite rules. Use `set j₁ := Nat.find hex with hj₁`. Establish `hP0 : P 0` using `by simp only [hPdef, pow_zero, inv_one, one_smul]; exact hDfΛ`. Establish `hj₁0 : j₁ ≠ 0`. Introduce `h0`.
+
+Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[← hj₁, h0]`. Conclude with `this hP0`. Establish `hPprev : P (j₁ - 1)`. Use `Nat.find_min hex (show j₁ - 1 < Nat.find hex by omega)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hPj : ¬ P j₁` using `Nat.find_spec hex`. Use `set xt := ((l : ℂ) ^ (j₁ - 1))⁻¹ • (Df • f) with hxt`. Establish `hxtΛ : xt ∈ Λ` using `hPprev`. Establish `hxtT : ∀ j ∈ T, xt j = 0`.
+
+Introduce `j hj`. Establish `hne : j ≠ i₀` using `by rintro rfl; exact hi₀ hj`. Simplify using `[hxt, hfdef, fvec, Pi.single_apply, hne]`. Establish `hdiv : ((l : ℂ)⁻¹) • xt ∉ Λ`. Rewrite using `[hxt, smul_smul, ← mul_inv, ← pow_succ', show j₁ - 1 + 1 = j₁ by omega]`.
+
+Conclude with `hPj`. Use `⟨xt, hxtΛ, hxtT, ?_⟩` and prove the remaining obligations. Establish `hnd : ¬ ∀ yv ∈ Λ, ∃ k : ℤ, altE (stdH L m) ((l : ℂ)⁻¹ • xt) yv = k`. Introduce `hall`. Apply `hdiv` to reduce the goal to its premises.
+
+Establish `: ((l : ℂ)⁻¹ • xt) ∈ dualLat (stdH L m) Λ` using `hall`. Rewrite `this` using `[hΛ]`. Conclude with `this`. Use `push_neg at hnd`. Take `⟨yv, hyv, hyk⟩` from `hnd`.
+
+Establish `hxtd : xt ∈ dualLat (stdH L m) Λ` using `by rw [hΛ]; exact hxtΛ`. Take `⟨c₂, hc₂⟩` from `hxtd yv hyv`. Use `⟨yv, hyv, c₂, hc₂, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, rfl⟩`. Apply `hyk t` to reduce the goal to its premises.
+
+Simplify using `only [altE] at hc₂ ⊢`. Establish `e : (stdH L m ((l : ℂ)⁻¹ • xt) yv) = (((l : ℝ)⁻¹ : ℝ) : ℂ) * stdH L m xt yv`. Simplify using `only [LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Complex.im_ofReal_mul, hc₂]`. Establish `hl' : (l : ℝ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rep_prim_pair (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0) (m : Type) [Fintype m] [DecidableEq m] (Λ : AddSubgroup (m → ℂ)) (l : ℕ) (x y : ℤ) (T : Finset m) (i₀ : m) (h : KeyHyps a b c d ha hd lam hlam m Λ l x y T i₀) :
     ∃ xt : m → ℂ, xt ∈ Λ ∧ (∀ j ∈ T, xt j = 0) ∧ ∃ yv : m → ℂ, yv ∈ Λ ∧ ∃ c₂ : ℤ,
       (stdH (cmL a b d ha hd lam hlam) m xt yv).im = c₂ ∧ ¬ (l : ℤ) ∣ c₂ := by

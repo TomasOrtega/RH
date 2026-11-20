@@ -2,6 +2,13 @@ import Mathlib
 
 open CategoryTheory Limits AlgebraicGeometry TensorProduct
 
+/- English proof (translation)
+Establish `L` using `IsPullback.of_hasPullback q c`. Establish `big` using `L.paste_horiz hq.flip`. Rewrite `big` using `[hc]`. Establish `hS` using `isPullback_SpecMap_of_isPushout φ χ l r hpo`. Establish `sq : IsPullback hN.isoSpec.inv (Spec.map φ) (hN.isoSpec.hom ≫ Spec.map φ) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`.
+
+Establish `hS'` using `hS.paste_horiz sq`. Rewrite `hS'` using `[Category.comp_id]`. Set `e` to `IsPullback.isoIsPullback _ _ hS' big`. Use `⟨e.hom ≫ pullback.fst q c, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso, Scheme.Hom.opensRange_pullbackFst]`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, IsPullback.isoIsPullback_hom_snd]`. Rewrite using `[Category.assoc, IsPullback.isoIsPullback_hom_fst]`.
+-/
 private lemma chart_open {X W E : Scheme.{0}} (π : W ⟶ X) (N : X.Opens) (hN : IsAffineOpen N)
     {S C T : CommRingCat.{0}} (φ : S ⟶ Γ(X, N)) (τ : E ⟶ Spec S)
     (q : (π ⁻¹ᵁ N).toScheme ⟶ E)
@@ -26,6 +33,17 @@ private lemma chart_open {X W E : Scheme.{0}} (π : W ⟶ X) (N : X.Opens) (hN :
       IsPullback.isoIsPullback_hom_snd]
   · rw [Category.assoc, IsPullback.isoIsPullback_hom_fst]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Establish `hVa : IsAffineOpen (ι ''ᵁ ⊤)` using `(isAffineOpen_top (Spec T)).image_of_isOpenImmersion ι`. Set `θ : Γ(W, ι ''ᵁ ⊤) ≅ T` to `ι.appIso ⊤ ≪≫ Scheme.ΓSpecIso T`. Establish `key1 : Spec.map θ.hom ≫ hVa.fromSpec = ι`. Establish `h0` using `IsAffineOpen.SpecMap_appLE_fromSpec ι hVa (isAffineOpen_top (Spec T)) (ι.preimage_image_eq ⊤).ge`.
+
+Rewrite `h0` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Simplify using `only [θ, Iso.trans_hom, Spec.map_comp, Category.assoc, Scheme.Hom.appIso_hom']`. Rewrite using `[h0, ← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`. Establish `key2 : π.appLE N (ι ''ᵁ ⊤) hle ≫ θ.hom = l`. Apply `Spec.map_injective` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_mono hN.fromSpec, Spec.map_comp, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec π hN hVa hle, ← Category.assoc, key1, hι]`. Use `⟨r ≫ θ.inv, ?_, ?_⟩` and prove the remaining obligations. Use `hpo.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) θ.symm ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[← key2]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `f`. Rewrite using `[← basicOpen_eq_of_affine, Scheme.image_basicOpen]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma chart_ring {X W : Scheme.{0}} (π : W ⟶ X) (N : X.Opens) (hN : IsAffineOpen N)
     {S C T : CommRingCat.{0}} (φ : S ⟶ Γ(X, N)) (χ : S ⟶ C)
     (l : Γ(X, N) ⟶ T) (r : C ⟶ T) (hpo : IsPushout φ χ l r)
@@ -57,6 +75,17 @@ private lemma chart_ring {X W : Scheme.{0}} (π : W ⟶ X) (N : X.Opens) (hN : I
     rw [← basicOpen_eq_of_affine, Scheme.image_basicOpen]
     rfl
 
+/- English proof (translation)
+Introduce `S C _ _ X W E π N hN φ τ q hq χ c _ hc`. Take `⟨ι', _, hr, hq', hπ'⟩` from `chart_open π N hN (CommRingCat.ofHom φ) τ q hq (CommRingCat.ofHom χ) c hc (pushout.inl (CommRingCat.ofHom φ) (CommRingCat.ofHom χ)) (pushout.inr (CommRingCat.ofHom φ) (CommRingCat.ofHom χ)) (IsPushout.of_hasPushout _ _)`. Establish `hι : (ι' ≫ (π ⁻¹ᵁ N).ι) ≫ π = Spec.map (pushout.inl (CommRingCat.ofHom φ) (CommRingCat.ofHom χ)) ≫ hN.fromSpec`. Rewrite using `[Category.assoc, ← morphismRestrict_ι, ← Category.assoc, hπ', Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `hV : (π ⁻¹ᵁ N).ι ''ᵁ (q ⁻¹ᵁ c.opensRange) = (ι' ≫ (π ⁻¹ᵁ N).ι) ''ᵁ ⊤`. Rewrite using `[Scheme.Hom.image_top_eq_opensRange, Scheme.Hom.opensRange_comp, hr]`. Establish `hle : (π ⁻¹ᵁ N).ι ''ᵁ (q ⁻¹ᵁ c.opensRange) ≤ π ⁻¹ᵁ N` using `(π ⁻¹ᵁ N).ι_image_le _`. Take `⟨ρ, hpo, hb⟩` from `chart_ring π N hN (CommRingCat.ofHom φ) (CommRingCat.ofHom χ) _ _ (IsPushout.of_hasPushout _ _) (ι' ≫ (π ⁻¹ᵁ N).ι) hι _ hV hle`. Use `⟨?_, hle, ρ.hom, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hV]`. Conclude with `(isAffineOpen_top _).image_of_isOpenImmersion _`. Simplify using `using hpo`. Introduce `O f hO`. Establish `hbo : (PrimeSpectrum.basicOpen ((pushout.inr (CommRingCat.ofHom φ) (CommRingCat.ofHom χ)).hom f) : (Spec _).Opens) = ι' ⁻¹ᵁ q ⁻¹ᵁ O`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, hq', Scheme.Hom.comp_preimage, hO]`. Use extensionality with `x`. Conclude with `Iff.rfl`. Rewrite using `[← hb f, hbo]`. Establish `hinj` using `(π ⁻¹ᵁ N).ι.isOpenEmbedding.injective`.
+
+Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Rewrite using `[TopologicalSpace.Opens.coe_inf, Scheme.Hom.coe_image, Scheme.Hom.coe_image, Scheme.Hom.coe_image, ← hr, ← Set.image_inter hinj, Scheme.Hom.comp_base, TopCat.coe_comp, Set.image_comp]`. Use `congr 1`. Rewrite using `[← Scheme.Hom.coe_image, Scheme.Hom.image_preimage_eq_opensRange_inf]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.isAffineOpen_image_pullback_openImmersion_chart :
     ∀ {S C : Type} [CommRing S] [CommRing C] {X W E : Scheme.{0}} (π : W ⟶ X) (N : X.Opens)
         (hN : IsAffineOpen N) (φ : S →+* Γ(X, N)) (τ : E ⟶ Spec (CommRingCat.of S))

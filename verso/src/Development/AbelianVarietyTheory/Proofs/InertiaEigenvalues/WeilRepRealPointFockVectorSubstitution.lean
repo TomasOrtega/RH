@@ -22,6 +22,19 @@ open GlobalTheory.LevelSeries
 
 namespace GlobalTheory.RealFockVac
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP p BW hBW a ha u hu f hf _ P`. Take `⟨hPr, -, -, -, -, -, -, hT, -⟩` from `hP`. Establish `hom` using `hPr.weil`. Establish `hθ : IsInfFam θ` using `hPr.inf`. Establish `one : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt W 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one _ _`.
+
+Establish `hS : ∀ τ, IsCartanInv (gramAt D V τ) 1` using `GlobalTheory.SmoothVac.isCartanInv_one V hPr.std`. Establish `hG : ∀ τ, gramAt D V τ = 1` using `fun τ => by`. Rewrite using `[gramAt, hPr.std, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hun : ∀ τ, ((u τ : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Matrix.unitaryGroup (Fin V.rank) ℂ` using `fun τ => by`. Rewrite using `[hu τ]`.
+
+Establish `h1 : (compAt θ τ (Formalism.L2.Theta.mt V a))ᴴ * gramAt D V τ * compAt θ τ (Formalism.L2.Theta.mt V a) = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a τ`. Rewrite `h1` using `[hG, Matrix.mul_one]`. Conclude with `Matrix.mem_unitaryGroup_iff'.2 h1`. Establish `ht : ∀ τ, sW τ * BW τ = BW τ * diagonal fun b : Fin W.rank => if decide (b.val < (fun _ => p) τ) = true then (1 : ℂ) else -1` using `fun τ => by`. Take `⟨ε, hε, -, h2⟩` from `hBW τ`.
+
+Establish `e : (fun b => (ε b : ℂ)) = fun b : Fin W.rank => if decide (b.val < p) = true then (1 : ℂ) else -1`. Use function extensionality and compare the values at `fun b => by`. Break down `hε b with h | h` into its components or cases. Simplify using `[h.1, h.2]`. Simplify using `[h.1, not_lt.2 h.2]`.
+
+Rewrite `h2` using `[e]`. Conclude with `h2`. Establish `hBT : (fun τ => compAt θ τ (Formalism.L2.Theta.mt W 1) * BW τ) = BW` using `funext fun τ => by rw [one, Matrix.one_mul]`. Use `show om (a, 1) (pureTensorO ψ θ V W (fun _ => 1) sW (fun _ => 1) BW f P) = pureTensorO ψ θ V W (fun _ => 1) sW (fun _ => 1) BW (om (a, 1) f) (GlobalTheory.ExportSeries.fockSubst (fun _ => p) u P)`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ V W χV χW om hom hθ (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun τ => (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) * ((u τ : GL (Fin V.rank) ℂ) : Matrix _ _ ℂ)) sW sW BW (fun τ => compAt θ τ (Formalism.L2.Theta.mt W 1) * BW τ) a 1 (fun …`.
+
+Conclude with `GlobalTheory.RealFockAction.pureTensorO_subst hom.std hθ hS hT ht (fun _ => 1) u hun (hom.om_pres _ _ hf) P`.
+-/
 theorem om_stdF_subst : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)

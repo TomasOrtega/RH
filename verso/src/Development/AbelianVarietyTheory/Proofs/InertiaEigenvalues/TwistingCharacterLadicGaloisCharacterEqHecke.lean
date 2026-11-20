@@ -18,6 +18,31 @@ noncomputable section
 
 namespace GlobalTheory.SeriesTie
 
+/- English proof (translation)
+Introduce `D a i κ ι χ r b ha hr hg f hf ch Q`. Use `set ψ := Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b r with hψdef`. Establish `hker : ψ.ker = r.ker`. Consider the cases of `b`. Use extensionality with `σ`.
+
+Simplify using `[hψdef, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt]`. Simplify using `[hψdef, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt]`. Establish `hop : IsOpen (ψ.ker : Set (G D.host.E D.nd.Om))` using `hker ▸ hr`. Establish `hfi : ψ.ker.FiniteIndex`. Set `H : OpenNormalSubgroup (G D.host.E D.nd.Om)` to `{ toSubgroup := ψ.ker, isOpen' := hop, isNormal' := inferInstance }`.
+
+Conclude with `inferInstanceAs (OpenNormalSubgroup.toFiniteIndexNormalSubgroup H).toSubgroup.FiniteIndex`. Establish `hn : ψ.ker.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hpow : ∀ σ, ψ σ ^ ψ.ker.index = 1` using `fun σ => by`. Rewrite using `[← map_pow]`. Conclude with `ψ.mem_ker.1 (Subgroup.pow_index_mem _ σ)`.
+
+Establish `key : ∀ (x : (AE D)ˣ) (σ : G D.host.E D.nd.Om), a.sym x = toAb D.host.E D.nd.Om σ → ((charOf a f ψ x : Circle) : ℂ) = ((χ.1 (Units.map a.κ.toMonoidHom x) : ℂˣ) : ℂ)`. Introduce `x σ hx`. Rewrite using `[charOf_eq a f hop hx hn (hpow σ)]`. Establish `hint : IsIntegral ℤ ((ψ σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)` using `IsIntegral.of_pow (Nat.pos_of_ne_zero hn) (by`. Rewrite using `[← Units.val_pow_eq_pow_val, hpow σ, Units.val_one]`.
+
+Conclude with `isIntegral_one)`. Rewrite using `[hf _ hint]`. Establish `h1` using `hg.2.2 (Units.map a.κ.toMonoidHom x) σ hx`. Simplify using `[GlobalTheory.GalChar.inQ, GlobalTheory.GalChar.toQ, GlobalTheory.HeckeGal.infPow, GlobalTheory.HeckeGal.lPow, GlobalTheory.HeckeGal.locPow] at h1`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules. Establish `hsymc : Continuous a.sym` using `ha.artin.quot.continuous.comp (Continuous.units_map _ ha.cont)`. Establish `hdesc : IsOpen (((descend ψ : Gab D.host.E D.nd.Om →* (D.ntw.O0 i)ˣ).ker : Set (Gab D.host.E D.nd.Om)))`. Establish `hpre : (toAb D.host.E D.nd.Om) ⁻¹' ((descend ψ).ker : Set (Gab D.host.E D.nd.Om)) = (ψ.ker : Set _)`. Use extensionality with `σ`.
+
+Simplify using `[descend_toAb hop]`. Establish `hs : Function.Surjective (toAb D.host.E D.nd.Om)` using `QuotientGroup.mk'_surjective _`. Rewrite using `[← Set.image_preimage_eq ((descend ψ).ker : Set (Gab D.host.E D.nd.Om)) hs, hpre]`. Conclude with `QuotientGroup.isOpenMap_coe _ hop`. Establish `hpullo : IsOpen (((a.pull ψ).ker : Set (AE D)ˣ))`.
+
+Establish `: ((a.pull ψ).ker : Set (AE D)ˣ) = a.sym ⁻¹' ((descend ψ).ker : Set _)`. Use extensionality with `x`. Simplify using `[Recip.pull]`. Rewrite using `[this]`. Conclude with `hdesc.preimage hsymc`.
+
+Use `⟨⟨?_, fun k => ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Use `continuous_of_continuousAt_one (charOf a f ψ) ?_` and prove the remaining obligations. Use `ContinuousAt.congr (continuousAt_const (y := (1 : Circle))) (Filter.eventuallyEq_of_mem (hpullo.mem_nhds (map_one _)) fun x hx => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Circle) = charOf a f ψ x`. Rewrite using `[charOf, MonoidHom.comp_apply, MonoidHom.comp_apply, (a.pull ψ).mem_ker.1 hx, map_one, map_one]`.
+
+Establish `hs : a.sym (Units.map (incA D).toMonoidHom k) = 1`. Express the relevant statement in the definitionally equal form `a.art (Units.map a.κ.toMonoidHom (Units.map (incA D).toMonoidHom k)) = 1`. Rewrite using `[← MonoidHom.mem_ker, ha.artin.ker]`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.mem_sup_left` to reduce the goal to its premises.
+
+Conclude with `⟨k, Units.ext (ha.rat k).symm⟩`. Express the relevant statement in the definitionally equal form `unitPart (Units.map f.toMonoidHom (descend ψ (a.sym (Units.map (incA D).toMonoidHom k)))) = 1`. Rewrite using `[hs, map_one, map_one, map_one]`. Take `⟨σ, hσ⟩` from `a.exists_sym x`. Establish `hy : Units.map a.κ.toMonoidHom x = Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P k)` using `Units.ext ((congrArg a.κ hx).trans (ha.loc P e he k))`.
+
+Express the relevant statement in the definitionally equal form `((charOf a f ψ x : Circle) : ℂ) = _`. Rewrite using `[key x σ hσ, hy]`. Both sides reduce to the same expression.
+-/
 theorem charOf_psiAt_chrEq : ∀ (D : D7) (a : Recip D D.nd.Om) (i : D.ntw.Tw) (κ : FractionRing (D.ntw.O0 i) →+* Qbar (D.ntw.l i)) (ι : Qbar (D.ntw.l i) ≃+* ℂ) (χ : Formalism.L2.Host.HChar D.host.E) (r : G D.host.E D.nd.Om →* (D.ntw.O0 i)ˣ) (b : Bool), a.Good → IsOpen (r.ker : Set (G D.host.E D.nd.Om)) → GlobalTheory.GalChar.IsGal a.art κ ι χ (fun _ => 0) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b r) → ∀ (f : D.ntw.O0 i →+* ℂ), (∀ y, IsIntegral ℤ y → f y = ι (κ (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) y))) → ∀ (ch : Set (Pl D.host.E)) (Q : Finset (Pl D.host.E)), ChrEq (twistOf a f ch Q (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b r)).chi χ := by
   intro D a i κ ι χ r b ha hr hg f hf ch Q
   set ψ := Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b r with hψdef

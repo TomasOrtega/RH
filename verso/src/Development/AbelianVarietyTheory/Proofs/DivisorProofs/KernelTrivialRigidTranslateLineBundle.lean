@@ -23,13 +23,28 @@ section
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Rewrite using `[← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one]`.
+-/
 theorem toUnit_inv_mul_self (a : 𝟙_ (Over S) ⟶ A) (T : Over S) :
     (toUnit T ≫ a⁻¹) * (toUnit T ≫ a) = 1 := by
   rw [← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one]
 
+/- English proof (translation)
+Rewrite using `[comp_transl, transl, _root_.mul_assoc, toUnit_inv_mul_self, _root_.mul_one]`.
+-/
 theorem transl_inv_comp_transl (a : 𝟙_ (Over S) ⟶ A) : transl a⁻¹ ≫ transl a = 𝟙 A := by
   rw [comp_transl, transl, _root_.mul_assoc, toUnit_inv_mul_self, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `R _ t y hy`. Use `h R t y fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hy p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hL'` using `pull_isLB hL (transl x).left`.
+
+Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`. Set `T : Over S` to `Over.mk t`. Take `⟨n, hn⟩` from `exists_restrict (fst T A).left (T ◁ transl x⁻¹).left (congrArg (fun q => q.left) (whiskerLeft_fst T (transl x⁻¹))) V`. Establish `k₂ : T ◁ transl x⁻¹ ≫ snd T A ≫ transl x = snd T A`. Rewrite using `[whiskerLeft_snd_assoc, transl_inv_comp_transl, Category.comp_id]`.
+
+Establish `k₃ : T ◁ transl x⁻¹ ≫ ((fst T A ≫ y) * snd T A) ≫ transl x = (fst T A ≫ y) * snd T A`. Rewrite using `[← Category.assoc, MonObj.comp_mul, whiskerLeft_fst_assoc, whiskerLeft_snd, comp_transl, comp_transl, _root_.mul_assoc, _root_.mul_assoc, toUnit_inv_mul_self, _root_.mul_one]`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn (L.pull (transl x).left) _ _ _) c hc`. Take `⟨c₂, h₂, -⟩` from `exists_up hw hL hL' c₁ h₁`. Use `gen_chartPull (chartPullOut L _ _ _ _ fun k => ?_) _ (pullGen_isGen _ _ _ c₂ h₂ n)` and prove the remaining obligations.
+
+Use `show n ≫ (_ ≫ _) ≫ (transl x).left = _`. Rewrite using `[Category.assoc, ← Category.assoc n, hn, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (fun q => _ ≫ q.left) k₃, congrArg (fun q => _ ≫ q.left) k₂]`.
+-/
 theorem kTriv_pull_transl (x : 𝟙_ (Over S) ⟶ A) {L : LB A.left} (hL : L.IsLB) (h : Out.KTriv A L) :
     Out.KTriv A (L.pull (transl x).left) := by
   intro R _ t y hy
@@ -56,6 +71,9 @@ theorem kTriv_pull_transl (x : 𝟙_ (Over S) ⟶ A) {L : LB A.left} (hL : L.IsL
 
 end
 
+/- English proof (translation)
+Introduce `S A _ L hL a h R _ s y hy`. Use `kTriv_pull_transl a hL h R s y fun p => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hy p`. Use `⟨V, hV, gen_of_lbIso (pull_isLB (DVR.linComb_isLB _ (DVR.linComb_isLB _ hL _ _) _ _) _) (pull_isLB (DVR.linComb_isLB _ (pull_isLB hL _) _ _) _) (LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.ch …` and prove the remaining obligations. Rewrite using `[comp_const, comp_const]`.
+-/
 theorem kTriv_rigTransl_any : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (L : LB A.left), L.IsLB → ∀ a : 𝟙_ (Over S) ⟶ A, Out.KTriv A L → Out.KTriv A (GlobalTheory.RigidTranslate.rigTransl L a) := by
   intro S A _ L hL a h R _ s y hy
   refine kTriv_pull_transl a hL h R s y fun p => ?_

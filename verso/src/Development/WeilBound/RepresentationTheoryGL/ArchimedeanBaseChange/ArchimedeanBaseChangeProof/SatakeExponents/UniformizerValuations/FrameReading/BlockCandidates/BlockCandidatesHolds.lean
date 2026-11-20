@@ -13,6 +13,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.RealReadLeviSta
 
 namespace PositivityTheory.Rg.BcB.F.BC
 
+/- English proof (translation)
+The claim follows from `block_candidates_of_inputs chiTr' limAt_holds (identOf' gamma_zeta_nabla_cancel.gelfInj)`.
+-/
 theorem block_candidates_holds : BlockCand := block_candidates_of_inputs chiTr' limAt_holds (identOf' gamma_zeta_nabla_cancel.gelfInj)
 
 end PositivityTheory.Rg.BcB.F.BC

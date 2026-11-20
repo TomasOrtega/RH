@@ -19,6 +19,11 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.ConstRatio
 
+/- English proof (translation)
+Use `GlobalTheory.GaloisDescent.mem_range_algebraMap_of_forall_algEquiv z fun σ => ?_` and prove the remaining obligations. Take `⟨y', hy'⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c T T σ.toAlgHom y`. Establish `h1` using `hu _ _ _ hy'`. Establish `h2` using `hu' _ _ _ hy'`. Rewrite `h2` using `[h y, h y', map_mul, ← h1]`.
+
+Establish `hne : σ.toAlgHom (u y) ≠ 0`. Simplify using `using hy`. Conclude with `mul_right_cancel₀ hne h2`.
+-/
 theorem ratio_mem_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (T : Type) [Field T] [IsAlgClosed T] [Algebra c.F T]
     (u u' : FrPt Xo c T → T)
@@ -35,6 +40,15 @@ theorem ratio_mem_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     simpa using hy
   exact mul_right_cancel₀ hne h2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c s J u u' hu hu' z hz h`. Establish `key : ∃ z₀ : c.F, (∃ k : ℕ, 0 < k ∧ z₀ ^ k = 1) ∧ ∀ j (y : @FrPt E _ _ _ H Dw l Xo c ℂ _ s.toAlgebra), @u' j ℂ _ s.toAlgebra y = s z₀ * @u j ℂ _ s.toAlgebra y`. Distinguish the cases in `h0 : ∀ j (y : @FrPt E _ _ _ H Dw l Xo c ℂ _ s.toAlgebra), @u j ℂ _ s.toAlgebra y = 0`. Use `⟨1, ⟨1, one_pos, one_pow 1⟩, fun j y => ?_⟩` and prove the remaining obligations. Rewrite using `[h j y, h0 j y, mul_zero, mul_zero]`.
+
+Simplify using `only [not_forall] at h0`. Take `⟨j, y, hy⟩` from `h0`. Take `⟨z₀, hz₀⟩` from `@ratio_mem_range E _ _ _ H Dw l Xo c ℂ _ _ s.toAlgebra (@u j ℂ _ s.toAlgebra) (@u' j ℂ _ s.toAlgebra) (@hu j ℂ ℂ _ s.toAlgebra _ s.toAlgebra) (@hu' j ℂ ℂ _ s.toAlgebra _ s.toAlgebra) z (h j) y hy`. Establish `hz₀' : s z₀ = z` using `hz₀`. Take `⟨m, hm, hzm⟩` from `hz`.
+
+Use `⟨z₀, ⟨m, hm, s.injective ?_⟩, fun j y => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hz₀', hzm, map_one]`. Rewrite using `[hz₀', h j y]`. Take `⟨z₀, hk, hz₀⟩` from `key`. Use `⟨z₀, hk, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.NaturalValues.eq_of_eq_complex E H Dw l Xo c s (u' j) (fun S _ _ y => algebraMap c.F S z₀ * u j S y) (hu' j) ?_ ?_` and prove the remaining obligations. Introduce `S T _ _ _ _ φ y y' hyy`. Rewrite using `[map_mul, φ.commutes, hu j S T φ y y' hyy]`. Introduce `y`. Conclude with `hz₀ j y`.
+-/
 theorem exists_ratio : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (s : c.F →+* ℂ) (J : Type) (u u' : J → ∀ (S : Type) [CommRing S] [Algebra c.F S], FrPt Xo c S → S), (∀ j, (∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap φ y z → φ (u j S y) = u j T z)) → (∀ j, (∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap φ y z → φ (u' j S y) = u' j T z)) → ∀ z : ℂ, IsMu z → (∀ j (y : @FrPt E _ _ _ H Dw l Xo c ℂ _ s.toAlgebra), @u' j ℂ _ s.toAlgebra y = z * @u j ℂ _ s.toAlgebra y) → ∃ z₀ : c.F, (∃ k : ℕ, 0 < k ∧ z₀ ^ k = 1) ∧ ∀ j (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), u' j S y = algebraMap c.F S z₀ * u j S y := by
   intro E _ _ _ H Dw l Xo c s J u u' hu hu' z hz h
   have key : ∃ z₀ : c.F, (∃ k : ℕ, 0 < k ∧ z₀ ^ k = 1) ∧

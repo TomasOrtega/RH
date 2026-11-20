@@ -130,6 +130,11 @@ def tieF {eps : ℝ} (Fm : FamP eps) : Prop :=
 
 def tieClosed (𝒞 : FamClass) : Prop := Closed 𝒞 (fun Fm _ => tieF Fm)
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `h` using `D.ntw.pD_eq (D.ntw.twOf a)`. Rewrite `h` using `[D.ntw.twOf_l a]`. Establish `h' : v ∈ D.ntw.pD (D.ntw.twOf a) ↔ v ∈ placesOver D.host.E (if D.nd.l a = D.host.pde then D.host.pde' else D.host.pde)`. Rewrite using `[← h]`.
+
+Both sides reduce to the same expression. Simplify using `only [badS, Set.mem_setOf_eq, Finset.mem_coe, D.nd.S_def, h', Fin.exists_fin_two, or_assoc]`.
+-/
 theorem badS_eq (a : D.nd.Loc) : badS D a = ↑(D.nd.S a) := by
   ext v
   have h := D.ntw.pD_eq (D.ntw.twOf a)
@@ -139,6 +144,9 @@ theorem badS_eq (a : D.nd.Loc) : badS D a = ↑(D.nd.S a) := by
     rw [← h]; rfl
   simp only [badS, Set.mem_setOf_eq, Finset.mem_coe, D.nd.S_def, h', Fin.exists_fin_two, or_assoc]
 
+/- English proof (translation)
+Evaluate the numerical expressions using `[ind2, epsL]`.
+-/
 example : ind2 2 + epsL 2 + epsL 2 = 3 / 2 := by norm_num [ind2, epsL]
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TwistedTriples

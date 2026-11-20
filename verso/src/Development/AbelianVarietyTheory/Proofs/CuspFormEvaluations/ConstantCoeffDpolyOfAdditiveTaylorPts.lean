@@ -15,11 +15,19 @@ variable {σ τ W : Type*} [Fintype σ] [DecidableEq σ] [Fintype τ] [NormedAdd
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Use `hasSubst_of_constantCoeff_zero fun i => ?_` and prove the remaining obligations. Simplify using `[h0]`.
+-/
 theorem hasSubst_taylorDir (u : τ → W) {φ : W → σ → ℂ} (h0 : φ 0 = 0) :
     HasSubst fun i => taylorDir u fun z => φ z i := by
   refine hasSubst_of_constantCoeff_zero fun i => ?_
   simp [h0]
 
+/- English proof (translation)
+Establish `hi : ∀ i, fderiv ℂ (fun y => φ y i) z v = fderiv ℂ φ z v i` using `fun i => by`. Rewrite using `[(hasFDerivAt_pi'.1 hφ.hasFDerivAt i).fderiv]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hi]`. Rewrite using `[fderiv_comp z hf hφ, ContinuousLinearMap.comp_apply]`.
+
+Use `conv_lhs => rw [← Finset.univ_sum_single (fderiv ℂ φ z v)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single i (fderiv ℂ φ z v i) : σ → ℂ) = fderiv ℂ φ z v i • Pi.single i 1 by`. Apply the tactic sequence `ext k; by_cases h : k = i <;> simp [h], map_smul, smul_eq_mul, mul_comm]`.
+-/
 private theorem fderiv_comp_apply_eq_sum_pi_single {φ : W → σ → ℂ} {f : (σ → ℂ) → ℂ} {z : W}
     (hφ : DifferentiableAt ℂ φ z) (hf : DifferentiableAt ℂ f (φ z)) (v : W) :
     fderiv ℂ (f ∘ φ) z v =
@@ -35,6 +43,19 @@ private theorem fderiv_comp_apply_eq_sum_pi_single {φ : W → σ → ℂ} {f : 
   rw [show (Pi.single i (fderiv ℂ φ z v i) : σ → ℂ) = fderiv ℂ φ z v i • Pi.single i 1 by
     ext k; by_cases h : k = i <;> simp [h], map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Establish `hs : HasSubst fun i => taylorDir u fun z => φ z i` using `hasSubst_taylorDir u h0`. Establish `ha0 : ∀ i, constantCoeff (taylorDir u fun z => φ z i) = 0` using `fun i => by simp [h0]`. Establish `hT : Tendsto φ (𝓝 0) (𝓝 0)` using `by simpa [h0] using hφ.continuousAt.tendsto`. Establish `hφi : ∀ i, AnalyticAt ℂ (fun z => φ z i) 0` using `fun i => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i).analyticAt (φ 0)).comp hφ`. Apply `mvPowerSeries_eq_zero_of_pderiv_mem_span` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Rewrite using `[map_sub, FormalCalc.constantCoeff_subst_of_zero hs ha0]`. Simplify using `[h0]`. Introduce and unpack `_ ⟨f, hf, rfl⟩ j`. Establish `hfφ : AnalyticAt ℂ (f ∘ φ) 0` using `hf.comp_of_eq hφ h0`.
+
+Establish `hg : ∀ i, AnalyticAt ℂ (fun y => fderiv ℂ f y (Pi.single i 1)) 0` using `fun i => analyticAt_fderiv_apply hf _`. Establish `hev : (fun z => fderiv ℂ (f ∘ φ) z (u j)) =ᶠ[𝓝 0] fun z => ∑ i, fderiv ℂ f (φ z) (Pi.single i 1) * fderiv ℂ (fun y => φ y i) z (u j)` using `by filter_upwards [hφ.eventually_analyticAt, hT.eventually hf.eventually_analyticAt] with z hz1 hz2`. Conclude with `fderiv_comp_apply_eq_sum_pi_single hz1.differentiableAt hz2.differentiableAt (u j)`. Establish `hsum` using `taylorDir_sum u Finset.univ (F := fun i z => fderiv ℂ f (φ z) (Pi.single i 1) * fderiv ℂ (fun y => φ y i) z (u j)) (fun i _ => ((hg i).comp_of_eq hφ h0).mul (analyticAt_fderiv_apply (hφi i) _))`. Use `beta_reduce at hsum`.
+
+Establish `key : pderiv ℂ j (taylorDir u (f ∘ φ) -`. Substitute `(fun i => taylorDir u fun z => φ z i) (taylor f)) =` using the available equality. Use the proof step `∑ i, (taylorDir u ((fun y => fderiv ℂ f y (Pi.single i 1)) ∘ φ) -`. Substitute `(fun i => taylorDir u fun z => φ z i) (taylor fun y => fderiv ℂ f y (Pi.single i 1))) * pderiv ℂ j (taylorDir u fun z => φ z i) := by` using the available equality. Rewrite using `[map_sub, FormalCalc.pderiv_subst hs, ← taylorDir_fderiv u hfφ j, taylorDir_congr u hev, hsum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, ← taylorDir_fderiv u (hφi i) j, taylor_fderiv hf i]`. Use `congr 1`. Conclude with `taylorDir_mul u ((hg i).comp_of_eq hφ h0) (analyticAt_fderiv_apply (hφi i) _)`. Rewrite using `[key]`.
+
+Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨_, hg i, rfl⟩)`.
+-/
 private theorem taylorDir_comp_eq_subst_taylor_of_analyticAt (u : τ → W) {φ : W → σ → ℂ} (hφ : AnalyticAt ℂ φ 0)
     (h0 : φ 0 = 0) :
     ∀ D ∈ {D : MvPowerSeries τ ℂ | ∃ f : (σ → ℂ) → ℂ, AnalyticAt ℂ f 0 ∧
@@ -75,6 +96,9 @@ private theorem taylorDir_comp_eq_subst_taylor_of_analyticAt (u : τ → W) {φ 
     exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _
       (Ideal.subset_span ⟨_, hg i, rfl⟩)
 
+/- English proof (translation)
+Establish `hs : HasSubst fun i => taylorDir u fun z => φ z i` using `hasSubst_taylorDir u h0`. Establish `hD` using `taylorDir_comp_eq_subst_taylor_of_analyticAt u hφ h0 (taylorDir u (f ∘ φ) -`. Substitute `(fun i => taylorDir u fun z => φ z i) (taylor f)) ⟨f, hf, rfl⟩` using the available equality. Conclude with `sub_eq_zero.1 hD`.
+-/
 theorem taylorDir_comp (u : τ → W) {φ : W → σ → ℂ} (hφ : AnalyticAt ℂ φ 0) (h0 : φ 0 = 0)
     {f : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) :
     taylorDir u (f ∘ φ) = subst (fun i => taylorDir u fun z => φ z i) (taylor f) := by
@@ -105,18 +129,30 @@ noncomputable def taylorPts (n : ℕ) (F : (Fin n → Fin d → ℂ) → ℂ) : 
 noncomputable def curryPts (n d : ℕ) : (Fin n × Fin d → ℂ) →L[ℂ] (Fin n → Fin d → ℂ) :=
   ContinuousLinearMap.pi fun j => ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (j, i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem curryPts_apply (z : Fin n × Fin d → ℂ) (j : Fin n) (i : Fin d) :
     curryPts n d z j i = z (j, i) := rfl
 
+/- English proof (translation)
+Unfold `taylorPts`. Rewrite using `[constantCoeff_taylor]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem constantCoeff_taylorPts (F : (Fin n → Fin d → ℂ) → ℂ) :
     constantCoeff (taylorPts n F) = F 0 := by
   unfold taylorPts
   rw [constantCoeff_taylor]
   rfl
 
+/- English proof (translation)
+The claim follows from `taylor_coord (j, i)`.
+-/
 @[simp] theorem taylorPts_coord (j : Fin n) (i : Fin d) :
     taylorPts n (fun z : Fin n → Fin d → ℂ => z j i) = X (j, i) := taylor_coord (j, i)
 
+/- English proof (translation)
+The claim follows from `taylor_const c`.
+-/
 @[simp] theorem taylorPts_const (c : ℂ) :
     taylorPts n (fun _ : Fin n → Fin d → ℂ => c) = C c := taylor_const c
 

@@ -27,6 +27,9 @@ def hv : Herm E a ≃ₗ[ℝ] HV E a where
   right_inv _ := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hv_val (X : Herm E a) : Matrix.of (hv X).1 = X.1 := rfl
 
 variable (E a) in
@@ -34,6 +37,9 @@ variable (E a) in
 def hOne : HV E a := hv ⟨1, IsSelfAdjoint.one _⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hOne_val : Matrix.of (hOne E a).1 = 1 := rfl
 
 def sand : GL (Fin a) (Cinf E) →* (HV E a →L[ℝ] HV E a) where
@@ -54,6 +60,9 @@ def sand : GL (Fin a) (Cinf E) →* (HV E a →L[ℝ] HV E a) where
       g.val * (h.val * Matrix.of p.1 * star h.val) * star g.val
     simp only [star_mul, mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sand_val (g : GL (Fin a) (Cinf E)) (p : HV E a) :
     Matrix.of (sand g p).1 = g.val * Matrix.of p.1 * star g.val := rfl
 
@@ -61,8 +70,14 @@ variable (E a) in
 
 def cone : Set (HV E a) := {p | ∃ g : GL (Fin a) (Cinf E), sand g (hOne E a) = p}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by rw [map_one]; rfl⟩`.
+-/
 theorem hOne_mem_cone : hOne E a ∈ cone E a := ⟨1, by rw [map_one]; rfl⟩
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hp`. Conclude with `⟨g * h, by rw [map_mul]; rfl⟩`.
+-/
 theorem sand_mem_cone (g : GL (Fin a) (Cinf E)) {p : HV E a} (hp : p ∈ cone E a) : sand g p ∈ cone E a := by
   obtain ⟨h, rfl⟩ := hp
   exact ⟨g * h, by rw [map_mul]; rfl⟩
@@ -74,6 +89,9 @@ def ev {d : ℕ} : Sm E a ⊗[ℂ] (Fin d → ℂ) →ₗ[ℂ] (GA E a → Fin d
     (fun c φ v => by ext g i; simp [mul_assoc]) (fun φ v w => by ext g i; simp [mul_add])
     (fun c φ v => by ext g i; simp [mul_left_comm]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_tmul {d : ℕ} (φ : Sm E a) (v : Fin d → ℂ) (g : GA E a) : ev (φ ⊗ₜ[ℂ] v) g = φ.1 g • v := rfl
 
 def geo (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) :
@@ -90,17 +108,32 @@ section
 
 variable (ho : IsOpen (cone E a)) (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem geo_Y : (geo ho U Ξ).Y = cone E a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem geo_ρ (γ : (⊤ : Subgroup (GL (Fin a) E))) :
     (geo ho U Ξ).ρ γ = sand (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem geo_σ (γ : (⊤ : Subgroup (GL (Fin a) E))) (s : GL (Fin a) (Af E) ⧸ U) :
     (geo ho U Ξ).σ γ s = GeneralLinearGroup.map (algebraMap E (Af E)) γ.1 • s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem geo_ξ (γ : (⊤ : Subgroup (GL (Fin a) E))) :
     (geo ho U Ξ).ξ γ = Ξ.mat (GeneralLinearGroup.map (pInf E) (ratGL E a γ.1)) := rfl
 
+/- English proof (translation)
+Use extensionality with `γ f s i`. Rewrite using `[Geo.lev_apply, geo_σ]`. Simplify using `only [Subgroup.coe_inv, map_inv]`. Both sides reduce to the same expression.
+-/
 theorem geo_lev : (geo ho U Ξ).lev = levelRep ⊤ U (ratC Ξ) := by
   ext γ f s i
   rw [Geo.lev_apply, geo_σ]

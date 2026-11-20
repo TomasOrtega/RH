@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.DRFlag.ToMdl
 
+/- English proof (translation)
+Set `hU` to `isAffineOpen_opensRange (χ ≫ g)`. Set `k` to `IsOpenImmersion.isoOfRangeEq hU.fromSpec (χ ≫ g) (by rw [hU.range_fromSpec]; simp)`. Establish `hg : Spec.map (Spec.preimage k.hom) = k.hom` using `Spec.map_preimage _`. Establish `hi : IsIso (Spec.map (Spec.preimage k.hom))` using `by rw [hg]; infer_instance`. Establish `hi' : IsIso (Spec.preimage k.hom)`.
+
+Establish `: IsIso (Scheme.Spec.map (Spec.preimage k.hom).op)` using `hi`. Use `isIso_of_reflects_iso (Spec.preimage k.hom).op Scheme.Spec` as an intermediate fact. Conclude with `isIso_of_op _`. Use `⟨(asIso (Spec.preimage k.hom)).commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage k.hom) ≫ _ = _`.
+
+Rewrite using `[hg]`. Conclude with `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`.
+-/
 theorem exists_chart_iso {X' Y : Scheme.{0}} {R : Type} [CommRing R] (χ : Sp R ⟶ Y) [IsOpenImmersion χ]
     (g : Y ⟶ X') [IsIso g] : ∃ θ : R ≃+* Γ(X', (χ ≫ g).opensRange),
       spMap θ.toRingHom ≫ χ ≫ g = (isAffineOpen_opensRange (χ ≫ g)).fromSpec := by
@@ -28,6 +35,11 @@ theorem exists_chart_iso {X' Y : Scheme.{0}} {R : Type} [CommRing R] (χ : Sp R 
   rw [hg]
   exact IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, by rw [← Scheme.Hom.comp_apply, Category.assoc, e.inv_hom_id, Category.comp_id]⟩`. Introduce and unpack `⟨y, hy⟩`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hy, ← Scheme.Hom.comp_apply, e.hom_inv_id]`. Both sides reduce to the same expression.
+-/
 theorem range_comp_inv {X X' T : Scheme.{0}} (e : X' ≅ X) (f : T ⟶ X) :
     Set.range (f ≫ e.inv) = e.hom ⁻¹' Set.range f := by
   ext x
@@ -51,6 +63,9 @@ def chartOpen {X' : Scheme.{0}} (e : X' ≅ X) (a : A.ch.ι) : X'.affineOpens :=
 def chartEquiv {X' : Scheme.{0}} (e : X' ≅ X) (a : A.ch.ι) : A.ch.R a ≃+* Γ(X', (chartOpen A e a).1) :=
   (exists_chart_iso (A.ch.χ a) e.inv).choose
 
+/- English proof (translation)
+Establish `h` using `congrArg (· ≫ e.hom) (exists_chart_iso (A.ch.χ a) e.inv).choose_spec`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id] at h`. Conclude with `h.symm`.
+-/
 theorem fromSpec_hom {X' : Scheme.{0}} (e : X' ≅ X) (a : A.ch.ι) :
     (chartOpen A e a).2.fromSpec ≫ e.hom = spMap (chartEquiv A e a).toRingHom ≫ A.ch.χ a := by
   have h := congrArg (· ≫ e.hom) (exists_chart_iso (A.ch.χ a) e.inv).choose_spec
@@ -73,6 +88,15 @@ def pre : Pre Y i₀ where
   alg b := (chartEquiv A e ((chartNum A).symm b)).toRingHom.comp (A.alg ((chartNum A).symm b))
   fr b := (A.fr ((chartNum A).symm b)).bc (chartEquiv A e ((chartNum A).symm b)).toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∃ (b : Fin (Nat.card A.ch.ι)) (φ : Γ(I.subscheme, (chartOpen A e ((chartNum A).symm b)).1) →+* k), spMap φ ≫ (chartOpen A e ((chartNum A).symm b)).2.fromSpec = w ∧ IsFrame (Y i).t (φ.comp ((chartEquiv A e ((chartNum A).symm b)).toRingHom.comp (A.alg ((chartNum A).symm b)))) (w ≫ …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, φ, h1, h2, h3⟩`. Use `⟨_, φ.comp (chartEquiv A e ((chartNum A).symm b)).toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, Category.assoc, fromSpec_hom, ← Category.assoc, GlobalTheory.LocM.Recode.spMap_comp_eq]`.
+
+Rewrite using `[Category.assoc, RingHom.comp_assoc]`. Conclude with `h2`. Rewrite using `[Category.assoc, ← GlobalTheory.LocM.Recode.bc_bc]`. Conclude with `h3`. Introduce and unpack `⟨a, φ, h1, h2, h3⟩`.
+
+Take `⟨b, rfl⟩` from `(chartNum A).symm.surjective a`. Establish `hφ : (φ.comp (chartEquiv A e ((chartNum A).symm b)).symm.toRingHom).comp (chartEquiv A e ((chartNum A).symm b)).toRingHom = φ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use `⟨b, φ.comp (chartEquiv A e ((chartNum A).symm b)).symm.toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono e.hom, Category.assoc, fromSpec_hom, ← Category.assoc, GlobalTheory.LocM.Recode.spMap_comp_eq, hφ, h1]`. Rewrite using `[← RingHom.comp_assoc, hφ, ← Category.assoc]`. Conclude with `h2`. Rewrite using `[GlobalTheory.LocM.Recode.bc_bc, hφ, ← Category.assoc]`. Conclude with `h3`.
+-/
 theorem pre_flagAt_iff {k : Type} [Field k] (w : Sp k ⟶ I.subscheme) (u : Vecs Dw (Y i).t k) :
     (pre A i₀ hl hc I e).FlagAt w u ↔ A.FlagAt (w ≫ e.hom) u := by
   change (∃ (b : Fin (Nat.card A.ch.ι)) (φ : Γ(I.subscheme, (chartOpen A e ((chartNum A).symm b)).1) →+* k),
@@ -191,16 +215,37 @@ namespace GlobalTheory.DRFlag
 
 namespace ToMdl
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem comp_hom_comp {X' X X₂ T Z : Scheme.{0}} (w : T ⟶ X') (e : X' ≅ X) (f : X ⟶ X₂) (π₂ : X₂ ⟶ Z) (π : X ⟶ Z)
     (hf : f ≫ π₂ = π) : (w ≫ e.hom ≫ f) ≫ π₂ = w ≫ (e.hom ≫ π) ≫ 𝟙 Z := by
   simp [hf]
 
+/- English proof (translation)
+Rewrite `h` using `[Category.assoc]`. Then use the resulting hypothesis.
+-/
 theorem of_assoc {X' X X₂ T : Scheme.{0}} (w : T ⟶ X') (e : X' ≅ X) (f : X ⟶ X₂) (P : (T ⟶ X₂) → Prop)
     (h : P ((w ≫ e.hom) ≫ f)) : P (w ≫ e.hom ≫ f) := by
   rwa [Category.assoc] at h
 
 end ToMdl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ i X π ty A hl hc g`. Take `⟨n, ι, hι, hs⟩` from `g.proj`. Establish `hiso : IsIso ι.toImage` using `inferInstance`. Set `e : ι.ker.subscheme ≅ X` to `(asIso ι.toImage).symm`. Establish `he : e.inv ≫ ι.ker.subschemeι = ι` using `ι.toImage_imageι`.
+
+Establish `hs' : e.hom ≫ π ≫ (Y i).s = ι.ker.subschemeι ≫ PSpace.str _ n`. Combine the equalities or inequalities in the displayed calculation. Use `⟨ToMdl.mdl A i₀ hl hc ι.ker e hs' g, e, rfl, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z₁ f hf k _ w hw`. Take `⟨τ, mu, u, h1, h2, h3, h4⟩` from `hf k w hw`.
+
+Use `⟨τ, mu, u, h1, ?_, h3, ?_⟩` and prove the remaining obligations. Establish `h5 : (w ≫ f ≫ e.inv) ≫ e.hom ≫ π = (w ≫ f) ≫ π`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `h5.trans h2`. Use `(ToMdl.pre_flagAt_iff A i₀ hl hc ι.ker e (w ≫ f ≫ e.inv) _).2 ?_` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `h4`. Introduce `X₂ π₂ ty₂ A₂ f hf hfl k _ w hw`. Take `⟨mu, hmu, ht⟩` from `exists_isTrans_id (Y := Y) i`. Establish `hw' : (w ≫ e.hom) (IsLocalRing.closedPoint k) ∈ A.ch.carrier`.
+
+Rewrite using `[A.cover]`. Conclude with `hw ⟨_, rfl⟩`. Take `⟨a, φ, ha⟩` from `A.ch.exists_fac (w ≫ e.hom) hw'`. Use `⟨𝟙 _, mu, (A.fr a).bc φ, ht, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ToMdl.comp_hom_comp w e f π₂ π hf`.
+
+Conclude with `(ToMdl.pre_flagAt_iff A i₀ hl hc ι.ker e w _).2 (A.flagAt_fr ha)`. Establish `h5 : (fun σ j => (A.fr a).bc φ σ j ≫ mu.φ) = (A.fr a).bc φ`. Use function extensionality and compare the values at `σ j`. Rewrite using `[hmu]`. Conclude with `Category.comp_id _`.
+
+Conclude with `(congrArg (A₂.FlagAt (w ≫ e.hom ≫ f)) h5).mpr (ToMdl.of_assoc w e f (fun v => A₂.FlagAt v ((A.fr a).bc φ)) (hfl k (w ≫ e.hom) _ (A.flagAt_fr ha)))`. Introduce `σ k h`. Conclude with `GlobalTheory.T.atlas_pullback_preserves_step E H Dw i.l (Xo i.l) i.c (i.c.V W) (Y i) X π ty A σ k _ e.hom ty (atlasOf (ToMdl.mdl A i₀ hl hc ι.ker e hs' g)) (fun K _ w u hw => (ToMdl.pre_flagAt_iff A i₀ hl hc ι.ker e w u).1 hw) h`.
+-/
 theorem exists_mdl_of_atlas : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (i : Idx H p) (X : Scheme.{0}) (π : X ⟶ (Y i).X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas (Y i) π ty), i₀.l.Dvd i.l → i₀.c.F ≤ i.c.F → Geo (Y i) π → ∃ (Z' : Mdl Y i₀) (e : Z'.X ≅ X), Z'.i = i ∧ Z'.ty = ty ∧ (∀ (Z₁ : Mdl Y i₀) (g : Z₁.X ⟶ X), MapsTo Z₁ A g → MapsTo Z₁ (atlasOf Z') (g ≫ e.inv)) ∧ (∀ (X₂ : Scheme.{0}) (π₂ : X₂ ⟶ (Y i).X) (ty₂ : (E →+* ℂ) → Finset ℕ) (A₂ : Atlas (Y i) π₂ ty₂) (f : X ⟶ X₂), f ≫ π₂ = π → (∀ (K : Type) [Field K] (w : Sp K ⟶ X) (u : Vecs Dw (Y i).t K), A.FlagAt w u → A₂.FlagAt (w ≫ f) u) → MapsTo Z' A₂ (e.hom ≫ f)) ∧ ∀ σ k, IntStep A σ k → IntStep (atlasOf Z') σ k := by
   intro E _ _ _ H Dw Xo p W Y i₀ i X π ty A hl hc g
   obtain ⟨n, ι, hι, hs⟩ := g.proj

@@ -10,6 +10,21 @@ open scoped InnerProductSpace Topology
 
 namespace GlobalTheory.SobolevHaar
 
+/- English proof (translation)
+Use `set l := Fin.last N with hl`. Establish `hΘ` using `continuous_prod_ofFn_curves (N + 1) c (fun i => (hc i).1)`. Establish `hΘ'` using `continuous_prod_ofFn_curves N (fun i => c i.castSucc) (fun i => (hc _).1)`. Establish `hsn : ∀ (t : Fin N → ℝ) (r : ℝ), (List.ofFn fun i => c i (Fin.snoc (α` using `fun _ => ℝ) t r i)).prod = (List.ofFn fun i : Fin N => c i.castSucc (t i)).prod * c l r := by`. Introduce `t r`.
+
+Rewrite using `[List.ofFn_succ']`. Simplify using `[hl]`. Establish `fub : ∀ w : G → ℂ, Continuous w → IntegrableOn (fun t : Fin N → ℝ => ∫ r in (0 : ℝ)..s, ‖w ((List.ofFn fun i : Fin N => c i.castSucc (t i)).prod * c l r)‖ ^ 2) (Set.pi Set.univ (fun _ : Fin N => Set.Icc (0 : ℝ) s)) ∧ ∫ t in Set.pi Set.univ (fun _ : Fin (N + 1) => Set.Icc (0 : ℝ) …`. Introduce `w hw`. Establish `h` using `integral_cube_succ_last N s (fun t => ‖w (List.ofFn fun i => c i (t i)).prod‖ ^ 2) ((hw.comp hΘ).norm.pow 2)`.
+
+Simplify using `only [hsn] at h`. Simplify using `only [intervalIntegral.integral_of_le hs.le, ← integral_Icc_eq_integral_Ioc]`. Conclude with `h`. Take `⟨i1, b1⟩` from `fub f hf`. Take `⟨i2, b2⟩` from `fub f' hf'`.
+
+Establish `pt : ∀ x : G, ‖f x‖ ^ 2 ≤ 2 / s * (∫ r in (0 : ℝ)..s, ‖f (x * c l r)‖ ^ 2) + 2 * s * ∫ r in (0 : ℝ)..s, ‖f' (x * c l r)‖ ^ 2`. Introduce `x`. Establish `h` using `sobolev_endpoint_one_variable ℂ (fun r => f (x * c l r)) (fun r => f' (x * c l r)) s hs ?_ ?_`. Simplify `h` using `only [(hc l).2.1, mul_one]`. Introduce `r _`.
+
+Establish `h1 : HasDerivAt (fun t => f (x * c l r * c l t)) (f' (x * c l r)) (r - r)`. Rewrite using `[sub_self]`. Conclude with `hd _`. Establish `h2` using `h1.comp_sub_const r r`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Simplify using `only [mul_assoc, ← (hc l).2.2, add_sub_cancel]`. Conclude with `(hf'.comp (continuous_const.mul (hc l).1)).continuousOn`. Establish `i0 : IntegrableOn (fun t : Fin N → ℝ => ‖f (List.ofFn fun i : Fin N => c i.castSucc (t i)).prod‖ ^ 2) (Set.pi Set.univ (fun _ : Fin N => Set.Icc (0 : ℝ) s))` using `((hf.comp hΘ').norm.pow 2).continuousOn.integrableOn_compact (isCompact_univ_pi fun _ => isCompact_Icc)`. Establish `key` using `integral_mono i0 ((i1.const_mul (2 / s)).add (i2.const_mul (2 * s))) (fun t => pt _)`. Simplify using `only [Pi.add_apply] at key`.
+
+Rewrite `key` using `[integral_add (i1.const_mul _) (i2.const_mul _), integral_const_mul, integral_const_mul]`. Rewrite using `[b1, b2]`. Conclude with `key`.
+-/
 theorem cube_step {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (N : ℕ)
     (c : Fin (N + 1) → ℝ → G) (s : ℝ) (hs : 0 < s)
     (hc : ∀ i, Continuous (c i) ∧ c i 0 = 1 ∧ ∀ a b, c i (a + b) = c i a * c i b)
@@ -72,6 +87,19 @@ theorem cube_step {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup 
   rw [b1, b2]
   exact key
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `c D _ _`. Use `⟨[u], 1, by simpa using hu, zero_le_one, fun Fr _ _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil]`. Rewrite using `[volume_pi, Measure.restrict_pi_pi]`. Simplify using `[Measure.real]`. Consider the case `succ N ih`. Introduce `c D hc hD`.
+
+Take `⟨S, C, hS, hC, h⟩` from `ih (fun i => c i.castSucc) (fun i => D i.castSucc) (fun i => hc _) (fun i => hD _)`. Use `⟨S ++ S.map (D (Fin.last N)), C * (2 / s + 2 * s), ?_, by positivity, fun Fr h1 h2 => ?_⟩` and prove the remaining obligations. Introduce `v hv`. Break down `List.mem_append.1 hv with hv | hv` into its components or cases. Conclude with `hS v hv`.
+
+Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hv`. Conclude with `hD _ w (hS w hw)`. Use `(h Fr h1 fun v hv i => h2 v hv _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations.
+
+Rewrite using `[List.map_append, List.sum_append, List.map_map, ← List.sum_map_add, ← List.sum_map_mul_left]`. Use `List.sum_le_sum fun v hv => ?_` and prove the remaining obligations. Use `(cube_step N c s hs hc (Fr v) (Fr (D (Fin.last N) v)) (h1 v (hS v hv)) (h1 _ (hD _ v (hS v hv))) (h2 v (hS v hv) _)).trans ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Establish `p : ∀ w, 0 ≤ ∫ t in Set.pi Set.univ (fun _ : Fin (N + 1) => Set.Icc (0 : ℝ) s), ‖Fr w (List.ofFn fun i => c i (t i)).prod‖ ^ 2` using `fun w => integral_nonneg fun t => by positivity`.
+
+Establish `a1` using `mul_nonneg (show 0 ≤ 2 * s by positivity) (p v)`. Establish `a2` using `mul_nonneg (show 0 ≤ 2 / s by positivity) (p (D (Fin.last N) v))`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cube_sum {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (A : Set V) (u : V)
     (hu : u ∈ A) (s : ℝ) (hs : 0 < s) : ∀ (N : ℕ) (c : Fin N → ℝ → G) (D : Fin N → V → V),
     (∀ i, Continuous (c i) ∧ c i 0 = 1 ∧ ∀ a b, c i (a + b) = c i a * c i b) →
@@ -112,6 +140,9 @@ theorem cube_sum {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
     have a2 := mul_nonneg (show 0 ≤ 2 / s by positivity) (p (D (Fin.last N) v))
     nlinarith
 
+/- English proof (translation)
+Establish `h : ContinuousAt (fun s : ℝ => n * (Real.exp (3 * n ^ 2 * s) - 1)) 0` using `by fun_prop`. Establish `h2 : ∀ᶠ s : ℝ in 𝓝 0, n * (Real.exp (3 * n ^ 2 * s) - 1) < 1 / 2` using `h.eventually_lt continuousAt_const (by simp)`. Take `⟨s, h3, h4⟩` from `((h2.filter_mono (nhdsWithin_le_nhds (s := Set.Ioi 0))).and self_mem_nhdsWithin).exists`. Conclude with `⟨s, h4, h3.le⟩`.
+-/
 theorem exists_small (n : ℕ) : ∃ s : ℝ, 0 < s ∧ n * (Real.exp (3 * n ^ 2 * s) - 1) ≤ 1 / 2 := by
   have h : ContinuousAt (fun s : ℝ => n * (Real.exp (3 * n ^ 2 * s) - 1)) 0 := by fun_prop
   have h2 : ∀ᶠ s : ℝ in 𝓝 0, n * (Real.exp (3 * n ^ 2 * s) - 1) < 1 / 2 :=
@@ -119,6 +150,21 @@ theorem exists_small (n : ℕ) : ∃ s : ℝ, 0 < s ∧ n * (Real.exp (3 * n ^ 2
   obtain ⟨s, h3, h4⟩ := ((h2.filter_mono (nhdsWithin_le_nhds (s := Set.Ioi 0))).and self_mem_nhdsWithin).exists
   exact ⟨s, h4, h3.le⟩
 
+/- English proof (translation)
+Introduce `n ε`. Take `⟨E, hE1, hE2, -⟩` from `GlobalTheory.LieONB.exists_orthonormal_basis n ε`. Take `⟨κ, hκ, hg, -⟩` from `GlobalTheory.GaugeConst.exists_unique_isGauge n ε`. Take `⟨s, hs, hsn⟩` from `exists_small n`. Set `c : Fin (n ^ 2) → ℝ → UJ ε` to `fun i t => GlobalTheory.GaugeConst.expJ ε (t • (⟨E i, (hE1 i).1⟩ : GlobalTheory.GaugeConst.lieJ ε))`.
+
+Establish `hc : ∀ i, Continuous (c i) ∧ c i 0 = 1 ∧ ∀ a b, c i (a + b) = c i a * c i b` using `fun i => ⟨(GlobalTheory.GaugeConst.continuous_expJ ε).comp (continuous_id.smul continuous_const), GlobalTheory.GaugeConst.uMat_injective ε (by`. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((0 : ℝ) • E i) = 1`. Use the proof step `simp),`. Use `fun a b => GlobalTheory.GaugeConst.uMat_injective ε (exp_add_smul (E i) a b)⟩`. Take `⟨S, C, hS, hC, h⟩` from `cube_sum {l : List (Mx n) | ∀ Y ∈ l, Y ∈ lieSet ε} [] (by simp) s hs (n ^ 2) c (fun i l => E i :: l) hc (fun i l hl Y hY => by`.
+
+Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases. Use `exacts [(hE1 i).1, hl Y hY])`. Use `set K := Real.exp (2 * n ^ 3 * (Real.exp (2 * n ^ 2 * s) - 1)) * κ with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨S, C * K, hS, by positivity, fun F hF hD hI => ?_⟩` and prove the remaining obligations.
+
+Establish `hcont : ∀ l : List (Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → Continuous fun g : UJ ε => F l (umat g)` using `fun l hl => (hF l hl).comp_continuous (GlobalTheory.GaugeConst.continuous_uMat ε) fun g => g.2`. Use `(h (fun l g => F l (umat g)) hcont fun l hl i x => hD l hl (E i) (hE1 i).1 _ x.2).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations. Rewrite using `[← List.sum_map_mul_left]`.
+
+Use `List.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Establish `hl'` using `hcont l (hS l hl)`. Establish `hΘ` using `continuous_prod_ofFn_curves (n ^ 2) c (fun i => (hc i).1)`. Establish `hch` using `GlobalTheory.ProductChart.lintegral_chart_le n ε κ s E (fun t => (List.ofFn fun i => c i (t i)).prod) hg (fun i => (hE1 i).1) hE2 hs hsn (fun t => by`. Use `map_list_prod ((Units.coeHom (Mx n)).comp (UJ ε).subtype) (List.ofFn fun i => c i (t i))` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[List.map_ofFn]`. Simplify using `only [Complex.coe_smul]`. Use the proof step `rfl)`. Use the proof step `(fun g => ENNReal.ofReal (‖F l (umat g)‖ ^ 2)) (hl'.norm.pow 2).measurable.ennreal_ofReal`.
+
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun t : Fin (n ^ 2) → ℝ => ‖F l (umat (List.ofFn fun i => c i (t i)).prod)‖ ^ 2) (Filter.Eventually.of_forall fun t => by positivity) ((hl'.comp hΘ).norm.pow 2).aestronglyMeasurable]`. Establish `hp : 0 ≤ ∫ g : UJ ε, ‖F l (umat g)‖ ^ 2 ∂(muG ε)` using `integral_nonneg fun g => by positivity`. Use `ENNReal.toReal_le_of_le_ofReal (mul_nonneg hK0 hp) (hch.trans ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul hK0, ofReal_integral_eq_lintegral_ofReal (hI l hl) (Filter.Eventually.of_forall fun g => by positivity)]`. Conclude with `mul_le_mul_right (setLIntegral_le_lintegral _ _) _`.
+-/
 theorem sobolev_at_one : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ 0 ≤ C ∧ ∀ F : List (Mx n) → Mx n → ℂ, (∀ l : List (Mx n), (∀ Y ∈ l, Y ∈ lieSet ε) → ContinuousOn (F l) (UJset ε)) → IsDerFam ε F → (∀ l ∈ S, Integrable (fun g : UJ ε => ‖F l (umat g)‖ ^ 2) (muG ε)) → ‖F [] 1‖ ^ 2 ≤ C * (S.map fun l => ∫ g : UJ ε, ‖F l (umat g)‖ ^ 2 ∂(muG ε)).sum := by
   intro n ε
   obtain ⟨E, hE1, hE2, -⟩ := GlobalTheory.LieONB.exists_orthonormal_basis n ε

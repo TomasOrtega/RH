@@ -15,6 +15,11 @@ set_option linter.unusedSectionVars false
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Simplify using `only [coneMap, aeval_def, eval₂_eq, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ m.support, m i = n`. Use `hf (mem_support_iff.mp hm)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod, Finset.prod_pow_eq_pow_sum, hdeg, Polynomial.algebraMap_apply, map_mul, mul_assoc]`.
+-/
 theorem coneMap_of_isHomogeneous' {Ω : Type*} [CommRing Ω] [Algebra ℤ Ω] (x : J → Ω) {f : MvPolynomial J ℤ}
     {n : ℕ} (hf : f.IsHomogeneous n) :
     coneMap ℤ x f = Polynomial.C (aeval x f) * Polynomial.X ^ n := by
@@ -26,32 +31,53 @@ theorem coneMap_of_isHomogeneous' {Ω : Type*} [CommRing Ω] [Algebra ℤ Ω] (x
   simp_rw [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod, Finset.prod_pow_eq_pow_sum,
     hdeg, Polynomial.algebraMap_apply, map_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[coordIdeal, RingHom.mem_ker, coneMap_of_isHomogeneous' x hf, h, map_zero, zero_mul]`.
+-/
 theorem mem_coordIdeal_of_isHomogeneous' {Ω : Type*} [CommRing Ω] [Algebra ℤ Ω] (x : J → Ω)
     {f : MvPolynomial J ℤ} {n : ℕ} (hf : f.IsHomogeneous n) (h : aeval x f = 0) : f ∈ coordIdeal ℤ x := by
   rw [coordIdeal, RingHom.mem_ker, coneMap_of_isHomogeneous' x hf, h, map_zero, zero_mul]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => Complex.continuous_conj.comp (continuous_apply i)`.
+-/
 theorem continuous_conjPt' : Continuous (conjPt : (J → ℂ) → J → ℂ) :=
   continuous_pi fun i => Complex.continuous_conj.comp (continuous_apply i)
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval_map, eval₂_comp_left, RingHom.ext_int ((starRingEnd ℂ).comp (Int.castRingHom ℂ)) (Int.castRingHom ℂ)]`. Both sides reduce to the same expression.
+-/
 theorem eval_conjPt_int (f : MvPolynomial J ℤ) (z : J → ℂ) :
     eval (conjPt z) (map (Int.castRingHom ℂ) f) = conj (eval z (map (Int.castRingHom ℂ) f)) := by
   rw [eval_map, eval_map, eval₂_comp_left,
     RingHom.ext_int ((starRingEnd ℂ).comp (Int.castRingHom ℂ)) (Int.castRingHom ℂ)]
   rfl
 
+/- English proof (translation)
+The claim follows from `measurable_of_continuousOn_compl_singleton 0 (hm.continuousOn.mono fun _ hz => hz)`.
+-/
 theorem measurable_rho (m : ConeMetric ℂ J) (hm : IsSmoothMetric m) : Measurable m.ρ :=
   measurable_of_continuousOn_compl_singleton 0 (hm.continuousOn.mono fun _ hz => hz)
 
+/- English proof (translation)
+Unfold `ptNorm`. Conclude with `((MvPolynomial.continuous_eval _).measurable.norm).div ((measurable_rho m hm).pow_const n)`.
+-/
 theorem measurable_ptNorm (m : ConeMetric ℂ J) (hm : IsSmoothMetric m) (n : ℕ) (g : MvPolynomial J ℤ) :
     Measurable (ptNorm m (Int.castRingHom ℂ) n g) := by
   unfold ptNorm
   exact ((MvPolynomial.continuous_eval _).measurable.norm).div ((measurable_rho m hm).pow_const n)
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[eval_conjPt_int, Complex.norm_conj, show m.ρ (conjPt z) = m.ρ z from hm z]`.
+-/
 theorem ptNorm_conjPt {m : ConeMetric ℂ J} (hm : IsConjInvariant m) (n : ℕ) (g : MvPolynomial J ℤ)
     (z : J → ℂ) : ptNorm m (Int.castRingHom ℂ) n g (conjPt z) = ptNorm m (Int.castRingHom ℂ) n g z := by
   unfold ptNorm
   rw [eval_conjPt_int, Complex.norm_conj, show m.ρ (conjPt z) = m.ρ z from hm z]
 
+/- English proof (translation)
+Establish `h` using `hz _ hfg`. Rewrite `h` using `[map_sub, eval_sub, sub_eq_zero]`. Unfold `ptNorm`. Rewrite using `[h]`.
+-/
 theorem ptNorm_eq_of_sub_mem {P : Ideal (MvPolynomial J ℤ)} {f g : MvPolynomial J ℤ} (hfg : f - g ∈ P)
     (m : ConeMetric ℂ J) (n : ℕ) {z : J → ℂ} (hz : ∀ h ∈ P, eval z (map (Int.castRingHom ℂ) h) = 0) :
     ptNorm m (Int.castRingHom ℂ) n f z = ptNorm m (Int.castRingHom ℂ) n g z := by
@@ -60,10 +86,30 @@ theorem ptNorm_eq_of_sub_mem {P : Ideal (MvPolynomial J ℤ)} {f g : MvPolynomia
   unfold ptNorm
   rw [h]
 
+/- English proof (translation)
+The claim follows from `(d.R.mem y y (d.R.mem_U y)).2`.
+-/
 theorem resPt_mem {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] (d : HSMDatum D Ω κ)
     (y : d.R.X) : ∀ h ∈ coordIdeal ℤ d.x, eval (resPt d y) (map (Int.castRingHom ℂ) h) = 0 :=
   (d.R.mem y y (d.R.mem_U y)).2
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d hmeas n f hf`. Establish `hex : ∃ g : MvPolynomial (Ix κ) ℤ, g.IsHomogeneous n ∧ aeval d.x g = aeval d.x f` using `⟨f, hf, rfl⟩`. Unfold `IndefiniteRowSideFullHecke.HilbertSamuel.secNorm`. Rewrite using `[dif_pos hex]`. Take `⟨hgh, hgx⟩` from `hex.choose_spec`.
+
+Generalize the expression as in `hex.choose = g at hgh hgx ⊢`. Establish `hfg : f - g ∈ coordIdeal ℤ d.x` using `mem_coordIdeal_of_isHomogeneous' d.x (hf.sub hgh) (by rw [map_sub, hgx, sub_self])`. Unfold `resolutionSectionL2Norm l2Norm`. Use `set σ := Int.castRingHom ℂ`. Establish `e1 : ∀ y, ptNorm d.m σ n f (resPt d y) = ptNorm d.m σ n g (resPt d y)` using `fun y => ptNorm_eq_of_sub_mem hfg d.m n (resPt_mem d y)`.
+
+Establish `e2 : ∀ y, ptNorm d.m σ n f (conjPt (resPt d y)) = ptNorm d.m σ n g (resPt d y)` using `fun y => by`. Rewrite using `[ptNorm_conjPt d.conjInv, e1]`. Use `congr 1`. Repeatedly rewrite using `[e1, e2]`. Establish `hψ : Measurable fun z => ptNorm d.m σ n g z ^ 2` using `(measurable_ptNorm d.m d.smooth n g).pow_const 2`.
+
+Establish `hA : AEMeasurable (resPt d) d.dV` using `hmeas.aemeasurable`. Establish `hB : AEMeasurable (conjPt ∘ resPt d) d.dV` using `(continuous_conjPt'.measurable.comp hmeas).aemeasurable`. Establish `hBψ : ∀ y, ptNorm d.m σ n g ((conjPt ∘ resPt d) y) ^ 2 = ptNorm d.m σ n g (resPt d y) ^ 2` using `fun y => by`. Rewrite using `[Function.comp_apply, ptNorm_conjPt d.conjInv]`. Establish `iA : Integrable (fun z => ptNorm d.m σ n g z ^ 2) (d.dV.map (resPt d)) ↔ Integrable (fun y => ptNorm d.m σ n g (resPt d y) ^ 2) d.dV` using `integrable_map_measure hψ.aestronglyMeasurable hA`.
+
+Establish `iB : Integrable (fun z => ptNorm d.m σ n g z ^ 2) (d.dV.map (conjPt ∘ resPt d)) ↔ Integrable (fun y => ptNorm d.m σ n g (resPt d y) ^ 2) d.dV`. Rewrite using `[integrable_map_measure hψ.aestronglyMeasurable hB]`. Conclude with `integrable_congr (Filter.Eventually.of_forall hBψ)`. Establish `jA : ∫ z, ptNorm d.m σ n g z ^ 2 ∂(d.dV.map (resPt d)) = ∫ y, ptNorm d.m σ n g (resPt d y) ^ 2 ∂d.dV` using `integral_map hA hψ.aestronglyMeasurable`. Establish `jB : ∫ z, ptNorm d.m σ n g z ^ 2 ∂(d.dV.map (conjPt ∘ resPt d)) = ∫ y, ptNorm d.m σ n g (resPt d y) ^ 2 ∂d.dV`.
+
+Rewrite using `[integral_map hB hψ.aestronglyMeasurable]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall hBψ)`. Unfold `IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure`. Rewrite using `[integral_smul_measure]`. Distinguish the cases in `hi : Integrable (fun y => ptNorm d.m σ n g (resPt d y) ^ 2) d.dV`.
+
+Rewrite using `[integral_add_measure (iA.2 hi) (iB.2 hi), jA, jB]`. Simplify using the standard rewrite rules. Establish `hn : ¬ Integrable (fun z => ptNorm d.m σ n g z ^ 2) (d.dV.map (resPt d) + d.dV.map (conjPt ∘ resPt d))`. Rewrite using `[integrable_add_measure]`. Conclude with `fun h => hi (iA.1 h.1)`.
+
+Rewrite using `[integral_undef hn, integral_undef hi]`. Simplify using the standard rewrite rules.
+-/
 theorem full : ResolutionL2SymmetricMeasure.Statement := by
   intro D Ω _ _ κ _ d hmeas n f hf
   classical

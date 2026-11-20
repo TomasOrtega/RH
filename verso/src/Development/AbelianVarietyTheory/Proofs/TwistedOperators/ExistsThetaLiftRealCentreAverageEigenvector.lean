@@ -31,6 +31,9 @@ def avg1 {K : Type} [MeasurableSpace K] (om : GA D S × GA D T →* Module.End �
     (j : K → GA D S) (c : K → ℂ) (Φ : WO S T → ℂ) : WO S T → ℂ :=
   fun w => ∫ k, c k * om (j k, 1) Φ w ∂μ
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ThetaJointCont.continuous_om_oriented hom hΦ).comp ((hp.comp continuous_fst).prodMk continuous_snd)`.
+-/
 theorem continuous_fam (hom : IsWeilDatumO ψ S T χS χT om) {Φ : WO S T → ℂ} (hΦ : IsThetaFunO ψ S T Φ) {K : Type}
     [TopologicalSpace K] {p : K → GA D S × GA D T} (hp : Continuous p) :
     Continuous fun q : K × WO S T => om (p q.1) Φ q.2 :=
@@ -39,6 +42,37 @@ theorem continuous_fam (hom : IsWeilDatumO ψ S T χS χT om) {Φ : WO S T → �
 variable {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)
   [IsFiniteMeasure μ] {j : K → GA D S} {c : K → ℂ} {Φ : WO S T → ℂ}
 
+/- English proof (translation)
+Establish `hψ` using `hom.std`. Establish `hp : Continuous fun k => (j k, (1 : GA D T))` using `hjc.prodMk continuous_const`. Use `⟨fun γ w => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [avg1]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[(hom.om_pres _ _ hΦ).quasi]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, h⟩` from `hΦ.level`.
+
+Use `⟨U, hU, fun u hu hu0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, avg1]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Use `congrFun (hom.om_heis (j k) 1 u Φ hΦ) w` as an intermediate fact. Rewrite `this` using `[h u hu hu0, GlobalTheory.FrComb.actO_real (hj k) (GinfC T).one_mem hu0]`. Rewrite using `[this, heisO]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `GlobalTheory.AvgFam.continuous_avg μ (F := fun k w => c k * om (j k, 1) Φ w) ((hc.comp continuous_fst).mul (continuous_fam hom hΦ hp))`. Set `gen : Set (K → WO S T → ℂ)` to `{F | ∃ (c : K → ℂ) (G : WO S T → ℂ), Continuous c ∧ IsThetaFunO ψ S T G ∧ F = fun k => c k • om (j k, 1) G}`. Establish `h1 : ∀ F ∈ Submodule.span ℂ gen, Continuous fun q : K × WO S T => F q.1 q.2`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`.
+
+Consider the case `mem F h`. Take `⟨c, G, hc, hG, rfl⟩` from `h`. Conclude with `(hc.comp continuous_fst).mul (continuous_fam hom hG hp)`. Consider the case `zero => exact continuous_const`. Consider the case `add F F' _ _ h h' => exact h.add h'`.
+
+Consider the case `smul a F _ h => exact h.const_smul a`. Establish `h2 : ∀ F ∈ Submodule.span ℂ gen, ∀ k, IsThetaFunO ψ S T (F k)`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`.
+
+Take `⟨c, G, hc, hG, rfl⟩` from `h`. Conclude with `fun k => GlobalTheory.WeilVacMove.isTheta_smul _ (hom.om_pres _ _ hG)`. Consider the case `zero => exact fun _ => GlobalTheory.WeilVacMove.isTheta_zero`. Consider the case `add F F' _ _ h h' => exact fun k => GlobalTheory.WeilVacMove.isTheta_add (h k) (h' k)`. Consider the case `smul a F _ h => exact fun k => GlobalTheory.WeilVacMove.isTheta_smul a (h k)`.
+
+Establish `h3 : ∀ F ∈ Submodule.span ℂ gen, ∀ M : ℝ →+ WO S T, Continuous M → (∀ s, (M s).map (finPart D) = 0) → (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (F k)) ∈ Submodule.span ℂ gen`. Introduce `F hF M hM hM0`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨c, G, hc, hG, rfl⟩` from `h`.
+
+Take `⟨m, N, e, hN, hN0, he, hexp⟩` from `GlobalTheory.HeisLineComb.dLine_om_comb D ψ S T χS χT om hom M hM hM0`. Establish `key : (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (c k • om (j k, 1) G)) = ∑ i, fun k => (c k * e i (j k, 1)) • om (j k, 1) (GlobalTheory.WeilVacMove.dLine ψ S T (N i) G)`. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.CenAvg.dLine_smul, hexp _ _ hG, Finset.smul_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, _, hc.mul ((he i).comp hp), (GlobalTheory.WeilVacMove.hasDerivAt_zero_and_isTheta hψ (hN i) (hN0 i) hG).2, rfl⟩`. Consider the case `zero`. Establish `: (fun k : K => GlobalTheory.WeilVacMove.dLine ψ S T M ((0 : K → WO S T → ℂ) k)) = 0`.
+
+Use function extensionality and compare the values at `k x`. Simplify using `[GlobalTheory.WeilVacMove.dLine, heisO]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add F F' hF hF' h h'`.
+
+Establish `: (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M ((F + F') k)) = (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (F k)) + fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (F' k)`. Use function extensionality and compare the values at `fun k => GlobalTheory.CenAvg.dLine_add hψ hM hM0 (h2 F hF k) (h2 F' hF' k)`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h h'`. Consider the case `smul a F _ h`.
+
+Establish `: (fun k => GlobalTheory.WeilVacMove.dLine ψ S T M ((a • F) k)) = a • fun k => GlobalTheory.WeilVacMove.dLine ψ S T M (F k)`. Use function extensionality and compare the values at `fun k => GlobalTheory.CenAvg.dLine_smul M a (F k)`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ a h`. Introduce `n L hL hL0 w`.
+
+Use `GlobalTheory.ThetaAvgSmooth.avg_smooth D ψ hψ S T K μ (Submodule.span ℂ gen : Set _) h1 h2 h3 _ (Submodule.subset_span (show _ ∈ gen from ⟨c, Φ, hc, hΦ, rfl⟩)) n L hL hL0 w` as an intermediate fact. Simplify `this` using `only [avg1, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem isThetaFunction_average_compactFamily_weilTranslates (hom : IsWeilDatumO ψ S T χS χT om) (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC S)
     (hc : Continuous c) (hΦ : IsThetaFunO ψ S T Φ) : IsThetaFunO ψ S T (avg1 om μ j c Φ) := by
   have hψ := hom.std
@@ -121,6 +155,11 @@ theorem isThetaFunction_average_compactFamily_weilTranslates (hom : IsWeilDatumO
       (Submodule.subset_span (show _ ∈ gen from ⟨c, Φ, hc, hΦ, rfl⟩)) n L hL hL0 w
     simpa only [avg1, Pi.smul_apply, smul_eq_mul] using this
 
+/- English proof (translation)
+Establish `hp : Continuous fun k => (j k, (1 : GA D T))` using `hjc.prodMk continuous_const`. Establish `hm : ∀ k, om p (om (j k, 1) Φ) = om (p * (j k, 1)) Φ` using `fun k => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `GlobalTheory.CenAvg.om_integral μ hom hc (F := fun k => om (j k, 1) Φ) p (fun k => hom.om_pres _ _ hΦ) (continuous_fam hom hΦ hp) (by simp only [hm]; exact continuous_fam hom hΦ (continuous_const.mul hp)) (isThetaFunction_average_compactFamily_weilTranslates μ hom hjc hj hc hΦ) x` as an intermediate fact. Simplify using `only [hm] at this`.
+
+Conclude with `this`.
+-/
 theorem weilOperator_average_eq_average_translated [SecondCountableTopology K] [IsTopologicalGroup (GA D S)] [IsTopologicalGroup (GA D T)]
     (hom : IsWeilDatumO ψ S T χS χT om) (hjc : Continuous j) (hj : ∀ k, j k ∈ GinfC S)
     (hc : Continuous c) (hΦ : IsThetaFunO ψ S T Φ) (p : GA D S × GA D T) (x : WO S T) :
@@ -138,6 +177,35 @@ end GlobalTheory.CenAvgOne
 
 namespace GlobalTheory.CenAvgOne
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom hsig hdef ν fd hν hfd χ φ hcen hφ Φ hΦ hint`. Distinguish the cases in `hz : φ = 0`. Substitute `hz` using the available equality. Conclude with `⟨0, GlobalTheory.WeilVacMove.isTheta_zero, fun z _ _ => by simp, fun h => by simp⟩`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D S`.
+
+Take `⟨j1, -, -, -, -, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D T`. Set `Z : Subgroup (GA D S)` to `GinfC S ⊓ Subgroup.center (GA D S)`. Establish `hcl : IsClosed (Subgroup.center (GA D S) : Set (GA D S))`. Establish `: (Subgroup.center (GA D S) : Set (GA D S)) = ⋂ g, {a | g * a = a * g}`. Use extensionality with `a`.
+
+Simplify using `only [SetLike.mem_coe, Subgroup.mem_center_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun g => isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`. Use `haveI : CompactSpace Z := isCompact_iff_compactSpace.mp ((Formalism.IndefR.Eqv.isCompact_GinfC hsig hdef).inter_right hcl)`. Set `m : Measure Z` to `GlobalTheory.haarProb Z`.
+
+Take `⟨h₀, hh₀⟩` from `Function.ne_iff.1 hz`. Establish `hh : φ h₀ ≠ 0` using `hh₀`. Establish `hmul : ∀ a b : Z, χ (a * b : Z) = χ a * χ b`. Introduce `a b`. Apply `mul_right_cancel₀ hh` to reduce the goal to its premises.
+
+Rewrite using `[← hcen _ (a * b).2.1 (a * b).2.2, Subgroup.coe_mul, ← mul_assoc, hcen _ b.2.1 b.2.2, hcen _ a.2.1 a.2.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : χ 1 = 1`. Apply `mul_right_cancel₀ hh` to reduce the goal to its premises. Rewrite using `[← hcen _ (one_mem _) (one_mem _), mul_one, one_mul]`.
+
+Establish `hcont : Continuous fun a : Z => χ a`. Establish `: (fun a : Z => χ a) = fun a : Z => φ (h₀ * a) / φ h₀`. Use function extensionality and compare the values at `a`. Rewrite using `[hcen _ a.2.1 a.2.2, mul_div_cancel_right₀ _ hh]`. Rewrite using `[this]`.
+
+Conclude with `(hφ.2.comp (continuous_const.mul continuous_subtype_val)).div_const _`. Establish `hj : ∀ a : Z, (a : GA D S) ∈ GinfC S` using `fun a => a.2.1`. Use `⟨avg1 om m Subtype.val (fun a => χ a) Φ, isThetaFunction_average_compactFamily_weilTranslates m hom continuous_subtype_val hj hcont hΦ, fun a ha1 ha2 => ?_, fun h => ?_⟩` and prove the remaining obligations. Set `a' : Z` to `⟨a, ha1, ha2⟩`. Establish `hne : χ a ≠ 0`.
+
+Introduce `h0`. Use `hmul a'⁻¹ a'` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, OneMemClass.coe_one, hone]`. Express the relevant statement in the definitionally equal form `1 = χ (a'⁻¹ : Z) * χ a at this`. Rewrite `this` using `[h0, mul_zero]`.
+
+Conclude with `one_ne_zero this`. Use function extensionality and compare the values at `u`. Rewrite using `[weilOperator_average_eq_average_translated m hom continuous_subtype_val hj hcont hΦ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, avg1]`. Rewrite using `[← integral_mul_left_eq_self (μ := m) (fun b : Z => χ b * om ((b : GA D S), 1) Φ u) a', ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[hmul a' b]`. Express the relevant statement in the definitionally equal form `_ = (χ a)⁻¹ * (χ a * χ b * om ((a * b : GA D S), 1) Φ u)`. Rewrite using `[Prod.mk_mul_mk, mul_one]`.
+
+Clear the denominators using the available nonvanishing facts. Use `haveI : Countable (GQ S) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig S.gram haveI : ν.IsMulRightInvariant := Formalism.IndefR.Eqv.unimodGA_holds S ν hν`. Establish `hF_inv : ∀ γ ∈ GQ S, ∀ g, thetaKO om (γ * g) h Φ * φ (γ * g) = thetaKO om g h Φ * φ g`. Introduce `γ hγ g`. Establish `: om (γ * g, h) Φ 0 = om (g, h) Φ 0`.
+
+Rewrite using `[show ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h) by rw [Prod.mk_mul_mk, one_mul], map_mul, Module.End.mul_apply, hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hΦ)]`. Simplify using `only [thetaKO, this, hφ.1 γ hγ g]`. Establish `hF_cont : Continuous fun g => thetaKO om g h Φ * φ g` using `((hom.om_cont Φ hΦ 0).comp (continuous_id.prodMk continuous_const)).mul hφ.2`. Establish `key : ∀ g, thetaKO om g h (avg1 om m Subtype.val (fun a => χ a) Φ) * φ g = ∫ k : Z, thetaKO om (g * k) h Φ * φ (g * k) ∂m`. Introduce `g`.
+
+Unfold `thetaKO`. Rewrite using `[weilOperator_average_eq_average_translated m hom continuous_subtype_val hj hcont hΦ, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Prod.mk_mul_mk, mul_one, hcen _ k.2.1 k.2.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`. Conclude with `(GlobalTheory.Chain.IoLift.AvgLift.setIntegral_average (GQ S) ν hfd m continuous_subtype_val (Φ := fun g => thetaKO om g h Φ * φ g) hF_inv hF_cont (hint h)).symm`.
+-/
 theorem exists_central_average_one : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → S.SigOK → S.IsDefinite → ∀ (ν : Measure (GA D S)) (fd : Set (GA D S)), ν.IsHaarMeasure → IsFundamentalDomain (GQ S) fd ν → ∀ (χ φ : GA D S → ℂ), GlobalTheory.SeeSaw.HasCen S χ φ → GlobalTheory.Unf.IsContAut S φ → ∀ Φ, IsThetaFunO ψ S T Φ → (∀ h, IntegrableOn (fun g => thetaKO om g h Φ * φ g) fd ν) → ∃ Φ', IsThetaFunO ψ S T Φ' ∧ (∀ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) → om (z, 1) Φ' = (χ z)⁻¹ • Φ') ∧ ∀ h, ∫ g in fd, thetaKO om g h Φ * φ g ∂ν = ∫ g in fd, thetaKO om g h Φ' * φ g ∂ν := by
   intro D ψ S T χS χT om hom hsig hdef ν fd hν hfd χ φ hcen hφ Φ hΦ hint
   by_cases hz : φ = 0

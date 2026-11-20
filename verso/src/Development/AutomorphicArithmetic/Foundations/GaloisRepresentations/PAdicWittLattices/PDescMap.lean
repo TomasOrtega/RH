@@ -6,6 +6,29 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Introduce `hSm hEt hEq hOrb hCart p _ D G L R _ _ gb M N' N XM X' X h hI hA' hA1 c Φc π₁ Φ₁ hWc hFin hEtc hSurj hW1`. Establish `hAd : AdmK L (↑M) (↑N) h`. Introduce `v hv`. Establish `h1` using `hA1 v hv`. Establish `h2 : v ∈ L.KN ↑N'` using `by simpa using h1`.
+
+Conclude with `hA' v h2`. Use `haveI hred : IsReduced XM.X := (GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field R XM.X XM.s (hSm p D R gb M XM).1).1`. Use `haveI hsep : IsSeparated X.s := (hSm p D R gb N X).2.1`. Use `haveI := hFin`. Use `haveI := hEtc`.
+
+Use `haveI := hSurj`. Establish `hsq : π₁ ≫ X.s = c ≫ X'.s` using `hW1.1.trans hWc.1.symm`. Take `⟨hepi, π, hπ⟩` from `hEt c X'.s X.s π₁ hsq (by`. Introduce `Ω _ _ x y hxy`. Take `⟨ox, oy, mx, my, hys, u, hu, θ, hθ, _⟩` from `hOrb p D G L R gb M N' XM X' c Φc hWc Ω x y hxy`.
+
+Establish `hu' : h * u⁻¹ * h⁻¹ ∈ L.KN ↑N` using `hA' _ (inv_mem hu)`. Establish `hh : h = h * u⁻¹ * h⁻¹ * (h * u)` using `by group`. Conclude with `(hEq p D G L R gb M M N XM XM X h h u (h * u⁻¹ * h⁻¹) π₁ Φ₁ π₁ Φ₁ hW1 hW1 hI hI hAd hAd hu' hh Ω (x ≫ XM.s) x y rfl hys ox oy mx my θ hθ).1)`. Establish `hπs : π ≫ X.s = X'.s`. Rewrite using `[← cancel_epi c, ← Category.assoc, hπ, hW1.1, hWc.1]`.
+
+Establish `wsq : ∀ {NN NN' : ℕ} (Y' : GenModel gb NN') (Y : GenModel gb NN) (g : G.GAf) (ρ : Y'.X ⟶ Y.X) (Ψ : Y'.univ.A.left ⟶ Y.univ.A.left), Wit L g Y' Y ρ Ψ → Ψ ≫ Y.univ.A.hom = Y'.univ.A.hom ≫ ρ`. Introduce and unpack `_ _ Y' Y g ρ Ψ ⟨_, o, ψ, φ, _, rfl⟩`. Rewrite using `[Category.assoc, φ.cart.1.w, ← Category.assoc, Over.w ψ]`. Establish `hC : IsPullback Φc XM.univ.A.hom X'.univ.A.hom c` using `hCart p D G L R gb (↑M) (↑N') XM X' 1 (one_mem _) c Φc hWc`. Use `haveI : IsReduced XM.univ.A.left := by haveI := XM.univ.ab.smooth`.
+
+Conclude with `GlobalTheory.isReduced_of_smooth_of_isReduced XM.univ.A.hom`. Use `haveI : IsSeparated X.univ.A.hom := by haveI := X.univ.ab.proper infer_instance`. Use `haveI : IsFinite Φc := MorphismProperty.of_isPullback (P := @IsFinite) hC.flip hFin`. Use `haveI : Etale Φc := MorphismProperty.of_isPullback (P := @Etale) hC.flip hEtc`. Use `haveI : Surjective Φc := MorphismProperty.of_isPullback (P := @Surjective) hC.flip hSurj`.
+
+Establish `hsq2 : Φ₁ ≫ X.univ.A.hom = Φc ≫ X'.univ.A.hom ≫ π`. Rewrite using `[wsq _ _ _ _ _ hW1, reassoc_of% hC.w, hπ]`. Take `⟨hepi2, Φ, hΦ⟩` from `hEt Φc (X'.univ.A.hom ≫ π) X.univ.A.hom Φ₁ hsq2 (by`. Introduce `Ω _ _ x y hxy`. Establish `hab : (x ≫ XM.univ.A.hom) ≫ c = (y ≫ XM.univ.A.hom) ≫ c`.
+
+Establish `e` using `congrArg (· ≫ X'.univ.A.hom) hxy`. Simplify `e` using `[hC.w]`. Take `⟨ox, oy, mx, my, hys, u, hu, θ, hθ, hθeq⟩` from `hOrb p D G L R gb M N' XM X' c Φc hWc Ω _ _ hab`. Establish `hu' : h * u⁻¹ * h⁻¹ ∈ L.KN ↑N` using `hA' _ (inv_mem hu)`. Establish `hh : h = h * u⁻¹ * h⁻¹ * (h * u)` using `by group`.
+
+Establish `key` using `(hEq p D G L R gb M M N XM XM X h h u (h * u⁻¹ * h⁻¹) π₁ Φ₁ π₁ Φ₁ hW1 hW1 hI hI hAd hAd hu' hh Ω ((x ≫ XM.univ.A.hom) ≫ XM.s) _ _ rfl hys ox oy mx my θ hθ).2`. Take `⟨x', hx1, hx2⟩ : ∃ x' : sp Ω ⟶ ox.A.left, x' ≫ mx.φ = x ∧ x' ≫ ox.A.hom = 𝟙 _` from `⟨mx.cart.1.lift x (𝟙 _) (by simp), mx.cart.1.lift_fst _ _ _, mx.cart.1.lift_snd _ _ _⟩`. Take `⟨y', hy1, hy2⟩ : ∃ y' : sp Ω ⟶ oy.A.left, y' ≫ my.φ = y ∧ y' ≫ oy.A.hom = 𝟙 _` from `⟨my.cart.1.lift y (𝟙 _) (by simp), my.cart.1.lift_fst _ _ _, my.cart.1.lift_snd _ _ _⟩`. Establish `hP` using `my.cart.1.paste_horiz hC`. Establish `hxy' : x' ≫ θ.left = y'`.
+
+Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hθeq, ← Category.assoc, hx1, hxy, ← Category.assoc, hy1]`. Rewrite using `[Category.assoc, Over.w θ, hx2, hy2]`. Combine the equalities or inequalities in the displayed calculation. Establish `hΦs : Φ ≫ X.univ.A.hom = X'.univ.A.hom ≫ π`.
+
+Rewrite using `[← cancel_epi Φc, ← Category.assoc, hΦ, wsq _ _ _ _ _ hW1, reassoc_of% hC.w, hπ]`. Conclude with `⟨π, Φ, hπ, hΦ, hπs, hΦs⟩`.
+-/
 theorem UpperTheory.Gal.G3.pDescMap :
     GenSm → EtDesc → PtEq → PtOrbit → WitCart → DescMap := by
   intro hSm hEt hEq hOrb hCart p _ D G L R _ _ gb M N' N XM X' X h hI hA' hA1 c Φc π₁ Φ₁ hWc hFin hEtc hSurj hW1

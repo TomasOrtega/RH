@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SemisimpleOfIn
 import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.RankOneUnitary
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt | exact GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt | (intros; apply GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chebotarev_split_all : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => ∀ _ : LC hL x, GlobalTheory.RowTie.ChebSplit (Dof x).nd := by
   first | exact @GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt | exact GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt | (intros; apply GlobalTheory.HeightCounting.Up.ChebAtThird.chebSplit_allSt <;> assumption)

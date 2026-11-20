@@ -14,21 +14,39 @@ def schExt (A : Matrix (Fin n) (Fin n) K) (c r : Fin n → K) (d : K) : Matrix (
   fun a b => Fin.lastCases (motive := fun _ => K) (Fin.lastCases (motive := fun _ => K) d (fun j => r j) b)
     (fun i => Fin.lastCases (motive := fun _ => K) (c i) (fun j => A i j) b) a
 
+/- English proof (translation)
+Simplify using `[schExt]`.
+-/
 @[simp] theorem schExt_cc (A : Matrix (Fin n) (Fin n) K) (c r : Fin n → K) (d : K) (i j : Fin n) :
     schExt A c r d i.castSucc j.castSucc = A i j := by simp [schExt]
+/- English proof (translation)
+Simplify using `[schExt]`.
+-/
 @[simp] theorem schExt_cl (A : Matrix (Fin n) (Fin n) K) (c r : Fin n → K) (d : K) (i : Fin n) :
     schExt A c r d i.castSucc (Fin.last n) = c i := by simp [schExt]
+/- English proof (translation)
+Simplify using `[schExt]`.
+-/
 @[simp] theorem schExt_lc (A : Matrix (Fin n) (Fin n) K) (c r : Fin n → K) (d : K) (j : Fin n) :
     schExt A c r d (Fin.last n) j.castSucc = r j := by simp [schExt]
+/- English proof (translation)
+Simplify using `[schExt]`.
+-/
 @[simp] theorem schExt_ll (A : Matrix (Fin n) (Fin n) K) (c r : Fin n → K) (d : K) :
     schExt A c r d (Fin.last n) (Fin.last n) = d := by simp [schExt]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b <;> simp`.
+-/
 theorem schExt_self (M : Matrix (Fin (n + 1)) (Fin (n + 1)) K) :
     M = schExt (M.submatrix Fin.castSucc Fin.castSucc) (fun i => M i.castSucc (Fin.last n))
       (fun j => M (Fin.last n) j.castSucc) (M (Fin.last n) (Fin.last n)) := by
   ext a b
   refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b <;> simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_castSucc, vecMulVec_apply, mulVec, vecMul, dotProduct, mul_comm]`.
+-/
 theorem schExt_mul (A A' : Matrix (Fin n) (Fin n) K) (c r c' r' : Fin n → K) (d d' : K) :
     schExt A c r d * schExt A' c' r' d' =
       schExt (A * A' + vecMulVec c r') (A *ᵥ c' + d' • c) (r ᵥ* A' + d • r') (r ⬝ᵥ c' + d * d') := by
@@ -36,6 +54,11 @@ theorem schExt_mul (A A' : Matrix (Fin n) (Fin n) K) (c r c' r' : Fin n → K) (
   refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b <;>
     simp [Matrix.mul_apply, Fin.sum_univ_castSucc, vecMulVec_apply, mulVec, vecMul, dotProduct, mul_comm]
 
+/- English proof (translation)
+Introduce `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b`. Simplify using the standard rewrite rules. Use `⟨fun h => absurd h (not_lt.2 (Fin.le_last _)), fun h => absurd h (Fin.castSucc_lt_last j).ne'⟩` and prove the remaining obligations. Rewrite using `[schExt_cl]`.
+
+Conclude with `⟨fun _ => rfl, fun h => absurd h (Fin.castSucc_lt_last i).ne⟩`. Simplify using `only [schExt_cc]`. Conclude with `⟨fun h => (hL i j).1 (Fin.castSucc_lt_castSucc_iff.1 h), fun h => (hL i j).2 (Fin.castSucc_injective _ h)⟩`.
+-/
 theorem schExt_lo (L : Matrix (Fin n) (Fin n) K) (hL : IsLoUni L) (l : Fin n → K) : IsLoUni (schExt L 0 l 1) := by
   intro a b
   refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b
@@ -46,6 +69,11 @@ theorem schExt_lo (L : Matrix (Fin n) (Fin n) K) (hL : IsLoUni L) (l : Fin n →
   · simp only [schExt_cc]
     exact ⟨fun h => (hL i j).1 (Fin.castSucc_lt_castSucc_iff.1 h), fun h => (hL i j).2 (Fin.castSucc_injective _ h)⟩
 
+/- English proof (translation)
+Introduce `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b`. Simplify using the standard rewrite rules. Rewrite using `[schExt_lc]`. Conclude with `⟨fun _ => rfl, fun h => absurd h (Fin.castSucc_lt_last j).ne'⟩`.
+
+Use `⟨fun h => absurd h (not_lt.2 (Fin.le_last _)), fun h => absurd h (Fin.castSucc_lt_last i).ne⟩` and prove the remaining obligations. Simplify using `only [schExt_cc]`. Conclude with `⟨fun h => (hU i j).1 (Fin.castSucc_lt_castSucc_iff.1 h), fun h => (hU i j).2 (Fin.castSucc_injective _ h)⟩`.
+-/
 theorem schExt_up (U : Matrix (Fin n) (Fin n) K) (hU : IsUpUni U) (u : Fin n → K) : IsUpUni (schExt U u 0 1) := by
   intro a b
   refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b
@@ -58,6 +86,9 @@ theorem schExt_up (U : Matrix (Fin n) (Fin n) K) (hU : IsUpUni U) (u : Fin n →
 
 end
 
+/- English proof (translation)
+The claim follows from `| [], i, j, hi, hj => by simp only [List.map_nil, List.sum_nil, Nat.le_zero_eq] at hi hj subst hi hj simp [ptEntry] | (t, s) :: bs, i, j, hi, hj => by simp only [List.map_cons, List.sum_cons] at hi hj ⊢ simp only [List.cons_append, ptEntry] by_cases h1 : i < s ∧ j < s · rw [if_po …`.
+-/
 theorem sch_ptEntry_append {K : Type} [Zero K] (δ : K) : ∀ (bs : List (K × ℕ)) (i j : ℕ),
     i ≤ (bs.map Prod.snd).sum → j ≤ (bs.map Prod.snd).sum →
     ptEntry (bs ++ [(δ, 1)]) i j =
@@ -94,6 +125,15 @@ def schSnoc {K : Type} [Zero K] {n : ℕ} (p : Point K n) (δ : K) (hδ : δ ≠
       subst h
       exact ⟨hδ, le_rfl⟩⟩
 
+/- English proof (translation)
+Establish `hs : (p.1.map Prod.snd).sum = n` using `p.2.2`. Use extensionality with `a b`. Apply the tactic sequence `have key : ∀ i j : ℕ, i ≤ n → j ≤ n → ptEntry (p.1 ++ [(δ, 1)]) i j = if i < n ∧ j < n then ptEntry p.1 i j else if i = n ∧ j = n then δ else 0 := by`. Introduce `i j hi hj`. Use `sch_ptEntry_append δ p.1 i j (hs.symm ▸ hi) (hs.symm ▸ hj)` as an intermediate fact.
+
+Rewrite `this` using `[hs]`. Then use the resulting hypothesis. Apply the tactic sequence `have e : ptMat (schSnoc p δ hδ) a b = ptEntry (p.1 ++ [(δ, 1)]) a.val b.val := rfl`. Rewrite using `[e, key _ _ (Nat.lt_succ_iff.1 a.isLt) (Nat.lt_succ_iff.1 b.isLt)]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> refine Fin.lastCases ?_ (fun j => ?_) b`. Simplify using the standard rewrite rules.
+
+Use `j.isLt` as an intermediate fact. Simplify using `[this.ne]`. Use `i.isLt` as an intermediate fact. Simplify using `[this.ne]`. Establish `h1` using `i.isLt`.
+
+Establish `h2` using `j.isLt`. Simplify using `[h1, h2, ptMat]`.
+-/
 theorem sch_ptMat_snoc {K : Type} [Field K] {n : ℕ} (p : Point K n) (δ : K) (hδ : δ ≠ 0) :
     ptMat (schSnoc p δ hδ) = schExt (ptMat p) 0 0 δ := by
   have hs : (p.1.map Prod.snd).sum = n := p.2.2
@@ -115,6 +155,25 @@ theorem sch_ptMat_snoc {K : Type} [Field K] {n : ℕ} (p : Point K n) (δ : K) (
     have h2 := j.isLt
     simp [h1, h2, ptMat]
 
+/- English proof (translation)
+Introduce `K _ n M p hcell hdet0 hdet`. Take `⟨L0, U0, hL, hU, hM0⟩` from `hcell`. Use `set M0 := M.submatrix Fin.castSucc Fin.castSucc with hM0def`. Use `set P0 := ptMat p with hP0`. Establish `hLP : IsUnit (L0 * P0).det`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h`. Apply `hdet0` to reduce the goal to its premises. Rewrite using `[hM0, det_mul, h, zero_mul]`. Establish `hPU : IsUnit (P0 * U0).det`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h`. Apply `hdet0` to reduce the goal to its premises. Rewrite using `[hM0, Matrix.mul_assoc, det_mul, h, mul_zero]`. Use `set c : Fin n → K := fun i => M i.castSucc (Fin.last n) with hc`.
+
+Use `set r : Fin n → K := fun j => M (Fin.last n) j.castSucc with hr`. Use `set d : K := M (Fin.last n) (Fin.last n) with hd`. Use `set u : Fin n → K := (L0 * P0)⁻¹ *ᵥ c with hu`. Use `set l : Fin n → K := r ᵥ* (P0 * U0)⁻¹ with hl`. Use `set δ : K := d - (l ᵥ* P0) ⬝ᵥ u with hδdef`.
+
+Establish `e1 : (L0 * P0) *ᵥ u = c`. Rewrite using `[hu, mulVec_mulVec, mul_nonsing_inv _ hLP, one_mulVec]`. Establish `e2 : (l ᵥ* P0) ᵥ* U0 = r`. Rewrite using `[hl, vecMul_vecMul, vecMul_vecMul, nonsing_inv_mul _ hPU, vecMul_one]`. Establish `hfac : M = schExt L0 0 l 1 * schExt P0 0 0 δ * schExt U0 u 0 1`.
+
+Rewrite using `[schExt_mul, schExt_mul]`. Use `conv_lhs => rw [schExt_self M]`. Use `congr 1`. Simplify using `[← hM0def, hM0]`. Simplify using `[e1, ← hc]`.
+
+Simplify using `[e2, ← hr]`. Simplify using `[hδdef, ← hd]`. Establish `hδ : δ ≠ 0`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises.
+
+Rewrite using `[hfac, det_mul, det_mul]`. Establish `: (schExt P0 0 0 δ).det = 0`. Apply `det_eq_zero_of_row_eq_zero (Fin.last n)` to reduce the goal to its premises. Introduce `j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) j <;> simp [h0]`.
+
+Rewrite using `[this, mul_zero, zero_mul]`. Use `⟨schSnoc p δ hδ, schExt L0 0 l 1, schExt U0 u 0 1, schExt_lo L0 hL l, schExt_up U0 hU u, ?_⟩` and prove the remaining obligations. Rewrite using `[sch_ptMat_snoc]`. Conclude with `hfac`.
+-/
 theorem cell_schur : SchurComplementCellExtension := by
   intro K _ n M p hcell hdet0 hdet
   obtain ⟨L0, U0, hL, hU, hM0⟩ := hcell

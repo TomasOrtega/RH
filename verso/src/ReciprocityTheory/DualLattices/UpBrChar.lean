@@ -22,6 +22,13 @@ section Char
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv, hvA⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hdet`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Establish `key : ∀ u ∈ Submodule.span R (Set.range fun i => fun a => A a i), v ⬝ᵥ u = 0`. Introduce `u hu`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `congrFun hvA i`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [dotProduct_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [dotProduct_smul, hx, smul_zero]`. Establish `h1` using `key _ (h (Pi.single j 1))`. Simplify using `[hc] at h1`. Conclude with `hj h1`.
+-/
 lemma det_ne_of_span {s : ℕ} (A : Matrix (Fin s) (Fin s) R) (c : R) (hc : c ≠ 0)
     (h : ∀ w : Fin s → R, c • w ∈ Submodule.span R (Set.range fun i => fun a => A a i)) :
     A.det ≠ 0 := by
@@ -41,6 +48,13 @@ lemma det_ne_of_span {s : ℕ} (A : Matrix (Fin s) (Fin s) R) (c : R) (hc : c �
   simp [hc] at h1
   exact hj h1
 
+/- English proof (translation)
+Set `A : Matrix (Fin (s + 1)) (Fin (s + 1)) R` to `Matrix.of fun a i => Fin.snoc (α := fun _ => R) (B a) (0 : R) i`. Establish `hA : A.det = 0`. Apply `Matrix.det_eq_zero_of_column_eq_zero (Fin.last s)` to reduce the goal to its premises. Introduce `a`. Simplify using `[A]`.
+
+Use `det_ne_of_span A c hc ?_ hA` and prove the remaining obligations. Introduce `w`. Use `Submodule.span_mono ?_ (h w)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Fin.castSucc i, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Simplify using `[A]`.
+-/
 lemma not_span_lt {s : ℕ} (B : Matrix (Fin (s + 1)) (Fin s) R) (c : R) (hc : c ≠ 0)
     (h : ∀ w : Fin (s + 1) → R, c • w ∈ Submodule.span R (Set.range fun i => fun a => B a i)) :
     False := by
@@ -59,6 +73,9 @@ lemma not_span_lt {s : ℕ} (B : Matrix (Fin (s + 1)) (Fin s) R) (c : R) (hc : c
   funext a
   simp [A]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hA` to reduce the goal to its premises. Use `Matrix.exists_mulVec_eq_zero_iff.mp ⟨x - y, sub_ne_zero.mpr hne, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_sub, h, sub_self]`.
+-/
 lemma mulVec_inj_of_det {s : ℕ} (A : Matrix (Fin s) (Fin s) R) (hA : A.det ≠ 0) {x y : Fin s → R}
     (h : A *ᵥ x = A *ᵥ y) : x = y := by
   by_contra hne
@@ -68,6 +85,41 @@ lemma mulVec_inj_of_det {s : ℕ} (A : Matrix (Fin s) (Fin s) R) (hA : A.det ≠
 
 variable {C : Type} [Field C] {v : Valuation C NNReal} [Algebra R C]
 
+/- English proof (translation)
+Establish `hcast : ∀ a : Fin s, (Fin.castLE hs1 (Fin.castSucc a) : Fin g) = Fin.castLE (Nat.le_of_succ_le hs1) a` using `fun a => Fin.ext rfl`. Use `set T : Fin N → Fin (s + 1) → R := fun b a => M (Fin.castLE hs1 a) b with hT`. Use `set A : Matrix (Fin s) (Fin s) R := Matrix.of fun a i => M (Fin.castLE (Nat.le_of_succ_le hs1) a) (ι i) with hA`. Establish `hAdet : A.det ≠ 0`. Use `det_ne_of_span A c hc fun w => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hspan s (Nat.le_of_succ_le hs1) w`. Rewrite `h1` using `[← hι]`. Conclude with `h1`. Establish `hlam : ∀ b, ∃ l : Fin s → R, ∀ a : Fin s, M (Fin.castLE (Nat.le_of_succ_le hs1) a) b = ∑ i, l i * M (Fin.castLE (Nat.le_of_succ_le hs1) a) (ι i)`. Introduce `b`.
+
+Establish `hmem : (fun a : Fin s => M (Fin.castLE (Nat.le_of_succ_le hs1) a) b) ∈ omTr M s (Nat.le_of_succ_le hs1)` using `Submodule.subset_span ⟨b, rfl⟩`. Rewrite `hmem` using `[← hι, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨l, hl⟩` from `hmem`. Use `⟨l, fun a => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun hl a`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `h2.symm`. Use `choose l hl using hlam`. Establish `hlι : ∀ j, l (ι j) = Pi.single j 1`. Introduce `j`.
+
+Apply `mulVec_inj_of_det A hAdet` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1` using `hl (ι j) a`. Simplify using `only [Matrix.mulVec, dotProduct, hA, Matrix.of_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[h1]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Use `set μ : Fin N → R := fun b => T b (Fin.last s) - ∑ i, l b i * T (ι i) (Fin.last s) with hμ`. Establish `hdecomp : ∀ b, T b = ∑ i, l b i • T (ι i) + μ b • (Pi.single (Fin.last s) 1 : Fin (s + 1) → R)`. Introduce `b`. Use function extensionality and compare the values at `a`.
+
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp [hμ, Finset.sum_apply]`. Consider the case `cast a`. Simplify `hl b a` using `[hT, Finset.sum_apply, Pi.single_apply, hcast, Fin.castSucc_ne_last]`. Establish `hex : ∃ b, μ b ≠ 0`.
+
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hle : omTr M (s + 1) hs1 ≤ Submodule.span R (Set.range fun i => T (ι i))`. Rewrite using `[omTr, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Use `show T b ∈ _`. Rewrite using `[hdecomp b, hall b, zero_smul, add_zero]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `not_span_lt (Matrix.of fun a i => T (ι i) a) c hc fun w => hle (hspan (s + 1) hs1 w)`. Take `⟨b0, hb0⟩` from `hex`.
+
+Take `⟨bs, -, hbs⟩` from `Finset.exists_max_image Finset.univ (fun b => v (algebraMap R C (μ b))) ⟨b0, Finset.mem_univ _⟩`. Establish `hμs : μ bs ≠ 0`. Introduce `h`. Establish `h1` using `hbs b0 (Finset.mem_univ _)`. Rewrite `h1` using `[h, map_zero, map_zero]`.
+
+Establish `h2 : v (algebraMap R C (μ b0)) = 0` using `le_antisymm h1 zero_le`. Rewrite `h2` using `[Valuation.zero_iff]`. Conclude with `hb0 (hv.hom_inj (by rw [h2, map_zero]))`. Establish `hbsι : bs ∉ Set.range ι`. Introduce and unpack `⟨j, hj⟩`.
+
+Apply `hμs` to reduce the goal to its premises. Rewrite using `[← hj]`. Simplify using `[hμ, hlι j, Pi.single_apply]`. Use `⟨bs, hbsι, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[omTr, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨Fin.snoc (α := fun _ => Fin N) ι bs i, rfl⟩`. Use `set S := Submodule.span R (Set.range fun i : Fin (s + 1) => fun a : Fin (s + 1) => M (Fin.castLE hs1 a) (Fin.snoc (α := fun _ => Fin N) ι bs i)) with hS`. Establish `hTι : ∀ i, T (ι i) ∈ S` using `fun i => by`. Establish `h1 : (fun a : Fin (s + 1) => M (Fin.castLE hs1 a) (Fin.snoc (α` using `fun _ => Fin N) ι bs (Fin.castSucc i))) ∈ S := Submodule.subset_span ⟨Fin.castSucc i, rfl⟩`.
+
+Simplify `h1` using `only [Fin.snoc_castSucc]`. Establish `hTbs : T bs ∈ S`. Establish `h1 : (fun a : Fin (s + 1) => M (Fin.castLE hs1 a) (Fin.snoc (α` using `fun _ => Fin N) ι bs (Fin.last s))) ∈ S := Submodule.subset_span ⟨Fin.last s, rfl⟩`. Simplify `h1` using `only [Fin.snoc_last]`. Establish `hE : μ bs • (Pi.single (Fin.last s) 1 : Fin (s + 1) → R) ∈ S`.
+
+Establish `h2 : μ bs • (Pi.single (Fin.last s) 1 : Fin (s + 1) → R) = T bs - ∑ i, l bs i • T (ι i)`. Rewrite using `[hdecomp bs]`. Normalize the expressions using the abelian group laws. Rewrite using `[h2]`. Conclude with `S.sub_mem hTbs (S.sum_mem fun i _ => S.smul_mem _ (hTι i))`.
+
+Rewrite using `[omTr, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `show T b ∈ S`. Take `⟨d, hd⟩` from `hv.dvd_of_le (hbs b (Finset.mem_univ _))`. Rewrite using `[hdecomp b, hd, mul_comm, mul_smul]`.
+
+Conclude with `S.add_mem (S.sum_mem fun i _ => S.smul_mem _ (hTι i)) (S.smul_mem _ hE)`.
+-/
 lemma char_step (hv : v.Integers R) {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (c : R) (hc : c ≠ 0)
     (hspan : ∀ s (hs : s ≤ g), ∀ w : Fin s → R, c • w ∈ omTr M s hs) (s : ℕ) (hs1 : s + 1 ≤ g)
     (ι : Fin s → Fin N)
@@ -170,6 +222,23 @@ lemma char_step (hv : v.Integers R) {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (
     rw [hdecomp b, hd, mul_comm, mul_smul]
     exact S.add_mem (S.sum_mem fun i _ => S.smul_mem _ (hTι i)) (S.smul_mem _ hE)
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `_`. Use `⟨fun a => a.elim0, fun a _ _ => a.elim0, fun s' hs' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : s' = 0` from `Nat.le_zero.mp hs'`. Use extensionality with `w`. Establish `hw : w = 0` using `Subsingleton.elim _ _`. Substitute `hw` using the available equality. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`.
+
+Consider the case `succ s ih`. Introduce `hs`. Take `⟨ι, hinj, hι⟩` from `ih (Nat.le_of_succ_le hs)`. Take `⟨b, hb, hb2⟩` from `char_step hv M c hc hspan s hs ι (hι s le_rfl)`. Use `⟨Fin.snoc (α := fun _ => Fin N) ι b, ?_, fun s' hs' => ?_⟩` and prove the remaining obligations.
+
+Introduce `i j hij`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rfl`.
+
+Consider the case `cast j`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc] at hij`. Conclude with `(hb ⟨j, hij.symm⟩).elim`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last`. Simplify using `only [Fin.snoc_last, Fin.snoc_castSucc] at hij`. Conclude with `(hb ⟨i, hij⟩).elim`. Consider the case `cast j`. Simplify using `only [Fin.snoc_castSucc] at hij`.
+
+Rewrite using `[hinj hij]`. Break down `Nat.lt_or_ge s' (s + 1) with hlt | hge` into its components or cases. Establish `hle : s' ≤ s` using `Nat.lt_succ_iff.mp hlt`. Use `Eq.trans ?_ (hι s' hle)` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `b' a`. Establish `e : (Fin.castLE hs' b' : Fin (s + 1)) = Fin.castSucc (Fin.castLE hle b')` using `Fin.ext rfl`. Rewrite using `[e, Fin.snoc_castSucc]`. Take `rfl : s' = s + 1` from `le_antisymm hs' hge`. Conclude with `hb2`.
+-/
 lemma char_ind (hv : v.Integers R) {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (c : R) (hc : c ≠ 0)
     (hspan : ∀ s (hs : s ≤ g), ∀ w : Fin s → R, c • w ∈ omTr M s hs) :
     ∀ s (hs : s ≤ g), ∃ ι : Fin s → Fin N, Function.Injective ι ∧ ∀ s' (hs' : s' ≤ s),
@@ -216,12 +285,20 @@ lemma char_ind (hv : v.Integers R) {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (c
       · obtain rfl : s' = s + 1 := le_antisymm hs' hge
         exact hb2
 
+/- English proof (translation)
+Introduce `C _ v R _ _ hv g N M c hc hspan`. Use `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj`. Take `⟨ι, hinj, h⟩` from `char_ind hv M c hc hspan g le_rfl`. Conclude with `⟨ι, hinj, fun s hs => h s hs⟩`.
+-/
 theorem charThm : CharStatement := by
   intro C _ v R _ _ hv g N M c hc hspan
   haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj
   obtain ⟨ι, hinj, h⟩ := char_ind hv M c hc hspan g le_rfl
   exact ⟨ι, hinj, fun s hs => h s hs⟩
 
+/- English proof (translation)
+Establish `h` using `hasLen_coker_det' v R hv (Fin s) (Matrix.of fun a b : Fin s => M (Fin.castLE hs a) (ι (Fin.castLE hs b)))`. Establish `hr : LinearMap.range (Matrix.of fun a b : Fin s => M (Fin.castLE hs a) (ι (Fin.castLE hs b))).mulVecLin = omTr M s hs`. Rewrite using `[Matrix.range_mulVecLin, ← hι]`. Both sides reduce to the same expression. Rewrite `h` using `[hr]`.
+
+Conclude with `h`.
+-/
 theorem char_len (hv : v.Integers R) {g N : ℕ} (M : Matrix (Fin g) (Fin N) R) (ι : Fin g → Fin N)
     (s : ℕ) (hs : s ≤ g)
     (hι : Submodule.span R (Set.range fun b : Fin s => fun a : Fin s =>

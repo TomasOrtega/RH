@@ -3,6 +3,33 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.HilbertSchurUnitaryI
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ spectrum ℝ A, ∀ y ∈ spectrum ℝ A, x < y → False`. Introduce `x hx y hy hxy`. Take `⟨m, hxm, hmy⟩ : ∃ m : ℝ, x < m ∧ m < y` from `⟨(x + y) / 2, by linarith, by linarith⟩`. Establish `hfc : ContinuousOn (fun t : ℝ => max (t - m) 0) (spectrum ℝ A)` using `(by fun_prop : Continuous fun t : ℝ => max (t - m) 0).continuousOn`. Establish `hkc : ContinuousOn (fun t : ℝ => max (m - t) 0) (spectrum ℝ A)` using `(by fun_prop : Continuous fun t : ℝ => max (m - t) 0).continuousOn`.
+
+Establish `hprod : cfc (fun t : ℝ => max (t - m) 0) A * cfc (fun t : ℝ => max (m - t) 0) A = 0`. Rewrite using `[← cfc_mul _ _ A hfc hkc]`. Establish `h0 : (fun t : ℝ => max (t - m) 0 * max (m - t) 0) = (0 : ℝ → ℝ)`. Use function extensionality and compare the values at `t`. Break down `le_total t m with h | h` into its components or cases.
+
+Rewrite using `[max_eq_right (by linarith), zero_mul, Pi.zero_apply]`. Rewrite using `[max_eq_right (by linarith : m - t ≤ 0), mul_zero, Pi.zero_apply]`. Rewrite using `[h0, cfc_zero]`. Establish `hk0 : cfc (fun t : ℝ => max (m - t) 0) A ≠ 0`. Introduce `h0`.
+
+Rewrite `h0` using `[← cfc_zero ℝ A]`. Establish `h1` using `eqOn_of_cfc_eq_cfc h0 hkc continuousOn_const hA hx`. Simplify using `only [Pi.zero_apply] at h1`. Establish `h2 : m - x ≤ max (m - x) 0` using `le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, cfc (fun t : ℝ => max (m - t) 0) A w ≠ 0 := by`. Assume the negation of the conclusion as `hnot`. Simplify using `only [not_exists, not_not] at hnot`. Conclude with `hk0 (ContinuousLinearMap.ext hnot)`. Set `F` to `cfc (fun t : ℝ => max (t - m) 0) A`.
+
+Set `S : Submodule ℂ H` to `LinearMap.ker (F : H →ₗ[ℂ] H)`. Establish `hS : IsClosed (S : Set H)` using `F.isClosed_ker`. Establish `hinv : ∀ g, ∀ v ∈ S, σ g v ∈ S`. Introduce `g v hv`. Establish `hv' : F v = 0` using `hv`.
+
+Establish `hcg : F * σ g = σ g * F` using `((hc g).cfc_real _).eq`. Express the relevant statement in the definitionally equal form `F (σ g v) = 0`. Use `congrArg (fun L : H →L[ℂ] H => L v) hcg` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_apply] at this`. Rewrite using `[this, hv', map_zero]`.
+
+Establish `hmem : cfc (fun t : ℝ => max (m - t) 0) A w ∈ S`. Express the relevant statement in the definitionally equal form `F (cfc (fun t : ℝ => max (m - t) 0) A w) = 0`. Simplify `congrArg (fun L : H →L[ℂ] H => L w) hprod` using `[F]`. Break down `hirr S hS hinv with hbot | htop` into its components or cases. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`.
+
+Conclude with `hw hmem`. Establish `hF : F = 0`. Use extensionality with `v`. Establish `hv : v ∈ S` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `hv`.
+
+Rewrite `hF` using `[← cfc_zero ℝ A]`. Establish `h1` using `eqOn_of_cfc_eq_cfc hF hfc continuousOn_const hA hy`. Simplify using `only [Pi.zero_apply] at h1`. Establish `h2 : y - m ≤ max (y - m) 0` using `le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsub : ∃ c : ℝ, ∀ x ∈ spectrum ℝ A, x = c`. Distinguish the cases in `hne : (spectrum ℝ A).Nonempty`. Take `⟨c, hc'⟩` from `hne`. Use `⟨c, fun x hx => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy x c with h | h | h` into its components or cases.
+
+Conclude with `(key x hx c hc' h).elim`. Conclude with `h`. Conclude with `(key c hc' x hx h).elim`. Conclude with `⟨0, fun x hx => (hne ⟨x, hx⟩).elim⟩`. Take `⟨c, hc'⟩` from `hsub`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_real_scalar_of_selfAdjoint_commute_irreducible {G H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G → (H →L[ℂ] H))
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, σ g v ∈ S) →
@@ -76,6 +103,15 @@ private theorem exists_real_scalar_of_selfAdjoint_commute_irreducible {G H : Typ
     _ = cfc (fun _ : ℝ => c) A := cfc_congr fun x hx => hc' x hx
     _ = algebraMap ℝ (H →L[ℂ] H) c := cfc_const c A hA
 
+/- English proof (translation)
+Introduce `G H _ _ _ σ hadj hirr T hT`. Establish `hcomm : ∀ g, Commute T (σ g)` using `fun g => hT g`. Establish `hcomm' : ∀ g, Commute (star T) (σ g)`. Introduce `g`. Take `⟨g', hg'⟩` from `hadj g`.
+
+Establish `h1` using `congrArg star (hcomm g').eq`. Rewrite `h1` using `[star_mul, star_mul, hg', ← ContinuousLinearMap.star_eq_adjoint, star_star]`. Conclude with `h1.symm`. Take `⟨a, ha⟩` from `exists_real_scalar_of_selfAdjoint_commute_irreducible σ hirr (realPart T : H →L[ℂ] H) (realPart T).prop fun g => by`. Rewrite using `[realPart_apply_coe]`.
+
+Conclude with `((hcomm g).add_left (hcomm' g)).smul_left _`. Take `⟨b, hb⟩` from `exists_real_scalar_of_selfAdjoint_commute_irreducible σ hirr (imaginaryPart T : H →L[ℂ] H) (imaginaryPart T).prop fun g => by`. Rewrite using `[imaginaryPart_apply_coe]`. Conclude with `(((hcomm g).sub_left (hcomm' g)).smul_left _).smul_left _`. Use `⟨(a : ℂ) + Complex.I * b, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ha, hb, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, add_smul, mul_smul, ← Complex.coe_smul, ← Complex.coe_smul]`.
+-/
 theorem hilbert_schur_of_adjoint_closed :
     ∀ (G H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G → (H →L[ℂ] H)), (∀ g, ∃ g', σ g' = ContinuousLinearMap.adjoint (σ g)) → (∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, σ g v ∈ S) → S = ⊥ ∨ S = ⊤) → ∀ T : H →L[ℂ] H, (∀ g, T ∘L σ g = σ g ∘L T) → ∃ c : ℂ, T = c • (1 : H →L[ℂ] H) := by
   intro G H _ _ _ σ hadj hirr T hT

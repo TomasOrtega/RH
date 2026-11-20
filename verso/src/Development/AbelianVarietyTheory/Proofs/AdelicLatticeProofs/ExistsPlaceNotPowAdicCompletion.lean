@@ -10,6 +10,19 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Introduce `p F _ _ _ ζ u S₀ hp hζ hu hns`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hle : ∀ S, finNorm p F u S₀ ≤ finNorm p F u S`. Introduce `S x hx`.
+
+Rewrite `hx`, the goal using `[finNorm]`. Simplify using `only [Subgroup.mem_iInf] at hx ⊢`. Introduce `v _`. Distinguish the cases in `hv : v ∈ S₀`. Conclude with `hx v hv`.
+
+Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Take `⟨r, hr⟩` from `hcon v hv`. Rewrite using `[GlobalTheory.T.unitsLocalKummerNorms_eq_top_of_pow p F _ _ u r hp.pos hu hr]`. Conclude with `Subgroup.mem_top x`. Establish `hidx` using `(GlobalTheory.T.pow_countPlacesNotLocalPower_le_index p F ζ u S₀ hp hζ).1`.
+
+Use `haveI : (finNorm p F u S₀).FiniteIndex := ⟨hidx⟩`. Use `haveI : Fintype (Fˣ ⧸ finNorm p F u S₀) := Fintype.ofFinite _`. Take `⟨S₁, -, hS₁⟩` from `exists_superset_mem_sUnits F (insert (Units.mk0 u hu) (Finset.univ.image (fun q : Fˣ ⧸ finNorm p F u S₀ => q.out))) S₀`. Take `⟨S, hS, hadm⟩` from `(GlobalTheory.T.exists_admissiblePlacesContainingPrime_superset_mono p F hp.pos).1 S₁`. Establish `hX` using `hS₁ S hS`.
+
+Use `GlobalTheory.T.sUnits_sup_localKummerNorms_ne_top p F ζ (Units.mk0 u hu) S hp hζ hadm (hX _ (Finset.mem_insert_self _ _)) hns ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hy : (QuotientGroup.mk x : Fˣ ⧸ finNorm p F u S₀).out ∈ sUnits F S` using `hX _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ _)))`. Establish `hz : ((QuotientGroup.mk x : Fˣ ⧸ finNorm p F u S₀).out)⁻¹ * x ∈ finNorm p F u S₀`.
+
+Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Establish `hx : x = (QuotientGroup.mk x : Fˣ ⧸ finNorm p F u S₀).out * (((QuotientGroup.mk x : Fˣ ⧸ finNorm p F u S₀).out)⁻¹ * x)`. Rewrite using `[mul_inv_cancel_left]`. Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem_sup hy (hle S hz)`.
+-/
 theorem exists_not_mem_not_pow_completion :
     ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (ζ u : F) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → IsPrimitiveRoot ζ p → u ≠ 0 → (∀ r : F, r ^ p ≠ u) → ∃ v, v ∉ S₀ ∧ ∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) u := by
   classical

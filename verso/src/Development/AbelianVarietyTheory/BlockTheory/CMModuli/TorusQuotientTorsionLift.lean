@@ -140,9 +140,15 @@ def TorusQuotientClaims : Prop :=
     WeightZero ∧ TorusLift ∧ TQLift ∧ TQUnique ∧ TQBaseChange ∧ TQBaseChangeOfCompat ∧ TQDim ∧ PointLift ∧
     TorsionLift ∧ TorsionKernel ∧ TorsionLiftHenselian ∧ TorsionCount
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `le_top`.
+-/
 example {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] (i : splitTorus S X ⟶ G) :
     TorusStable i ⊤ := fun _ _ _ _ => le_top
 
+/- English proof (translation)
+Introduce `Z t g h` and use `by have := Q.q_hom have e : ((t ≫ Q.i) * g) ≫ Q.q = g ≫ Q.q := by rw [MonObj.mul_comp, Category.assoc, Q.isKernel.w, ← Category.assoc, toUnit_unique (t ≫ toUnit _) (toUnit _), ← Hom.one_def, _root_.one_mul] rw [← Scheme.Hom.comp_preimage, ← Over.comp_left] at h ⊢ rwa [e]`.
+-/
 example {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] (Q : TQ G X) (V : Q.B.left.Opens) :
     TorusStable Q.i (Q.q.left ⁻¹ᵁ V) := fun Z t g h => by
   have := Q.q_hom
@@ -152,6 +158,11 @@ example {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] (Q 
   rw [← Scheme.Hom.comp_preimage, ← Over.comp_left] at h ⊢
   rwa [e]
 
+/- English proof (translation)
+Use `⟨TorusCompat.refl _, ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩, by simp⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `a : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `b : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[a, b, ← MonObj.comp_mul]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 example {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] (Q : TQ G X) :
     IsBaseChangeTQ (𝟙 S) (𝟙 _) Q Q (𝟙 _) := by
   refine ⟨TorusCompat.refl _, ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩, by simp⟩

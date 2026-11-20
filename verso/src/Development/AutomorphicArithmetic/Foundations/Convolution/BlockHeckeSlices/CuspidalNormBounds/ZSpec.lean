@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.BlockHeckeSlice
 
 open NumberField
 
+/- English proof (translation)
+Introduce `E _ _ _ n τ`. Establish `key : ∀ ℓ : UpperTheory.V.Cm.UC E n →ₗ[ℂ] ℂ, ∃ p : Polynomial ℂ, p.natDegree ≤ n ∧ p.coeff n = ℓ 1 ∧ (∀ u, p.eval u = ℓ (UpperTheory.V.Cm.capC τ u)) ∧ ∀ i, ℓ (zC E n τ i) = p.coeff (n - i)` using `fun ℓ => by`. Take `⟨p, h1, h2, -, h4⟩` from `exists_capPoly (UpperTheory.V.Cm.genC (a := n) τ) ℓ`. Use `⟨p, h1, h2, h4, fun i => ?_⟩` and prove the remaining obligations. Establish `hinj : Set.InjOn (fun j : Fin (n + 1) => ((j : ℕ) : ℂ)) (Finset.univ : Finset (Fin (n + 1)))` using `fun a _ b _ h => Fin.ext (Nat.cast_injective h)`.
+
+Establish `hd : p.degree < (Finset.univ : Finset (Fin (n + 1))).card`. Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `Polynomial.degree_le_natDegree.trans_lt (by exact_mod_cast Nat.lt_succ_of_le h1)`. Use `conv_rhs => rw [Lagrange.eq_interpolate hinj hd]`. Rewrite using `[Lagrange.interpolate_apply, Polynomial.finsetSum_coeff, zC, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_C_mul, h4, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+
+Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => ?_` and prove the remaining obligations. Take `⟨p, -, h2, -, h4⟩` from `key ℓ`. Rewrite using `[map_sub, h4, Nat.sub_zero, h2, sub_self]`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => ?_` and prove the remaining obligations.
+
+Take `⟨p, h1, -, h3, h4⟩` from `key ℓ`. Rewrite using `[map_sub, sub_eq_zero, ← h3, map_sum, Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le h1), ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, h4, smul_eq_mul, mul_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.BW.zSpec :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.ZSpec E := by
   intro E _ _ _ n τ

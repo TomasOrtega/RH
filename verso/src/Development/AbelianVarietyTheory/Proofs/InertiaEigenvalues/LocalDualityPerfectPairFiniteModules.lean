@@ -8,6 +8,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.LocalPair
 
+/- English proof (translation)
+Set `f : M' →+ TDual (ZMod n) M` to `AddMonoidHom.mk' (fun y => TDual.mk ((P.flip y).toZModLinearMap n)) (fun y y' => by ext x; simp)`. Establish `hf : ∀ y x, f y x = P x y` using `fun _ _ => rfl`. Establish `inj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+
+Use `h2 y fun x => ?_` and prove the remaining obligations. Rewrite using `[← hf, hy]`. Both sides reduce to the same expression. Establish `c1 : Nat.card (TDual (ZMod n) M) = Nat.card M` using `GlobalTheory.ZModDual.card_dual_eq n M`. Establish `: Finite (TDual (ZMod n) M)` using `Nat.finite_of_card_ne_zero (by rw [c1]; exact Nat.card_pos.ne')`.
+
+Establish `c2 : Nat.card (Module.Dual (ZMod n) M') = Nat.card M'` using `GlobalTheory.ZModDual.card_dual_eq n M'`. Establish `: Finite (Module.Dual (ZMod n) M')` using `Nat.finite_of_card_ne_zero (by rw [c2]; exact Nat.card_pos.ne')`. Establish `c3 : Nat.card M ≤ Nat.card M'`. Rewrite using `[← c2]`. Use `Nat.card_le_card_of_injective (fun x => ((P x).toZModLinearMap n : Module.Dual (ZMod n) M')) ?_` and prove the remaining obligations.
+
+Introduce `x x' hx`. Rewrite using `[← sub_eq_zero]`. Use `h1 _ fun y => ?_` and prove the remaining obligations. Rewrite using `[map_sub, AddMonoidHom.sub_apply, sub_eq_zero]`. Conclude with `DFunLike.congr_fun hx y`.
+
+Conclude with `⟨AddEquiv.ofBijective f (inj.bijective_of_nat_card_le (c1 ▸ c3)), hf⟩`.
+-/
 theorem exists_dual_equiv {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Module (ZMod n) M] [Finite M]
     {M' : Type} [AddCommGroup M'] [Module (ZMod n) M'] [Finite M'] (P : M →+ M' →+ ZMod n)
     (h1 : ∀ x, (∀ y, P x y = 0) → x = 0) (h2 : ∀ y, (∀ x, P x y = 0) → y = 0) :
@@ -35,6 +46,9 @@ theorem exists_dual_equiv {n : ℕ} [NeZero n] {M : Type} [AddCommGroup M] [Modu
     exact DFunLike.congr_fun hx y
   exact ⟨AddEquiv.ofBijective f (inj.bijective_of_nat_card_le (c1 ▸ c3)), hf⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[twDual_apply, he, he]`. Express the relevant statement in the definitionally equal form `_ = _ * P (ρ g⁻¹ x) y`. Rewrite using `[← hP, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem dual_equivariant {n : ℕ} {Λ D : Type} [CommRing Λ] [Group D]
     {M : Type} [AddCommGroup M] [Module (ZMod n) M] [Module Λ M] {M' : Type} [AddCommGroup M'] [Module Λ M']
     (ρ : Representation Λ D M) (ρ' : Representation Λ D M') (P : M →+ M' →+ ZMod n) (χ : D →* (ZMod n)ˣ)
@@ -68,6 +82,15 @@ private def cocycleTransport : Z1 ρ ≃+ Z1 ρ' where
 
 include he in
 
+/- English proof (translation)
+Use `⟨QuotientAddGroup.congr ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup ((B1 ρ').comap (Z1 ρ').subtype).toAddSubgroup (cocycleTransport ρ ρ' e he) ?_, fun z z' h => ?_⟩` and prove the remaining obligations. Use extensionality with `z'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ _).1 hz`.
+
+Use `(mem_coboundaries1 ρ' _).2 ⟨e m, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e (z.1 g) = _`. Rewrite using `[← he, ← map_sub]`. Conclude with `congrArg e (hm g)`. Introduce `hz`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ' _).1 hz`. Use `⟨(cocycleTransport ρ ρ' e he).symm z', (mem_coboundaries1 ρ _).2 ⟨e.symm m, fun g => ?_⟩, (cocycleTransport ρ ρ' e he).apply_symm_apply z'⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e (e.symm (z'.1 g)) = _`. Rewrite using `[map_sub, he, e.apply_symm_apply, e.apply_symm_apply]`.
+
+Conclude with `hm g`. Take `rfl : z' = cocycleTransport ρ ρ' e he z` from `Subtype.ext (funext h)`. Both sides reduce to the same expression.
+-/
 private theorem exists_H1_transport : ∃ T : H1 ρ ≃+ H1 ρ', ∀ (z : Z1 ρ) (z' : Z1 ρ'),
     (∀ g, z'.1 g = e (z.1 g)) → T (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' := by
   refine ⟨QuotientAddGroup.congr ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup
@@ -93,6 +116,9 @@ private theorem exists_H1_transport : ∃ T : H1 ρ ≃+ H1 ρ', ∀ (z : Z1 ρ)
 
 end Transport
 
+/- English proof (translation)
+Use `(Nat.card_congr (e.toEquiv.subtypeEquiv fun m => ?_)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∀ g, ρ g m = m) ↔ ∀ g, ρ' g (e m) = e m`. Rewrite using `[hφ.forall]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← he, e.injective.eq_iff]`.
+-/
 private theorem card_H0_transport {R R' : Type} [CommRing R] [CommRing R'] {D D' : Type} [Group D] [Group D']
     {M : Type} [AddCommGroup M] [Module R M] {M' : Type} [AddCommGroup M'] [Module R' M']
     (ρ : Representation R D M) (ρ' : Representation R' D' M') (φ : D → D')
@@ -104,6 +130,25 @@ private theorem card_H0_transport {R R' : Type} [CommRing R] [CommRing R'] {D D'
   refine forall_congr' fun g => ?_
   rw [← he, e.injective.eq_iff]
 
+/- English proof (translation)
+Introduce `hLF hLD hLE F Ω _ _ _ _ _ l _ n A v hA Λ _ W _ _ _ _ _ W' _ _ _ _ _ ρ ρ' P hn hρ hρ' h1 h2 hP`. Establish `: NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: Module (ZMod (l ^ n)) W` using `AddCommGroup.zmodModule fun x => h1 _ fun y => by`. Rewrite using `[map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Establish `: Module (ZMod (l ^ n)) W'` using `AddCommGroup.zmodModule fun y => h2 _ fun x => by`.
+
+Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Set `χ` to `(cycMod F Ω l n).comp (Dec (F := F) A).subtype`. Use `⟨fun y => ⟨fun H => ?_, ?_⟩, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `exists_dual_equiv P.flip h2 h1`. Establish `hee` using `dual_equivariant ρ' ρ P.flip χ (fun g y x => hP g x y) e he`.
+
+Establish `hinj` using `(hLD F Ω l n W' A (zmodRep (l ^ n) ρ') v hn hA hρ').2.2.2.1.1`. Rewrite `hinj` using `[injective_iff_map_eq_zero]`. Set `y' : Z1 ((zmodRep (l ^ n) ρ').comp (MonoidHom.id _))` to `⟨y.1, y.2.1, y.2.2⟩`. Establish `h0` using `hinj (Submodule.Quotient.mk y') (by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Take `⟨x, rfl⟩` from `(cocycleTransport ρ ((twDual χ (zmodRep (l ^ n) ρ')).comp (MonoidHom.id _)) e hee).surjective x`. Take `⟨f, hf1, hf2⟩` from `H x`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨f, hf1.continuous, funext fun p => ?_⟩)` and prove the remaining obligations. Conclude with `(hf2 p.1 p.2).symm.trans (he _ _).symm)`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 h0)`. Conclude with `⟨m, hm⟩`. Introduce and unpack `⟨m, hm⟩ x`. Use `⟨fun g => -P (x.1 g) (ρ' g m), (IsLocallyConstant.iff_continuous _).2 ?_, fun g h => ?_⟩` and prove the remaining obligations. Conclude with `((continuous_of_discreteTopology (f := fun p : W × W' => P p.1 p.2)).comp (x.2.1.prodMk (hρ'.comp (continuous_id.prodMk continuous_const)))).neg`.
+
+Use `beta_reduce`. Rewrite using `[mul_neg, ← hP, x.2.2, hm, map_mul, Module.End.mul_apply]`. Simplify using `only [map_add, map_sub, AddMonoidHom.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he⟩` from `exists_dual_equiv P h1 h2`.
+
+Establish `hee` using `dual_equivariant ρ ρ' P χ hP e he`. Take `⟨⟨j⟩, -, -, -, hb⟩` from `hLD F Ω l n W A (zmodRep (l ^ n) ρ) v hn hA hρ`. Establish `hE` using `(hLE F Ω l n W A (zmodRep (l ^ n) ρ) v hn hA hρ).2 hv`. Take `⟨T, -⟩` from `exists_H1_transport ρ (zmodRep (l ^ n) ρ) (AddEquiv.refl W) fun _ _ => rfl`. Establish `c0` using `card_H0_transport ρ (zmodRep (l ^ n) ρ) id Function.surjective_id (AddEquiv.refl W) fun _ _ => rfl`.
+
+Establish `c0'` using `card_H0_transport ρ' ((twDual χ (zmodRep (l ^ n) ρ)).comp (MonoidHom.id _)) id Function.surjective_id e hee`. Establish `: Finite (TDual (ZMod (l ^ n)) W)` using `Finite.of_equiv _ e.toEquiv`. Rewrite using `[Nat.card_congr T.toEquiv, hE, c0, ← c0']`. Use `congr 1`. Use `(Nat.card_eq_of_bijective _ hb).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Nat.card_congr (LinearEquiv.congrRight j).toEquiv).trans (GlobalTheory.ZModDual.card_dual_eq _ _)`.
+-/
 theorem local_pair : LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (Λ : Type) [CommRing Λ] (W : Type) [AddCommGroup W] [Module Λ W] [TopologicalSpace W] [DiscreteTopology W] [Finite W] (W' : Type) [AddCommGroup W'] [Module Λ W'] [TopologicalSpace W'] [DiscreteTopology W'] [Finite W'] (ρ : Representation Λ (Dec (F := F) A) W) (ρ' : Representation Λ (Dec (F := F) A) W') (P : W →+ W' →+ ZMod (l ^ n)), 0 < n → ContAction ρ → ContAction ρ' → (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (ρ g x) (ρ' g y) = ((cycMod F Ω l n g.1 : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)) * P x y) → (∀ y : Z1 ρ', (∀ x : Z1 ρ, CupB (fun g : Dec (F := F) A => ((cycMod F Ω l n g.1 : (ZMod (l ^ n))ˣ) : ZMod (l ^ n))) (fun g m => ρ' g m) P x.1 y.1) ↔ Cob ρ' y.1) ∧ (((l : ℕ) : 𝓞 F) ∉ v.asIdeal → Nat.card (H1 ρ) = Nat.card (H0 ρ) * Nat.card (H0 ρ')) := by
   intro hLF hLD hLE F Ω _ _ _ _ _ l _ n A v hA Λ _ W _ _ _ _ _ W' _ _ _ _ _ ρ ρ' P hn hρ hρ' h1 h2 hP
   have : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩

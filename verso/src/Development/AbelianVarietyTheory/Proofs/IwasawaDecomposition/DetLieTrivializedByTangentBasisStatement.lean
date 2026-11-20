@@ -15,6 +15,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.FlagMod GlobalTheory.Reg
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame | exact GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame | (intros; apply GlobalTheory.PolFin.pull_cls_detLie_eq_zero_of_frame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.det_lie_trivialized_by_tangent_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β)
     (hL : (GlobalTheory.FlagMod.detLie Z).IsLB) (W : Scheme.{0}) (p : W ⟶ Z.X) (G : Over W) [GrpObj G] [IsCommMonObj G]

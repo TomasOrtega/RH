@@ -7,6 +7,9 @@ open scoped ENNReal
 
 namespace Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM
 
+/- English proof (translation)
+The claim follows from `| 0, α, _, μ, _, f, _ => by simp | m + 1, α, _, μ, _, f, hf => by have hmp := measurePreserving_piFinSuccAbove μ 0 set g : α 0 × ((j : Fin m) → α (Fin.succAbove 0 j)) → ℝ≥0∞ := fun z => f 0 z.1 * ∏ i : Fin m, f (Fin.succAbove 0 i) (z.2 i) with hg have key : ∫⁻ x, ∏ i, f i (x i) ∂ …`.
+-/
 theorem lintegral_fin_prod : ∀ (m : ℕ) {α : Fin m → Type} [∀ i, MeasurableSpace (α i)] (μ : ∀ i, Measure (α i))
     [∀ i, SigmaFinite (μ i)] (f : ∀ i, α i → ℝ≥0∞), (∀ i, Measurable (f i)) →
     ∫⁻ x, ∏ i, f i (x i) ∂Measure.pi μ = ∏ i, ∫⁻ x, f i x ∂μ i
@@ -32,6 +35,13 @@ theorem lintegral_fin_prod : ∀ (m : ℕ) {α : Fin m → Type} [∀ i, Measura
       lintegral_fin_prod m (fun j => μ (Fin.succAbove 0 j)) (fun j => f (Fin.succAbove 0 j)) (fun j => hf _),
       Fin.prod_univ_succAbove _ 0]
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin ι).symm`. Establish `hmp` using `measurePreserving_piCongrLeft μ e`. Rewrite using `[← hmp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`. Establish `h1 : ∀ g : (∀ i', α (e i')), ∏ i, f i ((MeasurableEquiv.piCongrLeft α e g) i) = ∏ i', f (e i') (g i')`. Introduce `g`.
+
+Rewrite using `[← Fintype.prod_equiv e (fun i' => f (e i') (MeasurableEquiv.piCongrLeft α e g (e i'))) (fun i => f i (MeasurableEquiv.piCongrLeft α e g i)) (fun _ => rfl)]`. Use `congr 1`. Use function extensionality and compare the values at `i'`. Rewrite using `[MeasurableEquiv.piCongrLeft_apply_apply]`. Simplify using `only [h1]`.
+
+Rewrite using `[lintegral_fin_prod _ (fun i' => μ (e i')) (fun i' => f (e i')) (fun i' => hf _)]`. Conclude with `Fintype.prod_equiv e _ _ (fun _ => rfl)`.
+-/
 theorem lintegral_pi_prod {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)] (μ : ∀ i, Measure (α i))
     [∀ i, SigmaFinite (μ i)] (f : ∀ i, α i → ℝ≥0∞) (hf : ∀ i, Measurable (f i)) :
     ∫⁻ x, ∏ i, f i (x i) ∂Measure.pi μ = ∏ i, ∫⁻ x, f i x ∂μ i := by

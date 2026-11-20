@@ -27,6 +27,13 @@ noncomputable section
 
 namespace GlobalTheory.WeilTorsChar
 
+/- English proof (translation)
+Set `F : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Set `I : (Over.mk (T.hom ≫ f) ⟶ G) → (T ⟶ G')` to `fun y => Over.homMk (h.1.lift y.left T.hom (Over.w y)) (h.1.lift_snd _ _ _)`. Use `⟨⟨⟨F, I, fun x => ?_, fun y => ?_⟩, fun x y => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Conclude with `h.1.lift_fst _ _ _`. Conclude with `(h.1.lift_snd _ _ _).trans (Over.w x).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Conclude with `h.1.lift_fst _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.2 T x y (F x) (F y) rfl rfl).symm`.
+-/
 theorem exists_mulEquiv_points {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G']
     (φ : G'.left ⟶ G.left) (h : IsGrpPullback G' G f φ) (T : Over S') :
     ∃ Φ : (T ⟶ G') ≃* (Over.mk (T.hom ≫ f) ⟶ G), ∀ x, (Φ x).left = x.left ≫ φ := by

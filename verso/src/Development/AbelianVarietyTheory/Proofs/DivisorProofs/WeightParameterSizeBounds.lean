@@ -39,6 +39,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `WtShape.exists_tau p τ`. Establish `e1` using `WtShape.dat_p p i`. Establish `hd : ((uW p i τ a - uW p i τ b : ℤ) : ℝ) = WtShape.sgR D t a - WtShape.sgR D t (a + 1) - 1 + if (a : ℕ) + 1 = D.R.k + i then (D.R.r : ℝ) else 0`. Rewrite using `[Int.cast_sub, WtShape.uW_real p i τ t ht, WtShape.uW_real p i τ t ht, hab, ← WtShape.entR_step]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `h1` using `WtShape.sgR_step_low D L P t a (by omega) (by omega)`. Rewrite `hd` using `[if_pos (by omega)]`. Establish `c6 : (6 : ℝ) ≤ D.R.r` using `by exact_mod_cast WtShape.six_le_r D.R`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bar_gap (p : PtAt ex Csz) (i : Fin D.R.m) (P : ParameterChoice' D L) (hi : (i : ℕ) + 1 < D.R.m) (τ : Psi p.T.Q.H)
     (a b : Fin ((dat p i).p + (dat p i).q)) (hab : (b : ℕ) = a + 1) (hb : (b : ℕ) = (dat p i).p) :
     LevelStarExponents.h0 L ≤ ((uW p i τ a - uW p i τ b : ℤ) : ℝ) := by
@@ -57,6 +64,45 @@ theorem bar_gap (p : PtAt ex Csz) (i : Fin D.R.m) (P : ParameterChoice' D L) (hi
 abbrev wp (p : PtAt ex Csz) (i : Fin D.R.m) (PP : ℝ) : WtPar (dat p i) :=
   ⟨uW p i, cZero D ((i : ℕ) + 1), D.R.k - 2, lenT p i PP⟩
 
+/- English proof (translation)
+Take `⟨hb1, -, -, -, -, hbk, hquo⟩` from `hS`. Take `⟨u0, hu0⟩` from `(hquo hi).1`. Establish `hQ : Quo p i T.PP (wp p i T.PP).u₁` using `hq u0 hu0 ▸ hu0`. Take `⟨h0', S, eta, -, -, -, -, -, hHyp⟩` from `hW.hyp hi`. Establish `hDv : (wtsAt p i T.PP h0' S eta (wp p i T.PP).u₁).IsDiv` using `(quo_iff p i T.PP h0' S eta _).1 hQ`.
+
+Establish `hY : (wtsAt p i T.PP h0' S eta (wp p i T.PP).u₁).Hyp` using `hHyp _`. Establish `hDp : GlobalTheory.CompHt.dimFlag (dat p i) = T.Dp` using `hW.dim.trans T.Dp_eq.symm`. Establish `hlen : lenT p i T.PP ≤ T.TO`. Unfold `lenT`. Rewrite using `[hDp]`.
+
+Conclude with `Nat.ceil_le.2 (WtShape.len_le D L P T)`. Take `⟨s1, s2, -⟩` from `WtShape.spacing_ge T ((i : ℕ) + 1) _ hlen`. Establish `eN : ((((dat p i).p + (dat p i).q : ℕ)) : ℝ) = D.R.r` using `by rw [hW.sig.2.2]`. Establish `hb0 : 0 < L.sc.b` using `by linarith`. Establish `hsb : 0 < Real.sqrt L.sc.b` using `Real.sqrt_pos.2 hb0`.
+
+Establish `hw : ∀ τ, Real.sqrt L.sc.b / 2 ≤ (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ)` using `fun τ => by`. Use `hW.low τ` as an intermediate fact. Use `hH.low` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrho` using `GlobalTheory.T.weightDegreeDefect_le_of_divided_weight _ _ (wtsAt p i T.PP h0' S eta (wp p i T.PP).u₁) (LevelStarExponents.h0 L) hY hDv hsa (fun τ => lt_of_lt_of_le (by positivity) (hw τ)) (by show 4 * (((cZero D ((i : ℕ) + 1) : ℤ) : ℝ) + 2 * (((dat p i).p + (dat p i).q : ℕ) : ℝ) …`.
+
+Rewrite using `[eN, hDp]`. Simplify `s1)` using `[cZero]`. Use the proof step `(by show 24 * (((dat p i).p + (dat p i).q : ℕ) : ℝ) * (lenT p i T.PP : ℝ) ≤ LevelStarExponents.h0 L`. Rewrite using `[eN]`. Conclude with `s2)`.
+
+Use the proof step `(fun τ a b hab hb => bar_gap p i P hi τ a b hab hb)`. Establish `hrB : GlobalTheory.CompHt.rhoB (dat p i) (wp p i T.PP).u₁ = GlobalTheory.CompHt.rhoOf (wtsAt p i T.PP h0' S eta (wp p i T.PP).u₁).u' (wtsAt p i T.PP h0' S eta (wp p i T.PP).u₁).u1`. Unfold `GlobalTheory.CompHt.rhoB`. Use `congr 1`. Use function extensionality and compare the values at `τ j`.
+
+Rewrite using `[GlobalTheory.CompHt.uPrime_apply]`. Both sides reduce to the same expression. Establish `hcard : (Fintype.card (Psi p.T.Q.H) : ℝ) = D.R.f` using `by rw [← Nat.card_eq_fintype_card, hW.card]`. Establish `hrho' : GlobalTheory.CompHt.rhoB (dat p i) (wp p i T.PP).u₁ ≤ 3 * (D.R.r : ℝ) * ((D.R.f : ℝ) * ((D.R.r : ℝ) * D.R.r * (2 * ((lenT p i T.PP : ℝ) + T.Dp + 1)) / LevelStarExponents.h0 L + 2 * (D.R.r : ℝ) * D.R.r * (lenT p i T.PP : ℝ) * (2 / Real.sqrt L.sc.b)))`. Rewrite using `[hrB]`.
+
+Use `hrho.trans ((mul_le_mul_of_nonneg_left (Finset.sum_le_card_nsmul _ _ ((D.R.r : ℝ) * D.R.r * (2 * ((lenT p i T.PP : ℝ) + T.Dp + 1)) / LevelStarExponents.h0 L + 2 * (D.R.r : ℝ) * D.R.r * (lenT p i T.PP : ℝ) * (2 / Real.sqrt L.sc.b)) fun τ _ => ?_) (by rw [eN]; positivity)).trans_eq …` and prove the remaining obligations. Use `show (((dat p i).p + (dat p i).q : ℕ) : ℝ) * (((dat p i).p + (dat p i).q : ℕ) : ℝ) * (2 * ((lenT p i T.PP : ℝ) + (GlobalTheory.CompHt.dimFlag (dat p i) : ℝ) + 1)) / LevelStarExponents.h0 L + 2 * (((dat p i).p + (dat p i).q : ℕ) : ℝ) * (((dat p i).p + (dat p i).q : ℕ) : ℝ) * (lenT …`. Rewrite using `[eN, hDp]`. Establish `hwp : 0 < (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ)` using `lt_of_lt_of_le (by positivity) (hw τ)`. Establish `h2 : 1 / (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ) ≤ 2 / Real.sqrt L.sc.b`.
+
+Rewrite using `[div_le_div_iff₀ hwp hsb]`. Combine the linear relations using `[hw τ]`. Establish `h3 : 0 ≤ 2 * (D.R.r : ℝ) * D.R.r * (lenT p i T.PP : ℝ)` using `by positivity`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 h3`. Rewrite `h4` using `[mul_one_div]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Finset.card_univ, nsmul_eq_mul, hcard, eN]`. Establish `hk : kap p i ≤ 4 * (D.R.f : ℝ) * D.R.r * L.sc.b` using `by show ∑ τ : Psi p.T.Q.H, ∑ k, |(laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ k : ℝ)| ≤ _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Rewrite using `[hcard, eN]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hmk : (D.R.m : ℝ) ≤ D.R.k` using `by exact_mod_cast (by have := D.R.m_add_three_le_k; omega : D.R.m ≤ D.R.k)`. Establish `hf1 : (1 : ℝ) ≤ D.R.f`.
+
+Establish `h8 : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hH.f8`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD1 : (1 : ℝ) ≤ T.Dp` using `by exact_mod_cast WtShape.one_le_Dp T`. Establish `hTl : T.PP ^ 2 * (T.Dp : ℝ) ^ 2 * D.R.k / D.R.m ≤ (lenT p i T.PP : ℝ)`. Unfold `lenT`.
+
+Rewrite using `[hDp]`. Conclude with `Nat.le_ceil _`. Establish `hTO : (lenT p i T.PP : ℝ) ≤ T.TO` using `by exact_mod_cast hlen`. Establish `hT4 : 4 * (T.Dp : ℝ) + 4 ≤ lenT p i T.PP`. Use `hY.h1` as an intermediate fact.
+
+Establish `h : 4 * T.Dp + 4 ≤ lenT p i T.PP` using `by rw [← hDp]; exact this`. Conclude with `h` after adjusting the coercions. Establish `hH0 : (T.TO : ℝ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * T.Dp * T.PP ≤ LevelStarExponents.h0 L`. Use `le_trans ?_ T.heightBound_ge_order_product` and prove the remaining obligations. Establish `hP : 0 ≤ T.PP` using `by linarith [WtShape.forty_le_PP T]`.
+
+Establish `: 0 ≤ (T.TO : ℝ) * (D.R.N D.R.m : ℝ) * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * T.Dp * T.PP` using `by positivity`. Use polynomial arithmetic with `[T.ChT_ge]`. Establish `hn0 : 2500 * (D.R.r : ℝ) * ((T.Dp : ℝ) + 1) ≤ T.TO`. Establish `h` using `T.order_ge_rank_bound`. Establish `h' : 2500 * D.R.r * (T.Dp + 1) ≤ T.TO` using `le_trans (by`.
+
+Rewrite using `[show 2500 * D.R.r * (T.Dp + 1) = 2 * (2 * 5 ^ 4 * D.R.r) * (T.Dp + 1) by ring]; exact Nat.le_add_left _ _) h`. Conclude with `h'` after adjusting the coercions. Establish `hnW : (D.R.f : ℝ) * D.R.r * ((D.R.r : ℝ) + 1) ≤ T.nWn` using `by exact_mod_cast T.nW_lo.1`. Establish `hP3 : T.PP ^ 3 * (T.TO : ℝ) ^ 2 ≤ Real.sqrt L.sc.b`. Rewrite using `[Real.sqrt_eq_rpow]`.
+
+Conclude with `T.precision_cube_order_sq_le_sqrt`. Establish `hsp : (T.TO : ℝ) * T.nWn ≤ D.R.r + D.R.t`. Establish `h` using `T.split`. Establish `h' : T.TO * T.nWn ≤ D.R.r + D.R.t` using `by omega`. Conclude with `h'` after adjusting the coercions.
+
+Establish `hNb : (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) ≤ D.R.N D.R.m`. Establish `h' : D.R.m * (D.R.t + 1) ≤ D.R.N D.R.m` using `by unfold Ranks.N; omega`. Conclude with `h'` after adjusting the coercions. Establish `key` using `GlobalTheory.T.seven_mul_height_bound_le_half_of_parameters (T.Dp : ℝ) (lenT p i T.PP : ℝ) (GlobalTheory.CompHt.rhoB (dat p i) (wp p i T.PP).u₁) T.PP (kap p i) L.sc.b D.R.f D.R.r D.R.m D.R.k (LevelStarExponents.h0 L) T.TO (D.R.N D.R.m) T.nWn D.R.t hD1 hb0 hf1 hm2 hmk (WtShape.r_c …`. Unfold `zed`.
+
+Rewrite using `[hDp]`. Conclude with `key`.
+-/
 theorem zed_at (p : PtAt ex Csz) (i : Fin D.R.m) (P : ParameterChoice' D L) (T : ParamsT D L P) (A M C1 : ℝ)
     (hS : SizeAt p i T.PP C1) (hq : ∀ u1, Quo p i T.PP u1 → u1 = (wp p i T.PP).u₁)
     (hsa : ∀ τ, StrictAnti ((wp p i T.PP).u₁ τ)) (hH : HostNum D L T.PP A M) (hW : WtNum p i T.PP)
@@ -158,6 +204,15 @@ theorem zed_at (p : PtAt ex Csz) (i : Fin D.R.m) (P : ParameterChoice' D L) (T :
   rw [hDp]
   exact key
 
+/- English proof (translation)
+Introduce `hS`. Establish `hI` using `GlobalTheory.T.weight_parameter_strict_antitone hS`. Establish `hHN` using `GlobalTheory.CovTop.Sizes.hostN 1`. Establish `hWN` using `GlobalTheory.CovTop.WtShape.wtN`. Unfold `Covers Lifts`.
+
+Use `(Formalism.MainNotions.Closed.and (Formalism.MainNotions.Closed.and hS hI) (Formalism.MainNotions.Closed.and hHN hWN)).imp fun Fm CH _ hh => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, a1, h1⟩, ⟨C2, -, a2, h2⟩⟩, ⟨C3, -, a3, h3⟩, ⟨C4, -, a4, h4⟩⟩` from `hh`. Use `⟨0, le_rfl, max (max a1 a2) (max a3 a4), fun x hx hle ι p hp i hi Y _ => ?_⟩` and prove the remaining obligations. Establish `e1` using `h1 x hx (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hle) ι p hp i`. Establish `e2` using `h2 x hx (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hle) ι p hp i hi`.
+
+Establish `e3` using `h3 x hx (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hle) ι p hp i`. Establish `e4` using `h4 x hx (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hle) ι p hp i`. Establish `key` using `zed_at p i (Fm.params x hx ι) (Fm.parT x hx ι) C3 1 C1 e1 e2.2.2.2.1 (fun τ => (e2.2.2.2.2.1 τ).1) e3 e4 hi`. Establish `hb1` using `e1.1`. Establish `hbk` using `e1.2.2.2.2.2.1`.
+
+Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: 1 / 2 * ((Fm.parT x hx ι).PP * kap p i) < _ * ((Fm.parT x hx ι).PP * kap p i)` using `mul_lt_mul_of_pos_right hc (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zed_size : Size → Covers fun Fm x _ ι p i Y PP _ => zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ * (PP * kap p i) ≤ (Fm.L x ι).sc.b ∧ zed p i PP (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ ≤ 1 / 2 := by
   intro hS
   have hI := GlobalTheory.T.weight_parameter_strict_antitone hS

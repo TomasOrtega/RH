@@ -20,6 +20,39 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁ co ⟨h1, h2, h3, hrat⟩`. Use `set M : Model σ X W := Model.mk co (fun _ _ => 0) 0 ∅ with hMdef`. Establish `hstd` using `hB.std`. Take `⟨hS, act, real⟩` from `GlobalTheory.T.darboux_derivative_existence F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ _ _ co hstd GlobalTheory.T.archHeisenbergDerivatives_exist GlobalTheory.T.archActionReadings_compatible`. Take `⟨hS₁, act₁, real₁⟩` from `GlobalTheory.T.darboux_derivative_existence F E σ (Fin n) (Fin d₁) (Fin n × Fin d₁) B.ψ _ _ M₁.co hstd GlobalTheory.T.archHeisenbergDerivatives_exist GlobalTheory.T.archActionReadings_compatible`.
+
+Establish `cwz : ∀ z, cw co (z * (incM F H'.ι)ᵀ) = (ins0 hd (cw M₁.co z).1, ins0 hd (cw M₁.co z).2)`. Introduce `z`. Simplify using `only [cw, h1 z]`. Rewrite using `[ins0_map hd (evI F) evI_zero_eq, ins0_map hd (evI F) evI_zero_eq]`. Establish `key1 : ∀ w (z : Matrix (Fin n) (Fin d₁) (AE F E)), (z * (incM F H'.ι)ᵀ).map (piInf (B.emb w)) = z.map (piInf (B.emb w)) * (H'.ι.map (B.emb w).1)ᵀ`.
+
+Introduce `w z`. Rewrite using `[Matrix.map_mul, Matrix.transpose_map, incM_map_piInf_emb]`. Establish `gco : ∀ f₀, M.IsGauss B.ψ B.emb f₀ → ∃ ε : InfinitePlace F → ℤˣ, ∀ u u', At (evI F) u → At (evI F) u' → (∀ w, u'.map (piInf (B.emb w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * u.map (piInf (B.emb w)) * (W.θ w)ᵀ)) → ∀ x, dH (cw co u').1 (cw co u').2 ⇑f₀ x = Complex.I * dH (cw co …`. Introduce and unpack `f₀ ⟨ε, hε⟩`. Use `⟨ε, fun u u' hu hu' hr x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `hS (cw co u).1 (cw co u).2 f₀`. Take `⟨g', hg'⟩` from `hS (cw co u').1 (cw co u').2 f₀`. Establish `e` using `hε u u' hu hu' hr g g' ((act u hu f₀ g).2 hg) ((act u' hu' f₀ g').2 hg')`. Rewrite using `[← hg, ← hg', e]`. Both sides reduce to the same expression.
+
+Establish `gtr : ∀ f₀, M.IsGauss B.ψ B.emb f₀ → M₁.IsGauss B.ψ B.emb (ei F hd f₀)`. Introduce `f₀ hf₀`. Take `⟨ε, hε⟩` from `gco f₀ hf₀`. Use `⟨ε, fun z z' hz hz' hr g g' hg hg' => ?_⟩` and prove the remaining obligations. Establish `hu` using `at_mul_right_of hz (incM F H'.ι)ᵀ`.
+
+Establish `hu'` using `at_mul_right_of hz' (incM F H'.ι)ᵀ`. Establish `hr' : ∀ w, (z' * (incM F H'.ι)ᵀ).map (piInf (B.emb w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * (z * (incM F H'.ι)ᵀ).map (piInf (B.emb w)) * (W.θ w)ᵀ)`. Introduce `w`. Establish `e : (W₁.θ w)ᵀ * (H'.ι.map (B.emb w).1)ᵀ = (H'.ι.map (B.emb w).1)ᵀ * (W.θ w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, (hH.cartan w).1]`.
+
+Rewrite using `[key1, key1, hr w, Matrix.smul_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc, e]`. Take `⟨h, hh⟩` from `hS (ins0 hd (cw M₁.co z).1) (ins0 hd (cw M₁.co z).2) f₀`. Take `⟨h', hh'⟩` from `hS (ins0 hd (cw M₁.co z').1) (ins0 hd (cw M₁.co z').2) f₀`.
+
+Establish `e1 : ei F hd h = g` using `DFunLike.coe_injective ((GlobalTheory.T.heisenberg_derivative_extension F n d d₁ hd _ _ f₀ h hh).trans ((act₁ z hz _ _).1 hg).symm)`. Establish `e1' : ei F hd h' = g'` using `DFunLike.coe_injective ((GlobalTheory.T.heisenberg_derivative_extension F n d d₁ hd _ _ f₀ h' hh').trans ((act₁ z' hz' _ _).1 hg').symm)`. Establish `e3 : h' = Complex.I • h` using `SchwartzMap.ext fun x => by`. Use `hε _ _ hu hu' hr' x` as an intermediate fact. Rewrite `this` using `[cwz, cwz]`.
+
+Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul, hh', hh]`. Conclude with `this`. Rewrite using `[← e1', e3, map_smul, e1]`. Establish `plane : ∀ f₀, M.IsGauss B.ψ B.emb f₀ → ∀ γ : Fin n × Fin d → mixedEmbedding.mixedSpace F, IsPl hd γ → ∃ β : Fin n × Fin d → mixedEmbedding.mixedSpace F, IsPl hd β ∧ ∃ c : ℂ, ∀ x, dH γ 0 ⇑f₀ x = c * dH 0 β ⇑f₀ x`. Introduce `f₀ hf₀ γ hγ`.
+
+Take `⟨ε, hε⟩` from `gco f₀ hf₀`. Take `⟨u, u', hu, hu', hr, hcu, hcu1, hcu2⟩` from `GlobalTheory.T.darboux_adapted_plane_evaluation F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH co h1 h2 h3 ε γ hγ`. Use `⟨(cw co u').2, hcu2, -Complex.I, fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `hε u u' hu hu' hr x`. Rewrite `e` using `[hcu, hcu1]`.
+
+Simplify using `only at e`. Take the linear combination `Complex.I * e + dH γ 0 ⇑f₀ x * Complex.I_sq`. Establish `P1cl : ∀ (a b : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F), ∀ g ∈ M₁.Pol B.ψ B.emb, ∀ g₁ : SInf F (Fin n × Fin d₁), ⇑g₁ = dH a b ⇑g → g₁ ∈ M₁.Pol B.ψ B.emb`. Introduce `a b g hg g₁ hg₁`. Take `⟨z, hz, hzab⟩` from `real₁ a b`.
+
+Conclude with `Submodule.mem_sInf.2 fun N hN => hN.2 z hz g (Submodule.mem_sInf.1 hg N hN) g₁ ((act₁ z hz g g₁).2 (by rw [hzab]; exact hg₁))`. Take `⟨Q, hGQ, hQcl, hQei⟩` from `GlobalTheory.T.plane_evaluation_closure_derivatives F n d d₁ hd (M₁.Pol B.ψ B.emb) {f₀ | M.IsGauss B.ψ B.emb f₀} hS P1cl (fun f₀ hf₀ => ⟨Submodule.mem_sInf.2 fun N hN => hN.1 _ (gtr f₀ hf₀), plane f₀ hf₀⟩)`. Establish `hPQ : M.Pol B.ψ B.emb ≤ Q` using `sInf_le ⟨fun f₀ hf₀ => hGQ hf₀, fun u hu f hf f₁ hf₁ => hQcl _ _ f hf f₁ ((act u hu f f₁).1 hf₁)⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+
+Conclude with `hQei f (hPQ hf)`. Use `sInf_le ⟨fun g₀ hg₀ => ?_, fun z hz g hg g₁ hg₁ => ?_⟩` and prove the remaining obligations. Take `⟨f₀, hf₀ne, hf₀⟩` from `GlobalTheory.T.exists_nonzero_gaussian_vector F E σ B n d r s r' s' X W M hB hX hW GlobalTheory.T.archHeisenbergDerivatives_exist GlobalTheory.T.archActionReadings_compatible`. Take `⟨g, hgU⟩` from `GlobalTheory.T.gaussian_restricted_adapted_plane F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hB hX hW hH GlobalTheory.T.archHeisenbergDerivatives_exist GlobalTheory.T.archActionReadings_compatible`. Establish `hne : ei F hd f₀ ≠ 0` using `fun h0 => hf₀ne (GlobalTheory.T.eq_zero_of_plane_derivative_vanishing F n d d₁ hd f₀ (plane f₀ hf₀) fun x₁ => by`.
+
+Simplify using `using congrArg (fun k : SInf F (Fin n × Fin d₁) => k x₁) h0)`. Take `⟨z, hz⟩` from `hgU _ hg₀`. Take `⟨z₀, hz₀⟩` from `hgU _ (gtr f₀ hf₀)`. Establish `hz₀ne : z₀ ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hne (by rw [hz₀, zero_smul])`. Use `⟨(z / z₀) • f₀, Submodule.mem_sInf.2 fun N hN => N.smul_mem _ (hN.1 _ hf₀), ?_⟩` and prove the remaining obligations. Use `show ei F hd ((z / z₀) • f₀) = g₀`. Rewrite using `[map_smul, hz₀, hz, smul_smul, div_mul_cancel₀ _ hz₀ne]`. Take `⟨f, hf, rfl⟩` from `hg`.
+
+Take `⟨h, hh⟩` from `hS (ins0 hd (cw M₁.co z).1) (ins0 hd (cw M₁.co z).2) f`. Establish `hu` using `at_mul_right_of hz (incM F H'.ι)ᵀ`. Use `⟨h, Submodule.mem_sInf.2 fun N hN => hN.2 _ hu f (Submodule.mem_sInf.1 hf N hN) h ((act _ hu f h).2 (by rw [cwz]; exact hh)), ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.coe_injective ((GlobalTheory.T.heisenberg_derivative_extension F n d d₁ hd _ _ f h hh).trans ((act₁ z hz _ _).1 hg₁).symm)`.
+-/
 theorem pol_map_ei : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M₁ : Model σ X W₁)
     (hd : d = d₁ + 2), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ →

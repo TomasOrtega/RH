@@ -14,6 +14,9 @@ attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, map_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_mul (hX i e) (hY e j) (norm_nonneg _) ((norm_nonneg _).trans (hX i e))`. Use `_ = n * (bX * bY) := by simp [Finset.sum_const, nsmul_eq_mul]`.
+-/
 theorem rect_entry_mul_le {m n p : ℕ} (φ : AE D →+* ℂ) (X : Matrix (Fin m) (Fin n) (AE D))
     (Y : Matrix (Fin n) (Fin p) (AE D)) (i : Fin m) (j : Fin p) {bX bY : ℝ}
     (hX : ∀ i k, ‖φ (X i k)‖ ≤ bX) (hY : ∀ k j, ‖φ (Y k j)‖ ≤ bY) : ‖φ ((X * Y) i j)‖ ≤ n * (bX * bY) := by
@@ -24,6 +27,9 @@ theorem rect_entry_mul_le {m n p : ℕ} (φ : AE D →+* ℂ) (X : Matrix (Fin m
         exact mul_le_mul (hX i e) (hY e j) (norm_nonneg _) ((norm_nonneg _).trans (hX i e))
     _ = n * (bX * bY) := by simp [Finset.sum_const, nsmul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `(Finset.single_le_sum (fun j' _ => hf i j') (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i' => ∑ j', f i' j') (fun i' _ => Finset.sum_nonneg fun j' _ => hf i' j') (Finset.mem_univ i))`.
+-/
 theorem entry_le_sum {m n : ℕ} (f : Fin m → Fin n → ℝ) (hf : ∀ i j, 0 ≤ f i j) (i : Fin m) (j : Fin n) :
     f i j ≤ ∑ i', ∑ j', f i' j' :=
   (Finset.single_le_sum (fun j' _ => hf i j') (Finset.mem_univ j)).trans
@@ -34,6 +40,23 @@ variable {A T : HSp D} {ι : A.V →ₗ[D.host.E] T.V} {s : GA D A →* GA D T}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `set F := (frameMat T A ι).map (incA D)`. Use `set P := (embP' A T ι).map (incA D)`. Use `set Q := (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) - (frameMat T A ι * embP' A T ι).map (incA D)`. Set `φ : D.what₂.Tau → AE D →+* ℂ` to `fun τ => (θ τ).comp (infPart D)`. Set `bF : D.what₂.Tau → ℝ` to `fun τ => ∑ i, ∑ k, ‖φ τ (F i k)‖`.
+
+Set `bP : D.what₂.Tau → ℝ` to `fun τ => ∑ k, ∑ j, ‖φ τ (P k j)‖`. Set `cQ : D.what₂.Tau → ℝ` to `fun τ => ∑ i, ∑ j, ‖φ τ (Q i j)‖`. Establish `hbF0 : ∀ τ, 0 ≤ bF τ` using `fun τ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hbP0 : ∀ τ, 0 ≤ bP τ` using `fun τ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hcQ0 : ∀ τ, 0 ≤ cQ τ` using `fun τ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Set `C : ℝ` to `∑ τ, ((A.rank : ℝ) * ((A.rank : ℝ) * bF τ) * bP τ + cQ τ)`. Establish `hterm0 : ∀ τ, 0 ≤ (A.rank : ℝ) * ((A.rank : ℝ) * bF τ) * bP τ + cQ τ` using `fun τ => by`. Use `hbF0 τ` as an intermediate fact. Use `hbP0 τ` as an intermediate fact. Use `hcQ0 τ` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hCτ : ∀ τ, (A.rank : ℝ) * ((A.rank : ℝ) * bF τ) * bP τ + cQ τ ≤ C` using `fun τ => Finset.single_le_sum (fun τ' _ => hterm0 τ') (Finset.mem_univ τ)`. Establish `hC0 : 0 ≤ C` using `Finset.sum_nonneg fun τ _ => hterm0 τ`. Use `⟨C, hC0, fun h τ b hb hh i j => ?_⟩` and prove the remaining obligations. Rewrite using `[mt_of_embRel hι (hemb h)]`.
+
+Establish `hFe : ∀ i k, ‖φ τ (F i k)‖ ≤ bF τ` using `fun i k => entry_le_sum (fun i k => ‖φ τ (F i k)‖) (fun _ _ => norm_nonneg _) i k`. Establish `hPe : ∀ k j, ‖φ τ (P k j)‖ ≤ bP τ` using `fun k j => entry_le_sum (fun k j => ‖φ τ (P k j)‖) (fun _ _ => norm_nonneg _) k j`. Establish `hQe : ‖φ τ (Q i j)‖ ≤ cQ τ` using `entry_le_sum (fun i j => ‖φ τ (Q i j)‖) (fun _ _ => norm_nonneg _) i j`. Establish `hFM : ∀ i l, ‖φ τ ((F * mt A h) i l)‖ ≤ A.rank * (bF τ * b)` using `fun i l => rect_entry_mul_le (φ τ) F (mt A h) i l hFe hh`. Establish `hFMP : ‖φ τ ((F * mt A h * P) i j)‖ ≤ A.rank * ((A.rank * (bF τ * b)) * bP τ)` using `rect_entry_mul_le (φ τ) (F * mt A h) P i j hFM hPe`.
+
+Establish `hsum : ‖φ τ ((F * mt A h * P + Q) i j)‖ ≤ A.rank * ((A.rank * (bF τ * b)) * bP τ) + cQ τ`. Rewrite using `[Matrix.add_apply, map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add hFMP hQe)`. Use `show ‖φ τ ((F * mt A h * P + Q) i j)‖ ≤ C * (b + 1)`. Use `hsum.trans ?_` and prove the remaining obligations.
+
+Establish `h1` using `hCτ τ`. Establish `hA0 : (0 : ℝ) ≤ A.rank` using `Nat.cast_nonneg _`. Use `set X : ℝ := (A.rank : ℝ) * ((A.rank : ℝ) * bF τ) * bP τ with hXd`. Establish `hX0 : 0 ≤ X` using `mul_nonneg (mul_nonneg hA0 (mul_nonneg hA0 (hbF0 τ))) (hbP0 τ)`. Establish `e : (A.rank : ℝ) * ((A.rank : ℝ) * (bF τ * b) * bP τ) + cQ τ = X * b + cQ τ` using `by rw [hXd]; ring`.
+
+Rewrite using `[e]`. Establish `hX : X ≤ C` using `le_trans (le_add_of_nonneg_right (hcQ0 τ)) h1`. Establish `hY : cQ τ ≤ C` using `le_trans (le_add_of_nonneg_left hX0) h1`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hX hb]`.
+-/
 theorem s_entry_le (θ : InfFam D) (hι : HSpace.IsIsomEmb A T ι) (hemb : IsEmbHom ι s) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (h : GA D A) (τ : D.what₂.Tau) (b : ℝ), 0 ≤ b →
       (∀ k l, ‖θ τ (infPart D (mt A h k l))‖ ≤ b) → ∀ i j, ‖θ τ (infPart D (mt T (s h) i j))‖ ≤ C * (b + 1) := by
@@ -79,6 +102,9 @@ theorem s_entry_le (θ : InfFam D) (hι : HSpace.IsIsomEmb A T ι) (hemb : IsEmb
   have hY : cQ τ ≤ C := le_trans (le_add_of_nonneg_left hX0) h1
   nlinarith [mul_le_mul_of_nonneg_right hX hb]
 
+/- English proof (translation)
+Unfold `normInf`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[infMat_eq, infMat_eq]`. Conclude with `add_le_add (hB τ i j).1 (hB τ i j).2`. Use `_ = _ := by simp [Finset.sum_const, nsmul_eq_mul]; ring`.
+-/
 theorem normInf_le_of_entries (θ : InfFam D) (V : HSp D) (x : GA D V) (B : ℝ)
     (hB : ∀ τ i j, ‖θ τ (infPart D (mt V x i j))‖ ≤ B ∧ ‖θ τ (infPart D (mt V x⁻¹ i j))‖ ≤ B) :
     normInf θ V x ≤ Fintype.card D.what₂.Tau * (V.rank * (V.rank * (B + B))) := by

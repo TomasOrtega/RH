@@ -20,6 +20,9 @@ def IsStrongResolution (k : Type u) [Field k] (X : Scheme.{u})
   s.CentersLieOver ((smoothLocusComplement f : TopologicalSpace.Closeds X) : Set X) ∧
   IsStrictNormalCrossingsDivisor (reducedInverseImage s.lastStructMap (smoothLocusComplement f))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isStrongResolutionRule_iff (R : ResolutionRule.{u}) :
     IsStrongResolutionRule R ↔
       ∀ (k : Type u) [Field k] [CharZero k] (X : Scheme.{u})

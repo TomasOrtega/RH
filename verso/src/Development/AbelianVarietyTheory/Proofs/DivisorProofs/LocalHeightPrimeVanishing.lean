@@ -34,6 +34,15 @@ open scoped TensorProduct Matrix
 
 variable {p : ℕ} [Fact p.Prime] {T : Type} [AddCommGroup T] [Module ℤ_[p] T] {N : ℕ}
 
+/- English proof (translation)
+Use `set φ : ℤ_[p] →+* ZMod p := PadicInt.toZMod with hφ`. Establish `hφp : φ (p : ℤ_[p]) = 0` using `by rw [map_natCast]; exact ZMod.natCast_self p`. Establish `hGφ : G.map φ = φ u • B.map (Int.castRingHom (ZMod p))`. Use extensionality with `m m'`. Take `⟨c, hc⟩` from `h m m'`.
+
+Establish `h1 : G m m' = u * (B m m' : ℤ_[p]) + p * c` using `by rw [← hc]; ring`. Simplify using `[h1, hφp]`. Establish `hdetB : IsUnit B.det`. Establish `h` using `congrArg Matrix.det hBJ`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`.
+
+Conclude with `⟨⟨_, _, h, by rw [mul_comm]; exact h⟩, rfl⟩`. Assume the negation of the conclusion as `hn`. Establish `hmem : G.det ∈ IsLocalRing.maximalIdeal ℤ_[p]` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Rewrite `hmem` using `[← PadicInt.ker_toZMod, RingHom.mem_ker]`. Establish `h2 : φ G.det = (φ u) ^ N * ((B.det : ℤ) : ZMod p)`.
+
+Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hGφ, Matrix.det_smul, Fintype.card_fin, ← RingHom.mapMatrix_apply, ← RingHom.map_det, eq_intCast]`. Establish `h3 : IsUnit ((φ u) ^ N * ((B.det : ℤ) : ZMod p))` using `((u.isUnit.map φ).pow N).mul (hdetB.map (Int.castRingHom (ZMod p)))`. Rewrite `h3` using `[← h2, hmem]`. Conclude with `not_isUnit_zero h3`.
+-/
 theorem isUnit_det {G : Matrix (Fin N) (Fin N) ℤ_[p]} {u : ℤ_[p]ˣ} {B J : Matrix (Fin N) (Fin N) ℤ}
     (hBJ : B.transpose * J = 1) (h : ∀ m m', (p : ℤ_[p]) ∣ G m m' - u * (B m m' : ℤ_[p])) : IsUnit G.det := by
   set φ : ℤ_[p] →+* ZMod p := PadicInt.toZMod with hφ
@@ -58,6 +67,11 @@ theorem isUnit_det {G : Matrix (Fin N) (Fin N) ℤ_[p]} {u : ℤ_[p]ˣ} {B J : M
   rw [← h2, hmem] at h3
   exact not_isUnit_zero h3
 
+/- English proof (translation)
+Set `c` to `Module.finBasisOfFinrankEq ℤ_[p] T hN`. Establish `hG : (Matrix.of fun m m' => e (s m) (s m')) = (Matrix.of fun m k => e (s m) (c k)) * c.toMatrix s`. Use extensionality with `m m'`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`. Use `conv_lhs => rw [← c.sum_repr (s m')]`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul, Matrix.of_apply, Module.Basis.toMatrix_apply, mul_comm]`. Rewrite `h` using `[hG, Matrix.det_mul]`. Take `⟨h1, h2⟩` from `c.is_basis_iff_det.2 (isUnit_of_mul_isUnit_right h)`. Conclude with `⟨Module.Basis.mk h1 h2.ge, fun m => Module.Basis.mk_apply _ _ m⟩`.
+-/
 theorem exists_basis [Module.Free ℤ_[p] T] [Module.Finite ℤ_[p] T] (hN : Module.finrank ℤ_[p] T = N)
     (e : LinearMap.BilinForm ℤ_[p] T) (s : Fin N → T) (h : IsUnit (Matrix.of fun m m' => e (s m) (s m')).det) :
     ∃ b : Module.Basis (Fin N) ℤ_[p] T, ∀ m, b m = s m := by
@@ -73,6 +87,9 @@ theorem exists_basis [Module.Free ℤ_[p] T] [Module.Finite ℤ_[p] T] (hN : Mod
 
 variable [Algebra ℤ_[p] ℂ_[p]]
 
+/- English proof (translation)
+Rewrite using `[← s.sum_repr y, TensorProduct.tmul_sum, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hr fun m _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul ℂ_[p], map_smul, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hf _)).trans (h m)`.
+-/
 theorem norm_pair_le (hf : ∀ x : ℤ_[p], ‖algebraMap ℤ_[p] ℂ_[p] x‖ ≤ 1) (e : LinearMap.BilinForm ℤ_[p] T)
     (s : Module.Basis (Fin N) ℤ_[p] T) (b : ℂ_[p] ⊗[ℤ_[p]] T) {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ m, ‖e.baseChange ℂ_[p] b (1 ⊗ₜ s m)‖ ≤ r) (y : T) : ‖e.baseChange ℂ_[p] b (1 ⊗ₜ y)‖ ≤ r := by
@@ -81,6 +98,13 @@ theorem norm_pair_le (hf : ∀ x : ℤ_[p], ‖algebraMap ℤ_[p] ℂ_[p] x‖ �
   rw [TensorProduct.tmul_smul, ← algebraMap_smul ℂ_[p], map_smul, smul_eq_mul, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) (hf _)).trans (h m)
 
+/- English proof (translation)
+Use `set f := algebraMap ℤ_[p] ℂ_[p]`. Use `set G := Matrix.of fun m m' => e (s m) (s m') with hG`. Establish `hv : ∀ k l, e.baseChange ℂ_[p] (1 ⊗ₜ s k) (1 ⊗ₜ s l) = G.map f k l` using `fun k l => by`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, mul_one, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+
+Set `x'` to `(s.baseChange ℂ_[p]).repr b'`. Establish `hb' : b' = ∑ k, x' k • ((1 : ℂ_[p]) ⊗ₜ s k)` using `by conv_lhs => rw [← (s.baseChange ℂ_[p]).sum_repr b']`. Simplify using `only [Module.Basis.baseChange_apply, x']`. Establish `h1 : (fun m => e.baseChange ℂ_[p] b' (1 ⊗ₜ s m)) = (G.transpose.map f) *ᵥ x'`. Use function extensionality and compare the values at `m`.
+
+Use `conv_lhs => rw [hb']`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hv, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.transpose_apply, mul_comm]`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← Matrix.map_mul, ← Matrix.transpose_mul, hH, Matrix.transpose_one, Matrix.map_one _ (map_zero f) (map_one f), Matrix.one_mulVec, ← hbb]`. Use `conv_rhs => rw [hb']`. Simplify using `only [map_sum, map_smul, smul_eq_mul, dotProduct, mul_comm]`.
+-/
 theorem dot_inv_eq_zero (e : LinearMap.BilinForm ℤ_[p] T) (s : Module.Basis (Fin N) ℤ_[p] T)
     {H : Matrix (Fin N) (Fin N) ℤ_[p]} (hH : (Matrix.of fun m m' => e (s m) (s m')) * H = 1)
     {b b' : ℂ_[p] ⊗[ℤ_[p]] T} (hbb : e.baseChange ℂ_[p] b b' = 0) :
@@ -107,6 +131,11 @@ theorem dot_inv_eq_zero (e : LinearMap.BilinForm ℤ_[p] T) (s : Module.Basis (F
 
 omit [Algebra ℤ_[p] ℂ_[p]] in
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun m _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul (hx m) ?_ (norm_nonneg _) ha` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun m' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA m m') (hy m') (norm_nonneg _) hb`.
+-/
 theorem norm_dot_le {A : Matrix (Fin N) (Fin N) ℂ_[p]} {x y : Fin N → ℂ_[p]} {a b c : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hc : 0 ≤ c) (hx : ∀ m, ‖x m‖ ≤ a) (hA : ∀ m m', ‖A m m'‖ ≤ b) (hy : ∀ m, ‖y m‖ ≤ c) :
     ‖x ⬝ᵥ (A *ᵥ y)‖ ≤ a * (b * c) := by
@@ -118,6 +147,27 @@ theorem norm_dot_le {A : Matrix (Fin N) (Fin N) ℂ_[p]} {x y : Fin N → ℂ_[p
   rw [norm_mul]
   exact mul_le_mul (hA m m') (hy m') (norm_nonneg _) hb
 
+/- English proof (translation)
+Establish `hr0 : 0 ≤ r` using `(pow_nonneg (norm_nonneg _) n).trans hr`. Establish `h0` using `dot_inv_eq_zero e s (Matrix.mul_nonsing_inv _ hG) hbb`. Establish `hGH` using `Matrix.mul_nonsing_inv _ hG`. Use `set f := algebraMap ℤ_[p] ℂ_[p]`. Use `set G := Matrix.of fun m m' => e (s m) (s m')`.
+
+Use `set γ := fun m => e.baseChange ℂ_[p] b (1 ⊗ₜ s m)`. Use `set γ' := fun m => e.baseChange ℂ_[p] b' (1 ⊗ₜ s m)`. Use `choose D hD using h`. Establish `hGD : G = (u : ℤ_[p]) • B.map (Int.castRingHom ℤ_[p]) + (p : ℤ_[p]) ^ n • Matrix.of D`. Use extensionality with `m m'`.
+
+Simplify using `only [G, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, eq_intCast, ← hD]`. Expand and normalize the polynomial expressions, which then agree. Establish `hBJ' : (B.map (Int.castRingHom ℤ_[p])).transpose * J.map (Int.castRingHom ℤ_[p]) = 1`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hBJ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hJ : J.map (Int.castRingHom ℤ_[p]) = (u : ℤ_[p]) • G⁻¹.transpose + (p : ℤ_[p]) ^ n • (G⁻¹.transpose * (Matrix.of D).transpose * J.map (Int.castRingHom ℤ_[p]))`.
+
+Establish `h1 : G⁻¹.transpose * G.transpose = 1` using `by rw [← Matrix.transpose_mul, hGH, Matrix.transpose_one]`. Generalize the expression as in `G⁻¹.transpose = K at h1 ⊢`. Use `conv_lhs => rw [← Matrix.one_mul (J.map _), ← h1, hGD]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, hBJ', Matrix.mul_one]`. Generalize the expression as in `G⁻¹.transpose * (Matrix.of D).transpose * J.map (Int.castRingHom ℤ_[p]) = K at hJ`.
+
+Establish `hJc : J.map (Int.castRingHom ℂ_[p]) = f u • G⁻¹.transpose.map f + ((p : ℤ_[p]) ^ n • K).map f`. Use extensionality with `m m'`. Use `congrArg f (congrFun (congrFun hJ m) m')` as an intermediate fact. Simplify using `using this`. Establish `hJn : ∀ m m', ‖J.map (Int.castRingHom ℂ_[p]) m m'‖ ≤ 1` using `fun m m' => IsUltrametricDist.norm_intCast_le_one _ _`.
+
+Establish `hγn : ∀ m, ‖γ m‖ ≤ 1` using `fun m => by`. Establish `: γ m = β m + -(β m - γ m)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hβ m) ((norm_neg _).trans_le ((hγ m).trans hr1)))`. Establish `hγn' : ∀ m, ‖γ' m‖ ≤ 1` using `fun m => by`.
+
+Establish `: γ' m = β' m + -(β' m - γ' m)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hβ' m) ((norm_neg _).trans_le ((hγ' m).trans hr1)))`. Establish `e1 : β ⬝ᵥ (J.map (Int.castRingHom ℂ_[p]) *ᵥ β') = (β - γ) ⬝ᵥ (J.map (Int.castRingHom ℂ_[p]) *ᵥ β') + (γ ⬝ᵥ (J.map (Int.castRingHom ℂ_[p]) *ᵥ (β' - γ')) + γ ⬝ᵥ (((p : ℤ_[p]) ^ n • K).map f *ᵥ γ'))`. Establish `e2 : γ ⬝ᵥ (J.map (Int.castRingHom ℂ_[p]) *ᵥ γ') = γ ⬝ᵥ (((p : ℤ_[p]) ^ n • K).map f *ᵥ γ')`.
+
+Rewrite using `[hJc, Matrix.add_mulVec, dotProduct_add, Matrix.smul_mulVec, dotProduct_smul, h0, smul_zero, zero_add]`. Rewrite using `[← e2, sub_dotProduct, Matrix.mulVec_sub, dotProduct_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)))` and prove the remaining obligations.
+
+Conclude with `(norm_dot_le (x := β - γ) hr0 zero_le_one zero_le_one hγ hJn hβ').trans_eq (by ring)`. Conclude with `(norm_dot_le (y := β' - γ') zero_le_one zero_le_one hr0 hγn hJn hγ').trans_eq (by ring)`. Establish `hK : ∀ m m', ‖((p : ℤ_[p]) ^ n • K).map f m m'‖ ≤ r` using `fun m m' => by`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Conclude with `(mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (hf _)).trans hr`.
+
+Simplify using `using norm_dot_le zero_le_one hr0 zero_le_one hγn hK hγn'`.
+-/
 theorem norm_dot_dual_le (hf : ∀ x : ℤ_[p], ‖algebraMap ℤ_[p] ℂ_[p] x‖ ≤ 1) (e : LinearMap.BilinForm ℤ_[p] T)
     (s : Module.Basis (Fin N) ℤ_[p] T) (hG : IsUnit (Matrix.of fun m m' => e (s m) (s m')).det) {u : ℤ_[p]ˣ}
     {B J : Matrix (Fin N) (Fin N) ℤ} (hBJ : B.transpose * J = 1) {n : ℕ}
@@ -188,6 +238,15 @@ open scoped TensorProduct NNReal Matrix
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hε` using `ε.isPrimitiveRoot n`. Take `⟨i, -, rfl⟩` from `hε.eq_pow_of_mem_rootsOfUnity ((mem_rootsOfUnity _ _).2 hζ.pow_eq_one)`. Establish `hi : i.Coprime (p ^ n)` using `(hε.pow_iff_coprime (pow_pos hp.pos n) i).1 hζ`.
+
+Establish `hi' : IsUnit (i : ℤ_[p])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Coprime.coprime_dvd_right (dvd_pow_self p hn) hi).symm`. Use `⟨hi'.unit, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1 : ε.1.lev n ^ ((GlobalTheory.PDiv.digit n a : ℤ) - i * b) = 1`.
+
+Rewrite using `[zpow_sub, zpow_natCast, hab, zpow_mul, zpow_natCast, mul_inv_cancel]`. Establish `h2` using `(hε.zpow_eq_one_iff_dvd _).1 h1`. Establish `h3` using `map_dvd (Int.castRingHom ℤ_[p]) h2`. Establish `h4` using `GlobalTheory.PDiv.pow_dvd_sub_digit n a`. Simplify using `only [eq_intCast, Int.cast_natCast, Int.cast_sub, Int.cast_mul, Nat.cast_pow, Int.cast_pow] at h3`.
+
+Establish `h5` using `dvd_add h4 h3`. Rewrite `h5` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem exists_unit_exp {p : ℕ} [Fact p.Prime] {C : Type} [Field C] (ε : Eps p C) {n : ℕ} (hn : n ≠ 0) {ζ : Cˣ}
     (hζ : IsPrimitiveRoot ζ (p ^ n)) : ∃ u : ℤ_[p]ˣ, ∀ (a : ℤ_[p]) (b : ℤ), ε.1.lev n ^ GlobalTheory.PDiv.digit n a = ζ ^ b →
       (p : ℤ_[p]) ^ n ∣ a - u * (b : ℤ_[p]) := by
@@ -212,6 +271,13 @@ theorem exists_unit_exp {p : ℕ} [Fact p.Prime] {C : Type} [Field C] (ε : Eps 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X}
 
+/- English proof (translation)
+Use `⟨⟨fun y => l (tanOf (isTanAtG_lieG h' y)), fun y y' h => ?_, fun a y h => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Conclude with `congrArg l (tan_ext (h'.2 _ y.1 y'.1 (tv (tanOf (isTanAtG_lieG h' y))) (tv (tanOf (isTanAtG_lieG h' y')))`. Use `rfl rfl).symm)`. Rewrite using `[← smul_eq_mul, ← map_smul]`.
+
+Use `congrArg l (tan_ext ?_)` and prove the remaining obligations. Establish `ha : (dualScale a).toRingHom = epsScaleR a`. Apply the tactic sequence `ext y <;> simp [dualScale, epsScaleR]`. Express the relevant statement in the definitionally equal form `(ptMap (dualScale a) ≫ y.1).left ≫ φ = _`. Rewrite using `[Over.comp_left, Category.assoc]`.
+
+Conclude with `congrArg (fun r => spMap r ≫ y.1.left ≫ φ) ha`.
+-/
 theorem exists_omega {R : Type} [CommRing R] {x : Sp R ⟶ X} {G' : Over (Sp R)} [GrpObj G'] {φ : G'.left ⟶ t.G.left}
     (h' : IsGrpPullback G' t.G x φ) (l : TanM x t.G →ₗ[R] R) :
     ∃ f : ReciprocityTheory.ChartRestriction.G.Pdiv.omega G', ∀ y : LieG G', f.1 y = l (tanOf (isTanAtG_lieG h' y)) := by
@@ -227,6 +293,13 @@ theorem exists_omega {R : Type} [CommRing R] {x : Sp R ⟶ X} {G' : Over (Sp R)}
     rw [Over.comp_left, Category.assoc]
     exact congrArg (fun r => spMap r ≫ y.1.left ≫ φ) ha
 
+/- English proof (translation)
+Establish `h₁ : spMap (RingHom.id R) = 𝟙 _` using `Spec.map_id _`. Establish `h₂ : spMap (Formalism.L2.Pj.dualMap (RingHom.id R)) = 𝟙 _`. Establish `: Formalism.L2.Pj.dualMap (RingHom.id R) = RingHom.id _`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Formalism.L2.Pj.dualMap]`.
+
+Rewrite using `[this]`. Conclude with `Spec.map_id _`. Establish `key (m : TanM x t.G) : ∃! a : Fin g → R, ∑ l, a l • tanOf (he.1 l) = m`. Establish `h` using `he.2 R (RingHom.id R) (tv m).left`. Simplify using `only [h₁, h₂, Category.id_comp] at h`.
+
+Conclude with `(existsUnique_congr fun a => (isComb_iff (fun l => tanOf (he.1 l)) a m).trans eq_comm).1 (h (isTan_tv m))`. Set `b : Module.Basis (Fin g) R (TanM x t.G)` to `.mk (v := fun i => tanOf (he.1 i)) (Fintype.linearIndependent_iffₛ.2 fun f g hfg => congrFun ((key _).unique hfg rfl)) fun u _ => (Submodule.mem_span_range_iff_exists_fun R).2 (key u).exists`. Establish `hb : ∀ j, tanOf (he.1 j) = b j` using `fun j => by simp only [b, Module.Basis.mk_apply]`. Conclude with `⟨b.coord i, fun a => by simp only [hb, Module.Basis.coord_apply, Module.Basis.repr_sum_self]⟩`.
+-/
 theorem exists_coord {R : Type} [CommRing R] {x : Sp R ⟶ X} {g : ℕ} {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)}
     (he : IsTanBasis t x e) (i : Fin g) : ∃ l : TanM x t.G →ₗ[R] R, ∀ a : Fin g → R, l (∑ j, a j • tanOf (he.1 j)) = a i := by
   have h₁ : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
@@ -246,6 +319,11 @@ theorem exists_coord {R : Type} [CommRing R] {x : Sp R ⟶ X} {g : ℕ} {e : Fin
   have hb : ∀ j, tanOf (he.1 j) = b j := fun j => by simp only [b, Module.Basis.mk_apply]
   exact ⟨b.coord i, fun a => by simp only [hb, Module.Basis.coord_apply, Module.Basis.repr_sum_self]⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ i, ‖a i‖ ≤ 1`. Conclude with `⟨1, one_ne_zero, fun i => by rw [_root_.one_mul]; exact h i, Or.inl rfl⟩`. Use `push Not at h`. Take `⟨i₀, hi₀⟩` from `h`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun i => ‖a i‖) ⟨i₀, Finset.mem_univ _⟩`.
+
+Establish `h0 : a i ≠ 0` using `norm_pos_iff.1 (zero_lt_one.trans (hi₀.trans_le (hi i₀ (Finset.mem_univ _))))`. Use `⟨(a i)⁻¹, inv_ne_zero h0, fun j => ?_, Or.inr ⟨i, inv_mul_cancel₀ h0⟩⟩` and prove the remaining obligations. Rewrite using `[← div_eq_inv_mul, norm_div]`. Conclude with `div_le_one_of_le₀ (hi j (Finset.mem_univ _)) (norm_nonneg _)`.
+-/
 theorem exists_scale {K : Type} [NormedField K] {g : ℕ} (a : Fin g → K) :
     ∃ c : K, c ≠ 0 ∧ (∀ i, ‖c * a i‖ ≤ 1) ∧ (c = 1 ∨ ∃ i, c * a i = 1) := by
   by_cases h : ∀ i, ‖a i‖ ≤ 1
@@ -258,6 +336,39 @@ theorem exists_scale {K : Type} [NormedField K] {g : ℕ} (a : Fin g → K) :
   rw [← div_eq_inv_mul, norm_div]
   exact div_le_one_of_le₀ (hi j (Finset.mem_univ _)) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `hp0 : 0 < ‖(p : ℂ_[p])‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hf : ∀ x : ℤ_[p], ‖algebraMap ℤ_[p] ℂ_[p] x‖ ≤ 1` using `fun x => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[p] ↥(intO ℂ_[p]) ℂ_[p]]`. Conclude with `(algebraMap ℤ_[p] ↥(intO ℂ_[p]) x).2`. Take `⟨d, e, he⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t _ z`. Use `replace he : IsTanBasis t z e := he`. Establish `heC` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map t (intO ℂ_[p]).subtype (he.1 i)`.
+
+Use `choose A hA using fun l => (he.2 _ (intO ℂ_[p]).subtype (u l) (hu l)).exists`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_scale (∑ l, cf l • A l)`. Set `a : Fin d → ↥(intO ℂ_[p])` to `fun i => ⟨c * (∑ l, cf l • A l) i, hc1 i⟩`. Establish `hv` using `(GlobalTheory.LineNorm.Chart.comb_iff he.1 a _).2 rfl`. Establish `hvt` using `isTan_tv (∑ j, a j • tanOf (he.1 j))`.
+
+Establish `hvC` using `GlobalTheory.ShFam.CoordComp.comb_map t (intO ℂ_[p]).subtype hv`. Establish `hw` using `(GlobalTheory.LineNorm.Chart.comb_iff hu (fun l => c * cf l) _).2 rfl`. Establish `hw'` using `GlobalTheory.LineNorm.Chart.comb_comb heC hA hw`. Establish `ha : (∑ l, (c * cf l) • A l) = fun i => (intO ℂ_[p]).subtype (a i)`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `_ = c * _`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, _root_.mul_assoc]`. Rewrite `hw'` using `[ha]`. Rewrite `hw` using `[((GlobalTheory.LineNorm.Chart.comb_iff heC _ _).1 hw').trans ((GlobalTheory.LineNorm.Chart.comb_iff heC _ _).1 hvC).symm]`. Take `⟨y, hy⟩` from `exists_lieG hπ hvt`.
+
+Take `⟨x, rfl⟩` from `P.lieCmp.surjective y`. Establish `hd : ∀ m, ‖c * (Mc *ᵥ cf) m - P.pairV (P.bLie x) (1 ⊗ₜ s m)‖ ≤ ‖(p : ℂ_[p])‖ ^ n` using `fun m => by`. Take `⟨r, hr, hr'⟩` from `hM _ _ hvt hw m`. Take `⟨w, hw⟩` from `GlobalTheory.HTLevel.red_ex (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) hvt`. Establish `h2` using `GlobalTheory.TorsCharDlog.snd_chi_eq t P z π hπ n (χ m) (s m) (hc m) x w (by rw [hy]; exact hw)`.
+
+Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 ((hr' w hw).symm.trans h2))`. Establish `hq' : (r : ℂ_[p]) - ((P.al₀ (s m)).1 x : ℂ_[p]) = (p : ℂ_[p]) ^ n * q`. Conclude with `congrArg Subtype.val hq` after adjusting the coercions. Establish `h3 : c * (Mc *ᵥ cf) m = r`. Rewrite using `[hr]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_left_comm]`. Rewrite using `[h3, P.pairV_bLie]`. Use `(congrArg norm hq').trans_le ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (pow_nonneg hp0.le _) q.2`.
+
+Establish `hcc : ‖(p : ℂ_[p])‖ ^ 2 ≤ ‖c‖`. Break down `hc2 with rfl | ⟨i, hi⟩` into its components or cases. Rewrite using `[norm_one]`. Conclude with `pow_le_one₀ hp0.le hp1.le`. Take `⟨l, hl⟩` from `exists_coord he i`.
+
+Take `⟨f, hf'⟩` from `exists_omega hπ l`. Establish `h1 : (P.omegaCmp f).1 x = 1`. Rewrite using `[P.omegaCmp_apply, hf', show tanOf (isTanAtG_lieG hπ (P.lieCmp x)) = ∑ j, a j • tanOf (he.1 j) from tan_ext hy, hl]`. Conclude with `Subtype.ext hi`. Establish `h2 : ∀ y : P.T, ‖(((P.al₀ y).1 x : ↥(intO ℂ_[p])) : ℂ_[p])‖ ≤ max ‖c‖ (‖(p : ℂ_[p])‖ ^ n)` using `fun y => by`.
+
+Use `(congrArg norm (P.pairV_bLie x y)).ge.trans (norm_pair_le hf _ s _ (le_max_of_le_left (norm_nonneg _)) (fun m => ?_) y)` and prove the remaining obligations. Establish `e1 : P.pairV (P.bLie x) (1 ⊗ₜ s m) = c * (Mc *ᵥ cf) m + -(c * (Mc *ᵥ cf) m - P.pairV (P.bLie x) (1 ⊗ₜ s m))` using `by ring`. Use `(congrArg norm e1).trans_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max ?_ ((norm_neg _).trans_le (hd m))))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hβ m)`.
+
+Establish `h3 : ∀ y, ‖(((P.al y).1 x : ↥(intO ℂ_[p])) : ℂ_[p])‖ ≤ max ‖c‖ (‖(p : ℂ_[p])‖ ^ n)` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy'`. Rewrite using `[map_add, Submodule.coe_add, Pi.add_apply, Subring.coe_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hy hy')`. Consider the case `tmul q y`. Rewrite using `[Point.al_tmul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, Subring.coe_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) q.2).trans (h2 y)`. Take `⟨y, hy⟩` from `hcok (P.omegaCmp f)`.
+
+Establish `h4` using `h3 y`. Rewrite `h4` using `[hy, Submodule.coe_smul, Pi.smul_apply, h1, smul_eq_mul, _root_.mul_one, Subring.coe_pow, Subring.coe_natCast, norm_pow]`. Conclude with `(le_max_iff.1 h4).resolve_right (not_le.2 (pow_lt_pow_right_of_lt_one₀ hp0 hp1 (by omega)))`. Use `⟨c⁻¹ • P.bLie x, Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩), fun m => ?_⟩` and prove the remaining obligations. Establish `e1 : (Mc *ᵥ cf) m - P.pairV (c⁻¹ • P.bLie x) (1 ⊗ₜ s m) = c⁻¹ * (c * (Mc *ᵥ cf) m - P.pairV (P.bLie x) (1 ⊗ₜ s m))`.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, mul_sub, inv_mul_cancel_left₀ hc0]`. Rewrite using `[e1, norm_mul, norm_inv, inv_mul_le_iff₀ (norm_pos_iff.2 hc0)]`. Use `(hd m).trans ?_` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, n = 2 + k` from `⟨n - 2, by omega⟩`. Rewrite using `[pow_add, Nat.add_sub_cancel_left]`.
+
+Conclude with `mul_le_mul_of_nonneg_right hcc (pow_nonneg hp0.le _)`.
+-/
 theorem exists_approx {p : ℕ} [Fact p.Prime] {v : Valuation ℂ_[p] ℝ≥0} [Fact ¬IsUnit (p : ↥(intO ℂ_[p]))]
     [IsAdicComplete (Ideal.span {(p : ↥(intO ℂ_[p]))}) ↥(intO ℂ_[p])] [HenselianLocalRing ↥(intO ℂ_[p])]
     [a1 : Algebra ℤ_[p] ↥(intO ℂ_[p])] [a2 : Algebra ℤ_[p] ℂ_[p]]
@@ -356,6 +467,23 @@ theorem exists_approx {p : ℕ} [Fact p.Prime] {v : Valuation ℂ_[p] ℝ≥0} [
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hpu, hcomp, hhens, hint, ⟨io⟩⟩` from `GlobalTheory.HalfGeo.IntProof.intSt p`. Use `haveI : Fact ¬IsUnit (p : ↥(intO ℂ_[p])) := ⟨hpu⟩`. Use `letI a1 : Algebra ℤ_[p] ↥(intO ℂ_[p]) := io.toAlgebra`. Use `letI a2 : Algebra ℤ_[p] ℂ_[p] := ((algebraMap ↥(intO ℂ_[p]) ℂ_[p]).comp io).toAlgebra`. Use `haveI a3 : @IsScalarTower ℤ_[p] ↥(intO ℂ_[p]) ℂ_[p] a1.toSMul Algebra.toSMul a2.toSMul := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Take `⟨v, Λ, _, _, P, π, ψ, hπ, hψ, hsq, hL⟩` from `hP`. Establish `hk : 1 ≤ p ^ n` using `one_le_ppow p n`. Establish `hp1 : ‖(p : ℂ_[p])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`. Establish `hg : P.A.g = Module.finrank ℚ E / 2 * (Dw.p + Dw.q)`. Establish `h1` using `GlobalTheory.ObjDim.smoothOfRelativeDimension Z.oF`.
+
+Establish `h2 : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Dw.p + Dw.q)) P.A.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hψ.1 h1`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique P.A.A.hom P.A.smoothDim h2 ((η[P.A.A]).left (Nonempty.some (inferInstanceAs (Nonempty (Sp ℂ_[p])))))`. Establish `hrk : Module.finrank ℤ_[p] P.T = N` using `by rw [P.hodgeTateLatticePoint_finrank_tateModule, hg, hN, GlobalTheory.ZM.finrank_int_lattice]`. Establish `hlift : ∀ m, ∃ t : P.T, (Tate.lev t n).left ≫ ψ = (s m).left` using `fun m => by`. Take `⟨y, hy⟩` from `Iso.exists_lift hψ.1 (s m)`.
+
+Establish `hy1` using `Iso.pow_eq_one_of_push hψ (T₀ := Over.mk yy) (𝟙 _) (Category.id_comp _) y (s m) ((Category.id_comp _).trans hy.symm) (hG.1 m)`. Take `⟨t, ht⟩` from `(tate_free_of_card p _ _ P.card_torsion).2.1 n y hy1`. Conclude with `⟨t, by rw [ht, hy]⟩`. Use `choose t₀ ht using hlift`. Take `⟨u₀, hu'⟩` from `exists_unit_exp P.eps (by omega) hζ`.
+
+Establish `hgram : ∀ m m', (p : ℤ_[p]) ^ n ∣ pairT P.A P.eps (t₀ m) (t₀ m') - u₀ * (B m m' : ℤ_[p])` using `fun m m' => hu' _ _ ((pow_pairT P.A P.eps (t₀ m) (t₀ m') n).trans (Iso.eq_weil P.A Z.oF.t.PP.isLB hψ hL hk (Tate.lev_pow _ n) (Tate.lev_pow _ n) (ht m) (ht m') (hG.2 m m')).symm)`. Establish `hdet : IsUnit (Matrix.of fun m m' => pairT P.A P.eps (t₀ m) (t₀ m')).det` using `isUnit_det hBJ fun m m' => (dvd_pow_self _ (by omega)).trans (hgram m m')`. Take `⟨b, hb⟩` from `exists_basis hrk (pairT P.A P.eps) t₀ hdet`. Take `rfl : ⇑b = t₀` from `funext hb`. Take `⟨-, -, hcok, -, -, -, -, h5, -, h7⟩` from `hK p ℂ_[p] v ↥(intO ℂ_[p]) Λ P`.
+
+Establish `key` using `exists_approx P hcok hπ hn χ b (fun m w' y hw' hy => by`. Take `⟨σ, hσ⟩` from `Iso.exists_push hψ.1 y`. Establish `hy1` using `Iso.pow_eq_one_of_push (P.gen_pull.comp hπ) (T₀ := Over.mk (spMap (algebraMap ↥(intO ℂ_[p]) ↥(intO ℂ_[p])) ≫ z)) (spMap (algebraMap ↥(intO ℂ_[p]) ℂ_[p])) (by`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ z = _`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
+
+Use the proof step `rfl) y w' hy.symm hw'`. Establish `h3` using `hch m w' σ hw' (by rw [← hσ, Category.assoc, hsq]; exact hy)`. Conclude with `congrArg Units.val (Iso.eq_weil P.A Z.oF.t.PP.isLB hψ hL hk hy1 (Tate.lev_pow _ n) hσ (ht m) h3)) hu hM`. Take `⟨w, hw, hw1⟩` from `key cf hβ`. Take `⟨w', hw', hw1'⟩` from `key cf' hβ'`.
+
+Rewrite `hw`, `hw'` using `[← h7]`. Conclude with `norm_dot_dual_le (fun r => (io r).2) (pairT P.A P.eps) b hdet hBJ hgram ((h5 _).1 hw _ hw') hβ hβ' (pow_le_one₀ (norm_nonneg _) hp1) (pow_le_pow_of_le_one (norm_nonneg _) hp1 (Nat.sub_le _ _)) hw1 hw1'`.
+-/
 theorem norm_dot_le_of_weil (hK : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint) {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
     {p : ℕ} [Fact p.Prime] {z : Sp ↥(intO ℂ_[p]) ⟶ Z.X} {yy : Sp ℂ_[p] ⟶ Xo.XF c} (hP : HasPoint Z.oF.t Z.m.φ z yy)
@@ -416,6 +544,21 @@ theorem norm_dot_le_of_weil (hK : GlobalTheory.IndefiniteRowSideFullHecke.HodgeT
 
 end Point
 
+/- English proof (translation)
+Introduce `hP _ _ _ _ D O _ T R _ p _ _ c b n hn v hp e y Ch inC M hv hd k hk a ha u u' hu hu'`. Substitute `hv` using the available equality. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`. Take `⟨xO, χ, hx, -, ⟨yy, s, ζ, hζ, hPt, hG, hch⟩, -, hM⟩` from `hd`. Use `set io := ioOf (resP v) e with hio`.
+
+Use `set r := -Real.log (e.w ((resP v : ℕ) : AlgebraicClosure D.what₂.LL)) / Real.log (resP v) with hr_def`. Establish `hw : ∀ z, e.w z = ‖io z‖ ^ r` using `GlobalTheory.CovHt.Link.w_eq_norm_ioOf_rpow (resP v) v (residueCharacteristic_mem v) e`. Establish `hw1 : e.w ((resP v : ℕ) : AlgebraicClosure D.what₂.LL) < 1`. Establish `e1 : ((resP v : ℕ) : AlgebraicClosure D.what₂.LL) = algebraMap D.what₂.LL _ (algebraMap (𝓞 D.what₂.LL) D.what₂.LL ((resP v : ℕ) : 𝓞 D.what₂.LL))` using `by simp`. Rewrite using `[e1, e.w_alg]`.
+
+Conclude with `(v.adicAbv_coe_lt_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 (residueCharacteristic_mem v)`. Establish `hw0 : 0 < e.w ((resP v : ℕ) : AlgebraicClosure D.what₂.LL)` using `e.w.pos (Nat.cast_ne_zero.2 hp.ne_zero)`. Establish `hlp : 0 < Real.log (resP v)` using `Real.log_pos (by exact_mod_cast hp.one_lt)`. Establish `hr : 0 < r` using `div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp`. Establish `hle : ∀ z z', e.w z ≤ e.w z' ↔ ‖io z‖ ≤ ‖io z'‖` using `fun z z' => by`.
+
+Rewrite using `[hw, hw]`. Conclude with `Real.rpow_le_rpow_iff (norm_nonneg _) (norm_nonneg _) hr`. Establish `hball : ∀ u : Fin (D.R.f * O.N) → AlgebraicClosure D.what₂.LL, supN e.w ((M a).mulVec u) ≤ 1 → ∀ m, ‖((M a).map io).mulVec (io ∘ u) m‖ ≤ 1` using `fun u hu m => by`. Establish `h1` using `(hle ((M a).mulVec u m) 1).1 (by rw [map_one]; exact (le_supN e.w _ m).trans hu)`. Rewrite `h1` using `[map_one, norm_one, RingHom.map_mulVec]`. Then use the resulting hypothesis.
+
+Establish `hcm : ∀ {m m' : ℕ} (A : Matrix (Fin m) (Fin m') (AlgebraicClosure D.what₂.LL)) (x : Fin m' → _), io ∘ A.mulVec x = (A.map io).mulVec (io ∘ x)` using `fun A x => funext fun i => RingHom.map_mulVec io A x i`. Establish `hJ : ((dualForm O.S.Dw b).map (Int.castRingHom (AlgebraicClosure D.what₂.LL))).map io = (dualForm O.S.Dw b).map (Int.castRingHom ℂ_[resP v])`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hBJ : (gram O.S.Dw b).transpose * dualForm O.S.Dw b = 1`.
+
+Rewrite using `[dualForm, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ (isUnit_det_gram _ b), Matrix.transpose_one]`. Establish `key` using `norm_dot_le_of_weil (GlobalTheory.HTKernel.hodgeTateKernelAtPoint hP) O.s.T.Z hPt ((Module.finrank_eq_card_basis b).trans (Fintype.card_fin _)).symm hn hζ hBJ hG hch (fun l => by`. Rewrite using `[hx]`. Conclude with `GlobalTheory.FactorDepth.isTanAtG_map _ (psiAt O c e y) ((frAt O c (below y.1)).tan _ _))`. Use the proof step `(hM a ha) _ _ (hball u hu) (hball u' hu')`.
+
+Rewrite using `[← map_pow, hle, RingHom.map_dotProduct, hcm, hcm, hcm, hJ, map_pow, map_natCast, norm_pow]`. Conclude with `key.trans (pow_le_pow_of_le_one (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _) (by omega))`.
+-/
 theorem isotropic_dualForm : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)
     (b : Module.Basis (Fin (D.R.f * O.N + D.R.f * O.N)) ℤ O.S.Dw.La) (n : ℕ), 3 ≤ n →

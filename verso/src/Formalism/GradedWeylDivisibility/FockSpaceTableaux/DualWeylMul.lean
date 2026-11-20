@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _` and use `⟨fun hf hg => dualWeyl_mul hf hg, one_mem_dualWeyl⟩`.
+-/
 theorem dualWeylModuleMul : DualWeylMul := fun _ _ _ _ _ _ _ _ =>
   ⟨fun hf hg => dualWeyl_mul hf hg, one_mem_dualWeyl⟩
 

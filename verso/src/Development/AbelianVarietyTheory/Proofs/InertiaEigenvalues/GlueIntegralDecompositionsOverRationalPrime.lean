@@ -17,6 +17,11 @@ namespace GlobalTheory.DescGlue
 
 open GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 L)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun la hla => ?_` and prove the remaining obligations. Use `show la.asIdeal ∣ _`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `h la hla`.
+-/
 theorem finite_of_overPrime {L : Type} [Field L] [NumberField L] (l : ℕ) (hl : l.Prime)
     (S : Set (HeightOneSpectrum (𝓞 L))) (h : OverPrime l S) : S.Finite := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 L)} ≠ 0 := by
@@ -27,6 +32,9 @@ theorem finite_of_overPrime {L : Type} [Field L] [NumberField L] (l : ℕ) (hl :
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
   exact h la hla
 
+/- English proof (translation)
+Establish `e : below φ S = ⋃ la ∈ S, {p : HeightOneSpectrum (𝓞 K) | p.asIdeal = la.asIdeal.comap (RingOfIntegers.mapRingHom φ)}`. Use extensionality with `p`. Simplify using `[below]`. Rewrite using `[e]`. Conclude with `hS.biUnion fun la _ => Set.Subsingleton.finite fun p1 h1 p2 h2 => HeightOneSpectrum.ext (h1.trans h2.symm)`.
+-/
 theorem finite_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (φ : K →+* L)
     {S : Set (HeightOneSpectrum (𝓞 L))} (hS : S.Finite) : (below φ S).Finite := by
   have e : below φ S = ⋃ la ∈ S, {p : HeightOneSpectrum (𝓞 K) |
@@ -38,6 +46,27 @@ theorem finite_below {K L : Type} [Field K] [NumberField K] [Field L] [NumberFie
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hT h1 h2 h3 h4 h5 h6 i hVS hV hFP l hl C hC hPin S hS hUn φ hφmem hKf m x ψ hψ hφ hloc`. Establish `hσ : ∀ t : T.Q.c.F, C.σ₂ (C.inc t) = T.σ₀ t` using `fun t => by`. Rewrite using `[← RingHom.comp_apply, hC.1.2.2.1]`. Establish `hfin : S.Finite` using `finite_of_overPrime l hl S hS`. Break down `S.eq_empty_or_nonempty with hS0 | hSne` into its components or cases.
+
+Substitute `hS0` using the available equality. Use `⟨m, fun a => C.σ₂ (x a), ψ, fun a => ⟨x a, rfl, fun la h => absurd h (Set.notMem_empty la)⟩, fun a => ?_, hφ⟩` and prove the remaining obligations. Take `⟨f, ⟨hf1, hf2⟩, hf⟩` from `hψ a`. Conclude with `⟨f, ⟨hf1, hf2, fun p hp => by`. Take `⟨la, hla, _⟩` from `hp`.
+
+Conclude with `absurd hla (Set.notMem_empty la)⟩, hf⟩`. Use `set S' := hfin.toFinset with hS'`. Establish `hmem : ∀ la : S', la.1 ∈ S` using `fun la => hfin.mem_toFinset.1 la.2`. Use `choose m' x' ψ' hx' hψ' hφ' using fun la : S' => hloc la.1 (hmem la)`. Use `choose a' ha' hav using fun (la : S') (a : Fin (m' la)) => hx' la a`.
+
+Establish `hset : ∀ la : S', below C.inc {la.1} = {p | p.asIdeal = la.1.asIdeal.comap (RingOfIntegers.mapRingHom C.inc)}` using `fun la => by`. Use extensionality with `p`. Simplify using `[below]`. Use `choose t ht htψ using fun (la : S') (a : Fin (m' la)) => GlobalTheory.T.exists_unitScalar_smul_coreIntegralAdelicForm_places D T hT i (κ i) (GlobalTheory.AdTh.lastPos_of_kapIs h6.kap i) (la.1.asIdeal.comap (RingOfIntegers.mapRingHom C.inc)) (Ideal.IsPrime.comap _ (hK := la.1.isPr …`. Establish `hte : ∀ (la : S') (a : Fin (m' la)), la.1.valuation _ (C.inc (t la a : T.Q.c.F)) = 1` using `fun la a => by`.
+
+Establish `e : C.inc (t la a : T.Q.c.F) = ((RingOfIntegers.mapRingHom C.inc (t la a) : 𝓞 C.d.c₂.F) : C.d.c₂.F)` using `rfl`. Rewrite using `[e]`. Conclude with `(HeightOneSpectrum.valuation_eq_one_iff_notMem la.1).mpr fun h => ht la a (Ideal.mem_comap.2 h)`. Establish `ht0 : ∀ (la : S') (a : Fin (m' la)), T.σ₀ (t la a : T.Q.c.F) ≠ 0` using `fun la a => by`. Use `(map_ne_zero _).2 (RingOfIntegers.coe_ne_zero_iff.mpr ?_)` and prove the remaining obligations.
+
+Introduce and unpack `h0`. Conclude with `ht la a (h0 ▸ Ideal.zero_mem _)`. Set `Y : S' → Finset C.d.c₂.F` to `fun la => Finset.univ.image fun a => a' la a / C.inc (t la a : T.Q.c.F)`. Establish `hY : ∀ la, ∀ y ∈ Y la, la.1.valuation _ y ≤ 1`. Introduce `la y hy`.
+
+Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[map_div₀, hte, div_one]`. Conclude with `hav la a la.1 (Set.mem_singleton _)`. Establish `hne : S'.Nonempty`. Take `⟨la, h⟩` from `hSne`.
+
+Conclude with `⟨la, hfin.mem_toFinset.2 h⟩`. Take `⟨e, he1, he⟩` from `GlobalTheory.exists_partition_one_integral_at_places _ S' hne Y hY`. Set `ι` to `Σ la : S', Fin (m' la)`. Set `ε` to `Fintype.equivFin ι`. Set `X : ι → ℂ` to `fun s => C.σ₂ (e s.1 * (a' s.1 s.2 / C.inc (t s.1 s.2 : T.Q.c.F)))`.
+
+Set `Ψ : ι → (GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ)` to `fun s => T.σ₀ (t s.1 s.2 : T.Q.c.F) • ψ' s.1 s.2`. Establish `key : ∀ s : ι, X s • Ψ s = C.σ₂ (e s.1) • (x' s.1 s.2 • ψ' s.1 s.2)`. Introduce `s`. Simplify using `only [X, Ψ, smul_smul, map_mul, map_div₀, hσ, ha']`. Use `congr 1`.
+
+Clear denominators, using `[ht0 s.1 s.2]` for the nonvanishing conditions. Use `⟨Fintype.card ι, fun k => X (ε.symm k), fun k => Ψ (ε.symm k), fun k => ⟨_, rfl, fun la'' h'' => he _ _ (Finset.mem_image_of_mem _ (Finset.mem_univ _)) la'' (hfin.mem_toFinset.2 h'')⟩, fun k => htψ _ _, ?_⟩` and prove the remaining obligations. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem glue : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T R i T.σ₀ hV → ∀ l : ℕ, l.Prime → ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IsTowerCover T i l C → C.IsPinned (wtA (κ i)) (κ i).n → ∀ S : Set (HeightOneSpectrum (𝓞 C.d.c₂.F)), GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.OverPrime l S → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.UnramAt C.inc S → ∀ φ ∈ C.intForms (wtA (κ i)) (κ i).n S, (∀ k ∈ T.Kf ((i : ℕ) + 1) T.σ₀, ∀ h, φ (h * k) = φ h) → ∀ (m : ℕ) (x : Fin m → C.d.c₂.F) (ψ : Fin m → (GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ)), (∀ a, ψ a ∈ baseForms T ((i : ℕ) + 1) T.σ₀ (wtA (κ i)) (κ i).n) → φ = ∑ a, C.σ₂ (x a) • ψ a → (∀ la ∈ S, ∃ (m' : ℕ) (x' : Fin m' → ℂ) (ψ' : Fin m' → (GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ)), (∀ a, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IntVal C.σ₂ {la} (x' a)) ∧ (∀ a, ψ' a ∈ baseInt T ((i : ℕ) + 1) T.σ₀ (wtA (κ i)) (κ i).n (GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.below C.inc {la})) ∧ φ = ∑ a, x' a • ψ' a) → ∃ (m' : ℕ) (x' : Fin m' → ℂ) (ψ' : Fin m' → (GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ)), (∀ a, GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.IntVal C.σ₂ S (x' a)) ∧ (∀ a, ψ' a ∈ baseInt T ((i : ℕ) + 1) T.σ₀ (wtA (κ i)) (κ i).n (GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.below C.inc S)) ∧ φ = ∑ a, x' a • ψ' a := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hT h1 h2 h3 h4 h5 h6 i hVS hV hFP l hl C hC hPin S hS hUn φ hφmem hKf
     m x ψ hψ hφ hloc

@@ -62,6 +62,17 @@ def FlagExt (z : admitted Y i₀) : Prop :=
 
 end Free
 
+/- English proof (translation)
+Take `⟨τ, mu, hτ⟩` from `exists_isTrans (S.sys.clauses p W hp hW).1 Z.dvd Z.le`. Set `b : 𝓞 κ.c.F →+* κ.c.V W` to `(algebraMap (𝓞 κ.c.F) κ.c.F).codRestrict (κ.c.V W) fun x => by`. Establish `hx : IsIntegral ℤ (x : κ.c.F)` using `x.2`. Establish `h₂ : IsIntegral (κ.c.V W) (x : κ.c.F)` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h₂`.
+
+Conclude with `(show ((y : κ.c.V W) : κ.c.F) = algebraMap _ _ x from hy) ▸ y.2`. Establish `hb : spMap (κ.c.V W).subtype ≫ spMap b = spMap (algebraMap (𝓞 κ.c.F) κ.c.F)` using `(Spec.map_comp _ _).symm`. Take `⟨f, t, n₁, n₂, hf, hj, -⟩` from `s.glob.2.1 p W hp hW b fun _ => rfl`. Set `k : gen s.T.Z ⟶ pullback s.Ygl.s (spMap b)` to `pullback.lift (genι s.T.Z ≫ s.T.b) (genStr s.T.Z ≫ spMap (κ.c.V W).subtype) (by`. Rewrite using `[Category.assoc, s.T.b_s, Category.assoc, hb]`.
+
+Conclude with `pullback.condition)`. Establish `hk : k ≫ pullback.fst _ _ = genι s.T.Z ≫ s.T.b` using `pullback.lift_fst _ _ _`. Take `⟨tg, ⟨m⟩⟩` from `exists_sab k t`. Take `⟨m₂, -⟩` from `GlobalTheory.LevelCover.sab_comp m n₂ rfl`. Take `⟨n, -⟩` from `GlobalTheory.LevelCover.sab_comp m n₁ hk`.
+
+Take `⟨m₁, -⟩` from `GlobalTheory.LevelCover.sab_cancel s.T.pull n (genι s.T.Z) rfl`. Use `⟨⟨τ, mu, hτ, k ≫ f, tg, m₁, m₂, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Use `hj _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hk, ← Category.assoc]`.
+
+Conclude with `s.T.j_b`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (k ≫ ·) hf).trans (pullback.lift_snd _ _ _))`.
+-/
 theorem nonempty_link {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) {p : ℕ} (hp : p.Prime)
     {W : ValuationSubring ℂ} (hW : (p : ℂ) ∈ W.nonunits)
     (Z : LocM.Mdl (S.sys.Y p W hp hW) ⟨κ.l, κ.c, κ.good p hp⟩) : Nonempty (Link Z s.T.Z) := by

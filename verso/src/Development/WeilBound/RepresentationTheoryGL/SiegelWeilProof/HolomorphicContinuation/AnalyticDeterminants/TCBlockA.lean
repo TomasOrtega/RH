@@ -38,8 +38,14 @@ def bdL (j : ℕ) (c c' : ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ] Matrix (Fi
         simp only [bdiag, Matrix.smul_apply, RingHom.id_apply, smul_eq_mul]
         split_ifs <;> ring }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bdL_apply (j : ℕ) (c c' : ℂ) (t : Matrix (Fin n) (Fin n) ℂ) : bdL j c c' t = bdiag j c c' t := rfl
 
+/- English proof (translation)
+Simplify using `[blkB]`.
+-/
 theorem mem_blkB (j : ℕ) (r : Fin n) : r ∈ blkB (n := n) j ↔ r ∉ blkA (n := n) j := by
   simp [blkB]
 

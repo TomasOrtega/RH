@@ -10,6 +10,11 @@ open Formalism.L2.Host
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Establish `hval : ∀ k : L, Valued.v (algebraMap L (v.adicCompletion L) k) = v.valuation L k` using `fun k => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k`. Use `h (atFin v y) ((hval _).trans h2) ?_` and prove the remaining obligations. Establish `: ((atFin v y : (v.adicCompletion L)ˣ) : v.adicCompletion L) - 1 = algebraMap L (v.adicCompletion L) ((y : L) - 1)`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, hval]`. Simplify using `using h1`.
+-/
 theorem locK_eq_one_of_tame (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.TameAt v) (y : Lˣ)
     (h2 : v.valuation L (y : L) = 1) (h1 : v.valuation L ((y : L) - 1) ≤ WithZero.exp (-1 : ℤ)) :
     χ.locK v y = 1 := by
@@ -22,6 +27,11 @@ theorem locK_eq_one_of_tame (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h :
   rw [this, hval]
   simpa using h1
 
+/- English proof (translation)
+Establish `hfin : Finite (𝓞 L ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Establish `hmax` using `v.isMaximal`. Use `⟨Nat.card (𝓞 L ⧸ v.asIdeal)ˣ, Nat.card_pos, fun r hr => ?_⟩` and prove the remaining obligations. Set `_` to `Ideal.Quotient.field v.asIdeal`. Establish `h0 : Ideal.Quotient.mk v.asIdeal r ≠ 0` using `fun h => hr (Ideal.Quotient.eq_zero_iff_mem.1 h)`.
+
+Establish `h1` using `congrArg Units.val (pow_card_eq_one' (x := Units.mk0 _ h0))`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one, sub_eq_zero]`. Rewrite `h1` using `[Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_sub_one_mem (v : HeightOneSpectrum (𝓞 L)) :
     ∃ m : ℕ, 0 < m ∧ ∀ r : 𝓞 L, r ∉ v.asIdeal → r ^ m - 1 ∈ v.asIdeal := by
   have hfin : Finite (𝓞 L ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot
@@ -33,6 +43,15 @@ theorem exists_pow_sub_one_mem (v : HeightOneSpectrum (𝓞 L)) :
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, map_one, sub_eq_zero]
   rwa [Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_one] at h1
 
+/- English proof (translation)
+Take `⟨m, hm, H⟩` from `exists_pow_sub_one_mem v`. Use `⟨m, hm, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨r, s, hs, hrs⟩` from `(intAt_iff (P := v) (u : L)).2 hu.le`. Establish `hs1 : v.valuation L (algebraMap (𝓞 L) L s) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).2 hs`. Establish `hr1 : v.valuation L (algebraMap (𝓞 L) L r) = 1`.
+
+Rewrite using `[← hrs, map_mul, hs1, hu, one_mul]`. Establish `hr : r ∉ v.asIdeal` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem v).1 hr1`. Establish `hmem : r ^ m - s ^ m ∈ v.asIdeal`. Use `v.asIdeal.sub_mem (H r hr) (H s hs)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Establish `hle : v.valuation L (algebraMap (𝓞 L) L (r ^ m - s ^ m)) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Simplify `hmem)` using `using (v.intValuation_le_pow_iff_mem (r ^ m - s ^ m) 1).2 (by simpa`. Rewrite using `[← map_pow]`. Use `locK_eq_one_of_tame χ h _ (by simp [hu]) ?_` and prove the remaining obligations.
+
+Establish `e : algebraMap (𝓞 L) L (r ^ m - s ^ m) = (algebraMap (𝓞 L) L s) ^ m * (((u ^ m : Lˣ) : L) - 1)`. Rewrite using `[map_sub, map_pow, map_pow, ← hrs, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hle` using `[e, map_mul, map_pow, hs1, one_pow, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_locK (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.TameAt v) :
     ∃ m : ℕ, 0 < m ∧ ∀ u : Lˣ, v.valuation L (u : L) = 1 → χ.locK v u ^ m = 1 := by
   obtain ⟨m, hm, H⟩ := exists_pow_sub_one_mem v
@@ -54,6 +73,15 @@ theorem exists_pow_locK (χ : HChar L) {v : HeightOneSpectrum (𝓞 L)} (h : χ.
     rw [map_sub, map_pow, map_pow, ← hrs, Units.val_pow_eq_pow_val]; ring
   rwa [e, map_mul, map_pow, hs1, one_pow, one_mul] at hle
 
+/- English proof (translation)
+Establish `hP : P.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 L))` using `mem_nonZeroDivisors_of_ne_zero P.ne_bot`. Establish `h1 : ClassGroup.mk0 (⟨P.asIdeal, hP⟩ ^ Nat.card (ClassGroup (𝓞 L))) = 1`. Rewrite using `[map_pow, pow_card_eq_one']`. Take `⟨a, ha⟩` from `(ClassGroup.mk0_eq_one_iff (pow_mem hP _)).1 h1`. Establish `ha' : P.asIdeal ^ Nat.card (ClassGroup (𝓞 L)) = Ideal.span {a}` using `ha`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `pow_ne_zero _ P.ne_bot (by simpa using ha')`. Use `⟨Nat.card (ClassGroup (𝓞 L)), Units.mk0 (algebraMap (𝓞 L) L a) (by simpa using ha0), Nat.card_pos, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, HeightOneSpectrum.valuation_of_algebraMap, P.intValuation_if_neg ha0, ← ha', Associates.mk_pow, Associates.count_pow (by simpa using P.ne_bot) P.associates_irreducible, Associates.count_self P.associates_irreducible, mul_one]`.
+
+Introduce `Q hQ`. Rewrite using `[Units.val_mk0, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Introduce `hm`. Establish `h2 : P.asIdeal ^ Nat.card (ClassGroup (𝓞 L)) ≤ Q.asIdeal`. Rewrite using `[ha', Ideal.span_singleton_le_iff_mem]`.
+
+Conclude with `hm`. Establish `h3` using `Q.isPrime.le_of_pow_le h2`. Conclude with `hQ (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h3).symm)`.
+-/
 theorem exists_gen (P : HeightOneSpectrum (𝓞 L)) : ∃ (h : ℕ) (a : Lˣ), 0 < h ∧
     P.valuation L (a : L) = WithZero.exp (-(h : ℤ)) ∧
     ∀ Q : HeightOneSpectrum (𝓞 L), Q ≠ P → Q.valuation L (a : L) = 1 := by
@@ -77,6 +105,23 @@ theorem exists_gen (P : HeightOneSpectrum (𝓞 L)) : ∃ (h : ℕ) (a : Lˣ), 0
     have h3 := Q.isPrime.le_of_pow_le h2
     exact hQ (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h3).symm)
 
+/- English proof (translation)
+Introduce `E _ _ χ S hpr hunr htame P k`. Take `⟨h, a, hh, haP, haQ⟩` from `exists_gen P`. Use `choose m hm hmu using fun v => exists_pow_locK χ (htame v)`. Use `set M' := ∏ v ∈ insert P S, m v with hM'`. Establish `hkill : ∀ v ∈ insert P S, ∀ u : Eˣ, v.valuation E (u : E) = 1 → χ.locK v (u ^ M') = 1`.
+
+Introduce `v hv u hu`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem m hv`. Rewrite using `[map_pow, hM', hc, pow_mul, hmu v u hu, one_pow]`. Establish `hk0 : P.valuation E (k : E) ≠ 0` using `by simp`. Use `set z0 : Eˣ := a ^ ordF P k with hz0`.
+
+Establish `hz0P : P.valuation E (z0 : E) = P.valuation E (k : E) ^ h`. Rewrite using `[hz0, Units.val_zpow_eq_zpow_val, map_zpow₀, haP, ← WithZero.exp_log hk0, ← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ordF]`. Use `congr 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz0Q : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q.valuation E (z0 : E) = 1` using `fun Q hQ => by`. Rewrite using `[hz0, Units.val_zpow_eq_zpow_val, map_zpow₀, haQ Q hQ, one_zpow]`. Establish `hzQ : ∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q.valuation E ((z0 ^ M' : Eˣ) : E) = 1` using `fun Q hQ => by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hz0Q Q hQ, one_pow]`. Use `⟨h * M', z0 ^ M', Nat.mul_pos hh (Finset.prod_pos fun v _ => hm v), ?_, hzQ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hz0P, pow_mul]`. Establish `H` using `hpr (insert P S) (fun v hv => hunr v fun h => hv (Finset.mem_insert_of_mem h)) (z0 ^ M')`. Establish `e1 : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ insert P S), χ.val v ^ ordF v (z0 ^ M')) = 1`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ insert P S`.
+
+Rewrite using `[finprod_eq_if, if_neg (not_not.2 hv)]`. Rewrite using `[finprod_eq_if, if_pos hv]`. Establish `: v ≠ P` using `fun h => hv (h ▸ Finset.mem_insert_self _ _)`. Rewrite using `[ordF, hzQ v this, WithZero.log_one, neg_zero, zpow_zero]`. Establish `e2 : ∏ v ∈ insert P S, χ.locK v (z0 ^ M') = χ.locK P (z0 ^ M')` using `Finset.prod_eq_single P (fun v hv hne => hkill v hv z0 (hz0Q v hne)) (fun h => absurd (Finset.mem_insert_self _ _) h)`.
+
+Establish `e3 : χ.locK P (z0 ^ M') = χ.locK P k ^ (h * M')`. Use `hkill P (Finset.mem_insert_self _ _) (z0 / k ^ h) (by` as an intermediate fact. Rewrite using `[Units.val_div_eq_div_val, map_div₀, hz0P, Units.val_pow_eq_pow_val, map_pow, div_self (pow_ne_zero _ hk0)])`. Rewrite `this` using `[div_pow, map_div, div_eq_one, ← pow_mul, map_pow (χ.locK P) k]`. Then use the resulting hypothesis. Rewrite `H` using `[e1, e2, e3, mul_one, mul_comm]`.
+
+Conclude with `H`.
+-/
 theorem exists_pow_locK_mul_inf : ∀ (E : Type) [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (S : Finset (HeightOneSpectrum (𝓞 E))), χ.ProductRule → (∀ v, v ∉ S → χ.UnrAt v) → (∀ v, χ.TameAt v) → ∀ (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ), ∃ (M : ℕ) (z : Eˣ), 0 < M ∧ P.valuation E (z : E) = P.valuation E (k : E) ^ M ∧ (∀ Q : HeightOneSpectrum (𝓞 E), Q ≠ P → Q.valuation E (z : E) = 1) ∧ χ.locK P k ^ M * χ.inf z = 1 := by
   intro E _ _ χ S hpr hunr htame P k
   classical

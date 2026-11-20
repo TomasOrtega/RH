@@ -64,12 +64,18 @@ def CarUAlt : Prop :=
       (σ : SmIrr (GL (Fin a) (w.adicCompletion E))), π.IsLocComp w σ →
       ∀ rc : IrrGL (w.adicCompletion E) → WD h, _root_.UpperTheory.Zero.LLC.IsRecT h rc → NcW (rc (algNorm σ)) →
         Ab (wdAt P ι Bw h hj (r.comp (Dec (F := E) A).subtype)) (rc (algNorm σ))
+/- English proof (translation)
+The claim follows from `H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)`.
+-/
 theorem CuspUAlt.of_isCsd (H : _root_.UpperTheory.GalS.CuspUAlt) {E : Type} (Ω : Type) [Field E]
     [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
     {a : ℕ} (ha : 1 ≤ a) {π : CuspSub E a} (hr : (CG.mk π).IsRegAlg) (hc : π.IsCsd) :
     ∃ (r : G E Ω →* GL (Fin a) (Qbar l)) (wt : ℤ) (HT : (E →+* Qbar l) → Multiset ℤ),
       _root_.UpperTheory.GalS.IsGalUAlt π (quadChar E ^ a) ι r wt HT :=
   H E Ω l ι a ha π _ hr (isPolarized_of_isCsd hc)
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.GalOfCusp.rec_algNorm_alt hrc σ ▸ H.away w hl A h rc hrc σ hσ`.
+-/
 theorem IsGalUAlt.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
     (H : _root_.UpperTheory.GalS.IsGalUAlt π χ ι r wt HT) {w : HeightOneSpectrum (𝓞 E)}
@@ -78,6 +84,9 @@ theorem IsGalUAlt.aw {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι
     (hσ : π.IsLocComp w σ) :
     Aw (wdOf h hl ι r) ((rc (IrrGL.of σ.ρ σ.smooth σ.irred)).lpTw ((1 - (a : ℝ)) / 2)) :=
   _root_.GlobalTheory.GalOfCusp.rec_algNorm_alt hrc σ ▸ H.away w hl A h rc hrc σ hσ
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem mergeP'_alt (_ : GlobalTheory.Published.AutomorphicFormsFiniteGL) (_ : _root_.UpperTheory.Zero.LLC.RecTExists) (_ : _root_.UpperTheory.GalS.CuspUAlt) (h : _root_.UpperTheory.GalS.CarUAlt)
     (_ : GlobalTheory.Published.RegularAlgebraicPurity) : _root_.UpperTheory.GalS.CarUAlt := h
 end UpperTheory.GalS

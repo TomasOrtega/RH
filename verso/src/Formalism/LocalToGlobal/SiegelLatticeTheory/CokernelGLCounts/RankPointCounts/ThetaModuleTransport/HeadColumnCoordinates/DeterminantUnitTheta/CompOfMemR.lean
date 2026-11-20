@@ -9,11 +9,23 @@ namespace Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Rewrite using `[L.O_def]`. Use `⟨Polynomial.X ^ 2 - Polynomial.X, Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; norm_num), ?_⟩` and prove the remaining obligations. Simplify using `[Polynomial.eval₂_sub, sq, hx]`.
+-/
 theorem idem_mem_O (L : LocE F E) {x : E} (hx : x * x = x) : x ∈ L.O := by
   rw [L.O_def]
   refine ⟨Polynomial.X ^ 2 - Polynomial.X, Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; norm_num), ?_⟩
   simp [Polynomial.eval₂_sub, sq, hx]
 
+/- English proof (translation)
+Rewrite using `[M.L.O_def]`. Establish `hx : x = ((g.e x).1 : F) • g.e.symm (1, 0) + ((g.e x).2 : F) • g.e.symm (0, 1)`. Apply `g.e.injective` to reduce the goal to its premises. Simplify using `only [map_add, map_smul, AlgEquiv.apply_symm_apply, Prod.smul_mk, smul_eq_mul, mul_one, mul_zero, Prod.mk_add_mk, add_zero, zero_add]`. Establish `hid : ∀ y : F × F, y * y = y → IsIntegral 𝒪[F] (g.e.symm y)`.
+
+Introduce `y hy`. Use `⟨Polynomial.X ^ 2 - Polynomial.X, Polynomial.monic_X_pow_sub (by simp), ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X]`. Rewrite using `[sq, ← map_mul, hy, sub_self]`. Establish `hsc : ∀ (c : F) (hc : c ∈ 𝒪[F]) (y : E), IsIntegral 𝒪[F] y → IsIntegral 𝒪[F] (c • y)`.
+
+Introduce `c hc y hy`. Establish `e : c • y = algebraMap 𝒪[F] E ⟨c, hc⟩ * y`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `(isIntegral_algebraMap).mul hy`. Rewrite using `[hx]`. Conclude with `(hsc _ h1 _ (hid (1, 0) (by simp))).add (hsc _ h2 _ (hid (0, 1) (by simp)))`.
+-/
 theorem mem_O_of_comp {M : Model F E} (g : SplitG M.L) (x : E) (h1 : (g.e x).1 ∈ 𝒪[F])
     (h2 : (g.e x).2 ∈ 𝒪[F]) : x ∈ M.L.O := by
   rw [M.L.O_def]
@@ -36,6 +48,15 @@ theorem mem_O_of_comp {M : Model F E} (g : SplitG M.L) (x : E) (h1 : (g.e x).1 �
   rw [hx]
   exact (hsc _ h1 _ (hid (1, 0) (by simp))).add (hsc _ h2 _ (hid (0, 1) (by simp)))
 
+/- English proof (translation)
+Unfold `Model.R at hx`. Simplify using `only [hs, Subring.mem_comap, Subring.mem_map] at hx`. Take `⟨p, hp, hpe⟩` from `hx`. Establish `e1 : (g.e x).1 = (p.1 : F)`. Use `congrArg Prod.fst hpe` as an intermediate fact.
+
+Simplify using `using this.symm`. Establish `e2 : (g.e x).2 = (p.2 : F)`. Use `congrArg Prod.snd hpe` as an intermediate fact. Simplify using `using this.symm`. Rewrite `hp` using `[RingHom.mem_eqLocus]`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_fst, RingHom.coe_snd] at hp`. Rewrite `hp` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hp`. Use `⟨by rw [e1]; exact p.1.2, by rw [e2]; exact p.2.2, c, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, mul_comm]`.
+
+Conclude with `hc.symm` after adjusting the coercions.
+-/
 theorem comp_of_mem_R {M : Model F E} {g : SplitG M.L} (hs : M.split = some g) {x : E} (hx : x ∈ M.R) :
     (g.e x).1 ∈ 𝒪[F] ∧ (g.e x).2 ∈ 𝒪[F] ∧ ∃ c : 𝒪[F], (g.e x).1 - (g.e x).2 = (g.q : F) * c := by
   unfold Model.R at hx
@@ -58,6 +79,9 @@ theorem comp_of_mem_R {M : Model F E} {g : SplitG M.L} (hs : M.split = some g) {
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 variable {r : ℕ}
 
+/- English proof (translation)
+Unfold `HermSp.ZZplusOf`. Rewrite using `[hs]`. Simplify using `only [Matrix.of_apply]`. Apply the tactic sequence `split_ifs with h <;> simp [map_sub, h]`.
+-/
 theorem zz_comp {g : SplitG M.L} (hs : M.split = some g) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (T T' : F) (a b : Fin (r + 1)) :
     g.e (HermSp.ZZplusOf M Z T T' a b) =
@@ -68,6 +92,59 @@ theorem zz_comp {g : SplitG M.L} (hs : M.split = some g) (Z : Matrix (Fin (r + 1
   simp only [Matrix.of_apply]
   split_ifs with h <;> simp [map_sub, h]
 
+/- English proof (translation)
+Establish `hq` using `q_ne g`. Take `⟨c0, hc0⟩` from `hTT`. Establish `hqO : (g.q : F) ∈ 𝒪[F]` using `g.q.2`. Establish `hR'` using `fun a b => (zz_comp hg.1 (H.Zhat t.f t.f') t.T t.T' a b) ▸ comp_of_mem_R hg.1 (hR a b)`. Establish `ecj : ∀ x : E, g.e ((M.L.cj : E →+* E) x) = (g.e x).swap` using `g.e_cj`.
+
+Establish `eal : ∀ x : F, g.e (algebraMap F E x) = (x, x)` using `fun x => by`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression. Establish `hgen : ∀ i j, H.h (H.MMfam t i) (H.MMfam t j) ∈ M.L.O`. Introduce `i j`.
+
+Use `congrFun (congrFun (gramH_eqG H hg) i) j` as an intermediate fact. Express the relevant statement in the definitionally equal form `H.h (H.MMfam t i) (H.MMfam t j) = _ at this`. Rewrite using `[this]`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [gramG, Matrix.fromBlocks_apply₁₁, Matrix.of_apply, cor] split_ifs`.
+
+Conclude with `M.L.O.neg_mem (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O M.L ⟨t.T, hT⟩)`. Conclude with `M.L.O.zero_mem`. Simplify using `only [gramG, Matrix.fromBlocks_apply₁₂, Matrix.of_apply]`. Take `⟨-, A2, -⟩` from `hR' b a`. Take `⟨A1, -, -⟩` from `hR' a b`.
+
+Apply `mem_O_of_comp g` to reduce the goal to its premises. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [cor, and_self, if_true] at A2 ⊢`. Simplify using `only [map_mul, map_add, ecj, eal, Prod.fst_mul, Prod.fst_add, Prod.fst_swap]`.
+
+Use `add_mem (neg_mem A2) (mul_mem hqO c0.2) using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take the linear combination `hc0`. Establish `h' : ¬(b = Fin.last r ∧ a = Fin.last r)` using `fun h'' => h ⟨h''.2, h''.1⟩`. Simplify using `only [cor, h, h', if_false] at A2 ⊢`.
+
+Simplify using `only [map_mul, map_add, ecj, eal, Prod.fst_mul, Prod.fst_add, Prod.fst_swap, map_zero, Prod.fst_zero, add_zero]`. Use `neg_mem A2 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`.
+
+Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [cor, and_self, if_true] at A1 ⊢`. Simplify using `only [map_mul, map_add, ecj, eal, Prod.snd_mul, Prod.snd_add, Prod.snd_swap]`. Use `A1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cor, h, if_false] at A1 ⊢`. Simplify using `only [map_mul, map_add, ecj, eal, Prod.snd_mul, Prod.snd_add, Prod.snd_swap, map_zero, Prod.snd_zero, add_zero]`. Use `A1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [gramG, Matrix.fromBlocks_apply₂₁, Matrix.of_apply]`. Take `⟨-, A2, -⟩` from `hR' a b`. Take `⟨A1, -, -⟩` from `hR' b a`. Apply `mem_O_of_comp g` to reduce the goal to its premises.
+
+Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [cor, and_self, if_true] at A1 ⊢`. Simplify using `only [map_mul, map_add, eal, Prod.fst_mul, Prod.fst_add]`. Use `A1 using 1` and compare the differences between its conclusion and the goal.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬(b = Fin.last r ∧ a = Fin.last r)` using `fun h'' => h ⟨h''.2, h''.1⟩`. Simplify using `only [cor, h, h', if_false] at A1 ⊢`. Simplify using `only [map_mul, map_add, eal, Prod.fst_mul, Prod.fst_add, map_zero, Prod.fst_zero, add_zero]`.
+
+Use `A1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Take `⟨rfl, rfl⟩` from `h`.
+
+Simplify using `only [cor, and_self, if_true] at A2 ⊢`. Simplify using `only [map_mul, map_add, eal, Prod.snd_mul, Prod.snd_add]`. Use `add_mem (neg_mem A2) (mul_mem hqO c0.2) using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take the linear combination `hc0`.
+
+Simplify using `only [cor, h, if_false] at A2 ⊢`. Simplify using `only [map_mul, map_add, eal, Prod.snd_mul, Prod.snd_add, map_zero, Prod.snd_zero, add_zero]`. Use `neg_mem A2 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [gramG, Matrix.fromBlocks_apply₂₂, Matrix.of_apply]`. Take `⟨-, -, c, A3⟩` from `hR' b a`. Take `⟨-, -, c', A3'⟩` from `hR' a b`. Apply `mem_O_of_comp g` to reduce the goal to its premises. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`.
+
+Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [cor, and_self, if_true] at A3 ⊢`. Simplify using `only [map_mul, map_add, map_sub, map_neg, ecj, eal, Prod.fst_mul, Prod.fst_add, Prod.fst_sub, Prod.fst_neg, Prod.fst_swap]`. Use `neg_mem c.2 using 1` and compare the differences between its conclusion and the goal. Clear denominators, using `at A3 ⊢` for the nonvanishing conditions.
+
+Apply the tactic sequence `first | linear_combination A3 | linear_combination -A3 | linear_combination (g.q : F) * A3 | linear_combination -(g.q : F) * A3`. Establish `h' : ¬(b = Fin.last r ∧ a = Fin.last r)` using `fun h'' => h ⟨h''.2, h''.1⟩`. Simplify using `only [cor, h, h', if_false] at A3 ⊢`. Simplify using `only [map_mul, map_add, map_sub, map_neg, ecj, eal, Prod.fst_mul, Prod.fst_add, Prod.fst_sub, Prod.fst_neg, Prod.fst_swap, map_zero, Prod.fst_zero, sub_zero]`. Use `neg_mem c.2 using 1` and compare the differences between its conclusion and the goal.
+
+Clear denominators, using `at A3 ⊢` for the nonvanishing conditions. Apply the tactic sequence `first | linear_combination A3 | linear_combination -A3 | linear_combination (g.q : F) * A3 | linear_combination -(g.q : F) * A3`. Distinguish the cases in `h : a = Fin.last r ∧ b = Fin.last r`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [cor, and_self, if_true] at A3' ⊢`.
+
+Simplify using `only [map_mul, map_add, map_sub, map_neg, ecj, eal, Prod.snd_mul, Prod.snd_add, Prod.snd_sub, Prod.snd_neg, Prod.snd_swap]`. Use `neg_mem c'.2 using 1` and compare the differences between its conclusion and the goal. Clear denominators, using `at A3' ⊢` for the nonvanishing conditions. Apply the tactic sequence `first | linear_combination A3' | linear_combination -A3' | linear_combination (g.q : F) * A3' | linear_combination -(g.q : F) * A3'`. Simplify using `only [cor, h, if_false] at A3' ⊢`.
+
+Simplify using `only [map_mul, map_add, map_sub, map_neg, ecj, eal, Prod.snd_mul, Prod.snd_add, Prod.snd_sub, Prod.snd_neg, Prod.snd_swap, map_zero, Prod.snd_zero, sub_zero]`. Use `neg_mem c'.2 using 1` and compare the differences between its conclusion and the goal. Clear denominators, using `at A3' ⊢` for the nonvanishing conditions. Apply the tactic sequence `first | linear_combination A3' | linear_combination -A3' | linear_combination (g.q : F) * A3' | linear_combination -(g.q : F) * A3'`. Establish `h1 : ∀ i, ∀ m' ∈ MMo H t, H.h (H.MMfam t i) m' ∈ M.L.O`.
+
+Introduce `i m' hm'`. Unfold `MMo at hm'`. Proceed by induction on `hm' using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `hgen i j`.
+
+Consider the case `zero => rw [h_zero_right]`. Conclude with `M.L.O.zero_mem`. Consider the case `add x y _ _ hx hy => rw [h_add_right]`. Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[Subring.smul_def, h_smul_right]`. Conclude with `M.L.O.mul_mem (cj_mem_O M.L a.2) hx`. Introduce `m hm m' hm'`. Unfold `MMo at hm`. Proceed by induction on `hm using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `h1 i m' hm'`. Consider the case `zero => rw [H.h_zero_left]`. Conclude with `M.L.O.zero_mem`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`.
+
+Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul a x _ hx => rw [Subring.smul_def, H.h_smul_left]`. Conclude with `M.L.O.mul_mem a.2 hx`.
+-/
 theorem mmInt_G {g : SplitG M.L} {t : Term V M r} (hg : GoodG H g t) (hT : t.T ∈ 𝒪[F])
     (hTT : ∃ c : 𝒪[F], t.T - t.T' = (g.q : F) ^ 2 * c)
     (hR : ∀ a b, HermSp.ZZplusOf M (H.Zhat t.f t.f') t.T t.T' a b ∈ M.R) : MMInt H t := by

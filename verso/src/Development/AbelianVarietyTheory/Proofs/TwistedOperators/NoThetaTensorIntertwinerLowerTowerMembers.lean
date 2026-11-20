@@ -20,6 +20,9 @@ namespace GlobalTheory.LowerTower
 
 open GlobalTheory.SmallerSource GlobalTheory.FockAlg
 
+/- English proof (translation)
+Rewrite using `[List.append_assoc (al ++ be)]`. Consider the cases of `a with`. Consider the case `inl i => exact List.mem_append_left _ (GlobalTheory.LowestTypes.getD_mem (List.length_append) i)`. Consider the case `inr j => exact List.mem_append_right _ (GlobalTheory.LowestTypes.getD_mem (List.length_append) j)`.
+-/
 theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.length + de.length)) :
     lamA al be ga de a ∈ al ++ be ++ ga ++ de := by
   rw [List.append_assoc (al ++ be)]
@@ -27,6 +30,15 @@ theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.le
   | inl i => exact List.mem_append_left _ (GlobalTheory.LowestTypes.getD_mem (List.length_append) i)
   | inr j => exact List.mem_append_right _ (GlobalTheory.LowestTypes.getD_mem (List.length_append) j)
 
+/- English proof (translation)
+Introduce `MM f hf`. Assume the negation of the conclusion as `hne`. Take `⟨hadm, hirr⟩` from `discrete_series_gk_admissible_irreducible X h5 hpq lam`. Take `⟨hone, -, hcone⟩` from `hD p q lam hlam`. Establish `hex : ∃ v, IsHW (X.ds p q lam).HK.act (blattner lam) v`.
+
+Establish `hnb : hwSub (X.ds p q lam).HK.act (blattner lam) ≠ ⊥`. Introduce `hb`. Rewrite `hone` using `[hb, finrank_bot]`. Conclude with `zero_ne_one hone`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hnb`.
+
+Conclude with `⟨v, hv0, hv⟩`. Establish `hflow` using `GlobalTheory.T.degW_blattner_le_of_blattnerCone p q (X.ds p q lam).HK lam (cPair r s) θ hcone hsign`. Take `⟨⟨μ, P, hPJ, hP1, hP2, -⟩, -⟩` from `GlobalTheory.T.exists_jointHarm_highestWeight_and_map_mem_genSub p q r s (X.ds p q lam).HK MM f hirr hadm hf hne (blattner lam) hex hflow`. Establish `hbot` using `((GlobalTheory.JointHarm.fock_polynomials X p q r s).2.2.2.2.1 (blattner lam) μ).2 (hno μ)`. Establish `hmem : P ∈ hwSub (X.fock p q r s).act1 (blattner lam) ⊓ hwSub (X.fock p q r s).act2 μ ⊓ Submodule.span ℂ (X.fock p q r s).J` using `⟨⟨hP1.2, hP2.2⟩, Submodule.subset_span hPJ⟩`.
+
+Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `hP1.1 hmem`.
+-/
 theorem tensNo_first (X : ProvA) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
     {p q r s : ℕ} (hpq : 1 ≤ p + q) (lam : Ix p q → ℚ) (hlam : IsParam lam) (θ : ℚ)
     (hsign : ∀ a, (θ < lam a → 0 ≤ shiftNu (cPair r s) (blattner lam) a) ∧
@@ -54,6 +66,17 @@ theorem tensNo_first (X : ProvA) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
   rw [hbot, Submodule.mem_bot] at hmem
   exact hP1.1 hmem
 
+/- English proof (translation)
+Introduce `MM f hf`. Use `set c := TensorProduct.comm ℂ (X.ds r s lam).HK.V MM.V with hc`. Establish `hcm : ∀ (A : Module.End ℂ (X.ds r s lam).HK.V) (B : Module.End ℂ MM.V) x, c (TensorProduct.map A B x) = TensorProduct.map B A (c x)`. Introduce `A B x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x y => simp [hc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hg : IsIntw (X.fock p q r s) MM (X.ds r s lam).HK ((c : _ →ₗ[ℂ] _) ∘ₗ f)`. Use `⟨fun Z => LinearMap.ext fun P => ?_, fun Z => LinearMap.ext fun P => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun (hf.2 Z) P` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Express the relevant statement in the definitionally equal form `c (f (fockAct1 p q r s Z P)) = TensorProduct.map _ _ (c (f P))`. Rewrite using `[this, hcm]`. Use `LinearMap.congr_fun (hf.1 Z) P` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply] at this`. Express the relevant statement in the definitionally equal form `c (f (fockAct2 p q r s Z P)) = TensorProduct.map _ _ (c (f P))`. Rewrite using `[this, hcm]`. Establish `h0` using `intw_eq_zero X (GlobalTheory.JointHarm.fock_polynomials X) hD h5 hrs lam hlam θ hsign hno MM _ hg`. Use `LinearMap.ext fun P => ?_` and prove the remaining obligations.
+
+Establish `: c (f P) = 0` using `LinearMap.congr_fun h0 P`. Conclude with `c.map_eq_zero_iff.1 this`.
+-/
 theorem tensNo_second (X : ProvA) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
     {p q r s : ℕ} (hrs : 1 ≤ r + s) (lam : Ix r s → ℚ) (hlam : IsParam lam) (θ : ℚ)
     (hsign : ∀ a, (θ < lam a → 0 ≤ shiftNu (cPair p q) (blattner lam) a) ∧
@@ -84,6 +107,15 @@ theorem tensNo_second (X : ProvA) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
   have : c (f P) = 0 := LinearMap.congr_fun h0 P
   exact c.map_eq_zero_iff.1 this
 
+/- English proof (translation)
+Introduce `X hD h5 t al be ga de hA i hi`. Establish `ht : 1 ≤ t` using `hA.1`. Establish `hn : 1 ≤ al.length + be.length + ga.length + de.length` using `hA.2.1`. Establish `ht0 : (0 : ℚ) ≤ t` using `Nat.cast_nonneg t`. Take `⟨-, hpar, hpar', hsign, hsign'⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hA`.
+
+Take `⟨hno, -, hno'⟩` from `GlobalTheory.T.lowestType_not_jointShape_smaller_pairs t al be ga de hA i hi`. Use `⟨fun hr hs => ?_, fun hbig hp hq => ?_⟩` and prove the remaining obligations. Use `tensNo_first X hD h5 (by omega) _ hpar 0 ?_ (hno hr hs)` and prove the remaining obligations. Rewrite using `[cPair_sub hr hs]`. Use `fun a => ⟨(hsign a).1, fun h => (hsign a).2 (lt_of_le_of_ne h fun h0 => ?_)⟩` and prove the remaining obligations.
+
+Use `hA.2.2.2.2.2.2.2.2.2.2 _ (lamA_mem al be ga de a)` as an intermediate fact. Rewrite `this` using `[h0, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `tensNo_second X hD h5 (by omega) _ hpar' ((t : ℚ) / 2) ?_ (hno' (.inl ?_) hp hq).1` and prove the remaining obligations. Rewrite using `[cPair_sub hp hq]`.
+
+Conclude with `hsign'`. Introduce and unpack `⟨a, ha⟩`. Use `hbig _ (lamA_mem al be ga de a)` as an intermediate fact. Rewrite `this` using `[ha, abs_of_nonneg (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem no_map_lower : ∀ (X : ProvA), DiscreteSeriesBlattner X → admQ5 X → ∀ (t : ℕ) (al be ga de : List ℚ), HypA t al be ga de → ∀ i : ℕ, 1 ≤ i → (i ≤ al.length + de.length + t → i ≤ ga.length + be.length → TensNo (fockAct1 _ _ (al.length + de.length + t - i) (ga.length + be.length - i)) (fockAct2 _ _ _ _) (X.ds _ _ (lamA al be ga de))) ∧ ((∀ x ∈ al ++ be ++ ga ++ de, ((t : ℚ) + 3) / 2 ≤ |x|) → i ≤ al.length + be.length → i ≤ ga.length + de.length → TensNo (fockAct2 (al.length + be.length - i) (ga.length + de.length - i) _ _) (fockAct1 _ _ _ _) (X.ds _ _ (lamA' t al be ga de))) := by
   intro X hD h5 t al be ga de hA i hi
   have ht : 1 ≤ t := hA.1

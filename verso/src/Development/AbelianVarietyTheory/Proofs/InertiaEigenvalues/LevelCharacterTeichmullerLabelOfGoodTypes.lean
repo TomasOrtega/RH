@@ -19,12 +19,24 @@ noncomputable section
 
 namespace GlobalTheory.CharLabTransport
 
+/- English proof (translation)
+Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+-/
 theorem teich_inv {g : ℕ} [Fact g.Prime] (L : GlobalTheory.GLq.LabelDatum g) (c : (ZMod g)ˣ) :
     L.teich (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) ((c⁻¹ : (ZMod g)ˣ) : ZMod g)) =
       (L.teich (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (c : ZMod g)))⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
   rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ u : (ZMod g)ˣ, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) u = L.gen 1`. Take `⟨u₀, hu₀⟩` from `hex`. Establish `huniq : ∀ u : (ZMod g)ˣ, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) u = L.gen 1 → u = u₀`. Introduce `u hu`. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `(algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective (hu.trans hu₀.symm)`. Apply the tactic sequence `rcases hε with rfl | rfl <;> rcases h u₀ hu₀ with hv | hv`. Use `⟨_, ⟨t.ne_zero, fun u hu => ?_⟩, Or.inl rfl⟩` and prove the remaining obligations. Rewrite using `[huniq u hu, hv]`. Simplify using the standard rewrite rules.
+
+Use `⟨_, ⟨(t⁻¹).ne_zero, fun u hu => ?_⟩, Or.inr rfl⟩` and prove the remaining obligations. Rewrite using `[huniq u hu, teich_inv, hv]`. Simplify using the standard rewrite rules. Use `⟨_, ⟨(t⁻¹).ne_zero, fun u hu => ?_⟩, Or.inr rfl⟩` and prove the remaining obligations. Rewrite using `[huniq u hu, teich_inv, hv]`.
+
+Simplify using the standard rewrite rules. Use `⟨_, ⟨t.ne_zero, fun u hu => ?_⟩, Or.inl rfl⟩` and prove the remaining obligations. Rewrite using `[huniq u hu, hv]`. Simplify using the standard rewrite rules. Conclude with `⟨_, ⟨t.ne_zero, fun u hu => (hex ⟨u, hu⟩).elim⟩, Or.inl rfl⟩`.
+-/
 theorem charLab_of_value {g : ℕ} [Fact g.Prime] (L : GlobalTheory.GLq.LabelDatum g) (θ : (ZMod g)ˣ →* ℂˣ)
     (t : (ZMod g)ˣ) (ε : ℤ) (hε : ε = 1 ∨ ε = -1)
     (h : ∀ u : (ZMod g)ˣ, algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) u = L.gen 1 →
@@ -49,6 +61,9 @@ theorem charLab_of_value {g : ℕ} [Fact g.Prime] (L : GlobalTheory.GLq.LabelDat
       rw [huniq u hu, hv]; simp
   · exact ⟨_, ⟨t.ne_zero, fun u hu => (hex ⟨u, hu⟩).elim⟩, Or.inl rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ ∃ L : GlobalTheory.GLq.LabelDatum (D.host.g k), (∀ f, D.ntypes.eSer k f = GlobalTheory.GLq.eSerC L D.R.r f) ∧ ∃ c : ZMod (D.host.g k), GlobalTheory.GLp.IsCharLab L ((zpowGroupHom ε).comp ((R.chi ((i : ℕ) + 1) PP).comp (Units.map (iso : ZMod (D.host.g k) →* kP P …`.
+-/
 theorem charLab_of_goodTypes : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),
     GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes R → ∀ (k : Fin 2) (v : D.nd.PlG k) (i : Fin D.R.m) (PP : Pl D.host.E),

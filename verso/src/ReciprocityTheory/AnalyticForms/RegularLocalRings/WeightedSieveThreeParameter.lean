@@ -8,6 +8,23 @@ open MvPolynomial AlgebraicGeometry CategoryTheory
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)} {hP : IsMultiHomogIdeal P}
 
+/- English proof (translation)
+Use `⟨fun x y hxy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hcom : ∃ d, x ∈ w.src d ∧ y ∈ w.src d`. Take `⟨d, hxd, hyd⟩` from `hcom`. Establish `hne : w.coord d x ≠ w.coord d y`. Introduce `h`.
+
+Establish `h' : (⟨x, hxd⟩ : w.src d) = ⟨y, hyd⟩` using `(w.isEmbedding d).injective h`. Conclude with `hxy (congrArg Subtype.val h')`. Conclude with `sep_of_continuousOn (w.isOpen_alt_bis d) (w.continuousOn_coord d) hxd hyd hne`. Use `push Not at hcom`. Take `⟨c, hxc⟩` from `w.cover x`.
+
+Take `⟨c', hyc'⟩` from `w.cover y`. Distinguish the cases in `hblk : ∃ q, w.blk q x ≠ w.blk q y`. Take `⟨q, hq⟩` from `hblk`. Conclude with `sep_of_continuousOn isOpen_univ (w.continuous_blk q).continuousOn trivial trivial hq`. Use `push Not at hblk`.
+
+Establish `hy1 : ∀ k, eval (w.coord c' y) (w.lift c' ⟨k, c.1 k⟩) ≠ 0`. Introduce `k`. Establish `h1 : w.blk ⟨k, c.1 k⟩ x ≠ 0`. Rewrite using `[w.blk_eq _ c x hxc, blkNorm_ne_zero_iff, w.lv_self]`. Conclude with `one_ne_zero`.
+
+Rewrite `h1` using `[hblk, w.blk_eq _ c' y hyc', blkNorm_ne_zero_iff]`. Conclude with `h1`. Establish `hyp : w.π.base y.1 ∈ (chartOpen hP c.1).1` using `(w.mem_chartOpen_iff c' y hyc' c.1).mpr hy1`. Choose the witnesses or unpack the hypotheses as in `⟨j, hyj⟩ : ∃ j, y ∈ w.src ⟨c.1, j⟩ := by`. Establish `h : y.1 ∈ w.π ⁻¹ᵁ (chartOpen hP c.1).1` using `hyp`.
+
+Rewrite `h` using `[← w.iSup_pres]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp h`. Conclude with `⟨j, hj⟩`. Distinguish the cases in `hfib : ∃ l, w.fib c.1 l x ≠ w.fib c.1 l y`. Take `⟨l, hl⟩` from `hfib`.
+
+Conclude with `sep_of_continuousOn (w.isOpen_overP c.1) (w.continuousOn_fib c.1 l) ⟨c.2, hxc⟩ ⟨j, hyj⟩ hl`. Use `push Not at hfib`. Establish `h1 : w.fib c.1 j y ≠ 0`. Rewrite using `[w.fib_eq c.1 j j y hyj, vecNorm_ne_zero_iff, w.tv_self c.1 j y hyj]`. Conclude with `one_ne_zero`.
+
+Rewrite `h1` using `[← hfib j, w.fib_eq c.1 j c.2 x hxc, vecNorm_ne_zero_iff, w.tv_ne_zero_iff c.1 c.2 j x hxc]`. Conclude with `(hcom _ h1 hyj).elim`.
+-/
 theorem WData.t2Space (w : WData P D hP) : T2Space w.M := by
   refine ⟨fun x y hxy => ?_⟩
   by_cases hcom : ∃ d, x ∈ w.src d ∧ y ∈ w.src d

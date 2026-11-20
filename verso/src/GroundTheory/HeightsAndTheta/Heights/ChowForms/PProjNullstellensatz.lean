@@ -6,6 +6,17 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `F _ n P hP`. Establish `: P.IsPrime` using `hP.isPrime`. Take `⟨j, hj⟩` from `hP.isRelevant`. Use `set D := MvPolynomial (Fin n) F ⧸ P`. Establish `hr : Ideal.Quotient.mk P (X j) ≠ 0`.
+
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj`. Establish `hφ : ∃ φ : D →ₐ[F] AlgebraicClosure F, φ (Ideal.Quotient.mk P (X j)) ≠ 0`. Assume the negation of the conclusion as `hne`. Apply `hr` to reduce the goal to its premises.
+
+Use `h₁ F D _ (fun φ => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hne ⟨φ, h⟩`. Take `⟨φ, hφj⟩` from `hφ`. Establish `hcomp : φ.comp (Ideal.Quotient.mkₐ F P) = aeval (fun i => φ (Ideal.Quotient.mk P (X i)))`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, aeval_X]`. Both sides reduce to the same expression. Use `⟨fun i => φ (Ideal.Quotient.mk P (X i)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Conclude with `hφj (congrFun h0 j)`. Introduce `g hg`. Rewrite using `[← hcomp, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero]`.
+-/
 theorem ProjNullstellensatz.proof (h₁ : FGNullstellensatz.Statement) :
     ProjNullstellensatz.Statement := by
   intro F _ n P hP

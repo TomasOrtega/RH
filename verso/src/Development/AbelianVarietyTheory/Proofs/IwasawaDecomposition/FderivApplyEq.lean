@@ -14,8 +14,14 @@ variable {ι : Type} [Fintype ι] {p q : ℕ}
 
 abbrev Fl (ι : Type) (p q : ℕ) : Type := ι × Fin p × Fin q → ℂ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flat_add (ξ ζ : Pt ι p q) : flat (ξ + ζ) = flat ξ + flat ζ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [flat, Pi.add_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flat_smul (c : ℂ) (ξ : Pt ι p q) :
     flat (c • ξ) = c.re • flat ξ + c.im • flat (Complex.I • ξ) := by
   funext x
@@ -23,6 +29,9 @@ theorem flat_smul (c : ℂ) (ξ : Pt ι p q) :
   conv_lhs => rw [← Complex.re_add_im c]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [flat, Pi.sub_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Take the linear combination `(c.im * ξ x.1 x.2.1 x.2.2) * Complex.I_mul_I`.
+-/
 theorem flat_I_smul (c : ℂ) (ξ : Pt ι p q) :
     flat (Complex.I • c • ξ) = c.re • flat (Complex.I • ξ) - c.im • flat ξ := by
   funext x
@@ -66,19 +75,33 @@ namespace GlobalTheory.HessForm
 
 variable {ι : Type} [Fintype ι] {p q : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sesq_apply (B : Fl ι p q →L[ℝ] Fl ι p q →L[ℝ] ℝ) (ξ ζ : Pt ι p q) : sesq B ξ ζ = fn B ξ ζ := rfl
 
+/- English proof (translation)
+Rewrite using `[sesq_apply, fn, ← Complex.ofReal_ofNat, ← Complex.ofReal_mul, Complex.div_ofReal_re]`. Simplify using the standard rewrite rules.
+-/
 theorem re_sesq_self (B : Fl ι p q →L[ℝ] Fl ι p q →L[ℝ] ℝ) (ξ : Pt ι p q) :
     (sesq B ξ ξ).re = (B (flat ξ) (flat ξ) + B (flat (Complex.I • ξ)) (flat (Complex.I • ξ))) / (4 * Real.pi) := by
   rw [sesq_apply, fn, ← Complex.ofReal_ofNat, ← Complex.ofReal_mul, Complex.div_ofReal_re]
   simp
 
+/- English proof (translation)
+Simplify using `only [sesq_apply, fn, map_div₀, map_add, map_mul, map_sub, Complex.conj_ofReal, Complex.conj_I, map_ofNat]`. Rewrite using `[hB (flat ζ), hB (flat (Complex.I • ζ)), hB (flat ζ) (flat (Complex.I • ξ)), hB (flat (Complex.I • ζ)) (flat ξ)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_herm {B : Fl ι p q →L[ℝ] Fl ι p q →L[ℝ] ℝ} (hB : ∀ u v, B u v = B v u) (ξ ζ : Pt ι p q) :
     sesq B ζ ξ = starRingEnd ℂ (sesq B ξ ζ) := by
   simp only [sesq_apply, fn, map_div₀, map_add, map_mul, map_sub, Complex.conj_ofReal, Complex.conj_I, map_ofNat]
   rw [hB (flat ζ), hB (flat (Complex.I • ζ)), hB (flat ζ) (flat (Complex.I • ξ)), hB (flat (Complex.I • ζ)) (flat ξ)]
   push_cast; ring
 
+/- English proof (translation)
+Establish `e : ∀ ξ, (a - b) ξ ξ = 0` using `fun ξ => sub_eq_zero.2 (Complex.ext (h ξ) ((Complex.conj_eq_iff_im.1 (ha ξ ξ).symm).trans (Complex.conj_eq_iff_im.1 (hb ξ ξ).symm).symm))`. Rewrite using `[← sub_eq_zero]`. Generalize the expression as in `a - b = c at e`. Use `LinearMap.ext₂ fun ξ ζ => ?_` and prove the remaining obligations. Establish `e1` using `e (ξ + ζ)`.
+
+Establish `e2` using `e (ξ + Complex.I • ζ)`. Simplify using `only [map_add, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, e, smul_eq_mul, Complex.conj_I, RingHom.id_apply] at e1 e2`. Use `show c ξ ζ = 0`. Take the linear combination `(1 / 2) * e1 + (Complex.I / 2) * e2 + ((c ξ ζ - c ζ ξ) / 2) * Complex.I_mul_I`.
+-/
 theorem ext_of_re {a b : Pt ι p q →ₗ[ℂ] Pt ι p q →ₗ⋆[ℂ] ℂ} (ha : ∀ ξ ζ, a ζ ξ = starRingEnd ℂ (a ξ ζ))
     (hb : ∀ ξ ζ, b ζ ξ = starRingEnd ℂ (b ξ ζ)) (h : ∀ ξ, (a ξ ξ).re = (b ξ ξ).re) : a = b := by
   have e : ∀ ξ, (a - b) ξ ξ = 0 := fun ξ => sub_eq_zero.2 (Complex.ext (h ξ)
@@ -95,6 +118,9 @@ theorem ext_of_re {a b : Pt ι p q →ₗ[ℂ] Pt ι p q →ₗ⋆[ℂ] ℂ} (ha
 
 abbrev hess (F : Fl ι p q → ℝ) (x : Fl ι p q) : Fl ι p q →L[ℝ] Fl ι p q →L[ℝ] ℝ := fderiv ℝ (fderiv ℝ F) x
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (fderiv ℝ F) x` using `(hF.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Rewrite using `[fderiv_clm_apply hd (differentiableAt_const a)]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_apply_eq {F : Fl ι p q → ℝ} {x : Fl ι p q} (hF : ContDiffAt ℝ 2 F x) (a b : Fl ι p q) :
     fderiv ℝ (fun v => fderiv ℝ F v a) x b = hess F x b a := by
   have hd : DifferentiableAt ℝ (fderiv ℝ F) x :=
@@ -102,14 +128,25 @@ theorem fderiv_apply_eq {F : Fl ι p q → ℝ} {x : Fl ι p q} (hF : ContDiffAt
   rw [fderiv_clm_apply hd (differentiableAt_const a)]
   simp
 
+/- English proof (translation)
+The claim follows from `hF.isSymmSndFDerivAt (by simp) u v`.
+-/
 theorem hess_symm {F : Fl ι p q → ℝ} {x : Fl ι p q} (hF : ContDiffAt ℝ 2 F x) (u v : Fl ι p q) :
     hess F x u v = hess F x v u :=
   hF.isSymmSndFDerivAt (by simp) u v
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PoincareLower.ddc_eq hf, re_sesq_self, fderiv_apply_eq hf, fderiv_apply_eq hf]`.
+-/
 theorem ddc_eq_sesq {f : Pt ι p q → ℝ} {z : Pt ι p q} (hf : ContDiffAt ℝ 2 (fun v => f (unflat v)) (flat z))
     (ξ : Pt ι p q) : ddc f z ξ = (sesq (hess (fun v => f (unflat v)) (flat z)) ξ ξ).re := by
   rw [GlobalTheory.PoincareLower.ddc_eq hf, re_sesq_self, fderiv_apply_eq hf, fderiv_apply_eq hf]
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fun v => fderiv ℝ G v) U` using `hG.fderiv_of_isOpen hU (by simp)`. Establish `h2 : ContDiffOn ℝ ∞ (fun v => hess G v) U` using `h1.fderiv_of_isOpen hU (by simp)`. Establish `ap : ∀ a b : Fl ι p q, ContDiffOn ℝ ∞ (fun v => ((hess G v a b : ℝ) : ℂ)) U` using `fun a b => Complex.ofRealCLM.contDiff.comp_contDiffOn ((h2.clm_apply contDiffOn_const).clm_apply contDiffOn_const)`. Simplify using `only [sesq_apply, fn]`. Use `push_cast`.
+
+Conclude with `((((ap _ _).add (ap _ _)).add (contDiffOn_const.mul ((ap _ _).sub (ap _ _)))).div_const _)`.
+-/
 theorem contDiffOn_sesq {G : Fl ι p q → ℝ} {U : Set (Fl ι p q)} (hG : ContDiffOn ℝ ∞ G U) (hU : IsOpen U)
     (ξ ζ : Pt ι p q) : ContDiffOn ℝ ∞ (fun v => sesq (hess G v) ξ ζ) U := by
   have h1 : ContDiffOn ℝ ∞ (fun v => fderiv ℝ G v) U := hG.fderiv_of_isOpen hU (by simp)

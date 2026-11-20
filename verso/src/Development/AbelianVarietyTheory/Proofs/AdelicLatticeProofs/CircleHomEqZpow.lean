@@ -6,6 +6,21 @@ namespace GlobalTheory
 
 open MeasureTheory AddCircle in
 
+/- English proof (translation)
+Introduce `f hf`. Use `haveI : Fact ((0 : ℝ) < 1) := ⟨one_pos⟩`. Set `g : C(AddCircle (1 : ℝ), ℂ)` to `⟨fun x => (f (toCircle x) : ℂ), continuous_subtype_val.comp (hf.comp continuous_toCircle)⟩`. Establish `hg : ∀ x, g x = (f (toCircle x) : ℂ)` using `fun _ => rfl`. Establish `hex : ∃ n : ℤ, fourierCoeff g n ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h0 : fourierCoeff g = fun _ => 0` using `funext hcon`. Establish `hs` using `has_pointwise_sum_fourier_series_of_summable (f := g) (by rw [h0]; exact summable_zero) 0`. Simplify using `only [hcon, zero_smul] at hs`.
+
+Use `hs.unique hasSum_zero` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `Circle.coe_ne_zero _ this`. Take `⟨n, hn⟩` from `hex`. Use `⟨n, fun z => ?_⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w, rfl⟩ : ∃ w : AddCircle (1 : ℝ), toCircle w = z := by`. Take `⟨w, hw⟩` from `(homeomorphCircle (T := 1) one_ne_zero).surjective z`. Conclude with `⟨w, by rw [← homeomorphCircle_apply one_ne_zero, hw]⟩`. Establish `key : fourierCoeff g n = (fourier (-n) w * g w) * fourierCoeff g n`. Unfold `fourierCoeff`.
+
+Rewrite using `[← integral_const_mul]`. Rewrite using `[← integral_add_left_eq_self (μ := haarAddCircle) (fun t : AddCircle (1 : ℝ) => fourier (-n) t • g t) w]`. Use `congr 1`. Use extensionality with `t`. Simplify using `only [hg, fourier_apply, zsmul_add, toCircle_add, map_mul, Circle.coe_mul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : fourier (-n) w * g w = 1`. Use `mul_right_cancel₀ hn (key.symm.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Rewrite `h1` using `[hg, fourier_apply, toCircle_zsmul, ← Circle.coe_mul, ← Circle.coe_one]`.
+
+Establish `h2 : toCircle w ^ (-n) * f (toCircle w) = (1 : Circle)` using `Circle.ext h1`. Rewrite `h2` using `[zpow_neg, inv_mul_eq_one]`. Conclude with `h2.symm`.
+-/
 theorem circle_hom_eq_zpow :
     ∀ f : Circle →* Circle, Continuous f → ∃ n : ℤ, ∀ z, f z = z ^ n := by
   intro f hf

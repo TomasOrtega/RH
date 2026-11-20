@@ -23,6 +23,9 @@ namespace GlobalTheory.GapAmp
 
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants in
 
+/- English proof (translation)
+Introduce `hZ`. Establish `hv1 : 1 ≤ D.host.v` using `hZ.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Use `GlobalTheory.T.besselMap_multipleIsometry_largeGap hH D large₂ C' Cl Cg cb Cu cT CT C0 hCl (fun _ _ _ _ _ h => GlobalTheory.BesselSchur.theta_pos D (by linarith) h) (fun w => ?_) hZ` and prove the remaining obligations. Unfold `Tr`. Conclude with `(D.mem w).A.T_prime.pos` after adjusting the coercions.
+-/
 theorem bessel_schur_gap (hH : GlobalTheory.GapIn.Hyp) (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ)
     (hCl : 1000 ≤ Cl) : BSch D large₂ C' Cl Cg cb Cu cT CT C0 := by
   intro hZ
@@ -34,6 +37,13 @@ theorem bessel_schur_gap (hH : GlobalTheory.GapIn.Hyp) (D : D7) (large₂ : Size
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S in
 
+/- English proof (translation)
+Introduce `_ hH _ Cg cb Cu cT CT C0 C1`. Take `⟨C₀, hC⟩` from `GlobalTheory.Amp.schurSt_of_big_tie Cg cb Cu cT CT C0 C1`. Take `⟨m₀, hm⟩` from `hC C₀ le_rfl`. Take `⟨m₁, hL⟩` from `GlobalTheory.T.amplitudeMultOneDecay_of_largeGapHypotheses hH Cg cb Cu cT CT C0`. Use `⟨C₀, 1000, fun eps Fm _ h2 _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x0, hx⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm (max (max m₀ m₁) 1)`. Use `⟨x0, fun x hxx i => ?_⟩` and prove the remaining obligations. Take `⟨-, hmM, -, -, hrd, -⟩` from `hx x hxx i`. Establish `hm1 : (1 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `le_trans (le_max_right _ _) hmM`. Establish `hCm : 1 ≤ sCl Fm * ((Fm.D x i).R.m : ℝ)` using `by nlinarith`.
+
+Establish `hBig : ∀ m' : ℝ, m' ≤ max (max m₀ m₁) 1 → GlobalTheory.Amp.Big (Fm.D x i) (Fm.L x i) (sCl Fm) m'` using `fun m' hm' => ⟨hrd, hCm, le_trans hm' hmM⟩`. Conclude with `hm (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) (hBig m₀ (le_trans (le_max_left _ _) (le_max_left _ _))) (Fm.ties x i).cdScale_tie (bessel_schur_gap hH _ _ _ _ _ _ _ _ _ _ h2) (hL _ _ _ _ (hBig m₁ (le_trans (le_max_right _ _) (le_max_left _ _))))`.
+-/
 theorem schur_along_family : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS →
     ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ C thr : ℝ, ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm →
       PX.RanksF Fm C0 Cg cb Cu cT CT →

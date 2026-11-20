@@ -25,6 +25,9 @@ namespace GlobalTheory.TopFlip
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree GlobalTheory.Grid GlobalTheory.TripleRead GlobalTheory.TripleAssembly GlobalTheory.RouteSeesaw GlobalTheory.SquareIdent
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation (incM)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, GlobalTheory.SmallThetaModules.coe_pureT h, GlobalTheory.SmallThetaModules.coe_pureT h']`. Use function extensionality and compare the values at `l`. Simplify using `only [GlobalTheory.SmallThetaModules.evFam, Pi.smul_apply, smul_eq_mul, e, map_smul]`. Conclude with `finprod_mul_distrib hc (GlobalTheory.SmallThetaModules.mulSupport_fin h l)`.
+-/
 theorem pureT_smul {ι : Type} {N : ι → Type} [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] {s ξ ξ' : ∀ i, N i}
     (h : Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ) (h' : Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ') {c : ι → ℂ} (hc : (Function.mulSupport c).Finite)
     (e : ∀ i, ξ' i = c i • ξ i) : GlobalTheory.SmallThetaModules.pureT s ξ' = (∏ᶠ i, c i) • GlobalTheory.SmallThetaModules.pureT s ξ := by
@@ -38,6 +41,29 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `rfl` from `hR.ψ`. Establish `hg` using `hT₀.geo`. Establish `hstd : IsStdChar D Bs.ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hT₀.base.std`. Take `⟨om, hom, tA⟩` from `GlobalTheory.TripleDarboux.exists_weil Bs hT₀.base true W X e _ _ hg.hV hg.hW 1 hR.JW (by rw [neg_gram, one_smul, neg_neg]) hR.JX Γ.M hg.hM hωA`. Take `⟨om', hom', tB⟩` from `GlobalTheory.TripleDarboux.exists_weil Bs hT₀.base false W₁ X e _ _ hg.hV' hg.hW (-1) hR.JW₁ (neg_one_smul _ _) hR.JX Γ.M' hg.hM' hωB`.
+
+Establish `hT' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om'` using `⟨hT₀.base, hg, hT₀.chars, by rw [hR.α, hR.β]; exact hom, by rw [hR.α, hR.β]; exact hom'⟩`. Take `⟨R, Rf, hm⟩` from `hTL _ _ _ Bs _ _ Γ Xc om om' hT'`. Establish `sA` using `GlobalTheory.T.fockAlgebraicThetaVectors_stable_finiteAdeles_lie D Bs.ψ θ hstd hθ true W X A B β (β / α) ωA hωA`. Establish `sB` using `GlobalTheory.T.fockAlgebraicThetaVectors_stable_finiteAdeles_lie D Bs.ψ θ hstd hθ false W₁ X A₁ B α (α / β) ωB hωB`. Take `⟨oA, oB⟩` from `GlobalTheory.T.algF_map_mapA_and_mapB_eq_top hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`.
+
+Take `⟨iA, iB⟩` from `GlobalTheory.T.mapA_mapB_invariant_under_finite_group hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`. Take `⟨lA, lB⟩` from `GlobalTheory.T.seesaw_weil_local_factor_eq hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`. Take `⟨fA, fB⟩` from `GlobalTheory.T.seesaw_weil_archimedean_factor hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`. Take `⟨dA, dB⟩` from `GlobalTheory.T.seesaw_weil_unramified_factor hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`. Establish `ir` using `GlobalTheory.T.seesaw_weil_global_factor hH hP D Bs.ψ θ hstd hθ W W₁ X A A₁ B α β hT ωA ωB hωA hωB e Bs Γ Xc om om' hR tA tB R Rf hm`.
+
+Take `⟨cA, hcA⟩` from `GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords D W X e.symm (-1) (neg_ne_zero.2 one_ne_zero)`. Take `⟨cB, hcB⟩` from `GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel.coords D W₁ X e.symm 1 one_ne_zero`. Establish `gX` using `GlobalTheory.RouteCoords.gram_det_ne X`. Establish `dV : Γ.V.J.det ≠ 0` using `by rw [hR.JW, one_smul]; exact GlobalTheory.RouteCoords.gram_det_ne _`. Establish `dV' : Γ.V'.J.det ≠ 0`.
+
+Rewrite using `[hR.JW₁, det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (GlobalTheory.RouteCoords.gram_det_ne _)`. Establish `dW : Γ.W.J.det ≠ 0`. Rewrite using `[hR.JX, det_smul, det_submatrix_equiv_self, det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero) gX`.
+
+Use `⟨om, om', R, Rf, hm, _, _, _, _, ⟨hωA, hωB, ir, ⟨sA.1, sA.2, oA, iA, lA, fA, dA⟩, ⟨sB.1, sB.2, oB, iB, lB, fB, dB⟩⟩, fun f₀ g1 P => ?_, fun f₀ g2 P => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, -⟩` from `fock_datum hθ true A B e.symm Bs hT₀.base hR.JW hR.JX hg.hV hg.hW (fun w => by`. Take `⟨τ, a, b, -, d⟩` from `hR.cart w`. Conclude with `⟨τ, a, b.trans (one_smul _ _).symm, d⟩) Γ.M hg.hM cA hcA g1`. Take `⟨f, hf, hPf⟩` from `a2 P`.
+
+Use `⟨R.p f, fun φ p1 F kA => ?_⟩` and prove the remaining obligations. Establish `p2 : ∀ᶠ v in Filter.cofinite, φ v = Γ.M.vac v` using `Xc.T.eventually_cofinite_notMem.mono p1.2`. Establish `hcA' : ∀ u, cA u = (HMul.hMul (uᵀ.submatrix e.symm id) (incM (sgn true W).gram) : Matrix (Fin X.rank) (Fin W.rank) (AE D))` using `fun u => by rw [hcA, neg_one_smul]; rfl`. Use `replace kA : IsDatum Γ.M Bs.ψ cA (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) F := ⟨kA.1, fun u => by rw [hcA']; exact kA.2 u⟩`. Establish `mA` using `thetaLift_pure Γ.M hg.hM hT₀.base.std dV dW (GlobalTheory.RouteCoords.gram_det_ne (sgn true W)) e Bs.emb R.p Rf.p (vacIm Γ Rf) (Filter.Eventually.of_forall fun _ => rfl) hf p1.1 p2`.
+
+Establish `eA` using `eq_thO Γ.M Bs.ψ e (GlobalTheory.RouteCoords.gram_det_ne (sgn true W)) cA hcA' (hPf φ p1.1 p2 _ kA)`. Use `⟨a1 φ p1.1 p2 _ kA, ?_⟩` and prove the remaining obligations. Rewrite using `[eA]`. Conclude with `mA`. Take `⟨b1, b2, -⟩` from `fock_datum hθ false A₁ B e.symm Bs hT₀.base hR.JW₁ hR.JX hg.hV' hg.hW (fun w => by`.
+
+Take `⟨τ, a, -, c, d⟩` from `hR.cart w`. Conclude with `⟨τ, a, c.trans (neg_one_smul _ _).symm, d⟩) Γ.M' hg.hM' cB hcB g2`. Take `⟨f', hf', hP'⟩` from `b2 P`. Use `⟨R.p' f', fun φ' q1 F kB => ?_⟩` and prove the remaining obligations. Establish `q2 : ∀ᶠ v in Filter.cofinite, φ' v = Γ.M'.vac v` using `Xc.T.eventually_cofinite_notMem.mono q1.2`.
+
+Establish `hcB' : ∀ u, cB u = (HMul.hMul (uᵀ.submatrix e.symm id) (incM W₁.gram) : Matrix (Fin X.rank) (Fin W₁.rank) (AE D))` using `fun u => by rw [hcB, one_smul]`. Use `replace kB : IsDatum Γ.M' Bs.ψ cB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ') F := ⟨kB.1, fun u => by rw [hcB']; exact kB.2 u⟩`. Establish `mB` using `thetaLift_pure Γ.M' hg.hM' hT₀.base.std dV' dW (GlobalTheory.RouteCoords.gram_det_ne W₁) e Bs.emb R.p' Rf.p' (vacIm Γ Rf) (Xc.T.eventually_cofinite_notMem.mono fun v hv => (hm.fin.sph v hv).1.symm) hf' q1.1 q2`. Establish `eB` using `eq_thO Γ.M' Bs.ψ e (GlobalTheory.RouteCoords.gram_det_ne W₁) cB hcB' (hP' φ' q1.1 q2 _ kB)`. Use `⟨b1 φ' q1.1 q2 _ kB, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eB]`. Conclude with `mB`.
+-/
 theorem match_tens (hH : GlobalTheory.Published.HoweDualityReal) (hP : GlobalTheory.FunPr.Hypotheses₂) (hTL : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching)
     {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {W W₁ X : HSp D} (A : Fr W) (A₁ : Fr W₁) (B : Fr X)
     {α β : (AE D)ˣ →* Circle} (hT : IsTriple W W₁ X α β) {ωA : WRep W X} {ωB : WRep W₁ X} (hωA : IsWeil ψ true W X β (β / α) ωA)
@@ -134,6 +160,13 @@ namespace GlobalTheory.TopFlip
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}
 
+/- English proof (translation)
+Set `c' : Pl D.host.F → ℂ` to `fun v => ∏ w ∈ locPl G t with w.under (𝓞 D.host.F) = v, c w`. Establish `h1 : ∀ v, v ∉ X.T → c' v = 1` using `fun v hv => Finset.prod_eq_one fun w hw => by`. Take `⟨a, b⟩` from `Finset.mem_filter.1 hw`. Conclude with `absurd ((hti.2.2.1 v).2 ⟨w, a, b⟩) hv`. Establish `hs : Function.mulSupport c' ⊆ X.T` using `fun v hv => by_contra fun h => hv (h1 v h)`.
+
+Rewrite using `[pureT_smul (s := GlobalTheory.TripleAssembly.vacIm Γ Rf) (ξ := fun v => Rf.p' v (φ' v)) (ξ' := fun v => Rf.p v (φ v)) (c := c') (X.T.finite_toSet.subset fun v hv => by_contra fun hn => hv (by`. Conclude with `(congrArg (Rf.p' v) (h'.2 v hn)).trans (hm.fin.sph v hn).1.symm))`. Use the proof step `(X.T.finite_toSet.subset fun v hv => by_contra fun hn => hv (congrArg (Rf.p v) (h.2 v hn))) (X.T.finite_toSet.subset hs) fun v => ?_,`. Use `finprod_eq_prod_of_mulSupport_subset _ hs,`. Use the proof step `Finset.prod_fiberwise_of_maps_to fun w hw => (hti.2.2.1 _).2 ⟨w, hw, rfl⟩]`.
+
+Distinguish the cases in `hv : v ∈ X.T`. Take `⟨w, hw, rfl⟩` from `(hti.2.2.1 v).1 hv`. Establish `: c' (w.under (𝓞 D.host.F)) = c w` using `Finset.prod_eq_single_of_mem w (Finset.mem_filter.2 ⟨hw, rfl⟩) fun w' hw' hne => absurd (Good.under_injOn hL G t (Finset.mem_filter.1 hw').1 hw (Finset.mem_filter.1 hw').2) hne`. Rewrite using `[this, hc w hw]`. Rewrite using `[h1 v hv, one_smul, h.2 v hv, h'.2 v hv, (hm.fin.sph v hv).1]`.
+-/
 theorem pureT_loc (hL : L.Is μ₀) {t : T} {i j : ℕ} {e : Num G i j} {Bs : Base D.host.F D.host.E} {Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j}
     {X : Chars D.host.F D.host.E} {om om' R Rf} (hm : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ X om om' R Rf) (hti : IsTied t i j e Bs Γ X)
     {φ φ'} (h : IsFinPart Γ.M X.T φ) (h' : IsFinPart Γ.M' X.T φ') {c : Pl D.host.E → ℂ}

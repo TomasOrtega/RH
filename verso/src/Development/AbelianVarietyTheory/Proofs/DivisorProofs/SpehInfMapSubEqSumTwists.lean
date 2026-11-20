@@ -17,6 +17,17 @@ open NumberField IsDedekindDomain
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `d m F`. Establish `hL : ∀ (f : ℕ → Multiset ℂ) (n : ℕ), ((List.range n).map f).sum = ∑ k ∈ Finset.range n, f k`. Introduce `f n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+
+Consider the case `succ n ih => rw [List.range_succ, List.map_append, List.sum_append, ih, Finset.sum_range_succ]`. Simplify using the standard rewrite rules. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k : ℕ => m.map (fun z => F + (((d : ℂ) - 1) / 2 - (k : ℕ)) - z)) d]`. Unfold `spehInf`. Rewrite using `[hL]`.
+
+Establish `hM` using `map_sum (Multiset.mapAddMonoidHom (fun z : ℂ => F - z)) (fun k : ℕ => m.map (fun x => x + (((d : ℂ) - 1) / 2 - k))) (Finset.range d)`. Simplify using `only [Multiset.mapAddMonoidHom_apply] at hM`. Rewrite using `[hM]`. Rewrite using `[← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+
+Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.DefiniteBC.spehInf_map_sub_eq_sum_twists : ∀ (d : ℕ) (m : Multiset ℂ) (F : ℂ),
   ∑ k : Fin d, m.map (fun z => F + (((d : ℂ) - 1) / 2 - (k : ℕ)) - z) = (spehInf d m).map (fun z => F - z) := by
   intro d m F

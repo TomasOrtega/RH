@@ -8,6 +8,17 @@ namespace GlobalTheory.JSW.Cut
 
 open GlobalTheory.JSW.KirFin
 
+/- English proof (translation)
+Establish `hK` using `GlobalTheory.JSW.isCompact_charAnnihilator_of_mem_nhds_zero ψ hψ hψ1 L hL`. Use `set K := {r : Fin (m + 1) → F | ∀ y ∈ L, ψ (r ⬝ᵥ y) = 1} with hKdef`. Set `K' : Set (Fin (m + 1) → F)` to `⋃ k ∈ T'.support, (fun r => r ᵥ* ((κ k)⁻¹).val) '' K`. Establish `hK' : IsCompact K'` using `T'.support.isCompact_biUnion fun k _ => hK.image (continuous_id.matrix_vecMul continuous_const)`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_finite_characterSum_eq_locallyConstant_on_compact ψ hψ hψ1 K' hK' Φ hΦ`.
+
+Use `set T₂ : GL (Fin (m + 2)) F →₀ ℂ := T'.sum fun k c => Finsupp.single (cor (κ k)) c with hT₂def`. Set `M₂ : GL (Fin (m + 2)) F →₀ ℂ` to `M.sum fun v c => Finsupp.single (mir 1 v) c`. Use `⟨M₂, fun f hf hfL h => ?_⟩` and prove the remaining obligations. Establish `hT₂ : act T₂ f (cor h) = T'.sum fun k c => c * f (cor (h * κ k))`. Simplify using `only [T₂, act_finsupp_sum, act_single, map_mul]`.
+
+Rewrite using `[act_comp]`. Simplify using `only [M₂, act_finsupp_sum, act_single, eqv_cor_mul_col (eqv_act hf T₂), ← mul_assoc]`. Rewrite using `[← Finsupp.sum_mul]`. Distinguish the cases in `h0 : act T₂ f (cor h) = 0`. Rewrite using `[h0, mul_zero, mul_zero]`.
+
+Rewrite using `[hM]`. Rewrite `h0` using `[hT₂]`. Take `⟨k, hk, hk0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0`. Establish `hk1` using `right_ne_zero_of_mul hk0`. Use `Set.mem_iUnion₂.2 ⟨k, hk, lr (h * κ k), fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `hfL y hy (cor (h * κ k))` as an intermediate fact. Rewrite `this` using `[eqv_cor_mul_col hf]`. Conclude with `(mul_eq_right₀ hk1).1 this`. Simplify using `only`. Rewrite using `[← lr_mul, mul_inv_cancel_right]`.
+-/
 theorem exists_mul_lr {F : Type} [NormedField F] [ProperSpace F] {ψ : AddChar F ℂ} (hψ : IsLocallyConstant ψ)
     (hψ1 : ψ ≠ 1) {m : ℕ} {L : Set (Fin (m + 1) → F)} (hL : L ∈ nhds (0 : Fin (m + 1) → F))
     (T' : GL (Fin (m + 1)) F →₀ ℂ) (κ : GL (Fin (m + 1)) F → GL (Fin (m + 1)) F) (Φ : (Fin (m + 1) → F) → ℂ)
@@ -44,6 +55,45 @@ theorem exists_mul_lr {F : Type} [NormedField F] [ProperSpace F] {ψ : AddChar F
     · simp only
       rw [← lr_mul, mul_inv_cancel_right]
 
+/- English proof (translation)
+Introduce `F _ _ _ ψ hψ hψ1 m H B hBc hBo L hL h₀`. Set `U : Subgroup (GL (Fin (m + 1)) F)` to `B.map (MulAut.conj h₀).toMonoidHom`. Establish `hUe : (U : Set (GL (Fin (m + 1)) F)) = (fun b => h₀ * b * h₀⁻¹) '' B`. Use extensionality with `x`. Simplify using `[U]`.
+
+Establish `hUm : ∀ b ∈ B, h₀ * b * h₀⁻¹ ∈ U` using `fun b hb => ⟨b, hb, rfl⟩`. Establish `hUB : ∀ u ∈ U, h₀⁻¹ * u * h₀ ∈ B`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify `hb` using `[mul_assoc]`. Establish `hUc : IsCompact (U : Set (GL (Fin (m + 1)) F))`.
+
+Rewrite using `[hUe]; exact hBc.image (by fun_prop)`. Establish `hUo : IsOpen (U : Set (GL (Fin (m + 1)) F))`. Rewrite using `[hUe]`. Conclude with `((isOpenMap_mul_right h₀⁻¹).comp (isOpenMap_mul_left h₀)) _ hBo`. Take `⟨U₁, hU₁U, hU₁o, T', hT'⟩` from `H U hUc hUo 1`.
+
+Establish `hU₁c : IsCompact (U₁ : Set (GL (Fin (m + 1)) F))` using `hUc.of_isClosed_subset (U₁.isClosed_of_isOpen hU₁o) hU₁U`. Establish `hOe` using `GlobalTheory.T.isClopen_rowVector_orbit_compactOpen_GL U₁ hU₁c hU₁o (lr 1) (lr_ne_zero 1)`. Set `R : GL (Fin (m + 1)) F → Set (Fin (m + 1) → F)` to `fun a => (fun r => r ᵥ* ((a * h₀)⁻¹).val) ⁻¹' {r | ∃ b ∈ U₁, r = lr 1 ᵥ* (b : Matrix (Fin (m + 1)) (Fin (m + 1)) F)}`. Establish `hR : ∀ a, IsClopen (R a)` using `fun a => hOe.preimage (continuous_id.matrix_vecMul continuous_const)`. Establish `hC : ∀ a ∈ U, ∀ f : GL (Fin (m + 2)) F → ℂ, Eqv ψ f → (∀ b ∈ B, ∀ g, f (g * cor b) = f g) → ∀ h, lr h ∈ R a → act (T'.sum fun k c => Finsupp.single (cor (h₀⁻¹ * a⁻¹ * k * h₀)) c) f (cor h) = (cell h₀ (B : Set (GL (Fin (m + 1)) F))).indicator (fun h => f (cor h)) h`.
+
+Introduce `a ha f hf hfB h hRa`. Take `⟨v, hv, e⟩` from `hRa`. Establish `e' : lr (h * h₀⁻¹ * a⁻¹) = lr (1 * v)`. Rewrite using `[show h * h₀⁻¹ * a⁻¹ = h * (a * h₀)⁻¹ by group]`. Conclude with `e`.
+
+Establish `hmem : h * h₀⁻¹ * a⁻¹ ∈ {g | ∃ p : GL (Fin (m + 1)) F, lr p = lr 1 ∧ ∃ u ∈ U₁, g = p * u}` using `⟨h * h₀⁻¹ * a⁻¹ * v⁻¹, by rw [lr_mul_congr e' v⁻¹, one_mul, mul_inv_cancel], v, hv, by group⟩`. Establish `h2` using `hT' (fun g => f (cor (g * h₀))) (fun u hu g => by simp only [mul_assoc]; exact hf.res u hu _) (fun u hu g => by`. Rewrite using `[show g * u * h₀ = g * h₀ * (h₀⁻¹ * u * h₀) by group, map_mul]`. Conclude with `hfB _ (hUB u hu) _)`. Use the proof step `(h * h₀⁻¹ * a⁻¹) hmem`.
+
+Establish `hT₂ : act (T'.sum fun k c => Finsupp.single (cor (h₀⁻¹ * a⁻¹ * k * h₀)) c) f (cor h) = T'.sum fun k c => c * f (cor (h * (h₀⁻¹ * a⁻¹ * k * h₀)))`. Simplify using `only [act_finsupp_sum, act_single, map_mul]`. Establish `h3 : act (T'.sum fun k c => Finsupp.single (cor (h₀⁻¹ * a⁻¹ * k * h₀)) c) f (cor h) = act T' (fun g => f (cor (g * h₀))) (h * h₀⁻¹ * a⁻¹)`. Rewrite using `[hT₂]`. Simplify using `only [act, mul_assoc]`.
+
+Rewrite using `[h3, h2]`. Establish `h4 : h * h₀⁻¹ * a⁻¹ ∈ cell 1 (U : Set (GL (Fin (m + 1)) F)) ↔ h ∈ cell h₀ (B : Set (GL (Fin (m + 1)) F))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, c, hc, e⟩`. Use `⟨u, hu, h₀⁻¹ * (c * a) * h₀, hUB _ (U.mul_mem hc ha), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show h = h * h₀⁻¹ * a⁻¹ * (a * h₀) by group, e]`. Use `group`. Introduce and unpack `⟨u, hu, c, hc, rfl⟩`. Conclude with `⟨u, hu, h₀ * c * h₀⁻¹ * a⁻¹, U.mul_mem (hUm c hc) (U.inv_mem ha), by group⟩`. Distinguish the cases in `h5 : h ∈ cell h₀ (B : Set (GL (Fin (m + 1)) F))`.
+
+Rewrite using `[Set.indicator_of_mem h5, Set.indicator_of_mem (h4.2 h5)]`. Rewrite using `[show h * h₀⁻¹ * a⁻¹ * h₀ = h * (h₀⁻¹ * a⁻¹ * h₀) by group, map_mul]`. Conclude with `hfB _ (by simpa using hUB _ (U.inv_mem ha)) _`. Rewrite using `[Set.indicator_of_notMem h5, Set.indicator_of_notMem (fun h6 => h5 (h4.1 h6))]`. Establish `key : ∀ A : Finset (GL (Fin (m + 1)) F), (∀ a ∈ A, a ∈ U) → ∃ S : GL (Fin (m + 2)) F →₀ ℂ, ∀ f : GL (Fin (m + 2)) F → ℂ, Eqv ψ f → (∀ b ∈ B, ∀ g, f (g * cor b) = f g) → (∀ y ∈ L, ∀ g, f (g * mir 1 y) = f g) → ∀ h : GL (Fin (m + 1)) F, act S f (cor h) = (⋃ a ∈ A, R a).indicator 1 …`.
+
+Introduce `A`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨0, fun f _ _ _ h => by simp⟩`. Consider the case `insert a A haA ih`. Introduce `hA`.
+
+Take `⟨S, hS⟩` from `ih (fun b hb => hA b (Finset.mem_insert_of_mem hb))`. Establish `ha : a ∈ U` using `hA a (Finset.mem_insert_self a A)`. Establish `hcl : IsClopen (R a \ ⋃ b ∈ A, R b)` using `(hR a).diff (isClopen_biUnion_finset fun b _ => hR b)`. Take `⟨M₂, hM₂⟩` from `exists_mul_lr hψ hψ1 hL T' (fun k => h₀⁻¹ * a⁻¹ * k * h₀) ((R a \ ⋃ b ∈ A, R b).indicator 1) (LocallyConstant.charFn ℂ hcl).isLocallyConstant`. Use `⟨S + comp M₂ (T'.sum fun k c => Finsupp.single (cor (h₀⁻¹ * a⁻¹ * k * h₀)) c), fun f hf hfB hfL h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[act_add, hS f hf hfB hfL h, hM₂ f hf hfL h]`. Distinguish the cases in `h1 : lr h ∈ ⋃ b ∈ A, R b`. Establish `h2 : lr h ∈ ⋃ b ∈ insert a A, R b`. Rewrite using `[Finset.set_biUnion_insert]`. Conclude with `Or.inr h1`.
+
+Rewrite using `[Set.indicator_of_mem h1, Set.indicator_of_mem h2, Set.indicator_of_notMem (s := R a \ ⋃ b ∈ A, R b) (fun h3 => h3.2 h1)]`. Simplify using the standard rewrite rules. Distinguish the cases in `h3 : lr h ∈ R a`. Establish `h2 : lr h ∈ ⋃ b ∈ insert a A, R b`. Rewrite using `[Finset.set_biUnion_insert]`.
+
+Conclude with `Or.inl h3`. Rewrite using `[Set.indicator_of_notMem h1, Set.indicator_of_mem h2, Set.indicator_of_mem (s := R a \ ⋃ b ∈ A, R b) ⟨h3, h1⟩, hC a ha f hf hfB h h3]`. Simplify using the standard rewrite rules. Establish `h2 : lr h ∉ ⋃ b ∈ insert a A, R b`. Rewrite using `[Finset.set_biUnion_insert]`.
+
+Conclude with `fun h4 => h4.elim h3 h1`. Rewrite using `[Set.indicator_of_notMem h1, Set.indicator_of_notMem h2, Set.indicator_of_notMem (s := R a \ ⋃ b ∈ A, R b) (fun h4 => h3 h4.1)]`. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `hUc.elim_finite_subcover (fun a : U => (fun x => x * (a : GL (Fin (m + 1)) F)⁻¹) ⁻¹' (U₁ : Set (GL (Fin (m + 1)) F))) (fun a => hU₁o.preimage (continuous_mul_right _)) (fun u hu => Set.mem_iUnion.2 ⟨⟨u, hu⟩, by simp [U₁.one_mem]⟩)`. Take `⟨S, hS⟩` from `key (t.image Subtype.val) (fun a ha => by`.
+
+Take `⟨b, _, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `b.2)`. Use `⟨S, fun f hf hfB hfL h => ?_⟩` and prove the remaining obligations. Rewrite using `[hS f hf hfB hfL h]`. Distinguish the cases in `hh : h ∈ cell h₀ (B : Set (GL (Fin (m + 1)) F))`.
+
+Establish `hmem : lr h ∈ ⋃ a ∈ t.image Subtype.val, R a`. Take `⟨u, hu, c, hc, rfl⟩` from `hh`. Take `⟨i, hi, hw⟩` from `Set.mem_iUnion₂.1 (ht (hUm c hc))`. Use `Set.mem_iUnion₂.2 ⟨i.1, Finset.mem_image_of_mem _ hi, h₀ * c * h₀⁻¹ * (i : GL (Fin (m + 1)) F)⁻¹, hw, ?_⟩` and prove the remaining obligations. Use `show lr (u * h₀ * c) ᵥ* _ = _`.
+
+Rewrite using `[← lr_mul, show u * h₀ * c * ((i : GL (Fin (m + 1)) F) * h₀)⁻¹ = u * (h₀ * c * h₀⁻¹ * (i : GL (Fin (m + 1)) F)⁻¹) by group, lr_mul_congr (lr_of_mem hu), one_mul, ← lr_mul, one_mul]`. Rewrite using `[Set.indicator_of_mem hmem, Pi.one_apply, one_mul]`. Rewrite using `[Set.indicator_of_notMem hh, mul_zero]`.
+-/
 theorem exists_cut_cor_of_sub : ∀ {F : Type} [NormedField F] [ProperSpace F] [IsUltrametricDist F] (ψ : AddChar F ℂ), IsLocallyConstant ψ → ψ ≠ 1 → ∀ m : ℕ, (∀ U : Subgroup (GL (Fin (m + 1)) F), IsCompact (U : Set (GL (Fin (m + 1)) F)) → IsOpen (U : Set (GL (Fin (m + 1)) F)) → ∀ z : GL (Fin (m + 1)) F, ∃ U₁ : Subgroup (GL (Fin (m + 1)) F), U₁ ≤ U ∧ IsOpen (U₁ : Set (GL (Fin (m + 1)) F)) ∧ GlobalTheory.JSW.Cut.Cuts ψ (U : Set (GL (Fin (m + 1)) F)) (GlobalTheory.JSW.Cut.cell z (U : Set (GL (Fin (m + 1)) F))) {g | ∃ p : GL (Fin (m + 1)) F, GlobalTheory.JSW.KirFin.lr p = GlobalTheory.JSW.KirFin.lr 1 ∧ ∃ u ∈ U₁, g = p * u}) → ∀ B : Subgroup (GL (Fin (m + 1)) F), IsCompact (B : Set (GL (Fin (m + 1)) F)) → IsOpen (B : Set (GL (Fin (m + 1)) F)) → ∀ L : Set (Fin (m + 1) → F), L ∈ nhds (0 : Fin (m + 1) → F) → ∀ h₀ : GL (Fin (m + 1)) F, ∃ T : GL (Fin (m + 2)) F →₀ ℂ, ∀ f : GL (Fin (m + 2)) F → ℂ, GlobalTheory.JSW.KirFin.Eqv ψ f → (∀ b ∈ B, ∀ g, f (g * GlobalTheory.JSW.KirFin.cor b) = f g) → (∀ y ∈ L, ∀ g, f (g * GlobalTheory.JSW.KirFin.mir 1 y) = f g) → ∀ h : GL (Fin (m + 1)) F, GlobalTheory.JSW.Cut.act T f (GlobalTheory.JSW.KirFin.cor h) = (GlobalTheory.JSW.Cut.cell h₀ (B : Set (GL (Fin (m + 1)) F))).indicator (fun h => f (GlobalTheory.JSW.KirFin.cor h)) h := by
   intro F _ _ _ ψ hψ hψ1 m H B hBc hBo L hL h₀
   classical

@@ -26,6 +26,19 @@ noncomputable section
 
 namespace GlobalTheory.ConjRowCuspGap
 
+/- English proof (translation)
+Take `⟨hr, hgp⟩` from `hG`. Establish `hkb` using `GlobalTheory.Core.Rk.HdNc.node_of_sign D.R a b hab hne`. Establish `hbr : b.1 < D.R.r` using `b.2`. Establish `hm2` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`.
+
+Establish `hr' : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hstep : ∀ (i : Fin D.R.r) (hi : i.1 + 1 < D.R.r), lamS D.R (D.hc τ) ⟨i.1 + 1, hi⟩ < lamS D.R (D.hc τ) i` using `fun i hi => (Formalism.MainNotions.S.Inh.aut_isHCParam_lamS D.R (D.hc τ)).1 (show i < ⟨i.1 + 1, hi⟩ by rw [Fin.lt_def]; simp)`. Use `set j := b.1 - D.R.k with hj`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `e1 : b = ⟨D.R.k - 1 + (j + 1), by omega⟩` using `by ext; simp only []; omega`.
+
+Establish `hac : a ≤ (⟨D.R.k - 1 + j, by omega⟩ : Fin D.R.r)`. Rewrite using `[Fin.le_def]`. Simplify using `only []`. Establish `: a.1 < b.1` using `hab`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1` using `GlobalTheory.Core.Rk.HdNc.anti_of_step _ hstep _ _ hac`. Establish `hg` using `hgp τ ⟨j, by omega⟩ hj1`. Establish `hgR : (16 : ℝ) * (D.R.r : ℝ) ^ 19 ≤ (((D.hc τ).b ⟨j + 1, hj1⟩ : ℚ) : ℝ) - (((D.hc τ).b ⟨j, by omega⟩ : ℚ) : ℝ)`. Conclude with `hg` after adjusting the coercions. Rewrite `h1` using `[GlobalTheory.Core.Rk.HdNc.lamS_node D.R (D.hc τ) j (by omega) (by omega)]`.
+
+Rewrite using `[e1, GlobalTheory.Core.Rk.HdNc.lamS_node D.R (D.hc τ) (j + 1) hj1 (by omega)]`. Establish `hr7 : (7 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 7 ≤ D.R.r)`. Establish `h5 : (D.R.r : ℝ) ^ 5 ≤ (D.R.r : ℝ) ^ 19` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `h4 : (0 : ℝ) ≤ (D.R.r : ℝ) ^ 4` using `by positivity`. Establish `h6 : 7 * (D.R.r : ℝ) ^ 4 ≤ (D.R.r : ℝ) ^ 5`.
+
+Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gap_of_sign {D : D7} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (τ : D.what₂.Tau) (a b : Fin D.R.r)
     (hab : a < b) (hne : epsS D.R a ≠ epsS D.R b) :
     100 * (D.R.r : ℝ) ^ 4 ≤ lamS D.R (D.hc τ) a - lamS D.R (D.hc τ) b := by
@@ -57,6 +70,13 @@ theorem gap_of_sign {D : D7} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp 
     rw [pow_succ]; nlinarith
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ (τ : D.what₂.Tau) (a b : Fin D.R.r), epsS D.R a ≠ epsS D.R b → 100 * (D.R.r : ℝ) ^ 4 ≤ |lamS D.R (D.hc τ) a - lamS D.R (D.hc τ) b|`. Introduce `τ a b hne`. Establish `hp : (0 : ℝ) ≤ 100 * (D.R.r : ℝ) ^ 4` using `by positivity`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Use `gap_of_sign hG τ a b h hne` as an intermediate fact.
+
+Rewrite using `[abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd (by rw [h]) hne`. Use `gap_of_sign hG τ b a h (Ne.symm hne)` as an intermediate fact. Rewrite using `[abs_sub_comm, abs_of_nonneg (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `v a b hab`. Rewrite `hab` using `[X.eps_eq, X.eps_eq]`. Rewrite using `[X.lam_eq, X.lam_eq]`. Conclude with `key _ _ _ hab`.
+-/
 theorem gapGe_of_gapHyp {D : D7} (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (X : HidaSetting D) :
     GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) := by
   have key : ∀ (τ : D.what₂.Tau) (a b : Fin D.R.r), epsS D.R a ≠ epsS D.R b →
@@ -76,6 +96,15 @@ theorem gapGe_of_gapHyp {D : D7} (hG : Formalism.L2.SG.ConcreteSettingExists.Gap
   rw [X.lam_eq, X.lam_eq]
   exact key _ _ _ hab
 
+/- English proof (translation)
+Introduce `_ _ _ _ D G' _ _ Pl0 T A Ks _ _ _ R F X h t _ hG _ _ _ _ c _ Φ hΦ hcont u`. Take `⟨ψ, hψ⟩` from `hcont u`. Establish `hgap` using `gapGe_of_gapHyp hG X`. Take `⟨hd, hl, hH, hb, -⟩` from `GlobalTheory.Core.Mi.seeData_of_gap D X hgap`. Establish `hK : ∀ v, Formalism.MainNotions.S.IsKTypeOf (X.B.I.ε v) (X.B.σ v) (Formalism.QuantumDeterminants.lowK (X.B.I.ε v) (X.B.lam v)) (Formalism.MainNotions.S.lowKSub (X.B.I.ε v) (X.B.lam v) (X.B.σ v))` using `fun v => GlobalTheory.Jet.MultGap.isKTypeOf_lowKSub _ _ _ _ _ (hd v).1 (hd v).2.1 fun a b hab => (GlobalTheory.Dec.ProjCuspGap.two_mul_lt _ _ (hb v) (GlobalTheory.Dec.ProjCuspGap.rank_pos_of_ne _ hab)).trans_le (hgap v a b hab)`.
+
+Establish `hL2` using `((GlobalTheory.Dec.CuspAllKType.cusp_all X.B X.dv _ hd hK (GlobalTheory.PinScale.one_le_g X) hb hl hH Φ hΦ).2 (X.B.tens (GlobalTheory.ConjRowMult.vecC X (MP R) c u))).1`. Establish `hψc` using `GlobalTheory.ConjRowMultCusp.isCuspFn_of_contRep X hψ hL2`. Establish `hY` using `GlobalTheory.ConjRowMultCusp.isCuspFun_of_isCuspFn_iota D X.B.I h X.B.μf ψ hψ.1 hψ.2.1 hψc`. Establish `e : GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t u = fun y => star (ψ (iotaX X h (y * t⁻¹)))`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[GlobalTheory.ConjRowMult.conjMap_apply, GlobalTheory.ConjRowMult.contRepL_spec X hψ]`. Rewrite using `[e]`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Establish `hz : ∫ n in 𝓕, ψ (iotaX X h ((n : GA D (D.sp.Y 0)) * (g * t⁻¹))) ∂μ = 0` using `hY r C hC μ 𝓕 hμ h𝓕 (g * t⁻¹)`. Use `show ∫ n in 𝓕, star (ψ (iotaX X h ((n : GA D (D.sp.Y 0)) * g * t⁻¹))) ∂μ = 0`.
+
+Simplify using `only [mul_assoc]`. Use `congrArg (starRingEnd ℂ) hz` as an intermediate fact. Rewrite `this` using `[← integral_conj, map_zero]`. Conclude with `this`.
+-/
 theorem conjMap_isCuspFun : GlobalTheory.Dec.DSInfChar → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesUpqUnique → Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (D.sp.Y 0)), (∀ x : X.B.I.E, HEq (X.ιE x) x) → GapHyp D → R.toLevCh.Is A.μ0 → R.models_inf → R.models_ν0 → SeeAt R F X h t → ∀ (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ ((MP R).rep τ g w) = X.B.σ (X.pl.symm τ) (Formalism.MainNotions.S.uMat ((iotaX X h (atTau R.θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) → ∀ Φ : X.B.Hs →L[ℂ] L2X X, Φ ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re → (∀ u : (MP R).Vec, ∃ ψ, Formalism.L2.SG.EvalTOntoRep.IsContRep X (Φ (X.B.tens (GlobalTheory.ConjRowMult.vecC X (MP R) c u))) ψ) → ∀ u : (MP R).Vec, IsCuspFun (D.sp.Y 0) (GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t u) := by
   intro _ _ _ _ D G' _ _ Pl0 T A Ks _ _ _ R F X h t _ hG _ _ _ _ c _ Φ hΦ hcont u
   obtain ⟨ψ, hψ⟩ := hcont u

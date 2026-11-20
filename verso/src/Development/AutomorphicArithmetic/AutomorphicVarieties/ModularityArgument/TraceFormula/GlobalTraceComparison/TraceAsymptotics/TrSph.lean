@@ -10,6 +10,15 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+Introduce `hEx hSL E _ _ _ n w τ B hB e`. Establish `hne : fixed τ.ρ (KGL w n) ≠ ⊥` using `hB.1`. Establish `hfr : Module.finrank ℂ (fixed τ.ρ (KGL w n)) = 1` using `(hSL E n w τ hne).1`. Establish `hact : ∀ x ∈ fixed τ.ρ (KGL w n), levOp τ.ρ (KGL w n) (KGL w n) (fn1 n w e) LinearMap.id x = ev1 n w e B • x`. Introduce `x hx`.
+
+Distinguish the cases in `h0 : x = 0`. Simplify using `[h0]`. Conclude with `(hEx E n w e).2 _ τ.ρ x B (hB.2 x hx h0)`. Establish `hmaps : ∀ v ∈ fixed τ.ρ (KGL w n), levOp τ.ρ (KGL w n) (KGL w n) (fn1 n w e) LinearMap.id v ∈ fixed τ.ρ (KGL w n)` using `fun v hv => by`. Rewrite using `[hact v hv]`.
+
+Conclude with `Submodule.smul_mem _ _ hv`. Establish `hres : (levOp τ.ρ (KGL w n) (KGL w n) (fn1 n w e) LinearMap.id).restrict hmaps = ev1 n w e B • LinearMap.id`. Use extensionality with `⟨x, hx⟩`. Simplify using `[LinearMap.restrict_apply, hact x hx]`. Use `haveI : Module.Finite ℂ (fixed τ.ρ (KGL w n)) := Module.finite_of_finrank_pos (by omega)`.
+
+Unfold `twTr`. Rewrite using `[dif_pos hmaps, hres, map_smul, LinearMap.trace_id, hfr]`. Simplify using the standard rewrite rules.
+-/
 theorem trSph : TrSph := by
   intro hEx hSL E _ _ _ n w τ B hB e
   have hne : fixed τ.ρ (KGL w n) ≠ ⊥ := hB.1

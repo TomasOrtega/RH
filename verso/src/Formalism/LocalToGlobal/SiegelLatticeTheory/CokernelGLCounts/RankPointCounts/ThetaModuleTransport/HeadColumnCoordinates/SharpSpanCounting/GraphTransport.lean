@@ -8,6 +8,21 @@ namespace Formalism.L2.SG.LocalCountModules.LocCntCommon
 
 section Transport
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h1, ← h2, ← h, Set.image_image, Set.image_image]`. Apply `Set.image_congr` to reduce the goal to its premises. Introduce `p _`.
+
+Simplify using `[hP]`. Introduce `h`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`.
+
+Establish `hc : (Ψ₂ (θ p.1), Pc₁ p.2) ∈ Γc₂`. Rewrite using `[← h]`. Use `⟨(Ψ₁ p.1, Pc₁ p.2), ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `⟨p, hp, rfl⟩`.
+
+Rewrite `hc` using `[← h2]`. Take `⟨q', hq', hqe⟩` from `hc`. Simplify using `only [Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at hqe`. Establish `e2 : q'.2 = φ p.2` using `hinj p hp q' hq' hqe.2`. Establish `: q' = (θ p.1, φ p.2)` using `Prod.ext hqe.1 e2`.
+
+Use `show (θ p.1, φ p.2) ∈ Γ₂`. Rewrite using `[← this]`. Conclude with `hq'`. Introduce `hq`. Establish `hc : (Ψ₂ q.1, Pc₂ q.2) ∈ Γc₂`.
+
+Rewrite using `[← h2]`. Conclude with `⟨q, hq, rfl⟩`. Rewrite `hc` using `[← h]`. Take `⟨c, hc1, hce⟩` from `hc`. Rewrite `hc1` using `[← h1]`.
+
+Take `⟨p, hp, rfl⟩` from `hc1`. Simplify using `only [Prod.mk.injEq, Equiv.symm_apply_apply, EmbeddingLike.apply_eq_iff_eq] at hce`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `e2 : q.2 = φ p.2` using `hinj p hp q hq hce.2.symm`. Conclude with `Prod.ext hce.1 e2.symm`.
+-/
 theorem graph_transport {D₁ D₂ Dc₁ Dc₂ W₁ W₂ P : Type} (Ψ₁ : D₁ ≃ Dc₁) (Ψ₂ : D₂ ≃ Dc₂)
     (θ : D₁ ≃ D₂) (φ : W₁ → W₂) (Pc₁ : W₁ → P) (Pc₂ : W₂ → P) (Γ₁ : Set (D₁ × W₁))
     (Γ₂ : Set (D₂ × W₂)) (Γc₁ : Set (Dc₁ × P)) (Γc₂ : Set (Dc₂ × P))
@@ -58,6 +73,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Rewrite using `[map_smul]`. Establish `h1 : φ a = k₂ • (c₂ • φ a)` using `by rw [smul_smul, hk₂, one_smul]`. Rewrite using `[h1, e, smul_smul, smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smul_transport {A B : Type} [AddCommGroup A] [Module E A] [AddCommGroup B] [Module E B]
     (φ : A ≃ₗ[E] B) (c₁ c₂ k₁ k₂ : E) (hk₁ : k₁ * c₁ = 1) (hk₂ : k₂ * c₂ = 1) (a : A) (b : B)
     (e : c₂ • φ a = c₁ • b) : φ (k₁ • a) = k₂ • b := by
@@ -70,6 +88,15 @@ theorem smul_transport {A B : Type} [AddCommGroup A] [Module E A] [AddCommGroup 
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => H.h (H.om' f f') x = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Unfold `HermSp.om'`. Rewrite using `[h_sum_left]`.
+
+Establish `hm` using `congrFun (congrFun (Matrix.mul_adjugate (H.Zhat f f')) a.castSucc) (Fin.last r)`. Rewrite `hm` using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply_ne (Fin.castSucc_lt_last a).ne, smul_zero]`. Rewrite using `[← hm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Simplify using `[HermSp.Zhat, mul_comm]`. Conclude with `h_zero_right H _`. Introduce `x y _ _ hx hy`. Rewrite using `[h_add_right, hx, hy, add_zero]`. Introduce `c x _ hx`.
+
+Rewrite using `[h_smul_right, hx, mul_zero]`.
+-/
 theorem om'_mem (f f' : Fin (r + 1) → V) : H.om' f f' ∈ H.perp (H.X f) := by
   intro x hx
   refine Submodule.span_induction (p := fun x _ => H.h (H.om' f f') x = 0) ?_ ?_ ?_ ?_ hx
@@ -88,12 +115,20 @@ theorem om'_mem (f f' : Fin (r + 1) → V) : H.om' f f' ∈ H.perp (H.X f) := by
   · intro c x _ hx
     rw [h_smul_right, hx, mul_zero]
 
+/- English proof (translation)
+Use `hs ⟨v₁, h₁⟩ ⟨v₂, h₂⟩ rfl rfl` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sends_one {f₁ f₂ : Fin (r + 1) → V} (φ : H.Wb f₁ ≃ₗ[E] H.Wb f₂) (v₁ v₂ : V)
     (h₁ : v₁ ∈ H.perp (H.X f₁)) (h₂ : v₂ ∈ H.perp (H.X f₂))
     (hs : H.SendsTo φ.toLinearMap 1 1 v₁ v₂) : φ (H.mkW f₁ ⟨v₁, h₁⟩) = H.mkW f₂ ⟨v₂, h₂⟩ := by
   have := hs ⟨v₁, h₁⟩ ⟨v₂, h₂⟩ rfl rfl
   simpa using this
 
+/- English proof (translation)
+Establish `e` using `hs ⟨_, om'_mem H f₁ f₁'⟩ ⟨_, om'_mem H f₂ f₂'⟩ rfl rfl`. Establish `e1 : H.mkW f₁ ⟨omP H f₁ f₁', omP_mem H f₁ f₁' hD₁⟩ = Ring.inverse (H.Dl f₁ f₁' (r + 1)) • H.mkW f₁ ⟨_, om'_mem H f₁ f₁'⟩`. Rewrite using `[← LinearMap.map_smul]`. Both sides reduce to the same expression. Establish `e2 : H.mkW f₂ ⟨omP H f₂ f₂', omP_mem H f₂ f₂' hD₂⟩ = Ring.inverse (H.Dl f₂ f₂' (r + 1)) • H.mkW f₂ ⟨_, om'_mem H f₂ f₂'⟩`.
+
+Rewrite using `[← LinearMap.map_smul]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Conclude with `smul_transport φ _ _ _ _ (Ring.inverse_mul_cancel _ hD₁) (Ring.inverse_mul_cancel _ hD₂) _ _ e`.
+-/
 theorem sends_omP {f₁ f₁' f₂ f₂' : Fin (r + 1) → V} (φ : H.Wb f₁ ≃ₗ[E] H.Wb f₂)
     (hD₁ : IsUnit (H.Dl f₁ f₁' (r + 1))) (hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1)))
     (hs : H.SendsTo φ.toLinearMap (H.Dl f₂ f₂' (r + 1)) (H.Dl f₁ f₁' (r + 1)) (H.om' f₁ f₁')
@@ -111,6 +146,11 @@ theorem sends_omP {f₁ f₁' f₂ f₂' : Fin (r + 1) → V} (φ : H.Wb f₁ �
   rw [e1, e2]
   exact smul_transport φ _ _ _ _ (Ring.inverse_mul_cancel _ hD₁) (Ring.inverse_mul_cancel _ hD₂) _ _ e
 
+/- English proof (translation)
+Establish `hD : H.Dl f f' (r + 1) = (H.Zhat f f').det`. Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Simplify using `[Fin.castLE_refl]`. Unfold `omP HermSp.om'`.
+
+Rewrite using `[h_smul_right, h_sum_right, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[← mul_assoc, ← map_mul, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, hD]`.
+-/
 theorem h_omP (f f' : Fin (r + 1) → V) (u : V) :
     H.h u (omP H f f') = ∑ b, M.L.cj ((H.Zhat f f')⁻¹ b (Fin.last r)) * H.h u (f' b) := by
   have hD : H.Dl f f' (r + 1) = (H.Zhat f f').det := by

@@ -20,6 +20,11 @@ def flagProjPt {K' : Type*} (j : K' ↪ Option (Option K)) (y : (Σ k, ι k) →
 
 end Objects
 
+/- English proof (translation)
+Establish `key : ((pointConeMap R pt).comp (rename (FieldNumbers.blockIncl j ι'))) = ((rename j).restrictScalars R).comp (pointConeMap R (fun p => pt (FieldNumbers.blockIncl j ι' p)))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[pointConeMap, FieldNumbers.blockIncl]`. Use extensionality with `f`.
+
+Simplify using `only [pointIdeal, Ideal.mem_comap, RingHom.mem_ker]`. Establish `hf` using `congrArg (fun φ => φ f) key`. Simplify using `only [AlgHom.comp_apply] at hf`. Rewrite using `[hf, AlgHom.restrictScalars_apply]`. Conclude with `map_eq_zero_iff _ (rename_injective _ j.injective)`.
+-/
 theorem comap_pointIdeal_blockIncl {R : Type*} [CommRing R] {Φ : Type*} [Field Φ] [Algebra R Φ] {K K' : Type*}
     (j : K ↪ K') {ι' : K' → Type*} (pt : (Σ k', ι' k') → Φ) :
     (pointIdeal R pt).comap (rename (FieldNumbers.blockIncl j ι')) =

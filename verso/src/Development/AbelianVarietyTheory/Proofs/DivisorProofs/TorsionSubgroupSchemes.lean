@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.HTTorsRep
 
+/- English proof (translation)
+Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp.out]`. Introduce `hdvd`. Establish `h1 : (1 : 𝓞 K) ∈ 𝔟 ⊔ Ideal.span {(p : 𝓞 K)}` using `h ▸ Submodule.mem_top`. Take `⟨β, hβ, z, hz, hβz⟩` from `Submodule.mem_sup.1 h1`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`.
+
+Distinguish the cases in `h0 : 𝔟 = ⊥`. Substitute `h0` using the available equality. Establish `hβ0 : β = 0` using `(Submodule.mem_bot _).1 hβ`. Substitute `hβ0` using the available equality. Rewrite `hβz` using `[zero_add]`.
+
+Establish `hu : IsUnit (p : 𝓞 K)` using `⟨⟨(p : 𝓞 K), y, by rw [mul_comm]; exact hβz, hβz⟩, rfl⟩`. Establish `hu'` using `hu.map (Algebra.norm ℤ : 𝓞 K →* ℤ)`. Rewrite `hu'` using `[show (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ) by simp, Algebra.norm_algebraMap]`. Establish `hd : Module.finrank ℤ (𝓞 K) ≠ 0` using `(Module.finrank_pos).ne'`. Rewrite `hu'` using `[isUnit_pow_iff hd, Int.isUnit_iff]`.
+
+Break down `hu' with h' | h'` into its components or cases. Conclude with `hp.out.one_lt.ne' (by exact_mod_cast h')`. Establish `: (0 : ℤ) ≤ p` using `by positivity`. Use linear arithmetic over natural numbers and integers. Establish `hne : Ideal.absNorm 𝔟 ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Rewrite `hne`, `hdvd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 K ⧸ 𝔟)` using `Nat.finite_of_card_ne_zero hne`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' p hdvd`. Establish `hpx : (p : 𝓞 K ⧸ 𝔟) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`.
+
+Establish `h1' : (Ideal.Quotient.mk 𝔟 y) * (p : 𝓞 K ⧸ 𝔟) = 1`. Use `congrArg (Ideal.Quotient.mk 𝔟) hβz` as an intermediate fact. Rewrite `this` using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 hβ, zero_add, map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `hx0 : x = 0`. Rewrite using `[← _root_.one_mul x, ← h1', _root_.mul_assoc, hpx, MulZeroClass.mul_zero]`.
+
+Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hp.out.one_lt.ne hx`.
+-/
 theorem absNorm_coprime {K : Type} [Field K] [NumberField K] (p : ℕ) [hp : Fact p.Prime] (𝔟 : Ideal (𝓞 K))
     (h : 𝔟 ⊔ Ideal.span {(p : 𝓞 K)} = ⊤) : (Ideal.absNorm 𝔟).Coprime p := by
   rw [Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp.out]
@@ -52,8 +67,14 @@ section Tors
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (n : ℕ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g h _ => toUnit_unique g h⟩`.
+-/
 theorem mono_of_unit {X : Over S} (e : 𝟙_ (Over S) ⟶ X) : Mono e := ⟨fun g h _ => toUnit_unique g h⟩
 
+/- English proof (translation)
+Conclude with `(pullback.condition (f := mulN A n) (g := (η : 𝟙_ (Over S) ⟶ A))).trans (congrArg (· ≫ η[A]) (toUnit_unique _ _))`.
+-/
 theorem ι_mulN : torsion.ι A n ≫ mulN A n = toUnit _ ≫ η[A] := by
   exact (pullback.condition (f := mulN A n) (g := (η : 𝟙_ (Over S) ⟶ A))).trans
     (congrArg (· ≫ η[A]) (toUnit_unique _ _))
@@ -61,8 +82,14 @@ theorem ι_mulN : torsion.ι A n ≫ mulN A n = toUnit _ ≫ η[A] := by
 def torsEta : 𝟙_ (Over S) ⟶ torsion A n :=
   pullback.lift η[A] (𝟙 _) (by rw [IsMonHom.one_hom, Category.id_comp])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem torsEta_ι : torsEta n ≫ torsion.ι A n = η[A] := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Use `mono_of_unit η[A]` as an intermediate fact. Conclude with `pullback.fst_of_mono`.
+-/
 theorem mono_ι : Mono (torsion.ι A n) := by
   have := mono_of_unit η[A]
   exact pullback.fst_of_mono
@@ -71,9 +98,29 @@ def torsAct (f : A ⟶ A) [IsMonHom f] (hf : f ≫ mulN A n = mulN A n ≫ f) : 
   pullback.lift (torsion.ι A n ≫ f) (toUnit _) (by
     rw [Category.assoc, hf, ← Category.assoc, ι_mulN, Category.assoc, IsMonHom.one_hom])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc (attr := simp)] theorem torsAct_ι (f : A ⟶ A) [IsMonHom f] (hf : f ≫ mulN A n = mulN A n ≫ f) :
     torsAct n f hf ≫ torsion.ι A n = torsion.ι A n ≫ f := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Establish `hsec : IsOpenImmersion (torsEta (A` using `A) n).left ∧ IsClosedImmersion (torsEta (A := A) n).left := GlobalTheory.isOpenImmersion_and_isClosedImmersion_of_section_of_etale (torsion A n).hom _ (Over.w (torsEta n))`. Use `hsec.1` as an intermediate fact. Use `hsec.2` as an intermediate fact. Use `mono_of_unit (torsEta (A := A) n)` as an intermediate fact. Use `mono_ι (A := A) n` as an intermediate fact.
+
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨_, 𝟙 _, inferInstance, by rw [Over.id_left]; infer_instance, by rw [Over.id_left]; infer_instance, fun W y => ⟨fun _ a ha => absurd ha (Finset.notMem_empty a), fun _ => ⟨y, Category.comp_id y⟩⟩⟩`. Consider the case `insert a t hat ih`. Take `⟨Z, j, hj, hjo, hjc, hpts⟩` from `ih`.
+
+Set `g` to `j ≫ torsAct n (act a) (hc a)`. Establish `hP` using `(IsPullback.of_hasPullback g (torsEta n)).map (Over.forget S)`. Establish `ho : IsOpenImmersion (pullback.fst g (torsEta n)).left` using `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hP.flip hsec.1`. Establish `hcl : IsClosedImmersion (pullback.fst g (torsEta n)).left` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hP.flip hsec.2`. Use `⟨pullback g (torsEta n), pullback.fst g (torsEta n) ≫ j, inferInstance, ?_, ?_, fun W y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Over.comp_left]`. Use `infer_instance`. Rewrite using `[Over.comp_left]`. Use `infer_instance`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, rfl⟩ b hb`. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Establish `e : j ≫ torsion.ι A n ≫ act b = g ≫ torsion.ι A n` using `by simp [g]`. Simplify using `only [Category.assoc]`. Rewrite using `[e, ← Category.assoc (pullback.fst g _), pullback.condition]`.
+
+Simplify using `only [Category.assoc, torsEta_ι]`. Rewrite using `[← Category.assoc, toUnit_unique (z ≫ pullback.snd g (torsEta n)) (toUnit W)]`. Both sides reduce to the same expression. Conclude with `(hpts W _).1 ⟨z ≫ pullback.fst _ _, Category.assoc _ _ _⟩ b hb`. Introduce `h`.
+
+Take `⟨w, hw⟩` from `(hpts W y).2 (fun b hb => h b (Finset.mem_insert_of_mem hb))`. Establish `hwg : w ≫ g = toUnit W ≫ torsEta n`. Rewrite using `[← cancel_mono (torsion.ι A n)]`. Simplify using `only [g, Category.assoc, torsAct_ι, torsEta_ι]`. Rewrite using `[← Category.assoc w j, hw, h a (Finset.mem_insert_self a t)]`.
+
+Both sides reduce to the same expression. Conclude with `⟨pullback.lift w (toUnit W) hwg, by rw [← Category.assoc, pullback.lift_fst, hw]⟩`.
+-/
 theorem exists_openClosed {Ix : Type} [DecidableEq Ix] (act : Ix → (A ⟶ A)) [∀ a, IsMonHom (act a)]
     (hc : ∀ a, act a ≫ mulN A n = mulN A n ≫ act a) [Etale (torsion A n).hom] [IsSeparated (torsion A n).hom]
     (t : Finset Ix) :
@@ -120,6 +167,29 @@ end Tors
 
 open GlobalTheory.IwLevel in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o 𝔟 h𝔟`. Use `set n := Ideal.absNorm 𝔟 with hn_def`. Establish `hcop` using `absNorm_coprime p 𝔟 h𝔟`. Establish `hnR : IsUnit ((n : ℕ) : R)` using `b.unit n hcop`. Establish `hnS : IsUnit ((n : ℕ) : Γ(S, ⊤))`.
+
+Use `hnR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom` as an intermediate fact. Simplify using `using this`. Use `haveI := o.ab`. Take `⟨-, hTf, hTe⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion o.A hnS`. Establish `hactN : ∀ k : ℕ, o.act.act (k : D.O) = mulN o.A k`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`.
+
+Rewrite using `[Nat.cast_zero]`. Conclude with `left_eq_mul.1 h`. Consider the case `succ k ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one]`. Both sides reduce to the same expression. Establish `hc : ∀ a : D.O, o.act.act a ≫ mulN o.A n = mulN o.A n ≫ o.act.act a`.
+
+Introduce `a`. Rewrite using `[← hactN, ← o.act.mul, ← o.act.mul, Nat.cast_comm]`. Use `haveI : ∀ a, IsMonHom (o.act.act a) := o.act.hom`. Use `haveI : IsSeparated (torsion o.A n).hom := inferInstance`. Establish `: Module.Finite ℤ D.O` using `D.finO`.
+
+Establish `: IsNoetherian D.O D.O` using `isNoetherian_of_tower ℤ inferInstance`. Take `⟨t, ht⟩` from `IsNoetherian.noetherian (𝔟.map (algebraMap (𝓞 D.F) D.O))`. Take `⟨Z, j, hj, hjo, hjc, hpts⟩` from `exists_openClosed n o.act.act hc t`. Use `mono_ι (A := o.A) n` as an intermediate fact. Use `⟨Z, j ≫ torsion.ι o.A n, inferInstance, ?_, ?_, fun T x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.w j]`. Use `infer_instance`. Rewrite using `[← Over.w j]`. Use `infer_instance`. Rewrite using `[← ht]`.
+
+Use `Iff.trans ?_ (killedBy_span (htAct o) (t : Set D.O) x).symm` and prove the remaining obligations. Simplify using `only [htAct_act]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ a ha`. Simplify `(hpts T (z ≫ j)).1 ⟨z, rfl⟩ a ha` using `only [Category.assoc]`.
+
+Introduce `hx`. Establish `hn𝔟 : ((n : ℕ) : 𝓞 D.F) ∈ 𝔟` using `Ideal.absNorm_mem 𝔟`. Establish `hnO : ((n : ℕ) : D.O) ∈ Submodule.span D.O (t : Set D.O)`. Rewrite using `[ht]`. Simplify using `using Ideal.mem_map_of_mem (algebraMap (𝓞 D.F) D.O) hn𝔟`.
+
+Establish `hxn : x ≫ mulN o.A n = toUnit T ≫ η[o.A]`. Rewrite using `[← hactN]`. Use `(killedBy_span (htAct o) (t : Set D.O) x).2 (by simpa only [htAct_act] using hx) _ hnO` as an intermediate fact. Conclude with `this`. Set `y : T ⟶ torsion o.A n` to `pullback.lift x (toUnit T) hxn`.
+
+Establish `hy : y ≫ torsion.ι o.A n = x` using `pullback.lift_fst _ _ _`. Take `⟨z, hz⟩` from `(hpts T y).2 (fun a ha => by rw [← Category.assoc, hy]; exact hx a ha)`. Conclude with `⟨z, by rw [← Category.assoc, hz, hy]⟩`.
+-/
 theorem exists_finiteEtale_killedBy : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s) (𝔟 : Ideal (𝓞 D.F)), 𝔟 ⊔ Ideal.span {(p : 𝓞 D.F)} = ⊤ → ∃ (K : Over S) (i : K ⟶ o.A), Mono i ∧ IsFinite K.hom ∧ Etale K.hom ∧ ∀ (T : Over S) (x : T ⟶ o.A), GlobalTheory.IwLevel.InSub i x ↔ GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (𝔟.map (algebraMap (𝓞 D.F) D.O)) x := by
   intro p _ D R _ b N S s o 𝔟 h𝔟
   classical

@@ -1,6 +1,19 @@
 import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CommonEigenvalue
 
+/- English proof (translation)
+Introduce `ι M _ _ _ f hc W hW hinv`. Take `⟨V, ⟨hVW, hV0, hVinv⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ M)).has_min {V : Submodule ℂ M | V ≤ W ∧ V ≠ ⊥ ∧ ∀ i, ∀ y ∈ V, f i y ∈ V} ⟨W, le_rfl, hW, hinv⟩`. Take `⟨y, hyV, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV0`. Use `⟨y, hVW hyV, hy0, fun i => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial V := Submodule.nontrivial_iff_ne_bot.mpr hV0`.
+
+Take `⟨c, hcv⟩` from `Module.End.exists_eigenvalue ((f i).restrict (hVinv i) : Module.End ℂ V)`. Take `⟨v, hv⟩` from `hcv.exists_hasEigenvector`. Establish `hv1 : f i (v : M) = c • (v : M)`. Establish `h` using `congrArg Subtype.val hv.apply_eq_smul`. Simplify using `using h`.
+
+Establish `hv0 : (v : M) ≠ 0` using `fun h => hv.2 (Subtype.ext h)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hmin (V ⊓ (f i).eigenspace c) ⟨inf_le_left.trans hVW, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `h`.
+
+Establish `hm : (v : M) ∈ V ⊓ (f i).eigenspace c` using `⟨v.2, Module.End.mem_eigenspace_iff.mpr hv1⟩`. Rewrite `hm` using `[h]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).mp hm)`. Introduce `j z hz`. Use `⟨hVinv j z hz.1, Module.End.mem_eigenspace_iff.mpr ?_⟩` and prove the remaining obligations.
+
+Establish `hz2 : f i z = c • z` using `Module.End.mem_eigenspace_iff.mp hz.2`. Establish `h : f i (f j z) = f j (f i z)`. Rewrite using `[← Module.End.mul_apply, hc i j, Module.End.mul_apply]`. Rewrite using `[h, hz2, map_smul]`. Use `lt_of_le_of_ne inf_le_left fun h => hne ?_` and prove the remaining obligations.
+
+Establish `hm : y ∈ V ⊓ (f i).eigenspace c` using `by rw [h]; exact hyV`. Conclude with `Module.End.mem_eigenspace_iff.mp hm.2`.
+-/
 theorem UpperTheory.Reformulated.B.CommonEigenvectorInInvariantComplexSubspace.exists_common_eigenvector :
     ∀ {ι M : Type} [inst : AddCommGroup M]
     [inst_1 : _root_.Module ℂ M] [FiniteDimensional ℂ M] (f : ι → Module.End ℂ M),

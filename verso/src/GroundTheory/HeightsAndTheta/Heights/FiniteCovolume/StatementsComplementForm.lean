@@ -19,6 +19,9 @@ def IsHyperbolicPair (h : HermitianForm F E W) (v w : W) : Prop :=
 def hypComplement (h : HermitianForm F E W) (v w : W) : Submodule E W :=
   LinearMap.ker (h.toSesq v) ⊓ LinearMap.ker (h.toSesq w)
 
+/- English proof (translation)
+Simplify using `[hypComplement]`.
+-/
 theorem mem_hypComplement {h : HermitianForm F E W} {v w x : W} :
     x ∈ hypComplement h v w ↔ h.toSesq v x = 0 ∧ h.toSesq w x = 0 := by
   simp [hypComplement]
@@ -33,8 +36,16 @@ namespace GaussianPlane
 
 def w0G : Fin 2 → Eg := ![1 / 2, -1 / 2]
 
+/- English proof (translation)
+The claim follows from `map_ofNat _ 2`.
+-/
 theorem conj_two_G : conj ℚ Eg (2 : Eg) = 2 := map_ofNat _ 2
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_hypComplement, hG_apply, hG_apply]`. Take `⟨h1, h2⟩` from `hx`. Simplify using `[v0, w0G, conj_two_G] at h1 h2`. Establish `e0 : x 0 = 0` using `by linear_combination h2 + (1 / 2 : Eg) * h1`. Establish `e1 : x 1 = 0` using `by linear_combination h2 - (1 / 2 : Eg) * h1`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `e0`. Conclude with `e1`.
+-/
 theorem eq_zero_of_mem_hypComplementG {x : Fin 2 → Eg} (hx : x ∈ hypComplement hG v0 w0G) :
     x = 0 := by
   rw [mem_hypComplement, hG_apply, hG_apply] at hx

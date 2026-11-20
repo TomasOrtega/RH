@@ -18,6 +18,9 @@ namespace GlobalTheory.DenominatorExistenceLemmas
 
 variable {M W : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨_, hfa⟩` from `GlobalTheory.ProperFinite.isFiniteQC_pushforward f hL (structureModule M)`. Conclude with `hfa V hV`.
+-/
 theorem finite_app (f : M ⟶ W) [IsProper f] [IsLocallyNoetherian W] {L : ReciprocityTheory.ChartRestriction.G.Semi.LB M}
     (hL : IsAmpleLB L) {V : W.Opens} (hV : IsAffineOpen V) : (f.app V).hom.Finite := by
   obtain ⟨_, hfa⟩ := GlobalTheory.ProperFinite.isFiniteQC_pushforward f hL (structureModule M)
@@ -27,6 +30,9 @@ variable [IsIntegral M] [IsIntegral W]
 
 omit [IsIntegral W] in
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `f.denseRange.exists_mem_open U.isOpen ⟨y, hy⟩`. Conclude with `gen_mem (U := f ⁻¹ᵁ U) (x := m) hm`.
+-/
 theorem gen_mem_preimage (f : M ⟶ W) [IsDominant f] {U : W.Opens} {y : W} (hy : y ∈ U) :
     genericPoint M ∈ f ⁻¹ᵁ U := by
   obtain ⟨m, hm⟩ := f.denseRange.exists_mem_open U.isOpen ⟨y, hy⟩
@@ -34,10 +40,18 @@ theorem gen_mem_preimage (f : M ⟶ W) [IsDominant f] {U : W.Opens} {y : W} (hy 
 
 omit [IsIntegral W] in
 
+/- English proof (translation)
+Conclude with `fnOf_resG e h a`.
+-/
 theorem fnOf_map {U V : M.Opens} (e : V ≤ U) (h : genericPoint M ∈ V) (a : Γ(M, U)) :
     fnOf V h (M.presheaf.map (homOfLE e).op a) = fnOf U (e h) a := by
   exact fnOf_resG e h a
 
+/- English proof (translation)
+Establish `: Nonempty V` using `⟨⟨_, hg⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen W V hV` as an intermediate fact. Take `⟨⟨d, hd⟩, hdc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors Γ(W, V)) c`. Use `⟨d, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd, fun i => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hdc i`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[Algebra.smul_def]`. Conclude with `ha`.
+-/
 theorem exists_denominator {V : W.Opens} (hV : IsAffineOpen V) (hg : genericPoint W ∈ V) {ι : Type} [Finite ι]
     (c : ι → W.functionField) :
     ∃ d : Γ(W, V), fnOf V hg d ≠ 0 ∧ ∀ i, ∃ a : Γ(W, V), fnOf V hg a = fnOf V hg d * c i := by
@@ -50,6 +64,17 @@ theorem exists_denominator {V : W.Opens} (hV : IsAffineOpen V) (hg : genericPoin
   rw [Algebra.smul_def] at ha
   exact ha
 
+/- English proof (translation)
+Set `` to `(f.app V).hom.toAlgebra`. Establish `: Module.Finite Γ(W, V) Γ(M, f ⁻¹ᵁ V)` using `hf`. Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin (R := Γ(W, V)) (M := Γ(M, f ⁻¹ᵁ V))`. Take `⟨d, hd0, hd⟩` from `exists_denominator hV hg (fun p : Fin r × Fin n => co p.1 (fnOf (f ⁻¹ᵁ V) hg' (s p.2)))`. Use `⟨d, hd0, fun j b => ?_⟩` and prove the remaining obligations.
+
+Establish `hb : b ∈ Submodule.span Γ(W, V) (Set.range s)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `hd (j, k)`.
+
+Consider the case `zero => exact ⟨0, by simp only [map_zero, mul_zero]⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨a, ha⟩` from `hx`. Take `⟨a', ha'⟩` from `hx'`. Conclude with `⟨a + a', by rw [map_add, map_add, map_add, ha, ha', mul_add]⟩`.
+
+Consider the case `smul t x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨t * a, ?_⟩` and prove the remaining obligations. Establish `ht : fnOf (f ⁻¹ᵁ V) hg' (t • x) = functionFieldMap f (fnOf V hg t) * fnOf (f ⁻¹ᵁ V) hg' x`. Rewrite using `[Algebra.smul_def, map_mul, RingHom.algebraMap_toAlgebra]`.
+
+Use `congr 1`. Conclude with `GlobalTheory.Cartier.DomPull.fnOf_app f hg' t`. Rewrite using `[ht, hco, map_mul, ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_denominator_all (f : M ⟶ W) [IsDominant f] {V : W.Opens} (hV : IsAffineOpen V)
     (hg : genericPoint W ∈ V) (hg' : genericPoint M ∈ f ⁻¹ᵁ V) (hf : (f.app V).hom.Finite) {r : ℕ}
     (co : Fin r → M.functionField →+ W.functionField)
@@ -82,6 +107,17 @@ theorem exists_denominator_all (f : M ⟶ W) [IsDominant f] {V : W.Opens} (hV : 
     rw [ht, hco, map_mul, ha]
     ring
 
+/- English proof (translation)
+Take `⟨g, hgV', hyg⟩` from `hV.exists_basicOpen_le ⟨y, hy'⟩ hy`. Establish `hle : M.basicOpen (f.app V g) ≤ f ⁻¹ᵁ V'`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `fun x hx => hgV' hx`. Establish `hgb : genericPoint M ∈ M.basicOpen (f.app V g)`.
+
+Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `gen_mem_preimage f hyg`. Take `⟨n, b, hb⟩` from `exists_eq_pow_mul_of_isCompact_of_isQuasiSeparated M (f ⁻¹ᵁ V) (f.isCompact_preimage hV.isCompact) (IsQuasiSeparated.of_quasiSeparatedSpace _) (f.app V g) (M.presheaf.map (homOfLE hle).op z)`. Establish `e0 : M.basicOpen (f.app V g) ≤ f ⁻¹ᵁ V` using `M.basicOpen_le _`. Establish `h1 : fnOf _ hgb (M.presheaf.map (homOfLE e0).op b) = fnOf _ hgb (M.presheaf.map (homOfLE e0).op (f.app V g)) ^ n * fnOf _ hgb (M.presheaf.map (homOfLE hle).op z)`.
+
+Rewrite using `[← map_pow, ← map_mul]`. Conclude with `congrArg _ hb`. Rewrite `h1` using `[fnOf_map, fnOf_map, fnOf_map]`. Use `⟨fnOf V hg g ^ n, b, ?_, ?_⟩` and prove the remaining obligations. Establish `hu : UnitAt y (fnOf V hg g)` using `(unitAt_fnOf_iff hy hg g).2 hyg clear h1 hb`.
+
+Proceed by induction on `n with`. Consider the case `zero => simpa using unitAt_one y`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hu`. Rewrite using `[map_pow, ← GlobalTheory.Cartier.DomPull.fnOf_app f hg' g]`.
+
+Conclude with `h1`.
+-/
 theorem exists_pow_mul_eq (f : M ⟶ W) [IsDominant f] [QuasiCompact f] [QuasiSeparatedSpace M] {V : W.Opens}
     (hV : IsAffineOpen V) (hg : genericPoint W ∈ V) (hg' : genericPoint M ∈ f ⁻¹ᵁ V) {y : W} (hy : y ∈ V)
     {V' : W.Opens} (hy' : y ∈ V') (h : genericPoint M ∈ f ⁻¹ᵁ V') (z : Γ(M, f ⁻¹ᵁ V')) :
@@ -114,6 +150,13 @@ theorem exists_pow_mul_eq (f : M ⟶ W) [IsDominant f] [QuasiCompact f] [QuasiSe
 
 omit [IsIntegral M] [IsIntegral W] in
 
+/- English proof (translation)
+Take `⟨V, hVa, hyV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Establish `: IsLocallyNoetherian M` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: TopologicalSpace.NoetherianSpace M` using `GlobalTheory.IsAmpleLB.noetherianSpace hL`. Establish `hg' : genericPoint M ∈ f ⁻¹ᵁ V` using `gen_mem_preimage f hyV`. Take `⟨d, hd0, hd⟩` from `exists_denominator_all f hVa (gen_mem hyV) hg' (finite_app f hL hVa) co hco`.
+
+Use `⟨V, hyV, d, hd0, fun y' hy'V V' hy'V' h z j => ?_⟩` and prove the remaining obligations. Take `⟨u, b, hu, hb⟩` from `exists_pow_mul_eq f hVa (gen_mem hyV) hg' hy'V hy'V' h z`. Take `⟨a, ha⟩` from `hd j b`. Establish `hz : fnOf (f ⁻¹ᵁ V') h z = functionFieldMap f u⁻¹ * fnOf (f ⁻¹ᵁ V) hg' b`. Rewrite using `[hb, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hu.ne_zero, map_one, one_mul]`.
+
+Rewrite using `[hz, hco, mul_left_comm (fnOf V (gen_mem hyV) d), ← ha]`. Conclude with `hu.inv.regAt.mul (regAt_fnOf hy'V _ a)`.
+-/
 theorem exists_local_denominator (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f]
     [IsProper f] [IsLocallyNoetherian W] (L : ReciprocityTheory.ChartRestriction.G.Semi.LB M) (hL : IsAmpleLB L) {r : ℕ}
     (co : Fin r → M.functionField →+ W.functionField)

@@ -12,6 +12,9 @@ def DivS (S : Submonoid A) : Type := S
 
 def val {S : Submonoid A} (s : DivS S) : A := (show S from s).1
 
+/- English proof (translation)
+The claim follows from `(show S from s).2`.
+-/
 lemma val_mem {S : Submonoid A} (s : DivS S) : val s ∈ S := (show S from s).2
 
 instance (S : Submonoid A) : Preorder (DivS S) where
@@ -27,6 +30,9 @@ instance (S : Submonoid A) : IsDirected (DivS S) (· ≤ ·) :=
 
 instance (S : Submonoid A) : Nonempty (DivS S) := ⟨mkD 1 S.one_mem⟩
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h`. Use `isUnit_of_mul_isUnit_left (y := algebraMap A (Localization.Away (a * c)) c) ?_` and prove the remaining obligations. Rewrite using `[← map_mul]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+-/
 lemma unit_of_dvd {a b : A} (h : a ∣ b) : IsUnit (algebraMap A (Localization.Away b) a) := by
   obtain ⟨c, rfl⟩ := h
   refine isUnit_of_mul_isUnit_left (y := algebraMap A (Localization.Away (a * c)) c) ?_
@@ -35,12 +41,21 @@ lemma unit_of_dvd {a b : A} (h : a ∣ b) : IsUnit (algebraMap A (Localization.A
 def mp {a b : A} (h : a ∣ b) : Localization.Away a →+* Localization.Away b :=
   IsLocalization.Away.lift a (unit_of_dvd h)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_comp _`.
+-/
 lemma mp_comp {a b : A} (h : a ∣ b) : (mp h).comp (algebraMap A _) = algebraMap A _ :=
   IsLocalization.lift_comp _
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (mp_comp h) x`.
+-/
 lemma mp_alg {a b : A} (h : a ∣ b) (x : A) : mp h (algebraMap A _ x) = algebraMap A _ x :=
   RingHom.congr_fun (mp_comp h) x
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers a) h`.
+-/
 lemma ext_away {a : A} {P : Type} [CommRing P] {j k : Localization.Away a →+* P}
     (h : j.comp (algebraMap A _) = k.comp (algebraMap A _)) : j = k :=
   IsLocalization.ringHom_ext (Submonoid.powers a) h
@@ -68,6 +83,9 @@ variable (B : Type) [CommRing B] [Algebra A B] [IsLocalization S B]
 def lB (s : DivS S) : Localization.Away (val s) →+* B :=
   IsLocalization.Away.lift (val s) (IsLocalization.map_units B ⟨val s, val_mem s⟩)
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (IsLocalization.lift_comp _) x`.
+-/
 lemma lB_alg (s : DivS S) (x : A) : lB S B s (algebraMap A _ x) = algebraMap A B x :=
   RingHom.congr_fun (IsLocalization.lift_comp _) x
 
@@ -78,6 +96,23 @@ def sN : F S ⟶ (Functor.const (DivS S)).obj (CommRingCat.of B) where
     exact (by rw [mp_alg, lB_alg, lB_alg] :
       lB S B t (mp (leOfHom f) (algebraMap A _ x)) = lB S B s (algebraMap A _ x))
 
+/- English proof (translation)
+Establish `: ReflectsColimitsOfShape (DivS S) (forget CommRingCat.{0})` using `reflectsColimitsOfShape_of_reflectsIsomorphisms`. Use `⟨isColimitOfReflects (forget CommRingCat.{0}) (Types.FilteredColimit.isColimitOf' _ _ ?_ ?_)⟩` and prove the remaining obligations. Introduce `(x : B)`. Take `⟨⟨a, m⟩, hx⟩` from `IsLocalization.surj S x`. Set `s : DivS S` to `mkD (m : A) m.2`.
+
+Use `⟨s, IsLocalization.mk' (Localization.Away (val s)) a (⟨val s, Submonoid.mem_powers _⟩ : Submonoid.powers (val s)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x = lB S B s _`. Establish `hu` using `IsLocalization.map_units B m`. Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[hx]`.
+
+Establish `h2 : algebraMap A B (m : A) = lB S B s (algebraMap A _ (val s))` using `by rw [lB_alg]; rfl`. Rewrite using `[h2, ← map_mul, IsLocalization.mk'_spec, lB_alg]`. Introduce `i (y : Localization.Away (val i)) (y' : Localization.Away (val i)) h`. Express the relevant statement in the definitionally equal form `lB S B i y = lB S B i y' at h`. Take `⟨⟨c, m⟩, hd⟩` from `IsLocalization.surj (Submonoid.powers (val i)) (y - y')`.
+
+Establish `hc : algebraMap A B c = algebraMap A B 0`. Use `congrArg (lB S B i) hd` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, h, sub_self, zero_mul, lB_alg]`. Rewrite using `[map_zero]`. Conclude with `this.symm`.
+
+Take `⟨u, hu⟩` from `IsLocalization.exists_of_eq (M := S) hc`. Set `k : DivS S` to `mkD (val i * (u : A)) (S.mul_mem (val_mem i) u.2)`. Establish `hik : val i ∣ val k` using `Dvd.intro _ rfl`. Use `⟨k, homOfLE hik, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp hik y = mp hik y'`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Establish `hm : IsUnit (algebraMap A (Localization.Away (val k)) (m : A))`. Take `⟨n, hn⟩` from `m.2`. Rewrite using `[← hn, map_pow]`. Conclude with `(unit_of_dvd hik).pow n`.
+
+Establish `hck : algebraMap A (Localization.Away (val k)) c = 0`. Establish `hu' : IsUnit (algebraMap A (Localization.Away (val k)) (u : A))` using `unit_of_dvd (Dvd.intro_left _ rfl)`. Use `congrArg (algebraMap A (Localization.Away (val k))) hu` as an intermediate fact. Rewrite `this` using `[mul_zero, map_mul, map_zero]`. Conclude with `(hu'.mul_right_eq_zero).1 this`.
+
+Use `(hm.mul_left_eq_zero).1 ?_` and prove the remaining obligations. Rewrite using `[← mp_alg hik, ← map_mul, hd, mp_alg, hck]`.
+-/
 lemma isColim : Nonempty (IsColimit (Cocone.mk _ (sN S B))) := by
   have : ReflectsColimitsOfShape (DivS S) (forget CommRingCat.{0}) :=
     reflectsColimitsOfShape_of_reflectsIsomorphisms
@@ -118,6 +153,11 @@ lemma isColim : Nonempty (IsColimit (Cocone.mk _ (sN S B))) := by
     refine (hm.mul_left_eq_zero).1 ?_
     rw [← mp_alg hik, ← map_mul, hd, mp_alg, hck]
 
+/- English proof (translation)
+Introduce `A B _ _ _ S _`. Take `⟨hc⟩` from `isColim S B`. Use `⟨DivS S, inferInstance, inferInstance, F S, tN S, sN S B, hc, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap A (Localization.Away (val j))).Etale`. Rewrite using `[RingHom.etale_algebraMap]`.
+
+Conclude with `Algebra.Etale.of_isLocalizationAway (val j)`. Use `ext1`. Use extensionality with `x`. Conclude with `lB_alg S B j x`.
+-/
 theorem LocIE_of : LateralTheory.E.t_E3Cut.LocIE := by
   intro A B _ _ _ S _
   obtain ⟨hc⟩ := isColim S B

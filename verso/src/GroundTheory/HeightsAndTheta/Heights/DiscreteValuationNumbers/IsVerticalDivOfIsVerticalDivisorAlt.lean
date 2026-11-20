@@ -17,6 +17,9 @@ section Ring
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype m (fun i c => c • blockWeight ι i) (fun i => zero_smul ℕ _), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[blockWeight, Pi.single_apply]`.
+-/
 theorem weight_blockWeight_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blockWeight ι) m k = ∑ i, m ⟨k, i⟩ := by
   classical
@@ -25,6 +28,11 @@ theorem weight_blockWeight_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finset.sum_apply, Fintype.sum_sigma]
   simp [blockWeight, Pi.single_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h m hm k`. Rewrite using `[← weight_blockWeight_apply, h (mem_support_iff.mp hm)]`. Introduce `h m hm`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[weight_blockWeight_apply, h m (mem_support_iff.mpr hm) k]`.
+-/
 theorem isMultiHomog_iff (f : MRing ι R) (b : K → ℕ) :
     IsMultiHomog f b ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f b := by
   constructor
@@ -36,6 +44,13 @@ theorem isMultiHomog_iff (f : MRing ι R) (b : K → ℕ) :
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨{x | x ∈ I ∧ ∃ a, ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog x a}, fun f hf => hf.2, ?_⟩` and prove the remaining obligations. Use `le_antisymm (fun f hf => ?_) (Ideal.span_le.mpr fun x hx => hx.1)` and prove the remaining obligations. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`.
+
+Use `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨h f hf b, b, ?_⟩` and prove the remaining obligations. Conclude with `(isMultiHomog_iff _ b).mp (weightedHomogeneousComponent_isWeightedHomogeneous b f)`. Introduce and unpack `⟨S, hS, rfl⟩ f hf b`. Establish `hI : (Ideal.span S).IsHomogeneous (weightedHomogeneousSubmodule R (blockWeight ι))`. Use `Ideal.homogeneous_span _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hS x hx`. Conclude with `⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr ((isMultiHomog_iff x a).mpr ha)⟩`. Conclude with `weightedHomogeneousComponent_mem_of_mem R (blockWeight ι) hI hf b`.
+-/
 theorem isMultiHomogIdeal_iff (I : Ideal (MRing ι R)) :
     IsMultiHomogIdeal I ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal I := by
   classical
@@ -54,6 +69,9 @@ theorem isMultiHomogIdeal_iff (I : Ideal (MRing ι R)) :
       exact ⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr ((isMultiHomog_iff x a).mpr ha)⟩
     exact weightedHomogeneousComponent_mem_of_mem R (blockWeight ι) hI hf b
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.isPrime, (isMultiHomogIdeal_iff P).mp h.multiHomog, h.relevant⟩, fun h => ⟨h.1, (isMultiHomogIdeal_iff P).mpr h.2.1, h.2.2⟩⟩`.
+-/
 theorem isMultiProjPrime_iff (P : Ideal (MRing ι R)) :
     IsMultiProjPrime P ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime P :=
   ⟨fun h => ⟨h.isPrime, (isMultiHomogIdeal_iff P).mp h.multiHomog, h.relevant⟩,
@@ -61,6 +79,11 @@ theorem isMultiProjPrime_iff (P : Ideal (MRing ι R)) :
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Establish `hc : (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s : Ideal (MRing ι R) → ℕ) W = if W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P s then ReciprocityTheory.ChartRestriction.G.Geo.multAt (P ⊔ Ideal.span {s}) W else 0`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.divCycle`. Rewrite using `[Finsupp.ofSupportFinite_coe]`. Rewrite using `[GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.intCyc, Finsupp.mapRange_apply, hc, divCycle]`. Distinguish the cases in `h : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes ∧ IsRelevant W`.
+
+Establish `h' : W ∈ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P s` using `h`. Rewrite using `[if_pos h', dif_pos h, ReciprocityTheory.ChartRestriction.G.Geo.multAt, dif_pos h.1.1.1]`. Apply the tactic sequence `all_goals rfl`. Establish `h' : W ∉ ReciprocityTheory.ChartRestriction.G.Geo.divSupp P s` using `h`. Rewrite using `[if_neg h', dif_neg h, Nat.cast_zero]`.
+-/
 theorem intCyc_divCycle [IsNoetherianRing R] (P : Ideal (MRing ι R)) (s : MRing ι R)
     (W : Ideal (MRing ι R)) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.intCyc (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s) W =
@@ -85,6 +108,9 @@ section DVR
 
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.divO, Finsupp.sub_apply, intCyc_divCycle, intCyc_divCycle, ratDiv]`.
+-/
 theorem divO_eq_ratDiv (P : Ideal (MRing ι O)) (f g : MRing ι O) (W : Ideal (MRing ι O)) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.divO P f g W = ratDiv P f g W := by
   rw [GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.divO, Finsupp.sub_apply, intCyc_divCycle,
@@ -92,6 +118,9 @@ theorem divO_eq_ratDiv (P : Ideal (MRing ι O)) (f g : MRing ι O) (W : Ideal (M
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.redEval, cycEval, finsum_eq_sum_of_support_subset _ (s := Z.support) fun W hW => Finsupp.mem_support_iff.mpr (left_ne_zero_of_mul (Function.mem_support.mp hW))]`. Both sides reduce to the same expression.
+-/
 theorem redEval_eq_cycEval (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
     (Z : Ideal (MRing ι O) →₀ ℤ) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.redEval J Z =
@@ -104,6 +133,9 @@ theorem redEval_eq_cycEval (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) �
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨(isMultiProjPrime_iff P).mp h.multiProj, h.noTorsion, h.dim⟩, fun h => ⟨(isMultiProjPrime_iff P).mpr h.1, h.2.1, h.2.2⟩⟩`.
+-/
 theorem isModelOver_iff (P : Ideal (MRing ι O)) (d : ℕ) :
     IsModelOver P d ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.IsModelOver P d :=
   ⟨fun h => ⟨(isMultiProjPrime_iff P).mp h.multiProj, h.noTorsion, h.dim⟩,
@@ -111,6 +143,9 @@ theorem isModelOver_iff (P : Ideal (MRing ι O)) (d : ℕ) :
 
 end DVR
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isMultiHomog_iff, isMultiProjPrime_iff, intCyc_divCycle, divO_eq_ratDiv, redEval_eq_cycEval⟩`.
+-/
 theorem equiv (O : Type*) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     (∀ (f : MRing ι O) (b : K → ℕ), IsMultiHomog f b ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog f b) ∧
     (∀ P : Ideal (MRing ι O), IsMultiProjPrime P ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime P) ∧

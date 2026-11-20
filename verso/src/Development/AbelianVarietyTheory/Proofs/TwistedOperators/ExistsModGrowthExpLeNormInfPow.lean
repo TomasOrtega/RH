@@ -17,6 +17,11 @@ open GlobalTheory.SmoothForms
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hc : Continuous fun b : Ainf F => InfinitePlace.Completion.extensionEmbedding w (b w)` using `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`. Establish `key` using `(InfiniteAdeleRing.denseRange_algebraMap F).equalizer hθ.2 hc ?_`. Conclude with `congrFun key b`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[← Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply', hθ.1, ← RingHom.comp_apply, hτ]`. Simplify using the standard rewrite rules.
+-/
 private theorem infEmb_tmul_one_eq_extensionEmbedding {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {w : InfinitePlace F} {τ : E →+* ℂ} (hτ : τ.comp (algebraMap F E) = w.embedding)
     {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmb τ θ) (b : Ainf F) :
@@ -31,6 +36,15 @@ private theorem infEmb_tmul_one_eq_extensionEmbedding {F E : Type} [Field F] [Nu
     ← RingHom.comp_apply, hτ]
   simp
 
+/- English proof (translation)
+Establish `hre` using `infEmb_tmul_one_eq_extensionEmbedding t.2 hθ`. Establish `hz : ∀ z : AF F ⊗[F] E, GlobalTheory.AdelicU.infEmb t (compInf F E w z) = θ (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x`. Establish `e : (fstA F a) ⊗ₜ[F] x = ((fstA F a) ⊗ₜ[F] (1 : E)) * ((1 : Ainf F) ⊗ₜ[F] x)` using `by simp`. Simplify using `only [GlobalTheory.AdelicU.compInf, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, GlobalTheory.AdelicU.infEmb_tmul]`. Rewrite using `[e, map_mul, hre, hθ.1]`. Both sides reduce to the same expression.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hm : ∀ k : HA (AF F) σ J, ((bc (compInf F E w) (GlobalTheory.AdelicU.matHom _ σ J k) : GL (Fin n) _) : Matrix (Fin n) (Fin n) _).map (GlobalTheory.AdelicU.infEmb t) = infMat σ J θ k`. Introduce `k`. Use extensionality with `i j`. Conclude with `hz _`.
+
+Use `show max 1 (max (GlobalTheory.AdelicU.normInf F w _) (GlobalTheory.AdelicU.normInf F w _)) = _`. Rewrite using `[GlobalTheory.AdelicU.normInf_eq_opNorm h t, GlobalTheory.AdelicU.normInf_eq_opNorm h t, ← map_inv (bc (compInf F E w)), ← map_inv (GlobalTheory.AdelicU.matHom _ σ J), hm, hm]`.
+-/
 theorem htInf_eq_infMat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {w : InfinitePlace F} (t : EmbOver E w)
     [StarRing E] {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmb t.1 θ) (g : HA (AF F) σ J) :
@@ -60,6 +74,9 @@ theorem htInf_eq_infMat {F E : Type} [Field F] [NumberField F] [Field E] [Number
 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (V : HSp D)
 
+/- English proof (translation)
+Take `⟨hcm, -⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `ht : (tauE D τ).comp (algebraMap D.host.F D.host.E) = (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))).embedding` using `(InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.mp (hcm.1.isReal _))).symm`. Conclude with `(htInf_eq_infMat hcm V.gram ⟨_, ht⟩ (hθ τ) g).trans rfl`.
+-/
 theorem htInf_eq_infHt (hθ : IsInfFam θ) (τ : D.what₂.Tau) (g : GA D V) :
     htInf D.host.F (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))
       (bc (compInf D.host.F D.host.E _) (Formalism.L2.Theta.matHom V g)) = infHt θ V τ g := by
@@ -69,6 +86,15 @@ theorem htInf_eq_infHt (hθ : IsInfFam θ) (τ : D.what₂.Tau) (g : GA D V) :
     (InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.mp (hcm.1.isReal _))).symm
   exact (htInf_eq_infMat hcm V.gram ⟨_, ht⟩ (hθ τ) g).trans rfl
 
+/- English proof (translation)
+Establish `hk : Formalism.L2.Theta.finHom V g = 1` using `hg`. Establish `hz : ∀ z : AF D.host.F ⊗[D.host.F] D.host.E, compFin D.host.F D.host.E v z = Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host. …`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x => rfl`. Consider the case `add y z hy hz => rw [map_add, map_add, map_add, hy, hz]`. Establish `h1 : bc (compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom V g) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Establish `hij : Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (((Formalism.L2.Theta.matHom V g : GL _ _) : Matrix _ _ _) i j) = ((1 : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) : Matrix _ _ _) i j`. Rewrite using `[← hk]`. Both sides reduce to the same expression. Use `show compFin D.host.F D.host.E v (((Formalism.L2.Theta.matHom V g : GL _ _) : Matrix _ _ _) i j) = _`. Rewrite using `[hz, hij, Units.val_one, Units.val_one, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1]`. Apply the tactic sequence `refine (GlobalTheory.AdelicU.htOf_eq_one).2 ⟨?_, ?_⟩ <;> simpa using GlobalTheory.AdelicU.normFin_one_le D.host.F v`.
+-/
 private theorem htFin_eq_one_of_mem_GinfC {g : GA D V} (hg : g ∈ GinfC V) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     htFin D.host.F v (bc (compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom V g)) = 1 := by
   have hk : Formalism.L2.Theta.finHom V g = 1 := hg
@@ -93,6 +119,9 @@ private theorem htFin_eq_one_of_mem_GinfC {g : GA D V} (hg : g ∈ GinfC V) (v :
   rw [h1]
   refine (GlobalTheory.AdelicU.htOf_eq_one).2 ⟨?_, ?_⟩ <;> simpa using GlobalTheory.AdelicU.normFin_one_le D.host.F v
 
+/- English proof (translation)
+Establish `hinf : ∏ w, htInf D.host.F w (bc (compInf D.host.F D.host.E w) (Formalism.L2.Theta.matHom V g)) = ∏ τ, infHt θ V τ g` using `(Fintype.prod_bijective _ (GlobalTheory.CMTypePlaces.places_bijective D) _ _ fun τ => (htInf_eq_infHt V hθ τ g).symm).symm`. Use `show ((GlobalTheory.AdelicU.heightGL D.host.F (Formalism.L2.Theta.matHom V g) : NNReal) : ℝ) = _`. Rewrite using `[GlobalTheory.AdelicU.heightGL, hinf]`. Simplify using `only [htFin_eq_one_of_mem_GinfC V hg, finprod_one, mul_one, NNReal.coe_prod]`.
+-/
 theorem height_eq_prod_infHt (hθ : IsInfFam θ) {g : GA D V} (hg : g ∈ GinfC V) :
     height V g = ∏ τ, (infHt θ V τ g : ℝ) := by
   have hinf : ∏ w, htInf D.host.F w (bc (compInf D.host.F D.host.E w) (Formalism.L2.Theta.matHom V g)) =
@@ -103,6 +132,15 @@ theorem height_eq_prod_infHt (hθ : IsInfFam θ) {g : GA D V} (hg : g ∈ GinfC 
   rw [GlobalTheory.AdelicU.heightGL, hinf]
   simp only [htFin_eq_one_of_mem_GinfC V hg, finprod_one, mul_one, NNReal.coe_prod]
 
+/- English proof (translation)
+Use `⟨2 * (Fintype.card D.what₂.Tau * V.rank * V.rank : ℝ), fun g => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ τ, (infHt θ V τ g : ℝ) ≤ height V g` using `fun τ => by`. Use `htInf_le_height V g (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))` as an intermediate fact. Rewrite `this` using `[htInf_eq_infHt V hθ τ g]`. Then use the resulting hypothesis. Establish `he : ∀ τ i j, ‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖ ≤ 2 * height V g`.
+
+Introduce `τ i j`. Establish `h1` using `GlobalTheory.SmoothForms.NormInf.norm_entry_le_opNorm (infMat D.sp.cm.sig V.gram (θ τ) g) i j`. Establish `h2` using `GlobalTheory.SmoothForms.NormInf.norm_entry_le_opNorm (infMat D.sp.cm.sig V.gram (θ τ) g⁻¹) i j`. Establish `h3 : infNorm θ V τ g ≤ infHt θ V τ g` using `le_max_of_le_right (le_max_left _ _)`. Establish `h4 : infNorm θ V τ g⁻¹ ≤ infHt θ V τ g` using `le_max_of_le_right (le_max_right _ _)`.
+
+Establish `h3' : (infNorm θ V τ g : ℝ) ≤ height V g` using `(NNReal.coe_le_coe.2 h3).trans (hb τ)`. Establish `h4' : (infNorm θ V τ g⁻¹ : ℝ) ≤ height V g` using `(NNReal.coe_le_coe.2 h4).trans (hb τ)`. Establish `e3 : (infNorm θ V τ g : ℝ) = ‖Matrix.toEuclideanCLM (n` using `Fin V.rank) (𝕜 := ℂ) (infMat D.sp.cm.sig V.gram (θ τ) g)‖ := rfl`. Establish `e4 : (infNorm θ V τ g⁻¹ : ℝ) = ‖Matrix.toEuclideanCLM (n` using `Fin V.rank) (𝕜 := ℂ) (infMat D.sp.cm.sig V.gram (θ τ) g⁻¹)‖ := rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `he τ i j`. Use `_ = 2 * (Fintype.card D.what₂.Tau * V.rank * V.rank : ℝ) * height V g := by`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normInf_le_height (hθ : IsInfFam θ) : ∃ C : ℝ, ∀ g : GA D V, normInf θ V g ≤ C * height V g := by
   refine ⟨2 * (Fintype.card D.what₂.Tau * V.rank * V.rank : ℝ), fun g => ?_⟩
   have hb : ∀ τ, (infHt θ V τ g : ℝ) ≤ height V g := fun τ => by
@@ -131,6 +169,11 @@ theorem normInf_le_height (hθ : IsInfFam θ) : ∃ C : ℝ, ∀ g : GA D V, nor
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
         ring
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos V.rank with h0 | hpos` into its components or cases. Use `⟨0, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[height_eq_prod_infHt V hθ hg, pow_zero]`. Simplify using `[GlobalTheory.SmoothForms.HeightCoset.infHt_rank_zero θ V h0]`. Use `⟨Fintype.card D.what₂.Tau, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[height_eq_prod_infHt V hθ hg, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun τ _ => NNReal.coe_nonneg _) (fun τ _ => GlobalTheory.SmoothForms.HeightCoset.infHt_le_normInf θ V hpos τ g)`.
+-/
 theorem height_le_normInf_pow (hθ : IsInfFam θ) : ∃ d : ℕ, ∀ g ∈ GinfC V, height V g ≤ normInf θ V g ^ d := by
   rcases Nat.eq_zero_or_pos V.rank with h0 | hpos
   · refine ⟨0, fun g hg => ?_⟩
@@ -141,6 +184,11 @@ theorem height_le_normInf_pow (hθ : IsInfFam θ) : ∃ d : ℕ, ∀ g ∈ GinfC
     exact Finset.prod_le_prod (fun τ _ => NNReal.coe_nonneg _)
       (fun τ _ => GlobalTheory.SmoothForms.HeightCoset.infHt_le_normInf θ V hpos τ g)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `normInf_le_height V hθ`. Take `⟨d, hd⟩` from `height_le_normInf_pow V hθ`. Use `⟨⟨C, hC⟩, 1, d, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ normInf θ V g`. Unfold `Formalism.L2.Theta.normInf`.
+
+Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normInf_height_comparison (D : D7) (V : HSp D)
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) :
     (∃ C : ℝ, ∀ g : GA D V, normInf θ V g ≤ C * height V g) ∧
@@ -155,6 +203,9 @@ theorem normInf_height_comparison (D : D7) (V : HSp D)
     _ ≤ (1 + normInf θ V g) ^ d := pow_le_pow_left₀ h0 (by linarith) d
     _ = 1 * (1 + normInf θ V g) ^ d := (one_mul _).symm
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hf`. Establish `hC0 : 0 ≤ C` using `nonneg_of_growth hC`. Use `⟨C * height V x ^ A, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : height V (x * g) ≤ height V x * normInf θ V g ^ d` using `(height_mul_le V x g).trans (mul_le_mul_of_nonneg_left (hd g hg) (height_pos V x).le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_coset_bound_of_modGrowthExp (V : HSp D) {d : ℕ} (hd : ∀ g ∈ GinfC V, height V g ≤ normInf θ V g ^ d) {A : ℕ}
     {f : GA D V → ℂ} (hf : ModGrowthExp V A f) (x : GA D V) :
     ∃ C : ℝ, ∀ g ∈ GinfC V, ‖f (x * g)‖ ≤ C * normInf θ V g ^ (d * A) := by
@@ -170,12 +221,18 @@ private theorem exists_coset_bound_of_modGrowthExp (V : HSp D) {d : ℕ} (hd : �
 
 variable {V}
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `height_le_normInf_pow V hθ`. Conclude with `⟨d * A, fun f hf x => exists_coset_bound_of_modGrowthExp V hd hf x⟩`.
+-/
 theorem exists_modGrowthExp_le_normInf_pow (hθ : IsInfFam θ) (A : ℕ) :
     ∃ N : ℕ, ∀ f : GA D V → ℂ, ModGrowthExp V A f →
       ∀ x, ∃ C : ℝ, ∀ g ∈ GinfC V, ‖f (x * g)‖ ≤ C * normInf θ V g ^ N := by
   obtain ⟨d, hd⟩ := height_le_normInf_pow V hθ
   exact ⟨d * A, fun f hf x => exists_coset_bound_of_modGrowthExp V hd hf x⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `h`. Take `⟨N, hN⟩` from `exists_modGrowthExp_le_normInf_pow (V := V) hθ A`. Conclude with `⟨N, fun l hl x => hN _ (hA l hl) x⟩`.
+-/
 theorem UnifModGrowth.growth (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : UnifModGrowth V θ φ) :
     ∃ N : ℕ, ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) →
       ∀ x, ∃ C : ℝ, ∀ g ∈ GinfC V,
@@ -184,6 +241,9 @@ theorem UnifModGrowth.growth (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : Unif
   obtain ⟨N, hN⟩ := exists_modGrowthExp_le_normInf_pow (V := V) hθ A
   exact ⟨N, fun l hl x => hN _ (hA l hl) x⟩
 
+/- English proof (translation)
+The claim follows from `{ toIsAutFun := ha, smooth := hs, zfin := hz, growth := h.growth hθ }`.
+-/
 theorem UnifModGrowth.isAutFunSm (hθ : IsInfFam θ) {φ : GA D V → ℂ} (h : UnifModGrowth V θ φ) (ha : IsAutFun V φ)
     (hs : ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
       (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,

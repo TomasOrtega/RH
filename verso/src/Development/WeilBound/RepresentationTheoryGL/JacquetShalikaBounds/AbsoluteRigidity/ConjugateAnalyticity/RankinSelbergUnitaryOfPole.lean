@@ -9,12 +9,20 @@ namespace PositivityTheory.RgJS
 
 namespace RankinSelbergUnitary
 
+/- English proof (translation)
+Establish `harg : ((N : ℕ) : ℂ).arg ≠ Real.pi` using `by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm`. Use `Complex.cpow_conj ((N : ℕ) : ℂ) z harg` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.symm`.
+-/
 theorem conj_cpow_nat (N : ℕ) (z : ℂ) : conj ((N : ℂ) ^ z) = (N : ℂ) ^ (conj z) := by
   have harg : ((N : ℕ) : ℂ).arg ≠ Real.pi := by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm
   have := Complex.cpow_conj ((N : ℕ) : ℂ) z harg
   rw [map_natCast] at this
   exact this.symm
 
+/- English proof (translation)
+Unfold `eul`. Rewrite using `[Complex.isometry_conj.isClosedEmbedding.map_tprod]`. Use `tprod_congr fun w => ?_` and prove the remaining obligations. Simplify using `only [map_prod, map_inv₀, map_sub, map_one, map_mul, Complex.conj_conj, conj_cpow_nat, map_neg]`. Rewrite using `[Finset.prod_comm]`.
+
+Use `Finset.prod_congr rfl fun b _ => Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_eul {W : Type} (q : W → ℕ) {A B : Type} [Fintype A] [Fintype B] (α : W → A → ℂ) (β : W → B → ℂ) (s : ℂ) :
     conj (eul q α β s) = eul q β α (conj s) := by
   unfold eul
@@ -25,11 +33,19 @@ theorem conj_eul {W : Type} (q : W → ℕ) {A B : Type} [Fintype A] [Fintype B]
   refine Finset.prod_congr rfl fun b _ => Finset.prod_congr rfl fun a _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `nq`. Conclude with `Nat.cast_ne_zero.2 fun h => w.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+-/
 theorem nq_ne_zero {E : Type} [Field E] [NumberField E] {S : Finset (HeightOneSpectrum (𝓞 E))} (w : Off E S) :
     (nq w : ℂ) ≠ 0 := by
   unfold nq
   exact Nat.cast_ne_zero.2 fun h => w.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
+/- English proof (translation)
+Rewrite using `[map_mul, conj_cpow_nat]`. Establish `e : a * (N : ℂ) ^ ((τ : ℂ) * Complex.I) * (conj b * (N : ℂ) ^ (conj ((τ' : ℂ) * Complex.I))) * (N : ℂ) ^ (-((σ : ℂ) + ((τ - τ' : ℝ) : ℂ) * Complex.I)) = a * conj b * ((N : ℂ) ^ ((τ : ℂ) * Complex.I) * (N : ℂ) ^ (conj ((τ' : ℂ) * Complex.I)) * (N : ℂ) ^ (-((σ : ℂ) + ((τ - τ' : ℝ) …` using `by ring`. Rewrite using `[e, ← Complex.cpow_add _ _ hN, ← Complex.cpow_add _ _ hN]`. Use `congr 2`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift_term (N : ℕ) (hN : (N : ℂ) ≠ 0) (a b : ℂ) (σ τ τ' : ℝ) :
     a * (N : ℂ) ^ ((τ : ℂ) * Complex.I) * conj (b * (N : ℂ) ^ ((τ' : ℂ) * Complex.I)) *
         (N : ℂ) ^ (-((σ : ℂ) + ((τ - τ' : ℝ) : ℂ) * Complex.I)) = a * conj b * (N : ℂ) ^ (-(σ : ℂ)) := by
@@ -44,6 +60,9 @@ theorem shift_term (N : ℕ) (hN : (N : ℂ) ≠ 0) (a b : ℂ) (σ τ τ' : ℝ
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `LS eul`. Use `tprod_congr fun w => Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, hα, hβ]`. Rewrite using `[shift_term _ (nq_ne_zero w)]`.
+-/
 theorem LS_shift {E : Type} [Field E] [NumberField E] {S : Finset (HeightOneSpectrum (𝓞 E))} {m k : ℕ}
     (α : Off E S → Fin m → ℂˣ) (β : Off E S → Fin k → ℂˣ) (cα cβ : Off E S → ℂˣ) (τ τ' : ℝ)
     (hα : ∀ w, (cα w : ℂ) = (nq w : ℂ) ^ ((τ : ℂ) * Complex.I))
@@ -54,6 +73,9 @@ theorem LS_shift {E : Type} [Field E] [NumberField E] {S : Finset (HeightOneSpec
   simp only [Units.val_mul, hα, hβ]
   rw [shift_term _ (nq_ne_zero w)]
 
+/- English proof (translation)
+Introduce `w`. Establish `h` using `hT E m (ρ.twist χ) χ⁻¹ w.1 _ (hχ w.1).inv (hα w)`. Rewrite `h` using `[← CG.twist_mul, mul_inv_cancel, CG.twist_one, Multiset.map_map]`. Conclude with `h`.
+-/
 theorem transfer {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (hT : SatTw) {m : ℕ} (ρ : CG E m)
     (χ : HChar E) (S : Finset (HeightOneSpectrum (𝓞 E))) (hχ : ∀ w, χ.UnrAt w) (α : Off E S → Fin m → ℂˣ)
     (hα : SatOff (ρ.twist χ) S α) : SatOff ρ S (fun w a => α w a * (χ⁻¹).val w.1) := by
@@ -62,20 +84,61 @@ theorem transfer {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (hT :
   rw [← CG.twist_mul, mul_inv_cancel, CG.twist_one, Multiset.map_map] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[HChar.val_inv, Units.val_inv_eq_inv_val, h, Complex.cpow_neg, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem val_inv_eq {E : Type} [Field E] [NumberField E] {S : Finset (HeightOneSpectrum (𝓞 E))} (χ : HChar E) (τ : ℝ)
     (h : ∀ w, ((χ.val w : ℂˣ) : ℂ) = (Ideal.absNorm w.asIdeal : ℂ) ^ (-((τ : ℂ) * Complex.I))) (w : Off E S) :
     (((χ⁻¹).val w.1 : ℂˣ) : ℂ) = (nq w : ℂ) ^ ((τ : ℂ) * Complex.I) := by
   rw [HChar.val_inv, Units.val_inv_eq_inv_val, h, Complex.cpow_neg, inv_inv]
   rfl
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const Complex.continuous_re`.
+-/
 theorem openRe : IsOpen {s : ℂ | 0 < s.re} := isOpen_lt continuous_const Complex.continuous_re
 
+/- English proof (translation)
+The claim follows from `openRe.mem_nhds hz`.
+-/
 theorem re_mem {z : ℂ} (hz : 0 < z.re) : {s : ℂ | 0 < s.re} ∈ nhds z := openRe.mem_nhds hz
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem re_shift (σ u : ℝ) : ((σ : ℂ) + (u : ℂ) * Complex.I).re = σ := by simp
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨S₀, h⟩` from `hR E a b ρ ρ' u hb hab hn hn'`. Use `⟨S₀, fun S hS α β hα hβ => ?_⟩` and prove the remaining obligations. Take `⟨Z, ZS, σ₀, hZ, hZS, hne, heq, hz⟩` from `h S hS α β hα hβ`. Distinguish the cases in `hP : (⟨a, CG.mk ρ⟩ : Σ a, CG E a) = ⟨b, CG.mk ρ'⟩ ∧ u = 0`. Take `⟨hP1, rfl⟩` from `hP`.
+
+Use `⟨fun s => Z s / ZS s, max σ₀ 1, fun σ hσ => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : ZS σ ≠ 0` using `by simpa using hne σ hσ`. Establish `hσ' : 0 < (σ : ℂ).re` using `by simpa using hσ`. Conclude with `(hZ.analyticAt (re_mem hσ')).div (hZS.analyticAt (re_mem hσ')) h1`. Establish `hσ1 : 1 < σ` using `lt_of_le_of_lt (le_max_right _ _) hσ`.
+
+Establish `hσ0 : σ₀ < σ` using `lt_of_le_of_lt (le_max_left _ _) hσ`. Establish `h1 : ZS σ ≠ 0` using `by simpa using hne σ (by linarith)`. Establish `h2` using `heq σ (by simpa using hσ0)`. Rewrite using `[if_pos ⟨hP1, rfl⟩]`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero]`.
+
+Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hu : u = 0`. Substitute `hu` using the available equality. Establish `hs : (⟨a, CG.mk ρ⟩ : Σ a, CG E a) ≠ ⟨b, CG.mk ρ'⟩` using `fun h => hP ⟨h, rfl⟩`.
+
+Establish `hz1` using `hz hs`. Establish `hD : DifferentiableOn ℂ (dslope Z 1) {s : ℂ | 0 < s.re}` using `(Complex.differentiableOn_dslope (re_mem (by simp))).2 hZ`. Use `⟨fun s => dslope Z 1 s / ZS s, max σ₀ 1, fun σ hσ => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : ZS σ ≠ 0` using `by simpa using hne σ hσ`. Establish `hσ' : 0 < (σ : ℂ).re` using `by simpa using hσ`.
+
+Conclude with `(hD.analyticAt (re_mem hσ')).div (hZS.analyticAt (re_mem hσ')) h1`. Establish `hσ1 : 1 < σ` using `lt_of_le_of_lt (le_max_right _ _) hσ`. Establish `hσ0 : σ₀ < σ` using `lt_of_le_of_lt (le_max_left _ _) hσ`. Establish `h1 : ZS σ ≠ 0` using `by simpa using hne σ (by linarith)`. Establish `h2` using `heq σ (by simpa using hσ0)`.
+
+Establish `hne1 : (σ : ℂ) ≠ 1`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsub : (σ : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 hne1`. Rewrite using `[if_neg hP]`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero, one_mul]`. Rewrite using `[dslope_of_ne _ hne1, slope_def_field, h2, hz1]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨fun s => Z (s + u * Complex.I) / ((s + u * Complex.I - 1) * ZS (s + u * Complex.I)), max σ₀ 1, fun σ hσ => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hre : 0 < ((σ : ℂ) + (u : ℂ) * Complex.I).re` using `by rw [re_shift]; exact hσ`. Establish `hsh : AnalyticAt ℂ (fun s : ℂ => s + (u : ℂ) * Complex.I) (σ : ℂ)` using `analyticAt_id.add analyticAt_const`. Establish `hZa : AnalyticAt ℂ (fun s : ℂ => Z (s + u * Complex.I)) (σ : ℂ)` using `AnalyticAt.comp (g := Z) (f := fun s : ℂ => s + (u : ℂ) * Complex.I) (x := (σ : ℂ)) (hZ.analyticAt (re_mem hre)) hsh`.
+
+Establish `hZSa : AnalyticAt ℂ (fun s : ℂ => ZS (s + u * Complex.I)) (σ : ℂ)` using `AnalyticAt.comp (g := ZS) (f := fun s : ℂ => s + (u : ℂ) * Complex.I) (x := (σ : ℂ)) (hZS.analyticAt (re_mem hre)) hsh`. Establish `hlin : AnalyticAt ℂ (fun s : ℂ => s + u * Complex.I - 1) (σ : ℂ)` using `hsh.sub analyticAt_const`. Establish `hne2 : ((σ : ℂ) + u * Complex.I - 1) ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `hu this`. Conclude with `hZa.div (hlin.mul hZSa) (mul_ne_zero hne2 (hne σ hσ))`. Establish `hσ1 : 1 < σ` using `lt_of_le_of_lt (le_max_right _ _) hσ`. Establish `hσ0 : σ₀ < σ` using `lt_of_le_of_lt (le_max_left _ _) hσ`.
+
+Establish `hne2 : ((σ : ℂ) + u * Complex.I - 1) ≠ 0`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Conclude with `hu this`.
+
+Establish `h1` using `hne σ (by linarith)`. Establish `h2` using `heq ((σ : ℂ) + u * Complex.I) (by rw [re_shift]; exact hσ0)`. Rewrite using `[if_neg hP, one_mul]`. Use `show Z ((σ : ℂ) + u * Complex.I) / (((σ : ℂ) + u * Complex.I - 1) * ZS ((σ : ℂ) + u * Complex.I)) = _`. Rewrite using `[h2]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem core (hR : RSPole) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (ρ : CuspSub E a)
     (ρ' : CuspSub E b) (u : ℝ) (hb : 1 ≤ b) (hab : b ≤ a) (hn : GlobalTheory.DiscSpec.IsNormalised ρ)
     (hn' : GlobalTheory.DiscSpec.IsNormalised ρ') :
@@ -146,6 +209,11 @@ theorem core (hR : RSPole) {E : Type} [Field E] [NumberField E] [IsTotallyComple
         rw [h2]
         field_simp
 
+/- English proof (translation)
+Take `⟨t, ht, hto, hσt⟩` from `eventually_nhds_iff.1 h.eventually_analyticAt`. Establish `hU : IsOpen ((starRingEnd ℂ) ⁻¹' t)` using `hto.preimage Complex.continuous_conj`. Establish `hσU : (σ : ℂ) ∈ (starRingEnd ℂ) ⁻¹' t` using `by simpa [Complex.conj_ofReal] using hσt`. Use `DifferentiableOn.analyticAt (s := (starRingEnd ℂ) ⁻¹' t) (fun z hz => ?_) (hU.mem_nhds hσU)` and prove the remaining obligations. Establish `h1` using `((ht _ hz).differentiableAt).conj_conj`.
+
+Rewrite `h1` using `[Complex.conj_conj]`. Conclude with `h1.differentiableWithinAt`.
+-/
 theorem analyticAt_conj {G : ℂ → ℂ} {σ : ℝ} (h : AnalyticAt ℂ G σ) :
     AnalyticAt ℂ (fun s => conj (G (conj s))) σ := by
   obtain ⟨t, ht, hto, hσt⟩ := eventually_nhds_iff.1 h.eventually_analyticAt
@@ -159,6 +227,33 @@ theorem analyticAt_conj {G : ℂ → ℂ} {σ : ℝ} (h : AnalyticAt ℂ G σ) :
 end RankinSelbergUnitary
 
 open RankinSelbergUnitary Classical in
+/- English proof (translation)
+Introduce `hN hT hR E _ _ _ m k π π' hm hk hu hu'`. Take `⟨ν, hν, hrep⟩` from `hN E`. Take `⟨π₀, τ, hn, rfl⟩` from `hrep m π hm hu`. Take `⟨π₀', τ', hn', rfl⟩` from `hrep k π' hk hu'`. Establish `hval : ∀ (t : ℝ) {S : Finset (HeightOneSpectrum (𝓞 E))} (w : Off E S), ((((ν t)⁻¹).val w.1 : ℂˣ) : ℂ) = (nq w : ℂ) ^ ((t : ℂ) * Complex.I)` using `fun t S w => val_inv_eq (ν t) t (fun w => (hν t w).2) w`.
+
+Establish `hunr : ∀ t w, (ν t).UnrAt w` using `fun t w => (hν t w).1`. Break down `le_or_gt k m with hkm | hmk` into its components or cases. Take `⟨S₀, hc⟩` from `core hR m k π₀ π₀' (τ - τ') hk hkm hn hn'`. Use `⟨S₀, fun S hS α β hα hβ => ?_⟩` and prove the remaining obligations. Take `⟨G, σ₀, hG, hGe⟩` from `hc S hS _ _ (transfer hT _ (ν τ) S (hunr τ) α hα) (transfer hT _ (ν τ') S (hunr τ') β hβ)`.
+
+Use `set Q : Prop := (⟨m, (CG.mk π₀).twist (ν τ)⟩ : Σ a, CG E a) = ⟨k, (CG.mk π₀').twist (ν τ')⟩ with hQ`. Use `set P : Prop := (⟨m, CG.mk π₀⟩ : Σ a, CG E a) = ⟨k, CG.mk π₀'⟩ ∧ τ - τ' = 0 with hPd`. Establish `hPQ : P → Q`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : τ' = τ` using `by linarith`.
+
+Substitute `e` using the available equality. Take `⟨rfl, h3⟩` from `Sigma.mk.inj_iff.1 h1`. Rewrite using `[hQ, eq_of_heq h3]`. Use `⟨fun s => (if Q ∧ ¬ P then s - 1 else 1) * G s, σ₀, fun σ hσ => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc' : Q ∧ ¬ P`.
+
+Simplify using `only [if_pos hc']`. Conclude with `(analyticAt_id.sub analyticAt_const).mul (hG σ hσ)`. Simplify using `only [if_neg hc', one_mul]`. Conclude with `hG σ hσ`. Use `show (if Q ∧ ¬ P then (σ : ℂ) - 1 else 1) * G σ = _`.
+
+Rewrite using `[hGe σ hσ, ← LS_shift α β _ _ τ τ' (hval τ) (hval τ') σ]`. Apply the tactic sequence `by_cases hq : Q <;> by_cases hp : P`. Rewrite using `[if_neg (fun h => h.2 hp), if_pos hp, if_pos hq, one_mul]`. Rewrite using `[if_pos ⟨hq, hp⟩, if_neg hp, if_pos hq, one_mul]`. Conclude with `absurd (hPQ hp) hq`.
+
+Rewrite using `[if_neg (fun h => hq h.1), if_neg hp, if_neg hq, one_mul]`. Take `⟨S₀, hc⟩` from `core hR k m π₀' π₀ (τ' - τ) hm hmk.le hn' hn`. Use `⟨S₀, fun S hS α β hα hβ => ?_⟩` and prove the remaining obligations. Take `⟨G, σ₀, hG, hGe⟩` from `hc S hS _ _ (transfer hT _ (ν τ') S (hunr τ') β hβ) (transfer hT _ (ν τ) S (hunr τ) α hα)`. Use `set Q : Prop := (⟨m, (CG.mk π₀).twist (ν τ)⟩ : Σ a, CG E a) = ⟨k, (CG.mk π₀').twist (ν τ')⟩ with hQ`.
+
+Use `set P : Prop := (⟨k, CG.mk π₀'⟩ : Σ a, CG E a) = ⟨m, CG.mk π₀⟩ ∧ τ' - τ = 0 with hPd`. Establish `hPQ : P → Q`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : τ' = τ` using `by linarith`. Substitute `e` using the available equality.
+
+Take `⟨rfl, h3⟩` from `Sigma.mk.inj_iff.1 h1`. Rewrite using `[hQ, eq_of_heq h3]`. Use `⟨fun s => (if Q ∧ ¬ P then s - 1 else 1) * conj (G (conj s)), σ₀, fun σ hσ => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc' : Q ∧ ¬ P`. Simplify using `only [if_pos hc']`.
+
+Conclude with `(analyticAt_id.sub analyticAt_const).mul (analyticAt_conj (hG σ hσ))`. Simplify using `only [if_neg hc', one_mul]`. Conclude with `analyticAt_conj (hG σ hσ)`. Use `show (if Q ∧ ¬ P then (σ : ℂ) - 1 else 1) * conj (G (conj (σ : ℂ))) = _`. Rewrite using `[Complex.conj_ofReal, hGe σ hσ, map_mul]`.
+
+Establish `hL : conj (LS S (fun w b => β w b * ((ν τ')⁻¹).val w.1) (fun w a => α w a * ((ν τ)⁻¹).val w.1) ((σ : ℂ) + ((τ' - τ : ℝ) : ℂ) * Complex.I)) = LS S (fun w a => α w a * ((ν τ)⁻¹).val w.1) (fun w b => β w b * ((ν τ')⁻¹).val w.1) ((σ : ℂ) + ((τ - τ' : ℝ) : ℂ) * Complex.I)`. Unfold `LS`. Rewrite using `[conj_eul]`. Use `congr 1`. Simplify using `only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, LS_shift α β _ _ τ τ' (hval τ) (hval τ') σ]`. Apply the tactic sequence `have hcif : conj (if P then (σ : ℂ) - 1 else 1) = if P then (σ : ℂ) - 1 else 1 := by split_ifs <;> simp [Complex.conj_ofReal]`. Rewrite using `[hcif]`.
+
+Apply the tactic sequence `by_cases hq : Q <;> by_cases hp : P`. Rewrite using `[if_neg (fun h => h.2 hp), if_pos hp, if_pos hq, one_mul]`. Rewrite using `[if_pos ⟨hq, hp⟩, if_neg hp, if_pos hq, one_mul]`. Conclude with `absurd (hPQ hp) hq`. Rewrite using `[if_neg (fun h => hq h.1), if_neg hp, if_neg hq, one_mul]`.
+-/
 theorem rankin_selberg_unitary_of_pole : NormEx → SatTw → RSPole → RSU := by
   intro hN hT hR E _ _ _ m k π π' hm hk hu hu'
   obtain ⟨ν, hν, hrep⟩ := hN E

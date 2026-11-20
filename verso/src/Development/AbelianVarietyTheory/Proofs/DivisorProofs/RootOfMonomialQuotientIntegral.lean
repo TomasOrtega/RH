@@ -18,12 +18,24 @@ namespace GlobalTheory.EtRoot
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce and unpack `⟨q, hq⟩`. Use `congrArg (MvPolynomial.eval (fun j => if j = i then (0 : K) else 1)) hq` as an intermediate fact. Simplify using `[hik.symm] at this`.
+-/
 theorem not_X_dvd_X {K : Type} [Field K] {n : ℕ} {i k : Fin n} (hik : i ≠ k) :
     ¬ (X i : MvPolynomial (Fin n) K) ∣ X k := by
   rintro ⟨q, hq⟩
   have := congrArg (MvPolynomial.eval (fun j => if j = i then (0 : K) else 1)) hq
   simp [hik.symm] at this
 
+/- English proof (translation)
+Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intros`. Simplify using the standard rewrite rules. Consider the case `insert i S hi ih`.
+
+Introduce `hk h hd`. Rewrite `hd`, the goal using `[Finset.prod_insert hi]`. Establish `hik : i ≠ k` using `fun e => hk (e ▸ Finset.mem_insert_self _ _)`. Establish `hXi : (X i : MvPolynomial (Fin n) K) ∣ h`. Break down `(X_prime (R := K) (i := i)).dvd_or_dvd (dvd_trans (dvd_mul_right _ _) hd) with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 (not_X_dvd_X hik)`. Conclude with `h1`. Take `⟨h', rfl⟩` from `hXi`. Establish `hd' : X i * (∏ j ∈ S, X j) ∣ X i * (X k * h')`. Rewrite using `[mul_left_comm (X i) (X k) h']`.
+
+Conclude with `hd`. Establish `h2` using `(mul_dvd_mul_iff_left (X_ne_zero (R := K) i)).1 hd'`. Conclude with `mul_dvd_mul_left _ (ih (fun h => hk (Finset.mem_insert_of_mem h)) h' h2)`.
+-/
 theorem prod_X_dvd_of_dvd_X_mul {K : Type} [Field K] {n : ℕ} (k : Fin n) :
     ∀ (S : Finset (Fin n)), k ∉ S → ∀ h : MvPolynomial (Fin n) K,
       (∏ j ∈ S, X j) ∣ X k * h → (∏ j ∈ S, X j) ∣ h := by
@@ -44,6 +56,11 @@ theorem prod_X_dvd_of_dvd_X_mul {K : Type} [Field K] {n : ℕ} (k : Fin n) :
     have h2 := (mul_dvd_mul_iff_left (X_ne_zero (R := K) i)).1 hd'
     exact mul_dvd_mul_left _ (ih (fun h => hk (Finset.mem_insert_of_mem h)) h' h2)
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => intro h hd`. Simplify using `using hd`. Consider the case `succ e ih`.
+
+Introduce `h hd`. Apply `ih` to reduce the goal to its premises. Apply `prod_X_dvd_of_dvd_X_mul k S hk` to reduce the goal to its premises. Rewrite `hd` using `[pow_succ, mul_comm _ (X k), mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem prod_X_dvd_of_dvd_X_pow_mul {K : Type} [Field K] {n : ℕ} (k : Fin n)
     (S : Finset (Fin n)) (hk : k ∉ S) :
     ∀ (e : ℕ) (h : MvPolynomial (Fin n) K), (∏ j ∈ S, X j) ∣ X k ^ e * h → (∏ j ∈ S, X j) ∣ h := by
@@ -56,6 +73,15 @@ theorem prod_X_dvd_of_dvd_X_pow_mul {K : Type} [Field K] {n : ℕ} (k : Fin n)
     apply prod_X_dvd_of_dvd_X_mul k S hk
     rwa [pow_succ, mul_comm _ (X k), mul_assoc] at hd
 
+/- English proof (translation)
+Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intros`. Simplify using the standard rewrite rules. Consider the case `insert k S hk ih`.
+
+Introduce `f m hd`. Rewrite `hd`, the goal using `[Finset.prod_insert hk]`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Rewrite `hd` using `[pow_zero]`. Conclude with `dvd_trans hd (one_dvd _)`.
+
+Establish `hXk : (X k : MvPolynomial (Fin n) K) ∣ f` using `(X_prime (R := K) (i := k)).dvd_of_dvd_pow (dvd_trans (dvd_mul_right _ _) hd)`. Take `⟨f', rfl⟩` from `hXk`. Establish `h1 : (∏ j ∈ S, X j) ∣ X k ^ m * f' ^ m`. Rewrite using `[← mul_pow]`. Conclude with `dvd_trans (dvd_mul_left _ _) hd`.
+
+Conclude with `mul_dvd_mul_left _ (ih f' m (prod_X_dvd_of_dvd_X_pow_mul k S hk m _ h1))`.
+-/
 theorem prod_X_dvd_of_dvd_pow {K : Type} [Field K] {n : ℕ} :
     ∀ (S : Finset (Fin n)) (f : MvPolynomial (Fin n) K) (m : ℕ),
       (∏ j ∈ S, X j) ∣ f ^ m → (∏ j ∈ S, X j) ∣ f := by
@@ -75,6 +101,9 @@ theorem prod_X_dvd_of_dvd_pow {K : Type} [Field K] {n : ℕ} :
       rw [← mul_pow]; exact dvd_trans (dvd_mul_left _ _) hd
     exact mul_dvd_mul_left _ (ih f' m (prod_X_dvd_of_dvd_X_pow_mul k S hk m _ h1))
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨e, he⟩` from `(Ideal.mem_radical_iff).1 hy`. Rewrite `he`, the goal using `[Ideal.mem_span_singleton]`. Conclude with `prod_X_dvd_of_dvd_pow S y e he`.
+-/
 theorem isRadical_span_prod_X {K : Type} [Field K] {n : ℕ} (S : Finset (Fin n)) :
     (Ideal.span {∏ j ∈ S, (X j : MvPolynomial (Fin n) K)}).IsRadical := by
   intro y hy
@@ -88,6 +117,11 @@ namespace GlobalTheory.EtRoot
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin n) (ZMod p)) A := (MvPolynomial.aeval t).toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) (ZMod p)) A := he`. Establish `h1` using `GlobalTheory.EtaleReducedEq.isRadical_map_of_etale (C := A) (Ideal.span {∏ j ∈ S, (X j : MvPolynomial (Fin n) (ZMod p))}) (isRadical_span_prod_X S)`. Rewrite `h1` using `[Ideal.map_span, Set.image_singleton]`. Establish `h2 : algebraMap (MvPolynomial (Fin n) (ZMod p)) A (∏ j ∈ S, X j) = ∏ j ∈ S, t j`.
+
+Rewrite using `[RingHom.algebraMap_toAlgebra, map_prod]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`. Establish `hmem : z ∈ (Ideal.span {∏ j ∈ S, t j}).radical` using `(Ideal.mem_radical_iff).2 ⟨k, Ideal.mem_span_singleton.2 hz⟩`. Conclude with `Ideal.mem_span_singleton.1 (h1 hmem)`.
+-/
 theorem dvd_of_dvd_pow_prod_coords (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A]
     [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A)
     (he : (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale) (S : Finset (Fin n))
@@ -105,6 +139,21 @@ theorem dvd_of_dvd_pow_prod_coords (p : ℕ) [Fact p.Prime] (A : Type) [CommRing
     (Ideal.mem_radical_iff).2 ⟨k, Ideal.mem_span_singleton.2 hz⟩
   exact Ideal.mem_span_singleton.1 (h1 hmem)
 
+/- English proof (translation)
+Set `Q` to `MvPolynomial (Fin n) (ZMod p)`. Use `letI : Algebra Q A := (MvPolynomial.aeval t).toRingHom.toAlgebra`. Use `haveI : Algebra.Etale Q A := he`. Set `T` to `Localization.AtPrime P`. Use `haveI : Algebra.FormallyEtale Q T := inferInstance`.
+
+Use `haveI : Algebra.EssFiniteType A T := Algebra.EssFiniteType.of_isLocalization T P.primeCompl`. Use `haveI : Algebra.EssFiniteType Q T := Algebra.EssFiniteType.comp Q A T`. Use `haveI : IsIntegrallyClosed Q := isIntegrallyClosed_mvPolynomial_fin (ZMod p) n`. Take `⟨_, hT⟩` from `GlobalTheory.EtNormal.isDomain_and_isIntegrallyClosed_of_formallyEtale Q T`. Establish `hunit : ∀ y : P.primeCompl, IsUnit (algebraMap A L y)` using `fun y => by`.
+
+Establish `hy : (y : A) ≠ 0` using `fun h => y.2 (h ▸ P.zero_mem)`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective A L)).2 hy)`. Use `letI : Algebra T L := (IsLocalization.lift (M := P.primeCompl) (S := T) hunit).toAlgebra`. Use `haveI : IsScalarTower A T L := IsScalarTower.of_algebraMap_eq (fun y => (IsLocalization.lift_eq (M := P.primeCompl) (S := T) hunit y).symm)`. Use `haveI : IsFractionRing T L := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization P.primeCompl T L`.
+
+Establish `hmk : ∀ (a : A) (b : P.primeCompl), algebraMap T L (IsLocalization.mk' T a b) * algebraMap A L b = algebraMap A L a`. Introduce `a b`. Rewrite using `[IsScalarTower.algebraMap_apply A T L b, ← map_mul, IsLocalization.mk'_spec, ← IsScalarTower.algebraMap_apply]`. Take `⟨a, b, hb, hab⟩` from `hx`. Establish `hbL : algebraMap A L b ≠ 0` using `(hunit ⟨b, hb⟩).ne_zero`.
+
+Establish `hxm : x ^ m = algebraMap T L (IsLocalization.mk' T a (⟨b, hb⟩ : P.primeCompl))`. Apply `mul_right_cancel₀ hbL` to reduce the goal to its premises. Rewrite using `[hab]`. Conclude with `(hmk a ⟨b, hb⟩).symm`. Establish `hint : IsIntegral T x`.
+
+Apply `IsIntegral.of_pow hm` to reduce the goal to its premises. Rewrite using `[hxm]`. Conclude with `isIntegral_algebraMap`. Take `⟨u, hu⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := T) (K := L)).1 hint`. Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl u`.
+
+Use `⟨c, s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Conclude with `hmk c s`.
+-/
 theorem mem_local_of_pow_mem (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [IsDomain A]
     [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A)
     (he : (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale) (P : Ideal A) [P.IsPrime]
@@ -146,6 +195,19 @@ theorem mem_local_of_pow_mem (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [I
   refine ⟨c, s, s.2, ?_⟩
   rw [← hu]; exact hmk c s
 
+/- English proof (translation)
+Introduce `p _ A _ _ _ n t he P _ L _ _ _ S g m hm ⟨a, b, hb, hab⟩`. Establish `h1P : (1 : A) ∉ P` using `(Ideal.ne_top_iff_one P).1 (Ideal.IsPrime.ne_top ‹_›)`. Distinguish the cases in `h0 : (∏ j ∈ S, t j) = 0`. Conclude with `⟨0, 1, h1P, by simp [h0]⟩`. Establish `hπL : algebraMap A L (∏ j ∈ S, t j) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A L)).2 h0`.
+
+Establish `h1 : ∃ a' b' : A, b' ∉ P ∧ g ^ m * algebraMap A L b' = algebraMap A L a'` using `⟨a * ∏ j ∈ S, t j, b, hb, by`. Rewrite using `[map_mul, ← hab, div_mul_eq_mul_div, div_mul_cancel₀ _ hπL]⟩`. Take `⟨x, s, hs, hxs⟩` from `mem_local_of_pow_mem p A t he P L g m hm h1`. Establish `hbs : s * b ∉ P` using `fun h => ((‹P.IsPrime›).mem_or_mem h).elim hs hb`. Establish `h2 : x ^ m * b = a * (∏ j ∈ S, t j) * s ^ m`.
+
+Apply `IsFractionRing.injective A L` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow]`. Rewrite using `[← hxs, ← hab]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : (∏ j ∈ S, t j) ∣ (x * b) ^ m`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Use `⟨a * s ^ (k + 1) * b ^ k, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨y, hy⟩` from `dvd_of_dvd_pow_prod_coords p A t he S (x * b) m h3`.
+
+Use `⟨y, s * b, hbs, ?_⟩` and prove the remaining obligations. Establish `h4 : algebraMap A L (x * b) = algebraMap A L (∏ j ∈ S, t j) * algebraMap A L y`. Rewrite using `[hy, map_mul]`. Rewrite `h4` using `[map_mul, ← hxs]`. Rewrite using `[map_mul, div_mul_eq_mul_div, div_eq_iff hπL]`.
+
+Take the linear combination `h4`.
+-/
 theorem div_prod_coords_mem_of_pow : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] [IsDomain A] [Algebra (ZMod p) A] {n : ℕ} (t : Fin n → A), (MvPolynomial.aeval (R := ZMod p) t).toRingHom.Etale → ∀ (P : Ideal A) [P.IsPrime] (L : Type) [Field L] [Algebra A L] [IsFractionRing A L] (S : Finset (Fin n)) (g : L) (m : ℕ), 0 < m → (∃ a b : A, b ∉ P ∧ g ^ m / algebraMap A L (∏ j ∈ S, t j) * algebraMap A L b = algebraMap A L a) → ∃ a b : A, b ∉ P ∧ g / algebraMap A L (∏ j ∈ S, t j) * algebraMap A L b = algebraMap A L a := by
   intro p _ A _ _ _ n t he P _ L _ _ _ S g m hm ⟨a, b, hb, hab⟩
   have h1P : (1 : A) ∉ P := (Ideal.ne_top_iff_one P).1 (Ideal.IsPrime.ne_top ‹_›)

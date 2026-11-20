@@ -10,6 +10,9 @@ namespace GlobalTheory.Hk.LogDeriv
 open LSeries
 open scoped LSeries.notation
 
+/- English proof (translation)
+Establish `h : abscissaOfAbsConv a ≤ ((1 : ℝ) : EReal)` using `LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy => ha (y : ℂ) (by simpa using hy)`. Conclude with `lt_of_le_of_lt h (EReal.coe_lt_coe_iff.mpr hs)`.
+-/
 lemma absc_lt {a : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeriesSummable a s) {s : ℂ} (hs : 1 < s.re) :
     abscissaOfAbsConv a < s.re := by
   have h : abscissaOfAbsConv a ≤ ((1 : ℝ) : EReal) :=
@@ -17,6 +20,9 @@ lemma absc_lt {a : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeriesSummable 
       ha (y : ℂ) (by simpa using hy)
   exact lt_of_le_of_lt h (EReal.coe_lt_coe_iff.mpr hs)
 
+/- English proof (translation)
+Establish `h` using `LSeries_hasDerivAt (absc_lt ha hs)`. Establish `hlog : LSeries (logMul a) s = LSeries (l ⍟ a) s` using `LSeries_congr (fun {n} hn => hc n hn) s`. Rewrite `h` using `[hlog, LSeries_convolution' (hl s hs) (ha s hs)]`. Then use the resulting hypothesis.
+-/
 lemma hasDerivAt_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeriesSummable a s)
     (hl : ∀ s : ℂ, 1 < s.re → LSeriesSummable l s)
     (hc : ∀ n : ℕ, n ≠ 0 → Complex.log n * a n = (l ⍟ a) n) {s : ℂ} (hs : 1 < s.re) :
@@ -25,6 +31,11 @@ lemma hasDerivAt_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSe
   have hlog : LSeries (logMul a) s = LSeries (l ⍟ a) s := LSeries_congr (fun {n} hn => hc n hn) s
   rwa [hlog, LSeries_convolution' (hl s hs) (ha s hs)] at h
 
+/- English proof (translation)
+Use `show Complex.log (n : ℂ) * (l n / Complex.log (n : ℂ)) = l n`. Break down `eq_or_ne n 1 with rfl | hn1` into its components or cases. Simplify using `[h1]`. Establish `hn2 : 1 < n` using `by omega`. Establish `hlog : Complex.log (n : ℂ) ≠ 0`.
+
+Rewrite using `[← Complex.natCast_log]`. Conclude with `Complex.ofReal_ne_zero.mpr (Real.log_pos (by exact_mod_cast hn2)).ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma logMul_div {l : ℕ → ℂ} (h1 : l 1 = 0) {n : ℕ} (hn : n ≠ 0) :
     logMul (fun n => l n / Complex.log n) n = l n := by
   show Complex.log (n : ℂ) * (l n / Complex.log (n : ℂ)) = l n
@@ -36,6 +47,11 @@ lemma logMul_div {l : ℕ → ℂ} (h1 : l 1 = 0) {n : ℕ} (hn : n ≠ 0) :
       exact Complex.ofReal_ne_zero.mpr (Real.log_pos (by exact_mod_cast hn2)).ne'
     field_simp
 
+/- English proof (translation)
+Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Break down `lt_or_ge n 2 with hn | hn` into its components or cases. Apply the tactic sequence `have h0 : Complex.log (n : ℂ) = 0 := by interval_cases n <;> simp`. Rewrite using `[h0, div_zero, norm_zero]`. Conclude with `div_nonneg (norm_nonneg _) hl2.le`.
+
+Establish `hge : Real.log 2 ≤ Real.log n` using `Real.log_le_log (by norm_num) (by exact_mod_cast hn)`. Rewrite using `[← Complex.natCast_log, norm_div, Complex.norm_of_nonneg (hl2.le.trans hge)]`. Conclude with `div_le_div_of_nonneg_left (norm_nonneg _) hl2 hge`.
+-/
 private lemma norm_div_log_natCast_le_norm_div_log_two (x : ℂ) (n : ℕ) : ‖x / Complex.log n‖ ≤ ‖x‖ / Real.log 2 := by
   have hl2 : 0 < Real.log 2 := Real.log_pos one_lt_two
   rcases lt_or_ge n 2 with hn | hn
@@ -47,6 +63,11 @@ private lemma norm_div_log_natCast_le_norm_div_log_two (x : ℂ) (n : ℕ) : ‖
     rw [← Complex.natCast_log, norm_div, Complex.norm_of_nonneg (hl2.le.trans hge)]
     exact div_le_div_of_nonneg_left (norm_nonneg _) hl2 hge
 
+/- English proof (translation)
+Use `Summable.of_norm_bounded (g := fun n => ‖LSeries.term l s n‖ / Real.log 2) ((summable_norm_iff.mpr (hl s hs)).div_const _) (fun n => ?_)` and prove the remaining obligations. Simplify using `only [LSeries.norm_term_eq]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[div_right_comm] gcongr`.
+
+Conclude with `norm_div_log_natCast_le_norm_div_log_two _ _`.
+-/
 private lemma LSeriesSummable_div_log_of_LSeriesSummable {l : ℕ → ℂ} (hl : ∀ s : ℂ, 1 < s.re → LSeriesSummable l s)
     {s : ℂ} (hs : 1 < s.re) : LSeriesSummable (fun n => l n / Complex.log n) s := by
   refine Summable.of_norm_bounded (g := fun n => ‖LSeries.term l s n‖ / Real.log 2)
@@ -58,6 +79,9 @@ private lemma LSeriesSummable_div_log_of_LSeriesSummable {l : ℕ → ℂ} (hl :
     gcongr
     exact norm_div_log_natCast_le_norm_div_log_two _ _
 
+/- English proof (translation)
+Establish `h : abscissaOfAbsConv (fun n => l n / Complex.log n) ≤ ((1 : ℝ) : EReal)` using `LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy => LSeriesSummable_div_log_of_LSeriesSummable hl (by simpa using hy)`. Conclude with `lt_of_le_of_lt h (EReal.coe_lt_coe_iff.mpr hs)`.
+-/
 lemma absc_div_lt {l : ℕ → ℂ} (h1 : l 1 = 0) (hl : ∀ s : ℂ, 1 < s.re → LSeriesSummable l s)
     {s : ℂ} (hs : 1 < s.re) : abscissaOfAbsConv (fun n => l n / Complex.log n) < s.re := by
   have h : abscissaOfAbsConv (fun n => l n / Complex.log n) ≤ ((1 : ℝ) : EReal) :=
@@ -65,6 +89,15 @@ lemma absc_div_lt {l : ℕ → ℂ} (h1 : l 1 = 0) (hl : ∀ s : ℂ, 1 < s.re �
       LSeriesSummable_div_log_of_LSeriesSummable hl (by simpa using hy)
   exact lt_of_le_of_lt h (EReal.coe_lt_coe_iff.mpr hs)
 
+/- English proof (translation)
+Establish `hUo : IsOpen {z : ℂ | 1 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hG : ∀ z : ℂ, 1 < z.re → HasDerivAt (LSeries (fun n => l n / Complex.log n)) (-LSeries l z) z`. Introduce `z hz`. Establish `h` using `LSeries_hasDerivAt (absc_div_lt l1 hl hz)`. Rewrite `h` using `[LSeries_congr (fun {n} hn => logMul_div l1 hn) z]`. Then use the resulting hypothesis.
+
+Establish `hH : ∀ z : ℂ, 1 < z.re → HasDerivAt (fun w => LSeries a w * Complex.exp (-LSeries (fun n => l n / Complex.log n) w)) 0 z`. Introduce `z hz`. Establish `h : HasDerivAt (fun w => LSeries a w * Complex.exp (-LSeries (fun n => l n / Complex.log n) w)) (-(LSeries l z * LSeries a z) * Complex.exp (-LSeries (fun n => l n / Complex.log n) z) + LSeries a z * (Complex.exp (-LSeries (fun n => l n / Complex.log n) z) * -(-LSeries l z))) z` using `(hasDerivAt_of_conv ha hl hc hz).mul (hG z hz).neg.cexp`. Conclude with `h.congr_deriv (by ring)`. Establish `hconst : ∀ z : ℂ, 1 < z.re → LSeries a z * Complex.exp (-LSeries (fun n => l n / Complex.log n) z) = LSeries a s * Complex.exp (-LSeries (fun n => l n / Complex.log n) s)` using `fun z hz => hUo.is_const_of_deriv_eq_zero (convex_halfSpace_re_gt 1).isPreconnected (fun v hv => (hH v hv).differentiableAt.differentiableWithinAt) (fun v hv => (hH v hv).deriv) hz hs`.
+
+Establish `hab : abscissaOfAbsConv a < ⊤` using `(absc_lt ha hs).trans (EReal.coe_lt_top _)`. Establish `hlb : abscissaOfAbsConv (fun n => l n / Complex.log n) < ⊤` using `(absc_div_lt l1 hl hs).trans (EReal.coe_lt_top _)`. Establish `hlim : Tendsto (fun x : ℝ => LSeries a x * Complex.exp (-LSeries (fun n => l n / Complex.log n) x)) atTop (𝓝 (a 1 * Complex.exp (-((fun n => l n / Complex.log n) 1))))` using `(LSeries.tendsto_atTop hab).mul ((Complex.continuous_exp.tendsto _).comp (LSeries.tendsto_atTop hlb).neg)`. Establish `hev : (fun x : ℝ => LSeries a x * Complex.exp (-LSeries (fun n => l n / Complex.log n) x)) =ᶠ[atTop] fun _ => LSeries a s * Complex.exp (-LSeries (fun n => l n / Complex.log n) s)` using `by filter_upwards [eventually_gt_atTop (1 : ℝ)] with x hx`. Conclude with `hconst x (by simpa using hx)`.
+
+Establish `hval` using `tendsto_nhds_unique (hlim.congr' hev) tendsto_const_nhds`. Simplify using `only [a1, l1, zero_div, neg_zero, Complex.exp_zero, mul_one] at hval`. Establish `h2` using `hval.symm`. Rewrite `h2` using `[Complex.exp_neg, mul_inv_eq_one₀ (Complex.exp_ne_zero _)]`. Conclude with `h2`.
+-/
 lemma eq_exp_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeriesSummable a s)
     (hl : ∀ s : ℂ, 1 < s.re → LSeriesSummable l s) (a1 : a 1 = 1) (l1 : l 1 = 0)
     (hc : ∀ n : ℕ, n ≠ 0 → Complex.log n * a n = (l ⍟ a) n) {s : ℂ} (hs : 1 < s.re) :
@@ -109,6 +142,11 @@ lemma eq_exp_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeries
   rw [Complex.exp_neg, mul_inv_eq_one₀ (Complex.exp_ne_zero _)] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hΛ` using `LSeriesSummable_vonMangoldt hs`. Use `Summable.of_norm_bounded (g := fun n => 2 * ‖LSeries.term (↗Λ) s n‖) ((summable_norm_iff.mpr hΛ).mul_left 2) (fun n => ?_)` and prove the remaining obligations. Simplify using `only [LSeries.norm_term_eq]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← mul_div_assoc] gcongr`. Rewrite using `[Complex.norm_of_nonneg vonMangoldt_nonneg]`. Conclude with `hl n`.
+-/
 lemma summable_of_le {l : ℕ → ℂ} (hl : ∀ n, ‖l n‖ ≤ 2 * Λ n) (s : ℂ) (hs : 1 < s.re) :
     LSeriesSummable l s := by
   have hΛ := LSeriesSummable_vonMangoldt hs
@@ -122,6 +160,27 @@ lemma summable_of_le {l : ℕ → ℂ} (hl : ∀ n, ‖l n‖ ≤ 2 * Λ n) (s :
     rw [Complex.norm_of_nonneg vonMangoldt_nonneg]
     exact hl n
 
+/- English proof (translation)
+Establish `l1 : l 1 = 0` using `by simpa using hl 1`. Establish `hl' : ∀ z : ℂ, 1 < z.re → LSeriesSummable l z` using `fun z hz => summable_of_le hl z hz`. Establish `hΛs : ∀ z : ℂ, 1 < z.re → LSeriesSummable (↗Λ) z` using `fun z hz => LSeriesSummable_vonMangoldt hz`. Establish `h1s : ∀ z : ℂ, 1 < z.re → LSeriesSummable (1 : ℕ → ℂ) z` using `fun z hz => LSeriesSummable_one_iff.mpr hz`. Establish `hΛ1 : (↗Λ) 1 = 0` using `by simp`.
+
+Establish `hcz : ∀ n : ℕ, n ≠ 0 → Complex.log n * (1 : ℕ → ℂ) n = ((↗Λ) ⍟ (1 : ℕ → ℂ)) n`. Introduce `n _`. Rewrite using `[LSeries.convolution_def]`. Simplify using `only [Pi.one_apply, mul_one]`. Rewrite using `[Nat.sum_divisorsAntidiagonal (fun x _ => ((Λ x : ℝ) : ℂ)), ← Complex.ofReal_sum, vonMangoldt_sum, Complex.natCast_log]`.
+
+Establish `hσc : 1 < ((s.re : ℝ) : ℂ).re` using `by simpa using hs`. Establish `hζ` using `eq_exp_of_conv h1s hΛs (by simp) hΛ1 hcz hσc`. Establish `hA` using `eq_exp_of_conv ha hl' a1 l1 hc hs`. Use `set t : ℕ → ℂ := fun n => LSeries.term (fun n => (↗Λ) n / Complex.log n) ((s.re : ℝ) : ℂ) n with ht`. Establish `htn : ∀ n, t n = ((‖t n‖ : ℝ) : ℂ)`.
+
+Introduce `n`. Use `open ComplexOrder in`. Use the proof step `(refine Complex.eq_coe_norm_of_nonneg (LSeries.term_nonneg ?_ s.re) show (0 : ℂ) ≤ ((Λ n : ℝ) : ℂ) / Complex.log n`. Rewrite using `[← Complex.natCast_log, ← Complex.ofReal_div]`. Conclude with `Complex.zero_le_real.mpr (div_nonneg vonMangoldt_nonneg (Real.log_natCast_nonneg n)))`.
+
+Establish `hts : Summable fun n => ‖t n‖` using `summable_norm_iff.mpr (LSeriesSummable_of_abscissaOfAbsConv_lt_re (absc_div_lt hΛ1 hΛs hσc))`. Use `set R : ℝ := ∑' n, ‖t n‖ with hR`. Establish `hZ : LSeries (fun n => (↗Λ) n / Complex.log n) ((s.re : ℝ) : ℂ) = (R : ℂ)` using `by show ∑' n, t n = _`. Rewrite using `[tsum_congr htn, ← Complex.ofReal_tsum]`. Establish `hζb : Real.exp R ≤ s.re / (s.re - 1)`.
+
+Establish `hb` using `GlobalTheory.LLower.norm_LSeries_le (f := (1 : ℕ → ℂ)) (fun n => by simp) hσc`. Rewrite `hb` using `[hζ, hZ, Complex.norm_exp, Complex.ofReal_re]`. Simplify using `using hb`. Establish `hgs : Summable fun n => ‖LSeries.term (fun n => l n / Complex.log n) s n‖` using `summable_norm_iff.mpr (LSeriesSummable_of_abscissaOfAbsConv_lt_re (absc_div_lt l1 hl' hs))`. Establish `hpt : ∀ n, ‖LSeries.term (fun n => l n / Complex.log n) s n‖ ≤ 2 * ‖t n‖`.
+
+Introduce `n`. Simplify using `only [ht, LSeries.norm_term_eq, Complex.ofReal_re]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[norm_div, norm_div, Complex.norm_of_nonneg vonMangoldt_nonneg, ← mul_div_assoc, ← mul_div_assoc] gcongr`.
+
+Conclude with `hl n`. Establish `hGle : ‖LSeries (fun n => l n / Complex.log n) s‖ ≤ 2 * R`. Combine the equalities or inequalities in the displayed calculation. Establish `hre : -(2 * R) ≤ (LSeries (fun n => l n / Complex.log n) s).re`. Use `Complex.abs_re_le_norm (LSeries (fun n => l n / Complex.log n) s)` as an intermediate fact.
+
+Use `neg_abs_le (LSeries (fun n => l n / Complex.log n) s).re` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs0 : 0 < s.re` using `by linarith`. Establish `hs1 : 0 < s.re - 1` using `by linarith`. Establish `hR1 : (s.re - 1) / s.re ≤ Real.exp (-R)`.
+
+Rewrite using `[Real.exp_neg, ← inv_div]`. Conclude with `inv_anti₀ (Real.exp_pos R) hζb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_ge_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSeriesSummable a s)
     (hl : ∀ n, ‖l n‖ ≤ 2 * Λ n) (a1 : a 1 = 1)
     (hc : ∀ n : ℕ, n ≠ 0 → Complex.log n * a n = (l ⍟ a) n) {s : ℂ} (hs : 1 < s.re) :
@@ -196,6 +255,9 @@ lemma norm_ge_of_conv {a l : ℕ → ℂ} (ha : ∀ s : ℂ, 1 < s.re → LSerie
 
 variable (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ)
 
+/- English proof (translation)
+Use `show ‖∑ g, χ g * (𝓕.lam g n : ℂ)‖ ≤ 2 * Λ n`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, AddChar.norm_apply, one_mul, Complex.norm_of_nonneg (𝓕.lam_nonneg g n)]`. Use `_ ≤ 2 * Λ n := 𝓕.lam_le n`.
+-/
 lemma norm_lamChi_le (n : ℕ) : ‖𝓕.lamChi χ n‖ ≤ 2 * Λ n := by
   show ‖∑ g, χ g * (𝓕.lam g n : ℂ)‖ ≤ 2 * Λ n
   calc ‖∑ g, χ g * (𝓕.lam g n : ℂ)‖ ≤ ∑ g, ‖χ g * (𝓕.lam g n : ℂ)‖ := norm_sum_le _ _
@@ -204,6 +266,11 @@ lemma norm_lamChi_le (n : ℕ) : ‖𝓕.lamChi χ n‖ ≤ 2 * Λ n := by
         rw [norm_mul, AddChar.norm_apply, one_mul, Complex.norm_of_nonneg (𝓕.lam_nonneg g n)]
     _ ≤ 2 * Λ n := 𝓕.lam_le n
 
+/- English proof (translation)
+Use `show ∑ g, χ g * (𝓕.a g 1 : ℂ) = 1`. Rewrite using `[Finset.sum_eq_single (0 : 𝓕.G)]`. Rewrite using `[AddChar.map_zero_eq_one, 𝓕.a_one]`. Simplify using the standard rewrite rules. Introduce `g _ hg`.
+
+Rewrite using `[𝓕.a_one_ne g hg]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma aChi_one : 𝓕.aChi χ 1 = 1 := by
   show ∑ g, χ g * (𝓕.a g 1 : ℂ) = 1
   rw [Finset.sum_eq_single (0 : 𝓕.G)]
@@ -215,6 +282,17 @@ lemma aChi_one : 𝓕.aChi χ 1 = 1 := by
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[LSeries.convolution_def]`. Use `show Complex.log (n : ℂ) * ∑ g, χ g * (𝓕.a g n : ℂ) = ∑ p ∈ n.divisorsAntidiagonal, (∑ h, χ h * (𝓕.lam h p.1 : ℂ)) * ∑ g, χ g * (𝓕.a g p.2 : ℂ)`. Establish `step : ∀ g, Complex.log (n : ℂ) * (χ g * (𝓕.a g n : ℂ)) = ∑ h, ∑ p ∈ n.divisorsAntidiagonal, χ g * ((𝓕.lam h p.1 : ℂ) * (𝓕.a (g - h) p.2 : ℂ))`. Introduce `g`. Establish `hc` using `congrArg (fun r : ℝ => (r : ℂ)) (𝓕.conv g n)`.
+
+Simplify using `only [Complex.ofReal_mul, Complex.ofReal_sum] at hc`. Repeatedly rewrite using `[← Finset.mul_sum]`. Rewrite using `[← hc, ← Complex.natCast_log]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl (fun g _ => step g)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.subRight h) _ _ fun g => ?_` and prove the remaining obligations. Establish `hχ : χ g = χ h * χ (g - h)`. Rewrite using `[← AddChar.map_add_eq_mul]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [Equiv.subRight_apply]`. Rewrite using `[hχ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = ∑ p ∈ n.divisorsAntidiagonal, (∑ h, χ h * (𝓕.lam h p.1 : ℂ)) * ∑ g, χ g * (𝓕.a g p.2 : ℂ) := by`. Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum]`.
+-/
 lemma conv_chi (n : ℕ) : Complex.log n * 𝓕.aChi χ n = (𝓕.lamChi χ ⍟ 𝓕.aChi χ) n := by
   rw [LSeries.convolution_def]
   show Complex.log (n : ℂ) * ∑ g, χ g * (𝓕.a g n : ℂ) =
@@ -252,6 +330,21 @@ lemma conv_chi (n : ℕ) : Complex.log n * 𝓕.aChi χ n = (𝓕.lamChi χ ⍟ 
         (∑ h, χ h * (𝓕.lam h p.1 : ℂ)) * ∑ g, χ g * (𝓕.a g p.2 : ℂ) := by
         simp_rw [Finset.sum_mul, Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `𝓕 χ s hs`. Take `⟨-, hLS, -, -⟩` from `GlobalTheory.Hk.RayCont.continuation_growth 𝓕 χ`. Establish `ha : ∀ z : ℂ, 1 < z.re → LSeriesSummable (𝓕.aChi χ) z` using `fun z hz => (hLS z hz).1`. Establish `hl : ∀ z : ℂ, 1 < z.re → LSeriesSummable (𝓕.lamChi χ) z` using `fun z hz => summable_of_le (norm_lamChi_le 𝓕 χ) z hz`. Establish `hlb` using `norm_ge_of_conv ha (norm_lamChi_le 𝓕 χ) (aChi_one 𝓕 χ) (fun n _ => conv_chi 𝓕 χ n) hs`.
+
+Establish `hσ : 0 < (s.re - 1) / s.re` using `div_pos (by linarith) (by linarith)`. Establish `hL0 : LSeries (𝓕.aChi χ) s ≠ 0`. Introduce `h`. Rewrite `hlb` using `[h, norm_zero]`. Combine the linear relations using `[pow_pos hσ 2]`.
+
+Establish `hs1 : s - 1 ≠ 0`. Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hder` using `hasDerivAt_of_conv ha hl (fun n _ => conv_chi 𝓕 χ n) hs`. Establish `hU : IsOpen {z : ℂ | 1 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Use `⟨hl s hs, hlb, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [(hLS s hs).2] split_ifs <;> simp [hs1, hL0]`. Distinguish the cases in `h : χ = 1`.
+
+Establish `hev : 𝓕.F χ =ᶠ[𝓝 s] fun z => (z - 1) * LSeries (𝓕.aChi χ) z` using `Filter.eventually_of_mem (hU.mem_nhds hs) fun z hz => by`. Rewrite using `[(hLS z hz).2, if_pos h]`. Establish `hd : HasDerivAt (fun z => (z - 1) * LSeries (𝓕.aChi χ) z) (1 * LSeries (𝓕.aChi χ) s + (s - 1) * (-(LSeries (𝓕.lamChi χ) s * LSeries (𝓕.aChi χ) s))) s` using `((hasDerivAt_id s).sub_const (1 : ℂ)).mul hder`. Rewrite using `[hev.deriv_eq, hd.deriv, (hLS s hs).2, if_pos h, if_pos h]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hev : 𝓕.F χ =ᶠ[𝓝 s] LSeries (𝓕.aChi χ)` using `Filter.eventually_of_mem (hU.mem_nhds hs) fun z hz => by`. Rewrite using `[(hLS z hz).2, if_neg h, one_mul]`. Rewrite using `[hev.deriv_eq, hder.deriv, (hLS s hs).2, if_neg h, if_neg h, one_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logDeriv_F : ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (s : ℂ), 1 < s.re → LSeriesSummable (𝓕.lamChi χ) s ∧ ((s.re - 1) / s.re) ^ 2 ≤ ‖LSeries (𝓕.aChi χ) s‖ ∧ 𝓕.F χ s ≠ 0 ∧ -(deriv (𝓕.F χ) s / 𝓕.F χ s) + (if χ = 1 then 1 / (s - 1) else 0) = LSeries (𝓕.lamChi χ) s := by
   intro 𝓕 χ s hs
   obtain ⟨-, hLS, -, -⟩ := GlobalTheory.Hk.RayCont.continuation_growth 𝓕 χ

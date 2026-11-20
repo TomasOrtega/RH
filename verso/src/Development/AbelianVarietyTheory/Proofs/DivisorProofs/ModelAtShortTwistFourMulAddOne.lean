@@ -7,6 +7,25 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `V F a₄ a₆ D k _ _ h`. Take `⟨C, hu, hr, hs, ht, ⟨h1, h2, h3, h4, h6⟩, hΔ⟩` from `h`. Use `set d : ℂ := 4 * (k : ℂ) + 1 with hd`. Establish `hkV : (k : ℂ) ∈ V` using `intCast_mem V k`. Establish `hdV : d ∈ V` using `add_mem (mul_mem (by exact_mod_cast intCast_mem V 4 : (4 : ℂ) ∈ V) hkV) (one_mem V)`.
+
+Establish `hkF : (k : ℂ) ∈ F` using `by simpa using IntermediateField.intCast_mem F k`. Establish `hdF : d ∈ F` using `F.add_mem (F.mul_mem (by simpa using IntermediateField.intCast_mem F 4) hkF) F.one_mem`. Set `W₀ : WeierstrassCurve ℂ` to `⟨0, 0, 0, a₄, a₆⟩`. Set `C' : VariableChange ℂ` to `⟨C.u, d * C.r, C.s, d * C.t⟩`. Use `⟨C', hu, F.mul_mem hdF hr, hs, F.mul_mem hdF ht, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (C' • shortTwist d a₄ a₆).a₁ = (C • W₀).a₁`. Simplify using `only [variableChange_a₁, shortTwist, W₀, C']`. Establish `e2 : (C' • shortTwist d a₄ a₆).a₂ = d * (C • W₀).a₂ + k * (C • W₀).a₁ ^ 2`. Simplify using `only [variableChange_a₁, variableChange_a₂, shortTwist, W₀, C', hd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : (C' • shortTwist d a₄ a₆).a₃ = d * (C • W₀).a₃`. Simplify using `only [variableChange_a₃, shortTwist, W₀, C']`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : (C' • shortTwist d a₄ a₆).a₄ = d ^ 2 * (C • W₀).a₄ + 2 * k * d * (C • W₀).a₁ * (C • W₀).a₃`. Simplify using `only [variableChange_a₁, variableChange_a₃, variableChange_a₄, shortTwist, W₀, C', hd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e6 : (C' • shortTwist d a₄ a₆).a₆ = d ^ 3 * (C • W₀).a₆ + k * d ^ 2 * (C • W₀).a₃ ^ 2`. Simplify using `only [variableChange_a₃, variableChange_a₆, shortTwist, W₀, C', hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2V : (2 : ℂ) ∈ V` using `by simpa using intCast_mem V 2`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `h1`. Rewrite using `[e2]`. Conclude with `add_mem (mul_mem hdV h2) (mul_mem hkV (pow_mem h1 2))`.
+
+Rewrite using `[e3]`. Conclude with `mul_mem hdV h3`. Rewrite using `[e4]`. Conclude with `add_mem (mul_mem (pow_mem hdV 2) h4) (mul_mem (mul_mem (mul_mem (mul_mem h2V hkV) hdV) h1) h3)`. Rewrite using `[e6]`.
+
+Conclude with `add_mem (mul_mem (pow_mem hdV 3) h6) (mul_mem (mul_mem hkV (pow_mem hdV 2)) (pow_mem h3 2))`. Establish `eΔ : (C' • shortTwist d a₄ a₆).Δ = d ^ 6 * (C • W₀).Δ`. Rewrite using `[variableChange_Δ, variableChange_Δ]`. Simplify using `only [C', W₀, shortTwist, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[eΔ, map_mul, map_mul, hΔ]`.
+-/
 theorem modelAt_shortTwist_four_mul_add_one : ∀ (V : ValuationSubring ℂ) (F : IntermediateField ℚ ℂ) (a₄ a₆ D : ℂ) (k : ℤ), a₄ ∈ F → a₆ ∈ F → ModelAt V F ⟨0, 0, 0, a₄, a₆⟩ D → ModelAt V F (shortTwist (4 * (k : ℂ) + 1) a₄ a₆) ((4 * (k : ℂ) + 1) ^ 6 * D) := by
   intro V F a₄ a₆ D k _ _ h
   obtain ⟨C, hu, hr, hs, ht, ⟨h1, h2, h3, h4, h6⟩, hΔ⟩ := h

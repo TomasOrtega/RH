@@ -21,6 +21,11 @@ def perp {n : ℕ} (ψ : AddChar k Circle) (A : AddSubgroup (Fin n → k)) :
   neg_mem' := fun {x} hx a ha => by
     rw [neg_dotProduct, AddChar.map_neg_eq_inv, hx a ha, inv_one]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Establish `hN : IsOpen ((fun q : (Fin n → k) × (Fin n → k) => q.1 ⬝ᵥ q.2) ⁻¹' cball s)` using `(isOpen_cball s).preimage continuous_dot`. Establish `hsub : ({0} : Set (Fin n → k)) ×ˢ (A : Set (Fin n → k)) ⊆ (fun q : (Fin n → k) × (Fin n → k) => q.1 ⬝ᵥ q.2) ⁻¹' cball s`. Introduce and unpack `⟨x, a⟩ ⟨hx, -⟩`. Take `rfl : x = 0` from `hx`.
+
+Simplify using `[cball]`. Take `⟨u, v, hu, -, h0u, hAv, huv⟩` from `generalized_tube_lemma isCompact_singleton hAc hN hsub`. Use `AddSubgroup.isOpen_of_mem_nhds (perp ψ A) (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset (hu.mem_nhds (h0u rfl)) fun ξ hξ a ha => ?_` and prove the remaining obligations. Conclude with `hs _ (huv (Set.mk_mem_prod hξ (hAv ha)))`.
+-/
 theorem isOpen_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (A : AddSubgroup (Fin n → k)) (hAc : IsCompact (A : Set (Fin n → k))) :
     IsOpen (perp ψ A : Set (Fin n → k)) := by
@@ -38,6 +43,11 @@ theorem isOpen_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
   refine Filter.mem_of_superset (hu.mem_nhds (h0u rfl)) fun ξ hξ a ha => ?_
   exact hs _ (huv (Set.mk_mem_prod hξ (hAv ha)))
 
+/- English proof (translation)
+Establish `: (perp ψ A : Set (Fin n → k)) = ⋂ a ∈ A, (fun ξ : Fin n → k => ψ (ξ ⬝ᵥ a)) ⁻¹' {1}`. Use extensionality with `ξ`. Simplify using `[perp]`. Rewrite using `[this]`. Use `isClosed_biInter fun a _ => isClosed_singleton.preimage ?_` and prove the remaining obligations.
+
+Conclude with `hψ.comp (continuous_id.dotProduct continuous_const)`.
+-/
 theorem isClosed_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (A : AddSubgroup (Fin n → k)) : IsClosed (perp ψ A : Set (Fin n → k)) := by
   have : (perp ψ A : Set (Fin n → k)) =
@@ -48,6 +58,13 @@ theorem isClosed_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ)
   refine isClosed_biInter fun a _ => isClosed_singleton.preimage ?_
   exact hψ.comp (continuous_id.dotProduct continuous_const)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Take `⟨s, hs⟩` from `exists_box_subset (n := Fin n) (hAo.mem_nhds A.zero_mem)`. Use `(isCompact_box (n := Fin n) (c * s⁻¹)).of_isClosed_subset (isClosed_perp ψ hψ A) ?_` and prove the remaining obligations. Introduce `ξ hξ i _`. Assume the negation of the conclusion as `hi`.
+
+Take `⟨t, ht, hne⟩` from `hc.exists_ne_one s hi`. Establish `hmem : Pi.single i t ∈ box (Fin n) s`. Introduce `j _`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `using ht`. Simplify using `[Pi.single_eq_of_ne hj, cball]`. Apply `hne` to reduce the goal to its premises. Use `hξ _ (hs hmem)` as an intermediate fact. Rewrite `this` using `[dotProduct_single, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem isCompact_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (A : AddSubgroup (Fin n → k)) (hAo : IsOpen (A : Set (Fin n → k))) :
     IsCompact (perp ψ A : Set (Fin n → k)) := by
@@ -67,6 +84,9 @@ theorem isCompact_perp {n : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   have := hξ _ (hs hmem)
   rwa [dotProduct_single, mul_comm] at this
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ h1 n A hAc hAo`. Conclude with `⟨isOpen_perp ψ hψ A hAc, isCompact_perp ψ hψ h1 A hAo⟩`.
+-/
 theorem perp_isOpen_isCompact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 →
     ∀ (n : ℕ) (A : AddSubgroup (Fin n → k)), IsCompact (A : Set (Fin n → k)) →

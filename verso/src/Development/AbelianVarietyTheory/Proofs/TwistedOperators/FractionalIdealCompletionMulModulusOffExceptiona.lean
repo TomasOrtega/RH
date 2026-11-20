@@ -18,12 +18,20 @@ namespace GlobalTheory.ModulUnit
 
 variable {D : D7}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (HeightOneSpectrum.ext (v'.isMaximal.eq_of_le v.isPrime.ne_top hc))`.
+-/
 theorem exists_sep {v v' : GlobalTheory.FinPl.Pl D} (h : v' ≠ v) :
     ∃ t : 𝓞 D.host.F, t ∈ v'.asIdeal ∧ t ∉ v.asIdeal := by
   by_contra hc
   push_neg at hc
   exact h (HeightOneSpectrum.ext (v'.isMaximal.eq_of_le v.isPrime.ne_top hc))
 
+/- English proof (translation)
+Use `le_antisymm (GlobalTheory.SeeSaw.idV_mono FractionalIdeal.coeIdeal_le_one v) ?_` and prove the remaining obligations. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, h0, a, ha, rfl⟩`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨h1, h2⟩` from `GlobalTheory.IdVGen.smul_inv_mem ht hα h0`.
+
+Rewrite using `[GlobalTheory.IdVGen.tmul_eq ht α]`. Use `AddSubgroup.subset_closure ⟨_, h1, h2, _, ?_, rfl⟩` and prove the remaining obligations. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, I.mul_mem_right o hI, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem idV_eq_one_of_mem {v : GlobalTheory.FinPl.Pl D} {I : Ideal (𝓞 D.host.E)} {t : 𝓞 D.host.F} (ht : t ∉ v.asIdeal)
     (hI : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t ∈ I) :
     GlobalTheory.SeeSaw.idV ((I : GlobalTheory.SeeSaw.FI D)) v = GlobalTheory.SeeSaw.idV 1 v := by
@@ -38,6 +46,11 @@ theorem idV_eq_one_of_mem {v : GlobalTheory.FinPl.Pl D} {I : Ideal (𝓞 D.host.
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+Break down `eq_or_ne 𝔞 0 with rfl | h0` into its components or cases. Rewrite using `[zero_mul]`. Take `⟨x, hx0, hx⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔞 h0`. Use `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔞 I x 1 hx0 one_ne_zero hx (GlobalTheory.Core.Mi.LatMatch.DiUnit.eq_one_iff.1 h)` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Use extensionality with `s`. Rewrite using `[this, hx]`.
+-/
 theorem idV_mul_of_eq_one {𝔞 I : GlobalTheory.SeeSaw.FI D} {v : GlobalTheory.FinPl.Pl D}
     (h : GlobalTheory.SeeSaw.idV I v = GlobalTheory.SeeSaw.idV 1 v) : GlobalTheory.SeeSaw.idV (𝔞 * I) v = GlobalTheory.SeeSaw.idV 𝔞 v := by
   rcases eq_or_ne 𝔞 0 with rfl | h0
@@ -51,6 +64,13 @@ theorem idV_mul_of_eq_one {𝔞 I : GlobalTheory.SeeSaw.FI D} {v : GlobalTheory.
 
 variable {T : Type} {L : LevCh D T}
 
+/- English proof (translation)
+Establish `hsep : ∀ v' ∈ P.S0, ∃ t : 𝓞 D.host.F, t ∈ v'.asIdeal ∧ t ∉ v.asIdeal` using `fun v' hv' => exists_sep fun e => hv (e ▸ hv')`. Use `choose! t ht using hsep`. Use `⟨∏ v' ∈ P.S0, t v' ^ P.depth sc v', fun hm => ?_, ?_⟩` and prove the remaining obligations. Take `⟨v', hv', hm'⟩` from `(haveI := v.isPrime; Ideal.IsPrime.prod_mem_iff.1 hm)`. Conclude with `(ht v' hv').2 (v.isPrime.mem_of_pow_mem _ hm')`.
+
+Rewrite using `[map_prod]`. Use `Ideal.prod_mem_prod fun v' hv' => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Use `Ideal.pow_mem_pow ?_ _` and prove the remaining obligations. Establish `h : t v' ∈ ((P.w v').under (𝓞 D.host.F)).asIdeal` using `by rw [P.under_w hv']; exact (ht v' hv').1`.
+
+Conclude with `h`.
+-/
 theorem exists_mem_modul (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D} (hv : v ∉ P.S0) :
     ∃ s : 𝓞 D.host.F, s ∉ v.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ P.modul sc := by
   classical
@@ -72,12 +92,18 @@ namespace GlobalTheory.ModulUnit
 
 variable {D : D7} {T : Type} {L : LevCh D T}
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show D.host.conj ((s : D.host.F) : D.host.E) = ((s : D.host.F) : D.host.E)`. Conclude with `(D.host.conjE_mem_hostF_iff _).1 (s : D.host.F).2`.
+-/
 theorem conj_smul_algebraMap (s : 𝓞 D.host.F) :
     D.host.conj • algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s := by
   apply RingOfIntegers.ext
   show D.host.conj ((s : D.host.F) : D.host.E) = ((s : D.host.F) : D.host.E)
   exact (D.host.conjE_mem_hostF_iff _).1 (s : D.host.F).2
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `exists_mem_modul P sc hv`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `Ideal.smul_mem_pointwise_smul D.host.conj _ _ hm` as an intermediate fact. Rewrite `this` using `[conj_smul_algebraMap]`. Then use the resulting hypothesis.
+-/
 theorem exists_mem_modulBar (P : Places L) (sc : Consts) {v : GlobalTheory.FinPl.Pl D} (hv : v ∉ P.S0) :
     ∃ s : 𝓞 D.host.F, s ∉ v.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ P.modulBar sc := by
   obtain ⟨s, hs, hm⟩ := exists_mem_modul P sc hv
@@ -89,6 +115,9 @@ end GlobalTheory.ModulUnit
 
 open GlobalTheory.ModulUnit in
 
+/- English proof (translation)
+Introduce `D T L P sc v hv 𝔞`. Take `⟨s, hs, hm⟩` from `exists_mem_modul P sc hv`. Take `⟨s', hs', hm'⟩` from `exists_mem_modulBar P sc hv`. Conclude with `⟨idV_mul_of_eq_one (idV_eq_one_of_mem hs hm), idV_mul_of_eq_one (idV_eq_one_of_mem hs' hm')⟩`.
+-/
 theorem GlobalTheory.ChiGrid.Places.idV_mul_modul : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : GlobalTheory.ChiGrid.Places L) (sc : GlobalTheory.ChiGrid.Consts) (v : GlobalTheory.FinPl.Pl D), v ∉ P.S0 → ∀ 𝔞 : GlobalTheory.SeeSaw.FI D, GlobalTheory.SeeSaw.idV (𝔞 * ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)) v = GlobalTheory.SeeSaw.idV 𝔞 v ∧ GlobalTheory.SeeSaw.idV (𝔞 * ((P.modulBar sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D)) v = GlobalTheory.SeeSaw.idV 𝔞 v := by
   intro D T L P sc v hv 𝔞
   obtain ⟨s, hs, hm⟩ := exists_mem_modul P sc hv

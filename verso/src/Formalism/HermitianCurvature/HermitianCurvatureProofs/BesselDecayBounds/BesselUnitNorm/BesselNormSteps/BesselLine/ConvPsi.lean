@@ -16,12 +16,25 @@ variable {k r : ℕ}
 def ellT (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) (a : Fin r) : ℂ :=
   if h : a.val + 1 < r then g (eI k r a) (eI k r ⟨a.val + 1, h⟩) else (g *ᵥ z) (eI k r a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ell_eq (z : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) : ell k r z g = ∑ a, ellT k r z g a := rfl
 
+/- English proof (translation)
+Rewrite using `[← herm_esI (h *ᵥ y) b, ← (hh.2.1 b).2, herm_inv hh.1, herm_esI]`.
+-/
 theorem uw_coordX {z : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWset k r z)
     (y : Fin (2 * r + k + 1) → ℂ) (b : Fin r) : (h *ᵥ y) (eI k r b) = y (eI k r b) := by
   rw [← herm_esI (h *ᵥ y) b, ← (hh.2.1 b).2, herm_inv hh.1, herm_esI]
 
+/- English proof (translation)
+Establish `hh'` using `uw_inv hh`. Establish `hrow : ∀ l, h⁻¹ (eI k r a) l = if eI k r a = l then 1 else 0` using `fun l => by`. Establish `h1` using `uw_coordX hh' (bvec l) a`. Simplify `h1` using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply]`. Unfold `ellT`.
+
+Use `split_ifs with hlt`. Establish `hcol : ∀ l, h l (eI k r ⟨a.val + 1, hlt⟩) = if l = eI k r ⟨a.val + 1, hlt⟩ then 1 else 0`. Introduce `l`. Establish `h1` using `congrFun (hh.2.1 ⟨a.val + 1, hlt⟩).1 l`. Simplify `h1` using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply]`.
+
+Simplify using `[Matrix.mul_apply, hcol, hrow]`. Rewrite using `[← Matrix.mulVec_mulVec, hh.2.2, ← Matrix.mulVec_mulVec, uw_coordX hh' _ a]`.
+-/
 theorem ellT_conj {z : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWset k r z) (g : Mx k r) (a : Fin r) :
     ellT k r z (h⁻¹ * g * h) a = ellT k r z g a := by
   have hh' := uw_inv hh
@@ -37,11 +50,21 @@ theorem ellT_conj {z : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWs
     simp [Matrix.mul_apply, hcol, hrow]
   · rw [← Matrix.mulVec_mulVec, hh.2.2, ← Matrix.mulVec_mulVec, uw_coordX hh' _ a]
 
+/- English proof (translation)
+Rewrite using `[ell_eq, ell_eq]`. Conclude with `Finset.sum_congr rfl fun a _ => ellT_conj hh g a`.
+-/
 theorem ell_conj {z : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWset k r z) (g : Mx k r) :
     ell k r z (h⁻¹ * g * h) = ell k r z g := by
   rw [ell_eq, ell_eq]
   exact Finset.sum_congr rfl fun a _ => ellT_conj hh g a
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (eI k r a)]`. Rewrite using `[hn.2.1 a (eI k r a) le_rfl, if_pos rfl, one_mul]`. Introduce `j _ hj`. Distinguish the cases in `hjr : r ≤ j.val`. Rewrite using `[hd j hjr, mul_zero]`.
+
+Use `push_neg at hjr`. Establish `h1` using `hn.2.1 ⟨j.val, hjr⟩ (eI k r a) (by simp only [eI]; omega)`. Rewrite `h1` using `[show eI k r ⟨j.val, hjr⟩ = j from Fin.ext rfl, if_neg (Ne.symm hj)]`. Rewrite using `[h1, zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem n_last {n : Mx k r} (hn : n ∈ Nset k r) {d : Fin (2 * r + k + 1) → ℂ} (hd : d ∈ lowS k r r)
     (a : Fin r) (ha : ¬ a.val + 1 < r) : (n *ᵥ d) (eI k r a) = d (eI k r a) := by
   rw [Matrix.mulVec, dotProduct, Finset.sum_eq_single (eI k r a)]
@@ -56,6 +79,19 @@ theorem n_last {n : Mx k r} (hn : n ∈ Nset k r) {d : Fin (2 * r + k + 1) → �
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Unfold `ellT`. Use `split_ifs with hlt`. Rewrite using `[Matrix.mul_apply]`. Establish `hab : eI k r a ≠ eI k r ⟨a.val + 1, hlt⟩`. Introduce `h`.
+
+Establish `h1` using `congrArg Fin.val h`. Simplify using `[eI] at h1`. Rewrite using `[Finset.sum_eq_add (eI k r a) (eI k r ⟨a.val + 1, hlt⟩) hab]`. Rewrite using `[hn.2.1 a (eI k r a) le_rfl, if_pos rfl, one_mul, hm.2.1 ⟨a.val + 1, hlt⟩ (eI k r ⟨a.val + 1, hlt⟩) le_rfl, if_pos rfl, mul_one, add_comm]`. Introduce `c _ hc`.
+
+Distinguish the cases in `hcb : a.val + 1 ≤ c.val`. Rewrite using `[hm.2.1 ⟨a.val + 1, hlt⟩ c hcb, if_neg hc.2, mul_zero]`. Use `push_neg at hcb`. Establish `hcr : c.val < r` using `by omega`. Establish `h1` using `hn.2.1 ⟨c.val, hcr⟩ (eI k r a) (by simp only [eI]; omega)`.
+
+Rewrite `h1` using `[show eI k r ⟨c.val, hcr⟩ = c from Fin.ext rfl, if_neg (Ne.symm hc.1)]`. Rewrite using `[h1, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hd` using `n_on_Wb hm hz`. Establish `hz0 : z (eI k r a) = 0` using `hz _ (Or.inl (by simp [eI]))`. Establish `key : n *ᵥ (m *ᵥ z) = n *ᵥ z + n *ᵥ (m *ᵥ z - z)`. Rewrite using `[← Matrix.mulVec_add]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[← Matrix.mulVec_mulVec, key, Pi.add_apply, n_last hn hd a hlt, Pi.sub_apply, hz0, sub_zero]`.
+-/
 theorem ellT_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n m : Mx k r} (hn : n ∈ Nset k r)
     (hm : m ∈ Nset k r) (a : Fin r) : ellT k r z (n * m) a = ellT k r z n a + ellT k r z m a := by
   unfold ellT
@@ -88,11 +124,21 @@ theorem ellT_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n m : Mx k
       abel
     rw [← Matrix.mulVec_mulVec, key, Pi.add_apply, n_last hn hd a hlt, Pi.sub_apply, hz0, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[ell_eq, ell_eq, ell_eq, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => ellT_mul hz hn hm a`.
+-/
 theorem ell_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n m : Mx k r} (hn : n ∈ Nset k r)
     (hm : m ∈ Nset k r) : ell k r z (n * m) = ell k r z n + ell k r z m := by
   rw [ell_eq, ell_eq, ell_eq, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun a _ => ellT_mul hz hn hm a
 
+/- English proof (translation)
+Rewrite using `[ell_eq]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Unfold `ellT`. Use `split_ifs with hlt`.
+
+Rewrite using `[Matrix.one_apply, if_neg]`. Introduce `h`. Establish `h1` using `congrArg Fin.val h`. Simplify using `[eI] at h1`. Rewrite using `[Matrix.one_mulVec]`.
+
+Conclude with `hz _ (Or.inl (by simp [eI]))`.
+-/
 theorem ell_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : ell k r z 1 = 0 := by
   rw [ell_eq]
   apply Finset.sum_eq_zero
@@ -106,12 +152,30 @@ theorem ell_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : ell k r z 
   · rw [Matrix.one_mulVec]
     exact hz _ (Or.inl (by simp [eI]))
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[h, mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+-/
 theorem psi_add (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) {g g' g'' : Mx k r}
     (h : ell k r z g = ell k r z g' + ell k r z g'') :
     psi k r z c g = psi k r z c g' * psi k r z c g'' := by
   unfold psi
   rw [h, mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]
 
+/- English proof (translation)
+Introduce `k r z c hz`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `h0 : ∀ g, ell k 0 z g = 0` using `fun g => by simp [ell_eq]`. Apply the tactic sequence `refine ⟨fun n _ m _ => ?_, fun h _ n _ => ?_, fun h _ n _ => ?_, fun n _ => ?_⟩ <;> simp [psi, h0]`.
+
+Establish `hunitW : ∀ h ∈ UWset k r z, IsUnit h.det` using `fun h hh => by`. Assume the negation of the conclusion as `hdet`. Establish `h0 : h⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit h hdet`. Establish `h1` using `congrFun ((uw_inv hh).2.1 ⟨0, hr⟩).1 (eI k r ⟨0, hr⟩)`. Rewrite `h1` using `[h0, Matrix.zero_mulVec]`.
+
+Simplify using `[bvec] at h1`. Establish `hunitN : ∀ n ∈ Nset k r, IsUnit n.det` using `fun n hn => by`. Assume the negation of the conclusion as `hdet`. Establish `h0 : n⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit n hdet`. Establish `h1` using `(n_inv hn).2.1 ⟨0, hr⟩ (eI k r ⟨0, hr⟩) le_rfl`.
+
+Rewrite `h1` using `[h0, if_pos rfl]`. Simplify using `at h1`. Use `⟨fun n hn m hm => psi_add z c (ell_mul hz hn hm), fun h hh n hn => ?_, fun h hh n hn => ?_, fun n hn => ?_⟩` and prove the remaining obligations. Unfold `psi`. Rewrite using `[ell_conj hh n]`.
+
+Establish `hh'` using `uw_inv hh`. Establish `hinv : (h⁻¹)⁻¹ = h` using `Matrix.nonsing_inv_nonsing_inv h (hunitW h hh)`. Establish `h1` using `ell_conj hh' n`. Rewrite `h1` using `[hinv]`. Unfold `psi`.
+
+Rewrite using `[h1]`. Establish `h1 : ell k r z (n * n⁻¹) = ell k r z n + ell k r z n⁻¹` using `ell_mul hz hn (n_inv hn)`. Rewrite `h1` using `[Matrix.mul_nonsing_inv n (hunitN n hn), ell_one hz]`. Establish `h2 : ell k r z n⁻¹ = -ell k r z n` using `by linear_combination (-1 : ℂ) * h1`. Unfold `psi`.
+
+Rewrite using `[h2, mul_neg, Complex.neg_re, Complex.ofReal_neg, mul_neg]`. Use `show _ = (starRingEnd ℂ) _`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal]`.
+-/
 theorem psiAll : PsiAll := by
   intro k r z c hz
   rcases Nat.eq_zero_or_pos r with hr | hr

@@ -6,6 +6,19 @@ namespace GlobalTheory
 
 open NumberField.InfinitePlace NumberField.mixedEmbedding in
 
+/- English proof (translation)
+Introduce `E _ _ _`. Prove the components needed by the constructor for the conclusion. Set `f : mixedSpace E →ₗ[ℝ] (InfinitePlace E → ℂ)` to `{ toFun := fun x w => x.2 ⟨w, IsTotallyComplex.isComplex w⟩ map_add' := fun x y => rfl map_smul' := fun c x => rfl }`. Establish `hf : Function.Surjective f`. Introduce `y`.
+
+Conclude with `⟨(0, fun w => y w.1), rfl⟩`. Establish `hcomp : ∀ x : E, f (mixedEmbedding E x) = Pi.ringHom (fun w : InfinitePlace E => w.embedding) x`. Introduce `x`. Use function extensionality and compare the values at `w`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, mixedEmbedding_apply_isComplex]`.
+
+Both sides reduce to the same expression. Establish `hspan : Submodule.span ℝ (Set.range (mixedEmbedding E)) = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← (latticeBasis E).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, (latticeBasis_apply E i).symm⟩`. Establish `himg : f '' Set.range (mixedEmbedding E) = Set.range (Pi.ringHom fun w : InfinitePlace E => w.embedding)`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext hcomp)`.
+
+Rewrite using `[← himg, ← Submodule.map_span, hspan, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hf`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Rewrite using `[IsTotallyComplex.finrank, card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem totallyComplex_span_embeddings_and_finrank :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E],
       Submodule.span ℝ (Set.range (Pi.ringHom fun w : InfinitePlace E => w.embedding)) = ⊤ ∧

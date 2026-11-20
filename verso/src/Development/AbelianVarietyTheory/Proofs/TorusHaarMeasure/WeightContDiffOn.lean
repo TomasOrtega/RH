@@ -20,6 +20,11 @@ def weight (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (x0 : F
   phla X la (cpt X x0 z) + ((-1) * Real.log (densF X x0 z) +
     ((-(nd X : ℝ)) * phla X L (cpt X x0 z) + (ψ (cpt X x0 z) + (-bb) * rhF X x0 z)))
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h1` using `IW.phla_cpt_cdAt X x0 hz la`. Establish `h2` using `IW.logDens_cdAt X x0 hz`. Establish `h3` using `IW.phla_cpt_cdAt X x0 hz L`. Establish `h4` using `hψ.contDiffAt ((OntoB.isOpen_OmF X x0).mem_nhds hz)`.
+
+Establish `h5` using `OntoB.rhF_contDiffAt hz`. Conclude with `(h1.add ((contDiffAt_const.mul h2).add ((contDiffAt_const.mul h3).add (h4.add (contDiffAt_const.mul h5))))).contDiffWithinAt`.
+-/
 theorem weight_contDiffOn (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (x0 : Frame X.Ψ r)
     (bb : ℝ) (hψ : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) :
     ContDiffOn ℝ ∞ (weight X la L ψ x0 bb) (OmF X x0) := by
@@ -32,6 +37,11 @@ theorem weight_contDiffOn (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r �
   exact (h1.add ((contDiffAt_const.mul h2).add ((contDiffAt_const.mul h3).add
     (h4.add (contDiffAt_const.mul h5))))).contDiffWithinAt
 
+/- English proof (translation)
+Establish `h1` using `(IW.phla_cpt_cdAt X x0 hz la).of_le HE.two_le_inf`. Establish `h2` using `(IW.logDens_cdAt X x0 hz).of_le HE.two_le_inf`. Establish `h3` using `(IW.phla_cpt_cdAt X x0 hz L).of_le HE.two_le_inf`. Establish `h4` using `(hψ.contDiffAt ((OntoB.isOpen_OmF X x0).mem_nhds hz)).of_le HE.two_le_inf`. Establish `h5 : ContDiffAt ℝ 2 (fun w => rhF X x0 w) z` using `(OntoB.rhF_contDiffAt hz).of_le HE.two_le_inf`.
+
+Unfold `weight leviO leviM leviDens leviRh`. Rewrite using `[Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 ((contDiffAt_const.mul h2).add ((contDiffAt_const.mul h3).add (h4.add (contDiffAt_const.mul h5)))), Y.LocalMaximumSecondDerivative.leviV_ofReal_add (contDiffAt_const.mul h2) ((contDiffAt_const.mul h3).add (h4.add (contDiffAt_con …`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_weight (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (x0 : Frame X.Ψ r)
     (bb : ℝ) (hψ : ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0)) {z : V (nd X)}
     (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) :
@@ -55,6 +65,11 @@ theorem levi_weight (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ
   simp only [Complex.add_re, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Establish `hp` using `OntoE.nfac_pos X x0 (la := L) hz`. Establish `e : X.pnorm L P (cpt X x0 z) = ‖P (cpt X x0 z)‖ * X.nfac L (cpt X x0 z)` using `rfl`. Establish `e2 : Real.exp (-phla X L (cpt X x0 z)) = X.nfac L (cpt X x0 z) ^ 2`. Establish `: -phla X L (cpt X x0 z) = Real.log (X.nfac L (cpt X x0 z) ^ 2)`. Rewrite using `[Real.log_pow]`.
+
+Unfold `phla`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.exp_log (pow_pos hp 2)]`. Rewrite using `[e, e2, Complex.normSq_eq_norm_sq, mul_pow]`.
+-/
 theorem pnorm_sq (X : Data E r) (L : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x0 : Frame X.Ψ r)
     {z : V (nd X)} (hz : z ∈ OmF X x0) :
     X.pnorm L P (cpt X x0 z) ^ 2 =
@@ -67,6 +82,13 @@ theorem pnorm_sq (X : Data E r) (L : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x0 :
     rw [this, Real.exp_log (pow_pos hp 2)]
   rw [e, e2, Complex.normSq_eq_norm_sq, mul_pow]
 
+/- English proof (translation)
+Establish `hs : ∑ k, X.pnorm L (s k) (cpt X x0 z) ^ 2 = HE.nsq (fun k w => s k (cpt X x0 w)) z * Real.exp (-phla X L (cpt X x0 z))`. Unfold `HE.nsq`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => pnorm_sq X L (s k) x0 hz`. Rewrite using `[hs, Real.mul_rpow (HE.nsq_nonneg _ _) (Real.exp_pos _).le, ← Real.exp_mul]`.
+
+Establish `hd : densF X x0 z = Real.exp (Real.log (densF X x0 z))` using `(Real.exp_log (OntoB.densF_pos hz)).symm`. Establish `hw : Real.exp (-weight X la L ψ x0 bb z) = Real.exp (Real.log (densF X x0 z)) * Real.exp (-(phla X la (cpt X x0 z) + ψ (cpt X x0 z))) * Real.exp (-(-bb * rhF X x0 z)) * Real.exp (-phla X L (cpt X x0 z) * -(nd X : ℝ))`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Unfold `weight`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw, ← hd, kaF, Real.exp_neg (-bb * rhF X x0 z), div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrand_eq (X : Data E r) (la L : Wt X.Ψ r) (ψ : Frame X.Ψ r → ℝ) (x0 : Frame X.Ψ r)
     (bb : ℝ) (s : Fin (nd X) → Frame X.Ψ r → ℂ) (A : ℝ) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     densF X x0 z * (A * Real.exp (-(phla X la (cpt X x0 z) + ψ (cpt X x0 z))) / kaF X x0 bb z *
@@ -99,6 +121,39 @@ namespace GlobalTheory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `r X la L w0 s ψ x0 bb m η hn ho hw0 hs hψ hbb hbm hη hm h2 hL hw00 hs0 hdet`. Establish `hU` using `OntoB.isOpen_OmF X x0`. Establish `h0` using `IW.zero_mem_OmF X x0 ho`. Establish `hc0` using `IW.cpt_zero X x0`. Establish `hsd : ∀ k, DifferentiableOn ℂ (fun z => s k (cpt X x0 z)) (OmF X x0)` using `fun k => OntoB.hol_comp X x0 (hs k).1`.
+
+Establish `hwd : DifferentiableOn ℂ (fun z => w0 (cpt X x0 z)) (OmF X x0)` using `OntoB.hol_comp X x0 hw0.1`. Use `set f : V (nd X) → V (nd X) := fun z => (WithLp.toLp 2 fun k => s k (cpt X x0 z) / w0 (cpt X x0 z) : V (nd X)) with hf`. Establish `hfd : DifferentiableAt ℂ f 0`. Rewrite using `[differentiableAt_euclidean]`. Introduce `k`.
+
+Establish `hne : w0 (cpt X x0 0) ≠ 0` using `by rw [hc0]; exact hw00`. Establish `h1` using `(hsd k).differentiableAt (hU.mem_nhds h0)`. Establish `h2` using `(hwd.differentiableAt (hU.mem_nhds h0)).inv hne`. Establish `h3` using `h1.mul h2`. Use `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `[hf, div_eq_mul_inv]`. Establish `hf0 : f 0 = 0`. Use extensionality with `k`. Simplify using `[hf, hc0, hs0 k]`. Take `⟨δ, hδ, hiso⟩` from `HE.iso_zero hfd.hasFDerivAt hdet hf0`.
+
+Take `⟨k0, hk0⟩` from `HE.coord_ne_of_det (f := f) hn hdet`. Establish `hk0' : ¬ (fun z => s k0 (cpt X x0 z)) =ᶠ[𝓝 0] 0`. Introduce `h`. Apply `hk0` to reduce the goal to its premises. Use `filter_upwards [h] with z hz`.
+
+Establish `hz' : s k0 (cpt X x0 z) = 0` using `hz`. Simplify using `[hf, hz']`. Establish `hgn` using `HE.hgn_of hU (OmFConnStatement_holds r X x0 ho) (hsd k0) h0 hk0'`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 hU 0 h0`. Use `set ε : ℝ := min δ ρ / 4 with hεdef`.
+
+Establish `hmin : 0 < min δ ρ` using `lt_min hδ hρ`. Establish `hε : 0 < ε` using `by positivity`. Establish `hε1 : 2 * ε ≤ δ` using `by have := min_le_left δ ρ; linarith`. Establish `hε2 : 2 * ε < ρ` using `by have := min_le_right δ ρ; linarith`. Establish `hcb : Metric.closedBall (0 : V (nd X)) (2 * ε) ⊆ OmF X x0` using `(Metric.closedBall_subset_ball hε2).trans hball`.
+
+Establish `hiso' : ∀ z ∈ Metric.closedBall (0 : V (nd X)) (2 * ε), (∀ k, s k (cpt X x0 z) = 0) → z = 0`. Introduce `z hz hsz`. Use `hiso z (Metric.closedBall_subset_closedBall hε1 hz) ?_` and prove the remaining obligations. Use extensionality with `k`. Simplify using `[hf, hsz k]`.
+
+Establish `hW` using `KronSolve.weight_contDiffOn X la L ψ x0 bb hψ`. Establish `hWpos : ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, ξ ≠ 0 → 0 < (leviV (nd X) (fun w => ((KronSolve.weight X la L ψ x0 bb w : ℝ) : ℂ)) z ξ).re`. Introduce `z hz ξ hξ`. Rewrite using `[KronSolve.levi_weight X la L ψ x0 bb hψ hz ξ]`. Establish `a1` using `hm z hz ξ`.
+
+Establish `a2` using `h2 z hz ξ`. Establish `a3` using `hL z hz ξ hξ`. Use `set Q := leviO X x0 (phla X la) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X L) z ξ + leviO X x0 ψ z ξ`. Use `set R := leviRh X x0 z ξ`. Establish `hQ : 0 < Q` using `lt_of_lt_of_le (by positivity) a2`.
+
+Establish `hm0 : 0 < m` using `lt_of_le_of_lt hbb hbm`. Establish `: 0 < m * (Q - bb * R)`. Establish `b1 : 0 < (m - bb) * Q` using `mul_pos (by linarith) hQ`. Establish `b2 : 0 ≤ bb * (Q - m * R)` using `mul_nonneg hbb (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `(mul_pos_iff_of_pos_left hm0).1 this`. Establish `hWnn : ∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => ((KronSolve.weight X la L ψ x0 bb w : ℝ) : ℂ)) z ξ).re`. Introduce `z hz ξ`. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality.
+
+Simplify using `[leviV]`. Conclude with `(hWpos z hz ξ hξ).le`. Take `⟨c, hc, hunif⟩` from `HE.levi_unif hU hW (isCompact_closedBall (0 : V (nd X)) (2 * ε)) hcb (fun z hz => hWpos z (hcb hz))`. Establish `he : ContDiffOn ℝ ∞ (eF X x0) (OmF X x0)` using `fun z hz => (ExF.eF_contDiffAt X x0 ho hz).contDiffWithinAt`. Establish `hel : ∀ y ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => ((eF X x0 w : ℝ) : ℂ)) y ξ).re`.
+
+Introduce `y hy ξ`. Establish `e1 : (fun y : V (nd X) => ((eF X x0 y : ℝ) : ℂ)) = fun y => ((rhF X x0 y + Real.log (1 + ‖y‖ ^ 2) : ℝ) : ℂ)` using `rfl`. Rewrite using `[e1, Y.LocalMaximumSecondDerivative.leviV_ofReal_add ((ExF.rhF_contDiffAt X x0 ho hy).of_le HE.two_le_inf) (ExF.T_cd.contDiffAt.of_le HE.two_le_inf) ξ, Complex.add_re]`. Conclude with `add_nonneg (ExF.levi_rhF_nonneg X x0 ho hy ξ) (ExF.leviT_nonneg _ ξ)`. Establish `he0 : ∀ y ∈ OmF X x0, 0 ≤ eF X x0 y` using `fun y hy => add_nonneg (ExF.rhF_nonneg X x0 ho hy) (Real.log_nonneg (by nlinarith [sq_nonneg ‖y‖]))`.
+
+Take `⟨F, hFd, hF⟩` from `HE.interp_euclid hU (eF X x0) he hel (ExF.isCompact_subF X x0 ho) he0 (fun k w => s k (cpt X x0 w)) hsd k0 hgn (KronSolve.weight X la L ψ x0 bb) hW hWnn ε hε hcb hiso' c hc hunif`. Use `⟨ε, HE.cut ε hε, F, hε, hcb, hiso', (HE.cut_contDiff ε hε).continuous, fun z hz => HE.cut_one ε hε hz, fun z hz => HE.cut_zero ε hε hz, hFd, ?_⟩` and prove the remaining obligations. Use `lt_of_eq_of_lt ?_ hF` and prove the remaining obligations. Unfold `muF`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable _ (OntoC.measurable_densF X x0) (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`.
+
+Use `setLIntegral_congr_fun hU.measurableSet fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Rewrite using `[← ENNReal.ofReal_mul (OntoB.densF_pos hz).le, KronSolve.integrand_eq X la L ψ x0 bb s _ hz]`.
+-/
 theorem kronSolve : (∀ (r : ℕ) (X : Data E r) (la L : Wt X.Ψ r) (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd X) → Frame X.Ψ r → ℂ) (ψ : Frame X.Ψ r → ℝ) (x0 : Frame X.Ψ r) (bb m η : ℝ), 0 < nd X → IsOrth X x0 → X.IsSec L w0 → (∀ k, X.IsSec L (s k)) → ContDiffOn ℝ ∞ (fun z => ψ (cpt X x0 z)) (OmF X x0) → 0 ≤ bb → bb < m → 0 < η → (∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, m * leviRh X x0 z ξ ≤ leviO X x0 (phla X la) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X L) z ξ + leviO X x0 ψ z ξ) → (∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, 2 * η * leviO X x0 (phla X L) z ξ ≤ leviO X x0 (phla X la) z ξ - leviDens X x0 z ξ - (nd X : ℝ) * leviO X x0 (phla X L) z ξ + leviO X x0 ψ z ξ) → (∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, ξ ≠ 0 → 0 < leviO X x0 (phla X L) z ξ) → w0 x0 ≠ 0 → (∀ k, s k x0 = 0) → (fderiv ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k => s k (cpt X (x0) z) / w0 (cpt X (x0) z) : V (nd X))) 0).det ≠ 0 → ∃ (ε : ℝ) (χ F : V (nd X) → ℂ), 0 < ε ∧ Metric.closedBall (0 : V (nd X)) (2 * ε) ⊆ OmF X x0 ∧ (∀ z ∈ Metric.closedBall (0 : V (nd X)) (2 * ε), (∀ k, s k (cpt X x0 z) = 0) → z = 0) ∧ Continuous χ ∧ (∀ z, ‖z‖ ≤ ε → χ z = 1) ∧ (∀ z, 2 * ε ≤ ‖z‖ → χ z = 0) ∧ DifferentiableOn ℂ F (OmF X x0) ∧ ∫⁻ z, ENNReal.ofReal (‖χ z - F z‖ ^ 2 * Real.exp (-(phla X la (cpt X x0 z) + ψ (cpt X x0 z))) / kaF X x0 bb z * (∑ k, X.pnorm L (s k) (cpt X x0 z) ^ 2) ^ (-(nd X : ℝ))) ∂muF X x0 < ⊤) := by
   intro r X la L w0 s ψ x0 bb m η hn ho hw0 hs hψ hbb hbm hη hm h2 hL hw00 hs0 hdet
   have hU := OntoB.isOpen_OmF X x0

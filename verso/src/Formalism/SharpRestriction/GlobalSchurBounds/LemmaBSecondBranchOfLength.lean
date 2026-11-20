@@ -18,6 +18,21 @@ def SlopeLineT (D : D7) (u : D.what₂.Word) : Prop := product_first_zeroth_part
 def SecondBranchIntegralityUnderForms (D : D7) (u : D.what₂.Word) : Prop :=
   product_first_zeroth_parts.HidaSetting D u → ConcreteFormsLevelZero D u → Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.SecondBranchInclusionLength D u
 
+/- English proof (translation)
+Use `letI := M.grp`. Use `letI := M.finX`. Use `letI := M.act`. Set `ph : (∀ v : (D.mem u).A.vT, ((D.mem u).A.Fv v)ˣ) →* ((D.mem u).A.vT → M.H)` to `{ toFun := fun g v => M.e v (g v) map_one' := by`. Use function extensionality and compare the values at `v`.
+
+Conclude with `(M.e v).map_one`. Use the proof step `map_mul' := by`. Introduce `g h`. Use function extensionality and compare the values at `v`. Conclude with `(M.e v).map_mul (g v) (h v) }`.
+
+Use `letI : MulAction (∀ v : (D.mem u).A.vT, ((D.mem u).A.Fv v)ˣ) M.X := MulAction.compHom M.X ph`. Establish `hsingle : ∀ v (a : ((D.mem u).A.Fv v)ˣ), ph (Pi.mulSingle v a) = (Pi.mulSingle v (M.e v a) : (D.mem u).A.vT → M.H)`. Introduce `v a`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw show M.e w ((Pi.mulSingle w a : (∀ v : (D.mem u).A.vT, ((D.mem u).A.Fv v)ˣ)) w) = (Pi.mulSingle w (M.e w a) : (D.mem u).A.vT → M.H) w` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`. Use `show M.e w ((Pi.mulSingle v a : (∀ v : (D.mem u).A.vT, ((D.mem u).A.Fv v)ˣ)) w) = (Pi.mulSingle v (M.e v a) : (D.mem u).A.vT → M.H) w first`. Consider the case `simp [Pi.mulSingle_eq_of_ne hw]`. Consider the case `(simp only [Pi.mulSingle_eq_of_ne hw]; exact (M.e w).map_one)`.
+
+Use `⟨{ X := M.X, Θ := M.E, free := ?_, equiv := ?_ }⟩` and prove the remaining obligations. Introduce `g x hx`. Establish `h1 : ph g = 1` using `M.free (ph g) x hx`. Use function extensionality and compare the values at `v`. Establish `h2 : M.e v (g v) = 1` using `congrFun h1 v`.
+
+Use `first`. Consider the case `exact (M.e v).map_eq_one_iff.mp h2`. Consider the case `exact (MulEquiv.map_eq_one_iff (M.e v)).mp h2`. Introduce `v a φ h x`. Rewrite using `[M.intertw v a φ h x]`.
+
+Use `show M.E φ ((Pi.mulSingle v (M.e v a) : (D.mem u).A.vT → M.H) • x) = M.E φ (ph (Pi.mulSingle v a) • x)`. Rewrite using `[hsingle]`.
+-/
 theorem freeT_of_model {D : D7} {u : D.what₂.Word} (M : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.FreeRankModel (D.mem u).A) :
     Nonempty (product_first_zeroth_parts.FreeT D u) := by
   letI := M.grp
@@ -57,16 +72,25 @@ theorem freeT_of_model {D : D7} {u : D.what₂.Word} (M : Formalism.L2.GlobalThe
     show M.E φ ((Pi.mulSingle v (M.e v a) : (D.mem u).A.vT → M.H) • x) = M.E φ (ph (Pi.mulSingle v a) • x)
     rw [hsingle]
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨Tf, -⟩, hA⟩`. Take `⟨M⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.free_rank_model_of_split Tf hA (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.splitAtT_of_tied Tf.atT)`. Conclude with `freeT_of_model M`.
+-/
 theorem free_structure_under_forms (D : D7) (u : D.what₂.Word) : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.FormsCompatible D u ∧ product_first_zeroth_parts.admS D u → Nonempty (product_first_zeroth_parts.FreeT D u) := by
   rintro ⟨⟨Tf, -⟩, hA⟩
   obtain ⟨M⟩ := Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.free_rank_model_of_split Tf hA (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.splitAtT_of_tied Tf.atT)
   exact freeT_of_model M
 
+/- English proof (translation)
+Introduce and unpack `hS ⟨⟨Tf, hC⟩, hA⟩`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.slope_formula_of_character_finite hS Tf hC hA`.
+-/
 theorem slope_line_under_forms (D : D7) (u : D.what₂.Word) :
     product_first_zeroth_parts.HidaSetting D u → Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.FormsCompatible D u ∧ product_first_zeroth_parts.admS D u → product_first_zeroth_parts.SlopeLine D u := by
   rintro hS ⟨⟨Tf, hC⟩, hA⟩
   exact Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.slope_formula_of_character_finite hS Tf hC hA
 
+/- English proof (translation)
+Take `⟨T, -⟩` from `hT.1`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.second_branch_incl_length_of_second T h`.
+-/
 theorem lemma_B_second_branch_of_length (D : D7) (u : D.what₂.Word) (hT : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.FormsCompatible D u ∧ product_first_zeroth_parts.admS D u)
     (h : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.SeenPlaceLatticeLengthFormula D u) : Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.SecondBranchInclusionLength D u := by
   obtain ⟨T, -⟩ := hT.1
@@ -74,6 +98,9 @@ theorem lemma_B_second_branch_of_length (D : D7) (u : D.what₂.Word) (hT : Form
 
 variable {eps : ℝ}
 
+/- English proof (translation)
+Unfold `FamU at tT ⊢`. Take `⟨x0, hx⟩` from `tT`. Conclude with `⟨⟨x0, fun x h0 h1 i u hS => hWT _ u (hx x h0 h1 i u hS)⟩, ⟨x0, fun x h0 h1 i u hS => hμT _ u hS (hx x h0 h1 i u hS)⟩, ⟨x0, fun x h0 h1 i u hS => hBT _ u hS (hx x h0 h1 i u hS)⟩⟩`.
+-/
 theorem slope_free_branch_family (Fm : FamP eps) (tT : FamU Fm ConcreteFormsLevelZero) (hWT : ∀ (D : D7) (u : D.what₂.Word), FreeTT D u)
     (hμT : ∀ (D : D7) (u : D.what₂.Word), SlopeLineT D u) (hBT : ∀ (D : D7) (u : D.what₂.Word), SecondBranchIntegralityUnderForms D u) :
     FamU Fm (fun D u => Nonempty (product_first_zeroth_parts.FreeT D u)) ∧ FamU Fm product_first_zeroth_parts.SlopeLine ∧ FamU Fm Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.SecondBranchInclusionLength := by
@@ -83,6 +110,9 @@ theorem slope_free_branch_family (Fm : FamP eps) (tT : FamU Fm ConcreteFormsLeve
     ⟨x0, fun x h0 h1 i u hS => hμT _ u hS (hx x h0 h1 i u hS)⟩,
     ⟨x0, fun x h0 h1 i u hS => hBT _ u hS (hx x h0 h1 i u hS)⟩⟩
 
+/- English proof (translation)
+Take `⟨hW, hμ, hB⟩` from `slope_free_branch_family Fm tT hWT hμT hBT`. Use `first`. Consider the case `(apply linkGLOBAL7_min <;> assumption)`. Consider the case `(apply Formalism.MainNotions.Lnk.linkGLOBAL7_min <;> assumption)`. Consider the case `(apply Formalism.MainNotions.GlobalTheoryTheory.linkGLOBAL7_min <;> assumption)`.
+-/
 theorem linkGLOBAL7_tied6b (Fm : FamP eps) (Cabs CH C0 C5 : ℝ) (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 3 ≤ C0)
     (h2b : flipTwoThree.fam0 Fm StandardLattice.MassRatio₂) (h2v : flipTwoThree.fam0 Fm StandardLattice.BaseVolumeEqualsMass) (h3 : flipTwoThree.fam0 Fm StandardLattice.SigmaDegreeTwoSidedBoundOfGap)
     (hZa : flipTwoThree.FamilySlopeLowerOpenPart Fm) (hZb : flipTwoThree.FamilySlopeMaxOpenPart Fm C5)
@@ -98,6 +128,9 @@ theorem linkGLOBAL7_tied6b (Fm : FamP eps) (Cabs CH C0 C5 : ℝ) (hCabs : 0 ≤ 
   | (apply Formalism.MainNotions.Lnk.linkGLOBAL7_min <;> assumption)
   | (apply Formalism.MainNotions.GlobalTheoryTheory.linkGLOBAL7_min <;> assumption)
 
+/- English proof (translation)
+The claim follows from `linkGLOBAL7_tied6b Fm Cabs CH C0 C5 hCabs hCH hC0 h2b h2v h3 hZa hZb tCV tT hWT hμT hBT (hI_tied Fm tT hIT) (hR_tied Fm tT hFT hXT hUT)`.
+-/
 theorem linkGLOBAL7_tied6 (Fm : FamP eps) (Cabs CH C0 C5 : ℝ) (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 3 ≤ C0)
     (h2b : flipTwoThree.fam0 Fm StandardLattice.MassRatio₂) (h2v : flipTwoThree.fam0 Fm StandardLattice.BaseVolumeEqualsMass) (h3 : flipTwoThree.fam0 Fm StandardLattice.SigmaDegreeTwoSidedBoundOfGap)
     (hZa : flipTwoThree.FamilySlopeLowerOpenPart Fm) (hZb : flipTwoThree.FamilySlopeMaxOpenPart Fm C5)

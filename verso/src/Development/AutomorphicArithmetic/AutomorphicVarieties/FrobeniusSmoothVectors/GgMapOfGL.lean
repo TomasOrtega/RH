@@ -8,10 +8,18 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h`.
+-/
 private theorem lc_of_ker {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     (f : G →* H) (h : IsOpen (f.ker : Set G)) : IsLocallyConstant f :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `residue_surjective x.fst`. Establish `h1 : x - algebraMap O _ a ∈ maximalIdeal (DualNumber (ResidueField O))`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not, TrivSqZeroExt.fst_sub, ← ha]`. Conclude with `sub_self _`. Establish `h2` using `(res_eq_zero_iff O _ _).2 h1`.
+
+Rewrite `h2` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Rewrite using `[h2, ← ha]`. Both sides reduce to the same expression.
+-/
 private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNumber (ResidueField O))]
     (x : DualNumber (ResidueField O)) : res O (DualNumber (ResidueField O)) x = x.fst := by
   obtain ⟨a, ha⟩ := residue_surjective x.fst
@@ -24,30 +32,48 @@ private theorem res_dual (O : Type) [CommRing O] [IsLocalRing O] [IsCO O (DualNu
   rw [h2, ← ha]
   rfl
 
+/- English proof (translation)
+Establish `e : ρ.r = ρ'.r` using `MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)`. Use `NRep.ext e (funext fun v => funext fun i => MonoidHom.ext fun s => Units.ext ?_)` and prove the remaining obligations. Rewrite using `[← h.psi, ← h'.psi, e]`.
+-/
 private theorem of_unique {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} {C : Type}
     [CommRing C] {B : Box F n C} {ρ ρ' : NRep F n C} (h : B.Of ρ) (h' : B.Of ρ') : ρ = ρ' := by
   have e : ρ.r = ρ'.r := MonoidHom.ext fun s => (h.res s).symm.trans (h'.res s)
   refine NRep.ext e (funext fun v => funext fun i => MonoidHom.ext fun s => Units.ext ?_)
   rw [← h.psi, ← h'.psi, e]
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Simplify using `[hx]`.
+-/
 private theorem conj_mat {m : ℕ} {C : Type} [CommRing C] (h : GL (Fin m) C) (x : GG m C) (hx : x.right = 1) :
     (GG.ofGL h * x * (GG.ofGL h)⁻¹).left = h * x.left * h⁻¹ := by
   rw [← map_inv]
   simp [hx]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem gg_map_ofGL {m : ℕ} {C C' : Type} [CommRing C] [CommRing C'] (f : C →+* C') (h : GL (Fin m) C) :
     GG.map f (GG.ofGL h) = GG.ofGL (GeneralLinearGroup.map f h) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [mul_comm]`.
+-/
 private theorem dual_mul {K : Type} [Field K] (a : DualNumber K) (c : K) :
     (TrivSqZeroExt.inr (a.fst * c) : DualNumber K) = a * TrivSqZeroExt.inr c := by
   ext <;> simp [mul_comm]
 
+/- English proof (translation)
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+-/
 private theorem dual_fst {K : Type} [Field K] {m : ℕ} (X : Matrix (Fin m) (Fin m) K) (i j : Fin m) :
     ((1 + X.map (TrivSqZeroExt.inr : K → DualNumber K)) i j).fst = (1 : Matrix (Fin m) (Fin m) K) i j := by
   by_cases hij : i = j
   · subst hij; simp
   · simp [hij]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_mul, Matrix.one_mul]`. Simplify using `[Matrix.mul_apply, TrivSqZeroExt.snd_sum]`.
+-/
 private theorem dual_snd {K : Type} [Field K] {m : ℕ} (X A : Matrix (Fin m) (Fin m) K) :
     ((1 + X.map (TrivSqZeroExt.inr : K → DualNumber K)) * A.map (TrivSqZeroExt.inl : K → DualNumber K)).map
       TrivSqZeroExt.snd = X * A := by
@@ -55,6 +81,47 @@ private theorem dual_snd {K : Type} [Field K] {m : ℕ} (X A : Matrix (Fin m) (F
   rw [Matrix.add_mul, Matrix.one_mul]
   simp [Matrix.mul_apply, TrivSqZeroExt.snd_sum]
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ n hF O _ _ R _ _ _ ρ B hU hB hC _ hT`. Use `haveI := (co_res O).2`. Set `K` to `ResidueField O`. Set `C` to `DualNumber K`. Set `μ : K →+ C` to `(TrivSqZeroExt.inrHom K K).toAddMonoidHom`.
+
+Set `ι : K →+* C` to `(TrivSqZeroExt.inlHom K K)`. Establish `hμ : IsSq O μ`. Use `⟨fun a c => ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[res_dual]`. Conclude with `dual_mul a c`.
+
+Rewrite using `[← res_eq_zero_iff O, res_dual]`. Both sides reduce to the same expression. Establish `hres : (res O C : C →+* K).comp ι = RingHom.id K` using `RingHom.ext fun a => res_dual O _`. Take `⟨e, e1, e2, e3, -, e5⟩` from `pr_sqz O C n μ hμ`. Use `set T := lieT K n with hTdef`.
+
+Set `B₀ : Box F n C` to `(B.bar O).map ι`. Establish `hB₀ : B₀.bar O = B.bar O` using `by show ((B.bar O).map ι).map _ = _`. Rewrite using `[Box.map_map, hres]`. Both sides reduce to the same expression. Establish `hr₀ : ∀ s, GG.map (res O C : C →+* K) (B₀.r s) = (B.bar O).r s` using `fun s => by`.
+
+Rewrite using `[← hB₀]`. Both sides reduce to the same expression. Set `h` to `e (-T)`. Establish `hinv : h⁻¹ = e T` using `by rw [e3, neg_neg]`. Establish `hloc : ∀ s : F.G0, (B₀.r s).right = 1` using `fun s => (B₀.nu s).trans s.2`.
+
+Set `B' : Box F n C` to `{ r := conjBy h B₀.r nu := fun s => by show (GG.ofGL h * B₀.r s * (GG.ofGL h)⁻¹).right = _`. Rewrite using `[← map_inv]`. Simplify using `[B₀.nu]`. Use `g := fun v => B₀.g v * h⁻¹`. Use `tri := fun v s => by`.
+
+Establish `: (conjBy h B₀.r (F.loc v s)).left = h * (B₀.r (F.loc v s)).left * h⁻¹` using `conj_mat h _ (hloc (F.loc0 v s))`. Establish `h2` using `B₀.tri v s`. Unfold `GG.mat at h2 ⊢`. Rewrite using `[this, ← Units.val_mul, ← Units.val_mul]`. Rewrite `h2` using `[← Units.val_mul, ← Units.val_mul]`.
+
+Use `h2 using 2` and compare the differences between its conclusion and the goal. Use `group }`. Establish `hform : ∀ s, B'.r s = GG.ofGL (e ((B.bar O).ad s T - T)) * B₀.r s` using `fun s => by show GG.ofGL h * B₀.r s * (GG.ofGL h)⁻¹ = _`. Rewrite using `[← map_inv, hinv, mul_assoc, e5, hr₀, ← mul_assoc, ← map_mul, ← e2, neg_add_eq_sub]`. Both sides reduce to the same expression.
+
+Establish `hmat : ∀ s, (B'.r s).mat = (1 + ((B.bar O).ad s T - T).map μ) * ((B.bar O).r s).mat.map ι` using `fun s => by`. Rewrite using `[hform, ← e1]`. Simplify using `[GG.mat]`. Both sides reduce to the same expression. Establish `hbar : B.bar O |>.Of (ρ.bar O)` using `hB.map _`.
+
+Establish `hc : (B'.r F.c).mat = 1`. Establish `h1 : (B.bar O).ad F.c T = T`. Establish `hl : ((B.bar O).r F.c).left = 1` using `Units.ext hbar.atc`. Establish `hd : ((B.bar O).r F.c).right ≠ 1`. Rewrite using `[(B.bar O).nu, hF.del_c]`.
+
+Evaluate the decidable proposition. Use `show ((B.bar O).r F.c).adFun T = T`. Unfold `GG.adFun GG.mat`. Rewrite using `[hl, if_neg hd, hT]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hmat, h1, hbar.atc, sub_self, Matrix.map_one _ (map_zero ι) (map_one ι), Matrix.map_zero _ (map_zero μ)]`. Simplify using the standard rewrite rules. Establish `hdiagE : ∀ a : K, ((e (a • T) : GL (Fin n) C) : Matrix (Fin n) (Fin n) C) = Matrix.diagonal fun i => 1 + μ (a * (w n i : K))` using `fun a => by`. Rewrite using `[e1]`. Use `ext1 i j`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hTdef, lieT]`. Simplify using `[hTdef, lieT, hij]`. Establish `hd : ∀ i j, i ≠ j → ((B'.r F.g0).mat - (B'.r (F.star F.g0)).mat) i j = 0` using `fun i j hij => by`.
+
+Establish `h1 : ∀ s : F.G0, (B'.r s).mat = (h : Matrix (Fin n) (Fin n) C) * ((ρ.bar O).r s).map ι * ((h⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fin n) C)` using `fun s => by`. Rewrite using `[← hbar.res]`. Conclude with `congrArg Units.val (conj_mat h _ (hloc s))`. Establish `h2` using `(ρ.bar O).diag i j hij`. Rewrite using `[h1, h1, ← Matrix.sub_mul, ← Matrix.mul_sub, hinv, ← one_smul K T, hdiagE, Matrix.mul_diagonal]`.
+
+Establish `h3 : h = e ((-1 : K) • T)` using `by rw [neg_one_smul]`. Rewrite using `[h3, hdiagE, Matrix.diagonal_mul, Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, ← map_sub, ← Matrix.sub_apply, h2]`. Simplify using the standard rewrite rules. Establish `hcont : B'.Cont (maximalIdeal C)` using `fun i j N => by`. Establish `h1` using `lc_of_ker _ (pr_open hF O R B hC).1`.
+
+Conclude with `h1.comp fun x => Ideal.Quotient.mk _ ((GG.ofGL h * GG.map ι x * (GG.ofGL h)⁻¹).mat i j)`. Take `⟨ρ', hρ', hc'⟩` from `pr_ofbox hF C _ B' hc hd hcont`. Establish `hh : GeneralLinearGroup.map (res O C : C →+* K) h = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Use `show res O C ((e (-T) : Matrix (Fin n) (Fin n) C) i j) = _`. Rewrite using `[e1, res_dual]`. Conclude with `dual_fst _ i j`. Establish `hB' : B'.bar O = B.bar O`. Rewrite using `[← hB₀]`.
+
+Use `Box.ext (MonoidHom.ext fun s => ?_) (funext fun v => ?_)` and prove the remaining obligations. Use `show GG.map _ (GG.ofGL h * B₀.r s * (GG.ofGL h)⁻¹) = GG.map _ (B₀.r s)`. Rewrite using `[map_mul, map_mul, map_inv, gg_map_ofGL, hh]`. Simplify using the standard rewrite rules. Use `show GeneralLinearGroup.map _ (B₀.g v * h⁻¹) = GeneralLinearGroup.map _ (B₀.g v)`.
+
+Rewrite using `[map_mul, map_inv, hh]`. Simplify using the standard rewrite rules. Establish `hρb : ρ'.bar O = ρ.bar O` using `of_unique (hB' ▸ hρ'.map _) hbar`. Take `⟨D, hD, hD'⟩` from `pr_dof hF O R ρ B hU hB ρ' B'.r hc' hρb B'.nu hc hρ'.res`. Use `⟨D, hD, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (B'.r s).mat.map TrivSqZeroExt.snd = ((B.bar O).ad s T - T) * ((B.bar O).r s).mat`. Rewrite using `[hmat]`. Conclude with `dual_snd _ _`. Establish `h2` using `(hD' s).symm.trans h1`. Conclude with `(Units.mul_left_inj ((B.bar O).r s).left).1 h2`.
+-/
 theorem UpperTheory.V.Fr.pr_tor :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : NRep F n R) (B : Box F n R), ρ.Univ O → B.Of ρ → B.Cont (maximalIdeal R) → (ρ.bar O).Good → thetaLie (lieT (ResidueField O) n) = lieT (ResidueField O) n → ∃ D ∈ Tan O R, ∀ s, B.tanCo O D s = (B.bar O).ad s (lieT _ n) - lieT _ n := by
   intro l _ k _ _ F C₀ n hF O _ _ R _ _ _ ρ B hU hB hC _ hT

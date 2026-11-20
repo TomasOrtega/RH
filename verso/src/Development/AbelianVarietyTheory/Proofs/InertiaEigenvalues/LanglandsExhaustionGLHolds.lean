@@ -3,5 +3,8 @@ import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.CuspidalExhaustion
 import CompanionTheory.AutomorphicTheory.ProductFormulaTheory.GrothendieckRingPolynomial.GrothendieckRingPolynomialOfSeg
 import CompanionTheory.RealGroups.GeneralUnitaryRepresentations.ArchimedeanJacquetSegments.SegmentSubquotients.SegmentRepresentation
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.Exh.langlandsExhaustionGL_of_seg CompanionTheory.RgGu.segmentRepresentation`.
+-/
 theorem GlobalTheory.langlandsExhaustionGL_holds : GlobalTheory.Published.LanglandsExhaustionGL :=
   CompanionTheory.Exh.langlandsExhaustionGL_of_seg CompanionTheory.RgGu.segmentRepresentation

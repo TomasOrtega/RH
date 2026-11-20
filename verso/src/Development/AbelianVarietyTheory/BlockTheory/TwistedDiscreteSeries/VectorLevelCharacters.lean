@@ -31,6 +31,9 @@ def VecLevelAt (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : Prop :=
 def VecLevelOf (R : RealDat D A Ks) : Prop :=
   R.toLevCh.Is A.μ0 → R.thP_ωP → R.thP_vP → ∀ (i : Fin D.R.m) (t : T), VecLevelAt R i t
 
+/- English proof (translation)
+Establish `h : ∀ x, Formalism.L2.DIV.ext1 (R.toLevCh.datWp i R.toLevCh.triv).P.H (R.toLevCh.datWp i R.toLevCh.triv).P.chi x = 1` using `fun x => subgroupCharExtension_one_apply _ x`. Unfold `levChi Formalism.L2.DIV.levFn`. Rewrite using `[h]`. Simplify using `[LevCh.datWp, datY]`.
+-/
 theorem principalLevelCharacter_eq_one (R : RealDat D A Ks) (i : Fin D.R.m) (k : GA D (Wc D i)) :
     levChi (Wc D i) (R.βW i) (R.toLevCh.datWp i R.toLevCh.triv) k = 1 := by
   have h : ∀ x, Formalism.L2.DIV.ext1 (R.toLevCh.datWp i R.toLevCh.triv).P.H (R.toLevCh.datWp i R.toLevCh.triv).P.chi x = 1 :=

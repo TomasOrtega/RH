@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlaceDatum
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT ΛS ΛT βS βT LS χj Q ξ hS hT _ _ _ ⟨e, he⟩ f₀ hf`. Establish `hinf` using `infPart_idemSum he`. Take `⟨K, hK, hC⟩` from `exists_nsmul_of_frMapO hS.1 hT.1 βS βT`. Take `⟨f, h⟩` from `exists_isThetaAt hf.1 hS hT (idemSum_mul_self he) hinf (GlobalTheory.PlaceModelSum.placeModelExistsSum D ψ hf.1 S T ΛS ΛT hS hT _ e he f₀ hf.2.theta hf.2.lat).1 (isSBHalf_of_red e _ (frMapO S T βS βT) (frMapO_add βS βT) (exists_den_frMapO hS.1.fg hT.1.fg βS βT) ⟨K, hK, fun t ht = …`. Rewrite using `[omegaG_congr LS χj y y' fun PP hP => h PP (Finset.mem_union_left _ hP), omegaQ_congr Q LS.r ξ 1 y y' fun PP hP => h PP (Finset.mem_union_right _ hP)])`.
+
+Conclude with `⟨f, hf, e, he, h⟩`.
+-/
 theorem stepVecExists : ∀ D : D7, StepVecExists D := by
   classical
   intro D ψ θ S T sS sT ΛS ΛT βS βT LS χj Q ξ hS hT _ _ _ ⟨e, he⟩ f₀ hf

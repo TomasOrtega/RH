@@ -52,6 +52,35 @@ noncomputable section
 
 namespace GlobalTheory.HTConstRoot
 
+/- English proof (translation)
+Take `⟨r, -, hu, -, hf⟩` from `hN`. Use `CoverHt.isPreimmersion_j V` as an intermediate fact. Establish `hP : IsProper V.p`. Take `⟨N, j, hj, he⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) N` as an intermediate fact.
+
+Rewrite using `[← he]`. Use `infer_instance`. Establish `hη` using `GlobalTheory.CoverNorm.Isom.j_gen_specializes V`. Set `ρ : V.X.functionField ≃+* V.G.functionField` to `RingEquiv.ofBijective (SmallSec.fnMap V.j hη) ⟨(SmallSec.fnMap V.j hη).injective, SmallSec.fnMap_surjective V.j hη⟩`. Establish `hv : ∀ {K : Type} [Field K] (y : Sp K ⟶ V.G) (g : V.X.functionField), TrueGeo.valAt (y ≫ V.j) g = TrueGeo.valAt y (ρ g)` using `fun y g => ModelFn.valAt_comp V.j hη y g`.
+
+Establish `hreg : ∀ (x : V.G) (g : V.X.functionField), RegAt x (ρ g) ↔ RegAt (V.j x) g` using `fun x g => SmallSec.regAt_fnMap_iff V.j hη`. Establish `hun : ∀ (x : V.G) (g : V.X.functionField), UnitAt x (ρ g) ↔ UnitAt (V.j x) g`. Introduce `x g`. Distinguish the cases in `h0 : g = 0`. Substitute `h0` using the available equality.
+
+Conclude with `⟨fun h => absurd (map_zero ρ) h.ne_zero, fun h => absurd rfl h.ne_zero⟩`. Rewrite using `[unitAt_iff h0, unitAt_iff ((map_ne_zero ρ).2 h0), ← map_inv₀, hreg, hreg]`. Take `⟨t, ht, htW⟩` from `V.j.isEmbedding.isInducing.isOpen_iff.1 (V.π ⁻¹ᵁ W).isOpen`. Take `⟨w, hw⟩` from `V.π.surjective (genericPoint Y.X)`. Establish `hmemt : ∀ x : V.G, V.j x ∈ t ↔ V.π x ∈ W` using `fun x => Set.ext_iff.1 htW x`.
+
+Establish `key : ∀ (e : TrueGeo.Ext v) (y : AlgPt Y) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X) (i : L.B.ι), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ⊤ ≤ yt ⁻¹ᵁ L.B.U i → UnitAt (below y.1) (s / f (below y.1)) → UnitAt (below z) (V.φ s * (r fun _ => i : V.G.functionFi …`. Introduce `e y z yt i hz hyt hU hs`. Establish `h1 : (spMap e.O.subtype) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ yt ⁻¹ᵁ L.B.U i` using `hU trivial`. Establish `h2 : (z ≫ V.j) (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ L.B.U i`. Rewrite using `[← hyt]`.
+
+Conclude with `h1`. Establish `hb : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Establish `u₁` using `hu (fun _ => i) (below z) (Set.mem_iInter.2 fun _ => h2)`. Rewrite `u₁` using `[hb]`. Establish `hs' : UnitAt (V.π (below z)) (s / f (below y.1))` using `hb ▸ hs`.
+
+Establish `u₂` using `V.unitAt_φ hs'`. Establish `h0 : V.φ (f (below y.1)) ≠ 0` using `left_ne_zero_of_mul u₁.ne_zero`. Establish `e₁ : V.φ s * (r fun _ => i : V.G.functionFieldˣ) = V.φ (s / f (below y.1)) * (V.φ (f (below y.1)) * (r fun _ => i : V.G.functionFieldˣ))`. Rewrite using `[map_div₀, ← mul_assoc, div_mul_cancel₀ _ h0]`. Use `⟨e₁ ▸ u₂.mul u₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e₁, SmallSec.valAt_mul u₂.regAt u₁.regAt, map_mul, Real.log_mul (e.w.ne_zero (SmallSec.valAt_ne_zero u₂)) (e.w.ne_zero (SmallSec.valAt_ne_zero u₁)), V.valAt_φ z hs'.regAt, hz, hf v e y z yt (fun _ => i) hz hyt hU]`. Establish `K` using `fun i : L.B.ι => GlobalTheory.T.unit_at_points_over_prime_bound GlobalTheory.T.RegularLocalStatement F Y V (L.B.U i) ⟨t, ht⟩ ⟨V.j w, (hmemt w).2 (hw ▸ hW)⟩ v p hp hpv (ρ.symm (V.φ s * (r fun _ => i : V.G.functionFieldˣ))) ρ₀ (by`. Introduce `e z yt hz hyt hU hzW`. Set `y : AlgPt Y` to `⟨z ≫ V.π, by rw [Category.assoc]; exact hz⟩`. Take `⟨a₁, a₂⟩` from `H e y ((hmemt (below z)).1 hzW)`.
+
+Take `⟨b₁, b₂⟩` from `key e y z yt i rfl hyt hU a₁`. Use `⟨(hun (below z) _).1 (by rwa [ρ.apply_symm_apply]), ?_⟩` and prove the remaining obligations. Rewrite using `[hv, ρ.apply_symm_apply, b₂, a₂])`. Establish `chart (x : V.X) : ∃ i, x ∈ L.B.U i` using `TopologicalSpace.Opens.mem_iSup.1 (L.isLB.cover.ge (Set.mem_univ _))`. Establish `hall : ∀ x : Y.X, UnitAt x (s / f x)`.
+
+Introduce `x`. Use `GlobalTheory.T.unitAt_of_cover_unitAt F Y V _ x fun x' hx' => ?_` and prove the remaining obligations. Establish `hsp : V.p (V.j x') ⤳ (⟨v.asIdeal, v.isPrime⟩ : PrimeSpectrum (𝓞 F))` using `(PrimeSpectrum.le_iff_specializes _ _).1 ((PrimeSpectrum.asIdeal_le_asIdeal _ _).1 ((GlobalTheory.CoverNorm.Isom.asIdeal_p_j V x').le.trans bot_le))`. Take `⟨x₀, hx₀, hx₀'⟩` from `V.p.isClosedMap.specializingMap hsp`. Take `⟨i, hi⟩` from `chart x₀`.
+
+Establish `u₁` using `(K i).1 x' x₀ hi (congrArg PrimeSpectrum.asIdeal hx₀') hx₀`. Rewrite `u₁` using `[← hun, ρ.apply_symm_apply]`. Establish `hi' : V.j x' ∈ L.B.U i` using `Specializes.mem_open hx₀ (L.B.U i).isOpen hi`. Establish `u₂` using `hu (fun _ => i) x' (Set.mem_iInter.2 fun _ => hi')`. Rewrite `u₂` using `[hx']`.
+
+Establish `e₁ : V.φ (s / f x) = (V.φ s * (r fun _ => i : V.G.functionFieldˣ)) * (V.φ (f x) * (r fun _ => i : V.G.functionFieldˣ))⁻¹`. Rewrite using `[map_div₀, ← div_eq_mul_inv, mul_div_mul_right _ _ (Units.ne_zero _)]`. Rewrite using `[e₁]`. Conclude with `u₁.mul u₂.inv`. Use `⟨hall, fun e y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_lift_pt V.π y.1`. Take `⟨yt, hyt, hU⟩` from `V.exists_valuationRing_point e y z hz`. Take `⟨i, hi⟩` from `chart (yt (IsLocalRing.closedPoint e.O))`. Establish `h₁` using `((K i).2 e z yt (by rw [← Category.assoc, hz]; exact y.2) hyt (hU _ hi)).2`. Rewrite `h₁` using `[hv, ρ.apply_symm_apply, (key e y z yt i hz hyt (hU _ hi) (hall _)).2]`.
+
+Conclude with `h₁`.
+-/
 theorem extend {F : Type} [Field F] [NumberField F] {Y : Var F} (V : GlobalTheory.Mean4O.Cover Y) (L : HermLB V.p) (f : Y.X → Y.Fn)
     (a : ∀ σ : F →+* ℂ, TrueGeo.Pts Y σ → ℝ) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ)
     (hN : Norms V L f a lg) (s : Y.Fn) (W : Y.X.Opens) (hW : genericPoint Y.X ∈ W) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ)
@@ -142,6 +171,21 @@ theorem extend {F : Type} [Field F] [NumberField F] {Y : Var F} (V : GlobalTheor
 
 open GlobalTheory.DetHT in
 
+/- English proof (translation)
+Take `⟨f, hf, hρ⟩` from `GlobalTheory.T.anyLevSt_of_covering hP E H Dw l Xo c h1 hg hD hC Zc τ`. Use `⟨f, hf, fun la p _ => ?_⟩` and prove the remaining obligations. Take `⟨ρ₀, hρ₀⟩` from `hρ la`. Take `⟨K, hK⟩` from `GlobalTheory.T.point_count_of_eigen_covolume_hypotheses GlobalTheory.T.ConnectingStatement GlobalTheory.T.EigenvalueStatement GlobalTheory.DetHT.Covol.covol E H Dw τ p`. Use `⟨ρ₀ * Real.log ‖(p : ℂ_[p])‖ / (vLa la (p : c.F) : ℝ) + K, fun hla P hPa hPZ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨yb, hyb⟩` from `GlobalTheory.T.TestPointStatement E H Dw l Xo c Z p P hPa`. Take `⟨y, hy, hyP, Q, π, ψ, z, hpt, hch⟩` from `exFrameSt_holds E H Dw l Xo c h1 Z Zc la p hla P yb hyb hPZ`. Establish `h₀` using `hρ₀ _ hy`. Establish `hne : evR Xo c f y ≠ 0` using `fun h => by`. Rewrite `h₀` using `[h, val_vw_zero]`.
+
+Conclude with `EReal.coe_ne_top _ h₀.symm`. Take `⟨k₁, k₂⟩` from `hK l Xo c Z f hf P y z yb hyP Q π ψ hpt hch hne`. Use `⟨k₁, ?_⟩` and prove the remaining obligations. Rewrite using `[k₂]`. Rewrite `h₀` using `[val_vw_of_ne _ _ _ hne, EReal.coe_eq_coe_iff]`.
+
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+
+Establish `hlog : Real.log ‖(p : ℂ_[p])‖ ≠ 0` using `(Real.log_neg (norm_pos_iff.2 hp0) hp1).ne`. Establish `hvl : (vLa la (p : c.F) : ℝ) ≠ 0`. Introduce `h`. Establish `hq : la.valuation c.F (p : c.F) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 hpp.ne_zero)`. Establish `h₁ : (la.valuation c.F (p : c.F)).log = 0` using `neg_eq_zero.1 (Int.cast_eq_zero.1 h)`.
+
+Establish `h₂ : la.valuation c.F (p : c.F) = 1` using `by rw [← WithZero.exp_log hq, h₁, WithZero.exp_zero]`. Establish `h₃` using `(hla (p : c.F)⁻¹).2 (by rw [map_inv₀, h₂, inv_one])`. Rewrite `h₃` using `[map_inv₀, map_natCast, norm_inv]`. Conclude with `absurd h₃ (not_le.2 ((one_lt_inv₀ (norm_pos_iff.2 hp0)).2 hp1))`. Establish `e₁ : ∀ x : ℂ_[p], ((Valued.v x : NNReal) : ℝ) = ‖x‖` using `fun x => by`.
+
+Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`. Rewrite `h₀` using `[e₁, e₁]`. Rewrite using `[← h₀]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_detConst (hP : Hypotheses2) {E : Type} [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (h1 : 1 ≤ Dw.p + Dw.q)
     (hg : ∀ q : ℕ, q.Prime → l.GoodAt q) (hD : ∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0) (hC : GlobalTheory.CompRat.CurveOver H c.F l.M')
@@ -182,6 +226,21 @@ theorem exists_detConst (hP : Hypotheses2) {E : Type} [Field E] [NumberField E] 
   rw [← h₀]
   field_simp
 
+/- English proof (translation)
+Introduce `hP _ _ D O hO _ B _ c τ v p hp hpv hpB`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨W⟩` from `GlobalTheory.Mean4O.ReadsEx.nonempty_latModel hO (GlobalTheory.FlagAr.setB O.Y B) c`. Establish `hN` using `norms_prod (fun x : D.what₂.Tau × Fin O.N => norms_of_induces (Setup.induces_root0 D O hO.dualRef (GlobalTheory.FlagAr.setB O.Y B) c W (GlobalTheory.FlagAr.setB O.Y B) le_rfl x)) (fun x => if x.1 = τ then (1 : ℤ) else 0)`. Apply the tactic sequence `have hN' := hN.congr (f' := fun y => ∏ x : D.what₂.Tau × Fin O.N, if x.1 = τ then genAt (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) x).D y else 1) (a' := _) (l' := fun v e y => ∑ x : D.what₂.Tau × Fin O.N, if x.1 = τ then (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) x).lg v e y el …`.
+
+Take `⟨q, hq⟩` from `GlobalTheory.CovHt.Link.exists_equiv_over D O.A O.N O.j O.S O.κ O.s O.Φ`. Establish `h1 : 1 ≤ O.S.Dw.p + O.S.Dw.q` using `(one_le_two.trans O.S.two_le).trans O.S.rank_eq.ge`. Take `⟨f, hf, hdet⟩` from `exists_detConst hP h1 O.κ.good (O.A.exists_datum 1 0) O.κ.curve O.s.T.Z (q c) ⟨DV.tauEmb D τ, O.A.cm τ⟩`. Establish `ha : GlobalTheory.ShFam.Pad.ArIn.ind (GlobalTheory.FlagAr.setB O.Y B) (GlobalTheory.ShFam.Pad.resP v) = true`. Rewrite using `[GlobalTheory.Mean4O.Cover.RegOverP.residueCharacteristic_eq_of_mem hp hpv]`.
+
+Conclude with `decide_eq_true hpB`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.flag_statement_holds _ _ _ _ _ _ O.s.T.Z _ O.κ.e (O.Φ.C c) (q c) _ f hf (hq c) hdet O.N O.S.rank_eq _ none v ha`. Establish `eP : ∀ y, (∏ x : D.what₂.Tau × Fin O.N, if x.1 = τ then genAt (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) x).D y else 1) = ∏ i : Fin O.N, genAt (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) (τ, i)).D y`. Introduce `y`. Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Establish `eS : ∀ e y, (∑ x : D.what₂.Tau × Fin O.N, if x.1 = τ then (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) x).lg v e y else 0) = ∑ i : Fin O.N, (O.root0 c (GlobalTheory.FlagAr.setB O.Y B) (τ, i)).lg v e y`. Introduce `e y`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Establish `hgen : genericPoint (O.var c).X ∈ (O.Φ.C c).π ⁻¹ᵁ (GlobalTheory.Toroidal.genBd O.s.T.Z).compl`. Use `letI := (GlobalTheory.ShFam.constF O.κ.e (O.Φ.C c).Y).toAlgebra`. Introduce `h`. Use `GlobalTheory.Toroidal.mem_genBd.1 h ⟨GlobalTheory.AllWt.ptF (O.Φ.C c).y0 (IsLocalRing.closedPoint _), ?_⟩` and prove the remaining obligations. Establish `hx : (GlobalTheory.AllWt.ptF (O.Φ.C c).y0 ≫ O.s.T.Z.jQ) (IsLocalRing.closedPoint (O.Φ.C c).Y.Fn) = (O.Φ.C c).π (GlobalTheory.ShFam.genericPt (O.Φ.C c).Y (IsLocalRing.closedPoint (O.Φ.C c).Y.Fn))`.
+
+Rewrite using `[(O.Φ.C c).y0_x]`. Both sides reduce to the same expression. Conclude with `hx.trans (congrArg (O.Φ.C c).π Scheme.fromSpecStalk_closedPoint)`. Take `⟨k₁, k₂⟩` from `extend W.V _ _ _ _ hN' ((O.Φ.C c).val f) _ hgen v p hp hpv ρ (fun e y hy => by`. Rewrite using `[eP, eS]`.
+
+Conclude with `hρ e y hy)`. Use `⟨(O.Φ.C c).val f, fun y => by simpa only [inv_div] using (k₁ y).inv, ρ, fun e y => ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_div, GlobalTheory.LineNorm.Neg.valAt_inv (k₁ _), map_inv₀, Real.log_inv, ← k₂ e y]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_gen_const : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (τ : D.what₂.Tau) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (p : ℕ), p.Prime →
     ((p : 𝓞 D.what₂.LL) ∈ v.asIdeal) → p ∈ GlobalTheory.FlagAr.setB O.Y B →

@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.HkKs
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Establish `h1 : e (A (B x)) = (a * c) • A' (B' (e x))`. Rewrite using `[hA, hB, map_smul, smul_smul]`. Establish `h2 : e (B (A x)) = (a * c) • B' (A' (e x))`.
+
+Rewrite using `[hB, hA, map_smul, smul_smul, mul_comm c a]`. Establish `h3 : e (A (B x)) = e (B (A x))`. Rewrite using `[← Module.End.mul_apply, h, Module.End.mul_apply]`. Rewrite `h3` using `[h1, h2]`. Establish `h4` using `congrArg (fun z => (a * c)⁻¹ • z) h3`.
+
+Simplify using `only [inv_smul_smul₀ (mul_ne_zero ha hc)] at h4`. Simplify using `using h4`.
+-/
 theorem comm_of_conj {K F V : Type} [Field K] [AddCommGroup F] [Module K F] [AddCommGroup V] [Module K V]
     (e : F ≃ₗ[K] V) (A B : Module.End K F) (A' B' : Module.End K V) (a c : K) (ha : a ≠ 0) (hc : c ≠ 0)
     (hA : ∀ x, e (A x) = a • A' (e x)) (hB : ∀ x, e (B x) = c • B' (e x)) (h : A * B = B * A) :
@@ -26,6 +33,11 @@ theorem comm_of_conj {K F V : Type} [Field K] [AddCommGroup F] [Module K F] [Add
   simp only [inv_smul_smul₀ (mul_ne_zero ha hc)] at h4
   simpa using h4
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun y : M => ((1 : K) ⊗ₜ[Ks] y : K ⊗[Ks] M)`. Establish `h0` using `Module.Flat.rTensor_preserves_injective_linearMap (M := M) (Algebra.linearMap Ks K) (algebraMap Ks K).injective`. Introduce `y y' hy`. Apply `(TensorProduct.lid Ks M).symm.injective` to reduce the goal to its premises. Apply `h0` to reduce the goal to its premises.
+
+Simplify using `using hy`. Use extensionality with `x`. Apply `hinj` to reduce the goal to its premises. Conclude with `LinearMap.congr_fun h ((1 : K) ⊗ₜ[Ks] x)`.
+-/
 theorem baseChange_inj {Ks K M : Type} [Field Ks] [Field K] [Algebra Ks K] [AddCommGroup M] [Module Ks M]
     {f g : Module.End Ks M}
     (h : Module.End.baseChangeHom Ks K M f = Module.End.baseChangeHom Ks K M g) : f = g := by
@@ -47,6 +59,19 @@ namespace GlobalTheory.HkKs
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG S Y H hCG hHk i hi j h1 h2 b k P k' P' hP hP'`. Establish `hj : j ∈ Finset.Icc 1 D.R.m` using `Finset.mem_Icc.2 ⟨h1, h2⟩`. Establish `hc : ∀ k P, H.cHk i b k P ≠ 0` using `fun k P => by`. Rewrite using `[H.cHk_pow]`. Conclude with `pow_ne_zero _ (H.cHk_unit i b P).ne_zero`.
+
+Establish `hkE : ∀ k P, HkIdx i k P → ∀ x, Y.eF i j b h1 h2 (D.nexp.hkF i j b k P x) = H.cHk i b k P • hkFR S i j b (H.hL j) (H.hs j h1 h2) k P (Y.eF i j b h1 h2 x)`. Introduce `k P hP x`. Conclude with `H.hkEq i j b h1 h2 k P x hP.2.2.2 hP.2.2.1 hP.2.1`. Prove the components needed by the constructor for the conclusion. Establish `hcm` using `comm_of_conj (Y.eF i j b h1 h2) (D.nexp.hkF i j b k P) (D.nexp.hkF i j b k' P') _ _ _ _ (hc k P) (hc k' P') (hkE k P hP) (hkE k' P' hP') (hHk i hi j hj b k P k' P' hP hP').eq`.
+
+Apply `baseChange_inj (K := KB S i b)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Conclude with `hcm`. Introduce `g`. Establish `hne : (show FractionRing (D.ntw.O i) from (readLL0 S i b (chiL S j (Y.chi j h1 h2) (S.eG.symm (S.eG g))))⁻¹) ≠ 0`.
+
+Use `inv_ne_zero ((_root_.map_ne_zero _).2 fun h0 => ?_)` and prove the remaining obligations. Conclude with `Units.ne_zero _ (congrArg Subtype.val h0)`. Establish `hA : ∀ x, Y.eF i j b h1 h2 (D.nexp.actG i j b (S.eG g) x) = (show FractionRing (D.ntw.O i) from (readLL0 S i b (chiL S j (Y.chi j h1 h2) (S.eG.symm (S.eG g))))⁻¹) • (show Module.End (FractionRing (D.ntw.O i)) (Fm S i j b) from Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (r …`. Introduce `x`. Rewrite using `[Y.act]`.
+
+Both sides reduce to the same expression. Establish `hCG' : (D.nexp.actG i j b (S.eG g)).toLinearMap * D.nexp.hkF i j b k P = D.nexp.hkF i j b k P * (D.nexp.actG i j b (S.eG g)).toLinearMap` using `hCG i hi b j hj (S.eG g) k P hP`. Establish `hcm` using `comm_of_conj (Y.eF i j b h1 h2) _ _ _ _ _ _ hne (hc k P) hA (hkE k P hP) hCG'`. Rewrite `hcm` using `[MulEquiv.symm_apply_apply]`. Use `symm`.
+
+Apply `baseChange_inj (K := KB S i b)` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`. Conclude with `hcm`.
+-/
 theorem opK_comm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks]
     [Algebra Ks D.what₂.LL] (Rl : Formalism.IndefR.Links.RealDat3 D A3 Ks)

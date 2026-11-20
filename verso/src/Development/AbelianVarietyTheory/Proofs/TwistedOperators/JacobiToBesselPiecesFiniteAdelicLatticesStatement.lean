@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.pcFB_fin | exact GlobalTheory.AscFin.pcFB_fin | (intros; apply GlobalTheory.AscFin.pcFB_fin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacobi_to_bessel_pieces_finite_adelic_lattices : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), FinLat (pcFB W F σ h h').A₁ ∧ FinLat (pcFB W F σ h h').B₁ ∧ FinLat (pcFB W F σ h h').B₂ ∧ ∀ u ∈ (pcFB W F σ h h').Γ₀, MxAt (fun _ => True) u := by
   first | exact @GlobalTheory.AscFin.pcFB_fin | exact GlobalTheory.AscFin.pcFB_fin | (intros; apply GlobalTheory.AscFin.pcFB_fin <;> assumption)

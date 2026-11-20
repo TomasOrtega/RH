@@ -4,6 +4,29 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hPad hLoc hTriv hScale hSplit hD E _ _ _ A n p _ S B B' x x' t t' hT hT' s hs hloc w`. Use `set D : ℤ := A.tr ^ 2 - 4 * A.nm with hDdef`. Establish `hD0 : D ≠ 0` using `ne_of_lt A.disc_neg`. Use `set θ : E := (A.ω : E) - (A.bar A.ω : E) with hθdef`. Establish `hθc : (IsCMField.complexConj E) θ = -θ`.
+
+Rewrite using `[hθdef, map_sub, A.bar_eq, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hθ2 : θ ^ 2 = (D : E)`. Establish `h1 : ((A.ω + A.bar A.ω : 𝓞 E) : E) = ((A.tr : 𝓞 E) : E)` using `by rw [A.tr_eq]`. Establish `h2 : ((A.ω * A.bar A.ω : 𝓞 E) : E) = ((A.nm : 𝓞 E) : E)` using `by rw [A.nm_eq]`.
+
+Establish `c1 : ((A.tr : 𝓞 E) : E) = (A.tr : E)` using `map_intCast (algebraMap (𝓞 E) E) A.tr`. Establish `c2 : ((A.nm : 𝓞 E) : E) = (A.nm : E)` using `map_intCast (algebraMap (𝓞 E) E) A.nm`. Rewrite `h1` using `[c1]`. Rewrite `h2` using `[c2]`. Move the coercions through the operations in `at h1 h2`.
+
+Rewrite using `[hθdef, hDdef]`. Use `push_cast`. Take the linear combination `((A.ω : E) + (A.bar A.ω : E) + (A.tr : E)) * h1 - 4 * h2`. Take `⟨hM1, hM2, hM3⟩` from `hD E A n p S B`. Take `⟨hN1, hN2, hN3⟩` from `hD E A n p S B'`.
+
+Establish `hs0 : (s : E) ≠ 0` using `by exact_mod_cast hs.ne'`. Establish `hsym : ∀ a b, (IsCMField.complexConj E) (((s : E) • (mat S ↑B.β * (A.H n)⁻¹)) a b) = ((s : E) • (mat S ↑B.β * (A.H n)⁻¹)) b a`. Introduce `a b`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_ratCast, hM1 a b]`. Establish `hdet : ((s : E) • (mat S ↑B.β * (A.H n)⁻¹)).det ≠ 0`.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hs0) hM2`. Take `⟨v, ι, hv⟩` from `hPad (maximalRealSubfield E) w`. Distinguish the cases in `hvp : v.asIdeal = Ideal.span {(p : ℤ)}`. Establish `hpw : ((p : ℤ) : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal` using `hv _ (by rw [hvp]; exact Ideal.subset_span rfl)`.
+
+Take `⟨hnd, hr⟩` from `(S.good).1`. Take `⟨ρ, hρ, -⟩` from `hLoc (maximalRealSubfield E) w A.tr A.nm p (Fact.out) (by exact_mod_cast hpw) hnd hr`. Use `hSplit E n _ _ hsym hN1 hdet hN2 (HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) θ D hD0 hθc hθ2 (2 * (ρ : HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) - A.tr) ?_` and prove the remaining obligations. Establish `hρ'` using `congrArg (fun z : HeightOneSpectrum.adicCompletionIntegers (maximalRealSubfield E) w => (z : HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w)) hρ`. Move the coercions through the operations in `at hρ'`.
+
+Rewrite using `[hDdef]`. Use `push_cast`. Take the linear combination `4 * hρ'`. Set `v' : AwayP p` to `⟨v, hvp⟩`. Take `⟨a, b, hab⟩` from `hloc v'`.
+
+Set `ψ : AfP p →+* HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w` to `ι.comp (AfP.eval v').toRingHom`. Establish `hH' : (A.H n).map (cj E) = A.H n`. Establish `h` using `congrArg Matrix.transpose (A.herm n)`. Rewrite `h` using `[Matrix.transpose_transpose]`. Rewrite using `[h]`.
+
+Conclude with `Matrix.diagonal_transpose _`. Take `⟨X, hX, hXeq⟩` from `hTriv E n (A.H n) (A.herm n) hH' (A.det_ne n) (AfP p) (HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) ψ (mat S ↑B.β) x ↑t hT`. Take `⟨X', hX', hXeq'⟩` from `hTriv E n (A.H n) (A.herm n) hH' (A.det_ne n) (AfP p) (HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) ψ (mat S ↑B'.β) x' ↑t' hT'`. Establish `ht0 : ψ ↑t' ≠ 0` using `(t'.isUnit.map ψ).ne_zero`. Establish `heq : ψ ↑t' = (s : HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) * ψ ↑t * (ι a ^ 2 - (D : HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) * ι b ^ 2)` using `by show ι (AfP.eval v' ↑t') = _`.
+
+Rewrite using `[hab, map_mul, map_mul, map_sub, map_mul, map_pow, map_pow, map_intCast]`. Use `congr 2`. Conclude with `eq_ratCast (ι.comp (algebraMap ℚ _)) s`. Conclude with `hScale E n (A.H n)⁻¹ _ _ (HeightOneSpectrum.adicCompletion (maximalRealSubfield E) w) θ D hθc hθ2 (ψ ↑t) (ψ ↑t') (ι a) (ι b) s ht0 heq X X' hX hX' hXeq hXeq'`.
+-/
 theorem UpperTheory.Gal.G1.pFinCongr :
     PadMap → LocRoot → TrivMat → CongrScale → SplitCongr → DefSign → FinCongr := by
   classical

@@ -18,6 +18,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormaliserGLint.conj_eq_glint_mul_mul | exact GlobalTheory.NormaliserGLint.conj_eq_glint_mul_mul | (intros; apply GlobalTheory.NormaliserGLint.conj_eq_glint_mul_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.normaliser_GLint_conj_eq_two_sided_GLint_mul : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ)
     (N : GL (Fin n) (v.adicCompletion F)),
     (∀ g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), ∀ z : Fin n → v.adicCompletion F, (∀ i, z i ∈ Formalism.UG.Ov F v) →

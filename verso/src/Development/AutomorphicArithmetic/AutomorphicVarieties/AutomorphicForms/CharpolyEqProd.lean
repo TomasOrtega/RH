@@ -20,6 +20,9 @@ namespace UpperTheory.V.Af.Es
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `L` using `P.litN.loc`. Take `⟨rc, hrc⟩` from `L.llc E Ω A w h`. Conclude with `⟨rc, GlobalTheory.T.rec_of_rec_literal L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz E Ω A w h rc hrc⟩`.
+-/
 theorem exists_rec (P : Hypotheses₂) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) :
     ∃ rc : IrrGL (w.adicCompletion E) → WD h, IsRec h rc := by
   have L := P.litN.loc
@@ -27,9 +30,17 @@ theorem exists_rec (P : Hypotheses₂) {A : ValuationSubring Ω} {w : HeightOneS
   exact ⟨rc, GlobalTheory.T.rec_of_rec_literal L.dzc L.dzi L.exh L.multi L.cos L.zel L.geo L.bz E Ω A w h rc hrc⟩
 
 omit [IsAlgClosure E Ω] in
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cyc_cont`.
+-/
 theorem cyc_cont : Continuous (cycBar E Ω l) :=
   _root_.UpperTheory.Reformulated.B.CyclotomicCharacterContinuity.cyc_cont
 
+/- English proof (translation)
+Introduce `A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h1 : cycZ E Ω l s = 1` using `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => by`. Rewrite using `[cycZ_toZModPow_eq hw hA (q := 1) (fun x hx => by simpa using hs.2 x hx) n]`. Use the proof step `simp)`.
+
+Rewrite using `[MonoidHom.zpow_apply, cycBar, MonoidHom.comp_apply, h1, map_one, one_zpow]`. Establish `h2 : ((cycBar E Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`. Rewrite using `[cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]`. Rewrite using `[MonoidHom.zpow_apply, map_inv, inv_zpow', neg_neg, zpow_natCast, Units.val_pow_eq_pow_val, h2, map_pow, map_natCast]`.
+-/
 theorem charEig_cyc (ι : Qbar l ≃+* ℂ) {w : HeightOneSpectrum (𝓞 E)} (hw : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (j : ℕ) :
     CharEig ι (cycBar E Ω l ^ (-(j : ℤ))) w ((normV w : ℂ) ^ j) := by
   intro A hA
@@ -43,9 +54,19 @@ theorem charEig_cyc (ι : Qbar l ≃+* ℂ) {w : HeightOneSpectrum (𝓞 E)} (hw
       rw [cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]
     rw [MonoidHom.zpow_apply, map_inv, inv_zpow', neg_neg, zpow_natCast, Units.val_pow_eq_pow_val, h2, map_pow, map_natCast]
 
+/- English proof (translation)
+The claim follows from `map_sum (Multiset.mapAddMonoidHom f) B Finset.univ`.
+-/
 theorem map_sum_ms {I X Y : Type} [Fintype I] (B : I → Multiset X) (f : X → Y) :
     (∑ i, B i).map f = ∑ i, (B i).map f := map_sum (Multiset.mapAddMonoidHom f) B Finset.univ
 
+/- English proof (translation)
+Establish `e : ∀ B : Multiset ℂˣ, algSat n (normV w) B = B.map fun α : ℂˣ => (((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)` using `fun B => by`. Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `coe_qPow_one (w := w) ▸ (qPow w 1).ne_zero`. Rewrite using `[e, satTot, Fintype.sum_sigma, map_sum_ms]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum_ms]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, coe_qPow]`.
+
+Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), ← Complex.cpow_natCast, mul_assoc, ← Complex.cpow_add _ _ hq, mul_left_comm, Complex.ofReal_natCast, ← Complex.cpow_add _ _ hq]`. Use `congr 2`. Simplify using `only [ex]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem algSat_satTot (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) {c : ℕ} (d : Fin c → ℕ) (S : Fin c → Multiset ℂˣ) :
     algSat n (normV w) (satTot w d S) = ∑ x : Σ i, Fin (d i),
       ((S x.1).map fun α : ℂˣ => (α : ℂ) * ((normV w : ℕ) : ℂ) ^ (-((((ex n (d x.1) 0 : ℤ) : ℝ) / 2 : ℝ) : ℂ))).map
@@ -68,6 +89,9 @@ theorem algSat_satTot (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) {c : ℕ} (d : 
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`.
+-/
 private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
   have h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) =
@@ -79,6 +103,9 @@ private theorem contCoeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopolo
   exact (MvPolynomial.continuous_eval _).comp
     (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing m with`. Consider the case `empty => simpa using continuous_const`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.prod_insert hi, Polynomial.coeff_mul]`. Conclude with `continuous_finset_sum _ fun p _ => (hf i p.1).mul (ih p.2)`.
+-/
 private theorem contProd {K T I : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [TopologicalSpace T]
     (s : Finset I) (f : I → T → K[X]) (hf : ∀ i m, Continuous fun x => (f i x).coeff m) (m : ℕ) :
     Continuous fun x => (∏ i ∈ s, f i x).coeff m := by
@@ -89,6 +116,13 @@ private theorem contProd {K T I : Type} [CommRing K] [TopologicalSpace K] [IsTop
     simp only [Finset.prod_insert hi, Polynomial.coeff_mul]
     exact continuous_finset_sum _ fun p _ => (hf i p.1).mul (ih p.2)
 
+/- English proof (translation)
+Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := E) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 hw)`. It suffices to establish `hc : ∀ g : G E Ω, (ρ g⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = ∏ i, (r i g⁻¹ : Matrix (Fin (a i)) (Fin (a i)) (Qbar l)).charpoly by simpa using hc g⁻¹`. Introduce `g`. Use extensionality with `m`. Establish `h1 : Continuous fun g : G E Ω => (ρ g⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.coeff m` using `(contCoeff n m).comp (Units.continuous_val.comp (hρ.comp continuous_inv))`.
+
+Establish `h2` using `contProd Finset.univ (fun i (g : G E Ω) => (r i g⁻¹ : Matrix (Fin (a i)) (Fin (a i)) (Qbar l)).charpoly) (fun i m => (contCoeff (a i) m).comp (Units.continuous_val.comp ((hr i).comp continuous_inv))) m`. Use `congrFun (Continuous.ext_on hD h1 h2 ?_) g` and prove the remaining obligations. Introduce and unpack `σ ⟨v, hv, hd, A, hA, hσ⟩`. Take `⟨B, hB, hB'⟩` from `not_not.1 hv hd`. Establish `h : (ρ σ⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.map ι.toRingHom = (∏ i, (r i σ⁻¹ : Matrix (Fin (a i)) (Fin (a i)) (Qbar l)).charpoly).map ι.toRingHom`.
+
+Rewrite using `[(hB A hA).2 σ hσ, Polynomial.map_prod, map_sum_ms, Multiset.prod_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => ((hB' i A hA).2 σ hσ).symm`. Establish `h'` using `Polynomial.map_injective ι.toRingHom ι.injective h`. Simplify using `only [h']`.
+-/
 theorem charpoly_eq_prod (ι : Qbar l ≃+* ℂ) {I : Type} [Fintype I] {n : ℕ} {a : I → ℕ} (ρ : G E Ω →* GL (Fin n) (Qbar l))
     (r : ∀ i, G E Ω →* GL (Fin (a i)) (Qbar l)) (hρ : Continuous ρ) (hr : ∀ i, Continuous (r i))
     (hw : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 →

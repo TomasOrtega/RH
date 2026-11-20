@@ -7,6 +7,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.LineNorm GlobalTheory.BcLie GlobalTheory.CovTest GlobalTheory.Mean4O GlobalTheory.Cartier GlobalTheory.TrueCx
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e B Y ρB ρ f φ h hρ g g' g₁ hg τ XB X jB j π hj M hM dual A A' hA hA' hP hL`. Use `UpperTheory.frame_generic_valuation E H Dw l Xo c O β Z F e Y ρ (by rw [← h.1, Category.assoc, hρ, h.2.1]) g₁ τ X j _ (hM.pullback π) dual A' hA' fun z => ?_` and prove the remaining obligations. Take `⟨U, s, hU, hs⟩` from `hM (π z)`. Set `ch : Chart M (Dw.mult τ)` to `⟨U, s, hs⟩`. Use `⟨ch.pull hM π, hU, ?_⟩` and prove the remaining obligations.
+
+Introduce `v _ ε y yt hyt hin φ' f' hf' a w hw`. Set `yB : AlgPt B` to `⟨y.1 ≫ f, by rw [Category.assoc, h.2.1]; exact y.2⟩`. Establish `hytB : spMap ε.O.subtype ≫ (yt ≫ π) = yB.1 ≫ jB`. Rewrite using `[← Category.assoc, hyt, Category.assoc, hj, Category.assoc]`. Establish `hinB : ⊤ ≤ (yt ≫ π) ⁻¹ᵁ ch.U` using `hin`.
+
+Establish `hb : jB (f (below y.1)) ∈ ch.U`. Establish `: (spMap ε.O.subtype ≫ yt ≫ π) (IsLocalRing.closedPoint _) ∈ ch.U` using `hinB (Set.mem_univ _)`. Rewrite `this` using `[hytB]`. Then use the resulting hypothesis. Take `⟨φ₀, k, hk⟩` from `hA.2 ch (f (below y.1)) hb`. Take `⟨k₁, hm, hk₁⟩` from `hk.pull h hg g₁`.
+
+Rewrite `hf'` using `[hP ch (gen_le jB hb), lieMat_mul, lieMat_lieMat _ (g₁.isUnit_det_co g' τ), lieMat_map _ _ (hA.1.1 ch (gen_le jB hb))]`. Take `rfl` from `hf'.φ_eq hk₁`. Establish `hco : k₁.co f' τ = 1` using `hk₁.co_eq (by rwa [Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one])`. Establish `hv : ∀ i, f'.v τ i = k₁.v τ i` using `fun i => by`. Establish `: f'.vec τ i = k₁.vec τ i`.
+
+Use `(EigFrame.vec_eq k₁ f' τ i).trans (Eq.trans ?_ (EigFrame.vec_eq k₁ k₁ τ i).symm)` and prove the remaining obligations. Rewrite using `[hco, EigFrame.co_self]`. Conclude with `congrArg (fun u => (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv u).left) this`. Establish `hval : valP ε yB = (valP ε y).comp (f.stalkMap (below y.1)).hom`. Use `Scheme.stalkClosedPointTo_comp y.1 f` as an intermediate fact.
+
+Conclude with `congrArg (fun t => (ioOf (resP v) ε).comp (CommRingCat.Hom.hom t)) this`. Establish `hx : spMap (valP ε yB) ≫ stalkPt B (below yB.1) ≫ ρB ≫ genι Z = spMap (valP ε y) ≫ stalkPt Y (below y.1) ≫ ρ ≫ genι Z`. Establish `h₁ : spMap (valP ε yB) = spMap (valP ε y) ≫ spMap (f.stalkMap (below y.1)).hom`. Rewrite using `[hval, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `h₂` using `spMap_stalkMap f (below y.1)`. Rewrite using `[← h.1, Category.assoc f, ← Category.assoc (stalkPt Y _), ← h₂, h₁]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Establish `key` using `hL ch v ε yB (yt ≫ π) hytB hinB φ₀ k hk a w`.
+
+Rewrite `key` using `[hx]`. Use `key ?_` and prove the remaining obligations. Establish `: (fun i => spMap (dualMap (valP ε yB)) ≫ k.v τ i) = fun i => spMap (dualMap (valP ε y)) ≫ f'.v τ i`. Use function extensionality and compare the values at `i`. Rewrite using `[hv, hm, GlobalTheory.GradedPieces.dual_comp, hval]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hw`.
+-/
 theorem UpperTheory.eigenvariety_over_frame :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (B Y : Var F) (ρB : B.X ⟶ gen Z) (ρ : Y.X ⟶ gen Z) (f : Y.X ⟶ B.X) (φ : B.Fn →+* Y.Fn), IsOver e ρB ρ f φ → ρB ≫ genStr Z ≫ spMap e.toRingHom = B.str → ∀ (g : GenFrame e ρB) (g' g₁ : GenFrame e ρ), g.IsMap φ g' → ∀ (τ : E →+* ℂ) (XB X : Scheme.{0}) (jB : B.X ⟶ XB) (j : Y.X ⟶ X) (π : X ⟶ XB), j ≫ π = f ≫ jB → ∀ (M : XB.Modules) (hM : IsVB M (Dw.mult τ)) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) B.Fn) (A' : Chart ((Scheme.Modules.pullback π).obj M) (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Y.Fn), IsLie g τ jB dual A → IsLie g₁ τ j dual A' → IsPullCo jB π hM dual φ g' g₁ A A' → IsLat g τ jB dual A → IsLat g₁ τ j dual A' := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ _ e B Y ρB ρ f φ h hρ g g' g₁ hg τ XB X jB j π hj M hM dual A A' hA hA' hP hL

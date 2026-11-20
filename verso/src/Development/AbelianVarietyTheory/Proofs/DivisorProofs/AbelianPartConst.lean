@@ -24,15 +24,30 @@ namespace GlobalTheory.Heat.AbConst
 
 open GlobalTheory.KS.GlueDer
 
+/- English proof (translation)
+Rewrite using `[WtAlg.valR_eq' _ _ hg, WtAlg.valR_eq' (g ≫ m) U (fun p hp => h (hg hp)), ← Scheme.Hom.appLE_comp_appLE g m U W ⊤ h hg]`. Both sides reduce to the same expression.
+-/
 theorem valR_appLE {S : Type} [CommRing S] {Z X : Scheme.{0}} (g : Sp S ⟶ Z) (m : Z ⟶ X) (U : X.Opens) (W : Z.Opens)
     (h : W ≤ m ⁻¹ᵁ U) (hg : ⊤ ≤ g ⁻¹ᵁ W) (f : Γ(X, U)) : valR g W ((m.appLE U W h).hom f) = valR (g ≫ m) U f := by
   rw [WtAlg.valR_eq' _ _ hg, WtAlg.valR_eq' (g ≫ m) U (fun p hp => h (hg hp)),
     ← Scheme.Hom.appLE_comp_appLE g m U W ⊤ h hg]
   rfl
 
+/- English proof (translation)
+Simplify using `using InteriorKS.isField_intCast hd hO 1`.
+-/
 theorem isField_one {Z : Scheme.{0}} {W O : Z.Opens} {d : Fld Z} (hd : IsField W d) (hO : O ≤ W) : d O 1 = 0 := by
   simpa using InteriorKS.isField_intCast hd hO 1
 
+/- English proof (translation)
+Establish `hi : O ≤ h.W i` using `hO.trans inf_le_left`. Establish `hi' : O ≤ h.W i'` using `hO.trans inf_le_right`. Establish `hle : O ≤ m ⁻¹ᵁ (L.U (h.j i) ⊓ L.U (h.j i'))` using `fun p hp => ⟨h.le i (hi hp), h.le i' (hi' hp)⟩`. Establish `hg : IsUnit (pbT m (L.g (h.j i) (h.j i')).val O)`. Rewrite using `[pbT, dif_pos hle]`.
+
+Conclude with `(Units.isUnit _).map _`. Establish `e₁` using `congrArg π (h.glue 1 i i' O hO f)`. Establish `e₀` using `congrArg π (h.glue 1 i i' O hO 1)`. Generalize the expression as in `pbT m (L.g (h.j i) (h.j i')).val O = g at hg e₁ e₀`. Establish `hs : ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O (g * f)) = π g * ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O f) + π f * ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O g)`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(hdd a).2.1 O le_top, map_add, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [op, pow_one, _root_.mul_one, Nat.cast_one, one_pow, map_add, map_sub, map_mul, map_sum, hΘ, zero_mul, Finset.sum_const_zero, sub_zero, map_ofNat, isField_one (hdd _) le_top, isField_one (h.lift i').1 hi', map_zero, mul_zero, map_one] at e₁ e₀`.
+
+Rewrite `e₁` using `[hs, (h.lift i).1.2.1 O hi, map_add, map_mul, map_mul]`. Use `(h2.mul (hg.map π)).mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `e₁ - π f * e₀`.
+-/
 theorem lift_agree {R : Type} [CommRing R] {G : Over (Sp R)} {n : ℕ} {X : Scheme.{0}} {m : G.left ⟶ X} {L : LB X}
     {dd : Fin n → Fld G.left} {D : R → R} (h : Heat G m L dd D) (hdd : ∀ a, IsField ⊤ (dd a)) (i i' : h.J)
     (O : G.left.Opens) (hO : O ≤ h.W i ⊓ h.W i') {A : Type} [CommRing A] (π : Γ(G.left, O) →+* A) (h2 : IsUnit (2 : A))
@@ -64,6 +79,23 @@ section Ray
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O} (Y : Ray oa)
 
+/- English proof (translation)
+Take `⟨c⟩` from `GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0`. Use `c.q_surj` as an intermediate fact. Use `c.q_affine` as an intermediate fact. Set `F` to `fstG (⊥ : Ideal R) 0 Y.H`. Set `j` to `inv F.left`.
+
+Establish `hF : F.left ≫ Y.H.hom = (thickObj R ⊥ 0 Y.H).hom ≫ thick R ⊥ 0` using `Over.w F`. Set `ξ` to `Y.Φ Y.H (𝟙 _)`. Take `⟨x, hx⟩` from `GlobalTheory.TorusCoord.exists_point c (T := Y.H) (Y.H.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`. Take `⟨ξ', hξ'⟩` from `GlobalTheory.TorusCoord.exists_isPointOf c (T := Y.H) j (by`. Rewrite using `[← hF]`.
+
+Conclude with `IsIso.inv_hom_id_assoc _ _)`. Set `b : Y.H ⟶ Y.H` to `(Y.Φ Y.H).symm ξ'`. Establish `hb : Y.Φ Y.H b = ξ'` using `Equiv.apply_symm_apply _ _`. Set `a` to `x ≫ F.left`. Establish `ha : a ≫ Y.H.hom = Y.H.hom`.
+
+Rewrite using `[Category.assoc, hF]`. Conclude with `GlobalTheory.TorusCoord.IsPointOf.comp_hom c hx`. Set `a' : Y.H ⟶ Y.H` to `Over.homMk a ha`. Establish `haj : a ≫ j = x` using `by simp [a, j]`. Establish `e1 : b.left ≫ x = j`.
+
+Establish `h1 : GtPt.IsPull b.left ξ (Y.Φ Y.H (b ≫ 𝟙 _))` using `Y.rep.1 Y.H Y.H b (𝟙 _)`. Rewrite `h1` using `[Category.comp_id, hb]`. Conclude with `(GlobalTheory.TorusCoord.IsPointOf.pull c hx h1).unique_left c hξ'`. Establish `e1' : b.left ≫ a = 𝟙 _`. Rewrite using `[← Category.assoc, e1]`.
+
+Simplify using `[j]`. Establish `e2 : a' ≫ b = 𝟙 _`. Establish `h2 : GtPt.IsPull a (Y.Φ Y.H b) (Y.Φ Y.H (a' ≫ b))` using `Y.rep.1 Y.H Y.H a' b`. Rewrite `h2` using `[hb]`. Establish `h3` using `GlobalTheory.TorusCoord.IsPointOf.pull c hξ' h2`.
+
+Rewrite `h3` using `[haj]`. Conclude with `(Y.Φ Y.H).injective (h3.unique_right c hx)`. Establish `e2' : a ≫ b.left = 𝟙 _` using `congrArg (·.left) e2`. Establish `: IsIso a` using `⟨⟨b.left, e2', e1'⟩⟩`. Establish `hq : Y.q.left = a ≫ j ≫ c.q.left ≫ pullback.fst Q.P.A.hom (thick R ⊥ 0)`.
+
+Rewrite using `[← Category.assoc a j, haj, ← GlobalTheory.TorusCoord.pG_left]`. Conclude with `hx.1`. Rewrite using `[hq]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem surjective_q : Surjective Y.q.left ∧ QuasiCompact Y.q.left := by
   obtain ⟨c⟩ := GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0
   have := c.q_surj
@@ -103,6 +135,13 @@ theorem surjective_q : Surjective Y.q.left ∧ QuasiCompact Y.q.left := by
   rw [hq]
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Use `Y.q_linear.isMonHom` as an intermediate fact. Establish `w : (x⁻¹ * x') ≫ Y.q = toUnit T ≫ η[Q.P.A]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hq, inv_mul_cancel]`. Both sides reduce to the same expression. Set `t` to `Y.isKernel.lift _ _ w`.
+
+Establish `ht : x * (t ≫ Y.i) = x'`. Rewrite using `[Y.isKernel.lift_fst, mul_inv_cancel_left]`. Set `u : Multiplicative Q.X →* Γ(T.left, ⊤)` to `{ toFun := fun χ => (Rosenlicht.coord t).hom (AddMonoidAlgebra.single χ.toAdd 1) map_one' := Diag.coord_single_zero t map_mul' := fun a b => Diag.coord_single_add t _ _ }`. Use `⟨fun χ => u.toHomUnits (Multiplicative.ofAdd χ), fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x (t ≫ Y.i))).2 χ y J hJ`.
+
+Establish `C : IsCub (DVR.th Q (T` using `T) y J) := isCub_cubV Q.cub hJ`. Rewrite `h1` using `[(Y.Φ_i t).1, C.face₃, _root_.mul_one, ht]`. Use `h1.trans ((_root_.mul_comm _ _).trans (congrArg (· * _) (Units.ext ?_)))` and prove the remaining obligations. Conclude with `((Y.Φ_i t).2 χ y J hJ).trans (gs_unit (𝟙 _) y ⊤ trivial (u.toHomUnits (Multiplicative.ofAdd χ)))`.
+-/
 theorem exists_ratio {T : Over (Sp R)} (x x' : T ⟶ Y.H) (hq : x' ≫ Y.q = x ≫ Y.q) :
     ∃ u : Q.X → Γ(T.left, ⊤)ˣ, ∀ χ y J, Good Q.P.L y J →
       val ((Y.Φ _ x').s χ) (𝟙 _) y J = gm (𝟙 T.left) y ⊤ (u χ) * val ((Y.Φ _ x).s χ) (𝟙 _) y J := by
@@ -124,6 +163,13 @@ theorem exists_ratio {T : Over (Sp R)} (x x' : T ⟶ Y.H) (hq : x' ≫ Y.q = x �
   refine h1.trans ((_root_.mul_comm _ _).trans (congrArg (· * _) (Units.ext ?_)))
   exact ((Y.Φ_i t).2 χ y J hJ).trans (gs_unit (𝟙 _) y ⊤ trivial (u.toHomUnits (Multiplicative.ofAdd χ)))
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩ : ∃ φ : R →+* S, spMap φ = a ≫ Y.H.hom` from `⟨(Spec.preimage (a ≫ Y.H.hom)).hom, Spec.map_preimage _⟩`. Set `x : Over.mk (spMap φ) ⟶ Y.H` to `Over.homMk a hφ.symm`. Set `x' : Over.mk (spMap φ) ⟶ Y.H` to `Over.homMk a' (by show a' ≫ Y.H.hom = spMap φ`. Rewrite using `[hφ, ← Over.w Y.q, reassoc_of% e])`. Establish `hq : x' ≫ Y.q = x ≫ Y.q` using `Over.OverMorphism.ext e`.
+
+Take `⟨u, hu⟩` from `exists_ratio Y x x' hq`. Set `c : Q.X → Sˣ` to `fun χ => Units.map (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.toMonoidHom (u χ)`. Establish `hc : ∀ χ, unitOn (c χ) = u χ` using `fun χ => Units.ext (Iso.hom_inv_id_apply (Scheme.ΓSpecIso (CommRingCat.of S)) _)`. Establish `hc' : ∀ χ y J, Good Q.P.L y J → val ((Y.Φ _ x').s χ) (𝟙 _) y J = gm (𝟙 (Over.mk (spMap φ)).left) y ⊤ (unitOn (c χ)) * val ((Y.Φ _ x).s χ) (𝟙 _) y J` using `fun χ y J hJ => by`. Rewrite using `[hc]`.
+
+Conclude with `hu χ y J hJ`. Rewrite using `[hf S φ x x' c a a' rfl rfl h h' hq hc', WtAlg.c_zero x x' c hc', Units.val_one, _root_.one_mul]`.
+-/
 theorem valR_eq_of_isWt {V : Y.H.left.Opens} {f : Γ(Y.H.left, V)} (hf : IsWt Y 0 V f) {S : Type} [CommRing S]
     (a a' : Sp S ⟶ Y.H.left) (h : ⊤ ≤ a ⁻¹ᵁ V) (h' : ⊤ ≤ a' ⁻¹ᵁ V) (e : a' ≫ Y.q.left = a ≫ Y.q.left) :
     valR a' V f = valR a V f := by
@@ -142,6 +188,13 @@ theorem valR_eq_of_isWt {V : Y.H.left.Opens} {f : Γ(Y.H.left, V)} (hf : IsWt Y 
     rw [hc]; exact hu χ y J hJ
   rw [hf S φ x x' c a a' rfl rfl h h' hq hc', WtAlg.c_zero x x' c hc', Units.val_one, _root_.one_mul]
 
+/- English proof (translation)
+Use `Y.smooth_q` as an intermediate fact. Use `(surjective_q Y).1` as an intermediate fact. Use `(surjective_q Y).2` as an intermediate fact. Use `FunDescent.exists_app_eq Y.q.left V f fun Z g₁ g₂ h₁ h₂ e => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+
+Use `InteriorKS.app_eq_zero_of_valR (𝟙 Z) ⊤ _ fun Ω _ => ?_` and prove the remaining obligations. Establish `key : ∀ (g : Z ⟶ Y.H.left) (h : ⊤ ≤ g ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V)), valR (chart Ω ≫ 𝟙 Z) ⊤ ((g.appLE _ ⊤ h).hom f) = valR (chart Ω ≫ g) _ f` using `fun g h => by`. Rewrite using `[Category.comp_id, valR_appLE _ _ _ _ _ le_top]`. Use `(WtAlg.valR_sub' (chart Ω ≫ 𝟙 Z) ⊤ le_top _ _).trans ?_` and prove the remaining obligations. Rewrite using `[key, key, sub_eq_zero]`.
+
+Conclude with `valR_eq_of_isWt Y hf _ _ (fun p _ => h₂ (Set.mem_univ (chart Ω p))) (fun p _ => h₁ (Set.mem_univ (chart Ω p))) (by rw [Category.assoc, Category.assoc, e])`.
+-/
 theorem exists_app_eq {V : Q.P.A.left.Opens} {f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)} (hf : IsWt Y 0 _ f) :
     ∃ a, (Y.q.left.app V).hom a = f := by
   have := Y.smooth_q
@@ -158,6 +211,11 @@ theorem exists_app_eq {V : Q.P.A.left.Opens} {f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ
   exact valR_eq_of_isWt Y hf _ _ (fun p _ => h₂ (Set.mem_univ (chart Ω p))) (fun p _ => h₁ (Set.mem_univ (chart Ω p)))
     (by rw [Category.assoc, Category.assoc, e])
 
+/- English proof (translation)
+Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Substitute `ha ha'` using the available equality. Establish `key : ∀ (g : Sp S ⟶ Y.H.left) (h : ⊤ ≤ g ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V)), valR g _ ((Y.q.left.app V).hom f) = valR (g ≫ Y.q.left) V f` using `fun g h => by`. Rewrite using `[Scheme.Hom.app_eq_appLE, valR_appLE _ _ _ _ _ h]`. Rewrite using `[key _ hV, key _ hV', WtAlg.c_zero x x' c hc, Units.val_one, _root_.one_mul]`.
+
+Conclude with `congrArg (fun z => valR z V f) (congrArg (·.left) hq)`.
+-/
 theorem isWt_app (V : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, V)) : IsWt Y 0 _ ((Y.q.left.app V).hom f) := by
   intro S _ φ x x' c a a' ha ha' hV hV' hq hc
   subst ha ha'
@@ -167,6 +225,13 @@ theorem isWt_app (V : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, V)) : IsWt Y 0 _ ((Y
   rw [key _ hV, key _ hV', WtAlg.c_zero x x' c hc, Units.val_one, _root_.one_mul]
   exact congrArg (fun z => valR z V f) (congrArg (·.left) hq)
 
+/- English proof (translation)
+Use `Y.smooth_q` as an intermediate fact. Use `(surjective_q Y).1` as an intermediate fact. Establish `ex : ∀ (V' : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, V')), ∃ a, V' ≤ V → (Y.q.left.app V').hom a = d _ ((Y.q.left.app V').hom f)` using `fun V' f => by`. Distinguish the cases in `hV : V' ≤ V`. Conclude with `(exists_app_eq Y (hw V' hV _ (isWt_app Y V' f))).imp fun a ha _ => ha`.
+
+Conclude with `⟨0, fun h => absurd h hV⟩`. Use `choose e he using ex`. Establish `inj` using `FunDescent.app_injective Y.q.left`. Establish `hc : ∀ (V' : Q.P.A.left.Opens) r, (Y.q.left.app V').hom (constFn Q.P.A.hom V' r) = constFn Y.H.hom _ r` using `fun V' r => app_const (RingHom.id R) Q.P.A.hom Y.H.hom Y.q.left ((Over.w Y.q).trans ((Category.comp_id _).symm.trans (congrArg (Y.H.hom ≫ ·) (Spec.map_id _).symm))) V' r`. Use `⟨e, ⟨⟨fun W hW f f' => inj W ?_, fun W hW f f' => inj W ?_, fun W W' h hW f => inj W' ?_⟩, fun W hW r => inj W ?_⟩, fun V' hV f => he V' f hV⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, he _ _ hW, he _ _ hW, he _ _ hW, map_add, hd.1.1 _ (pre_mono _ hW)]`. Rewrite using `[map_add, map_mul, map_mul, he _ _ hW, he _ _ hW, he _ _ hW, map_mul, hd.1.2.1 _ (pre_mono _ hW)]`. Rewrite using `[he _ _ (h.trans hW), ← res_app _ h (pre_mono _ h), ← res_app _ h (pre_mono _ h), he _ _ hW, hd.1.2.2 _ _ _ (pre_mono _ hW)]`. Rewrite using `[he _ _ hW, hc, hc, hd.2 _ (pre_mono _ hW)]`.
+-/
 theorem exists_desc (V : Q.P.A.left.Opens) (d : Fld Y.H.left) (D : R → R) (hd : IsLift Y.H D (Y.q.left ⁻¹ᵁ V) d)
     (hw : ∀ V' : Q.P.A.left.Opens, V' ≤ V → ∀ f, IsWt Y 0 (Y.q.left ⁻¹ᵁ V') f → IsWt Y 0 (Y.q.left ⁻¹ᵁ V') (d _ f)) :
     ∃ e : Fld Q.P.A.left, IsLift Q.P.A D V e ∧
@@ -193,6 +258,23 @@ theorem exists_desc (V : Q.P.A.left.Opens) (d : Fld Y.H.left) (D : R → R) (hd 
 
 variable {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D)
 
+/- English proof (translation)
+Use `Y.smooth_q` as an intermediate fact. Establish `hs` using `(surjective_q Y).1`. Use `choose V hV using fun i => (hB i).1`. Use `choose e he hq using fun i => exists_desc Y (V i) (h.d i) D (hV i ▸ h.lift i) fun V' hV' => (hB i).2.2.2 0 V' ((pre_mono _ hV').trans (hV i).ge)`. Use `(InteriorKS.glue_along p Q.P.A.hom m _ V (fun y => ?_) (fun i W f => (m.app W).hom (e i W f)) (fun i => ?_) fun i i' W hW f => ?_).imp fun _ hd => hd.1` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `Y.q.left.surjective (m y)`. Establish `hx' : x ∈ ⨆ i, h.W i` using `by rw [h.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Rewrite `hi` using `[hV]`. Conclude with `⟨i, hx ▸ hi⟩`.
+
+Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' h' hW f => ?_, fun W hW r => ?_⟩` and prove the remaining obligations. Rewrite using `[(he i).1.1 W hW, map_add]`. Rewrite using `[(he i).1.2.1 W hW, map_add, map_mul, map_mul]`. Rewrite using `[(he i).1.2.2 W W' h' hW, rsT_eq (pre_mono m h'), res_app m h']`. Rewrite using `[(he i).2 W hW, app_const φ _ p m hm]`.
+
+Set `a` to `pullback.fst Y.q.left m`. Set `b` to `pullback.snd Y.q.left m`. Establish `w : a ≫ Y.q.left = b ≫ m` using `pullback.condition`. Establish `hle : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ a ⁻¹ᵁ (Y.q.left ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`.
+
+Set `π` to `(a.appLE _ _ hle).hom`. Establish `key : ∀ x, (b.app _).hom ((m.app W).hom x) = π ((Y.q.left.app W).hom x)` using `fun x => by`. Establish `k : ∀ (c : pullback Y.q.left m ⟶ Q.P.A.left) (_ : c = b ≫ m) (hc : b ⁻¹ᵁ (m ⁻¹ᵁ W) ≤ c ⁻¹ᵁ W), (b.app _).hom ((m.app W).hom x) = (c.appLE W _ hc).hom x`. Introduce and unpack `_ rfl hc`. Rewrite using `[Scheme.Hom.comp_appLE, Scheme.Hom.app_eq_appLE b]`.
+
+Both sides reduce to the same expression. Rewrite using `[k _ w hle]`. Conclude with `congrArg (fun ψ => ψ.hom x) (Scheme.Hom.comp_appLE a Y.q.left W _ hle)`. Establish `hc : ∀ r, π (constFn Y.H.hom _ r) = constFn (b ≫ p) _ (φ r)` using `fun r => by`. Rewrite using `[← res_const (b ≫ p) hle, ← app_const φ Y.H.hom (b ≫ p) a (by`.
+
+Rewrite using `[← Over.w Y.q, reassoc_of% w, hm, Category.assoc])]`. Both sides reduce to the same expression. Use `FunDescent.app_injective b _ ?_` and prove the remaining obligations. Use `show (b.app _).hom ((m.app W).hom _) = (b.app _).hom ((m.app W).hom _)`. Rewrite using `[key, key, hq i W (hW.trans inf_le_left), hq i' W (hW.trans inf_le_right)]`.
+
+Use `lift_agree h hdd i i' _ (le_inf ((pre_mono _ (hW.trans inf_le_left)).trans (hV i).ge) ((pre_mono _ (hW.trans inf_le_right)).trans (hV i').ge)) π ?_ (fun a b => ?_) _` and prove the remaining obligations. Use `(two_ne_zero (α := K)).isUnit.map ((((b ≫ p).appLE ⊤ (b ⁻¹ᵁ (m ⁻¹ᵁ W)) (fun _ _ => trivial)).hom).comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Rewrite using `[hc, hΘ, constFn, map_zero, map_zero]`.
+-/
 theorem exists_locDerK (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K : Type} [Field K] [CharZero K] (φ : R →+* K)
     (hΘ : ∀ a b, φ (h.Θ a b) = 0) {Z : Scheme.{0}} (p : Z ⟶ Sp K) (m : Z ⟶ Q.P.A.left)
     (hm : m ≫ Q.P.A.hom = p ≫ spMap φ) : ∃ d, KS.LocDerK p Q.P.A.hom m (fun r => φ (D r)) ⊤ d := by
@@ -241,6 +323,13 @@ theorem exists_locDerK (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K :
       rwa [map_ofNat] at this
     · rw [hc, hΘ, constFn, map_zero, map_zero]
 
+/- English proof (translation)
+Take `⟨B', _, ψ, hψ⟩` from `FlagTan.exists_isGrpPullback Q.P.A (spMap ρ)`. Take `⟨B₀, _, j, hj⟩ : ∃ (B₀ : Over (Sp K)) (_ : GrpObj B₀) (j : B₀.left ⟶ B'.left), IsGrpPullback B₀ B' (spMap (TrivSqZeroExt.fstHom K K K).toRingHom) j` from `⟨_, _, _, isGrpPullback_pullback _ _⟩`. Establish `h'` using `PolPull.isAbelianScheme_of_isGrpPullback Q.P.isAb hψ`. Establish `h₀` using `PolPull.isAbelianScheme_of_isGrpPullback h' hj`. Set `φ : R →+* K` to `(TrivSqZeroExt.fstHom K K K).toRingHom.comp ρ`.
+
+Establish `hφ : spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap ρ = spMap φ` using `(Spec.map_comp _ _).symm`. Take `⟨d, hd⟩` from `exists_locDerK Y h hdd hB φ hΘ B₀.hom (j ≫ ψ) (by rw [← hφ]; exact (hj.comp hψ).1.w)`. Take `⟨σ, hσ, -, hjσ⟩` from `KS.exists_isConstK_of_locDerK GlobalTheory.abelianSchemeLaws_all.1 K B₀ R ρ Q.P.A B' ψ j d h₀ h' hψ hj (by rw [funext hρ]; exact hd)`. Use `⟨B', inferInstance, ψ, σ ≫ j ≫ ψ, hψ, (hσ.comp (hj.comp hψ)).congr ?_ rfl, fun Z x y hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+
+Conclude with `(Spec.map_comp _ _).symm`. Rewrite using `[← hj.1.lift_fst x y hx, Category.assoc, Category.assoc, reassoc_of% hjσ]`.
+-/
 theorem exists_const (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K : Type} [Field K] [CharZero K]
     (ρ : R →+* DualNumber K) (hρ : ∀ r, (ρ r).snd = (ρ (D r)).fst) (hΘ : ∀ a b, (ρ (h.Θ a b)).fst = 0) :
     ∃ (B' : Over (Sp (DualNumber K))) (_ : GrpObj B') (π₁ π₂ : B'.left ⟶ Q.P.A.left),
@@ -265,6 +354,11 @@ theorem exists_const (hdd : ∀ a, IsField ⊤ (dd a)) (hB : IsBasic Y h) {K : T
 
 end Ray
 
+/- English proof (translation)
+Introduce `E _ _ _ H k _ _ m d t P gam _ _ _`. Use `letI := H.starRing`. Introduce `Y n' v' dd hdd D q _ h hB _ hΘ ρ hρ`. Use `exists_const Y h (fun a => (hdd a).1) hB ρ (fun r => by simp [hρ]) fun a b => ?_` and prove the remaining obligations. Establish `h0 : MvPowerSeries.constantCoeff (h.Θ a b) = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hΘ a b (MvPowerSeries.isUnit_iff_constantCoeff.2 (Ne.isUnit hne))`. Simplify using `[hρ, h0]`.
+-/
 theorem abelian_part_const : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [CharZero k] (m d : ℕ) (t : SAB H (Sp (ChartRing k m d))) (P : PELUnif (maximalIdeal (ChartRing k m d)) t) (gam : Fin m → LinearMap.BilinForm ℤ P.D.toPre.X), IsMonomial P.D.toPre (bdParam k m d) gam → LinearIndependent ℤ gam → (∀ p : Sp (ChartRing k m d), p ∈ abLocus t.G ↔ ∏ i, bdParam k m d i ∉ p.asIdeal) → letI := H.starRing; ∀ (Y : Ray P.oD) (n' : ℕ) (v' : Module.Basis (Fin n') (ChartRing k m d) (TanM (𝟙 (Sp (ChartRing k m d))) Y.H)) (dd : Fin n' → Fld Y.H.left), (∀ a, IsInv Y.H (v' a) (dd a)) → ∀ (D : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (q : Fin m → ChartRing k m d), (∀ i, D (bdParam k m d i) = q i * bdParam k m d i) → ∀ h : Heat Y.H Y.q.left P.D.toPre.P.L dd ⇑D, IsBasic Y h → HasDefect Y h (fun _ _ _ => 0) → (∀ a b, h.Θ a b ∈ maximalIdeal (ChartRing k m d)) → ∀ ρ : ChartRing k m d →+* DualNumber k, (∀ r, ρ r = TrivSqZeroExt.inl (MvPowerSeries.constantCoeff r) + TrivSqZeroExt.inr (MvPowerSeries.constantCoeff (D r))) → ∃ (B' : Over (Sp (DualNumber k))) (_ : GrpObj B') (π₁ π₂ : B'.left ⟶ P.D.toPre.P.A.left), IsGrpPullback B' P.D.toPre.P.A (spMap ρ) π₁ ∧ IsGrpPullback B' P.D.toPre.P.A (spMap (constHom ρ)) π₂ ∧ (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) := by
   intro E _ _ _ H k _ _ m d t P gam _ _ _
   letI := H.starRing

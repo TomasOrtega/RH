@@ -13,6 +13,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Establish `hl0 : l ≠ 0` using `by omega`. Set `r : ℕ → ℝ≥0` to `fun n => ρ₀ ^ (((l ^ n : ℕ) : ℝ)⁻¹)`. Establish `hp : ∀ n, r n ^ (l ^ n) = ρ₀` using `fun n => NNReal.rpow_inv_natCast_pow _ (pow_ne_zero _ hl0)`. Establish `hlt : ∀ n, r n < 1` using `fun n => by`. Assume the negation of the conclusion as `h`.
+
+Use `one_le_pow₀ (not_lt.1 h) (n := l ^ n)` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `absurd h1 (not_lt.2 this)`. Use `⟨r, by simpa using hp 0, fun n => ?_, fun n => ?_, hlt, fun ρ₁ h => ?_⟩` and prove the remaining obligations. Use `(pow_left_inj₀ zero_le zero_le (pow_ne_zero n hl0)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul, ← pow_succ', hp, hp]`. Rewrite using `[← hp n]`. Conclude with `pow_le_of_le_one zero_le (hlt n).le (pow_ne_zero _ hl0)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one h0 h`. Use `⟨n, le_of_lt (lt_of_pow_lt_pow_left₀ (l ^ n) zero_le ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[hp]`. Conclude with `(pow_le_pow_of_le_one zero_le h.le (Nat.lt_pow_self (by omega)).le).trans_lt hn`.
+-/
 theorem exists_root_radii (l : ℕ) (hl : 2 ≤ l) (ρ₀ : ℝ≥0) (h0 : 0 < ρ₀) (h1 : ρ₀ < 1) :
     ∃ r : ℕ → ℝ≥0, r 0 = ρ₀ ∧ (∀ n, r (n + 1) ^ l = r n) ∧ (∀ n, ρ₀ ≤ r n) ∧ (∀ n, r n < 1) ∧
       ∀ ρ₁ : ℝ≥0, ρ₁ < 1 → ∃ n, ρ₁ ≤ r n := by
@@ -34,12 +43,40 @@ theorem exists_root_radii (l : ℕ) (hl : 2 ≤ l) (ρ₀ : ℝ≥0) (h0 : 0 < �
     rw [hp]
     exact (pow_le_pow_of_le_one zero_le h.le (Nat.lt_pow_self (by omega)).le).trans_lt hn
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', mul_assoc, (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A u ρ).2.1, ih, div_div, pow_succ]`.
+-/
 theorem norm_l_pow_mul_disc (l : ℕ) [Fact l.Prime] {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) (k : ℕ)
     (y : Disc l u ρ) : ‖((l : ℕ) : Disc l u ρ) ^ k * y‖ = ‖y‖ / (l : ℝ) ^ k := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', mul_assoc, (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A u ρ).2.1, ih, div_div, pow_succ]
 
+/- English proof (translation)
+Introduce `l hl K bk A _ s ι tb φ hφ Φ hΦ κ c hc h V hV hs`. Take `⟨-, -, ⟨h0, h1, -⟩, -⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Establish `hl2` using `hl.out.two_le`. Take `⟨r, r0, rs, rle, rlt, rlim⟩` from `exists_root_radii l hl2 bk.ρ₀ h0 h1`. Establish `rpos : ∀ n, 0 < r n` using `fun n => h0.trans_le (rle n)`.
+
+Establish `hR : ∀ n, ∃ R : Disc l (s X) (r n) →+* Disc l (s X) bk.ρ₀, IsDiscMap (RingHom.id A) R` using `fun n => GlobalTheory.T.exists_closedDiscExtension_of_pow_dvd l A A (RingHom.id A) (s X) (s X) (r n) bk.ρ₀ 1 h0 (by simp) (by simpa using rle n)`. Use `choose R hR using hR`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC0, hC⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ j, ‖V j‖ ≤ C := by`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (Metric.isBounded_range_of_tendsto_cofinite hV)`. Conclude with `⟨max C 0, le_max_right _ _, fun j => (hC _ ⟨j, rfl⟩).trans (le_max_left _ _)⟩`.
+
+Use `set m := bk.Ep.natDegree * h with hm`. Establish `h0' : (0 : ℝ) < bk.ρ₀` using `h0`. Establish `key : ∀ n, ∃ U : κ → Disc l (s X) (r n), Filter.Tendsto U Filter.cofinite (nhds 0) ∧ (∀ j, R n (U j) = V j) ∧ ∀ j, ‖U j‖ ≤ C * ((r n : ℝ) / bk.ρ₀) ^ m`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Establish `gen : ∀ (ρ : ℝ≥0) (R₀ : Disc l (s X) ρ →+* Disc l (s X) bk.ρ₀), ρ = bk.ρ₀ → IsDiscMap (RingHom.id A) R₀ → ∃ U : κ → Disc l (s X) ρ, Filter.Tendsto U Filter.cofinite (nhds 0) ∧ (∀ j, R₀ (U j) = V j) ∧ ∀ j, ‖U j‖ ≤ C * ((ρ : ℝ) / bk.ρ₀) ^ m`. Introduce and unpack `ρ R₀ rfl hR₀`. Use `⟨V, hV, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hR₀.unique (isDiscMap_id l (s X) bk.ρ₀)]`.
+
+Both sides reduce to the same expression. Rewrite using `[div_self h0'.ne', one_pow, mul_one]`. Conclude with `hC j`. Conclude with `gen _ _ r0 (hR 0)`. Consider the case `succ n ih`.
+
+Take `⟨U, hU, hRU, hn⟩` from `ih`. Take `⟨U', hU', hRU', hn'⟩` from `GlobalTheory.T.exists_phiContraction_disc_step l K bk A s ι tb φ hφ Φ hΦ κ c hc h V hs (r n) (r (n + 1)) (rle n) (rlt n) (rs n) (R n) (R (n + 1)) (hR n) (hR (n + 1)) U _ (by positivity) hU hRU hn`. Use `⟨U', hU', hRU', fun j => ?_⟩` and prove the remaining obligations. Establish `hp : (0 : ℝ) < r (n + 1)` using `rpos _`. Establish `hle : (r n : ℝ) ≤ r (n + 1) * r (n + 1)`.
+
+Establish `: r n ≤ r (n + 1) ^ 2`. Rewrite using `[← rs n]`. Conclude with `pow_le_pow_of_le_one zero_le (rlt _).le hl2`. Rewrite using `[← sq]`. Conclude with `this` after adjusting the coercions.
+
+Use `le_of_mul_le_mul_left ((hn' j).trans ?_) (pow_pos hp m)` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← mul_pow, ← mul_div_assoc]`. Use `gcongr`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (C * (1 / (bk.ρ₀ : ℝ)) ^ m) (show (1 : ℝ) < l by exact_mod_cast hl.out.one_lt)`. Establish `hlk : (0 : ℝ) < (l : ℝ) ^ k` using `pow_pos (Nat.cast_pos.2 hl.out.pos) k`.
+
+Establish `hv : ∀ j, ∃ a, toDisc l (s X) bk.ρ₀ a = (l : Disc l (s X) bk.ρ₀) ^ k * V j` using `fun j => GlobalTheory.T.exists_base_eq_of_closedDisc_extends_norm_le_one l K bk A s ι tb bk.ρ₀ h0 h1 _ fun ρ₁ hρ₁ => by`. Take `⟨n, hn⟩` from `rlim ρ₁ hρ₁`. Take `⟨U, -, hRU, hU⟩` from `key n`. Use `⟨r n, R n, (l : Disc l (s X) (r n)) ^ k * U j, hn, rle n, rlt n, hR n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, hRU]`.
+
+Rewrite using `[norm_l_pow_mul_disc, div_le_one hlk]`. Use `(hU j).trans (le_trans ?_ hk.le)` and prove the remaining obligations. Establish `: (r n : ℝ) ≤ 1` using `(rlt n).le`. Use `gcongr`. Use `choose v hv using hv`.
+
+Use `⟨k, v, hv, fun n => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hJ⟩` from `(GlobalTheory.T.closedDisc_toDisc_injective_of_adicBasis l K bk A s ι tb bk.ρ₀ h0 h1).2.1 n`. Establish `ht : Filter.Tendsto (fun j => (l : Disc l (s X) bk.ρ₀) ^ k * V j) Filter.cofinite (nhds 0)`. Simplify using `using hV.const_mul ((l : Disc l (s X) bk.ρ₀) ^ k)`. Establish `he` using `Filter.eventually_cofinite.1 (ht.eventually (Metric.closedBall_mem_nhds 0 hε))`.
+
+Use `he.subset fun j hj hj' => hj (hJ _ ?_)` and prove the remaining obligations. Rewrite using `[hv]`. Simplify using `using hj'`.
+-/
 theorem exists_bounded_of_phi_equation : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A) (ι : Type), TopBasis s bk.J ι → ∀ (φ : A →+* A), φ (s X) = s X ^ l → ∀ (Φ : Disc l (s X) bk.ρ₀ →+* Disc l (s X) bk.ρ₀), IsDiscMap φ Φ → ∀ (κ : Type) (c : κ → κ → A), (∀ i (n : ℕ), {j | c i j ∉ (bk.J ^ n).map s}.Finite) → ∀ (h : ℕ) (V : κ → Disc l (s X) bk.ρ₀), Filter.Tendsto V Filter.cofinite (nhds 0) → (∀ j, HasSum (fun i => Φ (V i) * toDisc l (s X) bk.ρ₀ (c i j)) (toDisc l (s X) bk.ρ₀ (s bk.E) ^ h * V j)) → ∃ (k : ℕ) (v : κ → A), (∀ j, toDisc l (s X) bk.ρ₀ (v j) = (l : Disc l (s X) bk.ρ₀) ^ k * V j) ∧ ∀ n : ℕ, {j | v j ∉ (bk.J ^ n).map s}.Finite := by
   intro l hl K bk A _ s ι tb φ hφ Φ hΦ κ c hc h V hV hs
   obtain ⟨-, -, ⟨h0, h1, -⟩, -⟩ := GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk

@@ -23,22 +23,40 @@ abbrev ne (s : Finset κ) (h : s.Nonempty) : (NE κ)ᵒᵖ := op (OrderDual.toDu
 
 abbrev sub (a : (NE κ)ᵒᵖ) : Finset κ := (OrderDual.ofDual a.unop).1
 
+/- English proof (translation)
+The claim follows from `(OrderDual.ofDual a.unop).2`.
+-/
 theorem sub_nonempty (a : (NE κ)ᵒᵖ) : (sub a).Nonempty := (OrderDual.ofDual a.unop).2
 
+/- English proof (translation)
+The claim follows from `leOfHom f.unop`.
+-/
 theorem sub_subset {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) : sub a ⊆ sub b := leOfHom f.unop
 
 def homOf {a b : (NE κ)ᵒᵖ} (h : sub a ⊆ sub b) : a ⟶ b := (homOfLE (show b.unop ≤ a.unop from h)).op
 
 def mn (a : (NE κ)ᵒᵖ) : κ := (sub a).min' (sub_nonempty a)
 
+/- English proof (translation)
+The claim follows from `Finset.min'_mem _ _`.
+-/
 theorem mn_mem (a : (NE κ)ᵒᵖ) : mn a ∈ sub a := Finset.min'_mem _ _
 
+/- English proof (translation)
+The claim follows from `Finset.min'_le _ _ (sub_subset f (mn_mem a))`.
+-/
 theorem mn_le_of_hom {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) : mn b ≤ mn a :=
   Finset.min'_le _ _ (sub_subset f (mn_mem a))
 
+/- English proof (translation)
+The claim follows from `Finset.card_pos.1 (by rw [s.2]; omega)`.
+-/
 theorem card_nonempty {p : ℕ} (s : {s : Finset κ // s.card = p + 1}) : s.1.Nonempty :=
   Finset.card_pos.1 (by rw [s.2]; omega)
 
+/- English proof (translation)
+Rewrite using `[Finset.card_insert_of_notMem (by simp [h₁.ne, (h₁.trans h₂).ne]), Finset.card_pair h₂.ne]`.
+-/
 theorem card_three {x y z : κ} (h₁ : x < y) (h₂ : y < z) : ({x, y, z} : Finset κ).card = 2 + 1 := by
   rw [Finset.card_insert_of_notMem (by simp [h₁.ne, (h₁.trans h₂).ne]), Finset.card_pair h₂.ne]
 
@@ -53,6 +71,9 @@ def δ (p : ℕ) : CC F p →ₗ[R] CC F (p + 1) :=
     ((mp F (homOf (a := ne _ (card_nonempty (GlobalTheory.Cube.eraseIdx t i))) (b := ne _ (card_nonempty t))
       (Finset.erase_subset i.1 t.1))).toLinearMap ∘ₗ LinearMap.proj (GlobalTheory.Cube.eraseIdx t i))
 
+/- English proof (translation)
+Simplify using `[δ, LinearMap.sum_apply]`.
+-/
 theorem δ_apply (p : ℕ) (x : CC F p) (t : {s : Finset κ // s.card = p + 1 + 1}) :
     δ F p x t = ∑ i : t.1, GlobalTheory.cubeSign t.1 i.1 •
       mp F (homOf (a := ne _ (card_nonempty (GlobalTheory.Cube.eraseIdx t i))) (b := ne _ (card_nonempty t))
@@ -64,6 +85,9 @@ def e0 : CC F 0 →ₗ[R] C0 F :=
     (Finset.singleton_subset_iff.2 (mn_mem a)))).toLinearMap ∘ₗ
       LinearMap.proj (⟨{mn a}, Finset.card_singleton _⟩ : {s : Finset κ // s.card = 0 + 1})
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `mn_mem b`. Conclude with `sub_subset f (mn_mem a)`.
+-/
 theorem pair_subset {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) : ({mn b, mn a} : Finset κ) ⊆ sub b := by
   intro x hx
   simp only [Finset.mem_insert, Finset.mem_singleton] at hx
@@ -71,6 +95,11 @@ theorem pair_subset {a b : (NE κ)ᵒᵖ} (f : a ⟶ b) : ({mn b, mn a} : Finset
   · exact mn_mem b
   · exact sub_subset f (mn_mem a)
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `mn_mem d`. Conclude with `sub_subset g (mn_mem b)`.
+
+Conclude with `sub_subset g (sub_subset f (mn_mem a))`.
+-/
 theorem triple_subset {a b d : (NE κ)ᵒᵖ} (f : a ⟶ b) (g : b ⟶ d) :
     ({mn d, mn b, mn a} : Finset κ) ⊆ sub d := by
   intro x hx
@@ -106,6 +135,9 @@ def cov (D : κ → X.Opens) (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpe
     X.affineOpens :=
   ⟨⨅ i ∈ (OrderDual.ofDual I).1, D i, hD _ (OrderDual.ofDual I).2⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `show (⨅ i ∈ _, D i) ≤ ⨅ i ∈ _, D i from biInf_mono fun _ hi => h hi`.
+-/
 theorem cov_mono (D : κ → X.Opens) (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) :
     Monotone (cov D hD) := fun _ _ h => show (⨅ i ∈ _, D i) ≤ ⨅ i ∈ _, D i from biInf_mono fun _ hi => h hi
 
@@ -122,6 +154,9 @@ def res0 (s : X ⟶ Sp R) (D : κ → X.Opens)
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[LB.pull, LB.LinComb, LB.wchart]`.
+-/
 theorem triv_pull_U {X' : Scheme.{0}} (φ : X' ⟶ X) (j : ((LB.triv X).pull φ).ι) :
     ((LB.triv X).pull φ).U j = ⊤ := by
   ext x; simp [LB.pull, LB.LinComb, LB.wchart]

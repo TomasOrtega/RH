@@ -15,6 +15,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorSecLocal.toric_torsion_section_overLocal | exact GlobalTheory.TorSecLocal.toric_torsion_section_overLocal | (intros; apply GlobalTheory.TorSecLocal.toric_torsion_section_overLocal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.toricTorsionSection_eq_pushed_trait_point_local : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (k : ℕ)
     (s : ∀ (A : Type) [CommRing A] (a : R →+* A) (τ : Multiplicative P.D.toPre.X →* Aˣ), τ ^ k = 1 → (Over.mk (spMap a) ⟶ t.G)),

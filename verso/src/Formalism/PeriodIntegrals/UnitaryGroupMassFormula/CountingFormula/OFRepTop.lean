@@ -10,6 +10,17 @@ open Classical
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨hE, hz, hrr, -⟩` from `hR`. Take `⟨-, ⟨hlat, hunim, -, -⟩, hx⟩` from `hrr.1 Λ hΛ`. Use `⟨hlat, hunim, hE, ?_, (D.cOf u)⁻¹, inv_ne_zero (D.cOf_ne u), ?_⟩` and prove the remaining obligations. Unfold `XLam at hx`. Introduce `a`.
+
+Establish `hmem : F0.e a ∈ XS D F0`. Unfold `XS`. Use `clear hrr hz hunim hlat hΛ what₂ hE hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨a, 1, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations.
+
+Unfold `ddS`. Establish `hne : Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot`. Establish `hk : ((D.R.rS : ℤ) - ((a : ℕ) : ℤ)) = ((D.R.rS - (a : ℕ) : ℕ) : ℤ)`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hk, zpow_neg, zpow_natCast, ← FractionalIdeal.coeIdeal_pow, FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 (pow_ne_zero _ hne))]`. Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`. Rewrite `hmem` using `[← hx]`.
+
+Conclude with `hmem.1`. Rewrite using `[hz]`. Both sides reduce to the same expression.
+-/
 theorem fixedOK_of_rows (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Tn u))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) (hR : RowsOf u F0 what₂) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Λ ∈ what₂) : FixedOK D F0 Λ := by
@@ -39,6 +50,17 @@ theorem fixedOK_of_rows (D : Formalism.BasicNotions.D7) (u : D.what₂.Word) (F0
   · rw [hz]
     rfl
 
+/- English proof (translation)
+Introduce `D δ M hA L u u' hT F0 what₂ hR Z Λ hΛ`. Establish `hF` using `fixedOK_of_rows D u F0 what₂ hR hΛ`. Distinguish the cases in `hne : (EZ (Tn u') F0 Λ Z).Nonempty`. Take `⟨F1, hF1⟩` from `hne`. Establish `hGZ : GZ (Tn u) (Tn u') Z ≠ 0`.
+
+Establish `h` using `hF1.1.2.2`. Rewrite `h` using `[gz_eq, hF1.2.2.2.2]`. Conclude with `h`. Take `⟨R, hRm⟩` from `hRk D (Tn u) (Tn u') Z hGZ`. Take `⟨Wf, hWf, hW⟩` from `h1 D (Tn u') F0 Λ hF Z R hRm`.
+
+Take `⟨Af, hAf, hAx⟩` from `h2 D (Tn u') F0 Λ hF Z R hRm Wf hWf`. Use `⟨{x | Good D (Tn u') F0 Λ Z x ∧ pWf D x ∈ Wf ∧ alM D x * R ∈ Af}, hK D (Tn u') F0 Λ hF Z R hRm Wf Af hWf hAf, fun F' hF' => ?_⟩` and prove the remaining obligations. Establish `g0` using `hG D (Tn u') F0 Λ Z F' hF'`. Take `⟨n1, hn1, hw1⟩` from `hW _ g0`. Establish `g1` using `good_move D (Tn u') F0 Λ Z g0 hn1`.
+
+Take `⟨n2, hn2, hw2, ha2⟩` from `hAx _ g1 hw1`. Establish `g2` using `good_move D (Tn u') F0 Λ Z g1 hn2`. Use `⟨n1.trans n2, (hN D F0 Λ).2.2 n1 hn1 n2 hn2, ?_⟩` and prove the remaining obligations. Establish `hact : act D (n1.trans n2) (F'.fl.e, F'.fl.z) = act D n2 (act D n1 (F'.fl.e, F'.fl.z))` using `rfl`. Use `show act D (n1.trans n2) (F'.fl.e, F'.fl.z) ∈ _`.
+
+Rewrite using `[hact]`. Conclude with `⟨g2, hw2 ▸ hw1, ha2⟩`. Use `⟨∅, Set.finite_empty, fun F' hF' => absurd ⟨F', hF'⟩ hne⟩` and prove the remaining obligations.
+-/
 theorem orbitReps_of (hN : UnipotentIntegralIsGroup) (hRk : RankG) (hG : GoodEZ) (h1 : Stage1) (h2 : Stage2) (hK : FinK) :
     OrbitReps := by
   intro D δ M hA L u u' hT F0 what₂ hR Z Λ hΛ

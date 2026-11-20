@@ -39,6 +39,9 @@ import Mathlib
                 (@NumberField.RingOfIntegers.instAlgebra_1 E inst)
                 (@NumberField.RingOfIntegers.instIsFractionRing E inst inst_1) w))))
 
+/- English proof (translation)
+Introduce `k _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.aux3 :
     ∀ (k : Type) [inst : Field k],
       @SubsemiringClass (@Subring k (@Ring.toNonAssocRing k (@CommRing.toRing k (@Field.toCommRing k inst)))) k
@@ -48,6 +51,9 @@ theorem UpperTheory.Reformulated.B.BorelApproximation.aux3 :
   intro k _
   infer_instance
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.aux4 :
     ∀ (k : Type) [inst : Field k]
       [inst_1 :
@@ -97,6 +103,9 @@ noncomputable def UpperTheory.Reformulated.B.BorelApproximation.blk :
             (@Equiv.instEquivLike n (@Sigma α fun (a : α) ↦ m a)))
           (@Equiv.symm (@Sigma α fun (a : α) ↦ m a) n e) i)
 
+/- English proof (translation)
+Introduce `R _ α n m _ _ _ e x y hx hy`. Conclude with `Matrix.BlockTriangular.mul hx hy`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.aux6 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
       [inst_3 : DecidableEq n] (e : Equiv (@Sigma α fun (a : α) ↦ m a) n)
@@ -208,6 +217,9 @@ theorem UpperTheory.Reformulated.B.BorelApproximation.aux6 :
   intro R _ α n m _ _ _ e x y hx hy
   exact Matrix.BlockTriangular.mul hx hy
 
+/- English proof (translation)
+Introduce `R _ α n m _ _ _ e`. Conclude with `Matrix.blockTriangular_one`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.aux7 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
       [inst_3 : DecidableEq n] (e : Equiv (@Sigma α fun (a : α) ↦ m a) n),
@@ -259,6 +271,11 @@ theorem UpperTheory.Reformulated.B.BorelApproximation.aux7 :
   intro R _ α n m _ _ _ e
   exact Matrix.blockTriangular_one
 
+/- English proof (translation)
+Introduce `R _ α n m _ _ _ e x hx`. Establish `hx : Matrix.BlockTriangular (x : Matrix n n R) (UpperTheory.Reformulated.B.BorelApproximation.blk e)` using `hx`. Use `letI := x.invertible`. Express the relevant statement in the definitionally equal form `Matrix.BlockTriangular ((x⁻¹ : GL n R) : Matrix n n R) (UpperTheory.Reformulated.B.BorelApproximation.blk e)`. Rewrite using `[Matrix.coe_units_inv]`.
+
+Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hx`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.aux8 :
     ∀ (R : Type) [inst : CommRing R] {α n : Type} {m : α → Type} [inst_1 : LinearOrder α] [inst_2 : Fintype n]
       [inst_3 : DecidableEq n] (e : Equiv (@Sigma α fun (a : α) ↦ m a) n)
@@ -1066,6 +1083,13 @@ noncomputable def UpperTheory.Reformulated.B.BorelApproximation.iwahori :
             (@NumberField.RingOfIntegers.instIsFractionRing F inst inst_1) p))
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
+/- English proof (translation)
+Establish `hb : {y : adicCompletion F p | Valued.v (y - x) < 1} ∈ nhds x`. Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `using hy`. Take `⟨k, hk⟩` from `(denseRange_algebraMap F p).mem_nhds hb`.
+
+Establish `hk : Valued.v (algebraMap F (adicCompletion F p) k - x) < 1` using `hk`. Establish `hv : ∀ y : F, Valued.v (algebraMap F (adicCompletion F p) y) = p.valuation F y` using `fun y => valuedAdicCompletion_eq_valuation' p y`. Establish `hk1 : p.valuation F k ≤ 1`. Rewrite using `[← hv, ← sub_add_cancel (algebraMap F (adicCompletion F p) k) x]`. Conclude with `Valuation.map_add_le _ hk.le hx`.
+
+Take `⟨a, ha⟩` from `exists_valuation_sub_lt_of_integer p hk1 1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[← hv, map_sub, ← IsScalarTower.algebraMap_apply, Units.val_one]`. Rewrite using `[Valuation.map_sub_swap, ← sub_add_sub_cancel _ (algebraMap F (adicCompletion F p) k)]`. Conclude with `Valuation.map_add_lt _ ha hk`.
+-/
 private theorem UpperTheory.Reformulated.B.BorelApproximation.exists_near {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (NumberField.RingOfIntegers F)) (x : adicCompletion F p)
     (hx : Valued.v x ≤ 1) :
@@ -1088,6 +1112,15 @@ private theorem UpperTheory.Reformulated.B.BorelApproximation.exists_near {F : T
   exact Valuation.map_add_lt _ ha hk
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
+/- English proof (translation)
+Establish `hfin : Finite (NumberField.RingOfIntegers F ⧸ p.asIdeal)` using `p.asIdeal.finiteQuotientOfFreeOfNeBot p.ne_bot`. Establish `hmax : ∀ y : adicCompletionIntegers F p, Valued.v y.1 < 1 → IsLocalRing.residue _ y = 0` using `fun y hy => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Conclude with `hy.ne`. Set `φ : NumberField.RingOfIntegers F →+* IsLocalRing.ResidueField (adicCompletionIntegers F p)` to `(IsLocalRing.residue _).comp (algebraMap _ _)`.
+
+Establish `hker : ∀ a ∈ p.asIdeal, φ a = 0` using `fun a ha => by`. Use `hmax _ ?_` and prove the remaining obligations. Rewrite using `[algebraMap_adicCompletionIntegers_apply, valuedAdicCompletion_eq_valuation']`. Conclude with `(valuation_lt_one_iff_mem p a).2 ha`. Use `Finite.of_surjective (Ideal.Quotient.lift p.asIdeal φ hker) fun z => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective z`. Take `⟨a, ha⟩` from `UpperTheory.Reformulated.B.BorelApproximation.exists_near p x.1 x.2`. Use `⟨Ideal.Quotient.mk _ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.lift_mk, eq_comm, ← sub_eq_zero]`. Use `hmax (x - algebraMap _ _ a) ha` as an intermediate fact.
+
+Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.Reformulated.B.BorelApproximation.finite_residue {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     Finite (IsLocalRing.ResidueField (adicCompletionIntegers F p)) := by
@@ -1113,6 +1146,9 @@ private theorem UpperTheory.Reformulated.B.BorelApproximation.finite_residue {F 
   rwa [map_sub] at this
 
 open IsDedekindDomain IsDedekindDomain.HeightOneSpectrum in
+/- English proof (translation)
+Establish `h` using `(Valued.integer.properSpace_iff_completeSpace_and_isDiscreteValuationRing_integer_and_finite_residueField (K := adicCompletion F p)).2 ⟨inferInstance, inferInstanceAs (IsDiscreteValuationRing (adicCompletionIntegers F p)), UpperTheory.Reformulated.B.BorelApproximation.finite_resi …`. Conclude with `locallyCompact_of_proper`.
+-/
 private theorem UpperTheory.Reformulated.B.BorelApproximation.locCompact {F : Type} [Field F] [NumberField F]
     (p : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     LocallyCompactSpace (adicCompletion F p) := by
@@ -1122,6 +1158,11 @@ private theorem UpperTheory.Reformulated.B.BorelApproximation.locCompact {F : Ty
       UpperTheory.Reformulated.B.BorelApproximation.finite_residue p⟩
   exact locallyCompact_of_proper
 
+/- English proof (translation)
+Introduce `F _ _ p`. Use `letI := UpperTheory.Reformulated.B.BorelApproximation.complRel p`. Use `haveI : (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Use `haveI : IsValuativeTopology (p.adicCompletion F) := IsValuativeTopology.of_mem_nhds_zero_iff_vle (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ))) (fun {s} => Valued.is_topological_valuation s)`. Use `haveI := UpperTheory.Reformulated.B.BorelApproximation.locCompact p`.
+
+Use `haveI : ValuativeRel.IsNontrivial (p.adicCompletion F) := (ValuativeRel.isNontrivial_iff_isNontrivial (Valued.v : Valuation (p.adicCompletion F) (WithZero (Multiplicative ℤ)))).2 inferInstance`. Conclude with `{}`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.zero_contDiffOn_supported :
     ∀ {F : Type} [inst : Field F] [inst_1 : @NumberField F inst]
       (p :
@@ -2011,6 +2052,11 @@ noncomputable def UpperTheory.Reformulated.B.BorelApproximation.dcos :
         (@OfNat.ofNat Complex (nat_lit 1) (@One.toOfNat1 Complex Complex.instOne))
         (@OfNat.ofNat Complex (nat_lit 0) (@Zero.toOfNat0 Complex Complex.instZero))
 
+/- English proof (translation)
+Introduce `E _ _ _ m w t k g hk`. Unfold `UpperTheory.Reformulated.B.BorelApproximation.dcos`. Use `congrArg (fun P : Prop => @ite ℂ P (Classical.propDecidable P) 1 0) (propext ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨x, hx, z, hz, h⟩`. Use `⟨k⁻¹ * x, mul_mem (inv_mem hk) hx, z, hz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc k⁻¹, mul_assoc k⁻¹, ← h, inv_mul_cancel_left]`. Introduce and unpack `⟨x, hx, z, hz, h⟩`. Use `⟨k * x, mul_mem hk hx, z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_assoc k, mul_assoc k]`.
+-/
 theorem UpperTheory.Reformulated.B.BorelApproximation.dcos_left :
     ∀ {E : Type} [inst : Field E] [inst_1 : @NumberField E inst]
       [@NumberField.IsCMField E inst (@NumberField.to_charZero E inst inst_1)] {m : Nat}

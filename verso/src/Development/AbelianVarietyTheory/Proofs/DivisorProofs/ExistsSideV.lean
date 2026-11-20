@@ -21,6 +21,9 @@ def SideLev : Prop := ∀ (D : D7) (G : Type) [Group G] [Fintype G] (V : HSp D) 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T N : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {V : NewLev D N}
 
+/- English proof (translation)
+The claim follows from `hL.mu0 eta := hL.eta xi := Sum.rec hL.xi fun n => (hV n).xi xi_inj := by rintro (t | n) (t' | n') h · exact congrArg _ (hL.xi_inj h) · exact absurd h.symm (hn n' t) · exact absurd h (hn n t') · exact congrArg _ (hi h) xi_base := hL.xi_base xi_fin := Sum.rec hL.xi_fin fun n => (hV …`.
+-/
 theorem extL_is (hL : R.toLevCh.Is A.μ0) (hV : ∀ n, TwLev R (V.xiH n) (V.xi n) (V.Q n) (V.xiR n)) (hi : Function.Injective V.xiH)
     (hn : ∀ n t, V.xiH n ≠ R.xiH t)
     (hQ : ∀ p ∈ ({D.host.pde, D.host.pde'} : Set ℕ), ∃ 𝔭 : HeightOneSpectrum (𝓞 D.host.K),
@@ -52,6 +55,9 @@ theorem extL_is (hL : R.toLevCh.Is A.μ0) (hV : ∀ n, TwLev R (V.xiH n) (V.xi n
   βV := hL.βV
   βW := hL.βW
 
+/- English proof (translation)
+The claim follows from `Finset.eq_empty_of_forall_notMem fun PP hP => (hL.Q_ram A.μ0 PP).2 (Or.inl hP) (by show (R.xiH A.μ0).UnrAt PP rw [hL.xi_base] exact fun _ _ => rfl)`.
+-/
 theorem Q_base (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ :=
   Finset.eq_empty_of_forall_notMem fun PP hP => (hL.Q_ram A.μ0 PP).2 (Or.inl hP) (by
     show (R.xiH A.μ0).UnrAt PP
@@ -60,6 +66,25 @@ theorem Q_base (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ :=
 
 open Formalism.L2.Host Formalism.L2.Col GlobalTheory.RationalValues in
 
+/- English proof (translation)
+Introduce `PP hPP x`. Establish `i : Fin D.R.m` using `⟨0, lt_of_lt_of_le two_pos D.R.two_le_m⟩`. Take `⟨g, c, c', ht⟩` from `hF.tie`. Establish `hok` using `ht.ok A.μ0`. Establish `: IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`.
+
+Set `T : Finset (Pl D.host.E)` to `R.Sb ∪ Q ∪ R.Q A.μ0`. Establish `hQ : ∀ v ∈ Q, v ∈ T` using `fun v hv => Finset.mem_union_left _ (Finset.mem_union_right _ hv)`. Establish `hu : ∀ v, v ∉ T ∪ T.image conjPrime₂ → χ.UnrAt v` using `fun v hv => by`. Assume the negation of the conclusion as `hn`. Break down `(h.Q_ram v).1 hn with h | ⟨w, hw, h⟩` into its components or cases.
+
+Conclude with `hv (Finset.mem_union_left _ (hQ v h))`. Use `hv (Finset.mem_union_right _ (Finset.mem_image.2 ⟨w, hQ w hw, ?_⟩))` and prove the remaining obligations. Establish `h1 : w = conjPrime₂ v` using `HeightOneSpectrum.ext (w.isMaximal.eq_of_le (conjPrime₂ v).isPrime.ne_top fun c hc => by`. Take `⟨c', hc', e⟩` from `h c hc`. Rewrite using `[mem_conjP, show cO D.host.E c = c' from RingOfIntegers.ext e.symm]`.
+
+Conclude with `hc')`. Rewrite using `[h1, conjP_conjP]`. Establish `hv : ∀ v, v ∉ T ∪ T.image conjPrime₂ → χ.val v ∈ unitsIn D.what₂.embLL.fieldRange` using `fun v hv => by`. Distinguish the cases in `hc : conjPrime₂ v = v`. Establish `h1 : ((χ.val v : ℂˣ) : ℂ) ^ 2 = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, TypeValues.val_sq_eq_one D.sp.cm h.xi_triv (hu v hv) hc, Units.val_one]`. Use `show ((χ.val v : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange`. Break down `sq_eq_one_iff.1 h1 with h2 | h2` into its components or cases. Rewrite using `[h2]`. Conclude with `one_mem _`.
+
+Rewrite using `[h2]`. Conclude with `neg_mem (one_mem _)`. Establish `hs : ∀ S : Set (Pl D.host.E), (∀ w ∈ S, w ∈ T) → Bridge.SplitOff v S` using `fun S hS => ⟨fun h => hc (HeightOneSpectrum.ext ((conjIdeal_asIdeal v).symm.trans h)), fun h => hv (Finset.mem_union_left _ (hS v h)), fun w hw h => hv (Finset.mem_union_right _ (Finset.mem_image.2 ⟨w, hS w hw, by rw [show w = conjPrime₂ v from HeightOneSpectrum.ext (h.trans (con …`. Establish `hS : ∀ w ∈ R.Sb, w ∈ T` using `fun w hw => Finset.mem_union_left _ (Finset.mem_union_left _ hw)`. Take `⟨P, rfl⟩` from `hF.pl_onto v (hs _ hS)`.
+
+Establish `h1 : (R.C.mu0 i * χ).val (R.pl P) ∈ unitsIn D.what₂.embLL.fieldRange`. Take `⟨a, ha⟩` from `h.muVal i P (hs _ fun w hw => hw.elim (hS w) (hQ w))`. Conclude with `⟨_, ha⟩`. Establish `h2 : (R.C.mu0 i * R.xiH A.μ0).val (R.pl P) ∈ unitsIn D.what₂.embLL.fieldRange` using `⟨_, hF.muVal i A.μ0 P ((hok P).2 (hs _ fun w hw => hw.elim (hS w) fun h => Finset.mem_union_right _ h))⟩`. Rewrite `h2` using `[hL.xi_base, mul_one]`.
+
+Rewrite `h1` using `[HChar.val_mul]`. Conclude with `(mul_mem_cancel_left h2).1 h1`. Take `⟨n, hn, ho⟩` from `h.xi_fin`. Take `⟨a, k, hk, hx, hm⟩` from `TypeValues.exists_lift_mem χ _ (T ∪ T.image conjPrime₂) h.xi_tame (TypeValues.inf_eq_one _ hn ho) hu hv (Finset.mem_union_left _ (hQ PP hPP)) x`. Rewrite using `[h.xiR PP hPP a k x hk hx]`.
+
+Conclude with `hm`.
+-/
 theorem xiR_mem (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) {χ xi Q xiR} (h : TwLev R χ xi Q xiR) :
     ∀ PP ∈ Q, ∀ x, ((xiR PP x : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange := by
   classical
@@ -112,6 +137,9 @@ variable (R V) in
 
 def okOf (n : N) : Set Pl0 := {P | Bridge.SplitOff (R.pl P) ((R.Sb : Set (Pl D.host.E)) ∪ (V.Q n : Set (Pl D.host.E)))}
 
+/- English proof (translation)
+Take `⟨g, c, c', ht⟩` from `hF.tie`. Introduce `P hP`. Use `(ht.ok A.μ0 P).2 ?_` and prove the remaining obligations. Rewrite using `[Q_base hL, Finset.coe_empty, Set.union_empty]`. Conclude with `⟨hP.1, fun h => hP.2.1 (Or.inl h), fun w hw => hP.2.2 w (Or.inl hw)⟩`.
+-/
 theorem okOf_subset (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) (n : N) : okOf R V n ⊆ A.ok A.μ0 := by
   obtain ⟨g, c, c', ht⟩ := hF.tie
   intro P hP
@@ -119,6 +147,9 @@ theorem okOf_subset (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam) (n : N) : okOf R V 
   rw [Q_base hL, Finset.coe_empty, Set.union_empty]
   exact ⟨hP.1, fun h => hP.2.1 (Or.inl h), fun w hw => hP.2.2 w (Or.inl hw)⟩
 
+/- English proof (translation)
+Introduce `PP h PP' h'` and use `⟨fun e => Finset.disjoint_left.1 (idem_of_is hL' (.inr n)).1 h (e ▸ h'), GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hL' (.inr n) (Or.inl h) (Or.inr h'), GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hL' (.inr n) (Or.inr h') (Or.inl h)⟩`.
+-/
 theorem sep_new (hL' : (extL R.toLevCh V).Is (.inl A.μ0)) (n : N) : ∀ PP ∈ R.Pg, ∀ PP' ∈ V.Q n,
     PP ≠ PP' ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP PP' ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP' PP := fun PP h PP' h' =>
   ⟨fun e => Finset.disjoint_left.1 (idem_of_is hL' (.inr n)).1 h (e ▸ h'),
@@ -127,6 +158,13 @@ theorem sep_new (hL' : (extL R.toLevCh V).Is (.inl A.μ0)) (n : N) : ∀ PP ∈ 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hχ` using `GlobalTheory.RationalValues.chiVal_of_chiW R hC.grp.chiW`. Establish `hξ` using `xiR_mem hC.lev hC.fam hV`. Use `obt ⟨g, c, c', ht⟩ := hC.fam.tie`. Establish `key` using `hS D G D.sp.X' R.βX R.ΛX hC.lev.βX (R.datXt A.μ0) (V.Q n) ((extL R.toLevCh V).datXt (.inr n)).xq Pl0 R.pl (A.ok A.μ0) (okOf R V n) ((R.Sb : Set (Pl D.host.E)) ∪ (V.Q n : Set (Pl D.host.E))) (by show R.Q A.μ0 ⊆ _; rw [Q_base hC.lev]; exact Finset.empty_subset _) (okOf_subset hC.le …`. Establish `e : ((extL R.toLevCh V).datXt (.inr n)).xq PP x = (V.xiR n PP x)⁻¹` using `rfl`.
+
+Rewrite using `[e, Units.val_inv_eq_inv_val]`. Conclude with `Subfield.inv_mem _ (hξ PP hP x))`. Use the proof step `R.cX.coef _ _ _ (R.B.R A.μ0) ⟨_, c, _, _, _, _, ht.mapR, ht.coefR A.μ0⟩`. Use `obt ⟨S, act, op, B, h1, h2, h3⟩ := key`. Use `⟨S, act, op, B, fun q => ?_, h2, h3⟩` and prove the remaining obligations.
+
+Use `obt ⟨hq, e⟩ := h1 q`. Conclude with `(congrArg R.eG e).trans (hC.grp.red_R A.μ0 ⟨q, hq⟩)`.
+-/
 theorem exists_sideX (hS : SideLev) {F : Face D A} (hC : GlobalTheory.Hk3.Core R F) (hL' : (extL R.toLevCh V).Is (.inl A.μ0)) (n : N)
     (hV : TwLev R (V.xiH n) (V.xi n) (V.Q n) (V.xiR n)) :
     ∃ (S : CSD D.what₂.LL) (act : Representation D.what₂.LL G S.Forms) (op : okOf R V n × ℕ → Module.End D.what₂.LL S.Forms)
@@ -157,6 +195,13 @@ theorem exists_sideX (hS : SideLev) {F : Face D A} (hC : GlobalTheory.Hk3.Core R
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hχ` using `GlobalTheory.RationalValues.chiVal_of_chiW R hC.grp.chiW`. Establish `hξ` using `xiR_mem hC.lev hC.fam hV`. Use `obt ⟨g, c, c', ht⟩ := hC.fam.tie`. Establish `key` using `hS D G (Vc D i) (R.βV i) (R.ΛV i) (hC.lev.βV i) (R.datVt i A.μ0) (V.Q n) ((extL R.toLevCh V).datVt i (.inr n)).xq Pl0 R.pl (A.ok A.μ0) (okOf R V n) ((R.Sb : Set (Pl D.host.E)) ∪ (V.Q n : Set (Pl D.host.E))) (by show R.Q A.μ0 ⊆ _; rw [Q_base hC.lev]; exact Finset.empty_subset _) ( …`. Establish `e : (R.datVt i A.μ0).cg (j + 1) PP x = (R.chi ((i : ℕ) + 1) PP x)⁻¹` using `rfl`.
+
+Rewrite using `[e, Units.val_inv_eq_inv_val]`. Conclude with `Subfield.inv_mem _ (hχ i PP hP x))`. Use the proof step `(fun PP hP x => hξ PP hP x)`. Use the proof step `(R.cV i).coef _ _ _ (R.B.L i A.μ0) ⟨_, c' i, _, _, _, _, ht.mapL i, ht.coefL i A.μ0⟩`. Use `obt ⟨S, act, op, B, h1, h2, h3⟩ := key`.
+
+Use `⟨S, act, op, B, fun q => ?_, h2, h3⟩` and prove the remaining obligations. Use `obt ⟨hq, e⟩ := h1 q`. Conclude with `(congrArg R.eG e).trans (hC.grp.red_L i A.μ0 ⟨q, hq⟩)`.
+-/
 theorem exists_sideV (hS : SideLev) {F : Face D A} (hC : GlobalTheory.Hk3.Core R F) (hL' : (extL R.toLevCh V).Is (.inl A.μ0)) (i : Fin D.R.m)
     (n : N) (hV : TwLev R (V.xiH n) (V.xi n) (V.Q n) (V.xiR n)) :
     ∃ (S : CSD D.what₂.LL) (act : Representation D.what₂.LL G S.Forms) (op : okOf R V n × ℕ → Module.End D.what₂.LL S.Forms)
@@ -221,6 +266,21 @@ def newRealOfSideData {X : NewFam A N}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `choose SR actR opR BR a1 a2 a3 using fun n => exists_sideX hS hC hL' n (hV n)`. Use `choose SL actL opL BL b1 b2 b3 using fun i n => exists_sideV hS hC hL' i n (hV n)`. Use `choose mu hmu using fun i n P => exists_cond (1 : D.what₂.LLˣ) ((hV n).muVal i P)`. Use `⟨⟨okOf R V, mu, SR, actR, opR, SL, actL, opL⟩, newRealOfSideData BR BL, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(t | n)`.
+
+Conclude with `(by with_unfolding_all exact (hC.grp.red_R t :))`. Conclude with `(by with_unfolding_all exact (a1 n :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hC.grp.red_L i t :))`. Conclude with `(by with_unfolding_all exact (b1 i n :))`.
+
+Introduce `g c c' ht`. Use `⟨ht.ranks, ht.v0, ht.tauL_ok, ht.pl_inj, ht.q, ht.S_fin, ?_, ht.gramR_eq, ht.mapR, ht.mapL, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (ht.ok t :))`. Conclude with `fun _ => Iff.rfl`.
+
+Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (ht.coefR t :))`. Conclude with `(by with_unfolding_all exact (a2 n _ _ _ _ _ (ht.coefR A.μ0) :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (ht.coefL i t :))`.
+
+Conclude with `(by with_unfolding_all exact (b2 i n _ _ _ _ _ (ht.coefL i A.μ0) :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hC.fam.roots t :))`. Conclude with `fun PP h => h.elim (fun h => hC.fam.roots A.μ0 PP (Or.inl h)) ((hV n).roots PP)`. Introduce and unpack `(t | n)`.
+
+Conclude with `(by with_unfolding_all exact (hC.fam.degR t :))`. Conclude with `(by with_unfolding_all exact (a3 n :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hC.fam.degL i t :))`. Conclude with `(by with_unfolding_all exact (b3 i n :))`.
+
+Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hC.fam.muVal i t :))`. Conclude with `(by with_unfolding_all exact (hmu i n :))`.
+-/
 theorem fam_stage (hS : SideLev) {F : Face D A} (hC : GlobalTheory.Hk3.Core R F) (hL' : (extL R.toLevCh V).Is (.inl A.μ0))
     (hV : ∀ n, TwLev R (V.xiH n) (V.xi n) (V.Q n) (V.xiR n)) : ∃ (X : NewFam A N) (Y : NewReal R V X), FamC Y := by
   choose SR actR opR BR a1 a2 a3 using fun n => exists_sideX hS hC hL' n (hV n)

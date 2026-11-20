@@ -12,6 +12,15 @@ open Polynomial
 
 noncomputable def rev {ι : Type} (s : Finset ι) (f : ι → ℂ) : ℂ[X] := ∏ l ∈ s, (1 + C (f l) * X)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rev, coeff_one]`. Consider the case `insert a s ha ih`. Take `⟨h0, h1, h2⟩` from `ih`. Establish `c1 : ∀ p : ℂ[X], (X * p).coeff 1 = p.coeff 0` using `fun p => coeff_X_mul p 0`.
+
+Establish `c2 : ∀ p : ℂ[X], (X * p).coeff 2 = p.coeff 1` using `fun p => coeff_X_mul p 1`. Establish `: rev (insert a s) f = rev s f + C (f a) * (X * rev s f)`. Simplify using `only [rev, prod_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, sum_insert ha, sum_insert ha]`.
+
+Simplify using `only [coeff_add, coeff_C_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Rewrite using `[c1, h0, h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[c2, h1]`. Take the linear combination `h2`.
+-/
 theorem rev_coeff {ι : Type} (s : Finset ι) (f : ι → ℂ) :
     (rev s f).coeff 0 = 1 ∧ (rev s f).coeff 1 = ∑ l ∈ s, f l ∧
       2 * (rev s f).coeff 2 = (∑ l ∈ s, f l) ^ 2 - ∑ l ∈ s, f l ^ 2 := by
@@ -32,12 +41,40 @@ theorem rev_coeff {ι : Type} (s : Finset ι) (f : ι → ℂ) :
     · rw [c2, h1]
       linear_combination h2
 
+/- English proof (translation)
+Rewrite using `[rev, eval_prod, ← prod_const, ← prod_mul_distrib]`. Use `prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rev_eval {ι : Type} (s : Finset ι) (f : ι → ℂ) (t : ℂ) (ht : t ≠ 0) :
     (rev s f).eval t = t ^ s.card * ∏ l ∈ s, (t⁻¹ + f l) := by
   rw [rev, eval_prod, ← prod_const, ← prod_mul_distrib]
   refine prod_congr rfl fun l _ => ?_
   simp; field_simp
 
+/- English proof (translation)
+Establish `key : C e * rev univ ρ + X * ∑ i, C (a i) * rev (univ.erase i) ρ + X ^ 2 * ∑ i, ∑ j ∈ univ.filter (fun j => i < j), C (b i j) * rev ((univ.erase i).erase j) ρ + X ^ 3 * ∑ d ∈ range (n - 2), C (r d) * X ^ (n - 3 - d) * (1 + C c * X) ^ d = C e * rev univ μ`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Use `Set.Infinite.mono (s := {0}ᶜ) ?_ (Set.finite_singleton (0:ℂ)).infinite_compl` and prove the remaining obligations. Introduce `t ht`. Establish `ht : t ≠ 0` using `ht`.
+
+Simplify using `only [Set.mem_setOf_eq, eval_add, eval_mul, eval_C, eval_X, eval_pow, eval_finset_sum, eval_one, rev_eval _ _ _ ht, card_univ, Fintype.card_fin]`. Use `congrArg (fun z => t ^ n * z) (h t⁻¹)` as an intermediate fact. Simplify using `only [mul_add, mul_sum] at this ⊢`. Use `Eq.trans ?_ (this.trans (by ring))` and prove the remaining obligations. Use `congr 1`.
+
+Use `congr 1`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`.
+
+Take `⟨m, hm⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`. Establish `: t ^ n = t * t ^ (n - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun i _ => sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hij : j ≠ i` using `(mem_filter.1 hj).2.ne'`. Rewrite using `[card_erase_of_mem (mem_erase.2 ⟨hij, mem_univ _⟩), card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`.
+
+Establish `: t ^ n = t ^ 2 * t ^ (n - 1 - 1)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd` using `mem_range.1 hd`. Establish `h1 : t ^ n = t ^ 3 * t ^ (n - 3 - d) * t ^ d`. Rewrite using `[← pow_add, ← pow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (1 + c * t) = t * (t⁻¹ + c)` using `by field_simp`. Rewrite using `[h1, h2, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `k1` using `congrArg (fun p => p.coeff 1) key`. Establish `k2` using `congrArg (fun p => p.coeff 2) key`. Simplify using `only [coeff_add, coeff_C_mul, coeff_X_pow_mul'] at k1 k2`. Establish `c1 : ∀ p : ℂ[X], (X * p).coeff 1 = p.coeff 0` using `fun p => coeff_X_mul p 0`. Establish `c2 : ∀ p : ℂ[X], (X * p).coeff 2 = p.coeff 1` using `fun p => coeff_X_mul p 1`.
+
+Rewrite `k1` using `[c1]`. Rewrite `k2` using `[c2]`. Simplify using `only [finset_sum_coeff, coeff_C_mul, (rev_coeff _ _).1, (rev_coeff _ _).2.1, le_refl, if_true, Nat.sub_self, mul_one] at k1 k2`. Evaluate the numerical expressions using `at k1 k2`. Prove the components needed by the constructor for the conclusion.
+
+Take the linear combination `k1`. Establish `p1` using `(rev_coeff univ ρ).2.2`. Establish `p2` using `(rev_coeff univ μ).2.2`. Establish `: ∑ i, (∑ l ∈ univ.erase i, ρ l) * a i = ∑ i, a i * (∑ l, ρ l - ρ i)`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sum_erase_eq_sub (mem_univ _), mul_comm]`. Rewrite using `[this]`. Take the linear combination `2 * k2 - e * p1 + e * p2`.
+-/
 theorem scalar_core (n : ℕ) (hn : 2 ≤ n) (ρ μ a : Fin n → ℂ) (b : Fin n → Fin n → ℂ) (r : ℕ → ℂ)
     (e c : ℂ)
     (h : ∀ Y : ℂ, (∏ l, (Y + ρ l)) * e + ∑ i, (∏ l ∈ univ.erase i, (Y + ρ l)) * a i
@@ -103,6 +140,11 @@ theorem scalar_core (n : ℕ) (hn : 2 ≤ n) (ρ μ a : Fin n → ℂ) (b : Fin 
     rw [this]
     linear_combination 2 * k2 - e * p1 + e * p2
 
+/- English proof (translation)
+Establish `h1 : ∀ i j, F i j = (if i = j then F i j else 0) + (if i < j then F i j else 0) + (if j < i then F i j else 0)`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Simplify using `[h, h.ne, h.not_gt]`. Simplify using `[h]`.
+
+Simplify using `[h, h.ne', h.not_gt]`. Rewrite using `[sum_congr rfl fun i _ => sum_congr rfl fun j _ => h1 i j]`. Simplify using `only [sum_add_distrib, sum_filter, sum_ite_eq, mem_univ, if_true]`. Rewrite using `[add_assoc, sum_comm (f := fun i j => if j < i then F i j else 0)]`.
+-/
 theorem sum_sq_split {A : Type} [AddCommGroup A] {n : ℕ} (F : Fin n → Fin n → A) :
     ∑ i, ∑ j, F i j = ∑ i, F i i + ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (F i j + F j i) := by
   have h1 : ∀ i j, F i j = (if i = j then F i j else 0) + (if i < j then F i j else 0)
@@ -116,6 +158,13 @@ theorem sum_sq_split {A : Type} [AddCommGroup A] {n : ℕ} (F : Fin n → Fin n 
   simp only [sum_add_distrib, sum_filter, sum_ite_eq, mem_univ, if_true]
   rw [add_assoc, sum_comm (f := fun i j => if j < i then F i j else 0)]
 
+/- English proof (translation)
+Simplify using `only [sum_sub_distrib]`. Establish `: ∑ i, ∑ j ∈ univ.filter (fun j => i < j), x j = ∑ j, ∑ i ∈ univ.filter (fun i => i < j), x j`. Simplify using `only [sum_filter]`. Conclude with `sum_comm`. Rewrite using `[this, ← sum_sub_distrib]`.
+
+Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_const, sum_const, filter_lt_eq_Ioi, filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ, ← sub_smul]`. Use `congr 1`. Use `i.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_diff {A : Type} [AddCommGroup A] [Module ℂ A] {n : ℕ} (x : Fin n → A) :
     ∑ i, ∑ j ∈ univ.filter (fun j => i < j), (x i - x j)
       = ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) • x i := by
@@ -132,6 +181,13 @@ theorem sum_diff {A : Type} [AddCommGroup A] [Module ℂ A] {n : ℕ} (x : Fin n
   rw [Nat.cast_sub (by omega), Nat.cast_sub (by omega)]
   push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[← sum_diff, Formalism.REAL.Cas, sum_mul_sum, ← sum_sub_distrib]`. Simplify using `only [← sum_sub_distrib]`. Rewrite using `[sum_sq_split]`. Simplify using `only [sub_self, sum_const_zero, zero_add, smul_sum, ← sum_sub_distrib]`. Use `sum_congr rfl fun i _ => sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hij : i ≠ j` using `(mem_filter.1 hj).2.ne`. Establish `h1` using `hE i j j i`. Establish `h2` using `hE i i j j`. Simplify using `only [if_true, hij, hij.symm, if_false, sub_zero] at h1 h2`. Rewrite using `[two_smul, ← h1, ← sub_eq_zero.1 h2]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem sq_sub_cas {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (hE : Formalism.REAL.GlRel E) :
     (∑ i, E i i) * (∑ i, E i i) - Formalism.REAL.Cas E
@@ -149,6 +205,27 @@ theorem sq_sub_cas {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → 
   rw [two_smul, ← h1, ← sub_eq_zero.1 h2]
   abel
 
+/- English proof (translation)
+Introduce `M _ _ n E mu hn hE h`. Take `⟨Rm, hR⟩` from `_root_.GlobalTheory.qdet_top_three_orders (Module.End ℂ M) n E`. Use `set ρ : Fin n → ℂ := fun l => ((n : ℂ) - 1) / 2 - ((l : ℕ) : ℂ) with hρ`. Establish `hρ0 : ∑ l, ρ l = 0`. Establish `h1 : ∑ l, ρ l = ∑ l, ρ (Fin.rev l)` using `(Equiv.sum_comp Fin.revPerm ρ).symm`.
+
+Establish `h2 : ∑ l, ρ (Fin.rev l) = - ∑ l, ρ l`. Rewrite using `[← sum_neg_distrib]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `l.2` as an intermediate fact. Simplify using `only [hρ, Fin.val_rev]`.
+
+Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Take the linear combination `(h1.trans h2) / 2`. Establish `core` using `fun φ : Module.Dual ℂ (Module.End ℂ M) => scalar_core n hn ρ (fun s => (mu s : ℂ)) (fun i => φ (E i i)) (fun i j => φ (E i i * E j j - E j i * E i j)) (fun d => φ (Rm d)) (φ 1) (((n : ℂ) - 1) / 2) (fun Y => by`. Establish `h1 : Formalism.REAL.qdet E (Y + ((n : ℂ) - 1) / 2) = (∏ s, (Y + (mu s : ℂ))) • (1 : Module.End ℂ M)`. Use extensionality with `w`.
+
+Simplify using `using h Y w`. Establish `h2` using `congrArg φ ((hR _).symm.trans h1)`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, add_sub_assoc] at h2`. Conclude with `h2)`. Establish `e1 : ∑ i, E i i = (∑ l, (mu l : ℂ)) • (1 : Module.End ℂ M)`.
+
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Use `(core φ).1` as an intermediate fact. Rewrite `this` using `[hρ0]`. Simplify using `only [map_sub, map_sum, map_smul, smul_eq_mul]`.
+
+Take the linear combination `this`. Establish `e2 : Formalism.REAL.Cas E = (casG mu : ℂ) • (1 : Module.End ℂ M)`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Establish `h2` using `(core φ).2`.
+
+Establish `h3` using `congrArg φ (sq_sub_cas E hE)`. Rewrite `h3` using `[e1, smul_mul_smul_comm, mul_one]`. Simplify using `only [sum_erase_eq_sub (mem_univ _), hρ0] at h2`. Simplify using `only [map_sub φ, map_sum, map_smul, smul_eq_mul] at h3 h2 ⊢`. Establish `h4 : (casG mu : ℂ) = ∑ l, (mu l : ℂ) ^ 2 - ∑ l, ρ l ^ 2`.
+
+Simplify using `[casG, Formalism.QuantumDeterminants.rhoStd, hρ]`. Establish `h5 : ∑ i : Fin n, ((n : ℂ) - 1 - 2 * (i : ℕ)) * φ (E i i) = - (2 * ∑ i, (0 - ρ i) * φ (E i i))`. Rewrite using `[mul_sum, ← sum_neg_distrib]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hρ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4]`. Rewrite `h3` using `[h5]`. Take the linear combination `-h3 - h2`. Introduce `w`.
+
+Rewrite using `[e2]`. Simplify using the standard rewrite rules.
+-/
 theorem cas_of_capelli : ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (n : ℕ) (E : Fin n → Fin n → Module.End ℂ M) (mu : Fin n → ℝ), 2 ≤ n → Formalism.REAL.GlRel E → (∀ (Y : ℂ) (w : M), Formalism.REAL.qdet E (Y + ((n : ℂ) - 1) / 2) w = (∏ s, (Y + (mu s : ℂ))) • w) → ∀ w, Formalism.REAL.Cas E w = (casG mu : ℂ) • w := by
   intro M _ _ n E mu hn hE h
   obtain ⟨Rm, hR⟩ := _root_.GlobalTheory.qdet_top_three_orders (Module.End ℂ M) n E

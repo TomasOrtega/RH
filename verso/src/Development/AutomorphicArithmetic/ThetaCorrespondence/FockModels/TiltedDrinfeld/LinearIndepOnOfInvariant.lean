@@ -19,6 +19,9 @@ variable {S : Type} [CommRing S] [Algebra ℚ_[l] S] {V : Type} [AddCommGroup V]
 def cS (i : Fin d) : V ⊗[ℚ_[l]] S →ₗ[ℚ_[l]] S :=
   (TensorProduct.lid ℚ_[l] S).toLinearMap ∘ₗ (b.coord i).rTensor S
 
+/- English proof (translation)
+Simplify using `[cS]`.
+-/
 @[simp] theorem cS_tmul (i : Fin d) (v : V) (s : S) : cS b i (v ⊗ₜ s) = b.coord i v • s := by
   simp [cS]
 

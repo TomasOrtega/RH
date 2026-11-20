@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.ProjOverC.isProjOver_A | exact GlobalTheory.RealMult.ProjOverC.isProjOver_A | (intros; apply GlobalTheory.RealMult.ProjOverC.isProjOver_A <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.totally_positive_polarization_projective : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt),
     IsTotPos (c : F) → IsProjOver X.A.hom := by
   first | exact @GlobalTheory.RealMult.ProjOverC.isProjOver_A | exact GlobalTheory.RealMult.ProjOverC.isProjOver_A | (intros; apply GlobalTheory.RealMult.ProjOverC.isProjOver_A <;> assumption)

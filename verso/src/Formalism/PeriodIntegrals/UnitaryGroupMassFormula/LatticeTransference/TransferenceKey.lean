@@ -12,6 +12,11 @@ def TransferenceKey : Prop :=
       ∃ m : ℤ, inner ℝ u y = (m : ℝ)) →
     ∃ l ∈ Λ, ‖u - l‖ * lam ≤ (finrank ℝ E : ℝ) / 2
 
+/- English proof (translation)
+Introduce `E _ _ _ Λ _ _ lam hlam hmin x`. Use `h E Λ lam x hlam ?_` and prove the remaining obligations. Introduce `y hy hlt`. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, by simp [hy0]⟩`.
+
+Conclude with `absurd (hmin y hy0 hy) (not_le.mpr hlt)`.
+-/
 theorem cover_of_key (h : TransferenceKey) : TransferenceCover := by
   intro E _ _ _ Λ _ _ lam hlam hmin x
   refine h E Λ lam x hlam ?_

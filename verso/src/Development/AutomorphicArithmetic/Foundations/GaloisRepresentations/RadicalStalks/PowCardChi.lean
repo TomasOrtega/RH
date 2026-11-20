@@ -14,6 +14,11 @@ variable {k : Type*} [Field k] {C : Type*} {P : Type*} [AddCommGroup P] [Module 
 private abbrev Gs (ρ : C → Module.End k P) (ψ : C → k) : Submodule k P :=
   ⨅ c, (ρ c).maxGenEigenspace (ψ c)
 
+/- English proof (translation)
+Set `R : C →+* Module.End k P` to `{ toFun := ρ, map_one' := one, map_mul' := mul, map_add' := add, map_zero' := by have := add 0 0; simpa using this }`. Establish `hp : ((p : ℕ) : Module.End k P) = 0`. Rewrite using `[← map_natCast (algebraMap k (Module.End k P)) p, CharP.cast_eq_zero k p, map_zero]`. Take `⟨e, he⟩` from `h`. Establish `h0 : R (a - b) = 0` using `by rw [he, map_mul, map_natCast, hp, zero_mul]`.
+
+Rewrite `h0` using `[map_sub]`. Conclude with `sub_eq_zero.1 h0`.
+-/
 private theorem rho_congr [CommRing C] (p : ℕ) [CharP k p] (ρ : C → Module.End k P)
     (add : ∀ x y, ρ (x + y) = ρ x + ρ y) (mul : ∀ x y, ρ (x * y) = ρ x * ρ y) (one : ρ 1 = 1)
     {a b : C} (h : (p : C) ∣ a - b) : ρ a = ρ b := by
@@ -27,6 +32,17 @@ private theorem rho_congr [CommRing C] (p : ℕ) [CharP k p] (ρ : C → Module.
   rw [map_sub] at h0
   exact sub_eq_zero.1 h0
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hv`. Rewrite `hn` using `[one_smul]`. Establish `hNN : (E - 1) * (E - 1) = -(E - 1)`. Rewrite using `[sub_mul, mul_sub, mul_sub, h]`. Simplify using the standard rewrite rules.
+
+Establish `key : ∀ n : ℕ, ((E - 1) ^ (n + 1)) v = 0 → (E - 1) v = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro h0`. Simplify using `using h0`.
+
+Consider the case `succ n ih`. Introduce `h0`. Apply `ih` to reduce the goal to its premises. Establish `h1 : (E - 1) ^ (n + 1 + 1) = -(E - 1) ^ (n + 1)`. Rewrite using `[pow_succ (E - 1) (n + 1), pow_succ (E - 1) n, _root_.mul_assoc, hNN, mul_neg]`.
+
+Rewrite `h0` using `[h1]`. Simplify using `using h0`. Consider the cases of `n with`. Consider the case `zero`. Establish `: v = 0` using `by simpa using hn`.
+
+Simplify using `[this]`. Consider the case `succ n`. Use `key n hn` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 private theorem idem_fix (E : Module.End k P) (h : E * E = E) (v : P)
     (hv : v ∈ E.maxGenEigenspace 1) : E v = v := by
   obtain ⟨n, hn⟩ := (Module.End.mem_maxGenEigenspace _ _ _).1 hv
@@ -52,6 +68,11 @@ private theorem idem_fix (E : Module.End k P) (h : E * E = E) (v : P)
     have := key n hn
     simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Proceed by induction on `n generalizing v with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : Φ ((T - s • 1) v) = (T - (s ^ p) • 1) (Φ v)`. Simplify using `[comm, semi, map_sub]`.
+
+Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h1]`.
+-/
 private theorem Phi_pow {p : ℕ} (Φ : P →+ P) (semi : ∀ (l : k) x, Φ (l • x) = l ^ p • Φ x)
     (T : Module.End k P) (comm : ∀ x, Φ (T x) = T (Φ x)) (s : k) (n : ℕ) (v : P) :
     Φ (((T - s • 1) ^ n) v) = ((T - (s ^ p) • 1) ^ n) (Φ v) := by
@@ -62,6 +83,9 @@ private theorem Phi_pow {p : ℕ} (Φ : P →+ P) (semi : ∀ (l : k) x, Φ (l �
       simp [comm, semi, map_sub]
     rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h1]
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).2 fun c => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hv c)`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨n, by rw [← Phi_pow Φ semi (ρ c) (comm c), hn, map_zero]⟩`.
+-/
 private theorem Phi_maps {p : ℕ} (Φ : P →+ P) (semi : ∀ (l : k) x, Φ (l • x) = l ^ p • Φ x)
     (ρ : C → Module.End k P) (comm : ∀ c x, Φ (ρ c x) = ρ c (Φ x)) (ψ : C → k) (v : P)
     (hv : v ∈ Gs ρ ψ) : Φ v ∈ Gs ρ (fun c => ψ c ^ p) := by
@@ -70,6 +94,13 @@ private theorem Phi_maps {p : ℕ} (Φ : P →+ P) (semi : ∀ (l : k) x, Φ (l 
   exact (Module.End.mem_maxGenEigenspace _ _ _).2
     ⟨n, by rw [← Phi_pow Φ semi (ρ c) (comm c), hn, map_zero]⟩
 
+/- English proof (translation)
+Establish `hu : u ∈ Gs ρ χ ⊔ ⨆ (ψ) (_ : ψ ≠ χ), Gs ρ ψ`. Rewrite using `[← iSup_split_single (Gs ρ) χ, hT]`. Conclude with `Submodule.mem_top`. Take `⟨u₁, h₁, u₂, h₂, rfl⟩` from `Submodule.mem_sup.1 hu`. Establish `hmap : (⨆ (ψ) (_ : ψ ≠ χ), Gs ρ ψ) ≤ (⨆ (ψ) (_ : ψ ≠ χ), Gs ρ ψ).comap T` using `iSup₂_le fun ψ hψ v hv => (le_iSup₂_of_le (f := fun (ψ : C → k) (_ : ψ ≠ χ) => Gs ρ ψ) ψ hψ le_rfl : Gs ρ ψ ≤ _) (hTm ψ v hv)`.
+
+Establish `h₃` using `hmap h₂`. Establish `h₄ : T u₂ ∈ Gs ρ χ`. Establish `: T u₂ = y - T u₁` using `by rw [← h, map_add]; abel`. Rewrite using `[this]`. Conclude with `sub_mem hy (hTm χ _ h₁)`.
+
+Establish `h₅ : T u₂ = 0` using `(Submodule.disjoint_def.1 (hI χ)) _ h₄ h₃`. Conclude with `⟨u₁, h₁, by rw [← h, map_add, h₅, add_zero]⟩`.
+-/
 private theorem proj_gs (ρ : C → Module.End k P) (hI : iSupIndep (Gs ρ)) (hT : ⨆ ψ, Gs ρ ψ = ⊤)
     (T : Module.End k P) (hTm : ∀ ψ, ∀ v ∈ Gs ρ ψ, T v ∈ Gs ρ ψ) (χ : C → k) (u y : P)
     (hy : y ∈ Gs ρ χ) (h : T u = y) : ∃ u₁ ∈ Gs ρ χ, T u₁ = y := by
@@ -87,6 +118,19 @@ private theorem proj_gs (ρ : C → Module.End k P) (hI : iSupIndep (Gs ρ)) (hT
   have h₅ : T u₂ = 0 := (Submodule.disjoint_def.1 (hI χ)) _ h₄ h₃
   exact ⟨u₁, h₁, by rw [← h, map_add, h₅, add_zero]⟩
 
+/- English proof (translation)
+Set `b` to `Module.finBasis k A`. Establish `root : ∀ l : k, ∃ m : k, m ^ p = l` using `fun l => IsAlgClosed.exists_pow_nat_eq l hp`. Use `choose r hr using root`. Set `v : Fin (Module.finrank k A) → B` to `fun i => ⟨Φ (b i : P), hm _ (b i).2⟩`. Establish `hsum : ∀ m : Fin (Module.finrank k A) → k, Φ (∑ i, m i • (b i : P)) = ∑ i, m i ^ p • Φ (b i : P)` using `fun m => by`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => semi _ _`. Establish `hli : LinearIndependent k v`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`.
+
+Establish `h0 : Φ (∑ i, r (g i) • (b i : P)) = 0`. Rewrite using `[hsum]`. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[hr, v]`. Establish `hmem : (∑ i, r (g i) • (b i : P)) ∈ A` using `Submodule.sum_mem _ fun i _ => A.smul_mem _ (b i).2`.
+
+Establish `h1` using `hinj _ hmem h0`. Establish `h2 : ∑ i, r (g i) • b i = 0` using `Subtype.ext (by simpa using h1)`. Establish `h3` using `(Fintype.linearIndependent_iff.1 b.linearIndependent) _ h2 i`. Rewrite using `[← hr (g i), h3, zero_pow hp.ne']`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp [hd])`.
+
+Introduce `y hy`. Establish `hy' : (⟨y, hy⟩ : B) ∈ Submodule.span k (Set.range v)` using `hsp ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 hy'`. Use `⟨∑ i, r (c i) • (b i : P), Submodule.sum_mem _ fun i _ => A.smul_mem _ (b i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`.
+
+Use `congrArg Subtype.val hc` as an intermediate fact. Simplify `this` using `[hr, v]`.
+-/
 private theorem semi_surj [IsAlgClosed k] {p : ℕ} (hp : 0 < p) [FiniteDimensional k P] (Φ : P →+ P)
     (semi : ∀ (l : k) x, Φ (l • x) = l ^ p • Φ x) (A B : Submodule k P) (hm : ∀ x ∈ A, Φ x ∈ B)
     (hinj : ∀ x ∈ A, Φ x = 0 → x = 0) (hd : Module.finrank k A = Module.finrank k B) :
@@ -121,6 +165,11 @@ private theorem semi_surj [IsAlgClosed k] {p : ℕ} (hp : 0 < p) [FiniteDimensio
   have := congrArg Subtype.val hc
   simpa [hr, v] using this
 
+/- English proof (translation)
+Use `haveI : Finite (C ⧸ RingHom.ker χ) := Nat.finite_of_card_ne_zero (by rw [hq]; exact hq0)`. Use `letI := Fintype.ofFinite (C ⧸ RingHom.ker χ)`. Use `haveI : (RingHom.ker χ).IsPrime := RingHom.ker_isPrime χ`. Use `letI : Field (C ⧸ RingHom.ker χ) := Fintype.fieldOfDomain _`. Establish `h` using `FiniteField.pow_card (Ideal.Quotient.mk (RingHom.ker χ) c)`.
+
+Rewrite `h` using `[← Nat.card_eq_fintype_card, hq]`. Establish `h2` using `congrArg χ.kerLift h`. Rewrite `h2` using `[map_pow]`. Simplify using `using h2`.
+-/
 private theorem pow_card_chi [CommRing C] (χ : C →+* k) {q : ℕ} (hq0 : q ≠ 0)
     (hq : Nat.card (C ⧸ RingHom.ker χ) = q) (c : C) : χ c ^ q = χ c := by
   classical
@@ -134,6 +183,17 @@ private theorem pow_card_chi [CommRing C] (χ : C →+* k) {q : ℕ} (hq0 : q �
   rw [map_pow] at h2
   simpa using h2
 
+/- English proof (translation)
+Introduce `h`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hpj : 1 < p ^ j` using `Nat.one_lt_pow hj.ne' hp1`. Use `haveI : Finite (C ⧸ RingHom.ker χ) := Nat.finite_of_card_ne_zero (by rw [hq]; exact pow_ne_zero _ (by omega))`. Use `letI := Fintype.ofFinite (C ⧸ RingHom.ker χ)`.
+
+Set `Q : Polynomial k` to `Polynomial.X ^ p ^ j - Polynomial.X`. Establish `hQ : Q ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hpj`. Establish `hQd : Q.natDegree = p ^ j` using `FiniteField.X_pow_card_sub_X_natDegree_eq k hpj`. Establish `hsub : Finset.univ.image χ.kerLift ⊆ Q.roots.toFinset`. Introduce `x hx`.
+
+Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hQ, Polynomial.IsRoot.def]`. Use `congrFun h c` as an intermediate fact. Simplify using `only [Q, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X]`.
+
+Simplify using `only [RingHom.kerLift_mk]`. Rewrite using `[this, sub_self]`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Finset.card_image_of_injective _ (RingHom.kerLift_injective χ), Finset.card_univ, ← Nat.card_eq_fintype_card, hq]`. Establish `h2 : p ^ f ≤ p ^ j` using `h1.trans ((Multiset.toFinset_card_le _).trans ((Polynomial.card_roots' Q).trans hQd.le))`.
+
+Conclude with `absurd h2 (not_le.2 (Nat.pow_lt_pow_right hp1 hjf))`.
+-/
 private theorem pow_ne_chi [CommRing C] {p : ℕ} [Fact p.Prime] (χ : C →+* k) {f j : ℕ}
     (hq : Nat.card (C ⧸ RingHom.ker χ) = p ^ f) (hj : 0 < j) (hjf : j < f) :
     (fun c => χ c ^ p ^ j) ≠ ⇑χ := by
@@ -167,6 +227,45 @@ end Helpers
 
 end UpperTheory.Gal.Ord
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ C _ w f hf hcard π χ P _ _ ρ F Φ L V W hV hW hWF x hx`. Use `haveI := L.fin`. Establish `hp0 : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hcard' : Nat.card (C ⧸ RingHom.ker χ) = p ^ f` using `by rw [L.ker]; exact hcard`. Establish `hcg` using `fun {a b : C} => rho_congr p ρ L.add L.mul L.one (a := a) (b := b)`.
+
+Establish `hcomm : ∀ a b, Commute (ρ a) (ρ b)` using `fun a b => by show ρ a * ρ b = ρ b * ρ a`. Rewrite using `[← L.mul, ← L.mul, mul_comm]`. Establish `hmt : ∀ i j (φ : k), Set.MapsTo (ρ i) ((ρ j).maxGenEigenspace φ) ((ρ j).maxGenEigenspace φ)` using `fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) φ`. Establish `hI : iSupIndep (Gs ρ)` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo ρ hmt`. Establish `hT : ⨆ ψ, Gs ρ ψ = ⊤` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_forall_mapsTo ρ hmt fun _ => Module.End.iSup_maxGenEigenspace_eq_top _`.
+
+Establish `hGm : ∀ a ψ, ∀ v ∈ Gs ρ ψ, ρ a v ∈ Gs ρ ψ` using `fun a ψ v hv => (Submodule.mem_iInf _).2 fun b => hmt a b _ ((Submodule.mem_iInf _).1 hv b)`. Establish `hEE : ρ π.ε * ρ π.ε = ρ π.ε`. Rewrite using `[← L.mul]`. Conclude with `hcg π.idem`. Establish `hχε : χ π.ε = 1`.
+
+Establish `h1 : π.ε - 1 ∈ RingHom.ker χ` using `by rw [L.ker]; exact π.one`. Establish `h2 : χ (π.ε - 1) = 0` using `h1`. Rewrite `h2` using `[map_sub, map_one]`. Conclude with `sub_eq_zero.1 h2`. Establish `hχa : χ π.a = 0`.
+
+Establish `h1 : π.a ∈ RingHom.ker χ` using `by rw [L.ker]; exact π.mem`. Conclude with `h1`. Establish `hfix : ∀ ψ : C → k, ψ π.ε = 1 → ∀ v ∈ Gs ρ ψ, ρ π.ε v = v` using `fun ψ h1 v hv => idem_fix _ hEE v (by have := (Submodule.mem_iInf _).1 hv π.ε; rwa [h1] at this)`. Establish `heig : ∀ (ψ : C → k) (v : P), (∀ c, ρ c v = ψ c • v) → v ∈ Gs ρ ψ` using `fun ψ v h => (Submodule.mem_iInf _).2 fun c => (Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by simp [h c]⟩`. Establish `hstep : ∀ j, ∀ v ∈ Gs ρ (fun c => χ c ^ p ^ j), Φ v ∈ Gs ρ (fun c => χ c ^ p ^ (j + 1))`.
+
+Introduce `j v hv`. Establish `h1` using `Phi_maps Φ L.semi ρ L.comm _ v hv`. Establish `h2 : (fun c => χ c ^ p ^ (j + 1)) = fun c => (χ c ^ p ^ j) ^ p`. Use function extensionality and compare the values at `fun c => by rw [pow_succ, pow_mul]`. Rewrite using `[h2]`.
+
+Conclude with `h1`. Establish `hinj : ∀ j, 0 < j → j < f → ∀ v ∈ Gs ρ (fun c => χ c ^ p ^ j), Φ v = 0 → v = 0`. Introduce `j hj hjf v hv h0`. Establish `hvF : v ∈ F` using `(L.kerΦ v).1 h0`. Establish `hE : ρ π.ε v = v` using `hfix _ (by simp [hχε]) v hv`.
+
+Establish `he : ∀ c, ρ c v = χ c • v` using `fun c => by`. Use `L.eig c v hvF` as an intermediate fact. Rewrite `this` using `[hE]`. Then use the resulting hypothesis. Conclude with `Submodule.disjoint_def.1 (hI.pairwiseDisjoint (pow_ne_chi χ hcard' hj hjf)) v hv (heig _ v he)`. Establish `hsurj : ∀ j, 0 < j → j < f → ∀ u ∈ Gs ρ (fun c => χ c ^ p ^ (j + 1)), ∃ v ∈ Gs ρ (fun c => χ c ^ p ^ j), Φ v = u` using `fun j hj hjf => semi_surj hp0 Φ L.semi _ _ (hstep j) (hinj j hj hjf) ((L.dims j).trans (L.dims (j + 1)).symm)`.
+
+Take `⟨m, rfl⟩ : ∃ m, f = m + 1` from `⟨f - 1, by omega⟩`. Establish `hchain : ∀ n, n ≤ m → ∀ u ∈ Gs ρ (fun c => χ c ^ p ^ (n + 1)), ∃ u' ∈ Gs ρ (fun c => χ c ^ p ^ 1), Φ^[n] u' = u`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ u hu`.
+
+Conclude with `⟨u, hu, rfl⟩`. Consider the case `succ n ih`. Introduce `hn u hu`. Take `⟨v, hv, rfl⟩` from `hsurj (n + 1) (by omega) (by omega) u hu`. Take `⟨u', h1, rfl⟩` from `ih (by omega) v hv`.
+
+Conclude with `⟨u', h1, by rw [Function.iterate_succ_apply']⟩`. Establish `hit : ∀ (c : C) (n : ℕ) (v : P), Φ^[n] (ρ c v) = ρ c (Φ^[n] v)`. Introduce `c n v`. Proceed by induction on `n with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, L.comm]`. Establish `hye : ∀ c, ρ c (ρ π.ε x) = χ c • ρ π.ε x` using `fun c => L.eig c x hx`. Establish `hyG : ρ π.ε x ∈ Gs ρ χ` using `heig _ _ hye`. Establish `hay : ρ π.a (ρ π.ε x) = 0` using `by rw [hye, hχa, zero_smul]`. Take `⟨u, hu⟩` from `L.annA _ hay`.
+
+Establish `hEy : ρ π.ε (ρ π.ε x) = ρ π.ε x`. Use `congrArg (fun T : Module.End k P => T x) hEE` as an intermediate fact. Simplify using `using this`. Rewrite `hu` using `[hEy]`. Take `⟨u₁, hu₁G, hu₁⟩` from `proj_gs ρ hI hT (ρ π.g) (hGm π.g) χ u _ hyG hu.symm`.
+
+Establish `hu₁G' : u₁ ∈ Gs ρ (fun c => χ c ^ p ^ (m + 1))`. Establish `h2 : (fun c => χ c ^ p ^ (m + 1)) = ⇑χ` using `funext fun c => pow_card_chi χ (pow_ne_zero _ hp0.ne') hcard' c`. Rewrite using `[h2]`. Conclude with `hu₁G`. Take `⟨u', hu'G, rfl⟩` from `hchain m le_rfl u₁ hu₁G'`.
+
+Establish `hEu : ρ π.ε u' = u'` using `hfix _ (by simp [hχε]) u' hu'G`. Establish `hWy` using `hWF x hx`. Rewrite `hWy` using `[← hu₁, ← hit]`. Establish `hVz : V (ρ π.c u') = 0`. Use `hW u'` as an intermediate fact.
+
+Simplify using `only [Nat.add_sub_cancel] at this`. Rewrite using `[← this]`. Conclude with `hWy`. Take `⟨z, hz⟩` from `hV _ hVz`. Use `⟨ρ (π.c' * π.ε) z, ?_⟩` and prove the remaining obligations.
+
+Establish `hΦ : Φ (ρ (π.c' * π.ε) z) = u'`. Rewrite using `[L.comm, hz]`. Establish `h3 : ρ (π.c' * π.ε) * ρ π.c = ρ π.ε`. Rewrite using `[← L.mul]`. Apply `hcg` to reduce the goal to its premises.
+
+Establish `: π.c' * π.ε * π.c - π.ε = π.c' * π.c * π.ε - π.ε` using `by ring`. Rewrite using `[this]`. Conclude with `π.inv`. Establish `h4` using `congrArg (fun T : Module.End k P => T u') h3`. Simplify using `only [Module.End.mul_apply] at h4`.
+
+Rewrite using `[h4, hEu]`. Rewrite using `[Function.iterate_succ_apply, hΦ, hu₁]`.
+-/
 theorem UpperTheory.Gal.Ord.alg1 :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k p] (C : Type) [CommRing C] (w : Ideal C) (f : ℕ), 0 < f →
       Nat.card (C ⧸ w) = p ^ f → ∀ (π : Par p w f) (χ : C →+* k) (P : Type 1) [AddCommGroup P] [Module k P] (ρ : C → Module.End k P) (F : Submodule k P)

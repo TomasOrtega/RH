@@ -43,6 +43,11 @@ def LeafGhostRel : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k
         rpl q i ι (pullback.fst (g2 ≫ g1 ≫ p) ι) (pullback.snd (g2 ≫ g1 ≫ p) ι) (g2 ≫ g1 ≫ p) pullback.condition n c
 
 open CochainComplex.HomComplex in
+/- English proof (translation)
+Introduce `R _ F U E f n x hx`. Take `⟨z, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) z (zero_add n)) = 0 at hx`. Rewrite `hx` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨m, hm, β, hβ⟩` from `hx`.
+
+Use `⟨CohomologyClass.mk (mappingCone.descCocycle _ (n.negOnePow • β) z hm ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul, hβ]`. Simplify using `[zcomp]`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+-/
 theorem relExact : LeafRelExact := by
   intro R _ F U E f n x hx
   obtain ⟨z, rfl⟩ := x.mk_surjective
@@ -56,6 +61,11 @@ theorem relExact : LeafRelExact := by
     simp [zcomp]
 
 open CochainComplex.HomComplex in
+/- English proof (translation)
+Introduce `R _ F U E U' E' f f' u e comm n y`. Establish `key : mappingCone.inr ((chains R).map f') ≫ rmap R f f' u e comm = (chains R).map e ≫ mappingCone.inr ((chains R).map f)`. Simplify using `[rmap, mappingCone.map]`. Take `⟨y, rfl⟩` from `y.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations.
+
+Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, key, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+-/
 theorem relNat : LeafRelNat := by
   intro R _ F U E U' E' f f' u e comm n y
   have key : mappingCone.inr ((chains R).map f') ≫ rmap R f f' u e comm =
@@ -67,6 +77,11 @@ theorem relNat : LeafRelNat := by
   rw [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, key, Cochain.ofHom_comp,
     Cochain.comp_assoc_of_first_is_zero_cochain]
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA n a ha`. Take `⟨y, rfl⟩` from `hEx (ZMod q) (tw q i) (sch.map (pullback.fst p ι)) n a ha`. Take `⟨c, hc⟩` from `hCore hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hA n y`. Use `⟨fgt (ZMod q) (sch.map ι) (tw q i) n c, ?_⟩` and prove the remaining obligations. Establish `e1` using `hNat (ZMod q) (tw q i) (sch.map ι) (sch.map (pullback.fst (g2 ≫ g1 ≫ p) ι)) (sch.map (pullback.snd (g2 ≫ g1 ≫ p) ι)) (sch.map (g2 ≫ g1 ≫ p)) (by rw [← Functor.map_comp, ← Functor.map_comp, pullback.condition]) n c`.
+
+Establish `hsq : pullback.fst (g2 ≫ g1 ≫ p) ι ≫ (g2 ≫ g1) = pullback.map (g2 ≫ g1 ≫ p) ι p ι (g2 ≫ g1) (𝟙 W) (𝟙 B) (by simp) (by simp) ≫ pullback.fst p ι` using `(pullback.lift_fst _ _ _).symm`. Establish `e2` using `hNat (ZMod q) (tw q i) (sch.map (pullback.fst p ι)) (sch.map (pullback.fst (g2 ≫ g1 ≫ p) ι)) (sch.map (pullback.map (g2 ≫ g1 ≫ p) ι p ι (g2 ≫ g1) (𝟙 W) (𝟙 B) (by simp) (by simp))) (sch.map (g2 ≫ g1)) (by rw [← Functor.map_comp, ← Functor.map_comp, hsq]) n y`. Express the relevant statement in the definitionally equal form `pull _ _ _ _ _ = pull _ _ _ _ _`. Rewrite using `[← e1, ← e2]`. Conclude with `congrArg _ hc.symm`.
+-/
 theorem goal_of_all (hEx : LeafRelExact) (hNat : LeafRelNat) (hCore : LeafGhostRel) : LateralTheory.E.E4.LeafGhost := by
   intro hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA n a ha
   obtain ⟨y, rfl⟩ := hEx (ZMod q) (tw q i) (sch.map (pullback.fst p ι)) n a ha
@@ -84,6 +99,9 @@ theorem goal_of_all (hEx : LeafRelExact) (hNat : LeafRelNat) (hCore : LeafGhostR
   rw [← e1, ← e2]
   exact congrArg _ hc.symm
 
+/- English proof (translation)
+The claim follows from `goal_of_all relExact relNat hCore`.
+-/
 theorem goal_of (hCore : LeafGhostRel) : LateralTheory.E.E4.LeafGhost := goal_of_all relExact relNat hCore
 
 end LateralTheory.E.LeafGhostCut

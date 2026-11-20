@@ -62,11 +62,23 @@ section W3
 
 variable {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨rfl⟩`.
+-/
 theorem infinitePlace_liesOver_comap (w : InfinitePlace E) : w.LiesOver (w.comap (algebraMap F E)) := by
   first
     | exact inferInstance
     | exact ⟨rfl⟩
 
+/- English proof (translation)
+Establish `h` using `InfinitePlace.unramifedPlacesOver_ncard_add_eq_finrank E v`. Establish `hr : InfinitePlace.ramifiedPlacesOver E v = ∅`. Use extensionality with `w`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `h3` using `(InfinitePlace.isRamified_iff.1 h2).2`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _)) h3`. Establish `hu : InfinitePlace.unramifiedPlacesOver E v = {w : InfinitePlace E | w.comap (algebraMap F E) = v}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, -⟩`. Conclude with `InfinitePlace.LiesOver.comap_eq w v`. Introduce `hw`. Establish `hw' : w.comap (algebraMap F E) = v` using `hw`. Use `⟨hw' ▸ infinitePlace_liesOver_comap w, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Establish `h3` using `(InfinitePlace.isRamified_iff.1 hc).2`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex _)) h3`. Rewrite `h` using `[hr, hu]`. Simplify using `using h`.
+-/
 theorem ncard_places_over_eq_finrank [IsTotallyComplex F] (v : InfinitePlace F) :
     {w : InfinitePlace E | w.comap (algebraMap F E) = v}.ncard = finrank F E := by
   have h := InfinitePlace.unramifedPlacesOver_ncard_add_eq_finrank E v
@@ -91,6 +103,11 @@ theorem ncard_places_over_eq_finrank [IsTotallyComplex F] (v : InfinitePlace F) 
   rw [hr, hu] at h
   simpa using h
 
+/- English proof (translation)
+Establish `hfib : ∀ v : InfinitePlace F, (Finset.univ.filter fun w : InfinitePlace E => w.comap (algebraMap F E) = v).card = finrank F E`. Introduce `v`. Rewrite using `[← ncard_places_over_eq_finrank v, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `w`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (g := fun w : InfinitePlace E => w.comap (algebraMap F E)) (t := Finset.univ) (by intro x _; exact Finset.mem_univ _), ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun w hw => by rw [(Finset.mem_filter.1 hw).2]), Finset.prod_const, hfib v]`.
+-/
 theorem bc_prod [IsTotallyComplex F] [IsTotallyComplex E] (g : InfinitePlace F → ℝ) :
     ∏ w : InfinitePlace E, g (w.comap (algebraMap F E)) = (∏ v, g v) ^ finrank F E := by
   classical
@@ -106,6 +123,11 @@ theorem bc_prod [IsTotallyComplex F] [IsTotallyComplex E] (g : InfinitePlace F �
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [Finset.prod_congr rfl (fun w hw => by rw [(Finset.mem_filter.1 hw).2]), Finset.prod_const, hfib v]
 
+/- English proof (translation)
+Establish `hfib : ∀ v : InfinitePlace F, (Finset.univ.filter fun w : InfinitePlace E => w.comap (algebraMap F E) = v).card = finrank F E`. Introduce `v`. Rewrite using `[← ncard_places_over_eq_finrank v, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `w`.
+
+Simplify using the standard rewrite rules. Unfold `nPl`. Rewrite using `[← Finset.card_univ (α := InfinitePlace E), Finset.card_eq_sum_card_fiberwise (f := fun w : InfinitePlace E => w.comap (algebraMap F E)) (t := Finset.univ) (by intro x _; exact Finset.mem_univ _)]`. Rewrite using `[Finset.sum_congr rfl fun v _ => hfib v, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bc_nPl [IsTotallyComplex F] [IsTotallyComplex E] :
     nPl E = finrank F E * nPl F := by
   classical
@@ -130,6 +152,21 @@ section W3b
 variable {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Set `T : (Fin j → F) →ₗ[F] (ι → F)` to `Fintype.linearCombination F e`. Establish `hT : LinearMap.ker T = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `he.fintypeLinearCombination_injective`. Take `⟨π, hπ⟩` from `T.exists_leftInverse_of_injective hT`.
+
+Establish `key : ∀ a c, ∑ i, π (Pi.single i 1) a * e c i = if c = a then 1 else 0`. Introduce `a c`. Establish `h1 : π (e c) = Pi.single c 1`. Establish `h2 : T (Pi.single c 1) = e c`. Simplify using `[T, Fintype.linearCombination_apply, Pi.single_apply]`.
+
+Rewrite using `[← h2]`. Conclude with `LinearMap.congr_fun hπ _`. Establish `h3 : e c = ∑ i, e c i • (Pi.single i 1 : ι → F)`. Use function extensionality and compare the values at `i'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Establish `h4 : π (e c) a = ∑ i, π (Pi.single i 1) a * e c i` using `by conv_lhs => rw [h3]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[← h4, h1]`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Establish `h0 : ∑ i, algebraMap F E (π (Pi.single i 1) a) * (∑ c, g c • bcMap (E` using `E) (e c)) i = 0 := by`. Rewrite using `[hg]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : ∑ i, algebraMap F E (π (Pi.single i 1) a) * (∑ c, g c • bcMap (E` using `E) (e c)) i = ∑ c, g c * algebraMap F E (∑ i, π (Pi.single i 1) a * e c i) := by`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, bcMap, Finset.mul_sum, map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => by ring`. Rewrite `h0` using `[h1]`.
+
+Simplify `h0` using `[key]`.
+-/
 theorem bc_linIndep {j : ℕ} (e : Fin j → ι → F) (he : LinearIndependent F e) :
     LinearIndependent E (fun a => bcMap (E := E) (e a)) := by
   classical
@@ -166,6 +203,13 @@ theorem bc_linIndep {j : ℕ} (e : Fin j → ι → F) (he : LinearIndependent F
   rw [h1] at h0
   simpa [key] using h0
 
+/- English proof (translation)
+Establish `hD : ∀ u v : V, H1 u v + H1 v u = H2 u v + H2 v u`. Introduce `u v`. Establish `e1` using `hN (u + v)`. Rewrite `e1` using `[a1, b1, b1, a2, b2, b2]`. Take the linear combination `e1 - hN u - hN v`.
+
+Establish `h1` using `hD x y`. Establish `h2` using `hD (s0 • x) y`. Rewrite `h2` using `[l1, r1, l2, r2]`. Establish `h3 : (starRingEnd ℂ (τ s0) - τ s0) * (H1 x y - H2 x y) = 0`. Take the linear combination `h2 - τ s0 * h1`.
+
+Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) hs0`. Conclude with `sub_eq_zero.1 h`.
+-/
 theorem hermitian_polarization_eq {V : Type} [AddCommGroup V] [Module F V] (H1 H2 : V → V → ℂ) (τ : F →+* ℂ)
     (a1 : ∀ x y z, H1 (x + y) z = H1 x z + H1 y z) (b1 : ∀ x y z, H1 x (y + z) = H1 x y + H1 x z)
     (r1 : ∀ s x y, H1 x (s • y) = τ s * H1 x y)
@@ -193,6 +237,11 @@ section Maj
 
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Establish `hf : ∀ x y : V, Formalism.HermitianLatticesTheory.fcoord b X v (x + y) = Formalism.HermitianLatticesTheory.fcoord b X v x + Formalism.HermitianLatticesTheory.fcoord b X v y`. Introduce `x y`. Unfold `Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[hf]`. Simplify using `[add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hermitianForm_add_left (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x y z : V) : Formalism.HermitianLatticesTheory.majAt b X v (x + y) z =
       Formalism.HermitianLatticesTheory.majAt b X v x z + Formalism.HermitianLatticesTheory.majAt b X v y z := by
@@ -207,6 +256,11 @@ theorem hermitianForm_add_left (b : Basis ι K V) (X : InfinitePlace K → Matri
   rw [hf]
   simp [add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hf : ∀ x y : V, Formalism.HermitianLatticesTheory.fcoord b X v (x + y) = Formalism.HermitianLatticesTheory.fcoord b X v x + Formalism.HermitianLatticesTheory.fcoord b X v y`. Introduce `x y`. Unfold `Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[hf]`. Simplify using `[mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hermitianForm_add_right (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x y z : V) : Formalism.HermitianLatticesTheory.majAt b X v x (y + z) =
       Formalism.HermitianLatticesTheory.majAt b X v x y + Formalism.HermitianLatticesTheory.majAt b X v x z := by
@@ -221,6 +275,13 @@ theorem hermitianForm_add_right (b : Basis ι K V) (X : InfinitePlace K → Matr
   rw [hf]
   simp [mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hs : ∀ (a : K) (x : V), Formalism.HermitianLatticesTheory.fcoord b X v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.fcoord b X v x`. Introduce `a x`. Unfold `Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[hs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermitianForm_smul_right (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x y : V) : Formalism.HermitianLatticesTheory.majAt b X v x (a • y) =
       v.embedding a * Formalism.HermitianLatticesTheory.majAt b X v x y := by
@@ -237,6 +298,13 @@ theorem hermitianForm_smul_right (b : Basis ι K V) (X : InfinitePlace K → Mat
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ (a : K) (x : V), Formalism.HermitianLatticesTheory.fcoord b X v (a • x) = v.embedding a • Formalism.HermitianLatticesTheory.fcoord b X v x`. Introduce `a x`. Unfold `Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Unfold `Formalism.HermitianLatticesTheory.majAt`. Rewrite using `[hs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermitianForm_smul_left (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x y : V) : Formalism.HermitianLatticesTheory.majAt b X v (a • x) y =
       starRingEnd ℂ (v.embedding a) * Formalism.HermitianLatticesTheory.majAt b X v x y := by
@@ -253,6 +321,9 @@ theorem hermitianForm_smul_left (b : Basis ι K V) (X : InfinitePlace K → Matr
   simp only [Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Complex.conj_mul' _`.
+-/
 theorem hermitianForm_self_eq_norm_sq (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x : V) : Formalism.HermitianLatticesTheory.majAt b X v x x = ((Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 : ℝ) : ℂ) := by
   unfold Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm
@@ -263,10 +334,16 @@ theorem hermitianForm_self_eq_norm_sq (b : Basis ι K V) (X : InfinitePlace K �
 
 end Maj
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem bcMap_add' (x y : ι → F) : bcMap (E := E) (x + y) = bcMap x + bcMap y := by
   funext i
   simp [bcMap]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem baseChangeMap_smul_scalar (s : F) (x : ι → F) :
     bcMap (E := E) (s • x) = algebraMap F E s • bcMap x := by
   funext i
@@ -274,6 +351,25 @@ theorem baseChangeMap_smul_scalar (s : F) (x : ι → F) :
 
 variable [StarRing F] [StarRing E]
 
+/- English proof (translation)
+Use `set v := w.comap (algebraMap F E) with hv`. Establish `: w.LiesOver v` using `⟨rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨s0, hs0⟩ : ∃ s0 : F, starRingEnd ℂ (v.embedding s0) ≠ v.embedding s0 := by`. Establish `h1` using `InfinitePlace.isComplex_iff.1 (IsTotallyComplex.isComplex v)`. Rewrite `h1` using `[ComplexEmbedding.isReal_iff]`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h1 (RingHom.ext fun s => by rw [ComplexEmbedding.conjugate_coe_eq]; exact hc s)`. Set `τ : F →+* ℂ` to `w.embedding.comp (algebraMap F E)`. Set `H1 : (ι → F) → (ι → F) → ℂ` to `fun x y => Formalism.HermitianLatticesTheory.majAt (Pi.basisFun E ι) XE w (bcMap (E := E) x) (bcMap (E := E) y)`.
+
+Establish `a1 : ∀ x y z, H1 (x + y) z = H1 x z + H1 y z` using `fun x y z => by`. Simplify using `only [H1, bcMap_add', hermitianForm_add_left]`. Establish `b1 : ∀ x y z, H1 x (y + z) = H1 x y + H1 x z` using `fun x y z => by`. Simplify using `only [H1, bcMap_add', hermitianForm_add_right]`. Establish `r1 : ∀ s x y, H1 x (s • y) = τ s * H1 x y` using `fun s x y => by`.
+
+Simplify using `only [H1, baseChangeMap_smul_scalar, hermitianForm_smul_right]`. Both sides reduce to the same expression. Establish `l1 : ∀ s x y, H1 (s • x) y = starRingEnd ℂ (τ s) * H1 x y` using `fun s x y => by`. Simplify using `only [H1, baseChangeMap_smul_scalar, hermitianForm_smul_left]`. Both sides reduce to the same expression.
+
+Establish `hN : ∀ x, H1 x x = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun F ι) XF v x x` using `fun x => by`. Simplify using `only [H1, hermitianForm_self_eq_norm_sq]`. Use `hn w x` as an intermediate fact. Rewrite using `[show bcMap (E := E) x = fun i => algebraMap F E (x i) from rfl, this]`. Break down `InfinitePlace.LiesOver.embedding_comp_eq_or_conjugate_embedding_comp_eq w v with h | h` into its components or cases.
+
+Establish `hτ : ∀ s, v.embedding s = τ s` using `fun s => by rw [← h]`. Establish `hH` using `hermitian_polarization_eq H1 (fun x y => Formalism.HermitianLatticesTheory.majAt (Pi.basisFun F ι) XF v x y) τ a1 b1 r1 l1 (fun x y z => hermitianForm_add_left _ _ _ _ _ _) (fun x y z => hermitianForm_add_right _ _ _ _ _ _) (fun s x y => by rw [hermitianForm_smul_right, hτ]) (fun …`. Use `congr 1`. Use extensionality with `a c`. Conclude with `hH (e a) (e c)`.
+
+Establish `hτ : ∀ s, v.embedding s = starRingEnd ℂ (τ s)` using `fun s => by`. Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `hH` using `hermitian_polarization_eq H1 (fun x y => Formalism.HermitianLatticesTheory.majAt (Pi.basisFun F ι) XF v y x) τ a1 b1 r1 l1 (fun x y z => hermitianForm_add_right _ _ _ _ _ _) (fun x y z => hermitianForm_add_left _ _ _ _ _ _) (fun s x y => by rw [hermitianForm_smul_left, hτ, Comple …`. Introduce `hc`.
+
+Apply `hs0` to reduce the goal to its premises. Rewrite using `[hτ, Complex.conj_conj, hc])`. Rewrite using `[← Matrix.det_transpose (gramPl (Pi.basisFun F ι) XF v e)]`. Use `congr 1`. Use extensionality with `a c`.
+
+Conclude with `hH (e a) (e c)`.
+-/
 theorem bc_gram_det [IsTotallyComplex F]
     (XF : InfinitePlace F → Matrix ι ι ℂ) (XE : InfinitePlace E → Matrix ι ι ℂ)
     (hn : ∀ (w : InfinitePlace E) (x : ι → F),
@@ -335,6 +431,11 @@ section W4gen
 
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V]
 
+/- English proof (translation)
+Rewrite using `[Submodule.sup_toAddSubgroup, AddSubgroup.relIndex_sup_left, Ideal.absNorm_apply]`. Unfold `Submodule.cardQuot`. Rewrite using `[← AddSubgroup.relIndex_top_right]`. Establish `h1 : (Submodule.span (𝓞 K) {m}).toAddSubgroup = (⊤ : AddSubgroup (𝓞 K)).map (LinearMap.toSpanSingleton (𝓞 K) V m).toAddMonoidHom`. Use extensionality with `x`.
+
+Simplify using `[Submodule.mem_span_singleton]`. Rewrite using `[h1, ← AddSubgroup.relIndex_comap]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_sup_singleton_eq_absNorm (A : Submodule (𝓞 K) V) (m : V) :
     A.toAddSubgroup.relIndex (A ⊔ Submodule.span (𝓞 K) {m}).toAddSubgroup =
       Ideal.absNorm (A.comap (LinearMap.toSpanSingleton (𝓞 K) V m) : Ideal (𝓞 K)) := by
@@ -354,10 +455,16 @@ section W4
 
 variable {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem baseChangeMap_map_add (x y : ι → F) : bcMap (E := E) (x + y) = bcMap x + bcMap y := by
   funext i
   simp [bcMap]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [bcMap, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem baseChangeMap_smul_integers (r : 𝓞 F) (x : ι → F) :
     bcMap (E := E) (r • x) = (algebraMap (𝓞 F) (𝓞 E) r) • bcMap x := by
   funext i
@@ -365,14 +472,29 @@ theorem baseChangeMap_smul_integers (r : 𝓞 F) (x : ι → F) :
   rw [Algebra.smul_def, Algebra.smul_def, map_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`.
+-/
 theorem finrank_ringOfIntegers_eq : finrank (𝓞 F) (𝓞 E) = finrank F E :=
   (IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm
 
+/- English proof (translation)
+Unfold `bcLat`. Conclude with `Submodule.span_mono (fun _ ⟨z, hz, hze⟩ => ⟨z, h hz, hze⟩)`.
+-/
 theorem baseChangeLattice_mono {A B : Submodule (𝓞 F) (ι → F)} (h : A ≤ B) :
     bcLat (E := E) A ≤ bcLat B := by
   unfold bcLat
   exact Submodule.span_mono (fun _ ⟨z, hz, hze⟩ => ⟨z, h hz, hze⟩)
 
+/- English proof (translation)
+Unfold `bcLat`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Set `N : Submodule (𝓞 F) (ι → F)` to `{ carrier := {x | bcMap (E := E) x ∈ Submodule.span (𝓞 E) (bcMap (E := E) '' s)} add_mem' := fun {a b} ha hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq, baseChangeMap_map_add] at *`. Conclude with `Submodule.add_mem _ ha hb`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq]`. Establish `h0 : bcMap (E` using `E) (0 : ι → F) = 0 := by funext i; simp [bcMap]`.
+
+Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Use the proof step `smul_mem' := fun c {x} hx => by`. Simplify using `only [Set.mem_setOf_eq, baseChangeMap_smul_integers] at *`. Conclude with `Submodule.smul_mem _ _ hx }`.
+
+Establish `hsN : Submodule.span (𝓞 F) s ≤ N` using `Submodule.span_le.2 fun x hx => Submodule.subset_span ⟨x, hx, rfl⟩`. Conclude with `hsN hz`. Conclude with `Submodule.span_mono (fun _ ⟨z, hz, hze⟩ => ⟨z, Submodule.subset_span hz, hze⟩)`.
+-/
 theorem baseChangeLattice_span (s : Set (ι → F)) :
     bcLat (E := E) (Submodule.span (𝓞 F) s) = Submodule.span (𝓞 E) (bcMap '' s) := by
   unfold bcLat
@@ -397,6 +519,9 @@ theorem baseChangeLattice_span (s : Set (ι → F)) :
     exact hsN hz
   · exact Submodule.span_mono (fun _ ⟨z, hz, hze⟩ => ⟨z, Submodule.subset_span hz, hze⟩)
 
+/- English proof (translation)
+Establish `key : A ⊔ B = Submodule.span (𝓞 F) ((A : Set (ι → F)) ∪ B)`. Rewrite using `[Submodule.span_union, Submodule.span_eq, Submodule.span_eq]`. Rewrite using `[key, baseChangeLattice_span, Set.image_union, Submodule.span_union]`. Both sides reduce to the same expression.
+-/
 theorem baseChangeLattice_sup (A B : Submodule (𝓞 F) (ι → F)) :
     bcLat (E := E) (A ⊔ B) = bcLat A ⊔ bcLat B := by
   have key : A ⊔ B = Submodule.span (𝓞 F) ((A : Set (ι → F)) ∪ B) := by
@@ -404,6 +529,11 @@ theorem baseChangeLattice_sup (A B : Submodule (𝓞 F) (ι → F)) :
   rw [key, baseChangeLattice_span, Set.image_union, Submodule.span_union]
   rfl
 
+/- English proof (translation)
+Rewrite using `[baseChangeLattice_sup, baseChangeLattice_span, Set.image_singleton, relIndex_sup_singleton_eq_absNorm, relIndex_sup_singleton_eq_absNorm, ← finrank_ringOfIntegers_eq, ← Ideal.absNorm_algebraMap]`. Apply `Ideal.absNorm_dvd_absNorm_of_le` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, ← baseChangeMap_smul_integers]`.
+
+Conclude with `Submodule.subset_span ⟨_, hr, rfl⟩`.
+-/
 theorem relIndex_baseChange_sup_singleton_dvd (A : Submodule (𝓞 F) (ι → F)) (m : ι → F) :
     (bcLat (E := E) A).toAddSubgroup.relIndex
         (bcLat (E := E) (A ⊔ Submodule.span (𝓞 F) {m})).toAddSubgroup ∣
@@ -416,6 +546,13 @@ theorem relIndex_baseChange_sup_singleton_dvd (A : Submodule (𝓞 F) (ι → F)
   rw [Ideal.mem_comap, Submodule.mem_comap, LinearMap.toSpanSingleton_apply, ← baseChangeMap_smul_integers]
   exact Submodule.subset_span ⟨_, hr, rfl⟩
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `m s hm ih`. Establish `hU : A ⊔ Submodule.span (𝓞 F) ((insert m s : Finset (ι → F)) : Set (ι → F)) = (A ⊔ Submodule.span (𝓞 F) (s : Set (ι → F))) ⊔ Submodule.span (𝓞 F) {m}`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, sup_left_comm, sup_comm (Submodule.span (𝓞 F) {m})]`.
+
+Rewrite using `[hU]`. Establish `h1 : A ≤ A ⊔ Submodule.span (𝓞 F) (s : Set (ι → F))` using `le_sup_left`. Establish `h2 : A ⊔ Submodule.span (𝓞 F) (s : Set (ι → F)) ≤ (A ⊔ Submodule.span (𝓞 F) (s : Set (ι → F))) ⊔ Submodule.span (𝓞 F) {m}` using `le_sup_left`. Establish `e1` using `AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 h1) ((Submodule.toAddSubgroup_le _ _).2 h2)`. Establish `e2` using `AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 (baseChangeLattice_mono (E := E) h1)) ((Submodule.toAddSubgroup_le _ _).2 (baseChangeLattice_mono (E := E) h2))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem relIndex_baseChange_dvd_pow_finset (A : Submodule (𝓞 F) (ι → F)) (s : Finset (ι → F)) :
     (bcLat (E := E) A).toAddSubgroup.relIndex
         (bcLat (E := E) (A ⊔ Submodule.span (𝓞 F) (s : Set (ι → F)))).toAddSubgroup ∣
@@ -440,6 +577,9 @@ theorem relIndex_baseChange_dvd_pow_finset (A : Submodule (𝓞 F) (ι → F)) (
       _ ∣ _ := mul_dvd_mul ih (relIndex_baseChange_sup_singleton_dvd _ m)
       _ = _ := by rw [← mul_pow, e1]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hB`. Establish `h` using `relIndex_baseChange_dvd_pow_finset (E := E) A s`. Rewrite `h` using `[sup_eq_right.2 hAB]`. Then use the resulting hypothesis.
+-/
 theorem relIndex_baseChange_dvd_pow {A B : Submodule (𝓞 F) (ι → F)} (hAB : A ≤ B) (hB : B.FG) :
     (bcLat (E := E) A).toAddSubgroup.relIndex (bcLat (E := E) B).toAddSubgroup ∣
       (A.toAddSubgroup.relIndex B.toAddSubgroup) ^ finrank F E := by
@@ -453,6 +593,17 @@ section W4scale
 
 variable {K ι : Type} [Field K] [NumberField K] [Fintype ι]
 
+/- English proof (translation)
+Set `_ : StarRing K` to `starRingOfComm`. Establish `hmK : (m : K) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Use `set e' : Fin j → ι → K := fun a => (m : K)⁻¹ • e a with he'`. Establish `hli : LinearIndependent K e'` using `he.units_smul (fun _ => (Units.mk0 (m : K) hmK)⁻¹)`. Use `set X := Submodule.span (𝓞 K) (Set.range e') with hX`.
+
+Establish `hfg : X.FG` using `Submodule.fg_span (Set.finite_range e')`. Establish `h1 : (Ideal.span {(m : 𝓞 K)}) • X = Submodule.span (𝓞 K) (Set.range e)`. Rewrite using `[Submodule.ideal_span_singleton_smul, hX, Submodule.smul_span]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_smul_set, Set.mem_range, exists_exists_eq_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[he', ← algebraMap_smul K (m : 𝓞 K), smul_smul]`.
+
+Simplify using `[hmK]`. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[he', ← algebraMap_smul K (m : 𝓞 K), smul_smul]`. Simplify using `[hmK]`.
+
+Establish `h2` using `Formalism.HN.DualPolygon.twist_int X hfg m hm`. Rewrite `h2` using `[h1, Formalism.HN.DualPolygon.twist_finrank_int X hfg]`. Rewrite using `[h2, hX, Submodule.span_span_of_tower, finrank_span_eq_card hli, Fintype.card_fin]`.
+-/
 theorem relIndex_scaled_span_eq_pow {j : ℕ} (e : Fin j → ι → K) (he : LinearIndependent K e) (m : ℕ) (hm : m ≠ 0) :
     (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex
         (Submodule.span (𝓞 K) (Set.range fun a => (m : K)⁻¹ • e a)).toAddSubgroup =
@@ -483,6 +634,15 @@ theorem relIndex_scaled_span_eq_pow {j : ℕ} (e : Fin j → ι → K) (he : Lin
   rw [h1, Formalism.HN.DualPolygon.twist_finrank_int X hfg] at h2
   rw [h2, hX, Submodule.span_span_of_tower, finrank_span_eq_card hli, Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Take `⟨y, hy, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image c)`. Establish `key : y • ∑ a, c a • e a ∈ Submodule.span (𝓞 K) (Set.range e)`. Rewrite using `[Finset.smul_sum]`. Apply `Submodule.sum_mem` to reduce the goal to its premises.
+
+Introduce `a _`. Establish `hi : IsIntegral ℤ (y • c a)` using `hint _ (Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩)`. Set `r : 𝓞 K` to `⟨y • c a, hi⟩`. Establish `hr : y • (c a • e a) = r • e a`. Rewrite using `[← algebraMap_smul K r, ← smul_assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[hr]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `⟨y.natAbs, Int.natAbs_ne_zero.2 hy, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases.
+
+Rewrite using `[← natCast_zsmul, ← h]`. Conclude with `key`. Establish `: ((y.natAbs : ℕ) : ℤ) = -y` using `by omega`. Rewrite using `[← natCast_zsmul, this, neg_smul]`. Conclude with `Submodule.neg_mem _ key`.
+-/
 theorem exists_nat_ne_zero_smul_mem_span_ringOfIntegers {j : ℕ} (e : Fin j → ι → K) (x : ι → K)
     (hx : x ∈ Submodule.span K (Set.range e)) :
     ∃ m : ℕ, m ≠ 0 ∧ m • x ∈ Submodule.span (𝓞 K) (Set.range e) := by
@@ -506,6 +666,15 @@ theorem exists_nat_ne_zero_smul_mem_span_ringOfIntegers {j : ℕ} (e : Fin j →
   · have : ((y.natAbs : ℕ) : ℤ) = -y := by omega
     rw [← natCast_zsmul, this, neg_smul]; exact Submodule.neg_mem _ key
 
+/- English proof (translation)
+Establish `h` using `fun z : s => exists_nat_ne_zero_smul_mem_span_ringOfIntegers e (z : ι → K) (hs z.2)`. Use `choose m hm0 hmz using h`. Use `⟨∏ z : s, m z, Finset.prod_ne_zero_iff.2 fun z _ => hm0 z, ?_⟩` and prove the remaining obligations. Set `N : Submodule (𝓞 K) (ι → K)` to `{ carrier := {x | (∏ z : s, m z) • x ∈ Submodule.span (𝓞 K) (Set.range e)} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, smul_add] at *`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c {x} hx => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ hx }`. Establish `hle : Submodule.span (𝓞 K) (s : Set (ι → K)) ≤ N`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Use `show (∏ w : s, m w) • z ∈ Submodule.span (𝓞 K) (Set.range e)`.
+
+Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨z, hz⟩ : s)), mul_smul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (hmz ⟨z, hz⟩)`. Introduce `x hx`. Conclude with `hle hx`.
+-/
 theorem exists_nat_mul_mem_span_finset {j : ℕ} (e : Fin j → ι → K) (s : Finset (ι → K))
     (hs : (s : Set (ι → K)) ⊆ Submodule.span K (Set.range e)) :
     ∃ m : ℕ, m ≠ 0 ∧ ∀ x ∈ Submodule.span (𝓞 K) (s : Set (ι → K)),
@@ -535,6 +704,11 @@ theorem exists_nat_mul_mem_span_finset {j : ℕ} (e : Fin j → ι → K) (s : F
 
 end W4scale
 
+/- English proof (translation)
+Establish `ha1 : a1 ≠ 0` using `left_ne_zero_of_mul h0`. Establish `ha2 : a2 ≠ 0` using `right_ne_zero_of_mul h0`. Establish `hb1` using `Nat.le_of_dvd (Nat.pos_of_ne_zero ha1) h1`. Establish `hb2` using `Nat.le_of_dvd (Nat.pos_of_ne_zero ha2) h2`. Establish `hb2pos : 0 < b2` using `Nat.pos_of_ne_zero (fun h' => h0 (by rw [← h, h', mul_zero]))`.
+
+Assume the negation of the conclusion as `hne`. Establish `hlt : b1 < a1` using `lt_of_le_of_ne hb1 hne`. Establish `hlt2 : b1 * b2 < a1 * a2` using `lt_of_lt_of_le (mul_lt_mul_of_pos_right hlt hb2pos) (mul_le_mul_of_nonneg_left hb2 (Nat.zero_le a1))`. Rewrite `hlt2` using `[h]`. Conclude with `lt_irrefl _ hlt2`.
+-/
 theorem eq_of_dvd_of_mul_eq {a1 a2 b1 b2 : ℕ} (h1 : b1 ∣ a1) (h2 : b2 ∣ a2) (h : b1 * b2 = a1 * a2)
     (h0 : a1 * a2 ≠ 0) : b1 = a1 := by
   have ha1 : a1 ≠ 0 := left_ne_zero_of_mul h0
@@ -554,10 +728,32 @@ section W4final
 variable {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Conclude with `bc_linIndep e he`.
+-/
 theorem baseChangeMap_linearIndependent {j : ℕ} (e : Fin j → ι → F) (he : LinearIndependent F e) :
     LinearIndependent E (fun a => bcMap (E := E) (e a)) := by
   exact bc_linIndep e he
 
+/- English proof (translation)
+Establish `heE` using `baseChangeMap_linearIndependent (E := E) e he`. Take `⟨s, hs⟩` from `hM`. Take `⟨m, hm, hmM⟩` from `exists_nat_mul_mem_span_finset e s (by`. Introduce `x hx`. Conclude with `hsp (hs ▸ Submodule.subset_span hx))`.
+
+Rewrite `hmM` using `[hs]`. Establish `hmF : (m : F) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Use `set L0 := Submodule.span (𝓞 F) (Set.range e) with hL0`. Use `set L1 := Submodule.span (𝓞 F) (Set.range fun a => (m : F)⁻¹ • e a) with hL1`. Establish `hML1 : M ≤ L1`.
+
+Introduce `x hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).1 (hmM x hx)`. Rewrite using `[hL1, Submodule.mem_span_range_iff_exists_fun]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: x = (m : F)⁻¹ • (m • x)`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul F, smul_smul, inv_mul_cancel₀ hmF, one_smul]`. Rewrite using `[this, ← hc, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => smul_comm _ _ _`. Establish `hL0E : bcLat (E` using `E) L0 = Submodule.span (𝓞 E) (Set.range fun a => bcMap (E := E) (e a)) := by`. Rewrite using `[hL0, baseChangeLattice_span, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `hL1E : bcLat (E` using `E) L1 = Submodule.span (𝓞 E) (Set.range fun a => (m : E)⁻¹ • bcMap (E := E) (e a)) := by`. Rewrite using `[hL1, baseChangeLattice_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `a i`.
+
+Simplify using `[bcMap]`. Establish `hL1fg : L1.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `d1` using `relIndex_baseChange_dvd_pow (E := E) hle ⟨s, hs⟩`. Establish `d2` using `relIndex_baseChange_dvd_pow (E := E) hML1 hL1fg`. Establish `tF` using `relIndex_scaled_span_eq_pow e he m hm`.
+
+Establish `tE` using `relIndex_scaled_span_eq_pow (fun a => bcMap (E := E) (e a)) heE m hm`. Rewrite `tE` using `[← hL0E, ← hL1E]`. Rewrite `tF` using `[← hL0, ← hL1]`. Rewrite `tF` using `[← AddSubgroup.relIndex_mul_relIndex _ M.toAddSubgroup _ ((Submodule.toAddSubgroup_le _ _).2 hle) ((Submodule.toAddSubgroup_le _ _).2 hML1)]`. Rewrite `tE` using `[← AddSubgroup.relIndex_mul_relIndex _ (bcLat (E := E) M).toAddSubgroup _ ((Submodule.toAddSubgroup_le _ _).2 (baseChangeLattice_mono hle)) ((Submodule.toAddSubgroup_le _ _).2 (baseChangeLattice_mono hML1))]`.
+
+Rewrite using `[← hL0E]`. Use `eq_of_dvd_of_mul_eq d1 d2 ?_ ?_` and prove the remaining obligations. Rewrite using `[tE, ← mul_pow, tF, ← pow_mul, ← Module.finrank_mul_finrank ℚ F E]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← mul_pow, tF]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ hm)`.
+-/
 theorem bc_index {j : ℕ} (e : Fin j → ι → F) (he : LinearIndependent F e)
     (M : Submodule (𝓞 F) (ι → F)) (hM : M.FG) (hle : Submodule.span (𝓞 F) (Set.range e) ≤ M)
     (hsp : (M : Set (ι → F)) ⊆ Submodule.span F (Set.range e)) :
@@ -614,17 +810,33 @@ section W5
 
 variable {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Conclude with `baseChangeMap_map_add x y`.
+-/
 theorem baseChangeMap_add_vectors (x y : ι → F) : bcMap (E := E) (x + y) = bcMap x + bcMap y := by
   exact baseChangeMap_map_add x y
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem baseChangeMap_smul_field (c : F) (x : ι → F) : bcMap (E := E) (c • x) = algebraMap F E c • bcMap x := by
   funext i
   simp [bcMap]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bcMap]`.
+-/
 theorem bcMap_zero : bcMap (E := E) (0 : ι → F) = 0 := by
   funext i
   simp [bcMap]
 
+/- English proof (translation)
+Set `N : Submodule F (ι → F)` to `{ carrier := {x | bcMap (E := E) x ∈ Submodule.span E (Set.range fun a => bcMap (E := E) (e a))} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, baseChangeMap_add_vectors] at *`. Conclude with `Submodule.add_mem _ ha hb`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, bcMap_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Use the proof step `smul_mem' := fun c {x} hx => by`. Simplify using `only [Set.mem_setOf_eq, baseChangeMap_smul_field] at *`. Conclude with `Submodule.smul_mem _ _ hx }`. Establish `hle : Submodule.span F (Set.range e) ≤ N` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact Submodule.subset_span ⟨a, rfl⟩)`.
+
+Conclude with `hle hm`.
+-/
 theorem baseChangeMap_mem_span_field {j : ℕ} (e : Fin j → ι → F) (m : ι → F)
     (hm : m ∈ Submodule.span F (Set.range e)) :
     bcMap (E := E) m ∈ Submodule.span E (Set.range fun a => bcMap (E := E) (e a)) := by
@@ -643,15 +855,30 @@ theorem baseChangeMap_mem_span_field {j : ℕ} (e : Fin j → ι → F) (m : ι 
     Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact Submodule.subset_span ⟨a, rfl⟩)
   exact hle hm
 
+/- English proof (translation)
+Conclude with `baseChangeLattice_span s`.
+-/
 theorem baseChangeLattice_span_image (s : Set (ι → F)) :
     bcLat (E := E) (Submodule.span (𝓞 F) s) = Submodule.span (𝓞 E) (bcMap (E := E) '' s) := by
   exact baseChangeLattice_span s
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hM`. Rewrite using `[baseChangeLattice_span_image]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`.
+-/
 theorem baseChangeLattice_fg (M : Submodule (𝓞 F) (ι → F)) (hM : M.FG) : (bcLat (E := E) M).FG := by
   obtain ⟨s, rfl⟩ := hM
   rw [baseChangeLattice_span_image]
   exact Submodule.fg_span (s.finite_toSet.image _)
 
+/- English proof (translation)
+Take `⟨b, hbs, hspan, hli⟩` from `exists_linearIndependent F (M : Set (ι → F))`. Establish `hfin : b.Finite` using `hli.setFinite`. Establish `: Finite b` using `hfin.to_subtype`. Take `⟨j, ⟨eqv⟩⟩` from `Finite.exists_equiv_fin b`. Use `⟨j, fun a => (eqv.symm a : ι → F), hli.comp _ eqv.symm.injective, fun a => hbs (eqv.symm a).2, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hx' : x ∈ Submodule.span F (M : Set (ι → F))` using `Submodule.subset_span hx`. Rewrite `hx'` using `[← hspan]`. Establish `hr : Set.range (fun a => (eqv.symm a : ι → F)) = b`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(eqv.symm a).2`. Introduce `hz`. Conclude with `⟨eqv ⟨z, hz⟩, by simp⟩`.
+
+Rewrite using `[hr]`. Conclude with `hx'`.
+-/
 theorem exists_linearIndependent_spanning (M : Submodule (𝓞 F) (ι → F)) [Finite ι] :
     ∃ (j : ℕ) (e : Fin j → ι → F), LinearIndependent F e ∧ (∀ a, e a ∈ M) ∧
       (M : Set (ι → F)) ⊆ Submodule.span F (Set.range e) := by
@@ -675,6 +902,35 @@ theorem exists_linearIndependent_spanning (M : Submodule (𝓞 F) (ι → F)) [F
 
 end W5
 
+/- English proof (translation)
+Introduce `F E ι _ _ _ _ _ _ _ _ _ _ _ XF XE hXF hXE hn M hM`. Express the relevant statement in the definitionally equal form `rkK (bcLat (E := E) M) = rkK M ∧ degT (Pi.basisFun E ι) XE (bcLat (E := E) M) = degT (Pi.basisFun F ι) XF M`. Take `⟨j, e, he, heM, hsp⟩` from `exists_linearIndependent_spanning M`. Establish `he'` using `bc_linIndep (E := E) e he`. Use `set e' : Fin j → ι → E := fun a => bcMap (E := E) (e a) with he'def`.
+
+Establish `hle : Submodule.span (𝓞 F) (Set.range e) ≤ M`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `heM a`. Establish `hle' : Submodule.span (𝓞 E) (Set.range e') ≤ bcLat (E` using `E) M := by`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨e a, heM a, rfl⟩`. Establish `hrF : rkK M = j`. Unfold `rkK`.
+
+Establish `: Submodule.span F (M : Set (ι → F)) = Submodule.span F (Set.range e)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Conclude with `hsp`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `heM a`. Rewrite using `[this, finrank_span_eq_card he, Fintype.card_fin]`. Establish `hrE : rkK (bcLat (E` using `E) M) = j := by`. Unfold `rkK`.
+
+Establish `: Submodule.span E (bcLat (E` using `E) M : Set (ι → E)) = Submodule.span E (Set.range e') := by`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Establish `hres : bcLat (E` using `E) M ≤ (Submodule.span E (Set.range e')).restrictScalars (𝓞 E) := by`. Unfold `bcLat`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `baseChangeMap_mem_span_field e m (hsp hm)`. Conclude with `hres`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hle' (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[this, finrank_span_eq_card he', Fintype.card_fin]`. Use `⟨hrE.trans hrF.symm, ?_⟩` and prove the remaining obligations. Take `⟨hF1, hF2⟩` from `htGram F (ι → F) ι (Pi.basisFun F ι) XF hXF j e he`.
+
+Take `⟨hE1, hE2⟩` from `htGram E (ι → E) ι (Pi.basisFun E ι) XE hXE j e' he'`. Establish `hF` using `hF2 M hM hle hrF`. Establish `hE` using `hE2 (bcLat (E := E) M) (baseChangeLattice_fg M hM) hle' hrE`. Establish `hidx` using `bc_index (E := E) e he M hM hle hsp`. Establish `hpos : 0 < ht (Pi.basisFun F ι) XF (Submodule.span (𝓞 F) (Set.range e))` using `(plLat F (ι → F) ι (Pi.basisFun F ι) XF hXF _ (Submodule.fg_span (Set.finite_range e))).2.2`.
+
+Establish `hposM : 0 < ht (Pi.basisFun F ι) XF M` using `(plLat F (ι → F) ι (Pi.basisFun F ι) XF hXF _ hM).2.2`. Use `set d := finrank F E with hd`. Establish `hdpos : 0 < d` using `finrank_pos`. Use `set iF : ℕ := (Submodule.span (𝓞 F) (Set.range e)).toAddSubgroup.relIndex M.toAddSubgroup with hiF`. Establish `hiF0 : (iF : ℝ) ≠ 0`.
+
+Introduce `h0`. Rewrite `hF` using `[h0, mul_zero]`. Conclude with `hpos.ne hF`. Establish `hprod : ∏ w : InfinitePlace E, (gramPl (Pi.basisFun E ι) XE w e').det.re = (∏ v : InfinitePlace F, (gramPl (Pi.basisFun F ι) XF v e).det.re) ^ d`. Rewrite using `[← bc_prod (E := E) (fun v => (gramPl (Pi.basisFun F ι) XF v e).det.re)]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[bc_gram_det XF XE hn w e]`. Establish `hht : ht (Pi.basisFun E ι) XE (bcLat (E` using `E) M) = ht (Pi.basisFun F ι) XF M ^ d := by`. Rewrite `hE` using `[hE1, hprod, ← hF1, ← hF, hidx, mul_pow]`. Move the coercions through the operations in `at hE`.
+
+Conclude with `mul_right_cancel₀ (pow_ne_zero _ hiF0) hE`. Unfold `degT`. Rewrite using `[hht, Real.log_pow, bc_nPl (F := F) (E := E)]`. Use `push_cast`. Rewrite using `[← hd]`.
+
+Establish `hd0 : (d : ℝ) ≠ 0` using `by exact_mod_cast hdpos.ne'`. Rewrite using `[show -((d : ℝ) * Real.log (ht (Pi.basisFun F ι) XF M)) = d * -Real.log (ht (Pi.basisFun F ι) XF M) by ring, show 2 * ((d : ℝ) * (nPl F : ℝ)) = d * (2 * (nPl F : ℝ)) by ring, mul_div_mul_left _ _ hd0]`.
+-/
 theorem base_change_slope : BaseChange := by
   intro F E ι _ _ _ _ _ _ _ _ _ _ _ XF XE hXF hXE hn M hM
   change rkK (bcLat (E := E) M) = rkK M ∧

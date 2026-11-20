@@ -9,6 +9,17 @@ noncomputable section
 open NumberField
 open GlobalTheory.SqTop
 namespace GlobalTheory.NormBigNe
+/- English proof (translation)
+Introduce and unpack `hP hI ⟨a, k⟩`. Use `⟨a, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨c, x, l⟩` from `k ε CF hCF`. Use `⟨c, x, fun C hC D large₂ he hx hR T Lc μ₀ hμ G δ t0 i j t Q P P' hb => ?_⟩` and prove the remaining obligations. Take `⟨Λ, hΛ, hne⟩` from `(l C hC D large₂ he hx hR T Lc μ₀ hμ G i j).1 t`.
+
+Establish `e` using `_root_.GlobalTheory.NormRatio.petersson_norm_bottom_theta_lift_eq hP (hI D) hR hμ G hb hΛ`. Establish `hrk` using `GlobalTheory.FunObj.SqNum.Model.bot_ranks (D := D) i j`. Establish `hPa` using `hb.rank.1`. Establish `hPd` using `hb.rank.2.2.1`. Establish `hre : 0 < (((P.d - P.a : ℕ) : ℂ) / 2).re`.
+
+Establish `: (0 : ℝ) < ((P.d - P.a : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < P.d - P.a)`. Rewrite using `[show (((P.d - P.a : ℕ) : ℂ) / 2) = ((((P.d - P.a : ℕ) : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`. Check the signs of the components of the expression. Introduce `h0`. Rewrite `e` using `[h0, Complex.ofReal_zero]`.
+
+Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun s hs => ?_) e.symm` and prove the remaining obligations. Unfold `GlobalTheory.NormRatio.normFactor`. Use `div_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ (GlobalTheory.NormRatio.std_mass_ne_zero D _)) (GlobalTheory.NormRatio.std_mass_ne_zero D _)) (GlobalTheory.NormRatio.fockSum_ne_zero D _ _ _ P.a_le)) ?_) (GlobalTheory.LFun.dSfun_ne_zero_of_re_pos _ _ _ hre)` and prove the remaining obligations. Conclude with `(GlobalTheory.NormExact.normConst_pos P.crv _ _).ne'` after adjusting the coercions. Conclude with `GlobalTheory.VacuumNorm.vacNorm_ne_zero D ⊤ δ t0 P.crv P.pt0 _ _` after adjusting the coercions.
+
+Take `⟨hs1, hs2⟩` from `Finset.mem_Icc.1 hs`. Conclude with `hne s hs1 (hs2.trans (by exact_mod_cast GlobalTheory.SqTop.squareBottomHalfRankSum_le_halfRank D i j))`.
+-/
 theorem big_theta_petersson_norm_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} _ _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) t (Q : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q),
     GlobalTheory.FunObj.SqNum.IsBottom G t i j (GlobalTheory.SqTop.modT G t) P P' → P.norm ≠ 0 := by
@@ -43,6 +54,9 @@ end
 section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.NormBigNe.big_theta_petersson_norm_ne_zero | exact _root_.GlobalTheory.NormBigNe.big_theta_petersson_norm_ne_zero | (intros; apply _root_.GlobalTheory.NormBigNe.big_theta_petersson_norm_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.big_theta_lift_ne_zero_of_petersson_norm : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.LNe → GlobalTheory.SqTop.GBig fun {D} _ _ _ G _ _ _ _ =>
   ∀ (δ t0 : ℂ) (i j : Fin D.R.m) t (Q : ℕ) (P P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q),
     GlobalTheory.FunObj.SqNum.IsBottom G t i j (GlobalTheory.SqTop.modT G t) P P' → P.norm ≠ 0 := by

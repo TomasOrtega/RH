@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Establish `e : g.appLE N ⊤ h ≫ f.appTop = (f ≫ g).appLE N ⊤ h'`. Establish `e0 : f.appTop = f.appLE ⊤ ⊤ le_rfl` using `Scheme.Hom.app_eq_appLE ..`. Rewrite using `[e0]`. Conclude with `Scheme.Hom.appLE_comp_appLE f g N ⊤ ⊤ h le_rfl`. Rewrite using `[← e]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem appLE_pull {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (N : C.Opens)
     (h : ⊤ ≤ g ⁻¹ᵁ N) (h' : ⊤ ≤ (f ≫ g) ⁻¹ᵁ N) (a : Γ(C, N)) :
     f.appTop.hom ((g.appLE N ⊤ h).hom a) = ((f ≫ g).appLE N ⊤ h').hom a := by
@@ -18,6 +23,9 @@ private theorem appLE_pull {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (N :
   rw [← e]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem appLE_congr {A C : Scheme.{0}} {f g : A ⟶ C} (e : f = g) (N : C.Opens)
     (h : ⊤ ≤ f ⁻¹ᵁ N) (h' : ⊤ ≤ g ⁻¹ᵁ N) (a : Γ(C, N)) :
     (f.appLE N ⊤ h).hom a = (g.appLE N ⊤ h').hom a := by
@@ -28,6 +36,9 @@ section
 variable {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z}
   {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ (a b : V' ⟶ D.Y) (ha : a = s ≫ secOf B α k y h₁) (hb : b = s ≫ secOf B β l y h₂) (h : a ≫ D.f = b ≫ D.f), D.u a b h = Units.map s.appTop.hom.toMonoidHom (D.u (secOf B α k y h₁) (secOf B β l y h₂) ((secOf_f B α k y h₁).trans (secOf_f B β l y h₂).symm))`. Introduce `a b ha hb h`. Substitute `ha hb` using the available equality. Conclude with `D.nat s _ _ _`. Conclude with `key _ _ (chartNat B α k s y h₁ h₁').2 (chartNat B β l s y h₂ h₂').2 _`.
+-/
 private theorem u_pull (B : Blow q i π D d) (α β : B.ι) (k l : Fin d) {V' V : Scheme.{0}}
     (s : V' ⟶ V) (y : V ⟶ Y) (h₁ : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) (h₂ : ⊤ ≤ y ⁻¹ᵁ (B.c β).C l)
     (h₁' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c α).C k) (h₂' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c β).C l) :
@@ -45,6 +56,9 @@ private theorem u_pull (B : Blow q i π D d) (α β : B.ι) (k l : Fin d) {V' V 
     exact D.nat s _ _ _
   exact key _ _ (chartNat B α k s y h₁ h₁').2 (chartNat B β l s y h₂ h₂').2 _
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `((chartNat B α k s y h₁ h₁').1 n).symm`.
+-/
 private theorem left_pull (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V' V : Scheme.{0}}
     (s : V' ⟶ V) (y : V ⟶ Y) (h₁ : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k)
     (h₁' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c α).C k) (G : Matrix (Fin d) (Fin d) Γ(V, ⊤)) (m : Fin d) :
@@ -55,6 +69,9 @@ private theorem left_pull (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V' V : 
   funext n
   exact ((chartNat B α k s y h₁ h₁').1 n).symm
 
+/- English proof (translation)
+Rewrite using `[u_pull B α β k l s y h₁ h₂ h₁' h₂', ← map_inv]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[(chartNat B β l s y h₂ h₂').1 m]`. Both sides reduce to the same expression.
+-/
 private theorem right_pull (B : Blow q i π D d) (α β : B.ι) (k l : Fin d) {V' V : Scheme.{0}}
     (s : V' ⟶ V) (y : V ⟶ Y) (h₁ : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) (h₂ : ⊤ ≤ y ⁻¹ᵁ (B.c β).C l)
     (h₁' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c α).C k) (h₂' : ⊤ ≤ (s ≫ y) ⁻¹ᵁ (B.c β).C l) (m : Fin d) :
@@ -71,6 +88,29 @@ private theorem right_pull (B : Blow q i π D d) (α β : B.ι) (k l : Fin d) {V
 
 end
 
+/- English proof (translation)
+Introduce `K _ W Z Y q i π D d B V y p hyp α β k l h₁ h₂ M hL`. Use function extensionality and compare the values at `m`. Use `sectionExt _ _ fun x => ?_` and prove the remaining obligations. Take `⟨U, N, hxU, -, n₁, n₂, hU, G, hG, hM⟩` from `hL x`. Establish `hxN : π (y x) ∈ N`.
+
+Establish `h` using `hU (show (⟨x, hxU⟩ : U) ∈ (⊤ : (U : Scheme.{0}).Opens) from trivial)`. Establish `e : π (y x) = i (p x)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hyp]`. Rewrite using `[e]`. Conclude with `h`.
+
+Establish `hyP : y x ∈ (B.c α).C k ⊓ (B.c β).C l ⊓ π ⁻¹ᵁ N` using `⟨⟨h₁ (show x ∈ (⊤ : V.Opens) from trivial), h₂ (show x ∈ (⊤ : V.Opens) from trivial)⟩, hxN⟩`. Take `⟨Q, hQ, hyQ, hQP⟩` from `exists_isAffineOpen_mem_and_subset hyP`. Establish `hq1 : ⊤ ≤ Q.ι ⁻¹ᵁ (B.c α).C k` using `fun z _ => (hQP z.2).1.1`. Establish `hq2 : ⊤ ≤ Q.ι ⁻¹ᵁ (B.c β).C l` using `fun z _ => (hQP z.2).1.2`. Establish `hqN : ⊤ ≤ (Q.ι ≫ π) ⁻¹ᵁ N` using `fun z _ => (hQP z.2).2`.
+
+Establish `E` using `gvNzd B Q.ι α β k l hq1 hq2 n₁ n₂ hqN G hG (nzdRes B β l Q hQ hq2)`. Set `U' : V.Opens` to `U ⊓ y ⁻¹ᵁ Q`. Establish `hxU' : x ∈ U'` using `⟨hxU, hyQ⟩`. Establish `hr : Set.range (U'.ι ≫ y) ⊆ Set.range Q.ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `z.2.2`. Set `s : (U' : Scheme.{0}) ⟶ Q` to `IsOpenImmersion.lift Q.ι (U'.ι ≫ y) hr`. Establish `hs : s ≫ Q.ι = U'.ι ≫ y` using `IsOpenImmersion.lift_fac _ _ _`. Set `r : (U' : Scheme.{0}) ⟶ U` to `V.homOfLE inf_le_left`.
+
+Establish `hr' : r ≫ U.ι = U'.ι` using `Scheme.homOfLE_ι _ _`. Establish `em : r ≫ U.ι ≫ p ≫ i = s ≫ Q.ι ≫ π`. Rewrite using `[← Category.assoc r, hr', ← Category.assoc s, hs, Category.assoc, hyp]`. Establish `hh : ⊤ ≤ (s ≫ Q.ι ≫ π) ⁻¹ᵁ N` using `fun z _ => hqN (show s z ∈ (⊤ : (Q : Scheme.{0}).Opens) from trivial)`. Establish `hh' : ⊤ ≤ (r ≫ U.ι ≫ p ≫ i) ⁻¹ᵁ N` using `em ▸ hh`.
+
+Establish `hM' : M.map U'.ι.appTop.hom = (G.map ((Q.ι ≫ π).appLE N ⊤ hqN).hom).map s.appTop.hom`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Establish `e1` using `congrFun (congrFun hM a) b`. Simplify using `only [Matrix.map_apply] at e1`.
+
+Establish `e2 : U'.ι.appTop.hom (M a b) = r.appTop.hom (U.ι.appTop.hom (M a b))`. Rewrite using `[← hr']`. Both sides reduce to the same expression. Rewrite using `[e2, e1, appLE_pull r _ N hU hh', appLE_pull s _ N hqN hh]`. Conclude with `appLE_congr em N _ _ _`.
+
+Establish `hs1 : ⊤ ≤ (s ≫ Q.ι) ⁻¹ᵁ (B.c α).C k` using `fun z _ => hq1 (show s z ∈ (⊤ : (Q : Scheme.{0}).Opens) from trivial)`. Establish `hs2 : ⊤ ≤ (s ≫ Q.ι) ⁻¹ᵁ (B.c β).C l` using `fun z _ => hq2 (show s z ∈ (⊤ : (Q : Scheme.{0}).Opens) from trivial)`. Establish `E1` using `congrArg s.appTop.hom (congrFun E m)`. Rewrite `E1` using `[left_pull B α k s Q.ι hq1 hs1 _ m, right_pull B α β k l s Q.ι hq1 hq2 hs1 hs2 m]`. Establish `key : ∀ (y₂ : (U' : Scheme.{0}) ⟶ Y) (_ : s ≫ Q.ι = y₂) (a₁ : ⊤ ≤ y₂ ⁻¹ᵁ (B.c α).C k) (a₂ : ⊤ ≤ y₂ ⁻¹ᵁ (B.c β).C l), ((G.map ((Q.ι ≫ π).appLE N ⊤ hqN).hom).map s.appTop.hom).mulVec (uV B α k y₂ a₁) m = ((((D.u (secOf B α k y₂ a₁) (secOf B β l y₂ a₂) ((secOf_f B α k y₂ a₁).trans ( …`.
+
+Introduce `y₂ e a₁ a₂`. Substitute `e` using the available equality. Conclude with `E1`. Establish `h₁' : ⊤ ≤ (U'.ι ≫ y) ⁻¹ᵁ (B.c α).C k` using `fun z _ => h₁ (show z.1 ∈ (⊤ : V.Opens) from trivial)`. Establish `h₂' : ⊤ ≤ (U'.ι ≫ y) ⁻¹ᵁ (B.c β).C l` using `fun z _ => h₂ (show z.1 ∈ (⊤ : V.Opens) from trivial)`.
+
+Use `⟨U', hxU', ?_⟩` and prove the remaining obligations. Rewrite using `[left_pull B α k U'.ι y h₁ h₁' M m, right_pull B α β k l U'.ι y h₁ h₂ h₁' h₂' m, hM']`. Conclude with `key _ hs _ _`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.gvChart :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {V : Scheme.{0}} (y : V ⟶ Y) (p : V ⟶ W), y ≫ π = p ≫ i → ∀ (α β : B.ι) (k l : Fin d) (h₁ : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k) (h₂ : ⊤ ≤ y ⁻¹ᵁ (B.c β).C l) (M : Matrix (Fin d) (Fin d) Γ(V, ⊤)), LocMat B α β p M → M.mulVec (uV B α k y h₁) = (((D.u (secOf B α k y h₁) (secOf B β l y h₂) ((secOf_f B α k y h₁).trans (secOf_f B β l y h₂).symm))⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) • uV B β l y h₂ := by
   intro K _ W Z Y q i π D d B V y p hyp α β k l h₁ h₂ M hL

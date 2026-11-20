@@ -8,11 +8,19 @@ namespace GlobalTheory.UnfoldLoss.LatVol
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `e`. Conclude with `⟨fun h j _ r _ => h j r, fun h j r => h j trivial r trivial⟩`.
+-/
 theorem varLat_eq_pi (G : Grid k) (ϖ : kˣ) (n : ℕ) :
     (varLat G ϖ n : Set (Vars G)) = Set.univ.pi fun _ => Set.univ.pi fun _ => cball (ϖ ^ n) := by
   ext e
   exact ⟨fun h j _ r _ => h j r, fun h j r => h j trivial r trivial⟩
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff U).mp hU`. Establish `h1 : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Use `haveI : MulArchimedean (ValueGroupWithZero k) := ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨N, hN⟩` from `exists_pow_lt₀ h1 γ`. Use `Filter.eventually_atTop.2 ⟨N, fun n hn z hz => hγ ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : valuation k z ≤ valuation k ((ϖ ^ n : kˣ) : k)` using `hz`. Rewrite `hz'` using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `(hz'.trans (pow_le_pow_of_le_one zero_le h1.le hn)).trans_lt hN`.
+-/
 theorem eventually_cball_subset {ϖ : kˣ} (hϖ : IsUnif ϖ) {U : Set k} (hU : U ∈ nhds (0 : k)) :
     ∀ᶠ n : ℕ in Filter.atTop, cball (ϖ ^ n) ⊆ U := by
   obtain ⟨γ, hγ⟩ := (IsValuativeTopology.mem_nhds_zero_iff U).mp hU
@@ -24,6 +32,17 @@ theorem eventually_cball_subset {ϖ : kˣ} (hϖ : IsUnif ϖ) {U : Set k} (hU : U
   rw [Units.val_pow_eq_pow_val, map_pow] at hz'
   exact (hz'.trans (pow_le_pow_of_le_one zero_le h1.le hn)).trans_lt hN
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ G ν hν ϖ hϖ`. Use `⟨fun s hs => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hts⟩` from `hs`. Establish `key : ∀ j, ∀ᶠ n : ℕ in Filter.atTop, (Set.univ.pi fun _ => cball (ϖ ^ n)) ⊆ t j` using `fun j => by`.
+
+Establish `hj` using `ht j`. Rewrite `hj` using `[nhds_pi, Filter.mem_pi']`. Take `⟨J, u, hu, hut⟩` from `hj`. Use `filter_upwards [Filter.eventually_all.2 fun r => eventually_cball_subset hϖ (hu r)] with n hn e he`. Conclude with `hut fun r _ => hn r (he r trivial)`.
+
+Take `⟨n, hn⟩` from `(Filter.eventually_all.2 key).exists`. Use `⟨n, fun e he => hts fun j _ => hn j fun r _ => he j r⟩` and prove the remaining obligations. Use `haveI := hν.1 haveI := secondCountable k`. Establish `h1 : ((distribHaarChar k ϖ : NNReal) : ℝ) = (resCard k : ℝ)⁻¹` using `nabs_uniformiser hϖ.irreducible rfl`. Establish `hv : varsVol G ν (varLat G ϖ n : Set (Vars G)) = ((distribHaarChar k ϖ ^ (n * varCount G) : NNReal) : ENNReal)`.
+
+Rewrite using `[varLat_eq_pi, varsVol, Measure.pi_pi]`. Simplify using `only [Measure.pi_pi, measure_cball, hν.2, mul_one, Finset.prod_const, Finset.card_univ, map_pow, varCount, ← Nat.card_eq_fintype_card, ENNReal.coe_pow, ← pow_mul, Finset.prod_pow_eq_pow_sum, Finset.mul_sum]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[varLat_eq_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball _`.
+
+Rewrite using `[hv]`. Conclude with `ENNReal.coe_ne_top`. Rewrite using `[Measure.real, hv, ENNReal.coe_toReal, NNReal.coe_pow, h1]`.
+-/
 theorem varLat_basis_open_vol : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
     (G : Grid k) (ν : Measure k), IsUnitVol ν → ∀ ϖ : kˣ, IsUnif ϖ →
     (∀ s ∈ nhds (0 : Vars G), ∃ n : ℕ, (varLat G ϖ n : Set (Vars G)) ⊆ s) ∧

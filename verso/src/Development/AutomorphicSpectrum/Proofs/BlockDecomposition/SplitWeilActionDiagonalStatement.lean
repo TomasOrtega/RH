@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SplitDiag.piS_diag | exact GlobalTheory.CompanionTheory.SplitDiag.piS_diag | (intros; apply GlobalTheory.CompanionTheory.SplitDiag.piS_diag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_weil_action_diagonal : GL2LocalData.ForES fun F _ _ _ _ _ _ _ χ => ∀ (c₁ : Fˣ →* ℂˣ) (Φ : F × F → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ →
   ∀ (a : Fˣ) (g : GL (Fin 2) F) (x : F × F),
     GL2LocalData.piS χ c₁ (dg2 a 1 * g) Φ x = ((c₁ a : ℂˣ) : ℂ) * mp a (1 / 2) * GL2LocalData.piS χ c₁ g Φ ((a : F) * x.1, x.2) := by

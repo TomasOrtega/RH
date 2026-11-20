@@ -10,6 +10,19 @@ open Matrix
 
 namespace Formalism.HermitianLatticeCounting.P
 
+/- English proof (translation)
+Introduce `n q h hq hqn hh`. Establish `hq' : (1:ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hqn' : 2 * (q:ℝ) ≤ n` using `by exact_mod_cast hqn`. Establish `e : Real.sqrt (2 * (q : ℝ)) = Real.sqrt 2 * Real.sqrt q` using `Real.sqrt_mul (by norm_num) _`. Rewrite using `[e]`.
+
+Use `set r := Real.sqrt 2 with hr`. Use `set s := Real.sqrt (q:ℝ) with hs'`. Establish `r2 : r * r = 2` using `Real.mul_self_sqrt (by norm_num)`. Establish `s2 : s * s = q` using `Real.mul_self_sqrt (by linarith)`. Establish `r0 : 0 < r` using `Real.sqrt_pos.mpr (by norm_num)`.
+
+Establish `s1 : 1 ≤ s` using `by rw [hs']; exact Real.one_le_sqrt.mpr hq'`. Establish `rU : r < 1.415`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hns : 2 * s ≤ n` using `by nlinarith`. Establish `hn0 : (0:ℝ) < n` using `by linarith`. Rewrite using `[lt_div_iff₀ (by positivity)]`. Establish `key : (2 * (n:ℝ) * (r * s) + 2 * (n:ℝ) ^ 2) * (r * s) = 2 * n * (r * r) * (s * s) + 2 * (n:ℝ) ^ 2 * r * s` using `by ring`. Rewrite using `[key, r2]`.
+
+Establish `a1 : 2 * (n:ℝ) * 2 * (s * s) ≤ 2 * (n:ℝ) ^ 2 * s`. Establish `: (n:ℝ) * s * (2 * s) ≤ (n:ℝ) * s * n` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `a2 : 2 * (n:ℝ) ^ 2 * r * s < 2.83 * ((n:ℝ) ^ 2 * s)`. Establish `: 0 < (n:ℝ) ^ 2 * s` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `a3 : 0 < (n:ℝ) ^ 2 * s` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem threshold_cusp_numeric : CuspidalityThreshold := by
   intro n q h hq hqn hh
   have hq' : (1:ℝ) ≤ q := by exact_mod_cast hq
@@ -41,9 +54,21 @@ theorem threshold_cusp_numeric : CuspidalityThreshold := by
   have a3 : 0 < (n:ℝ) ^ 2 * s := by positivity
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[Real.sqrt_eq_rpow, show (3:ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hq, Real.rpow_one]`.
+-/
 lemma rpow_three_half (q : ℝ) (hq : 0 < q) : q ^ ((3:ℝ) / 2) = q * Real.sqrt q := by
   rw [Real.sqrt_eq_rpow, show (3:ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add hq, Real.rpow_one]
 
+/- English proof (translation)
+Introduce `n q h hq`. Establish `hq' : (1:ℝ) ≤ q` using `by exact_mod_cast hq`. Rewrite using `[rpow_three_half _ (by linarith)]`. Use `set s := Real.sqrt (q:ℝ) with hs'`. Establish `s1 : 1 ≤ s` using `by rw [hs']; exact Real.one_le_sqrt.mpr hq'`.
+
+Establish `s0 : 0 < s` using `by linarith`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lt_div_iff₀ s0]`. Apply the tactic sequence `constructor <;> intro hx <;> nlinarith`. Introduce `hqn hh`.
+
+Establish `hqn' : (q:ℝ) ≤ n` using `by exact_mod_cast hqn`. Establish `hn0 : (0:ℝ) < n` using `by linarith`. Establish `a3 : 0 < (n:ℝ) ^ 2 * s` using `by positivity`. Establish `a1 : (n:ℝ) * q * s ≤ (n:ℝ) ^ 2 * s`. Establish `: (n:ℝ) * s * q ≤ (n:ℝ) * s * n` using `by gcongr`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `⟨?_, by nlinarith⟩` and prove the remaining obligations. Rewrite using `[lt_div_iff₀ s0]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem threshold_cusp_operator : ThreshCuspOp := by
   intro n q h hq
   have hq' : (1:ℝ) ≤ q := by exact_mod_cast hq
@@ -65,6 +90,13 @@ theorem threshold_cusp_operator : ThreshCuspOp := by
     rw [lt_div_iff₀ s0]
     nlinarith
 
+/- English proof (translation)
+Introduce `N ep X h0 hX`. Use extensionality with `a b`. Apply `hX` to reduce the goal to its premises. Unfold `q0 at h0`. Break down `Nat.min_eq_zero_iff.mp h0 with h | h` into its components or cases.
+
+Rewrite `h` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `ha` using `h (Finset.mem_univ a)`. Establish `hb` using `h (Finset.mem_univ b)`. Simplify using `at ha hb`. Rewrite using `[ha, hb]`.
+
+Rewrite `h` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `ha` using `h (Finset.mem_univ a)`. Establish `hb` using `h (Finset.mem_univ b)`. Simplify using `at ha hb`. Rewrite using `[ha, hb]`.
+-/
 theorem probability_zero : PZero := by
   intro N ep X h0 hX
   ext a b
@@ -82,6 +114,13 @@ theorem probability_zero : PZero := by
     simp at ha hb
     rw [ha, hb]
 
+/- English proof (translation)
+Introduce `C n f b₁ τ hC hb hτ`. Establish `e1 : 4 / (1 / (C * n * b₁)) = 4 * (C * n * b₁)` using `by rw [one_div, div_inv_eq_mul]`. Establish `s2 : Real.sqrt (n:ℝ) ^ 2 = n` using `Real.sq_sqrt (by positivity)`. Rewrite using `[e1, show 2 * n ^ 2 * f = 2 * (n ^ 2 * f) by ring, show 4 * n ^ 2 * f = 4 * (n ^ 2 * f) by ring, pow_mul (C * Real.sqrt n / τ ^ 2) 2, pow_mul (4 * C / τ) 4, ← mul_pow, ← mul_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+
+Establish `e2 : (C * Real.sqrt n / τ ^ 2) ^ 2 = C ^ 2 * n / τ ^ 4`. Rewrite using `[div_pow, mul_pow, s2]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (4 * C / τ) ^ 4 = 256 * C ^ 4 / τ ^ 4` using `by rw [div_pow]; ring`. Rewrite using `[e2, e3, mul_div_assoc', mul_div_assoc']`.
+
+Apply `div_le_div_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `hC2 : C ^ 2 ≤ 256 * C ^ 4`. Establish `: 1 ≤ C ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cube_multiplication : CubeMult := by
   intro C n f b₁ τ hC hb hτ
   have e1 : 4 / (1 / (C * n * b₁)) = 4 * (C * n * b₁) := by rw [one_div, div_inv_eq_mul]
@@ -100,6 +139,19 @@ theorem cube_multiplication : CubeMult := by
   calc 4 * (C * n * b₁) * (C ^ 2 * n) = (4 * C * (n:ℝ) ^ 2 * b₁) * C ^ 2 := by ring
     _ ≤ (4 * C * (n:ℝ) ^ 2 * b₁) * (256 * C ^ 4) := by gcongr
 
+/- English proof (translation)
+Introduce `C hC`. Take `⟨C0, hC0, H⟩` from `HD C hC`. Use `⟨C0 + C, by linarith, ?_⟩` and prove the remaining obligations. Introduce `n q f rd g b τ₁ τs ρ Kxx Bs D volG volK hn hq hqn hf hrd hg hb hτ hττ hD hvK hvG hρ0 hρ hK hB hvol`. Establish `hn' : (1:ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hf' : (1:ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hY0 : 0 < Ydat n f rd g b` using `by unfold Ydat; positivity`. Establish `hb10 : 0 ≤ b1 n q f b` using `by unfold b1; positivity`. Use `set Y := Ydat n f rd g b`. Use `set Z := Y ^ (C * (n : ℝ) ^ 2 * f) with hZ`.
+
+Establish `hZ0 : 0 < Z` using `Real.rpow_pos_of_pos hY0 _`. Establish `hvol' : volG / Z / volK ≤ (C * n * rd * g) ^ (n ^ 2 * f)`. Establish `e : volG / Z / volK = volG / volK / Z` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `one_le_pow₀` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `H n q f rd g b τ₁ τs ρ Kxx Bs D (volG / Z) volK hn hq hqn hf hrd hg hb hτ hττ hD hvK (by positivity) hρ0 hρ hK hB hvol'`. Establish `hτs : 0 < τs` using `hτ.trans hττ`. Establish `eY : Y ^ ((C0 + C) * (n : ℝ) ^ 2 * f) = Y ^ (C0 * (n : ℝ) ^ 2 * f) * Z`.
+
+Rewrite using `[hZ, ← Real.rpow_add hY0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eY]`.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deepChainV_of (HD : DeepChain) : DeepChainV := by
   intro C hC
   obtain ⟨C0, hC0, H⟩ := HD C hC
@@ -137,6 +189,13 @@ theorem deepChainV_of (HD : DeepChain) : DeepChainV := by
       gcongr
       linarith
 
+/- English proof (translation)
+Introduce `C n f rd g b volG volK hn hf hrd hg hb hvK hG hK`. Take `⟨hY2, -, -, -, hgY, -⟩` from `ydat_facts hn hf hrd hg hb`. Establish `hY0 : 0 < Ydat n f rd g b` using `by linarith`. Establish `e : Ydat n f rd g b ^ ((C + 2) * (n : ℝ) ^ 2 * f) = Ydat n f rd g b ^ (C * (n : ℝ) ^ 2 * f) * Ydat n f rd g b ^ (2 * n ^ 2 * f)`. Rewrite using `[← Real.rpow_natCast (Ydat n f rd g b) (2 * n ^ 2 * f), ← Real.rpow_add hY0]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, div_eq_mul_inv]`. Establish `h1 : volK⁻¹ ≤ Ydat n f rd g b ^ (2 * n ^ 2 * f)` using `hK.trans (pow_le_pow_left₀ (by linarith) hgY _)`.
+
+Establish `h2 : 0 ≤ volK⁻¹` using `by positivity`. Establish `h3 : 0 ≤ Ydat n f rd g b ^ (C * (n : ℝ) ^ 2 * f)` using `(Real.rpow_pos_of_pos hY0 _).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem volume_level : VolLevel := by
   intro C n f rd g b volG volK hn hf hrd hg hb hvK hG hK
   obtain ⟨hY2, -, -, -, hgY, -⟩ := ydat_facts hn hf hrd hg hb
@@ -153,8 +212,50 @@ theorem volume_level : VolLevel := by
   calc volG * volK⁻¹ ≤ Ydat n f rd g b ^ (C * (n : ℝ) ^ 2 * f) * volK⁻¹ := by gcongr
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+The claim follows from `deepChainV_of deep_region_chain`.
+-/
 theorem deep_region_chain_volume : DeepChainV := deepChainV_of deep_region_chain
 
+/- English proof (translation)
+Introduce `c hc`. Use `⟨c / 4, c / 2, by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `C Cg hC hCg`. Establish `hK0 : 0 ≤ Real.log (C * (Cg + 4))` using `Real.log_nonneg (by nlinarith)`. Use `⟨ ⌈Real.exp (4 * (5 + Real.log (C * (Cg + 4))) / c)⌉₊, ?_⟩` and prove the remaining obligations.
+
+Introduce `n q J a f rd g b hn hq ha haJ hJq hf hlf hb hg hgb hrd hllrd hllb`. Establish `hn1 : Real.exp (4 * (5 + Real.log (C * (Cg + 4))) / c) ≤ n` using `Nat.ceil_le.mp hn`. Establish `hn0 : (0:ℝ) < n` using `lt_of_lt_of_le (Real.exp_pos _) hn1`. Establish `hlog : 4 * (5 + Real.log (C * (Cg + 4))) / c ≤ Real.log n` using `(Real.le_log_iff_exp_le hn0).mpr hn1`. Establish `hlog' : 4 * (5 + Real.log (C * (Cg + 4))) ≤ c * Real.log n`.
+
+Rewrite `hlog` using `[div_le_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnN : 1 ≤ n`. Establish `: 0 < n` using `by exact_mod_cast hn0`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hn' : (1:ℝ) ≤ n` using `by exact_mod_cast hnN`. Establish `hf' : (1:ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hJ1 : (1:ℝ) ≤ J` using `by exact_mod_cast ha.trans haJ`. Establish `hLn0 : 0 ≤ Real.log n` using `Real.log_nonneg hn'`. Establish `hY` using `log_ydat hnN hf hrd hg hb`.
+
+Establish `hKe : C * (Cg + 4) = Real.exp (Real.log (C * (Cg + 4)))` using `(Real.exp_log (by positivity)).symm`. Generalize the expression as in `Real.log (C * (Cg + 4)) = K at *`. Establish `hx0 : 0 ≤ c / 4 * ((n:ℝ) * f * Real.log n)` using `by positivity`. Establish `hlrd : Real.log rd ≤ Real.exp n`. Break down `(Real.log_nonneg hrd).eq_or_lt with h0 | h0` into its components or cases.
+
+Rewrite using `[← h0]`. Check the signs of the components of the expression. Conclude with `(Real.log_le_iff_le_exp h0).mp hllrd`. Establish `hlb0 : 0 < Real.log b` using `Real.log_pos (by linarith)`. Establish `hlb : Real.log b ≤ Real.exp (c / 4 * ((n:ℝ) * f * Real.log n))` using `(Real.log_le_iff_le_exp hlb0).mp (by`.
+
+Establish `e : c / 4 * ((n:ℝ) * f * Real.log n) = c / 4 * n * f * Real.log n` using `by ring`. Rewrite using `[e]`. Conclude with `hllb)`. Establish `hlg : Real.log g ≤ Cg * Real.log b`. Use `Real.log_le_log (by linarith) hgb` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_rpow (by linarith)]`. Then use the resulting hypothesis. Establish `hne : (n:ℝ) ≤ Real.exp n` using `by have := Real.add_one_le_exp (n:ℝ); linarith`. Establish `hsn : Real.sqrt (n:ℝ) ≤ n` using `Real.sqrt_le_iff.mpr ⟨by positivity, by nlinarith⟩`. Establish `hlnn : Real.log n ≤ n` using `(Real.log_le_sub_one_of_pos hn0).trans (by linarith)`. Establish `hfe : (f:ℝ) ≤ Real.exp n`.
+
+Rewrite using `[← Real.log_le_iff_le_exp (by linarith)]; linarith`. Establish `hq2 : (q:ℝ) ^ 2 ≤ Real.exp n`. Establish `: (q:ℝ) ^ 2 ≤ n` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqn1 : (q:ℝ) ≤ n`.
+
+Establish `: q ≤ n` using `le_trans (Nat.le_self_pow (by norm_num) q) hq`. Conclude with `this` after adjusting the coercions. Generalize the expression as in `hxdef : c / 4 * ((n:ℝ) * f * Real.log n) = x4 at *`. Establish `hE1 : Real.exp n ≤ Real.exp (n + x4)` using `Real.exp_le_exp.mpr (by linarith)`. Establish `hE2 : Real.exp x4 ≤ Real.exp (n + x4)` using `Real.exp_le_exp.mpr (by linarith)`.
+
+Establish `hLY : Real.log (Ydat n f rd g b) ≤ (Cg + 4) * Real.exp (n + x4)`. Rewrite using `[hY]`. Establish `h1 : Cg * Real.log b ≤ Cg * Real.exp (n + x4)`. Apply `mul_le_mul_of_nonneg_left _ (by linarith); linarith` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hLY0 : 0 ≤ Real.log (Ydat n f rd g b)` using `Real.log_nonneg (by have := (ydat_facts hnN hf hrd hg hb).1; linarith)`. Generalize the expression as in `Real.log (Ydat n f rd g b) = LY at *`. Establish `hbr : C * f * (q:ℝ) ^ 2 * LY ≤ Real.exp (K + 3 * n + x4)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hKe, ← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hM0 : 0 ≤ K + 3 * n + x4` using `by positivity`. Establish `hpow : (C * f * (q:ℝ) ^ 2 * LY) ^ a ≤ Real.exp ((J:ℝ) * (K + 3 * n + x4))`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `pow_le_pow_left₀ (by positivity) hbr` to reduce the goal to its premises. Use `_ ≤ (Real.exp (K + 3 * n + x4)) ^ J := pow_le_pow_right₀ (Real.one_le_exp hM0) haJ`. Use `_ = _ := (Real.exp_nat_mul _ _).symm`. Establish `h2q : (2:ℝ) ^ q * 2 ≤ Real.exp ((q:ℝ) + 1)`. Establish `h2 : (2:ℝ) ≤ Real.exp 1` using `by have := Real.add_one_le_exp (1:ℝ); linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.exp ((q:ℝ) + 1) * Real.exp (-(c * J * n * f * Real.log n)) * Real.exp ((J:ℝ) * (K + 3 * n + x4)) := by gcongr`. Use `_ = Real.exp ((q:ℝ) + 1 + -(c * J * n * f * Real.log n) + (J:ℝ) * (K + 3 * n + x4)) := by`.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `_ ≤ _ := by`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `e1 : c * J * n * f * Real.log n = J * (4 * x4)` using `by rw [← hxdef]; ring`. Establish `e2 : c / 2 * n * f * Real.log n = 2 * x4` using `by rw [← hxdef]; ring`.
+
+Rewrite using `[e1, e2]`. Establish `h5 : (5 + K) * n ≤ x4`. Rewrite using `[← hxdef]`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : (q:ℝ) + 1 ≤ J * (n + 1)`.
+
+Establish `: 1 * ((n:ℝ) + 1) ≤ J * (n + 1)` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7 : (n:ℝ) + 1 + K + 3 * n ≤ x4`. Establish `: K * 1 ≤ K * n` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h8 : (J:ℝ) * (n + 1 + K + 3 * n) ≤ J * x4` using `by gcongr`. Establish `h9 : 1 * x4 ≤ J * x4` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem near_region_total_abs : NearTotalAbs := by
   intro c hc
   refine ⟨c / 4, c / 2, by positivity, by positivity, ?_⟩

@@ -9,6 +9,9 @@ noncomputable def UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicCompl
     fun {σ : Type u_1} {p : ℕ} [Fact (Nat.Prime p)] (F : MvPowerSeries σ ℂ_[p]) ↦
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
+/- English proof (translation)
+Introduce `p inst σ n`. Use `show ‖(MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) 0‖ ≤ (1 : ℝ)`. Rewrite using `[map_zero, norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.intMv_zero.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1}, UpperTheory.Reformulated.B.IntegralMvPowerSeriesOverPadicComplex.IntegralMv (0 : MvPowerSeries σ ℂ_[p]) := by
   intro p inst σ n

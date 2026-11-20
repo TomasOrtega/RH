@@ -15,6 +15,29 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.BarycentricSubdivision
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hO q ψ lab φ i hdom hψ hψt hlt hcar hφt hst`. Take `⟨w, hwt, hw⟩` from `GlobalTheory.T.exists_marking_centre_function O bar w0 hO q ψ lab i hdom hψ hψt hlt hcar`. Take `⟨hφp, hφs, hφc⟩` from `hst`. Establish `hcen : IsCentreSet bar q φ w`. Introduce `X _ _ _ _ hX`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `hw X hX`. Use `⟨h1, h2, fun m γ hγ β hβ hp β' hβ' hp' hw1 hw2 hc hc' => ?_⟩` and prove the remaining obligations. Take `⟨b, a, v, u, -, hv, hcov, -, -, hvl, hoff, -⟩` from `hφc X hX m γ hγ`. Establish `inv : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 → InRCone γ β → InRCone v β`. Introduce `β hβ hp hw1 hc`.
+
+Assume the negation of the conclusion as `hn`. Use `hoff β hβ hp (inRCone_trans hcov hc) hn` as an intermediate fact. Rewrite `this` using `[h3 β hβ hp hw1]`. Conclude with `lt_irrefl _ this`. Conclude with `h4 b v hv hvl β hβ hp β' hβ' hp' hw1 hw2 (inv β hβ hp hw1 hc) (inv β' hβ' hp' hw2 hc')`.
+
+Take `⟨φ', hp', ht', hsub, hs1, hs2, hs3⟩` from `GlobalTheory.T.exists_star_subdivision O bar w0 hO q φ w hdom hφp hφt hwt hcen`. Use `⟨φ', ht', hp', hsub.trans hφs, fun X _ _ _ _ hX n γ' hγ' => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `hw X hX`. Establish `hnat : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → ∃ n : ℕ, lab.evalZ β = n` using `fun β hβ hp => ⟨_, hcar X hX β hβ hp⟩`. Establish `core : ∀ (b a : ℕ) (v : Fin b → LinearMap.BilinForm ℤ X) (u : Fin a → LinearMap.BilinForm ℤ X), IsCell bar φ (Fin.append v u) → IsCell bar ψ v → Function.Injective (fun j => lab.evalZ (u j)) → (∀ j, ((i + 1 : ℕ) : ℝ) < lab.evalZ (u j)) → (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → …`.
+
+Introduce `b a v u hγ hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 hin0`. Conclude with `GlobalTheory.T.starSubdivision_barycentre_cell_next_stage O bar ψ lab φ' w i X b a v u hv hinj hlu hvl hoff hind hnat (fun m' s h hh => GlobalTheory.T.cell_face_restriction O bar hO q ψ hψ X hX (hdom X) b v hv m' s h hh) h5 (fun β hβ hp β' hβ' hp' hw1 hw2 hc hc' => (hcen X hX).2. …`. Break down `hs3 X hX n γ' hγ' with ⟨m, γ, hγ, hno, hcov'⟩ | ⟨m, δ, β₀, m', s, h, hδ, hb0, hp0, hw0, hin0, hcut, hpos, hcov'⟩` into its components or cases. Take `⟨b, a, v, u, hG, hv, hcov, hinj, hlu, hvl, hoff, hind⟩` from `hφc X hX m γ hγ`. Distinguish the cases in `hc : ∃ β₀ ∈ balForms bar X, (∀ y, 0 ≤ β₀ y y) ∧ w.evalZ β₀ = 1 ∧ InRCone (Fin.append v u) β₀`.
+
+Take `⟨β₀, hb0, hp0, hw0, hin0⟩` from `hc`. Establish `hnin : ¬ InRCone γ β₀` using `fun hh => by`. Use `hno β₀ hb0 hp0 hh` as an intermediate fact. Rewrite `this` using `[hw0]`. Conclude with `one_ne_zero this`.
+
+Take `⟨m', s, h, hcut, hpos, hsub'⟩` from `reduce_of_not_mem hG hγ hcov hb0 hp0 hin0 hnin`. Take `⟨b', a', v', u', r1, r2, r3, r4, r5, r6, r7, r8⟩` from `core b a v u hG hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 hin0 m' s h hcut hpos`. Conclude with `⟨b', a', v', u', r1, r2, fun j => inRCone_trans r3 (inRCone_cons_of (n := 0) β₀ (inRCone_trans hsub' (hcov' j))), r4, r5, r6, r7, r8⟩`. Use `push_neg at hc`. Establish `hw0 : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone (Fin.append v u) β → w.evalZ β = 0` using `fun β hβ hp hin => (h1 β hβ hp).resolve_right fun e => hc β hβ hp e hin`.
+
+Use `⟨b, a, v, u, hs1 X hX _ _ hG hw0, hv, fun j => inRCone_trans hcov (hcov' j), hinj, fun j => ?_, fun β hβ hp hin => ?_, fun β hβ hp hin hn => ?_, hind⟩` and prove the remaining obligations. Use `hlu j` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, hk⟩` from `hnat β hβ hp`.
+
+Establish `hle` using `hvl β hβ hp hin`. Rewrite `hle`, the goal using `[hk]`. Establish `hle' : k ≤ i + 1` using `by exact_mod_cast hle`. Break down `hle'.lt_or_eq with hl | hl` into its components or cases. Conclude with `Nat.lt_succ_iff.1 hl` after adjusting the coercions.
+
+Take `⟨β₁, hb1, hp1, hw1, hin1⟩` from `h5 b v hv β hβ hp hin (by rw [hk, hl])`. Conclude with `absurd (inRCone_append_left v u hin1) (hc β₁ hb1 hp1 hw1)`. Use `hoff β hβ hp hin hn` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨b, a, v, u, hG, hv, hcov, hinj, hlu, hvl, hoff, hind⟩` from `hφc X hX m δ hδ`. Take `⟨m'', s', h', hcut', hpos', hsub'⟩` from `reduce_of_mem hG hδ hcov hin0 hcut hpos`. Take `⟨b', a', v', u', r1, r2, r3, r4, r5, r6, r7, r8⟩` from `core b a v u hG hv hinj hlu hvl hoff hind β₀ hb0 hp0 hw0 (inRCone_trans hcov hin0) m'' s' h' hcut' hpos'`. Conclude with `⟨b', a', v', u', r1, r2, fun j => inRCone_trans r3 (inRCone_trans (inRCone_cons_mono β₀ hsub') (hcov' j)), r4, r5, r6, r7, r8⟩`.
+-/
 theorem baryStep : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ lab φ : InvFun O) (i : ℕ), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → IsTwG w0 lab → IsCarrierDim bar q ψ lab → IsTwG w0 φ → IsBaryStage bar q ψ lab φ (i + 1) → ∃ φ' : InvFun O, IsTwG w0 φ' ∧ IsBaryStage bar q ψ lab φ' i := by
   intro O _ _ _ _ bar w0 hO q ψ lab φ i hdom hψ hψt hlt hcar hφt hst
   obtain ⟨w, hwt, hw⟩ := GlobalTheory.T.exists_marking_centre_function O bar w0 hO q ψ lab i hdom hψ hψt hlt hcar

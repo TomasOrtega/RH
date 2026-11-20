@@ -20,14 +20,23 @@ section Lat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {X : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul]`.
+-/
 theorem sp_epsMul_one (R : Type) [CommRing R] : spMap (epsMul (1 : R)) = 𝟙 _ := by
   rw [← Spec.map_id]
   congr 1
   ext r <;> simp [epsMul]
 
+/- English proof (translation)
+Introduce and unpack `v ⟨xO, hx, vO, hv, e⟩`. Use `⟨xO, hx, 0, vO, hv, by rw [pow_zero, sp_epsMul_one, Category.id_comp, e], fun n c g _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem latDR_subset_latHT {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (t : SAB H X) {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] (p : ℕ) (x : Sp C ⟶ X) : latDR t x ⊆ latHT t p x := by
   rintro v ⟨xO, hx, vO, hv, e⟩
@@ -47,18 +56,47 @@ def torusChar {O : Type} [CommRing O] (x : Sp O ⟶ X) (q : ℕ) (a : 𝓞 E) : 
   nat B B' _ _ _ _ _ _ φ g g' _ h :=
     (GlobalTheory.Diag.left_eq_iff φ.toRingHom (by rw [← Category.assoc, sp_comp]; congr 2; exact φ.comp_algebraMap.symm) g' g).1 h a
 
+/- English proof (translation)
+Use `(congrArg TrivSqZeroExt.snd (GlobalTheory.Diag.charVal_epsVec c a)).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem torusChar_epsVec {O : Type} [CommRing O] (x : Sp O ⟶ X) (q : ℕ) (a : 𝓞 E) (I : Ideal O) (c : 𝓞 E →+ O ⧸ I) :
     (((torusChar H x q a).χ (DualNumber (O ⧸ I)) (GlobalTheory.Diag.epsVec _ c) : (DualNumber (O ⧸ I))ˣ) :
       DualNumber (O ⧸ I)).snd = c a := by
   refine (congrArg TrivSqZeroExt.snd (GlobalTheory.Diag.charVal_epsVec c a)).trans ?_
   simp
 
+/- English proof (translation)
+Rewrite using `[sp_comp, sp_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dual_base {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     spMap (dualMap f) ≫ spMap (algebraMap A (DualNumber A)) = spMap (algebraMap B (DualNumber B)) ≫ spMap f := by
   rw [sp_comp, sp_comp]
   congr 1
   ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `Set.Subset.antisymm ?_ (latDR_subset_latHT _ p x)` and prove the remaining obligations. Introduce and unpack `v ⟨xO, hx, m, vO, hv, e, hd⟩`. Set `O : Type` to `intO C`. Set `w : Over.mk (spMap (algebraMap O (DualNumber O)) ≫ xO) ⟶ splitTorus X (𝓞 E)` to `Over.homMk vO hv.1`. Establish `hb : xO = spMap (TrivSqZeroExt.fstHom O O O).toRingHom ≫ spMap (algebraMap O (DualNumber O)) ≫ xO`.
+
+Rewrite using `[← Category.assoc, GlobalTheory.Diag.fstHom_base, Category.id_comp]`. Take `⟨c, hc⟩` from `(GlobalTheory.Diag.exists_epsVec_iff w).2 ((GlobalTheory.Diag.reduces_iff hb w).1 hv.2)`. Establish `hdiv : ∀ a, (p : O) ^ m ∣ c a` using `fun a => by`. Set `I : Ideal O` to `Ideal.span {(p : O) ^ m}`. Establish `hg : spMap (algebraMap O (DualNumber (O ⧸ I))) ≫ xO = spMap (dualMap (Ideal.Quotient.mk I)) ≫ spMap (algebraMap O (DualNumber O)) ≫ xO`.
+
+Rewrite using `[← Category.assoc, sp_comp]`. Use `congr 2`. Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`. Establish `h` using `hd m (torusChar H xO _ a) (GlobalTheory.Diag.epsVec _ ((Ideal.Quotient.mk I).toAddMonoidHom.comp c)) (by`. Express the relevant statement in the definitionally equal form `_ = spMap _ ≫ w.left`.
+
+Rewrite using `[← hc]`. Use `(GlobalTheory.Diag.left_eq_iff _ hg _ _).2 fun b => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Diag.charVal_epsVec, GlobalTheory.Diag.charVal_epsVec]`. Apply the tactic sequence `ext <;> simp [dualMap])`. Rewrite `h` using `[torusChar_epsVec]`.
+
+Establish `h0 : (p : O ⧸ I) ^ m = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h` using `[h0, Ideal.span_singleton_zero, Ideal.mem_bot]`. Conclude with `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 h)`.
+
+Use `choose d hdd using hdiv`. Establish `hp' : (p : O) ^ m ≠ 0` using `pow_ne_zero _ fun h => hp (by simpa using congrArg (intO C).subtype h)`. Set `c' : 𝓞 E →+ O` to `AddMonoidHom.mk' d fun a b => mul_left_cancel₀ hp' (by rw [mul_add, ← hdd, ← hdd, ← hdd, map_add])`. Set `w' : Over.mk (spMap (algebraMap O (DualNumber O)) ≫ xO) ⟶ splitTorus X (𝓞 E)` to `GlobalTheory.Diag.epsVec _ c'`. Use `⟨xO, hx, w'.left, ⟨Over.w w', (GlobalTheory.Diag.reduces_iff hb w').2 ((GlobalTheory.Diag.exists_epsVec_iff w').1 ⟨_, rfl⟩)⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : vO = spMap (epsMul ((p : O) ^ m)) ≫ w'.left`. Express the relevant statement in the definitionally equal form `w.left = _`. Rewrite using `[← hc]`. Use `(GlobalTheory.Diag.left_eq_iff _ ?_ _ _).2 fun b => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, sp_comp]`.
+
+Use `congr 2`. Apply the tactic sequence `ext r <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[GlobalTheory.Diag.charVal_epsVec, GlobalTheory.Diag.charVal_epsVec, hdd]`. Apply the tactic sequence `ext <;> simp [epsMul, c', mul_comm]`. Establish `h2 : spMap (epsMul ((p : C) ^ m)⁻¹) ≫ spMap (epsMul ((p : C) ^ m)) = 𝟙 _`.
+
+Rewrite using `[sp_comp, ← sp_epsMul_one]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsMul, hp]`. Establish `h3 : spMap (epsMul ((p : C) ^ m)⁻¹) ≫ spMap (dualMap (intO C).subtype) ≫ spMap (epsMul ((p : O) ^ m)) = spMap (dualMap (intO C).subtype)`. Rewrite using `[sp_comp, sp_comp]`.
+
+Use `congr 1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Use `ext`. Simplify using `[epsMul, dualMap, O]`. Simplify using `[epsMul, dualMap, O]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← Category.id_comp v, ← h2, Category.assoc, ← e, h1]`. Conclude with `(congrArg (· ≫ w'.left) h3.symm).trans (by simp only [Category.assoc]; rfl)`.
+-/
 theorem latHT_torus {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (p : ℕ) (hp : (p : C) ≠ 0)
     (x : Sp C ⟶ X) : latHT (torus H X) p x = latDR (torus H X) x := by
   refine Set.Subset.antisymm ?_ (latDR_subset_latHT _ p x)
@@ -124,6 +162,9 @@ section Pts
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `h : y ≫ genStr Z = spMap (Spec.preimage (y ≫ genStr Z)).hom` using `(Spec.map_preimage _).symm`. Take `⟨f⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z Ω _ y h`. Conclude with `⟨⟨_, y, h, f.v, f.tan, f.eig, f.basis⟩, rfl⟩`.
+-/
 theorem exists_flagPt {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β) (Ω : Type) [Field Ω]
     (y : Sp Ω ⟶ gen Z) : ∃ z : FlagPt Z Ω, z.y = y := by
   have h : y ≫ genStr Z = spMap (Spec.preimage (y ≫ genStr Z)).hom := (Spec.map_preimage _).symm
@@ -152,6 +193,15 @@ instance intO_frac (C : Type) [NormedField C] [IsUltrametricDist C] : IsFraction
   · exact ⟨1, ⟨z⁻¹, show ‖z⁻¹‖ ≤ 1 by rw [norm_inv]; exact inv_le_one_of_one_le₀ (le_of_not_ge h)⟩,
       by rw [map_one, one_div]; exact (inv_inv z).symm⟩
 
+/- English proof (translation)
+Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Set `φ : 𝓞 c.F →+* C` to `(Spec.preimage (x ≫ Z.s)).hom`. Establish `hφ : ∀ a, φ a ∈ intO C` using `fun a => by`. Establish `h1 : IsIntegral (intO C) (φ a)` using `(RingOfIntegers.isIntegral a).map_of_comp_eq (Int.castRingHom _) φ (RingHom.ext_int _ _)`. Set `_ : GCDMonoid (intO C)` to `IsBezout.toGCDDomain _`.
+
+Establish `: IsIntegrallyClosed (intO C)` using `GCDMonoid.toIsIntegrallyClosed`. Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := intO C) (K := C)).1 h1`. Conclude with `hb ▸ b.2`. Establish `hv : ValuativeCriterion.Existence Z.s`. Establish `h` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed Z.s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) Z.s)`.
+
+Conclude with `h.1`. Set `S : ValuativeCommSq Z.s` to `{ R := intO C, K := C, i₁ := x, i₂ := spMap (φ.codRestrict _ hφ) commSq := ⟨by`. Rewrite using `[← Spec.map_preimage (x ≫ Z.s)]`. Conclude with `Spec.map_comp (CommRingCat.ofHom (φ.codRestrict _ hφ)) (CommRingCat.ofHom (intO C).subtype)⟩ }`. Take `⟨⟨xO, h1, -⟩⟩` from `(hv S).exists_lift`.
+
+Set `p : tEpsG xO ⟶ Over.mk xO` to `Over.homMk (spMap (algebraMap _ (DualNumber _))) rfl`. Use `⟨_, xO, h1, (1 : tEpsG xO ⟶ Z.t.G).left, ⟨Over.w _, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_one p, Over.comp_left, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(_ ≫ spMap _) ≫ _ = _`. Rewrite using `[GlobalTheory.Diag.fstHom_base, Category.id_comp]`.
+-/
 theorem latDR_nonempty (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] (x : Sp C ⟶ Z.X) : (latDR Z.t x).Nonempty := by
   have := isProper_toroidalModel_structureMap Z
@@ -182,12 +232,18 @@ theorem latDR_nonempty (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {C : Type} [
 
 end Pts
 
+/- English proof (translation)
+Establish `h : ({a, b} : Multiset ℝ) = a ::ₘ b ::ₘ 0` using `rfl`. Simplify using `only [h, polar, Multiset.powerset_cons, Multiset.powerset_zero]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polar_sq (a b : ℝ) : polar (fun x : ℝ => x ^ 2) {a, b} = a * b := by
   have h : ({a, b} : Multiset ℝ) = a ::ₘ b ::ₘ 0 := rfl
   simp only [h, polar, Multiset.powerset_cons, Multiset.powerset_zero]
   simp
   ring
 
+/- English proof (translation)
+Establish `h : ({a, b, c} : Multiset ℝ) = a ::ₘ b ::ₘ c ::ₘ 0` using `rfl`. Simplify using `only [h, polar, Multiset.powerset_cons, Multiset.powerset_zero]`. Simplify using `[Nat.factorial]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polar_cube (a b c : ℝ) : polar (fun x : ℝ => x ^ 3) {a, b, c} = a * b * c := by
   have h : ({a, b, c} : Multiset ℝ) = a ::ₘ b ::ₘ c ::ₘ 0 := rfl
   simp only [h, polar, Multiset.powerset_cons, Multiset.powerset_zero]
@@ -200,6 +256,9 @@ def arReal (Tau : Type) (N g : ℕ) : ArIn Tau N g Unit where
   root a R _ _ := if a 2 then R else 1
   whole _ _ _ _ := 1
 
+/- English proof (translation)
+Establish `: (MvPolynomial.X a ^ d : MvPolynomial A ℝ) = MvPolynomial.basisMonomials A ℝ (Finsupp.single a d)`. Simplify using `[MvPolynomial.X_pow_eq_monomial]`. Rewrite using `[this, numL, Module.Basis.constr_basis]`. Simplify using `[Multiset.nsmul_singleton]`.
+-/
 theorem numL_pow {A : Type} (num : Multiset A → ℝ) (d : ℕ) (a : A) :
     numL num d (MvPolynomial.X a ^ d) = num (Multiset.replicate d a) := by
   have : (MvPolynomial.X a ^ d : MvPolynomial A ℝ) = MvPolynomial.basisMonomials A ℝ (Finsupp.single a d) := by
@@ -207,6 +266,9 @@ theorem numL_pow {A : Type} (num : Multiset A → ℝ) (d : ℕ) (a : A) :
   rw [this, numL, Module.Basis.constr_basis]
   simp [Multiset.nsmul_singleton]
 
+/- English proof (translation)
+Rewrite using `[ArIn.arDeg, LinearMap.sum_apply, Fintype.sum_unique]`. Express the relevant statement in the definitionally equal form `numL _ _ (MvPolynomial.rename _ _) = _`. Rewrite using `[map_pow, MvPolynomial.rename_X, numL_pow]`. Simplify using `[arReal, ArIn.ind, -Multiset.replicate_succ]`.
+-/
 theorem arReal_deg {Tau : Type} [Fintype Tau] {N g : ℕ} (x : Tau × Fin N) (S : Finset ℕ) (R : ℝ) :
     (arReal Tau N g).arDeg S R (MvPolynomial.X x ^ (Formalism.DegreeFormula.dimFl Tau N + 1)) =
       (if 2 ∈ S then R else 1) ^ (Formalism.DegreeFormula.dimFl Tau N + 1) := by
@@ -233,6 +295,15 @@ def admissibleStageOfPackage : AdmSt D N j jC :=
 
 end Stages
 
+/- English proof (translation)
+Use `isProper_genStr Z` as an intermediate fact. Establish `: CompactSpace (gen Z)` using `QuasiCompact.compactSpace_of_compactSpace (genStr Z)`. Take `⟨x, -, hx⟩` from `(isClosed_univ (X := gen Z)).exists_closed_singleton Set.univ_nonempty`. Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Set `φ` to `Spec.preimage ((gen Z).fromSpecResidueField x ≫ genStr Z)`.
+
+Establish `h1 : IsFinite (Spec.map φ)`. Rewrite using `[Spec.map_preimage]`. Conclude with `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 inferInstance`. Set `k : Type` to `(gen Z).residueField x`. Set `_ : Algebra c.F k` to `φ.hom.toAlgebra`.
+
+Establish `: Module.Finite c.F k` using `(IsFinite.SpecMap_iff φ).1 h1`. Establish `: Algebra.IsAlgebraic ℚ c.F` using `have := c.fin`. Use `inferInstance`. Set `em : c.F →+* Qb` to `(IntermediateField.inclusion (le_algebraicClosure ℚ ℂ c.F)).toRingHom`. Set `_ : Algebra c.F Qb` to `em.toAlgebra`.
+
+Establish `: IsAlgClosed Qb` using `(algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `ψ : k →ₐ[c.F] Qb` to `IsAlgClosed.lift`. Take `⟨z, -⟩` from `exists_flagPt Z Qb (spMap ψ.toRingHom ≫ (gen Z).fromSpecResidueField x)`. Conclude with `⟨z⟩`.
+-/
 theorem nonempty_flagPt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Z : Model Xo c β) [Nonempty (gen Z)] : Nonempty (FlagPt Z Qb) := by
@@ -260,6 +331,11 @@ section Sign
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `le_csInf hne ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨cf, h0, h1, ⟨w, hw, hc⟩, rfl⟩`. Establish `hb : BddBelow (Guard.grSet t x Λ' u i)` using `⟨0, by rintro _ ⟨cf, -, -, -, rfl⟩; positivity⟩`. Use `csInf_le hb ⟨fun k => a * cf k, mul_ne_zero ha h0, fun k hk => by simp [h1 k hk], ⟨_, h w hw, Guard.comb_smul hu hc a⟩, rfl⟩` as an intermediate fact. Establish `hp : 0 < ‖a‖` using `norm_pos_iff.2 ha`.
+
+Rewrite using `[Guard.grNorm_eq]`. Use `(mul_le_mul_of_nonneg_left this hp.le).trans_eq ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem grNorm_le_of_smul {X : Scheme.{0}} {t : SAB H X} {C : Type} [NontriviallyNormedField C] {x : Sp C ⟶ X}
     {Λ Λ' : Set (Sp (DualNumber C) ⟶ t.G.left)} {m : ℕ} {u : Fin m → (Sp (DualNumber C) ⟶ t.G.left)}
     (hu : ∀ k, IsTanAtG t x (u k)) {a : C} (ha : a ≠ 0) (h : ∀ w ∈ Λ, spMap (epsMul a) ≫ w ∈ Λ') (i : Fin m)
@@ -275,6 +351,23 @@ theorem grNorm_le_of_smul {X : Scheme.{0}} {t : SAB H X} {C : Type} [Nontriviall
   rw [norm_mul]
   field_simp
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) < p` using `Nat.one_lt_cast.2 hp.out.one_lt`. Establish `hlog : 0 < Real.log p` using `Real.log_pos h1`. Distinguish the cases in `hk : k < Dw.mult τ`. Use `swap`. Simplify using `only [FlagPt.lnLie, dif_neg hk, sub_self]`.
+
+Conclude with `⟨le_rfl, mul_nonneg (by rw [one_div, inv_nonneg]; linarith) hlog.le⟩`. Simplify using `only [FlagPt.lnLie, dif_pos hk]`. Establish `hu` using `fun k => GlobalTheory.FactorDepth.isTanAtG_map _ io (y.tan τ k)`. Establish `hi` using `(Guard.indep_u y τ).map io (y.tan τ)`. Take `⟨n1, p1⟩` from `Guard.grNorm_latDR_pos Z _ hu hi ⟨k, hk⟩`.
+
+Take `⟨n2, p2⟩` from `Guard.grNorm_latHT_pos Z hB p _ hu hi ⟨k, hk⟩`. Establish `hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹` using `by simpa using PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `hp1 : 0 < p - 1` using `Nat.sub_pos_of_lt hp.out.one_lt`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq (p : ℂ_[p]) hp1`. Establish `hc : ((p - 1 : ℕ) : ℝ) = (p : ℝ) - 1` using `by rw [Nat.cast_sub hp.out.one_le, Nat.cast_one]`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow hp1.ne']`. Conclude with `hp.out.ne_zero (Nat.cast_eq_zero.1 ha.symm)`. Establish `hla : Real.log ‖a‖ = -(1 / ((p : ℝ) - 1)) * Real.log p`.
+
+Establish `: ((p : ℝ) - 1) * Real.log ‖a‖ = - Real.log p`. Rewrite using `[← hc, ← Real.log_pow, ← norm_pow, ha, hn, Real.log_inv]`. Establish `h2 : (p : ℝ) - 1 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hna : ‖a‖ = (p : ℝ) ^ (-(1 / ((p : ℝ) - 1)))`. Rewrite using `[Real.rpow_def_of_pos (by linarith), mul_comm, ← hla, Real.exp_log (norm_pos_iff.2 ha0)]`. Establish `e1` using `grNorm_le_of_smul hu (a := 1) one_ne_zero (Λ' := latHT Z.t p _) (fun w hw => by`. Rewrite using `[sp_epsMul_one, Category.id_comp]`. Conclude with `latDR_subset_latHT _ p _ hw) _ n1`.
+
+Take `⟨xO, hx, hx'⟩` from `Guard.existsUnique_ext Z (spMap io ≫ y.y ≫ genι Z)`. Establish `e2` using `grNorm_le_of_smul hu ha0 (Λ' := latDR Z.t _) (fun w hw => by`. Use `hB E H _ Z.t p ℂ_[p] hn xO (fun b hb => hx' b (hb.trans hx)) w (hx ▸ hw) a hna.le` as an intermediate fact. Conclude with `hx ▸ this) _ n2`. Rewrite `e1` using `[norm_one, _root_.one_mul]`.
+
+Establish `l1` using `Real.log_le_log p2 e1`. Establish `l2` using `Real.log_le_log (mul_pos (norm_pos_iff.2 ha0) p1) e2`. Rewrite `l2` using `[Real.log_mul (norm_ne_zero_iff.2 ha0) p1.ne', hla]`. Simplify using `only [lat]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem lnLie_sub (hB : HTBoundSt) {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {Ω : Type} [Field Ω] (y : FlagPt Z Ω)
     (p : ℕ) [hp : Fact p.Prime] (io : Ω →+* ℂ_[p]) (τ : E →+* ℂ) (k : ℕ) :
     0 ≤ y.lnLie io p false τ k - y.lnLie io p true τ k ∧
@@ -325,6 +418,11 @@ section Phi
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ)
 
+/- English proof (translation)
+Rewrite using `[phi, Guard.lnAt_eq, Guard.lnAt_eq]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : (x.2 : ℕ) < S.Dw.p` using `by rw [S.p_eq]; exact h`. Use `lnLie_sub hB y p (iotaP p) (DV.tauEmb D x.1) x.2` as an intermediate fact. Simplify using `only [FlagPt.lnRoot, if_pos h', if_true, Bool.false_eq_true, if_false]`.
+
+Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Establish `h' : ¬ (x.2 : ℕ) < S.Dw.p` using `by rw [S.p_eq]; exact h.not_gt`. Use `lnLie_sub hB y p (iotaP p) (conjEmb (DV.tauEmb D x.1)) (S.Dw.p + S.Dw.q - 1 - x.2)` as an intermediate fact. Simplify using `only [FlagPt.lnRoot, if_neg h']`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`.
+-/
 theorem phi_bounds (hB : HTBoundSt) (p : ℕ) [Fact p.Prime] (y : Pt s) (x : DV.Rt D.what₂.Tau N) :
     ((x.2 : ℕ) < j → vDiff D.host.E p * Real.log p ≤ phi s p y x ∧
       phi s p y x ≤ (vDiff D.host.E p + 1 / ((p : ℝ) - 1)) * Real.log p) ∧
@@ -340,6 +438,13 @@ theorem phi_bounds (hB : HTBoundSt) (p : ℕ) [Fact p.Prime] (y : Pt s) (x : DV.
     simp only [FlagPt.lnRoot, if_neg h']
     constructor <;> linarith [this.1, this.2]
 
+/- English proof (translation)
+Establish `h` using `A.cm x.1`. Use `⟨fun h' => by rwa [Datum.mult, if_pos h], fun h' => ?_⟩` and prove the remaining obligations. Establish `hne : conjEmb (DV.tauEmb D x.1) (A.H.rt : D.host.E) ≠ A.H.rt0`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (DV.tauEmb D x.1 _) ≠ _`. Rewrite using `[h]`.
+
+Introduce `e`. Establish `him : A.H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 e`. Establish `h2` using `congrArg Complex.re A.H.sqrt_neg_disc_sq`. Establish `h3 : (0 : ℝ) < A.H.d` using `Nat.cast_pos.2 A.H.d_prime.pos`. Simplify using `[pow_two, him] at h2`.
+
+Use polynomial arithmetic with `[mul_self_nonneg A.H.rt0.re]`. Use `x.2.2` as an intermediate fact. Use `S.rank_eq` as an intermediate fact. Rewrite using `[Datum.mult, if_neg hne]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem root_in_range (x : DV.Rt D.what₂.Tau N) :
     ((x.2 : ℕ) < S.Dw.p → (x.2 : ℕ) < S.Dw.mult (DV.tauEmb D x.1)) ∧
     (¬ (x.2 : ℕ) < S.Dw.p → S.Dw.p + S.Dw.q - 1 - x.2 < S.Dw.mult (conjEmb (DV.tauEmb D x.1))) := by

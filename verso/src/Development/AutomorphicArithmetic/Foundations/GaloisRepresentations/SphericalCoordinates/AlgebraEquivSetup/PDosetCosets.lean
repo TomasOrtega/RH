@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, h⟩`. Conclude with `⟨x, hx, y * k⁻¹, K.mul_mem hy (K.inv_mem hk), by rw [← mul_assoc, ← h, mul_inv_cancel_right]⟩`. Introduce and unpack `⟨x, hx, y, hy, h⟩`.
+
+Conclude with `⟨x, hx, y * k, K.mul_mem hy hk, by rw [h, mul_assoc]⟩`.
+-/
 private theorem mul_mem_doubleCoset_iff_of_mem {X : Type} [Group X] (K : Subgroup X) (a g k : X) (hk : k ∈ K) :
     g * k ∈ DoubleCoset.doubleCoset a (K : Set X) K ↔ g ∈ DoubleCoset.doubleCoset a (K : Set X) K := by
   simp only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]
@@ -13,6 +18,11 @@ private theorem mul_mem_doubleCoset_iff_of_mem {X : Type} [Group X] (K : Subgrou
   · rintro ⟨x, hx, y, hy, h⟩
     exact ⟨x, hx, y * k, K.mul_mem hy hk, by rw [h, mul_assoc]⟩
 
+/- English proof (translation)
+Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, h⟩`. Use `⟨L'.pr x, hF.2 x hx, L'.pr y, hF.2 y hy, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg L'.pr h`.
+
+Simplify `h'` using `[map_mul, L'.pr_loc]`. Introduce and unpack `⟨x, hx, y, hy, h⟩`. Conclude with `⟨L'.loc x, hF.1 x hx, L'.loc y, hF.1 y hy, by rw [h, map_mul, map_mul]⟩`.
+-/
 private theorem loc_mem_doubleCoset_loc_iff {X M' : Type} [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X)
     (Kw : Subgroup M') (hF : L'.Fact K Kw) (t z : M') :
     L'.loc z ∈ DoubleCoset.doubleCoset (L'.loc t) (K : Set X) K ↔
@@ -26,6 +36,23 @@ private theorem loc_mem_doubleCoset_loc_iff {X M' : Type} [Group X] [Group M'] (
   · rintro ⟨x, hx, y, hy, h⟩
     exact ⟨L'.loc x, hF.1 x hx, L'.loc y, hF.1 y hy, by rw [h, map_mul, map_mul]⟩
 
+/- English proof (translation)
+Introduce `X M' _ _ L' K Kw hF t V _ _ Ψ hΨ`. Use `set f : X ⧸ K → V := fun y => dosetInd ℂ K (L'.loc t) y.out • Ψ y.out with hf`. Set `φ : M' ⧸ Kw → X ⧸ K` to `fun x => ((L'.loc x.out : X) : X ⧸ K)`. Establish `hφ : Function.Injective φ`. Introduce `x x' h`.
+
+Simplify using `only [φ, QuotientGroup.eq] at h`. Rewrite using `[← QuotientGroup.out_eq' x, ← QuotientGroup.out_eq' x', QuotientGroup.eq]`. Establish `h2` using `hF.2 _ h`. Simplify `h2` using `[map_mul, map_inv, L'.pr_loc]`. Establish `hφf : ∀ x, f (φ x) = dosetInd ℂ Kw t x.out • Ψ (L'.loc x.out)`.
+
+Introduce `x`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (L'.loc x.out)`. Simplify using `only [hf, φ, hk]`. Rewrite using `[hΨ k k.2]`. Simplify using `only [dosetInd, Set.indicator, mul_mem_doubleCoset_iff_of_mem K _ _ _ k.2, loc_mem_doubleCoset_loc_iff L' K Kw hF, Pi.one_apply]`.
+
+Establish `hsupp : Function.support f ⊆ Set.range φ`. Introduce `y hy`. Rewrite `hy` using `[Function.mem_support]`. Establish `hmem : y.out ∈ DoubleCoset.doubleCoset (L'.loc t) (K : Set X) K`. Assume the negation of the conclusion as `hn`.
+
+Apply `hy` to reduce the goal to its premises. Simplify using `[hf, dosetInd, hn]`. Rewrite `hmem` using `[DoubleCoset.mem_doubleCoset]`. Take `⟨a, ha, b, hb, hab⟩` from `hmem`. Use `⟨((L'.pr a * t : M') : M' ⧸ Kw), ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul Kw (L'.pr a * t)`. Simplify using `only [φ, hk]`. Rewrite using `[← QuotientGroup.out_eq' y, QuotientGroup.eq]`. Use `set n := a * (L'.loc (L'.pr a))⁻¹ with hn`. Establish `hn1 : L'.pr n = 1` using `by simp [hn, L'.pr_loc]`.
+
+Establish `hnK : n ∈ K` using `K.mul_mem ha (K.inv_mem (hF.1 _ (hF.2 a ha)))`. Establish `hy' : y.out = L'.loc (L'.pr a * t) * (n * b)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy', map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Conclude with `K.mul_mem (K.inv_mem (hF.1 _ k.2)) (K.mul_mem hnK hb)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.mpr hsupp]`. Use `_ = ∑ᶠ x, f (φ x) := finsum_mem_range hφ`. Use `_ = _ := finsum_congr hφf`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pDosetCosets :
     ∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (V : Type) [AddCommGroup V] [Module ℂ V] (Ψ : X → V), (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ y : X ⧸ K, dosetInd ℂ K (L'.loc t) y.out • Ψ y.out = ∑ᶠ x : M' ⧸ Kw, dosetInd ℂ Kw t x.out • Ψ (L'.loc x.out) := by
   intro X M' _ _ L' K Kw hF t V _ _ Ψ hΨ

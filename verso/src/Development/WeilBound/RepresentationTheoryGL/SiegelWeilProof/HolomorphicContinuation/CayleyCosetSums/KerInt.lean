@@ -27,16 +27,25 @@ def Lk (β : M2 n → ℝ) (Z x₀ : M2 n) (u : GR n) : ℂ :=
     Complex.I * fderiv ℝ (fun x' => kk m e μK β (x', mR u)) x₀ (x₀ * Z2 Z)
 
 include hβ hβs in
+/- English proof (translation)
+The claim follows from `PCD.good_of_joint isOpen_Inv _ (kk_contDiffOn m e μK hβ) (fun u : GR n => mR u) continuous_mR h hh (kk_supp m e μK hβs)`.
+-/
 theorem good (h : GR n → ℂ) (hh : Continuous h) :
     PCD.Good (Inv n) (fun x u => h u • kk m e μK β (x, mR u)) :=
   PCD.good_of_joint isOpen_Inv _ (kk_contDiffOn m e μK hβ) (fun u : GR n => mR u) continuous_mR h hh
     (kk_supp m e μK hβs)
 
 include hβ hβs in
+/- English proof (translation)
+The claim follows from `PCD.contDiffOn_integral isOpen_Inv ν (good m e μK hβ hβs h hh)`.
+-/
 theorem psi_contDiffOn (h : GR n → ℂ) (hh : Continuous h) : ContDiffOn ℝ ∞ (Psi m e ν μK β h) (Inv n) :=
   PCD.contDiffOn_integral isOpen_Inv ν (good m e μK hβ hβs h hh)
 
 include hβ in
+/- English proof (translation)
+Establish `hsl : ContDiffOn ℝ ∞ (fun x' => kk m e μK β (x', mR u)) (Inv n)` using `(kk_contDiffOn m e μK hβ).comp (contDiffOn_id.prodMk contDiffOn_const) fun x hx => ⟨hx, mem_univ _⟩`. Conclude with `(hsl.differentiableOn (by simp) x₀ hx₀).differentiableAt (isOpen_Inv.mem_nhds hx₀)`.
+-/
 theorem kk_diff {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) (u : GR n) :
     DifferentiableAt ℝ (fun x' => kk m e μK β (x', mR u)) x₀ := by
   have hsl : ContDiffOn ℝ ∞ (fun x' => kk m e μK β (x', mR u)) (Inv n) :=
@@ -44,6 +53,15 @@ theorem kk_diff {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) (u : GR n) :
   exact (hsl.differentiableOn (by simp) x₀ hx₀).differentiableAt (isOpen_Inv.mem_nhds hx₀)
 
 include hβ hβs in
+/- English proof (translation)
+Establish `hG` using `good m e μK hβ hβs h hh`. Establish `hF` using `hG.hasFDerivAt isOpen_Inv ν hx₀`. Establish `hI` using `(hG.dK isOpen_Inv).integrable ν hx₀`. Establish `hfd : ∀ u, fderiv ℝ (fun x => h u • kk m e μK β (x, mR u)) x₀ = h u • fderiv ℝ (fun x' => kk m e μK β (x', mR u)) x₀` using `fun u => fderiv_const_smul (kk_diff m e μK hβ hx₀ u) (h u)`. Rewrite using `[show Psi m e ν μK β h = fun x => ∫ u, h u • kk m e μK β (x, mR u) ∂ν from rfl]`.
+
+Rewrite using `[rC_of_diff hF.differentiableAt]`. Use `erw [hF.fderiv, ContinuousLinearMap.integral_apply hI, ContinuousLinearMap.integral_apply hI]`. Establish `i1` using `hI.apply_continuousLinearMap (x₀ * Z1 Z)`. Establish `i2` using `hI.apply_continuousLinearMap (x₀ * Z2 Z)`. Rewrite using `[← integral_const_mul, ← integral_add i1 (i2.const_mul _)]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only`. Use `erw [hfd u]`. Express the relevant statement in the definitionally equal form `h u • (fderiv ℝ (fun x' => kk m e μK β (x', mR u)) x₀) (x₀ * Z1 Z) + Complex.I * (h u • (fderiv ℝ (fun x' => kk m e μK β (x', mR u)) x₀) (x₀ * Z2 Z)) = _`. Simplify using `only [Lk, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rC_psi (h : GR n → ℂ) (hh : Continuous h) (Z : M2 n) {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) :
     rC Z (Psi m e ν μK β h) x₀ = ∫ u, h u * Lk m e μK β Z x₀ u ∂ν := by
   have hG := good m e μK hβ hβs h hh
@@ -67,6 +85,9 @@ theorem rC_psi (h : GR n → ℂ) (hh : Continuous h) (Z : M2 n) {x₀ : M2 n} (
   ring
 
 include hβ in
+/- English proof (translation)
+Establish `hS : IsOpen (Inv n ×ˢ (univ : Set (M2 n)))` using `isOpen_Inv.prod isOpen_univ`. Establish `hd : DifferentiableAt ℝ (kk m e μK β) (x₀, v)` using `((kk_contDiffOn m e μK hβ).differentiableOn (by simp) _ ⟨hx₀, mem_univ _⟩).differentiableAt (hS.mem_nhds ⟨hx₀, mem_univ _⟩)`. Establish `hi : HasFDerivAt (fun x' : M2 n => (x', v)) (ContinuousLinearMap.inl ℝ (M2 n) (M2 n)) x₀` using `(hasFDerivAt_id x₀).prodMk (hasFDerivAt_const v x₀)`. Conclude with `(hd.hasFDerivAt.comp x₀ hi).fderiv`.
+-/
 theorem slice_fderiv {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) (v : M2 n) :
     fderiv ℝ (fun x' => kk m e μK β (x', v)) x₀ = (fderiv ℝ (kk m e μK β) (x₀, v)).comp (ContinuousLinearMap.inl ℝ (M2 n) (M2 n)) := by
   have hS : IsOpen (Inv n ×ˢ (univ : Set (M2 n))) := isOpen_Inv.prod isOpen_univ
@@ -78,6 +99,11 @@ theorem slice_fderiv {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) (v : M2 n) :
   exact (hd.hasFDerivAt.comp x₀ hi).fderiv
 
 include hβ in
+/- English proof (translation)
+Establish `hS : IsOpen (Inv n ×ˢ (univ : Set (M2 n)))` using `isOpen_Inv.prod isOpen_univ`. Establish `hc : ContinuousOn (fun p => fderiv ℝ (kk m e μK β) p) (Inv n ×ˢ univ)` using `(kk_contDiffOn m e μK hβ).continuousOn_fderiv_of_isOpen hS (by simp)`. Establish `hc' : Continuous fun u : GR n => fderiv ℝ (kk m e μK β) (x₀, mR u)` using `hc.comp_continuous (continuous_const.prodMk continuous_mR) fun u => ⟨hx₀, mem_univ _⟩`. Establish `e1 : Lk m e μK β Z x₀ = fun u => fderiv ℝ (kk m e μK β) (x₀, mR u) (ContinuousLinearMap.inl ℝ (M2 n) (M2 n) (x₀ * Z1 Z)) + Complex.I * fderiv ℝ (kk m e μK β) (x₀, mR u) (ContinuousLinearMap.inl ℝ (M2 n) (M2 n) (x₀ * Z2 Z))`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [Lk, slice_fderiv m e μK hβ hx₀, ContinuousLinearMap.comp_apply]`. Rewrite using `[e1]`. Conclude with `(hc'.clm_apply continuous_const).add (continuous_const.mul (hc'.clm_apply continuous_const))`.
+-/
 theorem Lk_cont (Z : M2 n) {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) : Continuous (Lk m e μK β Z x₀) := by
   have hS : IsOpen (Inv n ×ˢ (univ : Set (M2 n))) := isOpen_Inv.prod isOpen_univ
   have hc : ContinuousOn (fun p => fderiv ℝ (kk m e μK β) p) (Inv n ×ˢ univ) :=
@@ -93,6 +119,9 @@ theorem Lk_cont (Z : M2 n) {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) : Continuous (
 
 omit [μK.IsHaarMeasure] in
 include hβs in
+/- English proof (translation)
+Take `⟨W, hW, C, hC, hz⟩` from `kk_supp m e μK hβs x₀ hx₀`. Use `⟨C, hC, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h0 : (fun x' => kk m e μK β (x', mR u)) =ᶠ[𝓝 x₀] fun _ => 0` using `by filter_upwards [hW] with x' hx' using hz x' hx' u hu`. Simplify using `[Lk, h0.fderiv_eq]`.
+-/
 theorem Lk_zero (Z : M2 n) {x₀ : M2 n} (hx₀ : x₀ ∈ Inv n) :
     ∃ C : Set (GR n), IsCompact C ∧ ∀ u ∉ C, Lk m e μK β Z x₀ u = 0 := by
   obtain ⟨W, hW, C, hC, hz⟩ := kk_supp m e μK hβs x₀ hx₀

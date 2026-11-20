@@ -9,6 +9,15 @@ namespace GlobalTheory.UPel.HT.ES
 
 open GlobalTheory.AbDual GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `p _ D R _ b N Y s o B _ _ ψ' hB hψ`. Take `⟨C, _, Q, h, hC, hQ, hQ', hh, e⟩` from `GlobalTheory.DualHomPull.exists_dual_hom Y B o.A ψ' o.P hB o.ab hψ o.isLB o.rig₁ o.rig₂`. Use `⟨C, inferInstance, Q, h, hC, hQ, hQ', hh, e, fun T x ↦ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have eχ : ψ' ⊗ₘ ψ' = lift (fst B B ≫ ψ') (snd B B ≫ ψ') := by ext <;> simp`. Rewrite `e` using `[eχ]`.
+
+Establish `hE : (ev o.P (fst B B ≫ ψ') (snd B B ≫ ψ')).IsLB` using `pull_isLB o.isLB _`. Establish `hF : (ev Q (fst B B) (snd B B ≫ h)).IsLB` using `pull_isLB hQ.isLB _`. Establish `c` using `congrArg (CechPic.pull (lift (fst B T) (snd B T ≫ x)).left) ((cls_eq_iff hE hF).2 e)`. Rewrite `c` using `[cls_ev o.isLB, cls_ev hQ.isLB, pull_evc, pull_evc, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd_assoc]`. Simplify using `only [Category.assoc] at c`.
+
+Establish `k : PullPolTriv o ψ' x ↔ evc o.isLB (fst B T ≫ ψ') (snd B T ≫ x ≫ ψ') = 0` using `triv_ev_iff o.isLB _ _`. Rewrite using `[k, c]`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Conclude with `hQ.eq_one (x ≫ h) ((triv_ev_iff hQ.isLB _ _).2 z)`.
+
+Introduce `z`. Rewrite using `[z, MonObj.comp_one]`. Conclude with `evc_one_right hQ.isLB hQ.zero _`.
+-/
 theorem pullPol_dual_hom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Y : Scheme.{0}) (s : Y ⟶ Sp R) (o : Obj b N s) (B : Over Y) [GrpObj B] [IsCommMonObj B] (ψ' : B ⟶ o.A), IsAbelianScheme B → IsMonHom ψ' → ∃ (C : Over Y) (_ : GrpObj C) (Q : LB (B ⊗ C).left) (h : B ⟶ C), IsAbelianScheme C ∧ GlobalTheory.AbDual.IsDual B C Q ∧ GlobalTheory.AbDual.IsAdditive (GlobalTheory.AbDual.swap Q) ∧ IsMonHom h ∧ LBIso (o.P.pull (ψ' ⊗ₘ ψ').left) (Q.pull (lift (fst B B) (snd B B ≫ h)).left) ∧ ∀ (T : Over Y) (x : T ⟶ B), PullPolTriv o ψ' x ↔ x ≫ h = 1 := by
   intro p _ D R _ b N Y s o B _ _ ψ' hB hψ
   obtain ⟨C, _, Q, h, hC, hQ, hQ', hh, e⟩ :=

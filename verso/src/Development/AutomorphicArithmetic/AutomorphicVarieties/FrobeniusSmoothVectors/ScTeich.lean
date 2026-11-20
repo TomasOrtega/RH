@@ -6,6 +6,11 @@ import Mathlib.RingTheory.Teichmuller
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Use `haveI : CharP (O ⧸ maximalIdeal O) l := ‹CharP (ResidueField O) l›`. Use `haveI hp : PerfectRing (ResidueField O) l := inferInstance`. Use `haveI : PerfectRing (O ⧸ maximalIdeal O) l := hp`. Set `f : (O ⧸ maximalIdeal O) →* O` to `(Perfection.teichmuller l (maximalIdeal O)).comp (Perfection.liftMonoidHom l (O ⧸ maximalIdeal O) (O ⧸ maximalIdeal O) (MonoidHom.id _))`. Use `⟨f, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `Perfection.mk_teichmuller (p := l) (I := maximalIdeal O) (Perfection.liftMonoidHom l (O ⧸ maximalIdeal O) (O ⧸ maximalIdeal O) (MonoidHom.id _) x)`. Conclude with `h.trans (Perfection.coeffMonoidHom_zero_liftMonoidHom l (MonoidHom.id _) x)`.
+-/
 private theorem teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O]
     [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] :
     ∃ τ : ResidueField O →* O, ∀ x, residue O (τ x) = x := by
@@ -19,6 +24,17 @@ private theorem teich_ex (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLoc
     (Perfection.liftMonoidHom l (O ⧸ maximalIdeal O) (O ⧸ maximalIdeal O) (MonoidHom.id _) x)
   exact h.trans (Perfection.coeffMonoidHom_zero_liftMonoidHom l (MonoidHom.id _) x)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c _ hfin`. Use `haveI : IsAdicComplete (maximalIdeal c.O) c.O := (dvrFacts l c.O).2.2.2.1`. Take `⟨τ, hτ⟩` from `teich_ex l c.O`. Set `ι : c.O →* Qbar l` to `c.O.val.toRingHom.toMonoidHom`. Use `⟨Units.map (ι.comp τ), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y hxy`. Establish `h1 : ((Units.map (ι.comp τ) x).val) = (Units.map (ι.comp τ) y).val` using `by rw [hxy]`. Establish `h2 : τ x.val = τ y.val` using `Subtype.ext h1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hτ x.val, ← hτ y.val, h2]`.
+
+Introduce `u j s`. Establish `hω : ((omO Ω l c.O s).val : ResidueField c.O) = residue c.O (chiO ℚ Ω l c.O s).val` using `(UpperTheory.V.X.cycKFacts Ω l (ResidueField c.O)).2 c (residue c.O) s`. Establish `hc : (GlobalTheory.GalOfCusp.cycBar ℚ Ω l s).val = ((chiO ℚ Ω l c.O s).val : PadicAlgCl l)` using `rfl`. Use `set w : (ResidueField c.O)ˣ := Units.map (residue c.O).toMonoidHom u * (omO Ω l c.O s ^ j)⁻¹`. Establish `key : (chiO ℚ Ω l c.O s).val ^ j * τ w.val - u.val ∈ maximalIdeal c.O`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `residue c.O _ = 0`. Rewrite using `[map_sub, map_mul, map_pow, hτ, ← hω]`. Simplify using `only [w, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, Units.coe_map, MonoidHom.coe_coe]`. Establish `hne : ((omO Ω l c.O s).val : ResidueField c.O) ^ j ≠ 0` using `pow_ne_zero _ (Units.ne_zero _)`.
+
+Rewrite using `[mul_left_comm, mul_inv_cancel₀ hne, mul_one]`. Conclude with `sub_self _`. Establish `hn` using `((sc_norm l c _).2.1 key)`. Use `hn using 2` and compare the differences between its conclusion and the goal. Simplify using `[Units.val_mul, Units.val_pow_eq_pow_val, hc, ι]`.
+-/
 theorem UpperTheory.V.Fr.sc_teich :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l], Finite (ResidueField c.O) → ∃ T : (ResidueField c.O)ˣ →* (Qbar l)ˣ, Function.Injective T ∧ ∀ (u : c.Oˣ) (j : ℕ) (s : G ℚ Ω), ‖(GlobalTheory.GalOfCusp.cycBar ℚ Ω l s ^ j * T (Units.map (residue c.O).toMonoidHom u * (omO Ω l c.O s ^ j)⁻¹)).val - u.val.1‖ < 1 := by
   intro Ω _ _ _ l _ c _ hfin

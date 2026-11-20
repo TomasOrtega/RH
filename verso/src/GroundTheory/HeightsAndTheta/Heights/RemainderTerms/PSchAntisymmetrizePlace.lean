@@ -26,10 +26,22 @@ def smallBlockPlaceEquiv (r a : ℕ) (c : SmallBlock) : Fin r ⊕ Fin a ≃ Fin 
       · simp only [smallBlockOf, h, dite_false, smallBlockPlace, Sum.elim_inr, zIndex]
         ext; simp; omega
 
+/- English proof (translation)
+Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`.
+-/
 theorem smallBlockPlace_eq (r a : ℕ) (c : SmallBlock) (x : Fin r ⊕ Fin a) :
     smallBlockPlace r a c x = (0, smallBlockPlaceEquiv r a c x) := by
   exact Prod.ext (Subsingleton.elim _ _) rfl
 
+/- English proof (translation)
+Introduce `r a c Q`. Use `set e := smallBlockPlaceEquiv r a c with he`. Unfold `antisymmetrize antisym`. Rewrite using `[map_sum]`. Use `Fintype.sum_equiv ((Equiv.funUnique (Fin 1) _).trans e.symm.permCongr) _ _ ?_` and prove the remaining obligations.
+
+Introduce `w`. Simplify using `only [Equiv.trans_apply, Equiv.funUnique_apply]`. Rewrite using `[AlgHom.map_smul_of_tower, blockPermute, rename_rename, rename_rename]`. Establish `hs : blockSign 1 (r + a) w = ((Equiv.Perm.sign (e.symm.permCongr (w 0)) : ℤ) : ℚ)`. Rewrite using `[Equiv.Perm.sign_permCongr, blockSign, Fintype.prod_unique]`.
+
+Both sides reduce to the same expression. Rewrite using `[hs]`. Use `congr 3`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, smallBlockPlace_eq, Equiv.permCongr_apply, Equiv.symm_symm]`.
+
+Rewrite using `[← he]`. Simplify using the standard rewrite rules.
+-/
 theorem SchAntisymmetrizePlace.proof : SchAntisymmetrizePlace.Statement := by
   intro r a c Q
   set e := smallBlockPlaceEquiv r a c with he

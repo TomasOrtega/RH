@@ -6,6 +6,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ γ hγ`. Establish `hfin : {u : Pl E | ¬ γ u ≤ 1}.Finite` using `Filter.eventually_cofinite.1 hγ`. Set `S : Finset (Pl E)` to `hfin.toFinset`. Set `k : Pl E → ℕ` to `fun u => (WithZero.log (γ u)).toNat`. Set `N : Pl E → ℕ` to `fun u => Ideal.absNorm u.asIdeal`.
+
+Use `⟨∏ u ∈ S, N u ^ k u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `u _`. Apply `pow_ne_zero` to reduce the goal to its premises. Simplify using `only [N, ne_eq, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `u.ne_bot`. Introduce `x hx`. Establish `hval : ∀ u : Pl E, u.valuation E x * u.valuation E ((∏ w ∈ S, N w ^ k w : ℕ) : E) ≤ 1`. Introduce `u`. Establish `hcast : (((∏ w ∈ S, N w ^ k w : ℕ) : E)) = algebraMap (𝓞 E) E ((∏ w ∈ S, N w ^ k w : ℕ) : 𝓞 E)` using `(map_natCast _ _).symm`.
+
+Rewrite using `[hcast, HeightOneSpectrum.valuation_of_algebraMap]`. Distinguish the cases in `hu : γ u ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `huS : u ∈ S`. Simplify using `only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+
+Conclude with `hu`. Establish `hmem : ((∏ w ∈ S, N w ^ k w : ℕ) : 𝓞 E) ∈ u.asIdeal ^ k u`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun w => N w ^ k w) huS`. Rewrite using `[hc, Nat.cast_mul]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `Ideal.pow_mem_pow (Ideal.absNorm_mem u.asIdeal) _`. Establish `hle` using `(u.intValuation_le_pow_iff_mem _ (k u)).2 hmem`. Establish `h0 : γ u ≠ 0`. Introduce `h`.
+
+Conclude with `hu (h ▸ zero_le')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[WithZero.exp_add, WithZero.exp_log h0]`. Use `_ ≤ 1 := by`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Use `Int.self_le_toNat (WithZero.log (γ u))` as an intermediate fact. Simplify using `only [k]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E (((∏ w ∈ S, N w ^ k w : ℕ) : E) * x) (fun u => by rw [map_mul, mul_comm]; exact hval u)`. Conclude with `⟨a, by rw [← ha]⟩`.
+-/
 theorem exists_nat_mul_integral_of_valuation_le : ∀ (E : Type) [Field E] [NumberField E] (γ : Pl E → WithZero (Multiplicative ℤ)), (∀ᶠ u in cofinite, γ u ≤ 1) → ∃ d : ℕ, d ≠ 0 ∧ ∀ x : E, (∀ u : Pl E, u.valuation E x ≤ γ u) → ∃ a : 𝓞 E, (a : E) = d * x := by
   intro E _ _ γ hγ
   have hfin : {u : Pl E | ¬ γ u ≤ 1}.Finite := Filter.eventually_cofinite.1 hγ

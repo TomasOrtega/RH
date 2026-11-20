@@ -5,6 +5,13 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertCoord
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v w hw h m n A Bm`. Use `⟨fun x u hu => ?_, fun γ hγ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, kap_apply, Matrix.map_apply, Matrix.zero_apply]`. Conclude with `at_ptAt hw h _ u hu`.
+
+Use `⟨(((A⁻¹ : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) (w.adicCompletion E)) * γ.map (locW h) * ((((Bm⁻¹ : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)))ᵀ))ᵀ, ?_⟩` and prove the remaining obligations. Rewrite using `[kap_apply, Matrix.transpose_transpose]`. Establish `e : (A : Matrix (Fin m) (Fin m) (w.adicCompletion E)) * (((A⁻¹ : GL (Fin m) (w.adicCompletion E)) : Matrix (Fin m) (Fin m) (w.adicCompletion E)) * γ.map (locW h) * ((((Bm⁻¹ : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)))ᵀ)) * (Bm : Matrix (Fin n …`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.mul_one, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[e]`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply]`. Use `ptAt_locW hw h fun u hu => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hγ u hu) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.zero_apply]`. Then use the resulting hypothesis.
+-/
 theorem kap_at_and_onto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (w : HeightOneSpectrum (𝓞 E)) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v) {m n : ℕ}
     (A : GL (Fin m) (w.adicCompletion E)) (Bm : GL (Fin n) (w.adicCompletion E)),

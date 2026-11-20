@@ -7,6 +7,13 @@ namespace CompanionTheory.Lime.BM
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Introduce `τ u H _ _ σ Wp _ _ π z B1 B2 hσ hπ hz hT hB1 hB2 _ _ _ _`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hl : IsHCParam (lamSH D.R (D.hc τ))` using `Inh.obj_isHCParam_lamSH D.R (D.hc τ)`. Establish `hga` using `gap_at_least_of_low_gap D.R.k D.R.rS (v48 D τ) (b48 D τ) _ hk (by rw [lambda_highest_weight_eq]; exact hl.1) (Formalism.L2.SG.Pf.WuDec.lowGap_of_gapHyp D hG τ)`. Rewrite `hga` using `[lambda_highest_weight_eq, epsilon_signature_eq]`.
+
+Establish `hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS (16 * (D.R.r : ℝ) ^ 19)`. Use `Formalism.L2.SG.Pf.WuDec.gapOK_of_big D.R.k D.R.rS hk (by rw [Formalism.L2.SG.Pf.WuDec.dimS D]; exact hG.1)` as an intermediate fact. Rewrite `this` using `[Formalism.L2.SG.Pf.WuDec.dimS D]`. Then use the resulting hypothesis. Distinguish the cases in `h1 : ∀ v ∈ smoothVecs (k := D.R.k) (r := D.R.rS) σ, B1 v = 0`. Conclude with `Or.inl h1`.
+
+Use `push Not at h1`. Unfold `psiS at hB1 hB2`. Rewrite `hB1`, `hB2` using `[Formalism.L2.SG.LitS.psi_eq_psiGen]`. Conclude with `Or.inr (aIsL hJ hga hok hl hσ (SchurRelationsDiscreteSeries.inWb_of_zero z hz) hT (fun _ => SchurRelationsDiscreteSeries.psiS_scale_ne D) hπ ((BridgeCS3d.isBesselMapSm_iff z _ σ π B2).1 hB2) ((BridgeCS3d.isBesselMapSm_iff z _ σ π B1).1 hB1) h1)`.
+-/
 theorem multiplicity_one_unitary_branching_of_uniqGap (hJ : UniqGap) (D : D7) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) : LocalBesselAndTopKernel.MultiplicityOneUnitaryBranching D := by
   intro τ u H _ _ σ Wp _ _ π z B1 B2 hσ hπ hz hT hB1 hB2 _ _ _ _
   have hk : 1 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega

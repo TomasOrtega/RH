@@ -228,6 +228,9 @@ structure DivisorReductionProperties (hres : FunctorialResolution.Blowup.StrictT
             T.ideal = imageIdealSheaf (T.boundary.get ⟨j, hj⟩).subschemeι J →
               DivisorReduction.containedComponentsIdeal T j hj = ⊤
 
+/- English proof (translation)
+The claim follows from `{ exists_ideal_mul_preIdeal_pow := fun T hV _ j hj => exists_mul_pow_containedComponentsIdeal_eq_ideal T hV j hj isMarked_pushedTop := h.isMarked_pushedTop isMarked_pushedPre := h.isMarked_pushedPre isBlowup_id_preIdeal := fun T hV j hj => isBlowupAlongIdealSheaf_id_containedComp …`.
+-/
 theorem DivisorReductionProperties.toDivisorReductionStepProperties {hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}}
     {hno : BlowupPreservesNoetherian.{u}} (h : DivisorReductionProperties hres hno) :
     DivisorReductionStepProperties hres hno :=

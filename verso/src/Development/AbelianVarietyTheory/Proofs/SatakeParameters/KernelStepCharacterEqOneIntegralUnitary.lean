@@ -20,6 +20,39 @@ namespace GlobalTheory.TieUnr
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a H T i hi y hint hsupp`. Use `letI := D.host.cmStar`. Establish `hzU : Matrix.GeneralLinearGroup.det y.1 ∈ U1 (sigD D)` using `det_in_unitary_one D.host.F D.host.E (sigD D) 1 1 (by simp) y.1 y.2`. Take `⟨x', hx'int, hx'h90, hx'supp⟩` from `GlobalTheory.T.integral_h90_preimage_trivial_at_places_over_trivial D.host.F D.host.E (sigD D) (GlobalTheory.T.cmData_conj_isConjOf _ _ D.sp.cm) (GlobalTheory.HeckeAdjoint.unramified_host D) _ hzU hint`. Use `set x : (AfE t.X.F t.X.E)ˣ := Units.map A.iA.symm.toRingHom.toMonoidHom x' with hxdef`.
+
+Establish `hxx : Units.map A.iA.toRingHom.toMonoidHom x = x'`. Use `ext`. Simplify using `[x]`. Establish `hq : A.q x = dtU y` using `H.q_dt x y (by rw [hxx, hx'h90])`. Establish `hcoe : ∀ w : AfE t.X.F t.X.E, A.iA w ∈ RInt D.host.F D.host.E ↔ w ∈ RInt t.X.F t.X.E` using `H.iA_int`.
+
+Establish `hxint : x ∈ intU t.X.F t.X.E`. Use `⟨(hcoe _).1 ?_, (hcoe _).1 ?_⟩` and prove the remaining obligations. Simplify `hx'int.1` using `[x]`. Simplify `hx'int.2` using `[x]`. Establish `hsub : ∀ {K : Type} [Field K] [NumberField K] (w : FiniteAdeleRing (𝓞 K) K) (P : HeightOneSpectrum (𝓞 K)), (w - 1) P = w P - 1` using `fun _ _ => rfl`.
+
+Establish `hsuppX : ∀ Q : HeightOneSpectrum (𝓞 t.X.E), (∃ P ∈ SB t μ, P.under (𝓞 t.X.F) = Q.under (𝓞 t.X.F)) → GlobalTheory.Mem.Col2.afIso t.X.F t.X.E (x : AfE t.X.F t.X.E) Q = 1`. Introduce and unpack `Q ⟨P, hP, hPQ⟩`. Establish `hxm1 : (x : AfE t.X.F t.X.E) - 1 ∈ RInt t.X.F t.X.E` using `sub_mem hxint.1 (one_mem _)`. Establish `key` using `GlobalTheory.T.afIso_ringEquiv_eq_zero_iff t.X.F t.X.E D.host.F D.host.E t.seam.iE A.iA H.iA_rat H.iA_int _ hxm1 Q`. Establish `e1 : A.iA ((x : AfE t.X.F t.X.E) - 1) = (x' : AfE D.host.F D.host.E) - 1`.
+
+Rewrite using `[map_sub, map_one]`. Simplify using `[x]`. Rewrite `key` using `[e1]`. Establish `hA : GlobalTheory.Mem.Col2.afIso t.X.F t.X.E ((x : AfE t.X.F t.X.E) - 1) Q = GlobalTheory.Mem.Col2.afIso t.X.F t.X.E (x : AfE t.X.F t.X.E) Q - 1`. Rewrite using `[map_sub, map_one]`.
+
+Both sides reduce to the same expression. Establish `hB : GlobalTheory.Mem.Col2.afIso D.host.F D.host.E ((x' : AfE D.host.F D.host.E) - 1) (seamP t.seam Q) = GlobalTheory.Mem.Col2.afIso D.host.F D.host.E (x' : AfE D.host.F D.host.E) (seamP t.seam Q) - 1`. Rewrite using `[map_sub, map_one]`. Both sides reduce to the same expression. Rewrite using `[← sub_eq_zero, ← hA]`.
+
+Use `key.1 ?_` and prove the remaining obligations. Use `show GlobalTheory.Mem.Col2.afIso D.host.F D.host.E ((x' : AfE D.host.F D.host.E) - 1) (seamP t.seam Q) = 0`. Rewrite using `[hB, sub_eq_zero]`. Use `hx'supp _ fun R hR => ?_` and prove the remaining obligations. Establish `hv : UnderSB t μ ((seamP t.seam Q).under (𝓞 D.host.F))`.
+
+Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Use `show ((seamP t.seam Q).under (𝓞 D.host.F)).asIdeal = ((seamP t.seam P).under (𝓞 D.host.F)).asIdeal`. Rewrite using `[GlobalTheory.T.columnPrimeToBasePrime_preserves_common_place D t.X t.seam t.seam_ok H.fields.ok P Q hPQ]`. Conclude with `(GlobalTheory.T.placeComponent_eq_one_iff_components_over_eq_one _ _ _ _).1 (hsupp _ hv) R hR`. Establish `hvG : ∀ P : HeightOneSpectrum (𝓞 t.X.E), (∃ k, ((t.Pr.g k : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal) → GlobalTheory.Mem.Col2.afIso t.X.F t.X.E (x : AfE t.X.F t.X.E) P = 1`.
+
+Introduce and unpack `P ⟨k, hk⟩`. Take `⟨P', hP', hu⟩` from `GlobalTheory.T.exists_typePrime_under_eq t.X t.Pr H.fields.ok t.pr_ok k P hk`. Use `hsuppX P ⟨P', Finset.mem_union_left _ ?_, hu⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Finset.mem_union_left _ hP'`.
+
+Conclude with `Finset.mem_union_right _ hP'`. Establish `hiso : IsAdIso (GlobalTheory.Mem.Col2.afIso t.X.F t.X.E)` using `⟨GlobalTheory.Mem.Col2.afIso_tmul_one _ _, GlobalTheory.Mem.Col2.mem_rInt_iff _ _⟩`. Establish `hmu : ∀ j : Fin D.R.m, D.muTil (j.1 + 1) (A.q x) = 1`. Introduce `j`. Rewrite using `[H.muTil _ hiso j (GlobalTheory.Mem.ReadEx.toIdl t.X.F t.X.E x) x (fun w => rfl) (GlobalTheory.Mem.ReadEx.toIdl_snd x).symm]`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.Mem.ReadEx.map_toIdl_eq_one (H.mu0 j).tame hxint (fun P hP => ?_)`. Rewrite using `[h1]`. Establish `hg : ∃ k, ((t.Pr.g k : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hP ((H.mu0 j).unr P hc)`. Establish `h2` using `hvG P hg`. Use `show Valued.v (GlobalTheory.Mem.Col2.afIso t.X.F t.X.E ((x : AfE t.X.F t.X.E) - 1) P) ≤ _`. Rewrite using `[map_sub, map_one, hsub, h2, sub_self, map_zero]`.
+
+Conclude with `zero_le'`. Establish `hxi : (t.tup μ : Chr t.X.F t.X.E t.X.K) x = 1`. Establish `hmem` using `(t.tup μ).2`. Simplify using `only [tupGrp, finChar, Subgroup.mem_inf] at hmem`. Use `GlobalTheory.T.openCharacter_eq_one_of_integralUnit_one_at_ramified t.X.F t.X.E t.X.K t.seam.σ₀ _ hmem.1.1.1.1.2 hmem.1.1.1.1.1 x hxint fun P hP => hsuppX P ?_` and prove the remaining obligations.
+
+Use `⟨t.sel (P.under (𝓞 t.X.F)), Finset.mem_union_right _ ?_, ?_⟩` and prove the remaining obligations. Establish `hs : (t.sel (P.under (𝓞 t.X.F))).under (𝓞 t.X.F) = P.under (𝓞 t.X.F)` using `GlobalTheory.TwistPlaces.under_eq_iff.2 (H.sel _)`. Use `(GlobalTheory.TwistPlaces.mem_QE_iff H.sel (t.tup μ)).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `hP`.
+
+Rewrite using `[hs]`. Conclude with `GlobalTheory.TwistPlaces.under_eq_iff.2 (H.sel _)`. Rewrite using `[← hq]`. Distinguish the cases in `hμ : μ = D.what₂.mu0`. Rewrite using `[(H.ref hμ).2]`.
+
+Conclude with `hmu ⟨i, hi⟩`. Take `⟨ξ, hξ, hmt⟩` from `H.tw μ hμ rfl`. Rewrite using `[hmt u, twMt, if_pos ⟨by omega, by omega⟩, MonoidHom.mul_apply, hmu ⟨i, hi⟩, one_mul, hξ x, hxi, map_one]`.
+-/
 theorem mt_eq_one_of_intUnit : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ i < D.R.m, ∀ y : (letI := D.host.cmStar; Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm), Matrix.GeneralLinearGroup.det y.1 ∈ intU D.host.F D.host.E → (∀ v, UnderSB t μ v → Formalism.UG.prV (E := D.host.E) v ((Matrix.GeneralLinearGroup.det y.1 : (AfE D.host.F D.host.E)ˣ) : AfE D.host.F D.host.E) = 1) → (t.O u μ).mt (i + 1) (dtU y) = 1) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a H T i hi y hint hsupp
   classical

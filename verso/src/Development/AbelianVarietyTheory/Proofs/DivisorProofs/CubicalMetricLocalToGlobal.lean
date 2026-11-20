@@ -10,18 +10,30 @@ namespace GlobalTheory.CubicalGlue
 
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `Set.prod_mono h subset_rfl`.
+-/
 theorem cov_mono {U V : Set E} (h : V ⊆ U) : cov V g ⊆ cov U g :=
   Set.prod_mono h subset_rfl
 
+/- English proof (translation)
+The claim follows from `hU.prod isOpen_univ`.
+-/
 theorem isOpen_cov {U : Set E} (hU : IsOpen U) : IsOpen (cov U g) :=
   hU.prod isOpen_univ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hm.1.mono (cov_mono hVU), fun P hP => hm.2.1 P (cov_mono hVU hP), fun l hl P hP => hm.2.2 l hl P (cov_mono hVU hP)⟩`.
+-/
 theorem isMetric_mono {U V : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}
     {M : Submodule ℤ (Fl g)} {j : Fl g → Pt E g → ℂ} {h : Pt E g → ℝ}
     (hm : IsMetric U τ M j h) (hVU : V ⊆ U) : IsMetric V τ M j h :=
   ⟨hm.1.mono (cov_mono hVU), fun P hP => hm.2.1 P (cov_mono hVU hP),
     fun l hl P hP => hm.2.2 l hl P (cov_mono hVU hP)⟩
 
+/- English proof (translation)
+Establish `h1 : fderiv ℝ u =ᶠ[nhds P] fderiv ℝ u'` using `h.fderiv`. Establish `h2 : ∀ v : Pt E g, (fun Q => fderiv ℝ u Q (Complex.I • v)) =ᶠ[nhds P] (fun Q => fderiv ℝ u' Q (Complex.I • v))` using `fun v => h1.mono fun Q hQ => by simp only [hQ]`. Use function extensionality and compare the values at `v w`. Unfold `ddc`. Rewrite using `[(h2 v).fderiv_eq, (h2 w).fderiv_eq]`.
+-/
 theorem ddc_congr {u u' : Pt E g → ℝ} {P : Pt E g} (h : u =ᶠ[nhds P] u') :
     ddc u P = ddc u' P := by
   have h1 : fderiv ℝ u =ᶠ[nhds P] fderiv ℝ u' := h.fderiv
@@ -31,6 +43,13 @@ theorem ddc_congr {u u' : Pt E g → ℝ} {P : Pt E g} (h : u =ᶠ[nhds P] u') :
   unfold ddc
   rw [(h2 v).fderiv_eq, (h2 w).fderiv_eq]
 
+/- English proof (translation)
+Establish `hp : IsPeriodMap (U ∩ U') τ` using `⟨hU.inter hU', fun i k => (hτ.2.1 i k).mono (Set.inter_subset_left.trans hUB), fun b hb => hτ.2.2 b (hUB hb.1)⟩`. Use `GlobalTheory.T.metric_determined_by_curvature_zero_section hp j h h' (isMetric_mono hh.1 Set.inter_subset_left) (isMetric_mono hh'.1 Set.inter_subset_right) ?_ ?_` and prove the remaining obligations. Introduce `P hP v w`. Establish `e1` using `hh.2.1 P (cov_mono Set.inter_subset_left hP) v w`. Establish `e2` using `hh'.2.1 P (cov_mono Set.inter_subset_right hP) v w`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `b hb`. Establish `e1` using `hh.2.2 b hb.1`. Establish `e2` using `hh'.2.2 b hb.2`. Establish `hne : ‖r b‖ ^ 2 ≠ 0`.
+
+Introduce `h0`. Rewrite `e1` using `[h0, mul_zero]`. Conclude with `zero_ne_one e1`. Conclude with `mul_right_cancel₀ hne (e1.trans e2.symm)`.
+-/
 theorem agree_on_inter [FiniteDimensional ℂ E] {B U U' : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {j : Fl g → Pt E g → ℂ}
     {r : E → ℂ} {h h' : Pt E g → ℝ} (hU : IsOpen U) (hUB : U ⊆ B) (hU' : IsOpen U')
@@ -58,6 +77,19 @@ end GlobalTheory.CubicalGlue
 
 open GlobalTheory.CubicalGlue in
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ hτ j r hloc`. Use `choose U hUo hbU hUB hh hcub using hloc`. Set `H : Pt E g → ℝ` to `fun P => if hP : P.1 ∈ B then hh P.1 hP P else 1`. Establish `key : ∀ b (hb : b ∈ B), ∀ Q ∈ cov (U b hb) g, H Q = hh b hb Q`. Introduce `b hb Q hQ`.
+
+Establish `hQB : Q.1 ∈ B` using `hUB b hb hQ.1`. Simplify using `only [H, dif_pos hQB]`. Conclude with `agree_on_inter hτ (hUo _ hQB) (hUB _ hQB) (hUo b hb) (hcub _ hQB) (hcub b hb) ⟨⟨hbU _ hQB, hQ.1⟩, trivial⟩`. Establish `mem : ∀ P : Pt E g, ∀ hb : P.1 ∈ B, P ∈ cov (U P.1 hb) g` using `fun P hb => ⟨hbU _ hb, trivial⟩`. Establish `hev : ∀ P : Pt E g, ∀ hb : P.1 ∈ B, H =ᶠ[nhds P] hh P.1 hb` using `fun P hb => Filter.eventually_of_mem ((isOpen_cov (hUo _ hb)).mem_nhds (mem P hb)) (key _ hb)`.
+
+Use `⟨H, ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `contDiffOn_of_locally_contDiffOn fun P hP => ⟨cov (U P.1 hP.1) g, isOpen_cov (hUo _ hP.1), mem P hP.1, ?_⟩` and prove the remaining obligations. Conclude with `((hcub _ hP.1).1.1.congr (fun Q hQ => key _ hP.1 Q hQ)).mono Set.inter_subset_right`. Introduce `P hP`. Rewrite using `[key _ hP.1 P (mem P hP.1)]`.
+
+Conclude with `(hcub _ hP.1).1.2.1 P (mem P hP.1)`. Introduce `l hl P hP`. Establish `hm : transl τ l P ∈ cov (U P.1 hP.1) g` using `mem P hP.1`. Rewrite using `[key _ hP.1 P (mem P hP.1), key _ hP.1 _ hm]`. Conclude with `(hcub _ hP.1).1.2.2 l hl P (mem P hP.1)`.
+
+Introduce `P hP v w`. Establish `hl : (fun Q => Real.log (H Q)) =ᶠ[nhds P] fun Q => Real.log (hh P.1 hP.1 Q)` using `(hev P hP.1).mono fun Q hQ => by simp only [hQ]`. Rewrite using `[ddc_congr hl]`. Conclude with `(hcub _ hP.1).2.1 P (mem P hP.1) v w`. Introduce `b hb`.
+
+Rewrite using `[key b hb (zeroSec g b) ⟨hbU b hb, trivial⟩]`. Conclude with `(hcub b hb).2.2 b (hbU b hb)`.
+-/
 theorem GlobalTheory.cubicalMetric_exists_of_local : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (j : Fl g → Pt E g → ℂ) (r : E → ℂ), (∀ b₀ ∈ B, ∃ U : Set E, IsOpen U ∧ b₀ ∈ U ∧ U ⊆ B ∧ ∃ h, IsCubicalMetric U τ j r h) → ∃ h, IsCubicalMetric B τ j r h := by
   intro g E _ _ _ B τ hτ j r hloc
   classical

@@ -28,6 +28,11 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨h1, -, -⟩` from `GlobalTheory.FirstVertexFrame.firstVertex_typeChain k S.ψ S.ϖ s (Fin τ) κ S.P (GlobalTheory.SymShape.sym_shape _ _ _ _ _ _ _ S.sym) S.μ S.tame (s + 1) (Nat.zero_add _)`. Rewrite using `[← h1]`. Use `⟨1, one_mem _, mem_Cgrp.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `(le_sup_left : (embX (s + 1)).range ≤ R k _ (s + 1) 1) ⟨g, rfl⟩`.
+
+Rewrite using `[inv_one, one_mul, mul_one, one_mul]`. Conclude with `hg`.
+-/
 theorem colGroup_of_embX {s κ τ : ℕ} (S : SymData k s κ) (g : GL (XIx (Fin κ) (Fin τ) 0) k)
     (hg : embX (s + 1) g ∈ ((S.T (Fin τ)).lev 0 (s + 1) (Nat.zero_add _)).J) : g ∈ colGroup k κ (Fin τ) := by
   obtain ⟨h1, -, -⟩ := GlobalTheory.FirstVertexFrame.firstVertex_typeChain k S.ψ S.ϖ s (Fin τ) κ S.P
@@ -39,6 +44,13 @@ theorem colGroup_of_embX {s κ τ : ℕ} (S : SymData k s κ) (g : GL (XIx (Fin 
   · rw [inv_one, one_mul, mul_one, one_mul]
     exact hg
 
+/- English proof (translation)
+Establish `hp : ∀ c, colPos κ (Fin τ) c = (e c).val` using `fun c => by`. Rewrite using `[he c]`. Break down `c with (c | c) | c` into its components or cases. Use `exacts [rfl, c.elim0, c.1.elim0]`. Take `⟨_, ⟨g₀, rfl, rfl⟩, hu⟩` from `hg`.
+
+Use `⟨(g₀.val a b).2, fun hab => ?_⟩` and prove the remaining obligations. Establish `h1 : residue 𝒪[k] (g₀.val a b) = (1 : Matrix _ _ 𝓀[k]) a b` using `hu a b (by rw [hp, hp]; exact hab)`. Establish `h2 : (1 : Matrix _ _ 𝓀[k]) a b = residue 𝒪[k] ((1 : Matrix _ _ 𝒪[k]) a b)`. Simplify using `only [Matrix.one_apply, apply_ite (residue 𝒪[k]), map_one, map_zero]`. Rewrite `h1` using `[h2, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
+
+Establish `h3` using `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 h1`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem entries_of_colGroup {κ τ n : ℕ} (e : XIx (Fin κ) (Fin τ) 0 ≃ Fin n) (he : IsOrd xPos e) (g : GL (XIx (Fin κ) (Fin τ) 0) k)
     (hg : g ∈ colGroup k κ (Fin τ)) (a b : XIx (Fin κ) (Fin τ) 0) :
     g.val a b ∈ 𝒪[k] ∧ (e b ≤ e a → valuation k (g.val a b - (1 : Matrix _ _ k) a b) < 1) := by
@@ -57,6 +69,15 @@ theorem entries_of_colGroup {κ τ n : ℕ} (e : XIx (Fin κ) (Fin τ) 0 ≃ Fin
   simp only [Matrix.one_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Establish `hmul : ∀ y z : GA D V, y * z = 1 → (F.γ * (mt V y).map q.pr * F.β) * (F.γ * (mt V z).map q.pr * F.β) = 1` using `fun y z h => by`. Establish `h1 : mt V y * mt V z = 1`. Establish `h2 : mt V y * mt V z = mt V (y * z)` using `rfl`. Rewrite using `[h2, h]`. Both sides reduce to the same expression.
+
+Establish `h3 : (mt V y).map q.pr * (mt V z).map q.pr = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Combine the equalities or inequalities in the displayed calculation. Set `g : GL Y k` to `⟨_, _, hmul x x⁻¹ (mul_inv_cancel x), hmul x⁻¹ x (inv_mul_cancel x)⟩`. Establish `hg : (mt V x).map q.pr = F.β * g.val * F.γ`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨g, hg, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1 : (mt V x).map q.pr * F.β = F.β * g.val` using `by rw [hg, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`. Establish `h2` using `congrFun (congrFun h1 (e a)) b`. Rewrite `h2` using `[hβ]`.
+
+Simplify `h2.symm` using `[Matrix.mul_apply, Matrix.one_apply]`.
+-/
 theorem exists_mat {D : D7} (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y]
     (F : Frame k V.rank Y) (e : Y ≃ Fin V.rank) (hβ : F.β = (1 : Matrix (Fin V.rank) (Fin V.rank) k).submatrix id e) (x : GA D V) :
     ∃ g : GL Y k, (mt V x).map q.pr = F.β * g.val * F.γ ∧ ∀ a b, g.val a b = (mt V x).map q.pr (e a) (e b) := by
@@ -83,6 +104,13 @@ end Loc
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ κ hκ i r c`. Take `⟨e, he, hβ⟩` from `(ha.stdG i).1 0 (Nat.zero_le _)`. Take `⟨g, hg, hgM⟩` from `exists_mat (a.G i).q ((I.rec7 l Z).sp.X 0) _ e hβ κ`. Take `⟨r, rfl⟩` from `e.surjective r`. Take `⟨c, rfl⟩` from `e.surjective c`.
+
+Establish `h` using `entries_of_colGroup e he g (colGroup_of_embX (a.G i).S g (hκ i g hg)) r c`. Rewrite `h` using `[hgM]`. Use `⟨h.1, fun hcr => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) (e r) (e c) = (1 : Matrix _ _ (a.G i).k) r c`. Simplify using `only [Matrix.one_apply, e.injective.eq_iff]`.
+
+Rewrite using `[h1]`. Conclude with `h.2 hcr`.
+-/
 theorem pattern_of_traceAtG : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ κ : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X 0), GlobalTheory.FamTrace.TraceAtG a κ → ∀ i : Fin a.n, ∀ r c : Fin ((I.rec7 l Z).sp.X 0).rank, ((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c ∈ 𝒪[(a.G i).k] ∧ (c ≤ r → valuation (a.G i).k (((mt ((I.rec7 l Z).sp.X 0) κ).map (a.G i).q.pr) r c - (1 : Matrix (Fin ((I.rec7 l Z).sp.X 0).rank) (Fin ((I.rec7 l Z).sp.X 0).rank) (a.G i).k) r c) < 1) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ κ hκ i r c
   obtain ⟨e, he, hβ⟩ := (ha.stdG i).1 0 (Nat.zero_le _)

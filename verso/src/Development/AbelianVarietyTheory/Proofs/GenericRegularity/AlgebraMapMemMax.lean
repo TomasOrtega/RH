@@ -17,6 +17,13 @@ variable {Ω : Type} [Field Ω] {D N : ℕ}
 
 abbrev Free (D N : ℕ) (j0 : Fin N) : Type := {p : Fin (D + 1) × Fin N // p.1 = 0 ∨ p.2 ≠ j0}
 
+/- English proof (translation)
+Establish `h1` using `Fintype.card_subtype_compl (fun p : Fin (D + 1) × Fin N => p.1 = 0 ∨ p.2 ≠ j0)`. Establish `h2 : Fintype.card (Fin D) = Fintype.card {p : Fin (D + 1) × Fin N // ¬ (p.1 = 0 ∨ p.2 ≠ j0)}`. Use `Fintype.card_of_bijective (f := fun i => ⟨(i.succ, j0), by simp⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Simplify using `using hab`.
+
+Introduce and unpack `⟨⟨i, k⟩, hp⟩`. Simplify using `only [not_or, ne_eq, not_not] at hp`. Take `⟨i', rfl⟩` from `Fin.exists_succ_eq.2 hp.1`. Conclude with `⟨i', Subtype.ext (Prod.ext rfl hp.2.symm)⟩`. Establish `h3` using `Fintype.card_subtype_le (fun p : Fin (D + 1) × Fin N => p.1 = 0 ∨ p.2 ≠ j0)`.
+
+Rewrite `h2` using `[Fintype.card_fin]`. Establish `h4 : Fintype.card (Free D N j0) = Fintype.card {p : Fin (D + 1) × Fin N // p.1 = 0 ∨ p.2 ≠ j0}` using `by congr`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_free (j0 : Fin N) : Fintype.card (Fin (D + 1) × Fin N) = Fintype.card (Free D N j0) + D := by
   classical
   have h1 := Fintype.card_subtype_compl (fun p : Fin (D + 1) × Fin N => p.1 = 0 ∨ p.2 ≠ j0)
@@ -40,6 +47,9 @@ def subst (x : Fin N → Ω) (j0 : Fin N) (p : Fin (D + 1) × Fin N) : MvPolynom
   if h : p.1 = 0 ∨ p.2 ≠ j0 then X ⟨p, h⟩
   else -∑ k : {k : Fin N // k ≠ j0}, C (x k / x j0) * X ⟨(p.1, k), Or.inr k.2⟩
 
+/- English proof (translation)
+Unfold `subst`. Use `split_ifs`. Conclude with `Formalism.L2.Pj.LocAlg.X_mem_intPoly _`. Conclude with `Subring.neg_mem _ (sum_mem fun k _ => Subring.mul_mem _ (Formalism.L2.Pj.LocAlg.C_mem_intPoly (hW _)) (Formalism.L2.Pj.LocAlg.X_mem_intPoly _))`.
+-/
 theorem subst_mem (x : Fin N → Ω) (j0 : Fin N) {W : Subring Ω} (hW : ∀ k, x k / x j0 ∈ W)
     (p : Fin (D + 1) × Fin N) : subst x j0 p ∈ Formalism.L2.Pj.LocAlg.intPoly _ W := by
   unfold subst
@@ -48,6 +58,15 @@ theorem subst_mem (x : Fin N → Ω) (j0 : Fin N) {W : Subring Ω} (hW : ∀ k, 
   · exact Subring.neg_mem _ (sum_mem fun k _ => Subring.mul_mem _
       (Formalism.L2.Pj.LocAlg.C_mem_intPoly (hW _)) (Formalism.L2.Pj.LocAlg.X_mem_intPoly _))
 
+/- English proof (translation)
+Unfold `subst`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Take `⟨i, k⟩` from `p`. Simplify using `only [not_or, ne_eq, not_not] at h`.
+
+Take `⟨h1, rfl⟩` from `h`. Take `⟨i', rfl⟩` from `Fin.exists_succ_eq.2 h1`. Establish `hr` using `hrel i'`. Rewrite `hr` using `[Fintype.sum_eq_add_sum_subtype_ne _ k]`. Establish `hx' : algebraMap Ω F (x k) ≠ 0` using `(map_ne_zero _).2 hx`.
+
+Simplify using `only [map_neg, map_sum, map_mul, aeval_C, aeval_X, map_div₀]`. Apply `mul_right_cancel₀ hx'` to reduce the goal to its premises. Rewrite using `[neg_mul, Finset.sum_mul, eq_comm, ← add_eq_zero_iff_eq_neg, ← hr]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem aeval_subst {F : Type} [Field F] [Algebra Ω F] (x : Fin N → Ω) (j0 : Fin N) (hx : x j0 ≠ 0)
     (u : Fin (D + 1) × Fin N → F) (hrel : ∀ i : Fin D, ∑ k, u (i.succ, k) * algebraMap Ω F (x k) = 0)
     (p : Fin (D + 1) × Fin N) : aeval (fun s : Free D N j0 => u s.1) (subst x j0 p) = u p := by
@@ -78,6 +97,9 @@ variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `(ReciprocityTheory.MultiplicativeHeights.Closed.residueTrdeg K Ω F D htr (Free D N j0) (fun s => u s.1) (vRing w) (fun s => hu s.1) (Fin (D + 1) × Fin N) (fun p => ⟨u p, hu p⟩) (subst x j0) (fun p α => subst_mem x j0 hint p α) (card_free j0) (aeval_subst x j0 hx u hrel) (Valuatio …`.
+-/
 theorem free_indep (htr : Algebra.trdeg K Ω = D) (x : Fin N → Ω) (j0 : Fin N) (hx : x j0 ≠ 0)
     {F : Type} [Field F] [Algebra Ω F] (w : AddValuation F (WithTop ℤ)) (u : Fin (D + 1) × Fin N → F)
     (hu : ∀ p, u p ∈ vRing w)
@@ -97,6 +119,15 @@ theorem free_indep (htr : Algebra.trdeg K Ω = D) (x : Fin N → Ω) (j0 : Fin N
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI : Algebra Ω F := ι.toAlgebra`. Establish `hu : ∀ p, u p ∈ vRing w` using `fun p => by`. Use `h1 (X p)` as an intermediate fact. Rewrite `this` using `[eval₂_X]`. Conclude with `this`.
+
+Establish `hs` using `aeval_subst x j0 hx u hrel`. Establish `hP : eval₂ ι u P = aeval (fun s : Free D N j0 => u s.1) (aeval (subst x j0) P)`. Establish `h : (aeval (fun s : Free D N j0 => u s.1)).comp (aeval (subst x j0)) = aeval (R` using `Ω) u := algHom_ext fun p => by rw [AlgHom.comp_apply, aeval_X, aeval_X, hs]`. Establish `h2` using `DFunLike.congr_fun h P`. Rewrite `h2` using `[AlgHom.comp_apply]`.
+
+Rewrite using `[h2, aeval_def]`. Both sides reduce to the same expression. Establish `RT` using `free_indep la htr x j0 hx w u hu h0 (fun a => by`. Use `h1 (C a)` as an intermediate fact. Rewrite `this` using `[eval₂_C]`.
+
+Conclude with `this) hrel (fun k => hint k)`. Use `⟨fun h => by rw [hP, h, map_zero], fun α hα hmin => ?_⟩` and prove the remaining obligations. Rewrite using `[hP]`. Conclude with `GlobalTheory.PlaceRestrict.val_aeval_eq_coeff (Ω := Ω) w (fun s : Free D N j0 => u s.1) (fun s => hu s.1) RT (aeval (subst x j0) P) α hα hmin`.
+-/
 theorem gauss_one (htr : Algebra.trdeg K Ω = D) (x : Fin N → Ω) (j0 : Fin N) (hx : x j0 ≠ 0)
     {F : Type} [Field F] (w : AddValuation F (WithTop ℤ)) (ι : Ω →+* F) (u : Fin (D + 1) × Fin N → F)
     (h0 : ∀ P : MvPolynomial (Fin (D + 1) × Fin N) (𝓞 K),
@@ -141,16 +172,27 @@ variable {Ω F F' : Type} [Field Ω] [Field F] [Field F'] (w : AddValuation F (W
 
 def Att (z : F × F') : Prop := ∃ a : Ω, w z.1 = w (ι a) ∧ w' z.2 = w' (ι' a)
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_mul]`. Conclude with `(by exact_mod_cast hc : (c : WithTop ℤ) ≤ (a : WithTop ℤ) + b).trans (add_le_add hx hy)`.
+-/
 theorem le_mul_of {a b : ℤ} {x y : F} (hx : (a : WithTop ℤ) ≤ w x) (hy : (b : WithTop ℤ) ≤ w y) {c : ℤ}
     (hc : c ≤ a + b) : (c : WithTop ℤ) ≤ w (x * y) := by
   rw [AddValuation.map_mul]
   exact (by exact_mod_cast hc : (c : WithTop ℤ) ≤ (a : WithTop ℤ) + b).trans (add_le_add hx hy)
 
+/- English proof (translation)
+Proceed by induction on `h : w x using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, le_top⟩`. Consider the case `coe a => exact ⟨a.natAbs, by exact_mod_cast (by omega : -(a.natAbs : ℤ) ≤ a)⟩`.
+-/
 theorem exists_lower (x : F) : ∃ m : ℕ, ((-(m : ℤ) : ℤ) : WithTop ℤ) ≤ w x := by
   induction h : w x using WithTop.recTopCoe with
   | top => exact ⟨0, le_top⟩
   | coe a => exact ⟨a.natAbs, by exact_mod_cast (by omega : -(a.natAbs : ℤ) ≤ a)⟩
 
+/- English proof (translation)
+Establish `e : r * s - a * b = r * (s - b) + (r - a) * s - (r - a) * (s - b)` using `by ring`. Rewrite using `[e]`. Use `w.map_le_sub (w.map_le_add ?_ ?_) ?_` and prove the remaining obligations. Conclude with `le_mul_of w hr hb (by omega)`. Conclude with `le_mul_of w ha hs (by omega)`.
+
+Conclude with `le_mul_of w ha hb (by omega)`.
+-/
 theorem approx_mul {r s a b : F} {m : ℕ} {n : ℤ} (hr : ((-(m : ℤ) : ℤ) : WithTop ℤ) ≤ w r)
     (hs : ((-(m : ℤ) : ℤ) : WithTop ℤ) ≤ w s) (ha : (((n.natAbs + m : ℕ) : ℤ) : WithTop ℤ) ≤ w (r - a))
     (hb : (((n.natAbs + m : ℕ) : ℤ) : WithTop ℤ) ≤ w (s - b)) : (n : WithTop ℤ) ≤ w (r * s - a * b) := by
@@ -193,8 +235,16 @@ def lim (A : Subring (F × F')) : Subring (F × F') where
       approx_mul w ((hle _ (by omega)).trans hm1) ((hle _ (by omega)).trans hm2) h1 h3,
       approx_mul w' ((hle _ (by omega)).trans hm3) ((hle _ (by omega)).trans hm4) h2 h4⟩
 
+/- English proof (translation)
+Introduce `z hz _` and use `⟨z, hz, by simp, by simp⟩`.
+-/
 theorem le_lim (A : Subring (F × F')) : A ≤ lim w w' A := fun z hz _ => ⟨z, hz, by simp, by simp⟩
 
+/- English proof (translation)
+Establish `hlt : (n : WithTop ℤ) < w (r - a)` using `lt_of_lt_of_le (WithTop.coe_lt_coe.2 (by omega)) h`. Prove the components needed by the constructor for the conclusion. Introduce `hr`. Establish `: a = r + -(r - a)` using `by ring`. Rewrite using `[this, AddValuation.map_add_eq_of_lt_left _ (by rw [AddValuation.map_neg, hr]; exact hlt), hr]`.
+
+Introduce `ha`. Establish `: r = a + (r - a)` using `by ring`. Rewrite using `[this, AddValuation.map_add_eq_of_lt_left _ (by rw [ha]; exact hlt), ha]`.
+-/
 theorem val_eq_of_close {r a : F} {n : ℤ} (h : ((n + 1 : ℤ) : WithTop ℤ) ≤ w (r - a)) :
     w r = n ↔ w a = n := by
   have hlt : (n : WithTop ℤ) < w (r - a) := lt_of_lt_of_le (WithTop.coe_lt_coe.2 (by omega)) h
@@ -206,6 +256,15 @@ theorem val_eq_of_close {r a : F} {n : ℤ} (h : ((n + 1 : ℤ) : WithTop ℤ) �
     have : r = a + (r - a) := by ring
     rw [this, AddValuation.map_add_eq_of_lt_left _ (by rw [ha]; exact hlt), ha]
 
+/- English proof (translation)
+Introduce `z hz`. Proceed by induction on `h : w z.1 using WithTop.recTopCoe with`. Consider the case `top`. Proceed by induction on `h' : w' z.2 using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, by simp [h], by simp [h']⟩`.
+
+Consider the case `coe n`. Take `⟨a, ha, h1, h2⟩` from `hz (n + 1)`. Take `⟨b, hb1, hb2⟩` from `hA a ha`. Establish `e2` using `(val_eq_of_close w' h2).1 h'`. Establish `e1` using `(val_eq_of_close w h1).2 (by rw [hb1, heq, ← hb2, e2])`.
+
+Rewrite `e1` using `[h]`. Conclude with `absurd e1 WithTop.top_ne_coe`. Consider the case `coe n`. Take `⟨a, ha, h1, h2⟩` from `hz (n + 1)`. Take `⟨b, hb1, hb2⟩` from `hA a ha`.
+
+Establish `e1` using `(val_eq_of_close w h1).1 h`. Establish `e2` using `(val_eq_of_close w' h2).2 (by rw [hb2, ← heq, ← hb1, e1])`. Conclude with `⟨b, by rw [h, ← hb1, e1], by rw [e2, ← heq, ← hb1, e1]⟩`.
+-/
 theorem att_lim (heq : ∀ a, w (ι a) = w' (ι' a)) {A : Subring (F × F')} (hA : ∀ z ∈ A, Att w w' ι ι' z) :
     ∀ z ∈ lim w w' A, Att w w' ι ι' z := by
   intro z hz
@@ -246,9 +305,15 @@ def frc (A : Subring (F × F')) : Subring (F × F') where
     rw [mul_mul_mul_comm]
     exact A.mul_mem hy hz
 
+/- English proof (translation)
+Introduce `z hz` and use `⟨1, A.one_mem, one_ne_zero, one_ne_zero, by rwa [one_mul]⟩`.
+-/
 theorem le_frc (A : Subring (F × F')) : A ≤ frc A := fun z hz =>
   ⟨1, A.one_mem, one_ne_zero, one_ne_zero, by rwa [one_mul]⟩
 
+/- English proof (translation)
+Take `⟨d, hd, d1, d2, hz⟩` from `h`. Use `⟨d * (y, y'), hz, mul_ne_zero d1 hy, mul_ne_zero d2 hy', ?_⟩` and prove the remaining obligations. Establish `: d * (y, y') * (y⁻¹, y'⁻¹) = d`. Apply the tactic sequence `ext <;> simp [hy, hy']`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem inv_mem_frc (A : Subring (F × F')) {y : F} {y' : F'} (h : (y, y') ∈ frc A) (hy : y ≠ 0) (hy' : y' ≠ 0) :
     (y⁻¹, y'⁻¹) ∈ frc A := by
   obtain ⟨d, hd, d1, d2, hz⟩ := h
@@ -257,6 +322,11 @@ theorem inv_mem_frc (A : Subring (F × F')) {y : F} {y' : F'} (h : (y, y') ∈ f
     ext <;> simp [hy, hy']
   rwa [this]
 
+/- English proof (translation)
+Introduce and unpack `z ⟨d, hd, d1, d2, hz⟩`. Take `⟨a, ha1, ha2⟩` from `hA d hd`. Take `⟨b, hb1, hb2⟩` from `hA _ hz`. Use `⟨b * a⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `: z.1 = (d * z).1 * d.1⁻¹` using `by rw [Prod.fst_mul]; field_simp`.
+
+Rewrite using `[this, map_mul ι, map_inv₀ ι, AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_inv, AddValuation.map_inv, ha1, hb1]`. Establish `: z.2 = (d * z).2 * d.2⁻¹` using `by rw [Prod.snd_mul]; field_simp`. Rewrite using `[this, map_mul ι', map_inv₀ ι', AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_inv, AddValuation.map_inv, ha2, hb2]`.
+-/
 theorem att_frc {A : Subring (F × F')} (hA : ∀ z ∈ A, Att w w' ι ι' z) :
     ∀ z ∈ frc A, Att w w' ι ι' z := by
   rintro z ⟨d, hd, d1, d2, hz⟩
@@ -277,6 +347,13 @@ section Both
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {Ω : Type} [Field Ω] [Algebra K Ω]
   {D N : ℕ}
 
+/- English proof (translation)
+Take `⟨k0, hk0⟩` from `hx`. Use `haveI : Nonempty (Fin N) := ⟨k0⟩`. Take `⟨j0, -, hj⟩` from `Finset.univ.exists_min_image (fun k => v (x k)) Finset.univ_nonempty`. Establish `hne : x j0 ≠ 0`. Introduce `h`.
+
+Use `hj k0 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h, AddValuation.map_zero, top_le_iff, AddValuation.top_iff]`. Conclude with `hk0 this`. Use `⟨j0, hne, fun k => ValuationResidueLemmas.wt_nonneg_of_add (b := v (x j0)) (c := v (x k)) ?_ ?_ (hj k (Finset.mem_univ _))⟩` and prove the remaining obligations. Rewrite using `[Ne, AddValuation.top_iff]`.
+
+Conclude with `hne`. Rewrite using `[← AddValuation.map_mul, div_mul_cancel₀ _ hne]`.
+-/
 theorem exists_adapted (x : Fin N → Ω) (hx : ∃ k, x k ≠ 0) (v : AddValuation Ω (WithTop ℤ)) :
     ∃ j0, x j0 ≠ 0 ∧ ∀ k, 0 ≤ v (x k / x j0) := by
   obtain ⟨k0, hk0⟩ := hx
@@ -291,6 +368,9 @@ theorem exists_adapted (x : Fin N → Ω) (hx : ∃ k, x k ≠ 0) (v : AddValuat
   · rw [Ne, AddValuation.top_iff]; exact hne
   · rw [← AddValuation.map_mul, div_mul_cancel₀ _ hne]
 
+/- English proof (translation)
+Establish `hϖ' : (ϖ : la.adicCompletion K) ≠ 0` using `fun h => hϖ (Subtype.ext h)`. Establish `hU : IsOpen {z : la.adicCompletion K | (c - z) * (ϖ : la.adicCompletion K)⁻¹ ∈ la.adicCompletionIntegers K}` using `(Valued.isOpen_valuationSubring (la.adicCompletion K)).preimage ((continuous_const.sub continuous_id).mul continuous_const)`. Take `⟨a, ha⟩` from `(HeightOneSpectrum.denseRange_algebraMap K la).exists_mem_open hU ⟨c, by simp⟩`. Use `⟨a, ⟨_, ha⟩, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_approx (c : la.adicCompletion K) (ϖ : la.adicCompletionIntegers K) (hϖ : ϖ ≠ 0) :
     ∃ (a : K) (o : la.adicCompletionIntegers K),
       c - algebraMap K (la.adicCompletion K) a = (ϖ : la.adicCompletion K) * o := by
@@ -301,6 +381,9 @@ theorem exists_approx (c : la.adicCompletion K) (ϖ : la.adicCompletionIntegers 
   refine ⟨a, ⟨_, ha⟩, ?_⟩
   field_simp
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_eq_one_iff_notMem, not_not]`.
+-/
 theorem algebraMap_mem_max (a : 𝓞 K) :
     algebraMap (𝓞 K) (la.adicCompletionIntegers K) a ∈ maximalIdeal (la.adicCompletionIntegers K) ↔
       a ∈ la.asIdeal := by
@@ -318,6 +401,9 @@ def OverGauss {F : Type} [Field F] (w : AddValuation F (WithTop ℤ)) (ι : Ω �
 
 variable {la φ κ x}
 
+/- English proof (translation)
+Establish `: eval₂Hom (ι.comp ((algebraMap K Ω).comp (algebraMap (𝓞 K) K))) (fun p => e (φ (X p))) = e.comp (φ.comp (MvPolynomial.map (algebraMap (𝓞 K) (la.adicCompletionIntegers K))))`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => by simp)` and prove the remaining obligations. Simplify using `only [coe_eval₂Hom, eval₂_C, RingHom.comp_apply, map_C, h.2.2.1, ← hκ]`. Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun this P`.
+-/
 theorem OverGauss.eval_eq (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C o))
     {F : Type} [Field F] {w : AddValuation F (WithTop ℤ)} {ι : Ω →+* F} {e : K' →+* F}
     (h : OverGauss la φ κ x w ι e) (P : MvPolynomial (Fin (D + 1) × Fin N) (𝓞 K)) :
@@ -330,6 +416,9 @@ theorem OverGauss.eval_eq (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ 
     rfl
   exact DFunLike.congr_fun this P
 
+/- English proof (translation)
+Use `gauss_one la htr x j0 hx w ι _ (fun Q => ?_) (fun Q => ?_) h.2.2.2 hint P` and prove the remaining obligations. Rewrite using `[h.eval_eq hκ, h.2.1]`. Simplify using `only [coeff_map, algebraMap_mem_max]`. Rewrite using `[h.eval_eq hκ]`. Conclude with `h.1 _`.
+-/
 theorem OverGauss.gauss (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C o)) (htr : Algebra.trdeg K Ω = D)
     {F : Type} [Field F] {w : AddValuation F (WithTop ℤ)} {ι : Ω →+* F} {e : K' →+* F}
     (h : OverGauss la φ κ x w ι e) (j0 : Fin N) (hx : x j0 ≠ 0) (hint : ∀ k, 0 ≤ w (ι (x k / x j0)))
@@ -345,6 +434,17 @@ theorem OverGauss.gauss (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C
   · rw [h.eval_eq hκ]
     exact h.1 _
 
+/- English proof (translation)
+Rewrite using `[h.2.2.1, ← map_sub, ← map_sub, hc, map_mul, map_mul, hκ, hκ]`. Establish `h1 : ((1 : ℤ) : WithTop ℤ) ≤ w (e (φ (C ϖ)))`. Establish `: 0 < w (e (φ (C ϖ)))` using `(h.2.1 _).2 fun α => by`. Rewrite using `[coeff_C]`. Use `split_ifs`.
+
+Conclude with `hϖ`. Conclude with `Ideal.zero_mem _`. Proceed by induction on `hh : w (e (φ (C ϖ))) using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe m`.
+
+Rewrite `this` using `[hh]`. Establish `: (0 : ℤ) < m` using `by exact_mod_cast this`. Conclude with `WithTop.coe_le_coe.2 (by omega)`. Establish `h2 : ∀ m : ℕ, ((m : ℤ) : WithTop ℤ) ≤ w (e (φ (C (ϖ ^ m))))`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, map_mul, map_mul, map_mul]`. Conclude with `le_mul_of w ih h1 (by push_cast; omega)`.
+
+Conclude with `le_mul_of w (b := 0) (h2 _) (h.1 _) (by omega)`.
+-/
 theorem OverGauss.approx (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C o))
     {F : Type} [Field F] {w : AddValuation F (WithTop ℤ)} {ι : Ω →+* F} {e : K' →+* F}
     (h : OverGauss la φ κ x w ι e) {ϖ : la.adicCompletionIntegers K}
@@ -374,6 +474,23 @@ theorem OverGauss.approx (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (
       exact le_mul_of w ih h1 (by push_cast; omega)
   exact le_mul_of w (b := 0) (h2 _) (h.1 _) (by omega)
 
+/- English proof (translation)
+Take `⟨j0, hj0, hint⟩` from `exists_adapted x hx (w.comap ι)`. Establish `hint1 : ∀ k, 0 ≤ w (ι (x k / x j0))` using `hint`. Establish `hint2 : ∀ k, 0 ≤ w' (ι' (x k / x j0))` using `fun k => heq _ ▸ hint1 k`. Set `A₀ : Subring (F × F')` to `((eval₂Hom ι (fun p => e (φ (X p)))).prod (eval₂Hom ι' (fun p => e' (φ (X p))))).range`. Establish `hA₀ : ∀ z ∈ A₀, Att w w' ι ι' z`.
+
+Introduce and unpack `_ ⟨P, rfl⟩`. Take `⟨g1, g2⟩` from `h.gauss hκ htr j0 hj0 hint1 P`. Take `⟨g3, g4⟩` from `h'.gauss hκ htr j0 hj0 hint2 P`. Distinguish the cases in `hQ : aeval (subst x j0) P = 0`. Conclude with `⟨0, by simp [g1 hQ], by simp [g3 hQ]⟩`.
+
+Take `⟨α, hα, hmin⟩` from `(aeval (subst x j0) P).support.exists_min_image (fun β => w (ι ((aeval (subst x j0) P).coeff β))) (MvPolynomial.support_nonempty.2 hQ)`. Conclude with `⟨_, g2 α hα hmin, g4 α hα (fun β hβ => by rw [← heq, ← heq]; exact hmin β hβ)⟩`. Establish `hΩ : ∀ a, (ι a, ι' a) ∈ A₀` using `fun a => ⟨C a, by simp⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (la.adicCompletionIntegers K)`. Establish `hϖm : ϖ ∈ maximalIdeal (la.adicCompletionIntegers K)` using `hϖ.not_isUnit`.
+
+Establish `hP : ∀ P, (e (φ P), e' (φ P)) ∈ lim w w' A₀`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C o`. Introduce `n`.
+
+Take `⟨a, o', hc⟩` from `exists_approx la (o : la.adicCompletion K) (ϖ ^ n.natAbs) (pow_ne_zero _ hϖ.ne_zero)`. Use `⟨_, hΩ (algebraMap K Ω a), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hκ]`. Conclude with `h.approx hκ hϖm n hc`. Rewrite using `[← hκ]`.
+
+Conclude with `h'.approx hκ hϖm n hc`. Consider the case `add p q hp hq`. Use `Subring.add_mem _ hp hq` as an intermediate fact. Simplify `this` using `only [map_add, Prod.mk_add_mk]`. Consider the case `mul_X p s hp`.
+
+Use `Subring.mul_mem _ hp (le_lim w w' A₀ (⟨X s, by simp⟩ : (e (φ (X s)), e' (φ (X s))) ∈ A₀))` as an intermediate fact. Simplify `this` using `only [map_mul, Prod.mk_mul_mk]`. Use `⟨frc (lim w w' A₀), att_frc w w' ι ι' (att_lim w w' ι ι' heq hA₀), fun a => le_frc _ (le_lim w w' A₀ (hΩ a)), fun c => ?_, fun y y' => inv_mem_frc _⟩` and prove the remaining obligations. Take `⟨a, b, hb, hc⟩` from `hφ c`. Use `⟨_, hP b, (map_ne_zero e).2 hb, (map_ne_zero e').2 hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Prod.mk_mul_mk, ← map_mul, ← map_mul, hc]`. Conclude with `hP a`.
+-/
 theorem exists_att (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C o))
     (hφ : ∀ c : K', ∃ a b, φ b ≠ 0 ∧ φ b * c = φ a) (htr : Algebra.trdeg K Ω = D) (hx : ∃ k, x k ≠ 0)
     {F F' : Type} [Field F] [Field F'] {w : AddValuation F (WithTop ℤ)} {ι : Ω →+* F} {e : K' →+* F}
@@ -421,6 +538,15 @@ theorem exists_att (hκ : ∀ o : la.adicCompletionIntegers K, κ o = φ (C o))
   rw [Prod.mk_mul_mk, ← map_mul, ← map_mul, hc]
   exact hP a
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨s, hs⟩ := weak_approx_orders ![v, v'] (fun i a ha => by rw [Ne, AddValuation.top_iff]; exact ha) (fun i => by fin_cases i; exacts [h, h']) (fun i j hij => by fin_cases i <;> fin_cases j <;> simp_all [hne.symm]) ![1, -1]`. Establish `s1 : v s = ((1 : ℤ) : WithTop ℤ)` using `hs 0`. Establish `s2 : v' s = ((-1 : ℤ) : WithTop ℤ)` using `hs 1`. Establish `t1 : v (1 + s) = ((0 : ℤ) : WithTop ℤ)`. Rewrite using `[AddValuation.map_add_eq_of_lt_left _ (by`.
+
+Rewrite using `[AddValuation.map_one, s1]`. Conclude with `(zero_lt_one : (0 : ℤ) < 1)),` after adjusting the coercions. Use the proof step `AddValuation.map_one, WithTop.coe_zero]`. Establish `t2 : v' (1 + s) = ((-1 : ℤ) : WithTop ℤ)`. Rewrite using `[AddValuation.map_add_eq_of_lt_right _ (by`.
+
+Rewrite using `[AddValuation.map_one, s2]; exact_mod_cast (by omega : (-1 : ℤ) < 0)), s2]`. Establish `h0 : 1 + s ≠ 0` using `wa_ne_zero_of_coe _ t1`. Use `⟨s / (1 + s), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[wa_div _ s1 t1]; exact_mod_cast (by omega : (0 : ℤ) < 1 - 0)`. Establish `: s / (1 + s) - 1 = -(1 + s)⁻¹` using `by field_simp; ring`.
+
+Rewrite using `[this, AddValuation.map_neg, wa_inv _ t2]; exact_mod_cast (by omega : (0 : ℤ) < - -1)`.
+-/
 theorem exists_sep (v v' : AddValuation Ω (WithTop ℤ)) (h : ∃ a, v a = 1) (h' : ∃ a, v' a = 1) (hne : v ≠ v') :
     ∃ a, 0 < v a ∧ 0 < v' (a - 1) := by
   obtain ⟨s, hs⟩ := weak_approx_orders ![v, v'] (fun i a ha => by rw [Ne, AddValuation.top_iff]; exact ha)

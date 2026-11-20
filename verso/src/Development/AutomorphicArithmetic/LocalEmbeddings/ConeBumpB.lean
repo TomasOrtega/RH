@@ -37,11 +37,19 @@ def dispA {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ :
     Fin n → Fv F v ⊗[F] E :=
   t • atV v (mat k⁻¹ *ᵥ incV F x₀) - atV v (incV F x₀)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.ConeBump.disp, dispA, atV, map_mul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem disp_eq {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ : Fin n → E) (k : UA σ J) (l : (AE F E)ˣ) :
     GlobalTheory.ConeBump.disp v x₀ k l = dispA v x₀ k (compFin F E v l.1) := by
   funext i
   simp only [GlobalTheory.ConeBump.disp, dispA, atV, map_mul, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_` and prove the remaining obligations. Rewrite using `[partFin, partFin, compInf_smul, compInf_smul, show evInf F w (GlobalTheory.LatVac.liftV v 1) = 0 from rfl, zero_smul, zero_smul]`. Rewrite using `[partFin, partFin, compFin_smul, compFin_smul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[GlobalTheory.LocPair.compFin_liftT]`. Rewrite using `[show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne hw 1, zero_smul, zero_smul]`.
+-/
 theorem partFin_liftT (v : Pl F) (z : AE F E) : partFin v (liftT v (compFin F E v z)) = partFin v z := by
   refine GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_
   · rw [partFin, partFin, compInf_smul, compInf_smul, show evInf F w (GlobalTheory.LatVac.liftV v 1) = 0 from rfl, zero_smul,
@@ -52,6 +60,9 @@ theorem partFin_liftT (v : Pl F) (z : AE F E) : partFin v (liftT v (compFin F E 
       rw [GlobalTheory.LocPair.compFin_liftT]
     · rw [show evFin F w (GlobalTheory.LatVac.liftV v 1) = 0 from evalV_singleFin_ne hw 1, zero_smul, zero_smul]
 
+/- English proof (translation)
+Establish `h` using `partFin_liftT v l.1`. Rewrite `h` using `[partFin, partFin]`. Rewrite using `[partFin, partFin, smul_shiftB, ← h, uS, map_smul]`. Conclude with `smul_assoc _ _ _`.
+-/
 theorem partFin_shiftB (σ : E →ₐ[F] E) (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (l : (AE F E)ˣ) :
     partFin v (shiftB σ H H' l) = partFin v (uS σ H H' v (compFin F E v l.1)) := by
   have h := partFin_liftT v l.1
@@ -59,15 +70,24 @@ theorem partFin_shiftB (σ : E →ₐ[F] E) (H : Plane E n n₁) (H' : Plane E d
   rw [partFin, partFin, smul_shiftB, ← h, uS, map_smul]
   exact smul_assoc _ _ _
 
+/- English proof (translation)
+Rewrite using `[uS, map_zero, map_zero, zero_smul]`.
+-/
 theorem uS_zero (σ : E →ₐ[F] E) (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) : uS σ H H' v 0 = 0 := by
   rw [uS, map_zero, map_zero, zero_smul]
 
+/- English proof (translation)
+Establish `e : (fun i => sigR (Fv F v) σ ((y + y') i)) = (fun i => sigR (Fv F v) σ (y i)) + fun i => sigR (Fv F v) σ (y' i)` using `funext fun i => map_add _ _ _`. Rewrite using `[pairV, pairV, pairV, e, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem pairV_add_right (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (x y y' : Fin n → Fv F v ⊗[F] E) :
     pairV σ J v x (y + y') = pairV σ J v x y + pairV σ J v x y' := by
   have e : (fun i => sigR (Fv F v) σ ((y + y') i)) =
       (fun i => sigR (Fv F v) σ (y i)) + fun i => sigR (Fv F v) σ (y' i) := funext fun i => map_add _ _ _
   rw [pairV, pairV, pairV, e, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Rewrite using `[pairV, pairV, pairV, sub_dotProduct, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem pairV_smul_sub_left (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (t : Fv F v ⊗[F] E)
     (x x' y : Fin n → Fv F v ⊗[F] E) : pairV σ J v (t • x - x') y = t * pairV σ J v x y - pairV σ J v x' y := by
   rw [pairV, pairV, pairV, sub_dotProduct, smul_dotProduct, smul_eq_mul]

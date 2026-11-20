@@ -15,6 +15,9 @@ namespace PositivityTheory.Rg.BcB.F.FX
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+Introduce `E _ _ _ n D w K hKo hKc`. Establish `hs : IsSmooth (Tail.prodAt D w)` using `GlobalTheory.SmGL.isSmooth_parInd _ _`. Establish `hfl : HasFiniteLength (Tail.prodAt D w)` using `GlobalTheory.T.finite_length_of_products (w.adicCompletion E) (Fin n) (Fin D.c) (fun i => Fin (D.N i)) (GlobalTheory.SmGL.stdBlocks D.N D.h) (fun i => (D.σ i w).V) (fun i => (D.σ i w).ρ) (fun i => (D.σ i w).smooth) (fun i => (D.σ i w).irred)`. Establish `hadm : IsAdmissible (Tail.prodAt D w)` using `GlobalTheory.T.admissible_of_finite_length_subquotients (Tail.prodAt D w) hs hfl fun W _ _ σ hsub hirr => PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (w.adicCompletion E) n W σ (hsub.isSmooth hs) hirr`. Conclude with `hadm.2 K hKo hKc`.
+-/
 theorem fixFin : FixFin := by
   intro E _ _ _ n D w K hKo hKc
   have hs : IsSmooth (Tail.prodAt D w) := GlobalTheory.SmGL.isSmooth_parInd _ _

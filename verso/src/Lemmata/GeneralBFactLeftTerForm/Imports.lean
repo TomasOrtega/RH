@@ -2,6 +2,17 @@ import Mathlib
 
 namespace Bl.general_b_fact_left_ter_form
 
+/- English proof (translation)
+Introduce `R K V _ _ _ _ _ _ _ _ _ M y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x z _ _ hx hz`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, htz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Establish `e1 : (s * t) • x = t • (s • x)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (s * t) • z = s • (t • z)` using `by rw [mul_smul]`.
+
+Rewrite using `[smul_add, e1, e2]`. Conclude with `M.add_mem (M.smul_mem t hsx) (M.smul_mem s htz)`. Consider the case `smul k x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : algebraMap R K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨b * s, mul_ne_zero hb0 hs, ?_⟩` and prove the remaining obligations. Establish `key : algebraMap R K (b * s) * (algebraMap R K a / algebraMap R K b) = algebraMap R K a * algebraMap R K s`. Rewrite using `[map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e : (b * s) • ((algebraMap R K a / algebraMap R K b) • x) = a • (s • x)`. Rewrite using `[← algebraMap_smul K (b * s), smul_smul, key, mul_smul, algebraMap_smul K, algebraMap_smul K]`. Rewrite using `[e]`. Conclude with `M.smul_mem a hsx`.
+-/
 theorem goal1 :
   ∀ {R K V : Type} [inst : CommRing.{0} R] [IsDomain.{0} R] [inst_2 : Field.{0} K] [inst_3 : Algebra.{0, 0} R K]
   [IsFractionRing.{0, 0} R K] [inst_5 : AddCommGroup.{0} V] [inst_6 : Module.{0, 0} R V] [inst_7 : Module.{0, 0} K V]

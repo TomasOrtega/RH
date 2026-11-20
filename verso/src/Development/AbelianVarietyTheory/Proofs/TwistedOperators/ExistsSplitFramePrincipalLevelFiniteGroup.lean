@@ -23,12 +23,20 @@ open Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.
 open GlobalTheory.LiftRows
 namespace GlobalTheory.TrPtFrame
 
+/- English proof (translation)
+Use `show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram u ((locFin V v x : GfC V) : GA D V) = 1`. Rewrite using `[coe_locFin]`. Conclude with `GlobalTheory.AdelicU.proj_emb_ne _ _ h x`.
+-/
 theorem finLoc_locFin_ne {D : D7} (V : HSp D) {u v : HeightOneSpectrum (𝓞 D.host.F)} (h : u ≠ v) (x : Gv V v) :
     finLoc V u (locFin V v x) = 1 := by
   show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram u ((locFin V v x : GfC V) : GA D V) = 1
   rw [coe_locFin]
   exact GlobalTheory.AdelicU.proj_emb_ne _ _ h x
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.DIV.mem_parLev]`. Use `⟨hU, hS, fun PP _ => ?_, fun PP hP => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.DIV.mem_blockTri]`. Introduce `i j hij`. It suffices to derive a contradiction.
+
+Simplify using `[Formalism.L2.DIV.blkOf, h] at hij`. It suffices to derive a contradiction. Simplify using `[hQ] at hP`.
+-/
 theorem mem_parLev {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     (L : LevDat D.host.E ℂ V.rank) (h : L.r = V.rank) (hQ : L.Q = ∅) {x : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)}
     (hU : x ∈ UA D.sp.cm V.gram) (hS : x ∈ St β) : x ∈ parLev D.sp.cm V.gram β L := by
@@ -41,6 +49,11 @@ theorem mem_parLev {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.
   · exfalso
     simp [hQ] at hP
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hm : g ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)`. Rewrite using `[Formalism.L2.DIV.mem_blockTri]`. Introduce `a b hab`. It suffices to derive a contradiction.
+
+Simplify using `[Formalism.L2.DIV.blk2] at hab`. Rewrite using `[Formalism.L2.DIV.upper_block_val_submatrix hr hm, Matrix.submatrix_apply]`. Both sides reduce to the same expression.
+-/
 theorem upperLeftBlock_apply_of_eq {D : D7} {n r : ℕ} (hr : r ≤ n) (h : r = n) (PP : Pl D.host.E) (g : GL (Fin n) (kP PP)) (i j : Fin r) :
     ((upperLeftBlock hr g : GL (Fin r) (kP PP)) : Matrix (Fin r) (Fin r) (kP PP)) i j = (g : Matrix (Fin n) (Fin n) (kP PP)) (i.cast h) (j.cast h) := by
   subst h
@@ -52,16 +65,47 @@ theorem upperLeftBlock_apply_of_eq {D : D7} {n r : ℕ} (hr : r ≤ n) (h : r = 
   rw [Formalism.L2.DIV.upper_block_val_submatrix hr hm, Matrix.submatrix_apply]
   rfl
 
+/- English proof (translation)
+Use `show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v ((locFin V v x : GfC V) : GA D V) = x`. Rewrite using `[coe_locFin]`. Conclude with `GlobalTheory.AdelicU.proj_emb_self _ _ v x`.
+-/
 private theorem finLoc_locFin' {D : D7} (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (x : Gv V v) :
     finLoc V v (locFin V v x) = x := by
   show GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v ((locFin V v x : GfC V) : GA D V) = x
   rw [coe_locFin]
   exact GlobalTheory.AdelicU.proj_emb_self _ _ v x
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one (Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) (Formalism.L2.DIV.blkR hr)`.
+-/
 private theorem upperLeftBlock_one {D : D7} {n r : ℕ} (hr : r ≤ n) (PP : Pl D.host.E) :
     (upperLeftBlock hr (1 : GL (Fin n) (kP PP)) : GL (Fin r) (kP PP)) = 1 :=
   Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one (Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) (Formalism.L2.DIV.blkR hr)
 
+/- English proof (translation)
+Introduce `D V β Λ N L h hB hQ hPg`. Take `⟨a, hLat, hSt⟩` from `GlobalTheory.FramePointMove.exists_point_carrying_frameLat D V β Λ N hB`. Establish `hStk : ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (k : Gv V v), k ∈ Kv V v → finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) ∈ St β`. Introduce `v k hk`. Use `(hSt (locFin V v k)).2 fun u => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Rewrite using `[finLoc_locFin']`. Conclude with `hk`. Rewrite using `[finLoc_locFin_ne V huv k]`.
+
+Conclude with `Subgroup.one_mem _`. Establish `hinj : ∀ PP ∈ L.Pg, ∀ PP' ∈ L.Pg, PP.under (𝓞 D.host.F) = PP'.under (𝓞 D.host.F) → PP = PP'`. Introduce `PP hP PP' hP' he`. Assume the negation of the conclusion as `hne`. Conclude with `hPg PP hP PP' hP' (GlobalTheory.UnderConj.isConjPl_of_under_eq_of_ne D PP PP' he hne)`.
+
+Set `S : Finset (HeightOneSpectrum (𝓞 D.host.F))` to `L.Pg.image fun PP => PP.under (𝓞 D.host.F)`. Set `f : L.Pg → S` to `fun PP => ⟨PP.1.under (𝓞 D.host.F), Finset.mem_image_of_mem _ PP.2⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `PP PP' he`.
+
+Conclude with `Subtype.ext (hinj _ PP.2 _ PP'.2 (congrArg Subtype.val he))`. Introduce `v`. Take `⟨PP, hP, he⟩` from `Finset.mem_image.1 v.2`. Conclude with `⟨⟨PP, hP⟩, Subtype.ext he⟩`. Set `pl : S ≃ L.Pg` to `(Equiv.ofBijective f hf).symm`.
+
+Establish `hunder : ∀ v : S, (pl v).1.under (𝓞 D.host.F) = v.1` using `fun v => congrArg Subtype.val ((Equiv.ofBijective f hf).apply_symm_apply v)`. Use `choose s ρ hsρ using fun v : S => GlobalTheory.SplitPlaceRed.splitRed_frame D V β Λ N a hB hLat v.1 (pl v).1 (hunder v) (hPg _ (pl v).2 _ (pl v).2) (fun k => hStk v.1 k.1 k.2)`. Use `⟨a, S, pl, s, ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv k hk`. Establish `hx` using `hStk v k hk`.
+
+Rewrite using `[Formalism.IndefR.Lev.levG, Formalism.IndefR.Lev.mem_levA]`. Use `⟨(a * locFin V v k * a⁻¹ : GfC V).2, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.DIV.mem_lev]`. Use `⟨mem_parLev (flag1L L) h hQ (GlobalTheory.LevSplit.finE_mem_UA V _) hx, ?_⟩` and prove the remaining obligations. Establish `hone : ∀ PP ∈ L.Pg, redFn β PP (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V)) = 1`.
+
+Introduce `PP hP`. Use `GlobalTheory.PlaceAwayRed.redFn_conj_locFin_eq_one D V β a v PP (fun he => hv ?_) k hx` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `Finset.mem_image_of_mem _ hP`. Establish `hrt : rTup β (flag1L L) (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V)) = rTup β (flag1L L) 1`.
+
+Use function extensionality and compare the values at `PP`. Simplify using `only [Formalism.L2.DIV.rTup]`. Rewrite using `[hone PP.1 PP.2, Formalism.L2.DIV.redFn_one]`. Rewrite using `[hrt, Formalism.L2.DIV.rTup_one]`. Conclude with `Subgroup.one_mem _`.
+
+Introduce `v k`. Establish `hx` using `hStk v.1 k.1 k.2`. Use `⟨rTup β L (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V)), ⟨(a * locFin V v k * a⁻¹ : GfC V).2, mem_parLev L h hQ (GlobalTheory.LevSplit.finE_mem_UA V _) hx, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `PP hne`. Establish `hu : PP.1.under (𝓞 D.host.F) ≠ v.1`.
+
+Introduce `he`. Conclude with `hne (Subtype.ext (hinj _ PP.2 _ (pl v).2 (he.trans (hunder v).symm)))`. Use `show upperLeftBlock L.hr (redFn β PP.1 (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V))) = 1`. Rewrite using `[GlobalTheory.PlaceAwayRed.redFn_conj_locFin_eq_one D V β a v.1 PP.1 hu k.1 hx]`. Conclude with `upperLeftBlock_one L.hr PP.1`.
+
+Introduce `i j show ((upperLeftBlock L.hr (redFn β (pl v).1 (finE V ((a * locFin V v k * a⁻¹ : GfC V) : GA D V))) : GL (Fin L.r) (kP (pl v).1)) : Matrix (Fin L.r) (Fin L.r) (kP (pl v).1)) i j = _`. Rewrite using `[upperLeftBlock_apply_of_eq L.hr h]`. Conclude with `hsρ v k (i.cast h) (j.cast h)`.
+-/
 theorem exists_splitFrame_levG : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ) (L : LevDat D.host.E ℂ V.rank) (h : L.r = V.rank), IsBaseFrame V β Λ N → L.Q = ∅ → (∀ PP ∈ L.Pg, ∀ PP' ∈ L.Pg, ¬ Formalism.IndefR.Lev.IsConjPl PP PP') → ∃ (a : GfC V) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (pl : S ≃ L.Pg) (s : ∀ v : S, SplitAt D.sp.cm.sig V.gram (frameLat V) v) (ρ : ∀ v : S, ResF v.1 ≃+* kP (pl v).1), (∀ v ∉ S, ∀ k ∈ Kv V v, ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) ∈ levG V β (flag1L L)) ∧ ∀ (v : S) (k : Kv V v), ∃ g0 : G0 L.Pg L.r, IsLevelLift V β L g0 ((a * locFin V v k * a⁻¹ : GfC V) : GA D V) ∧ (∀ PP, PP ≠ pl v → g0 PP = 1) ∧ ∀ i j : Fin L.r, (g0 (pl v)).1 i j = ρ v (((s v).red k).1 (i.cast h) (j.cast h)) := by
   intro D V β Λ N L h hB hQ hPg
   classical

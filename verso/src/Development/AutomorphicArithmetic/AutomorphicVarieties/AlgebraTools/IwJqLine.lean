@@ -9,6 +9,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwMem
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHeckePairIwC
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools GlobalTheory.PRep
 
+/- English proof (translation)
+Take `⟨S, ⟨hS0, hS⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ W)).has_min {S | S ≠ ⊥ ∧ ∀ t, ∀ v ∈ S, (θ t : Module.End ℂ W) v ∈ S} ⟨⊤, top_ne_bot, fun _ _ _ => trivial⟩`. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hS0`. Establish `key : ∀ t, ∃ c : ℂ, ∀ v ∈ S, (θ t : Module.End ℂ W) v = c • v` using `fun t => by`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue ((θ t : Module.End ℂ W).restrict (hS t))`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`.
+
+Establish `hw1 : (θ t : Module.End ℂ W) w = c • (w : W)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : S ⊓ Module.End.eigenspace (θ t : Module.End ℂ W) c = S`. Assume the negation of the conclusion as `hne`. Use `hmin _ ⟨?_, ?_⟩ (lt_of_le_of_ne inf_le_left hne)` and prove the remaining obligations.
+
+Conclude with `(Submodule.ne_bot_iff _).2 ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.2 hw1⟩, fun h => hw.2 (Subtype.ext h)⟩`. Introduce and unpack `s x ⟨hx, hx'⟩`. Use `⟨hS s x hx, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← Units.val_mul, ← map_mul, mul_comm, map_mul, Units.val_mul, Module.End.mul_apply, Module.End.mem_eigenspace_iff.1 hx', map_smul]`. Rewrite `hv` using `[← h1]`.
+
+Conclude with `Module.End.mem_eigenspace_iff.1 hv.2`. Use `choose c hc using key`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hS0`. Set `c' : T →* ℂ` to `{ toFun := c map_one' := by`. Use `hc 1 v hv` as an intermediate fact.
+
+Rewrite `this` using `[map_one, Units.val_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hv0 (this.symm.trans (one_smul _ _).symm)`. Use the proof step `map_mul' := fun s t => by`. Use `hc (s * t) v hv` as an intermediate fact. Rewrite `this` using `[map_mul, Units.val_mul, Module.End.mul_apply, hc t v hv, map_smul, hc s v hv, smul_smul, mul_comm]`.
+
+Conclude with `smul_left_injective ℂ hv0 this.symm }`. Use `⟨c'.toHomUnits, (Submodule.ne_bot_iff _).2 ⟨v, (Submodule.mem_iInf _).2 fun t => ?_, hv0⟩⟩` and prove the remaining obligations. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, LinearMap.sub_apply, hc t v hv]`. Simplify using `[c']`.
+-/
 private theorem jqLine_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     [Nontrivial W] (θ : T →* (Module.End ℂ W)ˣ) :
     ∃ χ : T →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ W) (χ t : ℂ)) ≠ ⊥ := by
@@ -49,6 +62,13 @@ private theorem jqLine_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module �
   rw [pow_one, LinearMap.sub_apply, hc t v hv]
   simp [c']
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hv`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨m, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x, (b - (c * d) • (1 : Module.End ℂ J)) (f x) = (d : ℂ) • f ((a - c • (1 : Module.End ℂ W)) x)`. Introduce `x`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, h, smul_sub, smul_smul, Units.mul_inv, one_smul, mul_comm c]`.
+
+Establish `h2 : ∀ (m : ℕ) x, ((b - (c * d) • (1 : Module.End ℂ J)) ^ m) (f x) = (d : ℂ) ^ m • f (((a - c • (1 : Module.End ℂ W)) ^ m) x)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `x`. Rewrite using `[pow_succ', pow_succ' (a - _), Module.End.mul_apply, Module.End.mul_apply, ih, map_smul, h1, smul_smul, pow_succ]`. Rewrite using `[h2, hm, map_zero, smul_zero]`.
+-/
 private theorem jqLine_map {W J : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup J] [Module ℂ J]
     (f : W →ₗ[ℂ] J) (a : Module.End ℂ W) (b : Module.End ℂ J) (d : ℂˣ) (c : ℂ)
     (h : ∀ v, f (a v) = ((d⁻¹ : ℂˣ) : ℂ) • b (f v)) {v : W} (hv : v ∈ a.maxGenEigenspace c) :
@@ -70,6 +90,9 @@ private theorem jqLine_map {W J : Type} [AddCommGroup W] [Module ℂ W] [AddComm
         pow_succ]
   rw [h2, hm, map_zero, smul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun h (Pi.mulSingle i x)` as an intermediate fact. Rewrite `this` using `[torusChar_apply, torusChar_apply, Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp), Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp)]`. Simplify using `using this`.
+-/
 private theorem jqLine_inj {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {ψ ψ' : Fin n → kˣ →* ℂˣ} (h : torusChar ψ = torusChar ψ') : ψ = ψ' := by
   funext i
@@ -80,6 +103,23 @@ private theorem jqLine_inj {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp)] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `hG hBZ k _ _ _ _ n C V _ _ π hs hirr`. Establish `ho : IsOpen (iwC k n C : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono (H₁ := KOne k (Fin n)) (le_sup_left.trans le_sup_left) GlobalTheory.StepData.isOpen_KOne`. Establish `hle : iwC k n C ≤ iwahori k (Fin n)` using `fun g hg => (((memIwC k n C).1 g).1 hg).1`. Establish `hc : IsCompact (iwC k n C : Set (GL (Fin n) k))` using `(IwahoriOnto.isCompact_iwahori k (Fin n)).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) hle`. Establish `hfix : fixd π (iwC k n C) = fixed π (iwC k n C)`.
+
+Use extensionality with `v`. Conclude with `⟨fun h u => by simpa using h u u.2, fun h u hu => by simpa using h ⟨u, hu⟩⟩`. Establish `hfd : FiniteDimensional ℂ (fixd π (iwC k n C))`. Rewrite using `[hfix]`. Conclude with `((hBZ k).1 _ V π hs hirr).2 _ ho hc`.
+
+Set `f : fixd π (iwC k n C) →ₗ[ℂ] Jacquet π (unipB k (Fin n))` to `(Submodule.mkQ _).comp (fixd π (iwC k n C)).subtype`. Establish `hf : Function.Injective f` using `(injective_iff_map_eq_zero f).2 fun v hv => jqInj k n C V π hs v hv`. Use `⟨hfd, ?_, fun θ hθ χ ψ hψ hχ => ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial (fixd π (iwC k n C)) with h | h` into its components or cases. Rewrite using `[Module.finrank_zero_of_subsingleton]`.
+
+Conclude with `Nat.zero_le _`. Establish `hq : IsUnit (resCard k : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit`. Take `⟨θ, hθ, -⟩` from `thetaEx k n C ℂ V π hq`. Take `⟨χ, hχ⟩` from `jqLine_eig θ`. Take `⟨ψ, h1, -, -, h2⟩` from `jqEmbed hBZ k n C V π hs hirr θ hθ χ hχ`.
+
+Take `⟨h3, h4, -⟩` from `jqMult hG hBZ k n V π ψ hs h1 h2`. Conclude with `(LinearMap.finrank_le_finrank_of_injective hf).trans h4`. Distinguish the cases in `h0 : (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd π (iwC k n C))) (χ t : ℂ)) = ⊥`. Rewrite using `[h0, finrank_bot]`. Conclude with `Nat.zero_le _`.
+
+Take `⟨ψ', h1, -, e, h2⟩` from `jqEmbed hBZ k n C V π hs hirr θ hθ χ h0`. Take `rfl : ψ = ψ'` from `jqLine_inj (hχ.trans e.symm)`. Take `⟨h3, -, h4⟩` from `jqMult hG hBZ k n V π ψ hs h1 h2`. Establish `h5 : Nat.card {w : Equiv.Perm (Fin n) // torusChar ψ = torusChar (ψ ∘ w)} ≤ 1`. Use `Finite.card_le_one_iff_subsingleton.2 ⟨fun a b => Subtype.ext (Equiv.ext fun i => hψ ?_)⟩` and prove the remaining obligations.
+
+Conclude with `(congrFun (jqLine_inj a.2) i).symm.trans (congrFun (jqLine_inj b.2) i)`. Use `le_trans ?_ ((h4 (torusChar ψ)).trans h5)` and prove the remaining obligations. Rewrite using `[LinearEquiv.finrank_eq (Submodule.equivMapOfInjective f hf _)]`. Use `Submodule.finrank_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Use `(Submodule.mem_iInf _).2 fun t => ?_` and prove the remaining obligations. Rewrite using `[hχ, MonoidHom.mul_apply, Units.val_mul]`. Conclude with `jqLine_map f _ _ _ _ (fun v => jqTheta k n C V π θ hθ t v) ((Submodule.mem_iInf _).1 hv t)`.
+-/
 theorem UpperTheory.V.AlgebraTools.jqLine :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → π.IsIrreducible → FiniteDimensional ℂ (fixd π (iwC k n C)) ∧ Module.finrank ℂ (fixd π (iwC k n C)) ≤ n.factorial ∧ ∀ θ : (Fin n → kˣ) →* (Module.End ℂ (fixd π (iwC k n C)))ˣ, (∀ t, Dom t → (θ t : Module.End ℂ (fixd π (iwC k n C))) = hk π (iwC k n C) (diagT k (Fin n) t)) → ∀ (χ : (Fin n → kˣ) →* ℂˣ) (ψ : Fin n → kˣ →* ℂˣ), Function.Injective ψ → torusChar ψ = χ * ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom) → Module.finrank ℂ (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd π (iwC k n C))) (χ t : ℂ) : Submodule ℂ (fixd π (iwC k n C))) ≤ 1 := by
   intro hG hBZ k _ _ _ _ n C V _ _ π hs hirr

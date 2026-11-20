@@ -18,6 +18,9 @@ namespace GlobalTheory.ConeMeasV
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `h3` using `(h2.and hM.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+-/
 theorem pure_mem_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     (hM : M.IsGood ψ) (f : SInf F (Fin n × Fin d)) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
     (h1 : ∀ v, φ v ∈ SB _) (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) : pure f φ ∈ schA F _ := by
@@ -25,6 +28,9 @@ theorem pure_mem_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ 
   exact Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3,
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨f, -, φ, h1, h2, rfl⟩ exact pure_mem_schA hM f φ h1 h2)`.
+-/
 theorem polData_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {B : Base F E}
     (hM : M.IsGood B.ψ) : PolData B M ≤ schA F _ :=
   Submodule.span_le.2 (by
@@ -37,6 +43,23 @@ namespace GlobalTheory.ConeMeasV
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨ei, ev, -, hev, hloc⟩` from `hE.loc`. Establish `key` using `GlobalTheory.SBSpan.mem_span_restrictedProd F (Fin n × Fin d) g hg`. Use `clear hg`. Proceed by induction on `key using Submodule.span_induction with`.
+
+Consider the case `mem p hp`. Take `⟨φ, h1, h2, rfl⟩` from `hp`. Establish `hvac : ∀ᶠ v in cofinite, φ v = M.vac v` using `(h2.and hM.std).mono fun v h => h.1.trans h.2.symm`. Establish `hψSB : ∀ v, ev v (φ v) ∈ SB (Fin n₁ × Fin d₁ → Fv F v)` using `fun v => (hev v).2 ▸ Submodule.mem_map_of_mem (h1 v)`. Establish `hψstd : ∀ᶠ v in cofinite, ev v (φ v) = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hM₁.std).mono fun v h => by rw [h.1, (hev v).1, h.2]`.
+
+Take `⟨T, hT⟩` from `hl _ ⟨isLocallyConstant_finprod_evalV _ hψSB hψstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod _ hψSB hψstd⟩`. Use `⟨T.comp ei, fun f => ?_⟩` and prove the remaining obligations. Establish `h` using `hloc f φ h1 hvac`. Rewrite using `[LinearMap.comp_apply, ContinuousLinearMap.comp_apply, ← hT]`. Conclude with `congrArg l h`.
+
+Consider the case `zero`. Use `⟨0, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) 0 = 0`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+
+Rewrite using `[this, map_zero, ContinuousLinearMap.zero_apply]`. Consider the case `add p q _ _ hp hq`. Take `⟨T₁, h₁⟩` from `hp`. Take `⟨T₂, h₂⟩` from `hq`. Use `⟨T₁ + T₂, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `: pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (p + q) = pureA F f p + pureA F f q`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_add]`. Rewrite using `[this, map_add, h₁, h₂, ContinuousLinearMap.add_apply]`. Consider the case `smul c p _ hp`.
+
+Take `⟨T, hT⟩` from `hp`. Use `⟨c • T, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (c • p) = c • pureA F f p`. Use function extensionality and compare the values at `x`. Simplify using `[pureA]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_smul, hT, ContinuousLinearMap.smul_apply]`.
+-/
 theorem comp_ev_mem_adm {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}
     {I : Set (Matrix (Fin n) (Fin d) (AE F E))} {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁}
@@ -86,9 +109,17 @@ def schrLin {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (w : (κ → AF F
   map_add' Φ Ψ := by funext x; simp [schr, mul_add]
   map_smul' c Φ := by funext x; simp [schr]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schrLin_apply {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F))
     (Φ : (κ → AF F) → ℂ) : schrLin ψ w Φ = schr ψ w Φ := rfl
 
+/- English proof (translation)
+Establish `: schA F κ ≤ (schA F κ).comap (schrLin ψ w)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Take `⟨T, g', hg', hT⟩` from `GlobalTheory.ThetaHeisCLM.exists_schr_pureA_eq ψ hψ w hg`. Use `show schrLin ψ w (pureA F f g) ∈ schA F κ`.
+
+Rewrite using `[schrLin_apply, hT]`. Conclude with `Submodule.subset_span ⟨T f, g', hg', rfl⟩`. Conclude with `this hΦ`.
+-/
 theorem schr_mem_schA {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F))
     {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : schr ψ w Φ ∈ schA F κ := by
   have : schA F κ ≤ (schA F κ).comap (schrLin ψ w) := by
@@ -100,6 +131,9 @@ theorem schr_mem_schA {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : 
     exact Submodule.subset_span ⟨T f, g', hg', rfl⟩
   exact this hΦ
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨T, g', hg', hT⟩` from `GlobalTheory.ThetaHeisCLM.exists_schr_pureA_eq ψ hψ w hg`. Take `⟨L, hL⟩` from `hl g' hg'`. Use `⟨L.comp T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, schrLin_apply, hT, hL, ContinuousLinearMap.comp_apply]`.
+-/
 theorem comp_schr_mem_adm {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F))
     {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ) : l ∘ₗ schrLin ψ w ∈ (adeleClass F).adm κ := by
   intro g hg
@@ -112,6 +146,15 @@ end GlobalTheory.ConeMeasV
 
 namespace GlobalTheory.ConeMeasV
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' _ X om om' om₁ om₁' hT _ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ _ _ hM₂ hE Φ hΦ h`. Establish `hM` using `hT.geo.hM`. Establish `hψ` using `hT.base.std`. Establish `hW : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Take `⟨l₀, hl₀, hl₀eq⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n₁ × Fin (a + b))`.
+
+Establish `hl` using `comp_schr_mem_adm hψ (G.M.co.e (shiftA H₀ H' 1)) (comp_ev_mem_adm hM hM₂ hE hl₀)`. Establish `hΦA` using `polData_le_schA hM hΦ`. Establish `hc` using `hW.2.2 _ hl Φ hΦA`. Establish `hsplit` using `hW.isUSplitting`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+
+Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Establish `heq : (fun g => thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ)))) = fun g => ((l₀ ∘ₗ e₂) ∘ₗ schrLin B.ψ (G.M.co.e (shiftA H₀ H' 1))) (om (g, h) Φ)`. Use function extensionality and compare the values at `g`. Establish `h1 : om (g, h) Φ ∈ schA F _` using `hsplit.pres (g, h) Φ hΦA`. Establish `h2` using `schr_mem_schA hψ (G.M.co.e (shiftA H₀ H' 1)) h1`.
+
+Establish `h3` using `hE.maps _ h2`. Conclude with `(hl₀eq _ h3).symm`. Rewrite using `[heq]`. Conclude with `hc.comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem coneTerm_aestronglyMeasurable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ Φ ∈ PolData B G.M, ∀ h, AEStronglyMeasurable (fun g => thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ)))) G.M.μ := by
   intro _ F E _ _ _ _ _ σ B a b G G₁ H H' _ X om om' om₁ om₁' hT _ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ _ _ hM₂ hE Φ hΦ h
   have hM := hT.geo.hM

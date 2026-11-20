@@ -20,8 +20,26 @@ open scoped TensorProduct ENNReal Matrix NumberField.AdeleRing
 
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_schwartzBruhat_compact_support_nonzero F ι`.
+-/
 theorem exists_test : ∃ f ∈ schwartzBruhatPi F ι, HasCompactSupport f ∧ f 0 ≠ 0 := GlobalTheory.T.exists_schwartzBruhat_compact_support_nonzero F ι
 
+/- English proof (translation)
+Take `⟨f0, hf0, hcs, h0⟩` from `exists_test (F := F) (ι := ι)`. Establish `hu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hG`. Establish `hNM : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G hu`. Establish `hMN : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hu`. Use `set Gm := G.map (algebraMap F 𝔸[F]) with hGm`.
+
+Establish `hH` using `h.1`. Establish `e : ν = Measure.addHaarScalarFactor ν (adeleMeasurePi F) • adeleMeasurePi F` using `Measure.isAddLeftInvariant_eq_smul ν (adeleMeasurePi F)`. Use `set c : NNReal := Measure.addHaarScalarFactor ν (adeleMeasurePi F) with hcdef`. Establish `hT0 : ∀ (g : (ι → 𝔸[F]) → ℂ) y, ∫ x, g x * chiG G x y ∂(adeleMeasurePi F) = adelicFourierPi F g (Gm *ᵥ y)` using `fun g y => rfl`. Establish `hT : ∀ (g : (ι → 𝔸[F]) → ℂ) y, ∫ x, g x * chiG G x y ∂ν = (c : ℂ) * adelicFourierPi F g (Gm *ᵥ y)`.
+
+Introduce `g y`. Rewrite using `[e, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul, hT0]`. Use `set g1 : (ι → 𝔸[F]) → ℂ := fun y => adelicFourierPi F f0 (Gm *ᵥ y) with hg1`. Establish `hg1m : g1 ∈ schwartzBruhatPi F ι` using `comp_mulVec_mem_schwartzBruhatPi G G⁻¹ hNM hMN (adelicFourierPi_mem_schwartzBruhatPi hf0)`. Establish `hI : Integrable (fun y => ∫ x, f0 x * chiG G x y ∂ν) ν`.
+
+Simplify using `only [hT]`. Rewrite using `[e]`. Conclude with `((integrable_of_mem_schwartzBruhatPi hg1m).const_mul (c : ℂ)).smul_measure_nnreal`. Establish `h2` using `h.2 f0 (continuous_of_mem_schwartzBruhatPi hf0) hcs hI 0`. Simplify using `only [hT] at h2`.
+
+Establish `h3 : adelicFourierPi F (fun x => (c : ℂ) * adelicFourierPi F f0 (Gm *ᵥ x)) (Gm *ᵥ 0) = (c : ℂ) * adelicFourierPi F g1 (Gm *ᵥ 0)` using `congrFun (adelicFourierPi_smul (c : ℂ) g1) _`. Establish `h4 : adelicFourierPi F g1 (Gm *ᵥ 0) = f0 0`. Rewrite using `[Matrix.mulVec_zero, hg1, adelicFourierPi_comp_mulVec G G⁻¹ hNM hMN, Matrix.mulVec_zero, adelicFourierPi_adelicFourierPi hf0]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, h4, neg_zero, ← mul_assoc]`.
+
+Establish `h5 : ((c : ℂ)) * (c : ℂ) = 1` using `mul_right_cancel₀ h0 (by rw [h2, one_mul])`. Establish `h6 : c * c = 1` using `by exact_mod_cast h5`. Establish `h7 : c = 1`. Establish `: (c : ℝ) * c = 1` using `by exact_mod_cast h6`. Establish `h8 : (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`.
+
+Conclude with `h8` after adjusting the coercions. Rewrite using `[e, h7, one_smul]`.
+-/
 theorem selfDual_eq (G : Matrix ι ι F) (hs : G.IsSymm) (hG : G.det ≠ 0) (ν : Measure (ι → 𝔸[F]))
     (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.SelfDual ν (chiG G)) : ν = adeleMeasurePi F := by
   obtain ⟨f0, hf0, hcs, h0⟩ := exists_test (F := F) (ι := ι)
@@ -63,6 +81,17 @@ theorem selfDual_eq (G : Matrix ι ι F) (hs : G.IsSymm) (hG : G.det ≠ 0) (ν 
     exact_mod_cast h8
   rw [e, h7, one_smul]
 
+/- English proof (translation)
+Establish `hμ` using `h.1`. Set `a : V ≃+ V'` to `AddEquiv.mk' e.toEquiv he`. Establish `ha : ∀ x, a x = e x` using `fun _ => rfl`. Use `⟨a.isAddHaarMeasure_map μ e.continuous e.symm.continuous, fun Φ hc hs hI z => ?_⟩` and prove the remaining obligations. Establish `hemb` using `e.measurableEmbedding`.
+
+Use `set Φ0 : V → ℂ := fun x => Φ (e x) with hΦ0`. Establish `hT : ∀ y, ∫ x, Φ x * χ' x (e y) ∂(μ.map e) = ∫ x, Φ0 x * χ x y ∂μ`. Introduce `y`. Rewrite using `[hemb.integral_map]`. Simplify using `only [hΦ0, hχ]`.
+
+Establish `hI' : Integrable (fun y => ∫ x, Φ0 x * χ x y ∂μ) μ`. Establish `h1` using `(hemb.integrable_map_iff).1 hI`. Conclude with `h1.congr (Filter.Eventually.of_forall fun y => by simp only [Function.comp_apply, hT])`. Establish `h2` using `h.2 Φ0 (hc.comp e.continuous) (hs.comp_homeomorph e) hI' (e.symm z)`. Rewrite using `[hemb.integral_map]`.
+
+Establish `h3 : Φ0 (-e.symm z) = Φ (-z)`. Simplify using `only [hΦ0]`. Rewrite using `[← ha, map_neg, ha, e.apply_symm_apply]`. Rewrite using `[← h3, ← h2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only []`. Rewrite using `[hT y, ← hχ y (e.symm z), e.apply_symm_apply]`.
+-/
 theorem selfDual_transport {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [AddCommGroup V'] [TopologicalSpace V'] [IsTopologicalAddGroup V']
     [MeasurableSpace V'] [BorelSpace V'] (e : V ≃ₜ V') (he : ∀ x y, e (x + y) = e x + e y)

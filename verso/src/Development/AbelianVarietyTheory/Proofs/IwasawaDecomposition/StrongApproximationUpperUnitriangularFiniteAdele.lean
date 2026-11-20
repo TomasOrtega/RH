@@ -16,6 +16,11 @@ open NumberField IsDedekindDomain Matrix PIW.ClassFinD
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hU : IsOpen ((fun y : FiniteAdeleRing (𝓞 F) F => e * (x + y)) ⁻¹' (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.Oint F))` using `ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_Oint.preimage (continuous_const.mul (continuous_const.add continuous_id))`. Establish `h0 : (fun y : FiniteAdeleRing (𝓞 F) F => e * (x + y)) (-x) ∈ ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.Oint F` using `by show e * (x + -x) ∈ ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.Oint F`. Rewrite using `[add_neg_cancel, mul_zero]`. Conclude with `(Ohat F).zero_mem`. Take `⟨r, hr⟩` from `(PI.UnipApproxD.additive_dense_integers F).exists_mem_open hU ⟨-x, h0⟩`.
+
+Conclude with `⟨r, hr⟩`.
+-/
 theorem approx (x e : FiniteAdeleRing (𝓞 F) F) :
     ∃ r : F, e * (x + algebraMap F (FiniteAdeleRing (𝓞 F) F) r) ∈ Ohat F := by
   have hU : IsOpen ((fun y : FiniteAdeleRing (𝓞 F) F => e * (x + y)) ⁻¹'
@@ -28,6 +33,21 @@ theorem approx (x e : FiniteAdeleRing (𝓞 F) F) :
   obtain ⟨r, hr⟩ := (PI.UnipApproxD.additive_dense_integers F).exists_mem_open hU ⟨-x, h0⟩
   exact ⟨r, hr⟩
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∃ y : Fin n → F, y i = 1 ∧ (∀ k, k < i → y k = 0) ∧ ∀ j : Fin n, i < j → j.val < m → e j * ∑ k, algebraMap F (FiniteAdeleRing (𝓞 F) F) (y k) * u k j ∈ Ohat F`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Use `⟨fun k => if k = i then 1 else 0, by simp, fun k hk => ?_, fun j _ hj => absurd hj (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+
+Simplify using `[ne_of_lt hk]`. Consider the case `succ m ih`. Take `⟨y, hy1, hy0, hyc⟩` from `ih`. Distinguish the cases in `h : ∃ hm : m < n, i < (⟨m, hm⟩ : Fin n)`. Take `⟨hm, him⟩` from `h`.
+
+Take `⟨r, hr⟩` from `approx (∑ k, algebraMap F (FiniteAdeleRing (𝓞 F) F) (y k) * u k ⟨m, hm⟩) (e ⟨m, hm⟩)`. Establish `hsum : ∀ j, ∑ k, algebraMap F (FiniteAdeleRing (𝓞 F) F) (y k + if k = (⟨m, hm⟩ : Fin n) then r else 0) * u k j = ∑ k, algebraMap F (FiniteAdeleRing (𝓞 F) F) (y k) * u k j + algebraMap F (FiniteAdeleRing (𝓞 F) F) r * u ⟨m, hm⟩ j`. Introduce `j`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib, apply_ite (algebraMap F _), map_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `⟨fun k => y k + if k = (⟨m, hm⟩ : Fin n) then r else 0, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hy1, ne_of_lt him]`. Introduce `k hk`. Simplify using `[hy0 k hk, ne_of_lt (hk.trans him)]`. Introduce `j hij hjm`. Rewrite using `[hsum]`.
+
+Break down `Nat.lt_succ_iff_lt_or_eq.mp hjm with hj | hj` into its components or cases. Rewrite using `[hu.1 ⟨m, hm⟩ j (by rw [Fin.lt_def]; exact hj), mul_zero, add_zero]`. Conclude with `hyc j hij hj`. Establish `hjM : j = ⟨m, hm⟩` using `Fin.ext hj`. Substitute `hjM` using the available equality.
+
+Rewrite using `[hu.2, mul_one]`. Conclude with `hr`. Use `⟨y, hy1, hy0, fun j hij hjm => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.mp hjm with hj | hj` into its components or cases. Conclude with `hyc j hij hj`.
+
+It suffices to derive a contradiction. Establish `hm : m < n` using `hj ▸ j.isLt`. Conclude with `h ⟨hm, by rwa [show (⟨m, hm⟩ : Fin n) = j from Fin.ext hj.symm]⟩`. Take `⟨y, h1, h2, h3⟩` from `key n`. Conclude with `⟨y, h1, h2, fun j hij => h3 j hij j.isLt⟩`.
+-/
 theorem row_exists (n : ℕ) (u : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F))
     (hu : IsUpperUni u) (i : Fin n) (e : Fin n → FiniteAdeleRing (𝓞 F) F) :
     ∃ y : Fin n → F, y i = 1 ∧ (∀ k, k < i → y k = 0) ∧
@@ -76,6 +96,13 @@ theorem row_exists (n : ℕ) (u : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 
   obtain ⟨y, h1, h2, h3⟩ := key n
   exact ⟨y, h1, h2, fun j hij => h3 j hij j.isLt⟩
 
+/- English proof (translation)
+Establish `hdet : g.val.det = 1`. Rewrite using `[det_of_upperTriangular (fun i j hij => hg.1 i j hij)]`. Simplify using `[hg.2]`. Establish `h1 : g.val * adjugate g.val = 1` using `by rw [mul_adjugate, hdet, one_smul]`. Establish `hinv : g⁻¹.val = adjugate g.val`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `W' : Matrix (Fin n) (Fin n) (Ohat F)` to `fun i j => ⟨g.val i j, hi i j⟩`. Establish `hW : g.val = (Ohat F).subtype.mapMatrix W'` using `by ext i j; rfl`. Introduce `i j`. Rewrite using `[hinv, hW, ← RingHom.map_adjugate]`.
+
+Conclude with `((adjugate W') i j).2`.
+-/
 theorem matInt_inv_of_upperUni {n : ℕ} (g : GL (Fin n) (FiniteAdeleRing (𝓞 F) F))
     (hg : IsUpperUni g.val) (hi : MatInt g.val) : MatInt g⁻¹.val := by
   have hdet : g.val.det = 1 := by
@@ -91,6 +118,27 @@ theorem matInt_inv_of_upperUni {n : ℕ} (g : GL (Fin n) (FiniteAdeleRing (𝓞 
   rw [hinv, hW, ← RingHom.map_adjugate]
   exact ((adjugate W') i j).2
 
+/- English proof (translation)
+Introduce `F _ _ n u t hu ht`. Take `⟨τ, rfl⟩` from `diag_eq_diagGL t ht`. Use `choose y hy1 hy0 hyc using fun i => row_exists n u.val hu i (fun j => (((τ i)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) * τ j)`. Set `Y : Matrix (Fin n) (Fin n) F` to `fun i k => y i k`. Establish `hdet : Y.det = 1`.
+
+Rewrite using `[det_of_upperTriangular (fun i k hki => hy0 i k hki)]`. Simplify using `[Y, hy1]`. Set `Yg : GL (Fin n) F` to `((Matrix.isUnit_iff_isUnit_det Y).mpr (by rw [hdet]; exact isUnit_one)).unit`. Set `P : Fin n → Fin n → FiniteAdeleRing (𝓞 F) F` to `fun i j => ∑ k, algebraMap F (FiniteAdeleRing (𝓞 F) F) (y i k) * u.val k j`. Establish `hPlow : ∀ i j, j < i → P i j = 0`.
+
+Introduce `i j hji`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with hk | hk` into its components or cases. Rewrite using `[hy0 i k hk, map_zero, zero_mul]`. Rewrite using `[hu.1 k j (lt_of_lt_of_le hji hk), mul_zero]`.
+
+Establish `hPdiag : ∀ i, P i i = 1`. Introduce `i`. Use `show ∑ k, _ = _`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hy1 i, map_one, one_mul, hu.2]`.
+
+Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with hk | hk` into its components or cases. Rewrite using `[hy0 i k hk, map_zero, zero_mul]`. Rewrite using `[hu.1 k i hk, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Set `w` to `(diagGL n τ)⁻¹ * glIncl F n Yg * u * diagGL n τ`. Establish `hw : ∀ i j, w.val i j = (((τ i)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) * P i j * τ j`. Introduce `i j`. Simplify using `only [w, ← map_inv, Units.val_mul, diagGL_val, Matrix.mul_assoc, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Establish `hwu : IsUpperUni w.val`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hw, hPlow i j hji, mul_zero, zero_mul]`.
+
+Rewrite using `[hw, hPdiag, mul_one, Units.inv_mul]`. Establish `hwi : MatInt w.val`. Introduce `i j`. Break down `lt_trichotomy i j with hij | rfl | hji` into its components or cases. Rewrite using `[hw]`.
+
+Use `hyc i j hij` as an intermediate fact. Rewrite using `[show (((τ i)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) * P i j * τ j = (((τ i)⁻¹ : (FiniteAdeleRing (𝓞 F) F)ˣ) : FiniteAdeleRing (𝓞 F) F) * τ j * P i j by ring]`. Conclude with `this`. Rewrite using `[hwu.2]`. Conclude with `(Ohat F).one_mem`.
+
+Rewrite using `[hwu.1 i j hji]`. Conclude with `(Ohat F).zero_mem`. Use `⟨Yg⁻¹, w, ⟨hwi, matInt_inv_of_upperUni w hwu hwi⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [w, map_inv]`. Use `group`.
+-/
 theorem unipApprox : PIW.ClassFinD.UnipApprox := by
   classical
   intro F _ _ n u t hu ht

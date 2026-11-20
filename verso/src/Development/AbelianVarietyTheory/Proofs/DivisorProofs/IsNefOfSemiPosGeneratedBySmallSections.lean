@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.GenNef
 
+/- English proof (translation)
+Introduce `_ k _ X _ p D hX M n s hsp hsm hs`. Establish `hcov : ⨆ i, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i) = ⊤` using `top_le_iff.1 fun x _ =>`. Establish `⟨i, hi⟩` using `hs x`. Use the proof step `Opens.mem_iSup.2 ⟨i, hi⟩`. Conclude with `GlobalTheory.VolBr.Model.isNef_of_small hX M hsp (GlobalTheory.TrueGeo.OfLattice.nefFib_of_isGenerated hX M (GlobalTheory.isGenerated_of_finite s hcov)) fun x => have ⟨i, hi⟩ := hs x`.
+
+Use the proof step `⟨s i, hsm i, hi⟩`.
+-/
 theorem isNef_of_gen_small : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (n : ℕ) (s : Fin n → M.B.Sec), M.SemiPos D → (∀ i, s i ∈ M.smallSec) → (∀ x : X, ∃ i, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i)) → M.IsNef D := by
   intro _ k _ X _ p D hX M n s hsp hsm hs
   have hcov : ⨆ i, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i) = ⊤ :=

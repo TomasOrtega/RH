@@ -12,6 +12,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {Tau : Type} [Fintype Tau] {LL : Type} [Field LL] {p : ℕ}
 
+/- English proof (translation)
+Use `⟨Subtype.mk (fun τ => atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * z'.1 τ) (fun τ => ?_), fun τ => rfl⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul ?_ (z'.2 τ)` and prove the remaining obligations. Establish `hdet : (atInf emb (γ : Matrix (Fin n) (Fin n) E) τ).det = emb τ (γ : Matrix (Fin n) (Fin n) E).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[hdet]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp γ.isUnit).map (emb τ)`.
+-/
 theorem frames_tr' (emb : Tau → E →+* ℂ) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (γ : GL (Fin n) E)
     (hγ : γ ∈ UJ (σ : E →+* E) J) (z' : Frames (gramC J emb)) : ∃ z : Frames (gramC J emb), IsTr (atInf emb γ) z' z := by
   refine ⟨Subtype.mk (fun τ => atInf emb (γ : Matrix (Fin n) (Fin n) E) τ * z'.1 τ) (fun τ => ?_), fun τ => rfl⟩
@@ -33,6 +38,9 @@ def PtAll : Prop :=
 
 variable {S emb embLL G e A pos embV yc}
 
+/- English proof (translation)
+Use `delta RatFn RatFnP`. Introduce `i L`. Distinguish the cases in `h : G.P.IsLatTup L`. Conclude with `⟨valC S emb embLL G A pos embV yc x i L, by simp [cmpC, h]⟩`. Conclude with `⟨0, by simp [cmpC, h]⟩`.
+-/
 theorem cmpC_rat (x : V) : RatFn G e (cmpC S emb embLL G e A pos embV yc x) := by
   delta RatFn RatFnP
   intro i L
@@ -40,12 +48,26 @@ theorem cmpC_rat (x : V) : RatFn G e (cmpC S emb embLL G e A pos embV yc x) := b
   · exact ⟨valC S emb embLL G A pos embV yc x i L, by simp [cmpC, h]⟩
   · exact ⟨0, by simp [cmpC, h]⟩
 
+/- English proof (translation)
+Introduce `v`. Conclude with `Exists.intro (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) ⟨(Matrix.isUnit_iff_isUnit_det _).mp (g v).isUnit, rfl⟩`.
+-/
 private theorem isLatTup_colSpan_GL (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) :
     G.P.IsLatTup (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) := by
   intro v
   exact Exists.intro (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))
     ⟨(Matrix.isUnit_iff_isUnit_det _).mp (g v).isUnit, rfl⟩
 
+/- English proof (translation)
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c z'`. Take `⟨i, g, γ, κ, hγ, hpt⟩` from `hall c`. Take `⟨z, hz⟩` from `frames_tr' emb hc γ hγ z'`.
+
+Establish `hL` using `isLatTup_colSpan_GL (G := G) g`. Take `⟨Q, hQ⟩` from `hex x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) hL`. Establish `hv : IsVal S emb embLL G A pos embV yc x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) (valC S emb embLL G A pos embV yc x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))))`. Establish `h' : ∃ Q, IsVal S emb embLL G A pos embV yc x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) Q` using `⟨Q, hQ⟩`. Unfold `valC`.
+
+Rewrite using `[dif_pos h']`. Conclude with `Classical.choose_spec h'`. Establish `h0 : valC S emb embLL G A pos embV yc x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) = 0`. Establish `h1 : cmpC S emb embLL G e A pos embV yc x i (fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) = 0`. Rewrite using `[hx]`.
+
+Both sides reduce to the same expression. Simplify using `only [cmpC, if_pos hL] at h1`. Conclude with `MvPolynomial.map_injective e e.injective (by rw [h1, map_zero])`. Rewrite `hv` using `[h0]`. Unfold `IsVal at hv`.
+
+Establish `h2` using `hv.2 g (fun v => rfl) c γ hγ κ hpt z z' hz`. Simplify using `only [map_zero, Pi.zero_apply] at h2`. Simplify using `only [Pi.zero_apply]`. Conclude with `(mul_eq_zero.mp h2.symm).resolve_left (by simp)`.
+-/
 theorem cmpC_inj (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hex : ValEx S emb embLL G A pos embV yc)
     (hall : PtAll S G A yc) (hinj : Function.Injective embV) (x : V)
     (hx : cmpC S emb embLL G e A pos embV yc x = 0) : x = 0 := by
@@ -78,6 +100,9 @@ theorem cmpC_inj (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (he
   simp only [Pi.zero_apply]
   exact (mul_eq_zero.mp h2.symm).resolve_left (by simp)
 
+/- English proof (translation)
+Unfold `IsVal at *`. Use `⟨Submodule.add_mem _ h.1 h'.1, fun g hg c γ hγ κ hpt z z' hz => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, mul_add]`. Rewrite using `[h.2 g hg c γ hγ κ hpt z z' hz, h'.2 g hg c γ hγ κ hpt z z' hz]`.
+-/
 private theorem isVal_add {x y : V} {i : G.comp} {L : G.P.Tup} {Q Q' : XR G.P LL}
     (h : IsVal S emb embLL G A pos embV yc x i L Q) (h' : IsVal S emb embLL G A pos embV yc y i L Q') :
     IsVal S emb embLL G A pos embV yc (x + y) i L (Q + Q') := by
@@ -86,6 +111,11 @@ private theorem isVal_add {x y : V} {i : G.comp} {L : G.P.Tup} {Q Q' : XR G.P LL
   simp only [map_add, Pi.add_apply, mul_add]
   rw [h.2 g hg c γ hγ κ hpt z z' hz, h'.2 g hg c γ hγ κ hpt z z' hz]
 
+/- English proof (translation)
+Unfold `IsVal at *`. Use `⟨Submodule.smul_mem _ a h.1, fun g hg c γ hγ κ hpt z z' hz => ?_⟩` and prove the remaining obligations. Establish `hm : MvPolynomial.map embLL (a • Q) = (embLL a) • MvPolynomial.map embLL Q`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.smul_eq_C_mul]`. Rewrite using `[hm, map_smul, Pi.smul_apply, h.2 g hg c γ hγ κ hpt z z' hz, map_smulₛₗ]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isVal_smul {x : V} {i : G.comp} {L : G.P.Tup} {Q : XR G.P LL} (a : LL)
     (h : IsVal S emb embLL G A pos embV yc x i L Q) :
     IsVal S emb embLL G A pos embV yc (a • x) i L (a • Q) := by
@@ -97,6 +127,9 @@ private theorem isVal_smul {x : V} {i : G.comp} {L : G.P.Tup} {Q : XR G.P LL} (a
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h'` using `hex x i L hL`. Unfold `valC`. Rewrite using `[dif_pos h']`. Conclude with `Classical.choose_spec h'`.
+-/
 private theorem isVal_valC_of_isLatTup (hex : ValEx S emb embLL G A pos embV yc) (x : V) (i : G.comp) {L : G.P.Tup}
     (hL : G.P.IsLatTup L) : IsVal S emb embLL G A pos embV yc x i L (valC S emb embLL G A pos embV yc x i L) := by
   have h' := hex x i L hL
@@ -104,6 +137,23 @@ private theorem isVal_valC_of_isLatTup (hex : ValEx S emb embLL G A pos embV yc)
   rw [dif_pos h']
   exact Classical.choose_spec h'
 
+/- English proof (translation)
+Set `Φ : V →ₗ[LL] (G.comp → {L : G.P.Tup // G.P.IsLatTup L} → XR G.P LL)` to `{ toFun := fun x i L => valC S emb embLL G A pos embV yc x i L.1 map_add' := fun x y => by`. Use function extensionality and compare the values at `i L`. Conclude with `hu (x + y) i L.1 _ _ L.2 (isVal_valC_of_isLatTup hex (x + y) i L.2) (isVal_add (isVal_valC_of_isLatTup hex x i L.2) (isVal_valC_of_isLatTup hex y i L.2))`. Use the proof step `map_smul' := fun a x => by`. Use function extensionality and compare the values at `i L`.
+
+Conclude with `hu (a • x) i L.1 _ _ L.2 (isVal_valC_of_isLatTup hex (a • x) i L.2) (isVal_smul a (isVal_valC_of_isLatTup hex x i L.2)) }`. Establish `hΦ : LinearMap.ker Φ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Use `cmpC_inj (e := e) hc hex hall hinj x ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i L`. Distinguish the cases in `hL : G.P.IsLatTup L`. Establish `h3` using `congrFun (congrFun hx i) ⟨L, hL⟩`. Simplify using `only [cmpC, if_pos hL, Pi.zero_apply]`. Rewrite using `[show valC S emb embLL G A pos embV yc x i L = 0 from h3, map_zero]`.
+
+Simplify using `only [cmpC, if_neg hL, Pi.zero_apply]`. Establish `hw` using `hb.map' Φ hΦ`. Use `letI : Algebra LL G.Kf := e.toAlgebra`. Establish `hsm : ∀ (q : LL) (y : G.Kf), y * e q = q • y` using `fun q y => by`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, mul_comm]`.
+
+Set `β` to `Module.Basis.ofVectorSpace LL G.Kf`. Rewrite using `[linearIndependent_iff']`. Rewrite `hw` using `[linearIndependent_iff']`. Introduce `s g hg a ha`. Establish `key : ∀ k, ∀ a ∈ s, β.repr (g a) k = 0`.
+
+Introduce `k`. Apply `hw s (fun a => β.repr (g a) k)` to reduce the goal to its premises. Use extensionality with `i L m`. Establish `h1` using `congrArg (MvPolynomial.coeff m) (congrFun (congrFun hg i) L.1)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul, Pi.zero_apply, MvPolynomial.coeff_zero, cmpC, if_pos L.2, MvPolynomial.coeff_map] at h1`.
+
+Establish `h2` using `congrArg (fun y => β.repr y k) h1`. Simplify using `only [map_sum, map_zero, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_zero, Pi.zero_apply, hsm, map_smul, Finsupp.smul_apply, smul_eq_mul] at h2`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul, Pi.zero_apply, MvPolynomial.coeff_zero]`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+
+Establish `h4 : β.repr (g a) = 0` using `Finsupp.ext fun k => key k a ha`. Conclude with `β.repr.map_eq_zero_iff.mp h4`.
+-/
 theorem cmpC_li (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hex : ValEx S emb embLL G A pos embV yc)
     (hu : ValUniq S emb embLL G A pos embV yc) (hall : PtAll S G A yc) (hinj : Function.Injective embV)
     {ι : Type} (b : ι → V) (hb : LinearIndependent LL b) :

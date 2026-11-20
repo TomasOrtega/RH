@@ -6,6 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 
 namespace GlobalTheory.IrrSubquot
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_ne (0 : M)`. Use `haveI := CompleteLattice.Iic_coatomic_of_compact_element (Submodule.singleton_span_isCompactElement (R := R) m)`. Break down `IsCoatomic.eq_top_or_exists_le_coatom (⊥ : Set.Iic (Submodule.span R {m})) with h0 | ⟨c, hc, -⟩` into its components or cases. Establish `h1 : (⊥ : Submodule R M) = Submodule.span R {m}` using `congrArg Subtype.val h0`. Conclude with `absurd (Submodule.mem_span_singleton_self m) (by rw [← h1]; simpa using hm)`.
+
+Use `⟨Submodule.span R {m}, c.1, lt_of_le_of_ne c.2 fun h => hc.1 (Subtype.ext h), ?_⟩` and prove the remaining obligations. Introduce `x h1 h2`. Use `congrArg Subtype.val (hc.2 ⟨x, h2.le⟩ h1)` as an intermediate fact. Conclude with `h2.ne this`.
+-/
 theorem exists_covBy_submodule {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] [Nontrivial M] :
     ∃ S T : Submodule R M, T ⋖ S := by
   obtain ⟨m, hm⟩ := exists_ne (0 : M)
@@ -18,6 +23,11 @@ theorem exists_covBy_submodule {R M : Type*} [Ring R] [AddCommGroup M] [Module R
     have := congrArg Subtype.val (hc.2 ⟨x, h2.le⟩ h1)
     exact h2.ne this
 
+/- English proof (translation)
+Introduce `G _ V _ _ ρ hV`. Use `haveI : Nontrivial ρ.asModule := hV`. Take `⟨S, T, h⟩` from `exists_covBy_submodule (R := MonoidAlgebra ℂ G) (M := ρ.asModule)`. Set `e` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Establish `h' : e.symm T ⋖ e.symm S` using `⟨e.symm.lt_iff_lt.2 h.1, fun c h1 h2 => h.2 (c := e c) (by simpa using e.lt_iff_lt.2 h1) (by simpa using e.lt_iff_lt.2 h2)⟩`.
+
+Use `⟨_, _, _, subQuot (e.symm S) (e.symm T), isIrreducible_subQuot h', e.symm S, ⟨Submodule.mkQ _, fun g => ?_⟩, Submodule.mkQ_surjective _⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem exists_irreducible_subquotient : ∀ (G : Type) [Group G] (V : Type) [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V), Nontrivial V → ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y)
       (σ : Representation ℂ G Y), σ.IsIrreducible ∧ IsSubquotient σ ρ := by

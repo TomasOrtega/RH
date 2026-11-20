@@ -14,6 +14,19 @@ section Idem
 
 variable {E : Type} [Field E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hss : f.IsSemisimple` using `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hf.squarefree (LinearMap.aeval_self_charpoly f)`. Take `⟨W₁, hW₁, hc⟩` from `Module.End.isSemisimple_iff.mp hss W ((Module.End.mem_invtSubmodule f).mpr (fun x hx => hW x hx))`. Establish `hW₁' : ∀ x ∈ W₁, f x ∈ W₁` using `fun x hx => (Module.End.mem_invtSubmodule f).mp hW₁ hx`. Establish `hcp` using `Formalism.GaloisIrreducibility.rr_charpoly_compl f W W₁ hc hW hW₁'`. Use `set a := LinearMap.charpoly (f.restrict hW) with ha`.
+
+Use `set b := LinearMap.charpoly (f.restrict hW₁') with hb`. Rewrite `hf` using `[hcp]`. Take `⟨u, v, huv⟩ : IsCoprime a b` from `hf.isCoprime`. Establish `hzW : ∀ x ∈ W, aeval f a x = 0` using `fun x hx => by`. Use `GlobalTheory.CuspGL.coe_aeval_restrict_apply f W hW a ⟨x, hx⟩` as an intermediate fact.
+
+Rewrite `this` using `[ha, LinearMap.aeval_self_charpoly]`. Simplify `this.symm` using `[ha]`. Establish `hzW₁ : ∀ x ∈ W₁, aeval f b x = 0` using `fun x hx => by`. Use `GlobalTheory.CuspGL.coe_aeval_restrict_apply f W₁ hW₁' b ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[hb, LinearMap.aeval_self_charpoly]`.
+
+Simplify `this.symm` using `[hb]`. Establish `hid : ∀ x, aeval f (u * a) x + aeval f (v * b) x = x` using `fun x => by`. Use `congrArg (fun q => aeval f q x) huv` as an intermediate fact. Simplify using `using this`. Establish `h1 : ∀ x ∈ W, aeval f (v * b) x = x` using `fun x hx => by`.
+
+Establish `h2 : aeval f (u * a) x = 0`. Rewrite using `[map_mul, Module.End.mul_apply, hzW x hx, map_zero]`. Use `hid x` as an intermediate fact. Rewrite `this` using `[h2, zero_add]`. Then use the resulting hypothesis. Establish `h0 : ∀ x ∈ W₁, aeval f (v * b) x = 0` using `fun x hx => by`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hzW₁ x hx, map_zero]`. Use `⟨v * b, fun x => ?_, h1⟩` and prove the remaining obligations. Take `⟨w, hw, w₁, hw₁, rfl⟩` from `Submodule.mem_sup.mp (hc.sup_eq_top ▸ Submodule.mem_top (x := x))`. Rewrite using `[map_add, h1 w hw, h0 w₁ hw₁, add_zero]`. Conclude with `hw`.
+-/
 theorem exists_poly_proj {V : Type} [AddCommGroup V] [Module E V] [FiniteDimensional E V]
     (f : Module.End E V) (hf : (LinearMap.charpoly f).Separable)
     (W : Submodule E V) (hW : ∀ x ∈ W, f x ∈ W) :
@@ -50,6 +63,17 @@ theorem exists_poly_proj {V : Type} [AddCommGroup V] [Module E V] [FiniteDimensi
   rw [map_add, h1 w hw, h0 w₁ hw₁, add_zero]
   exact hw
 
+/- English proof (translation)
+Use `set f : Module.End E (Fin n → E) := Matrix.toLinAlgEquiv' M with hf`. Establish `hcp : LinearMap.charpoly f = M.charpoly` using `Matrix.charpoly_toLin' M`. Establish `hae : ∀ (p : E[X]) (x : Fin n → E), aeval f p x = aeval M p *ᵥ x` using `fun p x => by`. Rewrite using `[hf, Polynomial.aeval_algHom_apply, Matrix.toLinAlgEquiv'_apply]`. Use `set W : Submodule E (Fin n → E) := LinearMap.range P.mulVecLin with hWd`.
+
+Establish `hW : ∀ x ∈ W, f x ∈ W`. Introduce and unpack `x ⟨y, rfl⟩`. Use `⟨C *ᵥ y, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, hf, Matrix.toLinAlgEquiv'_apply, Matrix.mulVec_mulVec, hC]`. Take `⟨p, hp1, hp2⟩` from `exists_poly_proj f (hcp ▸ hM) W hW`.
+
+Use `⟨p, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Establish `h` using `hp2 (P *ᵥ y) ⟨y, rfl⟩`. Rewrite `h` using `[hae, Matrix.mulVec_mulVec]`.
+
+Conclude with `h`. Establish `hcol : ∀ i : Fin n, ∃ c : ι → E, P *ᵥ c = aeval M p *ᵥ Pi.single i 1` using `fun i => by`. Take `⟨c, hc⟩` from `hp1 (Pi.single i 1)`. Conclude with `⟨c, by rw [← hae, ← hc]; rfl⟩`. Use `choose c hc using hcol`.
+
+Use `⟨Matrix.of fun l i => c i l, ?_⟩` and prove the remaining obligations. Use extensionality with `a i`. Use `congrFun (hc i) a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify `this.symm` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem exists_poly_proj_matrix {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix (Fin n) (Fin n) E) (hM : M.charpoly.Separable) (P : Matrix (Fin n) ι E)
     (C : Matrix ι ι E) (hC : M * P = P * C) :
@@ -80,6 +104,11 @@ theorem exists_poly_proj_matrix {ι : Type} [Fintype ι] [DecidableEq ι]
     rw [Matrix.mulVec_single_one] at this
     simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct] using this.symm
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => rw [aeval_C]`. Conclude with `(Algebra.commutes a T).symm`. Consider the case `add p q hp hq => simpa using hp.add_right hq`. Consider the case `monomial k a ih`.
+
+Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X]`. Conclude with `ih.mul_right h`.
+-/
 theorem commute_aeval {M T : Matrix (Fin n) (Fin n) E} (h : Commute T M) (p : E[X]) :
     Commute T (aeval M p) := by
   induction p using Polynomial.induction_on with
@@ -95,30 +124,55 @@ section Unip
 
 variable {E : Type} [Field E] (s : E →+* E) {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul {a b c : Type} [Fintype b] (A : Matrix a b E) (B : Matrix b c E) :
     cT s (A * B) = cT s B * cT s A := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add {a b : Type} (A B : Matrix a b E) : cT s (A + B) = cT s A + cT s B := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_sub {a b : Type} (A B : Matrix a b E) : cT s (A - B) = cT s A - cT s B := by
   ext i j; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hs]`.
+-/
 theorem cT_cT (hs : ∀ x, s (s x) = x) {a b : Type} (A : Matrix a b E) : cT s (cT s A) = A := by
   ext i j; simp [cT, hs]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cT]`. Simplify using `[cT, Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem cT_one {a : Type} [DecidableEq a] : cT s (1 : Matrix a a E) = 1 := by
   ext i j
   by_cases h : i = j
   · subst h; simp [cT]
   · simp [cT, Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[cT_mul, cT_mul, cT_cT s hs, hJ, Matrix.mul_assoc]`.
+-/
 theorem gram_cT (hs : ∀ x, s (s x) = x) {J : Matrix (Fin n) (Fin n) E} (hJ : cT s J = J)
     {a b : Type} [Fintype a] [Fintype b] (A : Matrix (Fin n) a E) (B : Matrix (Fin n) b E) :
     cT s (cT s A * J * B) = cT s B * J * A := by
   rw [cT_mul, cT_mul, cT_cT s hs, hJ, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : ∀ T : Matrix ι (Fin n) E, A * (P * T) = 0` using `fun T => by`. Rewrite using `[← Matrix.mul_assoc, hAP, Matrix.zero_mul]`. Establish `e2 : ∀ T : Matrix ι (Fin n) E, A * (D * T) = 0` using `fun T => by`. Rewrite using `[← Matrix.mul_assoc, hAD, Matrix.zero_mul]`. Establish `e3 : ∀ T : Matrix ι (Fin n) E, A' * (P * T) = 0` using `fun T => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hAP', Matrix.zero_mul]`. Establish `e4 : ∀ T : Matrix ι (Fin n) E, A' * (D * T) = G * T` using `fun T => by`. Rewrite using `[← Matrix.mul_assoc, hG]`. Establish `hB : B = - G - Bc`. Rewrite using `[eq_sub_iff_add_eq, eq_neg_iff_add_eq_zero, ← hsum]`.
+
+Normalize the expressions using the abelian group laws. Substitute `hB` using the available equality. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, e1, e2, e3, e4, Matrix.mul_zero, Matrix.neg_mul, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem unip_alg {ι : Type} [Fintype ι] [DecidableEq ι]
     (P D : Matrix (Fin n) ι E) (A A' : Matrix ι (Fin n) E) (B Bc G : Matrix ι ι E)
     (hAP : A * P = 0) (hAD : A * D = 0) (hAP' : A' * P = 0) (hG : A' * D = G) (hsum : B + G + Bc = 0) :
@@ -138,6 +192,23 @@ theorem unip_alg {ι : Type} [Fintype ι] [DecidableEq ι]
     Matrix.mul_assoc, e1, e2, e3, e4, Matrix.mul_zero, Matrix.neg_mul, Matrix.mul_neg]
   abel
 
+/- English proof (translation)
+Take `⟨D, hD⟩ : ∃ D, D = Q' - Q` from `⟨_, rfl⟩`. Establish `hQ' : Q' = Q + D` using `by simp [hD]`. Establish `hPD : cT s P * J * D = 0`. Rewrite using `[hD, Matrix.mul_sub, hPQ, hPQ', sub_self]`. Establish `hDP : cT s D * J * P = 0`.
+
+Rewrite using `[← gram_cT s hs hJ P D, hPD]`. Use extensionality with `i j`. Simplify using `[cT]`. Take `⟨A, hA⟩ : ∃ A, A = cT s P * J` from `⟨_, rfl⟩`. Take `⟨A', hA'⟩ : ∃ A', A' = cT s D * J` from `⟨_, rfl⟩`.
+
+Establish `cA : cT s A = J * P` using `by rw [hA, cT_mul, cT_cT s hs, hJ]`. Establish `cA' : cT s A' = J * D` using `by rw [hA', cT_mul, cT_cT s hs, hJ]`. Rewrite `hPP`, `hPQ`, `hPQ'`, `hPD` using `[← hA]`. Rewrite `hDP` using `[← hA']`. Establish `hsum : A' * Q + A' * D + cT s (A' * Q) = 0`.
+
+Establish `h : cT s (Q + D) * J * (Q + D) = 0` using `hQ' ▸ hQQ'`. Rewrite `h` using `[cT_add, Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, hQQ, zero_add, ← hA']`. Establish `h2 : cT s (A' * Q) = cT s Q * J * D`. Rewrite using `[hA', gram_cT s hs hJ]`. Rewrite using `[h2]`.
+
+Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Use `⟨1 + D * A - P * A' + P * (A' * Q) * A, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : cT s (1 + D * A - P * A' + P * (A' * Q) * A) * J = J * (1 + P * A' - D * A + P * cT s (A' * Q) * A)`. Rewrite using `[cT_add, cT_sub, cT_add, cT_one, cT_mul, cT_mul, cT_mul, cT_mul, cA, cA']`.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, hA, hA']`. Rewrite using `[h1, Matrix.mul_assoc, unip_alg P D A A' _ _ _ hPP hPD hDP rfl hsum, Matrix.mul_one]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hPP, hDP, Matrix.mul_zero, add_zero, sub_zero]`. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hPQ, Matrix.mul_one]`. Rewrite using `[hQ']`.
+
+Normalize the expressions using the abelian group laws. Introduce `κ _ Z hZ`. Rewrite `hZ` using `[← hA]`. Use `⟨-(A' * Z), ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hZ, Matrix.mul_zero, add_zero, Matrix.mul_neg]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_unip {ι : Type} [Fintype ι] [DecidableEq ι] (hs : ∀ x, s (s x) = x)
     (J : Matrix (Fin n) (Fin n) E) (hJ : cT s J = J)
     (P Q Q' : Matrix (Fin n) ι E) (hPP : cT s P * J * P = 0) (hPQ : cT s P * J * Q = 1)
@@ -192,6 +263,9 @@ abbrev Pj (X : Matrix (Fin n) (Fin r) E) (j : Fin r) : Matrix (Fin n) {l : Fin r
 def Stab (A : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (j : Fin r) : Prop :=
   ∃ C : Matrix {l : Fin r // l ≤ j} {l : Fin r // l ≤ j} E, A * Pj X j = Pj X j * C
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subtype (Finset.univ.filter (· ≤ j)) (by simp) f]`. Use `(Finset.sum_filter_of_ne fun x _ hx => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (hf x (not_le.mp h))`.
+-/
 theorem sum_trunc {j : Fin r} (f : Fin r → E) (hf : ∀ m, j < m → f m = 0) :
     ∑ m, f m = ∑ u : {l : Fin r // l ≤ j}, f u.1 := by
   rw [← Finset.sum_subtype (Finset.univ.filter (· ≤ j)) (by simp) f]
@@ -199,6 +273,15 @@ theorem sum_trunc {j : Fin r} (f : Fin r → E) (hf : ∀ m, j < m → f m = 0) 
   by_contra h
   exact hx (hf x (not_le.mp h))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose b hb1 hb2 using h`. Use `⟨Matrix.of fun m l => b l.1 l.2 m.1, ?_⟩` and prove the remaining obligations. Use extensionality with `a l`. Establish `h1` using `congrFun (hb1 l.1 l.2) a`.
+
+Establish `h2` using `sum_trunc (j := j) (fun m => X a m * b l.1 l.2 m) (fun m hm => by simp [hb2 l.1 l.2 m hm])`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨C, hC⟩ l hl`. Use `⟨fun m => if h : m ≤ j then C ⟨m, h⟩ ⟨l, hl⟩ else 0, ?_, fun m hm => dif_neg (not_le.mpr hm)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Establish `h1` using `congrFun (congrFun hC a) ⟨l, hl⟩`. Establish `h2` using `sum_trunc (j := j) (fun m => X a m * (if h : m ≤ j then C ⟨m, h⟩ ⟨l, hl⟩ else 0)) (fun m hm => by simp [not_le.mpr hm])`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Pj, Matrix.submatrix_apply, id]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[dif_pos u.2]`. Use `_ = _ := h2.symm`.
+-/
 theorem stab_iff (A : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (j : Fin r) :
     (∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, A *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0)
       ↔ Stab A X j := by
@@ -227,6 +310,11 @@ theorem stab_iff (A : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (
         rw [dif_pos u.2]
       _ = _ := h2.symm
 
+/- English proof (translation)
+Use `⟨Matrix.of fun u v => if u.1 = v.1 then 1 else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `b v`. Simplify using `only [Matrix.mul_apply, Pj, Matrix.submatrix_apply, id, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (⟨v.1, v.2.trans h⟩ : {l : Fin r // l ≤ a})]`. Simplify using the standard rewrite rules.
+
+Introduce `u _ hu`. Establish `: u.1 ≠ v.1` using `fun e => hu (Subtype.ext e)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_sel (X : Matrix (Fin n) (Fin r) E) {i a : Fin r} (h : i ≤ a) :
     ∃ L : Matrix {l : Fin r // l ≤ a} {l : Fin r // l ≤ i} E, Pj X i = Pj X a * L := by
   refine ⟨Matrix.of fun u v => if u.1 = v.1 then 1 else 0, ?_⟩
@@ -239,17 +327,76 @@ theorem exists_sel (X : Matrix (Fin n) (Fin r) E) {i a : Fin r} (h : i ≤ a) :
     simp [this]
   · simp
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hA`. Take `⟨D, hD⟩` from `hB`. Conclude with `⟨C * D, by rw [Matrix.mul_assoc, hD, ← Matrix.mul_assoc, hC, Matrix.mul_assoc]⟩`.
+-/
 theorem stab_mul {A B : Matrix (Fin n) (Fin n) E} {X : Matrix (Fin n) (Fin r) E} {j : Fin r}
     (hA : Stab A X j) (hB : Stab B X j) : Stab (A * B) X j := by
   obtain ⟨C, hC⟩ := hA
   obtain ⟨D, hD⟩ := hB
   exact ⟨C * D, by rw [Matrix.mul_assoc, hD, ← Matrix.mul_assoc, hC, Matrix.mul_assoc]⟩
 
+/- English proof (translation)
+Use extensionality with `u v`. Both sides reduce to the same expression.
+-/
 theorem pj_gram (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin r) E) (i j : Fin r) :
     cT s (Pj X i) * J * Pj Y j = (cT s X * J * Y).submatrix Subtype.val Subtype.val := by
   ext u v
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hJi : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hu`. Establish `hJi' : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hu`. Establish `gram1 : ∀ i j, cT s (Pj X i) * J * Pj Y j = (1 : Matrix _ _ E).submatrix Subtype.val Subtype.val`. Introduce `i j`.
+
+Rewrite using `[pj_gram, xy]`. Establish `gram1' : ∀ i, cT s (Pj X i) * J * Pj Y i = 1`. Introduce `i`. Rewrite using `[gram1]`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+
+Establish `gram0 : ∀ i j, cT s (Pj X i) * J * Pj X j = 0`. Introduce `i j`. Rewrite using `[pj_gram, xx]`. Use extensionality with `u v`. Both sides reduce to the same expression.
+
+Establish `gram0' : ∀ i, cT s (Pj Y i) * J * Pj Y i = 0`. Introduce `i`. Rewrite using `[pj_gram, yy]`. Use extensionality with `u v`. Both sides reduce to the same expression.
+
+Take `⟨C, hC⟩` from `ha`. Take `⟨p, hp, B, hB⟩` from `exists_poly_proj_matrix M hM (Pj X a) C hC`. Use `set e := aeval M p with he`. Use `set P := Pj X a with hP`. Use `set Q := Pj Y a with hQ`.
+
+Take `⟨f, hf⟩ : ∃ f, f = J⁻¹ * cT s e * J` from `⟨_, rfl⟩`. Establish `hPP : cT s P * J * P = 0` using `gram0 a a`. Establish `hPQ : cT s P * J * Q = 1` using `gram1' a`. Establish `hQQ : cT s Q * J * Q = 0` using `gram0' a`. Establish `hJf : J * f = cT s e * J`.
+
+Rewrite using `[hf, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJi', Matrix.one_mul]`. Establish `hfJ : cT s f * J = J * e`. Use `congrArg (cT s) hJf` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, cT_cT s hs, hJ]`. Conclude with `this`.
+
+Establish `hNM : (J⁻¹ * cT s M * J) * M = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT s M), hMU, hJi]`. Establish `hMN : M * (J⁻¹ * cT s M * J) = 1` using `mul_eq_one_comm.mp hNM`. Establish `hcomm : ∀ T' : Matrix (Fin n) (Fin n) E, Commute T' M → Commute (J⁻¹ * cT s T' * J) M`. Introduce `T' hT'`.
+
+Establish `h1 : (J⁻¹ * cT s M * J) * (J⁻¹ * cT s T' * J) = (J⁻¹ * cT s T' * J) * (J⁻¹ * cT s M * J)`. Establish `e1 : ∀ U V : Matrix (Fin n) (Fin n) E, (J⁻¹ * cT s U * J) * (J⁻¹ * cT s V * J) = J⁻¹ * cT s (V * U) * J`. Introduce `U V`. Rewrite using `[cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, e1, hT'.eq]`. Use `show (J⁻¹ * cT s T' * J) * M = M * (J⁻¹ * cT s T' * J)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMN, Matrix.one_mul]`. Use `_ = M * (J⁻¹ * cT s T' * J) * ((J⁻¹ * cT s M * J) * M) := by`.
+
+Rewrite using `[Matrix.mul_assoc M, h1]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hNM, Matrix.mul_one]`. Establish `heM : Commute e M` using `((commute_aeval (Commute.refl M) p)).symm`. Establish `hfM : Commute f M` using `hf ▸ hcomm e heM`.
+
+Establish `hfe' : Commute f e` using `commute_aeval hfM p`. Establish `hfe : f * e = 0`. Establish `h1 : J * (f * e) = 0`. Rewrite using `[← Matrix.mul_assoc, hJf, hB, cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hef : e * f = 0` using `by rw [← hfe'.eq, hfe]`. Establish `hPf : ∀ {κ κ' : Type} [Fintype κ] [Fintype κ'] (R : Matrix (Fin n) κ E) (Z : Matrix (Fin n) κ' E), e * R = R → cT s R * J * (f * Z) = cT s R * J * Z`. Introduce `κ κ' _ _ R Z hR`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hPQ' : cT s P * J * (f * Q) = 1` using `by rw [hPf P Q hp, hPQ]`. Establish `hQQ' : cT s (f * Q) * J * (f * Q) = 0`. Rewrite using `[cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, hN, hNP, hNQ, hNZ⟩` from `exists_unip s hs J hJ P Q (f * Q) hPP hPQ hQQ hPQ' hQQ'`.
+
+Establish `hN'N : (J⁻¹ * cT s N * J) * N = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT s N), hN, hJi]`. Take `⟨N', hN'⟩ : ∃ N', N' = J⁻¹ * cT s N * J` from `⟨_, rfl⟩`. Rewrite `hN'N` using `[← hN']`. Establish `hNN' : N * N' = 1` using `mul_eq_one_comm.mp hN'N`.
+
+Establish `hN'P : N' * P = P`. Combine the equalities or inequalities in the displayed calculation. Use `⟨N, N', hNN', hN'N, hN, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Break down `le_total i a with h | h` into its components or cases.
+
+Take `⟨L, hL⟩` from `exists_sel X h`. Establish `hL' : Pj X i = P * L` using `hL`. Conclude with `⟨⟨1, by rw [hL', ← Matrix.mul_assoc, hNP, Matrix.mul_one]⟩, ⟨1, by rw [hL', ← Matrix.mul_assoc, hN'P, Matrix.mul_one]⟩⟩`. Take `⟨L, hL⟩` from `exists_sel X h`. Establish `hL' : P = Pj X i * L` using `hL`.
+
+Take `⟨K, hK⟩` from `hNZ _ (Pj X i) (gram0 a i)`. Establish `h' : N' * Pj X i = Pj X i - P * K`. Establish `h1 : Pj X i = N' * Pj X i + P * K`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_sub_iff_add_eq]`.
+
+Conclude with `h1.symm`. Use `⟨⟨1 + L * K, ?_⟩, ⟨1 - L * K, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hK, Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← hL']`. Rewrite using `[h', Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← hL']`. Introduce `j hj`.
+
+Take `⟨hja, C', hC'⟩` from `hT j hj`. Take `⟨L, hL⟩` from `exists_sel Y hja`. Establish `hL' : Pj Y j = Q * L` using `hL`. Take `⟨LX, hLX⟩` from `exists_sel X hja`. Establish `hLX' : Pj X j = P * LX` using `hLX`.
+
+Take `⟨p', hp', B', hB'⟩` from `exists_poly_proj_matrix M hM (Pj Y j) C' hC'`. Establish `hfe2 : Commute f (aeval M p')` using `commute_aeval hfM p'`. Establish `h1 : f * Pj Y j = Pj Y j * (B' * (f * Pj Y j))`. Combine the equalities or inequalities in the displayed calculation. Establish `hePj : e * Pj X j = Pj X j` using `by rw [hLX', ← Matrix.mul_assoc, hp]`.
+
+Establish `h2 : B' * (f * Pj Y j) = 1`. Establish `h3` using `hPf (Pj X j) (Pj Y j) hePj`. Rewrite `h3` using `[gram1' j]`. Establish `h4 : cT s (Pj X j) * J * (Pj Y j * (B' * (f * Pj Y j))) = B' * (f * Pj Y j)`. Rewrite using `[← Matrix.mul_assoc, gram1' j, Matrix.one_mul]`.
+
+Rewrite using `[← h4, ← h1]`. Conclude with `h3`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc⟩ : ∃ c, c = cT s P * J * (M * Q)` from `⟨_, rfl⟩`. Establish `hZ : cT s P * J * (M * Q - Q * c) = 0`.
+
+Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc (cT s P * J) Q c, hPQ, Matrix.one_mul, hc, sub_self]`. Establish `hfZ : f * (M * Q - Q * c) = 0`. Establish `h1 : J * (f * (M * Q - Q * c)) = 0`. Rewrite using `[← Matrix.mul_assoc, hJf, hB, cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hMQ' : M * (f * Q) = (f * Q) * c`. Establish `h1 : f * (M * Q) = f * (Q * c)`. Rewrite `hfZ` using `[Matrix.mul_sub, sub_eq_zero]`. Conclude with `hfZ`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `show N' * M * N * Q = Q * c`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem step (hs : ∀ x, s (s x) = x) (J : Matrix (Fin n) (Fin n) E) (hJ : cT s J = J) (hdet : J.det ≠ 0)
     (X Y : Matrix (Fin n) (Fin r) E) (xx : cT s X * J * X = 0) (yy : cT s Y * J * Y = 0)
     (xy : cT s X * J * Y = 1) (M : Matrix (Fin n) (Fin n) E) (hM : M.charpoly.Separable)
@@ -400,6 +547,9 @@ theorem step (hs : ∀ x, s (s x) = x) (J : Matrix (Fin n) (Fin n) E) (hJ : cT s
       _ = (N' * N) * Q * c := by simp only [Matrix.mul_assoc]
       _ = Q * c := by rw [hN'N, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Conclude with `h`.
+-/
 theorem sep_conj (A : Matrix (Fin n) (Fin n) E) (u : (Matrix (Fin n) (Fin n) E)ˣ) (h : A.charpoly.Separable) :
     (((u⁻¹ : (Matrix (Fin n) (Fin n) E)ˣ) : Matrix (Fin n) (Fin n) E) * A * u).charpoly.Separable := by
   rw [Matrix.coe_units_inv, Matrix.charpoly_units_conj']
@@ -407,6 +557,27 @@ theorem sep_conj (A : Matrix (Fin n) (Fin n) E) (u : (Matrix (Fin n) (Fin n) E)�
 
 end Flags
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW S γ hreg hγ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hs : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `fun x => by`. Apply `τ.injective` to reduce the goal to its premises. Establish `h1` using `hCM.2.2.2 τ (σ x)`.
+
+Establish `h2` using `hCM.2.2.2 τ x`. Use `show τ (σ (σ x)) = τ x`. Rewrite using `[h1, h2, star_star]`. Establish `hJc : cT (σ : E →+* E) J = J`. Use extensionality with `i j`.
+
+Conclude with `hJ.1 i j`. Establish `key : ∀ T : Finset (Fin r), T ⊆ S → ∃ g : GRat σ J, (∀ j ∈ S, Stab g.1.1 X j) ∧ (∀ j ∈ S, Stab (g⁻¹ * γ * g).1.1 X j) ∧ ∀ j ∈ T, Stab (g⁻¹ * γ * g).1.1 Y j`. Introduce `T`. Use `Finset.induction_on_max T ?_ ?_` and prove the remaining obligations. Introduce `_`.
+
+Use `⟨1, fun j _ => ⟨1, by simp⟩, fun j hj => ?_, by simp⟩` and prove the remaining obligations. Use `(stab_iff _ X j).mp (hγ j hj)` as an intermediate fact. Simplify using `using this`. Introduce `a T hlt ih hsub`. Take `⟨g, h1, h2, h3⟩` from `ih ((Finset.subset_insert _ _).trans hsub)`.
+
+Establish `haS : a ∈ S` using `hsub (Finset.mem_insert_self a T)`. Establish `hsep : ((g⁻¹ * γ * g).1.1).charpoly.Separable`. Establish `e : (g⁻¹ * γ * g).1.1 = ((g.1⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * γ.1.1 * g.1.1`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `sep_conj _ g.1 hreg`. Take `⟨N, N', e1, e2, hNU, hNX, hNY, hNa⟩` from `step (σ : E →+* E) hs J hJc hJ.2 X Y hW.xx hW.yy hW.xy (g⁻¹ * γ * g).1.1 hsep (g⁻¹ * γ * g).2 a (h2 a haS) T (fun j hj => ⟨(hlt j hj).le, h3 j hj⟩)`. Set `m : GRat σ J` to `⟨⟨N, N', e1, e2⟩, hNU⟩`. Establish `hconj : ((g * m)⁻¹ * γ * (g * m)).1.1 = N' * (g⁻¹ * γ * g).1.1 * N`. Establish `e : (g * m)⁻¹ * γ * (g * m) = m⁻¹ * (g⁻¹ * γ * g) * m` using `by group`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Use `⟨g * m, fun j hj => ?_, fun j hj => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Conclude with `stab_mul (h1 j hj) (hNX j).1`. Rewrite using `[hconj]`.
+
+Conclude with `stab_mul (stab_mul (hNX j).2 (h2 j hj)) (hNX j).1`. Rewrite using `[hconj]`. Break down `Finset.mem_insert.mp hj with rfl | hjT` into its components or cases. Conclude with `hNa`. Take `⟨C, hC⟩` from `h3 j hjT`.
+
+Establish `hN` using `hNY j hjT`. Establish `hN' : N' * Pj Y j = Pj Y j`. Combine the equalities or inequalities in the displayed calculation. Use `⟨C, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hN, Matrix.mul_assoc, hC, ← Matrix.mul_assoc, hN']`.
+
+Take `⟨g, h1, h2, h3⟩` from `key S (Finset.Subset.refl S)`. Conclude with `⟨g, fun j hj => (stab_iff _ X j).mpr (h1 j hj), fun j hj => ⟨(stab_iff _ X j).mpr (h2 j hj), (stab_iff _ Y j).mpr (h3 j hj)⟩⟩`.
+-/
 theorem conj_into_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (S : Finset (Fin r)) (γ : GRat σ J), GlobalTheory.Orb.IsRegSS γ.1.1 → (∀ j ∈ S, (∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, γ.1.1 *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0)) → ∃ g : GRat σ J, (∀ j ∈ S, (∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, g.1.1 *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0)) ∧ ∀ j ∈ S, (∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, (g⁻¹ * γ * g).1.1 *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0) ∧ (∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, (g⁻¹ * γ * g).1.1 *ᵥ (fun a => Y a l) = Y *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0) := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW S γ hreg hγ
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance

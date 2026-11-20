@@ -5,6 +5,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `le_antisymm h12 (fun t ht => ?_)` and prove the remaining obligations. Establish `hmem : Ideal.Quotient.mk J₁ t ∈ Submodule.span R (Set.range (fun k => Ideal.Quotient.mk J₁ ((1 : R) ⊗ₜ[A] v k)))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hmem`.
+
+Use `set s : R ⊗[A] B := ∑ k, c k • ((1 : R) ⊗ₜ[A] v k) with hs`. Establish `hmk : ∀ (J : Ideal (R ⊗[A] B)), Ideal.Quotient.mk J s = ∑ k, c k • Ideal.Quotient.mk J ((1 : R) ⊗ₜ[A] v k)`. Introduce `J`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk R, map_smul]`. Establish `h1 : t - s ∈ J₁`. Rewrite using `[← Ideal.Quotient.eq, hmk J₁, hc]`. Establish `h2 : s ∈ J₂`. Use `J₂.sub_mem ht (h12 h1)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hsum : ∑ k, c k • Ideal.Quotient.mk J₂ ((1 : R) ⊗ₜ[A] v k) = 0`. Rewrite using `[← hmk J₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h2`. Establish `hc0 : ∀ k, c k = 0` using `Fintype.linearIndependent_iff.1 hli c hsum`.
+
+Establish `hs0 : s = 0` using `by simp [hs, hc0]`. Rewrite `h1` using `[hs0, sub_zero]`. Conclude with `h1`.
+-/
 theorem tensor_ideal_eq_of_span_of_linearIndependent
     (A B R : Type) [CommRing A] [CommRing B] [Algebra A B] [CommRing R] [Algebra A R] {r : ℕ}
     (v : Fin r → B) (J₁ J₂ : Ideal (R ⊗[A] B)) (h12 : J₁ ≤ J₂)

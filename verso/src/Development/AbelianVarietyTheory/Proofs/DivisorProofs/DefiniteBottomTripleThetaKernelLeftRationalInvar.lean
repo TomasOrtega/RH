@@ -14,6 +14,9 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ClassSumLeft
 
+/- English proof (translation)
+Introduce `D T L sc G W i j A A' WW X hX t P h`. Conclude with `GlobalTheory.RowTest.BottomClassSumNeg.ker_left hX t P h`.
+-/
 theorem ker_left_rat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ (t : T) (P : PolF D WW.rank A.rank) (h : Formalism.L2.Theta.GA D WW),
     ∀ γ ∈ GQ A, ∀ g, X.ker W.ψ W.θ t P h (γ * g) = X.ker W.ψ W.θ t P h g := by

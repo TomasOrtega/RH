@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨νl, hpin, hQ⟩` from `ooQuot_pin X u u' νq hN hR hLU hGP`. Conclude with `jointTensor_of_steps P sc i0 i0' νq νl hQ (hPJ νl hpin)`.
+-/
 theorem joint_tensor_factorization (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hN : NuQPin X u u' νq) (hR : StRel X u u') (hLU : LocUni X u u')
     (hGP : GlobProd X u u')

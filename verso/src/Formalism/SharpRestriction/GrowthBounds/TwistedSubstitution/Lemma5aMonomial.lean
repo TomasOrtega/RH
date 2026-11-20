@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.TestSideWords
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting
 
+/- English proof (translation)
+Unfold `symP`. Use `conv_lhs => rw [(SPR O p F hrk c' Q).as_sum]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun ga _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, ← MvPolynomial.map_C, ← map_mul]`.
+
+Use `congr 1`. Rewrite using `[show (monomial ga) ((SPR O p F hrk c' Q).coeff ga) = C ((SPR O p F hrk c' Q).coeff ga) * monomial ga 1 by`. Rewrite using `[C_mul_monomial, mul_one]]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symP_eq_sum (p : ℕ) {n' m r K : ℕ} [NeZero n'] (O : Type) [CommRing O] [IsDomain O] (hk : m + 1 = r + K)
     (hrk : r ≤ m + 1) (F : Frames n' r) (c' Q : ℕ) (P : RRing O n' (r + K)) :
     symP p O hk hrk F c' Q P = ∑ ga ∈ (SPR O p F hrk c' Q).support,
@@ -36,6 +41,9 @@ def Lemma5aMonomialAt (C CLa : ℝ) : Prop :=
       MemAtG 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h x) (goodG' r de h x) (cPrime n' r TT.card c0 cpp cStar)
         (MvPolynomial.map (algebraMap O (KK O)) (rename (castV hk) (B b) * monomial ga 1))
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD b`. Rewrite using `[symP_eq_sum]`. Use `Submodule.sum_mem (memSub 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar)) fun ga hga => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `h p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD b ga hga`.
+-/
 theorem conclusionAt_of_monomialAt (C CLa : ℝ) (h : Lemma5aMonomialAt C CLa) : Lemma5aAt C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk
     F nb B hD b
@@ -47,6 +55,9 @@ theorem conclusionAt_of_monomialAt (C CLa : ℝ) (h : Lemma5aMonomialAt C CLa) :
 def Lemma5aMonomial (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → Lemma5aMonomialAt C CLa
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨C₁, h1, h2⟩` from `h hA`. Conclude with `⟨C₁, h1, fun C hC => conclusionAt_of_monomialAt C CLa (h2 C hC)⟩`.
+-/
 theorem lemma5a_of_monomial (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : Lemma5aMonomial D CLa Ck Crk Cdeg) :
     Lemma5aTheoremII D CLa Ck Crk Cdeg := by
   intro hA

@@ -6,6 +6,41 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ L hτ γ j hγ hj`. Take `⟨φ, h1, h2, -, h4⟩` from `dIso O K Δ L`. Take `⟨j', hj'γ, hj'tr, hj'⟩` from `h4 τ γ j hγ hj`. Establish `hZD : ∀ g : DX Δ, g ∈ ZD Δ ↔ ∃ z, IsScal z g`. Introduce `g`.
+
+Simplify using `only [ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range, MonoidHom.comp_apply, IsScal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _`.
+
+Rewrite using `[← hz]`. Apply the tactic sequence `first | rfl | simp [Matrix.GeneralLinearGroup.scalar]`. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = Glob.mt g from rfl, hz]`. Apply the tactic sequence `first | rfl | simp [Matrix.GeneralLinearGroup.scalar]`. Establish `hmap : (ZD Δ ⊔ KD Δ O).map φ.toMonoidHom = ZK O K`. Rewrite using `[Subgroup.map_sup]`. Unfold `ZK`.
+
+Use `congr 1`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, hZD, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+
+Conclude with `⟨z, by rw [← (h2 z _).1 hz]; simp⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, (h2 z _).2 (by simp)⟩`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv, ← h1]`.
+
+Simplify using the standard rewrite rules. Establish `hmem : ∀ g, g ∈ ZD Δ ⊔ KD Δ O ↔ φ g ∈ ZK O K`. Introduce `g`. Rewrite using `[← hmap, Subgroup.mem_map_equiv]`. Simplify using the standard rewrite rules.
+
+Establish `hgen : ∀ z : (Etau K τ)ˣ, (z : Etau K τ).im ≠ 0 → ∃ S : Finset (DX Δ), ∀ y : DX Δ, y⁻¹ * j z * y ∈ ZD Δ ⊔ KD Δ O → ∃ t, ∃ s ∈ S, ∃ u ∈ ZD Δ ⊔ KD Δ O, y = j t * s * u`. Introduce `z hz`. Take `⟨s, hs⟩` from `finG O K Δ τ L hτ j' hj'tr z hz`. Use `⟨s.image φ.symm, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Rewrite `hy` using `[hmem]`. Simplify using `only [map_mul, map_inv, hj'] at hy`. Take `⟨t, x, hx, k, hk, hyk⟩` from `hs (φ y) hy`. Use `⟨t, φ.symm x, Finset.mem_image_of_mem _ hx, φ.symm k, by rw [hmem]; simp [hk], ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises.
+
+Simplify using `[map_mul, hj', hyk]`. Take `⟨a, ha⟩` from `exists_a (K := K) (τ := τ)`. Establish `hγa : γ = j a`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hj']`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hj'γ]`. Simplify using `[ha]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hgen a (by rw [ha]; simp)`.
+
+Use `⟨S, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `hS y` to reduce the goal to its premises. Establish `hK : y⁻¹ * γ * y ∈ KD Δ O`. Assume the negation of the conclusion as `hn`.
+
+Apply `hy` to reduce the goal to its premises. Simplify using `[one, hn]`. Rewrite using `[← hγa]`. Conclude with `Subgroup.mem_sup_right hK`. Introduce `z hz χ`.
+
+Take `⟨S, hS⟩` from `hgen z (by rw [hz]; simp)`. Use `⟨S, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `hS y` to reduce the goal to its premises. Unfold `fZD at hy`.
+
+Use `split_ifs at hy with hh`. Take `⟨z0, s0, hsc, hk⟩` from `hh`. Establish `hs0 : s0 ∈ ZD Δ` using `(hZD s0).2 ⟨z0, hsc⟩`. Use `(ZD Δ ⊔ KD Δ O).mul_mem (Subgroup.mem_sup_left hs0) (Subgroup.mem_sup_right hk)` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `absurd rfl hy`. Introduce `y`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Establish `hst : Subgroup.comap j (MulAction.stabilizer (DX Δ) (g : DX Δ ⧸ ZD Δ ⊔ KD Δ O)) = Subgroup.comap (jU j') (Subgroup.comap (MulAut.conj (φ g)⁻¹).toMonoidHom (ZK O K))`. Use extensionality with `t`.
+
+Simplify using `only [Subgroup.mem_comap, MulAction.mem_stabilizer_iff, MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Rewrite using `[← Subgroup.inv_mem_iff, show ((j t * g)⁻¹ * g)⁻¹ = g⁻¹ * j t * g by group, hmem]`. Simplify using `[hj']`. Rewrite using `[hst]`. Conclude with `stabG O K Δ τ L hτ j' hj'tr (φ g)`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.finD : UpperTheory.V.Z.Sym.Loc.FinD := by
   classical
   intro O K _ _ _ _ _ Δ τ L hτ γ j hγ hj

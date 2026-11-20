@@ -9,10 +9,16 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
 
 universe u
 
+/- English proof (translation)
+Simplify using `[mixedDiff]`.
+-/
 theorem mixedDiff_zero {K : Type*} (h : (K → ℤ) → ℤ) (bs : Fin 0 → K → ℤ) :
     mixedDiff bs h = h := by
   simp [mixedDiff]
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.FieldNumbers.relDim`. Rewrite using `[hd]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `WithTop.map (fun e : ℕ => (e : ℤ) - (Fintype.card K : ℤ)) ((Fintype.card K : ℕ) : WithTop ℕ) = 0`. Conclude with `congrArg WithTop.some (sub_self _)`.
+-/
 theorem relDim_eq_zero_of_ringKrullDim {F : Type*} [Field F] {K : Type} [Fintype K]
     {ι : K → Type} (q : Ideal (MRing ι F))
     (hd : ringKrullDim (MRing ι F ⧸ q) = ((Fintype.card K : ℕ) : WithBot ℕ∞)) :
@@ -24,6 +30,11 @@ theorem relDim_eq_zero_of_ringKrullDim {F : Type*} [Field F] {K : Type} [Fintype
     ((Fintype.card K : ℕ) : WithTop ℕ) = 0
   exact congrArg WithTop.some (sub_self _)
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ q hq hd`. Establish `h0` using `((GroundTheory.Heights₂.Heights.FieldNumbers.MixedDiffConst.full.{u} F K ι q hq.multiHomog hq.relevant 0 (relDim_eq_zero_of_ringKrullDim q hd)).1 (![] : Fin 0 → K → ℤ))`. Simplify using `only [mixedDiff_zero] at h0`. Take `⟨b, hb⟩` from `Filter.eventually_atTop.1 h0`. Use `⟨Finset.univ.sup fun k => (b k).toNat, fun a ha => hb _ fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (b k).toNat ≤ a k` using `le_trans (Finset.le_sup (f := fun k => (b k).toNat) (Finset.mem_univ k)) (ha k)`. Establish `h2 : b k ≤ ((b k).toNat : ℤ)` using `Int.self_le_toNat (b k)`. Use `show b k ≤ (a k : ℤ)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem HilbertDimZero.proof : HilbertDimZero.Statement.{u} := by
   intro F _ K _ _ ι _ q hq hd
   have h0 := ((GroundTheory.Heights₂.Heights.FieldNumbers.MixedDiffConst.full.{u} F K ι q hq.multiHomog

@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DetLine
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y V τ hτ z hz`. Take `⟨U, hU, φ, f, hzU, hs, -⟩` from `GlobalTheory.T.exists_affine_stable_lie_eigenspace_frame E H D l Xo c O β Y z`. Take `⟨⟨v, w, hfr, -⟩, -⟩` from `GlobalTheory.DetLine.EigParts.eigFrame_match E H D l Xo c O β Y τ hτ Set.univ Γ(gen Y, U) φ hU.fromSpec hs (Set.subset_univ _) f`. Take `⟨r, hrV, hzr⟩` from `hU.exists_basicOpen_le (V := V) ⟨z, hz⟩ hzU`. Establish `hW` using `hU.basicOpen r`.
+
+Establish `hle : (gen Y).basicOpen r ≤ U` using `(gen Y).basicOpen_le r`. Set `g : Γ(gen Y, U) →+* Γ(gen Y, (gen Y).basicOpen r)` to `((gen Y).presheaf.map (homOfLE hle).op).hom`. Establish `hx : (show Sp Γ(gen Y, (gen Y).basicOpen r) ⟶ gen Y from hW.fromSpec) = spMap g ≫ hU.fromSpec` using `(hU.map_fromSpec hW (homOfLE hle).op).symm`. Take `⟨v', w', h', -, -⟩` from `exists_pull g hfr hx`. Use `⟨(gen Y).basicOpen r, hW, g.comp φ, v', w', hzr, h'.1, ?_, h'.2.2⟩` and prove the remaining obligations.
+
+Rewrite using `[hW.range_fromSpec]`. Conclude with `hrV`.
+-/
 theorem frameCover_gen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (V : (gen Y).Opens) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → FrameCover Y.t (genι Y) (genStr Y) V (HermitianCompactForm.chi c τ) D.p D.q := by
   intro E _ _ _ H D l Xo c O _ β Y V τ hτ z hz
   obtain ⟨U, hU, φ, f, hzU, hs, -⟩ := GlobalTheory.T.exists_affine_stable_lie_eigenspace_frame E H D l Xo c O β Y z

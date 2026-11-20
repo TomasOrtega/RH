@@ -11,6 +11,9 @@ noncomputable section
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {L : HolLineBundle A}
 
+/- English proof (translation)
+Establish `h` using `hf.comp (A.chart j).continuousOn (fun y hy => ⟨(A.chart j).map_source hy, by simpa [(A.chart j).left_inv hy] using hy⟩)`. Conclude with `h.congr (fun y hy => by simp [(A.chart j).left_inv hy])`.
+-/
 theorem continuousOn_source_of_chart {E : Type*} [TopologicalSpace E] {f : X → E} (j : Fin A.n)
     (hf : ContinuousOn (f ∘ (A.chart j).symm)
       ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source)) :
@@ -19,6 +22,13 @@ theorem continuousOn_source_of_chart {E : Type*} [TopologicalSpace E] {f : X →
     ⟨(A.chart j).map_source hy, by simpa [(A.chart j).left_inv hy] using hy⟩)
   exact h.congr (fun y hy => by simp [(A.chart j).left_inv hy])
 
+/- English proof (translation)
+Establish `hk : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Establish `hkj : x ∈ (A.chart (chartIdx A x)).source ∩ (A.chart j).source` using `⟨hk, hx⟩`. Establish `hg : 0 < ‖L.g (chartIdx A x) j x‖ ^ 2`. Use `L.ne_zero _ _ x hkj` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `he : Real.exp ((n : ℝ) * Real.log (‖L.g (chartIdx A x) j x‖ ^ 2)) = (‖L.g (chartIdx A x) j x‖ ^ 2) ^ n`. Rewrite using `[← Real.log_pow, Real.exp_log (pow_pos hg n)]`. Rewrite using `[ptNormSq, hs.2.1 _ j x hkj, W.compat _ j x hkj, norm_mul, norm_pow, show -(n : ℝ) * (W.φ j x + Real.log (‖L.g (chartIdx A x) j x‖ ^ 2)) = -(n : ℝ) * W.φ j x - (n : ℝ) * Real.log (‖L.g (chartIdx A x) j x‖ ^ 2) by ring, Real.exp_sub, he]`. Establish `hp : 0 < (‖L.g (chartIdx A x) j x‖ ^ 2) ^ n` using `pow_pos hg n`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptNormSq_eq_of_mem (W : Weight L) {n : ℕ} {s : Fin A.n → X → ℂ} (hs : s ∈ L.sections n)
     (j : Fin A.n) {x : X} (hx : x ∈ (A.chart j).source) :
     ptNormSq W n s x = ‖s j x‖ ^ 2 * Real.exp (-(n : ℝ) * W.φ j x) := by
@@ -38,10 +48,18 @@ theorem ptNormSq_eq_of_mem (W : Weight L) {n : ℕ} {s : Fin A.n → X → ℂ} 
   field_simp
   ring
 
+/- English proof (translation)
+Unfold `ptNormSq`. Check the signs of the components of the expression.
+-/
 theorem ptNormSq_nonneg (W : Weight L) (n : ℕ) (s : Fin A.n → X → ℂ) (x : X) :
     0 ≤ ptNormSq W n s x := by
   unfold ptNormSq; positivity
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hx⟩` from `A.cover x`. Establish `hsj : ContinuousOn (s j) (A.chart j).source` using `continuousOn_source_of_chart j (hs.1 j j).continuousOn`. Establish `hφj : ContinuousOn (W.φ j) (A.chart j).source` using `continuousOn_source_of_chart j (W.smooth j j).continuousOn`. Establish `hF : ContinuousOn (fun y => ‖s j y‖ ^ 2 * Real.exp (-(n : ℝ) * W.φ j y)) (A.chart j).source` using `((hsj.norm.pow 2).mul ((continuousOn_const.mul hφj).rexp))`.
+
+Establish `hopen` using `(A.chart j).open_source`. Use `(hF.continuousAt (hopen.mem_nhds hx)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds hx] with y hy`. Conclude with `(ptNormSq_eq_of_mem W hs j hy).symm`.
+-/
 theorem continuous_ptNormSq (W : Weight L) {n : ℕ} {s : Fin A.n → X → ℂ}
     (hs : s ∈ L.sections n) : Continuous (ptNormSq W n s) := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -58,6 +76,9 @@ theorem continuous_ptNormSq (W : Weight L) {n : ℕ} {s : Fin A.n → X → ℂ}
   filter_upwards [hopen.mem_nhds hx] with y hy
   exact (ptNormSq_eq_of_mem W hs j hy).symm
 
+/- English proof (translation)
+Simplify using `only [ptNormSq, Pi.smul_apply, smul_eq_mul, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptNormSq_smul (W : Weight L) (n : ℕ) (c : ℂ) (s : Fin A.n → X → ℂ) (x : X) :
     ptNormSq W n (c • s) x = ‖c‖ ^ 2 * ptNormSq W n s x := by
   simp only [ptNormSq, Pi.smul_apply, smul_eq_mul, norm_mul]
@@ -65,6 +86,19 @@ theorem ptNormSq_smul (W : Weight L) (n : ℕ) (c : ℂ) (s : Fin A.n → X → 
 
 variable [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Use `⟨fun U hU ⟨x, hxU⟩ hzero => ?_⟩` and prove the remaining obligations. Take `⟨j, hx⟩` from `A.cover x`. Use `set O := (A.chart j).target ∩ (A.chart j).symm ⁻¹' U with hOdef`. Establish `hO : IsOpen O` using `(A.chart j).isOpen_inter_preimage_symm hU`. Establish `hxO : A.chart j x ∈ O` using `⟨(A.chart j).map_source hx, by simpa [(A.chart j).left_inv hx] using hxU⟩`.
+
+Establish `hOt : O ⊆ (A.chart j).target` using `inter_subset_left`. Establish `hmeas : Measurable (U.indicator (1 : X → ℝ≥0∞))` using `measurable_one.indicator hU.measurableSet`. Establish `h1` using `dV.chart_lintegral j _ hmeas`. Establish `hL : ∫⁻ y in (A.chart j).source, U.indicator (1 : X → ℝ≥0∞) y ∂dV.μ = 0`. Rewrite using `[lintegral_indicator_one hU.measurableSet, Measure.restrict_apply hU.measurableSet]`.
+
+Conclude with `measure_mono_null inter_subset_left hzero`. Rewrite `h1` using `[hL]`. Establish `h2 : ∫⁻ y in O, ENNReal.ofReal (dV.dens j y) = 0`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `setLIntegral_congr_fun hO.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show (A.chart j).symm y ∈ U from hy.2), Pi.one_apply, one_mul]`. Use `_ ≤ ∫⁻ y in (A.chart j).target, U.indicator (1 : X → ℝ≥0∞) ((A.chart j).symm y) * ENNReal.ofReal (dV.dens j y) := lintegral_mono_set hOt`. Use `_ = 0 := h1.symm`. Establish `hae : AEMeasurable (fun y => ENNReal.ofReal (dV.dens j y)) (volume.restrict O)` using `ENNReal.measurable_ofReal.comp_aemeasurable ((((dV.smooth j).continuousOn).mono hOt).aemeasurable hO.measurableSet)`.
+
+Establish `h3` using `(lintegral_eq_zero_iff' hae).1 h2`. Rewrite `h3` using `[EventuallyEq, ae_restrict_iff' hO.measurableSet]`. Establish `h4 : volume O = 0`. Rewrite using `[measure_eq_zero_iff_ae_notMem]`. Use `filter_upwards [h3] with y hy hyO`.
+
+Conclude with `(ENNReal.ofReal_pos.2 (dV.pos j y (hOt hyO))).ne' (hy hyO)`. Conclude with `hO.measure_ne_zero volume ⟨_, hxO⟩ h4`.
+-/
 theorem SmoothVolume.isOpenPosMeasure (dV : SmoothVolume A) : dV.μ.IsOpenPosMeasure := by
   refine ⟨fun U hU ⟨x, hxU⟩ hzero => ?_⟩
   obtain ⟨j, hx⟩ := A.cover x
@@ -100,6 +134,9 @@ theorem SmoothVolume.isOpenPosMeasure (dV : SmoothVolume A) : dV.μ.IsOpenPosMea
     exact (ENNReal.ofReal_pos.2 (dV.pos j y (hOt hyO))).ne' (hy hyO)
   exact hO.measure_ne_zero volume ⟨_, hxO⟩ h4
 
+/- English proof (translation)
+Use `dV.isProb` as an intermediate fact. Conclude with `(continuous_ptNormSq W hs).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem integrable_ptNormSq (W : Weight L) (dV : SmoothVolume A) [CompactSpace X] {n : ℕ}
     {s : Fin A.n → X → ℂ} (hs : s ∈ L.sections n) : Integrable (ptNormSq W n s) dV.μ := by
   have := dV.isProb
@@ -107,17 +144,26 @@ theorem integrable_ptNormSq (W : Weight L) (dV : SmoothVolume A) [CompactSpace X
     (HasCompactSupport.of_compactSpace _)
 
 omit [BorelSpace X] in
+/- English proof (translation)
+The claim follows from `integral_nonneg fun x => ptNormSq_nonneg W n s x`.
+-/
 theorem sectionL2NormSq_nonneg (W : Weight L) (dV : SmoothVolume A) (n : ℕ) (s : Fin A.n → X → ℂ) :
     0 ≤ sectionL2NormSq W dV n s :=
   integral_nonneg fun x => ptNormSq_nonneg W n s x
 
 omit [BorelSpace X] in
 
+/- English proof (translation)
+Simplify using `only [sectionL2NormSq, ptNormSq_smul]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem sectionL2NormSq_smul (W : Weight L) (dV : SmoothVolume A) (n : ℕ) (c : ℂ)
     (s : Fin A.n → X → ℂ) : sectionL2NormSq W dV n (c • s) = ‖c‖ ^ 2 * sectionL2NormSq W dV n s := by
   simp only [sectionL2NormSq, ptNormSq_smul]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Use `dV.isOpenPosMeasure` as an intermediate fact. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun y => ptNormSq_nonneg W n s y) (integrable_ptNormSq W dV hs)).1 h0`. Use `(Continuous.ae_eq_iff_eq (μ := dV.μ) (continuous_ptNormSq W hs) continuous_const).1 hae` as an intermediate fact. Conclude with `congrFun this x`.
+-/
 theorem ptNormSq_eq_zero_of_l2NormSq_eq_zero (W : Weight L) (dV : SmoothVolume A) [CompactSpace X]
     {n : ℕ} {s : Fin A.n → X → ℂ} (hs : s ∈ L.sections n) (h0 : sectionL2NormSq W dV n s = 0) (x : X) :
     ptNormSq W n s x = 0 := by

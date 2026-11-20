@@ -8,6 +8,17 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.FiniteDimens
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N GlobalTheory.WeilDeligne GlobalTheory.Pst Polynomial Module Matrix UpperTheory.V.W UpperTheory.V.Hi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Set `` to `Fintype.ofFinite (Γ ⧸ a.ker)`. Set `a' : Γ ⧸ a.ker →* Module.End L D` to `QuotientGroup.lift a.ker a le_rfl`. Establish `ha : ∀ q : Γ ⧸ a.ker, a q.out = a' q` using `fun q => by conv_rhs => rw [← QuotientGroup.out_eq' q]`.
+
+Both sides reduce to the same expression. Establish `h0 : ∀ x : D, ∑ q : Γ ⧸ a.ker, a' q x = 0` using `fun x => by`. Assume the negation of the conclusion as `hx`. Take `⟨g, hg⟩` from `hn _ hx`. Use `hg ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft (g : Γ ⧸ a.ker)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression. Establish `h1 : (∑ q : Γ ⧸ a.ker, b q.out) = 0`.
+
+Use `LinearMap.ext_on_range hs fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, LinearMap.zero_apply]`. Simplify using `only [hc, ha]`. Rewrite using `[← map_sum, h0, map_zero]`. Establish `h2` using `LinearMap.congr_fun h1 y`.
+
+Rewrite `h2` using `[LinearMap.sum_apply, LinearMap.zero_apply]`. Simplify using `only [hi, Finset.sum_const, Finset.card_univ] at h2`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `hy ((smul_eq_zero.mp h2).resolve_left (Nat.cast_ne_zero.mpr Fintype.card_ne_zero))`.
+-/
 private theorem UpperTheory.fixed_vector_descends_finite_image {Γ L D W : Type} [Group Γ] [Field L] [AddCommGroup D] [Module L D]
     [AddCommGroup W] [Module ℂ W] (a : Γ →* Module.End L D) (b : Γ →* Module.End ℂ W) (mk : D →+ W)
     (hs : Submodule.span ℂ (Set.range mk) = ⊤) (hc : ∀ g x, b g (mk x) = mk (a g x))
@@ -40,6 +51,15 @@ private theorem UpperTheory.fixed_vector_descends_finite_image {Γ L D W : Type}
   rw [← Nat.cast_smul_eq_nsmul ℂ] at h2
   exact hy ((smul_eq_zero.mp h2).resolve_left (Nat.cast_ne_zero.mpr Fintype.card_ne_zero))
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ ι A w h O _ _ _ Bw hj P L V _ _ _ _ _ ρ _ h1 h2`. Use `⟨?_, fun x hx σ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hi⟩` from `h1`. Use `compactSpace_Ine (E := F) A` as an intermediate fact. Establish `: Finite (Ine (F` using `F) A ⧸ (MonoidHom.comp (weilD Bw h P ρ) (ineIncl h)).ker) := Subgroup.quotient_finite_of_isOpen _ (isSmooth_weilD Bw h P ρ hj)`.
+
+Conclude with `UpperTheory.fixed_vector_descends_finite_image (MonoidHom.comp (weilD Bw h P ρ) (ineIncl h)) (MonoidHom.comp (wdRho P ι Bw h hj ρ) (ineIncl h)) (AddMonoidHom.mk' (wdMk P ι ρ) (wdMk_add P ι ρ)) (span_wdMk P ι ρ) (fun g x => wdRho_mk P ι Bw h hj ρ _ x) y hy hi`. Establish `hc : ∀ (n : ℕ) τ, Commute (phiD P ρ ^ n) (weilD Bw h P ρ τ)` using `fun n τ => by`. Use `Commute.pow_left ?_ n` and prove the remaining obligations. Rewrite using `[weilD_apply]`. Use `Commute.mul_right (phiD_actD P ρ _) ?_` and prove the remaining obligations.
+
+Conclude with `Commute.units_zpow_right (u := phiU P ρ) (Commute.refl _) _`. Establish `hc' : ∀ (n : ℕ) τ, weilD Bw h P ρ τ ((phiD P ρ ^ n) x) = (phiD P ρ ^ n) (weilD Bw h P ρ τ x)` using `fun n τ => (LinearMap.congr_fun (hc n τ).eq x).symm`. Use `sub_eq_zero.mp (GlobalTheory.PstFaithful.eq_zero_of_wdMk_phiD_pow l P ι _ L V ρ _ fun n => ?_)` and prove the remaining obligations. Establish `h3` using `h2 (wdMk P ι ρ ((phiD P ρ ^ n) x)) (fun s => by rw [wdRho_mk, hc', hx]) σ`. Rewrite `h3` using `[wdRho_mk, hc']`.
+
+Establish `h4` using `wdMk_add P ι ρ ((phiD P ρ ^ n) (weilD Bw h P ρ σ x - x)) ((phiD P ρ ^ n) x)`. Rewrite `h4` using `[← map_add, sub_add_cancel, h3]`. Conclude with `left_eq_add.mp (h4.trans (add_comm _ _))`.
+-/
 theorem UpperTheory.exists_invariant_vector_of_finite_image_averaging :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) (P : LocPrime l) {L : FinExt l} {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] [FiniteDimensional ↥L.1 V] (ρ : Representation ↥L.1 ↥(GK Bw.Kw) V) [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)], (∃ y : WDSpace P ι ρ, y ≠ 0 ∧ ∀ s, wdRho P ι Bw h hj ρ (ineIncl h s) y = y) → (∀ y : WDSpace P ι ρ, (∀ s, wdRho P ι Bw h hj ρ (ineIncl h s) y = y) → ∀ σ, wdRho P ι Bw h hj ρ σ y = y) → (∃ x : ↥(Dpst P ρ), x ≠ 0 ∧ ∀ s, weilD Bw h P ρ (ineIncl h s) x = x) ∧ ∀ x : ↥(Dpst P ρ), (∀ s, weilD Bw h P ρ (ineIncl h s) x = x) → ∀ σ, weilD Bw h P ρ σ x = x := by
   intro F Ω _ _ _ _ _ l _ ι A w h O _ _ _ Bw hj P L V _ _ _ _ _ ρ _ h1 h2

@@ -21,6 +21,19 @@ namespace GlobalTheory.CompHt.FormalChar
 
 open GlobalTheory.KernelNoTorsion GlobalTheory.TorsionCharacter GlobalTheory.TangentPow GlobalTheory.GmPoints
 
+/- English proof (translation)
+Establish `hpow : ∀ g c (n : ℕ), Rel g c → Rel (g ^ n) (c ^ n)` using `fun g c n h => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `hmul _ _ _ _ ih h`.
+
+Set `H : Subgroup N` to `{ carrier := {g | (∃ n : ℕ, n ≠ 0 ∧ g ^ n = 1) ∧ ∃ c, Rel g c} mul_mem' := by`. Introduce and unpack `a b ⟨⟨m, hm, ha⟩, c, hc⟩ ⟨⟨n, hn, hb⟩, c', hc'⟩`. Conclude with `⟨⟨m * n, mul_ne_zero hm hn, by`. Rewrite using `[mul_pow, pow_mul, ha, mul_comm m, pow_mul, hb, one_pow, one_pow, _root_.mul_one]⟩,`. Use the proof step `_, hmul _ _ _ _ hc hc'⟩`.
+
+Use the proof step `one_mem' := ⟨⟨1, one_ne_zero, one_pow _⟩, 1, h1⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨⟨n, hn, ha⟩, c, hc⟩`. Establish `: a⁻¹ = a ^ (n - 1)`. Rewrite using `[inv_eq_iff_mul_eq_one, ← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero hn), ha]`.
+
+Conclude with `⟨⟨n, hn, by rw [inv_pow, ha, inv_one]⟩, _, this ▸ hpow _ _ _ hc⟩ }`. Use `choose c hc using fun h : H => h.2.2`. Establish `hc0 : ∀ h, c h ≠ 0` using `fun h h0 => by`. Take `⟨n, hn, e⟩` from `h.2.1`. Use `hpow _ _ n (hc h)` as an intermediate fact.
+
+Rewrite `this` using `[e, h0, zero_pow hn]`. Conclude with `zero_ne_one (huniq _ _ _ this h1)`. Set `χ : H →* Fˣ` to `MonoidHom.mk' (fun h => Units.mk0 (c h) (hc0 h)) fun a b => Units.ext (huniq _ _ _ (hc (a * b)) (hmul _ _ _ _ (hc a) (hc b)))`. Take `⟨κ, hκ⟩` from `exists_extend_character H.subtype Subtype.val_injective χ`. Use `⟨κ, fun g k n hn hg hk => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show κ g = χ ⟨g, ⟨n, hn, hg⟩, k, hk⟩ from hκ ⟨g, ⟨n, hn, hg⟩, k, hk⟩]`. Conclude with `huniq _ _ _ (hc ⟨g, ⟨n, hn, hg⟩, k, hk⟩) hk`.
+-/
 theorem exists_character_of_rel {N F : Type} [CommGroup N] [Field F] [IsAlgClosed F]
     (Rel : N → F → Prop) (h1 : Rel 1 1)
     (hmul : ∀ g g' c c', Rel g c → Rel g' c' → Rel (g * g') (c * c'))
@@ -60,6 +73,9 @@ section Integers
 
 variable {p : ℕ} {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C]
 
+/- English proof (translation)
+Establish `h1 : v (algebraMap O C a) < 1` using `lt_of_le_of_ne (hv.map_le_one a) fun e => ha (hv.isUnit_of_one' e)`. Establish `h2 : 0 < v (algebraMap O C b)` using `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff v).2 ((map_ne_zero_iff _ hv.hom_inj).2 hb))`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one h2 h1`. Conclude with `⟨n, Ideal.mem_span_singleton.2 (hv.le_iff_dvd.1 (by rw [map_pow, map_pow]; exact hn.le))⟩`.
+-/
 theorem exists_pow_mem (hv : v.Integers O) {a b : O} (ha : ¬ IsUnit a) (hb : b ≠ 0) :
     ∃ n : ℕ, a ^ n ∈ Ideal.span {b} := by
   have h1 : v (algebraMap O C a) < 1 := lt_of_le_of_ne (hv.map_le_one a) fun e => ha (hv.isUnit_of_one' e)
@@ -68,6 +84,17 @@ theorem exists_pow_mem (hv : v.Integers O) {a b : O} (ha : ¬ IsUnit a) (hb : b 
   obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one h2 h1
   exact ⟨n, Ideal.mem_span_singleton.2 (hv.le_iff_dvd.1 (by rw [map_pow, map_pow]; exact hn.le))⟩
 
+/- English proof (translation)
+Set `W` to `v.valuationSubring`. Establish `hW : v.Integers W` using `Valuation.valuationSubring.integers v`. Set `f : O →+* W` to `(algebraMap O C).codRestrict W hv.map_le_one`. Establish `hf : Function.Bijective f` using `⟨fun a b h => hv.hom_inj (congrArg Subtype.val h), fun w => by`. Take `⟨a, ha⟩` from `hv.exists_of_le_one (r := (w : C)) w.2`.
+
+Conclude with `⟨a, Subtype.ext ha⟩⟩`. Set `e` to `RingEquiv.ofBijective f hf`. Use `letI : Algebra W O := e.symm.toRingHom.toAlgebra`. Use `letI : Algebra W A := ((algebraMap O A).comp e.symm.toRingHom).toAlgebra`. Use `haveI : IsScalarTower W O A := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : Module.Finite W O := Module.Finite.of_surjective (Algebra.linearMap W O) e.symm.surjective`. Use `haveI : Module.Finite W A := Module.Finite.trans O A`. Set `aug' : A →ₐ[W] W` to `⟨e.toRingHom.comp aug.toRingHom, fun w => by show e (aug (algebraMap O A (e.symm w))) = w`. Rewrite using `[aug.commutes]`. Conclude with `e.apply_symm_apply w⟩`.
+
+Establish `hk : RingHom.ker aug' = RingHom.ker aug` using `Ideal.ext fun a => map_eq_zero_iff e e.injective`. Take `⟨s, h1, h2, h3⟩` from `GlobalTheory.finite_augmented_connected_part_localisation C W (p : W) (fun a ha => exists_pow_mem hW ha (Nat.cast_ne_zero.2 hp)) A aug'`. Rewrite `h2` using `[hk, map_natCast]`. Use `⟨s, h1, h2, fun R _ _ w hw => ?_⟩` and prove the remaining obligations. Use `letI : Algebra W R := ((algebraMap O R).comp e.symm.toRingHom).toAlgebra`.
+
+Conclude with `h3 R ⟨w.toRingHom, fun a => w.commutes _⟩ (hk ▸ hw)`.
+-/
 theorem exists_localisation [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (hp : p ≠ 0) (A : Type) [CommRing A]
     [Algebra O A] [Module.Finite O A] (aug : A →ₐ[O] O) :
     ∃ s : A, Function.Surjective (algebraMap A (Localization.Away s)) ∧
@@ -99,6 +126,27 @@ theorem exists_localisation [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (hp
   letI : Algebra W R := ((algebraMap O R).comp e.symm.toRingHom).toAlgebra
   exact h3 R ⟨w.toRingHom, fun a => w.commutes _⟩ (hk ▸ hw)
 
+/- English proof (translation)
+Establish `hinj` using `hv.hom_inj`. Establish `: IsDomain O` using `hinj.isDomain _`. Use `ValuationRing.of_integers v hv` as an intermediate fact. Establish `hred` using `isReduced_torsion_geometric_fibre O C G N (Nat.cast_ne_zero.2 hN) hfi`. Take `⟨A, _, _, hfin, hfree, ⟨i⟩⟩` from `exists_finite_free (torsion G N)`.
+
+Take `⟨aug, haug⟩` from `exists_ptMap (torsionLift (1 : specO O O ⟶ G) (one_pow N) ≫ i.inv)`. Establish `haug' : ptMap aug ≫ i.hom ≫ torsion.ι G N = 1`. Rewrite using `[← haug, Category.assoc, Iso.inv_hom_id_assoc, torsionLift_ι]`. Take `⟨s, hs, ⟨m, hm⟩, hu⟩` from `exists_localisation hv hp A aug`. Set `loc` to `IsScalarTower.toAlgHom O A (Localization.Away s)`.
+
+Establish `lift : ∀ (R : Type) [CommRing R] [Algebra O R] (w : A →ₐ[O] R), (∀ t ∈ RingHom.ker aug, IsNilpotent (w t)) → ∃ w' : Localization.Away s →ₐ[O] R, w'.comp loc = w` using `fun R _ _ w hw => ⟨IsLocalization.Away.liftAlgHom s (hu R w hw), AlgHom.ext fun a => IsLocalization.Away.lift_eq s (hu R w hw) a⟩`. Establish `: Module.Finite O (Localization.Away s)` using `Module.Finite.of_surjective loc.toLinearMap hs`. Establish `: Module.Flat A (Localization.Away s)` using `IsLocalization.flat _ (Submonoid.powers s)`. Establish `: Module.Flat O (Localization.Away s)` using `Module.Flat.trans O A _`. Use `⟨Localization.Away s, inferInstance, inferInstance, ptMap loc ≫ i.hom, _, m, inferInstance, inferInstance, fun a b h => ?_, ?_, hm, fun R _ _ w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `: IsIso i.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map i.hom))`. Establish `: IsOpenImmersion (ptMap loc).left` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away s)))))`. Establish `: IsOpenImmersion (ptMap loc ≫ i.hom).left` using `by rw [Over.comp_left]; infer_instance`. Establish `: IsOpenImmersion (specO O C ◁ (ptMap loc ≫ i.hom)).left`. Rewrite using `[Over.whiskerLeft_left]`.
+
+Conclude with `MorphismProperty.pullbackMap (P := @IsOpenImmersion) inferInstance this (by simp) (Over.w _).symm`. Establish `h3` using `isReduced_of_isOpenImmersion (specO O C ◁ (ptMap loc ≫ i.hom)).left`. Establish `h4 : IsReduced (Spec (CommRingCat.of (C ⊗[O] Localization.Away s)))` using `@isReduced_of_isOpenImmersion _ _ (pullbackSpecIso O C _).inv _ h3`. Establish `hA : _root_.IsReduced (C ⊗[O] Localization.Away s)` using `(affine_isReduced_iff _).mp h4`. Use `sub_eq_zero.1 (FlatPoints.eq_zero_of_forall_point O C hinj _ _ fun x => ?_)` and prove the remaining obligations.
+
+Use `choose g hg using fun a => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 ((Algebra.IsIntegral.isIntegral (R := O) a).map x))`. Use `h { toFun := g map_one' := hinj (by simp [hg]) map_mul' := fun a b => hinj (by simp [hg]) map_zero' := hinj (by simp [hg]) map_add' := fun a b => hinj (by simp [hg]) commutes' := fun r => hinj (by simp [hg]) }` as an intermediate fact. Rewrite using `[map_sub, ← hg, ← hg, show g a = g b from this, sub_self]`. Establish `e : (Ideal.Quotient.mkₐ O ((RingHom.ker aug).map (algebraMap A (Localization.Away s)))).comp loc = (Algebra.ofId O _).comp aug` using `AlgHom.ext fun a => by show Ideal.Quotient.mk _ (algebraMap A _ a) = Ideal.Quotient.mk _ (algebraMap O _ (aug a))`. Rewrite using `[Ideal.Quotient.eq, IsScalarTower.algebraMap_apply O A, ← map_sub]`.
+
+Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Use `show aug _ = 0`. Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `sub_self _`. Rewrite using `[Category.assoc, ← Category.assoc, ptMap_comp_ptMap, e, ← ptMap_comp_ptMap, Category.assoc, haug', MonObj.comp_one]`.
+
+Take `⟨ψ, hψ⟩` from `exists_ptMap (w ≫ i.inv)`. Establish `e : (TrivSqZeroExt.fstHom O R R).comp ψ = (Algebra.ofId O R).comp aug`. Apply `SeriesCharacter.ptMap_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono i.hom]`. Apply `torsion_hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[← ptMap_comp_ptMap, ← ptMap_comp_ptMap, ← hψ]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[hw, haug', MonObj.comp_one]`. Take `⟨ψ', hψ'⟩` from `lift _ ψ fun t ht => by`. Rewrite using `[TrivSqZeroExt.isNilpotent_iff_isNilpotent_fst, show (ψ t).fst = 0 from (AlgHom.congr_fun e t).trans (by rw [AlgHom.comp_apply, show aug t = 0 from ht, map_zero])]`.
+
+Conclude with `IsNilpotent.zero`. Use `⟨ψ', ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ptMap_comp_ptMap, hψ', ← hψ, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 theorem exists_connected_part [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (hp : p ≠ 0)
     (G : Over (Sp O)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (hN : N ≠ 0) [hfi : IsFinite (torsion G N).hom]
     [Flat (torsion G N).hom] :
@@ -173,6 +221,11 @@ theorem exists_connected_part [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (
     refine ⟨ψ', ?_⟩
     rw [← Category.assoc, ptMap_comp_ptMap, hψ', ← hψ, Category.assoc, Iso.inv_hom_id, Category.comp_id]
 
+/- English proof (translation)
+Establish `h1 : ∀ n, 1 ≤ p ^ n` using `fun n => Nat.pos_of_ne_zero (pow_ne_zero n hp)`. Establish `H` using `fun n : ℕ => torsionCharacter_ext_and_exists_of_integral_points C v O hv G (p ^ n) (h1 n) (hG _ (h1 n)).1 (hG _ (h1 n)).2`. Use `choose g hg hgκ using fun n => (H n).2 κ fun x y _ _ => map_mul κ x y`. Use `⟨⟨g, hg, fun m T x y hxy => ?_⟩, hgκ⟩` and prove the remaining obligations. Establish `hι : torsion.ι G (p ^ m) ^ (p ^ (m + 1)) = 1`.
+
+Rewrite using `[pow_succ, pow_mul, torsionι_pow, one_pow]`. Establish `hy : y = x ≫ torsionLift _ hι` using `torsion_hom_ext (by rw [Category.assoc, torsionLift_ι, hxy])`. Establish `: g m = torsionLift _ hι ≫ g (m + 1)` using `(H m).1 _ _ fun w => unitOf_bijective.1 (Units.ext (hv.hom_inj (by`. Rewrite using `[← Category.assoc, hgκ, hgκ, Category.assoc, torsionLift_ι])))`. Rewrite using `[hy, this, Category.assoc]`.
+-/
 theorem exists_tv [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (hp : p ≠ 0)
     (G : Over (Sp O)) [GrpObj G] [IsCommMonObj G]
     (hG : ∀ N, 1 ≤ N → IsFinite (torsion G N).hom ∧ Flat (torsion G N).hom) (κ : (specO O O ⟶ G) →* Cˣ) :
@@ -206,11 +259,17 @@ def LimOf {A : Type} [CommRing A] [Algebra O A] (g : specO O A ⟶ G) (k : A) : 
 
 variable {Val}
 
+/- English proof (translation)
+Introduce `R _ _ θ' hp` and use `by rw [← Category.assoc, ptMap_comp_ptMap] exact h R (θ'.comp θ) hp`.
+-/
 theorem LimOf.map {A B : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra O B] {g : specO O A ⟶ G} {k : A}
     (h : LimOf p Val g k) (θ : A →ₐ[O] B) : LimOf p Val (ptMap θ ≫ g) (θ k) := fun R _ _ θ' hp => by
   rw [← Category.assoc, ptMap_comp_ptMap]
   exact h R (θ'.comp θ) hp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, by rw [← map_natCast (Ideal.Quotient.mk _), ← map_pow] exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) n)⟩`.
+-/
 theorem nilpotent_quot {A : Type} [CommRing A] (n : ℕ) : IsNilpotent (p : A ⧸ Ideal.span {(p : A)} ^ n) :=
   ⟨n, by
     rw [← map_natCast (Ideal.Quotient.mk _), ← map_pow]
@@ -226,6 +285,17 @@ variable [GrpObj G]
     ∀ g, ptMap (Ideal.Quotient.mkₐ O I) ≫ g = 1 → ∃ k, Val R g k)
 
 include hmap huniq hex in
+/- English proof (translation)
+Set `P : Ideal A` to `Ideal.span {(p : A)}`. Establish `ex : ∀ e : ℕ, ∃ k, Val _ (ptMap (Ideal.Quotient.mkₐ O (P ^ (e + 1))) ≫ g) k` using `fun e => by`. Set `θ` to `Ideal.Quotient.mkₐ O (P ^ (e + 1))`. Use `hex _ (nilpotent_quot _) (I.map θ) ⟨m * (e + 1), eq_bot_iff.2 ?_⟩ _ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap, pow_mul]`.
+
+Conclude with `(Ideal.pow_right_mono hI _).trans fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `e1 : (Ideal.Quotient.mkₐ O (I.map θ)).comp θ = (Ideal.quotientMapₐ (I.map θ) θ Ideal.le_comap_map).comp (Ideal.Quotient.mkₐ O I)` using `rfl`. Rewrite using `[← Category.assoc, ptMap_comp_ptMap, e1, ← ptMap_comp_ptMap, Category.assoc, hg, MonObj.comp_one]`. Use `choose k hk using ex`. Take `⟨k₀, hk₀⟩` from `SeriesValue.exists_lim P k fun e => by`.
+
+Use `hmap _ _ (Ideal.Quotient.factorₐ O (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)))) _ _ (hk (e + 1))` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ptMap_comp_ptMap]`. Conclude with `huniq _ _ _ _ this (hk e)`. Use `⟨k₀, fun R _ _ θ ⟨n, hn⟩ => ?_⟩` and prove the remaining obligations. Set `θ' : (A ⧸ P ^ (n + 1)) →ₐ[O] R` to `Ideal.Quotient.liftₐ _ θ fun a ha => by`.
+
+Rewrite `ha` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `ha`. Rewrite using `[map_mul, map_pow, map_natCast, pow_succ, hn, zero_mul, mul_zero]`. Use `hmap _ _ θ' _ _ (hk n)` as an intermediate fact. Rewrite `this` using `[← Category.assoc, ptMap_comp_ptMap, ← hk₀]`.
+
+Conclude with `this`.
+-/
 theorem exists_limOf {A : Type} [CommRing A] [Algebra O A] [IsPrecomplete (Ideal.span {(p : A)}) A] (I : Ideal A)
     {m : ℕ} (hI : I ^ m ≤ Ideal.span {(p : A)}) (g : specO O A ⟶ G)
     (hg : ptMap (Ideal.Quotient.mkₐ O I) ≫ g = 1) : ∃ k, LimOf p Val g k := by
@@ -254,6 +324,19 @@ theorem exists_limOf {A : Type} [CommRing A] [Algebra O A] [IsPrecomplete (Ideal
 
 include hmap huniq hone hmul hex in
 
+/- English proof (translation)
+Establish `: IsDomain O` using `hv.hom_inj.isDomain _`. Use `ValuationRing.of_integers v hv` as an intermediate fact. Take `⟨κ, hκ⟩` from `exists_character_of_rel (N := specO O O ⟶ G) (F := C) (fun g c => ∃ k : O, LimOf p Val g k ∧ c = algebraMap O C k) ⟨1, fun R _ _ θ hR => by rw [MonObj.comp_one, map_one]; exact hone R hR, (map_one _).symm⟩ (by`. Introduce and unpack `g g' _ _ ⟨k, hk, rfl⟩ ⟨k', hk', rfl⟩`. Use `⟨k * k', fun R _ _ θ hR => ?_, (map_mul _ _ _).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[MonObj.comp_mul, map_mul]`. Conclude with `hmul _ _ _ _ _ (hk R θ hR) (hk' R θ hR))`. Use the proof step `(by`. Introduce and unpack `g _ _ ⟨k, hk, rfl⟩ ⟨k', hk', rfl⟩`. Use `congrArg _ (sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => ?_))` and prove the remaining obligations.
+
+Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.Quotient.eq.1 (huniq _ _ _ _ (hk _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot n)) (hk' _ (Ideal.Quotient.mkₐ O _) (nilpotent_quot n))))`. Take `⟨χ, hχ⟩` from `exists_tv hv hp G hG κ`. Use `⟨χ, fun n R _ _ hR w hw k hk => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hG (p ^ n) (Nat.pos_of_ne_zero (pow_ne_zero n hp))`.
+
+Take `⟨A, _, _, X, I, m, _, _, hsep, hX, hI, hl⟩` from `exists_connected_part hv hp G (p ^ n) (pow_ne_zero n hp)`. Establish `hAc : IsAdicComplete (Ideal.span {(p : A)}) A`. Use `FlatComplete.isAdicComplete_of_finite_flat _ _ hc A` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `exists_limOf hmap huniq hex I hI _ hX`.
+
+Establish `e : (unitOf (X ≫ χ.χ n) : A) = a` using `hsep _ _ fun φ => hv.hom_inj (by`. Rewrite using `[← unitOf_ptMap, ← Category.assoc, hχ, Category.assoc]`. Use `hκ _ _ (p ^ n) (pow_ne_zero n hp) ?_ ⟨_, ha.map φ, rfl⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, MonObj.comp_one])`. Take `⟨ψ, rfl⟩` from `hl R w hw`.
+
+Rewrite using `[Category.assoc, unitOf_ptMap, e]`. Rewrite `hk` using `[Category.assoc]`. Use `huniq _ _ _ _ (ha _ ψ ⟨n, ?_⟩) hk` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap R (DualNumber R)), ← map_pow, hR, map_zero]`.
+-/
 theorem exists_tv_of_values {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C ℝ≥0} [Algebra O C]
     (hv : v.Integers O) (hp : p ≠ 0) [hc : IsAdicComplete (Ideal.span {(p : O)}) O] [IsCommMonObj G]
     (hG : ∀ N, 1 ≤ N → IsFinite (torsion G N).hom ∧ Flat (torsion G N).hom) :
@@ -309,13 +392,22 @@ def pushV (y : specO O R ⟶ G') : specV (algebraMap V O) R ⟶ G :=
   haveI : IsScalarTower V O R := IsScalarTower.of_algebraMap_eq fun _ => rfl
   push hπ y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pushV_left (y : specO O R ⟶ G') : (pushV hπ y).left = y.left ≫ π := rfl
 
+/- English proof (translation)
+The claim follows from `letI : Algebra V R := ((algebraMap O R).comp (algebraMap V O)).toAlgebra haveI : IsScalarTower V O R := IsScalarTower.of_algebraMap_eq fun _ => rfl push_mul hπ y z`.
+-/
 theorem pushV_mul (y z : specO O R ⟶ G') : pushV hπ (y * z) = pushV hπ y * pushV hπ z :=
   letI : Algebra V R := ((algebraMap O R).comp (algebraMap V O)).toAlgebra
   haveI : IsScalarTower V O R := IsScalarTower.of_algebraMap_eq fun _ => rfl
   push_mul hπ y z
 
+/- English proof (translation)
+The claim follows from `letI : Algebra V R := ((algebraMap O R).comp (algebraMap V O)).toAlgebra haveI : IsScalarTower V O R := IsScalarTower.of_algebraMap_eq fun _ => rfl push_one hπ`.
+-/
 theorem pushV_one : pushV hπ (1 : specO O R ⟶ G') = 1 :=
   letI : Algebra V R := ((algebraMap O R).comp (algebraMap V O)).toAlgebra
   haveI : IsScalarTower V O R := IsScalarTower.of_algebraMap_eq fun _ => rfl
@@ -332,6 +424,11 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF (IsCh dl)
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `id hR`. Set `θ' : (R ⧸ Ideal.span {(p : R) ^ m}) →ₐ[O] R'` to `Ideal.Quotient.liftₐ _ θ fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, map_pow, map_natCast, hm, mul_zero]`. Establish `e : ptMap θ = ptMap θ' ≫ ptMap (redR p O R m)`.
+
+Rewrite using `[ptMap_comp_ptMap]`. Both sides reduce to the same expression. Rewrite using `[e, Category.assoc, Category.assoc, h m, P.cmp_nat _ _ (nilpR m)]`.
+-/
 theorem cmp_of_corr {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R']
     {x : specO O R ⟶ P.Gt} {y : specO O R ⟶ P.G} (h : Corr P x y) (θ : R →ₐ[O] R') (hR : IsNilpotent (p : R')) :
     P.cmp R' hR (ptMap θ ≫ x) = ptMap θ ≫ y := by
@@ -346,6 +443,19 @@ theorem cmp_of_corr {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Alge
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp₀ : ¬ IsUnit (p : O)` using `Fact.out`. Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => hp₀ (by`. Simplify using `using h.map (TrivSqZeroExt.fstHom O O O))`.
+
+Establish `hc` using `isAdicComplete_dualNumber (O := O) p`. Establish `hl` using `existsUnique_left (P := P) hp hc`. Establish `hr` using `existsUnique_right (P := P) hp hc`. Set `tv : (Fin d → O) → LieG P.Gt` to `fun b => ⟨(hl (Chart.tvec (x := x) b)).choose, (existsUnique_left (P := P) hp₀ inferInstance 1).unique (by`. Establish `h` using `(hl (Chart.tvec (x := x) b)).choose_spec.1.comp (TrivSqZeroExt.fstHom O O O)`.
+
+Rewrite `h` using `[show ptMap (TrivSqZeroExt.fstHom O O O) ≫ Chart.tvec (x := x) b = 1 from Chart.isTan_tvec hx b]`. Conclude with `h) Corr.one⟩`. Establish `htv : ∀ b, Corr P (tv b).1 (Chart.tvec (x` using `x) b) := fun b => (hl _).choose_spec.1`. Establish `hsurj : ∀ w, ∃ b, tv b = w` using `fun w => by`. Take `⟨y, hy, -⟩` from `hr w.1`.
+
+Establish `h` using `hy.comp (TrivSqZeroExt.fstHom O O O)`. Rewrite `h` using `[w.2]`. Establish `ht : Chart.IsTan y` using `(existsUnique_right (P := P) hp₀ inferInstance 1).unique h Corr.one`. Use `⟨Chart.tcoord hx y ht, Subtype.ext ((hl y).unique ?_ hy)⟩` and prove the remaining obligations. Establish `h2` using `htv (Chart.tcoord hx y ht)`.
+
+Rewrite `h2` using `[show Chart.tvec (x := x) (Chart.tcoord hx y ht) = y from (Chart.tcoord_spec hx y ht).symm]`. Then use the resulting hypothesis. Use `choose co hco using hsurj`. Use `⟨tv, co, hco, htv, fun f hf b => ?_⟩` and prove the remaining obligations. Set `l : (Fin d → O) →ₗ[O] O` to `{ toFun := fun c => f (tv c) map_add' := fun c c' => (congrArg f (Subtype.ext ((hl _).unique (htv (c + c')) (Chart.tvec_add hx c c' ▸ (htv c).mul (htv c'))))).trans (omega_lieAdd ⟨f, hf⟩ (tv c) (tv c')) map_smul' := fun a c => (congrArg f (Subtype.ext ((hl _).unique (htv (a • c)) …`. Use `(LinearMap.pi_apply_eq_sum_univ l b).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, mul_comm]`. Use `congrArg (fun c => f (tv c) * b j) (funext fun i => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+-/
 theorem exists_tangent_param {d : ℕ} {x : JetSer.Fam P.G (Fin d)} (hx : Chart.IsUnivChart P.G d x) :
     ∃ (tv : (Fin d → O) → LieG P.Gt) (co : LieG P.Gt → Fin d → O), (∀ w, tv (co w) = w) ∧
       (∀ b, Corr P (tv b).1 (Chart.tvec (x := x) b)) ∧
@@ -393,6 +503,19 @@ variable [IsAlgClosed C] [CharZero C] {V : Type} [CommRing V] [IsLocalRing V] [A
 
 include hπ hx hL in
 
+/- English proof (translation)
+Use `exists_tv_of_values (p := p) (Val := fun R _ _ g k => ∃ h, HasVal x u ((P.cmp R h g).left ≫ π) k) ?_ ?_ ?_ ?_ ?_ P.integers (Fact.out : p.Prime).ne_zero P.finite_flat` and prove the remaining obligations. Introduce and unpack `R R' _ _ _ _ θ g k ⟨h, hk⟩`. Establish `h' : IsNilpotent (p : R')` using `by simpa using h.map θ`. Use `⟨h', ?_⟩` and prove the remaining obligations. Rewrite using `[P.cmp_nat _ _ h, Over.comp_left, Category.assoc]`.
+
+Conclude with `hk.map θ`. Introduce and unpack `R _ _ g k k' ⟨h, hk⟩ ⟨_, hk'⟩`. Conclude with `hk.unique hx hk'`. Introduce `R _ _ h`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_one, ← pushV_left hπ, pushV_one]`. Conclude with `hasVal_one hx hu.1`. Introduce and unpack `R _ _ g g' k k' ⟨h, hk⟩ ⟨_, hk'⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← pushV_left hπ, pushV_mul]`.
+
+Establish `h2` using `hu.2`. Rewrite `h2` using `[JetSer.addOf_pt_pt]`. Conclude with `HasVal.mul hx hL h2 (g := pushV hπ (P.cmp R h g)) (g' := pushV hπ (P.cmp R h g')) hk hk'`. Introduce `R _ _ h I hI g hg`. Establish `h' : IsNilpotent (p : R ⧸ I)` using `by simpa using h.map (Ideal.Quotient.mk I)`.
+
+Establish `e : ptMap (Ideal.Quotient.mkₐ O I) ≫ P.cmp R h g = ptMap (Ideal.Quotient.mkₐ O I) ≫ 1`. Rewrite using `[← P.cmp_nat _ _ h h', hg, map_one, MonObj.comp_one]`. Take `⟨k, hk⟩` from `exists_hasVal hx u I hI (pushV hπ (P.cmp R h g)) (by`. Establish `e1` using `congrArg (·.left ≫ π) e`. Establish `e2 : (1 : specO O R ⟶ P.G).left ≫ π = _` using `congrArg (·.left) (pushV_one (R := R) hπ)`.
+
+Simplify using `only [Over.comp_left, Category.assoc] at e1`. Rewrite `e1` using `[e2]`. Conclude with `e1)`. Conclude with `⟨k, h, hk⟩`.
+-/
 theorem exists_tv_of_series {u : PS O 1 d} (hu : IsCh (L.mapF (algebraMap V O)) u) :
     ∃ χ : Tv P.Gt p, ∀ (n : ℕ) (R : Type) [CommRing R] [Algebra O R], (p : R) ^ n = 0 →
       ∀ w : specO O (DualNumber R) ⟶ torsion P.Gt (p ^ n),
@@ -433,6 +556,23 @@ theorem exists_tv_of_series {u : PS O 1 d} (hu : IsCh (L.mapF (algebraMap V O)) 
 
 include hπ hx hL in
 
+/- English proof (translation)
+Use `choose x' hx' using fun m => push_surjective hπ (Chart.spMap (jetCoeff V O (Fin d) m) ≫ x m)`. Take `⟨tv, co, hco, htv, hsum⟩` from `exists_tangent_param P (isUnivChart_baseChange hπ hx hx')`. Set `l : (Fin d → O) →ₗ[O] (LieG P.Gt → O)` to `{ toFun := fun a w => ∑ j, a j * co w j map_add' := fun a b => funext fun w => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun a b => funext fun w => by simp [Finset.mul_sum, _root_.mul_assoc] }`. Introduce `f hf`. Establish `e : f = l fun j => f (tv (Pi.single j 1))` using `funext fun w => by`.
+
+Rewrite using `[← hco w, hsum f hf]`. Use `show _ = ∑ j, _ * co (tv (co w)) j`. Rewrite using `[hco]`. Establish `h` using `Submodule.mem_map_of_mem (f := l) (hc fun j => f (tv (Pi.single j 1)))`. Rewrite `h` using `[map_smul, ← e, Submodule.map_span]`.
+
+Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Take `⟨χ, hχ⟩` from `exists_tv_of_series P hπ hx L hL (hu k)`. Establish `hal : IsAl χ (l (dl (u k)))` using `fun n R _ _ hR w z hz => by`. Establish `hn : IsNilpotent (p : DualNumber R)` using `⟨n, by rw [← map_natCast (algebraMap R (DualNumber R)), ← map_pow, hR, map_zero]⟩`.
+
+Use `hχ n R hR z (by rw [hz]; exact fst_bc R w) _ ⟨hn, ?_⟩` and prove the remaining obligations. Set `β` to `dualBC (Algebra.ofId O R)`. Set `φ : Chart.JetR V (Fin d) 1 →+* DualNumber R` to `β.toRingHom.comp ((Chart.dualLift (co w)).toRingHom.comp (jetCoeff V O (Fin d) 1).toRingHom)`. Establish `e6 : ∀ i, φ (Chart.zR 1 i) = TrivSqZeroExt.inr (algebraMap O R (co w i))` using `fun i => by show β (Chart.dualLift (co w) (jetCoeff V O (Fin d) 1 (Chart.zR 1 i))) = _`. Rewrite using `[jetCoeff_zR, Chart.dualLift_zR, dualBC_inr]`.
+
+Establish `e5 : (pushV hπ (P.cmp _ hn (z ≫ torsion.ι P.Gt (p ^ n)))).left = Spec.map (CommRingCat.ofHom φ) ≫ (x 1).left`. Establish `h1 : (x' 1).left ≫ π = _` using `congrArg (·.left) (hx' 1)`. Rewrite using `[hz, ← hco w, cmp_of_corr P (htv _), pushV_left, Chart.tvec, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, h1, Over.comp_left, ← Category.assoc, ← Category.assoc, Chart.spMap_left, Chart.spMap_left, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, …`. Both sides reduce to the same expression. Set `θ : Chart.JetR O (Fin 1 × Fin d) 1 →ₐ[O] DualNumber O` to `Chart.jetLift _ (RingHom.ker (Chart.fstD O)) Chart.kerD_sq (fun q => TrivSqZeroExt.inr (co w q.2)) (fun q => TrivSqZeroExt.fst_inr _ (co w q.2))`.
+
+Establish `hθ : ∀ q, (β.comp θ) (Chart.zR 1 q) = TrivSqZeroExt.inr (algebraMap _ R (co w q.2))` using `fun q => by`. Establish `h0 : θ (Chart.zR 1 q) = TrivSqZeroExt.inr (co w q.2)` using `Chart.jetLift_zR (RingHom.ker (Chart.fstD O)) Chart.kerD_sq _ (fun q : Fin 1 × Fin d => TrivSqZeroExt.fst_inr _ (co w q.2)) q`. Conclude with `(congrArg β h0).trans (dualBC_inr _)`. Establish `v1` using `SeriesCharacter.hasVal_of_ringHom x (u k) _ _ e5 (β.comp θ) fun q => (hθ q).trans (e6 q.2).symm`. Rewrite `v1` using `[JetSer.dualNumber_value_toJet V _ (algebraMap V O) d L (co w) (u k) R _ hθ, (hu k).1, map_one, JetSer.constantCoeff_dof]`.
+
+Establish `e7 : l (dl (u k)) w = ∑ j, co w j * MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (u k)` using `show ∑ j, dl (u k) j * co w j = ∑ j, co w j * dl (u k) j from Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e7]`. Conclude with `v1`. Take `⟨g, ⟨hg, hg'⟩, -⟩` from `existsUnique_isAl χ`. Establish `e : l (dl (u k)) = g` using `funext fun w => eq_of_forall (p := p) fun n => by`.
+
+Rewrite using `[(isAl_iff χ _).1 hal w n _ (pow_quot n), (isAl_iff χ g).1 hg' w n _ (pow_quot n)]`. Conclude with `⟨e ▸ hg, χ, hal⟩`.
+-/
 theorem smul_mem_htSpan {N : ℕ} {u : Fin N → PS O 1 d} (hu : ∀ k, IsCh (L.mapF (algebraMap V O)) (u k)) {c : O}
     (hc : ∀ f : Fin d → O, c • f ∈ Submodule.span O (Set.range fun k => dl (u k))) :
     ∀ f ∈ omega P.Gt, c • f ∈ htSpan P.Gt p := by
@@ -491,6 +631,15 @@ theorem smul_mem_htSpan {N : ℕ} {u : Fin N → PS O 1 d} (hu : ∀ k, IsCh (L.
 
 end Point
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `letI := f.toAlgebra`. Use `letI : Algebra V C := ((algebraMap O C).comp f).toAlgebra`. Use `haveI : IsScalarTower V O C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite V W := hfin`.
+
+Use `haveI : FaithfulSMul V W := (faithfulSMul_iff_algebraMap_injective _ _).2 hφ`. Use `haveI : FaithfulSMul V C := (faithfulSMul_iff_algebraMap_injective _ _).2 (hv.hom_inj.comp hf)`. Set `j : W →ₐ[V] C` to `IsAlgClosed.lift`. Establish `hinj` using `hv.hom_inj`. Use `choose g hg using fun a => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 (((Algebra.IsIntegral.isIntegral (R := V) a).map j).tower_top (A := O)))`.
+
+Set `g' : W →+* O` to `{ toFun := g map_one' := hinj (by simp [hg]) map_mul' := fun a b => hinj (by simp [hg]) map_zero' := hinj (by simp [hg]) map_add' := fun a b => hinj (by simp [hg]) }`. Use `⟨g', RingHom.ext fun a => hinj ((hg _).trans (j.commutes a)), ⟨fun a ha => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨n, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (Nat.cast_ne_zero.2 hp : (p : W) ≠ 0) hϖ`.
+
+Establish `h1 : ϖ ∣ a` using `Ideal.mem_span_singleton.1 (hϖ.maximalIdeal_eq ▸ hn)`. Establish `h2 : IsUnit (g' ϖ)` using `isUnit_of_dvd_unit (map_dvd g' h1) ha`. Use `hO ?_` and prove the remaining obligations. Rewrite using `[← map_natCast g', hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map g').mul (h2.pow n)`.
+-/
 theorem exists_local_extension {p : ℕ} (hp : p ≠ 0) {C : Type} [Field C] [IsAlgClosed C] {v : Valuation C ℝ≥0} {O : Type}
     [CommRing O] [Algebra O C] (hv : v.Integers O) (hO : ¬ IsUnit (p : O)) {V W : Type} [CommRing V] [IsDomain V]
     [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CharZero W] (f : V →+* O) (hf : Function.Injective f)
@@ -529,6 +678,15 @@ namespace GlobalTheory.CompHt
 
 open FormalChar
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p hp C _ _ _ v O _ _ hO _ _ _ _ _ T io y₀ hy k kO P ψ hP`. Take `⟨hk, G, t', m₁, m₂, π, -, hπ, -⟩` from `hP`. Take `⟨T', φ, t, m, hφ, hfin, -, -, U, -⟩` from `UnifAfterExt.exists_finite_ext_uniformised E H Dw l Xo T G t' m₂ _ m₁ hy`. Establish `hkO : Function.Injective kO` using `fun a b h => IsFractionRing.injective T.V T.Fr (k.injective (by`. Rewrite using `[← hk, ← hk, h]))`.
+
+Take `⟨g, hg, hloc⟩` from `exists_local_extension hp.out.ne_zero P.integers hO.out kO hkO φ hφ hfin`. Use `letI := g.toAlgebra`. Establish `e : spMap g ≫ spMap φ = spMap kO` using `by rw [spMap_spMap, hg]`. Establish `w : π ≫ G.G.hom = (P.G.hom ≫ spMap g) ≫ spMap φ` using `by rw [Category.assoc, e, hπ.1.w]`. Establish `hπ' : IsGrpPullback P.G t.G (spMap g) (m.cart.1.lift π _ w)` using `m.cart.cancel (hπ.congr e.symm (m.cart.1.lift_fst _ _ _).symm) (m.cart.1.lift_snd _ _ _)`.
+
+Use `haveI := t.semi.smooth`. Take `⟨d, x, hx⟩` from `Chart.univChartLoc t.G`. Take `⟨F, hF⟩` from `(JetSer.lawSt_of JetSer.jetAlg (JetSer.repSt_of_jetAlgSt JetSer.jetAlg) _ t.G d x hx).1`. Take `⟨x', hx'⟩` from `ChartCharacter.exists_isChartJ t.G x hx F hF`. Take `⟨N, u, hu, hspan⟩` from `ChF.hodgeTate_inclusion_chart p T'.V (fun h => hO.out (by simpa using h.map g)) t.G U.D U.A U.U.toUnifPre d F x' hx' C v O P.integers g hloc`.
+
+Introduce `a ha`. Conclude with `smul_mem_htSpan P hπ' hx F hF hu (hspan a (by rwa [map_natCast]))`.
+-/
 theorem htChar_of_pointOver : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] [StarRing (𝓞 E)] (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), y₀.IsAlg → ∀ (k : T.Fr →+* C) (kO : T.V →+* O) (P : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left), (letI := io.toAlgebra; PointOver P y₀.1.x k kO ψ) → HTChar p v P.Gt := by
   intro E _ _ _ H Dw l Xo c p hp C _ _ _ v O _ _ hO _ _ _ _ _ T io y₀ hy k kO P ψ hP
   obtain ⟨hk, G, t', m₁, m₂, π, -, hπ, -⟩ := hP

@@ -5,6 +5,19 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu.EtFromConn
 
+/- English proof (translation)
+Introduce `p _ B k _ _ _ G H hG hH f l`. Unfold `IsTr`. Use `letI : Algebra k k := (RingHom.id k).toAlgebra`. Establish `hd` using `dual_conn hH`. Establish `hd'` using `dual_conn hG`.
+
+Establish `hb : (H.dual.baseChange k).IsConn` using `(baseChange_isConn_isEt p k k H.dual).1 hd`. Set `φ : H.dual ⟶ H.dual.baseChange k` to `SemiHom.lift (SemiHom.ofHom (𝟙 H.dual))`. Establish `hφ : ∀ x, B.smap hd hb (SemiHom.ofHom φ) (B.smap hb hd (H.dual.toBase k) x) = x`. Introduce `x`. Rewrite using `[← B.smap_comp hd hb hd (H.dual.toBase k) (SemiHom.ofHom φ) (SemiHom.ofHom (𝟙 _)), B.smap_id]`.
+
+Introduce `n a`. Conclude with `((SemiHom.lift_app _ n 1 a).trans (one_smul _ _)).symm`. Use `⟨hb, l ∘ₗ B.map hd hb φ, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l (B.smap hd hb (SemiHom.ofHom φ) (B.smap hb hd (H.dual.toBase k) x)) = _`. Rewrite using `[hφ, WittVector.map_id, RingHom.id_apply]`.
+
+Establish `hc : ∀ n a, (SemiHom.ofHom ((PerfdLat.dualBaseChange k H).inv ≫ dualHom G (H.baseChange k) (SemiHom.ofHom f).lift)).app n a = (H.dual.toBase k).app n ((SemiHom.ofHom (dualHom G H f)).app n a)`. Introduce `n a`. Express the relevant statement in the definitionally equal form `(CartierDual.baseChange k k (H.A n)).symm (CartierDual.map ((SemiHom.ofHom f).lift.app n) a) = (1 : k) ⊗ₜ CartierDual.map (f.app n) a`. Apply `EquivLike.injective (CartierDual.baseChange k k (H.A n))` to reduce the goal to its premises. Rewrite using `[BialgEquiv.apply_symm_apply]`.
+
+Use `WithConv.ext (TensorProduct.AlgebraTensorModule.ext fun b m => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[SemiHom.lift_app, SemiHom.ofHom_app, map_smul, smul_eq_mul, mul_comm]`. Establish `key` using `B.smap_comp hb hd hd' (SemiHom.ofHom (dualHom G H f)) (H.dual.toBase k) _ hc y`. Express the relevant statement in the definitionally equal form `l (B.map hd hd' (dualHom G H f) y) = l (B.smap hd hb (SemiHom.ofHom φ) (B.smap hb hd' _ y))`.
+
+Rewrite using `[key, hφ]`. Both sides reduce to the same expression.
+-/
 theorem isTr_ofHom : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn)) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (hG : G.IsEt) (hH : H.IsEt) (f : G ⟶ H) (l : Mod B H hH), IsTr B (RingHom.id k) hG hH (SemiHom.ofHom f) l (l ∘ₗ B.map (dual_conn hH) (dual_conn hG) (dualHom G H f)) := by
   intro p _ B k _ _ _ G H hG hH f l
   unfold IsTr

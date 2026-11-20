@@ -24,6 +24,19 @@ end GlobalTheory.RoadU.UnrTwist
 
 namespace GlobalTheory.RoadU
 open GlobalTheory.RoadU.UnrTwist in
+/- English proof (translation)
+Introduce `_ hcsd E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w hw B hB hl`. Take `⟨κ, m, hκ, hu, hS'⟩` from `GlobalTheory.GoodCsdTwist.exists_goodCsd_twist GlobalTheory.automorphicFormsFiniteGL E l a ha π χ hS w hw`. Take `⟨art, hart, H⟩` from `GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter GlobalTheory.globalArtinReciprocity_holds E Ω`. Take `⟨μ, ⟨hμc, hμ⟩, -⟩` from `H l ι κ m (isAlgPos_of_isAlg hκ)`. Establish `hrv : Continuous fun g => ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))` using `Units.continuous_val.comp hr.1`.
+
+Establish `htv : Continuous fun g => ((UpperTheory.V.Af.tw r μ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))`. Simplify using `only [UpperTheory.V.Af.tw_val]`. Conclude with `(Units.continuous_val.comp hμc).smul hrv`. Establish `htc : Continuous (UpperTheory.V.Af.tw r μ)`. Use `Units.continuous_iff.2 ⟨htv, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [← map_inv]`. Conclude with `htv.comp continuous_inv`. Establish `hT : Weak (π.twist κ) ι (UpperTheory.V.Af.tw r μ)` using `⟨htc, UpperTheory.V.Af.Cq.attTwist E Ω l ι a r π hr.2 art κ m μ hart hμ⟩`. Establish `hB' : (CG.mk (π.twist κ)).HasSat w (B.map (· * κ.val w))`. Rewrite `hB`, the goal using `[CG.hasSat_mk]`.
+
+Conclude with `GlobalTheory.SphGal.hasSatGL_twist E a π κ w B hu hB`. Establish `hc : UpperTheory.V.Af.FrobEig ι (UpperTheory.V.Af.tw r μ) w (UpperTheory.V.Af.algSat a (normV w) (B.map (· * κ.val w)))` using `hcsd E Ω l ι a ha (π.twist κ) (quadChar E ^ a) hS' (UpperTheory.V.Af.tw r μ) hT w hw _ hB' hl`. Establish `hce : UpperTheory.V.Af.Bc.CharEig ι μ⁻¹ w ((κ.val w : ℂ))⁻¹`. Use `fun A hA => ⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, (hμ.unr_iff hart (Or.inl hl) hA).2 hu s hs, inv_one]`.
+
+Rewrite using `[MonoidHom.inv_apply, map_inv, inv_inv, hμ.frob_unr hart (Or.inl hl) hu hA hσ, map_inv₀, RingEquiv.apply_symm_apply]`. Establish `h2` using `UpperTheory.frobenius_eigenvalues_twist E Ω l ι a _ μ⁻¹ w _ _ hc hce`. Rewrite `h2` using `[tw_tw_inv]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [algSat_eq', Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_good_unr : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .csd .unr → SphericalLevelCondition .good .unr := by
   intro _ hcsd E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w hw B hB hl
   obtain ⟨κ, m, hκ, hu, hS'⟩ := GlobalTheory.GoodCsdTwist.exists_goodCsd_twist GlobalTheory.automorphicFormsFiniteGL E l a ha π χ hS w hw
@@ -69,6 +82,27 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `hI hC E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B hB`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hA` using `hI.hk`. Take `⟨κ, m, hκ, hu, hcs⟩` from `GlobalTheory.T.exists_good_conjSelfDual_twist_split_unramified hF E l a ha π χ hs w hw`. Take `⟨art, hart, hμ⟩` from `(GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt GlobalTheory.globalArtinReciprocity_holds).1 E Ω`.
+
+Establish `hκp : GlobalTheory.HeckeGal.IsAlgPos κ m` using `GlobalTheory.HeckeGal.isAlgPos_of_isAlg hκ`. Take `⟨μ, ⟨hμc, hL⟩, -⟩` from `hμ l ι κ m hκp`. Establish `htc : Continuous (UpperTheory.V.Af.tw r μ)` using `UpperTheory.galoisRep_irreducibility_criterion.2 _ _ a r μ hr.1 hμc`. Establish `hW : Weak (π.twist κ) ι (UpperTheory.V.Af.tw r μ)` using `⟨htc, UpperTheory.V.Af.Cq.attTwist E Ω l ι a r π hr.2 art κ m μ hart hL⟩`. Establish `hB' : (CG.mk (π.twist κ)).HasSat w (B.map (· * κ.val w))`.
+
+Rewrite `hB`, the goal using `[CG.hasSat_mk]`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist E a π κ w B hu hB`. Establish `hcl : ClauseAt .dR (π.twist κ) ι (UpperTheory.V.Af.tw r μ) w` using `hC E Ω l ι a ha (π.twist κ) _ hcs (UpperTheory.V.Af.tw r μ) hW w hw _ hB'`. Use `show ClauseAt .dR π ι r w`. Introduce `P AI hT A hAw O _ _ _ Bw hj`.
+
+Take `⟨hdR', hJ'⟩` from `hcl P AI hT A hAw O Bw hj`. Establish `hμic : Continuous (μ⁻¹)` using `hμc.inv`. Establish `hch` using `GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 hA E Ω l P AI hT ι art hart κ⁻¹ (-m) μ⁻¹ (GlobalTheory.GalChar.isAlgPos_inv hκp) hμic hL.inv w A hAw O Bw hj`. Establish `key` using `GlobalTheory.TwistAbove.twist_above l P AI hT E Ω (Dec (F := E) A) O Bw a ((UpperTheory.V.Af.tw r μ).comp (Dec (F := E) A).subtype) (r.comp (Dec (F := E) A).subtype) (μ⁻¹.comp (Dec (F := E) A).subtype) (fun g => by`. Express the relevant statement in the definitionally equal form `((r g.1 : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)) = (((μ g.1)⁻¹ : (Qbar l)ˣ) : Qbar l) • ((UpperTheory.V.Af.tw r μ g.1 : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))`.
+
+Rewrite using `[UpperTheory.V.Af.tw_val, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul])`. Use `⟨key.1 hdR' hch.1, fun τ LL' τ' hτ J hJ => ?_⟩` and prove the remaining obligations. Use `set m0 := m (ι.toRingHom.comp τ) with hm0`. Establish `e : expo κ (ι.toRingHom.comp τ) = m0` using `(GlobalTheory.CuspRep.InfType.expo_of_infType E κ).1 m hκ _`. Establish `hinf : (CG.mk (π.twist κ)).infChar (ι.toRingHom.comp τ) = ((CG.mk π).infChar (ι.toRingHom.comp τ)).map (· + (m0 : ℂ))`.
+
+Rewrite using `[← e]`. Conclude with `((GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) _).twist κ).infChar_eq`. Establish `h1` using `hJ' τ LL' τ' hτ (J.map (· - m0)) (by`. Rewrite using `[hinf, Multiset.map_map, Multiset.map_map]`. Establish `e1 : ((CG.mk π).infChar (ι.toRingHom.comp τ)).map ((fun z : ℂ => ((a : ℂ) - 1) / 2 - z) ∘ (· + (m0 : ℂ))) = (((CG.mk π).infChar (ι.toRingHom.comp τ)).map (fun z : ℂ => ((a : ℂ) - 1) / 2 - z)).map (· - (m0 : ℂ))`.
+
+Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← hJ, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Use the proof step `ring)`. Establish `h2` using `key.2.2.2 τ _ _ h1 (hch.2.2.2 τ LL' τ' hτ)`.
+
+Establish `e2 : (J.map (· - m0)).map (· + -((-m) (ι.toRingHom.comp τ))) = J`. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id J]`. Use `Multiset.map_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Pi.neg_apply, neg_neg, id, hm0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e2]`. Conclude with `h2`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_good_dR_of_csd : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .csd .dR → SphericalLevelCondition .good .dR := by
   intro hI hC E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B hB
   have hF := GlobalTheory.automorphicFormsFiniteGL
@@ -142,6 +176,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `hI hC`. Establish `hG` using `GlobalTheory.CrysTwistBack.holds_good_crys GlobalTheory.automorphicFormsFiniteGL hI.hk (holds_csd_crys_of_holdsS hC)`. Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π χ hs r hr w hw B _`. Conclude with `hG E Ω l ι a ha π χ hs r hr w hw`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_good_crys : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .csd .crys → SphericalLevelCondition .good .crys := by
   intro hI hC
   have hG := GlobalTheory.CrysTwistBack.holds_good_crys GlobalTheory.automorphicFormsFiniteGL hI.hk (holds_csd_crys_of_holdsS hC)
@@ -174,6 +211,31 @@ end GlobalTheory.RoadU.PhiTwist
 namespace GlobalTheory.RoadU
 open GlobalTheory.GalCut.IwaTwist GlobalTheory.GalCut7.IwahoriTwist GlobalTheory.RoadU.PhiTwist UpperTheory.V UpperTheory.V.Af in
 
+/- English proof (translation)
+Introduce `hI Hc Hp E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w hw B hB`. Introduce `P AI hT A h O _ _ _ Bw hj g`. Take `⟨κ, m, hκ, hu, hS'⟩` from `GlobalTheory.GoodCsdTwist.exists_goodCsd_twist GlobalTheory.automorphicFormsFiniteGL E l a ha π χ hS w hw`. Take `⟨art, hart, hμ⟩` from `(GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter_and_principalIdealSt GlobalTheory.globalArtinReciprocity_holds).1 E Ω`. Establish `hκ'` using `isAlgPos_of_isAlg hκ`.
+
+Take `⟨μ, ⟨hμc, hL⟩, -⟩` from `hμ l ι κ m hκ'`. Establish `hcont : Continuous (tw r μ)` using `UpperTheory.galoisRep_irreducibility_criterion.2 _ _ a r μ hr.1 hμc`. Establish `hr' : Weak (π.twist κ) ι (tw r μ)` using `⟨hcont, UpperTheory.V.Af.Cq.attTwist E Ω l ι a r π hr.2 art κ m μ hart hL⟩`. Establish `hB' : (CG.mk (π.twist κ)).HasSat w (B.map (· * κ.val w))` using `CG.HasSat.twist hB hu`. Establish `C : (wdAt P ι Bw h hj ((tw r μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype)).charPol g = (satWD h a (B.map (· * κ.val w))).charPol g := Hp E Ω l ι a ha (π.twist κ) _ hS' (tw r μ) hr' w hw _ hB' P AI hT A h O Bw hj g`.
+
+Take `⟨σ, hσ, -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL E a π w`. Establish `hsph : SmGL.IsSpherical σ.ρ` using `GlobalTheory.CohomologicalConjSelfDualTempered.UnrModel.isSpherical_of_hasSatGL w a (((GlobalTheory.Cong.satake_locComp E a π w σ hσ).1 B).1 hB)`. Establish `c1 : IsCrysAt P Bw ((tw r μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := Hc E Ω l ι a ha (π.twist κ) _ hS' (tw r μ) hr' w hw _ hB' P AI hT A h O Bw hj _ (hσ.twist κ) (GlobalTheory.CrysTwistBack.isSpherical_twist_of_unr a w σ κ hu hsph)`. Take `⟨T⟩` from `hT`. Establish `c1s : IsSstAt P Bw ((tw r μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := GlobalTheory.CrysSst.isSstAt_of_isCrysAt l P AI ⟨T⟩ E Ω _ O Bw a _ c1`.
+
+Establish `hμi : IsCrysAt P Bw ((GlobalTheory.TripleGal.rk1 μ⁻¹).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := (GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 hI.hk E Ω l P AI ⟨T⟩ ι art hart κ⁻¹ (-m) μ⁻¹ (GlobalTheory.GalChar.isAlgPos_inv hκ') hμc.inv hL.inv w A h O Bw hj).2.2.1 hu.inv`. Establish `hrr : r.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype = Formalism.MainNotions.SumRepresentations.At.twGL ((tw r μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ⁻¹).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)) := by`. Use extensionality with `g i j`. Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, tw_val, GlobalTheory.TripleGal.rk1, Matrix.det_unique, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]`. Establish `hct : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => (((tw r μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) := Units.continuous_val.comp (hcont.comp continuous_subtype_val)`.
+
+Establish `hcμi : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => (((GlobalTheory.TripleGal.rk1 μ⁻¹).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Use `Units.continuous_val.comp (hμc.inv.comp (continuous_subtype_val (p := fun x => x ∈ ReciprocityTheory.Gal.Dec (F := E) A)))` as an intermediate fact.
+
+Simplify `this` using `[GlobalTheory.TripleGal.rk1, Function.comp_def]`. Establish `hsst : IsSstAt P Bw (r.comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) := by`. Rewrite using `[hrr]`. Conclude with `isSstAt_twist hI.pst P AI ⟨T⟩ Bw _ _ hct hcμi c1s hμi`. Take `⟨a', ha'⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`.
+
+Establish `hc` using `GlobalTheory.Published.ParamAboveModel.isComp_loc (w := w) κ`. Establish `hdet : Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) = μ.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype := by`. Use extensionality with `g`. Simplify using `[GlobalTheory.TripleGal.rk1, Matrix.det_unique]`. Establish `htw : (tw r μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype = Formalism.MainNotions.SumRepresentations.At.twGL (r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype) (Matrix.GeneralLinearGroup.det.comp ((GlobalTheory.TripleGal.rk1 μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)) := by`.
+
+Rewrite using `[hdet]`. Use extensionality with `g i j`. Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, tw_val, Algebra.algebraMap_eq_smul_one, Matrix.smul_apply]`. Establish `hcR : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => ((r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) := Units.continuous_val.comp (hr.1.comp continuous_subtype_val)`. Establish `hcμ : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => (((GlobalTheory.TripleGal.rk1 μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`.
+
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `fin_cases j`. Use `Units.continuous_val.comp (hμc.comp (continuous_subtype_val (p := fun x => x ∈ ReciprocityTheory.Gal.Dec (F := E) A)))` as an intermediate fact. Simplify `this` using `[GlobalTheory.TripleGal.rk1, Function.comp_def]`.
+
+Establish `hdR` using `(GlobalTheory.Published.heckeLAdicCharacterAbove_iff.1 hI.hk E Ω l P AI ⟨T⟩ ι art hart κ m μ hκ' hμc hL w A h O Bw hj).1`. Establish `hPμ` using `GlobalTheory.Published.DeRhamPotSemistable.isPstAt hI.pst T Bw _ hcμ hdR`. Establish `hP` using `isPstAt_of_isSstAt P AI ⟨T⟩ Bw _ hsst`. Establish `hP'` using `isPstAt_of_isSstAt P AI ⟨T⟩ Bw _ c1s`. Rewrite `hP'` using `[htw]`.
+
+Establish `hWD : wdAt P ι Bw h hj ((tw r μ).comp (ReciprocityTheory.Gal.Dec (F` using `E) A).subtype) = (wdAt P ι Bw h hj (r.comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype)).lpTwist ((κ.loc w).comp a') (ha'.smooth hc.1) := by`. Rewrite using `[htw, GlobalTheory.TwistParamAbove.wdAt_twist l P AI ⟨T⟩ ι E Ω A w h O Bw hj a _ _ hcR hcμ hP hPμ hP', hI.alg E Ω l P AI ⟨T⟩ ι art hart κ m μ hκ' hμc hL w A h O Bw hj _ hc a' ha', lpChar_lpOfChar]`. Establish `hsat : ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : GlobalTheory.WeilDeligne.IsSmooth (ξ.comp a')), ξ = SmGL.unrChar (w.adicCompletion E) (κ.val w) → satWD h a (B.map (· * κ.val w)) = (satWD h a B).lpTwist _ hξ`. Introduce and unpack `ξ hξ rfl`. Conclude with `satWD_map_mul h a B (κ.val w) ha' hξ`.
+
+Rewrite `C` using `[hWD, hsat (κ.loc w) (ha'.smooth hc.1) (loc_eq_unrChar κ hu)]`. Conclude with `(charPol_lpTwist_iff _ _ _ _ g).1 C`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_good_phi : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .csd .crys → SphericalLevelCondition .csd .phi → SphericalLevelCondition .good .phi := by
   intro hI Hc Hp E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w hw B hB
   intro P AI hT A h O _ _ _ Bw hj g
@@ -270,6 +332,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.UnrDescent
 
+/- English proof (translation)
+Introduce `hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB hl A h`. Establish `hAF` using `GlobalTheory.automorphicFormsFiniteGL`. Take `⟨Q, hQdec, hQsplit, hQram, hQgood⟩` from `(GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `GlobalTheory.QuadLiftBridge.quadLift hI.ac hI.js E Q.K Q.two a ha π hQram`. Take `⟨⟨χ', hsc'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hI.js hI.gk E Q.K l a ha π χ P hP hsc.all`.
+
+Establish `hscG : InScope .good l P χ'` using `⟨hsc'.1, hsc'.2.1, hQgood P hP⟩`. Establish `hrP : Weak P ι (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K))` using `GlobalTheory.GalCut.weak_comp_res E Q.K Ω l ι a π P hP r hr`. Take `⟨w', hunder, h', hN⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A h (hQdec A h)`. Establish `hB' : (CG.mk P).HasSat w' B`. Establish `e` using `hP.sat w' 1 B (by rw [pow_one, hunder, hN]) (hunder ▸ hB)`.
+
+Simplify using `using e`. Establish `hlw : ((l : ℕ) : 𝓞 Q.K) ∉ w'.asIdeal`. Introduce `hw`. Apply `hl` to reduce the goal to its premises. Establish `e1` using `(h ((l : ℕ) : 𝓞 E))`.
+
+Establish `e2` using `(h' ((l : ℕ) : 𝓞 Q.K))`. Simplify using `only [map_natCast] at e1 e2`. Conclude with `e1.1 (e2.2 hw)`. Establish `hcl` using `hG Q.K Ω l ι a ha P χ' hscG (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)) hrP w' (hQsplit w' hunder) B hB' hlw A h'`. Rewrite `hcl` using `[hN]`.
+
+Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨s', rfl⟩` from `hQdec A h (Ine_le_Dec A hs)`. Conclude with `hcl.1 s' hs`. Take `⟨σ', rfl⟩` from `hQdec A h hσ.1`. Establish `e` using `hcl.2 σ' hσ`.
+
+Rewrite using `[← map_inv]`. Conclude with `e`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_all_unr : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .good .unr → SphericalLevelCondition .all .unr := by
   intro hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB hl A h
   have hAF := GlobalTheory.automorphicFormsFiniteGL
@@ -313,6 +388,17 @@ namespace GlobalTheory.RoadU
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w _ B hB`. Establish `hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQL : QuadLift` using `GlobalTheory.QuadLiftBridge.quadLift hI.ac hI.js`. Take `⟨Q, hdec, hsplit, hram, hgood⟩` from `(GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `hQL E Q.K Q.two a ha π hram`.
+
+Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hI.js hI.gk E Q.K l a ha π χ P hP hS.all`. Establish `hrP` using `GlobalTheory.GalCut.weak_comp_res E Q.K Ω l ι a π P hP r hr`. Use `show ClauseAt .dR π ι r w`. Introduce `Pr AI hT A hA O _ _ _ Bw hj`. Establish `hdA` using `hdec A hA`.
+
+Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdA`. Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', hu, hw', hn⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A hA hdA`. Establish `hBP : (CG.mk P).HasSat w' (B.map (· ^ 1))` using `hP.sat w' 1 B (by rw [hu, pow_one]; exact hn) (by rw [hu]; exact hB)`.
+
+Establish `hc : ClauseAt .dR P ι _ w'` using `hG Q.K Ω l ι a ha P χ' ⟨hχ'.1, hχ'.2.1, hgood P hP⟩ _ hrP w' (hsplit w' hu) _ hBP`. Establish `hc'` using `hc Pr AI hT A hw' O Bw' hj'`. Establish `D` using `GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r`. Use `⟨D.1 hc'.1, fun τ LL' τ' hτ J hJ => ?_⟩` and prove the remaining obligations. Take `⟨τK, τ'', hτK, hind⟩` from `GlobalTheory.induced_embedding_extends E Ω Q.K l A O Bw Bw' e1 e2 τ LL' τ' hτ`.
+
+Establish `hJK : J.map (fun n : ℤ => (n : ℂ)) = ((CG.mk P).infChar (ι.toRingHom.comp τK)).map (fun z => ((a : ℂ) - 1) / 2 - z)`. Rewrite using `[hP.inf, RingHom.comp_assoc, hτK]`. Conclude with `hJ`. Establish `hres` using `D.2.2.2.2 τK J (hc'.2 τK LL' τ'' hind J hJK)`. Rewrite `hres` using `[hτK]`. Then use the resulting hypothesis.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_dR_all_of_good : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .good .dR → SphericalLevelCondition .all .dR := by
   intro hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hS r hr w _ B hB
   have hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL := GlobalTheory.automorphicFormsFiniteGL
@@ -355,6 +441,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `hIn hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB`. Establish `hAF` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQL : QuadLift` using `GlobalTheory.QuadLiftBridge.quadLift hIn.ac hIn.js`. Introduce `Pr AI hT A hA O _ _ _ Bw hj σ hσ hsph`. Take `⟨Q, hQ1, hQ2, hQ3, hQ4⟩` from `(GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π w).nonempty`.
+
+Take `⟨Pc, hPc⟩` from `hQL E Q.K Q.two a ha π hQ3`. Establish `hres` using `GlobalTheory.GalCut.weak_comp_res E Q.K Ω l ι a π Pc hPc r hr`. Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hIn.js hIn.gk E Q.K l a ha π χ Pc hPc hsc`. Establish `hin : InScope .good l Pc χ'` using `⟨hχ'.1, hχ'.2.1, hQ4 Pc hPc⟩`. Establish `hdec` using `hQ1 A hA`.
+
+Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdec`. Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', h', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω Q.K w A hA hdec`. Establish `hund : w'.under (𝓞 E) = w`.
+
+Use `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver hA h'` as an intermediate fact. Use `ext1`. Conclude with `this.over.symm`. Take `⟨c, -, -, hq, -⟩` from `GlobalTheory.WeilTransport.weil_equiv E Ω A w hA Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Establish `hB' : (CG.mk Pc).HasSat w' B`.
+
+Use `hPc.sat w' 1 B (by rw [pow_one, hund, hq]) (by rw [hund]; exact hB)` as an intermediate fact. Simplify using `using this`. Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp hAF Q.K a Pc w'`. Take `⟨e, he⟩` from `hPc.loc w w' i hi.cont hi.loc σ σ' hσ hσ'`. Establish `hsph'` using `(GlobalTheory.CompletionIso.iwahori_spherical_transfer E Q.K w w' i hi.cont a σ σ' e he).2 hsph`.
+
+Establish `hcr : ClauseAt .crys Pc ι (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)) w'` using `hgood Q.K Ω l ι a ha Pc χ' hin _ hres w' (hQ2 w' hund) B hB'`. Conclude with `(GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r).2.2.1 (hcr Pr AI hT A h' O Bw' hj' σ' hσ' hsph')`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_all_crys : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .good .crys → SphericalLevelCondition .all .crys := by
   intro hIn hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB
   have hAF := GlobalTheory.automorphicFormsFiniteGL
@@ -404,6 +503,23 @@ end GlobalTheory.RoadU.PhiDescent
 namespace GlobalTheory.RoadU
 open GlobalTheory.RoadU.PhiDescent in
 
+/- English proof (translation)
+Introduce `hIn _ hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB Pr AI hT A h O _ _ _ Bw hj g`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQ` using `GlobalTheory.QuadLiftBridge.quadLift hIn.ac hIn.js`. Take `⟨Q, hQdec, hQsplit, hQram, hQgood⟩` from `(GlobalTheory.T.infinite_quadraticCM_goodBaseChange_split hF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `hQ E Q.K Q.two a ha π hQram`.
+
+Take `⟨⟨χ', hsc'⟩, -⟩` from `GlobalTheory.T.polarizedPair_baseChange_polarized_same_weight hF hIn.js hIn.gk E Q.K l a ha π χ P hP hsc.all`. Establish `hsc'' : InScope .good l P χ'` using `⟨hsc'.1, hsc'.2.1, hQgood P hP⟩`. Establish `hr'` using `GlobalTheory.T.weaklyAttachedGaloisRepresentation_baseChange_restrict E Q.K Ω l ι a π P hP r hr`. Establish `hdec` using `hQdec A h`. Establish `hjK` using `GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le E Ω Q.K l A O Bw hdec`.
+
+Take `⟨Bw', e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge E Q.K Ω l A O Bw hjK`. Establish `hj' : Induces Bw'` using `fun x => by rw [e2]; exact hj x`. Take `⟨w', h', i, hi⟩` from `GlobalTheory.PlaceIsoDec.exists_placeIso_of_dec_le_range E Ω Q.K w A h hdec`. Establish `hunder : w'.under (𝓞 E) = w`. Use `GlobalTheory.PlaceIsoDec.liesOver_of_isPlaceOver h h'` as an intermediate fact.
+
+Use `ext1`. Conclude with `this.over.symm`. Take `⟨c, hc, hdegc, hq, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Take `⟨S, hS, -, -, -, -, hTw, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h Q.K Ω A w' h' (RingEquiv.refl Ω) (algebraMap E Q.K) i hi`. Establish `hB' : (CG.mk P).HasSat w' B`.
+
+Use `hP.sat w' 1 B (by rw [pow_one, hunder, hq]) (by rw [hunder]; exact hB)` as an intermediate fact. Simplify using `using this`. Establish `D` using `GlobalTheory.RealGal.dRSstCrysPstJumps_descend E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r`. Establish `hrel : WDRel (RingEquiv.refl Ω) (wdAt Pr ι Bw h hj (r.comp (Dec (F` using `E) A).subtype)) (wdAt Pr ι Bw' h' hj' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F := Q.K) A).subtype)) := by`. Distinguish the cases in `hp : IsPstAt Pr Bw (r.comp (Dec (F := E) A).subtype)`.
+
+Conclude with `GlobalTheory.RealGal.wdRelRes_gen E Ω Q.K l Pr A O Bw Bw' e1 e2 e3 a r hp ι w w' h h' hj hj' i hi`. Establish `hp' : ¬ IsPstAt Pr Bw' ((r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)).comp (Dec (F` using `Q.K) A).subtype) := fun H => hp (D.2.2.2.1 H)`. Rewrite using `[wdAt_of_not_isPstAt _ _ _ _ hp, wdAt_of_not_isPstAt _ _ _ _ hp']`. Conclude with `wdRel_trivWD h h' _ a`. Establish `hsat : WDRel (RingEquiv.refl Ω) (satWD h a B) (satWD h' a B)`.
+
+Establish `h0` using `GlobalTheory.RSGam.Transport.wdRel_lpUnr c hc hdegc (B.map fun b => ((b⁻¹ : ℂˣ) : ℂ))`. Unfold `satWD`. Rewrite using `[hS, hTw, (hS _ _).mp h0]`. Establish `hgc : WeilRel (RingEquiv.refl Ω) g (c g)` using `(hc g (c g)).2 rfl`. Establish `hcl` using `hgood Q.K Ω l ι a ha P χ' hsc'' _ hr' w' (hQsplit w' hunder) B hB' Pr AI hT A h' O Bw' hj' (c g)`.
+
+Rewrite using `[charPol_eq hrel hgc, charPol_eq hsat hgc]`. Conclude with `hcl`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.holdsS_all_phi : UpperTheory.Gal.Int.Inp.Inp → SphericalLevelCondition .good .crys → SphericalLevelCondition .good .phi → SphericalLevelCondition .all .phi := by
   intro hIn _ hgood E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB Pr AI hT A h O _ _ _ Bw hj g
   have hF := GlobalTheory.automorphicFormsFiniteGL
@@ -463,6 +579,27 @@ namespace GlobalTheory.RoadU
 
 open UpperTheory.V.Af in
 
+/- English proof (translation)
+Introduce `hIn hEx hHolds E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc`. Establish `hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQL : QuadLift` using `GlobalTheory.QuadLiftBridge.quadLift hIn.ac hIn.js`. Take `⟨hreg, hpol, -⟩` from `hsc`. Set `S : Set (GlobalTheory.RealGal.QCM E Ω)` to `{Q | ∃ P : CuspSub ↥Q.K a, IsLift π P ∧ Good l P}`.
+
+Establish `fam` using `GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π`. Establish `famS : ∀ (Q : GlobalTheory.RealGal.QCM E Ω), (∃ w : HeightOneSpectrum (𝓞 ↥Q.K), ¬ Algebra.IsUnramifiedAt (𝓞 E) w.asIdeal ∧ ∃ B, (CG.mk π).HasSat (w.under (𝓞 E)) B) → (∀ P : CuspSub ↥Q.K a, IsLift π P → Good l P) → Q ∈ S`. Introduce `Q hram hgood`. Take `⟨P, hP⟩` from `hQL E ↥Q.K Q.two a ha π hram`. Conclude with `⟨P, hP, hgood P hP⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v0⟩ : Nonempty (HeightOneSpectrum (𝓞 E)) := by`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩⟩`. Establish `hS : S.Infinite` using `(fam v0).mono fun Q hQ => famS Q hQ.2.2.1 hQ.2.2.2`. Use `choose P hP using fun Q : ↥S => Q.2`.
+
+Establish `key : ∀ Q : ↥S, ∃ (χ' : HChar (maximalRealSubfield ↥Q.1.K)) (r : G ↥Q.1.K Ω →* GL (Fin a) (Qbar l)), InScope .good l (P Q) χ' ∧ Weak (P Q) ι r` using `fun Q => by`. Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hIn.js hIn.gk E ↥Q.1.K l a ha π χ (P Q) (hP Q).1 ⟨hreg, hpol, trivial⟩`. Establish `hs : InScope .good l (P Q) χ'` using `⟨hχ'.1, hχ'.2.1, (hP Q).2⟩`. Take `⟨r, hr⟩` from `hEx ↥Q.1.K Ω l ι a ha (P Q) χ' hs`. Conclude with `⟨χ', r, hs, hr⟩`.
+
+Use `choose χ' r hχ' hr using key`. Take `⟨ρ, hρc, hρs, hev⟩` from `GlobalTheory.CMBasePatch.main hAF E Ω l ι a π S hS P r fun Q => ⟨(hP Q).1, hr Q⟩`. Use `⟨ρ, hρc, hρs, ?_⟩` and prove the remaining obligations. Use `haveI : Infinite ↥S := hS.to_subtype`. Take `⟨Q0, hQ0⟩` from `hev.exists`.
+
+Establish `hunr` using `GlobalTheory.RealGal.ConjUnr.unr_of_conj_res E Ω Q0.1 l a ρ (r Q0) hQ0 ((hr Q0).2.2.mono fun w' hw' A hA => by`. Take `⟨B, -, hF⟩` from `hw'`. Conclude with `(hF A hA).1)`. Establish `hlf : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hsat` using `GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hAF E a π`. Establish `hpick : ∀ w : HeightOneSpectrum (𝓞 E), ∃ Q : ↥S, (∀ A : ValuationSubring Ω, IsPlaceOver A w → Dec (F` using `E) A ≤ (Bc.res E Ω ↥Q.1.K).range) ∧ (∀ w' : HeightOneSpectrum (𝓞 ↥Q.1.K), w'.under (𝓞 E) = w → GlobalTheory.UnitaryBC.IsSplitAt w') ∧ RepIso (r Q) (ρ.comp (Bc.res E Ω ↥Q.1.K)) := by`.
+
+Introduce `w`. Establish `hfin` using `(Filter.eventually_cofinite.1 hev).image Subtype.val`. Take `⟨Q, hQ, hQn⟩` from `((fam w).diff hfin).nonempty`. Establish `hQS : Q ∈ S` using `famS Q hQ.2.2.1 hQ.2.2.2`. Use `⟨⟨Q, hQS⟩, hQ.1, hQ.2.1, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hQn ⟨⟨Q, hQS⟩, hc, rfl⟩`. Use `filter_upwards [hlf, hsat, hunr] with w hl hB hu`. Take `⟨B, hB⟩` from `hB`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations.
+
+Take `⟨Q, hdec, hsplit, hiso⟩` from `hpick w`. Conclude with `frobEig_of_dec ι π Q.1 (P Q) (r Q) ρ w B hl hdec (fun w' hw' hB' => hHolds ↥Q.1.K Ω l ι a ha (P Q) (χ' Q) (hχ' Q) (r Q) (hr Q) w' (hsplit w' hw') B hB') (hP Q).1 hB hiso hu`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.ex_all_of_good : UpperTheory.Gal.Int.Inp.Inp → Ex .good → SphericalLevelCondition .good .unr → Ex .all := by
   intro hIn hEx hHolds E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc
   have hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL := GlobalTheory.automorphicFormsFiniteGL
@@ -535,6 +672,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `hI hC`. Take `⟨hex, hh⟩` from `hC`. Establish `exg : Ex .good` using `GlobalTheory.GalCut.ex_good_of_ex_csd GlobalTheory.automorphicFormsFiniteGL hex`. Establish `unrg : SphericalLevelCondition .good .unr` using `UpperTheory.Gal.Int.Inp.holdsS_good_unr hI (hh .unr)`. Establish `crysg : SphericalLevelCondition .good .crys` using `UpperTheory.Gal.Int.Inp.holdsS_good_crys hI (hh .crys)`.
+
+Use `⟨UpperTheory.Gal.Int.Inp.ex_all_of_good hI exg unrg, ?_⟩` and prove the remaining obligations. Introduce `c`. Consider the cases of `c with`. Consider the case `unr => exact UpperTheory.Gal.Int.Inp.holdsS_all_unr hI unrg`. Consider the case `dR => exact UpperTheory.Gal.Int.Inp.holdsS_dR_all_of_good hI (UpperTheory.Gal.Int.Inp.holdsS_good_dR_of_csd hI (hh .dR))`.
+
+Consider the case `crys => exact UpperTheory.Gal.Int.Inp.holdsS_all_crys hI crysg`. Consider the case `phi => exact UpperTheory.Gal.Int.Inp.holdsS_all_phi hI crysg (UpperTheory.Gal.Int.Inp.holdsS_good_phi hI (hh .crys) (hh .phi))`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.coreAll_of_core_inp : UpperTheory.Gal.Int.Inp.Inp → Core → CoreAll := by
   intro hI hC
   obtain ⟨hex, hh⟩ := hC
@@ -564,6 +708,9 @@ open GlobalTheory.RoadU
 
 namespace GlobalTheory.Row9
 
+/- English proof (translation)
+Introduce `hI hR` and use `UpperTheory.Gal.Int.Inp.coreAll_of_core_inp hI (GlobalTheory.RoadW.core_of_rowStarCore hR)`.
+-/
 theorem _root_.UpperTheory.Gal.Int.Inp.coreAll_of_rowStarCore_inp : UpperTheory.Gal.Int.Inp.Inp → GlobalTheory.RoadW.RowStarCore → CoreAll :=
   fun hI hR => UpperTheory.Gal.Int.Inp.coreAll_of_core_inp hI (GlobalTheory.RoadW.core_of_rowStarCore hR)
 

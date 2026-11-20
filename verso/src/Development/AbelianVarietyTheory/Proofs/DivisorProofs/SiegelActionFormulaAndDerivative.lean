@@ -14,11 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.SiegelAffine
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `only [symPart, Submodule.coe_add, Pi.add_apply, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symPart_add' {g : ℕ} (Z W : Matrix (Fin g) (Fin g) ℂ) :
     symPart (Z + W) = symPart Z + symPart W := by
   apply Subtype.ext; funext i j
   simp only [symPart, Submodule.coe_add, Pi.add_apply, Matrix.add_apply]; ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Simplify using `only [symPart, Submodule.coe_smul, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symPart_smul' {g : ℕ} (c : ℂ) (Z : Matrix (Fin g) (Fin g) ℂ) :
     symPart (c • Z) = c • symPart Z := by
   apply Subtype.ext; funext i j
@@ -34,6 +40,11 @@ def congL {g : ℕ} (B : Matrix (Fin g) (Fin g) ℂ) : symMat g →L[ℂ] symMat
         have e : tauU (c • s) = c • tauU s := rfl
         rw [e, Matrix.mul_smul, Matrix.smul_mul, symPart_smul']; rfl }
 
+/- English proof (translation)
+Establish `hd : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hd`. Establish `h2 : (A⁻¹)ᵀ * Aᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Establish `h3 : A * (A⁻¹ * X) = X` using `by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hX' : Xᵀ = X` using `hX`.
+
+Rewrite using `[SymplecticGroup.mem_iff, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc, h1, h2, h3, hX']`.
+-/
 theorem block_mem {g : ℕ} (A X : Matrix (Fin g) (Fin g) ℝ) (hA : IsUnit A) (hX : X.IsSymm) :
     Matrix.fromBlocks A (X * (A⁻¹)ᵀ) 0 (A⁻¹)ᵀ ∈ Matrix.symplecticGroup (Fin g) ℝ := by
   have hd : IsUnit A.det := (Matrix.isUnit_iff_isUnit_det A).1 hA
@@ -45,6 +56,17 @@ theorem block_mem {g : ℕ} (A X : Matrix (Fin g) (Fin g) ℝ) (hA : IsUnit A) (
     Matrix.fromBlocks_multiply]
   simp [Matrix.mul_assoc, h1, h2, h3, hX']
 
+/- English proof (translation)
+Introduce `g A X hA hX`. Establish `hd : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hd`. Establish `h2 : (A⁻¹)ᵀ * Aᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Establish `hm : ∀ P Q : Matrix (Fin g) (Fin g) ℝ, (P * Q).map (fun t : ℝ => (t : ℂ)) = P.map (fun t : ℝ => (t : ℂ)) * Q.map (fun t : ℝ => (t : ℂ))` using `fun P Q => Matrix.map_mul (f := Complex.ofRealHom)`.
+
+Establish `h3 : ((A⁻¹)ᵀ).map (fun t : ℝ => (t : ℂ)) * (A.map (fun t : ℝ => (t : ℂ)))ᵀ = 1`. Rewrite using `[← Matrix.transpose_map, ← hm, h2]`. Conclude with `Matrix.map_one _ (by simp) (by simp)`. Set `γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g` to `⟨_, block_mem A X hA hX⟩`. Establish `hγ : γ.mat = Matrix.fromBlocks A (X * (A⁻¹)ᵀ) 0 (A⁻¹)ᵀ` using `rfl`.
+
+Establish `hmo : ∀ τ : Matrix (Fin g) (Fin g) ℂ, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.moeb γ τ = A.map (fun t : ℝ => (t : ℂ)) * τ * (A.map (fun t : ℝ => (t : ℂ)))ᵀ + X.map (fun t : ℝ => (t : ℂ))`. Introduce `τ`. Establish `hden : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.den γ τ = ((A⁻¹)ᵀ).map (fun t : ℝ => (t : ℂ))`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.den, hγ, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, Matrix.map_zero _ (by simp), Matrix.zero_mul, zero_add]`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.moeb, hden, Matrix.inv_eq_right_inv h3, hγ, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.add_mul, hm, Matrix.mul_assoc (X.map _), h3, Matrix.mul_one]`.
+
+Use `⟨γ, fun s v => ⟨by rw [actB, hmo], ?_⟩⟩` and prove the remaining obligations. Establish `he : actB γ = fun s => congL (A.map (fun t : ℝ => (t : ℂ))) s + symPart (X.map (fun t : ℝ => (t : ℂ)))`. Use function extensionality and compare the values at `s`. Rewrite using `[actB, hmo, symPart_add']`. Both sides reduce to the same expression.
+
+Rewrite using `[he, ((congL (A.map (fun t : ℝ => (t : ℂ)))).hasFDerivAt.add_const _).fderiv]`. Both sides reduce to the same expression.
+-/
 theorem exists_affine : ∀ (g : ℕ) (A X : Matrix (Fin g) (Fin g) ℝ), IsUnit A → X.IsSymm → ∃ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, ∀ s v : symMat g, actB γ s = symPart (A.map (fun t : ℝ => (t : ℂ)) * tauU s * (A.map (fun t : ℝ => (t : ℂ)))ᵀ + X.map (fun t : ℝ => (t : ℂ))) ∧ fderiv ℂ (actB γ) s v = symPart (A.map (fun t : ℝ => (t : ℂ)) * tauU v * (A.map (fun t : ℝ => (t : ℂ)))ᵀ) := by
   intro g A X hA hX
   have hd : IsUnit A.det := (Matrix.isUnit_iff_isUnit_det A).1 hA

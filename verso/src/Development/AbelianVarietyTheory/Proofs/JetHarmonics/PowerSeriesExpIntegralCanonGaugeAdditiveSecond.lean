@@ -14,27 +14,45 @@ section Ev
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun p => h p.1 p.2`.
+-/
 theorem hasSubst_points {n m : ℕ} {a : Fin m → Pt R n d} (h : ∀ j i, constantCoeff (a j i) = 0) :
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => h p.1 p.2
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[subst_comp_subst_apply (hasSubst_points ha) (hasSubst_points hb)]`.
+-/
 theorem ev_comp {n m l : ℕ} {a : Fin m → Pt R n d} {b : Fin n → Pt R l d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS R m d) :
     ev b (ev a f) = ev (fun j i => ev b (a j i)) f := by
   unfold ev
   rw [subst_comp_subst_apply (hasSubst_points ha) (hasSubst_points hb)]
 
+/- English proof (translation)
+Unfold `ev pt`. Rewrite using `[subst_X (hasSubst_points ha)]`.
+-/
 theorem ev_point {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (j : Fin m)
     (i : Fin d) : ev a (pt R d j i) = a j i := by
   unfold ev pt
   rw [subst_X (hasSubst_points ha)]
 
+/- English proof (translation)
+The claim follows from `subst_add (hasSubst_points ha) f g`.
+-/
 theorem ev_plus {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (f g : PS R m d) :
     ev a (f + g) = ev a f + ev a g := subst_add (hasSubst_points ha) f g
 
+/- English proof (translation)
+The claim follows from `subst_sub (hasSubst_points ha) f g`.
+-/
 theorem ev_minus {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (f g : PS R m d) :
     ev a (f - g) = ev a f - ev a g := subst_sub (hasSubst_points ha) f g
 
+/- English proof (translation)
+Establish `e : f = (f - C (constantCoeff f)) + C (constantCoeff f)` using `by ring`. Establish `h0 : constantCoeff (ev a (f - C (constantCoeff f))) = 0` using `constantCoeff_subst_eq_zero (hasSubst_points ha) (fun p => ha p.1 p.2) (by simp)`. Use `conv_lhs => rw [e, ev_plus ha, map_add, h0]`. Simplify using `[ev]`.
+-/
 theorem constantCoeff_ev_eq {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) : constantCoeff (ev a f) = constantCoeff f := by
   have e : f = (f - C (constantCoeff f)) + C (constantCoeff f) := by ring
@@ -43,24 +61,39 @@ theorem constantCoeff_ev_eq {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, 
   conv_lhs => rw [e, ev_plus ha, map_add, h0]
   simp [ev]
 
+/- English proof (translation)
+The claim follows from `map_subst (hasSubst_points ha) f`.
+-/
 theorem map_ev_eq {k : Type} [CommRing k] (φ : R →+* k) {n m : ℕ} {a : Fin m → Pt R n d}
     (ha : ∀ j i, constantCoeff (a j i) = 0) (f : PS R m d) :
     MvPowerSeries.map φ (ev a f) = ev (fun j i => MvPowerSeries.map φ (a j i)) (MvPowerSeries.map φ f) :=
   map_subst (hasSubst_points ha) f
 
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 theorem constantCoeff_point {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   simp [pt]
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Conclude with `hx i`.
+-/
 theorem cz1 {n : ℕ} {x : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) :
     ∀ j i, constantCoeff ((![x] : Fin 1 → Pt R n d) j i) = 0 := by
   intro j i; fin_cases j; exact hx i
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Conclude with `hx i`. Conclude with `hy i`.
+-/
 theorem cz2 {n : ℕ} {x y : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0) :
     ∀ j i, constantCoeff ((![x, y] : Fin 2 → Pt R n d) j i) = 0 := by
   intro j i; fin_cases j
   · exact hx i
   · exact hy i
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Conclude with `hx i`. Conclude with `hy i`. Conclude with `hz i`.
+-/
 theorem cz3 {n : ℕ} {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0)
     (hz : ∀ i, constantCoeff (z i) = 0) :
     ∀ j i, constantCoeff ((![x, y, z] : Fin 3 → Pt R n d) j i) = 0 := by
@@ -69,6 +102,9 @@ theorem cz3 {n : ℕ} {x y z : Pt R n d} (hx : ∀ i, constantCoeff (x i) = 0) (
   · exact hy i
   · exact hz i
 
+/- English proof (translation)
+Rewrite using `[ev_comp (cz1 hx) hb]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem germ_ev_ev_single_point_comp {n l : ℕ} {x : Pt R n d} {b : Fin n → Pt R l d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS R 1 d) :
     ev b (ev ![x] f) = ev ![fun i => ev b (x i)] f := by
@@ -76,6 +112,9 @@ theorem germ_ev_ev_single_point_comp {n l : ℕ} {x : Pt R n d} {b : Fin n → P
   congr 1
   funext j; fin_cases j; rfl
 
+/- English proof (translation)
+Rewrite using `[ev_comp (cz2 hx hy) hb]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem germEv_germEv_two_points {n l : ℕ} {x y : Pt R n d} {b : Fin n → Pt R l d} (hx : ∀ i, constantCoeff (x i) = 0)
     (hy : ∀ i, constantCoeff (y i) = 0) (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS R 2 d) :
     ev b (ev ![x, y] f) = ev ![fun i => ev b (x i), fun i => ev b (y i)] f := by
@@ -83,24 +122,39 @@ theorem germEv_germEv_two_points {n l : ℕ} {x y : Pt R n d} {b : Fin n → Pt 
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+The claim follows from `funext fun i => ev_point ha j i`.
+-/
 theorem ev_point_fun {n m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0) (j : Fin m) :
     (fun i => ev a (pt R d j i)) = a j := funext fun i => ev_point ha j i
 
+/- English proof (translation)
+The claim follows from `funext fun i => germ_ev_ev_single_point_comp hx hb (φ i)`.
+-/
 theorem ev_comp1 {n l : ℕ} (φ : Pt R 1 d) {x : Pt R n d} {b : Fin n → Pt R l d}
     (hx : ∀ i, constantCoeff (x i) = 0) (hb : ∀ j i, constantCoeff (b j i) = 0) :
     (fun i => ev b (comp1 φ x i)) = comp1 φ (fun i => ev b (x i)) :=
   funext fun i => germ_ev_ev_single_point_comp hx hb (φ i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => germEv_germEv_two_points hx hy hb (F i)`.
+-/
 theorem ev_addOf {n l : ℕ} (F : Fin d → PS R 2 d) {x y : Pt R n d} {b : Fin n → Pt R l d}
     (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0)
     (hb : ∀ j i, constantCoeff (b j i) = 0) :
     (fun i => ev b (addOf F x y i)) = addOf F (fun i => ev b (x i)) (fun i => ev b (y i)) :=
   funext fun i => germEv_germEv_two_points hx hy hb (F i)
 
+/- English proof (translation)
+Rewrite using `[comp1, constantCoeff_ev_eq (cz1 hx), hφ]`.
+-/
 theorem constantCoeff_comp1 {n : ℕ} {φ : Pt R 1 d} {x : Pt R n d} (hφ : ∀ i, constantCoeff (φ i) = 0)
     (hx : ∀ i, constantCoeff (x i) = 0) (i : Fin d) : constantCoeff (comp1 φ x i) = 0 := by
   rw [comp1, constantCoeff_ev_eq (cz1 hx), hφ]
 
+/- English proof (translation)
+Rewrite using `[addOf, constantCoeff_ev_eq (cz2 hx hy), hF]`.
+-/
 theorem constantCoeff_addOf {n : ℕ} {F : Fin d → PS R 2 d} {x y : Pt R n d} (hF : ∀ i, constantCoeff (F i) = 0)
     (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0) (i : Fin d) :
     constantCoeff (addOf F x y i) = 0 := by
@@ -117,6 +171,11 @@ def ExpIntegral (f : PS k 1 d) : Prop :=
 
 variable {R}
 
+/- English proof (translation)
+Take `⟨f0, v, v1, hv⟩` from `hf`. Take `⟨g0, w, w1, hw⟩` from `hg`. Use `⟨by simp [f0, g0], v * w, by simp [v1, w1], ?_⟩` and prove the remaining obligations. Rewrite using `[FB.toK, map_mul]`. Unfold `FB.expS`.
+
+Rewrite using `[WickVanishing.exp_add f0 g0]`. Conclude with `congrArg₂ (· * ·) hv hw`.
+-/
 theorem ExpIntegral.add {f g : PS k 1 d} (hf : ExpIntegral R f) (hg : ExpIntegral R g) :
     ExpIntegral R (f + g) := by
   obtain ⟨f0, v, v1, hv⟩ := hf
@@ -127,6 +186,13 @@ theorem ExpIntegral.add {f g : PS k 1 d} (hf : ExpIntegral R f) (hg : ExpIntegra
   rw [WickVanishing.exp_add f0 g0]
   exact congrArg₂ (· * ·) hv hw
 
+/- English proof (translation)
+Take `⟨f0, v, v1, hv⟩` from `hf`. Establish `n0 : constantCoeff (-f) = 0` using `by simp [f0]`. Use `⟨n0, invOfUnit v 1, by simp, ?_⟩` and prove the remaining obligations. Establish `h1 : FB.toK k v * FB.toK k (invOfUnit v 1) = 1`. Rewrite using `[FB.toK, FB.toK, ← map_mul, mul_invOfUnit v 1 (by simpa using v1), map_one]`.
+
+Establish `h2 : FB.expS k (-f) * FB.expS k f = 1`. Unfold `FB.expS`. Rewrite using `[← WickVanishing.exp_add n0 f0, neg_add_cancel, WickVanishing.exp_zero]`. Rewrite `h1` using `[hv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2, _root_.one_mul]`. Use `_ = FB.expS k (-f) := by rw [_root_.mul_assoc, h1, _root_.mul_one]`.
+-/
 theorem ExpIntegral.neg {f : PS k 1 d} (hf : ExpIntegral R f) : ExpIntegral R (-f) := by
   obtain ⟨f0, v, v1, hv⟩ := hf
   have n0 : constantCoeff (-f) = 0 := by simp [f0]
@@ -141,6 +207,11 @@ theorem ExpIntegral.neg {f : PS k 1 d} (hf : ExpIntegral R f) : ExpIntegral R (-
         rw [h2, _root_.one_mul]
     _ = FB.expS k (-f) := by rw [_root_.mul_assoc, h1, _root_.mul_one]
 
+/- English proof (translation)
+Establish `ha' : ∀ j i, constantCoeff (FB.toK k (a j i)) = 0` using `fun j i => by simp [FB.toK, ha]`. Use `⟨by rw [constantCoeff_ev_eq ha', f0], ev a w, by rw [constantCoeff_ev_eq ha, w1], ?_⟩` and prove the remaining obligations. Establish `e1 : FB.toK k (ev a w) = ev (fun j i => FB.toK k (a j i)) (FB.toK k w)` using `map_ev_eq _ ha w`. Rewrite using `[e1, hw]`. Unfold `ev FB.expS`.
+
+Conclude with `WickVanishing.subst_exp (fun p : Fin m × Fin d => FB.toK k (a p.1 p.2)) (fun p => ha' p.1 p.2) f0`.
+-/
 theorem expIntegral_ev {m : ℕ} {a : Fin m → Pt R 1 d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     {w : PS R m d} (w1 : constantCoeff w = 1) {f : PS k m d} (f0 : constantCoeff f = 0)
     (hw : FB.toK k w = FB.expS k f) :
@@ -160,14 +231,25 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
   {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O)
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Simplify using `[FB.actK, B.A.const]`.
+-/
 theorem constantCoeff_actK (a : O) (i : Fin d) : constantCoeff (B.actK k a i) = 0 := by
   simp [FB.actK, B.A.const]
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Simplify using `[FB.FK, FGLaw.mapF, B.G.const]`.
+-/
 theorem constantCoeff_FK (i : Fin d) : constantCoeff (B.FK k i) = 0 := by
   simp [FB.FK, FGLaw.mapF, B.G.const]
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [FB.actK, B.A.mul_act, comp1]`. Rewrite using `[map_ev_eq _ (cz1 (B.A.const b))]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem actK_mul (a b : O) : B.actK k (a * b) = comp1 (B.actK k a) (B.actK k b) := by
   funext i
   simp only [FB.actK, B.A.mul_act, comp1]
@@ -176,6 +258,9 @@ theorem actK_mul (a b : O) : B.actK k (a * b) = comp1 (B.actK k a) (B.actK k b) 
   funext j; fin_cases j; rfl
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [FB.actK, B.A.add_act, addOf]`. Rewrite using `[map_ev_eq _ (cz2 (B.A.const a) (B.A.const b))]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem actK_add (a b : O) : B.actK k (a + b) = addOf (B.FK k) (B.actK k a) (B.actK k b) := by
   funext i
   simp only [FB.actK, B.A.add_act, addOf]
@@ -184,12 +269,22 @@ theorem actK_add (a b : O) : B.actK k (a + b) = addOf (B.FK k) (B.actK k a) (B.a
   funext j; fin_cases j <;> rfl
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[FB.actK, B.A.one_act, pt]`.
+-/
 theorem actK_one : B.actK k 1 = pt k d 0 := by
   funext i
   simp [FB.actK, B.A.one_act, pt]
 
 variable {B} {h : PS k 2 d}
 
+/- English proof (translation)
+Establish `p0 : ∀ {n : ℕ} (j : Fin n) (i : Fin d), constantCoeff (pt k d j i) = 0` using `constantCoeff_point`. Establish `c0 : ∀ (e : O) (j : Fin 2) (i : Fin d), constantCoeff (comp1 (B.actK k e) (pt k d j) i) = 0` using `fun e j => constantCoeff_comp1 (constantCoeff_actK B e) (p0 j)`. Establish `w1 : constantCoeff (B.ad a) = 1`. Rewrite using `[← constantCoeff_ev_eq (cz2 (x := (0 : Pt R 1 d)) (fun _ => by simp) (constantCoeff_point 0)), B.adjoint_zero_fst, map_one]`. Establish `key` using `expIntegral_ev (cz2 (B.A.const b) (B.A.const c)) w1 (by`.
+
+Rewrite using `[map_sub, constantCoeff_ev_eq (cz2 (c0 a 0) (p0 1)), constantCoeff_ev_eq (cz2 (p0 0) (c0 _ 1)), sub_self]) (hh.ad a)`. Establish `e : (fun j i => FB.toK k ((![B.A.act b, B.A.act c] : Fin 2 → Pt R 1 d) j i)) = ![B.actK k b, B.actK k c]`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Establish `hb` using `cz2 (constantCoeff_actK (k := k) B b) (constantCoeff_actK (k := k) B c)`. Rewrite `key` using `[e, ev_minus hb, germEv_germEv_two_points (c0 a 0) (p0 1) hb, germEv_germEv_two_points (p0 0) (c0 _ 1) hb, ev_comp1 _ (p0 0) hb, ev_comp1 _ (p0 1) hb, ev_point_fun hb, ev_point_fun hb]`.
+
+Rewrite using `[actK_mul, actK_mul]`. Conclude with `key`.
+-/
 theorem expIntegral_ad (hh : B.IsCanonGauge k h) (a b c : O) :
     ExpIntegral R (ev ![B.actK k (a * b), B.actK k c] h - ev ![B.actK k b, B.actK k (star a * c)] h) := by
   have p0 : ∀ {n : ℕ} (j : Fin n) (i : Fin d), constantCoeff (pt k d j i) = 0 := constantCoeff_point
@@ -210,6 +305,13 @@ theorem expIntegral_ad (hh : B.IsCanonGauge k h) (a b c : O) :
   rw [actK_mul, actK_mul]
   exact key
 
+/- English proof (translation)
+Establish `p0 : ∀ {n : ℕ} (j : Fin n) (i : Fin d), constantCoeff (pt k d j i) = 0` using `constantCoeff_point`. Establish `c0 : ∀ (i : Fin d), constantCoeff (addOf (B.FK k) (pt k (n` using `3) d 1) (pt k d 2) i) = 0 := constantCoeff_addOf (constantCoeff_FK B) (p0 1) (p0 2)`. Establish `h0 : constantCoeff h = 0`. Rewrite using `[← constantCoeff_ev_eq (cz2 (x := (0 : Pt k 1 d)) (fun _ => by simp) (constantCoeff_point 0)), hh.ax0, map_zero]`. Establish `w1 : constantCoeff B.ph2 = 1`.
+
+Rewrite using `[← constantCoeff_ev_eq (cz3 (x := (0 : Pt R 2 d)) (fun _ => by simp) (constantCoeff_point 0) (constantCoeff_point 1)), B.cocycleRight_zero_fst, map_one]`. Establish `key` using `expIntegral_ev (cz3 (B.A.const b) (B.A.const c) (B.A.const c')) w1 (by`. Rewrite using `[map_sub, map_add, constantCoeff_ev_eq (cz2 (p0 0) (p0 1)), constantCoeff_ev_eq (cz2 (p0 0) (p0 2)), constantCoeff_ev_eq (cz2 (p0 0) c0), h0]`. Use the proof step `simp) hh.ph2`. Establish `e : (fun j i => FB.toK k ((![B.A.act b, B.A.act c, B.A.act c'] : Fin 3 → Pt R 1 d) j i)) = ![B.actK k b, B.actK k c, B.actK k c']`.
+
+Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Establish `hb` using `cz3 (constantCoeff_actK (k := k) B b) (constantCoeff_actK (k := k) B c) (constantCoeff_actK (k := k) B c')`. Rewrite `key` using `[e, ev_minus hb, ev_plus hb, germEv_germEv_two_points (p0 0) (p0 1) hb, germEv_germEv_two_points (p0 0) (p0 2) hb, germEv_germEv_two_points (p0 0) c0 hb, ev_addOf _ (p0 1) (p0 2) hb, ev_point_fun hb, ev_point_fun hb, ev_point_fun hb]`. Rewrite using `[actK_add]`. Conclude with `key`.
+-/
 theorem powerSeriesExpIntegral_canonGauge_additive_second (hh : B.IsCanonGauge k h) (b c c' : O) :
     ExpIntegral R (ev ![B.actK k b, B.actK k c] h + ev ![B.actK k b, B.actK k c'] h -
       ev ![B.actK k b, B.actK k (c + c')] h) := by
@@ -236,6 +338,11 @@ theorem powerSeriesExpIntegral_canonGauge_additive_second (hh : B.IsCanonGauge k
   rw [actK_add]
   exact key
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Use `(powerSeriesExpIntegral_canonGauge_additive_second hh b 0 0).neg` as an intermediate fact. Simplify using `using this`. Consider the case `succ j ih`.
+
+Use `ih.add (powerSeriesExpIntegral_canonGauge_additive_second hh b ((j : O) * c) c)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.cast_succ, Nat.cast_succ, add_smul, one_smul, add_mul, _root_.one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expIntegral_nsmul (hh : B.IsCanonGauge k h) (b c : O) (j : ℕ) :
     ExpIntegral R ((j : k) • ev ![B.actK k b, B.actK k c] h - ev ![B.actK k b, B.actK k ((j : O) * c)] h) := by
   induction j with
@@ -249,6 +356,9 @@ theorem expIntegral_nsmul (hh : B.IsCanonGauge k h) (b c : O) (j : ℕ) :
     ring
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Establish `hb` using `cz1 (constantCoeff_actK (k := k) B a)`. Rewrite using `[FB.hL, germEv_germEv_two_points (constantCoeff_point 0) (constantCoeff_comp1 (constantCoeff_actK B w0) (constantCoeff_point 0)) hb, ev_comp1 _ (constantCoeff_point 0) hb, ev_point_fun hb, actK_mul]`. Both sides reduce to the same expression.
+-/
 theorem ev_actK_hL (w0 a : O) :
     ev (n := 1) ![B.actK k a] (B.hL k h w0) = ev ![B.actK k a, B.actK k (w0 * a)] h := by
   have hb := cz1 (constantCoeff_actK (k := k) B a)
@@ -257,11 +367,19 @@ theorem ev_actK_hL (w0 a : O) :
   rfl
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Rewrite using `[FB.hL, ← actK_one B, ← actK_mul, _root_.mul_one]`.
+-/
 theorem hL_eq (w0 : O) : B.hL k h w0 = ev ![B.actK k 1, B.actK k w0] h := by
   rw [FB.hL, ← actK_one B, ← actK_mul, _root_.mul_one]
 
 end Main
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h hh w0 a N hN`. Establish `h1` using `expIntegral_ad hh a 1 (w0 * a)`. Establish `h2` using `(expIntegral_nsmul hh 1 w0 N).neg`. Establish `e : star a * (w0 * a) = (N : O) * w0` using `by rw [← hN]; ring`. Rewrite `h1` using `[e, _root_.mul_one]`.
+
+Establish `h3` using `(h1.add h2).2`. Rewrite using `[ev_actK_hL, hL_eq]`. Use `h3 using 5` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_integral_frame_pullback :
     ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k]
       [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h →

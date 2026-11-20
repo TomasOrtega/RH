@@ -19,34 +19,62 @@ open GlobalTheory.BranchFormula
 def blk {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ :=
   Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 1)
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+-/
 theorem blk_castSucc {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     blk A a.castSucc b.castSucc = A a b := by
   simp [blk, Matrix.reindex_apply, Matrix.submatrix_apply]
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+-/
 theorem blk_castSucc_last {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (a : Fin n) :
     blk A a.castSucc (Fin.last n) = 0 ∧ blk A (Fin.last n) a.castSucc = 0 := by
   simp [blk, Matrix.reindex_apply, Matrix.submatrix_apply]
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.reindex_apply, Matrix.submatrix_apply]`.
+-/
 theorem blk_last {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : blk A (Fin.last n) (Fin.last n) = 1 := by
   simp [blk, Matrix.reindex_apply, Matrix.submatrix_apply]
 
+/- English proof (translation)
+Simplify using `[blk, Matrix.fromBlocks_multiply]`.
+-/
 theorem blk_mul {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) : blk (A * B) = blk A * blk B := by
   simp [blk, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Unfold `blk`. Use `fun_prop`.
+-/
 theorem blk_cont {n : ℕ} : Continuous (blk (n := n)) := by
   unfold blk
   fun_prop
 
+/- English proof (translation)
+The claim follows from `(blk_cont.comp hf).matrix_mul continuous_const`.
+-/
 theorem blk_mul_cont {X : Type} [TopologicalSpace X] {n : ℕ} (f : X → Matrix (Fin n) (Fin n) ℂ) (hf : Continuous f)
     (B : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) : Continuous fun x => blk (f x) * B :=
   (blk_cont.comp hf).matrix_mul continuous_const
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `blk_castSucc A a b`. Conclude with `blk_castSucc_last A a`. Conclude with `blk_last A`.
+-/
 theorem isBlock_blk {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : IsBlock (rfl : n + 1 = n + 1) (blk A) A 1 := by
   refine ⟨fun a b => ?_, fun a => ?_, ?_⟩
   · exact blk_castSucc A a b
   · exact blk_castSucc_last A a
   · exact blk_last A
 
+/- English proof (translation)
+Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [blk_last]`.
+
+Conclude with `h.2.2`. Consider the case `cast b => rw [(blk_castSucc_last A b).2]`. Conclude with `(h.2.1 b).2`. Consider the case `cast a`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => rw [(blk_castSucc_last A a).1]`. Conclude with `(h.2.1 a).1`. Consider the case `cast b => rw [blk_castSucc]`. Conclude with `h.1 a b`.
+-/
 theorem eq_blk {n : ℕ} {A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} {A : Matrix (Fin n) (Fin n) ℂ}
     (h : IsBlock (rfl : n + 1 = n + 1) A' A 1) : A' = blk A := by
   ext i j
@@ -60,6 +88,9 @@ theorem eq_blk {n : ℕ} {A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ} {A : Matr
     | last => rw [(blk_castSucc_last A a).1]; exact (h.2.1 a).1
     | cast b => rw [blk_castSucc]; exact h.1 a b
 
+/- English proof (translation)
+Apply `isCompact_iff_compactSpace.mp` to reduce the goal to its premises. Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin m => Set.pi Set.univ fun _ : Fin m => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `IsCompact.of_isClosed_subset (t := ((Matrix.unitaryGroup (Fin m) ℂ : Submonoid _) : Set (Matrix (Fin m) (Fin m) ℂ))) hK isClosed_unitary ?_` and prove the remaining obligations. Introduce `U hU`. Conclude with `Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => mem_closedBall_zero_iff.2 (entry_norm_bound_of_unitary hU i j)`.
+-/
 theorem cptU (m : ℕ) : CompactSpace (Matrix.unitaryGroup (Fin m) ℂ) := by
   apply isCompact_iff_compactSpace.mp
   have hK : IsCompact (Set.pi Set.univ fun _ : Fin m => Set.pi Set.univ fun _ : Fin m =>
@@ -71,6 +102,11 @@ theorem cptU (m : ℕ) : CompactSpace (Matrix.unitaryGroup (Fin m) ℂ) := by
   exact Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j =>
     mem_closedBall_zero_iff.2 (entry_norm_bound_of_unitary hU i j)
 
+/- English proof (translation)
+Take `⟨P, -, rfl⟩` from `hΦ`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, one_mul]`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Use `continuous_finset_prod _ fun τ _ => ?_` and prove the remaining obligations. Conclude with `Continuous.zpow₀ ((continuous_apply τ).comp hM).matrix_det _ fun x => Or.inl (hinv x τ).ne_zero`.
+
+Conclude with `(MvPolynomial.continuous_eval P).comp (continuous_pi fun x => ((continuous_apply x.1).comp hM).matrix_elem x.2.1 x.2.2)`.
+-/
 theorem cont_val {ι : Type} [Fintype ι] {X : Type} [TopologicalSpace X] {a : ℕ} {G : ι → Matrix (Fin a) (Fin a) ℂ}
     {lam : ι → DomWeight a} {Φ : Frames G → ℂ} (hΦ : Φ ∈ ValC G lam) (M : X → ι → Matrix (Fin a) (Fin a) ℂ)
     (hM : Continuous M) (hinv : ∀ x τ, IsUnit (M x τ).det) : Continuous fun x => Φ ⟨M x, hinv x⟩ := by
@@ -82,16 +118,25 @@ theorem cont_val {ι : Type} [Fintype ι] {X : Type} [TopologicalSpace X] {a : �
   · exact (MvPolynomial.continuous_eval P).comp
       (continuous_pi fun x => ((continuous_apply x.1).comp hM).matrix_elem x.2.1 x.2.2)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun τ => blk_mul_cont (fun u : ι → Matrix.unitaryGroup (Fin n) ℂ => (u τ).1) (continuous_subtype_val.comp (continuous_apply τ)) (y τ)`.
+-/
 theorem cont_blkfam {ι : Type} [Fintype ι] {n : ℕ} (y : ι → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     Continuous fun (u : ι → Matrix.unitaryGroup (Fin n) ℂ) (τ : ι) => blk (u τ).1 * y τ :=
   continuous_pi fun τ => blk_mul_cont (fun u : ι → Matrix.unitaryGroup (Fin n) ℂ => (u τ).1)
     (continuous_subtype_val.comp (continuous_apply τ)) (y τ)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `⟨Matrix.mem_unitaryGroup_iff.1 hu, Matrix.mem_unitaryGroup_iff'.1 hu⟩`.
+-/
 theorem uniH {m : ℕ} {u : Matrix (Fin m) (Fin m) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin m) ℂ) :
     u * uᴴ = 1 ∧ uᴴ * u = 1 := by
   rw [← Matrix.star_eq_conjTranspose]
   exact ⟨Matrix.mem_unitaryGroup_iff.1 hu, Matrix.mem_unitaryGroup_iff'.1 hu⟩
 
+/- English proof (translation)
+Establish `h` using `hr.mul 1 1 τ`. Rewrite `h` using `[mul_one]`. Establish `hu` using `(uniH (hr.uni 1 τ)).2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem r_one {ι : Type} [Fintype ι] {m : ℕ} {K : Type} [Group K] [TopologicalSpace K]
     {r : K → ι → Matrix (Fin m) (Fin m) ℂ} (hr : OntoUni r) (τ : ι) : r 1 τ = 1 := by
   have h := hr.mul 1 1 τ
@@ -101,6 +146,9 @@ theorem r_one {ι : Type} [Fintype ι] {m : ℕ} {K : Type} [Group K] [Topologic
     _ = (r 1 τ)ᴴ * r 1 τ := by rw [mul_assoc, ← h]
     _ = 1 := hu
 
+/- English proof (translation)
+Establish `h` using `hr.mul k⁻¹ k τ`. Rewrite `h` using `[inv_mul_cancel, r_one hr]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem r_inv_H {ι : Type} [Fintype ι] {m : ℕ} {K : Type} [Group K] [TopologicalSpace K]
     {r : K → ι → Matrix (Fin m) (Fin m) ℂ} (hr : OntoUni r) (k : K) (τ : ι) : (r k⁻¹ τ)ᴴ = r k τ := by
   have h := hr.mul k⁻¹ k τ
@@ -108,6 +156,53 @@ theorem r_inv_H {ι : Type} [Fintype ι] {m : ℕ} {K : Type} [Group K] [Topolog
   calc (r k⁻¹ τ)ᴴ = (r k⁻¹ τ)ᴴ * (r k⁻¹ τ * r k τ) := by rw [← h, mul_one]
     _ = r k τ := by rw [← mul_assoc, (uniH (hr.uni k⁻¹ τ)).2, one_mul]
 
+/- English proof (translation)
+Introduce `ι _ N n hN G G' lam sg hI T₀ hT₀ hne K _ _ _ _ _ ν _ _ r hr y yk hyk J hJ Jk hJk`. Substitute `hN` using the available equality. Establish `hfd' : FiniteDimensional ℂ (ValC G' sg)` using `(GlobalTheory.T.frame_values_polynomial_det_stable_homogeneous ι n G' sg).2.1`. Establish `stab'` using `(GlobalTheory.T.frame_values_polynomial_det_stable_homogeneous ι n G' sg).2.2.1`. Establish `stab` using `(GlobalTheory.T.frame_values_polynomial_det_stable_homogeneous ι (n + 1) G lam).2.2.1`.
+
+Use `haveI := cptU n`. Establish `invH : ∀ (u : ι → Matrix.unitaryGroup (Fin n) ℂ) (z : Frames G') τ, IsUnit (((u τ).1)ᴴ * z.1 τ).det`. Introduce `u z τ`. Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (uniH (u τ).2).1).mul (z.2 τ)`.
+
+Set `zU : (ι → Matrix.unitaryGroup (Fin n) ℂ) → Frames G' → Frames G'` to `fun u z => ⟨fun τ => ((u τ).1)ᴴ * z.1 τ, invH u z⟩`. Establish `memJ : ∀ u, (fun z => J (zU u z)) ∈ ValC G' sg`. Introduce `u`. Use `stab' J hJ (fun τ => ((u τ).1)ᴴ) _ (fun z z' h => congrArg J (Subtype.ext (funext fun τ => (h τ).symm))) ?_` and prove the remaining obligations. Introduce `τ`.
+
+Conclude with `Matrix.isUnit_det_of_left_inverse (uniH (u τ).2).1`. Set `jU : (ι → Matrix.unitaryGroup (Fin n) ℂ) → ValC G' sg` to `fun u => ⟨_, memJ u⟩`. Take `⟨e⟩ : Nonempty (ValC G' sg ≃ₗ[ℂ] (Fin (Module.finrank ℂ (ValC G' sg)) → ℂ))` from `⟨(Module.finBasis ℂ (ValC G' sg)).equivFun⟩`. Establish `invB : ∀ (u : ι → Matrix.unitaryGroup (Fin n) ℂ) τ, IsUnit (blk (u τ).1 * y.1 τ).det`. Introduce `u τ`.
+
+Rewrite using `[Matrix.det_mul, (isBlock_blk (u τ).1).det, mul_one]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (uniH (u τ).2).2).mul (y.2 τ)`. Set `yU : (ι → Matrix.unitaryGroup (Fin n) ℂ) → Frames G` to `fun u => ⟨fun τ => blk (u τ).1 * y.1 τ, invB u⟩`. Set `r' : K → ι → Matrix.unitaryGroup (Fin n) ℂ` to `fun k τ => ⟨r k τ, hr.uni k τ⟩`. Establish `hr' : Continuous r'` using `continuous_pi fun τ => Continuous.subtype_mk ((continuous_apply τ).comp hr.cont) _`.
+
+Establish `hyk' : ∀ k, yk k = yU (r' k)`. Introduce `k`. Take `⟨kt, hb, ht⟩` from `hyk k`. Conclude with `Subtype.ext (funext fun τ => by rw [ht τ, eq_blk (hb τ)])`. Establish `hJk' : ∀ k, Jk k = (jU (r' k)).1`.
+
+Introduce `k`. Use function extensionality and compare the values at `z'`. Use `hJk k (zU (r' k) z') z' fun τ => ?_` and prove the remaining obligations. Use `show z'.1 τ = r k τ * ((r k τ)ᴴ * z'.1 τ)`. Rewrite using `[← mul_assoc, (uniH (hr.uni k τ)).1, one_mul]`.
+
+Establish `hjU : Continuous jU`. Use `Continuous.subtype_mk (continuous_pi fun z => ?_) _` and prove the remaining obligations. Conclude with `cont_val hJ (fun u τ => ((u τ).1)ᴴ * z.1 τ) (continuous_pi fun τ => ((continuous_apply τ).subtype_val.matrix_conjTranspose).matrix_mul continuous_const) (fun u τ => invH u z τ)`. Establish `he : Continuous e` using `LinearMap.continuous_of_finiteDimensional e.toLinearMap`. Establish `hint : ∀ Ψ ∈ ValC G lam, MeasureTheory.Integrable (fun k => Ψ (yk k) • e (jU (r' k))) ν`.
+
+Introduce `Ψ hΨ`. Establish `hH : Continuous fun u => Ψ (yU u) • e (jU u)`. Use `Continuous.smul (f := fun u => Ψ (yU u)) (g := fun u => e (jU u)) ?_ (he.comp hjU)` and prove the remaining obligations. Use `show Continuous fun u => Ψ ⟨fun τ => blk (u τ).1 * y.1 τ, invB u⟩`. Establish `hc1 : Continuous fun (u : ι → Matrix.unitaryGroup (Fin n) ℂ) (τ : ι) => blk (u τ).1 * y.1 τ` using `cont_blkfam y.1`.
+
+Conclude with `cont_val (X := ι → Matrix.unitaryGroup (Fin n) ℂ) (M := fun (u : ι → Matrix.unitaryGroup (Fin n) ℂ) (τ : ι) => blk (u τ).1 * y.1 τ) hΨ hc1 invB`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hH.continuousOn`. Establish `hf : (fun k => Ψ (yk k) • e (jU (r' k))) = (fun u => Ψ (yU u) • e (jU u)) ∘ r'`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, hyk']`.
+
+Rewrite using `[hf]`. Conclude with `MeasureTheory.Integrable.of_bound (hH.comp hr').aestronglyMeasurable C (MeasureTheory.ae_of_all _ fun k => hC _ (Set.mem_univ _))`. Set `A : ValC G lam →ₗ[ℂ] (Fin (Module.finrank ℂ (ValC G' sg)) → ℂ)` to `{ toFun := fun Ψ => ∫ k, Ψ.1 (yk k) • e (jU (r' k)) ∂ν map_add' := fun Ψ Ψ' => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_smul]`. Conclude with `MeasureTheory.integral_add (hint Ψ.1 Ψ.2) (hint Ψ'.1 Ψ'.2)`.
+
+Use the proof step `map_smul' := fun c Ψ => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_smul, RingHom.id_apply]`. Conclude with `MeasureTheory.integral_smul c _ }`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective (ValC G lam).subtype (Submodule.ker_subtype _)`. Establish `hpΨ : ∀ Ψ (h : Ψ ∈ ValC G lam), p Ψ = ⟨Ψ, h⟩` using `fun Ψ h => LinearMap.congr_fun hp ⟨Ψ, h⟩`.
+
+Set `T : (Frames G → ℂ) →ₗ[ℂ] (Frames G' → ℂ)` to `(ValC G' sg).subtype ∘ₗ e.symm.toLinearMap ∘ₗ A ∘ₗ p`. Establish `key : ∀ Ψ ∈ ValC G lam, ∀ ℓ : (Frames G' → ℂ) →ₗ[ℂ] ℂ, ℓ (T Ψ) = ∫ k, Ψ (yk k) * ℓ (Jk k) ∂ν`. Introduce `Ψ hΨ ℓ`. Set `L` to `(ℓ ∘ₗ (ValC G' sg).subtype ∘ₗ e.symm.toLinearMap).toContinuousLinearMap`. Establish `h1 : ℓ (T Ψ) = L (A ⟨Ψ, hΨ⟩)`.
+
+Simplify using `only [T, L, LinearMap.coe_comp, Function.comp_apply, hpΨ Ψ hΨ, LinearMap.coe_toContinuousLinearMap']`. Rewrite using `[h1]`. Use `show L (∫ k, Ψ (yk k) • e (jU (r' k)) ∂ν) = _`. Rewrite using `[← L.integral_comp_comm (hint Ψ hΨ)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [L, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_comp, Function.comp_apply, map_smul, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply, smul_eq_mul, hJk']`. Establish `hT : BrEqv rfl G G' lam sg T`. Use `⟨fun Ψ _ => Submodule.coe_mem _, ?_⟩` and prove the remaining obligations. Introduce `k0 kt0 hk0 hkt0 Ψ hΨ Ψ' hΨ' z z' hzz'`.
+
+Establish `hΨ'm : Ψ' ∈ ValC G lam`. Use `stab Ψ hΨ kt0 Ψ' hΨ' fun τ => ?_` and prove the remaining obligations. Rewrite using `[(hkt0 τ).det, mul_one]`. Conclude with `Matrix.isUnit_det_of_left_inverse (uniH (hk0 τ)).2`. Take `⟨k1, hk1⟩` from `hr.onto k0 hk0`.
+
+Establish `e1 : T Ψ' z = ∫ k, Ψ' (yk k) * Jk k z ∂ν`. Use `key Ψ' hΨ'm (LinearMap.proj z)` as an intermediate fact. Simplify using `using this`. Establish `e2 : T Ψ z' = ∫ k, Ψ (yk k) * Jk k z' ∂ν`. Use `key Ψ hΨ (LinearMap.proj z')` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[e1, e2]`. Establish `p1 : ∀ k, Ψ' (yk k) * Jk k z = Ψ (yk (k1 * k)) * Jk (k1⁻¹ * (k1 * k)) z`. Introduce `k`. Rewrite using `[inv_mul_cancel_left]`.
+
+Use `congr 1`. Use `hΨ' _ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[hyk', hyk']`. Use `show blk (r (k1 * k) τ) * y.1 τ = kt0 τ * (blk (r k τ) * y.1 τ)`. Rewrite using `[hr.mul, blk_mul, hk1, eq_blk (hkt0 τ), mul_assoc]`.
+
+Establish `p2 : ∀ k, Jk (k1⁻¹ * k) z = Jk k z'`. Introduce `k`. Rewrite using `[hJk', hJk']`. Use `show J (zU (r' (k1⁻¹ * k)) z) = J (zU (r' k) z')`. Use `congr 1`.
+
+Use `Subtype.ext (funext fun τ => ?_)` and prove the remaining obligations. Use `show (r (k1⁻¹ * k) τ)ᴴ * z.1 τ = (r k τ)ᴴ * z'.1 τ`. Rewrite using `[hr.mul, Matrix.conjTranspose_mul, r_inv_H hr, hzz' τ, ← hk1, mul_assoc]`. Repeatedly rewrite using `[p1]`. Rewrite using `[MeasureTheory.integral_mul_left_eq_self (fun k => Ψ (yk k) * Jk (k1⁻¹ * k) z) k1]`.
+
+Repeatedly rewrite using `[p2]`. Take `⟨c, hc⟩` from `GlobalTheory.T.branching_multiplicityOne_unitary_families ι (n + 1) n rfl G G' lam sg hI T₀ hT₀ hne T hT`. Use `⟨c, fun Ψ hΨ ℓ => ?_⟩` and prove the remaining obligations. Use `key Ψ hΨ ℓ` as an intermediate fact. Rewrite `this` using `[hc Ψ hΨ, map_smul, smul_eq_mul]`.
+
+Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem avg_eq_mul_branch : ∀ (ι : Type) [Fintype ι] (N n : ℕ) (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight N) (sg : ι → DomWeight n), (∀ τ, Formalism.L2.Col.Br.Interlace hN (lam τ) (sg τ)) → ∀ T₀, BrEqv hN G G' lam sg T₀ → (∃ Φ ∈ ValC G lam, T₀ Φ ≠ 0) → ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant] (r : K → ι → Matrix (Fin n) (Fin n) ℂ), OntoUni r → ∀ (y : Frames G) (yk : K → Frames G), (∀ k, ∃ kt, (∀ τ, GlobalTheory.BranchFormula.IsBlock hN (kt τ) (r k τ) 1) ∧ IsTr kt y (yk k)) → ∀ J ∈ ValC G' sg, ∀ Jk : K → Frames G' → ℂ, (∀ k z z', IsTr (r k) z z' → Jk k z' = J z) → ∃ c : ℂ, ∀ Φ ∈ ValC G lam, ∀ ℓ : (Frames G' → ℂ) →ₗ[ℂ] ℂ, ∫ k, ℓ (Jk k) * Φ (yk k) ∂ν = c * ℓ (T₀ Φ) := by
   intro ι _ N n hN G G' lam sg hI T₀ hT₀ hne K _ _ _ _ _ ν _ _ r hr y yk hyk J hJ Jk hJk
   subst hN

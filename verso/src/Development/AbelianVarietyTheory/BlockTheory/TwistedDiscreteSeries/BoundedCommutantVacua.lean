@@ -69,11 +69,17 @@ section Basic₂
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {μ : Measure (WO V W)} {𝓕 : Set (WO V W)} {θ : InfFam D}
 
+/- English proof (translation)
+Introduce `θ hθ _ _ M M' f hf g hg` and use `h θ hθ (cart M) (cart M') (GlobalTheory.Chain.VacVec.cart_isCartanInv M) (GlobalTheory.Chain.VacVec.cart_isCartanInv M') f ⟨hf.theta, hf.vac⟩ hf.ne g ⟨hg.theta, hg.vac⟩`.
+-/
 theorem VacuumDense.model (h : VacuumDense ψ V W μ 𝓕) : VacuumDenseModel ψ V W μ 𝓕 :=
   fun θ hθ _ _ M M' f hf g hg =>
     h θ hθ (cart M) (cart M') (GlobalTheory.Chain.VacVec.cart_isCartanInv M) (GlobalTheory.Chain.VacVec.cart_isCartanInv M') f
       ⟨hf.theta, hf.vac⟩ hf.ne g ⟨hg.theta, hg.vac⟩
 
+/- English proof (translation)
+Take `⟨f, f0, hf⟩` from `GlobalTheory.VacuumO.exists_ne_zero ψ θ hψ hθ V W _ _ hV hW _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame _) (GlobalTheory.PlaceModel.isSelfDualC_latFrame _)`. Establish `h` using `hf 1`. Simplify using `only [one_mul] at h`. Conclude with `⟨f, ⟨h.1, h.2.2⟩, f0⟩`.
+-/
 theorem exists_isVac_ne_zero (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {sV : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ}
     (hV : ∀ τ, IsCartanInv (gramAt D V τ) (sV τ)) (hW : ∀ τ, IsCartanInv (gramAt D W τ) (sW τ)) :

@@ -22,11 +22,17 @@ def PsiRead (D : D7) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) �
         (L := FractionRing (D.ntw.O i)) (D.ntw.O_inj i)
         (D.ntw.emb0 i ((psiUOf D.nd (NX.xiRed D) θ ⟨u, hu'⟩ : (↥D.LL0)ˣ) : ↥D.LL0))
 
+/- English proof (translation)
+Introduce `i u hu hu'`. Establish `h` using `b.Bs.psiU i true u hu hu'`. Conclude with `h`.
+-/
 theorem psiRead_withLoc {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} (b : NBuilt hL D') : PsiRead (withLoc b.L) b.θ := by
   intro i u hu hu'
   have h := b.Bs.psiU i true u hu hu'
   exact h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨θ0, HEq.rfl, h0⟩`.
+-/
 theorem exists_theta_of_eq {D₀ : D7} {L : LocAll (lay0 D₀)} {D' : D7} (h : D' = withLoc L)
     (θ0 : ∀ kk : Fin 2, Multiplicative (ZMod ((withLoc L).host.g kk)) →* (↥(withLoc L).LL0)ˣ)
     (h0 : PsiRead (withLoc L) θ0) :
@@ -34,6 +40,9 @@ theorem exists_theta_of_eq {D₀ : D7} {L : LocAll (lay0 D₀)} {D' : D7} (h : D
   subst h
   exact ⟨θ0, HEq.rfl, h0⟩
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => ?_⟩` and prove the remaining obligations. Introduce `_ w Z Wt p0 t nch n xd c _ _ _`. Conclude with `h K B f T w Z Wt p0 t nch n c`.
+-/
 theorem atMem_of_forall {hL : GlobalTheory.Published.LocalLanglandsGL} {p : LayP hL}
     (h : ∀ K B f T w Z Wt p0 t nch n c, p K B f T w Z Wt p0 t nch n c) : AtMem hL p := by
   refine ⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩
@@ -41,6 +50,13 @@ theorem atMem_of_forall {hL : GlobalTheory.Published.LocalLanglandsGL} {p : LayP
   intro _ w Z Wt p0 t nch n xd c _ _ _
   exact h K B f T w Z Wt p0 t nch n c
 
+/- English proof (translation)
+Introduce `_ _ hL`. Use `atMem_of_forall fun K B f T w Z Wt p0 t nch n c => ?_` and prove the remaining obligations. Take `⟨θ, hθ, hR⟩` from `exists_theta_of_eq c.a.nt.eq c.a.nt.θ (psiRead_withLoc c.a.nt.toNBuilt)`. Use `⟨θ, hθ, fun g => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Conclude with `(c.row.grp.lvl0 g).trans (SetLike.ext_iff.mp c.a.all.exp.U_eq _)`.
+
+Establish `hu0 : (t.r.z.R.eG.trans t.r.z.cG) u ∈ (w.D Z).nexp.U` using `(c.row.grp.lvl0 u).1 u.2`. Choose the witnesses or unpack the hypotheses as in `⟨i⟩ : Nonempty (w.D Z).ntw.Tw := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 (w.D Z).what₂.LL)`. Conclude with `⟨nch.twI ((w.D Z).plEq.symm ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩)⟩`. Take `⟨x, hx, hx'⟩` from `c.row.grp.psi0 u hu0 i true`.
+
+Establish `h2` using `hR i _ hu0 hu`. Establish `h3 : IsFractionRing.map (A` using `(w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := FractionRing ((w.D Z).ntw.O i)) ((w.D Z).ntw.O_inj i) ((w.D Z).ntw.emb0 i x) = IsFractionRing.map (A := (w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := Frac …`. Establish `h4` using `(IsFractionRing.map (A := (w.D Z).ntw.O0 i) (B := (w.D Z).ntw.O i) (K := FractionRing ((w.D Z).ntw.O0 i)) (L := FractionRing ((w.D Z).ntw.O i)) ((w.D Z).ntw.O_inj i)).injective h3`. Establish `h5` using `((w.D Z).ntw.emb0 i).injective h4`. Conclude with `(congrArg (fun z : ↥(w.D Z).LL0 => (z : (w.D Z).what₂.LL)) h5).symm.trans hx`.
+-/
 theorem lvlPsi_at : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ, HEq θ c.a.nt.θ ∧
       GlobalTheory.HeightCounting.RatSide.LvlPsi t.r.z.R t.r.z.F t.r.z.cG θ := by

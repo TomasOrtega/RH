@@ -31,10 +31,18 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def OpenBdd {a : Type} [Fintype a] [DecidableEq a] (H : Subgroup (GL a k)) : Prop :=
   IsOpen (H : Set (GL a k)) ∧ ∃ C : Set (GL a k), IsCompact C ∧ (H : Set (GL a k)) ⊆ C
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subgroup.isOpen_mono h1 isOpen_KOne, _, isCompact_KO, h2⟩`.
+-/
 theorem openBdd_of_le {a : Type} [Fintype a] [DecidableEq a] {H : Subgroup (GL a k)} (h1 : KOne k a ≤ H) (h2 : H ≤ KO k a) :
     OpenBdd H :=
   ⟨Subgroup.isOpen_mono h1 isOpen_KOne, _, isCompact_KO, h2⟩
 
+/- English proof (translation)
+Establish `e : ((H.map f.toMonoidHom : Subgroup (GL b k)) : Set (GL b k)) = f.symm ⁻¹' (H : Set (GL a k))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_map, Set.mem_preimage, MulEquiv.coe_toMonoidHom]`. Conclude with `⟨fun ⟨y, hy, e⟩ => by rw [← e, MulEquiv.symm_apply_apply]; exact hy, fun h => ⟨_, h, MulEquiv.apply_symm_apply _ _⟩⟩`. Take `⟨ho, C, hC, hHC⟩` from `hH`.
+
+Use `⟨e ▸ ho.preimage hf', f '' C, hC.image hf, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Introduce `x hx`. Conclude with `⟨_, hHC hx, MulEquiv.apply_symm_apply _ _⟩`.
+-/
 theorem OpenBdd.map {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {H : Subgroup (GL a k)}
     (hH : OpenBdd H) (f : GL a k ≃* GL b k) (hf : Continuous f) (hf' : Continuous f.symm) : OpenBdd (H.map f.toMonoidHom) := by
   have e : ((H.map f.toMonoidHom : Subgroup (GL b k)) : Set (GL b k)) = f.symm ⁻¹' (H : Set (GL a k)) := by
@@ -48,10 +56,16 @@ theorem OpenBdd.map {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decida
   intro x hx
   exact ⟨_, hHC hx, MulEquiv.apply_symm_apply _ _⟩
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_reindex _ _)`.
+-/
 theorem continuous_reGL {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b) :
     Continuous (reGL (k := k) e) :=
   Continuous.units_map _ (continuous_id.matrix_reindex _ _)
 
+/- English proof (translation)
+Establish `: (reGL (k` using `k) e).symm = reGL e.symm := by`. Use extensionality with `g i j`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `continuous_reGL e.symm`.
+-/
 theorem continuous_reGL_symm {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b) :
     Continuous (reGL (k := k) e).symm := by
   have : (reGL (k := k) e).symm = reGL e.symm := by
@@ -64,6 +78,13 @@ end Local
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Take `⟨m', hm⟩ : ∃ m', D.R.m = m' + 1` from `⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩`. Establish `key : ∀ X : ℕ × ℕ, X = (i, m' + 1) → OpenBdd (givenLevel G t w X)`. Introduce and unpack `_ rfl`. Break down `i with _ | i` into its components or cases. Use `OpenBdd.map ?_ _ (continuous_reGL _) (continuous_reGL_symm _)` and prove the remaining obligations.
+
+Unfold `stepGroup`. Use `split_ifs`. Conclude with `openBdd_of_le (TypeDatum.KOne_le _) (TypeDatum.le_KO _)`. Conclude with `openBdd_of_le (TypeDatum.KOne_le _) (TypeDatum.le_KO _)`. Conclude with `openBdd_of_le KOne_le_KO le_rfl`.
+
+Conclude with `openBdd_of_le KOne_le_KO le_rfl`. Conclude with `key _ (by rw [hm])`.
+-/
 theorem openBdd_givenLevel (t : T) (w : Pl D.host.E) (i : ℕ) : OpenBdd (givenLevel G t w (i, D.R.m)) := by
   obtain ⟨m', hm⟩ : ∃ m', D.R.m = m' + 1 := ⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩
   have key : ∀ X : ℕ × ℕ, X = (i, m' + 1) → OpenBdd (givenLevel G t w X) := by
@@ -78,6 +99,13 @@ theorem openBdd_givenLevel (t : T) (w : Pl D.host.E) (i : ℕ) : OpenBdd (givenL
     · exact openBdd_of_le KOne_le_KO le_rfl
   exact key _ (by rw [hm])
 
+/- English proof (translation)
+Establish `hK : OpenBdd (givenLevel G t w ((locGrid G t w).m, j))`. Take `⟨m', hm⟩ : ∃ m', (locGrid G t w).m = m' + 1` from `⟨(locGrid G t w).m - 1, by omega⟩`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `key : ∀ X : ℕ × ℕ, X = (m' + 1, j' + 1) → OpenBdd (givenLevel G t w X)`. Introduce and unpack `_ rfl`.
+
+Conclude with `openBdd_of_le KOne_le_KO le_rfl`. Conclude with `key _ (by rw [hm])`. Use `OpenBdd.map (OpenBdd.map hK _ ?_ ?_) _ ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `(continuous_const.mul continuous_id).mul continuous_const`.
+
+Conclude with `Continuous.units_map _ (continuous_id.matrix_reindex _ _)`. Conclude with `Continuous.units_map _ (continuous_id.matrix_reindex _ _)`.
+-/
 theorem openBdd_conjLevel (t : T) (w : Pl D.host.E) (g : (locGrid G t w).VertexGroup) {j : ℕ} (h0 : 0 < j)
     (hj : j < (locGrid G t w).m) : OpenBdd (conjLevel (G := locGrid G t w) one_le_sLen (givenLevel G t w) g hj) := by
   have hK : OpenBdd (givenLevel G t w ((locGrid G t w).m, j)) := by
@@ -93,6 +121,9 @@ theorem openBdd_conjLevel (t : T) (w : Pl D.host.E) (g : (locGrid G t w).VertexG
   · exact Continuous.units_map _ (continuous_id.matrix_reindex _ _)
   · exact Continuous.units_map _ (continuous_id.matrix_reindex _ _)
 
+/- English proof (translation)
+The claim follows from `have ho := ProdOpen.isOpen_comap_prodLev V β P h K fun w => (hK w).1 ⟨ho, GlobalTheory.ProdLevCompactC.isCompact_levA V β P h K (fun w => (hK w).2) ho⟩`.
+-/
 theorem isCO_prodLev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {n' : P → ℕ}
     (h : ∀ w, n' w = V.rank) (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (hK : ∀ w, OpenBdd (K w)) :
     IsCO V (prodLev β P h K) :=
@@ -101,6 +132,9 @@ theorem isCO_prodLev (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset 
 
 variable (W : G.Weil) {U : Set T} (S : GridChoice W U) (t : T) (Φ : G.Datum)
 
+/- English proof (translation)
+Take `⟨ho, hb⟩` from `openBdd_conjLevel t w.1 ((repsAt G t w).elt (β w)) h0 hj`. Conclude with `SymImageC.symPr_open_bounded _ ho hb`.
+-/
 theorem openBdd_pr (β : CosFam G t) (w : locPl G t) (j : ℕ) (h0 : 0 < j) (hj : j < D.R.m) :
     OpenBdd ((S.term t Φ β w).pr j h0 hj) := by
   obtain ⟨ho, hb⟩ := openBdd_conjLevel t w.1 ((repsAt G t w).elt (β w)) h0 hj
@@ -108,11 +142,17 @@ theorem openBdd_pr (β : CosFam G t) (w : locPl G t) (j : ℕ) (h0 : 0 < j) (hj 
 
 namespace GridChoice
 
+/- English proof (translation)
+Break down `j with _ | j` into its components or cases. Conclude with `congLev_open_compact _ (isV_Xp G).sd.1 (G.pl.modul_ne_bot sc)`. Conclude with `isCO_prodLev _ _ _ _ _ fun w => openBdd_pr W S t Φ β w (j + 1) j.succ_pos hj`.
+-/
 theorem isCO_levTop (β : CosFam G t) {j : ℕ} (hj : j < D.R.m) : IsCO (G.V (.top j)) (S.levTop t Φ β j hj) := by
   rcases j with _ | j
   · exact congLev_open_compact _ (isV_Xp G).sd.1 (G.pl.modul_ne_bot sc)
   · exact isCO_prodLev _ _ _ _ _ fun w => openBdd_pr W S t Φ β w (j + 1) j.succ_pos hj
 
+/- English proof (translation)
+The claim follows from `isCO_prodLev _ _ _ _ _ fun w => openBdd_givenLevel t w.1 i`.
+-/
 theorem isCO_levRow {i : ℕ} (hi : i ≤ D.R.m) : IsCO (G.V (.grid i D.R.m)) (S.levRow t i hi) :=
   isCO_prodLev _ _ _ _ _ fun w => openBdd_givenLevel t w.1 i
 
@@ -120,12 +160,18 @@ end GridChoice
 
 variable (G) in
 
+/- English proof (translation)
+Establish `h` using `G.isV (X := .top j) hj (fun _ e => by cases e)`. Use `h.sigOK φ` as an intermediate fact. Rewrite `this` using `[h.sig φ]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+-/
 theorem posDef_top {j : ℕ} (hj : j ≤ D.R.m) (φ : D.host.E →+* ℂ) : ((G.V (.top j)).gram.map φ).PosDef := by
   have h := G.isV (X := .top j) hj (fun _ e => by cases e)
   have := h.sigOK φ
   rw [h.sig φ] at this
   exact GlobalTheory.DefiniteQuotient.posDef_of_signature this
 
+/- English proof (translation)
+Establish `h` using `node_isV G hL (X := .grid i D.R.m) ⟨hi, le_rfl⟩`. Use `h.sigOK φ` as an intermediate fact. Rewrite `this` using `[h.sig φ]`. Simplify using `only [Node.neg, Nat.sub_self, Nat.zero_div, Nat.sub_zero] at this`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+-/
 theorem posDef_grid {μ₀ : T} (hL : L.Is μ₀) {i : ℕ} (hi : i ≤ D.R.m) (φ : D.host.E →+* ℂ) :
     ((G.V (.grid i D.R.m)).gram.map φ).PosDef := by
   have h := node_isV G hL (X := .grid i D.R.m) ⟨hi, le_rfl⟩
@@ -134,12 +180,20 @@ theorem posDef_grid {μ₀ : T} (hL : L.Is μ₀) {i : ℕ} (hi : i ≤ D.R.m) (
   simp only [Node.neg, Nat.sub_self, Nat.zero_div, Nat.sub_zero] at this
   exact GlobalTheory.DefiniteQuotient.posDef_of_signature this
 
+/- English proof (translation)
+Take `⟨φ, h, -⟩` from `funForm (K := ℂ) σ`. Conclude with `readOK_of_equiv σ φ fun F => (h F _).2 rfl`.
+-/
 theorem readOK {n : ℕ} (σ : D.what₂.Tau → DomWeight n) : ReadOK σ := by
   obtain ⟨φ, h, -⟩ := funForm (K := ℂ) σ
   exact readOK_of_equiv σ φ fun F => (h F _).2 rfl
 
 namespace GridChoice
 
+/- English proof (translation)
+Establish `hT : ∀ β (j : Fin D.R.m), Finite (FinCl _ (S.levTop t Φ β j j.2)) ∧ ∀ x, gamOrd _ (S.levTop t Φ β j j.2) x ≠ 0` using `fun β j => ClassFin.finite_finCl_and_gamOrd _ _ (posDef_top G j.2.le) (isCO_levTop W S t Φ β j.2)`. Establish `hR : ∀ i : Fin (D.R.m + 1), Finite (FinCl _ (S.levRow t i (Nat.le_of_lt_succ i.2))) ∧ ∀ x, gamOrd _ (S.levRow t i (Nat.le_of_lt_succ i.2)) x ≠ 0` using `fun i => ClassFin.finite_finCl_and_gamOrd _ _ (posDef_grid hL (Nat.le_of_lt_succ i.2)) (isCO_levRow W S t (Nat.le_of_lt_succ i.2))`. Use `⟨fun β => ?_, fun β c => ?_, fun i hi => ⟨wtOK_of_defPair G (.top t i) hi, wtOK_of_defPair G (.chi i D.R.m) ⟨hi, rfl⟩⟩, GlobalTheory.WtInterlaceC.weights_top_grid G, readOK _, readOK _⟩` and prove the remaining obligations. Use `fun j => (hT β j).1` as an intermediate fact. Use `fun i => (hR i).1` as an intermediate fact.
+
+Conclude with `inferInstance`. Unfold `GridChoice.invGam`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => inv_ne_zero (Nat.cast_ne_zero.2 ((hT β j).2 _))) (Finset.prod_ne_zero_iff.2 fun i _ => inv_ne_zero (Nat.cast_ne_zero.2 ((hR i).2 _)))`.
+-/
 theorem sumOK_classes {μ₀ : T} (hL : L.Is μ₀) :
     (∀ β, Finite (S.Classes t Φ β)) ∧ (∀ β (c : S.Classes t Φ β), S.invGam c ≠ 0) ∧
     (∀ i, i < D.R.m → WtOK G (.top t i) ∧ WtOK G (.chi i D.R.m)) ∧

@@ -10,6 +10,9 @@ section aux
 
 variable {A E : Type} [CommRing A] [Ring E] [Algebra A E]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [smul_tmul']`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+-/
 private lemma map_smul_c {B B' : Type} [CommRing B] [Algebra A B] [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B')
     (c : B) (w : B ⊗[A] E) :
     Algebra.TensorProduct.map φ (AlgHom.id A E) (c • w) = φ c • Algebra.TensorProduct.map φ (AlgHom.id A E) w := by
@@ -18,6 +21,9 @@ private lemma map_smul_c {B B' : Type} [CommRing B] [Algebra A B] [CommRing B'] 
   | tmul a b => simp [smul_tmul']
   | add a b ha hb => simp only [smul_add, map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [h]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private lemma map_map_c {B B' B'' : Type} [CommRing B] [Algebra A B] [CommRing B'] [Algebra A B']
     [CommRing B''] [Algebra A B''] (φ : B →ₐ[A] B') (ψ : B' →ₐ[A] B'') (χ : B →ₐ[A] B'') (h : ∀ b, ψ (φ b) = χ b)
     (w : B ⊗[A] E) :
@@ -28,6 +34,15 @@ private lemma map_map_c {B B' B'' : Type} [CommRing B] [Algebra A B] [CommRing B
   | tmul a b => simp [h]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Set `i2 : B →ₐ[A] TrivSqZeroExt B (B × B)` to `IsScalarTower.toAlgHom A B _`. Set `i1 : B →ₐ[A] TrivSqZeroExt B B` to `IsScalarTower.toAlgHom A B _`. Set `z : TrivSqZeroExt B (B × B) ⊗[A] E` to `(TrivSqZeroExt.inr (1, 0) : TrivSqZeroExt B (B × B)) • Algebra.TensorProduct.map i2 (AlgHom.id A E) x + (TrivSqZeroExt.inr (0, 1) : TrivSqZeroExt B (B × B)) • Algebra.TensorProduct.map i2 (AlgHom.id A E) y`. Establish `key : ∀ (g : (B × B) →ₗ[B] B), g (f _ z).snd = (f _ ((TrivSqZeroExt.inr (g (1, 0)) : TrivSqZeroExt B B) • Algebra.TensorProduct.map i1 (AlgHom.id A E) x + (TrivSqZeroExt.inr (g (0, 1)) : TrivSqZeroExt B B) • Algebra.TensorProduct.map i1 (AlgHom.id A E) y)).snd`. Introduce `g`.
+
+Establish `h` using `nat _ _ ((TrivSqZeroExt.map g).restrictScalars A) z`. Establish `hc : ∀ b, ((TrivSqZeroExt.map g).restrictScalars A) (i2 b) = i1 b` using `fun b => (TrivSqZeroExt.map g).commutes b`. Simplify using `only [z, map_add, map_smul_c, map_map_c i2 _ i1 hc] at h`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Simplify using `only [AlgHom.restrictScalars_apply, TrivSqZeroExt.map_inr, TrivSqZeroExt.snd_map] at h2`.
+
+Conclude with `h2.symm`. Establish `ev : ∀ w : B ⊗[A] E, (f _ ((TrivSqZeroExt.inr 1 : TrivSqZeroExt B B) • Algebra.TensorProduct.map i1 (AlgHom.id A E) w)).snd = f B w`. Introduce `w`. Rewrite using `[hom, nat]`. Simplify using `[i1, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Establish `k1` using `key (LinearMap.fst B B B)`. Establish `k2` using `key (LinearMap.snd B B B)`. Establish `k3` using `key (LinearMap.fst B B B + LinearMap.snd B B B)`. Simplify using `only [LinearMap.fst_apply, LinearMap.snd_apply, LinearMap.add_apply, TrivSqZeroExt.inr_zero, zero_smul, add_zero, zero_add, ← smul_add, ← map_add, ev] at k1 k2 k3`. Rewrite using `[← k1, ← k2, ← k3]`.
+-/
 private lemma add_of_homog (f : ∀ (B : Type) [CommRing B] [Algebra A B], B ⊗[A] E → B)
     (nat : ∀ (B B' : Type) [CommRing B] [Algebra A B] [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B') (x : B ⊗[A] E),
       f B' (Algebra.TensorProduct.map φ (AlgHom.id A E) x) = φ (f B x))
@@ -70,6 +85,9 @@ variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A
 private noncomputable def cornerF (B : Type) [CommRing B] [Algebra A B] (z : B ⊗[A] E) : B :=
   D.D B (1 - (1 : B) ⊗ₜ[A] e + (1 : B) ⊗ₜ[A] e * z * (1 : B) ⊗ₜ[A] e)
 
+/- English proof (translation)
+Unfold `cornerF`. Rewrite using `[← D.nat]`. Simplify using the standard rewrite rules.
+-/
 private lemma cornerF_nat (B B' : Type) [CommRing B] [Algebra A B] [CommRing B'] [Algebra A B'] (φ : B →ₐ[A] B')
     (x : B ⊗[A] E) :
     cornerF D e B' (Algebra.TensorProduct.map φ (AlgHom.id A E) x) = φ (cornerF D e B x) := by
@@ -79,20 +97,34 @@ private lemma cornerF_nat (B B' : Type) [CommRing B] [Algebra A B] [CommRing B']
 
 variable {D e}
 
+/- English proof (translation)
+Use `D.nat A[X] B (aeval b) (1 + X ⊗ₜ e)` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this`.
+-/
 private lemma one_add_e (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (B : Type) [CommRing B] [Algebra A B] (b : B) :
     D.D B (1 + b ⊗ₜ e) = 1 + b := by
   have := D.nat A[X] B (aeval b) (1 + X ⊗ₜ e)
   rw [h1] at this
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, he.eq, one_mul]`.
+-/
 private lemma ee (he : IsIdempotentElem e) (B : Type) [CommRing B] [Algebra A B] :
     ((1 : B) ⊗ₜ[A] e) * ((1 : B) ⊗ₜ[A] e) = (1 : B) ⊗ₜ[A] e := by
   rw [Algebra.TensorProduct.tmul_mul_tmul, he.eq, one_mul]
 
+/- English proof (translation)
+Simplify using `[smul_tmul']`.
+-/
 private lemma tmul_eq (B : Type) [CommRing B] [Algebra A B] (b : B) (x : E) :
     b ⊗ₜ[A] x = b • ((1 : B) ⊗ₜ[A] x) := by
   simp [smul_tmul']
 
+/- English proof (translation)
+Unfold `cornerF`. Establish `h` using `one_add_e h1 B (b - 1)`. Rewrite `h` using `[add_sub_cancel]`. Use `conv_rhs => rw [← h, ← map_mul]`. Use `congr 1`.
+
+Rewrite using `[tmul_eq B (b - 1)]`. Establish `h2` using `ee (A := A) he B`. Generalize the expression as in `((1 : B) ⊗ₜ[A] e) = ε at h2 ⊢`. Simplify using `only [add_mul, mul_add, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, ← mul_assoc, h2, sub_smul, one_smul, sub_mul]`. Normalize the expressions using the abelian group laws.
+-/
 private lemma cornerF_hom (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X)
     (B : Type) [CommRing B] [Algebra A B] (b : B) (x : B ⊗[A] E) :
     cornerF D e B (b • x) = b * cornerF D e B x := by
@@ -108,15 +140,24 @@ private lemma cornerF_hom (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ
     one_smul, sub_mul]
   abel
 
+/- English proof (translation)
+The claim follows from `add_of_homog (cornerF D e) (cornerF_nat D e) (cornerF_hom he h1) B x y`.
+-/
 private lemma cornerF_add (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X)
     (B : Type) [CommRing B] [Algebra A B] (x y : B ⊗[A] E) :
     cornerF D e B (x + y) = cornerF D e B x + cornerF D e B y :=
   add_of_homog (cornerF D e) (cornerF_nat D e) (cornerF_hom he h1) B x y
 
+/- English proof (translation)
+Rewrite using `[tmul_eq, cornerF_hom he h1, cornerF, ee he, ee he, sub_add_cancel, map_one, mul_one]`.
+-/
 private lemma cornerF_e (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X)
     (B : Type) [CommRing B] [Algebra A B] (b : B) : cornerF D e B (b ⊗ₜ e) = b := by
   rw [tmul_eq, cornerF_hom he h1, cornerF, ee he, ee he, sub_add_cancel, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[tmul_eq, cornerF_hom he h1]`. Use `congr 1`. Use `cornerF_nat D e A B (Algebra.ofId A B) (1 ⊗ₜ u)` as an intermediate fact. Simplify `this` using `[Algebra.ofId_apply]`.
+-/
 private lemma cornerF_tmul (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X)
     (B : Type) [CommRing B] [Algebra A B] (b : B) (u : E) :
     cornerF D e B (b ⊗ₜ u) = b * algebraMap A B (cornerF D e A (1 ⊗ₜ u)) := by
@@ -125,6 +166,11 @@ private lemma cornerF_tmul (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗�
   have := cornerF_nat D e A B (Algebra.ofId A B) (1 ⊗ₜ u)
   simpa [Algebra.ofId_apply] using this
 
+/- English proof (translation)
+Establish `h : D.D A[X] (1 + X ⊗ₜ u) = cornerF D e A[X] (1 ⊗ₜ e + X ⊗ₜ u)`. Unfold `cornerF`. Use `congr 1`. Simplify using `[mul_add, add_mul, he.eq, hu, ← add_assoc]`. Rewrite `h` using `[cornerF_add he h1, cornerF_e he h1, cornerF_tmul he h1, (d_chi D u).2.2.1]`.
+
+Establish `h2` using `congrArg (fun p => p.coeff 1) h`. Simplify using `only [finset_sum_coeff, coeff_C_mul_X_pow] at h2`. Rewrite `h2` using `[Finset.sum_ite_eq, if_pos (Finset.mem_range.2 (by omega))]`. Simplify `h2` using `[Det.tr, coeff_one]`.
+-/
 private lemma cornerF_tr (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (hn : 1 ≤ n)
     (u : E) (hu : e * u * e = u) : D.tr u = cornerF D e A (1 ⊗ₜ u) := by
   have h : D.D A[X] (1 + X ⊗ₜ u) = cornerF D e A[X] (1 ⊗ₜ e + X ⊗ₜ u) := by
@@ -137,6 +183,13 @@ private lemma cornerF_tr (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ 
   rw [Finset.sum_ite_eq, if_pos (Finset.mem_range.2 (by omega))] at h2
   simpa [Det.tr, coeff_one] using h2
 
+/- English proof (translation)
+Establish `h` using `one_add_e h1 S[X] (X - 1)`. Rewrite `h` using `[add_sub_cancel]`. Establish `h2 : D.D S[X] (X ⊗ₜ 1 - X ⊗ₜ e + 1 ⊗ₜ e) * X = X ^ (n - 1) * X` using `by conv_lhs => enter [2]; rw [← h]`. Rewrite using `[← map_mul, ← pow_succ, Nat.sub_add_cancel hn]`. Use `D.homog S[X] X 1` as an intermediate fact.
+
+Rewrite `this` using `[map_one, mul_one]`. Rewrite using `[← this]`. Use `congr 1`. Simplify using `only [mul_add, add_mul, sub_mul, mul_one, Algebra.TensorProduct.tmul_mul_tmul, he.eq, one_mul, mul_sub, sub_tmul, Algebra.TensorProduct.one_def, smul_tmul', smul_eq_mul]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `(Polynomial.isRegular_X.right) h2`.
+-/
 private lemma compl_e (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (hn : 1 ≤ n)
     (S : Type) [CommRing S] [Algebra A S] :
     D.D S[X] (X ⊗ₜ 1 - X ⊗ₜ e + 1 ⊗ₜ e) = X ^ (n - 1) := by
@@ -154,6 +207,11 @@ private lemma compl_e (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) 
     abel
   exact (Polynomial.isRegular_X.right) h2
 
+/- English proof (translation)
+Establish `hl : e * u = u` using `by rw [← hu, ← mul_assoc, ← mul_assoc, he.eq]`. Establish `hr : u * e = u` using `by rw [← hu, mul_assoc, he.eq]`. Establish `h : cornerF D e S[X] ((X - 1) ⊗ₜ e + (- C s) ⊗ₜ u) = X - C (1 + s * algebraMap A S (D.tr u))`. Rewrite using `[cornerF_add he h1, cornerF_e he h1, cornerF_tmul he h1, ← cornerF_tr he h1 hn u hu]`. Simplify using `[Polynomial.algebraMap_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h, ← compl_e he h1 hn, cornerF, ← map_mul, Det.chiS]`. Use `congr 1`. Simplify using `only [mul_add, add_mul, sub_mul, mul_one, Algebra.TensorProduct.tmul_mul_tmul, he.eq, one_mul, mul_sub, sub_tmul, Algebra.TensorProduct.one_def, hr, hl, map_add, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply, IsScalarTower.toAlgHom_apply, Polynomial.algebraMap_eq, neg_ …`. Normalize the expressions using the abelian group laws.
+-/
 private lemma chiS_corner (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (hn : 1 ≤ n)
     (S : Type) [CommRing S] [Algebra A S] (s : S) (u : E) (hu : e * u * e = u) :
     D.chiS S (1 ⊗ₜ e + s ⊗ₜ u) = X ^ (n - 1) * (X - C (1 + s * algebraMap A S (D.tr u))) := by
@@ -170,6 +228,17 @@ private lemma chiS_corner (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ
       AlgHom.id_apply, IsScalarTower.toAlgHom_apply, Polynomial.algebraMap_eq, neg_tmul, mul_neg, neg_mul]
   abel
 
+/- English proof (translation)
+Establish `hl : e * u = u` using `by rw [← hu, ← mul_assoc, ← mul_assoc, he.eq]`. Establish `hr : u * e = u` using `by rw [← hu, mul_assoc, he.eq]`. Set `s : TrivSqZeroExt A A` to `TrivSqZeroExt.inr 1`. Establish `hs : s * s = 0` using `TrivSqZeroExt.inr_mul_inr _ _ _`. Establish `h` using `(d_chS D (TrivSqZeroExt A A)).1 (1 ⊗ₜ e + s ⊗ₜ u)`.
+
+Rewrite `h` using `[chiS_corner he h1 hn _ s u hu, show D.CH = ⊥ from hD]`. Establish `h0` using `(Submodule.span_le (p := ⊥)).2 (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `: z = 0` using `by simpa using hz`. Simplify using `[this]) h`.
+
+Rewrite `h0` using `[Submodule.mem_bot, map_mul, map_pow, map_sub, aeval_X, aeval_C]`. Establish `h2 : ((1 ⊗ₜ e + s ⊗ₜ u : TrivSqZeroExt A A ⊗[A] E) - algebraMap (TrivSqZeroExt A A) _ (1 + s * algebraMap A _ (D.tr u))) * (1 ⊗ₜ e) = s ⊗ₜ (u - D.tr u • e)`. Simplify using `only [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, sub_mul, add_mul, Algebra.TensorProduct.tmul_mul_tmul, he.eq, hr, mul_one, one_mul, add_tmul, tmul_sub]`. Rewrite using `[← smul_tmul, Algebra.smul_def, mul_comm s]`. Normalize the expressions using the abelian group laws.
+
+Establish `h3 : ∀ k : ℕ, (1 ⊗ₜ e + s ⊗ₜ u : TrivSqZeroExt A A ⊗[A] E) ^ k * (s ⊗ₜ (u - D.tr u • e)) = s ⊗ₜ (u - D.tr u • e)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ', mul_assoc, ih, add_mul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, hs, zero_tmul, add_zero, one_mul, mul_sub, hl, mul_smul_comm, he.eq]`. Establish `h4` using `congrArg (· * ((1 : TrivSqZeroExt A A) ⊗ₜ[A] e)) h0`. Simplify using `only [mul_assoc, h2, h3, zero_mul] at h4`. Establish `h5` using `congrArg (fun w => TensorProduct.lid A E ((TrivSqZeroExt.sndHom A A).rTensor E w)) h4`. Simplify `h5` using `[s, sub_eq_zero]`.
+-/
 private lemma corner_eq (hD : D.IsCH) (he : IsIdempotentElem e) (h1 : D.D A[X] (1 + X ⊗ₜ e) = 1 + X) (hn : 1 ≤ n)
     (u : E) (hu : e * u * e = u) : u = D.tr u • e := by
   have hl : e * u = u := by rw [← hu, ← mul_assoc, ← mul_assoc, he.eq]
@@ -204,6 +273,15 @@ private lemma corner_eq (hD : D.IsCH) (he : IsIdempotentElem e) (h1 : D.D A[X] (
 
 end aux2
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D e hD he h1 hn`. Establish `h4 : ∀ a : A, D.D A[X] (1 + X ⊗ₜ (a • e)) = 1 + C a * X`. Introduce `a`. Rewrite using `[← smul_tmul, one_add_e h1, Polynomial.smul_eq_C_mul]`. Use `⟨fun x => ?_, ?_, fun a ha => ?_, h4⟩` and prove the remaining obligations.
+
+Establish `h` using `corner_eq hD he h1 hn (e * x * e) (by`. Rewrite using `[← mul_assoc, ← mul_assoc, he.eq, mul_assoc _ e e, he.eq])`. Establish `h2 : D.tr (e * x * e) = D.tr (e * x)`. Rewrite using `[Det.tr, (d_tr D).2.1 1 (e * x) e, ← mul_assoc, he.eq, Det.tr]`. Rewrite using `[← h2]`.
+
+Conclude with `h`. Rewrite using `[cornerF_tr he h1 hn e (by rw [he.eq, he.eq]), cornerF_e he h1]`. Establish `h` using `h4 a`. Rewrite `h` using `[ha, tmul_zero, add_zero, map_one]`. Establish `h2` using `congrArg (fun p => p.coeff 1) h`.
+
+Simplify `h2.symm` using `[coeff_one]`.
+-/
 theorem UpperTheory.V.CA.d_corner :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E), D.IsCH → IsIdempotentElem e → D.D A[X] (1 + X ⊗ₜ e) = 1 + X → 1 ≤ n → (∀ x, e * x * e = D.tr (e * x) • e) ∧ D.tr e = 1 ∧ (∀ a : A, a • e = 0 → a = 0) ∧ ∀ a : A, D.D A[X] (1 + X ⊗ₜ (a • e)) = 1 + C a * X := by
   intro n A E _ _ _ D e hD he h1 hn

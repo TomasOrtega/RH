@@ -127,8 +127,14 @@ def IsThetaQ (ρ : Representation A (GV n w) M) (C : ∀ j, Subgroup 𝓀[(w j).
     dc (ρ.comp (atJ n w j)) (iwC _ n (C j)) (iwC _ n (C j)) (diagT _ (Fin n) t) m) ∧
   ∀ j j' t t', Commute (Θ j t) (Θ j' t')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem UIw_eq : UIw n w = UC n w fun _ => ⊤ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem UIw1_eq (l : ℕ) : UIw1 l n w = UC n w fun _ => ellC l _ := rfl
 
 end Prod

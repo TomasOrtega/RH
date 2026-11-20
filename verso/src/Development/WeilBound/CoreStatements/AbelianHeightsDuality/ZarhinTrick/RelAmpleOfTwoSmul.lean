@@ -22,6 +22,9 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
+/- English proof (translation)
+The claim follows from `Z2.relAmple_of_two_smul hG hM hN d hd e h`.
+-/
 theorem relAmple_of_two_smul {G : Over (Sp Ω)} [GrpObj G] (hG : IsAbelianScheme G) {M N : LB G.left}
     (hM : M.IsLB) (hN : N.IsLB) (d : ℕ) (hd : 1 ≤ d) (e : d • cls M hM = d • cls N hN) (h : Out.RelAmple G N) :
     Out.RelAmple G M :=

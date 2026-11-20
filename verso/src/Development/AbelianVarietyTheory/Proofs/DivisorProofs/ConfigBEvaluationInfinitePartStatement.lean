@@ -14,6 +14,9 @@ open Formalism.L2.Host (aboveF)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.UnrSuppB.evShift_vac | exact GlobalTheory.ThK.UnrSuppB.evShift_vac | (intros; apply GlobalTheory.ThK.UnrSuppB.evShift_vac <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.config_b_evaluation_infinite_part : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {a b : ℕ} (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), B.IsGood σ → G.IsGood B → G₁.IsGood B → CfgB B G G₁ H H' →

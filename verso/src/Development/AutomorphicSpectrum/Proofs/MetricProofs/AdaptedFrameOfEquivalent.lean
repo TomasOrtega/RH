@@ -17,6 +17,9 @@ namespace LatEmb
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' n g : ℕ} {Λ : Type}
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
 
+/- English proof (translation)
+Establish `h : C.perExt R' = (k.toLinearMap.restrictScalars ℝ) ∘ₗ C.perExt R`. Use `C.bas.ext fun i => ?_` and prove the remaining obligations. Simplify using `[perExt, Module.Basis.constr_basis, hk]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem perExt_of_coord {R R' : RiemLat E g Λ} (k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hk : ∀ x, R'.P x = k (R.P x))
     (y : Ψ → Fin (j + j') → ℂ) : C.perExt R' y = k (C.perExt R y) := by
   have h : C.perExt R' = (k.toLinearMap.restrictScalars ℝ) ∘ₗ C.perExt R := by
@@ -25,16 +28,27 @@ theorem perExt_of_coord {R R' : RiemLat E g Λ} (k : (Fin g → ℂ) ≃ₗ[ℂ]
   rw [h]
   rfl
 
+/- English proof (translation)
+Simplify using `only [pPart, C.perExt_of_coord k hk, map_smul, map_sub]`.
+-/
 theorem pPart_of_coord {R R' : RiemLat E g Λ} (k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hk : ∀ x, R'.P x = k (R.P x))
     (τ : Ψ) (y : Fin (j + j') → ℂ) : C.pPart R' τ y = k (C.pPart R τ y) := by
   simp only [pPart, C.perExt_of_coord k hk, map_smul, map_sub]
 
+/- English proof (translation)
+Simplify using `only [pBar, C.perExt_of_coord k hk, map_smul, map_add]`.
+-/
 theorem pBar_of_coord {R R' : RiemLat E g Λ} (k : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hk : ∀ x, R'.P x = k (R.P x))
     (τ : Ψ) (y : Fin (j + j') → ℂ) : C.pBar R' τ y = k (C.pBar R τ y) := by
   simp only [pBar, C.perExt_of_coord k hk, map_smul, map_add]
 
 end LatEmb
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R R' A hA hE`. Take `⟨k, hk⟩` from `hE`. Establish `hk' : ∀ x, R'.P x = k (R.P x)` using `fun x => hk x`. Use `⟨hA.unit, fun τ v => ?_, fun τ v => ?_⟩` and prove the remaining obligations. Rewrite using `[C.pPart_of_coord k hk', hA.ker, map_zero]`.
+
+Rewrite using `[C.pBar_of_coord k hk', hA.kerBar, map_zero]`.
+-/
 theorem isAdapted_of_eqvBy : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R R' : RiemLat E g Λ) (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), C.IsAdapted R A → R.EqvBy R' 1 → C.IsAdapted R' A := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C R R' A hA hE
   obtain ⟨k, hk⟩ := hE

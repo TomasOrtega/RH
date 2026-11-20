@@ -21,16 +21,25 @@ abbrev ev (k : Type) [Field k] (n : ℕ) : (∀ _ : Fin 1, GL (Fin n) k) →* GL
 
 abbrev lv (τ : Representation ℂ (GL (Fin n) k) X) : Representation ℂ (∀ _ : Fin 1, GL (Fin n) k) X := τ.comp (ev k n)
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by rw [stdBlocks_val, Subsingleton.elim a 0]; simp)`.
+-/
 theorem stdBlocks_one (h : ∑ _ : Fin 1, n = n) (a : Fin 1) (i : Fin n) :
     stdBlocks (fun _ : Fin 1 => n) h ⟨a, i⟩ = i :=
   Fin.ext (by rw [stdBlocks_val, Subsingleton.elim a 0]; simp)
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `leviEmb_apply_same k (stdBlocks (fun _ : Fin 1 => n) h) g 0 i j` as an intermediate fact. Rewrite `this` using `[stdBlocks_one, stdBlocks_one]`. Then use the resulting hypothesis.
+-/
 theorem leviEmb_one (h : ∑ _ : Fin 1, n = n) (g : ∀ _ : Fin 1, GL (Fin n) k) :
     leviEmb k (stdBlocks (fun _ : Fin 1 => n) h) g = g 0 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   have := leviEmb_apply_same k (stdBlocks (fun _ : Fin 1 => n) h) g 0 i j
   rwa [stdBlocks_one, stdBlocks_one] at this
 
+/- English proof (translation)
+Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `(mem_unipRad.1 hu).2 0 i j` as an intermediate fact. Rewrite `this` using `[stdBlocks_one, stdBlocks_one]`. Then use the resulting hypothesis.
+-/
 theorem unipRad_one (h : ∑ _ : Fin 1, n = n) : unipRad k (stdBlocks (fun _ : Fin 1 => n) h) = ⊥ := by
   refine (Subgroup.eq_bot_iff_forall _).2 fun u hu => Units.ext (Matrix.ext fun i j => ?_)
   have := (mem_unipRad.1 hu).2 0 i j
@@ -77,15 +86,24 @@ def subrepComp (τ : Representation ℂ (GL (Fin n) k) X) :
   right_inv _ := rfl
   map_rel_iff' := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(subrepComp τ).isSimpleOrder_iff.2 h`.
+-/
 theorem isIrreducible_comp {τ : Representation ℂ (GL (Fin n) k) X} (h : τ.IsIrreducible) :
     (lv τ).IsIrreducible := (subrepComp τ).isSimpleOrder_iff.2 h
 
+/- English proof (translation)
+Rewrite using `[← jhMult_congr_left (piTensorEquiv τ), ← jhMult_congr_right _ (jacEquiv h π)]`.
+-/
 theorem jhMult_one (h : ∑ _ : Fin 1, n = n) (τ : Representation ℂ (GL (Fin n) k) X)
     (π : Representation ℂ (GL (Fin n) k) V) :
     jhMult (piTensor fun _ : Fin 1 => τ) (jac (stdBlocks (fun _ : Fin 1 => n) h) π) =
       jhMult (lv τ) (lv π) := by
   rw [← jhMult_congr_left (piTensorEquiv τ), ← jhMult_congr_right _ (jacEquiv h π)]
 
+/- English proof (translation)
+Substitute `hyx` using the available equality. Use `(jhMult_one hy x.rep π).trans ?_` and prove the remaining obligations. Rewrite using `[jhMult_congr_right _ (compEquiv φ (ev k x.1))]`. Conclude with `jhMult_self (isIrreducible_comp x.2.rep.irr)`.
+-/
 theorem jm_eq_one (x : IrrGL k) (π : Representation ℂ (GL (Fin x.1) k) V) (φ : π.Equiv x.rep)
     (y : Fin 1 → IrrGL k) (hy : ∑ a, (y a).1 = x.1) (hyx : y = fun _ => x) : jm y hy π = 1 := by
   subst hyx
@@ -93,6 +111,13 @@ theorem jm_eq_one (x : IrrGL k) (π : Representation ℂ (GL (Fin x.1) k) V) (φ
   rw [jhMult_congr_right _ (compEquiv φ (ev k x.1))]
   exact jhMult_self (isIrreducible_comp x.2.rep.irr)
 
+/- English proof (translation)
+Take `⟨z, rfl⟩ : ∃ z, y = fun _ => z` from `⟨y 0, funext fun a => by rw [Subsingleton.elim a 0]⟩`. Take `⟨d, c⟩` from `z`. Take `⟨m, b⟩` from `x`. Take `rfl : d = m` from `by simpa using hy`. Establish `h0 : jhMult (lv c.rep.ρ) (lv π) ≠ 0`.
+
+Rewrite using `[← jhMult_one hy]`. Conclude with `ENat.one_le_iff_ne_zero.1 h`. Establish `hπ : π.IsIrreducible` using `isIrreducible_of_equiv φ.symm b.rep.irr`. Take `⟨E⟩` from `(jhMult_ne_zero_iff.1 h0).nonempty_equiv (isIrreducible_comp c.rep.irr) (isIrreducible_comp hπ)`. Set `f : π.IntertwiningMap c.rep.ρ` to `⟨E.toLinearEquiv.toLinearMap, fun g => LinearMap.ext fun v => E.toIntertwiningMap.isIntertwining _ _ (fun _ => g) v⟩`.
+
+Establish `E' : c.rep.ρ.Equiv b.rep.ρ` using `(equivOfBijective f E.toLinearEquiv.bijective).symm.trans φ`. Conclude with `congrArg (Sigma.mk d) (irrCl_eq_iff.2 ⟨E'⟩)`.
+-/
 theorem eq_of_one_le_jm (x : IrrGL k) (π : Representation ℂ (GL (Fin x.1) k) V) (φ : π.Equiv x.rep)
     (y : Fin 1 → IrrGL k) (hy : ∑ a, (y a).1 = x.1) (h : 1 ≤ jm y hy π) : y 0 = x := by
   obtain ⟨z, rfl⟩ : ∃ z, y = fun _ => z := ⟨y 0, funext fun a => by rw [Subsingleton.elim a 0]⟩
@@ -109,10 +134,18 @@ theorem eq_of_one_le_jm (x : IrrGL k) (π : Representation ℂ (GL (Fin x.1) k) 
   have E' : c.rep.ρ.Equiv b.rep.ρ := (equivOfBijective f E.toLinearEquiv.bijective).symm.trans φ
   exact congrArg (Sigma.mk d) (irrCl_eq_iff.2 ⟨E'⟩)
 
+/- English proof (translation)
+The claim follows from `funext fun a => by show ρ.nu (((Fin.rev (a : Fin 1) : Fin 1) : ℕ) : ℂ) = ρ simp [Fin.val_eq_zero]`.
+-/
 theorem dec_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : dec (Segment.single ρ hρ) = fun _ => ρ := funext fun a => by
   show ρ.nu (((Fin.rev (a : Fin 1) : Fin 1) : ℕ) : ℂ) = ρ
   simp [Fin.val_eq_zero]
 
+/- English proof (translation)
+Introduce `h`. Establish `hne : unipRad k (stdBlocks (fun a => (y a).1) hy) ≠ ⊥` using `CuspMax.unipRad_ne_bot_iff.2 ⟨stdBlocks (fun a => (y a).1) hy ⟨0, ⟨0, (hc 0).1⟩⟩, stdBlocks (fun a => (y a).1) hy ⟨1, ⟨0, (hc 1).1⟩⟩, by simp⟩`. Use `hπ.2 _ _ _ hne` as an intermediate fact. Establish `hn : Nontrivial (PiTensorProduct ℂ fun a => (y a).2.rep.V)` using `GlobalTheory.ProdSupport.nontrivial_piTensor _ fun a => Model.nontrivial_of_isIrreducible (y a).2.rep.irr`. Take `⟨S, f, hf⟩` from `jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h)`.
+
+Conclude with `not_subsingleton _ hf.subsingleton`.
+-/
 theorem not_one_le_jm {N c : ℕ} {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsCuspidal π)
     (y : Fin (c + 2) → IrrGL k) (hy : ∑ a, (y a).1 = N) (hc : ∀ a, (y a).IsCusp) : ¬ 1 ≤ jm y hy π := by
   intro h
@@ -124,6 +157,13 @@ theorem not_one_le_jm {N c : ℕ} {π : Representation ℂ (GL (Fin N) k) V} (h�
   obtain ⟨S, f, hf⟩ := jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h)
   exact not_subsingleton _ hf.subsingleton
 
+/- English proof (translation)
+Take `⟨ρ, hρ, rfl⟩ : ∃ ρ hρ, Δ = Segment.single ρ hρ` from `⟨Δ.first, Δ.isCusp_first, Segment.ext_first rfl h⟩`. Introduce `N V _ _ π hπ`. Choose the witnesses or unpack the hypotheses as in `rfl : ρ.1 = N := by`. Use `hπ.deg_eq` as an intermediate fact. Simplify `this` using `[Segment.deg, Segment.single, Segment.ofFirst]`.
+
+Take `⟨φ⟩` from `(single_spec hρ).2.1.unique hπ`. Use `⟨fun hd => jm_eq_one ρ π φ _ hd (dec_single ρ hρ), fun c y hy hc h1 => ?_⟩` and prove the remaining obligations. Break down `c with _ | _ | c` into its components or cases. Conclude with `absurd hy (by simpa using hρ.1.ne)`. Establish `key : ∀ (z : Fin 1 → IrrGL k) (hz : ∑ a, (z a).1 = ρ.1), 1 ≤ jm z hz π → ∀ a, z a = ρ` using `fun z hz h1 a => by`.
+
+Rewrite using `[Subsingleton.elim a 0]`. Conclude with `eq_of_one_le_jm ρ π φ z hz h1`. Conclude with `⟨rfl, fun a => (key y hy h1 a).trans (congrFun (dec_single ρ hρ) _).symm⟩`. Conclude with `absurd h1 (not_one_le_jm (isCuspidal_of_equiv φ.symm hρ.2) y hy hc)`.
+-/
 theorem fineJac_one (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) (h : Δ.len = 1) : FineJac Δ := by
   obtain ⟨ρ, hρ, rfl⟩ : ∃ ρ hρ, Δ = Segment.single ρ hρ :=
     ⟨Δ.first, Δ.isCusp_first, Segment.ext_first rfl h⟩

@@ -8,6 +8,13 @@ namespace UpperTheory.SubRep
 variable {S T : Scheme.{0}} {A : Over S} [GrpObj A] {x : T ⟶ S} {A₁ : Over T} [GrpObj A₁]
   {φ₁ : A₁.left ⟶ A.left}
 
+/- English proof (translation)
+Establish `hP'` using `hP`. Unfold `IsGrpPullback at hP'`. Take `⟨hPb, -⟩` from `hP'`. Establish `hw : a.left ≫ A.hom = t ≫ x` using `by rw [Over.w a, ht]`. Use `⟨Over.homMk (hPb.lift a.left t hw) (hPb.lift_snd _ _ _), hPb.lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `g' hg'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hPb.hom_ext` to reduce the goal to its premises. Rewrite using `[hg']`. Conclude with `(hPb.lift_fst _ _ _).symm`.
+
+Conclude with `(Over.w g').trans (hPb.lift_snd _ _ _).symm`.
+-/
 theorem pull_existsUnique (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left ⟶ T)
     (ht : t ≫ x = T'.hom) (a : T' ⟶ A) :
     ∃! g : Over.mk t ⟶ A₁, g.left ≫ φ₁ = a.left := by
@@ -23,12 +30,20 @@ theorem pull_existsUnique (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t :
     exact (hPb.lift_fst _ _ _).symm
   · exact (Over.w g').trans (hPb.lift_snd _ _ _).symm
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hP.1.hom_ext h` to reduce the goal to its premises. Rewrite using `[Over.w g, Over.w g']`.
+-/
 theorem pull_ext (hP : IsGrpPullback A₁ A x φ₁) {T' : Over T} {g g' : T' ⟶ A₁}
     (h : g.left ≫ φ₁ = g'.left ≫ φ₁) : g = g' := by
   apply Over.OverMorphism.ext
   apply hP.1.hom_ext h
   rw [Over.w g, Over.w g']
 
+/- English proof (translation)
+Establish `hP'` using `hP`. Unfold `IsGrpPullback at hP'`. Take `⟨-, hPm⟩` from `hP'`. Set `e : Over.mk (t ≫ x) ⟶ T'` to `Over.homMk (𝟙 _) (by rw [Category.id_comp]; exact ht.symm)`. Establish `key` using `hPm (Over.mk t) g g' (e ≫ a) (e ≫ a') (by rw [Over.comp_left, ← h]; exact Category.id_comp _) (by rw [Over.comp_left, ← h']; exact Category.id_comp _)`.
+
+Rewrite `key` using `[← MonObj.comp_mul, Over.comp_left]`. Rewrite using `[← key]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem pull_mul (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left ⟶ T)
     (ht : t ≫ x = T'.hom) {g g' : Over.mk t ⟶ A₁} {a a' : T' ⟶ A}
     (h : g.left ≫ φ₁ = a.left) (h' : g'.left ≫ φ₁ = a'.left) :
@@ -44,6 +59,13 @@ theorem pull_mul (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left 
   rw [← key]
   exact (Category.id_comp _).symm
 
+/- English proof (translation)
+Establish `hP'` using `hP`. Unfold `IsGrpPullback at hP'`. Take `⟨hPb, -⟩` from `hP'`. Establish `hw : ((1 : Over.mk t ⟶ A₁).left ≫ φ₁) ≫ A.hom = T'.hom`. Rewrite using `[Category.assoc, hPb.w, ← Category.assoc, Over.w (1 : Over.mk t ⟶ A₁)]`.
+
+Conclude with `ht`. Set `c : T' ⟶ A` to `Over.homMk _ hw`. Establish `hc` using `pull_mul hP T' t ht (g := 1) (g' := 1) (a := c) (a' := c) rfl rfl`. Rewrite `hc` using `[_root_.mul_one]`. Establish `hcc : c * c = c`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hc.symm`. Establish `h1 : c = 1` using `mul_eq_left.mp hcc`. Use `show c.left = _`. Rewrite using `[h1]`.
+-/
 theorem pull_one (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left ⟶ T)
     (ht : t ≫ x = T'.hom) : (1 : Over.mk t ⟶ A₁).left ≫ φ₁ = (1 : T' ⟶ A).left := by
   have hP' := hP
@@ -62,6 +84,13 @@ theorem pull_one (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left 
   show c.left = _
   rw [h1]
 
+/- English proof (translation)
+Establish `hP'` using `hP`. Unfold `IsGrpPullback at hP'`. Take `⟨hPb, -⟩` from `hP'`. Establish `hw : ((g⁻¹).left ≫ φ₁) ≫ A.hom = T'.hom`. Rewrite using `[Category.assoc, hPb.w, ← Category.assoc, Over.w (g⁻¹)]`.
+
+Conclude with `ht`. Set `c : T' ⟶ A` to `Over.homMk _ hw`. Establish `hc` using `pull_mul hP T' t ht (g := g) (g' := g⁻¹) (a := a) (a' := c) h rfl`. Rewrite `hc` using `[_root_.mul_inv_cancel, pull_one hP T' t ht]`. Establish `hac : a * c = 1`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hc.symm`. Establish `h1 : c = a⁻¹` using `eq_inv_of_mul_eq_one_right hac`. Use `show c.left = _`. Rewrite using `[h1]`.
+-/
 theorem pull_inv (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left ⟶ T)
     (ht : t ≫ x = T'.hom) {g : Over.mk t ⟶ A₁} {a : T' ⟶ A}
     (h : g.left ≫ φ₁ = a.left) : (g⁻¹).left ≫ φ₁ = (a⁻¹).left := by
@@ -81,6 +110,9 @@ theorem pull_inv (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left 
   show c.left = _
   rw [h1]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using pull_one hP T' t ht`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `pull_mul hP T' t ht ih h`.
+-/
 theorem pull_pow (hP : IsGrpPullback A₁ A x φ₁) (T' : Over S) (t : T'.left ⟶ T)
     (ht : t ≫ x = T'.hom) {g : Over.mk t ⟶ A₁} {a : T' ⟶ A}
     (h : g.left ≫ φ₁ = a.left) (n : ℕ) : (g ^ n).left ≫ φ₁ = (a ^ n).left := by

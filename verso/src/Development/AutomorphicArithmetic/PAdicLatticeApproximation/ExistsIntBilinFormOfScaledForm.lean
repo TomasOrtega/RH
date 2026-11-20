@@ -4,6 +4,15 @@ open NumberField
 open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGeo UpperTheory.Gal.W2.Wit
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p _ D X`. Establish `h : ∀ u w : X.lat, (((X.s * X.B (u : VQ D) (w : VQ D)).num : ℤ) : ℚ) = X.s * X.B (u : VQ D) (w : VQ D)` using `fun u w => Rat.coe_int_num_of_den_eq_one (UpperTheory.scaled_form_den_eq_one_on_lattice p D X u w u.2 w.2)`. Use `⟨LinearMap.mk₂ ℤ (fun u w : X.lat => (X.s * X.B (u : VQ D) (w : VQ D)).num) ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `u u' w`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Rewrite using `[Int.cast_add, h, h, h, AddSubgroup.coe_add, map_add, LinearMap.add_apply, mul_add]`. Introduce `c u w`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, Int.cast_mul, h, h, AddSubgroup.coe_zsmul, LinearMap.map_smul_of_tower, LinearMap.smul_apply, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `u w w'`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_add, h, h, h, AddSubgroup.coe_add, map_add, mul_add]`. Introduce `c u w`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises.
+
+Rewrite using `[smul_eq_mul, Int.cast_mul, h, h, AddSubgroup.coe_zsmul, LinearMap.map_smul_of_tower, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u w`. Rewrite using `[LinearMap.mk₂_apply]`. Conclude with `h u w`.
+-/
 theorem UpperTheory.exists_int_bilinForm_of_scaled_form :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D), ∃ E : LinearMap.BilinForm ℤ X.lat, ∀ u w : X.lat, ((E u w : ℤ) : ℚ) = X.s * X.B (u : VQ D) (w : VQ D) := by
   intro p _ D X

@@ -9,6 +9,9 @@ namespace UpperTheory.V.Ws.Lk
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
+/- English proof (translation)
+Rewrite using `[T.hL]`. Conclude with `le_sup_right`.
+-/
 theorem K_le (T : Tower D) : T.K ≤ T.L := by
   rw [T.hL]
   exact le_sup_right
@@ -91,6 +94,9 @@ structure OCh (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) where
 def OCh.cb {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (X : OCh T c' h) (i : Fin 4) : G T.L Ω →* (ResidueField c'.O)ˣ :=
   W.pushCh (residue c'.O) (X.κ * W.pushCh (inc h) ((chi D T.pr i).comp (resQ T.L)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem OCh.cb_val {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (X : OCh T c' h) (i : Fin 4) (g : G T.L Ω) :
     (X.cb i g : ResidueField c'.O) = residue c'.O (X.κ g * inc h (chi D T.pr i (resQ T.L g))) := rfl
 

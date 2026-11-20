@@ -5,6 +5,15 @@ open scoped ENNReal
 
 namespace GlobalTheory.FibreParts
 
+/- English proof (translation)
+Establish `hP : (∫⁻ x, ENNReal.ofReal (φ x) ∂μ) ≠ ⊤` using `hφ.lintegral_lt_top.ne`. Establish `hN : (∫⁻ x, ENNReal.ofReal (-φ x) ∂μ) ≠ ⊤` using `hφ.neg.lintegral_lt_top.ne`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hφ]`. Generalize the expression as in `(∫⁻ x, ENNReal.ofReal (φ x) ∂μ) = P at hP ⊢`. Generalize the expression as in `(∫⁻ x, ENNReal.ofReal (-φ x) ∂μ) = N at hN ⊢`.
+
+Establish `hp` using `ENNReal.toReal_nonneg (a := P)`. Establish `hn` using `ENNReal.toReal_nonneg (a := N)`. Rewrite using `[← ENNReal.ofReal_toReal hP, ← ENNReal.ofReal_toReal hN]`. Simplify using `only [ENNReal.toReal_ofReal hp, ENNReal.toReal_ofReal hn]`. Generalize the expression as in `P.toReal = p at hp ⊢`.
+
+Generalize the expression as in `N.toReal = n at hn ⊢`. Break down `le_total p n with h | h` into its components or cases. Rewrite using `[ENNReal.ofReal_of_nonpos (show p - n ≤ 0 by linarith), ← ENNReal.ofReal_add hp (by linarith), add_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[ENNReal.ofReal_of_nonpos (show -(p - n) ≤ 0 by linarith), ← ENNReal.ofReal_add hn (by linarith), add_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lintegral_parts_balance {α : Type} [MeasurableSpace α] (μ : Measure α) (φ : α → ℝ)
     (hφ : Integrable φ μ) :
     (∫⁻ x, ENNReal.ofReal (φ x) ∂μ) + ENNReal.ofReal (-(∫ x, φ x ∂μ)) =
@@ -30,6 +39,21 @@ theorem lintegral_parts_balance {α : Type} [MeasurableSpace α] (μ : Measure �
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `α _ μ a G φ hφ hG`. Substitute `hG` using the available equality. Establish `habs : ∀ x, ENNReal.ofReal |φ x| = ‖φ x‖ₑ` using `fun x => by`. Rewrite using `[← Real.norm_eq_abs, ofReal_norm_eq_enorm]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Use `⟨?_, fun hfin => ?_⟩` and prove the remaining obligations. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Simplify using `only [habs]`. Rewrite using `[← Real.norm_eq_abs, ofReal_norm_eq_enorm]`. Conclude with `enorm_integral_le_lintegral_enorm _`.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hpos : ENNReal.ofReal |a| ≠ 0`. Simplify using `using ha`.
+
+Establish `hint : Integrable φ μ`. Use `⟨hφ.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Simplify using `only [habs] at hfin`. Rewrite using `[lt_top_iff_ne_top]`.
+
+Introduce `h`. Conclude with `hfin (by rw [h, ENNReal.mul_top hpos])`. Establish `m1 : AEMeasurable (fun x => ENNReal.ofReal a * ENNReal.ofReal (φ x)) μ` using `hφ.ennreal_ofReal.const_mul _`. Establish `m2 : AEMeasurable (fun x => ENNReal.ofReal a * ENNReal.ofReal (-φ x)) μ` using `hφ.neg.ennreal_ofReal.const_mul _`. Rewrite using `[lintegral_add_left' m1, lintegral_add_left' m2]`.
+
+Simplify using `only [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Establish `key` using `lintegral_parts_balance μ φ hint`. Generalize the expression as in `(∫⁻ x, ENNReal.ofReal (φ x) ∂μ) = P at key ⊢`. Generalize the expression as in `(∫⁻ x, ENNReal.ofReal (-φ x) ∂μ) = N at key ⊢`. Generalize the expression as in `ENNReal.ofReal (-(∫ x, φ x ∂μ)) = M at key ⊢`.
+
+Generalize the expression as in `ENNReal.ofReal (∫ x, φ x ∂μ) = Q at key ⊢`. Generalize the expression as in `ENNReal.ofReal (-a) = B`. Generalize the expression as in `ENNReal.ofReal a = A`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fibre_parts : ∀ (α : Type) [MeasurableSpace α] (μ : Measure α) (a G : ℝ) (φ : α → ℝ), AEMeasurable φ μ → ∫ x, φ x ∂μ = G → (ENNReal.ofReal |a| * ENNReal.ofReal |G| ≤ ∫⁻ x, ENNReal.ofReal |a| * ENNReal.ofReal |φ x| ∂μ) ∧ ((∫⁻ x, ENNReal.ofReal |a| * ENNReal.ofReal |φ x| ∂μ) ≠ ⊤ → (∫⁻ x, (ENNReal.ofReal a * ENNReal.ofReal (φ x) + ENNReal.ofReal (-a) * ENNReal.ofReal (-φ x)) ∂μ) + (ENNReal.ofReal a * ENNReal.ofReal (-G) + ENNReal.ofReal (-a) * ENNReal.ofReal G) = (∫⁻ x, (ENNReal.ofReal a * ENNReal.ofReal (-φ x) + ENNReal.ofReal (-a) * ENNReal.ofReal (φ x)) ∂μ) + (ENNReal.ofReal a * ENNReal.ofReal G + ENNReal.ofReal (-a) * ENNReal.ofReal (-G))) := by
   intro α _ μ a G φ hφ hG
   subst hG

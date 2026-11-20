@@ -12,6 +12,11 @@ namespace BData
 
 variable {X : BData}
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.lmulM`. Use `measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun l _ => ?_` and prove the remaining obligations. Establish `h1 : Measurable fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r => p.1 i l` using `by fun_prop`.
+
+Establish `h2 : Measurable fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r => p.2 l j` using `by fun_prop`. Conclude with `h1.mul h2`.
+-/
 theorem meas_mul : Measurable fun p : Formalism.QuantumDeterminants.Mt X.k X.r × Formalism.QuantumDeterminants.Mt X.k X.r =>
     Formalism.QuantumDeterminants.lmulM (Matrix.of p.1) p.2 := by
   unfold Formalism.QuantumDeterminants.lmulM

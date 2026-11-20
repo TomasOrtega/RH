@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Establish `h0` using `(D.host.g_prime 0).ne_zero`. Establish `h1` using `(D.host.g_prime 1).ne_zero`. Unfold `Lat.gS`. Check the signs of the components of the expression.
+-/
 theorem gS_ne : (Lat.gS D : ℚ) ≠ 0 := by
   have h0 := (D.host.g_prime 0).ne_zero
   have h1 := (D.host.g_prime 1).ne_zero

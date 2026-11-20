@@ -12,6 +12,9 @@ namespace GlobalTheory
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `h` using `(f.domRestrict P).finrank_range_add_finrank_ker`. Rewrite `h` using `[LinearMap.range_domRestrict, LinearMap.ker_domRestrict, ← Submodule.finrank_map_subtype_eq P, Submodule.map_comap_subtype]`. Conclude with `h`.
+-/
 theorem finrank_map_add_finrank_inf_ker_of_finite {K M N : Type*} [Field K] [AddCommGroup M] [Module K M]
     [AddCommGroup N] [Module K N] (f : M →ₗ[K] N) (P : Submodule K M) [Module.Finite K P] :
     Module.finrank K ↥(P.map f) + Module.finrank K ↥(P ⊓ LinearMap.ker f) = Module.finrank K P := by
@@ -20,6 +23,9 @@ theorem finrank_map_add_finrank_inf_ker_of_finite {K M N : Type*} [Field K] [Add
     ← Submodule.finrank_map_subtype_eq P, Submodule.map_comap_subtype] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← homogeneousSubmodule_one_pow K m, ← homogeneousSubmodule_one_pow K n, ← pow_add, homogeneousSubmodule_one_pow]`. Conclude with `hF`.
+-/
 theorem mem_homogeneousSubmodule_mul_of_add {K σ : Type*} [Field K] {m n : ℕ}
     {F : MvPolynomial σ K} (hF : F.IsHomogeneous (m + n)) :
     F ∈ homogeneousSubmodule σ K m * homogeneousSubmodule σ K n := by
@@ -27,6 +33,21 @@ theorem mem_homogeneousSubmodule_mul_of_add {K σ : Type*} [Field K] {m n : ℕ}
     homogeneousSubmodule_one_pow]
   exact hF
 
+/- English proof (translation)
+Establish `hk : ∀ (l : MvPolynomial σ K), l.IsHomogeneous 1 → l ∈ I → ∀ n, d ≤ n → ∀ H : MvPolynomial σ K, H.IsHomogeneous n → l * H ∈ Ideal.span {G | G ∈ I ∧ G.IsHomogeneous d}`. Introduce `l hl hlI n hn H hH`. Establish `hn' : n = (d - 1) + (n - (d - 1))` using `by omega`. Rewrite `hH` using `[hn']`. Use `Submodule.mul_induction_on (mem_homogeneousSubmodule_mul_of_add hH) ?_ ?_` and prove the remaining obligations.
+
+Introduce `A hA B _`. Rewrite using `[← _root_.mul_assoc]`. Use `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨Ideal.mul_mem_right _ _ hlI, ?_⟩)` and prove the remaining obligations. Establish `h` using `hl.mul hA`. Rewrite `h` using `[show 1 + (d - 1) = d by omega]`. Then use the resulting hypothesis.
+
+Introduce `x y hx hy`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`. Proceed by induction on `e, he using Nat.le_induction with`. Consider the case `base`.
+
+Introduce `F hF`. Conclude with `Ideal.subset_span ⟨hI F, hF.sub hF.rename_isHomogeneous⟩`. Consider the case `succ n hn ih`. Introduce `F hF`. Rewrite `hF` using `[add_comm]`.
+
+Use `Submodule.mul_induction_on (mem_homogeneousSubmodule_mul_of_add hF) ?_ ?_` and prove the remaining obligations. Introduce `l hl G hG`. Establish `hl' : l.IsHomogeneous 1` using `hl`. Establish `hG' : G.IsHomogeneous n` using `hG`. Establish `: l * G - rename t (l * G) = l * (G - rename t G) + (l - rename t l) * rename t G`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (ih G hG')) (hk _ (hl'.sub hl'.rename_isHomogeneous) (hI l) n hn _ hG'.rename_isHomogeneous)`. Introduce `x y hx hy`.
+
+Establish `: x + y - rename t (x + y) = (x - rename t x) + (y - rename t y)`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem hx hy`.
+-/
 theorem sub_rename_mem_span_degree {K σ : Type*} [Field K] (t : σ → σ)
     (I : Ideal (MvPolynomial σ K)) (hI : ∀ F, F - rename t F ∈ I) {d : ℕ} (hd : 1 ≤ d)
     {e : ℕ} (he : d ≤ e) : ∀ F : MvPolynomial σ K, F.IsHomogeneous e →
@@ -69,6 +90,31 @@ theorem sub_rename_mem_span_degree {K σ : Type*} [Field K] (t : σ → σ)
       rw [this]
       exact add_mem hx hy
 
+/- English proof (translation)
+Introduce `σ σ₀ _ _ _ r Q₀ hr`. Take `⟨s, hs⟩` from `hr.hasRightInverse`. Use `haveI : Nonempty σ := ⟨s (Classical.arbitrary _)⟩`. Take `⟨P, hP⟩` from `GlobalTheory.T.exists_polynomial_eval_eq_finrank_homogeneousSubmodule σ`. Take `⟨P₀, hP₀⟩` from `GlobalTheory.T.exists_polynomial_eval_eq_finrank_homogeneousSubmodule σ₀`.
+
+Use `⟨Q₀ + P - P₀, ?_⟩` and prove the remaining obligations. Introduce `K _ I₀ I d hI hd e he`. Establish `hrs : ∀ G : MvPolynomial σ₀ K, rename r (rename s G) = G`. Introduce `G`. Rewrite using `[rename_rename, hs.comp_eq_id, rename_id_apply]`.
+
+Establish `hmem : ∀ F, F ∈ I ↔ rename r F ∈ I₀`. Introduce `F`. Rewrite using `[hI]`. Conclude with `Ideal.mem_comap`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h haveI : Module.Finite K (homogeneousSubmodule σ K e) := Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _) haveI : Module.Finite K ↥(homogeneousSubmodule σ K e ⊓ I.restrictScalars K) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `h1` using `finrank_map_add_finrank_inf_ker_of_finite (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap (homogeneousSubmodule σ K e)`. Establish `h2` using `finrank_map_add_finrank_inf_ker_of_finite (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap (homogeneousSubmodule σ K e ⊓ I.restrictScalars K)`. Establish `e1 : (homogeneousSubmodule σ K e).map (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap = homogeneousSubmodule σ₀ K e`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `IsHomogeneous.rename_isHomogeneous hF`. Introduce `G hG`. Conclude with `⟨rename s G, IsHomogeneous.rename_isHomogeneous hG, hrs G⟩`. Establish `e2 : (homogeneousSubmodule σ K e ⊓ I.restrictScalars K).map (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap = homogeneousSubmodule σ₀ K e ⊓ I₀.restrictScalars K`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Conclude with `⟨IsHomogeneous.rename_isHomogeneous hF.1, (hmem F).1 hF.2⟩`. Introduce `G hG`. Use `⟨rename s G, ⟨IsHomogeneous.rename_isHomogeneous hG.1, (hmem _).2 ?_⟩, hrs G⟩` and prove the remaining obligations.
+
+Rewrite using `[hrs]`. Conclude with `hG.2`. Establish `e3 : homogeneousSubmodule σ K e ⊓ I.restrictScalars K ⊓ LinearMap.ker (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap = homogeneousSubmodule σ K e ⊓ LinearMap.ker (rename r : MvPolynomial σ K →ₐ[K] MvPolynomial σ₀ K).toLinearMap`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `inf_le_inf_right _ inf_le_left`.
+
+Introduce `F hF`. Use `⟨⟨hF.1, (hmem F).2 ?_⟩, hF.2⟩` and prove the remaining obligations. Establish `: rename r F = 0` using `hF.2`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2, e3]`. Rewrite using `[Polynomial.eval_sub, Polynomial.eval_add, ← h, ← hP K e, ← hP₀ K e, ← h1, ← h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `h F hF hFe`. Establish `hA` using `sub_rename_mem_span_degree (s ∘ r) I (fun G => by`. Rewrite using `[hmem, map_sub, ← rename_rename, hrs, sub_self]`. Conclude with `zero_mem _) hd he F hFe`. Establish `hB : Ideal.span {G | G ∈ I₀ ∧ G.IsHomogeneous d} ≤ (Ideal.span {G | G ∈ I ∧ G.IsHomogeneous d}).comap (rename s)`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `G hG`. Use `Ideal.mem_comap.mpr (Ideal.subset_span ⟨(hmem _).2 ?_, hG.2.rename_isHomogeneous⟩)` and prove the remaining obligations. Rewrite using `[hrs]`. Conclude with `hG.1`.
+
+Establish `hC` using `Ideal.mem_comap.mp (hB (h _ ((hmem F).1 hF) hFe.rename_isHomogeneous))`. Rewrite `hC` using `[rename_rename]`. Simplify using `using add_mem hA hC`.
+-/
 theorem regularity_comap_rename_of_surjective :
     ∀ (σ σ₀ : Type) [Finite σ] [Finite σ₀] [Nonempty σ₀] (r : σ → σ₀) (Q₀ : Polynomial ℚ), Function.Surjective r → ∃ Q : Polynomial ℚ, ∀ (K : Type) [Field K] (I₀ : Ideal (MvPolynomial σ₀ K)) (I : Ideal (MvPolynomial σ K)) (d : ℕ), I = I₀.comap (MvPolynomial.rename r) → 1 ≤ d → ∀ e ≥ d, (((Module.finrank K ↥(MvPolynomial.homogeneousSubmodule σ₀ K e ⊓ (I₀).restrictScalars K) : ℕ) : ℚ) = Q₀.eval (e : ℚ) → ((Module.finrank K ↥(MvPolynomial.homogeneousSubmodule σ K e ⊓ (I).restrictScalars K) : ℕ) : ℚ) = Q.eval (e : ℚ)) ∧ ((∀ F ∈ I₀, F.IsHomogeneous e → F ∈ Ideal.span {G | G ∈ I₀ ∧ G.IsHomogeneous d}) → ∀ F ∈ I, F.IsHomogeneous e → F ∈ Ideal.span {G | G ∈ I ∧ G.IsHomogeneous d}) := by
   intro σ σ₀ _ _ _ r Q₀ hr

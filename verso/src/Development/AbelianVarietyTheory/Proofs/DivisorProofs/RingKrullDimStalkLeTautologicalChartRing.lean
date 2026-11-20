@@ -20,6 +20,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart.ChartDim
 
+/- English proof (translation)
+Use `letI : Algebra (FractionRing A) K := FractionRing.liftAlgebra A K`. Use `haveI : IsScalarTower A (FractionRing A) K := FractionRing.isScalarTower_liftAlgebra A K`. Use `haveI : Algebra.QuasiFinite (FractionRing A) K := .of_restrictScalars A _ _`. Use `haveI : Module.Finite (FractionRing A) K := Algebra.QuasiFinite.iff_of_isArtinianRing.1 inferInstance`. Use `haveI : Algebra.IsAlgebraic A (FractionRing A) := IsLocalization.isAlgebraic _ (nonZeroDivisors A)`.
+
+Conclude with `Algebra.IsAlgebraic.trans A (FractionRing A) K`.
+-/
 theorem isAlgebraic_of_quasiFinite (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] [FaithfulSMul A K]
     [Algebra.QuasiFinite A K] : Algebra.IsAlgebraic A K := by
   letI : Algebra (FractionRing A) K := FractionRing.liftAlgebra A K
@@ -29,12 +34,26 @@ theorem isAlgebraic_of_quasiFinite (A K : Type) [CommRing A] [IsDomain A] [Field
   haveI : Algebra.IsAlgebraic A (FractionRing A) := IsLocalization.isAlgebraic _ (nonZeroDivisors A)
   exact Algebra.IsAlgebraic.trans A (FractionRing A) K
 
+/- English proof (translation)
+Use `(trdeg_le_of_injective b hb).trans ?_` and prove the remaining obligations. Rewrite using `[← trdeg_add_eq k A (A := K), trdeg_eq_zero (R := A) (A := K), add_zero]`.
+-/
 theorem trdeg_le (k A B K : Type) [CommRing k] [IsDomain k] [CommRing A] [IsDomain A] [CommRing B] [Field K] [Algebra k A]
     [Algebra k B] [Algebra k K] [Algebra A K] [IsScalarTower k A K] [FaithfulSMul k A] [FaithfulSMul A K]
     [Algebra.IsAlgebraic A K] (b : B →ₐ[k] K) (hb : Function.Injective b) : Algebra.trdeg k B ≤ Algebra.trdeg k A := by
   refine (trdeg_le_of_injective b hb).trans ?_
   rw [← trdeg_add_eq k A (A := K), trdeg_eq_zero (R := A) (A := K), add_zero]
 
+/- English proof (translation)
+Establish `ha` using `FaithfulSMul.algebraMap_injective A K`. Take `⟨p, hp⟩` from `CharP.exists K`. Use `haveI : CharP A p := RingHom.charP _ ha p`. Use `haveI : CharP B p := RingHom.charP _ hb p`. Break down `CharP.char_is_prime_or_zero K p with h | rfl` into its components or cases.
+
+Use `haveI := Fact.mk h`. Use `letI := ZMod.algebra A p`. Use `letI := ZMod.algebra B p`. Use `letI := ZMod.algebra K p`. Use `haveI : IsScalarTower ℤ (ZMod p) A := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+
+Use `haveI : IsScalarTower ℤ (ZMod p) B := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : IsScalarTower (ZMod p) A K := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Algebra.FiniteType (ZMod p) A := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`. Use `haveI : Algebra.FiniteType (ZMod p) B := Algebra.FiniteType.of_restrictScalars_finiteType ℤ _ _`. Take `⟨s, hs⟩` from `Cardinal.lt_aleph0.mp (trdeg_lt_aleph0_of_finiteType (R := ZMod p) (S := A))`.
+
+Take `⟨t, ht⟩` from `Cardinal.lt_aleph0.mp (trdeg_lt_aleph0_of_finiteType (R := ZMod p) (S := B))`. Establish `hle` using `trdeg_le (ZMod p) A B K { b with commutes' := fun r => RingHom.congr_fun (Subsingleton.elim (b.comp (algebraMap (ZMod p) B)) _) r } hb`. Rewrite `hle` using `[hs, ht]`. Rewrite using `[ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field s hs, ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field t ht]`. Conclude with `hle` after adjusting the coercions.
+
+Use `haveI : CharZero A := CharP.charP_to_charZero _ haveI : CharZero B := CharP.charP_to_charZero _ haveI : FaithfulSMul ℤ A := (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.injective_int _)`. Establish `hle` using `trdeg_le ℤ A B K b.toIntAlgHom hb`. Rewrite using `[IntFiniteTypeDim.ringKrullDim_eq_trdeg_add_one A (RingHom.injective_int _), IntFiniteTypeDim.ringKrullDim_eq_trdeg_add_one B (RingHom.injective_int _)]`. Conclude with `WithBot.coe_le_coe.2 (add_le_add_left (OrderHomClass.mono Cardinal.toENat hle) 1)`.
+-/
 theorem ringKrullDim_le_of_isAlgebraic (A B K : Type) [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Field K]
     [Algebra.FiniteType ℤ A] [Algebra.FiniteType ℤ B] [Algebra A K] [FaithfulSMul A K] [Algebra.IsAlgebraic A K]
     (b : B →+* K) (hb : Function.Injective b) : ringKrullDim B ≤ ringKrullDim A := by
@@ -67,10 +86,16 @@ theorem ringKrullDim_le_of_isAlgebraic (A B K : Type) [CommRing A] [IsDomain A] 
       IntFiniteTypeDim.ringKrullDim_eq_trdeg_add_one B (RingHom.injective_int _)]
     exact WithBot.coe_le_coe.2 (add_le_add_left (OrderHomClass.mono Cardinal.toENat hle) 1)
 
+/- English proof (translation)
+The claim follows from `Algebra.FiniteType.of_surjective (Ideal.Quotient.mk I).toIntAlgHom Ideal.Quotient.mk_surjective`.
+-/
 theorem finiteType_int_quotient {A : Type} [CommRing A] [Algebra.FiniteType ℤ A] (I : Ideal A) :
     @Algebra.FiniteType ℤ (A ⧸ I) _ _ (Ring.toIntAlgebra _) :=
   Algebra.FiniteType.of_surjective (Ideal.Quotient.mk I).toIntAlgHom Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Establish `h : Algebra.FiniteType ℤ (MvPolynomial σ A)` using `Algebra.FiniteType.trans (S := A) inferInstance inferInstance`. Use `h` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem finiteType_int_mvPolynomial (A σ : Type) [CommRing A] [Algebra.FiniteType ℤ A] [Finite σ] :
     @Algebra.FiniteType ℤ (MvPolynomial σ A) _ _ (Ring.toIntAlgebra _) := by
   have h : Algebra.FiniteType ℤ (MvPolynomial σ A) := Algebra.FiniteType.trans (S := A) inferInstance inferInstance
@@ -78,6 +103,13 @@ theorem finiteType_int_mvPolynomial (A σ : Type) [CommRing A] [Algebra.FiniteTy
   · rfl
   · exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Use `haveI := RingHom.ker_isPrime a`. Use `haveI := RingHom.ker_isPrime b`. Use `letI := a.toAlgebra`. Use `letI := (RingHom.kerLift a).toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ RingHom.ker a) K := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : Algebra.QuasiFinite A K := ha`. Use `haveI : Algebra.QuasiFinite (A ⧸ RingHom.ker a) K := .of_restrictScalars A _ _`. Use `haveI : FaithfulSMul (A ⧸ RingHom.ker a) K := (faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.kerLift_injective a)`. Use `haveI := isAlgebraic_of_quasiFinite (A ⧸ RingHom.ker a) K`. Use `haveI := finiteType_int_quotient (RingHom.ker a)`.
+
+Use `haveI := finiteType_int_quotient (RingHom.ker b)`. Conclude with `ringKrullDim_le_of_isAlgebraic _ _ K (RingHom.kerLift b) (RingHom.kerLift_injective b)`.
+-/
 theorem ringKrullDim_quotient_ker_le {A B K : Type} [CommRing A] [CommRing B] [Field K]
     [Algebra.FiniteType ℤ A] [Algebra.FiniteType ℤ B] (a : A →+* K) (ha : a.QuasiFinite) (b : B →+* K) :
     ringKrullDim (B ⧸ RingHom.ker b) ≤ ringKrullDim (A ⧸ RingHom.ker a) := by
@@ -94,6 +126,15 @@ theorem ringKrullDim_quotient_ker_le {A B K : Type} [CommRing A] [CommRing B] [F
   haveI := finiteType_int_quotient (RingHom.ker b)
   exact ringKrullDim_le_of_isAlgebraic _ _ K (RingHom.kerLift b) (RingHom.kerLift_injective b)
 
+/- English proof (translation)
+Take `⟨_, ⟨W, hW, rfl⟩, hxW, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Establish `hW : IsAffineOpen W` using `hW`. Establish `h0` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) s hs ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ le_top`. Take `⟨t, ht, h'⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h0`. Establish `hcov` using `hW.self_le_iSup_basicOpen_iff.2 ht hxW`.
+
+Take `⟨⟨g, hg⟩, hxg⟩` from `TopologicalSpace.Opens.mem_iSup.1 hcov`. Establish `hl` using `hW.isLocalization_basicOpen g`. Establish `h1` using `h' g hg Γ(X, X.basicOpen g)`. Establish `h3` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of o)).symm.commRingCatIsoToRingEquiv h1`. Take `⟨φ, -, hφ⟩` from `h3.exists_etale_mvPolynomial`.
+
+Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨y, hxg⟩ : X.basicOpen g)`. Use `haveI := (hW.basicOpen g).isLocalization_stalk ⟨y, hxg⟩`. Use `letI := φ.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin D) o) Γ(X, X.basicOpen g) := hφ`. Use `⟨(algebraMap Γ(X, X.basicOpen g) (X.presheaf.stalk y)).comp φ, RingHom.Flat.comp ?_ ?_, RingHom.QuasiFinite.comp ?_ ?_⟩` and prove the remaining obligations.
+
+Conclude with `(inferInstance : Module.Flat (MvPolynomial (Fin D) o) Γ(X, X.basicOpen g))`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ ((hW.basicOpen g).primeIdealOf ⟨y, hxg⟩).asIdeal.primeCompl)`. Conclude with `RingHom.quasiFinite_algebraMap.2 (.of_isLocalization ((hW.basicOpen g).primeIdealOf ⟨y, hxg⟩).asIdeal.primeCompl)`. Conclude with `(inferInstance : Algebra.QuasiFinite (MvPolynomial (Fin D) o) Γ(X, X.basicOpen g))`.
+-/
 theorem exists_flat_quasiFinite {o : Type} [CommRing o] {X : Scheme.{0}} (s : X ⟶ Sp o) (D : ℕ)
     (hs : SmoothOfRelativeDimension D s) (y : X) :
     ∃ φ : MvPolynomial (Fin D) o →+* X.presheaf.stalk y, φ.Flat ∧ φ.QuasiFinite := by
@@ -119,6 +160,13 @@ theorem exists_flat_quasiFinite {o : Type} [CommRing o] {X : Scheme.{0}} (s : X 
   · exact RingHom.quasiFinite_algebraMap.2 (.of_isLocalization ((hW.basicOpen g).primeIdealOf ⟨y, hxg⟩).asIdeal.primeCompl)
   · exact (inferInstance : Algebra.QuasiFinite (MvPolynomial (Fin D) o) Γ(X, X.basicOpen g))
 
+/- English proof (translation)
+Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing ℤ B`. Take `⟨h, hh, hle⟩` from `DedekindDimFormula.affine_heights ℤ B`. Use `set P := RingHom.ker ((residue R).comp ψ) with hP`. Use `haveI : P.IsPrime := RingHom.ker_isPrime _`.
+
+Take `⟨M, hM⟩` from `Ideal.exists_maximal B`. Establish `h1 : ringKrullDim B ≤ (M.height : WithBot ℕ∞)` using `(ringKrullDim_le_iff_isMaximal_height_le _).2 fun m hm => by rw [hh m, hh M]`. Use `h1.trans ((hle P M).trans (add_le_add_left ?_ _))` and prove the remaining obligations. Use `letI := ψ.toAlgebra`. Use `haveI : Module.Flat B R := hψ`.
+
+Use `haveI : (maximalIdeal R).LiesOver P := ⟨by rw [hP, ← RingHom.comap_ker, ker_residue]; rfl⟩`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim, Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown P (maximalIdeal R)]`. Conclude with `WithBot.coe_le_coe.2 le_self_add`.
+-/
 theorem ringKrullDim_le_add_of_flat {B R : Type} [CommRing B] [IsDomain B] [Algebra.FiniteType ℤ B] [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (ψ : B →+* R) (hψ : ψ.Flat) :
     ringKrullDim B ≤ ringKrullDim R + ringKrullDim (B ⧸ RingHom.ker ((residue R).comp ψ)) := by
@@ -138,6 +186,13 @@ theorem ringKrullDim_le_add_of_flat {B R : Type} [CommRing B] [IsDomain B] [Alge
     Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown P (maximalIdeal R)]
   exact WithBot.coe_le_coe.2 le_self_add
 
+/- English proof (translation)
+Set `t` to `(minimalPrimes.finite_of_isNoetherianRing A).toFinset.erase Q.asIdeal`. Establish `h1 : ¬ t.inf id ≤ Q.asIdeal` using `fun h => by`. Take `⟨I, hI, hle⟩` from `Q.isPrime.inf_le'.1 h`. Take `⟨hne, hI⟩` from `Finset.mem_erase.1 hI`. Rewrite `hI` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `hne (le_antisymm hle (hQ.2 hI.1 hle))`. Take `⟨f, hf, hfQ⟩` from `SetLike.not_le_iff_exists.1 h1`. Take `⟨z, hz, hzU⟩` from `hD.inter_open_nonempty _ (PrimeSpectrum.basicOpen f).isOpen ⟨Q, hfQ⟩`. Take `⟨Q', hQ', hle⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal A)) (J := z.asIdeal) bot_le`. Establish `hQQ : Q' = Q.asIdeal`.
+
+Assume the negation of the conclusion as `hne`. Establish `: t.inf id ≤ Q'` using `Finset.inf_le (f := id) (Finset.mem_erase.2 ⟨hne, (Set.Finite.mem_toFinset _).2 hQ'⟩)`. Conclude with `hz (hle (this hf))`. Conclude with `((PrimeSpectrum.le_iff_specializes Q z).1 (show Q.asIdeal ≤ z.asIdeal from hQQ ▸ hle)).mem_open hU hzU`.
+-/
 theorem mem_of_mem_minimalPrimes {A : Type} [CommRing A] [IsNoetherianRing A] {U : Set (PrimeSpectrum A)} (hU : IsOpen U)
     (hD : Dense U) (Q : PrimeSpectrum A) (hQ : Q.asIdeal ∈ minimalPrimes A) : Q ∈ U := by
   classical
@@ -156,6 +211,11 @@ theorem mem_of_mem_minimalPrimes {A : Type} [CommRing A] [IsNoetherianRing A] {U
     exact hz (hle (this hf))
   exact ((PrimeSpectrum.le_iff_specializes Q z).1 (show Q.asIdeal ≤ z.asIdeal from hQQ ▸ hle)).mem_open hU hzU
 
+/- English proof (translation)
+Establish `hl : LocallyOfFiniteType (Spec.map (Spec.preimage (hU.fromSpec ≫ s)))`. Rewrite using `[Spec.map_preimage]`. Use `infer_instance`. Rewrite `hl` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `h` using `hl.comp (RingHom.finiteType_algebraMap.2 (inferInstance : Algebra.FiniteType ℤ o))`.
+
+Rewrite using `[← RingHom.finiteType_algebraMap]`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem finiteType_sections {o : Type} [CommRing o] [Algebra.FiniteType ℤ o] {S : Scheme.{0}} (s : S ⟶ Sp o)
     [LocallyOfFiniteType s] {U : S.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℤ Γ(S, U) := by
   have hl : LocallyOfFiniteType (Spec.map (Spec.preimage (hU.fromSpec ≫ s))) := by
@@ -166,6 +226,11 @@ theorem finiteType_sections {o : Type} [CommRing o] [Algebra.FiniteType ℤ o] {
   convert h using 1
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Establish `hx : hU.fromSpec P ∈ U`. Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Use `letI : Algebra Γ(S, U) (S.presheaf.stalk (hU.fromSpec P)) := TopCat.Presheaf.algebra_section_stalk S.presheaf (⟨hU.fromSpec P, hx⟩ : U)`. Use `haveI : IsLocalization.AtPrime (S.presheaf.stalk (hU.fromSpec P)) P.asIdeal := hU.isLocalization_stalk' P hx`.
+
+Conclude with `⟨algebraMap _ _, RingHom.quasiFinite_algebraMap.2 (.of_isLocalization P.asIdeal.primeCompl), IsLocalization.AtPrime.under_maximalIdeal _ P.asIdeal, IsLocalization.AtPrime.ringKrullDim_eq_height P.asIdeal _⟩`.
+-/
 theorem exists_stalk_hom {S : Scheme.{0}} {U : S.Opens} (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(S, U)) :
     ∃ a : Γ(S, U) →+* S.presheaf.stalk (hU.fromSpec P), a.QuasiFinite ∧ (maximalIdeal _).comap a = P.asIdeal ∧
       ringKrullDim (S.presheaf.stalk (hU.fromSpec P)) = P.asIdeal.height := by
@@ -178,6 +243,15 @@ theorem exists_stalk_hom {S : Scheme.{0}} {U : S.Opens} (hU : IsAffineOpen U) (P
   exact ⟨algebraMap _ _, RingHom.quasiFinite_algebraMap.2 (.of_isLocalization P.asIdeal.primeCompl),
     IsLocalization.AtPrime.under_maximalIdeal _ P.asIdeal, IsLocalization.AtPrime.ringKrullDim_eq_height P.asIdeal _⟩
 
+/- English proof (translation)
+Use `haveI := finiteType_sections s hU`. Use `haveI : IsNoetherianRing Γ(S, U) := Algebra.FiniteType.isNoetherianRing ℤ _`. Use `haveI : IsNoetherianRing o := Algebra.FiniteType.isNoetherianRing ℤ _`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot Γ(S, U))]`. Use `IntFiniteTypeDim.ringKrullDim_quotient_le_of_minimalPrimes _ _ fun Q hQ => ?_` and prove the remaining obligations.
+
+Set `q : PrimeSpectrum Γ(S, U)` to `⟨Q, hQ.1.1⟩`. Take `⟨y, hy⟩ : q ∈ hU.fromSpec ⁻¹' Set.range j` from `mem_of_mem_minimalPrimes (j.isOpenEmbedding.isOpen_range.preimage hU.fromSpec.continuous) (hj.preimage hU.fromSpec.isOpenEmbedding.isOpenMap) q hQ`. Take `⟨φ, -, hφ⟩` from `exists_flat_quasiFinite sX D hs y`. Take `⟨a, -, ha, -⟩` from `exists_stalk_hom hU q`. Set `e : S.presheaf.stalk (hU.fromSpec q) →+* X.presheaf.stalk y` to `(j.stalkMap y).hom.comp (S.presheaf.stalkCongr (.of_eq hy.symm)).hom.hom`.
+
+Use `haveI : IsLocalHom e := RingHom.isLocalHom_comp _ _`. Use `haveI := finiteType_int_mvPolynomial o (Fin D)`. Establish `h` using `ringKrullDim_quotient_ker_le ((residue _).comp φ) ((RingHom.QuasiFinite.of_finite (RingHom.Finite.of_surjective _ residue_surjective)).comp hφ) ((residue _).comp (e.comp a))`. Rewrite `h` using `[← RingHom.comap_ker (residue _) (e.comp a), ker_residue, ← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap, ha]`. Use `h.trans ((ringKrullDim_quotient_le _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+-/
 theorem ringKrullDim_sections_le {o : Type} [CommRing o] [Algebra.FiniteType ℤ o] {S X : Scheme.{0}} (s : S ⟶ Sp o)
     [LocallyOfFiniteType s] (j : X ⟶ S) [IsOpenImmersion j] (hj : Dense (Set.range j)) (sX : X ⟶ Sp o) (D : ℕ)
     (hs : SmoothOfRelativeDimension D sX) {U : S.Opens} (hU : IsAffineOpen U) :
@@ -204,6 +278,9 @@ theorem ringKrullDim_sections_le {o : Type} [CommRing o] [Algebra.FiniteType ℤ
   refine h.trans ((ringKrullDim_quotient_le _).trans ?_)
   rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, Nat.card_eq_fintype_card, Fintype.card_fin]
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Use `letI : Algebra (MvPolynomial σ A) (MvPolynomial σ B) := MvPolynomial.algebraMvPolynomial`. Use `haveI : Module.Flat A B := hf`. Conclude with `RingHom.Flat.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) hf`.
+-/
 theorem flat_map {A B σ : Type} [CommRing A] [CommRing B] {f : A →+* B} (hf : f.Flat) :
     (MvPolynomial.map (σ := σ) f).Flat := by
   letI := f.toAlgebra
@@ -211,6 +288,9 @@ theorem flat_map {A B σ : Type} [CommRing A] [CommRing B] {f : A →+* B} (hf :
   haveI : Module.Flat A B := hf
   exact RingHom.Flat.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) hf
 
+/- English proof (translation)
+Establish `e : balForms (id : ℤ → ℤ) (Fin r → ℤ) = GlobalTheory.Forms.symForms ℤ (Fin r → ℤ) ℤ` using `Submodule.ext fun β => mem_balForms_int.trans GlobalTheory.Forms.mem_symForms.symm`. Rewrite using `[← Module.finrank_eq_card_basis ε, e, GlobalTheory.Forms.finrank_symLattice, Module.finrank_fin_fun, Nat.choose_two_right, Nat.add_sub_cancel, mul_comm]`.
+-/
 theorem card_basis {r : ℕ} {J : Type} [Fintype J] (ε : Module.Basis J ℤ (balForms (id : ℤ → ℤ) (Fin r → ℤ))) :
     Fintype.card J = r * (r + 1) / 2 := by
   have e : balForms (id : ℤ → ℤ) (Fin r → ℤ) = GlobalTheory.Forms.symForms ℤ (Fin r → ℤ) ℤ :=
@@ -218,6 +298,11 @@ theorem card_basis {r : ℕ} {J : Type} [Fintype J] (ε : Module.Basis J ℤ (ba
   rw [← Module.finrank_eq_card_basis ε, e, GlobalTheory.Forms.finrank_symLattice, Module.finrank_fin_fun, Nat.choose_two_right,
     Nat.add_sub_cancel, mul_comm]
 
+/- English proof (translation)
+Take `⟨h, hh, -⟩` from `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Use the proof step `DedekindDimFormula.affine_heights ℤ A`. Establish `h1 : ringKrullDim A ≤ (h : ℕ∞)` using `(ringKrullDim_le_iff_isMaximal_height_le _).2 fun m hm => by rw [hh m]`. Establish `h0 : 0 ≤ ringKrullDim A` using `ringKrullDim_nonneg_of_nontrivial`. Proceed by induction on `hA : ringKrullDim A with`.
+
+Consider the case `bot => simp [hA] at h0`. Consider the case `coe a`. Rewrite `h1` using `[hA, WithBot.coe_le_coe]`. Conclude with `⟨a.toNat, by rw [← WithBot.coe_natCast, ENat.coe_toNat (ne_top_of_le_ne_top (ENat.coe_ne_top h) h1)]⟩`.
+-/
 theorem exists_ringKrullDim_eq (A : Type) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A] : ∃ k : ℕ, ringKrullDim A = k := by
   obtain ⟨h, hh, -⟩ := haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int; DedekindDimFormula.affine_heights ℤ A
   have h1 : ringKrullDim A ≤ (h : ℕ∞) := (ringKrullDim_le_iff_isMaximal_height_le _).2 fun m hm => by rw [hh m]
@@ -228,6 +313,13 @@ theorem exists_ringKrullDim_eq (A : Type) [CommRing A] [IsDomain A] [Algebra.Fin
     rw [hA, WithBot.coe_le_coe] at h1
     exact ⟨a.toNat, by rw [← WithBot.coe_natCast, ENat.coe_toNat (ne_top_of_le_ne_top (ENat.coe_ne_top h) h1)]⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Take `⟨P, rfl⟩ : x ∈ Set.range hU.fromSpec` from `by rw [hU.range_fromSpec]; exact hxU`. Take `⟨a, ha₁, ha₂, ha₃⟩` from `exists_stalk_hom hU P`. Use `haveI := finiteType_sections s hU`.
+
+Establish `h1` using `ringKrullDim_quotient_ker_le (((residue R).comp f).comp a) ((RingHom.QuasiFinite.of_finite hf).comp ha₁) ((residue R).comp ψ)`. Rewrite `h1` using `[← RingHom.comap_ker _ a, ← RingHom.comap_ker _ f, ker_residue, IsLocalRing.maximalIdeal_comap, ha₂]`. Use `haveI := P.isPrime`. Use `haveI := finiteType_int_quotient P.asIdeal`. Take `⟨k, hk⟩` from `exists_ringKrullDim_eq (Γ(S, U) ⧸ P.asIdeal)`.
+
+Establish `h2` using `(RegularAscent.height_add_ringKrullDim_quotient_le P.asIdeal).trans ((ringKrullDim_sections_le s j hj sX D hs hU).trans (hB.ge.trans ((ringKrullDim_le_add_of_flat ψ hψ).trans (add_le_add_right h1 _))))`. Rewrite `h2` using `[hk]`. Rewrite using `[ha₃]`. Conclude with `ENat.WithBot.add_le_add_natCast_right_iff.1 h2`.
+-/
 theorem ringKrullDim_stalk_le {o : Type} [CommRing o] [Algebra.FiniteType ℤ o] {S X : Scheme.{0}} (s : S ⟶ Sp o)
     [LocallyOfFiniteType s] (j : X ⟶ S) [IsOpenImmersion j] (hj : Dense (Set.range j)) (sX : X ⟶ Sp o) (D : ℕ)
     (hs : SmoothOfRelativeDimension D sX) {B R : Type} [CommRing B] [IsDomain B] [Algebra.FiniteType ℤ B] [CommRing R]
@@ -252,6 +344,17 @@ theorem ringKrullDim_stalk_le {o : Type} [CommRing o] [Algebra.FiniteType ℤ o]
   rw [ha₃]
   exact ENat.WithBot.add_le_add_natCast_right_iff.1 h2
 
+/- English proof (translation)
+Introduce `g _ φ _ _ n hn _ F Z z i OZ d S π j _ BD _ hB C G₁ _ _ y α₁ ξ _ _ hf`. Take `⟨J, -, -, -, -, hP, hD, -⟩` from `hB`. Establish `hn0 : n ≠ 0` using `by omega`. Use `haveI : IsProper (π ≫ z) := GlobalTheory.SchemeWords.isProper_of_isProjOver hP`. Use `haveI := finiteType_cycAway n`.
+
+Use `haveI : IsNoetherianRing (cycAway n) := Algebra.FiniteType.isNoetherianRing ℤ _`. Use `haveI : IsNoetherianRing C.R := C.compl.1`. Establish `hd : SmoothOfRelativeDimension C.h C.F.univ.A.hom` using `GlobalTheory.SiegSharpCover.smoothDim C.F.univ (by omega) (cycBase hn0).ζ.isUnit (isUnit_natCast hn0)`. Use `haveI := GlobalTheory.smoothOfRelativeDimension_powObj C.F.univ.A C.h hd C.T.r`. Use `haveI := C.F.smooth`.
+
+Take `⟨χ, hχ, -⟩` from `exists_flat_quasiFinite (LowChart.toO C.F C.T.r) (C.T.r * C.h + C.h * (C.h + 1) / 2) (smoothOfRelativeDimension_comp _ _ (LowChart.powA C.F C.T.r).hom C.F.s) (C.u (closedPoint C.W))`. Use `haveI := finiteType_int_mvPolynomial (cycAway n) (Fin (C.T.r * C.h + C.h * (C.h + 1) / 2))`. Use `haveI := finiteType_int_mvPolynomial (MvPolynomial (Fin (C.T.r * C.h + C.h * (C.h + 1) / 2)) (cycAway n)) (Fin C.m ⊕ Fin C.N)`. Use `ringKrullDim_stalk_le (π ≫ z) j hD F.s _ F.smooth _ ((flat_map (hχ.comp C.u_et.1)).comp C.compl.2.2.1) ?_ _ hf` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, MvPolynomial.ringKrullDim_of_isNoetherianRing, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_fin, card_basis C.ε, add_assoc, ← Nat.cast_add]`.
+
+Use `congr 2`. Take `⟨a, ha⟩` from `Nat.even_mul_succ_self C.h`. Take `⟨b, hb⟩` from `Nat.even_mul_succ_self C.T.r`. Establish `: (C.h + C.T.r) * (C.h + C.T.r + 1) = C.h * (C.h + 1) + C.T.r * (C.T.r + 1) + 2 * (C.T.r * C.h)` using `by ring`. Rewrite `this` using `[C.genus]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ringKrullDim_stalk_le_chart : ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → ((residue C.R).comp (Scheme.stalkClosedPointTo ξ).hom).Finite → ringKrullDim (S.presheaf.stalk (ξ (closedPoint C.R))) ≤ ringKrullDim C.R := by
   intro g _ φ _ _ n hn _ F Z z i OZ d S π j _ BD _ hB C G₁ _ _ y α₁ ξ _ _ hf
   obtain ⟨J, -, -, -, -, hP, hD, -⟩ := hB

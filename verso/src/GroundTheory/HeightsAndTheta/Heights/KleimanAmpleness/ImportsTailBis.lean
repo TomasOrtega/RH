@@ -14,9 +14,15 @@ def SegreLiftPrime.Statement : Prop :=
     [∀ k, Fintype (ι k)] (W : Ideal (MRing ι F)), IsMultiProjPrime W →
       IsMultiProjPrime (segreLift ι F W)
 
+/- English proof (translation)
+The claim follows from `NumbersDVR.isMultiProjPrime_bot`.
+-/
 theorem SegreLiftPrime.hyps : IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :=
   NumbersDVR.isMultiProjPrime_bot
 
+/- English proof (translation)
+The claim follows from `h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftPrime.hyps`.
+-/
 example (h : SegreLiftPrime.Statement) := h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftPrime.hyps
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

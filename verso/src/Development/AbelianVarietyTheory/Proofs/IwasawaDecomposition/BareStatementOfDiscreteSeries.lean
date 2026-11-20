@@ -114,6 +114,19 @@ def bareLayer (B : Base) (C : Cols B) (W : RowsRest B C) {rows₁ : Rows.Data B.
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Set `nd` to `bareLayer B C W Y (fun k _ j => omLab f.W k ^ (2 * (j.1 + 1))) ldat hsha`. Use `haveI hE : IsEmpty nd.Loc := ⟨fun i : Empty => i.elim⟩`. Set `A : NAut nd` to `GaloisStage.nAut nd A₁.plGw A₁.plGw_over A₁.plGw_inj A₁.plGw_nconj`. Establish `hl : ∀ k w (p : A.LP w), A.items₂ k w p = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`. Establish `hi : ∀ w (p : A.LP w) σ, A.inePol p σ = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`.
+
+Use `choose tg htg using fun (k : Fin 2) (v : nd.PlG k) => GlobalTheory.TameInertiaGen.exists_tameGenAt B.host.E nd.Om (A.plGw k v) (nd.plOm.1 (A.plGw k v)) (nd.plOm.2 _)`. Use `choose s hs using fun k : Fin 2 => SerInhab.exists_isSer B.R.r (B.host.g k) B.toPre.restRowsFiniteGroupCard (B.host.g_prime k) B.toPre.restRowsFiniteGroupCard_pos ((dvd_pow_self _ (GaloisStage.f_pos B.R).ne').trans (Finset.dvd_prod_of_mem (fun k : Fin 2 => (Nat.card (GL (Fin B.R. …`. Take `⟨T₀⟩ : Nonempty (NTypes A)` from `⟨TypesInhab.types0 hl hi B.g_cond B.BB_disj tg htg s hs⟩`. Take `⟨ω, -⟩` from `TypesInhab.exists_char (A := MonoidAlgebra ℂ (G0g nd)) 0 one_ne_zero (by simp)`. Set `eR : G ≃* G0g nd` to `e₀.trans (grpEquiv N₀.naut A)`.
+
+Set `T : NTypes A` to `reser (retype T₀ hl hi (fun k => labDat (B.host.g k)) ω) N₀.ntypes (fun μ => (a μ).comp (cenPull eR)) (fun μ j => (b μ j).comp (cenPull eR))`. Establish `hT : TypesTrue T f.P f.W` using `⟨fun k v => hpl k v, fun _ => rfl, fun _ _ _ => rfl, fun k p => h₀.ser k p⟩`. Establish `hco : ∀ g, T.e0.coeff (grpEquiv N₀.naut A g) = N₀.ntypes.e0.coeff g` using `TypesTrue.typeIdempotent_coeff_across_layers h₀ hT`. Establish `hc : T.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g nd))` using `goodElement_mem_center_groupAlgebra T`. Establish `hz` using `ha (cenPull eR ⟨T.e0, hc⟩) fun g => (coeff_cenPull eR _ g).trans (hco (e₀ g))`.
+
+Establish `htie : T.IdempotentMatchesAction`. Use `⟨fun μ => ?_, fun μ j => ?_⟩` and prove the remaining obligations. Rewrite using `[NTypes.onAmb, dif_pos hc]`. Conclude with `hz.1 μ`. Rewrite using `[NTypes.onMt, dif_pos hc]`.
+
+Conclude with `hz.2 μ j`. Establish `hy : ∀ x, ∃ y : ↥B.LL0, B.embLL (y : B.LL) = T.e0.coeff x` using `fun x => by`. Take `⟨g, rfl⟩` from `(grpEquiv N₀.naut A).surjective x`. Conclude with `⟨_, (N₀.nStage_trivialCharacter_coeff_eq g).trans (hco g).symm⟩`. Use `choose e hee using hy`.
+
+Set `tw` to `GaloisStage.nTw B.LL0 nd`. Establish `hT' : IsEmpty tw.Tw` using `⟨fun i : Empty => i.elim⟩`. Take `⟨Y', hY, ⟨th⟩⟩` from `exists_nexp_nth_of_isEmpty B C W nd tw hT' e`. Conclude with `⟨{ toLocStage := L nd := nd ntw := tw naut := A nbc := GaloisStage.nBC A nexp := Y' ntypes := T nStage_trivialCharacter_compat := htie nStage_trivialCharacter_coeff_eq := fun g => by rw [hY]; exact hee g nth := th nbr := fun i => hE.elim i nbr_ind := fun i => hE.elim i self_good …`.
+-/
 theorem exists_nStage_over {B : Base} {C C₀ : Cols B} {W₀ : RowsRest B C₀} (N₀ : NStage B C₀ W₀) {f : Fr B.toPre}
     (h₀ : GrpTrue N₀ f) (W : RowsRest B C) (heta : ∀ j w, W.etaJ j w = 0)
     {rows₁ : Rows.Data B.R} (Y : NData B.R B.host rows₁) (A₁ : NAut Y) (hpl : ∀ k v, f.P.Div k (A₁.plGw k v)) (L : LocStage)
@@ -193,6 +206,17 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `letI := P.z.alg`. Take `⟨ldat₀, hsha₀⟩` from `P.q.sha`. Establish `hD` using `fun (p : ℕ) [Fact p.Prime] => GlobalTheory.T.exists_localGaloisData_shaLength_eq (Ω' := Y.Om) p (ldat₀ p)`. Set `ldat : ∀ (p : ℕ) [Fact p.Prime], Formalism.GaloisCohomology.LData B.host.E Y.Om p` to `fun p _ => (hD p).choose`. Establish `hsha : ∀ (p : ℕ) [Fact p.Prime] (e : ℕ), 0 < e → e < B.R.t → ∀ n : ℕ, Formalism.GaloisCohomology.shaLen (ldat p) (e : ℤ) = (n : ℕ∞) → (P.q.W (fun _ _ => 0) fun _ _ => le_rfl).shaLen p e = (n : ℚ)` using `fun p _ e h1 h2 n hn => hsha₀ p e h1 h2 n (((hD p).choose_spec (e : ℤ)).symm.trans hn)`.
+
+Set `e₀ : Gc B w.px ≃* G0g P.Z₀.N.nd` to `P.z.R.eG.trans P.z.cG`. Establish `hgood : ∀ g, B.embLL ((idemOf P.z.Xg).coeff g) = P.Z₀.N.ntypes.e0.coeff (e₀ g)` using `P.z.good.2`. Take `⟨N, hE, hN, hA, hM, hL, h1, h2, h3, h4, h5, h6⟩` from `exists_nStage_over P.Z₀.N P.grp (P.q.W (fun _ _ => 0) fun _ _ => le_rfl) (fun _ _ => rfl) Y A₁ hpl L ldat hsha e₀ (fun μ => (P.q.p.sA true μ).act) (fun μ j => (P.q.p.sL μ j).act) fun z hz => ⟨fun μ => e_eq_act (P.q.t.tA true μ) (P.q.t.lawsA true μ) z fun g => (hgood g).trans (hz …`. Establish `hpl' : ∀ k v, P.Z₀.N.naut.plGw k ((plEquiv P.Z₀.N.naut N.naut k).symm v) = N.naut.plGw k v` using `fun k v => by`. Rewrite using `[← TypesTrue.plGw_plEquiv P.grp hN, Equiv.apply_symm_apply]`.
+
+Use `⟨N, hE, hN, fun V S G => ⟨?_, fun eR hR => ?_⟩, hL, h1, h2, h3, h4, h5, h6⟩` and prove the remaining obligations. Take `⟨plg, hp⟩` from `P.grpAt.pl`. Take `⟨hc, hi⟩` from `GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent (w.st (RowPk.Over.Z (q := P.q) ⟨_, _, V, S, N, G⟩)).toD7`. Use `⟨⟨(Equiv.sigmaCongrRight fun k => (plEquiv P.Z₀.N.naut N.naut k).symm).trans plg, fun kv => ?_⟩, hi, hc⟩` and prove the remaining obligations. Conclude with `⟨(hp ⟨kv.1, _⟩).1.trans (hpl' kv.1 kv.2), (hp ⟨kv.1, _⟩).2⟩`.
+
+Establish `he : e₀.trans (grpEquiv P.Z₀.N.naut N.naut) = eR`. Take `⟨plg, iso, h1, h2⟩` from `hR`. Take `⟨plg₀, iso₀, k1, -, -, k2⟩` from `P.z.pins.keep.grp`. Use `MulEquiv.ext fun g => funext fun kv => ?_` and prove the remaining obligations. Conclude with `(read_unique g (P.z.R.eG g) (P.z.idG g) (plg kv) (plg₀ ⟨kv.1, (plEquiv P.Z₀.N.naut N.naut kv.1).symm kv.2⟩) ((h1 kv).trans ((k1 ⟨kv.1, _⟩).trans (hpl' kv.1 kv.2)).symm) (iso kv) (iso₀ ⟨kv.1, _⟩) (h2 g kv) (k2 g ⟨kv.1, _⟩)).symm`.
+
+Substitute `he` using the available equality. Conclude with `⟨fun μ z z' hz x => by rw [hA, cenPull_eq _ hz], fun μ j z z' hz x => by rw [hM, cenPull_eq _ hz]⟩`.
+-/
 theorem exists_bare_over {K : Ctx} (P : Pre2 K w) {rows₁ : Rows.Data B.R} (Y : NData B.R B.host rows₁) (A₁ : NAut Y)
     (hpl : ∀ k v, f.P.Div k (A₁.plGw k v)) (L : LocStage) :
     ∃ N : NStage B w.C (P.q.W (fun _ _ => 0) fun _ _ => le_rfl), IsEmpty N.nd.Loc ∧ GrpTrue N f ∧
@@ -239,6 +263,17 @@ open Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Form
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hP hD`. Use `StepW.of_all fun K B' f' T' w' hO _ _ P' X f hB hf hg => ?_` and prove the remaining obligations. Take `⟨B₀, C₀, W₀, V₀, S₀, N₀, G₀⟩` from `X`. Consider the cases of `B'`. Consider the cases of `B₀`.
+
+Simplify using `only at hB`. Substitute `hB` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨N, hE, hN, hN', hL, h1, h2, h3, h4, h5, h6⟩` from `exists_bare_over P' N₀.nd N₀.naut hg.pl N₀.toLocStage`. Take `⟨V, hV, -, -, hη, -, hB⟩` from `exists_divStage_of_pk _ w'.C (Gc _ w'.px) P'.q.p P'.q.e P'.q.W₀ P'.q.n (fun _ _ => 0) (fun _ _ => le_rfl) (frames_unit P'.q.t) (fun u => ((w'.C.fm u).lat 0).L) (fun _ => 0) (6 * K.s.x ^ (-K.C.P.CF))`.
+
+Take `⟨S, -⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K _ w'.C (P'.q.W (fun _ _ => 0) fun _ _ => le_rfl) P'.Z₀.G.cd hO (GlobalTheory.Mem.Df.cols_pos w'.I w'.ok w'.pins w'.l P'.hX) (rows_le P'.q.t)`. Take `⟨x, hx⟩` from `GlobalTheory.T.fittingLaterStages_row_is_constructionState GlobalTheory.weilRepresentationUnitaryPair hD hP.hc hP.decay K _ _ T' w' P' ⟨_, _, V, S, N, P'.Z₀.G⟩ ⟨hV, hN, (hN' V S P'.Z₀.G).1, (hN' V S P'.Z₀.G).2⟩ rfl hη (fun hr => hB hr)`. Establish `hDx : Dof x = (w'.st (RowPk.Over.Z (q` using `P'.q) ⟨_, _, V, S, N, P'.Z₀.G⟩)).toD7 := by`. Unfold `Dof`. Rewrite using `[hx]`.
+
+Establish `hE' : IsEmpty x.o.N.nd.Loc`. Rewrite using `[hx]`. Conclude with `hE`. Use `⟨x, hE', ?_⟩` and prove the remaining obligations. Rewrite using `[hDx]`.
+
+Conclude with `⟨⟨rfl, HEq.rfl, congrArg LocStage.loc hL.symm, h1.symm, h2.symm, h3.symm, h4.symm, h5.symm⟩, h6.symm⟩`.
+-/
 theorem bareStatement_of_known_theorems : PrN → GlobalTheory.Published.DiscreteSeriesExists → BareK := by
   intro hP hD
   refine StepW.of_all fun K B' f' T' w' hO _ _ P' X f hB hf hg => ?_

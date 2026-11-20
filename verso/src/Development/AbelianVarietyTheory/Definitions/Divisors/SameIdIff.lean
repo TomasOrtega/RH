@@ -65,6 +65,9 @@ def LiftAt (g : ℕ) {B S' : Over S} (b : B ⟶ S') (P : LB (A ⊗ B).left) (x :
 
 variable {A}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isLB, h.additive⟩ univ T t N hN := by obtain ⟨x, hx, hu⟩ := h.univ T N hN.isLB hN.add exact ⟨x, ⟨toUnit_unique _ _, hx⟩, fun y hy ↦ hu y hy.2⟩`.
+-/
 theorem Rep.of_isDual {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (h : IsDual A B P) : Rep A (toUnit B) P where
   fam := ⟨h.isLB, h.additive⟩
   univ T t N hN := by
@@ -73,6 +76,9 @@ theorem Rep.of_isDual {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (h : IsDua
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Rewrite using `[Same, ← cls_eq_iff (pull_isLB hN _) (pull_isLB hM _), ← cls_eq_iff hN (pull_isLB hM _), cls_ev hN, evc, Category.comp_id, lift_fst_snd, Over.id_left, pull_id]`.
+-/
 theorem same_id_iff {T U : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left} (hN : N.IsLB) (hM : M.IsLB)
     (u : T ⟶ U) : Same A N M (𝟙 T) u ↔ LBIso N (ev M (fst A T) (snd A T ≫ u)) := by
   rw [Same, ← cls_eq_iff (pull_isLB hN _) (pull_isLB hM _), ← cls_eq_iff hN (pull_isLB hM _), cls_ev hN, evc,
@@ -80,6 +86,9 @@ theorem same_id_iff {T U : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).lef
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+The claim follows from `(cls_eq_iff (pull_isLB hN _) (pull_isLB hM _)).symm`.
+-/
 theorem same_iff {T U Y : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left} (hN : N.IsLB) (hM : M.IsLB)
     (y : Y ⟶ T) (u : Y ⟶ U) :
     Same A N M y u ↔ evc hN (fst A Y) (snd A Y ≫ y) = evc hM (fst A Y) (snd A Y ≫ u) :=

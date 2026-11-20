@@ -18,6 +18,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieCoo
 open Formalism.L2.Pj (dualMap)
 open ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs (lieScale)
 
+/- English proof (translation)
+Establish `hci : IsClosedImmersion (equalizer.ι f g)` using `GlobalTheory.isClosedImmersion_equalizer_ι_of_isSeparated s hs`. Establish `hl : equalizer.lift (spMap p) h ≫ equalizer.ι f g = spMap p` using `equalizer.lift_ι _ _`. Take `⟨I, e, he⟩` from `IsClosedImmersion.Spec_iff.mp hci`. Establish `hI : ∀ x ∈ I, p x = 0`. Introduce `x hx`.
+
+Establish `hl'` using `hl`. Rewrite `hl'` using `[he, ← Category.assoc]`. Establish `h6 : Spec.map (Spec.preimage (equalizer.lift (spMap p) h ≫ e.hom)) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) = Spec.map (CommRingCat.ofHom p)`. Rewrite using `[Spec.map_preimage]`. Conclude with `hl'`.
+
+Rewrite `h6` using `[← Spec.map_comp]`. Establish `h7` using `Spec.map_injective h6`. Establish `h8` using `congrArg (fun φ => φ.hom x) h7`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at h8`. Rewrite using `[← h8, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`.
+
+Establish `hbot : I = ⊥` using `le_bot_iff.mp fun x hx => (Submodule.mem_bot _).2 (hp ((hI x hx).trans (map_zero p).symm))`. Substitute `hbot` using the available equality. Establish `hiso : IsIso (equalizer.ι f g)`. Rewrite using `[he]`. Establish `: IsIso (CommRingCat.ofHom (Ideal.Quotient.mk (⊥ : Ideal (CommRingCat.of A))))`.
+
+Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Conclude with `(RingEquiv.quotientBot A).symm.bijective`. Use `infer_instance`. Rewrite using `[← cancel_epi (equalizer.ι f g), equalizer.condition]`.
+-/
 theorem ext_of_injective_of_isSeparated {A B : Type} [CommRing A] [CommRing B] (p : A →+* B)
     (hp : Function.Injective p) {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsSeparated s] (f g : Sp A ⟶ Y)
     (hs : f ≫ s = g ≫ s) (h : spMap p ≫ f = spMap p ≫ g) : f = g := by
@@ -46,6 +57,13 @@ theorem ext_of_injective_of_isSeparated {A B : Type} [CommRing A] [CommRing B] (
     infer_instance
   rw [← cancel_epi (equalizer.ι f g), equalizer.condition]
 
+/- English proof (translation)
+Introduce `v w h`. Establish `h1 : spMap (dualMap φ) ≫ (tv v).left = spMap (dualMap φ) ≫ (tv w).left`. Use `congrArg (fun z : TanM x' t.G => (tv z).left) h` as an intermediate fact. Simplify `this` using `only [left_bcTan]`. Use `haveI : IsSeparated t.G.hom := t.semi.separated`.
+
+Establish `hd : Function.Injective (dualMap φ)` using `fun a b hab => by`. Establish `h1` using `congrArg TrivSqZeroExt.fst hab`. Establish `h2` using `congrArg TrivSqZeroExt.snd hab`. Simplify using `[dualMap] at h1 h2`. Conclude with `TrivSqZeroExt.ext (hφ h1) (hφ h2)`.
+
+Conclude with `tan_ext (ext_of_injective_of_isSeparated (dualMap φ) hd t.G.hom _ _ ((isTan_tv v).1.trans (isTan_tv w).1.symm) h1)`.
+-/
 theorem bcTan_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (hφ : Function.Injective φ)
     {x : Sp S ⟶ X} {x' : Sp T ⟶ X} (hx : spMap φ ≫ x = x') :
@@ -63,6 +81,9 @@ theorem bcTan_injective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   exact tan_ext (ext_of_injective_of_isSeparated (dualMap φ) hd t.G.hom _ _
     ((isTan_tv v).1.trans (isTan_tv w).1.symm) h1)
 
+/- English proof (translation)
+Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[left_tanOf, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_add]`. Conclude with `((isGrpPullback_pullback t.G x).2 _ a.1 b.1 _ _ rfl rfl).symm`.
+-/
 theorem tanOf_lieAdd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) (a b : LieG ((Over.pullback x).obj t.G)) :
     tanOf (GlobalTheory.CochInt.isTan_of_lieG t x (lieAdd _ a b)) =
@@ -71,6 +92,9 @@ theorem tanOf_lieAdd {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   rw [left_tanOf, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_add]
   exact ((isGrpPullback_pullback t.G x).2 _ a.1 b.1 _ _ rfl rfl).symm
 
+/- English proof (translation)
+Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[left_tanOf, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_smul, Formalism.L2.Pj.smT_left, left_tanOf]`. Use `show ((ptMap (ReciprocityTheory.ChartRestriction.G.Pdiv.dualScale c) ≫ a.1).left ≫ _) = _`. Rewrite using `[Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem tanOf_lieScale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) (c : R)
     (a : LieG ((Over.pullback x).obj t.G)) :
@@ -81,6 +105,15 @@ theorem tanOf_lieScale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   rw [Over.comp_left, Category.assoc]
   rfl
 
+/- English proof (translation)
+Use `⟨fun v v' h => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : v.1.left ≫ pullback.fst t.G.hom x = v'.1.left ≫ pullback.fst t.G.hom x`. Use `congrArg (fun z : TanM x t.G => (tv z).left) h` as an intermediate fact. Simplify `this` using `only [left_tanOf]`. Conclude with `Subtype.ext (Over.OverMorphism.ext (pullback.hom_ext h1 ((Over.w v.1).trans (Over.w v'.1).symm)))`.
+
+Establish `hw` using `isTan_tv w`. Set `m : specO R (DualNumber R) ⟶ (Over.pullback x).obj t.G` to `Over.homMk (pullback.lift (tv w).left (spMap (algebraMap R (DualNumber R))) hw.1) (pullback.lift_snd _ _ _)`. Establish `hm : m.left ≫ pullback.fst t.G.hom x = (tv w).left` using `pullback.lift_fst _ _ _`. Establish `e : (specO R R).hom ≫ x = x` using `(congrArg (· ≫ x) (Spec.map_id (CommRingCat.of R))).trans (Category.id_comp x)`. Establish `key : ∀ (y : Sp R ⟶ X), (specO R R).hom ≫ x = y → (1 : specO R R ⟶ (Over.pullback x).obj t.G).left ≫ pullback.fst t.G.hom x = (1 : Over.mk y ⟶ t.G).left`.
+
+Introduce and unpack `_ rfl`. Conclude with `(Formalism.L2.Pj.grpPull_one (isGrpPullback_pullback t.G x) (specO R R)).symm`. Establish `hu : ptMap (TrivSqZeroExt.fstHom R R R) ≫ m = toUnit (specO R R) ≫ η[(Over.pullback x).obj t.G]`. Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (1 : specO R R ⟶ (Over.pullback x).obj t.G).left ≫ _`.
+
+Rewrite using `[Over.comp_left, Category.assoc, hm]`. Conclude with `hw.2.trans (key x e).symm`. Conclude with `(Over.w (ptMap (TrivSqZeroExt.fstHom R R R) ≫ m)).trans (Over.w (toUnit (specO R R) ≫ η[(Over.pullback x).obj t.G])).symm`. Conclude with `⟨⟨m, hu⟩, tan_ext (by simp only [left_tanOf]; exact hm)⟩`.
+-/
 theorem tanOf_lieG_bijective {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) :
     Function.Bijective (fun v : LieG ((Over.pullback x).obj t.G) => tanOf (GlobalTheory.CochInt.isTan_of_lieG t x v)) := by
@@ -108,6 +141,15 @@ theorem tanOf_lieG_bijective {E : Type} [Field E] [NumberField E] [IsCMField E] 
           (Over.w (toUnit (specO R R) ≫ η[(Over.pullback x).obj t.G])).symm
     exact ⟨⟨m, hu⟩, tan_ext (by simp only [left_tanOf]; exact hm)⟩
 
+/- English proof (translation)
+Set `f : Sp K ⟶ Sp R` to `spMap (algebraMap R K)`. Set `GR` to `(Over.pullback xR).obj t.G`. Set `ψ : ((Over.pullback xK).obj t.G).left ⟶ GR.left` to `pullback.lift (pullback.fst t.G.hom xK) (pullback.snd t.G.hom xK ≫ f) (by rw [Category.assoc, hx, pullback.condition])`. Establish `hψ₁ : ψ ≫ pullback.fst t.G.hom xR = pullback.fst t.G.hom xK` using `pullback.lift_fst _ _ _`. Establish `hψ : IsGrpPullback ((Over.pullback xK).obj t.G) GR f ψ` using `(isGrpPullback_pullback t.G xR).cancel ((isGrpPullback_pullback t.G xK).congr hx.symm hψ₁.symm) (pullback.lift_snd _ _ _)`.
+
+Take `⟨e, he, heψ⟩` from `grpPullback_iso hψ (isGrpPullback_pullback GR f)`. Use `haveI := hu`. Use `haveI := he`. Set `uK : (Over.pullback f).obj (torus R r) ⟶ (Over.pullback f).obj GR` to `(SplitTorus.bcIso f (Fin r → ℤ)).inv ≫ u ≫ e.hom`. Establish `hmon : IsMonHom uK` using `inferInstance`.
+
+Establish `hcl : IsClosedImmersion uK.left` using `by haveI : IsIso (SplitTorus.bcIso f (Fin r → ℤ)).inv.left := inferInstanceAs (IsIso ((Over.forget _).map (SplitTorus.bcIso f (Fin r → ℤ)).inv)) haveI : IsIso e.hom.left := inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Simplify using `only [uK, Over.comp_left]`. Use `infer_instance`. Take `⟨uR, huR, hbc, -, hsat⟩` from `hTS R K GR (IsSemiAbelian.pullback xR t.G t.semi) r uK hmon hcl`. Use `⟨uR, huR, hsat, ?_⟩` and prove the remaining obligations.
+
+Establish `A : ((Over.pullback f).map uR).left ≫ pullback.fst GR.hom f = pullback.fst (torus R r).hom f ≫ uR.left` using `pullback.lift_fst _ _ _`. Establish `B : ((Over.pullback f).map uR).left = uK.left` using `congrArg (·.left) hbc`. Rewrite using `[← SplitTorus.bcIso_hom_fst f (Fin r → ℤ), Category.assoc, ← Category.assoc (pullback.fst _ _), ← A, B]`. Simplify using `only [uK, Over.comp_left, Category.assoc]`. Rewrite using `[← Category.assoc e.hom.left, heψ, hψ₁, ← Over.comp_left_assoc, Iso.hom_inv_id, Over.id_left, Category.id_comp]`.
+-/
 theorem exists_saturated_model (hTS : TorusSaturated) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} (t : SAB H X) (R K : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (xR : Sp R ⟶ X) (xK : Sp K ⟶ X)
@@ -148,6 +190,19 @@ theorem exists_saturated_model (hTS : TorusSaturated) {E : Type} [Field E] [Numb
   rw [← Category.assoc e.hom.left, heψ, hψ₁, ← Over.comp_left_assoc, Iso.hom_inv_id, Over.id_left,
     Category.id_comp]
 
+/- English proof (translation)
+Take `⟨hbij, hadd, hsm⟩` from `GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul K r`. Set `L` to `Equiv.ofBijective _ hbij`. Set `T : LieG (torus K r) → TanM xK t.G` to `fun y => tanOf (GlobalTheory.CochInt.isTan_of_lieG t xK (lieMap u y))`. Establish `hT : ∀ y, (tv (T y)).left = y.1.left ≫ u.left ≫ pullback.fst t.G.hom xK` using `fun y => by show (lieMap u y).1.left ≫ _ = _`. Rewrite using `[lieMap, Over.comp_left, Category.assoc]`.
+
+Establish `hLs : ∀ c, lieCoord (L.symm c) = c` using `fun c => Equiv.ofBijective_apply_symm_apply _ hbij c`. Establish `hL1 : ∀ c d, L.symm (c + d) = lieAdd _ (L.symm c) (L.symm d)` using `fun c d => L.symm_apply_eq.2 (by show c + d = lieCoord _; rw [hadd, hLs, hLs])`. Establish `hL2 : ∀ (k : K) c, L.symm (k • c) = lieScale _ k (L.symm c)` using `fun k c => L.symm_apply_eq.2 (by show k • c = lieCoord _; rw [hsm, hLs])`. Set `Ψ : (Fin r → K) →ₗ[K] TanM xK t.G` to `{ toFun := fun c => T (L.symm c) map_add' := fun c d => by show T (L.symm (c + d)) = T (L.symm c) + T (L.symm d)`. Simplify using `only [T]`.
+
+Rewrite using `[hL1, (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.isLieLinear_lieMap u).1, tanOf_lieAdd]`. Use the proof step `map_smul' := fun k c => by show T (L.symm (k • c)) = k • T (L.symm c)`. Simplify using `only [T]`. Rewrite using `[hL2, (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.isLieLinear_lieMap u).2, tanOf_lieScale] }`. Establish `hΨ : ∀ i, Ψ (Pi.single i 1) = ε i` using `fun i => by`.
+
+Take `⟨e', he', hε'⟩` from `hε i`. Establish `: L.symm (Pi.single i 1) = e'` using `L.symm_apply_eq.2 he'.symm`. Use `tan_ext ?_` and prove the remaining obligations. Use `show (tv (T (L.symm (Pi.single i 1)))).left = _`. Rewrite using `[this, hT, hε']`.
+
+Establish `hsum : ∑ i, lieCoord e i • ε i = Ψ (lieCoord e)` using `by conv_rhs => rw [LinearMap.pi_apply_eq_sum_univ Ψ (lieCoord e)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hΨ i]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[hsum]`. Use `show (tv (T (L.symm (L e)))).left = _`. Rewrite using `[Equiv.symm_apply_apply, hT]`.
+-/
 theorem tv_sum_lieCoord {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {K : Type} [CommRing K] (xK : Sp K ⟶ X) {r : ℕ}
     (u : torus K r ⟶ (Over.pullback xK).obj t.G) [IsMonHom u] (ε : Fin r → TanM xK t.G)
@@ -192,6 +247,19 @@ theorem tv_sum_lieCoord {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   show (tv (T (L.symm (L e)))).left = _
   rw [Equiv.symm_apply_apply, hT]
 
+/- English proof (translation)
+Take `⟨u, hu, hc, hεe⟩` from `hε`. Take `⟨uR, huR, ⟨-, -, ⟨hbij, -, hsm⟩, ρ, hρlin, hρ⟩, hrel⟩` from `exists_saturated_model hTS t R K xR xK hx r u hu hc`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors R) (Finset.univ : Finset (Fin r)) a`. Use `choose c hc' using fun j => hs j (Finset.mem_univ j)`.
+
+Take `⟨xc, hxc⟩` from `hbij.2 c`. Take `⟨xK', hxK'⟩` from `(GlobalTheory.TorusLieCoord.lieCoord_bijective_add_smul K r).1.2 (fun j => algebraMap R K (c j))`. Establish `h1 : bcTan (algebraMap R K) hx (tanOf (GlobalTheory.CochInt.isTan_of_lieG t xR (lieMap uR xc))) = ∑ j, algebraMap R K (c j) • ε j`. Use `tan_ext ?_` and prove the remaining obligations. Establish `hb` using `GlobalTheory.CochInt.left_comp_bcMap (algebraMap R K) xc xK' fun j => by rw [hxK', hxc]`.
+
+Establish `e1 : ∀ j, algebraMap R K (c j) = lieCoord xK' j` using `fun j => by rw [hxK']`. Simplify using `only [e1]`. Rewrite using `[left_bcTan, left_tanOf, tv_sum_lieCoord t xK u ε hεe xK']`. Use `show spMap (dualMap (algebraMap R K)) ≫ (xc.1 ≫ uR).left ≫ pullback.fst t.G.hom xR = _`. Rewrite using `[Over.comp_left, ← Category.assoc, ← Category.assoc, ← hb, Category.assoc, Category.assoc, ← hrel]`.
+
+Establish `h2 : bcTan (algebraMap R K) hx ((s : R) • w) = ∑ j, algebraMap R K (c j) • ε j`. Rewrite using `[LinearMap.map_smulₛₗ, hw, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← Algebra.smul_def, ← hc' j]`. Establish `h3` using `bcTan_injective t (algebraMap R K) hinj hx (h2.trans h1.symm)`.
+
+Take `⟨y, hy⟩` from `(tanOf_lieG_bijective t xR).2 w`. Establish `h4 : lieScale _ (s : R) y = lieMap uR xc` using `(tanOf_lieG_bijective t xR).1 (by`. Simplify using `only at hy ⊢`. Rewrite using `[tanOf_lieScale, hy, h3])`. Establish `h5 : (s : R) • lieCoord (ρ y) = c`.
+
+Rewrite using `[← hsm, ← hρlin.2, h4, hρ, hxc]`. Use `⟨lieCoord (ρ y) i, ?_⟩` and prove the remaining obligations. Establish `hs0 : algebraMap R K (s : R) ≠ 0` using `(map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero s.2)`. Use `mul_left_cancel₀ hs0 ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← smul_eq_mul, ← Pi.smul_apply, h5, hc' i, Algebra.smul_def]`.
+-/
 theorem mem_range_of_dvr (hTS : TorusSaturated) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}} (t : SAB H X) (R K : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (xR : Sp R ⟶ X) (xK : Sp K ⟶ X)
@@ -232,6 +300,11 @@ theorem mem_range_of_dvr (hTS : TorusSaturated) {E : Type} [Field E] [NumberFiel
   refine mul_left_cancel₀ hs0 ?_
   rw [← map_mul, ← smul_eq_mul, ← Pi.smul_apply, h5, hc' i, Algebra.smul_def]
 
+/- English proof (translation)
+Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[left_bcTan, left_bcTan, left_bcTan, ← Category.assoc]`. Use `congr 1`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Apply the tactic sequence `ext a <;> simp [dualMap]`.
+-/
 theorem bcTan_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (f : S →+* T) (g : T →+* U)
     {x : Sp S ⟶ X} {y : Sp T ⟶ X} {z : Sp U ⟶ X} (hy : spMap f ≫ x = y) (hz : spMap g ≫ y = z)
@@ -244,6 +317,15 @@ theorem bcTan_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
   congr 2
   ext a <;> simp [dualMap]
 
+/- English proof (translation)
+Introduce `hTS E _ _ _ H X t K _ _ xO xK hx r ε hε a w hw i`. Establish `key : ∀ v : MaximalSpectrum (𝓞 K), a i ∈ Localization.subalgebra.ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`. Introduce `v`. Set `Rv` to `Localization.subalgebra.ofField K v.asIdeal.primeCompl v.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDiscreteValuationRing Rv := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) (Ideal.bot_lt_of_maximal v.asIdeal (RingOfIntegers.not_isField K)).ne' Rv`.
+
+Use `haveI : IsFractionRing Rv K := inferInstance`. Establish `hxR : spMap (algebraMap Rv K) ≫ spMap (algebraMap (𝓞 K) Rv) ≫ xO = xK`. Rewrite using `[← Category.assoc, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Conclude with `hx`. Establish `hw' : bcTan (algebraMap Rv K) hxR (bcTan (algebraMap (𝓞 K) Rv) rfl w) = ∑ i, a i • ε i`.
+
+Rewrite using `[bcTan_comp _ _ rfl hxR (by rw [← IsScalarTower.algebraMap_eq]; exact hx), ← hw]`. Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[left_bcTan, left_bcTan, ← IsScalarTower.algebraMap_eq]`. Take `⟨b, hb⟩` from `mem_range_of_dvr hTS t Rv K _ xK hxR r ε hε a _ hw' i`. Conclude with `hb ▸ b.2`.
+
+Establish `h : a i ∈ (⊥ : Subalgebra (𝓞 K) K)`. Rewrite using `[← MaximalSpectrum.iInf_localization_eq_bot (𝓞 K) K, Algebra.mem_iInf]`. Conclude with `key`. Conclude with `Algebra.mem_bot.1 h`.
+-/
 theorem cochar_saturated : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (K : Type) [Field K] [NumberField K] (xO : Sp (𝓞 K) ⟶ X) (xK : Sp K ⟶ X) (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) (r : ℕ) (ε : Fin r → TanM xK t.G), IsCochFrame t xK ε → ∀ (a : Fin r → K) (w : TanM xO t.G), bcTan (algebraMap (𝓞 K) K) hx w = ∑ i, a i • ε i → ∀ i, a i ∈ Set.range (algebraMap (𝓞 K) K) := by
   intro hTS E _ _ _ H X t K _ _ xO xK hx r ε hε a w hw i
   have key : ∀ v : MaximalSpectrum (𝓞 K), a i ∈ Localization.subalgebra.ofField K v.asIdeal.primeCompl

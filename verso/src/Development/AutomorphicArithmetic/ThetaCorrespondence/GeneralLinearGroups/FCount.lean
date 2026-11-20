@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.IsIrreducibleOfClsGLE
 
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas UpperTheory.Lit.Red
 
+/- English proof (translation)
+Rewrite using `[Finsupp.supported_eq_span_single ℤ A, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `(Finsupp.mem_supported ℤ _).2 fun b hb => h a ha b (Finsupp.mem_support_iff.1 hb)`.
+-/
 private theorem UpperTheory.Lit.Full.count_map_le {α β : Type*} (e : (α →₀ ℤ) →ₗ[ℤ] (β →₀ ℤ)) (A : Set α) (B : Set β)
     (h : ∀ a ∈ A, ∀ b, e (Finsupp.single a 1) b ≠ 0 → b ∈ B) :
     (Finsupp.supported ℤ ℤ A).map e ≤ Finsupp.supported ℤ ℤ B := by
@@ -13,6 +16,11 @@ private theorem UpperTheory.Lit.Full.count_map_le {α β : Type*} (e : (α →�
   rintro _ ⟨_, ⟨a, ha, rfl⟩, rfl⟩
   exact (Finsupp.mem_supported ℤ _).2 fun b hb => h a ha b (Finsupp.mem_support_iff.1 hb)
 
+/- English proof (translation)
+Establish `h1` using `count_map_le e.toLinearMap A B h`. Establish `h2` using `count_map_le e.symm.toLinearMap B A h'`. Establish `h3 : (Finsupp.supported ℤ ℤ A).map e.toLinearMap = Finsupp.supported ℤ ℤ B`. Use `le_antisymm h1 fun y hy => ⟨e.symm y, h2 ⟨y, hy, rfl⟩, by simp⟩` and prove the remaining obligations. Set `f : (A →₀ ℤ) ≃ₗ[ℤ] (B →₀ ℤ)` to `((Finsupp.supportedEquivFinsupp (R := ℤ) (M := ℤ) A).symm.trans (e.ofSubmodules _ _ h3)).trans (Finsupp.supportedEquivFinsupp (R := ℤ) (M := ℤ) B)`.
+
+Conclude with `⟨(Finsupp.basisSingleOne.map f).indexEquiv Finsupp.basisSingleOne⟩`.
+-/
 private theorem UpperTheory.Lit.Full.count_equiv {α β : Type*} (e : (α →₀ ℤ) ≃ₗ[ℤ] (β →₀ ℤ)) (A : Set α) (B : Set β)
     (h : ∀ a ∈ A, ∀ b, e (Finsupp.single a 1) b ≠ 0 → b ∈ B)
     (h' : ∀ b ∈ B, ∀ a, e.symm (Finsupp.single b 1) a ≠ 0 → a ∈ A) : Nonempty (A ≃ B) := by
@@ -29,6 +37,11 @@ section
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := fun Δ : Segment k => (Δ.first, Δ.len)) (((S.toFinset.finite_toSet).prod (Set.finite_Iic S.card)).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Δ, hΔ, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Δ.first ∈ Δ.ms` using `Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, Δ.len_pos, by simp⟩)`. Simplify using `using Multiset.mem_of_le hΔ this`.
+
+Simplify using `using Multiset.card_le_card (show Δ.ms ≤ S from hΔ)`. Introduce `Δ _ Δ' _ h`. Conclude with `Segment.ext_first (congrArg Prod.fst h) (congrArg Prod.snd h)`.
+-/
 private theorem UpperTheory.Lit.Full.count_seg_finite (S : Multiset (IrrGL k)) :
     {Δ : Segment k | Δ.ms ≤ S}.Finite := by
   classical
@@ -42,6 +55,11 @@ private theorem UpperTheory.Lit.Full.count_seg_finite (S : Multiset (IrrGL k)) :
   · intro Δ _ Δ' _ h
     exact Segment.ext_first (congrArg Prod.fst h) (congrArg Prod.snd h)
 
+/- English proof (translation)
+Proceed by induction on `𝔪 using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons Δ 𝔪 ih`. Rewrite using `[← Multiset.singleton_add, msupp_add, msupp_singleton]`. Use `Δ.len_pos` as an intermediate fact.
+
+Simplify using `only [Multiset.card_add, Multiset.card_singleton, Segment.card_ms]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem UpperTheory.Lit.Full.count_card_le (𝔪 : Multiset (Segment k)) : 𝔪.card ≤ (msupp 𝔪).card := by
   induction 𝔪 using Multiset.induction_on with
   | empty => simp
@@ -51,6 +69,13 @@ private theorem UpperTheory.Lit.Full.count_card_le (𝔪 : Multiset (Segment k))
     simp only [Multiset.card_add, Multiset.card_singleton, Segment.card_ms]
     omega
 
+/- English proof (translation)
+Use `(Set.finite_Icc 0 (S.card • (count_seg_finite S).toFinset.val)).subset ?_` and prove the remaining obligations. Introduce `𝔪 h𝔪`. Establish `h𝔪 : msupp 𝔪 = S` using `h𝔪`. Use `⟨Multiset.zero_le _, Multiset.le_iff_count.2 fun Δ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hΔ : Δ ∈ 𝔪`.
+
+Establish `h1 : Δ.ms ≤ S`. Take `⟨𝔫, rfl⟩` from `Multiset.exists_cons_of_mem hΔ`. Rewrite using `[← h𝔪, ← Multiset.singleton_add, msupp_add, msupp_singleton]`. Conclude with `Multiset.le_add_right _ _`. Establish `h2 : Δ ∈ (count_seg_finite S).toFinset` using `by simpa using h1`.
+
+Rewrite using `[Multiset.count_nsmul, Multiset.count_eq_one_of_mem (Finset.nodup _) h2, mul_one, ← h𝔪]`. Conclude with `(Multiset.count_le_card _ _).trans (count_card_le 𝔪)`. Simplify using `[Multiset.count_eq_zero_of_notMem hΔ]`.
+-/
 private theorem UpperTheory.Lit.Full.count_mseg_finite (S : Multiset (IrrGL k)) :
     {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}.Finite := by
   classical
@@ -68,6 +93,11 @@ private theorem UpperTheory.Lit.Full.count_mseg_finite (S : Multiset (IrrGL k)) 
     exact (Multiset.count_le_card _ _).trans (count_card_le 𝔪)
   · simp [Multiset.count_eq_zero_of_notMem hΔ]
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp [msupp, GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum]`. Consider the case `add a b ha hb => rw [map_add, msupp_add, ha, hb, GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum_add]`. Consider the case `single Δ c`. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum_eq, Finsupp.sum_single_index (zero_smul ℕ Δ.ms), Finsupp.toMultiset_single]`.
+
+Proceed by induction on `c with`. Consider the case `zero => simp [msupp]`. Consider the case `succ c ih => rw [add_smul, add_smul, msupp_add, ih, one_smul, one_smul, msupp_singleton]`.
+-/
 private theorem UpperTheory.Lit.Full.count_msupp (m : Segment k →₀ ℕ) :
     msupp (Finsupp.toMultiset m) = GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum m := by
   induction m using Finsupp.induction_linear with
@@ -81,6 +111,15 @@ private theorem UpperTheory.Lit.Full.count_msupp (m : Segment k →₀ ℕ) :
 
 end
 
+/- English proof (translation)
+Introduce `hG hBZ hZ k _ _ _ _ S`. Take `⟨Z, Ψ, hS, hΨ, hX⟩` from `hZ k`. Set `c` to `MvPolynomial.basisMonomials (Segment k) ℤ`. Set `e : (IrrGL k →₀ ℤ) ≃ₗ[ℤ] ((Segment k →₀ ℕ) →₀ ℤ)` to `Ψ.toIntLinearEquiv.trans c.repr`. Establish `hc : ∀ p m, c.repr p m = MvPolynomial.coeff m p` using `fun _ _ => rfl`.
+
+Establish `hc' : ∀ m, c.repr.symm (Finsupp.single m 1) = MvPolynomial.monomial m 1` using `fun m => by`. Rewrite using `[Module.Basis.repr_symm_single_one]`. Simplify using `[c]`. Take `⟨f⟩` from `count_equiv e {x : IrrGL k | HasSupport x.rep S} {m | GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum m = S} (fun x hx m hm => GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum_eq_of_coeff_ne hG hBZ hS hΨ hX hx (by rw [← hc]; exact hm)) (fun m hm z hz => by`. Establish `hm : GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum m = S` using `hm`.
+
+Use `show HasSupport z.rep S`. Rewrite using `[← hm]`. Use `GlobalTheory.LocGL.UnramSupport.hasSupport_of_monomial hS hΨ hX z.2.rep.smooth z.2.rep.irr m ?_` and prove the remaining obligations. Rewrite using `[IrrGL.of_rep, ← hc']`. Conclude with `hz)`.
+
+Set `g : {m : Segment k →₀ ℕ | GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum m = S} ≃ {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}` to `Multiset.toFinsupp.symm.toEquiv.subtypeEquiv fun m => by show GlobalTheory.CompanionTheory.Hypotheses₂.RankOne.msum m = S ↔ msupp (Finsupp.toMultiset m) = S`. Rewrite using `[count_msupp]`. Establish `hfin` using `count_mseg_finite S`. Use `haveI := hfin.to_subtype`. Conclude with `⟨Set.finite_coe_iff.1 (Finite.of_equiv _ (f.trans g).symm), hfin, Set.ncard_congr' (f.trans g)⟩`.
+-/
 theorem UpperTheory.Lit.Full.count :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (S : Multiset (IrrGL k)), {x : IrrGL k | HasSupport x.rep S}.Finite ∧ {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}.Finite ∧ {x : IrrGL k | HasSupport x.rep S}.ncard = {𝔪 : Multiset (Segment k) | msupp 𝔪 = S}.ncard := by
   intro hG hBZ hZ k _ _ _ _ S

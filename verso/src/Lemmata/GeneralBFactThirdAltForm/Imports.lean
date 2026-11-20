@@ -2,6 +2,15 @@ import Mathlib
 
 namespace Bl.general_b_fact_third_alt_form
 
+/- English proof (translation)
+Introduce `E _ O V _ _ ι _ _ g b hg hspan`. Establish `hgb : ∀ j, g j ∈ Submodule.span O (Set.range b)` using `fun j => hspan ▸ Submodule.subset_span ⟨j, rfl⟩`. Establish `hbg : ∀ i, b i ∈ Submodule.span O (Set.range g)` using `fun i => hspan.symm ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `choose c hc using fun j => (Submodule.mem_span_range_iff_exists_fun O).1 (hgb j)`. Use `choose d hd using fun i => (Submodule.mem_span_range_iff_exists_fun O).1 (hbg i)`.
+
+Establish `key : ∀ j, ∑ k, ((Matrix.of fun k i => d i k) * (Matrix.of fun i j => c j i)) k j • g k = g j`. Introduce `j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul]`. Use `conv_rhs => rw [← hc j]`. Simplify using `only [← hd, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Use `⟨Matrix.of fun i j => c j i, Matrix.of fun k i => d i k, fun j => (hc j).symm, ?_⟩` and prove the remaining obligations. Use extensionality with `k j`. Establish `hz` using `Fintype.linearIndependent_iff.1 hg (fun k => ((Matrix.of fun k i => d i k) * (Matrix.of fun i j => c j i)) k j - (1 : Matrix ι ι O) k j) ?_ k`.
+
+Conclude with `congrArg Subtype.val (sub_eq_zero.1 hz)`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, key, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : CommRing.{0} E] {O : Subring.{0} E} {V : Type} [inst_1 : AddCommGroup.{0} V]
   [inst_2 : Module.{0, 0} E V] {ι : Type} [inst_3 : Fintype.{0} ι] [inst_4 : DecidableEq.{1} ι] (g b : ι → V),

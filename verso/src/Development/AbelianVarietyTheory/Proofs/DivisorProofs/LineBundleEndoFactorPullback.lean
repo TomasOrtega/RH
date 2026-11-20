@@ -24,6 +24,11 @@ namespace GlobalTheory.TorusRM
 
 open GlobalTheory.CechPic GlobalTheory.RealMult.Elliptic
 
+/- English proof (translation)
+Establish `hl : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hl' : (abelian₂ A M').IsLB` using `LB.isLB_linComb hM' _ _`. Establish `h₁ : lam (cls M' hM') (fst A A) (snd A A) = lam (cls M hM) (fst A A) (snd A A ≫ α)` using `(cls_cube_two hM' _ _ hl').symm.trans (((cls_eq_iff hl' (pull_isLB hl _)).2 h).trans (cls_pull_lam hM _ _ _))`. Establish `h₂ : lam (cls M hM) (fst A T) (snd A T ≫ x) = 0` using `(cls_pull_lam hM _ _ (pull_isLB hl _)).symm.trans ((cls_eq_zero_iff (pull_isLB hl _)).2 hx)`. Establish `h₃` using `congrArg (CechPic.pull (lift (snd A T ≫ x) (fst A T)).left) h₁`.
+
+Establish `h₄` using `congrArg (CechPic.pull (lift (fst A T ≫ α) (snd A T)).left) h₂`. Rewrite `h₃` using `[pull_lam, pull_lam, lift_fst, lift_snd, lift_snd_assoc]`. Rewrite `h₄` using `[pull_lam, map_zero, lift_fst, lift_snd_assoc]`. Use `(cls_eq_zero_iff (pull_isLB hl' _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull_lam hM', lam_comm, h₃, lam_comm, h₄]`.
+-/
 theorem hasGen_lam_pull_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {M M' : LB A.left}
     (hM : M.IsLB) (hM' : M'.IsLB) (α : A ⟶ A)
     (h : LBIso (abelian₂ A M') ((abelian₂ A M).pull (lift (fst A A) (snd A A ≫ α)).left)) {T : Over S} (x : T ⟶ A)
@@ -43,6 +48,11 @@ theorem hasGen_lam_pull_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCom
   refine (cls_eq_zero_iff (pull_isLB hl' _)).1 ?_
   rw [cls_pull_lam hM', lam_comm, h₃, lam_comm, h₄]
 
+/- English proof (translation)
+Introduce `g A _ hA M u Hm χ f hM hF M' u' Hm' χ' α hM' hAH _ hiso hf T x hx`. Use `haveI := hA.comm`. Take `⟨P, ψ, ρ, N, hN, hψ, hρ, h₁, h₂, h₃⟩` from `GlobalTheory.T.polarized_abelian_isogeny_exists g A hA M' u' Hm' χ' hM' hAH`. Establish `hk : x ^ (N * N) = 1` using `GlobalTheory.T.isogeny_torsion_generator_power A hA M' hM' P ψ ρ N hψ hρ h₁ h₂ h₃ T x (hasGen_lam_pull_of_lbIso hM hM' α hiso x hx)`. Use `GlobalTheory.T.torsion_generator_char_trivial A hA M f (N * N) hM (Nat.mul_pos hN hN) (fun y hy => ?_) T x hk hx` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `u.ex_onto y`. Take `⟨θ, hθ, h0, hp⟩` from `GlobalTheory.T.theta_multiplier_trivialization g A hA M u Hm χ hM hF w hy`. Conclude with `hf w (GlobalTheory.T.theta_multiplier_integral_imaginary g u.Λ u.full Hm hF.1 w θ hθ h0 hp)`.
+-/
 theorem comp_eq_one_of_lam_triv_of_pull_pos : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (f : A ⟶ A),
     M.IsLB → IsFactorAH u Hm χ →

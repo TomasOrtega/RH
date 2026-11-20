@@ -27,6 +27,9 @@ instance : Nonempty FiniteSubfield := ⟨⟨⊥, inferInstance⟩⟩
 abbrev algebraOfLE {F E : FiniteSubfield} (h : F ≤ E) : Algebra F.1 E.1 :=
   (IntermediateField.inclusion (show F.1 ≤ E.1 from h)).toRingHom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraOfLE_algebraMap {F E : FiniteSubfield} (h : F ≤ E) (x : F.1) :
     ((@algebraMap F.1 E.1 _ _ (algebraOfLE h) x : E.1) : ℚ̄) = x :=
   rfl
@@ -36,16 +39,27 @@ def ideleClassMap {F E : FiniteSubfield} (h : F ≤ E) :
   letI := algebraOfLE h
   GroundTheory.Global.ideleClassMap F.1 E.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ideleClassMap_mk {F E : FiniteSubfield} (h : F ≤ E) (x : IdeleGroup F.1) :
     ideleClassMap h (IdeleClassGroup.mk F.1 x) =
       IdeleClassGroup.mk E.1 (@ideleEmbedding F.1 E.1 _ _ _ _ (algebraOfLE h) x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `letI := algebraOfLE h GroundTheory.Global.ideleClassMap_injective`.
+-/
 theorem ideleClassMap_injective {F E : FiniteSubfield} (h : F ≤ E) :
     Function.Injective (ideleClassMap h) :=
   letI := algebraOfLE h
   GroundTheory.Global.ideleClassMap_injective
 
+/- English proof (translation)
+Set `` to `algebraOfLE hFE`. Set `` to `algebraOfLE hEM`. Set `` to `algebraOfLE (hFE.trans hEM)`. Establish `: IsScalarTower F.1 E.1 M.1` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Conclude with `GroundTheory.Global.ideleClassMap_ideleClassMap c`.
+
+Use the proof step `@[simp]`.
+-/
 theorem ideleClassMap_ideleClassMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hEM : E ≤ M)
     (c : IdeleClassGroup F.1) :
     ideleClassMap hEM (ideleClassMap hFE c) = ideleClassMap (hFE.trans hEM) c := by
@@ -56,6 +70,9 @@ theorem ideleClassMap_ideleClassMap {F E M : FiniteSubfield} (hFE : F ≤ E) (hE
   exact GroundTheory.Global.ideleClassMap_ideleClassMap c
 
 @[simp]
+/- English proof (translation)
+The claim follows from `ideleClassMap_injective h (ideleClassMap_ideleClassMap h h c)`.
+-/
 theorem ideleClassMap_self {F : FiniteSubfield} (h : F ≤ F) (c : IdeleClassGroup F.1) :
     ideleClassMap h c = c :=
   ideleClassMap_injective h (ideleClassMap_ideleClassMap h h c)
@@ -84,6 +101,9 @@ def of (F : FiniteSubfield) : IdeleClassGroup F.1 →* IdeleClassLimit where
   map_mul' x y := (DirectLimit.mul_def (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) F x y).symm
 
 @[simp]
+/- English proof (translation)
+The claim follows from `show (⟦⟨E, FiniteSubfield.ideleClassMap h c⟩⟧ : DirectLimit (fun F : FiniteSubfield ↦ IdeleClassGroup F.1) (fun _ _ h ↦ FiniteSubfield.ideleClassMap h)) = ⟦⟨F, c⟩⟧ from DirectLimit.mk_apply (F := fun F : FiniteSubfield ↦ IdeleClassGroup F.1) (f := fun _ _ h ↦ FiniteSubfield.idele …`.
+-/
 theorem of_ideleClassMap {F E : FiniteSubfield} (h : F ≤ E) (c : IdeleClassGroup F.1) :
     of E (FiniteSubfield.ideleClassMap h c) = of F c :=
   show (⟦⟨E, FiniteSubfield.ideleClassMap h c⟩⟧ : DirectLimit
@@ -91,22 +111,34 @@ theorem of_ideleClassMap {F E : FiniteSubfield} (h : F ≤ E) (c : IdeleClassGro
       ⟦⟨F, c⟩⟧ from DirectLimit.mk_apply (F := fun F : FiniteSubfield ↦ IdeleClassGroup F.1)
         (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) F E c h
 
+/- English proof (translation)
+The claim follows from `DirectLimit.mk_injective (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) (fun _ _ h ↦ FiniteSubfield.ideleClassMap_injective h) F`.
+-/
 theorem of_injective (F : FiniteSubfield) : Function.Injective (of F) :=
   DirectLimit.mk_injective (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h)
     (fun _ _ h ↦ FiniteSubfield.ideleClassMap_injective h) F
 
+/- English proof (translation)
+Take `⟨F, c, rfl⟩` from `DirectLimit.exists_eq_mk (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) z`. Conclude with `⟨F, c, rfl⟩`.
+-/
 theorem exists_of (z : IdeleClassLimit) : ∃ (F : FiniteSubfield) (c : IdeleClassGroup F.1),
     of F c = z := by
   obtain ⟨F, c, rfl⟩ := DirectLimit.exists_eq_mk
     (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) z
   exact ⟨F, c, rfl⟩
 
+/- English proof (translation)
+Take `⟨F, c, d, rfl, rfl⟩` from `DirectLimit.exists_eq_mk₂ (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) z w`. Conclude with `⟨F, c, d, rfl, rfl⟩`.
+-/
 theorem exists_of₂ (z w : IdeleClassLimit) : ∃ (F : FiniteSubfield) (c d : IdeleClassGroup F.1),
     of F c = z ∧ of F d = w := by
   obtain ⟨F, c, d, rfl, rfl⟩ := DirectLimit.exists_eq_mk₂
     (f := fun _ _ h ↦ FiniteSubfield.ideleClassMap h) z w
   exact ⟨F, c, d, rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← of_ideleClassMap hF x, ← of_ideleClassMap hE y, (of_injective M).eq_iff]`.
+-/
 theorem of_eq_of_iff {F E M : FiniteSubfield} (hF : F ≤ M) (hE : E ≤ M) (x : IdeleClassGroup F.1)
     (y : IdeleClassGroup E.1) : of F x = of E y ↔ FiniteSubfield.ideleClassMap hF x = FiniteSubfield.ideleClassMap hE y := by
   rw [← of_ideleClassMap hF x, ← of_ideleClassMap hE y, (of_injective M).eq_iff]
@@ -131,12 +163,21 @@ def lift : IdeleClassLimit →* G where
     exact map_mul (g F) c d
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_of (F : FiniteSubfield) (c : IdeleClassGroup F.1) : lift g compat (of F c) = g F c :=
   rfl
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun _ ↦ rfl`.
+-/
 theorem lift_comp_of (F : FiniteSubfield) : (lift g compat).comp (of F) = g F :=
   MonoidHom.ext fun _ ↦ rfl
 
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨F, c, rfl⟩` from `exists_of z`. Rewrite using `[lift_of, ← hφ F, MonoidHom.comp_apply]`.
+-/
 theorem lift_unique (φ : IdeleClassLimit →* G) (hφ : ∀ F, φ.comp (of F) = g F) :
     φ = lift g compat := by
   ext z
@@ -146,6 +187,9 @@ theorem lift_unique (φ : IdeleClassLimit →* G) (hφ : ∀ F, φ.comp (of F) =
 end lift
 
 @[ext]
+/- English proof (translation)
+Use extensionality with `z`. Take `⟨F, c, rfl⟩` from `exists_of z`. Conclude with `DFunLike.congr_fun (h F) c`.
+-/
 theorem hom_ext {G : Type*} [Monoid G] {φ ψ : IdeleClassLimit →* G}
     (h : ∀ F : FiniteSubfield, φ.comp (of F) = ψ.comp (of F)) : φ = ψ := by
   ext z

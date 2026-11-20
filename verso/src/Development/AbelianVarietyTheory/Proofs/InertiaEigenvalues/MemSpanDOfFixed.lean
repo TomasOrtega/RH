@@ -14,6 +14,9 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l)
     {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v c => simp [mul_assoc]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 private theorem mulR_mulR (a b : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     mulR ℚ_[l] P.R.BdR LL V a (mulR ℚ_[l] P.R.BdR LL V b x) = mulR ℚ_[l] P.R.BdR LL V (a * b) x := by
   induction x using TensorProduct.induction_on with
@@ -21,6 +24,9 @@ private theorem mulR_mulR (a b : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
   | tmul v c => simp [mul_assoc]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, neg_zero]`. Consider the case `tmul v c => simp [tmul_neg]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz, neg_add]`.
+-/
 private theorem mulR_neg (a : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     mulR ℚ_[l] P.R.BdR LL V (-a) x = -mulR ℚ_[l] P.R.BdR LL V a x := by
   induction x using TensorProduct.induction_on with
@@ -28,6 +34,9 @@ private theorem mulR_neg (a : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
   | tmul v c => simp [tmul_neg]
   | add y z hy hz => simp only [map_add, hy, hz, neg_add]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v c => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 private theorem mulR_one (x : V ⊗[ℚ_[l]] P.R.BdR) :
     mulR ℚ_[l] P.R.BdR LL V 1 x = x := by
   induction x using TensorProduct.induction_on with
@@ -35,6 +44,9 @@ private theorem mulR_one (x : V ⊗[ℚ_[l]] P.R.BdR) :
   | tmul v c => simp
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v c => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 private theorem act_mulR (K : FinExt l) (ρ : Representation LL ↥(GK K) V) (g : ↥(GK K))
     (a : P.R.BdR) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     actVdR (P.PD K) ρ g (mulR ℚ_[l] P.R.BdR LL V a x) =
@@ -61,6 +73,9 @@ private def spanD (K : FinExt l) (ρ : Representation LL ↥(GK K) V) :
     refine ⟨m, fun i => -b i, d, hd, ?_⟩
     simp only [mulR_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Take `⟨m, b, d, hd, rfl⟩` from `hx`. Use `⟨m, fun i => a * b i, d, hd, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, mulR_mulR]`.
+-/
 private theorem mulR_mem_spanD (K : FinExt l) (ρ : Representation LL ↥(GK K) V) (a : P.R.BdR)
     (x : V ⊗[ℚ_[l]] P.R.BdR) (hx : x ∈ spanD P K ρ) :
     mulR ℚ_[l] P.R.BdR LL V a x ∈ spanD P K ρ := by
@@ -68,6 +83,9 @@ private theorem mulR_mem_spanD (K : FinExt l) (ρ : Representation LL ↥(GK K) 
   refine ⟨m, fun i => a * b i, d, hd, ?_⟩
   simp only [map_sum, mulR_mulR]
 
+/- English proof (translation)
+Take `⟨m, b, d, hd, rfl⟩` from `hx`. Use `⟨m, fun i => (P.PD K).actdR g (b i), d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[act_mulR, (mem_DdR (P.PD K) ρ _).1 (hd i)]`.
+-/
 private theorem act_mem_spanD (K : FinExt l) (ρ : Representation LL ↥(GK K) V) (g : ↥(GK K))
     (x : V ⊗[ℚ_[l]] P.R.BdR) (hx : x ∈ spanD P K ρ) :
     actVdR (P.PD K) ρ g x ∈ spanD P K ρ := by
@@ -77,6 +95,23 @@ private theorem act_mem_spanD (K : FinExt l) (ρ : Representation LL ↥(GK K) V
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [act_mulR, (mem_DdR (P.PD K) ρ _).1 (hd i)]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K'.1 := K'.2`. Use `haveI : Finite (GQ l ⧸ GK K') := Subgroup.quotient_finite_of_isOpen _ (IntermediateField.fixingSubgroup_isOpen K'.1)`. Use `haveI : (GK K').FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `JumpDescent.descent (Ω := Om l) ((GK K').subgroupOf (GK K)) (fun g => (actVdR (P.PD K) ρ g).toAddMonoidHom) ?_ ?_ (fun c => (mulR ℚ_[l] P.R.BdR LL V (algebraMap (Om l) P.R.BdR c)).toAddMonoidHom) ?_ ?_ ?_ (fun g => ((g : GQ l) : Om l →* Om l)) (fun _ _ _ => rfl) (fun _ => rfl) ?_ …` and prove the remaining obligations. Simplify using `only [mulR_one, Fin.sum_univ_one]⟩) x trivial ?_`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Introduce `g g' x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Introduce `x`. Simplify using `only [map_one, LinearMap.toAddMonoidHom_coe, mulR_one]`. Introduce `g g' x`. Simplify using `only [map_mul, LinearMap.toAddMonoidHom_coe, mulR_mulR]`. Introduce `g g' x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Consider the case `tmul v b => simp [add_mul, tmul_add]`. Consider the case `add y z hy hz => simp only [map_add] at hy hz ⊢`. Rewrite using `[hy, hz]`.
+
+Normalize the expressions using the abelian group laws. Introduce `g c x`. Simplify using `only [LinearMap.toAddMonoidHom_coe]`. Rewrite using `[act_mulR, P.PD_actdR, P.actQdR_Om]`. Both sides reduce to the same expression.
+
+Introduce `g`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `⟨fun hg a ha => hg ⟨a, ha⟩, fun hg a => hg a.1 a.2⟩`. Introduce `g hg`. Use `(mem_DdR (P.PD K') _ x).1 hxH ⟨g.1, hg⟩` as an intermediate fact.
+
+Rewrite `this` using `[JumpDescent.actVdR_comp P h]`. Conclude with `this`.
+-/
 private theorem mem_spanD_of_fixed {K K' : FinExt l} (h : K.1 ≤ K'.1)
     (ρ : Representation LL ↥(GK K) V) (x : V ⊗[ℚ_[l]] P.R.BdR)
     (hxH : x ∈ DdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h)))) :
@@ -127,6 +162,9 @@ private theorem mem_spanD_of_fixed {K K' : FinExt l} (h : K.1 ≤ K'.1)
 
 end
 
+/- English proof (translation)
+Introduce `l _ P K K' LL h V _ _ _ _ ρ hs y`. Take `⟨m, b, d, hd, rfl⟩` from `hs y`. Conclude with `(spanD P K ρ).sum_mem fun i _ => mulR_mem_spanD P K ρ _ _ (mem_spanD_of_fixed P h ρ _ (hd i))`.
+-/
 theorem spans_descent : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1)
     (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V]
     (ρ : Representation ↥LL.1 ↥(GK K) V),

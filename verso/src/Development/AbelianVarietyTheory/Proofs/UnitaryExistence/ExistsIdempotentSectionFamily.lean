@@ -28,6 +28,11 @@ noncomputable section
 
 namespace GlobalTheory.CompIdem
 
+/- English proof (translation)
+Establish `h : Set.range x ⊆ Set.range i`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum L) z (IsLocalRing.closedPoint L)]` and apply the resulting hypothesis. Use `⟨(Spec.preimage (IsOpenImmersion.lift i x h)).hom, ?_⟩` and prove the remaining obligations. Use `show Spec.map (Spec.preimage (IsOpenImmersion.lift i x h)) ≫ i = x`.
+
+Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`.
+-/
 theorem exists_factor {L : Type} [Field L] {R : CommRingCat.{0}} {Z : Scheme.{0}} (i : Spec R ⟶ Z)
     [IsOpenImmersion i] (x : Sp L ⟶ Z) (hx : x (IsLocalRing.closedPoint L) ∈ Set.range i) :
     ∃ φ : R →+* L, spMap φ ≫ i = x := by
@@ -40,6 +45,29 @@ theorem exists_factor {L : Type} [Field L] {R : CommRingCat.{0}} {Z : Scheme.{0}
 
 open GlobalTheory.AffinePoints in
 
+/- English proof (translation)
+Establish `hirr : IrreducibleSpace Z`. Take `⟨z⟩ : Nonempty Z` from `inferInstance`. Use `GlobalTheory.KeyFam.isPreirreducible_connectedComponent_of_smooth g z` as an intermediate fact. Rewrite `this` using `[PreconnectedSpace.connectedComponent_eq_univ]`. Conclude with `{ isPreirreducible_univ := this, toNonempty := ⟨z⟩ }`.
+
+Establish `hK : GlobalTheory.IsNormalScheme (Spec (.of ℂ))` using `inferInstance`. Establish `: GlobalTheory.IsNormalScheme Z` using `(GlobalTheory.isNormalScheme_iff Z).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth g ((GlobalTheory.isNormalScheme_iff _).mp hK))`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian g`. Establish `: IsIntegral Z` using `GlobalTheory.IsNormalScheme.isIntegral_of_connectedSpace Z`. Establish `key : ∀ (R : CommRingCat.{0}) (i : Spec R ⟶ Z) [IsOpenImmersion i] (p q : Sp ℂ ⟶ Z), p ≫ g = 𝟙 _ → q ≫ g = 𝟙 _ → p (IsLocalRing.closedPoint ℂ) ∈ Set.range i → q (IsLocalRing.closedPoint ℂ) ∈ Set.range i → t p = t q`.
+
+Introduce `R i _ p q hp hq hpi hqi`. Establish `: Nonempty (Spec R)` using `⟨hpi.choose⟩`. Establish `: IsIntegral (Spec R)` using `isIntegral_of_isOpenImmersion i`. Establish `: IsDomain R` using `(affine_isIntegral_iff R).1 this`. Set `c : CommRingCat.of ℂ ⟶ R` to `Spec.preimage (i ≫ g)`.
+
+Establish `hc : Spec.map c = i ≫ g` using `Spec.map_preimage _`. Establish `hsm : Smooth (Spec.map c)` using `by rw [hc]; infer_instance`. Use `letI : Algebra ℂ R := c.hom.toAlgebra`. Establish `: Algebra.Smooth ℂ R` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).1 hsm`. Establish `halg : ∀ φ : R →+* ℂ, (spMap φ ≫ i) ≫ g = 𝟙 _ ↔ ∀ a, φ (algebraMap ℂ R a) = a`.
+
+Introduce `φ`. Rewrite using `[Category.assoc, ← hc]`. Use `show Spec.map (CommRingCat.ofHom φ) ≫ Spec.map c = 𝟙 _ ↔ _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id, Spec.map_injective.eq_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a`. Conclude with `congrArg (fun f : CommRingCat.of ℂ ⟶ CommRingCat.of ℂ => f.hom a) h`. Introduce `h`. Use extensionality with `a`. Conclude with `h a`.
+
+Take `⟨φ, rfl⟩` from `exists_factor i p hpi`. Take `⟨ψ, rfl⟩` from `exists_factor i q hqi`. Use `GlobalTheory.RootConst.preconnectedSpace_algHom R` as an intermediate fact. Establish `hcont` using `GlobalTheory.RootConst.continuous_of_holomorphic_families R (fun s => (t (spMap s.toRingHom ≫ i) : ℂ)) (fun m B s hB hs => by`. Establish `h1` using `ht m B (fun b => spMap (s b).toRingHom ≫ i) hB (fun b _ => (halg _).2 fun a => (s b).commutes a) (GlobalTheory.LocLift.isHolTo_comp_hom (GlobalTheory.ThetaValueCont.isHolTo_spMap hB (fun b => (s b).toRingHom) hs) i)`.
+
+Conclude with `(continuous_of_discreteTopology (f := fun n : ℕ => (n : ℂ))).comp_continuousOn h1)`. Establish `hdisc : IsDiscrete (Set.range fun n : ℕ => (n : ℂ))`. Establish `h0 : Topology.IsEmbedding (fun n : ℕ => (n : ℂ))`. Establish `h` using `Complex.isometry_ofReal.isEmbedding.comp Nat.isClosedEmbedding_coe_real.isEmbedding`. Conclude with `h`.
+
+Conclude with `h0.isDiscrete_range`. Use `isPreconnected_univ.constant_of_mapsTo hdisc hcont.continuousOn (fun s _ => ⟨_, rfl⟩) (x := { φ with commutes' := (halg φ).1 hp }) (y := { ψ with commutes' := (halg ψ).1 hq }) trivial trivial` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨R, i, _, hi, -⟩` from `Z.exists_affine_mem_range_and_range_subset (x := p (IsLocalRing.closedPoint ℂ)) (U := ⊤) trivial`. Take `⟨R', i', _, hi', -⟩` from `Z.exists_affine_mem_range_and_range_subset (x := q (IsLocalRing.closedPoint ℂ)) (U := ⊤) trivial`.
+
+Use `LocallyOfFiniteType.jacobsonSpace g` as an intermediate fact. Establish `ho` using `i.isOpenEmbedding.isOpen_range`. Establish `ho'` using `i'.isOpenEmbedding.isOpen_range`. Establish `hne : (Set.range i ∩ Set.range i').Nonempty` using `nonempty_preirreducible_inter ho ho' ⟨_, hi⟩ ⟨_, hi'⟩`. Take `⟨x, ⟨h1, h2⟩, hx⟩` from `nonempty_inter_closedPoints hne (ho.inter ho').isLocallyClosed`.
+
+Establish `hr` using `pointOfClosedPoint_comp g x hx`. Establish `hra` using `pointOfClosedPoint_apply g x hx (IsLocalRing.closedPoint ℂ)`. Conclude with `(key R i p _ hp hr hi (by rw [hra]; exact h1)).trans (key R' i' _ q hr hq (by rw [hra]; exact h2) hi')`.
+-/
 theorem const_of_connected {Z : Scheme.{0}} (g : Z ⟶ Sp ℂ) [Smooth g] [ConnectedSpace Z]
     (t : (Sp ℂ ⟶ Z) → ℕ)
     (ht : ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Z)), IsOpen B →
@@ -109,6 +137,11 @@ theorem const_of_connected {Z : Scheme.{0}} (g : Z ⟶ Sp ℂ) [Smooth g] [Conne
   have hra := pointOfClosedPoint_apply g x hx (IsLocalRing.closedPoint ℂ)
   exact (key R i p _ hp hr hi (by rw [hra]; exact h1)).trans (key R' i' _ q hr hq (by rw [hra]; exact h2) hi')
 
+/- English proof (translation)
+Use `GlobalTheory.RatPointConn.of_section s r hr` as an intermediate fact. Establish `: ConnectedSpace ↥(pullback s (spMap σ))` using `GeometricallyConnected.geometrically_connectedSpace (f := s) _ _ _ (IsPullback.of_hasPullback _ _)`. Establish `h` using `const_of_connected (pullback.snd s (spMap σ)) (fun x => t (x ≫ pullback.fst _ _)) (fun m B y hB hy hh => ht m B _ hB (fun b hb => by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy b hb, Category.id_comp])`. Use the proof step `(GlobalTheory.LocLift.isHolTo_comp_hom hh _))`.
+
+Use the proof step `(pullback.lift p (𝟙 _) (by simpa using hp)) (pullback.lift q (𝟙 _) (by simpa using hq))`. Use the proof step `(pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _)`. Simplify `h` using `only [pullback.lift_fst]`.
+-/
 theorem const_of_section {k : Type} [Field k] (σ : k →+* ℂ) {Y : Scheme.{0}} (s : Y ⟶ Sp k) [Smooth s]
     [ConnectedSpace Y] (r : Sp k ⟶ Y) (hr : r ≫ s = 𝟙 _) (t : (Sp ℂ ⟶ Y) → ℕ)
     (ht : ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Y)), IsOpen B →
@@ -125,6 +158,13 @@ theorem const_of_section {k : Type} [Field k] (σ : k →+* ℂ) {Y : Scheme.{0}
     (pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _)
   simpa only [pullback.lift_fst] using h
 
+/- English proof (translation)
+Set `U : Y.Opens` to `⟨connectedComponent (r (IsLocalRing.closedPoint k)), isOpen_connectedComponent_of_noetherianSpace _⟩`. Establish `: ConnectedSpace U.toScheme` using `isConnected_iff_connectedSpace.1 (isConnected_connectedComponent (x := r (IsLocalRing.closedPoint k)))`. Establish `lf : ∀ (L : Type) [Field L] (x : Sp L ⟶ Y), x (IsLocalRing.closedPoint L) ∈ U → ∃ x' : Sp L ⟶ U.toScheme, x' ≫ U.ι = x`. Introduce `L _ x hx`. Use `⟨IsOpenImmersion.lift U.ι x ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum L) z (IsLocalRing.closedPoint L), Scheme.Opens.range_ι]`. Conclude with `hx`. Take `⟨p', rfl⟩` from `lf ℂ p hpr`. Take `⟨q', rfl⟩` from `lf ℂ q hqr`.
+
+Take `⟨r', hr'⟩` from `lf k r mem_connectedComponent`. Conclude with `const_of_section σ (U.ι ≫ s) r' (by rw [← Category.assoc, hr', hr]) (fun x => t (x ≫ U.ι)) (fun m B y hB hy hh => ht m B _ hB (fun b hb => by rw [Category.assoc, hy b hb]) (GlobalTheory.LocLift.isHolTo_comp_hom hh _)) p' q' (by simpa using hp) (by simpa using hq)`.
+-/
 theorem const_on_component {k : Type} [Field k] (σ : k →+* ℂ) {Y : Scheme.{0}} (s : Y ⟶ Sp k) [Smooth s]
     [TopologicalSpace.NoetherianSpace Y] (r : Sp k ⟶ Y) (hr : r ≫ s = 𝟙 _) (t : (Sp ℂ ⟶ Y) → ℕ)
     (ht : ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Y)), IsOpen B →
@@ -150,10 +190,32 @@ theorem const_on_component {k : Type} [Field k] (σ : k →+* ℂ) {Y : Scheme.{
     (fun m B y hB hy hh => ht m B _ hB (fun b hb => by rw [Category.assoc, hy b hb])
       (GlobalTheory.LocLift.isHolTo_comp_hom hh _)) p' q' (by simpa using hp) (by simpa using hq)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Take `⟨R, i, _, hi, -⟩` from `X.exists_affine_mem_range_and_range_subset (x := x (IsLocalRing.closedPoint L)) (U := ⊤) trivial`. Take `⟨φ, rfl⟩` from `exists_factor i x hi`. Set `c : CommRingCat.of K ⟶ R` to `Spec.preimage (i ≫ s)`. Establish `hc : Spec.map c = i ≫ s` using `Spec.map_preimage _`. Establish `hft : LocallyOfFiniteType (Spec.map c)` using `by rw [hc]; infer_instance`.
+
+Use `letI : Algebra K R := c.hom.toAlgebra`. Establish `: Algebra.FiniteType K R` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 hft`. Take `⟨G, hG⟩` from `this.out`. Establish `hcomp : ∀ (F : Type) [CommRing F] (ψ : R →+* F) (j : K →+* F), (spMap ψ ≫ i) ≫ s = spMap j ↔ ∀ a, ψ (algebraMap K R a) = j a`. Introduce `F _ ψ j`.
+
+Rewrite using `[Category.assoc, ← hc]`. Use `show Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map c = _ ↔ _`. Rewrite using `[← Spec.map_comp, Spec.map_injective.eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Conclude with `congrArg (fun f : CommRingCat.of K ⟶ CommRingCat.of F => f.hom a) h`. Introduce `h`. Use extensionality with `a`. Conclude with `h a`. Establish `hφ` using `(hcomp L φ _).1 hx`.
+
+Use `⟨G.image fun a => (φ a : ℂ), ?_, fun F hK hL hS => ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(φ a).2`. Establish `hmem : ∀ a : R, (φ a : ℂ) ∈ F`.
+
+Introduce `a`. Establish `ha : a ∈ Algebra.adjoin K (G : Set R)` using `hG ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact hS _ (Finset.mem_image_of_mem _ ha)`. Consider the case `algebraMap a => rw [hφ]`.
+
+Conclude with `hK a.2`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`.
+
+Set `ψ : R →+* F` to `(L.val.toRingHom.comp φ).codRestrict F.toSubfield.toSubring hmem`. Use `⟨spMap ψ ≫ i, (hcomp F ψ _).2 fun a => Subtype.ext ?_, ?_⟩` and prove the remaining obligations. Use `show (φ (algebraMap K R a) : ℂ) = a`. Rewrite using `[hφ]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Category.assoc, spMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_descent {K L : IntermediateField ℚ ℂ} (hKL : K ≤ L) {X : Scheme.{0}} (s : X ⟶ Sp K)
     [LocallyOfFiniteType s] (x : Sp L ⟶ X) (hx : x ≫ s = spMap (IntermediateField.inclusion hKL).toRingHom) :
     ∃ S : Finset ℂ, (∀ z ∈ S, z ∈ L) ∧ ∀ (F : IntermediateField ℚ ℂ) (hK : K ≤ F) (hL : F ≤ L), (∀ z ∈ S, z ∈ F) →
@@ -201,6 +263,27 @@ theorem exists_descent {K L : IntermediateField ℚ ℂ} (hKL : K ≤ L) {X : Sc
   · rw [← Category.assoc, spMap_comp]
     rfl
 
+/- English proof (translation)
+Set `L` to `algebraicClosure ℚ ℂ`. Establish `: IsAlgClosed L` using `(algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `Z` to `pullback s (spMap (IntermediateField.inclusion hKL).toRingHom)`. Set `g : Z ⟶ Sp L` to `pullback.snd _ _`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian g`.
+
+Establish `: CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace g`. Establish `: IsNoetherian Z` using `{}`. Use `LocallyOfFiniteType.jacobsonSpace g` as an intermediate fact. Establish `: Finite (irreducibleComponents Z)` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.to_subtype`. Use `Fintype.ofFinite (irreducibleComponents Z)` as an intermediate fact.
+
+Establish `h1 : ∀ C : irreducibleComponents Z, ∃ x : Sp L ⟶ Z, x ≫ g = 𝟙 _ ∧ x (IsLocalRing.closedPoint L) ∈ C.1`. Introduce `C`. Take `⟨x, hx, hc⟩` from `nonempty_inter_closedPoints (C.2.1 : IsIrreducible C.1).nonempty (isClosed_of_mem_irreducibleComponents _ C.2).isLocallyClosed`. Conclude with `⟨pointOfClosedPoint g x hc, pointOfClosedPoint_comp g x hc, (congrArg (· ∈ C.1) (pointOfClosedPoint_apply g x hc _)).mpr hx⟩`. Use `choose x hx hxC using h1`.
+
+Establish `h2` using `fun C => exists_descent hKL s (x C ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx C, Category.id_comp])`. Use `choose S hS hSF using h2`. Use `⟨Finset.univ.biUnion S, ?_, fun F hK hL hF z => ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨C, -, h⟩` from `Finset.mem_biUnion.1 hz`. Conclude with `hS C z h`. Establish `hcomp : spMap (IntermediateField.inclusion hL).toRingHom ≫ spMap (IntermediateField.inclusion hK).toRingHom = spMap (IntermediateField.inclusion hKL).toRingHom`. Rewrite using `[spMap_comp]`. Both sides reduce to the same expression.
+
+Set `π : Z ⟶ pullback s (spMap (IntermediateField.inclusion hK).toRingHom)` to `pullback.lift (pullback.fst _ _) (g ≫ spMap (IntermediateField.inclusion hL).toRingHom) (by rw [Category.assoc, hcomp, pullback.condition])`. Establish `hπ : IsPullback π g (pullback.snd _ _) (spMap (IntermediateField.inclusion hL).toRingHom)`. Use `IsPullback.of_right (h₁₂ := pullback.fst _ _) (v₁₃ := s) (h₂₂ := spMap (IntermediateField.inclusion hK).toRingHom) ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, hcomp]`. Conclude with `IsPullback.of_hasPullback _ _`.
+
+Establish `hy : Surjective (spMap (IntermediateField.inclusion hL).toRingHom)` using `⟨fun a => ⟨Classical.arbitrary _, Subsingleton.elim (α := PrimeSpectrum F) _ _⟩⟩`. Establish `hs : Surjective π` using `MorphismProperty.of_isPullback hπ.flip hy`. Take `⟨w, rfl⟩` from `π.surjective z`. Set `C : irreducibleComponents Z` to `⟨irreducibleComponent w, irreducibleComponent_mem_irreducibleComponents w⟩`. Take `⟨x', hx1, hx2⟩` from `hSF C F hK hL fun z hz => hF z (Finset.mem_biUnion.2 ⟨C, Finset.mem_univ _, hz⟩)`.
+
+Set `r : Sp F ⟶ pullback s (spMap (IntermediateField.inclusion hK).toRingHom)` to `pullback.lift x' (𝟙 _) (by rw [hx1, Category.id_comp])`. Establish `hr : spMap (IntermediateField.inclusion hL).toRingHom ≫ r = x C ≫ π`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [r, π, Category.assoc, pullback.lift_fst, hx2]`. Simplify using `only [r, π, Category.assoc, pullback.lift_snd, Category.comp_id]`.
+
+Rewrite using `[← Category.assoc, hx C, Category.id_comp]`. Use `⟨r, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `e : r (IsLocalRing.closedPoint F) = π (x C (IsLocalRing.closedPoint L))`. Establish `e1 : r (spMap (IntermediateField.inclusion hL).toRingHom (IsLocalRing.closedPoint L)) = π (x C (IsLocalRing.closedPoint L))` using `congrArg (fun f : Sp L ⟶ _ => f (IsLocalRing.closedPoint L)) hr`. Rewrite using `[← e1]`.
+
+Use `congr 1`. Conclude with `Subsingleton.elim (α := PrimeSpectrum F) _ _`. Rewrite using `[e]`. Conclude with `((isIrreducible_irreducibleComponent (x := w)).isConnected.isPreconnected.image _ π.continuous.continuousOn).subset_connectedComponent ⟨_, hxC C, rfl⟩ ⟨w, mem_irreducibleComponent, rfl⟩`.
+-/
 theorem exists_rational_components {K : IntermediateField ℚ ℂ} (hKL : K ≤ algebraicClosure ℚ ℂ) {X : Scheme.{0}}
     (s : X ⟶ Sp K) [LocallyOfFiniteType s] [QuasiCompact s] :
     ∃ S : Finset ℂ, (∀ z ∈ S, z ∈ algebraicClosure ℚ ℂ) ∧
@@ -277,6 +360,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def basePt {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : Sp S ⟶ Xo.XF c :=
   pullback.lift y.x (spMap (algebraMap c.F S)) (by rw [y.x_over, spMap_comp]; rfl)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [basePt, Category.assoc, pullback.lift_fst, h]`. Simplify using `only [basePt, Category.assoc, pullback.lift_snd, spMap_comp]`. Use `congr 1`. Conclude with `φ.comp_algebraMap.symm`.
+-/
 theorem basePt_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) (z : FrPt Xo c T) (h : z.x = spMap φ.toRingHom ≫ y.x) :
     basePt z = spMap φ.toRingHom ≫ basePt y := by
@@ -286,12 +372,28 @@ theorem basePt_map {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algeb
     congr 1
     exact φ.comp_algebraMap.symm
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [basePt, pullback.lift_fst, h]`. Simplify using `only [basePt, pullback.lift_snd]`.
+-/
 theorem basePt_congr {S : Type} [CommRing S] [Algebra c.F S] (y z : FrPt Xo c S) (h : z.x = y.x) :
     basePt z = basePt y := by
   apply pullback.hom_ext
   · simp only [basePt, pullback.lift_fst, h]
   · simp only [basePt, pullback.lift_snd]
 
+/- English proof (translation)
+Establish `hex : ∀ (p : TRing c.F) (y : FrPt Xo c p.R), ∃ e : p.R, IsIdempotentElem e ∧ ∀ z : PrimeSpectrum p.R, e ∉ z.asIdeal ↔ basePt y z ∈ U`. Introduce `p y`. Take `⟨e, he, h⟩` from `PrimeSpectrum.isClopen_iff.1 (hU.preimage (basePt y).continuous)`. Conclude with `⟨e, he, fun z => (Set.ext_iff.1 h z).symm⟩`. Use `choose χ hi hχ using hex`.
+
+Establish `hmap : ∀ (p : TRing c.F) (S : Type) [CommRing S] [Algebra c.F S] (φ : p.R →ₐ[c.F] S) (y : FrPt Xo c p.R) (w : FrPt Xo c S), w.x = spMap φ.toRingHom ≫ y.x → ∀ z : PrimeSpectrum S, φ (χ p y) ∉ z.asIdeal ↔ basePt w z ∈ U`. Introduce `p S _ _ φ y w h z`. Rewrite using `[basePt_map φ y w h]`. Conclude with `hχ p y (PrimeSpectrum.comap φ.toRingHom z)`. Establish `hw : ∀ (p : TRing c.F) (t : Ix Dw → (p.R)ˣ), wchar (ex Dw 0 0) t = 1`.
+
+Introduce `p t`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have : ex Dw 0 0 i = 0 := by rcases i with _ | ⟨τ, i⟩ <;> simp [ex]`. Rewrite using `[this, pow_zero]`. Use `⟨χ, ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩, ?_, fun S _ _ _ y => ?_⟩` and prove the remaining obligations.
+
+Use `PrimeSpectrum.basicOpen_injOn_isIdempotentElem (hi q z) ((hi p y).map φ) ?_` and prove the remaining obligations. Use extensionality with `w`. Conclude with `(hχ q z w).trans (hmap p q.R φ y z h.1 w).symm`. Rewrite using `[hw, _root_.one_mul]`. Use `PrimeSpectrum.basicOpen_injOn_isIdempotentElem (hi p y') (hi p y) ?_` and prove the remaining obligations.
+
+Use extensionality with `w`. Use `hχ p y' w` as an intermediate fact. Rewrite `this` using `[basePt_congr y y' h.1]`. Conclude with `this.trans (hχ p y w).symm`. Use function extensionality and compare the values at `p y`.
+
+Conclude with `(hi p y).eq`. Establish `h` using `hA S y`. Establish `e : evR Xo c χ y = h.choose_spec.choose (χ h.choose h.choose_spec.choose_spec.choose)` using `dif_pos h`. Rewrite using `[e]`. Conclude with `⟨(hi _ _).map _, hmap _ S _ _ y h.choose_spec.choose_spec.choose_spec.1⟩`.
+-/
 theorem exists_indicator (hA : AllTest Xo c) (U : Set (Xo.XF c)) (hU : IsClopen U) :
     ∃ χ ∈ sec Xo c 0 0, χ * χ = χ ∧ ∀ (S : Type) [CommRing S] [IsReduced S] [Algebra c.F S] (y : FrPt Xo c S),
       IsIdempotentElem (evR Xo c χ y) ∧
@@ -330,6 +432,13 @@ theorem exists_indicator (hA : AllTest Xo c) (U : Set (Xo.XF c)) (hU : IsClopen 
     rw [e]
     exact ⟨(hi _ _).map _, hmap _ S _ _ y h.choose_spec.choose_spec.choose_spec.1⟩
 
+/- English proof (translation)
+Set `t : (Sp ℂ ⟶ Xo.X) → ℕ` to `fun x => if h : ∃ i P, IsPeriod (F.Di i) ty P ∧ F.u i P = x then (h.choose : ℕ) else 0`. Establish `ht : ∀ i P, IsPeriod (F.Di i) ty P → t (F.u i P) = i`. Introduce `i P hP`. Establish `h : ∃ j Q, IsPeriod (F.Di j) ty Q ∧ F.u j Q = F.u i P` using `⟨i, P, hP, rfl⟩`. Take `⟨Q, hQ, e⟩` from `h.choose_spec`.
+
+Conclude with `(dif_pos h).trans (congrArg _ (F.disj _ _ _ _ hQ hP e))`. Use `⟨t, ht, fun m B y hB hs hy b₀ hb₀ => ?_⟩` and prove the remaining obligations. Take `⟨B', i, P, ho, hm, -, hP, hu⟩` from `F.lift m B y hB hs hy b₀ hb₀`. Establish `hev : (fun b => t (y b)) =ᶠ[nhds b₀] fun _ => (i : ℕ)` using `Filter.eventually_of_mem (ho.mem_nhds hm) fun b hb => by show t (y b) = i`. Rewrite using `[← hu b hb]`.
+
+Conclude with `ht i _ (hP.1 b hb)`. Conclude with `(continuousAt_const.congr hev.symm).continuousWithinAt`.
+-/
 theorem exists_index {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (F : FamilyUnif Xo σ ty) :
     ∃ t : (Sp ℂ ⟶ Xo.X) → ℕ, (∀ i P, IsPeriod (F.Di i) ty P → t (F.u i P) = i) ∧
       ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ Xo.X)), IsOpen B →
@@ -351,6 +460,9 @@ theorem exists_index {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* �
       exact ht i _ (hP.1 b hb)
   exact (continuousAt_const.congr hev.symm).continuousWithinAt
 
+/- English proof (translation)
+Introduce `z hz`. Use `c.fin` as an intermediate fact. Conclude with `mem_algebraicClosure_iff'.2 ((Algebra.IsIntegral.isIntegral (R := ℚ) (⟨z, hz⟩ : c.F)).map c.F.val)`.
+-/
 theorem coeff_le_algebraicClosure (c : Coeff l) : c.F ≤ algebraicClosure ℚ ℂ := by
   intro z hz
   have := c.fin
@@ -358,6 +470,35 @@ theorem coeff_le_algebraicClosure (c : Coeff l) : c.F ≤ algebraicClosure ℚ �
 
 end Rule
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ g ty F _`. Use `CompFin.quasiCompact_alt Xo` as an intermediate fact. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Take `⟨S, hS, hrat⟩` from `exists_rational_components (c.le.trans (coeff_le_algebraicClosure c)) Xo.s`.
+
+Use `c.fin` as an intermediate fact. Set `b` to `Module.finBasis ℚ c.F`. Take `⟨c', hc'⟩` from `exists_coeff_containing E H l (S ∪ Finset.univ.image fun j => (b j : ℂ)) (by`. Introduce `z hz`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases.
+
+Conclude with `mem_algebraicClosure_iff.1 (hS z h)`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `mem_algebraicClosure_iff.1 (coeff_le_algebraicClosure c (b j).2))`. Use `⟨c', fun z hz => ?_, fun c'' hle i => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg c.F.val (b.sum_repr ⟨z, hz⟩)`.
+
+Rewrite `e` using `[map_sum]`. Establish `e' : z = _` using `e.symm`. Rewrite using `[e']`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`.
+
+Conclude with `IntermediateField.smul_mem _ (hc' _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))))`. Establish `hr` using `hrat c''.F c''.le (coeff_le_algebraicClosure c'') fun z hz => hle (hc' z (Finset.mem_union_left _ hz))`. Take `⟨t, ht, hcont⟩` from `exists_index F`. Use `CompFin.isNoetherian_XF Xo c''` as an intermediate fact. Set `σ : c''.F →+* ℂ` to `c''.F.val.toRingHom`.
+
+Set `s : Xo.XF c'' ⟶ Sp c''.F` to `pullback.snd _ _`. Set `pr : Xo.XF c'' ⟶ Xo.X` to `pullback.fst _ _`. Establish `hover : ∀ p : Sp ℂ ⟶ Xo.XF c'', p ≫ s = spMap σ → (p ≫ pr) ≫ Xo.s = spMap (KA l).val.toRingHom`. Introduce `p hp`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hp, spMap_comp]`.
+
+Both sides reduce to the same expression. Establish `hconst : ∀ p q : Sp ℂ ⟶ Xo.XF c'', p ≫ s = spMap σ → q ≫ s = spMap σ → p (IsLocalRing.closedPoint ℂ) ∈ connectedComponent (q (IsLocalRing.closedPoint ℂ)) → t (p ≫ pr) = t (q ≫ pr)`. Introduce `p q hp hq hpq`. Take `⟨r, hr1, hr2⟩` from `hr (q (IsLocalRing.closedPoint ℂ))`. Conclude with `const_on_component σ s r hr1 (fun x => t (x ≫ pr)) (fun m B y hB hy hh => hcont m B _ hB (fun b hb => hover _ (hy b hb)) (GlobalTheory.LocLift.isHolTo_comp_hom hh _)) p q hp hq ((connectedComponent_eq hr2) ▸ hpq) hr2`.
+
+Set `U : Set (Xo.XF c'')` to `{z | ∃ p : Sp ℂ ⟶ Xo.XF c'', p ≫ s = spMap σ ∧ p (IsLocalRing.closedPoint ℂ) ∈ connectedComponent z ∧ t (p ≫ pr) = i}`. Establish `hUc : ∀ z w, w ∈ connectedComponent z → (w ∈ U ↔ z ∈ U)`. Introduce `z w h`. Simplify using `only [U, Set.mem_setOf_eq, connectedComponent_eq h]`. Establish `hU : IsClopen U`.
+
+Use `⟨⟨isOpen_iff_forall_mem_open.2 fun z hz => ?_⟩, isOpen_iff_forall_mem_open.2 fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `⟨connectedComponent z, fun w hw h => hz ((hUc z w hw).1 h), isOpen_connectedComponent_of_noetherianSpace z, mem_connectedComponent⟩`. Conclude with `⟨connectedComponent z, fun w hw => (hUc z w hw).2 hz, isOpen_connectedComponent_of_noetherianSpace z, mem_connectedComponent⟩`. Take `⟨χ, h1, h2, h3⟩` from `exists_indicator (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.allSixLaws.1.secBaseChange E H Dw l Xo c'') U hU`. Use `⟨χ, h1, h2, fun y i' P hP hy => ?_⟩` and prove the remaining obligations.
+
+Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Take `⟨h4, h5⟩` from `h3 (CAt σ) y`. Set `p : Sp ℂ ⟶ Xo.XF c''` to `basePt y`. Establish `hp : p ≫ s = spMap σ` using `pullback.lift_snd _ _ _`. Establish `hp' : t (p ≫ pr) = i'`.
+
+Establish `: p ≫ pr = F.u i' P` using `(pullback.lift_fst _ _ _).trans hy`. Rewrite using `[this]`. Conclude with `ht i' P hP`. Set `v : ℂ` to `evR Xo c'' χ (S := CAt σ) y`. Establish `h6 : v ∉ (IsLocalRing.closedPoint ℂ).asIdeal ↔ p (IsLocalRing.closedPoint ℂ) ∈ U` using `h5 (IsLocalRing.closedPoint ℂ)`.
+
+Establish `h7 : v ≠ 0 ↔ i' = i`. Establish `h8 : v ∉ (IsLocalRing.closedPoint ℂ).asIdeal ↔ v ≠ 0` using `by show v ∉ IsLocalRing.maximalIdeal ℂ ↔ _`. Rewrite using `[IsLocalRing.notMem_maximalIdeal, isUnit_iff_ne_zero]`. Rewrite using `[← h8, h6]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨q, hq, hqp, hqi⟩`. Conclude with `Fin.ext (hp'.symm.trans ((hconst q p hq hp hqp).symm.trans hqi))`. Introduce and unpack `rfl`. Conclude with `⟨p, hp, mem_connectedComponent, hp'⟩`. Establish `h9 : IsIdempotentElem v` using `h4`.
+
+Use `split_ifs with h`. Conclude with `(IsIdempotentElem.iff_eq_zero_or_one.1 h9).resolve_left (h7.2 h)`. Conclude with `not_not.1 (mt h7.1 h)`.
+-/
 theorem exists_coeff_idempotent_sections :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo (KA l).val.toRingHom ty), IsTypeFn H Dw.p Dw.q ty → ∃ c' : Coeff l, c.F ≤ c'.F ∧ ∀ c'' : Coeff l, c'.F ≤ c''.F → ∀ i : Fin F.n, ∃ χ ∈ sec Xo c'' 0 0, χ * χ = χ ∧ ∀ (y : FrPt Xo c'' (CAt c''.F.val.toRingHom)) (i' : Fin F.n) P, IsPeriod (F.Di i') ty P → y.x = F.u i' P → evR Xo c'' χ y = if i' = i then 1 else 0 := by
   intro E _ _ _ H Dw l Xo c _ g ty F _

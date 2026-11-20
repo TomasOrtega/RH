@@ -16,6 +16,11 @@ namespace PositivityTheory.PfSWUS.SwMatch
 
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC GlobalTheory.CompanionTheory.IwaAd GlobalTheory.CompanionTheory.SiegelND
 
+/- English proof (translation)
+Take `⟨θ₀, h₀⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Use `⟨Function.extend (tauE D) θ θ₀, fun φ => ?_, fun τ => (GlobalTheory.MassLink.tauE_injective' D).extend_apply θ θ₀ τ⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ τ, tauE D τ = φ`. Take `⟨τ, rfl⟩` from `h`. Rewrite using `[(GlobalTheory.MassLink.tauE_injective' D).extend_apply θ θ₀ τ]`.
+
+Conclude with `hθ τ`. Rewrite using `[Function.extend_apply' θ θ₀ φ h]`. Conclude with `h₀ φ`.
+-/
 theorem exists_ext_infFam (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
     ∃ θ' : (D.host.E →+* ℂ) → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ),
       (∀ φ, Formalism.MainNotions.StandardLattice.IsInfEmb φ (θ' φ)) ∧ ∀ τ, θ' (tauE D τ) = θ τ := by
@@ -29,6 +34,13 @@ theorem exists_ext_infFam (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
   · rw [Function.extend_apply' θ θ₀ φ h]
     exact h₀ φ
 
+/- English proof (translation)
+Take `⟨θ', h', e⟩` from `exists_ext_infFam D θ hθ`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).2 θ' h'`. Use `⟨fun τ => e τ ▸ h1 _, fun τ z => e τ ▸ h2 _ z, ?_⟩` and prove the remaining obligations. Establish `h0 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Set `ι : D.what₂.Tau → {φ : D.host.E →+* ℂ // φ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD}` to `fun τ => ⟨tauE D τ, (Formalism.L2.Theta.tauE_sqrtMinusD D τ).trans h0.symm⟩`.
+
+Establish `hι : Function.Bijective ι` using `⟨fun a b h => GlobalTheory.MassLink.tauE_injective' D (congrArg Subtype.val h), fun φ => by`. Take `⟨τ, hτ⟩` from `GlobalTheory.MassLink.tauE_surj' D φ.1 (φ.2.trans h0)`. Conclude with `⟨τ, Subtype.ext hτ⟩⟩`. Establish `h4` using `(hι.comp_right (γ := ℂ)).comp h3`. Use `h4 using 2 with z` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `τ`. Conclude with `(congrArg (fun t => t z) (e τ)).symm`.
+-/
 theorem infFam_spec (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
     (∀ τ, Continuous (θ τ)) ∧
       (∀ τ z, θ τ (sigR (Ainf D.host.F) D.sp.cm.sig z) = starRingEnd ℂ (θ τ z)) ∧
@@ -48,6 +60,9 @@ theorem infFam_spec (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) :
   funext τ
   exact (congrArg (fun t => t z) (e τ)).symm
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν Φ h`. Take `⟨h1, h2, h3⟩` from `infFam_spec D θ h.hθ`. Conclude with `⟨h.hψ, h1, h3, h2, GlobalTheory.ResAniso.VacSchwartz.realPar_ne_zero D θ h.hθ ψ h.hψ l h.hl, h.hl⟩`.
+-/
 theorem psiPlaces : PsiPlaces := by
   intro D n V ψ χ θ μ ω H l s ν Φ h
   obtain ⟨h1, h2, h3⟩ := infFam_spec D θ h.hθ
@@ -55,6 +70,11 @@ theorem psiPlaces : PsiPlaces := by
 
 open GlobalTheory.CompanionTheory.SiegelND.ThetaGlue in
 
+/- English proof (translation)
+Introduce `D r V ν hν φ β hβ μH 𝓕 hμ h𝓕`. Establish `hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E), (δ.1 * ξ).rank = ξ.rank` using `fun δ ξ => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)`. Establish `hL` using `GlobalTheory.CompanionTheory.SplitGram.leftInv_subtypeSum V φ (fun x : Matrix (Fin V.rank) (Fin r) D.host.E => x.rank = r ∧ gramQ V x = β.1) (fun δ hδ ξ h => ⟨(hrank δ ξ).trans h.1, (GlobalTheory.CompanionTheory.SplitGram.gramQ_mul V hδ ξ).trans h.2⟩)`. Establish `hI` using `average_eq_meanC V ν μH hν hμ 𝓕 h𝓕 _ hL`. Establish `hS : HeckeCharacterZeroLocus.SiegelWeilU.thetaS D.host.F D.host.E D.sp.cm.sig V.rank V.gram (fun X => φ (tupOf X)) {X | HeckeCharacterZeroLocus.SiegelWeilU.gramE D.sp.cm.sig V.gram X = β.1} = fun h => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = β. …`.
+
+Use function extensionality and compare the values at `h`. Use `(tsum_congr fun X => ?_).trans ((fibEquiv V β hβ).tsum_eq fun x => φ (GlobalTheory.SiegelFormula.invPt V h x.1))` and prove the remaining obligations. Conclude with `congrArg φ (tupOf_actW V h X.1)`. Conclude with `hI.trans (congrArg (HeckeCharacterZeroLocus.SiegelWeilU.meanC μH 𝓕) hS.symm)`.
+-/
 theorem valueSide : ValueSide := by
   intro D r V ν hν φ β hβ μH 𝓕 hμ h𝓕
   have hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E),

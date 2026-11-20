@@ -16,6 +16,9 @@ open scoped TensorProduct
 
 namespace UpperTheory.V.K
 
+/- English proof (translation)
+Take `rfl : inst = AddCommGroup.toIntModule H` from `Subsingleton.elim _ _`. Conclude with `tensCard l H Y`.
+-/
 private theorem tensCard' (l : ℕ) [Fact l.Prime] (H : Type) [AddCommGroup H] [inst : Module ℤ H]
     [Finite (AddCommGroup.torsion H)] (Y : Submodule ℤ_[l] (ℤ_[l] ⊗[ℤ] H)) [Finite Y] :
     Nat.card Y ≤ Nat.card (AddCommGroup.torsion H) := by
@@ -30,6 +33,9 @@ variable (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK)
 
 include hP hF hT hL hμ
 
+/- English proof (translation)
+Establish `h` using `card_H2_quotient_le_sha hP hF hT l L Ω D e hL`. Simplify using `only at h`. Rewrite `h` using `[shaDualCard l L Ω D (e + 1) (chiTriv l L Ω D hμ)]`. Conclude with `h.trans (Nat.mul_le_mul_right _ (shaZmCard l L Ω D hL))`.
+-/
 theorem card_mod_le (e : ℤ) :
     Nat.card (H2 (zlTw D (e + 1)) ⧸ lpow l (H2 (zlTw D (e + 1))) 1) ≤ classNumber L * l ^ Module.finrank ℚ L := by
   have h := card_H2_quotient_le_sha hP hF hT l L Ω D e hL
@@ -37,11 +43,25 @@ theorem card_mod_le (e : ℤ) :
   rw [shaDualCard l L Ω D (e + 1) (chiTriv l L Ω D hμ)] at h
   exact h.trans (Nat.mul_le_mul_right _ (shaZmCard l L Ω D hL))
 
+/- English proof (translation)
+The claim follows from `numGens l L _ (card_mod_le hP hF hT D hL hμ e)`.
+-/
 theorem generators (e : ℤ) :
     Real.log (Nat.card (H2 (zlTw D (e + 1)) ⧸ lpow l (H2 (zlTw D (e + 1))) 1)) ≤
       4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) * Real.log l :=
   numGens l L _ (card_mod_le hP hF hT D hL hμ e)
 
+/- English proof (translation)
+Take `⟨K, _, _, _, p, h, hp, hh⟩` from `hK l L Ω D hL hμ e he`. Establish `hfin : Finite (H2 (zlTw D ((e : ℤ) + 1)))` using `Finite.of_surjective p hp`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hr : Finite (LinearMap.range h)` using `Finite.of_surjective h.rangeRestrict h.surjective_rangeRestrict`. Establish `h1` using `(cardRed l K _ _ p h _ hp hh).trans (Nat.mul_le_mul_left _ (tensCard' l (HGL L (4 * e + 4) (2 * e)) (LinearMap.range h)))`.
+
+Establish `hg` using `generators hP hF hT D hL hμ (e : ℤ)`. Establish `hq : Finite (H2 (zlTw D ((e : ℤ) + 1)) ⧸ lpow l (H2 (zlTw D ((e : ℤ) + 1))) 1)` using `Finite.of_surjective _ (Submodule.mkQ_surjective _)`. Use `set a := Nat.card (H2 (zlTw D ((e : ℤ) + 1)) ⧸ lpow l (H2 (zlTw D ((e : ℤ) + 1))) 1) with ha`. Use `set b := Nat.card (torsHGL L (4 * e + 4) (2 * e)) with hb`. Establish `ha0 : (0 : ℝ) < a` using `by exact_mod_cast (Nat.card_pos : 0 < a)`.
+
+Establish `hb0 : (0 : ℝ) < b` using `by exact_mod_cast (Nat.card_pos : 0 < b)`. Establish `hx0 : (0 : ℝ) < Nat.card (H2 (zlTw D ((e : ℤ) + 1)))` using `Nat.cast_pos.2 Nat.card_pos`. Establish `h2 : Real.log (Nat.card (H2 (zlTw D ((e : ℤ) + 1)))) ≤ cOne (2 * e) * Real.log a + Real.log b`. Rewrite using `[← Real.log_pow, ← Real.log_mul (by positivity) hb0.ne']`. Conclude with `Real.log_le_log hx0 (by exact_mod_cast h1)`.
+
+Establish `hc : (cOne (2 * e) : ℝ) ≤ (2 * (e : ℝ)) * (2 * (e : ℝ) + 3)` using `by exact_mod_cast cOne_le (2 * e)`. Establish `hl : Real.log l ≤ Real.log ((Module.finrank ℚ L : ℝ) + 1)` using `Real.log_le_log (by exact_mod_cast (Fact.out : l.Prime).pos) (by exact_mod_cast primeLe l L hμ)`. Establish `hD : (1 : ℝ) ≤ ((discr L).natAbs : ℝ)` using `by exact_mod_cast Int.natAbs_pos.2 (discr_ne_zero L)`. Establish `hlog : 0 ≤ Real.log (2 * ((discr L).natAbs : ℝ))` using `Real.log_nonneg (by linarith)`. Establish `hn : 0 ≤ Real.log ((Module.finrank ℚ L : ℝ) + 1)` using `Real.log_nonneg (le_add_of_nonneg_left (Nat.cast_nonneg _))`.
+
+Establish `h3 : Real.log a ≤ 4 * (Module.finrank ℚ L : ℝ) * Real.log (2 * ((discr L).natAbs : ℝ)) * Real.log ((Module.finrank ℚ L : ℝ) + 1)` using `hg.trans (mul_le_mul_of_nonneg_left hl (by positivity))`. Establish `h4` using `mul_le_mul hc h3 (Real.log_natCast_nonneg a) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem reduction (hK : KBridge) (e : ℕ) (he : 1 ≤ e) [Finite (torsHGL L (4 * e + 4) (2 * e))] :
     Finite (H2 (zlTw D ((e : ℤ) + 1))) ∧
       Real.log (Nat.card (H2 (zlTw D ((e : ℤ) + 1)))) ≤
@@ -78,11 +98,19 @@ theorem reduction (hK : KBridge) (e : ℕ) (he : 1 ≤ e) [Finite (torsHGL L (4 
 
 end
 
+/- English proof (translation)
+Take `⟨C', H⟩` from `numT C`. Conclude with `⟨C', fun L _ _ hL e he => ⟨(h L hL e he).1, (h L hL e he).2.trans (H e _ _ he Module.finrank_pos (Int.natAbs_pos.2 (discr_ne_zero L)))⟩⟩`.
+-/
 theorem TorsBound.pow {C : ℝ} (h : TorsBound C) : ∃ C', TorsBoundPow C' := by
   obtain ⟨C', H⟩ := numT C
   exact ⟨C', fun L _ _ hL e he => ⟨(h L hL e he).1, (h L hL e he).2.trans
     (H e _ _ he Module.finrank_pos (Int.natAbs_pos.2 (discr_ne_zero L)))⟩⟩
 
+/- English proof (translation)
+Take `⟨C, h⟩` from `h`. Take `⟨CK, h0, H⟩` from `numFin C`. Use `⟨CK, h0, fun l _ L Ω _ _ _ _ _ D hL hμ e he => ?_⟩` and prove the remaining obligations. Take `⟨hf, hb⟩` from `h L hL e he`. Take `⟨h1, h2⟩` from `reduction hP hF hT D hL hμ hK e he`.
+
+Use `⟨h1, h2.trans (le_trans ?_ (H e _ _ he Module.finrank_pos (Int.natAbs_pos.2 (discr_ne_zero L))))⟩` and prove the remaining obligations. Use `gcongr`.
+-/
 theorem lemmaK_of (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK) (hT : LocalTateDualityK) (hK : KBridge)
     (h : ∃ C, TorsBoundPow C) : ∃ CK : ℝ, 0 < CK ∧ LemmaK CK := by
   obtain ⟨C, h⟩ := h

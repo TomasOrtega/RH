@@ -16,6 +16,13 @@ variable {l : ℕ} [Fact l.Prime]
 open TensorProduct in
 variable {l : ℕ} [Fact l.Prime] in
 
+/- English proof (translation)
+Establish `hl : 0 < l ^ s` using `pow_pos (Fact.out : l.Prime).pos s`. Establish `hK : FiniteDimensional ℚ_[l] ↥(K.1)` using `K.2`. Establish `hK0 : FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.K0 K)`. Unfold `_root_.Formalism.BasicNotions.Loc.K0`. Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : (K.1 : IntermediateField ℚ_[l] (_root_.Formalism.BasicNotions.Loc.Om l)) ⊓ _root_.Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l ≤ K.1)).toLinearMap (RingHom.injective _)`.
+
+Establish `hfin : {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1}.Finite`. Use `(Polynomial.nthRoots (l ^ s) (1 : _root_.Formalism.BasicNotions.Loc.Om l)).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify `hx` using `[Polynomial.mem_nthRoots hl]`. Establish `: Finite {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1}` using `hfin.to_subtype`.
+
+Establish `hA : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {x : _root_.Formalism.BasicNotions.Loc.Om l | x ^ l ^ s = 1})` using `IntermediateField.finiteDimensional_adjoin fun x hx => IsIntegral.of_pow hl (by rw [show x ^ l ^ s = 1 from hx]; exact isIntegral_one)`. Unfold `_root_.Formalism.BasicNotions.Loc.Ks`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.finKs (K : _root_.Formalism.BasicNotions.Loc.FinExt l) (s : ℕ) :
     FiniteDimensional ℚ_[l] ↥(_root_.Formalism.BasicNotions.Loc.Ks K s) := by
   classical
@@ -97,6 +104,13 @@ end Generic
 open TensorProduct in
 variable {l : ℕ} [Fact l.Prime] in
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `P.χQ_cyc (g : _root_.Formalism.BasicNotions.Loc.GQ l) 0 1 (by simp)`. Establish `hnorm : ‖((P.χQ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Establish `ha' : ‖(a : ℚ_[l])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one ℚ_[l] a`. Combine the equalities or inequalities in the displayed calculation. Unfold `_root_.Formalism.MainNotions.N.cycLL`.
+
+Use `show algebraMap ℚ_[l] LL (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∈ _`. Rewrite using `[P.PD_χ K g]`. Establish `hmap : algebraMap ℚ_[l] LL ((P.χQ g : ℚ_[l]ˣ) : ℚ_[l]) = algebraMap ℤ_[l] LL ⟨_, hnorm⟩` using `rfl`. Rewrite using `[hmap]`. Unfold `_root_.Formalism.BasicNotions.Loc.OL`.
+
+Conclude with `(integralClosure ℤ_[l] LL).algebraMap_mem _`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.cyc_mem (P : _root_.Formalism.BasicNotions.LocPrime l) (K LL : _root_.Formalism.BasicNotions.Loc.FinExt l) (g : ↥(_root_.Formalism.BasicNotions.Loc.GK K)) :
     ((_root_.Formalism.MainNotions.N.cycLL (P.PD K) ↥LL.1 g : (↥LL.1)ˣ) : ↥LL.1) ∈ _root_.Formalism.BasicNotions.Loc.OL LL := by
   obtain ⟨a, ha, -⟩ := P.χQ_cyc (g : _root_.Formalism.BasicNotions.Loc.GQ l) 0 1 (by simp)
@@ -118,6 +132,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.cy
 def negTwist (P : LocPrime l) (K LL : FinExt l) (e : ℕ) : ↥(GK K) →* (↥LL.1)ˣ :=
   ((cycLL (P.PD K) ↥LL.1)⁻¹) ^ e
 
+/- English proof (translation)
+Establish `: negTwist P K LL e g = (cycLL (P.PD K) ↥LL.1 g⁻¹) ^ e`. Simplify using `[negTwist]`. Rewrite using `[this, Units.val_pow_eq_pow_val]`. Conclude with `Subalgebra.pow_mem _ (cyc_mem P K LL _) e`.
+-/
 theorem negTwist_mem (P : LocPrime l) (K LL : FinExt l) (e : ℕ) (g : ↥(GK K)) :
     ((negTwist P K LL e g : (↥LL.1)ˣ) : ↥LL.1) ∈ OL LL := by
   have : negTwist P K LL e g = (cycLL (P.PD K) ↥LL.1 g⁻¹) ^ e := by
@@ -147,6 +164,9 @@ def ringAs (K : FinExt l) (s : ℕ) : Subring (Ainf l) :=
 
 def ringAsW (K : FinExt l) (s : ℕ) : Subring (WCb l) := (ringAs AI K s).map (inclW l)
 
+/- English proof (translation)
+Simplify using `only [ringAs, Subring.mem_iInf, Subring.mem_comap]`. Conclude with `fun m => ⟨_, Subring.subset_closure (Set.mem_insert _ _), rfl⟩`.
+-/
 example (K : FinExt l) (s : ℕ) : piS AI s ∈ ringAs AI K s := by
   simp only [ringAs, Subring.mem_iInf, Subring.mem_comap]
   exact fun m => ⟨_, Subring.subset_closure (Set.mem_insert _ _), rfl⟩
@@ -191,6 +211,9 @@ def WachHyp {K LL : FinExt l} {s : ℕ} (h : Good K s LL) (Y : Lat K LL) (M₀ h
       ∀ x ∈ spanAs AI s n, ∃ x' ∈ spanAs AI s n, actWY AI Y g x - x =
         mulR ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] inclW l (piS AI s) : RW LL) x')
 
+/- English proof (translation)
+Establish `h2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Use `⟨H, ?_⟩` and prove the remaining obligations. Establish `h1 : H < l ^ H` using `Nat.lt_pow_self (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pow_mul_pred_ge (l : ℕ) [Fact l.Prime] (H : ℕ) : ∃ k : ℕ, H ≤ l ^ k * (l - 1) := by
   have h2 : 2 ≤ l := (Fact.out : l.Prime).two_le
   refine ⟨H, ?_⟩
@@ -214,6 +237,9 @@ def cTor (K : FinExt l) (s H : ℕ) (U : Finset ℤ) (e : ℕ) : ℕ :=
   cWindow l s H U e + ((e + 2) * s + padicValNat l e + e / (l - 1) + 1) +
     (s + padicValNat l (e + 1)) + gK K s
 
+/- English proof (translation)
+The claim follows from `padicValNat.zero`.
+-/
 example : padicValNat l 0 = 0 := padicValNat.zero
 
 def TorsionBound {K LL : FinExt l} {s : ℕ} (h : Good K s LL) (e : ℕ) : Prop :=

@@ -22,6 +22,9 @@ set_option linter.unusedSectionVars false
 
 variable {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c (), hc (), rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨fun _ => c, fun _ => hc, rfl⟩`.
+-/
 theorem sameOrbit_iff {z z' : Ix κ → ℂ} :
     SameOrbit (ι := GlobalTheory κ) z z' ↔ ∃ c : ℂ, c ≠ 0 ∧ z = c • z' := by
   constructor
@@ -30,17 +33,28 @@ theorem sameOrbit_iff {z z' : Ix κ → ℂ} :
   · rintro ⟨c, hc, rfl⟩
     exact ⟨fun _ => c, fun _ => hc, rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `sameOrbit_iff.1 h`. Conclude with `sameOrbit_iff.2 ⟨c⁻¹, inv_ne_zero hc, by rw [smul_smul, inv_mul_cancel₀ hc, one_smul]⟩`.
+-/
 theorem sameOrbit_symm {z z' : Ix κ → ℂ} (h : SameOrbit (ι := GlobalTheory κ) z z') :
     SameOrbit (ι := GlobalTheory κ) z' z := by
   obtain ⟨c, hc, rfl⟩ := sameOrbit_iff.1 h
   exact sameOrbit_iff.2 ⟨c⁻¹, inv_ne_zero hc, by rw [smul_smul, inv_mul_cancel₀ hc, one_smul]⟩
 
+/- English proof (translation)
+Take `⟨c1, hc1, rfl⟩` from `sameOrbit_iff.1 h1`. Take `⟨c2, hc2, rfl⟩` from `sameOrbit_iff.1 h2`. Conclude with `sameOrbit_iff.2 ⟨c1 * c2, mul_ne_zero hc1 hc2, by rw [smul_smul]⟩`.
+-/
 theorem sameOrbit_trans {a b c : Ix κ → ℂ} (h1 : SameOrbit (ι := GlobalTheory κ) a b)
     (h2 : SameOrbit (ι := GlobalTheory κ) b c) : SameOrbit (ι := GlobalTheory κ) a c := by
   obtain ⟨c1, hc1, rfl⟩ := sameOrbit_iff.1 h1
   obtain ⟨c2, hc2, rfl⟩ := sameOrbit_iff.1 h2
   exact sameOrbit_iff.2 ⟨c1 * c2, mul_ne_zero hc1 hc2, by rw [smul_smul]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h h0`. Take `⟨i, hi⟩` from `h ()`. Conclude with `hi (congrFun h0 _)`. Introduce `hz k`.
+
+Assume the negation of the conclusion as `hk`. Use `push Not at hk`. Conclude with `hz (funext fun p => hk p.2)`.
+-/
 theorem blockNonzero_iff {z : Ix κ → ℂ} : (∀ k : Unit, ∃ i, z ⟨k, i⟩ ≠ 0) ↔ z ≠ 0 := by
   constructor
   · intro h h0
@@ -51,6 +65,9 @@ theorem blockNonzero_iff {z : Ix κ → ℂ} : (∀ k : Unit, ∃ i, z ⟨k, i�
     push Not at hk
     exact hz (funext fun p => hk p.2)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, h⟩`. Conclude with `⟨blockNonzero_iff.2 hz, h⟩`. Introduce and unpack `⟨hz, h⟩`. Conclude with `⟨blockNonzero_iff.1 hz, h⟩`.
+-/
 theorem mem_pts_iff {P : Ideal (MvPolynomial (Ix κ) ℤ)} {z : Ix κ → ℂ} :
     z ∈ pts P ↔ z ∈ mcPts (ι := GlobalTheory κ) P := by
   constructor
@@ -59,6 +76,11 @@ theorem mem_pts_iff {P : Ideal (MvPolynomial (Ix κ) ℤ)} {z : Ix κ → ℂ} :
   · rintro ⟨hz, h⟩
     exact ⟨blockNonzero_iff.1 hz, h⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h j => h.2 _ (hg ▸ Ideal.subset_span ⟨j, rfl⟩)`. Introduce `h`. Use `⟨blockNonzero_iff.2 hz, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hle : J ≤ RingHom.ker ((eval z).comp (map (Int.castRingHom ℂ)))`.
+
+Rewrite using `[hg, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `RingHom.mem_ker.2 (h j)`. Conclude with `RingHom.mem_ker.1 (hle hf)`.
+-/
 theorem mem_mcPts_iff_gens {J : Ideal (MRing (GlobalTheory κ))} {r : ℕ} {g : Fin r → MRing (GlobalTheory κ)}
     (hg : J = Ideal.span (Set.range g)) {z : Ix κ → ℂ} (hz : z ≠ 0) :
     z ∈ mcPts (ι := GlobalTheory κ) J ↔ ∀ j, eval z (map (Int.castRingHom ℂ) (g j)) = 0 := by
@@ -72,6 +94,11 @@ theorem mem_mcPts_iff_gens {J : Ideal (MRing (GlobalTheory κ))} {r : ℕ} {g : 
       exact RingHom.mem_ker.2 (h j)
     exact RingHom.mem_ker.1 (hle hf)
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`.
+-/
 theorem differentiable_evalPoly {I : Type} [Fintype I] (p : MvPolynomial I ℂ) :
     Differentiable ℂ fun z : I → ℂ => eval z p := by
   induction p using MvPolynomial.induction_on with
@@ -87,6 +114,11 @@ section Atlas
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Apply `isManifold_of_contDiffOn` to reduce the goal to its premises. Introduce `c c' hc hc'`. Rewrite `hc`, `hc'` using `[hat]`. Take `⟨j, rfl⟩` from `hc`. Take `⟨k, rfl⟩` from `hc'`.
+
+Establish `hs : ((A.chart j).symm ≫ₕ A.chart k).source = (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source`. Simplify using the standard rewrite rules. Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart k).open_source`. Establish `hc : ContDiffOn ℂ ∞ (A.chart k ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source)` using `(A.holo j k).contDiffOn ho.uniqueDiffOn`. Simplify `hc` using `[hs]`.
+-/
 theorem isManifold_of_atlas [ChartedSpace (Fin e → ℂ) X] (A : FinHolAtlas e X)
     (hat : atlas (Fin e → ℂ) X = Set.range A.chart) : IsManifold 𝓘(ℂ, Fin e → ℂ) ∞ X := by
   apply isManifold_of_contDiffOn
@@ -104,6 +136,13 @@ theorem isManifold_of_atlas [ChartedSpace (Fin e → ℂ) X] (A : FinHolAtlas e 
     (A.holo j k).contDiffOn ho.uniqueDiffOn
   simpa [hs] using hc
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hch x`. Establish `hxs : x ∈ (A.chart j).source`. Rewrite using `[hj]`. Conclude with `mem_chart_source (Fin e → ℂ) x`. Establish `hmem : (A.chart j) x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hxs, by rw [Set.mem_preimage, (A.chart j).left_inv hxs]; exact hx⟩`.
+
+Establish `hd` using `hg j _ hmem`. Establish `hcont : ContinuousAt g x`. Establish `h` using `hd.continuousAt.comp ((A.chart j).continuousAt hxs)`. Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hxs] with y hy`.
+
+Simplify using `[(A.chart j).left_inv hy]`. Rewrite using `[mdifferentiableAt_iff]`. Use `⟨hcont, ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[hj]`. Simplify `hd.differentiableWithinAt` using `[writtenInExtChartAt, extChartAt_model_space_eq_id, chartAt_self_eq]`.
+-/
 theorem mdifferentiableAt_of_chart [ChartedSpace (Fin e → ℂ) X] (A : FinHolAtlas e X)
     (hch : ∀ x, chartAt (Fin e → ℂ) x ∈ Set.range A.chart)
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set X} {g : X → E}
@@ -137,9 +176,15 @@ variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] (d : HSMDatum D Ω κ)
 
 attribute [local instance] cs
 
+/- English proof (translation)
+The claim follows from `isManifold_of_atlas d.R.A rfl`.
+-/
 theorem isManifold : IsManifold 𝓘(ℂ, Fin D → ℂ) ∞ d.R.X :=
   isManifold_of_atlas d.R.A rfl
 
+/- English proof (translation)
+Use `mdifferentiableAt_of_chart d.R.A (fun _ => ⟨_, rfl⟩) (fun j u hu => ?_) hy` and prove the remaining obligations. Rewrite using `[differentiableAt_pi]`. Introduce `p`. Conclude with `(d.R.holo x p j u hu).differentiableAt`.
+-/
 theorem lift_mdiff (x y : d.R.X) (hy : y ∈ d.R.U x) :
     MDifferentiableAt 𝓘(ℂ, Fin D → ℂ) 𝓘(ℂ, Ix κ → ℂ) (d.R.lift x) y := by
   refine mdifferentiableAt_of_chart d.R.A (fun _ => ⟨_, rfl⟩) (fun j u hu => ?_) hy
@@ -147,6 +192,9 @@ theorem lift_mdiff (x y : d.R.X) (hy : y ∈ d.R.U x) :
   intro p
   exact (d.R.holo x p j u hu).differentiableAt
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Establish `h1 : d.dV Set.univ = 1` using `d.vol.1.measure_univ`. Rewrite `h1` using `[Set.univ_eq_empty_iff.2 h, measure_empty]`. Conclude with `zero_ne_one h1`.
+-/
 theorem nonempty_X : Nonempty d.R.X := by
   by_contra h
   rw [not_nonempty_iff] at h
@@ -154,6 +202,13 @@ theorem nonempty_X : Nonempty d.R.X := by
   rw [Set.univ_eq_empty_iff.2 h, measure_empty] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover d.R.U d.R.isOpen_U (fun y _ => Set.mem_iUnion.2 ⟨y, d.R.mem_U y⟩)`. Establish `hne : (t : Set d.R.X).Nonempty`. Take `⟨y⟩` from `nonempty_X d`. Take `⟨x, hx, -⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `⟨x, hx⟩`.
+
+Take `⟨q, hq⟩` from `t.countable_toSet.exists_eq_range hne`. Use `⟨q, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Establish `hx' : x ∈ Set.range q` using `hq ▸ hx`. Take `⟨n, rfl⟩` from `hx'`.
+
+Conclude with `⟨n, hy⟩`.
+-/
 theorem exists_seq_cover : ∃ q : ℕ → d.R.X, ∀ y, ∃ n, y ∈ d.R.U (q n) := by
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover d.R.U d.R.isOpen_U
     (fun y _ => Set.mem_iUnion.2 ⟨y, d.R.mem_U y⟩)
@@ -170,6 +225,9 @@ theorem exists_seq_cover : ∃ q : ℕ → d.R.X, ∀ y, ∃ n, y ∈ d.R.U (q n
 
 def seq : ℕ → d.R.X := (exists_seq_cover d).choose
 
+/- English proof (translation)
+The claim follows from `(exists_seq_cover d).choose_spec y`.
+-/
 theorem seq_cover (y : d.R.X) : ∃ n, y ∈ d.R.U (seq d n) := (exists_seq_cover d).choose_spec y
 
 open Classical in
@@ -178,19 +236,36 @@ def idx (y : d.R.X) : ℕ := Nat.find (seq_cover d y)
 
 def liftF (y : d.R.X) : Ix κ → ℂ := d.R.lift (seq d (idx d y)) y
 
+/- English proof (translation)
+Conclude with `Nat.find_spec (seq_cover d y)`.
+-/
 theorem mem_U_idx (y : d.R.X) : y ∈ d.R.U (seq d (idx d y)) := by
   classical
   exact Nat.find_spec (seq_cover d y)
 
+/- English proof (translation)
+The claim follows from `d.R.compat _ _ y ⟨mem_U_idx d y, d.R.mem_U y⟩`.
+-/
 theorem liftF_orbit (y : d.R.X) : SameOrbit (ι := GlobalTheory κ) (liftF d y) (resPt d y) :=
   d.R.compat _ _ y ⟨mem_U_idx d y, d.R.mem_U y⟩
 
+/- English proof (translation)
+The claim follows from `sameOrbit_iff.1 (liftF_orbit d y)`.
+-/
 theorem liftF_eq_smul (y : d.R.X) : ∃ c : ℂ, c ≠ 0 ∧ liftF d y = c • resPt d y :=
   sameOrbit_iff.1 (liftF_orbit d y)
 
+/- English proof (translation)
+The claim follows from `d.R.mem _ y (mem_U_idx d y)`.
+-/
 theorem liftF_mem (y : d.R.X) : liftF d y ∈ mcPts (ι := GlobalTheory κ) (coordIdeal ℤ d.x) :=
   d.R.mem _ y (mem_U_idx d y)
 
+/- English proof (translation)
+Establish `hg : ∀ n, Measurable ((d.R.U (seq d n)).piecewise (d.R.lift (seq d n)) 0)` using `fun n => ContinuousOn.measurable_piecewise (fun y hy => (lift_mdiff d _ y hy).continuousAt.continuousWithinAt) continuousOn_const (d.R.isOpen_U _).measurableSet`. Establish `h` using `Measurable.find (p := fun n y => y ∈ d.R.U (seq d n)) hg (fun n => (d.R.isOpen_U _).measurableSet) (seq_cover d)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using `only [liftF, idx]`.
+
+Rewrite using `[Set.piecewise_eq_of_mem _ _ _ (Nat.find_spec (seq_cover d y))]`.
+-/
 theorem measurable_liftF : Measurable (liftF d) := by
   classical
   have hg : ∀ n, Measurable ((d.R.U (seq d n)).piecewise (d.R.lift (seq d n)) 0) := fun n =>
@@ -212,10 +287,16 @@ variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] (d : HSMDatum D Ω κ)
 
 attribute [local instance] cs
 
+/- English proof (translation)
+Take `⟨r, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian d.J)`. Conclude with `⟨r, g, hg.symm⟩`.
+-/
 theorem exists_gens : ∃ (r : ℕ) (g : Fin r → MRing (GlobalTheory κ)), d.J = Ideal.span (Set.range g) := by
   obtain ⟨r, g, hg⟩ := Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian d.J)
   exact ⟨r, g, hg.symm⟩
 
+/- English proof (translation)
+Establish `ho : SameOrbit (ι` using `GlobalTheory κ) (liftF d q) (d.R.lift x q) := d.R.compat _ _ q ⟨mem_U_idx d q, hq⟩`. Establish `hne : d.R.lift x q ≠ 0` using `(mem_pts_iff.2 (d.R.mem x q hq)).1`. Rewrite using `[← mem_mcPts_iff_gens hg hne]`. Conclude with `⟨mem_mcPts_of_sameOrbit d.R.homog (sameOrbit_symm ho), mem_mcPts_of_sameOrbit d.R.homog ho⟩`.
+-/
 theorem liftF_mem_J_iff {r : ℕ} {g : Fin r → MRing (GlobalTheory κ)} (hg : d.J = Ideal.span (Set.range g))
     (x q : d.R.X) (hq : q ∈ d.R.U x) :
     liftF d q ∈ mcPts (ι := GlobalTheory κ) d.J ↔
@@ -226,12 +307,24 @@ theorem liftF_mem_J_iff {r : ℕ} {g : Fin r → MRing (GlobalTheory κ)} (hg : 
   rw [← mem_mcPts_iff_gens hg hne]
   exact ⟨mem_mcPts_of_sameOrbit d.R.homog (sameOrbit_symm ho), mem_mcPts_of_sameOrbit d.R.homog ho⟩
 
+/- English proof (translation)
+The claim follows from `DifferentiableAt.comp_mdifferentiableAt (g := fun z : Ix κ → ℂ => eval z (map (Int.castRingHom ℂ) p)) (differentiable_evalPoly _ _) (lift_mdiff d x y hy)`.
+-/
 theorem evalLift_mdiff (x : d.R.X) (p : MRing (GlobalTheory κ)) (y : d.R.X) (hy : y ∈ d.R.U x) :
     MDifferentiableAt 𝓘(ℂ, Fin D → ℂ) 𝓘(ℂ, ℂ)
       (fun q => eval (d.R.lift x q) (map (Int.castRingHom ℂ) p)) y :=
   DifferentiableAt.comp_mdifferentiableAt (g := fun z : Ix κ → ℂ => eval z (map (Int.castRingHom ℂ) p))
     (differentiable_evalPoly _ _) (lift_mdiff d x y hy)
 
+/- English proof (translation)
+Take `⟨r, g, hg⟩` from `exists_gens d`. Use `set A := {q : d.R.X | liftF d q ∈ mcPts (ι := GlobalTheory κ) d.J}`. Establish `hcont : ∀ x j, ContinuousOn (fun q => eval (d.R.lift x q) (map (Int.castRingHom ℂ) (g j))) (d.R.U x)` using `fun x j y hy => (evalLift_mdiff d x (g j) y hy).continuousAt.continuousWithinAt`. Use `⟨?_, fun q => ⟨d.R.U q, (d.R.isOpen_U q).mem_nhds (d.R.mem_U q), r, fun j q' => eval (d.R.lift q q') (map (Int.castRingHom ℂ) (g j)), fun j y hy => (evalLift_mdiff d q (g j) y hy).mdifferentiableWithinAt, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`.
+
+Introduce `q hq`. Use `⟨⋃ j, d.R.U q ∩ (fun q' => eval (d.R.lift q q') (map (Int.castRingHom ℂ) (g j))) ⁻¹' {0}ᶜ, ?_, isOpen_iUnion fun j => (hcont q j).isOpen_inter_preimage (d.R.isOpen_U q) isOpen_compl_singleton, ?_⟩` and prove the remaining obligations. Introduce `q' hq'`. Take `⟨j, hq'U, hj⟩` from `Set.mem_iUnion.1 hq'`. Conclude with `fun hA => hj (((liftF_mem_J_iff d hg q q' hq'U).1 hA) j)`.
+
+Establish `: ¬ ∀ j, eval (d.R.lift q q) (map (Int.castRingHom ℂ) (g j)) = 0` using `fun h => hq ((liftF_mem_J_iff d hg q q (d.R.mem_U q)).2 h) push Not at this`. Take `⟨j, hj⟩` from `this`. Conclude with `Set.mem_iUnion.2 ⟨j, d.R.mem_U q, hj⟩`. Use extensionality with `q'`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, A]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hU⟩`. Conclude with `⟨hU, (liftF_mem_J_iff d hg q q' hU).1 hA⟩`. Introduce and unpack `⟨hU, h⟩`. Conclude with `⟨(liftF_mem_J_iff d hg q q' hU).2 h, hU⟩`.
+-/
 theorem isAnalyticSubset_A :
     IndefiniteRowSideFullHecke.HilbertSamuel.IsAnalyticSubset D {q : d.R.X | liftF d q ∈ mcPts (ι := GlobalTheory κ) d.J} := by
   obtain ⟨r, g, hg⟩ := exists_gens d
@@ -261,6 +354,13 @@ theorem isAnalyticSubset_A :
     · rintro ⟨hU, h⟩
       exact ⟨(liftF_mem_J_iff d hg q q' hU).2 h, hU⟩
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `W hW ⟨y, hy⟩`. Assume the negation of the conclusion as `hempty`. Establish `hWA : ∀ w ∈ W, liftF d w ∈ mcPts (ι` using `GlobalTheory κ) d.J := fun w hw => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hempty ⟨w, hw, h⟩`. Take `⟨j, hj⟩` from `d.R.A.cover y`. Establish `hTo : IsOpen ((d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' W)` using `(d.R.A.chart j).isOpen_inter_preimage_symm hW`. Establish `hTne : ((d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' W).Nonempty` using `⟨_, (d.R.A.chart j).map_source hj, by rw [Set.mem_preimage, (d.R.A.chart j).left_inv hj]; exact hy⟩`. Establish `hpos` using `hTo.measure_pos volume hTne`.
+
+Establish `hsub : (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' W ⊆ (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' {x | d.R.lift x x ∈ mcPts d.J}`. Introduce and unpack `u ⟨hu, huW⟩`. Conclude with `⟨hu, mem_mcPts_of_sameOrbit d.R.homog (sameOrbit_symm (liftF_orbit d _)) (hWA _ huW)⟩`. Conclude with `hpos.ne' (measure_mono_null hsub (d.R.null j))`.
+-/
 theorem dense_compl_A : Dense {q : d.R.X | liftF d q ∈ mcPts (ι := GlobalTheory κ) d.J}ᶜ := by
   rw [dense_iff_inter_open]
   rintro W hW ⟨y, hy⟩
@@ -280,6 +380,9 @@ theorem dense_compl_A : Dense {q : d.R.X | liftF d q ∈ mcPts (ι := GlobalTheo
     exact ⟨hu, mem_mcPts_of_sameOrbit d.R.homog (sameOrbit_symm (liftF_orbit d _)) (hWA _ huW)⟩
   exact hpos.ne' (measure_mono_null hsub (d.R.null j))
 
+/- English proof (translation)
+Take `⟨g, hgJ, hgP⟩` from `SetLike.not_le_iff_exists.1 d.R.nondeg`. Introduce `z hz`. Use `closure_mono ?_ (hND Unit (GlobalTheory κ) (coordIdeal ℤ d.x) (D + 1) g d.arith hgP (mem_pts_iff.1 hz))` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hgw⟩`. Conclude with `⟨mem_pts_iff.2 hw, fun h => hgw (h.2.2 g hgJ)⟩`.
+-/
 theorem pts_subset_closure (hND : NonvanishingDense.Statement) :
     pts (coordIdeal ℤ d.x) ⊆
       closure (pts (coordIdeal ℤ d.x) \ (pts (coordIdeal ℤ d.x) ∩ mcPts (ι := GlobalTheory κ) d.J)) := by
@@ -289,6 +392,21 @@ theorem pts_subset_closure (hND : NonvanishingDense.Statement) :
   rintro w ⟨hw, hgw⟩
   exact ⟨mem_pts_iff.2 hw, fun h => hgw (h.2.2 g hgJ)⟩
 
+/- English proof (translation)
+Establish `hcl` using `pts_subset_closure d hND hz`. Take `⟨w, hwS, hwlim⟩` from `mem_closure_iff_seq_limit.1 hcl`. Establish `hsurj : ∀ n, ∃ x, SameOrbit (ι` using `GlobalTheory κ) (d.R.lift x x) (w n) := fun n => d.R.surj (w n) (mem_pts_iff.1 (hwS n).1) (fun h => (hwS n).2 ⟨(hwS n).1, h⟩)`. Use `choose xs hxs using hsurj`. Use `dI_secondCountable d.R.A` as an intermediate fact.
+
+Take `⟨a, -, φ, hφ, hlim⟩` from `isCompact_univ.tendsto_subseq (x := xs) (fun n => Set.mem_univ _)`. Use `set L := d.R.lift a`. Establish `hLlim : Tendsto (fun n => L (xs (φ n))) atTop (𝓝 (L a))` using `(lift_mdiff d a a (d.R.mem_U a)).continuousAt.tendsto.comp hlim`. Establish `hev : ∀ᶠ n in atTop, xs (φ n) ∈ d.R.U a` using `hlim ((d.R.isOpen_U a).mem_nhds (d.R.mem_U a))`. Establish `horb : ∀ᶠ n in atTop, ∃ b : ℂ, b ≠ 0 ∧ L (xs (φ n)) = b • w (φ n)` using `by filter_upwards [hev] with n hn`.
+
+Conclude with `sameOrbit_iff.1 (sameOrbit_trans (d.R.compat a _ _ ⟨hn, d.R.mem_U _⟩) (hxs (φ n)))`. Establish `hz0 : z ≠ 0` using `hz.1`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hz0`. Use `replace hi : z i ≠ 0 := hi`. Establish `hwφ : Tendsto (fun n => w (φ n)) atTop (𝓝 z)` using `hwlim.comp hφ.tendsto_atTop`.
+
+Establish `hwi : Tendsto (fun n => w (φ n) i) atTop (𝓝 (z i))` using `((continuous_apply i).tendsto z).comp hwφ`. Establish `hwi0 : ∀ᶠ n in atTop, w (φ n) i ≠ 0` using `hwi.eventually_ne hi`. Establish `heq : (fun n => (L (xs (φ n)) i / w (φ n) i) • w (φ n)) =ᶠ[atTop] fun n => L (xs (φ n))` using `by filter_upwards [horb, hwi0] with n hb hn`. Take `⟨b, -, hb⟩` from `hb`. Rewrite using `[hb]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_div_assoc, div_self hn, mul_one]`. Establish `hlim2 : Tendsto (fun n => (L (xs (φ n)) i / w (φ n) i) • w (φ n)) atTop (𝓝 ((L a i / z i) • z))` using `((((continuous_apply i).tendsto _).comp hLlim).div hwi hi).smul hwφ`. Establish `hLa : L a = (L a i / z i) • z` using `tendsto_nhds_unique hLlim (hlim2.congr' heq)`. Establish `hLa0 : L a ≠ 0` using `(mem_pts_iff.2 (d.R.mem a a (d.R.mem_U a))).1`.
+
+Establish `hc0 : L a i / z i ≠ 0`. Introduce `h`. Rewrite `hLa` using `[h, zero_smul]`. Conclude with `hLa0 hLa`. Take `⟨b, hb, hfb⟩` from `liftF_eq_smul d a`.
+
+Generalize the expression as in `L a i / z i = c0 at hLa hc0`. Use `⟨a, (b * c0)⁻¹, inv_ne_zero (mul_ne_zero hb hc0), ?_⟩` and prove the remaining obligations. Rewrite using `[hfb, show resPt d a = L a from rfl, hLa, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ (mul_ne_zero hb hc0), one_smul]`.
+-/
 theorem liftF_onto (hND : NonvanishingDense.Statement) (z : Ix κ → ℂ) (hz : z ∈ pts (coordIdeal ℤ d.x)) :
     ∃ q, ∃ c : ℂ, c ≠ 0 ∧ z = c • liftF d q := by
   have hcl := pts_subset_closure d hND hz
@@ -332,6 +450,9 @@ theorem liftF_onto (hND : NonvanishingDense.Statement) (z : Ix κ → ℂ) (hz :
   rw [hfb, show resPt d a = L a from rfl, hLa, smul_smul, smul_smul, mul_assoc,
     inv_mul_cancel₀ (mul_ne_zero hb hc0), one_smul]
 
+/- English proof (translation)
+The claim follows from `mem_pts_iff.2 (liftF_mem d q) meas := measurable_liftF d holo q := by classical have hc : ∀ q' ∈ d.R.U q, ∃ c : ℂ, c ≠ 0 ∧ d.R.lift q q' = c • liftF d q' := fun q' hq' => sameOrbit_iff.1 (d.R.compat q _ q' ⟨hq', mem_U_idx d q'⟩) refine ⟨fun q' => if h : q' ∈ d.R.U q then (hc q' h …`.
+-/
 theorem isAnalyticRes (hND : NonvanishingDense.Statement) :
     IndefiniteRowSideFullHecke.HilbertSamuel.IsAnalyticRes (coordIdeal ℤ d.x) D (liftF d) where
   mem q := mem_pts_iff.2 (liftF_mem d q)
@@ -388,10 +509,18 @@ end Res
 
 section Integrals
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[conjPt]`.
+-/
 theorem conjPt_smul (c : ℂ) (z : Ix κ → ℂ) : conjPt (c • z) = conj c • conjPt z := by
   funext i
   simp [conjPt]
 
+/- English proof (translation)
+Unfold `pairVal`. Rewrite using `[ResChiSymMeasure.evalQ_smul hb, ResChiSymMeasure.evalQ_smul hb', m.smul, map_mul, map_pow]`. Establish `hcn : (‖c‖ : ℂ) ≠ 0` using `by simpa using hc`. Establish `key : c ^ n * conj c ^ n = (‖c‖ : ℂ) ^ (2 * n)`. Rewrite using `[← mul_pow, Complex.mul_conj, Complex.normSq_eq_norm_sq, pow_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (((‖c‖ * m.ρ z) ^ (2 * n) : ℝ) : ℂ) = (‖c‖ : ℂ) ^ (2 * n) * ((m.ρ z ^ (2 * n) : ℝ) : ℂ) by push_cast; ring, show c ^ n * eval z (map (algebraMap ℚ ℂ) b) * (conj c ^ n * conj (eval z (map (algebraMap ℚ ℂ) b'))) = (c ^ n * conj c ^ n) * (eval z (map (algebraMap ℚ ℂ) b) * conj …`.
+-/
 theorem pairVal_smul (m : ConeMetric ℂ (Ix κ)) {n : ℕ} {b b' : MvPolynomial (Ix κ) ℚ}
     (hb : ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b = map (Int.castRingHom ℚ) f)
     (hb' : ∃ f : MvPolynomial (Ix κ) ℤ, f.IsHomogeneous n ∧ b' = map (Int.castRingHom ℚ) f)
@@ -410,6 +539,9 @@ theorem pairVal_smul (m : ConeMetric ℂ (Ix κ)) {n : ℕ} {b b' : MvPolynomial
       ring,
     key, mul_div_mul_left _ _ (pow_ne_zero _ hcn)]
 
+/- English proof (translation)
+Unfold `ptNorm`. Rewrite using `[ResChiSymMeasure.eval_smul_of_homog (hg.map _) c z, m.smul, norm_mul, norm_pow, mul_pow, mul_div_mul_left _ _ (pow_ne_zero _ (norm_ne_zero_iff.2 hc))]`.
+-/
 theorem ptNorm_smul (m : ConeMetric ℂ (Ix κ)) {n : ℕ} {g : MvPolynomial (Ix κ) ℤ} (hg : g.IsHomogeneous n)
     {c : ℂ} (hc : c ≠ 0) (z : Ix κ → ℂ) :
     ptNorm m (Int.castRingHom ℂ) n g (c • z) = ptNorm m (Int.castRingHom ℂ) n g z := by
@@ -417,6 +549,13 @@ theorem ptNorm_smul (m : ConeMetric ℂ (Ix κ)) {n : ℕ} {g : MvPolynomial (Ix
   rw [ResChiSymMeasure.eval_smul_of_homog (hg.map _) c z, m.smul, norm_mul, norm_pow, mul_pow,
     mul_div_mul_left _ _ (pow_ne_zero _ (norm_ne_zero_iff.2 hc))]
 
+/- English proof (translation)
+Establish `hg : Measurable (conjPt ∘ f)` using `ResChiSymMeasure.measurable_conjPt.comp hf`. Establish `iA : Integrable G (dV.map f) ↔ Integrable (fun y => G (f y)) dV` using `integrable_map_measure hG.aestronglyMeasurable hf.aemeasurable`. Establish `iB : Integrable G (dV.map (conjPt ∘ f)) ↔ Integrable (fun y => G (conjPt (f y))) dV` using `integrable_map_measure hG.aestronglyMeasurable hg.aemeasurable`. Unfold `IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure`. Rewrite using `[integral_smul_measure, ENNReal.toReal_inv, ENNReal.toReal_ofNat]`.
+
+Distinguish the cases in `h : Integrable (fun y => G (f y)) dV`. Rewrite using `[integral_add_measure (iA.2 h) (iB.2 (hi.1 h)), integral_map hf.aemeasurable hG.aestronglyMeasurable, integral_map hg.aemeasurable hG.aestronglyMeasurable]`. Both sides reduce to the same expression. Establish `hn : ¬ Integrable G (dV.map f + dV.map (conjPt ∘ f))`. Rewrite using `[integrable_add_measure]`.
+
+Conclude with `fun h' => h (iA.1 h'.1)`. Rewrite using `[integral_undef hn, integral_undef h, integral_undef (fun h' => h (hi.2 h')), add_zero, smul_zero]`.
+-/
 theorem integral_symMeasure {M : Type} [MeasurableSpace M] (dV : Measure M) {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] {G : (Ix κ → ℂ) → E} (hG : StronglyMeasurable G) {f : M → Ix κ → ℂ}
     (hf : Measurable f)
@@ -441,6 +580,23 @@ theorem integral_symMeasure {M : Type} [MeasurableSpace M] (dV : Measure M) {E :
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] (d : HSMDatum D Ω κ)
 
+/- English proof (translation)
+Establish `: IsProbabilityMeasure d.dV` using `d.vol.1`. Establish `hmult : ∀ w : NumberField.InfinitePlace ℚ, (w.mult : ℝ) = 1`. Introduce `w`. Establish `h1` using `NumberField.totalWeight_eq_sum_mult ℚ`. Rewrite `h1` using `[NumberField.totalWeight_eq_finrank, Module.finrank_self, Fintype.sum_unique]`.
+
+Rewrite using `[Subsingleton.elim w default, ← h1, Nat.cast_one]`. Establish `hemb : ∀ w : NumberField.InfinitePlace ℚ, w.embedding = algebraMap ℚ ℂ` using `fun w => Subsingleton.elim _ _`. Establish `hw : (Height.totalWeight ℚ : ℝ) = 1`. Rewrite using `[NumberField.totalWeight_eq_finrank, Module.finrank_self, Nat.cast_one]`. Establish `hf` using `measurable_liftF d`.
+
+Establish `hg : Measurable (conjPt ∘ liftF d)` using `ResChiSymMeasure.measurable_conjPt.comp hf`. Unfold `resChi chi`. Distinguish the cases in `h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d.x n p.2`. Use `swap`. Rewrite using `[dif_neg h, dif_neg h]`.
+
+Rewrite using `[dif_pos h, dif_pos h]`. Establish `hp` using `h.choose_spec`. Generalize the expression as in `h.choose = p at hp ⊢`. Take `⟨r, b⟩` from `p`. Establish `hp' : IsSecBasis d.x n b` using `hp`.
+
+Establish `hG : resGram d n b = realGram (K` using `ℚ) (fun _ => d.m) (fun _ => IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure (liftF d) d.dV) n b := by`. Use extensionality with `k l`. Take `⟨hmeas, C, hC⟩` from `ResChiSymMeasure.pairVal_bound d.smooth (hp'.1 k) (hp'.1 l)`. Establish `hi : Integrable (fun y => pairVal d.m n (b k) (b l) (liftF d y)) d.dV ↔ Integrable (fun y => pairVal d.m n (b k) (b l) (conjPt (liftF d y))) d.dV` using `iff_of_true (Integrable.of_bound (hmeas.comp hf).aestronglyMeasurable C (Filter.Eventually.of_forall fun y => hC _)) (Integrable.of_bound (hmeas.comp hg).aestronglyMeasurable C (Filter.Eventually.of_forall fun y => hC _))`. Establish `e1 : ∀ y, pairVal d.m n (b k) (b l) (liftF d y) = pairVal d.m n (b k) (b l) (resPt d y)`.
+
+Introduce `y`. Take `⟨c, hc, hcy⟩` from `liftF_eq_smul d y`. Rewrite using `[hcy, pairVal_smul d.m (hp'.1 k) (hp'.1 l) hc]`. Establish `e2 : ∀ y, pairVal d.m n (b k) (b l) (conjPt (liftF d y)) = pairVal d.m n (b k) (b l) (conjPt (resPt d y))`. Introduce `y`.
+
+Take `⟨c, hc, hcy⟩` from `liftF_eq_smul d y`. Rewrite using `[hcy, conjPt_smul, pairVal_smul d.m (hp'.1 k) (hp'.1 l) (by simpa using hc)]`. Simplify using `only [realGram, hmult, hemb, one_mul, Fintype.sum_unique]`. Express the relevant statement in the definitionally equal form `_ = (∫ z, pairVal d.m n (b k) (b l) z ∂IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure (liftF d) d.dV).re`. Rewrite using `[integral_symMeasure d.dV hmeas.stronglyMeasurable hf hi]`.
+
+Simplify using `only [e1, e2, resGram, Complex.real_smul, Complex.re_ofReal_mul, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG]`. Simplify using `only [l2Degree, hw, div_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_eq (n : ℕ) :
     chi d.x d.m (IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure (liftF d) d.dV) n = resChi d n := by
   have : IsProbabilityMeasure d.dV := d.vol.1
@@ -492,6 +648,13 @@ theorem chi_eq (n : ℕ) :
   simp only [l2Degree, hw, div_one]
   ring
 
+/- English proof (translation)
+Unfold `l2Norm resolutionSectionL2Norm`. Use `congr 1`. Establish `hG : Measurable fun z => ptNorm d.m (Int.castRingHom ℂ) n g z ^ 2` using `(ResolutionL2SymmetricMeasure.measurable_ptNorm d.m d.smooth n g).pow_const 2`. Establish `hc : ∀ w, ptNorm d.m (Int.castRingHom ℂ) n g (conjPt w) = ptNorm d.m (Int.castRingHom ℂ) n g w` using `ResolutionL2SymmetricMeasure.ptNorm_conjPt d.conjInv n g`. Establish `e1 : ∀ y, ptNorm d.m (Int.castRingHom ℂ) n g (liftF d y) = ptNorm d.m (Int.castRingHom ℂ) n g (resPt d y)`.
+
+Introduce `y`. Take `⟨c, hc0, hcy⟩` from `liftF_eq_smul d y`. Rewrite using `[hcy, ptNorm_smul d.m hg hc0]`. Rewrite using `[integral_symMeasure d.dV hG.stronglyMeasurable (measurable_liftF d) (by simp only [hc])]`. Simplify using `only [hc, e1, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symmetricMeasure_l2Norm_eq_resolutionL2 (n : ℕ) (g : MvPolynomial (Ix κ) ℤ) (hg : g.IsHomogeneous n) :
     l2Norm d.m (Int.castRingHom ℂ) (IndefiniteRowSideFullHecke.HilbertSamuel.symMeasure (liftF d) d.dV) n g = resolutionSectionL2Norm d n g := by
   unfold l2Norm resolutionSectionL2Norm
@@ -514,6 +677,9 @@ end AnResToAnalyticRes
 
 open AnResToAnalyticRes in
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d`. Conclude with `⟨d.R.X, inferInstance, inferInstance, inferInstance, chartedSpaceOfAtlas d.R.A, isManifold d, d.meas, d.borel, liftF d, d.dV, isAnalyticRes d hND, (IsSmoothVolume.equiv d.R.A d.dV).1 d.vol, chi_eq d, symmetricMeasure_l2Norm_eq_resolutionL2 d⟩`.
+-/
 theorem AnResToAnalyticRes.proof (hND : NonvanishingDense.Statement) : AnResToAnalyticRes.Statement := by
   intro D Ω _ _ κ _ d
   exact ⟨d.R.X, inferInstance, inferInstance, inferInstance, chartedSpaceOfAtlas d.R.A, isManifold d,

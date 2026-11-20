@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.ConstTermOnMulLe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProdHomeoSymmApplySnd
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Cusp.Shear.isHaarMeasure_map_prodHomeo | exact GlobalTheory.Cusp.Shear.isHaarMeasure_map_prodHomeo | (intros; apply GlobalTheory.Cusp.Shear.isHaarMeasure_map_prodHomeo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cocompact_normal_subgroup_fibration : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (Γ N N' : Subgroup G) [DiscreteTopology Γ] [LocallyCompactSpace N]
     [LocallyCompactSpace N'] (hle : N' ≤ N), (∀ p ∈ N, ∀ m ∈ N', p * m * p⁻¹ ∈ N') →

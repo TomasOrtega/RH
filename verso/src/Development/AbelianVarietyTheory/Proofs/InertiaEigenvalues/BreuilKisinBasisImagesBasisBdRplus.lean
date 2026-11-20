@@ -13,6 +13,29 @@ noncomputable section
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct PowerSeries GlobalTheory.Prism GlobalTheory.BK GlobalTheory.BKReal GlobalTheory.BKGal GlobalTheory.Per Matrix
 open scoped Formalism.Per
 
+/- English proof (translation)
+Establish `hcomm : ∀ (d d' : R) (w : W), act d (act d' w) = act d' (act d w)`. Introduce `d d' w`. Rewrite using `[← hmul, ← hmul, mul_comm]`. Establish `hpow : ∀ (n : ℕ) (w : W), act (eD ^ n) w = (act eD)^[n] w`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro w`. Rewrite using `[pow_zero, hone]`. Both sides reduce to the same expression. Consider the case `succ n ih => intro w`.
+
+Rewrite using `[pow_succ', hmul, ih, Function.iterate_succ_apply']`. Establish `hinj : ∀ n : ℕ, Function.Injective (act (eD ^ n))`. Introduce `n x x' hxx`. Rewrite `hxx` using `[hpow, hpow]`. Conclude with `(hbij.1.iterate n) hxx`.
+
+Establish `hsh : ∀ (n : ℕ) (w : W) (j : ℤ), F j w ↔ F (j + n) (act (eD ^ n) w)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro w j`. Rewrite using `[pow_zero, hone, Nat.cast_zero, add_zero]`.
+
+Consider the case `succ n ih`. Introduce `w j`. Rewrite using `[ih w j, hshift (act (eD ^ n) w) (j + n), pow_succ', hmul, Nat.cast_succ, ← add_assoc]`. Establish `hsingle : ∀ (v : ι → W) (i : ι), ∑ k, act ((Pi.single i (1 : R) : ι → R) k) (v k) = v i`. Introduce `v i`.
+
+Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by rw [Pi.single_eq_of_ne hk, map_zero, AddMonoidHom.zero_apply]) (fun h => (h (Finset.mem_univ i)).elim), Pi.single_eq_same, hone]`. Set `ginv : W → W` to `(Equiv.ofBijective _ hbij).symm`. Establish `hginv : ∀ x, act eD (ginv x) = x` using `fun x => (Equiv.ofBijective _ hbij).apply_symm_apply x`. Establish `h1 : ∀ i, act (eD ^ β) (ginv^[β] (g i)) = g i`. Introduce `i`.
+
+Rewrite using `[hpow]`. Conclude with `Function.RightInverse.iterate hginv β _`. Establish `h2 : ∀ v, F 0 v ↔ ∃ d : ι → R, v = ∑ i, act (d i) (ginv^[β] (g i))`. Establish `hf : ∀ i, act (eD ^ (β₀ + β)) (ginv^[β] (g i)) = h i`. Introduce `i`.
+
+Rewrite using `[pow_add, hmul, hpow β, Function.RightInverse.iterate hginv β, hg]`. Introduce `v`. Rewrite using `[hsh (β₀ + β) v 0, zero_add, hspan]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`.
+
+Use `⟨d, hinj (β₀ + β) ?_⟩` and prove the remaining obligations. Rewrite using `[hd, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcomm, hf i]`. Introduce and unpack `⟨d, rfl⟩`.
+
+Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcomm, hf i]`. Use `⟨fun i => ginv^[β] (g i), h1, h2, ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.T.linearIndependent_of_mutual_span_of_indep R W act hmul hone ι b _ hbi ?_ ?_` and prove the remaining obligations. Introduce `i`. Conclude with `(hb0 _).1 ((h2 _).2 ⟨Pi.single i 1, (hsingle (fun i => ginv^[β] (g i)) i).symm⟩)`. Introduce `k`. Conclude with `(h2 _).1 ((hb0 _).2 ⟨Pi.single k 1, (hsingle b k).symm⟩)`.
+-/
 theorem GlobalTheory.BKGal.JumpDR.BasisGlue.exists_basis {R W : Type} [CommRing R] [AddCommGroup W] (act : R →+ (W →+ W))
     (hmul : ∀ (r s : R) (w : W), act (r * s) w = act r (act s w)) (hone : ∀ w : W, act 1 w = w) (eD : R)
     (hbij : Function.Bijective (act eD)) (F : ℤ → W → Prop) (hshift : ∀ (y : W) (j : ℤ), F j y ↔ F (j + 1) (act eD y))
@@ -77,6 +100,21 @@ theorem GlobalTheory.BKGal.JumpDR.BasisGlue.exists_basis {R W : Type} [CommRing 
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `hF l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI Td hC X hX act hA β y hy`. Take `⟨hmul, hone⟩` from `GlobalTheory.T.coeffDeRhamPlusAction_mul_one l LL T Pl AI Td act hA`. Take `⟨hbij, hshift⟩` from `GlobalTheory.T.eisenstein_mul_bijective_shifts_filtrationV l a e ϖ LL T Pl AI Td act hA`. Take `⟨α, β0, hα, hβ0⟩` from `P.exists_exponents`. Establish `hLM1 : ∀ v ∈ P.M, E ↥LL.1 l e ^ (β0 + β) • v ∈ P.L`.
+
+Introduce `v hv`. Use `P.L.smul_mem (⟨_, pow_mem (E_mem l e _) β⟩ : A ↥(OL LL) ↥LL.1) (hβ0 v hv)` as an intermediate fact. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `this`. Establish `hβ1 : ∀ τ j i, E ↥LL.1 l e ^ (β0 + β) * P.mxInv τ j i ∈ A ↥(OL LL) ↥LL.1`.
+
+Introduce `τ j i`. Establish `hv : (fun (_ : ZMod a) (i' : ι) => if i' = i then (1 : (↥LL.1)⟦X⟧) else 0) ∈ P.M`. Use `mem_tot.2 fun τ' i' => ?_` and prove the remaining obligations. Use `show (if i' = i then (1 : (↥LL.1)⟦X⟧) else 0) ∈ A ↥(OL LL) ↥LL.1`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `h2` using `(P.mem_extc_iff.1 (mem_tot.1 (hLM1 _ hv) τ)) j`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+
+Establish `hy1 : ∀ τ j i, algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (Ehat ↥(OL LL) ↥LL.1 l e ^ β0 * y τ j i) = algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (Ehat ↥(OL LL) ↥LL.1 l e) ^ (β0 + β) * hat ↥(OL LL) l e (P.mxInv τ j i)` using `fun τ j i => (map_mul _ _ _).trans ((congrArg₂ (· * ·) (map_pow _ _ _) (hy τ j i)).trans ((mul_assoc _ _ _).symm.trans (congrArg (· * _) (pow_add _ _ _).symm)))`. Establish `hyA` using `GlobalTheory.T.coordinates_eq_of_eisensteinPow_mul_inverse_matrix l a e ϖ LL ι P (β0 + β) (fun τ j i => Ehat ↥(OL LL) ↥LL.1 l e ^ β0 * y τ j i) hy1 hβ1`. Establish `hg : ∀ i, act (ϖ.iD (thetaW a LL) ↥LL.1 (fun _ => Ehat ↥(OL LL) ↥LL.1 l e) ^ β0) (∑ j, act (ϖ.iD (thetaW a LL) ↥LL.1 (fun τ => y τ j i)) (X (jB (Pi.single j 1)))) = ∑ j, act (toOD l ↥(OL LL) (ϖ.iTot (thetaW a LL) ↥LL.1 (fun τ => ⟨E ↥LL.1 l e ^ (β0 + β) * P.mxInv τ j i, hβ1 τ j i⟩ …`. Introduce `i`. Use `(map_sum (act (ϖ.iD (thetaW a LL) ↥LL.1 (fun _ => Ehat ↥(OL LL) ↥LL.1 l e) ^ β0)) _ _).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+
+Use `(hmul _ _ _).symm.trans (congrArg (fun z => act z (X (jB (Pi.single j 1)))) ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (PiSys.iD_ofA (thetaW a LL) ↥LL.1 ϖ _)` and prove the remaining obligations. Establish `hpt : (fun _ => Ehat ↥(OL LL) ↥LL.1 l e) ^ β0 * (fun τ => y τ j i) = fun τ => ofA ↥(OL LL) ↥LL.1 l e ⟨E ↥LL.1 l e ^ (β0 + β) * P.mxInv τ j i, hβ1 τ j i⟩`. Use function extensionality and compare the values at `fun τ => hyA τ j i`. Conclude with `(congrArg (· * ϖ.iD (thetaW a LL) ↥LL.1 (fun τ => y τ j i)) (map_pow (ϖ.iD (thetaW a LL) ↥LL.1) (fun _ => Ehat ↥(OL LL) ↥LL.1 l e) β0).symm).trans ((map_mul (ϖ.iD (thetaW a LL) ↥LL.1) _ _).symm.trans (congrArg (ϖ.iD (thetaW a LL) ↥LL.1) hpt))`.
+
+Establish `hspan` using `GlobalTheory.T.breuilKisin_filtration_span_deRhamLattice hF l a e ϖ LL hl2 ι P T I jB Pl AI Td hC X hX act hA α (β0 + β) hα hLM1 hβ1`. Take `⟨b⟩` from `GlobalTheory.T.galoisLattice_basis_indexed_by_breuilKisin l a e ϖ LL ι P T I`. Take `⟨hb0, hbi⟩` from `GlobalTheory.T.coeffDeRhamPlus_basis_tensorLattice_free l LL T Pl AI Td act hA ι b`. Conclude with `GlobalTheory.BKGal.JumpDR.BasisGlue.exists_basis act hmul hone _ hbij (fun (j : ℤ) (v : T.V ⊗[ℚ_[l]] Pl.R.BdR) => v ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) (j)) hshift β β0 (fun i => ∑ j, act (ϖ.iD (thetaW a LL) ↥LL.1 (fun τ => y …`.
+-/
 theorem GlobalTheory.BKGal.JumpDR.basis_images : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI), IsCrisCmp I jB → ∀ (X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR), (∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), X ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) → ∀ (A : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), A (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (β : ℕ) (y : ZMod a → ι → ι → Ahat ↥(OL LL) ↥LL.1 l e), (∀ τ j i, algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (y τ j i) = algebraMap (Ahat ↥(OL LL) ↥LL.1 l e) (AhatE ↥(OL LL) ↥LL.1 l e) (Ehat ↥(OL LL) ↥LL.1 l e) ^ β * hat ↥(OL LL) l e (P.mxInv τ j i)) → ∃ f : ι → T.V ⊗[ℚ_[l]] Pl.R.BdR, (∀ i, A ((ϖ.iD (thetaW a LL) ↥LL.1 (fun _ => Ehat ↥(OL LL) ↥LL.1 l e)) ^ β) (f i) = ∑ j, A (ϖ.iD (thetaW a LL) ↥LL.1 (fun τ => y τ j i)) (X (jB (Pi.single j 1)))) ∧ (∀ v, v ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) (0) ↔ ∃ d : ι → OD l ↥(OL LL), v = ∑ i, A (d i) (f i)) ∧ ∀ d : ι → OD l ↥(OL LL), ∑ i, A (d i) (f i) = 0 → ∀ i, d i = 0 := by
   intro hF l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI Td hC X hX act hA β y hy
   obtain ⟨hmul, hone⟩ := GlobalTheory.T.coeffDeRhamPlusAction_mul_one l LL T Pl AI Td act hA

@@ -14,9 +14,15 @@ open Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M Recipro
 
 variable {e e' : ℕ} {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z] {A : FinHolAtlas e X} {A' : FinHolAtlas e' Z}
 
+/- English proof (translation)
+Introduce `j` and use `(h j).mono fun _ hy => ⟨hy.1, hVU hy.2⟩`.
+-/
 theorem holo_mono {U V : Set X} {g : X → ℂ} (h : A.HoloOn U g) (hVU : V ⊆ U) : A.HoloOn V g :=
   fun j => (h j).mono fun _ hy => ⟨hy.1, hVU hy.2⟩
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover x`. Establish `hc` using `(h j _ ⟨(A.chart j).map_source hj, by rwa [Set.mem_preimage, (A.chart j).left_inv hj]⟩).continuousAt`. Use `(hc.comp ((A.chart j).continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem holo_cont {U : Set X} {g : X → ℂ} (h : A.HoloOn U g) {x : X} (hx : x ∈ U) : ContinuousAt g x := by
   obtain ⟨j, hj⟩ := A.cover x
   have hc := (h j _ ⟨(A.chart j).map_source hj, by rwa [Set.mem_preimage, (A.chart j).left_inv hj]⟩).continuousAt
@@ -24,6 +30,11 @@ theorem holo_cont {U : Set X} {g : X → ℂ} (h : A.HoloOn U g) {x : X} (hx : x
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Introduce `j y hy`. Take `⟨k, hk⟩` from `A'.cover (h ((A.chart j).symm y))`. Establish `h1` using `hh.2 j k y ⟨hy.1, hk⟩`. Establish `h2` using `hg k (A'.chart k (h ((A.chart j).symm y))) ⟨(A'.chart k).map_source hk, by rw [Set.mem_preimage, (A'.chart k).left_inv hk]; exact hy.2⟩`. Use `(AnalyticAt.comp (f := A'.chart k ∘ h ∘ (A.chart j).symm) h2 h1).congr ?_` and prove the remaining obligations.
+
+Establish `hc : ContinuousAt (h ∘ (A.chart j).symm) y` using `hh.1.continuousAt.comp ((A.chart j).continuousAt_symm hy.1)`. Use `filter_upwards [hc.eventually_mem ((A'.chart k).open_source.mem_nhds hk)] with y' hy'`. Establish `: (A'.chart k).symm (A'.chart k (h ((A.chart j).symm y'))) = h ((A.chart j).symm y')` using `(A'.chart k).left_inv hy'`. Simplify using `[this]`.
+-/
 theorem holo_comp {U : Set Z} {g : Z → ℂ} (hg : A'.HoloOn U g) {h : X → Z} (hh : HoloMap A A' h) :
     A.HoloOn (h ⁻¹' U) (g ∘ h) := by
   intro j y hy
@@ -40,23 +51,38 @@ theorem holo_comp {U : Set Z} {g : Z → ℂ} (hg : A'.HoloOn U g) {h : X → Z}
 def LocRe (A : FinHolAtlas e X) (u : X → ℝ) (x : X) : Prop :=
   ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ ∃ G : X → ℂ, A.HoloOn V G ∧ ∀ y ∈ V, u y = (G y).re
 
+/- English proof (translation)
+Take `⟨V, hV, hx, G, hG, h⟩` from `h`. Take `⟨W, hW, hWo, hxW⟩` from `eventually_nhds_iff.1 hu`. Conclude with `⟨V ∩ W, hV.inter hWo, ⟨hx, hxW⟩, G, holo_mono hG Set.inter_subset_left, fun y hy => (hW y hy.2).trans (h y hy.1)⟩`.
+-/
 theorem LocRe.congr {u u' : X → ℝ} {x : X} (h : LocRe A u x) (hu : ∀ᶠ y in 𝓝 x, u' y = u y) : LocRe A u' x := by
   obtain ⟨V, hV, hx, G, hG, h⟩ := h
   obtain ⟨W, hW, hWo, hxW⟩ := eventually_nhds_iff.1 hu
   exact ⟨V ∩ W, hV.inter hWo, ⟨hx, hxW⟩, G, holo_mono hG Set.inter_subset_left, fun y hy => (hW y hy.2).trans (h y hy.1)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.univ, isOpen_univ, trivial, fun _ => 0, fun _ _ _ => analyticAt_const, fun _ _ => rfl⟩`.
+-/
 theorem LocRe.zero (x : X) : LocRe A (fun _ => 0) x :=
   ⟨Set.univ, isOpen_univ, trivial, fun _ => 0, fun _ _ _ => analyticAt_const, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨V, hV, hx, G, hG, h⟩` from `h`. Take `⟨V', hV', hx', G', hG', h'⟩` from `h'`. Conclude with `⟨V ∩ V', hV.inter hV', ⟨hx, hx'⟩, _, holoOn_add A hG hG', fun y hy => by simp [h y hy.1, h' y hy.2]⟩`.
+-/
 theorem LocRe.add {u u' : X → ℝ} {x : X} (h : LocRe A u x) (h' : LocRe A u' x) : LocRe A (fun y => u y + u' y) x := by
   obtain ⟨V, hV, hx, G, hG, h⟩ := h
   obtain ⟨V', hV', hx', G', hG', h'⟩ := h'
   exact ⟨V ∩ V', hV.inter hV', ⟨hx, hx'⟩, _, holoOn_add A hG hG', fun y hy => by simp [h y hy.1, h' y hy.2]⟩
 
+/- English proof (translation)
+Take `⟨V, hV, hx, G, hG, h⟩` from `h`. Conclude with `⟨V, hV, hx, _, holoOn_mul A hG c, fun y hy => by simp [h y hy]⟩`.
+-/
 theorem LocRe.mul {u : X → ℝ} {x : X} (h : LocRe A u x) (c : ℝ) : LocRe A (fun y => c * u y) x := by
   obtain ⟨V, hV, hx, G, hG, h⟩ := h
   exact ⟨V, hV, hx, _, holoOn_mul A hG c, fun y hy => by simp [h y hy]⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using LocRe.zero x`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `(h i (by simp)).add (ih fun j hj => h j (by simp [hj]))`.
+-/
 theorem LocRe.sum {I : Type} (s : Finset I) {u : I → X → ℝ} {x : X} (h : ∀ i ∈ s, LocRe A (u i) x) :
     LocRe A (fun y => ∑ i ∈ s, u i y) x := by
   classical
@@ -66,10 +92,16 @@ theorem LocRe.sum {I : Type} (s : Finset I) {u : I → X → ℝ} {x : X} (h : �
     simp only [Finset.sum_insert hi]
     exact (h i (by simp)).add (ih fun j hj => h j (by simp [hj]))
 
+/- English proof (translation)
+Take `⟨V, hV, hx, G, hG, hu⟩` from `hu`. Conclude with `⟨h ⁻¹' V, hV.preimage hh.1, hx, _, holo_comp hG hh, fun y hy => hu _ hy⟩`.
+-/
 theorem LocRe.comp {u : Z → ℝ} {h : X → Z} (hh : HoloMap A A' h) {x : X} (hu : LocRe A' u (h x)) : LocRe A (fun y => u (h y)) x := by
   obtain ⟨V, hV, hx, G, hG, hu⟩ := hu
   exact ⟨h ⁻¹' V, hV.preimage hh.1, hx, _, holo_comp hG hh, fun y hy => hu _ hy⟩
 
+/- English proof (translation)
+Establish `hc : ContinuousOn (fun y => f y / f x) U` using `fun y hy => ((holo_cont hf hy).div_const _).continuousWithinAt`. Use `⟨U ∩ (fun y => f y / f x) ⁻¹' Complex.slitPlane, hc.isOpen_inter_preimage hU Complex.isOpen_slitPlane, ⟨hx, by simp [div_self h0]⟩, fun y => Complex.log (f y / f x) + (Real.log ‖f x‖ : ℝ), fun j y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `(((hf j y ⟨hy.1, hy.2.1⟩).div_const (c := f x)).clog hy.2.2).add analyticAt_const`. Establish `h1 : f y ≠ 0` using `fun h => by simpa [h] using hy.2`. Simplify using `[Complex.log_re, Real.log_div, h1, h0]`.
+-/
 theorem LocRe.log {U : Set X} (hU : IsOpen U) {f : X → ℂ} (hf : A.HoloOn U f) {x : X} (hx : x ∈ U) (h0 : f x ≠ 0) :
     LocRe A (fun y => Real.log ‖f y‖) x := by
   have hc : ContinuousOn (fun y => f y / f x) U := fun y hy => ((holo_cont hf hy).div_const _).continuousWithinAt
@@ -81,18 +113,31 @@ theorem LocRe.log {U : Set X} (hU : IsOpen U) {f : X → ℂ} (hf : A.HoloOn U f
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Establish `hp : ∀ k, ‖c k‖ ^ L.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite using `[L.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => hp k) (L.pos z hz).ne', Real.log_prod fun k _ => hp k]`. Simplify using `only [Real.log_zpow]`.
+-/
 theorem log_h_smul (L : HermLine J) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log (L.h fun p => c p.1 * z p) = ∑ k, (L.a k : ℝ) * Real.log ‖c k‖ + Real.log (L.h z) := by
   have hp : ∀ k, ‖c k‖ ^ L.a k ≠ 0 := fun k => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))
   rw [L.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => hp k) (L.pos z hz).ne', Real.log_prod fun k _ => hp k]
   simp only [Real.log_zpow]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `ho`. Rewrite using `[log_h_smul L hc hz, log_h_smul L' hc hz, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_diff_orbit {L L' : HermLine J} (h : L.a = L'.a) {z z' : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z' ⟨k, i⟩ ≠ 0)
     (ho : SameOrbit z z') : Real.log (L.h z) - Real.log (L'.h z) = Real.log (L.h z') - Real.log (L'.h z') := by
   obtain ⟨c, hc, rfl⟩ := ho
   rw [log_h_smul L hc hz, log_h_smul L' hc hz, h]
   ring
 
+/- English proof (translation)
+Use `choose i hi using hne x hx`. Establish `hi' : ∀ k, s x ⟨k, i k⟩ ≠ 0` using `fun k => by`. Take `⟨c, hc, e⟩` from `ho x hx`. Rewrite using `[e]`. Conclude with `mul_ne_zero (hc k) (hi k)`.
+
+Establish `h1` using `LocRe.sum (A := A) Finset.univ (x := x) (u := fun k y => (L.a k : ℝ) * (Real.log ‖s y ⟨k, i k⟩‖ + -1 * Real.log ‖s' y ⟨k, i k⟩‖)) fun k _ => ((LocRe.log hU (hs _) hx (hi' k)).add ((LocRe.log hU (hs' _) hx (hi k)).mul _)).mul _`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hx, eventually_all.2 fun k => (holo_cont (hs' ⟨k, i k⟩) hx).eventually_ne (hi k)] with y hy hy'`. Take `⟨c, hc, e⟩` from `ho y hy`. Rewrite using `[e, log_h_smul L hc (hne y hy), add_sub_cancel_right]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hy' k))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locRe_orbit (L : HermLine J) {U : Set X} (hU : IsOpen U) {s s' : X → (Σ k, J k) → ℂ}
     (hs : ∀ p, A.HoloOn U fun y => s y p) (hs' : ∀ p, A.HoloOn U fun y => s' y p) (hne : ∀ y ∈ U, ∀ k, ∃ i, s' y ⟨k, i⟩ ≠ 0)
     (ho : ∀ y ∈ U, SameOrbit (s y) (s' y)) {x : X} (hx : x ∈ U) :
@@ -113,6 +158,9 @@ theorem locRe_orbit (L : HermLine J) {U : Set X} (hU : IsOpen U) {s s' : X → (
   rw [norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hy' k))]
   ring
 
+/- English proof (translation)
+Establish `hz : A.Smooth (fun _ : X => (0 : ℝ))` using `fun j => contDiffOn_const`. Establish `h1` using `(PshPull.isPsh_pull e e X X A A id (holoMap_id A) P Q (fun _ => 0) hP hQ hz (fun x _ => h x)).1 (TailBoundAlt.isPsh_congr A _ _ hq (fun x y hy => hy.1) (by funext x y; exact add_zero _))`. Conclude with `TailBoundAlt.isPsh_congr A _ _ h1 (fun x y hy => ⟨hy, trivial⟩) (by funext x y; exact (add_zero _).symm)`.
+-/
 theorem psh_of_locRe {P Q : LocPot X} (hP : IsPotential A P) (hQ : IsPotential A Q)
     (h : ∀ x, LocRe A (fun y => P.φ x y - Q.φ x y) x) (hq : IsPsh A Q) : IsPsh A P := by
   have hz : A.Smooth (fun _ : X => (0 : ℝ)) := fun j => contDiffOn_const
@@ -120,9 +168,19 @@ theorem psh_of_locRe {P Q : LocPot X} (hP : IsPotential A P) (hQ : IsPotential A
     (TailBoundAlt.isPsh_congr A _ _ hq (fun x y hy => hy.1) (by funext x y; exact add_zero _))
   exact TailBoundAlt.isPsh_congr A _ _ h1 (fun x y hy => ⟨hy, trivial⟩) (by funext x y; exact (add_zero _).symm)
 
+/- English proof (translation)
+The claim follows from `isPotential_mul A P hP c _ rfl fun _ _ => rfl`.
+-/
 theorem pot_rsmul {P : LocPot X} (hP : IsPotential A P) (c : ℝ) : IsPotential A (P.rsmul c) :=
   isPotential_mul A P hP c _ rfl fun _ _ => rfl
 
+/- English proof (translation)
+Establish `hp` using `isPotentialPullback A' A h hh Θ' hΘ'`. Take `⟨C, -, -, hC⟩` from `TailBoundAlt.exists_psh_chern_bound A Θ _ hΘ hΘp hp`. Use `⟨C, fun P Q hP hQ hq hl => ?_⟩` and prove the remaining obligations. Establish `hz : A'.Smooth (fun _ : Z => (0 : ℝ))` using `fun j => contDiffOn_const`. Establish `hQ'` using `isPotentialAdd A' _ _ hQ hΘ'`.
+
+Establish `hP'` using `isPotentialPullback A' A h hh _ hQ'`. Establish `h1` using `(PshPull.isPsh_pull e e' X Z A A' h hh _ (Q + Θ') (fun _ => 0) hP' hQ' hz (fun x _ => (LocRe.zero x).congr (Eventually.of_forall fun y => sub_self _))).1 (TailBoundAlt.isPsh_congr A' _ _ hq (fun x y hy => hy.1) (by funext x y; exact add_zero _))`. Establish `h2 : IsPsh A ((Q + Θ').pullback h hh.1)` using `TailBoundAlt.isPsh_congr A _ _ h1 (fun x y hy => ⟨hy, trivial⟩) (by funext x y; exact (add_zero _).symm)`. Establish `hR` using `isPotentialAdd A _ _ (pot_rsmul hΘ C) (pot_rsmul hp (-1))`. Use `psh_of_locRe (isPotentialAdd A _ _ hP (pot_rsmul hΘ C)) (isPotentialAdd A _ _ hP' hR) (fun x => ?_) (isPshAdd A _ _ hP' hR h2 hC)` and prove the remaining obligations.
+
+Use `(hl x).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show P.φ x y + C * Θ.φ x y - (Q.φ (h x) (h y) + Θ'.φ (h x) (h y) + (C * Θ.φ x y + -1 * Θ'.φ (h x) (h y))) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_psh_pull [CompactSpace X] [T2Space X] {h : X → Z} (hh : HoloMap A A' h) {Θ : LocPot X} (hΘ : IsPotential A Θ)
     (hΘp : IsPosPot A Θ) {Θ' : LocPot Z} (hΘ' : IsPotential A' Θ') :
     ∃ C : ℝ, ∀ (P : LocPot X) (Q : LocPot Z), IsPotential A P → IsPotential A' Q → IsPsh A' (Q + Θ') →

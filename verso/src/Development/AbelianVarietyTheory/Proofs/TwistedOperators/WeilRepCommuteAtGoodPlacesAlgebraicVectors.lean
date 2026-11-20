@@ -28,6 +28,15 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 namespace GlobalTheory.GoodComm
 
+/- English proof (translation)
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, P, hf, rfl⟩` from `hΦ`. Take `⟨U, U', hU, -, hfix⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D ψ hW.std W₁ X ωB (GlobalTheory.Ker.isWeak_of_datum hW) hW.om_cont f hf.1`. Use `⟨U, hU, fun k hk hkf => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `GlobalTheory.OrientedHeis.om_fin_pureTensorO ψ W₁ X χS χT ωB hW θ hθ k hkf 1 (one_mem _) (frSgn false A₁).cart B.cart A₁.onb B.onb f P hf.1`. Use `show ωB (k, 1) (fockF ψ θ false A₁ B f P) = fockF ψ θ false A₁ B f P`. Unfold `fockF`. Conclude with `e.trans (by rw [hfix k hk hkf 1 (one_mem _) (one_mem _)]; rfl)`. Consider the case `zero => exact ⟨⊤, by simp, fun k _ _ => map_zero _⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨U, hU, h⟩` from `hx`. Take `⟨U', hU', h'⟩` from `hy`. Use `⟨U ⊓ U', by rw [Subgroup.coe_inf]; exact hU.inter hU', fun k hk hkf => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h k (Subgroup.mem_inf.1 hk).1 hkf, h' k (Subgroup.mem_inf.1 hk).2 hkf]`.
+
+Consider the case `smul c x _ hx`. Take `⟨U, hU, h⟩` from `hx`. Conclude with `⟨U, hU, fun k hk hkf => by rw [map_smul, h k hk hkf]⟩`.
+-/
 theorem exists_open_fix_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {W₁ X : HSp D}
     {A₁ : Fr W₁} {B : Fr X} {χS χT : (AE D)ˣ →* Circle} {ωB : WRep W₁ X} (hW : IsWeilDatumO ψ W₁ X χS χT ωB)
     {Ψ : WO W₁ X → ℂ} (hΨ : Ψ ∈ algF ψ θ false A₁ B) :
@@ -53,6 +62,19 @@ theorem exists_open_fix_algF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : Inf
     obtain ⟨U, hU, h⟩ := hx
     exact ⟨U, hU, fun k hk hkf => by rw [map_smul, h k hk hkf]⟩
 
+/- English proof (translation)
+Introduce `D ψ θ hθ W₁ X A₁ B α β ωB hB n Ψ u hΨ hu`. Establish `hW : IsWeilDatumO ψ W₁ X α (α / β) ωB` using `hB`. Use `choose U hU hfix using fun i => exists_open_fix_algF (A₁ := A₁) (B := B) hθ hW (hΨ i)`. Establish `hfin : ∀ i, {v : HeightOneSpectrum (𝓞 D.host.F) | ¬ (GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.gAt W₁ (Sum.inl v) (u i) ∈ U i ∧ GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.gAt W₁ (Sum.inl v) (u i) ∈ GfC W₁)}.Finite` using `fun i => ((GlobalTheory.PlaceGen.gen_by_local D W₁ (U i) (hU i)).1 (u i)).preimage Sum.inl_injective.injOn`. Use `⟨Finset.univ.biUnion fun i => (hfin i).toFinset, fun v hv z hz i => ?_⟩` and prove the remaining obligations.
+
+Establish `hvi : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.gAt W₁ (Sum.inl v) (u i) ∈ U i ∧ GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.gAt W₁ (Sum.inl v) (u i) ∈ GfC W₁`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, (hfin i).mem_toFinset.2 hc⟩)`. Use `set uv := GlobalTheory.AdelicU.emb D.sp.cm.sig W₁.gram v (GlobalTheory.AdelicU.proj D.sp.cm.sig W₁.gram v (u i)) with huv`. Establish `hfixv : ωB (uv, 1) (Ψ i) = Ψ i` using `hfix i uv hvi.1 hvi.2`.
+
+Use `⟨u i * uv⁻¹, mul_mem (hu i) (inv_mem hvi.2), ?_⟩` and prove the remaining obligations. Establish `hp : GlobalTheory.AdelicU.proj D.sp.cm.sig W₁.gram v (u i * uv⁻¹) = 1`. Rewrite using `[map_mul, map_inv, huv, GlobalTheory.AdelicU.proj_emb_self, mul_inv_cancel]`. Establish `m : ∀ (a b : GA D W₁) (f : WO W₁ X → ℂ), ωB (a * b, 1) f = ωB (a, 1) (ωB (b, 1) f)` using `fun a b f => by`. Rewrite using `[show ((a * b, (1 : GA D X)) : GA D W₁ × GA D X) = (a, 1) * (b, 1) by simp, map_mul, Module.End.mul_apply]`.
+
+Establish `key : ∀ k ∈ z.support, ωB (k, 1) (ωB (u i, 1) (Ψ i)) = ωB (u i * uv⁻¹, 1) (ωB (k, 1) (Ψ i))`. Introduce `k hk`. Take `⟨x, rfl⟩` from `hz k hk`. Establish `hc` using `GlobalTheory.AdelicU.commute_emb D.sp.cm.sig W₁.gram x hp`. Establish `e1 : GlobalTheory.AdelicU.emb D.sp.cm.sig W₁.gram v x * u i = (u i * uv⁻¹) * (GlobalTheory.AdelicU.emb D.sp.cm.sig W₁.gram v x * uv)`.
+
+Rewrite using `[← mul_assoc, ← hc.eq]`. Use `group`. Rewrite using `[← m, e1, m (u i * uv⁻¹), m (GlobalTheory.AdelicU.emb D.sp.cm.sig W₁.gram v x) uv, hfixv]`. Simplify using `only [Finsupp.sum]`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul, key k hk]`.
+-/
 theorem comm_at_good_place : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (W₁ X : HSp D) (A₁ : Fr W₁) (B : Fr X)
     (α β : (AE D)ˣ →* Circle) (ωB : WRep W₁ X), IsWeil ψ false W₁ X α (α / β) ωB →

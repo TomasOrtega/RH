@@ -16,6 +16,9 @@ namespace In3
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
   (I : In3 K G Pl0 I0 Ty T m)
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Indef.IndefData.RR, Formalism.DivisionValues.glueLat, Submodule.mem_iInf, Formalism.HermitianLatticesTheory.localization₂, Formalism.HermitianLatticesTheory.locS, Formalism.DivisionValues.matLat, Submodule.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_RRg {x : Fin I.Sg.D → K} : x ∈ I.Sg.RR ↔ ∀ w : HeightOneSpectrum (𝓞 K), ∃ c ∈ w.asIdeal.primeCompl,
     ∃ z ∈ (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ (I.X.μ w),
       I.X.rowMat I.cg false (I.X.μ w) *ᵥ z = c • x := by
@@ -23,6 +26,9 @@ theorem mem_RRg {x : Fin I.Sg.D → K} : x ∈ I.Sg.RR ↔ ∀ w : HeightOneSpec
     Formalism.DivisionValues.matLat, Submodule.mem_map]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Indef.IndefData.RR, Formalism.DivisionValues.glueLat, Submodule.mem_iInf, Formalism.HermitianLatticesTheory.localization₂, Formalism.HermitianLatticesTheory.locS, Formalism.DivisionValues.matLat, Submodule.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_RRb (b : Bool) {x : Fin (I.Sb b).D → K} : x ∈ (I.Sb b).RR ↔ ∀ w : HeightOneSpectrum (𝓞 K),
     ∃ c ∈ w.asIdeal.primeCompl, ∃ z ∈ (lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).abelian₂ (I.X.μ w),
       I.X.rowMat I.cr b (I.X.μ w) *ᵥ z = c • x := by
@@ -35,9 +41,17 @@ section Prin
 variable {I} {s : ℕ} (hH : I.Hyp s)
 include hH
 
+/- English proof (translation)
+Introduce `g _ hz` and use `hH.stable.1 t (Sum.inr g) (Submodule.mem_map_of_mem hz)`.
+-/
 theorem hZ_of (t : T) : ∀ g : G, I.X.Z t ≤ (I.X.Z t).comap ((I.A.fam.R t).r g) :=
   fun g _ hz => hH.stable.1 t (Sum.inr g) (Submodule.mem_map_of_mem hz)
 
+/- English proof (translation)
+Establish `h1 : I.iCg (cpt I.A3.fam3.base3.v0.embedding (I.X.rowMat I.cg false t *ᵥ x)) = I.X.iC I.cg false t (cpt I.A3.fam3.base3.v0.embedding x)`. Rewrite using `[cpt_mulVec, CxData.rowMat, kMat_map _ (hH.ratMug t)]`. Use `relMat_spec _ _ (fun k => ?_) _` and prove the remaining obligations. Establish `e : LinearMap.range (I.X.iC I.cg false t) = LinearMap.range I.iCg` using `(hH.h2g.2 t).2`. Rewrite using `[← e]`.
+
+Conclude with `⟨_, rfl⟩`. Rewrite using `[h1, CxData.iC_eq_comp, CxData.lin_uQ_cpt]`.
+-/
 theorem key_g (t : T) (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ t) → K) :
     I.iCg (cpt I.A3.fam3.base3.v0.embedding (I.X.rowMat I.cg false t *ᵥ x)) =
       I.X.Θ t (I.X.jR t (I.cg.toR I.X.zs false t x)) := by
@@ -50,6 +64,11 @@ theorem key_g (t : T) (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Z
     exact ⟨_, rfl⟩
   rw [h1, CxData.iC_eq_comp, CxData.lin_uQ_cpt]
 
+/- English proof (translation)
+Establish `h1 : cpt I.A3.fam3.base3.v0.embedding x = cpt I.A3.fam3.base3.v0.embedding y` using `by first`. Consider the case `exact hH.h2g.1 h`. Consider the case `exact (hH.h2g.2 I.A3.fam3.base3.μ0).1 h`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun h1 i`.
+
+Simplify using `only [cpt] at h2`. Conclude with `I.A3.fam3.base3.v0.embedding.injective h2`.
+-/
 theorem inj_g {x y : Fin I.Sg.D → K}
     (h : I.iCg (cpt I.A3.fam3.base3.v0.embedding x) = I.iCg (cpt I.A3.fam3.base3.v0.embedding y)) : x = y := by
   have h1 : cpt I.A3.fam3.base3.v0.embedding x = cpt I.A3.fam3.base3.v0.embedding y := by
@@ -61,11 +80,25 @@ theorem inj_g {x y : Fin I.Sg.D → K}
   simp only [cpt] at h2
   exact I.A3.fam3.base3.v0.embedding.injective h2
 
+/- English proof (translation)
+The claim follows from `(bij_of_map I.A3.fam3.base3.v0.embedding _ (by rw [CxData.rowMat, kMat_map _ (hH.ratMug t)] exact relMat_bij _ _ hH.h2g.1 (hH.h2g.2 t).1 (hH.h2g.2 t).2)).2`.
+-/
 theorem rowG_surj (t : T) : Function.Surjective (I.X.rowMat I.cg false t).mulVec :=
   (bij_of_map I.A3.fam3.base3.v0.embedding _ (by
     rw [CxData.rowMat, kMat_map _ (hH.ratMug t)]
     exact relMat_bij _ _ hH.h2g.1 (hH.h2g.2 t).1 (hH.h2g.2 t).2)).2
 
+/- English proof (translation)
+Take `⟨h1, hm, -⟩` from `hρ s hH`. Use `letI : Fintype P := Fintype.ofFinite P`. Establish `hmul : ∀ h k : P, ((((ψ h)⁻¹ : Kˣ) : K) • I.ρf (h : G)) * ((((ψ k)⁻¹ : Kˣ) : K) • I.ρf (k : G)) = (((ψ (h * k))⁻¹ : Kˣ) : K) • I.ρf ((h * k : P) : G)`. Introduce `h k`. Use `first`.
+
+Consider the case `rw [smul_mul_smul_comm]`. Consider the case `rw [smul_mul_smul]`. Rewrite using `[← hm, Subgroup.coe_mul, map_mul, mul_inv, Units.val_mul]`. Establish `hSS : (∑ h : P, (((ψ h)⁻¹ : Kˣ) : K) • I.ρf (h : G)) * (∑ h : P, (((ψ h)⁻¹ : Kˣ) : K) • I.ρf (h : G)) = (Fintype.card P : K) • ∑ h : P, (((ψ h)⁻¹ : Kˣ) : K) • I.ρf (h : G)`. Rewrite using `[Finset.sum_mul]`.
+
+Repeatedly rewrite using `[Finset.mul_sum, hmul]`. Establish `e : ∀ h : P, ∑ k : P, (((ψ (h * k))⁻¹ : Kˣ) : K) • I.ρf ((h * k : P) : G) = ∑ k : P, (((ψ k)⁻¹ : Kˣ) : K) • I.ρf (k : G)` using `fun h => Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun k => rfl)`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul K]`. Unfold `epM`.
+
+Use `first`. Consider the case `rw [smul_mul_smul_comm, hSS, smul_smul]`. Consider the case `rw [smul_mul_smul, hSS, smul_smul]`. Use `congr 1`. Establish `hne : (Fintype.card P : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+
+Rewrite using `[Nat.card_eq_fintype_card]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem epM_idem (hρ : I.PRho) (P : Subgroup G) (ψ : P →* Kˣ) : I.epM P ψ * I.epM P ψ = I.epM P ψ := by
   obtain ⟨h1, hm, -⟩ := hρ s hH
   letI : Fintype P := Fintype.ofFinite P
@@ -94,9 +127,17 @@ theorem epM_idem (hρ : I.PRho) (P : Subgroup G) (ψ : P →* Kˣ) : I.epM P ψ 
   rw [Nat.card_eq_fintype_card]
   field_simp
 
+/- English proof (translation)
+The claim follows from `BlockDat.toF_injective (I.A.fam.R t) (Lvl.full I.A.fam.X) (I.X.Z t)`.
+-/
 theorem toRg_inj (t : T) : Function.Injective (I.cg.toR I.X.zs false t) :=
   BlockDat.toF_injective (I.A.fam.R t) (Lvl.full I.A.fam.X) (I.X.Z t)
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `(exponent_index_lattice.mem_matLat _ _ _).mp hy`. Take `⟨f', hf', he⟩` from `Sand.sub_toF (B := I.A.fam.R t) (hv0 := hH.ok.ok2.conj) (hOk := hH.ok.ok2.what₂ t) (hX := hH.ok.ok2.irr) (Z := I.X.Z t) (hZ := hZ_of hH t) (P := P) (ψ := ψ) f hf`. Establish `hex : ∃ z ∈ (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ t, I.cg.toR I.X.zs false t z = (I.A.fam.R t).toF (I.A.fam.lvl P ψ) (I.X.Z t) ((I.A.fam.R t).Pq (I.A.fam.lvl P ψ) (I.X.Z t) *ᵥ f)` using `⟨_, (exponent_index_lattice.mem_matLat _ _ _).mpr ⟨f', hf', rfl⟩, he.symm⟩`. Take `⟨z, hz, hze⟩` from `hex`.
+
+Establish `e : J *ᵥ ((I.A.fam.R t).Pq (I.A.fam.lvl P ψ) (I.X.Z t) *ᵥ f) = z` using `toRg_inj hH t (by rw [hJ, hze])`. Rewrite using `[e]`. Conclude with `hz`.
+-/
 theorem sub_g (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
     (J : Matrix (Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ t))
       (Fin ((I.A.fam.R t).dZ (I.A.fam.lvl P ψ) (I.X.Z t))) K)
@@ -116,6 +157,15 @@ theorem sub_g (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
   rw [e]
   exact hz
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `(exponent_index_lattice.mem_matLat _ _ _).mp hy`. Set `_ : Fintype P` to `Fintype.ofFinite P`. Take `⟨fb, hfb, he⟩` from `Sand.avg_toF (B := I.A.fam.R t) (hv0 := hH.ok.ok2.conj) (hOk := hH.ok.ok2.what₂ t) (hX := hH.ok.ok2.irr) (Z := I.X.Z t) (hZ := hZ_of hH t) (P := P) (ψ := ψ) f hf`. Establish `hex : ∃ z ∈ (I.A.fam.R t).abelian₂ (I.A.fam.lvl P ψ) (I.X.Z t), ∑ k : P, (((ψ k)⁻¹ : Kˣ) : K) • (I.A.fam.R t).r (k : G) (I.cg.toR I.X.zs false t ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq t *ᵥ f)) = (I.A.fam.R t).toF (I.A.fam.lvl P ψ) (I.X.Z t) z` using `⟨_, (exponent_index_lattice.mem_matLat _ _ _).mpr ⟨fb, hfb, rfl⟩, he⟩`.
+
+Take `⟨z, hz, hze⟩` from `hex`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `hc : (Nat.card P : K) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := P)).ne'`. Establish `hep : I.epM P ψ = (Nat.card P : K)⁻¹ • ∑ k : P, (((ψ k)⁻¹ : Kˣ) : K) • I.ρf (k : G)` using `rfl`. Apply `inj_g hH` to reduce the goal to its premises.
+
+Rewrite using `[key_g hH, hJ, ← hze, hep, Matrix.smul_mulVec, smul_smul, mul_inv_cancel₀ hc, one_smul, Matrix.sum_mulVec]`. Simplify using `only [Matrix.smul_mulVec]`. Use `erw [Sand.cpt_sum_smul]`. Rewrite using `[map_sum]`. Use `erw [map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `erw [map_smul, (hρ s hH).2.2 (k : G) (I.X.rowMat I.cg false t *ᵥ ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq t *ᵥ f)), key_g hH t ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq t *ᵥ f), LinearMap.map_smulₛₗ, map_smul]`. Conclude with `congrArg _ (hH.gequiv t k _).symm`.
+-/
 theorem avg_g (hρ : I.PRho) (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
     (J : Matrix (Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ t))
       (Fin ((I.A.fam.R t).dZ (I.A.fam.lvl P ψ) (I.X.Z t))) K)
@@ -149,6 +199,9 @@ theorem avg_g (hρ : I.PRho) (t : T) (P : Subgroup G) (ψ : P →* Kˣ)
     key_g hH t ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq t *ᵥ f), LinearMap.map_smulₛₗ, map_smul]
   exact congrArg _ (hH.gequiv t k _).symm
 
+/- English proof (translation)
+Consider the cases of `b`. Conclude with `sub_g hH t I.P0 I.ψ0 (I.Jt false t) (fun x => (hJt s hH false t).2.1 x)`. Conclude with `sub_g hH t I.P1 I.ψ1 (I.Jt true t) (fun x => (hJt s hH true t).2.1 x)`.
+-/
 theorem sub_b (hJt : I.PJt) (b : Bool) (t : T) :
     ∀ y ∈ (lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).abelian₂ t,
       I.Jt b t *ᵥ y ∈ (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ t := by
@@ -156,6 +209,9 @@ theorem sub_b (hJt : I.PJt) (b : Bool) (t : T) :
   · exact sub_g hH t I.P0 I.ψ0 (I.Jt false t) (fun x => (hJt s hH false t).2.1 x)
   · exact sub_g hH t I.P1 I.ψ1 (I.Jt true t) (fun x => (hJt s hH true t).2.1 x)
 
+/- English proof (translation)
+Consider the cases of `b`. Conclude with `avg_g hH hρ t I.P0 I.ψ0 (I.Jt false t) (fun x => (hJt s hH false t).2.1 x)`. Conclude with `avg_g hH hρ t I.P1 I.ψ1 (I.Jt true t) (fun x => (hJt s hH true t).2.1 x)`.
+-/
 theorem avg_b (hJt : I.PJt) (hρ : I.PRho) (b : Bool) (t : T) :
     ∀ y ∈ (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ t,
       ∃ z ∈ (lv (faceOf3 I.A3 I.P0 I.ψ0 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) b).abelian₂ t,
@@ -167,6 +223,9 @@ theorem avg_b (hJt : I.PJt) (hρ : I.PRho) (b : Bool) (t : T) :
 
 end Prin
 
+/- English proof (translation)
+Introduce `s hH`. Establish `: Finite T` using `hH.ok.ok2.tup_fin`. Conclude with `Sand.glue_lattice I.A3.fam3.base3.μ0 I.X.μ (fun t => matLat (I.X.rowMat I.cg false t) ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ t)) (fun t => GluingInclusion.matLat_lattice' _ (rowG_surj hH t) _ (show Submodule.IsLattice K ((I.A.fam.R t).abelian₂ (L …`.
+-/
 theorem pLat_of (_hJt : I.PJt) : I.PLat := by
   intro s hH
   have : Finite T := hH.ok.ok2.tup_fin
@@ -176,6 +235,13 @@ theorem pLat_of (_hJt : I.PJt) : I.PLat := by
       (show Submodule.IsLattice K ((I.A.fam.R t).abelian₂ (Lvl.full I.A.fam.X) (I.X.Z t)) from
         BlockDat.Lam_lat hH.ok.ok2.conj (hH.ok.ok2.what₂ t) hH.ok.ok2.irr))
 
+/- English proof (translation)
+Introduce `s hH g x hx`. Rewrite `hx`, the goal using `[mem_RRg]`. Introduce `w`. Take `⟨c, hc, z, hz, hzx⟩` from `hx w`. Take `⟨f, hf, rfl⟩` from `(exponent_index_lattice.mem_matLat _ _ _).mp hz`.
+
+Take `⟨f', hf', he⟩` from `Sand.act_toF (B := I.A.fam.R (I.X.μ w)) (hv0 := hH.ok.ok2.conj) (hOk := hH.ok.ok2.what₂ _) (hX := hH.ok.ok2.irr) (Z := I.X.Z (I.X.μ w)) (hZ := hZ_of hH _) g f hf`. Establish `hex : ∃ z ∈ (lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).abelian₂ (I.X.μ w), (I.A.fam.R (I.X.μ w)).r g (I.cg.toR I.X.zs false (I.X.μ w) ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq (I.X.μ w) *ᵥ f)) = I.cg.toR I.X.zs false (I.X.μ w) z` using `⟨_, (exponent_index_lattice.mem_matLat _ _ _).mpr ⟨f', hf', rfl⟩, he⟩`. Take `⟨z', hz', hze⟩` from `hex`. Use `⟨c, hc, z', hz', ?_⟩` and prove the remaining obligations. Rewrite using `[← exponent_index_lattice.mulVec_osmul, ← hzx]`.
+
+Apply `inj_g hH` to reduce the goal to its premises. Use `erw [key_g hH, (hρ s hH).2.2 g (I.X.rowMat I.cg false (I.X.μ w) *ᵥ ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq (I.X.μ w) *ᵥ f)), key_g hH (I.X.μ w) ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq (I.X.μ w) *ᵥ f), ← hze]`. Conclude with `hH.gequiv _ g _`.
+-/
 theorem pGLat_of (_hJt : I.PJt) (hρ : I.PRho) : I.PGLat := by
   intro s hH g x hx
   rw [mem_RRg] at hx ⊢
@@ -197,6 +263,19 @@ theorem pGLat_of (_hJt : I.PJt) (hρ : I.PRho) : I.PGLat := by
     key_g hH (I.X.μ w) ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).Pq (I.X.μ w) *ᵥ f), ← hze]
   exact hH.gequiv _ g _
 
+/- English proof (translation)
+Introduce `s hH b`. Use `⟨fun x hx => ?_, fun y hy hyr => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_RRb]`. Rewrite using `[mem_RRg]`. Introduce `w`.
+
+Take `⟨c, hc, z, hz, hzx⟩` from `hx w`. Use `⟨c, hc, I.Jt b (I.X.μ w) *ᵥ z, sub_b hH hJt b _ z hz, ?_⟩` and prove the remaining obligations. Conclude with `((hJt s hH b _).2.2 z).symm.trans ((congrArg (fun v => I.Jm b *ᵥ v) hzx).trans (exponent_index_lattice.mulVec_osmul _ _ _))`. Take `⟨z0, hz0⟩` from `LinearMap.mem_range.mp hyr`. Establish `hyr'` using `hyr`.
+
+Rewrite `hyr'` using `[← hR s hH b]`. Take `⟨x0, hx0⟩` from `LinearMap.mem_range.mp hyr'`. Rewrite `hz0`, `hx0` using `[Matrix.mulVecLin_apply]`. Establish `hidem : I.epM (I.lvP b) (I.lvψ b) *ᵥ y = y`. Rewrite using `[← hz0, Matrix.mulVec_mulVec, epM_idem hH hρ]`.
+
+Use `⟨((Nat.card (I.lvP b) : ℕ) : 𝓞 K) • x0, ?_, by rw [exponent_index_lattice.mulVec_osmul, hx0]⟩` and prove the remaining obligations. Rewrite `hy` using `[mem_RRg]`. Rewrite using `[mem_RRb]`. Introduce `w`. Take `⟨c, hc, z, hz, hzy⟩` from `hy w`.
+
+Take `⟨zb, hzb, he⟩` from `avg_b hH hJt hρ b (I.X.μ w) z hz`. Use `⟨c, hc, zb, hzb, ?_⟩` and prove the remaining obligations. Apply `(hJ s hH b).2` to reduce the goal to its premises. Establish `h3 : (Nat.card (I.lvP b) : K) • (I.epM (I.lvP b) (I.lvψ b) *ᵥ (I.X.rowMat I.cg false (I.X.μ w) *ᵥ z)) = I.Jm b *ᵥ (c • (((Nat.card (I.lvP b) : ℕ) : 𝓞 K) • x0))`. Establish `h4 : I.epM (I.lvP b) (I.lvψ b) *ᵥ (I.X.rowMat I.cg false (I.X.μ w) *ᵥ z) = c • y` using `(congrArg (fun v => I.epM (I.lvP b) (I.lvψ b) *ᵥ v) hzy).trans (by rw [exponent_index_lattice.mulVec_osmul, hidem])`.
+
+Rewrite using `[h4]`. Simplify using `only [exponent_index_lattice.mulVec_osmul]`. Rewrite using `[hx0, Nat.cast_smul_eq_nsmul K, Nat.cast_smul_eq_nsmul (𝓞 K), smul_comm]`. Conclude with `((hJt s hH b _).2.2 zb).trans (he.symm.trans h3)`.
+-/
 theorem pSand_of (hJt : I.PJt) (hJ : I.PJ) (hρ : I.PRho) (hR : I.PRange) : I.PSand := by
   intro s hH b
   refine ⟨fun x hx => ?_, fun y hy hyr => ?_⟩

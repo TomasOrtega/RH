@@ -32,12 +32,18 @@ def Carried (ψ : AddChar (AF D.host.F) ℂ) (om : GA D S × GA D T →* Module.
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨f₁, hf₁, e₁⟩ := hB f hf obtain ⟨f₂, hf₂, e₂⟩ := hA f₁ hf₁ exact ⟨f₂, hf₂, fun w => by simp only [e₁ w, e₂ w]⟩`.
+-/
 theorem Carried.comp {A B : (GA D S → ℂ) → (GA D S → ℂ)} (hA : Carried ψ om A) (hB : Carried ψ om B) :
     Carried ψ om fun φ => A (B φ) := fun f hf => by
   obtain ⟨f₁, hf₁, e₁⟩ := hB f hf
   obtain ⟨f₂, hf₂, e₂⟩ := hA f₁ hf₁
   exact ⟨f₂, hf₂, fun w => by simp only [e₁ w, e₂ w]⟩
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨f₁, hf₁, e₁⟩ := hA f hf refine ⟨c • f₁, (GlobalTheory.RealWeil.thetaSub ψ S T).smul_mem c hf₁, fun w => funext fun g => ?_⟩ simp only [e₁ w, Pi.smul_apply, map_smul]`.
+-/
 theorem Carried.smul {A : (GA D S → ℂ) → (GA D S → ℂ)} (hA : Carried ψ om A) (c : ℂ) :
     Carried ψ om fun φ => c • A φ := fun f hf => by
   obtain ⟨f₁, hf₁, e₁⟩ := hA f hf

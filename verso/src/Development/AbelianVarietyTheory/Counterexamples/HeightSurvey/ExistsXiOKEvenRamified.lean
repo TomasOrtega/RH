@@ -10,20 +10,32 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 open GlobalTheory.NormOneChar
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `@IsCMField.complexEmbedding_complexConj D.host.E _ _ (D.host.isCMField_hostE) _ φ y`.
+-/
 theorem conj_emb (D : D7) (φ : D.host.E →+* ℂ) (y : D.host.E) :
     φ (GlobalTheory.Member.cF D y) = starRingEnd ℂ (φ y) :=
   @IsCMField.complexEmbedding_complexConj D.host.E _ _
     (D.host.isCMField_hostE) _ φ y
 
+/- English proof (translation)
+The claim follows from `D.host.φ₀.injective (by rw [conj_emb, conj_emb, Complex.conj_conj])`.
+-/
 theorem conj_conj (D : D7) (y : D.host.E) : GlobalTheory.Member.cF D (GlobalTheory.Member.cF D y) = y :=
   D.host.φ₀.injective (by rw [conj_emb, conj_emb, Complex.conj_conj])
 
+/- English proof (translation)
+Unfold `CongOne`. Simplify using `only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_congOne (D : D7) (N : ℕ) (x : (AfE D)ˣ) :
     x ∈ congOne (GlobalTheory.Member.cF D) N ↔ CongOne N x ∧ NormOne x := by
   unfold CongOne
   simp only [GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers, nsmul_eq_mul]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨m, hm, hexp⟩` from `exists_exponent (GlobalTheory.Member.cF D) (conj_conj D) N hN`. Use `⟨m, hm, fun x hn => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Take `⟨r, ⟨⟨a, ha⟩, hr⟩, k, hk, e⟩` from `Subgroup.mem_sup.1 (hexp x hn)`. Rewrite using `[← e, map_mul, h1 r a ha hr, h2 k ((mem_congOne D _ _).1 hk).2 ((mem_congOne D _ _).1 hk).1, mul_one]`.
+-/
 theorem fin_of_rat_tame (D : D7) (N : ℕ) (hN : 0 < N) (xi : (AfE D)ˣ →* ℂˣ)
     (h1 : ∀ (x : (AfE D)ˣ) (a : D.host.E), (x : AfE D) = 1 ⊗ₜ a → NormOne x → xi x = 1)
     (h2 : ∀ x, NormOne x → CongOne N x → xi x = 1) : ∃ m : ℕ, 0 < m ∧ ∀ x, NormOne x → xi x ^ m = 1 := by

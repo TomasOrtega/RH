@@ -6,6 +6,13 @@ open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism
 
 namespace Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK θ γ γ' hγ hγ'`. Take `⟨-, -, hTT, hZ₁, -, hu₁, -⟩` from `H₁`. Take `⟨-, -, -, hZ₂, -, hu₂, hG₂⟩` from `H₂`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises.
+
+Introduce `m`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (γ.1 (Submodule.Quotient.mk v))`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (γ'.1 (Submodule.Quotient.mk v))`. Rewrite using `[← ha, ← hb]`.
+
+Use `mk_eq_of hs T T' TT hTT Zh₂ Z₂ hZ₂ hu₂ hG₂ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hγ v a ha.symm, ← hγ' v b hb.symm]`. Rewrite using `[← laM_mk Zh₂ T T' Z₂ hZ₂ (unit_zzm hs Zh₂ T T' hu₂), ← laM_mk Zh₂ T T' Z₂ hZ₂ (unit_zzm hs Zh₂ T T' hu₂), ha, hb] show laM Zh₂ T T' Z₂ hZ₂ _ (γ.1.toLinearMap _) = laM Zh₂ T T' Z₂ hZ₂ _ (γ'.1.toLinearMap _)`. Rewrite using `[laM_equiv hs T T' Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hK _ γ.2.1, laM_equiv hs T T' Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hK _ γ'.2.1]`.
+-/
 theorem firstIso_uniqueness_holds : FirstIsometryUniqueness := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK θ γ γ' hγ hγ'
   obtain ⟨-, -, hTT, hZ₁, -, hu₁, -⟩ := H₁
@@ -25,6 +32,23 @@ theorem firstIso_uniqueness_holds : FirstIsometryUniqueness := by
     rw [laM_equiv hs T T' Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hK _ γ.2.1,
       laM_equiv hs T T' Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hK _ γ'.2.1]
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK γ`. Take `⟨-, -, hTT, hZ₁, -, hu₁, -⟩` from `H₁`. Take `⟨-, -, -, hZ₂, -, hu₂, -⟩` from `H₂`. Establish `hLa : ∀ l x : Fin (r + 1) → M.R, γ.1 (Submodule.Quotient.mk l) = Submodule.Quotient.mk x → laG (ZZm g Zh₂ T T') x = laG (ZZm g Zh₁ T T') l`. Introduce `l x h`.
+
+Rewrite using `[← laM_mk Zh₂ T T' Z₂ hZ₂ (unit_zzm hs Zh₂ T T' hu₂), ← laM_mk Zh₁ T T' Z₁ hZ₁ (unit_zzm hs Zh₁ T T' hu₁), ← h]`. Conclude with `laM_equiv hs T T' Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hK γ.1.toLinearMap γ.2.1 _`. Establish `hpt : ∀ (η : M.R) (l x : Fin (r + 1) → M.R), γ.1 (Submodule.Quotient.mk l) = Submodule.Quotient.mk x → γ.1 (Submodule.Quotient.mk (η • eV r + q2 hs • l)) = Submodule.Quotient.mk (η • eV r + q2 hs • x)`. Introduce `η l x h`. Rewrite using `[Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul, Submodule.Quotient.mk_smul, map_add, map_smul, map_smul, h, show (Submodule.Quotient.mk (eV r) : MbMod Z₁.Z) = eCl Z₁.Z from rfl, γ.2.2]`.
+
+Both sides reduce to the same expression. Use `⟨thEquiv hs TT γ, ?_, ?_, fun l l₂ h => thEquiv_spec hs TT γ h⟩` and prove the remaining obligations. Introduce `c l l₂ h`. Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (γ.1 (Submodule.Quotient.mk l))`. Establish `h1` using `thEquiv_spec hs TT γ hw.symm`.
+
+Rewrite `h` using `[h1, quotientMk_eq_iff_sub_mem_LL]`. Establish `h2 : γ.1 (Submodule.Quotient.mk (dgR hs c • l)) = Submodule.Quotient.mk (dgR hs c • w)`. Rewrite using `[Submodule.Quotient.mk_smul, map_smul, ← hw, Submodule.Quotient.mk_smul]`. Rewrite using `[thEquiv_spec hs TT γ h2, quotientMk_eq_iff_sub_mem_LL, ← smul_sub]`. Conclude with `LL_dg_smul hs Z₂ TT c h`.
+
+Use extensionality with `⟨d, d', η, t⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨l, η₀, rfl⟩, he⟩`. Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (γ.1 (Submodule.Quotient.mk l))`. Use `⟨w, η₀, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← he]`. Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨thEquiv_spec hs TT γ (hpt η₀ l w hw.symm), thEquiv_spec hs TT γ hw.symm, trivial, (hLa l w hw.symm).symm⟩`. Introduce and unpack `⟨x, η₀, he⟩`. Take `⟨l, hl⟩` from `Submodule.Quotient.mk_surjective _ (γ.1.symm (Submodule.Quotient.mk x))`.
+
+Establish `hx : γ.1 (Submodule.Quotient.mk l) = Submodule.Quotient.mk x`. Rewrite using `[hl, LinearEquiv.apply_symm_apply]`. Use `⟨(mk1 hs Z₁ TT (η₀ • eV r + q2 hs • l), mk1 hs Z₁ TT l, η₀, laG (ZZm g Zh₁ T T') l), ⟨l, η₀, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Simplify using `only [Prod.mk.injEq]`.
+
+Conclude with `⟨thEquiv_spec hs TT γ (hpt η₀ l x hx), thEquiv_spec hs TT γ hx, trivial, (hLa l x hx).symm⟩`.
+-/
 theorem firstIso_backward_holds : FirstIsometryBackward := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK γ
   obtain ⟨-, -, hTT, hZ₁, -, hu₁, -⟩ := H₁
@@ -68,6 +92,37 @@ theorem firstIso_backward_holds : FirstIsometryBackward := by
       simp only [Prod.mk.injEq]
       exact ⟨thEquiv_spec hs TT γ (hpt η₀ l x hx), thEquiv_spec hs TT γ hx, trivial, (hLa l x hx).symm⟩
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK θ hO hM`. Take `⟨-, -, hTT, hZ₁, -, hu₁, hG₁⟩` from `H₁`. Take `⟨-, -, -, hZ₂, -, hu₂, hG₂⟩` from `H₂`. Take `⟨γ₀, h₀⟩` from `firstIso_linear hs T T' TT hTT Zh₁ Zh₂ Z₁ Z₂ hZ₁ hZ₂ hu₁ hu₂ hG₂ θ hO hM`. Take `⟨γ₁, h₁⟩` from `firstIso_linear hs T T' TT hTT Zh₂ Zh₁ Z₂ Z₁ hZ₂ hZ₁ hu₂ hu₁ hG₁ θ.symm (olin_symm hs θ hO) (match1_symm hs θ hM)`.
+
+Establish `c10 : γ₁ ∘ₗ γ₀ = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨l, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (γ₀ (Submodule.Quotient.mk l))`.
+
+Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (γ₁ (Submodule.Quotient.mk x))`. Take `⟨e1, e2⟩` from `h₀ l x hx.symm`. Take `⟨e3, e4⟩` from `h₁ x y hy.symm`. Rewrite using `[LinearMap.comp_apply, ← hx, ← hy, LinearMap.id_apply]`. Use `mk_eq_of hs T T' TT hTT Zh₁ Z₁ hZ₁ hu₁ hG₁ ?_ (e4.trans e2)` and prove the remaining obligations.
+
+Rewrite using `[← e3, ← e1, AddEquiv.symm_apply_apply]`. Establish `c01 : γ₀ ∘ₗ γ₁ = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨l, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`.
+
+Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (γ₁ (Submodule.Quotient.mk l))`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (γ₀ (Submodule.Quotient.mk x))`. Take `⟨e1, e2⟩` from `h₁ l x hx.symm`. Take `⟨e3, e4⟩` from `h₀ x y hy.symm`. Rewrite using `[LinearMap.comp_apply, ← hx, ← hy, LinearMap.id_apply]`.
+
+Use `mk_eq_of hs T T' TT hTT Zh₂ Z₂ hZ₂ hu₂ hG₂ ?_ (e4.trans e2)` and prove the remaining obligations. Rewrite using `[← e3, ← e1, AddEquiv.apply_symm_apply]`. Set `γ : MbMod Z₁.Z ≃ₗ[M.R] MbMod Z₂.Z` to `{ γ₀ with invFun := γ₁ left_inv := fun x => by simpa using LinearMap.congr_fun c10 x right_inv := fun x => by simpa using LinearMap.congr_fun c01 x }`. Establish `hkap` using `kap_common hs T T' Zh₁ Zh₂ hu₁ hu₂ hK`. Establish `hb : γ (bCls Z₁.Z) = bCls Z₂.Z` using `by show γ₀ (bCls Z₁.Z) = bCls Z₂.Z`.
+
+Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (γ₀ (bCls Z₁.Z))`. Rewrite using `[← hx]`. Rewrite `hx` using `[bCls, col_eq_mulVec]`. Take `⟨e1, e2⟩` from `h₀ _ x hx.symm`. Rewrite using `[bCls, col_eq_mulVec]`.
+
+Establish `z1 : mk1 hs Z₁ TT (Z₁.Z.mulVec (eV r)) = 0`. Rewrite using `[firstQuotient_eq_zero_iff]`. Use `⟨eV r, ?_⟩` and prove the remaining obligations. Use `show Z₁.Z.mulVec (eV r) - (TT * dgR hs (trO hs (eV (M := M) r (Fin.last r)))) • eV r = _`. Simplify using `[eV, trO_one]`.
+
+Establish `z2 : mk1 hs Z₂ TT (Z₂.Z.mulVec (eV r)) = 0`. Rewrite using `[firstQuotient_eq_zero_iff]`. Use `⟨eV r, ?_⟩` and prove the remaining obligations. Use `show Z₂.Z.mulVec (eV r) - (TT * dgR hs (trO hs (eV (M := M) r (Fin.last r)))) • eV r = _`. Simplify using `[eV, trO_one]`.
+
+Use `mk_eq_of hs T T' TT hTT Zh₂ Z₂ hZ₂ hu₂ hG₂ ?_ ?_` and prove the remaining obligations. Rewrite using `[← e1, z1, z2, map_zero]`. Rewrite using `[e2, laG_b Zh₁ T T' Z₁ hZ₁ (unit_zzm hs Zh₁ T T' hu₁), laG_b Zh₂ T T' Z₂ hZ₂ (unit_zzm hs Zh₂ T T' hu₂), hkap]`. Establish `hthe : θ (mk1 hs Z₁ TT (eV r)) = mk1 hs Z₂ TT (eV r)`. Establish `hp : (mk1 hs Z₁ TT ((1 : M.R) • eV r + q2 hs • (0 : Fin (r + 1) → M.R)), mk1 hs Z₁ TT 0, (1 : M.R), laG (ZZm g Zh₁ T T') (0 : Fin (r + 1) → M.R)) ∈ Gam1 hs Z₁ TT (ZZm g Zh₁ T T')` using `⟨0, 1, rfl⟩`.
+
+Establish `hq : (θ (mk1 hs Z₁ TT ((1 : M.R) • eV r + q2 hs • (0 : Fin (r + 1) → M.R))), θ (mk1 hs Z₁ TT 0), (1 : M.R), laG (ZZm g Zh₁ T T') (0 : Fin (r + 1) → M.R)) ∈ Gam1 hs Z₂ TT (ZZm g Zh₂ T T')`. Rewrite using `[← hM]`. Conclude with `⟨_, hp, rfl⟩`. Take `⟨x, η, hx⟩` from `hq`. Simplify using `only [Prod.mk.injEq] at hx`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hx`. Substitute `h3` using the available equality. Establish `hz : θ (mk1 hs Z₁ TT 0) = 0` using `map_zero θ`. Rewrite `h2` using `[hz, eq_comm, firstQuotient_eq_zero_iff]`. Establish `hx0 : x ∈ headCols Z₂.Z`.
+
+Use `ker_fact hs T T' TT hTT Zh₂ Z₂ hZ₂ hu₂ hG₂ x ((firstQuotient_eq_zero_iff hs Z₂ TT x).2 h2) ?_` and prove the remaining obligations. Rewrite using `[← h4, ← laGLin_apply (M := M) (ZZm g Zh₁ T T') 0, map_zero]`. Simplify using `only [one_smul, smul_zero, add_zero] at h1`. Rewrite using `[h1, quotientMk_eq_iff_sub_mem_LL, add_sub_cancel_left]`. Conclude with `headCols_le_LL hs Z₂ TT (Submodule.smul_mem _ _ hx0)`.
+
+Establish `he : γ (eCl Z₁.Z) = eCl Z₂.Z` using `by show γ₀ (eCl Z₁.Z) = eCl Z₂.Z`. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (γ₀ (eCl Z₁.Z))`. Rewrite using `[← hx]`. Take `⟨e1, e2⟩` from `h₀ (eV r) x hx.symm`. Use `mk_eq_of hs T T' TT hTT Zh₂ Z₂ hZ₂ hu₂ hG₂ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← e1, hthe]`. Rewrite using `[e2, laG_e, laG_e, hkap]`. Conclude with `⟨⟨γ, hb, he⟩, fun l l₂ h => (h₀ l l₂ h).1⟩`.
+-/
 theorem firstIso_forward_holds : FirstIsometryForward := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ H₁ H₂ hK θ hO hM
   obtain ⟨-, -, hTT, hZ₁, -, hu₁, hG₁⟩ := H₁

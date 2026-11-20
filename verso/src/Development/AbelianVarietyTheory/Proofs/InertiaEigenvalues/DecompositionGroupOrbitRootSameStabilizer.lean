@@ -4,6 +4,31 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 
 namespace GlobalTheory.Count
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A β β' S hS g hg hdeg hroot hstab`. Set `φ : Ω → Ω` to `fun x => if h : ∃ d ∈ Dec (F := E) A, d β = x then (Classical.choose h) β' else 0`. Establish `hφ : ∀ x ∈ S, ∃ d ∈ Dec (F` using `E) A, d β = x ∧ φ x = d β' := by`. Introduce `x hx`. Establish `h` using `(hS x).1 hx`.
+
+Use `⟨Classical.choose h, (Classical.choose_spec h).1, (Classical.choose_spec h).2, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, dif_pos h]`. Establish `hg0 : g ≠ 0` using `hg.ne_zero`. Establish `hconj : ∀ σ : G E Ω, σ β' ∈ (g.aroots Ω).toFinset`. Introduce `σ`.
+
+Rewrite using `[Multiset.mem_toFinset, mem_aroots]`. Use `⟨hg0, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_algEquiv, AlgHom.comp_apply, hroot, map_zero]`. Establish `hinj : Set.InjOn φ S`. Introduce `x hx y hy hxy`.
+
+Take `⟨d, hd, rfl, hdx⟩` from `hφ x hx`. Take `⟨e, he, rfl, hey⟩` from `hφ y hy`. Establish `h1 : (e⁻¹ * d) β' = β'`. Rewrite using `[AlgEquiv.mul_apply, ← hdx, hxy, hey]`. Conclude with `(AlgEquiv.symm_apply_apply e β')`.
+
+Establish `h2` using `hstab _ ((Dec (F := E) A).mul_mem ((Dec (F := E) A).inv_mem he) hd) h1`. Rewrite `h2` using `[AlgEquiv.mul_apply]`. Use `congrArg e h2` as an intermediate fact. Simplify using `using this`. Establish `hsub : S.image φ ⊆ (g.aroots Ω).toFinset`.
+
+Introduce `r hr`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨d, -, -, hdx⟩` from `hφ x hx`. Rewrite using `[hdx]`. Conclude with `hconj d`.
+
+Establish `hcard : (g.aroots Ω).toFinset.card ≤ (S.image φ).card`. Rewrite using `[Finset.card_image_of_injOn hinj, ← hdeg]`. Combine the equalities or inequalities in the displayed calculation. Establish `heq : S.image φ = (g.aroots Ω).toFinset` using `Finset.eq_of_subset_of_card_le hsub hcard`. Establish `hin : ∀ σ : G E Ω, ∃ x ∈ S, φ x = σ β'`.
+
+Introduce `σ`. Use `hconj σ` as an intermediate fact. Rewrite `this` using `[← heq]`. Conclude with `Finset.mem_image.1 this`. Establish `hkey : ∀ τ ∈ Dec (F` using `E) A, τ β' = φ (τ β) := by`.
+
+Introduce `τ hτ`. Take `⟨x, hx, hxe⟩` from `hin τ`. Take `⟨d, hd, rfl, hdx⟩` from `hφ x hx`. Establish `h1 : (d⁻¹ * τ) β' = β'`. Rewrite using `[AlgEquiv.mul_apply, ← hxe, hdx]`.
+
+Conclude with `(AlgEquiv.symm_apply_apply d β')`. Establish `h2` using `hstab _ ((Dec (F := E) A).mul_mem ((Dec (F := E) A).inv_mem hd) hτ) h1`. Rewrite `h2` using `[AlgEquiv.mul_apply]`. Establish `h3 : τ β = d β`. Use `congrArg d h2` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[h3, ← hxe]`. Use `⟨fun σ => ?_, fun σ hσ hσβ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxe⟩` from `hin σ`. Take `⟨d, hd, -, hdx⟩` from `hφ x hx`.
+
+Conclude with `⟨d, hd, by rw [← hxe, hdx]⟩`. Establish `h1` using `hkey σ hσ`. Establish `h0` using `hkey 1 (Dec (F := E) A).one_mem`. Rewrite using `[h1, hσβ]`. Conclude with `h0.symm`.
+-/
 theorem decOrbit_root_count : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (β β' : Ω) (S : Finset Ω), (∀ x, x ∈ S ↔ ∃ d ∈ Dec (F := E) A, d β = x) → ∀ g : Polynomial E, g.Monic → g.natDegree = S.card → aeval β' g = 0 → (∀ σ ∈ Dec (F := E) A, σ β' = β' → σ β = β) → (∀ σ : G E Ω, ∃ d ∈ Dec (F := E) A, σ β' = d β') ∧ (∀ σ ∈ Dec (F := E) A, σ β = β → σ β' = β') := by
   intro E Ω _ _ _ _ _ A β β' S hS g hg hdeg hroot hstab
   classical

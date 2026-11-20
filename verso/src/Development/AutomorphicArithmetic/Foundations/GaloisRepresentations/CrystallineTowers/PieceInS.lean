@@ -9,12 +9,22 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV TensorProduct
 open UpperTheory.Gal.Seam
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -, -, hs, hi⟩` from `h`. Use `letI : Fintype G := Fintype.ofFinite G`. Conclude with `(DirectSum.lmap_injective _).2 fun n => (hV l c G a hs hi n 0).1`.
+-/
 private theorem tot_inj (hV : VInv) (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} (c : W ⟶ Z) (G : Type) [Group G] [Finite G]
     (a : G → (W ⟶ W)) (h : IsGalois c G a) : Function.Injective (pullTot l (sch.map c)) := by
   obtain ⟨h1, h2, h3, -, -, hs, hi⟩ := h
   letI : Fintype G := Fintype.ofFinite G
   exact (DirectSum.lmap_injective _).2 fun n => (hV l c G a hs hi n 0).1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -, -, hs, hi⟩` from `h`. Use `letI : Fintype G := Fintype.ofFinite G`. Establish `key : ∀ n : ℤ, x n ∈ LinearMap.range (pullHQ l (sch.map c) n 0)` using `fun n => by`. Rewrite using `[(hV l c G a hs hi n 0).2]`. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun u : Htot l (sch.obj W) => u n) (hx g)`. Simplify using `only [pullTot, DirectSum.lmap_apply] at e`. Simplify using `[LinearMap.mem_ker, sub_eq_zero, e]`. Rewrite using `[← DirectSum.sum_support_of x]`. Use `Submodule.sum_mem _ fun n _ => ?_` and prove the remaining obligations.
+
+Take `⟨z, hz⟩` from `key n`. Use `⟨DirectSum.lof ℚ_[l] ℤ (fun n => HQ l (sch.obj Z) n 0) n z, ?_⟩` and prove the remaining obligations. Rewrite using `[pullTot, DirectSum.lmap_lof, hz]`. Both sides reduce to the same expression.
+-/
 private theorem tot_range (hV : VInv) (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} (c : W ⟶ Z) (G : Type) [Group G] [Finite G]
     (a : G → (W ⟶ W)) (h : IsGalois c G a) (x : Htot l (sch.obj W))
     (hx : ∀ g, pullTot l (sch.map (a g)) x = x) : x ∈ LinearMap.range (pullTot l (sch.map c)) := by
@@ -34,6 +44,15 @@ private theorem tot_range (hV : VInv) (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}
   rw [pullTot, DirectSum.lmap_lof, hz]
   rfl
 
+/- English proof (translation)
+Take `⟨W, c, G, _, _, a, J, _, σ, hG, hS, hx⟩` from `h`. Establish `hinj` using `tot_inj hV l c G a hG`. Establish `hsur : Surjective c` using `hG.2.2.1`. Take `⟨hσ, -⟩` from `id hS`. Take `⟨z⟩` from `‹Nonempty Z›`.
+
+Take `⟨w, -⟩` from `hsur.surj z`. Set `pt : UpperTheory.Gal.G3.sp (W.residueField w) ⟶ W` to `W.fromSpecResidueField w`. Take `⟨j₀, -, hj⟩` from `UpperTheory.Gal.G3.pPtsOfSplits s c J σ hS (W.residueField w) pt (pt ≫ c ≫ inv s) (by simp)`. Establish `hall : ∀ j, j = j₀` using `fun j => hj j (by`. Establish `: σ j = c ≫ inv s` using `by rw [← hσ j]; simp`.
+
+Express the relevant statement in the definitionally equal form `pt ≫ σ j = pt ≫ c ≫ inv s`. Rewrite using `[this])`. Use `haveI : Unique J := ⟨⟨j₀⟩, hall⟩`. Use `LinearMap.ext fun x => hinj ?_` and prove the remaining obligations. Rewrite using `[hx x, Fintype.sum_unique]`.
+
+Establish `e : σ default ≫ s ≫ b = c ≫ b` using `by rw [← Category.assoc, hσ]`. Rewrite using `[e, Functor.map_comp, pullTot_comp]`. Both sides reduce to the same expression.
+-/
 private theorem corr_iso (hV : VInv) (l : ℕ) [Fact l.Prime] {Z Y : Scheme.{0}} [Nonempty Z] (s : Y ⟶ Z) [IsIso s] (b : Z ⟶ Z)
     (A : Htot l (sch.obj Z) →ₗ[ℚ_[l]] Htot l (sch.obj Z)) (h : IsCorrOp l s (s ≫ b) A) :
     A = pullTot l (sch.map b) := by
@@ -56,6 +75,9 @@ private theorem corr_iso (hV : VInv) (l : ℕ) [Fact l.Prime] {Z Y : Scheme.{0}}
   rw [e, Functor.map_comp, pullTot_comp]
   rfl
 
+/- English proof (translation)
+Establish `f1 : GlobalTheory.Et.geomMap Ω p u hu ≫ pullback.fst _ _ = pullback.fst _ _ ≫ u` using `pullback.lift_fst _ _ _`. Establish `f2 : GlobalTheory.Et.geomMap Ω p u hu ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, f1, GlobalTheory.Et.galMap_fst_assoc, Category.assoc, GlobalTheory.Et.galMap_fst, f1]`. Rewrite using `[Category.assoc, f2, GlobalTheory.Et.galMap_snd, Category.assoc, GlobalTheory.Et.galMap_snd, ← Category.assoc, f2]`.
+-/
 private theorem gal_nat {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {X Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of k)}
     {q : Y ⟶ Spec (CommRingCat.of k)} (u : X ⟶ Y) (hu : u ≫ q = p) (σ : Ω ≃ₐ[k] Ω) :
     GlobalTheory.Et.galMap Ω p σ ≫ GlobalTheory.Et.geomMap Ω p u hu = GlobalTheory.Et.geomMap Ω p u hu ≫ GlobalTheory.Et.galMap Ω q σ := by
@@ -65,6 +87,11 @@ private theorem gal_nat {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {X Y :
   · rw [Category.assoc, f1, GlobalTheory.Et.galMap_fst_assoc, Category.assoc, GlobalTheory.Et.galMap_fst, f1]
   · rw [Category.assoc, f2, GlobalTheory.Et.galMap_snd, Category.assoc, GlobalTheory.Et.galMap_snd, ← Category.assoc, f2]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Take `⟨n, hn⟩` from `h m`. Conclude with `⟨a ⊗ₜ n, by simp [hn]⟩`.
+
+Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 private theorem bc_range {R L M M' N : Type*} [CommRing R] [CommRing L] [Algebra R L] [AddCommGroup M] [AddCommGroup M']
     [AddCommGroup N] [Module R M] [Module R M'] [Module R N] (E : M →ₗ[R] N) (P : M' →ₗ[R] N)
     (h : ∀ m, E m ∈ LinearMap.range P) (w : L ⊗[R] M) : E.baseChange L w ∈ LinearMap.range (P.baseChange L) := by
@@ -77,6 +104,9 @@ private theorem bc_range {R L M M' N : Type*} [CommRing R] [CommRing L] [Algebra
     rw [map_add]
     exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp [TensorProduct.tmul_sum]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Finset.sum_add_distrib]`.
+-/
 private theorem bc_sum {R L M N J : Type*} [CommRing R] [CommRing L] [Algebra R L] [AddCommGroup M] [AddCommGroup N]
     [Module R M] [Module R N] (s : Finset J) (A : J → M →ₗ[R] N) (w : L ⊗[R] M) :
     (∑ j ∈ s, A j).baseChange L w = ∑ j ∈ s, (A j).baseChange L w := by
@@ -85,6 +115,15 @@ private theorem bc_sum {R L M N J : Type*} [CommRing R] [CommRing L] [Algebra R 
   | tmul a m => simp [TensorProduct.tmul_sum]
   | add x y hx hy => simp only [map_add, hx, hy, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `letI : Fintype G := Fintype.ofFinite G`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap ℚ_[l] L).injective`. Establish `hmul : ∀ δ δ' m, pullTot l (sch.map (b δ')) (pullTot l (sch.map (b δ)) m) = pullTot l (sch.map (b (δ' * δ))) m`. Introduce `δ δ' m`. Rewrite using `[hG.2.2.2.2.1, Functor.map_comp, pullTot_comp]`.
+
+Both sides reduce to the same expression. Establish `hE : ∀ m, (∑ δ, pullTot l (sch.map (b δ))) m ∈ LinearMap.range (pullTot l (sch.map f))` using `fun m => by`. Use `tot_range hV l _ G b hG _ fun δ' => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, map_sum]`. Simplify using `only [hmul]`.
+
+Conclude with `Fintype.sum_equiv (Equiv.mulLeft δ') _ _ fun _ => rfl`. Establish `hEy : (∑ δ, pullTot l (sch.map (b δ))).baseChange L y = ((Fintype.card G : ℕ) : L) • y`. Rewrite using `[bc_sum, Finset.sum_congr rfl fun δ _ => hinv δ, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Establish `hcard : ((Fintype.card G : ℕ) : L) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `hy' : y = ((Fintype.card G : ℕ) : L)⁻¹ • (∑ δ, pullTot l (sch.map (b δ))).baseChange L y`.
+
+Rewrite using `[hEy, smul_smul, inv_mul_cancel₀ hcard, one_smul]`. Rewrite using `[hy']`. Conclude with `Submodule.smul_mem _ _ (bc_range _ _ hE y)`.
+-/
 private theorem inv_mem (hV : VInv) (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} (f : W ⟶ Z) (G : Type) [Group G] [Finite G]
     (b : G → (W ⟶ W)) (hG : IsGalois f G b) (L : Type) [Field L] [Algebra ℚ_[l] L] (y : L ⊗[ℚ_[l]] Htot l (sch.obj W))
     (hinv : ∀ δ, (pullTot l (sch.map (b δ))).baseChange L y = y) :
@@ -108,6 +147,13 @@ private theorem inv_mem (hV : VInv) (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} 
   rw [hy']
   exact Submodule.smul_mem _ _ (bc_range _ _ hE y)
 
+/- English proof (translation)
+Use `haveI : IsEmpty ↑Z := ⟨fun z => by`. Take `⟨w, -⟩` from `hs.surj z`. Conclude with `isEmptyElim w⟩`. Use `haveI : IsIso f := isIso_of_isEmpty _`. Establish `hsur : ∀ m, (LinearMap.id : Htot l (sch.obj W) →ₗ[ℚ_[l]] _) m ∈ LinearMap.range (pullTot l (sch.map f))` using `fun m => by`.
+
+Use `⟨pullTot l (sch.map (inv f)) m, ?_⟩` and prove the remaining obligations. Establish `e : pullTot l (sch.map f) ∘ₗ pullTot l (sch.map (inv f)) = LinearMap.id`. Rewrite using `[← pullTot_comp, ← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, pullTot_id]`. Conclude with `LinearMap.congr_fun e m`. Establish `h2` using `bc_range (L := L) _ _ hsur y`.
+
+Rewrite `h2` using `[LinearMap.baseChange_id, LinearMap.id_apply]`. Then use the resulting hypothesis.
+-/
 private theorem empty_mem (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} [IsEmpty ↑W] (f : W ⟶ Z) (hs : Surjective f) (L : Type)
     [Field L] [Algebra ℚ_[l] L] (y : L ⊗[ℚ_[l]] Htot l (sch.obj W)) :
     y ∈ LinearMap.range ((pullTot l (sch.map f)).baseChange L) := by
@@ -123,6 +169,23 @@ private theorem empty_mem (l : ℕ) [Fact l.Prime] {W Z : Scheme.{0}} [IsEmpty �
   have h2 := bc_range (L := L) _ _ hsur y
   rwa [LinearMap.baseChange_id, LinearMap.id_apply] at h2
 
+/- English proof (translation)
+Introduce `hT hHop l _ K L _ _ H θ hN C hOn`. Establish `hV` using `hT`. Establish `hGK : IsGalois (UpperTheory.Gal.G3.piK C) C.Δ C.a` using `C.isGalois hOn`. Establish `ha : ∀ δ, C.a δ ≫ H.q = H.q` using `fun δ => by`. Rewrite using `[← UpperTheory.Gal.G3.piK_snd C, ← Category.assoc, hGK.2.2.2.2.2.choose δ]`.
+
+Set `g₀ : UpperTheory.Gal.G3.sp (PadicAlgCl l) ⟶ UpperTheory.Gal.G3.sp ↥K` to `Spec.map (CommRingCat.ofHom (algebraMap ↥K (PadicAlgCl l)))`. Set `b : C.Δ → (H.geomZ (PadicAlgCl l) ⟶ H.geomZ (PadicAlgCl l))` to `fun δ => UpperTheory.Gal.G3.bcMap g₀ (C.a δ) (ha δ)`. Establish `hG : IsGalois (toMod C) C.Δ b` using `UpperTheory.Gal.G3.pBcGal (UpperTheory.Gal.G3.pBcSplits (UpperTheory.Gal.G3.pSplitsBasic (UpperTheory.Gal.G3.pSplitsPts UpperTheory.Gal.G3.pIsoPts) UpperTheory.Gal.G3.pPtsOfSplits)) g₀ _ _ (UpperTheory.Gal.G3.piK C) (UpperTheory.Gal.G3.piK_snd C) C.Δ C.a ha hGK`. Use `⟨?_, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+
+Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ (tot_inj hV l _ C.Δ b hG)`. Introduce `y hy`. Distinguish the cases in `hZ : Nonempty ↑(H.geomZ (PadicAlgCl l))`. Establish `hop' : ∀ δ, ∃ g, hop l H (PadicAlgCl l) g = pullTot l (sch.map (b δ)) ∧ θ g = 1` using `fun δ => by`. Take `⟨g, hiso, ht, hθ⟩` from `C.fix δ`.
+
+Use `haveI : IsIso (H.sΩ (PadicAlgCl l) g) := GlobalTheory.GalV.GaloisTowerConditions.geomMap_isIso (PadicAlgCl l) (H.s g) rfl`. Establish `b1 : b δ ≫ pullback.fst H.q g₀ = pullback.fst H.q g₀ ≫ C.a δ` using `UpperTheory.Gal.G3.bcMap_fst g₀ (C.a δ) (ha δ)`. Establish `b2 : b δ ≫ pullback.snd H.q g₀ = pullback.snd H.q g₀` using `UpperTheory.Gal.G3.bcMap_snd g₀ (C.a δ) (ha δ)`. Establish `t' : H.tΩ (PadicAlgCl l) g = UpperTheory.Gal.G3.bcMap g₀ (H.t g) (H.comm g)` using `rfl`. Establish `s' : H.sΩ (PadicAlgCl l) g = UpperTheory.Gal.G3.bcMap g₀ (H.s g) rfl` using `rfl`.
+
+Establish `e : H.tΩ (PadicAlgCl l) g = H.sΩ (PadicAlgCl l) g ≫ b δ`. Rewrite using `[t', s']`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[UpperTheory.Gal.G3.bcMap_fst, Category.assoc, b1, ← Category.assoc, UpperTheory.Gal.G3.bcMap_fst, Category.assoc, ht]`. Rewrite using `[UpperTheory.Gal.G3.bcMap_snd, Category.assoc, b2, UpperTheory.Gal.G3.bcMap_snd]`.
+
+Establish `hc` using `hHop l ↥K (PadicAlgCl l) H hN g`. Rewrite `hc` using `[e]`. Conclude with `⟨g, corr_iso hV l (H.sΩ (PadicAlgCl l) g) (b δ) _ hc, hθ⟩`. Establish `hinv : ∀ δ, (pullTot l (sch.map (b δ))).baseChange L y = y` using `fun δ => by`. Take `⟨g, e, hθ⟩` from `hop' δ`.
+
+Establish `h1` using `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hy g)`. Rewrite `h1` using `[hθ, one_smul, e]`. Conclude with `h1`. Conclude with `inv_mem hV l _ C.Δ b hG L y hinv`. Use `haveI : IsEmpty ↑(H.geomZ (PadicAlgCl l)) := not_nonempty_iff.1 hZ`.
+
+Conclude with `empty_mem l _ hG.2.2.1 L y`. Express the relevant statement in the definitionally equal form `pullTot l (sch.map _) ∘ₗ pullTot l (sch.map _) = pullTot l (sch.map _) ∘ₗ pullTot l (sch.map _)`. Rewrite using `[← pullTot_comp, ← pullTot_comp, ← Functor.map_comp, ← Functor.map_comp]`. Use `congr 2`. Conclude with `gal_nat _ _ σ`.
+-/
 theorem UpperTheory.Gal.Seam.pieceInS :
     GlobalTheory.GalV.VInv → HopEx → PieceIn := by
   intro hT hHop l _ K L _ _ H θ hN C hOn

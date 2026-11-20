@@ -5,6 +5,29 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Introduce `G _ _ _ _ U U' hle hU hU'`. Use `haveI : CompactSpace U := isCompact_iff_compactSpace.mp hU`. Establish `hopen : IsOpen ((U'.subgroupOf U : Subgroup U) : Set U)` using `hU'.preimage continuous_subtype_val`. Use `haveI : Finite (U ⧸ U'.subgroupOf U) := Subgroup.quotient_finite_of_isOpen _ hopen`. Use `haveI : Finite (Quotient (QuotientGroup.rightRel (U'.subgroupOf U))) := Finite.of_equiv _ (QuotientGroup.quotientRightRelEquivQuotientLeftRel (U'.subgroupOf U)).symm`.
+
+Use `letI : Fintype (Quotient (QuotientGroup.rightRel (U'.subgroupOf U))) := Fintype.ofFinite _`. Set `mk : U → Quotient (QuotientGroup.rightRel (U'.subgroupOf U))` to `fun u => Quotient.mk _ u`. Set `r : Quotient (QuotientGroup.rightRel (U'.subgroupOf U)) → G` to `fun q => ((Quotient.out q : U) : G)`. Establish `hrU : ∀ q, r q ∈ U` using `fun q => (Quotient.out q : U).2`. Establish `hinj : Function.Injective r`.
+
+Introduce `a b h`. Establish `: (Quotient.out a : U) = Quotient.out b` using `Subtype.ext h`. Rewrite using `[← Quotient.out_eq a, ← Quotient.out_eq b, this]`. Establish `key : ∀ (u : U) q, (u : G) * (r q)⁻¹ ∈ U' ↔ q = mk u`. Introduce `u q`.
+
+Establish `h1 : mk (Quotient.out q) = q` using `Quotient.out_eq q`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h1]`. Use `Quotient.sound ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `QuotientGroup.rightRel _ _ _`. Rewrite using `[QuotientGroup.rightRel_apply]`. Express the relevant statement in the definitionally equal form `((u * (Quotient.out q)⁻¹ : U) : G) ∈ U'`. Simplify `h` using `[r]`. Introduce `h`.
+
+Establish `h2 : mk (Quotient.out q) = mk u` using `h1.trans h`. Establish `h3` using `Quotient.exact h2`. Express the relevant statement in the definitionally equal form `QuotientGroup.rightRel _ _ _ at h3`. Rewrite `h3` using `[QuotientGroup.rightRel_apply]`. Establish `h4 : ((u * (Quotient.out q)⁻¹ : U) : G) ∈ U'` using `h3`.
+
+Simplify `h4` using `[r]`. Use `⟨Finset.univ.image r, ⟨r (mk 1), Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hg`. Conclude with `hrU q`.
+
+Introduce `x`. Rewrite using `[Finset.sum_image (fun a _ b _ h => hinj h)]`. Distinguish the cases in `hx : x ∈ U`. Establish `h1 : ind U x = 1` using `by simp [ind, Set.indicator, hx]`. Rewrite using `[h1, Finset.sum_eq_single (mk ⟨x, hx⟩)]`.
+
+Establish `: x * (r (mk ⟨x, hx⟩))⁻¹ ∈ U'` using `(key ⟨x, hx⟩ _).mpr rfl`. Simplify using `[ind, Set.indicator, this]`. Introduce `q _ hq`. Establish `: x * (r q)⁻¹ ∉ U'` using `fun h => hq ((key ⟨x, hx⟩ q).mp h)`. Simplify using `[ind, Set.indicator, this]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h1 : ind U x = 0` using `by simp [ind, Set.indicator, hx]`. Rewrite using `[h1]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Establish `: x * (r q)⁻¹ ∉ U'` using `fun h => hx (by`. Use `U.mul_mem (hle h) (hrU q)` as an intermediate fact. Simplify using `using this)`. Simplify using `[ind, Set.indicator, this]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.cosetSum :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (U U' : Subgroup G), U' ≤ U → IsCompact (U : Set G) → IsOpen (U' : Set G) →
       ∃ s : Finset G, s.Nonempty ∧ (∀ g ∈ s, g ∈ U) ∧ ∀ x, ind U x = ∑ g ∈ s, ind U' (x * g⁻¹) := by

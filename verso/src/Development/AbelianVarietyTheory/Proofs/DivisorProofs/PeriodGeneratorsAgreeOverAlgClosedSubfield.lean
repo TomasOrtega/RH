@@ -16,6 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UCanon.BaseDescent
 
+/- English proof (translation)
+Set `i : Sp K ⟶ Sp k₀` to `spMap k₀.subtype`. Set `B₂` to `(Over.pullback g).obj B₁`. Take `⟨e₁, m₁, he₁⟩` from `grpPullback_iso (isGrpPullback_pullback B₀ i) p₀`. Take `⟨e₂, m₂, he₂⟩` from `grpPullback_iso p₁ ((isGrpPullback_pullback B₂ i).comp (isGrpPullback_pullback B₁ g))`. Take `⟨f₀, ⟨-, hf⟩, -⟩` from `GlobalTheory.AlgClosedDescent.hom_descent k₀ K B₀ B₂ h₀ (TLinPf.isAb_pullback g B₁ h₁) (e₁.hom ≫ e₂.hom) (by exact inferInstanceAs (IsMonHom (e₁.hom ≫ e₂.hom)))`.
+
+Use `⟨f₀.left ≫ pullback.fst B₁.hom g, ?_⟩` and prove the remaining obligations. Establish `hi : IsIso e₁.hom.left` using `⟨⟨e₁.inv.left, by rw [← Over.comp_left, e₁.hom_inv_id, Over.id_left], by rw [← Over.comp_left, e₁.inv_hom_id, Over.id_left]⟩⟩`. Establish `h2 : (e₁.hom ≫ e₂.hom).left ≫ pullback.fst B₂.hom i = pullback.fst B₀.hom i ≫ f₀.left`. Conclude with `(congrArg (fun q => q.left ≫ pullback.fst B₂.hom i) hf).symm.trans (pullback.lift_fst _ _ _)`. Rewrite using `[← cancel_epi e₁.hom.left, ← he₂, ← Category.assoc, he₁, ← Category.assoc, ← h2]`.
+
+Simplify using `only [Over.comp_left, Category.assoc]`.
+-/
 theorem exists_descent {K : Type} [Field K] (k₀ : Subfield K) [IsAlgClosed k₀] {S : Scheme.{0}} (g : Sp k₀ ⟶ S)
     (B₀ : Over (Sp k₀)) [GrpObj B₀] (B₁ : Over S) [GrpObj B₁] (B' : Over (Sp K)) [GrpObj B']
     (h₀ : IsAbelianScheme B₀) (h₁ : IsAbelianScheme B₁) {π₀ : B'.left ⟶ B₀.left} {δ : B'.left ⟶ B₁.left}
@@ -35,9 +42,17 @@ theorem exists_descent {K : Type} [Field K] (k₀ : Subfield K) [IsAlgClosed k�
   rw [← cancel_epi e₁.hom.left, ← he₂, ← Category.assoc, he₁, ← Category.assoc, ← h2]
   simp only [Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `h.chartPull (Geo.Tor.chartPullPull P f f rfl) (Geo.Tor.chartPullPull Q f f rfl)`.
+-/
 theorem lbIso_pull {X Y : Scheme.{0}} {P Q : LB X} (h : LBIso P Q) (f : Y ⟶ X) : LBIso (P.pull f) (Q.pull f) :=
   h.chartPull (Geo.Tor.chartPullPull P f f rfl) (Geo.Tor.chartPullPull Q f f rfl)
 
+/- English proof (translation)
+Take `⟨e, -, he⟩` from `grpPullback_iso (isGrpPullback_pullback B₀ (spMap k₀.subtype)) p₀`. Establish `P : ∀ {X Y : Scheme.{0}} {N : LB X}, N.IsLB → ∀ f : Y ⟶ X, (N.pull f).IsLB` using `fun h f => pull_isLB h f`. Establish `a₁ : LBIso (M₀.pull π₀) ((M₁.pull β).pull π₁)` using `LBIso.trans (P hM₀ _) (P hL _) (P (P hM₁ _) _) w.symm (lbIso_pull w' π₁)`. Establish `a₂ : LBIso ((M₁.pull β).pull π₁) ((M₁.pull κ₀).pull π₀)` using `LBIso.trans (P (P hM₁ _) _) (P hM₁ (π₁ ≫ β)) (P (P hM₁ _) _) (SepBModel.lbIso_two hM₁ β π₁).symm (hκ₀ ▸ SepBModel.lbIso_two hM₁ κ₀ π₀)`. Establish `a₃` using `lbIso_pull (LBIso.trans (P hM₀ _) (P (P hM₁ _) _) (P (P hM₁ _) _) a₁ a₂) e.hom.left`.
+
+Use `lbIso_of_lbIso_fieldExt k₀ K k₀.subtype B₀ h₀ _ _ hM₀ (P hM₁ _) ?_` and prove the remaining obligations. Establish `a₄` using `LBIso.trans (P hM₀ _) (P (P hM₀ _) _) (P (P (P hM₁ _) _) _) (SepBModel.lbIso_two hM₀ π₀ e.hom.left) a₃`. Establish `a₅` using `LBIso.trans (P hM₀ _) (P (P (P hM₁ _) _) _) (P (P hM₁ _) _) a₄ (SepBModel.lbIso_two (P hM₁ κ₀) π₀ e.hom.left).symm`. Rewrite `a₅` using `[he]`. Conclude with `a₅`.
+-/
 theorem exists_lbIso {K : Type} [Field K] (k₀ : Subfield K) (B₀ : Over (Sp k₀)) [GrpObj B₀] (B' : Over (Sp K)) [GrpObj B']
     (h₀ : IsAbelianScheme B₀) {A B₁ : Scheme.{0}} {π₀ : B'.left ⟶ B₀.left} {π₁ : B'.left ⟶ A} {β : A ⟶ B₁}
     {κ₀ : B₀.left ⟶ B₁} (p₀ : IsGrpPullback B' B₀ (spMap k₀.subtype) π₀) (hκ₀ : π₀ ≫ κ₀ = π₁ ≫ β)
@@ -58,6 +73,19 @@ theorem exists_lbIso {K : Type} [Field K] (k₀ : Subfield K) (B₀ : Over (Sp k
   rw [he] at a₅
   exact a₅
 
+/- English proof (translation)
+Establish `hp : ∀ x : B', κ₀ (π₀ x) = β (π₁ x)` using `fun x => congrArg (fun q : B' ⟶ B₁ => q x) hκ₀`. Set `W : L.ι × M₀.ι × M₁.ι → B'.Opens` to `fun p => π₁ ⁻¹ᵁ ((M₁.pull β).U (fun _ => p.2.2) ⊓ L.U p.1) ⊓ π₀ ⁻¹ᵁ ((M₁.pull κ₀).U (fun _ => p.2.2) ⊓ M₀.U p.2.1) ⊓ ((M₀.pull π₀).U (fun _ => p.2.1) ⊓ (L.pull π₁).U (fun _ => p.1))`. Set `u : ∀ p, Γ(B', W p)ˣ` to `fun p => res (inf_le_left.trans inf_le_left) (pullU π₁ _ (w'.s (fun _ => p.2.2, p.1))) * (res (inf_le_left.trans inf_le_right) (pullU π₀ _ (v.s (fun _ => p.2.2, p.2.1))))⁻¹ * (res inf_le_right (w.s (fun _ => p.2.1, fun _ => p.1)))⁻¹`. Establish `hW : ∀ (x : B') p, x ∈ W p ↔ π₁ x ∈ L.U p.1 ∧ π₀ x ∈ M₀.U p.2.1 ∧ β (π₁ x) ∈ M₁.U p.2.2` using `fun x p => ⟨fun h => ⟨h.1.1.2, h.1.2.2, mem_pull.1 h.1.1.1⟩, fun h => ⟨⟨⟨mem_pull.2 h.2.2, h.1⟩, ⟨mem_pull.2 (by rw [hp]; exact h.2.2), h.2.1⟩⟩, mem_pull.2 h.2.1, mem_pull.2 h.1⟩⟩`. Establish `hu : ∀ (Z : Scheme.{0}) (f : Z ⟶ B') (z : Z) p, f z ∈ W p → gm f z (W p) (u p) = gw w' (f ≫ π₁) z p.2.2 p.1 * (gw v (f ≫ π₀) z p.2.2 p.2.1)⁻¹ * (gw w f z p.2.1 (fun _ => p.1))⁻¹`.
+
+Introduce `Z f z p h`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)) ?_)` and prove the remaining obligations. Conclude with `(gm_res f z _ h _).trans (gm_pull f π₁ z _ h.1.1 _)`. Conclude with `(map_inv _ _).trans (congrArg (·⁻¹) ((gm_res f z _ h _).trans (gm_pull f π₀ z _ h.1.2 _)))`. Conclude with `(map_inv _ _).trans (congrArg (·⁻¹) (gm_res f z _ h _))`.
+
+Take `⟨ρ, hρ⟩` from `glue_unit ⊤ W (fun _ => le_top) (fun x _ => by`. Take `⟨j, hj⟩` from `exists_chart hL (π₁ x)`. Take `⟨m₀, h₀⟩` from `exists_chart hM₀ (π₀ x)`. Take `⟨m₁, h₁⟩` from `exists_chart hM₁ (β (π₁ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(j, m₀, m₁), (hW x _).2 ⟨hj, h₀, h₁⟩⟩) u (fun p q x hx => by`.
+
+Take `⟨a₁, a₂, a₃⟩` from `(hW x p).1 hx.1`. Take `⟨b₁, b₂, b₃⟩` from `(hW x q).1 hx.2`. Rewrite using `[hu _ _ x p hx.1, hu _ _ x q hx.2, (isGen_iff w').1 hw' _ (𝟙 B' ≫ π₁) x p.2.2 q.2.2 p.1 q.1 a₃ b₃ a₁ b₁, (isGen_iff v).1 hv _ (𝟙 B' ≫ π₀) x p.2.2 q.2.2 p.2.1 q.2.1 ((hp x).symm ▸ a₃) ((hp x).symm ▸ b₃) a₂ b₂, (isGen_iff w).1 hw _ (𝟙 B') x p.2.1 q.2.1 (fun _ => p.1) (fun _ => q.1) …`. Simplify using `only [Category.assoc, hκ₀]`. Simplify using `only [mul_inv, inv_inv]`.
+
+Generalize the expression as in `gm (𝟙 B' ≫ π₁ ≫ β) x _ _ = s`. Generalize the expression as in `gm (𝟙 B' ≫ π₁) x _ _ = t`. Generalize the expression as in `gm (𝟙 B' ≫ π₀) x _ _ = r`. Rewrite using `[show ∀ a b c, s * t⁻¹ * a * (s⁻¹ * r * b) * (r⁻¹ * t * c) = (s * s⁻¹) * (t * t⁻¹) * (r * r⁻¹) * (a * b * c) from fun a b c => by ac_rfl]`. Use the proof step `simp)`.
+
+Use `⟨ρ, fun Z f z j m₀ m₁ h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations. Establish `hm : f z ∈ W (j, m₀, m₁)` using `(hW _ _).2 ⟨h₁, h₂, h₃⟩`. Rewrite using `[← gm_res f z le_top hm ρ, hρ, hu Z f z _ hm]`. Rewrite using `[mul_right_comm _ _ (gw v _ _ _ _), inv_mul_cancel_right, inv_mul_cancel_right]`.
+-/
 theorem exists_unit {B' B₀ A B₁ : Scheme.{0}} {π₀ : B' ⟶ B₀} {π₁ : B' ⟶ A} {β : A ⟶ B₁} {κ₀ : B₀ ⟶ B₁}
     (hκ₀ : π₀ ≫ κ₀ = π₁ ≫ β) {L : LB A} {M₀ : LB B₀} {M₁ : LB B₁} (hL : L.IsLB) (hM₀ : M₀.IsLB) (hM₁ : M₁.IsLB)
     {w : LB.Iso (L.pull π₁) (M₀.pull π₀)} {w' : LB.Iso L (M₁.pull β)} {v : LB.Iso M₀ (M₁.pull κ₀)}
@@ -108,6 +136,13 @@ theorem exists_unit {B' B₀ A B₁ : Scheme.{0}} {π₀ : B' ⟶ B₀} {π₁ :
   rw [← gm_res f z le_top hm ρ, hρ, hu Z f z _ hm]
   rw [mul_right_comm _ _ (gw v _ _ _ _), inv_mul_cancel_right, inv_mul_cancel_right]
 
+/- English proof (translation)
+Take `⟨e, -, -⟩` from `grpPullback_iso (isGrpPullback_pullback B₀ i) p₀`. Take `⟨κ, hκ⟩` from `TLinPf.const_pullback GlobalTheory.globalFns_holds i B₀ h₀ (e.hom.left.appTop.hom ρ.val)`. Establish `hρ : ρ.val = B'.hom.appTop.hom κ`. Establish `h1 : e.inv.left.appTop.hom (e.hom.left.appTop.hom ρ.val) = ρ.val`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Over.comp_left, e.inv_hom_id]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h1, ← hκ, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, Over.w]`. Establish `key : ∀ d : S ⟶ B'.left, d ≫ B'.hom = 𝟙 _ → d.appTop.hom ρ.val = κ` using `fun d hd => by`. Rewrite using `[hρ, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, hd]`. Simplify using the standard rewrite rules.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val c z ⊤ trivial, gm_val c' z ⊤ trivial]`. Conclude with `(congrArg (S.presheaf.germ ⊤ z trivial).hom ((key c hc).trans (key c' hc').symm))`.
+-/
 theorem gm_const {S S₀ : Scheme.{0}} (i : S ⟶ S₀) (B₀ : Over S₀) [GrpObj B₀] (B' : Over S) [GrpObj B']
     (h₀ : IsAbelianScheme B₀) {π₀ : B'.left ⟶ B₀.left} (p₀ : IsGrpPullback B' B₀ i π₀) (ρ : Γ(B'.left, ⊤)ˣ) (z : S)
     (c c' : S ⟶ B'.left) (hc : c ≫ B'.hom = 𝟙 _) (hc' : c' ≫ B'.hom = 𝟙 _) : gm c z ⊤ ρ = gm c' z ⊤ ρ := by
@@ -125,8 +160,22 @@ theorem gm_const {S S₀ : Scheme.{0}} (i : S ⟶ S₀) (B₀ : Over S₀) [GrpO
   rw [gm_val c z ⊤ trivial, gm_val c' z ⊤ trivial]
   exact (congrArg (S.presheaf.germ ⊤ z trivial).hom ((key c hc).trans (key c' hc').symm))
 
+/- English proof (translation)
+Use `group`.
+-/
 private theorem inv_mul_cancel_left' {G : Type} [Group G] (a s b : G) : a * s⁻¹ * (s * b) = a * b := by group
 
+/- English proof (translation)
+Establish `: Subsingleton (Sp k₀)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k₀))`. Use `set i : Sp K ⟶ Sp k₀ := spMap k₀.subtype with hi`. Establish `rg : ∀ (U : (Sp k₀).Opens) (a : Γ(Sp k₀, U)ˣ), i z ∈ U → gm i z U a ∈ (gm i z ⊤).range` using `fun U a h => by`. Take `⟨x, hx⟩` from `SepBModel.gm_field i z U h a`. Conclude with `⟨_, hx.symm⟩`.
+
+Use `choose I hI using fun χ : Sp K ⟶ B₀ => exists_chart hM₀ (χ z)`. Establish `rw' : ∀ k, gw v (i ≫ p k) z (m k) (I (i ≫ p k)) ∈ (gm i z ⊤).range` using `fun k => by`. Establish `h : p k (i z) ∈ (M₁.pull κ₀).U (fun _ => m k) ⊓ M₀.U (I (i ≫ p k))` using `⟨mem_pull.2 (hm k), hI (i ≫ p k)⟩`. Take `⟨c, hc⟩` from `rg _ (pullU (p k) _ (v.s (fun _ => m k, I (i ≫ p k)))) h`. Conclude with `⟨c, hc.trans (gm_pull i (p k) z _ h _)⟩`.
+
+Establish `rv : val τ₁ i z I ∈ (gm i z ⊤).range` using `rg _ _ (Good.mem hI p i)`. Take `⟨c, hc⟩` from `mul_mem (mul_mem (mul_mem (mul_mem (mul_mem (rw' 0) (inv_mem (rw' 1))) (inv_mem (rw' 2))) (rw' 3)) ht) (inv_mem rv)`. Take `⟨x, hx⟩` from `SepBModel.gm_field i z ⊤ trivial c`. Use `⟨x, fun J₀ hJ₀ => ?_⟩` and prove the remaining obligations. Establish `ch : ∀ k, gw v (i ≫ p k) z (m k) (J₀ (i ≫ p k)) = (gm (i ≫ p k) z _ (M₀.g (J₀ (i ≫ p k)) (I (i ≫ p k))))⁻¹ * gw v (i ≫ p k) z (m k) (I (i ≫ p k))` using `fun k => by`.
+
+Rewrite using `[(isGen_iff v).1 hv _ (i ≫ p k) z (m k) (m k) _ _ (hm k) (hm k) (hJ₀ _) (hI _), gm_self hM₁ ((i ≫ p k) ≫ κ₀) z (hm k), _root_.one_mul]`. Establish `cv : val τ₁ i z J₀ = _ * val τ₁ i z I` using `gen_trans hτ i z (hJ₀.mem p i) (Good.mem hI p i)`. Rewrite using `[← SepBModel.gm_spMap, ← hx, hc, ch, ch, ch, ch, cv]`. Simplify using `only [trF, Fin.prod_univ_four, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, zpow_neg, zpow_one, mul_inv, inv_inv]`. Generalize the expression as in `val τ₁ i z I = s`.
+
+Rewrite using `[mul_comm _ s, inv_mul_cancel_left' _ s]`. The two sides agree by associativity and commutativity.
+-/
 theorem exists_const {K : Type} [Field K] (k₀ : Subfield K) {B₀ B₁ : Scheme.{0}} {M₀ : LB B₀} {M₁ : LB B₁} (hM₀ : M₀.IsLB)
     (hM₁ : M₁.IsLB) {κ₀ : B₀ ⟶ B₁} {v : LB.Iso M₀ (M₁.pull κ₀)} (hv : v.IsGen) (p : Fin 4 → (Sp k₀ ⟶ B₀))
     (τ₁ : LB.Gen (LB.LinComb M₀ p ![-1, 1, 1, -1])) (hτ : τ₁.IsGen) (z : Sp K) (m : Fin 4 → M₁.ι)
@@ -165,6 +214,31 @@ theorem exists_const {K : Type} [Field K] (k₀ : Subfield K) {B₀ B₁ : Schem
   rw [mul_comm _ s, inv_mul_cancel_left' _ s]
   ac_rfl
 
+/- English proof (translation)
+Introduce `R _ _ Q τ₀ K _ _ ev k₀ hk W₀ _ ιb hF hι B₀ _ _ M₀ c₀ B' _ π₁ π₀ w c' h₀ hM₀ p₁ p₀ hw hc a b τ₁ hτ`. Take `⟨B₁, _, M₁, c₁, τ', β, w', h₁, hM₁, pβ, hw', -, -, hv'⟩` from `hF`. Set `i : Sp K ⟶ Sp k₀` to `spMap k₀.subtype`. Set `e₀ : W₀ →+* k₀` to `(ev.comp ιb).codRestrict k₀ hι`. Establish `he : spMap ev ≫ spMap ιb = i ≫ spMap e₀` using `(Spec.map_comp _ _).symm.trans (Spec.map_comp (CommRingCat.ofHom e₀) (CommRingCat.ofHom k₀.subtype))`.
+
+Take `⟨κ₀, hκ⟩` from `exists_descent k₀ (spMap e₀) B₀ B₁ B' h₀ h₁ p₀ ((p₁.comp pβ).congr he rfl)`. Take `⟨v, hv⟩` from `exists_lbIso k₀ B₀ B' h₀ p₀ hκ Q.P.isLB hM₀ hM₁ ⟨w, hw⟩ ⟨w', hw'⟩`. Take `⟨ρ, hρ⟩` from `exists_unit hκ Q.P.isLB hM₀ hM₁ hw hw' hv`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Set `z₀ : Sp K` to `(default : PrimeSpectrum K)`.
+
+Use `choose J₁ hJ₁ using fun χ : Sp K ⟶ B₁.left => exists_chart hM₁ (χ z₀)`. Establish `gJ₁ : Good M₁ (spMap ev z₀) (fun χ => J₁ (spMap ev ≫ χ))` using `fun χ => hJ₁ (spMap ev ≫ χ)`. Set `m : Q.X → M₁.ι` to `fun y => J₁ (spMap ev ≫ cpt Q y ≫ β)`. Establish `hm₁ : ∀ y, β (π₁ (c' y z₀)) ∈ M₁.U (m y)` using `fun y => by`. Use `hJ₁ (spMap ev ≫ cpt Q y ≫ β)` as an intermediate fact.
+
+Rewrite `this` using `[← Category.assoc]`. Conclude with `(congrArg (fun q : Sp K ⟶ _ => β (q z₀) ∈ M₁.U (m y)) (hc y).2.1).mpr this`. Establish `hm₀ : ∀ y, κ₀ (c₀ y (i z₀)) ∈ M₁.U (m y)` using `fun y => by`. Establish `e : i ≫ c₀ y ≫ κ₀ = c' y ≫ π₁ ≫ β` using `by rw [← hκ, ← Category.assoc, ← (hc y).2.2, Category.assoc]`. Conclude with `(congrArg (fun q : Sp K ⟶ _ => q z₀ ∈ M₁.U (m y)) e).mpr (hm₁ y)`.
+
+Establish `mτ` using `gJ₁.mem ![c₁ (a + b), c₁ a, c₁ b, c₁ 0] (spMap ιb)`. Set `t` to `Units.map ((spMap ev).stalkMap z₀).hom.toMonoidHom (val (τ' a b) (spMap ιb) (spMap ev z₀) (fun χ => J₁ (spMap ev ≫ χ)))`. Establish `ht : t ∈ (gm i z₀ ⊤).range`. Establish `hp : spMap ιb (spMap ev z₀) = spMap e₀ (i z₀)` using `congrArg (fun q : Sp K ⟶ Sp W₀ => q z₀) he`. Establish `hm'` using `Eq.mp (congrArg (· ∈ _) hp) mτ`.
+
+Establish `e₄ : t = _` using `SepBModel.stalkMap_gm (spMap ev) (spMap ιb) z₀ _ mτ _`. Rewrite `e₄` using `[he]`. Use `replace e₄ := e₄.trans (gm_pull _ _ z₀ _ hm' _).symm`. Take `⟨x, hx⟩` from `SepBModel.gm_field i z₀ _ hm' (pullU (spMap e₀) _ ((τ' a b).s _))`. Conclude with `⟨_, (e₄.trans hx).symm⟩`.
+
+Apply the tactic sequence `obtain ⟨x, hx⟩ := exists_const k₀ hM₀ hM₁ hv _ τ₁ hτ z₀ ![m (a + b), m a, m b, m 0] (fun k => by fin_cases k <;> exact hm₀ _) t ht`. Use `⟨x, fun z J J₀ hJ hJ₀ => ?_⟩` and prove the remaining obligations. Take `rfl : z₀ = z` from `Subsingleton.elim _ _`. Establish `gJ : Good Q.P.L (spMap ev z₀) (fun χ => J (spMap ev ≫ χ))` using `fun χ => hJ (spMap ev ≫ χ)`. Establish `E` using `congrArg (Units.map ((spMap ev).stalkMap z₀).hom.toMonoidHom) (hv' a b _ _ _ gJ gJ₁)`.
+
+Establish `l : Units.map ((spMap ev).stalkMap z₀).hom.toMonoidHom (val (τ₀ a b) (𝟙 (Sp R)) (spMap ev z₀) (fun χ => J (spMap ev ≫ χ))) = val (τ₀ a b) (spMap ev) z₀ J`. Use `(SepBModel.stalkMap_gm (spMap ev) (𝟙 _) z₀ _ (gJ.mem _ _) _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `(val_of _ _ _ _ _ fun k => by rw [Category.id_comp]).symm`. Establish `key : ∀ y, Units.map ((spMap ev).stalkMap z₀).hom.toMonoidHom (gm (cpt Q y) (spMap ev z₀) _ (w'.s (fun _ => J₁ (spMap ev ≫ cpt Q y ≫ β), J (spMap ev ≫ cpt Q y)))) = gm (c' 0) z₀ ⊤ ρ * gw v (i ≫ c₀ y) z₀ (m y) (J₀ (i ≫ c₀ y)) * gw w (c' y) z₀ (J₀ (c' y ≫ π₀)) (fun _ => J (c' y ≫ π …` using `fun y => by`.
+
+Establish `hmem : cpt Q y (spMap ev z₀) ∈ (M₁.pull β).U (fun _ => m y) ⊓ Q.P.L.U (J (spMap ev ≫ cpt Q y))` using `⟨mem_pull.2 (gJ₁ (cpt Q y ≫ β)), gJ (cpt Q y)⟩`. Use `(SepBModel.stalkMap_gm (spMap ev) (cpt Q y) z₀ _ hmem _).trans ?_` and prove the remaining obligations. Establish `r` using `hρ _ (c' y) z₀ (J (c' y ≫ π₁)) (J₀ (c' y ≫ π₀)) (m y) (hJ (c' y ≫ π₁)) (hJ₀ (c' y ≫ π₀)) (hm₁ y)`. Rewrite `r` using `[gm_const i B₀ B' h₀ p₀ ρ z₀ (c' y) (c' 0) (hc y).1 (hc 0).1]`. Establish `e₁ : c' y ≫ π₁ = spMap ev ≫ cpt Q y` using `(hc y).2.1`.
+
+Establish `e₂ : c' y ≫ π₀ = i ≫ c₀ y` using `(hc y).2.2`. Rewrite using `[← e₂, ← r, e₁]`. Both sides reduce to the same expression. Rewrite `E` using `[l, map_mul, map_mul, map_mul, map_mul, map_inv, map_inv]`. Establish `E'` using `E.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (congrArg₂ (· * ·) (key _) (congrArg (·⁻¹) (key _))) (congrArg (·⁻¹) (key _))) (key _)) (rfl : _ = t))`.
+
+Establish `hx'` using `hx J₀ hJ₀`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val] at hx'`. Rewrite using `[E', _root_.mul_assoc (lamUnit _ _ _ _ _ _ _), ← hx', lamUnit]`. Generalize the expression as in `gm (c' 0) z₀ ⊤ ρ = s`. Simplify using `only [mul_inv]`.
+
+Rewrite using `[show ∀ a₁ a₂ a₃ a₄ b₁ b₂ b₃ b₄ u, s * a₁ * b₁ * (s⁻¹ * a₂ * b₂) * (s⁻¹ * a₃ * b₃) * (s * a₄ * b₄) * u = (s * s⁻¹) * (s * s⁻¹) * (b₁ * b₂ * b₃ * b₄ * (a₁ * a₂ * a₃ * a₄ * u)) from fun _ _ _ _ _ _ _ _ _ => by ac_rfl]`. Simplify using `only [mul_inv_cancel, _root_.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R]
     (Q : DegPre R) (τ₀ : Gens Q) (K : Type) [Field K] [IsAlgClosed K] (ev : R →+* K) (k₀ : Subfield K), IsAlgClosed k₀ →
     ∀ (W₀ : Type) [CommRing W₀] (ιb : W₀ →+* R), FromBase Q τ₀ ιb → (∀ a, ev (ιb a) ∈ k₀) →

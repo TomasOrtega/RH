@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.Admissi
 
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct UpperTheory.KN
 
+/- English proof (translation)
+Introduce `G O LL Q _ _ _ _ _ _ _ _ _ _ _ a n Y φ u hu c hopen hcont hc hkill`. Set `Lmap : (Fin a → Fin n → O) →ₗ[O] (Fin a → Fin n → LL)` to `((Algebra.linearMap O LL).compLeft (Fin n)).compLeft (Fin a)`. Set `Λ` to `LinearMap.range Lmap`. Establish `hΛ : Λ.FG` using `by show (LinearMap.range Lmap).FG`. Rewrite using `[LinearMap.range_eq_map]`.
+
+Conclude with `(Module.Finite.fg_top).map _`. Take `⟨μ, hμ0, hμ⟩` from `admissible_lattices_commensurable (LL := LL) Λ Y hΛ c hc`. Establish `hμL : algebraMap O LL μ ≠ 0` using `fun h => hμ0 ((IsFractionRing.injective O LL) (h.trans (map_zero _).symm))`. Set `W : Set LL` to `(fun x => (algebraMap O LL μ)⁻¹ * x) ⁻¹' Set.range (algebraMap O LL)`. Establish `hW : IsOpen W` using `hopen.preimage (continuous_const.mul continuous_id)`.
+
+Set `U : Set (Fin a → Fin n → LL)` to `{v | ∀ j m, v j m ∈ W}`. Establish `hU : IsOpen U`. Establish `hUe : U = ⋂ j, ⋂ m, (fun v : Fin a → Fin n → LL => v j m) ⁻¹' W`. Use extensionality with `v`. Simplify using `[U]`.
+
+Rewrite using `[hUe]`. Conclude with `isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun m => hW.preimage ((continuous_apply m).comp (continuous_apply j))`. Establish `key : ∀ v ∈ Y, v ∈ U → ∃ y ∈ Y, v = c • y`. Introduce `v hvY hvU`. Simplify using `only [U, W, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_range] at hvU`.
+
+Use `choose x hx using hvU`. Establish `hxΛ : Lmap x ∈ Λ` using `LinearMap.mem_range_self _ _`. Establish `hmul : μ • Lmap x = v`. Use function extensionality and compare the values at `j m`. Use `show μ • algebraMap O LL (x j m) = v j m`.
+
+Rewrite using `[Algebra.smul_def, hx j m, ← mul_assoc, mul_inv_cancel₀ hμL, one_mul]`. Take `⟨y, hy, hyeq⟩` from `hμ _ hxΛ (hmul ▸ hvY)`. Conclude with `⟨y, hy, hmul ▸ hyeq⟩`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`.
+
+Establish `hnhds : {g | u g - u g0 ∈ U} ∈ nhds g0`. Use `(hU.preimage (hcont.sub continuous_const)).mem_nhds ?_` and prove the remaining obligations. Introduce `j m`. Use `⟨0, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `filter_upwards [hnhds] with g hg`. Take `⟨y, hy, hyeq⟩` from `key _ (Y.sub_mem (hu g) (hu g0)) hg`. Establish `hsplit : (⟨u g, hu g⟩ : Y) = ⟨u g0, hu g0⟩ + c • ⟨y, hy⟩` using `by ext1`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul]`. Rewrite using `[← hyeq]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, map_add, map_smul, hkill, add_zero]`.
+-/
 theorem _root_.UpperTheory.KN.isLocallyConstant_torsion_push_of_continuous :
     ∀ {G O LL Q : Type} [TopologicalSpace G] [CommRing O] [IsDomain O] [IsNoetherianRing O] [Field LL] [TopologicalSpace LL]
       [IsTopologicalRing LL] [Algebra O LL] [IsFractionRing O LL] [AddCommGroup Q] [Module O Q] {a n : ℕ}

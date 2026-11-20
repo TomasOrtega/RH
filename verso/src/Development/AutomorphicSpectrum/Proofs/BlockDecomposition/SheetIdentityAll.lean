@@ -31,12 +31,22 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Fin.succ_ne_zero]`.
+-/
 theorem cons_const_apply' {e : ℕ} (G H : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) (k : Fin (e + 1)) :
     (Fin.cons G (fun _ : Fin e => H) : Fin (e + 1) → _) k = if k = 0 then G else H := by
   refine Fin.cases ?_ (fun i => ?_) k
   · simp
   · simp [Fin.succ_ne_zero]
 
+/- English proof (translation)
+Rewrite using `[← mdisc_comp_perm (Fin.cons G (fun _ : Fin e => H) : Fin (e + 1) → _) (Equiv.swap 0 i)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, cons_const_apply', Function.update_apply]`. Distinguish the cases in `hki : k = i`.
+
+Substitute `hki` using the available equality. Simplify using the standard rewrite rules. Establish `: Equiv.swap 0 i k ≠ 0`. Introduce `h`. Apply `hki` to reduce the goal to its premises.
+
+Use `congrArg (Equiv.swap 0 i) h` as an intermediate fact. Simplify using `using this`. Simplify using `[hki, this]`.
+-/
 theorem mdisc_update_const {e : ℕ} (G H : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) (i : Fin (e + 1)) :
     mdisc (Function.update (fun _ : Fin (e + 1) => H) i G) =
       mdisc (Fin.cons G (fun _ : Fin e => H) : Fin (e + 1) → _) := by
@@ -54,6 +64,15 @@ theorem mdisc_update_const {e : ℕ} (G H : Matrix (Fin (e + 1)) (Fin (e + 1)) �
       simpa using this
     simp [hki, this]
 
+/- English proof (translation)
+Use `set H := hessC p y with hH`. Use `set G := gradMat p p y with hGdef`. Use `set a : ℝ := (p y)⁻¹ with ha`. Use `set b : ℝ := -((p y) ^ 2)⁻¹ with hb`. Establish `hlog : hessC (Real.log ∘ p) y = (a : ℂ) • H + (b : ℂ) • G` using `MaDensLogPow.hessC_log_comp hp hpos`.
+
+Establish `hG : ∀ (A : Fin (e + 1) → Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) (i j : Fin (e + 1)), i ≠ j → A i = G → A j = G → mdisc A = 0` using `fun A i j hij hi hj => MaDensLogPow.mdisc_eq_zero_of_two_rankOne A _ hij _ _ (hi.trans (gradMat_eq_vecMulVec p p y)) (hj.trans (gradMat_eq_vecMulVec p p y))`. Establish `key` using `MaDensLogPow.mdisc_expand (a : ℂ) (b : ℂ) H G hG Finset.univ (fun _ => H) (fun _ _ => rfl)`. Rewrite `key` using `[Finset.sum_congr rfl fun i _ => mdisc_update_const G H i, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Nat.add_sub_cancel, nsmul_eq_mul]`. Simplify using `only [Finset.mem_univ, if_true] at key`. Establish `hfam3 : (fun i => hessC ((fun _ : Fin e => p) i) y) = fun _ : Fin e => H` using `rfl`.
+
+Unfold `maDens gradDens`. Simplify using `only [hlog]`. Rewrite using `[key]`. Establish `hp0 : p y ≠ 0` using `hpos.ne'`. Simplify using `only [← Complex.ofReal_pow, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.add_re, Complex.re_ofReal_mul]`.
+
+Rewrite using `[← hH, ← hGdef, ha, hb]`. Simplify using `only [inv_pow, Nat.cast_add, Nat.cast_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem maDens_log_all {e : ℕ} (p : (Fin (e + 1) → ℂ) → ℝ) (y : Fin (e + 1) → ℂ)
     (hp : ContDiffAt ℝ 2 p y) (hpos : 0 < p y) :
     maDens (fun _ : Fin (e + 1) => Real.log ∘ p) y =
@@ -84,6 +103,21 @@ theorem maDens_log_all {e : ℕ} (p : (Fin (e + 1) → ℂ) → ℝ) (y : Fin (e
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hsC : ContDiffAt ℝ 2 s y` using `hs.contDiffAt.restrict_scalars ℝ`. Establish `hp2 : ContDiffAt ℝ 2 (fun w => euclPot (s w - x)) y` using `((contDiff_euclPot n).of_le (WithTop.coe_le_coe.mpr le_top)).contDiffAt.comp y (hsC.sub contDiffAt_const)`. Establish `hE` using `RegRadialWeight.hessC_euclPot_comp hs x`. Establish `h1 : (fun k => (fun _ : Fin (e + 1) => logDistSq x) k ∘ s) = fun _ : Fin (e + 1) => Real.log ∘ fun w => euclPot (s w - x)` using `rfl`. Establish `h2 : maDens (fun k => (fun _ : Fin (e + 1) => (euclPot : (Fin n → ℂ) → ℝ)) k ∘ s) y = maDens (fun _ : Fin (e + 1) => fun w => euclPot (s w - x)) y` using `RegRadialWeight.maDens_congr fun _ => hE`.
+
+Establish `h3 : maDens (fun k => (vecCons (fun z => Q (euclPot (z - x))) (fun _ : Fin e => (euclPot : (Fin n → ℂ) → ℝ)) : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ s) y = deriv Q (euclPot (s y - x)) * maDens (fun _ : Fin (e + 1) => fun w => euclPot (s w - x)) y + deriv (deriv Q) (euclPot (s y - x) …`. Establish `hc` using `(MaDensChain.proof e (fun _ : Fin e => euclPot ∘ s) Q (fun w => euclPot (s w - x)) y hQ hp2).1`. Establish `hfun : (fun k => (vecCons (fun z => Q (euclPot (z - x))) (fun _ : Fin e => (euclPot : (Fin n → ℂ) → ℝ)) : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ s) = Fin.cons (Q ∘ fun w => euclPot (s w - x)) (fun _ : Fin e => euclPot ∘ s)`. Use function extensionality and compare the values at `k`. Use `Fin.cases rfl (fun i => rfl) k` and prove the remaining obligations.
+
+Establish `hm : maDens (Fin.cons (fun w => euclPot (s w - x)) (fun _ : Fin e => euclPot ∘ s)) y = maDens (fun _ : Fin (e + 1) => fun w => euclPot (s w - x)) y`. Apply `RegRadialWeight.maDens_congr` to reduce the goal to its premises. Introduce `k`. Use `Fin.cases rfl (fun i => ?_) k` and prove the remaining obligations. Conclude with `hE`.
+
+Establish `hg : gradDens (fun _ : Fin e => euclPot ∘ s) (fun w => euclPot (s w - x)) (fun w => euclPot (s w - x)) y = gradDens (fun _ : Fin e => fun w => euclPot (s w - x)) (fun w => euclPot (s w - x)) (fun w => euclPot (s w - x)) y` using `RegRadialWeight.gradDens_congr _ _ fun _ => hE`. Rewrite using `[hfun, hc, hm, hg]`. Rewrite using `[h1, h2, h3]`. Establish `hp0 : 0 ≤ euclPot (s y - x)` using `RegRadialWeight.euclPot_nonneg' _`. Break down `hp0.eq_or_lt with h | h` into its components or cases.
+
+Rewrite using `[← h, hb0, hQ0, hQ0']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[maDens_log_all (fun w => euclPot (s w - x)) y hp2 h]`. Take `⟨e1, e2⟩` from `hQt _ h`. Establish `ht1 : euclPot (s y - x) ^ (e + 1) ≠ 0` using `pow_ne_zero _ h.ne'`.
+
+Establish `ht2 : euclPot (s y - x) ^ (e + 2) ≠ 0` using `pow_ne_zero _ h.ne'`. Establish `hQ' : deriv Q (euclPot (s y - x)) = (a (euclPot (s y - x)) * euclPot (s y - x) ^ (e + 1) - b (euclPot (s y - x))) / euclPot (s y - x) ^ (e + 1)`. Rewrite using `[eq_div_iff ht1]`. Conclude with `e1`. Establish `hQ'' : deriv (deriv Q) (euclPot (s y - x)) = ((e + 1 : ℕ) : ℝ) * b (euclPot (s y - x)) / euclPot (s y - x) ^ (e + 2)`.
+
+Rewrite using `[eq_div_iff ht2]`. Conclude with `e2`. Rewrite using `[hQ', hQ'']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sheet_identity_all {e : ℕ} {s : (Fin (e + 1) → ℂ) → Fin n → ℂ}
     {y : Fin (e + 1) → ℂ} (hs : AnalyticAt ℂ s y) (x : Fin n → ℂ) (Q a b : ℝ → ℝ)
     (hQ : ContDiff ℝ 2 Q) (hQ0 : deriv Q 0 = a 0) (hQ0' : deriv (deriv Q) 0 = 0) (hb0 : b 0 = 0)
@@ -149,6 +183,13 @@ theorem sheet_identity_all {e : ℕ} {s : (Fin (e + 1) → ℂ) → Fin n → �
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hfin : (fibre J A y).Finite` using `FiniteProjectionCluster.fibre_finite J A hA y`. Unfold `chartDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun x' hx' => ?_` and prove the remaining obligations. Rewrite `hx'` using `[Set.Finite.mem_toFinset]`.
+
+Take `⟨-, rfl⟩` from `hx'`. Use `split_ifs with h`. Establish `hsx : h.choose (A *ᵥ x') = x'`. Take `⟨U, -, -, -, hsx, -⟩` from `h.choose_spec`. Conclude with `hsx`.
+
+Establish `key` using `sheet_identity_all (CutOffBoundaryBound.analyticAt_of_isSheetAt h.choose_spec) x Q a b hQ hQ0 hQ0' hb0 hQt`. Rewrite `key` using `[hsx]`. Conclude with `key`. Simplify using the standard rewrite rules.
+-/
 theorem chartDens_eq_all {e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (hA : IsFiniteProjection J A) (x : Fin n → ℂ)
     (Q a b : ℝ → ℝ)
@@ -176,6 +217,21 @@ theorem chartDens_eq_all {e : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     exact key
   · simp
 
+/- English proof (translation)
+Establish `hS` using `GroundTheory.Heights₂.Heights.AutoClose.StokesOnChart`. Establish `hM` using `HilbertSamuel.Closed.ChartMassCompact`. Take `⟨Q, hQ, ⟨R, hR⟩, hQ0, hQ0', hQt⟩` from `RadialPrimitive.proof d a t₀ T ha ht₀ hconst hT hint`. Establish `hQ2 : ContDiff ℝ 2 Q` using `hQ.of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hψ : ContDiff ℝ ∞ (fun z : Fin n → ℂ => euclPot (z - x))` using `(contDiff_euclPot n).comp (contDiff_id.sub contDiff_const)`.
+
+Establish `hQψ : ContDiff ℝ ∞ (fun z : Fin n → ℂ => Q (euclPot (z - x)))` using `hQ.comp hψ`. Establish `hcsQ` using `RegRadialWeight.hasCompactSupport_radial x Q R hR`. Establish `hcsa` using `RegRadialWeight.hasCompactSupport_radial x a T hT`. Establish `hb0 : radialTransform (d + 1) a 0 = 0` using `radialTransform_eq_zero_of_const d a hconst ⟨le_refl 0, ht₀.le⟩`. Establish `hsE : ∀ i : Fin d, SmoothNear (zeroSet J) ((fun _ => euclPot) i)` using `fun _ => smoothNear_of_contDiff (contDiff_euclPot n)`.
+
+Establish `hsE' : ∀ i : Fin (d + 1), SmoothNear (zeroSet J) ((fun _ => euclPot) i)` using `fun _ => smoothNear_of_contDiff (contDiff_euclPot n)`. Establish `hsφ₁` using `RegRadialWeight.smoothNear_cons (smoothNear_of_contDiff (S := zeroSet J) hQψ) hsE`. Establish `hSt` using `hS n d J A (fun z => Q (euclPot (z - x))) (fun _ => 1) (fun _ : Fin d => euclPot) hJ hd hA (smoothNear_of_contDiff hQψ) (smoothNear_of_contDiff contDiff_const) hsE (Or.inl hcsQ)`. Establish `hzero : ∫ y, chartDens J A (fun _ => 1) (vecCons (fun z => Q (euclPot (z - x))) (fun _ : Fin d => euclPot)) y = 0`. Establish `h0 : ∀ y, chartDens J A (fun z => Q (euclPot (z - x))) (vecCons (fun _ => (1 : ℝ)) (fun _ : Fin d => euclPot)) y = 0`.
+
+Introduce `y`. Establish `hterm : ∀ x' (s : (Fin (d + 1) → ℂ) → Fin n → ℂ), Q (euclPot (x' - x)) * maDens (fun k => (vecCons (fun _ => (1 : ℝ)) (fun _ : Fin d => euclPot)) k ∘ s) y = 0`. Introduce `x' s`. Rewrite using `[RegRadialWeight.maDens_const_position 1 _ s y, mul_zero]`. Unfold `chartDens sheetSum`.
+
+Simplify using `[hterm]`. Unfold `chartInt at hSt`. Rewrite using `[← hSt]`. Simplify using `[h0]`. Establish `hint1 : Integrable (chartDens J A (fun _ => 1) (vecCons (fun z => Q (euclPot (z - x))) (fun _ : Fin d => euclPot)))` using `(hM n (d + 1) J A _ _ hJ hd hA continuousOn_const hsφ₁ (Or.inr ⟨0, hcsQ⟩)).mono' ((SheetSumMeasurable.proof n (d + 1) J A _ _ hJ hd hA measurable_const hsφ₁).1.aestronglyMeasurable) (Eventually.of_forall fun y => RegRadialWeight.norm_chartDens_le J A hA _ _ y)`.
+
+Establish `hint2 : Integrable (chartDens J A (fun z => a (euclPot (z - x))) (fun _ : Fin (d + 1) => euclPot))` using `(hM n (d + 1) J A _ _ hJ hd hA (ha.continuous.comp hψ.continuous).continuousOn hsE' (Or.inl hcsa)).mono' ((SheetSumMeasurable.proof n (d + 1) J A _ _ hJ hd hA (ha.continuous.comp hψ.continuous).measurable hsE').1.aestronglyMeasurable) (Eventually.of_forall fun y => RegRadialWeigh …`. Establish `hpt` using `chartDens_eq_all J A hA x Q a (radialTransform (d + 1) a) hQ2 hQ0 hQ0' hb0 hQt`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzero, sub_zero]`. Use `_ = ∫ y, (chartDens J A (fun z => a (euclPot (z - x))) (fun _ => euclPot) y - chartDens J A (fun _ => 1) (vecCons (fun z => Q (euclPot (z - x))) (fun _ : Fin d => euclPot)) y) := (integral_sub hint2 hint1).symm`.
+
+Use `_ = _ := by`. Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `(hpt y).symm`.
+-/
 theorem varRadialWeight {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (d + 1)) (Fin n) ℂ}
     (x : Fin n → ℂ) (a : ℝ → ℝ) (t₀ T : ℝ)
     (hJ : J.IsPrime) (hd : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = (d + 1 : ℕ))
@@ -247,6 +303,33 @@ theorem varRadialWeight {d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Ma
 
 open RegLelongAnnulus in
 
+/- English proof (translation)
+Establish `hCM` using `HilbertSamuel.Closed.ChartMassCompact`. Introduce `n d J A x r s hJ hdim hAf hr hrs`. Establish `hs : 0 < s` using `hr.trans_le hrs`. Establish `hr2 : 0 < r ^ 2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`.
+
+Establish `hφσ : ∀ k, SmoothNear (zeroSet J) ((fun _ => euclPot : Fin (d + 1) → (Fin n → ℂ) → ℝ) k)` using `fun _ => smoothNear_of_contDiff (S := zeroSet J) (contDiff_euclPot n)`. Establish `hball : ∀ ρ, 0 < ρ → ρ ≤ s → Integrable (chartDens J A ((euclBall x ρ).indicator fun _ => (1 : ℝ)) (fun _ : Fin (d + 1) => euclPot))`. Introduce `ρ hρ hρs`. Use `integrable_chartDens hCM hJ hdim hAf hφσ (continuous_majorant x s) (hasCompactSupport_majorant x s) zero_le_one (measurable_const.indicator (measurableSet_euclBall x ρ)) (abs_le_majorant x zero_le_one (fun z => ?_) (fun z hz => ?_))` and prove the remaining obligations. Apply the tactic sequence `by_cases h : z ∈ euclBall x ρ <;> simp [h]`.
+
+Use `Set.indicator_of_notMem (fun h => ?_) _` and prove the remaining obligations. Establish `h1` using `(mem_euclBall_iff_sq x hρ z).1 h`. Establish `h2 : ρ ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hρ.le hρs 2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : 0 ≤ r ^ (2 * (d + 1)) * s ^ (2 * (d + 1))` using `mul_nonneg (pow_nonneg hr.le _) (pow_nonneg hs.le _)`.
+
+Establish `hEq : ∀ k, ∫ y, chartDens J A (fun z => annWeight r s d k (euclPot (z - x))) (fun _ : Fin (d + 1) => euclPot) y = ∫ y, chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (radialTransform (d + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (d + 1) (hk k) (euclP …`. Introduce `k`. Establish `hT : (∫ τ in (0 : ℝ)..s ^ 2, annWeight r s d k τ * (((d + 1 : ℕ) : ℝ) * τ ^ (d + 1 - 1))) = 0`. Establish `h` using `radialTransform_annWeight d hr hs k (s ^ 2)`. Rewrite `h` using `[div_self (pow_pos hs 2).ne', radialTransform_hk_of_one_le d k le_rfl, radialTransform_hk_of_one_le d k ((one_le_div hr2).2 hs2), sub_self, mul_zero]`.
+
+Unfold `radialTransform at h`. Rewrite `h` using `[annWeight_zero_of_le d hr hrs k le_rfl, zero_mul, zero_sub, neg_eq_zero]`. Conclude with `h`. Establish `h` using `varRadialWeight x (annWeight r s d k) (pk k * r ^ 2) (s ^ 2) hJ hdim hAf (contDiff_annWeight d k) (mul_pos (pk_pos k) hr2) (fun t ht => annWeight_const d hr hrs k ht) (fun t ht => annWeight_zero_of_le d hr hrs k ht) hT`. Establish `hw : (fun z => radialTransform (d + 1) (annWeight r s d k) (euclPot (z - x))) = fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (radialTransform (d + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (d + 1) (hk k) (euclPot (z - x) / r ^ 2))`.
+
+Use function extensionality and compare the values at `fun z => radialTransform_annWeight d hr hs k _`. Rewrite using `[h, hw]`. Establish `hL : Tendsto (fun k => ∫ y, chartDens J A (fun z => annWeight r s d k (euclPot (z - x))) (fun _ : Fin (d + 1) => euclPot) y) atTop (𝓝 (r ^ (2 * (d + 1)) * (∫ y, chartDens J A ((euclBall x s).indicator fun _ => 1) (fun _ : Fin (d + 1) => euclPot) y) - s ^ (2 * (d + 1)) * ∫ y, char …`. Establish `h` using `tendsto_integral_chartDens hCM hJ hdim hAf hφσ (continuous_majorant x s) (hasCompactSupport_majorant x s) (C := r ^ (2 * (d + 1)) + s ^ (2 * (d + 1))) (add_nonneg (pow_nonneg hr.le _) (pow_nonneg hs.le _)) (w := fun k z => annWeight r s d k (euclPot (z - x))) (w' := fun z => r ^ …`. Establish `hlim : ∫ y, chartDens J A (fun z => r ^ (2 * (d + 1)) * (euclBall x s).indicator (fun _ => (1 : ℝ)) z - s ^ (2 * (d + 1)) * (euclBall x r).indicator (fun _ => (1 : ℝ)) z) (fun _ : Fin (d + 1) => euclPot) y = r ^ (2 * (d + 1)) * (∫ y, chartDens J A ((euclBall x s).indicator fun _ …`.
+
+Simplify using `only [chartDens_sub' hAf]`. Rewrite using `[integral_sub ((hball s hs le_rfl).const_mul _) ((hball r hr hrs).const_mul _), integral_const_mul, integral_const_mul]`. Rewrite using `[← hlim]`. Conclude with `h`. Establish `hφτ : ∀ k, SmoothNear (zeroSet J) ((fun _ => logDistSmooth x hr : Fin (d + 1) → (Fin n → ℂ) → ℝ) k)` using `fun _ => smoothNear_of_contDiff (S := zeroSet J) (contDiff_logDistSmooth x hr)`.
+
+Establish `hgerm : ∀ z : Fin n → ℂ, r ^ 2 / 4 < euclPot (z - x) → ∀ i : Fin (d + 1), (fun _ => logDistSq x : Fin (d + 1) → (Fin n → ℂ) → ℝ) i =ᶠ[𝓝 z] (fun _ => logDistSmooth x hr : Fin (d + 1) → (Fin n → ℂ) → ℝ) i` using `fun z hz _ => (logDistSmooth_eventuallyEq x hr hz).symm`. Establish `hloc : ∀ k y, chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (radialTransform (d + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (d + 1) (hk k) (euclPot (z - x) / r ^ 2))) (fun _ : Fin (d + 1) => logDistSq x) y = chartDens J A (fun z => r ^ (2 * (d + 1)) …`. Introduce `k y`. Use `chartDens_congr_fun (fun z _ hz => hgerm z ?_) y` and prove the remaining obligations. Assume the negation of the conclusion as `hle`.
+
+Use `replace hle := not_lt.1 hle`. Apply `hz` to reduce the goal to its premises. Establish `hp` using `half_le_pk k`. Rewrite using `[radialTransform_diff_of_le d hr hrs k (distSq_nonneg x z) (by nlinarith), mul_zero]`. Establish `hloc' : ∀ y, chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (euclBall x s \ euclBall x r).indicator (fun _ => (1 : ℝ)) z) (fun _ : Fin (d + 1) => logDistSq x) y = chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (euclBall x s \ euclBall x r).indica …`.
+
+Introduce `y`. Use `chartDens_congr_fun (fun z _ hz => hgerm z ?_) y` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Use `replace hle := not_lt.1 hle`. Apply `hz` to reduce the goal to its premises.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => h.2 ((mem_euclBall_iff_sq x hr z).2 (by linarith))), mul_zero]`. Establish `hR : Tendsto (fun k => ∫ y, chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (radialTransform (d + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (d + 1) (hk k) (euclPot (z - x) / r ^ 2))) (fun _ : Fin (d + 1) => logDistSq x) y) atTop (𝓝 (r ^ (2 * (d + 1)) * …`. Establish `h` using `tendsto_integral_chartDens hCM hJ hdim hAf hφτ (continuous_majorant x s) (hasCompactSupport_majorant x s) (C := 2 * (r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)))) (by positivity) (w := fun k z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (radialTransform (d + 1) (hk k) (euclPot (z - x) / …`. Establish `hl : ∀ y, chartDens J A (fun z => r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * (euclBall x s \ euclBall x r).indicator (fun _ => (1 : ℝ)) z) (fun _ : Fin (d + 1) => logDistSq x) y = r ^ (2 * (d + 1)) * s ^ (2 * (d + 1)) * chartDens J A ((euclBall x s \ euclBall x r).indicator fun _ => …` using `fun y => chartDens_const_mul hAf _ _ _ y`. Rewrite using `[← integral_const_mul]`.
+
+Simplify using `only [← hl, hloc', hloc]`. Conclude with `h`. Establish `h1` using `abs_radialTransform_hk_le d k (div_nonneg (distSq_nonneg x z) (pow_pos hs 2).le)`. Establish `h2` using `abs_radialTransform_hk_le d k (div_nonneg (distSq_nonneg x z) hr2.le)`. Rewrite using `[abs_mul, abs_of_nonneg hc0]`.
+
+Establish `h3` using `abs_sub (radialTransform (d + 1) (hk k) (euclPot (z - x) / s ^ 2)) (radialTransform (d + 1) (hk k) (euclPot (z - x) / r ^ 2))`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `tendsto_nhds_unique hL (hR.congr fun k => (hEq k).symm)`.
+-/
 theorem varLelongAnnulus : VarLelongAnnulus.Statement := by
   have hCM := HilbertSamuel.Closed.ChartMassCompact
   intro n d J A x r s hJ hdim hAf hr hrs
@@ -394,6 +477,9 @@ theorem varLelongAnnulus : VarLelongAnnulus.Statement := by
       nlinarith
   exact tendsto_nhds_unique hL (hR.congr fun k => (hEq k).symm)
 
+/- English proof (translation)
+The claim follows from `RegMassNearSmall.proof RegFormCompare.proof (RegBallMass.proof GroundTheory.Heights₂.Heights.AutoClose.RegFixedBallMass (RegLelongMono.proof (RegLelongAnnulus.proof (RegRadialWeight.proof GroundTheory.Heights₂.Heights.AutoClose.StokesOnChart HilbertSamuel.Closed.ChartMassCompact …`.
+-/
 theorem regMassNearSmall : RegMassNearSmall.Statement :=
   RegMassNearSmall.proof RegFormCompare.proof
     (RegBallMass.proof GroundTheory.Heights₂.Heights.AutoClose.RegFixedBallMass

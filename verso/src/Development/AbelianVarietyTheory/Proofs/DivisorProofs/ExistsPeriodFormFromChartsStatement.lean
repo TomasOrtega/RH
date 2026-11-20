@@ -12,5 +12,8 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatGlue.exists_flatForm | exact GlobalTheory.FlatGlue.exists_flatForm | (intros; apply GlobalTheory.FlatGlue.exists_flatForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_period_form_from_charts : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (A : Over S) [GrpObj A] (D' : ℕ) (h' : IsRegVar (A.hom ≫ p) D') (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ w : VMetric p (omega A) g, (∀ σ (y : CxPts p σ), ∃ (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), y ∈ c.e.source ∧ IsPeriodChart w c τ ex) → ∃ Ω₀ : h'.Fld, h'.IsArForm 1 Ω₀ ∧ ∀ σ, (h'.atlas σ).del (Ω₀ σ) = 0 ∧ (h'.atlas σ).dbar (Ω₀ σ) = 0 ∧ ∀ (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsFlatOn h' (Ω₀ σ) c.e.target τ ex := by
   first | exact @GlobalTheory.FlatGlue.exists_flatForm | exact GlobalTheory.FlatGlue.exists_flatForm | (intros; apply GlobalTheory.FlatGlue.exists_flatForm <;> assumption)

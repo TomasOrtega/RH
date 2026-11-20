@@ -5,10 +5,18 @@ open AlgebraicGeometry CategoryTheory LateralTheory.E.E4 Topology
 
 namespace LateralTheory.E.LeafDimOpenPf
 
+/- English proof (translation)
+The claim follows from `(IsEmbedding.inclusion h).isInducing.topologicalKrullDim_le`.
+-/
 theorem dim_mono {X : Type*} [TopologicalSpace X] {S T : Set X} (h : S ⊆ T) :
     topologicalKrullDim S ≤ topologicalKrullDim T :=
   (IsEmbedding.inclusion h).isInducing.topologicalKrullDim_le
 
+/- English proof (translation)
+Set `B` to `Localization.Away g`. Establish `hle : Submonoid.powers g ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors hg`. Establish `: IsDomain B` using `IsLocalization.isDomain_localization hle`. Establish `: Algebra.FiniteType A B` using `inferInstance`. Establish `: Algebra.FiniteType k B` using `Algebra.FiniteType.trans (S := A) inferInstance inferInstance`.
+
+Establish `: FaithfulSMul A B` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (IsLocalization.injective B hle)`. Establish `: Algebra.IsAlgebraic A B` using `IsLocalization.isAlgebraic B (Submonoid.powers g)`. Establish `htr : Algebra.trdeg k B = n`. Rewrite using `[GlobalTheory.trdeg_eq_of_isAlgebraic_top k A B, hn]`. Rewrite using `[GlobalTheory.topologicalKrullDim_eq_of_isEmbedding (PrimeSpectrum.localization_away_isOpenEmbedding B g).isEmbedding (PrimeSpectrum.localization_away_comap_range B g), PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, GlobalTheory.ringKrullDim_eq_of_trdeg_eq k B htr]`.
+-/
 theorem dim_basicOpen (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.FiniteType k A] (g : A) (hg : g ≠ 0) {n : ℕ} (hn : Algebra.trdeg k A = n) :
     topologicalKrullDim (PrimeSpectrum.basicOpen g : Set (PrimeSpectrum A)) = n := by
@@ -27,6 +35,15 @@ theorem dim_basicOpen (k A : Type) [Field k] [CommRing A] [IsDomain A] [Algebra 
       (PrimeSpectrum.localization_away_comap_range B g),
     PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, GlobalTheory.ringKrullDim_eq_of_trdeg_eq k B htr]
 
+/- English proof (translation)
+Introduce `k _ X b _ hX U hU hne`. Take `⟨x0, hx0⟩` from `hne`. Take `⟨A0, _, _, _, _, _, j0, _, ⟨p0, hp0⟩, -, htr0⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq b x0`. Take `⟨n, -, htn⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k A0`. Establish `hK` using `htr0.symm.trans htn`.
+
+Establish `hup : topologicalKrullDim X ≤ n`. Use `GlobalTheory.topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨A, _, _, _, _, _, j, _, hx, -, htr⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq b x`. Use `⟨Set.range j, j.isOpenEmbedding.isOpen_range, hx, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.topologicalKrullDim_eq_of_isEmbedding j.isOpenEmbedding.isEmbedding rfl]`.
+
+Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim A).trans (GlobalTheory.ringKrullDim_eq_of_trdeg_eq k A (htr.trans hK))`. Use `hup.trans ?_` and prove the remaining obligations. Establish `hVo : IsOpen (j0 ⁻¹' U)` using `hU.preimage j0.isOpenEmbedding.continuous`. Establish `hpV : p0 ∈ j0 ⁻¹' U` using `by simpa [Set.mem_preimage, hp0] using hx0`. Take `⟨_, ⟨g, rfl⟩, hpg, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hpV hVo`.
+
+Establish `hg : g ≠ 0`. Introduce and unpack `rfl`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).mp hpg (Ideal.zero_mem _)`. Establish `hd` using `dim_basicOpen k A0 g hg htn`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem LeafDimOpen_of : LateralTheory.E.LeafCloseBCut.LeafDimOpen := by
   intro k _ X b _ hX U hU hne
   obtain ⟨x0, hx0⟩ := hne

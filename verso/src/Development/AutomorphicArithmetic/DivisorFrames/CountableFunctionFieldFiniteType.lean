@@ -5,6 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.JGenSpeciali
 open CategoryTheory AlgebraicGeometry IsLocalRing GlobalTheory GlobalTheory.ValCount GlobalTheory.TrueGeo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `R _ _ X _ p _`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨x, hxU⟩⟩`. Establish `hft : (p.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) p inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`.
+
+Use `haveI : Countable Γ(Spec (.of R), ⊤) := (Scheme.ΓSpecIso (.of R)).commRingCatIsoToRingEquiv.toEquiv.injective.countable`. Use `haveI : Countable Γ(X, U) := by`. Use `letI := (p.appLE ⊤ U le_top).hom.toAlgebra`. Establish `h : Algebra.FiniteType Γ(Spec (.of R), ⊤) Γ(X, U)` using `hft`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp h`.
+
+Use `haveI : Countable (MvPolynomial (Fin n) Γ(Spec (.of R), ⊤)) := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `MvPolynomial.cardinalMk_le_max.trans ?_` and prove the remaining obligations. Simplify using `[Cardinal.mk_le_aleph0]`. Conclude with `hf.countable`.
+
+Use `haveI := functionField_isFractionRing_of_isAffineOpen X U hU`. Establish `hs : Function.Surjective (fun ab : Γ(X, U) × Γ(X, U) => (algebraMap Γ(X, U) X.functionField ab.1 / algebraMap Γ(X, U) X.functionField ab.2))`. Introduce `z`. Take `⟨a, b, -, h⟩` from `IsFractionRing.div_surjective (A := Γ(X, U)) z`. Conclude with `⟨(a, b), h⟩`.
+
+Conclude with `hs.countable`.
+-/
 theorem UpperTheory.countable_functionField_finiteType :
     ∀ (R : Type) [CommRing R] [Countable R] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Spec (.of R)) [LocallyOfFiniteType p], Countable X.functionField := by
   intro R _ _ X _ p _

@@ -7,6 +7,9 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hJ) v.associates_irreducible, ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le]`.
+-/
 theorem ideal_le_prime_pow_iff_le_count {R : Type} [CommRing R] [IsDedekindDomain R]
     (v : HeightOneSpectrum R) {J : Ideal R} (hJ : J ≠ 0) (n : ℕ) :
     J ≤ v.asIdeal ^ n ↔ n ≤ (Associates.mk v.asIdeal).count (Associates.mk J).factors := by
@@ -14,6 +17,29 @@ theorem ideal_le_prime_pow_iff_le_count {R : Type} [CommRing R] [IsDedekindDomai
   rw [← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hJ) v.associates_irreducible,
     ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le]
 
+/- English proof (translation)
+Distinguish the cases in `hJ : J = 0`. Substitute `hJ` using the available equality. Simplify using `[FractionalIdeal.count_zero]`. Establish `hv : ∀ x : 𝓞 k, 𝔓.intValuation (RingOfIntegers.mapRingHom i x) = 𝔭.intValuation x ^ ε`. Introduce `x`.
+
+Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := k'), ← HeightOneSpectrum.valuation_of_algebraMap (K := k), ← h]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (RingOfIntegers.mapRingHom i)`. Introduce `x y hxy`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Apply `i.injective` to reduce the goal to its premises. Conclude with `congrArg (fun t : 𝓞 k' => (t : k')) hxy`. Establish `hJ' : J.map (RingOfIntegers.mapRingHom i) ≠ 0` using `fun h0 => hJ ((Ideal.map_eq_bot_iff_of_injective hinj).mp h0)`. Rewrite using `[FractionalIdeal.count_coe k' 𝔓 hJ', FractionalIdeal.count_coe k 𝔭 hJ]`. Use `set m := (Associates.mk 𝔭.asIdeal).count (Associates.mk J).factors with hm`.
+
+Use `set m' := (Associates.mk 𝔓.asIdeal).count (Associates.mk (J.map (RingOfIntegers.mapRingHom i))).factors with hm'`. Establish `hle : J ≤ 𝔭.asIdeal ^ m` using `(ideal_le_prime_pow_iff_le_count 𝔭 hJ m).mpr le_rfl`. Establish `hle' : J.map (RingOfIntegers.mapRingHom i) ≤ 𝔓.asIdeal ^ m'` using `(ideal_le_prime_pow_iff_le_count 𝔓 hJ' m').mpr le_rfl`. Establish `hnle : ¬ J ≤ 𝔭.asIdeal ^ (m + 1)` using `fun h1 => by`. Use `(ideal_le_prime_pow_iff_le_count 𝔭 hJ (m + 1)).mp h1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1 : ε * m ≤ m'`. Apply `(ideal_le_prime_pow_iff_le_count 𝔓 hJ' _).mp` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+
+Rewrite using `[Ideal.mem_comap, ← 𝔓.intValuation_le_pow_iff_mem, hv]`. Establish `hx'` using `(𝔭.intValuation_le_pow_iff_mem x m).mpr (hle hx)`. Use `(pow_le_pow_left' hx' ε).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`.
+
+Use `push_cast`. Simplify using the standard rewrite rules. Establish `h2 : m' ≤ ε * m`. Take `⟨x, hx, hxn⟩` from `SetLike.not_le_iff_exists.mp hnle`. Establish `hx0 : x ≠ 0` using `fun h0 => hxn (h0 ▸ zero_mem _)`.
+
+Rewrite `hxn` using `[← 𝔭.intValuation_le_pow_iff_mem, not_le]`. Establish `hx'` using `(𝔭.intValuation_le_pow_iff_mem x m).mpr (hle hx)`. Establish `h3` using `(𝔓.intValuation_le_pow_iff_mem _ m').mpr (hle' (Ideal.mem_map_of_mem _ hx))`. Rewrite `h3` using `[hv]`. Establish `hne : 𝔭.intValuation x ≠ 0` using `𝔭.intValuation_ne_zero x hx0`.
+
+Rewrite `hxn`, `hx'`, `h3` using `[← WithZero.exp_log hne]`. Rewrite `h3` using `[← WithZero.exp_nsmul, WithZero.exp_le_exp]`. Rewrite `hxn` using `[WithZero.exp_lt_exp]`. Rewrite `hx'` using `[WithZero.exp_le_exp]`. Establish `h4 : WithZero.log (𝔭.intValuation x) = -(m : ℤ)`.
+
+Move the coercions through the operations in `at hxn`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[h4, nsmul_eq_mul]`. Establish `: (m' : ℤ) ≤ ε * m` using `by linarith`. Conclude with `this` after adjusting the coercions.
+
+Establish `: m' = ε * m` using `le_antisymm h2 h1`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_map_ideal_eq_mul_of_valuation_pow (k k' : Type) [Field k] [NumberField k] [Field k']
     [NumberField k'] (i : k →+* k') (J : Ideal (𝓞 k)) (𝔭 : HeightOneSpectrum (𝓞 k))
     (𝔓 : HeightOneSpectrum (𝓞 k')) (ε : ℕ)
@@ -81,6 +107,11 @@ theorem count_map_ideal_eq_mul_of_valuation_pow (k k' : Type) [Field k] [NumberF
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `E _ _ k k' _ _ _ _ i τ 𝔞 𝔭 𝔓 ε h`. Establish `hc : RingOfIntegers.mapRingHom (i.comp τ) = (RingOfIntegers.mapRingHom i).comp (RingOfIntegers.mapRingHom τ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hc, ← Ideal.map_map]`.
+
+Conclude with `count_map_ideal_eq_mul_of_valuation_pow k k' i _ 𝔭 𝔓 ε h`.
+-/
 theorem count_map_comp_ideal_eq_mul_of_valuation_pow : ∀ (E : Type) [Field E] [NumberField E] (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] (i : k →+* k') (τ : E →+* k) (𝔞 : Ideal (𝓞 E)) (𝔭 : HeightOneSpectrum (𝓞 k)) (𝔓 : HeightOneSpectrum (𝓞 k')) (ε : ℕ), (∀ z : k, 𝔓.valuation k' (i z) = 𝔭.valuation k z ^ ε) → FractionalIdeal.count k' 𝔓 ((𝔞.map (RingOfIntegers.mapRingHom (i.comp τ)) : Ideal (𝓞 k')) : FractionalIdeal (nonZeroDivisors (𝓞 k')) k') = ε * FractionalIdeal.count k 𝔭 ((𝔞.map (RingOfIntegers.mapRingHom τ) : Ideal (𝓞 k)) : FractionalIdeal (nonZeroDivisors (𝓞 k)) k) := by
   intro E _ _ k k' _ _ _ _ i τ 𝔞 𝔭 𝔓 ε h
   have hc : RingOfIntegers.mapRingHom (i.comp τ) =

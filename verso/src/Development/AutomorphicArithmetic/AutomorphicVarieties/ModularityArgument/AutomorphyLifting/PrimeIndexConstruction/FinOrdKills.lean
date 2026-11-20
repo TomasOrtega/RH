@@ -13,6 +13,13 @@ open scoped Matrix
 
 namespace UpperTheory.V.Cu2
 
+/- English proof (translation)
+Establish `ho : IsOpen (φ.ker : Set (G ℚ Ω))`. Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite` using `by classical`. Use `(Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet.subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots hM]`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hfin.isOpen_biInter fun ζ _ => stabilizer_isOpen_of_isIntegral (K := ℚ) ζ).mem_nhds ?_) fun s hs => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iInter]`. Conclude with `fun ζ _ => Subgroup.one_mem _`. Simplify using `only [Set.mem_iInter] at hs`. Conclude with `hφ s fun ζ hζ => hs ζ hζ`. Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`.
+
+Establish `hfi : Finite (G ℚ Ω ⧸ φ.ker)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `hpos : 0 < φ.ker.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨_, hpos, MonoidHom.ext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← map_pow]`. Conclude with `φ.ker.pow_index_mem s`.
+-/
 private theorem finOrd_kills {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     {l : ℕ} [Fact l.Prime] {M : ℕ} (hM : 1 ≤ M) {φ : G ℚ Ω →* (Qbar l)ˣ} (hφ : KillsMu M φ) : IsOfFinOrder φ := by
   have ho : IsOpen (φ.ker : Set (G ℚ Ω)) := by
@@ -33,16 +40,41 @@ private theorem finOrd_kills {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure 
   rw [MonoidHom.pow_apply, ← map_pow]
   exact φ.ker.pow_index_mem s
 
+/- English proof (translation)
+Rewrite using `[← map_one (residue c.O), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, (UpperTheory.V.Fr.sc_norm l c _).2]`. Both sides reduce to the same expression.
+-/
 private theorem cong_iff {l : ℕ} [Fact l.Prime] {c : Coef l} (a : c.Oˣ) :
     Cong (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom a) 1 ↔ residue c.O a = 1 := by
   rw [← map_one (residue c.O), ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, (UpperTheory.V.Fr.sc_norm l c _).2]
   rfl
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 private theorem toB_chi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l)
     (g : G ℚ Ω) : toB (chiO ℚ Ω l c.O) g = cycBar ℚ Ω l g := by
   ext
   rfl
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D T₀ hctx hok hfour ι B c₀`. Take `⟨N, w, θ, haux, hsp, hw⟩` from `h1 Ω l c D T₀ hctx hfour`. Take `⟨hcc, hev, hk⟩` from `h2 Ω l c D T₀ hctx hok hfour`. Establish `hodd : Odd l` using `(Fact.out : l.Prime).odd_of_ne_two haux.odd`. Establish `hcc' : toB (phi D T₀.pr) D.cc = -1` using `by show Units.map _ (phi D T₀.pr D.cc) = _`.
+
+Rewrite using `[hcc]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hne : toB (phi D T₀.pr) ≠ 1`. Introduce `h`.
+
+Establish `h'` using `congrArg (fun u : (Qbar l)ˣ => (u : Qbar l)) hcc'`. Rewrite `h'` using `[h]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, Units.val_neg] at h'`. Establish `h2' : (2 : Qbar l) = 0` using `by linear_combination h'`. Conclude with `two_ne_zero h2'`.
+
+Establish `hfin : IsOfFinOrder (toB (phi D T₀.pr))` using `finOrd_kills haux.pos hsp.1`. Take `⟨k₀, hk₀⟩` from `hP l Ω ι D.cc hctx.1.isCC N w (toB (phi D T₀.pr)) θ haux hsp hne`. Take `⟨n, hn⟩ : ∃ n, n = B + k₀ + 2` from `⟨_, rfl⟩`. Establish `hl1 : 1 ≤ l - 1` using `by have := (Fact.out : l.Prime).two_le; omega`. Establish `hle : n ≤ (l - 1) * n` using `Nat.le_mul_of_pos_left n hl1`.
+
+Establish `hev' : Even ((l - 1) * n)` using `(Nat.Odd.sub_odd hodd odd_one).mul_right n`. Take `⟨k, hkdef⟩ : ∃ k, k = D.e + 1 + (l - 1) * n` from `⟨_, rfl⟩`. Establish `hkodd : Odd k`. Rewrite using `[hkdef, add_assoc, add_comm 1, ← add_assoc]`. Conclude with `(hev.add hev').add_one`.
+
+Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hcong : k - 1 ≡ D.e [MOD l - 1]`. Unfold `Nat.ModEq`. Rewrite using `[show k - 1 = D.e + (l - 1) * n by omega, Nat.add_mul_mod_self_left]`. Take `⟨ρ, hρ, hrw⟩` from `hk₀ k (by omega) (by rw [hcc', hkodd.neg_one_pow])`.
+
+Take `⟨hsq, hdec⟩` from `hk k hk1 hcong`. Establish `e : ∀ g, (cycBar ℚ Ω l ^ (k - 1) * toB (phi D T₀.pr)) g = Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom (Phi D T₀.pr k g)`. Introduce `g`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.pow_apply, Phi, map_mul, map_pow]`. Rewrite using `[← toB_chi c g]`.
+
+Both sides reduce to the same expression. Establish `hI : IrrOpen ρ`. Use `(sI l haux.odd Ω ι _ θ k (by omega) hfin ρ hρ).2 ⟨resQ T₀.F T₀.g0, fun h => hsq ?_⟩` and prove the remaining obligations. Rewrite `h` using `[e]`. Use `(cong_iff (Phi D T₀.pr k (resQ T₀.F T₀.g0) ^ 2)).1 (by rw [map_pow]; exact h)` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_pow_eq_pow_val, map_pow]`. Then use the resulting hypothesis. Establish `hg1 : Raw.bar (Phi D T₀.pr k) (resQ T₀.F T₀.g0) ≠ 1` using `fun h => hsq (by rw [h, one_pow])`. Take `⟨c₁, h, ρ₁, x, hc₀, hM⟩` from `h3 Ω l ι c D T₀.pr θ k hk1 ρ hρ hdec (resQ T₀.F T₀.g0) hg1 c₀`. Conclude with `⟨w, θ, k, ρ, c₁, h, ρ₁, x, haux.prime, hw, haux.pow, haux.mu, by omega, hcong, hρ, ⟨hI, hrw⟩, hc₀, hM⟩`.
+-/
 theorem rhoExP (h1 : ExistsSplittingAuxiliaryCharacterForTower) (h2 : PhiFacts) (h3 : ModEx4) : RhoExP := by
   intro hP Ω _ _ _ l _ c D T₀ hctx hok hfour ι B c₀
   obtain ⟨N, w, θ, haux, hsp, hw⟩ := h1 Ω l c D T₀ hctx hfour

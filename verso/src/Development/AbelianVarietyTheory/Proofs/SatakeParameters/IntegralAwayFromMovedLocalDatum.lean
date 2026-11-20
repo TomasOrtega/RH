@@ -13,14 +13,27 @@ section Num
 
 variable {S : Finset ℕ}
 
+/- English proof (translation)
+The claim follows from `| 0 => by simpa using IntOff.one | n + 1 => by rw [pow_succ]; exact (intOff_pow' h n).mul h`.
+-/
 theorem intOff_pow' {z : ℂ} (h : IntOff S z) : ∀ n : ℕ, IntOff S (z ^ n)
   | 0 => by simpa using IntOff.one
   | n + 1 => by rw [pow_succ]; exact (intOff_pow' h n).mul h
 
+/- English proof (translation)
+The claim follows from `| (n : ℕ) => by rw [zpow_natCast]; exact intOff_pow' h n | Int.negSucc n => by rw [zpow_negSucc, ← inv_pow]; exact intOff_pow' h' _`.
+-/
 theorem intOff_zpow' {z : ℂ} (h : IntOff S z) (h' : IntOff S z⁻¹) : ∀ n : ℤ, IntOff S (z ^ n)
   | (n : ℕ) => by rw [zpow_natCast]; exact intOff_pow' h n
   | Int.negSucc n => by rw [zpow_negSucc, ← inv_pow]; exact intOff_pow' h' _
 
+/- English proof (translation)
+Establish `hz : z ∈ TaylorLogMetric.Qbar`. Rewrite using `[mem_algebraicClosure_iff]`. Use `⟨Polynomial.X ^ 2 - Polynomial.C (n : ℚ), Polynomial.X_pow_sub_C_ne_zero (by norm_num) _, ?_⟩` and prove the remaining obligations. Simplify using `[h]`. Use `⟨hz, fun p _ lam _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lamC_of_mem lam hz]`. Establish `h1 : (lam ⟨z, hz⟩) ^ 2 = (n : ℂ_[p])`. Rewrite using `[← map_pow]`. Establish `: (⟨z, hz⟩ : TaylorLogMetric.Qbar) ^ 2 = (n : TaylorLogMetric.Qbar)` using `Subtype.ext (by simpa using h)`. Rewrite using `[this, map_natCast]`.
+
+Establish `h2 : ‖(n : ℂ_[p])‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one _ _`. Establish `h3 : ‖lam ⟨z, hz⟩‖ ^ 2 ≤ 1` using `by rw [← norm_pow, h1]; exact h2`. Use polynomial arithmetic with `[norm_nonneg (lam ⟨z, hz⟩)]`.
+-/
 theorem intOff_of_sq_nat {z : ℂ} {n : ℕ} (h : z ^ 2 = n) : IntOff S z := by
   have hz : z ∈ TaylorLogMetric.Qbar := by
     rw [mem_algebraicClosure_iff]
@@ -36,12 +49,20 @@ theorem intOff_of_sq_nat {z : ℂ} {n : ℕ} (h : z ^ 2 = n) : IntOff S z := by
   have h3 : ‖lam ⟨z, hz⟩‖ ^ 2 ≤ 1 := by rw [← norm_pow, h1]; exact h2
   nlinarith [norm_nonneg (lam ⟨z, hz⟩)]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.qOf`. Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.ne_bot`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact P.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_qOf {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) : 1 < Formalism.L2.Col.qOf P := by
   unfold Formalism.L2.Col.qOf
   have h0 : Ideal.absNorm P.asIdeal ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.ne_bot
   have h1 : Ideal.absNorm P.asIdeal ≠ 1 := by rw [Ne, Ideal.absNorm_eq_one_iff]; exact P.isPrime.ne_top
   omega
 
+/- English proof (translation)
+Unfold `LocE.unitV`. Use `split_ifs with h`. Establish `hp` using `GlobalTheory.LastSteps.char_pow χ h.unit`. Establish `hq` using `one_lt_qOf P`. Establish `e : (σ ((χ h.unit : Kˣ) : K)) ^ (Formalism.L2.Col.qOf P - 1) = 1` using `by rw [← map_pow, hp, map_one]`.
+
+Conclude with `⟨IntOff.of_pow (by omega) e, IntOff.of_pow (n := Formalism.L2.Col.qOf P - 1) (by omega) (by rw [inv_pow, e, inv_one])⟩`. Simplify using `only [map_zero, inv_zero]`. Conclude with `⟨IntOff.zero, IntOff.zero⟩`.
+-/
 theorem unitV_intOff {E K : Type} [Field E] [NumberField E] [Field K] (σ : K →+* ℂ) {P : HeightOneSpectrum (𝓞 E)}
     (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     IntOff S (σ (LocE.unitV χ a)) ∧ IntOff S (σ (LocE.unitV χ a))⁻¹ := by
@@ -54,6 +75,9 @@ theorem unitV_intOff {E K : Type} [Field E] [NumberField E] [Field K] (σ : K �
   · simp only [map_zero, inv_zero]
     exact ⟨IntOff.zero, IntOff.zero⟩
 
+/- English proof (translation)
+Unfold `LocE.locChar`. Rewrite using `[map_mul, map_zpow₀, mul_inv, ← zpow_neg]`. Take `⟨h1, h2⟩` from `unitV_intOff (S := S) σ χ (a / ((Formalism.L2.Col.qOf P : ℕ) : E) ^ LocE.vP P (Formalism.L2.Col.qOf P) a)`. Conclude with `⟨(intOff_zpow' hc hc' _).mul h1, (intOff_zpow' hc hc' _).mul h2⟩`.
+-/
 theorem locChar_intOff {E K : Type} [Field E] [NumberField E] [Field K] (σ : K →+* ℂ) {P : HeightOneSpectrum (𝓞 E)}
     (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) (hc : IntOff S (σ cq)) (hc' : IntOff S (σ cq)⁻¹) :
     IntOff S (σ (LocE.locChar (Formalism.L2.Col.qOf P) cq χ a)) ∧ IntOff S (σ (LocE.locChar (Formalism.L2.Col.qOf P) cq χ a))⁻¹ := by
@@ -64,6 +88,21 @@ theorem locChar_intOff {E K : Type} [Field E] [NumberField E] [Field K] (σ : K 
 
 end Num
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hmu0 hval u μ hQg i hi P hal h hstab x`. Establish `hok` using `(t.idx_ok μ).cst_ok`. Establish `hS : SNum (t.O u μ).S (Formalism.L2.Col.qOf P.1)` using `GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P`. Establish `hs2 : (t.seam.σ₀ ((t.cst μ).sq P)) ^ 2 = ((Formalism.L2.Col.qOf P.1 : ℕ) : ℂ)`. Rewrite using `[← map_pow, hok.sq_sq P, map_natCast]`.
+
+Establish `hs0 : t.seam.σ₀ ((t.cst μ).sq P) ≠ 0`. Introduce `h0`. Rewrite `hs2` using `[h0, zero_pow two_ne_zero]`. Use `one_lt_qOf P.1` as an intermediate fact. Establish `h1 : ((Formalism.L2.Col.qOf P.1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+
+Conclude with `h1 hs2.symm`. Establish `hsq : IntOff (t.O u μ).S (t.seam.σ₀ ((t.cst μ).sq P))` using `intOff_of_sq_nat hs2`. Establish `hsq' : IntOff (t.O u μ).S (t.seam.σ₀ ((t.cst μ).sq P))⁻¹`. Establish `e : (t.seam.σ₀ ((t.cst μ).sq P))⁻¹ = t.seam.σ₀ ((t.cst μ).sq P) * (((Formalism.L2.Col.qOf P.1 : ℕ) : ℂ))⁻¹`. Rewrite using `[← hs2, pow_two, mul_inv, ← mul_assoc, mul_inv_cancel₀ hs0, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `hsq.mul (IntOff.inv_nat hS)`. Establish `hmu : ∀ a : t.X.E, (P.1 ∈ t.Pr.vGs → IsUnit (redP P.1 a)) → IntOff (t.O u μ).S (t.seam.σ₀ (Formalism.L2.Col.muAt t.Ch t.sel (t.tup μ) (t.cst μ) i P a)) ∧ IntOff (t.O u μ).S (t.seam.σ₀ (Formalism.L2.Col.muAt t.Ch t.sel (t.tup μ) (t.cst μ) i P a))⁻¹`. Introduce `a ha`. Unfold `Formalism.L2.Col.muAt`.
+
+Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Rewrite using `[GlobalTheory.LastSteps.locChar_unit _ _ (ha hP)]`. Conclude with `unitV_intOff _ _ _`. Take `⟨h1, h2⟩` from `GlobalTheory.KerTie.muq_intOff D L hT Gi Gl K Y cX ex t hmu0 hval u μ hQg i hi P hP`. Rewrite `h2` using `[map_inv₀]`.
+
+Conclude with `locChar_intOff _ _ _ _ h1 h2`. Establish `hPhi` using `(GlobalTheory.PhiRootVal.phi_intOff D L hT Gi Gl K Y cX ex t u μ P.1).1 i`. Establish `hA` using `hmu ((LinearEquiv.det hal : t.X.Eˣ) : t.X.E) fun hP => GlobalTheory.LastSteps.isUnit_det_of_stab (hstab hP).1`. Establish `hB` using `hmu ((LinearEquiv.det h : t.X.Eˣ) : t.X.E) fun hP => GlobalTheory.LastSteps.isUnit_det_of_stab (hstab hP).2`. Unfold `Formalism.L2.Col.omPhi Loc.om`.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_mul, map_inv₀, map_zpow₀, map_zpow₀]`. Conclude with `(((hA.1.mul hB.2).mul (intOff_zpow' hsq hsq' _)).mul (intOff_zpow' hsq hsq' _)).mul (hPhi _)`.
+-/
 theorem intOff_omPhi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), (∀ j, ∃ e, Formalism.L2.Col.IsMu0 t.Ch t.seam.σ₀ e j (t.glob.mu0 j)) → (∀ (j : Fin D.R.m) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 t.X.E)), (∀ i, ((t.Pr.g i : ℕ) : 𝓞 t.X.E) ∉ v.asIdeal) → t.seam.σ₀ (t.Ch.muVal j v : t.X.K) = (((t.glob.mu0 j).val v : ℂˣ) : ℂ)) → ∀ u μ, (∀ k, D.host.g k ∉ Y.Qp μ) → ∀ (i : ℕ), i < D.R.m → ∀ (P : rowSG t.Pr t.sel (t.tup μ)) (hal : AutY t.X D.R i) (h : AutY t.X D.R (i + 1)), (P.1 ∈ t.Pr.vGs → hal ∈ stabL t.X.E _ (lamYat (Pr := t.Pr) i P.1) ∧ h ∈ stabL t.X.E _ (lamYat (Pr := t.Pr) (i + 1) P.1)) → ∀ x, IntOff (t.O u μ).S (t.seam.σ₀ (omPhi t.Ch t.sel (t.tup μ) (t.cst μ) i P hal h x)) := by
   intro D L hT Gi Gl K Y cX ex t hmu0 hval u μ hQg i hi P hal h hstab x
   have hok := (t.idx_ok μ).cst_ok

@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.FrameOf
 
+/- English proof (translation)
+Introduce `l _ Lf _`. Use `⟨fun a b h => Subtype.ext (Subtype.ext h), fun x => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨(a : Lf).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Formalism.BasicNotions.Examples₂.LB.isIntegral_iff_norm_le]`. Establish `ha : IsIntegral ℤ_[l] (a : Lf)` using `a.2`. Conclude with `ha.map (Lf.val.restrictScalars ℤ_[l])`. Introduce and unpack `⟨hx, hn⟩`. Rewrite `hn` using `[← Formalism.BasicNotions.Examples₂.LB.isIntegral_iff_norm_le]`.
+
+Establish `hi : IsIntegral ℤ_[l] (⟨x, hx⟩ : Lf)` using `(isIntegral_algHom_iff (Lf.val.restrictScalars ℤ_[l]) Subtype.val_injective).1 hn`. Conclude with `⟨⟨⟨x, hx⟩, hi⟩, rfl⟩`.
+-/
 theorem intEmb_range_norm_le_one : ∀ (l : ℕ) [Fact l.Prime] (Lf : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] Lf],
     Function.Injective (intEmb Lf) ∧ ∀ x, x ∈ Set.range (intEmb Lf) ↔ x ∈ Lf ∧ ‖x‖ ≤ 1 := by
   intro l _ Lf _

@@ -31,6 +31,17 @@ open GlobalTheory.RowVacScalar (detIdl idemAt)
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (stdSnd)
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
   {A A' WW : HSp D} {X : Tri T A A' WW} {μ₀ : T} {δ t0 : ℂ} {s : T} {Q : ℕ} {P P' : Pair D ⊤ δ t0 Q}
+/- English proof (translation)
+Introduce `_ _ _ hI _`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W _ i j A A' WW X δ t0 hX hβ`. Establish `hc : D.host.ccK = ⊤` using `hR.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Distinguish the cases in `hex : ∃ (s : T) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q), IsBottom G s i j (GlobalTheory.SqTop.modT G s) P P'`.
+
+Take `⟨s₀, Q₀, P₀, P₀', hB₀⟩` from `hex`. Establish `s1 : X.rA'.s = fun _ => 1` using `funext fun τ => (hX.std'.2.2 τ).1`. Establish `s3 : X.rW.s = fun _ => 1` using `funext fun τ => (hX.stdW.2.2 τ).1`. Establish `hv` using `hX.is.isVac'`. Rewrite `hv` using `[s1, s3]`.
+
+Take `⟨κ, hκ, hvac⟩` from `vac_const (hI D) hc (setup hc hX P₀'.crv) P₀'.pt0 hX.std'.2.1 hX.stdW.2.1 hv`. Use `⟨(∏ τ, GlobalTheory.NormExact.period D δ 1 τ ^ (P₀'.a * P₀'.n τ)) * κ, mul_ne_zero (Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (period_ne_zero P₀'.crv τ)) hκ, fun s Q P P' hB => ?_⟩` and prove the remaining obligations. Establish `hS : A'.rank = P'.a` using `hX.rank'.trans hB.rank.2.1.symm`. Establish `hT : WW.rank = P'.d` using `by rw [hB.rank.2.2.2, hB.rank.2.2.1, ← hX.rank, ← hX.rank', hX.is.rank]`. Take `⟨ζ, hζ, r1⟩` from `hvac hS hT P'.e0 P'.vac P'.W.nz`.
+
+Take `⟨ζ', hζ', r2⟩` from `reads_datum (hI D) hR hL hX hβ hB hS hT r1`. Establish `hu` using `hζ.mul hζ'.isAlgUnit`. Use `⟨ζ * ζ', hu.1, hu.2.1, fun p _ _ lam => hu.2.2 p lam, fun ea ed h g hg x g' hg' T' => ?_⟩` and prove the remaining obligations. Take `⟨-, e1, -, e2, -⟩` from `GlobalTheory.BottomReal.bottom_real_eq G hL hB₀ hB`. Rewrite using `[ker'_eq (hI D) hc hL hX hB ea ed (mul_ne_zero (mul_ne_zero hκ hζ.1) hζ'.ne_zero) r2 hg hg' T', e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, one_ne_zero, fun s Q P P' hB => absurd ⟨s, Q, P, P', hB⟩ hex⟩`.
+-/
 theorem bottomKernel_eq_classSum_term : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
@@ -77,6 +88,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term | exact _root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term | (intros; apply _root_.GlobalTheory.BotSmallDict.bottomKernel_eq_classSum_term <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smallStage_bottomKernel_eq_term : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

@@ -33,6 +33,9 @@ def hermEquiv : hermSub ι d ≃ₗ[ℝ] (ι → Fin d → Fin d → ℝ) where
     apply Complex.ext <;> simp [this] <;> ring
   right_inv y := by funext τ i k; simp; ring
 
+/- English proof (translation)
+Rewrite using `[(hermEquiv ι d).finrank_eq]`. Simplify using `[Module.finrank_pi_fintype]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_hermSub [Fintype ι] : finrank ℝ (hermSub ι d) = d * d * Fintype.card ι := by
   rw [(hermEquiv ι d).finrank_eq]
   simp [Module.finrank_pi_fintype]
@@ -54,6 +57,9 @@ def hermSingle (i0 k0 : Fin d) : (ι → ℂ) →ₗ[ℝ] hermSub ι d where
       Submodule.coe_smul]
     split_ifs <;> ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i k`. Simplify using `only [Submodule.coe_sum, Finset.sum_apply, hermSingle, LinearMap.coe_mk, AddHom.coe_mk, Finset.sum_add_distrib, ite_and]`. Simplify using `[b.2 τ k i, map_ofNat]`.
+-/
 theorem sum_hermSingle (b : hermSub ι d) :
     b = ∑ i0, ∑ k0, hermSingle i0 k0 (fun τ => b.1 τ i0 k0 / 2) := by
   apply Subtype.ext
@@ -66,6 +72,25 @@ end Space
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r d : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Use `set V := Submodule.span ℝ {z : X.Ψ → ℂ | ∃ γ : E, IsIntegral ℤ γ ∧ z = fun τ => τ.1 γ}`. Establish `key : ∀ η : E, IsIntegral ℤ η → ∀ p : X.Ψ → ℝ, (fun τ : X.Ψ => τ.1 η * p τ) ∈ V`. Introduce `η hη p`. Establish `hp : p ∈ Submodule.span ℝ {p : X.Ψ → ℝ | ∃ a : E, cc a = a ∧ IsIntegral ℤ a ∧ p = fun τ => (τ.1 a).re}` using `by rw [FourierCoefficientLattice.span_fixed_integral_real_parts]; trivial`. Proceed by induction on `hp using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨a, ha, hai, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨η * a, hη.mul hai, funext fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← RealEmbeddingCharacters.emb_real ha]`. Consider the case `zero => convert V.zero_mem using 1`.
+
+Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => convert V.add_mem hx hy using 1`. Use function extensionality and compare the values at `τ`. Simplify using `[mul_add]`.
+
+Consider the case `smul c x _ hx => convert V.smul_mem c hx using 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨η, hηcc, hηi, hηne⟩ : ∃ η : E, cc η = -η ∧ IsIntegral ℤ η ∧ η ≠ 0 := by`.
+
+Establish `halg : IsAlgebraic ℤ X.ξ0` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic X.ξ0)`. Take `⟨k, hk, hki⟩` from `halg.exists_integral_multiple`. Use `⟨k • X.ξ0, ?_, hki, smul_ne_zero hk X.ξ0_ne⟩` and prove the remaining obligations. Rewrite using `[show cc (k • X.ξ0) = k • cc X.ξ0 from map_zsmul _ k _, X.ξ0_im, smul_neg]`. Establish `hre : ∀ τ : E →+* ℂ, (τ η).re = 0` using `fun τ => by`.
+
+Establish `h` using `emb_cc τ η`. Rewrite `h` using `[hηcc, map_neg]`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `him : ∀ τ : E →+* ℂ, (τ η).im ≠ 0` using `fun τ h => hηne ((map_eq_zero τ).1 (Complex.ext (hre τ) h))`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Use `V.add_mem (key 1 isIntegral_one fun τ => (z τ).re) (key η hηi fun τ => (z τ).im / (τ.1 η).im) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Use `him τ.1` as an intermediate fact.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, map_one, one_mul, add_re, ofReal_re, mul_re, hre, ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply, map_one, one_mul, add_im, ofReal_re, mul_im, hre, ofReal_im]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem span_emb_int : Submodule.span ℝ {z : X.Ψ → ℂ | ∃ γ : E, IsIntegral ℤ γ ∧
     z = fun τ => τ.1 γ} = ⊤ := by
   set V := Submodule.span ℝ {z : X.Ψ → ℂ | ∃ γ : E, IsIntegral ℤ γ ∧ z = fun τ => τ.1 γ}
@@ -129,9 +154,23 @@ def latZ (d g : ℕ) : Submodule ℤ (hermSub X.Ψ d) :=
         exact ⟨-γ, hγi.neg, by simp only [Matrix.neg_apply, e]; ring⟩
       · funext τ i k; simp [embH, e1] }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latZ {g : ℕ} {b : hermSub X.Ψ d} : b ∈ latZ X d g ↔ b.1 ∈ LZ X d g := Iff.rfl
 
 open FourierCoefficientLattice in
+/- English proof (translation)
+Use `set S := {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ 4}`. Establish `hS : S.Finite` using `Embeddings.finite_of_norm_le E ℂ 4`. Use `set T : Set (Matrix (Fin d) (Fin d) E) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (fun γ => cE g * γ) '' S`. Establish `hT : T.Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hS.image _`. Use `Set.Finite.of_finite_image (f := Subtype.val) ((hT.image fun β => embH X β).subset ?_) Subtype.val_injective.injOn` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, ⟨⟨β, hβ, hγ, e0⟩, hn⟩, rfl⟩`. Use `⟨β, fun i _ k _ => ?_, e0.symm⟩` and prove the remaining obligations. Take `⟨γ, hγi, e⟩` from `hγ i k`. Use `⟨γ, ⟨hγi, fun σ => ?_⟩, e.symm⟩` and prove the remaining obligations. Establish `hb2 : ∀ τ : X.Ψ, ‖τ.1 (β i k)‖ < 1` using `fun τ => by`.
+
+Use `(norm_le_pi_norm (y.1 τ i) k).trans ((norm_le_pi_norm (y.1 τ) i).trans (norm_le_pi_norm y.1 τ))` as an intermediate fact. Establish `h2 : y.1 τ i k = τ.1 (β i k)` using `by rw [e0]; rfl`. Rewrite using `[← h2]`. Conclude with `this.trans_lt hn`. Establish `hτ : ∀ τ : X.Ψ, ‖τ.1 γ‖ ≤ 4` using `fun τ => by`.
+
+Establish `h` using `hb2 τ`. Rewrite `h` using `[e, show ((g * dEnat E : ℕ) : E) / 2 * γ = cE g * γ from rfl, map_mul, norm_mul, emb_cE, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (cr_pos g hg)]`. Use polynomial arithmetic with `[norm_nonneg (τ.1 γ), cr_ge (E := E) g hg]`. Distinguish the cases in `hσ : σ ∈ X.Ψ`. Conclude with `hτ ⟨σ, hσ⟩`.
+
+Use `hτ ⟨_, (X.conj_mem_iff σ).2 hσ⟩` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem finite_small {g : ℕ} (hg : 0 < g) : {y | y ∈ latZ X d g ∧ ‖y‖ < 1}.Finite := by
   set S := {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ 4}
   have hS : S.Finite := Embeddings.finite_of_norm_le E ℂ 4
@@ -160,6 +199,15 @@ theorem finite_small {g : ℕ} (hg : 0 < g) : {y | y ∈ latZ X d g ∧ ‖y‖ 
   · have := hτ ⟨_, (X.conj_mem_iff σ).2 hσ⟩
     simpa [ComplexEmbedding.conjugate_coe_eq] using this
 
+/- English proof (translation)
+Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Use `set T := {y : hermSub X.Ψ d | y ∈ latZ X d g ∧ ‖y‖ < 1} \ {0}`. Establish `hT : IsClosed T` using `((finite_small X hg).subset Set.sdiff_subset).isClosed`. Establish `h0 : (0 : hermSub X.Ψ d) ∈ Tᶜ` using `by simp [T]`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hT.isOpen_compl 0 h0`.
+
+Rewrite using `[Metric.isOpen_iff]`. Introduce `q hq`. Rewrite `hq` using `[Set.mem_singleton_iff]`. Substitute `hq` using the available equality. Use `⟨min ε 1, lt_min hε one_pos, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hq` using `[Metric.mem_ball, dist_zero_right]`. Rewrite using `[Set.mem_singleton_iff]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hq' : ‖(q : hermSub X.Ψ d)‖ < min ε 1` using `hq`. Assume the negation of the conclusion as `hne`.
+
+Establish `hmem : (q : hermSub X.Ψ d) ∈ T` using `⟨⟨q.2, lt_of_lt_of_le hq' (min_le_right _ _)⟩, hne⟩`. Establish `: (q : hermSub X.Ψ d) ∈ Metric.ball (0 : hermSub X.Ψ d) ε`. Rewrite using `[Metric.mem_ball, dist_zero_right]`. Conclude with `lt_of_lt_of_le hq' (min_le_left _ _)`. Conclude with `hball this hmem`.
+-/
 theorem discrete_latZ {g : ℕ} (hg : 0 < g) : DiscreteTopology (latZ X d g) := by
   rw [discreteTopology_iff_isOpen_singleton_zero]
   set T := {y : hermSub X.Ψ d | y ∈ latZ X d g ∧ ‖y‖ < 1} \ {0}
@@ -182,6 +230,17 @@ theorem discrete_latZ {g : ℕ} (hg : 0 < g) : DiscreteTopology (latZ X d g) := 
   exact hball this hmem
 
 open FourierCoefficientLattice in
+/- English proof (translation)
+Use `set Sp := Submodule.span ℝ (latZ X d g : Set (hermSub X.Ψ d))`. Establish `hcr` using `cr_pos (E := E) g hg`. Establish `key : ∀ (i0 k0 : Fin d) (z : X.Ψ → ℂ), hermSingle i0 k0 z ∈ Sp`. Introduce `i0 k0 z`. Establish `hz : z ∈ Submodule.span ℝ {z : X.Ψ → ℂ | ∃ γ : E, IsIntegral ℤ γ ∧ z = fun τ => τ.1 γ}` using `by rw [span_emb_int]; trivial`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨γ, hγ, rfl⟩` from `hx`. Rewrite using `[← Sp.smul_mem_iff hcr.ne']`. Use `Submodule.subset_span ⟨fun i k => cE g * ((if i = i0 ∧ k = k0 then γ else 0) + (if k = i0 ∧ i = k0 then cc γ else 0)), fun i k => ?_, fun i k => ⟨_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [FixedPointImaginarySpan.cc_mul'', cc_cE, RealEmbeddingCharacters.cc_add', apply_ite cc, RealEmbeddingCharacters.cc_zero', RealEmbeddingCharacters.cc_cc', add_comm]`. Apply the tactic sequence `refine IsIntegral.add ?_ ?_ <;> split_ifs exacts [hγ, isIntegral_zero, isIntegral_cc hγ, isIntegral_zero]`. Use function extensionality and compare the values at `τ i k`. Simplify using `only [hermSingle, embH, Submodule.coe_smul, Pi.smul_apply, LinearMap.coe_mk, AddHom.coe_mk, Complex.real_smul, map_mul, emb_cE, map_add, apply_ite τ.1, map_zero, emb_cc]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Sp.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Sp.smul_mem c hx`. Use `eq_top_iff.2 fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[sum_hermSingle b]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun k _ => key _ _ _`.
+-/
 theorem span_latZ {g : ℕ} (hg : 0 < g) :
     Submodule.span ℝ (latZ X d g : Set (hermSub X.Ψ d)) = ⊤ := by
   set Sp := Submodule.span ℝ (latZ X d g : Set (hermSub X.Ψ d))
@@ -211,6 +270,19 @@ theorem span_latZ {g : ℕ} (hg : 0 < g) :
   rw [sum_hermSingle b]
   exact Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun k _ => key _ _ _
 
+/- English proof (translation)
+Use `discrete_latZ (d := d) X hg` as an intermediate fact. Establish `: IsZLattice ℝ (latZ X d g)` using `⟨span_latZ X hg⟩`. Establish `hrank : Module.finrank ℤ (latZ X d g) = d * d * Fintype.card X.Ψ`. Rewrite using `[ZLattice.rank ℝ (latZ X d g), finrank_hermSub]`. Use `set bZ := Module.finBasisOfFinrankEq ℤ (latZ X d g) hrank`.
+
+Use `set eR := bZ.ofZLatticeBasis ℝ (latZ X d g)`. Establish `heR : ∀ j, eR j = (bZ j : hermSub X.Ψ d)` using `fun j => bZ.ofZLatticeBasis_apply ℝ _ j`. Establish `hli : LinearIndependent ℝ (fun j => (eR j).1)` using `eR.linearIndependent.map' (hermSub X.Ψ d).subtype (Submodule.ker_subtype _)`. Establish `hc : ∀ (m : ℤ) (v : X.Ψ → Fin d → Fin d → ℂ), (m : ℂ) • v = (m : ℝ) • v` using `fun m v => by`. Rewrite using `[← Complex.ofReal_intCast, Complex.coe_smul]`.
+
+Use `⟨fun j => (eR j).1, fun j => ?_, fun b hb => ?_, hli⟩` and prove the remaining obligations. Rewrite using `[← mem_latZ, heR]`. Conclude with `(bZ j).2`. Use `set b' : latZ X d g := ⟨⟨b, isHerm_of_mem_LZ X hb⟩, hb⟩ set n := bZ.repr b'`. Establish `h1` using `congrArg (fun v : latZ X d g => v.1.1) (bZ.sum_repr b')`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at h1`. Establish `hb' : b = ∑ j, (n j : ℂ) • (eR j).1`. Use `h1.symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[heR, Int.cast_smul_eq_zsmul]`. Use `⟨n, hb', fun n' hn' => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∑ j, (n' j : ℝ) • (eR j).1 = ∑ j, (n j : ℝ) • (eR j).1`. Use `hn'.symm.trans hb'` as an intermediate fact. Simplify `this` using `only [hc]`. Establish `hz` using `Fintype.linearIndependent_iff.1 hli (fun j => (n' j : ℝ) - n j) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+
+Rewrite using `[e, sub_self])`. Use function extensionality and compare the values at `j`. Use `sub_eq_zero.1 (hz j)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem exists_isLZBasis {g : ℕ} (hg : 0 < g) : ∃ ω, IsLZBasis (d := d) X g ω := by
   have := discrete_latZ (d := d) X hg
   have : IsZLattice ℝ (latZ X d g) := ⟨span_latZ X hg⟩
@@ -243,6 +315,13 @@ theorem exists_isLZBasis {g : ℕ} (hg : 0 < g) : ∃ ω, IsLZBasis (d := d) X g
     have := sub_eq_zero.1 (hz j)
     exact_mod_cast this
 
+/- English proof (translation)
+Use `set ω' : Fin (d * d * Fintype.card X.Ψ) → hermSub X.Ψ d := fun j => ⟨ω j, isHerm_of_mem_LZ X (hω.1 j)⟩`. Establish `hli : LinearIndependent ℝ ω'` using `LinearIndependent.of_comp (hermSub X.Ψ d).subtype hω.2.2`. Establish `hsp : ⊤ ≤ Submodule.span ℝ (Set.range ω')` using `(hli.span_eq_top_of_card_eq_finrank' (by rw [finrank_hermSub, Fintype.card_fin])).ge`. Use `⟨Basis.mk hli hsp, fun j => by rw [Basis.mk_apply], le_antisymm ?_ fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[Basis.mk_apply]`. Conclude with `hω.1 j`. Take `⟨n, hn, -⟩` from `hω.2.1 b.1 hb`. Establish `: b = ∑ j, n j • Basis.mk hli hsp j`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hn]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower, Basis.mk_apply, Int.cast_smul_eq_zsmul, ω']`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem IsLZBasis.exists_basis {g : ℕ}
     {ω : Fin (d * d * Fintype.card X.Ψ) → X.Ψ → Fin d → Fin d → ℂ} (hω : IsLZBasis X g ω) :
     ∃ e : Basis (Fin (d * d * Fintype.card X.Ψ)) ℝ (hermSub X.Ψ d), (∀ j, (e j).1 = ω j) ∧
@@ -277,9 +356,19 @@ def form : (X.Ψ → Fin d → Fin d → ℂ) →ₗ[ℝ] hermSub X.Ψ d →ₗ[
       simp only [pairR, Submodule.coe_smul, Pi.smul_apply, Complex.real_smul, mul_left_comm _ (c : ℂ),
         ← Finset.mul_sum, Complex.re_ofReal_mul, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_apply (χ : X.Ψ → Fin d → Fin d → ℂ) (b : hermSub X.Ψ d) :
     form X χ b = 2 * pairR X χ b.1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `χ h`. Establish `h1` using `LinearMap.congr_fun h ⟨fun τ i k => conj (χ.1 τ i k), fun τ i k => by`. Conclude with `congrArg conj (χ.2 τ i k)⟩`. Simplify using `only [LinearMap.comp_apply, form_apply, pairR, Submodule.subtype_apply, Complex.mul_conj, LinearMap.zero_apply, Complex.re_sum, Complex.ofReal_re, mul_eq_zero, OfNat.ofNat_ne_zero, false_or] at h1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i k`. Establish `n` using `fun τ i k => Complex.normSq_nonneg (χ.1 τ i k)`. Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg fun τ _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => n τ i k).1 h1 τ (Finset.mem_univ _)`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => Finset.sum_nonneg fun k _ => n τ i k).1 h2 i (Finset.mem_univ _)`.
+
+Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => n τ i k).1 h3 k (Finset.mem_univ _)`. Conclude with `Complex.normSq_eq_zero.1 h4`.
+-/
 theorem form_injective : Function.Injective (form X ∘ₗ (hermSub X.Ψ d).subtype) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro χ h
@@ -298,11 +387,17 @@ theorem form_injective : Function.Injective (form X ∘ₗ (hermSub X.Ψ d).subt
   have h4 := (Finset.sum_eq_zero_iff_of_nonneg fun k _ => n τ i k).1 h3 k (Finset.mem_univ _)
   exact Complex.normSq_eq_zero.1 h4
 
+/- English proof (translation)
+Take `⟨χ, h⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := ℝ) (V := hermSub X.Ψ d)).symm).1 (form_injective X) φ`. Conclude with `⟨χ.1, χ.2, h⟩`.
+-/
 theorem exists_form_eq (φ : hermSub X.Ψ d →ₗ[ℝ] ℝ) : ∃ χ, IsHerm χ ∧ form X χ = φ := by
   obtain ⟨χ, h⟩ := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
     (Subspace.dual_finrank_eq (K := ℝ) (V := hermSub X.Ψ d)).symm).1 (form_injective X) φ
   exact ⟨χ.1, χ.2, h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h l hl => h l.1 hl, fun h b hb => h ⟨b, isHerm_of_mem_LZ X hb⟩ hb⟩`.
+-/
 theorem isFreqZ_iff {g : ℕ} (χ : X.Ψ → Fin d → Fin d → ℂ) :
     IsFreqZ X g χ ↔ ∀ l ∈ latZ X d g, ∃ k : ℤ, form X χ l = k :=
   ⟨fun h l hl => h l.1 hl, fun h b hb => h ⟨b, isHerm_of_mem_LZ X hb⟩ hb⟩

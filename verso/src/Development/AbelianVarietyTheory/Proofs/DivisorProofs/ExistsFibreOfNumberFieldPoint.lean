@@ -14,6 +14,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.InteriorFibre
 
+/- English proof (translation)
+Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨cB⟩` from `(GlobalTheory.firstFiveLaws.1.cube _ P ⟨P.L, rig, P.isLB, hrig⟩ rfl).1`. Establish `hB` using `TripleModel.isPullCubical_of_lbIso GlobalTheory.globalFns_holds P.isAb gp cB c h.symm`. Establish `hF : (cubeMapOf gp).F = (CubeMap.ofHom (𝟙 P.A)).F ≫ (cubeMapOf gp).F` using `(Category.id_comp _).symm`. Conclude with `⟨{ G := P.A, smooth := P.isAb.smooth, L := _, cub := cB, P := P, rig := rig rig_gen := hrig, cubB := cB, q := 𝟙 _ q_flat := inferInstanceAs (Flat (𝟙 P.A.left)) q_surj := inferInstanceAs (Surjective (𝟙 P.A.left)) q_affine := inferInstanceAs (IsAffineHom (𝟙 P.A.left)) X := PUnit, i …`.
+-/
 theorem exists_fib_of_polAV {k : Type} [Field k] {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {L : RigLB G} (c : CubicalStr G L) (x : Sp k ⟶ S) (P : Out.PolAV (Sp k)) (θ : P.A.left ⟶ G.left)
     (gp : IsGrpPullback P.A G x θ) (h : LBIso (L.L.pull θ) P.L) :
@@ -33,6 +36,9 @@ theorem exists_fib_of_polAV {k : Type} [Field k] {S : Scheme.{0}} {G : Over S} [
               (SpecialFibreExt.comp_eqs _ _ _ hF).2 hB hB },
     cubeMapOf gp, gp, rfl, hB⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z K _ _ yK hy`. Take `⟨P, θ, gp, h⟩` from `exists_polAV_of_not_mem_genBd Z K yK hy`. Conclude with `exists_fib_of_polAV Z.t.cub _ P θ gp h`.
+-/
 theorem exists_fibAt_of_not_mem_genBd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (K : Type) [Field K] [NumberField K] (yK : Sp K ⟶ gen Z), yK (IsLocalRing.closedPoint K) ∉ genBd Z → ∃ (φ : Fib K) (m : CubeMap φ.G Z.t.G), FibAt Z.t (yK ≫ genι Z) φ m := by
   intro E _ _ _ H Dw l Xo c Z K _ _ yK hy
   obtain ⟨P, θ, gp, h⟩ := exists_polAV_of_not_mem_genBd Z K yK hy

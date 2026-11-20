@@ -10,6 +10,17 @@ open scoped TensorProduct
 
 namespace PositivityTheory.Rg.BcB.N3.Pus
 
+/- English proof (translation)
+Set `e : (Σ _ : Fin N, Fin 1) ≃ Fin N` to `Equiv.sigmaUnique (Fin N) fun _ => Fin 1`. Set `κ : ℂ ≃ₗ[ℂ] ⨂[ℂ] _ : Fin N, ℂ` to `(PiTensorProduct.constantBaseRingEquiv (Fin N) ℂ).toLinearEquiv.symm`. Set `Ψ : IndSp (points (Fin N)) ((ofChar (torusChar χ)).comp (leviTorus k (Fin N)).symm.toMonoidHom) →ₗ[ℂ] IndSp e (piTensor fun i => detRep (Fin 1) (χ i))` to `MultiIrr.indPull (MonoidHom.id _) continuous_id κ.toLinearMap fun p => ⟨⟨p, mem_parab_iff.2 fun a b _ _ hab => mem_parab_iff.1 p.2 a b 0 0 hab⟩, rfl, fun w => by`. Establish `hd : ∀ a, GeneralLinearGroup.det (leviProj k e p a) = GeneralLinearGroup.det (leviProj k (points (Fin N)) ⟨p, mem_parab_iff.2 fun a b _ _ hab => mem_parab_iff.1 p.2 a b 0 0 hab⟩ a)` using `fun a => by`. Use `ext`.
+
+Simplify using `only [GeneralLinearGroup.val_det_apply, det_unique]`. Both sides reduce to the same expression. Use `show (deltaHalf k _ (leviProj k e p) : ℂ) • piTensor (fun i => detRep (Fin 1) (χ i)) (leviProj k e p) (κ w) = κ ((deltaHalf k _ (leviProj k (points (Fin N)) _) : ℂ) • ofChar (torusChar χ) ((leviTorus k (Fin N)).symm (leviProj k (points (Fin N)) _)) w)`. Rewrite using `[map_smul, deltaHalf_apply, deltaHalf_apply]`. Use `congrArg₂ (fun (c : ℂˣ) (v : ⨂[ℂ] _ : Fin N, ℂ) => (c : ℂ) • v) ?_ ?_` and prove the remaining obligations.
+
+Use `(Finset.prod_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hd, modExp_fin _ (fun _ => by simp), modExp_fin _ (fun _ => by simp)]`. Establish `hκ : ∀ w, κ w = w • PiTensorProduct.tprod ℂ (fun _ : Fin N => (1 : ℂ))` using `fun w => by`. Apply `κ.symm.injective` to reduce the goal to its premises. Simplify using `[κ]`.
+
+Rewrite using `[hκ, hκ, map_smul, piTensor_tprod, ofChar_apply, torusChar_apply]`. Establish `: (fun i => detRep (Fin 1) (χ i) (leviProj k e p i) 1) = fun i => (χ i (GeneralLinearGroup.det (leviProj k e p i)) : ℂ) • (1 : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[detRep]`. Rewrite using `[this, MultilinearMap.map_smul_univ, smul_smul, mul_comm, Units.coe_prod]`.
+
+Simplify using `only [hd]`. Use the proof step `rfl⟩`. Use `⟨⟨Ψ, fun g => rfl⟩, fun f f' h => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Subtype.ext (funext fun x => κ.injective (congrFun (congrArg (fun φ => φ.1.1) h) x)))`.
+-/
 theorem exists_emb (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (χ : Fin N → kˣ →* ℂˣ) :
     ∃ Ψ : (prinSeries χ).IntertwiningMap
@@ -48,6 +59,9 @@ theorem exists_emb (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
   exact Subtype.ext (Subtype.ext (funext fun x =>
     κ.injective (congrFun (congrArg (fun φ => φ.1.1) h) x)))
 
+/- English proof (translation)
+Use extensionality with `⟨a, i⟩`. Rewrite using `[stdBlocks_val]`. Simplify using `[Fin.eq_zero i]`.
+-/
 theorem sigmaUnique_eq_stdBlocks (N : ℕ) (h : ∑ _ : Fin N, 1 = N) :
     (Equiv.sigmaUnique (Fin N) fun _ => Fin 1) = stdBlocks (fun _ => 1) h := by
   ext ⟨a, i⟩

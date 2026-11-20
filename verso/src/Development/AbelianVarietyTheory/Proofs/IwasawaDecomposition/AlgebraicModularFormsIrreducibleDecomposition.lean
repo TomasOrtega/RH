@@ -7,6 +7,11 @@ namespace GlobalTheory.AutReps
 
 variable {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
 
+/- English proof (translation)
+Rewrite using `[inf_comm, ← Submodule.map_comap_eq, not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Submodule.map_bot]`. Introduce `h`.
+
+Conclude with `Submodule.map_injective_of_injective hf (by rw [h, Submodule.map_bot])`.
+-/
 theorem comap_ne_bot_iff {f : M →ₗ[ℂ] N} (hf : Function.Injective f) (A : Submodule ℂ N) :
     A.comap f ≠ ⊥ ↔ A ⊓ LinearMap.range f ≠ ⊥ := by
   rw [inf_comm, ← Submodule.map_comap_eq, not_iff_not]
@@ -15,6 +20,15 @@ theorem comap_ne_bot_iff {f : M →ₗ[ℂ] N} (hf : Function.Injective f) (A : 
   · intro h
     exact Submodule.map_injective_of_injective hf (by rw [h, Submodule.map_bot])
 
+/- English proof (translation)
+Introduce `i`. Rewrite using `[disjoint_iff]`. Apply `le_bot_iff.mp` to reduce the goal to its premises. Introduce `x hx`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.mp hx`.
+
+Establish `h3 : f x ∈ ⨆ j, ⨆ (_ : j ≠ i), A j`. Establish `hle : (⨆ j, ⨆ (_ : j ≠ i), (A j).comap f) ≤ (⨆ j, ⨆ (_ : j ≠ i), A j).comap f`. Apply `iSup_le` to reduce the goal to its premises. Introduce `j`. Apply `iSup_le` to reduce the goal to its premises.
+
+Introduce `hj`. Conclude with `Submodule.comap_mono (le_iSup₂_of_le j hj le_rfl)`. Conclude with `hle h2`. Establish `h4 : f x ∈ A i ⊓ ⨆ j, ⨆ (_ : j ≠ i), A j` using `Submodule.mem_inf.mpr ⟨h1, h3⟩`. Rewrite `h4` using `[disjoint_iff.mp (hA i)]`.
+
+Establish `: f x = 0` using `(Submodule.mem_bot ℂ).mp h4`. Conclude with `(Submodule.mem_bot ℂ).mpr (hf (this.trans (map_zero f).symm))`.
+-/
 theorem iSupIndep_comap {ι : Type} {f : M →ₗ[ℂ] N} (hf : Function.Injective f) {A : ι → Submodule ℂ N}
     (hA : iSupIndep A) : iSupIndep (fun i => (A i).comap f) := by
   intro i
@@ -32,6 +46,9 @@ theorem iSupIndep_comap {ι : Type} {f : M →ₗ[ℂ] N} (hf : Function.Injecti
   have : f x = 0 := (Submodule.mem_bot ℂ).mp h4
   exact (Submodule.mem_bot ℂ).mpr (hf (this.trans (map_zero f).symm))
 
+/- English proof (translation)
+Apply `Submodule.map_injective_of_injective hf` to reduce the goal to its premises. Rewrite using `[Submodule.map_iSup, Submodule.map_top]`. Repeatedly rewrite using `[Submodule.map_comap_eq]`. Simplify `hA` using `only [inf_comm]`.
+-/
 theorem iSup_comap_eq_top {ι : Type} {f : M →ₗ[ℂ] N} (hf : Function.Injective f) {A : ι → Submodule ℂ N}
     (hA : ⨆ i, A i ⊓ LinearMap.range f = LinearMap.range f) : ⨆ i, (A i).comap f = ⊤ := by
   apply Submodule.map_injective_of_injective hf
@@ -41,6 +58,13 @@ theorem iSup_comap_eq_top {ι : Type} {f : M →ₗ[ℂ] N} (hf : Function.Injec
 
 end GlobalTheory.AutReps
 
+/- English proof (translation)
+Introduce `D μ j Mr`. Take `⟨_, ι, hι, S, hirr, hinj, hsurj, hne, hind, hsup⟩` from `GlobalTheory.T.typeSpaces_orthogonal_of_classSum_inner D.host.E D.R.nV Mr.wt Mr.J Mr.χ Mr.J_open`. Establish `hR` using `Mr.real_range`. Use `⟨ι, hι, S, hirr, hinj, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S' h1 h2`.
+
+Apply `hsurj S' h1` to reduce the goal to its premises. Rewrite using `[← hR]`. Conclude with `(GlobalTheory.AutReps.comap_ne_bot_iff Mr.real_inj _).mp h2`. Introduce `P`. Rewrite using `[GlobalTheory.AutReps.comap_ne_bot_iff Mr.real_inj, hR]`.
+
+Conclude with `hne P`. Conclude with `GlobalTheory.AutReps.iSupIndep_comap Mr.real_inj hind`. Apply `GlobalTheory.AutReps.iSup_comap_eq_top Mr.real_inj` to reduce the goal to its premises. Rewrite using `[hR]`. Conclude with `hsup`.
+-/
 theorem GlobalTheory.AutReps.mtReal_decomp : ∀ (D : D7) (μ : D.what₂.Tup) (j : ℕ) (Mr : MtReal D μ j), ∃ (ι : Type) (_ : Finite ι) (F : ι → Submodule ℂ (GAf D.host.E D.R.nV → Mr.wt.W)), (∀ P, NG.IsIrrRep Mr.wt.ρ (F P)) ∧ (∀ P P', NG.IsoRep (F P) (F P') → P = P') ∧ (∀ S', NG.IsIrrRep Mr.wt.ρ S' → (NG.isoTyp Mr.wt.ρ S').comap Mr.real ≠ ⊥ → ∃ P, NG.IsoRep (F P) S') ∧ (∀ P, (NG.isoTyp Mr.wt.ρ (F P)).comap Mr.real ≠ ⊥) ∧ iSupIndep (fun P => (NG.isoTyp Mr.wt.ρ (F P)).comap Mr.real) ∧ ⨆ P, (NG.isoTyp Mr.wt.ρ (F P)).comap Mr.real = ⊤ := by
   intro D μ j Mr
   obtain ⟨_, ι, hι, S, hirr, hinj, hsurj, hne, hind, hsup⟩ :=

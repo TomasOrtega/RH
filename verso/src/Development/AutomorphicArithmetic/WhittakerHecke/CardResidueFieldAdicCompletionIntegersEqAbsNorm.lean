@@ -3,6 +3,19 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzApprox
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.GLq
 
+/- English proof (translation)
+Introduce `L _ _ u`. Establish `hmax : ∀ a : u.adicCompletionIntegers L, a ∈ IsLocalRing.maximalIdeal (u.adicCompletionIntegers L) ↔ Valued.v (a : u.adicCompletion L) < 1`. Introduce `a`. Unfold `HeightOneSpectrum.adicCompletionIntegers at a ⊢`. Conclude with `Valuation.mem_maximalIdeal_iff _ _`.
+
+Establish `hval : ∀ x : 𝓞 L, Valued.v ((algebraMap (𝓞 L) (u.adicCompletionIntegers L) x : u.adicCompletionIntegers L) : u.adicCompletion L) < 1 ↔ x ∈ u.asIdeal`. Introduce `x`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := L)]`. Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`. Both sides reduce to the same expression.
+
+Set `ψ : 𝓞 L →+* IsLocalRing.ResidueField (u.adicCompletionIntegers L)` to `(IsLocalRing.residue _).comp (algebraMap (𝓞 L) (u.adicCompletionIntegers L))`. Establish `hker : RingHom.ker ψ = u.asIdeal`. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker]`. Use `show IsLocalRing.residue _ _ = 0 ↔ _`.
+
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, hmax, hval]`. Establish `hsurj : Function.Surjective ψ`. Introduce `r`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective r`. Establish `ha : Valued.v (a : u.adicCompletion L) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mp a.2`.
+
+Take `⟨x, hx⟩` from `DiscreteGroups.sglob.DzType.exists_int_approx_compl u _ ha`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show IsLocalRing.residue _ _ = _`. Rewrite using `[eq_comm, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `hx`.
+
+Use `show Nat.card _ = Nat.card (𝓞 L ⧸ u.asIdeal)`. Conclude with `(Nat.card_congr ((Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective hsurj)).toEquiv).symm`.
+-/
 theorem UpperTheory.card_residueField_adicCompletionIntegers_eq_absNorm :
     ∀ {L : Type} [Field L] [NumberField L] (u : HeightOneSpectrum (𝓞 L)),
         Nat.card (IsLocalRing.ResidueField (u.adicCompletionIntegers L)) = normV u := by

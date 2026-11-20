@@ -54,6 +54,9 @@ def evAn {g d : ℕ} {N : ℕ → ℕ} (Th : ∀ j, Fin (N j) → (Fin g → ℂ
 def jacAn {g d : ℕ} (F : Fin g → (Fin g → ℂ) → ℂ) (z : Fin d → Fin g → ℂ) : ℂ :=
   ∏ e, (Matrix.of fun i k : Fin g => (2 * Real.pi * Complex.I)⁻¹ * fderiv ℂ (F i) (z e) (Pi.single k 1)).det
 
+/- English proof (translation)
+Establish `: (Matrix.of fun i k : Fin g => (2 * Real.pi * Complex.I)⁻¹ * M i k) = (2 * Real.pi * Complex.I : ℂ)⁻¹ • Matrix.of M`. Use extensionality with `i k`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.det_smul, mul_ne_zero_iff, and_iff_right]`. Conclude with `pow_ne_zero _ (inv_ne_zero Complex.two_pi_I_ne_zero)`.
+-/
 theorem det_scale_ne_zero {g : ℕ} (M : Fin g → Fin g → ℂ) :
     (Matrix.of fun i k : Fin g => (2 * Real.pi * Complex.I)⁻¹ * M i k).det ≠ 0 ↔ (Matrix.of M).det ≠ 0 := by
   have : (Matrix.of fun i k : Fin g => (2 * Real.pi * Complex.I)⁻¹ * M i k) =
@@ -62,6 +65,9 @@ theorem det_scale_ne_zero {g : ℕ} (M : Fin g → Fin g → ℂ) :
   rw [this, Matrix.det_smul, mul_ne_zero_iff, and_iff_right]
   exact pow_ne_zero _ (inv_ne_zero Complex.two_pi_I_ne_zero)
 
+/- English proof (translation)
+Use `⟨hF.1.mul hG.1, fun m n z => ?_⟩` and prove the remaining obligations. Simplify using `only [hF.2, hG.2, h, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsLevel.mul {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {l₁ l₂ l : ℕ} {F G : (Fin g → ℂ) → ℂ}
     (hF : IsLevel τ a b l₁ F) (hG : IsLevel τ a b l₂ G) (h : l = l₁ + l₂) : IsLevel τ a b l (fun z => F z * G z) := by
   refine ⟨hF.1.mul hG.1, fun m n z => ?_⟩
@@ -71,11 +77,23 @@ theorem IsLevel.mul {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g →
 section Geo
 variable {g : ℕ} (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g)
 
+/- English proof (translation)
+Take `⟨j, hj⟩ : ∃ j, (u.ex z).left (default : PrimeSpectrum ℂ) ∈ x.P.L.U j` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [x.P.isLB.cover]; trivial)`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`.
+-/
 theorem exists_chart (z : Fin g → ℂ) : ∃ c, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U c := by
   obtain ⟨j, hj⟩ : ∃ j, (u.ex z).left (default : PrimeSpectrum ℂ) ∈ x.P.L.U j :=
     TopologicalSpace.Opens.mem_iSup.1 (by rw [x.P.isLB.cover]; trivial)
   exact ⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩
 
+/- English proof (translation)
+Establish `key : ∀ i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U i → valAt' (u.ex z).left (x.P.L.U i) (∑ k, cst x.P.A.hom (x.P.L.U i) (c k) * (show Γ(x.P.A.left, x.P.L.U i) from (b k).f i)) = (∑ k, c k * Th k z) * u.fr i z ^ l`. Introduce `i z hz`. Rewrite using `[valAt'_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[valAt'_mul, _root_.mul_assoc, ← hb k i z hz]`.
+
+Use `congr 1`. Conclude with `KoszulCx.valH_cst x (u.ex z) _ hz (c k)`. Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨i, hi⟩` from `exists_chart x u z`.
+
+Establish `e` using `key i z hi`. Rewrite `e` using `[← h i, hf i z hi]`. Conclude with `mul_right_cancel₀ (pow_ne_zero _ (u.fr_ne i z hi)) e`. Introduce `h i`. Use `x.P.isAb.smooth` as an intermediate fact.
+
+Establish `: IsIntegral x.P.A.left` using `polAV_isIntegral_of_isAlgClosed ℂ x.P`. Use `ComplexPoints.eq_of_valAt'_eq x.P.A.hom _ _ _ fun q hq hi => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk q hq)`. Take `rfl : (u.ex z).left = q` from `by rw [hz]; rfl`. Rewrite using `[key i z hi, hf i z hi, h z]`.
+-/
 theorem coords_iff {l N : ℕ} (b : Fin N → RR x l) (Th : Fin N → (Fin g → ℂ) → ℂ) (hb : ∀ k, FnPw x u (b k) (Th k))
     (f : ∀ i, Γ(x.P.A.left, x.P.L.U i)) (G : (Fin g → ℂ) → ℂ)
     (hf : ∀ i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U i → valAt' (u.ex z).left (x.P.L.U i) (f i) = G z * u.fr i z ^ l)
@@ -103,6 +121,9 @@ theorem coords_iff {l N : ℕ} (b : Fin N → RR x l) (Th : Fin N → (Fin g →
     obtain rfl : (u.ex z).left = q := by rw [hz]; rfl
     rw [key i z hi, hf i z hi, h z]
 
+/- English proof (translation)
+Rewrite using `[← u.ker]`. Use `u.ex_add (z - w) w` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Conclude with `mul_eq_right`.
+-/
 theorem ex_eq_iff (z w : Fin g → ℂ) : u.ex z = u.ex w ↔ z - w ∈ u.Λ := by
   rw [← u.ker]
   have := u.ex_add (z - w) w
@@ -110,12 +131,18 @@ theorem ex_eq_iff (z w : Fin g → ℂ) : u.ex z = u.ex w ↔ z - w ∈ u.Λ := 
   rw [this]
   exact mul_eq_right
 
+/- English proof (translation)
+Use `haveI := x.P.isAb.proper`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Take `rfl : p' = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `Over.OverMorphism.ext (ext_of_apply_closedPoint_eq x.P.A.hom (Over.w q) (Over.w q') h)`.
+-/
 theorem pt_eq_of_apply_eq {q q' : Pt x} {p p' : Sp ℂ} (h : q.left p = q'.left p') : q = q' := by
   haveI := x.P.isAb.proper
   obtain rfl : p = IsLocalRing.closedPoint ℂ := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
   obtain rfl : p' = IsLocalRing.closedPoint ℂ := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
   exact Over.OverMorphism.ext (ext_of_apply_closedPoint_eq x.P.A.hom (Over.w q) (Over.w q') h)
 
+/- English proof (translation)
+Introduce `s`. Take `⟨F, ⟨hF, hs⟩, -⟩` from `(GlobalTheory.T.lineBundlePow_sections_eq_theta_level hT g x h u τ a b l hab hW).1 s`. Simplify `hTh.2 F hF` using `only [coords_iff x u bs Th hb s.f F hs]`.
+-/
 theorem isBasis_of_levB (hT : ThetaUnifAV) (h : x.P.g = g) {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
     (hab : charHalf g a b) (hW : Wit x h u τ a b) {l N : ℕ} {Th : Fin N → (Fin g → ℂ) → ℂ} (hTh : LevB τ a b l Th)
     (bs : Fin N → RR x l) (hb : ∀ k, FnPw x u (bs k) (Th k)) : IsBasis x bs := by
@@ -130,6 +157,13 @@ variable (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g) {τ : Matrix (Fin x.P.g
   {n d : ℕ} {s : Fin x.P.g → RR x n} {F : Fin x.P.g → (Fin x.P.g → ℂ) → ℂ} {z : Fin d → Fin x.P.g → ℂ}
   {ch : Fin d → x.P.L.ι}
 
+/- English proof (translation)
+Establish `H` using `fun e => unif_value_jac_zeros hT _ x rfl u τ a b n s F (z e) (ch e) hW hF (hc e)`. Take `⟨h0, hd, hdist, hex⟩` from `hz`. Use `⟨hc, fun e i => ?_, fun e => ?_, fun e e' hne p hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(H e).1 i, h0, zero_mul]`. Rewrite using `[(H e).2.1 (h0 e), isUnit_iff_ne_zero]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (u.fr_ne _ _ (hc e))) ((det_scale_ne_zero _).2 (hd e))`. Take `⟨m, m', hm⟩` from `(hW.2.2.1 _).1 ((ex_eq_iff x u _ _).1 (pt_eq_of_apply_eq x hp))`. Conclude with `hne (hdist e e' m m' (by rw [← hm, add_sub_cancel]))`. Take `⟨c, hc0⟩` from `exists_chart x u 0`. Use `(unif_value_jac_zeros hT _ x rfl u τ a b n s F 0 c hW hF hc0).2.2 d z fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨e, m, m', he⟩` from `hex y hy`. Conclude with `⟨e, _, (hW.2.2.1 _).2 ⟨m, m', rfl⟩, he⟩`.
+-/
 theorem etZ_of_simpleZeros (hT : ThetaUnifAV) (hW : Wit x rfl u τ a b)
     (hF : ∀ i, Differentiable ℂ (F i) ∧ FnPw x u (s i) (F i)) (hz : SimpleZeros τ F z)
     (hc : ∀ e, ⊤ ≤ (u.ex (z e)).left ⁻¹ᵁ x.P.L.U (ch e)) : EtZ x s (fun e => u.ex (z e)) ch := by
@@ -146,6 +180,15 @@ theorem etZ_of_simpleZeros (hT : ThetaUnifAV) (hW : Wit x rfl u τ a b)
     obtain ⟨e, m, m', he⟩ := hex y hy
     exact ⟨e, _, (hW.2.2.1 _).2 ⟨m, m', rfl⟩, he⟩
 
+/- English proof (translation)
+Take `⟨hc, h0, hd, hdist, hex⟩` from `hz`. Establish `H` using `fun e => unif_value_jac_zeros hT _ x rfl u τ a b n s F (z e) (ch e) hW hF (hc e)`. Establish `hz0 : ∀ e i, F i (z e) = 0` using `fun e i => (mul_eq_zero.1 (((H e).1 i).symm.trans (h0 e i))).resolve_right (pow_ne_zero _ (u.fr_ne _ _ (hc e)))`. Use `⟨hz0, fun e => ?_, fun e e' m m' h => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `(hd e).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[(H e).2.1 (hz0 e)]`. Conclude with `(det_scale_ne_zero _).1 (right_ne_zero_of_mul this)`. Assume the negation of the conclusion as `hne`. Use `hdist e e' hne (IsLocalRing.closedPoint ℂ) ?_` and prove the remaining obligations. Establish `: u.ex (z e) = u.ex (z e')` using `(ex_eq_iff x u _ _).2 ((hW.2.2.1 _).2 ⟨m, m', by rw [h, add_sub_cancel_left]⟩)`.
+
+Simplify using `only [this]`. Take `⟨e, p, hp⟩` from `hex ((u.ex y).left (default : PrimeSpectrum ℂ)) fun i hi => by`. Take `⟨c, hcy⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Establish `h1` using `(top_le_preimage_iff_mem _ _).2 hcy`. Establish `h2` using `(top_le_preimage_basicOpen_iff (u.ex y).left (x.P.L.U c) ((s i).f c)).1 h1`.
+
+Conclude with `h2 (by rw [(hF i).2 c y (top_le_preimage_of_valAt'_ne_zero _ h2), hy, zero_mul])`. Take `⟨m, m', hm⟩` from `(hW.2.2.1 _).1 ((ex_eq_iff x u _ _).1 (pt_eq_of_apply_eq x hp).symm)`. Conclude with `⟨e, m, m', by rw [← hm, add_sub_cancel]⟩`.
+-/
 theorem simpleZeros_of_etZ (hT : ThetaUnifAV) (hW : Wit x rfl u τ a b)
     (hF : ∀ i, Differentiable ℂ (F i) ∧ FnPw x u (s i) (F i)) (hz : EtZ x s (fun e => u.ex (z e)) ch) :
     SimpleZeros τ F z := by
@@ -181,6 +224,9 @@ def formC (g n l l' : ℕ) (t t' : ℂ) (lam lam' : ℕ → ℂ) (J : ℂ) : ℂ
       ((2 * l : ℤ) - g * n) *
     J ^ (8 * (degProd g n l l' ^ (3 * g + 2) : ℕ) * ((l' : ℤ) - l))
 
+/- English proof (translation)
+Simplify using `only [kaForm, tComb, formC, Units.val_mul, Units.val_zpow_eq_zpow_val, Units.val_pow_eq_pow_val, Units.coe_prod]`. Use `congr 4`. Conclude with `Finset.prod_congr rfl fun j hj => by rw [h j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`. Conclude with `Finset.prod_congr rfl fun j hj => by rw [h' j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]`.
+-/
 theorem coe_kaForm (g n l l' : ℕ) (t t' J : ℂˣ) (la la' : ℕ → ℂˣ) (lam lam' : ℕ → ℂ)
     (h : ∀ j ≤ g, (la j : ℂ) = lam j) (h' : ∀ j ≤ g, (la' j : ℂ) = lam' j) :
     (kaForm g n l l' t t' la la' J : ℂ) = formC g n l l' t t' lam lam' J := by
@@ -190,6 +236,9 @@ theorem coe_kaForm (g n l l' : ℕ) (t t' J : ℂˣ) (la la' : ℕ → ℂˣ) (l
   · exact Finset.prod_congr rfl fun j hj => by rw [h j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]
   · exact Finset.prod_congr rfl fun j hj => by rw [h' j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))]
 
+/- English proof (translation)
+Use `kaForm_homogeneous ℂ g n l l' t t' J U⁻¹ 1 1 la la' (fun _ => 1) (fun _ => 1) hl hl'` as an intermediate fact. Simplify using `only [one_zpow, one_pow, Finset.prod_const_one, _root_.mul_one, neg_mul, inv_zpow', neg_neg] at this`. Rewrite using `[← this]`. Use `norm_cast`.
+-/
 theorem kaForm_frame {g n l l' : ℕ} (hl : g * n < l) (hl' : l < l') (t t' J U : ℂˣ) (la la' : ℕ → ℂˣ) :
     kaForm g n l l' (t * U ^ (2 * l)) (t' * U ^ (2 * l')) la la' (J * U ^ (g * n)) = kaForm g n l l' t t' la la' J := by
   have := kaForm_homogeneous ℂ g n l l' t t' J U⁻¹ 1 1 la la' (fun _ => 1) (fun _ => 1) hl hl'
@@ -197,6 +246,9 @@ theorem kaForm_frame {g n l l' : ℕ} (hl : g * n < l) (hl' : l < l') (t t' J U 
   rw [← this]
   norm_cast
 
+/- English proof (translation)
+Establish `: (j + 1) * n ≤ g * n` using `Nat.mul_le_mul_right _ hj`. Establish `h2 : (j + 1) * n = j * n + n` using `Nat.succ_mul _ _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sub_step {g n l j : ℕ} (h : g * n < l) (hj : j < g) : l - j * n = n + (l - (j + 1) * n) := by
   have : (j + 1) * n ≤ g * n := Nat.mul_le_mul_right _ hj
   have h2 : (j + 1) * n = j * n + n := Nat.succ_mul _ _
@@ -207,6 +259,27 @@ variable (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g) {τ : Matrix (Fin x.P.g
   {n d : ℕ} {s : Fin x.P.g → RR x n} {F : Fin x.P.g → (Fin x.P.g → ℂ) → ℂ} {z : Fin d → Fin x.P.g → ℂ}
   {ch : Fin d → x.P.L.ι}
 
+/- English proof (translation)
+Establish `h1 : ∀ j k, ∃ s : RR x (l - j * n), j ≤ x.P.g → FnPw x u s (Th j k)`. Introduce `j k`. Establish `hd` using `(GlobalTheory.T.lineBundlePow_sections_eq_theta_level hT _ x rfl u τ a b (l - j * n) hab hW).2`. Distinguish the cases in `hj : j ≤ x.P.g`. Take `⟨s, hs, -⟩` from `hd _ ((hTh j hj).1 k)`.
+
+Conclude with `⟨s, fun _ => hs⟩`. Take `⟨s, -⟩` from `hd (fun _ => 0) ⟨differentiable_const _, fun _ _ _ => (mul_zero _).symm⟩`. Conclude with `⟨s, fun h => absurd h hj⟩`. Use `choose bs hbs using h1`. Establish `hb : ∀ j ≤ x.P.g, IsBasis x (bs j)` using `fun j hj => isBasis_of_levB x u hT rfl hab hW (hTh j hj) (bs j) fun k => hbs j k hj`.
+
+Establish `h2 : ∀ j, ∃ la : ℂˣ, j ≤ x.P.g → IsSquareDeterminantComparison x (l - j * n) (al (l - j * n)) (bs j) la`. Introduce `j`. Distinguish the cases in `hj : j ≤ x.P.g`. Establish `: j * n ≤ x.P.g * n` using `Nat.mul_le_mul_right _ hj`. Take `⟨la, hla⟩` from `GlobalTheory.T.exists_squareDeterminantComparison_isAlgClosed laws ℂ x (l - j * n) _ (bs j) (Nat.cast_ne_zero.2 (by omega)) (hal _) (hb j hj)`.
+
+Conclude with `⟨la, fun _ => hla⟩`. Conclude with `⟨1, fun h => absurd h hj⟩`. Use `choose la hla using h2`. Take `⟨-, t₀, m₀, hm₀, ht₀⟩` from `GlobalTheory.T.exists_koszulTorsion_transversal_split_zeros laws ℂ x n l d s bs _ ch hn hl hb hE`. Establish `hcx` using `(KoszulCx.koszul_isCx ℂ x n l d s bs _ ch hl hb).2 m₀ hm₀ hE.1 hE.2.1`.
+
+Establish `hfr : ∀ e, u.fr (ch e) (z e) ≠ 0` using `fun e => u.fr_ne _ _ (hE.1 e)`. Establish `hdet : (Matrix.diagonal fun e => u.fr (ch e) (z e) ^ l).det = (U : ℂ) ^ l`. Rewrite using `[Matrix.det_diagonal, hU, Finset.prod_pow]`. Take `⟨t, ht, htt⟩` from `torsSq_kosD_conj ℂ x.P.g d (fun j => (l - j * n) ^ x.P.g) m₀ m _ (evAn (N := fun j => (l - j * n) ^ x.P.g) Th z) (fun _ => 1) (Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun e => u.fr (ch e) (z e) ^ l) (hdet ▸ pow_ne_zero _ U.ne_zero)) t₀ (fun i j hj => by`. Simplify using `only [Units.val_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Use extensionality with `k' k`. Establish `hlev` using `IsLevel.mul (hF i).1 ((hTh (j + 1) hj).1 k) (sub_step hl hj)`. Establish `e` using `(coords_iff x u (bs j) (Th j) (fun k => hbs j k hj.le) _ (fun z => F i z * Th (j + 1) k z) (fun c y hy => by`. Rewrite using `[valAt'_mul]`. Use `(congrArg₂ (· * ·) ((hF i).2 c y hy) (hbs (j + 1) k hj c y hy)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[congrArg (u.fr c y ^ ·) (sub_step hl hj), pow_add]`. Use the proof step `ring) _).1 (hm₀ i j hj k)`. Conclude with `congrFun (((hTh j hj.le).2 _ hlev).unique (hm i j hj k) e) k')`. Use the proof step `(by`. Use extensionality with `e k`.
+
+Simplify using `only [Units.val_one, Matrix.mul_one]`. Use `(Matrix.diagonal_mul _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hbs 0 k (Nat.zero_le _) (ch e) (z e) (hE.1 e)).symm` and prove the remaining obligations. Simplify using `[evAn, mul_comm]) hcx ht₀`. Use `⟨bs, t, la, fun j hj => ⟨hb j hj, hla j hj⟩, fun j hj => hlam j hj _ _ (fun k => hbs j k hj) (hla j hj), ⟨m₀, hm₀, ?_⟩, ht⟩` and prove the remaining obligations.
+
+Establish `: t * U ^ (2 * l) = t₀`. Simplify using `only [map_one, one_zpow, Finset.prod_const_one, _root_.mul_one] at htt`. Rewrite using `[← htt, mul_comm 2 l, pow_mul]`. Use `congr 2`. Conclude with `Units.ext hdet.symm`.
+
+Rewrite using `[this]`. Conclude with `ht₀`.
+-/
 theorem exists_degree (laws : Out.Laws) (hT : ThetaUnifAV) (hab : charHalf x.P.g a b) (hW : Wit x rfl u τ a b)
     {l : ℕ} (hn : 1 ≤ n) (hl : x.P.g * n < l) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ)
     (hal : ∀ m, (al m).transpose * al m = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ))
@@ -277,6 +350,15 @@ theorem exists_degree (laws : Out.Laws) (hT : ThetaUnifAV) (hab : charHalf x.P.g
 
 end Point
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨hn, hl, hl', hal⟩` from `hadm`. Use `choose s hs using fun i => ((GlobalTheory.T.lineBundlePow_sections_eq_theta_level hT _ x rfl u τ a b n hab hW).2 _ (hF i)).exists`. Use `choose ch hch using fun e => exists_chart x u (z e)`. Establish `hE` using `etZ_of_simpleZeros x u hT hW (fun i => ⟨(hF i).1, hs i⟩) hz hch`.
+
+Establish `hU : (∏ e, u.fr (ch e) (z e)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun e _ => u.fr_ne _ _ (hch e)`. Establish `hJ : jacAn F z ≠ 0` using `Finset.prod_ne_zero_iff.2 fun e _ => (det_scale_ne_zero _).2 (hz.2.1 e)`. Take `⟨bs, t, la, h1, h2, h3, h4⟩` from `exists_degree x u laws hT hab hW (by omega) hl al hal (fun i => ⟨hF i, hs i⟩) hE Th hTh m hm lam hlam (Units.mk0 _ hU) rfl`. Take `⟨bs', t', la', h1', h2', h3', h4'⟩` from `exists_degree x u laws hT hab hW (by omega) (hl.trans hl') al hal (fun i => ⟨hF i, hs i⟩) hE Th' hTh' m' hm' lam' hlam' (Units.mk0 _ hU) rfl`. Use `⟨s, _, t, t', ⟨_, ch, bs, bs', _, _, Units.mk0 _ hJ * Units.mk0 _ hU ^ (x.P.g * n), la, la', hE, ?_, h1, h1', h3, h3', rfl⟩, h4, h4', fun j hj => ⟨h2 j hj ▸ (la j).ne_zero, h2' j hj ▸ (la' j).ne_zero⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_mk0]`. Rewrite using `[jacAn, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[(unif_value_jac_zeros hT _ x rfl u τ a b n s F (z e) (ch e) hW (fun i => ⟨(hF i).1, hs i⟩) (hch e)).2.1 (hz.1 e), mul_comm]`. Both sides reduce to the same expression.
+
+Rewrite using `[kaForm_frame hl hl', coe_kaForm _ _ _ _ _ _ _ _ _ lam lam' h2 h2']`. Both sides reduce to the same expression.
+-/
 theorem exists_kaVal (laws : Out.Laws) (hT : ThetaUnifAV) {g n l l' : ℕ} {al : ℕ → Matrix (Fin 4) (Fin 4) ℤ}
     {a b : Fin g → ℂ} (hab : charHalf g a b) (hadm : admitted g n l l' al) {τ : Matrix (Fin g) (Fin g) ℂ}
     (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (hW : Wit x h u τ a b)
@@ -318,6 +400,11 @@ theorem exists_kaVal (laws : Out.Laws) (hT : ThetaUnifAV) {g n l l' : ℕ} {al :
   · rw [kaForm_frame hl hl', coe_kaForm _ _ _ _ _ _ _ _ _ lam lam' h2 h2']
     rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨q, ch, -, -, -, -, -, -, -, hE, -⟩` from `hk`. Use `choose F hF hs using fun i => ((GlobalTheory.T.lineBundlePow_sections_eq_theta_level hT _ x rfl u τ a b n hab hW).1 (s i)).exists`. Use `choose z hz using fun e => u.ex_onto (q e)`. Take `rfl : q = fun e => u.ex (z e)` from `funext fun e => (hz e).symm`.
+
+Conclude with `⟨F, z, hF, simpleZeros_of_etZ x u hT hW (fun i => ⟨(hF i).1, hs i⟩) hE⟩`.
+-/
 theorem exists_simpleZeros (hT : ThetaUnifAV) {g n l l' : ℕ} {al : ℕ → Matrix (Fin 4) (Fin 4) ℤ}
     {a b : Fin g → ℂ} (hab : charHalf g a b) {τ : Matrix (Fin g) (Fin g) ℂ}
     (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (hW : Wit x h u τ a b)
@@ -334,6 +421,9 @@ theorem exists_simpleZeros (hT : ThetaUnifAV) {g n l l' : ℕ} {al : ℕ → Mat
 section An
 variable {g : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem differentiableOn_prod {E I : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Set E} {s : Finset I}
     {f : I → E → ℂ} (h : ∀ i ∈ s, DifferentiableOn ℂ (f i) W) : DifferentiableOn ℂ (fun p => ∏ i ∈ s, f i p) W := by
   classical
@@ -343,16 +433,25 @@ theorem differentiableOn_prod {E I : Type} [NormedAddCommGroup E] [NormedSpace �
     simp only [Finset.prod_insert hi]
     exact (h i (Finset.mem_insert_self _ _)).mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Use `⟨Differentiable.fun_sum fun k _ => (h k).1.const_mul _, fun m n z => ?_⟩` and prove the remaining obligations. Simplify using `only [(h _).2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem isLevel_sum {N l : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {Th : Fin N → (Fin g → ℂ) → ℂ}
     (h : ∀ k, IsLevel τ a b l (Th k)) (c : Fin N → ℂ) : IsLevel τ a b l (fun z => ∑ k, c k * Th k z) := by
   refine ⟨Differentiable.fun_sum fun k _ => (h k).1.const_mul _, fun m n z => ?_⟩
   simp only [(h _).2, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+The claim follows from `(h.2 _ (isLevel_sum h.1 c)).unique (fun _ => rfl) e`.
+-/
 theorem LevB.coord_eq {N l : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {Th : Fin N → (Fin g → ℂ) → ℂ}
     (h : LevB τ a b l Th) {c c' : Fin N → ℂ} (e : ∀ z, ∑ k, c k * Th k z = ∑ k, c' k * Th k z) : c = c' :=
   (h.2 _ (isLevel_sum h.1 c)).unique (fun _ => rfl) e
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Use `congrFun (h.coord_eq (c' := 0) fun z => ?_)` and prove the remaining obligations. Simplify using `using congrFun hc z`.
+-/
 theorem LevB.linearIndependent {N l : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
     {Th : Fin N → (Fin g → ℂ) → ℂ} (h : LevB τ a b l Th) : LinearIndependent ℂ Th := by
   rw [Fintype.linearIndependent_iff]
@@ -360,6 +459,15 @@ theorem LevB.linearIndependent {N l : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a 
   refine congrFun (h.coord_eq (c' := 0) fun z => ?_)
   simpa using congrFun hc z
 
+/- English proof (translation)
+Establish `key : ∀ i i' j, j + 2 ≤ g → ∀ k y, ∑ k', (m i j (j + 1) * m i' (j + 1) (j + 2)) k' k * Th j k' y = F i y * (F i' y * Th (j + 2) k y)`. Introduce `i i' j hj k y`. Rewrite using `[hm i' (j + 1) (by omega), Finset.mul_sum]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k₁ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, hm i j (by omega), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k₂ _ => by ring`. Use `KoszulCx.isCx_kosD m _ (fun i i' j hj => ?_) fun i => ?_` and prove the remaining obligations. Use extensionality with `k' k`.
+
+Conclude with `congrFun ((hTh j (by omega)).coord_eq (c := fun k' => (m i j (j + 1) * m i' (j + 1) (j + 2)) k' k) (c' := fun k' => (m i' j (j + 1) * m i (j + 1) (j + 2)) k' k) fun y => by`. Rewrite using `[key i i' j hj, key i' i j hj, mul_left_comm]) k'`. Use extensionality with `e k`. Use `hm i 0 i.pos k (z e)` as an intermediate fact. Rewrite `this` using `[hz, zero_mul]`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.zero_apply, this]`. Conclude with `Finset.sum_congr rfl fun k' _ => mul_comm _ _`.
+-/
 theorem isCx_an {d : ℕ} {N lv : ℕ → ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ}
     {F : Fin g → (Fin g → ℂ) → ℂ} {Th : ∀ j, Fin (N j) → (Fin g → ℂ) → ℂ} (hTh : ∀ j ≤ g, LevB τ a b (lv j) (Th j))
     {m} (hm : AnMul F Th m) {z : Fin d → Fin g → ℂ} (hz : ∀ e i, F i (z e) = 0) :
@@ -384,6 +492,13 @@ theorem isCx_an {d : ℕ} {N lv : ℕ → ℕ} {τ : Matrix (Fin g) (Fin g) ℂ}
     rw [Matrix.mul_apply, Matrix.zero_apply, this]
     exact Finset.sum_congr rfl fun k' _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hm' : ∀ i j j', j' = j + 1 → j' ≤ g → ∀ k' k, DifferentiableOn ℂ (fun p => m p i j j' k' k) W`. Introduce and unpack `i j _ rfl h`. Conclude with `hm i j h`. Establish `hev' : ∀ j, j = 0 → ∀ e k, DifferentiableOn ℂ (fun p => ev p j e k) W`. Introduce and unpack `_ rfl`.
+
+Conclude with `hev`. Apply the tactic sequence `rcases r with r | r <;> rcases c with c | c <;> simp only [kosD]`. Use `DifferentiableOn.fun_sum fun i _ => ?_ split_ifs with h` and prove the remaining obligations. Conclude with `(hm' i _ _ (by rw [h.2, Finset.card_insert_of_notMem h.1]) (by simpa using Finset.card_le_univ c.1) _ _).const_mul _`. Conclude with `differentiableOn_const _`.
+
+Conclude with `differentiableOn_const _`. Use `split_ifs with h`. Conclude with `hev' _ (by simp [h]) _ _`. Conclude with `differentiableOn_const _`. Conclude with `differentiableOn_const _`.
+-/
 theorem differentiableOn_kosD {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Set E} {d : ℕ} {N : ℕ → ℕ}
     (m : E → Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) ℂ) (ev : E → ∀ j, Matrix (Fin d) (Fin (N j)) ℂ)
     (hm : ∀ i j, j < g → ∀ k' k, DifferentiableOn ℂ (fun p => m p i j (j + 1) k' k) W)
@@ -407,11 +522,19 @@ theorem differentiableOn_kosD {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ
     · exact differentiableOn_const _
   · exact differentiableOn_const _
 
+/- English proof (translation)
+The claim follows from `DifferentiableOn.comp (f := fun p => (p, z p)) hF (differentiableOn_id.prodMk hz) fun _ hp => ⟨hW hp, trivial⟩`.
+-/
 theorem holFam_comp {F : (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ} (hF : HolFam (Key.phDom g) F)
     {W : Set (Fin g → Fin g → ℂ)} (hW : W ⊆ Key.phDom g) {z : (Fin g → Fin g → ℂ) → Fin g → ℂ}
     (hz : DifferentiableOn ℂ z W) : DifferentiableOn ℂ (fun p => F p (z p)) W :=
   DifferentiableOn.comp (f := fun p => (p, z p)) hF (differentiableOn_id.prodMk hz) fun _ hp => ⟨hW hp, trivial⟩
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hc : ContDiffAt ℂ 2 (fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => F q.1 q.2) (p, z p)` using `GlobalTheory.SCV.contDiffAt_of_differentiableOn hF (prod_mem_nhds ((GlobalTheory.isOpen_phDom g).mem_nhds (hW hp)) Filter.univ_mem) 2`. Establish `h1 : ContDiffAt ℂ 1 (fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => fderiv ℂ (F q.1) q.2) (p, z p)`. Use `ContDiffAt.fderiv (f := fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => F q.1) (n := 2) ?_ contDiffAt_snd (by norm_num)` and prove the remaining obligations. Conclude with `ContDiffAt.comp (g := fun q : (Fin g → Fin g → ℂ) × (Fin g → ℂ) => F q.1 q.2) (f := fun q : ((Fin g → Fin g → ℂ) × (Fin g → ℂ)) × (Fin g → ℂ) => (q.1.1, q.2)) ((p, z p), z p) hc (contDiffAt_fst.fst.prodMk contDiffAt_snd)`.
+
+Conclude with `(DifferentiableAt.comp_differentiableWithinAt (f := fun p => (p, z p)) p (h1.differentiableAt one_ne_zero) (differentiableWithinAt_id.prodMk (hz p hp))).clm_apply (differentiableWithinAt_const _)`.
+-/
 theorem holFam_fderiv {F : (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ} (hF : HolFam (Key.phDom g) F)
     {W : Set (Fin g → Fin g → ℂ)} (hW : W ⊆ Key.phDom g) {z : (Fin g → Fin g → ℂ) → Fin g → ℂ}
     (hz : DifferentiableOn ℂ z W) (v : Fin g → ℂ) : DifferentiableOn ℂ (fun p => fderiv ℂ (F p) (z p) v) W := by
@@ -428,6 +551,9 @@ theorem holFam_fderiv {F : (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ
   exact (DifferentiableAt.comp_differentiableWithinAt (f := fun p => (p, z p)) p (h1.differentiableAt one_ne_zero)
     (differentiableWithinAt_id.prodMk (hz p hp))).clm_apply (differentiableWithinAt_const _)
 
+/- English proof (translation)
+Use `differentiableOn_prod fun e _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Conclude with `differentiableOn_prod fun k _ => (holFam_fderiv (hF _) hW (differentiableOn_pi.1 hz e) _).const_mul _`.
+-/
 theorem differentiableOn_jacAn {d : ℕ} {F : Fin g → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ}
     (hF : ∀ i, HolFam (Key.phDom g) (F i)) {W : Set (Fin g → Fin g → ℂ)} (hW : W ⊆ Key.phDom g)
     {z : (Fin g → Fin g → ℂ) → Fin d → Fin g → ℂ} (hz : DifferentiableOn ℂ z W) :
@@ -438,6 +564,9 @@ theorem differentiableOn_jacAn {d : ℕ} {F : Fin g → (Fin g → Fin g → ℂ
   exact differentiableOn_prod fun k _ =>
     (holFam_fderiv (hF _) hW (differentiableOn_pi.1 hz e) _).const_mul _
 
+/- English proof (translation)
+Establish `hj : ∀ {j}, j ∈ Finset.range (g + 1) → j ≤ g` using `fun h => Nat.lt_succ_iff.1 (Finset.mem_range.1 h)`. Use `(DifferentiableOn.mul (DifferentiableOn.zpow ((ht.pow _).mul (differentiableOn_prod fun j h => (hl j (hj h)).zpow (Or.inl fun p hp => ((h0 p hp).2.2.2 j (hj h)).1))) (Or.inl fun p hp => ?_)) (DifferentiableOn.zpow ((ht'.pow _).mul (differentiableOn_prod fun j h => (hl' j (hj h)). …` and prove the remaining obligations. Conclude with `mul_ne_zero (pow_ne_zero _ (h0 p hp).1) (Finset.prod_ne_zero_iff.2 fun j h => zpow_ne_zero _ ((h0 p hp).2.2.2 j (hj h)).1)`. Conclude with `mul_ne_zero (pow_ne_zero _ (h0 p hp).2.1) (Finset.prod_ne_zero_iff.2 fun j h => zpow_ne_zero _ ((h0 p hp).2.2.2 j (hj h)).2)`.
+-/
 theorem differentiableOn_formC {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Set E} (n l l' : ℕ)
     {t t' J : E → ℂ} {lam lam' : ℕ → E → ℂ} (ht : DifferentiableOn ℂ t W) (ht' : DifferentiableOn ℂ t' W)
     (hJ : DifferentiableOn ℂ J W) (hl : ∀ j ≤ g, DifferentiableOn ℂ (lam j) W)
@@ -455,6 +584,21 @@ theorem differentiableOn_formC {E : Type} [NormedAddCommGroup E] [NormedSpace �
   · exact mul_ne_zero (pow_ne_zero _ (h0 p hp).2.1)
       (Finset.prod_ne_zero_iff.2 fun j h => zpow_ne_zero _ ((h0 p hp).2.2.2 j (hj h)).2)
 
+/- English proof (translation)
+Establish `hpos : ∀ j ≤ g, 1 ≤ l - j * n` using `fun j hj => by`. Establish `: j * n ≤ g * n` using `Nat.mul_le_mul_right _ hj`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ∀ j, ∃ Th : Fin ((l - j * n) ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ, j ≤ g → LevBasis a b (l - j * n) Th` using `fun j => by`. Distinguish the cases in `hj : j ≤ g`.
+
+Take `⟨Th, h⟩` from `LevelBasis.exists_levBasis g a b _ hab (hpos j hj)`. Conclude with `⟨Th, fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose Th hTh using h1`. Establish `hB : ∀ p ∈ Key.phDom g, ∀ j ≤ g, LevB (per p) a b (l - j * n) (fun k => Th j k p)` using `fun p hp j hj => (hTh j hj).2 p hp`.
+
+Establish `h2 : ∀ p i j (k : Fin ((l - (j + 1) * n) ^ g)), ∃ c : Fin ((l - j * n) ^ g) → ℂ, p ∈ Key.phDom g → j < g → ∀ y, F i p y * Th (j + 1) k p y = ∑ k', c k' * Th j k' p y` using `fun p i j k => by`. Distinguish the cases in `hp : p ∈ Key.phDom g ∧ j < g`. Take `⟨c, hc, -⟩` from `(hB p hp.1 j hp.2.le).2 _ (IsLevel.mul (hL i p hp.1) ((hB p hp.1 (j + 1) hp.2).1 k) (sub_step hl hp.2))`. Conclude with `⟨c, fun _ _ => hc⟩`. Conclude with `⟨0, fun h h' => absurd ⟨h, h'⟩ hp⟩`.
+
+Use `choose c hc using h2`. Establish `h3 : ∀ j, ∃ lam : (Fin g → Fin g → ℂ) → ℂ, j ≤ g → DifferentiableOn ℂ lam (Key.phDom g) ∧ ∀ p ∈ Key.phDom g, ∀ (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (bs : Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (la : ℂˣ), Wit x h u (per p) a b → (∀ k, FnPw x u (bs k) (T …` using `fun j => by`. Distinguish the cases in `hj : j ≤ g`. Take `⟨lam, h⟩` from `GlobalTheory.T.exists_holomorphic_theta_of_level_basis laws hT g _ a b _ (Th j) hab (hpos j hj) (hal _) (hTh j hj)`. Conclude with `⟨lam, fun _ => h⟩`.
+
+Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose lam hlam using h3`. Set `m : (Fin g → Fin g → ℂ) → Fin g → ∀ j j', Matrix (Fin ((l - j * n) ^ g)) (Fin ((l - j' * n) ^ g)) ℂ` to `fun p i j j' => if h : j' = j + 1 then Matrix.of fun k' k => c p i j (h ▸ k) k' else 0`. Establish `hmc : ∀ p i j k' k, m p i j (j + 1) k' k = c p i j k k'` using `fun p i j k' k => by`. Simplify using `only [m, dif_pos, Matrix.of_apply]`.
+
+Establish `hm : ∀ p ∈ Key.phDom g, AnMul (N` using `fun j => (l - j * n) ^ g) (fun i => F i p) (fun j k => Th j k p) (m p) := by`. Introduce `p hp i j hj k y`. Simplify using `only [hmc]`. Conclude with `hc p i j k hp hj y`. Use `⟨Th, m, lam, hB, hm, fun j hj => (hlam j hj).1, fun p hp x h u hx j hj bs la => (hlam j hj).2 p hp x h u bs la hx, ?_, fun p hp => isCx_an (N := fun j => (l - j * n) ^ g) (hB p (hW hp)) (hm p (hW hp)) (hz0 p hp)⟩` and prove the remaining obligations.
+
+Use `differentiableOn_kosD (N := fun j => (l - j * n) ^ g) m _ (fun i j hj k' k => ?_) fun e k => ?_` and prove the remaining obligations. Simplify using `only [hmc]`. Use `(differentiableOn_coord_of_linearIndependent _ _ _ (Key.phDom g) (Th j) (fun p y => F i p y * Th (j + 1) k p y) (fun p => c p i j k) (GlobalTheory.isOpen_phDom g) (fun k y => holFam_comp ((hTh j hj.le).1 k) subset_rfl (differentiableOn_const y)) (fun y => (holFam_comp (hF i) subs …` and prove the remaining obligations. Conclude with `holFam_comp ((hTh 0 (Nat.zero_le _)).1 k) hW (differentiableOn_pi.1 hz e)`.
+-/
 theorem exists_data (laws : Out.Laws) (hT : ThetaUnifAV) {n l d : ℕ} {a b : Fin g → ℂ} (hab : charHalf g a b)
     (hl : g * n < l) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ)
     (hal : ∀ m, (al m).transpose * al m = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ))
@@ -531,6 +675,21 @@ theorem exists_data (laws : Out.Laws) (hT : ThetaUnifAV) {n l d : ℕ} {a b : Fi
 
 end An
 
+/- English proof (translation)
+Introduce `laws hT g n l l' al a b p₀ x₀ h₀ u₀ s₀ κ₀ hab hadm hp₀ hW₀ hk₀`. Take `⟨F₀, z₀, hF₀, hz₀⟩` from `exists_simpleZeros hT hab x₀ h₀ u₀ hW₀ s₀ κ₀ hk₀`. Take `⟨B, hB⟩` from `LevelBasis.exists_levBasis g a b n hab (by have := hadm.1; omega)`. Use `choose T hT₀ using fun i => ((hB.2 p₀ hp₀).2 _ (hF₀ i)).exists`. Set `F : Fin g → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ` to `fun i p y => ∑ k, T i k * B k p y`.
+
+Establish `hF : ∀ i, HolFam (Key.phDom g) (F i)` using `fun i => DifferentiableOn.fun_sum fun k _ => DifferentiableOn.const_mul (hB.1 k) _`. Establish `hL : ∀ i, ∀ p ∈ Key.phDom g, IsLevel (per p) a b n (F i p)` using `fun i p hp => isLevel_sum (hB.2 p hp).1 _`. Take `rfl : F₀ = fun i => F i p₀` from `funext fun i => funext (hT₀ i)`. Take `⟨W₁, z, hW₁, hp₁, hd₁, hzp, hz, hG⟩` from `HolZeros.simple_zeros_move_holomorphically g n _ a b F p₀ z₀ hp₀ hF hL hz₀`. Use `replace hG : ∀ p ∈ W₁, SimpleZeros (per p) (fun i => F i p) (z p) := hG`.
+
+Take `⟨Th, m, lam, k1, k2, k3, k4, k5, k6⟩` from `exists_data laws hT hab hadm.2.1 al hadm.2.2.2 hF hL hd₁ hz fun p hp => (hG p hp).1`. Take `⟨Th', m', lam', k1', k2', k3', k4', k5', k6'⟩` from `exists_data laws hT hab (hadm.2.1.trans hadm.2.2.1) al hadm.2.2.2 hF hL hd₁ hz fun p hp => (hG p hp).1`. Establish `main` using `fun p (hp : p ∈ W₁) x h u hx => exists_kaVal laws hT hab hadm x h u hx (fun i => hL i p (hd₁ hp)) (hG p hp) _ (k1 p (hd₁ hp)) _ (k2 p (hd₁ hp)) (fun j => lam j p) (k4 p (hd₁ hp) x h u hx) _ (k1' p (hd₁ hp)) _ (k2' p (hd₁ hp)) (fun j => lam' j p) (k4' p (hd₁ hp) x h u hx)`. Take `⟨-, -, t₀, t₀', -, ht₀, ht₀', hl₀, -⟩` from `main p₀ hp₁ x₀ h₀ u₀ hW₀`. Take `⟨W₂, t, hW₂, hp₂, hd₂, ht, htt⟩` from `TorsionHolomorphic.exists_differentiableOn_torsSq _ _ kdeg _ W₁ p₀ t₀ hW₁ hp₁ k5 k6 ht₀`.
+
+Take `⟨W₃, t', hW₃, hp₃, hd₃, ht', htt'⟩` from `TorsionHolomorphic.exists_differentiableOn_torsSq _ _ kdeg _ W₁ p₀ t₀' hW₁ hp₁ k5' k6' ht₀'`. Establish `hn` using `(GlobalTheory.isOpen_phDom g).mem_nhds hp₀`. Establish `hev : ∀ᶠ p in nhds p₀, p ∈ W₂ ∧ p ∈ W₃ ∧ ∀ j ∈ Set.Iic g, lam j p ≠ 0 ∧ lam' j p ≠ 0`. Use `Filter.Eventually.and (hW₂.mem_nhds hp₂) (Filter.Eventually.and (hW₃.mem_nhds hp₃) ?_)` and prove the remaining obligations. Use `(Filter.eventually_all_finite (Set.finite_Iic g)).2 fun j hj => ?_` and prove the remaining obligations.
+
+Conclude with `(((k3 j hj).differentiableAt hn).continuousAt.eventually_ne (hl₀ j hj).1).and (((k3' j hj).differentiableAt hn).continuousAt.eventually_ne (hl₀ j hj).2)`. Take `⟨W, hW, hWo, hpW⟩` from `eventually_nhds_iff.1 hev`. Establish `s₂ : W ⊆ W₂` using `fun p hp => (hW p hp).1`. Establish `s₃ : W ⊆ W₃` using `fun p hp => (hW p hp).2.1`. Establish `s₁ : W ⊆ W₁` using `s₂.trans hd₂`.
+
+Establish `s₀ : W ⊆ Key.phDom g` using `s₁.trans hd₁`. Use `⟨W, fun p => formC g n l l' (t p) (t' p) (fun j => lam j p) (fun j => lam' j p) (jacAn (fun i => F i p) (z p)), hWo, hpW, s₀, ?_, fun p hp x h u hx => ?_⟩` and prove the remaining obligations. Use `differentiableOn_formC n l l' (ht.mono s₂) (ht'.mono s₃) (differentiableOn_jacAn hF s₀ (hz.mono s₁)) (fun j hj => (k3 j hj).mono s₀) (fun j hj => (k3' j hj).mono s₀) fun p hp => ⟨?_, ?_, ?_, (hW p hp).2.2⟩` and prove the remaining obligations. Conclude with `(TorsionUnique.torsSq_unique _ _ _ _ _ _ (k6 p (s₁ hp)) (htt p (s₂ hp)) (htt p (s₂ hp))).2.ne_zero`. Conclude with `(TorsionUnique.torsSq_unique _ _ _ _ _ _ (k6' p (s₁ hp)) (htt' p (s₃ hp)) (htt' p (s₃ hp))).2.ne_zero`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun e _ => (det_scale_ne_zero _).2 ((hG p (s₁ hp)).2.1 e)`. Take `⟨s, κ, r, r', hk, hr, hr', -, hκ⟩` from `main p (s₁ hp) x h u hx`. Use `⟨s, κ, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hκ, (TorsionUnique.torsSq_unique _ _ _ _ _ _ (k6 p (s₁ hp)) hr (htt p (s₂ hp))).1, (TorsionUnique.torsSq_unique _ _ _ _ _ _ (k6' p (s₁ hp)) hr' (htt' p (s₃ hp))).1]`.
+-/
 theorem kaVal_locally_holomorphic : Out.Laws → ThetaUnifAV → ∀ (g : ℕ) (n l l' : ℕ) (al : ℕ → Matrix (Fin 4) (Fin 4) ℤ) (a b : Fin g → ℂ) (p₀ : (Fin g → Fin g → ℂ)) (x₀ : KeyIn ℂ) (h₀ : x₀.P.g = g) (u₀ : HolUnif x₀.P.A x₀.P.L g) (s₀ : Fin x₀.P.g → RR x₀ n) (κ₀ : ℂˣ), charHalf g a b → admitted g n l l' al → p₀ ∈ Key.phDom g → Wit x₀ h₀ u₀ (per p₀) a b → KaVal x₀ n l l' al s₀ κ₀ → ∃ (W : Set (Fin g → Fin g → ℂ)) (V : (Fin g → Fin g → ℂ) → ℂ), IsOpen W ∧ p₀ ∈ W ∧ W ⊆ Key.phDom g ∧ DifferentiableOn ℂ V W ∧ ∀ p ∈ W, ∀ (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g), Wit x h u (per p) a b → ∃ (s : Fin x.P.g → RR x n) (κ : ℂˣ), KaVal x n l l' al s κ ∧ (κ : ℂ) = V p := by
   intro laws hT g n l l' al a b p₀ x₀ h₀ u₀ s₀ κ₀ hab hadm hp₀ hW₀ hk₀
   obtain ⟨F₀, z₀, hF₀, hz₀⟩ := exists_simpleZeros hT hab x₀ h₀ u₀ hW₀ s₀ κ₀ hk₀

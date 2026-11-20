@@ -19,6 +19,13 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 
 open GlobalTheory.ConjTwist
 
+/- English proof (translation)
+Use `set ψ := Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) with hψ`. Establish `hopen : IsOpen (ψ.ker : Set (Formalism.ConjugateSelfDual.G D.host.E D.nd.Om))`. Establish `: ψ.ker = (D.ntw.delta i).ker`. Use extensionality with `σ`. Apply the tactic sequence `cases b <;> simp [hψ, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`.
+
+Rewrite using `[this]`. Conclude with `D.ntw.delta_open i`. Use `haveI : ψ.ker.FiniteIndex := @Subgroup.finiteIndex_of_finite_quotient _ _ _ (Subgroup.quotient_finite_of_isOpen _ hopen)`. Establish `hpow : ∀ σ, ψ σ ^ ψ.ker.index = 1` using `fun σ => by`. Rewrite using `[← map_pow]`.
+
+Conclude with `ψ.ker.pow_index_mem σ`. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym x`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ.delta i j b]`. Conclude with `charOf_eq _ _ hopen hσ Subgroup.FiniteIndex.index_ne_zero (hpow σ)`.
+-/
 theorem de_chi_eq {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (x : (AE D)ˣ) :
     ∃ σ, (((ρ.B i j b).de.chi x : Circle) : ℂ) = ρ.eO i b (algebraMap (D.ntw.O0 i) (D.ntw.O i)
         ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)) := by
@@ -36,6 +43,19 @@ theorem de_chi_eq {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j 
   rw [hρ.delta i j b]
   exact charOf_eq _ _ hopen hσ Subgroup.FiniteIndex.index_ne_zero (hpow σ)
 
+/- English proof (translation)
+Introduce `hRF hA`. Use `AtTw.imp (AtTw.and hA lowAt_holds) fun Fm x hx k p hr hm w _ j H => ?_` and prove the remaining obligations. Introduce `ρ hρ hp hL τ hτ`. Establish `hR` using `ratHyp0_at_point Fm x hx k p hr hm _ H.1.2.2 H.2 j`. Establish `hτ' : ∀ z ∈ (Formalism.L2.Host.embLL0 (Fm.D x k)).fieldRange, τ z = z`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hτ y`. Establish `hFB : FixBase p.T p.R.toRealDat j τ` using `GlobalTheory.T.fixes_untwistedTupleData_of_fixes_smallField _ _ _ _ _ _ hRF p.T p.R p.cG p.Sx p.nexp (F2 p) p.κ p.v₀ hR.laws hR.core hR.fw hR.tieIn hR.galois hR.small.val hR.small.ray hR.small.roots j τ hτ'`. Use `⟨hFB, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨σ, hσ⟩` from `de_chi_eq hρ ((Fm.ex x hx k).nch.twI w) j ((Fm.ex x hx k).nch.sd w) y`. Express the relevant statement in the definitionally equal form `τ (((ρ.B _ j _).de.chi y : Circle) : ℂ) = _`. Rewrite using `[hσ]`. Use `GlobalTheory.T.ringAut_fixing_smallField_fixes_delta_values ρ hρ _ j _ (p.R.C.delAt ((Fm.D x k).ntw.l ((Fm.ex x hx k).nch.twI w))) (hp.delta _ j _) ?_ τ hτ σ` and prove the remaining obligations. Unfold `Formalism.L2.Host.CharFrame.delAt`.
+
+Use `split_ifs`. Use `exacts [hR.small.val.del', hR.small.val.del]`. Introduce and unpack `⟨q, hq⟩`. Take `⟨y, rfl⟩` from `(ρ.eG ((Fm.ex x hx k).nch.twI w) j ((Fm.ex x hx k).nch.sd w)).surjective q`. Take `⟨g, rfl⟩` from `(p.R.eG.trans p.cG).surjective y`.
+
+Establish `hg` using `(mem_level_iff hm.2.2 hL _ j _ g).1 hq`. Take `⟨z, hz⟩` from `(level_chi hm.2.2 hρ hL _ j _ ⟨g, hg⟩ hq).2`. Express the relevant statement in the definitionally equal form `τ ((((ρ.B _ j _).G.P.chi ⟨_, hq⟩ : ℂˣ) : ℂ)) = _`. Rewrite using `[← hz]`. Conclude with `hτ z`.
+
+Conclude with `(baseOf_of_realPin hR.core.lev hρ hp _ j _).fix_mu hR.core.lev (hρ.base _ j _) hFB.chi`.
+-/
 theorem fixAt_holds : GlobalTheory.Published.RayClassFieldSt → TwAdm → FixAt := by
   intro hRF hA
   refine AtTw.imp (AtTw.and hA lowAt_holds) fun Fm x hx k p hr hm w _ j H => ?_

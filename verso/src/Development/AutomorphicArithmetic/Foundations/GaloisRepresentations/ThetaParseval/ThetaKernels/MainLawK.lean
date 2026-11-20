@@ -15,6 +15,25 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open Formalism.IndefR.DatumF
 noncomputable section
 namespace GlobalTheory.SiegelLawDblTargetF
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd`. Take `⟨α, hαc, hαr, hlaw⟩` from `_root_.GlobalTheory.T.fundamental_domain_haar_plancherel F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd`. Introduce `h t hht f hf`. Distinguish the cases in `h0 : ∀ g, IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ g → GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) g = 0`. Rewrite using `[h0 _ (hωd.om_pres _ f hf), h0 f hf, mul_zero]`.
+
+Use `push_neg at h0`. Take `⟨f₀, hf₀, hne⟩` from `h0`. Establish `hsp` using `_root_.GlobalTheory.T.fundamental_domain_haar_parseval F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd α hlaw f₀ hf₀ hne`. Establish `hα : ∀ a : GL (Fin nT) (AF F ⊗[F] E), α a = χS (Matrix.GeneralLinearGroup.det a)`. Break down `Nat.eq_zero_or_pos nT with hn0 | hpos` into its components or cases.
+
+Introduce `a`. Establish `hd : Matrix.GeneralLinearGroup.det a = 1` using `by ext; rw [Matrix.GeneralLinearGroup.val_det_apply]; subst hn0; simp`. Rewrite using `[char_det_one F E nT α a hd, hd, map_one]`. Take `⟨i0⟩ : Nonempty (Fin nT)` from `⟨⟨0, hpos⟩⟩`. Establish `hhec : IsHeckeCharF (α.comp (GlobalTheory.LeviOrigin.dgU nT i0) * χS⁻¹)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hαc.comp (GlobalTheory.LeviOrigin.continuous_dgU nT i0)).mul (hωd.hecS.1.inv)`. Introduce `x`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply, hωd.hecS.2 x, inv_one, mul_one, GlobalTheory.LeviOrigin.dgU_map (incAF F E) nT i0 x]`. Conclude with `hαr _`.
+
+Establish `hν1` using `_root_.GlobalTheory.T.hecke_character_trivial_of_split F E σ B hB _ hhec (by`. Introduce `e he x hx`. Establish `h2` using `hsp e he (GlobalTheory.LeviOrigin.dgU nT i0 x) (by`. Introduce `k l`. Rewrite using `[GlobalTheory.LeviOrigin.dgU_sub_one]`.
+
+Use `split_ifs`. Conclude with `hx`. Conclude with `mul_zero _)`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.comp_apply, h2, GlobalTheory.LeviOrigin.det_dgU, MonoidHom.inv_apply, mul_inv_cancel])`. Establish `hdg : ∀ x, α (GlobalTheory.LeviOrigin.dgU nT i0 x) = χS x`.
+
+Introduce `x`. Use `hν1 x` as an intermediate fact. Rewrite `this` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.inv_apply]`. Conclude with `mul_inv_eq_one.mp this`. Introduce `a`.
+
+Establish `hb : Matrix.GeneralLinearGroup.det (a * (GlobalTheory.LeviOrigin.dgU nT i0 (Matrix.GeneralLinearGroup.det a))⁻¹) = 1`. Rewrite using `[map_mul, map_inv, GlobalTheory.LeviOrigin.det_dgU, mul_inv_cancel]`. Establish `h3 : α a = α (a * (GlobalTheory.LeviOrigin.dgU nT i0 (Matrix.GeneralLinearGroup.det a))⁻¹) * α (GlobalTheory.LeviOrigin.dgU nT i0 (Matrix.GeneralLinearGroup.det a))`. Rewrite using `[← map_mul, inv_mul_cancel_right]`. Rewrite using `[h3, char_det_one F E nT α _ hb, one_mul]`.
+
+Conclude with `hdg _`. Rewrite using `[hlaw h t hht f hf, hα t]`.
+-/
 theorem lagr_law_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
@@ -75,6 +94,13 @@ theorem lagr_law_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     rw [h3, char_det_one F E nT α _ hb, one_mul]
     exact hdg _
   rw [hlaw h t hht f hf, hα t]
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ JB ξ hξ κ _ co hco ν 𝓕 hν h𝓕 χS hχS rχS ωd hωd omp htr p t hpt Φ hΦ`. Take `⟨h, hh⟩` from `exists_gaf σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) p`. Establish `hg : mtF σ JS 1 = ((1 : UG (cA σ) (incM F JB))⁻¹).1.1ᵀ` using `by first`. Consider the case `(simp only [mtF, map_one, inv_one]; simp; done)`. Consider the case `(simp [mtF, matHomF]; exact map_one _)`.
+
+Consider the case `(simp [mtF, matHomF]; rfl)`. Take `⟨hmem, heq⟩` from `htr p 1 1 h hh hg Φ hΦ`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Establish `hth` using `_root_.GlobalTheory.TransportHeisF.isThetaFunOF_thetaTr_k F E σ B hB nS (nT + nT) JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) hS (GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT) ξ₀ hξ₀ hσ hωd.std _ JB ξ`.
+
+Use `rfl hξ κ co hco Φ hΦ`. Conclude with `_root_.GlobalTheory.SiegelLawDblTargetF.lagr_law_k F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd h t (by rw [hh]; exact hpt) _ hth`.
+-/
 theorem main_law_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

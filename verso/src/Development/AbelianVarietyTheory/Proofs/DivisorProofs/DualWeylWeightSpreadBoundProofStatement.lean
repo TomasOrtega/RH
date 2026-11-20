@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DualWeylWeightSprea
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NablaSchur
 open GlobalTheory.LeviCut
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviCut.nablaBdd | exact GlobalTheory.LeviCut.nablaBdd | (intros; apply GlobalTheory.LeviCut.nablaBdd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dualWeylWeightSpreadBound_proof : GlobalTheory.LeviCut.NablaBdd := by
   first | exact @GlobalTheory.LeviCut.nablaBdd | exact GlobalTheory.LeviCut.nablaBdd | (intros; apply GlobalTheory.LeviCut.nablaBdd <;> assumption)

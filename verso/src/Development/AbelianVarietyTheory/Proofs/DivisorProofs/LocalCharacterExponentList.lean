@@ -11,6 +11,21 @@ namespace GlobalTheory.LeviBlockExponentLocal
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hG k _ _ _ _ N i hi b hb χ hsm hn ϖ`. Unfold `pairInd`. Take `⟨M, bb, hbb⟩` from `hG k (Fin 2) (Fin (i + 2)) (Fin N) (fun j => Fin (b j)) (fun j => Fin (blockSizes₂ N i j)) (pairPlace b hb) (blockIndex hi)`. Establish `hchar : IsSmoothChar (pairChar k b χ)`. Unfold `pairChar`.
+
+Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) ?_ fun a _ => ?_` and prove the remaining obligations. Unfold `IsSmoothChar`. Simplify using the standard rewrite rules. Conclude with `(hsm a).detChar.comp _ (continuous_apply a)`. Take `⟨S, -, h0, htop, hS⟩` from `hbb ℂ (ofChar (pairChar k b χ)) ((isSmooth_ofChar_iff _).2 hchar)`.
+
+Establish `key : ∀ t : Fin M, ∃ c : ℂ, (∃ (j : Fin 2) (l : ℕ), l ≤ i ∧ ‖c‖ = nabs k ϖ ^ ((1 - (b j : ℝ)) / 2 + l)) ∧ ∀ v ∈ (S t.succ).toSubmodule, jac (blockIndex hi) (parInd (pairPlace b hb) (ofChar (pairChar k b χ))) (blockScalar₂ k N i ϖ) v - c • v ∈ (S t.castSucc).toSubmodule`. Introduce `t`. Take `⟨f⟩` from `(bb t).nonempty_rows`. Take `⟨g⟩` from `(bb t).nonempty_cols`. Establish `φ` using `Classical.choice (hS t f g)`.
+
+Establish `hB` using `GlobalTheory.T.exists_size_matrix_character k N i b χ hn ϖ (bb t) f g`. Use `⟨_, hB, fun v hv => ?_⟩` and prove the remaining obligations. Set `x : (S t.succ).toSubmodule ⧸ Submodule.comap (S t.succ).toSubmodule.subtype (S t.castSucc).toSubmodule` to `Submodule.Quotient.mk ⟨v, hv⟩`. Establish `hq : subQuot (S t.succ) (S t.castSucc) (blockScalar₂ k N i ϖ) x = ((cellScalar f g (pairChar k b χ) ⟨blockScalar₂ k N i ϖ, blockScalar_mem_relParab N i ϖ g⟩ : ℂˣ) : ℂ) • x`. Apply `φ.toLinearEquiv.injective` to reduce the goal to its premises.
+
+Establish `h1 : φ.toLinearEquiv (subQuot (S t.succ) (S t.castSucc) (blockScalar₂ k N i ϖ) x) = cellFunctor f g (ofChar (pairChar k b χ)) (blockScalar₂ k N i ϖ) (φ.toLinearEquiv x)` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap (blockScalar₂ k N i ϖ) x`. Use `h1.trans ((cellFunctor_ofChar_central f g _ _ (blockScalar_mem_relParab N i ϖ g) (blockScalar_comm N i ϖ) _).trans ?_)` and prove the remaining obligations. Conclude with `(φ.toLinearEquiv.map_smul _ _).symm`. Establish `h2` using `(Submodule.Quotient.eq _).1 (show (Submodule.Quotient.mk ((S t.succ).toRepresentation (blockScalar₂ k N i ϖ) ⟨v, hv⟩) : (S t.succ).toSubmodule ⧸ Submodule.comap (S t.succ).toSubmodule.subtype (S t.castSucc).toSubmodule) = Submodule.Quotient.mk (((cellScalar f g (pairChar k b χ) ⟨ …`. Conclude with `h2`.
+
+Use `choose c hcn hc using key`. Use `⟨List.ofFn c, fun a ha => ?_, fun w => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `hcn t`. Establish `h0' : (S 0).toSubmodule = ⊥` using `(congrArg Subrepresentation.toSubmodule h0).trans (toSubmodule_bot' _)`.
+
+Establish `ht' : (S (Fin.last M)).toSubmodule = ⊤` using `(congrArg Subrepresentation.toSubmodule htop).trans (toSubmodule_top' _)`. Conclude with `prod_ofFn_eq_zero _ M (fun t => (S t).toSubmodule) c hc h0' w (ht' ▸ Submodule.mem_top)`.
+-/
 theorem position_exponents : GlobalTheory.Published.GeometricLemmaFiltration → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N i : ℕ) (hi : i + 1 ≤ N) (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → kˣ →* ℂˣ),
     (∀ j, IsSmoothChar (χ j)) → (∀ j y, ‖((χ j y : ℂˣ) : ℂ)‖ = 1) → ∀ ϖ : kˣ, ∃ L : List ℂ,

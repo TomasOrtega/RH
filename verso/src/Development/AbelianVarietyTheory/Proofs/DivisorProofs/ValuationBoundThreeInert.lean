@@ -11,6 +11,23 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.ArithThreeInert
 
+/- English proof (translation)
+Introduce `_ lam d w σ p hd hw h1 h2`. Take `⟨hint, hadd, hmul, -, hneg, -, -⟩` from `GlobalTheory.T.algebraicValuationAtLeast_basic_properties 3 lam`. Establish `hsub : ∀ x y : ℂ, Sz 3 lam 0 x → Sz 3 lam 0 y → Sz 3 lam 0 (x - y)`. Introduce `x y hx hy`. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `hadd 0 x (-y) hx (hneg 0 y hy)`. Establish `hI : ∀ x : ℂ, IsIntegral ℤ x → Sz 3 lam 0 x`. Introduce `x hx`. Conclude with `hint 1 x (by norm_num) (by simpa using hx)`. Establish `hw_int : IsIntegral ℤ w`.
+
+Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.Monic.def.mpr (by`. Rewrite using `[Polynomial.leadingCoeff_X_pow_add_C (by norm_num)])`. Simplify using `[hw]`. Establish `hA : Sz 3 lam 0 ((1 + w) ^ 2 - 1)` using `hI _ (((isIntegral_one.add hw_int).pow 2).sub isIntegral_one)`.
+
+Establish `hB : Sz 3 lam 0 ((1 - w) ^ 2 - 1)` using `hI _ (((isIntegral_one.sub hw_int).pow 2).sub isIntegral_one)`. Establish `hW : Sz 3 lam 0 w` using `hI _ hw_int`. Establish `hcomb : Sz 3 lam 0 (((((1 - w) ^ 2 - 1) * (((1 + w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 + w) ^ 2 - 1) * p)) - (((1 + w) ^ 2 - 1) * (((1 - w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 - w) ^ 2 - 1) * p))) * w)`. Use `hmul 0 0 _ _ (hsub _ _ (by simpa using hmul 0 0 _ _ hB h1) (by simpa using hmul 0 0 _ _ hA h2)) hW` as an intermediate fact. Simplify using `using this`.
+
+Establish `heq : ((((1 - w) ^ 2 - 1) * (((1 + w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 + w) ^ 2 - 1) * p)) - (((1 + w) ^ 2 - 1) * (((1 - w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 - w) ^ 2 - 1) * p))) * w = ((4 * d ^ 2 : ℕ) : ℂ) * (-σ)`. Use `push_cast`. Take the linear combination `(4 * (d : ℂ) * σ) * hw`. Rewrite `hcomb` using `[heq]`. Establish `hd0 : ((4 * d ^ 2 : ℕ) : ℂ) ≠ 0`.
+
+Establish `: d ≠ 0` using `by rintro rfl; simp at hd`. Conclude with `(by positivity : 0 < 4 * d ^ 2).ne'` after adjusting the coercions. Establish `h3 : ¬ 3 ∣ 4 * d ^ 2`. Introduce `h`. Establish `h0 : (4 * d ^ 2) % 3 = 0` using `Nat.mod_eq_zero_of_dvd h`.
+
+Rewrite `h0` using `[Nat.mul_mod, Nat.pow_mod, hd]`. Evaluate the numerical expressions using `at h0`. Establish `hinv : Sz 3 lam 0 (((4 * d ^ 2 : ℕ) : ℂ))⁻¹` using `hint (4 * d ^ 2) _ h3 (by rw [mul_inv_cancel₀ hd0]; exact isIntegral_one)`. Establish `hm` using `hmul 0 0 _ _ hinv hcomb`. Rewrite `hm` using `[zero_add]`.
+
+Establish `hfin` using `hneg 0 _ hm`. Rewrite `hfin` using `[← mul_assoc, inv_mul_cancel₀ hd0, one_mul, neg_neg]`. Conclude with `hfin`.
+-/
 theorem main : ∀ [Fact (Nat.Prime 3)] (lam : algebraicClosure ℚ ℂ →+* ℂ_[3]) (d : ℕ) (w σ p : ℂ), d % 3 = 1 → w ^ 2 = -(d : ℂ) → Sz 3 lam 0 (((1 + w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 + w) ^ 2 - 1) * p) → Sz 3 lam 0 (((1 - w) ^ 2 - (1 + (d : ℂ))) * σ - ((1 - w) ^ 2 - 1) * p) → Sz 3 lam 0 σ := by
   intro _ lam d w σ p hd hw h1 h2
   obtain ⟨hint, hadd, hmul, -, hneg, -, -⟩ := GlobalTheory.T.algebraicValuationAtLeast_basic_properties 3 lam

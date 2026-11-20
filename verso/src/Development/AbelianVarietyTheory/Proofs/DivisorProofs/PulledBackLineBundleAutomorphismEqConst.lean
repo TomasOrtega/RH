@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PullAutConst
 
+/- English proof (translation)
+Introduce `A _ B' _ X L π hB hL w hw`. Establish `hP` using `(isGen_iff w).1 hw`. Establish `hg : ∀ (j j' : L.ι) (x : B'.left), π x ∈ L.U j → π x ∈ L.U j' → gm (𝟙 B'.left) x _ ((L.pull π).g (fun _ => j) (fun _ => j')) = gm (𝟙 _ ≫ π) x _ (L.g j j')`. Introduce `j j' x hj hj'`. Establish `hp : (𝟙 B'.left : B'.left ⟶ B'.left) x ∈ (L.pull π).U (fun _ => j) ⊓ (L.pull π).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`.
+
+Use `show gm _ x _ (∏ _k : PUnit, (res _ (pullU π _ (L.g j j'))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res _ x _ hp _).trans (gm_pull _ π x (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)`. Take `⟨u, hu⟩` from `glue_unit (⊤ : B'.left.Opens) (fun j : L.ι => (L.pull π).U (fun _ => j) ⊓ (L.pull π).U (fun _ => j)) (fun _ => le_top) (fun x _ => by`. Take `⟨j, hj⟩` from `exists_chart hL (π x)`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, mem_pull.2 hj, mem_pull.2 hj⟩)`. Use the proof step `(fun j => w.s (fun _ => j, fun _ => j)) (fun j j' x hx => by`. Establish `hj : π x ∈ L.U j` using `mem_pull.1 hx.1.1`. Establish `hj' : π x ∈ L.U j'` using `mem_pull.1 hx.2.1`. Establish `e` using `hP _ (𝟙 _) x j j' (fun _ => j) (fun _ => j') hj hj' (mem_pull.2 hj) (mem_pull.2 hj')`.
+
+Rewrite `e` using `[hg j j' x hj hj', mul_inv_cancel]`. Conclude with `e.trans (_root_.one_mul _))`. Set `e₁ : Γ(Sp A, ⊤) ≃+* Γ(B'.left, ⊤)` to `RingEquiv.ofBijective B'.hom.appTop.hom (GlobalTheory.globalFns_holds _ B' hB)`. Set `e₂ : A ≃+* Γ(Sp A, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv`. Set `e : A ≃+* Γ(B'.left, ⊤)` to `e₂.trans e₁`.
+
+Use `⟨Units.map e.symm.toMonoidHom u, fun Z x z j hj => ?_⟩` and prove the remaining obligations. Establish `hl : pullU B'.hom ⊤ (unitOn (Units.map e.symm.toMonoidHom u)) = u` using `Units.ext (e.apply_symm_apply u.val)`. Establish `hm : x z ∈ (L.pull π).U (fun _ => j) ⊓ (L.pull π).U (fun _ => j)` using `⟨mem_pull.2 hj, mem_pull.2 hj⟩`. Use `(congrArg (gm x z _) (hu j)).symm.trans ((gm_res x z _ hm _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (gm x z ⊤) hl).symm.trans (gm_pull x B'.hom z ⊤ trivial _)`.
+-/
 theorem main : ∀ {A : Type} [CommRing A] (B' : Over (Sp A)) [GrpObj B'] {X : Scheme.{0}} (L : LB X) (π : B'.left ⟶ X), IsAbelianScheme B' → L.IsLB → ∀ w : LB.Iso (L.pull π) (L.pull π), w.IsGen → ∃ lam : Aˣ, ∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (z : Z) (j : L.ι), π (x z) ∈ L.U j → gm x z _ (w.s (fun _ => j, fun _ => j)) = gm (x ≫ B'.hom) z ⊤ (unitOn lam) := by
   intro A _ B' _ X L π hB hL w hw
   have hP := (isGen_iff w).1 hw

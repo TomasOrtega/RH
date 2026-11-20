@@ -54,19 +54,37 @@ namespace LatAt
 variable {a₀ : ℕ} {b₀ c₀ : ℤ} {dK : ℕ} {ha : 0 < a₀} {hdK : 0 < dK} {lam : ℂ} {hlam : lam ≠ 0} {n : Type} [Fintype n]
   [DecidableEq n] {h : Matrix n n ℂ} {Λ : AddSubgroup (n → ℂ)} {θ : (n → ℂ) → ℂ} {p : ℕ} [Fact p.Prime] {ι : ℂ ≃+* ℂ_[p]}
 
+/- English proof (translation)
+The claim follows from `H.2.1`.
+-/
 theorem selfDual (H : LatAt a₀ b₀ c₀ dK ha hdK lam hlam h Λ θ p ι) : IsSelfDual (matH h) Λ := H.2.1
 
+/- English proof (translation)
+The claim follows from `H.2.2.1`.
+-/
 theorem stable (H : LatAt a₀ b₀ c₀ dK ha hdK lam hlam h Λ θ p ι) : ∀ x ∈ Λ, Formalism.L2.Th1.F.cmTheta b₀ dK • x ∈ Λ := H.2.2.1
 
+/- English proof (translation)
+The claim follows from `H.2.2.2.1`.
+-/
 theorem mem_th (H : LatAt a₀ b₀ c₀ dK ha hdK lam hlam h Λ θ p ι) :
     θ ∈ Th (matH h) (alphaQ (Real.sqrt dK / 2) (matH h)) Λ := H.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `H.2.2.2.2`.
+-/
 theorem locNorm (H : LatAt a₀ b₀ c₀ dK ha hdK lam hlam h Λ θ p ι) : LocNorm a₀ b₀ dK ha hdK lam hlam h Λ θ p ι := H.2.2.2.2
 
 end LatAt
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by decide, by norm_num, by norm_num⟩`.
+-/
 example : CmOK 1 1 2 7 := ⟨by norm_num, by decide, by norm_num, by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨by norm_num, by decide, by norm_num, by norm_num⟩, by norm_num, by norm_num⟩`.
+-/
 example : CmOK 1 1 6 23 ∧ 23 % 8 = 7 ∧ 23 % 3 = 2 := ⟨⟨by norm_num, by decide, by norm_num, by norm_num⟩, by norm_num, by norm_num⟩
 
 end GlobalTheory.ThLoc

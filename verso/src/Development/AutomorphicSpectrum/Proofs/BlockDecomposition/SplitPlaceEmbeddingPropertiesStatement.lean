@@ -12,6 +12,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm | exact GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm | (intros; apply GlobalTheory.CompanionTheory.SpAlg.split_place_embeddings_norm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_place_embedding_properties : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w₁ w₂ : PlK K)
   [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal], w₁ ≠ w₂ →
     (∀ ξ : K, algebraMap (Qv v) (Kv K w₁) (dg1 v w₁ ξ) = algebraMap K (Kv K w₁) ξ) ∧

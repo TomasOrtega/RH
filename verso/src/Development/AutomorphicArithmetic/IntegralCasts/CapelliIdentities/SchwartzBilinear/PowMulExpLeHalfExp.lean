@@ -2,6 +2,17 @@ import Mathlib
 
 namespace UpperTheory.Reformulated.B.P6.r23b
 
+/- English proof (translation)
+Use `⟨(2 / a) ^ N * (N.factorial : ℝ) * Real.exp (a / 2), by positivity, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hy : 0 ≤ a / 2 * (1 + x)` using `by positivity`. Establish `h1 : (a / 2 * (1 + x)) ^ N / (N.factorial : ℝ) ≤ Real.exp (a / 2 * (1 + x))` using `Real.pow_div_factorial_le_exp (x := a / 2 * (1 + x)) (n := N) hy`. Establish `hf : (0 : ℝ) < (N.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos N`.
+
+Establish `h1' : (a / 2 * (1 + x)) ^ N ≤ Real.exp (a / 2 * (1 + x)) * (N.factorial : ℝ)` using `(div_le_iff₀ hf).mp h1`. Establish `h2 : (1 + x) ^ N = (2 / a) ^ N * (a / 2 * (1 + x)) ^ N`. Rewrite using `[← mul_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hp : (0 : ℝ) ≤ (2 / a) ^ N` using `by positivity`. Establish `h3 : (1 + x) ^ N ≤ (2 / a) ^ N * (N.factorial : ℝ) * Real.exp (a / 2 * (1 + x))`. Rewrite using `[h2]`. Use `mul_le_mul_of_nonneg_left h1' hp` as an intermediate fact. Combine the linear relations using `[this]`.
+
+Establish `h4 : Real.exp (a / 2 * (1 + x)) * Real.exp (-(a * x)) = Real.exp (a / 2) * Real.exp (-(a / 2 * x))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_mul_exp_le_half_exp (N : ℕ) (a : ℝ) (ha : 0 < a) :
     ∃ (C : ℝ), 0 ≤ C ∧ ∀ (x : ℝ), 0 ≤ x →
       (1 + x) ^ N * Real.exp (-(a * x)) ≤ C * Real.exp (-(a / 2 * x)) := by
@@ -33,6 +44,9 @@ theorem pow_mul_exp_le_half_exp (N : ℕ) (a : ℝ) (ha : 0 < a) :
     _ = (2 / a) ^ N * (N.factorial : ℝ) * Real.exp (a / 2) * Real.exp (-(a / 2 * x)) := by
         rw [h4]; ring
 
+/- English proof (translation)
+Introduce `N a ha`. Conclude with `pow_mul_exp_le_half_exp N a ha`.
+-/
 theorem PositivityTheory.Rg.Sw.Glob.DCalcDH.poly_exp :
     ∀ (N : ℕ) (a : ℝ), OfNat.ofNat (nat_lit 0) < a → ∃ (C : ℝ), OfNat.ofNat (nat_lit 0) ≤ C ∧ ∀ (x : ℝ), OfNat.ofNat (nat_lit 0) ≤ x → (OfNat.ofNat (nat_lit 1) + x) ^ N * Real.exp (-(a * x)) ≤ C * Real.exp (-(a / OfNat.ofNat (nat_lit 2) * x)) := by
   intro N a ha

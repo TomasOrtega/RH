@@ -7,6 +7,9 @@ namespace UpperTheory.TP.RP
 private noncomputable def sAlg {n d : ℕ} (h : n ≤ d) : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] PP n d :=
   aeval fun v => xv v.1 (Fin.castLE h v.2)
 
+/- English proof (translation)
+Establish `key : (sAlg h).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) g.transpose) = (leftSub g).comp (sAlg h) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[sAlg, Formalism.GradedWeylDivisibility.rowAct, leftSub, xv, Matrix.transpose_apply, map_sum, aeval_X, MvPolynomial.algebraMap_eq]`. Conclude with `congrArg (fun φ => φ f) key`.
+-/
 private theorem sAlg_rowAct {n d : ℕ} (h : n ≤ d) (g : Matrix (Fin n) (Fin n) ℂ)
     (f : MvPolynomial (Fin n × Fin n) ℂ) :
     sAlg h (Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) g.transpose f) = leftSub g (sAlg h f) := by
@@ -16,6 +19,11 @@ private theorem sAlg_rowAct {n d : ℕ} (h : n ≤ d) (g : Matrix (Fin n) (Fin n
     simp [sAlg, Formalism.GradedWeylDivisibility.rowAct, leftSub, xv, Matrix.transpose_apply, map_sum, aeval_X, MvPolynomial.algebraMap_eq]
   exact congrArg (fun φ => φ f) key
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[AlgHom.map_det]`. Establish `hM : (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) g.transpose).mapMatrix (Matrix.of fun p q : Fin n => (X (Fin.castLE le_rfl p, Fin.castLE le_rfl q) : MvPolynomial (Fin n × Fin n) ℂ)) = (g.map C).transpose * Matrix.of fun p q : Fin n => (X (Fin.castLE le_rfl p, Fin.castLE le_rfl q) : MvPolynomial (Fin n × Fin n) ℂ) := by`. Use extensionality with `p q`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.mul_apply, aeval_X, Matrix.transpose_apply, MvPolynomial.algebraMap_eq]`.
+
+Rewrite using `[hM, Matrix.det_mul, Matrix.det_transpose]`. Use `congr 1`. Conclude with `(RingHom.map_det (C : ℂ →+* MvPolynomial (Fin n × Fin n) ℂ) g).symm`.
+-/
 private theorem rowAct_lp {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) g.transpose (Formalism.GradedWeylDivisibility.lpMinor ℂ n le_rfl le_rfl) =
       C g.det * Formalism.GradedWeylDivisibility.lpMinor ℂ n le_rfl le_rfl := by
@@ -30,6 +38,9 @@ private theorem rowAct_lp {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   congr 1
   exact (RingHom.map_det (C : ℂ →+* MvPolynomial (Fin n × Fin n) ℂ) g).symm
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[AlgHom.map_det, AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[sAlg, ofTall, xv, aeval_X, rename_X, Matrix.transpose_apply, Fin.castLE_castLE]`.
+-/
 private theorem sAlg_lp {n d : ℕ} (h : n ≤ d) (k : ℕ) (hk : k ≤ n) :
     sAlg h (Formalism.GradedWeylDivisibility.lpMinor ℂ k hk hk) = ofTall (Formalism.GradedWeylDivisibility.lpMinor ℂ k (hk.trans h) hk) := by
   unfold Formalism.GradedWeylDivisibility.lpMinor
@@ -38,6 +49,15 @@ private theorem sAlg_lp {n d : ℕ} (h : n ≤ d) (k : ℕ) (hk : k ≤ n) :
   ext p q
   simp [sAlg, ofTall, xv, aeval_X, rename_X, Matrix.transpose_apply, Fin.castLE_castLE]
 
+/- English proof (translation)
+Establish `h1 : ∀ ρ : Fin (m + 1) → ℕ, sAlg h (Formalism.GradedWeylDivisibility.hw ℂ le_rfl ρ) = ofTall (Formalism.GradedWeylDivisibility.hw ℂ h ρ)`. Introduce `ρ`. Simplify using `only [Formalism.GradedWeylDivisibility.hw, map_prod, map_pow]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[sAlg_lp]`.
+
+Rewrite using `[h1, sAlg_lp, ← map_pow, ← map_mul]`. Unfold `joint`. Use `congr 1`. Simplify using `only [Formalism.GradedWeylDivisibility.hw]`. Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`.
+
+Establish `e1 : ∀ i : Fin m, μ (Fin.castSucc i) - Formalism.GradedWeylDivisibility.nuNext μ (Fin.castSucc i) = ν (Fin.castSucc i) - Formalism.GradedWeylDivisibility.nuNext ν (Fin.castSucc i)`. Introduce `i`. Establish `hi : (Fin.castSucc i : ℕ) + 1 < m + 1` using `by simp`. Simplify using `only [Formalism.GradedWeylDivisibility.nuNext, dif_pos hi, hν]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e2 : Formalism.GradedWeylDivisibility.nuNext μ (Fin.last m) = 0` using `by simp [Formalism.GradedWeylDivisibility.nuNext]`. Establish `e3 : Formalism.GradedWeylDivisibility.nuNext ν (Fin.last m) = 0` using `by simp [Formalism.GradedWeylDivisibility.nuNext]`. Simplify using `only [e1, e2, e3, hl, Nat.sub_zero, pow_zero, mul_one]`. Rewrite using `[hν, hl, zero_add]`. Simplify using the standard rewrite rules.
+-/
 private theorem key_succ {m d : ℕ} (h : m + 1 ≤ d) (ν μ : Fin (m + 1) → ℕ) (t : ℕ)
     (hν : ∀ k, μ k = ν k + t) (hl : ν (Fin.last m) = 0) :
     sAlg h (Formalism.GradedWeylDivisibility.hw ℂ le_rfl ν) * sAlg h (Formalism.GradedWeylDivisibility.lpMinor ℂ (m + 1) le_rfl le_rfl) ^ t = joint h μ := by
@@ -63,6 +83,15 @@ private theorem key_succ {m d : ℕ} (h : m + 1 ≤ d) (ν μ : Fin (m + 1) → 
   rw [hν, hl, zero_add]
   simp
 
+/- English proof (translation)
+Use `set s := sAlg h (Formalism.GradedWeylDivisibility.lpMinor ℂ n le_rfl le_rfl) with hs`. Use `⟨((LinearMap.mulRight ℂ (s ^ t)).comp (sAlg h).toLinearMap).comp (nablaSq ℂ n lam).subtype, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x`. Establish `hx : ((GlobalTheory.Branching.sqRep ℂ n lam g x : nablaSq ℂ n lam) : MvPolynomial (Fin n × Fin n) ℂ) = detPow ℂ n g lam.detShift • Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (g : Matrix (Fin n) (Fin n) ℂ).transpose x := rfl`. Establish `hsg : leftSub (g : Matrix (Fin n) (Fin n) ℂ) s = C (g : Matrix (Fin n) (Fin n) ℂ).det * s`.
+
+Rewrite using `[hs, ← sAlg_rowAct, rowAct_lp, map_mul]`. Simplify using `[sAlg, MvPolynomial.algebraMap_eq]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply, hx, act1, LinearMap.smul_apply]`. Rewrite using `[map_smul, sAlg_rowAct, ht g, map_mul, map_pow, hsg]`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_mul, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hanti : Antitone lam.natW`. Introduce `a b hab`. Use `lam.anti hab` as an intermediate fact. Unfold `DomWeight.natW`.
+
+Conclude with `Int.toNat_le_toNat (by omega)`. Use `⟨⟨Formalism.GradedWeylDivisibility.hw ℂ le_rfl lam.natW, Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ hanti⟩, ?_⟩` and prove the remaining obligations. Simplify using `using hj`.
+-/
 private theorem main_gen {n d : ℕ} (h : n ≤ d) (lam : DomWeight n) (c : ℤ) (μ : Fin n → ℕ) (t : ℕ)
     (ht : ∀ g : GL (Fin n) ℂ, detPow ℂ n g lam.detShift = detPow ℂ n g c * g.1.det ^ t)
     (hj : sAlg h (Formalism.GradedWeylDivisibility.hw ℂ le_rfl lam.natW) * sAlg h (Formalism.GradedWeylDivisibility.lpMinor ℂ n le_rfl le_rfl) ^ t = joint h μ) :
@@ -90,6 +119,21 @@ private theorem main_gen {n d : ℕ} (h : n ≤ d) (lam : DomWeight n) (c : ℤ)
 
 end UpperTheory.TP.RP
 
+/- English proof (translation)
+Introduce `n d h lam c μ hμ`. Consider the cases of `n with`. Consider the case `zero`. Use `main_gen h lam c μ 0 ?_ ?_` and prove the remaining obligations. Introduce `g`.
+
+Establish `hg : Matrix.GeneralLinearGroup.det g = 1` using `Units.ext (by simp [Matrix.det_isEmpty])`. Simplify using `[detPow, DomWeight.detShift, hg]`. Simplify using `[Formalism.GradedWeylDivisibility.hw, joint]`. Consider the case `succ m`. Establish `hd : lam.detShift = lam.w (Fin.last m)`.
+
+Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Establish `hk : ∀ k, ((lam.natW k : ℕ) : ℤ) = (μ k : ℤ) - μ (Fin.last m)`. Introduce `k`.
+
+Establish `hle` using `lam.anti (Fin.le_last k)`. Rewrite `hle` using `[← hμ k, ← hμ (Fin.last m)]`. Unfold `DomWeight.natW`. Rewrite using `[hd, ← hμ k, ← hμ (Fin.last m), Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `main_gen h lam c μ (μ (Fin.last m)) ?_ ?_` and prove the remaining obligations. Introduce `g`. Establish `hs : lam.detShift = c + ((μ (Fin.last m) : ℕ) : ℤ)`. Rewrite using `[hd, ← hμ (Fin.last m)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [detPow, hs, zpow_add, zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Apply `key_succ h` to reduce the goal to its premises. Introduce `k`. Use `hk k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `hk (Fin.last m)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.TP.RP.exists_act1_equivariant_nablaSq_map_hitting_joint :
     ∀ {n d : ℕ} (h : n ≤ d) (lam : DomWeight n) (c : ℤ) (μ : Fin n → ℕ), (∀ k, (μ k : ℤ) + c = lam.w k) →
       ∃ i : nablaSq ℂ n lam →ₗ[ℂ] PP n d, (∀ g x, i (GlobalTheory.Branching.sqRep ℂ n lam g x) = act1 c g (i x)) ∧ ∃ x₀, i x₀ = joint h μ := by

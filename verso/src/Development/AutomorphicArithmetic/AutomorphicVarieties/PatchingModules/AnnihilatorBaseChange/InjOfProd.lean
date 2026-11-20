@@ -8,6 +8,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ (Polynomial A) _).det = _`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Matrix.charpoly, Matrix.charmatrix]`. Use `congr 2`. Use `ext1 a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [GDet.repAlg, hab, Matrix.one_apply, Matrix.diagonal_apply]`.
+
+Use `ext1 a b`. Simplify using `[GDet.repAlg]`.
+-/
 private theorem chi_rep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
   change (GDet.repAlg ρ (Polynomial A) _).det = _
@@ -18,6 +23,11 @@ private theorem chi_rep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G �
   · ext1 a b
     simp [GDet.repAlg]
 
+/- English proof (translation)
+Establish `e : ∀ c : Fin n → A, (∏ i, (Polynomial.X - Polynomial.C (c i))).roots = Finset.univ.val.map c` using `fun c => by`. Rewrite using `[← Polynomial.roots_multiset_prod_X_sub_C (Finset.univ.val.map c), Multiset.map_map]`. Both sides reduce to the same expression. Establish `h1 : Finset.univ.val.map a = Finset.univ.val.map b` using `by rw [← e, ← e, h]`. Establish `h2 : (Finset.univ.val.map a).Nodup` using `h1 ▸ Finset.univ.nodup.map hb`.
+
+Conclude with `fun i j hij => Multiset.inj_on_of_nodup_map h2 i (Finset.mem_univ_val i) j (Finset.mem_univ_val j) hij`.
+-/
 private theorem inj_of_prod {n : ℕ} {A : Type} [CommRing A] [IsDomain A] {a b : Fin n → A}
     (h : ∏ i, (Polynomial.X - Polynomial.C (a i)) = ∏ i, (Polynomial.X - Polynomial.C (b i)))
     (hb : Function.Injective b) : Function.Injective a := by
@@ -28,6 +38,13 @@ private theorem inj_of_prod {n : ℕ} {A : Type} [CommRing A] [IsDomain A] {a b 
   have h2 : (Finset.univ.val.map a).Nodup := h1 ▸ Finset.univ.nodup.map hb
   exact fun i j hij => Multiset.inj_on_of_nodup_map h2 i (Finset.mem_univ_val i) j (Finset.mem_univ_val j) hij
 
+/- English proof (translation)
+Rewrite using `[← ((UpperTheory.V.CA.d_gmap E).2.2.1 f y).2 i, ← h]`. Unfold `GDet.lam`. Generalize the expression as in `MonoidAlgebra.mapRingHom H f y = z`. Use `congr 2`. Express the relevant statement in the definitionally equal form `D.D (Polynomial S) _ = D.D (Polynomial S) (MonoidAlgebra.mapDomainRingHom (Polynomial S) φ _)`.
+
+Use `congr 1`. Rewrite using `[map_sub]`. Use `congr 1`. Simplify using the standard rewrite rules. Proceed by induction on `z using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp`.
+-/
 private theorem lam_lift {n : ℕ} {R S H G : Type} [CommRing R] [CommRing S] [Group H] [Group G]
     {E : GDet n R H} {D : GDet n S G} {f : R →+* S} {φ : H →* G}
     (h : D.comap φ = E.map f) (i : ℕ) (y : MonoidAlgebra R H) :
@@ -46,6 +63,11 @@ private theorem lam_lift {n : ℕ} {R S H G : Type} [CommRing R] [CommRing S] [G
     | add a b ha hb => simp only [map_add, ha, hb]
     | single g r => simp
 
+/- English proof (translation)
+Use `GDet.ext fun S _ _ z => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ S (MonoidAlgebra.mapDomainRingHom S φ z)).det = (GDet.repAlg (ρ.comp φ) S z).det`. Use `congr 1`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp [GDet.repAlg]`.
+-/
 private theorem rep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (φ : H →* G) : (GDet.ofRep ρ).comap φ = GDet.ofRep (ρ.comp φ) := by
   refine GDet.ext fun S _ _ z => ?_
@@ -56,6 +78,13 @@ private theorem rep_comap {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
   | add a b ha hb => simp only [map_add, ha, hb]
   | single g r => simp [GDet.repAlg]
 
+/- English proof (translation)
+Introduce `N b`. Take `⟨b, rfl⟩` from `hf b`. Take `⟨a, ha, hb⟩` from `h N b`. Use `haveI : IsLocalHom (f : R →+* S) := IsLocalHom.of_surjective _ hf`. Use `⟨f a, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: Algebra.adjoin O s ≤ (Algebra.adjoin O t).comap f` using `Algebra.adjoin_le fun c hc => Algebra.subset_adjoin (hst c hc)`. Conclude with `this ha`. Rewrite using `[← map_sub]`. Establish `h1 : (maximalIdeal R).map (f : R →+* S) ≤ maximalIdeal S` using `Ideal.map_le_iff_le_comap.2 fun c hc => map_nonunit (f : R →+* S) c hc`. Establish `h2` using `Ideal.mem_map_of_mem (f : R →+* S) hb`.
+
+Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 N h2`.
+-/
 private theorem genBy_img {O R S : Type} [CommRing O] [CommRing R] [Algebra O R] [IsLocalRing R] [CommRing S]
     [Algebra O S] [IsLocalRing S] (f : R →ₐ[O] S) (hf : Function.Surjective f) {s : Set R} {t : Set S}
     (h : GenBy O s) (hst : ∀ a ∈ s, f a ∈ t) : GenBy O t := by
@@ -74,6 +103,39 @@ private theorem genBy_img {O R S : Type} [CommRing O] [CommRing R] [Algebra O R]
     rw [Ideal.map_pow] at h2
     exact Ideal.pow_right_mono h1 N h2
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ o πb hπ had D0 x x' hx' hsurj ht`. Take `⟨-, -, hs, hU, hy⟩` from `m.π_maps`. Take `⟨hD, hψ⟩` from `ooMaps l L G0 T Λ n O r B u J D A W m o πb hπ`. Establish `hc : x'.toRingHom.comp (algebraMap B (Spo A)) = x.f.toRingHom` using `RingHom.ext hx'`. Establish `heig : ∀ j, (mat x.x.ρ (T.sg j)).charpoly = ∏ i, (Polynomial.X - Polynomial.C (x' (m.π (W.t.U j i))))` using `fun j => by`.
+
+Establish `h1` using `congrArg (Polynomial.map x'.toRingHom) (spRoots B T.q n (fun j => u.D.chi (MonoidAlgebra.single (T.sg j) 1)) (fun j i => algebraMap O B (A.ut j i)) j).1`. Rewrite `h1` using `[Polynomial.map_map, hc, ← ((UpperTheory.V.CA.d_gmap u.D).2.2.1 _ _).1, x.maps.1, MonoidAlgebra.mapRingHom_single, map_one, chi_rep, Polynomial.map_prod]`. Rewrite using `[← h1]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+
+Conclude with `congrArg (fun a => Polynomial.X - Polynomial.C (x' a)) (hU j i).symm`. Establish `hinj : ∀ j, Function.Injective fun i => x' (m.π (W.t.U j i))` using `fun j => inj_of_prod ((heig j).symm.trans (x.eig j).2) (x.eig j).1`. Establish `hl` using `lam_lift o.D_eq`. Use `set Φ : MonoidAlgebra W.R (Ph0 Λ) →+* MonoidAlgebra (W.R ⧸ ii W) Λ.G.G₀ := (MonoidAlgebra.mapDomainRingHom _ (πo0 Λ)).comp (MonoidAlgebra.mapRingHom _ (Ideal.Quotient.mk (ii W))) with hΦ`. Establish `hp : ∀ g a, Φ (MonoidAlgebra.single g a) = MonoidAlgebra.single (πo0 Λ g) (Ideal.Quotient.mk (ii W) a)` using `fun g a => by simp [hΦ]`.
+
+Establish `hl' : ∀ i y, o.p.D.lam i (Φ y) = Ideal.Quotient.mk (ii W) (W.t.D.lam i y)` using `hl`. Establish `hrel : ∀ y, Rel W (W.t.D.tr y) → o.p.D.tr (Φ y) = 0` using `fun y h => (hl' 1 y).trans (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span h))`. Establish `hsj : Function.Surjective (πo0 Λ)` using `Λ.πo0_surj`. Use `⟨?_, ⟨{ fg := ?_, Ip := fun w => ?_, surj := hsurj, q := T.q, ph := Λ.ph, ta := Λ.ta, comm := Λ.comm, p_ta := Λ.p_ta U := fun j i => Ideal.Quotient.mk (ii W) (W.t.U j i), y := fun j i => Ideal.Quotient.mk (ii W) (W.t.y j i) s := Ideal.Quotient.mk (ii W) W.t.s, q1 := fun j g => ?_ …` and prove the remaining obligations. Simplify using `only [fo, fEl, map_prod, map_mul, map_sub, Nat.cast_one, one_mul]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun j _ => Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun i' hi' => ?_` and prove the remaining obligations. Use `sub_ne_zero.2 ((hinj j).ne (Finset.ne_of_mem_erase hi').symm)` as an intermediate fact. Conclude with `mul_ne_zero this this`. Take `⟨s, hs⟩` from `Λ.fg`. Use `⟨s.image Λ.πo, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.coe_image, ← MonoidHom.map_closure]`. Conclude with `Λ.πo_surj.denseRange.topologicalClosure_map_subgroup Λ.πo_cont hs`. Use `inf_eq_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `Subgroup.mem_iInf.2 fun i => ?_` and prove the remaining obligations.
+
+Establish `h1 : G0.φu w g ∈ r.Ip w` using `by rw [had.2]; exact ⟨g, hg, rfl⟩`. Establish `h2` using `Subgroup.mem_iInf.1 h1.2 i`. Rewrite using `[o.compat.1 i]`. Express the relevant statement in the definitionally equal form `r.chib i (Λ.h.p₀ (Λ.G.φu w g)) = 1`. Rewrite using `[Λ.h.p₀_φu]`.
+
+Conclude with `h2`. Take `⟨g, rfl⟩` from `hsj g`. Take `⟨ph, hph⟩` from `hsj (Λ.ph j)`. Use `hrel _ (Rel.q1 j ph g hph)` as an intermediate fact. Rewrite `this` using `[map_mul, hp, map_one, q1El, map_list_prod, List.map_ofFn]`.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Rewrite using `[q1El]`. Use `congr 4`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, hp, map_one, hph]`.
+
+Take `⟨g, rfl⟩` from `hsj g`. Take `⟨ph, hph⟩` from `hsj (Λ.ph j)`. Take `⟨ta, hta⟩` from `hsj (Λ.ta j)`. Use `hrel _ (Rel.q2 j i ph ta g hph hta)` as an intermediate fact. Rewrite `this` using `[map_mul, hp, map_one, q2El, map_mul, map_list_prod, List.map_ofFn, map_sub, map_sub, hp, hp, hta]`.
+
+Simplify using `only [map_one] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Rewrite using `[q2El]`. Use `congr 5`. Use function extensionality and compare the values at `k`.
+
+Apply the tactic sequence `by_cases hk : k = i <;> simp only [Function.comp_apply, map_sub, hp, map_one, hph, hk, if_true, if_false]`. Use `genBy_img (Ideal.Quotient.mkₐ O (ii W)) Ideal.Quotient.mk_surjective (rrGen l L G0 T Λ n O r B u J D A W) ?_` and prove the remaining obligations. Introduce and unpack `a (((⟨i, g, rfl⟩ | ⟨v, i, g, rfl⟩) | ⟨j, i, h⟩) | rfl)`. Use `Or.inl (Or.inl (Or.inl ⟨i, πo0 Λ g, ?_⟩))` and prove the remaining obligations. Use `hl' i (MonoidAlgebra.single g 1)` as an intermediate fact.
+
+Rewrite `this` using `[hp, map_one]`. Conclude with `this.symm`. Use `Or.inl (Or.inl (Or.inr ⟨v, i, g, ?_⟩))` and prove the remaining obligations. Rewrite using `[o.ψ_eq]`. Both sides reduce to the same expression.
+
+Conclude with `Or.inl (Or.inr ⟨j, i, h.imp (congrArg _) (congrArg _)⟩)`. Conclude with `Or.inr rfl`. Establish `e : (x'.comp πb).toRingHom = x'.toRingHom.comp πb.toRingHom` using `rfl`. Rewrite using `[e, ← (UpperTheory.V.CA.d_gmap o.p.D).2.1, hD, (UpperTheory.V.CA.d_gmap _).2.1, hc]`. Express the relevant statement in the definitionally equal form `(u.D.map x.f.toRingHom).comap Λ.h.p₀ = _`.
+
+Rewrite using `[x.maps.1, rep_comap]`. Both sides reduce to the same expression. Rewrite using `[← x.maps.2 v i, ← hc]`. Conclude with `congrArg (pushCh x'.toRingHom) (hψ v i)`. Rewrite using `[AlgHom.comp_apply, hπ, ← ht, ← hx']`.
+
+Conclude with `congrArg x' hs`. Rewrite using `[AlgHom.comp_apply, hπ, ← map_zero x']`. Conclude with `congrArg x' (hy j i)`. Simplify `hinj j` using `only [AlgHom.comp_apply, hπ]`. Simplify `heig j` using `only [AlgHom.comp_apply, hπ, Λ.p_ph]`.
+-/
 theorem UpperTheory.V.Pa.Core.ooPt :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W) [IsCO O (W.R ⧸ ii W)] (o : OoPair W) (πb : (W.R ⧸ ii W) →ₐ[O] Spo A), (∀ a, πb (Ideal.Quotient.mk (ii W) a) = m.π a) → Adapted T (r := r) → ∀ (D0 : ℕ) (x : Pt T u D0) (x' : Spo A →ₐ[O] x.x.A), (∀ b, x' (algebraMap B (Spo A) b) = x.f b) → Function.Surjective (algebraMap O x.x.K) → x.f (A.b.lam (MvPowerSeries.X (.inl ()))) = x.x.t → x' (m.π (fo W)) ≠ 0 ∧ ∃ P : OoPt Λ.h x.x o.p, P.f = x'.comp πb ∧ P.ker = ooKer o := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ o πb hπ had D0 x x' hx' hsurj ht

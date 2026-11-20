@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CuspGAK
 
+/- English proof (translation)
+Introduce `K _ _ f _ hinv hY hY'`. Conclude with `cusp_of_constantTerms K f hinv hY hY'`.
+-/
 theorem cusp : ∀ (K : Type) [Field K] [NumberField K], Ad3.K.GA.Cusp K := by
   intro K _ _ f _ hinv hY hY'
   exact cusp_of_constantTerms K f hinv hY hY'

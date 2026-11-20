@@ -12,10 +12,16 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ggeo.IntBasis
 
+/- English proof (translation)
+Simplify using `[spMap, ← Spec.map_comp]`.
+-/
 theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
   simp [spMap, ← Spec.map_comp]
 
+/- English proof (translation)
+Apply the tactic sequence `ext x <;> simp only [RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, map_zero, …`.
+-/
 theorem dualMap_comp_alt {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     (dualMap b).comp (dualMap a) = dualMap (b.comp a) := by
   ext x <;> simp only [RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, map_zero, add_zero, zero_add]
@@ -24,6 +30,23 @@ end GlobalTheory.CompanionTheory.Ggeo.IntBasis
 
 open GlobalTheory.CompanionTheory.Ggeo.IntBasis in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c g ty FU i Z P hP X N b a V _ hN hspan hV hNu`. Set `f : 𝓞 X.K →+* V` to `(algebraMap (𝓞 X.K) X.K).codRestrict V hV`. Establish `hf : (algebraMap V X.K).comp f = algebraMap (𝓞 X.K) X.K` using `by ext; rfl`. Take `⟨T', m0, hg⟩` from `GlobalTheory.CM.PAT.exists_pullback E H _ _ (spMap f) X.B`. Establish `hψ : ∀ k, IsMonHom (X.ψ (b k) (a k))` using `fun k => ((X.fam (b k)).1 (a k)).isMonHom`.
+
+Take `⟨hon, hker⟩` from `GlobalTheory.CompanionTheory.Relay.cm_pack_torsion_points E H D l Xo c g ty FU i Z P hP X N b a hN hspan`. Take `⟨χ, hχ, hψχ, hoff⟩` from `GlobalTheory.T.isogeny_product_decomposition X.K (algebraMap X.K ℂ) g N (fun k => (X.C (b k)).P) X.B.pol (fun k => X.ψ (b k) (a k)) hψ hN hon hker`. Take `⟨uV, huV, htan, hbasis⟩` from `GlobalTheory.CompanionTheory.Relay.isogeny_decomposition_product (𝓞 X.K) V f g N (fun k => (X.C (b k)).P) (fun k => (X.C (b k)).v) X.B.pol (fun k => X.ψ (b k) (a k)) χ T'.t.G m0.φ X.dim (fun k => (X.C (b k)).basis) hψ hχ hψχ hoff hNu m0.cart`. Establish `hy : spMap (algebraMap V X.K) ≫ spMap f = spMap (algebraMap (𝓞 X.K) X.K)` using `by rw [spectrumMap_comp, hf]`. Take `⟨m'', hm''⟩` from `(GlobalTheory.CM.Factor.ellMap_cancel_and_sabMap_cancel E H (𝓞 X.K) V X.K f (algebraMap V X.K)).2 (Sp (𝓞 X.K)) (spMap f) (spMap (algebraMap (𝓞 X.K) X.K)) X.B.t T'.t X.t m0 X.m' hy`.
+
+Use `⟨T'.t, m'', uV, htan, hbasis, fun k u hu => ?_⟩` and prove the remaining obligations. Take `⟨r, hr1, hr2⟩` from `hu`. Use `⟨r, hr1, ?_⟩` and prove the remaining obligations. Apply `m0.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm'', hr2, Category.assoc, huV k]`.
+
+Simplify using `only [← Category.assoc]`. Use `congr 2`. Rewrite using `[spectrumMap_comp, dualMap_comp_alt, hf]`. Establish `w1` using `m''.cart.1.w`. Establish `w2` using `X.m'.cart.1.w`.
+
+Establish `hmono : Mono (spMap (algebraMap (𝓞 X.K) X.K))`. Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 X.K) X.K))` using `IsLocalization.epi (nonZeroDivisors (𝓞 X.K)) X.K`. Conclude with `(inferInstance : Mono (Scheme.Spec.map (CommRingCat.ofHom (algebraMap (𝓞 X.K) X.K)).op))`. Establish `hbase : r ≫ X.t.G.hom = spMap (algebraMap X.K (DualNumber X.K))`. Apply `hmono.right_cancellation` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, ← w2, ← Category.assoc, hr2]`. Simplify using `only [Category.assoc]`. Rewrite using `[Over.w (X.ψ (b k) (a k)), Over.w ((X.C (b k)).v)]`. Simplify using `only [Over.mk_hom, spectrumMap_comp]`. Use `congr 1`.
+
+Apply the tactic sequence `ext x <;> simp only [RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, map_zero, …`. Rewrite using `[Category.assoc, w1, ← Category.assoc, hbase, Category.assoc, Over.w (uV k)]`. Simplify using `only [Over.mk_hom, Category.comp_id]`. Use `show spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[spectrumMap_comp, spectrumMap_comp]`.
+
+Use `congr 1`. Apply the tactic sequence `ext x <;> simp only [RingHom.comp_apply, dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, map_zero, …`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.cm_pack_product_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (X : CMPack Z c FU i hP) (N : ℕ) (b : Fin g → Bool) (a : ∀ k, PureType.lat hP (sgnRt H (b k))) (V : Subring X.K) [IsLocalRing V], 0 < N → (∀ y : (FU.Di i).La, N • y ∈ Submodule.span (OK H) (Set.range fun k => (a k : (FU.Di i).La))) → (∀ s : 𝓞 X.K, (s : X.K) ∈ V) → IsUnit (N : V) → ∃ (T : SAB H (Sp V)) (m'' : SABMap X.t T (spMap (algebraMap V X.K))) (uV : Fin g → (epsAt (𝟙 (Sp V)) ⟶ T.G)), (∀ k, IsTanAt T.G _ (uV k)) ∧ (∀ w, IsTanAt T.G _ w → ∃! cc : Fin g → V, IsComb cc uV w) ∧ ∀ k u, X.IsImage (b k) (a k) u → ∃ s : Sp (DualNumber X.K) ⟶ X.t.G.left, s ≫ X.m.φ = u.left ∧ s ≫ m''.φ = spMap (dualMap (algebraMap V X.K)) ≫ (uV k).left := by
   intro E _ _ _ H D l Xo c g ty FU i Z P hP X N b a V _ hN hspan hV hNu
   classical

@@ -39,6 +39,9 @@ def pullPol (P : Out.PolAV (Sp R)) (hg : P.g = 1) {s : R →+* R'} {A : Over (Sp
     L := P.L.pull φ, isLB := hL, rigid := PolBaseChange.rigidified_pull h P.rigid
     sym := PolBaseChange.sym_pull h P.sym, ample := H.2.1 P.ample, ktriv := H.2.2 P.ktriv }
 
+/- English proof (translation)
+Take `⟨Q, φ, -, h, -⟩` from `exists_isPolFibre polBaseChange_holds s P`. Take `⟨rig, hr⟩` from `(pullPol P hg h).rigid`. Take `⟨u, Hm, χ, -, hA, -⟩` from `thetaUnifAV_all (pullPol P hg h) rig hr`. Conclude with `⟨Q.A, inferInstance, φ, u, Hm, χ, h, hA⟩`.
+-/
 theorem exists_unif (P : Out.PolAV (Sp R)) (hg : P.g = 1) (s : R →+* ℂ) :
     ∃ (A : Over (Sp ℂ)) (_ : GrpObj A) (φ : A.left ⟶ P.A.left) (u : HolUnif A (P.L.pull φ) 1)
       (Hm : Matrix (Fin 1) (Fin 1) ℂ) (χ : u.Λ → ℂ), IsGrpPullback A P.A (spMap s) φ ∧ u.IsAH Hm χ := by
@@ -47,6 +50,9 @@ theorem exists_unif (P : Out.PolAV (Sp R)) (hg : P.g = 1) (s : R →+* ℂ) :
   obtain ⟨u, Hm, χ, -, hA, -⟩ := thetaUnifAV_all (pullPol P hg h) rig hr
   exact ⟨Q.A, inferInstance, φ, u, Hm, χ, h, hA⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy 0`. Introduce `h`. Conclude with `⟨![w], fun i => by fin_cases i; exact h, by simp⟩`.
+-/
 theorem isLieComb_one_iff {G : Over (Sp R)} [GrpObj G] (c : R) (v w : epsR R ⟶ G) :
     IsLieComb ![c] ![v] w ↔ w.left = spMap (epsScaleR c) ≫ v.left := by
   constructor
@@ -55,6 +61,11 @@ theorem isLieComb_one_iff {G : Over (Sp R)} [GrpObj G] (c : R) (v w : epsR R ⟶
   · intro h
     exact ⟨![w], fun i => by fin_cases i; exact h, by simp⟩
 
+/- English proof (translation)
+Establish `h1 : IsLieComb ![(1 : R)] ![v] (v ≫ 𝟙 P.A)`. Rewrite using `[isLieComb_one_iff, Category.comp_id]`. Establish `e : epsScaleR (1 : R) = RingHom.id _`. Apply the tactic sequence `ext a <;> simp [epsScaleR]`. Rewrite using `[e]`.
+
+Conclude with `((congrArg (· ≫ v.left) (Spec.map_id (CommRingCat.of (DualNumber R)))).trans (Category.id_comp _)).symm`. Establish `e` using `NormHom.lieNormSq_comp thetaUnifAV_all T.abelianScheme_laws_unconditional.1 R P P (𝟙 P.A) (𝟙 P.A) v 1 s x y inferInstance inferInstance (PolBaseChange.lbIso_refl (LB.isLB_linComb P.isLB _ _)) hv h1 hx (by rwa [Category.comp_id])`. Simplify using `using e`.
+-/
 theorem isLieNormSq_unique {P : Out.PolAV (Sp R)} {v : epsR R ⟶ P.A} (hv : IsTangent v) {s : R →+* ℂ} {x y : ℝ}
     (hx : IsLieNormSq P v s x) (hy : IsLieNormSq P v s y) : y = x := by
   have h1 : IsLieComb ![(1 : R)] ![v] (v ≫ 𝟙 P.A) := by
@@ -73,6 +84,13 @@ end Fibre
 
 section Line
 
+/- English proof (translation)
+Establish `e : ∀ z w : Fin 1 → ℂ, z ⬝ᵥ ((c * starRingEnd ℂ c) • Hm).mulVec (star w) = (c • z) ⬝ᵥ Hm.mulVec (star (c • w))` using `fun z w => by`. Simplify using `[Matrix.mulVec, dotProduct]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨holUnifReparam u (LinearEquiv.smulOfNeZero ℂ _ c hc) 1 (differentiable_const _) fun _ => one_ne_zero, (c * starRingEnd ℂ c) • Hm, fun l => χ ⟨c • l.1, l.2⟩, ⟨?_, fun z hz => ?_, fun l => hA.2.2.1 _, fun l i z hz => ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations. Rewrite using `[Matrix.IsHermitian, Matrix.conjTranspose_smul, hA.1.eq]`.
+
+Simplify using `[mul_comm]`. Rewrite using `[e]`. Conclude with `hA.2.1 _ (smul_ne_zero hc hz)`. Rewrite using `[e, e]`. Express the relevant statement in the definitionally equal form `u.fr i (c • z) / 1 = _ * (u.fr i (c • (z + l.1)) / 1)`.
+
+Rewrite using `[div_one, div_one, smul_add]`. Conclude with `hA.2.2.2 ⟨c • l.1, l.2⟩ i _ hz`.
+-/
 theorem exists_scaled {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUnif A L 1)
     {Hm : Matrix (Fin 1) (Fin 1) ℂ} {χ : u.Λ → ℂ} (hA : u.IsAH Hm χ) {c : ℂ} (hc : c ≠ 0) :
     ∃ (u' : HolUnif A L 1) (Hm' : Matrix (Fin 1) (Fin 1) ℂ) (χ' : u'.Λ → ℂ), u'.IsAH Hm' χ' ∧
@@ -95,12 +113,28 @@ theorem exists_scaled {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (u : HolUni
 
 end Line
 
+/- English proof (translation)
+Simplify using `only [mul_zpow, ← zpow_mul, zpow_add]`. The two sides agree by associativity and commutativity.
+-/
 theorem zpow_identity {A : Type*} [CommGroup A] (i w : A) (k m n m' n' : ℤ) :
     i ^ (m * m' + (-k) * n * n') * w ^ (m * n' + n * m' + n * n') =
       (i ^ m * w ^ n) ^ m' * (w ^ m * (w * i ^ (-k)) ^ n) ^ n' := by
   simp only [mul_zpow, ← zpow_mul, zpow_add]
   ac_rfl
 
+/- English proof (translation)
+Use `choose c hc hcu using hco`. Establish `hcoord : ∀ m n : ℤ, c ((m : O) + (n : O) * ω) = (m, n)` using `fun m n => (hcu _ (m, n) rfl).symm`. Establish `hWW : W ≫ W = W * (𝟙 G) ^ (-(k : ℤ))`. Rewrite using `[zpow_neg, zpow_natCast, eq_mul_inv_iff_mul_eq]`. Conclude with `hEq`.
+
+Set `F : O → (G ⟶ G)` to `fun a => (𝟙 G) ^ (c a).1 * W ^ (c a).2`. Establish `hF : ∀ m n : ℤ, F ((m : O) + (n : O) * ω) = (𝟙 G) ^ m * W ^ n` using `fun m n => by`. Simplify using `only [F, hcoord]`. Establish `hex : ∀ a : O, ∃ m n : ℤ, a = (m : O) + (n : O) * ω` using `fun a => ⟨_, _, hc a⟩`. Use `⟨⟨F, fun a => ?_, ?_, fun a b => ?_, fun a b => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `Serre.isMonHom_zpow (𝟙 G) (c a).1`. Establish `h2` using `Serre.isMonHom_zpow W (c a).2`. Conclude with `Serre.isMonHom_mul _ _`. Simplify using `using hF 1 0`. Take `⟨m, n, rfl⟩` from `hex a`.
+
+Take `⟨m', n', rfl⟩` from `hex b`. Establish `e : ((m : O) + (n : O) * ω) * ((m' : O) + (n' : O) * ω) = ((m * m' + (-(k : ℤ)) * n * n' : ℤ) : O) + ((m * n' + n * m' + n * n' : ℤ) : O) * ω`. Use `push_cast`. Take the linear combination `((n : O) * (n' : O)) * hsq`. Rewrite using `[e, hF, hF, hF]`.
+
+Simplify using `only [MonObj.comp_mul, GrpObj.comp_zpow, MonObj.mul_comp, GrpObj.zpow_comp, Category.comp_id, Category.id_comp, hWW]`. Conclude with `zpow_identity _ _ _ _ _ _ _`. Take `⟨m, n, rfl⟩` from `hex a`. Take `⟨m', n', rfl⟩` from `hex b`. Establish `e : ((m : O) + (n : O) * ω) + ((m' : O) + (n' : O) * ω) = ((m + m' : ℤ) : O) + ((n + n' : ℤ) : O) * ω`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hF, hF, hF, zpow_add, zpow_add]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Simplify using `using hF 0 1`.
+-/
 theorem exists_oAct {O : Type} [CommRing O] {ω : O} {k : ℕ} (hsq : ω ^ 2 + k = ω)
     (hco : ∀ a : O, ∃! p : ℤ × ℤ, a = p.1 + p.2 * ω) {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
     {W : G ⟶ G} (hW : IsMonHom W) (hEq : (W ≫ W) * (𝟙 G) ^ k = W) : ∃ a : OAct O G, a.act ω = W := by
@@ -173,6 +207,21 @@ section Compare
 
 variable {d : ℕ} {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨ω, hω, hgen⟩` from `exists_integer_generator_of_sq_eq_neg h2 hs h4 hr`. Establish `h1 : τ (ω : K) = (1 + Complex.I * √d) / 2`. Use `congrArg τ hω` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat, hτ]`. Take the linear combination `this / 2`.
+
+Establish `hd' : (0 : ℝ) < √d` using `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < d))`. Establish `hc : ∀ m n : ℤ, τ (((m : 𝓞 K) + n * ω : 𝓞 K) : K) = m + n * ((1 + Complex.I * √d) / 2)` using `fun m n => by`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Use `⟨ω, h1, ?_, fun a => ?_, fun Λ => forall_congr' fun z => iff_congr Iff.rfl ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨k, rfl⟩ : ∃ k, d = 4 * k + 3` from `⟨d / 4, by omega⟩`. Rewrite using `[show (1 + (4 * k + 3)) / 4 = k + 1 by omega]`. Use `RingOfIntegers.coe_injective ?_` and prove the remaining obligations. Simplify using `only [map_add, map_pow, map_natCast]`. Express the relevant statement in the definitionally equal form `(ω : K) ^ 2 + _ = (ω : K)`.
+
+Move the coercions through the operations in `at hr ⊢`. Take the linear combination `(2 * (ω : K) - 1 + rt) / 4 * hω + hr / 4`. Take `⟨m, n, e⟩` from `hgen a`. Use `⟨(m, n), e, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨m', n'⟩ e'`.
+
+Establish `e₁` using `(hc m' n').symm.trans ((congrArg (fun b : 𝓞 K => τ (b : K)) (e'.symm.trans e)).trans (hc m n))`. Establish `e₂` using `congrArg Complex.im e₁`. Simplify using `[hd'.ne'] at e₂`. Substitute `e₂` using the available equality. Establish `e₃ : m' = m` using `by exact_mod_cast add_right_cancel e₁`.
+
+Rewrite using `[e₃]`. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨_, by rw [hc, _root_.one_mul]⟩`. Introduce and unpack `⟨a, ha⟩`. Take `⟨m, n, rfl⟩` from `hgen a`.
+
+Use `⟨m, n, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, ha, hc, _root_.one_mul]`.
+-/
 theorem exists_generator (hs : Squarefree d) (h4 : d % 4 = 3) (h2 : Module.finrank ℚ K = 2) {rt : K}
     (hr : rt ^ 2 = -(d : K)) {τ : K →+* ℂ} (hτ : τ rt = Complex.I * (Real.sqrt d : ℝ)) :
     ∃ ω : 𝓞 K, τ (ω : K) = (1 + Complex.I * √d) / 2 ∧ ω ^ 2 + ((1 + d) / 4 : ℕ) = ω ∧

@@ -19,6 +19,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.DepthZeroLoc
 open GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil in
+/- English proof (translation)
+Introduce `_ _ hL D w n π ⟨v, hv, hv0⟩ hq σ hσ`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, _, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)`. Establish `h0 : fixed π.toIrrRep.ρ (KOne (w.adicCompletion D.host.E) (Fin n)) ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩`. Establish `h1` using `fixed_ne_bot_of_equiv (equivRep π.toIrrRep) h0`. Take `⟨m, b, hb, hb'⟩` from `haveI := UpperTheory.One.M.charZero_compl w`.
+
+Use the proof step `_root_.UpperTheory.One.M.LawsM.depth H (cls π.toIrrRep) (UpperTheory.One.M.good_of_fixed hq _ h1) h1`. Establish `hd` using `H.dim (cls π.toIrrRep)`. Establish `hI : σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 w) := GlobalTheory.TameGenPowers.wild_mem_Ine hσ`. Establish `hW : Formalism.MainNotions.BlochKatoReduction.IsWild (D.nd.plOm.1 w) ((ineIncl (D.nd.plOm.2 w) ⟨σ, hI⟩ : Weil (D.nd.plOm.2 w)) : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om)`. Use `⟨hI, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `hσ y hy`. Establish `h3 : (D.nd.plOm.1 w).valuation y ≠ 0` using `by simpa using hy`. Establish `e2 : σ y / y - 1 = (σ y - y) / y` using `by field_simp`. Rewrite `h2` using `[e2, map_div₀, div_lt_one₀ (zero_lt_iff.mpr h3)]`. Conclude with `h2`.
+
+Use `show (_root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 w) (cls π.toIrrRep)).inePol σ = (X - 1) ^ n`. Rewrite `hd`, the goal using `[← hb]`. Rewrite `hd` using `[WD.lpDim_mk]`. Rewrite using `[WD.inePol_of_mem_Ine _ hI, WD.charPol_mk, hb' _ hW, LinearMap.charpoly_one, hd]`.
+-/
 theorem main_m_alt : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (w : PlE D.host) (n : ℕ) (π : Irr (w.adicCompletion D.host.E) n), (∃ v ∈ GlobalTheory.PRep.fixed π.π (GlobalTheory.SplitWeil.KOne (w.adicCompletion D.host.E) (Fin n)), v ≠ 0) → UpperTheory.One.M.IsQg (w.adicCompletion D.host.E) → ∀ σ ∈ wildSet D.nd (D.nd.plOm.1 w), (_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D w n π).inePol σ = (X - 1) ^ n := by
   intro _ _ hL D w n π ⟨v, hv, hv0⟩ hq σ hσ
   first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, _, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)

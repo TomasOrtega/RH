@@ -11,6 +11,15 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 
 namespace GlobalTheory.CompanionTheory.Untilt
 
+/- English proof (translation)
+Introduce `l _ A hA`. Take `⟨t, ht⟩` from `A.frob_bijective.2 A.pi`. Establish `ht' : t ^ l = A.pi` using `ht`. Establish `hpow : A.sharp t ^ l = (l : A.U)`. Rewrite using `[← map_pow, ht', A.sharp_pi]`.
+
+Use `⟨A.sharp t, hpow, ?_⟩` and prove the remaining obligations. Establish `hle : Ideal.span {(l : A.U) ^ 1} ≤ Ideal.span {A.sharp t ^ 2}`. Rewrite using `[pow_one, ← hpow]`. Conclude with `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ (Fact.out : l.Prime).two_le)`. Take `⟨hsurj, hker⟩` from `sharp_map_surjective_ker A`.
+
+Set `g : A.A →+* A.U ⧸ Ideal.span {A.sharp t ^ 2}` to `(Ideal.Quotient.factor hle).comp A.aToU1`. Establish `hg : Function.Surjective g` using `(Ideal.Quotient.factor_surjective hle).comp hsurj`. Establish `hπ : ∀ a ∈ Ideal.span {A.pi}, g a = 0` using `fun a ha => by`. Rewrite `ha` using `[← hker]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factor hle (A.aToU1 a) = 0`.
+
+Rewrite using `[RingHom.mem_ker.1 ha, map_zero]`. Set `g' : A.A ⧸ Ideal.span {A.pi} →+* A.U ⧸ Ideal.span {A.sharp t ^ 2}` to `Ideal.Quotient.lift _ g hπ`. Establish `hg' : Function.Surjective g'` using `Ideal.Quotient.lift_surjective_of_surjective _ hπ hg`. Conclude with `⟨(GlobalTheory.CompanionTheory.SurjPass.absolutely_closed_comparable_surjective g' hg').2 (GlobalTheory.CompanionTheory.ValQuot.valuation_comparable_quotient A.pi hA.2), (GlobalTheory.CompanionTheory.SurjPass.absolutely_closed_comparable_surjective g hg).1 hA.1⟩`.
+-/
 theorem untilt_mod_varpi_sq : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), A.IsTest →
     ∃ ϖ : A.U, ϖ ^ l = (l : A.U) ∧ R.Val0 (A.U ⧸ Ideal.span {ϖ ^ 2}) ∧
       R.Aic (A.U ⧸ Ideal.span {ϖ ^ 2}) := by

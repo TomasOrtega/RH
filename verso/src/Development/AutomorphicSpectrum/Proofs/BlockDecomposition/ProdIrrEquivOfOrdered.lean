@@ -17,6 +17,9 @@ def PairComm (x y : IrrGL k) : Prop :=
   ∀ (N : ℕ) (h₁ : x.1 + y.1 = N) (h₂ : y.1 + x.1 = N),
     Nonempty ((ind₂ (stdSum h₁) (extTensor x.rep y.rep)).Equiv (ind₂ (stdSum h₂) (extTensor y.rep x.rep)))
 
+/- English proof (translation)
+Take `rfl : f = g` from `funext hfg`. Conclude with `multiProd_placing e e' _`.
+-/
 theorem famCongr {u : ℕ} {f g : Fin u → IrrGL k} (hfg : ∀ i, f i = g i) {T : ℕ}
     (e : (Σ i, Fin (f i).1) ≃ Fin T) (e' : (Σ i, Fin (g i).1) ≃ Fin T) :
     Nonempty ((multiProd e fun i => (f i).rep).Equiv (multiProd e' fun i => (g i).rep)) := by

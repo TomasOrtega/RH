@@ -9,11 +9,17 @@ noncomputable section
 
 namespace PositivityTheory.Xgn.TestGroupPoint
 
+/- English proof (translation)
+Simplify using `only [TestPt.bcLin, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, LinearMap.toMatrix'_apply]`. Apply the tactic sequence `try (refine Finset.sum_congr rfl fun i _ => ?_; congr 4; funext j; simp [Pi.single_apply])`.
+-/
 theorem bcLin_apply {Ω C : Type} [Field Ω] [Field C] [Algebra Ω C] {m n : ℕ} (f : (Fin m → Ω) →ₗ[Ω] (Fin n → Ω))
     (x : Fin m → C) (k : Fin n) : TestPt.bcLin C f x k = ∑ i, algebraMap Ω C (f (Pi.single i 1) k) * x i := by
   simp only [TestPt.bcLin, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, LinearMap.toMatrix'_apply]
   try (refine Finset.sum_congr rfl fun i _ => ?_; congr 4; funext j; simp [Pi.single_apply])
 
+/- English proof (translation)
+Rewrite using `[bcLin_apply]`. Establish `h` using `congrFun (LinearMap.toMatrix'_mulVec f x) k`. Rewrite using `[← h]`. Simplify using `[Matrix.mulVec, dotProduct, LinearMap.toMatrix'_apply, map_sum, map_mul]`.
+-/
 theorem bcLin_bc {Ω C : Type} [Field Ω] [Field C] [Algebra Ω C] {m n : ℕ} (f : (Fin m → Ω) →ₗ[Ω] (Fin n → Ω))
     (x : Fin m → Ω) (k : Fin n) : TestPt.bcLin C f (fun i => algebraMap Ω C (x i)) k = algebraMap Ω C (f x k) := by
   rw [bcLin_apply]
@@ -21,6 +27,11 @@ theorem bcLin_bc {Ω C : Type} [Field Ω] [Field C] [Algebra Ω C] {m n : ℕ} (
   rw [← h]
   simp [Matrix.mulVec, dotProduct, LinearMap.toMatrix'_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `h0 : (a : C) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero]`. Conclude with `zero_ne_one ha`. Establish `hi : (a : C)⁻¹ ∈ RC` using `(hv _).2 (by rw [map_inv₀, ha, inv_one])`.
+
+Use `⟨⟨a, ⟨_, hi⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `ext`. Simplify using `[h0]`. Use `ext`. Simplify using `[h0]`.
+-/
 theorem isUnit_of_val {O C : Type} [CommRing O] [Field C] [Algebra O C] {RC : Subalgebra O C} {v : Valuation C NNReal}
     (hv : ∀ c, c ∈ RC ↔ v c ≤ 1) (a : RC) (ha : v (a : C) = 1) : IsUnit a := by
   have h0 : (a : C) ≠ 0 := by
@@ -34,6 +45,41 @@ theorem isUnit_of_val {O C : Type} [CommRing O] [Field C] [Algebra O C] {RC : Su
   · ext
     simp [h0]
 
+/- English proof (translation)
+Establish `hmem : ∀ a, χ a ∈ RC`. Introduce `a`. Take `⟨o, ho⟩` from `IsLocalRing.residue_surjective (σF a)`. Establish `h1` using `(hχ a o ho).1`. Establish `h2 : algebraMap O C o ∈ RC` using `RC.algebraMap_mem o`.
+
+Simplify using `using RC.add_mem h1 h2`. Use `⟨fun a => ⟨χ a, hmem a⟩, fun a => rfl, ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `hq2 : 1 < Fintype.card F` using `Fintype.one_lt_card`. Take `⟨f, -, hq⟩` from `FiniteField.card F p`.
+
+Use `set x := pq (Ideal.Quotient.mk _ a) with hx`. Use `set c0 : RC := ⟨χ x, hmem x⟩ with hc0`. Use `set d : RC := c0 - σ a with hd`. Establish `hdn : ¬ IsUnit d`. Take `⟨o, ho1, ho2⟩` from `hσ a`.
+
+Introduce and unpack `⟨u, hu⟩`. Apply `(hχ x o ho2).2 (((u⁻¹ : RCˣ) : RC) : C) ((u⁻¹ : RCˣ) : RC).2` to reduce the goal to its premises. Establish `h3 : ((u⁻¹ : RCˣ) : RC) * d = 1` using `by rw [← hu]; simp`. Establish `h4` using `congrArg (fun r : RC => (r : C)) h3`. Simplify using `only [hd, hc0, Subalgebra.coe_mul, Subalgebra.coe_sub, Subalgebra.coe_one] at h4`.
+
+Rewrite using `[ho1]`. Conclude with `h4`. Establish `hvd : v (d : C) < 1`. Use `lt_of_le_of_ne ((hv _).1 d.2) ?_` and prove the remaining obligations. Introduce `h`.
+
+Conclude with `hdn (isUnit_of_val hv d h)`. Distinguish the cases in `hpu : IsUnit (p : RC)`. Rewrite using `[Ideal.span_singleton_eq_top.mpr hpu]`. Discharge the goal by the elementary cases of `trivial`. Use `haveI : CharP (RC ⧸ Ideal.span {(p : RC)}) p := CharP.quotient RC p hpu`.
+
+Establish `hσq : σ a ^ Fintype.card F - σ a ∈ Ideal.span {(p : RC)}`. Take `⟨e', he'⟩` from `Ideal.Quotient.mk_surjective (sc 1)`. Establish `hker : (Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) (a ^ Fintype.card F - a)) * sc 1 = 0`. Apply `hsec.2` to reduce the goal to its premises. Simplify using `[map_sub, map_pow, FiniteField.pow_card]`.
+
+Rewrite `hker` using `[← he', ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hker`. Establish `hσe : IsUnit (σ e')`. Take `⟨o, ho1, ho2⟩` from `hσ e'`. Establish `hres : IsLocalRing.residue O o ≠ 0`.
+
+Rewrite using `[ho2, he', hsec.1, map_one]`. Conclude with `one_ne_zero`. Establish `hu` using `(IsLocalRing.residue_ne_zero_iff_isUnit o).1 hres`. Establish `h5 : σ e' = algebraMap O RC o` using `Subtype.ext (by rw [← ho1]; rfl)`. Rewrite using `[h5]`.
+
+Conclude with `hu.map _`. Take `⟨w, hw⟩` from `hσe`. Establish `h2` using `congrArg σ hc`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast] at h2`. Establish `h6 : σ a ^ Fintype.card F - σ a = (p : RC) * (σ c * ↑w⁻¹)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hw, mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h2, mul_assoc]`. Rewrite using `[h6]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+
+Establish `hχq : c0 ^ Fintype.card F = c0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_pow, hc0]`. Use `show χ x ^ Fintype.card F = χ x`. Rewrite using `[← map_pow, FiniteField.pow_card]`.
+
+Establish `key : ∀ y z : RC ⧸ Ideal.span {(p : RC)}, (y - z) ^ Fintype.card F = y ^ Fintype.card F - z ^ Fintype.card F`. Introduce `y z`. Rewrite using `[hq]`. Conclude with `sub_pow_char_pow y z f`. Establish `hdq : d ^ Fintype.card F - d ∈ Ideal.span {(p : RC)}`.
+
+Rewrite `hσq`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hσq` using `[map_sub, map_pow]`. Rewrite using `[map_sub, map_pow, hd, map_sub, key, ← map_pow, hχq, sub_eq_zero.mp hσq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (d ^ (Fintype.card F - 1) - 1)`.
+
+Apply `isUnit_of_val hv` to reduce the goal to its premises. Establish `h7 : ((d ^ (Fintype.card F - 1) - 1 : RC) : C) = (d : C) ^ (Fintype.card F - 1) - 1`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h7, Valuation.map_sub_eq_of_lt_right, map_one]`.
+
+Rewrite using `[map_one, map_pow]`. Conclude with `pow_lt_one₀ zero_le' hvd (by omega)`. Take `⟨w, hw⟩` from `hunit`. Establish `e1 : d ^ Fintype.card F - d = d * (d ^ (Fintype.card F - 1) - 1)` using `by conv_lhs => rw [show Fintype.card F = (Fintype.card F - 1) + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h8 : d = (d ^ Fintype.card F - d) * ↑w⁻¹`. Rewrite using `[e1, ← hw, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h8]`. Conclude with `Ideal.mul_mem_right _ _ hdq`.
+-/
 theorem chi_cong {E : Type} [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [IsLocalRing O]
     {C : Type} [Field C] [Algebra O C] (RC : Subalgebra O C) (v : Valuation C NNReal) (hv : ∀ c, c ∈ RC ↔ v c ≤ 1)
     {F : Type} [Field F] [Fintype F] [CharP F p] (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F)
@@ -130,6 +176,37 @@ theorem chi_cong {E : Type} [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] {
   rw [h8]
   exact Ideal.mul_mem_right _ _ hdq
 
+/- English proof (translation)
+Distinguish the cases in `hpu : IsUnit (p : R)`. Rewrite using `[Ideal.span_singleton_eq_top.mpr hpu]`. Discharge the goal by the elementary cases of `trivial`. Use `haveI : CharP (R ⧸ Ideal.span {(p : R)}) p := CharP.quotient R p hpu`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`.
+
+Use `haveI : NeZero (p ^ Rr) := ⟨pow_ne_zero _ hp0⟩`. Set `mk` to `Ideal.Quotient.mk (Ideal.span {(p : R)})`. Set `φ : ZMod (p ^ Rr) →+* (R ⧸ Ideal.span {(p : R)})` to `ZMod.castHom (dvd_pow_self p (by omega)) _`. Establish `hφ : ∀ z : ZMod (p ^ Rr), mk (z.val : R) = φ z`. Introduce `z`.
+
+Use `show _ = ZMod.cast z`. Rewrite using `[map_natCast, ZMod.cast_eq_val]`. Establish `hskew : ∀ x y, e x y = - e y x`. Introduce `x y`. Establish `h` using `alt (x + y)`.
+
+Simplify using `only [map_add, AddMonoidHom.add_apply, alt x, alt y, zero_add, add_zero] at h`. Conclude with `eq_neg_of_add_eq_zero_left (by rw [add_comm]; exact h)`. Use `set B := RingOfIntegers.basis E with hB`. Set `L : Fin n → 𝓞 E →+ (R ⧸ Ideal.span {(p : R)})` to `fun l => φ.toAddMonoidHom.comp ((e.flip (Pi.single m.1 1)).comp (AddMonoidHom.single (fun _ => 𝓞 E) l))`. Establish `hL : ∀ l c, L l c = φ (e (Pi.single l c) (Pi.single m.1 1))` using `fun l c => rfl`.
+
+Establish `hswap : ∀ l k, φ (e (dl m) (Pi.single l (B k))) = - L l (bar (B m.2) * B k)`. Introduce `l k`. Rewrite using `[hL, hskew, map_neg]`. Use `congr 2`. Establish `h1 : dl m = B m.2 • (Pi.single m.1 1 : Fin n → 𝓞 E)`.
+
+Use function extensionality and compare the values at `t`. Apply the tactic sequence `by_cases h : t = m.1 <;> simp [dl, Pi.single_apply, h, hB]`. Establish `h2 : (Pi.single l (bar (B m.2) * B k) : Fin n → 𝓞 E) = bar (B m.2) • (Pi.single l (B k) : Fin n → 𝓞 E)`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `by_cases h : t = l <;> simp [Pi.single_apply, h]`.
+
+Rewrite using `[h1, h2, hadj, hbar]`. Establish `hexp : ∀ l c, L l c = ∑ t, ((B.repr c t : ℤ) : R ⧸ Ideal.span {(p : R)}) * L l (B t)`. Introduce `l c`. Use `conv_lhs => rw [← B.sum_repr c]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Establish `hdual : ∀ l, ∑ k, mk (s k) * L l (bar (B m.2) * B k) = mk (σ' (bar (B m.2))) * ∑ t, mk (s t) * L l (B t)`. Introduce `l`. Establish `hx : ∀ k, L l (bar (B m.2) * B k) = ∑ t, ((B.repr (bar (B m.2) * B k) t : ℤ) : R ⧸ Ideal.span {(p : R)}) * L l (B t)` using `fun k => hexp l _`.
+
+Simplify using `only [hx, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h3` using `congrArg mk (hd.2 (bar (B m.2)) t)`. Simplify using `only [map_mul, map_sum, map_intCast] at h3`.
+
+Rewrite using `[← mul_assoc, h3, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hE' : ∀ m', mk (Eg m m') = φ (e (dl m) (dl m'))`. Introduce `m'`.
+
+Rewrite using `[← hφ]`. Conclude with `Ideal.Quotient.eq.mpr (hE m m')`. Establish `hfirst : ∀ l, ∑ k, φ (e (dl m) (Pi.single l (B k))) * (mk (s k) * mk (x' l)) = - (mk (σ' (bar (B m.2))) * (mk (x' l) * ∑ k, mk (s k) * L l (B k)))`. Introduce `l`. Repeatedly rewrite using `[hswap l]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`.
+
+Rewrite using `[hdual l]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `mk _ = 0`. Simplify using `only [map_add, map_sum, map_mul, hE', hφ]`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Express the relevant statement in the definitionally equal form `∑ k, φ (e (dl m) (Pi.single l (B k))) * (mk (s k) * mk (x' l)) + mk (σ' (bar (B m.2))) * (mk (x' l) * ∑ k, mk (s k) * L l (B k)) = 0`. Rewrite using `[hfirst l]`.
+
+Conclude with `neg_add_cancel _`.
+-/
 theorem gram_cong {E : Type} [Field E] [NumberField E] {R : Type} [CommRing R] {p Rr n : ℕ} [Fact p.Prime] (hRr : 1 ≤ Rr)
     (e : (Fin n → 𝓞 E) →+ (Fin n → 𝓞 E) →+ ZMod (p ^ Rr)) (alt : ∀ x, e x x = 0) (bar : 𝓞 E ≃+* 𝓞 E)
     (hbar : ∀ a, bar (bar a) = a) (hadj : ∀ a x y, e (a • x) y = e x (bar a • y)) (Eg : Matrix (Ix E n) (Ix E n) R)
@@ -223,6 +300,19 @@ variable {E : Type} [Field E] [NumberField E] {O Ω C Li : Type} [CommRing O] [F
   (io : Dh.om →ₛₗ[toRC R RC hR] (Fin g → RC)) (ev : Li → ((Fin g → C) →ₗ[C] C))
   (Hm : Matrix (Fin g) (Ix E n) RC)
 
+/- English proof (translation)
+Use `choose w hw using fun k => Ideal.mem_span_singleton.1 (hH m k)`. Take `⟨y, hy, hyeq⟩` from `Dh.h_lin (RingOfIntegers.basis E m.2) (Pi.single m.1 1)`. Use `⟨fun k => w k + (p : RC) ^ (Rr - 1) * io ⟨y, hy⟩ k, ?_⟩` and prove the remaining obligations. Introduce `V t hV`. Establish `hdl : dl m = RingOfIntegers.basis E m.2 • (Pi.single m.1 1 : Fin n → 𝓞 E)`.
+
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `by_cases h : j = m.1 <;> simp [dl, Pi.single_apply, h]`. Establish `hvec : (fun j => (Hm j m : C)) = (fun j => (io ⟨Dh.h (dl m), Dh.h_mem _⟩ j : C)) + (p : C) • (fun j => (w j : C))`. Use function extensionality and compare the values at `j`. Establish `h1` using `congrArg (fun r : RC => (r : C)) (hw j)`.
+
+Move the coercions through the operations in `at h1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `h1`. Establish `hvec2 : (fun j => ((w j + (p : RC) ^ (Rr - 1) * io ⟨y, hy⟩ j : RC) : C)) = (fun j => (w j : C)) + ((p : C) ^ (Rr - 1)) • (fun j => (io ⟨y, hy⟩ j : C))`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Establish `hhV : Dh.h (dl m) V = t * Dh.h (Pi.single m.1 1) V + (p : Ω) ^ Rr * y V`. Rewrite using `[hdl, hyeq]`. Simplify using `[hact, hV, nsmul_eq_mul]`. Rewrite using `[hvec, hvec2, map_add, map_smul, map_add, map_smul, hev, hev, smul_eq_mul, smul_eq_mul, hhV]`.
+
+Establish `hRr' : (p : C) ^ Rr = p * p ^ (Rr - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[hRr']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_col (hRr : 1 ≤ Rr) (hact : ∀ a u, Dh.ρΩ a u = u ∘ₗ ρ (bar a))
     (hev : ∀ v (u : Dh.om), ev v (fun k => (io u k : C)) = algebraMap Ω C (u.1 v))
     (hH : ∀ m k, Hm k m - io ⟨Dh.h (dl m), Dh.h_mem _⟩ k ∈ Ideal.span {(p : RC)}) (m : Ix E n) :
@@ -259,6 +349,9 @@ theorem ev_col (hRr : 1 ≤ Rr) (hact : ∀ a u, Dh.ρΩ a u = u ∘ₗ ρ (bar 
   rw [hRr']
   ring
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `ev_col Dh ρ bar io ev Hm hRr hact hev hH m`. Use `⟨u, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hu _ _ (hvs _ k), bcLin_apply, Finset.sum_eq_single m.1 (fun i _ hi => by simp [Pm, hi.symm]) (by simp)]`. Simplify using `[Pm, hσ, mul_comm]`.
+-/
 theorem hq_chart (hRr : 1 ≤ Rr) (hact : ∀ a u, Dh.ρΩ a u = u ∘ₗ ρ (bar a))
     (hev : ∀ v (u : Dh.om), ev v (fun k => (io u k : C)) = algebraMap Ω C (u.1 v))
     (hH : ∀ m k, Hm k m - io ⟨Dh.h (dl m), Dh.h_mem _⟩ k ∈ Ideal.span {(p : RC)})
@@ -272,6 +365,33 @@ theorem hq_chart (hRr : 1 ≤ Rr) (hact : ∀ a u, Dh.ρΩ a u = u ∘ₗ ρ (ba
   rw [hu _ _ (hvs _ k), bcLin_apply, Finset.sum_eq_single m.1 (fun i _ hi => by simp [Pm, hi.symm]) (by simp)]
   simp [Pm, hσ, mul_comm]
 
+/- English proof (translation)
+Use `set Bj := RingOfIntegers.basis E m.2 with hBj`. Set `x' : Fin n → RC` to `fun l => toRC R RC hR ⟨x l, hx l⟩`. Establish `hx' : ∀ l, (x' l : C) = algebraMap Ω C (x l)` using `fun l => rfl`. Establish `hP1` using `gram_cong hRr Dh.e Dh.alt bar hbar hadj Eg hE hd x' m`. Take `⟨c1, hc1⟩` from `Ideal.mem_span_singleton.1 hP1`.
+
+Take `⟨u, hu⟩` from `ev_col (Dh := Dh) (ρ := ρ) (bar := bar) (io := io) (ev := ev) (Hm := Hm) hRr hact hev hH m`. Take `⟨z, hz, hzeq⟩` from `hseq m.1`. Use `set t : Ω := σ ((bar Bj : 𝓞 E) : E) with ht`. Establish `hσ' : (σ' (bar Bj) : C) = algebraMap Ω C t` using `hσ _`. Use `set S : C := ∑ k, algebraMap Ω C (a k) * ev (b k) (fun j => (u j : C)) with hS`.
+
+Use `set G : C := ∑ l, algebraMap Ω C (x l) * ∑ k, (s k : C) * (((Dh.e (Pi.single l (RingOfIntegers.basis E k))) (Pi.single m.1 1)).val : C) with hGdef`. Establish `hF1 : ∀ m', ((Jm n s).map (algebraMap RC C) *ᵥ fun l => algebraMap Ω C (x l)) m' = (s m'.2 : C) * algebraMap Ω C (x m'.1)`. Introduce `m'`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Jm]`. Rewrite using `[Finset.sum_eq_single m'.1]`.
+
+Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Ne.symm hl]`. Simplify using the standard rewrite rules. Establish `hc1C : ∑ m', (Eg m m' : C) * ((s m'.2 : C) * algebraMap Ω C (x m'.1)) + (σ' (bar Bj) : C) * G = (p : C) * (c1 : C)`.
+
+Establish `h1` using `congrArg (fun r : RC => (r : C)) hc1`. Move the coercions through the operations in `at h1`. Simplify `h1` using `[hx', hGdef]`. Establish `hG : G = algebraMap Ω C (∑ l, x l * Dh.gram σ 1 l m.1)`. Simplify using `only [hGdef, HT.HTChart.gram, map_one, one_mul, map_sum, map_mul, map_natCast, hs]`.
+
+Establish `hzC : algebraMap Ω C (∑ l, x l * Dh.gram σ 1 l m.1) = algebraMap Ω C (Dh.h (Pi.single m.1 1) (∑ k, a k • b k)) + (p : C) ^ M * algebraMap Ω C z`. Rewrite using `[hzeq, map_add, map_mul, map_pow, map_natCast]`. Establish `hsec : ∑ k, algebraMap Ω C (a k) * ev (b k) (fun j => (Hm j m : C)) = algebraMap Ω C t * algebraMap Ω C (Dh.h (Pi.single m.1 1) (∑ k, a k • b k)) + (p : C) * S`. Rewrite using `[Finset.sum_congr rfl fun k _ => by rw [hu (b k) t (hb _ k)]]`. Simplify using `only [hS, map_sum, map_smul, smul_eq_mul, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hT : ∑ m', (Eg m m' : C) * ((Jm n s).map (algebraMap RC C) *ᵥ fun l => algebraMap Ω C (x l)) m' + ∑ k, algebraMap Ω C (a k) * ev (b k) (fun j => (Hm j m : C)) = (p : C) * (c1 : C) - algebraMap Ω C t * ((p : C) ^ M * algebraMap Ω C z) + (p : C) * S`. Simplify using `only [hF1]`. Rewrite using `[hsec]`.
+
+Take the linear combination `hc1C - G * hσ' - algebraMap Ω C t * hG - algebraMap Ω C t * hzC`. Rewrite using `[hT]`. Establish `hvp : v (p : C) ≤ 1` using `(hv _).1 (by simpa using (p : RC).2)`. Establish `hvpw : v (p : C) ≤ v w` using `le_trans hpw (by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hvc : v (c1 : C) ≤ 1` using `(hv _).1 c1.2`. Establish `hvt : v (algebraMap Ω C t) ≤ 1`. Rewrite using `[← hσ']`. Conclude with `(hv _).1 (σ' (bar Bj)).2`. Establish `hvz : v (algebraMap Ω C z) ≤ 1` using `(hv _).1 (hR z hz)`.
+
+Establish `hwS : v w * v S ≤ 1`. Rewrite using `[← map_mul]`. Apply `(hv _).1` to reduce the goal to its premises. Establish `h2` using `ha u`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hS, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Apply `Valuation.map_add_le` to reduce the goal to its premises. Apply `Valuation.map_sub_le` to reduce the goal to its premises.
+
+Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hdual_chart [Fact p.Prime] (hRr : 1 ≤ Rr) (hact : ∀ a u, Dh.ρΩ a u = u ∘ₗ ρ (bar a))
     (hev : ∀ v (u : Dh.om), ev v (fun k => (io u k : C)) = algebraMap Ω C (u.1 v))
     (hH : ∀ m k, Hm k m - io ⟨Dh.h (dl m), Dh.h_mem _⟩ k ∈ Ideal.span {(p : RC)})

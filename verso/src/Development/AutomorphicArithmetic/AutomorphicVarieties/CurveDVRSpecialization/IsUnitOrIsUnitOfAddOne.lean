@@ -121,6 +121,9 @@ def FinCrit : Prop :=
         ((∀ i, W.wt i < 0 → f (W.z i) = 0) ∨ ∀ i, 0 < W.wt i → f (W.z i) = 0)) →
     Module.Finite O (W.part 0)
 
+/- English proof (translation)
+The claim follows from `inferInstance isLocalHom := ⟨fun _ h => h⟩ fin := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`.
+-/
 example (l : ℕ) [Fact l.Prime] : IsCD ℤ_[l] ℤ_[l] where
   complete := inferInstance
   isLocalHom := ⟨fun _ h => h⟩

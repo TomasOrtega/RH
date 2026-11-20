@@ -36,32 +36,62 @@ import Development.WeilBound.CoreStatements.StandardPublishedResults.StandardThe
 
 namespace UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+The claim follows from `pstOfDR_holds GlobalTheory.deRham_potentiallySemistable`.
+-/
 theorem pstOfDR : PstOfDR := pstOfDR_holds GlobalTheory.deRham_potentiallySemistable
 
+/- English proof (translation)
+The claim follows from `frobSub_holds cpFacts_holds`.
+-/
 theorem frobSub : FrobSub := frobSub_holds cpFacts_holds
 
+/- English proof (translation)
+The claim follows from `clConj_holds cpFacts_holds contLeft_holds pstOfDR`.
+-/
 theorem clConj : ClConj := clConj_holds cpFacts_holds contLeft_holds pstOfDR
 
+/- English proof (translation)
+The claim follows from `clSub_holds frobSub sumDR_holds pstOfDR wDFacts_holds`.
+-/
 theorem clSub : ClSub := clSub_holds frobSub sumDR_holds pstOfDR wDFacts_holds
 
+/- English proof (translation)
+The claim follows from `clTw_holds frobSub twLoc_holds twJumps_holds pstOfDR wDFacts_holds contLeft_holds`.
+-/
 theorem clTw : ClTw := clTw_holds frobSub twLoc_holds twJumps_holds pstOfDR wDFacts_holds contLeft_holds
 
+/- English proof (translation)
+The claim follows from `peelAll_holds (peelOne_holds dgFacts_holds cpFacts_holds eigTransfer_holds eigSum_holds splitLine_holds sSLeft_holds) contLeft_holds clConj clSub`.
+-/
 theorem peelAll : PeelAll :=
   peelAll_holds (peelOne_holds dgFacts_holds cpFacts_holds eigTransfer_holds eigSum_holds splitLine_holds sSLeft_holds)
     contLeft_holds clConj clSub
 
+/- English proof (translation)
+The claim follows from `charEx_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter charFrob_holds (charAbove_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter HodgeLocalDeRhamField.HLdR.field_outright (UpperTheory.Lit.CharWD.algebraicCharacterWD GlobalTheory.globalArtinReciprocity_holds HodgeLocalDe …`.
+-/
 theorem charEx : CharEx :=
   charEx_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter charFrob_holds
     (charAbove_holds PositivityTheory.Stage1.PM.heckeLAdicCharacter HodgeLocalDeRhamField.HLdR.field_outright
       (UpperTheory.Lit.CharWD.algebraicCharacterWD GlobalTheory.globalArtinReciprocity_holds HodgeLocalDeRhamField.HLdR.field_outright GlobalTheory.deRham_potentiallySemistable) pstOfDR
       contLeft_holds) charInj_holds
 
+/- English proof (translation)
+The claim follows from `weakIso_holds satAE_holds`.
+-/
 theorem weakIso : WeakIso := weakIso_holds satAE_holds
 
+/- English proof (translation)
+The claim follows from `atPlace_holds charEx satAE_holds (frobId_holds (denseId_holds cpFacts_holds dgFacts_holds) cpFacts_holds) peelAll clTw clAway_holds contLeft_holds sSLeft_holds`.
+-/
 theorem atPlace : AtPlace :=
   atPlace_holds charEx satAE_holds (frobId_holds (denseId_holds cpFacts_holds dgFacts_holds) cpFacts_holds) peelAll clTw
     clAway_holds contLeft_holds sSLeft_holds
 
+/- English proof (translation)
+The claim follows from `subtract_of atPlace splitEx_holds weakIso clConj`.
+-/
 theorem subtract_holds : Subtract := subtract_of atPlace splitEx_holds weakIso clConj
 
 end UpperTheory.Gal.TP.Sub

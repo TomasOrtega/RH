@@ -75,9 +75,15 @@ def SymbolNil : Prop :=
       (∀ X ∈ lieOf (Sset k r z'), (Matrix.trace (ξ * (g * X * g⁻¹))).re = 0) →
       ξ = 0
 
+/- English proof (translation)
+Introduce `_ hX t` and use `h (hX t)`.
+-/
 theorem lieOf_mono {k r : ℕ} {A B' : Set (B.Mat k r)} (h : A ⊆ B') : lieOf A ⊆ lieOf B' :=
   fun _ hX t => h (hX t)
 
+/- English proof (translation)
+Introduce `h hh` and use `⟨h, hh, 1, (nSubgroup k r).1, by simp⟩`.
+-/
 theorem UWset_sub_Sset (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : UWset k r z ⊆ Sset k r z :=
   fun h hh => ⟨h, hh, 1, (nSubgroup k r).1, by simp⟩
 

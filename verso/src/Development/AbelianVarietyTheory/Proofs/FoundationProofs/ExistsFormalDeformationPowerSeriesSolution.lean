@@ -7,6 +7,9 @@ open Polynomial
 
 namespace GlobalTheory.FormalDeform
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_subst' hs, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ha, zero_pow hd, smul_zero]`.
+-/
 theorem constantCoeff_subst_eq {k : Type} [Field k] (a φ : PowerSeries k)
     (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ := by
@@ -17,6 +20,15 @@ theorem constantCoeff_subst_eq {k : Type} [Field k] (a φ : PowerSeries k)
   · intro d hd
     rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, ha, zero_pow hd, smul_zero]
 
+/- English proof (translation)
+Introduce `hmem`. Establish `hQne : Q i ≠ ⊥`. Introduce `h`. Rewrite `hmem` using `[h, Ideal.bot_pow (Nat.succ_ne_zero N), Ideal.mem_bot]`. Conclude with `hf₀ hmem`.
+
+Establish `hp : Prime (Q i)` using `Ideal.prime_of_isPrime hQne (hQmax i).isPrime`. Establish `hdvd : Q i ^ (N + 1) ∣ Ideal.span {f₀}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hmem)`. Establish `hsplit : Ideal.span {f₀} = Q i ^ N * (P₀ * D * ∏ j ∈ Finset.univ.erase i, Q j ^ N)`. Rewrite using `[hspan, ← Finset.mul_prod_erase Finset.univ (fun j => Q j ^ N) (Finset.mem_univ i)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hdvd` using `[hsplit, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero N hQne)]`. Break down `hp.dvd_or_dvd hdvd with h | h` into its components or cases. Break down `hp.dvd_or_dvd h with h | h` into its components or cases. Conclude with `hQP i (hP₀.eq_of_le (hQmax i).ne_top (Ideal.le_of_dvd h)).symm`. Conclude with `hDQ i (Ideal.le_of_dvd h)`.
+
+Take `⟨j, hj, hji⟩` from `(hp.dvd_finset_prod_iff _).mp h`. Establish `hle : Q j ≤ Q i` using `Ideal.le_of_dvd (hp.dvd_of_dvd_pow hji)`. Conclude with `(Finset.mem_erase.mp hj).1 (hQinj ((hQmax j).eq_of_le (hQmax i).ne_top hle))`.
+-/
 theorem not_mem_pow_succ {A : Type} [CommRing A] [IsDedekindDomain A] {N : ℕ} {I : Type}
     [Fintype I] {D P₀ : Ideal A} {Q : I → Ideal A} {f₀ : A} (hP₀ : P₀.IsMaximal)
     (hQmax : ∀ i, (Q i).IsMaximal) (hQinj : Function.Injective Q) (hQP : ∀ i, Q i ≠ P₀)
@@ -43,11 +55,83 @@ theorem not_mem_pow_succ {A : Type} [CommRing A] [IsDedekindDomain A] {N : ℕ} 
     have hle : Q j ≤ Q i := Ideal.le_of_dvd (hp.dvd_of_dvd_pow hji)
     exact (Finset.mem_erase.mp hj).1 (hQinj ((hQmax j).eq_of_le (hQmax i).ne_top hle))
 
+/- English proof (translation)
+Simplify using `[map_sum, map_smul]`.
+-/
 theorem coeff_map_sum {k A : Type} [Field k] [CommRing A] [Algebra k A] {m : ℕ}
     (σ : A →ₐ[k] PowerSeries k) (v : Fin m → A) (c : Fin m → k) (l : ℕ) :
     ∑ j, c j * PowerSeries.coeff l (σ (v j)) = PowerSeries.coeff l (σ (∑ j, c j • v j)) := by
   simp [map_sum, map_smul]
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ _ _ N I _ V D P₀ Q f₀ hN hP₀ hyp`. Take `⟨hVfin, hVD, hQmax, hQinj, hQP, hDQ, hDP, hf₀V, hf₀, hspan, hsurj⟩` from `hyp`. Establish `hne : Ideal.span {f₀} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hf₀`. Establish `hf₀P : f₀ ∈ P₀`. Establish `: Ideal.span {f₀} ≤ P₀` using `hspan ▸ le_trans Ideal.mul_le_left Ideal.mul_le_left`.
+
+Conclude with `this (Ideal.mem_span_singleton_self f₀)`. Establish `hf₀Q : ∀ i, f₀ ∈ Q i ^ N`. Introduce `i`. Establish `h1 : Ideal.span {f₀} ≤ ∏ i, Q i ^ N` using `hspan ▸ Ideal.mul_le_right`. Establish `h2 : (∏ i, Q i ^ N) ≤ Q i ^ N` using `Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun j => Q j ^ N) (Finset.mem_univ i))`.
+
+Conclude with `h2 (h1 (Ideal.mem_span_singleton_self f₀))`. Establish `hP₀ne : P₀ ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hf₀ ((Ideal.mem_bot).mp hf₀P)`. Establish `hQne : ∀ i, Q i ≠ ⊥`.
+
+Introduce `i h`. Use `hf₀Q i` as an intermediate fact. Rewrite `this` using `[h, Ideal.bot_pow (by omega), Ideal.mem_bot]`. Conclude with `hf₀ this`. Take `⟨σ₀, π₀, -, hσ₀inj, hσ₀pow, hσ₀surj⟩` from `GlobalTheory.T.exists_power_series_completion_embedding k A P₀ hP₀ hP₀ne`.
+
+Establish `hcomp` using `fun i => GlobalTheory.T.exists_power_series_completion_embedding k A (Q i) (hQmax i) (hQne i)`. Use `choose σ π hσπ hσinj hσpow hσsurj using hcomp`. Establish `hzero : ∀ (τ : A →ₐ[k] PowerSeries k) (R : Ideal A), (∀ (m : ℕ) (u : A), u ∈ R ^ m ↔ (PowerSeries.X : PowerSeries k) ^ m ∣ τ u) → ∀ u, u ∈ R ↔ PowerSeries.constantCoeff (τ u) = 0`. Introduce `τ R h u`. Rewrite using `[← PowerSeries.X_dvd_iff, ← pow_one (PowerSeries.X : PowerSeries k), ← h 1 u, pow_one]`.
+
+Use `set b := Module.finBasis k V with hb`. Use `set m := Module.finrank k V with hm`. Set `v : Fin m → A` to `fun j => (b j : A)`. Establish `hrepr : ∀ x : V, ∑ j, b.repr x j • v j = (x : A)`. Introduce `x`.
+
+Establish `h` using `congrArg Subtype.val (b.sum_repr x)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h` using `[v]`. Set `y₀ : Fin m → k` to `fun j => b.repr ⟨f₀, hf₀V⟩ j`. Establish `hy₀ : ∑ j, y₀ j • v j = f₀` using `hrepr ⟨f₀, hf₀V⟩`.
+
+Establish `hlin : ∀ (τ : A →ₐ[k] PowerSeries k) (c : Fin m → k) (l : ℕ), ∑ j, c j * PowerSeries.coeff l (τ (v j)) = PowerSeries.coeff l (τ (∑ j, c j • v j))` using `fun τ c l => coeff_map_sum τ v c l`. Establish `hlin0 : ∀ (τ : A →ₐ[k] PowerSeries k) (c : Fin m → k), ∑ j, c j * PowerSeries.constantCoeff (τ (v j)) = PowerSeries.constantCoeff (τ (∑ j, c j • v j))`. Introduce `τ c`. Simplify `hlin τ c 0` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Establish `h1 : ∑ j, y₀ j * PowerSeries.constantCoeff (σ₀ (v j)) = 0`.
+
+Rewrite using `[hlin0, hy₀]`. Conclude with `(hzero σ₀ P₀ hσ₀pow f₀).mp hf₀P`. Establish `h2 : ∀ i, ∀ l < N, ∑ j, y₀ j * PowerSeries.coeff l (σ i (v j)) = 0`. Introduce `i l hl`. Rewrite using `[hlin, hy₀]`.
+
+Conclude with `PowerSeries.X_pow_dvd_iff.mp ((hσpow i N f₀).mp (hf₀Q i)) l hl`. Establish `h3 : ∀ i, ∑ j, y₀ j * PowerSeries.coeff N (σ i (v j)) ≠ 0`. Introduce `i hc`. Rewrite `hc` using `[hlin, hy₀]`. Apply `not_mem_pow_succ hP₀ hQmax hQinj hQP hDQ hf₀ hspan i` to reduce the goal to its premises.
+
+Rewrite using `[hσpow i (N + 1) f₀, PowerSeries.X_pow_dvd_iff]`. Introduce `l hl`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hl with hl | rfl` into its components or cases. Conclude with `PowerSeries.X_pow_dvd_iff.mp ((hσpow i N f₀).mp (hf₀Q i)) l hl`. Conclude with `hc`.
+
+Establish `h4 : ∀ (e₀ : k) (e : I → ℕ → k), ∃ h : Fin m → k, ∑ j, h j * PowerSeries.constantCoeff (σ₀ (v j)) = e₀ ∧ ∀ i, ∀ l, l + 1 < N → ∑ j, h j * PowerSeries.coeff l (σ i (v j)) = e i l`. Introduce `e₀ e`. Take `⟨u₀, hu₀⟩` from `hσ₀surj 1 (PowerSeries.C e₀)`. Use `choose u hu using fun i => hσsurj i (N - 1) (PowerSeries.mk (e i))`. Set `P : Option I → Ideal A` to `fun o => o.elim P₀ Q`.
+
+Set `ex : Option I → ℕ` to `fun o => o.elim 1 (fun _ => N - 1)`. Take `⟨w, hw⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := Finset.univ) P ex (by`. Introduce and unpack `(_ | i) -`. Use `exacts [Ideal.prime_of_isPrime hP₀ne hP₀.isPrime, Ideal.prime_of_isPrime (hQne i) (hQmax i).isPrime])`. Use the proof step `(by`.
+
+Introduce and unpack `(_ | i) - (_ | j) - hij`. Conclude with `absurd rfl hij`. Conclude with `(hQP j).symm`. Conclude with `hQP i`. Conclude with `hQinj.ne (fun h => hij (by rw [h])))`.
+
+Use the proof step `(fun o => o.1.elim u₀ u)`. Establish `hw₀ : w - u₀ ∈ P₀` using `by simpa [P, ex] using hw none (Finset.mem_univ _)`. Establish `hwi : ∀ i, w - u i ∈ Q i ^ (N - 1)` using `fun i => by`. Simplify `hw (some i) (Finset.mem_univ _)` using `[P, ex]`. Take `⟨v', hv'V, hv'⟩` from `hsurj w`.
+
+Establish `hv'P : v' - u₀ ∈ P₀`. Establish `: w - v' ∈ P₀` using `Ideal.mul_le_left hv'`. Establish `e1 : v' - u₀ = (w - u₀) - (w - v')` using `by ring`. Rewrite using `[e1]`. Conclude with `P₀.sub_mem hw₀ this`.
+
+Establish `hv'Q : ∀ i, v' - u i ∈ Q i ^ (N - 1)`. Introduce `i`. Establish `h5 : (∏ i, Q i ^ (N - 1)) ≤ Q i ^ (N - 1)` using `Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun j => Q j ^ (N - 1)) (Finset.mem_univ i))`. Establish `: w - v' ∈ Q i ^ (N - 1)` using `h5 (Ideal.mul_le_right hv')`. Establish `e1 : v' - u i = (w - u i) - (w - v')` using `by ring`.
+
+Rewrite using `[e1]`. Conclude with `Ideal.sub_mem _ (hwi i) this`. Use `⟨fun j => b.repr ⟨v', hv'V⟩ j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlin0, hrepr ⟨v', hv'V⟩]`. Establish `h6 : (PowerSeries.X : PowerSeries k) ^ 1 ∣ σ₀ v' - σ₀ u₀`.
+
+Rewrite using `[← map_sub, ← hσ₀pow 1, pow_one]`. Conclude with `hv'P`. Establish `h7 : (PowerSeries.X : PowerSeries k) ∣ PowerSeries.C e₀ - σ₀ v'`. Use `dvd_sub hu₀ h6` as an intermediate fact. Rewrite `this` using `[pow_one]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite `h7` using `[PowerSeries.X_dvd_iff, map_sub, PowerSeries.constantCoeff_C, sub_eq_zero]`. Conclude with `h7.symm`. Introduce `i l hl`.
+
+Rewrite using `[hlin, hrepr ⟨v', hv'V⟩]`. Establish `h6 : (PowerSeries.X : PowerSeries k) ^ (N - 1) ∣ σ i v' - σ i (u i)`. Rewrite using `[← map_sub, ← hσpow i]`. Conclude with `hv'Q i`. Establish `h7` using `PowerSeries.X_pow_dvd_iff.mp (dvd_sub (hu i) h6) l (by omega)`.
+
+Rewrite `h7` using `[show PowerSeries.mk (e i) - σ i (u i) - (σ i v' - σ i (u i)) = PowerSeries.mk (e i) - σ i v' by ring, map_sub, PowerSeries.coeff_mk, sub_eq_zero]`. Conclude with `h7.symm`. Take `⟨y, a, hy0, ha0, hyξ, hyΔ⟩` from `GlobalTheory.T.deform_multiple_zeros_linear_family k (Fin m) I N (fun j => σ₀ (v j)) (fun i j => σ i (v j)) y₀ (by omega) h1 h2 h3 h4`. Establish `hsub : ∀ i, PowerSeries.HasSubst (a i)` using `fun i => PowerSeries.HasSubst.of_constantCoeff_zero' (ha0 i)`. Set `Δ : I → ℕ → A →ₗ[k] PowerSeries k` to `fun i l => (PowerSeries.substAlgHom (R := k) (hsub i)).toLinearMap ∘ₗ ((PowerSeries.derivative k).toLinearMap ^ l) ∘ₗ (σ i).toLinearMap`.
+
+Establish `hΔ : ∀ i l u, Δ i l u = (((PowerSeries.derivativeFun)^[l] (σ i u)).subst (a i) : PowerSeries k)`. Introduce `i l u`. Simplify using `only [Δ, LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, Module.End.coe_pow, PowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression. Establish `hcc : ∀ i u, PowerSeries.constantCoeff (Δ i 0 u) = PowerSeries.constantCoeff (σ i u)`.
+
+Introduce `i u`. Rewrite using `[hΔ]`. Conclude with `constantCoeff_subst_eq _ _ (ha0 i)`. Establish `hunit : ∀ φ : PowerSeries k, IsUnit φ ↔ PowerSeries.constantCoeff φ ≠ 0`. Introduce `φ`.
+
+Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`. Establish `hQσ : ∀ i u, u ∈ Q i ↔ PowerSeries.constantCoeff (σ i u) = 0` using `fun i => hzero (σ i) (Q i) (hσpow i)`. Establish `hPσ : ∀ u, u ∈ P₀ ↔ PowerSeries.constantCoeff (σ₀ u) = 0` using `hzero σ₀ P₀ hσ₀pow`. Use `⟨σ₀, Δ, m, v, y, hσ₀inj, ?_, ?_, ?_, ?_, ?_, ?_, hyξ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Rewrite using `[hΔ, Function.iterate_zero, id, map_one, ← PowerSeries.coe_substAlgHom (hsub i), map_one]`. Introduce `i l u w`. Simplify using `only [hΔ, map_mul]`. Conclude with `GlobalTheory.T.iterate_derivativeFun_mul_subst_leibniz k (a i) _ _ l (ha0 i)`. Introduce `i`.
+
+Use `⟨π i, ?_⟩` and prove the remaining obligations. Establish `hX : PowerSeries.derivativeFun (PowerSeries.X : PowerSeries k) = 1` using `PowerSeries.derivative_X`. Rewrite using `[hΔ, Function.iterate_one, hσπ, hX, ← PowerSeries.coe_substAlgHom (hsub i), map_one]`. Introduce `j`. Conclude with `(b j).2`.
+
+Conclude with `b.linearIndependent.map' V.subtype (Submodule.ker_subtype V)`. Assume the negation of the conclusion as `hcon push_neg at hcon`. Establish `hz : ∀ j, y₀ j = 0`. Introduce `j`. Use `hcon j` as an intermediate fact.
+
+Rewrite `this` using `[hunit, hy0, not_not]`. Then use the resulting hypothesis. Apply `hf₀` to reduce the goal to its premises. Rewrite using `[← hy₀]`. Simplify using `[hz]`. Introduce `i l hl`.
+
+Simplify `hyΔ i l hl` using `only [hΔ]`. Introduce `i i' hii'`. Establish `hle : ¬ Q i' ≤ Q i` using `fun h => hii' (hQinj ((hQmax i').eq_of_le (hQmax i).ne_top h)).symm`. Take `⟨u, hu', hu⟩` from `SetLike.not_le_iff_exists.mp hle`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hunit, map_sub, hcc, hcc, (hQσ i' u).mp hu', sub_zero]`. Conclude with `fun h => hu ((hQσ i u).mpr h)`. Introduce `i`. Establish `hle : ¬ P₀ ≤ Q i` using `fun h => hQP i (hP₀.eq_of_le (hQmax i).ne_top h).symm`. Take `⟨u, hu', hu⟩` from `SetLike.not_le_iff_exists.mp hle`.
+
+Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hunit, map_sub, hcc, (hPσ u).mp hu', sub_zero]`. Conclude with `fun h => hu ((hQσ i u).mpr h)`. Introduce `i`. Take `⟨u, hu', hu⟩` from `SetLike.not_le_iff_exists.mp (hDQ i)`.
+
+Use `⟨u, hu', ?_⟩` and prove the remaining obligations. Rewrite using `[hunit, hcc]`. Conclude with `fun h => hu ((hQσ i u).mpr h)`. Take `⟨u, hu', hu⟩` from `SetLike.not_le_iff_exists.mp hDP`. Use `⟨u, hu', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hunit]`. Conclude with `fun h => hu ((hPσ u).mpr h)`.
+-/
 theorem formal_deformation : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k] [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A] (N : ℕ) (I : Type) [Fintype I] (V : Submodule k A) (D P₀ : Ideal A) (Q : I → Ideal A) (f₀ : A), 2 ≤ N → P₀.IsMaximal → (FiniteDimensional k V ∧ (∀ v ∈ V, v ∈ D) ∧ (∀ i, (Q i).IsMaximal) ∧ Function.Injective Q ∧ (∀ i, Q i ≠ P₀) ∧ (∀ i, ¬ D ≤ Q i) ∧ ¬ D ≤ P₀ ∧ f₀ ∈ V ∧ f₀ ≠ 0 ∧ Ideal.span {f₀} = P₀ * D * ∏ i, Q i ^ N ∧ (∀ u : A, ∃ v ∈ V, u - v ∈ P₀ * ∏ i, Q i ^ (N - 1))) → ∃ (ξ : A →ₐ[k] PowerSeries k) (Δ : I → ℕ → A →ₗ[k] PowerSeries k) (m : ℕ) (v : Fin m → A) (y : Fin m → PowerSeries k),
   Function.Injective ξ ∧ (∀ i, Δ i 0 1 = 1) ∧ (∀ i, (∀ l, ∀ u w : A, Δ i l (u * w) = ∑ p ∈ Finset.range (l + 1), l.choose p • (Δ i p u * Δ i (l - p) w))) ∧ (∀ i, ∃ π : A, Δ i 1 π = 1) ∧
   (∀ j, v j ∈ V) ∧ LinearIndependent k v ∧ (∃ j, IsUnit (y j)) ∧ ∑ j, y j * ξ (v j) = 0 ∧ (∀ i, ∀ l < N, ∑ j, y j * Δ i l (v j) = 0) ∧

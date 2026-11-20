@@ -14,6 +14,15 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.GalLoc.FieldAt
+/- English proof (translation)
+Introduce `hP _ hL`. Establish `h1` using `_root_.GlobalTheory.TwInputs.SmallField.fieldOk_and_exists_lamDat_ok_teich_valuesIn hP`. Establish `h2` using `(evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).inter (evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev)`. Use `(h1.inter h2).imp fun K _ _ _ _ hK => ?_` and prove the remaining obligations. Take `⟨hF, hH, hV⟩` from `hK`.
+
+Use `hF.imp fun B f T hO hF' => ?_` and prove the remaining obligations. Introduce `hKP w Z Wt p0 t nch n xd c _ _ _`. Take `⟨hX, -⟩` from `hF' hKP T w Z`. Establish `hHH` using `(hH (w.st Z) hO).1`. Take `⟨hVs, hs⟩` from `hV (w.st Z) hO`.
+
+Establish `F` using `hX (GlobalTheory.TwInputs.JoinModel.realOf t hHH hVs hs) t.r.z.lev.C`. Use `⟨?_, F.roots, F.star⟩` and prove the remaining obligations. Establish `v : ValLL0 (w.D Z) t.r.z.R.C` using `F.vals`. Establish `e : t.r.z.R.C = TC.cf w.I w.l Z` using `t.r.z.lev.C`. Rewrite using `[← e]`.
+
+Conclude with `v`.
+-/
 theorem galoisRep_field_of_definition_at_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ValLL0 (w.D Z) (TC.cf w.I w.l Z) ∧ (∀ (k : Fin 2) (z : ℂ), z ^ ((w.D Z).host.g k * ((w.D Z).host.g k - 1)) = 1 → z ∈ (embLL0 (w.D Z)).fieldRange) ∧ (∀ x : (w.D Z).LL0, star (x : (w.D Z).what₂.LL) ∈ (w.D Z).LL0) := by
   intro hP _ hL
@@ -38,6 +47,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt | exact _root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt <;> as …`.
+-/
 theorem _root_.GlobalTheory.T.valLL0_roots_of_unity_mem_star_closed_at_members : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ValLL0 (w.D Z) (TC.cf w.I w.l Z) ∧ (∀ (k : Fin 2) (z : ℂ), z ^ ((w.D Z).host.g k * ((w.D Z).host.g k - 1)) = 1 → z ∈ (embLL0 (w.D Z)).fieldRange) ∧ (∀ x : (w.D Z).LL0, star (x : (w.D Z).what₂.LL) ∈ (w.D Z).LL0) := by
   first | exact @_root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt | exact _root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.FieldAt.galoisRep_field_of_definition_at_place_alt <;> assumption)

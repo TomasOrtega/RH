@@ -45,25 +45,49 @@ def lv : ∀ (i : ℕ) (hi : i ≤ D.R.m), i = 0 → LvTied u T.atT i hi
 def fMe : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0) v, (T.cls i hi h).lev.fM (T.atT.eV v).1 (T.atT.eV v).2 ≃+ (D.mem u).A.Fv v
   | 0, _, _ => T.fMe0
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => T.fv0`.
+-/
 theorem fv : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), FvTie (T.lv i hi h) (T.cls i hi h) (T.fMe i hi h)
   | 0, _, _ => T.fv0
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => T.up_natural_level_zero`.
+-/
 theorem upN : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), UpNatTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h)
   | 0, _, _ => T.up_natural_level_zero
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => T.down_natural_level_zero`.
+-/
 theorem dnN : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), DnNatTie (T.lv i hi h) (T.cls i hi h) (T.val i hi h)
   | 0, _, _ => T.down_natural_level_zero
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => T.norm0`.
+-/
 theorem norm : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), NormTie (T.val i hi h)
   | 0, _, _ => T.norm0
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => T.bw0`.
+-/
 theorem bw : ∀ (i : ℕ) (hi : i ≤ D.R.m) (h : i = 0), BwTie T.atT (T.val i hi h)
   | 0, _, _ => T.bw0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_zero : T.cls 0 (Nat.zero_le _) rfl = T.cls0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_zero : T.val 0 (Nat.zero_le _) rfl = T.val0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lv_zero : T.lv 0 (Nat.zero_le _) rfl = T.lv0 := rfl
 
 end Forms0
@@ -96,6 +120,9 @@ def Joint0 {D : D7} (L0 : LevelData D) (u : D.what₂.Word) (T : Forms0 D u) : P
     (fun c => ((L0 u).y c).1) (fun c => (T.cls0.y c).1)
     (fun c s => ((L0 u).stabI c s).1) (fun c s => (T.cls0.stabI c s).1)
 
+/- English proof (translation)
+The claim follows from `h.car0`.
+-/
 theorem Joint.to0 {D : D7} {X : Formalism.L2.Herm.ColsHerm D} {u : D.what₂.Word} {T : FormsTied D u} (h : Joint X u T) :
     Joint0 X.base.lev0 u T.to0 := h.car0
 

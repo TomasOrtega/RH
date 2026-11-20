@@ -7,6 +7,15 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 open scoped Matrix
 
+/- English proof (translation)
+Establish `h0 : (M : Matrix (Fin n) (Fin n) K)ᵀ = (P : Matrix (Fin n) (Fin n) K) * (t • ((M'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul, ← hP, Units.mul_inv_cancel_right, Units.mul_inv_cancel_right]`. Establish `h1 : (M : Matrix (Fin n) (Fin n) K).charpoly = (t • ((M'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).charpoly`. Rewrite using `[← Matrix.charpoly_transpose, h0, Matrix.coe_units_inv P, Matrix.charpoly_units_conj]`. Rewrite `h'` using `[← Matrix.charpoly_map]`.
+
+Establish `h3` using `GlobalTheory.charpoly_smul_inv_of_charpoly_eq_prod n (Matrix.GeneralLinearGroup.map φ M') (φ t) _ h'`. Establish `h4 : (t • ((M'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)).map φ = φ t • (((Matrix.GeneralLinearGroup.map φ M')⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← map_inv]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[h1, ← Matrix.charpoly_map, h4, h3]`. Establish `h5` using `congrArg roots h`. Rewrite `h5` using `[roots_multiset_prod_X_sub_C]`. Rewrite using `[← roots_multiset_prod_X_sub_C (S'.map fun a => φ t * a⁻¹), Multiset.map_map]`.
+
+Conclude with `h5.symm`.
+-/
 private theorem eig_dual {K : Type} [Field K] (φ : K →+* ℂ) {n : ℕ} (M M' P : GL (Fin n) K) (t : K)
     (hP : (M : Matrix (Fin n) (Fin n) K)ᵀ * (P : Matrix (Fin n) (Fin n) K) * (M' : Matrix (Fin n) (Fin n) K) =
       t • (P : Matrix (Fin n) (Fin n) K)) (S S' : Multiset ℂ)
@@ -33,10 +42,16 @@ private theorem eig_dual {K : Type} [Field K] (φ : K →+* ℂ) {n : ℕ} (M M'
   rw [← roots_multiset_prod_X_sub_C (S'.map fun a => φ t * a⁻¹), Multiset.map_map]
   exact h5.symm
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w))`.
+-/
 private theorem cPl_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     cPl w = preplace (IsCMField.complexConj E).toRingEquiv w :=
   HeightOneSpectrum.ext ((GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w))
 
+/- English proof (translation)
+Use `show Nat.card (𝓞 K ⧸ (preplace τ v).asIdeal) = Nat.card (𝓞 K ⧸ v.asIdeal)`. Use `Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv τ) ?_).toEquiv` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective (RingOfIntegers.mapRingEquiv τ : 𝓞 K →+* 𝓞 K) (RingOfIntegers.mapRingEquiv τ).surjective v.asIdeal).symm`.
+-/
 private theorem normV_preplace {K : Type} [Field K] [NumberField K] (τ : K ≃+* K) (v : HeightOneSpectrum (𝓞 K)) :
     normV (preplace τ v) = normV v := by
   show Nat.card (𝓞 K ⧸ (preplace τ v).asIdeal) = Nat.card (𝓞 K ⧸ v.asIdeal)
@@ -44,6 +59,9 @@ private theorem normV_preplace {K : Type} [Field K] [NumberField K] (τ : K ≃+
   exact (Ideal.map_comap_of_surjective (RingOfIntegers.mapRingEquiv τ : 𝓞 K →+* 𝓞 K)
     (RingOfIntegers.mapRingEquiv τ).surjective v.asIdeal).symm
 
+/- English proof (translation)
+Use `⟨conjGal_mem_Dec h hA hg.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_lt_one hA, map_sub, apply_conjGal, map_pow]`. Conclude with `hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).2 ((A.valuation_le_one_iff _).1 hx)))`.
+-/
 private theorem isFrob_conjGal {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {τ : K ≃+* K} {σ : Ω ≃+* Ω}
     (h : IsLift τ σ) {A A' : ValuationSubring Ω} (hA : ∀ x, σ x ∈ A' ↔ x ∈ A) {q : ℕ} {g : G K Ω}
     (hg : IsFrob (F := K) A' q g) : IsFrob (F := K) A q (conjGal h g) := by
@@ -51,6 +69,11 @@ private theorem isFrob_conjGal {K Ω : Type} [Field K] [NumberField K] [Field Ω
   rw [← val_lt_one hA, map_sub, apply_conjGal, map_pow]
   exact hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).2 ((A.valuation_le_one_iff _).1 hx)))
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hc`. Introduce `x`. Use `c.symm_apply_eq.2 (j.injective ?_)` and prove the remaining obligations. Rewrite using `[hj]`. Establish `h` using `IsCMField.complexEmbedding_complexConj F (j.comp (algebraMap F Ω)) x`.
+
+Conclude with `(Complex.conj_conj _).symm.trans (congrArg (starRingEnd ℂ) h.symm)`.
+-/
 private theorem isLift_conj {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω]
     {c : G (maximalRealSubfield F) Ω} (hc : IsConjEl c) :
     IsLift (IsCMField.complexConj F).toRingEquiv c.symm.toRingEquiv := by
@@ -61,6 +84,25 @@ private theorem isLift_conj {F Ω : Type} [Field F] [NumberField F] [IsCMField F
   have h := IsCMField.complexEmbedding_complexConj F (j.comp (algebraMap F Ω)) x
   exact (Complex.conj_conj _).symm.trans (congrArg (starRingEnd ℂ) h.symm)
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `hL` using `isLift_conj hc`. Establish `hAA : ∀ y, c.symm.toRingEquiv y ∈ A ↔ y ∈ A.comap c.symm.toRingEquiv.toRingHom` using `fun _ => Iff.rfl`. Rewrite `hB'` using `[cPl_eq]`.
+
+Establish `e` using `(hB' _ (isPlaceOver_preplace hL hAA hA)).2 (conjGal hL σ) (by rw [normV_preplace]; exact isFrob_conjGal hL hAA hσ)`. Rewrite `e` using `[normV_preplace]`. Establish `h1` using `eig_dual ι.toRingHom (r σ⁻¹) (r (conjGal hL σ)⁻¹) P _ (hP σ⁻¹ (conjGal hL σ)⁻¹ (by rw [← map_inv]; exact AlgEquiv.ext fun _ => rfl)) _ _ ((hB A hA).2 σ hσ) e`. Establish `h2 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : ℕ)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) (PadicInt.Coe.ringHom ((cycZ F Ω l σ : ℤ_[l]ˣ) : ℤ_[l])) = _`.
+
+Rewrite using `[cycZ_of_isFrob hw hA hσ, map_natCast, map_natCast]`. Establish `hq0 : normV w ≠ 0`. Introduce `h0`. Rewrite `h2` using `[h0, Nat.cast_zero]`. Conclude with `Units.ne_zero _ h2`.
+
+Establish `hqR : (0 : ℝ) < normV w` using `by exact_mod_cast Nat.pos_of_ne_zero hq0`. Establish `h3` using `(hz A hA).2 σ hσ`. Use `set d : ℂ := ((((normV w : ℕ) : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hd`. Establish `hd0 : d ≠ 0`. Rewrite using `[hd]`.
+
+Conclude with `(Real.rpow_pos_of_pos hqR _).ne'` after adjusting the coercions. Establish `hdd : d * d = (normV w : ℂ) ^ ((n : ℤ) - 1)`. Rewrite using `[hd, ← Complex.ofReal_mul, ← Real.rpow_add hqR, add_halves, show ((n : ℝ) - 1) = (((n : ℤ) - 1 : ℤ) : ℝ) by push_cast; ring, Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `h4 : ι.toRingHom (((cycBar F Ω l ^ (1 - (n : ℤ)) * θ) σ⁻¹ : (Qbar l)ˣ) : Qbar l) = d * d * z`. Express the relevant statement in the definitionally equal form `ι _ = _`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.zpow_apply, Units.val_mul, map_mul, map_inv (cycBar F Ω l), Units.val_zpow_eq_zpow_val, Units.val_inv_eq_inv_val, h2, map_zpow₀, map_inv₀, map_natCast, h3, hdd, inv_zpow', neg_sub]`. Establish `hS : ∀ B : Multiset ℂˣ, algSat n (normV w) B = B.map fun α : ℂˣ => d * (α : ℂ)` using `fun B => by`. Simplify using `only [algSat, ← hd, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`.
+
+Rewrite `h1` using `[h4, hS, hS]`. Establish `h5` using `congrArg (Multiset.map fun a : ℂ => d⁻¹ * a * (z : ℂ)⁻¹) h1`. Simplify using `only [Multiset.map_map, Function.comp_def] at h5`. Apply `Multiset.map_injective (f := (Units.val : ℂˣ → ℂ)) Units.val_injective` to reduce the goal to its premises. Simplify using `only [Multiset.map_map, Function.comp_def]`.
+
+Use `z.ne_zero` as an intermediate fact. Use `(Multiset.map_congr rfl fun a _ => ?_).trans (h5.symm.trans (Multiset.map_congr rfl fun a _ => ?_))` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `a.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem frob_dual {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} {θ : G F Ω →* (Qbar l)ˣ}
     {c : G (maximalRealSubfield F) Ω} {P : GL (Fin n) (Qbar l)} (hc : IsConjEl c)
@@ -116,6 +158,11 @@ private theorem frob_dual {F Ω : Type} [Field F] [NumberField F] [IsCMField F] 
   · rw [Units.val_mul, Units.val_inv_eq_inv_val]
     field_simp
 
+/- English proof (translation)
+Introduce `H F Ω _ _ _ _ _ _ l _ ι n hn r π hπ χ μ hμ c P hc hP`. Use `UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse H.litN.aut.js.1 H.litN.aut.gk F n hn π _ ?_` and prove the remaining obligations. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+
+Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ((l : ℕ) : 𝓞 F) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `h2` using `(conjSrc_injective (IsCMField.complexConj F).toRingEquiv).tendsto_cofinite.eventually hπ.2`. Use `filter_upwards [Bc.normGal F Ω l ι χ μ hμ, hπ.2, h2, hl] with w ⟨hu, he⟩ ⟨B, hB, hF⟩ ⟨B', hB', hF'⟩ hw`. Conclude with `⟨hu, B, B', hB, hB', frob_dual hc hP hw hF hF' he⟩`.
+-/
 theorem UpperTheory.V.Af.selfDualC :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.SelfDualC := by
   intro H F Ω _ _ _ _ _ _ l _ ι n hn r π hπ χ μ hμ c P hc hP

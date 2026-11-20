@@ -33,6 +33,9 @@ namespace GalX
 
 open GlobalTheory.HeckeGal.Model (absPow absPow_isAbsPow)
 
+/- English proof (translation)
+Use `Subtype.ext (MonoidHom.ext fun z => Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((absPow E x).1 z : ℂˣ) : ℂ) * (((absPow E y).1 z : ℂˣ) : ℂ) = (((absPow E (x + y)).1 z : ℂˣ) : ℂ)`. Rewrite using `[CG.absPow_val_apply, CG.absPow_val_apply, CG.absPow_val_apply, ← Complex.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem absPow_mul_absPow (E : Type) [Field E] [NumberField E] (x y : ℝ) :
     absPow E x * absPow E y = absPow E (x + y) := by
   refine Subtype.ext (MonoidHom.ext fun z => Units.ext ?_)
@@ -41,11 +44,21 @@ theorem absPow_mul_absPow (E : Type) [Field E] [NumberField E] (x y : ℝ) :
   push_cast
   ring_nf
 
+/- English proof (translation)
+Rewrite using `[← absPow_mul_absPow]`. Conclude with `(CG.twist_mul (CG.mk P) _ _).symm`.
+-/
 theorem twist_absPow_absPow {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (P : CuspSub E a)
     (x y : ℝ) : (CG.mk (P.twist (absPow E x))).twist (absPow E y) = CG.mk (P.twist (absPow E (x + y))) := by
   rw [← absPow_mul_absPow]
   exact (CG.twist_mul (CG.mk P) _ _).symm
 
+/- English proof (translation)
+Unfold `infOfWeight`. Use `Multiset.Nodup.map (fun j k h => ?_) Finset.univ.nodup` and prove the remaining obligations. Establish `h1 : (((lam.w j - (j : ℕ) : ℤ)) : ℂ) = ((lam.w k - (k : ℕ) : ℤ) : ℂ)`. Use `push_cast`. Take the linear combination `h`.
+
+Establish `h2 : lam.w j - (j : ℕ) = lam.w k - (k : ℕ)` using `Int.cast_injective h1`. Break down `lt_trichotomy j k with hjk | rfl | hjk` into its components or cases. Use `lam.anti hjk.le` as an intermediate fact. Establish `: (j : ℕ) < k` using `hjk`. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Use `lam.anti hjk.le` as an intermediate fact. Establish `: (k : ℕ) < j` using `hjk`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem infOfWeight_nodup {n : ℕ} (lam : DomWeight n) : (infOfWeight lam).Nodup := by
   unfold infOfWeight
   refine Multiset.Nodup.map (fun j k h => ?_) Finset.univ.nodup
@@ -62,18 +75,35 @@ theorem infOfWeight_nodup {n : ℕ} (lam : DomWeight n) : (infOfWeight lam).Nodu
     have : (k : ℕ) < j := hjk
     omega
 
+/- English proof (translation)
+Unfold `infOfWeight at hz`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨lam.w j - (j : ℕ), by push_cast; ring⟩`.
+-/
 theorem mem_infOfWeight {n : ℕ} {lam : DomWeight n} {z : ℂ} (hz : z ∈ infOfWeight lam) :
     ∃ k : ℤ, z = k + ((n : ℂ) - 1) / 2 := by
   unfold infOfWeight at hz
   obtain ⟨j, -, rfl⟩ := Multiset.mem_map.1 hz
   exact ⟨lam.w j - (j : ℕ), by push_cast; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons j s hj ih => rw [Finset.sum_cons, Finset.prod_cons, Multiset.map_add, Multiset.prod_add, ih]`.
+-/
 theorem prod_map_sum {ι α β : Type*} [CommMonoid β] (s : Finset ι) (M : ι → Multiset α) (f : α → β) :
     ((∑ i ∈ s, M i).map f).prod = ∏ i ∈ s, ((M i).map f).prod := by
   induction s using Finset.cons_induction with
   | empty => simp
   | cons j s hj ih => rw [Finset.sum_cons, Finset.prod_cons, Multiset.map_add, Multiset.prod_add, ih]
 
+/- English proof (translation)
+Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_` and prove the remaining obligations. Take `⟨lam, hlam⟩` from `hr τ`. Take `⟨m0, hm0, hsum⟩` from `infAsc_holds E (D.N i) a d (D.V i) P (D.discrete i) he τ _ (D.inf i τ)`. Use `set s : ℝ := spehExp d k + ((a : ℝ) - n) / 2 with hs`. Establish `hexpo : ∀ τ, expo (absPow E s) τ = s` using `(GlobalTheory.CuspRep.InfType.expo_of_infType E _).2.1 s (absPow_isAbsPow E s)`.
+
+Establish `hm' : (P.twist (absPow E s)).HasInfChar τ (m0.map (· + (s : ℂ)))`. Use `hm0.twist (absPow E s)` as an intermediate fact. Rewrite `this` using `[hexpo]`. Then use the resulting hypothesis. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk _) hm']`. Establish `hle : D.m i τ ≤ infOfWeight lam`.
+
+Rewrite using `[← hlam]`. Conclude with `Finset.single_le_sum (f := fun j => D.m j τ) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ i)`. Establish `hk : m0.map (· + (spehExp d k : ℂ)) ≤ D.m i τ`. Rewrite using `[hsum]`. Conclude with `Finset.single_le_sum (f := fun j : Fin d => m0.map (· + (spehExp d j : ℂ))) (fun _ _ => Multiset.zero_le _) (Finset.mem_univ k)`.
+
+Establish `hnd : (m0.map (· + (spehExp d k : ℂ))).Nodup` using `Multiset.nodup_of_le (hk.trans hle) (infOfWeight_nodup lam)`. Use `⟨(Multiset.Nodup.of_map _ hnd).map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨j, hj⟩` from `mem_infOfWeight (Multiset.mem_of_le (hk.trans hle) (Multiset.mem_map_of_mem _ hy))`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Use `push_cast`. Take the linear combination `hj`.
+-/
 theorem regTw {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (D : Pre E n) (hr : D.Reg)
     (i : Fin D.c) {a d : ℕ} (P : CuspSub E a) (he : AscEmb (D.V i) P d) (k : Fin d) :
     (CG.mk (P.twist (absPow E (spehExp d k + ((a : ℝ) - n) / 2)))).IsRegAlg := by

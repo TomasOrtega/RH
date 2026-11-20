@@ -12,14 +12,23 @@ variable {Ω : Type} [Field Ω] {D N : ℕ}
 def yv (jc : Fin (N + 1)) (x : Fin N → Ω) : Fin (N + 1) → Ω :=
   Fin.insertNth (α := fun _ => Ω) jc 1 x
 
+/- English proof (translation)
+Unfold `yv`. Conclude with `Fin.insertNth_apply_same (α := fun _ => Ω) jc 1 x`.
+-/
 theorem yv_self (jc : Fin (N + 1)) (x : Fin N → Ω) : yv jc x jc = 1 := by
   unfold yv
   exact Fin.insertNth_apply_same (α := fun _ => Ω) jc 1 x
 
+/- English proof (translation)
+Unfold `yv`. Conclude with `Fin.insertNth_apply_succAbove (α := fun _ => Ω) jc 1 x k`.
+-/
 theorem yv_succAbove (jc : Fin (N + 1)) (x : Fin N → Ω) (k : Fin N) : yv jc x (jc.succAbove k) = x k := by
   unfold yv
   exact Fin.insertNth_apply_succAbove (α := fun _ => Ω) jc 1 x k
 
+/- English proof (translation)
+Unfold `sImg`. Use `congr 1`. Conclude with `Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) jc _ _`.
+-/
 theorem sImg_self (jc : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) :
     sImg jc x (i, jc) = algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N)
       (if i = 0 then X (Sum.inl ()) else -∑ k, X (Sum.inr (i, k)) * C (x k)) := by
@@ -27,6 +36,9 @@ theorem sImg_self (jc : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) :
   congr 1
   exact Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) jc _ _
 
+/- English proof (translation)
+Unfold `sImg`. Use `congr 1`. Conclude with `Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) jc _ _ k`.
+-/
 theorem sImg_succAbove (jc : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) (k : Fin N) :
     sImg jc x (i, jc.succAbove k) =
       algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (X (Sum.inr (i, k))) := by
@@ -34,6 +46,9 @@ theorem sImg_succAbove (jc : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) (
   congr 1
   exact Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) jc _ _ k
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succAbove _ jc, yv_self, sImg_self, if_neg hi]`. Simplify using `only [yv_succAbove, sImg_succAbove, map_one, one_mul, map_neg, map_sum, map_mul]`. Rewrite using `[neg_add_eq_zero]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply Ω (MvPolynomial (SVar D N) Ω) (OmS Ω D N), MvPolynomial.algebraMap_eq, mul_comm]`.
+-/
 theorem sum_y_sImg (jc : Fin (N + 1)) (x : Fin N → Ω) {i : Fin (D + 1)} (hi : i ≠ 0) :
     ∑ j, algebraMap Ω (OmS Ω D N) (yv jc x j) * sImg jc x (i, j) = 0 := by
   rw [Fin.sum_univ_succAbove _ jc, yv_self, sImg_self, if_neg hi]
@@ -43,6 +58,11 @@ theorem sum_y_sImg (jc : Fin (N + 1)) (x : Fin N → Ω) {i : Fin (D + 1)} (hi :
   rw [IsScalarTower.algebraMap_apply Ω (MvPolynomial (SVar D N) Ω) (OmS Ω D N),
     MvPolynomial.algebraMap_eq, mul_comm]
 
+/- English proof (translation)
+Take `⟨j0, -, hj0⟩` from `Finset.exists_max_image Finset.univ (fun j => W.valuation (yv jc x j)) ⟨jc, Finset.mem_univ _⟩`. Establish `h1 : W.valuation (yv jc x jc) = 1` using `by rw [yv_self, map_one]`. Establish `hne : W.valuation (yv jc x j0) ≠ 0`. Introduce `h`. Establish `hle` using `hj0 jc (Finset.mem_univ _)`.
+
+Rewrite `hle` using `[h, h1]`. Conclude with `one_ne_zero (le_antisymm hle zero_le')`. Use `⟨j0, fun h => hne (by rw [h, map_zero]), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_div₀]`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr hne)).mpr (hj0 j (Finset.mem_univ _))`.
+-/
 theorem exists_valuation_adapted_index (jc : Fin (N + 1)) (x : Fin N → Ω) (W : ValuationSubring Ω) :
     ∃ j0, yv jc x j0 ≠ 0 ∧ ∀ j, yv jc x j / yv jc x j0 ∈ W := by
   obtain ⟨j0, -, hj0⟩ := Finset.exists_max_image Finset.univ (fun j => W.valuation (yv jc x j))
@@ -68,6 +88,17 @@ def qj (jc j0 : Fin (N + 1)) (x : Fin N → Ω) (p : TVar D N) : MvPolynomial (S
 
 variable {jc j0 : Fin (N + 1)} {x : Fin N → Ω}
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `p`. Break down `Fin.eq_self_or_eq_succAbove j0 j with h | ⟨k, h⟩` into its components or cases. Rewrite using `[h]`. Simplify using `only [qj, Fin.insertNth_apply_same]`. Use `split_ifs with hi`.
+
+Rewrite using `[hi, aeval_X]`. Both sides reduce to the same expression. Establish `hs` using `sum_y_sImg jc x hi`. Rewrite `hs` using `[Fin.sum_univ_succAbove _ j0]`. Establish `hy : algebraMap Ω (OmS Ω D N) (yv jc x j0) ≠ 0` using `(map_ne_zero _).mpr hy0`.
+
+Establish `key : sImg jc x (i, j0) = -(∑ k, algebraMap Ω (OmS Ω D N) (yv jc x (j0.succAbove k)) * sImg jc x (i, j0.succAbove k)) / algebraMap Ω (OmS Ω D N) (yv jc x j0)`. Rewrite using `[eq_div_iff hy]`. Take the linear combination `hs`. Simplify using `only [map_neg, map_sum, map_mul, aeval_X, aeval_C, tj, Sum.elim_inr, map_div₀]`. Rewrite using `[key, neg_div, Finset.sum_div]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Simplify using `only [qj, Fin.insertNth_apply_succAbove, aeval_X]`.
+
+Both sides reduce to the same expression.
+-/
 theorem aeval_qj (hy0 : yv jc x j0 ≠ 0) (p : TVar D N) :
     aeval (tj jc j0 x) (qj jc j0 x p) = sImg jc x p := by
   obtain ⟨i, j⟩ := p
@@ -119,10 +150,16 @@ def intPoly (σ : Type) (W : Subring Ω) : Subring (MvPolynomial σ Ω) where
     rw [coeff_neg]
     exact W.neg_mem (hP e)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intPoly {σ : Type} {W : Subring Ω} {P : MvPolynomial σ Ω} :
     P ∈ intPoly σ W ↔ ∀ e, P.coeff e ∈ W :=
     Iff.rfl
 
+/- English proof (translation)
+Introduce `e`. Rewrite using `[coeff_C]`. Use `split_ifs`. Use `exacts [ha, W.zero_mem]`.
+-/
 theorem C_mem_intPoly {σ : Type} {W : Subring Ω} {a : Ω} (ha : a ∈ W) : (C a : MvPolynomial σ Ω) ∈ intPoly σ W := by
   intro e
   classical
@@ -130,6 +167,9 @@ theorem C_mem_intPoly {σ : Type} {W : Subring Ω} {a : Ω} (ha : a ∈ W) : (C 
   split_ifs
   exacts [ha, W.zero_mem]
 
+/- English proof (translation)
+Introduce `e`. Rewrite using `[coeff_X']`. Use `split_ifs`. Use `exacts [W.one_mem, W.zero_mem]`.
+-/
 theorem X_mem_intPoly {σ : Type} {W : Subring Ω} (s : σ) : (X s : MvPolynomial σ Ω) ∈ intPoly σ W := by
   intro e
   classical
@@ -137,6 +177,11 @@ theorem X_mem_intPoly {σ : Type} {W : Subring Ω} (s : σ) : (X s : MvPolynomia
   split_ifs
   exacts [W.one_mem, W.zero_mem]
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum]`. Use `Subring.sum_mem _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial]`. Use `Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.algebraMap_eq]`.
+
+Conclude with `C_mem_intPoly (hP v)`. Conclude with `Subring.prod_mem _ fun s _ => Subring.pow_mem _ (hq s) _`.
+-/
 theorem aeval_mem_intPoly {σ τ : Type} {W : Subring Ω} {q : σ → MvPolynomial τ Ω}
     (hq : ∀ s, q s ∈ intPoly τ W) {P : MvPolynomial σ Ω} (hP : P ∈ intPoly σ W) :
     aeval q P ∈ intPoly τ W := by
@@ -148,6 +193,11 @@ theorem aeval_mem_intPoly {σ τ : Type} {W : Subring Ω} {q : σ → MvPolynomi
     exact C_mem_intPoly (hP v)
   · exact Subring.prod_mem _ fun s _ => Subring.pow_mem _ (hq s) _
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `p`. Break down `Fin.eq_self_or_eq_succAbove j0 j with h | ⟨k, h⟩` into its components or cases. Rewrite using `[h]`. Simplify using `only [qj, Fin.insertNth_apply_same]`. Use `split_ifs`.
+
+Conclude with `X_mem_intPoly _`. Conclude with `Subring.neg_mem _ (Subring.sum_mem _ fun k _ => Subring.mul_mem _ (C_mem_intPoly (hyW _)) (X_mem_intPoly _))`. Rewrite using `[h]`. Simplify using `only [qj, Fin.insertNth_apply_succAbove]`. Conclude with `X_mem_intPoly _`.
+-/
 theorem qj_mem {W : Subring Ω} (hyW : ∀ j, yv jc x j / yv jc x j0 ∈ W) (p : TVar D N) :
     qj jc j0 x p ∈ intPoly (SVar D N) W := by
   obtain ⟨i, j⟩ := p

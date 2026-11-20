@@ -31,18 +31,90 @@ noncomputable section
 
 namespace GlobalTheory.SiegCover
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isClopen_geometricPoints_rootOfUnity_eq_unit`.
+-/
 theorem locEq : ∀ (X : Scheme.{0}) (N : ℕ) (c₀ u : Γ(X, ⊤)ˣ), IsUnit (N : Γ(X, ⊤)) → c₀ ^ N = 1 → (∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ X), Units.map g.appTop.hom.toMonoidHom u ^ N = 1) → GlobalTheory.HkClopen.Loc (S := X) (fun (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ X) => Units.map g.appTop.hom.toMonoidHom c₀ = Units.map g.appTop.hom.toMonoidHom u) := GlobalTheory.T.isClopen_geometricPoints_rootOfUnity_eq_unit
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DiagPairing.exists_weilIs_diag_root`.
+-/
 theorem pairValue : ∀ (h n : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Scheme.{0}) (s : S ⟶ Sp B) (c : SiegPre h n ζ s) (N : ℕ) (T : Over S) (x y : T ⟶ c.A), Out.RelAmple c.A c.diag → 0 < N → IsUnit (N : Γ(T.left, ⊤)) → x ^ N = 1 → y ^ N = 1 → ∃ c₀ : Γ(T.left, ⊤)ˣ, c₀ ^ N = 1 ∧ Out.WeilIs c.A c.diag N x y c₀ := GlobalTheory.DiagPairing.exists_weilIs_diag_root
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_geometric_symplectic_level_lift_siegel`.
+-/
 theorem geomLift : ∀ (h n N : ℕ) (B : Type) [CommRing B] (b : TBase B N) (ζ₀ : B) (S : Scheme.{0}) (s : S ⟶ Sp B) (c : SiegPre h n ζ₀ s) (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (β : B →+* k), 3 ≤ n → Odd N → n ∣ N → ζ₀ = (b.ζ : B) ^ (N / n) → c.Principal → x ≫ s = spMap β → ∃ e : (Fin h ⊕ Fin h → ℤ) → (Over.mk x ⟶ c.A), (∀ a a', e (a + a') = e a * e a') ∧ (∀ a, e a ^ N = 1) ∧ (∀ a, e a ^ (N / n) = toUnit (Over.mk x) ≫ c.lev a) ∧ (∀ a, e a = 1 ↔ ∃ a', a = N • a') ∧ (∀ g : Over.mk x ⟶ c.A, g ^ N = 1 → ∃ a, e a = g) ∧ ∀ a a', Out.WeilIs c.A c.diag N (e a) (e a') (unitOn (Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd a a'))) := GlobalTheory.T.exists_geometric_symplectic_level_lift_siegel
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.basis_torsion_of_weilPairing_field`.
+-/
 theorem geomBij : ∀ (h N : ℕ) (k : Type) [Field k] (S : Scheme.{0}) (x : Sp k ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left) (z : kˣ) (e₀ e : (Fin h ⊕ Fin h → ℤ) → (Over.mk x ⟶ A)), L.IsLB → Odd N → IsPrimitiveRoot z N → (∀ a a', e₀ (a + a') = e₀ a * e₀ a') → (∀ a, e₀ a = 1 ↔ ∃ a', a = N • a') → (∀ g : Over.mk x ⟶ A, g ^ N = 1 → ∃ a, e₀ a = g) → (∀ a a', e (a + a') = e a * e a') → (∀ a, e a ^ N = 1) → (∀ a a', Out.WeilIs A L N (e a) (e a') (unitOn (z ^ (2 * omegaStd a a')))) → (∀ a, e a = 1 ↔ ∃ a', a = N • a') ∧ ∀ g : Over.mk x ⟶ A, g ^ N = 1 → ∃ a, e a = g := GlobalTheory.T.basis_torsion_of_weilPairing_field
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_siegelObject_deeper_level_of_sections`.
+-/
 theorem buildCover : ∀ (h n N d : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (ζ' : B') (S V : Scheme.{0}) (s : S ⟶ Sp B) (sV : V ⟶ Sp B') (π : V ⟶ S) (c : SiegPre h n ζ s) (e : (Fin h ⊕ Fin h → ℤ) → (Over.mk π ⟶ c.A)), (∀ a a', e (a + a') = e a * e a') → (∀ a, e a ^ N = 1) → (∀ a, e a ^ d = toUnit (Over.mk π) ≫ c.lev a) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ V) (β : B' →+* k) (z : kˣ), x ≫ sV = spMap β → (z : k) = β ζ' → (∀ a, (Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a = 1 ↔ ∃ a', a = N • a') ∧ (∀ g : Over.mk (x ≫ π) ⟶ c.A, g ^ N = 1 → ∃ a, (Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a = g) ∧ ∀ a a', Out.WeilIs c.A c.diag N ((Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a) ((Over.homMk x rfl : Over.mk (x ≫ π) ⟶ Over.mk π) ≫ e a') (unitOn (z ^ (2 * omegaStd a a')))) → ∃ (C : SiegPre h N ζ' sV) (φ : C.A.left ⟶ c.A.left), SRelBy C c d 1 π φ ∧ (∀ a, (C.lev a).left ≫ φ = (e a).left) ∧ ∀ (T : Scheme.{0}) (t : T ⟶ V) (B'' : Type) [CommRing B''] (ζ'' : B'') (sT : T ⟶ Sp B'') (C' : SiegPre h N ζ'' sT), SiegPB C' C t ↔ ∃ φ' : C'.A.left ⟶ c.A.left, SRelBy C' c d 1 (t ≫ π) φ' ∧ ∀ a, (C'.lev a).left ≫ φ' = t ≫ (e a).left := GlobalTheory.T.exists_siegelObject_deeper_level_of_sections
 
 open GlobalTheory.LevCover in
 
+/- English proof (translation)
+Introduce `h n N B B' _ _ ζ b j S s' c hn hN hnN hζ hc`. Establish `hNpos : 0 < N` using `hN.pos`. Establish `hnodd : Odd n` using `hN.of_dvd_nat hnN`. Establish `hNn : N / n * n = N` using `Nat.div_mul_cancel hnN`. Set `b₀ : TBase B' n` to `{ ζ := b.ζ ^ (N / n) unit := by`.
+
+Use `b.unit` as an intermediate fact. Rewrite `this` using `[← hNn, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_right this`. Use `prim := fun K _ β => by`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`.
+
+Conclude with `(b.prim K β).pow hNpos hNn.symm }`. Establish `hb₀ : (b₀.ζ : B') = (b.ζ : B') ^ (N / n)` using `Units.val_pow_eq_pow_val _ _`. Establish `hj : j ζ = (b₀.ζ : B')` using `hζ.trans hb₀.symm`. Establish `RC` using `GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h n B B' ζ (b₀.ζ : B') j S S (s' ≫ spMap j) s' (𝟙 S) hj (Category.id_comp _)`. Take `⟨c₀, hpb⟩` from `RC.1 c`.
+
+Establish `hc₀ : c₀.Principal` using `RC.2.1 c c₀ hpb hc`. Establish `hrel : ∀ (T : Scheme.{0}) (t : T ⟶ S) (C' : SiegPre h N (b.ζ : B') (t ≫ s')), SRel C' c₀ (N / n) 1 t ↔ SRel C' c (N / n) 1 t` using `fun T t C' => by`. Use `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n N B B' B' ζ (b₀.ζ : B') (b.ζ : B') S S T (s' ≫ spMap j) s' (t ≫ s') c c₀ C' (𝟙 S) t 1 1 (N / n) ((sRel_one_one_iff c₀ c (𝟙 S)).2 hpb)).1` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `hNS : IsUnit (N : Γ(S, ⊤))`.
+
+Use `b.unit.map (fnOn s')` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨Z, et, hfin, het, hadd, hpow, huniv⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom S c₀.A N (Fin h ⊕ Fin h → ℤ) c₀.ab hNS`. Establish `R : RepTors c₀.A N _ Z et` using `⟨hfin, het, hadd, hpow, huniv⟩`. Use `haveI := hfin`.
+
+Use `haveI := het`. Establish `hNZ : IsUnit (N : Γ(Z.left, ⊤))`. Use `hNS.map Z.hom.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hlevN : ∀ a, c₀.lev a ^ N = 1` using `fun a => by`.
+
+Rewrite using `[← hNn, mul_comm, pow_mul, c₀.lev_tors, one_pow]`. Take `⟨Ul, hUl, HUl⟩` from `R.clopenCond (fun a => et a ^ (N / n)) (fun a => toUnit Z ≫ c₀.lev a) (fun a a' => by rw [hadd, mul_pow]) (fun a => by rw [← pow_mul, mul_comm, pow_mul, hpow, one_pow]) (fun a a' => by rw [c₀.lev_add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, hlevN, MonObj.comp_one])`. Establish `hG` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `hLB : c₀.diag.IsLB` using `pull_isLB c₀.isLB _`. Set `P2 : (Fin h ⊕ Fin h → ℤ) → (Fin h ⊕ Fin h → ℤ) → HkClopen.GeoCond Z.left` to `fun a a' k _ _ g => ∀ β : B' →+* k, g ≫ Z.hom ≫ s' = spMap β → Out.WeilIs c₀.A c₀.diag N ((Over.homMk g rfl : Over.mk (g ≫ Z.hom) ⟶ Z) ≫ et a) ((Over.homMk g rfl : Over.mk (g ≫ Z.hom) ⟶ Z) ≫ et a') (unitOn (Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd a a')))`.
+
+Establish `hzN : ∀ (k : Type) [Field k] (β : B' →+* k), Units.map β.toMonoidHom b.ζ ^ N = 1` using `fun k _ β => Units.ext (by simpa using (b.prim k β).pow_eq_one)`. Establish `locPair : ∀ a a', HkClopen.Loc (P2 a a')` using `fun a a' => by`. Take `⟨v, hv, hW⟩` from `pairValue h n B' _ S s' c₀ N Z (et a) (et a') hc₀.1 hNpos hNZ (hpow a) (hpow a')`. Use `(locEq Z.left N v (Units.map (fnOn (Z.hom ≫ s')).toMonoidHom (b.ζ ^ (2 * omegaStd a a'))) hNZ hv fun k _ _ g => ?_).congr fun k _ _ g => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ Z.hom ≫ s')`.
+
+Rewrite using `[map_fnOn _ g β hβ, ← unitOn_pow', map_zpow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hzN, one_zpow]`. Conclude with `unitOn_one'`. Establish `hW'` using `CommPairing.weilIs_pull hG c₀.ab hLB (Over.homMk g rfl : Over.mk (g ≫ Z.hom) ⟶ Z) hW`. Take `⟨β, hβ⟩` from `exists_spMap (g ≫ Z.hom ≫ s')`. Establish `hu` using `map_fnOn _ g β hβ (b.ζ ^ (2 * omegaStd a a'))`.
+
+Rewrite `hu` using `[show Units.map β.toMonoidHom (b.ζ ^ (2 * omegaStd a a')) = Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd a a') from map_zpow _ _ _]`. Prove the components needed by the constructor for the conclusion. Introduce `e β' hβ'`. Take `rfl : β' = β` from `spMap_inj' (hβ'.symm.trans hβ)`. Rewrite using `[← hu, ← e]`.
+
+Conclude with `hW'`. Introduce `H`. Conclude with `CommutatorPairing.weilIs_unique hG c₀.ab hLB hW' (hu ▸ H β hβ)`. Take `⟨κ, hκ, q, hq⟩` from `exists_finite_mod (Fin h ⊕ Fin h → ℤ) hNpos`. Use `haveI := hκ`.
+
+Establish `inv : ∀ (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ Z.left) (a a' c₁ c₂ : Fin h ⊕ Fin h → ℤ), P2 a a' k g → P2 (a + N • c₁) (a' + N • c₂) k g`. Introduce `k _ _ g a a' c₁ c₂ H β hβ`. Establish `e1 : ∀ a c, et (a + N • c) = et a` using `fun a c => by rw [hadd, add_map_nsmul hadd, hpow, _root_.mul_one]`. Rewrite using `[e1, e1]`. Take `⟨m, hm⟩ : ∃ m : ℤ, omegaStd (a + N • c₁) (a' + N • c₂) = omegaStd a a' + N * m` from `⟨_, omegaStd_add_nsmul N a a' c₁ c₂⟩`.
+
+Establish `hz : Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd (a + N • c₁) (a' + N • c₂)) = Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd a a')`. Rewrite using `[hm, mul_add, zpow_add, show (2 : ℤ) * (N * m) = N * (2 * m) by ring, zpow_mul _ (N : ℤ), zpow_natCast, hzN, one_zpow, _root_.mul_one]`. Rewrite using `[hz]`. Conclude with `H β hβ`. Set `r : κ → (Fin h ⊕ Fin h → ℤ)` to `Function.invFun q`.
+
+Establish `localization₂ : HkClopen.Loc (fun (k : Type) [Field k] [IsAlgClosed k] (g : Sp k ⟶ Z.left) => ∀ a a', P2 a a' k g)`. Use `(HkClopen.Loc.all (I₀ := κ × κ) (P := fun i => P2 (r i.1) (r i.2)) fun i => locPair _ _).congr fun k _ _ g => ⟨fun H a a' => ?_, fun H i => H _ _⟩` and prove the remaining obligations. Take `⟨c₁, e₁⟩` from `hq (r (q a)) a (Function.invFun_eq ⟨a, rfl⟩)`. Take `⟨c₂, e₂⟩` from `hq (r (q a')) a' (Function.invFun_eq ⟨a', rfl⟩)`. Rewrite using `[e₁, e₂]`.
+
+Conclude with `inv k g _ _ c₁ c₂ (H (q a, q a'))`. Take `⟨Wp, hWp, HWp⟩` from `localization₂`. Set `U : Z.left.Opens` to `Ul ⊓ ⟨Wp, hWp.isOpen⟩`. Establish `hU : IsClosed (U : Set Z.left)` using `hUl.inter hWp.isClosed`. Take `⟨V, i, hV1, hV2, hi, Hi⟩` from `exists_sub U hU`.
+
+Establish `memWp : ∀ (Tw : Over S) (w : Tw ⟶ Z), (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Tw.left) (a a'), P2 a a' k (x ≫ w.left)) → Set.range w.left ⊆ Wp`. Introduce and unpack `Tw w H _ ⟨p, rfl⟩`. Take `⟨k, _, _, x, hx⟩` from `GlobalTheory.FinEt.exists_algClosed_point Tw.left p`. Establish `h₁` using `(HWp k (x ≫ w.left)).2 (H k x)`. Establish `hp : x (default : PrimeSpectrum k) = p`.
+
+Establish `: x (default : PrimeSpectrum k) ∈ Set.range x` using `⟨_, rfl⟩`. Rewrite `this` using `[hx]`. Then use the resulting hypothesis. Conclude with `(show (x ≫ w.left) (default : PrimeSpectrum k) = w.left p by rw [← hp]; rfl) ▸ h₁`. Establish `hir : Set.range i.left ⊆ U` using `(Hi V i).2 ⟨𝟙 _, Category.id_comp _⟩`. Establish `hiL` using `(HUl V i).2 fun _ hp => (hir hp).1`.
+
+Establish `iW : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ V.left) (a a'), P2 a a' k (x ≫ i.left)` using `fun k _ _ x => (HWp k (x ≫ i.left)).1 (hir ⟨x (default : PrimeSpectrum k), rfl⟩).2`. Establish `hprim : ∀ (k : Type) [Field k] (β : B' →+* k), IsPrimitiveRoot (Units.map β.toMonoidHom b.ζ) N` using `fun k _ β => IsPrimitiveRoot.coe_units_iff.1 (b.prim k β)`. Take `⟨C, φ, hsrel, hlev, huniv'⟩` from `buildCover h n N (N / n) B' B' (b₀.ζ : B') (b.ζ : B') S V.left s' (V.hom ≫ s') V.hom c₀ (fun a => i ≫ et a) (fun a a' => by rw [hadd, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, hpow, MonObj.comp_one]) (fun a => by rw [← MonObj.comp_pow, hiL a, comp_toUnit_assoc]; rfl) …`. Take `rfl : z = Units.map β.toMonoidHom b.ζ` from `Units.ext hz`. Establish `hxS : (x ≫ V.hom) ≫ s' = spMap β` using `by rw [Category.assoc]; exact hx`.
+
+Take `⟨e₀, a1, -, -, k1, o1, -⟩` from `geomLift h n N B' b (b₀.ζ : B') S s' c₀ k (x ≫ V.hom) β hn hN hnN hb₀ hc₀ hxS`. Establish `hpair : ∀ a a', Out.WeilIs c₀.A c₀.diag N ((Over.homMk x rfl : Over.mk (x ≫ V.hom) ⟶ Over.mk V.hom) ≫ i ≫ et a) ((Over.homMk x rfl : Over.mk (x ≫ V.hom) ⟶ Over.mk V.hom) ≫ i ≫ et a') (unitOn (Units.map β.toMonoidHom b.ζ ^ (2 * omegaStd a a')))` using `fun a a' => weilIs_congr_base (by rw [Category.assoc, Over.w i]) (by simp) (by simp) (iW k x a a' β (by rw [← hx, Category.assoc, reassoc_of% (Over.w i)]))`. Take `⟨b1, b2⟩` from `geomBij h N k S (x ≫ V.hom) c₀.A c₀.diag (Units.map β.toMonoidHom b.ζ) e₀ (fun a => (Over.homMk x rfl : Over.mk (x ≫ V.hom) ⟶ Over.mk V.hom) ≫ i ≫ et a) hLB hN (hprim k β) a1 k1 o1 (fun a a' => by simp only [hadd, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, ← MonObj.com …`. Conclude with `⟨b1, b2, hpair⟩)`. Establish `h1T : ∀ (T : Scheme.{0}), (𝟙_ (Over T)).hom = 𝟙 T` using `fun T => rfl`.
+
+Use `⟨V.left, V.hom, C, hV1, hV2, ⟨fun pt => ?_⟩, (hrel V.left V.hom C).1 ⟨φ, hsrel⟩, fun T t C' hC' => ?_⟩` and prove the remaining obligations. Take `⟨k, _, _, x, hx⟩` from `GlobalTheory.FinEt.exists_algClosed_point S pt`. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s')`. Take `⟨e₀, a1, p1, l1, -, -, w1⟩` from `geomLift h n N B' b (b₀.ζ : B') S s' c₀ k x β hn hN hnN hb₀ hc₀ hβ`. Take `⟨w, hw, -⟩` from `huniv (Over.mk x) e₀ a1 p1`.
+
+Establish `hx' : w.left ≫ Z.hom = x` using `Over.w w`. Establish `hwl : Set.range w.left ⊆ Ul` using `(HUl (Over.mk x) w).1 fun a => by`. Rewrite using `[MonObj.comp_pow, hw, l1, comp_toUnit_assoc]`. Establish `hwW : w.left (default : PrimeSpectrum k) ∈ Wp` using `(HWp k w.left).2 fun a a' β' hβ' => by`. Take `rfl : β' = β` from `spMap_inj' (hβ'.symm.trans (by rw [← Category.assoc, hx', hβ]))`.
+
+Conclude with `weilIs_congr_base hx'.symm (by rw [← hw a]; rfl) (by rw [← hw a']; rfl) (w1 a a')`. Take `⟨w', hw'⟩` from `(Hi _ w).1 fun _ hq => ⟨hwl hq, (HkClopen.range_subset_iff w.left Wp).2 hwW hq⟩`. Take `⟨p, hp⟩ : pt ∈ Set.range x` from `by rw [hx]; rfl`. Conclude with `⟨w'.left p, by rw [← Scheme.Hom.comp_apply, Over.w w']; exact hp⟩`. Take `⟨φ', pb', hφ', low'⟩` from `(hrel T t C').2 hC'`.
+
+Set `Tt : Over S` to `Over.mk ((𝟙_ (Over T)).hom ≫ t)`. Set `et' : (Fin h ⊕ Fin h → ℤ) → (Tt ⟶ c₀.A)` to `fun a => pushHom pb' (𝟙_ (Over T)) (C'.lev a)`. Establish `a' : ∀ a a₂, et' (a + a₂) = et' a * et' a₂` using `fun a a₂ => by simp only [et', C'.lev_add, map_mul]`. Establish `p' : ∀ a, et' a ^ N = 1` using `fun a => by simp only [et', ← map_pow, C'.lev_tors, map_one]`. Take `⟨u, hu, -⟩` from `huniv Tt et' a' p'`.
+
+Establish `hul : ∀ a, (u ≫ et a).left = (C'.lev a).left ≫ φ'` using `fun a => by rw [hu]; rfl`. Establish `hut : u.left ≫ Z.hom = t` using `(Over.w u).trans (Category.id_comp t)`. Establish `hulow : Set.range u.left ⊆ Ul` using `(HUl Tt u).1 fun a => by`. Rewrite using `[MonObj.comp_pow, hu, comp_toUnit_assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Simplify using `only [et', ← map_pow]`. Use `show (C'.lev a ^ (N / n)).left ≫ φ' = (toUnit Tt).left ≫ (c₀.lev a).left`. Rewrite using `[low' a, pow_one, Over.toUnit_left]`. Conclude with `(Category.id_comp t ▸ rfl : t ≫ (c₀.lev a).left = Tt.hom ≫ (c₀.lev a).left)`. Establish `huW : Set.range u.left ⊆ Wp` using `memWp Tt u fun k _ _ x a a₂ β hβ => weilTransport h N n B' B' (b₀.ζ : B') (b.ζ : B') S T s' (t ≫ s') c₀ C' t φ' pb' hφ' k x β (Units.map β.toMonoidHom b.ζ) ((x ≫ u.left) ≫ Z.hom) _ _ a a₂ (by rw [← hβ, Category.assoc, reassoc_of% hut])`.
+
+Use `rfl (by rw [Category.assoc, hut])`. Use the proof step `(by rw [Over.comp_left, ← hul, Over.comp_left]; simp)`. Use the proof step `(by rw [Over.comp_left, ← hul, Over.comp_left]; simp)`. Take `⟨t₁, ht₁⟩` from `(Hi Tt u).1 fun _ hq => ⟨hulow hq, huW hq⟩`. Establish `ht₁π : t₁.left ≫ V.hom = t` using `(Over.w t₁).trans (Category.id_comp t)`.
+
+Use `⟨t₁.left, ⟨ht₁π, (huniv' T t₁.left B' (b.ζ : B') (t ≫ s') C').2 ⟨φ', by rw [ht₁π]; exact ⟨pb', hφ', low'⟩, fun a => (hul a).symm.trans (by rw [← ht₁]; simp)⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t₂ ⟨ht₂, hpb₂⟩`. Take `⟨φ₂, hsr₂, hl₂⟩` from `(huniv' T t₂ B' (b.ζ : B') (t ≫ s') C').1 hpb₂`. Rewrite `hsr₂` using `[ht₂]`. Establish `e` using `GlobalTheory.T.principal_siegel_object_odd_level_rigid h n N (N / n) B' B' b₀ (b.ζ : B') S T s' (t ≫ s') c₀ C' t φ' φ₂ hn hnodd hc₀ ⟨pb', hφ', low'⟩ hsr₂`.
+
+Substitute `e` using the available equality. Set `h₂ : Tt ⟶ V` to `Over.homMk t₂ (ht₂.trans (Category.id_comp t).symm)`. Establish `: h₂ ≫ i = u` using `R.ext fun a => Over.OverMorphism.ext (by rw [hul, hl₂ a]; simp [h₂])`. Conclude with `congrArg (fun q => q.left) ((cancel_mono i).1 (this.trans ht₁.symm))`.
+-/
 theorem exists_levelCover : ∀ (h n N : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (b : TBase B' N) (j : B →+* B') (S : Scheme.{0}) (s' : S ⟶ Sp B') (c : SiegPre h n ζ (s' ≫ spMap j)), 3 ≤ n → Odd N → n ∣ N → j ζ = (b.ζ : B') ^ (N / n) → c.Principal → ∃ (S₁ : Scheme.{0}) (π : S₁ ⟶ S) (C : SiegPre h N (b.ζ : B') (π ≫ s')), IsFinite π ∧ Etale π ∧ Surjective π ∧ SRel C c (N / n) 1 π ∧ ∀ (T : Scheme.{0}) (t : T ⟶ S) (C' : SiegPre h N (b.ζ : B') (t ≫ s')), SRel C' c (N / n) 1 t → ∃! t₁ : T ⟶ S₁, t₁ ≫ π = t ∧ SiegPB C' C t₁ := by
   intro h n N B B' _ _ ζ b j S s' c hn hN hnN hζ hc
   have hNpos : 0 < N := hN.pos

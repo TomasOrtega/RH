@@ -12,6 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ T κ i lev hJ hL g _ f hf`. Establish `h` using `hJ.toLawsM`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, by have := i.2; omega⟩`. Establish `hp` using `h.pins`. Establish `hpq : 1 ≤ (T.Q.Dw ((i : ℕ) + 1)).p + (T.Q.Dw ((i : ℕ) + 1)).q`.
+
+Rewrite using `[(hp.2.2.2 _ hj).1, (hp.2.2.2 _ hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨hs, hc⟩` from `(mem_cusp _ _ _ _ _ _).1 hf`. Establish `hg : actLev (Xo` using `T.Q.Xo ((i : ℕ) + 1)) T.Q.c lev g f ∈ sec (T.Q.Xo ((i : ℕ) + 1)) T.Q.c (wtA (κ i)) (κ i).n := actL_mem _ _ _ _ hL.total hL.nat hL.bor _ g hs`. Use `(mem_cusp _ _ _ _ _ _).2 ⟨hg, fun σ hσ => holCusp_mem_holSub _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hU` using `h.unf _ hj σ hσ`.
+
+Use `GlobalTheory.LevelCusp.rdU_mem_SS (U := Formalism.L2.PjFree.Unf.ofPj (T.U ((i : ℕ) + 1) σ)) hσ hU (hU.1 ▸ hpq) (fun k k' τ => (h.xiAbs _ hj σ hσ k τ).trans (h.xiAbs _ hj σ hσ k' τ).symm) (dom_wtA (κ i)) hs hg (fun k => GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (hc σ hσ) k) …` and prove the remaining obligations. Take `⟨ρ, ν, -, -, hm⟩` from `mvPt_spec hL.total g y`. Conclude with `⟨ρ, ν, _, hm, evalAt_actL hL (h.evalWD _ hj) frMap_trans_id g hs.1 y⟩`.
+-/
 theorem GlobalTheory.LevelCusp.actLev_mem_cuspA_of_actLev : ∀ {D : D7} {G : Type} [Group G] (T : CoreJ D) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (i : Fin D.R.m) (lev : G → ((T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La) × ((T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La)), LawsJ T → ActLev (Xo := T.Q.Xo ((i : ℕ) + 1)) T.Q.c lev → ∀ g, (∀ a, (lev g).2 a = a) → ∀ f ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n, actLev T.Q.c lev g f ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n := by
   intro D G _ T κ i lev hJ hL g _ f hf
   have h := hJ.toLawsM

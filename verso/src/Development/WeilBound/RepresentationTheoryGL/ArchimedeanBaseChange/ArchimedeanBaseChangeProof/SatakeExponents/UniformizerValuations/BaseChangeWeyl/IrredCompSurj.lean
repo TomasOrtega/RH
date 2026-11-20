@@ -18,6 +18,9 @@ section Conj
 
 variable {L : Type} [Field L] (s : L →+* L) {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : cT s Q * cT s P = 1` using `by rw [← cT_mul, hPQ, cT_one]`. Rewrite `hX` using `[Matrix.mul_one]`. Rewrite using `[cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT s Q) (cT s P), h1, Matrix.one_mul, ← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul, ← Matrix.mul_assoc (cT s X) X, hX, Matrix.one_mul]`.
+-/
 theorem conj_mem_GU (P Q X : Matrix (Fin n) (Fin n) L) (hPQ : P * Q = 1) (hX : cT s X * 1 * X = 1) :
     cT s (Q * X * P) * (cT s P * P) * (Q * X * P) = cT s P * P := by
   have h1 : cT s Q * cT s P = 1 := by rw [← cT_mul, hPQ, cT_one]
@@ -27,6 +30,11 @@ theorem conj_mem_GU (P Q X : Matrix (Fin n) (Fin n) L) (hPQ : P * Q = 1) (hX : c
   rw [← Matrix.mul_assoc (cT s Q) (cT s P), h1, Matrix.one_mul, ← Matrix.mul_assoc P Q, hPQ, Matrix.one_mul,
     ← Matrix.mul_assoc (cT s X) X, hX, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1 : cT s Q * cT s P = 1` using `by rw [← cT_mul, hPQ, cT_one]`. Rewrite using `[Matrix.mul_one, cT_mul, cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`.
+
+Rewrite using `[hY]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hPQ, Matrix.mul_one, h1]`.
+-/
 theorem conj_mem_UJ (P Q Y : Matrix (Fin n) (Fin n) L) (hPQ : P * Q = 1)
     (hY : cT s Y * (cT s P * P) * Y = cT s P * P) :
     cT s (P * Y * Q) * 1 * (P * Y * Q) = 1 := by
@@ -58,12 +66,18 @@ def conjU (b : GL (Fin n) L) (hb : cT s b.val * b.val = antiJ L n) (H : Subgroup
   right_inv y := Subtype.ext (by simp [mul_assoc])
   map_mul' x y := Subtype.ext (by simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjU_val (b : GL (Fin n) L) (hb : cT s b.val * b.val = antiJ L n) (H : Subgroup (GL (Fin n) L))
     (hH : ∀ g, g ∈ H ↔ g ∈ UJ s (1 : Matrix (Fin n) (Fin n) L)) (x : H) :
     ((conjU s b hb H hH x : GU s n) : GL (Fin n) L) = b⁻¹ * x.1 * b := rfl
 
 end Conj
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 h`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun W hW => h1 W fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hφ g`. Conclude with `hW g' v hv`.
+-/
 theorem irred_comp_surj {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ H X) (φ : H' →* H) (hφ : Function.Surjective φ) (h : ρ.IsIrreducible) :
     Representation.IsIrreducible (ρ.comp φ) := by

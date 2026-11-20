@@ -13,6 +13,13 @@ section Mul
 
 variable [IsIntegral X] [IsLocallyNoetherian X] [IsNormalScheme X]
 
+/- English proof (translation)
+Use `⟨fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hyW, h⟩` from `hf.1 y`. Conclude with `⟨W, hyW, fun z hz => by simp only [h z hz]⟩`. Use `set Z := PrimeDivisor.ofPoint y.1 hy`. Distinguish the cases in `hfy : f y = 0`.
+
+Simplify using `[hfy]`. Establish `h1` using `hf.2 y hy`. Express the relevant statement in the definitionally equal form `Z.valuation (f y) ≤ WithZero.exp (D Z) at h1`. Express the relevant statement in the definitionally equal form `Z.valuation (f y * c) ≤ WithZero.exp (E Z)`. Rewrite `h1` using `[Z.valuation_le_exp_iff hfy]`.
+
+Rewrite using `[Z.valuation_le_exp_iff (mul_ne_zero hfy (Units.ne_zero c)), Z.ord_mul hfy (Units.ne_zero c)]`. Use `hc Z` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma mul_mem_divisorSections {D E : WeilDivisor X} (c : (X.functionField)ˣ)
     (hc : ∀ Z : PrimeDivisor X, D Z - E Z ≤ Z.ord (c : X.functionField)) {V : X.Opens}
     {f : V → X.functionField} (hf : f ∈ divisorSections D V) :
@@ -103,6 +110,21 @@ noncomputable def localBasis (D : WeilDivisor X) (U : X.Opens) (g : (X.functionF
     dsimp only
     omega⟩
 
+/- English proof (translation)
+Distinguish the cases in `hne : Nonempty V`. Prove the components needed by the constructor for the conclusion. Introduce `r₁ r₂ h12`. Take `⟨y⟩` from `hne`. Establish `: Nonempty V` using `⟨y⟩`.
+
+Use `congrArg (fun t : divisorSections D V => t.1 y) h12` as an intermediate fact. Establish `h` using `mul_right_cancel₀ (Units.ne_zero g⁻¹) this`. Rewrite `h` using `[sectionValue_eq V y r₁, sectionValue_eq V y r₂]`. Conclude with `Scheme.germToFunctionField_injective X V h`. Introduce `t`.
+
+Take `⟨y0⟩` from `hne`. Establish `: Nonempty V` using `⟨y0⟩`. Use `set c := t.1 y0`. Establish `hord : ∀ Z : PrimeDivisor X, Z.point ∈ V → 0 ≤ Z.ord (c * (g : X.functionField))`. Introduce `Z hZ`.
+
+Distinguish the cases in `hc : c = 0`. Rewrite using `[hc, zero_mul, PrimeDivisor.ord_zero]`. Rewrite using `[PrimeDivisor.ord_mul Z hc (Units.ne_zero g), hg Z (hVU hZ)]`. Establish `ht` using `t.2.2 ⟨Z.point, hZ⟩ Z.2`. Establish `hcZ : t.1 ⟨Z.point, hZ⟩ = c` using `divisorSections_apply_eq D t _ y0`.
+
+Rewrite `ht` using `[hcZ]`. Use `(PrimeDivisor.valuation_le_exp_iff Z hc (D Z)).mp ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨r, hr⟩` from `exists_section_of_ord_nonneg V _ hord`. Use `⟨r, Subtype.ext (funext fun y => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[divisorSections_smul_apply, sectionValue_eq, hr, divisorSections_apply_eq D t y y0]`. Express the relevant statement in the definitionally equal form `c * (g : X.functionField) * ((g⁻¹ : (X.functionField)ˣ) : X.functionField) = c`. Rewrite using `[mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Establish `hV : V = ⊥`. Use extensionality with `y`.
+
+Simplify using `only [Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hy => hne ⟨⟨y, hy⟩⟩`. Establish `: Subsingleton Γ(X, V)` using `CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hV)`. Use `⟨fun _ _ _ => Subsingleton.elim _ _, fun t => ⟨0, Subtype.ext (funext fun y => ?_)⟩⟩` and prove the remaining obligations. Conclude with `(hne ⟨y⟩).elim`.
+-/
 theorem localBasis_bijective (D : WeilDivisor X) (U : X.Opens) (g : (X.functionField)ˣ)
     (hg : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z)
     (V : X.Opens) (hVU : V ≤ U) :
@@ -153,6 +175,9 @@ noncomputable def unitToDivisorZero (V : (Opens X)ᵒᵖ) :
       ((divisorPresheaf (0 : WeilDivisor X)).obj V) :=
   LinearMap.toSpanSingleton _ _ (divisorSectionsOne V.unop)
 
+/- English proof (translation)
+The claim follows from `localBasis_bijective 0 ⊤ 1 (fun Z _ => by simp [PrimeDivisor.ord_one]) V.unop le_top`.
+-/
 lemma unitToDivisorZero_bijective (V : (Opens X)ᵒᵖ) :
     Function.Bijective (unitToDivisorZero (X := X) V) :=
   localBasis_bijective 0 ⊤ 1 (fun Z _ => by simp [PrimeDivisor.ord_one]) V.unop le_top
@@ -179,6 +204,21 @@ section Hom
 
 variable [IsIntegral X] [IsNoetherian X] [IsLocallyFactorial X]
 
+/- English proof (translation)
+Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨U, g, hxU, hg⟩` from `WeilDivisor.exists_local_equation D x`. Establish `hg' : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z` using `fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)`. Use `set s := localBasis D U g hg'`. Use `set t : divisorSections E U := (φ.val.app (op U)).hom s`.
+
+Use `⟨t.1 ⟨x, hxU⟩ * g, fun V f y => ?_⟩` and prove the remaining obligations. Take `⟨w, hwV, hwU⟩` from `nonempty_preirreducible_inter V.unop.isOpen U.isOpen ⟨y.1, y.2⟩ ⟨x, hxU⟩`. Use `set W : X.Opens := V.unop ⊓ U`. Establish `hWU : W ≤ U` using `inf_le_right`. Establish `hWV : W ≤ V.unop` using `inf_le_left`.
+
+Take `⟨r, hr⟩` from `(localBasis_bijective D U g hg' W hWU).2 (divisorSectionsRes D hWV f)`. Establish `hnat` using `PresheafOfModules.naturality_apply φ.val (homOfLE hWV).op f`. Establish `hnat'` using `PresheafOfModules.naturality_apply φ.val (homOfLE hWU).op s`. Establish `hw : w ∈ W` using `⟨hwV, hwU⟩`. Establish `key : ((φ.val.app V).hom f : divisorSections E V.unop).1 ⟨w, hwV⟩ = f.1 ⟨w, hwV⟩ * (t.1 ⟨x, hxU⟩ * g)`.
+
+Establish `e1` using `congrArg (fun m : divisorSections E W => m.1 ⟨w, hw⟩) hnat`. Establish `e2` using `congrArg (fun m : divisorSections D W => m.1 ⟨w, hw⟩) hr`. Express the relevant statement in the definitionally equal form `((φ.val.app (op W)).hom (divisorSectionsRes D hWV f)).1 ⟨w, hw⟩ = ((φ.val.app V).hom f).1 ⟨w, hwV⟩ at e1`. Express the relevant statement in the definitionally equal form `sectionValue W ⟨w, hw⟩ r * ((g⁻¹ : (X.functionField)ˣ) : X.functionField) = f.1 ⟨w, hwV⟩ at e2`. Establish `e3` using `congrArg (fun m : divisorSections E W => m.1 ⟨w, hw⟩) hnat'`.
+
+Express the relevant statement in the definitionally equal form `((φ.val.app (op W)).hom (divisorSectionsRes D hWU s)).1 ⟨w, hw⟩ = t.1 ⟨w, hwU⟩ at e3`. Establish `hr' : r • divisorSectionsRes D hWU s = divisorSectionsRes D hWV f` using `hr`. Set `ψ : divisorSections D W → divisorSections E W` to `fun m => (φ.val.app (op W)).hom m`. Establish `hlin : ψ (r • divisorSectionsRes D hWU s) = r • ψ (divisorSectionsRes D hWU s)` using `(φ.val.app (op W)).hom.map_smul r _`. Establish `hg0 : (g : X.functionField) ≠ 0` using `g.ne_zero`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[divisorSections_smul_apply, e3]`. Use `_ = sectionValue W ⟨w, hw⟩ r * t.1 ⟨x, hxU⟩ := by`. Rewrite using `[divisorSections_apply_eq E t ⟨w, hwU⟩ ⟨x, hxU⟩]`. Use `_ = f.1 ⟨w, hwV⟩ * (t.1 ⟨x, hxU⟩ * g) := by`.
+
+Rewrite using `[← e2, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `divisorSections_apply_eq E ((φ.val.app V).hom f : divisorSections E V.unop) y ⟨w, hwV⟩`. Rewrite using `[h1, key, divisorSections_apply_eq D f ⟨w, hwV⟩ y]`.
+-/
 theorem divisorSheaf_hom_eq_mul {D E : WeilDivisor X} (φ : divisorSheaf D ⟶ divisorSheaf E) :
     ∃ c : X.functionField, ∀ (V : (Opens X)ᵒᵖ) (f : divisorSections D V.unop) (y : V.unop),
       ((φ.val.app V).hom f : divisorSections E V.unop).1 y = f.1 y * c := by
@@ -235,17 +275,30 @@ section Iso
 
 variable [IsIntegral X] [IsNoetherian X] [IsLocallyFactorial X]
 
+/- English proof (translation)
+The claim follows from `(Z.valuation_le_exp_iff hm (D Z)).mp (m.2.2 ⟨Z.point, hZ⟩ Z.2)`.
+-/
 lemma neg_le_ord_of_mem (D : WeilDivisor X) {U : X.Opens} (m : divisorSections D U)
     (Z : PrimeDivisor X) (hZ : Z.point ∈ U) (hm : m.1 ⟨Z.point, hZ⟩ ≠ 0) :
     -D Z ≤ Z.ord (m.1 ⟨Z.point, hZ⟩) :=
   (Z.valuation_le_exp_iff hm (D Z)).mp (m.2.2 ⟨Z.point, hZ⟩ Z.2)
 
+/- English proof (translation)
+Establish `h` using `Z.ord_mul (Units.ne_zero g) (Units.ne_zero g⁻¹)`. Rewrite `h` using `[← Units.val_mul, mul_inv_cancel, Units.val_one, PrimeDivisor.ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma ord_inv_units (Z : PrimeDivisor X) (g : (X.functionField)ˣ) :
     Z.ord ((g⁻¹ : (X.functionField)ˣ) : X.functionField) = - Z.ord (g : X.functionField) := by
   have h := Z.ord_mul (Units.ne_zero g) (Units.ne_zero g⁻¹)
   rw [← Units.val_mul, mul_inv_cancel, Units.val_one, PrimeDivisor.ord_one] at h
   omega
 
+/- English proof (translation)
+Take `⟨U, g, hZU, hg⟩` from `WeilDivisor.exists_local_equation D Z.point`. Establish `hg' : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z` using `fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)`. Use `set s := localBasis D U g hg'`. Set `m : divisorSections E U` to `(φ.val.app (op U)).hom s`. Establish `hval : m.1 ⟨Z.point, hZU⟩ = s.1 ⟨Z.point, hZU⟩ * c` using `hc (op U) s ⟨Z.point, hZU⟩`.
+
+Establish `hs0 : s.1 ⟨Z.point, hZU⟩ ≠ 0` using `Units.ne_zero g⁻¹`. Establish `hne : m.1 ⟨Z.point, hZU⟩ ≠ 0`. Rewrite using `[hval]`. Conclude with `mul_ne_zero hs0 hc0`. Establish `h` using `neg_le_ord_of_mem E m Z hZU hne`.
+
+Rewrite `h` using `[hval]`. Express the relevant statement in the definitionally equal form `-E Z ≤ Z.ord (((g⁻¹ : (X.functionField)ˣ) : X.functionField) * c) at h`. Rewrite `h` using `[Z.ord_mul (Units.ne_zero _) hc0, ord_inv_units, hg' Z hZU]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma sub_le_ord_of_hom {D E : WeilDivisor X} (φ : divisorSheaf D ⟶ divisorSheaf E)
     {c : X.functionField} (hc0 : c ≠ 0)
     (hc : ∀ (V : (Opens X)ᵒᵖ) (f : divisorSections D V.unop) (y : V.unop),
@@ -267,6 +320,19 @@ lemma sub_le_ord_of_hom {D E : WeilDivisor X} (φ : divisorSheaf D ⟶ divisorSh
   rw [Z.ord_mul (Units.ne_zero _) hc0, ord_inv_units, hg' Z hZU] at h
   omega
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `divisorSheaf_hom_eq_mul e.hom`. Take `⟨c', hc'⟩` from `divisorSheaf_hom_eq_mul e.inv`. Take `⟨x⟩ : Nonempty X` from `inferInstance`. Take `⟨U, g, hxU, hg⟩` from `WeilDivisor.exists_local_equation D x`. Establish `hg' : ∀ Z : PrimeDivisor X, Z.point ∈ U → Z.ord (g : X.functionField) = D Z` using `fun Z hZ => (principalDivisor_apply g Z).symm.trans (hg Z hZ)`.
+
+Use `set s := localBasis D U g hg'`. Establish `hid` using `congrArg (fun φ : divisorSheaf D ⟶ divisorSheaf D => ((φ.val.app (op U)).hom s : divisorSections D U).1 ⟨x, hxU⟩) e.hom_inv_id`. Establish `e1` using `hc' (op U) ((e.hom.val.app (op U)).hom s) ⟨x, hxU⟩`. Establish `e2` using `hc (op U) s ⟨x, hxU⟩`. Establish `hid' : s.1 ⟨x, hxU⟩ * c * c' = s.1 ⟨x, hxU⟩`.
+
+Rewrite using `[← e2]`. Conclude with `e1.symm.trans hid`. Establish `hcc' : c * c' = 1`. Establish `hs0 : s.1 ⟨x, hxU⟩ ≠ 0` using `Units.ne_zero g⁻¹`. Rewrite `hid'` using `[mul_assoc]`.
+
+Conclude with `(mul_right_eq_self₀.mp hid').resolve_right hs0`. Establish `hc0 : c ≠ 0` using `left_ne_zero_of_mul_eq_one hcc'`. Establish `hc'0 : c' ≠ 0` using `right_ne_zero_of_mul_eq_one hcc'`. Use `⟨Units.mk c c' hcc' (by rw [mul_comm]; exact hcc'), ?_⟩` and prove the remaining obligations. Use extensionality with `Z`.
+
+Simplify using `only [Finsupp.coe_sub, Pi.sub_apply, principalDivisor_apply]`. Establish `h1` using `sub_le_ord_of_hom e.hom hc0 hc Z`. Establish `h2` using `sub_le_ord_of_hom e.inv hc'0 hc' Z`. Establish `h3` using `Z.ord_mul hc0 hc'0`. Rewrite `h3` using `[hcc', PrimeDivisor.ord_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_principal_of_iso {D E : WeilDivisor X} (e : divisorSheaf D ≅ divisorSheaf E) :
     ∃ c : (X.functionField)ˣ, D - E = principalDivisor (Additive.ofMul c) := by
   obtain ⟨c, hc⟩ := divisorSheaf_hom_eq_mul e.hom
@@ -298,6 +364,11 @@ theorem exists_principal_of_iso {D E : WeilDivisor X} (e : divisorSheaf D ≅ di
   rw [hcc', PrimeDivisor.ord_one] at h3
   omega
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e⟩`. Take `⟨c, hc⟩` from `exists_principal_of_iso e`. Conclude with `⟨Additive.ofMul c, hc.symm⟩`. Introduce and unpack `⟨a, ha⟩`.
+
+Conclude with `⟨divisorMulIso (Additive.toMul a) ha.symm⟩`.
+-/
 theorem nonempty_divisorSheaf_iso_iff (D E : WeilDivisor X) :
     Nonempty (divisorSheaf D ≅ divisorSheaf E) ↔ D - E ∈ principalDivisors X := by
   constructor

@@ -22,28 +22,46 @@ variable {G σ : Type} [TopologicalSpace G]
 
 def CoefCont (F : G → MvPolynomial σ ℂ) : Prop := ∀ m, Continuous fun k => MvPolynomial.coeff m (F k)
 
+/- English proof (translation)
+Introduce `_` and use `continuous_const`.
+-/
 theorem CoefCont.const (P : MvPolynomial σ ℂ) : CoefCont fun _ : G => P := fun _ => continuous_const
 
+/- English proof (translation)
+Introduce `m` and use `by simp only [MvPolynomial.coeff_add] exact (h m).add (h' m)`.
+-/
 theorem CoefCont.add {F F' : G → MvPolynomial σ ℂ} (h : CoefCont F) (h' : CoefCont F') :
     CoefCont fun k => F k + F' k := fun m => by
   simp only [MvPolynomial.coeff_add]
   exact (h m).add (h' m)
 
+/- English proof (translation)
+Introduce `m` and use `by simp only [MvPolynomial.coeff_mul] exact continuous_finset_sum _ fun p _ => (h _).mul (h' _)`.
+-/
 theorem CoefCont.mul {F F' : G → MvPolynomial σ ℂ} (h : CoefCont F) (h' : CoefCont F') :
     CoefCont fun k => F k * F' k := fun m => by
   simp only [MvPolynomial.coeff_mul]
   exact continuous_finset_sum _ fun p _ => (h _).mul (h' _)
 
+/- English proof (translation)
+Introduce `m` and use `by simp only [MvPolynomial.coeff_smul, smul_eq_mul] exact hs.mul (h m)`.
+-/
 theorem CoefCont.smul {s : G → ℂ} {F : G → MvPolynomial σ ℂ} (hs : Continuous s) (h : CoefCont F) :
     CoefCont fun k => s k • F k := fun m => by
   simp only [MvPolynomial.coeff_smul, smul_eq_mul]
   exact hs.mul (h m)
 
+/- English proof (translation)
+Introduce `m` and use `by simp only [MvPolynomial.coeff_sum] exact continuous_finset_sum _ fun i _ => h i m`.
+-/
 theorem CoefCont.sum {ι : Type} [Fintype ι] {F : ι → G → MvPolynomial σ ℂ} (h : ∀ i, CoefCont (F i)) :
     CoefCont fun k => ∑ i, F i k := fun m => by
   simp only [MvPolynomial.coeff_sum]
   exact continuous_finset_sum _ fun i _ => h i m
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa using CoefCont.const _`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p v hp => simpa using hp.mul (h v)`.
+-/
 theorem CoefCont.aeval {τ : Type} {g : G → τ → MvPolynomial σ ℂ} (h : ∀ v, CoefCont fun k => g k v)
     (P : MvPolynomial τ ℂ) : CoefCont fun k => MvPolynomial.aeval (g k) P := by
   induction P using MvPolynomial.induction_on with
@@ -51,6 +69,11 @@ theorem CoefCont.aeval {τ : Type} {g : G → τ → MvPolynomial σ ℂ} (h : �
   | add p q hp hq => simpa using hp.add hq
   | mul_X p v hp => simpa using hp.mul (h v)
 
+/- English proof (translation)
+Set `T` to `(Finsupp.finite_of_degree_le (σ := σ) N).toFinset`. Use `⟨T.card, fun i => (T.equivFin.symm i : σ →₀ ℕ), fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[T.equivFin.symm.sum_comp (fun d : T => MvPolynomial.coeff (d : σ →₀ ℕ) P • MvPolynomial.monomial (d : σ →₀ ℕ) (1 : ℂ)), Finset.sum_coe_sort T fun d => MvPolynomial.coeff d P • MvPolynomial.monomial d (1 : ℂ)]`. Simplify using `only [MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [P.as_sum]`.
+
+Use `Finset.sum_subset (fun d hd => ?_) fun d _ hd => ?_` and prove the remaining obligations. Simplify using `only [T, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Conclude with `(MvPolynomial.le_totalDegree hd).trans hP`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hd, map_zero]`.
+-/
 theorem exists_monomials [Finite σ] (N : ℕ) : ∃ (n : ℕ) (e : Fin n → σ →₀ ℕ), ∀ P : MvPolynomial σ ℂ,
     P.totalDegree ≤ N → P = ∑ i, MvPolynomial.coeff (e i) P • MvPolynomial.monomial (e i) (1 : ℂ) := by
   let T := (Finsupp.finite_of_degree_le (σ := σ) N).toFinset
@@ -65,6 +88,11 @@ theorem exists_monomials [Finite σ] (N : ℕ) : ∃ (n : ℕ) (e : Fin n → σ
     exact (MvPolynomial.le_totalDegree hd).trans hP
   · rw [MvPolynomial.notMem_support_iff.1 hd, map_zero]
 
+/- English proof (translation)
+Take `⟨n, e, he⟩` from `exists_monomials (σ := σ) φ.totalDegree`. Use `⟨n, fun i => MvPolynomial.monomial (e i) 1, fun i k => MvPolynomial.coeff (e i) (ρ k φ), ⟨fun i => hc φ _, fun k₀ i => ⟨fun j => MvPolynomial.coeff (e i) (ρ k₀ (MvPolynomial.monomial (e j) 1)), fun k => ?_⟩⟩, fun k => he _ (hd k φ)⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hm]`. Use `conv_lhs => rw [he _ (hd k φ)]`.
+
+Simplify using `only [map_sum, map_smul, MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem exists_coefFam [Group G] [Finite σ] (ρ : G → Module.End ℂ (MvPolynomial σ ℂ))
     (hm : ∀ a b P, ρ (a * b) P = ρ a (ρ b P)) (hd : ∀ a P, (ρ a P).totalDegree ≤ P.totalDegree)
     (hc : ∀ P, CoefCont fun k => ρ k P) (φ : MvPolynomial σ ℂ) :
@@ -81,6 +109,11 @@ theorem exists_coefFam [Group G] [Finite σ] (ρ : G → Module.End ℂ (MvPolyn
 
 end General
 
+/- English proof (translation)
+Establish `hd : k.det ≠ 0` using `(Matrix.isUnit_iff_isUnit_det k).1 (Unitary.isUnit_coe (U := ⟨k, hk.1⟩)) |>.ne_zero`. Rewrite using `[Matrix.twoBlockTriangular_det k (fun i => ε i = e) (fun i hi j hj => by`. Establish `h` using `congrFun (congrFun hk.2 i) j`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h`. Apply the tactic sequence `cases e <;> simp only [Bool.not_eq_true, Bool.not_eq_false] at hi <;> simp [hi, hj] at h <;> first | linear_combination (1 / 2 : ℂ) * h | linear_combination (-1 / 2 : ℂ) * h)] at hd`.
+
+Use `left_ne_zero_of_mul hd` as an intermediate fact. Unfold `signBlockDeterminant`. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem signBlockDeterminant_ne_zero_of_mem_maxCompact {n : ℕ} {ε : Fin n → Bool} (e : Bool) {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Formalism.REAL.Kset ε) : signBlockDeterminant ε e k ≠ 0 := by
   have hd : k.det ≠ 0 := (Matrix.isUnit_iff_isUnit_det k).1 (Unitary.isUnit_coe (U := ⟨k, hk.1⟩)) |>.ne_zero
@@ -94,14 +127,27 @@ theorem signBlockDeterminant_ne_zero_of_mem_maxCompact {n : ℕ} {ε : Fin n →
   convert this
   rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_submatrix _ _).matrix_det`.
+-/
 theorem continuous_signBlockDeterminant {n : ℕ} (ε : Fin n → Bool) (e : Bool) : Continuous (signBlockDeterminant ε e) :=
   (continuous_id.matrix_submatrix _ _).matrix_det
 
+/- English proof (translation)
+The claim follows from `((Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).continuous`.
+-/
 theorem continuous_toMK {n : ℕ} (ε : Fin n → Bool) : Continuous fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k :=
   ((Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).continuous
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M'.fr_unit τ)`. Establish `hJ : kᴴ * Formalism.REAL.Jm (M'.ε τ) * k = Formalism.REAL.Jm (M'.ε τ)` using `(Formalism.REAL.maximal_compact_facts _ _).1 k hk`. Establish `hJ' : ∀ A : Matrix (Fin W.rank) (Fin W.rank) ℂ, kᴴ * (Formalism.REAL.Jm (M'.ε τ) * (k * A)) = Formalism.REAL.Jm (M'.ε τ) * A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ]`. Establish `e1 : ((M'.fr τ)⁻¹)ᴴ * (M'.fr τ)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ A : Matrix (Fin W.rank) (Fin W.rank) ℂ, ((M'.fr τ)⁻¹)ᴴ * ((M'.fr τ)ᴴ * A) = A` using `fun A => by`. Rewrite using `[← Matrix.mul_assoc, e1, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `((M'.fr τ)⁻¹ * k * M'.fr τ)ᴴ * gramAt D W τ * ((M'.fr τ)⁻¹ * k * M'.fr τ) = gramAt D W τ`.
+
+Rewrite using `[← M'.fr_gram τ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e2, Matrix.mul_nonsing_inv_cancel_left _ _ hd, hJ']`.
+-/
 theorem unframe_mem {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S') (τ : D.what₂.Tau)
     {k : Matrix (Fin W.rank) (Fin W.rank) ℂ} (hk : k ∈ Formalism.REAL.Kset (M'.ε τ)) :
     (M'.fr τ)⁻¹ * k * M'.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ) := by
@@ -118,6 +164,9 @@ theorem unframe_mem {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S'
   rw [← M'.fr_gram τ]
   simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e2, Matrix.mul_nonsing_inv_cancel_left _ _ hd, hJ']
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M'.fr_unit τ)`. Rewrite using `[elt, elt, elt, ← atTau_mul hθ W τ (unframe_mem M' τ ha) (unframe_mem M' τ hb)]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`.
+-/
 theorem elt_mul {θ : InfFam D} (hθ : IsInfFam θ) {W : HSp D} {S' : D.what₂.Tau → SPar} (M' : DSModel W S')
     (τ : D.what₂.Tau) {a b : Matrix (Fin W.rank) (Fin W.rank) ℂ} (ha : a ∈ Formalism.REAL.Kset (M'.ε τ))
     (hb : b ∈ Formalism.REAL.Kset (M'.ε τ)) : elt θ M' τ (a * b) = elt θ M' τ a * elt θ M' τ b := by
@@ -125,10 +174,18 @@ theorem elt_mul {θ : InfFam D} (hθ : IsInfFam θ) {W : HSp D} {S' : D.what₂.
   rw [elt, elt, elt, ← atTau_mul hθ W τ (unframe_mem M' τ ha) (unframe_mem M' τ hb)]
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]
 
+/- English proof (translation)
+Rewrite using `[elt, Matrix.mul_one, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), atTau_one hθ]`.
+-/
 theorem elt_one' {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
     (τ : D.what₂.Tau) : elt θ M τ 1 = 1 := by
   rw [elt, Matrix.mul_one, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)), atTau_one hθ]
 
+/- English proof (translation)
+Unfold `subst`. Use `CoefCont.aeval (fun v => ?_) P` and prove the remaining obligations. Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `exact CoefCont.const _`.
+
+Consider the case `refine CoefCont.sum fun l => CoefCont.sum fun m => CoefCont.smul ?_ (CoefCont.const _)`. Conclude with `(hk.matrix_elem _ _).mul continuous_const`. Conclude with `((hk.matrix_elem _ _).mul continuous_const).star`.
+-/
 theorem coefCont_subst {G : Type} [TopologicalSpace G] {a b : ℕ} (τ : D.what₂.Tau) (ε : Fin a → Bool)
     (ε' : Fin b → Bool) (g : Matrix (Fin a) (Fin a) ℂ) {k : G → Matrix (Fin b) (Fin b) ℂ} (hk : Continuous k)
     (P : PolF D b a) : CoefCont fun x => subst τ ε ε' g (k x) P := by
@@ -141,6 +198,15 @@ theorem coefCont_subst {G : Type} [TopologicalSpace G] {a b : ℕ} (τ : D.what�
   · exact (hk.matrix_elem _ _).mul continuous_const
   · exact ((hk.matrix_elem _ _).mul continuous_const).star
 
+/- English proof (translation)
+Introduce `D V W S S' M M' θ ψ ω f τ aS aT hθ hpt hC φ`. Take `⟨x, y, -, -, hc⟩` from `hC`. Set `pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ)` to `pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f`. Establish `hp : ptOf ψ θ M M' f = pt` using `rfl`. Rewrite `hpt`, `hc`, the goal using `[hp]`.
+
+Set `s : Formalism.REAL.KG (M'.ε τ) → ℂ` to `fun k => signBlockDeterminant (M.ε τ) true 1 ^ x true * signBlockDeterminant (M.ε τ) false 1 ^ x false * (signBlockDeterminant (M'.ε τ) true (Formalism.REAL.toMK k) ^ y true * signBlockDeterminant (M'.ε τ) false (Formalism.REAL.toMK k) ^ y false)`. Set `ρ : Formalism.REAL.KG (M'.ε τ) → Module.End ℂ (PolF D W.rank V.rank)` to `fun k => s k • (subst τ (M.ε τ) (M'.ε τ) ((1 : Matrix (Fin V.rank) (Fin V.rank) ℂ).map (starRingEnd ℂ)) (Formalism.REAL.toMK k)).toLinearMap`. Establish `key : ∀ k P, ω (1, elt θ M' τ (Formalism.REAL.toMK k)) (pt P) = pt (ρ k P)` using `fun k P => by`. Use `hc 1 ⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩ (Formalism.REAL.toMK k) k.2 P` as an intermediate fact. Rewrite `this` using `[elt_one' hθ, ← map_smul]`.
+
+Conclude with `this`. Establish `hz : ∀ e, Continuous fun k : Formalism.REAL.KG (M'.ε τ) => signBlockDeterminant (M'.ε τ) e (Formalism.REAL.toMK k) ^ y e` using `fun e => ((continuous_signBlockDeterminant _ e).comp (continuous_toMK _)).zpow₀ _ fun k => Or.inl (signBlockDeterminant_ne_zero_of_mem_maxCompact e k.2)`. Establish `hs : Continuous s` using `continuous_const.mul ((hz true).mul (hz false))`. Take `⟨n, φs, c, h1, h2⟩` from `exists_coefFam ρ (fun a b P => hpt (by`. Establish `e : Formalism.REAL.toMK (a * b) = Formalism.REAL.toMK a * Formalism.REAL.toMK b` using `rfl`.
+
+Rewrite using `[← key, ← key, ← key, e, elt_mul hθ M' τ a.2 b.2, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]))`. Use the proof step `(fun a P => (MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.Chain.RealIt.SubstDeg.totalDegree_subst_le _ _ _ _ _ _ _ _ _))`. Use the proof step `(fun P => CoefCont.smul hs (coefCont_subst τ _ _ _ (continuous_toMK _) P)) φ`. Conclude with `⟨n, φs, c, h1, fun k => by rw [key, h2]⟩`.
+-/
 theorem fock_orbit_coefFam : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (f : WO V W → ℂ) (τ : D.what₂.Tau) (aS aT : ℚ), IsInfFam θ → Function.Injective (ptOf ψ θ M M' f) → GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.CompactFock ψ θ M M' ω f τ aS aT → ∀ φ : PolF D W.rank V.rank, ∃ (n : ℕ) (φs : Fin n → PolF D W.rank V.rank) (c : Fin n → Formalism.REAL.KG (M'.ε τ) → ℂ), IsCoefFam c ∧ ∀ k, ω (1, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.elt θ M' τ (Formalism.REAL.toMK k)) (ptOf ψ θ M M' f φ) = ptOf ψ θ M M' f (∑ i, c i k • φs i) := by
   intro D V W S S' M M' θ ψ ω f τ aS aT hθ hpt hC φ
   obtain ⟨x, y, -, -, hc⟩ := hC

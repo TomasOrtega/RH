@@ -14,6 +14,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilSchrodinger.DblTarget.thetaTr_coDbl_boxFun | exact GlobalTheory.WeilSchrodinger.DblTarget.thetaTr_coDbl_boxFun | (intros; apply GlobalTheory.WeilSchrodinger.DblTarget.thetaTr_coDbl_boxFun <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaTransform_doubledCoords_boxProduct : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (hA : JA = T.gramᵀ) (κ : Type) [Fintype κ]

@@ -47,6 +47,11 @@ def KillsAll {D₁ : BKDat O K l e a ι η H} {D₂ : BKDat O K l e a κ η H} (
 
 omit [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨x, hx, hxy⟩` from `h y y.2`. Rewrite using `[← Submodule.mkQ_apply, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨x, hx, hxy⟩`. Introduce `h y hy`. Establish `h1` using `h (Submodule.Quotient.mk ⟨y, hy⟩)`. Rewrite `h1` using `[← Submodule.mkQ_apply, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+-/
 theorem killsCoker_M_iff {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} (F : Hom P Q) (n : ℕ) :
     KillsCoker F.app n P.M Q.M ↔ ∀ q : F.coker, n • q = 0 := by
   constructor
@@ -72,6 +77,9 @@ def Stmt : Prop :=
       ∀ F : BKHom D₁ D₂, IsFiniteLength (A O K) F.coker →
         KillsAll F (l ^ rho l Sig N)
 
+/- English proof (translation)
+Simplify using `[rho, maxPeriod, frobPeriod, Function.minimalPeriod_eq_one_iff_isFixedPt.2 (show Function.IsFixedPt (fun x => (l : ZMod e) * x) 0 from mul_zero _)]`.
+-/
 example (l e N : ℕ) : rho l ({0} : Finset (ZMod e)) N = 2 * (N - 1) := by
   simp [rho, maxPeriod, frobPeriod, Function.minimalPeriod_eq_one_iff_isFixedPt.2
     (show Function.IsFixedPt (fun x => (l : ZMod e) * x) 0 from mul_zero _)]

@@ -9,6 +9,19 @@ noncomputable def UpperTheory.Reformulated.B.LiftErrorLocal.ShellInt :
             (∀ (R : ℝ), (1 : ℝ) ≤ R → (μ : Set X → ENNReal) {x : X | N x ≤ R} ≤ ENNReal.ofReal (C * R ^ d)) →
               d < A → ∫⁻ (x : X), ENNReal.ofReal (N x ^ (-A)) ∂μ < ⊤
 
+/- English proof (translation)
+Introduce `X _ μ N C d A hN h1 hd hμ hA`. Establish `hA0 : -A ≤ 0` using `by linarith`. Establish `hmeas : ∀ k : ℕ, MeasurableSet {x : X | N x ≤ (2 : ℝ) ^ (k + 1)}` using `fun k => measurableSet_le hN measurable_const`. Establish `hpt : ∀ᵐ x ∂μ, ENNReal.ofReal (N x ^ (-A)) ≤ ∑' k : ℕ, {x : X | N x ≤ (2 : ℝ) ^ (k + 1)}.indicator (fun _ => ENNReal.ofReal (((2 : ℝ) ^ k) ^ (-A))) x` using `by filter_upwards [h1] with x hx`. Take `⟨k, hk1, hk2⟩` from `exists_nat_pow_near hx (one_lt_two : (1 : ℝ) < 2)`.
+
+Use `le_trans ?_ (ENNReal.le_tsum k)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show x ∈ {x : X | N x ≤ (2 : ℝ) ^ (k + 1)} from hk2.le)]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos (by positivity) hk1 hA0)`. Establish `hr : (2 : ℝ) ^ (d - A) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg one_lt_two (by linarith)`. Establish `hr0 : (0 : ℝ) ≤ (2 : ℝ) ^ (d - A)` using `by positivity`.
+
+Establish `hsum : Summable fun k : ℕ => C * (2 : ℝ) ^ d * ((2 : ℝ) ^ (d - A)) ^ k` using `(summable_geometric_of_lt_one hr0 hr).mul_left _`. Establish `hterm : ∀ k : ℕ, ((2 : ℝ) ^ k) ^ (-A) * (C * ((2 : ℝ) ^ (k + 1)) ^ d) = C * (2 : ℝ) ^ d * ((2 : ℝ) ^ (d - A)) ^ k`. Introduce `k`. Establish `h2 : (0 : ℝ) < 2` using `two_pos`. Establish `hk : (0 : ℝ) < (2 : ℝ) ^ k` using `by positivity`.
+
+Rewrite using `[pow_succ, Real.mul_rpow hk.le h2.le, Real.rpow_pow_comm h2.le, sub_eq_add_neg, Real.rpow_add hk]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MeasureTheory.lintegral_tsum (fun k => (measurable_const.indicator (hmeas k)).aemeasurable)]`. Conclude with `tsum_congr fun k => MeasureTheory.lintegral_indicator_const (hmeas k) _`.
+
+Use `_ ≤ ∑' k : ℕ, ENNReal.ofReal (C * (2 : ℝ) ^ d * ((2 : ℝ) ^ (d - A)) ^ k) := by`. Use `ENNReal.tsum_le_tsum fun k => ?_` and prove the remaining obligations. Rewrite using `[← hterm k, ENNReal.ofReal_mul (by positivity)]`. Use `gcongr`. Conclude with `hμ _ (one_le_pow₀ one_le_two)`.
+
+Use `_ < ⊤ := hsum.tsum_ofReal_lt_top`.
+-/
 theorem UpperTheory.Reformulated.B.LiftErrorLocal.shell_int :
     UpperTheory.Reformulated.B.LiftErrorLocal.ShellInt := by
   intro X _ μ N C d A hN h1 hd hμ hA

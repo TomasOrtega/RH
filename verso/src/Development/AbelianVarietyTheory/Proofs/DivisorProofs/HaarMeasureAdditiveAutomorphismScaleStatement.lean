@@ -6,6 +6,9 @@ open scoped Matrix
 open GlobalTheory.WeilM GlobalTheory.FullRankCoinv MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HaarScaleMatrix.integral_comp_addEquiv_matrix | exact GlobalTheory.HaarScaleMatrix.integral_comp_addEquiv_matrix | (intros; apply GlobalTheory.HaarScaleMatrix.integral_comp_addEquiv_matrix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.haar_measure_additive_automorphism_scale : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (e d : ℕ)
     [MeasurableSpace (Matrix (Fin e) (Fin d) k)] [BorelSpace (Matrix (Fin e) (Fin d) k)]
     (μ : Measure (Matrix (Fin e) (Fin d) k)) [μ.IsAddHaarMeasure]

@@ -12,6 +12,11 @@ section Rat
 variable {D : D7} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
   {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Fl : Fills (D.gat u w h)} {Lv : Levels Fl}
 
+/- English proof (translation)
+Use `li_of_rat (e := c.embW u w h) (ev := evP (P := Fl.Pj j) (α := Lv.comp j)) (cmp := f.toAddMonoidHom) ?_ (fun a x => f.map_smulₛₗ a x) ?_ hinj _ ((Tw.fm u (D.what₂.muAt w)).lat j).b.linearIndependent` and prove the remaining obligations. Introduce `F hF`. Use function extensionality and compare the values at `a L`. Use extensionality with `m`. Simplify `hF (a, L, m)` using `[evP]`.
+
+Introduce `x t`. Take `⟨Q, hQ⟩` from `hrat x t.1 t.2.1`. Conclude with `⟨Q.coeff t.2.2, by simp [evP, ← hQ, MvPolynomial.coeff_map]⟩`.
+-/
 theorem li_step (j : ℕ) (f : ((Tw.fm u (D.what₂.muAt w)).lat j).V →ₛₗ[c.embW u w h] Lv.Fm j)
     (hinj : Function.Injective f)
     (hrat : ∀ x, RatFnP (Fl.Pj j) (Lv.comp j) (c.embW u w h) (f x)) :

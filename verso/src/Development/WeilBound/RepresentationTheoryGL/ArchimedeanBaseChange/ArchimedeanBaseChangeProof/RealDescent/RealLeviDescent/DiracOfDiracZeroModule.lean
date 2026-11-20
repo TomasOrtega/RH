@@ -19,6 +19,9 @@ structure IsCoreMod0 {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   irr : ∀ v w : V, v ≠ 0 → ∃ x ∈ alg E1 E2, x v = w
   der : IsDerivK σ (kF E1 E2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.pair, h.ch1, h.ch2, h.nontriv, h.irr, h.der⟩`.
+-/
 theorem IsCoreMod.toCoreMod0 {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {χ : Inf n}
     {E1 E2 : Fin n → Fin n → Module.End ℂ V} {σ : Matrix.unitaryGroup (Fin n) ℂ →* (V →ₗ[ℂ] V)} {A : V →ₗ[ℂ] V}
     (h : IsCoreMod χ E1 E2 σ A) : IsCoreMod0 χ E1 E2 σ :=
@@ -36,8 +39,16 @@ def AdmLeast0 : Prop :=
       (∀ lev' : Fin n → ℕ, IsLev lam lev' → hwSp E1 E2 (muQ lam lev') ≠ ⊥ →
         nsq (muQ lam lev + rhoV n) ≤ nsq (muQ lam lev' + rhoV n)) → AdmFor lam lev E1 E2
 
+/- English proof (translation)
+Introduce `n lam hlam V _ _ E1 E2 σ _ hc` and use `h n lam hlam V E1 E2 σ hc.toCoreMod0`.
+-/
 theorem adm_least_of_zero_module (h : AdmLeast0) : AdmLeast := fun n lam hlam V _ _ E1 E2 σ _ hc => h n lam hlam V E1 E2 σ hc.toCoreMod0
 
+/- English proof (translation)
+Introduce `n lam hlam V _ _ E1 E2 σ hc lev hlev _ hleast`. Use `⟨hc.pair.gl1, hc.pair.gl2, hc.pair.comm, hc.pair.unitK, fun x => ?_, hc.ch1, hc.ch2, fun ν hν => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hxS, -, hK, -⟩` from `hc.der.2 x`. Conclude with `⟨S, hS, hxS, hK⟩`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨hνT, hlt⟩` from `hN n lam hlam lev hlev ν hν`. Establish `hνh : ν ∈ harmSet lam` using `((hH n lam hlam).2 ν hνT).2 (le_antisymm ((hH n lam hlam).2 ν hνT).1 (hD n lam hlam V E1 E2 σ hc ν hne))`. Simplify using `only [harmSet, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and] at hνh`. Take `⟨lev', hlev', rfl⟩` from `hνh`. Conclude with `absurd (hleast _ hlev' hne) (not_le.2 hlt)`.
+-/
 theorem adm_least_zero_of_dirac (hN : SecondTypeWeightsShorter) (hD : DiracInequalityWithoutSplitComponent) (hH : LemmaHT) : AdmLeast0 := by
   intro n lam hlam V _ _ E1 E2 σ hc lev hlev _ hleast
   refine ⟨hc.pair.gl1, hc.pair.gl2, hc.pair.comm, hc.pair.unitK, fun x => ?_, hc.ch1, hc.ch2, fun ν hν => ?_⟩

@@ -8,6 +8,9 @@ open NumberField Matrix GlobalTheory.CuspRep
 
 namespace GlobalTheory.StdCharStd
 
+/- English proof (translation)
+Introduce `E _ _` and use `GlobalTheory.StdCharConductor.stdPsi_psi E`.
+-/
 theorem stdPsi_adelicChar : ∀ (E : Type) [Field E] [NumberField E],
     GlobalTheory.CuspGeneric.StdPsi (Circle.coeHom.compAddChar (GroundTheory.Global.adelicChar E)) :=
   fun E _ _ => GlobalTheory.StdCharConductor.stdPsi_psi E

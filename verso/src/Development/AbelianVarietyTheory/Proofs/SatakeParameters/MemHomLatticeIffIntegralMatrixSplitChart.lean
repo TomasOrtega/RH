@@ -20,6 +20,11 @@ open GlobalTheory.LatticeStable GlobalTheory.SplitScalar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+
+Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+-/
 theorem ideal_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
   · rw [FractionalIdeal.coeIdeal_ne_zero]
@@ -31,10 +36,20 @@ theorem ideal_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     rw [h, Ideal.bot_mul] at h1
     exact differentIdeal_ne_bot h1
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem finPart_mul_incA (w : AE D) (x : D.host.E) :
     finPart D (w * incA D x) = finPart D w * ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) := by
   rw [RingHom.map_mul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨β, hβ, o', rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨β, hβ, o' * o, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+
+Both sides reduce to the same expression. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem mul_int_mem {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D) (o : 𝓞 D.host.E) :
     w * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (o : D.host.E)) ∈ intAE D := by
   induction hw using AddSubgroup.closure_induction with
@@ -47,6 +62,15 @@ theorem mul_int_mem {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D
   | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨β, hβ, o, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨β, hβ, fun i => (o : D.host.E) * y i, ?_, ?_⟩` and prove the remaining obligations. Establish `h : ∑ i, y i • V.frame i ∈ V.L0` using `hy`.
+
+Establish `h2` using `V.L0.smul_mem o h`. Use `show ∑ i, ((o : D.host.E) * y i) • V.frame i ∈ V.L0`. Rewrite `h2` using `[Finset.smul_sum]`. Simplify using `only [mul_smul]`. Use `h2 using 2 with i` and compare the differences between its conclusion and the goal.
+
+Conclude with `algebraMap_smul D.host.E o _`. Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Consider the case `zero => simp only [zero_mul]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => simp only [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem mul_lat_mem (V : HSp D) {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ intAE D)
     {y : Fin V.rank → D.host.E} (hy : y ∈ L0c D V) :
     (fun i => w * ((1 : Af D.host.F) ⊗ₜ[D.host.F] y i)) ∈ LamHat V := by
@@ -67,12 +91,18 @@ theorem mul_lat_mem (V : HSp D) {w : Af D.host.F ⊗[D.host.F] D.host.E} (hw : w
   | add x y _ _ hx hy => simp only [add_mul]; exact add_mem hx hy
   | neg x _ hx => simp only [neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [LinearMap.map_zero, RingHom.map_zero]`. Consider the case `tmul a m => rfl`. Consider the case `add x y hx hy => rw [LinearMap.map_add, RingHom.map_add, hx, hy]`.
+-/
 theorem finPart_liftFin (x : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (liftFin D x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => rw [LinearMap.map_zero, RingHom.map_zero]
   | tmul a m => rfl
   | add x y hx hy => rw [LinearMap.map_add, RingHom.map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `tmul a m => rfl`. Consider the case `add x y hx hy => simp only [RingHom.map_add, hx, hy]`.
+-/
 theorem finPart_cA (x : AE D) : finPart D (cA D x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp only [RingHom.map_zero]
@@ -94,6 +124,19 @@ def rkHom (S T : HSp D) (a : D.host.E) : (Fin S.rank → Af D.host.F ⊗[D.host.
       simp only [rk, Matrix.of_apply, Matrix.add_apply, Pi.add_apply, LinearMap.map_add, RingHom.map_add, add_mul,
         mul_add, Finset.sum_add_distrib, AddMonoidHom.mk'_apply, AddMonoidHom.add_apply])
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `rkHom S T a s t ∈ _`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem t ht`.
+
+Take `⟨α, hα, x, hx, rfl⟩` from `hs`. Take `⟨β, hβ, y, hy, rfl⟩` from `ht`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => ?_, fun _ h => absurd trivial h, a, ha, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (hβ v) (hα v)`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `liftFin D (_ * _ * ∑ k, (α ⊗ₜ[D.host.F] star (x k)) * _) = _`. Rewrite using `[Matrix.of_apply, ← liftFin_tmul]`. Use `congr 1`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Rewrite using `[← TensorProduct.tmul_sum, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem rk_mem (S T : HSp D) {a : D.host.E} (ha : a ∈ D.host.AA)
     {s : Fin S.rank → Af D.host.F ⊗[D.host.F] D.host.E} (hs : s ∈ LamHat S)
     {t : Fin T.rank → Af D.host.F ⊗[D.host.F] D.host.E} (ht : t ∈ LamHat T) :
@@ -124,20 +167,34 @@ section Chart
 
 variable {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
 
+/- English proof (translation)
+Establish `h : π (1 - e) = 0` using `(hπ.2.1 _).2 (by rw [mul_sub, mul_one, he.1, sub_self])`. Rewrite `h` using `[RingHom.map_sub, RingHom.map_one]`. Conclude with `(sub_eq_zero.1 h).symm`.
+-/
 theorem pi_idem (he : IsSplitIdem D e) (hπ : Chart e v π) : π e = 1 := by
   have h : π (1 - e) = 0 := (hπ.2.1 _).2 (by rw [mul_sub, mul_one, he.1, sub_self])
   rw [RingHom.map_sub, RingHom.map_one] at h
   exact (sub_eq_zero.1 h).symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he.1])`.
+-/
 theorem idem_int {e : AE D} (he : IsSplitIdem D e) : finPart D e ∈ intAE D :=
   GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he.1])
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← RingHom.map_sub, hπ.2.1]`. Conclude with `adele_ext (by rw [RingHom.map_mul, infPart_splitIdem he, zero_mul, RingHom.map_zero]) (by rw [RingHom.map_mul, RingHom.map_sub, h, sub_self, mul_zero, RingHom.map_zero])`.
+-/
 theorem pi_eq_of_finPart (he : IsSplitIdem D e) (hπ : Chart e v π) {a b : AE D} (h : finPart D a = finPart D b) :
     π a = π b := by
   rw [← sub_eq_zero, ← RingHom.map_sub, hπ.2.1]
   exact adele_ext (by rw [RingHom.map_mul, infPart_splitIdem he, zero_mul, RingHom.map_zero])
     (by rw [RingHom.map_mul, RingHom.map_sub, h, sub_self, mul_zero, RingHom.map_zero])
 
+/- English proof (translation)
+Establish `h : π (rk S T a (fun k => finPart D (cA D e * s k)) (fun k => finPart D (e * t k)) i j) = π (incA D a * (e * t i) * ∑ k, cA D (cA D e * s k) * incA D (S.gram k j))`. Use `pi_eq_of_finPart he hπ ?_` and prove the remaining obligations. Rewrite using `[rk, Matrix.of_apply, finPart_liftFin]`. Simplify using `only [← finPart_cA]`. Rewrite using `[RingHom.map_mul (finPart D) (_ * _), RingHom.map_mul (finPart D) (incA D a), map_sum (finPart D)]`.
+
+Simplify using `only [finPart_mul_incA]`. Both sides reduce to the same expression. Rewrite using `[h]`. Simplify using `only [RingHom.map_mul, map_sum π, GlobalTheory.DualPairCheck.cA_cA, pi_idem he hπ, one_mul]`.
+-/
 theorem pi_rk (he : IsSplitIdem D e) (hπ : Chart e v π) (S T : HSp D) (a : D.host.E) (s : Fin S.rank → AE D)
     (t : Fin T.rank → AE D) (i : Fin T.rank) (j : Fin S.rank) :
     π (rk S T a (fun k => finPart D (cA D e * s k)) (fun k => finPart D (e * t k)) i j) =
@@ -153,6 +210,21 @@ theorem pi_rk (he : IsSplitIdem D e) (hπ : Chart e v π) (S T : HSp D) (a : D.h
   rw [h]
   simp only [RingHom.map_mul, map_sum π, GlobalTheory.DualPairCheck.cA_cA, pi_idem he hπ, one_mul]
 
+/- English proof (translation)
+Establish `hfg : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG` using `FractionalIdeal.fg_of_isUnit _ (Ne.isUnit (ideal_ne_zero D))`. Take `⟨s, hs⟩` from `hfg`. Establish `hne : s.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`.
+
+Rewrite `hs` using `[Finset.coe_empty, Submodule.span_empty]`. Conclude with `ideal_ne_zero D (FractionalIdeal.coeToSubmodule_eq_bot.1 hs.symm)`. Take `⟨a₀, ha₀, hmax⟩` from `s.exists_max_image (fun a => Valued.v (π (incA D a))) hne`. Establish `hle : ∀ a ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E), Valued.v (π (incA D a)) ≤ Valued.v (π (incA D a₀))`. Introduce `a ha`.
+
+Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => exact hmax a ha`. Consider the case `zero => simp only [map_zero, zero_le]`. Consider the case `add x y _ _ hx hy => rw [RingHom.map_add, RingHom.map_add]`.
+
+Conclude with `Valuation.map_add_le _ hx hy`. Consider the case `smul o x _ hx`. Establish `ho : Valued.v (π (incA D (o : D.host.E))) ≤ 1` using `isInt_Ov.1 ((hπ.2.2.2 _).1 (by rw [finPart_mul_incA]; exact mul_int_mem (idem_int he) o))`. Rewrite using `[show o • x = (o : D.host.E) * x from rfl, RingHom.map_mul, RingHom.map_mul, Valuation.map_mul]`. Conclude with `(mul_le_of_le_one_left' ho).trans hx`.
+
+Establish `h0 : π (incA D a₀) ≠ 0`. Introduce `h`. Apply `ideal_ne_zero D` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.eq_zero_iff]`. Introduce `a ha`.
+
+Use `hle a ha` as an intermediate fact. Rewrite `this` using `[h, map_zero, le_zero_iff, map_eq_zero]`. Conclude with `(map_eq_zero (π.comp (incA D))).1 this`. Use `⟨a₀, ?_, h0, fun a ha => isInt_Ov.2 ?_⟩` and prove the remaining obligations. Use `show a₀ ∈ (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ha₀`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, map_inv₀, inv_mul_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 h0))]`. Conclude with `hle a ha`.
+-/
 theorem exists_generator (he : IsSplitIdem D e) (hπ : Chart e v π) :
     ∃ a₀ ∈ D.host.AA, π (incA D a₀) ≠ 0 ∧ ∀ a ∈ D.host.AA, IsInt (Ov D v) ((π (incA D a₀))⁻¹ * π (incA D a)) := by
   have hfg : (D.host.AA : Submodule (𝓞 D.host.E) D.host.E).FG :=
@@ -193,6 +265,39 @@ theorem exists_generator (he : IsSplitIdem D e) (hπ : Chart e v π) :
 
 end Chart
 
+/- English proof (translation)
+Introduce `D e v π he hπ S T βS βT hS hT`. Take `⟨a₀, ha₀, h0, hgen⟩` from `exists_generator he hπ`. Use `⟨(π (incA D a₀))⁻¹, inv_ne_zero h0, fun u hu => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Use `clear hu`. Proceed by induction on `h using AddSubgroup.closure_induction with`.
+
+Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Introduce `i j`. Establish `h1` using `(hT fun k => incA D (t k)).1 (by`. Simplify using `only [finPart_mul_incA]`.
+
+Conclude with `mul_lat_mem T (idem_int he) ht) i`. Establish `h2` using `(GlobalTheory.SplitDualLat.conj_mem_lamHat_iff e v π he hπ S βS hS fun k => incA D (s k)).1 (by`. Simplify using `only [finPart_mul_incA]`. Conclude with `mul_lat_mem S (idem_int (isSplitIdem_conj he)) hs) j`. Establish `h3` using `hgen a ha`.
+
+Establish `h4 : IsInt (Ov D v) (evalV D.host.F v α)` using `isInt_Ov.2 (hα v)`. Establish `h5` using `mul_mem (mul_mem (mul_mem (isInt_iff.1 h4) (isInt_iff.1 h3)) (isInt_iff.1 h1)) (isInt_iff.1 h2)`. Establish `hm : ∀ m : D.host.E, π (pairA D.host.F 0 α ⊗ₜ[D.host.F] m) = evalV D.host.F v α * π (incA D m)`. Introduce `m`. Establish `: (pairA D.host.F 0 α ⊗ₜ[D.host.F] m : AE D) = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) * incA D m`.
+
+Express the relevant statement in the definitionally equal form `_ = (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] m)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this, RingHom.map_mul, hπ.2.2.1]`. Both sides reduce to the same expression. Rewrite using `[isInt_iff]`.
+
+Use `h5 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Matrix.vecMul_vecMul]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, hm, Matrix.mulVec, Matrix.vecMul, dotProduct, RingHom.map_mul, map_sum, GlobalTheory.DualPairCheck.cA_incA]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Rewrite using `[Matrix.map_zero _ π.map_zero, Matrix.mul_zero, Matrix.zero_mul, smul_zero]`.
+
+Conclude with `fun i j => ⟨0, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.map_add _ π.map_add, Matrix.mul_add, Matrix.add_mul, smul_add]`. Conclude with `hx.add hy`. Consider the case `neg x _ hx`.
+
+Rewrite using `[Matrix.map_neg _ π.map_neg, Matrix.mul_neg, Matrix.neg_mul, smul_neg]`. Conclude with `fun i j => isInt_iff.2 (neg_mem (isInt_iff.1 (hx i j)))`. Use `set G : Matrix (Fin S.rank) (Fin S.rank) (Fv D.host.F v) := S.gram.map fun a => π (incA D a) with hG`. Establish `hGu : IsUnit G.det`. Use `(GlobalTheory.LatVac.gram_det_isUnit S).map (π.comp (incA D))` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `choose σ hσ using hπ.1`. Use `set Y : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) := (π (incA D a₀))⁻¹ • (Matrix.map u π * βS.1) with hY`. Use `set Z : Matrix (Fin S.rank) (Fin S.rank) (Fv D.host.F v) := (βS⁻¹).1 * G⁻¹ with hZ`. Establish `hZ1 : Z * (G * βS.1) = 1`.
+
+Rewrite using `[hZ, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hGu, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hs : ∀ j, (fun k => finPart D (cA D e * cA D (σ (Z j k)))) ∈ LamHat S`. Introduce `j`. Use `(GlobalTheory.SplitDualLat.conj_mem_lamHat_iff e v π he hπ S βS hS fun k => cA D (σ (Z j k))).2 fun l => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.DualPairCheck.cA_cA, hσ]`.
+
+Establish `: ((fun k => Z j k) ᵥ* (G * βS.1)) l = (Z * (G * βS.1)) j l` using `rfl`. Rewrite using `[this, hZ1]`. Conclude with `intM_one j l`. Establish `ht : ∀ j, (fun k => finPart D (e * σ (Y k j))) ∈ LamHat T`. Introduce `j`.
+
+Use `(hT fun k => σ (Y k j)).2 fun i => ?_` and prove the remaining obligations. Simplify using `only [hσ]`. Establish `: ((βT⁻¹).1 *ᵥ fun k => Y k j) i = ((βT⁻¹).1 * Y) i j` using `rfl`. Rewrite using `[this, hY, Matrix.mul_smul, ← Matrix.mul_assoc]`. Conclude with `h i j`.
+
+Establish `hU` using `smul_mem_latO D S T _ _ _ e (idem_int he) _ (sum_mem fun j (_ : j ∈ Finset.univ) => rk_mem S T ha₀ (hs j) (ht j))`. Use `hU using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i l`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← hu i l, ← sub_eq_zero, ← mul_sub, ← hπ.2.1, RingHom.map_sub, sub_eq_zero, Matrix.sum_apply, map_sum]`. Establish `hsum : ∀ j, π (rk S T a₀ (fun k => finPart D (cA D e * cA D (σ (Z j k)))) (fun k => finPart D (e * σ (Y k j))) i l) = π (incA D a₀) * (Y i j * (Z * G) j l)`.
+
+Introduce `j`. Rewrite using `[pi_rk he hπ S T a₀ (fun k => cA D (σ (Z j k))) (fun k => σ (Y k j)) i l, mul_assoc]`. Simplify using `only [GlobalTheory.DualPairCheck.cA_cA, hσ]`. Both sides reduce to the same expression. Simplify using `only [hsum]`.
+
+Rewrite using `[← Finset.mul_sum, ← Matrix.mul_apply, hZ, Matrix.nonsing_inv_mul_cancel_right _ _ hGu, hY, Matrix.smul_mul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one, Matrix.smul_apply, smul_eq_mul, mul_inv_cancel_left₀ h0, Matrix.map_apply]`.
+-/
 theorem mem_latO_iff_intM : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsSplitIdem D e → Chart e v π → ∀ (S T : HSp D) (βS : GL (Fin S.rank) (Fv D.host.F v)) (βT : GL (Fin T.rank) (Fv D.host.F v)), Frame S e π βS → Frame T e π βT → ∃ c : Fv D.host.F v, c ≠ 0 ∧ ∀ u : WO S T, IsHalf e u → (u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True) ↔ IntM (Ov D v) (c • ((βT⁻¹).1 * Matrix.map u π * βS.1))) := by
   intro D e v π he hπ S T βS βT hS hT
   obtain ⟨a₀, ha₀, h0, hgen⟩ := exists_generator he hπ

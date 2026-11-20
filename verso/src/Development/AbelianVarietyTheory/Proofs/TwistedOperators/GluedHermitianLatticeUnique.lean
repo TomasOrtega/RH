@@ -13,6 +13,9 @@ namespace GlobalTheory.GlueUnique
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `U.exists_isCompl`. Use `⟨LinearMap.id - U.subtype ∘ₗ U.projectionOnto W hW, fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `Submodule.linearProjOfIsCompl_apply_left hW ⟨x, hx⟩` as an intermediate fact. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_proj {K M : Type} [Field K] [AddCommGroup M] [Module K M] (U : Submodule K M) :
     ∃ Q : M →ₗ[K] M, (∀ x ∈ U, Q x = 0) ∧ ∀ x, x - Q x ∈ U := by
   obtain ⟨W, hW⟩ := U.exists_isCompl
@@ -21,6 +24,17 @@ theorem exists_proj {K M : Type} [Field K] [AddCommGroup M] [Module K M] (U : Su
     simp [this]
   · simp
 
+/- English proof (translation)
+Take `⟨Q, h1, h2⟩` from `exists_proj (Submodule.span K (Λ : Set (Fin n → K)))`. Establish `h3 : ∀ x, Q (Q x) = Q x` using `fun x => by`. Use `h1 _ (h2 x)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`.
+
+Use `⟨Q, Λ ⊔ Submodule.span O (Set.range fun j : Fin n => Q (Pi.single j 1)), ⟨?_, ?_⟩, le_sup_left, fun x hx => h1 x (Submodule.subset_span hx), fun x hx h0 => ?_⟩` and prove the remaining obligations. Conclude with `h.sup (Submodule.fg_span (Set.finite_range _))`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[Pi.basisFun_apply, ← sub_add_cancel (Pi.single j 1 : Fin n → K) (Q (Pi.single j 1))]`.
+
+Use `add_mem (Submodule.span_mono ?_ (h2 _)) (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `fun y hy => Submodule.mem_sup_left hy`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `h4 : Q b = b`.
+
+Use `Submodule.span_induction (p := fun b _ => Q b = b) ?_ (map_zero Q) ?_ ?_ hb` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `h3 _`. Introduce `x y _ _ hx hy`. Rewrite using `[map_add, hx, hy]`.
+
+Introduce `c x _ hx`. Rewrite using `[← algebraMap_smul K c x, map_smul, hx]`. Rewrite `h0` using `[map_add, h1 a (Submodule.subset_span ha), h4, zero_add]`. Rewrite using `[h0, add_zero]` and apply the resulting hypothesis.
+-/
 theorem exists_lattice {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : ℕ} (Λ : Submodule O (Fin n → K))
     (h : Λ.FG) : ∃ (Q : (Fin n → K) →ₗ[K] (Fin n → K)) (Λ' : Submodule O (Fin n → K)),
       Submodule.IsLattice K Λ' ∧ Λ ≤ Λ' ∧ (∀ x ∈ Λ, Q x = 0) ∧ ∀ x ∈ Λ', Q x = 0 → x ∈ Λ := by
@@ -50,6 +64,9 @@ theorem exists_lattice {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : �
     rw [map_add, h1 a (Submodule.subset_span ha), h4, zero_add] at h0
     rwa [h0, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[← LinearMap.toMatrix'_mulVec, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem map_mulVec_gen {K A : Type} [CommRing K] [CommRing A] (f : K →+* A) {n : ℕ}
     (Q : (Fin n → K) →ₗ[K] (Fin n → K)) (x : Fin n → K) :
     (LinearMap.toMatrix' Q).map f *ᵥ (fun i => f (x i)) = fun i => f (Q x i) := by
@@ -59,6 +76,9 @@ theorem map_mulVec_gen {K A : Type} [CommRing K] [CommRing A] (f : K →+* A) {n
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨P, hP, h0⟩` from `Ring.exists_maximal_of_not_isField (RingOfIntegers.not_isField D.host.E) |>.imp fun _ h => h.symm`. Introduce `a b hab`. Use `congrArg (GlobalTheory.StdFrames.cpt (D := D) ⟨P, hP.isPrime, h0⟩) hab` as an intermediate fact. Rewrite `this` using `[cpt_inc, cpt_inc]`. Conclude with `(algebraMap D.host.E _).injective this`.
+-/
 theorem inc_injective : Function.Injective (inc D) := by
   obtain ⟨P, hP, h0⟩ := Ring.exists_maximal_of_not_isField (RingOfIntegers.not_isField D.host.E) |>.imp fun _ h => h.symm
   intro a b hab
@@ -66,6 +86,13 @@ theorem inc_injective : Function.Injective (inc D) := by
   rw [cpt_inc, cpt_inc] at this
   exact (algebraMap D.host.E _).injective this
 
+/- English proof (translation)
+Take `⟨Q, Λ', h1, h2, h3, h4⟩` from `exists_lattice Λ h`. Use `h4 x ((inc_mem_hat_iff h1 x).1 (hat_mono h2 hx)) ?_` and prove the remaining obligations. Establish `h5 : (LinearMap.toMatrix' Q).map (inc D) *ᵥ (fun i => inc D (x i)) = 0`. Use `hat_induction (p := fun y => (LinearMap.toMatrix' Q).map (inc D) *ᵥ y = 0) ?_ (mulVec_zero _) ?_ ?_ hx` and prove the remaining obligations. Introduce `y hy`.
+
+Rewrite using `[map_mulVec_gen, h3 y hy]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_zero _`. Introduce `a b ha hb`. Rewrite using `[mulVec_add, ha, hb, add_zero]`.
+
+Introduce `a _ b hb`. Rewrite using `[mulVec_smul, hb, smul_zero]`. Rewrite `h5` using `[map_mulVec_gen]`. Use function extensionality and compare the values at `i`. Conclude with `inc_injective ((congrFun h5 i).trans (RingHom.map_zero _).symm)`.
+-/
 theorem mem_of_inc_mem_hat {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG)
     {x : Fin n → D.host.E} (hx : (fun i => inc D (x i)) ∈ hat Λ) : x ∈ Λ := by
   obtain ⟨Q, Λ', h1, h2, h3, h4⟩ := exists_lattice Λ h
@@ -84,6 +111,11 @@ theorem mem_of_inc_mem_hat {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → 
   funext i
   exact inc_injective ((congrFun h5 i).trans (RingHom.map_zero _).symm)
 
+/- English proof (translation)
+Distinguish the cases in `hT : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Break down `(T_mem_iff hπ w).1 hT with hw | hw` into its components or cases. Conclude with `((h.2.2 w _ (isPlIdem_idem w) hw).1 y).trans ((h'.2.2 w _ (isPlIdem_idem w) hw).1 y).symm`. Establish `a` using `h.2.2 _ _ (isPlIdem_idem _) hw`. Establish `a'` using `h'.2.2 _ _ (isPlIdem_idem _) hw`.
+
+Rewrite `a`, `a'` using `[cjA_idem, GlobalTheory.StdFrames.cP_cP]`. Use `(a.2 y).trans (Iff.trans ?_ (a'.2 y).symm)` and prove the remaining obligations. Use `and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun y' => ?_` and prove the remaining obligations. Rewrite using `[a.1 y', a'.1 y']`. Conclude with `(h.2.1 w _ (isPlIdem_idem w) hT y).trans (h'.2.1 w _ (isPlIdem_idem w) hT y).symm`.
+-/
 theorem inCmp_iff {u : D.what₂.Word} {π : 𝓞 D.host.E} (hπ : IsPi u π) {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V}
     {z : Y.V} {L₀ : Lat X} {f₀ : Pl D.host.E → Fin X.rank → EAf D} {L L' : Submodule (𝓞 D.host.E) Y.V}
     (h : IsGlued Y X ι z u π L₀ f₀ L) (h' : IsGlued Y X ι z u π L₀ f₀ L') (w : Pl D.host.E) (y : Fin Y.rank → EAf D) :
@@ -99,6 +131,9 @@ theorem inCmp_iff {u : D.what₂.Word} {π : 𝓞 D.host.E} (hπ : IsPi u π) {Y
       rw [a.1 y', a'.1 y']
   · exact (h.2.1 w _ (isPlIdem_idem w) hT y).trans (h'.2.1 w _ (isPlIdem_idem w) hT y).symm
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hfg : (Formalism.L2.Herm.crdLat Y L').FG` using `h'.1.map _`. Establish `h1 : vA Y x ∈ hat (Formalism.L2.Herm.crdLat Y L')` using `mem_hat_of_idem hfg fun w => ((inCmp_iff hπ h h' w _).1 ⟨smul_mem_hat (idem_mem w) (vA_mem_hat Y hx), by rw [smul_smul, idem_mul_self]⟩).1`. Take `⟨x', hx', e⟩` from `mem_of_inc_mem_hat hfg h1`. Rewrite using `[← (Formalism.L2.Herm.crd Y).injective e]` and apply the resulting hypothesis.
+-/
 theorem glued_le {u : D.what₂.Word} {π : 𝓞 D.host.E} (hπ : IsPi u π) {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V}
     {z : Y.V} {L₀ : Lat X} {f₀ : Pl D.host.E → Fin X.rank → EAf D} {L L' : Submodule (𝓞 D.host.E) Y.V}
     (h : IsGlued Y X ι z u π L₀ f₀ L) (h' : IsGlued Y X ι z u π L₀ f₀ L') : L ≤ L' := by
@@ -109,6 +144,9 @@ theorem glued_le {u : D.what₂.Word} {π : 𝓞 D.host.E} (hπ : IsPi u π) {Y 
   obtain ⟨x', hx', e⟩ := mem_of_inc_mem_hat hfg h1
   rwa [← (Formalism.L2.Herm.crd Y).injective e]
 
+/- English proof (translation)
+The claim follows from `le_antisymm (glued_le hπ h h') (glued_le hπ h' h)`.
+-/
 theorem glued_unique (D : D7) (u : D.what₂.Word) (π : 𝓞 D.host.E) (hπ : IsPi u π) (Y X : HSp D)
     (ι : X.V →ₗ[D.host.E] Y.V) (z : Y.V) (L₀ : Lat X) (f₀ : Pl D.host.E → Fin X.rank → EAf D)
     (L L' : Submodule (𝓞 D.host.E) Y.V) (h : IsGlued Y X ι z u π L₀ f₀ L) (h' : IsGlued Y X ι z u π L₀ f₀ L') :

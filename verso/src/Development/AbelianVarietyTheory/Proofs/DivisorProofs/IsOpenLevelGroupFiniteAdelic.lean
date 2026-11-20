@@ -12,6 +12,9 @@ open GlobalTheory.CuspMult
 
 namespace GlobalTheory.LevelOpen
 
+/- English proof (translation)
+Introduce `D V β L`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Take `⟨U, hU, hle⟩` from `GlobalTheory.GoodFiniteDim.exists_open_subgroup V β L`. Establish `h1 : IsOpen ((U.subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hU.preimage continuous_subtype_val`. Conclude with `Subgroup.isOpen_mono (H₂ := (levG V β L).subgroupOf (GfC V)) (fun g hg => (hle g.1 hg g.2).1) h1`.
+-/
 theorem isOpen_levG : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : LevDat D.host.E ℂ V.rank), IsOpen {g : GfC V | (g : GA D V) ∈ levG V β L} := by
   intro D V β L
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram

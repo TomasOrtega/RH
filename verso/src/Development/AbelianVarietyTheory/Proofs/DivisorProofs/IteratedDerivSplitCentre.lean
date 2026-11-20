@@ -13,6 +13,13 @@ namespace GlobalTheory.CuspRep.SplitDeriv
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`. Rewrite using `[hasDerivAt_pi]`.
+
+Introduce `w`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Establish `h1 : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).ofReal_comp`.
+
+Establish `h2` using `h1.cexp`. Simplify `h2` using `[toL, Matrix.scalar_apply, Matrix.diagonal_apply, expU]`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[toL, Matrix.scalar_apply, Matrix.diagonal_apply, h]`.
+-/
 theorem hasDerivAt_scalar_exp :
     HasDerivAt (fun t : ℝ =>
       toL (Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => (t : ℂ))).val)
@@ -30,6 +37,11 @@ theorem hasDerivAt_scalar_exp :
 
 open GlobalTheory.UnitaryBC in
 
+/- English proof (translation)
+Establish `h0 : Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => ((0 : ℝ) : ℂ)) = 1`. Use extensionality with `i j w`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, expU, Matrix.one_apply, h]`. Establish `h` using `hasDerivAt_curve ψ (g * splitCentre E a s) (fun t => Units.map (Matrix.scalar (Fin a)).toMonoidHom (expU fun _ : InfinitePlace E => (t : ℂ))) _ h0 hasDerivAt_scalar_exp`. Establish `h'` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h)`.
+
+Rewrite using `[lie_apply]`. Use `h'.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.1 (g * splitCentre E a t) = ψ.1 (g * splitCentre E a s * splitCentre E a (t - s))`. Rewrite using `[mul_assoc, ← splitCentre_add, add_sub_cancel]`.
+-/
 theorem hasDerivAt_splitCentre (ψ : Sm E a) (g : GA E a) (s : ℝ) :
     HasDerivAt (fun t : ℝ => ψ.1 (g * splitCentre E a t))
       ((lie E a (fun i j => if i = j then (1 : Cinf E) else 0) ψ).1 (g * splitCentre E a s)) s := by

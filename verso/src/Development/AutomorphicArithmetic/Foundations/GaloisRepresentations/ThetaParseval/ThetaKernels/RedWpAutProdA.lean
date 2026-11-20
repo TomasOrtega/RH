@@ -20,6 +20,9 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {hc : HeisClosedF σ JS JT ξ₀ B.ψ} {w : 𝓞 E} {lam : ℕ →* ℂ}
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
 variable {η : (AEF F E)ˣ →* Circle} {ε : AEF F E} {of oi : GAF σ JS × GAF σ JT →* Module.End ℂ (WOF F E nS nT → ℂ)}
+/- English proof (translation)
+Break down `hε.split e he with ⟨a1, a2⟩ | ⟨a1, a2⟩` into its components or cases. Rewrite using `[GlobalTheory.SplitDetCharF.cutDet_same ε hε.idem a1 a2 hg hx]`. Conclude with `GlobalTheory.SplitDetCharF.char_eq_of_mul_conj hB.cm hres _ x (GlobalTheory.SplitDetCharF.cutDet_conj hJ ε hε.idem he.1 a1 a2 hg hx)`.
+-/
 theorem cut_char_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {χ : (AEF F E)ˣ →* Circle} {m : ℕ} (hres : ResEtaF χ m) (hε : IsHalfF σ ε) {e : AEF F E} (he : IsSplitIdemF σ e)
     {g : GAF σ J} {x : (AEF F E)ˣ} (hg : SuppAtF σ e J g) (hx : IsDetAtF σ e J g x) :
@@ -28,6 +31,13 @@ theorem cut_char_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) {n : ℕ} {J : Matr
   · rw [GlobalTheory.SplitDetCharF.cutDet_same ε hε.idem a1 a2 hg hx]
   · exact GlobalTheory.SplitDetCharF.char_eq_of_mul_conj hB.cm hres _ x
       (GlobalTheory.SplitDetCharF.cutDet_conj hJ ε hε.idem he.1 a1 a2 hg hx)
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hof p`. Establish `hσ : ∀ x, σ (σ x) = x` using `_root_.PositivityTheory.ThKW.LatA.sig_sig_k C.good`. Take `⟨a, ha, k, hk, e1, -⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS q.1`. Take `⟨b, hb, l, hl, e2, -⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT q.2`. Establish `hoi : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → oi q f = oi (a, b) f` using `fun f h => by`.
+
+Rewrite using `[show q = (a, b) * (k, l) from Prod.ext e1 e2, map_mul, Module.End.mul_apply, hi.triv k hk l hl f h]`. Set `L : thetaSubF σ JS JT ξ₀ B.ψ →ₗ[ℂ] thetaSubF σ JS JT ξ₀ B.ψ` to `(oi q).restrict fun f hf => hi.pres q f hf`. Establish `hL : ∀ m, (L m : WOF F E nS nT → ℂ) = oi q m` using `fun _ => rfl`. Use `congrArg Subtype.val ((_root_.PositivityTheory.ThKW.LatA.rep_k hO).comm (_root_.PositivityTheory.ThKW.LatA.sys_k hσ C.hS C.hT C.hξ hO) L (fun x v => Subtype.ext (by` as an intermediate fact. Establish `e3 : actOF σ JS JT a b x = x`.
+
+Use `congrArg (fun y : XFF F E nS nT => (y : WOF F E nS nT)) (LatA.rhoFF_real ha hb x)` as an intermediate fact. Rewrite `this` using `[coe_rhoFF]`. Then use the resulting hypothesis. Rewrite using `[hL, coe_opFF, coe_opFF, hL, map_smul, hoi _ (hc _ _ v.2), hi.Heisenberg₂ a ha b hb _ _ v.2, e3, ← hoi _ v.2])) p ⟨f, hf⟩)`. Rewrite using `[hz ⟨f, hf⟩, map_smul, ← hL, ← this]`. Conclude with `hz (L ⟨f, hf⟩)`.
+-/
 theorem fin_inf_comm_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
     (hi : IsInfWeilF σ JS JT ξ₀ B.ψ oi) (p q : GAF σ JS × GAF σ JT) (f : WOF F E nS nT → ℂ)
@@ -47,6 +57,9 @@ theorem fin_inf_comm_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ�
     rw [hL, coe_opFF, coe_opFF, hL, map_smul, hoi _ (hc _ _ v.2), hi.Heisenberg₂ a ha b hb _ _ v.2, e3, ← hoi _ v.2])) p ⟨f, hf⟩)
   rw [hz ⟨f, hf⟩, map_smul, ← hL, ← this]
   exact hz (L ⟨f, hf⟩)
+/- English proof (translation)
+Use `filter_upwards [_root_.PositivityTheory.ThKW.LatA.eventually_fix_k (_root_.PositivityTheory.ThKW.LatA.sig_sig_k C.good) C.hS C.hT C.hξ hO ⟨f, h1⟩] with p hp`. Take `⟨c, hc'⟩` from `hof p`. Conclude with `⟨c, by rw [hc' ⟨f, h1⟩, hp]⟩`.
+-/
 theorem eventually_smul_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
     {f : WOF F E nS nT → ℂ} (h1 : IsThetaFunOF σ JS JT ξ₀ B.ψ f) :
@@ -54,6 +67,15 @@ theorem eventually_smul_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT �
   filter_upwards [_root_.PositivityTheory.ThKW.LatA.eventually_fix_k (_root_.PositivityTheory.ThKW.LatA.sig_sig_k C.good) C.hS C.hT C.hξ hO ⟨f, h1⟩] with p hp
   obtain ⟨c, hc'⟩ := hof p
   exact ⟨c, by rw [hc' ⟨f, h1⟩, hp]⟩
+/- English proof (translation)
+Use `haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)`. Use `haveI : IsTopologicalGroup (GAF σ JS) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JS))`. Use `haveI : IsTopologicalGroup (GAF σ JT) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ JT))`. Use `continuous_iff_continuousAt.2 fun q => ?_` and prove the remaining obligations. Establish `h2 : Filter.Tendsto (fun p => p * q⁻¹) (𝓝 q) (𝓝 1)` using `(continuous_id.mul continuous_const).tendsto' q 1 (mul_inv_cancel q)`.
+
+Establish `h3` using `hf.pres q f h1`. Establish `h4 : ∀ᶠ p in 𝓝 q, ∃ c : ℂ, of p f = c • of q f` using `by filter_upwards [h2.eventually (_root_.PositivityTheory.ThKW.eventually_smul_A_k C hO hof h3)] with p hp`. Rewrite `hp` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis. Distinguish the cases in `h0 : of q f = 0`. Use `continuousAt_const.congr (f := fun _ => (0 : ℂ)) ?_ filter_upwards [h4] with p hp` and prove the remaining obligations.
+
+Take `⟨c, hc'⟩` from `hp`. Rewrite using `[_root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p p f h1, hc', h0, smul_zero, map_zero]`. Both sides reduce to the same expression. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Establish `hx' : of q f x ≠ 0` using `hx`.
+
+Use `(((hf.cont f h1 x).div_const (of q f x)).mul (hi.cont _ h3 u)).continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [h4] with p hp`. Take `⟨c, hc'⟩` from `hp`. Use `show of p f x / of q f x * oi p (of q f) u = _`. Rewrite using `[_root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p p f h1, hc', map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, mul_div_cancel_right₀ _ hx']`.
+-/
 theorem continuous_product_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))
@@ -83,6 +105,21 @@ theorem continuous_product_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS J
     show of p f x / of q f x * oi p (of q f) u = _
     rw [_root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p p f h1, hc', map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul,
       mul_div_cancel_right₀ _ hx']
+/- English proof (translation)
+Establish `hB` using `C.good`. Establish `hψ` using `_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB`. Establish `hcomm : ∀ p q f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → of p (oi q f) = oi q (of p f)` using `fun p q f h => _root_.PositivityTheory.ThKW.fin_inf_comm_A_k C hO hof hi p q f h`. Establish `hth : ∀ (w₀ : WOF F E nS nT) f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (heisOF σ JS JT ξ₀ B.ψ w₀ f)` using `fun w₀ f h => GlobalTheory.T.heisenbergOperatorF_preserves_isThetaFunction F E σ nS nT JS JT ξ₀ B.ψ hB.std.1 w₀ f h`. Set `Th` to `thetaSubF σ JS JT ξ₀ B.ψ`.
+
+Set `Om2 : GAF σ JS × GAF σ JT →* Module.End ℂ Th` to `{ toFun := fun p => (of p * oi p).restrict (p := Th) (q := Th) fun f h1 => hf.pres p _ (hi.pres p f h1) map_one' := LinearMap.ext fun f => Subtype.ext (by show of 1 (oi 1 f) = f`. Simplify using `only [map_one, Module.End.one_apply])`. Use the proof step `map_mul' := fun p q => LinearMap.ext fun f => Subtype.ext (by show of (p * q) (oi (p * q) f) = of p (oi p (of q (oi q (f : WOF F E nS nT → ℂ))))`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hcomm q p _ (hi.pres q _ f.2)]) }`.
+
+Take `⟨om, hom⟩` from `exists_extend Th Om2`. Establish `ho : ∀ p f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → om p f = of p (oi p f)` using `fun p f h1 => hom p ⟨f, h1⟩`. Establish `hp : ∀ p f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (om p f)` using `fun p f h1 => by`. Rewrite using `[ho p f h1]`. Conclude with `hf.pres p _ (hi.pres p f h1)`.
+
+Use `⟨om, hψ, isHeckeCharF_pow hη _, isHeckeCharF_pow hη _, resEtaF_pow hres _, resEtaF_pow hres _, hp, fun g h w₀ f h1 => ?_, fun γ hγ γ' hγ' f h1 => ?_, fun f h1 w => ?_, fun μ 𝓕 hμ h𝓕 p f h1 => ?_, fun e he g h hg hh x y hx hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, k, hk, e1, e1'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nS JS g`. Take `⟨b, hb, l, hl, e2, e2'⟩` from `GlobalTheory.T.unitaryAdelicPoint_eq_real_mul_finite_both_orders F E σ nT JT h`. Establish `key : ∀ x, IsThetaFunOF σ JS JT ξ₀ B.ψ x → om (g, h) x = of (k, l) (oi (a, b) x)` using `fun x hx => by`. Rewrite using `[ho _ x hx]`.
+
+Establish `E1 : ((g, h) : GAF σ JS × GAF σ JT) = (a, b) * (k, l)` using `Prod.ext e1 e2`. Establish `E2 : ((g, h) : GAF σ JS × GAF σ JT) = (k, l) * (a, b)` using `Prod.ext e1' e2'`. Establish `E3 : oi (g, h) x = oi (a, b) x` using `by rw [E1, map_mul, Module.End.mul_apply, hi.triv k hk l hl x hx]`. Rewrite using `[E3, E2, map_mul, Module.End.mul_apply, hf.triv a ha b hb _ (hi.pres _ x hx)]`. Rewrite using `[key _ (hth w₀ f h1), key f h1, hi.Heisenberg₂ a ha b hb w₀ f h1, hf.Heisenberg₂ k hk l hl _ _ (hi.pres _ f h1), ← actOF_mul, ← e1', ← e2']`.
+
+Rewrite using `[ho _ f h1]`. Conclude with `haut γ hγ γ' hγ' f h1`. Establish `e : (fun p => om p f w) = fun p => of p (oi p f) w` using `funext fun p => by rw [ho p f h1]`. Rewrite using `[e]`. Conclude with `_root_.PositivityTheory.ThKW.continuous_product_A_k C hO hf hof hi h1 w`.
+
+Rewrite using `[ho p f h1, hf.unit μ 𝓕 hμ h𝓕 p _ (hi.pres p f h1), hi.unit μ 𝓕 hμ h𝓕 p f h1]`. Take `⟨r, hr, h2⟩` from `hf.split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ f h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[ho _ f h1, hi.triv g (mem_GfCF_of_suppAt he hg) h (mem_GfCF_of_suppAt he hh) f h1]`. Conclude with `h2 ℓ hℓ f h1`.
+-/
 theorem datum_of_aut_A_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om)
     (hη : IsHeckeCharF η) (hres : ResEtaF η 1) (hf : IsFinWeilF σ JS JT ξ₀ B.ψ (η ^ nS) (η ^ nT) of)
     (hof : ∀ p, ∃ z : ℂ, ∀ f : thetaSubF σ JS JT ξ₀ B.ψ, of p f = z • (Om p f : WOF F E nS nT → ℂ))

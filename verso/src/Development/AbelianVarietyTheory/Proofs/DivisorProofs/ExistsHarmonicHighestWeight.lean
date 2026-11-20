@@ -14,14 +14,23 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg
 
 namespace GlobalTheory.HarmLift
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_fockHarmonic_representative`.
+-/
 theorem lemA : ∀ (P Q R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (pr : Pol P Q R S →ₗ[ℂ] W),
     (∀ Z : Mat P Q, IsPC Z → ∀ f, pr (fockAct1 P Q R S Z f) = 0) →
     ∀ f, ∃ h ∈ harm2 P Q R S, pr h = pr f := GlobalTheory.T.exists_fockHarmonic_representative
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fockHarmonic_mem_finiteDimensional_compactStable`.
+-/
 theorem lemB : ∀ (P Q R S : ℕ) (h : Pol P Q R S), h ∈ harm2 P Q R S →
     ∃ H0 : Submodule ℂ (Pol P Q R S), FiniteDimensional ℂ H0 ∧ h ∈ H0 ∧ (∀ v ∈ H0, v ∈ harm2 P Q R S) ∧
       KStable (fockAct1 P Q R S) H0 ∧ KStable (fockAct2 P Q R S) H0 := GlobalTheory.T.fockHarmonic_mem_finiteDimensional_compactStable
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_eigen_complement_of_adjoint_stable_kernel`.
+-/
 theorem lemC : ∀ (V W H : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ι : V →ₗ[ℂ] H), Function.Injective ι →
     ∀ (pr : V →ₗ[ℂ] W) (H0 : Submodule ℂ V), FiniteDimensional ℂ H0 →
@@ -30,21 +39,35 @@ theorem lemC : ∀ (V W H : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup 
       (∀ a ∈ A, ∃ b ∈ A, ∀ u v, inner ℂ (ι (a u)) (ι v) = inner ℂ (ι u) (ι (b v))) →
       ∀ h ∈ H0, ∃ c ∈ H0, pr c = pr h ∧ ∀ a ∈ A, ∀ z : ℂ, pr (a c) = z • pr c → a c = z • c := GlobalTheory.T.exists_eigen_complement_of_adjoint_stable_kernel
 
+/- English proof (translation)
+Introduce `a b hab`. Apply the tactic sequence `rw [GlobalTheory.FockAdj.adjZ_apply, hZ b a (fun h => hab (by revert h; rcases a with a | a <;> rcases b with b | b <;> simp [sameBlock])), star_zero, mul_zero]`.
+-/
 theorem isKC_adjZ {p q : ℕ} {Z : Mat p q} (hZ : IsKC Z) : IsKC (adjZ Z) := by
   intro a b hab
   rw [GlobalTheory.FockAdj.adjZ_apply, hZ b a (fun h => hab (by revert h; rcases a with a | a <;> rcases b with b | b <;> simp [sameBlock])),
     star_zero, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag]`. Use `Finset.sum_eq_zero fun a _ => hZ a a ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> simp [sameBlock]`.
+-/
 theorem trace_PC {p q : ℕ} {Z : Mat p q} (hZ : IsPC Z) : Z.trace = 0 := by
   simp only [Matrix.trace, Matrix.diag]
   refine Finset.sum_eq_zero fun a _ => hZ a a ?_
   rcases a with a | a <;> simp [sameBlock]
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Eab, Matrix.trace_single_eq_same]`. Rewrite using `[if_neg h, Eab, Matrix.trace_single_eq_of_ne _ _ _ h]`.
+-/
 theorem trace_Eab {p q : ℕ} (a b : Ix p q) : (Eab a b).trace = if a = b then 1 else 0 := by
   by_cases h : a = b
   · subst h; rw [if_pos rfl, Eab, Matrix.trace_single_eq_same]
   · rw [if_neg h, Eab, Matrix.trace_single_eq_of_ne _ _ _ h]
 
+/- English proof (translation)
+Introduce `c d hcd`. Simplify using `only [Eab, Matrix.single_apply]`. Use `split_ifs with e`. Take `⟨rfl, rfl⟩` from `e`. Conclude with `absurd h hcd`.
+
+Both sides reduce to the same expression.
+-/
 theorem isKC_Eab {p q : ℕ} {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b) := by
   intro c d hcd
   simp only [Eab, Matrix.single_apply]
@@ -52,6 +75,25 @@ theorem isKC_Eab {p q : ℕ} {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b)
   · obtain ⟨rfl, rfl⟩ := e; exact absurd h hcd
   · rfl
 
+/- English proof (translation)
+Introduce `P Q R S x t M pr ⟨hsurj, h1, h2⟩ μ w hw`. Take `⟨g, rfl⟩` from `hsurj w`. Establish `hPC : ∀ Z : Mat P Q, IsPC Z → ∀ f, pr (fockAct1 P Q R S Z f) = 0`. Introduce `Z hZ f`. Rewrite using `[h1, trace_PC hZ, mul_zero, zero_smul]`.
+
+Establish `h2' : ∀ Y f, pr (fockAct2 P Q R S Y f) = M.act Y (pr f) - ((t : ℂ) * Y.trace) • pr f`. Introduce `Y f`. Rewrite using `[h2]`. Normalize the expressions using the abelian group laws. Take `⟨h, hh, hpr⟩` from `lemA P Q R S M.V pr hPC g`.
+
+Take `⟨H0, hfin, hH0, hharm, hs1, hs2⟩` from `lemB P Q R S h hh`. Take `⟨ι, hιIP, hιinj⟩` from `GlobalTheory.FischerParts.exists_fockIP (Ln P Q R S)`. Set `A : Set (Module.End ℂ (Pol P Q R S))` to `{a | (∃ X, IsKC X ∧ a = fockAct1 P Q R S X) ∨ ∃ Y, IsKC Y ∧ a = fockAct2 P Q R S Y}`. Establish `hadj` using `GlobalTheory.FockAdj.fock_adjoints P Q R S _ ι hιIP`. Take `⟨c, hc, hcpr, hceig⟩` from `lemC (Pol P Q R S) M.V _ ι hιinj pr H0 hfin A (by`.
+
+Introduce and unpack `a (⟨X, hX, rfl⟩ | ⟨Y, hY, rfl⟩) v hv`. Use `exacts [hs1 X hX v hv, hs2 Y hY v hv])`. Use the proof step `(by`. Introduce and unpack `a (⟨X, hX, rfl⟩ | ⟨Y, hY, rfl⟩) v _ hv`. Rewrite using `[h1, hv, smul_zero]`.
+
+Rewrite using `[h2', hv, map_zero, smul_zero, sub_zero])`. Use the proof step `(by`. Introduce and unpack `a (⟨X, hX, rfl⟩ | ⟨Y, hY, rfl⟩)`. Conclude with `⟨_, Or.inl ⟨_, isKC_adjZ hX, rfl⟩, hadj.2.1 X⟩`. Conclude with `⟨_, Or.inr ⟨_, isKC_adjZ hY, rfl⟩, hadj.2.2 Y⟩)`.
+
+Use `h hH0`. Rewrite `hcpr` using `[hpr]`. Use `⟨c, hharm c hc, fun X hX => hceig _ (Or.inl ⟨X, hX, rfl⟩) _ (by rw [h1]), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hw.1 (by rw [← hcpr, map_zero])`.
+
+Establish `hw2` using `hw.2`. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hw2 ⊢`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hs : sameBlock a a := by rcases a with a | a <;> simp [sameBlock]`. Rewrite using `[hceig _ (Or.inr ⟨_, isKC_Eab hs, rfl⟩) ((((μ a - t : ℚ)) : ℂ))]`.
+
+Rewrite using `[h2', hcpr, hw2.1 a, trace_Eab, if_pos rfl, mul_one, ← sub_smul]`. Use `push_cast`. Put the polynomial expressions in normal form. Apply the tactic sequence `have hs : sameBlock a b := by revert hab; rcases a with a | a <;> rcases b with b | b <;> simp [posC, sameBlock]`. Establish `hne : a ≠ b`.
+
+Apply the tactic sequence `rintro rfl; revert hab; rcases a with a | a <;> simp [posC]`. Rewrite using `[hceig _ (Or.inr ⟨_, isKC_Eab hs, rfl⟩) 0, zero_smul]`. Rewrite using `[h2', hcpr, hw2.2 a b hab, trace_Eab, if_neg hne, mul_zero, zero_smul, sub_zero]`.
+-/
 theorem harm_lift : ∀ (P Q R S : ℕ) (x t : ℚ) (M : GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V),
     GlobalTheory.RealLift.IsLift x t M pr → ∀ (μ : Formalism.BasicNotions.TH.Ix R S → ℚ) (w : M.V),
     Formalism.BasicNotions.TH.IsHW M.act μ w → ∃ f : Formalism.BasicNotions.TH.Pol P Q R S, GlobalTheory.RealLift.IsHarmVec x (fun c => μ c - t) f := by

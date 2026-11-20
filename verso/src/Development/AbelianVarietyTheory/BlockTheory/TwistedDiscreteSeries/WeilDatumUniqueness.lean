@@ -31,15 +31,26 @@ def WeilDatumTwist (D : D7) : Prop :=
 
 def WeilDatumDetermined (D : D7) : Prop := WeilDatumUnique D ∧ WeilDatumTwist D
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1`. Rewrite using `[← h.2 x hx, ← h'.2 x hx]`.
+-/
 theorem IsTildeDet.unique {V : HSp D} {ξ : (AE D)ˣ →* Circle} {g : GA D V} {c c' : Circle}
     (h : IsTildeDet V ξ g c) (h' : IsTildeDet V ξ g c') : c = c' := by
   obtain ⟨x, hx⟩ := h.1
   rw [← h.2 x hx, ← h'.2 x hx]
 
+/- English proof (translation)
+Establish `h1 : IsDetRoot V 1 1` using `by simp [IsDetRoot]`. Rewrite using `[← h.2 1 h1, map_one]`.
+-/
 theorem IsTildeDet.at_one {V : HSp D} {ξ : (AE D)ˣ →* Circle} {c : Circle} (h : IsTildeDet V ξ 1 c) : c = 1 := by
   have h1 : IsDetRoot V 1 1 := by simp [IsDetRoot]
   rw [← h.2 1 h1, map_one]
 
+/- English proof (translation)
+Introduce `ψ S T χS χT om om' h h' g k f hf`. Take `⟨a, b, ha, hb, e⟩` from `H ψ S T χS χT 1 1 om om' (fun _ => rfl) (fun _ => rfl) h (by simpa using h') g k`. Take `⟨x, hx⟩` from `ha.1`. Take `⟨y, hy⟩` from `hb.1`. Establish `ha1 : a = 1` using `(ha.2 x hx).symm`.
+
+Establish `hb1 : b = 1` using `(hb.2 y hy).symm`. Simplify `e f hf` using `[ha1, hb1]`.
+-/
 theorem WeilDatumTwist.unique (H : WeilDatumTwist D) : WeilDatumUnique D := by
   intro ψ S T χS χT om om' h h' g k f hf
   obtain ⟨a, b, ha, hb, e⟩ := H ψ S T χS χT 1 1 om om' (fun _ => rfl) (fun _ => rfl) h

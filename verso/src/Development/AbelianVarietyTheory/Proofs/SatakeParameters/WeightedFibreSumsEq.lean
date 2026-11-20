@@ -14,12 +14,18 @@ def transporterEquiv {Γ Y : Type} [Group Γ] [MulAction Γ Y] (v : Y) (δ : Γ)
   left_inv γ := by ext; simp
   right_inv s := by ext; simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ => h ⟨γ.1⁻¹, by show γ.1⁻¹ • v = u rw [inv_smul_eq_iff]; exact γ.2.symm⟩⟩`.
+-/
 theorem transporter_isEmpty {Γ Y : Type} [Group Γ] [MulAction Γ Y] (u v : Y)
     (h : u ∉ MulAction.orbit Γ v) : IsEmpty {γ : Γ // γ • u = v} :=
   ⟨fun γ => h ⟨γ.1⁻¹, by
     show γ.1⁻¹ • v = u
     rw [inv_smul_eq_iff]; exact γ.2.symm⟩⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : u ∈ MulAction.orbit Γ v`. Take `⟨δ, rfl⟩` from `h`. Conclude with `Finite.of_equiv _ (transporterEquiv v δ).symm`. Use `haveI := transporter_isEmpty u v h infer_instance`.
+-/
 theorem transporter_finite {Γ Y : Type} [Group Γ] [MulAction Γ Y] (u v : Y)
     [Finite (MulAction.stabilizer Γ v)] : Finite {γ : Γ // γ • u = v} := by
   by_cases h : u ∈ MulAction.orbit Γ v
@@ -28,6 +34,13 @@ theorem transporter_finite {Γ Y : Type} [Group Γ] [MulAction Γ Y] (u v : Y)
   · haveI := transporter_isEmpty u v h
     infer_instance
 
+/- English proof (translation)
+Take `⟨j, hj, huniq⟩` from `hy u`. Rewrite using `[Finset.sum_eq_single j]`. Take `⟨δ, rfl⟩` from `hj haveI := hf j`. Establish `h1 : Nat.card {γ : Γ // γ • (δ • y j) = y j} = Nat.card (MulAction.stabilizer Γ (y j))` using `Nat.card_congr (transporterEquiv (y j) δ)`. Establish `h2 : (Nat.card (MulAction.stabilizer Γ (y j)) : ℂ) ≠ 0`.
+
+Conclude with `(Nat.card_pos (α := MulAction.stabilizer Γ (y j))).ne'` after adjusting the coercions. Use `show _ * (Nat.card {γ : Γ // γ • (δ • y j) = y j} : ℂ) = 1`. Rewrite using `[h1, inv_mul_cancel₀ h2]`. Introduce `k _ hk haveI := transporter_isEmpty (Γ := Γ) u (y k) (fun h => hk (huniq k h))`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_transporter {Γ Y I' : Type} [Group Γ] [MulAction Γ Y] [Fintype I'] (y : I' → Y)
     (hy : ∀ u : Y, ∃! i, u ∈ MulAction.orbit Γ (y i))
     (hf : ∀ i, Finite (MulAction.stabilizer Γ (y i))) (u : Y) :
@@ -56,6 +69,13 @@ def pairEquiv {Γ X Y Z : Type} [Group Γ] [MulAction Γ Y] (p : Z → X) (q : Z
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use `haveI : Fintype {z | p z = x₀} := hx.fintype`. Establish `key : ∀ j, ∑ᶠ t : {t : Z × Γ // p t.1 = x₀ ∧ t.2 • q t.1 = y j}, φ t.1.1 = ∑ z : {z | p z = x₀}, (Nat.card {γ : Γ // γ • q z.1 = y j} : ℂ) * φ z.1`. Introduce `j`. Use `haveI := hf j`. Use `haveI : ∀ z : {z | p z = x₀}, Fintype {γ : Γ // γ • q z.1 = y j} := fun z => @Fintype.ofFinite _ (transporter_finite _ _)`.
+
+Rewrite using `[← finsum_comp_equiv (pairEquiv p q x₀ (y j)), finsum_eq_sum_of_fintype, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `show ∑ _γ : {γ : Γ // γ • q z.1 = y j}, φ z.1 = _`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card, nsmul_eq_mul]`. Repeatedly rewrite using `[key, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm, ← finsum_set_coe_eq_finsum_mem, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[← Finset.sum_mul, sum_transporter y hy hf, one_mul]`.
+-/
 theorem fibre_sum {Γ X Y Z I' : Type} [Group Γ] [MulAction Γ Y] [Fintype I']
     (p : Z → X) (q : Z → Y) (x₀ : X) (y : I' → Y) (φ : Z → ℂ)
     (hy : ∀ u : Y, ∃! i, u ∈ MulAction.orbit Γ (y i))
@@ -96,6 +116,11 @@ end OrbitDoubleCount
 
 open OrbitDoubleCount in
 
+/- English proof (translation)
+Introduce `Γ X Y Z I I' _ _ _ _ _ _ p q x y φ hp hq hx hy fx fy gx gy hφ`. Establish `h1` using `fun i => fibre_sum p q (x i) y φ hy fy (gx i)`. Establish `h2` using `fun j => fibre_sum q p (y j) x φ hx fx (gy j)`. Repeatedly rewrite using `[h1, h2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congr 2`. Rewrite using `[← finsum_comp_equiv (swapEquiv p q hp hq (x i) (y j))]`. Conclude with `finsum_congr fun t => (hφ _ _).symm`.
+-/
 theorem weighted_fibre_sums_eq : ∀ {Γ X Y Z I I' : Type} [Group Γ] [MulAction Γ X] [MulAction Γ Y] [MulAction Γ Z] [Fintype I] [Fintype I'] (p : Z → X) (q : Z → Y) (x : I → X) (y : I' → Y) (φ : Z → ℂ), (∀ (γ : Γ) z, p (γ • z) = γ • p z) → (∀ (γ : Γ) z, q (γ • z) = γ • q z) → (∀ u : X, ∃! i, u ∈ MulAction.orbit Γ (x i)) → (∀ u : Y, ∃! i, u ∈ MulAction.orbit Γ (y i)) → (∀ i, Finite (MulAction.stabilizer Γ (x i))) → (∀ i, Finite (MulAction.stabilizer Γ (y i))) → (∀ i, {z | p z = x i}.Finite) → (∀ i, {z | q z = y i}.Finite) → (∀ (γ : Γ) z, φ (γ • z) = φ z) → ∑ i, ((Nat.card (MulAction.stabilizer Γ (x i)) : ℂ))⁻¹ * ∑ᶠ z ∈ {z | p z = x i}, φ z = ∑ i, ((Nat.card (MulAction.stabilizer Γ (y i)) : ℂ))⁻¹ * ∑ᶠ z ∈ {z | q z = y i}, φ z := by
   intro Γ X Y Z I I' _ _ _ _ _ _ p q x y φ hp hq hx hy fx fy gx gy hφ
   have h1 := fun i => fibre_sum p q (x i) y φ hy fy (gx i)

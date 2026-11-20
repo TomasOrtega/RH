@@ -42,6 +42,9 @@ structure GrTriv (Z : Mdl Y i₀) (e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) �
 
 variable {Z : Mdl Y i₀} {e : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → ℤ}
 
+/- English proof (translation)
+Take `⟨hL, hU, w, hw, ht⟩` from `h`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC (GlobalTheory.LB.toMod L) := (GlobalTheory.VB.isVB_toMod hL).isFiniteQC`. Take `⟨i⟩` from `GlobalTheory.ModelPresentation.nonempty_ofMod_toMod_iso E H Dw Xo p W hp hW Y i₀ Z (GlobalTheory.LB.toMod L)`. Conclude with `⟨⟨L, hL, hU, w, hw, ht, i⟩⟩`.
+-/
 theorem nonempty_grTriv (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) {L : LB Z.X} (h : IsGrLB Z e L) :
     Nonempty (GrTriv Z e (Z.ofMod (GlobalTheory.LB.toMod L)).toMod) := by
   obtain ⟨hL, hU, w, hw, ht⟩ := h
@@ -56,12 +59,28 @@ def GrTriv.IsVal (f : Γ(F, V)) (x : Sp k ⟶ Z.X) (u : Vecs Dw (Y Z.i).t k) (r 
     spMap φ ≫ (T.hU i).fromSpec = x ∧ (∀ σ, DiagAt (Y Z.i).t (x ≫ Z.π) ((T.w i).bc φ σ) (u σ) (d σ)) ∧
     r = valR x (V ⊓ T.L.U i) (GlobalTheory.LB.coord (T.iso.hom.app V f) i) * ∏ σ, ∏ a, d σ a ^ e σ a
 
+/- English proof (translation)
+Take `⟨a, φ, rfl, -⟩` from `h`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[← Z.cover]`. Conclude with `Set.mem_iUnion.2 ⟨a, le_preimage_specMap_fromSpec (Z.U a).2 (CommRingCat.ofHom φ) (Set.mem_univ z)⟩`.
+-/
 theorem range_subset_opn {x : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k} (h : Z.FlagAt x u) : Set.range x ⊆ Z.opn := by
   obtain ⟨a, φ, rfl, -⟩ := h
   rintro _ ⟨z, rfl⟩
   rw [← Z.cover]
   exact Set.mem_iUnion.2 ⟨a, le_preimage_specMap_fromSpec (Z.U a).2 (CommRingCat.ofHom φ) (Set.mem_univ z)⟩
 
+/- English proof (translation)
+Establish `ho` using `range_subset_opn hu`. Establish `tu : ∀ σ i, IsTanAtG (Y Z.i).t (x ≫ Z.π) (u σ i)` using `fun σ i => by`. Take `⟨_, _, -, h, -⟩` from `hu`. Conclude with `(h.1 σ i).1`. Establish `fl : ∀ i (φ : Γ(Z.X, T.L.U i) →+* k), spMap φ ≫ (T.hU i).fromSpec = x → Z.FlagAt x ((T.w i).bc φ)` using `fun i φ h => h ▸ (T.int i).2 k φ (h ▸ ho)`.
+
+Use `existsUnique_of_exists_of_unique ?_ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (T.isLB.cover.ge (Set.mem_univ (x (closedPoint k))))`. Establish `h : ⊤ ≤ x ⁻¹ᵁ T.L.U i` using `fun z _ => by`. Take `rfl : z = closedPoint k` from `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Conclude with `hi`.
+
+Establish `e₁` using `specMap_valMap_fromSpec (T.hU i) x h`. Use `choose d hd using fun σ => exists_diag_of_flagAt Z hty hu (fl i _ e₁) σ (tu σ) (tan_bc (T.int i) _ e₁ σ) (linInd_bc (T.int i) _ e₁ σ)`. Conclude with `⟨_, hx, i, _, d, e₁, fun σ => (diagAt_iff (tan_bc (T.int i) _ e₁ σ) (tu σ) (d σ)).2 (hd σ), rfl⟩`. Introduce and unpack `_ _ ⟨-, i, φ, d, e₁, hd, rfl⟩ ⟨-, i', φ', d', e₂, hd', rfl⟩ choose D hD using fun σ => exists_diag_of_flagAt Z hty (fl i _ e₁) (fl i' _ e₂) σ (tan_bc (T.int i) _ e₁ σ) (tan_bc (T.int i') _ e₂ σ) (linInd_bc (T.int i') _ e₂ σ)`. Establish `hg` using `T.trans i i' k φ φ' D (e₁.trans e₂.symm) (e₁ ▸ ho) fun σ => by`.
+
+Rewrite using `[← Category.assoc, e₁]`. Conclude with `(diagAt_iff (tan_bc (T.int i') _ e₂ σ) (tan_bc (T.int i) _ e₁ σ) (D σ)).2 (hD σ)`. Establish `hd'' : ∀ σ, d' σ = fun a => d σ a * D σ a` using `fun σ => ((diagAt_iff (tan_bc (T.int i') _ e₂ σ) (tu σ) _).1 (hd' σ)).unique (linInd_bc (T.int i') _ e₂ σ) ((hD σ).trans ((diagAt_iff (tan_bc (T.int i) _ e₁ σ) (tu σ) _).1 (hd σ)))`. Establish `h₁ : ⊤ ≤ x ⁻¹ᵁ T.L.U i` using `e₁ ▸ le_preimage_specMap_fromSpec (T.hU i) (CommRingCat.ofHom φ)`. Establish `h₂ : ⊤ ≤ x ⁻¹ᵁ T.L.U i'` using `e₂ ▸ le_preimage_specMap_fromSpec (T.hU i') (CommRingCat.ofHom φ')`.
+
+Establish `h₃ : ⊤ ≤ x ⁻¹ᵁ (V ⊓ T.L.U i ⊓ T.L.U i')` using `fun z hz => ⟨⟨hx hz, h₁ hz⟩, h₂ hz⟩`. Establish `hc` using `congrArg (valR x _) (GlobalTheory.LB.coord_mem (T.iso.hom.app V f) i i')`. Rewrite `hc` using `[valR_mul x _ h₃]`. Use `erw [valR_res x _ h₃, valR_res x _ h₃, valR_res x _ h₃] at hc`. Rewrite `hg` using `[e₁]`.
+
+Rewrite using `[hc, hg]`. Simplify using `only [hd'', mul_zpow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GrTriv.existsUnique_isVal (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult σ + 1)) (f : Γ(F, V)) {x : Sp k ⟶ Z.X}
     (hx : ⊤ ≤ x ⁻¹ᵁ V) {u : Vecs Dw (Y Z.i).t k} (hu : Z.FlagAt x u) : ∃! r, T.IsVal f x u r := by
   have ho := range_subset_opn hu
@@ -99,6 +118,9 @@ theorem GrTriv.existsUnique_isVal (hty : ∀ σ, Z.ty σ = Finset.range (Dw.mult
     simp only [hd'', mul_zpow, Finset.prod_mul_distrib]
     ring
 
+/- English proof (translation)
+Take `⟨hx, i, φ, D, e₁, hD, rfl⟩` from `h`. Use `⟨hx, i, φ, fun σ a => d σ a * D σ a, e₁, fun σ => (diagAt_iff (tan_bc (T.int i) _ e₁ σ) (tu' σ) _).2 (((diagAt_iff (tan_bc (T.int i) _ e₁ σ) (tu σ) _).1 (hD σ)).trans ((diagAt_iff (tu σ) (tu' σ) _).1 (hd σ))), ?_⟩` and prove the remaining obligations. Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GrTriv.IsVal.change {T : GrTriv Z e F} {f : Γ(F, V)} {x : Sp k ⟶ Z.X} {u u' : Vecs Dw (Y Z.i).t k} {r : k}
     (h : T.IsVal f x u r) (tu : ∀ σ i, IsTanAtG (Y Z.i).t (x ≫ Z.π) (u σ i))
     (tu' : ∀ σ i, IsTanAtG (Y Z.i).t (x ≫ Z.π) (u' σ i)) {d : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → k}
@@ -109,6 +131,9 @@ theorem GrTriv.IsVal.change {T : GrTriv Z e F} {f : Γ(F, V)} {x : Sp k ⟶ Z.X}
   simp only [mul_zpow, Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx, i, φ, fun _ _ => 1, h, fun σ => (diagAt_iff (tan_bc (T.int i) _ h σ) (tan_bc (T.int i) _ h σ) _).2 (Diag.refl _), by simp⟩`.
+-/
 theorem GrTriv.isVal_chart (f : Γ(F, V)) {x : Sp k ⟶ Z.X} (hx : ⊤ ≤ x ⁻¹ᵁ V) (i : T.L.ι) (φ : Γ(Z.X, T.L.U i) →+* k)
     (h : spMap φ ≫ (T.hU i).fromSpec = x) :
     T.IsVal f x ((T.w i).bc φ) (valR x (V ⊓ T.L.U i) (GlobalTheory.LB.coord (T.iso.hom.app V f) i)) :=

@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TemperedLocalComponents.SatLoc
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SatOfFixed
 
+/- English proof (translation)
+Introduce `P F _ _ _ n M π hπ w hw`. Take `⟨⟨σ, hσ⟩, h⟩` from `locCompR P F n π w`. Conclude with `sat_of_isotypic (satLoc P) π.finPart hπ w hw σ (h σ hσ)`.
+-/
 theorem UpperTheory.V.Af.satR :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.SatR := by
   intro P F _ _ _ n M π hπ w hw

@@ -17,6 +17,9 @@ noncomputable section
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_common_denominator hM`.
+-/
 theorem exists_common_denominator {N : ℕ} {M : Submodule (𝓞 K) (Fin N → K)} (hM : M.FG) :
     ∃ c : 𝓞 K, c ≠ 0 ∧ ∀ v ∈ M, ∀ i, ∃ w : 𝓞 K,
       algebraMap (𝓞 K) K w = algebraMap (𝓞 K) K c * v i :=
@@ -26,19 +29,31 @@ def intIncl (K : Type) [Field K] (N : ℕ) : (Fin N → 𝓞 K) →ₗ[𝓞 K] (
   LinearMap.compLeft (Algebra.linearMap (𝓞 K) K) (Fin N)
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intIncl_apply {N : ℕ} (v : Fin N → 𝓞 K) (i : Fin N) : intIncl K N v i = (v i : K) := rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Introduce `_ _ h` and use `funext fun i => RingOfIntegers.coe_injective (congrFun h i)`.
+-/
 theorem intIncl_injective (N : ℕ) : Function.Injective (intIncl K N) := fun _ _ h =>
   funext fun i => RingOfIntegers.coe_injective (congrFun h i)
 
 def denom {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M] : 𝓞 K :=
   (exists_common_denominator (Module.Finite.iff_fg.mp ‹_›)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_common_denominator (Module.Finite.iff_fg.mp ‹_›)).choose_spec.1`.
+-/
 theorem denom_ne_zero {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M] :
     denom M ≠ 0 :=
   (exists_common_denominator (Module.Finite.iff_fg.mp ‹_›)).choose_spec.1
 
+/- English proof (translation)
+Take `⟨-, h⟩` from `(exists_common_denominator (Module.Finite.iff_fg.mp ‹_›)).choose_spec`. Use `choose w hw using h v v.2`. Conclude with `⟨w, funext fun i => by rw [intIncl_apply, Pi.smul_apply, Algebra.smul_def]; exact hw i⟩`.
+-/
 theorem denom_mul_mem {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
     (v : M) : denom M • (v : Fin N → K) ∈ LinearMap.range (intIncl K N) := by
   obtain ⟨-, h⟩ := (exists_common_denominator (Module.Finite.iff_fg.mp ‹_›)).choose_spec
@@ -50,12 +65,18 @@ def scaleMap {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (�
   (LinearEquiv.ofInjective (intIncl K N) (intIncl_injective N)).symm.toLinearMap ∘ₗ
     (denom M • M.subtype).codRestrict (LinearMap.range (intIncl K N)) (denom_mul_mem M)
 
+/- English proof (translation)
+Simplify using `only [scaleMap, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.ofInjective_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem intIncl_scaleMap {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
     (v : M) : intIncl K N (scaleMap M v) = denom M • (v : Fin N → K) := by
   simp only [scaleMap, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]
   rw [LinearEquiv.ofInjective_symm_apply]
   rfl
 
+/- English proof (translation)
+Use `congrFun (intIncl_scaleMap M v) i` as an intermediate fact. Rewrite `this` using `[intIncl_apply]`. Rewrite using `[this, Pi.smul_apply, Algebra.smul_def]`.
+-/
 theorem scaleMap_apply {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
     (v : M) (i : Fin N) : (scaleMap M v i : K) = (denom M : K) * (v : Fin N → K) i := by
   have := congrFun (intIncl_scaleMap M v) i
@@ -71,6 +92,11 @@ def latticeCoord (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N →
   (σ (denom M : K))⁻¹ • ((WithLp.linearEquiv 2 ℂ (Fin N → ℂ)).toLinearMap ∘ₗ
     (standardCoord K σ (Fin N)).toLinearMap ∘ₗ fibreMap σ (scaleMap M))
 
+/- English proof (translation)
+Establish `hc : σ (denom M : K) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `denom_ne_zero M` after adjusting the coercions. Simplify using `only [latticeCoord, LinearMap.smul_apply, LinearMap.coe_comp, Function.comp_apply, fibreMap_tmul, LinearEquiv.coe_coe, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `(σ (denom M : K))⁻¹ * standardCoord K σ (Fin N) (z ⊗ₜ scaleMap M v) i = _`.
+
+Rewrite using `[standardCoord_tmul, scaleMap_apply, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem latticeCoord_tmul (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
     [Module.Finite (𝓞 K) M] (z : ComplexAt σ) (v : M) (i : Fin N) :
     latticeCoord σ M (z ⊗ₜ v) i = σ ((v : Fin N → K) i) * (ofComplex σ).symm z := by
@@ -83,6 +109,13 @@ theorem latticeCoord_tmul (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (
   rw [standardCoord_tmul, scaleMap_apply, map_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hc : σ (denom M : K) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `denom_ne_zero M` after adjusting the coercions. Establish `hs : Function.Injective (scaleMap M)`. Introduce `v w h`.
+
+Use `congrArg (intIncl K N) h` as an intermediate fact. Rewrite `this` using `[intIncl_scaleMap, intIncl_scaleMap]`. Conclude with `Subtype.ext (smul_right_injective (Fin N → K) (denom_ne_zero M) this)`. Introduce `x y h`. Simplify using `only [latticeCoord, LinearMap.smul_apply] at h`.
+
+Establish `h'` using `smul_right_injective _ (inv_ne_zero hc) h`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, EmbeddingLike.apply_eq_iff_eq] at h'`. Conclude with `fibreMap_injective σ hs h'`.
+-/
 theorem latticeCoord_injective (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
     [Module.Finite (𝓞 K) M] : Function.Injective (latticeCoord σ M) := by
   have hc : σ (denom M : K) ≠ 0 := by
@@ -100,6 +133,11 @@ theorem latticeCoord_injective (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞
     EmbeddingLike.apply_eq_iff_eq] at h'
   exact fibreMap_injective σ hs h'
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z v`. Use function extensionality and compare the values at `i`. Rewrite using `[conjMap_tmul, latticeCoord_tmul, Pi.star_apply, latticeCoord_tmul, conjugate_coe_eq]`.
+
+Express the relevant statement in the definitionally equal form `_ * starRingEnd ℂ ((ofComplex σ).symm z) = _`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`. Use the proof step `@[instance_reducible]`.
+-/
 theorem latticeCoord_conjMap (σ : K →+* ℂ) {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
     [Module.Finite (𝓞 K) M] (x : Fibre σ M) :
     latticeCoord (conjugate σ) M (conjMap σ M x) = star (latticeCoord σ M x) := by
@@ -136,6 +174,9 @@ def matrixCore {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype
     have hx' : Ψ x ≠ 0 := fun h0 => hx (hΨ (h0.trans (map_zero Ψ).symm))
     exact (hH.dotProduct_mulVec_pos hx').ne' h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixCore_inner {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} [Fintype ι]
     (Ψ : V →ₗ[ℂ] (ι → ℂ)) (hΨ : Function.Injective Ψ) (H : Matrix ι ι ℂ) (hH : H.PosDef)
     (x y : V) : (matrixCore Ψ hΨ H hH).inner x y = star (Ψ x) ⬝ᵥ (H *ᵥ Ψ y) := rfl
@@ -149,12 +190,18 @@ def matrixMetric {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite
     simp only [dotProduct, mulVec, Pi.star_apply, map_sum, map_mul, Matrix.map_apply,
       RCLike.star_def, Complex.conj_conj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixMetric_inner {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
     (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
     (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) (σ : K →+* ℂ) (x y : Fibre σ M) :
     ((matrixMetric M H hH hconj).form σ).inner x y =
       star (latticeCoord σ M x) ⬝ᵥ (H σ *ᵥ latticeCoord σ M y) := rfl
 
+/- English proof (translation)
+Rewrite using `[matrixMetric_inner]`. Apply the tactic sequence `congr 2 <;> funext i <;> rw [latticeCoord_tmul] <;> simp [embVec, ofComplex]`.
+-/
 theorem matrixMetric_inner_one_tmul {N : ℕ} (M : Submodule (𝓞 K) (Fin N → K))
     [Module.Finite (𝓞 K) M] (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
     (hconj : ∀ σ, H (conjugate σ) = (H σ).map (starRingEnd ℂ)) (σ : K →+* ℂ) (v u : M) :
@@ -174,11 +221,17 @@ instance idealLattice_finite {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)�
   Module.Finite.iff_fg.mpr (KLinesIdealLatticeFG.fg K a)
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `Matrix.PosDef.diagonal fun x => Complex.zero_lt_real.mpr (hd σ x)`.
+-/
 theorem diagMetric_posDef {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ} (hd : ∀ σ x, 0 < d σ x)
     (σ : K →+* ℂ) : (diagMetric d σ).PosDef :=
   Matrix.PosDef.diagonal fun x => Complex.zero_lt_real.mpr (hd σ x)
 
 omit [NumberField K] in
+/- English proof (translation)
+Simplify using `only [diagMetric, Matrix.diagonal_map (map_zero _), Complex.conj_ofReal, hc]`.
+-/
 theorem diagMetric_conj {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
     (hc : ∀ σ x, d (conjugate σ) x = d σ x) (σ : K →+* ℂ) :
     diagMetric d (conjugate σ) = (diagMetric d σ).map (starRingEnd ℂ) := by
@@ -202,6 +255,9 @@ def sumBasis {n m k : ℕ} (b : Fin m → Fin n → K) (c : Fin k → Fin n → 
   Module.Basis.mk hli (by
     rw [hli.span_eq_top_of_card_eq_finrank' (by simp [hmk])])
 
+/- English proof (translation)
+Simplify using `[sumBasis, Module.Basis.mk_apply]`.
+-/
 theorem sumBasis_apply {n m k : ℕ} (b : Fin m → Fin n → K) (c : Fin k → Fin n → K)
     (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n) (i : Fin m ⊕ Fin k) :
     sumBasis b c hli hmk i = Sum.elim b c i := by
@@ -237,6 +293,15 @@ def schurMetric {n m k : ℕ} (d : (K →+* ℂ) → Fin n → ℝ) (b : Fin m �
   let G := gramAt (diagMetric d σ) σ (Sum.elim b c)
   G.toBlocks₂₂ - G.toBlocks₂₁ * G.toBlocks₁₁⁻¹ * G.toBlocks₁₂
 
+/- English proof (translation)
+Establish `hA : G.toBlocks₁₁.PosDef` using `hG.submatrix Sum.inl_injective`. Establish `hBC : G.toBlocks₂₁ = G.toBlocks₁₂ᴴ`. Use extensionality with `i j`. Simplify `(congrFun (congrFun hG.1 (Sum.inr i)) (Sum.inl j)).symm` using `[toBlocks₂₁, toBlocks₁₂]`. Establish `: Invertible G.toBlocks₁₁` using `hA.isUnit.invertible`.
+
+Establish `hG' : G = fromBlocks G.toBlocks₁₁ G.toBlocks₁₂ G.toBlocks₁₂ᴴ G.toBlocks₂₂`. Rewrite using `[← hBC, fromBlocks_toBlocks]`. Rewrite using `[hBC]`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun y hy => ?_` and prove the remaining obligations. Conclude with `(IsHermitian.fromBlocks₁₁ (A := G.toBlocks₁₁) G.toBlocks₁₂ G.toBlocks₂₂ hA.1).mp (hG' ▸ hG.1)`.
+
+Use `set A := G.toBlocks₁₁ set B := G.toBlocks₁₂ set x : m → ℂ := -((A⁻¹ * B) *ᵥ y)`. Establish `hxy : (x ⊕ᵥ y) ≠ 0`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+
+Simplify using `using congrFun h (Sum.inr j)`. Establish `hpos` using `hG.dotProduct_mulVec_pos hxy`. Rewrite `hpos` using `[dotProduct_mulVec, hG', schur_complement_eq₁₁ B G.toBlocks₂₂ x y hA.1]`. Simplify `hpos` using `[x, ← dotProduct_mulVec]`.
+-/
 theorem posDef_schur {m k : Type*} [Fintype m] [Fintype k] [DecidableEq m] [DecidableEq k]
     {G : Matrix (m ⊕ k) (m ⊕ k) ℂ} (hG : G.PosDef) :
     (G.toBlocks₂₂ - G.toBlocks₂₁ * G.toBlocks₁₁⁻¹ * G.toBlocks₁₂).PosDef := by
@@ -264,6 +329,9 @@ theorem posDef_schur {m k : Type*} [Fintype m] [Fintype k] [DecidableEq m] [Deci
     simpa [x, ← dotProduct_mulVec] using hpos
 
 omit [NumberField K] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramAt, embVec, diagMetric, dotProduct, mulVec_diagonal, conjugate_coe_eq, hc, map_sum]`.
+-/
 theorem gramAt_diagMetric_conj {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
     (hc : ∀ σ x, d (conjugate σ) x = d σ x) (σ : K →+* ℂ) {ι : Type*} (u : ι → Fin n → K) :
     gramAt (diagMetric d (conjugate σ)) (conjugate σ) u =
@@ -272,12 +340,20 @@ theorem gramAt_diagMetric_conj {n : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
   simp [gramAt, embVec, diagMetric, dotProduct, mulVec_diagonal, conjugate_coe_eq, hc, map_sum]
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `posDef_schur (LinesGramPosDef.full K n _ σ _ _ (diagMetric_posDef hd σ) hli)`.
+-/
 theorem schurMetric_posDef {n m k : ℕ} {d : (K →+* ℂ) → Fin n → ℝ} (hd : ∀ σ x, 0 < d σ x)
     {b : Fin m → Fin n → K} {c : Fin k → Fin n → K} (hli : LinearIndependent K (Sum.elim b c))
     (σ : K →+* ℂ) : (schurMetric d b c σ).PosDef :=
   posDef_schur (LinesGramPosDef.full K n _ σ _ _ (diagMetric_posDef hd σ) hli)
 
 omit [NumberField K] in
+/- English proof (translation)
+Establish `hmap : ∀ {p q : Type} [Fintype p] [Fintype q] (X : Matrix p q ℂ), X.map (starRingEnd ℂ) = Xᴴᵀ` using `fun X => by ext; simp`. Establish `hinv : ∀ {p : Type} [Fintype p] [DecidableEq p] (X : Matrix p p ℂ), (X.map (starRingEnd ℂ))⁻¹ = X⁻¹.map (starRingEnd ℂ)` using `fun X => by`. Rewrite using `[hmap, hmap, ← transpose_nonsing_inv, ← conjTranspose_nonsing_inv]`. Simplify using `only [schurMetric, gramAt_diagMetric_conj hc σ]`. Use `set G := gramAt (diagMetric d σ) σ (Sum.elim b c)`.
+
+Express the relevant statement in the definitionally equal form `G.toBlocks₂₂.map (starRingEnd ℂ) - G.toBlocks₂₁.map (starRingEnd ℂ) * (G.toBlocks₁₁.map (starRingEnd ℂ))⁻¹ * G.toBlocks₁₂.map (starRingEnd ℂ) = _`. Rewrite using `[hinv, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_sub _ (map_sub _)]`.
+-/
 theorem schurMetric_conj {n m k : ℕ} {d : (K →+* ℂ) → Fin n → ℝ}
     (hc : ∀ σ x, d (conjugate σ) x = d σ x) (b : Fin m → Fin n → K) (c : Fin k → Fin n → K)
     (σ : K →+* ℂ) :
@@ -300,6 +376,13 @@ def quotBundle {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (d : 
   matrixBundle (quotLattice a b c hli hmk) (schurMetric d b c) (schurMetric_posDef hd hli)
     (schurMetric_conj hc b c)
 
+/- English proof (translation)
+Introduce `a d`. Establish `hv : (Pi.single 0 1 : Fin 2 → ℚ) ∈ idealLattice a`. Rewrite using `[idealLattice, Submodule.mem_pi]`. Introduce `i _`. Rewrite using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_one_iff]`.
+
+Distinguish the cases in `h : i = 0`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [h]⟩`. Use `⟨fun _ _ => one_pos, fun _ _ => rfl, ⟨_, hv⟩, ?_⟩` and prove the remaining obligations. Use `(matrixMetric_inner_one_tmul (idealLattice a) (diagMetric d) (diagMetric_posDef fun _ _ => one_pos) (diagMetric_conj fun _ _ => rfl) ratEmbedding ⟨_, hv⟩ ⟨_, hv⟩).trans ?_` and prove the remaining obligations.
+
+Simplify using `[embVec, diagMetric, dotProduct, Fin.sum_univ_two, d]`.
+-/
 theorem latticeBundle_example :
     let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
     let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1
@@ -321,6 +404,9 @@ theorem latticeBundle_example :
       ⟨_, hv⟩ ⟨_, hv⟩).trans ?_
     simp [embVec, diagMetric, dotProduct, Fin.sum_univ_two, d]
 
+/- English proof (translation)
+The claim follows from `quotBundle (fun _ : Fin 2 => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) (fun _ _ => 1) (fun _ _ => one_pos) (fun _ _ => rfl) (fun _ : Fin 1 => (Pi.single 0 1 : Fin 2 → ℚ)) (fun _ : Fin 1 => (Pi.single 1 1 : Fin 2 → ℚ)) S6.LatticeAsBundle.hypotheses_inhabited.2.2.2.1 rfl`.
+-/
 example : HermitianBundle.{0} ℚ :=
   quotBundle (fun _ : Fin 2 => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) (fun _ _ => 1) (fun _ _ => one_pos)
     (fun _ _ => rfl) (fun _ : Fin 1 => (Pi.single 0 1 : Fin 2 → ℚ))

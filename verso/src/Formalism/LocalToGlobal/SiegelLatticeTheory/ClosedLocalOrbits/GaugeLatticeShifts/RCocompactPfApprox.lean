@@ -26,10 +26,18 @@ section SlopeTestRemainingChoices
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨star (a : X.B.I.E), (NumberField.RingOfIntegers.isIntegral_coe a).map (starRingEnd X.B.I.E).toIntAlgHom⟩, rfl⟩`.
+-/
 theorem star_integral (a : 𝓞 X.B.I.E) : ∃ b : 𝓞 X.B.I.E, (b : X.B.I.E) = star (a : X.B.I.E) :=
   ⟨⟨star (a : X.B.I.E), (NumberField.RingOfIntegers.isIntegral_coe a).map
     (starRingEnd X.B.I.E).toIntAlgHom⟩, rfl⟩
 
+/- English proof (translation)
+Use `set Mm : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E := (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) with hMm`. Use `set Mi : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E := ((M⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) with hMi`. Establish `hMMi : Mm * Mi = 1` using `by rw [hMm, hMi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Unfold `Gr`. Establish `e : Bm' X * Mm * Bm X * (Bm' X * Mi * Bm X) = Bm' X * (Mm * (Bm X * Bm' X) * Mi) * Bm X`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, Bm_mul_Bm', Matrix.mul_one, hMMi, Matrix.mul_one, Bm'_mul_Bm]`.
+-/
 theorem gr_mul (M : GL (Fin X.B.I.n) X.B.I.E) :
     Gr X (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *
       Gr X ((M⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = 1 := by
@@ -42,6 +50,15 @@ theorem gr_mul (M : GL (Fin X.B.I.n) X.B.I.E) :
     simp only [Matrix.mul_assoc]
   rw [e, Bm_mul_Bm', Matrix.mul_one, hMMi, Matrix.mul_one, Bm'_mul_Bm]
 
+/- English proof (translation)
+Use `set Mm : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E := (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) with hMm`. Establish `hU : Mmᴴ * X.B.I.J * Mm = X.B.I.J`. Establish `h : Formalism.UG.cT (starRingEnd X.B.I.E) Mm * X.B.I.J * Mm = X.B.I.J` using `hM`. Establish `hc : Formalism.UG.cT (starRingEnd X.B.I.E) Mm = Mmᴴ`. Use extensionality with `i j`.
+
+Simplify using `[Formalism.UG.cT, conjTranspose_apply, starRingEnd_apply]`. Rewrite `h` using `[hc]`. Then use the resulting hypothesis. Establish `hB : (Bm' X)ᴴ * (Bm X)ᴴ = 1`. Rewrite using `[← conjTranspose_mul, Bm_mul_Bm', conjTranspose_one]`. Unfold `Gr`.
+
+Rewrite using `[JB_eq, conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Bm X)ᴴ * (Mmᴴ * X.B.I.J * Mm) * Bm X := by`. Rewrite using `[hB, Bm_mul_Bm']`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = (Bm X)ᴴ * X.B.I.J * Bm X := by rw [hU]`.
+-/
 theorem gr_unitary (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J) :
     (Gr X (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E))ᴴ * JB X *
       Gr X (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = JB X := by
@@ -68,6 +85,9 @@ section Bounds
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (ha i x) (hb x j) (norm_nonneg _) ha0`. Use `_ = Fintype.card ι * (a * b) := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem norm_mul_entry_le (A B : Matrix ι ι ℂ) (a b : ℝ) (ha0 : 0 ≤ a)
     (ha : ∀ i j, ‖A i j‖ ≤ a) (hb : ∀ i j, ‖B i j‖ ≤ b) (i j : ι) :
     ‖(A * B) i j‖ ≤ Fintype.card ι * (a * b) := by
@@ -77,6 +97,13 @@ theorem norm_mul_entry_le (A B : Matrix ι ι ℂ) (a b : ℝ) (ha0 : 0 ≤ a)
         rw [norm_mul]; exact mul_le_mul (ha i x) (hb x j) (norm_nonneg _) ha0
     _ = Fintype.card ι * (a * b) := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hs : ∀ i j, ‖E'ᴴ i j‖ ≤ a` using `fun i j => by rw [conjTranspose_apply, norm_star]; exact ha j i`. Establish `h1` using `norm_mul_entry_le J' E'ᴴ bJ' a hJ'0 hJ' hs`. Establish `hn : 0 ≤ Fintype.card ι * (bJ' * a)` using `by positivity`. Establish `h2` using `norm_mul_entry_le (J' * E'ᴴ) J _ bJ hn h1 hJ i j`. Establish `h2' : ‖(⅟2 : ℂ)‖ = 1 / 2` using `by rw [invOf_eq_inv]; simp`.
+
+Unfold `proj Formalism.L2.SG.Pf.Unip.sharp`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, h2', Matrix.sub_apply]`. Establish `h3` using `norm_sub_le (E' i j) ((J' * E'ᴴ * J) i j)`. Establish `h4` using `ha i j`. Establish `h5 : 0 ≤ Fintype.card ι * (Fintype.card ι * (bJ' * a) * bJ)` using `by positivity`.
+
+Use polynomial arithmetic with `[norm_nonneg (E' i j - (J' * E'ᴴ * J) i j)]`.
+-/
 theorem norm_proj_entry_le [Invertible (2 : ℂ)] (J J' E' : Matrix ι ι ℂ) (a bJ bJ' : ℝ) (ha0 : 0 ≤ a)
     (hJ0 : 0 ≤ bJ) (hJ'0 : 0 ≤ bJ') (ha : ∀ i j, ‖E' i j‖ ≤ a) (hJ : ∀ i j, ‖J i j‖ ≤ bJ)
     (hJ' : ∀ i j, ‖J' i j‖ ≤ bJ') (i j : ι) :
@@ -99,6 +126,9 @@ section Proj
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [StarRing K] [Invertible (2 : K)]
 
+/- English proof (translation)
+Unfold `proj Formalism.L2.SG.Pf.Unip.sharp`. Rewrite using `[conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, ← smul_sub]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem proj_sub' (J J' A B : Matrix ι ι K) : proj J J' A - proj J J' B = proj J J' (A - B) := by
   unfold proj Formalism.L2.SG.Pf.Unip.sharp
   rw [conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, ← smul_sub]
@@ -107,6 +137,9 @@ theorem proj_sub' (J J' A B : Matrix ι ι K) : proj J J' A - proj J J' B = proj
 
 end Proj
 
+/- English proof (translation)
+Establish `h2 : X.B.I.φ v (⅟2 : X.B.I.E) = (⅟2 : ℂ)`. Rewrite using `[invOf_eq_inv, invOf_eq_inv, map_inv₀, map_ofNat]`. Unfold `proj Formalism.L2.SG.Pf.Unip.sharp`. Rewrite using `[Matrix.map_smul' _ _ _ (fun a b => map_mul _ a b), h2, Matrix.map_sub _ (fun a b => map_sub _ a b), Matrix.map_mul, Matrix.map_mul, map_conjTranspose X v]`.
+-/
 theorem map_proj {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) [Invertible (2 : X.B.I.E)]
     [Invertible (2 : ℂ)] (J J' A : Matrix (Kap X) (Kap X) X.B.I.E) :
     (proj J J' A).map (X.B.I.φ v) = proj (J.map (X.B.I.φ v)) (J'.map (X.B.I.φ v)) (A.map (X.B.I.φ v)) := by
@@ -116,6 +149,29 @@ theorem map_proj {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) [Inver
   rw [Matrix.map_smul' _ _ _ (fun a b => map_mul _ a b), h2, Matrix.map_sub _ (fun a b => map_sub _ a b), Matrix.map_mul, Matrix.map_mul,
     map_conjTranspose X v]
 
+/- English proof (translation)
+Introduce `D X M hM k hk d hd`. Set `_ : Invertible (2 : X.B.I.E)` to `invertibleOfNonzero two_ne_zero`. Set `_ : Invertible (2 : ℂ)` to `invertibleOfNonzero two_ne_zero`. Take `⟨c, hc, B, B', hB, hB'⟩` from `hD D X`. Establish `hN : 1 ≤ 2 * d * (c * c)`.
+
+Use `Nat.mul_pos (Nat.mul_pos two_pos hd) (Nat.mul_pos hc hc)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨C1, hC1⟩` from `hS D X (Gr X (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)) (Gr X ((M⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)) k (2 * d * (c * c)) hN`. Establish `hJ0 : 0 ≤ ∑ v, ∑ i, ∑ j, ‖JBv X v i j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hJ'0 : 0 ≤ ∑ v, ∑ i, ∑ j, ‖JBv' X v i j‖` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Establish `hJb : ∀ v i j, ‖JBv X v i j‖ ≤ ∑ v, ∑ i, ∑ j, ‖JBv X v i j‖` using `fun v i j => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hJ'b : ∀ v i j, ‖JBv' X v i j‖ ≤ ∑ v, ∑ i, ∑ j, ‖JBv' X v i j‖` using `fun v i j => by`. Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `hbJ : (∑ v, ∑ i, ∑ j, ‖JBv X v i j‖) = bJ at hJ0 hJb`.
+
+Generalize the expression as in `hbJ' : (∑ v, ∑ i, ∑ j, ‖JBv' X v i j‖) = bJ' at hJ'0 hJ'b`. Generalize the expression as in `ha : max C1 0 = a`. Establish `ha0 : 0 ≤ a` using `ha ▸ le_max_right _ _`. Establish `haC : C1 ≤ a` using `ha ▸ le_max_left _ _`. Use `⟨a + Fintype.card (Kap X) * (Fintype.card (Kap X) * (bJ' * a) * bJ), fun P hP => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Y0, hk0, h10, ⟨A, hA⟩, hC⟩` from `hC1 P (fun v => ⟨(hP v).1, (hP v).2.1⟩)`. Use `⟨proj (JB X) (JB' X) Y0, inPat_proj (JB_graded X) (JB'_graded X) hk0, ?_, proj_skew (JB_herm X) (JB'_herm X) (JB'_mul_JB X) (JB_mul_JB' X) Y0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_proj (JB_herm X) (JB'_herm X) (JB'_mul_JB X) (JB_mul_JB' X) (gr_unitary X M hM) (gr_mul X M)]`. Conclude with `inPat_proj (JB_graded X) (JB'_graded X) h10`. Use `choose s hs using fun i j => star_integral X (A j i) set As : Matrix (Kap X) (Kap X) (𝓞 X.B.I.E) := Matrix.of fun i j => s i j with hAsd set Am := A.map (fun a => (a : X.B.I.E)) with hAm set Asm := As.map (fun a => (a : X.B.I.E)) with hAsm set Bm_ := B.map (fun a => (a : X.B.I.E) …`.
+
+Establish `hAs : Amᴴ = Asm`. Use extensionality with `i j`. Simplify using `[Am, Asm, As, hs, conjTranspose_apply]`. Establish `e1 : JB' X * Y0ᴴ * JB X = ((2 * d : ℕ) : X.B.I.E) • (B'm * Asm * Bm_)`. Rewrite using `[hA, conjTranspose_smul, star_natCast, Matrix.mul_smul, Matrix.smul_mul, hAs, ← hB, ← hB', Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(c * c) • A - B' * As * B, ?_⟩` and prove the remaining obligations. Establish `e2 : ((c * c) • A - B' * As * B).map (fun a => (a : X.B.I.E)) = ((c * c : ℕ) : X.B.I.E) • Am - B'm * Asm * Bm_`.
+
+Establish `h` using `(algebraMap (𝓞 X.B.I.E) X.B.I.E).mapMatrix.map_sub ((c * c) • A) (B' * As * B)`. Rewrite `h` using `[map_nsmul, map_mul, map_mul]`. Simplify using `only [RingHom.mapMatrix_apply] at h`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h`.
+
+Rewrite using `[e2]`. Unfold `proj Formalism.L2.SG.Pf.Unip.sharp`. Rewrite using `[e1, hA]`. Establish `e3 : ((2 * d * (c * c) : ℕ) : X.B.I.E) • Am - ((2 * d : ℕ) : X.B.I.E) • (B'm * Asm * Bm_) = (2 : X.B.I.E) • ((d : X.B.I.E) • (((c * c : ℕ) : X.B.I.E) • Am - B'm * Asm * Bm_))`. Use `push_cast`.
+
+Use `module`. Rewrite using `[e3, smul_smul, invOf_mul_self, one_smul]`. Introduce `v i j`. Establish `hskew` using `proj_of_skew (JBv'_mul X v) (hP v).2.2`. Rewrite using `[map_proj X v, show (JB X).map (X.B.I.φ v) = JBv X v from rfl, show (JB' X).map (X.B.I.φ v) = JBv' X v from rfl, ← hskew, proj_sub']`.
+
+Conclude with `norm_proj_entry_le (JBv X v) (JBv' X v) _ a bJ bJ' ha0 hJ0 hJ'0 (fun i j => (hC v i j).trans haC) (hJb v) (hJ'b v) i j`.
+-/
 theorem ratApprox_of (hS : RatSolApprox) (hD : JBDenom) : RatApprox := by
   intro D X M hM k hk d hd
   let _ : Invertible (2 : X.B.I.E) := invertibleOfNonzero two_ne_zero
@@ -192,6 +248,11 @@ theorem ratApprox_of (hS : RatSolApprox) (hD : JBDenom) : RatApprox := by
     exact norm_proj_entry_le (JBv X v) (JBv' X v) _ a bJ bJ' ha0 hJ0 hJ'0
       (fun i j => (hC v i j).trans haC) (hJb v) (hJ'b v) i j
 
+/- English proof (translation)
+Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image f)`. Establish `hpos : 0 < y * y` using `mul_self_pos.2 hy0`. Use `⟨(y * y).toNat, by omega, fun i => ?_⟩` and prove the remaining obligations. Establish `hc : (((y * y).toNat : ℕ) : E) = ((y : ℤ) : E) * ((y : ℤ) : E)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg hpos.le, Int.cast_mul]`.
+
+Establish `hi : IsIntegral ℤ (y • f i)` using `hy _ (Finset.mem_image_of_mem f (Finset.mem_univ i))`. Rewrite using `[hc]`. Establish `hi' : IsIntegral ℤ (((y : ℤ) : E) * f i)` using `by simpa [zsmul_eq_mul] using hi`. Establish `h2 : IsIntegral ℤ (algebraMap ℤ E y * (((y : ℤ) : E) * f i))` using `isIntegral_algebraMap.mul hi'`. Simplify `h2` using `[mul_assoc]`.
+-/
 theorem exists_common_den {E : Type} [Field E] [NumberField E] {ι : Type} [Fintype ι] (f : ι → E) :
     ∃ c : ℕ, 1 ≤ c ∧ ∀ i, IsIntegral ℤ ((c : E) * f i) := by
   obtain ⟨y, hy0, hy⟩ := exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image f)
@@ -205,6 +266,11 @@ theorem exists_common_den {E : Type} [Field E] [NumberField E] {ι : Type} [Fint
   have h2 : IsIntegral ℤ (algebraMap ℤ E y * (((y : ℤ) : E) * f i)) := isIntegral_algebraMap.mul hi'
   simpa [mul_assoc] using h2
 
+/- English proof (translation)
+Introduce `D X`. Take `⟨c, hc, h⟩` from `exists_common_den (E := X.B.I.E) (fun p : (Kap X × Kap X) ⊕ (Kap X × Kap X) => Sum.elim (fun q => JB X q.1 q.2) (fun q => JB' X q.1 q.2) p)`. Use `⟨c, hc, Matrix.of fun i j => ⟨(c : X.B.I.E) * JB X i j, h (Sum.inl (i, j))⟩, Matrix.of fun i j => ⟨(c : X.B.I.E) * JB' X i j, h (Sum.inr (i, j))⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[smul_eq_mul]`.
+
+Both sides reduce to the same expression. Use extensionality with `i j`. Simplify using `[smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem jbDenom_holds : JBDenom := by
   intro D X
   obtain ⟨c, hc, h⟩ := exists_common_den (E := X.B.I.E)
@@ -214,6 +280,9 @@ theorem jbDenom_holds : JBDenom := by
   · ext i j; simp [smul_eq_mul]; rfl
   · ext i j; simp [smul_eq_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `ratApprox_of hS jbDenom_holds`.
+-/
 theorem ratApprox_of_sol (hS : RatSolApprox) : RatApprox := ratApprox_of hS jbDenom_holds
 
 end Formalism.L2.SG.TermOp.Vanish

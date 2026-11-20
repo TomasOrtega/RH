@@ -21,6 +21,17 @@ open AlgebraicGeometry CategoryTheory Limits NumberField TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.CompRat GlobalTheory.CompRat.FixedConst
   GlobalTheory.AllWt GlobalTheory.FlatLine
 
+/- English proof (translation)
+Take `⟨⟨y, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField ℂ Y).symm.surjective x`. Establish `hfix : ∀ τ : ℂ ≃+* ℂ, (∀ a ∈ K, τ a = a) → φ ≫ CommRingCat.ofHom (τ : ℂ →+* ℂ) = φ`. Introduce `τ hτ`. Establish `e : spMap (τ : ℂ →+* ℂ) ≫ (Scheme.SpecToEquivOfField ℂ Y).symm ⟨y, φ⟩ = (Scheme.SpecToEquivOfField ℂ Y).symm ⟨y, φ ≫ CommRingCat.ofHom (τ : ℂ →+* ℂ)⟩`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map φ ≫ _ = Spec.map (φ ≫ _) ≫ _`.
+
+Rewrite using `[Spec.map_comp, Category.assoc]`. Establish `h2` using `(Scheme.SpecToEquivOfField ℂ Y).symm.injective (e.symm.trans (hx τ hτ))`. Conclude with `eq_of_heq (Sigma.mk.inj_iff.mp h2).2`. Establish `hmem : ∀ r, φ.hom r ∈ K`. Introduce `r`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv (K := K) (φ.hom r) (fun σ => by`. Establish `h` using `hfix σ.toRingEquiv (fun a ha => σ.commutes ⟨a, ha⟩)`. Conclude with `congrArg (fun f => f.hom r) h)`. Rewrite using `[← ha]`. Conclude with `a.2`.
+
+Set `ψ : Y.residueField y →+* K` to `φ.hom.codRestrict K hmem`. Use `⟨Spec.map (CommRingCat.ofHom ψ : Y.residueField y ⟶ CommRingCat.of K) ≫ Y.fromSpecResidueField y, ?_⟩` and prove the remaining obligations. Establish `hc : (CommRingCat.ofHom ψ : Y.residueField y ⟶ CommRingCat.of K) ≫ CommRingCat.ofHom (algebraMap K ℂ) = φ`. Use extensionality with `r`. Both sides reduce to the same expression.
+
+Conclude with `(Spec.map_comp_assoc _ _ _).symm.trans (congrArg (· ≫ Y.fromSpecResidueField y) (congrArg Spec.map hc))`.
+-/
 theorem exists_descent {Y : Scheme.{0}} (K : IntermediateField ℚ ℂ) (x : Sp ℂ ⟶ Y)
     (hx : ∀ τ : ℂ ≃+* ℂ, (∀ a ∈ K, τ a = a) → spMap (τ : ℂ →+* ℂ) ≫ x = x) :
     ∃ g : Sp K ⟶ Y, spMap (algebraMap K ℂ) ≫ g = x := by
@@ -48,6 +59,13 @@ theorem exists_descent {Y : Scheme.{0}} (K : IntermediateField ℚ ℂ) (x : Sp 
     rfl
   exact (Spec.map_comp_assoc _ _ _).symm.trans (congrArg (· ≫ Y.fromSpecResidueField y) (congrArg Spec.map hc))
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range W.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q p]` and apply the resulting hypothesis. Establish `hf' : (Y.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom f = n` using `hf`.
+
+Establish `hle : W.ι ''ᵁ ⊤ ≤ W` using `(Scheme.Opens.ι_image_top W).le`. Establish `e : (homOfLE (le_top : W.ι ''ᵁ ⊤ ≤ ⊤)).op = (homOfLE (le_top : W ≤ ⊤)).op ≫ (homOfLE hle).op` using `rfl`. Establish `key : (Y.presheaf.map (homOfLE (le_top : W.ι ''ᵁ ⊤ ≤ ⊤)).op).hom f = n`. Rewrite using `[e, Functor.map_comp]`. Conclude with `(congrArg (Y.presheaf.map (homOfLE hle).op).hom hf').trans (map_natCast _ n)`.
+
+Rewrite using `[← IsOpenImmersion.lift_fac W.ι x hr, ev_comp, Scheme.Opens.ι_appTop]`. Conclude with `(congrArg _ key).trans (map_natCast _ n)`.
+-/
 theorem ev_eq_of_restrict {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (W : Y.Opens) (p : Sp ℂ) (hp : x p ∈ W) (f : Γ(Y, ⊤))
     (n : ℕ) (hf : Y.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op f = n) : ev x f = n := by
   have hr : Set.range x ⊆ Set.range W.ι := by
@@ -63,6 +81,13 @@ theorem ev_eq_of_restrict {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (W : Y.Opens) (p :
   rw [← IsOpenImmersion.lift_fac W.ι x hr, ev_comp, Scheme.Opens.ι_appTop]
   exact (congrArg _ key).trans (map_natCast _ n)
 
+/- English proof (translation)
+Set `V : Y.Opens` to `⟨Z, hZ.isOpen⟩`. Set `W : Y.Opens` to `⟨Zᶜ, hZ.isClosed.isOpen_compl⟩`. Establish `hVW : V ⊔ W = ⊤`. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Simplify using `[V, W, Set.union_compl_self]`.
+
+Establish `hdis : Disjoint V W`. Rewrite using `[disjoint_iff]`. Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Simplify using `[V, W]`. Take `⟨f, hfV, hfW⟩` from `exists_extension_zero V W hVW hdis 1`.
+
+Use `⟨f, fun x p => ⟨fun hp => ?_, fun hp => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `ev_eq_of_restrict x V p hp f 1 (by rw [hfV, Nat.cast_one])`. Simplify using `using h`. Establish `h` using `ev_eq_of_restrict x W p hp f 0 (by rw [hfW, Nat.cast_zero])`. Simplify using `using h`.
+-/
 theorem exists_indicator {Y : Scheme.{0}} {Z : Set Y} (hZ : IsClopen Z) :
     ∃ f : Γ(Y, ⊤), ∀ (x : Sp ℂ ⟶ Y) (p : Sp ℂ), (x p ∈ Z → ev x f = 1) ∧ (x p ∉ Z → ev x f = 0) := by
   let V : Y.Opens := ⟨Z, hZ.isOpen⟩
@@ -81,6 +106,11 @@ theorem exists_indicator {Y : Scheme.{0}} {Z : Set Y} (hZ : IsClopen Z) :
   · have h := ev_eq_of_restrict x W p hp f 0 (by rw [hfW, Nat.cast_zero])
     simpa using h
 
+/- English proof (translation)
+Set `m : (E →+* ℂ) → ℕ` to `fun τ => if τ (H.rt : E) = H.rt0 then p else q`. Set `e` to `Fintype.equivFin (Σ τ : E →+* ℂ, Fin (m τ))`. Use `⟨_, fun i => (e.symm i).1, fun τ => ?_⟩` and prove the remaining obligations. Establish `hcard : Nat.card {i // (e.symm i).1 = τ} = m τ`. Rewrite using `[Nat.card_congr (e.symm.subtypeEquiv (p := fun i => (e.symm i).1 = τ) (q := fun s => s.1 = τ) (fun _ => Iff.rfl)), Nat.card_congr (Equiv.sigmaSubtype τ), Nat.card_eq_fintype_card, Fintype.card_fin]`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hcard]`. Simplify using `[m, h]`. Rewrite using `[hcard]`. Simplify using `[m, h]`.
+-/
 private theorem exists_isTypeFn' {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p q : ℕ) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), IsTypeFn H p q ty := by
   classical
@@ -94,6 +124,9 @@ private theorem exists_isTypeFn' {E : Type} [Field E] [NumberField E] [IsCMField
   · rw [hcard]; simp [m, h]
   · rw [hcard]; simp [m, h]
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem spMap_comp_spMap_divisor {R₀ R R' : Type} [CommRing R₀] [CommRing R] [CommRing R'] (f : R →+* R')
     (g : R₀ →+* R) : spMap f ≫ spMap g = spMap (f.comp g) := by
   show Spec.map _ ≫ Spec.map _ = Spec.map _
@@ -103,6 +136,25 @@ private theorem spMap_comp_spMap_divisor {R₀ R R' : Type} [CommRing R₀] [Com
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨g, ty, hty⟩` from `exists_isTypeFn' H Dw.p Dw.q`. Set `σ₀ : KA l →+* ℂ` to `(algebraMap c.F ℂ).comp (IntermediateField.inclusion c.le).toRingHom`. Establish `hσ₀ : σ₀ (baseKA l).ρ = H.rt0` using `rfl`. Take `⟨F⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H Dw l Xo σ₀ g ty hD hσ₀ hty`. Take `⟨L, _, _, j, g₀, hg₀, hZ₀⟩` from `GlobalTheory.FlatLine.exists_numberField_point Z`.
+
+Use `letI : Algebra c.F L := j.toAlgebra`. Use `haveI : IsScalarTower ℚ c.F L := IsScalarTower.of_algebraMap_eq (fun a => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, eq_ratCast (algebraMap ℚ c.F), eq_ratCast (algebraMap ℚ L), map_ratCast])`. Use `haveI : Algebra.IsAlgebraic c.F L := Algebra.IsAlgebraic.tower_top (K := ℚ) c.F`. Set `φ : L →ₐ[c.F] ℂ` to `IsAlgClosed.lift`.
+
+Establish `hφ : (φ : L →+* ℂ).comp j = algebraMap c.F ℂ` using `RingHom.ext fun a => φ.commutes a`. Take `⟨hx₀, hZx₀⟩` from `GlobalTheory.FlatLine.point_ext hg₀ hZ₀ (φ : L →+* ℂ)`. Rewrite `hx₀` using `[hφ]`. Use `set x₀ : Sp ℂ ⟶ Xo.XF c := spMap (φ : L →+* ℂ) ≫ g₀ with hx₀def`. Establish `hover : x₀ ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap σ₀`.
+
+Rewrite using `[pullback.condition, ← Category.assoc]`. Use `erw [hx₀]`. Rewrite using `[spMap_comp_spMap_divisor]`. Take `⟨i, P, hP, hPx⟩` from `F.onto _ (by rw [Category.assoc]; exact hover)`. Take `⟨P', hP', hs⟩` from `GlobalTheory.CompRat.exists_isSplit_period_anyLevel E H Dw l Xo σ₀ g ty F hD hσ₀ hty hsig i`.
+
+Establish `hcond : F.u i P' ≫ Xo.s = spMap (algebraMap c.F ℂ) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[F.over_σ i P' hP', spMap_comp_spMap_divisor]`. Set `xs : Sp ℂ ⟶ Xo.XF c` to `pullback.lift (F.u i P') (spMap (algebraMap c.F ℂ)) hcond`. Establish `hxs₁ : xs ≫ pullback.fst _ _ = F.u i P'` using `pullback.lift_fst _ _ _`. Establish `hxs₂ : xs ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ)` using `pullback.lift_snd _ _ _`.
+
+Take `⟨f, hf⟩` from `exists_indicator (GlobalTheory.TrivOrderTieCompare.isClopen_comp Z)`. Establish `hvals : ∀ x : Sp ℂ ⟶ Xo.XF c, x ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → valAt' x ⊤ f ∈ ({0, 1} : Set ℂ)`. Introduce `x _`. Rewrite using `[valAt'_top]`. Distinguish the cases in `hx : x default ∈ (Z : Set (Xo.XF c))`.
+
+Simplify using `[(hf x default).1 hx]`. Simplify using `[(hf x default).2 hx]`. Establish `heq` using `GlobalTheory.CompRat.valAt_eq_of_finite_values_anyLevel E H Dw l Xo σ₀ g ty F hD hσ₀ hty c (algebraMap c.F ℂ) f _ (Set.toFinite _) hvals i P P' hP hP' x₀ xs hPx.symm hx₀ hxs₁ hxs₂`. Rewrite `heq` using `[valAt'_top, valAt'_top, (hf x₀ default).1 (hZx₀ default)]`. Use `⟨xs, hxs₂, fun p => ?_, fun τ hτ hfix => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hp`. Rewrite `heq` using `[(hf xs p).2 hp]`. Conclude with `one_ne_zero heq`. Establish `hτσ : (τ : ℂ →+* ℂ).comp σ₀ = σ₀` using `RingHom.ext fun a => hτ _ (IntermediateField.inclusion c.le a).2`. Establish `hfixed` using `GlobalTheory.CompRat.AnyLevel.conj_point_eq_of_isSplit F hD hσ₀ hty τ hτσ hfix i P' hP' hs`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hxs₁, hfixed]`. Rewrite using `[Category.assoc, hxs₂, spMap_comp_spMap_divisor]`. Use `congr 1`. Conclude with `RingHom.ext fun a => hτ a a.2`.
+-/
 theorem exists_fixed_point (hD : 1 ≤ Dw.p + Dw.q)
     (hsig : Dw.p = 0 ∨ Dw.q = 0 ∨ (3 ≤ Dw.p + Dw.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) (Z : Comp Xo c) :
     ∃ x : Sp ℂ ⟶ Xo.XF c, x ≫ strK = spMap (algebraMap c.F ℂ) ∧ (∀ p, x p ∈ (Z : Set (Xo.XF c))) ∧
@@ -165,6 +217,17 @@ namespace GlobalTheory.FixedPoint
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 open AlgebraicGeometry CategoryTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hD hsig K _ hle hK Z`. Use `letI : Algebra c.F K := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Take `⟨x, _, hxZ, hxfix⟩` from `exists_fixed_point (H := H) (Xo := Xo) (c := c) hD hsig Z`. Take `⟨g, hg⟩` from `exists_descent K x (fun τ hτ => hxfix τ (fun a ha => hτ a (hle ha)) (hK τ hτ))`. Establish `hcancel : ∀ a b : Sp K ⟶ Sp c.F, spMap (algebraMap K ℂ) ≫ a = spMap (algebraMap K ℂ) ≫ b → a = b`.
+
+Introduce `a b hab`. Rewrite `hab`, the goal using `[← Spec.map_preimage a, ← Spec.map_preimage b]`. Rewrite `hab` using `[← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Use `congr 1`. Use extensionality with `r`.
+
+Conclude with `congrArg (fun f => f.hom r) hab`. Establish `hgK : g ≫ strK = spMap (algebraMap c.F K)`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hg, ‹x ≫ strK = spMap (algebraMap c.F ℂ)›, spMap_comp_spMap_divisor]`. Both sides reduce to the same expression.
+
+Take `⟨y, hy⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed (g ≫ GlobalTheory.FlatLine.prX Xo c) (GlobalTheory.FlatLine.prX_over hgK)`. Use `⟨y, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FlatLine.ptF_eq hgK hy]`. Establish `hs : s = spMap (algebraMap K ℂ) default` using `Subsingleton.elim _ _`. Establish `h1` using `hxZ default`.
+
+Rewrite `h1` using `[← hg]`. Rewrite using `[hs]`. Conclude with `h1`.
+-/
 theorem exists_frPt_liesOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (Dw.p = 0 ∨ Dw.q = 0 ∨ (3 ≤ Dw.p + Dw.q ∧ (∃ D₁ : Datum H, D₁.p = 1 ∧ D₁.q = 0))) → ∀ (K : IntermediateField ℚ ℂ) [NumberField K] (hle : c.F ≤ K), GlobalTheory.CompRat.CurveOver H K l.M' → ∀ Z : Comp Xo c, (letI : Algebra c.F K := (IntermediateField.inclusion hle).toRingHom.toAlgebra; ∃ y : FrPt Xo c K, LiesOn Z y) := by
   intro E _ _ _ H Dw l Xo c hD hsig K _ hle hK Z
   letI : Algebra c.F K := (IntermediateField.inclusion hle).toRingHom.toAlgebra

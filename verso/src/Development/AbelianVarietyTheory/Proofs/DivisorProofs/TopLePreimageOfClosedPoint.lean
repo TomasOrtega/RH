@@ -25,12 +25,21 @@ def resEps {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ R] (δ : Derivat
   map_add' a b := by ext <;> simp
   map_mul' a b := by ext <;> simp [Derivation.leibniz, mul_comm, add_comm]
 
+/- English proof (translation)
+Simplify using `[resEps]`.
+-/
 @[simp] theorem resEps_fst {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ R] (δ : Derivation ℤ R R) (r : R) :
     (resEps δ r).fst = residue R r := by simp [resEps]
 
+/- English proof (translation)
+Simplify using `[resEps]`.
+-/
 @[simp] theorem resEps_snd {R : Type} [CommRing R] [IsLocalRing R] [Algebra ℤ R] (δ : Derivation ℤ R R) (r : R) :
     (resEps δ r).snd = residue R (δ r) := by simp [resEps]
 
+/- English proof (translation)
+Introduce `p _`. Establish `hp : p ⤳ closedPoint R` using `(PrimeSpectrum.le_iff_specializes p (closedPoint R)).1 (le_maximalIdeal p.2.ne_top)`. Conclude with `hp.mem_open (f ⁻¹ᵁ V).2 h`.
+-/
 theorem top_le_preimage_of_closedPoint {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (f : Sp R ⟶ X)
     (V : X.Opens) (h : f (closedPoint R) ∈ V) : ⊤ ≤ f ⁻¹ᵁ V := by
   intro p _

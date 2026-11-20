@@ -34,6 +34,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 namespace GlobalTheory.BottomFrames
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ ζ` using `IsIntegral.of_pow hn (by rw [hζ]; exact isIntegral_one)`. Use `set a : 𝓞 K := ⟨ζ, hi⟩ with ha`. Establish `h1 : (a : K) = ζ` using `rfl`. Use `⟨a, 0, 0, ?_, by rw [pow_zero, mul_one, h1]⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`.
+
+Use `⟨a ^ (n - 1), ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Move the coercions through the operations in `[h1]`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hn, hζ]`.
+-/
 theorem away_of_root {K : Type} [Field K] (ζ : K) (n : ℕ) (hn : 0 < n) (hζ : ζ ^ n = 1) (m : ℕ) :
     GlobalTheory.Square.IsAwayUnit m ζ := by
   have hi : IsIntegral ℤ ζ := IsIntegral.of_pow hn (by rw [hζ]; exact isIntegral_one)
@@ -46,16 +51,27 @@ theorem away_of_root {K : Type} [Field K] (ζ : K) (n : ℕ) (hn : 0 < n) (hζ :
   push_cast [h1]
   rw [← pow_succ', Nat.sub_add_cancel hn, hζ]
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratio_alg {u1 u2 a b : ℂ} (h2 : u2 ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) :
     u1 * (a / b) / u2 = (u1 * b⁻¹) / (u2 * a⁻¹) := by
   field_simp
 
+/- English proof (translation)
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem const_alg {c1 c2 c x : ℂ} (h2 : c2 ≠ 0) : c1 * (c * x) = c1 / c2 * c * (c2 * x) := by
   field_simp
 end GlobalTheory.BottomFrames
 
 namespace GlobalTheory.BottomFrames
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.StdUnn.CartanMove.compAt_mt_one θ τ V`. Rewrite `h1` using `[GlobalTheory.AdelicLatMove.mt_one]`. Use extensionality with `a b`. Establish `e1 : Formalism.L2.Theta.mt V k a b = (e + cA D e) * (Formalism.L2.Theta.mt V k - 1) a b + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) a b`. Rewrite using `[hk a b, Matrix.sub_apply, sub_add_cancel]`.
+
+Establish `h2` using `congrFun (congrFun h1 a) b`. Simplify using `only [compAt, Matrix.map_apply] at h2 ⊢`. Establish `h0 : infPart D (e + cA D e) = 0` using `by rw [RingHom.map_add, he, GlobalTheory.PlaceDatum.infPart_cA he, add_zero]`. Rewrite using `[e1, RingHom.map_add (infPart D), RingHom.map_mul (infPart D), h0, zero_mul, zero_add, h2]`.
+-/
 theorem compAt_supp {D : D7} (θ : InfFam D) {e : AE D} (he : infPart D e = 0) {V : HSp D} {k : GA D V}
     (hk : SuppAt e V k) (τ : D.what₂.Tau) : compAt θ τ (Formalism.L2.Theta.mt V k) = 1 := by
   have h1 := GlobalTheory.StdUnn.CartanMove.compAt_mt_one θ τ V
@@ -68,16 +84,28 @@ theorem compAt_supp {D : D7} (θ : InfFam D) {e : AE D} (he : infPart D e = 0) {
   have h0 : infPart D (e + cA D e) = 0 := by rw [RingHom.map_add, he, GlobalTheory.PlaceDatum.infPart_cA he, add_zero]
   rw [e1, RingHom.map_add (infPart D), RingHom.map_mul (infPart D), h0, zero_mul, zero_add, h2]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [GlobalTheory.AdelicLatMove.mt_one, sub_self]; simp`.
+-/
 theorem suppAt_one' {D : D7} (e : AE D) (V : HSp D) : SuppAt e V 1 := fun i j => by
   rw [GlobalTheory.AdelicLatMove.mt_one, sub_self]; simp
 
+/- English proof (translation)
+Introduce `y` and use `by simp`.
+-/
 theorem stabLat_one' {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) :
     GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.StabLat V Λ 1 := fun y => by simp
 
+/- English proof (translation)
+Use `show ((1 : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V 1).det + (1 - e)`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_one, Matrix.det_one]`. Simplify using the standard rewrite rules.
+-/
 theorem isDetAt_one' {D : D7} (e : AE D) (V : HSp D) : IsDetAt e V 1 1 := by
   show ((1 : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V 1).det + (1 - e)
   rw [GlobalTheory.AdelicLatMove.mt_one, Matrix.det_one]; simp
 
+/- English proof (translation)
+Use `⟨hA.1, fun y => (hA.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.Grid.neg_gram, hc]`. Simplify using `[GlobalTheory.Grid.neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`.
+-/
 theorem selfDual_neg {D : D7} {A : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} (hA : IsSelfDualC A Λ) :
     IsSelfDualC (GlobalTheory.Grid.neg A) Λ := by
   refine ⟨hA.1, fun y => (hA.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩
@@ -86,6 +114,61 @@ theorem selfDual_neg {D : D7} {A : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin A
     exact neg_eq_iff_eq_neg.2 hc
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL W S hN i j A A' WW X Y hX hY eA eA' eW`. Take `⟨p1, p2, p3, p4, n1, n2, n3, hI⟩` from `hY`. Establish `hXI` using `hX.is`. Establish `fA : Formalism.L2.DIV.IsFrame X.rA.β Y.rA.Λ` using `eA ▸ hXI.rigA.2.1`. Establish `fA' : Formalism.L2.DIV.IsFrame X.rA'.β Y.rA'.Λ` using `eA' ▸ hXI.rigA'.2.1`.
+
+Establish `fW : Formalism.L2.DIV.IsFrame X.rW.β Y.rW.Λ` using `eW ▸ hXI.rigW.2.1`. Use `set α : T → ((AE D)ˣ →* Circle) := fun t => Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2) with hα`. Use `set β : T → ((AE D)ˣ →* Circle) := fun _ => G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2) with hβ`. Establish `hee : ∀ t, Y.e t * Y.e t = Y.e t` using `fun t => GlobalTheory.PlaceDatum.idemSum_mul_self (hI.idem t)`. Use `choose k hk1 hk2 hk3 hk4 using fun t => GlobalTheory.T.exists_unitaryStabilizer_transition_selfDualFrames (Y.e t) (locPl G t) (hI.idem t) WW Y.rW.Λ hI.rigW.1 Y.rW.β X.rW.β hI.rigW.2.1 fW`.
+
+Use `choose x1 hx1 hx1' using fun t => GlobalTheory.T.standardThetaPair_first_frameChange_unitTranslate (α t / β t) (Y.e t) (locPl G t) (hI.idem t) (Y.ideal (locPl G) t) A WW Y.rA.Λ Y.rA.β X.rA.β hI.rigA.2.1 fA Y.rW.β X.rW.β (k t) (hk1 t) (hk3 t)`. Use `choose x2 hx2 hx2' using fun t => GlobalTheory.T.standardThetaPair_second_frameChange_unitTranslate (α t / β t) (Y.e t) (locPl G t) (hI.idem t) (Y.ideal (locPl G) t) A.rank A' WW Y.rA'.Λ Y.rA'.β X.rA'.β hI.rigA'.2.1 fA' Y.rW.β X.rW.β (k t) (hk1 t) (hk3 t)`. Use `set y : T → (AE D)ˣ := fun t => GlobalTheory.VecInv.detAt (Y.e t) (hee t) WW (k t) with hy`. Establish `hy1 : ∀ t, IsDetAt (Y.e t) WW (k t) (y t)` using `fun t => GlobalTheory.VecInv.isDetAt_detAt _ _ _ _`. Use `set c1 : T → ℂ := fun t => (((α t / β t) (x1 t) : Circle) : ℂ) * (((β t (y t) : Circle) : ℂ))⁻¹ with hc1`.
+
+Use `set c2 : T → ℂ := fun t => (((α t / β t) (x2 t) : Circle) : ℂ) * (((α t (y t) : Circle) : ℂ))⁻¹ with hc2`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Establish `hSdA` using `selfDual_neg hI.rigA.1`. Establish `hinf : ∀ t, infPart D (Y.e t) = 0` using `fun t => GlobalTheory.PlaceDatum.infPart_idemSum (hI.idem t)`. Establish `hinf' : ∀ t, infPart D (cA D (Y.e t)) = 0` using `fun t => GlobalTheory.PlaceDatum.infPart_cA (hinf t)`.
+
+Establish `hee' : ∀ t, cA D (Y.e t) * cA D (Y.e t) = cA D (Y.e t)` using `fun t => by rw [← RingHom.map_mul, hee t]`. Establish `hSB : ∀ t, IsSBHalf (Y.e t) (latO (GlobalTheory.Grid.neg A) WW (Y.rA.Λ : Set (Fin A.rank → D.host.E)) (Y.rW.Λ : Set (Fin WW.rank → D.host.E)) fun _ => True) (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A WW Y.rA.β Y.rW …` using `fun t => by`. Take `⟨K, hK, hC⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_of_frMapO (S := GlobalTheory.Grid.neg A) hSdA.1 hI.rigW.1.1 Y.rA.β Y.rW.β`. Conclude with `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.stdFst_isSB (hI.weil' t).hecT.1 (hI.idem t) (GlobalTheory.ConstRatio.ideal_ne_bot Y (locPl G) t) A WW Y.rA.β Y.rW.β _ (GlobalTheory.PlaceDatum.exists_den_frMapO (S := GlobalTheory.Grid.neg A) hSdA.1.fg hI.rigW.1.1.fg Y.r …`. Establish `hSB' : ∀ t, IsSBHalf (cA D (Y.e t)) (latO A' WW (Y.rA'.Λ : Set (Fin A'.rank → D.host.E)) (Y.rW.Λ : Set (Fin WW.rank → D.host.E)) fun _ => True) (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A.rank A' WW Y.rA'.β Y.rW.β)` using `fun t => GlobalTheory.T.standardThetaPair_second_isSchwartzBruhat_conjHalf _ (hI.weil' t).hecT.1 (Y.e t) (locPl G t) (hI.idem t) _ (GlobalTheory.ConstRatio.ideal_ne_bot Y (locPl G) t) A.rank A' WW Y.rA'.Λ Y.rW.Λ hI.rigA'.1 hI.rigW.1 Y.rA'.β Y.rW.β`.
+
+Establish `thY : ∀ t, IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (Y.f t)` using `fun t => by`. Take `⟨Tm, hTm⟩` from `(hI.fst t).1`. Rewrite using `[(hI.fst t).2 Tm hTm]`. Conclude with `GlobalTheory.SchrTheta.isTheta_placeModel D W.ψ hψ (GlobalTheory.Grid.neg A) WW Y.rA.Λ Y.rW.Λ hSdA hI.rigW.1 (Y.e t) (hee t) (hinf t) Y.vac hI.isVac.2.theta Tm hTm _ (hSB t)`. Establish `thY' : ∀ t, IsThetaFunO W.ψ A' WW (Y.f' t)` using `fun t => by`.
+
+Take `⟨Tm, hTm⟩` from `(hI.snd t).1`. Rewrite using `[(hI.snd t).2 Tm hTm]`. Conclude with `GlobalTheory.SchrTheta.isTheta_placeModel D W.ψ hψ A' WW Y.rA'.Λ Y.rW.Λ hI.rigA'.1 hI.rigW.1 (cA D (Y.e t)) (hee' t) (hinf' t) Y.vac' hI.isVac'.2.theta Tm hTm _ (hSB' t)`. Set `Z : Tri T A A' WW` to `⟨⟨Y.rA.Λ, X.rA.β, Y.rA.s, Y.rA.B⟩, ⟨Y.rA'.Λ, X.rA'.β, Y.rA'.s, Y.rA'.B⟩, ⟨Y.rW.Λ, X.rW.β, Y.rW.s, Y.rW.B⟩, Y.ω, Y.ω', Y.vac, Y.vac', Y.e, Y.c, fun t => c1 t • (Y.ω t).toSgn true (1, k t) (Y.f t), fun t => c2 t • Y.ω' t (1, k t) (Y.f' t), Y.m, Y.fd, Y.m', Y.fd'⟩`. Establish `hZI : Z.Is W.ψ W.θ α β (fun t => nuH G t i j) (locPl G)`.
+
+Use `⟨hI.rank, ⟨hI.rigA.1, fA, hI.rigA.2.2⟩, ⟨hI.rigA'.1, fA', hI.rigA'.2.2⟩, ⟨hI.rigW.1, fW, hI.rigW.2.2⟩, hI.weil, hI.weil', hI.isVac, hI.isVac', hI.idem, hI.expo, fun t => ?_, fun t => ?_, hI.meas, hI.meas'⟩` and prove the remaining obligations. Use `⟨(hI.fst t).1, fun Tm hTm => ?_⟩` and prove the remaining obligations. Establish `hY` using `(hI.fst t).2 Tm hTm`. Establish `hLaw` using `((GlobalTheory.WeilSplit.weilSplitFormula D W.ψ W.θ (GlobalTheory.Grid.neg A) WW (β t) (β t / α t) ((Y.ω t).toSgn true) (hI.weil t) (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.Λ Y.rW.Λ hSdA hI.rigW.1 Y.vac hI.isVac (Y.e t) (Or.inr ⟨_, hI.idem t⟩)).1 Tm hTm) 1 (k t) (suppAt_one' _ _) (hk1 t) …`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A WW X.rA.β X.rW.β = (((α t / β t) (x1 t) : Circle) : ℂ) • fun s => GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst (α t / β t) (Y.e t) (Y.ideal (locPl G …` using `funext fun s => hx1' t s`.
+
+Use `show c1 t • (Y.ω t).toSgn true (1, k t) (Y.f t) = Tm (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A WW X.rA.β X.rW.β)`. Rewrite using `[hY, hLaw, e1, map_smul, smul_smul]`. Use `congr 1`. Rewrite using `[hc1, map_one, Circle.coe_one, inv_one, one_mul, mul_assoc, inv_mul_cancel₀ (Circle.coe_ne_zero _), mul_one]`. Use `⟨(hI.snd t).1, fun Tm hTm => ?_⟩` and prove the remaining obligations.
+
+Establish `hY` using `(hI.snd t).2 Tm hTm`. Establish `hLaw` using `((GlobalTheory.WeilSplit.weilSplitFormula D W.ψ W.θ A' WW (α t) (α t / β t) (Y.ω' t) (hI.weil' t) Y.rA'.s Y.rW.s Y.rA'.Λ Y.rW.Λ hI.rigA'.1 hI.rigW.1 Y.vac' hI.isVac' (Y.e t) (Or.inr ⟨_, hI.idem t⟩)).2 Tm hTm) 1 (k t) (suppAt_one' _ _) (hk1 t) (stabLat_one' _ _) (hk2 t) 1 (y t) (i …`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A.rank A' WW X.rA'.β X.rW.β = (((α t / β t) (x2 t) : Circle) : ℂ) • fun s => GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (α t / β t) (Y.e t) (Y.ideal …` using `funext fun s => hx2' t s`. Use `show c2 t • Y.ω' t (1, k t) (Y.f' t) = Tm (GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdSnd (α t / β t) (Y.e t) (Y.ideal (locPl G) t) A.rank A' WW X.rA'.β X.rW.β)`. Rewrite using `[hY, hLaw, e1, map_smul, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[hc2, map_one, Circle.coe_one, inv_one, one_mul, mul_assoc, inv_mul_cancel₀ (Circle.coe_ne_zero _), mul_one]`. Establish `tsg : ∀ t (h' : GA D WW), (Y.ω t).toSgn true (1, h') = Y.ω t (1, h')` using `fun t h' => by show Y.ω t ((GlobalTheory.Grid.ofSgn true A) 1, h') = _`. Rewrite using `[map_one]`. Establish `kerZ : ∀ t P h' g, Z.ker W.ψ W.θ t P h' g = c1 t * Y.ker W.ψ W.θ t P (h' * k t) g`.
+
+Introduce `t P h' g`. Establish `hop` using `(GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ (GlobalTheory.Grid.neg A) WW _ _ ((Y.ω t).toSgn true) (hI.weil t) W.θ_is (fun τ => -Y.rA.s τ) (fun τ => -Y.rA.s τ) Y.rA.B Y.rA.B Y.rW.s Y.rW.s Y.rW.B Y.rW.B 1 (k t) (fun τ => by rw [GlobalTheory.StdUnn.CartanMove.compAt_mt_one, …`. Establish `hm : ∀ F, Y.ω t (g, h') (Y.ω t (1, k t) F) = Y.ω t (g, h' * k t) F` using `fun F => by`. Establish `e` using `(Y.ω t).map_mul (g, h') (1, k t)`. Rewrite `e` using `[Prod.mk_mul_mk, mul_one]`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `e1 : pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (c1 t • (Y.ω t).toSgn true (1, k t) (Y.f t)) P = c1 t • (Y.ω t) (1, k t) (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.f t) P)`. Rewrite using `[GlobalTheory.SeeSaw.Resc.pureTensorO_smul, LinearMap.smul_apply, ← tsg, hop]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← e1]`. Both sides reduce to the same expression. Use `_ = c1 t * (Y.ω t (g, h') (Y.ω t (1, k t) (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.f t) P))) 0 := by`. Rewrite using `[LinearMap.map_smul]`. Both sides reduce to the same expression.
+
+Use `_ = c1 t * Y.ker W.ψ W.θ t P (h' * k t) g := congrArg (c1 t * ·) (congrFun (hm (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (Y.f t) P)) 0)`. Establish `kerZ' : ∀ t P h' g, Z.ker' W.ψ W.θ t P h' g = c2 t * Y.ker' W.ψ W.θ t P (h' * k t) g`. Introduce `t P h' g`. Establish `hw' : IsWeilDatumO W.ψ A' WW (α t) (α t / β t) (Y.ω' t)` using `hI.weil' t`. Establish `hop` using `(GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ A' WW (α t) (α t / β t) (Y.ω' t) hw' W.θ_is Y.rA'.s Y.rA'.s Y.rA'.B Y.rA'.B Y.rW.s Y.rW.s Y.rW.B Y.rW.B 1 (k t) (fun τ => by rw [GlobalTheory.StdUnn.CartanMove.compAt_mt_one, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [com …`.
+
+Establish `hm : ∀ F, Y.ω' t (g, h') (Y.ω' t (1, k t) F) = Y.ω' t (g, h' * k t) F` using `fun F => by`. Establish `e : Y.ω' t ((g, h') * (1, k t)) = Y.ω' t (g, h') * Y.ω' t (1, k t)` using `map_mul _ _ _`. Rewrite `e` using `[Prod.mk_mul_mk, mul_one]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+
+Establish `e1 : pureTensorO W.ψ W.θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (c2 t • Y.ω' t (1, k t) (Y.f' t)) P = c2 t • (Y.ω' t) (1, k t) (pureTensorO W.ψ W.θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (Y.f' t) P)`. Rewrite using `[GlobalTheory.SeeSaw.Resc.pureTensorO_smul, LinearMap.smul_apply, hop]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e1]`. Both sides reduce to the same expression.
+
+Use `_ = c2 t * (Y.ω' t (g, h') (Y.ω' t (1, k t) (pureTensorO W.ψ W.θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (Y.f' t) P))) 0 := by`. Rewrite using `[LinearMap.map_smul]`. Both sides reduce to the same expression. Use `_ = c2 t * Y.ker' W.ψ W.θ t P (h' * k t) g := congrArg (c2 t * ·) (congrFun (hm (pureTensorO W.ψ W.θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (Y.f' t) P)) 0)`. Establish `IZ : ∀ t P h', Z.I W.ψ W.θ t P h' = c1 t * Y.I W.ψ W.θ t P (h' * k t)` using `fun t P h' => by show ∫ g in Y.fd, Z.ker W.ψ W.θ t P h' g ∂Y.m = _`.
+
+Simplify using `only [kerZ]`. Conclude with `MeasureTheory.integral_const_mul _ _`. Establish `IZ' : ∀ t P h', Z.I' W.ψ W.θ t P h' = c2 t * Y.I' W.ψ W.θ t P (h' * k t)` using `fun t P h' => by show ∫ g in Y.fd', Z.ker' W.ψ W.θ t P h' g ∂Y.m' = _`. Simplify using `only [kerZ']`. Conclude with `MeasureTheory.integral_const_mul _ _`.
+
+Establish `c1ne : ∀ t, c1 t ≠ 0` using `fun t => mul_ne_zero (Circle.coe_ne_zero _) (inv_ne_zero (Circle.coe_ne_zero _))`. Establish `c2ne : ∀ t, c2 t ≠ 0` using `fun t => mul_ne_zero (Circle.coe_ne_zero _) (inv_ne_zero (Circle.coe_ne_zero _))`. Establish `hv : ∀ t, ∃ ζ : D.what₂.LL, (∃ n : ℕ, 0 < n ∧ ζ ^ n = 1) ∧ D.what₂.embLL ζ = c1 t / c2 t`. Introduce `t`. Take `⟨z1, ⟨n1, hn1, hz1⟩, e1⟩` from `GlobalTheory.T.gridSquareCharQuotient_finiteUnitIdele_rootOfUnity μ₀ hL hN.chars i j t (x1 t) (hx1 t)`.
+
+Take `⟨z2, ⟨n2, hn2, hz2⟩, e2⟩` from `GlobalTheory.T.gridSquareCharQuotient_finiteUnitIdele_rootOfUnity μ₀ hL hN.chars i j t (x2 t) (hx2 t)`. Take `⟨z3, ⟨n3, hn3, hz3⟩, e3⟩` from `GlobalTheory.T.gridSquareCharQuotient_finiteUnitIdele_rootOfUnity μ₀ hL hN.chars i j t (y t) (hk4 t _ (hy1 t))`. Use `⟨z1 * z3 / z2, ⟨n1 * n2 * n3, by positivity, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `r1 : z1 ^ (n1 * n2 * n3) = 1` using `by rw [mul_assoc, pow_mul, hz1, one_pow]`. Establish `r2 : z2 ^ (n1 * n2 * n3) = 1` using `by rw [mul_comm n1 n2, mul_assoc, pow_mul, hz2, one_pow]`.
+
+Establish `r3 : z3 ^ (n1 * n2 * n3) = 1` using `by rw [mul_comm, pow_mul, hz3, one_pow]`. Rewrite using `[div_pow, mul_pow, r1, r2, r3]`. Simplify using the standard rewrite rules. Rewrite using `[map_div₀, map_mul, e1, e2, e3, MonoidHom.div_apply, Circle.coe_div]`. Conclude with `ratio_alg (Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (Circle.coe_ne_zero _)`.
+
+Use `⟨Z, fun t => c1 t / c2 t, ⟨p1, p2, p3, p4, n1, n2, n3, hZI⟩, eA, eA', eW, rfl, rfl, rfl, fun t => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨z, ⟨n, hn, hz⟩, ez⟩` from `hv t`. Take `⟨z0, ⟨n0, hn0, hz0⟩, ez0⟩` from `hv μ₀`. Establish `hz0' : z0 ≠ 0` using `fun h => by rw [h, zero_pow hn0.ne'] at hz0; exact zero_ne_one hz0`. Use `⟨div_ne_zero (c1ne t) (c2ne t), z / z0, away_of_root (z / z0) (n * n0) (by positivity) ?_ _, ?_⟩` and prove the remaining obligations.
+
+Establish `r1 : z ^ (n * n0) = 1` using `by rw [pow_mul, hz, one_pow]`. Establish `r2 : z0 ^ (n * n0) = 1` using `by rw [mul_comm, pow_mul, hz0, one_pow]`. Rewrite using `[div_pow, r1, r2, div_one]`. Rewrite using `[map_div₀, ez, ez0, div_mul_cancel₀ _ (div_ne_zero (c1ne μ₀) (c2ne μ₀))]`. Take `⟨⟨t0, ht0⟩, P, P', H⟩` from `hc`.
+
+Use `⟨⟨t0, mul_ne_zero (div_ne_zero (c1ne t0) (c2ne t0)) ht0⟩, P, P', fun t => ⟨fun h' => ⟨?_, ?_⟩, ?_, fun h' => ?_⟩⟩` and prove the remaining obligations. Establish `e : Z.ker W.ψ W.θ t P h' = fun g => c1 t * Y.ker W.ψ W.θ t P (h' * k t) g` using `funext (kerZ t P h')`. Rewrite using `[e]`. Conclude with `((H t).1 (h' * k t)).1.const_mul _`. Establish `e : Z.ker' W.ψ W.θ t P' h' = fun g => c2 t * Y.ker' W.ψ W.θ t P' (h' * k t) g` using `funext (kerZ' t P' h')`.
+
+Rewrite using `[e]`. Conclude with `((H t).1 (h' * k t)).2.const_mul _`. Take `⟨h0, hh0⟩` from `(H t).2.1`. Use `⟨h0 * (k t)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[IZ', inv_mul_cancel_right]`.
+
+Conclude with `mul_ne_zero (c2ne t) hh0`. Use `show Z.I W.ψ W.θ t P h' = c1 t / c2 t * c t * Z.I' W.ψ W.θ t P' h'`. Rewrite using `[IZ, IZ', (H t).2.2]`. Conclude with `const_alg (c2ne t)`.
+-/
 theorem frames_change : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (μ₀ : T), Lc.Is μ₀ → ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ →
   ∀ (i j : Fin D.R.m) {A A' WW : HSp D} (X Y : Tri T A A' WW), IsBottomTri W i j X → GlobalTheory.SqTower.IsStageC W i j 0 0 Y →
   Y.rA.Λ = X.rA.Λ → Y.rA'.Λ = X.rA'.Λ → Y.rW.Λ = X.rW.Λ →

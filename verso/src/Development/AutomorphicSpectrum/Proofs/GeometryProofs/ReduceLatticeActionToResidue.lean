@@ -16,6 +16,9 @@ section EvalRank
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h : LinearMap.IsProj (HT.eigSp ρ σ) (HT.eigProj ρ σ)` using `⟨fun x => HT.LatBasic.eigProj_mem ρ σ x, fun x hx => HT.LatBasic.eigProj_of_mem hx⟩`. Conclude with `h.trace`.
+-/
 theorem trace_eigProj {K V : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) :
     LinearMap.trace K V (HT.eigProj ρ σ) = (Module.finrank K (HT.eigSp ρ σ) : K) := by
@@ -23,6 +26,9 @@ theorem trace_eigProj {K V : Type} [Field K] [AddCommGroup V] [Module K V] [Fini
     ⟨fun x => HT.LatBasic.eigProj_mem ρ σ x, fun x hx => HT.LatBasic.eigProj_of_mem hx⟩
   exact h.trace
 
+/- English proof (translation)
+Simplify using `[HT.eigProj, map_sum, map_smul]`.
+-/
 theorem trace_eigProj_eq_sum {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) :
     LinearMap.trace K V (HT.eigProj ρ σ) =
@@ -31,6 +37,9 @@ theorem trace_eigProj_eq_sum {K V : Type} [Field K] [AddCommGroup V] [Module K V
 
 variable {Ω Vs C : Type} [Field Ω] [AddCommGroup Vs] [Module Ω Vs] [Field C]
 
+/- English proof (translation)
+Unfold `comb`. Rewrite using `[Finset.sum_eq_single j (fun i _ h => by simp [Pi.single_apply, h]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem comb_single {R : Subring Ω} {g : ℕ} (ℓ : Fin g → Vs) (j : Fin g) :
     comb (R := R) ℓ (Pi.single j 1) = ℓ j := by
   classical
@@ -38,11 +47,19 @@ theorem comb_single {R : Subring Ω} {g : ℕ} (ℓ : Fin g → Vs) (j : Fin g) 
   rw [Finset.sum_eq_single j (fun i _ h => by simp [Pi.single_apply, h]) (by simp)]
   simp
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 h`. Conclude with `⟨c, by rw [← hc]; rfl⟩`.
+-/
 theorem exists_comb {R : Subring Ω} {g : ℕ} {ℓ : Fin g → Vs} {v : Vs}
     (h : v ∈ Submodule.span R (Set.range ℓ)) : ∃ x : Fin g → R, v = comb ℓ x := by
   obtain ⟨c, hc⟩ := (Submodule.mem_span_range_iff_exists_fun R).1 h
   exact ⟨c, by rw [← hc]; rfl⟩
 
+/- English proof (translation)
+Use `set b := Module.Basis.mk hl hs.ge with hb`. Establish `hbj : ∀ j, b j = ℓ j` using `fun j => by simp [hb]`. Rewrite using `[LinearMap.trace_eq_matrix_trace Ω b f, Matrix.trace]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply, hbj, hx j, comb]`. Simplify using `only [← hbj, map_sum, map_smul, Module.Basis.repr_self]`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem trace_of_comb {R : Subring Ω} {g : ℕ} {ℓ : Fin g → Vs} (hl : LinearIndependent Ω ℓ)
     (hs : Submodule.span Ω (Set.range ℓ) = ⊤) (f : Module.End Ω Vs) (x : Fin g → Fin g → R)
     (hx : ∀ j, f (ℓ j) = comb ℓ (x j)) :
@@ -57,6 +74,9 @@ theorem trace_of_comb {R : Subring Ω} {g : ℕ} {ℓ : Fin g → Vs} (hl : Line
   simp only [← hbj, map_sum, map_smul, Module.Basis.repr_self]
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace C (Pi.basisFun C (Fin g)) f, Matrix.trace]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, LinearMap.toMatrix_apply]`. Simplify using `[hy j]`.
+-/
 theorem trace_of_cols {g : ℕ} (f : Module.End C (Fin g → C)) (y : Fin g → Fin g → C)
     (hy : ∀ j, f (Pi.single j 1) = y j) :
     LinearMap.trace C (Fin g → C) f = ∑ j, y j j := by
@@ -68,6 +88,23 @@ theorem trace_of_cols {g : ℕ} (f : Module.End C (Fin g → C)) (y : Fin g → 
 
 end EvalRank
 
+/- English proof (translation)
+Introduce `E _ _ Ω Vs C _ _ _ _ _ _ _ ρ R' g ℓ ψ ρC σ σC hl hs hst hT hσ`. Use `choose M hM using fun (a : 𝓞 E) (j : Fin g) => exists_comb (hst a j)`. Establish `hC : ∀ a j, ρC a (Pi.single j 1) = fun i => ψ (M a j i)`. Introduce `a j`. Use `hT a (Pi.single j 1) (M a j) (by rw [comb_single]; exact hM a j)` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `congr 1`. Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `tΩ : ∀ a, LinearMap.trace Ω Vs (ρ a) = ((∑ j, M a j j : R') : Ω)` using `fun a => trace_of_comb hl hs (ρ a) (M a) (hM a)`. Establish `tC : ∀ a, LinearMap.trace C (Fin g → C) (ρC a) = ψ (∑ j, M a j j)`. Introduce `a`.
+
+Rewrite using `[trace_of_cols (ρC a) (fun j i => ψ (M a j i)) (hC a), map_sum]`. Use `set T : R' := ∑ k, ⟨σ (HT.dualInt E k), (hσ _).1⟩ * ∑ j, M (RingOfIntegers.basis E k) j j with hTdef`. Establish `h1 : (Module.finrank Ω (HT.eigSp ρ σ) : Ω) = (T : Ω)`. Rewrite using `[← trace_eigProj, trace_eigProj_eq_sum, hTdef]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[tΩ]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2 : T = (Module.finrank Ω (HT.eigSp ρ σ) : R')`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Establish `h3 : (Module.finrank C (HT.eigSp ρC σC) : C) = ψ T`. Rewrite using `[← trace_eigProj, trace_eigProj_eq_sum, hTdef, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[tC, map_mul]`. Use `congr 1`. Conclude with `((hσ _).2).symm`. Rewrite `h3` using `[h2, map_natCast]`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem finrank_eigSp_eval : ∀ (E : Type) [Field E] [NumberField E] (Ω Vs C : Type) [Field Ω] [CharZero Ω] [AddCommGroup Vs] [Module Ω Vs]
     [FiniteDimensional Ω Vs] [Field C] [CharZero C] (ρ : 𝓞 E →+* Module.End Ω Vs) (R' : Subring Ω) (g : ℕ)
     (ℓ : Fin g → Vs) (ψ : R' →+* C) (ρC : 𝓞 E →+* Module.End C (Fin g → C)) (σ : E →+* Ω) (σC : E →+* C),

@@ -31,13 +31,24 @@ def ratH : (κ → F) →+ (κ → AF F) :=
 
 variable {F κ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratH_apply (ξ : κ → F) : ratH F κ ξ = fun i => algebraMap F (AF F) (ξ i) := rfl
 
 variable [Fintype κ]
 
+/- English proof (translation)
+Simplify using `[ratH_apply, dotProduct, map_sum, map_mul]`.
+-/
 theorem ratH_dot (ξ η : κ → F) : ratH F κ ξ ⬝ᵥ ratH F κ η = algebraMap F (AF F) (ξ ⬝ᵥ η) := by
   simp [ratH_apply, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `: ratH F κ (Pi.single i a) = Pi.single i (algebraMap F (AF F) a)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[ratH_apply]`.
+
+Simplify using `[ratH_apply, Pi.single_eq_of_ne h]`. Rewrite using `[this, dotProduct_single, mul_comm]`.
+-/
 theorem dot_single (i : κ) [DecidableEq κ] (u : κ → AF F) (a : F) :
     u ⬝ᵥ ratH F κ (Pi.single i a) = algebraMap F (AF F) a * u i := by
   have : ratH F κ (Pi.single i a) = Pi.single i (algebraMap F (AF F) a) := by
@@ -47,6 +58,19 @@ theorem dot_single (i : κ) [DecidableEq κ] (u : κ → AF F) (a : F) :
     · simp [ratH_apply, Pi.single_eq_of_ne h]
   rw [this, dotProduct_single, mul_comm]
 
+/- English proof (translation)
+Establish `: Nontrivial (AF F)` using `by show Nontrivial (AdeleRing (𝓞 F) F)`. Unfold `AdeleRing`. Use `infer_instance`. Introduce `ξ η h`. Use function extensionality and compare the values at `l`.
+
+Conclude with `(algebraMap F (AF F)).injective (congrFun h l)`. Use `cont ξ := by`. Establish `h : Continuous fun u : κ → AF F => u ⬝ᵥ ratH F κ ξ` using `continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const`. Conclude with `hψ.1.comp h`. Use `norm ξ u := hψ.2.1 _`.
+
+Use `addl ξ η u := by rw [map_add, dotProduct_add, AddChar.map_add_eq_mul]`. Use `addr ξ u v := by rw [add_dotProduct, AddChar.map_add_eq_mul]`. Use `triv ξ η := by rw [ratH_dot, hψ.2.2.1]`. Use `sep u hu := by classical`. Establish `key : ∀ i, ∃ c : F, algebraMap F (AF F) c = u i` using `fun i => hann (a := u i) (by`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[mul_comm, ← dot_single]`. Conclude with `hu _)`. Use `choose c hc using key`. Conclude with `⟨c, funext hc⟩`.
+
+Use `nondeg ξ hξ := by classical`. Take `⟨x, hx⟩` from `hψ.2.2.2`. Take `⟨l, hl⟩` from `Function.ne_iff.1 hξ`. Use `⟨Pi.single l (x * algebraMap F (AF F) (ξ l)⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[single_dotProduct, ratH_apply, mul_assoc, ← map_mul, inv_mul_cancel₀ hl, map_one, mul_one]` and apply the resulting hypothesis.
+
+Use `cpt := by`. Take `⟨K, hK, hKc⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `⟨Set.univ.pi fun _ => K, isCompact_univ_pi fun _ => hK, fun u => ?_⟩` and prove the remaining obligations. Use `choose ξ hξ using fun l => hKc (u l)`. Conclude with `⟨ξ, fun l _ => hξ l⟩`.
+-/
 theorem dual {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (hann : RatOfKer ψ) :
     Dual (ratH F κ) fun ξ u => ψ (u ⬝ᵥ ratH F κ ξ) where
   inj := by
@@ -85,6 +109,15 @@ theorem dual {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (hann : RatOfKer ψ
     choose ξ hξ using fun l => hKc (u l)
     exact ⟨ξ, fun l _ => hξ l⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hU0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Take `⟨V, hVU, hVo, h0V⟩` from `mem_nhds_iff.1 hU`. Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Establish `: ({0} : Set (ratH F κ).range) = ((↑) : (ratH F κ).range → κ → AF F) ⁻¹' (Set.univ.pi fun _ => V)`. Use extensionality with `⟨x, hx⟩`.
+
+Take `⟨y, rfl⟩` from `hx`. Simplify using `only [Set.mem_singleton_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`. Establish `: ratH F κ y = 0` using `congrArg Subtype.val h`.
+
+Rewrite using `[this]`. Conclude with `h0V`. Introduce `h`. Establish `: y = 0` using `funext fun i => hU0 (y i) (hVU (h i trivial))`. Substitute `this` using the available equality.
+
+Conclude with `Subtype.ext (map_zero _)`. Rewrite using `[this]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hVo).preimage continuous_subtype_val`.
+-/
 theorem discrete : DiscreteTopology (ratH F κ).range := by
   obtain ⟨U, hU, hU0⟩ := GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F
   obtain ⟨V, hVU, hVo, h0V⟩ := mem_nhds_iff.1 hU
@@ -104,6 +137,13 @@ theorem discrete : DiscreteTopology (ratH F κ).range := by
   rw [this]
   exact (isOpen_set_pi Set.finite_univ fun _ _ => hVo).preimage continuous_subtype_val
 
+/- English proof (translation)
+Set `: MeasurableSpace (Multiplicative G)` to `inferInstanceAs (MeasurableSpace G)`. Establish `: BorelSpace (Multiplicative G)` using `inferInstanceAs (BorelSpace G)`. Establish `: SecondCountableTopology (Multiplicative G)` using `inferInstanceAs (SecondCountableTopology G)`. Establish `: DiscreteTopology (AddSubgroup.toSubgroup Γ)` using `hd`. Take `⟨-, D, hDm, hD⟩` from `GlobalTheory.discreteSubgroup_countable_and_exists_strict_fundamentalDomain (AddSubgroup.toSubgroup Γ)`.
+
+Establish `hDm' : MeasurableSet (Multiplicative.ofAdd ⁻¹' D : Set G)` using `hDm`. Use `⟨_, IsAddFundamentalDomain.mk' hDm'.nullMeasurableSet fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, huniq⟩` from `hD (Multiplicative.ofAdd x)`. Use `⟨⟨γ.1.toAdd, γ.2⟩, hγ, fun g hg => ?_⟩` and prove the remaining obligations. Use `huniq ⟨Multiplicative.ofAdd g.1, g.2⟩ hg` as an intermediate fact.
+
+Conclude with `Subtype.ext (congrArg (fun s : AddSubgroup.toSubgroup Γ => Multiplicative.toAdd s.1) this)`.
+-/
 theorem exists_dom {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [hd : DiscreteTopology Γ]
     (m : Measure G) : ∃ D, IsAddFundamentalDomain Γ D m := by
@@ -124,6 +164,29 @@ end CS
 
 open CS in
 
+/- English proof (translation)
+Introduce `F _ _ κ _ ψ hstd μ hμ`. Establish `hψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hstd`. Establish `: SecondCountableTopology (AF F)` using `GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`.
+
+Use `discrete (F := F) (κ := κ)` as an intermediate fact. Establish `hd` using `dual (κ := κ) hψ (hA F ψ hstd)`. Take `⟨D, hD⟩` from `exists_dom (ratH F κ).range μ`. Take `⟨c, hc, hP⟩` from `hd.poisson_le hD`. Use `⟨c, hc, fun Φ₁ h₁ Φ₂ h₂ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c₁, b₁⟩` from `GlobalTheory.CompanionTheory.ThetaCoord.Cont.schA_bound h₁`. Take `⟨c₂, b₂⟩` from `GlobalTheory.CompanionTheory.ThetaCoord.Cont.schA_bound h₂`. Establish `s₁ : Summable fun ξ => ‖Φ₁ (ratH F κ ξ)‖` using `summable_norm_of_mem_schA F h₁`. Establish `s₂ : Summable fun ξ => ‖(starRingEnd ℂ) (Φ₂ (ratH F κ ξ))‖`. Simplify using `only [Complex.norm_conj]`.
+
+Conclude with `summable_norm_of_mem_schA F h₂`. Establish `hx : ∀ x : κ → F, ‖∑' ξ, Φ₁ (ratH F κ ξ + ratH F κ x) * (starRingEnd ℂ) (Φ₂ (ratH F κ ξ))‖ₑ ≤ ENNReal.ofReal c * ∑' y : κ → F, ‖coef F ψ μ Φ₁ Φ₂ (ratH F κ x, ratH F κ y)‖ₑ`. Introduce `x`. Use `(hP (fun u => Φ₁ (u + ratH F κ x) * (starRingEnd ℂ) (Φ₂ u)) ((c₁.comp (continuous_id.add continuous_const)).mul (Complex.continuous_conj.comp c₂)) fun K hK => ?_).trans (le_of_eq ?_)` and prove the remaining obligations. Take `⟨u, hu, hub⟩` from `b₁ K hK`.
+
+Take `⟨v, hv, hvb⟩` from `b₂ K hK`. Take `⟨M, hM⟩` from `hu.tendsto_cofinite_zero.bddAbove_range_of_cofinite`. Use `⟨fun ξ => M * v ξ, hv.mul_left M, fun ξ a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖Φ₁ (ratH F κ ξ + a + ratH F κ x)‖ ≤ M`. Rewrite using `[add_right_comm, ← map_add]`.
+
+Conclude with `(hub (ξ + x) a ha).trans (hM ⟨_, rfl⟩)`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul h1 (hvb ξ a ha) (norm_nonneg _) ((norm_nonneg _).trans h1)`. Use `congr 1`. Use `tsum_congr fun y => ?_` and prove the remaining obligations.
+
+Establish `h2 : ⅟(2 : AF F) * (ratH F κ x ⬝ᵥ ratH F κ y) = algebraMap F (AF F) (2⁻¹ * (x ⬝ᵥ y))`. Rewrite using `[ratH_dot, invOf_mul_eq_iff_eq_mul_left, ← map_ofNat (algebraMap F (AF F)) 2, ← map_mul, mul_inv_cancel_left₀ two_ne_zero]`. Simplify using `only [coef, schr, h2, AddChar.map_add_eq_mul, hψ.2.2.1, mul_one, mul_assoc]`. Establish `hs` using `summable_mul_of_summable_norm s₁ s₂`. Set `e : (κ → F) × (κ → F) ≃ (κ → F) × (κ → F)` to `{ toFun := fun p => (p.2 + p.1, p.2) invFun := fun p => (p.1 - p.2, p.2) left_inv := fun p => by simp right_inv := fun p => by simp }`.
+
+Establish `hs'` using `e.summable_iff.2 hs`. Establish `hmain : thetaSum F Φ₁ * (starRingEnd ℂ) (thetaSum F Φ₂) = ∑' x : κ → F, ∑' ξ, Φ₁ (ratH F κ ξ + ratH F κ x) * (starRingEnd ℂ) (Φ₂ (ratH F κ ξ))`. Establish `e2 : (starRingEnd ℂ) (thetaSum F Φ₂) = ∑' ξ, (starRingEnd ℂ) (Φ₂ (ratH F κ ξ))` using `Complex.conj_tsum _`. Establish `e1 : thetaSum F Φ₁ = ∑' ξ, Φ₁ (ratH F κ ξ)` using `rfl`. Rewrite using `[e1, e2, tsum_mul_tsum_of_summable_norm s₁ s₂, ← e.tsum_eq]`.
+
+Use `hs'.tsum_prod.trans ?_` and prove the remaining obligations. Simplify using `only [← map_add]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[enorm_mul, ← ofReal_norm ((starRingEnd ℂ) _), Complex.norm_conj, ofReal_norm]`.
+
+Use `_ ≤ ∑' x : κ → F, ENNReal.ofReal c * ∑' y : κ → F, ‖coef F ψ μ Φ₁ Φ₂ (ratH F κ x, ratH F κ y)‖ₑ := by`. Rewrite using `[hmain]`. Conclude with `enorm_tsum_le_tsum_enorm.trans (ENNReal.tsum_le_tsum hx)`. Use `_ = _ := by`. Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_prod']`.
+
+Both sides reduce to the same expression.
+-/
 theorem coefSum_of_annih (hA : Annih) : CoefSum := by
   intro F _ _ κ _ ψ hstd μ hμ
   have hψ := GlobalTheory.StdCharFromIsStd.isCharAF hstd

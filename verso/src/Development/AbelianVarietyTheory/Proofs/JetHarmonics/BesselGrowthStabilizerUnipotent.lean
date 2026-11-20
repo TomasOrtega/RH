@@ -12,6 +12,9 @@ namespace GlobalTheory
 
 namespace BesselGrowth
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.gN`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Use `Complex.continuous_normSq.comp ?_` and prove the remaining obligations. Conclude with `(continuous_apply j).comp (continuous_apply i)`.
+-/
 theorem continuous_hsNorm (k r : ℕ) :
     Continuous (fun x : Formalism.QuantumDeterminants.Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x : Mx k r)) := by
   unfold Formalism.FourierDecayAlt.B.gN
@@ -20,12 +23,37 @@ theorem continuous_hsNorm (k r : ℕ) :
   refine Complex.continuous_normSq.comp ?_
   exact (continuous_apply j).comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `(continuous_hsNorm k r).measurable.pow_const _`.
+-/
 theorem measurable_hsNorm_rpow (k r : ℕ) (A : ℝ) :
     Measurable (fun x : Formalism.QuantumDeterminants.Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x : Mx k r) ^ (-A)) :=
   (continuous_hsNorm k r).measurable.pow_const _
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem hsNorm_nonneg {k r : ℕ} (g : Mx k r) : 0 ≤ Formalism.FourierDecayAlt.B.gN g := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Introduce `k r z μW μN μG νq A _ _ hW hNn hGm hq hA`. Take `⟨hS0, hS⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hNn`. Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hGm.2.2.1 hS0 hS hq`. Establish `hA0 : 0 ≤ A`. Establish `: 0 ≤ AG k r` using `by unfold AG; positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint` using `hG k r μG A hGm hA`. Establish `hm` using `measurable_hsNorm_rpow k r A`. Use `set F : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞ := fun x => ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of x : Mx k r) ^ (-A)) with hF`. Establish `hFm : Measurable F` using `hm.ennreal_ofReal`.
+
+Establish `hfin : ∫⁻ x, F x ∂μG < ⊤` using `hint.lintegral_lt_top`. Establish `hν : νq Set.univ ≠ 0`. Introduce `h0`. Establish `h1` using `hq (fun _ => 1) measurable_const`. Rewrite `h1` using `[Measure.measure_univ_eq_zero.mp h0, lintegral_zero_measure, lintegral_one]`.
+
+Conclude with `hGm.2.1 (Measure.measure_univ_eq_zero.mp h1)`. Establish `hSfin : ∫⁻ s, F s ∂(muSof μW μN) < ⊤`. Assume the negation of the conclusion as `hc`. Establish `htop : ∫⁻ s, F s ∂(muSof μW μN) = ⊤` using `top_le_iff.mp (not_lt.mp hc)`. Establish `hle : ∫⁻ _x, (⊤ : ℝ≥0∞) ∂νq ≤ ∫⁻ x, (∫⁻ s, F (fun i j => (Matrix.of s * Matrix.of x) i j) ∂(muSof μW μN)) ∂νq`.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Establish `hx1` using `((hN k r).2 _ hx).2`. Establish `hFx : F x ≠ 0`. Simplify using `only [hF, ne_eq, ENNReal.ofReal_eq_zero, not_le]`.
+
+Conclude with `Real.rpow_pos_of_pos (by linarith) _`. Establish `h2 : ∫⁻ s, F s * F x ∂(muSof μW μN) = ⊤`. Rewrite using `[lintegral_mul_const _ hFm, htop, ENNReal.top_mul hFx]`. Rewrite using `[← h2]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(ae_iff.mpr hS : ∀ᵐ s ∂(muSof μW μN), Matrix.of s ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))] with s hs`. Establish `hsx` using `((hN k r).2 _ (Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hs hx)).2`. Simplify using `only [hF]`. Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg (hsNorm_nonneg _) _), ← Real.mul_rpow (hsNorm_nonneg _) (hsNorm_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Conclude with `Real.rpow_le_rpow_of_nonpos (lt_of_lt_of_le one_pos hsx) ((hN k r).1 _ _) (by linarith)`. Rewrite `hle` using `[← hq F hFm, lintegral_const, ENNReal.top_mul hν]`. Conclude with `absurd hfin (not_lt.mpr hle)`. Establish `hf : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))`. Establish `h1 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mx k r))` using `continuous_fst`.
+
+Establish `h2 : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.2 : Mx k r))` using `continuous_snd`. Conclude with `h1.matrix_mul h2`. Establish `hI : Integrable (fun x : Formalism.QuantumDeterminants.Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x : Mx k r) ^ (-A)) (muSof μW μN)` using `⟨hm.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => Real.rpow_nonneg (hsNorm_nonneg _) _)).mpr hSfin⟩`. Conclude with `(integrable_map_measure hm.aestronglyMeasurable hf.measurable.aemeasurable).mp hI`.
+-/
 theorem growthS_of (hN : NormInv) (hG : GrowthG) : GrowthS := by
   intro k r z μW μN μG νq A _ _ hW hNn hGm hq hA
   obtain ⟨hS0, hS⟩ := Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hNn
@@ -84,6 +112,9 @@ theorem growthS_of (hN : NormInv) (hG : GrowthG) : GrowthS := by
 
 end BesselGrowth
 
+/- English proof (translation)
+The claim follows from `BesselGrowth.growthS_of GlobalTheory.T.hilbertSchmidt_norm_submul_inv_ge_one GlobalTheory.T.growth_unitaryGroup_rpow_neg_integrable`.
+-/
 theorem besselGrowthS : Formalism.FourierDecayAlt.ThreeDimData.GrowthS :=
   BesselGrowth.growthS_of GlobalTheory.T.hilbertSchmidt_norm_submul_inv_ge_one GlobalTheory.T.growth_unitaryGroup_rpow_neg_integrable
 

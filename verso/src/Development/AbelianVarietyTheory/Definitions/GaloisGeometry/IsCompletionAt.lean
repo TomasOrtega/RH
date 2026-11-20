@@ -29,16 +29,27 @@ def IsWCorner (πw : Λ →+* Matrix (Fin n) (Fin n) Ow) (E : Λ) {G : PDivGroup
     ∀ (a : Ow) (c : Λ), πw c = Matrix.scalar (Fin n) a →
       (H.ι a : H.G ⟶ H.G) = iH ≫ (ρ c : G ⟶ G) ≫ rH
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.2.2.1, Category.assoc, h.2.2.2.1, Category.comp_id]`.
+-/
 theorem IsWCorner.rH_eq {πw : Λ →+* Matrix (Fin n) (Fin n) Ow} {E : Λ} {G : PDivGroup p T}
     {ρ : PDivGroup.Action Λ G} {H : VarpiDivModule p Ow T} {iH : H.G ⟶ G} {rH : G ⟶ H.G}
     (h : IsWCorner πw E ρ H iH rH) : (ρ E : G ⟶ G) ≫ rH = rH := by
   rw [← h.2.2.2.2.1, Category.assoc, h.2.2.2.1, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.2.2.1, ← Category.assoc, h.2.2.2.1, Category.id_comp]`.
+-/
 theorem IsWCorner.iH_eq {πw : Λ →+* Matrix (Fin n) (Fin n) Ow} {E : Λ} {G : PDivGroup p T}
     {ρ : PDivGroup.Action Λ G} {H : VarpiDivModule p Ow T} {iH : H.G ⟶ G} {rH : G ⟶ H.G}
     (h : IsWCorner πw E ρ H iH rH) : iH ≫ (ρ E : G ⟶ G) = iH := by
   rw [← h.2.2.2.2.1, ← Category.assoc, h.2.2.2.1, Category.id_comp]
 
+/- English proof (translation)
+Establish `key : ∀ d : Λ, (ρ d : G ⟶ G) ≫ rH = (ρ (E * d) : G ⟶ G) ≫ rH` using `fun d => by`. Rewrite using `[map_mul, End.mul_def, Category.assoc, h.rH_eq]`. Establish `e : E * c = E * c'`. Use `h.2.2.1 (c - c') (by rw [RingHom.mem_ker, map_sub, hc, sub_self])` as an intermediate fact. Rewrite `this` using `[mul_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Rewrite using `[key c, key c', e]`.
+-/
 theorem IsWCorner.corner_congr {πw : Λ →+* Matrix (Fin n) (Fin n) Ow} {E : Λ} {G : PDivGroup p T}
     {ρ : PDivGroup.Action Λ G} {H : VarpiDivModule p Ow T} {iH : H.G ⟶ G} {rH : G ⟶ H.G}
     (h : IsWCorner πw E ρ H iH rH) {c c' : Λ} (hc : πw c = πw c') :
@@ -99,13 +110,25 @@ namespace WPartOf
 variable {πw : WProj D b i₀} {T : Type} [CommRing T] [Algebra Ow T] {A : Over (Sp T)} [GrpObj A]
   [IsCommMonObj A] {a : Out.RingAct A D.O} {H : VarpiDivModule p Ow T}
 
+/- English proof (translation)
+The claim follows from `w.corner.2.2.2.1`.
+-/
 theorem iH_rH (w : WPartOf πw A a H) : w.iH ≫ w.rH = 𝟙 H.G := w.corner.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `w.corner.2.2.2.2.1`.
+-/
 theorem rH_iH (w : WPartOf πw A a H) :
     w.rH ≫ w.iH = ((w.t.ringAct a).padicExtend w.E : w.G ⟶ w.G) := w.corner.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `w.corner.2.1`.
+-/
 theorem π_E (w : WPartOf πw A a H) : πw.π w.E = unitE Ow D.m := w.corner.2.1
 
+/- English proof (translation)
+The claim follows from `w.corner.2.2.2.2.2 x c hc`.
+-/
 theorem ι_eq (w : WPartOf πw A a H) (x : Ow) (c : ℤ_[p] ⊗[ℤ] D.O) (hc : πw.π c = Matrix.scalar (Fin D.m) x) :
     (H.ι x : H.G ⟶ H.G) = w.iH ≫ ((w.t.ringAct a).padicExtend c : w.G ⟶ w.G) ≫ w.rH :=
   w.corner.2.2.2.2.2 x c hc
@@ -130,11 +153,17 @@ def TowerInduced {G : PDivGroup p T} {G' : PDivGroup p T'} {A : Over (Sp T)} [Gr
     (u : PDivGroup.SemiHom σ G' G) : Prop :=
   ∀ k, spMap (u.app k).toRingHom ≫ (t.y k).left = (t'.y k).left ≫ φ
 
+/- English proof (translation)
+The claim follows from `PDivGroup.SemiHom.ext_apply fun k a => RingHom.congr_fun (t.ringHom_ext ((hu k).trans (hv k).symm)) a`.
+-/
 theorem TowerInduced.unique {G : PDivGroup p T} {G' : PDivGroup p T'} {A : Over (Sp T)} [GrpObj A]
     {A' : Over (Sp T')} [GrpObj A'] {t : G.TorsionTower A} {t' : G'.TorsionTower A'} {φ : A'.left ⟶ A.left}
     {u v : PDivGroup.SemiHom σ G' G} (hu : TowerInduced t t' φ u) (hv : TowerInduced t t' φ v) : u = v :=
   PDivGroup.SemiHom.ext_apply fun k a => RingHom.congr_fun (t.ringHom_ext ((hu k).trans (hv k).symm)) a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, t'.semiOf_y t (GlobalTheory.PDiv.grpMor_of_isGrpPullback h)⟩`.
+-/
 theorem TowerInduced.exists {G : PDivGroup p T} {G' : PDivGroup p T'} {A : Over (Sp T)} [GrpObj A]
     {A' : Over (Sp T')} [GrpObj A'] (t : G.TorsionTower A) (t' : G'.TorsionTower A') {φ : A'.left ⟶ A.left}
     (h : IsGrpPullback A' A (spMap σ) φ) : ∃ u : PDivGroup.SemiHom σ G' G, TowerInduced t t' φ u :=
@@ -147,12 +176,18 @@ def IsInducedOf (w : WPartOf πw A a H) (w' : WPartOf πw A' a' H') (φ : A'.lef
     (s : PDivGroup.SemiHom σ H'.G H.G) : Prop :=
   ∃ u : PDivGroup.SemiHom σ w'.G w.G, TowerInduced w.t w'.t φ u ∧ s = cornerMap w'.iH w.rH u
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Take `⟨u', hu', rfl⟩` from `h'`. Rewrite using `[hu.unique hu']`.
+-/
 theorem IsInducedOf.unique {w : WPartOf πw A a H} {w' : WPartOf πw A' a' H'} {φ : A'.left ⟶ A.left}
     {s s' : PDivGroup.SemiHom σ H'.G H.G} (h : IsInducedOf w w' φ s) (h' : IsInducedOf w w' φ s') : s = s' := by
   obtain ⟨u, hu, rfl⟩ := h
   obtain ⟨u', hu', rfl⟩ := h'
   rw [hu.unique hu']
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `TowerInduced.exists w.t w'.t h`. Conclude with `⟨_, u, hu, rfl⟩`.
+-/
 theorem IsInducedOf.exists (w : WPartOf πw A a H) (w' : WPartOf πw A' a' H') {φ : A'.left ⟶ A.left}
     (h : IsGrpPullback A' A (spMap σ) φ) : ∃ s : PDivGroup.SemiHom σ H'.G H.G, IsInducedOf w w' φ s := by
   obtain ⟨u, hu⟩ := TowerInduced.exists w.t w'.t h
@@ -179,10 +214,16 @@ def IsInduced (w : WPart πw o H) (w' : WPart πw o' H') (m : ObjMap o' o (spMap
     (s : PDivGroup.SemiHom σ H'.G H.G) : Prop :=
   IsInducedOf w w' m.φ s
 
+/- English proof (translation)
+The claim follows from `IsInducedOf.exists w w' m.cart`.
+-/
 theorem IsInduced.exists (w : WPart πw o H) (w' : WPart πw o' H') (m : ObjMap o' o (spMap σ)) :
     ∃ s : PDivGroup.SemiHom σ H'.G H.G, IsInduced w w' m s :=
   IsInducedOf.exists w w' m.cart
 
+/- English proof (translation)
+The claim follows from `IsInducedOf.unique h h'`.
+-/
 theorem IsInduced.unique {w : WPart πw o H} {w' : WPart πw o' H'} {m : ObjMap o' o (spMap σ)}
     {s s' : PDivGroup.SemiHom σ H'.G H.G} (h : IsInduced w w' m s) (h' : IsInduced w w' m s') : s = s' :=
   IsInducedOf.unique h h'
@@ -225,6 +266,11 @@ open GlobalTheory.UPel.HT GlobalTheory.VDiv GlobalTheory.VDefo GlobalTheory.Mori
 
 section Basic₂
 
+/- English proof (translation)
+Use `⟨IsIdempotentElem.one, by rw [map_one, unitE_one], fun x hx => ?_, Category.id_comp _, ?_, fun a c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.one_mul]`. Rewrite `hx` using `[RingHom.mem_ker]`. Conclude with `(Matrix.scalar_inj).1 (hx.trans (map_zero _).symm)`. Rewrite using `[map_one, Category.id_comp]`.
+
+Both sides reduce to the same expression. Take `rfl` from `(Matrix.scalar_inj).1 hc.symm`. Rewrite using `[Category.id_comp, Category.comp_id]`. Both sides reduce to the same expression.
+-/
 example (p : ℕ) [Fact p.Prime] :
     IsWCorner (Matrix.scalar (Fin 1) : ℤ_[p] →+* Matrix (Fin 1) (Fin 1) ℤ_[p]) 1
       (VarpiDivModule.muMod p).G.padicAction (VarpiDivModule.muMod p) (𝟙 _) (𝟙 _) := by
@@ -238,13 +284,22 @@ example (p : ℕ) [Fact p.Prime] :
     rw [Category.id_comp, Category.comp_id]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨VarpiDivModule.muMod_hasOHeight, fun h => one_ne_zero (h.2.2.trans (zero_mul _))⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : (VarpiDivModule.muMod p).HasOHeight 1 ∧ ¬ (VarpiDivModule.muMod p).HasOHeight 0 :=
   ⟨VarpiDivModule.muMod_hasOHeight, fun h => one_ne_zero (h.2.2.trans (zero_mul _))⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [pow_zero, Ideal.span_singleton_one]; exact Submodule.mem_top`.
+-/
 example {p : ℕ} [Fact p.Prime] {D : Datum p} {Ow : Type} [CommRing Ow] [Algebra ℤ_[p] Ow] {b : Base D Ow}
     {i₀ : Fin D.a} (πw : WProj D b i₀) (e : D.O) (ϖ : Ow) : IsCornerMod πw e ϖ 0 := fun i j => by
   rw [pow_zero, Ideal.span_singleton_one]; exact Submodule.mem_top
 
+/- English proof (translation)
+Use `⟨map_one _, ?_⟩` and prove the remaining obligations. Rewrite using `[πw.padic, map_natCast]`.
+-/
 example {p : ℕ} [Fact p.Prime] {D : Datum p} {Ow : Type} [CommRing Ow] [Algebra ℤ_[p] Ow] {b : Base D Ow}
     {i₀ : Fin D.a} (πw : WProj D b i₀) :
     πw.π 1 = 1 ∧ πw.π ((p : ℤ_[p]) ⊗ₜ 1) = Matrix.scalar (Fin D.m) (p : Ow) := by

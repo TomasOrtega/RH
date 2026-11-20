@@ -10,6 +10,9 @@ private def HasSmith {a : ℕ} (Φ : Matrix (Fin a) (Fin a) R) : Prop :=
   ∃ (U V : Matrix (Fin a) (Fin a) R) (d : Fin a → R), IsUnit U.det ∧ IsUnit V.det ∧
       Φ = U * diagonal d * V ∧ ∀ i j, i ≤ j → d i ∣ d j
 
+/- English proof (translation)
+Take `⟨U, V, d, hU, hV, rfl, hd⟩` from `h`. Use `⟨U, V, x • d, hU, hV, ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_smul, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `mul_dvd_mul_left x (hd i j hij)`.
+-/
 private theorem HasSmith.smul {a : ℕ} {Φ : Matrix (Fin a) (Fin a) R} (h : HasSmith Φ) (x : R) :
     HasSmith (x • Φ) := by
   obtain ⟨U, V, d, hU, hV, rfl, hd⟩ := h
@@ -17,6 +20,11 @@ private theorem HasSmith.smul {a : ℕ} {Φ : Matrix (Fin a) (Fin a) R} (h : Has
   · rw [diagonal_smul, Matrix.mul_smul, Matrix.smul_mul]
   · exact mul_dvd_mul_left x (hd i j hij)
 
+/- English proof (translation)
+Take `⟨U, V, d, hU, hV, rfl, hd⟩` from `h`. Use `⟨U.submatrix σ id, V.submatrix id τ, d, ?_, ?_, ?_, hd⟩` and prove the remaining obligations. Rewrite using `[det_permute]`. Conclude with `((Equiv.Perm.sign σ).isUnit.map (Int.castRingHom R)).mul hU`. Rewrite using `[det_permute']`.
+
+Conclude with `((Equiv.Perm.sign τ).isUnit.map (Int.castRingHom R)).mul hV`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 private theorem HasSmith.perm {a : ℕ} {Φ : Matrix (Fin a) (Fin a) R} (h : HasSmith Φ)
     (σ τ : Equiv.Perm (Fin a)) : HasSmith (Φ.submatrix σ τ) := by
   obtain ⟨U, V, d, hU, hV, rfl, hd⟩ := h
@@ -34,6 +42,17 @@ private def consEquiv (a : ℕ) : Fin (a + 1) ≃ Unit ⊕ Fin a where
   left_inv i := by cases i using Fin.cases <;> simp
   right_inv i := by rcases i with _ | i <;> simp
 
+/- English proof (translation)
+Use `set e := consEquiv a with he`. Use `set N := M.submatrix e.symm e.symm with hN`. Establish `h11 : N.toBlocks₁₁ = 1`. Use extensionality with `i j`. Establish `: N (Sum.inl i) (Sum.inl j) = M 0 0` using `rfl`.
+
+Simplify using `[toBlocks₁₁, this, h]`. Take `⟨U, V, d, hU, hV, hΨ, hd⟩` from `ih (N.toBlocks₂₂ - N.toBlocks₂₁ * N.toBlocks₁₂)`. Establish `key : N = fromBlocks 1 0 N.toBlocks₂₁ U * diagonal (Sum.elim (fun _ => 1) d) * fromBlocks 1 N.toBlocks₁₂ 0 V`. Rewrite using `[← fromBlocks_diagonal, fromBlocks_multiply, fromBlocks_multiply]`. Use `conv_lhs => rw [← fromBlocks_toBlocks N, h11]`.
+
+Simplify using `[← hΨ]`. Use `⟨(fromBlocks 1 0 N.toBlocks₂₁ U).submatrix e e, (fromBlocks 1 N.toBlocks₁₂ 0 V).submatrix e e, Sum.elim (fun _ => 1) d ∘ e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self, det_fromBlocks_zero₁₂]`. Simplify using `using hU`. Rewrite using `[det_submatrix_equiv_self, det_fromBlocks_zero₂₁]`.
+
+Simplify using `using hV`. Rewrite using `[← submatrix_diagonal_equiv, submatrix_mul_equiv, submatrix_mul_equiv, ← key, hN]`. Simplify using the standard rewrite rules. Introduce `i j hij`. Consider the cases of `i using Fin.cases with`.
+
+Consider the case `zero => exact one_dvd _`. Consider the case `succ i`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact absurd hij (by simp)`. Consider the case `succ j => exact hd i j (by simpa using hij)`.
+-/
 private theorem hasSmith_of_one {a : ℕ} (ih : ∀ Ψ : Matrix (Fin a) (Fin a) R, HasSmith Ψ)
     (M : Matrix (Fin (a + 1)) (Fin (a + 1)) R) (h : M 0 0 = 1) : HasSmith M := by
   set e := consEquiv a with he
@@ -62,6 +81,13 @@ private theorem hasSmith_of_one {a : ℕ} (ih : ∀ Ψ : Matrix (Fin a) (Fin a) 
       | zero => exact absurd hij (by simp)
       | succ j => exact hd i j (by simpa using hij)
 
+/- English proof (translation)
+Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, by simp, by simp⟩`. Consider the case `cons a s ha hs ih`. Take `⟨p, hp, h⟩` from `ih`. Take `⟨c, hc | hc⟩` from `PreValuationRing.cond (f a) (f p)`.
+
+Use `⟨a, by simp, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_cons.1 hi with rfl | hi` into its components or cases. Conclude with `dvd_rfl`. Conclude with `(Dvd.intro c hc).trans (h i hi)`. Use `⟨p, by simp [hp], fun i hi => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_cons.1 hi with rfl | hi` into its components or cases. Conclude with `Dvd.intro c hc`. Conclude with `h i hi`.
+-/
 private theorem exists_dvd_all [PreValuationRing R] {ι : Type*} (f : ι → R) (s : Finset ι)
     (hs : s.Nonempty) : ∃ p ∈ s, ∀ i ∈ s, f p ∣ f i := by
   classical
@@ -79,6 +105,15 @@ private theorem exists_dvd_all [PreValuationRing R] {ι : Type*} (f : ι → R) 
       · exact Dvd.intro c hc
       · exact h i hi
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero`. Conclude with `⟨1, 1, fun _ => 1, by simp, by simp, Subsingleton.elim _ _, fun _ _ _ => dvd_rfl⟩`. Consider the case `succ a ih`. Take `⟨⟨p, q⟩, -, h⟩` from `exists_dvd_all (fun ij : Fin (a + 1) × Fin (a + 1) => Φ ij.1 ij.2) Finset.univ Finset.univ_nonempty`.
+
+Establish `h' : ∀ i j, ∃ c, Φ i j = Φ p q * c ∧ (i = p → j = q → c = 1)`. Introduce `i j`. Distinguish the cases in `hij : i = p ∧ j = q`. Take `⟨rfl, rfl⟩` from `hij`. Conclude with `⟨1, by simp, by simp⟩`.
+
+Take `⟨c, hc⟩` from `h (i, j) (Finset.mem_univ _)`. Conclude with `⟨c, hc, fun h1 h2 => absurd ⟨h1, h2⟩ hij⟩`. Use `choose M hM hM1 using h'`. Establish `h1 : HasSmith ((Matrix.of M).submatrix (Equiv.swap 0 p) (Equiv.swap 0 q))` using `hasSmith_of_one ih _ (by simp [hM1 p q rfl rfl])`. Establish `h2` using `(h1.perm (Equiv.swap 0 p) (Equiv.swap 0 q)).smul (Φ p q)`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `using hM i j`.
+-/
 private theorem hasSmith_all [PreValuationRing R] (a : ℕ) (Φ : Matrix (Fin a) (Fin a) R) :
     HasSmith Φ := by
   classical
@@ -103,6 +138,9 @@ private theorem hasSmith_all [PreValuationRing R] (a : ℕ) (Φ : Matrix (Fin a)
     ext i j
     simpa using hM i j
 
+/- English proof (translation)
+The claim follows from `hasSmith_all a Φ`.
+-/
 theorem exists_smith [PreValuationRing R] (a : ℕ) (Φ : Matrix (Fin a) (Fin a) R) :
     ∃ (U V : Matrix (Fin a) (Fin a) R) (d : Fin a → R), IsUnit U.det ∧ IsUnit V.det ∧
       Φ = U * diagonal d * V ∧ ∀ i j, i ≤ j → d i ∣ d j :=

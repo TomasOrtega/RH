@@ -6,12 +6,22 @@ namespace GlobalTheory.TracePairingBasisChange
 
 open Matrix
 
+/- English proof (translation)
+Unfold `GlobalTheory.FlipMatch.pairM`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply]`. Conclude with `Finset.sum_comm`.
+-/
 theorem pair_eq_trace {K : Type} [Field K] {n d : ℕ} (X Y : Matrix (Fin n) (Fin d) K) :
     GlobalTheory.FlipMatch.pairM X Y = Matrix.trace (Xᵀ * Y) := by
   unfold GlobalTheory.FlipMatch.pairM
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[pair_eq_trace, Matrix.mul_neg, Matrix.trace_neg, neg_inj]`. Establish `hb : Matrix.transpose (↑b⁻¹ : Matrix (Fin n) (Fin n) K) * Matrix.transpose (↑b : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Establish `hc : (↑c : Matrix (Fin d) (Fin d) K) * (↑c⁻¹ : Matrix (Fin d) (Fin d) K) = 1` using `Units.mul_inv c`. Establish `key : Matrix.transpose ((↑b⁻¹ : Matrix (Fin n) (Fin n) K) * P * Matrix.transpose (↑c⁻¹ : Matrix (Fin d) (Fin d) K)) * (Matrix.transpose (↑b : Matrix (Fin n) (Fin n) K) * A * Q * Matrix.transpose B * (↑c : Matrix (Fin d) (Fin d) K)) = (↑c⁻¹ : Matrix (Fin d) (Fin d) K) * ((Matrix.t …`.
+
+Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.transpose (↑b⁻¹ : Matrix (Fin n) (Fin n) K)), hb, Matrix.one_mul]`. Rewrite using `[key, Matrix.trace_mul_comm, Matrix.mul_assoc, hc, Matrix.mul_one]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_change_basis {K : Type} [Field K] {n d : ℕ} (A : Matrix (Fin n) (Fin n) K)
     (B : Matrix (Fin d) (Fin d) K) (b : GL (Fin n) K) (c : GL (Fin d) K)
     (P Q : Matrix (Fin n) (Fin d) K) :

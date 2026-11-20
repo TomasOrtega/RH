@@ -14,11 +14,17 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {A B C : Scheme.{u}}
 
+/- English proof (translation)
+Simplify using `[← isoRangeOpens_inv_comp γ W h]`.
+-/
 theorem comap_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (J : B.IdealSheafData) :
     ((J.comap γ).comap W.ι).comap (isoRangeOpens γ W h).inv = J.comap (rangeOpens γ W h).ι := by
   simp [← isoRangeOpens_inv_comp γ W h]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[← isoRangeOpens_inv_comp γ W h]`.
+-/
 theorem preimage_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (S : Set ↥B) :
     (isoRangeOpens γ W h).inv.base ⁻¹' (W.ι.base ⁻¹' (γ.base ⁻¹' S))
@@ -26,11 +32,19 @@ theorem preimage_isoRangeOpens_inv (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmer
   ext x
   simp [← isoRangeOpens_inv_comp γ W h]
 
+/- English proof (translation)
+The claim follows from `(isoRangeOpens_inv_comp_assoc γ W h f).symm`.
+-/
 theorem rangeOpens_ι_comp (γ : A ⟶ B) (W : A.Opens) (h : IsOpenImmersion (W.ι ≫ γ))
     (f : B ⟶ C) :
     (rangeOpens γ W h).ι ≫ f = (isoRangeOpens γ W h).inv ≫ W.ι ≫ γ ≫ f :=
   (isoRangeOpens_inv_comp_assoc γ W h f).symm
 
+/- English proof (translation)
+Take `⟨U, hU, hxU⟩` from `exists_mem_rangeOpens g hg x`. Use `⟨rangeOpens g U hU, hxU, ?_⟩` and prove the remaining obligations. Establish `hres` using `hcert.restrict (hopen k) U`. Establish `htr` using `OrderCertificate.comap_iso_of_eq_iso_hom_comp (isoRangeOpens g U hU).symm (rangeOpens_ι_comp g U hU p) hres`. Simplify using `only [Iso.symm_hom, comap_isoRangeOpens_inv, preimage_isoRangeOpens_inv] at htr`.
+
+Conclude with `htr`.
+-/
 theorem exists_opens_orderCertificate_of_isLocalIsomorphism
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
     {k : Type u} [Field k] {W W' : Scheme.{u}} (p : W ⟶ Spec (CommRingCat.of k))
@@ -56,6 +70,9 @@ def OrderCertificateLocalToGlobal : Prop :=
       OrderCertificate V.toScheme (V.ι ≫ p) (N.comap V.ι) μ (V.ι.base ⁻¹' Mem) (Z.comap V.ι)) →
     OrderCertificate W p N μ Mem Z
 
+/- English proof (translation)
+The claim follows from `hglue k W p N μ Mem Z (fun x => exists_opens_orderCertificate_of_isLocalIsomorphism hopen p g hg N μ Mem Z hcert x)`.
+-/
 theorem orderCertificate_of_comap_of_isLocalIsomorphism
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
     (hglue : OrderCertificateLocalToGlobal.{u})

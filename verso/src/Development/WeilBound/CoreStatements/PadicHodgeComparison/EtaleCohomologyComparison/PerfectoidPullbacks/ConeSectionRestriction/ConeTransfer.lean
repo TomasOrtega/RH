@@ -13,6 +13,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 
 namespace CrystallineSemistableComparison.Pb
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.projective_chart_affine_coords`.
+-/
 theorem cone_transfer : KH.LocGr → KH.PolyTf → KH.GrAff →
     ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)
     [SmoothOfRelativeDimension (n + 1) q] {N : ℕ} (i : X ⟶ PSpace K N) (y : Fin (n + 2) → MvPolynomial (Fin (N + 1)) K),

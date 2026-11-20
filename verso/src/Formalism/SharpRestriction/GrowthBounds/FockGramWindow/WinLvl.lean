@@ -11,6 +11,17 @@ section Lvl
 
 variable (p : ℕ) [hp : Fact p.Prime] {N r : ℕ} [NeZero r] (G : M.BlockData N)
 
+/- English proof (translation)
+Establish `hr : 1 ≤ r` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne r)`. Establish `h` using `bnd_foldr (p := p) (fun i : Fin G.T.t => Formalism.GM.tiePhi (k := ℚ_[p]) (fun c => (Sum.inl (M.finPos N (G.T.pos i), c) : M.BVar N r G.T.t)) (fun c => Sum.inl (M.finPos N (G.T.pos i + 1), c)) ((G.lettersAt j jp).deg (G.letterAt (G.T.pos i))) ((G.lettersAt j jp).deg (G.letterAt ( …`. Use `bnd_phi _ _ ?_ ?_ ?_ hr _ _ _ (lgN p A r) ?_ k u hu` and prove the remaining obligations. Introduce `c d h`. Simplify using `using h`.
+
+Introduce `c d h`. Simplify using `using h`. Introduce `c d h`. Simplify using `only [Sum.inl.injEq, Prod.mk.injEq] at h`. Establish `h1` using `congrArg Fin.val h.1`.
+
+Establish `h2 : min (G.T.pos i) N = min (G.T.pos i + 1) N` using `h1`. Establish `h3` using `hB.2.1 i`. Establish `h4` using `G.uPos.2`. Use linear arithmetic over natural numbers and integers. Use `log_le_lgN p A _ ?_` and prove the remaining obligations.
+
+Establish `h1` using `(lettersAt_le G j jp (G.letterAt (G.T.pos i))).trans (hdeg _)`. Establish `h2` using `(lettersAt_le G j jp (G.letterAt (G.T.pos i + 1))).trans (hdeg _)`. Establish `h3` using `hz i`. Use the proof step `omega) 0 u (by simpa using hu)`. Rewrite `h` using `[List.length_finRange, zero_add]`.
+
+Conclude with `h`.
+-/
 theorem bnd_phisB (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hz : ∀ i, G.T.z i ≤ 2 * A)
     (j : Fin G.T.t → ℕ) (jp : ℕ) (u : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (hu : Bnd 1 u) :
     Bnd ((p : ℝ) ^ (G.T.t * ((r + 1) * lgN p A r))) (phisB p (r := r) G j jp u) := by
@@ -41,6 +52,17 @@ theorem bnd_phisB (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A
   rw [List.length_finRange, zero_add] at h
   exact h
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) ≤ p` using `one_le_p`. Establish `hp0 : (0 : ℝ) < p` using `lt_of_lt_of_le zero_lt_one hp1`. Establish `h1` using `bnd_phisB p G hB A hdeg hz j jp u (Ljj_int p G j jp u hu)`. Establish `h2` using `bnd_Xl (fun c => (Sum.inl (Fin.castSucc G.uPos, c) : M.BVar N r G.T.t)) (fun c => M.xiVar N r G.T.t c) (JN G jp) l hl _ (by positivity) _ h1`. Establish `hJ : JN G jp ≤ 2 * A` using `(min_le_right _ _).trans ((Nat.sub_le _ _).trans hBa)`.
+
+Establish `hlog : Nat.log p (JN G jp) ≤ lgN p A r`. Use `log_le_lgN p (r := r) A (JN G jp) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h3 : Bnd ((p : ℝ) ^ (G.T.t * ((r + 1) * lgN p A r) + (r + 1) * lgN p A r)) _` using `bnd_mono h2 (by`. Rewrite using `[← pow_add]`.
+
+Conclude with `pow_le_pow_right₀ hp1 (Nat.add_le_add_left (Nat.mul_le_mul_left _ hlog) _))`. Establish `h4` using `norm_fock_le _ v (degFact G j jp) (degFact_ne_zero G j jp) _ (((N + 1) * r + (G.T.t + 1) * 2) * lgN p A r) h3 (Ljj_int p G j jp v hv) (Ljj_val p G A hdeg hBa j jp v hv)`. Rewrite `h4` using `[ProjS.fockK_smul_left]`. Establish `hx : G.T.t * ((r + 1) * lgN p A r) + (r + 1) * lgN p A r + ((N + 1) * r + (G.T.t + 1) * 2) * lgN p A r = x0N p A r N G.T.t`. Unfold `x0N`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[hx]`. Unfold `mX`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow, div_eq_inv_mul (M.fockK _ _)]`. Rewrite using `[inv_mul_le_iff₀ (pow_pos hp0 _), mul_one]`.
+
+Conclude with `h4`.
+-/
 theorem int_lvl (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) (hBa : G.B ≤ 2 * A)
     (hz : ∀ i, G.T.z i ≤ 2 * A) (j : Fin G.T.t → ℕ) (jp : ℕ) (l : ℕ) (hl : l ≤ JN G jp)
     (u v : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (hu : u ∈ Ljj p (r := r) G j jp) (hv : v ∈ Ljj p (r := r) G j jp) :
@@ -74,6 +96,13 @@ theorem int_lvl (hB : G.BlockOK) (A : ℕ) (hdeg : ∀ x, G.LL.deg x ≤ 2 * A) 
 
 end Lvl
 
+/- English proof (translation)
+Introduce `p _ N r _ G hB j jp _ A _ hdeg hBa hz n₁ f hf hli horth D hsmall z0 W h k hk hW hWh hJh`. Establish `hr : 1 ≤ r` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne r)`. Establish `hJ : JN G jp ≤ 2 * A` using `(min_le_right _ _).trans ((Nat.sub_le _ _).trans hBa)`. Establish `hV : ((min (G.LL.deg G.uPos - jp) (G.B - jp) : ℕ) : ℝ) / ((p : ℝ) - 1) - padicValNat p (min (G.LL.deg G.uPos - jp) (G.B - jp)).factorial ≤ (lgN p A r : ℝ)`. Use `(Formalism.GM.MeanGammaLemmas.legendre' p _).trans ?_` and prove the remaining obligations.
+
+Use `log_le_lgN p (r := r) A (JN G jp) (by omega)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `win_abs (fun c => (Sum.inl (Fin.castSucc G.uPos, c) : M.BVar N r G.T.t)) (fun c => M.xiVar N r G.T.t c) gramWindow2_proved (by intro c d h; simpa using h) (by intro c d h; simpa [M.xiVar] using h) (by`. Introduce `c d h`. Simplify using `only [M.xiVar, Sum.inl.injEq, Prod.mk.injEq] at h`.
+
+Conclude with `(Fin.castSucc_lt_last G.uPos).ne h.1)`. Use `hr (G.LL.deg G.uPos - jp) (G.B - jp) (phisB p (r := r) G j jp) (degFact G j jp : ℚ_[p]) n₁ f hli`. Use the proof step `(fun b => Ljj_biHom p G hB j jp (f b) (hf b)) (x0N p A r N G.T.t)`. Use the proof step `(fun l hl a b => int_lvl p G hB A hdeg hBa hz j jp l hl (f a) (f b) (hf a) (hf b))`. Use `horth D hsmall (lgN p A r : ℝ) hV z0 W h k hk hW hWh hJh`.
+-/
 theorem winLvl : WinLvl := by
   intro p _ N r _ G hB j jp _ A _ hdeg hBa hz n₁ f hf hli horth D hsmall z0 W h k hk hW hWh hJh
   have hr : 1 ≤ r := Nat.one_le_iff_ne_zero.2 (NeZero.ne r)

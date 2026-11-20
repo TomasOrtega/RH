@@ -24,6 +24,11 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
 
 omit [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Take `⟨h1, -, h3, h4, h5⟩` from `hfg`. Use `U.L.free` as an intermediate fact. Use `LinearMap.lTensor_injective_of_exact_of_flat ((g.f.restrictScalars O).restrict g.T_le) (fun z => ?_) ((f.f.restrictScalars O).restrict f.T_le) (fun x y h => Subtype.ext (h1 (congrArg Subtype.val h))) (fun z => ⟨fun h => ?_, ?_⟩) B` and prove the remaining obligations. Take `⟨x, hx, h⟩` from `h3 z.1 z.2`. Conclude with `⟨⟨x, hx⟩, Subtype.ext h⟩`.
+
+Take `⟨y, hy⟩` from `(h4 z.1).1 (congrArg Subtype.val h)`. Conclude with `⟨⟨y, h5 y (hy ▸ z.2)⟩, Subtype.ext hy⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `Subtype.ext ((h4 _).2 ⟨y.1, rfl⟩)`.
+-/
 theorem map_injective (hfg : IsSESLat (Qp := ℚ_[l]) f g) (B : Type) [AddCommGroup B] [Module O B] :
     Function.Injective (TensorProduct.map (LinearMap.id : B →ₗ[O] B) ((f.f.restrictScalars O).restrict f.T_le)) := by
   obtain ⟨h1, -, h3, h4, h5⟩ := hfg
@@ -38,6 +43,21 @@ theorem map_injective (hfg : IsSESLat (Qp := ℚ_[l]) f g) (B : Type) [AddCommGr
   · rintro ⟨y, rfl⟩
     exact Subtype.ext ((h4 _).2 ⟨y.1, rfl⟩)
 
+/- English proof (translation)
+Take `⟨m₁, hm₁⟩` from `I.exists_phiW_sub (toW t ϖ P ⟨y, hy⟩)`. Establish `hfixp : ∀ z, phiW t ϖ Q (Ip.ofT z) = Ip.ofT z` using `fun z => mem_Treal.1 (by rw [← Ip.range_ofT]; exact ⟨z, rfl⟩)`. Establish `hfix : ∀ z, phiW t ϖ P (I.ofT z) = I.ofT z` using `fun z => mem_Treal.1 (by rw [← I.range_ofT]; exact ⟨z, rfl⟩)`. Establish `h1 : phiW t ϖ Q (homW t ϖ F m₁) - homW t ϖ F m₁ = phiW t ϖ Q (toW t ϖ Q ⟨x₂, mem_ME_of_mem_M hx₂⟩) - toW t ϖ Q ⟨x₂, mem_ME_of_mem_M hx₂⟩`. Rewrite using `[← homW_phiW, ← map_sub, hm₁, homW_toW, ← toW_phi t ϖ Q hx₂, ← map_sub]`.
+
+Conclude with `congrArg _ (Subtype.ext hFy)`. Establish `h2 : homW t ϖ F m₁ - (toW t ϖ Q ⟨x₂, mem_ME_of_mem_M hx₂⟩ - k • Ip.ofT v) ∈ LinearMap.range Ip.ofT`. Rewrite using `[Ip.range_ofT, mem_Treal, map_sub, map_sub, map_nsmul, hfixp, sub_eq_iff_eq_add.1 h1]`. Normalize the expressions using the abelian group laws. Take `⟨z, hz⟩` from `h2`.
+
+Establish `h3 : homW t ϖ G (homW t ϖ F m₁) = 0`. Apply `Iu.j.injective` to reduce the goal to its premises. Rewrite using `[hG, hF, map_zero]`. Proceed by induction on `I.j m₁ using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul w s`. Establish `h0 : ((g.f.restrictScalars O).restrict g.T_le) (((f.f.restrictScalars O).restrict f.T_le) s) = 0` using `Subtype.ext ((hfg.2.2.2.1 _).2 ⟨s.1, rfl⟩)`. Simplify using `only [latW, TensorProduct.map_tmul, h0, TensorProduct.tmul_zero]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, add_zero]`. Establish `h4 : homW t ϖ G (toW t ϖ Q ⟨x₂, mem_ME_of_mem_M hx₂⟩) = k • Iu.ofT x`.
+
+Rewrite using `[homW_toW, ← hux, ← map_nsmul]`. Conclude with `congrArg _ (Subtype.ext hGx)`. Establish `h5 : homW t ϖ G (Ip.ofT v) = Iu.ofT x`. Rewrite using `[hG.homW_ofT]`. Conclude with `congrArg _ (Subtype.ext hv)`.
+
+Establish `h6` using `congrArg (homW t ϖ G) hz`. Rewrite `h6` using `[map_sub, map_sub, map_nsmul, h3, h4, h5, sub_self, sub_self, hG.homW_ofT, ← map_zero Iu.ofT]`. Take `⟨s, hs⟩` from `(hfg.2.2.2.1 z.1).1 (congrArg Subtype.val (Iu.ofT_injective h6))`. Establish `hsT : s ∈ T.L.T` using `hfg.2.2.2.2 s (hs ▸ z.2)`. Use `⟨m₁ - I.ofT ⟨s, hsT⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, hfix, ← hm₁]`. Normalize the expressions using the abelian group laws. Rewrite using `[map_sub, hF.homW_ofT, show (⟨f.f (⟨s, hsT⟩ : ↥T.L.T), f.T_le _ hsT⟩ : ↥Tp.L.T) = z from Subtype.ext hs, hz]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_solution {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {R : PhiMod O K l e a μ}
     {I : Ident t ϖ P T} {Ip : Ident t ϖ Q Tp} {Iu : Ident t ϖ R U} {F : GlobalTheory.BK.Hom P Q} {G : GlobalTheory.BK.Hom Q R}
     (hfg : IsSESLat (Qp := ℚ_[l]) f g) (hF : IsMapOf I Ip f F) (hG : IsMapOf Ip Iu g G) (u : ME R) (x : ↥U.L.T)
@@ -84,6 +104,11 @@ theorem exists_solution {P : PhiMod O K l e a ι} {Q : PhiMod O K l e a κ} {R :
   · rw [map_sub, hF.homW_ofT, show (⟨f.f (⟨s, hsT⟩ : ↥T.L.T), f.T_le _ hsT⟩ : ↥Tp.L.T) = z from Subtype.ext hs, hz]
     abel
 
+/- English proof (translation)
+Use `⟨1, fun i => ϖ.iTot t K (coordL P _ ⟨_, hL⟩ i), by rw [map_one]; exact isUnit_one, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`. Conclude with `(toW_toCris_of_mem_L t ϖ P hL (P.ext_mono (A_le_S l e) hL)).1`. Rewrite using `[map_one, one_smul]`. Use `congrArg _ (funext fun i => ?_)` and prove the remaining obligations.
+
+Rewrite using `[toBcris_apply, toB, AlgHom.comp_apply, ← ϖ.iC_of_mem t K, ← ϖ.iB_of_mem t K]`. Both sides reduce to the same expression.
+-/
 theorem isCrisVal_toW {P : PhiMod O K l e a ι} (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T) {w : Vec K a ι}
     (hL : w ∈ P.L) (hS : w ∈ P.MMl) :
     IsCrisVal t ϖ P jB (toW t ϖ P ⟨w, mem_ME_of_mem_L hL⟩) (jB (toBcris t ϖ P ⟨w, hS⟩)) := by
@@ -99,6 +124,23 @@ variable [TameDescentExponentData K l e a] {η H : ℕ}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hyE : y ∈ ME D.toPhiMod` using `BKDat.mem_invE_of_mem_Y hy`. Take `⟨m₀, hm₀, hFm₀⟩` from `exists_solution hfg hF hG u x hux (l ^ n) hx₂.1 hGx ⟨v, hv⟩ hgv hyE hFy`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.GalPot.exists_isCrisVal R hy hyE m₀ hm₀`. Establish `hz : D.conn σ = D.zeta y`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[F.toHom.app_conn, F.toHom.app_zeta, hFσ, hFy, PhiMod.zeta_phi_sub, map_sub, PhiMod.conn_xi, sub_zero]`. Use `⟨_, ⟨hyE, m₀, ⟨σ, hσ⟩, b₀, hm₀, hσi, hz, hb₀, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hAS : A O K ≤ invL l (S O K e)` using `(A_le_S l e).trans (le_away _ _)`. Establish `hL` using `Dp.phi_mem_L hx₂.1`. Establish `hS : Dp.phi x₂ ∈ Dp.MMl` using `Dp.ext_mono hAS hL`.
+
+Establish `hFS : F.app σ ∈ Dp.MMl` using `F.toHom.app_mem_ext hAS hσ`. Establish `hξ : Dp.xi (red (Dp.phi x₂)) ∈ Dp.MMl`. Use `sub_mem hS hFS` as an intermediate fact. Rewrite `this` using `[hFσ, sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hfixξ` using `GlobalTheory.GalPot.fix_of_horiz Rp ⟨_, hξ⟩ (fun γ => by`.
+
+Express the relevant statement in the definitionally equal form `Dp.desc.act γ (Dp.xi _) = Dp.xi _`. Rewrite using `[Descent.act_xi, ← Descent.red_act, Dp.desc.act_phi, hx₂.2 γ]) (Dp.conn_xi _)`. Establish `N` using `GlobalTheory.T.bcrisTensorIdentification_natural l a e O K t ϖ ι D.toPhiMod T R.I R.jB R.cmp κ Dp.toPhiMod Tp Rp.I Rp.jB f F.toHom Rp.cmp hF`. Establish `C` using `(GlobalTheory.T.breuilKisin_bcris_comparison_frobenius_naturality l a e O K t ϖ κ Dp.toPhiMod Tp Rp.I).2 Rp.jB Rp.cmp`. Use `set Φ := TensorProduct.map (R := O) (LinearMap.id (R := O) (M := OB l O)) ((f.f.restrictScalars O).restrict f.T_le) with hΦ`.
+
+Establish `hfix : phiW t ϖ Dp.toPhiMod (Rp.I.ofT ⟨v, hv⟩) = Rp.I.ofT ⟨v, hv⟩` using `mem_Treal.1 (by rw [← Rp.I.range_ofT]; exact ⟨_, rfl⟩)`. Establish `h1` using `N.2 _ _ hb₀`. Rewrite `h1` using `[homW_phiW, hFm₀, map_sub, map_nsmul, hfix, ← toW_phi t ϖ Dp.toPhiMod hx₂.1]`. Establish `h2` using `C.2.1 _ _ _ h1 (IsCrisVal.sub t ϖ (isCrisVal_toW Rp.jB hL hS) (GlobalTheory.GalPot.isCrisVal_nsmul (C.2.2.2.1 ⟨v, hv⟩) (l ^ n)))`. Establish `h3 : Φ (R.jB (toBcris t ϖ D.toPhiMod ⟨σ, hσ⟩) - b₀) = (l ^ n) • ((1 : OB l O) ⊗ₜ[O] (⟨v, hv⟩ : ↥Tp.L.T)) - Rp.jB (toBcris t ϖ Dp.toPhiMod ⟨_, hξ⟩)`.
+
+Rewrite using `[map_sub, h2, ← N.1 ⟨σ, hσ⟩ ⟨_, hFS⟩ rfl, show (⟨F.app σ, hFS⟩ : Dp.MMl) = ⟨_, hS⟩ - ⟨_, hξ⟩ from Subtype.ext hFσ, map_sub, map_sub]`. Normalize the expressions using the abelian group laws. Introduce `γ k s hs`. Apply `map_injective hfg (OB l O)` to reduce the goal to its premises. Establish `hact : actB (sQ l) Tp γ ((1 : OB l O) ⊗ₜ[O] (⟨v, hv⟩ : ↥Tp.L.T)) = (1 : OB l O) ⊗ₜ[O] (Tp.actT γ ⟨v, hv⟩)`.
+
+Rewrite using `[actB, TWact, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one]`. Establish `hs' : (f.f.restrictScalars O).restrict f.T_le s = (l : O) ^ k • (l : O) ^ n • (Tp.actT γ ⟨v, hv⟩ - ⟨v, hv⟩)`. Establish `hsm : ∀ (j : ℕ) (w : Tp.V), ((l : O) ^ j) • w = (l : K) ^ j • w` using `fun j w => by`. Rewrite using `[← algebraMap_smul K ((l : O) ^ j) w, map_pow, map_natCast]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `f.f (s : T.V) = (l : O) ^ k • (l : O) ^ n • (Tp.ρ γ v - v)`. Rewrite using `[hs, hsm, hsm, hc, Pi.smul_apply, map_smul, map_smul]`. Rewrite using `[map_smul, map_sub, GlobalTheory.CocycleNat.actB_map, ← hΦ, h3, map_sub, map_nsmul, hfixξ, hact, hΦ, TensorProduct.map_tmul, LinearMap.id_apply, hs', TensorProduct.tmul_smul, TensorProduct.tmul_smul, TensorProduct.tmul_sub, smul_sub, ← Nat.cast_smul_eq_nsmul O, ← Nat.cast_smul_eq …`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem classOf {D : BKDat O K l e a ι η H} {Dp : BKDat O K l e a κ η H} {Du : BKDat O K l e a μ η H}
     (R : GalDat t ϖ (sQ l) D T) (Rp : GalDat t ϖ (sQ l) Dp Tp) (Ru : GalDat t ϖ (sQ l) Du U)
     (F : BKHom D Dp) (G : BKHom Dp Du) (hfg : IsSESLat (Qp := ℚ_[l]) f g)
@@ -160,6 +202,9 @@ theorem classOf {D : BKDat O K l e a ι η H} {Dp : BKDat O K l e a κ η H} {Du
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ ϖ LL _ _ η H T Tp f g hfg Pk Pp Pu F G hF hG _ hinj u x hx1 _ _ hux n x₂ hx₂ hGx₂ v c hv hgv hc σ hσ hσi hFσ y hy hFy`. Conclude with `classOf Pk.R Pp.R Pu.R F G hfg hF hG hinj u x hux n hx₂ hGx₂ hv (hgv.trans hx1.symm) hc hσ hσi hFσ hy hFy`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (η H : ℕ) (T Tp : QLat LL) (f : LatHom T.L Tp.L) (g : LatHom Tp.L (unitLat (Gl l) : QLat LL).L), IsSESLat (Qp := ℚ_[l]) f g → ∀ (Pk : Pack a ϖ η H T) (Pp : Pack a ϖ η H Tp) (Pu : Pack a ϖ η H (unitLat (Gl l) : QLat LL)) (F : BKHom Pk.D Pp.D) (G : BKHom Pp.D Pu.D), IsMapOf Pk.R.I Pp.R.I f F.toHom → IsMapOf Pp.R.I Pu.R.I g G.toHom → IsExactTriple F.toHom G.toHom → Function.Injective F.app → ∀ (u : ME Pu.D.toPhiMod) (x : ↥(unitLat (Gl l) : QLat LL).L.T), x.1 = (1 : ↥LL.1) → u.1 ∈ Pu.D.Minv → Pu.D.phi u.1 = u.1 → toW (thetaW a LL) ϖ Pu.D.toPhiMod u = Pu.R.I.ofT x → ∀ (n : ℕ) (x₂ : Vec ↥LL.1 a (Fin Pp.n)), x₂ ∈ Pp.D.Minv → G.app x₂ = (l ^ n) • u.1 → ∀ (v : Tp.V) (c : Gl l → T.V), v ∈ Tp.L.T → g.f v = (1 : ↥LL.1) → (∀ h, Tp.ρ h v - v = f.f (c h)) → ∀ σ ∈ Pk.D.MMl, σ ∈ Pk.D.desc.inv → F.app σ = Pp.D.phi x₂ - Pp.D.xi (red (Pp.D.phi x₂)) → ∀ y ∈ Pk.D.Y, F.app y = Pp.D.phi x₂ - x₂ → Pk.R.ClassOf y ((l : ↥LL.1) ^ n • c) := by
   intro l _ a e _ _ ϖ LL _ _ η H T Tp f g hfg Pk Pp Pu F G hF hG _ hinj u x hx1 _ _ hux n x₂ hx₂ hGx₂ v c hv hgv hc σ hσ hσi hFσ y hy hFy
   exact classOf Pk.R Pp.R Pu.R F G hfg hF hG hinj u x hux n hx₂ hGx₂ hv (hgv.trans hx1.symm) hc hσ hσi hFσ hy hFy

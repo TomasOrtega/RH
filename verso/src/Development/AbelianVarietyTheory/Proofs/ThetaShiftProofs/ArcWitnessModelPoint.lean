@@ -20,6 +20,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.ArcWitness
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[← V.valuation_le_one_iff]`. Rewrite `h` using `[map_pow, pow_le_one_iff hn]`. Then use the resulting hypothesis.
+-/
 theorem mem_valuationSubring_of_pow_mem {K : Type} [Field K] (V : ValuationSubring K) {x : K} {n : ℕ} (hn : n ≠ 0)
     (h : x ^ n ∈ V) : x ∈ V := by
   rw [← V.valuation_le_one_iff] at h ⊢
@@ -45,6 +48,19 @@ def restrictArcIn {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   etaA := a.etaA
   geom F _ _ _ r z hr hz := a.geom F (β r) (β z) hr hz
 
+/- English proof (translation)
+Introduce `hP`. Set `H` to `HostModel.host`. Set `D` to `HostModel.hypDatum H`. Establish `hD : 1 ≤ D.p + D.q` using `by simp [D]`. Set `Xo : ∀ l : Level H, Moduli D l` to `fun l => (GlobalTheory.T.exists_moduli_scheme_polarized_abelian_level _ H D l hD).some`.
+
+Take `⟨W₀, hW₀⟩` from `GlobalTheory.exists_valuationSubring_complex_prime_mem_nonunits 2 Nat.prime_two`. Take `⟨l₀, -, -, hi⟩` from `GlobalTheory.exists_level_goodAt_all_primes_and_idx _ H 5 (by norm_num)`. Take `⟨i, -⟩` from `hi 2 Nat.prime_two`. Take `⟨Y, hY, -⟩` from `hP.2 _ H D hD Xo`. Establish `h4` using `((hY 2 W₀ Nat.prime_two hW₀).2 i).2.2`.
+
+Set `bF : i.c.F →+* ℂ` to `i.c.F.val.toRingHom`. Set `a` to `restrictArcIn (i.c.V W₀).subtype (HostModel.arcIn i.c ℂ bF)`. Take `⟨χ, hχ, -⟩` from `h4 ℂ _ 1 a (Or.inl ⟨Field.toIsField ℂ, rfl⟩)`. Take `⟨h1, h2, h3, hA⟩` from `(hχ χ).1 rfl`. Take `⟨W⟩` from `(Model.hasArcData_iff _ _ _ _ _ _).1 hA`.
+
+Take `⟨g, ty, hty⟩` from `(GlobalTheory.PeriodExists.typeFn_period_exist _ H D).1`. Take `⟨Fu⟩` from `GlobalTheory.T.cmModuli_consequence_of_abelianSchemeLaws _ H D i.l (Xo i.l) (bF.comp (IntermediateField.inclusion i.c.le).toRingHom) g ty hD rfl hty`. Use `haveI : FaithfulSMul ℂ ℂ := inferInstance`. Use `⟨_, _, _, _, H, D, i.l, Xo i.l, i.c, W₀, Y 2 W₀ Nat.prime_two hW₀ i, bF, FractionRing.liftAlgebra ℂ ℂ, FractionRing.isScalarTower_liftAlgebra ℂ ℂ, a, χ, W, g, ty, Fu, rfl, hty, ?_, h1, ?_, h2, ?_, Fu.n_pos⟩` and prove the remaining obligations. Establish `hr : H.rt0 ∈ W₀` using `mem_valuationSubring_of_pow_mem W₀ two_ne_zero (by`.
+
+Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `neg_mem (natCast_mem W₀ _))`. Establish `hz : zeta i.l.A ∈ W₀` using `mem_valuationSubring_of_pow_mem W₀ i.l.A_pos.ne' (by`. Rewrite using `[(HostModel.isPrimitiveRoot_zeta i.l.A_pos).pow_eq_one]`. Conclude with `one_mem W₀)`.
+
+Conclude with `⟨⟨⟨_, HostModel.sqrtNegDisc_mem_coeffField i.c⟩, hr⟩, ⟨⟨_, HostModel.zeta_A_mem_coeff i.c⟩, hz⟩, rfl, rfl⟩`. Introduce `x hx`. Conclude with `h3 x (by rwa [map_one, _root_.one_mul])`. Use `haveI := a.nontriv`. Conclude with `W.e.injective.nontrivial`.
+-/
 theorem exists_arcWit : PartI → ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (bF : c.F →+* ℂ) (_ : Algebra (FractionRing ℂ) ℂ) (_ : IsScalarTower ℂ (FractionRing ℂ) ℂ) (a : ArcIn D l (c.V W₀).subtype ℂ (bF.comp (c.V W₀).subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (bF.comp (IntermediateField.inclusion c.le).toRingHom) ty), bF (IntermediateField.inclusion c.le (baseKA l).ρ) = H.rt0 ∧ IsTypeFn H D.p D.q ty ∧ (∃ r z : c.V W₀, (((c.V W₀).subtype r : c.F) : ℂ) = H.rt0 ∧ (((c.V W₀).subtype z : c.F) : ℂ) = zeta l.A) ∧ χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (bF.comp (c.V W₀).subtype) ∧ (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) ∧ (∀ x : Sp (PowerSeries ℂ), χ x ∈ abLocus Y.t.G ↔ PowerSeries.X ∉ x.asIdeal) ∧ Nontrivial W.P.D.toPre.X ∧ 0 < Fu.n := by
   intro hP
   let H := HostModel.host

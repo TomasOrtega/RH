@@ -17,12 +17,20 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[genSub, Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b v (hv T hT)`.
+-/
 theorem closure_E_mem_genSub {V : Submodule ℂ D} (a b : Fin n) {v : D} (hv : v ∈ genSub E V) :
     E a b v ∈ genSub E V := by
   rw [genSub, Submodule.mem_sInf] at hv ⊢
   intro T hT
   exact hT.2 a b v (hv T hT)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hv`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, actM, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (closure_E_mem_genSub a b ih)`.
+-/
 theorem closure_actM_pow_mem_genSub {V : Submodule ℂ D} (X : Matrix (Fin n) (Fin n) ℂ) (m : ℕ)
     {v : D} (hv : v ∈ genSub E V) : ((actM E X) ^ m) v ∈ genSub E V := by
   induction m with
@@ -35,6 +43,11 @@ theorem closure_actM_pow_mem_genSub {V : Submodule ℂ D} (X : Matrix (Fin n) (F
     rw [LinearMap.smul_apply]
     exact Submodule.smul_mem _ _ (closure_E_mem_genSub a b ih)
 
+/- English proof (translation)
+Establish `hsub : (((genSub E V).map D.subtype : Submodule ℂ H) : Set H) ⊆ T ⁻¹' ((((genSub E V).map D.subtype).topologicalClosure : Submodule ℂ H) : Set H)`. Introduce and unpack `y ⟨v, hv, rfl⟩`. Conclude with `hT v hv`. Establish `hcl : IsClosed (T ⁻¹' ((((genSub E V).map D.subtype).topologicalClosure : Submodule ℂ H) : Set H))` using `((genSub E V).map D.subtype).isClosed_topologicalClosure.preimage T.continuous`. Establish `hx' : x ∈ closure (((genSub E V).map D.subtype : Submodule ℂ H) : Set H)`.
+
+Rewrite `hx` using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe]`. Then use the resulting hypothesis. Conclude with `closure_minimal hsub hcl hx'`.
+-/
 theorem closure_mapsTo_of_genSub {V : Submodule ℂ D} (T : H →L[ℂ] H)
     (hT : ∀ v : D, v ∈ genSub E V → T (v : H) ∈ ((genSub E V).map D.subtype).topologicalClosure)
     {x : H} (hx : x ∈ ((genSub E V).map D.subtype).topologicalClosure) :
@@ -50,6 +63,9 @@ theorem closure_mapsTo_of_genSub {V : Submodule ℂ D} (T : H →L[ℂ] H)
     rwa [← SetLike.mem_coe, Submodule.topologicalClosure_coe] at hx
   exact closure_minimal hsub hcl hx'
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hk`. Establish `h1 : k.conjTranspose * k = 1`. Simplify `Matrix.mem_unitaryGroup_iff'.mp hu` using `[Matrix.star_eq_conjTranspose]`. Use `show k.conjTranspose * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem closure_inUJ_of_mem_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     k ∈ UJset ε := by
   obtain ⟨hu, hc⟩ := hk
@@ -58,6 +74,19 @@ theorem closure_inUJ_of_mem_Kset {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Ks
   show k.conjTranspose * Jm ε * k = Jm ε
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hSc : IsClosed ((((genSub E V).map D.subtype).topologicalClosure : Submodule ℂ H) : Set H)` using `((genSub E V).map D.subtype).isClosed_topologicalClosure`. Establish `hsub : ∀ w : D, w ∈ genSub E V → (w : H) ∈ ((genSub E V).map D.subtype).topologicalClosure` using `fun w hw => ((genSub E V).map D.subtype).le_topologicalClosure ⟨w, hw, rfl⟩`. Establish `hc0 : (0 : ℝ) ≤ √2 * √(∑ a, ∑ b, ‖X a b‖ ^ 2)` using `by positivity`. Take `⟨N, hN⟩` from `exists_nat_gt (√2 * √(∑ a, ∑ b, ‖X a b‖ ^ 2))`. Establish `hN0 : (0 : ℝ) < N` using `lt_of_le_of_lt hc0 hN`.
+
+Establish `hstep : ∀ j : ℕ, ∀ w : D, w ∈ genSub E V → σ (NormedSpace.exp ((((j : ℝ) / N : ℝ) : ℂ) • X)) (w : H) ∈ ((genSub E V).map D.subtype).topologicalClosure`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `w hw`.
+
+Simplify using `only [Nat.cast_zero, zero_div, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]`. Rewrite using `[hσ.1.1, ContinuousLinearMap.one_apply]`. Conclude with `hsub w hw`. Consider the case `succ j ih`. Introduce `w hw`.
+
+Establish `hdiff : (((j + 1 : ℕ) : ℝ) / N) - ((j : ℝ) / N) = 1 / N`. Rewrite using `[Nat.cast_succ, add_div, add_sub_cancel_left]`. Establish `ht : |(((j + 1 : ℕ) : ℝ) / N) - ((j : ℝ) / N)| * (√2 * √(∑ a, ∑ b, ‖X a b‖ ^ 2)) < 1`. Rewrite using `[hdiff, abs_of_pos (div_pos one_pos hN0), one_div, inv_mul_lt_iff₀ hN0, mul_one]`. Conclude with `hN`.
+
+Establish `hs` using `orbit_hasSum_taylor hσ hD hVf hVK hc hX hw ((j : ℝ) / N) (((j + 1 : ℕ) : ℝ) / N) ht`. Use `hSc.mem_of_tendsto hs.tendsto_sum_nat (Filter.Eventually.of_forall fun M => ?_)` and prove the remaining obligations. Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `ih _ (closure_actM_pow_mem_genSub X m hw)`. Establish `h` using `hstep N v hv`.
+
+Rewrite `h` using `[div_self hN0.ne', Complex.ofReal_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem exp_apply_mem_topologicalClosure (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) {c : ℝ}
     (hc : ∀ v ∈ V, casimir E v = (c : ℂ) • v) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -95,6 +124,17 @@ theorem exp_apply_mem_topologicalClosure (hσ : IsURepOn (UJset ε) σ) (hD : Is
   have h := hstep N v hv
   rwa [div_self hN0.ne', Complex.ofReal_one, one_smul] at h
 
+/- English proof (translation)
+Introduce `g hg x hx`. Take `⟨k, hk, Y, hY, hgk⟩` from `polar_UJ hg`. Establish `hkU : k ∈ UJset ε` using `closure_inUJ_of_mem_Kset hk`. Establish `h1 : k.conjTranspose * k = 1`. Simplify `Matrix.mem_unitaryGroup_iff'.mp hk.1` using `[Matrix.star_eq_conjTranspose]`.
+
+Establish `h2 : k * k.conjTranspose = 1`. Simplify `Matrix.mem_unitaryGroup_iff.mp hk.1` using `[Matrix.star_eq_conjTranspose]`. Establish `hEq : k.conjTranspose * g = NormedSpace.exp Y`. Rewrite using `[hgk, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hkg : k.conjTranspose * g ∈ UJset ε`.
+
+Establish `hg' : g.conjTranspose * Jm ε * g = Jm ε` using `hg`. Use `show (k.conjTranspose * g).conjTranspose * Jm ε * (k.conjTranspose * g) = Jm ε`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hσg : σ g = (σ k).comp (σ (k.conjTranspose * g))`.
+
+Establish `h3` using `hσ.1.2 k hkU _ hkg`. Rewrite `h3` using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `hs1 : σ (NormedSpace.exp Y) x ∈ ((genSub E V).map D.subtype).topologicalClosure` using `closure_mapsTo_of_genSub _ (fun v hv => exp_apply_mem_topologicalClosure hσ hD hVf hVK hc hY hv) hx`. Take `⟨Z, hZ, hZe⟩` from `exists_exp_eq_of_mem_Kset hk`. Establish `hs2 : ∀ y ∈ ((genSub E V).map D.subtype).topologicalClosure, σ k y ∈ ((genSub E V).map D.subtype).topologicalClosure` using `fun y hy => closure_mapsTo_of_genSub _ (fun v hv => by`.
+
+Rewrite using `[← hZe]`. Conclude with `exp_inK_apply_mem_closure hσ hD hVf hVK hZ hv) hy`. Rewrite using `[hσg, ContinuousLinearMap.comp_apply, hEq]`. Conclude with `hs2 _ hs1`.
+-/
 theorem closure_genSub_stable (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     {V : Submodule ℂ D} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) {c : ℝ}
     (hc : ∀ v ∈ V, casimir E v = (c : ℂ) • v) :

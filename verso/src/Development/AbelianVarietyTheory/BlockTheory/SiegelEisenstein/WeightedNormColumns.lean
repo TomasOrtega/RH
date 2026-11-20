@@ -71,9 +71,15 @@ def flatE (χ : AddChar k Circle) (ν : Measure k) (ρ : ℕ)
   GlobalTheory.RootEx.opE χ ν (ρ + 1) (fun y => Φ (y + zCol n' ρ fun r => x r (Sum.inr 0))) (x.submatrix id Sum.inl)
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Apply the tactic sequence `ext (r | r) (s | s) <;> simp [zCol]`.
+-/
 theorem zCol_zero (ρ : ℕ) : zCol n' ρ (fun _ : n => (0 : k)) = 0 := by
   ext (r | r) (s | s) <;> simp [zCol]
 
+/- English proof (translation)
+Establish `h : (fun r => fromCols x₀ (0 : Matrix n (Fin 1) k) r (Sum.inr 0)) = fun _ => 0` using `rfl`. Rewrite using `[flatE, h, zCol_zero]`. Simplify using `only [add_zero]`. Both sides reduce to the same expression.
+-/
 theorem flatE_zero (χ : AddChar k Circle) (ν : Measure k) (ρ : ℕ)
     (Φ : Matrix (n ⊕ Fin (2 * ρ)) (n' ⊕ Fin (2 * ρ + 1)) k → ℂ) (x₀ : Matrix n n' k) :
     flatE χ ν ρ Φ (fromCols x₀ 0) = GlobalTheory.RootEx.opE χ ν (ρ + 1) Φ x₀ := by
@@ -96,10 +102,16 @@ def FlatSplitBF (D : D7) : Prop :=
           ∀ Φ : SB (Matrix (n ⊕ Fin (2 * ρ)) (n' ⊕ Fin (2 * ρ + 1)) k),
             ∃ h : flatE χ ν ρ Φ.1 ∈ SB (Matrix n (n' ⊕ Fin 1) k), flatBF s (M Φ) = M₀ ⟨flatE χ ν ρ Φ.1, h⟩
 
+/- English proof (translation)
+Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [kaSrc]`.
+-/
 example {k : Type} [Field k] (ξ N : k) (hξ : ξ ≠ 0) : IsNormalScal ξ (kaSrc 1 N) ![ξ, 1, -(ξ⁻¹ * N)] := by
   intro i j h
   fin_cases i <;> fin_cases j <;> simp_all [kaSrc]
 
+/- English proof (translation)
+Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [kaTgt]`. Clear the denominators using the available nonvanishing facts.
+-/
 example {k : Type} [Field k] (ξ N : k) (hξ : ξ ≠ 0) : IsNormalScal ξ (kaTgt 1 N) ![ξ, N] := by
   intro i j h
   fin_cases i <;> fin_cases j <;> simp_all [kaTgt]

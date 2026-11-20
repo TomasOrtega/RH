@@ -15,6 +15,11 @@ open GlobalTheory.CompanionTheory.Ar.PB.FibN ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibN
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => if i < m then a else b) (m + j), Finset.prod_range_add]`. Establish `h1 : (∏ x ∈ Finset.range m, (if x < m then a else b)) = a ^ m`. Rewrite using `[Finset.prod_congr rfl (fun x hx => if_pos (Finset.mem_range.mp hx))]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : (∏ x ∈ Finset.range j, (if m + x < m then a else b)) = b ^ j`. Rewrite using `[Finset.prod_congr rfl (fun x _ => if_neg (by omega))]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, Nat.add_sub_cancel_left]`.
+-/
 theorem prod_fin_ite_lt {R : Type*} [CommMonoid R] (a b : R) (m N : ℕ) (h : m ≤ N) :
     (∏ r : Fin N, (if (r : ℕ) < m then a else b)) = a ^ m * b ^ (N - m) := by
   obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -28,19 +33,37 @@ theorem prod_fin_ite_lt {R : Type*} [CommMonoid R] (a b : R) (m N : ℕ) (h : m 
     simp
   rw [h1, h2, Nat.add_sub_cancel_left]
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp [rowW]`.
+-/
 theorem rowW_ite (c : Prop) [Decidable c] :
     rowW ![if c then 1 else 0, 0] (if c then 0 else 1) =
       if c then (X (some 0) : MvPolynomial (Option (Fin 2)) ℝ) else X none := by
   split_ifs <;> simp [rowW]
 
+/- English proof (translation)
+Simplify using `[evalW, lin4]`.
+-/
 theorem evalW_X_some_zero (n₀ n₁ : Fin 3 → ℝ) :
     evalW n₀ n₁ (X (some 0)) = rename some (lin3 n₀) := by
   simp [evalW, lin4]
 
+/- English proof (translation)
+Simplify using `[evalW]`.
+-/
 theorem evalW_X_none (n₀ n₁ : Fin 3 → ℝ) :
     evalW n₀ n₁ (X none) = X none := by
   simp [evalW]
 
+/- English proof (translation)
+Introduce `d k hk hkd n`. Take `⟨t, rfl⟩ : ∃ t, k = t + 1` from `⟨k - 1, by omega⟩`. Establish `hm : 2 * (t + 1) - 1 = 2 * t + 1` using `by omega`. Establish `hm2 : 2 * (t + 1) - 2 = 2 * t` using `by omega`. Establish `hj : d + 2 - 2 * (t + 1) = d + 1 - (2 * t + 1)` using `by omega`.
+
+Establish `hprod : (∏ r : Fin (d + 1), rowW ![if (r : ℕ) < 2 * (t + 1) - 1 then 1 else 0, 0] (if (r : ℕ) < 2 * (t + 1) - 1 then 0 else 1)) = X (some 0) ^ (2 * t + 1) * X none ^ (d + 1 - (2 * t + 1))`. Simplify using `only [rowW_ite, hm]`. Conclude with `prod_fin_ite_lt _ _ _ _ (by omega)`. Rewrite using `[hprod, hm2, hj, Derivation.leibniz, Derivation.leibniz_pow, Derivation.leibniz_pow]`. Establish `hne : (none : Option (Fin 2)) ≠ some 0` using `by simp`.
+
+Simplify using `only [pderiv_X_self, pderiv_X_of_ne hne, smul_eq_mul, smul_zero, zero_add, mul_zero, add_zero, mul_one, Nat.add_sub_cancel, nsmul_eq_mul]`. Simplify using `only [map_mul, map_pow, map_natCast, evalW_X_some_zero, evalW_X_none]`. Establish `hc : (C (2 * ((t + 1 : ℕ) : ℝ) - 1) : MvPolynomial (Option (Fin 3)) ℝ) = ((2 * t + 1 : ℕ) : MvPolynomial (Option (Fin 3)) ℝ)`. Rewrite using `[← map_natCast (C : ℝ →+* MvPolynomial (Option (Fin 3)) ℝ)]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalW_pderiv_prod_rowW : ∀ (d k : ℕ), 1 ≤ k → 2 * k ≤ d + 2 → ∀ n : Fin 3 → ℝ,
     evalW n n (pderiv (some 0) (∏ r : Fin (d + 1),
       rowW ![if (r : ℕ) < 2 * k - 1 then 1 else 0, 0] (if (r : ℕ) < 2 * k - 1 then 0 else 1))) =

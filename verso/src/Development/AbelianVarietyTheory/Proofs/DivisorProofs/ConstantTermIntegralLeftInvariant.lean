@@ -6,6 +6,19 @@ open NumberField MeasureTheory GlobalTheory.CuspRep
 
 namespace GlobalTheory.LeviConstTerm
 
+/- English proof (translation)
+Establish `key : ∀ U : G ≃ₜ+ G, (∀ x ∈ Γ, U x ∈ Γ) → (∀ x ∈ Γ, U.symm x ∈ Γ) → MeasurePreserving U μ μ ∧ IsAddFundamentalDomain Γ (U ⁻¹' 𝓕) μ`. Introduce `U hU hU'`. Establish `hmeas : Measurable U` using `U.continuous.measurable`. Use `haveI : (μ.map U).IsAddHaarMeasure := U.isAddHaarMeasure_map μ`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul (μ.map U) μ`.
+
+Establish `hq : Measure.QuasiMeasurePreserving U μ μ` using `⟨hmeas, by rw [hc]; exact Measure.smul_absolutelyContinuous⟩`. Establish `hS : IsAddFundamentalDomain Γ (U ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv (e := fun γ : Γ => (⟨U.symm γ, hU' _ γ.2⟩ : Γ)) hq ?_ ?_` and prove the remaining obligations. Use `⟨fun x y hxy => Subtype.ext (U.symm.injective (congrArg Subtype.val hxy)), fun y => ⟨⟨U y, hU _ y.2⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `Subtype.ext (U.symm_apply_apply _)`.
+
+Introduce `γ x`. Express the relevant statement in the definitionally equal form `U (U.symm γ + x) = (γ : G) + U x`. Rewrite using `[map_add, U.apply_symm_apply]`. Use `⟨⟨hmeas, ?_⟩, hS⟩` and prove the remaining obligations. Establish `h2 : μ (U ⁻¹' 𝓕) = 1` using `(hS.measure_eq h𝓕).trans h1`.
+
+Establish `h3 : μ.map U 𝓕 = 1`. Rewrite using `[Measure.map_apply₀ hmeas.aemeasurable (h𝓕.nullMeasurableSet.mono_ac hq.2), h2]`. Rewrite `h3` using `[hc, Measure.smul_apply, h1]`. Establish `h4 : (μ.map U).addHaarScalarFactor μ = 1`. Simplify `h3` using `[ENNReal.smul_def]`.
+
+Rewrite using `[hc, h4, one_smul]`. Establish `hmp` using `(key T hT hT').1`. Establish `hS` using `(key T.symm hT' hT).2`. Establish `hemb : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`. Establish `hpre : T ⁻¹' (T.symm ⁻¹' 𝓕) = 𝓕` using `by ext x; simp`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem setIntegral_comp_aut {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (Γ : AddSubgroup G) [Countable Γ] (μ : Measure G) [μ.IsAddHaarMeasure] (𝓕 : Set G)
@@ -50,6 +63,13 @@ def IsBlockSL2Embedding (r : ℕ) (m : Matrix (Fin a) (Fin a) R) : Prop :=
 def conjN (m n : Matrix (Fin a) (Fin a) R) (x : BlockIx a r → R) : BlockIx a r → R :=
   fun p => (m * nilM x * n) p.1.1 p.1.2
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Simplify using `only [nilM, Matrix.of_apply, dif_pos h]`. Both sides reduce to the same expression. Rewrite using `[nilM, Matrix.of_apply, dif_neg h, Matrix.mul_apply]`.
+
+Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Break down `hn k j with h1 | h1` into its components or cases. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero, zero_mul]`. Introduce `l _`. Break down `hm i l with h2 | h2` into its components or cases.
+
+Rewrite using `[nilM, Matrix.of_apply, dif_neg (fun h' => h (by omega)), mul_zero]`. Rewrite using `[h2, zero_mul]`. Rewrite using `[h1, mul_zero]`.
+-/
 theorem nilM_conjN {m n : Matrix (Fin a) (Fin a) R} (hm : IsBlockSL2Embedding r m) (hn : IsBlockSL2Embedding r n) (x : BlockIx a r → R) :
     nilM (conjN m n x) = m * nilM x * n := by
   ext i j
@@ -65,14 +85,23 @@ theorem nilM_conjN {m n : Matrix (Fin a) (Fin a) R} (hm : IsBlockSL2Embedding r 
       · rw [h2, zero_mul]
     · rw [h1, mul_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; simp only [nilM, Matrix.of_apply, Matrix.add_apply]; split_ifs <;> simp`.
+-/
 theorem nilM_add (x y : BlockIx a r → R) : nilM (x + y) = nilM x + nilM y := by
   ext i j; simp only [nilM, Matrix.of_apply, Matrix.add_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [conjN, nilM_add, mul_add, add_mul, Matrix.add_apply, Pi.add_apply]`.
+-/
 theorem conjN_add (m n : Matrix (Fin a) (Fin a) R) (x y : BlockIx a r → R) :
     conjN m n (x + y) = conjN m n x + conjN m n y := by
   funext p
   simp only [conjN, nilM_add, mul_add, add_mul, Matrix.add_apply, Pi.add_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `: m' * (m * nilM x * n) * n' = nilM x`. Rewrite using `[show m' * (m * nilM x * n) * n' = (m' * m) * nilM x * (n * n') by simp only [mul_assoc], h1, h2, one_mul, mul_one]`. Rewrite using `[conjN, nilM_conjN hm hn, this, nilM, Matrix.of_apply, dif_pos p.2]`.
+-/
 theorem conjN_conjN {m n m' n' : Matrix (Fin a) (Fin a) R} (hm : IsBlockSL2Embedding r m) (hn : IsBlockSL2Embedding r n)
     (h1 : m' * m = 1) (h2 : n * n' = 1) (x : BlockIx a r → R) : conjN m' n' (conjN m n x) = x := by
   funext p
@@ -81,6 +110,11 @@ theorem conjN_conjN {m n m' n' : Matrix (Fin a) (Fin a) R} (hm : IsBlockSL2Embed
       mul_one]
   rw [conjN, nilM_conjN hm hn, this, nilM, Matrix.of_apply, dif_pos p.2]
 
+/- English proof (translation)
+Establish `h : Continuous (nilM : (BlockIx a r → R) → Matrix (Fin a) (Fin a) R)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
+
+Conclude with `continuous_const`. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul h).matrix_mul continuous_const).matrix_elem _ _`.
+-/
 theorem continuous_conjN [TopologicalSpace R] [IsTopologicalRing R] (m n : Matrix (Fin a) (Fin a) R) :
     Continuous (conjN (r := r) m n) := by
   have h : Continuous (nilM : (BlockIx a r → R) → Matrix (Fin a) (Fin a) R) := by
@@ -92,6 +126,9 @@ theorem continuous_conjN [TopologicalSpace R] [IsTopologicalRing R] (m n : Matri
   refine continuous_pi fun p => ?_
   exact ((continuous_const.matrix_mul h).matrix_mul continuous_const).matrix_elem _ _
 
+/- English proof (translation)
+Establish `: nilM (fun p => φ (x p)) = (nilM x).map φ`. Apply the tactic sequence `ext i j; simp only [nilM, Matrix.of_apply, Matrix.map_apply]; split_ifs <;> simp`. Use function extensionality and compare the values at `p`. Rewrite using `[conjN, conjN, this, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`.
+-/
 theorem conjN_map {S : Type} [CommRing S] (φ : R →+* S) (m n : Matrix (Fin a) (Fin a) R) (x : BlockIx a r → R) :
     conjN (m.map φ) (n.map φ) (fun p => φ (x p)) = fun p => φ (conjN m n x p) := by
   have : nilM (fun p => φ (x p)) = (nilM x).map φ := by
@@ -99,15 +136,36 @@ theorem conjN_map {S : Type} [CommRing S] (φ : R →+* S) (m n : Matrix (Fin a)
   funext p
   rw [conjN, conjN, this, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]
 
+/- English proof (translation)
+Introduce `i j` and use `(hm i j).imp id fun h => by rw [Matrix.map_apply, h, map_zero]`.
+-/
 theorem IsBlockSL2Embedding.map {S : Type} [CommRing S] (φ : R →+* S) {m : Matrix (Fin a) (Fin a) R} (hm : IsBlockSL2Embedding r m) :
     IsBlockSL2Embedding r (m.map φ) := fun i j => (hm i j).imp id fun h => by rw [Matrix.map_apply, h, map_zero]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + nilM x) * m.val = m.val * (1 + nilM (conjN m⁻¹.val m.val x))`. Rewrite using `[nilM_conjN hm' hm, mul_add, add_mul, one_mul, mul_one, ← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem unip_mul (m : GL (Fin a) R) (hm : IsBlockSL2Embedding r m.val) (hm' : IsBlockSL2Embedding r m⁻¹.val) (x : BlockIx a r → R) :
     unip x * m = m * unip (conjN m⁻¹.val m.val x) := by
   apply Units.ext
   change (1 + nilM x) * m.val = m.val * (1 + nilM (conjN m⁻¹.val m.val x))
   rw [nilM_conjN hm' hm, mul_add, add_mul, one_mul, mul_one, ← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ a r hr _ _ μ 𝓕 hμ h𝓕 h1 f hf γ g`. Use `haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Use `haveI : Countable (ratN E a r) := by`. Establish `: ((ratN E a r : AddSubgroup _) : Set (BlockIx a r → Ad E)) = Set.range (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r))` using `AddMonoidHom.coe_range _`. Express the relevant statement in the definitionally equal form `Countable (((ratN E a r : AddSubgroup _) : Set (BlockIx a r → Ad E)))`.
+
+Rewrite using `[this]`. Conclude with `(Set.countable_range _).to_subtype`. Use `haveI : SecondCountableTopology (Ad E) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E`. Use `haveI : LocallyCompactSpace (Ad E) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E`. Use `set h : (BlockIx a r → Ad E) → ℂ := fun x => f (unip x * g) with hh`.
+
+Establish `hinv : ∀ (γ : ratN E a r) (x : BlockIx a r → Ad E), h (γ +ᵥ x) = h x`. Introduce and unpack `⟨_, e, rfl⟩ x`. Express the relevant statement in the definitionally equal form `f (unip ((fun p => algebraMap E (Ad E) (e p)) + x) * g) = f (unip x * g)`. Rewrite using `[unip_add, unip_algebraMap, mul_assoc, hf]`. Take `⟨m, hm⟩ : ∃ m, m = GlobalTheory.LeviGA.blkGL hr γ` from `⟨_, rfl⟩`.
+
+Establish `hb : IsBlockSL2Embedding r m.val` using `hm ▸ GlobalTheory.LeviGA.blkGL_block hr γ`. Establish `hb' : IsBlockSL2Embedding r m⁻¹.val`. Rewrite using `[hm, ← map_inv]`. Conclude with `GlobalTheory.LeviGA.blkGL_block hr γ⁻¹`. Rewrite using `[← hm]`.
+
+Establish `e1 : (ratGL E a m).val = m.val.map (algebraMap E (Ad E))` using `rfl`. Establish `e2 : (ratGL E a m)⁻¹.val = m⁻¹.val.map (algebraMap E (Ad E))` using `rfl`. Establish `hB : IsBlockSL2Embedding r (ratGL E a m).val` using `e1 ▸ hb.map _`. Establish `hB' : IsBlockSL2Embedding r (ratGL E a m)⁻¹.val` using `e2 ▸ hb'.map _`. Set `T : (BlockIx a r → Ad E) ≃ₜ+ (BlockIx a r → Ad E)` to `{ toFun := conjN (ratGL E a m)⁻¹.val (ratGL E a m).val invFun := conjN (ratGL E a m).val (ratGL E a m)⁻¹.val left_inv := conjN_conjN hB' hB (Units.mul_inv _) (Units.mul_inv _) right_inv := conjN_conjN hB hB' (Units.inv_mul _) (Units.inv_mul _) map_add' := conjN_add _ _ continuous …`.
+
+Establish `hL : ∀ x, f (unip x * (ratGL E a m * g)) = h (T x)` using `fun x => by`. Rewrite using `[← mul_assoc, unip_mul _ hB hB', mul_assoc, hf]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hL]`. Use `setIntegral_comp_aut (ratN E a r) μ 𝓕 h𝓕 h1 T ?_ ?_ h hinv` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨e, rfl⟩`. Conclude with `⟨conjN m⁻¹.val m.val e, (conjN_map (algebraMap E (Ad E)) _ _ e).symm⟩`. Introduce and unpack `_ ⟨e, rfl⟩`. Conclude with `⟨conjN m.val m⁻¹.val e, (conjN_map (algebraMap E (Ad E)) _ _ e).symm⟩`.
+-/
 theorem constTerm_levi_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (hr : r ≤ a) [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E)) (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 → ∀ f : GA E a → ℂ, (∀ γ g, f (ratGL E a γ * g) = f g) → ∀ (γ : GL (Fin r) E × GL (Fin (a - r)) E) (g : GA E a), ∫ x in 𝓕, f (unip x * (ratGL E a (GlobalTheory.LeviGA.blkGL hr γ) * g)) ∂μ = ∫ x in 𝓕, f (unip x * g) ∂μ := by
   intro E _ _ _ a r hr _ _ μ 𝓕 hμ h𝓕 h1 f hf γ g
   haveI : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm

@@ -14,6 +14,9 @@ namespace PositivityTheory.AdelicQuotientData
 
 namespace tableDegreeOneUnipotent
 
+/- English proof (translation)
+Break down `le_total a b with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_le_sq_add (a b : ℝ≥0∞) : a * b ≤ a ^ 2 + b ^ 2 := by
   rcases le_total a b with h | h
   · calc a * b ≤ b * b := by gcongr
@@ -23,6 +26,11 @@ theorem mul_le_sq_add (a b : ℝ≥0∞) : a * b ≤ a ^ 2 + b ^ 2 := by
       _ = a ^ 2 := (sq a).symm
       _ ≤ _ := le_self_add
 
+/- English proof (translation)
+Use `⟨hf.mul (Complex.continuous_conj.comp_aestronglyMeasurable hφ), ?_⟩` and prove the remaining obligations. Use `show ∫⁻ g, ‖f g * conj (φ g)‖ₑ ∂ν < ∞`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Establish `hc : ‖conj (φ g)‖ₑ = ‖φ g‖ₑ` using `by simp [enorm_eq_nnnorm]`.
+
+Rewrite using `[enorm_mul, hc]`. Conclude with `mul_le_sq_add _ _`. Use `_ = ∫⁻ g, ‖f g‖ₑ ^ 2 ∂ν + ∫⁻ g, ‖φ g‖ₑ ^ 2 ∂ν := lintegral_add_left' (hf.enorm.pow_const 2) _`. Use `_ < ∞ := ENNReal.add_lt_top.2 ⟨h1, h2⟩`.
+-/
 theorem integ {X : Type} [MeasurableSpace X] {ν : Measure X} {f φ : X → ℂ}
     (hf : AEStronglyMeasurable f ν) (hφ : AEStronglyMeasurable φ ν)
     (h1 : ∫⁻ g, ‖f g‖ₑ ^ 2 ∂ν < ∞) (h2 : ∫⁻ g, ‖φ g‖ₑ ^ 2 ∂ν < ∞) :
@@ -37,10 +45,20 @@ theorem integ {X : Type} [MeasurableSpace X] {ν : Measure X} {f φ : X → ℂ}
     _ = ∫⁻ g, ‖f g‖ₑ ^ 2 ∂ν + ∫⁻ g, ‖φ g‖ₑ ^ 2 ∂ν := lintegral_add_left' (hf.enorm.pow_const 2) _
     _ < ∞ := ENNReal.add_lt_top.2 ⟨h1, h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.cont, h.left, h.law⟩`.
+-/
 theorem pre_of_good {E : Type} [Field E] [NumberField E] {k : ℕ} {ψ : AddChar (Ad E) ℂ} {m : ℕ}
     {f : GA E k → ℂ} (h : Good ψ m f) : Pre ψ m f :=
   ⟨h.cont, h.left, h.law⟩
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_ β hβ`. Use `⟨β, hβ, fun f φ hf hφ h1 h2 => ⟨?_, rfl⟩⟩` and prove the remaining obligations.
+
+Conclude with `integ hf.cont.aestronglyMeasurable (pre_of_good hφ).cont.aestronglyMeasurable h1 h2`. Consider the case `succ m ih`. Introduce `hm β hβ`. Take `⟨β1, hβ1, hL2, hip⟩` from `hU1 E k μ ψ hψ (m + 1) (by omega) hm β hβ`. Take `⟨β', hβ', h⟩` from `ih (by omega) β1 hβ1`.
+
+Use `⟨β', hβ', fun f φ hf hφ h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hf' : Pre ψ m (colT ψ (m + 1) f)` using `(hP1 E k ψ hψ (m + 1) (by omega) hm f hf).1`. Establish `hφ' : Good ψ m (colT ψ (m + 1) φ)` using `GlobalTheory.CuspRep.Generic.good_colT hψ hm hφ`. Take `⟨hi, he⟩` from `h _ _ hf' hφ' ((hL2 f hf).trans_lt h1) ((hL2 φ (pre_of_good hφ)).trans_lt h2)`. Conclude with `⟨hi, (hip f φ hf hφ h1 h2).trans he⟩`.
+-/
 theorem main (hU1 : U1) (hP1 : P1) (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (k : ℕ)
     (μ : Measure (GA E k)) [μ.IsHaarMeasure] (ψ : AddChar (Ad E) ℂ) (hψ : StdPsi ψ) :
     ∀ m, m < k → ∀ β, IsWt (nuP E k m) β → ∃ β', IsWt (nuP E k 0) β' ∧
@@ -66,6 +84,9 @@ theorem main (hU1 : U1) (hP1 : P1) (E : Type) [Field E] [NumberField E] [IsTotal
 
 end tableDegreeOneUnipotent
 
+/- English proof (translation)
+Introduce `hU1 hP1 E _ _ _ k μ _ ψ hψ`. Conclude with `tableDegreeOneUnipotent.main hU1 hP1 E k μ ψ hψ`.
+-/
 theorem unitaryGroupGeometricSide_of_quotient_identities : U1 → P1 → U2 := by
   intro hU1 hP1 E _ _ _ k μ _ ψ hψ
   exact tableDegreeOneUnipotent.main hU1 hP1 E k μ ψ hψ

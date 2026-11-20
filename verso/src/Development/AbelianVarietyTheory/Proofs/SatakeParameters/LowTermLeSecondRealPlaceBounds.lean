@@ -16,6 +16,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Establish `hd : Disjoint ((reps X p).image (fun t => ((false, t) : OrbitPlaces.Pl D))) ((reps X p).image (fun t => ((true, t) : OrbitPlaces.Pl D)))`. Rewrite using `[Finset.disjoint_left]`. Introduce `r h1 h2`. Take `⟨t, -, rfl⟩` from `Finset.mem_image.1 h1`. Take `⟨t', -, h⟩` from `Finset.mem_image.1 h2`.
+
+Simplify using `at h`. Unfold `OrbitPlaces.repsPl`. Rewrite using `[if_neg hs, Finset.sum_union hd, Finset.sum_image (fun a _ b _ h => by simpa using h), Finset.sum_image (fun a _ b _ h => by simpa using h)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Simplify using `[OrbitPlaces.betaI, OrbitPlaces.g0Pl, kindA, hs]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `[OrbitPlaces.betaI, OrbitPlaces.g0Pl, kindA]`.
+-/
 theorem sum_betaI (X : Inst D L) (K : Consts) (ce : ErrC) (j p : ℕ) (hs : ¬ IsSg D p) :
     ∑ r ∈ OrbitPlaces.repsPl X p, OrbitPlaces.betaI X K ce j p r =
       (∑ t ∈ reps X p, max (g0 X K (aL L) (bL L) p j t) 0) +
@@ -36,6 +43,9 @@ theorem sum_betaI (X : Inst D L) (K : Consts) (ce : ErrC) (j p : ℕ) (hs : ¬ I
   · refine Finset.sum_congr rfl fun t _ => ?_
     simp [OrbitPlaces.betaI, OrbitPlaces.g0Pl, kindA]
 
+/- English proof (translation)
+Establish `h` using `OrbitPlaces.sumI X K ce p hp (Or.inl ⟨hc, hh⟩) j hj`. Rewrite `h` using `[sum_betaI X K ce j p hs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem FInert_sub_EatI (X : Inst D L) (K : Consts) (ce : ErrC) {p j : ℕ} (hp : p.Prime) (hc : IsResidueClassZero D p)
     (hh : HEv D p) (hs : ¬ IsSg D p) (hj : j ∈ SizeData₂.lifts D) :
     FInert D j p - EatI L K ce j p ≤
@@ -44,6 +54,11 @@ theorem FInert_sub_EatI (X : Inst D L) (K : Consts) (ce : ErrC) {p j : ℕ} (hp 
   rw [sum_betaI X K ce j p hs] at h
   linarith
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ', h0]`. Establish `: ∑ j ∈ Finset.range k, (d (j + 1) : ℝ) ≤ ∑ _j ∈ Finset.range k, (n : ℝ)` using `Finset.sum_le_sum fun j _ => by exact_mod_cast hj _`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul] at this`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_dG_le {m n : ℕ} (hm : 1 ≤ m) {d : ℕ → ℕ} (h0 : d 0 = 0) (hj : ∀ j, d j ≤ n) :
     ∑ j ∈ Finset.range m, (d j : ℝ) ≤ ((m : ℝ) - 1) * n := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
@@ -54,6 +69,25 @@ theorem sum_dG_le {m n : ℕ} (hm : 1 ≤ m) {d : ℕ → ℕ} (h0 : d 0 = 0) (h
   push_cast
   linarith
 
+/- English proof (translation)
+Introduce `D u w hg L X K ce Xe dG hF h0 hd`. Establish `hm : 1 ≤ D.R.m` using `le_trans one_le_two D.R.two_le_m`. Establish `hloss` using `sum_dG_le hm h0 hd`. Establish `hc : IsResidueClassZero D (D.what₂.places.resChar w)` using `hg.2.2.1`. Establish `hs : ¬ IsSg D (D.what₂.places.resChar w)`.
+
+Introduce `h`. Establish `h' : D.host.cls (D.what₂.places.resChar w) = _` using `h`. Rewrite `h'` using `[hg.2.2.1]`. Conclude with `absurd h' (by decide)`. Establish `hev : HEv D (D.what₂.places.resChar w)` using `hEv_of_hNeZero hg.1 hg.2.2.2.1`.
+
+Establish `hh` using `hev.ne_zero`. Establish `hne : ∀ i : Fin 2, D.what₂.places.resChar w ≠ D.host.g i` using `fun i h => hg.2.2.2.2.1 (h ▸ D.host.g_level i)`. Establish `h2 : D.host.cls (D.what₂.places.resChar w) ≠ PrimeClass.ramD` using `by rw [hg.2.2.1]; decide`. Establish `h4 : D.what₂.places.resChar w ∉ L.gTypes` using `by simp [SizeData₂.gTypes, hne]`. Establish `hcard : ((SizeData₂.lifts D).card : ℝ) = D.R.m` using `by simp [SizeData₂.lifts]`.
+
+Establish `hterm : ∀ j ∈ SizeData₂.lifts D, L.F j w - WeilJacquetShalikaLaw.ES L Xe K ce u j w = (if (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n then FInert D j (D.what₂.places.resChar w) - EatI L K ce j (D.what₂.places.resChar w) else 0) - WeilJacquetShalikaLaw.vDG D u w`. Introduce `j hj`. Rewrite using `[hF j hj w]`. Unfold `Fval FvalP WeilJacquetShalikaLaw.ES Eval WeilJacquetShalikaLaw.vDG`. Simplify using `only [if_neg (hne 0), if_neg (hne 1), if_neg (WeilJacquetShalikaLaw.residue_char_ne_level hg), if_neg h2, if_neg h4]`.
+
+Distinguish the cases in `hX : (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n`. Establish `hA : (IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)) ∧ (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n` using `⟨Or.inl hc, hX⟩`. Establish `hB : ¬ (IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) = 0)` using `fun h => hh h.2`. Simplify using `only [if_pos hA, if_neg hB, if_pos hX]`. Unfold `FInert`.
+
+Rewrite using `[if_neg hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ¬ ((IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)) ∧ (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n)` using `fun h => hX h.2`. Simplify using `only [if_neg hA, if_neg hX]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum : WeilJacquetShalikaLaw.lowS L Xe K ce 1 u w = (∑ j ∈ Finset.Icc 1 D.R.m, if (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n then FInert D j (D.what₂.places.resChar w) - EatI L K ce j (D.what₂.places.resChar w) else 0) - ((D.R.m : ℝ) - 1) * WeilJacquetShalikaLaw.vDG D u w`. Unfold `WeilJacquetShalikaLaw.lowS`. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul, hcard]`. Establish `hl : SizeData₂.lifts D = Finset.Icc 1 D.R.m` using `rfl`. Rewrite using `[hl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hle : (∑ j ∈ Finset.Icc 1 D.R.m, if (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n then FInert D j (D.what₂.places.resChar w) - EatI L K ce j (D.what₂.places.resChar w) else 0) ≤ ∑ j ∈ Finset.Icc 1 D.R.m, ∑ t ∈ reps X (D.what₂.places.resChar w), if (D.what₂.places.resChar w : ℝ) …`. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hX : (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n`. Simplify using `only [if_pos hX]`.
+
+Conclude with `FInert_sub_EatI X K ce hg.1 hc hev hs hj`. Simplify using `[hX]`. Establish `hv : ((D.R.m : ℝ) - 1) * (padicValNat (D.what₂.places.resChar w) (D.mem u).C.DGam : ℝ) = ((D.R.m : ℝ) - 1) * WeilJacquetShalikaLaw.vDG D u w` using `rfl`. Rewrite using `[hsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowS_le : ∀ (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (ce : ErrC)
     (Xe : ErrX D) (dG : ℕ → ℕ), L.FDef → dG 0 = 0 →

@@ -20,6 +20,9 @@ namespace GlobalTheory.DblWeilSecond
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `r j`. Simplify using `only [topC, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply, blkMat, id, Function.comp_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, zero_add]`.
+-/
 theorem topC_mul_blk {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) (A C : Matrix (Fin d) (Fin d) (AE F E)) :
     topC (u * (blkMat finSumFinEquiv A C)ᵀ) = topC u * Aᵀ := by
   ext r j
@@ -29,6 +32,9 @@ theorem topC_mul_blk {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) (A 
     Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero,
     zero_add]
 
+/- English proof (translation)
+Use extensionality with `r j`. Simplify using `only [botC, Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply, blkMat, id, Function.comp_apply]`. Rewrite using `[← finSumFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, zero_add]`.
+-/
 theorem botC_mul_blk {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) (A C : Matrix (Fin d) (Fin d) (AE F E)) :
     botC (u * (blkMat finSumFinEquiv A C)ᵀ) = botC u * Cᵀ := by
   ext r j
@@ -38,6 +44,27 @@ theorem botC_mul_blk {n d : ℕ} (u : Matrix (Fin n) (Fin (d + d)) (AE F E)) (A 
     Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero,
     zero_add]
 
+/- English proof (translation)
+Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨hbox, hmove⟩` from `GlobalTheory.T.doubled_model_darboux_weil_action F E σ B hP.base n d Xs W M W₂ hJ co e he1 he2 he3`. Establish `hS1` using `GlobalTheory.T.doubled_pair_embedding_block_diagonal F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ i hi co hrat hΔ hN om₂ hom₂`. Establish `hS3` using `GlobalTheory.T.doubled_pair_darboux_seesaw F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ co hrat hΔ hN e he1 he2 he3`. Establish `hsp2` using `hom₂.isUSplitting`.
+
+Establish `hsp` using `hP.weil.isUSplitting`. Establish `hrho : ∀ a, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ a Φ ∈ schA F (Fin n × Fin d)` using `fun a Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hstd _ Φ hΦ`. Establish `hom : ∀ Φ ∈ schA F (Fin n × Fin d), om (1, h) Φ ∈ schA F (Fin n × Fin d)` using `fun Φ hΦ => hsp.pres (1, h) Φ hΦ`. Establish `heS : ∀ Ψ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), e Ψ ∈ schA F (Fin n × Fin (d + d))` using `fun Ψ hΨ => he1.mapsTo hΨ`. Establish `ev : ∀ (x : Fin n × Fin (d + d) → AF F) (Φ : (Fin n × Fin (d + d) → AF F) → ℂ), co.rho B.ψ (co.e.symm (x, 0)) Φ 0 = Φ x`.
+
+Introduce `x Φ`. Simplify using `[Darboux.rho, schr]`. Establish `hinv : mat (i (h, h))⁻¹ = blkMat finSumFinEquiv (mat h⁻¹) (mat h⁻¹)`. Rewrite using `[← map_inv, Prod.inv_mk, hi]`. Establish `hmul : ∀ {m : ℕ} {J : Matrix (Fin m) (Fin m) E} (g : UA σ J), mat g * mat g⁻¹ = 1`.
+
+Introduce `m J g`. Use `show ((g * g⁻¹ : UA σ J) : GL (Fin m) (AE F E)).1 = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `x`.
+
+Use `set u := co.e.symm (x, 0) with hu`. Use `set v := u * (mat (i (h, h))⁻¹)ᵀ with hv`. Establish `hvu : actAB (cA σ) ((1 : UA σ Xs.J), i (h, h)) v = u`. Simplify using `only [actAB, hv]`. Use `show (1 : Matrix (Fin n) (Fin n) (AE F E)) * (u * (mat (i (h, h))⁻¹)ᵀ) * (mat (i (h, h)))ᵀ = u`.
+
+Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, hmul, Matrix.transpose_one, Matrix.mul_one]`. Establish `htop : actAB (cA σ) ((1 : UA σ Xs.J), h) (topC v) = topC u`. Simplify using `only [actAB, hv, hinv, topC_mul_blk]`. Use `show (1 : Matrix (Fin n) (Fin n) (AE F E)) * (topC u * (mat h⁻¹)ᵀ) * (mat h)ᵀ = topC u`. Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, hmul, Matrix.transpose_one, Matrix.mul_one]`.
+
+Establish `hbot : actAB (cA σ) ((1 : UA σ Xs.J), h) (botC v) = botC u`. Simplify using `only [actAB, hv, hinv, botC_mul_blk]`. Use `show (1 : Matrix (Fin n) (Fin n) (AE F E)) * (botC u * (mat h⁻¹)ᵀ) * (mat h)ᵀ = botC u`. Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, hmul, Matrix.transpose_one, Matrix.mul_one]`. Establish `hb` using `hbox Φ₁ hΦ₁ Φ₂ hΦ₂`.
+
+Establish `hb'` using `hbox _ (hrho (topC v) Φ₁ hΦ₁) _ (hrho (botC v) Φ₂ hΦ₂)`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmove v Φ₁ hΦ₁ Φ₂ hΦ₂]`. Use `_ = ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ) * e (boxC (M.co.rho B.ψ (topC v) Φ₁) (M.co.rho B.ψ (botC v) Φ₂)) 0 := hS1 h _ (heS _ hb')`.
+
+Use `_ = ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ) * e (boxC (om (1, h) (M.co.rho B.ψ (topC v) Φ₁)) (om (1, h) (M.co.rho B.ψ (botC v) Φ₂))) 0 := by`. Rewrite using `[hS3 h _ (hrho _ Φ₁ hΦ₁) _ (hrho _ Φ₂ hΦ₂)]`. Use `_ = ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ) * e (boxC (M.co.rho B.ψ (topC u) (om (1, h) Φ₁)) (M.co.rho B.ψ (botC u) (om (1, h) Φ₂))) 0 := by`. Rewrite using `[hsp.impl _ _ _ hΦ₁, htop, hsp.impl _ _ _ hΦ₂, hbot]`. Use `_ = ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ) * co.rho B.ψ u (e (boxC (om (1, h) Φ₁) (om (1, h) Φ₂))) 0 := by`.
+
+Rewrite using `[hmove u _ (hom Φ₁ hΦ₁) _ (hom Φ₂ hΦ₂)]`. Use `_ = ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ) * e (boxC (om (1, h) Φ₁) (om (1, h) Φ₂)) x := by`. Rewrite using `[ev x]`.
+-/
 theorem diag_box (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W)
     (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ) (hP : IsPair B M χX χW om r s' r₁ s₁)
     (W₂ : Spc F E (d + d)) (hJ : W₂.J = dblGram finSumFinEquiv W.J)

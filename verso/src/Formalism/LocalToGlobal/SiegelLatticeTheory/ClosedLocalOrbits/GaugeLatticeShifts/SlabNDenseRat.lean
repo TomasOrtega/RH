@@ -14,9 +14,19 @@ section CayInv
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [Invertible (2 : K)]
 
+/- English proof (translation)
+Rewrite using `[← add_smul, invOf_two_add_invOf_two, one_smul]`.
+-/
 theorem half_add_half' (M : Matrix ι ι K) : (⅟2 : K) • M + (⅟2 : K) • M = M := by
   rw [← add_smul, invOf_two_add_invOf_two, one_smul]
 
+/- English proof (translation)
+Use `set Y : Matrix ι ι K := (⅟2 : K) • Z with hY`. Use `set G := geo N Y with hG`. Establish `hBG : (1 - Y) * G = 1` using `by rw [hG, geo, mul_neg_geom_sum, hN, sub_zero]`. Establish `e1 : G = 1 + Y * G`. Use `hBG` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `e2 : Z = Y + Y` using `by rw [hY, half_add_half']`. Establish `e3 : cay N Z = 1 + Z * G` using `rfl`.
+
+Rewrite using `[e3, Matrix.add_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) :
     cay N Z = (1 + (⅟2 : K) • Z) * geo N ((⅟2 : K) • Z) := by
   set Y : Matrix ι ι K := (⅟2 : K) • Z with hY
@@ -32,6 +42,13 @@ theorem cay_eq {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) 
   calc 1 + Z * G = (1 + Y * G) + Y * G := by rw [e2, Matrix.add_mul]; abel
     _ = G + Y * G := by rw [← e1]
 
+/- English proof (translation)
+Establish `hN' : ((⅟2 : K) • -Z) ^ N = 0` using `by rw [smul_neg, neg_pow, hN, mul_zero]`. Rewrite using `[cay_eq hN, cay_eq hN', smul_neg]`. Use `set Y : Matrix ι ι K := (⅟2 : K) • Z with hY`. Establish `h1 : geo N (-Y) * (1 + Y) = 1`. Use `geom_sum_mul_neg (-Y) N` as an intermediate fact.
+
+Rewrite `this` using `[sub_neg_eq_add]`. Rewrite using `[geo, this, neg_pow, hN, mul_zero, sub_zero]`. Establish `h2 : (1 - Y) * geo N Y = 1` using `by rw [geo, mul_neg_geom_sum, hN, sub_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_eq_add_neg]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, h2]`.
+-/
 theorem cay_neg_mul {N : ℕ} {Z : Matrix ι ι K} (hN : ((⅟2 : K) • Z) ^ N = 0) : cay N (-Z) * cay N Z = 1 := by
   have hN' : ((⅟2 : K) • -Z) ^ N = 0 := by rw [smul_neg, neg_pow, hN, mul_zero]
   rw [cay_eq hN, cay_eq hN', smul_neg]
@@ -52,6 +69,9 @@ def mkUJ {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : 
       rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, Formalism.REAL.Jm_mul_self]),
     by rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg, Formalism.REAL.Jm_mul_self]⟩, hg⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mkUJ {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) :
     uMat (mkUJ ε g hg) = g := rfl
 
@@ -61,8 +81,14 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 abbrev N0 (D : D7) : ℕ := 2 * D.R.rS + 2
 
+/- English proof (translation)
+Use `show lvk X k < 2 * D.R.rS + 2`. Use `lvk_le X k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lvk_lt (k : Kap X) : lvk X k < N0 D := by show lvk X k < 2 * D.R.rS + 2; have := lvk_le X k; omega
 
+/- English proof (translation)
+The claim follows from `pow_eq_zero_of_inPat hk (lvk_lt X) (inPat_smul c hY)`.
+-/
 theorem nil_of_pat {K : Type*} [CommRing K] {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) K}
     (hY : InPat (lvk X) k Y) (c : K) : (c • Y) ^ N0 D = 0 :=
   pow_eq_zero_of_inPat hk (lvk_lt X) (inPat_smul c hY)
@@ -70,6 +96,9 @@ theorem nil_of_pat {K : Type*} [CommRing K] {k : ℕ} (hk : 1 ≤ k) {Y : Matrix
 def gE (Y : Matrix (Kap X) (Kap X) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E :=
   Bm X * cay (N0 D) Y * Bm' X
 
+/- English proof (translation)
+Unfold `gE`. Establish `e : Bm X * cay (N0 D) (-Y) * Bm' X * (Bm X * cay (N0 D) Y * Bm' X) = Bm X * (cay (N0 D) (-Y) * ((Bm' X * Bm X) * cay (N0 D) Y)) * Bm' X` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e, Bm'_mul_Bm, Matrix.one_mul, cay_neg_mul (nil_of_pat X hk hY _), Matrix.mul_one, Bm_mul_Bm']`.
+-/
 theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X (-Y) * gE X Y = 1 := by
   unfold gE
@@ -77,16 +106,27 @@ theorem gE_mul {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY
       Bm X * (cay (N0 D) (-Y) * ((Bm' X * Bm X) * cay (N0 D) Y)) * Bm' X := by simp only [Matrix.mul_assoc]
   rw [e, Bm'_mul_Bm, Matrix.one_mul, cay_neg_mul (nil_of_pat X hk hY _), Matrix.mul_one, Bm_mul_Bm']
 
+/- English proof (translation)
+Use `gE_mul X hk (inPat_neg hY)` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis.
+-/
 theorem gE_mul' {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y) :
     gE X Y * gE X (-Y) = 1 := by
   have := gE_mul X hk (inPat_neg hY)
   rwa [neg_neg] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, conjTranspose_apply, Matrix.transpose_apply, Matrix.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem cT_eq {m p : Type} (M : Matrix m p X.B.I.E) : Formalism.UG.cT (starRingEnd X.B.I.E) M = Mᴴ := by
   ext i j
   simp only [Formalism.UG.cT, conjTranspose_apply, Matrix.transpose_apply, Matrix.map_apply]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `cay_unitary hYs (nil_of_pat X hk hY (⅟2 : X.B.I.E))`. Establish `hh : (Bm' X)ᴴ * (Bm X)ᴴ = 1` using `by rw [← conjTranspose_mul, Bm_mul_Bm', conjTranspose_one]`. Establish `hJB` using `JB_eq X`. Unfold `gE`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Bm' X)ᴴ * (Bm X)ᴴ * X.B.I.J * (Bm X * Bm' X) := by`. Rewrite using `[← hJB, hc, hJB]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X.B.I.J := by rw [hh, Bm_mul_Bm', Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem gE_unitary {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gE X Y)ᴴ * X.B.I.J * gE X Y = X.B.I.J := by
   have hc := cay_unitary hYs (nil_of_pat X hk hY (⅟2 : X.B.I.E))
@@ -104,14 +144,23 @@ def gGL {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPa
     GL (Fin X.B.I.n) X.B.I.E :=
   ⟨gE X Y, gE X (-Y), gE_mul' X hk hY, gE_mul X hk hY⟩
 
+/- English proof (translation)
+Use `show Formalism.UG.cT (starRingEnd X.B.I.E) (gE X Y) * X.B.I.J * gE X Y = X.B.I.J`. Rewrite using `[cT_eq]`. Conclude with `gE_unitary X hk hY hYs`.
+-/
 theorem gGL_mem {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gGL X hk hY ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
   show Formalism.UG.cT (starRingEnd X.B.I.E) (gE X Y) * X.B.I.J * gE X Y = X.B.I.J
   rw [cT_eq]
   exact gE_unitary X hk hY hYs
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem sig_eq : (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) = starRingEnd X.B.I.E := RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+Unfold `gE Bv Bv'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cay_map]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E) :
     (X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v =
       Bv X v * cay (N0 D) (Y.map (X.B.I.φ v)) * Bv' X v := by
@@ -119,12 +168,20 @@ theorem gE_real (v : InfinitePlace X.B.I.F) (Y : Matrix (Kap X) (Kap X) X.B.I.E)
   rw [Matrix.map_mul, Matrix.map_mul, cay_map]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[JBv, map_conjTranspose, ← Matrix.map_mul, hYs, ← Matrix.map_mul, Matrix.map_neg]`. Conclude with `fun a => map_neg _ a`.
+-/
 theorem skew_map (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hYs : Yᴴ * JB X = -(JB X * Y)) :
     (Y.map (X.B.I.φ v))ᴴ * JBv X v = -(JBv X v * Y.map (X.B.I.φ v)) := by
   rw [JBv, map_conjTranspose, ← Matrix.map_mul, hYs, ← Matrix.map_mul, Matrix.map_neg]
   exact fun a => map_neg _ a
 
+/- English proof (translation)
+Rewrite using `[gE_real]`. Unfold `Formalism.REAL.inUJ`. Establish `hc` using `cay_unitary (skew_map X v hYs) (nil_of_pat X hk (inPat_map (X.B.I.φ v) hY) (⅟2 : ℂ))`. Establish `hh : (Bv' X v)ᴴ * (Bv X v)ᴴ = 1` using `by rw [← conjTranspose_mul, Bv_mul_Bv', conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [hh, Bv_mul_Bv', Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem inUJ_real {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
     Formalism.REAL.inUJ (X.B.I.ε v) ((X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v) := by
@@ -147,10 +204,16 @@ def gA {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat
     Formalism.L2.SG.ColsDim.ratHom X.B.I.cm.sig X.B.I.J (Af X.B.I.F)
       ⟨gGL X hk hY, by rw [sig_eq]; exact gGL_mem X hk hY hYs⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gGL X hk hY, gGL_mem X hk hY hYs, fun v => rfl, rfl⟩`.
+-/
 theorem gA_GF {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : gA X hk hY hYs ∈ X.B.I.GFset :=
   ⟨gGL X hk hY, gGL_mem X hk hY hYs, fun v => rfl, rfl⟩
 
+/- English proof (translation)
+Unfold `Mv`. Use `show Bv' X v * ((X.B.I.P v)⁻¹ * (gE X Y).map (X.B.I.φ v) * X.B.I.P v) * Bv X v = _`. Rewrite using `[gE_real]`. Simplify using `only [← Matrix.mul_assoc, Bv'_mul_Bv, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Bv'_mul_Bv, Matrix.mul_one]`.
+-/
 theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (Kap X) (Kap X) X.B.I.E}
     (hY : InPat (lvk X) k Y) (hYs : Yᴴ * JB X = -(JB X * Y)) :
     Mv X v (gA X hk hY hYs).1 = cay (N0 D) (Y.map (X.B.I.φ v)) := by
@@ -160,6 +223,11 @@ theorem Mv_gA {k : ℕ} (hk : 1 ≤ k) (v : InfinitePlace X.B.I.F) {Y : Matrix (
   simp only [← Matrix.mul_assoc, Bv'_mul_Bv, Matrix.one_mul]
   rw [Matrix.mul_assoc, Bv'_mul_Bv, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `v`. Apply `inN_of_pat X u v` to reduce the goal to its premises. Use `Mv_gA X hk v hY hYs` as an intermediate fact. Unfold `Mv at this`. Rewrite using `[this]`.
+
+Conclude with `inPat_mono hk (cay_sub_one _ (inPat_map (X.B.I.φ v) hY))`.
+-/
 theorem gA_ninf {k : ℕ} (hk : 1 ≤ k) {Y : Matrix (Kap X) (Kap X) X.B.I.E} (hY : InPat (lvk X) k Y)
     (hYs : Yᴴ * JB X = -(JB X * Y)) : (gA X hk hY hYs).1 ∈ X.NinfU u := by
   intro v

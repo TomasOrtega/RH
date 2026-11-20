@@ -6,13 +6,22 @@ namespace LateralTheory.EtaleFoundations.PrimPf
 
 noncomputable def μ (q : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / q)
 
+/- English proof (translation)
+The claim follows from `Complex.isPrimitiveRoot_exp q (NeZero.ne q)`.
+-/
 lemma hμ (q : ℕ) [NeZero q] : IsPrimitiveRoot (μ q) q :=
   Complex.isPrimitiveRoot_exp q (NeZero.ne q)
 
+/- English proof (translation)
+Rewrite using `[cyclotomic_eq_minpoly h hn]`. Conclude with `minpoly.aeval _ _`.
+-/
 lemma aeval_cyc {n : ℕ} (hn : 0 < n) {ν : ℂ} (h : IsPrimitiveRoot ν n) :
     aeval ν (cyclotomic n ℤ) = 0 := by
   rw [cyclotomic_eq_minpoly h hn]; exact minpoly.aeval _ _
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, hom_eval₂]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+-/
 lemma hom_aeval {S T : Type} [CommRing S] [CommRing T] [Algebra ℤ S] [Algebra ℤ T] (f : S →+* T) (x : S) (p : ℤ[X]) :
     f (aeval x p) = aeval (f x) p := by
   rw [aeval_def, aeval_def, hom_eval₂]; congr 1; exact RingHom.ext_int _ _
@@ -24,8 +33,16 @@ noncomputable abbrev θ (q : ℕ) : R q := AdjoinRoot.root (cyclotomic q ℤ)
 noncomputable def φ (q : ℕ) [NeZero q] : R q →+* ℂ :=
   AdjoinRoot.lift (algebraMap ℤ ℂ) (μ q) (by rw [← aeval_def]; exact aeval_cyc (NeZero.pos q) (hμ q))
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_root _`.
+-/
 lemma φ_root (q : ℕ) [NeZero q] : φ q (θ q) = μ q := AdjoinRoot.lift_root _
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective x`. Rewrite using `[AdjoinRoot.mk_eq_zero]`. Establish `h : aeval (μ q) p = 0`.
+
+Rewrite `hx` using `[φ, AdjoinRoot.lift_mk]`. Rewrite using `[aeval_def]` and apply the resulting hypothesis. Rewrite using `[cyclotomic_eq_minpoly (hμ q) (NeZero.pos q)]`. Conclude with `minpoly.isIntegrallyClosed_dvd ((hμ q).isIntegral (NeZero.pos q)) h`.
+-/
 lemma φ_inj (q : ℕ) [NeZero q] : Function.Injective (φ q) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -39,16 +56,30 @@ lemma φ_inj (q : ℕ) [NeZero q] : Function.Injective (φ q) := by
 noncomputable def ψ {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : R q →+* A :=
   AdjoinRoot.lift (algebraMap ℤ A) ζ.1 (by rw [← aeval_def]; exact ζ.2.2)
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.lift_root _`.
+-/
 lemma ψ_root {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ψ ζ (θ q) = ζ.1 :=
   AdjoinRoot.lift_root _
 
+/- English proof (translation)
+The claim follows from `φ_inj q (by rw [map_pow, φ_root, map_one, (hμ q).pow_eq_one])`.
+-/
 lemma θ_pow (q : ℕ) [NeZero q] : θ q ^ q = 1 :=
   φ_inj q (by rw [map_pow, φ_root, map_one, (hμ q).pow_eq_one])
 
+/- English proof (translation)
+The claim follows from `φ_inj q (by rw [hom_aeval (φ q), map_pow, φ_root, map_zero]; exact aeval_cyc hr h)`.
+-/
 lemma root_of_prim {q r a : ℕ} [NeZero q] (hr : 0 < r) (h : IsPrimitiveRoot (μ q ^ a) r) :
     aeval (θ q ^ a) (cyclotomic r ℤ) = 0 :=
   φ_inj q (by rw [hom_aeval (φ q), map_pow, φ_root, map_zero]; exact aeval_cyc hr h)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_image, mem_nthRootsFinset (NeZero.pos q)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -, rfl⟩`. Rewrite using `[← pow_mul, mul_comm, pow_mul, (hμ q).pow_eq_one, one_pow]`.
+
+Introduce `hx`. Take `⟨i, hi, rfl⟩` from `(hμ q).eq_pow_of_pow_eq_one hx`. Conclude with `⟨i, mem_range.2 hi, rfl⟩`.
+-/
 lemma image_range (q : ℕ) [NeZero q] :
     (range q).image (fun a => μ q ^ a) = nthRootsFinset q (1 : ℂ) := by
   ext x
@@ -59,6 +90,11 @@ lemma image_range (q : ℕ) [NeZero q] :
     obtain ⟨i, hi, rfl⟩ := (hμ q).eq_pow_of_pow_eq_one hx
     exact ⟨i, mem_range.2 hi, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_image, mem_primitiveRoots (NeZero.pos q)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `(hμ q).pow_of_coprime a (mem_filter.1 ha).2`.
+
+Introduce `hx`. Take `⟨i, hi, rfl⟩` from `(hμ q).eq_pow_of_pow_eq_one hx.pow_eq_one`. Conclude with `⟨i, mem_filter.2 ⟨mem_range.2 hi, ((hμ q).pow_iff_coprime (NeZero.pos q) i).1 hx⟩, rfl⟩`.
+-/
 lemma image_prim (q : ℕ) [NeZero q] :
     ((range q).filter (fun a => Nat.Coprime a q)).image (fun a => μ q ^ a) = primitiveRoots q ℂ := by
   ext x
@@ -69,30 +105,48 @@ lemma image_prim (q : ℕ) [NeZero q] :
     obtain ⟨i, hi, rfl⟩ := (hμ q).eq_pow_of_pow_eq_one hx.pow_eq_one
     exact ⟨i, mem_filter.2 ⟨mem_range.2 hi, ((hμ q).pow_iff_coprime (NeZero.pos q) i).1 hx⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `i hi j hj h`. Conclude with `(hμ q).pow_inj (mem_range.1 (hs hi)) (mem_range.1 (hs hj)) h`.
+-/
 lemma inj_on (q : ℕ) [NeZero q] (s : Finset ℕ) (hs : s ⊆ range q) :
     Set.InjOn (fun a => μ q ^ a) s := by
   intro i hi j hj h
   exact (hμ q).pow_inj (mem_range.1 (hs hi)) (mem_range.1 (hs hj)) h
 
+/- English proof (translation)
+Rewrite using `[X_pow_sub_one_eq_prod (NeZero.pos q) (hμ q), ← image_range, prod_image (inj_on q _ subset_rfl)]`.
+-/
 lemma C_prod_all (q : ℕ) [NeZero q] :
     ∏ a ∈ range q, (X - C (μ q ^ a)) = (X ^ q - 1 : ℂ[X]) := by
   rw [X_pow_sub_one_eq_prod (NeZero.pos q) (hμ q), ← image_range,
     prod_image (inj_on q _ subset_rfl)]
 
+/- English proof (translation)
+Rewrite using `[cyclotomic_eq_prod_X_sub_primitiveRoots (hμ q), ← image_prim, prod_image (inj_on q _ (filter_subset _ _))]`.
+-/
 lemma C_prod_prim (q : ℕ) [NeZero q] :
     ∏ a ∈ (range q).filter (fun a => Nat.Coprime a q), (X - C (μ q ^ a)) = cyclotomic q ℂ := by
   rw [cyclotomic_eq_prod_X_sub_primitiveRoots (hμ q), ← image_prim,
     prod_image (inj_on q _ (filter_subset _ _))]
 
+/- English proof (translation)
+Simplify using `[Polynomial.map_prod, φ_root]`.
+-/
 lemma mapφ_C_prod (q : ℕ) [NeZero q] (s : Finset ℕ) :
     (∏ a ∈ s, (X - C (θ q ^ a))).map (φ q) = ∏ a ∈ s, (X - C (μ q ^ a)) := by
   simp [Polynomial.map_prod, φ_root]
 
+/- English proof (translation)
+Apply `Polynomial.map_injective _ (φ_inj q)` to reduce the goal to its premises. Rewrite using `[mapφ_C_prod, C_prod_all]`. Simplify using the standard rewrite rules.
+-/
 lemma R_prod_all (q : ℕ) [NeZero q] :
     ∏ a ∈ range q, (X - C (θ q ^ a)) = (X ^ q - 1 : (R q)[X]) := by
   apply Polynomial.map_injective _ (φ_inj q)
   rw [mapφ_C_prod, C_prod_all]; simp
 
+/- English proof (translation)
+Apply `Polynomial.map_injective _ (φ_inj q)` to reduce the goal to its premises. Rewrite using `[mapφ_C_prod, C_prod_prim, Polynomial.map_map, ← map_cyclotomic_int]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+-/
 lemma R_prod_prim (q : ℕ) [NeZero q] :
     ∏ a ∈ (range q).filter (fun a => Nat.Coprime a q), (X - C (θ q ^ a))
       = (cyclotomic q ℤ).map (algebraMap ℤ (R q)) := by
@@ -100,6 +154,9 @@ lemma R_prod_prim (q : ℕ) [NeZero q] :
   rw [mapφ_C_prod, C_prod_prim, Polynomial.map_map, ← map_cyclotomic_int]
   congr 1; exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Establish `h` using `C_prod_all (n + 1)`. Rewrite `h` using `[prod_range_succ', pow_zero, ← geom_sum_mul, C_1]`. Establish `hne : (X - 1 : ℂ[X]) ≠ 0` using `by simpa using X_sub_C_ne_zero (1 : ℂ)`. Conclude with `mul_right_cancel₀ hne h`.
+-/
 lemma C_prod_geom (n : ℕ) [NeZero (n + 1)] :
     ∏ i ∈ range n, (X - C (μ (n + 1) ^ (i + 1))) = ∑ i ∈ range (n + 1), (X ^ i : ℂ[X]) := by
   have h := C_prod_all (n + 1)
@@ -107,6 +164,9 @@ lemma C_prod_geom (n : ℕ) [NeZero (n + 1)] :
   have hne : (X - 1 : ℂ[X]) ≠ 0 := by simpa using X_sub_C_ne_zero (1 : ℂ)
   exact mul_right_cancel₀ hne h
 
+/- English proof (translation)
+Apply `Polynomial.map_injective _ (φ_inj (n + 1))` to reduce the goal to its premises. Simplify using `only [Polynomial.map_prod, Polynomial.map_sum, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, map_pow, φ_root, Polynomial.map_pow]`. Simplify using `using C_prod_geom n`.
+-/
 lemma R_prod_geom (n : ℕ) [NeZero (n + 1)] :
     ∏ i ∈ range n, (X - C (θ (n + 1) ^ (i + 1))) = ∑ i ∈ range (n + 1), (X ^ i : (R (n + 1))[X]) := by
   apply Polynomial.map_injective _ (φ_inj (n + 1))
@@ -114,14 +174,23 @@ lemma R_prod_geom (n : ℕ) [NeZero (n + 1)] :
     Polynomial.map_C, map_pow, φ_root, Polynomial.map_pow]
   simpa using C_prod_geom n
 
+/- English proof (translation)
+Simplify using `[eval₂_finsetProd, eval₂_pow, ψ_root]`.
+-/
 lemma eval_prod_ψ {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) (y : A) (s : Finset ℕ) (f : ℕ → ℕ) :
     eval₂ (ψ ζ) y (∏ a ∈ s, (X - C (θ q ^ f a))) = ∏ a ∈ s, (y - ζ.1 ^ f a) := by
   simp [eval₂_finsetProd, eval₂_pow, ψ_root]
 
+/- English proof (translation)
+Simplify using `[eval₂_finsetProd, eval₂_pow, ψ_root]`.
+-/
 lemma eval_prod_ψ0 {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) (y : A) (s : Finset ℕ) :
     eval₂ (ψ ζ) y (∏ a ∈ s, (X - C (θ q ^ a))) = ∏ a ∈ s, (y - ζ.1 ^ a) := by
   simp [eval₂_finsetProd, eval₂_pow, ψ_root]
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, q = n + 1` from `⟨q - 1, (Nat.succ_pred_eq_of_pos (NeZero.pos q)).symm⟩`. Establish `h` using `congrArg (eval₂ (ψ ζ) 1) (R_prod_geom n)`. Rewrite `h` using `[eval_prod_ψ ζ 1 _ (fun i => i + 1)]`. Simplify `h` using `[eval₂_finsetSum]`.
+-/
 lemma unit_prod {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
     ∏ i ∈ range (q - 1), (1 - ζ.1 ^ (i + 1)) = (q : A) := by
   obtain ⟨n, rfl⟩ : ∃ n, q = n + 1 := ⟨q - 1, (Nat.succ_pred_eq_of_pos (NeZero.pos q)).symm⟩
@@ -129,6 +198,27 @@ lemma unit_prod {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ : Prim q A) :
   rw [eval_prod_ψ ζ 1 _ (fun i => i + 1)] at h
   simpa [eval₂_finsetSum] using h
 
+/- English proof (translation)
+Introduce `q _ A _`. Establish `hq1 : ∀ ζ : Prim q A, ζ.1 ^ q = 1` using `fun ζ => by`. Rewrite using `[← ψ_root, ← map_pow, θ_pow, map_one]`. Establish `hu : ∀ ζ : Prim q A, IsUnit ζ.1` using `fun ζ => IsUnit.of_mul_eq_one (ζ.1 ^ (q - 1)) (by`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (NeZero.pos q), hq1])`.
+
+Establish `hmod : ∀ (ζ : Prim q A) (a : ℕ), ζ.1 ^ a = ζ.1 ^ (a % q)` using `fun ζ a => by conv_lhs => rw [← Nat.mod_add_div a q, pow_add, pow_mul, hq1, one_pow, mul_one]`. Establish `hlt : ∀ (ζ : Prim q A) (c d : ℕ), c < d → d < q → IsUnit (ζ.1 ^ c - ζ.1 ^ d)`. Introduce `ζ c d hcd hd`. Take `⟨i, rfl⟩ : ∃ i, d = c + (i + 1)` from `⟨d - c - 1, by omega⟩`. Establish `e : ζ.1 ^ c - ζ.1 ^ (c + (i + 1)) = ζ.1 ^ c * (1 - ζ.1 ^ (i + 1))` using `by ring`.
+
+Rewrite using `[e]`. Use `((hu ζ).pow c).mul (isUnit_of_dvd_unit ?_ ζ.2.1)` and prove the remaining obligations. Establish `hd` using `dvd_prod_of_mem (fun j => 1 - ζ.1 ^ (j + 1)) (mem_range.2 (show i < q - 1 by omega))`. Rewrite `hd` using `[unit_prod ζ]`. Conclude with `hd`.
+
+Use `⟨hq1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ a ha`. Use `⟨⟨ζ.1 ^ a, ζ.2.1, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← ψ_root, ← map_pow, ← hom_aeval (ψ ζ), root_of_prim (NeZero.pos q) ((hμ q).pow_of_coprime a ha), map_zero]`. Introduce `ζ a b hab`.
+
+Rewrite using `[hmod ζ a, hmod ζ b]`. Establish `hne : a % q ≠ b % q` using `hab`. Establish `ha` using `Nat.mod_lt a (NeZero.pos q)`. Establish `hb` using `Nat.mod_lt b (NeZero.pos q)`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Conclude with `hlt ζ _ _ h hb`. Use `(hlt ζ _ _ h ha).neg` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Introduce `ζ x hx`. Establish `h` using `congrArg (eval₂ (ψ ζ) x) (R_prod_all q)`.
+
+Rewrite `h` using `[eval_prod_ψ0]`. Simplify `h` using `[hx]`. Introduce `ζ ξ`. Establish `h` using `congrArg (eval₂ (ψ ζ) ξ.1) (R_prod_prim q)`. Rewrite `h` using `[eval_prod_ψ0, eval₂_map]`.
+
+Rewrite using `[h]`. Establish `e : (ψ ζ).comp (algebraMap ℤ (R q)) = algebraMap ℤ A` using `RingHom.ext_int _ _`. Rewrite using `[e, ← aeval_def]`. Conclude with `ξ.2.2`. Introduce `r hr ζ`.
+
+Establish `hr0 : 0 < r` using `Nat.pos_of_dvd_of_pos hr (NeZero.pos q)`. Establish `hur : IsUnit (r : A)`. Take `⟨k, hk⟩` from `hr`. Use `ζ.2.1` as an intermediate fact. Rewrite `this` using `[hk, Nat.cast_mul]`.
+
+Conclude with `isUnit_of_mul_isUnit_left this`. Use `⟨⟨ζ.1 ^ (q / r), hur, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← ψ_root, ← map_pow, ← hom_aeval (ψ ζ), root_of_prim hr0 ((hμ q).pow (NeZero.pos q) (Nat.div_mul_cancel hr).symm), map_zero]`.
+-/
 theorem cyclotomic_primitive_root_product_identities_of_adjoin_root : LateralTheory.EtaleFoundations.PrimitiveRootsOfUnityBasicIdentities := by
   intro q _ A _
   have hq1 : ∀ ζ : Prim q A, ζ.1 ^ q = 1 := fun ζ => by

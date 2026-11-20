@@ -12,6 +12,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
 def SatB (X : Data E r) (x1 : Frame X.Ψ r) (ρ : ℝ) : Set (Frame X.Ψ r) :=
   {x | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ ball (0 : V (nd X)) ρ, x = lact γ (rmul (cpt X x1 z') b)}
 
+/- English proof (translation)
+Take `⟨γ', hγ', b', hb', z', hz', rfl⟩` from `hx`. Use `⟨γ * γ', X.Γ.mul_mem hγ hγ', rmul b' b, ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.mul_mem (X := X) hb' hb, z', hz', ?_⟩` and prove the remaining obligations. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_rmul, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_lact, ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_assoc]`.
+-/
 theorem satB_sat (x1 : Frame X.Ψ r) (ρ : ℝ) {x : Frame X.Ψ r} (hx : x ∈ SatB X x1 ρ) {γ : GL (Fin r) E}
     (hγ : γ ∈ X.Γ) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : lact γ (rmul x b) ∈ SatB X x1 ρ := by
   obtain ⟨γ', hγ', b', hb', z', hz', rfl⟩ := hx
@@ -20,6 +23,15 @@ theorem satB_sat (x1 : Frame X.Ψ r) (ρ : ℝ) {x : Frame X.Ψ r} (hx : x ∈ S
   rw [← ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_rmul, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_lact,
     ReciprocityTheory.ChartRestriction.G.AR.Up.ExtFPf.rmul_assoc]
 
+/- English proof (translation)
+Establish `hn : nmat X 0 = fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)`. Use function extensionality and compare the values at `τ a c`. Simplify using `only [nmat]`. Use `split_ifs with h1 h2`. Apply the tactic sequence `rw [Matrix.one_apply_ne (ne_of_lt h1).symm] first | rfl | simp | exact PiLp.zero_apply _ _`.
+
+Substitute `h2` using the available equality. Conclude with `(Matrix.one_apply_eq a).symm`. Conclude with `(Matrix.one_apply_ne h2).symm`. Use `⟨1, X.Γ.one_mem, fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), ?_, 0, Metric.mem_ball_self hρ, ?_⟩` and prove the remaining obligations. Introduce `τ`.
+
+Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Use `show Matrix.det (1 : Matrix (Fin r) (Fin r) ℂ) ≠ 0`. Simplify using the standard rewrite rules. Use `show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0`. Conclude with `Matrix.one_apply_ne (ne_of_lt hca).symm`.
+
+Use function extensionality and compare the values at `τ a c`. Simplify using `[lact, rmul, mat, cpt, hn]`. Express the relevant statement in the definitionally equal form `x1 τ a c = ((Matrix.of (x1 τ) * (1 : Matrix (Fin r) (Fin r) ℂ)) * (1 : Matrix (Fin r) (Fin r) ℂ)) a c`. Rewrite using `[Matrix.mul_one, Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_satB_self (x1 : Frame X.Ψ r) {ρ : ℝ} (hρ : 0 < ρ) : x1 ∈ SatB X x1 ρ := by
   have hn : nmat X 0 = fun _ => (1 : Matrix (Fin r) (Fin r) ℂ) := by
     funext τ a c
@@ -43,10 +55,34 @@ theorem mem_satB_self (x1 : Frame X.Ψ r) {ρ : ℝ} (hρ : 0 < ρ) : x1 ∈ Sat
     rw [Matrix.mul_one, Matrix.mul_one]
     rfl
 
+/- English proof (translation)
+Rewrite using `[ENNReal.ofReal_rpow_of_pos ha]`. Conclude with `ENNReal.ofReal_ne_top`.
+-/
 theorem rpow_ofReal_ne_top {a : ℝ} (ha : 0 < a) (y : ℝ) : ENNReal.ofReal a ^ y ≠ ⊤ := by
   rw [ENNReal.ofReal_rpow_of_pos ha]
   exact ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+Establish `hsec : X.IsSec (Xa.Fp + Xa.T • Xa.L) g` using `hg.1.1`. Establish `hGm` using `Gf_meas Xa Fl hsec.1.continuousOn`. Establish `key : ∀ j, ∃ ρ : ℝ, 0 < ρ ∧ IsOpen (SatB X (Fl.xs j) ρ) ∧ ∫⁻ z in FF ∩ {z | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ ball (0 : V (nd X)) ρ, cpt X x0 z = lact γ (rmul (cpt X (Fl.xs j) z') b)}, Gf Xa Fl g (cpt X x0 z) ∂muF X x0 < ⊤`. Introduce `j`. Take `⟨ρV, hρV, hV⟩` from `hv j`.
+
+Take `⟨ρ0, hρ0, hL⟩` from `hLU r X x0 hx0 hPD FF hFF (Fl.xs j) (Fl.xs_mem j)`. Establish `h0 : (0 : V (nd X)) ∈ OmF X (Fl.xs j)` using `by show cpt X (Fl.xs j) 0 ∈ X.dom`. Rewrite using `[IW.cpt_zero]`. Conclude with `Fl.xs_mem j`. Take `⟨ε, hε, hεsub⟩` from `Metric.isOpen_iff.1 (ExF.isOpen_OmF X (Fl.xs j)) 0 h0`.
+
+Use `set ρ := min (min ρV ρ0) (ε / 2) with hρdef`. Establish `hρ : 0 < ρ` using `lt_min (lt_min hρV hρ0) (by linarith)`. Establish `hρV' : ρ ≤ ρV` using `(min_le_left _ _).trans (min_le_left _ _)`. Establish `hρ0' : ρ ≤ ρ0` using `(min_le_left _ _).trans (min_le_right _ _)`. Establish `hcl : closedBall (0 : V (nd X)) ρ ⊆ OmF X (Fl.xs j)` using `(closedBall_subset_ball (lt_of_le_of_lt (min_le_right _ _) (by linarith))).trans hεsub`.
+
+Take `⟨hop, K, hK, hb⟩` from `hL ρ hρ hρ0'`. Use `⟨ρ, hρ, hop, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `choose ρ hρ hop hfin using key`. Use `set U := ⋃ j, SatB X (Fl.xs j) (ρ j) with hUdef`.
+
+Establish `hU : IsOpen U` using `isOpen_iUnion hop`. Establish `hxs : ∀ j, Fl.xs j ∈ U` using `fun j => Set.mem_iUnion.2 ⟨j, mem_satB_self _ (hρ j)⟩`. Establish `hsat : ∀ x ∈ U, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ U`. Introduce `x hx γ hγ b hb`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hx`.
+
+Conclude with `Set.mem_iUnion.2 ⟨j, satB_sat _ _ hj hγ hb⟩`. Take `⟨K, hK⟩` from `Fl.family_le_coords U hU hxs hsat`. Use `set P := {z : V (nd X) | cpt X x0 z ∈ U} with hPdef`. Establish `hPm : MeasurableSet P` using `((IW.cpt_diff X x0).continuous.isOpen_preimage _ hU).measurableSet`. Use `set C := ENNReal.ofReal (1 / (max K 0 + 1)) ^ (-((Xa.T : ℝ) - 1 / 2)) with hCdef`.
+
+Establish `hC : C ≠ ⊤` using `rpow_ofReal_ne_top (by positivity) _`. Establish `hoff : ∫⁻ z in FF \ P, Gf Xa Fl g (cpt X x0 z) ∂muF X x0 < ⊤`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' (hFF.1.diff hPm) fun z hz => ?_` and prove the remaining obligations. Establish `hzd : cpt X x0 z ∈ X.dom` using `hFF.2.1 hz.1`.
+
+Conclude with `Gf_le_off Xa Fl g K hzd (hK _ hzd hz.2)`. Use `_ ≤ ∫⁻ z in FF, C * ENNReal.ofReal (X.pnorm (Xa.Fp + Xa.T • Xa.L) g (cpt X x0 z) ^ 2 * (∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2) ^ (-(Xa.T : ℝ))) ∂muF X x0 := lintegral_mono_set Set.diff_subset`. Use `_ = C * ∫⁻ z in FF, ENNReal.ofReal (X.pnorm (Xa.Fp + Xa.T • Xa.L) g (cpt X x0 z) ^ 2 * (∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2) ^ (-(Xa.T : ℝ))) ∂muF X x0 := lintegral_const_mul' _ _ hC`. Use `_ < ⊤ := ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hC) hint`. Establish `hcover : FF ⊆ (FF \ P) ∪ ⋃ j, FF ∩ {z | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' ∈ ball (0 : V (nd X)) (ρ j), cpt X x0 z = lact γ (rmul (cpt X (Fl.xs j) z') b)}`.
+
+Introduce `z hz`. Distinguish the cases in `hzP : z ∈ P`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hzP`. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨j, hz, hj⟩)`. Conclude with `Or.inl ⟨hz, hzP⟩`.
+
+Use `show ∫⁻ z in FF, Gf Xa Fl g (cpt X x0 z) ∂muF X x0 < ⊤`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_fintype]`. Conclude with `ENNReal.add_lt_top.2 ⟨hoff, ENNReal.sum_lt_top.2 fun j _ => hfin j⟩`.
+-/
 theorem inFF_of (hLU : LocalUnfoldBStatement (E := E)) {Xa : ArchInM X} (Fl : FlatM X Xa) (hPD : PropDisc X)
     (x0 : Frame X.Ψ r) (hx0 : IsOrth X x0) (FF : Set (V (nd X))) (hFF : IsFundSet X x0 FF)
     (g : Frame X.Ψ r → ℂ) (hg : g ∈ X.SS (Xa.Fp + Xa.T • Xa.L))
@@ -126,6 +162,11 @@ theorem inFF_of (hLU : LocalUnfoldBStatement (E := E)) {Xa : ArchInM X} (Fl : Fl
       rw [tsum_fintype]
       exact ENNReal.add_lt_top.2 ⟨hoff, ENNReal.sum_lt_top.2 fun j _ => hfin j⟩
 
+/- English proof (translation)
+Introduce `r X Xa Fl hPD _ bb m _ _ hlevi _ x0 hx0 FF hFF`. Take `⟨k0, z0, hz0, hs0⟩` from `exists_s_ne Fl x0 hx0`. Use `⟨PsK Xa Fl, fun z => Fl.s k0 (cpt X x0 z), WSk_metric Xa Fl, WSk_lower Xa Fl, IW.comp_cpt_diffOn X (s_diffOn Fl k0) x0, ⟨z0, hz0, hs0⟩, fun z hz => ?_, fun z hz hg1 => ?_, fun z hz hg1 ξ => ?_, fun g hg hint hv => ?_⟩` and prove the remaining obligations. Conclude with `(PsK_cpt_cdAt Fl x0 k0 hz).contDiffWithinAt`. Conclude with `WSk_eq_exp Xa Fl hz (sums_pos Fl hg1)`.
+
+Conclude with `PsK_levi Fl x0 k0 m (hlevi x0 hx0) ⟨hz, hg1⟩ ξ`. Conclude with `inFF_of hLU Fl hPD x0 hx0 FF hFF g hg hint hv`.
+-/
 theorem ontoWeight_of (hLU : LocalUnfoldBStatement (E := E)) : OntoWeightStatement (E := E) := by
   intro r X Xa Fl hPD _ bb m _ _ hlevi _ x0 hx0 FF hFF
   obtain ⟨k0, z0, hz0, hs0⟩ := exists_s_ne Fl x0 hx0

@@ -25,6 +25,23 @@ namespace GlobalTheory.CompanionTheory.Ar.Plug.FinTr.Approx
 
 section Help
 
+/- English proof (translation)
+Establish `hig : i g ≠ 0` using `(map_ne_zero_iff i hi).2 hg`. Set `large₂` to `Localization.Away g`. Set `Φ : large₂ →+* K` to `IsLocalization.Away.lift g (isUnit_iff_ne_zero.2 hig)`. Set `Ψ : large₂ →+* L` to `IsLocalization.Away.lift g (isUnit_iff_ne_zero.2 hχ)`. Establish `hΦ : ∀ r, Φ (algebraMap R large₂ r) = i r` using `fun r => IsLocalization.Away.lift_eq g _ r`.
+
+Establish `hΨ : ∀ r, Ψ (algebraMap R large₂ r) = χ r` using `fun r => IsLocalization.Away.lift_eq g _ r`. Establish `hsurj : ∀ x : large₂, ∃ (a : R) (k : ℕ), x * algebraMap R large₂ g ^ k = algebraMap R large₂ a`. Introduce `x`. Take `⟨⟨a, ⟨s, k, rfl⟩⟩, h⟩` from `IsLocalization.surj (Submonoid.powers g) x`. Conclude with `⟨a, k, by simpa using h⟩`.
+
+Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, k, h⟩` from `hsurj x`. Establish `h1` using `congrArg Φ h`.
+
+Rewrite `h1` using `[map_mul, hx, zero_mul, hΦ]`. Establish `ha : a = 0` using `hi (by rw [← h1, map_zero])`. Establish `hu : IsUnit (algebraMap R large₂ g ^ k)` using `(IsLocalization.Away.algebraMap_isUnit g).pow k`. Rewrite `h` using `[ha, map_zero]`. Conclude with `(hu.mul_left_eq_zero).1 h`.
+
+Set `e : large₂ ≃+* Φ.range` to `RingEquiv.ofBijective Φ.rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), Φ.rangeRestrict_surjective⟩`. Establish `hA : ∀ r, i r ∈ Φ.range` using `fun r => ⟨algebraMap R large₂ r, hΦ r⟩`. Establish `hev : ∀ x : large₂, (Ψ.comp e.symm.toRingHom) (e x) = Ψ x` using `fun x => by`. Simplify using the standard rewrite rules. Establish `hev' : ∀ r, (Ψ.comp e.symm.toRingHom) ⟨i r, hA r⟩ = χ r` using `fun r => by`.
+
+Establish `: (⟨i r, hA r⟩ : Φ.range) = e (algebraMap R large₂ r)` using `Subtype.ext (hΦ r).symm`. Rewrite using `[this, hev, hΨ]`. Use `⟨Φ.range, Ψ.comp e.symm.toRingHom, hA, ?_, hev', fun x => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `IsLocalization.Away.algebraMap_isUnit (x := g) (S := large₂) |>.exists_right_inv`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Φ hv` as an intermediate fact. Rewrite `this` using `[map_mul, hΦ, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Take `⟨a, k, h⟩` from `hsurj (e.symm x)`. Use `⟨a, k, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Ψ h` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hΨ, hΨ]`. Conclude with `this`.
+-/
 theorem exists_loc {R K L : Type} [CommRing R] [IsDomain R] [Field K] [Field L] (i : R →+* K)
     (hi : Function.Injective i) (g : R) (hg : g ≠ 0) (χ : R →+* L) (hχ : χ g ≠ 0) :
     ∃ (A : Subring K) (ev : A →+* L) (hA : ∀ r, i r ∈ A), (i g)⁻¹ ∈ A ∧ (∀ r, ev ⟨i r, hA r⟩ = χ r) ∧
@@ -69,6 +86,11 @@ theorem exists_loc {R K L : Type} [CommRing R] [IsDomain R] [Field K] [Field L] 
     rw [map_mul, map_pow, hΨ, hΨ] at this
     exact this
 
+/- English proof (translation)
+Establish `: a⁻¹ = b * g⁻¹`. Rewrite using `[← h]`. Establish `hb0 : b ≠ 0` using `fun h0 => hne (by rw [← h, h0, mul_zero])`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `A.mul_mem hb hg`.
+-/
 theorem inv_mem_of_mul {K : Type} [Field K] {A : Subring K} {a b g : K} (ha : a ≠ 0) (hb : b ∈ A) (hg : g⁻¹ ∈ A)
     (hne : g ≠ 0) (h : a * b = g) : a⁻¹ ∈ A := by
   have : a⁻¹ = b * g⁻¹ := by
@@ -78,6 +100,13 @@ theorem inv_mem_of_mul {K : Type} [Field K] {A : Subring K} {a b g : K} (ha : a 
   rw [this]
   exact A.mul_mem hb hg
 
+/- English proof (translation)
+Establish `hz : ∀ (u : Kˣ) (m : ℤ), vV V (((u ^ m : Kˣ)) : K) = m * vV V (u : K)`. Introduce `u m`. Simplify using `only [vV]`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, WithZero.log_zpow]`. Put the polynomial expressions in normal form.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: vV V (1 : K) = 0` using `by simp [vV]`. Simplify using `using this`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Units.val_mul, vV_mul (Units.ne_zero _) (Units.ne_zero _), hz, ih]`.
+-/
 theorem vV_units_prod {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {I : Type} (s : Finset I) (t : I → Kˣ) (e : I → ℤ) :
     vV V (((∏ i ∈ s, t i ^ e i : Kˣ)) : K) = ∑ i ∈ s, e i * vV V ((t i : Kˣ) : K) := by
@@ -95,6 +124,15 @@ theorem vV_units_prod {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
     rw [Finset.prod_insert ha, Finset.sum_insert ha, Units.val_mul,
       vV_mul (Units.ne_zero _) (Units.ne_zero _), hz, ih]
 
+/- English proof (translation)
+Distinguish the cases in `he : a' = a`. Substitute `he` using the available equality. Conclude with `⟨ha, rfl⟩`. Establish `h : vV V a < vV V (a' - a)` using `h.resolve_left he`. Establish `hneg : ∀ x : K, vV V (-x) = vV V x` using `fun x => by simp [vV]`.
+
+Establish `hd : a' - a ≠ 0` using `sub_ne_zero.2 he`. Establish `h0 : a' ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, zero_sub, hneg]`. Conclude with `lt_irrefl _ h`.
+
+Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `h1` using `min_le_vV_add (V := V) ha hd (by rwa [add_sub_cancel])`. Establish `h2` using `min_le_vV_add (V := V) h0 (neg_ne_zero.2 hd) (by rwa [← sub_eq_add_neg, sub_sub_cancel])`. Rewrite `h1` using `[add_sub_cancel]`. Rewrite `h2` using `[← sub_eq_add_neg, sub_sub_cancel, hneg]`.
+
+Apply the tactic sequence `rcases min_le_iff.1 h1 with h1 | h1 <;> rcases min_le_iff.1 h2 with h2 | h2 <;> omega`.
+-/
 theorem vV_eq_of_close {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {a a' : K} (ha : a ≠ 0) (h : a' = a ∨ vV V a < vV V (a' - a)) : a' ≠ 0 ∧ vV V a' = vV V a := by
   by_cases he : a' = a
@@ -114,6 +152,17 @@ theorem vV_eq_of_close {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuati
   rw [← sub_eq_add_neg, sub_sub_cancel, hneg] at h2
   rcases min_le_iff.1 h1 with h1 | h1 <;> rcases min_le_iff.1 h2 with h2 | h2 <;> omega
 
+/- English proof (translation)
+Take `⟨ha'0, hva⟩` from `vV_eq_of_close ha hclose`. Establish `hsum : (e₀ : ℤ) * vV T'.V (((∏ i, t' i ^ ex i : T'.Frˣ)) : T'.Fr) = (e' : ℤ) * vV T.V (((∏ i, t₀ i ^ ex i : T.Frˣ)) : T.Fr)`. Rewrite using `[vV_units_prod, vV_units_prod, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ex i = 0`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `hvt i h0` as an intermediate fact. Take the linear combination `(ex i) * this`. Establish `hW'` using `Units.ne_zero (∏ i, t' i ^ ex i : T'.Frˣ)`.
+
+Establish `hW` using `Units.ne_zero (∏ i, t₀ i ^ ex i : T.Frˣ)`. Establish `hφa : φ a' ≠ 0` using `(map_ne_zero φ).2 ha'0`. Establish `key : vV T'.V (((∏ i, t' i ^ ex i : T'.Frˣ) : T'.Fr) * φ a') * (e₀ : ℤ) = (e' : ℤ) * vV T.V (((∏ i, t₀ i ^ ex i : T.Frˣ) : T.Fr) * a)`. Rewrite using `[vV_mul hW' hφa, vV_mul hW ha, ← hva]`. Use `hφ _ ha'0` as an intermediate fact.
+
+Take the linear combination `hsum + this`. Rewrite using `[nval_of_ne (mul_ne_zero hW' hφa), nval_of_ne (mul_ne_zero hW ha)]`. Establish `he'' : (0 : ℝ) < e'` using `by exact_mod_cast he'`. Establish `he₀' : (0 : ℝ) < e₀` using `by exact_mod_cast he₀`. Establish `keyR : (vV T'.V (((∏ i, t' i ^ ex i : T'.Frˣ) : T'.Fr) * φ a') : ℝ) * e₀ = e' * (vV T.V (((∏ i, t₀ i ^ ex i : T.Frˣ) : T.Fr) * a) : ℝ)` using `by exact_mod_cast key`.
+
+Use `congr 1`. Rewrite using `[div_eq_div_iff he''.ne' he₀'.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nval_transfer {T T' : CDVR} {e₀ e' : ℕ} (he₀ : 0 < e₀) (he' : 0 < e') {I : Type} [Fintype I] (ex : I → ℤ)
     (t₀ : I → T.Frˣ) (t' : I → T'.Frˣ)
     (hvt : ∀ i, ex i ≠ 0 → vV T'.V ((t' i : T'.Frˣ) : T'.Fr) * (e₀ : ℤ) = (e' : ℤ) * vV T.V ((t₀ i : T.Frˣ) : T.Fr))
@@ -146,6 +195,11 @@ theorem nval_transfer {T T' : CDVR} {e₀ e' : ℕ} (he₀ : 0 < e₀) (he' : 0 
   rw [div_eq_div_iff he''.ne' he₀'.ne']
   linarith
 
+/- English proof (translation)
+Break down `h with h1 | h1` into its components or cases. Conclude with `Or.inl h1`. Use `Or.inr ?_` and prove the remaining obligations. Establish `h3 : vV T.V a + 1 ≤ ((vV T.V a + 1).toNat : ℤ)` using `Int.self_le_toNat _`. Establish `h4 : (((vV T.V a + 1).toNat : ℕ) : ℤ) ≤ (n' : ℤ)` using `by exact_mod_cast hn`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem close_of_le {T : CDVR} {a a' : T.Fr} {n' : ℕ} (hn : (vV T.V a + 1).toNat ≤ n')
     (h : a' = a ∨ (n' : ℤ) ≤ vV T.V (a' - a)) : a' = a ∨ vV T.V a < vV T.V (a' - a) := by
   rcases h with h1 | h1
@@ -155,12 +209,18 @@ theorem close_of_le {T : CDVR} {a a' : T.Fr} {n' : ℕ} (hn : (vV T.V a + 1).toN
     have h4 : (((vV T.V a + 1).toNat : ℕ) : ℤ) ≤ (n' : ℤ) := by exact_mod_cast hn
     omega
 
+/- English proof (translation)
+Take `rfl : iK = Ring.toIntAlgebra K` from `Subsingleton.elim _ _`. Take `rfl : iL = Ring.toIntAlgebra L` from `Subsingleton.elim _ _`. Conclude with `h.algHom f.toIntAlgHom`.
+-/
 theorem alg_map {K L : Type} [Field K] [Field L] [iK : Algebra ℤ K] [iL : Algebra ℤ L] (f : K →+* L) {x : K}
     (h : IsAlgebraic ℤ x) : IsAlgebraic ℤ (f x) := by
   obtain rfl : iK = Ring.toIntAlgebra K := Subsingleton.elim _ _
   obtain rfl : iL = Ring.toIntAlgebra L := Subsingleton.elim _ _
   exact h.algHom f.toIntAlgHom
 
+/- English proof (translation)
+Establish `e1 : x = a * (g ^ k)⁻¹`. Rewrite using `[← hx]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`. Conclude with `ha.mul (hg.pow k).inv`.
+-/
 theorem alg_of_loc {L : Type} [Field L] [Algebra ℤ L] {x a g : L} {k : ℕ} (ha : IsAlgebraic ℤ a) (hg : IsAlgebraic ℤ g) (hg0 : g ≠ 0)
     (hx : x * g ^ k = a) : IsAlgebraic ℤ x := by
   have e1 : x = a * (g ^ k)⁻¹ := by
@@ -173,6 +233,45 @@ end Help
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c r U h e hCL Y Z u f hf B' la T io e₀ ho y hy hLies hne`. Use `letI := io.toAlgebra`. Take `⟨hL, -, -, hAt⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨C, ψ, z₀, t₀, hm, hb⟩` from `hAt h T.Fr y.1`. Establish `hZ : C.Z = Z`.
+
+Establish `s₀ : Sp T.Fr` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.Fr)`. Conclude with `comp_eq_of_mem (hLies s₀) (liesOn_chart C hm hb s₀)`. Substitute `hZ` using the available equality. Use `haveI := C.sm`. Take `⟨g₀, hg₀, hReg⟩` from `GlobalTheory.T.frame_chart_nonzero_denominator E H Dw l Xo c hL h C`.
+
+Take `⟨F, n, hNear⟩` from `GlobalTheory.T.integral_frame_subalgebra_relay hG E H Dw l Xo c hCL.intAll Y la T io e₀ ho hy y C.R C.y ψ z₀ t₀ hm hb`. Set `fS : C.R` to `evR Xo c f C.y`. Establish `hz₀ : evR Xo c f z₀ = ψ fS` using `GlobalTheory.Reg.PChartModel.evR_map hL hf.1 ψ hm`. Establish `hy₀ : evI y f = ((∏ i, t₀ i ^ GlobalTheory.AllWt.exOf Dw u 0 i : T.Frˣ) : T.Fr) * ψ fS`. Rewrite using `[← hz₀]`.
+
+Conclude with `GlobalTheory.FlagTan.evR_frBor hf hb`. Establish `hψf : ψ fS ≠ 0` using `fun h0 => hne (by rw [hy₀, h0, mul_zero])`. Use `choose na hna de hde hde0 hfr using C.frac`. Set `deR : Om C.Z → C.R` to `fun b => ⟨de b, hde b⟩`. Set `naR : Om C.Z → C.R` to `fun b => ⟨na b, hna b⟩`.
+
+Set `g₁ : C.R` to `∏ b ∈ B', deR b`. Set `g₂ : C.R` to `∏ b ∈ B'.filter (· ≠ 0), naR b`. Set `g : C.R` to `g₀ * g₁ * g₂`. Establish `hde0' : ∀ b, deR b ≠ 0` using `fun b hb0 => hde0 b (congrArg Subtype.val hb0)`. Establish `hna0' : ∀ b, b ≠ 0 → naR b ≠ 0` using `fun b hb0 h0 => by`.
+
+Establish `h1 : na b = 0` using `congrArg Subtype.val h0`. Use `hfr b` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `(mul_ne_zero hb0 (hde0 b)) this`. Establish `hg₁ : g₁ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b _ => hde0' b`.
+
+Establish `hg₂ : g₂ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b hb => hna0' b (Finset.mem_filter.1 hb).2`. Establish `hg : g ≠ 0` using `mul_ne_zero (mul_ne_zero hg₀ hg₁) hg₂`. Set `n' : ℕ` to `max n (vV T.V (ψ fS) + 1).toNat`. Take `⟨ψ₁, hψ₁c, hψ₁a, hψ₁n, hψ₁g⟩` from `GlobalTheory.T.algebraic_approximation_complete_dvr c.F C.R T hy io ψ.toRingHom (RingHom.ext fun a => ψ.commutes a) (insert fS F) n' g hg`. Set `ψ' : C.R →ₐ[c.F] T.Fr` to `{ ψ₁ with commutes' := fun a => RingHom.congr_fun hψ₁c a }`.
+
+Establish `hψ' : ∀ x, ψ' x = ψ₁ x` using `fun _ => rfl`. Take `⟨z', hz'⟩` from `hL.bc _ _ ψ' C.y`. Take `⟨T', io', e', y', ho', hy', hrest⟩` from `hNear ψ' (fun s hs => by`. Break down `hψ₁n s (Finset.mem_insert_of_mem hs) with h1 | h1` into its components or cases. Conclude with `Or.inl h1`.
+
+Use `Or.inr (le_trans ?_ h1)` and prove the remaining obligations. Conclude with `le_max_left _ _) z' hz'` after adjusting the coercions. Use `letI := io'.toAlgebra`. Take `⟨φ, z'', t', hφ, hb', hvφ, hvt⟩` from `hrest`. Set `χ : C.R →+* T'.Fr` to `φ.toRingHom.comp ψ₁`.
+
+Establish `hχg : χ g ≠ 0` using `(map_ne_zero φ.toRingHom).2 hψ₁g`. Take `⟨A, ev, hA, hgA, hevχ, hevx⟩` from `exists_loc C.R.val.toRingHom Subtype.val_injective g hg χ hχg`. Establish `hAr : ∀ r : C.R, (r : Om C.Z) ∈ A` using `hA`. Establish `hgne : ((g : C.R) : Om C.Z) ≠ 0` using `fun h0 => hg (Subtype.ext h0)`. Establish `hgA' : ((g : C.R) : Om C.Z)⁻¹ ∈ A` using `hgA`.
+
+Establish `hdvd : ∀ a b : C.R, a ≠ 0 → a * b = g → (a : Om C.Z)⁻¹ ∈ A` using `fun a b ha hab => inv_mem_of_mul (fun h0 => ha (Subtype.ext h0)) (hAr b) hgA' hgne (congrArg Subtype.val hab)`. Establish `hdeA : ∀ b ∈ B', (de b)⁻¹ ∈ A` using `fun b hb0 => by`. Take `⟨w, hw⟩` from `Finset.dvd_prod_of_mem deR hb0`. Conclude with `hdvd (deR b) (g₀ * w * g₂) (hde0' b) (by show deR b * (g₀ * w * g₂) = g₀ * g₁ * g₂`. Rewrite using `[show g₁ = deR b * w from hw]`.
+
+Use the proof step `ring)`. Establish `hnaA : ∀ b ∈ B', b ≠ 0 → (na b)⁻¹ ∈ A` using `fun b hb0 hb1 => by`. Take `⟨w, hw⟩` from `Finset.dvd_prod_of_mem naR (show b ∈ B'.filter (· ≠ 0) from Finset.mem_filter.2 ⟨hb0, hb1⟩)`. Conclude with `hdvd (naR b) (g₀ * g₁ * w) (hna0' b hb1) (by show naR b * (g₀ * g₁ * w) = g₀ * g₁ * g₂`. Rewrite using `[show g₂ = naR b * w from hw]`.
+
+Use the proof step `ring)`. Establish `hg₀A : ((g₀ : C.R) : Om C.Z)⁻¹ ∈ A` using `hdvd g₀ (g₁ * g₂) hg₀ (by show g₀ * (g₁ * g₂) = g₀ * g₁ * g₂ ring)`. Set `ψ₂ : C.R →ₐ[c.F] T'.Fr` to `φ.comp ψ'`. Establish `hz'' : FrMap ψ₂ C.y z''` using `frMap_trans _ _ _ _ φ _ _ _ hz' hφ`. Use `⟨T', io', e', y', A, ev, ho', hy', ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hyv : evI y' f = ((∏ i, t' i ^ GlobalTheory.AllWt.exOf Dw u 0 i : T'.Frˣ) : T'.Fr) * φ (ψ₁ fS)`. Establish `h1 : evR Xo c f z'' = ψ₂ fS` using `GlobalTheory.Reg.PChartModel.evR_map hL hf.1 ψ₂ hz''`. Establish `h2 : evR Xo c f y'.1 = ((∏ i, t' i ^ GlobalTheory.AllWt.exOf Dw u 0 i : T'.Frˣ) : T'.Fr) * evR Xo c f z''` using `GlobalTheory.FlagTan.evR_frBor hf hb'`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+
+Rewrite using `[hyv, hy₀]`. Use `nval_transfer ho.1 ho'.1 _ t₀ t' (fun i hi => ?_) φ.toRingHom hvφ hψf (close_of_le (le_max_right _ _) (hψ₁n fS (Finset.mem_insert_self _ _)))` and prove the remaining obligations. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Conclude with `absurd (show GlobalTheory.AllWt.exOf Dw u 0 none = 0 by show (GlobalTheory.AllWt.wtOf Dw u 0).2 = 0`. Rewrite using `[GlobalTheory.AllWt.wtOf_snd]`.
+
+Use the proof step `simp) hi`. Conclude with `hvt τ i`. Introduce `b hb0`. Establish `: b = na b * (de b)⁻¹`. Rewrite using `[← hfr b]`.
+
+Clear denominators, using `[hde0 b]` for the nonvanishing conditions. Rewrite using `[this]`. Conclude with `A.mul_mem (hAr (naR b)) (hdeA b hb0)`. Introduce `b hb0 hb1`. Establish `: b⁻¹ = de b * (na b)⁻¹`.
+
+Rewrite using `[← hfr b]`. Use `hde0 b` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `A.mul_mem (hAr (deR b)) (hnaA b hb0 hb1)`.
+
+Introduce `x`. Take `⟨a, k, hx⟩` from `hevx x`. Establish `hχa : ∀ a, IsAlgebraic ℤ (χ a)` using `fun a => alg_map φ.toRingHom (hψ₁a a)`. Conclude with `alg_of_loc (hχa a) (hχa g) hχg hx`. Conclude with `hReg A hAr hg₀A T'.Fr io' ev ψ₂ (fun r => (hevχ r).symm) z'' y'.1 t' hz'' hb'`.
+-/
 theorem approx_main : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Z : Comp Xo c) (u : GlobalTheory.AllWt.Weight Dw) (f : Rul Xo c), f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0) → ∀ (B' : Finset (Om Z)) (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e₀ : ℕ), OverLa la T.V io e₀ → ∀ y : IntFr Xo c T io, y.IsAlg → (letI := io.toAlgebra; GlobalTheory.AllWt.LiesOn Z y.1) → evI y f ≠ 0 → ∃ (T' : CDVR) (io' : c.F →+* T'.Fr) (e' : ℕ) (y' : IntFr Xo c T' io') (A : Subring (Om Z)) (ev : A →+* T'.Fr), OverLa la T'.V io' e' ∧ y'.IsAlg ∧ nval T'.V e' (evI y' f) = nval T.V e₀ (evI y f) ∧ (↑B' : Set (Om Z)) ⊆ A ∧ (∀ b ∈ B', b ≠ 0 → b⁻¹ ∈ A) ∧ (∀ x, IsAlgebraic ℤ (ev x)) ∧ FinTr.RegAt h Z io' A ev y'.1 := by
   intro hG E _ _ _ H Dw l Xo c r U h e hCL Y Z u f hf B' la T io e₀ ho y hy hLies hne
   letI := io.toAlgebra

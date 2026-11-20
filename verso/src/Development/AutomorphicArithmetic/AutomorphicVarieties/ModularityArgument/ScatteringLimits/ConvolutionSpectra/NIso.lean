@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M`. Take `⟨g, hg, g1, g2⟩` from `grow (V := V) (W := W)`. Establish `hb` using `(cobLaws M.F).2.2.2.2.2.1`. Establish `e1 : ∀ (e : V) t, ‖∫ s in (0 : ℝ)..t, M.F.U s (M.J (one V e))‖ = g t * ‖e‖` using `fun e t => by`. Simplify using `only [M.hJ]`.
+
+Rewrite using `[← g1, ← M.J.norm_map]`. Conclude with `congrArg _ ((M.J.toContinuousLinearEquiv : L V →L[ℂ] H).intervalIntegral_comp_comm (((shF V).cont _).intervalIntegrable _ _))`. Establish `e2 : ∀ (f : W) t, ‖∫ s in (0 : ℝ)..t, M.F.U s (M.J' (one W f))‖ = g t * ‖f‖` using `fun f t => by`. Simplify using `only [M.hJ']`. Rewrite using `[← g2, ← M.J'.norm_map]`.
+
+Conclude with `congrArg _ ((M.J'.toContinuousLinearEquiv : L W →L[ℂ] H).intervalIntegral_comp_comm (((shF W).rev.cont _).intervalIntegrable _ _))`. Establish `key : ∀ d C : ℝ, (∀ t, |g t * d| ≤ C) → d = 0` using `fun d C h => by`. Assume the negation of the conclusion as `hd`. Establish `h1 : Tendsto (fun t => |g t| * |d|) atTop atTop` using `(tendsto_abs_atTop_atTop.comp hg).atTop_mul_const (abs_pos.2 hd)`. Take `⟨t, ht⟩` from `(h1.eventually_gt_atTop C).exists`.
+
+Conclude with `absurd (abs_mul (g t) d ▸ h t) (not_le.2 ht)`. Use `⟨fun e he => ?_, fun N hN w => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hb _ he`. Conclude with `norm_eq_zero.1 (key _ C fun t => by rw [← e1, abs_norm]; exact hC t)`. Take `⟨C, hC⟩` from `hb _ (hN w)`.
+
+Use `(sub_eq_zero.1 (key (‖w‖ - ‖N w‖) C fun t => ?_)).symm` and prove the remaining obligations. Rewrite using `[mul_sub, ← e1, ← e2]`. Use `(abs_norm_sub_norm_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← intervalIntegral.integral_sub ((M.F.cont _).intervalIntegrable _ _) ((M.F.cont _).intervalIntegrable _ _)]`. Simplify `hC t` using `only [map_sub]`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.nIso :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W), (∀ e, M.F.Cob (M.J (one V e)) → e = 0) ∧ ∀ N, M.IsN N → ∀ w, ‖N w‖ = ‖w‖ := by
   intro H _ _ _ V _ _ _ _ W _ _ _ _ M

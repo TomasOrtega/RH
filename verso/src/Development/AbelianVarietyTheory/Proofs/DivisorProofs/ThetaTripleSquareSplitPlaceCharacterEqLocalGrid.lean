@@ -22,6 +22,13 @@ namespace GlobalTheory.PureMatch
 
 open GlobalTheory.LFun
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W M t i j e Bs Γ X hX w v hv τ hw`. Substitute `hw` using the available equality. Establish `e1 : X.ν = G.nu t i (j + 1)` using `by show X.α / X.β = _`. Rewrite using `[hX.α, hX.β]`. Conclude with `mul_div_mul_right_eq_div _ _ _`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x show (locChar X.ν (splitPrime τ) (Units.map (complMap hv).toMonoidHom x) : ℂ) = _`. Rewrite using `[e1, locChar_eq_of_chrEq (GlobalTheory.FunObj.SqNum.chrEq_nu G t i j hL)]`. Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Simplify using `only [GlobalTheory.FunObj.SqNum.nuH, Grid.nu, locGrid, muBase, dif_pos hj, MonoidHom.div_apply, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, div_eq_mul_inv]`.
+
+Both sides reduce to the same expression. Use extensionality with `x show (locChar X.α (splitPrime τ) _ : ℂ) = (locChar (X.α / X.β) (splitPrime τ) _ * locChar X.β (splitPrime τ) _ : ℂˣ)`. Simplify using `[locChar]`.
+-/
 theorem chrW_triple_split_nu : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil)
     (M : Vol G) (t : T) (i j : Fin D.R.m) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j)
     (X : Chars D.host.F D.host.E), IsTripleOf W M t i j e Bs Γ X →

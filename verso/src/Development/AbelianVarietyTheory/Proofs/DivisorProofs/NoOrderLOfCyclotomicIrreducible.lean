@@ -3,6 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 open Polynomial in
+/- English proof (translation)
+Introduce `E _ _ l N g hl hirr hN hg`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hmon : g.charpoly.Monic` using `Matrix.charpoly_monic g`. Establish `hdeg : g.charpoly.natDegree = N`. Simplify using `using Matrix.charpoly_natDegree_eq_dim g`.
+
+Establish `hndvd : ¬ cyclotomic l E ∣ g.charpoly`. Introduce `h`. Establish `h1` using `Polynomial.natDegree_le_of_dvd h hmon.ne_zero`. Rewrite `h1` using `[Polynomial.natDegree_cyclotomic, Nat.totient_prime hl, hdeg]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).2 hndvd`. Establish `hev` using `congrArg (aeval g) hab`. Simplify using `only [map_add, map_mul, map_one, Matrix.aeval_self_charpoly, mul_zero, add_zero] at hev`. Establish `hcyc : aeval g (cyclotomic l E) * (g - 1) = 0`. Use `congrArg (aeval g) (Polynomial.cyclotomic_prime_mul_X_sub_one E l)` as an intermediate fact.
+
+Simplify using `only [map_mul, map_sub, aeval_X, map_one, map_pow] at this`. Rewrite using `[this, hg, sub_self]`. Establish `: g - 1 = 0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem no_order_l_of_cyclotomic_irreducible :
     ∀ (E : Type) [Field E] [CharZero E] (l N : ℕ) (g : Matrix (Fin N) (Fin N) E),
       l.Prime → Irreducible (Polynomial.cyclotomic l E) → N + 1 < l → g ^ l = 1 → g = 1 := by

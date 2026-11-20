@@ -9,5 +9,8 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.unit_of_isUnit_cst_closedPoint | exact GlobalTheory.unit_of_isUnit_cst_closedPoint | (intros; apply GlobalTheory.unit_of_isUnit_cst_closedPoint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isUnit_of_isUnit_constant_closedPoint_localRing : ∀ (V : Type) [CommRing V] [IsLocalRing V] (a : V), IsUnit (Geo.Tor.cst (𝟙 (Sp V)) (closedPoint V) a) → IsUnit a := by
   first | exact @GlobalTheory.unit_of_isUnit_cst_closedPoint | exact GlobalTheory.unit_of_isUnit_cst_closedPoint | (intros; apply GlobalTheory.unit_of_isUnit_cst_closedPoint <;> assumption)

@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.NormCharSplit
 import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeasures.MatchOne
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n v aE bE aF bF`. Take `⟨⟨aE', bE', aF', bF', mE, mF, hE, hF, hE1, hF1⟩, h2⟩` from `UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v`. Take `rfl : aE = aE'` from `bE.measurable_eq.trans bE'.measurable_eq.symm`. Take `rfl : aF = aF'` from `bF.measurable_eq.trans bF'.measurable_eq.symm`. Conclude with `⟨mE, mF, hE, hF, hE1, hF1, fun c φ f hM => @h2 _ bE' _ bF' mE mF hE hF hE1 hF1 c φ f hM⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.matchOne :
     UpperTheory.ConvolutionTheory.T.MatchOne := by
   intro F E _ _ _ _ _ σ n v aE bE aF bF

@@ -13,6 +13,13 @@ namespace ValuationZeroReduction
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ w.asIdeal.zero_mem)`. Establish `hJ : Ideal.span {s} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hs0`. Establish `hnd : ¬ w.asIdeal ∣ Ideal.span {s}`.
+
+Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hs`. Establish `hirr : Irreducible w.asIdeal` using `(Ideal.prime_of_isPrime w.ne_bot w.isPrime).irreducible`. Establish `hc` using `mt (Associates.count_ne_zero_iff_dvd hJ hirr).mp hnd`. Use `push_neg at hc`.
+
+Unfold `vw`. Rewrite using `[show (s : K) = algebraMap (𝓞 K) K s from rfl, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w hJ, Nat.cast_eq_zero]`. Use `hc` and compare the differences between its conclusion and the goal.
+-/
 theorem vw_eq_zero_of_not_mem (w : HeightOneSpectrum (𝓞 K)) (s : 𝓞 K) (hs : s ∉ w.asIdeal) :
     vw w (s : K) = 0 := by
   have hs0 : s ≠ 0 := fun h => hs (h ▸ w.asIdeal.zero_mem)
@@ -31,6 +38,19 @@ theorem vw_eq_zero_of_not_mem (w : HeightOneSpectrum (𝓞 K)) (s : 𝓞 K) (hs 
 
 end ValuationZeroReduction
 
+/- English proof (translation)
+Introduce `K _ _ _ w n D M π ι B P ζ σ hζ hvζ hP hM x hx`. Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs' : s ∉ w.asIdeal` using `hs`. Take `⟨y, hy, hyx⟩` from `hsx`. Take `⟨F, hF, hFy⟩` from `hy`.
+
+Simplify using `only [LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply] at hFy hyx`. Establish `hs0 : s ≠ 0` using `fun h => hs' (h ▸ w.asIdeal.zero_mem)`. Establish `hsK : algebraMap (𝓞 K) K s ≠ 0`. Introduce `h`. Apply `hs0` to reduce the goal to its premises.
+
+Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h`. Establish `hPF : P F = ζ * (algebraMap (𝓞 K) K s * B x)`. Rewrite using `[hP F, hFy, hyx, ← algebraMap_smul K s x, map_smul, smul_eq_mul]`.
+
+Establish `hvmul : ∀ a b : K, a ≠ 0 → b ≠ 0 → vw w (a * b) = vw w a + vw w b`. Introduce `a b ha hb`. Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (fun h => ha (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)) (fun h => hb (FractionalIdeal.spanSingleton_eq_zero_iff.mp h))]`. Establish `hv0 : vw w (algebraMap (𝓞 K) K s) = 0` using `ValuationZeroReduction.vw_eq_zero_of_not_mem w s hs'`.
+
+Distinguish the cases in `hBx : B x = 0`. Conclude with `Or.inl hBx`. Use `right`. Establish `hPF0 : P F ≠ 0` using `by rw [hPF]; exact mul_ne_zero hζ (mul_ne_zero hsK hBx)`. Break down `hM F hF with h0 | hσ` into its components or cases.
+
+Conclude with `absurd h0 hPF0`. Rewrite `hσ` using `[hPF, hvmul _ _ hζ (mul_ne_zero hsK hBx), hvmul _ _ hsK hBx, hvζ, hv0]`. Simplify using `using hσ`.
+-/
 theorem reduction_first_step : StepA := by
   intro K _ _ _ w n D M π ι B P ζ σ hζ hvζ hP hM x hx
   obtain ⟨s, hs, hsx⟩ := hx

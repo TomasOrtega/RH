@@ -16,6 +16,21 @@ namespace GlobalTheory.HeightLower
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `r X d hd x hx`. Take `⟨C, hC, hCle⟩` from `GlobalTheory.relIndex_span_le_norm_minor r X`. Establish `hω : ∀ τ : X.Ψ, ∃ ω : ℝ, 1 ≤ ω ∧ ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : Matrix (Fin r) ι ℂ), ((mat x τ * M)ᴴ * (mat x τ * M)).det.re ≤ ω * (Mᴴ * M).det.re` using `fun τ => GlobalTheory.gram_det_mul_le GlobalTheory.det_re_mono_of_posSemidef r (mat x τ)`. Use `choose ω hω1 hωle using hω`. Establish `hΩ : 0 < ∏ τ, ω τ` using `Finset.prod_pos fun τ _ => lt_of_lt_of_le one_pos (hω1 τ)`.
+
+Use `⟨1 / (C * ∏ τ, ω τ), by positivity, fun W => ?_⟩` and prove the remaining obligations. Take `⟨w, hwi, hwΛ, hspan⟩` from `GlobalTheory.LatBasis.exists_basis_mem r X W`. Take `⟨e, he, hδ⟩` from `GlobalTheory.exists_maximal_minor_ne_zero_of_linearIndependent E r _ w hwi`. Establish `hdW` using `hd x hx _ w hwi hwΛ`. Rewrite `hdW` using `[hspan]`.
+
+Rewrite using `[hdW]`. Establish `hI0` using `GlobalTheory.SpanIndex.relIndex_span_ne_zero r X _ w hwi hwΛ`. Establish `hIle` using `hCle _ w hwi hwΛ e he hδ`. Rewrite `hI0`, `hIle` using `[hspan]`. Use `set I := ((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ W.toAddSubgroup)) with hIdef`.
+
+Establish `hIpos : (0 : ℝ) < (I : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hI0`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 (Matrix.of fun k a => w a (e k)).det‖ ^ 2 ≤ ω τ * (((mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w a k))ᴴ * ((mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w a k))).det.re`. Introduce `τ`. Establish `hu : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.mpr (hx τ)`. Establish `h1` using `hωle τ _ ((mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w a k))`.
+
+Rewrite `h1` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Establish `h2` using `GlobalTheory.norm_det_submatrix_sq_le_det_gram (Fin r) _ (Matrix.of fun k a => τ.1 (w a k)) e he`. Establish `h3 : ((Matrix.of fun k a => τ.1 (w a k)).submatrix e id).det = τ.1 (Matrix.of fun k a => w a (e k)).det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Rewrite `h2` using `[h3]`. Conclude with `h2.trans h1`. Establish `hprod : ∏ τ : X.Ψ, ‖τ.1 (Matrix.of fun k a => w a (e k)).det‖ ^ 2 ≤ (∏ τ, ω τ) * ∏ τ : X.Ψ, (((mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w a k))ᴴ * ((mat x τ)⁻¹ * Matrix.of fun k a => τ.1 (w a k))).det.re`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun τ _ => by positivity) (fun τ _ => key τ)`.
+
+Rewrite using `[div_le_div_iff₀ (by positivity) hIpos, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pos_le_height : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∃ m : ℝ, 0 < m ∧ ∀ W, m ≤ d x W) := by
   intro r X d hd x hx
   obtain ⟨C, hC, hCle⟩ := GlobalTheory.relIndex_span_le_norm_minor r X

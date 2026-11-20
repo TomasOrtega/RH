@@ -10,6 +10,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.SplitPlaceHeckeS
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `D hF V n Ps hstd sp κ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, e, f, hef, hs⟩`. Conclude with `⟨(hstd.2 κ).2 hK, (GlobalTheory.LabelTransport.suppF_iff_trivOutside D sp hF V n Ps hstd e f hef κ).1 hs⟩`. Introduce and unpack `⟨hU, hT⟩`.
+
+Take `⟨-, e, f, hef, -⟩` from `GlobalTheory.DefLiftHecke.one_mem_hyp V sp.w`. Conclude with `⟨(hstd.2 κ).1 hU, e, f, hef, (GlobalTheory.LabelTransport.suppF_iff_trivOutside D sp hF V n Ps hstd e f hef κ).2 hT⟩`.
+-/
 theorem GlobalTheory.FrameHyp.mem_hyp_iff : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D} {n : ℕ}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V n), GlobalTheory.NJoin.StdFrame hF Ps → ∀ (sp : SplitPlace D.host.E)
     (κ : Formalism.AUTREP.GAf D.host.E n), Ps.ψ κ ∈ GlobalTheory.Hk3.hyp V sp.w ↔ κ ∈ Umax D.host.E n ∧ TrivOutside {sp.v} κ := by

@@ -8,6 +8,13 @@ namespace PositivityTheory.ThKEst.Sq
 open scoped ENNReal
 open MeasureTheory Finset PositivityTheory.ThKEst
 
+/- English proof (translation)
+Introduce `r c hc`. Establish `h1` using `ReciprocityTheory.ThetaSummability.Est.integrableOn_exp_logCone (0 : ℝ) (s := c) fun k => by`. Use `hc (k.val + 1) (by omega) k.isLt` as an intermediate fact. Unfold `psum at this`. Unfold `ReciprocityTheory.ThetaSummability.Est.partialSum`.
+
+Rewrite using `[Finset.sum_filter]`. Simplify `this` using `only [Nat.lt_succ_iff, Fin.le_def]`. Establish `h2 : Cone r ⊆ ReciprocityTheory.ThetaSummability.Est.logCone r 0` using `fun t ht k => by`. Unfold `ReciprocityTheory.ThetaSummability.Est.gap`. Use `split_ifs with h`.
+
+Conclude with `sub_nonneg.2 (ht.1 (by simp [Fin.le_def]))`. Simplify using `using ht.2 k`. Use `(lintegral_mono_set h2).trans_lt ?_` and prove the remaining obligations. Establish `h3` using `h1.2`. Rewrite `h3` using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun x => (Real.exp_pos _).le)]`. Then use the resulting hypothesis.
+-/
 theorem cone_exponent_bound_holds : ConeExp := by
   intro r c hc
   have h1 := ReciprocityTheory.ThetaSummability.Est.integrableOn_exp_logCone (0 : ℝ) (s := c) fun k => by
@@ -27,12 +34,18 @@ theorem cone_exponent_bound_holds : ConeExp := by
 
 def ext {y : ℕ} (t : Fin y → ℝ) (j : ℕ) : ℝ := if h : j < y then t ⟨j, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.range_mono hN) fun j _ hj => by`. Rewrite using `[ext, dif_neg (by simpa using hj), hg], ← Fin.sum_univ_eq_sum_range (fun j => g j (ext t j))]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [ext]`.
+-/
 theorem sum_ext {y N : ℕ} (hN : y ≤ N) (t : Fin y → ℝ) (g : ℕ → ℝ → ℝ) (hg : ∀ j, g j 0 = 0) :
     ∑ j : Fin y, g j (t j) = ∑ j ∈ range N, g j (ext t j) := by
   rw [← Finset.sum_subset (Finset.range_mono hN) fun j _ hj => by
     rw [ext, dif_neg (by simpa using hj), hg], ← Fin.sum_univ_eq_sum_range (fun j => g j (ext t j))]
   exact Finset.sum_congr rfl fun j _ => by simp [ext]
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range g, ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `j`. Simplify using `only [mem_range, mem_filter]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_cut {q N : ℕ} (hN : q ≤ N) (g : ℕ → ℝ) :
     ∑ j : Fin q, g j = ∑ j ∈ range N, if j < q then g j else 0 := by
   rw [Fin.sum_univ_eq_sum_range g, ← Finset.sum_filter]
@@ -41,12 +54,20 @@ theorem sum_cut {q N : ℕ} (hN : q ≤ N) (g : ℕ → ℝ) :
   simp only [mem_range, mem_filter]
   omega
 
+/- English proof (translation)
+Unfold `ext`. Use `split_ifs`. Conclude with `ht.2 _`. Conclude with `le_rfl`.
+-/
 theorem ext_nonneg {y : ℕ} {t : Fin y → ℝ} (ht : t ∈ Cone y) (j : ℕ) : 0 ≤ ext t j := by
   unfold ext
   split_ifs
   · exact ht.2 _
   · exact le_rfl
 
+/- English proof (translation)
+Introduce `i j hij`. Distinguish the cases in `hj : j < y`. Rewrite using `[ext, ext, dif_pos hj, dif_pos (by omega)]`. Conclude with `ht.1 (by simpa [Fin.le_def] using hij)`. Rewrite using `[ext, dif_neg hj]`.
+
+Conclude with `ext_nonneg ht i`.
+-/
 theorem ext_anti {y : ℕ} {t : Fin y → ℝ} (ht : t ∈ Cone y) : Antitone (ext t) := by
   intro i j hij
   by_cases hj : j < y
@@ -55,6 +76,13 @@ theorem ext_anti {y : ℕ} {t : Fin y → ℝ} (ht : t ∈ Cone y) : Antitone (e
   · rw [ext, dif_neg hj]
     exact ext_nonneg ht i
 
+/- English proof (translation)
+Use `cone_exponent_bound_holds r _ fun k hk hkr => ?_` and prove the remaining obligations. Establish `e : psum (fun i : Fin r => a + b * (i.val : ℝ)) k = k * (a + b * ((k : ℝ) - 1) / 2)`. Unfold `psum`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => if j < k then a + b * (j : ℝ) else 0), ← sum_cut hkr (fun j => a + b * (j : ℝ)), Fin.sum_univ_eq_sum_range (fun j => a + b * (j : ℝ))]`. Use `clear h hk hkr`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Finset.sum_range_succ, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_neg_of_pos_of_neg (by exact_mod_cast hk) (h k hk hkr)`.
+-/
 theorem coneAff (r : ℕ) (a b : ℝ) (h : ∀ k : ℕ, 1 ≤ k → k ≤ r → a + b * ((k : ℝ) - 1) / 2 < 0) :
     ∫⁻ t in Cone r, ENNReal.ofReal (Real.exp (∑ i : Fin r, (a + b * (i.val : ℝ)) * t i)) < ⊤ := by
   refine cone_exponent_bound_holds r _ fun k hk hkr => ?_
@@ -69,6 +97,15 @@ theorem coneAff (r : ℕ) (a b : ℝ) (h : ∀ k : ℕ, 1 ≤ k → k ≤ r → 
   rw [e]
   exact mul_neg_of_pos_of_neg (by exact_mod_cast hk) (h k hk hkr)
 
+/- English proof (translation)
+Introduce `n d q y D hD h1 h2`. Prove the components needed by the constructor for the conclusion. Use `lt_of_eq_of_lt (lintegral_congr fun s => ?_) (coneAff q (D * (d / 2 - n + 1)) (2 * D) fun k hk hkq => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `congr 2`.
+
+Simplify using `only [rho2, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Break down `h1 with h1 | h1` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `a1 : (d : ℝ) + 2 * k < 2 * n` using `by exact_mod_cast (by omega : d + 2 * k < 2 * n)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `lt_of_eq_of_lt (lintegral_congr fun s => ?_) (coneAff y (D * (n - d + 1)) (2 * D) fun k hk hkq => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `congr 2`. Simplify using `only [rho2, Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Break down `h2 with h2 | h2` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `a1 : (n : ℝ) + k < d` using `by exact_mod_cast (by omega : n + k < d)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem square_integrable_integral_holds : ConeIntegralsFinite := by
   intro n d q y D hD h1 h2
   constructor
@@ -91,6 +128,11 @@ theorem square_integrable_integral_holds : ConeIntegralsFinite := by
       · have a1 : (n : ℝ) + k < d := by exact_mod_cast (by omega : n + k < d)
         nlinarith
 
+/- English proof (translation)
+Establish `e : ∑ i, ∑ j, 2 * max (s i) (t j) = 2 * y * ∑ i, s i + 2 * q * ∑ j, t j - 2 * ∑ i, ∑ j, min (s i) (t j)`. Establish `: ∀ i j, 2 * max (s i) (t j) = 2 * s i + 2 * t j - 2 * min (s i) (t j)` using `fun i j => by`. Combine the linear relations using `[min_add_max (s i) (t j)]`. Simplify using `only [this, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[posWt, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem posWt_eq (n d : ℕ) {q y : ℕ} (s : Fin q → ℝ) (t : Fin y → ℝ) :
     posWt n d s t = d * ∑ i, s i + n * ∑ j, t j - 2 * ∑ i, ∑ j, min (s i) (t j) := by
   have e : ∑ i, ∑ j, 2 * max (s i) (t j) =
@@ -103,6 +145,13 @@ theorem posWt_eq (n d : ℕ) {q y : ℕ} (s : Fin q → ℝ) (t : Fin y → ℝ)
   rw [posWt, e]
   ring
 
+/- English proof (translation)
+Introduce `n d q y s t hs ht`. Establish `hb : BddAbove (Set.range fun i : Fin (q + 1) => psum s i.val - psum t i.val)` using `(Set.finite_range _).bddAbove`. Use `⟨?_, ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[posWt_eq]`. Establish `: 0 ≤ ∑ i, ∑ j, min (s i) (t j)` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => le_min (hs.2 i) (ht.2 j)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `le_ciSup hb 0` as an intermediate fact. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Simplify using `[psum]`. Use `le_ciSup hb ⟨i, by omega⟩` as an intermediate fact.
+
+Unfold `viol`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem posWt' : PosWt := by
   intro n d q y s t hs ht
   have hb : BddAbove (Set.range fun i : Fin (q + 1) => psum s i.val - psum t i.val) := (Set.finite_range _).bddAbove
@@ -118,6 +167,11 @@ theorem posWt' : PosWt := by
     unfold viol
     linarith
 
+/- English proof (translation)
+Establish `hex : ∃ k, ∀ h : k < q, ¬ P ⟨k, h⟩` using `⟨q, fun h => absurd h (lt_irrefl q)⟩`. Use `⟨Nat.find hex, Nat.find_min' hex fun h => absurd h (lt_irrefl q), fun i => ⟨fun hi => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h' : Nat.find hex ≤ i.val` using `not_lt.1 h`. Conclude with `Nat.find_spec hex (h'.trans_lt i.isLt) (hP _ i h' hi)`.
+
+Use `Nat.find_min hex hi push Not at this` as an intermediate fact. Conclude with `this.2`.
+-/
 theorem exists_initial {q : ℕ} (P : Fin q → Prop) (hP : ∀ i i', i ≤ i' → P i' → P i) :
     ∃ k ≤ q, ∀ i, P i ↔ i.val < k := by
   classical
@@ -130,6 +184,23 @@ theorem exists_initial {q : ℕ} (P : Fin q → Prop) (hP : ∀ i i', i ≤ i' �
     push Not at this
     exact this.2
 
+/- English proof (translation)
+Establish `h1 : ∑ i, ∑ j, min (s i) (s j) - ∑ i, ∑ j, min (s i) (t j) ≤ ∑ j, ∑ i, ((if t j < s i then s i else 0) - if t j < s i then t j else 0)`. Rewrite using `[Finset.sum_comm (f := fun j i => (if t j < s i then s i else 0) - if t j < s i then t j else 0), ← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+
+Use `min_le_left (s i) (s j)` as an intermediate fact. Use `split_ifs with hij`. Rewrite using `[min_eq_right hij.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[min_eq_left (not_lt.1 hij)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∀ j, ∑ i, ((if t j < s i then s i else 0) - if t j < s i then t j else 0) ≤ ∑ i, (if i < j then t i else 0) + δ`. Introduce `j`. Take `⟨k, hk, hP⟩` from `exists_initial (fun i => t j < s i) fun i i' hi h' => h'.trans_le (hs.1 hi)`. Establish `a1` using `h k hk`.
+
+Unfold `psum at a1`. Simplify using `only [hP]`. Rewrite using `[Finset.sum_sub_distrib]`. Establish `a2 : ∑ i : Fin q, (if i.val < k then t i else 0) - ∑ i : Fin q, (if i.val < k then t j else 0) ≤ ∑ i, (if i < j then t i else 0)`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `ht.2 i` as an intermediate fact. Use `ht.2 j` as an intermediate fact. Use `split_ifs with b1 b2 b2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear relations using `[ht.1 (not_lt.1 b2)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `h1.trans ((Finset.sum_le_sum fun j _ => h2 j).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, Finset.filter_lt_eq_Ioi, Fin.card_Ioi, nsmul_eq_mul, Nat.cast_sub (by have := i.isLt; omega), Nat.cast_sub (by have := i.isLt; omega)]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem major_slack {q : ℕ} {s t : Fin q → ℝ} (hs : s ∈ Cone q) (ht : t ∈ Cone q) {δ : ℝ}
     (h : ∀ i ≤ q, psum s i ≤ psum t i + δ) :
     ∑ i, ∑ j, min (s i) (s j) - ∑ i, ∑ j, min (s i) (t j) ≤ ∑ j : Fin q, ((q : ℝ) - 1 - j.val) * t j + q * δ := by
@@ -174,9 +245,17 @@ theorem major_slack {q : ℕ} {s t : Fin q → ℝ} (hs : s ∈ Cone q) (ht : t 
     simp
   · simp
 
+/- English proof (translation)
+Introduce `q s t hs ht h` and use `by simpa using major_slack hs ht (δ := 0) (by simpa using h)`.
+-/
 theorem majorant_inequality_holds : Major := fun q s t hs ht h => by
   simpa using major_slack hs ht (δ := 0) (by simpa using h)
 
+/- English proof (translation)
+Establish `e : ∀ i j, min (s i) (s j) = (if j ≤ i then s i else 0) + if i < j then s j else 0` using `fun i j => by`. Break down `le_or_gt j i with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (not_lt.2 h), add_zero, min_eq_left (hs.1 h)]`. Rewrite using `[if_neg (not_le.2 h), if_pos h, zero_add, min_eq_right (hs.1 h.le)]`. Simplify using `only [e, Finset.sum_add_distrib]`.
+
+Rewrite using `[Finset.sum_comm (f := fun i j => if i < j then s j else 0), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const, Finset.filter_ge_eq_Iic, Finset.filter_gt_eq_Iio, Fin.card_Iic, Fin.card_Iio, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_min_self {q : ℕ} {s : Fin q → ℝ} (hs : s ∈ Cone q) :
     ∑ i, ∑ j, min (s i) (s j) = ∑ i : Fin q, (2 * (i.val : ℝ) + 1) * s i := by
   have e : ∀ i j, min (s i) (s j) = (if j ≤ i then s i else 0) + if i < j then s j else 0 := fun i j => by
@@ -191,6 +270,31 @@ theorem sum_min_self {q : ℕ} {s : Fin q → ℝ} (hs : s ∈ Cone q) :
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `n d q y Y hq hy hY hd`. Use `⟨d + q + 1, fun s hs t ht => ?_⟩` and prove the remaining obligations. Take `⟨-, hδ, hps⟩` from `posWt' n d q y s t hs ht`. Use `set δ := viol s t`. Set `u : Fin q → ℝ` to `fun j => ext t j`.
+
+Establish `hu : u ∈ Cone q` using `⟨fun i j hij => ext_anti ht hij, fun j => ext_nonneg ht j⟩`. Establish `hpu : ∀ k ≤ q, psum t k = psum u k` using `fun k hk => by`. Unfold `psum`. Rewrite using `[sum_ext (Nat.le_add_left y q) t (fun j x => if j < k then x else 0) (by simp), sum_cut (Nat.le_add_right q y) (fun j => if j < k then ext t j else 0)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `h1` using `major_slack hs hu (δ := δ) fun i hi => by rw [← hpu i hi]; exact hps i hi`. Establish `h2 : ∑ i, ∑ j, min (s i) (u j) ≤ ∑ i, ∑ j, min (s i) (t j)`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sum_ext (Nat.le_add_left y q) t (fun _ x => min (s i) x) (fun _ => min_eq_right (hs.2 i)), sum_cut (Nat.le_add_right q y) (fun j => min (s i) (ext t j))]`.
+
+Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `le_min (hs.2 i) (ext_nonneg ht j)`. Establish `h3 : ∑ i, s i ≤ ∑ j, u j + δ`.
+
+Use `hps q le_rfl` as an intermediate fact. Rewrite `this` using `[hpu q le_rfl]`. Simplify `this` using `[psum]`. Establish `hn : 2 * (Y : ℝ) + 2 ≤ n` using `by exact_mod_cast hY`. Establish `hd' : 2 * (n : ℝ) ≤ d` using `by exact_mod_cast hd`.
+
+Establish `hq' : (q : ℝ) ≤ Y` using `by exact_mod_cast hq`. Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Use `set c : ℝ := d / 2 - n + 1 / (4 * (q + 1)) with hc`. Establish `hc1 : 1 / (4 * ((q : ℝ) + 1)) ≤ 1 / 4` using `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Establish `hc2 : 0 ≤ 1 / (4 * ((q : ℝ) + 1))` using `by positivity`.
+
+Establish `h4 : ∑ j : Fin q, (c + ((q : ℝ) - 1 - j.val)) * u j ≤ ∑ j : Fin y, (((d : ℝ) - 2 * j.val - 1) / 2 - n / 2 - 1 / 4) * t j`. Rewrite using `[sum_ext (Nat.le_add_left y q) t (fun j x => (((d : ℝ) - 2 * j - 1) / 2 - n / 2 - 1 / 4) * x) (by simp), sum_cut (Nat.le_add_right q y) (fun j => (c + ((q : ℝ) - 1 - j)) * ext t j)]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `a0` using `ext_nonneg ht j`. Use `split_ifs with hj`.
+
+Conclude with `mul_le_mul_of_nonneg_right (by linarith) a0`. Distinguish the cases in `hjy : j < y`. Establish `: (j : ℝ) + 1 ≤ Y` using `by exact_mod_cast (by omega : j + 1 ≤ Y)`. Conclude with `mul_nonneg (by linarith) a0`. Rewrite using `[ext, dif_neg hjy, mul_zero]`.
+
+Establish `e1 : rho2 n s = n * ∑ i, s i - ∑ i, ∑ j, min (s i) (s j)`. Rewrite using `[sum_min_self hs, rho2, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e2 : ∑ j : Fin y, (((d : ℝ) - 2 * j.val - 1) / 2 - n / 2 - 1 / 4) * t j = rho2 d t / 2 - n / 2 * ∑ j, t j - (∑ j, t j) / 4`. Rewrite using `[rho2, Finset.sum_div, Finset.sum_div, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e3 : ∑ j : Fin q, (c + ((q : ℝ) - 1 - j.val)) * u j = c * ∑ j, u j + ∑ j : Fin q, ((q : ℝ) - 1 - j.val) * u j`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e4 : (∑ i, s i) / (4 * ((q : ℝ) + 1)) = 1 / (4 * ((q : ℝ) + 1)) * ∑ i, s i` using `by ring`.
+
+Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `h5` using `mul_le_mul_of_nonneg_left h3 hc0`. Establish `h6 : c * δ ≤ (d + 1) * δ` using `mul_le_mul_of_nonneg_right (by linarith [Nat.cast_nonneg (α := ℝ) n]) hδ`. Establish `e5 : c * ∑ i, s i = (d / 2 - n) * ∑ i, s i + 1 / (4 * ((q : ℝ) + 1)) * ∑ i, s i` using `by rw [hc]; ring`. Rewrite using `[posWt_eq, e1, e4]`.
+
+Rewrite `h4` using `[e2, e3]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exponent_bound_orthogonal_case : ExpSo := by
   intro n d q y Y hq hy hY hd
   refine ⟨d + q + 1, fun s hs t ht => ?_⟩

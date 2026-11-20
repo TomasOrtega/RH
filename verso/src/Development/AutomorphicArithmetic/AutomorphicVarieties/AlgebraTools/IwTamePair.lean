@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Hecke
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TameParahoricRepSplitsAsProduct
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools GlobalTheory.PRep
 
+/- English proof (translation)
+Establish `hp : ∀ k : ℕ, P * X ^ k = Y ^ k * P`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ← mul_assoc, ih, mul_assoc, h, pow_succ, mul_assoc]`.
+
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, mul_add, add_mul, hp, hq]`. Consider the case `monomial k a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, ← Algebra.smul_def, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, hp]`.
+-/
 private theorem tamePair_aeval_comm {K A : Type} [CommRing K] [Ring A] [Algebra K A]
     (P X Y : A) (h : P * X = Y * P) (p : Polynomial K) :
     P * Polynomial.aeval X p = Polynomial.aeval Y p * P := by
@@ -16,6 +21,19 @@ private theorem tamePair_aeval_comm {K A : Type} [CommRing K] [Ring A] [Algebra 
     rw [Polynomial.aeval_monomial, Polynomial.aeval_monomial, ← Algebra.smul_def,
       ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, hp]
 
+/- English proof (translation)
+Establish `h1` using `tamePair_aeval_comm (K := K) Y (c • P) P hY.symm P.charpoly`. Rewrite `h1` using `[Matrix.aeval_self_charpoly, zero_mul, hP]`. Establish `hu : ∀ i, IsUnit (Polynomial.aeval (c • P) (Polynomial.X - Polynomial.C (a i)))`. Introduce `i`. Establish `e : Polynomial.aeval (c • P) (Polynomial.X - Polynomial.C (a i)) = (-c) • (Matrix.scalar (Fin n) (a i / c) - P)`.
+
+Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Use extensionality with `k l`. Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Simplify using `[Matrix.algebraMap_matrix_apply]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.algebraMap_matrix_apply, hkl]`. Rewrite using `[e, Matrix.isUnit_iff_isUnit_det, Matrix.det_smul, ← Matrix.eval_charpoly, hP, Polynomial.eval_prod, isUnit_iff_ne_zero]`. Use `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr hc)) (Finset.prod_ne_zero_iff.mpr ?_)` and prove the remaining obligations.
+
+Introduce `j _ h`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h`. Apply `ha i j` to reduce the goal to its premises. Rewrite `h` using `[sub_eq_zero, div_eq_iff hc]`. Rewrite using `[h, mul_comm]`.
+
+Establish `hs : ∀ s : Finset (Fin n), IsUnit (Polynomial.aeval (c • P) (∏ i ∈ s, (Polynomial.X - Polynomial.C (a i))))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, map_mul]`.
+
+Conclude with `(hu i).mul ih`. Conclude with `(hs Finset.univ).mul_left_eq_zero.mp h1`.
+-/
 private theorem tamePair_inj {K : Type} [Field K] {n : ℕ} (c : K) (hc : c ≠ 0)
     (P : Matrix (Fin n) (Fin n) K) (a : Fin n → K)
     (hP : P.charpoly = ∏ i, (Polynomial.X - Polynomial.C (a i)))
@@ -51,6 +69,11 @@ private theorem tamePair_inj {K : Type} [Field K] {n : ℕ} (c : K) (hc : c ≠ 
     | insert i s hi ih => rw [Finset.prod_insert hi, map_mul]; exact (hu i).mul ih
   exact (hs Finset.univ).mul_left_eq_zero.mp h1
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ q ih`. Take `⟨r, hr⟩` from `ih`. Use `⟨(q : Polynomial K) + r + Polynomial.X * r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem tamePair_binom {K : Type} [CommRing K] (q : ℕ) :
     ∃ r : Polynomial K, (1 + Polynomial.X) ^ q =
       1 + (q : Polynomial K) * Polynomial.X + Polynomial.X ^ 2 * r := by
@@ -61,6 +84,29 @@ private theorem tamePair_binom {K : Type} [CommRing K] (q : ℕ) :
     refine ⟨(q : Polynomial K) + r + Polynomial.X * r, ?_⟩
     rw [pow_succ, hr]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `tamePair_binom (K := K) q`. Use `set g : Polynomial K := (q : Polynomial K) * Polynomial.X + Polynomial.X ^ 2 * r with hg`. Establish `h1 : P * X = Polynomial.aeval X g * P`. Use `congrArg (Polynomial.aeval X) hr` as an intermediate fact. Rewrite `this` using `[map_pow, map_add, map_one, Polynomial.aeval_X, add_assoc, map_add, map_one, ← hg]`.
+
+Rewrite `h` using `[this, mul_add, add_mul, mul_one, one_mul]`. Conclude with `add_left_cancel h`. Establish `h2 : ∀ p : Polynomial K, P * Polynomial.aeval X p * Q = Polynomial.aeval X (p.comp g)`. Introduce `p`. Rewrite using `[tamePair_aeval_comm P X _ h1, mul_assoc, hPQ, mul_one, Polynomial.aeval_comp]`.
+
+Set `ψ : A →ₗ[K] A` to `(LinearMap.mulRight K Q).comp (LinearMap.mulLeft K P) - (q : K) • LinearMap.id`. Establish `hψ : ∀ Y, ψ Y = P * Y * Q - (q : K) • Y` using `fun _ => rfl`. Establish `hψa : ∀ p : Polynomial K, ψ (Polynomial.aeval X p) = Polynomial.aeval X (p.comp g - (q : Polynomial K) * p)`. Introduce `p`. Rewrite using `[hψ, h2, map_sub, map_mul, map_natCast, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+
+Establish `hψi : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `Y hY`. Apply `hinj` to reduce the goal to its premises. Rewrite `hY` using `[hψ, sub_eq_zero]`.
+
+Rewrite using `[mul_smul_comm, ← smul_mul_assoc, ← hY, mul_assoc, hQP, mul_one]`. Set `L : Polynomial K →ₗ[K] A` to `(Polynomial.aeval X).toLinearMap.comp (LinearMap.mulLeft K (Polynomial.X ^ 2))`. Establish `hL : ∀ p, L p = Polynomial.aeval X (Polynomial.X ^ 2 * p)` using `fun _ => rfl`. Establish `hW : ∀ Y ∈ LinearMap.range L, ψ Y ∈ LinearMap.range L`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Use `⟨((q : Polynomial K) + Polynomial.X * r) ^ 2 * p.comp g - (q : Polynomial K) * p, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, hL, hψa]`. Use `congr 1`. Rewrite using `[Polynomial.mul_comp, Polynomial.pow_comp, Polynomial.X_comp]`. Generalize the expression as in `p.comp g = t`.
+
+Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsurj : Function.Surjective (ψ.restrict hW)`. Apply `LinearMap.injective_iff_surjective.mp` to reduce the goal to its premises. Introduce `x y hxy`.
+
+Conclude with `Subtype.ext (hψi (congrArg Subtype.val hxy))`. Establish `hXW : ψ X ∈ LinearMap.range L`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use `hψa Polynomial.X` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_X]`.
+
+Rewrite using `[this, hL, Polynomial.X_comp]`. Use `congr 1`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨_, p, rfl⟩, hw⟩` from `hsurj ⟨_, hXW⟩`.
+
+Establish `h3 : L p = X` using `hψi (congrArg Subtype.val hw)`. Rewrite `h3` using `[hL, map_mul, map_pow, Polynomial.aeval_X]`. Establish `hc : Commute X (Polynomial.aeval X p)` using `tamePair_aeval_comm X X X rfl p`. Establish `hn : IsNilpotent (X * Polynomial.aeval X p)` using `hc.isNilpotent_mul_right hX`. Establish `h4 : X * (1 - X * Polynomial.aeval X p) = 0`.
+
+Rewrite using `[mul_sub, mul_one, ← mul_assoc, ← pow_two, h3, sub_self]`. Conclude with `hn.isUnit_one_sub.mul_left_eq_zero.mp h4`.
+-/
 private theorem tamePair_nil {K A : Type} [Field K] [Ring A] [Algebra K A]
     [FiniteDimensional K A] (q : ℕ) (P Q X : A) (hPQ : P * Q = 1) (hQP : Q * P = 1)
     (hinj : ∀ Y : A, P * Y = Y * ((q : K) • P) → Y = 0)
@@ -118,6 +164,13 @@ private theorem tamePair_nil {K A : Type} [Field K] [Ring A] [Algebra K A]
     rw [mul_sub, mul_one, ← mul_assoc, ← pow_two, h3, sub_self]
   exact hn.isUnit_one_sub.mul_left_eq_zero.mp h4
 
+/- English proof (translation)
+Introduce `K _ _ n q P T a hq hPT hP ha hN`. Establish `hq0 : (q : K) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `h1 : P * T ^ (q - 1) = (T ^ (q - 1)) ^ q * P`. Rewrite using `[← pow_mul, mul_comm (q - 1) q, pow_mul, ← hPT, conj_pow, inv_mul_cancel_right]`. Establish `h2` using `tamePair_nil (K := K) q (P : Matrix (Fin n) (Fin n) K) ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) _ (Units.mul_inv P) (Units.inv_mul P) (tamePair_inj (q : K) hq0 _ a hP ha) hN (by`.
+
+Rewrite using `[add_sub_cancel, ← Units.val_mul, h1, Units.val_mul, Units.val_pow_eq_pow_val _ q])`. Establish `h3 : T ^ (q - 1) = 1` using `Units.ext (sub_eq_zero.mp h2)`. Use `⟨h3, ?_⟩` and prove the remaining obligations. Establish `h4 : T ^ q = T`. Take `⟨k, rfl⟩ : ∃ k, q = k + 1` from `⟨q - 1, by omega⟩`.
+
+Rewrite `h3` using `[Nat.add_sub_cancel]`. Rewrite using `[pow_succ, h3, one_mul]`. Rewrite `hPT` using `[h4]`. Conclude with `mul_inv_eq_iff_eq_mul.mp hPT`.
+-/
 theorem UpperTheory.V.AlgebraTools.tamePair :
     ∀ (K : Type) [Field K] [CharZero K] (n q : ℕ) (P T : GL (Fin n) K) (a : Fin n → K), 2 ≤ q → P * T * P⁻¹ = T ^ q → (P : Matrix (Fin n) (Fin n) K).charpoly = ∏ i, (Polynomial.X - Polynomial.C (a i)) → (∀ i j, a i ≠ (q : K) * a j) → IsNilpotent (((T ^ (q - 1) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1) → T ^ (q - 1) = 1 ∧ P * T = T * P := by
   intro K _ _ n q P T a hq hPT hP ha hN

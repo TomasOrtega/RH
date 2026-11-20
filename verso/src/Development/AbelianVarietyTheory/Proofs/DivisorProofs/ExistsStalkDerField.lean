@@ -33,15 +33,32 @@ variable {X Y Z : Scheme.{0}}
 def gsH (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : Γ(X, U) →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ (r ⁻¹ᵁ U) z h).hom.comp (r.app U).hom
 
+/- English proof (translation)
+The claim follows from `gs_eq r z U h f`.
+-/
 theorem gs_eq_gsH (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (f : Γ(X, U)) : gs r z U f = gsH r z U h f :=
   gs_eq r z U h f
 
 def cstH {S : Type} [CommRing S] (q : Z ⟶ Sp S) (z : Z) : S →+* Z.presheaf.stalk z :=
   (gsH q z ⊤ trivial).comp (Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom
 
+/- English proof (translation)
+The claim follows from `gs_eq q z ⊤ trivial _`.
+-/
 theorem cst_eq_cstH {S : Type} [CommRing S] (q : Z ⟶ Sp S) (z : Z) (a : S) : cst q z a = cstH q z a :=
   gs_eq q z ⊤ trivial _
 
+/- English proof (translation)
+Establish `loc : ∀ W W', W ≤ W₀ → W' ≤ W₀ → s z ∈ W → s z ∈ W' → ∀ f f', gs (𝟙 X) (s z) W f = gs (𝟙 X) (s z) W' f' → E W f = E W' f'`. Introduce `W W' hW hW' m m' f f' e`. Rewrite `e` using `[gs_eq (𝟙 X) (s z) W m, gs_eq (𝟙 X) (s z) W' m']`. Take `⟨U, hU, i, i', e'⟩` from `X.presheaf.germ_eq (U := W) (V := W') (s z) m m' f f' e`. Rewrite using `[← hres W U i.le hW hU, ← hres W' U i'.le hW' hU]`.
+
+Conclude with `congrArg (E U) e'`. Establish `ex : ∀ x : X.presheaf.stalk (s z), ∃ (W : X.Opens) (f : Γ(X, W)), W ≤ W₀ ∧ s z ∈ W ∧ gs (𝟙 X) (s z) W f = x`. Introduce `x`. Take `⟨U, m, f, e⟩` from `X.presheaf.germ_exist x`. Use `⟨U ⊓ W₀, resG X inf_le_left f, inf_le_right, ⟨m, h₀⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[gs_res (𝟙 X) (s z) inf_le_left ⟨m, h₀⟩, gs_eq (𝟙 X) (s z) U m]`. Conclude with `e`. Establish `ex₂ : ∀ x y : X.presheaf.stalk (s z), ∃ (W : X.Opens) (f g : Γ(X, W)), W ≤ W₀ ∧ s z ∈ W ∧ gs (𝟙 X) (s z) W f = x ∧ gs (𝟙 X) (s z) W g = y`. Introduce `x y`. Take `⟨W, f, h₁, m, e⟩` from `ex x`.
+
+Take `⟨W', g, -, m', e'⟩` from `ex y`. Conclude with `⟨W ⊓ W', resG X inf_le_left f, resG X inf_le_right g, inf_le_left.trans h₁, ⟨m, m'⟩, (gs_res (𝟙 X) (s z) inf_le_left ⟨m, m'⟩ _).trans e, (gs_res (𝟙 X) (s z) inf_le_right ⟨m, m'⟩ _).trans e'⟩`. Use `choose U g hU mU eU using ex`. Establish `key : ∀ W, W ≤ W₀ → s z ∈ W → ∀ f, E (U (gs (𝟙 X) (s z) W f)) (g _) = E W f` using `fun W hW m f => loc _ _ (hU _) hW (mU _) m _ _ (eU _)`. Use `⟨fun x => E (U x) (g x), fun x y => ?_, fun x y => ?_, key⟩` and prove the remaining obligations.
+
+Take `⟨W, f, f', hW, m, rfl, rfl⟩` from `ex₂ x y beta_reduce`. Rewrite using `[← gs_add (𝟙 X) (s z) W m, key W hW m, key W hW m, key W hW m, hadd W hW m]`. Take `⟨W, f, f', hW, m, rfl, rfl⟩` from `ex₂ x y beta_reduce`. Rewrite using `[← gs_mul (𝟙 X) (s z) W m, key W hW m, key W hW m, key W hW m, hmul W hW m, ← gs_stalkMap s z W m, ← gs_stalkMap s z W m]`.
+-/
 theorem exists_stalkDer (s : Z ⟶ X) (z : Z) (W₀ : X.Opens) (h₀ : s z ∈ W₀)
     (E : ∀ W : X.Opens, Γ(X, W) → Z.presheaf.stalk z)
     (hadd : ∀ W, W ≤ W₀ → s z ∈ W → ∀ f f', E W (f + f') = E W f + E W f')
@@ -82,6 +99,9 @@ theorem exists_stalkDer (s : Z ⟶ X) (z : Z) (W₀ : X.Opens) (h₀ : s z ∈ W
     rw [← gs_mul (𝟙 X) (s z) W m, key W hW m, key W hW m, key W hW m, hmul W hW m, ← gs_stalkMap s z W m,
       ← gs_stalkMap s z W m]
 
+/- English proof (translation)
+The claim follows from `exists_stalkDer a z W₀ h₀ (fun W f => gs a z W (d W f)) (fun W hW m f f' => by rw [hd.1 W hW, gs_add a z W m]) (fun W hW m f f' => by rw [hd.2.1 W hW, gs_add a z W m, gs_mul a z W m, gs_mul a z W m]) (fun W W' h hW m f => by rw [hd.2.2 W W' h hW]; exact gs_res a z h m _)`.
+-/
 theorem exists_stalkDer_field {W₀ : X.Opens} {d : Fld X} (hd : IsField W₀ d) (a : Z ⟶ X) (z : Z) (h₀ : a z ∈ W₀) :
     ∃ δ : X.presheaf.stalk (a z) → Z.presheaf.stalk z, (∀ x y, δ (x + y) = δ x + δ y) ∧
       (∀ x y, δ (x * y) = (a.stalkMap z).hom x * δ y + (a.stalkMap z).hom y * δ x) ∧
@@ -91,6 +111,11 @@ theorem exists_stalkDer_field {W₀ : X.Opens} {d : Fld X} (hd : IsField W₀ d)
     (fun W hW m f f' => by rw [hd.2.1 W hW, gs_add a z W m, gs_mul a z W m, gs_mul a z W m])
     (fun W W' h hW m f => by rw [hd.2.2 W W' h hW]; exact gs_res a z h m _)
 
+/- English proof (translation)
+Take `⟨δ, h₁, h₂, h₃⟩` from `exists_stalkDer (b ≫ m) z ⊤ trivial (fun W f => gs b z (m ⁻¹ᵁ W) (d W f)) (fun W hW h f f' => by rw [hd.add W hW, gs_add b z (m ⁻¹ᵁ W) h]) (fun W hW h f f' => by`. Rewrite using `[hd.mul W hW, gs_add b z (m ⁻¹ᵁ W) h, gs_mul b z (m ⁻¹ᵁ W) h, gs_mul b z (m ⁻¹ᵁ W) h, gs_pull b m z W h, gs_pull b m z W h])`. Use the proof step `(fun W W' h hW h' f => by`. Rewrite using `[hd.res W W' h hW]`. Conclude with `gs_rsT b z (O := m ⁻¹ᵁ W') (fun _ hy => h hy) h' _)`.
+
+Conclude with `⟨δ, h₁, h₂, fun W => h₃ W le_top⟩`.
+-/
 theorem exists_stalkDer_along {R K : Type} [CommRing R] [Field K] {q : Y ⟶ Sp K} {p : X ⟶ Sp R} {m : Y ⟶ X} {D : R → K}
     {d : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)} (hd : GlobalTheory.KS.LocDerK q p m D ⊤ d) (b : Z ⟶ Y) (z : Z) :
     ∃ δ : X.presheaf.stalk ((b ≫ m) z) → Z.presheaf.stalk z, (∀ x y, δ (x + y) = δ x + δ y) ∧
@@ -105,6 +130,11 @@ theorem exists_stalkDer_along {R K : Type} [CommRing R] [Field K] {q : Y ⟶ Sp 
       rw [hd.res W W' h hW]; exact gs_rsT b z (O := m ⁻¹ᵁ W') (fun _ hy => h hy) h' _)
   exact ⟨δ, h₁, h₂, fun W => h₃ W le_top⟩
 
+/- English proof (translation)
+Use `⟨MonoidHom.mk' (fun u => Multiplicative.ofAdd (π (u⁻¹).val * δ u.val)) fun u v => (congrArg Multiplicative.ofAdd ?_).trans (ofAdd_add _ _), fun u => ?_⟩` and prove the remaining obligations. Establish `hu : π u.val * π (u⁻¹).val = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hv : π v.val * π (v⁻¹).val = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Rewrite using `[Units.val_mul, hδ, mul_inv, Units.val_mul, π.map_mul]`. Take the linear combination `(π (v⁻¹).val * δ v.val) * hu + (π (u⁻¹).val * δ u.val) * hv`.
+
+Establish `hu : π u.val * π (u⁻¹).val = 1` using `by rw [← map_mul, Units.mul_inv, map_one] show δ u.val = π u.val * (π (u⁻¹).val * δ u.val)`. Rewrite using `[← _root_.mul_assoc, hu, _root_.one_mul]`.
+-/
 theorem exists_dlog {A B : Type} [CommRing A] [CommRing B] (π : A →+* B) (δ : A → B)
     (hδ : ∀ x y, δ (x * y) = π x * δ y + π y * δ x) :
     ∃ l : Aˣ →* Multiplicative B, ∀ u : Aˣ, δ u.val = π u.val * (l u).toAdd := by
@@ -130,6 +160,13 @@ def dE (i : h.J) : Fld G.left := fun O f =>
 
 def pE (i : h.J) : Γ(G.left, h.W i) := h.p i + constFn G.hom (h.W i) ν * h.p' i
 
+/- English proof (translation)
+Establish `h₀` using `(h.lift i).1`. Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' hWW hW f => ?_⟩` and prove the remaining obligations. Simplify using `only [dE, h₀.1 W hW, fun a => (hdd a).1 W le_top, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∑ a, constFn G.hom W (h.u a) * dd a W (f * f') = f * ∑ a, constFn G.hom W (h.u a) * dd a W f' + f' * ∑ a, constFn G.hom W (h.u a) * dd a W f`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[(hdd a).2.1 W le_top]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dE, h₀.2.1 W hW, e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dE, h₀.2.2 W W' hWW hW, fun a => (hdd a).2.2 W W' hWW le_top, map_add, map_sum, map_mul, GlobalTheory.KS.GlueDer.res_const]`.
+-/
 theorem isField_dE (hdd : ∀ a, IsField ⊤ (dd a)) (i : h.J) : IsField (h.W i) (dE h ν i) := by
   have h₀ := (h.lift i).1
   refine ⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' hWW hW f => ?_⟩
@@ -145,6 +182,11 @@ theorem isField_dE (hdd : ∀ a, IsField ⊤ (dd a)) (i : h.J) : IsField (h.W i)
   · simp only [dE, h₀.2.2 W W' hWW hW, fun a => (hdd a).2.2 W W' hWW le_top, map_add, map_sum, map_mul,
       GlobalTheory.KS.GlueDer.res_const]
 
+/- English proof (translation)
+Establish `h1 : π (constFn G.hom O ν) * (e : A) = 1`. Establish `: constFn G.hom O ν * (e : Γ(G.left, O)) = 1`. Unfold `constFn`. Rewrite using `[← map_natCast (G.hom.appLE ⊤ O (fun _ _ => trivial)).hom, ← map_natCast (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom, ← map_mul, ← map_mul, hν, map_one, map_one]`. Simplify using `using congrArg π this`.
+
+Simplify using `only [op, dE, pE, GlobalTheory.KS.GlueDer.rsT_eq hO, map_add, map_sub, map_mul, map_sum, hΘ, zero_mul, Finset.sum_const_zero, sub_zero, map_ofNat, map_natCast, map_pow, GlobalTheory.KS.GlueDer.res_const]`. Take the linear combination `(-2 * ∑ a, π (constFn G.hom O (h.u a)) * π (dd a O f) - 2 * (e : A) * π (resG G.left hO (h.p' i)) * π f) * h1`.
+-/
 theorem map_op (e : ℕ) (hν : ν * e = 1) (i : h.J) (O : G.left.Opens) (hO : O ≤ h.W i) {A : Type} [CommRing A]
     (π : Γ(G.left, O) →+* A) (hΘ : ∀ a b, π (constFn G.hom O (h.Θ a b)) = 0) (f : Γ(G.left, O)) :
     π (op G dd h.Θ h.u (h.d i) (h.p i) (h.p' i) e O f) =
@@ -168,6 +210,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRin
   {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D)
   {K : Type} [Field K]
 
+/- English proof (translation)
+Use `Q.P.isAb.comm` as an intermediate fact. Use `fin_cases k`. Express the relevant statement in the definitionally equal form `(padd Q.P.A (toUnit _ ≫ Q.c α) Y.q).left = Y.q.left ≫ (padd Q.P.A (𝟙 Q.P.A) (toUnit _ ≫ Q.c α)).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `(toUnit _ ≫ Q.c α) * Y.q = Y.q ≫ (𝟙 Q.P.A * (toUnit _ ≫ Q.c α))`. Rewrite using `[MonObj.comp_mul, Category.comp_id, _root_.mul_comm, ← Category.assoc, comp_toUnit]`. Express the relevant statement in the definitionally equal form `(toUnit Y.H ≫ Q.c α).left = Y.q.left ≫ (toUnit Q.P.A ≫ Q.c α).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`. Conclude with `(Category.comp_id _).symm`.
+
+Express the relevant statement in the definitionally equal form `(toUnit Y.H ≫ η[Q.P.A]).left = Y.q.left ≫ (toUnit Q.P.A ≫ η[Q.P.A]).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`.
+-/
 theorem gtφT_eq (α : Q.X) (k : Fin 4) :
     DegPre.gtφT Q Y.H (Y.Φ Y.H (𝟙 _)).b α k = Y.q.left ≫ Q.famφB α (![1, 2, 0, 3] k) := by
   have := Q.P.isAb.comm
@@ -235,6 +284,11 @@ def CoordEq (α : Q.X) (c : K) : Prop :=
     ∀ (Z : Scheme.{0}) (a : Z ⟶ Y.H.left) (b : Z ⟶ A₀.left), a ≫ Y.q.left = b ≫ m₀ → ∀ (z : Z) (i : Fin 4 → h.J),
       (∀ j, (b ≫ T j ≫ m₀) z ∈ V (i j)) → CoordAt Y h ν m₀ V pb α i T a b z (cst (b ≫ A₀.hom) z c)
 
+/- English proof (translation)
+Use `Y.smooth_q` as an intermediate fact. Use `(AbConst.surjective_q Y).1` as an intermediate fact. Use `FunDescent.app_injective (pullback.snd Y.q.left m₀) U (fn_ext fun z hz => ?_)` and prove the remaining obligations. Establish `e` using `H _ _ _ pullback.condition z hz`. Rewrite using `[gs_pull (𝟙 _) _ z U hz, gs_pull (𝟙 _) _ z U hz, Category.id_comp]`.
+
+Conclude with `e`.
+-/
 theorem ext_lift {U : A₀.left.Opens} {f g : Γ(A₀.left, U)}
     (H : ∀ (Z : Scheme.{0}) (a : Z ⟶ Y.H.left) (b : Z ⟶ A₀.left), a ≫ Y.q.left = b ≫ m₀ → ∀ z : Z, b z ∈ U →
       gs b z U f = gs b z U g) : f = g := by
@@ -248,6 +302,9 @@ theorem ext_lift {U : A₀.left.Opens} {f g : Γ(A₀.left, U)}
 variable {Y h ν m₀} {φ : R →+* K} {e : ℕ} [GrpObj A₀] (hF : IsFibre Y h φ e ν A₀ m₀)
 include hF
 
+/- English proof (translation)
+Establish `e₁ : a ≫ Y.H.hom = (b ≫ A₀.hom) ≫ spMap φ`. Rewrite using `[← Over.w Y.q, reassoc_of% w, hF.pull.1.w, Category.assoc]`. Rewrite using `[gs_constFn _ _ _ _ hz, e₁, cst, cst, ← gs_pull _ (spMap φ) z ⊤ trivial]`. Conclude with `congrArg (gs _ z ⊤) (congrArg (fun ψ => ψ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`.
+-/
 theorem IsFibre.gs_const {Z : Scheme.{0}} {a : Z ⟶ Y.H.left} {b : Z ⟶ A₀.left} (w : a ≫ Y.q.left = b ≫ m₀) (z : Z)
     (U : Y.H.left.Opens) (hz : a z ∈ U) (r : R) : gs a z U (constFn Y.H.hom U r) = cst (b ≫ A₀.hom) z (φ r) := by
   have e₁ : a ≫ Y.H.hom = (b ≫ A₀.hom) ≫ spMap φ := by
@@ -255,6 +312,9 @@ theorem IsFibre.gs_const {Z : Scheme.{0}} {a : Z ⟶ Y.H.left} {b : Z ⟶ A₀.l
   rw [gs_constFn _ _ _ _ hz, e₁, cst, cst, ← gs_pull _ (spMap φ) z ⊤ trivial]
   exact congrArg (gs _ z ⊤) (congrArg (fun ψ => ψ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm
 
+/- English proof (translation)
+Establish `P` using `hF.pull.1`. Establish `w : ∀ j, (m₀ ≫ Q.famφB α j) ≫ Q.P.A.hom = A₀.hom ≫ spMap φ` using `fun j => by`. Establish `: Q.famφB α j ≫ Q.P.A.hom = Q.P.A.hom` using `by fin_cases j exacts [Category.id_comp _, Over.w _, Over.w _, Over.w _]`. Rewrite using `[Category.assoc, this, P.w]`. Conclude with `⟨fun j => P.lift _ _ (w j), fun j => P.lift_fst _ _ _, fun j => P.lift_snd _ _ _⟩`.
+-/
 theorem IsFibre.exists_strictHenselian_absolutely_closed_local_ring (α : Q.X) : ∃ T : Fin 4 → (A₀.left ⟶ A₀.left),
     (∀ j, T j ≫ m₀ = m₀ ≫ Q.famφB α j) ∧ ∀ j, T j ≫ A₀.hom = A₀.hom := by
   have P := hF.pull.1
@@ -265,6 +325,9 @@ theorem IsFibre.exists_strictHenselian_absolutely_closed_local_ring (α : Q.X) :
     rw [Category.assoc, this, P.w]
   exact ⟨fun j => P.lift _ _ (w j), fun j => P.lift_fst _ _ _, fun j => P.lift_snd _ _ _⟩
 
+/- English proof (translation)
+Use `AbConst.lift_agree h hF.field i i' U hU (gsH a z U hz) (by simpa only [map_ofNat] using (two_ne_zero (α := K)).isUnit.map (cstH (b ≫ A₀.hom) z)) (fun a' b' => by rw [← gs_eq_gsH, hF.gs_const w z U hz, hF.symb, cst_eq_cstH, map_zero]) f` as an intermediate fact. Simplify using `only [gs_eq_gsH a z U hz, dE, map_add, this]`.
+-/
 theorem IsFibre.dE_agree [CharZero K] {Z : Scheme.{0}} {a : Z ⟶ Y.H.left} {b : Z ⟶ A₀.left}
     (w : a ≫ Y.q.left = b ≫ m₀) (z : Z) (i i' : h.J) (U : Y.H.left.Opens) (hU : U ≤ h.W i ⊓ h.W i') (hz : a z ∈ U)
     (f : Γ(Y.H.left, U)) : gs a z U (dE h ν i U f) = gs a z U (dE h ν i' U f) := by
@@ -273,6 +336,9 @@ theorem IsFibre.dE_agree [CharZero K] {Z : Scheme.{0}} {a : Z ⟶ Y.H.left} {b :
     (fun a' b' => by rw [← gs_eq_gsH, hF.gs_const w z U hz, hF.symb, cst_eq_cstH, map_zero]) f
   simp only [gs_eq_gsH a z U hz, dE, map_add, this]
 
+/- English proof (translation)
+The claim follows from `hF.pull.1.hom_ext (h₁.trans ((Category.comp_id _).trans (Category.id_comp _).symm)) (h₂.trans (Category.id_comp _).symm)`.
+-/
 theorem IsFibre.T_zero {α : Q.X} {T : A₀.left ⟶ A₀.left} (h₁ : T ≫ m₀ = m₀ ≫ Q.famφB α 0) (h₂ : T ≫ A₀.hom = A₀.hom) :
     T = 𝟙 _ :=
   hF.pull.1.hom_ext (h₁.trans ((Category.comp_id _).trans (Category.id_comp _).symm))
@@ -280,6 +346,11 @@ theorem IsFibre.T_zero {α : Q.X} {T : A₀.left ⟶ A₀.left} (h₁ : T ≫ m�
 
 variable {V ed pb}
 
+/- English proof (translation)
+Establish `e : ∀ j, b ≫ T j ≫ m₀ = a ≫ Y.q.left ≫ Q.famφB α j` using `fun j => by rw [h₁, reassoc_of% w]`. Use `⟨?_, Set.mem_iInter.2 fun k => ?_⟩` and prove the remaining obligations. Use `hi 0` as an intermediate fact. Rewrite `this` using `[e, show Q.famφB α 0 = 𝟙 _ from rfl, Category.comp_id]`. Rewrite using `[hD.1]`.
+
+Conclude with `this`. Use `hV _ (hi (![1, 2, 0, 3] k))` as an intermediate fact. Rewrite `this` using `[e, ← gtφT_eq]`. Conclude with `this`.
+-/
 theorem IsFibre.mem_chart (hD : IsDesc Y h ν m₀ V ed pb) (hV : ∀ i, V i ≤ Q.P.L.U (h.j i)) {α : Q.X}
     {T : Fin 4 → (A₀.left ⟶ A₀.left)} (h₁ : ∀ j, T j ≫ m₀ = m₀ ≫ Q.famφB α j) {Z : Scheme.{0}} {a : Z ⟶ Y.H.left}
     {b : Z ⟶ A₀.left} (w : a ≫ Y.q.left = b ≫ m₀) {z : Z} {i : Fin 4 → h.J} (hi : ∀ j, (b ≫ T j ≫ m₀) z ∈ V (i j)) :

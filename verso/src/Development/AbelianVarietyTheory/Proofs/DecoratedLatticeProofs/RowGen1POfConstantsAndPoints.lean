@@ -29,6 +29,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.One
 
+/- English proof (translation)
+Introduce `hSW hLine hInt hSep hPts hN1 hTie hCh hPin hThm`. Establish `hEq : CorankOneIsEquivalenceOnRow` using `corankOne_isEquivalence_nonzeroGram_terms`. Establish `hFam : FamGen1` using `famGen1 hEq`. Establish `hStepFam : StepFam1` using `stepFam1_of (fun D hk => GlobalTheory.localMass_le_genericMass_nine D.R.k D.R.rS hk) GlobalTheory.HTieLeaf.main hFam GlobalTheory.SnFam.familyRowWeightSumUnfoldingIdentity_proof (GlobalTheory.WeightsFamPf.weightsFam_of hSW) GlobalTheory.FamilyNormRational.familyGroupSumFactorsRow …`. Establish `hLoc : StepLoc1` using `stepLoc1_of_fam (fun D => ((GlobalTheory.local_nongeneric_bound_record_family 39 le_rfl).2.1 D).1) hStepFam`.
+
+Establish `hNml : StepNormals1` using `GlobalTheory.Core.One.stepNormals1_of hEq hLine hInt hSep Formalism.L2.SG.NGCut.NormalCount.NormCount_holds hN1`. Establish `hVan : StepTermVanishG` using `Formalism.L2.SG.Pf.MainEqVanish.stepTermVanishG_of_form (Formalism.L2.SG.Pf.formGC_of_rel Formalism.L2.SG.Pf.formRelC_holds)`. Conclude with `rowGen1P_of_steps Formalism.FourierDecayAlt.P.norm_chain (stepClass1_of hEq) hNml hPts hN1 hTie hCh hPin hVan hLoc hThm`.
+-/
 theorem rowGen1P_of_siegelWeil_of_points : PI.VolStabS.MassDataS.SWXS → Formalism.L2.SG.NGCut.NormalVectorPairings.NmlLine →
     Formalism.L2.SG.NGCut.NormalVectorPairings.NmlInt → Formalism.L2.SG.NGCut.NormalVectorPairings.NmlSep → StepPointsG → StepNormOneG → TieOfCtx →
     StepChoiceConstantsC → StepPinExists → GlobalTheory.SnPos.StepThmBGP → RowGen1P := by

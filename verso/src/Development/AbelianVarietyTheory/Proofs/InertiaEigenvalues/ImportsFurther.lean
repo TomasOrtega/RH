@@ -2,6 +2,19 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.SmulMemRatF
 
 namespace GlobalTheory.ScalarMultipleMembership
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `M.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem a hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨n, d, hd, hc⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers Ks) c`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hd1 : algebraMap (NumberField.RingOfIntegers Ks) Ks d ≠ 0`. Introduce `h`. Conclude with `hd0 (IsFractionRing.injective (NumberField.RingOfIntegers Ks) Ks (by simpa using h))`.
+
+Use `⟨a * d, mul_ne_zero ha hd0, ?_⟩` and prove the remaining obligations. Establish `key : (a * d) • c • y = n • a • y`. Rewrite using `[← algebraMap_smul Ks (a * d), ← algebraMap_smul Ks n, ← algebraMap_smul Ks a, smul_smul, smul_smul, ← hc, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[key]`. Conclude with `M.smul_mem n hay`.
+-/
 theorem exists_smul_mem {Ks WL : Type} [Field Ks] [NumberField Ks] [AddCommGroup WL] [Module Ks WL]
     [Module (NumberField.RingOfIntegers Ks) WL]
     [IsScalarTower (NumberField.RingOfIntegers Ks) Ks WL]
@@ -35,6 +48,9 @@ theorem exists_smul_mem {Ks WL : Type} [Field Ks] [NumberField Ks] [AddCommGroup
     rw [key]
     exact M.smul_mem n hay
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[← h]`. Conclude with `exists_smul_mem _ x hx`.
+-/
 theorem main {LL Ks WL G : Type} [inst : Field LL] [NumberField LL] [inst_2 : Field Ks] [inst_3 : NumberField Ks] [inst_4 : Algebra Ks LL] [inst_5 : AddCommGroup WL] [inst_6 : Module LL WL] [inst_7 : Module Ks WL] [IsScalarTower Ks LL WL] [inst_9 : Module (NumberField.RingOfIntegers Ks) WL] [inst_10 : IsScalarTower (NumberField.RingOfIntegers Ks) Ks WL] {W : (LL →+* ℂ) → Type} [inst_11 : (σ : LL →+* ℂ) → NormedAddCommGroup (W σ)] [inst_12 : (σ : LL →+* ℂ) → InnerProductSpace ℂ (W σ)] [inst_13 : Group G] (Φ : Formalism.IndefR.Arith.FormsL LL Ks WL W G)
     (h : Submodule.span Ks (↑(Formalism.IndefR.Arith.FormsL.MK Φ) : Set WL) = Formalism.IndefR.Arith.FormsL.WK Φ) :
     ∀ x ∈ Formalism.IndefR.Arith.FormsL.WK Φ, ∃ (a : NumberField.RingOfIntegers Ks), a ≠ (0 : NumberField.RingOfIntegers Ks) ∧ a • x ∈ Formalism.IndefR.Arith.FormsL.MK Φ := by

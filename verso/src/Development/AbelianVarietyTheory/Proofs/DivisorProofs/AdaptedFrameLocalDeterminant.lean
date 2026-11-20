@@ -22,6 +22,17 @@ open GlobalTheory.Div.CoordOpp (piW_cA incM_map_piW unit_map)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 variable {B : Base F E} {d m r s i₀ i₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E m} {H : Plane E d m}
 
+/- English proof (translation)
+Establish `hG` using `gram_frame_map hB hW hA t`. Establish `hΓ` using `gram_inv (Matrix.nonsing_inv_mul _ hJ)`. Use `set P := frame H.x H.ι H.y with hP`. Generalize the expression as in `fromBlocks _ _ _ _ = Γ' at hΓ`. Establish `hc : IsUnit ((P.map t).submatrix id e.symm)`.
+
+Rewrite using `[← Matrix.isUnit_transpose]`. Use `IsUnit.of_mul_eq_one ((W.J.map t * P.map (t.comp σ) * Γ').submatrix id e.symm) ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_submatrix, ← Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hG, mul_eq_one_comm.1 hΓ, Matrix.submatrix_one_equiv]`. Use `⟨hc, fun u => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, hu⟩` from `GlobalTheory.SkewSplitSurj.exists_locMat_eq F E σ B d W r s hB hW v t hc.unit u`.
+
+Use `⟨h, hh, hu, fun N hN h1 h2 => ?_⟩` and prove the remaining obligations. Establish `a1 : (mat h).map (piW t) * P.map t = P.map t * u.val.submatrix e e`. Establish `b1 : (mat h).map (piW t) * hc.unit.val = hc.unit.val * u.val`. Rewrite using `[← hu, locMat_val, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `b2 : P.map t = hc.unit.val.submatrix id e` using `by simp`.
+
+Rewrite using `[b2, Matrix.submatrix_mul_equiv, ← b1]`. Both sides reduce to the same expression. Establish `a2` using `adj_intertwine e hG hΓ (N₀ := (u⁻¹).val.submatrix e e) (by rw [Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]) (unit_map σ h t) a1 h2`. Establish `a3 : frame (incV F H.x) (incM F H.ι) (incV F H.y) = incM F P`. Apply the tactic sequence `ext r (j | j | j) <;> rfl`.
+
+Rewrite using `[a3]`. Conclude with `adelic_intertwine hB.cm t hh hN (by rw [h1]; exact a1) a2`.
+-/
 theorem exists_basis_of_unit (hB : B.IsGood σ) (hW : W.IsSkew σ B r s) (hA : H.IsAdapted σ B W W₁ i₀ i₁)
     (e : Fin 1 ⊕ Fin m ⊕ Fin 1 ≃ Fin d) (t : E →ₐ[F] Fv F v) (hJ : IsUnit (W₁.J.map t).det) :
     ∃ hc : IsUnit (((frame H.x H.ι H.y).map t).submatrix id e.symm), ∀ u : GL (Fin d) (Fv F v),
@@ -60,6 +71,17 @@ end GlobalTheory.LineFrame
 
 open GlobalTheory.JacGeom GlobalTheory.SplitGLLift GlobalTheory.KSplit in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d m r s i₀ i₁ W W₁ H hB hW hA _ hJ0 v t u X Y hu`. Establish `hJ : IsUnit (W₁.J.map t).det`. Establish `: (W₁.J.map t).det = t W₁.J.det`. Rewrite using `[show W₁.J.map t = (t : E →+* Fv F v).mapMatrix W₁.J from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero t).2 hJ0)`. Take `⟨hc, hb⟩` from `exists_basis_of_unit hB hW hA (frameEquiv hA.rank) t hJ`. Establish `hcG : frameGL t H hA.rank = hc.unit` using `Units.ext (frameGL_val t H hA.rank hc)`. Take `⟨h, hh, h1, h2⟩` from `hb u`.
+
+Take `⟨X', Y', hX⟩` from `gram_unip (Matrix.mul_nonsing_inv _ hJ) X Y`. Use `⟨h, Subgroup.subset_closure (cols_unip (X := Matrix.of fun i j => liftPair hB.cm t (X i j, X' i j)) (Y := Matrix.of fun i j => liftPair hB.cm t (Y i j, Y' i j)) (h2 _ (fun a ha => ?_) ?_ ?_)), hh, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, at_liftPair hB.cm t _ a ha]`. Rewrite using `[hu]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, piW_liftPair, apply_ite (piW t)]`.
+
+Rewrite using `[hu]`. Use `Eq.trans ?_ hX` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply, piW_comp_liftPair, apply_ite (piW (t.comp σ))]`. Rewrite using `[hcG, ← h1, Units.val_mul, Units.val_mul, locMat_val]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+-/
 theorem GlobalTheory.LineFrame.exists_unip_frameGL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m r s i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m), B.IsGood σ → W.IsSkew σ B r s →
     ∀ (hA : H.IsAdapted σ B W W₁ i₀ i₁),

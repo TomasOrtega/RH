@@ -19,6 +19,23 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw.GSuppAsm
 
+/- English proof (translation)
+Introduce `D c v n G hc hv hG h1 h2 _hfl t ht hch j σ h Ψ₁ Ψ₂ hΨ₁ hΨ₂`. Establish `hj : j + 1 < D.R.m` using `by omega`. Establish `hj2 : j + 1 + 1 < D.R.m` using `by omega`. Use `⟨fun x hx hne => ?_, fun x hx hne => ?_⟩` and prove the remaining obligations. Take `⟨xs, hxs, rfl⟩` from `GlobalTheory.T.seeSaw_fixedLevel_element_eq_prod_local_parts hc hv G hG (j + 1) x hx`.
+
+Establish `hb : ∀ i, j + 1 + (2 * σ + 1 + 1) = (G i).s + 1` using `fun i => by have := (G i).hs; omega`. Use `GlobalTheory.T.seeSaw_prod_local_cells_distinct_places G hG (j + 1) hj (jacGrp (c.jac j (σ + 1) h).d) (fun _ => 2 * σ + 1 + 1) hb xs (fun i => ?_)` and prove the remaining obligations. Take `⟨F, hF, hcomb⟩` from `GlobalTheory.T.seeSaw_fixedLevel_combination_eq_single_place_on_vacuum hc hv G hG j hj Ψ₁ hΨ₁ i`. Take `⟨y, hy, hprod⟩` from `GlobalTheory.T.ordered_prod_local_parts_separates_place G hG (j + 1) xs hxs i`. Establish `hw : IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) (t.sBF j (σ + 1) h).χV (t.sBF j (σ + 1) h).χW (t.om j)`.
+
+Use `(t.sBF j (σ + 1) h).weil` as an intermediate fact. Rewrite `this` using `[(ht.sBF j (σ + 1) h).1]`. Conclude with `this`. Take `⟨hF', hcm⟩` from `GlobalTheory.T.trivialAtPlace_comm_seeSawCombination_keeps_vacuum hc hv (G i) j hj _ _ (t.om j) hw F hF y hy`. Use `GlobalTheory.T.seesaw_first_flatMap_support_at_level_place hc hv h1 t ht (G i) (hch i) j σ h _ hF' (xs i) (hxs i) ?_` and prove the remaining obligations.
+
+Rewrite `hne` using `[hprod, hcomb]`. Establish `e : t.om j (1, xs i * y) = t.om j (1, xs i) * t.om j (1, y)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite `hne` using `[e, Module.End.mul_apply, hcm]`. Conclude with `hne`.
+
+Take `⟨xs, hxs, rfl⟩` from `GlobalTheory.T.seeSaw_fixedLevel_element_eq_prod_local_parts hc hv G hG (j + 1 + 1) x hx`. Establish `hb : ∀ i, j + 1 + 1 + (2 * σ + 1) = (G i).s + 1` using `fun i => by have := (G i).hs; omega`. Use `GlobalTheory.T.seeSaw_prod_local_cells_distinct_places G hG (j + 1 + 1) (by omega) (besGrp (c.bes (j + 1 + 1) σ (idx_step h)).d (c.bes (j + 1 + 1) σ (idx_step h)).o) (fun _ => 2 * σ + 1) hb xs (fun i => ?_)` and prove the remaining obligations. Take `⟨F₁, hF₁, hcomb₁⟩` from `GlobalTheory.T.seeSaw_fixedLevel_combination_eq_single_place_on_vacuum hc hv G hG j hj Ψ₁ hΨ₁ i`. Take `⟨F₂, hF₂, hcomb₂⟩` from `GlobalTheory.T.seeSaw_fixedLevel_combination_eq_single_place_on_vacuum hc hv G hG (j + 1) hj2 Ψ₂ hΨ₂ i`.
+
+Take `⟨y, hy, hprod⟩` from `GlobalTheory.T.ordered_prod_local_parts_separates_place G hG (j + 1 + 1) xs hxs i`. Establish `hw : IsWeilDatumO c.ψ (c.V (j + 1)) (c.V (j + 1 + 1)) (t.sFB j σ h).χV (t.sFB j σ h).χW (t.om (j + 1))`. Use `(t.sFB j σ h).weil` as an intermediate fact. Rewrite `this` using `[(ht.sFB j σ h).1]`. Conclude with `this`.
+
+Take `⟨hF₂', hcm⟩` from `GlobalTheory.T.trivialAtPlace_comm_seeSawCombination_keeps_vacuum hc hv (G i) (j + 1) hj2 _ _ (t.om (j + 1)) hw F₂ hF₂ y hy`. Use `GlobalTheory.T.seeSaw_flatMap_contraction_support_at_level_place hc hv h2 t ht (G i) (hch i) j σ h F₁ hF₁ _ hF₂' (xs i) (hxs i) ?_` and prove the remaining obligations. Rewrite `hne` using `[hprod, hcomb₁, hcomb₂]`. Establish `e : t.om (j + 1) (1, xs i * y) = t.om (j + 1) (1, xs i) * t.om (j + 1) (1, y)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`.
+
+Rewrite `hne` using `[e, Module.End.mul_apply, hcm]`. Conclude with `hne`.
+-/
 theorem gsupp_of_local : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G → GlobalTheory.LocMod.GSupp1 D → GlobalTheory.LocMod.GSupp2 D → FlatLaw D → ∀ t : Tup c, t.Is → (∀ i, (G i).Chars t) → GSupp (t := t) v := by
   intro D c v n G hc hv hG h1 h2 _hfl t ht hch j σ h Ψ₁ Ψ₂ hΨ₁ hΨ₂
   have hj : j + 1 < D.R.m := by omega

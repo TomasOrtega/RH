@@ -24,11 +24,17 @@ def Rel (I J : Ideal R) : Prop :=
 
 variable {m}
 
+/- English proof (translation)
+Establish `e : a * b - 1 = (a - 1) * b + (b - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `m.add_mem (m.mul_mem_right b ha) hb`.
+-/
 theorem mul_sub_one_mem {a b : R} (ha : a - 1 ∈ m) (hb : b - 1 ∈ m) : a * b - 1 ∈ m := by
   have e : a * b - 1 = (a - 1) * b + (b - 1) := by ring
   rw [e]
   exact m.add_mem (m.mul_mem_right b ha) hb
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Apply `hm` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : -(0 - 1 : R) ∈ m` using `m.neg_mem ha`. Simplify using `using h1`.
+-/
 theorem ne_zero_of_sub_one_mem (hm : m ≠ ⊤) {a : R} (ha : a - 1 ∈ m) : a ≠ 0 := by
   rintro rfl
   apply hm
@@ -36,6 +42,9 @@ theorem ne_zero_of_sub_one_mem (hm : m ≠ ⊤) {a : R} (ha : a - 1 ∈ m) : a �
   have h1 : -(0 - 1 : R) ∈ m := m.neg_mem ha
   simpa using h1
 
+/- English proof (translation)
+Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.1 h`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Establish `e : i - 1 = -j` using `by rw [← hij]; ring`. Rewrite using `[e]`. Conclude with `m.neg_mem hj`.
+-/
 theorem exists_mem_sub_one {I : Ideal R} (h : IsCoprime I m) : ∃ a ∈ I, a - 1 ∈ m := by
   obtain ⟨i, hi, j, hj, hij⟩ := Ideal.isCoprime_iff_exists.1 h
   refine ⟨i, hi, ?_⟩
@@ -43,17 +52,31 @@ theorem exists_mem_sub_one {I : Ideal R} (h : IsCoprime I m) : ∃ a ∈ I, a - 
   rw [e]
   exact m.neg_mem hj
 
+/- English proof (translation)
+Use `Ideal.isCoprime_iff_exists.2 ⟨a, Ideal.mem_span_singleton_self a, -(a - 1), m.neg_mem ha, ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isCoprime_span {a : R} (ha : a - 1 ∈ m) : IsCoprime (Ideal.span {a}) m := by
   refine Ideal.isCoprime_iff_exists.2 ⟨a, Ideal.mem_span_singleton_self a, -(a - 1), m.neg_mem ha, ?_⟩
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, by simp, by simp, rfl⟩`.
+-/
 theorem Rel.refl (I : Ideal R) : Rel m I I :=
   ⟨1, 1, by simp, by simp, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, e⟩` from `h`. Conclude with `⟨b, a, hb, ha, e.symm⟩`.
+-/
 theorem Rel.symm {I J : Ideal R} (h : Rel m I J) : Rel m J I := by
   obtain ⟨a, b, ha, hb, e⟩ := h
   exact ⟨b, a, hb, ha, e.symm⟩
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, e⟩` from `h`. Take `⟨a', b', ha', hb', e'⟩` from `h'`. Use `⟨a * a', b * b', mul_sub_one_mem ha ha', mul_sub_one_mem hb hb', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = (Ideal.span {b} * J) * (Ideal.span {b'} * J') := by rw [e, e']`. Use `_ = Ideal.span {b * b'} * (J * J') := by`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Rel.mul {I J I' J' : Ideal R} (h : Rel m I J) (h' : Rel m I' J') : Rel m (I * I') (J * J') := by
   obtain ⟨a, b, ha, hb, e⟩ := h
   obtain ⟨a', b', ha', hb', e'⟩ := h'
@@ -64,6 +87,13 @@ theorem Rel.mul {I J I' J' : Ideal R} (h : Rel m I J) (h' : Rel m I' J') : Rel m
     _ = Ideal.span {b * b'} * (J * J') := by
         rw [← Ideal.span_singleton_mul_span_singleton]; ring
 
+/- English proof (translation)
+Take `⟨a, b, ha, hb, e⟩` from `h`. Take `⟨c, d, hc, hd, e'⟩` from `h'`. Use `⟨a * c, b * d, mul_sub_one_mem ha hc, mul_sub_one_mem hb hd, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = Ideal.span {c} * (Ideal.span {b} * J) := by rw [e]`. Use `_ = Ideal.span {b} * (Ideal.span {c} * J) := by ring`. Use `_ = Ideal.span {b} * (Ideal.span {d} * L) := by rw [e']`. Use `_ = Ideal.span {b * d} * L := by`.
+
+Rewrite using `[← Ideal.span_singleton_mul_span_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Rel.trans {I J L : Ideal R} (h : Rel m I J) (h' : Rel m J L) : Rel m I L := by
   obtain ⟨a, b, ha, hb, e⟩ := h
   obtain ⟨c, d, hc, hd, e'⟩ := h'
@@ -76,6 +106,21 @@ theorem Rel.trans {I J L : Ideal R} (h : Rel m I J) (h' : Rel m J L) : Rel m I L
     _ = Ideal.span {b * d} * L := by
         rw [← Ideal.span_singleton_mul_span_singleton]; ring
 
+/- English proof (translation)
+Take `⟨j, hj, hj1⟩` from `exists_mem_sub_one hJ`. Establish `hyj : y * j ∈ Ideal.span {x}`. Establish `hm : y * j ∈ Ideal.span {y} * J` using `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self y) hj`. Rewrite `hm` using `[← h]`. Conclude with `(Ideal.mul_le_left : Ideal.span {x} * I ≤ Ideal.span {x}) hm`.
+
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hyj`. Distinguish the cases in `hx : x = 0`. Establish `hj0 : j = 0`. Rewrite `hb` using `[hx, mul_zero]`. Conclude with `(mul_eq_zero.1 hb.symm).resolve_left hy`.
+
+Establish `htop : m = ⊤`. Rewrite using `[Ideal.eq_top_iff_one]`. Rewrite `hj1` using `[hj0]`. Establish `h1 : -(0 - 1 : R) ∈ m` using `m.neg_mem hj1`. Simplify using `using h1`.
+
+Substitute `htop` using the available equality. Use `⟨0, Ideal.isCoprime_iff_sup_eq.2 (sup_top_eq _), 0, 0, Submodule.mem_top, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_eq_bot.2 rfl, Ideal.bot_mul, Ideal.bot_mul]`. Establish `key : Ideal.span {j} * I = Ideal.span {b} * J`. Establish `hx' : Ideal.span {x} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`. Apply `mul_left_cancel₀ hx'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hb, ← Ideal.span_singleton_mul_span_singleton]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨b, ?_, j, 1, hj1, by simp, ?_⟩` and prove the remaining obligations. Establish `hc : IsCoprime (Ideal.span {j} * I) m` using `(isCoprime_span hj1).mul_left hI`. Rewrite `hc` using `[key]`. Conclude with `hc.of_mul_left_left`.
+
+Rewrite using `[Ideal.span_singleton_one, Ideal.top_mul]`. Conclude with `key`.
+-/
 theorem exists_good {I J : Ideal R} (hI : IsCoprime I m) (hJ : IsCoprime J m) {x y : R} (hy : y ≠ 0)
     (h : Ideal.span {x} * I = Ideal.span {y} * J) :
     ∃ b : R, IsCoprime (Ideal.span {b}) m ∧ Rel m I (Ideal.span {b} * J) := by
@@ -114,6 +159,13 @@ theorem exists_good {I J : Ideal R} (hI : IsCoprime I m) (hJ : IsCoprime J m) {x
     · rw [Ideal.span_singleton_one, Ideal.top_mul]
       exact key
 
+/- English proof (translation)
+Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.1 hb`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 hi`. Establish `hu : u * b - 1 ∈ m`. Establish `e : u * b - 1 = -j` using `by rw [← hij]; ring`. Rewrite using `[e]`.
+
+Conclude with `m.neg_mem hj`. Use `⟨u * c, u * b, ?_, hu, ?_⟩` and prove the remaining obligations. Establish `e : u * c - 1 = (u * b - 1) - u * (b - c)` using `by ring`. Rewrite using `[e]`. Conclude with `m.sub_mem hu (m.mul_mem_left u h)`.
+
+Rewrite using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, mul_right_comm]`.
+-/
 theorem rel_span {b c : R} (hb : IsCoprime (Ideal.span {b}) m) (h : b - c ∈ m) :
     Rel m (Ideal.span {b}) (Ideal.span {c}) := by
   obtain ⟨i, hi, j, hj, hij⟩ := Ideal.isCoprime_iff_exists.1 hb
@@ -133,6 +185,9 @@ end General
 
 variable {K : Type} [Field K] [NumberField K] {𝔮 : Ideal (𝓞 K)}
 
+/- English proof (translation)
+Use `(mem_principalRay_iff 𝔮 _).2 ⟨a, b, ha, hb, ha1, hb1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_idealUnit]`. Rewrite using `[← FractionalIdeal.coeIdeal_mul, ← FractionalIdeal.coeIdeal_mul, mul_comm J, mul_comm I, h]`.
+-/
 theorem mem_principalRay_of_eq {I J : Ideal (𝓞 K)} (hI0 : I ≠ ⊥) (hJ0 : J ≠ ⊥) {a b : 𝓞 K} (ha : a ≠ 0) (hb : b ≠ 0)
     (ha1 : a - 1 ∈ 𝔮) (hb1 : b - 1 ∈ 𝔮) (h : Ideal.span {a} * I = Ideal.span {b} * J) :
     (idealUnit I hI0)⁻¹ * idealUnit J hJ0 ∈ rayP 𝔮 := by
@@ -142,6 +197,29 @@ theorem mem_principalRay_of_eq {I J : Ideal (𝓞 K)} (hI0 : I ≠ ⊥) (hJ0 : J
   simp only [Units.val_mul, coe_idealUnit]
   rw [← FractionalIdeal.coeIdeal_mul, ← FractionalIdeal.coeIdeal_mul, mul_comm J, mul_comm I, h]
 
+/- English proof (translation)
+Unfold `rayI at hx`. Proceed by induction on `hx using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, hxv⟩` from `hx`. Use `⟨v.asIdeal, v.ne_bot, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Rewrite using `[Ideal.dvd_iff_le]`. Establish `e` using `v.isMaximal.eq_of_le hne le_sup_left`.
+
+Rewrite using `[e]`. Conclude with `le_sup_right`. Establish `e : idealUnit v.asIdeal v.ne_bot = x` using `Units.ext (by rw [coe_idealUnit, hxv])`. Rewrite using `[e, inv_mul_cancel]`. Conclude with `one_mem _`.
+
+Consider the case `one`. Use `⟨⊤, top_ne_bot, Ideal.isCoprime_iff_sup_eq.2 (top_sup_eq _), ?_⟩` and prove the remaining obligations. Establish `e : idealUnit (⊤ : Ideal (𝓞 K)) top_ne_bot = 1` using `Units.ext (by rw [coe_idealUnit, FractionalIdeal.coeIdeal_top]; rfl)`. Rewrite using `[e, inv_one, one_mul]`. Conclude with `one_mem _`.
+
+Consider the case `mul x y _ _ ihx ihy`. Take `⟨I, hI0, hIc, hIr⟩` from `ihx`. Take `⟨J, hJ0, hJc, hJr⟩` from `ihy`. Establish `hIJ : I * J ≠ ⊥`. Rewrite using `[Ne, Ideal.mul_eq_bot, not_or]`.
+
+Conclude with `⟨hI0, hJ0⟩`. Use `⟨I * J, hIJ, hIc.mul_left hJc, ?_⟩` and prove the remaining obligations. Rewrite using `[idealUnit_mul I J hI0 hJ0 hIJ, mul_inv, mul_mul_mul_comm]`. Conclude with `mul_mem hIr hJr`. Consider the case `inv x _ ihx`.
+
+Take `⟨I, hI0, hIc, hIr⟩` from `ihx`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi, hi0, hi1⟩ : ∃ i ∈ I, i ≠ 0 ∧ i - 1 ∈ 𝔮 := by`. Distinguish the cases in `htop : 𝔮 = ⊤`. Take `⟨i, hi, hi0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI0`. Conclude with `⟨i, hi, hi0, by rw [htop]; exact Submodule.mem_top⟩`.
+
+Take `⟨i, hi, hi1⟩` from `exists_mem_sub_one hIc`. Conclude with `⟨i, hi, ne_zero_of_sub_one_mem htop hi1, hi1⟩`. Take `⟨J, hJ⟩ : I ∣ Ideal.span {i}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hi)`. Establish `hJ0 : J ≠ ⊥`. Introduce and unpack `rfl`.
+
+Rewrite `hJ` using `[Ideal.mul_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hi0 hJ`. Establish `hJc : IsCoprime J 𝔮`. Establish `hc` using `isCoprime_span (m := 𝔮) hi1`. Rewrite `hc` using `[hJ]`.
+
+Conclude with `hc.of_mul_left_right`. Use `⟨J, hJ0, hJc, ?_⟩` and prove the remaining obligations. Establish `hS : idealUnit (Ideal.span {i}) (span_ne_bot hi0) = idealUnit I hI0 * idealUnit J hJ0`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_idealUnit]`.
+
+Rewrite using `[hJ, FractionalIdeal.coeIdeal_mul]`. Establish `hSr : idealUnit (Ideal.span {i}) (span_ne_bot hi0) ∈ rayP 𝔮` using `Subgroup.subset_closure ⟨i, hi1, coe_idealUnit _ _⟩`. Establish `key` using `mul_mem (inv_mem hSr) (inv_mem hIr)`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hS, mul_inv, mul_inv, inv_inv, mul_mul_mul_comm, inv_mul_cancel, one_mul]`.
+-/
 theorem exists_integral (h𝔮 : 𝔮 ≠ ⊥) (x : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (hx : x ∈ rayI 𝔮) :
     ∃ (I : Ideal (𝓞 K)) (hI0 : I ≠ ⊥), IsCoprime I 𝔮 ∧ (idealUnit I hI0)⁻¹ * x ∈ rayP 𝔮 := by
   unfold rayI at hx
@@ -203,6 +281,21 @@ theorem exists_integral (h𝔮 : 𝔮 ≠ ⊥) (x : (FractionalIdeal (𝓞 K)⁰
     convert key using 1
     rw [hS, mul_inv, mul_inv, inv_inv, mul_mul_mul_comm, inv_mul_cancel, one_mul]
 
+/- English proof (translation)
+Establish `H1 : ∀ ξ : rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮), ∃ (I : Ideal (𝓞 K)) (hI0 : I ≠ ⊥), IsCoprime I 𝔮 ∧ (idealUnit I hI0)⁻¹ * (ξ.out : (FractionalIdeal (𝓞 K)⁰ K)ˣ) ∈ rayP 𝔮` using `fun ξ => exists_integral h𝔮 _ ξ.out.2`. Use `choose I hI0 hIc hIr using H1`. Take `⟨c, hc⟩ : ∃ c : rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮) → ClassGroup (𝓞 K), ∀ ξ, c ξ = ClassGroup.mk0 ⟨I ξ, mem_nonZeroDivisors_of_ne_zero (hI0 ξ)⟩` from `⟨_, fun _ => rfl⟩`. Establish `H2 : ∀ ξ, ∃ b : 𝓞 K, IsCoprime (Ideal.span {b}) 𝔮 ∧ Rel 𝔮 (I ξ) (Ideal.span {b} * I (Function.invFun c (c ξ)))`. Introduce `ξ`.
+
+Take `⟨ξ0, hξ0⟩ : ∃ ξ0, ξ0 = Function.invFun c (c ξ)` from `⟨_, rfl⟩`. Establish `e : c ξ0 = c ξ` using `hξ0 ▸ Function.invFun_eq (f := c) ⟨ξ, rfl⟩`. Rewrite `e` using `[hc, hc]`. Take `⟨x, y, _, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 e.symm`. Rewrite using `[← hξ0]`.
+
+Conclude with `exists_good (hIc _) (hIc _) hy hxy`. Use `choose b hbc hbr using H2`. Use `⟨fun ξ => (c ξ, Ideal.Quotient.mk 𝔮 (b ξ)), ?_⟩` and prove the remaining obligations. Introduce `ξ η hξη`. Simplify using `only [Prod.mk.injEq] at hξη`.
+
+Take `⟨h1, h2⟩` from `hξη`. Establish `hq : (idealUnit (I ξ) (hI0 ξ))⁻¹ * idealUnit (I η) (hI0 η) ∈ rayP 𝔮`. Distinguish the cases in `htop : 𝔮 = ⊤`. Rewrite `h1` using `[hc, hc]`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 h1`.
+
+Conclude with `mem_principalRay_of_eq (hI0 ξ) (hI0 η) hx hy (by rw [htop]; exact Submodule.mem_top) (by rw [htop]; exact Submodule.mem_top) hxy`. Establish `hsub : b ξ - b η ∈ 𝔮` using `Ideal.Quotient.eq.1 h2`. Establish `R2` using `hbr η`. Rewrite `R2` using `[← h1]`. Establish `R` using `(hbr ξ).trans (((rel_span (hbc ξ) hsub).mul (Rel.refl _)).trans R2.symm)`.
+
+Take `⟨a, a', ha, ha', e⟩` from `R`. Conclude with `mem_principalRay_of_eq (hI0 ξ) (hI0 η) (ne_zero_of_sub_one_mem htop ha) (ne_zero_of_sub_one_mem htop ha') ha ha' e`. Rewrite using `[← QuotientGroup.out_eq' ξ, ← QuotientGroup.out_eq' η, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `key` using `mul_mem (mul_mem (inv_mem (hIr ξ)) hq) (hIr η)`. Use `key using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`.
+-/
 theorem exists_injective (h𝔮 : 𝔮 ≠ ⊥) :
     ∃ F : (rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮)) → ClassGroup (𝓞 K) × (𝓞 K ⧸ 𝔮), Function.Injective F := by
   have H1 : ∀ ξ : rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮), ∃ (I : Ideal (𝓞 K)) (hI0 : I ≠ ⊥),
@@ -244,6 +337,15 @@ theorem exists_injective (h𝔮 : 𝔮 ≠ ⊥) :
   simp only [Subgroup.coe_mul, Subgroup.coe_inv]
   group
 
+/- English proof (translation)
+Introduce `K _ _ 𝔮 h𝔮`. Establish `: Finite (𝓞 K ⧸ 𝔮)` using `Ideal.finiteQuotientOfFreeOfNeBot 𝔮 h𝔮`. Take `⟨F, hF⟩` from `exists_injective h𝔮`. Establish `: Finite (rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮))` using `Finite.of_injective F hF`. Establish `hno : rayNo 𝔮 = Nat.card (rayI 𝔮 ⧸ (rayP 𝔮).subgroupOf (rayI 𝔮))` using `rfl`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hno]`. Conclude with `Nat.card_pos`. Rewrite using `[hno]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Nat.card_prod, Ideal.absNorm_apply, Submodule.cardQuot_apply, classNumber, Nat.card_eq_fintype_card]`. Unfold `rayP`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `x ⟨a, ha1, hxa⟩`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hxa` using `[Ideal.span_singleton_eq_bot.2 rfl, FractionalIdeal.coeIdeal_bot]`. Conclude with `x.ne_zero hxa`. Conclude with `Model.mem_rayI_of_coprime 𝔮 (Ideal.span {a}) (by rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact ha0) (Ideal.isCoprime_iff_sup_eq.1 (isCoprime_span ha1)) x hxa`.
+-/
 theorem rayNo_bounds : ∀ (K : Type) [Field K] [NumberField K] (𝔮 : Ideal (𝓞 K)), 𝔮 ≠ ⊥ →
     1 ≤ rayNo 𝔮 ∧ rayNo 𝔮 ≤ classNumber K * Ideal.absNorm 𝔮 ∧ rayP 𝔮 ≤ rayI 𝔮 := by
   intro K _ _ 𝔮 h𝔮

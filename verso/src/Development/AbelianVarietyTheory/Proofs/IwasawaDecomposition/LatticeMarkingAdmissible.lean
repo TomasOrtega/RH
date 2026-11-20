@@ -14,10 +14,16 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 namespace GlobalTheory.OneMapRef
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_sub, e, Matrix.mulVec_smul]`.
+-/
 theorem mulVec_congr {A : Type} [CommRing A] {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) A) {x y w : Fin n → A}
     (e : x - Q *ᵥ y = N • w) : P *ᵥ x - (P * Q) *ᵥ y = N • P *ᵥ w := by
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_sub, e, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latW_rfl {D : D7} {W : HSp D} (L : Lt D.host.E W.rank) : latW (T := W) rfl L = L := rfl
 
 section
@@ -25,19 +31,36 @@ section
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {W : HSp D}
   {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)} {h : GA D W}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem markAd_rfl (l : Level H) (mk : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)) :
     MarkAd (T := W) rfl l ι h mk ↔ ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 D.host.E) Dw.La), ∃ w ∈ latGHat W h,
       finVec W (mk a) - (finHom W h).1 *ᵥ (finVec W (ι a)) = l.M • w := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdLat.cap_fv_add D.host.F a b`.
+-/
 theorem finVec_add' (a b : Fin W.rank → D.host.E) : finVec W (a + b) = finVec W a + finVec W b :=
   GlobalTheory.AdLat.cap_fv_add D.host.F a b
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdLat.cap_fv_nsmul D.host.F n a`.
+-/
 theorem finVec_nsmul' (n : ℕ) (a : Fin W.rank → D.host.E) : finVec W (n • a) = n • finVec W a :=
   GlobalTheory.AdLat.cap_fv_nsmul D.host.F n a
 
+/- English proof (translation)
+The claim follows from `funext fun _ => TensorProduct.tmul_sub _ _ _`.
+-/
 theorem finVec_sub' (a b : Fin W.rank → D.host.E) : finVec W (a - b) = finVec W a - finVec W b :=
   funext fun _ => TensorProduct.tmul_sub _ _ _
 
+/- English proof (translation)
+Introduce `a ha`. Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Take `⟨c, hc⟩` from `hM`. Take `⟨w, hw, e⟩` from `(markAd_rfl l mk).1 h1 a (Submodule.smul_mono_left hI ha)`. Take `⟨w', hw', e'⟩` from `(markAd_rfl l₂ mk₂).1 h2 a ha`.
+
+Take `⟨u, hu, eu⟩` from `GlobalTheory.MarkCoset.finVec_div W l.M hM0 (mk₂ a - mk a) (c • w' - w) ((finVec_sub' _ _).trans (GlobalTheory.AdMark.sub_congr hc e e'))`. Use `⟨u, ((GlobalTheory.MarkCoset.latG_spec D W h).1 u).2 (hu ▸ sub_mem (nsmul_mem hw' c) hw), ?_⟩` and prove the remaining obligations. Rewrite using `[← eu]`. Normalize the expressions using the abelian group laws.
+-/
 theorem markOver_of_markAd {l l₂ : Level H} (hM : l.M ∣ l₂.M) (hI : Mfr l₂ ≤ Mfr l)
     {mk mk₂ : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)} (h1 : MarkAd (T := W) rfl l ι h mk)
     (h2 : MarkAd (T := W) rfl l₂ ι h mk₂) : MarkOver l l₂ (latG W h) mk mk₂ := by
@@ -52,6 +75,11 @@ theorem markOver_of_markAd {l l₂ : Level H} (hM : l.M ∣ l₂.M) (hI : Mfr l�
   rw [← eu]
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hf : ∀ i j, (finHom W δ).1 i j = (1 : Af D.host.F) ⊗ₜ ga.1 i j` using `fun i j => by`. Establish `he' : (matHom W δ).1 i j = (1 : AF D.host.F) ⊗ₜ ga.1 i j` using `congrFun (congrFun hδ i) j`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) ((matHom W δ).1 i j) = _`. Rewrite using `[he', Algebra.TensorProduct.map_tmul, map_one]`.
+
+Both sides reduce to the same expression. Simplify using `only [Matrix.mulVec, dotProduct, hf, finVec, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, TensorProduct.tmul_sum]`.
+-/
 theorem finHom_mulVec_finVec {δ : GA D W} {ga : GL (Fin W.rank) D.host.E}
     (hδ : Formalism.L2.Theta.mt W δ = (ga : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D))
     (v : Fin W.rank → D.host.E) : (finHom W δ).1 *ᵥ finVec W v = finVec W (ga.1 *ᵥ v) := by
@@ -64,6 +92,11 @@ theorem finHom_mulVec_finVec {δ : GA D W} {ga : GL (Fin W.rank) D.host.E}
   simp only [Matrix.mulVec, dotProduct, hf, finVec, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one,
     TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.MarkCoset.latG_spec D W h).2, (GlobalTheory.MarkCoset.latG_spec D W (δ * h)).2]`. Use `exists_congr fun y => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `⟨fun e => ?_, fun e => by rw [e]⟩` and prove the remaining obligations. Use `congrArg (fun v => ((finHom W δ)⁻¹).1 *ᵥ v) e` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Units.inv_mul_cancel_left] at this`. Conclude with `this`.
+-/
 theorem mem_latGHat_mul (δ : GA D W) (z : Fin W.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     (finHom W δ).1 *ᵥ z ∈ latGHat W (δ * h) ↔ z ∈ latGHat W h := by
   rw [(GlobalTheory.MarkCoset.latG_spec D W h).2, (GlobalTheory.MarkCoset.latG_spec D W (δ * h)).2]
@@ -76,6 +109,27 @@ theorem mem_latGHat_mul (δ : GA D W) (z : Fin W.rank → Af D.host.F ⊗[D.host
 
 end
 
+/- English proof (translation)
+Introduce `D H Dw W r hr ι hι h L hL l`. Substitute `hr` using the available equality. Rewrite `hL` using `[latW_rfl]`. Substitute `hL` using the available equality. Take `⟨mk₀, hm0, ha0, -⟩` from `GlobalTheory.AdMark.exists_marking D H Dw l l W _ rfl ι hι dvd_rfl le_rfl h`.
+
+Rewrite `hm0` using `[GlobalTheory.AdMark.latR_rfl]`. Use `replace ha0 : MarkAd (T := W) rfl l ι h mk₀ := ha0`. Use `⟨⟨mk₀, hm0.mem, ha0⟩, fun mk hmem hmk => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `ho` using `markOver_of_markAd dvd_rfl le_rfl hmk ha0`. Use `⟨hmem, ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `a ha ⟨u, hu, e⟩`. Take `⟨u', hu', e'⟩` from `ho a ha`. Conclude with `hm0.inj a ha ⟨u + u', add_mem hu hu', by rw [e', e, smul_add]⟩`. Take `⟨a, ha, u, hu, e⟩` from `hm0.surj v hv`. Take `⟨u', hu', e'⟩` from `ho a ha`.
+
+Conclude with `⟨a, ha, u' + u, add_mem hu' hu, by rw [e, e', smul_add, add_assoc]⟩`. Introduce `mk' hc`. Use `(markAd_rfl l mk').2 fun a ha => ?_` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `hc a ha`. Take `⟨w, hw, e'⟩` from `(markAd_rfl l mk).1 hmk a ha`.
+
+Use `⟨w + finVec W u, add_mem hw (((GlobalTheory.MarkCoset.latG_spec D W h).1 u).1 hu), ?_⟩` and prove the remaining obligations. Rewrite using `[e, finVec_add', finVec_nsmul', smul_add, ← e']`. Normalize the expressions using the abelian group laws. Introduce `l₂ hM hI mk₂ _ h2`. Conclude with `markOver_of_markAd hM hI hmk h2`.
+
+Introduce `δ ga hδ`. Establish `hf` using `finHom_mulVec_finVec (δ := δ) (ga := ga) hδ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[latW_rfl]`. Use extensionality with `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `((GlobalTheory.MarkCoset.latG_spec D W (δ * h)).1 _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finVec W (ga.1 *ᵥ x) ∈ _`. Rewrite using `[← hf, mem_latGHat_mul]`.
+
+Conclude with `((GlobalTheory.MarkCoset.latG_spec D W h).1 _).1 hx`. Introduce `hv`. Establish `hri : ga.1 *ᵥ ((ga⁻¹).1 *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `⟨(ga⁻¹).1 *ᵥ v, ((GlobalTheory.MarkCoset.latG_spec D W h).1 _).2 ?_, hri⟩` and prove the remaining obligations.
+
+Rewrite using `[← mem_latGHat_mul δ, hf, hri]`. Conclude with `((GlobalTheory.MarkCoset.latG_spec D W (δ * h)).1 _).1 hv`. Use `(markAd_rfl l _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `(markAd_rfl l mk).1 hmk a ha`. Use `⟨_, (mem_latGHat_mul δ w).2 hw, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `finVec W (ga.1 *ᵥ mk a) - _ = _`. Rewrite using `[← hf, map_mul, Units.val_mul]`. Conclude with `mulVec_congr _ _ e`.
+-/
 theorem markAd_laws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (W : HSp D) (r : ℕ) (hr : W.rank = r) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin W.rank → D.host.E)), LatEmb W ι → ∀ (h : GA D W) (L : Lt D.host.E r), latW hr L = latG W h → ∀ l : Level H, (∃ mk : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E), (∀ a, mk a ∈ L) ∧ MarkAd hr l ι h mk) ∧ ∀ mk : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E), (∀ a, mk a ∈ L) → MarkAd hr l ι h mk → IsMark l L mk ∧ (∀ mk' : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E), (∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 D.host.E) Dw.La), ∃ u ∈ L, mk' a = mk a + l.M • u) → MarkAd hr l ι h mk') ∧ (∀ l₂ : Level H, l.M ∣ l₂.M → Mfr l₂ ≤ Mfr l → ∀ mk₂ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E), (∀ a, mk₂ a ∈ L) → MarkAd hr l₂ ι h mk₂ → MarkOver l l₂ L mk mk₂) ∧ ∀ (δ : GA D W) (ga : GL (Fin r) D.host.E), Formalism.L2.Theta.mt W δ = ((ga : Matrix (Fin r) (Fin r) D.host.E).submatrix (Fin.cast hr) (Fin.cast hr)).map (incA D) → latW hr (mapL ga L) = latG W (δ * h) ∧ MarkAd hr l ι (δ * h) (mvMap ga mk) := by
   intro D H Dw W r hr ι hι h L hL l
   subst hr

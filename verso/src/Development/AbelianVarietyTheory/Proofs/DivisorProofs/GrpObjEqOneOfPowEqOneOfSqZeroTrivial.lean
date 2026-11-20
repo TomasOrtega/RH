@@ -7,6 +7,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.MulUnramified
 
+/- English proof (translation)
+Set `φ : CommRingCat.of C ⟶ R` to `Spec.preimage g`. Set `K : Ideal C` to `RingHom.ker π`. Set `J : Ideal R` to `Ideal.map φ.hom K`. Set `q : R →+* R ⧸ J` to `Ideal.Quotient.mk J`. Set `ψ : C₀ →+* R ⧸ J` to `(Ideal.quotientMap J φ.hom Ideal.le_comap_map).comp (RingHom.quotientKerEquivOfSurjective hπ).symm.toRingHom`.
+
+Establish `hψ : ∀ c, ψ (π c) = q (φ c)`. Introduce `c`. Establish `: (RingHom.quotientKerEquivOfSurjective hπ).symm (π c) = Ideal.Quotient.mk K c`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Simplify using `only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, this]`. Both sides reduce to the same expression. Establish `hJ : RingHom.ker q = J` using `Ideal.mk_ker`. Establish `hJsq : J ^ 2 = ⊥`. Simplify using `only [J, ← Ideal.map_pow]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.map φ.hom (RingHom.ker π ^ 2) = ⊥`. Rewrite using `[hsq, Ideal.zero_eq_bot, Ideal.map_bot]`. Set `T₀ : Over (Sp C₀)` to `Over.mk (spMap ψ)`. Establish `hw : Spec.map (CommRingCat.ofHom q) ≫ g = T₀.hom ≫ spMap π`. Rewrite using `[← Spec.map_preimage g]`.
+
+Simplify using `only [T₀, spMap, Over.mk_hom, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `c`. Conclude with `(hψ c).symm`. Set `j : Over.mk (T₀.hom ≫ spMap π) ⟶ Over.mk g` to `Over.homMk (Spec.map (CommRingCat.ofHom q)) hw`.
+
+Establish `hsurj : Function.Surjective j.left`. Introduce `(p : PrimeSpectrum R)`. Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap q)`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, PrimeSpectrum.mem_zeroLocus]`. Introduce `a ha`.
+
+Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: a ^ 2 ∈ RingHom.ker q ^ 2` using `Ideal.pow_mem_pow ha 2`. Rewrite `this` using `[hJ, hJsq, Ideal.mem_bot]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Establish `hker : RingHom.ker (CommRingCat.ofHom q).hom ^ 2 = ⊥`. Express the relevant statement in the definitionally equal form `RingHom.ker q ^ 2 = ⊥`. Rewrite using `[hJ, hJsq]`. Establish `hn' : IsUnit (n : Γ(Sp C, ⊤))`. Simplify using `using hn.map (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom`.
+
+Conclude with `eq_one_of_pow_eq_one G j hsurj (mul_eq_zero_of_ker_sq (CommRingCat.ofHom q) hker) n hn' z (hz T₀ j) hzn`.
+-/
 lemma eq_one_of_pow_eq_one_thick_affine (C C₀ : Type) [CommRing C] [CommRing C₀] (π : C →+* C₀)
     (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = 0) (G : Over (Sp C)) [GrpObj G] (n : ℕ)
     (hn : IsUnit (n : C)) (R : CommRingCat.{0}) (g : Spec R ⟶ Sp C) (z : Over.mk g ⟶ G)
@@ -59,6 +78,13 @@ end GlobalTheory.MulUnramified
 
 namespace GlobalTheory.MulUnramified
 
+/- English proof (translation)
+Introduce `C C₀ _ _ π hπ hsq G _ n hn T z hz hzn`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `T.left.affineOpenCover.openCover.hom_ext _ _ fun i ↦ ?_` and prove the remaining obligations. Set `k : T.left.affineOpenCover.I₀` to `i`. Set `f : Over.mk (T.left.affineOpenCover.f k ≫ T.hom) ⟶ T` to `Over.homMk (T.left.affineOpenCover.f k) rfl`.
+
+Establish `hfz : (f ≫ z) ^ n = 1`. Rewrite using `[← MonObj.comp_pow, hzn, comp_one]`. Establish `h` using `eq_one_of_pow_eq_one_thick_affine C C₀ π hπ hsq G n hn _ _ (f ≫ z) (fun T₀ j ↦ by rw [← Category.assoc]; exact hz T₀ _) hfz`. Establish `h'` using `congrArg (·.left) (h.trans (comp_one f).symm)`. Simplify using `only [Over.comp_left] at h'`.
+
+Conclude with `h'`.
+-/
 theorem eq_one_of_pow_eq_one_thick : ∀ (C C₀ : Type) [CommRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → RingHom.ker π ^ 2 = 0 → ∀ (G : Over (Sp C)) [GrpObj G] (n : ℕ), IsUnit (n : C) → ∀ (T : Over (Sp C)) (z : T ⟶ G), (∀ (T₀ : Over (Sp C₀)) (j : Over.mk (T₀.hom ≫ spMap π) ⟶ T), j ≫ z = 1) → z ^ n = 1 → z = 1 := by
   intro C C₀ _ _ π hπ hsq G _ n hn T z hz hzn
   apply Over.OverMorphism.ext

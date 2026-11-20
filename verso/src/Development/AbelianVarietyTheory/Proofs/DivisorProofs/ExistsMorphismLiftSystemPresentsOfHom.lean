@@ -13,10 +13,20 @@ namespace GlobalTheory.LiftSys.Glue
 
 open Opposite Limits
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp₂ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `p`. Establish `hker : RingHom.ker q ≤ p.asIdeal`. Introduce `x hx`. Establish `hx2` using `hn x (RingHom.mem_ker.1 hx)`. Conclude with `(p.isPrime.mem_or_mem (by rw [hx2]; exact p.asIdeal.zero_mem)).elim id id`.
+
+Use `haveI := p.isPrime`. Use `haveI : (Ideal.map q p.asIdeal).IsPrime := Ideal.map_isPrime_of_surjective hq hker`. Use `⟨⟨Ideal.map q p.asIdeal, this⟩, ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap q (Ideal.map q p.asIdeal) = p.asIdeal`.
+
+Rewrite using `[Ideal.comap_map_of_surjective _ hq, sup_eq_left]`. Introduce `x hx`. Conclude with `hker (by simpa [RingHom.mem_ker] using hx)`.
+-/
 theorem spMap_surjective {A B : Type} [CommRing A] [CommRing B] (q : A →+* B)
     (hq : Function.Surjective q) (hn : ∀ a, q a = 0 → a * a = 0) : Function.Surjective (spMap q) := by
   intro p
@@ -33,6 +43,9 @@ theorem spMap_surjective {A B : Type} [CommRing A] [CommRing B] (q : A →+* B)
   intro x hx
   exact hker (by simpa [RingHom.mem_ker] using hx)
 
+/- English proof (translation)
+Take `⟨W, hW, hxW, hWU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X₀.isBasis_affineOpens) hx`. Conclude with `⟨⟨W, hW⟩, hxW, hWU⟩`.
+-/
 theorem exists_affine {X₀ : Scheme.{0}} {x : X₀} {U : X₀.Opens} (hx : x ∈ U) :
     ∃ W : X₀.affineOpens, x ∈ W.1 ∧ W.1 ≤ U := by
   obtain ⟨W, hW, hxW, hWU⟩ := (TopologicalSpace.Opens.isBasis_iff_nbhd.mp X₀.isBasis_affineOpens) hx
@@ -84,6 +97,35 @@ def dir {S : Sys I π s₀} {X : Scheme.{0}} {s : X ⟶ Sp R} {i : X₀ ⟶ X} (
       rw [h.nat]; exact h.isOpen _
     exact IsOpenImmersion.of_comp _ (h.y (op V))
 
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ S S' X s i Y t j hpb hY hX hψ`. Take `⟨ψ, hψp, hψn⟩` from `hψ`. Establish `hsurU : ∀ U, Function.Surjective (spMap (S'.p U))` using `fun U ↦ spMap_surjective _ (S'.surj U) fun b hb ↦ by`. Establish `hb'` using `(S'.ker U b).1 hb`. Establish `: b * b ∈ (I.map (algebraMap R (S'.F.obj U))) ^ 2`.
+
+Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul hb' hb'`. Rewrite `this` using `[map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `hπs : Function.Surjective (spMap π)` using `spMap_surjective π hπ fun a ha ↦ by`. Establish `ha' : a ∈ I` using `hk ▸ RingHom.mem_ker.2 ha`.
+
+Establish `: a * a ∈ I ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul ha' ha'`. Rewrite `this` using `[hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom π) hπ`. Use `haveI hic : IsClosedImmersion i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hpb.flip inferInstance`. Establish `hinj : Function.Injective i` using `i.isClosedEmbedding.injective`.
+
+Establish `hisurj : Function.Surjective i` using `(MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) hpb.flip ⟨hπs⟩).surj`. Establish `hrng : ∀ (U : X₀.affineOpens) (z : Sp (S'.F.obj (op U))), ∃ x₀ ∈ U.1, hX.y (op U) z = i x₀`. Introduce `U z`. Take `⟨w, rfl⟩` from `hsurU (op U) z`. Use `⟨affPt s₀ U w, U.2.range_fromSpec.le ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hX.red (op U), Scheme.Hom.comp_apply]`. Establish `hcov : ∀ (U : X₀.affineOpens) (x₀ : X₀), x₀ ∈ U.1 → ∃ z : Sp (S'.F.obj (op U)), hX.y (op U) z = i x₀`. Introduce `U x₀ hx`. Take `⟨w, hw⟩ : x₀ ∈ Set.range (affPt s₀ U)` from `U.2.range_fromSpec.ge hx`. Use `⟨spMap (S'.p (op U)) w, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(spMap (S'.p (op U)) ≫ hX.y (op U)) w = i x₀`. Rewrite using `[hX.red (op U), Scheme.Hom.comp_apply]`. Conclude with `congrArg i hw`. Establish `hc : ∀ x : X, ∃ (U : X₀.affineOpens) (z : Sp (S'.F.obj (op U))), hX.y (op U) z = x`. Introduce `x`.
+
+Take `⟨x₀, rfl⟩` from `hisurj x`. Take `⟨U, hxU, -⟩` from `exists_affine (show x₀ ∈ (⊤ : X₀.Opens) from trivial)`. Take `⟨z, hz⟩` from `hcov U x₀ hxU`. Conclude with `⟨U, z, hz⟩`. Establish `hd : ∀ (U V : X₀.affineOpens) (a : Sp (S'.F.obj (op U))) (b : Sp (S'.F.obj (op V))), hX.y (op U) a = hX.y (op V) b → ∃ (W : X₀.affineOpens) (_ : W ≤ U) (_ : W ≤ V) (c : Sp (S'.F.obj (op W))), hX.y (op W) c = hX.y (op U) a`.
+
+Introduce `U V a b hab`. Take `⟨x₀, hxU, ha⟩` from `hrng U a`. Take `⟨x₁, hxV, hb⟩` from `hrng V b`. Establish `e : x₀ = x₁` using `hinj (ha.symm.trans (hab.trans hb))`. Substitute `e` using the available equality.
+
+Take `⟨W, hxW, hWle⟩` from `exists_affine (show x₀ ∈ U.1 ⊓ V.1 from ⟨hxU, hxV⟩)`. Take `⟨c, hc'⟩` from `hcov W x₀ hxW`. Conclude with `⟨W, le_inf_iff.1 hWle |>.1, le_inf_iff.1 hWle |>.2, c, hc'.trans ha.symm⟩`. Use `letI := dir hX hc hd`. Set `𝒰` to `cov hX hc`.
+
+Set `g : ∀ U : 𝒰.I₀, 𝒰.X U ⟶ Y` to `fun U ↦ spMap (ψ (op U) : S.F.obj (op U) →+* S'.F.obj (op U)) ≫ hY.y (op U)`. Establish `hg : ∀ {U V : 𝒰.I₀} (a : U ⟶ V), 𝒰.trans a ≫ g V = g U`. Introduce `U V a`. Express the relevant statement in the definitionally equal form `spMap (mp S'.F a.op : S'.F.obj (op V) →+* S'.F.obj (op U)) ≫ spMap (ψ (op V) : S.F.obj (op V) →+* S'.F.obj (op V)) ≫ hY.y (op V) = _`. Rewrite using `[← Category.assoc, ← spMap_comp₂]`.
+
+Establish `e : (mp S'.F a.op : S'.F.obj (op V) →+* S'.F.obj (op U)).comp (ψ (op V) : S.F.obj (op V) →+* S'.F.obj (op V)) = (ψ (op U) : S.F.obj (op U) →+* S'.F.obj (op U)).comp (mp S.F a.op : S.F.obj (op V) →+* S.F.obj (op U))` using `RingHom.ext fun b ↦ hψn (op V) (op U) a.op b`. Rewrite using `[e, spMap_comp₂, Category.assoc, hY.nat a.op]`. Use `⟨𝒰.glueMorphismsOfLocallyDirected g hg, 𝒰.hom_ext _ _ fun U ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[𝒰.map_glueMorphismsOfLocallyDirected_assoc g hg U]`. Express the relevant statement in the definitionally equal form `(spMap (ψ (op U) : S.F.obj (op U) →+* S'.F.obj (op U)) ≫ hY.y (op U)) ≫ t = hX.y (op U) ≫ s`.
+
+Rewrite using `[Category.assoc, hY.base, hX.base, ← spMap_comp₂]`. Conclude with `congrArg spMap (RingHom.ext fun r ↦ (ψ (op U)).commutes r)`. Set `𝒱 : X₀.OpenCover` to `Scheme.Cover.mkOfCovers X₀.affineOpens (fun U ↦ Sp (Sec s₀ U.1)) (fun U ↦ affPt s₀ U) (fun x ↦ by`. Take `⟨U, hxU, -⟩` from `exists_affine (show x ∈ (⊤ : X₀.Opens) from trivial)`. Take `⟨w, hw⟩ : x ∈ Set.range (affPt s₀ U)` from `U.2.range_fromSpec.ge hxU`.
+
+Conclude with `⟨U, w, hw⟩)`. Use the proof step `(fun U ↦ IsAffineOpen.isOpenImmersion_fromSpec U.2)`. Use `𝒱.hom_ext _ _ fun U ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `affPt s₀ U ≫ i ≫ _ = affPt s₀ U ≫ j`. Rewrite using `[← Category.assoc, show affPt s₀ U ≫ i = _ from (hX.red (op U)).symm, show affPt s₀ U ≫ j = _ from (hY.red (op U)).symm, Category.assoc]`.
+
+Express the relevant statement in the definitionally equal form `spMap (S'.p (op U)) ≫ 𝒰.f U ≫ _ = _`. Rewrite using `[𝒰.map_glueMorphismsOfLocallyDirected g hg U]`. Express the relevant statement in the definitionally equal form `spMap (S'.p (op U)) ≫ spMap (ψ (op U) : S.F.obj (op U) →+* S'.F.obj (op U)) ≫ hY.y (op U) = _`. Rewrite using `[← Category.assoc, ← spMap_comp₂]`. Conclude with `congrArg (· ≫ hY.y (op U)) (congrArg spMap (RingHom.ext fun b ↦ hψp (op U) b))`.
+-/
 theorem presents_hom : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), ∀ (S S' : Sys I π s₀) (X : Scheme.{0}) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (Y : Scheme.{0}) (t : Y ⟶ Sp R) (j : X₀ ⟶ Y), IsPullback i s₀ s (spMap π) → S.Presents t j → S'.Presents s i → (∃ ψ : ∀ U, S.F.obj U →ₐ[R] S'.F.obj U, (∀ U b, S'.p U (ψ U b) = S.p U b) ∧ ∀ (U V : AffOp X₀) (a : U ⟶ V) (b : S.F.obj U), mp S'.F a (ψ U b) = ψ V (mp S.F a b)) → ∃ f : X ⟶ Y, f ≫ t = s ∧ i ≫ f = j := by
   intro R R₀ _ _ I hI π hπ hk X₀ s₀ S S' X s i Y t j hpb hY hX hψ
   obtain ⟨ψ, hψp, hψn⟩ := hψ

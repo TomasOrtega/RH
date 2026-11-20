@@ -12,13 +12,24 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
+/- English proof (translation)
+The claim follows from `Or.inl P.tied.div.tup.mu0`.
+-/
 theorem used_base (P : RowSideFamily ex) : Formalism.IndefR.RecTie.Used0 D (P.I.tup P.A3.A.μ0) := Or.inl P.tied.div.tup.mu0
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+-/
 theorem mu_eq_of_heq (P : RowSideFamily ex) {Zs : DefSub P.A3.fam3.amb3} (h : Zs = P.Zs)
     (S : IndefData (P.A3.side3 P.P0 P.ψ0 Zs)) (hS : HEq S P.S0) : S.μ = P.S0.μ := by
   subst h
   rw [eq_of_heq hS]
 
+/- English proof (translation)
+Break down `W.Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Rewrite using `[h]`. Conclude with `used_base W.P`. Use `right`. Establish `e : W.Q.Rl.mu = W.P.S0.μ` using `mu_eq_of_heq W.P W.Q.zs _ W.Q.s0`.
+
+Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Rewrite using `[W.P.tied.div.tup.muAt, Equiv.apply_symm_apply, ← h, e]`. Both sides reduce to the same expression.
+-/
 theorem used_all (W : RealPack ex) (t : W.P.T) : Formalism.IndefR.RecTie.Used0 D (W.P.I.tup t) := by
   rcases W.Q.charW.tup.mu_used t with h | ⟨w, h⟩
   · rw [h]; exact used_base W.P
@@ -28,26 +39,44 @@ theorem used_all (W : RealPack ex) (t : W.P.T) : Formalism.IndefR.RecTie.Used0 D
     rw [W.P.tied.div.tup.muAt, Equiv.apply_symm_apply, ← h, e]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h u t x F => h u t (used_all W t) x F, fun h u t _ x F => h u t x F⟩`.
+-/
 theorem dcPtG_iff (W : RealPack ex) : DcPtG W.P ↔ RowsHoldDcPt3 W.P :=
   ⟨fun h u t x F => h u t (used_all W t) x F, fun h u t _ x F => h u t x F⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, (dcPtG_iff W).1 h.2.2.1, h.2.2.2⟩, fun h => ⟨h.1, W.S.lev, (dcPtG_iff W).2 h.2.1, h.2.2⟩⟩`.
+-/
 theorem hypAt_iff (W : RealPack ex) : HypAt W ↔
     Nonempty (Formalism.L2.SG.JoinSI.JoinSI W.R W.S W.Q) ∧ RowsHoldDcPt3 W.P ∧ W.Q.Rl.Char3 W.Q.F ∧ FramesOKg2 W.Q.Rl :=
   ⟨fun h => ⟨h.1, (dcPtG_iff W).1 h.2.2.1, h.2.2.2⟩, fun h => ⟨h.1, W.S.lev, (dcPtG_iff W).2 h.2.1, h.2.2⟩⟩
 
+/- English proof (translation)
+The claim follows from `(hypAt_iff W).2 ⟨hJ, hP, RealDat3.characterisation_of_weak W.Q.charW hE, W.Q.frames hF⟩`.
+-/
 theorem hypAt_of (W : RealPack ex) (hJ : Nonempty (Formalism.L2.SG.JoinSI.JoinSI W.R W.S W.Q)) (hP : RowsHoldDcPt3 W.P)
     (hE : W.Q.Rl.toRealDat.ExAt) (hF : W.Q.FramesEx) : HypAt W :=
   (hypAt_iff W).2 ⟨hJ, hP, RealDat3.characterisation_of_weak W.Q.charW hE, W.Q.frames hF⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, h u _ (used_base P) x F⟩`.
+-/
 theorem period_rational {P : RowSideFamily ex} (h : DcPtG P) (u : D.what₂.Word) (x : Fin (P.Dc.a (P.I.wU u)) → D.what₂.LL)
     (F : Fin ((P.A3.side3 P.Ps P.ψs P.Zs).nV P.A3.A.μ0) → D.what₂.LL) :
     D.what₂.perCol u (P.I.tup P.A3.A.μ0) (D.jN u (P.I.eNu u x))
       (P.I.jA P.A3.A.μ0 ((rV0 D P.A3.A P.Ps P.ψs P.A3.A.μ0).mulVec F)) ∈ Set.range D.what₂.embLL :=
   ⟨_, h u _ (used_base P) x F⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.IndefR.Cx.definite_coordinates_in_good_part _ true`.
+-/
 theorem cornerCoordinate_automatic (W : RealPack ex) : (cxW W).CoordinatesInGoodPart W.Q.F.cr W.Q.F.cv true :=
   Formalism.IndefR.Cx.definite_coordinates_in_good_part _ true
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.2.2.2.2.1⟩`.
+-/
 theorem tiesRest_of_cxTies (W : RealPack ex)
     (h : CxTies (cxW W) W.Q.F.cr W.Q.F.cv (W.Q.F.eV (cxW W).zs)) : TiesRest W :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.2.2.2.2.1⟩

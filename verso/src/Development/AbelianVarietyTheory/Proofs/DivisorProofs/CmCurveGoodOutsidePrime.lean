@@ -16,17 +16,26 @@ open scoped IntermediateField
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Simplify using `only [shortTwist, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shortTwist_Δ (d a b : ℂ) :
     (shortTwist d a b).Δ = d ^ 6 * (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).Δ := by
   simp only [shortTwist, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
     WeierstrassCurve.b₆, WeierstrassCurve.b₈]
   ring
 
+/- English proof (translation)
+Simplify using `only [shortTwist, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shortTwist_c₄ (d a b : ℂ) :
     (shortTwist d a b).c₄ = d ^ 2 * (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).c₄ := by
   simp only [shortTwist, WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄]
   ring
 
+/- English proof (translation)
+Establish `h0 : (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).Δ ≠ 0` using `(WeierstrassCurve.IsElliptic.isUnit (W := (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ))).ne_zero`. Simplify using `only [WeierstrassCurve.j, Units.val_inv_eq_inv_val, WeierstrassCurve.coe_Δ', shortTwist_Δ, shortTwist_c₄]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem shortTwist_j {d a b : ℂ} (hd : d ≠ 0) [(shortTwist d a b).IsElliptic]
     [(⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).IsElliptic] :
     (shortTwist d a b).j = (⟨0, 0, 0, a, b⟩ : WeierstrassCurve ℂ).j := by
@@ -36,6 +45,9 @@ theorem shortTwist_j {d a b : ℂ} (hd : d ≠ 0) [(shortTwist d a b).IsElliptic
     shortTwist_Δ, shortTwist_c₄]
   field_simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem j_congr_of_eq {W W' : WeierstrassCurve ℂ} (h : W = W') [W.IsElliptic] [W'.IsElliptic] :
     W.j = W'.j := by
   subst h; rfl
@@ -44,6 +56,29 @@ end GlobalTheory.CMModel
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `p hp h4 h3`. Take `⟨L₀, hL₀⟩` from `exists_isIntegersLattice (p := p) hp.pos`. Take `⟨-, -, hms⟩` from `GlobalTheory.T.integersLattice_g2_g3_ne_zero_and_mulStable p L₀ hp h3 hL₀`. Establish `him : (sqrtNegNat p).im ≠ 0`. Simplify using `only [sqrtNegNat, Complex.mul_im, Complex.ofReal_re, Complex.I_im, Complex.ofReal_im, Complex.I_re, mul_one, mul_zero, add_zero]`.
+
+Conclude with `(Real.sqrt_pos.mpr (by exact_mod_cast hp.pos)).ne'`. Establish `hjint` using `GlobalTheory.T.isIntegral_j_of_nonreal_multiplier L₀ (sqrtNegNat p) hms him`. Establish `hjQ : IsIntegral ℚ (latticeCurve L₀).j` using `hjint.tower_top`. Use `haveI : FiniteDimensional ℚ ℚ⟮(latticeCurve L₀).j⟯ := IntermediateField.adjoin.finiteDimensional hjQ`. Use `haveI hNF : NumberField ℚ⟮(latticeCurve L₀).j⟯ := NumberField.of_module_finite ℚ _`.
+
+Take `⟨L₁, t₁, hD₁, hj₁⟩` from `GlobalTheory.T.exists_sqrtNegPrimeKernelDatum_of_integersLattice p L₀ hp h4 h3 hL₀`. Take `⟨L, t, hD, hj, hsq⟩` from `GlobalTheory.T.exists_rescaled_lattice_prodDerivWeierstrassP_mem p _ L₁ t₁ hp h4 h3 hD₁`. Use `set F := ℚ⟮(latticeCurve L₀).j⟯ with hFdef`. Establish `hg₂ : -L.g₂ / 4 ∈ F` using `div_mem (neg_mem hD.g₂_mem) (ofNat_mem _ 4)`. Establish `hg₃ : -L.g₃ / 4 ∈ F` using `div_mem (neg_mem hD.g₃_mem) (ofNat_mem _ 4)`.
+
+Set `dF : F` to `if p % 8 = 3 then 1 else -(p : F)`. Set `dC : ℂ` to `if p % 8 = 3 then 1 else -(p : ℂ)`. Establish `hdC : ((dF : F) : ℂ) = dC`. Apply the tactic sequence `simp only [dF, dC]; split_ifs <;> simp`. Establish `hdC0 : dC ≠ 0`.
+
+Simplify using `only [dC]`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `neg_ne_zero.mpr (by exact_mod_cast hp.ne_zero)`. Set `A : WeierstrassCurve F` to `shortTwist dF ⟨-L.g₂ / 4, hg₂⟩ ⟨-L.g₃ / 4, hg₃⟩`.
+
+Establish `hmap : A.map (algebraMap F ℂ) = shortTwist dC (-L.g₂ / 4) (-L.g₃ / 4)`. Rewrite using `[← hdC]`. Apply the tactic sequence `ext <;> simp [A, shortTwist, WeierstrassCurve.map]`. Establish `hlat : (⟨0, 0, 0, -L.g₂ / 4, -L.g₃ / 4⟩ : WeierstrassCurve ℂ) = latticeCurve L` using `rfl`. Establish `hΔA : A.Δ ≠ 0`.
+
+Introduce `h0`. Use `congrArg (algebraMap F ℂ) h0` as an intermediate fact. Rewrite `this` using `[← WeierstrassCurve.map_Δ, hmap, shortTwist_Δ, hlat, map_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ hdC0) (latticeCurve_Δ_ne_zero L) this`. Use `haveI hE : A.IsElliptic := ⟨Ne.isUnit hΔA⟩`.
+
+Establish `hmin : HasMinimalDiscriminant A (-(p : F) ^ 3)`. Introduce `w`. Take `⟨V, hV⟩` from `GlobalTheory.T.exists_valuationSubring_complex_restrict_eq_at_prime F w`. Establish `hloc` using `GlobalTheory.T.quadraticTwist_cmCurve_model_discriminant_negPrimeCube p F L t hp h4 h3 hD hsq V`. Establish `hD0 : (-(p : F) ^ 3) ≠ 0` using `neg_ne_zero.mpr (pow_ne_zero _ (by exact_mod_cast hp.ne_zero))`.
+
+Establish `hmod : ModelAt V F (A.map (algebraMap F ℂ)) ((-(p : F) ^ 3 : F) : ℂ)`. Rewrite using `[hmap]`. Use `hloc using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Both sides reduce to the same expression.
+
+Take `⟨C, u, hI, hΔ⟩` from `GlobalTheory.T.exists_variableChange_isIntegral_of_modelAt F w V A _ hV hD0 hmod`. Establish `hram` using `GlobalTheory.T.natCast_notMem_cube_prime_adjoin_jInvariant_sqrtNeg p L₀ w hp hL₀`. Conclude with `⟨C, u, GlobalTheory.T.isMinimal_of_discr_eq_unit_mul_neg_prime_cube p F w (C • A) u hram hI hΔ, hΔ⟩`. Use `⟨F, hNF, A, ⟨hNF, hE, L₀, hL₀, rfl, ?_, hmin.hasGoodReductionOutside⟩, hmin⟩` and prove the remaining obligations. Establish `e1 : ((A.j : F) : ℂ) = (A.map (algebraMap F ℂ)).j` using `(A.map_j (algebraMap F ℂ)).symm`.
+
+Use `haveI : (shortTwist dC (-L.g₂ / 4) (-L.g₃ / 4)).IsElliptic := hmap ▸ inferInstance`. Use `haveI : (⟨0, 0, 0, -L.g₂ / 4, -L.g₃ / 4⟩ : WeierstrassCurve ℂ).IsElliptic := inferInstanceAs (latticeCurve L).IsElliptic`. Rewrite using `[e1, j_congr_of_eq hmap, shortTwist_j hdC0, j_congr_of_eq hlat, hj, hj₁]`.
+-/
 theorem cmCurveGoodOutsidePrime : CMCurveGoodOutsidePrimeSt := by
   intro p hp h4 h3
   obtain ⟨L₀, hL₀⟩ := exists_isIntegersLattice (p := p) hp.pos

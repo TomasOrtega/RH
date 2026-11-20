@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `IsLevelLift`. Use `⟨Subgroup.one_mem _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[map_one]`.
+
+Conclude with `rTup_one`.
+-/
 theorem isLift_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     IsLevelLift V β L 1 1 := by
   unfold IsLevelLift
@@ -22,6 +27,9 @@ theorem isLift_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.
   · rw [map_one]
     exact rTup_one
 
+/- English proof (translation)
+Establish `h` using `(levChar D.sp.cm V.gram β L).map_one`. Rewrite `h` using `[levChar_apply]`. Establish `h' : levFn β L 1 = 1` using `h`. Unfold `levChi`. Rewrite using `[map_one, h', Units.val_one]`.
+-/
 theorem levChi_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     levChi V β L 1 = 1 := by
   have h := (levChar D.sp.cm V.gram β L).map_one
@@ -30,6 +38,9 @@ theorem levChi_one (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.
   unfold levChi
   rw [map_one, h', Units.val_one]
 
+/- English proof (translation)
+Establish `hm` using `h`. Unfold `levG levA at hm`. Rewrite `hm` using `[Subgroup.mem_inf, Subgroup.mem_comap, mem_lev]`. Take `⟨h1, h2, h3⟩` from `hm`. Conclude with `⟨h1, h2, Subgroup.mem_bot.mp h3⟩`.
+-/
 theorem isLift_of_mem (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     {κ : GA D V} (h : κ ∈ levG V β (flag1L L)) : IsLevelLift V β L 1 κ := by
   have hm := h
@@ -38,6 +49,11 @@ theorem isLift_of_mem (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat
   obtain ⟨h1, h2, h3⟩ := hm
   exact ⟨h1, h2, Subgroup.mem_bot.mp h3⟩
 
+/- English proof (translation)
+Establish `e1 : ext1 (flag1L L).P.H (flag1L L).P.chi (rTup β (flag1L L) (finE V κ)) = 1`. Unfold `ext1`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `e2 : ext1 (flagL L).P.H (flagL L).P.chi (rTup β (flagL L) (finE V κ)) = 1`. Unfold `ext1`.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Unfold `levChi levFn`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+-/
 private lemma levChi_flag1L_eq_levChi_flagL (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (κ : GA D V) :
     levChi V β (flag1L L) κ = levChi V β (flagL L) κ := by
   have e1 : ext1 (flag1L L).P.H (flag1L L).P.chi (rTup β (flag1L L) (finE V κ)) = 1 := by
@@ -50,6 +66,9 @@ private lemma levChi_flag1L_eq_levChi_flagL (V : HSp D) (β : GL (Fin V.rank) (L
   rw [e1, e2]
   rfl
 
+/- English proof (translation)
+Establish `hne : levChi V β (flagL L) κ ≠ 0`. Unfold `levChi`. Conclude with `Units.ne_zero _`. Rewrite `h` using `[levChi_one W β' (flagL L'), inv_one, one_smul]`. Rewrite using `[levChi_flag1L_eq_levChi_flagL, ← h, smul_smul, mul_inv_cancel₀ hne, one_smul]`.
+-/
 theorem law_of_pair {V W : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (β' : GL (Fin W.rank) (Lev.EAf D)) (L' : LevDat D.host.E ℂ W.rank) {X : Type} [AddCommGroup X] [Module ℂ X]
     {κ : GA D V} {u v : X}
@@ -61,6 +80,15 @@ theorem law_of_pair {V W : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat
   rw [levChi_one W β' (flagL L'), inv_one, one_smul] at h
   rw [levChi_flag1L_eq_levChi_flagL, ← h, smul_smul, mul_inv_cancel₀ hne, one_smul]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hIs hθ hωY hωX hvY hvX`. Establish `hInf : R.models_inf` using `hθ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `t k hk κ hκ`. Establish `hl : IsLevelLift (Yc D k) (R.βY k) (R.datYt t k R.triv) 1 κ` using `isLift_of_mem _ _ _ hκ`.
+
+Establish `hl'` using `isLift_one (Yc D (k + 1)) (R.βY (k + 1)) (R.datYt t (k + 1) R.triv)`. Establish `key` using `GlobalTheory.T.stepVector_lift_pair_flagLevel_realized_chain R hIs hInf hωY hvY t k hk 1 κ 1 hl hl'`. Establish `e : flag1L (R.datYt t k R.triv) = R.datYt t k R.triv` using `rfl`. Establish `hlaw` using `law_of_pair (R.βY k) (R.datYt t k R.triv) (R.βY (k + 1)) (R.datYt t (k + 1) R.triv) key`. Rewrite `hlaw` using `[e]`.
+
+Conclude with `⟨hl.1, hlaw⟩`. Introduce `t κ hκ`. Establish `hl : IsLevelLift (Yc D (D.R.m - 1)) (R.βY (D.R.m - 1)) (R.datYt t (D.R.m - 1) R.triv) 1 κ` using `isLift_of_mem _ _ _ hκ`. Establish `hl'` using `isLift_one D.sp.X' R.βX (R.datXt t)`. Establish `key` using `GlobalTheory.T.lastVector_lift_pair_flagLevel_characters R hIs hInf hωX hvX t 1 κ 1 hl hl'`.
+
+Establish `e : flag1L (R.datYt t (D.R.m - 1) R.triv) = R.datYt t (D.R.m - 1) R.triv` using `rfl`. Establish `hlaw` using `law_of_pair (R.βY (D.R.m - 1)) (R.datYt t (D.R.m - 1) R.triv) R.βX (R.datXt t) key`. Rewrite `hlaw` using `[e]`. Conclude with `⟨hl.1, hlaw⟩`.
+-/
 theorem lawsOK : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),
     R.toLevCh.Is A.μ0 → IsInfFam R.θ → R.chain_ωY → R.chain_ωX → R.chain_vY → R.chain_vX → LawsOK R := by

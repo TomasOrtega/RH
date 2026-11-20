@@ -9,20 +9,32 @@ variable {K M : Type} [Group K] [Ring M] (ρ z : K → M) (h1 : ρ 1 = 1) (hm : 
   (hz : ∀ g h, z (g * h) = z g + ρ g * z h * ρ g⁻¹)
 
 include h1 hz in
+/- English proof (translation)
+Simplify `hz 1 1` using `[h1]`.
+-/
 private theorem cocycle_apply_one_eq_zero : z 1 = 0 := by
   simpa [h1] using hz 1 1
 
 include h1 hm in
+/- English proof (translation)
+Use `hm g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, hg, one_mul]`. Conclude with `this.symm`.
+-/
 private theorem cp_inv {g : K} (hg : ρ g = 1) : ρ g⁻¹ = 1 := by
   have := hm g g⁻¹
   rw [mul_inv_cancel, h1, hg, one_mul] at this
   exact this.symm
 
 include h1 hm hz in
+/- English proof (translation)
+Rewrite using `[hz, hg, cp_inv ρ h1 hm hg, one_mul, mul_one]`.
+-/
 private theorem cp_add {g : K} (hg : ρ g = 1) (h : K) : z (g * h) = z g + z h := by
   rw [hz, hg, cp_inv ρ h1 hm hg, one_mul, mul_one]
 
 include h1 hm hz in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨by simpa using h1, by simpa using cocycle_apply_one_eq_zero ρ z h1 hz⟩`. Consider the case `succ k ih`. Use `⟨by rw [pow_succ', hm, hg, ih.1, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', cp_add ρ z h1 hm hz hg, ih.2, succ_nsmul']`.
+-/
 private theorem cp_pow {g : K} (hg : ρ g = 1) (k : ℕ) : ρ (g ^ k) = 1 ∧ z (g ^ k) = k • z g := by
   induction k with
   | zero => exact ⟨by simpa using h1, by simpa using cocycle_apply_one_eq_zero ρ z h1 hz⟩
@@ -31,6 +43,17 @@ private theorem cp_pow {g : K} (hg : ρ g = 1) (k : ℕ) : ρ (g ^ k) = 1 ∧ z 
     rw [pow_succ', cp_add ρ z h1 hm hz hg, ih.2, succ_nsmul']
 
 include h1 hm hz in
+/- English proof (translation)
+Establish `hinv : ∀ g, ρ g = 1 → z g = 0 → ρ g⁻¹ = 1 ∧ z g⁻¹ = 0`. Introduce `g hg hzg`. Use `⟨cp_inv ρ h1 hm hg, ?_⟩` and prove the remaining obligations. Use `cp_add ρ z h1 hm hz hg g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, cocycle_apply_one_eq_zero ρ z h1 hz, hzg, zero_add, eq_comm]`. Then use the resulting hypothesis.
+
+Set `S : Subgroup K` to `{ carrier := {g | ρ g = 1 ∧ z g = 0} mul_mem' := by`. Introduce and unpack `a b ⟨ha, hza⟩ ⟨hb, hzb⟩`. Conclude with `⟨by rw [hm, ha, hb, one_mul], by rw [cp_add ρ z h1 hm hz ha, hza, hzb, zero_add]⟩`. Use the proof step `one_mem' := ⟨h1, cocycle_apply_one_eq_zero ρ z h1 hz⟩`. Use the proof step `inv_mem' := by`.
+
+Introduce and unpack `a ⟨ha, hza⟩`. Conclude with `hinv a ha hza }`. Establish `hS : IsOpen (S : Set K)` using `(cρ.isOpen_fiber 1).inter (cz.isOpen_fiber 0)`. Establish `hN : S.Normal`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `a ⟨ha, hza⟩ k`. Use `show ρ (k * a * k⁻¹) = 1 ∧ z (k * a * k⁻¹) = 0`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hm, ha, mul_one, ← hm, mul_inv_cancel, h1]`. Rewrite using `[mul_assoc, hz, cp_add ρ z h1 hm hz ha, hza, zero_add, ← hz, mul_inv_cancel, cocycle_apply_one_eq_zero ρ z h1 hz]`.
+
+Conclude with `⟨{ toOpenSubgroup := ⟨S, hS⟩, isNormal' := hN }, fun g => Iff.rfl⟩`.
+-/
 private theorem cp_U [TopologicalSpace K] (cρ : IsLocallyConstant ρ) (cz : IsLocallyConstant z) :
     ∃ U : OpenNormalSubgroup K, ∀ g, g ∈ U ↔ ρ g = 1 ∧ z g = 0 := by
   have hinv : ∀ g, ρ g = 1 → z g = 0 → ρ g⁻¹ = 1 ∧ z g⁻¹ = 0 := by
@@ -59,6 +82,11 @@ private theorem cp_U [TopologicalSpace K] (cρ : IsLocallyConstant ρ) (cz : IsL
 
 end Abs
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `y`. Establish `e : (fun g => (Ideal.Quotient.mk (I ^ m)).mapMatrix (f g)) ⁻¹' {y} = ⋂ i, ⋂ j, (fun g => Ideal.Quotient.mk (I ^ m) (f g i j)) ⁻¹' {y i j}`. Use extensionality with `g`. Simplify using `[← Matrix.ext_iff]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hf i j m).isOpen_fiber _`.
+-/
 private theorem cp_lc {K R : Type} [TopologicalSpace K] [CommRing R] {n : ℕ} (I : Ideal R)
     (f : K → Matrix (Fin n) (Fin n) R) (hf : ∀ i j, AdicCont I fun g => f g i j) (m : ℕ) :
     IsLocallyConstant fun g => (Ideal.Quotient.mk (I ^ m)).mapMatrix (f g) := by
@@ -71,15 +99,38 @@ private theorem cp_lc {K R : Type} [TopologicalSpace K] [CommRing R] {n : ℕ} (
   rw [e]
   exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hf i j m).isOpen_fiber _
 
+/- English proof (translation)
+Rewrite using `[← Matrix.ext_iff]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 private theorem cp_zero {R : Type} [CommRing R] {n : ℕ} (J : Ideal R) (A : Matrix (Fin n) (Fin n) R) :
     (Ideal.Quotient.mk J).mapMatrix A = 0 ↔ ∀ i j, A i j ∈ J := by
   rw [← Matrix.ext_iff]
   simp [Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk J).mapMatrix, ← map_sub, cp_zero]`.
+-/
 private theorem cp_one {R : Type} [CommRing R] {n : ℕ} (J : Ideal R) (A : Matrix (Fin n) (Fin n) R) :
     (Ideal.Quotient.mk J).mapMatrix A = 1 ↔ ∀ i j, (A - 1) i j ∈ J := by
   rw [← sub_eq_zero, ← map_one (Ideal.Quotient.mk J).mapMatrix, ← map_sub, cp_zero]
 
+/- English proof (translation)
+Introduce `l _ L G n R _ I ρ z H _ hHo hHk hl h1 hm hρc hρH hzc hz`. Establish `main : ∀ m : ℕ, (∀ (h : G.G₀), (h : G.Γ) ∈ H → ∃ e : ℕ, ∀ i j, (ρ (h ^ l ^ e) - 1) i j ∈ I ^ m ∧ z (h ^ l ^ e) i j ∈ I ^ m) ∧ ∀ k : G.G₀, (k : G.Γ) ∈ PL l H → ∀ i j, (ρ k - 1) i j ∈ I ^ m ∧ z k i j ∈ I ^ m`. Introduce `m`. Set `ρ'` to `fun x => (Ideal.Quotient.mk (I ^ m)).mapMatrix (ρ x)`. Set `z'` to `fun x => (Ideal.Quotient.mk (I ^ m)).mapMatrix (z x)`.
+
+Establish `h1' : ρ' 1 = 1` using `by simp [ρ', h1]`. Establish `hm' : ∀ a b, ρ' (a * b) = ρ' a * ρ' b`. Introduce `a b`. Simplify using `[ρ', hm]`. Establish `hz' : ∀ a b, z' (a * b) = z' a + ρ' a * z' b * ρ' a⁻¹`.
+
+Introduce `a b`. Simplify using `only [z', ρ', hz, map_add, map_mul]`. Establish `hlq : ((l : ℕ) : R ⧸ I ^ m) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (I ^ m)), hl, map_zero]`. Establish `key : ∀ g : G.G₀, ρ' g = 1 → ρ' (g ^ l) = 1 ∧ z' (g ^ l) = 0`.
+
+Introduce `g hg`. Take `⟨p1, p2⟩` from `cp_pow ρ' z' h1' hm' hz' hg l`. Use `⟨p1, p2.trans ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, nsmul_eq_mul, hlq]`.
+
+Establish `P1 : ∀ (h : G.G₀), (h : G.Γ) ∈ H → ∃ e : ℕ, ∀ i j, (ρ (h ^ l ^ e) - 1) i j ∈ I ^ m ∧ z (h ^ l ^ e) i j ∈ I ^ m`. Introduce `h hh`. Take `⟨e, he⟩` from `hρH m h hh`. Use `⟨e + 1, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ l e, pow_mul]`.
+
+Take `⟨q1, q2⟩` from `key _ ((cp_one _ _).2 he)`. Conclude with `⟨(cp_one _ _).1 q1 i j, (cp_zero _ _).1 q2 i j⟩`. Use `⟨P1, ?_⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `cp_U ρ' z' h1' hm' hz' (cp_lc I ρ hρc m) (cp_lc I z hzc m)`. Introduce `k hk i j`.
+
+Establish `hkU : k ∈ U`. Use `pl_sub l G.Γ H G.η.ker G.η_open hHk U ?_ k hk` and prove the remaining obligations. Introduce `h hh`. Take `⟨e, he⟩` from `P1 h hh`. Conclude with `⟨e, (hU _).2 ⟨(cp_one _ _).2 fun i j => (he i j).1, (cp_zero _ _).2 fun i j => (he i j).2⟩⟩`.
+
+Take `⟨q1, q2⟩` from `(hU k).1 hkU`. Conclude with `⟨(cp_one _ _).1 q1 i j, (cp_zero _ _).1 q2 i j⟩`. Conclude with `⟨fun m h hh => (main m).1 h hh, fun k hk m i j => (main m).2 k hk i j⟩`.
+-/
 theorem UpperTheory.V.Pa.coc_pl :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G : Glob l L) (n : ℕ) (R : Type) [CommRing R] (I : Ideal R) (ρ z : G.G₀ → Matrix (Fin n) (Fin n) R) (H : Subgroup G.Γ) [H.Normal], IsOpen (H : Set G.Γ) → H ≤ G.η.ker → (l : R) = 0 → ρ 1 = 1 → (∀ g h, ρ (g * h) = ρ g * ρ h) → (∀ i j, AdicCont I fun g => ρ g i j) → (∀ (m : ℕ) (h : G.G₀), (h : G.Γ) ∈ H → ∃ e : ℕ, ∀ i j, (ρ (h ^ l ^ e) - 1) i j ∈ I ^ m) → (∀ i j, AdicCont I fun g => z g i j) → (∀ g h, z (g * h) = z g + ρ g * z h * ρ g⁻¹) → (∀ (m : ℕ) (h : G.G₀), (h : G.Γ) ∈ H → ∃ e : ℕ, ∀ i j, (ρ (h ^ l ^ e) - 1) i j ∈ I ^ m ∧ z (h ^ l ^ e) i j ∈ I ^ m) ∧ ∀ k : G.G₀, (k : G.Γ) ∈ PL l H → ∀ (m : ℕ) i j, (ρ k - 1) i j ∈ I ^ m ∧ z k i j ∈ I ^ m := by
   intro l _ L G n R _ I ρ z H _ hHo hHk hl h1 hm hρc hρH hzc hz

@@ -16,19 +16,31 @@ variable {n : ℕ} (ε : Fin n → Bool)
 
 def bJ (u y : Fin n → ℂ) : ℂ := star u ⬝ᵥ (Jm ε *ᵥ y)
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `congr 1; funext a; split_ifs <;> norm_num`.
+-/
 theorem jm_mul_self : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext a; split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; by_cases h : ε a <;> simp [h]`.
+-/
 theorem jm_conjTranspose : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
   congr 1; funext a; by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[mulVec_mulVec, jm_mul_self, one_mulVec]`.
+-/
 theorem jm_jm_mulVec (y : Fin n → ℂ) : Jm ε *ᵥ (Jm ε *ᵥ y) = y := by
   rw [mulVec_mulVec, jm_mul_self, one_mulVec]
 
 variable {ε}
 
+/- English proof (translation)
+Establish `hPP : P * P⁻¹ = 1` using `mul_nonsing_inv P ((isUnit_iff_isUnit_det P).1 hP)`. Use `conv_lhs => rw [show y = P *ᵥ (P⁻¹ *ᵥ y) by rw [mulVec_mulVec, hPP, one_mulVec]]`. Rewrite using `[bJ, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Simplify using `[Pi.star_def, Pi.single_apply, dotProduct]`.
+-/
 theorem coord {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (b : Fin n) (y : Fin n → ℂ) :
     bJ ε (P *ᵥ Pi.single b 1) y = ((Pᴴ * Jm ε * P) *ᵥ (P⁻¹ *ᵥ y)) b := by
   have hPP : P * P⁻¹ = 1 := mul_nonsing_inv P ((isUnit_iff_isUnit_det P).1 hP)
@@ -36,6 +48,11 @@ theorem coord {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (b : Fin n) (y : 
   rw [bJ, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
   simp [Pi.star_def, Pi.single_apply, dotProduct]
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single q]`. Rewrite using `[hG p q (Or.inl rfl)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[hG p b (Or.inl rfl)]`. Simplify using `[hb, hpq]`. Simplify using the standard rewrite rules.
+-/
 theorem row_p {P : Matrix (Fin n) (Fin n) ℂ} {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
@@ -46,6 +63,11 @@ theorem row_p {P : Matrix (Fin n) (Fin n) ℂ} {p q : Fin n} (hpq : p ≠ q)
   · intro b _ hb; rw [hG p b (Or.inl rfl)]; simp [hb, hpq]
   · simp
 
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[hG q p (Or.inr (Or.inl rfl))]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[hG q b (Or.inr (Or.inl rfl))]`. Simplify using `[hb, hpq.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem row_q {P : Matrix (Fin n) (Fin n) ℂ} {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
@@ -56,6 +78,15 @@ theorem row_q {P : Matrix (Fin n) (Fin n) ℂ} {p q : Fin n} (hpq : p ≠ q)
   · intro b _ hb; rw [hG q b (Or.inr (Or.inl rfl))]; simp [hb, hpq.symm]
   · simp
 
+/- English proof (translation)
+Establish `hPP : P * P⁻¹ = 1` using `mul_nonsing_inv P ((isUnit_iff_isUnit_det P).1 hP)`. Rewrite using `[coord hP q, coord hP p, row_q hpq hG, row_p hpq hG]`. Establish `hy : P *ᵥ (P⁻¹ *ᵥ y) = y` using `by rw [mulVec_mulVec, hPP, one_mulVec]`. Establish `hdz : diagonal d *ᵥ (P⁻¹ *ᵥ y) = (P⁻¹ *ᵥ y) + ((d p - 1) * (P⁻¹ *ᵥ y) p) • Pi.single p 1 + ((d q - 1) * (P⁻¹ *ᵥ y) q) • Pi.single q 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [mulVec_diagonal, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Distinguish the cases in `hap : a = p`. Substitute `hap` using the available equality. Simplify using `[hpq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Distinguish the cases in `haq : a = q`. Substitute `haq` using the available equality. Simplify using `[hap]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hap, haq, hd a hap haq]`.
+
+Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, hdz, mulVec_add, mulVec_add, mulVec_smul, mulVec_smul, hy]`.
+-/
 theorem act {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
@@ -82,6 +113,13 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hPPi : P * P⁻¹ = 1` using `mul_nonsing_inv P ((isUnit_iff_isUnit_det P).1 hP)`. Establish `e1 : ∀ M : Matrix (Fin n) (Fin n) ℂ, P⁻¹ᴴ * (Pᴴ * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, ← conjTranspose_mul, hPPi, conjTranspose_one, Matrix.one_mul]`. Establish `h0 : diagonal (star d) * (Pᴴ * Jm ε * P) + (Pᴴ * Jm ε * P) * diagonal d = 0`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.add_apply, diagonal_mul, mul_diagonal, Pi.star_apply, Matrix.zero_apply]`. Take the linear combination `hd a b`. Use `show (P * diagonal d * P⁻¹)ᴴ * Jm ε + Jm ε * (P * diagonal d * P⁻¹) = 0`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, diagonal_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hPPi, Matrix.mul_one, e1]`. Use `_ = 0 := by rw [h0, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem mem_lie_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin n → ℂ)
     (hd : ∀ a b, (star (d a) + d b) * (Pᴴ * Jm ε * P) a b = 0) :
     P * diagonal d * P⁻¹ ∈ GlobalTheory.SmoothGlob.lieSet ε := by
@@ -98,6 +136,9 @@ theorem mem_lie_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin n
         simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc, hPPi, Matrix.mul_one, e1]
     _ = 0 := by rw [h0, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[toM_expG ε _ t hX]`. Rewrite using `[show (t : ℂ) • (P * diagonal d * P⁻¹) = P * diagonal ((t : ℂ) • d) * P⁻¹ by`. Rewrite using `[diagonal_smul, Matrix.mul_smul, Matrix.smul_mul]]`. Rewrite using `[Matrix.exp_conj _ _ hP, Matrix.exp_diagonal, Pi.exp_def, Complex.exp_eq_exp_ℂ]`. Both sides reduce to the same expression.
+-/
 theorem toM_expG_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin n → ℂ)
     (hX : inG ε (P * diagonal d * P⁻¹)) (t : ℝ) :
     toM (expG ε (P * diagonal d * P⁻¹) t) = P * diagonal (fun a => Complex.exp (t * d a)) * P⁻¹ := by
@@ -107,17 +148,28 @@ theorem toM_expG_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin 
   rw [Matrix.exp_conj _ _ hP, Matrix.exp_diagonal, Pi.exp_def, Complex.exp_eq_exp_ℂ]
   rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conjT_eq {M N : Matrix (Fin n) (Fin n) ℂ} (hM : Mᴴ * Jm ε * M = Jm ε) (hMN : M * N = 1) :
     Mᴴ = Jm ε * N * Jm ε := by
   calc Mᴴ = Mᴴ * (Jm ε * (M * N) * Jm ε) := by rw [hMN, Matrix.mul_one, jm_mul_self, Matrix.mul_one]
     _ = (Mᴴ * Jm ε * M) * N * Jm ε := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [hM]
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, jm_jm_mulVec, star_smul, smul_dotProduct, star_mulVec, jm_conjTranspose, ← dotProduct_mulVec, smul_eq_mul]`.
+-/
 theorem bJ_twist (c : ℂ) (e y : Fin n → ℂ) :
     bJ ε (c • (Jm ε *ᵥ e)) (Jm ε *ᵥ y) = star c * bJ ε e y := by
   rw [bJ, bJ, jm_jm_mulVec, star_smul, smul_dotProduct, star_mulVec, jm_conjTranspose,
     ← dotProduct_mulVec, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : P⁻¹ *ᵥ (P *ᵥ Pi.single p (1 : ℂ)) = Pi.single p 1`. Rewrite using `[mulVec_mulVec, nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP), one_mulVec]`. Rewrite `h1` using `[h0, mulVec_zero]`. Use `congrFun h1 p` as an intermediate fact.
+
+Simplify using `at this`.
+-/
 theorem col_ne_zero {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (p : Fin n) :
     P *ᵥ Pi.single p (1 : ℂ) ≠ 0 := by
   intro h0
@@ -133,12 +185,23 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem bJ_smul_left (t : ℂ) (u y : Fin n → ℂ) : bJ ε (t • u) y = star t * bJ ε u y := by
   rw [bJ, bJ, star_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem bJ_smul_right (t : ℂ) (u y : Fin n → ℂ) : bJ ε u (t • y) = t * bJ ε u y := by
   rw [bJ, bJ, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hPiP : P⁻¹ * P = 1` using `nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP)`. Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, hPiP, Matrix.mul_one, ← mulVec_mulVec, ← mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [mulVec_diagonal, Pi.single_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem act_col {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin n → ℂ) (b : Fin n) :
     (P * diagonal d * P⁻¹) *ᵥ (P *ᵥ Pi.single b 1) = d b • (P *ᵥ Pi.single b 1) := by
   have hPiP : P⁻¹ * P = 1 := nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP)
@@ -150,6 +213,11 @@ theorem act_col {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d : Fin n → 
   · subst h; ring
   · ring
 
+/- English proof (translation)
+Establish `hPiP : P⁻¹ * P = 1` using `nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP)`. Establish `hPPi : P * P⁻¹ = 1` using `mul_nonsing_inv P ((isUnit_iff_isUnit_det P).1 hP)`. Establish `h1 : diagonal d * diagonal d' = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Conclude with `hdd a`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mul_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d d' : Fin n → ℂ)
     (hdd : ∀ a, d a * d' a = 1) : (P * diagonal d * P⁻¹) * (P * diagonal d' * P⁻¹) = 1 := by
   have hPiP : P⁻¹ * P = 1 := nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP)
@@ -159,6 +227,9 @@ theorem conj_mul_conj {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (d d' : F
   calc _ = P * (diagonal d * (P⁻¹ * P) * diagonal d') * P⁻¹ := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hPiP, Matrix.mul_one, h1, Matrix.mul_one, hPPi]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `⟨_, by rw [hMd, act hP hpq hG d hd y, hy, mul_zero, zero_smul, add_zero]⟩`. Establish `hMN : M * (P * diagonal d' * P⁻¹) = 1` using `hMd ▸ conj_mul_conj hP d d' hdd`. Use `⟨((d' q - 1) * bJ ε (P *ᵥ Pi.single p 1) (Jm ε *ᵥ y)) * c, ?_⟩` and prove the remaining obligations. Rewrite using `[conjT_eq hM hMN, ← mulVec_mulVec, ← mulVec_mulVec, act hP hpq hG d' hd' (Jm ε *ᵥ y), hc, bJ_twist, hy, mul_zero, mul_zero, zero_smul, add_zero, mulVec_add, mulVec_smul, mulVec_smul, jm_jm_mulVec, jm_jm_mulVec, smul_smul]`.
+-/
 theorem keep {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
@@ -176,6 +247,11 @@ theorem keep {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq
       bJ_twist, hy, mul_zero, mul_zero, zero_smul, add_zero, mulVec_add, mulVec_smul, mulVec_smul,
       jm_jm_mulVec, jm_jm_mulVec, smul_smul]
 
+/- English proof (translation)
+Establish `hr : Module.finrank ℂ (W ⟨1, Nat.succ_lt_succ h⟩) = 1`. Establish `h1` using `hW.2.2.1 ⟨0, h⟩`. Rewrite `h1` using `[show (Fin.castSucc ⟨0, h⟩ : Fin (a + 1)) = 0 from Fin.ext rfl, hW.1, finrank_bot, hj]`. Conclude with `h1`. Take `⟨t, ht⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨e, he⟩ : W ⟨1, Nat.succ_lt_succ h⟩) (fun h0 => he0 (congrArg Subtype.val h0))).1 hr ⟨y, hy⟩`.
+
+Conclude with `⟨t, (congrArg Subtype.val ht).symm⟩`.
+-/
 theorem first_flag_space_one_dimensional {a : ℕ} {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (h : 0 < a)
     (hj : j ⟨0, h⟩ = 1) {e : Fin n → ℂ} (he : e ∈ W ⟨1, Nat.succ_lt_succ h⟩) (he0 : e ≠ 0)
     {y : Fin n → ℂ} (hy : y ∈ W ⟨1, Nat.succ_lt_succ h⟩) : ∃ t : ℂ, y = t • e := by
@@ -187,11 +263,21 @@ theorem first_flag_space_one_dimensional {a : ℕ} {j : Fin a → ℕ} {W : Flag
     (fun h0 => he0 (congrArg Subtype.val h0))).1 hr ⟨y, hy⟩
   exact ⟨t, (congrArg Subtype.val ht).symm⟩
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos i.val with h0 | h0` into its components or cases. Conclude with `absurd (Fin.ext (by simp [h0])) hi`. Conclude with `h0`.
+-/
 theorem one_le_of_ne {a : ℕ} (i : Fin (a + 1)) (hi : i ≠ 0) : 1 ≤ i.val := by
   rcases Nat.eq_zero_or_pos i.val with h0 | h0
   · exact absurd (Fin.ext (by simp [h0])) hi
   · exact h0
 
+/- English proof (translation)
+Introduce `i y hy`. Establish `hel : e ∈ W (Fin.last a)` using `hW.2.1 (Fin.le_last _) he`. Establish `hb : bJ ε e y = 0` using `hW.2.2.2 e hel y (hW.2.1 (Fin.le_last i) hy)`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+
+Rewrite `hy` using `[hW.1, Submodule.mem_bot]`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `hei : e ∈ W i` using `hW.2.1 (show (⟨1, Nat.succ_lt_succ h⟩ : Fin (a + 1)) ≤ i from Fin.le_def.2 (one_le_of_ne i hi)) he`. Take `⟨⟨s, hs⟩, ⟨s', hs'⟩⟩` from `hk y hb`.
+
+Conclude with `⟨hs ▸ add_mem hy (Submodule.smul_mem _ s hei), hs' ▸ add_mem hy (Submodule.smul_mem _ s' hei)⟩`.
+-/
 theorem mem_flagM' {a : ℕ} {j : Fin a → ℕ} {W : Flag n a} (hW : IsIsoFlag ε j W) (h : 0 < a)
     {e : Fin n → ℂ} (he : e ∈ W ⟨1, Nat.succ_lt_succ h⟩) (g : Formalism.REAL.UJ ε)
     (hk : ∀ y, bJ ε e y = 0 → (∃ s : ℂ, uMat g *ᵥ y = y + s • e) ∧ ∃ s : ℂ, (uMat g)ᴴ *ᵥ y = y + s • e) :
@@ -215,6 +301,11 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use `mem_lie_conj hP _ (fun a b => ?_)` and prove the remaining obligations. Distinguish the cases in `h : a = p ∨ a = q ∨ b = p ∨ b = q`. Rewrite using `[hG a b h] split_ifs with h2`. Apply the tactic sequence `rcases h2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [Pi.single_apply, hpq, hpq.symm]`. Simplify using the standard rewrite rules.
+
+Use `push_neg at h`. Simplify using `[Pi.single_apply, h.1, h.2.1, h.2.2.1, h.2.2.2]`.
+-/
 theorem lie_H {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0) :
@@ -228,6 +319,11 @@ theorem lie_H {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hp
   · push_neg at h
     simp [Pi.single_apply, h.1, h.2.1, h.2.2.1, h.2.2.2]
 
+/- English proof (translation)
+Use `mem_lie_conj hP _ (fun a b => ?_)` and prove the remaining obligations. Distinguish the cases in `h : a = p ∨ a = q ∨ b = p ∨ b = q`. Rewrite using `[hG a b h] split_ifs with h2`. Apply the tactic sequence `rcases h2 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [Pi.single_apply, hpq, hpq.symm]`. Simplify using the standard rewrite rules.
+
+Use `push_neg at h`. Simplify using `[Pi.single_apply, h.1, h.2.1, h.2.2.1, h.2.2.2]`.
+-/
 theorem lie_algebra_split_torus_generator {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (hG : ∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) →
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0) :
@@ -241,6 +337,21 @@ theorem lie_algebra_split_torus_generator {P : Matrix (Fin n) (Fin n) ℂ} (hP :
   · push_neg at h
     simp [Pi.single_apply, h.1, h.2.1, h.2.2.1, h.2.2.2]
 
+/- English proof (translation)
+Establish `hH` using `lie_H hP hpq hG`. Establish `hg : uMat (expG ε (P * diagonal (Pi.single p 1 - Pi.single q 1) * P⁻¹) x) = P * diagonal (fun a => Complex.exp (x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) a)) * P⁻¹` using `toM_expG_conj hP _ hH x`. Establish `hgJ` using `(expG ε (P * diagonal (Pi.single p 1 - Pi.single q 1) * P⁻¹) x).2`. Express the relevant statement in the definitionally equal form `(uMat _)ᴴ * Jm ε * uMat _ = Jm ε at hgJ`. Establish `hd : ∀ a, a ≠ p → a ≠ q → (fun a => Complex.exp (x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) a)) a = 1`.
+
+Introduce `a hap haq`. Simplify using `[Pi.single_apply, hap, haq]`. Establish `hd' : ∀ a, a ≠ p → a ≠ q → (fun a => Complex.exp (-(x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) a))) a = 1`. Introduce `a hap haq`. Simplify using `[Pi.single_apply, hap, haq]`.
+
+Establish `hdd : ∀ a, (fun a => Complex.exp (x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) a)) a * (fun a => Complex.exp (-(x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) a))) a = 1`. Introduce `a`. Simplify using `only`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hk` using `fun y hy => keep hP hpq hG hc _ _ hd hd' hdd _ hg hgJ y hy`.
+
+Establish `hel : P *ᵥ Pi.single p 1 ∈ W (Fin.last a)` using `hW.2.1 (Fin.le_last _) he`. Use `⟨mem_flagM' hW h he _ hk, ?_, ?_⟩` and prove the remaining obligations. Introduce `i y hy`. Distinguish the cases in `hi : i = ⟨0, h⟩`. Substitute `hi` using the available equality.
+
+Take `⟨t, rfl⟩` from `first_flag_space_one_dimensional hW h hj he (col_ne_zero hP p) hy`. Rewrite using `[Pi.single_eq_same, mulVec_smul, hg, act_col hP]`. Establish `h1 : Complex.exp (x * (Pi.single p 1 - Pi.single q 1 : Fin n → ℂ) p) = ((Real.exp x : ℝ) : ℂ)` using `by simp [Pi.single_apply, hpq, Complex.ofReal_exp]`. Rewrite using `[h1, smul_comm, sub_self]`. Conclude with `zero_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne hi, Real.exp_zero, Complex.ofReal_one, one_smul]`. Establish `hb : bJ ε (P *ᵥ Pi.single p 1) y = 0` using `hW.2.2.2 _ hel y (hW.2.1 (Fin.le_last _) hy)`. Take `⟨s, hs⟩` from `(hk y hb).1`. Rewrite using `[hs, add_sub_cancel_left]`. Establish `hle : (⟨1, Nat.succ_lt_succ h⟩ : Fin (a + 1)) ≤ i.castSucc` using `Fin.le_def.2 (by rw [Fin.coe_castSucc]; exact Nat.one_le_iff_ne_zero.2 (fun h0 => hi (Fin.ext h0)))`.
+
+Conclude with `Submodule.smul_mem _ s (hW.2.1 hle he)`. Introduce `y hy`. Take `⟨s, hs⟩` from `(hk y (hy _ hel)).1`. Rewrite using `[hs, add_sub_cancel_left]`. Conclude with `Submodule.smul_mem _ s hel`.
+-/
 theorem split_part {a : ℕ} {j : Fin a → ℕ} {W : Flag n a} (h : 0 < a) (hW : IsIsoFlag ε j W)
     (hj : j ⟨0, h⟩ = 1) {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (he : P *ᵥ Pi.single p 1 ∈ W ⟨1, Nat.succ_lt_succ h⟩) {c : ℂ}
@@ -294,12 +405,21 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun y => by simpa [Matrix.toLin'_apply] using h y)`.
+-/
 theorem mat_ext {A B : Matrix (Fin n) (Fin n) ℂ} (h : ∀ y, A *ᵥ y = B *ᵥ y) : A = B :=
   Matrix.toLin'.injective (LinearMap.ext fun y => by simpa [Matrix.toLin'_apply] using h y)
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, star_mulVec, jm_conjTranspose, ← dotProduct_mulVec]`.
+-/
 theorem bJ_swap (u : Fin n → ℂ) : bJ ε (Jm ε *ᵥ u) u = bJ ε u (Jm ε *ᵥ u) := by
   rw [bJ, bJ, star_mulVec, jm_conjTranspose, ← dotProduct_mulVec]
 
+/- English proof (translation)
+Use `bJ_twist (ε := ε) c e (Jm ε *ᵥ y)` as an intermediate fact. Rewrite `this` using `[jm_jm_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem bJ_twist2 (c : ℂ) (e y : Fin n → ℂ) :
     bJ ε (c • (Jm ε *ᵥ e)) y = star c * bJ ε e (Jm ε *ᵥ y) := by
   have := bJ_twist (ε := ε) c e (Jm ε *ᵥ y)
@@ -311,16 +431,27 @@ variable {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
 include hP hpq hG
 
+/- English proof (translation)
+Rewrite using `[coord hP p, row_p hpq hG, mulVec_mulVec, nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP), one_mulVec]`. Simplify using the standard rewrite rules.
+-/
 theorem bJ_pq : bJ ε (P *ᵥ Pi.single p 1) (P *ᵥ Pi.single q 1) = 1 := by
   rw [coord hP p, row_p hpq hG, mulVec_mulVec, nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP),
     one_mulVec]
   simp
 
+/- English proof (translation)
+Rewrite using `[coord hP q, row_q hpq hG, mulVec_mulVec, nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP), one_mulVec]`. Simplify using the standard rewrite rules.
+-/
 theorem bJ_qp : bJ ε (P *ᵥ Pi.single q 1) (P *ᵥ Pi.single p 1) = 1 := by
   rw [coord hP q, row_q hpq hG, mulVec_mulVec, nonsing_inv_mul P ((isUnit_iff_isUnit_det P).1 hP),
     one_mulVec]
   simp
 
+/- English proof (translation)
+Establish `h1` using `bJ_pq hP hpq hG`. Establish `h2` using `bJ_qp hP hpq hG`. Rewrite `h1` using `[hc, bJ_smul_right]`. Rewrite `h2` using `[hc, bJ_smul_left, bJ_swap]`. Establish `hs : bJ ε (P *ᵥ Pi.single p 1) (Jm ε *ᵥ (P *ᵥ Pi.single p 1)) ≠ 0`.
+
+Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `zero_ne_one h1`. Conclude with `mul_right_cancel₀ hs (h2.trans h1.symm)`.
+-/
 theorem c_real {c : ℂ} (hc : P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ (P *ᵥ Pi.single p 1))) : star c = c := by
   have h1 := bJ_pq hP hpq hG
   have h2 := bJ_qp hP hpq hG
@@ -330,6 +461,11 @@ theorem c_real {c : ℂ} (hc : P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ (P *ᵥ 
     intro h0; rw [h0, mul_zero] at h1; exact zero_ne_one h1
   exact mul_right_cancel₀ hs (h2.trans h1.symm)
 
+/- English proof (translation)
+Establish `hcr` using `c_real hP hpq hG hc`. Use `mat_ext fun y => ?_` and prove the remaining obligations. Establish `e1 : ((P * diagonal d * P⁻¹) * Jm ε) *ᵥ y = (P * diagonal d * P⁻¹) *ᵥ (Jm ε *ᵥ y)`. Rewrite using `[mulVec_mulVec]`. Establish `e2 : (Jm ε * (P * diagonal d * P⁻¹)) *ᵥ y = Jm ε *ᵥ ((P * diagonal d * P⁻¹) *ᵥ y)`.
+
+Rewrite using `[mulVec_mulVec]`. Rewrite using `[e1, e2, act hP hpq hG d hd, act hP hpq hG d hd, hdp, hdq, hc, bJ_twist, bJ_twist2, hcr]`. Simplify using `only [mulVec_add, mulVec_smul, jm_jm_mulVec]`. Use `module`.
+-/
 theorem comm_J {c : ℂ} (hc : P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ (P *ᵥ Pi.single p 1)))
     (d : Fin n → ℂ) (l : ℂ) (hdp : d p = l) (hdq : d q = l) (hd : ∀ a, a ≠ p → a ≠ q → d a = 1) :
     (P * diagonal d * P⁻¹) * Jm ε = Jm ε * (P * diagonal d * P⁻¹) := by
@@ -352,16 +488,25 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, mulVec_mulVec, hJM, ← mulVec_mulVec, dotProduct_mulVec, star_mulVec]`.
+-/
 theorem bJ_transfer {M K : Matrix (Fin n) (Fin n) ℂ} (hJM : Jm ε * M = Kᴴ * Jm ε) (u y : Fin n → ℂ) :
     bJ ε u (M *ᵥ y) = bJ ε (K *ᵥ u) y := by
   rw [bJ, bJ, mulVec_mulVec, hJM, ← mulVec_mulVec, dotProduct_mulVec, star_mulVec]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem jm_swap {M K : Matrix (Fin n) (Fin n) ℂ} (hK : Kᴴ * Jm ε * K = Jm ε) (hKM : K * M = 1) :
     Jm ε * M = Kᴴ * Jm ε := by
   calc Jm ε * M = Kᴴ * Jm ε * K * M := by rw [hK]
     _ = Kᴴ * Jm ε * (K * M) := by simp only [Matrix.mul_assoc]
     _ = Kᴴ * Jm ε := by rw [hKM, Matrix.mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul' (g h : Formalism.REAL.UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
 section
@@ -370,6 +515,23 @@ variable {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p
       (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0)
 include hP hpq hG
 
+/- English proof (translation)
+Establish `hmF : m ∈ flagM ε W` using `hm.1`. Establish `hkF : m⁻¹ ∈ flagM ε W` using `((leviOne ε W).inv_mem hm).1`. Establish `hMK : uMat m * uMat m⁻¹ = 1` using `by rw [← uMat_mul', mul_inv_cancel]; rfl`. Establish `hKM : uMat m⁻¹ * uMat m = 1` using `by rw [← uMat_mul', inv_mul_cancel]; rfl`. Establish `hMJ : (uMat m)ᴴ * Jm ε * uMat m = Jm ε` using `m.2`.
+
+Establish `hKJ : (uMat m⁻¹)ᴴ * Jm ε * uMat m⁻¹ = Jm ε` using `(m⁻¹).2`. Establish `hJM` using `jm_swap hKJ hKM`. Establish `hJK` using `jm_swap hMJ hMK`. Establish `he0` using `col_ne_zero hP p`. Take `⟨μ, hμ⟩` from `first_flag_space_one_dimensional hW h hj he he0 (hmF _ _ he).1`.
+
+Take `⟨ν, hν⟩` from `first_flag_space_one_dimensional hW h hj he he0 (hmF _ _ he).2`. Take `⟨κ, hκ⟩` from `first_flag_space_one_dimensional hW h hj he he0 (hkF _ _ he).1`. Take `⟨ρ, hρ⟩` from `first_flag_space_one_dimensional hW h hj he he0 (hkF _ _ he).2`. Establish `hKe' : uMat m⁻¹ *ᵥ (P *ᵥ Pi.single q 1) = ν • (P *ᵥ Pi.single q 1)`. Establish `e1 : uMat m⁻¹ *ᵥ (Jm ε *ᵥ (P *ᵥ Pi.single p 1)) = Jm ε *ᵥ ((Jm ε * uMat m⁻¹) *ᵥ (Jm ε *ᵥ (P *ᵥ Pi.single p 1)))`.
+
+Rewrite using `[← mulVec_mulVec, jm_jm_mulVec]`. Rewrite using `[hc, mulVec_smul, e1, hJK, ← mulVec_mulVec, jm_jm_mulVec, hν, mulVec_smul, smul_comm]`. Establish `hMe' : uMat m *ᵥ (P *ᵥ Pi.single q 1) = ρ • (P *ᵥ Pi.single q 1)`. Establish `e1 : uMat m *ᵥ (Jm ε *ᵥ (P *ᵥ Pi.single p 1)) = Jm ε *ᵥ ((Jm ε * uMat m) *ᵥ (Jm ε *ᵥ (P *ᵥ Pi.single p 1)))`. Rewrite using `[← mulVec_mulVec, jm_jm_mulVec]`.
+
+Rewrite using `[hc, mulVec_smul, e1, hJM, ← mulVec_mulVec, jm_jm_mulVec, hρ, mulVec_smul, smul_comm]`. Establish `hμν : μ = star ν`. Establish `h1` using `bJ_transfer hJM (P *ᵥ Pi.single q 1) (P *ᵥ Pi.single p 1)`. Rewrite `h1` using `[hμ, hKe', bJ_smul_right, bJ_smul_left, bJ_qp hP hpq hG]`. Simplify using `using h1`.
+
+Establish `hρκ : ρ = star κ`. Establish `h1` using `bJ_transfer hJM (P *ᵥ Pi.single p 1) (P *ᵥ Pi.single q 1)`. Rewrite `h1` using `[hMe', hκ, bJ_smul_right, bJ_smul_left, bJ_pq hP hpq hG]`. Simplify using `using h1`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations.
+
+Use `show uMat g * uMat m = uMat m * uMat g`. Use `mat_ext fun y => ?_` and prove the remaining obligations. Establish `e1 : (uMat g * uMat m) *ᵥ y = uMat g *ᵥ (uMat m *ᵥ y)` using `by rw [mulVec_mulVec]`. Establish `e2 : (uMat m * uMat g) *ᵥ y = uMat m *ᵥ (uMat g *ᵥ y)` using `by rw [mulVec_mulVec]`. Rewrite using `[e1, e2, hg, act hP hpq hG d hd, act hP hpq hG d hd, hdp, hdq, bJ_transfer hJM, bJ_transfer hJM, hKe', hκ, bJ_smul_left, bJ_smul_left]`.
+
+Simplify using `only [mulVec_add, mulVec_smul, hμ, hMe', hμν, hρκ]`. Use `module`.
+-/
 theorem central {a : ℕ} {j : Fin a → ℕ} {W : Flag n a} (h : 0 < a) (hW : IsIsoFlag ε j W)
     (hj : j ⟨0, h⟩ = 1) (he : P *ᵥ Pi.single p 1 ∈ W ⟨1, Nat.succ_lt_succ h⟩) {c : ℂ}
     (hc : P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ (P *ᵥ Pi.single p 1)))
@@ -425,6 +587,17 @@ namespace GlobalTheory.SplitTorus
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hT` using `lie_algebra_split_torus_generator hP hpq hG`. Establish `hg : uMat (expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ) = P * diagonal (fun a => Complex.exp (θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a)) * P⁻¹` using `toM_expG_conj hP _ hT θ`. Establish `hgJ` using `(expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ).2`. Express the relevant statement in the definitionally equal form `(uMat _)ᴴ * Jm ε * uMat _ = Jm ε at hgJ`. Establish `hdp : (fun a => Complex.exp (θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a)) p = Complex.exp (θ * Complex.I)` using `by simp [Pi.single_apply, hpq]`.
+
+Establish `hdq : (fun a => Complex.exp (θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a)) q = Complex.exp (θ * Complex.I)` using `by simp [Pi.single_apply, hpq.symm]`. Establish `hd : ∀ a, a ≠ p → a ≠ q → (fun a => Complex.exp (θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a)) a = 1`. Introduce `a hap haq`. Simplify using `[Pi.single_apply, hap, haq]`. Establish `hd' : ∀ a, a ≠ p → a ≠ q → (fun a => Complex.exp (-(θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a))) a = 1`.
+
+Introduce `a hap haq`. Simplify using `[Pi.single_apply, hap, haq]`. Establish `hdd : ∀ a, (fun a => Complex.exp (θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a)) a * (fun a => Complex.exp (-(θ * (Pi.single p Complex.I + Pi.single q Complex.I : Fin n → ℂ) a))) a = 1`. Introduce `a`. Simplify using `only`.
+
+Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hcomm` using `comm_J hP hpq hG hc _ _ hdp hdq hd`. Rewrite `hcomm` using `[← hg]`. Establish `hunit : (uMat (expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ))ᴴ * uMat (expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ) = 1` using `by set M := uMat (expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hflag` using `mem_flagM' hW h he _ (fun y hy => keep hP hpq hG hc _ _ hd hd' hdd _ hg hgJ y hy)`. Use `⟨Subgroup.mem_inf.2 ⟨?_, ?_⟩, fun m hm => central hP hpq hG h hW hj he hc _ _ hdp hdq hd _ hg m hm⟩` and prove the remaining obligations. Use `show toM _ ∈ Kset ε`. Conclude with `⟨Matrix.mem_unitaryGroup_iff'.2 (by rw [star_eq_conjTranspose]; exact hunit), hcomm⟩`. Conclude with `⟨hflag, fun i => GlobalTheory.IwDelta.detOn_eq_one ⟨hunit, hflag⟩ i⟩`.
+-/
 theorem circle_part {a : ℕ} {j : Fin a → ℕ} {W : Flag n a} (h : 0 < a) (hW : IsIsoFlag ε j W)
     (hj : j ⟨0, h⟩ = 1) {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) {p q : Fin n} (hpq : p ≠ q)
     (he : P *ᵥ Pi.single p 1 ∈ W ⟨1, Nat.succ_lt_succ h⟩) {c : ℂ}
@@ -477,6 +650,9 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 open PI.DSInfCharCap (actU Egl)
 
+/- English proof (translation)
+Introduce `n ε a j W h hW hj P p q c hP hpq he hc hG`. Conclude with `⟨GlobalTheory.SplitTorus.lie_H hP hpq hG, GlobalTheory.SplitTorus.split_part h hW hj hP hpq he hc hG, GlobalTheory.SplitTorus.lie_algebra_split_torus_generator hP hpq hG, fun θ => GlobalTheory.SplitTorus.circle_part h hW hj hP hpq he hc hG θ⟩`.
+-/
 theorem GlobalTheory.SplitTorus.split_torus_circle : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Flag n a) (h : 0 < a), IsIsoFlag ε j W → j ⟨0, h⟩ = 1 → ∀ (P : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) (c : ℂ), IsUnit P → p ≠ q → P *ᵥ Pi.single p 1 ∈ W ⟨1, Nat.succ_lt_succ h⟩ → P *ᵥ Pi.single q 1 = c • (Jm ε *ᵥ (P *ᵥ Pi.single p 1)) → (∀ a b, (a = p ∨ a = q ∨ b = p ∨ b = q) → (Pᴴ * Jm ε * P) a b = if (a = p ∧ b = q) ∨ (a = q ∧ b = p) then 1 else 0) → P * diagonal (Pi.single p 1 - Pi.single q 1) * P⁻¹ ∈ lieSet ε ∧ (∀ x : ℝ, IsSplit ε W (Pi.single ⟨0, h⟩ x) (expG ε (P * diagonal (Pi.single p 1 - Pi.single q 1) * P⁻¹) x)) ∧ P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹ ∈ lieSet ε ∧ ∀ θ : ℝ, expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ ∈ KG ε ⊓ leviOne ε W ∧ ∀ m ∈ leviOne ε W, expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ * m = m * expG ε (P * diagonal (Pi.single p Complex.I + Pi.single q Complex.I) * P⁻¹) θ := by
   intro n ε a j W h hW hj P p q c hP hpq he hc hG
   exact ⟨GlobalTheory.SplitTorus.lie_H hP hpq hG, GlobalTheory.SplitTorus.split_part h hW hj hP hpq he hc hG,

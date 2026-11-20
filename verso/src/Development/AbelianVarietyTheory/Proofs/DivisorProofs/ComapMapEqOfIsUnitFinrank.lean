@@ -11,6 +11,27 @@ namespace GlobalTheory.Poinc.Sep
 
 open Module in
 
+/- English proof (translation)
+Introduce `V V' _ _ _ _ _ _ _ hinj hunit I`. Use `le_antisymm ?_ Ideal.le_comap_map` and prove the remaining obligations. Set `K` to `FractionRing V`. Set `L` to `FractionRing V'`. Establish `hinjL : Function.Injective (algebraMap V L)`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq V V' L]`. Conclude with `(IsFractionRing.injective V' L).comp hinj`. Use `haveI : FaithfulSMul V L := (faithfulSMul_iff_algebraMap_injective V L).mpr hinjL`. Use `letI : Algebra K L := FractionRing.liftAlgebra V L`. Use `haveI : IsScalarTower V K L := FractionRing.isScalarTower_liftAlgebra V L`.
+
+Establish `hrank : finrank K L = finrank V V'` using `IsFractionRing.finrank_eq V K V' L`. Establish `hn0 : finrank K L ≠ 0`. Introduce `h`. Rewrite `hunit` using `[← hrank, h, Nat.cast_zero]`. Conclude with `not_isUnit_zero hunit`.
+
+Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_pos (Nat.pos_of_ne_zero hn0)`. Use `haveI : Module.Free K L := Module.Free.of_divisionRing K L`. Use `haveI : Algebra.IsIntegral V V' := Algebra.IsIntegral.of_finite V V'`. Establish `htrV : ∀ z : V', ∃ t : V, algebraMap V K t = Algebra.trace K L (algebraMap V' L z)`. Introduce `z`.
+
+Establish `hz : IsIntegral V (algebraMap V' L z)` using `(Algebra.IsIntegral.isIntegral (R := V) z).map (IsScalarTower.toAlgHom V V' L)`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp (Algebra.isIntegral_trace hz)`. Establish `hmul : ∀ (i : V) (w : L), Algebra.trace K L (algebraMap V L i * w) = algebraMap V K i * Algebra.trace K L w`. Introduce `i w`. Rewrite using `[IsScalarTower.algebraMap_apply V K L, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+
+Establish `key : ∀ y ∈ I.map (algebraMap V V'), ∀ z : V', ∃ c ∈ I, algebraMap V K c = Algebra.trace K L (algebraMap V' L (z * y))`. Introduce `y hy`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩ z`. Take `⟨t, ht⟩` from `htrV z`.
+
+Use `⟨i * t, I.mul_mem_right t hi, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, mul_comm z, map_mul, ← IsScalarTower.algebraMap_apply V V' L, hmul]`. Introduce `z`. Conclude with `⟨0, I.zero_mem, by simp⟩`. Introduce `x y _ _ hx hy z`.
+
+Take `⟨c, hc, hcx⟩` from `hx z`. Take `⟨d, hd, hdy⟩` from `hy z`. Conclude with `⟨c + d, I.add_mem hc hd, by rw [map_add, hcx, hdy, mul_add, map_add, map_add]⟩`. Introduce `w x _ hx z`. Take `⟨c, hc, hcx⟩` from `hx (z * w)`.
+
+Conclude with `⟨c, hc, by rw [hcx, smul_eq_mul, _root_.mul_assoc]⟩`. Introduce `a ha`. Take `⟨c, hc, hca⟩` from `key _ ha 1`. Rewrite `hca` using `[_root_.one_mul, ← IsScalarTower.algebraMap_apply V V' L, IsScalarTower.algebraMap_apply V K L, Algebra.trace_algebraMap, hrank, nsmul_eq_mul, ← map_natCast (algebraMap V K), ← map_mul]`. Establish `hc' : c = (finrank V V' : V) * a` using `IsFractionRing.injective V K hca`.
+
+Take `⟨u, hu⟩` from `hunit`. Establish `: a = ↑u⁻¹ * c` using `by rw [hc', ← hu, ← _root_.mul_assoc, Units.inv_mul, _root_.one_mul]`. Rewrite using `[this]`. Conclude with `I.mul_mem_left _ hc`.
+-/
 theorem comap_map_eq_of_isUnit_finrank : ∀ (V V' : Type) [CommRing V] [IsDomain V] [IsIntegrallyClosed V] [CommRing V'] [IsDomain V'] [Algebra V V'] [Module.Finite V V'], Function.Injective (algebraMap V V') → IsUnit ((Module.finrank V V' : ℕ) : V) → ∀ I : Ideal V, (I.map (algebraMap V V')).comap (algebraMap V V') = I := by
   intro V V' _ _ _ _ _ _ _ hinj hunit I
   refine le_antisymm ?_ Ideal.le_comap_map

@@ -8,6 +8,11 @@ namespace GlobalTheory.TypeSum.Transport
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hY' : Yᴴ * G + G * Y = 0` using `hY`. Use `show (B * Y * A)ᴴ * G' + G' * (B * Y * A) = 0`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Aᴴ * (Yᴴ * G + G * Y) * A := by`. Rewrite using `[hAB]`. Simplify using `only [conjTranspose_one, Matrix.mul_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hY']; simp`.
+-/
 theorem conj_lie {A B G G' Y : Mx n} (hAB : A * B = 1) (hG : Aᴴ * G * A = G') (hY : Y ∈ lieOf G) :
     B * Y * A ∈ lieOf G' := by
   have hY' : Yᴴ * G + G * Y = 0 := hY
@@ -20,6 +25,11 @@ theorem conj_lie {A B G G' Y : Mx n} (hAB : A * B = 1) (hG : Aᴴ * G * A = G') 
         rw [hAB]; simp only [conjTranspose_one, Matrix.mul_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hY']; simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * G * g = G` using `hg`. Use `show (B * g * A)ᴴ * G' * (B * g * A) = G'`. Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by`. Rewrite using `[hAB]`. Simplify using `only [conjTranspose_one, Matrix.mul_one, hg']`.
+-/
 theorem conj_UH {A B G G' g : Mx n} (hAB : A * B = 1) (hG : Aᴴ * G * A = G') (hg : g ∈ Formalism.QuantumDeterminants.UH G) :
     B * g * A ∈ Formalism.QuantumDeterminants.UH G' := by
   have hg' : gᴴ * G * g = G := hg
@@ -31,6 +41,9 @@ theorem conj_UH {A B G G' g : Mx n} (hAB : A * B = 1) (hG : Aᴴ * G * A = G') (
     _ = _ := by
         rw [hAB]; simp only [conjTranspose_one, Matrix.mul_one, hg']
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [h2]`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, ih]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_conj {Q : Mx n} (h1 : Q⁻¹ * Q = 1) (h2 : Q * Q⁻¹ = 1) (l : List (Mx n)) :
     (l.map fun x => Q * x * Q⁻¹).prod = Q * l.prod * Q⁻¹ := by
   induction l with
@@ -40,10 +53,44 @@ theorem prod_conj {Q : Mx n} (h1 : Q⁻¹ * Q = 1) (h2 : Q * Q⁻¹ = 1) (l : Li
     calc Q * a * Q⁻¹ * (Q * l.prod * Q⁻¹) = Q * a * (Q⁻¹ * Q) * l.prod * Q⁻¹ := by simp only [Matrix.mul_assoc]
       _ = _ := by rw [h1]; simp only [Matrix.mul_one, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_conj Q _ hQ, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem exp_smul_conj {Q : Mx n} (hQ : IsUnit Q) (X : Mx n) (t : ℝ) :
     NormedSpace.exp (t • (Q * X * Q⁻¹)) = Q * NormedSpace.exp (t • X) * Q⁻¹ := by
   rw [← Matrix.exp_conj Q _ hQ, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `n H H' _ _ _ _ σ₁ σ₂ G₁ G₂ Q hG hQ hGG U hU f hf`. Establish `h1 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hQ)`. Establish `h2 : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 hQ)`. Establish `hGG' : (Q⁻¹)ᴴ * G₁ * Q⁻¹ = G₂`. Rewrite using `[← hGG]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]; simp`. Establish `cd : ∀ Y : Mx n, Q * (Q⁻¹ * Y * Q) * Q⁻¹ = Y` using `fun Y => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `Ur : H ≃L[ℝ] H'` to `{ U.toLinearEquiv.restrictScalars ℝ with continuous_toFun := U.continuous continuous_invFun := U.symm.continuous }`. Establish `hUr : ∀ x, Ur x = U x` using `fun _ => rfl`. Establish `key : ∀ (k : ℕ) (Xs : Fin k → Mx n), (∀ i, Xs i ∈ lieOf G₁) → ∀ w : H, (fun t : Fin k → ℝ => σ₂ (List.ofFn fun i => NormedSpace.exp (t i • (Q * Xs i * Q⁻¹))).prod (U w)) = Ur ∘ fun t : Fin k → ℝ => σ₁ (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod w`. Introduce `k Xs hX w`. Use function extensionality and compare the values at `t`.
+
+Establish `hm : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.QuantumDeterminants.UH G₁` using `GlobalTheory.GardingVec.list_prod_mem _ (by`. Introduce `g hg`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hg`. Conclude with `GlobalTheory.GardingVec.exp_mem hG (hX i) _)`. Rewrite using `[Function.comp_apply, hUr, hU _ hm, ← prod_conj h1 h2, List.map_ofFn]`.
+
+Simplify using `only [exp_smul_conj hQ, Function.comp_def]`. Establish `smF : ∀ w, SmoothVec (lieOf G₁) σ₁ w → SmoothVec (lieOf G₂) σ₂ (U w)`. Introduce `w hw k Ys hY`. Establish `hX : ∀ i, Q⁻¹ * Ys i * Q ∈ lieOf G₁` using `fun i => conj_lie h2 hGG (hY i)`. Use `key k _ hX w` as an intermediate fact.
+
+Simplify using `only [cd] at this`. Rewrite using `[this]`. Conclude with `Ur.contDiff.comp (hw k _ hX)`. Establish `smB : ∀ w, SmoothVec (lieOf G₂) σ₂ (U w) → SmoothVec (lieOf G₁) σ₁ w`. Introduce `w hw k Xs hX`.
+
+Use `hw k _ fun i => conj_lie h1 hGG' (hX i)` as an intermediate fact. Rewrite `this` using `[key k Xs hX w]`. Conclude with `Ur.comp_contDiff_iff.1 this`. Establish `hd : ∀ X ∈ lieOf G₁, ∀ w, dRep σ₂ (Q * X * Q⁻¹) (U w) = U (dRep σ₁ X w)`. Introduce `X hX w`.
+
+Establish `e : (fun t : ℝ => σ₂ (NormedSpace.exp (t • (Q * X * Q⁻¹))) (U w)) = Ur ∘ fun t : ℝ => σ₁ (NormedSpace.exp (t • X)) w`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.comp_apply, hUr, hU _ (GlobalTheory.GardingVec.exp_mem hG hX t), exp_smul_conj hQ]`. Unfold `dRep`. Rewrite using `[e, deriv, deriv, Ur.comp_fderiv]`.
+
+Both sides reduce to the same expression. Establish `hw : ∀ l : List (Mx n), (∀ X ∈ l, X ∈ lieOf G₁) → ∀ w, (l.map fun X => Q * X * Q⁻¹).foldr (dRep σ₂) (U w) = U (l.foldr (dRep σ₁) w)`. Introduce `l hl w`. Proceed by induction on `l with`. Consider the case `nil => rfl`.
+
+Consider the case `cons X l ih`. Rewrite using `[List.map_cons, List.foldr_cons, List.foldr_cons, ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY), hd X (hl X List.mem_cons_self)]`. Take `⟨S, hS, ⟨B, hB, hBc⟩, v, ℓ, C, e1, e2, e3, e4, e5⟩` from `hf`. Establish `hs : ∀ w, sobNorm σ₂ (S.map fun l => l.map fun X => Q * X * Q⁻¹) (U w) = sobNorm σ₁ S w`. Introduce `w`.
+
+Unfold `sobNorm`. Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun l hl => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hw l (hS l hl), U.norm_map]`. Establish `hσ : ∀ g ∈ Formalism.QuantumDeterminants.UH G₂, ∀ w, σ₂ g (U w) = U (σ₁ (Q⁻¹ * g * Q) w)` using `fun g hg w => by`. Rewrite using `[hU _ (conj_UH h2 hGG hg), cd]`. Use `⟨S.map fun l => l.map fun X => Q * X * Q⁻¹, ?_, ⟨fun y => B (Q⁻¹ * y * Q), hB.comp (by fun_prop), ?_⟩, fun i => U (v i), fun i => ℓ i ∘ₗ (U.symm.toLinearEquiv : H' →ₗ[ℂ] H), C, fun i => smF _ (e1 i), e2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl X hX`.
+
+Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `conj_lie h1 hGG' (hS l' hl' Y hY)`. Introduce `g hg w hw'`. Take `⟨w, rfl⟩` from `U.surjective w`.
+
+Rewrite using `[hσ g hg, hs, hs]`. Conclude with `hBc _ (conj_UH h2 hGG hg) w (smB w hw')`. Introduce `i w hw'`. Take `⟨w, rfl⟩` from `U.surjective w`. Rewrite using `[hs]`.
+
+Simplify using `using e3 i w (smB w hw')`. Simplify `e4` using `only [hs]`. Introduce `g hg`. Simplify `e5 _ (conj_UH h2 hGG hg)` using `[hσ g hg]`.
+-/
 theorem hasType_transport : ∀ (n : ℕ) (H H' : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (σ₁ : Mx n → (H →L[ℂ] H)) (σ₂ : Mx n → (H' →L[ℂ] H')) (G₁ G₂ Q : Mx n), IsUnit G₁ → IsUnit Q → Qᴴ * G₂ * Q = G₁ → ∀ U : H ≃ₗᵢ[ℂ] H', (∀ g ∈ Formalism.QuantumDeterminants.UH G₁, ∀ v, U (σ₁ g v) = σ₂ (Q * g * Q⁻¹) (U v)) → ∀ f : Mx n → ℂ, HasType (lieOf G₁) (Formalism.QuantumDeterminants.UH G₁) σ₁ f → HasType (lieOf G₂) (Formalism.QuantumDeterminants.UH G₂) σ₂ (fun y => f (Q⁻¹ * y * Q)) := by
   intro n H H' _ _ _ _ σ₁ σ₂ G₁ G₂ Q hG hQ hGG U hU f hf
   have h1 : Q⁻¹ * Q = 1 := Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hQ)

@@ -22,12 +22,32 @@ namespace GlobalTheory.IntegralityCompare
 
 open MvPolynomial
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twSub_eq_subP (D : D7) {n : ℕ} (M : GL (Fin n) D.host.E) (s : D.what₂.Tau → ℤ)
     (P : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ) :
     twSub (embT D) M s P = C (∏ τ, (embT D τ (M : Matrix (Fin n) (Fin n) D.host.E).det) ^ (s τ)) *
       Formalism.L2.Forms.subP (fun τ => (M : Matrix (Fin n) (Fin n) D.host.E).map (embT D τ)) P := by
   rfl
 
+/- English proof (translation)
+Introduce `D n lam M s P0 hP`. Set `A : Matrix (Fin n) (Fin n) D.host.E` to `(M : Matrix (Fin n) (Fin n) D.host.E)`. Set `ML : D.what₂.Tau → Matrix (Fin n) (Fin n) D.what₂.LL` to `fun τ => A.map (Formalism.L2.G.Cmp.tEL D τ)`. Establish `hoM : ∀ τ, A.map (embT D τ) = (ML τ).map D.what₂.embLL` using `fun τ => by`. Use extensionality with `a b`.
+
+Conclude with `(Formalism.L2.G.Cmp.tEL_emb D τ _).symm`. Establish `hdetA : A.det ≠ 0` using `(Matrix.isUnits_det_units M).ne_zero`. Establish `hMdet : ∀ τ, (ML τ).det ≠ 0`. Introduce `τ h`. Apply `hdetA` to reduce the goal to its premises.
+
+Establish `: Formalism.L2.G.Cmp.tEL D τ A.det = 0`. Rewrite using `[RingHom.map_det]`. Conclude with `h`. Conclude with `(map_eq_zero _).1 this`. Establish `hc : (∏ τ, (embT D τ A.det) ^ (s τ)) = D.what₂.embLL (∏ τ, (ML τ).det ^ s τ)`.
+
+Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, RingHom.map_det, RingHom.mapMatrix_apply, hoM τ, RingHom.map_det D.what₂.embLL, RingHom.mapMatrix_apply]`. Rewrite using `[twSub_eq_subP]`. Use `show C (∏ τ, (embT D τ A.det) ^ (s τ)) * Formalism.L2.Forms.subP (fun τ => A.map (embT D τ)) P0 ∈ _`.
+
+Rewrite using `[hc, MvPolynomial.C_mul']`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r, f, hf, rfl⟩` from `hp`. Rewrite using `[map_smul, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.substitution_tensor, smul_smul, ← map_mul]`.
+
+Apply `Formalism.L2.GlobalTheoryTheory.LemB.rat_ten D _ Finset.univ` to reduce the goal to its premises. Introduce `τ _`. Rewrite using `[hoM τ]`. Conclude with `Formalism.L2.GlobalTheoryTheory.LemB.rat_rowAct_mem D _ (Formalism.L2.DIV.natW_antitone _) (ML τ) (hMdet τ) _ (Submodule.subset_span ⟨f τ, hf τ, rfl⟩)`. Introduce `τ hτ`.
+
+Conclude with `absurd (Finset.mem_univ τ) hτ`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [map_neg, smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem twSub_mem_ratSpan : ∀ (D : D7) {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (M : GL (Fin n) D.host.E) (s : D.what₂.Tau → ℤ)
     (P0 : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ),
     P0 ∈ Formalism.L2.Forms.RatSpan D lam → twSub (embT D) M s P0 ∈ Formalism.L2.Forms.RatSpan D lam := by

@@ -111,23 +111,38 @@ def ExpandsIn (U : UnifPre I D A G) {e : ℕ} {b : thickObj R I e G ⟶ thickObj
 
 def zeroT (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n j : ℤ) (β : D.X) : SecT D a n j β := ⟨fun _ => 0, fun _ _ => by simp⟩
 
+/- English proof (translation)
+The claim follows from `DVR.gs_zero x z _ (hJ.mem _ x)`.
+-/
 theorem sval_zeroT (D : DegPre R) (a : D.P.A ⟶ D.P.A) (n j : ℤ) (β : D.X) {Z : Scheme.{0}} (x : Z ⟶ D.P.A.left) (z : Z) (J)
     (hJ : Good D.P.L z J) : sval (zeroT D a n j β) x z J = 0 := DVR.gs_zero x z _ (hJ.mem _ x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => Set.finite_empty.subset fun i hi => hi fun _ _ z J hJ => sval_zeroT D a n j i _ z J hJ, fun _ _ _ _ _ _ z J hJ => by rw [sval_zeroT _ _ _ _ _ _ z J hJ, sval_zeroT _ _ _ _ _ _ z J hJ, zero_mul]⟩`.
+-/
 theorem zero_small_tfe (I : Ideal R) (D : DegPre R) (a : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X) (n j : ℤ) :
     Small I (w := id) (zeroT D a n j) ∧ TFE h h' (zeroT D a n j) :=
   ⟨fun e => Set.finite_empty.subset fun i hi => hi fun _ _ z J hJ => sval_zeroT D a n j i _ z J hJ,
     fun _ _ _ _ _ _ z J hJ => by rw [sval_zeroT _ _ _ _ _ _ z J hJ, sval_zeroT _ _ _ _ _ _ z J hJ, zero_mul]⟩
 
+/- English proof (translation)
+The claim follows from `and_iff_right hs`.
+-/
 theorem Small.hasAdicSum_iff {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j : ℤ} {Ix : Type} {w : Ix → D.X}
     {s : ∀ i, SecT D a n j (w i)} (hs : Small I s) (F : ∀ δ, SecT D a n j δ) : HasAdicSum I s F ↔ IsSum I s F :=
   and_iff_right hs
 
+/- English proof (translation)
+The claim follows from `and_iff_right (hs e)`.
+-/
 theorem Small.expandsIn_iff (U : UnifPre I D A G) {e : ℕ} {b : thickObj R I e G ⟶ thickObj R I e G}
     {a : D.toPre.P.A ⟶ D.toPre.P.A} {n j : ℤ} (τ : SecE U b n j) {Ix : Type} {w : Ix → D.toPre.X}
     {s : ∀ i, SecT D.toPre a n j (w i)} (hs : Small I s) : ExpandsIn U τ s ↔ TExp U τ s :=
   and_iff_right (hs e)
 
+/- English proof (translation)
+Introduce `e`. Use `((H.1 e).image w).subset fun δ hδ => by_contra fun hn => hδ fun Z x z J hJ => ?_` and prove the remaining obligations. Use `(H.2 e (H.1 e).toFinset (fun i hi => by_contra fun h => hi ((H.1 e).mem_toFinset.2 h)) δ Z x z J hJ).trans (Finset.sum_eq_zero fun i hi => absurd ?_ hn)` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `Finset.mem_filter.1 hi`. Conclude with `⟨i, (H.1 e).mem_toFinset.1 h₁, h₂⟩`.
+-/
 theorem HasAdicSum.small {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j : ℤ} {Ix : Type} {w : Ix → D.X}
     {s : ∀ i, SecT D a n j (w i)} {F : ∀ δ, SecT D a n j δ} (H : HasAdicSum I s F) : Small I (w := id) F := by
   classical
@@ -138,6 +153,9 @@ theorem HasAdicSum.small {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j
   obtain ⟨h₁, h₂⟩ := Finset.mem_filter.1 hi
   exact ⟨i, (H.1 e).mem_toFinset.1 h₁, h₂⟩
 
+/- English proof (translation)
+The claim follows from `have h₀ : ∀ i ∉ (H.1 e).toFinset, Van I (s i) e := fun _ hi => by_contra fun h => hi ((H.1 e).mem_toFinset.2 h) (H.2 e _ h₀ δ Z x z J hJ).trans (H'.2 e _ h₀ δ Z x z J hJ).symm`.
+-/
 theorem HasAdicSum.unique {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j : ℤ} {Ix : Type} {w : Ix → D.X}
     {s : ∀ i, SecT D a n j (w i)} {F F' : ∀ δ, SecT D a n j δ} (H : HasAdicSum I s F) (H' : HasAdicSum I s F') (e : ℕ) (δ : D.X)
     (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e D.P.A).left) (z : Z) (J) (hJ : Good D.P.L z J) :
@@ -145,6 +163,13 @@ theorem HasAdicSum.unique {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n 
   have h₀ : ∀ i ∉ (H.1 e).toFinset, Van I (s i) e := fun _ hi => by_contra fun h => hi ((H.1 e).mem_toFinset.2 h)
   (H.2 e _ h₀ δ Z x z J hJ).trans (H'.2 e _ h₀ δ Z x z J hJ).symm
 
+/- English proof (translation)
+Use `⟨hf, fun e S hS δ Z x z J hJ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : δ ∈ S`. Use `symm`. Use `Finset.sum_eq_single_of_mem δ ?_ ?_` and prove the remaining obligations. Simplify using `using h`.
+
+Introduce `b hb hne`. Conclude with `absurd (by simpa using hb : b ∈ S ∧ b = δ).2 hne`. Rewrite using `[hS δ h Z x z J hJ]`. Use `symm`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations.
+
+Take `⟨hb', rfl⟩ : b ∈ S ∧ b = δ` from `by simpa using hb`. Conclude with `absurd hb' h`.
+-/
 theorem Small.hasAdicSum_self {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j : ℤ} {f : ∀ β, SecT D a n j β}
     (hf : Small I (w := id) f) : HasAdicSum I (w := id) f f := by
   classical
@@ -161,15 +186,26 @@ theorem Small.hasAdicSum_self {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A}
     obtain ⟨hb', rfl⟩ : b ∈ S ∧ b = δ := by simpa using hb
     exact absurd hb' h
 
+/- English proof (translation)
+Introduce `H` and use `Set.infinite_univ ((H.1 e).subset fun _ _ => hs)`.
+-/
 theorem HasAdicSum.not_const {I : Ideal R} {D : DegPre R} {a : D.P.A ⟶ D.P.A} {n j : ℤ} {β : D.X} {s : SecT D a n j β} {e : ℕ}
     (hs : ¬ Van I s e) (F : ∀ δ, SecT D a n j δ) : ¬ HasAdicSum I (w := fun _ : ℕ => β) (fun _ => s) F :=
   fun H => Set.infinite_univ ((H.1 e).subset fun _ _ => hs)
 
+/- English proof (translation)
+Introduce `H` and use `Set.infinite_univ (H.1.subset fun _ _ => hs)`.
+-/
 theorem ExpandsIn.not_const (U : UnifPre I D A G) {e : ℕ} {b : thickObj R I e G ⟶ thickObj R I e G}
     {a : D.toPre.P.A ⟶ D.toPre.P.A} {n j : ℤ} (τ : SecE U b n j) {β : D.toPre.X} {s : SecT D.toPre a n j β}
     (hs : ¬ Van I s e) : ¬ ExpandsIn U τ (w := fun _ : ℕ => β) (fun _ => s) :=
   fun H => Set.infinite_univ (H.1.subset fun _ _ => hs)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e D.P.A).left ⟶ D.P.A.left => exists_chart D.P.isLB (ψ y)`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (DVR.gs_zero (𝟙 _) y _ hy).symm)` and prove the remaining obligations.
+
+Conclude with `(sec_trans s _ y hy (Good.mem hJ _ _)).trans ((congrArg _ (H _ (𝟙 _) y J hJ)).trans (mul_zero _))`. Introduce `H Z x z J hJ`. Establish `m` using `hJ.mem φ (x ≫ pullback.fst D.P.A.hom (thick R I e))`. Conclude with `(gs_pull x _ z _ m _).symm.trans ((congrArg (gs x z _) (H _)).trans (DVR.gs_zero x z _ m))`.
+-/
 theorem Van.iff_chart (I : Ideal R) {D : DegPre R} {K : Type} [Fintype K] {φ : K → (D.P.A.left ⟶ D.P.A.left)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb D.P.L φ ε)) (e : ℕ) :
     Van I s e ↔ ∀ j : K → D.P.L.ι, ((pullback.fst D.P.A.hom (thick R I e)).app _).hom (s.f j) = 0 := by
@@ -183,6 +219,15 @@ theorem Van.iff_chart (I : Ideal R) {D : DegPre R} {K : Type} [Fintype K] {φ : 
     have m := hJ.mem φ (x ≫ pullback.fst D.P.A.hom (thick R I e))
     exact (gs_pull x _ z _ m _).symm.trans ((congrArg (gs x z _) (H _)).trans (DVR.gs_zero x z _ m))
 
+/- English proof (translation)
+Establish `e' : (U.gt e).pG.left = (U.gt e).q.left ≫ pullback.fst D.toPre.P.A.hom (thick R I e)` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `H Z x z J hJ`. Use `H Z (x ≫ (U.gt e).q.left) z J hJ` as an intermediate fact. Rewrite `this` using `[Category.assoc]`. Then use the resulting hypothesis.
+
+Introduce `H`. Use `(Van.iff_chart I s e).2 fun j => ?_` and prove the remaining obligations. Use `(U.gt e).q_flat` as an intermediate fact. Use `(U.gt e).q_surj` as an intermediate fact. Apply `DVR.TG.app_injective_of_flat_surj (U.gt e).q.left` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Establish `h' : ((U.gt e).pG.left.app _).hom (s.f j) = 0`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (DVR.gs_zero (𝟙 _) y _ hy).symm)` and prove the remaining obligations.
+
+Conclude with `(sec_trans s _ y hy (Good.mem hJ _ _)).trans ((congrArg _ (H _ (𝟙 _) y J hJ)).trans (mul_zero _))`. Rewrite `h'` using `[e', Scheme.Hom.comp_app]`. Conclude with `h'`.
+-/
 theorem Van.iff_pull (U : UnifPre I D A G) {K : Type} [Fintype K] {φ : K → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb D.toPre.P.L φ ε)) (e : ℕ) :
     Van I s e ↔ ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e G).left) (z : Z) (J), Good D.toPre.P.L z J →
@@ -206,6 +251,11 @@ theorem Van.iff_pull (U : UnifPre I D A G) {K : Type} [Fintype K] {φ : K → (D
     rw [e', Scheme.Hom.comp_app] at h'
     exact h'
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, H⟩`. Establish `h₀ : ∀ i ∉ hf.toFinset, Van I (s i) e` using `fun _ hi => by_contra fun h => hi (hf.mem_toFinset.2 h)`. Conclude with `⟨_, fun Z x z J hJ => ⟨fun i hi => (Van.iff_pull U _ e).1 (h₀ i hi) Z x z J hJ, fun J' hJ' => H _ h₀ Z x z J J' hJ hJ'⟩⟩`. Introduce and unpack `⟨S₀, h₀⟩`.
+
+Use `⟨S₀.finite_toSet.subset fun i hi => by_contra fun h => hi ((Van.iff_pull U _ e).2 fun Z x z J hJ => (h₀ Z x z J hJ).1 i h), fun S hS Z x z J J' hJ hJ' => ((h₀ Z x z J hJ).2 J' hJ').trans ?_⟩` and prove the remaining obligations. Use `(Finset.sum_subset (Finset.subset_union_left (s₂ := S)) fun i _ hi => by` and prove the remaining obligations. Rewrite using `[(h₀ Z x z J hJ).1 i hi, zero_mul]).trans ?_`. Conclude with `(Finset.sum_subset (Finset.subset_union_right (s₁ := S₀)) fun i _ hi => by`. Rewrite using `[(Van.iff_pull U _ e).1 (hS i hi) Z x z J hJ, zero_mul]).symm`.
+-/
 theorem ExpandsIn.iff_exists (U : UnifPre I D A G) {e : ℕ} {b : thickObj R I e G ⟶ thickObj R I e G}
     {a : D.toPre.P.A ⟶ D.toPre.P.A} {n j : ℤ} (τ : SecE U b n j) {Ix : Type} {w : Ix → D.toPre.X}
     (s : ∀ i, SecT D.toPre a n j (w i)) : ExpandsIn U τ s ↔ ∃ S : Finset Ix, ∀ (Z : Scheme.{0})
@@ -226,6 +276,15 @@ theorem ExpandsIn.iff_exists (U : UnifPre I D A G) {e : ℕ} {b : thickObj R I e
     exact (Finset.sum_subset (Finset.subset_union_right (s₁ := S₀)) fun i _ hi => by
       rw [(Van.iff_pull U _ e).1 (hS i hi) Z x z J hJ, zero_mul]).symm
 
+/- English proof (translation)
+Establish `l : ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R I e G).left) z J J', Good U.LG.L z J' → evalE U τ x z J J' = (DVR.wv U e x z (J (x ≫ DVR.pGl U e)) (J' (x ≫ (fstG I e G).left)) ^ k).val * DVR.sv U k σ (x ≫ DVR.fGl I G e) z (J' (x ≫ (fstG I e G).left))` using `fun Z x z J J' hJ' => by`. Rewrite using `[evalE, hτ Z x z J' hJ', zpow_zero, _root_.mul_one, zpow_natCast, sval_of σ _ z J' (fun _ => J' (x ≫ (fstG I e G).left)) (fun _ => by rw [Category.comp_id])]`. Both sides reduce to the same expression. Rewrite using `[ExpandsIn.iff_exists]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨S, H⟩`. Use `DVR.expandsAt_of_val U e k σ f S fun y J hJ => ⟨fun α hα => ?_, fun jL hL => ?_⟩` and prove the remaining obligations. Use `(H _ (𝟙 _) y J hJ).1 α hα` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `(hs α _ _ y J hJ).symm.trans this`.
+
+Take `⟨J', hJ', eJ⟩` from `exists_good U.LG.L U.LG.isLB y (fun _ : Unit => (fstG I e G).left) (fun _ => jL) (fun _ _ _ => rfl) (fun _ => hL)`. Use `(l _ (𝟙 _) y J J' hJ').symm.trans ((H _ (𝟙 _) y J hJ).2 J' hJ')` as an intermediate fact. Simplify using `only [Category.id_comp] at this`. Rewrite `this` using `[eJ ()]`. Conclude with `this.trans (Finset.sum_congr rfl fun α _ => congrArg (· * _) (hs α _ _ y J hJ))`.
+
+Introduce `H`. Take `⟨S, h₀⟩` from `DVR.expandsAt_val U e k σ f H`. Use `⟨S, fun Z x z J hJ => ⟨fun α hα => (hs α _ _ z J hJ).trans ((h₀ Z x z J hJ).1 α hα), fun J' hJ' => ?_⟩⟩` and prove the remaining obligations. Conclude with `(l Z x z J J' hJ').trans (((h₀ Z x z J hJ).2 _ (hJ' (x ≫ (fstG I e G).left))).trans (Finset.sum_congr rfl fun α _ => congrArg (· * _) (hs α _ _ z J hJ).symm))`.
+-/
 theorem ExpandsIn.iff_expandsAt (U : UnifPre I D A G) (e k : ℕ) (b : thickObj R I e G ⟶ thickObj R I e G)
     (a : D.toPre.P.A ⟶ D.toPre.P.A) (σ : H0 U.LG.L k) (f : ∀ α, D.toPre.SecB k α)
     (τ : SecE U b k 0) (hτ : ∀ (Z : Scheme.{0}) (x : Z ⟶ _) z J', Good U.LG.L z J' →
@@ -259,6 +318,15 @@ theorem ExpandsIn.iff_expandsAt (U : UnifPre I D A G) (e k : ℕ) (b : thickObj 
 
 namespace Witness
 
+/- English proof (translation)
+Introduce `U _ h`. Establish `c : ∀ α (i : Fin 4), (DegPre.prB D (FractionRing R)).left ≫ tφ D a α i.castSucc = DegPre.famφ D (FractionRing R) α i`. Introduce `α i`. Use `fin_cases i`. Conclude with `Category.comp_id _`.
+
+Use `show (DegPre.prB D (FractionRing R) ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left = (padd D.P.A (DegPre.prB D (FractionRing R)) (toUnit _ ≫ D.c α)).left`. Use `congr 1`. Simplify using `only [padd]`. Rewrite using `[← Category.assoc, comp_lift, Category.comp_id, ← Category.assoc, comp_toUnit]`. Use `show (DegPre.prB D (FractionRing R) ≫ toUnit _ ≫ D.c α).left = (toUnit _ ≫ D.c α).left`.
+
+Rewrite using `[← Category.assoc, comp_toUnit]`. Use `show (DegPre.prB D (FractionRing R) ≫ toUnit _ ≫ η[D.P.A]).left = (toUnit _ ≫ η[D.P.A]).left`. Rewrite using `[← Category.assoc, comp_toUnit]`. Apply the tactic sequence `have e : ∀ i : Fin 4, tε k 0 i.castSucc = DegPre.famε k i := by intro i; fin_cases i <;> rfl`. Establish `e' : tε k 0 (Fin.last 4) = 0` using `rfl`.
+
+Simplify using `only [Fintype.prod_sum_type, dφ, dε, DegPre.deltaφ, DegPre.deltaε, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc (n := 4)]`. Simplify using `only [c, e, e', neg_zero, zpow_zero, _root_.mul_one]`.
+-/
 theorem formEq_delta {D : DegPre R} (a : D.P.A ⟶ D.P.A) (k : ℕ) (mu β : D.X) :
     FormEq (dφ D a mu β (β + k • mu)) (dε k 0) (DegPre.deltaφ D (FractionRing R) k β mu) (DegPre.deltaε k) := by
   intro U _ h
@@ -281,6 +349,17 @@ theorem formEq_delta {D : DegPre R} (a : D.P.A ⟶ D.P.A) (k : ℕ) (mu β : D.X
   rw [Fin.prod_univ_castSucc, Fin.prod_univ_castSucc (n := 4)]
   simp only [c, e, e', neg_zero, zpow_zero, _root_.mul_one]
 
+/- English proof (translation)
+Use `choose f hf using fun β => exists_sec D.P.isLB (φ' := tφ D a β) (ε' := tε k 0) (fun U _ h => by`. Rewrite using `[Fin.prod_univ_four, Fin.prod_univ_five]`. Simplify using `[tφ, tε, DegPre.famφB, DegPre.famε]) (F.f β)`. Establish `hv : ∀ β e, Van I (f β) e ↔ Mum.VanMod I (F.f β) e` using `fun β e => by`. Use `Iff.trans ?_ (Van.iff_chart I (F.f β) e)` and prove the remaining obligations.
+
+Conclude with `forall_congr' fun Z => forall_congr' fun x => forall_congr' fun z => forall_congr' fun J => forall_congr' fun hJ => by rw [hf β Z _ z J hJ]`. Use `⟨f, hf, hv, fun e => (F.small e).subset fun β hβ => (hv β e).not.1 hβ, fun mu β => ?_⟩` and prove the remaining obligations. Establish `key : ∀ β', β' = β + k • mu → TRel h mu (f β) (f β')`. Introduce and unpack `_ rfl u ⟨hu, u₀⟩ Z x z J hJ`. Take `⟨u', hu', vu⟩` from `exists_gen D.P.isLB (formEq_delta a k mu β) u hu`.
+
+Establish `h1 : Out.scal (DegPre.BF D (FractionRing R)).hom (1 : R) = 1` using `by unfold Out.scal; rw [map_one, map_one]`. Establish `ex : ∀ α (x : Z ⟶ _), sval (F.f α) (x ≫ (DegPre.prB D (FractionRing R)).left) z J = sval (F.F.s α) x z J` using `fun α x => DVR.SectionScalarValuation.secScal_sval (h1 ▸ F.ext α) x z hJ`. Establish `fe` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u').1 (F.F.fe mu β u' hu' (corr_of_val D.P.isLB fun y J' hJ' => by`. Rewrite using `[val_pull hJ', Category.id_comp, vu _ _ y J' hJ', u₀ y J' hJ']`. Use `Eq.trans ?_ (val_pull hJ' _ _ _).symm` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, val_mul hJ', val_mul hJ']`. Establish `p₁ : val (GeneratorPullback.powGen D.P.L _ _ (D.psi mu) k) (jFK (R` using `R) (FractionRing R)) y J' = val (D.psi mu) (jFK (R := R) (FractionRing R)) y J' ^ k := map_pow _ _ _`. Establish `p₂ : val (GeneratorPullback.powGen D.P.L _ _ D.rigK k) (jFK (R` using `R) (FractionRing R)) y J' = val D.rigK (jFK (R := R) (FractionRing R)) y J' ^ k := map_pow _ _ _`. Rewrite using `[p₁, p₂]`. Use the proof step `simp)) Z x z J hJ`.
+
+Rewrite using `[hf _ _ _ z J hJ, hf _ _ _ z J hJ, ex, ← Category.assoc, ex, fe, vu _ _ z J hJ]`. Conclude with `key _ (by simp [shift])`.
+-/
 theorem of_integral {I : Ideal R} {D : DegPre R} {k : ℕ} (F : Mum.IntFam I D k) (a : D.P.A ⟶ D.P.A) (h h' : D.X →+ D.X) :
     ∃ f : ∀ β, SecT D a k 0 β, (∀ β (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J →
       sval (f β) r z J = sval (F.f β) r z J) ∧ (∀ β e, Van I (f β) e ↔ Mum.VanMod I (F.f β) e) ∧
@@ -312,6 +391,9 @@ theorem of_integral {I : Ideal R} {D : DegPre R} {k : ℕ} (F : Mum.IntFam I D k
     rw [hf _ _ _ z J hJ, hf _ _ _ z J hJ, ex, ← Category.assoc, ex, fe, vu _ _ z J hJ]
   exact key _ (by simp [shift])
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_sec U.LG.isLB (φ' := ![(fstG I e G).left, b.left ≫ (fstG I e G).left]) (ε' := ![(k : ℤ), 0]) (fun U _ h => by`. Simplify using `[Fintype.prod_sum_type])`. Use the proof step `(pullMulSec σ (fstG I e G).left (LB.oneGen U.LG.L) (fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm))`. Use `⟨τ, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `(hτ Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ _ _ hJ).trans ((congrArg (fun u : (Z.presheaf.stalk z)ˣ => _ * u.val) (val_one _)).trans (_root_.mul_one _)))`.
+-/
 theorem exists_secE (U : UnifPre I D A G) {e k : ℕ} (b : thickObj R I e G ⟶ thickObj R I e G) (σ : H0 U.LG.L k) :
     ∃ τ : SecE U b k 0, ∀ (Z : Scheme.{0}) (x : Z ⟶ _) z J', Good U.LG.L z J' →
       sval τ x z J' = sval σ (x ≫ (fstG I e G).left) z J' := by
@@ -324,6 +406,9 @@ theorem exists_secE (U : UnifPre I D A G) {e k : ℕ} (b : thickObj R I e G ⟶ 
   exact (hτ Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ _ _ hJ).trans
     ((congrArg (fun u : (Z.presheaf.stalk z)ˣ => _ * u.val) (val_one _)).trans (_root_.mul_one _)))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `DVR.expandsAt_val U e k σ g x`. Conclude with `S.finite_toSet.subset fun α hα => by_contra fun h => hα ((Van.iff_chart _ _ e).1 ((Van.iff_pull U _ e).2 fun Z r z J hJ => (hS Z r z J hJ).1 α h))`.
+-/
 theorem finite_of_expandsAt (U : UnifPre I D A G) {e k : ℕ} {σ : H0 U.LG.L k} {g : ∀ α, D.toPre.SecB k α}
     (x : U.ExpandsAt e k σ g) : {α | ¬ Mum.VanMod I (g α) e}.Finite := by
   obtain ⟨S, hS⟩ := DVR.expandsAt_val U e k σ g x
@@ -332,6 +417,13 @@ theorem finite_of_expandsAt (U : UnifPre I D A G) {e k : ℕ} {σ : H0 U.LG.L k}
 
 open ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.DVR.TG in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨ϑ, hϑ, -⟩` from `GlobalTheory.ThetaSectionTest.exists_isTheta_of_dvr GlobalTheory.allSixLaws.1 V D A G U`. Take `⟨F, g, -, x, f⟩` from `integral_exp rfl U ϑ`. Establish `hv` using `terms_vanish hϖ rfl F g f`. Establish `h1 : Out.scal (DegPre.BF D.toPre (FractionRing V)).hom (1 : V) = 1` using `by unfold Out.scal; rw [map_one, map_one]`.
+
+Set `Φ : Mum.IntFam (maximalIdeal V) D.toPre 1` to `⟨F, g, fun α => h1 ▸ f α, fun e => finite_of_expandsAt U.toUnifPre (x e)⟩`. Take `⟨s, hs, hw, hsm, hfe⟩` from `of_integral Φ a h h'`. Establish `hn : ¬ Mum.VanMod (maximalIdeal V) (g 0) 0` using `leading_expansion_term_ne_zero rfl U ϑ (nonzero_of_isTheta rfl U hϑ) g (x 0) hv`. Use `⟨s, hsm.hasAdicSum_self, hfe, fun H => hn ((hw 0 0).1 H), fun e b => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `exists_secE U.toUnifPre b ϑ`.
+
+Conclude with `⟨τ, (ExpandsIn.iff_expandsAt U.toUnifPre e 1 b a ϑ g τ hτ s hs).2 (x e)⟩`.
+-/
 theorem exists_of_unif {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {D : DegData V (maximalIdeal V)} {A : PolAV (Sp (FractionRing V))} {G : Over (Sp V)} [GrpObj G] [IsCommMonObj G]
     (U : Unif (maximalIdeal V) D A G) (a : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X) :
@@ -350,6 +442,9 @@ theorem exists_of_unif {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuation
   obtain ⟨τ, hτ⟩ := exists_secE U.toUnifPre b ϑ
   exact ⟨τ, (ExpandsIn.iff_expandsAt U.toUnifPre e 1 b a ϑ g τ hτ s hs).2 (x e)⟩
 
+/- English proof (translation)
+Take `⟨A, G, _, _, D, U, -, -, hr, -⟩` from `GlobalTheory.TateUnif.exists_unif_rank_one`. Take `⟨f, h₁, h₂, h₃, h₄⟩` from `exists_of_unif U (𝟙 _) (AddMonoidHom.id _) (AddMonoidHom.id _)`. Conclude with `⟨A, G, _, _, D, U, hr, f, h₁, h₂, h₃, fun e => h₄ e _⟩`.
+-/
 theorem exists_toric_rank_one : ∃ (A : PolAV (Sp (FractionRing (PowerSeries ℚ)))) (G : Over (Sp (PowerSeries ℚ))) (_ : GrpObj G)
     (_ : IsCommMonObj G) (D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ))) (U : Unif (maximalIdeal _) D A G),
     Module.finrank ℤ D.toPre.X = 1 ∧ ∃ f : ∀ β, SecT D.toPre (𝟙 _) (1 : ℕ) 0 β, HasAdicSum (maximalIdeal _) (w := id) f f ∧
@@ -361,6 +456,9 @@ theorem exists_toric_rank_one : ∃ (A : PolAV (Sp (FractionRing (PowerSeries �
 
 end Witness
 
+/- English proof (translation)
+Simplify using `[shift, sub_eq_add_neg]`.
+-/
 example {X : Type} [AddCommGroup X] (h h' : X →+ X) (κ : ℤ) (mu : X) : shift h h' κ (-1) mu = κ • mu - h' (h mu) := by
   simp [shift, sub_eq_add_neg]
 

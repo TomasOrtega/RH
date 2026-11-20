@@ -35,6 +35,15 @@ def ofAt {H : NExpRealH R cG S YS} (a : TwAt hL D nch xd first R F cG geo S YS H
   ⟨a.X, a.Γ_eq, a.grp_eq, a.fin_eq, a.Pl0_eq, a.I0_eq, a.T_eq, a.core_eq, a.alg_eq, a.R_eq, a.F_eq, a.cG_eq, a.geo_eq, a.A3_eq, a.Y,
     a.S_eq, a.YS_eq, a.gal, a.cf_eq, a.lam_eq, a.C_eq, a.field, a.cg, a.base⟩
 
+/- English proof (translation)
+Take `⟨X, h1, h2, h3, h4, h5, h6, h7, h8, hR, hF, hc, hg, hA, Y, hS, hY, g, -, -, hC, hf, -, -⟩` from `a`. Consider the cases of `X`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7 h8 hR hA hF hc hg hC`. Substitute `h1 h4 h5 h6 h7` using the available equality. Consider the cases of `h2`.
+
+Consider the cases of `h3`. Consider the cases of `h8`. Consider the cases of `hA`. Consider the cases of `hR`. Consider the cases of `hF`.
+
+Consider the cases of `hc`. Consider the cases of `hg`. Consider the cases of `Y`. Simplify using `only at hS hY`. Substitute `hS` using the available equality.
+
+Consider the cases of `hY`. Substitute `hC` using the available equality. Name the introduced variables `ch _ _ _ _ _ _ ig _ _ _ _ _ _ sup H rd _ Z U _ _ _ _ _ _ _ all`. Conclude with `⟨ch, rfl, ig, hf.vals, fun i j b h1 h2 => Set.eq_univ_of_forall (all i j (Finset.mem_Icc.2 ⟨h1, h2⟩) b), sup, ⟨H, rd⟩, ⟨Z⟩, U, g.rank⟩`.
+-/
 theorem elim (a : TwJoin hL D nch xd first R F cG geo S YS cf) :
     R.Char3 F ∧ R.C = cf ∧ GlobalTheory.RealGeo.InGeo geo ∧ Formalism.L2.Host.ValLL0 D cf ∧ XdAll xd ∧
       (∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : D.nexp.Fm i j b), x ∈ D.nexp.Bsup i j b ↔ YS.eF i j b h1 h2 x ∈ NX.Bsup S i j b) ∧
@@ -54,12 +63,21 @@ theorem elim (a : TwJoin hL D nch xd first R F cG geo S YS cf) :
   exact ⟨ch, rfl, ig, hf.vals, fun i j b h1 h2 => Set.eq_univ_of_forall (all i j (Finset.mem_Icc.2 ⟨h1, h2⟩) b), sup, ⟨H, rd⟩, ⟨Z⟩, U,
     g.rank⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => h (elim a).2.2.2.2.1⟩`.
+-/
 theorem isEmpty_of_not_all (h : ¬ XdAll xd) : IsEmpty (TwJoin hL D nch xd first R F cG geo S YS cf) :=
   ⟨fun a => h (elim a).2.2.2.2.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => h (elim a).2.1⟩`.
+-/
 theorem isEmpty_of_ne (h : R.C ≠ cf) : IsEmpty (TwJoin hL D nch xd first R F cG geo S YS cf) :=
   ⟨fun a => h (elim a).2.1⟩
 
+/- English proof (translation)
+Take `⟨x, hx, e⟩` from `h.psi0 g hg i b`. Establish `h1` using `Z.good.e_LL0 i b x`. Use `(congrArg (Z.ρ.e i b) e).trans (h1.trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.what₂.embLL (x : D.what₂.LL) = _`. Rewrite using `[hx, Units.val_inv_eq_inv_val, map_inv₀]`.
+-/
 theorem psi_of_grp (h : GrpTie D A3.A F.P0 F.ψ0 F.P1 F.ψ1 (R.eG.trans cG)) (Z : ExportTie YS geo.v₀) (i b) (g : F.P0)
     (hg : cG (R.eG g) ∈ D.nexp.U) :
     Z.ρ.e i b (D.nexp.psiU i b ⟨_, hg⟩ : (FractionRing (D.ntw.O i))ˣ) = (D.what₂.embLL (F.ψ0 g : D.what₂.LLˣ))⁻¹ := by
@@ -69,6 +87,21 @@ theorem psi_of_grp (h : GrpTie D A3.A F.P0 F.ψ0 F.P1 F.ψ1 (R.eG.trans cG)) (Z 
   change D.what₂.embLL (x : D.what₂.LL) = _
   rw [hx, Units.val_inv_eq_inv_val, map_inv₀]
 
+/- English proof (translation)
+Establish `hp` using `P.isPrime`. Establish `mem : ∀ p : ℕ, placesOver D.host.E p ⊆ ↑(D.ntw.S0 i) → ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ D.ntw.S0 i` using `fun p a b => a b`. Establish `key : ∀ m : ℕ, m ≠ 0 → ((m : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∃ p : ℕ, p.Prime ∧ p ∣ m ∧ ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Introduce `m`. Proceed by induction on `m using Nat.recOnMul with`.
+
+Consider the case `zero => exact fun h0 => absurd rfl h0`. Consider the case `one => exact fun _ h1 => absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h1)) hp.ne_top`. Consider the case `prime p pp => exact fun _ h1 => ⟨p, pp, dvd_rfl, h1⟩`. Consider the case `mul a b iha ihb`. Introduce `h0 h1`.
+
+Rewrite `h1` using `[Nat.cast_mul]`. Break down `hp.mem_or_mem h1 with h1 | h1` into its components or cases. Take `⟨p, p1, p2, p3⟩` from `iha (left_ne_zero_of_mul h0) h1`. Conclude with `⟨p, p1, p2.mul_right _, p3⟩`. Take `⟨p, p1, p2, p3⟩` from `ihb (right_ne_zero_of_mul h0) h1`.
+
+Conclude with `⟨p, p1, p2.mul_left _, p3⟩`. Simplify using `only [Nat.cast_mul] at hP`. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases.
+
+Take `⟨p, p1, p2, p3⟩` from `key _ D.host.QS_pos.ne' hP`. Conclude with `mem p ((h.two_ramified_places_subset_S0 i).2 p p1 ((D.host.dvd_natAbs_discr_iff p1).2 (p2.trans D.host.QS_dvd_condN))) p3`. Conclude with `mem _ ((h.two_ramified_places_subset_S0 i).2 _ D.host.hyp.1 hq) hP`. Establish `hN : Ideal.absNorm D.host.ccK ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `D.host.ccK_ne_bot`. Take `⟨p, p1, p2, p3⟩` from `key _ hN hP`. Conclude with `mem p (h.norm_ccK_places_subset_S0 i p p1 p2) p3`. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases.
+
+Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Conclude with `mem _ (D.ntw.placesOver_subset_exceptional i 0) hP`. Conclude with `mem _ (D.ntw.placesOver_subset_exceptional i 1) hP`. Conclude with `mem _ (by rw [h.ringSpec_excludedPlaces_eq i]; exact fun Q hQ => Or.inl (Or.inl (Or.inr hQ))) hP`. Conclude with `mem _ (by rw [h.ringSpec_excludedPlaces_eq i]; exact fun Q hQ => Or.inl (Or.inr hQ)) hP`.
+-/
 theorem low_of_tied {Fr : TwFrame D} (h : NTwTied D Fr) (hq : D.host.q ∣ (NumberField.discr D.host.E).natAbs) (i) (P : PlE D.host)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) :
       𝓞 D.host.E) ∈ P.asIdeal) : P ∈ D.ntw.S0 i := by
@@ -109,6 +142,13 @@ theorem low_of_tied {Fr : TwFrame D} (h : NTwTied D Fr) (hq : D.host.q ∣ (Numb
       · exact mem _ (by rw [h.ringSpec_excludedPlaces_eq i]; exact fun Q hQ => Or.inl (Or.inl (Or.inr hQ))) hP
     · exact mem _ (by rw [h.ringSpec_excludedPlaces_eq i]; exact fun Q hQ => Or.inl (Or.inr hQ)) hP
 
+/- English proof (translation)
+Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Set `φ : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)`. Establish `hφ : ∀ x : 𝓞 D.host.E, ((φ x : 𝓞 D.host.E) : D.host.E) = D.host.conj x` using `fun _ => rfl`. Establish `le : P.asIdeal ≤ P'.asIdeal.comap φ` using `fun c hc => by`. Take `⟨c', h1, h2⟩` from `h c hc`.
+
+Establish `: φ c = c'` using `RingOfIntegers.ext (by rw [hφ, h2, hs])`. Conclude with `Ideal.mem_comap.2 (this ▸ h1)`. Establish `e` using `P.isMaximal.eq_of_le (Ideal.comap_ne_top φ P'.isPrime.ne_top) le`. Introduce `x y hxy`. Establish `: y = φ x` using `RingOfIntegers.ext (by rw [hφ, hxy])`.
+
+Rewrite using `[this, e]`. Both sides reduce to the same expression.
+-/
 theorem conj_of_lev {P P' : HeightOneSpectrum (𝓞 D.host.E)}
     (h : Formalism.IndefR.Lev.IsConjPl P P') : Formalism.BasicNotions.IsConjPl D.host P P' := by
   have hs : ∀ x : D.host.E, star x = D.host.conj x := bridge_star_holds D.R D.host
@@ -124,6 +164,9 @@ theorem conj_of_lev {P P' : HeightOneSpectrum (𝓞 D.host.E)}
   rw [this, e]
   rfl
 
+/- English proof (translation)
+Introduce `j b` and use `by have hL := X.char.lev refine ⟨t, (GlobalTheory.ChrEqUnique.chrEq_unique D).2.1 _ _ _ (ht ▸ hL.xi t) (Y.Z.pin.delta i j b), ?_⟩ have hd : IsDelta (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde) (X.R.xiH t) := by rw [ht, CharFrame.delAt] split_ifs exacts [X.R.C.isDe …`.
+-/
 theorem baseTup_of {X : RealSide D} {E : IntegralHeckeForms.XD D} (Y : SerSide X E) (i : D.ntw.Tw)
     (t : X.T) (ht : X.R.xiH t = X.R.C.delAt (D.ntw.l i)) : BaseTup Y i := fun j b => by
   have hL := X.char.lev
@@ -151,6 +194,9 @@ theorem baseTup_of {X : RealSide D} {E : IntegralHeckeForms.XD D} (Y : SerSide X
     · exact e ▸ h
     · exact absurd h2 (((Y.Z.good.ch i).pair P' P (conj_of_lev hc) e).1 (fw P' h).2)
 
+/- English proof (translation)
+The claim follows from `Int.natCast_dvd.1 D.host.q_dvd_discr`.
+-/
 theorem q_dvd_discr (D : D7) : D.host.q ∣ (NumberField.discr D.host.E).natAbs :=
   Int.natCast_dvd.1 D.host.q_dvd_discr
 
@@ -234,6 +280,11 @@ def serOf {hH hV hs} (e : NE hL K B f T w Z Wt p0 t nch n xd c)
     change a ∈ xd.xd0 i j b
     rw [this]; trivial
 
+/- English proof (translation)
+Use `baseTup_of Y _ (t.r.z.R.mu ((w.D Z).plEq v)) ?_` and prove the remaining obligations. Establish `hW : v ∈ Wt` using `by_contra fun h => hv (t.mu.off v h)`. Establish `h1` using `(t.r.z.mu v).2`. Rewrite `h1` using `[if_pos hW]`. Establish `hp : T.psi v = 1` using `by rw [hT]; rfl`.
+
+Use `((t.r.z.lev.xiH _).trans h1).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ CharFrame.delAt t.r.z.lev.C (nch.twI_l v)).symm` and prove the remaining obligations. Unfold `TwDat.xiTw`. Rewrite using `[hp, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem base_of_untw {hH hV hs} (Y : SerSide (realOf t hH hV hs) (twEOf xd)) (hT : T = TwDat.untw B T.pl) (v : B.places.Pl)
     (hv : (w.D Z).what₂.muAt v ≠ (w.D Z).what₂.mu0) : BaseTup Y (nch.twI v) := by
   refine baseTup_of Y _ (t.r.z.R.mu ((w.D Z).plEq v)) ?_
@@ -247,17 +298,26 @@ theorem base_of_untw {hH hV hs} (Y : SerSide (realOf t hH hV hs) (twEOf xd)) (hT
   rw [hp, mul_one]
   rfl
 
+/- English proof (translation)
+Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Conclude with `⟨{ A.wdT with }, ⟨{ cg with }⟩, A.lab⟩`.
+-/
 theorem wd_of_built {D : D7} (b : NBuilt hL D) :
     ∃ wd : GlobalTheory.RowTie.WDTie D.nd D.naut, Nonempty (CGTrue hL D wd) ∧ LabTrue D wd := by
   obtain ⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩ := b
   exact ⟨{ A.wdT with }, ⟨{ cg with }⟩, A.lab⟩
 
+/- English proof (translation)
+Take `⟨wd, cg, lab⟩` from `wd_of_built c.a.nt.toNBuilt`. Conclude with `⟨⟨wd, lab, TC.cf w.I w.l Z, { c.a.chrN with }, h3, e.ser.lam, e.ser.lam_ok, fun i hi => (e.ser.lam_tie i hi).imp id (Exists.imp fun _ h => ⟨h.1, h.2.1⟩), hr, hg⟩, rfl, e.ser.lam_C, cg⟩`.
+-/
 theorem gal_of (e : NE hL K B f T w Z Wt p0 t nch n xd c) (h3 : GlobalTheory.Triple.IsTriple (w.D Z)) (hr : 100 ≤ B.R.r)
     (hg : ∀ k, 2 * B.R.r ≤ B.host.g k) : ∃ g : GalSide (w.st Z).toD7, g.cf = TC.cf w.I w.l Z ∧ g.lam.C = TC.cf w.I w.l Z ∧
       Nonempty (CGTrue hL (w.st Z).toD7 g.wd) := by
   obtain ⟨wd, cg, lab⟩ := wd_of_built c.a.nt.toNBuilt
   exact ⟨⟨wd, lab, TC.cf w.I w.l Z, { c.a.chrN with }, h3, e.ser.lam, e.ser.lam_ok, fun i hi => (e.ser.lam_tie i hi).imp id (Exists.imp fun _ h => ⟨h.1, h.2.1⟩), hr, hg⟩, rfl, e.ser.lam_C, cg⟩
 
+/- English proof (translation)
+Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Conclude with `⟨fun i j s k P x h1 h2 h => Bs.hk_emb i j s k P x h1 h2 h.2.2.2 h.2.2.1 h.2.1, Bs.hEig_zero⟩`.
+-/
 theorem hk_of_built {D : D7} (b : NBuilt hL D) :
     (∀ i j s k P (x : D.ntw.B i j s), 1 ≤ j → j ≤ D.R.m → IntegralHeckeForms.HkIdx i k P →
       D.nexp.embB i j s (D.ntw.hk i j s k P x) = D.nexp.hkF i j s k P (D.nexp.embB i j s x)) ∧
@@ -265,6 +325,9 @@ theorem hk_of_built {D : D7} (b : NBuilt hL D) :
   obtain ⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩ := b
   exact ⟨fun i j s k P x h1 h2 h => Bs.hk_emb i j s k P x h1 h2 h.2.2.2 h.2.2.1 h.2.1, Bs.hEig_zero⟩
 
+/- English proof (translation)
+Take `⟨g, h1, h2, ⟨cg⟩⟩` from `gal_of e h3 hr hg`. Take `⟨k1, k2⟩` from `hk_of_built c.a.nt.toNBuilt`. Conclude with `⟨twOf (serOf e H hR hd k1 k2) rfl HEq.rfl g h1 h2 hF cg fun hT v hv => base_of_untw _ hT v hv⟩`.
+-/
 theorem nonempty_of_more {hH hV hs} (e : NE hL K B f T w Z Wt p0 t nch n xd c) (hF : FieldOk (realOf t hH hV hs))
     (h3 : GlobalTheory.Triple.IsTriple (w.D Z)) (hr : 100 ≤ B.R.r) (hg : ∀ k, 2 * B.R.r ≤ B.host.g k)
     (H : NExpRealH t.r.z.R t.r.z.cG _ c.row.nexp) (hR : GlobalTheory.ExportPin.Reads t.r.z.R t.r.z.cG _ c.row.nexp H.hL)
@@ -279,6 +342,9 @@ theorem nonempty_of_more {hH hV hs} (e : NE hL K B f T w Z Wt p0 t nch n xd c) (
 
 def ofExt (a : TwExt hL K B f T w Z Wt p0 t nch n xd c) : TwOf hL K B f T w Z Wt p0 t nch n xd c := ofAt a
 
+/- English proof (translation)
+The claim follows from `(elim a).2.2.2.2.1`.
+-/
 theorem twOf_xdAll (a : TwOf hL K B f T w Z Wt p0 t nch n xd c) : XdAll xd := (elim a).2.2.2.2.1
 
 end Rows

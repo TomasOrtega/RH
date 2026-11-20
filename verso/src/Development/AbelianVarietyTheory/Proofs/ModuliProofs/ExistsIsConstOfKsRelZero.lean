@@ -19,6 +19,9 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Simplify using `only [map_mul, TrivSqZeroExt.snd_mul, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDer_snd_of_ringHom {R : Type} [CommRing R] (xD : R →+* DualNumber ℂ) :
     IsDer ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp xD) (fun r => (xD r).snd) := by
   refine ⟨fun a b => ?_, fun a b => ?_⟩
@@ -28,12 +31,30 @@ theorem isDer_snd_of_ringHom {R : Type} [CommRing R] (xD : R →+* DualNumber �
       MulOpposite.unop_op]
     ring
 
+/- English proof (translation)
+Unfold `spMap Sp`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+-/
 theorem spMap_fst_comp_algebraMap :
     spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = 𝟙 (Sp ℂ) := by
   unfold spMap Sp
   rw [← Spec.map_comp, ← Spec.map_id]
   congr 1
 
+/- English proof (translation)
+Introduce `hL P₀ u Hm χ hU R _ xD A _ A' _ φ j s hA hA' hφ hj hKS`. Establish `hcomp : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap xD = spMap ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp xD)`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hsq : IsPullback (j ≫ φ) P₀.A.hom A.hom (spMap ((TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom.comp xD))`.
+
+Rewrite using `[← hcomp]`. Conclude with `hj.1.paste_horiz hφ.1`. Take `⟨d, hd⟩` from `GlobalTheory.T.exists_global_derivation_of_kodairaSpencer_zero hL P₀ u Hm χ hU R _ A.left A.hom (j ≫ φ) hA.smooth hsq (fun r => (xD r).snd) s (isDer_snd_of_ringHom xD) hKS`. Take `⟨Y', ρ, π, hpb⟩ : ∃ (Y' : Scheme.{0}) (ρ : Y' ⟶ P₀.A.left) (π : Y' ⟶ Sp (DualNumber ℂ)), IsPullback ρ π P₀.A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Establish `hw : 𝟙 P₀.A.left ≫ P₀.A.hom = (P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) ≫ spMap (algebraMap ℂ (DualNumber ℂ))`.
+
+Rewrite using `[Category.assoc, spMap_fst_comp_algebraMap, Category.comp_id, Category.id_comp]`. Take `⟨i, hiρ, hiπ⟩` from `hpb.exists_lift (𝟙 _) (P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) hw`. Establish `hm : (j ≫ φ) ≫ A.hom = P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap xD`. Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, hj.1.w, Category.assoc]`. Take `⟨Φ, hiΦ, hΦ⟩` from `GlobalTheory.T.exists_hom_from_const_thickening_of_derivation P₀.A.left Y' P₀.A.hom π ρ i hpb hiρ hiπ R xD A.left A.hom (j ≫ φ) d hm hd`.
+
+Take `⟨e, heφ, heπ⟩` from `hφ.1.exists_lift Φ π hΦ`. Establish `hie : i ≫ e = j`. Use `hφ.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, heφ, hiΦ]`. Rewrite using `[Category.assoc, heπ, hiπ, hj.1.w]`.
+
+Establish `hpb'` using `(GlobalTheory.T.const_thickening_complex_functions_structure P₀.A.left Y' P₀.A.hom π ρ i hpb hiρ hiπ).2.1`. Use `P₀.isAb.smooth` as an intermediate fact. Establish `hfl : Flat π` using `MorphismProperty.of_isPullback (P := @Flat) hpb inferInstance`. Establish `he : IsIso e` using `GlobalTheory.T.isIso_thickening_map_of_mod_eps P₀.A.left Y' A'.left P₀.A.hom π A'.hom i j e hpb' hj.1 hfl heπ hie`. Establish `hsq2 : IsPullback (inv e) A'.hom π (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Category.comp_id, IsIso.inv_comp_eq, heπ]⟩`.
+
+Establish `hρ₀ : IsPullback (inv e ≫ ρ) A'.hom P₀.A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))`. Establish `h` using `hsq2.paste_horiz hpb`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hjρ : j ≫ inv e ≫ ρ = 𝟙 _`. Rewrite using `[← hie, Category.assoc, IsIso.hom_inv_id_assoc, hiρ]`.
+
+Conclude with `exists_isConst_of_isPullback hL P₀.A A' (inv e ≫ ρ) j P₀.isAb hA' hj hρ₀ hjρ`.
+-/
 theorem exists_isConst_of_ksRel_zero :
     Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (xD : R →+* DualNumber ℂ) (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (φ : A'.left ⟶ A.left) (j : P₀.A.left ⟶ A'.left) (s : (Fin P₀.g → ℂ) → ∀ W : A.left.Opens, Γ(A.left, W) → ℂ), IsAbelianScheme A → IsAbelianScheme A' → IsGrpPullback A' A (spMap xD) φ → IsGrpPullback P₀.A A' (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) j → KSRel u A.hom (j ≫ φ) (fun r => (xD r).snd) 0 s → ∃ ρ, IsConst A' P₀.A ρ j := by
   intro hL P₀ u Hm χ hU R _ xD A _ A' _ φ j s hA hA' hφ hj hKS

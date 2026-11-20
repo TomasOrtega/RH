@@ -18,6 +18,9 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.LevelSeries
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevelSeries.trSp_theta_fock | exact GlobalTheory.LevelSeries.trSp_theta_fock | (intros; apply GlobalTheory.LevelSeries.trSp_theta_fock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.span_finiteTranslates_vacuum_thetaFockVacua : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ)

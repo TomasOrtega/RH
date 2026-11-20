@@ -27,6 +27,27 @@ variable {KA KB KC LA' LB' : CochainComplex (ModuleCat.{u} k) ℕ} {fA : KA ⟶ 
     μR.μ h ((ρA.f r).hom x) w = μLL.μ h ((fA.f r).hom x) w)
 
 include hLL hRR in
+/- English proof (translation)
+Consider the cases of `r with`. Consider the case `zero`. Establish `hx' : (fA.f 0).hom x = 0`. Establish `e : (shiftNegOneD LA 0).hom b = 0` using `rfl`. Rewrite `hx` using `[e, add_zero]`.
+
+Conclude with `hx`. Establish `e1 : μL.shiftLeft 0 s (m + 1) h b ((ρB.f s).hom y) = 0` using `rfl`. Establish `e2 : μLL.shiftBoth 0 s m h b c = 0` using `rfl`. Rewrite using `[e1, e2, smul_zero, map_zero, zero_sub, neg_eq_zero]`. Use `clear e1 e2 hy`.
+
+Consider the cases of `s with`. Consider the case `zero`. Establish `e : μR.shiftRight 0 0 (m + 1) h = 0` using `rfl`. Rewrite using `[e, LinearMap.zero_apply, LinearMap.zero_apply, smul_zero]`. Consider the case `succ s => revert c`.
+
+Introduce `(c : LB.X s)`. Express the relevant statement in the definitionally equal form `(-1 : k) ^ 0 • μR.μ (show 0 + s = m by omega) ((ρA.f 0).hom x) c = 0`. Rewrite using `[hRR, hx', map_zero, LinearMap.zero_apply, smul_zero]`. Consider the case `succ r`. Consider the cases of `s with`.
+
+Consider the case `zero`. Establish `hy' : (fB.f 0).hom y = 0`. Establish `e : (shiftNegOneD LB 0).hom c = 0` using `rfl`. Rewrite `hy` using `[e, add_zero]`. Conclude with `hy`.
+
+Establish `e1 : μR.shiftRight (r + 1) 0 (m + 1) h ((ρA.f (r + 1)).hom x) c = 0` using `rfl`. Establish `e2 : μLL.shiftBoth (r + 1) 0 m h b c = 0` using `rfl`. Rewrite using `[e1, e2, smul_zero, smul_zero, map_zero, sub_zero]`. Use `clear e1 e2 hx`. Use `revert b`.
+
+Introduce `(b : LA.X r)`. Express the relevant statement in the definitionally equal form `μL.μ (show r + 0 = m by omega) b ((ρB.f 0).hom y) = 0`. Rewrite using `[hLL, hy', map_zero]`. Consider the case `succ s`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨r + s, by omega⟩`.
+
+Use `revert b hx c hy`. Introduce `(b : LA.X r) hx (c : LB.X s) hy`. Establish `hx' : (fA.f (r + 1)).hom x = (LA.d r (r + 1)).hom b`. Establish `e : ((fA.f (r + 1)).hom x : LA.X (r + 1)) + -(LA.d r (r + 1)).hom b = 0` using `hx`. Conclude with `add_neg_eq_zero.1 e`.
+
+Establish `hy' : (fB.f (s + 1)).hom y = (LB.d s (s + 1)).hom c`. Establish `e : ((fB.f (s + 1)).hom y : LB.X (s + 1)) + -(LB.d s (s + 1)).hom c = 0` using `hy`. Conclude with `add_neg_eq_zero.1 e`. Express the relevant statement in the definitionally equal form `μL.μ (show r + (s + 1) = m + 1 by omega) b ((ρB.f (s + 1)).hom y) - (-1 : k) ^ (r + 1) • μR.μ (show r + 1 + s = m + 1 by omega) ((ρA.f (r + 1)).hom x) c = -(LC.d m (m + 1)).hom ((-1 : k) ^ (r + 1) • μLL.μ (show r + s = m by omega) b c)`. Establish `e2 : (-1 : k) ^ (r + 1) * (-1 : k) ^ r = -1`.
+
+Rewrite using `[← pow_add, show r + 1 + r = 2 * r + 1 by omega, pow_succ, pow_mul, neg_one_sq, one_pow, one_mul]`. Rewrite using `[hLL, hRR, hx', hy', map_smul, μLL.leibniz, smul_add, smul_smul, e2, neg_one_smul, neg_add, neg_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem shiftLeft_sub_shiftRight {r s m : ℕ} (h : r + s = m + 1) (x : KA.X r)
     (b : shiftNegOneX LA r) (y : KB.X s) (c : shiftNegOneX LB s)
     (hx : shiftNegOneSucc LA r ((fA.f r).hom x) + (shiftNegOneD LA r).hom b = 0)
@@ -95,6 +116,11 @@ variable {fC : KC ⟶ LC} (μK : LeibnizPairing KA KB KC)
     (fC.f n).hom (μK.μ h x y) = μR.μ h ((ρA.f r).hom x) ((fB.f s).hom y))
 
 include hLL hRR in
+/- English proof (translation)
+Take `⟨x0, b⟩` from `X`. Take `⟨y0, c⟩` from `Y`. Use `⟨((0 : KC.X m), (-1 : k) ^ r • μLL.shiftBoth r s m h b c), Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μK.μ h x0 y0 - μK.μ h x0 y0 = (KC.d m (m + 1)).hom 0`. Rewrite using `[sub_self, map_zero]`.
+
+Express the relevant statement in the definitionally equal form `μL.shiftLeft r s (m + 1) h b ((ρB.f s).hom y0) - (-1 : k) ^ r • μR.shiftRight r s (m + 1) h ((ρA.f r).hom x0) c = shiftNegOneSucc LC m ((fC.f m).hom 0) + (shiftNegOneD LC m).hom ((-1 : k) ^ r • μLL.shiftBoth r s m h b c)`. Rewrite using `[map_zero, map_zero, zero_add]`. Conclude with `shiftLeft_sub_shiftRight μLL ρA ρB μL μR hLL hRR h x0 b y0 c (congrArg Prod.snd hX) (congrArg Prod.snd hY)`.
+-/
 theorem coconeLeftμ_sub_coconeRightμ_eq_d {r s m : ℕ} (h : r + s = m + 1)
     (X : (mappingCoconeNat fA).X r) (Y : (mappingCoconeNat fB).X s)
     (hX : (mappingCoconeNatD fA r).hom X = 0) (hY : (mappingCoconeNatD fB s).hom Y = 0) :
@@ -117,6 +143,17 @@ theorem coconeLeftμ_sub_coconeRightμ_eq_d {r s m : ℕ} (h : r + s = m + 1)
 
 include hLL hRR in
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Rewrite using `[homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homology_homologyπ, homology_homologyπ]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Consider the cases of `n with`.
+
+Consider the case `zero`. Take `⟨rfl, rfl⟩ : r = 0 ∧ s = 0` from `⟨by omega, by omega⟩`. Establish `e : (coconeLeft μL ρB μK hL).cycles h x ((HomologicalComplex.cyclesMap (mappingCoconeNat.fst fB) 0).hom y) - (coconeRight μR ρA μK hR).cycles h ((HomologicalComplex.cyclesMap (mappingCoconeNat.fst fA) 0).hom x) y = 0`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[map_sub, iCycles_cycles, iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply, map_zero, sub_eq_zero]`.
+
+Conclude with `Prod.ext rfl rfl`. Rewrite using `[e, map_zero]`. Consider the case `succ m`. Establish `hX` using `iCycles_d_apply (mappingCoconeNat fA) r (r + 1) x`. Establish `hY` using `iCycles_d_apply (mappingCoconeNat fB) s (s + 1) y`.
+
+Rewrite `hX`, `hY` using `[mappingCoconeNat_d]`. Take `⟨W, hW⟩` from `coconeLeftμ_sub_coconeRightμ_eq_d μLL ρA ρB μL μR hLL hRR μK h _ _ hX hY`. Establish `e : (coconeLeft μL ρB μK hL).cycles h x ((HomologicalComplex.cyclesMap (mappingCoconeNat.fst fB) s).hom y) - (coconeRight μR ρA μK hR).cycles h ((HomologicalComplex.cyclesMap (mappingCoconeNat.fst fA) r).hom x) y = ((mappingCoconeNat fC).toCycles m (m + 1)).hom W`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[map_sub, iCycles_cycles, iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply, iCycles_toCycles_hom_apply, mappingCoconeNat_d]`.
+
+Conclude with `hW`. Rewrite using `[e, homologyπ_toCycles_hom_apply]`.
+-/
 theorem coconeLeft_homology_eq_coconeRight_homology {r s n : ℕ} (h : r + s = n)
     (x : (mappingCoconeNat fA).homology r) (y : (mappingCoconeNat fB).homology s) :
     (coconeLeft μL ρB μK hL).homology h x

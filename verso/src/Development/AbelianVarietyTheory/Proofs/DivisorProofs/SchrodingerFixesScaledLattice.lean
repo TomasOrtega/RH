@@ -18,6 +18,9 @@ namespace GlobalTheory.SmallHeisFix
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `v`. Establish `h` using `map_one (evalV F v)`. Rewrite `h` using `[GlobalTheory.SchADecomp.evalV_eq]`. Rewrite using `[h]`. Conclude with `one_mem _`.
+-/
 theorem one_mem_intA : (1 : FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchADecomp.intA F := by
   intro v
   have h := map_one (evalV F v)
@@ -25,6 +28,11 @@ theorem one_mem_intA : (1 : FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchADec
   rw [h]
   exact one_mem _
 
+/- English proof (translation)
+Use `haveI : CompactSpace (GlobalTheory.SchADecomp.intA F) := isCompact_iff_compactSpace.1 GlobalTheory.SchADecomp.isCompact_intA`. Establish `ho : IsOpen ((V.addSubgroupOf (GlobalTheory.SchADecomp.intA F)) : Set (GlobalTheory.SchADecomp.intA F))` using `hV.preimage continuous_subtype_val`. Use `haveI : Finite (GlobalTheory.SchADecomp.intA F ⧸ V.addSubgroupOf (GlobalTheory.SchADecomp.intA F)) := AddSubgroup.quotient_finite_of_isOpen _ ho`. Use `⟨(V.addSubgroupOf (GlobalTheory.SchADecomp.intA F)).index, AddSubgroup.index_ne_zero_of_finite, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.nsmul_index_mem (V.addSubgroupOf (GlobalTheory.SchADecomp.intA F)) (⟨1, one_mem_intA⟩ : GlobalTheory.SchADecomp.intA F)` as an intermediate fact.
+
+Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify using `using this`.
+-/
 theorem exists_natCast_mem (V : AddSubgroup (FiniteAdeleRing (𝓞 F) F)) (hV : IsOpen (V : Set (FiniteAdeleRing (𝓞 F) F))) :
     ∃ N : ℕ, N ≠ 0 ∧ (N : FiniteAdeleRing (𝓞 F) F) ∈ V := by
   haveI : CompactSpace (GlobalTheory.SchADecomp.intA F) :=
@@ -44,17 +52,26 @@ variable {κ : Type} [Fintype κ]
 def wFin (y z : κ → Af F) (a : Af F) : (κ → AF F) × (κ → AF F) :=
   (fun i => pairA F 0 (a * y i), fun i => pairA F 0 (a * z i))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.add_apply, mul_add]`.
+-/
 theorem schr_add (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (Φ₁ Φ₂ : (κ → AF F) → ℂ) :
     schr ψ w (Φ₁ + Φ₂) = schr ψ w Φ₁ + schr ψ w Φ₂ := by
   funext x
   simp only [schr, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_smul (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (c : ℂ) (Φ : (κ → AF F) → ℂ) :
     schr ψ w (c • Φ) = c • schr ψ w Φ := by
   funext x
   simp only [schr, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.zero_apply, mul_zero]`.
+-/
 theorem schr_zero (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) :
     schr ψ w (0 : (κ → AF F) → ℂ) = 0 := by
   funext x
@@ -64,6 +81,11 @@ def phase (y z : κ → Af F) (p : Af F × (κ → Af F)) : Af F :=
   p.2 ⬝ᵥ (fun i => p.1 * z i) +
     GlobalTheory.HeisSchA.p2 (⅟(2 : AF F)) * ((fun i => p.1 * y i) ⬝ᵥ (fun i => p.1 * z i))
 
+/- English proof (translation)
+Establish `h1 : Continuous fun p : Af F × (κ → Af F) => p.2 ⬝ᵥ (fun i => p.1 * z i)`. Unfold `dotProduct`. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_apply i).comp continuous_snd).mul (continuous_fst.mul continuous_const)`. Establish `h2 : Continuous fun p : Af F × (κ → Af F) => (fun i => p.1 * y i) ⬝ᵥ (fun i => p.1 * z i)`. Unfold `dotProduct`.
+
+Conclude with `continuous_finset_sum _ fun i _ => (continuous_fst.mul continuous_const).mul (continuous_fst.mul continuous_const)`. Conclude with `h1.add (continuous_const.mul h2)`.
+-/
 theorem continuous_phase (y z : κ → Af F) : Continuous (phase y z) := by
   have h1 : Continuous fun p : Af F × (κ → Af F) => p.2 ⬝ᵥ (fun i => p.1 * z i) := by
     unfold dotProduct
@@ -73,9 +95,21 @@ theorem continuous_phase (y z : κ → Af F) : Continuous (phase y z) := by
     exact continuous_finset_sum _ fun i _ => (continuous_fst.mul continuous_const).mul (continuous_fst.mul continuous_const)
   exact h1.add (continuous_const.mul h2)
 
+/- English proof (translation)
+Simplify using `[phase]`.
+-/
 theorem phase_zero (y z : κ → Af F) (u : κ → Af F) : phase y z (0, u) = 0 := by
   simp [phase]
 
+/- English proof (translation)
+Simplify using `only [schr, pureA]`. Rewrite using `[GlobalTheory.HeisSchA.map_eq_mul ψ]`. Establish `h1 : GlobalTheory.HeisSchA.p1 (x ⬝ᵥ (wFin y z a).2 + ⅟(2 : AF F) * ((wFin y z a).1 ⬝ᵥ (wFin y z a).2)) = 0`. Simplify using `only [map_add, map_mul, RingHom.map_dotProduct]`. Establish `: (⇑GlobalTheory.HeisSchA.p1 ∘ (wFin y z a).2 : κ → InfiniteAdeleRing F) = 0` using `by funext i; rfl`.
+
+Simplify using `[this]`. Establish `h2 : GlobalTheory.HeisSchA.p2 (x ⬝ᵥ (wFin y z a).2 + ⅟(2 : AF F) * ((wFin y z a).1 ⬝ᵥ (wFin y z a).2)) = phase y z (a, fun i => (x i).2)`. Simplify using `only [map_add, map_mul, RingHom.map_dotProduct]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+
+Establish `h0 : ψ (GlobalTheory.HeisSchA.mk 0 0) = 1` using `AddChar.map_zero_eq_one ψ`. Rewrite using `[h0, one_mul]`. Establish `ha : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + (wFin y z a).1) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Conclude with `congrArg _ (add_zero (x i).1)`.
+
+Establish `hf : (fun i => ((x + (wFin y z a).1) i).2) = (fun i => (x i).2) + a • y` using `rfl`. Rewrite using `[ha, hf]`.
+-/
 theorem schr_wFin_pureA (ψ : AddChar (AF F) ℂ) (y z : κ → Af F) (a : Af F)
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) (x : κ → AF F) :
     schr ψ (wFin y z a) (pureA F f g) x =
@@ -101,6 +135,19 @@ theorem schr_wFin_pureA (ψ : AddChar (AF F) ℂ) (y z : κ → Af F) (a : Af F)
   have hf : (fun i => ((x + (wFin y z a).1) i).2) = (fun i => (x i).2) + a • y := rfl
   rw [ha, hf]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.HeisSchA.nonarch_finiteAdeleRing (F := F)`. Use `haveI : NonarchimedeanAddGroup (κ → Af F) := GlobalTheory.HeisSchA.nonarch_pi`. Take `⟨M', hM'o, hM'⟩` from `GlobalTheory.SchADecomp.exists_open_invariant g hg`. Establish `hKo : IsOpen {b : Af F | GlobalTheory.HeisSchA.finChar ψ b = 1}` using `(GlobalTheory.HeisSchA.finChar_isLocallyConstant ψ hψ).isOpen_fiber 1`. Take `⟨U, W', hUo, -, h0U, hW', hUW⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : Af F))) hg.2 (hKo.preimage (continuous_phase y z)) (by`.
+
+Introduce and unpack `⟨a, u⟩ ⟨ha, -⟩`. Simplify using `only [Set.mem_singleton_iff] at ha`. Substitute `ha` using the available equality. Use `show GlobalTheory.HeisSchA.finChar ψ (phase y z (0, u)) = 1`. Rewrite using `[phase_zero]`.
+
+Conclude with `AddChar.map_zero_eq_one _)`. Establish `hT : IsOpen {a : Af F | a • y ∈ M'}` using `hM'o.preimage (continuous_id.smul continuous_const)`. Establish `hnhds : U ∩ {a : Af F | a • y ∈ M'} ∈ 𝓝 (0 : Af F)` using `Filter.inter_mem (hUo.mem_nhds (h0U rfl)) (hT.mem_nhds (by simp [M'.zero_mem]))`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hnhds`. Take `⟨N, hN, hNV⟩` from `exists_natCast_mem (V : AddSubgroup (Af F)) V.isOpen`.
+
+Use `⟨N, hN, fun M => ?_⟩` and prove the remaining obligations. Establish `haV : (N : Af F) * (M : Af F) ∈ (V : AddSubgroup (Af F))`. Rewrite using `[mul_comm, ← nsmul_eq_mul]`. Conclude with `(V : AddSubgroup (Af F)).nsmul_mem hNV M`. Take `⟨haU, haT⟩` from `hV haV`.
+
+Establish `haT' : ((N : Af F) * (M : Af F)) • y ∈ M'` using `haT`. Use function extensionality and compare the values at `x`. Rewrite using `[schr_wFin_pureA, hM' _ haT']`. Distinguish the cases in `hgx : g (fun i => (x i).2) = 0`. Simplify using `[pureA, hgx]`.
+
+Establish `hmem : (((N : Af F) * (M : Af F)), fun i => (x i).2) ∈ U ×ˢ W'` using `⟨haU, hW' (subset_tsupport _ hgx)⟩`. Establish `h1 : GlobalTheory.HeisSchA.finChar ψ (phase y z (((N : Af F) * (M : Af F)), fun i => (x i).2)) = 1` using `hUW hmem`. Rewrite using `[h1, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem pure_fix (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (y z : κ → Af F)
     (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (g : (κ → Af F) → ℂ) (hg : g ∈ SB (κ → Af F)) :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ M : ℕ, schr ψ (wFin y z ((N : Af F) * (M : Af F))) (pureA F f g) = pureA F f g := by
@@ -140,6 +187,19 @@ theorem pure_fix (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (y z : κ → A
 
 end GlobalTheory.SmallHeisFix
 
+/- English proof (translation)
+Introduce `F _ _ κ _ ψ hψ Ψ hΨ m y z`. Establish `key : ∀ j, ∃ N : ℕ, N ≠ 0 ∧ ∀ M : ℕ, schr ψ (GlobalTheory.SmallHeisFix.wFin (y j) (z j) ((N : Af F) * (M : Af F))) Ψ = Ψ`. Introduce `j`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨f, g, hg, rfl⟩` from `hΦ`. Conclude with `GlobalTheory.SmallHeisFix.pure_fix ψ hψ (y j) (z j) (⇑f) g hg`. Consider the case `zero => exact ⟨1, one_ne_zero, fun M => GlobalTheory.SmallHeisFix.schr_zero ψ _⟩`. Consider the case `add Φ₁ Φ₂ _ _ h1 h2`. Take `⟨N₁, hN₁, e1⟩` from `h1`.
+
+Take `⟨N₂, hN₂, e2⟩` from `h2`. Use `⟨N₁ * N₂, mul_ne_zero hN₁ hN₂, fun M => ?_⟩` and prove the remaining obligations. Establish `c1 : ((N₁ * N₂ : ℕ) : Af F) * (M : Af F) = (N₁ : Af F) * ((N₂ * M : ℕ) : Af F)` using `by push_cast; ring`. Establish `c2 : ((N₁ * N₂ : ℕ) : Af F) * (M : Af F) = (N₂ : Af F) * ((N₁ * M : ℕ) : Af F)` using `by push_cast; ring`. Rewrite using `[GlobalTheory.SmallHeisFix.schr_add]`.
+
+Use `congr 1`. Rewrite using `[c1]`. Conclude with `e1 _`. Rewrite using `[c2]`. Conclude with `e2 _`.
+
+Consider the case `smul c Φ _ h`. Take `⟨N, hN, e⟩` from `h`. Conclude with `⟨N, hN, fun M => by rw [GlobalTheory.SmallHeisFix.schr_smul, e]⟩`. Use `choose N hN hNe using key`. Use `⟨∏ j, N j, Finset.prod_ne_zero_iff.2 fun j _ => hN j, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hNe j (∏ j' ∈ Finset.univ.erase j, N j')`. Rewrite `h` using `[← Nat.cast_mul, Finset.mul_prod_erase _ _ (Finset.mem_univ j)]`. Conclude with `h`.
+-/
 theorem GlobalTheory.SmallHeisFix.main : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ Ψ ∈ schA F κ, ∀ (m : ℕ) (y z : Fin m → κ → Af F), ∃ N : ℕ, N ≠ 0 ∧ ∀ j,
       schr ψ (fun i => pairA F 0 ((N : Af F) * y j i), fun i => pairA F 0 ((N : Af F) * z j i)) Ψ = Ψ := by

@@ -11,6 +11,17 @@ open Classical
 
 namespace GlobalTheory.HTLat.Point
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ _ O _ _ _ _ _ E _ _ _ P φ d n r a hsum w hw`. Take `⟨y, hy, rfl⟩` from `hw`. Establish `hact : ∀ (b : 𝓞 E) (x : P.V), x ∈ P.latT → P.actV b x ∈ P.latT`. Introduce `b x hx`. Take `⟨s, rfl⟩` from `hx`.
+
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul c t => exact ⟨c ⊗ₜ P.actT b t, by rw [P.inclT_tmul, P.inclT_tmul]; rfl⟩`.
+
+Establish `e : d • idem (isSplitting_embO P.integers) φ = ∑ k, algebraMap O C (r k) ⊗ₜ[ℤ] a k` using `(isSplitting_embO P.integers).1 (by`. Use extensionality with `ψ`. Rewrite using `[map_smul, splitMap_idem, map_sum, Finset.sum_apply]`. Simplify using `only [splitMap_tmul, RingHom.comp_apply, algebraMap_embO, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Rewrite using `[hsum ψ]`.
+
+Apply the tactic sequence `split_ifs <;> simp)`. Express the relevant statement in the definitionally equal form `d • proj (isSplitting_embO P.integers) P.actV φ y ∈ P.latT`. Rewrite using `[proj, ← LinearMap.smul_apply, ← map_smul, e, map_sum, LinearMap.sum_apply]`. Use `P.latT.sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[tensorAction_tmul, algebraMap_smul]`.
+
+Conclude with `P.latT.smul_mem _ (hact _ _ hy)`.
+-/
 theorem smul_latTQuot_le_latT : ∀ {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (φ : E →+* C) (d : C) {n : ℕ} (r : Fin n → O) (a : Fin n → 𝓞 E), (∀ σ : E →+* C, ∑ k, algebraMap O C (r k) * σ (a k) = if σ = φ then d else 0) → ∀ {w : P.V}, w ∈ P.latTQuot (σ := fun ψ : E →+* C => embO P.integers ψ) (isSplitting_embO P.integers) φ → d • w ∈ P.latT := by
   intro p _ C _ _ _ _ O _ _ _ _ _ E _ _ _ P φ d n r a hsum w hw
   obtain ⟨y, hy, rfl⟩ := hw

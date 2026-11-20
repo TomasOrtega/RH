@@ -10,6 +10,33 @@ open scoped ComplexConjugate nonZeroDivisors ContDiff
 
 namespace GlobalTheory.RSTheta
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `haveI : IsEmpty {ξ : Fin 0 → E // ξ ≠ 0} := ⟨fun ξ => ξ.2 (Subsingleton.elim _ _)⟩`. Conclude with `⟨0, 0, fun _ _ _ _ _ _ => ⟨summable_empty, by simp⟩⟩`. Use `set D := Module.finrank ℝ (Fin a → Cinf E) with hD`. Establish `hD1 : 1 ≤ D` using `by rw [hD, finrank_pi_Cinf]; exact Nat.mul_pos ha Module.finrank_pos`.
+
+Establish `hND : (D : ℝ) ≤ N` using `by exact_mod_cast hN`. Take `⟨K, hK, hlat⟩` from `GlobalTheory.LatticeCount.tsum_one_add_norm_rpow_neg_le_regimes (V := Fin a → Cinf E) hD1 (M := ((N + D + 1 : ℕ) : ℝ)) (by push_cast; linarith)`. Rewrite `hlat` using `[← hD]`. Use `⟨N + D + 1, 2 ^ N * K, fun g A c hA hsupp hdec => ?_⟩` and prove the remaining obligations. Set `T : (Fin a → E) →+ (Fin a → Ad E)` to `{ toFun := fun ξ => (fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val map_zero' := by simp only [Pi.zero_apply, map_zero]; exact zero_vecMul _ map_add' := fun x y => by simp only [Pi.add_apply, map_add]; exact add_vecMul _ _ _ }`.
+
+Set `TI : (Fin a → E) →+ (Fin a → Cinf E)` to `((pInf E).toAddMonoidHom.compLeft (Fin a)).comp T`. Set `TF : (Fin a → E) →+ (Fin a → Af E)` to `((pFin E).toAddMonoidHom.compLeft (Fin a)).comp T`. Set `P : AddSubgroup (Fin a → E)` to `(AddSubgroup.pi Set.univ fun _ => idealFiniteAdeles J).comap TF`. Establish `hP : ∀ ξ, ξ ∈ P ↔ TF ξ ∈ latt a J` using `fun ξ => ⟨fun h i => h i trivial, fun h i _ => h i⟩`. Take `⟨δ, hδ, hδle⟩` from `exists_le_norm g (isCompact_latt J)`.
+
+Use `replace hδle : ∀ ξ ∈ P, ξ ≠ 0 → δ ≤ ‖TI ξ‖ := fun ξ h h0 => hδle ξ h0 ((hP ξ).1 h)`. Establish `hsP : ∀ ξ, c ξ ≠ 0 → ξ ∈ P` using `fun ξ h => (hP ξ).2 (by_contra fun h' => h (hsupp ξ h'))`. Use `set S : Set ℝ := (fun ξ => ‖TI ξ‖) '' {ξ | ξ ∈ P ∧ ξ ≠ 0} with hS`. Break down `S.eq_empty_or_nonempty with hS0 | hS0` into its components or cases. Establish `: ∀ ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖c ξ‖ = 0` using `fun ξ => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `Set.eq_empty_iff_forall_notMem.1 hS0 _ ⟨ξ.1, ⟨hsP _ (norm_ne_zero_iff.1 h), ξ.2⟩, rfl⟩`. Simplify using `only [this, tsum_zero]`. Conclude with `⟨summable_zero, by positivity⟩`. Establish `hr : 0 < sInf S` using `hδ.trans_le (le_csInf hS0 (by rintro _ ⟨ξ, hξ, rfl⟩; exact hδle ξ hξ.1 hξ.2))`.
+
+Establish `hrle : ∀ ξ ∈ P, ξ ≠ 0 → sInf S ≤ ‖TI ξ‖` using `fun ξ h h0 => csInf_le ⟨0, by rintro _ ⟨ξ, -, rfl⟩; exact norm_nonneg _⟩ ⟨ξ, ⟨h, h0⟩, rfl⟩`. Take `⟨_, ⟨ξ₀, hξ₀, rfl⟩, hlt⟩` from `exists_lt_of_csInf_lt hS0 (show sInf S < 2 * sInf S by linarith)`. Generalize the expression as in `sInf S = r at hr hrle hlt`. Take `⟨hsum, hlo, hhi⟩` from `hlat (P.map TI) r hr (by`. Introduce and unpack `_ ⟨ξ, hξ, rfl⟩ h0`.
+
+Conclude with `hrle ξ hξ fun e => h0 (by rw [e, map_zero]))`. Use `set B : ℝ := A * (2 * r) ^ N with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hterm : ∀ ξ, ‖c ξ‖ ≤ B * (1 + ‖TI ξ‖) ^ (-(((N + D + 1 : ℕ)) : ℝ))` using `fun ξ => by`. Establish `h1` using `hdec ξ ξ₀ hξ₀.2 ((hP _).1 hξ₀.1)`.
+
+Establish `hpos : 0 < (1 + ‖TI ξ‖) ^ (N + D + 1)` using `by positivity`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ hpos]`. Use `h1.trans (mul_le_mul_of_nonneg_left ?_ hA)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hlt.le _`. Set `j : {ξ // ξ ∈ P ∧ ξ ≠ 0} → {ξ : Fin a → E // ξ ≠ 0}` to `fun ξ => ⟨ξ.1, ξ.2.2⟩`.
+
+Establish `hj : Function.Injective j` using `fun x y h => Subtype.ext (congrArg (fun z : {ξ : Fin a → E // ξ ≠ 0} => z.1) h)`. Establish `hjs : ∀ ξ ∉ Set.range j, ‖c ξ‖ = 0` using `fun ξ h => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨⟨ξ.1, hsP _ (norm_ne_zero_iff.1 h'), ξ.2⟩, rfl⟩`. Set `ι : {ξ // ξ ∈ P ∧ ξ ≠ 0} → ((P.map TI : Set (Fin a → Cinf E)) \ {0} : Set (Fin a → Cinf E))` to `fun ξ => ⟨TI ξ.1, ⟨ξ.1, ξ.2.1, rfl⟩, norm_pos_iff.1 (hr.trans_le (hrle _ ξ.2.1 ξ.2.2))⟩`.
+
+Establish `hι : Function.Injective ι` using `fun x y h => Subtype.ext (by`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hrle _ (P.sub_mem x.2.1 y.2.1) (sub_ne_zero.2 hne)`. Rewrite `h1` using `[map_sub, show TI x.1 = TI y.1 from congrArg Subtype.val h, sub_self, norm_zero]`. Conclude with `h1.not_gt hr)`.
+
+Establish `hs1` using `(hsum.mul_left B).comp_injective hι`. Establish `hs2 : Summable ((fun ξ : {ξ : Fin a → E // ξ ≠ 0} => ‖c ξ‖) ∘ j)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => hterm ξ.1) hs1`. Use `⟨(hj.summable_iff hjs).1 hs2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj.tsum_eq (f := fun ξ : {ξ : Fin a → E // ξ ≠ 0} => ‖c ξ‖) fun ξ h => by_contra fun h' => h (hjs ξ h')]`. Use `(Summable.tsum_le_tsum_of_inj ι hι (fun _ _ => by positivity) (fun ξ => hterm ξ.1) hs2 (hsum.mul_left B)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[tsum_mul_left]`. Establish `key : ∀ e : ℝ, r ^ ((N : ℝ) + e) ≤ 1 → B * (K * r ^ e) ≤ 2 ^ N * K * A`. Introduce `e he`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB, Real.rpow_add hr, Real.rpow_natCast, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_of_le_one_right (by positivity) he`. Break down `le_total r 1 with h1 | h1` into its components or cases. Conclude with `(mul_le_mul_of_nonneg_left (hlo h1) hB0).trans (key _ (Real.rpow_le_one hr.le h1 (by linarith)))`. Conclude with `(mul_le_mul_of_nonneg_left (hhi h1) hB0).trans (key _ (Real.rpow_le_one_of_one_le_of_nonpos h1 (by push_cast; linarith)))`.
+-/
 theorem summable_tsum_norm_le_of_le_shortest (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (N : ℕ) (hN : Module.finrank ℝ (Fin a → Cinf E) ≤ N) :
     ∃ (M : ℕ) (C : ℝ), ∀ (h : GA E a) (A : ℝ) (c : (Fin a → E) → ℂ), 0 ≤ A →

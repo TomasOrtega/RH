@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsAffCoverSpec
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 KaehlerDifferential
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite ℂ (A ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℂ (A ⧸ m)`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := A ⧸ m)`. Set `φ` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (A ⧸ m)) hb`. Use `⟨φ.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ m), fun x => ?_⟩` and prove the remaining obligations.
+
+Use `show φ.symm (Ideal.Quotient.mkₐ ℂ m x) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ φ.symm.injective, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 private theorem exists_algHom_complex_ker_eq_maximal (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A]
     (m : Ideal A) [m.IsMaximal] : ∃ e : A →ₐ[ℂ] ℂ, ∀ x, e x = 0 ↔ x ∈ m := by
   letI := Ideal.Quotient.field m
@@ -17,6 +22,13 @@ private theorem exists_algHom_complex_ker_eq_maximal (A : Type) [CommRing A] [Al
   show φ.symm (Ideal.Quotient.mkₐ ℂ m x) = 0 ↔ _
   rw [map_eq_zero_iff _ φ.symm.injective, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := ℂ)`. Establish `hj : x ∈ J.jacobson`. Rewrite using `[Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨hJm, hm⟩`. Use `haveI := hm`.
+
+Take `⟨e, he⟩` from `exists_algHom_complex_ker_eq_maximal A m`. Conclude with `(he x).1 (hx e fun y hy => (he y).2 (hJm hy))`. Rewrite `hj` using `[← Ideal.radical_eq_jacobson]`. Take `⟨n, hn⟩` from `hj`. Use `haveI := hred`.
+
+Establish `hnil : IsNilpotent (Ideal.Quotient.mk J x)` using `⟨n, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact hn⟩`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 hnil.eq_zero`.
+-/
 private theorem mem_of_reduced_vanishing_on_zeros (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A]
     (J : Ideal A) (hred : IsReduced (A ⧸ J)) (x : A)
     (hx : ∀ e : A →ₐ[ℂ] ℂ, (∀ y ∈ J, e y = 0) → e x = 0) : x ∈ J := by
@@ -34,6 +46,19 @@ private theorem mem_of_reduced_vanishing_on_zeros (A : Type) [CommRing A] [Algeb
     ⟨n, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact hn⟩
   exact Ideal.Quotient.eq_zero_iff_mem.1 hnil.eq_zero
 
+/- English proof (translation)
+Introduce `A _ _ _ d t hred hfin e he b hb`. Establish `key : ∀ s : {e' : A →ₐ[ℂ] ℂ // ∀ j, e' (t j) = 0}, ∃ a : A, e a ≠ 0 ∧ (s.1 ≠ e → s.1 a = 0)`. Introduce `s`. Distinguish the cases in `hs : s.1 = e`. Conclude with `⟨1, by simp, fun h => absurd hs h⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, e y ≠ s.1 y := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hs (AlgHom.ext fun y => (hcon y).symm)`. Use `⟨y - algebraMap ℂ A (s.1 y), ?_, fun _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `sub_ne_zero.2 hy`. Rewrite using `[map_sub, AlgHom.commutes]`. Conclude with `sub_self _`. Use `choose f hf using key`.
+
+Use `haveI := Fintype.ofFinite {e' : A →ₐ[ℂ] ℂ // ∀ j, e' (t j) = 0}`. Use `⟨∏ s, f s, ?_⟩` and prove the remaining obligations. Establish `hmem : (∏ s, f s) * b ∈ Ideal.span (Set.range t)`. Apply `mem_of_reduced_vanishing_on_zeros A _ hred` to reduce the goal to its premises. Introduce `e' he'`.
+
+Establish `ht : ∀ j, e' (t j) = 0` using `fun j => he' _ (Ideal.subset_span ⟨j, rfl⟩)`. Distinguish the cases in `hee : e' = e`. Substitute `hee` using the available equality. Rewrite using `[map_mul, hb, mul_zero]`. Rewrite using `[map_mul, map_prod, Finset.prod_eq_zero (Finset.mem_univ ⟨e', ht⟩) ((hf ⟨e', ht⟩).2 hee), zero_mul]`.
+
+Take `⟨g, hg⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hmem`. Use `⟨g, ?_, hg.symm⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun s _ => (hf s).1`.
+-/
 theorem UpperTheory.Cb.exists_unit_mul_mem_span_of_reduced_isolated_zero :
     ∀ (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A] (d : ℕ) (t : Fin d → A), IsReduced (A ⧸ Ideal.span (Set.range t)) → Finite {e : A →ₐ[ℂ] ℂ // ∀ j, e (t j) = 0} → ∀ e : A →ₐ[ℂ] ℂ, (∀ j, e (t j) = 0) → ∀ b : A, e b = 0 → ∃ (c : A) (g : Fin d → A), e c ≠ 0 ∧ c * b = ∑ l, g l * t l := by
   intro A _ _ _ d t hred hfin e he b hb

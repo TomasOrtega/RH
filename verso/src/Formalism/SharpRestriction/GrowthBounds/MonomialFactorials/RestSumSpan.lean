@@ -26,6 +26,9 @@ def RestSumSpan : Prop :=
 
 variable {C0 CE1 CE2 X}
 
+/- English proof (translation)
+Introduce `aTop hT aPlus hP b hk` and use `(Finset.sum_le_sum fun x hx => h1 aTop hT aPlus hP b hk x hx).trans (h2 aTop hT aPlus hP b hk)`.
+-/
 theorem restDirQ_of (h1 : RestLvlDim C0 CE1 CE2 X) (h2 : RestSumSpan C0 CE1 CE2 X) : RestDirQ C0 CE1 CE2 X :=
   fun aTop hT aPlus hP b hk =>
     (Finset.sum_le_sum fun x hx => h1 aTop hT aPlus hP b hk x hx).trans (h2 aTop hT aPlus hP b hk)

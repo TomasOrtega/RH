@@ -19,6 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UPoinc.TraitUniq
 
+/- English proof (translation)
+Establish `key : ∀ {a b : ℕ}, Associated (w ^ a) (w ^ b) → a ≤ b → a = b`. Introduce `a b h hab`. Assume the negation of the conclusion as `hne`. Establish `hlt : 0 < b - a` using `by omega`. Establish `h1 : Associated (w ^ a * 1) (w ^ a * w ^ (b - a))`.
+
+Rewrite using `[mul_one, ← pow_add, Nat.add_sub_cancel' hab]`. Conclude with `h`. Establish `h2 : Associated 1 (w ^ (b - a))` using `Associated.of_mul_left h1 (Associated.refl _) (pow_ne_zero _ hw.ne_zero)`. Establish `h3 : IsUnit (w ^ (b - a))` using `associated_one_iff_isUnit.1 h2.symm`. Conclude with `hw.not_isUnit ((isUnit_pow_iff hlt.ne').1 h3)`.
+
+Break down `le_total a b with hab | hab` into its components or cases. Conclude with `key h hab`. Conclude with `(key h.symm hab).symm`.
+-/
 theorem pow_eq_of_associated {W : Type} [CommRing W] [IsDomain W] {w : W} (hw : Irreducible w) {a b : ℕ}
     (h : Associated (w ^ a) (w ^ b)) : a = b := by
   have key : ∀ {a b : ℕ}, Associated (w ^ a) (w ^ b) → a ≤ b → a = b := by
@@ -35,6 +42,11 @@ theorem pow_eq_of_associated {W : Type} [CommRing W] [IsDomain W] {w : W} (hw : 
   · exact key h hab
   · exact (key h.symm hab).symm
 
+/- English proof (translation)
+Establish `hu : IsUnit (f (u : V))` using `(Units.isUnit u).map f`. Establish `e : (v * f (u * ϖ ^ n)) ^ 2 = (((v : W) * f u) ^ 2) * (f ϖ ^ n) ^ 2`. Rewrite using `[map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `(associated_unit_mul_left _ _ ((v.isUnit.mul hu).pow 2)).trans ?_` and prove the remaining obligations. Establish `eq : w ^ (2 * (m * n)) = ((w ^ m) ^ n) ^ 2` using `by rw [← pow_mul, ← pow_mul]; ring_nf`. Rewrite using `[eq]`. Conclude with `(hm.pow_pow (n := n)).pow_pow (n := 2)`.
+-/
 theorem sq_associated {V W : Type} [CommRing V] [CommRing W] [IsDomain W] (f : V →+* W) (ϖ : V) (w : W) (m n : ℕ)
     (hm : Associated (f ϖ) (w ^ m)) (v : Wˣ) (u : Vˣ) :
     Associated ((v * f (u * ϖ ^ n)) ^ 2) (w ^ (2 * (m * n))) := by
@@ -51,6 +63,21 @@ end GlobalTheory.UPoinc.TraitUniq
 
 open GlobalTheory.UPoinc.TraitUniq in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T T' W _ _ _ f f' fK fK' hB hW hf hf' hfl hfl' hK hK' hy w m m' hw hm hm'`. Take `⟨tW, ⟨φ⟩, ⟨φ'⟩⟩` from `GlobalTheory.T.exists_common_semiAbelian_pullback_two_unitary_traits E H Dw l Xo c T T' W f f' fK fK' hB hW hf hf' hfl hfl' hK hK' hy`. Take `⟨PW, e1, he1⟩` from `GlobalTheory.T.exists_linear_uniformisation_base_change_complete_dvr E H T.V T.cdvr T.t T.P W hB hW f hf hfl tW ⟨φ⟩`. Take `⟨PW', e1', he1'⟩` from `GlobalTheory.T.exists_linear_uniformisation_base_change_complete_dvr E H T'.V T'.cdvr T'.t T'.P W hB hW f' hf' hfl' tW ⟨φ'⟩`. Take `⟨e2, he2⟩` from `GlobalTheory.T.linear_uniformisations_character_iso_associated_coords E H W hB tW PW PW'`.
+
+Set `e : T.P.D.toPre.X ≃ₗ[𝓞 E] T'.P.D.toPre.X` to `e1.symm.trans (e2.trans e1')`. Establish `diag : ∀ y, (m : ℤ) * T.be y y = m' * T'.be (e y) (e y)`. Introduce `y`. Take `⟨u, n, hn, hc⟩` from `T.mono y`. Take `⟨u', n', hn', hc'⟩` from `T'.mono (e y)`.
+
+Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_fin_one] at hn hc hn' hc'`. Establish `hc1 : PsiCoord T.P.D.toPre (e1 (e1.symm y)) (u * T.ϖ ^ n 0)`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hc`. Take `⟨v, hv⟩` from `he1 _ _ hc1`.
+
+Take `⟨v', hv'⟩` from `he1' (e2 (e1.symm y)) _ hc'`. Establish `ha` using `he2 _ _ _ hv hv'`. Establish `h1` using `sq_associated f T.ϖ w m (n 0) hm v u`. Establish `h2` using `sq_associated f' T'.ϖ w m' (n' 0) hm' v' u'`. Use `pow_eq_of_associated hw (h1.symm.trans (ha.trans h2))` as an intermediate fact.
+
+Rewrite using `[hn 0, hn' 0]`. Establish `: ((2 * (m * n 0) : ℕ) : ℤ) = ((2 * (m' * n' 0) : ℕ) : ℤ)` using `by rw [this]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∀ a b, T.be a b = T.be b a` using `fun a b => (mem_levelForms.1 T.lev).1 a b`.
+
+Establish `hs' : ∀ a b, T'.be a b = T'.be b a` using `fun a b => (mem_levelForms.1 T'.lev).1 a b`. Use `⟨e, fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `diag (a + b)`. Simplify using `only [map_add, LinearMap.add_apply] at h`. Establish `ha` using `diag a`.
+
+Establish `hb` using `diag b`. Rewrite `h` using `[hs b a, hs' (e b) (e a)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.UPoinc.uTraitUniqSt_holds : UTraitUniqSt := by
   intro E _ _ _ H Dw l Xo c T T' W _ _ _ f f' fK fK' hB hW hf hf' hfl hfl' hK hK' hy w m m' hw hm hm'
   obtain ⟨tW, ⟨φ⟩, ⟨φ'⟩⟩ := GlobalTheory.T.exists_common_semiAbelian_pullback_two_unitary_traits E H Dw l Xo c T T' W f f' fK fK' hB hW hf hf' hfl hfl' hK hK' hy

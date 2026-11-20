@@ -39,6 +39,17 @@ def cut (a : FiniteAdeleRing (𝓞 L) L) (T : Finset (HeightOneSpectrum (𝓞 L)
     simp only [h', if_false]
     exact one_mem _⟩
 
+/- English proof (translation)
+Set `S : Set (HeightOneSpectrum (𝓞 L))` to `{v | a v ∈ v.adicCompletionIntegers L}`. Establish `hle : (Filter.cofinite : Filter (HeightOneSpectrum (𝓞 L))) ≤ Filter.principal S`. Rewrite using `[Filter.le_principal_iff]`. Conclude with `a.2`. Set `P` to `RestrictedProduct (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) (fun w => (w.adicCompletionIntegers L : Set (w.adicCompletion L))) (Filter.principal S)`.
+
+Set `f : Finset (HeightOneSpectrum (𝓞 L)) → P` to `fun T => ⟨fun v => if v ∈ T then a v else 1, by`. Rewrite using `[Filter.eventually_principal]`. Introduce `w hw`. Distinguish the cases in `h : w ∈ T`. Simplify using `only [h, if_true]`.
+
+Conclude with `hw`. Simplify using `only [h, if_false]`. Conclude with `one_mem _⟩`. Set `a' : P` to `⟨fun v => a v, by rw [Filter.eventually_principal]; exact fun w hw => hw⟩`. Establish `hf : Filter.Tendsto f Filter.atTop (nhds a')`.
+
+Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `v`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop ({v} : Finset _)] with T hT`. Establish `: v ∈ T` using `hT (Finset.mem_singleton_self v)`.
+
+Express the relevant statement in the definitionally equal form `a v = if v ∈ T then a v else 1`. Rewrite using `[if_pos this]`. Conclude with `((RestrictedProduct.continuous_inclusion hle).tendsto a').comp hf`.
+-/
 theorem tendsto_cut (a : FiniteAdeleRing (𝓞 L) L) : Filter.Tendsto (cut a) Filter.atTop (nhds a) := by
   classical
   let S : Set (HeightOneSpectrum (𝓞 L)) := {v | a v ∈ v.adicCompletionIntegers L}
@@ -63,6 +74,9 @@ theorem tendsto_cut (a : FiniteAdeleRing (𝓞 L) L) : Filter.Tendsto (cut a) Fi
     rw [if_pos this]
   exact ((RestrictedProduct.continuous_inclusion hle).tendsto a').comp hf
 
+/- English proof (translation)
+Rewrite using `[Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace L, w.Completion) →* AdeleRing (𝓞 L) L` to `MonoidHom.inl (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)`. Set `f : ∀ w : InfinitePlace L, w.Completion` to `fun w => (a : AdeleRing (𝓞 L) L).1 w`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace L, ι (Pi.mulSingle w (f w)) = ι f`. Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`.
+-/
 theorem prod_inf (a : Ideles L) :
     ((∏ w, infIdele L w (cInf w a) : Ideles L) : AdeleRing (𝓞 L) L) = ((a : AdeleRing (𝓞 L) L).1, 1) := by
   classical
@@ -73,6 +87,13 @@ theorem prod_inf (a : Ideles L) :
   change ∏ w : InfinitePlace L, ι (Pi.mulSingle w (f w)) = ι f
   rw [← map_prod, Finset.univ_prod_mulSingle]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty]`. Conclude with `Prod.ext rfl (Subtype.ext (funext fun v => by simp [cut]; rfl))`. Consider the case `insert u T hu ih`.
+
+Rewrite using `[Finset.prod_insert hu, Units.val_mul, ih]`. Use `Prod.ext (mul_one (1 : InfiniteAdeleRing L)) (Subtype.ext (funext fun v => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((localIdele L u (cFin u a) : Ideles L) : AdeleRing (𝓞 L) L).2 v * (if v ∈ T then _ else 1) = if v ∈ insert u T then _ else 1`. Distinguish the cases in `h : v = u`. Substitute `h` using the available equality.
+
+Rewrite using `[AntiExist.loc_self, if_neg hu, if_pos (Finset.mem_insert_self _ _), mul_one]`. Both sides reduce to the same expression. Rewrite using `[AntiExist.loc_ne h, one_mul]`. Simplify using `[h]`.
+-/
 theorem prod_fin (a : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) :
     ((∏ v ∈ T, localIdele L v (cFin v a) : Ideles L) : AdeleRing (𝓞 L) L) = (1, cut (a : AdeleRing (𝓞 L) L).2 T) := by
   classical
@@ -90,6 +111,13 @@ theorem prod_fin (a : Ideles L) (T : Finset (HeightOneSpectrum (𝓞 L))) :
       rw [AntiExist.loc_self, if_neg hu, if_pos (Finset.mem_insert_self _ _), mul_one]; rfl
     · rw [AntiExist.loc_ne h, one_mul]; simp [h]
 
+/- English proof (translation)
+Establish `h : ∀ a : Ideles L, Filter.Tendsto (fun T : Finset (HeightOneSpectrum (𝓞 L)) => (((∏ w, infIdele L w (cInf w a)) * ∏ v ∈ T, localIdele L v (cFin v a) : Ideles L) : AdeleRing (𝓞 L) L)) Filter.atTop (nhds (a : AdeleRing (𝓞 L) L))` using `fun a => by`. Establish `e : ∀ T : Finset (HeightOneSpectrum (𝓞 L)), (((∏ w, infIdele L w (cInf w a)) * ∏ v ∈ T, localIdele L v (cFin v a) : Ideles L) : AdeleRing (𝓞 L) L) = ((a : AdeleRing (𝓞 L) L).1, cut (a : AdeleRing (𝓞 L) L).2 T)` using `fun T => by`. Rewrite using `[Units.val_mul, prod_inf, prod_fin]`. Conclude with `Prod.ext (mul_one _) (one_mul _)`. Simplify using `only [e]`.
+
+Conclude with `tendsto_const_nhds.prodMk_nhds (tendsto_cut _)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `(h a).prodMk_nhds ?_` and prove the remaining obligations. Use `(MulOpposite.continuous_op.tendsto _).comp ?_` and prove the remaining obligations. Establish `h2` using `h a⁻¹`.
+
+Simplify using `only [map_inv, Finset.prod_inv_distrib, ← mul_inv] at h2`. Conclude with `h2`.
+-/
 theorem tendsto_prod_local (a : Ideles L) :
     Filter.Tendsto (fun T : Finset (HeightOneSpectrum (𝓞 L)) =>
       (∏ w, infIdele L w (cInf w a)) * ∏ v ∈ T, localIdele L v (cFin v a)) Filter.atTop (nhds a) := by
@@ -110,6 +138,13 @@ theorem tendsto_prod_local (a : Ideles L) :
   simp only [map_inv, Finset.prod_inv_distrib, ← mul_inv] at h2
   exact h2
 
+/- English proof (translation)
+Establish `key : (fun u : ∀ w : InfinitePlace L, (w.Completion)ˣ => χ.1 (∏ w, infIdele L w (u w))) = fun _ => 1`. Use `(GlobalTheory.InfTypeLocal.denseRange_atInf L).equalizer ?_ continuous_const ?_` and prove the remaining obligations. Conclude with `χ.2.1.comp (continuous_finsetProd _ fun w _ => (GlobalTheory.InfTypeLocal.continuous_infIdele L w).comp (continuous_apply w))`. Use function extensionality and compare the values at `k`. Establish `h1 : χ.1 (infDiag k) = 1` using `hi k`.
+
+Unfold `infDiag at h1`. Rewrite `h1` using `[MonoidHom.finsetProd_apply]`. Conclude with `h1`. Establish `h1` using `(χ.2.1.tendsto _).comp (tendsto_prod_local a)`. Establish `h2 : ∀ T : Finset (HeightOneSpectrum (𝓞 L)), χ.1 ((∏ w, infIdele L w (cInf w a)) * ∏ v ∈ T, localIdele L v (cFin v a)) = 1` using `fun T => by`.
+
+Establish `h3 : χ.1 (∏ w, infIdele L w (cInf w a)) = 1` using `congrFun key fun w => cInf w a`. Establish `h4 : ∀ v, χ.1 (localIdele L v (cFin v a)) = 1` using `fun v => hu v (cFin v a) (ha v)`. Rewrite using `[map_mul, h3, one_mul, map_prod]`. Conclude with `Finset.prod_eq_one fun v _ => h4 v`. Conclude with `tendsto_nhds_unique h1 (tendsto_const_nhds.congr fun T => (h2 T).symm)`.
+-/
 theorem eq_one_of_unr (χ : HChar L) (hi : ∀ k, χ.inf k = 1) (hu : ∀ v, χ.UnrAt v) {a : Ideles L} (ha : a ∈ unitIdl L) :
     χ.1 a = 1 := by
   have key : (fun u : ∀ w : InfinitePlace L, (w.Completion)ˣ => χ.1 (∏ w, infIdele L w (u w))) = fun _ => 1 := by
@@ -130,6 +165,11 @@ theorem eq_one_of_unr (χ : HChar L) (hi : ∀ k, χ.inf k = 1) (hu : ∀ v, χ.
     exact Finset.prod_eq_one fun v _ => h4 v
   exact tendsto_nhds_unique h1 (tendsto_const_nhds.congr fun T => (h2 T).symm)
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup L`. Use `⟨_, Nat.pos_of_ne_zero hf.index_ne_zero, fun χ hi hu => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (MonoidHom.ext fun x => ?_)` and prove the remaining obligations. Take `⟨u, hu', _, ⟨k, rfl⟩, e⟩` from `Subgroup.mem_sup.1 ((unitIdl L ⊔ (diagUnits L).range).pow_index_mem x)`. Express the relevant statement in the definitionally equal form `χ.1 x ^ _ = 1`.
+
+Rewrite using `[← map_pow, ← e, map_mul, χ.2.2 k, eq_one_of_unr χ hi hu hu', mul_one]`.
+-/
 theorem exists_exponent (L : Type) [Field L] [NumberField L] :
     ∃ h : ℕ, 0 < h ∧ ∀ χ : HChar L, (∀ k, χ.inf k = 1) → (∀ v, χ.UnrAt v) → χ ^ h = 1 := by
   have hf := GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup L
@@ -139,6 +179,13 @@ theorem exists_exponent (L : Type) [Field L] [NumberField L] :
   change χ.1 x ^ _ = 1
   rw [← map_pow, ← e, map_mul, χ.2.2 k, eq_one_of_unr χ hi hu hu', mul_one]
 
+/- English proof (translation)
+Use `set p := atFin v (unif v) with hp`. Establish `hpv : Valued.v (p : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Establish `hx0 : Valued.v (x : v.adicCompletion L) ≠ 0` using `by simp`. Use `set n : ℤ := WithZero.log (Valued.v (x : v.adicCompletion L)) with hn`. Establish `hxn : Valued.v (x : v.adicCompletion L) = WithZero.exp n` using `(WithZero.exp_log hx0).symm`.
+
+Establish `hunit : IsUnitAt v (x * p ^ n)`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hpv, hxn, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `h1` using `hu _ hunit`.
+
+Establish `hp1 : χ.loc v p = 1` using `hv`. Rewrite `h1` using `[map_mul, map_zpow, hp1, one_zpow, mul_one]`. Conclude with `h1`.
+-/
 theorem loc_eq_one (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) (hu : χ.UnrAt v) (hv : χ.val v = 1)
     (x : (v.adicCompletion L)ˣ) : χ.loc v x = 1 := by
   set p := atFin v (unif v) with hp
@@ -156,15 +203,26 @@ theorem loc_eq_one (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) (hu : χ.UnrA
   rw [map_mul, map_zpow, hp1, one_zpow, mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_pow (χ : HChar L) (n : ℕ) (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     (χ ^ n).loc v x = χ.loc v x ^ n := rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, ← mul_inv_cancel χ]`. Conclude with `h.mul h.inv`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem trivOn_pow {F : Type} [Field F] [NumberField F] [Algebra F L] {χ : HChar L} (h : χ.TrivOn F) (n : ℕ) :
     (χ ^ n).TrivOn F := by
   induction n with
   | zero => rw [pow_zero, ← mul_inv_cancel χ]; exact h.mul h.inv
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := G)`. Establish `hζ` using `Complex.isPrimitiveRoot_exp m hm`. Establish `hζ'` using `hζ.isUnit_unit hm`. Use `set ζ : ℂˣ := (hζ.isUnit hm).unit`. Establish `ho : orderOf ζ ∣ orderOf g`.
+
+Rewrite using `[← hζ'.eq_orderOf, orderOf_eq_card_of_forall_mem_zpowers hg]`. Conclude with `h`. Use `⟨monoidHomOfForallMemZpowers hg ho, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.eq_iff_eq_on_generator hg, MonoidHom.pow_apply, monoidHomOfForallMemZpowers_apply_gen, MonoidHom.one_apply]`. Conclude with `hζ'.pow_eq_one_iff_dvd n`.
+-/
 theorem exists_char_of_dvd {G : Type} [Group G] [IsCyclic G] {m : ℕ} (hm : m ≠ 0) (h : m ∣ Nat.card G) :
     ∃ θ : G →* ℂˣ, ∀ n : ℕ, θ ^ n = 1 ↔ m ∣ n := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := G)
@@ -179,6 +237,13 @@ theorem exists_char_of_dvd {G : Type} [Group G] [IsCyclic G] {m : ℕ} (hm : m �
     MonoidHom.one_apply]
   exact hζ'.pow_eq_one_iff_dvd n
 
+/- English proof (translation)
+Establish `hc : Nat.card (𝓞 L ⧸ v.asIdeal) = p`. Rewrite using `[← hv, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: Finite (𝓞 L ⧸ v.asIdeal)` using `Nat.finite_of_card_ne_zero (hc ▸ hp.ne_zero)`. Use `v.isPrime` as an intermediate fact. Establish `: IsCyclic (𝓞 L ⧸ v.asIdeal)ˣ` using `inferInstance`.
+
+Establish `hmax` using `v.isMaximal`. Establish `hu : Nat.card (𝓞 L ⧸ v.asIdeal)ˣ = p - 1`. Set `_` to `Ideal.Quotient.field v.asIdeal`. Rewrite using `[← hc]`. Conclude with `Nat.card_units _`.
+
+Take `⟨θ, hθ⟩` from `exists_char_of_dvd (G := (𝓞 L ⧸ v.asIdeal)ˣ) (m := W * l) (mul_ne_zero hW hl) (by rw [hu]; exact hpl)`. Use `⟨θ ^ W, fun x hx => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.pow_apply, ← map_pow, hx, map_one]`. Rewrite using `[← pow_mul, hθ, Nat.mul_dvd_mul_iff_left (Nat.pos_of_ne_zero hW)]`.
+-/
 private theorem exists_residue_char_pow (v : HeightOneSpectrum (𝓞 L)) {p l W : ℕ}
     (hp : p.Prime) (hl : l ≠ 0) (hW : W ≠ 0) (hpl : W * l ∣ p - 1) (hv : Ideal.absNorm v.asIdeal = p) :
     ∃ θ : (𝓞 L ⧸ v.asIdeal)ˣ →* ℂˣ, (∀ x, x ^ W = 1 → θ x = 1) ∧ ∀ n : ℕ, θ ^ n = 1 ↔ l ∣ n := by
@@ -198,6 +263,13 @@ private theorem exists_residue_char_pow (v : HeightOneSpectrum (𝓞 L)) {p l W 
   · rw [MonoidHom.pow_apply, ← map_pow, hx, map_one]
   · rw [← pow_mul, hθ, Nat.mul_dvd_mul_iff_left (Nat.pos_of_ne_zero hW)]
 
+/- English proof (translation)
+Establish `hne : Ideal.span {((p : ℕ) : 𝓞 K)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h1 : IsUnit (algebraMap ℤ (𝓞 K) (p : ℤ))` using `by simpa using hu`. Establish `h2 : IsUnit (p : ℤ)` using `isUnit_of_map_unit _ _ h1`.
+
+Conclude with `(Nat.prime_iff_prime_int.1 hp).not_isUnit h2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hmem : ((p : ℕ) : 𝓞 K) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `hp.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hmem))`.
+-/
 theorem exists_place_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
     ∃ Q : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ Q.asIdeal := by
   have hne : Ideal.span {((p : ℕ) : 𝓞 K)} ≠ ⊤ := by
@@ -214,12 +286,18 @@ theorem exists_place_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p
 
 omit [NumberField L] in
 
+/- English proof (translation)
+Introduce `hb` and use `by obtain ⟨x, y, e⟩ := Nat.Coprime.cast (R := 𝓞 L) h exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left x ha) (v.asIdeal.mul_mem_left y hb)))`.
+-/
 theorem not_mem_of_coprime {a b : ℕ} (h : a.Coprime b) {v : HeightOneSpectrum (𝓞 L)} (ha : (a : 𝓞 L) ∈ v.asIdeal) :
     (b : 𝓞 L) ∉ v.asIdeal := fun hb => by
   obtain ⟨x, y, e⟩ := Nat.Coprime.cast (R := 𝓞 L) h
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (e ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left x ha) (v.asIdeal.mul_mem_left y hb)))
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {(p : 𝓞 L)} ≠ 0` using `by simpa using hp`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_over {p : ℕ} (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 L) | (p : 𝓞 L) ∈ v.asIdeal}.Finite := by
   have h0 : Ideal.span {(p : 𝓞 L)} ≠ 0 := by simpa using hp
   refine (Ideal.finite_factors h0).subset fun v hv => ?_
@@ -231,6 +309,27 @@ variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hce : c.toRingEquiv = H.conj.toRingEquiv` using `RingEquiv.ext hc`. Establish `hsp` using `GlobalTheory.Mem.Chr.splitsC_main R H q hq hs`. Take `⟨w, hw⟩` from `exists_place_over H.E hq`. Establish `hQ : ((q : ℕ) : 𝓞 H.K) ∈ (w.under (𝓞 H.K)).asIdeal` using `by show algebraMap (𝓞 H.K) (𝓞 H.E) ((q : ℕ) : 𝓞 H.K) ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]` and apply the resulting hypothesis. Establish `hθ : ∀ v : HeightOneSpectrum (𝓞 H.E), ∃ θ : (𝓞 H.E ⧸ v.asIdeal)ˣ →* ℂˣ, (∀ x, x ^ H.w = 1 → θ x = 1) ∧ (OverP H q v → ∀ n : ℕ, θ ^ n = 1 ↔ l ∣ n)`. Introduce `v`. Distinguish the cases in `h : OverP H q v`. Take `⟨θ, h1, h2⟩` from `exists_residue_char_pow v hq hl H.w_pos.ne' hql (hsp v h).1`.
+
+Conclude with `⟨θ, h1, fun _ => h2⟩`. Conclude with `⟨1, fun _ _ => rfl, fun h' => absurd h' h⟩`. Use `choose θ hθ1 hθ2 using hθ`. Take `⟨χ, -, ht, hi, htame, hunr, -, hord⟩` from `GlobalTheory.Mem.Chr.AntiExist.exists_hecke_trivOn H.F H.E c (R.Psi) (embPsi H) hcm (fun _ => 0) {w} θ (by`. Introduce `w1 hw1 w' hcj hw'`.
+
+Rewrite `hw1`, `hw'` using `[Finset.mem_singleton]`. Substitute `hw1 hw'` using the available equality. Rewrite `hcj` using `[hce]`. Conclude with `((hsp _ hw).2.2.2 _ hQ _ hcj).2.1 rfl rfl)`. Use the proof step `(by`.
+
+Introduce `ζ hζ`. Establish `h1 : ζ ^ H.w = 1`. Establish `h0 : ((ζ : 𝓞 H.E) : H.E) ^ H.w = 1` using `(H.isMu_iff _).1 hζ`. Apply `Units.ext` to reduce the goal to its premises. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Simplify using `using h0`. Establish `h2 : θ w (Units.map (Ideal.Quotient.mk w.asIdeal).toMonoidHom ζ) = 1` using `hθ1 w _ (by rw [← map_pow, h1, map_one])`. Simplify using `only [neg_zero, zpow_zero, Finset.prod_const_one, one_mul, Finset.prod_singleton]`. Rewrite using `[h2]`. Use the proof step `rfl)`.
+
+Take `⟨hord1, hord2⟩` from `forall_and.1 (hord w (Finset.mem_singleton_self w))`. Use `⟨χ, ht, fun k => ?_, htame, fun v hv => hunr v (fun h => hv ?_) fun w1 hw1 hcj => hv ?_, fun v => ?_, w, hw, fun n hn => (hθ2 w hw n).1 ((hord1 n).1 hn)⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hi k]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.mem_singleton.1 h]`. Conclude with `hw`. Rewrite `hcj` using `[Finset.mem_singleton.1 hw1, hce]`. Conclude with `((hsp w hw).2.2.2 _ hQ v hcj).1`. Distinguish the cases in `h1 : v = w`.
+
+Substitute `h1` using the available equality. Conclude with `(hord1 l).2 ((hθ2 _ hw l).2 dvd_rfl)`. Distinguish the cases in `h2 : ConjPl c.toRingEquiv w v`. Conclude with `(hord2 l v h2).2 ((hθ2 _ hw l).2 dvd_rfl)`. Introduce `x hx`.
+
+Rewrite using `[loc_pow, hunr v (fun h => h1 (Finset.mem_singleton.1 h)) (fun w1 hw1 => by rwa [Finset.mem_singleton.1 hw1]) x hx, one_pow]`.
+-/
 theorem exists_basic {l q : ℕ} (hl : l ≠ 0) (hq : q.Prime) (hql : H.w * l ∣ q - 1) (hs : SplitsC H.E q) :
     ∃ χ : HChar H.E, χ.TrivOn H.F ∧ (∀ k, χ.inf k = 1) ∧ (∀ v, χ.TameAt v) ∧ (∀ v, ¬ OverP H q v → χ.UnrAt v) ∧
       (∀ v, (χ ^ l).UnrAt v) ∧ ∃ w, OverP H q w ∧ ∀ n : ℕ, (χ ^ n).UnrAt w → l ∣ n := by
@@ -290,6 +389,29 @@ theorem exists_basic {l q : ℕ} (hl : l ≠ 0) (hq : q.Prime) (hql : H.w * l �
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H l hl T hT`. Establish `hN : H.w * l * (H.QS * H.q * H.d) ≠ 0` using `mul_ne_zero (mul_ne_zero H.w_pos.ne' hl.ne_zero) H.condN_ne_zero`. Set `P : Set ℕ` to `{q | q.Prime ∧ q ≡ 1 [MOD H.w * l * (H.QS * H.q * H.d)]} \ Set.Iic (l + T.sup id)`. Establish `hP : P.Infinite` using `(Nat.infinite_setOfPred_prime_modEq_one hN).sdiff (Set.finite_Iic _)`. Establish `hPp : ∀ q : P, q.1.Prime` using `fun q => q.2.1.1`.
+
+Establish `hPs : ∀ q : P, SplitsC H.E q.1` using `fun q => GlobalTheory.Mem.Chr.splitsC_of_modEq_one R H q.1 (hPp q) (q.2.1.2.of_mul_left _)`. Establish `hPc : ∀ (q : P) (p : ℕ), p ≠ 0 → p ≤ l + T.sup id → q.1.Coprime p` using `fun q p h0 hp => Nat.coprime_of_lt_prime h0 (lt_of_le_of_lt hp (not_le.1 q.2.2)) (hPp q)`. Use `choose χ ht hi htame hunr hpow w hw hord using fun q : P => exists_basic H hl.ne_zero (hPp q) ((Nat.modEq_iff_dvd' (hPp q).one_le).1 (q.2.1.2.of_mul_right _).symm) (hPs q)`. Take `⟨h, hh, hexp⟩` from `exists_exponent H.E`. Establish `hlh : l * h ≠ 0` using `mul_ne_zero hl.ne_zero hh.ne'`.
+
+Establish `hχ : ∀ q, χ q ^ (l * h) = 1` using `fun q => by`. Rewrite using `[pow_mul]`. Use `hexp _ (fun k => ?_) (hpow q)` and prove the remaining obligations. Use `show (χ q).inf k ^ l = 1`. Rewrite using `[hi, one_pow]`.
+
+Establish `: NeZero (l * h)` using `⟨hlh⟩`. Establish `: Finite {v : HeightOneSpectrum (𝓞 H.E) | (l : 𝓞 H.E) ∈ v.asIdeal}` using `finite_over hl.ne_zero`. Establish `: Infinite P` using `hP.to_subtype`. Set `f : P → {v : HeightOneSpectrum (𝓞 H.E) | (l : 𝓞 H.E) ∈ v.asIdeal} → rootsOfUnity (l * h) ℂ` to `fun q v => ⟨(χ q).val v.1, congrArg (fun ξ : HChar H.E => ξ.val v.1) (hχ q)⟩`. Take `⟨q, q', hne, hf⟩` from `Finite.exists_ne_map_eq_of_infinite f`.
+
+Take `⟨a, m, hm, ham⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hlh l hl.ne_one`. Establish `hcop : q.1.Coprime q'.1` using `(Nat.coprime_primes (hPp q) (hPp q')).2 fun e => hne (Subtype.ext e)`. Establish `hu : ∀ v, ¬ OverP H q.1 v → ¬ OverP H q'.1 v → ((χ q * (χ q')⁻¹) ^ m).UnrAt v` using `fun v h1 h2 x hx => by`. Rewrite using `[loc_pow, (hunr q v h1).mul (hunr q' v h2).inv x hx, one_pow]`. Establish `hov : ∀ v, ¬ ((χ q * (χ q')⁻¹) ^ m).UnrAt v → ∃ r : P, OverP H r.1 v` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hv (hu v (fun h => hc ⟨q, h⟩) fun h => hc ⟨q', h⟩)`. Establish `hfin : {v | ¬ ((χ q * (χ q')⁻¹) ^ m).UnrAt v}.Finite`. Use `((finite_over (L := H.E) (hPp q).ne_zero).union (finite_over (hPp q').ne_zero)).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hv (hu v (fun h => hc (Or.inl h)) fun h => hc (Or.inr h))`. Use `⟨hfin.toFinset, (χ q * (χ q')⁻¹) ^ m, ⟨w q, hfin.mem_toFinset.2 fun hc => hm (hord q m fun x hx => ?_)⟩, ⟨⟨a, ?_⟩, trivOn_pow ((ht q).mul (ht q').inv) m, fun v x hx hx' => ?_, fun v => ?_, fun v hv x => ?_, fun v hv => ?_⟩, fun v hv p hp hpv v' hv' => ?_, fun v hv p hp => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc x hx`. Rewrite `h1` using `[loc_pow, HChar.loc_mul, HChar.loc_inv, hunr q' _ (not_mem_of_coprime hcop (hw q)) x hx, inv_one, mul_one]`. Then use the resulting hypothesis. Unfold `HChar.OrderDvd`.
+
+Rewrite using `[← pow_mul, mul_comm m, ← ham, mul_pow, inv_pow, hχ, hχ, inv_one, mul_one]`. Rewrite using `[loc_pow, (htame q v).mul (htame q' v).inv x hx hx', one_pow]`. Rewrite using `[hfin.mem_toFinset]`. Conclude with `not_not.symm`. Establish `h1 : ∀ r : P, (χ r).UnrAt v` using `fun r => hunr r v (not_mem_of_coprime (hPc r l hl.ne_zero (Nat.le_add_right _ _)).symm hv)`.
+
+Establish `h2 : (χ q).val v = (χ q').val v` using `congrArg Subtype.val (congrFun hf ⟨v, hv⟩)`. Rewrite using `[loc_pow, loc_eq_one _ v ((h1 q).mul (h1 q').inv) (by rw [HChar.val_mul, HChar.val_inv, h2, mul_inv_cancel]), one_pow]`. Take `⟨r, hr⟩` from `hov v (hfin.mem_toFinset.1 hv)`. Conclude with `(GlobalTheory.Mem.Chr.splitsC_main R H r.1 (hPp r) (hPs r) v hr).2.2.1`. Take `⟨r, hr⟩` from `hov v (hfin.mem_toFinset.1 hv)`.
+
+Establish `e : r.1 = p`. Assume the negation of the conclusion as `e`. Conclude with `not_mem_of_coprime ((Nat.coprime_primes (hPp r) hp).2 e) hr hpv`. Substitute `e` using the available equality. Establish `h1` using `GlobalTheory.Mem.Chr.splitsC_main R H r.1 (hPp r) (hPs r) v' hv'`.
+
+Conclude with `⟨h1.1, h1.2.1⟩`. Take `⟨r, hr⟩` from `hov v (hfin.mem_toFinset.1 hv)`. Conclude with `not_mem_of_coprime (hPc r p (fun e => hT (e ▸ hp)) ((Finset.le_sup (f := id) hp).trans (Nat.le_add_left _ _))) hr`.
+-/
 theorem psi_exists : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (l : ℕ), l.Prime → ∀ T : Finset ℕ, 0 ∉ T → ∃ (Q : Finset (HeightOneSpectrum (𝓞 H.E))) (ψ : HChar H.E), Q.Nonempty ∧ IsPsi (H := H) l Q ψ ∧ SplitsCompletely (H := H) Q ∧ ∀ v ∈ Q, ∀ p ∈ T, ¬ OverP H p v := by
   intro R H l hl T hT
   have hN : H.w * l * (H.QS * H.q * H.d) ≠ 0 :=

@@ -20,6 +20,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Set `e` to `Scheme.ΓSpecIso (CommRingCat.of K)`. Set `z' : Kˣ` to `Units.map e.hom.hom.toMonoidHom ze`. Establish `hz' : IsPrimitiveRoot z' M` using `hz.map_of_injective (f := Units.map e.hom.hom.toMonoidHom) (Units.map_injective (ConcreteCategory.bijective_of_isIso e.hom).1)`. Establish `hze : unitOn z' = ze` using `Units.ext (e.hom_inv_id_apply (ze : Γ(Sp K, ⊤)))`. Take `⟨pt, hpt, hw⟩` from `EllipticLevel.exists_symplectic_system hL P M hM z' hz'`.
+
+Rewrite `hw` using `[hze]`. Establish `nt : ∀ (F : Type) [Field F], Nontrivial Γ(Spec (CommRingCat.of F), ⊤)` using `fun F _ => (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Take `⟨lev, -⟩` from `exists_level_of_pairing hL.globalFns hL.weil hL.mulN (Sp K) P M ze hz (fun F _ s => by`. Use `nt F` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast (Spec.preimage s).hom]`. Conclude with `(map_ne_zero _).2 hM`. Rewrite using `[← hze]`. Conclude with `hz'.map_of_injective (f := Units.map (s.appTop.hom.comp e.inv.hom).toMonoidHom) (Units.map_injective (RingHom.injective _)))`. Use `pt hpt hw`.
+
+Conclude with `⟨lev⟩`.
+-/
 theorem nonempty_level_algClosed (hL : Laws) (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (M : ℕ)
     (hM : (M : K) ≠ 0) (ze : Γ(Sp K, ⊤)ˣ) (hz : IsPrimitiveRoot ze M) : Nonempty (Level P M ze) := by
   let e := Scheme.ΓSpecIso (CommRingCat.of K)
@@ -42,6 +51,27 @@ theorem nonempty_level_algClosed (hL : Laws) (K : Type) [Field K] [IsAlgClosed K
     pt hpt hw
   exact ⟨lev⟩
 
+/- English proof (translation)
+Introduce `K _ _ P rig g m N hg c ze hrig hm hK hze hc`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hK2 : ((m ^ 2 : ℕ) : K) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hK`. Take `⟨lev⟩` from `nonempty_level_algClosed hL K P (m ^ 2) hK2 ze hze`. Take `⟨v, hv⟩` from `ThetaPtDet.exists_thetaPt_of_level hL K P hg m hm hK lev`.
+
+Set `e` to `Scheme.ΓSpecIso (CommRingCat.of K)`. Set `v' : (Fin (2 * g) → ZMod (m ^ 2)) → K` to `fun a => e.hom.hom (v a)`. Establish `hvv : v = fun a => GlobalTheory.Ex.fnOf (v' a)` using `funext fun a => (e.hom_inv_id_apply (v a)).symm`. Rewrite `hv` using `[hvv]`. Take `⟨th, hth, hthG⟩` from `exists_gen_thG_of_isThetaPt K P rig hrig m _ (levelPoint lev hg) v' (ThetaPtDet.levelPoint_pow lev hg) hv`.
+
+Take `⟨θ, pt, hgen, hinj, hG, hall⟩` from `hc`. Establish `hβ : ∀ a, ∃ b, pt b = levelPoint lev hg a` using `fun a => by`. Set `u : Over.mk (spMap (RingHom.id K) ≫ 𝟙 (Sp K)) ⟶ Over.mk (𝟙 (Sp K))` to `Over.homMk (spMap (RingHom.id K)) rfl`. Take `⟨b, hb⟩` from `hall K (RingHom.id K) (u ≫ levelPoint lev hg a) (by`. Rewrite using `[← MonObj.comp_pow, ThetaPtDet.levelPoint_pow, MonObj.comp_one])`.
+
+Conclude with `⟨b, TorsionFieldExt.comp_injective u _ (Over.OverMorphism.ext hb.symm)⟩`. Use `choose β hβ using hβ`. Use `⟨lev, β, fun mu hmu => ?_⟩` and prove the remaining obligations. Establish `hun : IsUnit ((m ^ 2 : ℕ) : Γ(Sp K, ⊤))`. Rewrite using `[← map_natCast e.inv.hom]`.
+
+Conclude with `(IsUnit.mk0 _ hK2).map _`. Take `⟨s, hs⟩` from `hth θ`. Establish `e₁ : SecM.ofSec P.A θ = s • SecM.ofSec P.A th` using `Subtype.ext (funext hs)`. Take `⟨r, hr⟩` from `hgen th`. Establish `e₂ : SecM.ofSec P.A th = r • SecM.ofSec P.A θ` using `Subtype.ext (funext hr)`.
+
+Establish `k₁ : ∀ a, c (β a) = e.hom.hom s * v' a` using `fun a => by`. Establish `q₁` using `hG (β a)`. Rewrite `q₁` using `[hβ a]`. Establish `q` using `congrArg e.hom.hom (ThG.unique hL P hm hun q₁ (ThG.smul P.isLB e₁ (hthG a)))`. Rewrite `q` using `[map_mul, show e.hom.hom (GlobalTheory.ZH.fn (c (β a))) = c (β a) from e.inv_hom_id_apply _, show e.hom.hom (GlobalTheory.Ex.fnOf (v' a)) = v' a from e.inv_hom_id_apply _]`.
+
+Conclude with `q`. Establish `k₂ : ∀ a, v' a = e.hom.hom r * c (β a)` using `fun a => by`. Establish `q₁` using `hG (β a)`. Rewrite `q₁` using `[hβ a]`. Establish `q` using `congrArg e.hom.hom (ThG.unique hL P hm hun (hthG a) (ThG.smul P.isLB e₂ q₁))`.
+
+Rewrite `q` using `[map_mul, show e.hom.hom (GlobalTheory.ZH.fn (c (β a))) = c (β a) from e.inv_hom_id_apply _, show e.hom.hom (GlobalTheory.Ex.fnOf (v' a)) = v' a from e.inv_hom_id_apply _]`. Conclude with `q`. Distinguish the cases in `hs₀ : e.hom.hom s = 0`. Establish `h0 : ∀ a, c (β a) = 0` using `fun a => by rw [k₁, hs₀, zero_mul]`. Establish `: (fun a => GlobalTheory.ZH.fn (mu * c (β a))) = fun a => GlobalTheory.Ex.fnOf (v' a)` using `funext fun a => by`.
+
+Rewrite using `[k₂, h0, mul_zero, mul_zero]`. Rewrite using `[this]`. Conclude with `hv`. Use `GenericObject.isThetaPt_unit_mul P m (levelPoint lev hg) _ _ (e.inv.hom (mu * e.hom.hom s)) ((IsUnit.mk0 _ (mul_ne_zero hmu hs₀)).map _) (fun a => ?_) hv` and prove the remaining obligations. Rewrite using `[k₁, ← _root_.mul_assoc]`.
+
+Conclude with `map_mul e.inv.hom _ _`.
+-/
 theorem exists_level_isThetaPt_of_hasTh : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (rig : LB.Gen (P.L.pull (eSec P.A))) (g m N : ℕ) (hg : P.g = g) (c : Fin N → K) (ze : Γ(Sp K, ⊤)ˣ), rig.IsGen → Odd m → (m : K) ≠ 0 → IsPrimitiveRoot ze (m ^ 2) → HasTh P.A P.L rig m (𝟙 (Sp K)) c → ∃ (lev : Out.Level P (m ^ 2) ze) (β : (Fin (2 * g) → ZMod (m ^ 2)) → Fin N), ∀ mu : K, mu ≠ 0 → IsThetaPt P m (levelPoint lev hg) (fun a => GlobalTheory.ZH.fn (mu * c (β a))) := by
   intro K _ _ P rig g m N hg c ze hrig hm hK hze hc
   have hL : Laws := GlobalTheory.firstFiveLaws.1

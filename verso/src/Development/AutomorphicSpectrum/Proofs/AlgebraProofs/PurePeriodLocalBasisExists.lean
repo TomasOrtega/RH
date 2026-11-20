@@ -21,6 +21,9 @@ open scoped ComplexOrder
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one_of_int {C : Type} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : @IsIntegral ℤ C _ _ (Ring.toIntAlgebra C) x) : ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := C)).integer :=
@@ -28,14 +31,27 @@ theorem norm_le_one_of_int {C : Type} [NormedField C] [IsUltrametricDist C] {x :
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
   exact_mod_cast h
 
+/- English proof (translation)
+The claim follows from `norm_le_one_of_int (map_isIntegral_int j b.isIntegral_coe)`.
+-/
 theorem norm_int_le (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) (b : 𝓞 E) : ‖j (b : E)‖ ≤ 1 :=
   norm_le_one_of_int (map_isIntegral_int j b.isIntegral_coe)
 
+/- English proof (translation)
+Establish `h : (((ℓ : ℕ) : ℂ_[ℓ])) = algebraMap ℚ_[ℓ] ℂ_[ℓ] ((ℓ : ℕ) : ℚ_[ℓ])` using `by simp`. Rewrite using `[h, norm_algebraMap', Padic.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast ℓ.2.one_lt)`.
+-/
 theorem norm_prime_lt (ℓ : Nat.Primes) : ‖(((ℓ : ℕ) : ℂ_[ℓ]))‖ < 1 := by
   have h : (((ℓ : ℕ) : ℂ_[ℓ])) = algebraMap ℚ_[ℓ] ℂ_[ℓ] ((ℓ : ℕ) : ℚ_[ℓ]) := by simp
   rw [h, norm_algebraMap', Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast ℓ.2.one_lt)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (j.comp (algebraMap (𝓞 E) E))` using `j.injective.comp (RingOfIntegers.coe_injective)`. Take `⟨a, ha, ha0, -, hlog⟩` from `GlobalTheory.T.padic_logIdeal_max_element E ℓ (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) hinj differentIdeal_ne_bot`. Establish `hn : 0 < ‖j (a : E)‖`. Rewrite using `[norm_pos_iff]`. Introduce `h`.
+
+Conclude with `ha0 (hinj (by simpa using h))`. Use `⟨‖j (a : E)‖⁻¹, inv_pos.2 hn, ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_inv]`. Conclude with `congrArg Neg.neg hlog.symm`. Take `⟨b, hb⟩` from `(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.2 a ha x y`.
+
+Establish `h1 : ‖j (a : E)‖ * ‖j (sesq D x y)‖ = ‖j (b : E)‖` using `by rw [← norm_mul, ← map_mul, hb]`. Establish `h2` using `norm_int_le ℓ j b`. Rewrite `h2` using `[← h1]`. Rewrite using `[← one_div, le_div_iff₀ hn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_bound (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) :
     ∃ r : ℝ, 0 < r ∧ Real.log r = -logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) ∧
       ∀ x y, ‖j (sesq D x y)‖ ≤ r := by
@@ -57,16 +73,25 @@ theorem exists_bound (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) :
     rw [← one_div, le_div_iff₀ hn]
     linarith
 
+/- English proof (translation)
+Set `φ : D.La →+ E` to `AddMonoidHom.mk' (fun x => sesq D x y) (fun a b => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.1 a b y)`. Conclude with `map_sum φ f s`.
+-/
 theorem sesq_sum_left (D : Datum H) {J : Type} (s : Finset J) (f : J → D.La) (y : D.La) :
     sesq D (∑ m ∈ s, f m) y = ∑ m ∈ s, sesq D (f m) y := by
   let φ : D.La →+ E := AddMonoidHom.mk' (fun x => sesq D x y) (fun a b => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.1 a b y)
   exact map_sum φ f s
 
+/- English proof (translation)
+Set `φ : D.La →+ E` to `AddMonoidHom.mk' (fun x => sesq D y x) (fun a b => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1 y a b)`. Conclude with `map_sum φ f s`.
+-/
 theorem sesq_sum_right (D : Datum H) {J : Type} (s : Finset J) (f : J → D.La) (y : D.La) :
     sesq D y (∑ m ∈ s, f m) = ∑ m ∈ s, sesq D y (f m) := by
   let φ : D.La →+ E := AddMonoidHom.mk' (fun x => sesq D y x) (fun a b => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.1 y a b)
   exact map_sum φ f s
 
+/- English proof (translation)
+Rewrite using `[sesq_sum_right]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1, sesq_sum_left, mul_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun m _ => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1 _ _ _`.
+-/
 theorem sesq_comb (D : Datum H) {J : Type} [Fintype J] (x : J → D.La) (u v : J → 𝓞 E) :
     sesq D (∑ m, u m • x m) (∑ n, v n • x n) =
       ∑ n, (∑ m, (u m : E) * sesq D (x m) (x n)) * IsCMField.complexConj E (v n : E) := by
@@ -76,6 +101,9 @@ theorem sesq_comb (D : Datum H) {J : Type} [Fintype J] (x : J → D.La) (u v : J
   congr 1
   exact Finset.sum_congr rfl fun m _ => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.1 _ _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, gramE, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, sesq_comb, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, IsCMField.complexEmbedding_complexConj, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_comb_map (D : Datum H) (τ : E →+* ℂ) {I J : Type} [Fintype J] (x : J → D.La)
     (X : Matrix I J (𝓞 E)) :
     ((gramE D (fun a => ∑ m, X a m • x m)).map fun a => Complex.I * τ a) =
@@ -86,6 +114,13 @@ theorem gram_comb_map (D : Datum H) (τ : E →+* ℂ) {I J : Type} [Fintype J] 
   refine Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun m _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨-, hl, hr', hsl, hsr, -, -⟩` from `GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D`. Establish `hcast : ((((ℓ : ℕ) : 𝓞 E)) : E) = ((ℓ : ℕ) : E)` using `map_natCast (algebraMap (𝓞 E) E) _`. Establish `e : j (sesq D (u + ((ℓ : ℕ) : 𝓞 E) • v) (u' + ((ℓ : ℕ) : 𝓞 E) • v')) - j (sesq D u u') = ((ℓ : ℕ) : ℂ_[ℓ]) * (j (sesq D v u') + j (sesq D u v') + ((ℓ : ℕ) : ℂ_[ℓ]) * j (sesq D v v'))`. Rewrite using `[hl, hr', hr', hsl, hsl, hsr, hsr, hcast, map_natCast (IsCMField.complexConj E)]`. Simplify using `only [map_add, map_mul, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `norm_prime_lt ℓ`. Establish `hc0 : 0 ≤ ‖(((ℓ : ℕ) : ℂ_[ℓ]))‖` using `norm_nonneg _`. Establish `h3 : ‖((ℓ : ℕ) : ℂ_[ℓ]) * j (sesq D v v')‖ ≤ r`. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hc.le).trans (hb v v')`. Establish `h4 : ‖j (sesq D v u') + j (sesq D u v') + ((ℓ : ℕ) : ℂ_[ℓ]) * j (sesq D v v')‖ ≤ r` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hb _ _) (hb _ _))) h3)`. Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_diff_lt (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) {r : ℝ} (hr : 0 < r)
     (hb : ∀ x y, ‖j (sesq D x y)‖ ≤ r) (u u' v v' : D.La) :
     ‖j (sesq D (u + ((ℓ : ℕ) : 𝓞 E) • v) (u' + ((ℓ : ℕ) : 𝓞 E) • v')) - j (sesq D u u')‖ < r := by
@@ -109,6 +144,17 @@ theorem norm_diff_lt (D : Datum H) (ℓ : Nat.Primes) (j : E →+* ℂ_[ℓ]) {r
     _ < 1 * r := mul_lt_mul_of_pos_right hc hr
     _ = r := one_mul r
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hsq` using `H.sqrt_neg_disc_sq`. Establish `him : H.rt0 ≠ 0`. Introduce `h0`. Rewrite `hsq` using `[h0]`.
+
+Simplify using `at hsq`. Conclude with `H.d_prime.ne_zero hsq`. Establish `h1 : H.rt0.re * H.rt0.re - H.rt0.im * H.rt0.im = -(H.d : ℝ)`. Use `congrArg Complex.re hsq` as an intermediate fact. Simplify `this` using `[pow_two]`.
+
+Establish `h2 : H.rt0.re * H.rt0.im + H.rt0.im * H.rt0.re = 0`. Use `congrArg Complex.im hsq` as an intermediate fact. Simplify `this` using `[pow_two]`. Establish `h3 : H.rt0.re * H.rt0.im = 0` using `by linarith [mul_comm H.rt0.re H.rt0.im]`. Establish `hre : H.rt0.re = 0`.
+
+Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `h4`. Rewrite `h1` using `[h4]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h]`.
+
+Introduce `h5`. Establish `h6` using `congrArg Complex.im h5`. Simplify using `at h6`. Conclude with `him (Complex.ext hre (by simpa using (by linarith : H.rt0.im = 0)))`.
+-/
 theorem conj_ne (τ : E →+* ℂ) (h : τ (H.rt : E) = H.rt0) :
     (ComplexEmbedding.conjugate τ) (H.rt : E) ≠ H.rt0 := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
@@ -136,9 +182,23 @@ theorem conj_ne (τ : E →+* ℂ) (h : τ (H.rt : E) = H.rt0) :
   simp at h6
   exact him (Complex.ext hre (by simpa using (by linarith : H.rt0.im = 0)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsAlgClosed.lift : E →ₐ[ℚ] ℂ_[ℓ]).toRingHom⟩`.
+-/
 theorem exists_emb (E : Type) [Field E] [NumberField E] (ℓ : Nat.Primes) : Nonempty (E →+* ℂ_[ℓ]) :=
   ⟨(IsAlgClosed.lift : E →ₐ[ℚ] ℂ_[ℓ]).toRingHom⟩
 
+/- English proof (translation)
+Establish `key : ∀ j : E →+* ℂ_[ℓ], 0 < ‖j (gramE D x').det‖ ∧ Real.log ‖j (gramE D x').det‖ = -(p : ℝ) * logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E))`. Introduce `j`. Take `⟨r, hr, hlog, hb⟩` from `exists_bound D ℓ j`. Establish `hd0 : 0 < ‖j (gramE D x).det‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hx0)`. Establish `hdet : ‖((gramE D x).map j).det‖ = r ^ Fintype.card (Fin p)`.
+
+Establish `e : ((gramE D x).map j).det = j (gramE D x).det` using `(RingHom.map_det j _).symm`. Rewrite using `[e, Fintype.card_fin, ← Real.exp_log hd0, hxn j, ← Real.exp_log (pow_pos hr p), Real.log_pow, hlog]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `GlobalTheory.T.ultrametric_det_norm_stable ℂ_[ℓ] (Fin p) ((gramE D x).map j) ((gramE D x').map j) r hr (fun a b => hb _ _) (fun a b => by`.
+
+Simplify using `only [Matrix.map_apply, gramE, Matrix.of_apply, hx']`. Conclude with `norm_diff_lt D ℓ j hr hb _ _ _ _) hdet`. Establish `e' : ((gramE D x').map j).det = j (gramE D x').det` using `(RingHom.map_det j _).symm`. Rewrite `h` using `[e', Fintype.card_fin]`. Use `⟨by rw [h]; exact pow_pos hr p, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, Real.log_pow, hlog]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨j⟩` from `exists_emb E ℓ`. Use `⟨fun h0 => ?_, fun j => (key j).2⟩` and prove the remaining obligations. Use `(key j).1` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Simplify using `at this`.
+-/
 theorem norm_det_close (D : Datum H) (p : ℕ) (ℓ : Nat.Primes) (x x' w : Fin p → D.La)
     (hx' : ∀ a, x' a = x a + ((ℓ : ℕ) : 𝓞 E) • w a) (hx0 : (gramE D x).det ≠ 0)
     (hxn : ∀ j : E →+* ℂ_[ℓ], Real.log ‖j (gramE D x).det‖ =
@@ -170,6 +230,13 @@ theorem norm_det_close (D : Datum H) (p : ℕ) (ℓ : Nat.Primes) (x x' w : Fin 
   rw [h0] at this
   simp at this
 
+/- English proof (translation)
+Take `⟨hH, -, C, hC⟩` from `GlobalTheory.T.period_gram_hermitian_signature E H D g ty P₀ p q x τ hP₀ hty hli hpq hτ`. Establish `hblk : ((gramE D x).map fun a => Complex.I * τ a) = Matrix.fromBlocks ((gramE D (x ∘ Sum.inl)).map fun a => Complex.I * τ a) 0 0 ((gramE D (x ∘ Sum.inr)).map fun a => Complex.I * τ a)`. Use extensionality with `(a | a) (b | b)`. Simplify using `[gramE]`. Simplify using `[gramE, horth]`.
+
+Establish `h` using `(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 (x (.inl b)) (x (.inr a))`. Simplify using `[gramE, h, horth]`. Simplify using `[gramE]`. Rewrite `hC` using `[hblk]`. Use `GlobalTheory.T.negDef_block_of_posDef p q _ _ C hpos ?_ hC` and prove the remaining obligations.
+
+Use extensionality with `i k`. Establish `h` using `congrFun (congrFun hH (.inr i)) (.inr k)`. Simplify `h` using `[gramE]`.
+-/
 theorem neg_compl (D : Datum H) {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P₀ : D.La →+ (Fin g → ℂ)} {p q : ℕ}
     (hP₀ : IsPeriod D ty P₀) (hty : IsTypeFn H p q ty) (hpq : p + q = D.p + D.q)
     (x : Fin p ⊕ Fin q → D.La) (hli : LinearIndependent (𝓞 E) x)
@@ -199,6 +266,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ H D g ty P₀ p q ℓ hP₀ hty hpq`. Take `⟨x, hxb, hx0, hxn⟩` from `GlobalTheory.T.local_basis_gram_determinant_bound E H D p q ℓ hpq`. Establish `hli` using `hxb.1`. Set `Ψ : Set (E →+* ℂ)` to `{τ | τ (H.rt : E) = H.rt0}`. Set `M : (E →+* ℂ) → Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `fun τ => (gramE D x).map fun a => Complex.I * τ a`.
+
+Establish `hC : ∀ τ : E →+* ℂ, ∃ C : Matrix (Fin p) (Fin p ⊕ Fin q) ℂ, τ ∈ Ψ → (C * M τ * Cᴴ).PosDef`. Introduce `τ`. Distinguish the cases in `h : τ ∈ Ψ`. Take `⟨C, hC⟩` from `(GlobalTheory.T.period_gram_hermitian_signature E H D g ty P₀ p q x τ hP₀ hty hli hpq h).2.1`. Conclude with `⟨C, fun _ => hC⟩`.
+
+Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose C hC using hC`. Take `⟨Y, hY⟩` from `GlobalTheory.T.exists_integral_posDef_perturbation E Ψ (Fin p) (Fin p ⊕ Fin q) M C (Matrix.fromCols 1 0) (ℓ : ℕ) ℓ.2.ne_zero (fun τ h => DSplit.conj_ne τ h) (fun τ h => ⟨(GlobalTheory.T.period_gram_hermitian_signature E H D g ty P₀ p q x τ hP₀ hty hli hpq h).1, hC τ h⟩)`. Set `X : Matrix (Fin p) (Fin p ⊕ Fin q) (𝓞 E)` to `Matrix.fromCols 1 0 + (ℓ : ℕ) • Y`. Set `x' : Fin p → D.La` to `fun a => ∑ m, X a m • x m`.
+
+Set `w : Fin p → D.La` to `fun a => ∑ m, Y a m • x m`. Establish `hx' : ∀ a, x' a = (x ∘ Sum.inl) a + (((ℓ : ℕ) : 𝓞 E)) • w a`. Introduce `a`. Simplify using `only [x', w, X, Matrix.add_apply, Matrix.smul_apply, add_smul, Finset.sum_add_distrib, Finset.smul_sum, nsmul_eq_mul, mul_smul, Function.comp]`. Use `congr 1`.
+
+Simplify using `[Fintype.sum_sum_type, Matrix.one_apply, ite_smul]`. Take `⟨hd0, hdn⟩` from `DSplit.norm_det_close D p ℓ (x ∘ Sum.inl) x' w hx' hx0 hxn`. Take `⟨x₂, hx₂, hb₂, horth⟩` from `GlobalTheory.T.exists_orthogonal_local_basis E H D p q ℓ x' hpq hd0 hdn`. Establish `hpos : ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → ((gramE D (x₂ ∘ Sum.inl)).map fun a => Complex.I * τ a).PosDef`. Introduce `τ hτ`.
+
+Rewrite using `[hx₂, DSplit.gram_comb_map D τ x X]`. Conclude with `hY τ hτ`. Take `⟨P, hP, hpure⟩` from `GlobalTheory.T.gram_signature_orthogonal_split E H D g ty p q x₂ hty hpq hb₂.1 horth fun τ hτ => ⟨hpos τ hτ, DSplit.neg_compl D hP₀ hty hpq x₂ hb₂.1 horth τ hτ (hpos τ hτ)⟩`. Conclude with `⟨P, hP, x₂, hb₂, hpure⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Fl.DSplit.exists_split_period : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P₀ : D.La →+ (Fin g → ℂ)) (p q : ℕ) (ℓ : Nat.Primes), IsPeriod D ty P₀ → IsTypeFn H p q ty → p + q = D.p + D.q → ∃ (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P) (x : Fin p ⊕ Fin q → D.La), IsLocBasis (𝓞 E) ℓ x ∧ IsPure hP x := by
   intro E _ _ _ H D g ty P₀ p q ℓ hP₀ hty hpq
   obtain ⟨x, hxb, hx0, hxn⟩ := GlobalTheory.T.local_basis_gram_determinant_bound E H D p q ℓ hpq

@@ -12,10 +12,20 @@ namespace PDiv
 variable {R A C D : Type*} [CommRing R] [CommRing A] [CommRing C] [CommRing D]
   [Bialgebra R A] [Bialgebra R C] [Bialgebra R D]
 
+/- English proof (translation)
+The claim follows from `AugCot.map_surjective _ _ hf`.
+-/
 theorem cotMap_surjective {f : C →ₐc[R] A} (hf : Function.Surjective f) :
     Function.Surjective (cotMap f) :=
   AugCot.map_surjective _ _ hf
 
+/- English proof (translation)
+It suffices to establish `h : counitAlgHom R C c = 0 ∧ dUnit R c ∈ LinearMap.range (cotMap g) from h.2`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨?_, dUnit R a, cotMap_d g a⟩` and prove the remaining obligations.
+
+Establish `ha' : counit (R` using `R) a = 0 := ha`. Simplify using `using ha'`. Consider the case `zero => exact ⟨map_zero _, by rw [dUnit, map_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨by rw [map_add, hx.1, hy.1, add_zero], by rw [dUnit, map_add]; exact add_mem hx.2 hy.2⟩`.
+
+Consider the case `smul a x _ hx`. Use `⟨by rw [smul_eq_mul, map_mul, hx.1, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, dUnit, AugCot.d_mul, hx.1, zero_smul, add_zero]`. Conclude with `Submodule.smul_mem _ _ hx.2`.
+-/
 theorem dUnit_mem_range_of_mem_kerIdeal (g : D →ₐc[R] C) {c : C} (hc : c ∈ kerIdeal g) :
     dUnit R c ∈ LinearMap.range (cotMap g) := by
   suffices h : counitAlgHom R C c = 0 ∧ dUnit R c ∈ LinearMap.range (cotMap g) from h.2
@@ -33,6 +43,13 @@ theorem dUnit_mem_range_of_mem_kerIdeal (g : D →ₐc[R] C) {c : C} (hc : c ∈
     rw [smul_eq_mul, dUnit, AugCot.d_mul, hx.1, zero_smul, add_zero]
     exact Submodule.smul_mem _ _ hx.2
 
+/- English proof (translation)
+Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨x, rfl⟩` from `(AugCot.exact_kerMap_map (f : C →ₐ[R] A) (BialgHomClass.counitAlgHom_comp f) hf w).1 hw`. Take `⟨v, hv⟩` from `dUnit_mem_range_of_mem_kerIdeal g (hk.le x.2)`.
+
+Conclude with `⟨v, hv.trans (AugCot.kerMap_apply _ _ x).symm⟩`. Introduce and unpack `⟨v, rfl⟩`. Take `⟨a, rfl⟩` from `AugCot.d_surjective _ v`. Rewrite using `[cotMap_d, cotMap_d]`. Establish `h` using `(kerIdeal_le_ker_iff g (f : C →ₐ[R] A)).1 hk.ge a`.
+
+Conclude with `(congrArg (dUnit R) h).trans (AugCot.d_algebraMap _ _)`.
+-/
 theorem exact_cotMap {f : C →ₐc[R] A} (hf : Function.Surjective f) (g : D →ₐc[R] C)
     (hk : RingHom.ker f = kerIdeal g) : Function.Exact (cotMap g) (cotMap f) := by
   intro w
@@ -48,17 +65,26 @@ theorem exact_cotMap {f : C →ₐc[R] A} (hf : Function.Surjective f) (g : D �
     have h := (kerIdeal_le_ker_iff g (f : C →ₐ[R] A)).1 hk.ge a
     exact (congrArg (dUnit R) h).trans (AugCot.d_algebraMap _ _)
 
+/- English proof (translation)
+Rewrite using `[mulBy, cotMap_pow, ofConv_toConv, cotMap_id, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+-/
 theorem cotMap_mulBy [IsCocomm R C] (m : ℕ) (w : Cot R C) :
     cotMap (mulBy R C m) w = (m : R) • w := by
   rw [mulBy, cotMap_pow, ofConv_toConv, cotMap_id, Nat.cast_smul_eq_nsmul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[exact_cotMap hf _ hk w]`. Conclude with `exists_congr fun v => by rw [cotMap_mulBy, eq_comm]`.
+-/
 theorem cotMap_eq_zero_iff [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) {m : ℕ}
     (hk : RingHom.ker f = torsionIdeal R C m) (w : Cot R C) :
     cotMap f w = 0 ↔ ∃ v : Cot R C, w = (m : R) • v := by
   rw [exact_cotMap hf _ hk w]
   exact exists_congr fun v => by rw [cotMap_mulBy, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[LinearMap.mem_ker, cotMap_eq_zero_iff hf hk, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `exists_congr fun v => by simp [eq_comm]`.
+-/
 theorem ker_cotMap [IsCocomm R C] {f : C →ₐc[R] A} (hf : Function.Surjective f) {m : ℕ}
     (hk : RingHom.ker f = torsionIdeal R C m) :
     LinearMap.ker (cotMap f) = Ideal.span {(m : R)} • (⊤ : Submodule R (Cot R C)) := by
@@ -75,14 +101,23 @@ open PDiv
 
 variable {p : ℕ} {O : Type} [CommRing O] (G : PDivGroup p O)
 
+/- English proof (translation)
+Rewrite using `[ker_cotMap hf hk, Nat.cast_pow]`.
+-/
 theorem ker_cotMap_of_ker_eq {m n : ℕ} {f : G.A n →ₐc[O] G.A m} (hf : Function.Surjective f)
     (hk : RingHom.ker f = torsionIdeal O _ (p ^ m)) :
     LinearMap.ker (cotMap f) = Ideal.span {(p : O) ^ m} • (⊤ : Submodule O (Cot O (G.A n))) := by
   rw [ker_cotMap hf hk, Nat.cast_pow]
 
+/- English proof (translation)
+The claim follows from `cotMap_surjective (G.res_surjective n)`.
+-/
 theorem cotMap_res_surjective (n : ℕ) : Function.Surjective (cotMap (G.res n)) :=
   cotMap_surjective (G.res_surjective n)
 
+/- English proof (translation)
+Rewrite using `[cotMap_eq_zero_iff (G.res_surjective n) (G.ker_res n), Nat.cast_pow]`.
+-/
 theorem cotMap_res_eq_zero_iff (n : ℕ) (w : Cot O (G.A (n + 1))) :
     cotMap (G.res n) w = 0 ↔ ∃ v, w = (p : O) ^ n • v := by
   rw [cotMap_eq_zero_iff (G.res_surjective n) (G.ker_res n), Nat.cast_pow]
@@ -90,20 +125,43 @@ theorem cotMap_res_eq_zero_iff (n : ℕ) (w : Cot O (G.A (n + 1))) :
 def omegaLevel (n : ℕ) : G.omega →ₗ[O] Cot O (G.A n) :=
   LinearMap.proj n ∘ₗ G.omegaSub.subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem omegaLevel_apply (n : ℕ) (w : G.omega) : G.omegaLevel n w = w.1 n := rfl
 
+/- English proof (translation)
+The claim follows from `w.2 n`.
+-/
 @[simp] theorem cotMap_res_omega (n : ℕ) (w : G.omega) :
     cotMap (G.res n) (w.1 (n + 1)) = w.1 n := w.2 n
 
+/- English proof (translation)
+Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base => exact hw`. Consider the case `succ n _ ih => exact ih (by rw [← w.2 n, hw, map_zero])`.
+-/
 theorem omega_val_eq_zero_of_le {m n : ℕ} (h : m ≤ n) {w : G.omega} (hw : w.1 n = 0) :
     w.1 m = 0 := by
   induction n, h using Nat.le_induction with
   | base => exact hw
   | succ n _ ih => exact ih (by rw [← w.2 n, hw, map_zero])
 
+/- English proof (translation)
+Simplify using `using G.pow_smul_cot 0 w`.
+-/
 theorem cot_zero_eq_zero (w : Cot O (G.A 0)) : w = 0 := by
   simpa using G.pow_smul_cot 0 w
 
+/- English proof (translation)
+Establish `hsec` using `fun k => (G.cotMap_res_surjective k).hasRightInverse`. Use `choose s hs using hsec`. Establish `key : ∀ (n : ℕ) (x : Cot O (G.A (n + 1))), cotMap (G.res n) x = 0 → ∃ w : G.omega, w.1 (n + 1) = x`. Introduce `n x hx`. Set `u : ∀ k, Cot O (G.A k)` to `fun k => if h : n + 1 ≤ k then Nat.leRecOn h (fun {k} => s k) x else 0`.
+
+Use `⟨⟨u, fun k => ?_⟩, by simp [u, Nat.leRecOn_self]⟩` and prove the remaining obligations. Break down `lt_trichotomy k n with hk | rfl | hk` into its components or cases. Simplify using `only [u]`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), map_zero]`. Simplify using `only [u]`.
+
+Rewrite using `[dif_pos le_rfl, dif_neg (by omega), Nat.leRecOn_self, hx]`. Simplify using `only [u]`. Rewrite using `[dif_pos (by omega), dif_pos (show n + 1 ≤ k from hk), Nat.leRecOn_succ (show n + 1 ≤ k from hk)]`. Conclude with `hs k _`. Proceed by induction on `n with`.
+
+Consider the case `zero => exact fun x => ⟨0, (G.cot_zero_eq_zero _).trans (G.cot_zero_eq_zero _).symm⟩`. Consider the case `succ n ih`. Introduce `x`. Take `⟨v, hv⟩` from `ih (cotMap (G.res n) x)`. Take `⟨w, hw⟩` from `key n (x - v.1 (n + 1)) (by rw [map_sub, v.2 n, ← hv]; exact sub_self _)`.
+
+Use `⟨w + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, omegaLevel_apply, omegaLevel_apply, hw, sub_add_cancel]`.
+-/
 theorem omegaLevel_surjective (n : ℕ) : Function.Surjective (G.omegaLevel n) := by
   have hsec := fun k => (G.cotMap_res_surjective k).hasRightInverse
   choose s hs using hsec
@@ -131,6 +189,9 @@ theorem omegaLevel_surjective (n : ℕ) : Function.Surjective (G.omegaLevel n) :
     refine ⟨w + v, ?_⟩
     rw [map_add, omegaLevel_apply, omegaLevel_apply, hw, sub_add_cancel]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(G.cotMap_res_eq_zero_iff n (w.1 (n + 1))).1 ((w.2 n).trans hw)`. Take `⟨v, rfl⟩` from `G.omegaLevel_surjective (n + 1) x`. Use `⟨v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `w.1 (n + 1) - (p : O) ^ n • v.1 (n + 1) = 0`. Rewrite using `[hx, omegaLevel_apply, sub_self]`.
+-/
 theorem exists_sub_pow_smul_val_succ (n : ℕ) (w : G.omega) (hw : w.1 n = 0) :
     ∃ v : G.omega, (w - (p : O) ^ n • v).1 (n + 1) = 0 := by
   obtain ⟨x, hx⟩ := (G.cotMap_res_eq_zero_iff n (w.1 (n + 1))).1 ((w.2 n).trans hw)
@@ -139,6 +200,19 @@ theorem exists_sub_pow_smul_val_succ (n : ℕ) (w : G.omega) (hw : w.1 n = 0) :
   change w.1 (n + 1) - (p : O) ^ n • v.1 (n + 1) = 0
   rw [hx, omegaLevel_apply, sub_self]
 
+/- English proof (translation)
+Use `⟨fun hw => ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `G.pow_smul_cot n (v.1 n)`. Use `choose! c hc using G.exists_sub_pow_smul_val_succ`.
+
+Set `r : ℕ → G.omega` to `fun j => Nat.rec w (fun j x => x - (p : O) ^ (n + j) • c (n + j) x) j`. Establish `hr : ∀ j, (r j).1 (n + j) = 0` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => exact hw`. Consider the case `succ j ih => exact hc _ _ ih`.
+
+Set `t : ℕ → G.omega` to `fun k => ∑ j ∈ Finset.range k, (p : O) ^ j • c (n + j) (r j)`. Establish `ht : ∀ k, w = r k + (p : O) ^ n • t k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simp [t, r]`. Consider the case `succ k ih`.
+
+Establish `h1 : r (k + 1) = r k - (p : O) ^ (n + k) • c (n + k) (r k)` using `rfl`. Establish `h2 : t (k + 1) = t k + (p : O) ^ k • c (n + k) (r k)` using `Finset.sum_range_succ _ _`. Rewrite using `[h1, h2, smul_add, smul_smul, ← pow_add]`. Conclude with `ih.trans (by abel)`. Use `⟨⟨fun k => (t k).1 k, fun k => ?_⟩, Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations.
+
+Establish `h2 : t (k + 1) = t k + (p : O) ^ k • c (n + k) (r k)` using `Finset.sum_range_succ _ _`. Rewrite using `[(t (k + 1)).2 k, h2]`. Express the relevant statement in the definitionally equal form `(t k).1 k + (p : O) ^ k • (c (n + k) (r k)).1 k = _`. Rewrite using `[pow_smul_cot, add_zero]`. Establish `h` using `congrArg (fun x : G.omega => x.1 k) (ht k)`.
+
+Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(r k).1 k + (p : O) ^ n • (t k).1 k = (p : O) ^ n • (t k).1 k`. Rewrite using `[G.omega_val_eq_zero_of_le (Nat.le_add_left k n) (hr k), zero_add]`.
+-/
 theorem omega_val_eq_zero_iff (n : ℕ) (w : G.omega) :
     w.1 n = 0 ↔ ∃ v : G.omega, w = (p : O) ^ n • v := by
   refine ⟨fun hw => ?_, ?_⟩
@@ -170,6 +244,9 @@ theorem omega_val_eq_zero_iff (n : ℕ) (w : G.omega) :
     change (r k).1 k + (p : O) ^ n • (t k).1 k = (p : O) ^ n • (t k).1 k
     rw [G.omega_val_eq_zero_of_le (Nat.le_add_left k n) (hr k), zero_add]
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[LinearMap.mem_ker, omegaLevel_apply, omega_val_eq_zero_iff, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `exists_congr fun v => by simp [eq_comm]`.
+-/
 theorem ker_omegaLevel (n : ℕ) :
     LinearMap.ker (G.omegaLevel n) = Ideal.span {(p : O)} ^ n • (⊤ : Submodule O G.omega) := by
   ext w
@@ -182,9 +259,15 @@ def omegaQuotEquiv (n : ℕ) :
   Submodule.quotEquivOfEq _ _ (G.ker_omegaLevel n).symm ≪≫ₗ
     (G.omegaLevel n).quotKerEquivOfSurjective (G.omegaLevel_surjective n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem omegaQuotEquiv_mk (n : ℕ) (w : G.omega) :
     G.omegaQuotEquiv n (Submodule.Quotient.mk w) = w.1 n := rfl
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, ← ker_omegaLevel, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem omega_smodEq_iff (n : ℕ) (v w : G.omega) :
     v ≡ w [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O G.omega)] ↔ v.1 n = w.1 n := by
   rw [SModEq.sub_mem, ← ker_omegaLevel, LinearMap.mem_ker, map_sub, sub_eq_zero]

@@ -5,6 +5,11 @@ open scoped ENNReal Real
 
 namespace ReciprocityTheory.ChartRestriction.DS.Xi.RadialKernelIntegrals
 
+/- English proof (translation)
+Rewrite using `[← Complex.lintegral_comp_polarCoord_symm, polarCoord_target]`. Establish `h1 : ∀ p ∈ Ioi (0 : ℝ) ×ˢ Ioo (-π) π, ENNReal.ofReal p.1 • g ‖Complex.polarCoord.symm p‖ = (fun r : ℝ => ENNReal.ofReal r * g r) p.1 * (fun _ : ℝ => (1 : ℝ≥0∞)) p.2`. Introduce `p hp`. Rewrite using `[Complex.norm_polarCoord_symm, abs_of_pos hp.1, smul_eq_mul, mul_one]`. Rewrite using `[setLIntegral_congr_fun (measurableSet_Ioi.prod measurableSet_Ioo) h1, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_mul (f := fun r : ℝ => ENNReal.ofReal r * g r) (g := fun _ : ℝ => (1 : ℝ≥0∞)) ((ENNReal.measurable_ofReal.mul hg).aemeasurable) aemeasurable_cons …`.
+
+Simplify using `only [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, one_mul]`. Rewrite using `[show π - -π = 2 * π by ring, mul_comm]`.
+-/
 theorem lintegral_radial (g : ℝ → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ x : ℂ, g ‖x‖ = ENNReal.ofReal (2 * π) * ∫⁻ r in Ioi (0 : ℝ), ENNReal.ofReal r * g r := by
   rw [← Complex.lintegral_comp_polarCoord_symm, polarCoord_target]
@@ -20,6 +25,9 @@ theorem lintegral_radial (g : ℝ → ℝ≥0∞) (hg : Measurable g) :
   simp only [lintegral_const, Measure.restrict_apply_univ, Real.volume_Ioo, one_mul]
   rw [show π - -π = 2 * π by ring, mul_comm]
 
+/- English proof (translation)
+Establish `hr : -1 < 1 - a` using `by linarith`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal ((intervalIntegral.intervalIntegrable_rpow' hr).1) (ae_restrict_of_forall_mem measurableSet_Ioc (fun r hr => Real.rpow_nonneg hr.1.le _)), ← intervalIntegral.integral_of_le hρ.le, integral_rpow (Or.inl hr), Real.zero_rpow (by linarith)]`. Use `congr 1`. Rewrite using `[show 1 - a + 1 = 2 - a by ring, sub_zero]`.
+-/
 theorem lintegral_Ioc_rpow (a ρ : ℝ) (ha : a < 2) (hρ : 0 < ρ) :
     ∫⁻ r in Ioc (0 : ℝ) ρ, ENNReal.ofReal (r ^ (1 - a)) = ENNReal.ofReal (ρ ^ (2 - a) / (2 - a)) := by
   have hr : -1 < 1 - a := by linarith
@@ -30,6 +38,9 @@ theorem lintegral_Ioc_rpow (a ρ : ℝ) (ha : a < 2) (hρ : 0 < ρ) :
   congr 1
   rw [show 1 - a + 1 = 2 - a by ring, sub_zero]
 
+/- English proof (translation)
+Establish `hr : 1 - b < -1` using `by linarith`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (integrableOn_Ioi_rpow_of_lt hr hρ) (ae_restrict_of_forall_mem measurableSet_Ioi (fun r hr => Real.rpow_nonneg (hρ.trans hr).le _)), integral_Ioi_rpow_of_lt hr hρ]`. Use `congr 1`. Rewrite using `[show 1 - b + 1 = 2 - b by ring, show b - 2 = -(2 - b) by ring, div_neg, neg_div]`.
+-/
 theorem lintegral_Ioi_rpow (b ρ : ℝ) (hb : 2 < b) (hρ : 0 < ρ) :
     ∫⁻ r in Ioi ρ, ENNReal.ofReal (r ^ (1 - b)) = ENNReal.ofReal (ρ ^ (2 - b) / (b - 2)) := by
   have hr : 1 - b < -1 := by linarith
@@ -39,6 +50,11 @@ theorem lintegral_Ioi_rpow (b ρ : ℝ) (hb : 2 < b) (hρ : 0 < ρ) :
   congr 1
   rw [show 1 - b + 1 = 2 - b by ring, show b - 2 = -(2 - b) by ring, div_neg, neg_div]
 
+/- English proof (translation)
+Establish `hm : Measurable ((Iic ρ).indicator (fun r : ℝ => ENNReal.ofReal (r ^ (-a))))` using `(Measurable.ennreal_ofReal (measurable_id.pow_const _)).indicator measurableSet_Iic`. Rewrite using `[lintegral_radial _ hm]`. Establish `h1 : ∀ r ∈ Ioi (0 : ℝ), ENNReal.ofReal r * (Iic ρ).indicator (fun r => ENNReal.ofReal (r ^ (-a))) r = (Iic ρ).indicator (fun r => ENNReal.ofReal (r ^ (1 - a))) r`. Introduce `r hr`. Distinguish the cases in `h : r ∈ Iic ρ`.
+
+Rewrite using `[indicator_of_mem h, indicator_of_mem h, ← ENNReal.ofReal_mul (le_of_lt hr), sub_eq_add_neg, Real.rpow_add hr, Real.rpow_one]`. Rewrite using `[indicator_of_notMem h, indicator_of_notMem h, mul_zero]`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi h1, lintegral_indicator measurableSet_Iic, Measure.restrict_restrict measurableSet_Iic, Iic_inter_Ioi, lintegral_Ioc_rpow a ρ ha hρ, ← ENNReal.ofReal_mul (by positivity)]`.
+-/
 theorem lintegral_disc (a ρ : ℝ) (ha : a < 2) (hρ : 0 < ρ) :
     ∫⁻ x : ℂ, (Iic ρ).indicator (fun r => ENNReal.ofReal (r ^ (-a))) ‖x‖ =
       ENNReal.ofReal (2 * π * (ρ ^ (2 - a) / (2 - a))) := by
@@ -56,6 +72,11 @@ theorem lintegral_disc (a ρ : ℝ) (ha : a < 2) (hρ : 0 < ρ) :
     Measure.restrict_restrict measurableSet_Iic, Iic_inter_Ioi, lintegral_Ioc_rpow a ρ ha hρ,
     ← ENNReal.ofReal_mul (by positivity)]
 
+/- English proof (translation)
+Establish `hm : Measurable ((Ioi ρ).indicator (fun r : ℝ => ENNReal.ofReal (r ^ (-b))))` using `(Measurable.ennreal_ofReal (measurable_id.pow_const _)).indicator measurableSet_Ioi`. Rewrite using `[lintegral_radial _ hm]`. Establish `h1 : ∀ r ∈ Ioi (0 : ℝ), ENNReal.ofReal r * (Ioi ρ).indicator (fun r => ENNReal.ofReal (r ^ (-b))) r = (Ioi ρ).indicator (fun r => ENNReal.ofReal (r ^ (1 - b))) r`. Introduce `r hr`. Distinguish the cases in `h : r ∈ Ioi ρ`.
+
+Rewrite using `[indicator_of_mem h, indicator_of_mem h, ← ENNReal.ofReal_mul (le_of_lt hr), sub_eq_add_neg, Real.rpow_add hr, Real.rpow_one]`. Rewrite using `[indicator_of_notMem h, indicator_of_notMem h, mul_zero]`. Rewrite using `[setLIntegral_congr_fun measurableSet_Ioi h1, lintegral_indicator measurableSet_Ioi, Measure.restrict_restrict measurableSet_Ioi, Ioi_inter_Ioi, max_eq_left hρ.le, lintegral_Ioi_rpow b ρ hb hρ, ← ENNReal.ofReal_mul (by positivity)]`.
+-/
 theorem lintegral_outside (b ρ : ℝ) (hb : 2 < b) (hρ : 0 < ρ) :
     ∫⁻ x : ℂ, (Ioi ρ).indicator (fun r => ENNReal.ofReal (r ^ (-b))) ‖x‖ =
       ENNReal.ofReal (2 * π * (ρ ^ (2 - b) / (b - 2))) := by
@@ -73,6 +94,25 @@ theorem lintegral_outside (b ρ : ℝ) (hb : 2 < b) (hρ : 0 < ρ) :
     Measure.restrict_restrict measurableSet_Ioi, Ioi_inter_Ioi, max_eq_left hρ.le,
     lintegral_Ioi_rpow b ρ hb hρ, ← ENNReal.ofReal_mul (by positivity)]
 
+/- English proof (translation)
+Establish `hE : -1 + e / 2 ≤ 0` using `by linarith`. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.2 hx0`. Establish `hm : 0 < ‖x - c‖` using `norm_pos_iff.2 (sub_ne_zero.2 hxc)`. Establish `t1 : ‖c‖ - ‖x‖ ≤ ‖x - c‖` using `by rw [norm_sub_rev]; exact norm_sub_norm_le c x`. Establish `t2 : ‖x‖ - ‖c‖ ≤ ‖x - c‖` using `norm_sub_norm_le x c`.
+
+Establish `t3 : ‖x - c‖ ≤ ‖x‖ + ‖c‖` using `norm_sub_le x c`. Break down `le_or_gt ‖x‖ ρ with hA | hA` into its components or cases. Establish `hle : ρ ^ 2 ≤ ‖x - c‖ ^ 2 + D ^ 2`. Break down `le_or_gt ‖c‖ ρ with h | h` into its components or cases. Use polynomial arithmetic with `[norm_nonneg c, sq_nonneg ‖x - c‖, mul_le_mul h h (norm_nonneg c) hρ.le]`.
+
+Establish `h' : ‖c‖ - ρ ≤ ‖x - c‖` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul h' h' (by linarith) (norm_nonneg _), mul_le_mul_of_nonneg_left hρc hρ.le]`. Use `le_add_right (le_add_right ?_)` and prove the remaining obligations. Rewrite using `[indicator_of_mem (show ‖x‖ ∈ Iic ρ from hA)]`. Conclude with `mul_le_mul' (ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos (by positivity) hle hE)) le_rfl`.
+
+Break down `le_or_gt (2 * ‖c‖) ‖x‖ with hB | hB` into its components or cases. Use `le_add_right (le_add_left ?_)` and prove the remaining obligations. Rewrite using `[indicator_of_mem (show ‖x‖ ∈ Ioi ρ from hA)]`. Establish `h' : ‖x‖ / 2 ≤ ‖x - c‖` using `by linarith`. Establish `hle : ‖x‖ ^ 2 / 4 ≤ ‖x - c‖ ^ 2 + D ^ 2`.
+
+Use polynomial arithmetic with `[mul_le_mul h' h' (by positivity) (norm_nonneg _), sq_nonneg D]`. Establish `hid : (‖x‖ ^ 2 / 4) ^ (-1 + e / 2) * ‖x‖ ^ (-γ) = (4 : ℝ) ^ (-(-1 + e / 2)) * ‖x‖ ^ (-(2 + γ - e))`. Rewrite using `[Real.div_rpow (by positivity) (by norm_num), ← Real.rpow_two, ← Real.rpow_mul hn.le, Real.rpow_neg (by norm_num : (0 : ℝ) ≤ 4)]`. Establish `h2 : ‖x‖ ^ (2 * (-1 + e / 2)) * ‖x‖ ^ (-γ) = ‖x‖ ^ (-(2 + γ - e))`. Rewrite using `[← Real.rpow_add hn]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← hid]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_nonpos (by positivity) hle hE) (by positivity))`. Use `le_add_left ?_` and prove the remaining obligations. Establish `h6 : ‖x - c‖ ≤ 6 * ρ` using `by linarith`. Rewrite using `[indicator_of_mem (show ‖x - c‖ ∈ Iic (6 * ρ) from h6)]`. Establish `hid : (‖x - c‖ ^ 2) ^ (-1 + e / 2) = ‖x - c‖ ^ (-(2 - e))`.
+
+Rewrite using `[← Real.rpow_two, ← Real.rpow_mul hm.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← hid, mul_comm (ρ ^ (-γ))]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+
+Conclude with `mul_le_mul (Real.rpow_le_rpow_of_nonpos (pow_pos hm 2) (le_add_of_nonneg_right (sq_nonneg D)) hE) (Real.rpow_le_rpow_of_nonpos hρ hA.le (by linarith)) (by positivity) (by positivity)`.
+-/
 theorem ker_pointwise (e γ : ℝ) (he : 0 < e) (heγ : e < γ) (hγ : γ < 2) (c : ℂ) (D ρ : ℝ) (hρ : 0 < ρ)
     (hρc : ‖c‖ ≤ 2 * ρ) (hDρ : D ^ 2 = 4 * ρ ^ 2 - ‖c‖ ^ 2) (x : ℂ) (hx0 : x ≠ 0) (hxc : x ≠ c) :
     ENNReal.ofReal ((‖x - c‖ ^ 2 + D ^ 2) ^ (-1 + e / 2)) * ENNReal.ofReal (‖x‖ ^ (-γ)) ≤
@@ -132,6 +172,27 @@ namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
 open RadialKernelIntegrals
 
+/- English proof (translation)
+Introduce `e γ he heγ hγ`. Use `set A : ℝ := 2 * π / (2 - γ) + (4 : ℝ) ^ (-(-1 + e / 2)) * (2 * π / (γ - e)) + (6 : ℝ) ^ e * (2 * π / e) with hA`. Use `⟨A / (4 : ℝ) ^ (-(γ - e) / 2), fun c D hD => ?_⟩` and prove the remaining obligations. Establish `hS : 0 < ‖c‖ ^ 2 + D ^ 2` using `by positivity`. Use `set ρ : ℝ := Real.sqrt (‖c‖ ^ 2 + D ^ 2) / 2 with hρdef`.
+
+Establish `hρ : 0 < ρ` using `div_pos (Real.sqrt_pos.2 hS) two_pos`. Establish `hρ2 : ρ ^ 2 = (‖c‖ ^ 2 + D ^ 2) / 4`. Rewrite using `[hρdef, div_pow, Real.sq_sqrt hS.le]`. Evaluate the numerical expressions. Establish `hρc : ‖c‖ ≤ 2 * ρ`.
+
+Establish `: ‖c‖ ≤ Real.sqrt (‖c‖ ^ 2 + D ^ 2)` using `Real.le_sqrt_of_sq_le (by nlinarith [sq_nonneg D])`. Rewrite using `[hρdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDρ : D ^ 2 = 4 * ρ ^ 2 - ‖c‖ ^ 2` using `by rw [hρ2]; ring`. Establish `hS4 : ‖c‖ ^ 2 + D ^ 2 = 4 * ρ ^ 2` using `by rw [hρ2]; ring`.
+
+Establish `hae : ∀ᵐ x : ℂ, x ≠ 0 ∧ x ≠ c` using `by filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ)), compl_mem_ae_iff.2 (measure_singleton c)] with x h0 hc`. Conclude with `⟨h0, hc⟩`. Use `(lintegral_mono_ae (hae.mono fun x hx => ker_pointwise e γ he heγ hγ c D ρ hρ hρc hDρ x hx.1 hx.2)).trans ?_` and prove the remaining obligations. Establish `hm1 : Measurable ((Iic ρ).indicator (fun r : ℝ => ENNReal.ofReal (r ^ (-γ))))` using `(Measurable.ennreal_ofReal (measurable_id.pow_const _)).indicator measurableSet_Iic`. Establish `hm2 : Measurable ((Ioi ρ).indicator (fun r : ℝ => ENNReal.ofReal (r ^ (-(2 + γ - e)))))` using `(Measurable.ennreal_ofReal (measurable_id.pow_const _)).indicator measurableSet_Ioi`.
+
+Establish `hF1 : Measurable fun x : ℂ => ENNReal.ofReal ((ρ ^ 2) ^ (-1 + e / 2)) * (Iic ρ).indicator (fun r => ENNReal.ofReal (r ^ (-γ))) ‖x‖` using `(hm1.comp measurable_norm).const_mul _`. Establish `hF2 : Measurable fun x : ℂ => ENNReal.ofReal ((4 : ℝ) ^ (-(-1 + e / 2))) * (Ioi ρ).indicator (fun r => ENNReal.ofReal (r ^ (-(2 + γ - e)))) ‖x‖` using `(hm2.comp measurable_norm).const_mul _`. Establish `hF12 : Measurable fun x : ℂ => ENNReal.ofReal ((ρ ^ 2) ^ (-1 + e / 2)) * (Iic ρ).indicator (fun r => ENNReal.ofReal (r ^ (-γ))) ‖x‖ + ENNReal.ofReal ((4 : ℝ) ^ (-(-1 + e / 2))) * (Ioi ρ).indicator (fun r => ENNReal.ofReal (r ^ (-(2 + γ - e)))) ‖x‖` using `hF1.add hF2`. Establish `h3 : ∫⁻ x : ℂ, (Iic (6 * ρ)).indicator (fun r => ENNReal.ofReal (r ^ (-(2 - e)))) ‖x - c‖ = ∫⁻ x : ℂ, (Iic (6 * ρ)).indicator (fun r => ENNReal.ofReal (r ^ (-(2 - e)))) ‖x‖` using `lintegral_sub_right_eq_self (fun y : ℂ => (Iic (6 * ρ)).indicator (fun r => ENNReal.ofReal (r ^ (-(2 - e)))) ‖y‖) c`. Establish `hI1 : 0 ≤ 2 * π * (ρ ^ (2 - γ) / (2 - γ))` using `mul_nonneg (by positivity) (div_nonneg (by positivity) (by linarith))`.
+
+Establish `hI2 : 0 ≤ 2 * π * (ρ ^ (2 - (2 + γ - e)) / (2 + γ - e - 2))` using `mul_nonneg (by positivity) (div_nonneg (by positivity) (by linarith))`. Establish `hI3 : 0 ≤ 2 * π * ((6 * ρ) ^ (2 - (2 - e)) / (2 - (2 - e)))` using `mul_nonneg (by positivity) (div_nonneg (by positivity) (by linarith))`. Rewrite using `[lintegral_add_left hF12, lintegral_add_left hF1, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, h3, lintegral_disc γ ρ hγ hρ, lintegral_outside (2 + γ - e) ρ (by linarith) hρ, linteg …`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hP1 : (ρ ^ 2) ^ (-1 + e / 2) * ρ ^ (2 - γ) = ρ ^ (e - γ)`.
+
+Rewrite using `[← Real.rpow_two, ← Real.rpow_mul hρ.le, ← Real.rpow_add hρ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hP2 : ρ ^ (2 - (2 + γ - e)) = ρ ^ (e - γ)` using `by congr 1; ring`. Establish `hP3 : ρ ^ (-γ) * (6 * ρ) ^ e = (6 : ℝ) ^ e * ρ ^ (e - γ)`.
+
+Establish `h : ρ ^ (-γ) * ρ ^ e = ρ ^ (e - γ)` using `by rw [← Real.rpow_add hρ]; congr 1; ring`. Rewrite using `[Real.mul_rpow (by norm_num) hρ.le, ← h]; ring`. Establish `hS' : (‖c‖ ^ 2 + D ^ 2) ^ (-(γ - e) / 2) = (4 : ℝ) ^ (-(γ - e) / 2) * ρ ^ (e - γ)`. Rewrite using `[hS4, Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_two, ← Real.rpow_mul hρ.le]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : (4 : ℝ) ^ (-(γ - e) / 2) ≠ 0` using `(Real.rpow_pos_of_pos (by norm_num) _).ne'`. Rewrite using `[hS', hP2, show (2 : ℝ) + γ - e - 2 = γ - e by ring, show (2 : ℝ) - (2 - e) = e by ring]`. Use `le_of_eq ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hA]`. Take the linear combination `(2 * π / (2 - γ)) * hP1 + (2 * π / e) * hP3`. Use `_ = _ := by field_simp`.
+-/
 theorem planarKernelBound' : KER := by
   intro e γ he heγ hγ
   set A : ℝ := 2 * π / (2 - γ) + (4 : ℝ) ^ (-(-1 + e / 2)) * (2 * π / (γ - e)) +

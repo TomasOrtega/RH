@@ -21,11 +21,23 @@ namespace GlobalTheory.MixModel.HypDec
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc (adj (mt S g)), mt_unitary]`.
+-/
 theorem gram_mt {S : HSp D} (g : GA D S) {k l : ℕ} (x : Mx D S.rank k) (y : Mx D S.rank l) :
     adj (mt S g ⬝ x) ⬝ (gA S ⬝ (mt S g ⬝ y)) = adj x ⬝ (gA S ⬝ y) := by
   rw [adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc (adj (mt S g)),
     mt_unitary]
 
+/- English proof (translation)
+Use `set M := mt S g with hM`. Use `set B := d.p0 ⬝ M ⬝ d.j0 with hB`. Establish `h1 : d.pX ⬝ M ⬝ d.j0 = 0`. Rewrite using `[pX_eq, Matrix.mul_assoc, Matrix.mul_assoc, ← hY, adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S) M, ← Matrix.mul_assoc (adj M), mt_unitary, gramR_Y0_eq_TI]`. Establish `h2 : d.pY ⬝ M ⬝ d.j0 = 0`.
+
+Rewrite using `[pY_eq, Matrix.mul_assoc, Matrix.mul_assoc, ← hX, adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S) M, ← Matrix.mul_assoc (adj M), mt_unitary, wittDecomp_gram_X_anisotropic]`. Establish `h3 : M ⬝ d.j0 = d.j0 ⬝ B`. Rewrite `h1`, `h2` using `[Matrix.mul_assoc]`. Rewrite using `[← Matrix.one_mul (M ⬝ d.j0), ← d.sum_eq_one]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h2, Matrix.mul_zero, add_zero, zero_add, hB]`.
+
+Establish `h4 : adj B * (gA S₀ * B) = gA S₀`. Establish `e1` using `gram_mt g d.j0 d.j0`. Rewrite `e1` using `[← hM, h3, d.gram_00, adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc (adj d.j0), ← Matrix.mul_assoc (adj d.j0), Matrix.mul_assoc (adj d.j0), d.gram_00]`. Conclude with `e1`. Use `⟨ofMat S₀ B h4, d.ga_ext ?_ ?_ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[wittDecomp_anisotropicEmbedding_inclX, ← hM, hX]`. Rewrite using `[wittDecomp_anisotropicEmbedding_inclAnisotropic, mt_ofMat, ← hM, h3]`. Rewrite using `[wittDecomp_anisotropicEmbedding_inclY, ← hM, hY]`.
+-/
 theorem exists_emb0_eq_of_fix_jX_jY {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (g : GA D S)
     (hX : mt S g ⬝ d.jX = d.jX) (hY : mt S g ⬝ d.jY = d.jY) : ∃ b : GA D S₀, d.emb0 b = g := by
   set M := mt S g with hM

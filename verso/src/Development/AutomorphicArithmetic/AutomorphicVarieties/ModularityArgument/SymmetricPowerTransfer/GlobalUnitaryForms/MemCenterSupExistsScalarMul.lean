@@ -8,18 +8,32 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 variable {K K' : Type} [Field K] [Field K'] {Δ τ : K}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext h)`.
+-/
 theorem dx_ext {a b : DX Δ} (h : mt a = mt b) : a = b := Subtype.ext (Units.ext h)
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Conclude with `⟨z, (congrArg Units.val hz).symm⟩`.
+-/
 theorem zd_scal {s : DX Δ} (h : s ∈ ZD Δ) : ∃ z, IsScal z s := by
   obtain ⟨z, hz⟩ := h
   exact ⟨z, (congrArg Units.val hz).symm⟩
 
+/- English proof (translation)
+Use `dx_ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mt s * mt y = mt y * mt s`. Rewrite using `[h]`. Conclude with `(scalar_commute _ (fun _ => Commute.all _ _) _).eq`.
+-/
 theorem scal_comm {z : Kˣ} {s : DX Δ} (h : IsScal z s) (y : DX Δ) : s * y = y * s := by
   refine dx_ext ?_
   change mt s * mt y = mt y * mt s
   rw [h]
   exact (scalar_commute _ (fun _ => Commute.all _ _) _).eq
 
+/- English proof (translation)
+Set `A : Subgroup (DX Δ)` to `{ carrier := {u | ∀ x, f (u⁻¹ * x * u) = f x} one_mem' := by simp mul_mem' := fun {a b} ha hb x => by`. Use `hb (a⁻¹ * x * a)` as an intermediate fact. Rewrite `this` using `[ha]`. Simplify `this` using `[mul_assoc]`. Use the proof step `inv_mem' := fun {a} ha x => by`.
+
+Use `ha (a * x * a⁻¹)` as an intermediate fact. Simplify `this.symm }` using `[mul_assoc]`. Use `fun u hu => (sup_le (fun s hs x => ?_) h : ZD Δ ⊔ J ≤ A) hu` and prove the remaining obligations. Take `⟨z, hz⟩` from `zd_scal hs`. Rewrite using `[mul_assoc, ← scal_comm hz, inv_mul_cancel_left]`.
+-/
 theorem conj_sup {J : Subgroup (DX Δ)} {f : DX Δ → ℂ} (h : ∀ u ∈ J, ∀ x, f (u⁻¹ * x * u) = f x) :
     ∀ u ∈ ZD Δ ⊔ J, ∀ x, f (u⁻¹ * x * u) = f x := by
   let A : Subgroup (DX Δ) :=
@@ -36,6 +50,11 @@ theorem conj_sup {J : Subgroup (DX Δ)} {f : DX Δ → ℂ} (h : ∀ u ∈ J, �
   obtain ⟨z, hz⟩ := zd_scal hs
   rw [mul_assoc, ← scal_comm hz, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use `haveI : (ZD Δ).Normal := ⟨fun s hs g => by`. Take `⟨z, hz⟩` from `zd_scal hs`. Rewrite using `[← scal_comm hz, mul_inv_cancel_right]⟩` and apply the resulting hypothesis. Take `⟨s, hs, k, hk, e⟩` from `Subgroup.mem_sup_of_normal_left.1 hu`. Take `⟨z, hz⟩` from `zd_scal hs`.
+
+Conclude with `⟨z, s, k, hk, hz, e.symm⟩`.
+-/
 theorem mem_center_sup_exists_scalar_mul {J : Subgroup (DX Δ)} {u : DX Δ} (hu : u ∈ ZD Δ ⊔ J) : ∃ z s, ∃ k ∈ J, IsScal z s ∧ u = s * k := by
   haveI : (ZD Δ).Normal := ⟨fun s hs g => by
     obtain ⟨z, hz⟩ := zd_scal hs
@@ -44,6 +63,11 @@ theorem mem_center_sup_exists_scalar_mul {J : Subgroup (DX Δ)} {u : DX Δ} (hu 
   obtain ⟨z, hz⟩ := zd_scal hs
   exact ⟨z, s, k, hk, hz, e.symm⟩
 
+/- English proof (translation)
+Introduce `u hu x`. Take `⟨h0, h1⟩` from `Loc.fzdLaw O K Δ h χ hχ`. Establish `hu' : u ∈ ZD Δ ⊔ KD Δ O` using `Subgroup.mem_sup_right hu`. Distinguish the cases in `hx : x ∈ ZD Δ ⊔ KD Δ O`. Take `⟨z, s, k, hk, hz, rfl⟩` from `mem_center_sup_exists_scalar_mul hx`.
+
+Establish `e : u⁻¹ * (s * k) * u = s * (u⁻¹ * k * u)` using `by rw [← mul_assoc, ← scal_comm hz]; simp only [mul_assoc]`. Rewrite using `[e, h1 z s k hz hk, h1 z s _ hz (mul_mem (mul_mem (inv_mem hu) hk) hu)]`. Rewrite using `[h0 x hx, h0]`. Conclude with `fun h => hx (by simpa [mul_assoc] using mul_mem (mul_mem hu' h) (inv_mem hu'))`.
+-/
 theorem fZD_conj (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O K] (h : IsLoc O Δ) (χ : Kˣ →* ℂˣ)
     (hχ : Unr O χ) : ∀ u ∈ KD Δ O, ∀ x, fZD O χ (u⁻¹ * x * u) = fZD O χ x := by
   intro u hu x
@@ -56,6 +80,9 @@ theorem fZD_conj (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O
   · rw [h0 x hx, h0]
     exact fun h => hx (by simpa [mul_assoc] using mul_mem (mul_mem hu' h) (inv_mem hu'))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[e, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h.1, map_one]`. Use `congrArg (lmap f Δ) h.2` as an intermediate fact. Rewrite using `[e, trace_fin_two, map_apply, map_apply, ← map_add, ← trace_fin_two, this]`. Apply the tactic sequence `ext <;> simp [lmap, QuadraticAlgebra.algebraMap_eq]`.
+-/
 theorem hasTr_map (f : K →+* K') {γ : DX Δ} {γ' : DX (f Δ)} (e : mt γ' = (mt γ).map (lmap f Δ)) (h : HasTr γ τ) : HasTr γ' (f τ) := by
   constructor
   · rw [e, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h.1, map_one]
@@ -63,18 +90,35 @@ theorem hasTr_map (f : K →+* K') {γ : DX Δ} {γ' : DX (f Δ)} (e : mt γ' = 
     rw [e, trace_fin_two, map_apply, map_apply, ← map_add, ← trace_fin_two, this]
     ext <;> simp [lmap, QuadraticAlgebra.algebraMap_eq]
 
+/- English proof (translation)
+Rewrite using `[h, h', e, ez]`. Apply the tactic sequence `ext a b <;> by_cases hab : a = b <;> simp [lmap, emap, hab, Matrix.one_apply, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 theorem emb_map (f : K →+* K') {γ : DX Δ} {γ' : DX (f Δ)} (e : mt γ' = (mt γ).map (lmap f Δ)) {j j'} (h : IsEmb τ γ j)
     (h' : IsEmb (f τ) γ' j') (z : (Etau K τ)ˣ) (z' : (Etau K' (f τ))ˣ) (ez : (z' : Etau K' (f τ)) = emap f τ z) :
     mt (j' z') = (mt (j z)).map (lmap f Δ) := by
   rw [h, h', e, ez]
   ext a b <;> by_cases hab : a = b <;> simp [lmap, emap, hab, Matrix.one_apply, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Use `dx_ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mt (j z) * mt γ = mt γ * mt (j z)`. Rewrite using `[h]`. Simplify using `[add_mul, mul_add]`.
+-/
 theorem emb_comm {γ : DX Δ} {j} (h : IsEmb τ γ j) (z) : j z * γ = γ * j z := by
   refine dx_ext ?_
   change mt (j z) * mt γ = mt γ * mt (j z)
   rw [h]
   simp [add_mul, mul_add]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hu`. Take `⟨w, hw⟩` from `h2.exists_right_inv`. Apply the tactic sequence `let st : Etau K τ →ₐ[O] Etau K τ := { starRingEnd (Etau K τ) with commutes' := fun r => by ext <;> simp [QuadraticAlgebra.algebraMap_eq, IsScalarTower.algebraMap_apply O K (Etau K τ), starRingEnd_apply] }`. Establish `hs : IsIntegral O (star x)` using `hx.map st`. Establish `inj : Function.Injective (algebraMap K (Etau K τ))` using `(algebraMap K _).injective`.
+
+Establish `h1 : IsIntegral O (x.im ^ 2 * (τ ^ 2 - 4))`. Rewrite using `[← isIntegral_algebraMap_iff inj]`. Use `(hx.sub hs).pow 2 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_eq, sq] <;> ring`. Establish `h3 : IsIntegral O x.im`.
+
+Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Use `h1.mul (isIntegral_algebraMap (R := O) (A := K) (x := (u⁻¹ : Oˣ)))` as an intermediate fact. Rewrite `this` using `[← hu, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`. Then use the resulting hypothesis. Establish `h4 : IsIntegral O (2 * x.re + τ * x.im)`. Rewrite using `[← isIntegral_algebraMap_iff inj]`.
+
+Use `hx.add hs using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_eq] <;> ring`. Use `⟨?_, h3⟩` and prove the remaining obligations. Use `(h4.sub (hτ.mul h3)).mul (isIntegral_algebraMap (R := O) (A := K) (x := w))` as an intermediate fact. Establish `e : (2 : K) * algebraMap O K w = 1` using `by rw [← map_ofNat (algebraMap O K) 2, ← map_mul, hw, map_one]`.
+
+Rewrite `this` using `[show (2 * x.re + τ * x.im - τ * x.im) * algebraMap O K w = x.re by linear_combination x.re * e]`. Then use the resulting hypothesis.
+-/
 theorem cu_coords (O : Type) [CommRing O] [Algebra O K] (hτ : IsIntegral O τ) (hu : ∃ u : Oˣ, algebraMap O K u = τ ^ 2 - 4)
     (h2 : IsUnit (2 : O)) {x : Etau K τ} (hx : IsIntegral O x) : IsIntegral O x.re ∧ IsIntegral O x.im := by
   obtain ⟨u, hu⟩ := hu
@@ -100,6 +144,11 @@ theorem cu_coords (O : Type) [CommRing O] [Algebra O K] (hτ : IsIntegral O τ) 
   have e : (2 : K) * algebraMap O K w = 1 := by rw [← map_ofNat (algebraMap O K) 2, ← map_mul, hw, map_one]
   rwa [show (2 * x.re + τ * x.im - τ * x.im) * algebraMap O K w = x.re by linear_combination x.re * e] at this
 
+/- English proof (translation)
+Establish `key : ∀ z : (Etau K τ)ˣ, IsIntegral O (z : Etau K τ) → ∀ a b, IsIntegral O (mt (j z) a b)` using `fun z hz a b => by`. Take `⟨h1, h3⟩` from `cu_coords O hτ hu h2 hz`. Rewrite using `[h, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, Algebra.smul_def, Algebra.smul_def]`. Use `(h1.algebraMap.mul ?_).add (h3.algebraMap.mul ((mem_KD.1 hγ).1 a b))` and prove the remaining obligations. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab, isIntegral_one, isIntegral_zero]`.
+
+Introduce and unpack `_ ⟨_, ⟨w, rfl⟩, rfl⟩`. Use `mem_KD.2 ⟨key _ w.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `key _ (w⁻¹).1.2`.
+-/
 theorem cu_map (O : Type) [CommRing O] [Algebra O K] (hτ : IsIntegral O τ) (hu : ∃ u : Oˣ, algebraMap O K u = τ ^ 2 - 4)
     (h2 : IsUnit (2 : O)) {γ : DX Δ} {j} (h : IsEmb τ γ j) (hγ : γ ∈ KD Δ O) : (Cu O τ).map j ≤ KD Δ O := by
   have key : ∀ z : (Etau K τ)ˣ, IsIntegral O (z : Etau K τ) → ∀ a b, IsIntegral O (mt (j z) a b) := fun z hz a b => by

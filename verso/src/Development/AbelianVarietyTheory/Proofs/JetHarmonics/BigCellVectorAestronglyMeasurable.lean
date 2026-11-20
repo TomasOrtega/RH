@@ -10,6 +10,19 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filt
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p H hH`. Take `⟨γ, hγc, hγ⟩` from `GlobalTheory.T.exists_continuous_frame_section' P.k P.r Wp Wq p.T.base p.ν' p.m₀ p.hF`. Use `set U : Set (Fin (P.r + 1) → ℂ) := {c | (∀ a, c a ≠ 0) ∧ Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' < Complex.normSq (c (Fin.last P.r))} with hU`. Establish `hUo : IsOpen U`. Establish `h1 : IsOpen {c : Fin (P.r + 1) → ℂ | ∀ a, c a ≠ 0}`.
+
+Rewrite using `[Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_ne_fun (continuous_apply a) continuous_const`. Establish `h2 : IsOpen {c : Fin (P.r + 1) → ℂ | Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' < Complex.normSq (c (Fin.last P.r))}` using `isOpen_lt continuous_const (Complex.continuous_normSq.comp (continuous_apply _))`. Conclude with `h1.inter h2`. Establish `key : ∀ c ∈ U, γ c ∈ B.GPos p.T.base ∧ p.V H (TBB.bigPt P.r c) = B.JF p.T.base H (γ c)`.
+
+Introduce `c hc`. Take `⟨g1, g2, g3⟩` from `hγ c hc.1 hc.2`. Conclude with `((GlobalTheory.T.besselBigCellPoint_vector_eq_bessel Wp Wq P p H c).2 hc).2 (γ c) g1 g2 g3`. Establish `hm : AEStronglyMeasurable (fun c => B.JF p.T.base H (γ c)) (volume.restrict U)`. Use `GlobalTheory.T.aestronglyMeasurable_besselFunction_continuousFamily P.k P.r Wp Wq p.T.base _ volume U γ (B.GPos p.T.base) H hUo hγc ?_ hH` and prove the remaining obligations.
+
+Introduce `c hc q hq`. Establish `h` using `(key c hc).1`. Conclude with `⟨Formalism.FourierDecayAlt.P.B7.sgs_mem _ hq h.1, by`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs _ hq]`. Conclude with `h.2⟩`.
+
+Establish `he : (fun c : Fin (P.r + 1) → ℂ => p.V H (TBB.bigPt P.r c)) = U.indicator (fun c => B.JF p.T.base H (γ c))`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ U`. Rewrite using `[Set.indicator_of_mem hc]`. Conclude with `(key c hc).2`.
+
+Rewrite using `[Set.indicator_of_notMem hc]`. Conclude with `(GlobalTheory.T.besselBigCellPoint_vector_eq_bessel Wp Wq P p H c).1 hc`. Rewrite using `[he]`. Conclude with `(aestronglyMeasurable_indicator_iff hUo.measurableSet).2 hm`.
+-/
 theorem bigCell_vector_aestronglyMeasurable :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
       [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)

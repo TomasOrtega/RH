@@ -17,6 +17,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
   (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun v hv => absurd hv (Finset.notMem_empty v), fun v _ => map_one _⟩`. Consider the case `insert a S ha ih`. Take `⟨k, h1, h2⟩` from `ih`. Establish `s1 : mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F a) (extH σ J (sgV a) (sgV_mul a) (γ a)) = γ a` using `mapH_extH_self σ J _ _ _ (fun y => Pi.single_eq_same a y) _`.
+
+Establish `s2 : ∀ w, w ≠ a → mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w) (extH σ J (sgV a) (sgV_mul a) (γ a)) = 1` using `fun w hw => mapH_extH_zero σ J _ _ _ (fun y => Pi.single_eq_of_ne hw y) _`. Use `⟨extH σ J (sgV a) (sgV_mul a) (γ a) * k, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Rewrite using `[s1, h2 _ ha, mul_one]`.
+
+Rewrite using `[s2 v (fun e => ha (e ▸ hv)), h1 v hv, one_mul]`. Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[map_mul, s2 v hv.1, h2 v hv.2, one_mul]`.
+-/
 theorem exists_on_finset (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J)
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ k : HA (Af F) σ J, (∀ v ∈ S, mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) k = γ v) ∧
@@ -39,6 +46,11 @@ theorem exists_on_finset (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) �
     · rw [Finset.mem_insert, not_or] at hv
       rw [map_mul, s2 v hv.1, h2 v hv.2, one_mul]
 
+/- English proof (translation)
+Take `⟨k, h1, h2⟩` from `exists_on_finset σ J γ h.toFinset`. Use `⟨k, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ h.toFinset`. Conclude with `h1 v hv`. Rewrite using `[h2 v hv]`.
+
+Simplify `hv` using `[eq_comm]`.
+-/
 theorem exists_of_finite (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J)
     (h : {v | γ v ≠ 1}.Finite) :
     ∃ k : HA (Af F) σ J, ∀ v, mapH σ J (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) k = γ v := by
@@ -51,6 +63,11 @@ theorem exists_of_finite (γ : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) �
 
 end Gen
 
+/- English proof (translation)
+Introduce `D V γ h`. Take `⟨k, hk⟩` from `exists_of_finite D.sp.cm.sig V.gram γ h`. Use `⟨ofFin D.sp.cm V k, ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (HA.mat _ _ _) (projInf_ofFin D.sp.cm V k)`. Establish `e : finMat D.sp.cm.sig V.gram (ofFin D.sp.cm V k) = (HA.mat _ _ _ k).1` using `congrArg (fun x => (HA.mat _ _ _ x).1) (projFin_ofFin D.sp.cm V k)`.
+
+Rewrite using `[e, ← hk v]`. Both sides reduce to the same expression.
+-/
 theorem exists_finite_adelic : ∀ (D : D7) (V : HSp D) (γ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), HA (Fv D.host.F v) D.sp.cm.sig V.gram), {v | γ v ≠ 1}.Finite → ∃ k ∈ GfC V, ∀ v : HeightOneSpectrum (𝓞 D.host.F), (finMat D.sp.cm.sig V.gram k).map (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F v) (AlgHom.id D.host.F D.host.E)) = (HA.mat (Fv D.host.F v) D.sp.cm.sig V.gram (γ v)).1 := by
   intro D V γ h
   obtain ⟨k, hk⟩ := exists_of_finite D.sp.cm.sig V.gram γ h

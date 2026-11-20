@@ -19,6 +19,9 @@ variable (S : Set (HeightOneSpectrum (𝓞 L))) [Finite S]
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+The claim follows from `hasHerbrandQuotient_cycSubOne_of_finite _ hσ`.
+-/
 theorem hasHerbrandQuotient_sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S)
     {σ : L ≃ₐ[K] L} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     GroundTheory.GroupCoh.HasHerbrandQuotient (cycSubOne (sUnitRep S hS) σ) (cycNorm (sUnitRep S hS)) :=
@@ -26,6 +29,11 @@ theorem hasHerbrandQuotient_sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S,
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Establish `hn : (-(classNumber L : ℤ)) ≠ 0`. Simplify using `using classNumber_ne_zero L`. Use `finite_quotient_of_smul_mem _ hn fun y => ⟨SUnit.placeUnitsMap S y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(SUnit.valuationVector S ∘ₗ SUnit.placeUnitsMap S) y = _`. Rewrite using `[SUnit.valuationVector_comp_placeUnitsMap]`.
+
+Both sides reduce to the same expression.
+-/
 theorem finite_quotient_range_valuationVector :
     Finite ((S → ℤ) ⧸ (SUnit.valuationVector (K := L) S).toAddMonoidHom.range) := by
   have hn : (-(classNumber L : ℤ)) ≠ 0 := by
@@ -37,6 +45,9 @@ theorem finite_quotient_range_valuationVector :
 
 omit [IsGalois K L] [Finite S] in
 
+/- English proof (translation)
+Introduce `y`. Establish `h` using `SetLike.ext_iff.1 (SUnit.ker_valuationVector (K := L) S) y`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.mem_range]`. Conclude with `h`.
+-/
 theorem exact_ofUnits_valuationVector :
     Function.Exact (SUnit.ofUnits (K := L) S).toAdditive
       (SUnit.valuationVector (K := L) S).toAddMonoidHom := by
@@ -47,6 +58,11 @@ theorem exact_ofUnits_valuationVector :
 
 open scoped Classical in
 
+/- English proof (translation)
+Set `` to `stableMulAction S hS`. Establish `: Fintype (orbitRel.Quotient (L ≃ₐ[K] L) S)` using `Fintype.ofFinite _`. Establish `: Finite ((S → ℤ) ⧸ (SUnit.valuationVector (K` using `L) S).toAddMonoidHom.range) := finite_quotient_range_valuationVector S`. Establish `h1` using `cycHerbrand_eq_mul_of_exact (unitsRep K L) (sUnitRep S hS) (funPermRep ℤ (L ≃ₐ[K] L) S) σ (i := (SUnit.ofUnits (K := L) S).toAdditive) (p := (SUnit.valuationVector (K := L) S).toAddMonoidHom) (fun a b h => SUnit.ofUnits_injective S (congrArg Additive.toMul h)) (exact_ofUnits_valu …`. Rewrite using `[h1, cycHerbrand_unitsRep hσ, cycHerbrand_funPermRep hσ, prod_card_stabilizer_finitePlace S hS]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cycHerbrand_sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S)
     {σ : L ≃ₐ[K] L} (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     cycHerbrand (sUnitRep S hS) σ =

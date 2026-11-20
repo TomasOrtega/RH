@@ -24,6 +24,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U`. Take `⟨θ, f, hθ⟩` from `GlobalTheory.T.exists_integral_theta_section_with_expansion hL hL2 V hV D A G U`. Establish `hf` using `(GlobalTheory.T.thetaSection_support_eq_univ hL hL2 V hV D A G U θ f hθ).1`. Take `⟨ψ, h, hpsi⟩` from `GlobalTheory.T.exists_psi_thetaExpansionPsiRelation hL hL2 V D f hf`. Take `⟨U', hP, hgen, -, hth⟩` from `exists_preU_setPsi V D (IsLocalRing.maximalIdeal V) A G U ψ h`.
+
+Take `⟨θ', hθ'⟩` from `hth θ f hθ`. Establish `hev` using `GlobalTheory.T.even_psi_of_thetaExpansionPsiRelation hL hL2 V hV (setPsi D ψ h) A G U' θ' f hθ' hpsi`. Establish `hbi` using `GlobalTheory.T.bimultiplicative_tau_of_thetaExpansionPsiRelation hL hL2 V hV (setPsi D ψ h) A G U' θ' f hθ' hpsi`. Establish `hfin` using `GlobalTheory.T.finite_not_psiIn_maximalIdeal_pow V hV (setPsi D ψ h) A G U' θ' f hθ' (hf 0) hpsi`. Establish `hpos` using `GlobalTheory.psiIn_maximalIdeal_of_ne_zero V hV (setPsi D ψ h) hbi hev (hfin 1)`.
+
+Establish `hfe` using `GlobalTheory.T.thetaExpansion_functionalEquation_degree_one hL hL2 V hV (setPsi D ψ h) A G U' θ' f hθ' hpsi`. Conclude with `⟨{ toPre := setPsi D ψ h, psi_even := hev, tau_bimult := hbi, psi_pos := hpos, psi_tendsto := hfin }, U', hP, hgen, hfe⟩`.
+-/
 theorem exists_degData_fe_one : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∃ (D' : DegData V (IsLocalRing.maximalIdeal V)) (U' : PreU (IsLocalRing.maximalIdeal V) D'.toPre A G), U'.P = U.P ∧ U'.gen = U.gen ∧ U'.FE (Kbar V) 1) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U
 

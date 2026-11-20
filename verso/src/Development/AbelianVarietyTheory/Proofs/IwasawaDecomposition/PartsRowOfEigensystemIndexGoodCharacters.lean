@@ -19,6 +19,21 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3
 
+/- English proof (translation)
+Introduce `hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z Xd hP hH hHost hgen hLam`. Establish `e1` using `GlobalTheory.T.exists_sphericalEigensystem_firstLift_baseLevel hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost hgen`. Establish `e2` using `GlobalTheory.Mem.EigCarry.carries_of_hasEig hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost`. Establish `e3` using `GlobalTheory.Mem.R3.IsotPart.isot_le_part hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost`. Establish `e4` using `GlobalTheory.Mem.R3.prt_le_hPart_of_carries hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost`.
+
+Establish `e5` using `GlobalTheory.Mem.R3.prtW_le_hPart hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost`. Establish `hc : Formalism.L2.Col.PairComm (A3.fam3.F.R A3.fam3.F.μ0).op` using `(hH.ok.ok2.what₂ A3.fam3.F.μ0).comm`. Establish `hE : ∀ π, HasEig R F Y π (eigOfType R F Y π)` using `fun π => hasEig_eigOfType (e1 π)`. Establish `hK : ∀ π, ∃ p, R.Carries p (eigOfType R F Y π)` using `fun π => e2 π _ (hE π)`. Set `Pi : Type` to `Set.range (eigOfType R F Y)`.
+
+Establish `hPi : ∀ c : Pi, ∃ p, R.Carries p c.1`. Introduce and unpack `⟨c, π, rfl⟩`. Conclude with `hK π`. Set `labP : Pi → A3.fam3.base3.Ix` to `fun c => (hPi c).choose`. Set `E : EigIdx D Xd` to `{ Pi := Pi fin := Set.fintypeRange _ dec := Classical.decEq _ cOf := fun π => ⟨eigOfType R F Y π, π, rfl⟩ lam_const := by`.
+
+Introduce `j hj π π' e h1 h2 hcc`. Establish `hc' : eigOfType R F Y π = eigOfType R F Y π'` using `congrArg Subtype.val hcc`. Take `⟨p, hp⟩` from `hK π`. Establish `hp' : R.Carries p (eigOfType R F Y π')` using `hc' ▸ hp`. Establish `hj' : 1 ≤ j ∧ j ≤ D.R.m` using `Finset.mem_Icc.1 hj`.
+
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hk : k < D.R.m` using `by omega`. Establish `a1` using `hLam ⟨k, hk⟩ π p e h1 (e3 π _ p (hE π) hp ⟨k, hk⟩)`. Establish `a2` using `hLam ⟨k, hk⟩ π' p e h2 (e3 π' _ p (hE π') hp' ⟨k, hk⟩)`. Conclude with `a1.trans a2.symm }`.
+
+Use `⟨E, fun c => A3.fam3.toIx2 hc (labP c), Subtype.val, ?_⟩` and prove the remaining obligations. Use `⟨fun π => rfl, Subtype.val_injective, ?_, ?_⟩` and prove the remaining obligations. Introduce `π`. Conclude with `e4 π _ _ (hE π) (hPi _).choose_spec`. Introduce `i π`.
+
+Establish `h5` using `e5 π _ _ (hE π) (hPi (E.cOf π)).choose_spec i`. Conclude with `h5`.
+-/
 theorem partsRec_of_eig : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y) (Xd : DivX D), Pins R F cG → Holds R F → HostHyp D → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → (∀ (i : Fin D.R.m) π (c : A3.fam3.base3.Ix) (e : D.what₂.LL →+* ℂ), D.what₂.isot ((i : ℕ) + 1) π ≠ ⊥ → D.what₂.isot ((i : ℕ) + 1) π ≤ (R.Wp3 i c).comap (Y.mj.eW i) → Xd.logLam ((i : ℕ) + 1) π e = Real.log (R.lam3 i A3.A.μ0 c (InfinitePlace.mk e))) → ∃ (E : EigIdx D Xd) (labPi : E.Pi → A3.A.fam.base.Ix) (piOf : E.Pi → HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ), PartsRec R.toRealDat F.lv2 Y.tupT Y.hm Y.PY Y.PW Y.eFT E labPi piOf Y.Ish.prt Y.IL.prtW := by
   intro hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z Xd hP hH hHost hgen hLam
   have e1 := GlobalTheory.T.exists_sphericalEigensystem_firstLift_baseLevel hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y hP hH hHost hgen

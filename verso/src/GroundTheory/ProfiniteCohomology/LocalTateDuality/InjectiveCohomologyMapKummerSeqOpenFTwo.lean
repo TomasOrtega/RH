@@ -19,6 +19,11 @@ section CoresNaturality
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [CompactSpace G]
 
+/- English proof (translation)
+Use extensionality with `f`. Express the relevant statement in the definitionally equal form `(coindTrace (U : Subgroup G) B).hom ((Rep.coindMap (U : Subgroup G).subtype ((Rep.resFunctor (U : Subgroup G).subtype).map φ)).hom f) = φ.hom ((coindTrace (U : Subgroup G) A).hom f)`. Rewrite using `[coindTrace_hom_apply, coindTrace_hom_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Proceed by induction on `c using QuotientGroup.induction_on with`.
+
+Consider the case `H x`. Rewrite using `[coindTraceTerm_apply, coindTraceTerm_apply]`. Express the relevant statement in the definitionally equal form `B.ρ x (φ.hom (f.1 x⁻¹)) = φ.hom (A.ρ x (f.1 x⁻¹))`. Rewrite using `[Rep.hom_comm_apply]`.
+-/
 theorem coindMap_res_comp_coindTrace (U : OpenSubgroup G) {A B : Rep.{u} k G} (φ : A ⟶ B) :
     Rep.coindMap (U : Subgroup G).subtype ((Rep.resFunctor (U : Subgroup G).subtype).map φ) ≫
         coindTrace (U : Subgroup G) B =
@@ -35,6 +40,9 @@ theorem coindMap_res_comp_coindTrace (U : OpenSubgroup G) {A B : Rep.{u} k G} (�
     change B.ρ x (φ.hom (f.1 x⁻¹)) = φ.hom (A.ρ x (f.1 x⁻¹))
     rw [Rep.hom_comm_apply]
 
+/- English proof (translation)
+Rewrite using `[cohomologyCores, cohomologyCores, Category.assoc, ← cohomologyMap_comp, ← coindMap_res_comp_coindTrace, cohomologyMap_comp, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv, shapiroMap_naturality]`.
+-/
 theorem cohomologyCores_naturality (U : OpenSubgroup G) {A B : Rep.{u} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] (φ : A ⟶ B) (n : ℕ) :
     cohomologyCores U A n ≫ cohomologyMap φ n =
@@ -44,6 +52,9 @@ theorem cohomologyCores_naturality (U : OpenSubgroup G) {A B : Rep.{u} k G} [IsD
   congr 1
   rw [IsIso.inv_comp_eq, ← Category.assoc, IsIso.eq_comp_inv, shapiroMap_naturality]
 
+/- English proof (translation)
+Establish `h1` using `cohomologyCores_naturality (openSubgroupOf U V) ((Rep.resFunctor (U : Subgroup G).subtype).map φ) n`. Establish `h2 : cohomologyMap ((Rep.resFunctor (V : Subgroup G).subtype).map φ) n ≫ cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe (show (V : Subgroup G) ≤ U from h)).toMonoidHom (continuous_subgroupOfEquivOfLe _) (resSubgroupOfInvHom _ B) n = cohomologyMapAlong (Subgroup.subgroupOfEquivO …`. Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun _ => rfl) (fun _ => rfl) n`. Rewrite using `[cohomologyCoresLE_eq, cohomologyCoresLE_eq, Category.assoc, h1, ← Category.assoc, ← Category.assoc, ← h2]`.
+-/
 theorem cohomologyCoresLE_naturality {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (φ : A ⟶ B) {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ) :
     cohomologyCoresLE A h n ≫ cohomologyMap ((Rep.resFunctor (U : Subgroup G).subtype).map φ) n =
@@ -64,6 +75,9 @@ theorem cohomologyCoresLE_naturality {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDi
   rw [cohomologyCoresLE_eq, cohomologyCoresLE_eq, Category.assoc, h1, ← Category.assoc,
     ← Category.assoc, ← h2]
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun ψ => ψ.hom x) (cohomologyCoresLE_naturality φ h n)).symm`.
+-/
 theorem cohomologyCoresLE_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (φ : A ⟶ B) {U V : OpenSubgroup G} (h : V ≤ U) (n : ℕ)
     (x : cohomology (Rep.res (V : Subgroup G).subtype A) n) :
@@ -79,6 +93,11 @@ section Kummer
 
 variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsSepClosure K Ksep]
 
+/- English proof (translation)
+Establish `: IsSepClosed Ksep` using `IsSepClosure.sep_closed K`. Establish `hn' : (n : Ksep) ≠ 0`. Rewrite using `[← map_natCast (algebraMap K Ksep)]`. Conclude with `(map_ne_zero _).2 hn`. Establish `: NeZero (n : Ksep)` using `⟨hn'⟩`.
+
+Establish `: NeZero n` using `⟨by rintro rfl; exact hn Nat.cast_zero⟩`. Establish `hcard : Nat.card (rootsOfUnity n Ksep) = Nat.card (Multiplicative (ZMod n))`. Rewrite using `[HasEnoughRootsOfUnity.natCard_rootsOfUnity, Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card]`. Conclude with `⟨MulEquiv.toAdditive (mulEquivOfCyclicCardEq hcard)⟩`.
+-/
 theorem nonempty_addEquiv_galRootsOfUnity {n : ℕ} (hn : (n : K) ≠ 0) :
     Nonempty (galRootsOfUnity.{0} K Ksep n ≃+ ZMod n) := by
   have : IsSepClosed Ksep := IsSepClosure.sep_closed K
@@ -108,24 +127,36 @@ instance isDiscreteRep_res_galUnits_subgroup (W : Subgroup Gal(Ksep/K)) :
     IsDiscreteRep (Rep.res W.subtype (galUnits.{0} K Ksep)) :=
   isDiscreteRep_res_subtype _ _
 
+/- English proof (translation)
+The claim follows from `shortExact_map_res W (kummerSequence_shortExact n hn)`.
+-/
 theorem kummerSeqOpen_shortExact {n : ℕ} (hn : (n : K) ≠ 0) (W : Subgroup Gal(Ksep/K)) :
     (kummerSeqOpen (K := K) (Ksep := Ksep) n W).ShortExact :=
   shortExact_map_res W (kummerSequence_shortExact n hn)
 
 omit [IsSepClosure K Ksep] in
 
+/- English proof (translation)
+The claim follows from `nsmul_id_hom_apply (galUnits.{0} K Ksep) n x`.
+-/
 theorem kummerSeqOpen_g_hom_apply (n : ℕ) (W : Subgroup Gal(Ksep/K))
     (x : Rep.res W.subtype (galUnits.{0} K Ksep)) :
     (kummerSeqOpen (K := K) (Ksep := Ksep) n W).g.hom x = n • x :=
   nsmul_id_hom_apply (galUnits.{0} K Ksep) n x
 
 omit [IsSepClosure K Ksep] in
+/- English proof (translation)
+The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => (kummerSeqOpen_g_hom_apply n W x).trans (nsmul_id_hom_apply (Rep.res W.subtype (galUnits.{0} K Ksep)) n x).symm))`.
+-/
 theorem kummerSeqOpen_g (n : ℕ) (W : Subgroup Gal(Ksep/K)) :
     (kummerSeqOpen (K := K) (Ksep := Ksep) n W).g = n • 𝟙 (Rep.res W.subtype (galUnits.{0} K Ksep)) :=
   Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x =>
     (kummerSeqOpen_g_hom_apply n W x).trans
       (nsmul_id_hom_apply (Rep.res W.subtype (galUnits.{0} K Ksep)) n x).symm))
 
+/- English proof (translation)
+Rewrite using `[kummerSeqOpen_g]`. Conclude with `cohomologyMap_nsmul_id_apply _ n i y`.
+-/
 theorem cohomologyMap_kummerSeqOpen_g_apply (n : ℕ) (W : Subgroup Gal(Ksep/K)) (i : ℕ)
     (y : cohomology (Rep.res W.subtype (galUnits.{0} K Ksep)) i) :
     (cohomologyMap (kummerSeqOpen (K := K) (Ksep := Ksep) n W).g i).hom y = n • y := by
@@ -141,12 +172,18 @@ variable (K Ksep : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
 
 attribute [local irreducible] localClassFormationOfIsSepClosure
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.isZero_iff_subsingleton).1 ((localClassFormationOfIsSepClosure K Ksep).isZero_H1_open_subgroups U)`.
+-/
 theorem subsingleton_cohomology_one_kummerSeqOpen_X₂ (U : OpenSubgroup Gal(Ksep/K)) :
     Subsingleton (cohomology (kummerSeqOpen (K := K) (Ksep := Ksep) n (U : Subgroup Gal(Ksep/K))).X₂ 1) :=
   (ModuleCat.isZero_iff_subsingleton).1 ((localClassFormationOfIsSepClosure K Ksep).isZero_H1_open_subgroups U)
 
 variable {K Ksep}
 
+/- English proof (translation)
+The claim follows from `cohomologyMap_f_injective_of_subsingleton (kummerSeqOpen_shortExact hn _) 1 (subsingleton_cohomology_one_kummerSeqOpen_X₂ K Ksep (n := n) U)`.
+-/
 theorem injective_cohomologyMap_kummerSeqOpen_f_two (hn : (n : K) ≠ 0)
     (U : OpenSubgroup Gal(Ksep/K)) :
     Function.Injective
@@ -159,17 +196,32 @@ noncomputable def rootsOfUnityInv (n : ℕ) (U : OpenSubgroup Gal(Ksep/K)) :
   ((localClassFormationOfIsSepClosure K Ksep).inv U).comp
     (cohomologyMap (kummerSeqOpen (K := K) (Ksep := Ksep) n (U : Subgroup Gal(Ksep/K))).f 2).hom.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rootsOfUnityInv_apply (n : ℕ) (U : OpenSubgroup Gal(Ksep/K))
     (x : cohomology (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 2) :
     rootsOfUnityInv n U x = (localClassFormationOfIsSepClosure K Ksep).inv U
       ((cohomologyMap (kummerSeqOpen (K := K) (Ksep := Ksep) n (U : Subgroup Gal(Ksep/K))).f 2).hom x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `((localClassFormationOfIsSepClosure K Ksep).inv_bijective U).1.comp (injective_cohomologyMap_kummerSeqOpen_f_two hn U)`.
+-/
 theorem rootsOfUnityInv_injective (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K)) :
     Function.Injective (rootsOfUnityInv (Ksep := Ksep) n U) :=
   ((localClassFormationOfIsSepClosure K Ksep).inv_bijective U).1.comp
     (injective_cohomologyMap_kummerSeqOpen_f_two hn U)
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨by rintro rfl; exact hn Nat.cast_zero⟩`. Use `set F := localClassFormationOfIsSepClosure K Ksep`. Use `set S := kummerSeqOpen (K := K) (Ksep := Ksep) n (U : Subgroup Gal(Ksep/K))`. Establish `hS : S.ShortExact` using `kummerSeqOpen_shortExact hn _`. Use extensionality with `q`.
+
+Simplify using `only [AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `exists_zmodToQZ_eq ?_` and prove the remaining obligations. Establish `h0 : n • (cohomologyMap S.f 2).hom x = 0`.
+
+Rewrite using `[← cohomologyMap_kummerSeqOpen_g_apply n (U : Subgroup Gal(Ksep/K)) 2]`. Conclude with `cohomologyMap_g_cohomologyMap_f_apply (S := S) 2 x`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨a, rfl⟩`. Take `⟨y, hy⟩` from `(F.inv_bijective U).2 (zmodToQZ n a)`.
+
+Establish `hny : n • y = 0`. Apply `(F.inv_bijective U).1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hy, ← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul, map_zero, map_zero]`. Take `⟨x, hx⟩` from `exists_cohomologyMap_f_eq hS 2 y ((cohomologyMap_kummerSeqOpen_g_apply n _ 2 y).trans hny)`. Conclude with `⟨x, show F.inv U ((cohomologyMap S.f 2).hom x) = _ by rw [hx, hy]⟩`.
+-/
 theorem range_rootsOfUnityInv (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K)) :
     (rootsOfUnityInv (Ksep := Ksep) n U).range = (zmodToQZ n).range := by
   have : NeZero n := ⟨by rintro rfl; exact hn Nat.cast_zero⟩
@@ -205,6 +257,11 @@ noncomputable def localInvRootsOfUnity (hn : (n : K) ≠ 0) (U : OpenSubgroup Ga
     ((AddEquiv.addSubgroupCongr (range_rootsOfUnityInv hn U)).trans
       (AddMonoidHom.ofInjective (zmodToQZ_injective (n := n))).symm)
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨by rintro rfl; exact hn Nat.cast_zero⟩`. Use `set w := AddEquiv.addSubgroupCongr (range_rootsOfUnityInv hn U) (AddMonoidHom.ofInjective (rootsOfUnityInv_injective hn U) x) with hw`. Establish `h1 : (w : QZ) = rootsOfUnityInv n U x` using `AddMonoidHom.ofInjective_apply (rootsOfUnityInv_injective hn U) (x := x)`. Establish `h2` using `AddMonoidHom.ofInjective_apply (zmodToQZ_injective (n := n)) (x := (AddMonoidHom.ofInjective (zmodToQZ_injective (n := n))).symm w)`. Rewrite `h2` using `[AddEquiv.apply_symm_apply]`.
+
+Conclude with `h2.symm.trans h1`.
+-/
 theorem zmodToQZ_localInvRootsOfUnity (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal(Ksep/K))
     (x : cohomology (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 2) :
     zmodToQZ n (localInvRootsOfUnity hn U x) = rootsOfUnityInv n U x := by
@@ -218,6 +275,9 @@ theorem zmodToQZ_localInvRootsOfUnity (hn : (n : K) ≠ 0) (U : OpenSubgroup Gal
   rw [AddEquiv.apply_symm_apply] at h2
   exact h2.symm.trans h1
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨by rintro rfl; exact hn Nat.cast_zero⟩`. Apply `zmodToQZ_injective` to reduce the goal to its premises. Rewrite using `[zmodToQZ_localInvRootsOfUnity, zmodToQZ_localInvRootsOfUnity]`. Conclude with `(congrArg ((localClassFormationOfIsSepClosure K Ksep).inv U) (cohomologyCoresLE_cohomologyMap (kummerSequence K Ksep n).f h 2 x).symm).trans (ClassFormation.inv_cohomologyCoresLE _ h _)`.
+-/
 theorem localInvRootsOfUnity_cores (hn : (n : K) ≠ 0) (U V : OpenSubgroup Gal(Ksep/K)) (h : V ≤ U)
     (x : cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep n)) 2) :
     localInvRootsOfUnity hn U (cohomologyCoresLE (galRootsOfUnity.{0} K Ksep n) h 2 x) =

@@ -21,15 +21,48 @@ def ratios (x : Ix κ → Ω) (c : κ) : Ix κ → ratioField x c := fun p =>
   ⟨x p / x ⟨(), c⟩, Subfield.subset_closure ⟨p, rfl⟩⟩
 
 omit [Fintype κ] in
+/- English proof (translation)
+The claim follows from `Subtype.ext (div_self hc)`.
+-/
 theorem ratios_c (x : Ix κ → Ω) {c : κ} (hc : x ⟨(), c⟩ ≠ 0) : ratios x c ⟨(), c⟩ = 1 :=
   Subtype.ext (div_self hc)
 
 omit [Fintype κ] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x p = x ⟨(), c⟩ * (x p / x ⟨(), c⟩)`. Rewrite using `[mul_div_cancel₀ _ hc]`.
+-/
 theorem eq_mul_ratios (x : Ix κ → Ω) {c : κ} (hc : x ⟨(), c⟩ ≠ 0) (p : Ix κ) :
     x p = x ⟨(), c⟩ * (ratioField x c).subtype (ratios x c p) := by
   change x p = x ⟨(), c⟩ * (x p / x ⟨(), c⟩)
   rw [mul_div_cancel₀ _ hc]
 
+/- English proof (translation)
+Introduce `s`. Take `⟨s, hs⟩` from `s`. Proceed by induction on `hs using Subfield.closure_induction with`. Consider the case `mem t ht`. Take `⟨p, rfl⟩` from `ht`.
+
+Use `⟨fun _ => 1, X p, X ⟨(), c⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `ProjLine.isMultiHomog_X (ι := GlobalTheory κ) p using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Use `ProjLine.isMultiHomog_X (ι := GlobalTheory κ) ⟨(), c⟩ using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[aeval_X, ratios_c x hc]`. Conclude with `one_ne_zero`. Rewrite using `[aeval_X, aeval_X, ratios_c x hc, mul_one]`.
+
+Both sides reduce to the same expression. Consider the case `one`. Use `⟨0, 1, 1, ProjLine.isMultiHomog_one, ProjLine.isMultiHomog_one, by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, mul_one]`. Both sides reduce to the same expression.
+
+Consider the case `add a b ha hb iha ihb`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩` from `iha`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩` from `ihb`. Establish `hsum : IsMultiHomog (g₁ * h₂ + g₂ * h₁) (d₁ + d₂)`. Use `ProjLine.mhAdd (ProjLine.mhMul hg₁ hh₂) ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm d₁]`. Conclude with `ProjLine.mhMul hg₂ hh₁`. Use `⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂, hsum, ProjLine.mhMul hh₁ hh₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hne₁ hne₂`.
+
+Rewrite using `[map_add, map_mul, map_mul, map_mul, he₁, he₂]`. Establish `: (⟨a + b, add_mem ha hb⟩ : ratioField x c) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg a ha iha`.
+
+Take `⟨d, g, h, hg, hh, hne, he⟩` from `iha`. Use `⟨d, -g, h, ProjLine.mhNeg hg, hh, hne, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, he]`. Establish `: (⟨-a, neg_mem ha⟩ : ratioField x c) = -⟨a, ha⟩` using `rfl`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `inv a ha iha`. Take `⟨d, g, h, hg, hh, hne, he⟩` from `iha`. Distinguish the cases in `ha0 : (⟨a, ha⟩ : ratioField x c) = 0`. Use `⟨0, 0, 1, ProjLine.isMultiHomog_zero _, ProjLine.isMultiHomog_one, by simp, ?_⟩` and prove the remaining obligations.
+
+Establish `: (⟨a⁻¹, inv_mem ha⟩ : ratioField x c) = (⟨a, ha⟩ : ratioField x c)⁻¹` using `rfl`. Rewrite using `[this, ha0]`. Simplify using the standard rewrite rules. Establish `hg0 : aeval (ratios x c) g ≠ 0`. Rewrite using `[he]`.
+
+Conclude with `mul_ne_zero ha0 hne`. Use `⟨d, h, g, hh, hg, hg0, ?_⟩` and prove the remaining obligations. Establish `: (⟨a⁻¹, inv_mem ha⟩ : ratioField x c) = (⟨a, ha⟩ : ratioField x c)⁻¹` using `rfl`. Rewrite using `[this, he]`. Clear the denominators using the available nonvanishing facts.
+
+Consider the case `mul a b ha hb iha ihb`. Take `⟨d₁, g₁, h₁, hg₁, hh₁, hne₁, he₁⟩` from `iha`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hne₂, he₂⟩` from `ihb`. Use `⟨d₁ + d₂, g₁ * g₂, h₁ * h₂, ProjLine.mhMul hg₁ hg₂, ProjLine.mhMul hh₁ hh₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_ne_zero hne₁ hne₂`. Rewrite using `[map_mul, map_mul, he₁, he₂]`. Establish `: (⟨a * b, mul_mem ha hb⟩ : ratioField x c) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem birational_ratios (x : Ix κ → Ω) {c : κ} (hc : x ⟨(), c⟩ ≠ 0) :
     Birational (ι := GlobalTheory κ) (ratios x c) := by
   intro s
@@ -100,6 +133,9 @@ theorem birational_ratios (x : Ix κ → Ω) {c : κ} (hc : x ⟨(), c⟩ ≠ 0)
 
 end Ratios
 
+/- English proof (translation)
+Introduce `Ω _ _ κ _ x c hc`. Establish `hx` using `eq_mul_ratios x hc`. Use `⟨ratioField x c, inferInstance, inferInstance, ratios x c, mCoordIdeal_eq (ratioField x c).subtype hc hx, birational_ratios x hc, fun A τ => smallSectionCount_eq_of_birational (ratioField x c).subtype hc hx hc A τ⟩` and prove the remaining obligations.
+-/
 theorem proof : Statement := by
   intro Ω _ _ κ _ x c hc
   have hx := eq_mul_ratios x hc

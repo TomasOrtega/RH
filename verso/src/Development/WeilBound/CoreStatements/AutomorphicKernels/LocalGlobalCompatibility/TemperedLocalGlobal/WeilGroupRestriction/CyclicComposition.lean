@@ -21,6 +21,11 @@ section Grp
 
 variable {Γ : Type*} [Group Γ]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `hc.exists_generator`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Use `⟨g, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hq (x : Γ ⧸ H))`. Establish `hx : x = x * (g ^ k)⁻¹ * g ^ k` using `by group`.
+
+Rewrite using `[hx]`. Use `Subgroup.mul_mem _ (Subgroup.mem_sup_left ?_) (Subgroup.mem_sup_right (Subgroup.zpow_mem_zpowers g k))` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq_one_iff]`. Simplify using `[hk]`.
+-/
 theorem cyc_of_isCyclic {H : Subgroup Γ} [H.Normal] (hc : IsCyclic (Γ ⧸ H)) :
     ∃ g : Γ, H ⊔ Subgroup.zpowers g = ⊤ := by
   obtain ⟨q, hq⟩ := hc.exists_generator
@@ -33,6 +38,11 @@ theorem cyc_of_isCyclic {H : Subgroup Γ} [H.Normal] (hc : IsCyclic (Γ ⧸ H)) 
   rw [← QuotientGroup.eq_one_iff]
   simp [hk]
 
+/- English proof (translation)
+Use `⟨⟨(g : Γ ⧸ H), fun q => ?_⟩⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective q`. Establish `hle : H ⊔ Subgroup.zpowers g ≤ (Subgroup.zpowers (g : Γ ⧸ H)).comap (QuotientGroup.mk' H)`. Use `sup_le (fun h hh => ?_) ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff h).2 hh]`.
+
+Conclude with `Subgroup.one_mem _`. Rewrite using `[Subgroup.zpowers_le, Subgroup.mem_comap, QuotientGroup.mk'_apply]`. Conclude with `Subgroup.mem_zpowers _`. Establish `hx : x ∈ H ⊔ Subgroup.zpowers g` using `by rw [hg]; exact Subgroup.mem_top x`. Conclude with `hle hx`.
+-/
 theorem isCyclic_of_cyc {H : Subgroup Γ} [H.Normal] (g : Γ) (hg : H ⊔ Subgroup.zpowers g = ⊤) :
     IsCyclic (Γ ⧸ H) := by
   refine ⟨⟨(g : Γ ⧸ H), fun q => ?_⟩⟩
@@ -46,6 +56,15 @@ theorem isCyclic_of_cyc {H : Subgroup Γ} [H.Normal] (g : Γ) (hg : H ⊔ Subgro
   have hx : x ∈ H ⊔ Subgroup.zpowers g := by rw [hg]; exact Subgroup.mem_top x
   exact hle hx
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `IsCyclic.exists_generator (α := Q)`. Establish `ho : orderOf q = Nat.card Q` using `orderOf_eq_card_of_forall_mem_zpowers hq`. Use `⟨Subgroup.zpowers (q ^ p), ⟨fun n hn g => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hq g)`. Establish `hc : Commute (q ^ i) n`.
+
+Take `⟨j, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hn`. Conclude with `(((Commute.refl q).zpow_left i).pow_right p).zpow_right j`. Rewrite using `[hc.eq, mul_inv_cancel_right]`. Conclude with `hn`. Establish `hc` using `Subgroup.card_mul_index (Subgroup.zpowers (q ^ p))`.
+
+Establish `hd' : p ∣ orderOf q` using `by rw [ho]; exact hd`. Rewrite `hc` using `[Nat.card_zpowers, orderOf_pow_of_dvd hp.ne_zero hd', ho]`. Take `⟨m, hm⟩` from `hd`. Rewrite `hc` using `[hm, Nat.mul_div_cancel_left m hp.pos]`. Establish `hm0 : 0 < m`.
+
+Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Rewrite `hm` using `[h, mul_zero]`. Conclude with `absurd hm (Nat.card_pos (α := Q)).ne'`. Conclude with `h`. Conclude with `Nat.eq_of_mul_eq_mul_left hm0 (hc.trans (mul_comm p m))`.
+-/
 theorem exists_index_prime {Q : Type*} [Group Q] [Finite Q] [IsCyclic Q] {p : ℕ} (hp : p.Prime)
     (hd : p ∣ Nat.card Q) : ∃ K : Subgroup Q, K.Normal ∧ K.index = p := by
   obtain ⟨q, hq⟩ := IsCyclic.exists_generator (α := Q)
@@ -75,6 +94,11 @@ section Gal
 
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
 
+/- English proof (translation)
+Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Conclude with `τ.commutes ⟨x, hx⟩`. Introduce `hσ`. Rewrite `hσ` using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun y => hσ y y.2), AlgEquiv.ext fun _ => rfl⟩`.
+-/
 theorem range_resG (L : IntermediateField E Ω) :
     (resG E (E' := L) (Ω := Ω)).range = L.fixingSubgroup := by
   ext σ
@@ -102,11 +126,17 @@ def comp (X₁ : CMExt E Ω) (X₂ : CMExt X₁.M Ω) : CMExt E Ω :=
   { M := X₂.M }
 
 omit [NumberField E] [IsAlgClosure E Ω] in
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun _ => rfl`.
+-/
 theorem resG_comp (X₁ : CMExt E Ω) (X₂ : CMExt X₁.M Ω) (τ : G (comp X₁ X₂).M Ω) :
     resG E (E' := (comp X₁ X₂).M) (Ω := Ω) τ =
       resG E (E' := X₁.M) (Ω := Ω) (resG X₁.M (E' := X₂.M) (Ω := Ω) τ) :=
   AlgEquiv.ext fun _ => rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+-/
 theorem trace_conj {l a : ℕ} [Fact l.Prime] (p x : GL (Fin a) (Qbar l)) :
     ((p * x * p⁻¹ : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace =
       (x : Matrix (Fin a) (Fin a) (Qbar l)).trace := by
@@ -119,6 +149,11 @@ section Lift
 
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
 
+/- English proof (translation)
+Use `⟨hc, hr, ?_⟩` and prove the remaining obligations. Introduce `l _ ι r wt HT r' wt' HT' h h'`. Take `⟨p, hp⟩` from `GlobalTheory.TraceConjWeil.main E Ω l a r r' h.cont h'.cont h.ss h'.ss (fun w hw A hA σ => by`. Take `⟨rc, hrc, -⟩` from `hL.1 E Ω A w hA`. Take `⟨σ0, hσ0, -⟩` from `LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL E a π w`.
+
+Conclude with `GlobalTheory.WdTrace.trace_eq_of_isWDOf E Ω l ι a r r' w A hA _ (h.away w hw A hA rc hrc σ0 hσ0) (h'.away w hw A hA rc hrc σ0 hσ0) σ)`. Use `⟨p, fun g => ?_⟩` and prove the remaining obligations. Establish `e : resG E (E'` using `(CMExt.self E Ω).M) (Ω := Ω) g = g := AlgEquiv.ext fun _ => rfl`. Rewrite using `[e]`. Conclude with `hp g`.
+-/
 theorem lift_self (hL : GlobalTheory.Published.LocalLanglandsGL) {a : ℕ} (π : CuspSub E a) (hc : π.IsCsd)
     (hr : (CG.mk π).IsRegAlg) : IsLift Ω (CMExt.self E Ω) π π := by
   refine ⟨hc, hr, ?_⟩
@@ -133,11 +168,65 @@ theorem lift_self (hL : GlobalTheory.Published.LocalLanglandsGL) {a : ℕ} (π :
   rw [e]
   exact hp g
 
+/- English proof (translation)
+The claim follows from `MonoidHom.range_eq_top.2 fun g => ⟨g, AlgEquiv.ext fun _ => rfl⟩`.
+-/
 theorem range_self : (resG E (E' := (CMExt.self E Ω).M) (Ω := Ω)).range = ⊤ :=
   MonoidHom.range_eq_top.2 fun g => ⟨g, AlgEquiv.ext fun _ => rfl⟩
 
 end Lift
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `E Ω _ _ _ _ _ _ a ha π hc hr l _ ι r wt HT hR H hH hT hne hn`. Use `haveI : IsGalois E Ω := {}`.
+
+Use `haveI : Finite (G E Ω ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH.isOpen`. Conclude with `absurd (Nat.le_zero.1 hn) Subgroup.index_ne_zero_of_finite`. Consider the case `succ n ih`. Introduce `E Ω _ _ _ _ _ _ a ha π hc hr l _ ι r wt HT hR H hH hT hne hn`. Use `haveI : IsGalois E Ω := {}`.
+
+Use `haveI : Finite (G E Ω ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH.isOpen`. Use `haveI := hH.normal`. Establish `h0 : H.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h1 : H.index ≠ 1` using `fun h => hne (Subgroup.index_eq_one.1 h)`. Take `⟨p, hp, hpd⟩` from `Nat.exists_prime_and_dvd h1`.
+
+Take `⟨g0, hg0⟩` from `hH.cyc`. Use `haveI : IsCyclic (G E Ω ⧸ H) := isCyclic_of_cyc g0 hg0`. Take `⟨K, hKn, hKi⟩` from `exists_index_prime (Q := G E Ω ⧸ H) hp (by rwa [← Subgroup.index_eq_card])`. Use `set H1 : Subgroup (G E Ω) := K.comap (QuotientGroup.mk' H) with hH1def`. Establish `hH1i : H1.index = p`.
+
+Rewrite using `[hH1def, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective H)]`. Conclude with `hKi`. Establish `hHH1 : H ≤ H1` using `fun x hx => by`. Rewrite using `[hH1def, Subgroup.mem_comap, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).2 hx]`. Conclude with `K.one_mem`.
+
+Use `haveI hH1n : H1.Normal := hKn.comap _`. Establish `hH1o : IsOpen (H1 : Set (G E Ω))` using `Subgroup.isOpen_mono hHH1 hH.isOpen`. Establish `hH1c : IsClosed (H1 : Set (G E Ω))` using `Subgroup.isClosed_of_isOpen H1 hH1o`. Establish `hH1top : H1 ≠ ⊤` using `fun h => hp.ne_one (hH1i.symm.trans (Subgroup.index_eq_one.2 h))`. Use `set L : IntermediateField E Ω := IntermediateField.fixedField H1 with hLdef`.
+
+Establish `hLfix : L.fixingSubgroup = H1` using `InfiniteGalois.fixingSubgroup_fixedField ⟨H1, hH1c⟩`. Use `haveI hLfd : FiniteDimensional E L := (InfiniteGalois.isOpen_iff_finite L).1 (by rw [hLfix]; exact hH1o)`. Use `haveI hLgal : IsGalois E L := (InfiniteGalois.normal_iff_isGalois L).1 (by rw [hLfix]; exact hH1n)`. Establish `hLcm : IsCMField L` using `hH.cm L (by rw [hLfix]; exact hHH1)`. Establish `hrk : Module.finrank E L = p` using `by haveI : (⟨H1, hH1c⟩ : ClosedSubgroup (G E Ω)).Normal := hH1n`.
+
+Rewrite using `[← IsGalois.card_aut_eq_finrank, ← hH1i, Subgroup.index_eq_card]`. Conclude with `(Nat.card_congr (InfiniteGalois.normalAutEquivQuotient ⟨H1, hH1c⟩).toEquiv).symm`. Set `X1 : CMExt E Ω` to `ofIF L hLcm`. Establish `hX1r : (resG E (E'` using `X1.M) (Ω := Ω)).range = H1 := (range_resG L).trans hLfix`. Establish `hTr : ∃ g, g ∉ (resG E (E'` using `X1.M) (Ω := Ω)).range ∧ (r g : Matrix (Fin a) (Fin a) (Qbar l)).trace ≠ 0 := by`.
+
+Rewrite using `[hX1r]`. Take `⟨g, -, hg, ht⟩` from `hT H1 ⊤ hHH1 (lt_top_iff_ne_top.2 hH1top)`. Conclude with `⟨g, hg, ht⟩`. Establish `hX1gal : IsGalois E X1.M` using `hLgal`. Establish `hX1p : (Module.finrank E X1.M).Prime` using `by show (Module.finrank E L).Prime`.
+
+Rewrite using `[hrk]`. Conclude with `hp`. Take `⟨P1, hP1⟩` from `hO E Ω a ha π hc hr X1 hX1gal hX1p l ι r wt HT hR hTr`. Distinguish the cases in `hEq : H1 ≤ H`. Conclude with `⟨X1, P1, hX1r.trans (le_antisymm hEq hHH1), hP1⟩`.
+
+Take `⟨r1, wt1, HT1, hR1⟩` from `GlobalTheory.Published.GaloisRepOfPolarizedCuspidal.of_isCsd hG Ω ι ha hP1.reg hP1.csd`. Take `⟨p1, hp1⟩` from `hP1.res l ι r wt HT r1 wt1 HT1 hR hR1`. Use `set H' : Subgroup (G X1.M Ω) := H.comap (resG E (E' := X1.M) (Ω := Ω)) with hH'def`. Establish `hH'i : H'.index = H.relIndex H1` using `by rw [hH'def, Subgroup.index_comap, hX1r]`. Establish `hrel : H.relIndex H1 * p = H.index` using `hH1i ▸ Subgroup.relIndex_mul_index hHH1`.
+
+Establish `hrel1 : H.relIndex H1 ≠ 1` using `fun h => hEq (Subgroup.relIndex_eq_one.1 h)`. Establish `hrel0 : H.relIndex H1 ≠ 0` using `fun h => h0 (by rw [← hrel, h, zero_mul])`. Establish `hlt : H'.index ≤ n`. Rewrite using `[hH'i]`. Use `hp.two_le` as an intermediate fact.
+
+Use `Nat.pos_of_ne_zero hrel0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hne' : H' ≠ ⊤` using `fun h => hrel1 (by rw [← hH'i, h, Subgroup.index_top])`. Establish `hinj : Function.Injective (resG E (E'` using `X1.M) (Ω := Ω)) := resG_injective`. Establish `hcont : Continuous (resG E (E'` using `X1.M) (Ω := Ω)) := continuous_resG`.
+
+Use `haveI hH'n : H'.Normal := hH.normal.comap _`. Establish `hH'good : GoodSub H'`. Use `⟨hH'n, hH.isOpen.preimage hcont, ?_, ?_⟩` and prove the remaining obligations. Apply `cyc_of_isCyclic` to reduce the goal to its premises. Use `isCyclic_of_injective (QuotientGroup.map H' H (resG E (E' := X1.M) (Ω := Ω)) le_rfl) ?_` and prove the remaining obligations.
+
+Introduce `x y hxy`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H x`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H y`.
+
+Establish `h2 : ((resG E (E'` using `X1.M) (Ω := Ω) x : G E Ω) : G E Ω ⧸ H) = ((resG E (E' := X1.M) (Ω := Ω) y : G E Ω) : G E Ω ⧸ H) := hxy`. Rewrite `h2`, the goal using `[QuotientGroup.eq]`. Rewrite using `[hH'def, Subgroup.mem_comap, map_mul, map_inv]`. Conclude with `h2`. Introduce `L' hL'`.
+
+Establish `key : H ≤ (L'.restrictScalars E).fixingSubgroup`. Introduce `σ hσ`. Take `⟨τ, rfl⟩ : σ ∈ (resG E (E'` from `X1.M) (Ω := Ω)).range := by rw [hX1r]; exact hHH1 hσ`. Establish `hτ : τ ∈ L'.fixingSubgroup` using `hL' hσ`. Rewrite `hτ`, the goal using `[IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Conclude with `hτ x hx`. Conclude with `hH.cm _ key`. Establish `hT' : TrCond r1 H'`. Introduce `K1 K2 hK1 hK12`.
+
+Establish `hmap1 : H ≤ K1.map (resG E (E'` using `X1.M) (Ω := Ω)) := by`. Introduce `σ hσ`. Take `⟨τ, rfl⟩ : σ ∈ (resG E (E'` from `X1.M) (Ω := Ω)).range := by rw [hX1r]; exact hHH1 hσ`. Conclude with `⟨τ, hK1 hσ, rfl⟩`. Establish `hmap2 : K1.map (resG E (E'` using `X1.M) (Ω := Ω)) < K2.map (resG E (E' := X1.M) (Ω := Ω)) := by`.
+
+Use `lt_of_le_of_ne (Subgroup.map_mono hK12.le) fun h => hK12.ne ?_` and prove the remaining obligations. Rewrite using `[← Subgroup.comap_map_eq_self_of_injective hinj K1, h, Subgroup.comap_map_eq_self_of_injective hinj K2]`. Take `⟨g, ⟨τ, hτ2, rfl⟩, hg1, ht⟩` from `hT _ _ hmap1 hmap2`. Use `⟨τ, hτ2, fun h => hg1 ⟨τ, h, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hp1 τ, trace_conj]`.
+
+Conclude with `ht`. Take `⟨X2, P2, hX2r, hX2⟩` from `ih X1.M Ω a ha P1 hP1.csd hP1.reg l ι r1 wt1 HT1 hR1 H' hH'good hT' hne' hlt`. Use `⟨comp X1 X2, P2, ?_, hX2.csd, hX2.reg, ?_⟩` and prove the remaining obligations. Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨τ, rfl⟩`. Rewrite using `[resG_comp]`. Establish `: resG X1.M (E'` using `X2.M) (Ω := Ω) τ ∈ H' := by rw [← hX2r]; exact ⟨τ, rfl⟩`. Conclude with `this`. Introduce `hσ`.
+
+Take `⟨τ1, rfl⟩ : σ ∈ (resG E (E'` from `X1.M) (Ω := Ω)).range := by rw [hX1r]; exact hHH1 hσ`. Establish `: τ1 ∈ (resG X1.M (E'` using `X2.M) (Ω := Ω)).range := by rw [hX2r]; exact hσ`. Take `⟨τ, rfl⟩` from `this`. Conclude with `⟨τ, resG_comp X1 X2 τ⟩`. Introduce `l' _ ι' r0 wt0 HT0 r' wt' HT' h0' h'`.
+
+Take `⟨s1, ws1, Hs1, hs1⟩` from `GlobalTheory.Published.GaloisRepOfPolarizedCuspidal.of_isCsd hG Ω ι' ha hP1.reg hP1.csd`. Take `⟨q1, hq1⟩` from `hP1.res l' ι' r0 wt0 HT0 s1 ws1 Hs1 h0' hs1`. Take `⟨q2, hq2⟩` from `hX2.res l' ι' s1 ws1 Hs1 r' wt' HT' hs1 h'`. Use `⟨q2 * q1, fun g => ?_⟩` and prove the remaining obligations. Use `(hq2 g).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hq1, resG_comp]`. Simplify using `only [mul_inv_rev, mul_assoc]`.
+-/
 theorem tower_ne_top (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hO : OneStep) : ∀ n : ℕ,
     ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (a : ℕ), 1 ≤ a →
     ∀ π : CuspSub E a, π.IsCsd → (CG.mk π).IsRegAlg →
@@ -274,6 +363,9 @@ theorem tower_ne_top (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) 
 end CyclicComposition
 
 open CyclicComposition in
+/- English proof (translation)
+Introduce `hG hL hO E Ω _ _ _ _ _ _ a ha π hc hr l _ ι r wt HT hR H hH hT`. Distinguish the cases in `hne : H = ⊤`. Substitute `hne` using the available equality. Conclude with `⟨CMExt.self E Ω, π, range_self, lift_self hL π hc hr⟩`. Conclude with `tower_ne_top hG hO H.index E Ω a ha π hc hr l ι r wt HT hR H hH hT hne le_rfl`.
+-/
 theorem cyclic_composition_lift : LocalHeckeAlgebra := by
   intro hG hL hO E Ω _ _ _ _ _ _ a ha π hc hr l _ ι r wt HT hR H hH hT
   by_cases hne : H = ⊤

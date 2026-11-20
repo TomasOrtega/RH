@@ -12,6 +12,11 @@ namespace UpperTheory.Gal.KunnethLefschetz.G
 section Pts
 variable {Y X : Scheme.{0}} (f : Y ⟶ X)
 
+/- English proof (translation)
+Set `φ : yoneda.obj U ⟶ (cech f) _⦋k⦌` to `yonedaEquiv.symm z`. Use `⟨fun i => Yoneda.fullyFaithful.preimage (φ ≫ WidePullback.π _ i), Yoneda.fullyFaithful.preimage (φ ≫ WidePullback.base _), fun i => ?_, ?_⟩` and prove the remaining obligations. Apply `Yoneda.fullyFaithful.map_injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `e : φ = WidePullback.lift (yoneda.map (Yoneda.fullyFaithful.preimage (φ ≫ WidePullback.base _))) (fun i => yoneda.map (Yoneda.fullyFaithful.preimage (φ ≫ WidePullback.π _ i))) (by simp)`.
+
+Apply the tactic sequence `apply WidePullback.hom_ext <;> simp`. Establish `hz : z = yonedaEquiv φ` using `by simp [φ]`. Use `hz.trans ?_` and prove the remaining obligations. Use `conv_lhs => rw [e]`. Both sides reduce to the same expression.
+-/
 theorem exists_pts {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) :
     ∃ y : Fin (k + 1) → (U ⟶ Y), ∃ x h, z = cechPt f k x y h := by
   let φ : yoneda.obj U ⟶ (cech f) _⦋k⦌ := yonedaEquiv.symm z
@@ -30,9 +35,15 @@ theorem exists_pts {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) :
 def pts {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) : Fin (k + 1) → (U ⟶ Y) :=
   (exists_pts f z).choose
 
+/- English proof (translation)
+The claim follows from `(exists_pts f z).choose_spec`.
+-/
 theorem pts_spec {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) :
     ∃ x h, z = cechPt f k x (pts f z) h := (exists_pts f z).choose_spec
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((WidePullback.π (fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map f)).hom) i).app (op U)) (yonedaEquiv (WidePullback.lift (yoneda.map x) (fun i => yoneda.map (y i)) _)) = y i`. Rewrite using `[← yonedaEquiv_comp]`. Simplify using `only [WidePullback.lift_π]`. Rewrite using `[yonedaEquiv_apply]`. Conclude with `Category.id_comp (y i)`.
+-/
 private theorem widePullback_pi_app_cechPt_eq {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ Y))
     (h : ∀ i, y i ≫ f = x) (i : Fin (k + 1)) :
     ((WidePullback.π (fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map f)).hom) i).app (op U)) (cechPt f k x y h) = y i := by
@@ -43,27 +54,42 @@ private theorem widePullback_pi_app_cechPt_eq {k : ℕ} {U : Scheme.{0}} (x : U 
   rw [yonedaEquiv_apply]
   exact Category.id_comp (y i)
 
+/- English proof (translation)
+Take `⟨x, h, e⟩` from `pts_spec f z`. Use `conv_rhs => rw [e]`. Rewrite using `[widePullback_pi_app_cechPt_eq]`.
+-/
 private theorem pts_eq_widePullback_pi_app {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) (i : Fin (k + 1)) :
     pts f z i = ((WidePullback.π (fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map f)).hom) i).app (op U)) z := by
   obtain ⟨x, h, e⟩ := pts_spec f z
   conv_rhs => rw [e]
   rw [widePullback_pi_app_cechPt_eq]
 
+/- English proof (translation)
+Take `⟨x, h, -⟩` from `pts_spec f z`. Conclude with `(h i).trans (h j).symm`.
+-/
 theorem pts_eq {k : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U) (i j : Fin (k + 1)) :
     pts f z i ≫ f = pts f z j ≫ f := by
   obtain ⟨x, h, -⟩ := pts_spec f z
   exact (h i).trans (h j).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[pts_eq_widePullback_pi_app, widePullback_pi_app_cechPt_eq]`.
+-/
 theorem pts_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ Y))
     (h : ∀ i, y i ≫ f = x) : pts f (cechPt f k x y h) = y := by
   funext i
   rw [pts_eq_widePullback_pi_app, widePullback_pi_app_cechPt_eq]
 
+/- English proof (translation)
+Rewrite using `[pts_eq_widePullback_pi_app, pts_eq_widePullback_pi_app]`. Conclude with `NatTrans.naturality_apply (WidePullback.π (fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map f)).hom) i) g.op z`.
+-/
 theorem pts_res {k : ℕ} {U V : Scheme.{0}} (g : V ⟶ U) (z : Sx (cech f) k U) (i : Fin (k + 1)) :
     pts f (Sx.res g z) i = g ≫ pts f z i := by
   rw [pts_eq_widePullback_pi_app, pts_eq_widePullback_pi_app]
   exact NatTrans.naturality_apply (WidePullback.π (fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map f)).hom) i) g.op z
 
+/- English proof (translation)
+Rewrite using `[pts_eq_widePullback_pi_app, pts_eq_widePullback_pi_app]`. Establish `e : (cech f).map θ.op ≫ WidePullback.π (fun _ ↦ (Arrow.mk (yoneda.map f)).hom) i = WidePullback.π (fun _ ↦ (Arrow.mk (yoneda.map f)).hom) (θ.toOrderHom i)`. Simplify using `[cech, Arrow.cechNerve]`. Conclude with `congrArg (fun φ : (cech f) _⦋k⦌ ⟶ _ => ConcreteCategory.hom (φ.app (op U)) z) e`.
+-/
 theorem pts_along {k p : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U)
     (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk k) (i : Fin (p + 1)) :
     pts f (Sx.along z θ) i = pts f z (θ.toOrderHom i) := by
@@ -73,6 +99,11 @@ theorem pts_along {k p : ℕ} {U : Scheme.{0}} (z : Sx (cech f) k U)
     simp [cech, Arrow.cechNerve]
   exact congrArg (fun φ : (cech f) _⦋k⦌ ⟶ _ => ConcreteCategory.hom (φ.app (op U)) z) e
 
+/- English proof (translation)
+Take `⟨x, h, hz⟩` from `pts_spec f z`. Take `⟨x', h', hz'⟩` from `pts_spec f z'`. Establish `hx : x = x'` using `(h 0).symm.trans ((congrArg (· ≫ f) (congrFun e 0)).trans (h' 0))`. Substitute `hx` using the available equality. Establish `key : ∀ (a b : Fin (k + 1) → (U ⟶ Y)) (ha : ∀ i, a i ≫ f = x) (hb : ∀ i, b i ≫ f = x), a = b → cechPt f k x a ha = cechPt f k x b hb`.
+
+Introduce and unpack `a b ha hb rfl`. Both sides reduce to the same expression. Conclude with `hz.trans ((key _ _ _ _ e).trans hz'.symm)`.
+-/
 theorem pts_inj {k : ℕ} {U : Scheme.{0}} {z z' : Sx (cech f) k U} (e : pts f z = pts f z') : z = z' := by
   obtain ⟨x, h, hz⟩ := pts_spec f z
   obtain ⟨x', h', hz'⟩ := pts_spec f z'
@@ -86,6 +117,9 @@ theorem pts_inj {k : ℕ} {U : Scheme.{0}} {z z' : Sx (cech f) k U} (e : pts f z
 
 end Pts
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 (show (1 : A) ∈ Ideal.span (Set.range v.1) by rw [v.2]; trivial)`. Apply `Units.ext` to reduce the goal to its premises. Establish `hi : ∀ i, (u : A) * v.1 i = (u' : A) * v.1 i` using `fun i => by simpa using congrFun h i`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Um.unit_unique {A : Type} [CommRing A] {N : ℕ} (v : Um N A) {u u' : Aˣ}
     (h : (u : A) • v.1 = (u' : A) • v.1) : u = u' := by
   obtain ⟨c, hc⟩ := (Ideal.mem_span_range_iff_exists_fun).1
@@ -98,6 +132,9 @@ theorem Um.unit_unique {A : Type} [CommRing A] {N : ℕ} (v : Um N A) {u u' : A�
     _ = u' * ∑ i, c i * v.1 i := by rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring
     _ = u' := by rw [hc, mul_one]
 
+/- English proof (translation)
+Substitute `hv hw` using the available equality. Conclude with `heq_of_eq (Subtype.ext h)`.
+-/
 theorem Um.hom_heq {A : Type} [CommRing A] {N : ℕ} {v v' w w' : Um N A} (hv : v = v') (hw : w = w') (p : v ⟶ w) (p' : v' ⟶ w')
     (h : p.1 = p'.1) : HEq p p' := by
   subst hv hw
@@ -106,17 +143,29 @@ theorem Um.hom_heq {A : Type} [CommRing A] {N : ℕ} {v v' w w' : Um N A} (hv : 
 namespace PBData
 variable {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d)
 
+/- English proof (translation)
+The claim follows from `mul_eq_left.mp (P.g_coc a a a h h)`.
+-/
 theorem g_self {V : Scheme.{0}} (a : V ⟶ P.W') (h : a ≫ P.c = a ≫ P.c) : P.g a a h = 1 :=
   mul_eq_left.mp (P.g_coc a a a h h)
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+-/
 theorem g_congr {V : Scheme.{0}} {a a' b b' : V ⟶ P.W'} (ha : a = a') (hb : b = b')
     (h : a ≫ P.c = b ≫ P.c) (h' : a' ≫ P.c = b' ≫ P.c) : P.g a b h = P.g a' b' h' := by
   subst ha hb; rfl
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+-/
 theorem w_congr {V : Scheme.{0}} {a a' b b' : V ⟶ P.T'} (ha : a = a') (hb : b = b')
     (h : a ≫ P.e = b ≫ P.e) (h' : a' ≫ P.e = b' ≫ P.e) : P.w a b h = P.w a' b' h' := by
   subst ha hb; rfl
 
+/- English proof (translation)
+Simplify using `only [Category.assoc, P.comm]`. Simplify using `only [← Category.assoc, h]`.
+-/
 theorem ρ_eq {V : Scheme.{0}} {a b : V ⟶ P.T'} (h : a ≫ P.e = b ≫ P.e) :
     (a ≫ P.ρ) ≫ P.c = (b ≫ P.ρ) ≫ P.c := by
   simp only [Category.assoc, P.comm]
@@ -131,6 +180,9 @@ def gFun {V : Scheme.{0}} {k : ℕ} (y : Fin (k + 1) → (V ⟶ P.W')) (hy : ∀
     rw [SingleObj.comp_as_mul]
     exact (P.g_coc _ _ _ _ _).symm
 
+/- English proof (translation)
+Use `CategoryTheory.Functor.hext (fun _ => rfl) (fun i j p => heq_of_eq ?_)` and prove the remaining obligations. Establish `hs : (s ≫ y i) ≫ P.c = (s ≫ y j) ≫ P.c` using `by simp only [Category.assoc, hy i j]`. Conclude with `(P.g_congr (e i) (e j) _ hs).trans (P.g_nat s (y i) (y j) (hy i j))`.
+-/
 theorem gFun_res {U V : Scheme.{0}} {k : ℕ} (s : V ⟶ U) (y : Fin (k + 1) → (U ⟶ P.W'))
     (hy : ∀ i j, y i ≫ P.c = y j ≫ P.c) (y' : Fin (k + 1) → (V ⟶ P.W'))
     (hy' : ∀ i j, y' i ≫ P.c = y' j ≫ P.c) (e : ∀ i, y' i = s ≫ y i) :
@@ -154,12 +206,20 @@ def bunV : cech P.c ⟶ ofCat (glCat d) where
     refine CategoryTheory.Functor.hext (fun _ => rfl) (fun i j p => heq_of_eq ?_)
     exact P.g_congr (pts_along P.c _ θ.unop i) (pts_along P.c _ θ.unop j) _ _
 
+/- English proof (translation)
+Establish `e` using `P.gv a a h (P.ρ_eq h)`. Rewrite `e` using `[P.g_self]`. Use `Um.unit_unique (P.v a) ?_` and prove the remaining obligations. Simplify using `using e.symm`.
+-/
 theorem w_self {V : Scheme.{0}} (a : V ⟶ P.T') (h : a ≫ P.e = a ≫ P.e) : P.w a a h = 1 := by
   have e := P.gv a a h (P.ρ_eq h)
   rw [P.g_self] at e
   refine Um.unit_unique (P.v a) ?_
   simpa using e.symm
 
+/- English proof (translation)
+Apply `Um.unit_unique (P.v k)` to reduce the goal to its premises. Establish `h1` using `P.gv a b h (P.ρ_eq h)`. Establish `h2` using `P.gv b k h' (P.ρ_eq h')`. Establish `h3` using `P.gv a k (h.trans h') (P.ρ_eq (h.trans h'))`. Establish `hc` using `P.g_coc (a ≫ P.ρ) (b ≫ P.ρ) (k ≫ P.ρ) (P.ρ_eq h) (P.ρ_eq h')`.
+
+Rewrite using `[← h3, ← hc]`. Simplify using `only [Units.val_mul, ← Matrix.mulVec_mulVec, h1, Matrix.mulVec_smul, h2, smul_smul]`. Rewrite using `[mul_comm]`.
+-/
 theorem w_coc {V : Scheme.{0}} (a b k : V ⟶ P.T') (h : a ≫ P.e = b ≫ P.e) (h' : b ≫ P.e = k ≫ P.e) :
     P.w b k h' * P.w a b h = P.w a k (h.trans h') := by
   apply Um.unit_unique (P.v k)
@@ -171,6 +231,9 @@ theorem w_coc {V : Scheme.{0}} (a b k : V ⟶ P.T') (h : a ≫ P.e = b ≫ P.e) 
   simp only [Units.val_mul, ← Matrix.mulVec_mulVec, h1, Matrix.mulVec_smul, h2, smul_smul]
   rw [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+-/
 private theorem gl_map_mulVec_comp_eq_comp_mulVec {n : ℕ} {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (M : GL (Fin n) A)
     (x : Fin n → A) :
     (↑(Matrix.GeneralLinearGroup.map φ M) : Matrix (Fin n) (Fin n) B).mulVec (φ ∘ x) =
@@ -178,6 +241,11 @@ private theorem gl_map_mulVec_comp_eq_comp_mulVec {n : ℕ} {A B : Type} [CommRi
   funext i
   simp [Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Apply `Um.unit_unique (P.v (s ≫ b))` to reduce the goal to its premises. Establish `hs : (s ≫ a ≫ P.ρ) ≫ P.c = (s ≫ b ≫ P.ρ) ≫ P.c`. Simplify `congrArg (s ≫ ·) (P.ρ_eq h)` using `only [Category.assoc]`. Establish `hg : P.g ((s ≫ a) ≫ P.ρ) ((s ≫ b) ≫ P.ρ) (P.ρ_eq h') = Matrix.GeneralLinearGroup.map s.appTop.hom (P.g (a ≫ P.ρ) (b ≫ P.ρ) (P.ρ_eq h))` using `(P.g_congr (Category.assoc _ _ _) (Category.assoc _ _ _) _ hs).trans (P.g_nat s _ _ _)`. Rewrite using `[← P.gv (s ≫ a) (s ≫ b) h' (P.ρ_eq h'), hg, P.v_nat s a, P.v_nat s b, gl_map_mulVec_comp_eq_comp_mulVec, P.gv a b h (P.ρ_eq h)]`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem w_nat {V' V : Scheme.{0}} (s : V' ⟶ V) (a b : V ⟶ P.T') (h : a ≫ P.e = b ≫ P.e)
     (h' : (s ≫ a) ≫ P.e = (s ≫ b) ≫ P.e) :
     P.w (s ≫ a) (s ≫ b) h' = Units.map s.appTop.hom.toMonoidHom (P.w a b h) := by
@@ -199,6 +267,11 @@ def wFun {V : Scheme.{0}} {k : ℕ} (y : Fin (k + 1) → (V ⟶ P.T')) (hy : ∀
   map_id i := Subtype.ext (Prod.ext (P.g_self _ _) (P.w_self _ _))
   map_comp {i j l} _ _ := Subtype.ext (Prod.ext (P.g_coc _ _ _ _ _).symm (P.w_coc _ _ _ _ _).symm)
 
+/- English proof (translation)
+Establish `ho : ∀ i, P.v (y' i) = (Um.map d s.appTop.hom).obj (P.v (y i))` using `fun i => Subtype.ext (by rw [e i, P.v_nat]; rfl)`. Use `CategoryTheory.Functor.hext ho (fun i j p => Um.hom_heq (ho i) (ho j) _ _ ?_)` and prove the remaining obligations. Establish `hs : (s ≫ y i) ≫ P.e = (s ≫ y j) ≫ P.e` using `by simp only [Category.assoc, hy i j]`. Establish `hsρ : (s ≫ y i ≫ P.ρ) ≫ P.c = (s ≫ y j ≫ P.ρ) ≫ P.c`. Simplify `congrArg (s ≫ ·) (P.ρ_eq (hy i j))` using `only [Category.assoc]`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(P.g_congr (by rw [e i, Category.assoc]) (by rw [e j, Category.assoc]) _ hsρ).trans (P.g_nat s _ _ _)`. Conclude with `(P.w_congr (e i) (e j) _ hs).trans (P.w_nat s _ _ _ _)`.
+-/
 theorem wFun_res {U V : Scheme.{0}} {k : ℕ} (s : V ⟶ U) (y : Fin (k + 1) → (U ⟶ P.T'))
     (hy : ∀ i j, y i ≫ P.e = y j ≫ P.e) (y' : Fin (k + 1) → (V ⟶ P.T'))
     (hy' : ∀ i j, y' i ≫ P.e = y' j ≫ P.e) (e : ∀ i, y' i = s ≫ y i) :
@@ -236,6 +309,9 @@ def ρmap : cech P.e ⟶ cech P.c :=
     (show yoneda.map P.ρ ≫ yoneda.map P.c = yoneda.map P.e ≫ yoneda.map r by
       rw [← yoneda.map_comp, ← yoneda.map_comp, P.comm]) : Arrow.mk (yoneda.map P.e) ⟶ Arrow.mk (yoneda.map P.c))
 
+/- English proof (translation)
+Establish `key : WidePullback.lift (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by simp [← Functor.map_comp, h]) ≫ P.ρmap.app (op ⦋k⦌) = WidePullback.lift (objs` using `fun _ : Fin (k + 1) => (Arrow.mk (yoneda.map P.c)).left) (arrows := fun _ => (Arrow.mk (yoneda.map P.c)).hom) (yoneda.map (x ≫ r)) (fun i => yoneda.map (y i ≫ P.ρ)) (fun i => by simp [← Functor.map_comp, Category.assoc, P.comm, ← h i]) := by`. Apply the tactic sequence `apply WidePullback.hom_ext <;> simp [ρmap]`. Conclude with `congrArg (fun φ : yoneda.obj U ⟶ (cech P.c) _⦋k⦌ => ConcreteCategory.hom (φ.app (op U)) (𝟙 U)) key`.
+-/
 theorem ρmap_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ T) (y : Fin (k + 1) → (U ⟶ P.T')) (h : ∀ i, y i ≫ P.e = x) :
     Sx.map P.ρmap (cechPt P.e k x y h) =
       cechPt P.c k (x ≫ r) (fun i => y i ≫ P.ρ) (fun i => by rw [Category.assoc, P.comm, ← Category.assoc, h]) := by
@@ -248,12 +324,18 @@ theorem ρmap_cechPt {k : ℕ} {U : Scheme.{0}} (x : U ⟶ T) (y : Fin (k + 1) �
     apply WidePullback.hom_ext <;> simp [ρmap]
   exact congrArg (fun φ : yoneda.obj U ⟶ (cech P.c) _⦋k⦌ => ConcreteCategory.hom (φ.app (op U)) (𝟙 U)) key
 
+/- English proof (translation)
+Take `⟨x, h, e⟩` from `pts_spec P.e z`. Use `conv_lhs => rw [e]`. Rewrite using `[ρmap_cechPt, pts_cechPt]`.
+-/
 theorem pts_ρmap {k : ℕ} {U : Scheme.{0}} (z : Sx (cech P.e) k U) (i : Fin (k + 1)) :
     pts P.c (Sx.map P.ρmap z) i = pts P.e z i ≫ P.ρ := by
   obtain ⟨x, h, e⟩ := pts_spec P.e z
   conv_lhs => rw [e]
   rw [ρmap_cechPt, pts_cechPt]
 
+/- English proof (translation)
+Use extensionality with `n U z`. Express the relevant statement in the definitionally equal form `P.gFun (pts P.c (Sx.map P.ρmap (show Sx (cech P.e) n.unop.len U.unop from z))) (pts_eq P.c _) = (show Fin (n.unop.len + 1) ⥤ Um d Γ(U.unop, ⊤) from P.wFun (pts P.e (show Sx (cech P.e) n.unop.len U.unop from z)) (pts_eq P.e _)) ⋙ Um.toGL d _`. Use `CategoryTheory.Functor.hext (fun _ => rfl) (fun i j p => heq_of_eq ?_)` and prove the remaining obligations. Conclude with `P.g_congr (pts_ρmap P _ i) (pts_ρmap P _ j) _ _`.
+-/
 theorem ρmap_comm : P.ρmap ≫ P.bunV = P.bunP ≫ PGL.pr d := by
   ext n U z
   change P.gFun (pts P.c (Sx.map P.ρmap (show Sx (cech P.e) n.unop.len U.unop from z))) (pts_eq P.c _) =
@@ -279,9 +361,17 @@ def PA : PSh where
 def rel (U : Scheme.{0}) (p p' : P.PA.obj (op U)) : Prop :=
   ∃ (h : p.1 ≫ P.c = p'.1 ≫ P.c) (u : (Γ(U, ⊤))ˣ), (P.g p.1 p'.1 h).1.mulVec p.2.1 = (u : Γ(U, ⊤)) • p'.2.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, 1, by rw [P.g_self]; simp⟩`.
+-/
 theorem rel_refl (U : Scheme.{0}) (p : P.PA.obj (op U)) : P.rel U p p :=
   ⟨rfl, 1, by rw [P.g_self]; simp⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨h, u, e⟩`. Use `⟨h.symm, u⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1 : P.g p'.1 p.1 h.symm * P.g p.1 p'.1 h = 1` using `by rw [P.g_coc, P.g_self]`. Establish `e2 : (P.g p'.1 p.1 h.symm).1.mulVec ((P.g p.1 p'.1 h).1.mulVec p.2.1) = p.2.1`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, e1]`.
+
+Simplify using the standard rewrite rules. Rewrite `e2` using `[e, Matrix.mulVec_smul]`. Rewrite using `[← e2, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem rel_symm {U : Scheme.{0}} {p p' : P.PA.obj (op U)} : P.rel U p p' → P.rel U p' p := by
   rintro ⟨h, u, e⟩
   refine ⟨h.symm, u⁻¹, ?_⟩
@@ -292,11 +382,19 @@ theorem rel_symm {U : Scheme.{0}} {p p' : P.PA.obj (op U)} : P.rel U p p' → P.
   rw [← e2, smul_smul]
   simp
 
+/- English proof (translation)
+Introduce and unpack `⟨h, u, e⟩ ⟨h', u', e'⟩`. Use `⟨h.trans h', u' * u, ?_⟩` and prove the remaining obligations. Rewrite using `[← P.g_coc _ _ _ h h', Units.val_mul, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul, e', smul_smul, Units.val_mul, mul_comm]`.
+-/
 theorem rel_trans {U : Scheme.{0}} {p p' p'' : P.PA.obj (op U)} : P.rel U p p' → P.rel U p' p'' → P.rel U p p'' := by
   rintro ⟨h, u, e⟩ ⟨h', u', e'⟩
   refine ⟨h.trans h', u' * u, ?_⟩
   rw [← P.g_coc _ _ _ h h', Units.val_mul, ← Matrix.mulVec_mulVec, e, Matrix.mulVec_smul, e', smul_smul, Units.val_mul, mul_comm]
 
+/- English proof (translation)
+Take `⟨h, u, hu⟩` from `hp`. Establish `hs : (s ≫ p.1) ≫ P.c = (s ≫ p'.1) ≫ P.c` using `by simp only [Category.assoc, h]`. Use `⟨hs, Units.map s.appTop.hom.toMonoidHom u, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(↑(P.g (s ≫ p.1) (s ≫ p'.1) hs) : Matrix (Fin d) (Fin d) Γ(V, ⊤)).mulVec (s.appTop.hom ∘ p.2.1) = _ • (s.appTop.hom ∘ p'.2.1)`. Rewrite using `[P.g_nat s _ _ h, gl_map_mulVec_comp_eq_comp_mulVec, hu]`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem rel_res {U V : Scheme.{0}} (s : V ⟶ U) {p p' : P.PA.obj (op U)} (hp : P.rel U p p') :
     P.rel V (P.PA.map s.op p) (P.PA.map s.op p') := by
   obtain ⟨h, u, hu⟩ := hp
@@ -324,10 +422,16 @@ def Q : PSh where
 
 abbrev S : Spc := pullback P.bunV (PGL.pr d)
 
+/- English proof (translation)
+Conclude with `NatTrans.naturality_apply (f.app (op ⦋n⦌)) s.op z`.
+-/
 theorem map_res {E E' : Spc} (f : E ⟶ E') {n : ℕ} {U V : Scheme.{0}} (s : V ⟶ U) (z : Sx E n U) :
     Sx.map f (Sx.res s z) = Sx.res s (Sx.map f z) := by
   exact NatTrans.naturality_apply (f.app (op ⦋n⦌)) s.op z
 
+/- English proof (translation)
+Conclude with `congrArg (fun φ : E _⦋n⦌ ⟶ E' _⦋p⦌ => ConcreteCategory.hom (φ.app (op U)) z) (f.naturality θ.op)`.
+-/
 theorem map_along {E E' : Spc} (f : E ⟶ E') {n p : ℕ} {U : Scheme.{0}} (z : Sx E n U)
     (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk n) : Sx.map f (Sx.along z θ) = Sx.along (Sx.map f z) θ := by
   exact congrArg (fun φ : E _⦋n⦌ ⟶ E' _⦋p⦌ => ConcreteCategory.hom (φ.app (op U)) z) (f.naturality θ.op)
@@ -336,11 +440,19 @@ def sv {n : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) (i : Fin (n + 1)) : P.PA.obj 
   (pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) z) i,
     (show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z).obj i)
 
+/- English proof (translation)
+Conclude with `congrArg (fun φ : P.S ⟶ ofCat (glCat d) => Sx.map φ z) pullback.condition`.
+-/
 theorem S_comm {n : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) :
     Sx.map P.bunV (Sx.map (pullback.fst P.bunV (PGL.pr d)) z) =
       Sx.map (PGL.pr d) (Sx.map (pullback.snd P.bunV (PGL.pr d)) z) := by
   exact congrArg (fun φ : P.S ⟶ ofCat (glCat d) => Sx.map φ z) pullback.condition
 
+/- English proof (translation)
+Use `⟨pts_eq P.c _ i j, ((show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z).map (homOfLE hij)).1.2, ?_⟩` and prove the remaining obligations. Establish `hg` using `congrArg (fun F : Fin (n + 1) ⥤ (glCat d).obj Γ(U, ⊤) => F.map (homOfLE hij)) (P.S_comm z)`. Establish `hp` using `((show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z).map (homOfLE hij)).2`. Use `hp using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`.
+
+Consider the case `exact hg`. Consider the case `rfl`.
+-/
 theorem sv_rel_le {n : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) {i j : Fin (n + 1)} (hij : i ≤ j) :
     P.rel U (P.sv z i) (P.sv z j) := by
   refine ⟨pts_eq P.c _ i j, ((show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from
@@ -353,11 +465,19 @@ theorem sv_rel_le {n : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) {i j : Fin (n + 1)
     | exact hg
     | rfl
 
+/- English proof (translation)
+Break down `le_total i j with h | h` into its components or cases. Conclude with `P.sv_rel_le z h`. Conclude with `P.rel_symm (P.sv_rel_le z h)`.
+-/
 theorem sv_rel {n : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) (i j : Fin (n + 1)) : P.rel U (P.sv z i) (P.sv z j) := by
   rcases le_total i j with h | h
   · exact P.sv_rel_le z h
   · exact P.rel_symm (P.sv_rel_le z h)
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) (Sx.res s z)) i = s ≫ pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) z) i`. Rewrite using `[map_res, pts_res]`. Express the relevant statement in the definitionally equal form `(show Fin (n + 1) ⥤ Um d Γ(V, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) (Sx.res s z)).obj i = _`. Rewrite using `[map_res]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sv_res {n : ℕ} {U V : Scheme.{0}} (s : V ⟶ U) (z : Sx P.S n U) (i : Fin (n + 1)) :
     P.sv (Sx.res s z) i = P.PA.map s.op (P.sv z i) := by
   refine Prod.ext ?_ ?_
@@ -368,6 +488,11 @@ theorem sv_res {n : ℕ} {U V : Scheme.{0}} (s : V ⟶ U) (z : Sx P.S n U) (i : 
     rw [map_res]
     rfl
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) (Sx.along z θ)) i = pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) z) (θ.toOrderHom i)`. Rewrite using `[map_along, pts_along]`. Express the relevant statement in the definitionally equal form `(show Fin (p + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) (Sx.along z θ)).obj i = _`. Rewrite using `[map_along]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sv_along {n p : ℕ} {U : Scheme.{0}} (z : Sx P.S n U) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk n)
     (i : Fin (p + 1)) : P.sv (Sx.along z θ) i = P.sv z (θ.toOrderHom i) := by
   refine Prod.ext ?_ ?_
@@ -388,14 +513,28 @@ def pS : P.S ⟶ disc.obj P.Q where
     ext U z
     refine Eq.trans (congrArg (Quotient.mk (P.relS U.unop)) (P.sv_along _ θ.unop 0)) (Quotient.sound (s := P.relS U.unop) (P.sv_rel _ _ _))
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem bunF_fst : P.bunF ≫ pullback.fst P.bunV (PGL.pr d) = P.ρmap := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem bunF_snd : P.bunF ≫ pullback.snd P.bunV (PGL.pr d) = P.bunP := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Simplify using `[ρmap, cechAug, sch, Arrow.augmentedCechNerve]`.
+-/
 theorem ρmap_aug : P.ρmap ≫ cechAug P.c = cechAug P.e ≫ sch.map r := by
   ext n : 1
   simp [ρmap, cechAug, sch, Arrow.augmentedCechNerve]
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pts P.c (Sx.map (P.bunF ≫ pullback.fst P.bunV (PGL.pr d)) z) i = _`. Rewrite using `[P.bunF_fst, P.pts_ρmap]`. Express the relevant statement in the definitionally equal form `(show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (P.bunF ≫ pullback.snd P.bunV (PGL.pr d)) z).obj i = _`. Rewrite using `[P.bunF_snd]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sv_bunF {n : ℕ} {U : Scheme.{0}} (z : Sx (cech P.e) n U) (i : Fin (n + 1)) :
     P.sv (Sx.map P.bunF z) i = (pts P.e z i ≫ P.ρ, P.v (pts P.e z i)) := by
   refine Prod.ext ?_ ?_
@@ -405,6 +544,11 @@ theorem sv_bunF {n : ℕ} {U : Scheme.{0}} (z : Sx (cech P.e) n U) (i : Fin (n +
     rw [P.bunF_snd]
     rfl
 
+/- English proof (translation)
+Establish `hb : P.bunF ≫ pullback.snd P.bunV (PGL.pr d) ≫ PGL.line d = P.bunP ≫ PGL.line d`. Rewrite using `[← Category.assoc, P.bunF_snd]`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) (P.w (pts P.e (cechPt P.e 1 x a h) 0) (pts P.e (cechPt P.e 1 x a h) 1) (pts_eq P.e _ 0 1))) = _`. Rewrite using `[P.w_congr (congrFun (pts_cechPt P.e x a h) 0) (congrFun (pts_cechPt P.e x a h) 1) _ ((h 0).trans (h 1).symm)]`.
+
+Use `ext`. Simplify using `[Matrix.det_fin_one]`.
+-/
 theorem lineUnit_bunF {V : Scheme.{0}} (x : V ⟶ T) (a : Fin 2 → (V ⟶ P.T')) (h : ∀ s, a s ≫ P.e = x) :
     lineUnit (P.bunF ≫ pullback.snd P.bunV (PGL.pr d) ≫ PGL.line d) (cechPt P.e 1 x a h) =
       P.w (a 0) (a 1) ((h 0).trans (h 1).symm) := by

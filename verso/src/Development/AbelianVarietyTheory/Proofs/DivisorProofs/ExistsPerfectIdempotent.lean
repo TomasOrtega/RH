@@ -11,6 +11,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Use `choose π hπ using fun n => GlobalTheory.T.exists_perfectPart_algHom_finiteAlgebra p k (G.A n)`. Establish `hk : (∀ a : k, IsNilpotent (a - AlgHom.id k k a)) ∧ ∀ a : k, ∃ b : k, AlgHom.id k k a = AlgHom.id k k b ^ p` using `⟨fun a => by simp, fun a => by`. Take `⟨b, hb⟩` from `(PerfectRing.bijective_frobenius (R := k) (p := p)).2 a`. Conclude with `⟨b, hb.symm⟩⟩`. Establish `nat` using `fun n m => GlobalTheory.T.perfectProjection_natural_idempotent_reduced p k (G.A n) (G.A m) (π n) (π m) (hπ n) (hπ m)`.
+
+Set `b : ∀ n, G.A n →ₐc[k] G.A n` to `fun n => BialgHom.ofAlgHom (π n) (AlgHom.ext fun a => (GlobalTheory.T.perfectProjection_natural_idempotent_reduced p k (G.A n) k (π n) (AlgHom.id k k) (hπ n) hk).1 (counitAlgHom k (G.A n)) a) (AlgHom.ext fun a => ((GlobalTheory.T.perfectProjection_natural_idempotent_reduced p k ( …`. Use `⟨⟨b, fun n => ?_⟩, ?_, fun n a => (hπ n).1 a, fun n a => (nat n n).2.2 a⟩` and prove the remaining obligations. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations. Conclude with `(nat (n + 1) n).1 (G.res n : G.A (n + 1) →ₐ[k] G.A n) a`. Conclude with `hom_ext fun n => BialgHom.ext fun a => (nat n n).2.1 a`.
+-/
 theorem exists_perfect_idempotent (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (G : PDivGroup p k) :
     ∃ e : G ⟶ G, e ≫ e = e ∧ (∀ (n : ℕ) (a : G.A n), IsNilpotent (a - e.app n a)) ∧

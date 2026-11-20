@@ -40,6 +40,11 @@ def LeafTop : Prop := ∀ (R : Type) [CommRing R] (K : Cx R) (X : Scheme.{0}) (U
 def LeafRs : Prop := ∀ (R : Type) [CommRing R] (G : Shv R) (X : Scheme.{0}) (T V W : X.Opens) (h : V ≤ W) (h' : T ≤ V)
   (a b : Sec G W.toScheme), rs h (a - b) = rs h a - rs h b ∧ rs h' (rs h a) = rs (h'.trans h) a
 
+/- English proof (translation)
+Introduce `R _ G X T V W h h' a b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((G.obj.map (X.homOfLE h).op).hom (a - b)) = _`. Conclude with `map_sub _ a b`. Use `show ((G.obj.map (X.homOfLE h').op).hom ((G.obj.map (X.homOfLE h).op).hom a)) = (G.obj.map (X.homOfLE (h'.trans h)).op).hom a`.
+
+Establish `e : X.homOfLE (h'.trans h) = X.homOfLE h' ≫ X.homOfLE h` using `(Scheme.homOfLE_homOfLE X h' h).symm`. Rewrite using `[e, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem LeafRs_of : LeafRs := by
   intro R _ G X T V W h h' a b
   refine ⟨?_, ?_⟩
@@ -50,6 +55,33 @@ theorem LeafRs_of : LeafRs := by
     rw [e, op_comp, Functor.map_comp]
     rfl
 
+/- English proof (translation)
+Introduce `R _ K hinj hneg X U m H`. Establish `hR` using `LeafRs_of`. Establish `key : ∀ n, n < m → OK (ZN K U (n - 1)) → OK (ZN K U n)`. Introduce `n hn hprev`. Establish `hB` using `hS R K hZ hinj X U n hprev`.
+
+Establish `eq : ZN K U n = BN K U n`. Use function extensionality and compare the values at `W`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+
+Apply `hB.2.1 W a` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V, h, hxV, hb⟩` from `H n hn W a ha x hx`. Conclude with `⟨V, h, hxV, AddSubgroup.subset_closure hb⟩`. Introduce `ha`.
+
+Conclude with `hBZ R K X U n W a (hA R K X U n W a ha)`. Rewrite using `[eq]`. Conclude with `hB`. Establish `P : ∀ k : ℕ, (k : ℤ) < m → OK (ZN K U (k : ℤ))`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => intro h; exact key _ h (h0 R K X U _ (hneg _ (by norm_num)))`. Consider the case `succ k ih`. Introduce `h`. Apply `key _ h` to reduce the goal to its premises.
+
+Establish `e : ((k + 1 : ℕ) : ℤ) - 1 = (k : ℤ)` using `by push_cast; ring`. Rewrite using `[e]; exact ih (by omega)`. Establish `hm : OK (ZN K U (m - 1))`. Distinguish the cases in `hc : m - 1 < 0`. Conclude with `h0 R K X U _ (hneg _ hc)`.
+
+Establish `e : ((m - 1).toNat : ℤ) = m - 1` using `Int.toNat_of_nonneg (by omega)`. Use `P (m - 1).toNat (by omega)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Establish `hBm` using `hS R K hZ hinj X U m hm`.
+
+Use `⟨fun W a hloc => hA R K X U m W a (hBm.2.1 W a fun x hx => ?_), ?_⟩` and prove the remaining obligations. Take `⟨V, h, hxV, hb⟩` from `hloc x hx`. Conclude with `⟨V, h, hxV, AddSubgroup.subset_closure hb⟩`. Introduce `A V a ha hcov hagree`. Take `⟨c', hc'⟩` from `hZ R (K.X m) X (BN K U m) hBm.1 hBm.2.1 hBm.2.2 ⊤ A V (fun _ => le_top) a (fun x _ => hcov x) (by`.
+
+Introduce `k l`. Apply `hBm.2.1` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxk, hxl⟩` from `hx`. Take `⟨T, hk, hl, hxT, hb⟩` from `hagree k l x hxk hxl`.
+
+Use `⟨T, le_inf hk hl, hxT, ?_⟩` and prove the remaining obligations. Establish `e : rs (le_inf hk hl) (rs (inf_le_left : V k ⊓ V l ≤ V k) (a k) - rs (inf_le_right : V k ⊓ V l ≤ V l) (a l)) = rs hk (a k) - rs hl (a l)`. Establish `rsub : ∀ {V W : X.Opens} (h : V ≤ W) (x y : Sec (K.X m) W.toScheme), rs h (x - y) = rs h x - rs h y` using `fun {V W} h x y => (hR R _ X V V W h le_rfl x y).1`. Establish `rrs : ∀ {T V W : X.Opens} (h : V ≤ W) (h' : T ≤ V) (x : Sec (K.X m) W.toScheme), rs h' (rs h x) = rs (h'.trans h) x` using `fun {T V W} h h' x => (hR R _ X T V W h h' x x).2`. Rewrite using `[rsub, rrs, rrs]`.
+
+Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure hb)`. Establish `hmem : c' ∈ ZN K U m ⊤`. Apply `(hL R K X U m).2 ⊤ c'` to reduce the goal to its premises. Introduce `x _`.
+
+Take `⟨k, hk⟩` from `hcov x`. Use `⟨V k, le_top, hk, ?_⟩` and prove the remaining obligations. Establish `h1` using `hBZ R K X U m (V k) _ (hA R K X U m (V k) _ (hc' k))`. Establish `h2 : a k ∈ ZN K U m (V k)` using `ha k`. Simplify using `using add_mem h1 h2`.
+
+Take `⟨c, hc, hcV⟩` from `hT R K X U m c' hmem`. Use `⟨c, hc, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hcV]`. Conclude with `hA R K X U m (V k) _ (hc' k)`.
+-/
 theorem LeafFlq_of (hZ : LateralTheory.CohomologicalPurity.Cl.LeafZorn) (hA : LeafBdAdd) (hBZ : LeafBZ) (hL : LeafZloc) (h0 : LeafZero)
     (hS : LeafStep) (hT : LeafTop) : LateralTheory.CohomologicalPurity.Cl.LeafFlq := by
   intro R _ K hinj hneg X U m H

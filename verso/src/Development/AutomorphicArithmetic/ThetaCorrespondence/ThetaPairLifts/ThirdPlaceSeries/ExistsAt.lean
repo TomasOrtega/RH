@@ -36,6 +36,11 @@ end
 section
 variable {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C}
 end
+/- English proof (translation)
+Take `⟨⟨nb, pack⟩, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, hlow, split, ratIn, r1, r2, r3, depth⟩` from `a`. Take `⟨D0, cf0, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C0, tp0, ch, mt, big, L, Sp, Au, ss, eq⟩` from `nb`. Substitute `eq` using the available equality. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at pack`. Take `⟨rfl, rfl, rfl⟩` from `pack`.
+
+Establish `hmt : mtL L M = all.gal.mt` using `eq_of_heq mt_eq`. Use `⟨@_root_.GlobalTheory.Mem.Top.Bl.NAtData.mk hL m.D _ _ _ (⟨@_root_.GlobalTheory.HeightCounting.NormChoiceConstructed.mk hL m.D m.pre.D (m.pre.cf cf0) jE (m.pre.sideA_alt A) ((_root_.UpperTheory.One.M.mvCg_alt trivial) m.pre cg) (m.pre.automorphy_of_move au) rep (m.pre.herm_wCell_ …` and prove the remaining obligations. Use `⟨HEq.rfl, (by with_unfolding_all exact ((HEq.refl Pq') :)), (by with_unfolding_all exact ((HEq.refl (ratL L S)) :)), (by with_unfolding_all exact ((HEq.refl hk) :)), (by with_unfolding_all exact ((HEq.refl rep) :)), (by with_unfolding_all exact ((HEq.refl eig) :)), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2, fr, h3, h4⟩`. Conclude with `⟨(by with_unfolding_all exact ((m.pre.labConj_alt (A := A) h1) :)), (by with_unfolding_all exact (h2 :)), (by with_unfolding_all exact ((m.pre.omFrame fr) :)), (by with_unfolding_all exact (h3 :)), (by with_unfolding_all exact ((m.pre.phtOn_alt (A := A) h4) :))⟩`.
+-/
 theorem Mv.exists_at_alt {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C} (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf C tp) :
     ∃ a' : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL m.D (m.cf cf) (m.ch C) (m.tp tp), _root_.GlobalTheory.LayerMove.AtSameAltAlt m a a' := by
   obtain ⟨⟨nb, pack⟩, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, hlow, split, ratIn,

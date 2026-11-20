@@ -6,6 +6,9 @@ namespace DensInertW.Sub
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Introduce `hq`. Substitute `hq` using the available equality. Establish `h` using `hinv 0`. Simplify using `at h`.
+-/
 theorem q_ne_zero_of_inv {q : ℕ} (hinv : ∀ a : L, (a ^ q) ^ q = a) : q ≠ 0 := by
   intro hq
   subst hq
@@ -19,23 +22,38 @@ def sig (q : ℕ) (hq : q ≠ 0) (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ 
   map_zero' := zero_pow hq
   map_add' := hadd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sig_apply (q : ℕ) (hq : q ≠ 0) (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q) (a : L) :
     sig q hq hadd a = a ^ q := rfl
 
 section
 variable {n : ℕ} {q : ℕ} {M : Matrix (Fin n) (Fin n) L}
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_left (x x' y : Fin n → L) : hf q M (x + x') y = hf q M x y + hf q M x' y := by
   simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_smul_left (c : L) (x y : Fin n → L) : hf q M (c • x) y = c * hf q M x y := by
   simp only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem hf_zero_left (y : Fin n → L) : hf q M 0 y = 0 := by
   simp [hf]
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_left (x x' y : Fin n → L) : hf q M (x - x') y = hf q M x y - hf q M x' y := by
   simp only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
@@ -44,18 +62,32 @@ def hfL (q : ℕ) (M : Matrix (Fin n) (Fin n) L) (y : Fin n → L) : (Fin n → 
   map_add' x x' := hf_add_left x x' y
   map_smul' c x := by simp only [hf_smul_left, smul_eq_mul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hfL_apply (y x : Fin n → L) : hfL q M y x = hf q M x y := rfl
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, hadd, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hf_add_right (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q) (x y y' : Fin n → L) :
     hf q M x (y + y') = hf q M x y + hf q M x y' := by
   simp only [hf, Pi.add_apply, hadd, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, mul_pow]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_smul_right (x : Fin n → L) (c : L) (y : Fin n → L) :
     hf q M x (c • y) = c ^ q * hf q M x y := by
   simp only [hf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, mul_pow]
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ a b : L, (a - b) ^ q = a ^ q - b ^ q` using `fun a b => by`. Establish `h` using `hadd (a - b) b`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hf, Pi.sub_apply, hs, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_right (hq : q ≠ 0) (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
     (x y y' : Fin n → L) : hf q M x (y - y') = hf q M x y - hf q M x y' := by
   have hs : ∀ a b : L, (a - b) ^ q = a ^ q - b ^ q := fun a b => by
@@ -65,9 +97,17 @@ theorem hf_sub_right (hq : q ≠ 0) (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b
     ring
   simp only [hf, Pi.sub_apply, hs, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, zero_pow hq]`.
+-/
 theorem hf_zero_right (hq : q ≠ 0) (x : Fin n → L) : hf q M x 0 = 0 := by
   simp [hf, zero_pow hq]
 
+/- English proof (translation)
+Establish `hq` using `q_ne_zero_of_inv hinv`. Establish `e : (hf q M x y) ^ q = sig q hq hadd (hf q M x y)` using `rfl`. Rewrite using `[e]`. Simplify using `only [hf, map_sum, map_mul, map_pow, sig_apply, hinv]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hf_symm (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q) (hinv : ∀ a : L, (a ^ q) ^ q = a)
     (hM : ∀ k l, M l k = M k l ^ q) (x y : Fin n → L) : hf q M y x = (hf q M x y) ^ q := by
   have hq := q_ne_zero_of_inv hinv
@@ -84,6 +124,11 @@ end
 section geom
 variable {n : ℕ} {q : ℕ} {M : Matrix (Fin n) (Fin n) L}
 
+/- English proof (translation)
+Introduce `x hx y hy`. Establish `key : ∀ c : L, c * hf q M x y + (c * hf q M x y) ^ q = 0`. Introduce `c`. Establish `h1` using `h0 (c • x + y) (W.add_mem (W.smul_mem c hx) hy)`. Rewrite `h1` using `[hf_add_left, hf_add_right hadd, hf_add_right hadd, h0 _ (W.smul_mem c hx), h0 y hy, hf_symm hadd hinv hM (c • x) y, hf_smul_left]`.
+
+Take the linear combination `h1`. Assume the negation of the conclusion as `hz`. Take `⟨c, hc⟩` from `htr _ hz`. Conclude with `hc (key c)`.
+-/
 theorem hf_eq_zero_of_diag (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
     (hinv : ∀ a : L, (a ^ q) ^ q = a) (hM : ∀ k l, M l k = M k l ^ q)
     (htr : ∀ z : L, z ≠ 0 → ∃ c : L, c * z + (c * z) ^ q ≠ 0)
@@ -100,6 +145,13 @@ theorem hf_eq_zero_of_diag (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
   obtain ⟨c, hc⟩ := htr _ hz
   exact hc (key c)
 
+/- English proof (translation)
+Establish `hsurj : LinearMap.range f = ⊤`. Use `LinearMap.range_eq_top.mpr fun a => ⟨(a / f u) • u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, div_mul_cancel₀ _ hfu]`. Establish `hr : finrank L (LinearMap.range f) = 1`. Rewrite using `[hsurj, finrank_top, Module.finrank_self]`.
+
+Establish `hk` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `hk` using `[hr, Module.finrank_fin_fun]`. Establish `hsup : W ⊔ LinearMap.ker f = ⊤`. Use `eq_top_iff.mpr fun v _ => Submodule.mem_sup.mpr ⟨(f v / f u) • u, W.smul_mem _ hu, v - (f v / f u) • u, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hfu, sub_self]`.
+
+Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq W (LinearMap.ker f)`. Rewrite `h` using `[hsup, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_inf_ker_add_one (W : Submodule L (Fin n → L)) (f : (Fin n → L) →ₗ[L] L)
     (u : Fin n → L) (hu : u ∈ W) (hfu : f u ≠ 0) :
     finrank L ↥(W ⊓ LinearMap.ker f) + 1 = finrank L ↥W := by
@@ -118,17 +170,28 @@ theorem finrank_inf_ker_add_one (W : Submodule L (Fin n → L)) (f : (Fin n → 
   rw [hsup, finrank_top, Module.finrank_fin_fun] at h
   omega
 
+/- English proof (translation)
+The claim follows from `finrank_inf_ker_add_one W _ e he hee`.
+-/
 theorem finrank_perp_aniso (W : Submodule L (Fin n → L)) (e : Fin n → L) (he : e ∈ W)
     (hee : hf q M e e ≠ 0) :
     finrank L ↥(W ⊓ LinearMap.ker (hfL q M e)) + 1 = finrank L ↥W :=
   finrank_inf_ker_add_one W _ e he hee
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨W.sub_mem hw (W.smul_mem _ he), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, hfL_apply, hf_sub_left, hf_smul_left, div_mul_cancel₀ _ hee, sub_self]`.
+-/
 theorem sub_mem_perp (W : Submodule L (Fin n → L)) (e : Fin n → L) (he : e ∈ W)
     (hee : hf q M e e ≠ 0) (w : Fin n → L) (hw : w ∈ W) :
     w - (hf q M w e / hf q M e e) • e ∈ W ⊓ LinearMap.ker (hfL q M e) := by
   refine Submodule.mem_inf.2 ⟨W.sub_mem hw (W.smul_mem _ he), ?_⟩
   rw [LinearMap.mem_ker, hfL_apply, hf_sub_left, hf_smul_left, div_mul_cancel₀ _ hee, sub_self]
 
+/- English proof (translation)
+Introduce `w hw hperp`. Establish `hw'` using `Submodule.mem_inf.1 hw`. Establish `hwe : hf q M w e = 0` using `LinearMap.mem_ker.1 hw'.2`. Apply `hW w hw'.1` to reduce the goal to its premises. Introduce `v hv`.
+
+Establish `h1` using `hperp _ (sub_mem_perp W e he hee v hv)`. Establish `hsplit : v = (v - (hf q M v e / hf q M e e) • e) + (hf q M v e / hf q M e e) • e` using `(sub_add_cancel _ _).symm`. Rewrite using `[hsplit, hf_add_right hadd, h1, hf_smul_right, hwe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nondeg_perp_aniso (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
     (W : Submodule L (Fin n → L)) (hW : NonDeg q M W) (e : Fin n → L) (he : e ∈ W)
     (hee : hf q M e e ≠ 0) : NonDeg q M (W ⊓ LinearMap.ker (hfL q M e)) := by
@@ -143,10 +206,36 @@ theorem nondeg_perp_aniso (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
   rw [hsplit, hf_add_right hadd, h1, hf_smul_right, hwe]
   ring
 
+/- English proof (translation)
+Introduce `h` and use `hee (LinearMap.mem_ker.1 (Submodule.mem_inf.1 h).2)`.
+-/
 theorem not_mem_perp_aniso (W : Submodule L (Fin n → L)) (e : Fin n → L)
     (hee : hf q M e e ≠ 0) : e ∉ W ⊓ LinearMap.ker (hfL q M e) :=
   fun h => hee (LinearMap.mem_ker.1 (Submodule.mem_inf.1 h).2)
 
+/- English proof (translation)
+Establish `hq` using `q_ne_zero_of_inv hinv`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hz⟩ : ∃ v ∈ W, hf q M x v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hx0 (hW x hx hc)`.
+
+Use `set y1 := ((hf q M x v)⁻¹) ^ q • v with hy1`. Establish `hy1W : y1 ∈ W` using `W.smul_mem _ hv`. Establish `hxy1 : hf q M x y1 = 1`. Rewrite using `[hy1, hf_smul_right, hinv, inv_mul_cancel₀ hz]`. Use `clear_value y1`.
+
+Establish `hy1x : hf q M y1 x = 1`. Rewrite using `[hf_symm hadd hinv hM x y1, hxy1, one_pow]`. Establish `hs : (hf q M y1 y1) ^ q = hf q M y1 y1` using `(hf_symm hadd hinv hM y1 y1).symm`. Establish `hneg : (-hf q M y1 y1) ^ q = -hf q M y1 y1`. Establish `h` using `hadd (hf q M y1 y1) (-hf q M y1 y1)`.
+
+Rewrite `h` using `[add_neg_cancel, zero_pow hq]`. Take the linear combination `-h - hs`. Take `⟨t, ht⟩` from `htrs _ hneg`. Use `set y := y1 + t • x with hy`. Establish `hyW : y ∈ W` using `W.add_mem hy1W (W.smul_mem _ hx)`.
+
+Use `clear_value y`. Establish `hxy : hf q M x y = 1`. Rewrite using `[hy, hf_add_right hadd, hf_smul_right, hxx, mul_zero, add_zero, hxy1]`. Establish `hyy : hf q M y y = 0`. Rewrite using `[hy, hf_add_left, hf_add_right hadd, hf_add_right hadd, hf_smul_left, hf_smul_left, hf_smul_right, hf_smul_right, hxx, hy1x, hxy1]`.
+
+Take the linear combination `ht`. Establish `hyx : hf q M y x = 1`. Rewrite using `[hf_symm hadd hinv hM x y, hxy, one_pow]`. Use `⟨y, hyW, hxy, hyy, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `finrank_inf_ker_add_one W (hfL q M y) x hx (by rw [hfL_apply, hxy]; exact one_ne_zero)`.
+
+Establish `h2` using `finrank_inf_ker_add_one (W ⊓ LinearMap.ker (hfL q M y)) (hfL q M x) y (Submodule.mem_inf.2 ⟨hyW, by rw [LinearMap.mem_ker, hfL_apply, hyy]⟩) (by rw [hfL_apply, hyx]; exact one_ne_zero)`. Rewrite using `[inf_right_comm]`. Use linear arithmetic over natural numbers and integers. Introduce `w hw hperp`. Establish `hw'` using `Submodule.mem_inf.1 hw`.
+
+Establish `hw''` using `Submodule.mem_inf.1 hw'.1`. Establish `hwx : hf q M w x = 0` using `LinearMap.mem_ker.1 hw''.2`. Establish `hwy : hf q M w y = 0` using `LinearMap.mem_ker.1 hw'.2`. Apply `hW w hw''.1` to reduce the goal to its premises. Introduce `u hu`.
+
+Establish `hu' : u - hf q M u y • x - hf q M u x • y ∈ W ⊓ LinearMap.ker (hfL q M x) ⊓ LinearMap.ker (hfL q M y)`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨W.sub_mem (W.sub_mem hu (W.smul_mem _ hx)) (W.smul_mem _ hyW), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, hfL_apply, hf_sub_left, hf_sub_left, hf_smul_left, hf_smul_left, hxx, hyx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.mem_ker, hfL_apply, hf_sub_left, hf_sub_left, hf_smul_left, hf_smul_left, hxy, hyy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hperp _ hu'`. Establish `hsplit : u = (u - hf q M u y • x - hf q M u x • y) + hf q M u y • x + hf q M u x • y`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, hf_add_right hadd, hf_add_right hadd, h0, hf_smul_right, hf_smul_right, hwx, hwy]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hyperbolic (hadd : ∀ a b : L, (a + b) ^ q = a ^ q + b ^ q)
     (hinv : ∀ a : L, (a ^ q) ^ q = a) (hM : ∀ k l, M l k = M k l ^ q)
     (htrs : ∀ s : L, s ^ q = s → ∃ t : L, t + t ^ q = s)

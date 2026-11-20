@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Lift
 
+/- English proof (translation)
+Introduce `hP D θ hθ ψ hψ V W χ χ' ha om hom μ 𝓕 hq Φ F hF`. Take `⟨omO, H, e⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO_of_rank_eq D ψ hψ V W χ χ' om ha hom`. Take `⟨E, -, -, hE, -, -, -, h7, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W ha.1.le`. Establish `hf` using `(h7 ψ Φ.1).2 (mem_ThS.1 Φ.2)`. Simplify using `only [hE] at hf`.
+
+Establish `e' : ∀ g h, (om (g, h) Φ).1 0 = thKer ψ V W omO ⟨fun x => Φ.1 (toTWsmall V W x), hf⟩ g h` using `fun g h => by`. Use `congrFun (e (g, h) Φ) 0` as an intermediate fact. Rewrite `this` using `[toTWsmall_zero]`. Conclude with `this.symm`. Simplify using `only [e']`.
+
+Conclude with `(isKerSys_thKer hθ hψ (GlobalTheory.Ker.isWeak_of_datum H) H.om_cont).lift hP hθ hq hF _`.
+-/
 theorem liftAutEq : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, LiftAutEq D := by
   intro hP D θ hθ ψ hψ V W χ χ' ha om hom μ 𝓕 hq Φ F hF
   obtain ⟨omO, H, e⟩ := GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO_of_rank_eq D ψ hψ V W χ χ' om ha hom

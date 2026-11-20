@@ -3,6 +3,19 @@ import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.Ine
 
 open Formalism.HC Formalism.FrobeniusOrbits UpperTheory.Top
 
+/- English proof (translation)
+Use `set D := AnyGrp.data Ξ e with hD`. Set `g : (ZMod (EvenGrp.QS Ξ e))ˣ →* ℂˣ` to `(θ.comp (MonoidHom.inr G0 D.frame.MA)).comp D.toA`. Establish `hk : (EvenGrp.xi Ξ e).ker ≤ g.ker`. Introduce `u hu`. Rewrite `hu` using `[MonoidHom.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `g u = 1`. Establish `h0 : Multiplicative.toAdd (D.toA u) ∈ D.frame.A0`. Rewrite using `[D.mem_cusp_forms_iff_automorphic_compact]`. Conclude with `(D.xiA_toA u).trans hu`. Conclude with `h1 _ h0`.
+
+Set `ρ` to `MonoidHom.liftOfSurjective (EvenGrp.xi Ξ e) (EvenGrp.xi_surj Ξ e) ⟨g, hk⟩`. Establish `hρ : ∀ u, ρ (EvenGrp.xi Ξ e u) = g u` using `fun u => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ u`. Set `cu : (ZMod M)ˣ →* ℂˣ` to `ρ.comp (QuotientGroup.mk' (EvenGrp.ann Ξ))`. Use `⟨MulChar.ofUnitHom cu, ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[EvenGrp.mem_iff]`.
+
+Introduce `v hv`. Rewrite using `[MulChar.ofUnitHom_coe]`. Establish `hv1 : QuotientGroup.mk' (EvenGrp.ann Ξ) v = 1`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `hv`.
+
+Express the relevant statement in the definitionally equal form `((ρ (QuotientGroup.mk' (EvenGrp.ann Ξ) v) : ℂˣ) : ℂ) = 1`. Rewrite using `[hv1, map_one, Units.val_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MulChar.coe_toUnitHom, MulChar.ofUnitHom_coe]`. Establish `hx : EvenGrp.xi Ξ e (ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) u) = QuotientGroup.mk' (EvenGrp.ann Ξ) (ZMod.unitsMap (Nat.dvd_lcm_right (2 ^ (e + 2)) M) u)` using `EvenGrp.xi_unitsMap Ξ e u`.
+
+Express the relevant statement in the definitionally equal form `((θ (1, D.toA (ZMod.unitsMap (EvenGrp.QS_dvd Ξ e) u)) : ℂˣ) : ℂ) = ((ρ (QuotientGroup.mk' (EvenGrp.ann Ξ) (ZMod.unitsMap (Nat.dvd_lcm_right (2 ^ (e + 2)) M) u)) : ℂˣ) : ℂ)`. Rewrite using `[← hx, hρ]`. Both sides reduce to the same expression.
+-/
 private theorem exA {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) (e : ℕ)
     (θ : (AnyGrp.frame Ξ e).Char) (h1 : Frame.TrivialOnFirstFactor θ) :
     ∃ χ ∈ Ξ, ∀ u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ,
@@ -41,6 +54,13 @@ private theorem exA {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ 
     rw [← hx, hρ]
     rfl
 
+/- English proof (translation)
+Establish `hm : (-1 : ℤˣ) * -1 = 1` using `by simp`. Establish `hsq : ((f (-1) : ℂˣ) : ℂ) * ((f (-1) : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, hm, map_one, Units.val_one]`. Break down `mul_self_eq_one_iff.mp hsq with h | h` into its components or cases. Use `⟨0, Units.ext (by simpa using h), fun s => ?_⟩` and prove the remaining obligations.
+
+Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h]`. Use `⟨1, Units.ext (by simpa using h), fun s => ?_⟩` and prove the remaining obligations. Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 private theorem exSign (f : ℤˣ →* ℂˣ) : ∃ i : Fin 2, f (-1) = (-1) ^ (i : ℕ) ∧
     ∀ s : ℤˣ, ((f s : ℂˣ) : ℂ) = (((s : ℤ) : ℤ) : ℂ) ^ (i : ℕ) := by
   have hm : (-1 : ℤˣ) * -1 = 1 := by simp
@@ -56,6 +76,13 @@ private theorem exSign (f : ℤˣ →* ℂˣ) : ∃ i : Fin 2, f (-1) = (-1) ^ (
     · simp
     · simp [h]
 
+/- English proof (translation)
+Rewrite using `[EvenGrp.mem_ann]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h χ (Subgroup.mem_zpowers χ)`. Introduce `h ψ hψ`.
+
+Rewrite `hψ` using `[Subgroup.zpowers_eq_closure]`. Proceed by induction on `hψ using Subgroup.closure_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Rewrite using `[hx]`.
+
+Conclude with `h`. Consider the case `one => exact MulChar.one_apply_coe u`. Consider the case `mul x y _ _ hx hy => rw [MulChar.mul_apply, hx, hy, one_mul]`. Consider the case `inv x _ hx => rw [MulChar.inv_apply_eq_inv', hx, inv_one]`.
+-/
 private theorem mem_ann_zpowers_iff_apply_eq_one {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (u : (ZMod M)ˣ) :
     u ∈ EvenGrp.ann (Subgroup.zpowers χ) ↔ χ u = 1 := by
   rw [EvenGrp.mem_ann]
@@ -73,12 +100,28 @@ private theorem mem_ann_zpowers_iff_apply_eq_one {M : ℕ} [NeZero M] (χ : Diri
     | mul x y _ _ hx hy => rw [MulChar.mul_apply, hx, hy, one_mul]
     | inv x _ hx => rw [MulChar.inv_apply_eq_inv', hx, inv_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `QuotientGroup.mk' _ (ZMod.unitsMap (Nat.dvd_lcm_right (2 ^ (e + 2)) M) u) = 1 ↔ _`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, mem_ann_zpowers_iff_apply_eq_one]`.
+-/
 private theorem xiW_zpowers_eq_one_iff_apply_unitsMap {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (e : ℕ)
     (u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ) :
     EvenGrp.xiW (Subgroup.zpowers χ) e u = 1 ↔ χ (ZMod.unitsMap (Nat.dvd_lcm_right _ _) u : (ZMod M)ˣ) = 1 := by
   change QuotientGroup.mk' _ (ZMod.unitsMap (Nat.dvd_lcm_right (2 ^ (e + 2)) M) u) = 1 ↔ _
   rw [QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, mem_ann_zpowers_iff_apply_eq_one]
 
+/- English proof (translation)
+Take `⟨hQL, h2Q, hgood⟩` from `EvenGrp.good_QS (Subgroup.zpowers χ) e`. Use `set Q := EvenGrp.QS (Subgroup.zpowers χ) e with hQ`. Use `haveI : NeZero ((2 ^ (e + 2)).lcm M) := ⟨Nat.lcm_ne_zero (by positivity) (NeZero.ne M)⟩`. Establish `hf : χ.FactorsThrough (Q.gcd M)`. Use `(DirichletCharacter.factorsThrough_iff_ker_unitsMap (Nat.gcd_dvd_right Q M)).mpr ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite `hx` using `[MonoidHom.mem_ker, unitsMap_eq_one_iff]`. Take `⟨z, hz1, hz2⟩` from `Nat.chineseRemainder' hx.symm`. Establish `hzM : z.Coprime M` using `hz2.gcd_eq.trans (ZMod.val_coe_unit_coprime x)`. Establish `hzQ : z.Coprime Q` using `hz1.gcd_eq.trans (Nat.gcd_one_left Q)`.
+
+Establish `hz2e : z.Coprime (2 ^ (e + 2))` using `hzQ.coprime_dvd_right h2Q`. Establish `hzL : z.Coprime ((2 ^ (e + 2)).lcm M)` using `(Nat.Coprime.mul_right hz2e hzM).coprime_dvd_right (Nat.lcm_dvd_mul _ _)`. Establish `hw` using `hgood (ZMod.unitOfCoprime z hzL) (by`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Conclude with `((Nat.mod_modEq z _).of_dvd hQL).trans hz1)`.
+
+Rewrite `hw` using `[xiW_zpowers_eq_one_iff_apply_unitsMap, unitsMap_unitOfCoprime]`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Establish `hx' : ((ZMod.unitOfCoprime z (hzL.coprime_dvd_right (Nat.dvd_lcm_right _ _)) : (ZMod M)ˣ) : ZMod M) = x`. Rewrite using `[ZMod.coe_unitOfCoprime, ← ZMod.natCast_zmod_val (x : ZMod M)]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hz2`.
+
+Rewrite using `[← hx']`. Conclude with `hw`. Establish `hc0 : χ.conductor ≤ Q.gcd M` using `Nat.sInf_le hf`. Establish `hχ' : χ.conductor = M` using `hχ`. Rewrite `hc0` using `[hχ']`.
+
+Establish `hg : Q.gcd M = M` using `le_antisymm (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne M)) (Nat.gcd_dvd_right _ _)) hc0`. Establish `h` using `Nat.gcd_dvd_left Q M`. Rewrite `h` using `[hg]`. Then use the resulting hypothesis.
+-/
 private theorem dvd_lemma_3 {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (hχ : χ.IsPrimitive) (e : ℕ) :
     M ∣ EvenGrp.QS (Subgroup.zpowers χ) e := by
   obtain ⟨hQL, h2Q, hgood⟩ := EvenGrp.good_QS (Subgroup.zpowers χ) e
@@ -112,6 +155,25 @@ private theorem dvd_lemma_3 {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M)
   have h := Nat.gcd_dvd_left Q M
   rwa [hg] at h
 
+/- English proof (translation)
+Introduce `ψ e q d hH hc he hs θ hθ`. Use `haveI := ψ.ne`. Use `set D := AnyGrp.data (Subgroup.zpowers ψ.χ) e with hD`. Take `⟨χ, hχ, hχθ⟩` from `exA (Subgroup.zpowers ψ.χ) e θ hθ`. Set `f1 : ℤˣ →* ℂˣ` to `θ.comp (MonoidHom.prod (MonoidHom.inl ℤˣ ℤˣ) D.w)`.
+
+Set `f2 : ℤˣ →* ℂˣ` to `θ.comp ((MonoidHom.inl G0 D.frame.MA).comp (MonoidHom.inr ℤˣ ℤˣ))`. Take `⟨i, -, hi⟩` from `exSign f1`. Take `⟨j, hj1, hj⟩` from `exSign f2`. Use `⟨χ, hχ, i, j, ?_, fun a h => ?_⟩` and prove the remaining obligations. Conclude with `hj1`.
+
+Establish `hM : ψ.N ∣ D.m` using `dvd_lemma_3 ψ.χ ψ.prim e`. Establish `h' : a.Coprime (D.m * q * d)` using `h`. Establish `h1 : a.Coprime D.m` using `h'.coprime_dvd_right (D.m_dvd q d)`. Establish `hT : 2 ^ (e + 2) ∣ D.m` using `D.tower`. Establish `hL : (2 ^ (e + 2)).lcm ψ.N ∣ D.m` using `Nat.lcm_dvd hT hM`.
+
+Establish `hcL : a.Coprime ((2 ^ (e + 2)).lcm ψ.N)` using `h1.coprime_dvd_right hL`. Establish `hv : ((ZMod.unitOfCoprime a h' : ZMod (D.m * q * d)).val) ≡ a [MOD D.m * q * d]`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Conclude with `Nat.mod_modEq a _`. Establish `hdir : (AnyGrp.host (Subgroup.zpowers ψ.χ) e hH hc he hs).dirAt θ a = ((θ (D.art hH (ZMod.unitOfCoprime a h')) : ℂˣ) : ℂ)` using `HostRaw.dir_unit (AnyGrp.host (Subgroup.zpowers ψ.χ) e hH hc he hs) θ (ZMod.unitOfCoprime a h')`.
+
+Use `set x := D.art hH (ZMod.unitOfCoprime a h') with hx`. Establish `hsplit : x = ((x.1.1, 1), D.w x.1.1) * ((1, x.1.2), 1) * ((1, 1), D.toA (ZMod.unitsMap (D.m_dvd q d) (ZMod.unitOfCoprime a h')))`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.1.1 = x.1.1 * 1 * 1`. Rewrite using `[mul_one, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `x.1.2 = 1 * x.1.2 * 1`. Rewrite using `[one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `x.2 = D.w x.1.1 * 1 * D.toA (ZMod.unitsMap (D.m_dvd q d) (ZMod.unitOfCoprime a h'))`. Rewrite using `[mul_one, hx, D.art_snd, mul_comm]`. Establish `e1 : ((θ ((x.1.1, 1), D.w x.1.1) : ℂˣ) : ℂ) = ((jacobiSym (a : ℤ) q : ℤ) : ℂ) ^ (i : ℕ)`.
+
+Rewrite using `[show θ ((x.1.1, 1), D.w x.1.1) = f1 x.1.1 from rfl, hi, hx, D.art_ps, D7.jac_congr (hv.of_dvd (D.q_dvd q d))]`. Establish `e2 : ((θ ((1, x.1.2), 1) : ℂˣ) : ℂ) = ((jacobiSym (a : ℤ) d : ℤ) : ℂ) ^ (j : ℕ)`. Rewrite using `[show θ ((1, x.1.2), 1) = f2 x.1.2 from rfl, hj, hx, D.art_ch, D7.jac_congr (hv.of_dvd (D.d_dvd q d))]`. Establish `e3 : ((θ ((1, 1), D.toA (ZMod.unitsMap (D.m_dvd q d) (ZMod.unitOfCoprime a h'))) : ℂˣ) : ℂ) = χ (a : ZMod ψ.N)`. Establish `hw` using `hχθ (ZMod.unitOfCoprime a hcL)`.
+
+Rewrite `hw` using `[unitsMap_unitOfCoprime, unitsMap_unitOfCoprime]`. Rewrite using `[unitsMap_unitOfCoprime]`. Establish `hw'` using `congrArg (fun z : ℂˣ => (z : ℂ)) hw`. Simplify using `only [MulChar.coe_toUnitHom, ZMod.coe_unitOfCoprime] at hw'`. Conclude with `hw'`.
+
+Rewrite using `[hdir, hsplit, map_mul, map_mul, Units.val_mul, Units.val_mul, e1, e2, e3]`. Express the relevant statement in the definitionally equal form `_ = χ (a : ZMod ψ.N) * ((jacobiSym (a : ℤ) q : ℤ) : ℂ) ^ (i : ℕ) * ((jacobiSym (a : ℤ) d : ℤ) : ℂ) ^ (j : ℕ)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Top.twistAny :
     ∀ (ψ : PChar) (e q d : ℕ) (hH : HostHyp q d) (hc : Nat.Coprime ψ.N (q * d)) (he : 2 ≤ e)
       (hs : ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ ψ.N → jacobiSym (-(d : ℤ)) l = 1),

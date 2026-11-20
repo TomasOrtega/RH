@@ -20,6 +20,9 @@ def SteepOn (W : Submodule k (H0 p B ⊤)) (C : Set Y) (s : H0 p B ⊤) : Prop :
   ∀ y ∈ C, ∀ ν, Centred y ν → ∃ w ∈ W, ∀ (i : B.ι) (hi : y ∈ B.U i),
     ν (H0.germ i y (memTop y) hi s) < ν (H0.germ i y (memTop y) hi w)
 
+/- English proof (translation)
+Introduce `y hy`. Conclude with `h y (e hy)`.
+-/
 theorem SteepOn.mono {W : Submodule k (H0 p B ⊤)} {C C' : Set Y} {s : H0 p B ⊤} (h : SteepOn W C s) (e : C' ⊆ C) :
     SteepOn W C' s := by
   intro y hy

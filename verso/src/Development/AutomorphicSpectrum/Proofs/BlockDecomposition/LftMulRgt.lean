@@ -54,16 +54,28 @@ def rgt (V : Type) [AddCommGroup V] [Module ℂ V] : Matrix ι ι ℂ →ₐ[ℂ
     funext i
     simp [Module.algebraMap_end_apply, Matrix.algebraMap_matrix_apply, ite_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lft_apply (T : Module.End ℂ V) (x : ι → V) (i : ι) : lft ι T x i = T (x i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rgt_apply (M : Matrix ι ι ℂ) (x : ι → V) (i : ι) : rgt V M x i = ∑ j, M i j • x j := rfl
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `i`. Simplify using `[lft_apply, rgt_apply, map_sum]`.
+-/
 theorem lft_mul_rgt (T : Module.End ℂ V) (M : Matrix ι ι ℂ) : lft ι T * rgt V M = rgt V M * lft ι T := by
   apply LinearMap.ext
   intro x
   funext i
   simp [lft_apply, rgt_apply, map_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem yF_eq (Kf : Fin n → Fin n → Module.End ℂ V) (c : Fin n → Fin n → Matrix ι ι ℂ) (a b : Fin n) :
     yF Kf c a b = lft ι (Kf a b) + rgt V (spinM c a b) := rfl
 

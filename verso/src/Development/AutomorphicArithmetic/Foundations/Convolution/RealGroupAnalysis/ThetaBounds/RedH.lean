@@ -8,6 +8,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W h φ hφ`. Take `⟨σ, τ, -, -, hd⟩` from `dec F E D`. Take `⟨y₀, k, rfl⟩ : ∃ y₀ k, infGL E 2 y₀ * finGL E 2 k = h` from `⟨_, _, infGL_mul_finGL h⟩`. Take `⟨hz, hone, -⟩` from `hd y₀`. Use `⟨τ y₀, hone, W.L (finGL E 2 k) φ, (fockSt F E D W).fin k φ hφ, mD (ideleNorm F E (infId E (σ y₀)))⁻¹, fun g y' => ?_⟩` and prove the remaining obligations.
+
+Establish `key : infGL E 2 y₀ * finGL E 2 k * infGL E 2 y' = Matrix.GeneralLinearGroup.scalar (Fin 2) (infId E (σ y₀)) * (infGL E 2 (τ y₀ * y') * finGL E 2 k)`. Rewrite using `[hz, map_mul, mul_assoc _ (finGL E 2 k), ← infGL_comm y' k]`. Simplify using `only [mul_assoc]`. Rewrite using `[key, map_mul W.L, Module.End.mul_apply, (lCen F E D W _).1, map_mul W.L, Module.End.mul_apply, map_mul W.Om, Module.End.mul_apply]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.redH :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), RedH W := by
   intro F E _ _ _ _ _ _ _ D W h φ hφ

@@ -24,44 +24,83 @@ def SmallM {a b : Type} (M : Matrix a b K) : Prop := ∀ i j, v (M i j) < 1
 
 variable {v} {a b c : Type}
 
+/- English proof (translation)
+Introduce `i j` and use `(h i j).le`.
+-/
 theorem SmallM.int {M : Matrix a b K} (h : SmallM v M) : IntM v M := fun i j => (h i j).le
 
+/- English proof (translation)
+Introduce `i j` and use `v.map_add_le (h i j) (h' i j)`.
+-/
 theorem IntM.add {M N : Matrix a b K} (h : IntM v M) (h' : IntM v N) : IntM v (M + N) :=
   fun i j => v.map_add_le (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `v.map_sub_le (h i j) (h' i j)`.
+-/
 theorem IntM.sub {M N : Matrix a b K} (h : IntM v M) (h' : IntM v N) : IntM v (M - N) :=
   fun i j => v.map_sub_le (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `v.map_add_lt (h i j) (h' i j)`.
+-/
 theorem SmallM.add {M N : Matrix a b K} (h : SmallM v M) (h' : SmallM v N) : SmallM v (M + N) :=
   fun i j => v.map_add_lt (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `v.map_sub_lt (h i j) (h' i j)`.
+-/
 theorem SmallM.sub {M N : Matrix a b K} (h : SmallM v M) (h' : SmallM v N) : SmallM v (M - N) :=
   fun i j => v.map_sub_lt (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact v.map_sum_le fun l _ => by rw [map_mul]; exact mul_le_one' (h i l) (h' l j)`.
+-/
 theorem IntM.mul [Fintype b] {M : Matrix a b K} {N : Matrix b c K} (h : IntM v M) (h' : IntM v N) : IntM v (M * N) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact v.map_sum_le fun l _ => by rw [map_mul]; exact mul_le_one' (h i l) (h' l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact v.map_sum_lt one_ne_zero fun l _ => by rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_right' (h' l j)) (h i l)`.
+-/
 theorem SmallM.mul_int [Fintype b] {M : Matrix a b K} {N : Matrix b c K} (h : SmallM v M) (h' : IntM v N) :
     SmallM v (M * N) := fun i j => by
   rw [Matrix.mul_apply]
   exact v.map_sum_lt one_ne_zero fun l _ => by
     rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_right' (h' l j)) (h i l)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact v.map_sum_lt one_ne_zero fun l _ => by rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' (h i l)) (h' l j)`.
+-/
 theorem IntM.mul_small [Fintype b] {M : Matrix a b K} {N : Matrix b c K} (h : IntM v M) (h' : SmallM v N) :
     SmallM v (M * N) := fun i j => by
   rw [Matrix.mul_apply]
   exact v.map_sum_lt one_ne_zero fun l _ => by
     rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' (h i l)) (h' l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.one_apply] split_ifs <;> simp`.
+-/
 theorem intM_one [DecidableEq a] : IntM v (1 : Matrix a a K) := fun i j => by
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `using h.int.add intM_one`.
+-/
 theorem intM_of_near [DecidableEq a] {A : Matrix a a K} (h : SmallM v (A - 1)) : IntM v A := by
   simpa using h.int.add intM_one
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨l, -, hl⟩` from `Finset.exists_max_image Finset.univ (fun l => v (Y l j)) ⟨i, Finset.mem_univ _⟩`. Use `(hl i (Finset.mem_univ _)).trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Establish `h0 : v (Y l j) ≠ 0` using `(zero_lt_one.trans hn).ne'`. Establish `e : Y l j = (A * Y : Matrix a b K) l j - ((A - 1) * Y : Matrix a b K) l j`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, sub_sub_cancel]`. Establish `h1 : v (((A - 1) * Y : Matrix a b K) l j) < v (Y l j)`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `v.map_sum_lt h0 fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `lt_of_le_of_lt (mul_le_mul_right (hl t (Finset.mem_univ _)) _) ?_` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_left (zero_lt_one.trans hn) (h l t)`. Establish `h2` using `v.map_sub_lt ((hY l j).trans_lt hn) h1`.
+
+Rewrite `h2` using `[← e]`. Conclude with `lt_irrefl _ h2`.
+-/
 theorem intM_of_mul_left [Fintype a] [DecidableEq a] {A : Matrix a a K} (h : SmallM v (A - 1)) {Y : Matrix a b K}
     (hY : IntM v (A * Y)) : IntM v Y := by
   intro i j
@@ -82,6 +121,11 @@ theorem intM_of_mul_left [Fintype a] [DecidableEq a] {A : Matrix a a K} (h : Sma
   rw [← e] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Establish `h1 : SmallM v (Aᵀ - 1)` using `fun i j => by`. Use `h j i` as an intermediate fact. Simplify `this` using `[Matrix.one_apply, eq_comm]`. Establish `h2 : IntM v (Aᵀ * Yᵀ)` using `fun i j => by`. Rewrite using `[← Matrix.transpose_mul]`.
+
+Conclude with `hY j i`. Conclude with `fun i j => intM_of_mul_left h1 h2 j i`.
+-/
 theorem intM_of_mul_right [Fintype a] [DecidableEq a] {A : Matrix a a K} (h : SmallM v (A - 1)) {Y : Matrix b a K}
     (hY : IntM v (Y * A)) : IntM v Y := by
   have h1 : SmallM v (Aᵀ - 1) := fun i j => by
@@ -92,6 +136,11 @@ theorem intM_of_mul_right [Fintype a] [DecidableEq a] {A : Matrix a a K} (h : Sm
     exact hY j i
   exact fun i j => intM_of_mul_left h1 h2 j i
 
+/- English proof (translation)
+Establish `h1 : IntM v Y ↔ IntM v Z` using `⟨fun h => intM_of_mul_right hC (e ▸ (intM_of_near hA).mul h), fun h => intM_of_mul_left hA (e ▸ h.mul (intM_of_near hC))⟩`. Use `⟨h1, fun h => ?_⟩` and prove the remaining obligations. Establish `e2 : Y - Z = Z * (C - 1) - (A - 1) * Y`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, e]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e2]`. Conclude with `((h1.1 h).mul_small hC).sub (hA.mul_int h)`.
+-/
 theorem two_sided [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {A : Matrix a a K} {C : Matrix b b K}
     (hA : SmallM v (A - 1)) (hC : SmallM v (C - 1)) {Y Z : Matrix a b K} (e : A * Y = Z * C) :
     (IntM v Y ↔ IntM v Z) ∧ (IntM v Y → SmallM v (Y - Z)) := by
@@ -122,28 +171,43 @@ def locM (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (g : GL (Fin n) (AfE F E)) :
   (g : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P)
 
 omit [StarRing E] in
+/- English proof (translation)
+Unfold `ratM`. Rewrite using `[LinearMap.toMatrix'_comp, Matrix.map_mul]`.
+-/
 theorem ratM_comp (P : HeightOneSpectrum (𝓞 E)) {a b c : ℕ} (x : HomE E b c) (y : HomE E a b) :
     ratM P (x ∘ₗ y) = ratM P x * ratM P y := by
   unfold ratM
   rw [LinearMap.toMatrix'_comp, Matrix.map_mul]
 
 omit [StarRing E] in
+/- English proof (translation)
+Unfold `locM`. Rewrite using `[Units.val_mul, Matrix.map_mul]`.
+-/
 theorem locM_mul (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (g h : GL (Fin n) (AfE F E)) :
     locM F P (g * h) = locM F P g * locM F P h := by
   unfold locM
   rw [Units.val_mul, Matrix.map_mul]
 
 omit [StarRing E] in
+/- English proof (translation)
+Unfold `locM`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem locM_one (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} : locM F P (1 : GL (Fin n) (AfE F E)) = 1 := by
   unfold locM
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 omit [StarRing E] in
+/- English proof (translation)
+Simplify using `[ratM, LinearMap.toMatrix'_apply]`.
+-/
 theorem ratM_apply (P : HeightOneSpectrum (𝓞 E)) {a b : ℕ} (x : HomE E a b) (i : Fin b) (j : Fin a) :
     ratM P x i j = algebraMap E _ (x (Pi.single j 1) i) := by
   simp [ratM, LinearMap.toMatrix'_apply]
 
 omit [StarRing E] in
+/- English proof (translation)
+Unfold `IntM`. Simplify using `only [ratM_apply, valued_algebraMap, GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val]`. Conclude with `forall_comm`.
+-/
 theorem intM_ratM (P : HeightOneSpectrum (𝓞 E)) {a b : ℕ} (x : HomE E a b) :
     IntM Valued.v (ratM P x) ↔ ∀ j i, IntAt P (x (Pi.single j 1) i) := by
   unfold IntM
@@ -151,6 +215,13 @@ theorem intM_ratM (P : HeightOneSpectrum (𝓞 E)) {a b : ℕ} (x : HomE E a b) 
   exact forall_comm
 
 omit [StarRing E] in
+/- English proof (translation)
+Establish `ha : IntAt P a` using `(GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val P a).2 h.le`. Use `intAt_div_of_redP hq ha ?_` and prove the remaining obligations. Take `⟨r, s, hs, e⟩` from `ha`. Establish `h1` using `reduction_spec P hs e`. Establish `hr : r ∈ P.asIdeal`.
+
+Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := E)]`. Express the relevant statement in the definitionally equal form `P.valuation E (algebraMap (𝓞 E) E r) < 1`. Rewrite using `[← e, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (P.valuation_le_one s)) h`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem.2 hr]`.
+
+Use `P.isPrime` as an intermediate fact. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h0 => hs (Ideal.Quotient.eq_zero_iff_mem.1 h0)`.
+-/
 theorem intAt_div_of_val {P : HeightOneSpectrum (𝓞 E)} (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {a : E}
     (h : P.valuation E a < 1) : IntAt P (a / (qOf P : E)) := by
   have ha : IntAt P a := (GlobalTheory.Proof.IntegralPowerExpansion.intAt_iff_val P a).2 h.le
@@ -166,6 +237,9 @@ theorem intAt_div_of_val {P : HeightOneSpectrum (𝓞 E)} (hq : ((qOf P : ℕ) :
   have := P.isPrime
   exact (mul_eq_zero.1 h1).resolve_left fun h0 => hs (Ideal.Quotient.eq_zero_iff_mem.1 h0)
 
+/- English proof (translation)
+The claim follows from `mem_stdAt.2 fun i => by rw [Pi.single_apply] split_ifs · exact intAt_one · exact intAt_zero`.
+-/
 theorem single_std {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (j : Fin n) : (Pi.single j 1 : Sp E n) ∈ stdAt E n P :=
   mem_stdAt.2 fun i => by
     rw [Pi.single_apply]
@@ -175,6 +249,21 @@ theorem single_std {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (j : Fin n) : (Pi.
 
 variable {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨h1, h2⟩` from `liftFr_spec p.deco.2 w`. Establish `hz` using `(h1 _).2 (single_std w.1 j)`. Establish `hb` using `h2 _ (single_std w.1 j)`. Use `set z := p.deco.1.liftFr w (Pi.single j 1) with hzdef`.
+
+Establish `hs` using `p.deco.2.be_smul w`. Take `⟨s, hs0, hsz⟩ : ∃ s ∈ w.1.asIdeal.primeCompl, s • z ∈ p.deco.1.N` from `id hz`. Take `⟨r, hr, hv⟩` from `h.be w _ hsz i`. Rewrite `hr` using `[hs s z hz, hb]`. Establish `hδ : ∃ d : 𝓞 E, redV w.1 (Pi.single j 1 : Sp E n) i = Ideal.Quotient.mk _ d ∧ (1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)) i j = algebraMap E _ (algebraMap (𝓞 E) E d)`.
+
+Unfold `redV`. Rewrite using `[Pi.single_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `⟨1, by rw [reduction_one₂, map_one], by simp⟩`. Conclude with `⟨0, by rw [reduction_zero, map_zero], by simp⟩`.
+
+Take `⟨d, hd, hd'⟩` from `hδ`. Rewrite `hr` using `[Pi.smul_apply, hd, smul_eq_mul, ← map_mul]`. Establish `hr' : Valued.v (algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E (r - s * d))) < 1`. Rewrite using `[valued_algebraMap, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `Ideal.Quotient.eq.1 hr`.
+
+Establish `hs1 : Valued.v (algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E s)) = 1`. Rewrite using `[valued_algebraMap]`. Use `le_antisymm (w.1.valuation_le_one s) (not_lt.1 fun hlt => hs0 ?_)` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w.1 s).1 hlt`. Establish `e : adAt F w.1 (Col2.pullV g (s • z) i) = algebraMap E (w.1.adicCompletion E) (algebraMap (𝓞 E) E s) * (locM F w.1 g⁻¹ * ratM w.1 (p.deco.1.liftFr w).toLinearMap : Matrix (Fin n) (Fin n) _) i j`.
+
+Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Unfold `Col2.pullV`. Rewrite using `[Matrix.mulVec, dotProduct, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, adAt_inclE, ratM_apply, Pi.smul_apply, Algebra.smul_def, map_mul]`.
+
+Express the relevant statement in the definitionally equal form `locM F w.1 g⁻¹ i l * _ = _ * (_ * algebraMap E _ (z l))`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `Valuation.map_add_lt _ hv hr'`. Rewrite `h3` using `[e, map_sub, map_sub, map_mul, map_mul, sub_add_sub_cancel, ← mul_sub, map_mul, hs1, one_mul, ← hd']`. Conclude with `h3`.
+-/
 theorem frame_near {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) (w : SG) :
     SmallM Valued.v (locM F w.1 g⁻¹ * ratM w.1 (p.deco.1.liftFr w).toLinearMap - 1) := by
   intro i j
@@ -215,6 +304,13 @@ theorem frame_near {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtO
   rw [e, map_sub, map_sub, map_mul, map_mul, sub_add_sub_cancel, ← mul_sub, map_mul, hs1, one_mul, ← hd'] at h3
   exact h3
 
+/- English proof (translation)
+Establish `h0` using `frame_near h w`. Establish `h1 : ∀ x, p.deco.1.liftFr w x ∈ stdAt E n w.1 ↔ x ∈ stdAt E n w.1` using `fun x => by`. Use `(liftFr_spec p.deco.2 w).1 x` as an intermediate fact. Rewrite `this` using `[Deco.at, hN]`. Then use the resulting hypothesis. Use `set f := p.deco.1.liftFr w`.
+
+Establish `hf : IntM Valued.v (ratM w.1 f.toLinearMap)` using `(intM_ratM _ _).2 fun j => mem_stdAt.1 ((h1 _).2 (single_std w.1 j))`. Establish `hf' : IntM Valued.v (ratM w.1 f.symm.toLinearMap)` using `(intM_ratM _ _).2 fun j => mem_stdAt.1 ((h1 _).1 (by`. Rewrite using `[LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `single_std w.1 j))`. Prove the components needed by the constructor for the conclusion.
+
+Use `intM_of_mul_right h0 ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← locM_mul, mul_inv_cancel, locM_one, Matrix.one_mul]` and apply the resulting hypothesis. Use `(intM_of_near h0).mul hf'` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, ← ratM_comp, LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap, ratM, LinearMap.toMatrix'_id, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem locM_int {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf hc g p) (hN : p.deco.1.N = Formalism.L2.Col.stdLat E n) (w : SG) :
     IntM Valued.v (locM F w.1 g) ∧ IntM Valued.v (locM F w.1 g⁻¹) := by
   have h0 := frame_near h w
@@ -234,6 +330,15 @@ theorem locM_int {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (h : IsPtOf 
     rwa [Matrix.mul_assoc, ← ratM_comp, LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap,
       ratM, LinearMap.toMatrix'_id, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one] at this
 
+/- English proof (translation)
+Establish `key : ∀ (g : GL (Fin a) (AfE F E)) (g' : GL (Fin b) (AfE F E)) (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b) (z : HomE E a b), (locM F w.1 g'⁻¹ * ratM w.1 f'.toLinearMap) * ratM w.1 (inFr f f' z) = (locM F w.1 g'⁻¹ * ratM w.1 z * locM F w.1 g) * (locM F w.1 g⁻¹ * ratM w.1 …`. Introduce `g g' f f' z`. Establish `e : f'.toLinearMap ∘ₗ inFr f f' z = z ∘ₗ f.toLinearMap`. Use extensionality with `v l`. Simplify using `[inFr]`.
+
+Rewrite using `[Matrix.mul_assoc, ← ratM_comp, e, ratM_comp, Matrix.mul_assoc _ (locM F w.1 g), ← Matrix.mul_assoc (locM F w.1 g), ← locM_mul, mul_inv_cancel, locM_one, Matrix.one_mul, Matrix.mul_assoc]`. Take `⟨a1, a2⟩` from `two_sided (frame_near hp' w) (frame_near hp w) (key _ _ _ _ x₀)`. Take `⟨b1, b2⟩` from `two_sided (frame_near hq' w) (frame_near hq w) (key _ _ _ _ x)`. Establish `hD` using `((locM_int hp' hN' w).2.mul_small hx).mul_int (locM_int hp hN w).1`. Establish `e : locM F w.1 k'⁻¹ * (locM F w.1 y'⁻¹ * ratM w.1 x * locM F w.1 y - ratM w.1 x₀) * locM F w.1 k = locM F w.1 (y' * k')⁻¹ * ratM w.1 x * locM F w.1 (y * k) - locM F w.1 k'⁻¹ * ratM w.1 x₀ * locM F w.1 k`.
+
+Rewrite using `[_root_.mul_inv_rev, locM_mul, locM_mul, Matrix.mul_sub, Matrix.sub_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `hD` using `[e]`. Establish `c1 : IntM Valued.v (locM F w.1 k'⁻¹ * ratM w.1 x₀ * locM F w.1 k) ↔ IntM Valued.v (locM F w.1 (y' * k')⁻¹ * ratM w.1 x * locM F w.1 (y * k))` using `⟨fun h => by simpa using hD.int.add h, fun h => by simpa using h.sub hD.int⟩`. Establish `c2` using `a1.trans (c1.trans b1.symm)`.
+
+Use `⟨c2, fun h => ?_⟩` and prove the remaining obligations. Use `((a2 h).sub hD).sub (b2 (c2.1 h))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem read_cong {a b : ℕ} {ST' : Finset (HeightOneSpectrum (𝓞 E))} {k y : GL (Fin a) (AfE F E)} {k' y' : GL (Fin b) (AfE F E)}
     {p q : DecoF E a ST SG Q} {p' q' : DecoF E b ST' SG Q} (hp : IsPtOf hc k p) (hN : p.deco.1.N = Formalism.L2.Col.stdLat E a)
     (hp' : IsPtOf hc k' p') (hN' : p'.deco.1.N = Formalism.L2.Col.stdLat E b) (hq : IsPtOf hc (y * k) q) (hq' : IsPtOf hc (y' * k') q') (w : SG)
@@ -279,6 +384,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {m2 : ℕ}
 
+/- English proof (translation)
+Unfold `locTop`. Use `congr 1`. Generalize the expression as in `atNL X.E (R.N R.m) (R.N R.m - 1) ∘ₗ y = η`. Unfold `ftY`. Rewrite using `[if_pos hP, if_pos hP]`.
+
+Use `split_ifs with h`. Establish `ev : ∀ z : Sp X.E (R.N (m2 + 1)), η z = ∑ j, z j * η (Pi.single j 1)` using `fun z => by conv_lhs => rw [pi_eq_sum_univ' z]`. Simplify using `[map_sum]`. Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `intCast_mem (intRing P.1) _`. Establish `hd : IntAt P.1 ((epsSg : X.E) * η (b - a))`.
+
+Rewrite using `[ev]`. Conclude with `he.mul (intAt_sum _ fun j _ => (hb j).mul (h j))`. Establish `hz' : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * ((epsSg : X.E) * η a))`. Take `⟨D, hD⟩ : ∃ D, cst.D P = D + 1` from `⟨cst.D P - 1, by have := hc.D_pos P; omega⟩`. Use `(intAt_pow (intAt_nat (P := P.1) (qOf P.1)) D).mul (he.mul (intAt_sum Finset.univ fun j _ => (ha j).mul (h j)))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hD, ev, pow_succ, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `hc.psi_add P _ _ hz' ((intAt_pow (intAt_nat (P := P.1) (qOf P.1)) _).mul hd)` as an intermediate fact. Rewrite `this` using `[hc.psi_int P _ hd, mul_one, ← mul_add, ← map_add, add_sub_cancel]`.
+
+Conclude with `this`. Both sides reduce to the same expression.
+-/
 theorem locTop_shift (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs)
     (y : HomE X.E (R.N (m2 + 1)) (R.N R.m)) {a b : Sp X.E (R.N (m2 + 1))} (ha : ∀ i, IntAt P.1 ((qOf P.1 : X.E) * a i))
     (hb : ∀ i, IntAt P.1 (b i - a i)) : locTop Ch sel mu cst m2 P y b = locTop Ch sel mu cst m2 P y a := by
@@ -307,6 +423,15 @@ theorem locTop_shift (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs)
     exact this
   · rfl
 
+/- English proof (translation)
+Establish `h1 : (frsF sel mu p.1.1 P).symm (repY p.1.2) ∈ cosetIn p P` using `⟨_, p.repY_mem h, by rw [sub_self, smul_zero]; exact zero_mem _⟩`. Rewrite `h1` using `[← e]`. Take `⟨z, hz1, h2⟩` from `h1`. Rewrite `h2` using `[if_pos hP, pow_zero, inv_one, one_smul]`. Establish `h3` using `q.repY_mem h`.
+
+Take `⟨y, -, hY⟩` from `q.mem_ybSet h`. Establish `h4` using `(mem_locLat _ _ _ _).1 ((Set.ext_iff.1 hY _).1 hz1) P`. Establish `h5` using `(mem_locLat _ _ _ _).1 ((Set.ext_iff.1 hY _).1 h3) P`. Simplify using `only [if_pos hP, zpow_zero, inv_one, one_smul] at h4 h5`. Establish `h6 : z - repY q.1.2 ∈ q.1.1.deco.1.at P.1`.
+
+Use `sub_mem h4 h5` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite `h6` using `[← (frsF sel mu q.1.1 P).apply_symm_apply (z - _), frsF_mem, map_sub]`. Establish `h7` using `add_mem h2 h6`. Rewrite `h7` using `[sub_add_sub_cancel]`.
+
+Conclude with `mem_stdAt.1 h7 i`.
+-/
 theorem rep_sub_int {u : Pr.Word} {j : ℕ} (h : j + 1 = R.m) (p q : PtAt R sel mu cst u j) (e : cosetIn q = cosetIn p)
     {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs) (i : Fin (R.N j)) :
     IntAt P.1 ((frsF sel mu p.1.1 P).symm (repY p.1.2) i - (frsF sel mu q.1.1 P).symm (repY q.1.2) i) := by
@@ -328,6 +453,13 @@ theorem rep_sub_int {u : Pr.Word} {j : ℕ} (h : j + 1 = R.m) (p q : PtAt R sel 
   rw [sub_add_sub_cancel] at h7
   exact mem_stdAt.1 h7 i
 
+/- English proof (translation)
+Establish `supp : ∀ w : HomE X.E (R.N (m2 + 1)) (R.N j), locTop Ch sel mu cst m2 P (castSp X.E h ∘ₗ w) a ≠ 0 → IntM Valued.v (ratM P.1 w)` using `fun w hw => (intM_ratM _ _).2 fun s i => mem_stdAt.1 (locTop_supp hm hP hw s) (Fin.cast h i)`. Distinguish the cases in `hy : IntM Valued.v (ratM P.1 y)`. Use `locTop_congr hm hc hP ha fun s l => ⟨(intM_ratM _ _).1 hy s _, (intM_ratM _ _).1 (H.1.1 hy) s _, ?_⟩` and prove the remaining obligations. Use `intAt_div_of_val hq ?_` and prove the remaining obligations. Use `H.2 hy (Fin.cast h.symm l) s` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.sub_apply, ratM_apply, ratM_apply, ← map_sub, valued_algebraMap]`. Then use the resulting hypothesis. Establish `h1 : locTop Ch sel mu cst m2 P (castSp X.E h ∘ₗ y) a = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hy (supp _ h0)`. Establish `h2 : locTop Ch sel mu cst m2 P (castSp X.E h ∘ₗ z) a = 0`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hy (H.1.2 (supp _ h0))`. Rewrite using `[h1, h2]`.
+-/
 theorem locTop_of_cong (hm : R.m = m2 + 2) (hc : cst.Ok) {P : rowSG Pr sel mu} (hP : P.1 ∈ Pr.vGs)
     (hq : ((qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2) {j : ℕ} (h : R.N j = R.N R.m) (y z : HomE X.E (R.N (m2 + 1)) (R.N j))
     {a : Sp X.E (R.N (m2 + 1))} (ha : ∀ i, IntAt P.1 ((qOf P.1 : X.E) * a i))

@@ -64,6 +64,11 @@ def TargetBridge (D : D7) : Prop :=
 
 def ModelsAreCoverSeries (D : D7) : Prop := SourceBridge D ∧ TargetBridge D
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Establish `ha` using `h a`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+
+Apply the tactic sequence `simp_all [Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp_all`.
+-/
 theorem reindex_form {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompat ε e) :
     Matrix.reindex e e (Formalism.UG.Jpq p q) = Formalism.REAL.Jm ε := by
   ext a b
@@ -73,12 +78,20 @@ theorem reindex_form {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} 
   rcases a with a | a <;> rcases b with b | b <;>
     simp_all [Formalism.UG.Jpq, Formalism.REAL.Jm, Matrix.diagonal_apply, Matrix.one_apply] <;> split_ifs <;> simp_all
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(plainMat e g)ᴴ * Formalism.REAL.Jm ε * plainMat e g = Formalism.REAL.Jm ε`. Rewrite using `[← reindex_form h]`. Simplify using `only [plainMat, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hg]`.
+-/
 theorem plainMat_mem {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompat ε e) {g : Mat p q}
     (hg : gᴴ * Formalism.UG.Jpq p q * g = Formalism.UG.Jpq p q) : plainMat e g ∈ Formalism.MainNotions.S.UJset ε := by
   change (plainMat e g)ᴴ * Formalism.REAL.Jm ε * plainMat e g = Formalism.REAL.Jm ε
   rw [← reindex_form h]
   simp only [plainMat, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hg]
 
+/- English proof (translation)
+Use `plainMat_mem h ?_` and prove the remaining obligations. Establish `hJ : (Formalism.UG.Jpq p q).map (starRingEnd ℂ) = Formalism.UG.Jpq p q`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply] <;> split_ifs <;> simp`. Establish `h1` using `congrArg (fun A : Mat p q => A.map (starRingEnd ℂ)) hg`.
+
+Simplify using `only [Matrix.map_mul, hJ] at h1`. Conclude with `h1`.
+-/
 theorem barMat_mem {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompat ε e) {g : Mat p q}
     (hg : gᴴ * Formalism.UG.Jpq p q * g = Formalism.UG.Jpq p q) : barMat e g ∈ Formalism.MainNotions.S.UJset ε := by
   refine plainMat_mem h ?_
@@ -89,6 +102,9 @@ theorem barMat_mem {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h
   simp only [Matrix.map_mul, hJ] at h1
   exact h1
 
+/- English proof (translation)
+Simplify using `[dualPar, GlobalTheory.Chain.signed]`. Evaluate the numerical expressions.
+-/
 example : dualPar (GlobalTheory.Chain.signed [2] [-3] (1 / 2)) = {(-5 / 2, true), (5 / 2, false)} := by
   simp [dualPar, GlobalTheory.Chain.signed]
   norm_num

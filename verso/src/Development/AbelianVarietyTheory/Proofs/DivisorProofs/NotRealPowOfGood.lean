@@ -16,6 +16,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel
 local instance locFieldAt' {F : Type} [Field F] [NumberField F] (v : Pl F) : IsNonarchimedeanLocalField (Fv F v) :=
   GlobalTheory.LocalData.isLocalField v
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv τ t ht`. Establish `hnr` using `GlobalTheory.NuGood.not_root_of_unity F E σ B a a' G X om om' hT v hv τ`. Establish `hdiv : chrW X.ν τ = chrW X.α τ * (chrW X.β τ)⁻¹`. Use extensionality with `x`. Simplify using `[Chars.ν, chrW, locChar, div_eq_mul_inv]`.
+
+Establish `hval : ((chrW X.ν τ (unifAt v) : ℂˣ) : ℂ) = ((GlobalTheory.SplitWeil.nabs (Fv F v) (unifAt v) ^ t : ℝ) : ℂ)`. Rewrite using `[hdiv, ht, GlobalTheory.SmGL.val_absPow_ofReal]`. Establish `hn : ‖((chrW X.ν τ (unifAt v) : ℂˣ) : ℂ)‖ = 1`. Simplify using `only [chrW, locChar, MonoidHom.coe_comp, Function.comp_apply]`. Apply the tactic sequence `first | exact Circle.norm_coe _ | exact Circle.abs_coe _ | simp`.
+
+Establish `hpos : 0 < GlobalTheory.SplitWeil.nabs (Fv F v) (unifAt v) ^ t` using `Real.rpow_pos_of_pos (GlobalTheory.SmGL.nabs_pos' _ _) t`. Establish `h1 : GlobalTheory.SplitWeil.nabs (Fv F v) (unifAt v) ^ t = 1`. Rewrite `hn` using `[hval, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos]`. Conclude with `hn`. Apply `hnr 1 one_ne_zero` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[zpow_one, hval, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem notRealPow_of_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ v, X.Good v → ∀ τ : E →ₐ[F] Fv F v, NotRealPow τ X.α X.β := by
@@ -40,6 +49,23 @@ theorem notRealPow_of_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E
   rw [zpow_one, hval, h1]
   simp
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _hq d₁ H' i₀ i₁ sp pl hH hiso c h0 hj i hi v hv τ hcm ε herm hJ e f hf`. Establish `hT` using `hM.triple`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Establish `hsk` using `GlobalTheory.ThK.DescB.NextStep.skew_sp (p := G.p) hσ B hT.geo.hW.skew hH hiso`. Establish `hgen` using `notRealPow_of_good F E σ B a a' G X om om' hT v hv τ`.
+
+Establish `hreg` using `GlobalTheory.ThK.DescB.Nondeg.lev_reg hK hM hH hiso c h0 hj`. Establish `hdreg` using `GlobalTheory.ThK.DescB.Nondeg.diffs_reg hK hM c`. Establish `hrank : a + a' = d₁ + 2` using `hH.rank`. Set `w0` to `Classical.arbitrary (InfinitePlace F)`. Establish `hJW : IsUnit (G.W.J.map τ).det` using `isUnit_det_of_cartan G.W.J τ (B.emb w0).1 Complex.I Complex.I_ne_zero _ (hT.geo.hW.cartan w0)`.
+
+Establish `hermW : ∀ k l, σ (G.W.J l k) = algebraMap F E (-1) * G.W.J k l` using `fun k l => by`. Rewrite using `[hT.geo.hW.skew k l, map_neg, map_one, neg_one_mul]`. Establish `hJsp : ∀ j < G.p, IsUnit (((sp j).J).map τ).det` using `fun j hj' => isUnit_det_of_cartan (sp j).J τ (B.emb w0).1 Complex.I Complex.I_ne_zero _ ((hiso j hj').2.2.2.2.2.2.1 w0)`. Establish `hermSp : ∀ j ≤ G.p, ∀ k l, σ ((sp j).J l k) = algebraMap F E (-1) * (sp j).J k l` using `fun j hj' k l => by`. Rewrite using `[hsk j hj' k l, map_neg, map_one, neg_one_mul]`.
+
+It suffices to establish `P : ∀ j, j < G.p → ∀ g ∈ Lev B X a a' H' sp pl (Diffs B G X om om' R Rf c) j, ∀ x, x + 2 * (j + 1) = a → ∀ (ε : F) (herm : ∀ k l, σ ((sp j).J l k) = algebraMap F E ε * (sp j).J k l) (hJ : IsUnit ((sp j).J.map τ).det) (e : Fin (x + a') ≃ Fin (d₁ - 2 * j)), HasLocType hcm τ (sp j). …`. Establish `hbig : 2 * (G.p + G.q) + 1 < (a - a') / 2` using `hT.geo.eBig`. Conclude with `P i hi f hf (a - 2 * (i + 1)) (by omega) ε herm hJ e`. Establish `hbig : 2 * (G.p + G.q) + 1 < (a - a') / 2` using `hT.geo.eBig`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ g hg x hx ε₁ herm₁ hJ₁ e₁`. Establish `hzb : ((a : ℝ) / 2) = (((x + 2 : ℕ) : ℝ) / 2)`. Apply the tactic sequence `rw [← hx] <;> push_cast <;> ring`.
+
+Rewrite `hg` using `[lev_zero, hzb]`. Establish `eW : Fin (x + 2 + a') ≃ Fin (a + a')` using `finCongr (by omega)`. Conclude with `GlobalTheory.T.hecke_hyperbolic_plane_residue hK F E σ hcm X.α X.β v τ hgen hT.chars.heckeα hT.chars.heckeβ a' hT.chars.resα (a + a') (d₁ - 2 * 0) G.W (sp 0) H' (by omega) hH.xx hH.yy hH.xy hH.orth hH.gram (-1) hermW hJW ε₁ herm₁ hJ₁ x a' eW e₁ (finK σ G.W B.emb) (Diffs B G X om …`. Consider the case `succ j ih`. Introduce `hj1 g hg x hx ε₁ herm₁ hJ₁ e₁`.
+
+Establish `hI` using `hiso j (by omega)`. Establish `hzb : zb a j = (((x + 2 : ℕ) : ℝ) / 2)`. Apply the tactic sequence `unfold zb; rw [← hx] <;> push_cast <;> ring`. Rewrite `hg` using `[lev_succ, hzb]`. Establish `eW : Fin (x + 2 + a') ≃ Fin (d₁ - 2 * j)` using `finCongr (by omega)`.
+
+Conclude with `GlobalTheory.T.hecke_hyperbolic_plane_residue hK F E σ hcm X.α X.β v τ hgen hT.chars.heckeα hT.chars.heckeβ a' hT.chars.resα (d₁ - 2 * j) (d₁ - 2 * (j + 1)) (sp j) (sp (j + 1)) (pl j) hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2.1 hI.2.2.2.2.2.1 (-1) (hermSp j (by omega)) (hJsp j ( …`.
+-/
 theorem locType : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

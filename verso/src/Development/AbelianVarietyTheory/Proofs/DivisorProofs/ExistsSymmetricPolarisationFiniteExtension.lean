@@ -22,6 +22,9 @@ namespace GlobalTheory.PolDeg.SymPol
 
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun z => z.left) (map_inv (pushHom h G') (𝟙 G'))`. Rewrite `e` using `[Hom.inv_def, Hom.inv_def, Category.id_comp]`. Use `Eq.trans e ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+-/
 theorem inv_comm (h : IsGrpPullback G' G f φ) : (ι[G']).left ≫ φ = φ ≫ (ι[G]).left := by
   have e := congrArg (fun z => z.left) (map_inv (pushHom h G') (𝟙 G'))
   rw [Hom.inv_def, Hom.inv_def, Category.id_comp] at e
@@ -29,6 +32,13 @@ theorem inv_comm (h : IsGrpPullback G' G f φ) : (ι[G']).left ≫ φ = φ ≫ (
   show (𝟙 _ ≫ φ) ≫ _ = _
   rw [Category.id_comp]
 
+/- English proof (translation)
+Establish `w : b.left ≫ G.hom = 𝟙 S' ≫ f` using `(Over.w b).trans (Category.id_comp _).symm`. Set `b' : 𝟙_ (Over S') ⟶ G'` to `Over.homMk (h.1.lift _ _ w) (h.1.lift_snd _ _ _)`. Establish `hb' : b'.left ≫ φ = b.left` using `h.1.lift_fst _ _ _`. Set `j : Over.mk (G'.hom ≫ f) ⟶ Over.mk f` to `Over.homMk G'.hom rfl`. Establish `hu : (toUnit G').left = G'.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit G'))`.
+
+Establish `e₁ : pushHom h G' (toUnit G' ≫ b') = j ≫ b` using `Over.OverMorphism.ext (by show ((toUnit G').left ≫ b'.left) ≫ φ = G'.hom ≫ b.left`. Rewrite using `[Category.assoc, hb', hu])`. Establish `e₂ : pushHom h G' ((toUnit G' ≫ b' ^ 2) * 𝟙 G') = pushHom h G' (𝟙 G') ≫ ((toUnit G ≫ a) * 𝟙 G)`. Rewrite using `[map_mul, MonObj.comp_pow, map_pow, e₁, ← MonObj.comp_pow, hb, MonObj.comp_mul, Category.comp_id, ← Category.assoc, ← Category.assoc, toUnit_unique (j ≫ toUnit _) (pushHom h G' (𝟙 G') ≫ toUnit G)]`. Use `⟨b', (congrArg (fun z => z.left) e₂).trans ?_⟩` and prove the remaining obligations.
+
+Use `show (𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+-/
 theorem exists_half (h : IsGrpPullback G' G f φ) (a : 𝟙_ (Over S) ⟶ G) (b : Over.mk f ⟶ G) (hb : b ^ 2 = toUnit _ ≫ a) :
     ∃ b' : 𝟙_ (Over S') ⟶ G',
       ((toUnit G' ≫ b' ^ 2) * 𝟙 G').left ≫ φ = φ ≫ ((toUnit G ≫ a) * 𝟙 G).left := by
@@ -47,6 +57,9 @@ theorem exists_half (h : IsGrpPullback G' G f φ) (a : 𝟙_ (Over S) ⟶ G) (b 
   show (𝟙 _ ≫ φ) ≫ _ = _
   rw [Category.id_comp]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ht`. Conclude with `gen_chartPull (chartPullLinComb L φ _ _ _ (cubeMapOf h).F3 fun I => (cubeMapOf h).psum_comm I.down) t ht`.
+-/
 theorem exists_gen_theta_pull [IsCommMonObj G] [IsCommMonObj G'] (h : IsGrpPullback G' G f φ) {L : LB G.left}
     (ht : ∃ t : LB.Gen (Theta G L), t.IsGen) : ∃ t : LB.Gen (Theta G' (L.pull φ)), t.IsGen := by
   obtain ⟨t, ht⟩ := ht
@@ -56,6 +69,17 @@ end GlobalTheory.PolDeg.SymPol
 
 open GlobalTheory.PolDeg.SymPol GlobalTheory.CechPic in
 
+/- English proof (translation)
+Introduce `R _ _ _ Q hR`. Use `haveI := hR.1`. Establish `hM` using `Q.M.isLB`. Establish `hΘ : ∃ t : LB.Gen (Theta Q.B Q.M.L), t.IsGen` using `⟨Q.cub.t, Q.cub.isGen⟩`. Take `⟨a, ha⟩` from `GlobalTheory.T.primitive_bundle_eq_translate_ample_noetherian_local R Q.B Q.g Q.M.L _ Q.isAb Q.smoothDim hM Q.ample Q.ktriv hΘ (LB.isLB_linComb hM _ _) (GlobalTheory.T.exists_generator_mumfordBundle_inv_pullback_primitive R Q.B Q.M Q.cub Q.isAb)`.
+
+Establish `ea` using `(cls_eq_iff (LB.isLB_linComb hM _ _) (LB.isLB_linComb hM _ _)).2 ha`. Rewrite `ea` using `[cls_linComb hM, cls_linComb hM, Fin.sum_univ_two, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, add_left_inj] at ea`. Take `⟨R', _, _, _, ρ, b, hR', hinj, hfin, hloc, hb⟩` from `GlobalTheory.T.exists_halving_point_abelianScheme_finite_ext R Q.B a hR Q.isAb`. Use `haveI := hR'.1`.
+
+Establish `h` using `isGrpPullback_pullback Q.B (spMap ρ)`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback Q.isAb h`. Use `haveI := hA.comm`. Take `⟨b', hb'⟩` from `exists_half h a b hb`. Establish `hM'` using `pull_isLB hM (pullback.fst Q.B.hom (spMap ρ))`.
+
+Establish `hid` using `(cls_eq_iff hM' hM').1 rfl`. Take `⟨w, hw⟩` from `id hid`. Take `⟨L, hL, hrig, hsym, hamp, hK, hΛ⟩` from `GlobalTheory.T.exists_symmetric_rigidified_translate_ample_K_trivial R' _ _ b' hA hM' (relAmple_pull h.1 hM hM' ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) Q.ample) (kTriv_pull h hM hM' ((isGen_iff w).1 hw) Q.ktriv) (exists_gen_theta_pull h hΘ) ((cls_eq_iff (pu …`. Rewrite using `[cls_pull hM', cls_pull hM', cls_pull hM, ← pull_comp, ← pull_comp, inv_comm h, hb', pull_comp, pull_comp, ea]))`. Take `⟨β₂, hβ₂⟩` from `SiegPull.exists_isSquare h.1.w`.
+
+Conclude with `⟨R', _, _, _, ρ, { A := (Over.pullback (spMap ρ)).obj Q.B, isAb := hA, g := Q.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 Q.smoothDim L := L, isLB := hL, rigid := hrig, sym := hsym, ample := hamp, ktriv := hK }, _, β₂, hR', hinj, hfin, h …`.
+-/
 theorem GlobalTheory.PolDeg.exists_symmetric_pol : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : Data R), IsCN R → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (P : PolAV (Sp R')) (β : P.A.left ⟶ Q.B.left) (β₂ : (G2 P.A).left ⟶ (G2 Q.B).left), IsCN R' ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ IsGrpPullback P.A Q.B (spMap ρ) β ∧ IsSquare β β₂ ∧ (letI := P.isAb.comm; LBIso (abelian₂ P.A P.L) ((abelian₂ Q.B Q.M.L).pull β₂)) := by
   intro R _ _ _ Q hR
   haveI := hR.1

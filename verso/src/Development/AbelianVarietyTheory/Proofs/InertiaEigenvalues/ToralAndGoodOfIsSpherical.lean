@@ -8,6 +8,13 @@ open ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitW
 
 namespace GlobalTheory.SphSupport
 
+/- English proof (translation)
+Establish `hadm : IsAdmissible x.rep` using `(hBZ k).1 (Fin x.1) x.2.rep.V x.rep x.2.rep.smooth x.2.rep.irr`. Establish `hI : fixed x.rep (iwahori k (Fin x.1)) ≠ ⊥`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun h => ?_, hv0⟩` and prove the remaining obligations. Conclude with `hv ⟨h.1, iwahori_le_KO k _ h.2⟩`.
+
+Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries hadm x.2.rep.irr hI`. Establish `hχ : ∀ i, IsSmoothChar (unrChar k (α i))` using `fun i => isSmoothChar_of_isUnram (isUnram_unrChar k (α i))`. Establish `H : IsCuspSupport x.rep (fun _ : Fin x.1 => 1) fun a => detRep (Fin 1) (unrChar k (α a))` using `⟨x.2.rep.irr, fun a => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hχ a)⟩, _, hα.trans (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k x.1 fun i => unrChar k (α i))⟩`. Use `⟨_, hasSupport_of_isCuspSupport H, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `⟨unrChar k (α i), isUnram_unrChar k (α i), rfl⟩`.
+-/
 theorem toral_of_isSpherical (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (k : Type) [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : IrrGL k)
     (hs : IsSpherical x.rep) :
@@ -29,6 +36,11 @@ theorem toral_of_isSpherical (hBZ : GlobalTheory.Published.BernsteinZelevinskyFi
   obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hy
   exact ⟨unrChar k (α i), isUnram_unrChar k (α i), rfl⟩
 
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ x hs`. Take `⟨s, hsup, hs1⟩` from `toral_of_isSpherical hBZ k x hs`. Establish `h1 : ∀ y ∈ s, y.1 = 1` using `fun y hy => by`. Take `⟨χ, -, rfl⟩` from `hs1 y hy`. Both sides reduce to the same expression.
+
+Conclude with `⟨⟨s, hsup, h1⟩, ⟨s, hsup, fun y hy => Or.inl (h1 y hy)⟩⟩`.
+-/
 theorem toral_and_good_of_isSpherical : GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : IrrGL k),
       IsSpherical x.rep → Toral x ∧ Good x := by

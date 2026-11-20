@@ -14,6 +14,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 namespace GlobalTheory.HoweFockReal
+/- English proof (translation)
+Introduce `hH hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, hcm, hstd, hX, hXd, hWs, hWd, hrX, hrW, hhX, hhW, hwe, hcX, hcW, Φ, hinj, hran, hLT, hKT, hLS, hKS⟩` from `_root_.GlobalTheory.T.twist_real_place_correspondence hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨⟨L, hL⟩, hsum⟩` from `hH D.host.F D.host.E D.sp.cm.sig hcm M.rank X.rank Xs Ws Mo ψ' χX χW om hstd hX hXd hWs hWd hrX hrW hhX hhW hwe τ hcX hcW`. Establish `key : ∀ N : Submodule ℂ (PolF D X.rank M.rank), GlobalTheory.RealQuot.IsStab (fun i : GlobalTheory.RealQuot.LieIx X => GlobalTheory.RealQuot.actT ε A B eS i.1.1 i.1.2) N → GlobalTheory.RealQuot.coinv ε A B eT ≤ N → GlobalTheory.Published.ThetaSubInf Mo ψ' τ om (N.map Φ)`. Introduce `N hs hc`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hran]`. Conclude with `LinearMap.map_le_range`. Introduce `γ hγ f hf f₁ h`. Conclude with `Submodule.map_mono hc (hLS γ hγ f hf f₁ h)`.
+
+Introduce `k hk f hf f₁ h`. Conclude with `Submodule.map_mono hc (hKS k hk f hf f₁ h)`. Introduce `γ hγ f hf f₁ h`. Conclude with `hLT N hs γ hγ f hf f₁ h`. Introduce `k hk f hf f₁ h`.
+
+Conclude with `hKT N hs k hk f hf f₁ h`. Establish `hne : ∀ N : Submodule ℂ (PolF D X.rank M.rank), N ≠ ⊤ → N.map Φ ≠ Mo.Pol ψ' τ`. Introduce `N hN h`. Apply `hN` to reduce the goal to its premises. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises.
+
+Rewrite using `[h, Submodule.map_top, hran]`. Use `⟨⟨L, fun m N hN hk => hL m (fun i => (N i).map Φ) ?_ fun i => key _ (hk i).1 (hk i).2⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `(Submodule.map_strictMono_of_injective hinj) (hN hij)`. Introduce `N N' hs hc hN hs' hc' hN' hsup`.
+
+Apply `hsum _ _ (key N hs hc) (key N' hs' hc') (hne N hN) (hne N' hN')` to reduce the goal to its premises. Rewrite using `[← Submodule.map_sup, hsup, Submodule.map_top, hran]`.
+-/
 theorem howe_condition_action_coinvariants_fock : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
@@ -62,6 +75,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock | exact _root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock | (intros; apply _root_.GlobalTheory.HoweFockReal.howe_condition_action_coinvariants_fock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.howe_condition_of_fock_coinvariants : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

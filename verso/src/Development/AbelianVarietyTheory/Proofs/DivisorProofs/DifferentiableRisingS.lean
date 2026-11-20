@@ -28,13 +28,25 @@ def logFac (z : I → ℂ) : ℂ := ((Real.log (Complex.normSq (homFac z)) : ℝ
 def modPt {Φ : Type} (φ : I → E →+* ℂ) (e : I ≃ Φ) (θ : E) (z : I → ℂ) : Φ → ℂ :=
   fun τ => defCoord φ z θ (e.symm τ) / (1 + z (e.symm τ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dz_apply (j : I) (v : I → ℂ) : dz j v = v j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dzbar_apply (j : I) (v : I → ℂ) : dzbar j v = starRingEnd ℂ (v j) := rfl
 
+/- English proof (translation)
+Simplify using `[eTerm, defTerm]`.
+-/
 theorem eTerm_zero (φ : I → E →+* ℂ) (σ : ℂ) (z : I → ℂ) (x : E) : eTerm φ 0 σ z x = defTerm φ 2 z σ x := by
   simp [eTerm, defTerm]
 
+/- English proof (translation)
+Unfold `eTerm risingS term`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [defCoord, Pi.zero_apply, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eTerm_origin (φ : I → E →+* ℂ) (m : I → ℕ) (σ : ℂ) (x : E) :
     eTerm φ m σ 0 x = risingS σ m * term φ 2 m σ x := by
   unfold eTerm risingS term
@@ -43,13 +55,22 @@ theorem eTerm_origin (φ : I → E →+* ℂ) (m : I → ℕ) (σ : ℂ) (x : E)
   simp only [defCoord, Pi.zero_apply, zero_mul, add_zero]
   ring
 
+/- English proof (translation)
+Simplify using `[risingS, risingFactor]`.
+-/
 theorem risingS_zero (m : I → ℕ) : risingS 0 m = risingFactor 2 m := by
   simp [risingS, risingFactor]
 
+/- English proof (translation)
+Unfold `risingS`. Use `fun_prop`.
+-/
 theorem differentiable_risingS (m : I → ℕ) : Differentiable ℂ fun σ => risingS σ m := by
   unfold risingS
   fun_prop
 
+/- English proof (translation)
+Establish `: polydisc I = ⋂ i : I, {z : I → ℂ | ‖z i‖ < 1}`. Use extensionality with `z`. Simplify using `[polydisc]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt (continuous_apply i).norm continuous_const`.
+-/
 theorem isOpen_polydisc (I : Type) [Fintype I] : IsOpen (polydisc I) := by
   have : polydisc I = ⋂ i : I, {z : I → ℂ | ‖z i‖ < 1} := by
     ext z; simp [polydisc]
@@ -57,6 +78,9 @@ theorem isOpen_polydisc (I : Type) [Fintype I] : IsOpen (polydisc I) := by
   exact isOpen_iInter_of_finite fun i => isOpen_lt (continuous_apply i).norm continuous_const
 
 omit [Fintype I] in
+/- English proof (translation)
+Introduce `h`. Establish `h1 : z i = -1` using `by linear_combination h`. Establish `h2` using `hz i`. Rewrite `h2` using `[h1]`. Simplify using `at h2`.
+-/
 theorem one_add_ne_zero {z : I → ℂ} (hz : z ∈ polydisc I) (i : I) : 1 + z i ≠ 0 := by
   intro h
   have h1 : z i = -1 := by linear_combination h
@@ -64,15 +88,26 @@ theorem one_add_ne_zero {z : I → ℂ} (hz : z ∈ polydisc I) (i : I) : 1 + z 
   rw [h1] at h2
   simp at h2
 
+/- English proof (translation)
+Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => div_ne_zero (one_add_ne_zero hz i) (mul_ne_zero (mul_ne_zero two_ne_zero hπ) Complex.I_ne_zero)`.
+-/
 theorem homFac_ne_zero {z : I → ℂ} (hz : z ∈ polydisc I) : homFac z ≠ 0 := by
   have hπ : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
   exact Finset.prod_ne_zero_iff.2 fun i _ => div_ne_zero (one_add_ne_zero hz i)
     (mul_ne_zero (mul_ne_zero two_ne_zero hπ) Complex.I_ne_zero)
 
+/- English proof (translation)
+Unfold `homFac`. Conclude with `contDiff_prod fun i _ => (contDiff_const.add (contDiff_apply ℂ ℂ i)).div_const _`.
+-/
 theorem contDiff_homFac : ContDiff ℂ ∞ (homFac : (I → ℂ) → ℂ) := by
   unfold homFac
   exact contDiff_prod fun i _ => (contDiff_const.add (contDiff_apply ℂ ℂ i)).div_const _
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (homFac : (I → ℂ) → ℂ)` using `contDiff_homFac.restrict_scalars ℝ`. Establish `h2 : ContDiff ℝ ∞ (fun z : I → ℂ => Complex.normSq (homFac z))`. Simplify using `only [Complex.normSq_apply]`. Conclude with `((Complex.reCLM.contDiff.comp h1).mul (Complex.reCLM.contDiff.comp h1)).add ((Complex.imCLM.contDiff.comp h1).mul (Complex.imCLM.contDiff.comp h1))`. Establish `h3 : ContDiffOn ℝ ∞ (fun z : I → ℂ => Real.log (Complex.normSq (homFac z))) (polydisc I)` using `h2.contDiffOn.log fun z hz => (Complex.normSq_pos.2 (homFac_ne_zero hz)).ne'`.
+
+Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn h3`.
+-/
 theorem contDiffOn_logFac : ContDiffOn ℝ ∞ (logFac : (I → ℂ) → ℂ) (polydisc I) := by
   have h1 : ContDiff ℝ ∞ (homFac : (I → ℂ) → ℂ) := contDiff_homFac.restrict_scalars ℝ
   have h2 : ContDiff ℝ ∞ (fun z : I → ℂ => Complex.normSq (homFac z)) := by
@@ -83,6 +118,9 @@ theorem contDiffOn_logFac : ContDiffOn ℝ ∞ (logFac : (I → ℂ) → ℂ) (p
     h2.contDiffOn.log fun z hz => (Complex.normSq_pos.2 (homFac_ne_zero hz)).ne'
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn h3
 
+/- English proof (translation)
+Use `contDiffOn_pi.2 fun τ => ?_` and prove the remaining obligations. Unfold `modPt defCoord`. Use `ContDiffOn.div ?_ ?_ fun z hz => one_add_ne_zero hz _` and prove the remaining obligations. Conclude with `(contDiff_const.add ((contDiff_apply ℂ ℂ _).mul contDiff_const)).contDiffOn`. Conclude with `(contDiff_const.add (contDiff_apply ℂ ℂ _)).contDiffOn`.
+-/
 theorem contDiffOn_modPt {Φ : Type} [Fintype Φ] (φ : I → E →+* ℂ) (e : I ≃ Φ) (θ : E) :
     ContDiffOn ℂ ∞ (modPt φ e θ) (polydisc I) := by
   refine contDiffOn_pi.2 fun τ => ?_
@@ -93,6 +131,13 @@ theorem contDiffOn_modPt {Φ : Type} [Fintype Φ] (φ : I → E →+* ℂ) (e : 
 
 omit [Fintype I] in
 
+/- English proof (translation)
+Unfold `modPt defCoord`. Use `set i := e.symm τ`. Establish `h0 : 0 < Complex.normSq (1 + z i)` using `Complex.normSq_pos.2 (one_add_ne_zero hz i)`. Establish `h1 : Complex.normSq (z i) < 1`. Rewrite using `[Complex.normSq_eq_norm_sq]`.
+
+Use `hz i` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (z i)]`. Rewrite using `[Complex.div_im, ← sub_div]`. Use `div_pos ?_ h0` and prove the remaining obligations. Rewrite `h1` using `[Complex.normSq_apply]`.
+
+Establish `h2` using `hθ i`. Simplify using `only [Complex.add_im, Complex.add_re, Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.one_re, Complex.one_im]`. Use polynomial arithmetic with `[mul_pos h2 (sub_pos.2 h1)]`.
+-/
 theorem modPt_im_pos {Φ : Type} (φ : I → E →+* ℂ) (e : I ≃ Φ) (θ : E) (hθ : ∀ i, 0 < (φ i θ).im)
     {z : I → ℂ} (hz : z ∈ polydisc I) (τ : Φ) : 0 < (modPt φ e θ z τ).im := by
   unfold modPt defCoord
@@ -110,6 +155,9 @@ theorem modPt_im_pos {Φ : Type} (φ : I → E →+* ℂ) (e : I ≃ Φ) (θ : E
     Complex.one_im]
   nlinarith [mul_pos h2 (sub_pos.2 h1)]
 
+/- English proof (translation)
+Simplify using `[eTerm, defCoord]`.
+-/
 example (φ : E →+* ℂ) (x : E) :
     eTerm (fun _ : Unit => φ) (fun _ => 1) 0 0 x = -2 * (starRingEnd ℂ (φ x)) * (φ x)⁻¹ ^ 3 := by
   simp [eTerm, defCoord]

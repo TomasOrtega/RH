@@ -14,6 +14,13 @@ namespace GlobalTheory.SW.FourierJ
 
 noncomputable section
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨Summable.of_finite, by simp⟩`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `ih (fun k => f k.succ) fun k => hf _`. Establish `e : ∀ q : α × (Fin n → α), ∏ k, f k ((Fin.consEquiv fun _ => α) q k) = f 0 q.1 * ∏ k : Fin n, f k.succ (q.2 k)`.
+
+Introduce `q`. Rewrite using `[Fin.prod_univ_succ]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Rewrite using `[← (Fin.consEquiv fun _ : Fin (n + 1) => α).summable_iff]`.
+
+Use `(hf 0).mul_norm h1` as an intermediate fact. Simplify `this` using `only [Function.comp_def, e]`. Rewrite using `[← (Fin.consEquiv fun _ : Fin (n + 1) => α).tsum_eq, Fin.prod_univ_succ, ← h2, tsum_mul_tsum_of_summable_norm (hf 0) h1]`. Simplify using `only [e]`.
+-/
 theorem prodsum_fin (α : Type) (n : ℕ) (f : Fin n → α → ℂ) (hf : ∀ k, Summable fun a => ‖f k a‖) :
     (Summable fun m : Fin n → α => ‖∏ k, f k (m k)‖) ∧
       ∑' m : Fin n → α, ∏ k, f k (m k) = ∏ k, ∑' a, f k a := by
@@ -32,6 +39,13 @@ theorem prodsum_fin (α : Type) (n : ℕ) (f : Fin n → α → ℂ) (hf : ∀ k
         tsum_mul_tsum_of_summable_norm (hf 0) h1]
       simp only [e]
 
+/- English proof (translation)
+Introduce `κ α _ f hf`. Use `set e := (Fintype.equivFin κ).symm`. Take `⟨h1, h2⟩` from `prodsum_fin α _ (fun k => f (e k)) fun k => hf _`. Establish `h : ∀ m : Fin (Fintype.card κ) → α, ∏ k, f k ((e.arrowCongr (Equiv.refl α)) m k) = ∏ k, f (e k) (m k)`. Introduce `m`.
+
+Rewrite using `[← e.prod_comp]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite using `[← (e.arrowCongr (Equiv.refl α)).summable_iff]`. Simplify `h1` using `only [Function.comp_def, h]`.
+
+Rewrite using `[← (e.arrowCongr (Equiv.refl α)).tsum_eq, ← e.prod_comp, ← h2]`. Simplify using `only [h]`.
+-/
 theorem tsum_pi_prod : ∀ (κ α : Type) [Fintype κ] (f : κ → α → ℂ), (∀ k, Summable fun a => ‖f k a‖) → (Summable fun m : κ → α => ‖∏ k, f k (m k)‖) ∧ ∑' m : κ → α, ∏ k, f k (m k) = ∏ k, ∑' a, f k a := by
   intro κ α _ f hf
   set e := (Fintype.equivFin κ).symm
@@ -45,6 +59,19 @@ theorem tsum_pi_prod : ∀ (κ α : Type) [Fintype κ] (f : κ → α → ℂ), 
   · rw [← (e.arrowCongr (Equiv.refl α)).tsum_eq, ← e.prod_comp, ← h2]
     simp only [h]
 
+/- English proof (translation)
+Establish `hR0 : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `split_ifs with h`. Simplify using `[h, ech_zero, sq]`. Use `set t : ℚ := (((a : ℕ) : ℚ) - (b : ℕ)) / (R * R) with ht`. Establish `hpow : ∀ n : ℕ, ech (t * n) = ech t ^ n`.
+
+Introduce `n`. Simplify using `only [ech, ← Complex.exp_nat_mul]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `h1 : ∀ n : Fin (R * R), ech ((((a : ℕ) : ℚ) / R - ((b : ℕ) : ℚ) / R) * (((n : ℕ) : ℚ) / R)) = ech t ^ (n : ℕ)`.
+
+Introduce `n`. Rewrite using `[← hpow, ht]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hne : ech t ≠ 1`.
+
+Introduce `h1`. Take `⟨m, hm⟩` from `(ech_eq_one_iff _).1 h1`. Rewrite `hm` using `[ht, div_eq_iff (mul_ne_zero hR0 hR0)]`. Establish `hm' : ((a : ℕ) : ℤ) - (b : ℕ) = m * ((R * R : ℕ) : ℤ)` using `by exact_mod_cast hm`. Establish `ha` using `a.2`.
+
+Establish `hb` using `b.2`. Establish `: ((a : ℕ) : ℤ) - (b : ℕ) = 0` using `Int.eq_zero_of_abs_lt_dvd (m := ((R * R : ℕ) : ℤ)) ⟨m, by rw [hm', mul_comm]⟩ (by rw [abs_lt]; omega)`. Conclude with `h (Fin.ext (by omega))`. Establish `hN : ech t ^ (R * R) = 1`. Rewrite using `[← hpow]`.
+
+Conclude with `(ech_eq_one_iff _).2 ⟨((a : ℕ) : ℤ) - (b : ℕ), by rw [ht]; push_cast; field_simp⟩`. Simplify using `only [h1]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun n => ech t ^ n), geom_sum_eq hne, hN]`. Simplify using the standard rewrite rules.
+-/
 theorem orth_one {R : ℕ} (hR : 0 < R) (a b : Fin (R * R)) :
     ∑ n : Fin (R * R), ech ((((a : ℕ) : ℚ) / R - ((b : ℕ) : ℚ) / R) * (((n : ℕ) : ℚ) / R)) =
       if a = b then (R : ℂ) ^ 2 else 0 := by
@@ -74,6 +101,15 @@ theorem orth_one {R : ℕ} (hR : 0 < R) (a b : Fin (R * R)) :
     simp only [h1]
     rw [Fin.sum_univ_eq_sum_range (fun n => ech t ^ n), geom_sum_eq hne, hN]; simp
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ _ R hR a b`. Establish `h : ∀ n : κ → ι → Fin (R * R), ech (∑ k, (rep R a k - rep R b k) ⬝ᵥ rep R n k) = ∏ k, ∏ i, ech ((((a k i : ℕ) : ℚ) / R - ((b k i : ℕ) : ℚ) / R) * (((n k i : ℕ) : ℚ) / R))`. Introduce `n`. Simplify using `only [dotProduct, ech_sum]`. Both sides reduce to the same expression.
+
+Simplify using `only [h]`. Rewrite using `[← Fintype.prod_sum (fun k (v : ι → Fin (R * R)) => ∏ i, ech ((((a k i : ℕ) : ℚ) / R - ((b k i : ℕ) : ℚ) / R) * (((v i : ℕ) : ℚ) / R)))]`. Establish `h2 : ∀ k, ∑ v : ι → Fin (R * R), ∏ i, ech ((((a k i : ℕ) : ℚ) / R - ((b k i : ℕ) : ℚ) / R) * (((v i : ℕ) : ℚ) / R)) = ∏ i, if a k i = b k i then (R : ℂ) ^ 2 else 0`. Introduce `k`. Rewrite using `[← Fintype.prod_sum (fun i (v : Fin (R * R)) => ech ((((a k i : ℕ) : ℚ) / R - ((b k i : ℕ) : ℚ) / R) * (((v : ℕ) : ℚ) / R)))]`.
+
+Simplify using `only [orth_one hR]`. Simplify using `only [h2]`. Use `split_ifs with hab`. Simplify using `[hab, ← pow_mul]`. Put the polynomial expressions in normal form.
+
+Take `⟨k, hk⟩` from `Function.ne_iff.1 hab`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hk`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi))`.
+-/
 theorem sum_ech_rep : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq κ] [DecidableEq ι] (R : ℕ), 0 < R → ∀ a b : κ → ι → Fin (R * R), ∑ n : κ → ι → Fin (R * R), ech (∑ k, (rep R a k - rep R b k) ⬝ᵥ rep R n k) = if a = b then ((R : ℂ) ^ (Fintype.card κ * Fintype.card ι)) ^ 2 else 0 := by
   intro κ ι _ _ _ _ R hR a b
   have h : ∀ n : κ → ι → Fin (R * R), ech (∑ k, (rep R a k - rep R b k) ⬝ᵥ rep R n k) =
@@ -102,31 +138,55 @@ variable {κ ι : Type} [Fintype κ] [Fintype ι]
 
 def pr (x y : Matrix κ ι ℚ) : ℚ := ∑ k, x k ⬝ᵥ y k
 
+/- English proof (translation)
+Simplify using `only [pr, ← Finset.sum_add_distrib, ← add_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem pr_add_left (x x' y : Matrix κ ι ℚ) : pr (x + x') y = pr x y + pr x' y := by
   simp only [pr, ← Finset.sum_add_distrib, ← add_dotProduct]; rfl
 
+/- English proof (translation)
+Simplify using `only [pr, ← Finset.sum_sub_distrib, ← sub_dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem pr_sub_left (x x' y : Matrix κ ι ℚ) : pr (x - x') y = pr x y - pr x' y := by
   simp only [pr, ← Finset.sum_sub_distrib, ← sub_dotProduct]; rfl
 
+/- English proof (translation)
+Simplify using `only [pr, dotProduct_comm]`.
+-/
 theorem pr_comm (x y : Matrix κ ι ℚ) : pr x y = pr y x := by
   simp only [pr, dotProduct_comm]
 
+/- English proof (translation)
+Simplify using `only [pr, dotProduct, Finset.mul_sum, Matrix.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem pr_smul_left (t : ℚ) (x y : Matrix κ ι ℚ) : pr (t • x) y = t * pr x y := by
   simp only [pr, dotProduct, Finset.mul_sum, Matrix.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[pr_smul_left, pr_comm x (t • y), pr_smul_left, pr_comm]`.
+-/
 theorem pr_smul_swap (t : ℚ) (x y : Matrix κ ι ℚ) : pr (t • x) y = pr x (t • y) := by
   rw [pr_smul_left, pr_comm x (t • y), pr_smul_left, pr_comm]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(intM_iff x).1 hx`. Take `⟨b, rfl⟩` from `(intM_iff y).1 hy`. Use `(ech_eq_one_iff _).2 ⟨∑ k, ∑ i, a k i * b k i, ?_⟩` and prove the remaining obligations. Simplify using `[pr, zm, dotProduct]`.
+-/
 theorem ech_pr_int {x y : Matrix κ ι ℚ} (hx : IntM x) (hy : IntM y) : ech (pr x y) = 1 := by
   obtain ⟨a, rfl⟩ := (intM_iff x).1 hx
   obtain ⟨b, rfl⟩ := (intM_iff y).1 hy
   refine (ech_eq_one_iff _).2 ⟨∑ k, ∑ i, a k i * b k i, ?_⟩
   simp [pr, zm, dotProduct]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(intM_iff x).1 hx`. Conclude with `(intM_iff _).2 ⟨fun k i => S * a k i, by ext k i; simp [zm]⟩`.
+-/
 theorem intM_nsmul {x : Matrix κ ι ℚ} (hx : IntM x) (S : ℕ) : IntM ((S : ℚ) • x) := by
   obtain ⟨a, rfl⟩ := (intM_iff x).1 hx
   exact (intM_iff _).2 ⟨fun k i => S * a k i, by ext k i; simp [zm]⟩
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Use `intM_nsmul (h.1 x hx) S` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_comm, ← Nat.cast_mul]`. Then use the resulting hypothesis. Rewrite using `[Nat.cast_mul, ← smul_smul]`. Conclude with `h.2 x _ (intM_nsmul hy S)`.
+-/
 theorem level_mul {R : ℕ} {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) (S : ℕ) :
     HasLevel (R * S) φ := by
   refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
@@ -134,6 +194,11 @@ theorem level_mul {R : ℕ} {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) 
     rwa [smul_smul, mul_comm, ← Nat.cast_mul] at this
   · rw [Nat.cast_mul, ← smul_smul]; exact h.2 x _ (intM_nsmul hy S)
 
+/- English proof (translation)
+Use `⟨∏ p : κ × ι, (y p.1 p.2).den, Finset.prod_pos fun p _ => (y p.1 p.2).den_pos, ?_⟩` and prove the remaining obligations. Introduce `k i`. Take `⟨d, hd⟩ : (y k i).den ∣ ∏ p : κ × ι, (y p.1 p.2).den` from `Finset.dvd_prod_of_mem (fun p : κ × ι => (y p.1 p.2).den) (Finset.mem_univ (k, i))`. Establish `: (((∏ p : κ × ι, (y p.1 p.2).den : ℕ) : ℚ) • y) k i = ((d * (y k i).num : ℤ) : ℚ)`. Rewrite using `[hd, Matrix.smul_apply, smul_eq_mul]`.
+
+Use `push_cast`. Rewrite using `[← Rat.den_mul_eq_num]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap (R := ℤ) (x := d * (y k i).num)`.
+-/
 theorem exists_den (y : Matrix κ ι ℚ) : ∃ S : ℕ, 0 < S ∧ IntM ((S : ℚ) • y) := by
   classical
   refine ⟨∏ p : κ × ι, (y p.1 p.2).den, Finset.prod_pos fun p _ => (y p.1 p.2).den_pos, ?_⟩
@@ -146,6 +211,9 @@ theorem exists_den (y : Matrix κ ι ℚ) : ∃ S : ℕ, 0 < S ∧ IntM ((S : �
   rw [this]
   exact isIntegral_algebraMap (R := ℤ) (x := d * (y k i).num)
 
+/- English proof (translation)
+Use `⟨fun x hx => h.1 x (left_ne_zero_of_mul hx), fun x z hz => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h.2 x z hz, pr_add_left, ech_add, pr_smul_swap, ech_pr_int hz hy, mul_one]`.
+-/
 theorem level_ch {R : ℕ} {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) {y : Matrix κ ι ℚ}
     (hy : IntM ((R : ℚ) • y)) : HasLevel R fun x => φ x * ech (pr x y) := by
   refine ⟨fun x hx => h.1 x (left_ne_zero_of_mul hx), fun x z hz => ?_⟩
@@ -154,12 +222,30 @@ theorem level_ch {R : ℕ} {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) {
 
 def ft (φ : Matrix κ ι ℚ → ℂ) (y : Matrix κ ι ℚ) : ℂ := haar fun x => φ x * ech (pr x y)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_ch h hy)`.
+-/
 theorem ft_eq [DecidableEq κ] [DecidableEq ι] {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ}
     (h : HasLevel R φ) {y : Matrix κ ι ℚ} (hy : IntM ((R : ℚ) • y)) :
     ft φ y = ((R : ℂ) ^ (Fintype.card κ * Fintype.card ι))⁻¹ *
       ∑ n : κ → ι → Fin (R * R), φ (rep R n) * ech (pr (rep R n) y) :=
   GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_ch h hy)
 
+/- English proof (translation)
+Introduce `k i`. Take `⟨S, hS, hSy⟩` from `exists_den y`. Establish `hsb : IsSB fun x => φ x * ech (pr x y)`. Use `⟨R * S, Nat.mul_pos hR hS, level_ch (level_mul h S) ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ← smul_smul]`.
+
+Conclude with `intM_nsmul hSy R`. Take `⟨-, -, -, -, -, hsm, -, htr⟩` from `GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear ℚ κ ι _ _ hsb hsb`. Use `set z : Matrix κ ι ℚ := -Matrix.single k i 1 with hz`. Establish `hzi : IntM (-z)`. Introduce `k' i'`.
+
+Simplify using `only [hz, neg_neg, Matrix.single_apply]`. Use `split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Establish `h1` using `(htr ((R : ℚ) • z)).2`.
+
+Establish `h2 : (fun x => φ (x - (R : ℚ) • z) * ech (pr (x - (R : ℚ) • z) y)) = ech (((R : ℚ) • y) k i) • fun x => φ x * ech (pr x y)`. Use extensionality with `x`. Establish `h3 : pr (-z) ((R : ℚ) • y) = ((R : ℚ) • y) k i`. Generalize the expression as in `(R : ℚ) • y = w`. Rewrite using `[hz, neg_neg]`.
+
+Simplify using `[pr, dotProduct, Matrix.single_apply, ite_and]`. Rewrite using `[sub_eq_add_neg, ← smul_neg, h.2 x _ hzi, pr_add_left, ech_add, pr_smul_swap, h3]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce at h1`.
+
+Rewrite `h1` using `[h2, hsm]`. Establish `h4 : ech (((R : ℚ) • y) k i) = 1`. Establish `: ech (((R : ℚ) • y) k i) * ft φ y = 1 * ft φ y` using `by rw [one_mul]; exact h1`. Conclude with `mul_right_cancel₀ hy this`. Take `⟨m, hm⟩` from `(ech_eq_one_iff _).1 h4`.
+
+Rewrite using `[hm]`. Conclude with `isIntegral_algebraMap (R := ℤ) (x := m)`.
+-/
 theorem ft_supp {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ}
     (h : HasLevel R φ) (y : Matrix κ ι ℚ) (hy : ft φ y ≠ 0) : IntM ((R : ℚ) • y) := by
   classical
@@ -195,6 +281,11 @@ theorem ft_supp {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ}
   rw [hm]
   exact isIntegral_algebraMap (R := ℤ) (x := m)
 
+/- English proof (translation)
+Use `⟨fun y hy => ft_supp hR h y (right_ne_zero_of_mul hy), fun y z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [ft]`. Use `congr 2`. Use extensionality with `x`. Distinguish the cases in `hx : φ x = 0`.
+
+Simplify using `[hx]`. Rewrite using `[pr_comm, pr_add_left, ech_add, pr_smul_swap, ech_pr_int hz (h.1 x hx), mul_one, pr_comm]`.
+-/
 theorem ft_level {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) (c : ℂ) :
     HasLevel R fun y => c * ft φ y := by
   refine ⟨fun y hy => ft_supp hR h y (right_ne_zero_of_mul hy), fun y z hz => ?_⟩
@@ -205,15 +296,34 @@ theorem ft_level {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ} (h : Has
   · simp [hx]
   · rw [pr_comm, pr_add_left, ech_add, pr_smul_swap, ech_pr_int hz (h.1 x hx), mul_one, pr_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => h.1 x (left_ne_zero_of_mul hx), fun x z hz => by simp only [h.2 x z hz, h'.2 x z hz]⟩`.
+-/
 theorem level_mul_conj {R : ℕ} {φ ψ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) (h' : HasLevel R ψ) :
     HasLevel R fun x => φ x * conj (ψ x) :=
   ⟨fun x hx => h.1 x (left_ne_zero_of_mul hx), fun x z hz => by simp only [h.2 x z hz, h'.2 x z hz]⟩
 
+/- English proof (translation)
+Use `(intM_iff _).2 ⟨fun k i => ((n k i : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Establish `: (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use extensionality with `k i`. Simplify using `[rep, zm]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem intM_rep {R : ℕ} (hR : 0 < R) (n : κ → ι → Fin (R * R)) : IntM ((R : ℚ) • rep R n) := by
   refine (intM_iff _).2 ⟨fun k i => ((n k i : ℕ) : ℤ), ?_⟩
   have : (R : ℚ) ≠ 0 := by exact_mod_cast hR.ne'
   ext k i; simp [rep, zm]; field_simp
 
+/- English proof (translation)
+Unfold `ip`. Rewrite using `[GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_mul_conj (ft_level hR h c) (ft_level hR h' c)), GlobalTheory.T.schwartzBruhatIntegral_eq_sum_residueRepresentatives κ ι R _ hR (level_mul_conj h h')]`. Use `congr 1`. Use `set V : ℂ := (R : ℂ) ^ (Fintype.card κ * Fintype.card ι) with hV`. Establish `hV0 : V ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hR.ne')`.
+
+Establish `hVc : conj V = V` using `by simp [hV]`. Establish `key : ∀ n : κ → ι → Fin (R * R), c * ft φ (rep R n) * conj (c * ft ψ (rep R n)) = ∑ a : κ → ι → Fin (R * R), ∑ b : κ → ι → Fin (R * R), (V ^ 2)⁻¹ * (φ (rep R a) * conj (ψ (rep R b))) * ech (∑ k, (rep R a k - rep R b k) ⬝ᵥ rep R n k)`. Introduce `n`. Rewrite using `[ft_eq hR h (intM_rep hR n), ft_eq hR h' (intM_rep hR n), ← hV, map_mul, map_mul, map_inv₀, hVc, map_sum]`. Establish `e : ∀ A B : ℂ, c * (V⁻¹ * A) * (conj c * (V⁻¹ * B)) = (V ^ 2)⁻¹ * (A * B)`.
+
+Introduce `A B`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: (∑ k, (rep R a k - rep R b k) ⬝ᵥ rep R n k) = pr (rep R a) (rep R n) + -pr (rep R b) (rep R n)`. Rewrite using `[← sub_eq_add_neg, ← pr_sub_left]`. Both sides reduce to the same expression. Rewrite using `[this, ech_add, map_mul, conj_ech]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.mul_sum, sum_ech_rep κ ι R hR, ← hV, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem plancherel {R : ℕ} (hR : 0 < R) {φ ψ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ)
     (h' : HasLevel R ψ) (c : ℂ) (hc : c * conj c = 1) :
     ip (fun y => c * ft φ y) (fun y => c * ft ψ y) = ip φ ψ := by
@@ -252,10 +362,18 @@ theorem plancherel {R : ℕ} (hR : 0 < R) {φ ψ : Matrix κ ι ℚ → ℂ} (h 
     Finset.mem_univ, if_true]
   field_simp
 
+/- English proof (translation)
+Simplify using `only [thS, gs, ← Complex.exp_sum, Finset.mul_sum]`.
+-/
 theorem thS_eq [DecidableEq ι] (φ : Matrix κ ι ℚ → ℂ) (τ : Matrix ι ι ℂ) (ζ : κ → ι → ℂ) :
     thS φ τ ζ = ∑' x : Matrix κ ι ℚ, φ x * ∏ k, gs τ (ζ k) (x k) := by
   simp only [thS, gs, ← Complex.exp_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hR0 : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hinj : Function.Injective fun m : κ → ι → ℤ => (R : ℚ)⁻¹ • zm m`. Introduce `m m' hm`. Use extensionality with `k i`. Use `congrFun (congrFun hm k) i` as an intermediate fact.
+
+Simplify `this` using `[zm, hR.ne']`. Use `(hinj.tsum_eq (f := fun y => ψ y * G y) ?_).symm` and prove the remaining obligations. Introduce `y hy`. Take `⟨m, hm⟩` from `(intM_iff _).1 (h.1 y (left_ne_zero_of_mul hy))`. Conclude with `⟨m, by simp only [← hm, smul_smul, inv_mul_cancel₀ hR0, one_smul]⟩`.
+-/
 theorem tsum_supp {R : ℕ} (hR : 0 < R) {ψ : Matrix κ ι ℚ → ℂ} (h : HasLevel R ψ)
     (G : Matrix κ ι ℚ → ℂ) :
     ∑' y, ψ y * G y = ∑' m : κ → ι → ℤ, ψ ((R : ℚ)⁻¹ • zm m) * G ((R : ℚ)⁻¹ • zm m) := by
@@ -270,15 +388,24 @@ theorem tsum_supp {R : ℕ} (hR : 0 < R) {ψ : Matrix κ ι ℚ → ℂ} (h : Ha
   obtain ⟨m, hm⟩ := (intM_iff _).1 (h.1 y (left_ne_zero_of_mul hy))
   exact ⟨m, by simp only [← hm, smul_smul, inv_mul_cancel₀ hR0, one_smul]⟩
 
+/- English proof (translation)
+Establish `h1 : qm (1 : Matrix ι ι ℚ) = 1`. Apply the tactic sequence `ext i j; simp [qm, Matrix.one_apply]; split_ifs <;> simp`. Establish `h0 : qm (0 : Matrix ι ι ℚ) = 0` using `by ext i j; simp [qm]`. Simplify using `[spDen, Matrix.J, h1, h0]`.
+-/
 theorem spDen_J [DecidableEq ι] (τ : Matrix ι ι ℂ) : spDen (Matrix.J ι ℚ) τ = τ := by
   have h1 : qm (1 : Matrix ι ι ℚ) = 1 := by
     ext i j; simp [qm, Matrix.one_apply]; split_ifs <;> simp
   have h0 : qm (0 : Matrix ι ι ℚ) = 0 := by ext i j; simp [qm]
   simp [spDen, Matrix.J, h1, h0]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; simp [qm, Matrix.J, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem qm_J [DecidableEq ι] : qm (Matrix.J ι ℚ).toBlocks₂₁ = 1 := by
   ext i j; simp [qm, Matrix.J, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h1 : qm (-1 : Matrix ι ι ℚ) = -1`. Apply the tactic sequence `ext i j; simp [qm, Matrix.one_apply]; split_ifs <;> simp`. Establish `h0 : qm (0 : Matrix ι ι ℚ) = 0` using `by ext i j; simp [qm]`. Rewrite using `[spAct, spDen_J]`. Simplify using `[Matrix.J, h1, h0]`.
+-/
 theorem spAct_J [DecidableEq ι] (τ : Matrix ι ι ℂ) : spAct (Matrix.J ι ℚ) τ = -τ⁻¹ := by
   have h1 : qm (-1 : Matrix ι ι ℚ) = -1 := by
     ext i j; simp [qm, Matrix.one_apply]; split_ifs <;> simp
@@ -286,6 +413,27 @@ theorem spAct_J [DecidableEq ι] (τ : Matrix ι ι ℂ) : spAct (Matrix.J ι �
   rw [spAct, spDen_J]
   simp [Matrix.J, h1, h0]
 
+/- English proof (translation)
+Introduce `τ hτ ζ`. Establish `hR0 : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hRc : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Take `⟨hd, hs, -⟩` from `GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι _ (SymplecticGroup.J_mem ι ℚ) τ hτ`. Rewrite `hs` using `[spAct_J]`.
+
+Rewrite `hd` using `[spDen_J]`. Take `⟨c, hc, hrow⟩` from `GlobalTheory.T.poisson_summation_thetaSeriesRowTerm_coset ι R hR τ hτ hs (Ne.isUnit hd)`. Rewrite using `[spAct_J, spDen_J, qm_J, Matrix.mul_one, thS_eq, thS_eq, tsum_supp hR (ft_level hR h _)]`. Establish `hsum : Summable fun x : Matrix κ ι ℚ => φ x * ∏ k, gs τ (ζ k) (x k)`. Use `(GlobalTheory.SW.SiegelSum.summable_norm_thetaTerm κ ι φ ⟨R, hR, h⟩ τ hτ ζ).of_norm` as an intermediate fact.
+
+Simplify `this` using `only [gs, ← Complex.exp_sum, Finset.mul_sum]`. Rewrite using `[GlobalTheory.T.tsum_schwartzBruhatLevel_eq_sum_residueCosets κ ι R φ _ hR h hsum]`. Use `set V : ℂ := (R : ℂ) ^ (Fintype.card κ * Fintype.card ι) with hV`. Use `set T : (κ → ι → Fin (R * R)) → κ → (ι → ℤ) → ℂ := fun n k m => ech (rep R n k ⬝ᵥ ((R : ℚ)⁻¹ • zv m)) * gs (-τ⁻¹) (ζ k ᵥ* τ⁻¹) ((R : ℚ)⁻¹ • zv m) with hT`. Establish `hTs : ∀ n k, Summable fun m => ‖T n k m‖` using `fun n k => by`.
+
+Simplify `(hrow 0 (ζ k)).2.1` using `only [hT, norm_mul, norm_ech, one_mul]`. Establish `hconst : τ.det ^ p * c ^ (p + p) = I ^ (Fintype.card ι * p) * V⁻¹`. Establish `hV0 : V ≠ 0` using `pow_ne_zero _ hRc`. Establish `h1 : (c ^ 2 * (((-I) * (R : ℂ) ^ 2) ^ Fintype.card ι * τ.det)) ^ p = 1`. Rewrite using `[hc, one_pow]`.
+
+Establish `h2 : ((-I) * I) ^ (Fintype.card ι * p) = 1` using `by simp`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ hV0, hV, hp]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by rw [h1, mul_one]`. Establish `hl : ∀ m : κ → ι → ℤ, I ^ (Fintype.card ι * p) * ft φ ((R : ℚ)⁻¹ • zm m) * ∏ k, gs (-τ⁻¹) (ζ k ᵥ* τ⁻¹) (((R : ℚ)⁻¹ • zm m) k) = ∑ n : κ → ι → Fin (R * R), (I ^ (Fintype.card ι * p) * V⁻¹ * φ (rep R n)) * ∏ k, T n k (m k)`. Introduce `m`. Establish `hm : IntM ((R : ℚ) • (R : ℚ)⁻¹ • zm m)`. Rewrite using `[smul_smul, mul_inv_cancel₀ hR0, one_smul]`.
+
+Conclude with `(intM_iff _).2 ⟨m, rfl⟩`. Rewrite using `[ft_eq hR h hm, ← hV, ← mul_assoc, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Simplify using `only [hT, Finset.prod_mul_distrib, pr, ech_sum, mul_assoc]`. Both sides reduce to the same expression.
+
+Simplify using `only [hl]`. Rewrite using `[Summable.tsum_finsetSum fun n _ => ((tsum_pi_prod κ _ (T n) (hTs n)).1.of_norm.mul_left _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[tsum_mul_left, (tsum_pi_prod κ _ (T n) (hTs n)).2]`. Establish `hr` using `(tsum_pi_prod κ _ (fun k (m : ι → ℤ) => gs τ (ζ k) (rep R n k + (R : ℚ) • zv m)) (fun k => (hrow _ _).1)).2`.
+
+Establish `hr' : ∑' m : κ → ι → ℤ, ∏ k, gs τ (ζ k) ((rep R n + (R : ℚ) • zm m) k) = ∏ k, ∑' m : ι → ℤ, gs τ (ζ k) (rep R n k + (R : ℚ) • zv m)` using `hr`. Establish `hp2 : Fintype.card κ / 2 = p` using `by omega`. Establish `hprod : cexp (π * I * ∑ k, ζ k ⬝ᵥ τ⁻¹ *ᵥ ζ k) * ∏ k, ∑' m : ι → ℤ, gs τ (ζ k) (rep R n k + (R : ℚ) • zv m) = c ^ (p + p) * ∏ k, ∑' m, T n k m`. Rewrite using `[Finset.mul_sum, Complex.exp_sum, ← Finset.prod_mul_distrib, ← hp, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => (hrow _ _).2.2`.
+
+Rewrite using `[hr', hp2, ← hconst]`. Take the linear combination `(-(τ.det ^ p * φ (rep R n))) * hprod`.
+-/
 theorem trans_J [DecidableEq ι] {p : ℕ} (hp : Fintype.card κ = p + p) {R : ℕ} (hR : 0 < R)
     {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) :
     TransS (Matrix.J ι ℚ) φ fun y => I ^ (Fintype.card ι * p) * ft φ y := by
@@ -350,6 +498,9 @@ theorem trans_J [DecidableEq ι] {p : ℕ} (hp : Fintype.card κ = p + p) {R : �
   rw [hr', hp2, ← hconst]
   linear_combination (-(τ.det ^ p * φ (rep R n))) * hprod
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ ⟨p, hp⟩`. Use `⟨fun φ y => I ^ (Fintype.card ι * p) * ft φ y, fun φ ⟨R, hR, h⟩ => ⟨⟨R, hR, ft_level hR h _⟩, trans_J hp hR h, fun φ' ⟨S, hS, h'⟩ => ?_⟩⟩` and prove the remaining obligations. Use `plancherel (Nat.mul_pos hR hS) (level_mul h S) (by rw [mul_comm]; exact level_mul h' R) _ ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_trans_J : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι],
     Even (Fintype.card κ) → ∃ ω : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ), ∀ φ, IsSB φ →
       IsSB (ω φ) ∧ TransS (Matrix.J ι ℚ) φ (ω φ) ∧

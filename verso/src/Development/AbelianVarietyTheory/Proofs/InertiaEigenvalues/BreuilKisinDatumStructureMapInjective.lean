@@ -7,6 +7,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Introduce `a a' h`. Establish `h1 : tb.c tb.i₀ 1 = 1` using `by simpa [tb.b_i₀] using tb.c_self tb.i₀`. Establish `key : ∀ x, tb.c tb.i₀ (bk.ev x) = x` using `fun x => by`.
+
+Use `tb.c_mul tb.i₀ x (tb.b tb.i₀)` as an intermediate fact. Rewrite `this` using `[tb.b_i₀, mul_one, h1, mul_one]`. Conclude with `this`. Rewrite using `[← key a, ← key a', h]`.
+-/
 theorem bk_ev_injective : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), Function.Injective bk.ev := by
   intro l _ K bk
   obtain ⟨ι, ⟨tb⟩⟩ := GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk

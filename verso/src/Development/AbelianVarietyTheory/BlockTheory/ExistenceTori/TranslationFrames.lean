@@ -22,6 +22,9 @@ abbrev MulIso (L : LB A.left) (N : ℕ) : Type :=
 abbrev FrameAt (L : LB A.left) (k : ℤ) {T : Over S} (x : T ⟶ A) : Type :=
   LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => k))
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp [mulA, MonObj.comp_one]`. Consider the case `succ n ih`. Establish `ih' : x ≫ 𝟙 A ^ n = x ^ n` using `ih`. Simplify using `only [mulA, pow_succ, MonObj.comp_mul, ih', Category.comp_id]`.
+-/
 theorem comp_mulA {T : Over S} (x : T ⟶ A) (N : ℕ) : x ≫ mulA A N = x ^ N := by
   induction N with
   | zero => simp [mulA, MonObj.comp_one]
@@ -29,6 +32,11 @@ theorem comp_mulA {T : Over S} (x : T ⟶ A) (N : ℕ) : x ≫ mulA A N = x ^ N 
     have ih' : x ≫ 𝟙 A ^ n = x ^ n := ih
     simp only [mulA, pow_succ, MonObj.comp_mul, ih', Category.comp_id]
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h0 : (snd T A).left.base y ∈ (L.U (j 0) : Set A.left)` using `Set.mem_iInter.1 hy 0`. Establish `h1 : (snd T A ^ N).left.base y ∈ (L.U (j 1) : Set A.left)` using `Set.mem_iInter.1 hy 1`. Establish `e : (snd T A).left ≫ (mulA A N).left = (snd T A ^ N).left`. Rewrite using `[← Over.comp_left, comp_mulA]`.
+
+Rewrite `h1` using `[← e]`. Use `Set.mem_iInter.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`.
+-/
 theorem mulIsoT_le (L : LB A.left) (N : ℕ) (T : Over S) (j : Fin 2 → L.ι) :
     LB.wchart L ![(snd T A).left, (snd T A ^ N).left] j ≤
       (snd T A).left ⁻¹ᵁ LB.wchart L ![𝟙 A.left, (mulA A N).left] j := by
@@ -47,10 +55,16 @@ def mulIsoT (L : LB A.left) (N : ℕ) (α : MulIso A L N) (T : Over S) :
     LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, (snd T A ^ N).left] ![(N : ℤ) ^ 2, -1]) where
   s := fun j => res (mulIsoT_le A L N T j) (pullU (snd T A).left _ (α.s j))
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+-/
 theorem one_left (T : Over S) : (1 : T ⟶ A).left = T.hom ≫ eSec A := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
   rfl
 
+/- English proof (translation)
+The claim follows from `le_of_eq (by rw [one_left])`.
+-/
 theorem originFrame_le (L : LB A.left) (T : Over S) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => (1 : T ⟶ A).left) j ≤
       LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec A) j :=

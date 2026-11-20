@@ -22,6 +22,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [Set.mem_preimage, mem_shellSet]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, h⟩`. Use `⟨g₀⁻¹ * x, (KO k A).mul_mem ((KO k A).inv_mem hg) hx, y, hy, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, hx, y, hy, h⟩`. Conclude with `⟨g₀ * x, (KO k A).mul_mem hg hx, y, hy, by rw [h]; simp only [mul_assoc]⟩`.
+-/
 theorem preimage_shellSet {A : Type} [Fintype A] [DecidableEq A] (ϖ : kˣ) (n : A → ℤ) {g₀ : GL A k}
     (hg : g₀ ∈ KO k A) : (fun g => g₀ * g) ⁻¹' shellSet ϖ n = shellSet ϖ n := by
   ext g
@@ -34,6 +39,17 @@ theorem preimage_shellSet {A : Type} [Fintype A] [DecidableEq A] (ϖ : kˣ) (n :
   · rintro ⟨x, hx, y, hy, h⟩
     exact ⟨g₀ * x, (KO k A).mul_mem hg hx, y, hy, by rw [h]; simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hz : apow (gdet g₀) z = 1` using `apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg) z`. Establish `hν : (ν (gdet g₀) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `key : ∀ n : Fin a → ℤ, shell μ ϖ ν z (fun g => φ (g₀.val * g)) n = shell μ ϖ ν z (fun g => ((ν (gdet g₀) : ℂ))⁻¹ * φ g) n`. Introduce `n`. Use `set F : GL (Fin a) k → ℂ := fun g => φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z with hF`.
+
+Establish `hL : ∀ g : GL (Fin a) k, φ (g₀.val * g.val) * (ν (gdet g) : ℂ) * apow (gdet g) z = ((ν (gdet g₀) : ℂ))⁻¹ * F (g₀ * g)`. Introduce `g`. Simplify using `only [hF, gdet_mul, apow_mul, hz, map_mul, Units.val_mul, one_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hR : ∀ g : GL (Fin a) k, ((ν (gdet g₀) : ℂ))⁻¹ * φ g.val * (ν (gdet g) : ℂ) * apow (gdet g) z = ((ν (gdet g₀) : ℂ))⁻¹ * F g`.
+
+Introduce `g`. Simplify using `only [hF]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∫ g in shellSet ϖ n, F (g₀ * g) ∂μ = ∫ g in shellSet ϖ n, F g ∂μ`. Establish `h1` using `setIntegral_map_equiv (μ := μ) (MeasurableEquiv.mulLeft g₀) F (shellSet ϖ n)`.
+
+Rewrite `h1` using `[MeasurableEquiv.coe_mulLeft, map_mul_left_eq_self, preimage_shellSet ϖ n hg]`. Conclude with `h1.symm`. Unfold `shell`. Simplify using `only [hL, hR]`. Rewrite using `[integral_const_mul, integral_const_mul, hI]`.
+
+Establish `hsum : shellSum μ ϖ ν z (fun g => φ (g₀.val * g)) = shellSum μ ϖ ν z (fun g => ((ν (gdet g₀) : ℂ))⁻¹ * φ g)`. Simplify using `only [shellSum, key]`. Rewrite using `[hsum, shellSum_smul, ← mul_assoc, mul_inv_cancel₀ hν, one_mul]`.
+-/
 theorem shellSum_mul_left {a : ℕ} (μ : Measure (GL (Fin a) k)) [μ.IsHaarMeasure] (ϖ : kˣ) (ν : kˣ →* ℂˣ) (z : ℂ)
     (φ : Matrix (Fin a) (Fin a) k → ℂ) {g₀ : GL (Fin a) k} (hg : g₀ ∈ KO k (Fin a)) :
     (ν (gdet g₀) : ℂ) * shellSum μ ϖ ν z (fun g => φ (g₀.val * g)) = shellSum μ ϖ ν z φ := by
@@ -75,6 +91,11 @@ def renum {A A₁ : Type} [Fintype A] [DecidableEq A] [Fintype A₁] [DecidableE
   continuous_invFun := Units.continuous_iff.2
     ⟨Units.continuous_val.matrix_reindex e.symm e.symm, Units.continuous_coe_inv.matrix_reindex e.symm e.symm⟩
 
+/- English proof (translation)
+Establish `hme : MeasurableEmbedding (renum e : GL A k → GL A₁ k)` using `(renum e).toHomeomorph.toMeasurableEquiv.measurableEmbedding`. Use `haveI : (μ.map (renum e)).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ (renum e)`. Take `⟨c, hpos, hmap⟩ : ∃ c : NNReal, 0 < c ∧ μ.map (renum e) = c • μ₁` from `⟨_, Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, Measure.isMulLeftInvariant_eq_smul _ _⟩`. Use `⟨((c : ℝ) : ℂ), ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `hpos.ne'` after adjusting the coercions.
+
+Rewrite using `[← hme.integral_map f, hmap, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem exists_integral_renum {A A₁ : Type} [Fintype A] [DecidableEq A] [Fintype A₁] [DecidableEq A₁] (e : A ≃ A₁)
     (μ : Measure (GL A k)) [μ.IsHaarMeasure] (μ₁ : Measure (GL A₁ k)) [μ₁.IsHaarMeasure] :
     ∃ r : ℂ, r ≠ 0 ∧ ∀ f : GL A₁ k → ℂ, ∫ g, f (renum e g) ∂μ = r * ∫ g, f g ∂μ₁ := by
@@ -87,24 +108,40 @@ theorem exists_integral_renum {A A₁ : Type} [Fintype A] [DecidableEq A] [Finty
   · exact_mod_cast hpos.ne'
   · rw [← hme.integral_map f, hmap, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
+/- English proof (translation)
+Simplify using `only [reindex_apply]`. Conclude with `submatrix_mul M N e.symm e.symm eC.symm e.symm.bijective`.
+-/
 private theorem reindex_mul {K A A₁ C C₁ : Type} [Field K] [Fintype A] [Fintype A₁]
     (e : A ≃ A₁) (eC : C ≃ C₁) (M : Matrix A A K) (N : Matrix A C K) :
     reindex e eC (M * N) = reindex e e M * reindex e eC N := by
   simp only [reindex_apply]
   exact submatrix_mul M N e.symm e.symm eC.symm e.symm.bijective
 
+/- English proof (translation)
+Establish `h1 : (renum e g).val = reindex e e g.val` using `rfl`. Rewrite using `[h1, reindex_mul]`.
+-/
 private theorem renum_mul_reindex {A A₁ C C₁ : Type} [Fintype A] [DecidableEq A] [Fintype A₁] [DecidableEq A₁]
     (e : A ≃ A₁) (eC : C ≃ C₁) (g : GL A k) (N : Matrix A C k) :
     (renum e g).val * reindex e eC N = reindex e eC (g.val * N) := by
   have h1 : (renum e g).val = reindex e e g.val := rfl
   rw [h1, reindex_mul]
 
+/- English proof (translation)
+Use `ext`. Establish `h1 : (renum e g).val = reindex e e g.val` using `rfl`. Simplify using `only [gdet, Matrix.GeneralLinearGroup.val_det_apply, h1, det_reindex_self]`.
+-/
 private theorem gdet_renum {A A₁ : Type} [Fintype A] [DecidableEq A] [Fintype A₁] [DecidableEq A₁]
     (e : A ≃ A₁) (g : GL A k) : gdet (renum e g) = gdet g := by
   ext
   have h1 : (renum e g).val = reindex e e g.val := rfl
   simp only [gdet, Matrix.GeneralLinearGroup.val_det_apply, h1, det_reindex_self]
 
+/- English proof (translation)
+Take `⟨r₀, hr₀, hint⟩` from `exists_integral_renum e μ μ₁`. Establish `hCC : (Fintype.card C₁ : ℂ) = Fintype.card C` using `by rw [Fintype.card_congr eC]`. Establish `hp` using `apow_ne_zero (gdet g₀) ((Fintype.card C : ℂ) / 2)`. Establish `hν : (ν (gdet g₀) : ℂ) ≠ 0` using `Units.ne_zero _`. Use `⟨((ν (gdet g₀) : ℂ))⁻¹ * (apow (gdet g₀) ((Fintype.card C : ℂ) / 2))⁻¹ * r₀, by simp [hp, hν, hr₀], fun lam Ψ Y => ?_⟩` and prove the remaining obligations.
+
+Use `set F : GL A₁ k → ℂ := fun g => Ψ (g.val * reindex e eC (Y * c)) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card C₁ : ℂ) / 2) with hF`. Establish `hpt : ∀ g : GL A k, lam * Ψ (reindex e eC (g₀.val * (g.val * Y) * c)) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card C : ℂ) / 2) = (lam * ((ν (gdet g₀) : ℂ))⁻¹ * (apow (gdet g₀) ((Fintype.card C : ℂ) / 2))⁻¹) * F (renum e (g₀ * g))`. Introduce `g`. Simplify using `only [hF, renum_mul_reindex, gdet_renum, gdet_mul, map_mul, Units.val_mul, apow_mul, hCC, Matrix.mul_assoc]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2` using `hint F`. Unfold `smallF`. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, integral_mul_left_eq_self (fun g => F (renum e g)) g₀, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smallF_rows {A A₁ C C₁ : Type} [Fintype A] [DecidableEq A] [Fintype A₁] [DecidableEq A₁]
     [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁] (e : A ≃ A₁) (eC : C ≃ C₁)
     (μ : Measure (GL A k)) [μ.IsHaarMeasure] (μ₁ : Measure (GL A₁ k)) [μ₁.IsHaarMeasure] (ν : kˣ →* ℂˣ)
@@ -135,6 +172,13 @@ theorem exists_smallF_rows {A A₁ C C₁ : Type} [Fintype A] [DecidableEq A] [F
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use `⟨Units.map (Int.castRingHom k).toMonoidHom (Equiv.Perm.sign (τ.symm.trans eC)), fun u => ?_⟩` and prove the remaining obligations. Use `⟨⟨reindex τ eC u.val, reindex eC τ (u⁻¹).val, ?_, ?_⟩, rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reindex_apply, reindex_apply, ← submatrix_mul _ _ _ _ _ eC.symm.bijective, Units.mul_inv, submatrix_one_equiv]`. Rewrite using `[reindex_apply, reindex_apply, ← submatrix_mul _ _ _ _ _ τ.symm.bijective, Units.inv_mul, submatrix_one_equiv]`. Rewrite using `[invT_val, invT_val]`.
+
+Both sides reduce to the same expression. Establish `hsub : reindex τ eC u.val = (u.val.submatrix eC.symm eC.symm).submatrix (τ.symm.trans eC) id`. Use extensionality with `i j`. Simplify using `[reindex_apply]`. Use `ext`.
+
+Simplify using `only [gdet, Matrix.GeneralLinearGroup.val_det_apply, Units.val_mul]`. Express the relevant statement in the definitionally equal form `det (reindex τ eC u.val) = _`. Rewrite using `[hsub, det_permute, det_submatrix_equiv_self]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_reindex_unit {C C₁ : Type} [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁] (τ eC : C ≃ C₁) :
     ∃ s : kˣ, ∀ u : GL C k, ∃ u₁ : GL C₁ k, u₁.val = reindex τ eC u.val ∧
       (invT u₁).val = reindex τ eC (invT u).val ∧ gdet u₁ = s * gdet u := by
@@ -156,6 +200,9 @@ theorem exists_reindex_unit {C C₁ : Type} [Fintype C] [DecidableEq C] [Fintype
     rw [hsub, det_permute, det_submatrix_equiv_self]
     simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[reindex_apply, frameMatrixFirstColumnBlock_mul_apply]`.
+-/
 private theorem X0_mul_reindex {K A' A₁ C C₁ : Type} [Field K] [Fintype A'] [DecidableEq A'] [Fintype A₁]
     [DecidableEq A₁] [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁] {a : ℕ}
     (eB : A' ≃ A₁) (eC : C ≃ C₁) (σ : Fin a ⊕ A' ≃ C) (σ₁ : Fin a ⊕ A₁ ≃ C₁) (N : Matrix C C K) :
@@ -164,6 +211,9 @@ private theorem X0_mul_reindex {K A' A₁ C C₁ : Type} [Field K] [Fintype A'] 
   ext i j
   simp [reindex_apply, frameMatrixFirstColumnBlock_mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[reindex_apply, frameMatrixSecondColumnBlock_mul_apply]`.
+-/
 private theorem Y0_mul_reindex {K A' A₁ C C₁ : Type} [Field K] [Fintype A'] [DecidableEq A'] [Fintype A₁]
     [DecidableEq A₁] [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁] {a : ℕ}
     (eB : A' ≃ A₁) (eC : C ≃ C₁) (σ : Fin a ⊕ A' ≃ C) (σ₁ : Fin a ⊕ A₁ ≃ C₁) (N : Matrix C C K) :
@@ -174,6 +224,33 @@ private theorem Y0_mul_reindex {K A' A₁ C C₁ : Type} [Field K] [Fintype A'] 
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a a₁ ha A' _ _ A₁ _ _ C _ _ C₁ _ _ eB eC σ σ₁ μ _ μ₁ _ ϖ ν β gA gB c hgA`. Substitute `a₁` using the available equality. Take `⟨s, hs⟩` from `exists_reindex_unit (k := k) ((σ₁.symm.trans ((Equiv.sumCongr (Equiv.refl (Fin a)) eB).symm.trans (σ.trans eC))).trans eC.symm).symm eC`. Take `⟨r, hr0, hr⟩` from `exists_smallF_rows eB eC μ μ₁ ν gB c.val`. Establish `hCC : (Fintype.card C₁ : ℂ) = Fintype.card C` using `by rw [Fintype.card_congr eC]`.
+
+Establish `hAA : (Fintype.card A₁ : ℂ) = Fintype.card A'` using `by rw [Fintype.card_congr eB]`. Establish `q1` using `apow_ne_zero s ((Fintype.card A' : ℂ) / 2)`. Establish `q2` using `apow_ne_zero (gdet c) ((Fintype.card A' : ℂ) / 2)`. Establish `q3` using `apow_ne_zero s (-(a : ℂ) / 2)`. Establish `q4` using `apow_ne_zero (gdet c) (-(a : ℂ) / 2)`.
+
+Use `⟨((ν (gdet gA) : ℂ))⁻¹ * (ν s : ℂ) * (ν (gdet c) : ℂ) * apow s ((Fintype.card A' : ℂ) / 2) * apow (gdet c) ((Fintype.card A' : ℂ) / 2) / (apow s (-(a : ℂ) / 2) * apow (gdet c) (-(a : ℂ) / 2)) / r, by simp [q1, q2, q3, q4, hr0], fun Ξ Ψ H => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Take `⟨u₁, hu₁, hiu₁, hdu₁⟩` from `hs (h * c)`. Establish `hfc : finCongr (rfl : a = a) = Equiv.refl (Fin a)`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Establish `hpt : ∀ M : Matrix (Fin a) (Fin a) k, reindex (finCongr (rfl : a = a)) eC (gA.val * (M * (X0 k σ * (invT h).val)) * (invT c).val) = gA.val * M * (X0 k σ₁ * (invT u₁).val)`. Introduce `M`. Rewrite using `[hiu₁, show invT (h * c) = invT h * invT c from map_mul invT h c, Units.val_mul, X0_mul_reindex, hfc, show gA.val * (M * (X0 k σ * (invT h).val)) * (invT c).val = (gA.val * M) * (X0 k σ * ((invT h).val * (invT c).val)) by simp only [Matrix.mul_assoc], reindex_mul, reindex_refl_re …`. Establish `hY : reindex eB eC (Y0 k σ * h.val * c.val) = Y0 k σ₁ * u₁.val`.
+
+Rewrite using `[hu₁, Y0_mul_reindex, Units.val_mul, Matrix.mul_assoc]`. Establish `hsh` using `shellSum_mul_left (haarVol (KO k (Fin a))) ϖ ν ((Fintype.card C : ℂ) / 2) (fun N => Ξ (N * (X0 k σ₁ * (invT u₁).val))) hgA`. Establish `hνA : (ν (gdet gA) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `H1` using `congrFun H u₁`. Rewrite `H1` using `[bigZetaIntegral_eq, smallP]`.
+
+Unfold `bigF at H1`. Rewrite `H1` using `[hCC, hAA]`. Rewrite using `[bigZetaIntegral_eq, smallP]`. Unfold `bigF`. Simplify using `only [hpt]`.
+
+Rewrite using `[hr _ Ψ (Y0 k σ * h.val), hY]`. Establish `hS0 : shellSum (haarVol (KO k (Fin a))) ϖ ν ((Fintype.card C : ℂ) / 2) (fun M => Ξ (gA.val * M * (X0 k σ₁ * (invT u₁).val))) = ((ν (gdet gA) : ℂ))⁻¹ * shellSum (haarVol (KO k (Fin a))) ϖ ν ((Fintype.card C : ℂ) / 2) (fun N => Ξ (N * (X0 k σ₁ * (invT u₁).val)))`. Rewrite using `[← hsh, ← mul_assoc, inv_mul_cancel₀ hνA, one_mul]`. Rewrite using `[hS0]`. Use `set S := shellSum (haarVol (KO k (Fin a))) ϖ ν ((Fintype.card C : ℂ) / 2) (fun N => Ξ (N * (X0 k σ₁ * (invT u₁).val))) with hSdef`.
+
+Use `set I := smallF μ₁ ν Ψ (Y0 k σ₁ * u₁.val) with hIdef`. Establish `hden : (β (gdet u₁) : ℂ) * apow (gdet u₁) (-(a : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (apow_ne_zero _ _)`. Establish `hS : S = ((ν * β) (gdet u₁) : ℂ) * apow (gdet u₁) ((Fintype.card A' : ℂ) / 2) * I / ((β (gdet u₁) : ℂ) * apow (gdet u₁) (-(a : ℂ) / 2))`. Rewrite using `[eq_div_iff hden, ← H1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hS, hdu₁, gdet_mul]`. Establish `q5` using `apow_ne_zero (gdet h) ((Fintype.card A' : ℂ) / 2)`. Establish `q6` using `apow_ne_zero (gdet h) (-(a : ℂ) / 2)`. Establish `q7 : (ν s : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `q8 : (ν (gdet h) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Establish `q9 : (ν (gdet c) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `q10 : (β s : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `q11 : (β (gdet h) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `q12 : (β (gdet c) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [map_mul, MonoidHom.mul_apply, Units.val_mul, apow_mul]`.
+
+Use `clear * - q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 hνA hr0`. Generalize the expression as in `apow s ((Fintype.card A' : ℂ) / 2) = x1 at q1 ⊢`. Generalize the expression as in `apow (gdet c) ((Fintype.card A' : ℂ) / 2) = x2 at q2 ⊢`. Generalize the expression as in `apow s (-(a : ℂ) / 2) = x3 at q3 ⊢`. Generalize the expression as in `apow (gdet c) (-(a : ℂ) / 2) = x4 at q4 ⊢`.
+
+Generalize the expression as in `apow (gdet h) ((Fintype.card A' : ℂ) / 2) = x5 at q5 ⊢`. Generalize the expression as in `apow (gdet h) (-(a : ℂ) / 2) = x6 at q6 ⊢`. Generalize the expression as in `(ν s : ℂ) = x7 at q7 ⊢`. Generalize the expression as in `(ν (gdet h) : ℂ) = x8 at q8 ⊢`. Generalize the expression as in `(ν (gdet c) : ℂ) = x9 at q9 ⊢`.
+
+Generalize the expression as in `(β s : ℂ) = x10 at q10 ⊢`. Generalize the expression as in `(β (gdet h) : ℂ) = x11 at q11 ⊢`. Generalize the expression as in `(β (gdet c) : ℂ) = x12 at q12 ⊢`. Generalize the expression as in `(ν (gdet gA) : ℂ) = x13 at hνA ⊢`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bigZeta_eq_smallZeta_change : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a a₁ : ℕ) (ha : a = a₁) (A' : Type) [Fintype A'] [DecidableEq A'] (A₁ : Type) [Fintype A₁] [DecidableEq A₁] (C : Type) [Fintype C] [DecidableEq C] (C₁ : Type) [Fintype C₁] [DecidableEq C₁] (eB : A' ≃ A₁) (eC : C ≃ C₁)
     (σ : Fin a ⊕ A' ≃ C) (σ₁ : Fin a₁ ⊕ A₁ ≃ C₁) (μ : Measure (GL A' k)) [μ.IsHaarMeasure] (μ₁ : Measure (GL A₁ k)) [μ₁.IsHaarMeasure]
     (ϖ : kˣ) (ν β : kˣ →* ℂˣ) (gA : GL (Fin a) k) (gB : GL A' k) (c : GL C k), gA ∈ KO k (Fin a) →

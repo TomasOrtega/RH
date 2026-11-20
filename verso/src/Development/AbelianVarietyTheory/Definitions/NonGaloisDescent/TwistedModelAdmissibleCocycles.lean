@@ -32,6 +32,9 @@ def IsHom (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) : Prop 
 open scoped LaurentSeries PowerSeries in
 variable {k G : Type} [Field k] [Group G] in
 
+/- English proof (translation)
+Set `e : M ≃ₗ[k] (Fin (Module.finrank k M) → k)` to `(Module.finBasis k M).equivFun`. Use `⟨⟨Module.finrank k M, { toFun := fun g => (e : M →ₗ[k] _) ∘ₗ π g ∘ₗ (e.symm : _ →ₗ[k] M) map_one' := by ext; simp map_mul' := fun g h => by ext; simp }⟩, e, fun g x => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.Models.exists_ob {M : Type} [AddCommGroup M] [Module k M]
     [Module.Finite k M] (π : Representation k G M) :
     ∃ (A : _root_.GlobalTheory.Models.Ob k G) (e : M ≃ₗ[k] (Fin A.m → k)),
@@ -182,6 +185,9 @@ def herrB {m : ℕ} (D : ModPG R n (Vc k m)) : Submodule k ((ZMod n → Vc k m) 
       (LinearMap.pi fun i => D.φ i ∘ₗ (LinearMap.proj (i - 1) : (ZMod n → Vc k m) →ₗ[k] Vc k m) - LinearMap.proj i)
       (LinearMap.pi fun i => D.γ i ∘ₗ (LinearMap.proj i : (ZMod n → Vc k m) →ₗ[k] Vc k m) - LinearMap.proj i))
 
+/- English proof (translation)
+The claim follows from `N.smul_of_tower_mem c hx`.
+-/
 theorem const_smul_mem_lat {m : ℕ} (N : Submodule k⟦X⟧ (Vc k m)) (c : k) {x : Vc k m} (hx : x ∈ N) : c • x ∈ N :=
   N.smul_of_tower_mem c hx
 
@@ -213,6 +219,9 @@ def pairSpace {m r : ℕ} (D : ModPG R n (Vc k m)) (Dt : TopData n r) (N : Lats 
       simp only [Prod.smul_snd, Pi.smul_apply, map_smul]
       rwa [← smul_sub, ← smul_sub]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pairSpace {m r : ℕ} {D : ModPG R n (Vc k m)} {Dt : TopData n r} {N : Lats k n m}
     {b g : ZMod n → Vc k m} : (b, g) ∈ pairSpace D Dt N ↔ InZZ D Dt N b g := Iff.rfl
 
@@ -222,27 +231,49 @@ def herrD {m : ℕ} (D : ModPG R n (Vc k m)) :
     (LinearMap.pi fun i => D.φ i ∘ₗ (LinearMap.proj (i - 1) : (ZMod n → Vc k m) →ₗ[k] Vc k m) - LinearMap.proj i)
     (LinearMap.pi fun i => D.γ i ∘ₗ (LinearMap.proj i : (ZMod n → Vc k m) →ₗ[k] Vc k m) - LinearMap.proj i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem herrD_apply {m : ℕ} (D : ModPG R n (Vc k m)) (x : ZMod n → Vc k m) :
     herrD D x = (fun i => D.φ i (x (i - 1)) - x i, fun i => D.γ i (x i) - x i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem herrB_eq_range {m : ℕ} (D : ModPG R n (Vc k m)) : herrB D = LinearMap.range (herrD D) := rfl
 
 def latB {m : ℕ} (D : ModPG R n (Vc k m)) (N : Lats k n m) :
     Submodule k ((ZMod n → Vc k m) × (ZMod n → Vc k m)) :=
   (Submodule.pi Set.univ fun i => (N i).restrictScalars k).map (herrD D)
 
+/- English proof (translation)
+Simplify using `[latB, Submodule.mem_pi]`.
+-/
 theorem mem_latB {m : ℕ} {D : ModPG R n (Vc k m)} {N : Lats k n m} {p : (ZMod n → Vc k m) × (ZMod n → Vc k m)} :
     p ∈ latB D N ↔ ∃ x : ZMod n → Vc k m, (∀ i, x i ∈ N i) ∧ herrD D x = p := by
   simp [latB, Submodule.mem_pi]
 
+/- English proof (translation)
+The claim follows from `LinearMap.map_le_range`.
+-/
 theorem latB_le_herrB {m : ℕ} (D : ModPG R n (Vc k m)) (N : Lats k n m) : latB D N ≤ herrB D :=
   LinearMap.map_le_range
 
+/- English proof (translation)
+Establish `h1` using `Dt.one_le_letterBlockLength`. Establish `h` using `Dt.range i (Dt.w i) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by omega⟩)))`. Conclude with `⟨h.1, by rw [TopData.wst]; omega⟩`.
+-/
 theorem one_le_w_and_wst {r : ℕ} (Dt : TopData n r) (i : ZMod n) : 1 ≤ Dt.w i ∧ 1 ≤ Dt.wst i := by
   have h1 := Dt.one_le_letterBlockLength
   have h := Dt.range i (Dt.w i) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by omega⟩)))
   exact ⟨h.1, by rw [TopData.wst]; omega⟩
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨x, hx, rfl⟩` from `mem_latB.1 hp`. Introduce `i`. Take `⟨hw, hw'⟩` from `one_le_w_and_wst Dt i`. Establish `h0 : ∀ (a : ℤ) (P : Submodule k⟦X⟧ (Vc k m)), 0 ≤ a → P ≤ sh (-a) P` using `fun a P ha => by`.
+
+Use `sh_le_sh_of_le (show -a ≤ 0 by omega) P` as an intermediate fact. Rewrite `this` using `[sh_zero_eq]`. Then use the resulting hypothesis. Establish `hφ : D.φ i (x (i - 1)) ∈ pull (D.φ i) (N (i - 1))` using `Submodule.subset_span ⟨_, hx _, rfl⟩`. Rewrite using `[herrD_apply]`. Use `⟨?_, h.2.2 i _ (hx i), fun _ => Submodule.sub_mem _ ((h.2.1 i).1 hφ) (h0 _ _ (by omega) (hx i)), fun _ => ⟨Submodule.sub_mem _ (h0 _ _ (by omega) hφ) ?_, x i, hx i, by simp⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [map_sub, D.comm]`. Normalize the expressions using the abelian group laws. Use `sh_le_sh (-Dt.wst i) (h.2.1 i).2` as an intermediate fact. Rewrite `this` using `[sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Conclude with `this (hx i)`.
+-/
 theorem latB_le_pairSpace {m r : ℕ} {D : ModPG R n (Vc k m)} {Dt : TopData n r} {N : Lats k n m}
     (h : ABC D Dt.w Dt.wst N) : latB D N ≤ pairSpace D Dt N := by
   intro p hp
@@ -268,15 +299,24 @@ abbrev PairQuot {m r : ℕ} (D : ModPG R n (Vc k m)) (Dt : TopData n r) (N : Lat
 def maxModel (F : DFun R n G) (Base : ∀ A : Ob k G, Lats k n A.m → Prop) (A : Ob k G) : Lats k n A.m :=
   fun i => ⨆ N : {N : Lats k n A.m // IsModel F Base A N}, N.1 i
 
+/- English proof (translation)
+The claim follows from `le_iSup (fun N : {N : Lats k n A.m // IsModel F Base A N} => N.1 i) ⟨N, h⟩`.
+-/
 theorem IsModel.le_maxModel {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
     {N : Lats k n A.m} (h : IsModel F Base A N) (i : ZMod n) : N i ≤ maxModel F Base A i :=
   le_iSup (fun N : {N : Lats k n A.m // IsModel F Base A N} => N.1 i) ⟨N, h⟩
 
+/- English proof (translation)
+The claim follows from `funext fun i => le_antisymm (iSup_le fun N' => hmax N'.1 N'.2 i) (h.le_maxModel i)`.
+-/
 theorem maxModel_eq {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
     {N : Lats k n A.m} (h : IsModel F Base A N) (hmax : ∀ N', IsModel F Base A N' → ∀ i, N' i ≤ N i) :
     maxModel F Base A = N :=
   funext fun i => le_antisymm (iSup_le fun N' => hmax N'.1 N'.2 i) (h.le_maxModel i)
 
+/- English proof (translation)
+Use `⟨A, N, A, LinearMap.id, LinearMap.id, h, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl, Function.surjective_id, funext fun i => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[DFun.push, DFun.pre, F.map_id A hA i]`.
+-/
 theorem IsModel.of_base {F : DFun R n G} {Base : ∀ A : Ob k G, Lats k n A.m → Prop} {A : Ob k G}
     {N : Lats k n A.m} (hA : F.Obj A) (h : Base A N) : IsModel F Base A N := by
   refine ⟨A, N, A, LinearMap.id, LinearMap.id, h, fun _ _ => rfl, Function.injective_id, fun _ _ => rfl,
@@ -333,6 +373,9 @@ end Law
 @[reducible] def ModTh.data {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) : ModData k G n :=
   ⟨M.T, M.ω, M.Base, M.Nstd, M.Nχ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.ω_ne, M.base_obj, M.base_abc, M.base_sen, M.base_sum, M.base_e, ⟨M.T_m, M.std_model, M.std_sen⟩, fun e h h' => ⟨M.χ_obj e h h', M.χ_lat e h h'⟩, M.χ_model, M.χ_zero⟩`.
+-/
 theorem ModTh.laws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) : Law.All F Dt M.data :=
   ⟨M.ω_ne, M.base_obj, M.base_abc, M.base_sen, M.base_sum, M.base_e, ⟨M.T_m, M.std_model, M.std_sen⟩,
     fun e h h' => ⟨M.χ_obj e h h', M.χ_lat e h h'⟩, M.χ_model, M.χ_zero⟩
@@ -358,19 +401,31 @@ theorem ModTh.laws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt
   χ_model := h.2.2.2.2.2.2.2.2.1
   χ_zero := h.2.2.2.2.2.2.2.2.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ModTh.data_ofLaws {F : DFun R n G} {r : ℕ} {Dt : TopData n r} (Y : ModData k G n) (h : Law.All F Dt Y) :
     (ModTh.ofLaws Y h).data = Y := rfl
 
+/- English proof (translation)
+Rewrite using `[resCount, show ({3, 5, 5} : Multiset ℤ) = {3} + ({5} + {5}) from rfl]`. Simplify using `only [Multiset.filter_add, Multiset.filter_singleton, Multiset.card_add]`. Evaluate the numerical expressions.
+-/
 example : resCount ({3, 5, 5} : Multiset ℤ) 1 (4 : ℚ) = 2 := by
   rw [resCount, show ({3, 5, 5} : Multiset ℤ) = {3} + ({5} + {5}) from rfl]
   simp only [Multiset.filter_add, Multiset.filter_singleton, Multiset.card_add]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[cob, LinearMap.range_eq_bot]`. Use extensionality with `x g j`. Simplify using the standard rewrite rules.
+-/
 example : cob (chr (1 : G →* kˣ)) = ⊥ := by
   rw [cob, LinearMap.range_eq_bot]
   ext x g j
   simp
 
+/- English proof (translation)
+Rewrite using `[herrD_apply]`. Use `Prod.ext (funext fun i => funext fun j => ?_) (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Conclude with `sub_eq_zero.2 (map_one R.φ)`. Conclude with `sub_eq_zero.2 (map_one R.γ)`.
+-/
 example (hγ : Function.Bijective R.γ) : herrD (Inh.powMod R hγ n 1) (fun _ _ => 1) = 0 := by
   rw [herrD_apply]
   refine Prod.ext (funext fun i => funext fun j => ?_) (funext fun i => funext fun j => ?_)

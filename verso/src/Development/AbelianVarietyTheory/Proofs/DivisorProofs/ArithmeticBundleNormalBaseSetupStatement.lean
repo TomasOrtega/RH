@@ -7,6 +7,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB GlobalTheory.ShFam GlobalTheory.TrueGeo Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ArLieBase
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BcRead.classifyingMap | exact GlobalTheory.BcRead.classifyingMap | (intros; apply GlobalTheory.BcRead.classifyingMap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_bundle_normal_base_setup : Hypotheses2 → HypothesesH → RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (P : Finset ℕ) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

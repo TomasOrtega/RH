@@ -33,10 +33,20 @@ namespace GlobalTheory.ThickBerg
 
 open ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst MeasureTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitriangularChart_mem_domain_small_ball`.
+-/
 theorem cpt_mem_dom_small : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (x : Frame X.Ψ r) (z : ReciprocityTheory.L2DbarEstimates.V (nd X)), IsOrth X x → ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) →
     cpt X x z ∈ X.dom := GlobalTheory.T.unitriangularChart_mem_domain_small_ball
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hl hp hq k x hx hM γ hγ z z' hz hz' b hb he`. Take `⟨hsd, horb⟩` from `GlobalTheory.T.selfDual_and_principalCongruence_orbits_of_goodLevel E H Dw l Xo c σ r U hσ hU hl hp hq k`. Establish `hwd : cpt (U.X k) x z ∈ (U.X k).dom` using `cpt_mem_dom_small E r (U.X k) x z hx hz`. Take `⟨γ', hγ'U, hγ'c, b', hb', he'⟩` from `horb γ hγ _ hwd`. Establish `h1 : lact γ' (cpt (U.X k) x z) = rmul (cpt (U.X k) x z') (rmul b (ExtFPf.invF (U.X k) b'))`.
+
+Establish `e1` using `congrArg (fun w => rmul w (ExtFPf.invF (U.X k) b')) (he'.symm.trans he)`. Simplify using `only [ExtFPf.rmul_assoc, ExtFPf.rmul_invF _ hb', ExtFPf.rmul_oneF] at e1`. Conclude with `e1`. Establish `hγ'1 : γ' = 1` using `GlobalTheory.T.deep_congruence_element_separates_chart_ball_thick_frame E r (U.X k) l.M' x hsd hx hM γ' hγ'U hγ'c z z' hz hz' _ (ExtFPf.mul_mem _ hb (ExtFPf.invF_mem _ hb')) h1`. Substitute `hγ'1` using the available equality.
+
+Rewrite `he'` using `[FundSetPf.lact_one]`. Conclude with `(U.X k).Γ_free γ hγ _ hwd b' hb' he'`.
+-/
 theorem ball_injects : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r),
     GoodEmb c σ → IsUnf U → (∀ p : ℕ, p.Prime → l.GoodAt p) → 1 ≤ Dw.p → 1 ≤ Dw.q →
@@ -60,6 +70,9 @@ theorem ball_injects : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
   rw [FundSetPf.lact_one] at he'
   exact (U.X k).Γ_free γ hγ _ hwd b' hb' he'
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.model_weight_gap_l1_card_bound`.
+-/
 theorem modelWt_shape : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r),
     GoodEmb c σ → IsUnf U → 1 ≤ Dw.p → 1 ≤ Dw.q → ∀ (u1 : GlobalTheory.AllWt.Weight Dw) (g : ℝ),
@@ -71,6 +84,13 @@ theorem modelWt_shape : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
     (∑ τ, ∑ a, |(modelWt U (wtOf Dw u1 0) k τ a : ℝ)|) = l1 u1 ∧
     (U.X k).Ψ.card = Nat.card (Psi H) := GlobalTheory.T.model_weight_gap_l1_card_bound
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la y hy`. Take `⟨x, hx, b, hb, rfl⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Up.ortho_holds r X y hy`. Establish `hxd` using `ReciprocityTheory.ChartRestriction.G.AR.Up.KU.orth_dom X hx`. Use `⟨x, hx, (firstMinimumSq_rightBorel X hxd hb).symm, fun P hP hPx => ⟨?_, FrameDegreeData.pnorm_rmul X la P hP.1.1.2.1 x hxd b hb⟩⟩` and prove the remaining obligations. Rewrite using `[hP.1.1.2.1 x hxd b hb]`.
+
+Use `mul_ne_zero ?_ hPx` and prove the remaining obligations. Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Establish `h` using `(hb τ).1`. Rewrite `h` using `[Matrix.det_of_upperTriangular ((ExtFPf.upper_iff X b τ).mp (hb τ).2)]`.
+
+Conclude with `Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ i)`.
+-/
 theorem orth_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (la : Wt X.Ψ r) (y : Frame X.Ψ r), y ∈ X.dom → ∃ x, IsOrth X x ∧ X.firstMinimumSq x = X.firstMinimumSq y ∧
     ∀ P ∈ X.SS la, P x ≠ 0 → P y ≠ 0 ∧ X.pnorm la P y = X.pnorm la P x := by
@@ -87,6 +107,19 @@ theorem orth_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   rw [Matrix.det_of_upperTriangular ((ExtFPf.upper_iff X b τ).mp (hb τ).2)] at h
   exact Finset.prod_ne_zero_iff.1 h i (Finset.mem_univ i)
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ a * l` using `by nlinarith`. Establish `hal8 : a ^ 8 ≤ (a * l) ^ 12`. Combine the equalities or inequalities in the displayed calculation. Establish `hPP' : a ^ 8 ≤ PP` using `hal8.trans hPP`. Establish `hT1 : 1 ≤ T` using `(one_le_pow₀ h1).trans hT`.
+
+Establish `hPP0 : 0 ≤ PP` using `(by positivity : (0 : ℝ) ≤ a ^ 8).trans hPP'`. Establish `hDl : 1 ≤ D ^ 2 * l` using `by nlinarith [one_le_pow₀ (n := 2) hD]`. Establish `hTPP : T * PP ≤ b`. Establish `h2 : T * PP ≤ PP * T * D ^ 2 * l`. Establish `h3 : 0 ≤ PP * T` using `mul_nonneg hPP0 (by linarith)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : a ^ 8 * l ≤ (a * l) ^ 24`.
+
+Rewrite using `[mul_pow]`. Conclude with `mul_le_mul (pow_le_pow_right₀ ha (by norm_num)) (le_self_pow₀ (by linarith) (by norm_num)) (by linarith) (by positivity)`. Establish `h5 : C0 * a ^ 8 ≤ l * a ^ 8` using `mul_le_mul_of_nonneg_right hlC (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h12 : 100 * a ^ 4 ≤ (a * l) ^ 12`.
+
+Rewrite using `[mul_pow]`. Establish `h6 : (100 : ℝ) ≤ l ^ 12`. Combine the equalities or inequalities in the displayed calculation. Establish `h7 : a ^ 4 ≤ a ^ 12` using `pow_le_pow_right₀ ha (by norm_num)`. Establish `h8 : 0 ≤ a ^ 4` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h9 : PP ≤ T * PP` using `le_mul_of_one_le_left hPP0 hT1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nums (a l C0 PP T D b uE : ℝ) (ha : 1 ≤ a) (hl : 10 ≤ l) (hlC : C0 ≤ l) (hPP : (a * l) ^ 12 ≤ PP)
     (hT : (a * l) ^ 24 ≤ T) (hD : 1 ≤ D) (hrows : PP * T * D ^ 2 * l ≤ b) (hbu : b ≤ uE) :
     T * a ^ 8 ≤ uE ∧ C0 * a ^ 8 ≤ T ∧ 100 * a ^ 4 ≤ b := by
@@ -124,6 +157,29 @@ theorem nums (a l C0 PP T D b uE : ℝ) (ha : 1 ≤ a) (hl : 10 ≤ l) (hlC : C0
     linarith
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `_ _ _ hS _`. Take `⟨C0, hC0, hpeak⟩` from `GlobalTheory.T.exists_cusp_form_peak_at_injective_chart_frame`. Establish `hnum` using `GlobalTheory.T.torus_length_lower_bound_quotient hS`. Use `(((hnum.and (GlobalTheory.CovTop.Sizes.hostN (max 10 C0))).and GlobalTheory.CovTop.WtShape.wtN).and hS).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨C2, hC2, hN⟩, ⟨A, -, hH⟩⟩, ⟨C3, -, hW⟩⟩, ⟨C4, -, hSz⟩⟩` from `h`.
+
+Use `⟨C0 * (C2 + 1), by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hall⟩` from `((hN.and hH).and hW).and hSz`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY u1 hu1 => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨hN, hH⟩, hW⟩, hSz⟩` from `hall x hx hle ι p hp`. Take `⟨hZ24, hu⟩` from `hN i hi`.
+
+Take `⟨hTl1, hgap⟩` from `hu u1 hu1`. Establish `hHi` using `hH i`. Establish `hWi` using `hW i`. Establish `hSi` using `hSz i`. Establish `hsig` using `hWi.sig`.
+
+Establish `hm3` using `(Fm.D x ι).R.m_add_three_le_k`. Simplify using `only [Ranks.sigW] at hsig`. Establish `hp1 : 1 ≤ (dat p i).p` using `by omega`. Establish `hq1 : 1 ≤ (dat p i).q` using `by omega`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast (by have := hHi.f8; omega : 1 ≤ (Fm.D x ι).R.f)`.
+
+Establish `hr1 : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)`. Establish `hD1 : (1 : ℝ) ≤ (dimFlag (dat p i) : ℝ)`. Rewrite using `[hWi.dim]`. Establish `h2 : 1 ≤ (Fm.D x ι).R.r.choose 2` using `Nat.choose_pos (by omega)`. Establish `h8` using `hHi.f8`.
+
+Conclude with `(Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))` after adjusting the coercions. Establish `hzb : zBase (Fm.L x ι) = ((Fm.D x ι).R.f * (Fm.D x ι).R.r) * (Fm.L x ι).sc.L` using `rfl`. Take `⟨hA8, hC08, h100⟩` from `nums ((Fm.D x ι).R.f * (Fm.D x ι).R.r) (Fm.L x ι).sc.L C0 _ _ _ _ _ (one_le_mul_of_one_le_of_one_le hf1 hr1) hHi.big.2.1 ((le_max_right _ _).trans hHi.big.1) (hzb ▸ hHi.ppLow) (hzb ▸ hZ24) hD1 hWi.what₂.2 hSi.2.1`. Establish `hl10 : 0 ≤ l1 u1` using `by unfold l1; positivity`. Use `⟨C0 * (l1 u1 + ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8), by positivity, ?_, fun Z σ hσ y hy hb => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (lenT p i (Fm.parT x hx ι).PP : ℝ) * (C0 * (l1 u1 + ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8)) = C0 * ((lenT p i (Fm.parT x hx ι).PP : ℝ) * l1 u1 + (lenT p i (Fm.parT x hx ι).PP : ℝ) * ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8)` using `by ring`. Rewrite using `[e, mul_add C0 C2 1, mul_one]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (add_le_add hTl1 hA8) hC0]`. Establish `hL` using `GlobalTheory.LawsDeep.levLaws _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`. Establish `hg0 : ∀ q : ℕ, q.Prime → p.T.Q.l.GoodAt q` using `Formalism.L2.Pj.goodAt_of_two_primes p.fw.laws.pins.2.1.1 ((Fm.D x ι).host.g_prime 0) ((Fm.D x ι).host.g_prime 1) (Fm.D x ι).host.g_ne`.
+
+Establish `hg : ∀ q : ℕ, q.Prime → Y.d.l₂.GoodAt q` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hY.1.lev.1.2.1 hg0`. Establish `hU` using `hL.unf σ hσ`. Establish `hM' : Y.d.l₂.M' = Y.d.l₂.M` using `by rw [Level.M', hY.1.lev.2, Nat.lcm_one_right]`. Use `GlobalTheory.T.cuspForm_lower_bound_bergmanFunction_on_component (Fm.D x ι) ((i : ℕ) + 1) _ _ _ Y.d.Xo₂ Y.d.c₂ Y.U Y.dict hL σ hσ _ Z y hy _ (fun x0 FF hx0 hFF => ?_)` and prove the remaining obligations. Take `⟨x1, hx1, hla, htr⟩` from `orth_transfer _ _ ((Y.U σ).X y.1) (modelWt (Y.U σ) (wtOf (dat p i) u1 0) y.1) y.2.1 y.2.2`.
+
+Take `⟨hg1, hg2, hl1, hcard⟩` from `modelWt_shape _ _ _ _ _ _ σ _ (Y.U σ) hσ hU hp1 hq1 u1 (lenT p i (Fm.parT x hx ι).PP) (fun τ a b hab => by exact_mod_cast hgap τ a b hab) y.1`. Establish `hcf : (((Y.U σ).X y.1).Ψ.card : ℝ) = (Fm.D x ι).R.f`. Rewrite using `[hcard]`. Conclude with `hWi.card` after adjusting the coercions. Establish `hball` using `ball_injects _ _ _ _ _ _ σ _ (Y.U σ) hσ hU hg hp1 hq1 y.1 x1 hx1 (by`.
+
+Rewrite using `[hcf, hM', hla]`. Conclude with `h100.trans hb)`. Establish `hp0` using `(hU.2.1 y.1).1`. Establish `hr` using `hU.1`. Take `⟨P, hP, hPx, hle⟩` from `hpeak _ _ ((Y.U σ).X y.1) (modelWt (Y.U σ) (wtOf (dat p i) u1 0) y.1) x1 (by rw [hp0]; exact hq1) (by rw [hp0, hr]; exact Nat.lt_add_of_pos_left hp1) hx1 (fun τ a b hab hb0 => by rw [hcf]; exact hC08.trans (hg1 τ a b hab hb0)) (fun τ a b ha hb' => by rw [hcf]; exact hC08.trans (h …`.
+
+Take `⟨hPy, hpn⟩` from `htr P hP hPx`. Use `⟨P, hP, hPy, ?_⟩` and prove the remaining obligations. Rewrite using `[hpn]`. Rewrite `hle` using `[hl1, hcf]`. Conclude with `hle`.
+-/
 theorem thick_bound : Hypotheses2 → HypothesesH → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP C => ∀ u1, Quo p i PP u1 → ∃ B : ℝ, 0 ≤ B ∧ lenT p i PP * B ≤ C * unitE p ∧ ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ y : FPt (Y.U σ).X, (⟨y.1, y.2.1⟩ : Σ k, Frame ((Y.U σ).X k).Ψ (Fm.D x ι).R.r) ∈ framesOn (Y.U σ) Z → (Fm.L x ι).sc.b ≤ (Y.d.l₂.M : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1 → ENNReal.ofReal (Real.exp (-B)) ≤ bergOn (Y.U σ) ((Fm.D x ι).sp.W ((i : ℕ) + 1)) (Y.dict σ) Z (wtOf (dat p i) u1 0) y := by
   intro _ _ _ hS _
   obtain ⟨C0, hC0, hpeak⟩ := GlobalTheory.T.exists_cusp_form_peak_at_injective_chart_frame

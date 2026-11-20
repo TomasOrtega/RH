@@ -6,6 +6,17 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.CartanRestrict
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `hs : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (C : Matrix (Fin b) (Fin c) ℂ), (A * C).map star = A.map star * C.map star` using `fun A C => Matrix.map_mul (f := starRingEnd ℂ)`. Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: ι * (θ₁ * θ₁) = ι`. Rewrite using `[← Matrix.mul_assoc, ← hι, Matrix.mul_assoc, ← hι, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hs, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ιᵀ * (θᵀ * M * θ.map star) * ι.map star := by`.
+
+Rewrite using `[← hι, hs, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]`. Establish `hx' : ι *ᵥ x ≠ 0` using `fun h0 => hx (by`. Establish `: L *ᵥ (ι *ᵥ x) = 0` using `by rw [h0, Matrix.mulVec_zero]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hL, Matrix.one_mulVec] at this)` and apply the resulting hypothesis. Establish `hst : star (ι *ᵥ x) = ι.map star *ᵥ star x`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Use `h3 _ hx'` as an intermediate fact.
+
+Rewrite `this` using `[hst, Matrix.mulVec_mulVec, hι, ← Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `this`.
+-/
 theorem isCartan_restrict {n m : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} {θ₁ : Matrix (Fin m) (Fin m) ℂ}
     {ι : Matrix (Fin n) (Fin m) ℂ} {L : Matrix (Fin m) (Fin n) ℂ} (hL : L * ι = 1) (h : IsCartan M θ)
     (hι : θ * ι = ι * θ₁) : IsCartan (ιᵀ * M * ι.map star) θ₁ := by
@@ -34,6 +45,11 @@ theorem isCartan_restrict {n m : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} {θ₁
       ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec] at this
     exact this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ r' s' i₀ i₁ W W₁ H' hB hW hH w ⟨L, hL⟩`. Establish `key` using `isCartan_restrict hL (hW.cartan w) (hH.cartan w).1`. Establish `hc : (H'.ι.map σ).map (B.emb w).1 = (H'.ι.map (B.emb w).1).map star`. Use extensionality with `i j`. Simplify using `using hB.cm.2.2.2 (B.emb w).1 (H'.ι i j)`.
+
+Establish `hg : W₁.J.map (B.emb w).1 = (H'.ι.map (B.emb w).1)ᵀ * W.J.map (B.emb w).1 * (H'.ι.map (B.emb w).1).map star`. Rewrite using `[← hH.gram, Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map]`. Rewrite using `[hg, ← Matrix.smul_mul, ← Matrix.mul_smul]`. Conclude with `key`.
+-/
 theorem isCartan_of_isAdapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ r' s' i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁), B.IsGood σ → W.IsSkew σ B r' s' →

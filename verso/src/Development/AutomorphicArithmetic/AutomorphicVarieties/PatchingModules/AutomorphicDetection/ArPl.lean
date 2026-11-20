@@ -10,6 +10,55 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ch
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `hC l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r hS`. Use `haveI : CharP (ResidueField O) l := hO.char`. Establish `hphi : PhiCond V0.frame.Γ l` using `phiGS hC.gf l L Ω s V0`. Use `⟨hphi, ?_⟩` and prove the remaining obligations. Introduce `q sg hsg`.
+
+Take `⟨H, hH⟩` from `hEx l V0.frame O n r`. Take `⟨W, hWH, hWlim⟩` from `frat l V0.frame.Γ H hphi`. Establish `hlift : ∀ x : V0.frame.G₀, ∃ g : G L Ω, V0.pr g = x`. Introduce `x`. Take `⟨g', hg'⟩` from `QuotientGroup.mk'_surjective (NS Ω V0.S') (show GS Ω V0.S' from x.1)`.
+
+Establish `hr : g' ∈ (resP L Ω).range`. Rewrite using `[← V0.hη g']`. Establish `e : (toGS Ω V0.S') g' = (show GS Ω V0.S' from x.1)` using `hg'`. Rewrite using `[e]`. Conclude with `x.2`.
+
+Take `⟨g, rfl⟩` from `hr`. Conclude with `⟨g, Subtype.ext hg'⟩`. Use `choose g hg using fun j => hlift (sg j)`. Set `ρ : G L Ω →* V0.frame.Γ` to `V0.η.ker.subtype.comp V0.pr`. Establish `hρc : Continuous ρ` using `(continuous_toGS Ω V0.S').comp continuous_resP`.
+
+Set `U : ℕ → Subgroup (G L Ω)` to `fun N => ((W N).toOpenSubgroup : Subgroup V0.frame.Γ).comap ρ ⊓ (cycMod L Ω l N).ker`. Establish `hUo : ∀ N, IsOpen (U N : Set (G L Ω))`. Introduce `N`. Use `IsOpen.inter ((W N).toOpenSubgroup.isOpen.preimage hρc) ?_` and prove the remaining obligations. Establish `h1` using `(isOpen_discrete ({1} : Set (ZMod (l ^ N)))).preimage (GlobalTheory.TameQuot.continuous_cycMod (F := L) (Ω := Ω) l N)`.
+
+Establish `e : ((cycMod L Ω l N).ker : Set (G L Ω)) = (fun x => ((cycMod L Ω l N x : (ZMod (l ^ N))ˣ) : ZMod (l ^ N))) ⁻¹' {1}`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_singleton_iff, Units.val_eq_one]`. Express the relevant statement in the definitionally equal form `IsOpen ((cycMod L Ω l N).ker : Set (G L Ω))`. Rewrite using `[e]`.
+
+Conclude with `h1`. Establish `hSfin : s.S.Finite` using `hS ▸ V0.fin`. Use `choose v w B σ hinj hP using fun N => chebFam L Ω (U N) q (fun j => (g j)⁻¹) s.S (hUo N) hSfin`. Establish `hlw : ∀ N j, (l : 𝓞 L) ∉ (w N j).asIdeal`. Introduce `N j hl`.
+
+Apply `(hP N j).1` to reduce the goal to its premises. Use `left`. Rewrite using `[← (hP N j).2.2.1]`. Rewrite `hl` using `[← (hP N j).2.1]`. Simplify using `using hl`.
+
+Establish `hTQ` using `fun N j => hC.tame.1 L Ω l (B N j) (w N j) (hP N j).2.1 (hlw N j)`. Use `choose τ hτ using fun N j => (hTQ N j).2.2.2.2.1`. Use `choose VN hVS hN hNe using fun N => levUp l L Ω s V0 O n r (Set.range (v N)) (Set.finite_range _) (by rintro _ ⟨j, rfl⟩; exact ⟨B N j, (hP N j).2.2.1, (hP N j).2.2.2.1⟩)`. Establish `hK` using `fun N => kerLe l L Ω s V0 (VN N) O n r (hN N) (H.toOpenSubgroup : Subgroup V0.frame.Γ) q (v N) (B N) (τ N) (hNe N) (hVS N) (fun j => ⟨by rw [hS]; exact (hP N j).1, (hP N j).2.2.1, (hP N j).2.2.2.1, hτ N j⟩)`. Establish `hcg : ∀ j, cycZ L Ω l (g j) = 1`.
+
+Introduce `j`. Establish `h1 : cycZ L Ω l (g j) = V0.ε (toGS Ω V0.S' (resP L Ω (g j)))`. Rewrite using `[← MonoidHom.comp_apply, V0.hε]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Establish `h2` using `hsg j`. Rewrite `h2` using `[← hg j]`. Conclude with `h2`. Establish `hNq : ∀ N j, normV (w N j) ≡ 1 [MOD l ^ N]`. Introduce `N j`.
+
+Establish `hu` using `(hP N j).2.2.2.2.2`. Simplify using `only [inv_inv] at hu`. Establish `hk : cycMod L Ω l N (σ N j * g j) = 1` using `(Subgroup.mem_inf.1 hu).2`. Establish `hgm : cycMod L Ω l N (g j) = 1` using `by simp [cycMod, hcg j]`. Rewrite `hk` using `[map_mul, hgm, mul_one]`.
+
+Establish `hz` using `cycZ_toZModPow_eq (hlw N j) (hP N j).2.1 (hP N j).2.2.2.2.1.2 N`. Establish `hk' : PadicInt.toZModPow N ((cycZ L Ω l (σ N j) : ℤ_[l])) = 1`. Use `congrArg Units.val hk` as an intermediate fact. Simplify `this` using `[cycMod]`. Rewrite `hz` using `[hk', map_natCast]`.
+
+Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_one]`. Conclude with `hz.symm`. Establish `hWm : ∀ N j, (show V0.frame.Γ from (hN N).p ((VN N).pr (σ N j)⁻¹).1) * ((sg j).1)⁻¹ ∈ W N`. Introduce `N j`. Establish `e1 : (hN N).p ((VN N).pr (σ N j)⁻¹).1 = ρ (σ N j)⁻¹` using `hNe N (resP L Ω (σ N j)⁻¹)`.
+
+Establish `e2 : (sg j).1 = ρ (g j)`. Rewrite using `[← hg j]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Establish `hu` using `(hP N j).2.2.2.2.2`.
+
+Simplify using `only [inv_inv] at hu`. Establish `hm : ρ (σ N j * g j) ∈ W N` using `(Subgroup.mem_inf.1 hu).1`. Establish `hc` using `(W N).isNormal'.conj_mem _ hm (ρ (g j))`. Establish `hi` using `Subgroup.inv_mem _ hc`. Establish `eq : ρ (σ N j)⁻¹ * (ρ (g j))⁻¹ = (ρ (g j) * ρ (σ N j * g j) * (ρ (g j))⁻¹)⁻¹`.
+
+Simplify using `only [map_mul, map_inv]`. Use `group`. Rewrite using `[eq]`. Conclude with `hi`. Establish `htame : ∀ N j, ((((VN N).pr (τ N j)) ^ normV (w N j))⁻¹ * (((VN N).pr (σ N j)⁻¹)⁻¹ * (VN N).pr (τ N j) * (VN N).pr (σ N j)⁻¹)).1 ∈ PL l (Subgroup.comap (hN N).p (H.toOpenSubgroup : Subgroup V0.frame.Γ))`.
+
+Introduce `N j`. Establish `hσD : σ N j ∈ Dec (B N j)` using `(hP N j).2.2.2.2.1.1`. Establish `hτD : τ N j ∈ Dec (B N j)` using `Ine_le_Dec _ (hτ N j).1`. Establish `ht` using `((hTQ N j).2.2.2.2.2 ⟨σ N j, hσD⟩ ⟨τ N j, hτD⟩ (hP N j).2.2.2.2.1 (hτ N j)).2.1`. Establish `hm` using `(hK N).2.1 j _ ht`.
+
+Establish `e : (((VN N).pr (τ N j)) ^ normV (w N j))⁻¹ * (((VN N).pr (σ N j)⁻¹)⁻¹ * (VN N).pr (τ N j) * (VN N).pr (σ N j)⁻¹) = (VN N).pr (((⟨τ N j, hτD⟩ : Dec (B N j)) ^ normV (w N j))⁻¹ * ((⟨σ N j, hσD⟩ : Dec (B N j)) * ⟨τ N j, hτD⟩ * (⟨σ N j, hσD⟩ : Dec (B N j))⁻¹) : Dec (B N j))`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_pow, map_mul, map_inv, map_pow, inv_inv]`. Rewrite using `[e]`. Conclude with `hm`. Set `T : TWGrp (globOf r V0)` to `{ q := q H := H H_η := fun x hx => by`.
+
+Take `⟨h1, -, -⟩` from `(hH x).1 hx`. Conclude with `h1`. Use `H_ε := fun x hx => by`. Take `⟨-, -, h3⟩` from `(hH x).1 hx`. Conclude with `h3`.
+
+Use `GN := fun N => globOf r (VN N)`. Use `h := hN`. Use `sg := sg`. Use `sg_mem := hsg`. Use `Nq := fun N j => normV (w N j)`.
+
+Use `Nq_mod := hNq`. Use `ph := fun N j => (VN N).pr (σ N j)⁻¹`. Use `ta := fun N j => (VN N).pr (τ N j)`. Use `ph_lim := fun V j hV => (hWlim V hV).mono fun N hle => hle (hWm N j)`. Use `ph_H := fun N j => hWH N (hWm N j)`.
+
+Use `ta_ker := fun N j => (hK N).1 j _ (hτ N j).1`. Use `tame := htame`. Use `ker_le := fun N => (hK N).2.2`. Use `hb := Nat.card (HomL l (H.toOpenSubgroup : Subgroup V0.frame.Γ)) * l ^ (q * (H.toOpenSubgroup : Subgroup V0.frame.Γ).index)`. Use `fin0 := hphi _ H.toOpenSubgroup.isOpen`.
+
+Use `finN := fun N => homBound l (VN N).frame.Γ V0.frame.Γ (hN N).p H q (fun j => ((VN N).pr (τ N j)).1) (hN N).cont (hN N).surj (fun j => (hK N).1 j _ (hτ N j).1) ((hK N).2.2) (hphi _ H.toOpenSubgroup.isOpen)`. Use `phiV := fun x => phiDec hC.lf l L Ω (s.A x.1) (s.w x.1) (s.hw x.1)`. Use `phiU := fun u => phiDec hC.lf l L Ω (s.A u.1) (s.w u.1) (s.hw u.1) }`. Use `⟨T, ⟨{ V := VN e := fun N => { p := MonoidHom.id _ cont := continuous_id surj := Function.surjective_id η := fun _ => rfl c := rfl ε := fun _ => rfl φ := fun _ _ => rfl φu := fun _ _ => rfl } e_inj := fun N => Function.injective_id e_h := fun N x => hNe N x v := v v_inj := hinj v …` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Pa.arPl : ArPl := by
   intro hC l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ hO _ n r hS
   haveI : CharP (ResidueField O) l := hO.char

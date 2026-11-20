@@ -22,6 +22,41 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LiftForms
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `set b := Module.finBasis K V`. Use `set Φ : (Fin n → K) → (Fin n → K') := fun x k => φ (x k) with hΦ`. Establish `hrel : ∀ x' : Fin n → K', ∀ x : Fin n → K, (∀ (k k' : Fin n), (k : ℕ) = k' → x' k' = φ (x k)) ↔ x' = Φ x`. Introduce `x' x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `k`. Conclude with `h k k rfl`. Introduce and unpack `rfl k k' hk`.
+
+Rewrite using `[Fin.ext hk]`. Establish `hS : {x' | ∃ x ∈ V, ∀ (k k' : Fin n), (k : ℕ) = k' → x' k' = φ (x k)} = Φ '' V`. Use extensionality with `x'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, h⟩`. Conclude with `⟨x, hx, ((hrel x' x).1 h).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, (hrel _ x).2 rfl⟩`. Rewrite `hV` using `[hS]`.
+
+Establish `hΦadd : ∀ x y, Φ (x + y) = Φ x + Φ y` using `fun x y => by funext k; simp [hΦ]`. Establish `hΦsmul : ∀ (a : K) x, Φ (a • x) = φ a • Φ x` using `fun a x => by funext k; simp [hΦ]`. Establish `hΦsum : ∀ y : Fin (Module.finrank K V) → K, Φ (∑ i, y i • (b i : Fin n → K)) = ∑ i, φ (y i) • Φ (b i)`. Introduce `y`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[hΦ, Finset.sum_apply, map_sum]`. Set `c : Fin (Module.finrank K V) → Fin n → K'` to `fun i => Φ (b i)`. Establish `hc_mem : ∀ i, c i ∈ V'` using `fun i => hV ▸ Submodule.subset_span ⟨b i, (b i).2, rfl⟩`. Establish `hli : LinearIndependent K' c`. Use `letI := φ.toAlgebra`.
+
+Establish `h0 : LinearIndependent K (fun i => (b i : Fin n → K))` using `b.linearIndependent.map' V.subtype V.ker_subtype`. Conclude with `(linearIndependent_algebraMap_comp_iff).2 h0`. Establish `hspan : Submodule.span K' (Set.range c) = V'`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hc_mem i`. Rewrite using `[hV, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : (⟨x, hx⟩ : V) = ∑ i, (b.repr ⟨x, hx⟩ i) • b i` using `(b.sum_repr _).symm`.
+
+Establish `hx2 : x = ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : Fin n → K)`. Use `congrArg Subtype.val hx'` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify `this` using `only [Submodule.coe_smul]`. Rewrite using `[hx2, hΦsum]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `cV : Fin (Module.finrank K V) → V'` to `fun i => ⟨c i, hc_mem i⟩`. Establish `hliV : LinearIndependent K' cV` using `LinearIndependent.of_comp V'.subtype hli`. Establish `hspV : ⊤ ≤ Submodule.span K' (Set.range cV)`. Introduce and unpack `⟨x, hx⟩ _`.
+
+Rewrite `hx` using `[← hspan]`. Establish `: Set.range c = V'.subtype '' Set.range cV`. Use extensionality with `z`. Simplify using `[cV, c]`. Rewrite `hx` using `[this, ← Submodule.map_span]`.
+
+Take `⟨w, hw, hwx⟩` from `hx`. Establish `: w = ⟨x, hspan ▸ (by rw [this, ← Submodule.map_span]; exact ⟨w, hw, hwx⟩)⟩` using `Subtype.ext hwx`. Rewrite using `[← this]`. Conclude with `hw`. Set `bc : Module.Basis (Fin (Module.finrank K V)) K' V'` to `Module.Basis.mk hliV hspV`.
+
+Use `set b' := Module.finBasis K' V'`. Use `⟨Matrix.of fun l i => b'.repr (bc i) l, ?_, ?_⟩` and prove the remaining obligations. Establish `hG : (Matrix.of fun l i => b'.repr (bc i) l).mulVec = fun y => b'.equivFun (bc.equivFun.symm y)`. Use function extensionality and compare the values at `y l`. Simplify using `[Matrix.mulVec, dotProduct, Module.Basis.equivFun_symm_apply, map_sum, mul_comm]`.
+
+Rewrite using `[hG]`. Conclude with `b'.equivFun.bijective.comp bc.equivFun.symm.bijective`. Introduce `y k k' hk`. Rewrite using `[← Fin.ext hk]`. Establish `e1 : (∑ l, ((Matrix.of fun l i => b'.repr (bc i) l).mulVec (fun i => φ (y i))) l • (b' l : Fin n → K')) = ((∑ i, φ (y i) • bc i : V') : Fin n → K')`.
+
+Establish `: ∑ l, ((Matrix.of fun l i => b'.repr (bc i) l).mulVec (fun i => φ (y i))) l • b' l = ∑ i, φ (y i) • bc i`. Rewrite using `[← b'.sum_repr (∑ i, φ (y i) • bc i)]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Use `congr 1`.
+
+Simplify using `[Matrix.mulVec, dotProduct, map_sum, mul_comm]`. Use `congrArg Subtype.val this` as an intermediate fact. Simplify `this` using `[Submodule.coe_sum]`. Rewrite using `[e1]`. Establish `e2 : ((∑ i, φ (y i) • bc i : V') : Fin n → K') = ∑ i, φ (y i) • c i`.
+
+Simplify using `[Submodule.coe_sum, bc, cV]`. Rewrite using `[e2, ← hΦsum]`.
+-/
 theorem exists_mat {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {n n' : ℕ} (hn : n = n')
     (V : Submodule K (Fin n → K)) (V' : Submodule K' (Fin n' → K'))
     (hV : V' = Submodule.span K' {x' | ∃ x ∈ V, ∀ (k : Fin n) (k' : Fin n'), (k : ℕ) = k' → x' k' = φ (x k)}) :
@@ -102,6 +137,25 @@ theorem exists_mat {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {n n' : 
       simp [Submodule.coe_sum, bc, cV]
     rw [e2, ← hΦsum]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `set L' := (Fintype.linearCombination K' b').restrictScalars (𝓞 K') with hL'`. Establish `hL'apply : ∀ c, L' c = ∑ l, c l • b' l` using `fun c => by`. Simplify using `[hL', Fintype.linearCombination_apply]`. Establish `key : ∀ y : Fin d → K, L' (G.mulVec fun i => φ (y i)) = fun k => φ ((∑ i, y i • b i) k)`.
+
+Introduce `y`. Use function extensionality and compare the values at `k`. Rewrite using `[hL'apply]`. Conclude with `hG y k k rfl`. Establish `hinj : Function.Injective L'`.
+
+Introduce `c₁ c₂ h`. Rewrite `h` using `[hL'apply, hL'apply]`. Establish `h0 : ∑ l, (c₁ - c₂) l • b' l = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Use function extensionality and compare the values at `l`.
+
+Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hb' _ h0 l)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `c hc`. Establish `hc' : L' c ∈ M'` using `hc`. Establish `hle : M' ≤ (Submodule.span (𝓞 K') ((fun y : Fin d → K => G.mulVec fun i => φ (y i)) '' (M.comap ((Fintype.linearCombination K b).restrictScalars (𝓞 K)) : Set (Fin d → K)))).map L'`.
+
+Rewrite using `[hM', Submodule.span_le]`. Introduce and unpack `x' ⟨x, hx, hrel⟩`. Take `⟨y, hy⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hM x hx)`. Establish `hyM : y ∈ M.comap ((Fintype.linearCombination K b).restrictScalars (𝓞 K))` using `by show (Fintype.linearCombination K b) y ∈ M`. Rewrite using `[Fintype.linearCombination_apply, hy]`.
+
+Conclude with `hx`. Establish `: x' = L' (G.mulVec fun i => φ (y i))`. Rewrite using `[key y, hy]`. Use function extensionality and compare the values at `k`. Conclude with `hrel k k rfl`.
+
+Rewrite using `[this]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, hyM, rfl⟩)`. Take `⟨e, he, hec⟩` from `hle hc'`. Rewrite using `[← hinj hec]`. Conclude with `he`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show L' (G.mulVec fun i => φ (y i)) ∈ M'`. Rewrite using `[hM', key y]`. Use `Submodule.subset_span ⟨∑ i, y i • b i, ?_, fun k k' hk => by rw [Fin.ext hk]⟩` and prove the remaining obligations.
+
+Establish `: (Fintype.linearCombination K b) y ∈ M` using `hy`. Rewrite `this` using `[Fintype.linearCombination_apply]`. Then use the resulting hypothesis.
+-/
 theorem lat_coords {K K' : Type} [Field K] [Field K'] [NumberField K] [NumberField K'] (φ : K →+* K') {n n' d d' : ℕ}
     (hn : n = n') (b : Fin d → Fin n → K) (b' : Fin d' → Fin n' → K') (hb' : LinearIndependent K' b')
     (G : Matrix (Fin d') (Fin d) K')
@@ -151,6 +205,15 @@ theorem lat_coords {K K' : Type} [Field K] [Field K'] [NumberField K] [NumberFie
     have : (Fintype.linearCombination K b) y ∈ M := hy
     rwa [Fintype.linearCombination_apply] at this
 
+/- English proof (translation)
+Establish `hpos : (0:ℝ) < RealDat.nP F.lv2 false`. Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions. Use `set s := twAt D.what₂.embLL A3.A.v0`. Use `set WS := R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`.
+
+Establish `h2 : (@Tw.out s WS ((R.toCx3 F).wC false i A3.fam3.base3.v0 (cpt A3.fam3.base3.v0.embedding y))) = ∑ k, cj s (cpt A3.fam3.base3.v0.embedding y k) • (⟨R.toRealDat.bC F.lv2 false i (sg0 D A3.A) k, Submodule.subset_span ⟨k, rfl⟩⟩ : WS)`. Simplify using `only [CxData.wC, lin, Fintype.linearCombination_apply]`. Both sides reduce to the same expression. Establish `h1 : ∀ x : Tw s WS, @Tw.out s _ ((R.toCx3 F).eW false i x) = (((Real.sqrt (RealDat.nP F.lv2 false) : ℝ) : ℂ)) • ((Tw.out x : WS) : (R.HW i (sg0 D A3.A)).H)` using `fun x => rfl`. Use `Eq.trans (h1 ((R.toCx3 F).wC false i A3.fam3.base3.v0 (cpt A3.fam3.base3.v0.embedding y))) ?_` and prove the remaining obligations.
+
+Rewrite using `[h2, Submodule.coe_sum, Finset.smul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, map_smulₛₗ, smul_comm]`. Establish `he : cj s (cpt A3.fam3.base3.v0.embedding y k) = sg0 D A3.A (y k)` using `by show cj s (A3.A.v0.embedding (y k)) = _`. Rewrite using `[emb_eq D.what₂.embLL A3.A.v0 (y k), cj_cj]`.
+
+Rewrite using `[he]`. Use `congr 1`. Use `show ((Real.sqrt (RealDat.nP F.lv2 false) : ℝ) : ℂ) • ((((Real.sqrt (RealDat.nP F.lv2 false))⁻¹ : ℝ) : ℂ) • (R.FW i).j (sg0 D A3.A) (R.toRealDat.bL F.lv2 false i k)) = _`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.2 hpos).ne', Complex.ofReal_one, one_smul]`.
+-/
 theorem complexPoints_baseLevelLift_readAtBaseEmbedding {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (i : Fin D.R.m)
     (y : Fin ((R.toCx3 F).dW false i) → D.what₂.LL) :
@@ -177,6 +240,11 @@ theorem complexPoints_baseLevelLift_readAtBaseEmbedding {D : D7} {G : Type} [Gro
   show ((Real.sqrt (RealDat.nP F.lv2 false) : ℝ) : ℂ) • ((((Real.sqrt (RealDat.nP F.lv2 false))⁻¹ : ℝ) : ℂ) • (R.FW i).j (sg0 D A3.A) (R.toRealDat.bL F.lv2 false i k)) = _
   rw [smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.2 hpos).ne', Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+Establish `e` using `complexPoints_baseLevelLift_readAtBaseEmbedding R F i y`. Establish `hs : sg0 D A3.A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `key : ∀ (σ σ' : D.what₂.LL →+* ℂ), σ = σ' → ∀ v, HEq ((R.FW i).j σ v) ((R.FW i).j σ' v)`. Introduce `σ σ' h v`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression. Use `show HEq (@Tw.out (twAt D.what₂.embLL A3.A.v0) _ ((R.toCx3 F).w0C false i (cpt A3.fam3.base3.v0.embedding y))) _`. Rewrite using `[e]`. Conclude with `key _ _ hs _`.
+-/
 theorem liftWeight_complexPoint_eq_twist {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (i : Fin D.R.m)
     (y : Fin ((R.toCx3 F).dW false i) → D.what₂.LL) :
@@ -190,6 +258,9 @@ theorem liftWeight_complexPoint_eq_twist {D : D7} {G : Type} [Group G] [Fintype 
   rw [e]
   exact key _ _ hs _
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `eq_of_heq h` as an intermediate fact. Substitute `this` using the available equality. Rewrite using `[Fin.ext hi]`.
+-/
 theorem nat_eq_of_heq {m m' : ℕ} (hm : m' = m) {f : Fin m → ℕ} {f' : Fin m' → ℕ} (h : HEq f' f) (i : Fin m) (i' : Fin m')
     (hi : (i : ℕ) = i') : f i = f' i' := by
   subst hm
@@ -197,6 +268,11 @@ theorem nat_eq_of_heq {m m' : ℕ} (hm : m' = m) {f : Fin m → ℕ} {f' : Fin m
   subst this
   rw [Fin.ext hi]
 
+/- English proof (translation)
+Establish `hx' : (⟨x, hx⟩ : V) = ∑ i, ((Module.finBasis K V).repr ⟨x, hx⟩ i) • Module.finBasis K V i` using `((Module.finBasis K V).sum_repr _).symm`. Establish `hx2 : x = ∑ i, ((Module.finBasis K V).repr ⟨x, hx⟩ i) • (Module.finBasis K V i : Fin n → K)`. Use `congrArg Subtype.val hx'` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify `this` using `only [Submodule.coe_smul]`.
+
+Rewrite using `[hx2]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_span_basis {K : Type} [Field K] {n : ℕ} (V : Submodule K (Fin n → K)) [Module.Finite K V] {x : Fin n → K}
     (hx : x ∈ V) : x ∈ Submodule.span K (Set.range fun k => (Module.finBasis K V k : Fin n → K)) := by
   have hx' : (⟨x, hx⟩ : V) = ∑ i, ((Module.finBasis K V).repr ⟨x, hx⟩ i) • Module.finBasis K V i := ((Module.finBasis K V).sum_repr _).symm

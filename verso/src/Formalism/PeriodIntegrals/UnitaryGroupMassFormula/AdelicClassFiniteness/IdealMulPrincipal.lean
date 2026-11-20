@@ -7,6 +7,9 @@ namespace PIW.AdelClassFin
 open NumberField
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `h1 : ClassGroup.mk0 ((⟨I, hI0⟩ : (Ideal (𝓞 E))⁰) * A) = 1`. Rewrite using `[map_mul, hA, mul_inv_cancel]`. Take `⟨c, hc⟩` from `((ClassGroup.mk0_eq_one_iff (((⟨I, hI0⟩ : (Ideal (𝓞 E))⁰) * A).2)).mp h1).principal`. Conclude with `⟨c, hc⟩`.
+-/
 theorem ideal_mul_principal {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E)) (hI0 : I ∈ (Ideal (𝓞 E))⁰)
     (A : (Ideal (𝓞 E))⁰) (hA : ClassGroup.mk0 A = (ClassGroup.mk0 (⟨I, hI0⟩ : (Ideal (𝓞 E))⁰))⁻¹) :
     ∃ c : 𝓞 E, I * (A : Ideal (𝓞 E)) = Ideal.span {c} := by
@@ -19,6 +22,17 @@ def IdealBoundAll : Prop :=
   ∀ (E : Type) [Field E] [NumberField E], ∃ B : ℕ, ∀ I : Ideal (𝓞 E), I ≠ ⊥ → ∃ c ∈ I, c ≠ 0 ∧ ∃ e : ℕ,
     1 ≤ e ∧ e ≤ B ∧ ∀ g ∈ I, ∃ q : 𝓞 E, (e : 𝓞 E) * g = c * q
 
+/- English proof (translation)
+Distinguish the cases in `hN : N = 0`. Conclude with `⟨∅, Set.finite_empty, fun h => absurd hN h⟩`. Set `I : Ideal (𝓞 E)` to `Ideal.span {(N : 𝓞 E)}`. Establish `hI : I ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hN` after adjusting the coercions. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Set `P : 𝓞 E → Prop` to `fun β => star (algebraMap (𝓞 E) E β) = algebraMap (𝓞 E) E β`. Set `pick : 𝓞 E ⧸ I → E` to `fun q => if h : ∃ β, P β ∧ Ideal.Quotient.mk I β = q then algebraMap (𝓞 E) E h.choose else 0`. Use `⟨Set.range pick, Set.finite_range pick, fun _ β hβ => ?_⟩` and prove the remaining obligations.
+
+Establish `h : ∃ b, P b ∧ Ideal.Quotient.mk I b = Ideal.Quotient.mk I β` using `⟨β, hβ, rfl⟩`. Take `⟨hP, hq⟩` from `h.choose_spec`. Establish `hP' : star (algebraMap (𝓞 E) E h.choose) = algebraMap (𝓞 E) E h.choose` using `hP`. Establish `hpick : pick (Ideal.Quotient.mk I β) = algebraMap (𝓞 E) E h.choose`. Simplify using `only [pick, dif_pos h]`.
+
+Establish `hmem : β - h.choose ∈ I` using `Ideal.Quotient.eq.mp hq.symm`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `e1` using `congrArg (algebraMap (𝓞 E) E) hs`. Rewrite `e1` using `[map_mul, map_sub, map_natCast]`. Use `⟨pick (Ideal.Quotient.mk I β), ⟨_, rfl⟩, s, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hpick]`. Take the linear combination `(-1 : E) * e1`. Establish `e2` using `congrArg star e1`. Rewrite `e2` using `[star_mul', star_natCast, star_sub, hβ, hP', ← e1]`. Conclude with `mul_right_cancel₀ (Nat.cast_ne_zero.mpr hN) e2`.
+-/
 theorem star_fixed_reps (E : Type) [Field E] [NumberField E] [StarRing E] (N : ℕ) :
     ∃ R : Set E, R.Finite ∧ (N ≠ 0 → ∀ β : 𝓞 E, star (algebraMap (𝓞 E) E β) = algebraMap (𝓞 E) E β →
       ∃ r ∈ R, ∃ s : 𝓞 E, algebraMap (𝓞 E) E β = r + N * algebraMap (𝓞 E) E s ∧

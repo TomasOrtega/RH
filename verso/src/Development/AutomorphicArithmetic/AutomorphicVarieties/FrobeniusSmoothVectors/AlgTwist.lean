@@ -2,11 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Simplify using `only [w, Fin.val_rev]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 private theorem w_rev (n : ℕ) (i : Fin n) : w n i.rev = - w n i := by
   have := i.isLt
   simp only [w, Fin.val_rev]
   split_ifs <;> omega
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `key : ∀ k : Fin n, (j = k.rev) ↔ (k = j.rev)`. Introduce `k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Simplify using `only [key, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 private theorem J_apply {K : Type} [CommRing K] {n : ℕ} (X : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     (Jmat K n * Xᵀ * Jmat K n) i j = X j.rev i.rev := by
   simp only [Matrix.mul_apply, Jmat, Matrix.transpose_apply, ite_mul, one_mul, zero_mul,
@@ -39,9 +47,15 @@ private def tw {K : Type} [CommRing K] (n : ℕ) (u : Kˣ) :
     ext i j
     by_cases h : i = j <;> simp [h, Matrix.algebraMap_matrix_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem tw_apply {K : Type} [CommRing K] (n : ℕ) (u : Kˣ) (X : Matrix (Fin n) (Fin n) K) (i j : Fin n) :
     tw n u X i j = ((u ^ (w n i - w n j) : Kˣ) : K) * X i j := rfl
 
+/- English proof (translation)
+Unfold `ordProd`. Rewrite using `[map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, map_sub, map_smul, map_one]`.
+-/
 private theorem ordProd_tw {H K : Type} [CommRing K] {n : ℕ} (u : Kˣ)
     (r : H → Matrix (Fin n) (Fin n) K) (ψ : Fin n → H → K) (g : Fin n → H) :
     ordProd (fun s => tw n u (r s)) ψ g = tw n u (ordProd r ψ g) := by
@@ -51,6 +65,15 @@ private theorem ordProd_tw {H K : Type} [CommRing K] {n : ℕ} (u : Kˣ)
   funext i
   simp only [Function.comp_apply, map_sub, map_smul, map_one]
 
+/- English proof (translation)
+Introduce `l _ k _ F n K _ u ρ`. Use `⟨⟨(tw n u).toRingHom.toMonoidHom.comp ρ.r, ρ.ψ, ?_, ?_, ?_⟩, fun g i j => rfl, rfl⟩` and prove the remaining obligations. Introduce `g`. Use extensionality with `i j`. Rewrite using `[J_apply]`.
+
+Use `show tw n u (ρ.r (F.star g)) i j = tw n u (ρ.r g) j.rev i.rev`. Rewrite using `[tw_apply, tw_apply, ρ.pol, J_apply, w_rev, w_rev]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j h`.
+
+Use `ρ.diag i j h` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.sub_apply]`. Use `show tw n u (ρ.r F.g0) i j - tw n u (ρ.r (F.star F.g0)) i j = 0`. Rewrite using `[tw_apply, tw_apply, ← mul_sub, this, mul_zero]`. Introduce `v g`.
+
+Use `ordProd_tw u (fun s => ρ.r (F.loc0 v s)) (fun i s => ((ρ.ψ v i s : Kˣ) : K)) g` as an intermediate fact. Conclude with `this.trans (by rw [ρ.ord, map_zero])`.
+-/
 theorem UpperTheory.V.Fr.alg_twist :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} {K : Type} [CommRing K] (u : Kˣ) (ρ : NRep F n K), ∃ ρ' : NRep F n K, (∀ g i j, ρ'.r g i j = ((u ^ (w n i - w n j) : Kˣ) : K) * ρ.r g i j) ∧ ρ'.ψ = ρ.ψ := by
   intro l _ k _ F n K _ u ρ

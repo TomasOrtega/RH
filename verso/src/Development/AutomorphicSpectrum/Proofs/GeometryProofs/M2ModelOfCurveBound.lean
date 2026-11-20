@@ -27,6 +27,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Conj.ModelNefness
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun s => ?_` and prove the remaining obligations. Distinguish the cases in `h : s = s₀`. Substitute `h` using the available equality. Conclude with `le_sup_left`.
+
+Conclude with `le_sup_of_le_right (le_iSup (fun s : {s // s ≠ s₀} => f s) ⟨s, h⟩)`. Conclude with `sup_le (le_iSup f s₀) (iSup_le fun s => le_iSup f s.1)`.
+-/
 theorem iSup_split {α I : Type} [CompleteLattice α] (f : I → α) (s₀ : I) :
     ⨆ s, f s = f s₀ ⊔ ⨆ s : {s // s ≠ s₀}, f s := by
   apply le_antisymm
@@ -38,6 +43,21 @@ theorem iSup_split {α I : Type} [CompleteLattice α] (f : I → α) (s₀ : I) 
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Introduce `p hp`. Use `choose U hU b hb hfr using fun s => hL s p hp`. Establish `hmem : ∀ (x : X) (s : Finset I), x ∈ s.inf U ↔ ∀ i ∈ s, x ∈ U i`. Introduce `x s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih => simp [Finset.inf_insert, ih]`. Set `e : (Σ s, Fin (r s)) ≃ Fin (∑ s, r s)` to `Fintype.equivFinOfCardEq (by simp [Fintype.card_sigma])`. Set `c : Fin (∑ s, r s) → E` to `fun i => b (e.symm i).1 (e.symm i).2`. Establish `hsp : ∀ (A : Type) [Semiring A] [Module A E], Submodule.span A (Set.range c) = ⨆ s, Submodule.span A (Set.range (b s))`.
+
+Introduce `A _ _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(le_iSup (fun s => Submodule.span A (Set.range (b s))) (e.symm i).1) (Submodule.subset_span ⟨_, rfl⟩)`.
+
+Use `iSup_le fun s => ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨e ⟨s, i⟩, congrArg (fun x : Σ s, Fin (r s) => b x.1 x.2) (e.symm_apply_apply ⟨s, i⟩)⟩`. Establish `hli : LinearIndependent Ω c`.
+
+Establish `h1 : LinearIndependent Ω fun ji : Σ s, Fin (r s) => b ji.1 ji.2`. Use `linearIndependent_iUnion_finite (fun s => (hfr s p hp (hU s)).1) fun i t _ hi => ?_` and prove the remaining obligations. Rewrite using `[hb i]`. Use `(hV i).mono_right (iSup₂_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[hb s]`.
+
+Conclude with `le_iSup₂_of_le s (fun h => hi (h ▸ hs)) le_rfl`. Conclude with `h1.comp e.symm e.symm.injective`. Use `⟨Finset.univ.inf U, (hmem _ _).2 fun s _ => hU s, c, ?_, fun q hq hqU => ⟨hli, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsp Ω]`. Conclude with `iSup_congr hb`.
+
+Rewrite using `[hsp (regAt ξ q)]`. Conclude with `iSup_congr fun s => (hfr s q hq ((hmem _ _).1 hqU s (Finset.mem_univ s))).2`.
+-/
 theorem isVBOn_iSup {E : Type} [AddCommGroup E] [Module Ω E] {I : Type} [Fintype I]
     (L : I → Lat ξ E) (T : Set (Cpt ξ)) (r : I → ℕ) (V : I → Submodule Ω E) (hV : iSupIndep V)
     (hL : ∀ s, (L s).IsVBOn T (r s) (V s)) :
@@ -78,6 +98,11 @@ theorem isVBOn_iSup {E : Type} [AddCommGroup E] [Module Ω E] {I : Type} [Fintyp
   · rw [hsp (regAt ξ q)]
     exact iSup_congr fun s => (hfr s q hq ((hmem _ _).1 hqU s (Finset.mem_univ s))).2
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Use `⟨fun h0 => u.ne_zero (Subtype.ext h0), u.1.2, ?_⟩` and prove the remaining obligations. Establish `: ((u : regAt ξ q) : Ω)⁻¹ = (((u⁻¹ : (regAt ξ q)ˣ) : regAt ξ q) : Ω)`. Conclude with `inv_eq_of_mul_eq_one_right (congrArg Subtype.val u.mul_inv)`. Rewrite using `[this]`.
+
+Conclude with `(((u⁻¹ : (regAt ξ q)ˣ) : regAt ξ q)).2`.
+-/
 theorem unitAt_of_isUnit {q : Cpt ξ} {a : regAt ξ q} (h : IsUnit a) : unitAt ξ q (a : Ω) := by
   obtain ⟨u, rfl⟩ := h
   refine ⟨fun h0 => u.ne_zero (Subtype.ext h0), u.1.2, ?_⟩
@@ -86,6 +111,11 @@ theorem unitAt_of_isUnit {q : Cpt ξ} {a : regAt ξ q} (h : IsUnit a) : unitAt �
   rw [this]
   exact (((u⁻¹ : (regAt ξ q)ˣ) : regAt ξ q)).2
 
+/- English proof (translation)
+Use `haveI := EigSplit.isLocalRing_regAt q`. Take `⟨a, b, hab⟩` from `((Nat.prime_iff_prime_int.1 hp).coprime_iff_not_dvd).2 hd`. Establish `hP : ¬ IsUnit ((p : ℕ) : regAt ξ q)` using `fun h => hq (by simpa using unitAt_of_isUnit h)`. Establish `h1 : ((a : regAt ξ q) * (p : regAt ξ q)) + (b : regAt ξ q) * (d : regAt ξ q) = 1`. Conclude with `congrArg (Int.cast : ℤ → regAt ξ q) hab` after adjusting the coercions.
+
+Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h1 with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_right h) hP`. Establish `e : ((d : regAt ξ q) : Ω) = (d : Ω)` using `map_intCast (regAt ξ q).subtype d`. Rewrite using `[← e]`. Conclude with `unitAt_of_isUnit (isUnit_of_mul_isUnit_right (x := (b : regAt ξ q)) (by rwa [mul_comm] at h ⊢))`.
+-/
 theorem unitAt_int_of_fibre [CharZero Ω] {p : ℕ} (hp : p.Prime) (q : Cpt ξ) (hq : InFibre ξ p q) {d : ℤ}
     (hd : ¬ (p : ℤ) ∣ d) : unitAt ξ q (d : Ω) := by
   haveI := EigSplit.isLocalRing_regAt q
@@ -99,6 +129,11 @@ theorem unitAt_int_of_fibre [CharZero Ω] {p : ℕ} (hp : p.Prime) (q : Cpt ξ) 
     rw [← e]
     exact unitAt_of_isUnit (isUnit_of_mul_isUnit_right (x := (b : regAt ξ q)) (by rwa [mul_comm] at h ⊢))
 
+/- English proof (translation)
+Take `⟨-, -, hh, -⟩` from `h`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `h1 : (n : ℤ) ∈ (mCoordIdeal y).comap (MvPolynomial.C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker]`. Establish `: mConeMap y (MvPolynomial.C (n : ℤ)) = MvPolynomial.C (n : Ω)`.
+
+Simplify using `using (mConeMap y).commutes (n : ℤ)`. Simplify `this` using `[hn]`. Rewrite `h1` using `[show (mCoordIdeal y).comap (MvPolynomial.C : ℤ →+* MRing ι) = ⊥ from hh]`. Simplify using `using h1`.
+-/
 theorem charZero_of_isArithVar {B : Type} [Fintype B] {ι : B → Type} [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → Ω} {d : ℕ}
     (h : IsArithVar (mCoordIdeal y) d) : CharZero Ω := by
   obtain ⟨-, -, hh, -⟩ := h
@@ -113,6 +148,15 @@ theorem charZero_of_isArithVar {B : Type} [Fintype B] {ι : B → Type} [∀ k, 
 
 open Module in
 
+/- English proof (translation)
+Establish `hvb : M.lat.IsVBOn S (finrank Ω V) ⊤` using `fun p _ => by`. Take `⟨U, hU, c, hc, hf⟩` from `(GlobalTheory.T.lie_omega_lattice_vector_bundle X Ω ξ G V M hg hsm).1 p trivial`. Conclude with `⟨U, hU, c, hc, fun q _ hq => hf q trivial hq⟩`. Take `⟨hE, hsum⟩` from `EigSplit.isVBOn_eigSp X Ω ξ V E r M.lat S _ I σ hg hσ hcard hvb (fun p _ a e he => LieStable.lat_stable X Ω ξ G V M _ act r hr p a e he) hreg hdisc`. Establish `hint` using `GlobalTheory.T.eigenspace_decomposition_internal Ω V E r I σ hσ hcard`.
+
+Establish `hind` using `hint.submodule_iSupIndep`. Set `U' : Submodule Ω V` to `⨆ s : {s // s ≠ s₀}, eigSp r (σ s)`. Set `L' : Lat ξ V` to `fun q => ⨆ s : {s // s ≠ s₀}, M.eigLat r (σ s) q`. Establish `hL' : L'.IsVBOn S (∑ s : {s // s ≠ s₀}, finrank Ω (eigSp r (σ s))) U'` using `isVBOn_iSup (fun s : {s // s ≠ s₀} => M.eigLat r (σ s)) S _ (fun s => eigSp r (σ s)) (hind.comp Subtype.val_injective) fun s => hE s`. Establish `hcompl : IsCompl (Submodule.span Ω (Set.range b)) U'`.
+
+Rewrite using `[hspan]`. Use `⟨(hind s₀).mono_right (iSup_le fun s => le_iSup₂_of_le s.1 s.2 le_rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff, ← iSup_split (fun s => eigSp r (σ s)) s₀]`. Conclude with `hint.submodule_iSup_eq_top`. Establish `hlat : ∀ q ∈ S, M.lat q = M.eigLat r (σ s₀) q ⊔ L' q` using `fun q hq => (hsum q hq).trans (iSup_split (fun s => M.eigLat r (σ s) q) s₀)`.
+
+Take `⟨W, hW0, hWn, hdeg⟩` from `GlobalTheory.T.curve_lie_lattice_degree X Ω ξ K C z Y G V M Vz Mz h₀ h S (M.eigLat r (σ s₀)) L' n _ b U' hg hsm hz hS hb hfl hL' hcompl hlat`. Use `⟨W, hW0, ?_, hdeg⟩` and prove the remaining obligations. Rewrite using `[hWn]`. Conclude with `GlobalTheory.T.curve_lie_eigen_decomposition X Ω ξ k K z G V M Vz Mz h₀ (𝓞 E) I act.act r rz σ χ hg hsm act.hom hr hrz hχ hval (hsum _ hz) s₀`.
+-/
 theorem flag_at (E : Type) [Field E] [NumberField E] [CharZero Ω] (hg : IsCptGen ξ)
     {K k : Type} [Field K] [Field k] [Algebra k K] (C : ACurve K) (z : Spec (CommRingCat.of K) ⟶ X) (Y : CurveIn C z)
     (G : Over X) [GrpObj G] [IsCommMonObj G] (hsm : Smooth G.hom) (act : OAct (𝓞 E) G)
@@ -163,6 +207,35 @@ namespace GlobalTheory.CompanionTheory.Ar.Conj
 
 open ModelNefness GlobalTheory.CompanionTheory.Ar.Top in
 
+/- English proof (translation)
+Introduce `hC Ψ _ N M j p E _ _ _ H D hp hp2 hj hjN mu hdom hthr Wi hW`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨hprime, hPW, hchar, hdim⟩` from `hW`. Use `haveI : CharZero M.Ω := charZero_of_isArithVar M.arith`. Take `⟨K, _, _, _, w, hwW, hbir, hwk⟩` from `GlobalTheory.T.function_field_model_exists M.K M.ι Wi p hprime hchar hdim`.
+
+Take `⟨C, hFF, hne, hv⟩` from `GlobalTheory.T.function_field_curve_exists (ZMod p) K`. Use `haveI : CharP K p := charP_of_injective_algebraMap (algebraMap (ZMod p) K).injective p`. Take `⟨z, Y, h₀, h, hco, hfib⟩` from `GlobalTheory.T.curve_through_coordinates D.X M.Ω D.ξ M.K M.ι M.y D.tie K C w (by rw [hwW]; exact hPW) hwk`. Take `⟨hz, hi⟩` from `hfib p (CharP.cast_eq_zero K p)`. Establish `hg : IsCptGen D.ξ` using `D.tie.gen`.
+
+Take `⟨φ, hφ, -⟩` from `ValHom.exists_valAt_hom D.X M.Ω D.ξ K z h₀ hg`. Set `σ' : Ψ ⊕ Ψ → (𝓞 E →+* regAt D.ξ ⟨centre z, h₀⟩)` to `fun s => (D.σ s).codRestrict _ (D.reg _ hz s)`. Establish `hσ' : Function.Injective σ'` using `fun s s' e => D.σ_inj (RingHom.ext fun a => congrArg Subtype.val (RingHom.congr_fun e a))`. Establish `hcard : Fintype.card (Ψ ⊕ Ψ) = Module.finrank ℚ E`. Rewrite using `[Fintype.card_sum, ← D.card]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨χ, hχ, hχv⟩` from `GlobalTheory.T.split_characters_unramified E (regAt D.ξ ⟨centre z, h₀⟩) K (Ψ ⊕ Ψ) p σ' φ hσ' hcard D.unram`. Establish `hval : ∀ s a, ValAt D.ξ z (D.σ s a) (algebraMap (algebraicClosure (ZMod p) K) K (χ s a))` using `fun s a => (hφ _ _).2 ⟨D.reg _ hz s a, (hχv s a).symm⟩`. Establish `hconj : ∀ τ a, χ (Sum.inr τ) a = χ (Sum.inl τ) (H.bar a)` using `fun τ a => Subtype.ext (by`. Rewrite using `[hχv, hχv]`.
+
+Conclude with `congrArg φ (Subtype.ext (D.conj τ a)))`. Establish `hconst : ∀ i (c : algebraicClosure (ZMod p) K), C.v i (algebraMap _ K c) ≤ 1` using `fun i c => hv i _ (mem_algebraicClosure_iff.1 c.2)`. Take `⟨Vz, _, _, ⟨Mz⟩⟩` from `lieModel_exists D.X D.t.G K z`. Use `haveI : Smooth D.t.G.hom := D.t.semi.smooth`. Use `haveI : FiniteDimensional K Vz := (GlobalTheory.T.lie_model_finite_projective D.X D.t.G K z Vz Mz).1`.
+
+Take `⟨rz, hrz, -⟩` from `lieModel_exists_unique_act D.X D.t.G K z Vz Mz (𝓞 E) D.t.act.act D.t.act.hom D.t.act.one D.t.act.mul D.t.act.add`. Establish `hreg : ∀ q ∈ {q | InFibre D.ξ p q}, ∀ s a, D.σ s a ∈ regAt D.ξ q` using `fun q hq s a => D.reg q hq s a`. Establish `hdisc : ∀ q ∈ {q | InFibre D.ξ p q}, unitAt D.ξ q ((NumberField.discr E : ℤ) : M.Ω)` using `fun q hq => unitAt_int_of_fibre hp q hq D.unram`. Use `choose Wf hW0 hWj hdegW using fun τ => flag_at E hg C z Y D.t.G D.t.semi.smooth D.t.act D.V D.L Vz Mz D.r rz D.act hrz (Ψ ⊕ Ψ) D.σ χ D.σ_inj hcard hχ h₀ h {q | InFibre D.ξ p q} hz hi hreg hdisc hval (Sum.inl τ) (D.b₁ τ) (D.ind₁ τ).1 (D.ind₁ τ).2 (D.flag₁ τ)`. Use `choose Lf hL0 hLq hdegL using fun τ => flag_at E hg C z Y D.t.G D.t.semi.smooth D.t.act D.V D.L Vz Mz D.r rz D.act hrz (Ψ ⊕ Ψ) D.σ χ D.σ_inj hcard hχ h₀ h {q | InFibre D.ξ p q} hz hi hreg hdisc hval (Sum.inr τ) (D.b₂ τ) (D.ind₂ τ).1 (D.ind₂ τ).2 (D.flag₂ τ)`.
+
+Establish `hxdeg : ∀ r, geoNum 1 Wi (fun _ => M.xdeg r) = coordDeg C w (M.xdeg r)` using `fun r => by`. Rewrite using `[← hwW]`. Conclude with `GlobalTheory.T.function_field_degree_eq M.K M.ι p K C w (M.xdeg r) hFF hbir hwk`. Set `x : Ψ × Fin N → ℝ` to `fun r => (geoNum 1 Wi (fun _ => M.xdeg r) : ℝ)`. Set `wd : Ψ → ℕ → ℝ` to `fun τ i => (subDeg C (Y.lieLat Mz) (Wf τ i) : ℝ)`.
+
+Set `ld : Ψ → ℕ → ℝ` to `fun τ i => (subDeg C (Y.lieLat Mz) (Lf τ i) : ℝ)`. Establish `hx1 : ∀ τ (i : Fin N), (i : ℕ) < j → x (τ, i) = wd τ (i + 1) - wd τ i`. Introduce `τ i hij`. Take `⟨e₀, hdo⟩` from `D.deg₁ τ i hij`. Establish `h1` using `GlobalTheory.T.curve_lattice_degree_formula D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo`.
+
+Establish `h2` using `GlobalTheory.T.curve_degree_unique D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegW τ ⟨i, hij⟩)`. Simplify using `only [x, wd, hxdeg, h2]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hx2 : ∀ τ (i : Fin N), j ≤ (i : ℕ) → x (τ, i) = -(ld τ (N - 1 - i + 1) - ld τ (N - 1 - i))`.
+
+Introduce `τ i hij`. Establish `hlt : N - 1 - (i : ℕ) < N - j` using `by have := i.2; omega`. Take `⟨e₀, hdo⟩` from `D.deg₂ τ i hlt hij`. Establish `h1` using `GlobalTheory.T.curve_lattice_degree_formula D.X M.Ω D.ξ K C z Y M.K M.ι M.y w _ {q | InFibre D.ξ p q} _ e₀ h₀ h D.tie hco hz hi hdo`. Establish `h2` using `GlobalTheory.T.curve_degree_unique D.X M.Ω D.ξ K C z Y _ _ _ hg h1 (hdegL τ ⟨N - 1 - i, hlt⟩)`.
+
+Establish `h3 : coordDeg C w (-M.xdeg (τ, i)) = -coordDeg C w (M.xdeg (τ, i))`. Simplify using `[coordDeg]`. Rewrite `h2` using `[h3]`. Establish `h4 : coordDeg C w (M.xdeg (τ, i)) = -(subDeg C (Y.lieLat Mz) (Lf τ (N - 1 - i + 1)) - subDeg C (Y.lieLat Mz) (Lf τ (N - 1 - i)))`. Rewrite using `[← neg_eq_iff_eq_neg]`.
+
+Conclude with `h2`. Simplify using `only [x, ld, hxdeg, h4]`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨hgap, heq⟩` from `GlobalTheory.T.nef_threshold_gap_condition Ψ N j p mu x wd ld hp2 hj hjN hdom hthr hx1 hx2`.
+
+Establish `hfin` using `hC E H D.X D.t D.pow (algebraicClosure (ZMod p) K) K p hp2 C z Y hne hconst (fun i => D.fib ⟨_, h i⟩ (hi i)) Vz Mz rz hrz Ψ χ hχ hconj j (N - j) _ Wf Lf hj (by omega) hW0 hL0 hWj hLq hgap`. Establish `hfin' : 0 ≤ ∑ r : Ψ × Fin N, -mu r.1 r.2 * x r` using `heq ▸ hfin`. Establish `hcd : M.curveDeg mu 0 Wi = ∑ r : Ψ × Fin N, -mu r.1 r.2 * x r`. Unfold `RootModel.curveDeg`. Rewrite using `[Fintype.sum_option]`.
+
+Simplify using `only [RootModel.coef, RootModel.line, M.x_deg, zero_div, zero_mul, zero_add, x]`. Rewrite using `[hcd]`. Conclude with `hfin'`.
+-/
 theorem m2Model_of_m2Curve : CurveSemiAbelianConjecture → RootLineDeRhamModel := by
   intro hC Ψ _ N M j p E _ _ _ H D hp hp2 hj hjN mu hdom hthr Wi hW
   haveI : Fact p.Prime := ⟨hp⟩

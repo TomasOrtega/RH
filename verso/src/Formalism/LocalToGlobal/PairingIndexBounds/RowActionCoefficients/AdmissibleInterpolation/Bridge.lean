@@ -26,6 +26,13 @@ def eB (b : GlobalTheory P) : ℤ := lamAt (P.lam0 b.1) b.2 (Fin.last P.m)
 
 def sB (g : ∀ v, Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) : Kf := ∏ b : GlobalTheory P, (gam P g b).det ^ (-(eB P b))
 
+/- English proof (translation)
+Establish `e1 : ∀ (b : GlobalTheory P) (G : MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf), P.vEmb b.1 (blockEmb Kf b.2 G) = rename (emP P b) G`. Introduce `b G`. Simplify using `only [Places.vEmb, blockEmb]`. Rewrite using `[rename_rename]`. Both sides reduce to the same expression.
+
+Rewrite using `[show (∏ b, c b) • ∏ b, rename (emP P b) (F b) = ∏ b : GlobalTheory P, c b • rename (emP P b) (F b) by`. Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, map_prod]]`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, e1 ⟨v, s⟩]`.
+-/
 theorem prod_blocks (c : GlobalTheory P → Kf) (F : GlobalTheory P → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf) :
     ∏ v, P.vEmb v (∏ s, blockEmb Kf s (c ⟨v, s⟩ • F ⟨v, s⟩)) = (∏ b, c b) • ∏ b, rename (emP P b) (F b) := by
   have e1 : ∀ (b : GlobalTheory P) (G : MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf),
@@ -42,6 +49,13 @@ theorem prod_blocks (c : GlobalTheory P → Kf) (F : GlobalTheory P → MvPolyno
   refine Finset.prod_congr rfl fun s _ => ?_
   rw [map_smul, map_smul, e1 ⟨v, s⟩]
 
+/- English proof (translation)
+Establish `hd : Antitone (lamAt (P.lam0 v) s)`. Unfold `lamAt`. Use `split_ifs`. Conclude with `P.dom v s`. Introduce `i j hij`.
+
+Conclude with `neg_le_neg (P.dom v s (Fin.rev_le_rev.2 hij))`. Rewrite using `[la_extO (P.ι v) (P.σ v) (P.j v) (fun x => by obtain ⟨y, hy⟩ := (P.setting v).frob x; exact ⟨_, hy⟩) (P.setting v).ι_comp s.val g]`. Establish `hg'` using `la_tw_det (P.ι v) (P.σ v) s.val g hg`. Use `le_antisymm (lowest_invariant_le_delta _ _ hd _ hg') ?_` and prove the remaining obligations. Unfold `Dl0`.
+
+Rewrite using `[if_pos hd]`. Use `le_iInf₂ fun h hh => ?_` and prove the remaining obligations. Conclude with `dl_indep O Kf hinj _ _ _ h hg' hh.2`.
+-/
 theorem delta_zero_eq_twisted_delta (hinj : Function.Injective (algebraMap O Kf)) (v : Fin P.nV) (s : Fin (P.n' v))
     (g : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) (hg : IsUnit g.det) :
     Dl0 O P.m (lamAt (P.lam0 v) s) (extO O (P.ι v) (P.σ v) s.val (colSpan (P.W v) g)) =
@@ -65,6 +79,31 @@ variable (g : ∀ v, Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) (hg : ∀ 
 
 include hg in
 
+/- English proof (translation)
+Establish `key : ∀ S : Fin P.nV → Set P.Xsp, (∀ f : Fin P.nV → P.Xsp, (∀ v, f v ∈ S v) → ∏ v, f v ∈ T) → ∀ f : Fin P.nV → P.Xsp, (∀ v, f v ∈ Submodule.span O (S v)) → ∏ v, f v ∈ T`. Introduce `S h f hf`. It suffices to establish `H : ∀ A : Finset (Fin P.nV), ∀ f : Fin P.nV → P.Xsp, (∀ i ∈ A, f i ∈ Submodule.span O (S i)) → (∀ i ∉ A, f i ∈ S i) → ∏ i, f i ∈ T from H Finset.univ f (fun i _ => hf i) (fun i hi => absurd (Finset.mem_univ i) hi)`. Introduce `A`. Use `Finset.induction_on A ?_ ?_` and prove the remaining obligations.
+
+Introduce `f _ h2`. Conclude with `h f (fun i => h2 i (by simp))`. Introduce `a A ha ih f h1 h2`. Establish `hR : ∀ x ∈ Submodule.span O (S a), x * ∏ j ∈ Finset.univ \ {a}, f j ∈ T`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `h3` using `ih (Function.update f a y) (fun i hi => ?_) (fun i hi => ?_)`. Rewrite `h3` using `[Finset.prod_update_of_mem (Finset.mem_univ a)]`. Then use the resulting hypothesis. Establish `hia : i ≠ a` using `by rintro rfl; exact ha hi`.
+
+Simplify using `only [Function.update_apply, hia, if_false]`. Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `only [Function.update_apply, if_true]`.
+
+Conclude with `hy`. Simplify using `only [Function.update_apply, hia, if_false]`. Conclude with `h2 i (by simp [hia, hi])`. Consider the case `zero => rw [zero_mul]`. Conclude with `T.zero_mem`.
+
+Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `T.add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `T.smul_mem c hx`. Establish `h4` using `Finset.prod_update_of_mem (Finset.mem_univ a) f (f a)`.
+
+Rewrite `h4` using `[Function.update_eq_self]`. Rewrite using `[h4]`. Conclude with `hR _ (h1 a (Finset.mem_insert_self a A))`. Unfold `Places.HtupW Places.tenV`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `X ⟨F, hF, rfl⟩`. Establish `hF' : ∀ v, P.vEmb v (F v) ∈ Submodule.span O (((P.vEmb v).toLinearMap.restrictScalars O) '' {Q | ∃ G : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf, (∀ s, G s ∈ deltaLTw O Kf P.m (lamAt (P.lam0 v) s) (la_tw (P.ι v) (P.σ v) s.val (g v))) ∧ Q = ∏ s, blockEmb Kf s …`. Introduce `v`. Rewrite using `[Submodule.span_image]`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations.
+
+Establish `h` using `hF v`. Unfold `HtenW tensorLat at h`. Simplify using `only [delta_zero_eq_twisted_delta P hinj v _ (g v) (hg v)] at h`. Conclude with `h`. Use `key _ ?_ (fun v => P.vEmb v (F v)) hF'` and prove the remaining obligations.
+
+Introduce `f hf`. Use `choose Q hQ hfQ using hf`. Use `choose G hG hQG using hQ`. Establish `hG' : ∀ v s, ∃ H, H ∈ deltaL O Kf (P.m + 1) (nuB P ⟨v, s⟩) (gam P g ⟨v, s⟩) ∧ (gam P g ⟨v, s⟩).det ^ (-(eB P ⟨v, s⟩)) • H = G v s` using `fun v s => Submodule.mem_map.1 (hG v s)`. Use `choose H hH hHG using hG'`.
+
+Establish `e : ∏ v, f v = sB P g • ∏ b : GlobalTheory P, rename (emP P b) (H b.1 b.2)`. Rewrite using `[show sB P g • ∏ b : GlobalTheory P, rename (emP P b) (H b.1 b.2) = _ from (prod_blocks P (fun b => (gam P g b).det ^ (-(eB P b))) (fun b => H b.1 b.2)).symm]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hfQ v, hQG v]`. Use `show P.vEmb v _ = _`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← hHG v s]`. Rewrite using `[e]`. Conclude with `hT (fun b => H b.1 b.2) (fun b => hH b.1 b.2)`.
+-/
 theorem htupW_le (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O P.Xsp)
     (hT : ∀ F : GlobalTheory P → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf,
       (∀ b, F b ∈ deltaL O Kf (P.m + 1) (nuB P b) (gam P g b)) → sB P g • ∏ b, rename (emP P b) (F b) ∈ T) :
@@ -139,6 +178,11 @@ theorem htupW_le (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O 
 
 include hg in
 
+/- English proof (translation)
+Rewrite using `[show sB P g • ∏ b, rename (emP P b) (F b) = _ from (prod_blocks P (fun b => (gam P g b).det ^ (-(eB P b))) F).symm]`. Unfold `Places.HtupW Places.tenV`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun v => ∏ s, blockEmb Kf s ((gam P g ⟨v, s⟩).det ^ (-(eB P ⟨v, s⟩)) • F ⟨v, s⟩), fun v => ?_, rfl⟩` and prove the remaining obligations. Unfold `HtenW tensorLat`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun s => (gam P g ⟨v, s⟩).det ^ (-(eB P ⟨v, s⟩)) • F ⟨v, s⟩, fun s => ?_, rfl⟩` and prove the remaining obligations. Use `show _ ∈ Dl0 O P.m (lamAt (P.lam0 v) s) (extO O (P.ι v) (P.σ v) s.val (colSpan (P.W v) (g v)))`. Rewrite using `[delta_zero_eq_twisted_delta P hinj v s (g v) (hg v)]`. Conclude with `Submodule.mem_map.2 ⟨F ⟨v, s⟩, hF ⟨v, s⟩, rfl⟩`.
+-/
 theorem mem_htupW (hinj : Function.Injective (algebraMap O Kf)) (F : GlobalTheory P → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) Kf)
     (hF : ∀ b, F b ∈ deltaL O Kf (P.m + 1) (nuB P b) (gam P g b)) :
     sB P g • ∏ b, rename (emP P b) (F b) ∈ P.HtupW (fun v => colSpan (P.W v) (g v)) := by

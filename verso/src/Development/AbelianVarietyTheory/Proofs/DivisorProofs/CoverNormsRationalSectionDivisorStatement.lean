@@ -20,6 +20,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Cartier GlobalTheory.ShFam.Pad GlobalTheory.FlatSecCover
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CoverNorm.Lift.exists_ratSec_vertical_const | exact GlobalTheory.CoverNorm.Lift.exists_ratSec_vertical_const | (intros; apply GlobalTheory.CoverNorm.Lift.exists_ratSec_vertical_const <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cover_norms_rational_section_divisor : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (L : HermLB V.p) (φ : Y.Fn)
     (a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ) (l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ),
     GlobalTheory.CoverNorm.Norms V L (fun _ => φ) a l → (∀ σ, ∃ C : ℝ, ∀ y, a σ y = C) →

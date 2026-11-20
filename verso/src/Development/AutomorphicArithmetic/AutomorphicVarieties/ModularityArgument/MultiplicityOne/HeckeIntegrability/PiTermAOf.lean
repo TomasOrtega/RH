@@ -19,12 +19,40 @@ namespace UpperTheory.V.Z.Mult.Pi
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Lev, Subgroup.mem_iInf] at hg ⊢`. Conclude with `fun i => h _ (hg i)`.
+-/
 private theorem lev_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (S : Set (Pl E))
     {N N' : ∀ w : Pl E, Subgroup (GLw n w)} (h : ∀ w, N w ≤ N' w) : Lev S N ≤ Lev S N' := by
   intro g hg
   simp only [Lev, Subgroup.mem_iInf] at hg ⊢
   exact fun i => h _ (hg i)
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n hn l u hu μC μ _ _`. Take `⟨hFo, hFc⟩` from `hK E n`. Set `K₀ : TopologicalSpace.PositiveCompacts (GF E n)` to `⟨⟨(Kf E n : Set (GF E n)), hFc⟩, by show (interior (Kf E n : Set (GF E n))).Nonempty`. Rewrite using `[hFo.interior_eq]`. Conclude with `⟨1, (Kf E n).one_mem⟩⟩`.
+
+Set `μf : Measure (GF E n)` to `Measure.haarMeasure K₀`. Use `haveI : μf.IsHaarMeasure := inferInstance`. Establish `hμ1 : μf (Kf E n : Set (GF E n)) = 1` using `Measure.haarMeasure_self (K₀ := K₀)`. Take `⟨c₀, hc₀, hG⟩` from `h1 E n μC μf μ`. Use `⟨c₀, hc₀, fun π hreg hd hl S hS Z hZ B τ hB hτ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨lamE, hlam⟩` from `h2 E n π hreg`. Establish `hch : ∀ w : InfinitePlace E, HasInfCharGL π.V w.embedding (Multiset.map (infOf (l w).w true) Finset.univ.val) ∧ HasInfCharGL π.V (ComplexEmbedding.conjugate w.embedding) (Multiset.map (infOf (l w).w false) Finset.univ.val)` using `fun w => ⟨by`. Rewrite using `[map_infOf_true]`. Conclude with `hl w, by`. Rewrite using `[map_infOf_false, ← GlobalTheory.T.infChar_conjEmbedding_neg_of_invariant_pairing E n π π hd w.embedding _ _ (hl w) (hlam _)]`.
+
+Conclude with `hlam _⟩`. Establish `level : ∀ N : ∀ w : Pl E, Subgroup (GLw n w), Good Z N → (∃ ψ ∈ π.V, ψ ≠ 0 ∧ ∀ k ∈ Lev S N, finRep E n k ψ = ψ) → (∃ φ : ∀ w : Pl E, LF n 0 w, (∀ w ∈ Z, ∀ N' ≤ N w, ∀ b, IsHecke N' (two φ φ w b)) ∧ (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => seen φ φ w (g, 1)) ≠ 0) ∧ ∃ c : ℂ, ‖c‖ = …`. Introduce `N hN hfix`. Take `⟨hKo, hKc, -, -⟩` from `h3 E n S Z N hS hZ hN`. Take `⟨hKθ, hY⟩` from `h6 E n S Z N hS hZ hN π u hu`.
+
+Take `⟨Y, ρ, A, cK, hYπ, hfd, hne, hYfix, hact, hsimple, hsq, htw, hcK, htr⟩` from `hG hn π hreg (hθ E n hn π hd) (fun v => (l v).w) (fun v => (l v).anti) hch (Lev S N) hKo hKc hKθ hfix`. Take `⟨y, v, hv, hyv⟩` from `hY μf inferInstance Y ρ A hYπ hfd hne hYfix hact hsimple hsq htw`. Take `⟨href, d, hd0, hdtr⟩` from `h7 E n S Z N hS hZ hN π y B τ hB hτ`. Take `⟨hle, hidx⟩` from `h9 E n S Z N hS hZ hN`. Establish `hvol` using `h10 (GF E n) μf (Kf E n) (Lev S N) hKo hFc hle`.
+
+Rewrite `hvol` using `[hμ1, hidx]`. Use `⟨href, cK * v * d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hcK, hv, hd0, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg, mul_assoc]`. Move the coercions through the operations in `at hvol`. Rewrite using `[hvol]`.
+
+Simplify using the standard rewrite rules. Introduce `φ₁ φ₂ hφ T hT e₁ e₂ k vl R hE hM`. Take `⟨hH, hTr⟩` from `hdtr φ₁ φ₂ hφ T hT e₁ e₂ hE`. Take `⟨hHF, hTrY⟩` from `hyv _ hH`. Establish `key` using `htr k vl (fun _ => R) hM _ hHF`.
+
+Rewrite `key` using `[hTrY, hTr]`. Establish `e : cK * (∏ w : InfinitePlace E, vl w (infOf (l w).w)) * (v * (d * (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => seen φ₁ φ₂ w (g, 1)) * val T e₁ e₂ B 0)) = cK * v * d * (∏ v : InfinitePlace E, vl v (infOf (l v).w)) * (∏ w ∈ Z, trc (τ w).ρ (KGL w n) fun g => seen φ₁ φ₂ w (g, 1)) * val …` using `by ring`. Rewrite `key` using `[e]`. Conclude with `key`. Take `⟨N₀, hN₀, ψ, hψ, hψ0, hψfix⟩` from `h4 E n π S Z hS hZ fun w hw => ⟨B w, hB w hw⟩`.
+
+Take `⟨⟨φr, hr, hrne⟩, c₁, hc₁, hlev₀⟩` from `level N₀ hN₀ ⟨ψ, hψ, hψ0, hψfix⟩`. Use `⟨c₁, hc₁, ?_⟩` and prove the remaining obligations. Introduce `φ₁ φ₂ hφ T hT e₁ e₂ k vl R hE hM`. Take `⟨N, hN, hle, hHecke⟩` from `h5 E n Z N₀ hN₀ φ₁ φ₂ hφ`. Take `⟨-, c, -, hlev⟩` from `level N hN ⟨ψ, hψ, hψ0, fun g hg => hψfix g (lev_mono S hle hg)⟩`.
+
+Establish `main` using `hlev φ₁ φ₂ hHecke T hT e₁ e₂ k vl R hE hM`. Distinguish the cases in `hP : (∏ v : InfinitePlace E, vl v (infOf (l v).w)) = 0`. Rewrite `main`, the goal using `[hP]`. Simplify using `using main`. Establish `hcc : c = c₁`.
+
+Set `e : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))` to `fun _ => Ex.one`. Establish `hEe : TEv S (∅ : Finset (Pl E)) e` using `⟨by simp, by simp⟩`. Establish `a₀` using `hlev₀ φr φr (fun w hw b => hr w hw (N₀ w) le_rfl b) ∅ (Finset.disjoint_empty_left Z) e e k vl R hEe hM`. Establish `a₁` using `hlev φr φr (fun w hw b => hr w hw (N w) (hle w) b) ∅ (Finset.disjoint_empty_left Z) e e k vl R hEe hM`. Establish `heq` using `h8 E n μ π _ _ _ a₁ a₀`.
+
+Simplify using `only [UpperTheory.V.Z.Tf.GlobalTraceComparison.val, Finset.prod_empty, mul_one] at heq`. Conclude with `mul_right_cancel₀ hP (mul_right_cancel₀ hrne heq)`. Rewrite `main` using `[hcc]`. Conclude with `main`.
+-/
 theorem piTermA_of (h1 : GlobalTwistedTraceBound) (hθ : ThetaFixOf) (h2 : WtEx) (h3 : LevTop) (h4 : LevFix) (h5 : LcLevel) (h6 : ToYdA)
     (h7 : LevelTrA) (h8 : TwUniq) (h9 : LevIdx) (h10 : VolIdx) (hK : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ),
       IsOpen (Kf E n : Set (GF E n)) ∧ IsCompact (Kf E n : Set (GF E n))) : PiTermA := by
@@ -104,6 +132,11 @@ theorem piTermA_of (h1 : GlobalTwistedTraceBound) (hθ : ThetaFixOf) (h2 : WtEx)
   rw [hcc] at main
   exact main
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(hP E).1`. Establish `hG : Good (∅ : Finset (Pl E)) (fun w => KGL w n)` using `fun w => ⟨(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (E := E) w n).1, le_rfl, fun k hk x hx => mul_mem (mul_mem hk hx) (inv_mem hk), fun _ => rfl⟩`. Take `⟨ho, hc, -, -⟩` from `h3 E n S ∅ _ hS (fun _ h => absurd h (Finset.notMem_empty _)) hG`. Establish `e : Lev S (fun w => KGL w n) = Kf E n` using `Subgroup.ext (h0 E n S hS).2.2.2.2.2.2`. Rewrite `ho`, `hc` using `[e]`.
+
+Conclude with `⟨ho, hc⟩`.
+-/
 theorem kf_top (h0 : SlotBasic) (h3 : LevTop) (hP : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Places) (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     IsOpen (Kf E n : Set (GF E n)) ∧ IsCompact (Kf E n : Set (GF E n)) := by
   obtain ⟨S, hS⟩ := (hP E).1

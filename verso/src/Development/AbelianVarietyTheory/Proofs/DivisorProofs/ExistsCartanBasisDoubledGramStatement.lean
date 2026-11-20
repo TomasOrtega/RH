@@ -14,6 +14,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.SkewDblIwasawa
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SkewDblIwasawa.arch | exact GlobalTheory.SkewDblIwasawa.arch | (intros; apply GlobalTheory.SkewDblIwasawa.arch <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cartan_basis_doubled_gram : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (B : Base F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (θ : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ),
     (∀ i j, σ (J j i) = -J i j) → (∀ w, IsCartan (Complex.I • J.map (B.emb w).1) (θ w)) →

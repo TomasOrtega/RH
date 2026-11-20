@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.ChartLift
 
+/- English proof (translation)
+Introduce `X R W V _ _ _ _ _ _ ξ χ h ψ f hψ hf hc`. Establish `key : ∀ (x y : X) (hxy : x = y) (g : X.presheaf.stalk y ⟶ CommRingCat.of V), Spec.map ((X.presheaf.stalkCongr (Inseparable.of_eq hxy)).hom ≫ g) ≫ X.fromSpecStalk x = Spec.map g ≫ X.fromSpecStalk y`. Introduce `x y hxy g`. Substitute `hxy` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hc' : Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom ψ = (X.presheaf.stalkCongr (Inseparable.of_eq h)).hom ≫ Scheme.stalkClosedPointTo χ ≫ CommRingCat.ofHom f`. Use extensionality with `a`. Conclude with `congrArg (fun g : _ →+* V => g a) hc`. Use `conv_lhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk χ]`. Use `conv_rhs => rw [← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ]`.
+
+Simplify using `only [spMap, ← Category.assoc, ← Spec.map_comp]`. Rewrite using `[hc', key _ _ h]`.
+-/
 theorem eq_of_stalkClosedPointTo : ∀ {X : Scheme.{0}} {R W V : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLocalRing W] [CommRing V] [IsLocalRing V] (ξ : Sp R ⟶ X) (χ : Sp W ⟶ X) (h : ξ (closedPoint R) = χ (closedPoint W)) (ψ : R →+* V) (f : W →+* V), IsLocalHom ψ → IsLocalHom f → ψ.comp (Scheme.stalkClosedPointTo ξ).hom = f.comp ((X.presheaf.stalkCongr (Inseparable.of_eq h)).hom ≫ Scheme.stalkClosedPointTo χ).hom → spMap f ≫ χ = spMap ψ ≫ ξ := by
   intro X R W V _ _ _ _ _ _ ξ χ h ψ f hψ hf hc
   have key : ∀ (x y : X) (hxy : x = y) (g : X.presheaf.stalk y ⟶ CommRingCat.of V),
@@ -34,6 +41,23 @@ theorem eq_of_stalkClosedPointTo : ∀ {X : Scheme.{0}} {R W V : Type} [CommRing
   simp only [spMap, ← Category.assoc, ← Spec.map_comp]
   rw [hc', key _ _ h]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y k _ m e ξ hξ W _ _ _ hW χ hχ`. Establish `hiso : IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))`. Rewrite using `[show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]`. Use `infer_instance`. Use `haveI : IsIso (genι Y) := inferInstance`.
+
+Set `χ' : Sp W ⟶ gen Y` to `χ ≫ inv (genι Y)`. Establish `hχχ : χ' ≫ genι Y = χ` using `by simp [χ']`. Establish `hpt : ξ (closedPoint (ChartRing k m e)) = χ' (closedPoint W)`. Establish `h1 : genι Y (χ' (closedPoint W)) = χ (closedPoint W)`. Rewrite using `[← hχχ]`.
+
+Both sides reduce to the same expression. Apply `(genι Y).isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[h1, hχ]`. Set `φ : (gen Y).presheaf.stalk (ξ (closedPoint (ChartRing k m e))) →+* ChartRing k m e` to `(Scheme.stalkClosedPointTo ξ).hom`. Set `α : (gen Y).presheaf.stalk (ξ (closedPoint (ChartRing k m e))) →+* W` to `(((gen Y).presheaf.stalkCongr (Inseparable.of_eq hpt)).hom ≫ Scheme.stalkClosedPointTo χ').hom`.
+
+Use `haveI : IsLocalHom α := by`. Simplify using `only [α, CommRingCat.hom_comp]`. Use `infer_instance`. Use `haveI : IsLocalHom φ := Scheme.isLocalHom_stalkClosedPointTo' ξ`. Take `⟨hflat, hmax, hfin⟩` from `hξ`.
+
+Establish `hfin' : (ResidueField.map φ).Finite`. Rewrite `hfin` using `[← ResidueField.map_comp_residue]`. Conclude with `RingHom.Finite.of_comp_finite hfin`. Establish `hch0 : CharZero (ResidueField ((gen Y).presheaf.stalk (ξ (closedPoint (ChartRing k m e)))))`. Set `g : c.F →+* ResidueField ((gen Y).presheaf.stalk (ξ (closedPoint (ChartRing k m e))))` to `(residue _).comp ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ (Sp c.F).presheaf.germ ⊤ ((genStr Y) (ξ (closedPoint _))) trivial ≫ (genStr Y).stalkMap (ξ (closedPoint _))).hom`.
+
+Conclude with `(RingHom.charZero_iff g.injective).1 inferInstance`. Take `⟨V, _, _, _, f, hV, hfinj, hfloc, σ, hσ⟩` from `GlobalTheory.T.exists_dvr_residue_extension (ResidueField.map φ) hfin' hch0 W hW α inferInstance`. Use `haveI := hV.2.1`. Establish `: IsAdicComplete (maximalIdeal k) k` using `by rw [maximalIdeal_eq_bot]; infer_instance`. Use `haveI hCA : IsAdicComplete (maximalIdeal (ChartRing k m e)) (ChartRing k m e) := GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _`.
+
+Take `⟨θ, q, hqm, hqθ, hqd, hgen, hind⟩` from `GlobalTheory.T.exists_primitive_element_complete φ hfin' hch0`. Take `⟨η, hη, -⟩` from `GlobalTheory.T.exists_hensel_root_residue φ (f.comp α) σ (fun a => by rw [RingHom.comp_apply, ← hσ a, ResidueField.map_residue]) θ q hqm hqθ hqd`. Establish `hgp` using `GlobalTheory.T.polynomial_approx_pow_maximal φ hmax θ hgen`. Establish `hip` using `GlobalTheory.T.polynomial_approx_uniqueness φ hflat hmax θ q hqm hqθ hgp hind`. Take `⟨ψ, hψ, hψl⟩` from `GlobalTheory.T.hensel_roots_compatible φ (f.comp α) inferInstance θ η q hqm hqθ hη hgp hip`.
+
+Use `⟨V, inferInstance, inferInstance, inferInstance, f, ψ, hV, hfinj, hfloc, hψl, ?_⟩` and prove the remaining obligations. Establish `hg` using `eq_of_stalkClosedPointTo ξ χ' hpt ψ f hψl hfloc hψ`. Rewrite using `[← hχχ, ← Category.assoc, hg, Category.assoc]`.
+-/
 theorem exists_lift_to_chart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F)) {k : Type} [Field k] {m e : ℕ} (ξ : Sp (ChartRing k m e) ⟶ gen Y), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (χ : Sp W ⟶ Y.X), χ (closedPoint W) = genι Y (ξ (closedPoint _)) → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (f : W →+* V) (ψ : ChartRing k m e →+* V), CDvr V ∧ Function.Injective f ∧ IsLocalHom f ∧ IsLocalHom ψ ∧ spMap f ≫ χ = spMap ψ ≫ ξ ≫ genι Y := by
   intro E _ _ _ H D l Xo c Y k _ m e ξ hξ W _ _ _ hW χ hχ
   have hiso : IsIso (spMap (RingHom.id c.F)) := by

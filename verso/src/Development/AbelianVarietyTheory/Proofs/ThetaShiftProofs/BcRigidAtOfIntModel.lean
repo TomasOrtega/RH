@@ -22,12 +22,24 @@ namespace GlobalTheory.ArcRigidity
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := ArcS Dw L) (arcDet Dw L)`. Establish `e : algebraMap _ (ArcS Dw L) (arcDet Dw L) = ∏ τ, (letM Dw L τ).det`. Conclude with `(map_prod _ _ _).trans (Finset.prod_congr rfl fun τ _ => RingHom.map_det _ _)`. Conclude with `e ▸ h`.
+-/
 theorem isUnit_prod_det (Dw : Datum H) (L : Type) [Field L] : IsUnit (∏ τ, (letM Dw L τ).det) := by
   have h := IsLocalization.Away.algebraMap_isUnit (S := ArcS Dw L) (arcDet Dw L)
   have e : algebraMap _ (ArcS Dw L) (arcDet Dw L) = ∏ τ, (letM Dw L τ).det := by
     exact (map_prod _ _ _).trans (Finset.prod_congr rfl fun τ _ => RingHom.map_det _ _)
   exact e ▸ h
 
+/- English proof (translation)
+Set `g : MvPolynomial (ArcLt Dw) (LaurentSeries K) →+* ArcS Dw L` to `MvPolynomial.eval₂Hom ((algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries L)) (ArcS Dw L)).comp (MvPolynomial.C.comp (LetterMap.coeffMap f))) fun x => (letM Dw L x.1 * (N x.1).map ((arcι Dw L).comp (PowerSeries.C (R := L)))) x.2.1 x.2.2`. Establish `hg : IsUnit (g (arcDet Dw K))`. Establish `e : g (arcDet Dw K) = (∏ τ, (letM Dw L τ).det) * ∏ τ, (arcι Dw L).comp (PowerSeries.C (R` using `L)) (N τ).det := by`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `(map_prod g _ _).trans (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i k : 2`. Conclude with `MvPolynomial.eval₂Hom_X' _ _ _`. Rewrite using `[e]`.
+
+Conclude with `(isUnit_prod_det Dw L).mul (IsUnit.prod_univ_iff.2 fun τ => (hN τ).map _)`. Use `⟨IsLocalization.Away.lift (arcDet Dw K) hg, fun p => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.Away.lift_eq]`. Conclude with `MvPolynomial.eval₂Hom_C _ _ _`. Use extensionality with `i k : 2`.
+
+Conclude with `(IsLocalization.Away.lift_eq (arcDet Dw K) hg _).trans (MvPolynomial.eval₂Hom_X' _ _ _)`.
+-/
 theorem exists_letterSub (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K →+* L)
     (N : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L) (hN : ∀ τ, IsUnit (N τ).det) :
     ∃ φ : ArcS Dw K →+* ArcS Dw L,
@@ -55,20 +67,32 @@ theorem exists_letterSub (Dw : Datum H) {K L : Type} [Field K] [Field L] (f : K 
   · ext i k : 2
     exact (IsLocalization.Away.lift_eq (arcDet Dw K) hg _).trans (MvPolynomial.eval₂Hom_X' _ _ _)
 
+/- English proof (translation)
+Rewrite using `[← HahnSeries.ofPowerSeries_C]`. Both sides reduce to the same expression.
+-/
 theorem arcι_C (Dw : Datum H) {L : Type} [Field L] (x : L) : arcι Dw L (PowerSeries.C (R := L) x) =
     algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries L)) _ (MvPolynomial.C (HahnSeries.C (Γ := ℤ) x)) := by
   rw [← HahnSeries.ofPowerSeries_C]
   rfl
 
+/- English proof (translation)
+Establish `h : HahnSeries.ofPowerSeries ℤ L PowerSeries.X ≠ 0` using `(map_ne_zero_iff _ HahnSeries.ofPowerSeries_injective).2 PowerSeries.X_ne_zero`. Conclude with `h.isUnit.map ((algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries L)) (ArcS Dw L)).comp MvPolynomial.C)`.
+-/
 theorem isUnit_arcι_X (Dw : Datum H) (L : Type) [Field L] : IsUnit (arcι Dw L PowerSeries.X) := by
   have h : HahnSeries.ofPowerSeries ℤ L PowerSeries.X ≠ 0 :=
     (map_ne_zero_iff _ HahnSeries.ofPowerSeries_injective).2 PowerSeries.X_ne_zero
   exact h.isUnit.map ((algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries L)) (ArcS Dw L)).comp MvPolynomial.C)
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.injective (ArcS Dw L) (powers_le_nonZeroDivisors_of_noZeroDivisors (LetterMap.det_ne_zero Dw L))).nontrivial`.
+-/
 theorem nontrivial_arcS (Dw : Datum H) (L : Type) [Field L] : Nontrivial (ArcS Dw L) :=
   (IsLocalization.injective (ArcS Dw L)
     (powers_le_nonZeroDivisors_of_noZeroDivisors (LetterMap.det_ne_zero Dw L))).nontrivial
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors T.V) y`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (nonZeroDivisors.ne_zero s.2) h`. Conclude with `⟨a * u, n, by rw [← map_pow, ← hu, map_mul, ← mul_assoc, hs, map_mul]⟩`.
+-/
 theorem exists_mul_pow (T : CDVR) {ϖ : T.V} (h : Irreducible ϖ) (y : T.Fr) :
     ∃ (v : T.V) (n : ℕ), y * algebraMap T.V T.Fr ϖ ^ n = algebraMap T.V T.Fr v := by
   obtain ⟨⟨a, s⟩, hs⟩ := IsLocalization.surj (nonZeroDivisors T.V) y
@@ -77,6 +101,37 @@ theorem exists_mul_pow (T : CDVR) {ϖ : T.V} (h : Irreducible ϖ) (y : T.Fr) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `h1 h2 hU h5 E _ _ _ H Dw l Xo c K₁ _ _ _ d w Z Dv Wl Yw M χw Ww y₀ ζ lam A Bm hd hN hχ hpin hy₀ hyR _ hlam hAB hg`. Establish `calcu` using `frChg_calculus E H Dw l Xo c`. Establish `exu` using `frChg_exists_unique_units E H Dw l Xo c`. Establish `frbc` using `GlobalTheory.FramedBaseChange.exists_frMap h1 E H Dw l Xo c`. Use `nontrivial_arcS Dw Dv.Tv.Fr` as an intermediate fact.
+
+Set `N : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Dv.Tv.Fr` to `fun τ => Matrix.of fun i k => Bm τ i k * (lam τ k)⁻¹`. Establish `hNg : ∀ τ, N τ * M.g τ = 1` using `fun τ => by`. Rewrite using `[← mul_eq_one_comm.1 (hAB τ)]`. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, N, Matrix.of_apply, hg]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_assoc, inv_mul_cancel_left₀ (hlam τ j)]`. Set `κ : Dv.Tv.Fr →+* ArcS Dw Dv.Tv.Fr` to `(arcι Dw Dv.Tv.Fr).comp (PowerSeries.C (R := Dv.Tv.Fr))`. Take `⟨φ₀, hφC, hφX⟩` from `exists_letterSub Dw Dv.io N fun τ => Matrix.isUnit_det_of_right_inverse (hNg τ)`. Establish `hφι : φ₀.comp (arcι Dw K₁) = (arcι Dw Dv.Tv.Fr).comp (PowerSeries.map Dv.io)` using `RingHom.ext fun p => (hφC _).trans (by rw [LetterMap.coeffMap_ofPowerSeries]; rfl)`. Establish `hφc : ∀ x : K₁, φ₀ (cst Dw x) = κ (Dv.io x)` using `fun x => (RingHom.congr_fun hφι (PowerSeries.C x)).trans (congrArg (arcι Dw Dv.Tv.Fr) (PowerSeries.map_C _ _))`.
+
+Set `φ : ArcS Dw K₁ →ₐ[c.F] ArcS Dw Dv.Tv.Fr` to `{ φ₀ with commutes' := fun r => (congrArg φ₀ (arcS_pin Dw K₁ r)).trans ((hφc _).trans (Dv.algW_eq r).symm) }`. Take `⟨-, -, -, ⟨ψ₀, hψι, hψX⟩, -⟩` from `GlobalTheory.LetterDenom.main E H Dw Dv.Tv Dv.ϖ Dv.ϖ_irr.ne_zero`. Establish `hψc : ∀ v, ψ₀ (arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C v)) = κ (algebraMap Dv.Tv.V Dv.Tv.Fr v)` using `fun v => (RingHom.congr_fun hψι (PowerSeries.C v)).trans (congrArg (arcι Dw Dv.Tv.Fr) (PowerSeries.map_C _ _))`. Establish `hψa : ∀ r : c.F, ψ₀ (algebraMap c.F _ r) = algebraMap c.F _ r` using `fun r => by`. Take `⟨v, n, hv⟩` from `exists_mul_pow Dv.Tv Dv.ϖ_irr (Dv.io (algebraMap c.F K₁ r))`.
+
+Establish `e` using `congrArg ψ₀ (hpin r v n hv)`. Rewrite `e` using `[map_mul ψ₀, map_pow ψ₀, hψc, hψc, ← hv, map_mul κ, map_pow κ]`. Establish `hu : IsUnit (κ (algebraMap Dv.Tv.V Dv.Tv.Fr Dv.ϖ) ^ n)` using `(((map_ne_zero_iff _ (IsFractionRing.injective Dv.Tv.V Dv.Tv.Fr)).2 Dv.ϖ_irr.ne_zero).isUnit.map κ).pow n`. Conclude with `(hu.mul_right_cancel e).trans (Dv.algW_eq r).symm`. Set `ψ : ArcSR Dw Dv.Tv.V Dv.ϖ →ₐ[c.F] ArcS Dw Dv.Tv.Fr` to `{ ψ₀ with commutes' := hψa }`.
+
+Establish `hψM : ∀ τ, (letMR Dw Dv.Tv.V Dv.ϖ τ).map ψ = letM Dw Dv.Tv.Fr τ` using `fun τ => Matrix.ext fun i k => hψX ⟨τ, i, k⟩`. Take `⟨th₁, th₂, t₁, t₂, t₃⟩` from `M.th_tie`. Take `⟨e₁, e₂, l₁, l₂, -, l₃⟩` from `M.e_tie`. Establish `bcK : InBC Dv.io (d.a.restrict (c.V d.Wp).subtype) (M.aK.restrict (c.V d.Wp).subtype) M.pK` using `⟨rfl, M.bcK.2⟩`. Take `⟨w₁, -, -, -, n₁⟩` from `(GlobalTheory.ArcQBC.baseChanges h1 h2 hU h5 E H Dw l Xo c _ _ Yw Dv.Tv.V Dv.Tv.Fr _ M.aw _ (IsFractionRing.injective Dv.Tv.V Dv.Tv.Fr) _ M.bcw.1).2 (M.aK.restrict (c.V Wl).subtype) M.pw M.bcw`.
+
+Take `⟨w₂, -, -, -, n₂⟩` from `(GlobalTheory.ArcQBC.baseChanges h1 h2 hU h5 E H Dw l Xo c _ _ d.Y K₁ Dv.Tv.Fr _ (d.a.restrict (c.V d.Wp).subtype) _ Dv.io.injective _ bcK.1).2 (M.aK.restrict (c.V d.Wp).subtype) M.pK bcK`. Take `⟨W₁, hW₁⟩` from `w₁ χw Ww`. Take `⟨W₂, hW₂⟩` from `w₂ d.χ d.W`. Establish `nz : ThNZ d.th`. Take `⟨_, _, _, _, h, -⟩` from `d.isArc3`.
+
+Conclude with `(GlobalTheory.ThetaOverField.exists_ne_zero_iff _ _).1 h`. Establish `hj : Mono Yw.j` using `GlobalTheory.ThetaShiftProofs.mono_j Yw (mono_spMap_subtype _)`. Establish `hj' : Mono d.Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j d.Y (mono_spMap_subtype _)`. Take `⟨y₁, hy₁⟩` from `frbc _ _ ψ y₀`. Establish `a₁` using `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ Yw _ _ _ χw Ww _ _ M.thw_nz _ _ y₀ hy₀).2 hj _ ψ y₁ hy₁`.
+
+Establish `a₂ : IsArcFr W₁ e₁ th₁ (arcι Dw Dv.Tv.Fr) y₁` using `GlobalTheory.ArcQ.isArcFr_witBC h1 h2 E H Dw l Xo c _ _ Yw _ _ M.aw χw Ww _ _ (M.aK.restrict (c.V Wl).subtype) _ M.pw W₁ hj M.bcw hW₁ _ _ _ _ l₁ t₁ _ _ y₁ (hψι ▸ a₁)`. Take `⟨y₂, hy₂⟩` from `(exu _ (fun τ => (M.g τ).map κ) (κ M.γ) y₁).1 (fun τ => by`. Use `(Matrix.isUnit_det_of_left_inverse (hNg τ)).map κ` as an intermediate fact. Rewrite using `[RingHom.map_det] at this) ((Ne.isUnit ‹M.γ ≠ 0›).map κ)` and apply the resulting hypothesis. Establish `a₃ : IsArcFr W₁ e₂ th₂ (arcι Dw Dv.Tv.Fr) y₂` using `GlobalTheory.ArcQ.isArcFr_of_frChg_const h1 h2 E H Dw l Xo c _ _ Yw _ _ _ _ W₁ e₁ e₂ th₁ th₂ M.g M.γ (n₁ _ _ t₁ M.thw_nz) l₃ t₃ _ _ y₁ y₂ hj a₂ hy₂`.
+
+Take `⟨x₀, hx₀, hxF⟩` from `hN`. Take `⟨x₁, hx₁⟩` from `frbc _ _ φ x₀`. Establish `b₁` using `(GlobalTheory.ArcQ.isArcFr_unique_baseChange h1 h2 E H Dw l Xo c _ _ d.Y _ _ _ d.χ d.W _ _ nz _ _ x₀ hx₀).2 hj' _ φ x₁ hx₁`. Establish `b₂ : IsArcFr W₂ e₂ th₂ (arcι Dw Dv.Tv.Fr) x₁` using `GlobalTheory.ArcQ.isArcFr_witBC h1 h2 E H Dw l Xo c _ _ d.Y _ _ (d.a.restrict (c.V d.Wp).subtype) d.χ d.W _ _ (M.aK.restrict (c.V d.Wp).subtype) _ M.pK W₂ hj' bcK hW₂ _ _ _ _ l₂ t₂ _ _ x₁ (hφι ▸ b₁)`. Establish `hC : ∀ {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'), spMap (PowerSeries.map f) ≫ spMap (PowerSeries.C (R` using `R)) = spMap (PowerSeries.C (R := R')) ≫ spMap f := fun f => by`.
+
+Rewrite using `[← spMap_comp, ← spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun x => PowerSeries.map_C _ _)`. Take `rfl : y₂ = x₁` from `GlobalTheory.T.arc_framed_point_eq_of_models_over_base h1 h2 h5 E H Dw l Xo c _ _ M.aK _ _ Yw d.Y _ _ W₁ W₂ (by rw [Category.assoc, hχ, ← Category.assoc, hC, Category.assoc, ← spMap_comp, ← M.bcw.1]) (by rw [Category.assoc, hd, ← Category.assoc, hC, Category.assoc, ← spMap_comp, …`. Take `⟨z₁, hz₁⟩` from `frbc _ _ φ d.yF`. Take `⟨z₂, hz₂⟩` from `frbc _ _ ψ Dv.yR`.
+
+Establish `c₁` using `((calcu _).1 _ _ _ _ _ _ _ hy₂).1 (((calcu _).2.2.1 _ φ _ _ _ _ _ _ hxF hx₁).1 hz₁)`. Establish `c₂` using `((calcu _).2.2.1 _ ψ _ _ _ _ _ _ hyR hy₁).1 hz₂`. Establish `eM : (fun τ => (letM Dw K₁ τ).map φ * (M.g τ).map κ) = fun τ => 1 * (letMR Dw Dv.Tv.V Dv.ϖ τ).map ψ`. Use function extensionality and compare the values at `fun τ => by`. Rewrite using `[hψM, one_mul]`.
+
+Use `(congrArg (· * (M.g τ).map κ) (hφX τ)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `letM Dw Dv.Tv.Fr τ * (N τ).map κ * (M.g τ).map κ = _`. Rewrite using `[mul_assoc, ← Matrix.map_mul, hNg, Matrix.map_one _ (map_zero κ) (map_one κ), mul_one]`. Establish `eS : φ (cst Dw ζ) * κ M.γ = κ (Dv.io ζ * M.γ) * ψ 1`. Rewrite using `[map_one, mul_one, map_mul]`.
+
+Conclude with `congrArg (· * κ M.γ) (hφc ζ)`. Rewrite `c₁` using `[eM, eS]`. Establish `c₃` using `((calcu _).1 _ (fun _ => 1) _ _ _ _ _ c₂).2 c₁`. Establish `hu` using `((exu _ _ _ _).2.2.1 _ c₃).2`. Use `⟨φ, ψ, z₁, z₂, fun o => o.elim hu.unit fun _ => 1, fun f => ⟨_, fun _ => rfl, hφC f⟩, fun x => ?_, fun p => RingHom.congr_fun hψι p, hψX, arcι_C Dw _, fun _ => rfl, hz₁, hz₂, ((calcu _).2.2.2 _ _ _).2 ⟨fun _ => 1, fun τ i => Matrix.one_apply_eq i, fun τ i j h => Matrix.one_apply_ …` and prove the remaining obligations.
+
+Use `(congrFun (congrFun (hφX x.1) x.2.1) x.2.2).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => congrArg (_ * ·) (arcι_C Dw _)`.
+-/
 theorem bcRigidAt_of_intModel : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt → Out.Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (w : HeightOneSpectrum (𝓞 K₁)) (Z : FinSite K₁ w) (Dv : DvrFrame d w Z) (Wl : ValuationSubring ℂ) (Yw : Model Xo c (c.V Wl).subtype) (M : IntModel d Dv.Tv Dv.io Wl) (χw : Sp (PowerSeries Dv.Tv.V) ⟶ Yw.X) (Ww : Wit Yw M.aw χw) (y₀ : FrPt Xo c (ArcSR Dw Dv.Tv.V Dv.ϖ)) (ζ : K₁) (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Dv.Tv.Fr) (A Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) Dv.Tv.Fr), d.OverBase → d.Normal ζ → χw ≫ Yw.s = spMap (PowerSeries.C (R := Dv.Tv.V)) ≫ spMap M.b → (∀ (x : c.F) (v : Dv.Tv.V) (n : ℕ), (Dv.io.comp (algebraMap c.F K₁)) x * algebraMap Dv.Tv.V Dv.Tv.Fr Dv.ϖ ^ n = algebraMap Dv.Tv.V Dv.Tv.Fr v → algebraMap c.F (ArcSR Dw Dv.Tv.V Dv.ϖ) x * arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C (R := Dv.Tv.V) Dv.ϖ) ^ n = arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C (R := Dv.Tv.V) v)) → IsArcFr Ww M.ew M.thw (arcιR Dw Dv.Tv.V Dv.ϖ) y₀ → FrChg (letMR Dw Dv.Tv.V Dv.ϖ) 1 y₀ Dv.yR → M.γ ≠ 0 → (∀ τ k, lam τ k ≠ 0) → (∀ τ, A τ * Bm τ = 1) → (∀ τ k l, M.g τ k l = lam τ k * A τ k l) → BcRigidAt Dv (Dv.io ζ * M.γ) lam Bm := by
   intro h1 h2 hU h5 E _ _ _ H Dw l Xo c K₁ _ _ _ d w Z Dv Wl Yw M χw Ww y₀ ζ lam A Bm hd hN hχ hpin hy₀ hyR _ hlam hAB hg
   have calcu := frChg_calculus E H Dw l Xo c

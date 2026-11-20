@@ -121,6 +121,9 @@ structure TopCoc (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n M : ℕ) (z :
   coc : ∀ σ ∈ fixMu Ω M, ∀ τ ∈ fixMu Ω M, CgF X l n (z (σ * τ)) (z σ + X.galB l σ (z τ))
   loc : ∃ T : Finset Ω, ∀ σ ∈ fixMu Ω M, ∀ τ ∈ fixMu Ω M, (∀ a ∈ T, σ a = τ a) → CgF X l n (z σ) (z τ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clsBmu_eq (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N : ℕ) [NeZero N] (x : ZMod N) (c d k : ℕ)
     (g : (ZMod l)ˣ → SL(2, ℤ)) (σ : Ω ≃ₐ[ℚ] Ω) :
     clsBmu X l n r N x c d k g σ = ∑ r₀, cls0 X l n r N x c d (k - 2) (g r₀) σ := rfl

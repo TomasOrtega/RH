@@ -15,6 +15,9 @@ namespace GlobalTheory.ClsPLocBasis
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Forms
 
+/- English proof (translation)
+Introduce `D u Ch chOf Tf w c`. Establish `hL : Submodule.IsLattice D.host.E (Tf.clsP.lat c)` using `Formalism.MainNotions.G.ChF.isLattice_of_hat Tf.clsP.lev.Lb (Tf.clsP.lat c) Tf.clsP.lev.Lb_fin Tf.clsP.lev.Lb_span (Tf.clsP.y c).1 (Tf.clsP.y_lat c)`. Use `haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩`. Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis (D.what₂.places.resChar w) D.host.E (Tf.clsP.lat c) hL.fg hL.span_eq_top`.
+-/
 theorem exists_isLocBasis_clsP : ∀ (D : D7) (u : D.what₂.Word) (Ch : ℕ → Type) (chOf : ∀ i, (D.mem u).C.cls i → Ch i)
     (Tf : FormsTiedSym D u Ch chOf) (w : D.what₂.places.Pl) (c : (D.fm u).clsP),
     ∃ B : GL (Fin (D.R.N D.R.m - 1)) D.host.E,

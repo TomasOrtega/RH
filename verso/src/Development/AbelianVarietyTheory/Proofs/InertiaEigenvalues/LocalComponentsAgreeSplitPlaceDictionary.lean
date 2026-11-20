@@ -19,10 +19,24 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 local notation3 "L⁺" => maximalRealSubfield L
 
+/- English proof (translation)
+Use `ext1`. Conclude with `s.w_under`.
+-/
 theorem under_w (s : SplitPlace L) : s.w.under (𝓞 L⁺) = s.v := by
   ext1
   exact s.w_under
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨e, hne⟩ : ∃ e : L, e ≠ IsCMField.complexConj L e := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext fun x => (hcon x).symm)`. Establish `hli : LinearIndependent L⁺ ![(1 : L), e]`.
+
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a t h`. Establish `h'` using `congrArg (IsCMField.complexConj L) h`. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgEquiv.commutes, map_one, map_zero] at h h'`. Establish `hd : algebraMap L⁺ L t * (e - IsCMField.complexConj L e) = 0`.
+
+Take the linear combination `h - h'`. Establish `ht : t = 0`. Break down `mul_eq_zero.1 hd with h0 | h0` into its components or cases. Simplify using `using h0`. Conclude with `absurd (sub_eq_zero.1 h0) hne`.
+
+Substitute `ht` using the available equality. Simplify using `using h`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank L⁺ L`. Rewrite using `[Algebra.IsQuadraticExtension.finrank_eq_two L⁺ L]`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨basisOfLinearIndependentOfCardEqFinrank hli hcard, by simp⟩`.
+-/
 theorem exists_basis : ∃ b : Module.Basis (Fin 2) L⁺ L, b 0 = 1 := by
   obtain ⟨e, hne⟩ : ∃ e : L, e ≠ IsCMField.complexConj L e := by
     by_contra hcon
@@ -45,6 +59,13 @@ theorem exists_basis : ∃ b : Module.Basis (Fin 2) L⁺ L, b 0 = 1 := by
     rw [Algebra.IsQuadraticExtension.finrank_eq_two L⁺ L]; simp
   exact ⟨basisOfLinearIndependentOfCardEqFinrank hli hcard, by simp⟩
 
+/- English proof (translation)
+Take `⟨i', -, hi'⟩` from `F.right u (u.under (𝓞 L⁺)) rfl`. Take `⟨b, hb0⟩` from `exists_basis (L := L)`. Take `⟨A, B, hAB⟩` from `GlobalTheory.tensor_exists_decomp b z`. Rewrite `hAB` using `[hb0]`. Establish `hAB0 : A (u.under (𝓞 L⁺)) = 0 ∧ B (u.under (𝓞 L⁺)) = 0`.
+
+Rewrite `hz` using `[hAB]`. Apply `GlobalTheory.tensor_decomp_eq_zero b` to reduce the goal to its premises. Rewrite using `[hb0]`. Simplify using `[ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul] at hz`. Conclude with `hz`.
+
+Establish `h2 : b 1 ⊗ₜ[L⁺] B = (b 1 ⊗ₜ[L⁺] (1 : AFplus L)) * ((1 : L) ⊗ₜ[L⁺] B)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hAB, h2, map_add, map_mul]`. Express the relevant statement in the definitionally equal form `F.κ (1 ⊗ₜ A) u + F.κ (b 1 ⊗ₜ 1) u * F.κ (1 ⊗ₜ B) u = 0`. Rewrite using `[hi', hi', hAB0.1, hAB0.2, map_zero, mul_zero, add_zero]`.
+-/
 theorem kappa_eq_zero (F : FinIso L n) (u : HeightOneSpectrum (𝓞 L)) (z : AL L)
     (hz : compAt L (u.under (𝓞 L⁺)) z = 0) : F.κ z u = 0 := by
   obtain ⟨i', -, hi'⟩ := F.right u (u.under (𝓞 L⁺)) rfl
@@ -63,6 +84,17 @@ theorem kappa_eq_zero (F : FinIso L n) (u : HeightOneSpectrum (𝓞 L)) (z : AL 
   change F.κ (1 ⊗ₜ A) u + F.κ (b 1 ⊗ₜ 1) u * F.κ (1 ⊗ₜ B) u = 0
   rw [hi', hi', hAB0.1, hAB0.2, map_zero, mul_zero, add_zero]
 
+/- English proof (translation)
+Use `Subgroup.mem_inf.2 ⟨F.fin y, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_iInf]`. Introduce `u`. Rewrite using `[Subgroup.mem_iInf]`. Introduce `hu`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Rewrite `hu` using `[under_w]`. Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Rewrite using `[F.loc]`. Establish `h1` using `congrFun (congrFun (hy (u.under (𝓞 L⁺)) hu) a) c`.
+
+Simplify using `only [Matrix.map_apply] at h1`. Establish `h2 : compAt L (u.under (𝓞 L⁺)) (((y : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) a c - (1 : Matrix (Fin n) (Fin n) (AL L)) a c) = 0`. Rewrite using `[map_sub, h1]`. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `h3` using `kappa_eq_zero F u _ h2`. Rewrite `h3` using `[map_sub]`. Express the relevant statement in the definitionally equal form `F.κ _ u - F.κ _ u = 0 at h3`. Rewrite `h3` using `[sub_eq_zero]`. Rewrite using `[h3]`.
+
+Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem j_mem_locU (F : FinIso L n) (s : SplitPlace L) (y : GAf L n) (hy : TrivOutside {s.v} y) :
     F.j y ∈ locU n s.w := by
   refine Subgroup.mem_inf.2 ⟨F.fin y, ?_⟩
@@ -95,6 +127,17 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 local notation3 "L⁺" => maximalRealSubfield L
 
+/- English proof (translation)
+Take `⟨i', hic', hi'⟩` from `F.right s.w s.v s.w_under`. Establish `hL : ∀ k : L⁺, i' (algebraMap L⁺ (s.v.adicCompletion L⁺) k) = algebraMap L (s.w.adicCompletion L) (algebraMap L⁺ L k)` using `fun k => by`. Establish `h1` using `hi' (algebraMap L⁺ (AFplus L) k)`. Establish `h2 : (1 : L) ⊗ₜ[L⁺] algebraMap L⁺ (AFplus L) k = algebraMap L⁺ L k ⊗ₜ[L⁺] (1 : AFplus L)`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', Algebra.TensorProduct.algebraMap_apply]`.
+
+Rewrite `h1` using `[h2, F.left]`. Conclude with `h1.symm`. Establish `hR : ∀ k : L⁺, i (algebraMap L⁺ (s.v.adicCompletion L⁺) k) = algebraMap L (s.w.adicCompletion L) (algebraMap L⁺ L k)` using `fun k => by`. Rewrite using `[← hi, AlgHom.commutes]`. Establish `heq : ∀ a : s.v.adicCompletion L⁺, i' a = i a` using `fun a => (HeightOneSpectrum.denseRange_algebraMap L⁺ s.v).induction_on (p := fun a => i' a = i a) a (isClosed_eq hic' hic) fun k => by rw [hL, hR]`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, map_add]`. Express the relevant statement in the definitionally equal form `F.κ x s.w + F.κ y s.w = _`.
+
+Rewrite using `[hx, hy]`. Consider the case `tmul l a`. Establish `h2 : l ⊗ₜ[L⁺] a = (l ⊗ₜ[L⁺] (1 : AFplus L)) * ((1 : L) ⊗ₜ[L⁺] a)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[GlobalTheory.SplitLift.proj_tmul, map_mul, hi, h2, map_mul]`.
+
+Express the relevant statement in the definitionally equal form `F.κ (l ⊗ₜ 1) s.w * F.κ (1 ⊗ₜ a) s.w = _`. Rewrite using `[hi', heq, F.left]`. Both sides reduce to the same expression.
+-/
 theorem kappa_split (F : FinIso L n) (s : SplitPlace L) (i : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L)
     (hic : Continuous i) (hi : ∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x) (z : AL L) :
     F.κ z s.w = i (s.proj z) := by
@@ -126,6 +169,9 @@ theorem kappa_split (F : FinIso L n) (s : SplitPlace L) (i : s.v.adicCompletion 
     rw [hi', heq, F.left]
     rfl
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Rewrite using `[F.loc, kappa_split F s i hic hi]`. Both sides reduce to the same expression.
+-/
 theorem cLoc_j (F : FinIso L n) (s : SplitPlace L) (i : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L)
     (hic : Continuous i) (hi : ∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x) (y : GAf L n) :
     cLoc s.w (F.j y) = Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n y) := by
@@ -133,6 +179,17 @@ theorem cLoc_j (F : FinIso L n) (s : SplitPlace L) (i : s.v.adicCompletion L⁺ 
   rw [F.loc, kappa_split F s i hic hi]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hns`. Take `⟨y, hy⟩` from `DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one L)`. Use `set δ : L := y - IsCMField.complexConj L y with hδdef`. Establish `hδ : IsCMField.complexConj L δ = -δ`. Rewrite using `[hδdef, map_sub, IsCMField.complexConj_apply_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hδ0 : δ ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Establish `hfix : IsCMField.complexConj L (δ * δ) = δ * δ` using `by rw [map_mul, hδ]; ring`. Set `d : L⁺` to `⟨δ * δ, (IsCMField.complexConj_eq_self_iff L _).1 hfix⟩`. Establish `hd : δ * δ = algebraMap L⁺ L d` using `rfl`.
+
+Establish `hr : s.i δ ≠ 0` using `(map_ne_zero _).2 hδ0`. Establish `hk : F.κ (GlobalTheory.SplitLift.Em s δ) = 0` using `by ext1 u`. Express the relevant statement in the definitionally equal form `F.κ (GlobalTheory.SplitLift.Em s δ) u = 0`. Distinguish the cases in `hu : u = s.w`. Substitute `hu` using the available equality.
+
+Rewrite using `[kappa_split F s i hic hi, GlobalTheory.SplitLift.proj_Em s δ d hd hr, map_zero]`. Apply `kappa_eq_zero` to reduce the goal to its premises. Apply `GlobalTheory.SplitLift.compAt_Em` to reduce the goal to its premises. Rewrite using `[← under_w s]`. Conclude with `fun h => hns ⟨u, hu, h⟩`.
+
+Establish `h0 : GlobalTheory.SplitLift.Em s δ = 0` using `F.κ.injective (hk.trans (map_zero _).symm)`. Establish `h1` using `GlobalTheory.SplitLift.proj_Ep s δ d hd hr`. Rewrite `h1` using `[← GlobalTheory.SplitLift.conj_Em s δ hδ, h0, map_zero, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem isSplitAt_w (F : FinIso L n) (s : SplitPlace L) (i : s.v.adicCompletion L⁺ ≃+* s.w.adicCompletion L)
     (hic : Continuous i) (hi : ∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x) : IsSplitAt s.w := by
   by_contra hns
@@ -163,6 +220,35 @@ end GlobalTheory.SplitDict
 
 namespace GlobalTheory.SplitDict
 
+/- English proof (translation)
+Introduce `L _ _ _ n F π U hD s σ hσ`. Take `⟨τ, hτ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class L n π s`. Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Take `⟨i, T, hic, hi, hTinj, hTS, hTeq⟩` from `hτ`. Establish `hsplit : IsSplitAt s.w` using `isSplitAt_w F s i hic hi`.
+
+Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL L n s.w hsplit`. Take `⟨sec, hsecT, hsecL⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s`. Establish `hlift : ∀ x : locU n s.w, ∃ y, TrivOutside {s.v} y ∧ F.j y = x`. Introduce `x`. Use `⟨sec (Matrix.GeneralLinearGroup.map i.symm.toRingHom (cLoc s.w (x : UA L n))), hsecT _, ?_⟩` and prove the remaining obligations.
+
+Establish `hm` using `j_mem_locU F s _ (hsecT (Matrix.GeneralLinearGroup.map i.symm.toRingHom (cLoc s.w (x : UA L n))))`. Establish `h1 : e ⟨_, hm⟩ = e x`. Rewrite using `[he, he, cLoc_j F s i hic hi, hsecL]`. Use `Units.ext (Matrix.ext fun a c => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Conclude with `congrArg Subtype.val (e.injective h1)`. Set `R : U →ₗ[ℂ] (GAf L n → ℂ)` to `(LinearMap.funLeft ℂ ℂ F.j).comp U.subtype`. Establish `hRinj : Function.Injective R`. Use `(injective_iff_map_eq_zero R).2 fun φ hφ => ?_` and prove the remaining obligations. Establish `h0 : ∀ y ∈ finU L n, (φ : UA L n → ℂ) y = 0` using `fun y hy => by`.
+
+Take `⟨x, rfl⟩` from `F.onto y hy`. Conclude with `congrFun hφ x`. Conclude with `Subtype.ext (GlobalTheory.T.definiteUnitaryAutForm_eq_zero_of_finitePoints L n φ (hD.1.aut φ φ.2) h0)`. Establish `hRrange : LinearMap.range R = U.map (LinearMap.funLeft ℂ ℂ F.j)`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+
+Take `⟨hnt, -⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 τ.irr`. Take `⟨a0, ha0⟩` from `exists_ne (0 : τ.V)`. Establish `hTa0 : T a0 ≠ 0` using `fun h => ha0 (hTinj (h.trans (map_zero T).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0, T a0 g0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hTa0 (funext hc)`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam⟩ : ∃ lam : Module.Dual ℂ π.W, lam (T a0 g0) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hg0 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hc)`. Set `T' : τ.V →ₗ[ℂ] (GAf L n → ℂ)` to `(LinearMap.compLeft lam (GAf L n)).comp T`. Establish `hT'mem : ∀ a, T' a ∈ LinearMap.range R` using `fun a => by`. Rewrite using `[hRrange, hD.2]`. Conclude with `Submodule.subset_span ⟨T a, hTS a, lam, rfl⟩`.
+
+Set `eR` to `LinearEquiv.ofInjective R hRinj`. Set `f : τ.V →ₗ[ℂ] (UA L n → ℂ)` to `U.subtype ∘ₗ eR.symm.toLinearMap ∘ₗ T'.codRestrict _ hT'mem`. Establish `hfU : ∀ a, f a ∈ U` using `fun a => (eR.symm _).2`. Establish `hf : ∀ a y, f a (F.j y) = lam (T a y)` using `fun a y => by`. Establish `h1` using `congrArg Subtype.val (eR.apply_symm_apply ⟨T' a, hT'mem a⟩)`.
+
+Conclude with `congrFun h1 y`. Establish `hcomp : IsCompAlong U (locU n s.w) ((cLoc s.w).comp (locU n s.w).subtype) τ.ρ`. Use `⟨τ.irr, f, fun h => hlam ?_, hfU, fun x a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf a0 g0`. Rewrite `h1` using `[h]`.
+
+Conclude with `h1.symm`. Take `⟨y, hyT, hyx⟩` from `hlift x`. Establish `hm2 : RU L n (x : UA L n) (f a) ∈ U` using `hD.1.stable _ _ (hfU a)`. Establish `h1 : R ⟨_, hfU (τ.ρ (((cLoc s.w).comp (locU n s.w).subtype) x) a)⟩ = R ⟨_, hm2⟩`. Use function extensionality and compare the values at `g`.
+
+Express the relevant statement in the definitionally equal form `f _ (F.j g) = f a (F.j g * x)`. Rewrite using `[hf, ← hyx, ← map_mul, hf]`. Establish `h2` using `hTeq y hyT a`. Rewrite `h2` using `[← cLoc_j F s i hic hi, hyx]`. Express the relevant statement in the definitionally equal form `lam (T (τ.ρ (cLoc s.w (x : UA L n)) a) g) = _`.
+
+Rewrite using `[h2]`. Both sides reduce to the same expression. Conclude with `congrArg Subtype.val (hRinj h1)`. Set `P : GlobalTheory.DefU.AutSub L n` to `⟨U, hD.1⟩`. Set `τ' : SmIrr (GL (Fin n) (s.w.adicCompletion L))` to `⟨τ.V, τ.ρ, τ.smooth, τ.irr⟩`.
+
+Establish `h1 : (GlobalTheory.DefU.AU.mk P).IsLoc s.w (Quotient.mk _ τ')` using `hcomp`. Establish `h2 : (GlobalTheory.DefU.AU.mk P).IsLoc s.w (Quotient.mk _ σ)` using `hσ`. Establish `h3` using `GlobalTheory.DefU.AU.isLoc_unique_of_isSplitAt L n _ s.w _ _ hsplit h1 h2`. Take `⟨φ⟩` from `Quotient.exact h3`. Conclude with `⟨φ⟩`.
+-/
 theorem locComp_agree : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n)
     (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (s : SplitPlace L) (σ : SmIrr (GL (Fin n) (s.w.adicCompletion L))),
     IsCompAlong U (locU n s.w) ((cLoc s.w).comp (locU n s.w).subtype) σ.ρ →

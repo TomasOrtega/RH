@@ -18,6 +18,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (IsDefSum IsEis
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `hE E _ _ _ I _ _ φ e θ τ Λ L n s N g κ u hf hs hN hL hφ hθ hn hLΛ hg hu`. Establish `hI : Nonempty I`. Choose the witnesses or unpack the hypotheses as in `⟨σ⟩ : Nonempty (FR E →+* ℂ) := by`. Rewrite using `[← Fintype.card_pos_iff, NumberField.Embeddings.card]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨e.symm (NumberField.ComplexEmbedding.IsReal.embedding (IsTotallyReal.complexEmbedding_isReal σ))⟩`. Use `set W : (Emb (FR E) → ℂ) → ℂ := fun w ↦ (cK (FR E) (2 * s) : ℂ) * gval (2 * s) L (fun j ↦ (τ : ℂ) + w j * (1 * (τ : ℂ) + (starRingEnd ℂ (τ : ℂ) - τ))) (fun j ↦ 1 + w j * 1) with hW`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `key : g =ᶠ[nhds 0] fun z ↦ (n : ℂ) ^ (2 * s * Module.finrank ℚ (FR E)) * W (fun j ↦ z (e.symm j))` using `by filter_upwards [Metric.ball_mem_nhds (0 : I → ℂ) one_pos] with z hz`. Establish `hzp : z ∈ polydisc I` using `fun i ↦ by`.
+
+Use `norm_le_pi_norm z i` as an intermediate fact. Rewrite `hz` using `[Metric.mem_ball, dist_zero_right]`. Conclude with `lt_of_le_of_lt this hz`. Take `⟨G, hG, hgz⟩` from `hg z hzp`. Establish `hv` using `GlobalTheory.T.deformedLattice_value_eq_hilbertEisenstein_value E I φ e θ τ Λ L n (2 * s) z G hI ⟨s, two_mul s⟩ hφ hθ hn hLΛ hG`.
+
+Establish `hu'` using `GlobalTheory.HilbFam.gval_eq_of_isGVal (FR E) (2 * s) L _ _ _ hv`. Simplify using `only [hW]`. Rewrite using `[hu', hgz]`. Establish `: (GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.cWt E (2 * s) : ℂ) = (cK (FR E) (2 * s) : ℂ)` using `rfl`. Rewrite using `[this, inv_pow, ← pow_mul, mul_comm (Module.finrank ℚ (FR E)) (2 * s)]`.
+
+Establish `h1 : (n : ℂ) ^ (2 * s * Module.finrank ℚ (FR E)) ≠ 0` using `pow_ne_zero _ hn0`. Rewrite using `[mul_left_comm, mul_inv_cancel_left₀ h1]`. Rewrite using `[GlobalTheory.HilbFam.iterD_eq_of_eventuallyEq I u g _ 0 key, GlobalTheory.HilbFam.iterD_const_mul_reindex I (Emb (FR E)) e u W _ 0]`. Use `congr 1`. Establish `hc : ∀ j, (u.map e).count j = κ (e.symm j)` using `fun j ↦ by`.
+
+Rewrite using `[← hu (e.symm j)]`. Use `conv_lhs => rw [← e.apply_symm_apply j]`. Use `List.count_map_of_injective u e e.injective (e.symm j)` and compare the differences between its conclusion and the goal. Use `GlobalTheory.T.iterated_derivative_eq_hilbert_eisenstein_jet hE (FR E) hf s N L hs hN hL τ 1 (starRingEnd ℂ (τ : ℂ) - τ) (fun j ↦ κ (e.symm j)) (u.map e) τ.im_pos hc` as an intermediate fact. Conclude with `this`.
+-/
 theorem iterD_defSum_eq_jet : EisExp → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ) (e : I ≃ Emb (FR E)) (θ : E) (τ : ℍ) (Λ : Set E) (L : Lat (FR E)) (n : ℕ) (s N : ℕ) (g : (I → ℂ) → ℂ) (κ : I → ℕ) (u : List I), 2 ≤ Module.finrank ℚ (FR E) → 1 ≤ s → 0 < N → HasLevel N L → (∀ i (x : FR E), φ i (x : E) = ((e i x : ℝ) : ℂ)) → (∀ i, φ i θ = (τ : ℂ)) → 0 < n → (∀ x : Fin 2 → FR E, x ∈ L ↔ ∃ y ∈ Λ, (n : E) * y = (x 0 : E) * θ + (x 1 : E)) → IsDefSum φ (2 * s) Λ g → (∀ i, u.count i = κ i) → iterD u g 0 = (n : ℂ) ^ (2 * s * Module.finrank ℚ (FR E)) * jet (2 * s) L (fun j ↦ κ (e.symm j)) τ 1 (starRingEnd ℂ (τ : ℂ) - τ) := by
   intro hE E _ _ _ I _ _ φ e θ τ Λ L n s N g κ u hf hs hN hL hφ hθ hn hLΛ hg hu
   have hI : Nonempty I := by

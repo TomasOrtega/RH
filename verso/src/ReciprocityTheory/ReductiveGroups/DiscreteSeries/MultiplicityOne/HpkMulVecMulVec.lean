@@ -12,6 +12,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
   have hi := i.isLt
@@ -19,6 +22,9 @@ theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j :
   simp only [Hpk, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | rfl`.
+-/
 theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
   have hi := i.isLt
@@ -26,6 +32,19 @@ theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) 
   simp only [Hpk, Fin.ext_iff]
   split_ifs <;> first | omega | rfl
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Use `show ∑ j, Hpk k r i j * v j = _`. Use `split_ifs with h1 h2`. Repeatedly rewrite using `[hpk_out h1]`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg, zero_mul]`. Introduce `hj'`. Conclude with `hj (Fin.ext hj')`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Repeatedly rewrite using `[hpk_mid h1]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[h2]`.
+
+Introduce `j _ hj`. Rewrite using `[if_neg, zero_mul]`. Introduce `hj'`. Conclude with `hj (Fin.ext hj')`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Repeatedly rewrite using `[hpk_mid h1]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[h2]`. Introduce `j _ hj`.
+
+Rewrite using `[if_neg, zero_mul]`. Introduce `hj'`. Conclude with `hj (Fin.ext hj')`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = if i.val < r ∨ r + k < i.val then v ⟨2 * r + k - i.val, by omega⟩
       else if i.val = r + k then -v i else v i := by
@@ -60,6 +79,13 @@ theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     · intro h
       exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Rewrite using `[hpk_mulVec]`. Use `split_ifs with h1 h2`. Rewrite using `[hpk_mulVec, if_pos]`.
+
+Use `congr 1`. Use `ext`. Use `show 2 * r + k - (2 * r + k - i.val) = i.val`. Use linear arithmetic over natural numbers and integers. Use `show 2 * r + k - i.val < r ∨ r + k < 2 * r + k - i.val`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hpk_mulVec, if_neg h1, if_pos h2, neg_neg]`. Rewrite using `[hpk_mulVec, if_neg h1, if_neg h2]`.
+-/
 theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   funext i
   have hi := i.isLt
@@ -75,14 +101,23 @@ theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
   · rw [hpk_mulVec, if_neg h1, if_pos h2, neg_neg]
   · rw [hpk_mulVec, if_neg h1, if_neg h2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+-/
 theorem mat_eq_of_mulVec {A B : Mat k r} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B := by
   ext i j
   have := congrFun (h (Pi.single j 1)) i
   simpa [Matrix.mulVec_single] using this
 
+/- English proof (translation)
+The claim follows from `mat_eq_of_mulVec (fun v => by rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec])`.
+-/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := mat_eq_of_mulVec (fun v => by
   rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec])
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Matrix.conjTranspose_apply, Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
   have hi := i.isLt
@@ -90,24 +125,44 @@ theorem hpk_conjT : (Hpk k r)ᴴ = Hpk k r := by
   simp only [Matrix.conjTranspose_apply, Hpk, Fin.ext_iff]
   split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hpk_sq]`.
+-/
 theorem gv_left_inv {g : Mat k r} (hg : g ∈ GV k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg', hpk_sq]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (gv_left_inv hg)`.
+-/
 theorem gv_inv_eq {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := Matrix.inv_eq_left_inv (gv_left_inv hg)
 
+/- English proof (translation)
+Rewrite using `[gv_inv_eq hg]`. Conclude with `gv_left_inv hg`.
+-/
 theorem gv_inv_mul {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ * g = 1 := by
   rw [gv_inv_eq hg]
   exact gv_left_inv hg
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (gv_inv_mul hg))`.
+-/
 theorem gv_mul_inv {g : Mat k r} (hg : g ∈ GV k r) : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (gv_inv_mul hg))
 
+/- English proof (translation)
+Use `show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+-/
 theorem gv_one : (1 : Mat k r) ∈ GV k r := by
   show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r
   simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hg', hh']`.
+-/
 theorem gv_mul {g h : Mat k r} (hg : g ∈ GV k r) (hh : h ∈ GV k r) : g * h ∈ GV k r := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   have hh' : hᴴ * Hpk k r * h = Hpk k r := hh
@@ -117,6 +172,11 @@ theorem gv_mul {g h : Mat k r} (hg : g ∈ GV k r) (hh : h ∈ GV k r) : g * h �
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [hg', hh']
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h1 : g * g⁻¹ = 1` using `gv_mul_inv hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [h1]; simp`.
+-/
 theorem gv_inv_mem {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ ∈ GV k r := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   have h1 : g * g⁻¹ = 1 := gv_mul_inv hg
@@ -127,12 +187,21 @@ theorem gv_inv_mem {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ ∈ GV k r := by
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [h1]; simp
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (gv_mul_inv hg)`.
+-/
 theorem gv_inv_inv {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹⁻¹ = g := Matrix.inv_eq_left_inv (gv_mul_inv hg)
 
+/- English proof (translation)
+Use `show (Hpk k r)ᴴ * Hpk k r * Hpk k r = Hpk k r`. Rewrite using `[hpk_conjT, hpk_sq, Matrix.one_mul]`.
+-/
 theorem hpk_mem : Hpk k r ∈ GV k r := by
   show (Hpk k r)ᴴ * Hpk k r * Hpk k r = Hpk k r
   rw [hpk_conjT, hpk_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `gN`. Rewrite using `[Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_two, Complex.normSq_eq_norm_sq]`.
+-/
 theorem gN_eq_frob (g : Mat k r) :
     gN g = @Norm.norm _ (Matrix.frobeniusSeminormedAddCommGroup).toNorm g := by
   unfold gN
@@ -141,20 +210,32 @@ theorem gN_eq_frob (g : Mat k r) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Real.rpow_two, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Rewrite using `[gN_eq_frob, gN_eq_frob, gN_eq_frob]`. Conclude with `Matrix.frobenius_norm_mul a b`.
+-/
 theorem gN_mul_le (a b : Mat k r) : gN (a * b) ≤ gN a * gN b := by
   rw [gN_eq_frob, gN_eq_frob, gN_eq_frob]
   exact Matrix.frobenius_norm_mul a b
 
+/- English proof (translation)
+Unfold `gN`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem gN_nonneg (g : Mat k r) : 0 ≤ gN g := by
   unfold gN
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `gN`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.conjTranspose_apply, Complex.star_def, Complex.normSq_conj]`.
+-/
 theorem gN_conjT (g : Mat k r) : gN gᴴ = gN g := by
   unfold gN
   congr 1
   rw [Finset.sum_comm]
   simp only [Matrix.conjTranspose_apply, Complex.star_def, Complex.normSq_conj]
 
+/- English proof (translation)
+Rewrite using `[gv_inv_eq hg]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gN_inv_le {g : Mat k r} (hg : g ∈ GV k r) : gN g⁻¹ ≤ gN (Hpk k r) ^ 2 * gN g := by
   rw [gv_inv_eq hg]
   calc gN (Hpk k r * gᴴ * Hpk k r) ≤ gN (Hpk k r * gᴴ) * gN (Hpk k r) := gN_mul_le _ _
@@ -162,6 +243,9 @@ theorem gN_inv_le {g : Mat k r} (hg : g ∈ GV k r) : gN g⁻¹ ≤ gN (Hpk k r)
         mul_le_mul_of_nonneg_right (gN_mul_le _ _) (gN_nonneg _)
     _ = gN (Hpk k r) ^ 2 * gN g := by rw [gN_conjT]; ring
 
+/- English proof (translation)
+Unfold `gN`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Establish `h0 : (0 : ℝ) < Complex.normSq ((1 : Mat k r) 0 0)` using `by simp`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gN_one_pos : 0 < gN (1 : Mat k r) := by
   unfold gN
   apply Real.sqrt_pos.mpr
@@ -174,6 +258,11 @@ theorem gN_one_pos : 0 < gN (1 : Mat k r) := by
         Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq ((1 : Mat k r) i j))
           (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ 0)
 
+/- English proof (translation)
+Establish `h1` using `gN_mul_le g⁻¹ g`. Rewrite `h1` using `[gv_inv_mul hg]`. Break down `(gN_nonneg g).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Rewrite `h1` using `[← h, mul_zero]`. Combine the linear relations using `[gN_one_pos (k := k) (r := r)]`.
+-/
 theorem gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
   have h1 := gN_mul_le g⁻¹ g
   rw [gv_inv_mul hg] at h1
@@ -185,15 +274,28 @@ theorem gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
 
 def KH (k r : ℕ) : ℝ := gN (Hpk k r) ^ 2
 
+/- English proof (translation)
+Unfold `KH`. Conclude with `pow_pos (gN_pos hpk_mem) 2`.
+-/
 theorem KH_pos : 0 < KH k r := by
   unfold KH
   exact pow_pos (gN_pos hpk_mem) 2
 
+/- English proof (translation)
+Unfold `KH`. Establish `h` using `gN_inv_le (gv_inv_mem hg)`. Rewrite `h` using `[gv_inv_inv hg]`. Then use the resulting hypothesis.
+-/
 theorem gN_le_inv {g : Mat k r} (hg : g ∈ GV k r) : gN g ≤ KH k r * gN g⁻¹ := by
   unfold KH
   have h := gN_inv_le (gv_inv_mem hg)
   rwa [gv_inv_inv hg] at h
 
+/- English proof (translation)
+Establish `hx : 0 < x`. Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : 0 < x ^ b` using `Real.rpow_pos_of_pos hx b`.
+
+Establish `hB : 0 < y ^ b` using `Real.rpow_pos_of_pos hy b`. Establish `hC : 0 < c ^ b` using `Real.rpow_pos_of_pos hc b`. Establish `key : y ^ b ≤ c ^ b * x ^ b`. Rewrite using `[← Real.mul_rpow hc.le hx.le]`. Conclude with `Real.rpow_le_rpow hy.le h hb`.
+
+Rewrite using `[Real.rpow_neg hx.le, Real.rpow_neg hy.le]`. Establish `e : c ^ b * (y ^ b)⁻¹ - (x ^ b)⁻¹ = (c ^ b * x ^ b - y ^ b) / (x ^ b * y ^ b)`. Apply the tactic sequence `field_simp <;> ring`. Establish `h2 : 0 ≤ (c ^ b * x ^ b - y ^ b) / (x ^ b * y ^ b)` using `div_nonneg (by linarith) (mul_pos hA hB).le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rpow_neg_le {x y c b : ℝ} (hy : 0 < y) (hc : 0 < c) (hb : 0 ≤ b) (h : y ≤ c * x) :
     x ^ (-b) ≤ c ^ b * y ^ (-b) := by
   have hx : 0 < x := by
@@ -213,10 +315,19 @@ theorem rpow_neg_le {x y c b : ℝ} (hy : 0 < y) (hc : 0 < c) (hb : 0 ≤ b) (h 
     div_nonneg (by linarith) (mul_pos hA hB).le
   linarith
 
+/- English proof (translation)
+The claim follows from `hh.1`.
+-/
 theorem uw_gv {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z) : h ∈ GV k r := hh.1
 
+/- English proof (translation)
+The claim follows from `hm.1`.
+-/
 theorem n_gv {m : Mat k r} (hm : m ∈ Nset k r) : m ∈ GV k r := hm.1
 
+/- English proof (translation)
+Take `⟨hG, hE, hz⟩` from `hh`. Establish `hinv : h⁻¹ * h = 1` using `gv_inv_mul hG`. Establish `fix : ∀ v : Fin (2 * r + k + 1) → ℂ, h *ᵥ v = v → h⁻¹ *ᵥ v = v` using `fun v hv => by`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨gv_inv_mem hG, fun a => ⟨fix _ (hE a).1, fix _ (hE a).2⟩, fix _ hz⟩`.
+-/
 theorem uw_inv_mem {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z) :
     h⁻¹ ∈ UWset k r z := by
   obtain ⟨hG, hE, hz⟩ := hh
@@ -239,9 +350,17 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+The claim follows from `X.rep.1.2 x hx y hy`.
+-/
 theorem sig_mul (X : SigData k r) {x y : Mat k r} (hx : x ∈ GV k r) (hy : y ∈ GV k r) :
     X.σ (x * y) = (X.σ x).comp (X.σ y) := X.rep.1.2 x hx y hy
 
+/- English proof (translation)
+Establish `hyi : y⁻¹ ∈ GV k r` using `gv_inv_mem hy`. Establish `hcomp : X.σ y (X.σ y⁻¹ v) = v`. Establish `h` using `X.rep.1.2 y hy y⁻¹ hyi`. Rewrite `h` using `[gv_mul_inv hy, X.rep.1.1]`. Establish `h2` using `DFunLike.congr_fun h v`.
+
+Simplify using `only [ContinuousLinearMap.one_apply, ContinuousLinearMap.comp_apply] at h2`. Conclude with `h2.symm`. Set `L : X.Hs →ₗᵢ[ℂ] X.Hs` to `{ toLinearMap := (X.σ y).toLinearMap, norm_map' := fun w => X.rep.2.1 y hy w }`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sig_inner (X : SigData k r) {y : Mat k r} (hy : y ∈ GV k r) (u v : X.Hs) :
     ⟪X.σ y u, v⟫_ℂ = ⟪u, X.σ y⁻¹ v⟫_ℂ := by
   have hyi : y⁻¹ ∈ GV k r := gv_inv_mem hy
@@ -257,6 +376,11 @@ theorem sig_inner (X : SigData k r) {y : Mat k r} (hy : y ∈ GV k r) (u v : X.H
     _ = ⟪L u, L (X.σ y⁻¹ v)⟫_ℂ := rfl
     _ = ⟪u, X.σ y⁻¹ v⟫_ℂ := L.inner_map_map _ _
 
+/- English proof (translation)
+Establish `h1` using `h 1 gv_one`. Establish `hp : 0 < gN (1 : Mat k r) ^ e` using `Real.rpow_pos_of_pos gN_one_pos e`. Assume the negation of the conclusion as `hC`. Use `push_neg at hC`. Establish `h2 : C * gN (1 : Mat k r) ^ e < 0` using `mul_neg_of_neg_of_pos hC hp`.
+
+Combine the linear relations using `[norm_nonneg (f 1)]`.
+-/
 theorem C_nonneg {E : Type} [NormedAddCommGroup E] {f : Mat k r → E} {C e : ℝ}
     (h : ∀ x ∈ GV k r, ‖f x‖ ≤ C * gN x ^ e) : 0 ≤ C := by
   have h1 := h 1 gv_one
@@ -266,8 +390,20 @@ theorem C_nonneg {E : Type} [NormedAddCommGroup E] {f : Mat k r → E} {C e : �
   have h2 : C * gN (1 : Mat k r) ^ e < 0 := mul_neg_of_neg_of_pos hC hp
   linarith [norm_nonneg (f 1)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.Cw, X.dec⟩`.
+-/
 theorem w_mem (X : SigData k r) : X.w ∈ Vfl X := ⟨X.Cw, X.dec⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hu`. Establish `hgi : g⁻¹ ∈ GV k r` using `gv_inv_mem hg`. Establish `hc : 0 < gN g⁻¹` using `gN_pos hgi`. Establish `hC0 : 0 ≤ C` using `C_nonneg (f := mc X u X.w) hC`. Use `⟨C * gN g⁻¹ ^ X.a, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hxg : x * g ∈ GV k r` using `gv_mul hx hg`. Establish `e : mc X (X.σ g u) X.w x = mc X u X.w (x * g)`. Unfold `mc`. Rewrite using `[sig_mul X hx hg, ContinuousLinearMap.comp_apply]`. Rewrite using `[e]`.
+
+Establish `hy : 0 < gN x` using `gN_pos hx`. Establish `hle : gN x ≤ gN g⁻¹ * gN (x * g)`. Establish `h1` using `gN_mul_le (x * g) g⁻¹`. Rewrite `h1` using `[Matrix.mul_assoc, gv_mul_inv hg, Matrix.mul_one]`. Rewrite using `[mul_comm (gN g⁻¹)]`.
+
+Conclude with `h1`. Establish `key` using `rpow_neg_le hy hc ha hle`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sig_mem_vfl (X : SigData k r) (ha : 0 ≤ X.a) {g : Mat k r} (hg : g ∈ GV k r) {u : X.Hs}
     (hu : u ∈ Vfl X) : X.σ g u ∈ Vfl X := by
   obtain ⟨C, hC⟩ := hu
@@ -291,6 +427,11 @@ theorem sig_mem_vfl (X : SigData k r) (ha : 0 ≤ X.a) {g : Mat k r} (hg : g ∈
     _ ≤ C * (gN g⁻¹ ^ X.a * gN x ^ (-X.a)) := mul_le_mul_of_nonneg_left key hC0
     _ = C * gN g⁻¹ ^ X.a * gN x ^ (-X.a) := by ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hu`. Establish `hC0 : 0 ≤ C` using `C_nonneg (f := mc X u X.w) hC`. Use `⟨C * KH k r ^ X.a, mul_nonneg hC0 (Real.rpow_pos_of_pos KH_pos _).le, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyi : y⁻¹ ∈ GV k r` using `gv_inv_mem hy`. Rewrite using `[sig_inner X hy]`.
+
+Establish `key` using `rpow_neg_le (gN_pos hy) KH_pos ha (gN_le_inv hy)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_bound (X : SigData k r) (ha : 0 ≤ X.a) {u : X.Hs} (hu : u ∈ Vfl X) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y ∈ GV k r, ‖⟪X.σ y X.w, u⟫_ℂ‖ ≤ C * gN y ^ (-X.a) := by
   obtain ⟨C, hC⟩ := hu
@@ -304,14 +445,23 @@ theorem coef_bound (X : SigData k r) (ha : 0 ≤ X.a) {u : X.Hs} (hu : u ∈ Vfl
     _ ≤ C * (KH k r ^ X.a * gN y ^ (-X.a)) := mul_le_mul_of_nonneg_left key hC0
     _ = C * KH k r ^ X.a * gN y ^ (-X.a) := by ring
 
+/- English proof (translation)
+Unfold `psiD psi`. Rewrite using `[mul_comm Complex.I]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem psi_norm (D : RealPlaceData k r Wp Wp) (m : Mat k r) : ‖psiD D m‖ = 1 := by
   unfold psiD psi
   rw [mul_comm Complex.I]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [D.π_unitary h hh v, one_mul])`.
+-/
 theorem pi_norm_le (D : RealPlaceData k r Wp Wp) {h : Mat k r} (hh : h ∈ UWset k r D.z) : ‖D.π h‖ ≤ 1 := ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by
   rw [D.π_unitary h hh v, one_mul])
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts D.μW := ⟨fun K hK => D.haarW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts D.μN := ⟨fun K hK => D.haarN.finite_compact K hK⟩`. Establish `hW : ∀ᵐ x ∂D.μW, Matrix.of x ∈ UWset k r D.z` using `ae_iff.mpr D.haarW.conc`. Establish `hN : ∀ᵐ x ∂D.μN, Matrix.of x ∈ Nset k r` using `ae_iff.mpr D.haarN.conc`. Conclude with `((Measure.quasiMeasurePreserving_fst (μ := D.μW) (ν := D.μN)).ae hW).and ((Measure.quasiMeasurePreserving_snd (μ := D.μW) (ν := D.μN)).ae hN)`.
+-/
 theorem ae_UN (D : RealPlaceData k r Wp Wp) :
     ∀ᵐ p ∂(D.μW.prod D.μN), Matrix.of p.1 ∈ UWset k r D.z ∧ Matrix.of p.2 ∈ Nset k r := by
   haveI : IsFiniteMeasureOnCompacts D.μW := ⟨fun K hK => D.haarW.finite_compact K hK⟩
@@ -321,6 +471,21 @@ theorem ae_UN (D : RealPlaceData k r Wp Wp) :
   exact ((Measure.quasiMeasurePreserving_fst (μ := D.μW) (ν := D.μN)).ae hW).and
     ((Measure.quasiMeasurePreserving_snd (μ := D.μW) (ν := D.μN)).ae hN)
 
+/- English proof (translation)
+Establish `hCp0 : 0 ≤ Cp` using `C_nonneg (f := mc X X.w v) hCp`. Use `⟨Cp * KH k r ^ b * ∫ p, gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b) ∂(D.μW.prod D.μN), fun y hy => ?_⟩` and prove the remaining obligations. Establish `bound : ∀ᵐ p ∂(D.μW.prod D.μN), ‖beInt D X (X.σ y X.w) v p‖ ≤ (Cp * (KH k r * gN y) ^ b) * gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)` using `by filter_upwards [ae_UN D] with p hp`. Take `⟨hp1, hp2⟩` from `hp`. Establish `hW : Matrix.of p.1 ∈ GV k r` using `uw_gv hp1`.
+
+Establish `hN : Matrix.of p.2 ∈ GV k r` using `n_gv hp2`. Establish `hnw : Matrix.of p.2 * Matrix.of p.1 ∈ GV k r` using `gv_mul hN hW`. Establish `hnwy : Matrix.of p.2 * Matrix.of p.1 * y ∈ GV k r` using `gv_mul hnw hy`. Establish `hmc : mc X (X.σ y X.w) v (Matrix.of p.2 * Matrix.of p.1) = mc X X.w v (Matrix.of p.2 * Matrix.of p.1 * y)`. Unfold `mc`.
+
+Rewrite using `[sig_mul X hnw hy, ContinuousLinearMap.comp_apply]`. Establish `hpos : 0 < gN (Matrix.of p.2 * Matrix.of p.1)` using `gN_pos hnw`. Establish `hle : gN (Matrix.of p.2 * Matrix.of p.1) ≤ (KH k r * gN y) * gN (Matrix.of p.2 * Matrix.of p.1 * y)`. Establish `h1` using `gN_mul_le (Matrix.of p.2 * Matrix.of p.1 * y) y⁻¹`. Rewrite `h1` using `[Matrix.mul_assoc _ y, gv_mul_inv hy, Matrix.mul_one]`.
+
+Establish `h2 : gN y⁻¹ ≤ KH k r * gN y` using `gN_inv_le hy`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `rpow_neg_le hpos (mul_pos KH_pos (gN_pos hy)) hb0 hle`. Establish `hpi : ‖D.π (Matrix.of p.1)⁻¹‖ ≤ 1` using `pi_norm_le D (uw_inv_mem hp1)`. Unfold `beInt`.
+
+Rewrite using `[norm_smul, norm_mul, norm_star, psi_norm, mul_one, hmc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `hCp _ hnwy`. Use `_ ≤ Cp * ((KH k r * gN y) ^ b * gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)) := mul_le_mul_of_nonneg_left key hCp0`.
+
+Use `_ = Cp * (KH k r * gN y) ^ b * gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b) := by ring`. Establish `hint : Integrable (fun p : Mt k r × Mt k r => (Cp * (KH k r * gN y) ^ b) * gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)) (D.μW.prod D.μN)` using `hS.const_mul _`. Unfold `beOp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow KH_pos.le (gN_nonneg y)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem be_bound (D : RealPlaceData k r Wp Wp) (X : SigData k r) {v : X.Hs} {b Cp : ℝ} (hb0 : 0 ≤ b)
     (hCp : ∀ x ∈ GV k r, ‖mc X X.w v x‖ ≤ Cp * gN x ^ (-b))
     (hS : Integrable (fun p : Mt k r × Mt k r => gN (Matrix.of p.2 * Matrix.of p.1) ^ (-b)) (D.μW.prod D.μN)) :

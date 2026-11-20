@@ -8,6 +8,9 @@ namespace Formalism.GradedWeylDivisibility
 
 open scoped MonomialOrder
 
+/- English proof (translation)
+Rewrite using `[initMinor, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Rewrite using `[← mul_one (((Equiv.Perm.sign σ : ℤ) : R)), ← C_mul_monomial, monomial_sum_one, Units.smul_def, zsmul_eq_mul]`. Use `congr 1`.
+-/
 theorem lcminor_initMinor_eq (R : Type) [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n) :
     initMinor R I hs = ∑ σ : Equiv.Perm (Fin s),
       monomial (∑ q : Fin s, Finsupp.single (I (σ q), Fin.castLE hs q) 1)
@@ -19,6 +22,17 @@ theorem lcminor_initMinor_eq (R : Type) [CommRing R] {r n s : ℕ} (I : Fin s �
     Units.smul_def, zsmul_eq_mul]
   congr 1
 
+/- English proof (translation)
+Introduce `R _ _ r n s I hs hI`. Rewrite using `[lcminor_initMinor_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ (1 : Equiv.Perm (Fin s)))]`. Simplify using `only [Equiv.Perm.one_apply, Equiv.Perm.sign_one, Units.val_one, Int.cast_one]`. Use `set g := ∑ σ ∈ Finset.univ.erase (1 : Equiv.Perm (Fin s)), monomial (∑ q : Fin s, Finsupp.single (I (σ q), Fin.castLE hs q) 1) (((Equiv.Perm.sign σ : ℤ) : R)) with hg_def`. Use `set e := ∑ q : Fin s, Finsupp.single (I q, Fin.castLE hs q) 1 with he`.
+
+Establish `hdf : (colLex r n).degree (monomial e (1 : R)) = e` using `by classical`. Rewrite using `[MonomialOrder.degree_monomial]`. Simplify using the standard rewrite rules. Distinguish the cases in `hg : g = 0`. Rewrite using `[hg, add_zero, hdf, MonomialOrder.leadingCoeff_monomial]`.
+
+Conclude with `⟨rfl, rfl⟩`. Establish `hne : (Finset.univ.erase (1 : Equiv.Perm (Fin s))).Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce `h0`. Apply `hg` to reduce the goal to its premises.
+
+Rewrite using `[hg_def, h0, Finset.sum_empty]`. Establish `hlt : (colLex r n).toSyn ((colLex r n).degree g) < (colLex r n).toSyn ((colLex r n).degree (monomial e (1 : R)))`. Rewrite using `[hdf]`. Use `lt_of_le_of_lt MonomialOrder.degree_sum_le ?_` and prove the remaining obligations. Take `⟨σ0, hσ0⟩` from `hne`.
+
+Rewrite using `[Finset.sup_lt_iff (lt_of_le_of_lt bot_le (h r n s I hs hI σ0 (Finset.ne_of_mem_erase hσ0)))]`. Introduce `σ hσ`. Conclude with `lt_of_le_of_lt (MonomialOrder.degree_monomial_le _) (h r n s I hs hI σ (Finset.ne_of_mem_erase hσ))`. Rewrite using `[MonomialOrder.degree_add_of_lt hlt, MonomialOrder.leadingCoeff_add_of_lt hlt, hdf, MonomialOrder.leadingCoeff_monomial]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem colLexInitMinor_of (h : MinorExpLt) : ColLexInitMinor := by
   intro R _ _ r n s I hs hI
   rw [lcminor_initMinor_eq, ← Finset.add_sum_erase _ _ (Finset.mem_univ (1 : Equiv.Perm (Fin s)))]

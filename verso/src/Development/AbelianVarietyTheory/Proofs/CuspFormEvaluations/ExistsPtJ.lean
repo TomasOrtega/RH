@@ -29,10 +29,16 @@ variable {n l : ℕ}
 
 def gen (j : Fin n) : Q k d n := ⟨pt k d j, cc_pt j⟩
 
+/- English proof (translation)
+Introduce `j i` and use `(b j).2 i`.
+-/
 theorem czQ (b : Fin n → Q k d l) : CZ (fun j => (b j).1) := fun j i => (b j).2 i
 
 def sb (b : Fin n → Q k d l) : PS k n d →+* PS k l d := evHom (czQ b)
 
+/- English proof (translation)
+The claim follows from `evHom_apply (czQ b) f`.
+-/
 theorem sb_apply (b : Fin n → Q k d l) (f : PS k n d) : sb b f = ev (fun j => (b j).1) f := evHom_apply (czQ b) f
 
 def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
@@ -41,6 +47,9 @@ def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
   map_zero' := Subtype.ext (funext fun _ => map_zero _)
   map_add' _ _ := Subtype.ext (funext fun _ => map_add _ _ _)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show sb b (pt k d j i) = (b j).1 i`. Rewrite using `[sb_apply, pt_apply, ev_X (czQ b)]`.
+-/
 @[simp] theorem sq_gen (b : Fin n → Q k d l) (j : Fin n) : sq b (gen j) = b j := by
   apply Subtype.ext
   funext i
@@ -49,6 +58,11 @@ def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
 
 def ac (A : Q k d 1) (u : Q k d n) : Q k d n := sq ![u] A
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show sb ![u] (A.1 i) = ev ![u.1] (A.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
   funext i
   show sb ![u] (A.1 i) = ev ![u.1] (A.1 i)
@@ -60,6 +74,11 @@ theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
 
 def op (F : Q k d 2) (u v : Q k d n) : Q k d n := sq ![u, v] F
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show sb ![u, v] (F.1 i) = ev ![u.1, v.1] (F.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem op_val (F : Q k d 2) (u v : Q k d n) : (op F u v).1 = addOf F.1 u.1 v.1 := by
   funext i
   show sb ![u, v] (F.1 i) = ev ![u.1, v.1] (F.1 i)
@@ -74,6 +93,11 @@ variable {R : Type} [CommRing R] {σ τ : Type} [Finite σ] [Finite τ]
 
 def pj (m : ℕ) (f : MvPowerSeries σ R) : JetR R σ m := Ideal.Quotient.mk _ (truncTotal (m + 1) f)
 
+/- English proof (translation)
+Unfold `pj`. Rewrite using `[Ideal.Quotient.eq]`. Express the relevant statement in the definitionally equal form `_ ∈ MvPolynomial.idealOfVars σ R ^ (m + 1) ↔ _`. Rewrite using `[MvPolynomial.mem_pow_idealOfVars_iff']`. Use `forall_congr' fun e => imp_congr_right fun he => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_sub, MvPowerSeries.coeff_truncTotal _ he, sub_eq_zero]`.
+-/
 theorem pj_eq_mk {m : ℕ} {f : MvPowerSeries σ R} {q : MvPolynomial σ R} :
     pj m f = Ideal.Quotient.mk _ q ↔ ∀ e : σ →₀ ℕ, e.degree < m + 1 → coeff e f = q.coeff e := by
   unfold pj
@@ -83,14 +107,23 @@ theorem pj_eq_mk {m : ℕ} {f : MvPowerSeries σ R} {q : MvPolynomial σ R} :
   refine forall_congr' fun e => imp_congr_right fun he => ?_
   rw [MvPolynomial.coeff_sub, MvPowerSeries.coeff_truncTotal _ he, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite using `[pj_eq_mk]`. Introduce `e _`. Rewrite using `[MvPolynomial.coeff_coe]`.
+-/
 theorem pj_coe (m : ℕ) (q : MvPolynomial σ R) : pj m (q : MvPowerSeries σ R) = Ideal.Quotient.mk _ q := by
   rw [pj_eq_mk]
   intro e _
   rw [MvPolynomial.coeff_coe]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.coe_X, pj_coe]`.
+-/
 theorem pj_X (m : ℕ) (s : σ) : pj m (X s : MvPowerSeries σ R) = zR m s := by
   rw [← MvPolynomial.coe_X, pj_coe]
 
+/- English proof (translation)
+Use `symm`. Use `show pj m f = Ideal.Quotient.mk _ (truncTotal (m + 1 + 1) f)`. Rewrite using `[pj_eq_mk]`. Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_truncTotal _ (by omega)]`.
+-/
 theorem pj_trunc (m : ℕ) (f : MvPowerSeries σ R) : jetTruncR R σ m (pj (m + 1) f) = pj m f := by
   symm
   show pj m f = Ideal.Quotient.mk _ (truncTotal (m + 1 + 1) f)
@@ -98,10 +131,16 @@ theorem pj_trunc (m : ℕ) (f : MvPowerSeries σ R) : jetTruncR R σ m (pj (m + 
   intro e he
   rw [MvPowerSeries.coeff_truncTotal _ (by omega)]
 
+/- English proof (translation)
+Use `show (MvPolynomial.aeval fun _ => (0 : R)) (truncTotal (m + 1) f) = constantCoeff f`. Simplify using `[MvPowerSeries.constantCoeff_truncTotal_eq_ite]`.
+-/
 theorem aug_pj (m : ℕ) (f : MvPowerSeries σ R) : jetAug R σ m (pj m f) = constantCoeff f := by
   show (MvPolynomial.aeval fun _ => (0 : R)) (truncTotal (m + 1) f) = constantCoeff f
   simp [MvPowerSeries.constantCoeff_truncTotal_eq_ite]
 
+/- English proof (translation)
+Use extensionality with `e`. Establish `h1` using `h e.degree`. Establish `h2 : pj e.degree g = Ideal.Quotient.mk _ (truncTotal (e.degree + 1) g)` using `rfl`. Rewrite `h1` using `[h2, pj_eq_mk]`. Rewrite using `[h1 e (Nat.lt_succ_self _), MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_self _)]`.
+-/
 theorem pj_ext {f g : MvPowerSeries σ R} (h : ∀ m, pj m f = pj m g) : f = g := by
   ext e
   have h1 := h e.degree
@@ -109,6 +148,9 @@ theorem pj_ext {f g : MvPowerSeries σ R} (h : ∀ m, pj m f = pj m g) : f = g :
   rw [h2, pj_eq_mk] at h1
   rw [h1 e (Nat.lt_succ_self _), MvPowerSeries.coeff_truncTotal _ (Nat.lt_succ_self _)]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [← ih, ← Nat.add_assoc, hq _ e (by omega)]`.
+-/
 private theorem coeff_add_degree_eq_coeff_degree_of_stable (q : ℕ → MvPolynomial σ R)
     (hq : ∀ m, ∀ e : σ →₀ ℕ, e.degree < m + 1 → (q (m + 1)).coeff e = (q m).coeff e)
     (e : σ →₀ ℕ) : ∀ j, (q (e.degree + j)).coeff e = (q e.degree).coeff e := by
@@ -117,6 +159,13 @@ private theorem coeff_add_degree_eq_coeff_degree_of_stable (q : ℕ → MvPolyno
   | zero => rfl
   | succ j ih => rw [← ih, ← Nat.add_assoc, hq _ e (by omega)]
 
+/- English proof (translation)
+Use `choose q hq using fun m => Ideal.Quotient.mk_surjective (z m)`. Establish `hc : ∀ m, ∀ e : σ →₀ ℕ, e.degree < m + 1 → (q (m + 1)).coeff e = (q m).coeff e`. Introduce `m e he`. Establish `h` using `hz m`. Rewrite `h` using `[← hq (m + 1), ← hq m]`.
+
+Establish `h' : (Ideal.Quotient.mk _ (q (m + 1)) : JetR R σ m) = Ideal.Quotient.mk _ (q m)` using `h`. Rewrite `h'` using `[Ideal.Quotient.eq]`. Use `(MvPolynomial.mem_pow_idealOfVars_iff' _ _).1 h' e he` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨(show MvPowerSeries σ R from fun e => (q e.degree).coeff e), fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hq m, pj_eq_mk]`. Introduce `e he`. Use `show (q e.degree).coeff e = (q m).coeff e`. Take `⟨j, rfl⟩ : ∃ j, m = e.degree + j` from `⟨m - e.degree, by omega⟩`. Conclude with `(coeff_add_degree_eq_coeff_degree_of_stable q hc e j).symm`.
+-/
 theorem exists_pj (z : ∀ m, JetR R σ m) (hz : ∀ m, jetTruncR R σ m (z (m + 1)) = z m) :
     ∃ f : MvPowerSeries σ R, ∀ m, pj m f = z m := by
   choose q hq using fun m => Ideal.Quotient.mk_surjective (z m)
@@ -138,14 +187,23 @@ theorem exists_pj (z : ∀ m, JetR R σ m) (hz : ∀ m, jetTruncR R σ m (z (m +
 def jS {κ : Type} (m : ℕ) (a : κ → MvPowerSeries τ R) (ha : ∀ s, constantCoeff (a s) = 0) : JetR R κ m →ₐ[R] JetR R τ m :=
   jetLift R (RingHom.ker (jetAug R τ m)) (ker_jetAug_pow τ m) (fun s => pj m (a s)) fun s => (aug_pj m _).trans (ha s)
 
+/- English proof (translation)
+Use `show (MvPolynomial.aeval fun s => pj m (a s)) (MvPolynomial.X s) = pj m (a s)`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem jS_zR {κ : Type} (m : ℕ) (a : κ → MvPowerSeries τ R) (ha) (s : κ) : jS m a ha (zR m s) = pj m (a s) := by
   show (MvPolynomial.aeval fun s => pj m (a s)) (MvPolynomial.X s) = pj m (a s)
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Simplify using `only [pj, map_add]`.
+-/
 private theorem pj_add {κ : Type} [Finite κ] (m : ℕ) (g h : MvPowerSeries κ R) :
     pj m (g + h) = pj m g + pj m h := by
   simp only [pj, map_add]
 
+/- English proof (translation)
+Use `show pj m (g * h) = Ideal.Quotient.mk _ (truncTotal (m + 1) g) * Ideal.Quotient.mk _ (truncTotal (m + 1) h)`. Rewrite using `[← map_mul, pj_eq_mk]`. Introduce `x hx`. Rewrite using `[MvPowerSeries.coeff_truncTotal_mul_truncTotal_eq_coeff_mul _ _ hx]`.
+-/
 private theorem pj_mul' {κ : Type} [Finite κ] (m : ℕ) (g h : MvPowerSeries κ R) :
     pj m (g * h) = pj m g * pj m h := by
   show pj m (g * h) = Ideal.Quotient.mk _ (truncTotal (m + 1) g) * Ideal.Quotient.mk _ (truncTotal (m + 1) h)
@@ -153,6 +211,13 @@ private theorem pj_mul' {κ : Type} [Finite κ] (m : ℕ) (g h : MvPowerSeries �
   intro x hx
   rw [MvPowerSeries.coeff_truncTotal_mul_truncTotal_eq_coeff_mul _ _ hx]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C r`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.aeval_C]`. Use `show pj m _ = Ideal.Quotient.mk _ (MvPolynomial.C r)`. Rewrite using `[pj_eq_mk]`.
+
+Introduce `e _`. Rewrite using `[MvPowerSeries.algebraMap_apply, MvPowerSeries.coeff_C, MvPolynomial.coeff_C]`. Distinguish the cases in `h : e = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Consider the case `add p q hp hq => rw [map_add, map_add, pj_add, hp, hq]`. Consider the case `mul_X p s hp => rw [map_mul, map_mul, pj_mul', hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X]`.
+-/
 private theorem pj_aeval (m : ℕ) (a : σ → MvPowerSeries τ R) (q : MvPolynomial σ R) :
     pj m (MvPolynomial.aeval a q) = MvPolynomial.aeval (fun s => pj m (a s)) q := by
   induction q using MvPolynomial.induction_on with
@@ -170,6 +235,9 @@ private theorem pj_aeval (m : ℕ) (a : σ → MvPowerSeries τ R) (q : MvPolyno
   | add p q hp hq => rw [map_add, map_add, pj_add, hp, hq]
   | mul_X p s hp => rw [map_mul, map_mul, pj_mul', hp, MvPolynomial.aeval_X, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `ha' : MvPowerSeries.HasSubst a` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Establish `h1 : pj m (subst a f) = pj m (subst a (truncTotal (m + 1) f : MvPowerSeries σ R))` using `by show Ideal.Quotient.mk _ (truncTotal (m + 1) (subst a f)) = Ideal.Quotient.mk _ (truncTotal (m + 1) (subst a (truncTotal (m + 1) f : MvPowerSeries σ R)))`. Rewrite using `[MvPowerSeries.truncTotal_subst_eq_truncTotal_subst_sum ha' ha, ← MvPowerSeries.truncTotal_eq_sum]`. Rewrite using `[h1, MvPowerSeries.subst_coe, pj_aeval]`. Both sides reduce to the same expression.
+-/
 theorem jS_pj (m : ℕ) (a : σ → MvPowerSeries τ R) (ha) (f : MvPowerSeries σ R) : jS m a ha (pj m f) = pj m (subst a f) := by
   have ha' : MvPowerSeries.HasSubst a := MvPowerSeries.hasSubst_of_constantCoeff_zero ha
   have h1 : pj m (subst a f) = pj m (subst a (truncTotal (m + 1) f : MvPowerSeries σ R)) := by
@@ -183,8 +251,14 @@ variable {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ} (x : ∀ m : 
 
 def jP (m : ℕ) (p : Q R d n) : JetR R (Fin d) m →ₐ[R] JetR R (Fin n × Fin d) m := jS m p.1 p.2
 
+/- English proof (translation)
+The claim follows from `jS_zR m p.1 p.2 j`.
+-/
 theorem jP_zR (m : ℕ) (p : Q R d n) (j : Fin d) : jP m p (zR m j) = pj m (p.1 j) := jS_zR m p.1 p.2 j
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [spMap, Over.comp_left, Over.homMk_left, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem jet_spMap_square_comm {A B C : Type} [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]
     [CommRing C] [Algebra R C] (f : A →ₐ[R] B) (g : B →ₐ[R] C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -192,6 +266,9 @@ private theorem jet_spMap_square_comm {A B C : Type} [CommRing A] [Algebra R A] 
   simp only [spMap, Over.comp_left, Over.homMk_left, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Conclude with `h`.
+-/
 private theorem jetR_algHom_ext_of_eq_on_zR {κ A : Type} [CommRing A] [Algebra R A] {m : ℕ} (f g : JetR R κ m →ₐ[R] A)
     (h : ∀ j, f (zR m j) = g (zR m j)) : f = g := by
   apply Ideal.Quotient.algHom_ext
@@ -203,6 +280,13 @@ def ptJ (m : ℕ) (p : Q R d n) : sp (R₀ := R) (JetR R (Fin n × Fin d) m) ⟶
 def jQ (m : ℕ) (b : Fin n → Q R d l) : JetR R (Fin n × Fin d) m →ₐ[R] JetR R (Fin l × Fin d) m :=
   jS m (fun s => (b s.1).1 s.2) fun s => (b s.1).2 s.2
 
+/- English proof (translation)
+Establish `e : (jQ m b).comp (jP m p) = jP m (sq b p)`. Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Use `show jQ m b (jP m p (zR m j)) = jP m (sq b p) (zR m j)`. Rewrite using `[jP_zR, jP_zR]`.
+
+Unfold `jQ`. Rewrite using `[jS_pj]`. Use `show pj m (subst _ (p.1 j)) = pj m (sb b (p.1 j))`. Rewrite using `[sb_apply]`. Both sides reduce to the same expression.
+
+Unfold `ptJ`. Rewrite using `[← Category.assoc, ← jet_spMap_square_comm, e]`.
+-/
 theorem ptJ_sq (m : ℕ) (b : Fin n → Q R d l) (p : Q R d n) : spMap (jQ m b) ≫ ptJ x m p = ptJ x m (sq b p) := by
   have e : (jQ m b).comp (jP m p) = jP m (sq b p) := by
     apply jetR_algHom_ext_of_eq_on_zR
@@ -220,6 +304,11 @@ theorem ptJ_sq (m : ℕ) (b : Fin n → Q R d l) (p : Q R d n) : spMap (jQ m b) 
 variable {x} (hx : IsUnivChart G d x)
 include hx
 
+/- English proof (translation)
+Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Use `show jetAug R _ m (jP m p (zR m j)) = jetAug R (Fin d) m (zR m j)`. Rewrite using `[jP_zR, aug_pj, p.2 j]`. Use `show (0 : R) = (MvPolynomial.aeval fun _ => (0 : R)) (MvPolynomial.X j)`.
+
+Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem aug_jS (m : ℕ) (p : Q R d n) : (jetAug R _ m).comp (jP m p) = jetAug R (Fin d) m := by
   apply jetR_algHom_ext_of_eq_on_zR
   intro j
@@ -228,6 +317,9 @@ theorem aug_jS (m : ℕ) (p : Q R d n) : (jetAug R _ m).comp (jP m p) = jetAug R
   show (0 : R) = (MvPolynomial.aeval fun _ => (0 : R)) (MvPolynomial.X j)
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `e : (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) m) = jetAug R (Fin d) m`. Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Both sides reduce to the same expression. Rewrite using `[← e, jet_spMap_square_comm, Category.assoc, hx.2.1 m, MonObj.comp_one]`.
+-/
 private theorem spMap_jetAug_comp_x_eq_one (m : ℕ) : spMap (jetAug R (Fin d) m) ≫ x m = 1 := by
   have e : (jetAug R (Fin d) 0).comp (jetZeroR R (Fin d) m) = jetAug R (Fin d) m := by
     apply jetR_algHom_ext_of_eq_on_zR
@@ -235,11 +327,19 @@ private theorem spMap_jetAug_comp_x_eq_one (m : ℕ) : spMap (jetAug R (Fin d) m
     rfl
   rw [← e, jet_spMap_square_comm, Category.assoc, hx.2.1 m, MonObj.comp_one]
 
+/- English proof (translation)
+Unfold `ptJ`. Rewrite using `[← Category.assoc, ← jet_spMap_square_comm, aug_jS hx]`. Conclude with `spMap_jetAug_comp_x_eq_one hx m`.
+-/
 theorem ptJ_aug (m : ℕ) (p : Q R d n) : spMap (jetAug R _ m) ≫ ptJ x m p = 1 := by
   unfold ptJ
   rw [← Category.assoc, ← jet_spMap_square_comm, aug_jS hx]
   exact spMap_jetAug_comp_x_eq_one hx m
 
+/- English proof (translation)
+Establish `e : (jetTruncR R (Fin n × Fin d) m).comp (jP (m + 1) p) = (jP m p).comp (jetTruncR R (Fin d) m)`. Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Use `show jetTruncR R _ m (jP (m + 1) p (zR (m + 1) j)) = jP m p (jetTruncR R (Fin d) m (zR (m + 1) j))`. Rewrite using `[jP_zR, pj_trunc]`.
+
+Use `show pj m (p.1 j) = jP m p (zR m j)`. Rewrite using `[jP_zR]`. Unfold `ptJ`. Rewrite using `[← Category.assoc, ← jet_spMap_square_comm, e, jet_spMap_square_comm, Category.assoc, hx.1 m]`.
+-/
 theorem ptJ_trunc (m : ℕ) (p : Q R d n) : spMap (jetTruncR R _ m) ≫ ptJ x (m + 1) p = ptJ x m p := by
   have e : (jetTruncR R (Fin n × Fin d) m).comp (jP (m + 1) p) = (jP m p).comp (jetTruncR R (Fin d) m) := by
     apply jetR_algHom_ext_of_eq_on_zR
@@ -251,6 +351,11 @@ theorem ptJ_trunc (m : ℕ) (p : Q R d n) : spMap (jetTruncR R _ m) ≫ ptJ x (m
   unfold ptJ
   rw [← Category.assoc, ← jet_spMap_square_comm, e, jet_spMap_square_comm, Category.assoc, hx.1 m]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Apply `pj_ext` to reduce the goal to its premises. Introduce `m`. Establish `hu` using `hx.2.2 (JetR R (Fin n × Fin d) m) (jetAug R _ m) m (ker_jetAug_pow _ m) (ptJ x m q) (ptJ_aug hx m q)`.
+
+Establish `e : jP m p = jP m q` using `hu.unique ⟨aug_jS hx m p, (h m).symm⟩ ⟨aug_jS hx m q, rfl⟩`. Rewrite using `[← jP_zR m p j, ← jP_zR m q j, e]`.
+-/
 theorem ptJ_inj {p q : Q R d n} (h : ∀ m, ptJ x m p = ptJ x m q) : p = q := by
   apply Subtype.ext
   funext j
@@ -260,12 +365,28 @@ theorem ptJ_inj {p q : Q R d n} (h : ∀ m, ptJ x m p = ptJ x m q) : p = q := by
   have e : jP m p = jP m q := hu.unique ⟨aug_jS hx m p, (h m).symm⟩ ⟨aug_jS hx m q, rfl⟩
   rw [← jP_zR m p j, ← jP_zR m q j, e]
 
+/- English proof (translation)
+Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Both sides reduce to the same expression.
+-/
 private theorem jetAug_comp_jetTruncR_eq_jetAug_succ (κ : Type) (m : ℕ) :
     (jetAug R κ m).comp (jetTruncR R κ m) = jetAug R κ (m + 1) := by
   apply jetR_algHom_ext_of_eq_on_zR
   intro j
   rfl
 
+/- English proof (translation)
+Use `choose ψ hψ hu using fun m => hx.2.2 (JetR R (Fin n × Fin d) m) (jetAug R _ m) m (ker_jetAug_pow _ m) (y m) (h₀ m)`. Establish `hc : ∀ m, (jetTruncR R (Fin n × Fin d) m).comp (ψ (m + 1)) = (ψ m).comp (jetTruncR R (Fin d) m)`. Introduce `m`. Establish `hk : RingHom.ker (jetAug R (Fin n × Fin d) m) ^ (m + 1 + 1) = ⊥` using `le_bot_iff.mp ((Ideal.pow_le_pow_right (by omega)).trans (ker_jetAug_pow _ m).le)`. Use `(hx.2.2 (JetR R (Fin n × Fin d) m) (jetAug R _ m) (m + 1) hk (y m) (h₀ m)).unique ⟨?_, ?_⟩ ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← AlgHom.comp_assoc, jetAug_comp_jetTruncR_eq_jetAug_succ hx, (hψ (m + 1)).1]`. Rewrite using `[jet_spMap_square_comm, Category.assoc, ← (hψ (m + 1)).2, h₁]`. Rewrite using `[← AlgHom.comp_assoc, (hψ m).1, jetAug_comp_jetTruncR_eq_jetAug_succ hx]`. Rewrite using `[jet_spMap_square_comm, Category.assoc, hx.1 m, (hψ m).2]`. Establish `hz : ∀ j m, jetTruncR R (Fin n × Fin d) m (ψ (m + 1) (zR (m + 1) j)) = ψ m (zR m j)`.
+
+Introduce `j m`. Conclude with `congrArg (fun φ => φ (zR (m + 1) j)) (hc m)`. Use `choose P hP using fun j => exists_pj (fun m => ψ m (zR m j)) (hz j)`. Establish `hP0 : ∀ j, constantCoeff (P j) = 0`. Introduce `j`.
+
+Rewrite using `[← aug_pj 0, hP j 0]`. Use `show ((jetAug R _ 0).comp (ψ 0)) (zR 0 j) = 0`. Rewrite using `[(hψ 0).1]`. Use `show (MvPolynomial.aeval fun _ => (0 : R)) (MvPolynomial.X j) = 0`. Rewrite using `[MvPolynomial.aeval_X]`.
+
+Use `⟨⟨P, hP0⟩, fun m => ?_⟩` and prove the remaining obligations. Establish `e : jP m ⟨P, hP0⟩ = ψ m`. Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Rewrite using `[jP_zR]`.
+
+Conclude with `hP j m`. Unfold `ptJ`. Rewrite using `[e, (hψ m).2]`.
+-/
 theorem exists_ptJ (y : ∀ m, sp (R₀ := R) (JetR R (Fin n × Fin d) m) ⟶ G) (h₀ : ∀ m, spMap (jetAug R _ m) ≫ y m = 1)
     (h₁ : ∀ m, spMap (jetTruncR R _ m) ≫ y (m + 1) = y m) : ∃ p : Q R d n, ∀ m, ptJ x m p = y m := by
   choose ψ hψ hu using fun m =>
@@ -300,6 +421,11 @@ theorem exists_ptJ (y : ∀ m, sp (R₀ := R) (JetR R (Fin n × Fin d) m) ⟶ G)
   unfold ptJ
   rw [e, (hψ m).2]
 
+/- English proof (translation)
+Establish `e : jP m (0 : Q R d n) = (Algebra.ofId R _).comp (jetAug R (Fin d) m)`. Apply `jetR_algHom_ext_of_eq_on_zR` to reduce the goal to its premises. Introduce `j`. Rewrite using `[jP_zR]`. Use `show pj m 0 = algebraMap R _ ((MvPolynomial.aeval fun _ => (0 : R)) (MvPolynomial.X j))`.
+
+Rewrite using `[MvPolynomial.aeval_X, map_zero]`. Simplify using `[pj]`. Unfold `ptJ`. Rewrite using `[e, jet_spMap_square_comm, Category.assoc, spMap_jetAug_comp_x_eq_one hx m, MonObj.comp_one]`.
+-/
 theorem ptJ_zero (m : ℕ) : ptJ x m (0 : Q R d n) = 1 := by
   have e : jP m (0 : Q R d n) = (Algebra.ofId R _).comp (jetAug R (Fin d) m) := by
     apply jetR_algHom_ext_of_eq_on_zR
@@ -311,6 +437,31 @@ theorem ptJ_zero (m : ℕ) : ptJ x m (0 : Q R d n) = 1 := by
   unfold ptJ
   rw [e, jet_spMap_square_comm, Category.assoc, spMap_jetAug_comp_x_eq_one hx m, MonObj.comp_one]
 
+/- English proof (translation)
+Take `⟨F0, hF0⟩ : ∃ F0 : Q R d 2, ∀ m, ptJ x m F0 = ptJ x m (gen 0) * ptJ x m (gen 1)` from `exists_ptJ hx (fun m => ptJ x m (gen 0) * ptJ x m (gen 1)) (fun m => by rw [MonObj.comp_mul, ptJ_aug hx, ptJ_aug hx, _root_.one_mul]) (fun m => by rw [MonObj.comp_mul, ptJ_trunc hx, ptJ_trunc hx])`. Establish `hA : ∀ c : O, ∃ A0 : Q R d 1, ∀ m, ptJ x m A0 = ptJ x m (gen 0) ≫ a.act c`. Introduce `c`. Use `a.hom c` as an intermediate fact. Conclude with `exists_ptJ hx (fun m => ptJ x m (gen 0) ≫ a.act c) (fun m => by rw [← Category.assoc, ptJ_aug hx, MonObj.one_comp]) (fun m => by rw [← Category.assoc, ptJ_trunc hx])`.
+
+Use `choose A0 hA0 using hA`. Establish `hop : ∀ {l : ℕ} (u v : Q R d l) (m : ℕ), ptJ x m (op F0 u v) = ptJ x m u * ptJ x m v`. Introduce `l u v m`. Use `show ptJ x m (sq ![u, v] F0) = _`. Rewrite using `[← ptJ_sq x m ![u, v] F0, hF0, MonObj.comp_mul, ptJ_sq, ptJ_sq, sq_gen, sq_gen]`.
+
+Both sides reduce to the same expression. Establish `hac : ∀ {l : ℕ} (u : Q R d l) (c : O) (m : ℕ), ptJ x m (ac (A0 c) u) = ptJ x m u ≫ a.act c`. Introduce `l u c m`. Use `show ptJ x m (sq ![u] (A0 c)) = _`. Rewrite using `[← ptJ_sq x m ![u] (A0 c), hA0, ← Category.assoc, ptJ_sq, sq_gen]`.
+
+Both sides reduce to the same expression. Use `⟨⟨F0.1, F0.2, ?unit, ?comm, ?assoc⟩, ⟨fun c => (A0 c).1, fun c => (A0 c).2, ?hom, ?add, ?mul, ?one⟩, fun m => hF0 m, fun c m => hA0 c m⟩` and prove the remaining obligations. Use `case unit =>`. Introduce `i`. Establish `E : op F0 (0 : Q R d 1) (gen 0) = (gen 0 : Q R d 1)` using `ptJ_inj hx fun m => by rw [hop, ptJ_zero hx, _root_.one_mul]`.
+
+Establish `h` using `congrFun (op_val F0 (0 : Q R d 1) (gen 0)) i`. Rewrite `h` using `[E]`. Conclude with `h.symm.trans (pt_apply _ _)`. Use `case comm =>`. Introduce `i`.
+
+Establish `E : op F0 (gen 1 : Q R d 2) (gen 0) = F0` using `ptJ_inj hx fun m => by rw [hop, hF0, _root_.mul_comm]`. Establish `h` using `congrFun (op_val F0 (gen 1 : Q R d 2) (gen 0)) i`. Rewrite `h` using `[E]`. Conclude with `h.symm`. Use `case assoc =>`.
+
+Introduce `i`. Establish `E : op F0 (op F0 (gen 0 : Q R d 3) (gen 1)) (gen 2) = op F0 (gen 0) (op F0 (gen 1) (gen 2))` using `ptJ_inj hx fun m => by simp only [hop, _root_.mul_assoc]`. Establish `h` using `congrArg (fun r : Q R d 3 => r.1 i) E`. Simplify using `only [op_val] at h`. Conclude with `h`.
+
+Use `case hom =>`. Introduce `c`. Use `a.hom c` as an intermediate fact. Establish `E : ac (A0 c) (op F0 (gen 0 : Q R d 2) (gen 1)) = op F0 (ac (A0 c) (gen 0)) (ac (A0 c) (gen 1))` using `ptJ_inj hx fun m => by simp only [hac, hop, MonObj.mul_comp]`. Establish `h` using `congrArg Subtype.val E`.
+
+Simplify using `only [ac_val, op_val] at h`. Conclude with `h`. Use `case add =>`. Introduce `c₁ c₂`. Establish `E : A0 (c₁ + c₂) = op F0 (A0 c₁) (A0 c₂)` using `ptJ_inj hx fun m => by rw [hA0, hop, hA0, hA0, a.add, MonObj.comp_mul]`.
+
+Establish `h` using `congrArg Subtype.val E`. Rewrite `h` using `[op_val]`. Conclude with `h`. Use `case mul =>`. Introduce `c₁ c₂`.
+
+Establish `E : A0 (c₁ * c₂) = ac (A0 c₁) (A0 c₂)` using `ptJ_inj hx fun m => by rw [hA0, hac, hA0, Category.assoc, ← a.mul c₂ c₁, _root_.mul_comm c₂ c₁]`. Establish `h` using `congrArg Subtype.val E`. Rewrite `h` using `[ac_val]`. Conclude with `h`. Use `case one =>`.
+
+Establish `E : A0 1 = (gen 0 : Q R d 1)` using `ptJ_inj hx fun m => by rw [hA0, a.one, Category.comp_id]`. Conclude with `congrArg Subtype.val E`.
+-/
 theorem exists_series [IsCommMonObj G] {O : Type} [CommRing O] (a : Geo.Tor.OAct O G) :
     ∃ (F : FGLaw R d) (A : OAct O F),
       (∀ m, ptJ x m (⟨F.F, F.const⟩ : Q R d 2) = ptJ x m (gen 0) * ptJ x m (gen 1)) ∧
@@ -386,6 +537,11 @@ theorem exists_series [IsCommMonObj G] {O : Type} [CommRing O] (a : Geo.Tor.OAct
       ptJ_inj hx fun m => by rw [hA0, a.one, Category.comp_id]
     exact congrArg Subtype.val E
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro g _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `g h`.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons, h 0, _root_.one_mul]`. Conclude with `ih _ fun j => h _`.
+-/
 private theorem prod_ofFn_eq_one_of_forall_eq_one {M : Type*} [Monoid M] (n : ℕ) :
     ∀ g : Fin n → M, (∀ j, g j = 1) → (List.ofFn g).prod = 1 := by
   induction n with
@@ -395,6 +551,13 @@ private theorem prod_ofFn_eq_one_of_forall_eq_one {M : Type*} [Monoid M] (n : �
     rw [List.ofFn_succ, List.prod_cons, h 0, _root_.one_mul]
     exact ih _ fun j => h _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro f i`. Conclude with `i.elim0`. Consider the case `succ n ih`. Introduce `f i h`.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons]`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[prod_ofFn_eq_one_of_forall_eq_one hx n _ fun j => h _ (Fin.succ_ne_zero j), _root_.mul_one]`. Consider the case `succ i`.
+
+Rewrite using `[h 0 (Fin.succ_ne_zero i).symm, _root_.one_mul]`. Conclude with `ih (fun j => f j.succ) i fun j hj => h _ fun e => hj (Fin.succ_injective _ e)`.
+-/
 private theorem prod_ofFn_eq_apply_of_forall_ne_eq_one {M : Type*} [Monoid M] (n : ℕ) :
     ∀ (f : Fin n → M) (i : Fin n), (∀ j, j ≠ i → f j = 1) → (List.ofFn f).prod = f i := by
   induction n with
@@ -409,6 +572,15 @@ private theorem prod_ofFn_eq_apply_of_forall_ne_eq_one {M : Type*} [Monoid M] (n
       rw [h 0 (Fin.succ_ne_zero i).symm, _root_.one_mul]
       exact ih (fun j => f j.succ) i fun j hj => h _ fun e => hj (Fin.succ_injective _ e)
 
+/- English proof (translation)
+Establish `h1 : Geo.Tor.epsScaleR (1 : R) = RingHom.id (DualNumber R)` using `RingHom.ext fun z => TrivSqZeroExt.ext (by simp [Geo.Tor.epsScaleR]) (by simp [Geo.Tor.epsScaleR])`. Establish `h0 : Geo.Tor.epsScaleR (0 : R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom` using `RingHom.ext fun z => TrivSqZeroExt.ext (by simp [Geo.Tor.epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [Geo.Tor.epsScaleR, TrivSqZeroExt.algebraMap_eq_inl])`. Use `⟨fun j => if j = i then v j else 1, fun j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `only [if_true, Pi.single_eq_same, h1]`. Use `show _ = Spec.map (CommRingCat.ofHom (RingHom.id _)) ≫ _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Use `show (if j = i then v j else 1).left = _`. Establish `ht0 : Geo.Tor.IsTangent (v j)`.
+
+Rewrite using `[hv j]`. Conclude with `(basis_of_chart hx).1 j`. Establish `ht : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (v j).left = η[G].left` using `ht0`. Rewrite using `[if_neg hj, Pi.single_eq_of_ne hj, h0]`. Use `show _ = Spec.map (CommRingCat.ofHom ((algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom)) ≫ (v j).left`.
+
+Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, ht]`. Both sides reduce to the same expression. Rewrite using `[prod_ofFn_eq_apply_of_forall_ne_eq_one hx d _ i fun j hj => if_neg hj] show v i = if i = i then v i else 1`. Rewrite using `[if_pos rfl]`.
+-/
 theorem comb_single {v : Fin d → (Geo.Tor.epsR R ⟶ G)} (hv : ∀ j, v j = spMap (dualLift (Pi.single j 1)) ≫ x 1) (i : Fin d) :
     Geo.Tor.IsLieComb (Pi.single i 1) v (v i) := by
   have h1 : Geo.Tor.epsScaleR (1 : R) = RingHom.id (DualNumber R) :=

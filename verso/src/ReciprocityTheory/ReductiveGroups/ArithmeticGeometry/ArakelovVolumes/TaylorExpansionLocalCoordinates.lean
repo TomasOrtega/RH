@@ -8,6 +8,19 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Set `cnt : (Fin a → Fin n) → Fin n → ℕ` to `fun r k => (Finset.univ.filter fun i => r i = k).card`. Use `⟨fun α => ∑ r ∈ Finset.univ.filter (fun r => cnt r = α), D (fun i => EuclideanSpace.single (r i) (1 : ℂ)), fun u => ?_⟩` and prove the remaining obligations. Establish `hu : u = ∑ k, u k • EuclideanSpace.single k (1 : ℂ)`. Simplify using `using ((EuclideanSpace.basisFun (Fin n) ℂ).toBasis.sum_repr u).symm`. Establish `h1 : D (fun _ => u) = ∑ r : Fin a → Fin n, (∏ i, u (r i)) * D (fun i => EuclideanSpace.single (r i) (1 : ℂ))`.
+
+Establish `e1 : (fun _ : Fin a => u) = fun _ => ∑ k, u k • EuclideanSpace.single k (1 : ℂ)`. Rewrite using `[← hu]`. Rewrite using `[e1, D.map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[D.map_smul_univ (fun i => u (r i)) (fun i => EuclideanSpace.single (r i) (1 : ℂ)), smul_eq_mul]`.
+
+Establish `h2 : ∀ r : Fin a → Fin n, ∏ i, u (r i) = ∏ k, u k ^ cnt r k`. Introduce `r`. Rewrite using `[← Finset.prod_fiberwise Finset.univ r (fun i => u (r i))]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (g := fun _ => u k) fun i hi => by rw [(Finset.mem_filter.1 hi).2], Finset.prod_const]`.
+
+Establish `hmap : ∀ r ∈ (Finset.univ : Finset (Fin a → Fin n)), cnt r ∈ Finset.Nat.antidiagonalTuple n a`. Introduce `r _`. Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`. Use `Finset.card_eq_sum_card_fiberwise (s := Finset.univ) (t := Finset.univ) (f := r) (fun i _ => Finset.mem_univ (r i))` as an intermediate fact. Simplify `this.symm` using `[cnt]`.
+
+Rewrite using `[h1, ← Finset.sum_fiberwise_of_maps_to hmap]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[h2 r, (Finset.mem_filter.1 hr).2]`.
+
+Conclude with `mul_comm _ _`.
+-/
 theorem multilinear_diagonal_homogeneous {n a : ℕ} (D : ContinuousMultilinearMap ℂ (fun _ : Fin a => V n) ℂ) :
     ∃ b : (Fin n → ℕ) → ℂ, ∀ u : V n,
       D (fun _ => u) = ∑ α ∈ Finset.Nat.antidiagonalTuple n a, b α * ∏ k, u k ^ α k := by
@@ -43,6 +56,21 @@ theorem multilinear_diagonal_homogeneous {n a : ℕ} (D : ContinuousMultilinearM
   rw [h2 r, (Finset.mem_filter.1 hr).2]
   exact mul_comm _ _
 
+/- English proof (translation)
+Establish `hc : ContDiffOn ℂ ∞ G U` using `contDiffOn_of_differentiableOn n G U hU hG`. Use `set D := iteratedFDeriv ℂ a G 0 with hD`. Use `set M := (a.factorial : ℂ)⁻¹ • D with hM`. Take `⟨b, hb⟩` from `multilinear_diagonal_homogeneous M`. Use `⟨b, ?_⟩` and prove the remaining obligations.
+
+Use `set p : V n → ℂ := fun u => M (fun _ => u) with hp`. Establish `hpc : ContDiff ℂ ∞ p` using `M.contDiff.comp (contDiff_pi.2 fun _ => contDiff_id)`. Establish `hpO : p =O[𝓝 0] fun u => ‖u‖ ^ a`. Use `IsBigO.of_bound ‖M‖ (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow, norm_norm]`.
+
+Use `M.le_opNorm (fun _ => u)` as an intermediate fact. Simplify `this` using `[Finset.prod_const]`. Use `set H : V n → ℂ := fun u => G u - p u with hH`. Establish `hHc : ContDiffOn ℂ ∞ H U` using `hc.sub hpc.contDiffOn`. Establish `hHO : H =O[𝓝 0] fun u => ‖u‖ ^ a` using `hO.sub hpO`.
+
+Establish `hcG : ContDiffAt ℂ a G 0` using `(hc.contDiffAt (hU.mem_nhds h0)).of_le (by exact_mod_cast le_top)`. Establish `hcp : ContDiffAt ℂ a p 0` using `hpc.contDiffAt.of_le (by exact_mod_cast le_top)`. Establish `hpa : iteratedFDeriv ℂ a p 0 = D`. Use extensionality with `v`. Rewrite using `[hp, M.iteratedFDeriv_comp_diagonal]`.
+
+Establish `hs : ∀ σ : Equiv.Perm (Fin a), M (fun i => v (σ i)) = M v`. Introduce `σ`. Simplify using `only [hM, ContinuousMultilinearMap.smul_apply]`. Use `congr 1`. Conclude with `zd_iteratedFDeriv_comp_perm hU hc a 0 h0 σ v`.
+
+Rewrite using `[Finset.sum_congr rfl (fun σ _ => hs σ), Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, hM, ContinuousMultilinearMap.smul_apply, nsmul_eq_mul, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast (Nat.factorial_pos a).ne'), one_mul]`. Establish `hzero : ∀ k < a + 1, iteratedFDeriv ℂ k H 0 = 0`. Introduce `k hk`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hk with hk | rfl` into its components or cases. Take `⟨m, rfl⟩ : ∃ m, a = m + 1` from `⟨a - 1, by omega⟩`.
+
+Conclude with `iteratedFDeriv_eq_zero_of_isBigO_alt m H U 0 hU h0 hHc (by simpa using hHO) k (by omega)`. Rewrite using `[hH, show (fun u => G u - p u) = G - p from rfl, iteratedFDeriv_sub_apply hcG hcp, hpa, sub_self]`. Use `isBigO_pow_of_iteratedFDeriv_zero (a + 1) H U 0 hU h0 hHc hzero` as an intermediate fact. Use `(this.congr_left fun u => ?_).congr_right fun u => by rw [sub_zero]` and prove the remaining obligations. Simplify using `only [hH, hp, hb]`.
+-/
 theorem taylor_expansion_at_origin {n a : ℕ} (G : V n → ℂ) (U : Set (V n)) (hU : IsOpen U) (h0 : (0 : V n) ∈ U)
     (hG : DifferentiableOn ℂ G U) (hO : G =O[𝓝 0] fun u => ‖u‖ ^ a) :
     ∃ b : (Fin n → ℕ) → ℂ,
@@ -87,6 +115,23 @@ theorem taylor_expansion_at_origin {n a : ℕ} (G : V n → ℂ) (U : Set (V n))
   refine (this.congr_left fun u => ?_).congr_right fun u => by rw [sub_zero]
   simp only [hH, hp, hb]
 
+/- English proof (translation)
+Establish `hcζ : ContDiffOn ℂ ∞ ζ U` using `contDiffOn_euclidean.2 fun k => contDiffOn_of_differentiableOn n _ U hU (differentiableOn_euclidean.1 hζ k)`. Establish `hCA : ContDiffAt ℂ 1 ζ x` using `(hcζ.contDiffAt (hU.mem_nhds hx)).of_le (by exact_mod_cast le_top)`. Set `E : V n ≃L[ℂ] V n` to `(LinearMap.equivOfDetNeZero (fderiv ℂ ζ x : V n →ₗ[ℂ] V n) hdet).toContinuousLinearEquiv`. Establish `hE : (E : V n →L[ℂ] V n) = fderiv ℂ ζ x` using `ContinuousLinearMap.ext fun _ => rfl`. Establish `hf' : HasFDerivAt ζ (E : V n →L[ℂ] V n) x`.
+
+Rewrite using `[hE]`. Conclude with `(hζ.differentiableAt (hU.mem_nhds hx)).hasFDerivAt`. Use `set ψ := hCA.localInverse hf' one_ne_zero with hψ`. Establish `hψ0 : ψ 0 = x` using `by rw [← hζ0]; exact hCA.localInverse_apply_image hf' one_ne_zero`. Establish `hψC : ContDiffAt ℂ 1 ψ 0` using `by rw [← hζ0]; exact hCA.to_localInverse hf' one_ne_zero`.
+
+Establish `hleft : ∀ᶠ v in 𝓝 x, ψ (ζ v) = v` using `(hCA.hasStrictFDerivAt' hf' one_ne_zero).eventually_left_inverse`. Establish `hψt : Tendsto ψ (𝓝 0) (𝓝 x)`. Use `hψC.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hψ0]`. Then use the resulting hypothesis. Establish `hSn : {u | DifferentiableAt ℂ ψ u ∧ ψ u ∈ U} ∈ 𝓝 (0 : V n)` using `((hψC.eventually (by simp)).mono fun u hu => hu.differentiableAt one_ne_zero).and (hψt.eventually (hU.mem_nhds hx))`.
+
+Use `set U' := interior {u | DifferentiableAt ℂ ψ u ∧ ψ u ∈ U}`. Establish `hG : DifferentiableOn ℂ (g ∘ ψ) U'` using `fun u hu =>`. Establish `hu'` using `interior_subset hu`. Use the proof step `((hg.differentiableAt (hU.mem_nhds hu'.2)).comp u hu'.1).differentiableWithinAt`. Establish `hψd : HasFDerivAt ψ (fderiv ℂ ψ 0) 0` using `(hψC.differentiableAt one_ne_zero).hasFDerivAt`.
+
+Establish `hGO : (g ∘ ψ) =O[𝓝 0] fun u => ‖u‖ ^ a`. Use `(hO.comp_tendsto hψt).trans ?_` and prove the remaining obligations. Establish `h1` using `hψd.isBigO_sub`. Rewrite `h1` using `[hψ0]`. Simplify using `only [sub_zero] at h1`.
+
+Conclude with `h1.norm_norm.pow a`. Take `⟨b, hb⟩` from `taylor_expansion_at_origin (g ∘ ψ) U' isOpen_interior (mem_interior_iff_mem_nhds.2 hSn) hG hGO`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hζt : Tendsto ζ (𝓝 x) (𝓝 0)`. Use `(hζ.differentiableAt (hU.mem_nhds hx)).continuousAt.tendsto` as an intermediate fact.
+
+Rewrite `this` using `[hζ0]`. Then use the resulting hypothesis. Establish `hζO : (fun v => ζ v) =O[𝓝 x] fun v => v - x`. Use `(hζ.differentiableAt (hU.mem_nhds hx)).hasFDerivAt.isBigO_sub` as an intermediate fact. Simplify `this` using `[hζ0]`. Use `((hb.comp_tendsto hζt).congr' (hleft.mono fun v hv => ?_) EventuallyEq.rfl).trans ?_` and prove the remaining obligations.
+
+Simplify using `[hv]`. Conclude with `hζO.norm_norm.pow (a + 1)`.
+-/
 theorem taylor_expansion_local_coordinates {n a : ℕ} (g : V n → ℂ) (ζ : V n → V n) (U : Set (V n)) (x : V n)
     (hU : IsOpen U) (hx : x ∈ U) (hg : DifferentiableOn ℂ g U) (hζ : DifferentiableOn ℂ ζ U)
     (hζ0 : ζ x = 0) (hdet : (fderiv ℂ ζ x).det ≠ 0) (hO : g =O[𝓝 x] fun v => ‖v - x‖ ^ a) :

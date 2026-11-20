@@ -12,6 +12,11 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Establish `h : Continuous fun g => (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k)` using `GlobalTheory.BCGal.cont_sumRep r s (Units.continuous_val.comp hr) (Units.continuous_val.comp hs)`. Rewrite using `[Units.continuous_iff]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => (((sumRep r s g)⁻¹ : GL (Fin (a + b)) k) : Matrix (Fin (a + b)) (Fin (a + b)) k)) = (fun g => (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k)) ∘ fun g => g⁻¹`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[map_inv]`. Conclude with `e ▸ h.comp continuous_inv`.
+-/
 private theorem cont_sum {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k]
     [TopologicalSpace k] [IsTopologicalRing k] {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (Fin b) k)
     (hr : Continuous r) (hs : Continuous s) : Continuous (sumRep r s) := by
@@ -25,14 +30,31 @@ private theorem cont_sum {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [IsTopol
     simp [map_inv]
   exact e ▸ h.comp continuous_inv
 
+/- English proof (translation)
+Simplify using `only [unrPol, Multiset.map_add, Multiset.prod_add]`.
+-/
 private theorem unrPol_add (S : Multiset ℂ) (c : ℂ) (m : ℤ) :
     unrPol (S + {c}) m = unrPol S m * unrPol {c} m := by
   simp only [unrPol, Multiset.map_add, Multiset.prod_add]
 
+/- English proof (translation)
+Simplify using `only [unrPol, Multiset.map_singleton, Multiset.prod_singleton]`. Conclude with `X_sub_C_ne_zero _`.
+-/
 private theorem unrPol_single_ne (c : ℂ) (m : ℤ) : unrPol {c} m ≠ 0 := by
   simp only [unrPol, Multiset.map_singleton, Multiset.prod_singleton]
   exact X_sub_C_ne_zero _
 
+/- English proof (translation)
+Introduce `hF hD hP hW E Ω _ _ _ _ _ l _ ι a s μ hs hμ w S c J m hc hsum`. Use `⟨fun hl => (hF E Ω l ι a w S c μ (hc.1 hl)).1 s (hsum.1 hl), ?_⟩` and prove the remaining obligations. Introduce `P AI hT A h O _ _ _ Bw hj`. Take `⟨-, d1, j1, p1⟩` from `hc.2 P AI hT A h O Bw hj`. Take `⟨c2, d2, j2, p2⟩` from `hsum.2 P AI hT A h O Bw hj`.
+
+Establish `ci : Continuous (Dec (F` using `E) A).subtype := continuous_subtype_val`. Establish `cμ : Continuous (rk1 μ)` using `(contLeft_holds (G E Ω) (Qbar l) a 1).2.2.2 μ hμ`. Establish `cS : Continuous ((sumRep s (rk1 μ)).comp (Dec (F` using `E) A).subtype) := (cont_sum s (rk1 μ) hs cμ).comp ci`. Establish `e : (sumRep s (rk1 μ)).comp (Dec (F` using `E) A).subtype = sumRep (s.comp (Dec (F := E) A).subtype) ((rk1 μ).comp (Dec (F := E) A).subtype) := by ext; rfl`. Rewrite `c2`, `d2`, `j2`, `p2`, `cS` using `[e]`.
+
+Take `⟨dS, -, jS⟩` from `hD l P AI hT E Ω A O Bw a 1 _ _ d2`. Establish `pS : IsPstAt P Bw (s.comp (Dec (F` using `E) A).subtype) := hP l P AI hT E Ω A O Bw a _ (hs.comp ci) dS`. Establish `pM : IsPstAt P Bw ((rk1 μ).comp (Dec (F` using `E) A).subtype) := hP l P AI hT E Ω A O Bw 1 _ (cμ.comp ci) d1`. Establish `pT` using `hP l P AI hT E Ω A O Bw (a + 1) _ cS d2`. Establish `hw` using `GlobalTheory.T.weilDeligneParamAboveL_directSum_potSemistable l P AI hT ι E Ω A w O Bw h hj a 1 _ _ pS pM pT`.
+
+Establish `hu` using `(GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ pT).2 c2`. Rewrite `hu`, `p2` using `[hw]`. Use `⟨(GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ pS).1 ((hW E Ω A w h _ _).1 hu), dS, fun τ LL' τ' hi => jS τ (J τ) {m τ} (j2 τ LL' τ' hi) (j1 τ LL' τ' hi), fun g => ?_⟩` and prove the remaining obligations. Establish `q` using `p2 g`. Rewrite `q` using `[(hW E Ω A w h _ _).2.1 g, p1 g, unrPol_add]`.
+
+Conclude with `mul_right_cancel₀ (unrPol_single_ne c (deg g)) q`.
+-/
 theorem UpperTheory.Gal.TP.Sub.clSub_holds :
     FrobSub → SumDR → PstOfDR → WDFacts → ClSub := by
   intro hF hD hP hW E Ω _ _ _ _ _ l _ ι a s μ hs hμ w S c J m hc hsum

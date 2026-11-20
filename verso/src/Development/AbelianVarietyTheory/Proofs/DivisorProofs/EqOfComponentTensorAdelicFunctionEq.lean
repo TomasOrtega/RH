@@ -30,6 +30,11 @@ open scoped Classical
 
 namespace GlobalTheory.TensUniq
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hc : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hd : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Use `⟨hc.toSchwartzMap hd, ?_⟩` and prove the remaining obligations. Establish `h1 : b 0 = 1` using `b.one_of_mem_closedBall (by simp [b])`.
+
+Use `show ((b 0 : ℝ) : ℂ) ≠ 0`. Rewrite using `[h1]`. Conclude with `one_ne_zero`.
+-/
 theorem exists_sInf_ne_zero (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     ∃ f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ, f 0 ≠ 0 := by
   let b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -40,6 +45,9 @@ theorem exists_sInf_ne_zero (F : Type) [Field F] [NumberField F] (κ : Type) [Fi
   show ((b 0 : ℝ) : ℂ) ≠ 0
   rw [h1]; exact one_ne_zero
 
+/- English proof (translation)
+Establish `hg : (fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ GlobalTheory.WeilM.SB _` using `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hSB hstd, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hSB hstd⟩`. Conclude with `Submodule.subset_span ⟨f, _, hg, rfl⟩`.
+-/
 theorem pure_mem_schA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _)
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -53,6 +61,27 @@ end GlobalTheory.TensUniq
 
 namespace GlobalTheory.TensUniq
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v φ φ₁ φ₂ hφ h`. Take `⟨f, hf⟩` from `exists_sInf_ne_zero F κ`. Set `φs : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ` to `fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φs w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `Filter.Eventually.of_forall fun _ => rfl`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φs hstd`.
+
+Establish `hRest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) φ r`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[hrt φ]`. Use `pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φs v φ hstd)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB w`.
+
+Establish `hr0 : r 0 ≠ 0`. Establish `e` using `congrFun (hrt (fun _ => 1)) 0`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, one_mul] at e`. Rewrite using `[e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`.
+
+Establish `hI : (fun i : κ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((0 : κ → AF F) i)) = 0`. Use function extensionality and compare the values at `i`. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : AF F).1 = 0`. Conclude with `map_zero _`. Establish `hP : (∏ᶠ w, Function.update φs v (fun _ => 1) w fun i => evFin F w ((0 : κ → AF F) i)) = 1`.
+
+Use `finprod_eq_one_of_forall_eq_one fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hw]`.
+
+Simplify using `only [φs, Pi.zero_apply, map_zero]`. Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Rewrite using `[hI, hP, mul_one]`. Conclude with `hf`.
+
+Use function extensionality and compare the values at `y`. Set `z : κ → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z`. Introduce `u hu`. Use function extensionality and compare the values at `i`.
+
+Conclude with `GlobalTheory.LatVac.at_liftV v (y i) u hu`. Establish `hrz : r z = r 0`. Use `hr 0 z hz` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hev : (fun i => evFin F v (z i)) = y`.
+
+Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (y i)`. Establish `e` using `congrFun (h r hRest) z`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, hev, hrz] at e`. Conclude with `mul_right_cancel₀ hr0 e`.
+-/
 theorem eq_of_tens_eq : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (φ φ₁ φ₂ : (κ → Fv F v) → ℂ), φ ∈ GlobalTheory.WeilM.SB _ →
     (∀ r, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) φ r → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ₁ r = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ₂ r) →

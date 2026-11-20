@@ -17,6 +17,11 @@ variable {n : ℕ}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `contDiff_of_entries fun a b => ?_` and prove the remaining obligations. Establish `: (fun p : M2 n × M2 n => (p.1 * p.2) a b) = fun p => ∑ c, p.1 a c * p.2 c b`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Apply the tactic sequence `exact ContDiff.sum fun c _ => ((contDiff_entry a c).comp contDiff_fst).mul ((contDiff_entry c b).comp contDiff_snd)`.
+-/
 theorem contDiff_mul_M2 : ContDiff ℝ ∞ (fun p : M2 n × M2 n => p.1 * p.2) := by
   refine contDiff_of_entries fun a b => ?_
   have : (fun p : M2 n × M2 n => (p.1 * p.2) a b) = fun p => ∑ c, p.1 a c * p.2 c b := by
@@ -24,6 +29,13 @@ theorem contDiff_mul_M2 : ContDiff ℝ ∞ (fun p : M2 n × M2 n => p.1 * p.2) :
   rw [this]
   exact ContDiff.sum fun c _ => ((contDiff_entry a c).comp contDiff_fst).mul ((contDiff_entry c b).comp contDiff_snd)
 
+/- English proof (translation)
+Establish `hk : ContDiffOn ℝ ∞ (fun p : M2 n × M2 n => ((β (p.2 * p.1) : ℝ) : ℂ)) (univ ×ˢ univ)`. Establish `h1 : ContDiff ℝ ∞ (fun p : M2 n × M2 n => p.2 * p.1)` using `contDiff_mul_M2.comp (contDiff_snd.prodMk contDiff_fst)`. Conclude with `(Complex.ofRealCLM.contDiff.comp (hβ.comp h1)).contDiffOn`. Establish `hv : Continuous (fun k : KR n => (mR (k : GR n))ᴴ)` using `continuous_kR.matrix_conjTranspose`. Establish `hh : Continuous (fun k : KR n => (F0 m 0 e (k : GR n))⁻¹)` using `((Vac.continuous_weight_factor detU1 m 0 e).comp continuous_subtype_val).inv₀ fun k => Vac.spherical_section_ne_zero detU1 m 0 e _`.
+
+Use `PCD.contDiffOn_integral' (F := M2 n) (X := KR n) isOpen_univ μK (fun p : M2 n × M2 n => ((β (p.2 * p.1) : ℝ) : ℂ)) hk (fun k : KR n => (mR (k : GR n))ᴴ) hv (fun k : KR n => (F0 m 0 e (k : GR n))⁻¹) hh (fun x _ => ⟨univ, univ_mem, univ, isCompact_univ, fun _ _ u hu => absurd (mem_ …` as an intermediate fact. Rewrite `this` using `[contDiffOn_univ]`. Establish `e' : tw m e μK β = fun X => ∫ k : KR n, (F0 m 0 e (k : GR n))⁻¹ • ((β ((mR (k : GR n))ᴴ * X) : ℝ) : ℂ) ∂μK`. Use function extensionality and compare the values at `X`. Both sides reduce to the same expression.
+
+Rewrite using `[e']`. Conclude with `this`.
+-/
 theorem tw_contDiff (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [μK.IsHaarMeasure] {β : M2 n → ℝ}
     (hβ : ContDiff ℝ ∞ β) : ContDiff ℝ ∞ (tw m e μK β) := by
   have hk : ContDiffOn ℝ ∞ (fun p : M2 n × M2 n => ((β (p.2 * p.1) : ℝ) : ℂ)) (univ ×ˢ univ) := by
@@ -44,12 +56,24 @@ theorem tw_contDiff (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [μK.IsHaarMeasur
 
 def kk (m : ℕ) (e : ℤ) (μK : Measure (KR n)) (β : M2 n → ℝ) (p : M2 n × M2 n) : ℂ := tw m e μK β (p.1⁻¹ * p.2)
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fun p : M2 n × M2 n => (p.1⁻¹, p.2)) (Inv n ×ˢ univ)` using `(contDiffOn_inv.comp contDiffOn_fst fun p hp => hp.1).prodMk contDiffOn_snd`. Conclude with `(tw_contDiff m e μK hβ).comp_contDiffOn (contDiff_mul_M2.comp_contDiffOn h1)`.
+-/
 theorem kk_contDiffOn (m : ℕ) (e : ℤ) (μK : Measure (KR n)) [μK.IsHaarMeasure] {β : M2 n → ℝ}
     (hβ : ContDiff ℝ ∞ β) : ContDiffOn ℝ ∞ (kk m e μK β) (Inv n ×ˢ univ) := by
   have h1 : ContDiffOn ℝ ∞ (fun p : M2 n × M2 n => (p.1⁻¹, p.2)) (Inv n ×ˢ univ) :=
     (contDiffOn_inv.comp contDiffOn_fst fun p hp => hp.1).prodMk contDiffOn_snd
   exact (tw_contDiff m e μK hβ).comp_contDiffOn (contDiff_mul_M2.comp_contDiffOn h1)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨r, hr, hrs⟩` from `Metric.isOpen_iff.mp isOpen_Inv x hx`. Establish `hFD : FiniteDimensional ℝ (M2 n)` using `inferInstanceAs (FiniteDimensional ℝ (Fin n ⊕ Fin n → Fin n ⊕ Fin n → ℂ))`. Establish `hPS : ProperSpace (M2 n)` using `FiniteDimensional.proper ℝ (M2 n)`. Use `set B := Metric.closedBall x (r / 2)`.
+
+Establish `hB : IsCompact B` using `isCompact_closedBall x (r / 2)`. Establish `hBI : B ⊆ Inv n` using `fun y hy => hrs (lt_of_le_of_lt (Metric.mem_closedBall.mp hy) (half_lt_self hr))`. Use `set T := (fun p : M2 n × M2 n => p.1 * p.2) '' (B ×ˢ kSet (tsupport β))`. Establish `hT : IsCompact T` using `(hB.prod (isCompact_kSet hβs)).image contDiff_mul_M2.continuous`. Use `⟨Metric.closedBall x (r / 2), Metric.closedBall_mem_nhds x (half_pos hr), (mR : GR n → M2 n) ⁻¹' T, isCompact_preimage_mR hT, fun x' hx' u hu => ?_⟩` and prove the remaining obligations.
+
+Unfold `kk`. Use `tw_eq_zero m e μK β fun hmem => hu ?_` and prove the remaining obligations. Use `⟨(x', x'⁻¹ * mR u), ⟨hx', hmem⟩, ?_⟩` and prove the remaining obligations. Use `show x' * (x'⁻¹ * mR u) = mR u`. Establish `hdet : IsUnit x'.det` using `isUnit_iff_ne_zero.mpr (hBI hx')`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mul]`.
+-/
 theorem kk_supp (m : ℕ) (e : ℤ) (μK : Measure (KR n)) {β : M2 n → ℝ} (hβs : HasCompactSupport β) :
     ∀ x ∈ Inv n, ∃ W ∈ 𝓝 x, ∃ C : Set (GR n), IsCompact C ∧ ∀ x' ∈ W, ∀ u ∉ C, kk m e μK β (x', mR u) = 0 := by
   intro x hx

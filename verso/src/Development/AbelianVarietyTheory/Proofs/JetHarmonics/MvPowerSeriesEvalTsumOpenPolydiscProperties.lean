@@ -10,6 +10,43 @@ open GlobalTheory.ConvSer
 
 namespace GlobalTheory.ConvSer
 
+/- English proof (translation)
+Introduce `K _ _ _ σ _ x hx`. Establish `Cinj : ∀ a b : K, (MvPowerSeries.C a : MvPowerSeries Unit K) = MvPowerSeries.C b → a = b`. Introduce `a b h`. Simplify using `using congrArg MvPowerSeries.constantCoeff h`. Establish `E : ∀ (ρ : Type) [Fintype ρ] (S : MvPowerSeries ρ K) (y : ρ → K), csub (fun i => (MvPowerSeries.C (y i) : MvPowerSeries Unit K)) S = MvPowerSeries.C (ev S y)`.
+
+Introduce `ρ _ S y`. Conclude with `(GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K).2.2.2.1 ρ Unit S y`. Take `⟨c, hc⟩ : ∃ c : σ → MvPowerSeries Unit K, c = fun i => MvPowerSeries.C (x i)` from `⟨_, rfl⟩`. Establish `E' : ∀ S : MvPowerSeries σ K, csub c S = MvPowerSeries.C (ev S x)`. Introduce `S`.
+
+Substitute `hc` using the available equality. Conclude with `E σ S x`. Establish `B` using `GlobalTheory.T.mvPowerSeries_integral_bounded_closure K σ`. Establish `hcs : ∀ i, Small (c i)`. Introduce `i`.
+
+Substitute `hc` using the available equality. Conclude with `((GlobalTheory.T.mvPowerSeries_integral_bounded_closure K Unit).2.2.2.1 (x i)).2.2 (hx i)`. Establish `R` using `GlobalTheory.T.mvPowerSeriesConvergentSubst_isRingHom_on_bounded K σ Unit c hcs`. Establish `p1 : ∀ S : MvPowerSeries σ K, Bdd S → HS S x (ev S x)`. Introduce `S hS`.
+
+Establish `h` using `(GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c S hcs hS).1 0`. Rewrite `h` using `[E' S]`. Establish `hm : ∀ ν : σ →₀ ℕ, MvPowerSeries.coeff 0 (∏ i, c i ^ ν i) = ∏ i, x i ^ ν i`. Introduce `ν`. Substitute `hc` using the available equality.
+
+Simplify using `[map_prod, map_pow]`. Simplify using `only [hm] at h`. Unfold `HS`. Simplify using `using h`. Establish `p2 : ∀ S T : MvPowerSeries σ K, Bdd S → Bdd T → ev (S + T) x = ev S x + ev T x ∧ ev (S - T) x = ev S x - ev T x ∧ ev (S * T) x = ev S x * ev T x`.
+
+Introduce `S T hS hT`. Take `⟨h1, h2, h3⟩` from `R.1 S T hS hT`. Simplify using `only [E'] at h1 h2 h3`. Conclude with `⟨by simpa using congrArg MvPowerSeries.constantCoeff h1, by simpa using congrArg MvPowerSeries.constantCoeff h2, by simpa using congrArg MvPowerSeries.constantCoeff h3⟩`. Establish `p3 : ∀ a : K, ev (MvPowerSeries.C a : MvPowerSeries σ K) x = a`.
+
+Introduce `a`. Establish `h` using `R.2.1 a`. Rewrite `h` using `[E']`. Conclude with `Cinj _ _ h`. Establish `p4 : ∀ i, ev (MvPowerSeries.X i : MvPowerSeries σ K) x = x i`.
+
+Introduce `i`. Establish `h` using `R.2.2.1 i`. Rewrite `h` using `[E']`. Conclude with `Cinj _ _ (h.trans (by rw [hc]))`. Establish `p5 : ∀ S : MvPowerSeries σ K, Intg S → ‖ev S x‖ ≤ 1 ∧ (Small S → ‖ev S x‖ < 1)`.
+
+Introduce `S hS`. Establish `hSB : Bdd S` using `(B.2.2.1 S 0).2.2 hS`. Establish `hI` using `(GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c S hcs hSB).2.2.1 hS`. Rewrite `hI` using `[E']`. Use `⟨by simpa using hI 0, fun hSm => ?_⟩` and prove the remaining obligations.
+
+Use `set c0 := MvPowerSeries.constantCoeff S with hc0d`. Establish `hc0 : ‖c0‖ ≤ 1` using `by simpa [hc0d] using hS 0`. Establish `hCI : Intg (MvPowerSeries.C c0 : MvPowerSeries σ K)` using `(B.2.2.2.1 c0).2.1 hc0`. Establish `hCB : Bdd (MvPowerSeries.C c0 : MvPowerSeries σ K)` using `(B.2.2.2.1 c0).1`. Establish `hT : Intg (S - MvPowerSeries.C c0)` using `(B.1 S _ hS hCI).2.1`.
+
+Establish `hT0 : MvPowerSeries.constantCoeff (S - MvPowerSeries.C c0) = 0` using `by simp [hc0d]`. Establish `hTB : Bdd (S - MvPowerSeries.C c0)` using `(B.2.2.1 _ 0).2.2 hT`. Establish `hsm` using `(GlobalTheory.T.mvPowerSeriesConvergentSubst_hasSum_and_bounds K σ Unit c _ hcs hTB).2.2.2 hT hT0`. Rewrite `hsm` using `[E']`. Establish `hlt : ‖ev (S - MvPowerSeries.C c0) x‖ < 1` using `by simpa using hsm.2`.
+
+Establish `hadd : ev S x = ev (S - MvPowerSeries.C c0) x + c0`. Establish `h` using `(p2 (S - MvPowerSeries.C c0) _ hTB hCB).1`. Rewrite `h` using `[sub_add_cancel, p3]`. Conclude with `h`. Establish `hlt0 : ‖c0‖ < 1` using `hSm.2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `p6 : ∀ (ρ : Type) [Fintype ρ] (s : ρ → MvPowerSeries σ K) (S : MvPowerSeries ρ K), (∀ j, Small (s j)) → Bdd S → ev (csub s S) x = ev S (fun j => ev (s j) x)`. Introduce `ρ _ s S hs hS`. Establish `h` using `(GlobalTheory.T.mvPowerSeriesConvergentSubst_assoc K ρ σ Unit s c S hs hcs hS).2`. Establish `hf : (fun j => csub c (s j)) = fun j => (MvPowerSeries.C (ev (s j) x) : MvPowerSeries Unit K)`.
+
+Use function extensionality and compare the values at `fun j => E' (s j)`. Rewrite `h` using `[hf, E']`. Conclude with `Cinj _ _ (h.trans (E ρ S (fun j => ev (s j) x)))`. Establish `small0 : ∀ a : MvPowerSeries σ K, Intg a → MvPowerSeries.constantCoeff a = 0 → Small a`. Introduce `a ha ha0`.
+
+Use `show Intg a ∧ ‖MvPowerSeries.constantCoeff a‖ < 1`. Conclude with `⟨ha, by rw [ha0]; simp⟩`. Establish `p7 : ∀ (ρ : Type) [Fintype ρ] (a : ρ → MvPowerSeries σ K) (S : MvPowerSeries ρ K), (∀ j, Intg (a j)) → (∀ j, MvPowerSeries.constantCoeff (a j) = 0) → Bdd S → ev (MvPowerSeries.subst a S) x = ev S (fun j => ev (a j) x)`. Introduce `ρ _ a S ha ha0 hS`. Rewrite using `[← (GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K).2.2.2.2.2.1 ρ σ a S ha0]`.
+
+Conclude with `p6 ρ a S (fun j => small0 _ (ha j) (ha0 j)) hS`. Establish `p8 : ∀ (a : MvPowerSeries σ K) (f : PowerSeries K), Intg a → MvPowerSeries.constantCoeff a = 0 → Bdd f → ev (f.subst a) x = ev1 f (ev a x)`. Introduce `a f ha ha0 hf`. Rewrite using `[← (GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K).2.2.2.2.2.2 σ a f ha0, (GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K).1 σ a f, (GlobalTheory.T.convergentSubst_oneVariable_and_formal_agreement K).2.1 f (ev a x)]`. Conclude with `p6 Unit (fun _ => a) f (fun _ => small0 a ha ha0) hf`.
+
+Conclude with `⟨p1, p2, p3, p4, p5, p6, p7, p8⟩`.
+-/
 theorem ev_algebra : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (σ : Type) [Fintype σ] (x : σ → K), (∀ i, ‖x i‖ < 1) → (∀ S : MvPowerSeries σ K, Bdd S → HS S x (ev S x)) ∧ (∀ S T : MvPowerSeries σ K, Bdd S → Bdd T → ev (S + T) x = ev S x + ev T x ∧ ev (S - T) x = ev S x - ev T x ∧ ev (S * T) x = ev S x * ev T x) ∧ (∀ a : K, ev (MvPowerSeries.C a : MvPowerSeries σ K) x = a) ∧ (∀ i, ev (MvPowerSeries.X i : MvPowerSeries σ K) x = x i) ∧ (∀ S : MvPowerSeries σ K, Intg S → ‖ev S x‖ ≤ 1 ∧ (Small S → ‖ev S x‖ < 1)) ∧ (∀ (ρ : Type) [Fintype ρ] (s : ρ → MvPowerSeries σ K) (S : MvPowerSeries ρ K), (∀ j, Small (s j)) → Bdd S → ev (csub s S) x = ev S (fun j => ev (s j) x)) ∧ (∀ (ρ : Type) [Fintype ρ] (a : ρ → MvPowerSeries σ K) (S : MvPowerSeries ρ K), (∀ j, Intg (a j)) → (∀ j, MvPowerSeries.constantCoeff (a j) = 0) → Bdd S → ev (MvPowerSeries.subst a S) x = ev S (fun j => ev (a j) x)) ∧ (∀ (a : MvPowerSeries σ K) (f : PowerSeries K), Intg a → MvPowerSeries.constantCoeff a = 0 → Bdd f → ev (f.subst a) x = ev1 f (ev a x)) := by
   intro K _ _ _ σ _ x hx
   have Cinj : ∀ a b : K, (MvPowerSeries.C a : MvPowerSeries Unit K) = MvPowerSeries.C b → a = b := by

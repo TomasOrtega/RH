@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.LineForm
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX σ L`. Use function extensionality and compare the values at `x`. Establish `e : (fun v => (L.dual.φ σ).φ (pick (L.dual.φ σ).isLB x.pt) (x.ch.symm v)) = fun v => -(L.φ σ).φ (pick (L.φ σ).isLB x.pt) (x.ch.symm v)` using `rfl`. Establish `e₂ : ∀ (u : ReciprocityTheory.L2DbarEstimates.V D → ℝ) (z : ReciprocityTheory.L2DbarEstimates.V D), GlobalTheory.HermFrame.ddc (fun v => -u v) z = fun ξ η => -GlobalTheory.HermFrame.ddc u z ξ η`. Introduce `u z`.
+
+Use function extensionality and compare the values at `ξ η`. Simplify using `only [GlobalTheory.HermFrame.ddc, GlobalTheory.leviForm_neg, neg_apply, mul_neg]`. Simplify using `only [c1F, Pi.neg_apply]`. Rewrite using `[e, e₂, ofValues, ofValues]`. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`.
+-/
 theorem c1F_dual : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ L : HermLB p, c1F hX σ L.dual = -c1F hX σ L := by

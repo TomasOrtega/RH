@@ -19,12 +19,18 @@ namespace GlobalTheory.BaseTransl
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
   {g : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Establish `e : x.left ≫ g = x'.left ≫ g` using `congrArg (fun z => z.left) h`. Use `ext`. Conclude with `hg.hom_ext e (by rw [Over.w x, Over.w x'])`.
+-/
 theorem toBase_injective (hg : IsPullback g G'.hom G.hom f) {T : Over S'} {x x' : T ⟶ G'}
     (h : toBase hg.w x = toBase hg.w x') : x = x' := by
   have e : x.left ≫ g = x'.left ≫ g := congrArg (fun z => z.left) h
   ext
   exact hg.hom_ext e (by rw [Over.w x, Over.w x'])
 
+/- English proof (translation)
+Use `hm T 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 theorem toBase_one (hg : IsPullback g G'.hom G.hom f)
     (hm : ∀ (T : Over S') (x y : T ⟶ G'), toBase hg.w (x * y) = toBase hg.w x * toBase hg.w y) (T : Over S') :
     toBase hg.w (1 : T ⟶ G') = 1 := by
@@ -32,6 +38,9 @@ theorem toBase_one (hg : IsPullback g G'.hom G.hom f)
   rw [_root_.mul_one] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+Use `⟨hg, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `ex : x₀ = toBase hg.w x` using `by ext; exact hx`. Establish `ey : y₀ = toBase hg.w y` using `by ext; exact hy`. Rewrite using `[ex, ey, ← hm]`. Both sides reduce to the same expression.
+-/
 theorem isGrpPullback_of_toBase (hg : IsPullback g G'.hom G.hom f)
     (hm : ∀ (T : Over S') (x y : T ⟶ G'), toBase hg.w (x * y) = toBase hg.w x * toBase hg.w y) :
     IsGrpPullback G' G f g := by
@@ -43,6 +52,19 @@ theorem isGrpPullback_of_toBase (hg : IsPullback g G'.hom G.hom f)
 
 open GlobalTheory.RigidTranslate in
 
+/- English proof (translation)
+Introduce `K K' _ _ io A y hy`. Take `⟨P, g, hg, -, hm, w, hw⟩` from `GlobalTheory.polBaseChange_holds (Sp K) (Sp K') (spMap io) A`. Establish `hpb : IsGrpPullback P.A A.A (spMap io) g` using `isGrpPullback_of_toBase hg hm`. Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact.
+
+Use `A.isAb.comm` as an intermediate fact. Set `t₀ : 𝟙_ (Over (Sp K')) ⟶ P.A` to `Over.homMk (hg.lift y.left (𝟙 _) (by rw [Over.w y, Category.id_comp]; rfl)) (hg.lift_snd _ _ _)`. Establish `ht₀ : t₀.left ≫ g = y.left` using `hg.lift_fst _ _ _`. Set `e : Over.mk ((𝟙_ (Over (Sp K'))).hom ≫ spMap io) ⟶ Over.mk (spMap io)` to `Over.homMk (𝟙 _) (Category.id_comp _)`. Establish `hte : toBase hg.w t₀ = e ≫ y`.
+
+Use `ext`. Conclude with `ht₀.trans (Category.id_comp _).symm`. Establish `htt : t₀ * t₀ = 1`. Use `toBase_injective hg ?_` and prove the remaining obligations. Rewrite using `[hm, hte, toBase_one hg hm, ← MonObj.comp_mul, hy, MonObj.comp_one]`.
+
+Establish `hwL : LBIso (A.L.pull g) P.L` using `⟨w, hw⟩`. Take `⟨c, hc⟩` from `GlobalTheory.Moduli.cube_of_isLB _ P P.L P.isLB`. Set `A₁ : PolAV (Sp K')` to `{ A := P.A, isAb := P.isAb, g := P.g, smoothDim := P.smoothDim, L := rigTransl P.L t₀ isLB := DVR.linComb_isLB _ P.isLB _ _ rigid := rigidified_rigTransl P.isLB sym := sym_rigTransl htt P.isLB P.sym ample := relAmple_rigTransl htt P.isLB P.ample ktriv := kTriv_rigTransl htt P.isL …`. Take `⟨β₂, hsq, hlam⟩` from `GlobalTheory.Mum.lbIso_lam_pull_of_isGrpPullback _ _ _ A.A P.A g hpb`. Establish `hLamA : (abelian₂ A.A A.L).IsLB` using `DVR.linComb_isLB _ A.isLB _ _`.
+
+Establish `hLamP : (abelian₂ P.A P.L).IsLB` using `DVR.linComb_isLB _ P.isLB _ _`. Establish `h3` using `hlam A.L P.L _ (abelian₂ A.A A.L) (𝟙 _) A.isLB P.isLB hLamA hwL.symm (GlobalTheory.DescendedPrincipal.lbIso_pull_id hLamA).symm`. Rewrite `h3` using `[Category.comp_id]`. Establish `h1 : LBIso (abelian₂ A₁.A A₁.L) ((abelian₂ P.A P.L).pull (𝟙 _))` using `lam_rigTransl P.isLB c hc`. Use `⟨A₁, g, β₂, t₀, hpb, hsq, ?_, ht₀, GlobalTheory.PelPrim.lbIso_linComb hwL.symm _ _⟩` and prove the remaining obligations.
+
+Conclude with `LBIso.trans (DVR.linComb_isLB _ A₁.isLB _ _) (pull_isLB hLamP _) (pull_isLB hLamA _) h1 (LBIso.trans (pull_isLB hLamP _) hLamP (pull_isLB hLamA _) (GlobalTheory.DescendedPrincipal.lbIso_pull_id hLamP) h3)`.
+-/
 theorem exists_baseChange_translate : ∀ (K K' : Type) [Field K] [Field K'] (io : K →+* K') (A : PolAV (Sp K)) (y : Over.mk (spMap io) ⟶ A.A), y * y = 1 → ∃ (A₁ : PolAV (Sp K')) (α₁ : A₁.A.left ⟶ A.A.left) (α₁₂ : (G2 A₁.A).left ⟶ (G2 A.A).left) (t : 𝟙_ (Over (Sp K')) ⟶ A₁.A), IsGrpPullback A₁.A A.A (spMap io) α₁ ∧ IsSquare α₁ α₁₂ ∧ LBIso (abelian₂ A₁.A A₁.L) ((abelian₂ A.A A.L).pull α₁₂) ∧ t.left ≫ α₁ = y.left ∧ LBIso A₁.L (GlobalTheory.RigidTranslate.rigTransl (A.L.pull α₁) t) := by
   intro K K' _ _ io A y hy
   obtain ⟨P, g, hg, -, hm, w, hw⟩ := GlobalTheory.polBaseChange_holds (Sp K) (Sp K') (spMap io) A

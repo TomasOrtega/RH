@@ -15,6 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open MonoidalCategory CartesianMonoidalCategory MonObj
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KSLin.snd_valR_translate_prod | exact GlobalTheory.KSLin.snd_valR_translate_prod | (intros; apply GlobalTheory.KSLin.snd_valR_translate_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.snd_sectionValue_translate_prod_first_order_linear : ∀ {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (G : Over X0) [GrpObj G]
     (g₀ : Sp S ⟶ G.left) (g' : overAt x0 (DualNumber S) ⟶ G),
     g'.left = spMap (algebraMap S (DualNumber S)) ≫ g₀ →

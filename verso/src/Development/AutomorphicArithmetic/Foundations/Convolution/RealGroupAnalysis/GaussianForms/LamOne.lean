@@ -9,6 +9,25 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Introduce `F _ _ _ g`. Take `⟨⟨e, c, he, hmap⟩, hψ⟩` from `splitA F`. Use `⟨fun β => ((c.toReal : ℝ) : ℂ) ^ 2 * abelian₂ (finiteAdeleMeasure F) (fun x => ((finiteAdelicChar F (β * x ^ 2) : Circle) : ℂ)) g, fun b => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ w, TR.pInf F (b : A F) w ≠ 0`. Introduce `w h0`.
+
+Establish `h1 : TR.pInf F (b : A F) * TR.pInf F ((b⁻¹ : (A F)ˣ) : A F) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2` using `congrFun h1 w`. Rewrite `h2` using `[Pi.mul_apply, h0, zero_mul]`. Conclude with `zero_ne_one h2`.
+
+Set `γi : InfinitePlace F → ℝ → ℂ` to `fun w x => Complex.exp (-(2 * Real.pi * Complex.I) * ((TR.pInf F (b : A F) w : ℝ) : ℂ) * (x : ℂ) ^ 2)`. Set `φi : InfinitePlace F → ℝ → ℂ` to `fun _ x => Complex.exp (-(Real.pi : ℂ) * (x : ℂ) ^ 2)`. Set `γf : FiniteAdeleRing (𝓞 F) F → ℂ` to `fun x => ((finiteAdelicChar F ((b : A F).2 * x ^ 2) : Circle) : ℂ)`. Establish `hadd : ∀ x y, e (x + y) = e x + e y`. Introduce `x y`.
+
+Simplify using `only [he, map_add]`. Both sides reduce to the same expression. Establish `h3` using `(lamGen.2.2 (A F) ((InfinitePlace F → ℝ) × FiniteAdeleRing (𝓞 F) F) (adeleMeasure F) _ e c hadd hmap (fun p => (∏ w, γi w (p.1 w)) * γf p.2) (fun p => (∏ w, φi w (p.1 w)) * g p.2)).1`. Establish `h1` using `lamGen.1 (InfinitePlace F → ℝ) (FiniteAdeleRing (𝓞 F) F) volume (finiteAdeleMeasure F) (fun v => ∏ w, γi w (v w)) (fun v => ∏ w, φi w (v w)) γf g`. Establish `h2` using `lamGen.2.1 (InfinitePlace F) ℝ volume γi φi`.
+
+Establish `h4 : ∀ w, abelian₂ (volume : Measure ℝ) (γi w) (φi w) = lamR (TR.pInf F (b : A F) w)` using `fun w => lamReal _ (hne w)`. Establish `hγ : (fun x : A F => ψ ((b : A F) * x ^ 2)) = fun x => (∏ w, γi w ((e x).1 w)) * γf (e x).2`. Use function extensionality and compare the values at `x`. Rewrite using `[hψ, he]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: TR.pInf F ((b : A F) * x ^ 2) w = TR.pInf F (b : A F) w * (TR.pInf F x w) ^ 2`. Rewrite using `[map_mul, map_pow]`. Both sides reduce to the same expression. Simplify using `only [γi]`.
+
+Rewrite using `[this]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hφ : g1 g = fun x : A F => (∏ w, φi w ((e x).1 w)) * g (e x).2`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[he]`. Both sides reduce to the same expression. Establish `hL : Lam1 (b : A F) (g1 g) = abelian₂ (adeleMeasure F) (fun x : A F => ψ ((b : A F) * x ^ 2)) (g1 g)` using `rfl`. Establish `hv : (volume : Measure (InfinitePlace F → ℝ)) = Measure.pi fun _ => volume` using `volume_pi`. Rewrite using `[hL, hγ, hφ, h3, h1, hv, h2]`.
+
+Simplify using `only [h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.lamOne :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (g : FiniteAdeleRing (𝓞 F) F → ℂ), ∃ C : FiniteAdeleRing (𝓞 F) F → ℂ, ∀ b : (A F)ˣ, Lam1 (b : A F) (g1 g) = C (b : A F).2 * ∏ w, lamR (TR.pInf F (b : A F) w) := by
   intro F _ _ _ g

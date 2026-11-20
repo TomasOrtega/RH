@@ -68,10 +68,19 @@ def Pend.toRecord (P : Pend (own D u)) : Formalism.MainNotions.product_first_zer
 def Pend.equivRecord (D : D7) (u : D.what₂.Word) : Formalism.MainNotions.product_first_zeroth_parts.Pend D u ≃ Pend (own D u) :=
   ⟨Pend.ofRecord, Pend.toRecord, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem branchingLaw_ofRecord_iff (P : Formalism.MainNotions.product_first_zeroth_parts.Pend D u) : ArchimedeanSignatureMatching (Pend.ofRecord P) ↔ Formalism.MainNotions.product_first_zeroth_parts.ArchimedeanSignatureMatching P := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem branchingCoordinates_iff (P : Pend (own D u)) : Formalism.MainNotions.product_first_zeroth_parts.ArchimedeanSignatureMatching P.toRecord ↔ ArchimedeanSignatureMatching P := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP⟩`. Conclude with `⟨P.toRecord, (branchingCoordinates_iff P).2 hP⟩`. Introduce and unpack `⟨P, hP⟩`. Conclude with `⟨Pend.ofRecord P, (branchingLaw_ofRecord_iff P).2 hP⟩`.
+-/
 theorem exists_branchingCoordinates_iff : (∃ P : Pend (own D u), ArchimedeanSignatureMatching P) ↔ ∃ P : Formalism.MainNotions.product_first_zeroth_parts.Pend D u, Formalism.MainNotions.product_first_zeroth_parts.ArchimedeanSignatureMatching P := by
   constructor
   · rintro ⟨P, hP⟩
@@ -79,6 +88,11 @@ theorem exists_branchingCoordinates_iff : (∃ P : Pend (own D u), ArchimedeanSi
   · rintro ⟨P, hP⟩
     exact ⟨Pend.ofRecord P, (branchingLaw_ofRecord_iff P).2 hP⟩
 
+/- English proof (translation)
+Establish `h` using `P.interlace`. Unfold `Formalism.BasicNotions.MemberForms.SgInterlace at h`. Unfold `Formalism.MainNotions.PrimeDegreeVariant.Interlace lamTr sgTr`. Introduce `i`. Take `⟨h1, h2⟩` from `h τ i`.
+
+Conclude with `⟨sub_le_sub_right h1 _, sub_le_sub_right h2 _⟩`.
+-/
 theorem Pend.interlaceTr (P : Pend X) (τ : D.what₂.Tau) :
     Formalism.MainNotions.PrimeDegreeVariant.Interlace (Nm_succ D.R) (lamTr X τ) (sgTr X τ) := by
   have h := P.interlace
@@ -88,21 +102,35 @@ theorem Pend.interlaceTr (P : Pend X) (τ : D.what₂.Tau) :
   obtain ⟨h1, h2⟩ := h τ i
   exact ⟨sub_le_sub_right h1 _, sub_le_sub_right h2 _⟩
 
+/- English proof (translation)
+Unfold `lamTr delSq`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]`.
+-/
 theorem delSq_lamTr (X : Ch D u) (R : Type) [CommRing R] (τ : D.what₂.Tau) :
     delSq R _ (lamTr X τ) = delSq R _ (X.fm.lam D.R.m τ) := by
   unfold lamTr delSq
   rw [Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]
 
+/- English proof (translation)
+Unfold `sgTr delSq`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]`.
+-/
 theorem delSq_sgTr (X : Ch D u) (R : Type) [CommRing R] (τ : D.what₂.Tau) :
     delSq R _ (sgTr X τ) = delSq R _ (X.fm.sg τ) := by
   unfold sgTr delSq
   rw [Formalism.MainNotions.product_first_zeroth_parts.natW_wSh]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `f g`. Unfold `normFock`. Rewrite using `[Formalism.MainNotions.product_first_zeroth_parts.extremal_wSh]`.
+-/
 theorem normFock_wSh {n : ℕ} (l : DomWeight n) (c : ℤ) : normFock (wSh l c) = normFock l := by
   funext f g
   unfold normFock
   rw [Formalism.MainNotions.product_first_zeroth_parts.extremal_wSh]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.PrimeDegreeVariant.degZ lamTr sgTr`. Unfold `Formalism.BasicNotions.MemberForms.deg`. Unfold `Formalism.MainNotions.PrimeDegreeVariant.wsum wSh cTw`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hN` using `Nm_succ D.R`.
+
+Establish `hc : ((D.R.N D.R.m - 1 : ℕ) : ℤ) = (D.R.N D.R.m : ℤ) - 1` using `by omega`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degZ_tr (X : Ch D u) (τ : D.what₂.Tau) : Formalism.MainNotions.PrimeDegreeVariant.degZ (lamTr X τ) (sgTr X τ) = X.fm.deg τ := by
   unfold Formalism.MainNotions.PrimeDegreeVariant.degZ lamTr sgTr
   unfold Formalism.BasicNotions.MemberForms.deg
@@ -113,6 +141,9 @@ theorem degZ_tr (X : Ch D u) (τ : D.what₂.Tau) : Formalism.MainNotions.PrimeD
   rw [hc]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hc : f.coeff m * star (f.coeff m) = ((Complex.normSq (f.coeff m) : ℝ) : ℂ)` using `Complex.mul_conj _`. Rewrite using `[hc, Complex.ofReal_mul, Complex.ofReal_natCast]`.
+-/
 theorem fockF_self_eq {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.fockF f f =
     ((∑ m ∈ f.support, Complex.normSq (f.coeff m) * ((∏ k ∈ m.support, (m k).factorial : ℕ) : ℝ) : ℝ) : ℂ) := by
   unfold Formalism.REAL.fockF
@@ -121,6 +152,11 @@ theorem fockF_self_eq {σ : Type} (f : MvPolynomial σ ℂ) : Formalism.REAL.foc
   have hc : f.coeff m * star (f.coeff m) = ((Complex.normSq (f.coeff m) : ℝ) : ℂ) := Complex.mul_conj _
   rw [hc, Complex.ofReal_mul, Complex.ofReal_natCast]
 
+/- English proof (translation)
+Rewrite using `[fockF_self_eq, Complex.ofReal_re]`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hf`. Use `Finset.sum_pos (fun n hn => ?_) ⟨m, MvPolynomial.mem_support_iff.mpr hm⟩` and prove the remaining obligations. Establish `h1 : f.coeff n ≠ 0` using `MvPolynomial.mem_support_iff.mp hn`. Establish `h2 : 0 < Complex.normSq (f.coeff n)` using `Complex.normSq_pos.mpr h1`.
+
+Establish `h3 : (0 : ℝ) < ((∏ k ∈ n.support, (n k).factorial : ℕ) : ℝ)`. Conclude with `Finset.prod_pos (fun k _ => Nat.factorial_pos _)` after adjusting the coercions. Conclude with `mul_pos h2 h3`.
+-/
 theorem fockF_self_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 < (Formalism.REAL.fockF f f).re := by
   rw [fockF_self_eq, Complex.ofReal_re]
   obtain ⟨m, hm⟩ := MvPolynomial.ne_zero_iff.mp hf
@@ -131,6 +167,11 @@ theorem fockF_self_pos {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) : 0 
     exact_mod_cast Finset.prod_pos (fun k _ => Nat.factorial_pos _)
   exact mul_pos h2 h3
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : MvPolynomial.eval (fun p : Fin n × Fin n => if p.1 = p.2 then (1 : ℂ) else 0) (extremal ℂ n l) = 1`. Unfold `extremal Formalism.GradedWeylDivisibility.hw Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_pow, RingHom.map_det]`. Establish `hI : ∀ M : Matrix (Fin (s.val + 1)) (Fin (s.val + 1)) ℂ, M = 1 → M.det = 1` using `fun M hM => hM ▸ Matrix.det_one`. Rewrite using `[hI _ (by ext p q; simp [Matrix.one_apply, Fin.castLE_inj]), one_pow]`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 private lemma extremal_ne_zero_global_twisting {n : ℕ} (l : DomWeight n) : extremal ℂ n l ≠ 0 := by
   intro h
   have h1 : MvPolynomial.eval (fun p : Fin n × Fin n => if p.1 = p.2 then (1 : ℂ) else 0) (extremal ℂ n l) = 1 := by
@@ -143,6 +184,11 @@ private lemma extremal_ne_zero_global_twisting {n : ℕ} (l : DomWeight n) : ext
   rw [h, map_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `h1` using `fockF_self_pos hf`. Establish `h2` using `fockF_self_pos (extremal_ne_zero_global_twisting l)`. Rewrite `h1` using `[fockF_self_eq, Complex.ofReal_re]`. Rewrite `h2` using `[fockF_self_eq, Complex.ofReal_re]`. Unfold `normFock`.
+
+Rewrite using `[fockF_self_eq f, fockF_self_eq (extremal ℂ n l), ← Complex.ofReal_div, Complex.ofReal_re]`. Conclude with `div_pos h1 h2`.
+-/
 theorem normFock_self_pos {n : ℕ} (l : DomWeight n) {f : MvPolynomial (Fin n × Fin n) ℂ} (hf : f ≠ 0) :
     0 < (normFock l f f).re := by
   have h1 := fockF_self_pos hf
@@ -153,6 +199,15 @@ theorem normFock_self_pos {n : ℕ} (l : DomWeight n) {f : MvPolynomial (Fin n �
   rw [fockF_self_eq f, fockF_self_eq (extremal ℂ n l), ← Complex.ofReal_div, Complex.ofReal_re]
   exact div_pos h1 h2
 
+/- English proof (translation)
+Establish `hb` using `normFock_self_pos (X.fm.lam D.R.m τ) h0`. Establish `hf' : f ∈ delSq ℂ _ (lamTr X τ)` using `by rw [delSq_lamTr]; exact hf`. Take `⟨-, -, -, -, -, hN⟩` from `h τ`. Establish `hB` using `hN f hf'`. Establish `hB0 : 0 ≤ Formalism.MainNotions.PrimeDegreeVariant.brBd (Nm_succ D.R) (lamTr X τ) (sgTr X τ)`.
+
+Unfold `Formalism.MainNotions.PrimeDegreeVariant.brBd Formalism.MainNotions.PrimeDegreeVariant.cBd`. Use `mul_nonneg (Real.rpow_nonneg ?_ _) (Real.sqrt_nonneg _)` and prove the remaining obligations. Establish `hs : 0 ≤ DomWeight.spread (lamTr X τ)`. Unfold `DomWeight.spread`. Use `split_ifs with hN`.
+
+Establish `hw` using `(lamTr X τ).anti (show (⟨0, hN⟩ : Fin (D.R.N D.R.m)) ≤ ⟨D.R.N D.R.m - 1, by omega⟩ from Fin.mk_le_mk.mpr (Nat.zero_le _))`. Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`. Establish `h2 : (0 : ℤ) ≤ 2 * DomWeight.spread (lamTr X τ)` using `by omega`. Conclude with `h2` after adjusting the coercions.
+
+Simplify using `only [lamTr, sgTr, normFock_wSh] at hB`. Rewrite using `[Real.sqrt_le_iff]`. Use `⟨hB0, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hb]`. Conclude with `hB`.
+-/
 theorem ArchimedeanSignatureMatching.quot_le {P : Pend X} (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau)
     {f : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ} (hf : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ)) (h0 : f ≠ 0) :
     Real.sqrt ((normFock (X.fm.sg τ) (P.br τ f) (P.br τ f)).re / (normFock (X.fm.lam D.R.m τ) f f).re) ≤
@@ -179,6 +234,9 @@ theorem ArchimedeanSignatureMatching.quot_le {P : Pend X} (h : ArchimedeanSignat
   rw [div_le_iff₀ hb]
   exact hB
 
+/- English proof (translation)
+Use `⟨Formalism.MainNotions.PrimeDegreeVariant.brBd (Nm_succ D.R) (lamTr X τ) (sgTr X τ), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨hf, h0⟩, rfl⟩`. Conclude with `h.quot_le τ hf h0`.
+-/
 theorem ArchimedeanSignatureMatching.bddAbove {P : Pend X} (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau) :
     BddAbove ((fun f => Real.sqrt ((normFock (X.fm.sg τ) (P.br τ f) (P.br τ f)).re /
       (normFock (X.fm.lam D.R.m τ) f f).re)) '' {f | f ∈ delSq ℂ _ (X.fm.lam D.R.m τ) ∧ f ≠ 0}) := by
@@ -186,12 +244,22 @@ theorem ArchimedeanSignatureMatching.bddAbove {P : Pend X} (h : ArchimedeanSigna
   rintro _ ⟨f, ⟨hf, h0⟩, rfl⟩
   exact h.quot_le τ hf h0
 
+/- English proof (translation)
+Break down `eq_or_ne f 0 with rfl | hf` into its components or cases. Simplify using `[normFock, Formalism.REAL.fockF]`. Conclude with `(normFock_self_pos l hf).le`.
+-/
 private lemma normFock_self_re_nonneg' {n : ℕ} (l : DomWeight n) (f : MvPolynomial (Fin n × Fin n) ℂ) :
     0 ≤ (normFock l f f).re := by
   rcases eq_or_ne f 0 with rfl | hf
   · simp [normFock, Formalism.REAL.fockF]
   · exact (normFock_self_pos l hf).le
 
+/- English proof (translation)
+Break down `eq_or_ne f 0 with rfl | h0` into its components or cases. Simplify using `[normFock, Formalism.REAL.fockF]`. Establish `hb` using `normFock_self_pos (X.fm.lam D.R.m τ) h0`. Establish `ha` using `normFock_self_re_nonneg' (X.fm.sg τ) (P.br τ f)`. Establish `hle : Real.sqrt ((normFock (X.fm.sg τ) (P.br τ f) (P.br τ f)).re / (normFock (X.fm.lam D.R.m τ) f f).re) ≤ X.fm.beOn τ`.
+
+Rewrite using `[P.beOn_eq τ]`. Unfold `opNorm`. Conclude with `le_csSup (h.bddAbove τ) ⟨f, ⟨hf, h0⟩, rfl⟩`. Establish `hsq : (normFock (X.fm.sg τ) (P.br τ f) (P.br τ f)).re / (normFock (X.fm.lam D.R.m τ) f f).re ≤ X.fm.beOn τ ^ 2`. Rewrite using `[← Real.sq_sqrt (div_nonneg ha hb.le)]`.
+
+Conclude with `pow_le_pow_left₀ (Real.sqrt_nonneg _) hle 2`. Rewrite `hsq` using `[div_le_iff₀ hb]`. Then use the resulting hypothesis.
+-/
 theorem ArchimedeanSignatureMatching.br_le {P : Pend X} (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau)
     {f : MvPolynomial (Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ} (hf : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ)) :
     (normFock (X.fm.sg τ) (P.br τ f) (P.br τ f)).re ≤ X.fm.beOn τ ^ 2 * (normFock (X.fm.lam D.R.m τ) f f).re := by
@@ -210,6 +278,11 @@ theorem ArchimedeanSignatureMatching.br_le {P : Pend X} (h : ArchimedeanSignatur
     exact pow_le_pow_left₀ (Real.sqrt_nonneg _) hle 2
   rwa [div_le_iff₀ hb] at hsq
 
+/- English proof (translation)
+Take `⟨-, -, ⟨f, hf, hne⟩, -⟩` from `h τ`. Establish `hf' : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ)` using `by rw [← delSq_lamTr X ℂ τ]; exact hf`. Establish `h0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (map_zero _)`.
+
+Establish `ha` using `normFock_self_pos (X.fm.sg τ) hne`. Establish `hb` using `normFock_self_pos (X.fm.lam D.R.m τ) h0`. Rewrite using `[P.beOn_eq τ]`. Unfold `opNorm`. Conclude with `lt_of_lt_of_le (Real.sqrt_pos.mpr (div_pos ha hb)) (le_csSup (h.bddAbove τ) ⟨f, ⟨hf', h0⟩, rfl⟩)`.
+-/
 theorem ArchimedeanSignatureMatching.beOn_pos {P : Pend X} (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau) : 0 < X.fm.beOn τ := by
   obtain ⟨-, -, ⟨f, hf, hne⟩, -⟩ := h τ
   have hf' : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ) := by rw [← delSq_lamTr X ℂ τ]; exact hf
@@ -222,6 +295,11 @@ theorem ArchimedeanSignatureMatching.beOn_pos {P : Pend X} (h : ArchimedeanSigna
   unfold opNorm
   exact lt_of_lt_of_le (Real.sqrt_pos.mpr (div_pos ha hb)) (le_csSup (h.bddAbove τ) ⟨f, ⟨hf', h0⟩, rfl⟩)
 
+/- English proof (translation)
+Take `⟨-, -, ⟨f, hf, hne⟩, -⟩` from `h τ`. Establish `hf' : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ)` using `by rw [← delSq_lamTr X ℂ τ]; exact hf`. Establish `h0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (map_zero _)`.
+
+Rewrite using `[P.beOn_eq τ]`. Unfold `opNorm`. Use `csSup_le ⟨_, ⟨f, ⟨hf', h0⟩, rfl⟩⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨hg, hg0⟩, rfl⟩`. Conclude with `h.quot_le τ hg hg0`.
+-/
 theorem ArchimedeanSignatureMatching.beOn_le {P : Pend X} (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau) :
     X.fm.beOn τ ≤ Formalism.MainNotions.PrimeDegreeVariant.brBd (Nm_succ D.R) (lamTr X τ) (sgTr X τ) := by
   obtain ⟨-, -, ⟨f, hf, hne⟩, -⟩ := h τ
@@ -235,16 +313,30 @@ theorem ArchimedeanSignatureMatching.beOn_le {P : Pend X} (h : ArchimedeanSignat
   rintro _ ⟨g, ⟨hg, hg0⟩, rfl⟩
   exact h.quot_le τ hg hg0
 
+/- English proof (translation)
+Rewrite using `[P.Pt_eq w φ hφ c, hf, Formalism.MainNotions.product_first_zeroth_parts.blk_ten]`.
+-/
 example (P : Pend X) (w) (c) (φ) (hφ : φ ∈ X.fm.Fi D.R.m) (f) (hf : P.coM w c (φ (X.fm.til c)) = ten f) :
     P.coP w (Pt X φ) c = ten fun τ => P.br τ (f τ) := by
   rw [P.Pt_eq w φ hφ c, hf, Formalism.MainNotions.product_first_zeroth_parts.blk_ten]
 
+/- English proof (translation)
+Introduce `H` and use `by obtain ⟨f, -, hf⟩ := (H τ).2.2.1 exact hf (by rw [h]; rfl)`.
+-/
 example (P : Pend X) (τ : D.what₂.Tau) (h : P.br τ = 0) : ¬ ArchimedeanSignatureMatching P := fun H => by
   obtain ⟨f, -, hf⟩ := (H τ).2.2.1
   exact hf (by rw [h]; rfl)
 
+/- English proof (translation)
+Introduce `⟨_, H⟩` and use `(H.beOn_pos τ).ne' h`.
+-/
 example (τ : D.what₂.Tau) (h : X.fm.beOn τ = 0) : ¬ ∃ P : Pend X, ArchimedeanSignatureMatching P := fun ⟨_, H⟩ => (H.beOn_pos τ).ne' h
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ((Real.sqrt (X.A.T : ℝ) : ℝ) : ℂ) ^ 2 = _`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Rewrite using `[← degZ_tr]`.
+
+Conclude with `(h τ).2.2.2.2.1 _ f (by rw [delSq_lamTr]; exact hf)`.
+-/
 example (P : Pend X) (h : ArchimedeanSignatureMatching P) (τ : D.what₂.Tau) (f) (hf : f ∈ delSq ℂ _ (X.fm.lam D.R.m τ)) :
     ((sqrtT X : ℂˣ) : ℂ) ^ 2 = X.A.T ∧
     P.br τ (sqAct ℂ _ (lamTr X τ) (Formalism.MainNotions.PrimeDegreeVariant.lastGL ℂ _ (sqrtT X)) f) =

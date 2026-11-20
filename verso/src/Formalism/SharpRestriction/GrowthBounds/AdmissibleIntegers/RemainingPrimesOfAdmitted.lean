@@ -7,12 +7,20 @@ open NumberField IsDedekindDomain Formalism.FrobeniusOrbits Formalism.BasicNotio
 
 namespace Formalism.MainNotions.WeilJacquetShalikaLaw.Proof
 
+/- English proof (translation)
+Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w x`. Rewrite using `[D.val_eq w x hx]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem mem_intW_of (D : D7) (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x ≠ 0) (h : 0 ≤ vAdd (D.plEq w) x) :
     x ∈ intW D.what₂.places w := by
   show (0 : WithTop ℤ) ≤ D.what₂.places.val w x
   rw [D.val_eq w x hx]
   exact_mod_cast h
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [vAdd]; done)`. Consider the case `(norm_num [vAdd]; done)`. Consider the case `(simp; done)`.
+
+Consider the case `(unfold vAdd; simp; done)`. Consider the case `aesop`.
+-/
 theorem vAdd_one (D : D7) (w : D.what₂.places.Pl) : vAdd (D.plEq w) (1 : D.what₂.LL) = 0 := by
   first
   | rfl
@@ -22,6 +30,9 @@ theorem vAdd_one (D : D7) (w : D.what₂.places.Pl) : vAdd (D.plEq w) (1 : D.wha
   | (unfold vAdd; simp; done)
   | aesop
 
+/- English proof (translation)
+Establish `hq : b / a ≠ 0` using `div_ne_zero hb ha`. Use `mem_intW_of D w hq ?_` and prove the remaining obligations. Establish `h1 : vAdd (D.plEq w) (a * (b / a)) = vAdd (D.plEq w) a + vAdd (D.plEq w) (b / a)` using `vAdd_mul' _ ha hq`. Rewrite `h1` using `[mul_div_cancel₀ b ha]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem div_mem_intW (D : D7) (w : D.what₂.places.Pl) {a b : D.what₂.LL} (ha : a ≠ 0) (hb : b ≠ 0)
     (h : vAdd (D.plEq w) a ≤ vAdd (D.plEq w) b) : b / a ∈ intW D.what₂.places w := by
   have hq : b / a ≠ 0 := div_ne_zero hb ha
@@ -35,9 +46,17 @@ section VGeLemmas
 variable {D : D7} {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V]
   {Λ : Submodule (𝓞 D.what₂.LL) V}
 
+/- English proof (translation)
+Conclude with `⟨0, 0, zero_mem _, by simp, Or.inl rfl⟩`.
+-/
 theorem VGe_zero (s : ℝ) : VGe D w Λ (0 : V) s := by
   exact ⟨0, 0, zero_mem _, by simp, Or.inl rfl⟩
 
+/- English proof (translation)
+Use `⟨1, z, hz, (one_smul _ _).symm, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[vAdd_one]`. Use `first`. Consider the case `(simp [ur]; done)`. Consider the case `(norm_num [ur]; done)`.
+
+Consider the case `(unfold ur; simp; done)`. Consider the case `(simp; done)`.
+-/
 theorem VGe_of_mem {z : V} (hz : z ∈ locW D.what₂.places w Λ) : VGe D w Λ z 0 := by
   refine ⟨1, z, hz, (one_smul _ _).symm, Or.inr ?_⟩
   rw [vAdd_one]
@@ -47,6 +66,9 @@ theorem VGe_of_mem {z : V} (hz : z ∈ locW D.what₂.places w Λ) : VGe D w Λ 
   | (unfold ur; simp; done)
   | (simp; done)
 
+/- English proof (translation)
+Use `⟨a1, z1 + (⟨a2 / a1, div_mem_intW D w h1 h2 hle⟩ : intW D.what₂.places w) • z2, Submodule.add_mem _ hz1 (Submodule.smul_mem _ _ hz2), ?_, Or.inr hv⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_add, smul_smul]`. Use `show a1 • z1 + a2 • z2 = a1 • z1 + (a1 * (a2 / a1)) • z2`. Rewrite using `[mul_div_cancel₀ a2 h1]`.
+-/
 theorem valuation_ge_add_of_le {a1 a2 : D.what₂.LL} {z1 z2 : V} {s : ℝ} (h1 : a1 ≠ 0) (h2 : a2 ≠ 0)
     (hz1 : z1 ∈ locW D.what₂.places w Λ) (hz2 : z2 ∈ locW D.what₂.places w Λ)
     (hv : ur D w s ≤ (vAdd (D.plEq w) a1 : ℝ)) (hle : vAdd (D.plEq w) a1 ≤ vAdd (D.plEq w) a2) :
@@ -57,6 +79,15 @@ theorem valuation_ge_add_of_le {a1 a2 : D.what₂.LL} {z1 z2 : V} {s : ℝ} (h1 
   show a1 • z1 + a2 • z2 = a1 • z1 + (a1 * (a2 / a1)) • z2
   rw [mul_div_cancel₀ a2 h1]
 
+/- English proof (translation)
+Take `⟨a1, z1, hz1, rfl, ha1⟩` from `h1`. Take `⟨a2, z2, hz2, rfl, ha2⟩` from `h2`. Distinguish the cases in `e1 : a1 = 0`. Substitute `e1` using the available equality. Rewrite using `[zero_smul, zero_add]`.
+
+Conclude with `⟨a2, z2, hz2, rfl, ha2⟩`. Distinguish the cases in `e2 : a2 = 0`. Substitute `e2` using the available equality. Rewrite using `[zero_smul, add_zero]`. Conclude with `⟨a1, z1, hz1, rfl, ha1⟩`.
+
+Establish `hv1` using `ha1.resolve_left e1`. Establish `hv2` using `ha2.resolve_left e2`. Break down `le_total (vAdd (D.plEq w) a1) (vAdd (D.plEq w) a2) with h | h` into its components or cases. Conclude with `valuation_ge_add_of_le e1 e2 hz1 hz2 hv1 h`. Rewrite using `[add_comm]`.
+
+Conclude with `valuation_ge_add_of_le e2 e1 hz2 hz1 hv2 h`.
+-/
 theorem VGe_add {y1 y2 : V} {s : ℝ} (h1 : VGe D w Λ y1 s) (h2 : VGe D w Λ y2 s) : VGe D w Λ (y1 + y2) s := by
   obtain ⟨a1, z1, hz1, rfl, ha1⟩ := h1
   obtain ⟨a2, z2, hz2, rfl, ha2⟩ := h2
@@ -75,12 +106,22 @@ theorem VGe_add {y1 y2 : V} {s : ℝ} (h1 : VGe D w Λ y1 s) (h2 : VGe D w Λ y2
   · rw [add_comm]
     exact valuation_ge_add_of_le e2 e1 hz2 hz1 hv2 h
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `h`. Use `⟨a, r • z, Submodule.smul_mem _ _ hz, ?_, ha⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem VGe_smul_int {y : V} {s : ℝ} (r : intW D.what₂.places w) (h : VGe D w Λ y s) :
     VGe D w Λ ((r : D.what₂.LL) • y) s := by
   obtain ⟨a, z, hz, rfl, ha⟩ := h
   refine ⟨a, r • z, Submodule.smul_mem _ _ hz, ?_, ha⟩
   rw [Subring.smul_def, smul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `h`. Use `⟨b * a, z, hz, by rw [smul_smul], ?_⟩` and prove the remaining obligations. Distinguish the cases in `e1 : b = 0`. Use `left`. Rewrite using `[e1, zero_mul]`.
+
+Distinguish the cases in `e2 : a = 0`. Use `left`. Rewrite using `[e2, mul_zero]`. Use `right`. Establish `hv1` using `hb.resolve_left e1`.
+
+Establish `hv2` using `ha.resolve_left e2`. Rewrite using `[vAdd_mul' _ e1 e2]`. Use `push_cast`. Establish `h1 : ur D w (s' + s) = ur D w s' + ur D w s` using `by unfold ur; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem VGe_smul {y : V} {s s' : ℝ} {b : D.what₂.LL} (hb : b = 0 ∨ ur D w s' ≤ (vAdd (D.plEq w) b : ℝ))
     (h : VGe D w Λ y s) : VGe D w Λ (b • y) (s' + s) := by
   obtain ⟨a, z, hz, rfl, ha⟩ := h
@@ -105,6 +146,15 @@ variable {D : D7} {hc : D.what₂.Tau → HCParam D.R} {C : ColumnChain D.R D.wh
   {P : PeriodMap D.R C} (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau hc C A P)
   (w : D.what₂.places.Pl)
 
+/- English proof (translation)
+Unfold `locW at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact hstep x hx`. Consider the case `zero`. Use `⟨0, ?_, VGe_zero s⟩` and prove the remaining obligations.
+
+Use `show M.emb (i + 1) 0 = C.Klin i (M.emb i 0)`. Rewrite using `[map_zero, map_zero, map_zero]`. Consider the case `add a b _ _ ha hb`. Take `⟨ya, hya, hva⟩` from `ha`. Take `⟨yb, hyb, hvb⟩` from `hb`.
+
+Use `⟨ya + yb, ?_, VGe_add hva hvb⟩` and prove the remaining obligations. Use `show M.emb (i + 1) (ya + yb) = C.Klin i (M.emb i (a + b))`. Rewrite using `[map_add, map_add, map_add, hya, hyb]`. Both sides reduce to the same expression. Consider the case `smul r a _ ha`.
+
+Take `⟨ya, hya, hva⟩` from `ha`. Use `⟨(r : D.what₂.LL) • ya, ?_, VGe_smul_int r hva⟩` and prove the remaining obligations. Use `show M.emb (i + 1) ((r : D.what₂.LL) • ya) = C.Klin i (M.emb i (r • a))`. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.map_smul, hya]`. Both sides reduce to the same expression.
+-/
 theorem step_loc (i : ℕ) (s : ℝ)
     (hstep : ∀ x ∈ (M.lat i).L, ∃ y, M.emb (i + 1) y = C.K i (M.emb i x) ∧ VGe D w (M.lat (i + 1)).L y s)
     (z : (M.lat i).V) (hz : z ∈ locW D.what₂.places w (M.lat i).L) :
@@ -130,6 +180,11 @@ theorem step_loc (i : ℕ) (s : ℝ)
     rw [Subring.smul_def, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.map_smul, hya]
     rfl
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `hx`. Take `⟨y, hy, hv⟩` from `step_loc M w i s hstep z hz`. Use `⟨a • y, ?_, VGe_smul ha hv⟩` and prove the remaining obligations. Use `show M.emb (i + 1) (a • y) = C.Klin i (M.emb i (a • z))`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.map_smul, hy]`.
+
+Both sides reduce to the same expression.
+-/
 theorem step_ge (i : ℕ) (s s0 : ℝ)
     (hstep : ∀ x ∈ (M.lat i).L, ∃ y, M.emb (i + 1) y = C.K i (M.emb i x) ∧ VGe D w (M.lat (i + 1)).L y s)
     (x : (M.lat i).V) (hx : VGe D w (M.lat i).L x s0) :
@@ -141,6 +196,13 @@ theorem step_ge (i : ℕ) (s s0 : ℝ)
   rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, LinearMap.map_smul, hy]
   rfl
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨x, rfl, by simpa using VGe_of_mem hx⟩`.
+
+Consider the case `succ i ih`. Introduce `hi`. Take `⟨y, hy, hv⟩` from `ih (by omega)`. Take `⟨y', hy', hv'⟩` from `step_ge M w i (s i) _ (hstep i (by omega)) y hv`. Use `⟨y', ?_, by rw [Finset.sum_range_succ]; exact hv'⟩` and prove the remaining obligations.
+
+Rewrite using `[hy', hy]`. Both sides reduce to the same expression.
+-/
 theorem chain_ge (s : ℕ → ℝ) (n : ℕ)
     (hstep : ∀ i < n, ∀ x ∈ (M.lat i).L, ∃ y, M.emb (i + 1) y = C.K i (M.emb i x) ∧
       VGe D w (M.lat (i + 1)).L y (s i))
@@ -162,6 +224,9 @@ theorem chain_ge (s : ℕ → ℝ) (n : ℕ)
 
 end Chain
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_bounds (m : ℕ) (hm : 1 ≤ m) (sp v : ℝ) :
     ∑ j ∈ Finset.range m, (-((if j = 0 then 1 - sp else 1) * v)) = -((m : ℝ) - sp) * v := by
   obtain ⟨k, rfl⟩ : ∃ k, m = k + 1 := ⟨m - 1, by omega⟩
@@ -169,6 +234,11 @@ theorem sum_bounds (m : ℕ) (hm : 1 ≤ m) (sp v : ℝ) :
   simp
   ring
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [SizeData₂.lifts]; done)`. Consider the case `(norm_num [SizeData₂.lifts]; done)`. Consider the case `(simp; done)`.
+
+Consider the case `(unfold SizeData₂.lifts; simp; done)`. Consider the case `aesop`.
+-/
 theorem card_lifts (D : D7) : ((SizeData₂.lifts D).card : ℝ) = (D.R.m : ℝ) := by
   first
   | rfl
@@ -178,6 +248,11 @@ theorem card_lifts (D : D7) : ((SizeData₂.lifts D).card : ℝ) = (D.R.m : ℝ)
   | (unfold SizeData₂.lifts; simp; done)
   | aesop
 
+/- English proof (translation)
+Unfold `locW at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ((T.twist_preserves_base_lattice u μ x).1 hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha`. Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ r ha`.
+-/
 theorem base_map_mem_local_lattice {D : D7} (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl)
     (x : ((D.fm u).lat 0).V) (hx : x ∈ locW D.what₂.places w ((D.fm u).lat 0).L) :
     T.e0 u μ x ∈ locW D.what₂.places w ((T.fm u μ).lat 0).L := by
@@ -190,6 +265,11 @@ theorem base_map_mem_local_lattice {D : D7} (T : TwForms D) (u : D.what₂.Word)
     rw [Subring.smul_def, map_smul, ← Subring.smul_def]
     exact Submodule.smul_mem _ r ha
 
+/- English proof (translation)
+Introduce `u w hw hd hg μ hUs hμ x hx`. Establish `hx0 : x ∈ locW D.what₂.places w ((D.fm u).lat 0).L` using `hx.1`. Establish `hm : 1 ≤ D.R.m` using `le_trans (by norm_num) D.R.two_le_m`. Rewrite using `[card_lifts, ← sum_bounds D.R.m hm sp (vDG D u w)]`. Use `⟨fun _ => ?_, fun hne => ?_⟩` and prove the remaining obligations.
+
+Conclude with `chain_ge (D.fm u) w _ D.R.m (fun i hi => (hI hD u w hd hg hw i hi).1) x hx0 D.R.m le_rfl`. Take `⟨y, hy, hv⟩` from `chain_ge (T.fm u μ) w _ D.R.m (fun i hi => (hI hD u w hd hg hw i hi).2 μ hUs hne hμ) (T.e0 u μ x) (base_map_mem_local_lattice T u μ w x hx0) D.R.m le_rfl`. Use `⟨y, ?_, hv⟩` and prove the remaining obligations. Rewrite using `[hy, T.embed_mul_block_embedding]`. Both sides reduce to the same expression.
+-/
 theorem remaining_primes_of_admitted {D : D7} {Dx : DivX D} {T : TwForms D} {sp : ℝ} (hI : IsotypicPartsInternalDirectSum D Dx T sp) (hD : DGamDef D) :
     ∀ u (w : D.what₂.places.Pl), D.what₂.places.resChar w ≠ (D.mem u).A.T →
       D.what₂.places.resChar w ≠ D.host.d → D.what₂.places.resChar w ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) →

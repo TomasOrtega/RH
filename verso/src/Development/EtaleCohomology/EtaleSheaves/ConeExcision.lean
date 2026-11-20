@@ -21,6 +21,13 @@ def LeafConePush : Prop := A1 → ∀ (R : Type) [CommRing R] (F : Shv R) {K' L'
   (∀ n, Mono (a.f n)) → (∀ n, Mono (b.f n)) → (∀ n, IsPushout (a.f n) (u.f n) (v.f n) (b.f n)) →
   ∀ n : ℤ, (Subsingleton (HK R (mappingCone a) F n) ↔ Subsingleton (HK R (mappingCone b) F n))
 
+/- English proof (translation)
+Introduce `hA1 R _ F c U E' E f _ g h1 h2`. Unfold `Conn`. Rewrite using `[hRel R F c, hRel R F c]`. Establish `hsq : (chains R).map (pullback.snd f g) ≫ (chains R).map g = (chains R).map (pullback.fst f g) ≫ (chains R).map f`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, pullback.condition]`.
+
+Establish `key` using `hCone hA1 R F _ _ _ _ hsq (fun n => hMono R _ n) (fun n => hMono R f n) (hSq R f g h1 h2)`. Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Conclude with `(key n).2 (h n hn)`. Introduce `h n hn`.
+
+Conclude with `(key n).1 (h n hn)`.
+-/
 theorem LeafExc_of (hRel : LeafRel) (hMono : LeafMono) (hSq : LeafSq) (hCone : LeafConePush) : LeafExc := by
   intro hA1 R _ F c U E' E f _ g h1 h2
   unfold Conn

@@ -12,6 +12,9 @@ variable (D : D7)
 instance modO (μ : D.what₂.Tup) (j : ℕ) : Module (𝓞 D.what₂.LL) (D.what₂.MtL μ j) :=
   Module.compHom _ (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (μ : D.what₂.Tup) (j : ℕ) (s : 𝓞 D.what₂.LL) (x : D.what₂.MtL μ j) :
     s • x = (s : D.what₂.LL) • x := rfl
 
@@ -104,6 +107,9 @@ open Classical in
 def hLL (μ : D.what₂.Tup) (j : ℕ) (x y : D.what₂.MtL μ j) : D.what₂.LL :=
   if h : ∃ c : D.what₂.LL, D.what₂.embLL c = inner ℂ (D.what₂.jMt μ j x) (D.what₂.jMt μ j y) then h.choose else 0
 
+/- English proof (translation)
+Unfold `hLL`. Rewrite using `[dif_pos (h μ j h1 h2 x y)]`. Conclude with `(h μ j h1 h2 x y).choose_spec`.
+-/
 theorem hLL_spec (h : HermRat D) (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (x y : D.what₂.MtL μ j) :
     D.what₂.embLL (hLL D μ j x y) = inner ℂ (D.what₂.jMt μ j x) (D.what₂.jMt μ j y) := by
@@ -139,6 +145,9 @@ def FullRank : Prop :=
   ∀ μ j, 1 ≤ j → j ≤ D.R.m → (TjL D μ j).FG ∧ (thTj X μ j).FG ∧
     Submodule.span D.what₂.LL (thTj X μ j : Set (X.MjH j).V) = ⊤
 
+/- English proof (translation)
+The claim follows from `inj_of_li D.what₂.embLL (X.jM j) (X.MjH j).b (X.jM_basis j).1`.
+-/
 theorem jM_inj (j : ℕ) : Function.Injective (X.jM j) :=
   inj_of_li D.what₂.embLL (X.jM j) (X.MjH j).b (X.jM_basis j).1
 
@@ -147,11 +156,19 @@ def thetaL (μ : D.what₂.Tup) (j : ℕ)
     D.what₂.MtL μ j →ₗ[D.what₂.LL] (X.MjH j).V :=
   descend (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h
 
+/- English proof (translation)
+The claim follows from `descend_spec (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h x`.
+-/
 theorem thetaL_spec (μ : D.what₂.Tup) (j : ℕ)
     (h : ∀ x : D.what₂.MtL μ j, ∃ y, X.jM j y = D.what₂.thetaP μ j (D.what₂.jMt μ j x)) (x : D.what₂.MtL μ j) :
     X.jM j (thetaL X μ j h x) = D.what₂.thetaP μ j (D.what₂.jMt μ j x) :=
   descend_spec (D.what₂.jMt μ j) (X.jM j) (jM_inj X j) (D.what₂.thetaP μ j) h x
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hy⟩`. Conclude with `⟨x, hx, jM_inj X j (by rw [hy]; exact thetaL_spec X μ j h x)⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x, hx, thetaL_spec X μ j h x⟩`.
+-/
 theorem thImg_eq_map (μ : D.what₂.Tup) (j : ℕ)
     (h : ∀ x : D.what₂.MtL μ j, ∃ y, X.jM j y = D.what₂.thetaP μ j (D.what₂.jMt μ j x))
     (A : Submodule (𝓞 D.what₂.LL) (D.what₂.MtL μ j)) :
@@ -194,6 +211,11 @@ namespace Formalism.BasicNotions.Idx
 
 open NumberField IsDedekindDomain Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `h : (X.MjH j).L = thTj X μ j` using `SetLike.ext fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Unfold `IjIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[h]`.
+
+Conclude with `sub_self _`.
+-/
 theorem IjIdx_of_subsingleton {D : D7} (X : DivX D) (μ : D.what₂.Tup) (j : ℕ) (w : D.what₂.places.Pl)
     [Subsingleton (X.MjH j).V] : IjIdx X μ j w = 0 := by
   have h : (X.MjH j).L = thTj X μ j := SetLike.ext fun x => by
@@ -201,6 +223,11 @@ theorem IjIdx_of_subsingleton {D : D7} (X : DivX D) (μ : D.what₂.Tup) (j : �
   unfold IjIdx Formalism.HermitianLatticesTheory.lidx
   rw [h]; exact sub_self _
 
+/- English proof (translation)
+Establish `h : TjL D μ j = TjDual D μ j` using `SetLike.ext fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Unfold `jwIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[← h]`.
+
+Conclude with `sub_self _`.
+-/
 theorem jwIdx_of_subsingleton (D : D7) (μ : D.what₂.Tup) (j : ℕ) (w : D.what₂.places.Pl)
     [Subsingleton (D.what₂.MtL μ j)] : jwIdx D μ j w = 0 := by
   have h : TjL D μ j = TjDual D μ j := SetLike.ext fun x => by
@@ -255,6 +282,11 @@ def NChoice.toFracE (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Simplify using `only [NChoice.thPe, LinearMap.coe_comp, Function.comp_apply, LinearMap.baseChange_tmul, LinearEquiv.coe_coe]`. Proceed by induction on `(D.nexp.thP (c.twI w) j (c.sd w) (c.k' w) (c.Q w) ((c.psi' w).comp (D.ntw.art (c.twI w) (c.Q w))) m) using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a f`. Rewrite using `[TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul, LinearMap.rTensor_tmul]`.
+
+Simplify using `[Algebra.smul_def]`. Consider the case `add x y hx hy => rw [TensorProduct.tmul_add, map_add, hx, hy, map_add]`.
+-/
 theorem NChoice.thPe_one (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
     (m : D.nexp.MtV (c.twI w) j (c.sd w) (c.k' w) (c.Q w) ((c.psi' w).comp (D.ntw.art (c.twI w) (c.Q w)))) :
     NChoice.thPe D c w j ((1 : FractionRing (c.Oe w)) ⊗ₜ m) =

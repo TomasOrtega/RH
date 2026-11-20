@@ -24,6 +24,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.BaseMoveAt
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : GlobalTheory.StepData.reGL (finCongr (rfl : a = a)) Y = Y`. Use extensionality with `i j`. Simplify using `[GlobalTheory.StepData.reGL]`. Rewrite `hY` using `[e]`.
+
+Rewrite using `[hY]`. Both sides reduce to the same expression.
+-/
 theorem val_of_reGL_eq_inv_diagGL {k : Type} [Field k] {a b : ℕ} (h : a = b) (Y : GL (Fin a) k) (c : Fin b → kˣ)
     (hY : GlobalTheory.StepData.reGL (finCongr h) Y = (GlobalTheory.SplitFlip.diagGL c)⁻¹) :
     (Y : Matrix (Fin a) (Fin a) k) = diagonal fun i => (((c (Fin.cast h i))⁻¹ : kˣ) : k) := by
@@ -35,6 +40,9 @@ theorem val_of_reGL_eq_inv_diagGL {k : Type} [Field k] {a b : ℕ} (h : a = b) (
   rw [hY]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, submatrix_apply, id]`. Conclude with `Fintype.sum_equiv F _ _ fun _ => rfl`.
+-/
 theorem submatrix_mulVec_comp {k : Type} [CommRing k] {m n ι : Type} [Fintype n] [Fintype ι] (M : Matrix m n k) (F : ι ≃ n)
     (y : n → k) : (M.submatrix id F) *ᵥ (fun i => y (F i)) = M *ᵥ y := by
   funext i
@@ -47,6 +55,53 @@ namespace GlobalTheory.BaseMoveAt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL hde G W U S t ht hc b hb w hw p hpw hpr x`. Establish `h0 : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hpr' : ∀ a : D.host.E, p.pr (incA D a) = algebraMap D.host.E (Kw w) a` using `fun a => (hpr _).trans (GlobalTheory.FunObj.Good.cpt_incA w a)`. Establish `hN : (Formalism.L2.Theta.mt _ (b 0)).map p.pr = ((GlobalTheory.StdFrames.loc w (Lev.finE (G.V (.grid D.R.m 0)) (b 0)) : GL _ (Kw w)) : Matrix _ _ (Kw w))`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.map_apply, hpr]`. Both sides reduce to the same expression. Take `⟨e, -, -, hloc⟩` from `hb.1`. Establish `hl` using `hloc ⟨w, hw⟩`. Simplify using `only [GlobalTheory.FunObj.inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, MulAut.conj_inv_apply] at hl`.
+
+Establish `hY` using `val_of_reGL_eq_inv_diagGL _ _ _ hl`. Simplify using `only [Fin.coe_cast, topRank_eq G t w (Nat.zero_le _), map_mul, map_inv] at hY`. Establish `hrow` using `S.row t ht w hw 0 h0`. Unfold `GlobalTheory.FunObj.IsSumFrame at hrow`. Simplify using `only [if_true] at hrow`.
+
+Establish `hΛ : G.Λ (.grid D.R.m 0) = (G.rowDec 0 h0).lat (G.Λ (.top 0)) (stairId (G.pl.stA sc) (G.pl.stAbar sc) (D.R.m - 1 - 0))` using `G.sp.colLat D.R.m h0 le_rfl`. Establish `hR : GlobalTheory.RowShape.rowN G 0 = (G.rowDec 0 h0).lat (G.Λ (.top 0)) (GlobalTheory.RowShape.rowId D 0)`. Simplify using `[GlobalTheory.RowShape.rowN, h0]`. Take `⟨δ, hδ⟩ : ∃ δ : Fin (G.V (.grid D.R.m 0)).rank → Kw w, δ = fun i => ((((unifAt w) ^ (cosExp G w * (i.1 + 1 - (G.V (.top 0)).rank)))⁻¹ : (Kw w)ˣ) : Kw w)` from `⟨_, rfl⟩`. Establish `hcomm : ((GlobalTheory.StdFrames.loc w (Lev.finE (G.V (.grid D.R.m 0)) (b 0)) : GL _ (Kw w)) : Matrix _ _ (Kw w)) * ((GlobalTheory.StdFrames.loc w (S.B.β D.R.m 0) : GL _ (Kw w)) : Matrix _ _ (Kw w)) = ((GlobalTheory.StdFrames.loc w (S.B.β D.R.m 0) : GL _ (Kw w)) : Matrix _ _ (Kw …`.
+
+Rewrite using `[hδ, ← hY, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Take `⟨s, hs⟩ : ∃ s : Fin (D.R.m - 1 - 0) → Kw w, s = fun r => frameSign (Kw w) (D.R.m - 1 - 0) r * ((unifAt w : Kw w) ^ (cosExp G w * (r.1 + 1)))` from `⟨_, rfl⟩`. Take `⟨M', hM'⟩ : ∃ M' : Matrix (Fin (G.V (.grid D.R.m 0)).rank) (Fin (G.V (.top 0)).rank ⊕ Fin (D.R.m - 1 - 0)) (Kw w), M' = (fromCols (frameMat (G.V (.grid D.R.m 0)) (G.V (.top 0)) (G.rowDec 0 h0).ι) (G.rowDec 0 h0).a).map (fun a => p.pr (incA D a))` from `⟨_, rfl⟩`.
+
+Take `⟨Q, hQ⟩ : ∃ Q : Matrix (Fin (G.V (.top 0)).rank ⊕ Fin (D.R.m - 1 - 0)) (Fin (G.V (.top 0)).rank ⊕ Fin (D.R.m - 1 - 0)) (Kw w), Q = fromBlocks ((GlobalTheory.StdFrames.loc w (S.βp 0) : GL _ (Kw w)) : Matrix _ _ (Kw w)) 0 0 (diagonal s)` from `⟨_, rfl⟩`. Establish `hLb : ((GlobalTheory.StdFrames.loc w (S.B.β D.R.m 0) : GL _ (Kw w)) : Matrix _ _ (Kw w)).submatrix id (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank) = M' * Q`. Establish `hM'' : M' = fromCols ((frameMat (G.V (.grid D.R.m 0)) (G.V (.top 0)) (G.rowDec 0 h0).ι).map (algebraMap D.host.E (Kw w))) ((G.rowDec 0 h0).a.map (algebraMap D.host.E (Kw w)))`. Rewrite using `[hM']`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases j with j | j <;> simp [hpr']`. Rewrite using `[hrow, hM'', hQ, fromCols_mul_fromBlocks, hs]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add]`. Establish `hδl : ∀ i, δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank (Sum.inl i)) = 1`. Introduce `i`.
+
+Establish `hi : i.1 + 1 - (G.V (.top 0)).rank = 0` using `by have := i.2; omega`. Simplify using `[hδ, GlobalTheory.FunObj.frame, hi]`. Establish `hδr : ∀ r, δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank (Sum.inr r)) = ((unifAt w : Kw w) ^ (cosExp G w * (r.1 + 1)))⁻¹`. Introduce `r`. Establish `hi : (G.V (.top 0)).rank + r.1 + 1 - (G.V (.top 0)).rank = r.1 + 1` using `by omega`.
+
+Simplify using `[hδ, GlobalTheory.FunObj.frame, hi]`. Establish `hQc : Q * diagonal (fun s => δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank s)) = diagonal (fun s => δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank s)) * Q`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, hQ]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Simplify using `[hδl]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Conclude with `mul_comm _ _`. Simplify using `[diagonal_apply, h]`. Choose the witnesses or unpack the hypotheses as in `⟨z, hx, hNx⟩ : ∃ z, M' *ᵥ z = x ∧ ((GlobalTheory.StdFrames.loc w (Lev.finE (G.V (.grid D.R.m 0)) (b 0)) : GL _ (Kw w)) : Matrix _ _ (Kw w)) *ᵥ x = M' *ᵥ (diagonal (fun s => δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank s)) *ᵥ z) := by`. Take `⟨y, hy⟩ : ∃ y : Fin (G.V (.grid D.R.m 0)).rank → Kw w, y = (((GlobalTheory.StdFrames.loc w (S.B.β D.R.m 0))⁻¹ : GL _ (Kw w)) : Matrix _ _ (Kw w)) *ᵥ x` from `⟨_, rfl⟩`. Establish `hxy : ((GlobalTheory.StdFrames.loc w (S.B.β D.R.m 0) : GL _ (Kw w)) : Matrix _ _ (Kw w)) *ᵥ y = x`.
+
+Rewrite using `[hy, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Use `⟨Q *ᵥ fun i => y (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, ← hLb, submatrix_mulVec_comp, hxy]`. Rewrite using `[← hxy, mulVec_mulVec, hcomm, ← mulVec_mulVec, ← submatrix_mulVec_comp _ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank), hLb]`. Establish `hv : (fun i => (diagonal δ *ᵥ y) (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank i)) = diagonal (fun s => δ (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank s)) *ᵥ fun i => y (GlobalTheory.FunObj.frame (G.rowDec 0 h0).rank i)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[mulVec_diagonal]`. Rewrite using `[hv]`. Simplify using `only [mulVec_mulVec]`. Rewrite using `[Matrix.mul_assoc, hQc]`.
+
+Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc`. Establish `h3` using `GlobalTheory.FunObj.ne_zero_of_conj h2.1 h2.2`. Establish `h1'` using `GlobalTheory.FunObj.ne_zero_of_conj h1.1 h1.2`. Establish `hA` using `GlobalTheory.FunObj.count_AA_AAbar w (GlobalTheory.FunObj.Good.badInt_notMem hL hde hc hw)`.
+
+Establish `hmo : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `G.pl.modul_ne_bot sc`. Establish `hmb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Introduce `h`.
+
+Establish `h4` using `h2.1`. Rewrite `h4` using `[GlobalTheory.ChiGrid.Places.stA, h, _root_.inv_zero, mul_zero]`. Conclude with `h4 rfl`. Establish `hI1 : ∀ r, stairId (G.pl.stA sc) (G.pl.stAbar sc) (D.R.m - 1 - 0) r ≠ 0` using `fun r => mul_ne_zero (pow_ne_zero _ h2.1) (inv_ne_zero (pow_ne_zero _ h3))`. Establish `hn1 : ∀ r : Fin (D.R.m - 1 - 0), FractionalIdeal.count D.host.E w (stairId (G.pl.stA sc) (G.pl.stAbar sc) (D.R.m - 1 - 0) r) = ((cosExp G w * (r.1 + 1) : ℕ) : ℤ)`.
+
+Introduce `r`. Rewrite using `[GlobalTheory.FunObj.count_stairId h2.1 h3, GlobalTheory.ChiGrid.Places.stA, GlobalTheory.ChiGrid.Places.stAbar, FractionalIdeal.count_mul _ _ h1.1 (inv_ne_zero hmb), FractionalIdeal.count_mul _ _ h1' (inv_ne_zero hmo), FractionalIdeal.count_inv, FractionalIdeal.count_inv, Global …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrId : ∀ r, GlobalTheory.RowShape.rowId D 0 r = stairId D.host.AA D.host.AAbar (D.R.m - 1 - 0) r`.
+
+Introduce `r`. Simplify using `[GlobalTheory.RowShape.rowId, GlobalTheory.RowShape.tiltSc]`. Establish `hI2 : ∀ r, GlobalTheory.RowShape.rowId D 0 r ≠ 0` using `fun r => by`. Rewrite using `[hrId]`. Conclude with `mul_ne_zero (pow_ne_zero _ h1.1) (inv_ne_zero (pow_ne_zero _ h1'))`.
+
+Establish `hn2 : ∀ r, FractionalIdeal.count D.host.E w (GlobalTheory.RowShape.rowId D 0 r) = ((0 : ℕ) : ℤ)`. Introduce `r`. Rewrite using `[hrId, GlobalTheory.FunObj.count_stairId h1.1 h1', hA.1, hA.2]`. Simplify using the standard rewrite rules. Establish `hϖ` using `GlobalTheory.SplitFlip.IsUnif.irreducible (isUnif_unifAt w)`.
+
+Rewrite using `[hN, hNx]`. Substitute `hx` using the available equality. Substitute `hM'` using the available equality. Rewrite using `[hΛ, hR, GlobalTheory.LatticeMembershipValuation.sec_mem_lat_iff p (G.rowDec 0 h0) (neg_ne_zero.2 one_ne_zero), GlobalTheory.LatticeMembershipValuation.sec_mem_lat_iff p (G.rowDec 0 h0) (neg_ne_zero.2 one_ne_zero)]`. Simplify using `only [mulVec_diagonal, hδl, one_mul, hδr]`.
+
+Use `and_congr Iff.rfl (forall_congr' fun r => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatticeMembershipValuation.sec_mem_idV_iff p hpw hϖ (hI1 r) (hn1 r), GlobalTheory.LatticeMembershipValuation.sec_mem_idV_iff p hpw hϖ (hI2 r) (hn2 r)]`. Establish `hq : ((unifAt w : Kw w) ^ (cosExp G w * (r.1 + 1))) ≠ 0` using `pow_ne_zero _ (Units.ne_zero _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho⟩`.
+
+Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, pow_zero, one_mul, ← mul_assoc]`. Conclude with `(inv_mul_cancel₀ hq).symm ▸ (one_mul _)`. Introduce and unpack `⟨o, ho⟩`. Use `⟨o, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ho` using `[pow_zero, one_mul]`. Rewrite using `[← ho, ← mul_assoc]`. Conclude with `((mul_inv_cancel₀ hq).symm ▸ (one_mul _)).symm`.
+-/
 theorem lat_moves_at_place : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → (Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)) → ∀ (G : GridData L sc) (W : G.Weil) (U : Set T) (S : GridChoice W U) (t : T), t ∈ U → (∀ P ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → ∀ b : Pts G, IsBase t S.B b → ∀ w ∈ locPl G t, ∀ p : GlobalTheory.FinPl.SplitPt D (Kw w), Formalism.L2.NTheta.IsIdemAt p.e w → (∀ a : AE D, p.pr a = cpt w (Lev.swapAE D (finPart D a))) → ∀ x : Fin (G.V (.grid D.R.m 0)).rank → Kw w, ((fun i => p.sec (x i)) ∈ GlobalTheory.FinPl.latV _ (G.Λ (.grid D.R.m 0)) (· = p.v) ↔ (fun i => p.sec (((Formalism.L2.Theta.mt _ (b 0)).map p.pr *ᵥ x) i)) ∈ GlobalTheory.FinPl.latV _ (GlobalTheory.RowShape.rowN G 0) (· = p.v)) := by
   intro D T L sc μ₀ hL hde G W U S t ht hc b hb w hw p hpw hpr x
   have h0 : 0 < D.R.m := by have := D.R.two_le_m; omega

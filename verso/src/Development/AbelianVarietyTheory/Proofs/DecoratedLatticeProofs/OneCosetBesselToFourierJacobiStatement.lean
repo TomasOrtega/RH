@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.OneCosetBe
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.PlacesToAdeles
 open Formalism.BasicNotions
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.oneCosetBF | exact GlobalTheory.FinPl.oneCosetBF | (intros; apply GlobalTheory.FinPl.oneCosetBF <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.oneCoset_besselToFourierJacobi : ∀ D : D7, GlobalTheory.FinPl.OneCosetBF D := by
   first | exact @GlobalTheory.FinPl.oneCosetBF | exact GlobalTheory.FinPl.oneCosetBF | (intros; apply GlobalTheory.FinPl.oneCosetBF <;> assumption)

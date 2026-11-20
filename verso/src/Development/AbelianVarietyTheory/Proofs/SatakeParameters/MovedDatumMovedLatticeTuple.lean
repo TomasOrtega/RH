@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Establish `h : ∀ w : Fin N → D.host.E, toLE (1 : GL (Fin N) D.host.E) w = w`. Introduce `w`. Simplify using `[toLE, LinearMap.GeneralLinearGroup.generalLinearEquiv, Matrix.GeneralLinearGroup.toLin]`. Use `show (stdCo _ J) (toLE 1 ((stdCo _ J).symm v)) = v`. Rewrite using `[h, LinearEquiv.apply_symm_apply]`.
+-/
 theorem stdG_one_apply {D : D7} {N : ℕ} (J : Matrix (Fin N) (Fin N) D.host.E) (v : Fin N → D.host.E) :
     stdG (D.sp.cm.sig : D.host.E →+* D.host.E) J 1 v = v := by
   have h : ∀ w : Fin N → D.host.E, toLE (1 : GL (Fin N) D.host.E) w = w := by
@@ -18,6 +21,11 @@ theorem stdG_one_apply {D : D7} {N : ℕ} (J : Matrix (Fin N) (Fin N) D.host.E) 
   show (stdCo _ J) (toLE 1 ((stdCo _ J).symm v)) = v
   rw [h, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Substitute `hr hr'` using the available equality. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `h1 : ∀ w, (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) J' 1).symm w = w`. Introduce `w`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq, stdG_one_apply]`. Simplify using `only [Formalism.L2.Col.inFr, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, homRe, eMat]`. Use `congr 2`. Use extensionality with `i`. Simplify using `[Matrix.toLin'_apply, LinearMap.toMatrix'_mulVec]`.
+-/
 theorem inFr_stdG_homRe {D : D7} {a b N N' : ℕ} (hr : a = N) (hr' : b = N') (J : Matrix (Fin N) (Fin N) D.host.E)
     (J' : Matrix (Fin N') (Fin N') D.host.E) (g : GL (Fin N) D.host.E) (x : Formalism.L2.Col.HomE D.host.E a b) :
     Formalism.L2.Col.inFr (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) J g) (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) J' 1) (homRe hr hr' x) =
@@ -37,6 +45,17 @@ end GlobalTheory.TwV.Xc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS j hj c La γ g κ hr hLa hM La'`. Establish `hj' : j + 1 ≤ D.R.m` using `hj`. Establish `hr' : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1)` using `(GlobalTheory.TwV.DelB.sysS_ranks S).2.2.1 (j + 1)`. Take `⟨hg, hpt, -, r, hr0, -⟩` from `hM`. Establish `hκU` using `((((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.U_eq κ.1).1 κ.2).1`.
+
+Establish `hdet : Matrix.GeneralLinearGroup.det κ.1 ∈ U1 (sigD D)` using `det_unitary_adelic_point_gram_step_norm_one D j hj.le ⟨κ.1, hκU⟩`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hmu` using `S.law.mu_alg j hj _ hdet`. Establish `hchi : ((((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.chi κ : ℂˣ) : ℂ) ∈ TaylorLogMetric.Qbar`. Rewrite using `[← hr0]`.
+
+Conclude with `(mem_algebraicClosure_iff).2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) r).algHom (D.what₂.embLL.toRatAlgHom))`. Conclude with `mul_mem hmu (inv_mem hchi)`. Establish `e1` using `GlobalTheory.T.movedDatum_pair_eq_adelicDatum_two_points S hD hS j hj' hr hr' (c, ((sysS H X std).Lv.lev j c).smul γ La) La' x`. Establish `e2` using `GlobalTheory.T.movedDatum_pair_eq_adelicDatum_two_points S hD hS j hj' hr hr' (c, La) La' (x ∘ₗ Matrix.toLin' (eMat hr (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D j hj.le) g))`. Establish `hch` using `GlobalTheory.T.latticeTuple_chart_eq_of_same_component S hD hS j hj.le c (((sysS H X std).Lv.lev j c).smul γ La) La (GlobalTheory.GO.CmpMem.isLatTup_smul _ γ hLa) hLa`.
+
+Rewrite using `[e1, e2, hch]`. Establish `hx0 : (J.pt std j hj.le (c, ((sysS H X std).Lv.lev j c).smul γ La)).1 * κ.1⁻¹ ∈ UPts (sigD D) (gramN D j hj.le) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `mul_mem (J.pt std j hj.le _).2 (inv_mem hκU)`. Establish `hlev` using `S.law.lev j hj' (J.chart std j hj.le (c, La)) (J.chart std (j + 1) hj' La') ⟨_, hx0⟩ (J.pt std (j + 1) hj' La') (J.pt std j hj.le (c, ((sysS H X std).Lv.lev j c).smul γ La)) (J.pt std (j + 1) hj' La') κ 1 (by show _ = _ * _ * _; group) (by simp) (homRe hr hr' x)`. Establish `hrat` using `S.law.rat j hj' (J.chart std j hj.le (c, La)) (J.chart std (j + 1) hj' La') (J.pt std j hj.le (c, La)) (J.pt std (j + 1) hj' La') ⟨_, hx0⟩ (J.pt std (j + 1) hj' La') g hg 1 (one_mem _) (by show _ * _ = _; rw [hpt]; group) (by simp) (homRe hr hr' x)`. Rewrite `hrat` using `[inFr_stdG_homRe]`.
+
+Rewrite `hlev` using `[hrat]`. Simplify using `only [OneMemClass.coe_one, map_one, (S.law.mu_mul j hj).1, one_mul, Units.val_one, mul_one] at hlev`. Establish `hc : ((((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.chi κ : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hlev`.
+-/
 theorem GlobalTheory.TwV.Xc.xiM_smul_moveBy : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (hj : j < D.R.m) (c : (sysS H X std).Lv.comp j) (La : ((sysS H X std).Pj j).Tup) (γ : ((sysS H X std).Lv.lev j c).Γ) (g : GL (Fin (D.R.N j)) D.host.E) (κ : ((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.U) (hr : ((sysS H X std).Pj j).m + 1 = D.R.N j), ((sysS H X std).Pj j).IsLatTup La → MoveBy std J j hj.le c La γ g κ → ∀ La' : (sysS H X std).Lt (j + 1), (S.muT (j + 1) (Matrix.GeneralLinearGroup.det κ.1) * (((((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.chi κ : ℂˣ) : ℂ))⁻¹) ∈ TaylorLogMetric.Qbar ∧ ∀ x, GlobalTheory.TwU.xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j (c, (((sysS H X std).Lv.lev j c).smul γ La)) La' x = (S.muT (j + 1) (Matrix.GeneralLinearGroup.det κ.1) * (((((J.St j hj.le).K (J.chart std j hj.le (c, La))).lev.chi κ : ℂˣ) : ℂ))⁻¹) * GlobalTheory.TwU.xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j (c, La) La' (x ∘ₗ Matrix.toLin' (eMat hr (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D j hj.le) g))) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hS j hj c La γ g κ hr hLa hM La'
   have hj' : j + 1 ≤ D.R.m := hj

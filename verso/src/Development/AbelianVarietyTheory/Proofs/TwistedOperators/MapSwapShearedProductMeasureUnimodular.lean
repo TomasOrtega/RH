@@ -5,6 +5,13 @@ open scoped Pointwise
 
 namespace GlobalTheory.UnfoldNormal
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace N := hNc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := TopologicalSpace.Subtype.secondCountableTopology (N : Set H)`. Use `haveI := hκ`. Establish `hsh : Measurable (shear N)` using `(measurableEmbedding_shear hNc).measurable`. Establish `hT : MeasurePreserving (fun p : N × H => (p.1⁻¹, (p.1 : H) * p.2)) (κ.prod ν) (κ.prod ν)`.
+
+Use `MeasurePreserving.skew_product (f := fun n : N => n⁻¹) (g := fun (n : N) (h : H) => (n : H) * h) ⟨measurable_inv, hinv⟩ ((measurable_subtype_coe.comp measurable_fst).mul measurable_snd) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun n => (measurePreserving_mul_left ν (n : H)).map_eq`. Establish `hcomm : Prod.swap ∘ shear N = shear N ∘ (fun p : N × H => (p.1⁻¹, (p.1 : H) * p.2))`. Use function extensionality and compare the values at `p`. Simplify using `[shear]`.
+
+Rewrite using `[Measure.map_map measurable_swap hsh, hcomm, ← Measure.map_map hsh hT.measurable, hT.map_eq]`.
+-/
 theorem map_swap_map_shear (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H]
     [BorelSpace H] (ν : Measure H) [ν.IsHaarMeasure] (N : Subgroup H) (hNc : IsClosed (N : Set H))

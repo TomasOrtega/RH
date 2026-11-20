@@ -27,32 +27,57 @@ def Tw (w : HeightOneSpectrum (𝓞 K)) : Submonoid (𝓞 K) where
       rcases w.isPrime.mem_or_mem h with h | h
       exacts [ha' h, hb' h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cO_coe (x : 𝓞 K) : ((cO K x : 𝓞 K) : K) = star (x : K) := rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[cO_coe, cO_coe, star_star]`.
+-/
 theorem cO_cO (x : 𝓞 K) : cO K (cO K x) = x := by
   apply RingOfIntegers.ext
   rw [cO_coe, cO_coe, star_star]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hs.2, by rw [cO_cO]; exact hs.1⟩`.
+-/
 theorem cO_mem_Tw {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw w) : cO K s ∈ Tw w :=
   ⟨hs.2, by rw [cO_cO]; exact hs.1⟩
 
+/- English proof (translation)
+Use `Submonoid.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hs'⟩`. Conclude with `⟨hs, hs' (cO K s) rfl⟩`.
+-/
 theorem hcompl_le_Tw (w : HeightOneSpectrum (𝓞 K)) :
     Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal ≤ Tw w := by
   refine Submonoid.closure_le.2 ?_
   rintro s ⟨hs, hs'⟩
   exact ⟨hs, hs' (cO K s) rfl⟩
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul K r v).symm`.
+-/
 theorem smul_coe {m : Type*} (r : 𝓞 K) (v : m → K) : r • v = (r : K) • v :=
   (algebraMap_smul K r v).symm
 
 def InS (w : HeightOneSpectrum (𝓞 K)) (x : K) : Prop :=
   ∃ s ∈ Tw w, ∃ r : 𝓞 K, (s : K) * x = r
 
+/- English proof (translation)
+Take `⟨s, hs, r, hr⟩` from `h`. Use `⟨cO K s, cO_mem_Tw hs, cO K r, ?_⟩` and prove the remaining obligations. Rewrite using `[cO_coe, cO_coe, ← hr, star_mul']`.
+-/
 theorem InS.star' {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : InS w x) : InS w (star x) := by
   obtain ⟨s, hs, r, hr⟩ := h
   refine ⟨cO K s, cO_mem_Tw hs, cO K r, ?_⟩
   rw [cO_coe, cO_coe, ← hr, star_mul']
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, (Tw w).one_mem, by simp⟩`. Consider the case `@insert a S ha ih`. Take `⟨t, ht, hS⟩` from `ih (fun k hk => h k (Finset.mem_insert_of_mem hk))`. Take `⟨s, hs, r, hr⟩` from `h a (Finset.mem_insert_self a S)`.
+
+Use `⟨s * t, (Tw w).mul_mem hs ht, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `⟨t * r, by show (s : K) * (t : K) * x k = (t : K) * (r : K); linear_combination (t : K) * hr⟩`. Take `⟨r', hr'⟩` from `hS k hk`.
+
+Conclude with `⟨s * r', by show (s : K) * (t : K) * x k = (s : K) * (r' : K); linear_combination (s : K) * hr'⟩`.
+-/
 theorem common_den {w : HeightOneSpectrum (𝓞 K)} {ι : Type*} (S : Finset ι) (x : ι → K)
     (h : ∀ k ∈ S, InS w (x k)) : ∃ s ∈ Tw w, ∀ k ∈ S, ∃ r : 𝓞 K, (s : K) * x k = r := by
   classical
@@ -68,12 +93,21 @@ theorem common_den {w : HeightOneSpectrum (𝓞 K)} {ι : Type*} (S : Finset ι)
     · obtain ⟨r', hr'⟩ := hS k hk
       exact ⟨s * r', by show (s : K) * (t : K) * x k = (s : K) * (r' : K); linear_combination (s : K) * hr'⟩
 
+/- English proof (translation)
+Simplify using `[vw, FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]`.
+-/
 theorem vw_zero (w : HeightOneSpectrum (𝓞 K)) : vw w (0 : K) = 0 := by
   simp [vw, FractionalIdeal.spanSingleton_zero, FractionalIdeal.count_zero]
 
+/- English proof (translation)
+Simplify using `[vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+-/
 theorem vw_one (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   simp [vw, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
+/- English proof (translation)
+Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K w (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 ha) (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 hb)]`.
+-/
 theorem vw_mul (w : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
   unfold vw
@@ -81,16 +115,29 @@ theorem vw_mul (w : HeightOneSpectrum (𝓞 K)) {a b : K} (ha : a ≠ 0) (hb : b
     FractionalIdeal.count_mul K w (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 ha)
       (mt FractionalIdeal.spanSingleton_eq_zero_iff.1 hb)]
 
+/- English proof (translation)
+Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+-/
 theorem vw_pow (w : HeightOneSpectrum (𝓞 K)) (a : K) (m : ℕ) :
     vw w (a ^ m) = (m : ℤ) * vw w a := by
   unfold vw
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]
 
+/- English proof (translation)
+Unfold `vw`. Rewrite using `[show (r : K) = algebraMap (𝓞 K) K r from rfl, ← FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`.
+-/
 theorem vw_int_nonneg (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) : 0 ≤ vw w (r : K) := by
   unfold vw
   rw [show (r : K) = algebraMap (𝓞 K) K r from rfl, ← FractionalIdeal.coeIdeal_span_singleton]
   exact FractionalIdeal.count_coe_nonneg K w _
 
+/- English proof (translation)
+Establish `hr0 : r ≠ 0` using `fun h => hr (h ▸ w.asIdeal.zero_mem)`. Establish `hJ : Ideal.span {r} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hr0`. Unfold `vw`.
+
+Rewrite using `[show (r : K) = algebraMap (𝓞 K) K r from rfl, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K w hJ]`. Establish `h2 : ¬ w.asIdeal ∣ Ideal.span {r}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hr`. Establish `h3` using `mt (Associates.count_ne_zero_iff_dvd hJ w.irreducible).1 h2`.
+
+Rewrite `h3` using `[not_not]`. Simplify using `[h3]`.
+-/
 theorem vw_unit (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) (hr : r ∉ w.asIdeal) :
     vw w (r : K) = 0 := by
   classical
@@ -106,12 +153,18 @@ theorem vw_unit (w : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) (hr : r ∉ w.asId
   rw [not_not] at h3
   simp [h3]
 
+/- English proof (translation)
+Introduce `h`. Apply `hs.1` to reduce the goal to its premises. Establish `: s = 0` using `RingOfIntegers.ext (by simpa using h)`. Rewrite using `[this]`. Conclude with `w.asIdeal.zero_mem`.
+-/
 theorem Tw_ne_zero {w : HeightOneSpectrum (𝓞 K)} {s : 𝓞 K} (hs : s ∈ Tw w) : (s : K) ≠ 0 := by
   intro h
   apply hs.1
   have : s = 0 := RingOfIntegers.ext (by simpa using h)
   rw [this]; exact w.asIdeal.zero_mem
 
+/- English proof (translation)
+Rewrite using `[hform, Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, starRingEnd_apply, RingHom.id_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hform_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (y x : Fin n → K) :
     hform H y x = star y ⬝ᵥ (H *ᵥ x) := by
   rw [hform, Matrix.toLinearMapₛₗ₂'_apply]
@@ -119,6 +172,9 @@ theorem hform_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) K) (y x : Fin n → K)
     RingHom.id_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.SelectionLemmas.main H P M hM l g hl hdual w e he`.
+-/
 theorem main {n D : ℕ} (H : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin D) (Fin n) K)
     (M : Submodule (𝓞 K) (Fin n → K)) (hM : M.FG) (l g : ℕ) (hl : 0 < l)
     (hdual : ∀ x ∈ Formalism.HermitianLatticesTheory.dual (hform H) M, ((l : 𝓞 K) ^ g) • x ∈ M)
@@ -128,6 +184,9 @@ theorem main {n D : ℕ} (H : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin D) (Fin
 
 end ReductionFirst
 
+/- English proof (translation)
+Introduce `K _ _ _ _ K0 _ v0 _ n D H _ _ P _ M hM l g hl hdual w e he`. Conclude with `ReductionFirst.main H P M hM.fg l g hl hdual w e he`.
+-/
 theorem reduction_lemma_first : LemmaRa := by
   intro K _ _ _ _ K0 _ v0 _ n D H _ _ P _ M hM l g hl hdual w e he
   exact ReductionFirst.main H P M hM.fg l g hl hdual w e he

@@ -8,6 +8,11 @@ namespace GlobalTheory.FourKFub
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace F := Unram.lcF E`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Set `e : A.K ≃ₗ[F] (Fin (Module.finrank F A.K) → F)` to `(Module.finBasis F A.K).equivFun`. Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
+
+Conclude with `(Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology`.
+-/
 theorem secondCountableK [Unram F E] (A : Et F E) : SecondCountableTopology A.K := by
   haveI : LocallyCompactSpace F := Unram.lcF E
   haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F
@@ -16,6 +21,11 @@ theorem secondCountableK [Unram F E] (A : Et F E) : SecondCountableTopology A.K 
   have h2 : Continuous e.symm := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap
   exact (Homeomorph.mk e.toEquiv h1 h2).secondCountableTopology
 
+/- English proof (translation)
+Apply `IsLocallyConstant.continuous` to reduce the goal to its premises. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [Metric.closedBall_mem_nhds x one_pos] with y hy`. Establish `: ψ y = ψ x * ψ (y - x)` using `by rw [← AddChar.map_add_eq_mul]; congr 1; abel`.
+
+Rewrite using `[this, hψ.1 (y - x) (by rwa [Metric.mem_closedBall, dist_eq_norm] at hy), mul_one]`.
+-/
 theorem stdChar_continuous (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous ψ := by
   apply IsLocallyConstant.continuous
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -24,12 +34,27 @@ theorem stdChar_continuous (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuou
   have : ψ y = ψ x * ψ (y - x) := by rw [← AddChar.map_add_eq_mul]; congr 1; abel
   rw [this, hψ.1 (y - x) (by rwa [Metric.mem_closedBall, dist_eq_norm] at hy), mul_one]
 
+/- English proof (translation)
+The claim follows from `(stdChar_continuous ψ hψ).comp (IsModuleTopology.continuous_of_linearMap (Algebra.trace F A.K))`.
+-/
 theorem psiK_continuous (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous (A.psiK ψ) :=
   (stdChar_continuous ψ hψ).comp (IsModuleTopology.continuous_of_linearMap (Algebra.trace F A.K))
 
+/- English proof (translation)
+Simplify using `only [Et.psiK, map_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psiK_add (A : Et F E) (ψ : AddChar F ℂ) (x y : A.K) : A.psiK ψ (x + y) = A.psiK ψ x * A.psiK ψ y := by
   simp only [Et.psiK, map_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ b c`. Use `haveI := secondCountableK A`. Establish `hc` using `psiK_continuous A ψ hψ`. Set `f : A.K × A.K → ℂ` to `fun p => φ' p * A.psiK ψ (b * p.2 + p.1 * c)`. Establish `hf : Integrable f (μK.prod μK)`.
+
+Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `hφ.1.continuous.mul (hc.comp (by fun_prop))`. Conclude with `hφ.2.mul_right`. Simplify using `only [Et.fourK, fourB, Et.tilde, Et.kerK]`. Rewrite using `[integral_integral_swap (f := fun b' c' => φ' (b', c') * A.psiK ψ (b * c' + b' * c)) hf]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun b' => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[psiK_add, mul_comm b c', mul_comm b' c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourK_eq_fourB_tilde : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), μK.IsAddHaarMeasure → ∀ φ' : A.K × A.K → ℂ, IsTest φ' → ∀ b c : A.K, A.fourK μK ψ φ' (b, c) = fourB μK (A.kerK ψ) (fun c' => A.tilde μK ψ φ' c' c) b := by
   intro F E _ _ _ _ _ A ψ hψ μK hμ φ' hφ b c
   haveI := secondCountableK A

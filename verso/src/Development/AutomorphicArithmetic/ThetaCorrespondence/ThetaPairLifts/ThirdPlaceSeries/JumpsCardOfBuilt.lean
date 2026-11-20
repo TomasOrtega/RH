@@ -13,6 +13,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 noncomputable section
 namespace GlobalTheory.HeightCounting.JumpsAt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Take `⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hL', eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Introduce `i a r w τ hw hτ hdR`. Establish `hdA` using `((Au.wdOf i a r w).2.2.2.1).mp hdR`. Establish `e1` using `(Au.wdOf i a r w).2.2.2.2 τ`. Use `haveI : Fact (L.X.nd.l i).Prime := L.X.nd.lPrime i`.
+
+Establish `e2` using `hp.card _ (L.Y.naut.iotaQC i) a r τ w trivial (fun x => (hτ x).symm) hdA`. Use `show Multiset.card (L.Y.jumpsW i r τ) = a`. Rewrite using `[e1, e2]`.
+-/
 theorem jumpsCard_of_built_alt (hH : HtCard) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D' : D7} (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D')
     (fr : OmFrame b.D) (hp : PhtOn b.A.wd fr fun _ _ _ _ => True) : JumpsCard D'.nd D'.naut := by
   obtain ⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hL', eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩ := b
@@ -23,6 +28,9 @@ theorem jumpsCard_of_built_alt (hH : HtCard) {hL : _root_.UpperTheory.Zero.LLC.R
   have e2 := hp.card _ (L.Y.naut.iotaQC i) a r τ w trivial (fun x => (hτ x).symm) hdA
   show Multiset.card (L.Y.jumpsW i r τ) = a
   rw [e1, e2]
+/- English proof (translation)
+Introduce `hH hL`. Use `evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE _ _ => ?_` and prove the remaining obligations. Take `⟨e⟩` from `hE`. Take `⟨fr, -, hp⟩` from `(e : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D := (w.st Z).toD7) c.row t.r.z.geo xd).pht`. Conclude with `_root_.GlobalTheory.HeightCounting.JumpsAt.jumpsCard_of_built_alt hH c.a.nt.toNBuilt fr hp`.
+-/
 theorem jumpsCard_at_members_of_htCard : HtCard → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists,
     _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ _ _ _ _ => JumpsCard (w.D Z).nd (w.D Z).naut := by
   intro hH hL

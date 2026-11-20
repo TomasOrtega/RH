@@ -24,12 +24,21 @@ def blockMean (j : Fin a → ℕ) (β : Fin b → Fin a) (y : Fin b → ℝ) (i 
 def stageS (j : Fin a → ℕ) (β : Fin b → Fin a) (s : Fin a → ℂ) (y : Fin b → ℝ) : Fin b → ℂ :=
   fun l => s (β l) + Complex.I * ((y l - blockMean j β y (β l) : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem hm _`.
+-/
 theorem restr_of_mem {U : Type} [Zero U] {M : Subgroup (UJ ε)} (F : UJ ε → U) (g : UJ ε) {m : UJ ε} (hm : m ∈ M) :
     restr M F g m = F (m * g) := Set.indicator_of_mem hm _
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_notMem hm _`.
+-/
 theorem restr_of_not_mem {U : Type} [Zero U] {M : Subgroup (UJ ε)} (F : UJ ε → U) (g : UJ ε) {m : UJ ε}
     (hm : m ∉ M) : restr M F g m = 0 := Set.indicator_of_notMem hm _
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem stageFun_of_mem {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     {M : Subgroup (UJ ε)} {Fsp : Submodule ℂ (UJ ε → U)} (ι : Fsp →ₗ[ℂ] V) {F : UJ ε → U} {g : UJ ε}
     (h : restr M F g ∈ Fsp) : stageFun M Fsp ι F g = ι ⟨_, h⟩ := dif_pos h

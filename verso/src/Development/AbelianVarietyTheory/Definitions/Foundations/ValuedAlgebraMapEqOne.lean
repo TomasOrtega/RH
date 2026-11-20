@@ -39,6 +39,9 @@ def infIdele (w : InfinitePlace L) : (w.Completion)ˣ →* Ideles L :=
   Units.map ((MonoidHom.inl (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)).comp
     (MonoidHom.mulSingle (fun w : InfinitePlace L => w.Completion) w))
 
+/- English proof (translation)
+Use `show Valued.v ((algebraMap (𝓞 L) L x : L) : v.adicCompletion L) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).mpr hx`.
+-/
 theorem valued_algebraMap_eq_one (v : HeightOneSpectrum (𝓞 L)) (x : 𝓞 L) (hx : x ∉ v.asIdeal) :
     Valued.v (algebraMap L (v.adicCompletion L) (algebraMap (𝓞 L) L x)) = 1 := by
   show Valued.v ((algebraMap (𝓞 L) L x : L) : v.adicCompletion L) = _

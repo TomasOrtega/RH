@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.KernelFinite
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CM.ExObj.cmExists GlobalTheory.cmCurve_closed GlobalTheory.cmPoint_closed GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1 GlobalTheory.homExtension_semiAbelian_dvr_unconditional GlobalTheory.kernelFiniteFlat_holds`.
+-/
 theorem cmExists_holds : GlobalTheory.CM.CMExistsSt :=
   GlobalTheory.CM.ExObj.cmExists GlobalTheory.cmCurve_closed GlobalTheory.cmPoint_closed GlobalTheory.thetaUnifAV_all
     GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1 GlobalTheory.homExtension_semiAbelian_dvr_unconditional

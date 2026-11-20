@@ -12,6 +12,29 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP W hW hPW v hv`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Introduce `p e he`. Take `⟨b, g, h, hg, hgW, hh, hcoeff, himg⟩` from `hNum F K ι P hP W hW hPW v hv p`.
+
+Establish `hne : ∀ x : MRing ι F, x ∉ W → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P x) ≠ 0` using `fun x hx h0 => hx (hPW ((Ideal.Quotient.eq_zero_iff_mem).mp ((IsFractionRing.to_map_eq_zero_iff).mp h0)))`. Establish `heW : h e ∉ W`. Introduce `heW`. Take `⟨y, hy⟩` from `he.exists_right_inv`. Take `⟨b', f', g', -, -, -, hg'W, hy'⟩` from `hDZ F K ι P {W} (fun W' hW' => (Set.mem_singleton_iff.mp hW') ▸ hW.isPrime) y y.2`.
+
+Establish `h1 : ((p.coeff e : degZeroLoc P {W}) : FractionRing (MRing ι F ⧸ P)) * y = 1`. Rewrite using `[← Subalgebra.coe_mul, hy, Subalgebra.coe_one]`. Rewrite `h1` using `[hcoeff e, hy', div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (hne g hgW) (hne g' (hg'W W rfl))), ← map_mul, ← map_mul, ← map_mul, ← map_mul]`. Establish `h2` using `Ideal.Quotient.eq.mp (IsFractionRing.injective _ _ h1)`. Establish `h3 : g * g' ∈ W`.
+
+Use `W.sub_mem (W.mul_mem_right f' heW) (hPW h2)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Break down `hW.isPrime.mem_or_mem h3 with h4 | h4` into its components or cases. Use `exacts [hgW h4, hg'W W rfl h4]`. Establish `hu : ∀ d : K →₀ ℕ, IsMultiHomog (∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k) (⇑d)`.
+
+Introduce `d`. Use `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ d k) (fun k => d k • blockWeight ι ⟨k, v k⟩) (fun k _ => (isWeightedHomogeneous_X F _ _).pow _)` as an intermediate fact. Establish `hdeg : (∑ k, d k • blockWeight ι ⟨k, v k⟩) = ⇑d`. Use extensionality with `j`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite `this` using `[hdeg]`. Conclude with `this`. Establish `huW : ∀ d : K →₀ ℕ, (∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k) ∉ W`. Introduce `d hd`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp hd`.
+
+Conclude with `hv k (hW.isPrime.mem_of_pow_mem _ hk)`. Use `set N := ∑ d ∈ p.support, h d * ∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k with hNdef`. Establish `hcomp : weightedHomogeneousComponent (blockWeight ι) (b + ⇑e) N = h e * ∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ e k`. Rewrite using `[hNdef, map_sum, Finset.sum_eq_single e]`. Conclude with `((hh e).mul (hu e)).weightedHomogeneousComponent_same`.
+
+Introduce `d _ hde`. Use `weightedHomogeneousComponent_eq_zero' _ _ fun c hc hw => hde ?_` and prove the remaining obligations. Rewrite `hw` using `[((hh d).mul (hu d)) (mem_support_iff.mp hc)]`. Conclude with `DFunLike.coe_injective (add_left_cancel hw)`. Introduce `hes`.
+
+Conclude with `absurd (notMem_support_iff.mp hes) he.ne_zero`. Establish `hNW : N ∉ W` using `fun hN => by`. Use `hW.multiHomog N hN (b + ⇑e)` as an intermediate fact. Rewrite `this` using `[hcomp]`. Break down `hW.isPrime.mem_or_mem this with h4 | h4` into its components or cases.
+
+Use `exacts [heW h4, huW e h4]`. Establish `hunit : ∀ x : MRing ι F, x ∉ W → IsUnit (algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P x))` using `fun x hx => IsLocalization.map_units (coneLocal P W hPW) (⟨_, Submonoid.mem_map_of_mem _ hx⟩ : W.primeCompl.map (Ideal.Quotient.mk P))`. Establish `heq : coneVarMap P W hPW v p * algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P g) = algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P N)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_algebraMap, Subalgebra.coe_algebraMap, himg, div_mul_cancel₀ _ (hne g hgW)]`.
+
+Conclude with `isUnit_of_mul_isUnit_left (heq ▸ hunit N hNW)`.
+-/
 theorem ConeVarUnit.proof (hDZ : DegZeroLocQuot.Statement.{u})
     (hNum : ConeVarNumerator.Statement.{u}) : ConeVarUnit.Statement.{u} := by
   intro F _ K _ _ ι _ P hP W hW hPW v hv

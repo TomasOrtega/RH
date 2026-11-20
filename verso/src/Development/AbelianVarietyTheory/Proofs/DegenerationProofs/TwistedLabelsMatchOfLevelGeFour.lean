@@ -11,6 +11,13 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Ex.Trait
 
 namespace GlobalTheory.Ex.Trait.LevelFour
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃, -⟩` from `NumD.hom_transport C C (RingHom.id C) N N' (TateInh.homOfIso J)`. Take `⟨g, hg, -⟩` from `h₁ p.1.2`. Establish `hp : ∀ n : ℕ, J.Rel (p.1.2 ^ n) (g ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`.
+
+Conclude with `J.rel_one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `h₂ _ _ _ _ ih hg`. Use `⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g), ?_⟩, rfl, hg⟩` and prove the remaining obligations. Establish `a` using `hp k`.
+
+Rewrite `a` using `[N.mem_QT.1 p.2]`. Conclude with `(h₁ _).unique a (h₃ _)`.
+-/
 theorem exists_image {C : Type} [Field C] {N N' : NumD C} (J : NumD.Iso N N') {k : ℕ} (p : N.QT k) :
     ∃ q : N'.QT k, q.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 q.1.2 := by
   obtain ⟨h₁, h₂, h₃, -⟩ := NumD.hom_transport C C (RingHom.id C) N N' (TateInh.homOfIso J)
@@ -24,6 +31,9 @@ theorem exists_image {C : Type} [Field C] {N N' : NumD C} (J : NumD.Iso N N') {k
   rw [N.mem_QT.1 p.2] at a
   exact (h₁ _).unique a (h₃ _)
 
+/- English proof (translation)
+Establish `H` using `(NumD.hom_transport C C (RingHom.id C) N N' (TateInh.homOfIso J)).2.2.2.2 m hm p p' h₁ h₂`. Rewrite using `[NumD.ev, NumD.ev, ← J.e.toEquiv.tsum_eq, ← tsum_mul_left]`. Conclude with `tsum_congr fun χ => (H χ).2 g g' hg`.
+-/
 theorem ev_iso {C : Type} [NormedField C] {N N' : NumD C} (J : NumD.Iso N N') {m : ℕ} (hm : Odd m)
     {p : N.QT (m ^ 2)} {p' : N'.QT (m ^ 2)} (h₁ : p'.1.1.toAdd = J.e p.1.1.toAdd) (h₂ : J.Rel p.1.2 p'.1.2)
     {g : N.Gt} {g' : N'.Gt} (hg : J.Rel g g') :
@@ -32,6 +42,19 @@ theorem ev_iso {C : Type} [NormedField C] {N N' : NumD C} (J : NumD.Iso N N') {m
   rw [NumD.ev, NumD.ev, ← J.e.toEquiv.tsum_eq, ← tsum_mul_left]
   exact tsum_congr fun χ => (H χ).2 g g' hg
 
+/- English proof (translation)
+Introduce `hL hE hB E _ _ _ H D l c O _ β O' _ _ _ b a C _ _ _ _ _ _ A u r o M f N' ν' J hr _ hT hR n hn h3 hl k hk x p q' p' z hp e₁ e₂ hq hz`. Establish `hn2 : 0 < n ^ 2` using `pow_pos hn.pos 2`. Establish `B` using `hB M.W M.P.D.toPre M.P.D.psi_even M.P.D.tau_bimult C N' ν'`. Take `⟨e, he⟩` from `LiePull.exists_pushEquiv M.cart (baseOver (Sp C)) (jFK (R := M.W) C) (Category.id_comp _).symm`. Use `choose pt hpt using fun i : D.La => (existsUnique_twRel A.be u (r (n ^ 2)) (hr.pow hn2) (A.q (n ^ 2) i)).exists`.
+
+Use `choose qt hq₁ hq₂ using fun i => exists_image J (pt i)`. Use `choose pp hpp using fun i => (B.2.2.2.2 (n ^ 2)).2.1 (qt i)`. Establish `hA : ∀ i, M.P.ToA C (n ^ 2) (pp i) (e (o.I.ev (n ^ 2) i))` using `fun i => hl i (pt i) (qt i) (pp i) _ (hpt i) (hq₁ i) (hq₂ i) (hpp i) (he _)`. Take `⟨F, hF, -⟩` from `hT C k (by omega)`. Take `⟨y, hy⟩` from `e.surjective (F p')`.
+
+Establish `Q` using `hE M.W _ M.cdv rfl M.P.D M.P.A M.t.G M.t.semi M.P.U C M.ext N' ν' n hn D.La pp qt _ hA hpp k hk p' q' (F p') ((hF _ _).2 rfl) hq`. Set `τ : (baseOver (Sp C)).left ⟶ (TFK (R` to `M.W) C).left := 𝟙 (Sp C)`. Establish `: IsIso τ` using `inferInstanceAs (IsIso (𝟙 (Sp C)))`. Establish `hτ : τ ≫ (TFK (R` using `M.W) C).hom = (baseOver (Sp C)).hom ≫ jFK (R := M.W) C := rfl`. Establish `ht : ∀ i, o.I.ev (n ^ 2) i ^ (n ^ 2) = 1` using `fun i => (o.I.onto _ hn2 _).2 ⟨i, rfl⟩`.
+
+Establish `Q₁ : IsCoordPt o.P n (T` using `baseOver (Sp C)) (o.I.ev (n ^ 2)) y fun i => fnOf (N'.ev n (qt i) q'.1.2) := FullExtend.isCoordPt_move τ M.cart M.lb τ (𝟙 _) (Category.comp_id _) hτ (fun th h s => by`. Take `⟨c, hc⟩` from `h s`. Establish `e` using `VVRank.pullM_id M.P.A.A M.P.A.isLB 1 (SecM.ofSec M.P.A.A th)`. Conclude with `⟨c, fun j => (hc j).trans (congrArg (_ * ·) (congrArg (fun q => q.1 j) e).symm)⟩)`. Use the proof step `(fun i => (Category.id_comp _).trans (he _)) ht (z := y)`.
+
+Use the proof step `((Category.id_comp _).trans ((congrArg (fun w => w.left) hy).symm.trans (he _))) Q`. Establish `Q₂` using `((hR.2.2.2 n hn pt hpt).2.2 k (by omega) x p hp).2`. Take `⟨-, s₂, -, s₄⟩` from `CoordSep.coord_exists_unique_separate hL.1 C (Sp C) o.P (𝟙 _) n hn (Nat.cast_ne_zero.2 hn.pos.ne') D.La (o.I.ev (n ^ 2)) ht`. Establish `Q₃` using `(s₂ _ _ (fun i => N'.ev n (qt i) q'.1.2) Q₂).2 ⟨J.lam * J.h p.1.2.b ^ (n ^ 2), funext fun i => ev_iso J hn (hq₁ i) (hq₂ i) e₂⟩`. Take `rfl` from `(s₄ h3 (fun w hw => (o.I.onto _ hn2 w).1 hw) _ _ _ Q₃ Q₁).1`.
+
+Conclude with `(hF _ _).2 ((Over.OverMorphism.ext (hz.trans (he _).symm)).trans hy)`.
+-/
 theorem labels_of_four_le : GlobalTheory.UT.LL → EVSt → BrGtSt → AllS fun {_} _ _ _ {_} {_} {_} {_} {_} _ {_} {_} _ _ {_} _ {_} _ _ A u r {o} M _ {_} ν' J => M.P.TorsionIso → Realises o A.arc A.be u r → ∀ n : ℕ, Odd n → 3 ≤ n → Labels A u r M ν' J (n ^ 2) → ∀ k, 4 ≤ k → Labels A u r M ν' J k := by
   intro hL hE hB E _ _ _ H D l c O _ β O' _ _ _ b a C _ _ _ _ _ _ A u r o M f N' ν' J hr _ hT hR n hn h3 hl k hk
     x p q' p' z hp e₁ e₂ hq hz

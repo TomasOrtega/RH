@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GE.TwGen
 
+/- English proof (translation)
+Establish `key : ∀ h : A ⟶ B, (imageSubobject h).Factors h` using `fun h => by`. Use `Subobject.factors_comp_arrow (P := imageSubobject h) (factorThruImageSubobject h)` as an intermediate fact. Rewrite `this` using `[imageSubobject_arrow_comp]`. Then use the resulting hypothesis. Establish `h` using `Subobject.factors_add f g (Subobject.factors_of_le f le_sup_left (key f)) (Subobject.factors_of_le g le_sup_right (key g))`. Conclude with `imageSubobject_le (f + g) _ (Subobject.factorThru_arrow _ _ h)`.
+-/
 theorem imageSubobject_add_le {C : Type*} [Category C] [Preadditive C] [HasImages C]
     [HasBinaryCoproducts C] {A B : C} (f g : A ⟶ B) :
     imageSubobject (f + g) ≤ imageSubobject f ⊔ imageSubobject g := by
@@ -18,6 +21,9 @@ theorem imageSubobject_add_le {C : Type*} [Category C] [Preadditive C] [HasImage
     (Subobject.factors_of_le f le_sup_left (key f)) (Subobject.factors_of_le g le_sup_right (key g))
   exact imageSubobject_le (f + g) _ (Subobject.factorThru_arrow _ _ h)
 
+/- English proof (translation)
+Use extensionality with `V a`. Express the relevant statement in the definitionally equal form `GlobalTheory.QCoh.structureModuleSectionsEquiv V a • GlobalTheory.Twist.resM F (le_top : V ≤ ⊤) (b + c) = GlobalTheory.QCoh.structureModuleSectionsEquiv V a • GlobalTheory.Twist.resM F (le_top : V ≤ ⊤) b + GlobalTheory.QCoh.structureModuleSectionsEquiv V a • GlobalTheory.Twist.re …`. Rewrite using `[map_add, smul_add]`.
+-/
 theorem sectionHom_add {X : Scheme.{0}} {F : X.Modules} (b c : Γ(F, ⊤)) :
     GlobalTheory.QCoh.sectionHom (b + c) = GlobalTheory.QCoh.sectionHom b + GlobalTheory.QCoh.sectionHom c := by
   ext V a
@@ -26,6 +32,9 @@ theorem sectionHom_add {X : Scheme.{0}} {F : X.Modules} (b c : Γ(F, ⊤)) :
       GlobalTheory.QCoh.structureModuleSectionsEquiv V a • GlobalTheory.Twist.resM F (le_top : V ≤ ⊤) c
   rw [map_add, smul_add]
 
+/- English proof (translation)
+Establish `h : GlobalTheory.Twist.map (GlobalTheory.lbZPow H (-n)) (GlobalTheory.QCoh.sectionHom (b + c)) = GlobalTheory.Twist.map (GlobalTheory.lbZPow H (-n)) (GlobalTheory.QCoh.sectionHom b) + GlobalTheory.Twist.map (GlobalTheory.lbZPow H (-n)) (GlobalTheory.QCoh.sectionHom c)`. Rewrite using `[sectionHom_add]`. Conclude with `(GlobalTheory.twistFunctor (GlobalTheory.lbZPow H (-n))).map_add`. Simplify using `only [genHom, h, Preadditive.add_comp]`.
+-/
 theorem genHom_add {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB) {P : X.Modules}
     (n : ℤ) (b c : Γ(GlobalTheory.twistZ P H n, ⊤)) :
     genHom hH n (b + c) = genHom hH n b + genHom hH n c := by
@@ -36,6 +45,9 @@ theorem genHom_add {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Se
     exact (GlobalTheory.twistFunctor (GlobalTheory.lbZPow H (-n))).map_add
   simp only [genHom, h, Preadditive.add_comp]
 
+/- English proof (translation)
+Unfold `genSub`. Simplify using `only [genHom_add]`. Conclude with `imageSubobject_add_le _ _`.
+-/
 theorem genSub_add_le {X : Scheme.{0}} {H : ReciprocityTheory.ChartRestriction.G.Semi.LB X} (hH : H.IsLB) {P : X.Modules}
     (n : ℤ) (b c : Γ(GlobalTheory.twistZ P H n, ⊤)) :
     genSub hH n (b + c) ≤ genSub hH n b ⊔ genSub hH n c := by

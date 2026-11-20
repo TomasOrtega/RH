@@ -12,6 +12,43 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF}
   {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Establish `hK` using `Col.hK_of hI`. Use `set η := Col.wmap (IR I) ξ with hη`. Establish `hη1 : ‖η‖ ≤ 1` using `by rw [hη, cab_norm_wmap_xi hK hξI, hξ1]`. Establish `hq2 : (2 : ℝ) ≤ P.q` using `cab_q_ge P`. Establish `hq2n : 2 ≤ P.q` using `by exact_mod_cast hq2`.
+
+Establish `hq0 : (0 : ℝ) < P.q` using `by linarith`. Establish `hR0sq` using `P.hR0`. Establish `hR0ne : P.R0 ≠ 0` using `by intro h; rw [h] at hR0sq; norm_num at hR0sq`. Establish `hR0pos : 0 < |P.R0|` using `abs_pos.mpr hR0ne`. Establish `hlat` using `cab_YB_abs hI hP P.q`.
+
+Establish `hGle : Col.gB (IR I) ≤ X.gA` using `cab_gB_le (IR I)`. Establish `hGle' : (Col.gB (IR I) : ℝ) ≤ X.gA` using `by exact_mod_cast hGle`. Establish `hcD : (c : ℝ) ≤ DF` using `by exact_mod_cast hc`. Establish `h90 : 90 * ((Fintype.card (Fin (Col.gB (IR I))) : ℝ) + c) ≤ |P.R0| ^ 2`. Rewrite using `[sq_abs, Fintype.card_fin]`.
+
+Use polynomial arithmetic with `[hR0sq.2]`. Take `⟨β, hβ, hjet, hl2⟩` from `hA (Fin (Col.gB (IR I))) (Col.YB hI hP P.q) P.q c |P.R0| P.hq (Col.YB_coc hI hP P.q) hR0pos hlat (by rw [sq_abs]; exact hR0sq.1) h90 (cabPoly η c) (cabPoly_deg η c)`. Establish `hJ` using `cab_J_le η hη1 c P.q P.hq`. Rewrite `hJ` using `[Fintype.card_fin]`. Establish `hl2' : (Col.YB hI hP P.q).l2 P.q β ≤ 6 * (c.factorial * (2 / (P.q * Real.pi)) ^ c * (2 / P.q) ^ Fintype.card (Fin (Col.gB (IR I))))`.
+
+Rewrite using `[Fintype.card_fin]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h90' : 90 * (Fintype.card (Fin (Col.gB (IR I))) : ℝ) ≤ |P.R0| ^ 2`. Establish `: (0 : ℝ) ≤ 90 * c` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set Bsq : ℝ := 12 * (5.12 : ℝ) ^ (Col.gB (IR I)) * c.factorial * (2 / (P.q * Real.pi)) ^ c with hBsq`. Establish `hsup : ∀ t, (Col.YB hI hP P.q).ptN2 P.q β t ≤ Bsq`. Introduce `t`. Use `cab_sup hS (Col.YB hI hP P.q) P.q c hq2n |P.R0| hR0pos hlat h90' β hβ hl2' t` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+
+Establish `hBsq0 : 0 ≤ Bsq` using `by rw [hBsq]; positivity`. Use `set B := Real.sqrt Bsq with hBdef`. Establish `hB0 : 0 ≤ B` using `Real.sqrt_nonneg _`. Establish `hBβ : ∀ t, ‖β t‖ ^ 2 * Real.exp (-(P.q * Real.pi) * ‖t‖ ^ 2) ≤ B ^ 2`. Introduce `t`.
+
+Rewrite using `[hBdef, Real.sq_sqrt hBsq0]`. Conclude with `hsup t`. Establish `hT2 : ∀ c' v, ‖Col.Tc X I P.q β c' v‖ ≤ B * Real.exp (P.q * Real.pi * ‖v‖ ^ 2 / 2) * Real.exp (-(P.q * Real.pi * ‖Col.uc (IR I) v - Col.uc (IR I) (cabOut c' : Vsp X.dim)‖ ^ 2))`. Introduce `c' v`. Use `Col.norm_Tc_le hI hB0 hBβ c' v` as an intermediate fact.
+
+Rewrite `this` using `[Col.uQ_out]`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show cabOut c' = Quotient.out c' from rfl]`. Put the polynomial expressions in normal form. Use `set s' : (Fin 1 → Vsp X.dim) → ℂ := Col.colS X I P.q β with hs'`.
+
+Establish `hs'mem : s' ∈ X.Sec P.q 1` using `Col.colS_mem hI hP hGT hB0 hBβ hβ`. Establish `hsPd : Differentiable ℂ (Col.sP X I P.q β)`. Establish `h1 : Differentiable ℂ s'` using `hs'mem.1`. Set `D : Vsp X.dim →L[ℂ] (Fin 1 → Vsp X.dim)` to `ContinuousLinearMap.pi fun _ => ContinuousLinearMap.id ℂ _`. Establish `: Col.sP X I P.q β = s' ∘ D` using `by funext v; rfl`.
+
+Rewrite using `[this]`. Conclude with `h1.comp D.differentiable`. Use `⟨s', hs'mem, ?_, ?_⟩` and prove the remaining obligations. Introduce `xs hxs set F0 := Col.F0 I P.q β with hF0 set R : Vsp X.dim → ℂ := fun v => Col.sP X I P.q β v - F0 v with hR`. Establish `hF0d : Differentiable ℂ F0` using `differentiable_zeroModeLift I P.q β hβ.1`.
+
+Establish `hRd : Differentiable ℂ R` using `hsPd.sub hF0d`. Establish `hsplit : Col.sP X I P.q β = F0 + R` using `by funext v; simp [hR]`. Establish `hd1 : d1 s' c xs = iteratedFDeriv ℂ c (Col.sP X I P.q β) 0 xs` using `iteratedFDeriv_single_column (contDiff_of_differentiable_fd hsPd c) xs`. Establish `hmain : iteratedFDeriv ℂ c F0 0 xs = (c.factorial : ℂ) * ∏ k, Hf (xs k) ξ` using `cab_main hK σ hξI β hβ.1 hjet F0 hF0d (fun v hv => zeroModeLift_on_part hI P.q β σ v hv) xs (fun k => (hxs k).1)`. Establish `hadd : iteratedFDeriv ℂ c (Col.sP X I P.q β) 0 xs = iteratedFDeriv ℂ c F0 0 xs + iteratedFDeriv ℂ c R 0 xs`.
+
+Rewrite using `[hsplit, iteratedFDeriv_add_apply (contDiff_of_differentiable_fd hF0d c).contDiffAt (contDiff_of_differentiable_fd hRd c).contDiffAt]`. Both sides reduce to the same expression. Rewrite using `[hd1, hadd, hmain, add_sub_cancel_left]`. Take `⟨g', hg', hs, hle⟩` from `cab_sum_nz hP hGT hI`. Establish `hbd` using `cab_R hI hP hGT hβ B hB0 (Col.summable_Tc hI hP hGT hB0 hBβ) hT2`.
+
+Establish `htd` using `cab_tail_deriv R hRd c xs (fun k => (hxs k).2.le) P.q hq0 B hB0 _ hs hbd`. Use `htd.trans ?_` and prove the remaining obligations. Establish `hstep : B * ((P.q : ℝ) * (c + 1)) ^ ((c : ℝ) / 2) * Real.exp (5 * Real.pi * c / 2) * ∑' a : cabNZ X I, Real.exp (-(Real.pi / 2 * P.q * ‖Col.uc (IR I) (cabOut (a : Col.Qc X I) : Vsp X.dim)‖ ^ 2)) ≤ B * ((P.q : ℝ) * (c + 1)) ^ ((c : ℝ) / 2) * Real.exp (5 * Real.pi * c / 2) * (2 * 9 …` using `E) P.q P.R0))) := by gcongr`. Use `hstep.trans ?_` and prove the remaining obligations. Establish `hnum` using `cab_numeric c (Col.gB (IR I)) X.gA g' (dstar (E := E) P.m) P.q (t0 (E := E) P.q P.R0) hq2 hGle hg' (threshold_ge_log_bound P hc) (threshold_ge_rank_log_two P)`.
+
+Use `hnum.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Par.eps1]`. Establish `h4` using `Col.l2_colS_le_four_mul hI hP hGT hβ hB0 hBβ`. Establish `hJ1` using `cab_J_one P (G := Col.gB (IR I)) hc`. Establish `hl2Y : (Col.YB hI hP P.q).l2 P.q β ≤ 6`.
+
+Use `hl2'` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK6` using `twentyfour_le_constant P`. Establish `hf1 : (1 : ℝ) ≤ (c.factorial : ℝ) ^ 2`.
+
+Establish `: (1 : ℝ) ≤ c.factorial` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero c)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK6p : 0 < P.K6` using `by linarith`. Rewrite using `[inv_mul_le_iff₀ hK6p]`. Establish `: P.K6 ≤ P.K6 * (c.factorial : ℝ) ^ 2` using `le_mul_of_one_le_right hK6p.le hf1`.
+
+Establish `: X.l2 P.q s' ≤ 4 * (Col.YB hI hP P.q).l2 P.q β` using `h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cab_core (hP : Ext.PackingCount) (hGT : Ext.GaussianTailBound) (hA : PropAStatement)
     (hS : GSupStatement) (hI : IsSplit P I) (c : ℕ) (hc : c ≤ DF) (σ : E →+* ℂ)
     (ξ : Vsp X.dim) (hξ1 : ‖ξ‖ = 1) (hξI : ∀ a ∈ I, Hf ξ a = 0)
@@ -118,6 +155,9 @@ theorem cab_core (hP : Ext.PackingCount) (hGT : Ext.GaussianTailBound) (hA : Pro
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ X DF P I hI c hc σ ξ _ hξ1 hξI`. Conclude with `cab_core hx.1 hx.2.1 hA hS hI c hc σ ξ hξ1 hξI`.
+-/
 theorem colAbel_holds (hx : Ext.All) (hA : PropAStatement) (hS : GSupStatement) :
     ColAbelStatement := by
   intro E _ _ _ X DF P I hI c hc σ ξ _ hξ1 hξI

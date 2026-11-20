@@ -6,6 +6,9 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.HaarUJ
 
+/- English proof (translation)
+Introduce `n ε μ _`. Establish `hν : (Formalism.REAL.muG ε).IsMulRightInvariant` using `⟨fun g => Formalism.REAL.indefinite_unitary_unimodular n ε g⟩`. Establish `hμ : μ = Measure.haarScalarFactor μ (Formalism.REAL.muG ε) • Formalism.REAL.muG ε` using `Measure.isMulLeftInvariant_eq_smul μ (Formalism.REAL.muG ε)`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hμ, Measure.map_smul, map_mul_right_eq_self]`.
+-/
 theorem haar_rinv_UJ : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (Formalism.REAL.UJ ε)) [μ.IsHaarMeasure],
     μ.IsMulRightInvariant := by
   intro n ε μ _

@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.CoefIso
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show MvPolynomial.map σ (actP lam (invTrK (embGL emb g)) v.1) = actP lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) g) (MvPolynomial.map σ v.1)`. Rewrite using `[GlobalTheory.CoefSpace.map_actP]`. Use `congr 2`.
+-/
 theorem bcVV_rhoVr {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
     (σ : K →+* ℂ) (emb : ι → E →+* K) (lam : ι → DomWeight n) (g : GL (Fin n) E) (v : VV K lam) :
     GlobalTheory.CoefSpace.bcVV σ lam (rhoVr emb lam g v) =
@@ -23,6 +26,11 @@ theorem bcVV_rhoVr {E K : Type} [Field E] [NumberField E] [Field K] [NumberField
   rw [GlobalTheory.CoefSpace.map_actP]
   congr 2
 
+/- English proof (translation)
+Establish `hi : ((U⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = (U : Matrix (Fin n) (Fin n) ℂ)ᴴ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, Matrix.one_mul]`. Use `_ = (U : Matrix (Fin n) (Fin n) ℂ)ᴴ := by`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`.
+
+Use `show (((U⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ)ᴴ * 1 * ((U⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ = 1`. Establish `e : (((U : Matrix (Fin n) (Fin n) ℂ)ᴴ)ᵀ)ᴴ = (U : Matrix (Fin n) (Fin n) ℂ)ᵀ`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hi, Matrix.mul_one, e, ← Matrix.transpose_mul, hU, Matrix.transpose_one]`.
+-/
 theorem invTr_unitary_one {n : ℕ} (U : GL (Fin n) ℂ) (hU : (U : Matrix (Fin n) (Fin n) ℂ)ᴴ * U = 1) :
     ((inside₂ ℂ n U : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᴴ * (1 : Matrix (Fin n) (Fin n) ℂ) *
       ((inside₂ ℂ n U : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = 1 := by
@@ -38,6 +46,13 @@ theorem invTr_unitary_one {n : ℕ} (U : GL (Fin n) ℂ) (hU : (U : Matrix (Fin 
     simp
   rw [hi, Matrix.mul_one, e, ← Matrix.transpose_mul, hU, Matrix.transpose_one]
 
+/- English proof (translation)
+Take `⟨γ, ⟨g, hgU, hgm⟩⟩` from `γ`. Establish `e1 : Formalism.UG.bc (incA D) g = Formalism.UG.bc (incA D) γE` using `hgm.trans h`. Establish `e2 : g = γE` using `Units.ext (Matrix.ext fun i j => (Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)) (congrArg (fun u => (Units.val u) i j) e1))`. Substitute `e2` using the available equality. Establish `hu : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (g : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram * (g : Matrix (Fin V.rank) (Fin V.rank) D.host.E) = V.gram` using `hgU`.
+
+Rewrite `hu` using `[hg, Matrix.mul_one]`. Establish `hc : ((g : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map φ)ᴴ = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (g : Matrix (Fin V.rank) (Fin V.rank) D.host.E)).map φ`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, Formalism.UG.cT, Matrix.transpose_apply]`. Conclude with `(D.sp.cm.cmUnram.2.1 φ _).symm`.
+
+Rewrite using `[bc_coe, hc, ← Matrix.map_mul, hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem ratMat_unitary {D : D7} (V : HSp D) (hg : V.gram = 1) (γ : GQ V) (γE : GL (Fin V.rank) D.host.E)
     (h : Bridge.IsRatMat V γ γE) (φ : D.host.E →+* ℂ) :
     ((Formalism.UG.bc φ γE : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ *
@@ -60,6 +75,47 @@ theorem ratMat_unitary {D : D7} (V : HSp D) (hg : V.gram = 1) (γ : GQ V) (γE :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V n hn hg c hc K ι _ _ _ σ emb lam c0 hne hint hli`. Substitute `hn` using the available equality. Establish `hMat : ∀ γ : GQ V, ∃ γE, Bridge.IsRatMat V γ γE ∧ MatEq γE γE` using `fun γ => by`. Take `⟨γE, h⟩` from `GlobalTheory.Mem.StdUnique.exists_ratMat γ`. Conclude with `⟨γE, h, rfl, fun i j i' j' hi hj => by rw [Fin.ext hi, Fin.ext hj]⟩`.
+
+Establish `hmem : ∀ v, c0 v ∈ Submodule.span ℂ (Set.range fun i => c0 (bVV K lam i))`. Introduce `v`. Establish `hv : v ∈ Submodule.span K (Set.range (bVV K lam))` using `by rw [(bVV K lam).span_eq]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨i₀⟩` from `hne`. Establish `htop : Submodule.span ℂ (Set.range fun i => c0 (bVV K lam i)) = ⊤`. Use `(GlobalTheory.Mem.StdUnique.bot_or_top c hc _ fun γ hγ w hw => ?_).resolve_left fun h0 => ?_` and prove the remaining obligations. Take `⟨γE, h1, h2⟩` from `hMat ⟨γ, hγ⟩`.
+
+Establish `hle : (Submodule.span ℂ (Set.range fun i => c0 (bVV K lam i))).map (c.ρ γ) ≤ Submodule.span ℂ (Set.range fun i => c0 (bVV K lam i))`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[show c.ρ γ (c0 (bVV K lam i)) = c.coef.ρ ⟨γ, hγ⟩ (c0 (bVV K lam i)) from rfl, ← hint ⟨γ, hγ⟩ γE γE h1 h2]`. Conclude with `hmem _`.
+
+Conclude with `hle ⟨w, hw, rfl⟩`. Use `hmem (bVV K lam i₀)` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `hli.ne_zero i₀ this`. Set `b1 : Module.Basis (VVIdx lam) ℂ (VV ℂ lam)` to `Module.Basis.mk (GlobalTheory.CoefSpace.bcVV_indep σ lam) (GlobalTheory.CoefSpace.bcVV_span σ lam).ge`.
+
+Set `b2 : Module.Basis (VVIdx lam) ℂ c.W` to `Module.Basis.mk hli htop.ge`. Establish `hb1 : ∀ i, b1 i = GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i)` using `fun i => Module.Basis.mk_apply _ _ i`. Establish `hb2 : ∀ i, b2 i = c0 (bVV K lam i)` using `fun i => Module.Basis.mk_apply _ _ i`. Take `⟨e0, he0b⟩ : ∃ e0 : VV ℂ lam ≃ₗ[ℂ] c.W, ∀ i, e0 (b1 i) = b2 i` from `⟨b1.equiv b2 (Equiv.refl _), fun i => by simp⟩`. Establish `he0 : ∀ v, e0 (GlobalTheory.CoefSpace.bcVV σ lam v) = c0 v`.
+
+Introduce `v`. Establish `: (e0.toLinearMap.comp (GlobalTheory.CoefSpace.bcVV σ lam) : VV K lam →ₛₗ[σ] c.W) = c0` using `(bVV K lam).ext fun i => by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, ← hb1, he0b, hb2]`. Conclude with `LinearMap.congr_fun this v`. Establish `hR : ∀ (γ : GQ V) (γE g : GL (Fin V.rank) D.host.E), Bridge.IsRatMat V γ γE → MatEq γE g → ∀ x, e0 (rhoK lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) g) x) = c.ρ γ (e0 x)`.
+
+Introduce `γ γE g h1 h2 x`. Establish `: e0.toLinearMap.comp (rhoK lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) g)) = (c.ρ γ).comp e0.toLinearMap` using `b1.ext fun i => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hb1, ← bcVV_rhoVr, LinearEquiv.coe_coe, he0, he0, hint γ γE g h1 h2]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun this x`.
+
+Establish `hP : ∀ (γ : GQ V) (γE g : GL (Fin V.rank) D.host.E), Bridge.IsRatMat V γ γE → MatEq γE g → ∀ x y : VV ℂ lam, pairK lam (fun _ => 1) (rhoK lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) g) x) (rhoK lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) g) y) = pairK lam (fun …`. Introduce `γ γE g h1 h2`. Take `rfl : γE = g` from `Units.ext (Matrix.ext fun i j => h2.2 i j i j rfl rfl)`. Conclude with `pairInv ℂ ι V.rank lam (fun _ => 1) _ fun τ => invTr_unitary_one (Formalism.UG.bc (σ.comp (emb τ)) γE) (ratMat_unitary V hg γ γE h1 _)`. Establish `hgr : GlobalTheory.CoefSpace.gramOf (fun _ : ι => (1 : GL (Fin V.rank) ℂ)) = fun _ => 1`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[GlobalTheory.CoefSpace.gramOf]`. Set `S : c.W →ₗ[ℂ] GlobalTheory.CoefSpace.HV lam (fun _ => (1 : GL (Fin V.rank) ℂ))` to `e0.symm.toLinearMap`. Establish `hS : ∀ w, S w = e0.symm w` using `fun _ => rfl`. Set `T : Module.End ℂ c.W` to `(LinearMap.adjoint S).comp S`.
+
+Establish `hT : ∀ w w', inner ℂ w (T w') = pairK lam (fun _ => 1) (e0.symm w) (e0.symm w')`. Introduce `w w'`. Use `show inner ℂ w (LinearMap.adjoint S (S w')) = _`. Rewrite using `[LinearMap.adjoint_inner_right, GlobalTheory.CoefSpace.inner_HV, hgr]`. Both sides reduce to the same expression.
+
+Establish `hBinv : ∀ (γ : GQ V) a b, pairK lam (fun _ => 1) (e0.symm (c.ρ γ a)) (e0.symm (c.ρ γ b)) = pairK lam (fun _ => 1) (e0.symm a) (e0.symm b)`. Introduce `γ a b`. Take `⟨γE, h1, h2⟩` from `hMat γ`. Establish `key : ∀ a, e0.symm (c.ρ γ a) = rhoK lam (invTrK fun τ => Formalism.UG.bc (σ.comp (emb τ)) γE) (e0.symm a)` using `fun a => by rw [LinearEquiv.symm_apply_eq, hR γ γE γE h1 h2, LinearEquiv.apply_symm_apply]`. Rewrite using `[key, key, hP γ γE γE h1 h2]`.
+
+Establish `hcomm : ∀ (γ : GQ V) x, T (c.ρ γ x) = c.ρ γ (T x)`. Introduce `γ x`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Establish `hinv : c.ρ γ (c.ρ (γ⁻¹ : GQ V) w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, map_one, Module.End.one_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨μ, hμ⟩` from `GlobalTheory.Mem.RowCoord.scalar_of_comm_rat c hc T hcomm`. Establish `hx₀ : GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀) ≠ 0`. Rewrite using `[← hb1]`. Conclude with `b1.ne_zero i₀`.
+
+Establish `hpos` using `GlobalTheory.CoefSpace.pairK_pos lam (fun _ => 1) _ hx₀`. Rewrite `hpos` using `[hgr]`. Establish `h1` using `hT (e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀))) (e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀)))`. Establish `hsq : inner ℂ (e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀))) (e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀))) = ((‖e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀))‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+
+Use `norm_cast`. Rewrite `h1` using `[hμ, inner_smul_right, LinearEquiv.symm_apply_apply, hsq]`. Rewrite `hpos` using `[← h1]`. Establish `hn : 0 < ‖e0 (GlobalTheory.CoefSpace.bcVV σ lam (bVV K lam i₀))‖ ^ 2` using `pow_pos (norm_pos_iff.2 (e0.map_ne_zero_iff.2 hx₀)) 2`. Take `⟨hre, him⟩` from `Complex.lt_def.1 hpos`.
+
+Simplify using `only [Complex.re_mul_ofReal, Complex.im_mul_ofReal, Complex.zero_re, Complex.zero_im] at hre him`. Establish `hm : 0 < μ.re` using `(pos_iff_pos_of_mul_pos hre).2 hn`. Establish `hμr : ((μ.re : ℝ) : ℂ) = μ` using `Complex.ext rfl (by`. Rewrite using `[Complex.ofReal_im]`. Conclude with `((mul_eq_zero.1 him.symm).resolve_right hn.ne').symm)`.
+
+Establish `hr : 0 < Real.sqrt μ.re` using `Real.sqrt_pos.2 hm`. Establish `hr0 : ((Real.sqrt μ.re : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Take `⟨e, he⟩ : ∃ e : VV ℂ lam ≃ₗ[ℂ] c.W, ∀ x, e x = ((Real.sqrt μ.re : ℝ) : ℂ) • e0 x` from `⟨e0.trans (LinearEquiv.smulOfNeZero ℂ c.W _ hr0), fun _ => rfl⟩`. Use `⟨e, (Real.sqrt μ.re)⁻¹, inv_pos.2 hr, fun v => ?_, fun x y => ?_, fun γ γE g h1 h2 x => ?_⟩` and prove the remaining obligations. Rewrite using `[he, he0, smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hr.ne', Complex.ofReal_one, one_smul]`.
+
+Rewrite using `[he, he, inner_smul_left, inner_smul_right, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, Real.mul_self_sqrt hm.le, hμr, ← inner_smul_right, ← hμ, hT, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[he, he, hR γ γE g h1 h2]`. Conclude with `((c.ρ γ).map_smul _ _).symm`.
+-/
 theorem coef_iso : ∀ (D : D7) (V : HSp D) (n : ℕ), V.rank = n → V.gram = 1 → ∀ (c : CoefA V), c.Is → ∀ {K ι : Type} [Field K] [NumberField K] [Fintype ι] (σ : K →+* ℂ) (emb : ι → (D.host.E →+* K)) (lam : ι → DomWeight n) (c0 : VV K lam →ₛₗ[σ] c.W), Nonempty (VVIdx lam) →
   (∀ (γ : GQ V) (γE : GL (Fin V.rank) D.host.E) (g : GL (Fin n) D.host.E), Bridge.IsRatMat V γ γE → MatEq γE g → ∀ v, c0 (rhoVr emb lam g v) = c.coef.ρ γ (c0 v)) →
   (LinearIndependent ℂ fun i => c0 (bVV K lam i)) →

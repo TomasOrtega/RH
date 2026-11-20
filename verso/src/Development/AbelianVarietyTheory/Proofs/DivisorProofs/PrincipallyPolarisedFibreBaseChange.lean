@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep.E8Fibration
 
+/- English proof (translation)
+Introduce `S S' f G _ g M hM`. Take `⟨hA, hg, ⟨c⟩, ha, hK⟩` from `hM`. Establish `hA'` using `GlobalTheory.isAbelianScheme_pullback_obj f G hA`. Use `hA.comm` as an intermediate fact. Use `hA'.comm` as an intermediate fact.
+
+Use `hA.proper` as an intermediate fact. Establish `h` using `isGrpPullback_pullback G f`. Take `⟨hL, hr, c', -⟩` from `GlobalTheory.PullSharp.cube_pull_sharp (ReciprocityTheory.ChartRestriction.G.Geo.Tor.cubeMapOf h) M c`. Take `⟨w, hw⟩` from `GlobalTheory.PolBaseChange.lbIso_refl hL`. Conclude with `⟨(ReciprocityTheory.ChartRestriction.G.Geo.Tor.cubeMapOf h).rigLB M hL hr, rfl, hA', (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 hg, ⟨c'⟩, GlobalTheory.AmpleBaseChange.relAmple_of_isPullback M.isLB ha h.1, kTriv_pull h M.isLB hL ((isGen_iff w).1 hw) hK …`.
+-/
 theorem isPPFib_baseChange : ∀ {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] (g : ℕ) (M : RigLB G), E8Fibration.IsPPFib G g M → ∃ M' : RigLB ((Over.pullback f).obj G), M'.L = M.L.pull (pullback.fst G.hom f) ∧ E8Fibration.IsPPFib ((Over.pullback f).obj G) g M' := by
   intro S S' f G _ g M hM
   obtain ⟨hA, hg, ⟨c⟩, ha, hK⟩ := hM

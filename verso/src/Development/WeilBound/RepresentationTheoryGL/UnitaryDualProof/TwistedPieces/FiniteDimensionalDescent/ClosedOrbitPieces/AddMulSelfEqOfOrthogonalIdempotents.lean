@@ -18,6 +18,11 @@ def Cx (Z : Subalgebra k (Matrix (Fin N) (Fin N) k)) (x : Matrix (Fin N) (Fin N)
 section
 variable {Z : Subalgebra k (Matrix (Fin N) (Fin N) k)} {x : Matrix (Fin N) (Fin N) k}
 
+/- English proof (translation)
+Introduce `a ha b hb`. Break down `Set.mem_insert_iff.1 ha with h1 | h1` into its components or cases. Break down `Set.mem_insert_iff.1 hb with h2 | h2` into its components or cases. Rewrite using `[h1, h2]`. Rewrite using `[h1]`.
+
+Conclude with `(hx b h2).symm`. Break down `Set.mem_insert_iff.1 hb with h2 | h2` into its components or cases. Rewrite using `[h2]`. Conclude with `hx a h1`. Conclude with `hZ.1 a h1 b h2`.
+-/
 theorem cx_gens (hZ : CR Z) (hx : x ∈ Bz Z) :
     ∀ a ∈ insert x (Z : Set (Matrix (Fin N) (Fin N) k)), ∀ b ∈ insert x (Z : Set (Matrix (Fin N) (Fin N) k)),
       a * b = b * a := by
@@ -32,6 +37,11 @@ theorem cx_gens (hZ : CR Z) (hx : x ∈ Bz Z) :
       exact hx a h1
     · exact hZ.1 a h1 b h2
 
+/- English proof (translation)
+Introduce `a ha b hb`. Establish `key` using `cx_gens hZ hx`. Establish `h : Commute a b`. Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb ?_` and prove the remaining obligations. Introduce `c hc`.
+
+Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute ha ?_).symm` and prove the remaining obligations. Introduce `d hd`. Conclude with `key c hc d hd`. Conclude with `h.eq`.
+-/
 theorem cx_comm (hZ : CR Z) (hx : x ∈ Bz Z) : ∀ a ∈ Cx Z x, ∀ b ∈ Cx Z x, a * b = b * a := by
   intro a ha b hb
   have key := cx_gens hZ hx
@@ -43,10 +53,19 @@ theorem cx_comm (hZ : CR Z) (hx : x ∈ Bz Z) : ∀ a ∈ Cx Z x, ∀ b ∈ Cx Z
     exact key c hc d hd
   exact h.eq
 
+/- English proof (translation)
+Introduce `_ h` and use `Algebra.subset_adjoin (Set.mem_insert_of_mem _ h)`.
+-/
 theorem z_le_cx : Z ≤ Cx Z x := fun _ h => Algebra.subset_adjoin (Set.mem_insert_of_mem _ h)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (Set.mem_insert _ _)`.
+-/
 theorem x_mem_cx : x ∈ Cx Z x := Algebra.subset_adjoin (Set.mem_insert _ _)
 
+/- English proof (translation)
+The claim follows from `Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (z_le_cx (hc l)) (Subalgebra.pow_mem _ x_mem_cx _)`.
+-/
 theorem pe_mem {d : ℕ} {c : Fin d → Matrix (Fin N) (Fin N) k} (hc : ∀ l, c l ∈ Z) : pe c x ∈ Cx Z x :=
   Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (z_le_cx (hc l)) (Subalgebra.pow_mem _ x_mem_cx _)
 

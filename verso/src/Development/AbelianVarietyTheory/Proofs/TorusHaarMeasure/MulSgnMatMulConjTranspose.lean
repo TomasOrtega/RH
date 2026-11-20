@@ -13,6 +13,9 @@ namespace GlobalTheory.MinorRatioNear
 noncomputable abbrev sgnMat (r p : ℕ) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sgnMat_mul_self (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
@@ -20,10 +23,20 @@ theorem sgnMat_mul_self (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
   unfold sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.diagonal_apply, h]`.
+-/
 theorem sgnMat_map_conj (r p : ℕ) : (sgnMat r p).map (starRingEnd ℂ) = sgnMat r p := by
   ext a b
   by_cases h : a = b <;> simp [Matrix.diagonal_apply, h]
 
+/- English proof (translation)
+Establish `h1 : gᴴ * sgnMat r p * g = sgnMat r p`. Use `congrArg (fun M : Matrix (Fin r) (Fin r) ℂ => M.map (starRingEnd ℂ)) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, sgnMat_map_conj] at this`. Establish `e : (g.map (starRingEnd ℂ)).map (starRingEnd ℂ) = g` using `by ext a b; simp`. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `h2 : (sgnMat r p * gᴴ * sgnMat r p) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h1, sgnMat_mul_self]`. Establish `h3 : g * (sgnMat r p * gᴴ * sgnMat r p) = 1` using `mul_eq_one_comm.1 h2`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, sgnMat_mul_self, Matrix.mul_one]`. Use `_ = sgnMat r p := by rw [h3, Matrix.one_mul]`.
+-/
 theorem mul_sgnMat_mul_conjTranspose {r p : ℕ} {g : Matrix (Fin r) (Fin r) ℂ}
     (h : gᵀ * sgnMat r p * g.map (starRingEnd ℂ) = sgnMat r p) :
     g * sgnMat r p * gᴴ = sgnMat r p := by
@@ -40,6 +53,15 @@ theorem mul_sgnMat_mul_conjTranspose {r p : ℕ} {g : Matrix (Fin r) (Fin r) ℂ
         simp only [Matrix.mul_assoc, sgnMat_mul_self, Matrix.mul_one]
     _ = sgnMat r p := by rw [h3, Matrix.one_mul]
 
+/- English proof (translation)
+Use `set R : Matrix (Fin p) (Fin r) ℂ := g.submatrix (Fin.castLE hp) id with hR`. Establish `hRR : R * sgnMat r p * Rᴴ = 1`. Establish `: R * sgnMat r p * Rᴴ = (g * sgnMat r p * gᴴ).submatrix (Fin.castLE hp) (Fin.castLE hp)`. Use extensionality with `i j`. Simplify using `[hR, Matrix.mul_apply]`.
+
+Rewrite using `[this, h, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[sgn]`. Establish `key : ((v ᵥ* R) ᵥ* sgnMat r p) ⬝ᵥ star (v ᵥ* R) = v ⬝ᵥ star v`.
+
+Rewrite using `[Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hRR, Matrix.vecMul_one]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Simplify using `only [dotProduct, Matrix.vecMul_diagonal, Pi.star_apply, Complex.star_def] at key`. Use `key using 2 with a _ i _` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[mul_comm ((v ᵥ* R) a), mul_assoc, Complex.mul_conj']`. Rewrite using `[Complex.mul_conj']`.
+-/
 theorem signed_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (v : Fin p → ℂ) :
     ∑ a : Fin r, sgn p a * ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 = ∑ i, ‖v i‖ ^ 2 := by
@@ -63,6 +85,11 @@ theorem signed_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) �
   · rw [mul_comm ((v ᵥ* R) a), mul_assoc, Complex.mul_conj']
   · rw [Complex.mul_conj']
 
+/- English proof (translation)
+Rewrite using `[← signed_sum_rows hp h v, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun a : Fin r => (a : ℕ) < p), add_assoc, ← Finset.sum_add_distrib]`. Establish `e0 : ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), (sgn p a * ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 + ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2) = 0`. Use `Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations. Use `(Finset.mem_filter.1 ha).2` as an intermediate fact. Simplify using `[sgn, this]`.
+
+Rewrite using `[e0, add_zero]`. Use `symm`. Use `Finset.sum_bij (fun i _ => Fin.castLE hp i) (fun i _ => by simp) (fun i _ j _ hij => Fin.castLE_injective _ hij) (fun a ha => ?_) (fun i _ => ?_)` and prove the remaining obligations. Conclude with `⟨⟨a, (Finset.mem_filter.1 ha).2⟩, Finset.mem_univ _, rfl⟩`. Simplify using `[sgn, Matrix.vecMul, dotProduct]`.
+-/
 theorem neg_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (v : Fin p → ℂ) :
     ∑ i, ‖v i‖ ^ 2 + ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p),
@@ -84,6 +111,13 @@ theorem neg_sum_rows {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
   · exact ⟨⟨a, (Finset.mem_filter.1 ha).2⟩, Finset.mem_univ _, rfl⟩
   · simp [sgn, Matrix.vecMul, dotProduct]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `neg_sum_rows hp h v` as an intermediate fact. Rewrite `this` using `[hv0]`. Simplify using `only [Pi.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at this`.
+
+Establish `h1 : 0 ≤ ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), ‖(v ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `h2 : 0 ≤ ∑ i, ‖v i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `h3 : ∑ i, ‖v i‖ ^ 2 = 0` using `by linarith`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity).1 h3 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem det_block_ne_zero {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) :
     (g.submatrix (Fin.castLE hp) (Fin.castLE hp)).det ≠ 0 := by
@@ -102,6 +136,17 @@ theorem det_block_ne_zero {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r)
   have := (Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity).1 h3 i (Finset.mem_univ _)
   simpa using this
 
+/- English proof (translation)
+Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`. Establish `hinv : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul _ hu`. Distinguish the cases in `ha : (a : ℕ) < p`. Establish `: (A⁻¹ * g.submatrix (Fin.castLE hp) id) i a = (A⁻¹ * A) i ⟨a, ha⟩` using `rfl`.
+
+Rewrite using `[this, hinv, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hs` using `neg_sum_rows hp h (A⁻¹ i)`. Establish `e1 : ∀ j, (A⁻¹ i ᵥ* A) j = (1 : Matrix (Fin p) (Fin p) ℂ) i j` using `fun j => by`. Rewrite using `[← hinv]`.
+
+Both sides reduce to the same expression. Rewrite `hs` using `[← hA]`. Establish `e2 : ∑ j : Fin p, ‖(A⁻¹ i ᵥ* A) j‖ ^ 2 = 1`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj.symm]`. Simplify using the standard rewrite rules. Establish `h2 : 0 ≤ ∑ j, ‖A⁻¹ i j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`.
+
+Establish `h3 : ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 ≤ ∑ a ∈ Finset.univ.filter (fun a : Fin r => ¬ (a : ℕ) < p), ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2` using `Finset.single_le_sum (f := fun a => ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2) (fun _ _ => by positivity) (by simpa using ha)`. Establish `h4 : ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 ≤ 1` using `by linarith`. Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).1 h4`.
+-/
 theorem norm_entry_le_one {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r) ℂ}
     (h : g * sgnMat r p * gᴴ = sgnMat r p) (i : Fin p) (a : Fin r) :
     ‖((g.submatrix (Fin.castLE hp) (Fin.castLE hp))⁻¹ * g.submatrix (Fin.castLE hp) id) i a‖ ≤ 1 := by
@@ -130,6 +175,13 @@ theorem norm_entry_le_one {r p : ℕ} (hp : p ≤ r) {g : Matrix (Fin r) (Fin r)
     have h4 : ‖(A⁻¹ i ᵥ* g.submatrix (Fin.castLE hp) id) a‖ ^ 2 ≤ 1 := by linarith
     exact (sq_le_one_iff₀ (norm_nonneg _)).1 h4
 
+/- English proof (translation)
+Establish `hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖` using `(Continuous.matrix_det (A := fun N : Fin p → Fin p → ℂ => Matrix.of N) continuous_id).norm`. Take `⟨δ, hδ, H⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j)) (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun N hN => ?_⟩` and prove the remaining obligations. Use `@H (fun i j => N i j) (by` as an intermediate fact. Rewrite using `[dist_pi_lt_iff hδ]`.
+
+Introduce `i`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `j`. Rewrite using `[dist_eq_norm]`. Conclude with `hN i j)`.
+
+Establish `e : (Matrix.of fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j).det = 1` using `Matrix.det_one`. Rewrite `this` using `[e, norm_one, Real.dist_eq, abs_lt]`. Establish `e' : (Matrix.of fun i j => N i j) = N` using `rfl`. Rewrite `this` using `[e']`. Combine the linear relations using `[this.1]`.
+-/
 theorem exists_det_near_one (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix (Fin p) (Fin p) ℂ,
     (∀ i j, ‖(N - 1) i j‖ < δ) → 1 / 2 ≤ ‖N.det‖ := by
   have hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖ :=
@@ -147,6 +199,17 @@ theorem exists_det_near_one (p : ℕ) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix 
   rw [e'] at this
   linarith [this.1]
 
+/- English proof (translation)
+Take `⟨δ, hδ, H⟩` from `exists_det_near_one p`. Use `⟨δ / (r + 1), by positivity, fun g n h hn => ?_⟩` and prove the remaining obligations. Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Use `set R := g.submatrix (Fin.castLE hp) (id : Fin r → Fin r) with hR`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`.
+
+Establish `e1 : (g * n).submatrix (Fin.castLE hp) (Fin.castLE hp) = A * (A⁻¹ * R * n.submatrix id (Fin.castLE hp))`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `e2 : R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = A`. Establish `: R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = (g * 1).submatrix (Fin.castLE hp) (Fin.castLE hp)` using `rfl`.
+
+Rewrite using `[this, Matrix.mul_one]`. Establish `e3 : A⁻¹ * R * n.submatrix id (Fin.castLE hp) - 1 = A⁻¹ * R * (n - 1).submatrix id (Fin.castLE hp)`. Establish `: (n - 1).submatrix id (Fin.castLE hp) = n.submatrix id (Fin.castLE hp) - (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp)` using `rfl`. Rewrite using `[this, Matrix.mul_sub, Matrix.mul_assoc A⁻¹ R (Matrix.submatrix 1 _ _), e2, Matrix.nonsing_inv_mul _ hu]`. Establish `h1` using `H (A⁻¹ * R * n.submatrix id (Fin.castLE hp)) fun i j => by`.
+
+Rewrite using `[e3, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ < δ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e1, Matrix.det_mul, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg A.det]`.
+-/
 theorem exists_block_det_ge {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ ∧
     ∀ g n : Matrix (Fin r) (Fin r) ℂ, g * sgnMat r p * gᴴ = sgnMat r p →
       (∀ a b, ‖(n - 1) a b‖ ≤ δ) →
@@ -189,6 +252,11 @@ theorem exists_block_det_ge {r p : ℕ} (hp : p ≤ r) : ∃ δ : ℝ, 0 < δ �
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Simplify using `only [mat, nmat, Matrix.of_apply]`. Distinguish the cases in `h : b < a`. Rewrite using `[dif_pos h, if_neg h.ne', sub_zero]`. Conclude with `PiLp.norm_apply_le z _`.
+
+Rewrite using `[dif_neg h, sub_self, norm_zero]`. Conclude with `norm_nonneg _`.
+-/
 theorem norm_nmat_sub_one_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     ‖(mat (nmat X z) τ - 1) a b‖ ≤ ‖z‖ := by
   rw [Matrix.sub_apply, Matrix.one_apply]
@@ -199,6 +267,9 @@ theorem norm_nmat_sub_one_le {r : ℕ} (X : Data E r) (z : V (nd X)) (τ : X.Ψ)
   · rw [dif_neg h, sub_self, norm_zero]
     exact norm_nonneg _
 
+/- English proof (translation)
+Apply `mul_sgnMat_mul_conjTranspose` to reduce the goal to its premises. Establish `hu : IsUnit (mat x0 τ).det` using `(ExF.det_ne_of_orth X h0 τ).isUnit`. Use `FrameDegreeData.gram_mul τ.1 X.Gm (mat x0 τ) ((mat x0 τ)⁻¹ * mat x τ)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, hx τ, h0 τ]`. Conclude with `this.symm`.
+-/
 theorem isometry_of_orth {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0)
     (hx : IsOrth X x) (τ : X.Ψ) :
     ((mat x0 τ)⁻¹ * mat x τ) * sgnMat r X.p0 * ((mat x0 τ)⁻¹ * mat x τ)ᴴ = sgnMat r X.p0 := by
@@ -208,12 +279,24 @@ theorem isometry_of_orth {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : Is
   rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, hx τ, h0 τ] at this
   exact this.symm
 
+/- English proof (translation)
+Unfold `dmin`. Rewrite using `[ExF.mat_cpt, ExF.mat_cpt, FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, hx τ, h0 τ]`.
+-/
 theorem dmin_cpt_eq {r : ℕ} (X : Data E r) {x0 x : Frame X.Ψ r} (h0 : IsOrth X x0)
     (hx : IsOrth X x) (z : V (nd X)) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (cpt X x z) τ i = dmin X.Gm (cpt X x0 z) τ i := by
   unfold dmin
   rw [ExF.mat_cpt, ExF.mat_cpt, FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, hx τ, h0 τ]
 
+/- English proof (translation)
+Introduce `r X x0 h0`. Use `set i0 : Fin (r + 1) := ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ with hi0`. Take `⟨δ, hδ, H⟩` from `exists_block_det_ge X.p0_le`. Establish `hc : Continuous fun z : V (nd X) => fun τ : X.Ψ => dmin X.Gm (cpt X x0 z) τ i0` using `continuous_pi fun τ => (ExtFPf.cont_dmin X τ i0).comp (FundSetPf.cont_cpt (X := X) (x0 := x0))`. Take `⟨B, hB⟩` from `(isCompact_closedBall (0 : V (nd X)) δ).exists_bound_of_continuousOn hc.continuousOn`.
+
+Use `⟨δ, ∏ _τ : X.Ψ, (4 * B), hδ, fun x hx z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun τ _ => by positivity) fun τ _ => ?_` and prove the remaining obligations. Establish `hiso` using `isometry_of_orth X h0 hx τ`. Establish `h1 : ‖dmin X.Gm (cpt X x z) τ i0‖ ≤ B`.
+
+Rewrite using `[dmin_cpt_eq X h0 hx]`. Conclude with `(norm_le_pi_norm (fun τ : X.Ψ => dmin X.Gm (cpt X x0 z) τ i0) τ).trans (hB z (by simpa using hz.le))`. Establish `h2 : ‖lminor ((mat x0 τ)⁻¹ * mat x τ) i0‖ / 2 ≤ ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x z) τ) i0‖`. Rewrite using `[ExF.mat_cpt, ← Matrix.mul_assoc]`. Conclude with `H _ _ hiso fun a b => (norm_nmat_sub_one_le X z τ a b).trans hz.le`.
+
+Establish `h3 : 0 < ‖lminor ((mat x0 τ)⁻¹ * mat x τ) i0‖` using `norm_pos_iff.2 (det_block_ne_zero X.p0_le hiso)`. Rewrite using `[IC.norm_dmin_orth X hx]`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem minorRatio_near :
     (∀ (r : ℕ) (X : Data E r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∃ ρ C : ℝ, 0 < ρ ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → (∏ τ : X.Ψ, ‖dmin X.Gm (cpt X x z) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (cpt X x z) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2) ≤ C * (∏ τ : X.Ψ, ‖dmin X.Gm (x) τ (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ / ‖lminor ((mat x0 τ)⁻¹ * mat (x) τ) (⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ : Fin (r + 1))‖ ^ 2)) := by
   intro r X x0 h0

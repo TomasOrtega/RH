@@ -25,6 +25,9 @@ variable {B : Type} [Fintype B] {J : B → Type} [∀ k, Fintype (J k)]
 def chartEval {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : (k : B) → J k) : MRing J →ₐ[ℤ] Ω :=
   MvPolynomial.aeval fun q => y q / y ⟨q.1, c q.1⟩
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ q.1), map_mul, map_mul, ← mul_assoc]`. Use `congr 1`. Simplify using `only [mConeMap, MvPolynomial.aeval_X]`. Rewrite using `[← mul_assoc, ← map_mul, div_mul_cancel₀ _ (hy _)]`.
+-/
 theorem cone_step [DecidableEq B] {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (c : (k : B) → J k)
     (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (q : Σ k, J k) :
     mConeMap y (MvPolynomial.X q * ∏ l ∈ Finset.univ.erase q.1, MvPolynomial.X ⟨l, c l⟩) =
@@ -34,6 +37,15 @@ theorem cone_step [DecidableEq B] {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω
   simp only [mConeMap, MvPolynomial.aeval_X]
   rw [← mul_assoc, ← map_mul, div_mul_cancel₀ _ (hy _)]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, MvPolynomial.C a, by simp, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨N, f', h1, h2⟩` from `hf`. Take `⟨M, g', h3, h4⟩` from `hg`.
+
+Use `⟨N + M, f' * (∏ l, MvPolynomial.X ⟨l, c l⟩) ^ M + g' * (∏ l, MvPolynomial.X ⟨l, c l⟩) ^ N, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, h1, h3, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, h2, h4, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X f q hf`. Take `⟨N, f', h1, h2⟩` from `hf`. Use `⟨N + 1, f' * (MvPolynomial.X q * ∏ l ∈ Finset.univ.erase q.1, MvPolynomial.X ⟨l, c l⟩), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, cone_step y c hy, h1, map_mul, map_mul, chartEval, MvPolynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[map_mul, cone_step w c hw, h2, map_mul, map_mul, chartEval, MvPolynomial.aeval_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_homog {Ω K : Type} [Field Ω] [Field K] (y : (Σ k, J k) → Ω) (w : (Σ k, J k) → K)
     (c : (k : B) → J k) (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hw : ∀ k, w ⟨k, c k⟩ ≠ 0) (f : MRing J) :
     ∃ (N : ℕ) (g : MRing J),
@@ -54,14 +66,25 @@ theorem exists_homog {Ω K : Type} [Field Ω] [Field K] (y : (Σ k, J k) → Ω)
     · rw [map_mul, cone_step y c hy, h1, map_mul, map_mul, chartEval, MvPolynomial.aeval_X]; ring
     · rw [map_mul, cone_step w c hw, h2, map_mul, map_mul, chartEval, MvPolynomial.aeval_X]; ring
 
+/- English proof (translation)
+Simplify using `[mConeMap]`.
+-/
 theorem cone_X_eq_zero {Ω : Type} [Field Ω] (y : (Σ k, J k) → Ω) (q : Σ k, J k) :
     mConeMap y (MvPolynomial.X q) = 0 ↔ y q = 0 := by
   simp [mConeMap]
 
+/- English proof (translation)
+Introduce `h0` and use `hq ((cone_X_eq_zero w q).1 (h ((cone_X_eq_zero y q).2 h0)))`.
+-/
 theorem ne_zero_of_le {Ω K : Type} [Field Ω] [Field K] {y : (Σ k, J k) → Ω} {w : (Σ k, J k) → K}
     (h : mCoordIdeal y ≤ mCoordIdeal w) {q : Σ k, J k} (hq : w q ≠ 0) : y q ≠ 0 := fun h0 =>
   hq ((cone_X_eq_zero w q).1 (h ((cone_X_eq_zero y q).2 h0)))
 
+/- English proof (translation)
+Take `⟨N, g, h1, h2⟩` from `exists_homog y w c (fun k => ne_zero_of_le h (hw k)) hw f`. Rewrite `h1` using `[hf, map_zero, zero_mul]`. Establish `h3 : mConeMap w g = 0` using `h h1`. Rewrite `h3` using `[h2, mul_eq_zero]`. Break down `h3 with h3 | h3` into its components or cases.
+
+Conclude with `MvPolynomial.C_eq_zero.1 h3`. Establish `h4` using `pow_eq_zero_iff'.1 h3`. Rewrite `h4` using `[map_prod, Finset.prod_eq_zero_iff]`. Take `⟨⟨k, -, hk⟩, -⟩` from `h4`. Conclude with `absurd ((cone_X_eq_zero w _).1 hk) (hw k)`.
+-/
 theorem chartEval_ker {Ω K : Type} [Field Ω] [Field K] {y : (Σ k, J k) → Ω} {w : (Σ k, J k) → K}
     (h : mCoordIdeal y ≤ mCoordIdeal w) (c : (k : B) → J k) (hw : ∀ k, w ⟨k, c k⟩ ≠ 0) (f : MRing J)
     (hf : chartEval y c f = 0) : chartEval w c f = 0 := by
@@ -77,12 +100,22 @@ theorem chartEval_ker {Ω K : Type} [Field Ω] [Field K] {y : (Σ k, J k) → Ω
     exact absurd ((cone_X_eq_zero w _).1 hk) (hw k)
 
 omit [∀ k, Fintype (J k)] in
+/- English proof (translation)
+Rewrite using `[Conj.segre, Conj.segre, ← Finset.prod_div_distrib, Finset.prod_eq_single k (fun l _ hl => by`. Rewrite using `[Function.update_of_ne hl, div_self (h0 l)]) (by simp), Function.update_self]`.
+-/
 theorem segre_update [DecidableEq B] {Ω : Type} [Field Ω] {y : (Σ k, J k) → Ω} {c : (k : B) → J k}
     (h0 : ∀ k, y ⟨k, c k⟩ ≠ 0) (k : B) (j : J k) :
     segre y (Function.update c k j) / segre y c = y ⟨k, j⟩ / y ⟨k, c k⟩ := by
   rw [Conj.segre, Conj.segre, ← Finset.prod_div_distrib, Finset.prod_eq_single k (fun l _ hl => by
     rw [Function.update_of_ne hl, div_self (h0 l)]) (by simp), Function.update_self]
 
+/- English proof (translation)
+Establish `hle : Algebra.adjoin ℤ (Set.range fun j => segre y j / segre y c) ≤ (chartEval y c).range`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨∏ k, MvPolynomial.X ⟨k, j k⟩, ?_⟩` and prove the remaining obligations. Simplify using `[chartEval, Conj.segre]`.
+
+Set `π` to `(chartEval y c).rangeRestrict.toRingHom`. Establish `hπ : Function.Surjective π` using `(chartEval y c).rangeRestrict_surjective`. Set `ψ'` to `π.liftOfSurjective hπ ⟨(chartEval w c).toRingHom, fun f hf => chartEval_ker h c hw f (congrArg Subtype.val hf)⟩`. Establish `hψ' : ∀ f, ψ' (π f) = chartEval w c f` using `fun f => RingHom.liftOfSurjective_comp_apply _ _ _ _`. Use `⟨ψ'.comp (Subalgebra.inclusion hle).toRingHom, fun k j => ⟨Algebra.subset_adjoin ⟨Function.update c k j, segre_update (fun k => ne_zero_of_le h (hw k)) k j⟩, ?_⟩⟩` and prove the remaining obligations.
+
+Use `Eq.trans (congrArg ψ' (Subtype.ext ?_)) ((hψ' (MvPolynomial.X ⟨k, j⟩)).trans ?_)` and prove the remaining obligations. Conclude with `(MvPolynomial.aeval_X (fun q : Σ k, J k => y q / y ⟨q.1, c q.1⟩) ⟨k, j⟩).symm`. Conclude with `MvPolynomial.aeval_X _ _`.
+-/
 theorem exists_chart_hom {Ω K : Type} [Field Ω] [Field K] {y : (Σ k, J k) → Ω} {w : (Σ k, J k) → K}
     (h : mCoordIdeal y ≤ mCoordIdeal w) (c : (k : B) → J k) (hw : ∀ k, w ⟨k, c k⟩ ≠ 0) :
     ∃ ψ : Algebra.adjoin ℤ (Set.range fun j => segre y j / segre y c) →+* K,
@@ -108,9 +141,23 @@ end Alg
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one ⟨_, h.2.2⟩ (Subtype.ext (mul_inv_cancel₀ h.1))`.
+-/
 theorem isUnit_regAt {p : Cpt ξ} {a : regAt ξ p} (h : unitAt ξ p (a : Ω)) : IsUnit a :=
   IsUnit.of_mul_eq_one ⟨_, h.2.2⟩ (Subtype.ext (mul_inv_cancel₀ h.1))
 
+/- English proof (translation)
+Establish `hI : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime ψ`. Take `⟨p, ⟨hp, hu⟩, -⟩` from `GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ ℤ κ x tie c hc _ hI`. Establish `hle : ∀ a : Algebra.adjoin ℤ (Set.range fun j => x j / x c), (a : Ω) ∈ regAt ξ p` using `fun a => (tie.ring c hc a).1 a.2 p hp`. Set `ι : Algebra.adjoin ℤ (Set.range fun j => x j / x c) →+* regAt ξ p` to `(Algebra.adjoin ℤ (Set.range fun j => x j / x c)).val.toRingHom.codRestrict _ hle`. Set `_` to `ι.toAlgebra`.
+
+Establish `hsurj : ∀ a : regAt ξ p, ∃ s t, s ∉ RingHom.ker ψ ∧ a * ι s = ι t`. Introduce `a`. Take `⟨s, hs, h1, h2⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x tie c p hp a).1 a.2`. Conclude with `⟨⟨s, hs⟩, ⟨_, h2⟩, (hu _).2 h1, Subtype.ext (mul_comm _ _)⟩`. Establish `hloc : IsLocalization (RingHom.ker ψ).primeCompl (regAt ξ p)`.
+
+Use `(isLocalization_iff _ _).2 ⟨fun s => isUnit_regAt ((hu s).1 s.2), fun a => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Take `⟨s, t, hs, h⟩` from `hsurj a`. Conclude with `⟨⟨t, s, hs⟩, h⟩`. Conclude with `⟨1, by rw [show a = b from Subtype.ext (congrArg (fun u : regAt ξ p => (u : Ω)) hab)]⟩`. Set `φ : regAt ξ p →+* K` to `IsLocalization.lift (M := (RingHom.ker ψ).primeCompl) (g := ψ) fun s => IsUnit.mk0 _ s.2`.
+
+Establish `hφ : ∀ a, φ (ι a) = ψ a` using `fun a => IsLocalization.lift_eq _ a`. Establish `hl : IsLocalHom φ` using `⟨fun a ha => by`. Take `⟨s, t, hs, h⟩` from `hsurj a`. Establish `h1` using `congrArg φ h`. Rewrite `h1` using `[map_mul, hφ, hφ]`.
+
+Establish `ht : t ∉ RingHom.ker ψ` using `fun h0 => mul_ne_zero ha.ne_zero hs (h1.trans h0)`. Conclude with `isUnit_of_mul_isUnit_left (h ▸ isUnit_regAt (a := ι t) ((hu t).1 ht))⟩`. Take `⟨z, ⟨-, hz⟩, -⟩` from `GlobalTheory.T.existsUnique_centre_local_hom X Ω ξ tie.gen p K φ hl`. Conclude with `⟨z, fun a => hφ a ▸ hz (ι a)⟩`.
+-/
 theorem exists_point {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {c : κ} (hc : x c ≠ 0) {K : Type} [Field K]
     (ψ : Algebra.adjoin ℤ (Set.range fun j => x j / x c) →+* K) :
     ∃ z : Spec (CommRingCat.of K) ⟶ X,
@@ -143,18 +190,29 @@ theorem exists_point {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {c : 
   obtain ⟨z, ⟨-, hz⟩, -⟩ := GlobalTheory.T.existsUnique_centre_local_hom X Ω ξ tie.gen p K φ hl
   exact ⟨z, fun a => hφ a ▸ hz (ι a)⟩
 
+/- English proof (translation)
+Take `⟨φ, h1, h2⟩` from `ValHom.exists_valAt_hom X Ω ξ R z h hξ`. Take `⟨hm, rfl⟩` from `(h1 a r).1 ha`. Conclude with `h2 _`.
+-/
 theorem unitAt_of_val (hξ : IsCptGen ξ) {R : Type} [CommRing R] [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ X}
     (h : genPt ξ ⤳ centre z) {a : Ω} {r : R} (ha : ValAt ξ z a r) : IsUnit r ↔ unitAt ξ ⟨centre z, h⟩ a := by
   obtain ⟨φ, h1, h2⟩ := ValHom.exists_valAt_hom X Ω ξ R z h hξ
   obtain ⟨hm, rfl⟩ := (h1 a r).1 ha
   exact h2 _
 
+/- English proof (translation)
+Introduce `hu` and use `not_isUnit_zero (hp ▸ (unitAt_of_val hξ h ⟨h, (p : X.presheaf.stalk (centre z)), map_natCast _ _, map_natCast _ _⟩).2 hu)`.
+-/
 theorem inFibre_of_zero (hξ : IsCptGen ξ) {R : Type} [CommRing R] [IsLocalRing R]
     {z : Spec (CommRingCat.of R) ⟶ X} (h : genPt ξ ⤳ centre z) {p : ℕ} (hp : (p : R) = 0) :
     InFibre ξ p ⟨centre z, h⟩ := fun hu =>
   not_isUnit_zero (hp ▸ (unitAt_of_val hξ h ⟨h, (p : X.presheaf.stalk (centre z)), map_natCast _ _,
     map_natCast _ _⟩).2 hu)
 
+/- English proof (translation)
+Take `⟨W, hW, hm⟩` from `tie.affine c hp.1`. Establish `hmem : ∀ q : Cpt ξ, InChart ξ x c q → q.1 ∈ W` using `fun q hq => (hm q.1).2 ⟨q.2, hq⟩`. Take `⟨f, hf1, hf2⟩` from `hW.exists_basicOpen_le (V := U) ⟨p.1, hU⟩ (hmem p hp)`. Establish `hg : genPt ξ ∈ W` using `p.2.mem_open W.2 (hmem p hp)`. Establish `key : ∀ (q : Cpt ξ) (hq : q.1 ∈ W), genMap ξ q (X.presheaf.germ W q.1 hq f) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ W (genPt ξ) hg f)` using `fun q hq => congrArg (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ_stalkSpecializes_apply hq q.2 f)`.
+
+Use `⟨_, (tie.ring c hp.1 _).2 fun q hq => ⟨_, key q (hmem q hq)⟩, ?_, fun q hq hu => hf1 ?_⟩` and prove the remaining obligations. Rewrite using `[← key p (hmem p hp), ← ValHom.isUnit_iff_unitAt ξ tie.gen]`. Conclude with `(X.mem_basicOpen f p.1 (hmem p hp)).1 hf2`. Rewrite `hu` using `[← key q (hmem q hq), ← ValHom.isUnit_iff_unitAt ξ tie.gen]`. Conclude with `(X.mem_basicOpen f q.1 (hmem q hq)).2 hu`.
+-/
 theorem exists_chart_fun {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {c : κ} {p : Cpt ξ} (hp : InChart ξ x c p)
     {U : X.Opens} (hU : p.1 ∈ U) : ∃ a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c), unitAt ξ p a ∧
       ∀ q : Cpt ξ, InChart ξ x c q → unitAt ξ q a → q.1 ∈ U := by
@@ -171,6 +229,35 @@ theorem exists_chart_fun {κ : Type} {x : κ → Ω} (tie : CoordTie ℤ ξ x) {
   · rw [← key q (hmem q hq), ← ValHom.isUnit_iff_unitAt ξ tie.gen] at hu
     exact (X.mem_basicOpen f q.1 (hmem q hq)).2 hu
 
+/- English proof (translation)
+Introduce `X Ω _ ξ B _ J _ y tie K _ C w hle hw`. Establish `hξ` using `tie.gen`. Use `choose c hc using hw`. Establish `hy` using `fun k => ne_zero_of_le hle (hc k)`. Establish `hsc : segre y c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`.
+
+Take `⟨ψ, hψ⟩` from `exists_chart_hom hle c hc`. Take `⟨z, hz⟩` from `exists_point tie hsc ψ`. Establish `h₀ : genPt ξ ⤳ centre z` using `(hz 0).1`. Establish `hmem : ∀ j, segre y j / segre y c ∈ Algebra.adjoin ℤ (Set.range fun j => segre y j / segre y c)` using `fun j => Algebra.subset_adjoin ⟨j, rfl⟩`. Establish `hch : InChart ξ (segre y) c ⟨centre z, h₀⟩` using `⟨hsc, fun j => Val.mem (hz ⟨_, hmem j⟩) h₀⟩`.
+
+Use `choose x hx using fun i => (GlobalTheory.T.valuative_lift_existsUnique X Ω ξ _ _ tie K (C.v i).valuationSubring z h₀).exists`. Establish `hgen : ∀ i, Spec.map (CommRingCat.ofHom (C.v i).valuationSubring.subtype) ≫ x i = z` using `fun i => (hx i).2`. Establish `hunit : ∀ i (a : Ω) (r : K), a ∈ regAt ξ ⟨centre (x i), (hx i).1⟩ → ValAt ξ z a r → C.v i r = 1 → unitAt ξ ⟨centre (x i), (hx i).1⟩ a`. Introduce `i a r ha hr hv`. Take `⟨ρ, hρ⟩` from `Val.of_mem ha`.
+
+Establish `h1` using `LieTangent.valAt_base hξ (C.v i).valuationSubring.subtype hρ`. Rewrite `h1` using `[hgen i]`. Use `(unitAt_of_val hξ _ hρ).1 ?_` and prove the remaining obligations. Establish `h2 : (ρ : K) = r` using `LieTangent.valAt_unique hξ h1 hr`. Establish `h3 : r ≠ 0` using `fun h0 => by simp [h0] at hv`.
+
+Use `IsUnit.of_mul_eq_one ⟨r⁻¹, ?_⟩ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C.v i r⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hv, inv_one]`. Express the relevant statement in the definitionally equal form `(ρ : K) * r⁻¹ = 1`. Rewrite using `[h2, mul_inv_cancel₀ h3]`.
+
+Establish `hF : (⋃ j : {j // ψ ⟨_, hmem j⟩ ≠ 0}, {i | C.v i (ψ ⟨_, hmem j.1⟩) ≠ 1}).Finite` using `Set.finite_iUnion fun j => C.fin _ j.2`. Establish `hgood : ∀ i, i ∉ (⋃ j : {j // ψ ⟨_, hmem j⟩ ≠ 0}, {i | C.v i (ψ ⟨_, hmem j.1⟩) ≠ 1}) → InChart ξ (segre y) c ⟨centre (x i), (hx i).1⟩`. Introduce `i hi`. Take `⟨d, hd⟩` from `tie.cover ⟨centre (x i), (hx i).1⟩`. Take `⟨ρ, hρ⟩` from `Val.of_mem (hd.2 c)`.
+
+Establish `h1` using `LieTangent.valAt_base hξ (C.v i).valuationSubring.subtype hρ`. Rewrite `h1` using `[hgen i]`. Establish `h2` using `Val.mul h1 (hz ⟨_, hmem d⟩)`. Express the relevant statement in the definitionally equal form `ValAt ξ z (segre y c / segre y d * (segre y d / segre y c)) _ at h2`. Rewrite `h2` using `[div_mul_div_cancel₀ hd.1, div_self hsc]`.
+
+Establish `h3` using `LieTangent.valAt_unique hξ h2 (Val.one h₀)`. Establish `h4 : C.v i (ψ ⟨_, hmem d⟩) = 1`. Assume the negation of the conclusion as `hcon`. Conclude with `hi (Set.mem_iUnion.2 ⟨⟨d, right_ne_zero_of_mul_eq_one h3⟩, hcon⟩)`. Establish `h5` using `congrArg (C.v i) h3`.
+
+Rewrite `h5` using `[map_mul, h4, mul_one, map_one]`. Establish `h6` using `hunit i _ _ (hd.2 c) h1 h5`. Use `⟨hsc, fun j => ?_⟩` and prove the remaining obligations. Establish `h7` using `mul_mem (hd.2 j) h6.2.2`. Rewrite `h7` using `[inv_div, div_mul_div_cancel₀ hd.1]`. Then use the resulting hypothesis.
+
+Use `⟨z, ⟨x, hgen, fun U hU => ?_⟩, h₀, fun i => (hx i).1, ⟨fun k => ⟨c k, IsUnit.mk0 _ (hc k)⟩, fun k d hd => ⟨ne_zero_of_le hle hd.ne_zero, fun j => ?_⟩⟩, fun p hp => ⟨inFibre_of_zero hξ h₀ hp, fun i => inFibre_of_zero hξ _ (Subtype.ext (by simpa using hp))⟩⟩` and prove the remaining obligations. Take `⟨a, ha, hu, hq⟩` from `exists_chart_fun tie hch hU`. Establish `ha0 : ψ ⟨a, ha⟩ ≠ 0` using `((unitAt_of_val hξ h₀ (hz ⟨a, ha⟩)).2 hu).ne_zero`. Use `(hF.union (C.fin _ ha0)).subset fun i hi => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[Set.mem_union, not_or]`. Establish `h1` using `hgood i hcon.1`. Conclude with `hi (hq _ h1 (hunit i a _ ((tie.ring c hsc a).1 ha _ h1) (hz ⟨a, ha⟩) (not_not.1 hcon.2)))`. Take `⟨m1, e1⟩` from `hψ k d`. Take `⟨m2, e2⟩` from `hψ k j`.
+
+Establish `v1 : ValAt ξ z (y ⟨k, d⟩ / y ⟨k, c k⟩) (w ⟨k, d⟩ / w ⟨k, c k⟩)` using `e1 ▸ hz ⟨_, m1⟩`. Establish `v2 : ValAt ξ z (y ⟨k, j⟩ / y ⟨k, c k⟩) (w ⟨k, j⟩ / w ⟨k, c k⟩)` using `e2 ▸ hz ⟨_, m2⟩`. Establish `hu` using `(unitAt_of_val hξ h₀ v1).1 (IsUnit.mk0 _ (div_ne_zero hd.ne_zero (hc k)))`. Establish `hr` using `mul_mem (Val.mem v2 h₀) hu.2.2`. Rewrite `hr` using `[inv_div, div_mul_div_cancel₀ (hy k)]`.
+
+Take `⟨r, hr⟩` from `Val.of_mem hr`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Establish `h1` using `Val.mul hr v1`. Rewrite `h1` using `[div_mul_div_cancel₀ (ne_zero_of_le hle hd.ne_zero)]`. Establish `h2` using `LieTangent.valAt_unique hξ h1 v2`.
+
+Rewrite `h2` using `[← mul_div_assoc, div_left_inj' (hc k)]`. Conclude with `h2.symm`.
+-/
 theorem curve_in_cpt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (B : Type) [Fintype B] (J : B → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω), CoordTie ℤ ξ (segre y) → ∀ (K : Type) [Field K] (C : ACurve K) (w : (Σ k, J k) → K), mCoordIdeal y ≤ mCoordIdeal w → (∀ k, ∃ c, w ⟨k, c⟩ ≠ 0) → ∃ (z : Spec (CommRingCat.of K) ⟶ X) (Y : CurveIn C z) (h₀ : genPt ξ ⤳ centre z) (h : ∀ i, genPt ξ ⤳ centre (Y.x i)), CoordsAt ξ y z w ∧ ∀ p : ℕ, (p : K) = 0 → InFibre ξ p ⟨centre z, h₀⟩ ∧ ∀ i, InFibre ξ p ⟨centre (Y.x i), h i⟩ := by
   intro X Ω _ ξ B _ J _ y tie K _ C w hle hw
   classical

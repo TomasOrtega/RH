@@ -14,6 +14,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.EtLev GlobalTheory.UPel.HT.ES
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Establish `hmem : u - v ∈ wSub D 𝔞 r` using `(Submodule.Quotient.eq _).mp e`. Establish `h1 : l (u - v) = 1` using `hl.2.2.1 _ hmem`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem level_congr {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s} {𝔞 : Ideal (𝓞 D.F)} {r : ℕ} {T : Over S}
     {l : D.La → (T ⟶ o.A)} (hl : IsEtLevOver o 𝔞 r l) {u v : D.La}
@@ -24,6 +27,9 @@ private theorem level_congr {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [C
     _ = l (u - v) * l v := hl.1 _ _
     _ = l v := by rw [h1, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨g, -, huniq⟩` from `hrep T (fun y => f ≫ lu y) (GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu f hlu)`. Rewrite using `[huniq f (fun y => rfl), huniq f' (fun y => (h y).symm)]`.
+-/
 private theorem rep_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S : Scheme.{0}} {s : S ⟶ Sp R} {o : Obj b N s} {𝔞 : Ideal (𝓞 D.F)} {r : ℕ} {Y : Scheme.{0}} {π : Y ⟶ S}
     {lu : D.La → (Over.mk π ⟶ o.A)} (hlu : IsEtLevOver o 𝔞 r lu)
@@ -33,6 +39,39 @@ private theorem rep_ext {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommR
     (GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu f hlu)
   rw [huniq f (fun y => rfl), huniq f' (fun y => (h y).symm)]
 
+/- English proof (translation)
+Introduce `hRep hPt hGrp p _ D R _ b N 𝔞 r hN hcop het S _ s o`. Take `⟨Y, π, lu, hfin, het', hlu, hrep⟩` from `hRep p D R b N 𝔞 r hcop het S s o`. Take `⟨o', ⟨m⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N S Y s π o`. Establish `hpb` using `m.cart.1`. Establish `hluw : ∀ y, (lu y).left ≫ o.A.hom = 𝟙 Y ≫ π` using `fun y => by`.
+
+Rewrite using `[Category.id_comp]`. Conclude with `Over.w (lu y)`. Set `lv : D.La → (𝟙_ (Over Y) ⟶ o'.A)` to `fun y => Over.homMk (hpb.lift (lu y).left (𝟙 Y) (hluw y)) (by rw [hpb.lift_snd]; rfl)`. Establish `hlv : ∀ y, (lv y).left ≫ m.φ = (lu y).left` using `fun y => hpb.lift_fst _ _ _`. Establish `hlv2 : ∀ y, (lv y).left ≫ o'.A.hom = 𝟙 Y` using `fun y => hpb.lift_snd _ _ _`.
+
+Establish `hpt : ∀ y, ptOf m (lv y) = lu y` using `fun y => by ext1; exact hlv y`. Establish `hcomp : ∀ (a c : LevGrp D 𝔞 r) (y : D.La), lu (levAct a (levAct c y)) = lu (levAct (a * c) y)` using `fun a c y => level_congr hlu (by rw [mkQ_levAct, mkQ_levAct, mkQ_levAct]; rfl)`. Establish `hone : ∀ y, lu (levAct (1 : LevGrp D 𝔞 r) y) = lu y` using `fun y => level_congr hlu (by rw [mkQ_levAct]; rfl)`. Establish `hact : ∀ g : LevGrp D 𝔞 r, ∃ f : Over.mk π ⟶ Over.mk π, ∀ y, f ≫ lu y = lu (levAct g y)` using `fun g => (hrep _ _ (GlobalTheory.T.etale_level_group_action p D R b N S s o 𝔞 r _ lu g hlu)).exists`. Use `choose fg hfg using hact`.
+
+Establish `hfgeq : ∀ (f : Over.mk π ⟶ Over.mk π) (g : LevGrp D 𝔞 r), (∀ y, f ≫ lu y = lu (levAct g y)) → f = fg g` using `fun f g hf => rep_ext hlu hrep (fun y => by rw [hf, hfg])`. Use `⟨Y, π, o', m, lv, fun g => (fg g).left, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.isEtLev_iff_isEtLevOver' p D R b N S Y s π (π ≫ s) o o' m 𝔞 r lv]`. Simplify `hlu` using `only [hpt]`. Use `⟨(hGrp p D 𝔞 r het.1).2, ?_, ?_, ?_, hfin, het', ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (fg 1).left = 𝟙 Y`. Rewrite using `[← hfgeq (𝟙 _) 1 (fun y => by rw [Category.id_comp, hone])]`. Both sides reduce to the same expression. Introduce `a c show (fg (a * c)).left = (fg a).left ≫ (fg c).left`. Rewrite using `[← hfgeq (fg a ≫ fg c) (a * c) (fun y => by rw [Category.assoc, hfg, hfg, hcomp])]`.
+
+Both sides reduce to the same expression. Introduce `a`. Conclude with `Over.w (fg a)`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+
+Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point S x`. Take `⟨l, hl⟩` from `hPt p D R b N 𝔞 r hcop het S s o k a`. Take `⟨f, -, -⟩` from `hrep _ l hl`. Establish `hx : x ∈ Set.range ⇑a` using `by rw [ha]; rfl`. Take `⟨q, hq⟩` from `hx`.
+
+Establish `hw : f.left ≫ π = a` using `Over.w f`. Use `⟨f.left q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, ← Scheme.Hom.comp_apply, hw]`. Introduce `K _ _ y y' hyy`. Set `j : Over.mk (y ≫ π) ⟶ Over.mk π` to `Over.homMk y rfl`.
+
+Set `j' : Over.mk (y ≫ π) ⟶ Over.mk π` to `Over.homMk y' hyy.symm`. Establish `hl` using `GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu j hlu`. Establish `hl'` using `GlobalTheory.T.etale_level_base_change p D R b N S s o 𝔞 r _ _ lu j' hlu`. Take `⟨g, hg, hguniq⟩` from `GlobalTheory.T.existsUnique_levGrp_of_isEtLevOver p D R b N S s o 𝔞 r K (y ≫ π) _ _ hl hl'`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: j ≫ fg g = j'` using `rep_ext hlu hrep (fun z => by rw [Category.assoc, hfg]; exact hg z)`. Conclude with `congrArg (fun q => Over.Hom.left q) this`. Introduce `a ha`. Apply `hguniq` to reduce the goal to its premises. Introduce `z`.
+
+Use `show j ≫ lu (levAct a z) = j' ≫ lu z`. Establish `: j ≫ fg a = j'` using `by ext1; exact ha`. Rewrite using `[← hfg, ← Category.assoc, this]`. Introduce `T t o₁ m₁ l hl`. Establish `hl'` using `(GlobalTheory.T.isEtLev_iff_isEtLevOver' p D R b N S T s t (t ≫ s) o o₁ m₁ 𝔞 r l).mp hl`.
+
+Take `⟨g, hg, hguniq⟩` from `hrep (Over.mk t) _ hl'`. Establish `hgw : g.left ≫ π = t` using `Over.w g`. Establish `hφ : ∀ (f : T ⟶ Y) (_ : f ≫ π = t) (m₃ : GlobalTheory.UPel.HT.ObjMap o₁ o (f ≫ π)), m₃.φ = m₁.φ` using `fun f hf m₃ => Rigid.objMap_phi_unique p D R b N hN hcop S T s (t ≫ s) o o₁ (f ≫ π) t m₃ m₁ hf`. Establish `hgl : ∀ y, (l y).left ≫ m₁.φ = g.left ≫ (lu y).left` using `fun y => by`. Use `congrArg (fun q => Over.Hom.left q) (hg y)` as an intermediate fact.
+
+Conclude with `this.symm`. Use `⟨g.left, ⟨hgw, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨m₂, hm₂⟩` from `GlobalTheory.HTSympCover.exists_objMap_cancel_φ (by rw [hgw]; exact m₁ : GlobalTheory.UPel.HT.ObjMap o₁ o (g.left ≫ π)) m`. Use `⟨m₂, fun y => ?_⟩` and prove the remaining obligations. Apply `hpb.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hm₂, hφ _ hgw, Category.assoc, hlv, hgl]`. Rewrite using `[Category.assoc, m₂.cart.1.w, ← Category.assoc, Over.w (l y), Category.assoc, hlv2, Category.comp_id]`. Conclude with `Category.id_comp _`. Introduce and unpack `f' ⟨hf', m₂', hm₂'⟩`. Take `⟨m₃, hm₃⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₂' m`.
+
+Establish `: (Over.homMk f' hf' : Over.mk t ⟶ Over.mk π) = g`. Apply `hguniq` to reduce the goal to its premises. Introduce `y`. Use `ext1`. Use `show f' ≫ (lu y).left = (l y).left ≫ m₁.φ`.
+
+Rewrite using `[← hlv, ← Category.assoc, ← hm₂' y, Category.assoc, ← hm₃, hφ f' hf' m₃]`. Conclude with `congrArg (fun q => Over.Hom.left q) this`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.finCover_holds :
     RepAll → PtAll → GrpFin → FinCover := by
   intro hRep hPt hGrp p _ D R _ b N 𝔞 r hN hcop het S _ s o

@@ -18,14 +18,23 @@ namespace GlobalTheory.FN
 
 variable {Ω : Type} [Field Ω] (ε : Ω →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_cuspExpansionAtInfinity_of_someLevel Ω ε a (((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 a).1 a.2)`.
+-/
 theorem exists_isExp_of_mem_ring (a : ring ε.range) : ∃ h : HahnSeries ℚ Ω, IsExp ε a h :=
   GlobalTheory.T.exists_cuspExpansionAtInfinity_of_someLevel Ω ε a (((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 a).1 a.2)
 
 def expan (a : ring ε.range) : HahnSeries ℚ Ω := Classical.choose (exists_isExp_of_mem_ring ε a)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_isExp_of_mem_ring ε a)`.
+-/
 theorem isExp_expan (a : ring ε.range) : IsExp ε a (expan ε a) :=
   Classical.choose_spec (exists_isExp_of_mem_ring ε a)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).2.1 _ _ _ (isExp_expan ε a) ha`.
+-/
 theorem expan_eq_of_isExp {a : ring ε.range} {h : HahnSeries ℚ Ω} (ha : IsExp ε a h) : expan ε a = h :=
   (GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).2.1 _ _ _ (isExp_expan ε a) ha
 
@@ -50,6 +59,11 @@ def expanHom : ring ε.range →+* HahnSeries ℚ Ω where
     have h := ((GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).1 _ _ _ _ (isExp_expan ε a) (isExp_expan ε b)).1
     simpa using h
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hsub` using `((GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).1 _ _ _ _ (isExp_expan ε a) (isExp_expan ε b)).2.1`. Establish `h0 : expan ε a - expan ε b = 0` using `sub_eq_zero.mpr hab`. Rewrite `hsub` using `[h0]`. Establish `hmem : ((a - b : ring ε.range) : ℍ → ℂ) ∈ ring ε.range` using `(a - b).2`.
+
+Establish `hin : InR ε.range ((a - b : ring ε.range) : ℍ → ℂ)` using `((GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1 _).1 hmem`. Establish `hhol` using `GlobalTheory.T.mdifferentiable_of_hasSomeLevelOver ε.range _ hin`. Move the coercions through the operations in `at hhol`. Use `(GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).2.2.2.1 _ hhol hsub` as an intermediate fact. Conclude with `Subtype.ext (sub_eq_zero.mp this)`.
+-/
 theorem expanHom_injective : Function.Injective (expanHom ε) := by
   intro a b hab
   have hsub := ((GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).1 _ _ _ _ (isExp_expan ε a) (isExp_expan ε b)).2.1
@@ -62,6 +76,9 @@ theorem expanHom_injective : Function.Injective (expanHom ε) := by
   have := (GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε).2.2.2.1 _ hhol hsub
   exact Subtype.ext (sub_eq_zero.mp this)
 
+/- English proof (translation)
+Introduce `_ _ ε` and use `⟨expanHom ε, expanHom_injective ε, isExp_expan ε⟩`.
+-/
 theorem expansion_injective_ringHom :
     ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ), ∃ e : GlobalTheory.FN.ring ε.range →+* HahnSeries ℚ Ω,
       Function.Injective e ∧ ∀ a : GlobalTheory.FN.ring ε.range, IsExp ε a (e a) :=

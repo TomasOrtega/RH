@@ -11,6 +11,13 @@ namespace GlobalTheory.Published.LanglandsSumTests
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {χ : kˣ →* ℂˣ}
 
+/- English proof (translation)
+Take `⟨V, _, _, π, f, ⟨φ⟩, hf, h0, h, h1⟩` from `exists_line hη`. Establish `hi : (detRep (Fin 2) η).IsIrreducible` using `isIrreducible_ofChar _`. Use `⟨?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[← jhMult_congr_right _ φ, JHMult.jhMult_exact f (quotMk f.range) hi hf f.range.toSubmodule.mkQ_surjective (fun u => (Submodule.Quotient.mk_eq_zero _).2 ⟨u, rfl⟩) (fun v hv => (Submodule.Quotient.mk_eq_zero _).1 hv), jhMult_self hi]`. Establish `: jhMult (detRep (Fin 2) η) (quot f.range) = 0`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨e⟩` from `(JHMult.jhMult_ne_zero_iff.1 hne).nonempty_equiv hi (isCosocle_quot h0 h).1`. Conclude with `h1.false e.toLinearEquiv`. Rewrite using `[this, add_zero]`. Establish `H' : π.IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv φ.symm H`.
+
+Break down `eq_bot_or_eq_top f.range with e | e` into its components or cases. Conclude with `(isAtom_range hi f hf).1 e`. Conclude with `h0 e`.
+-/
 theorem jhMult_parInd {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
     jhMult (detRep (Fin 2) η) (parInd pts (ofChar (detLevi pts η))) = 1 ∧
       ¬ (parInd pts (ofChar (detLevi pts η))).IsIrreducible := by
@@ -31,6 +38,11 @@ theorem jhMult_parInd {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
     · exact (isAtom_range hi f hf).1 e
     · exact h0 e
 
+/- English proof (translation)
+Establish `hν` using `hχ.mul (isSmoothChar_absPow (k := k) 1)`. Take `⟨a⟩` from `nonempty_prod₂_equiv_prodIrr _ (IrrRep.det (Fin 1) χ hχ).smooth (IrrRep.det (Fin 1) χ hχ).irr _ (IrrRep.det (Fin 1) _ hν).smooth (IrrRep.det (Fin 1) _ hν).irr rfl`. Take `⟨hd, ⟨ψ⟩⟩` from `exists_equiv_prodIrr (θ := ![χ, χ * absPow k 1]) (Fin.forall_fin_two.2 ⟨hχ, hν⟩) (x := ![IrrGL.of _ (IrrRep.det (Fin 1) χ hχ).smooth (IrrRep.det (Fin 1) χ hχ).irr, IrrGL.of _ (IrrRep.det (Fin 1) _ hν).smooth (IrrRep.det (Fin 1) _ hν).irr]) (Fin.forall_fin_two.2 ⟨rfl, rfl⟩) (Θ := …`. Rewrite using `[detLevi_pts, Fin.prod_univ_two, mul_assoc χ, mul_assoc χ, ← absPow_add, ← absPow_add]`. Evaluate the numerical expressions.
+
+Conclude with `⟨Representation.Equiv.trans ψ (Representation.Equiv.symm a)⟩`.
+-/
 theorem nonempty_equiv_prod (hχ : IsSmoothChar χ) :
     Nonempty ((parInd pts (ofChar (detLevi pts (χ * absPow k (1 / 2))))).Equiv
       (prod₂ (detRep (Fin 1) χ) (detRep (Fin 1) (χ * absPow k 1)))) := by
@@ -47,17 +59,30 @@ theorem nonempty_equiv_prod (hχ : IsSmoothChar χ) :
       norm_num
   exact ⟨Representation.Equiv.trans ψ (Representation.Equiv.symm a)⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `(single_spec hy).2.2.2.of_equiv (equivRep (IrrRep.det (Fin 1) χ hχ)).symm`.
+-/
 theorem isL_char {y : IrrGL k} (hy : y.IsCusp) (hχ : IsSmoothChar χ) (e : y = IrrGL.ofChar χ hχ) :
     IsL {Segment.single y hy} (detRep (Fin 1) χ) := by
   subst e
   exact (single_spec hy).2.2.2.of_equiv (equivRep (IrrRep.det (Fin 1) χ hχ)).symm
 
+/- English proof (translation)
+Take `⟨n, c⟩` from `x`. Take `⟨d, c'⟩` from `ρ`. Take `rfl : d = n` from `(one_mul d).symm.trans h.deg_eq`. Conclude with `congrArg _ (irrCl_eq_iff.2 ((single_spec hρ).2.1.unique h))`.
+-/
 theorem eq_of_isLSeg_single {ρ x : IrrGL k} (hρ : ρ.IsCusp) (h : IsLSeg (.single ρ hρ) x.rep) : x = ρ := by
   obtain ⟨n, c⟩ := x
   obtain ⟨d, c'⟩ := ρ
   obtain rfl : d = n := (one_mul d).symm.trans h.deg_eq
   exact congrArg _ (irrCl_eq_iff.2 ((single_spec hρ).2.1.unique h))
 
+/- English proof (translation)
+Take `⟨Δ, ⟨hm, ho⟩, hΔ⟩` from `H`. Take `rfl : h = 2` from `by simpa using congrArg Multiset.card hm`. Establish `hm' : ({Δ 0, Δ 1} : Multiset (Segment k)) = {.single _ (IrrGL.isCusp_ofChar χ hχ), .single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)}` using `hm`. Establish `hp` using `single_precedes χ hχ`. Establish `h01 : Δ 0 = .single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1) ∧ Δ 1 = .single _ (IrrGL.isCusp_ofChar χ hχ)`.
+
+Break down `Multiset.cons_eq_cons.1 hm' with ⟨a, b⟩ | ⟨-, s, a, b⟩` into its components or cases. Conclude with `absurd hp.1 (by rw [← a, ← Multiset.singleton_inj.1 b]; exact ho 0 1 (by decide))`. Take `rfl : s = 0` from `by simpa using congrArg Multiset.card a`. Conclude with `⟨(Multiset.singleton_inj.1 b).symm, Multiset.singleton_inj.1 a⟩`. Use `⟨rfl, heq_of_eq (funext (Fin.forall_fin_two.2 ⟨?_, ?_⟩))⟩` and prove the remaining obligations.
+
+Conclude with `eq_of_isLSeg_single _ (h01.1 ▸ hΔ 0)`. Conclude with `eq_of_isLSeg_single _ (h01.2 ▸ hΔ 1)`.
+-/
 theorem factors_eq (hχ : IsSmoothChar χ) {h : ℕ} {x : Fin h → IrrGL k}
     (H : LFactors ({Segment.single _ (IrrGL.isCusp_ofChar χ hχ)} +
       {Segment.single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)}) x) :
@@ -76,6 +101,11 @@ theorem factors_eq (hχ : IsSmoothChar χ) {h : ℕ} {x : Fin h → IrrGL k}
   · exact eq_of_isLSeg_single _ (h01.1 ▸ hΔ 0)
   · exact eq_of_isLSeg_single _ (h01.2 ▸ hΔ 1)
 
+/- English proof (translation)
+Take `⟨_, x, hd, hx, hc⟩` from `H`. Take `⟨_, y, hd', hy, hc'⟩` from `isL_detRep_two hχ`. Take `⟨rfl, h1⟩` from `factors_eq hχ hx`. Take `⟨rfl, h2⟩` from `factors_eq hχ hy`. Take `rfl : x = y` from `eq_of_heq (h1.trans h2.symm)`.
+
+Conclude with `hc'.unique hc`.
+-/
 theorem equiv_of_isL (hχ : IsSmoothChar χ) {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin 2) k) V} (H : IsL ({Segment.single _ (IrrGL.isCusp_ofChar χ hχ)} +
       {Segment.single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)}) π) :
@@ -87,6 +117,11 @@ theorem equiv_of_isL (hχ : IsSmoothChar χ) {V : Type} [AddCommGroup V] [Module
   obtain rfl : x = y := eq_of_heq (h1.trans h2.symm)
   exact hc'.unique hc
 
+/- English proof (translation)
+Establish `hη` using `hχ.mul (isSmoothChar_absPow (k := k) (1 / 2))`. Take `⟨φ⟩` from `nonempty_equiv_prod hχ`. Use `⟨_, _, IrrRep.det (Fin 1) χ hχ, IrrRep.det (Fin 1) _ (hχ.mul (isSmoothChar_absPow 1)), isL_char (IrrGL.isCusp_ofChar χ hχ) hχ rfl, isL_char ((IrrGL.isCusp_ofChar χ hχ).nu 1) _ (IrrGL.tw_ofChar _ _ hχ (isSmoothChar_absPow _)), fun H => (jhMult_parInd hη).2 (GlobalTheory.Parabolic. …` and prove the remaining obligations. Take `⟨e⟩` from `equiv_of_isL hχ h`. Establish `h1` using `jhMult_congr_right (detRep (Fin 2) (χ * absPow k (1 / 2))) φ`.
+
+Rewrite `h1` using `[(jhMult_parInd hη).1]`. Establish `h2` using `jhMult_congr_left e (prod₂ (detRep (Fin 1) χ) (detRep (Fin 1) (χ * absPow k 1)))`. Conclude with `h2.trans h1.symm`.
+-/
 theorem linked_case (hχ : IsSmoothChar χ) :
     ∃ (𝔪 𝔫 : Multiset (Segment k)) (π₁ π₂ : IrrRep (GL (Fin 1) k)),
       IsL 𝔪 π₁.ρ ∧ IsL 𝔫 π₂.ρ ∧ ¬ (prod₂ π₁.ρ π₂.ρ).IsIrreducible ∧
@@ -105,9 +140,19 @@ theorem linked_case (hχ : IsSmoothChar χ) :
   have h2 := jhMult_congr_left e (prod₂ (detRep (Fin 1) χ) (detRep (Fin 1) (χ * absPow k 1)))
   exact h2.trans h1.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, isSmoothChar_one⟩`.
+-/
 example : IsNonarchimedeanLocalField ℚ_[2] ∧ CharZero ℚ_[2] ∧ IsSmoothChar (1 : ℚ_[2]ˣ →* ℂˣ) :=
   ⟨inferInstance, inferInstance, isSmoothChar_one⟩
 
+/- English proof (translation)
+Establish `hg : ∀ g : GL (Fin 0) k, g = 1` using `fun g => Units.ext (Subsingleton.elim _ _)`. Set `f : ℂ →ₗ[ℂ] IndSp e ρ` to `{ toFun := fun c => ⟨⟨fun _ => L c, fun p g => by`. Take `rfl : p = 1` from `Subtype.ext (hg _)`. Use the proof step `simp⟩, mem_smoothPart_of_nhds (Filter.Eventually.of_forall fun g => rfl)⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (Subtype.ext (funext fun _ => map_add L a b))`.
+
+Use the proof step `map_smul' := fun a b => Subtype.ext (Subtype.ext (funext fun _ => map_smul L a b)) }`. Use `⟨equivOfBijective ⟨f, fun g => by rw [hg g, map_one, map_one]; rfl⟩ ⟨fun a b h => ?_, fun φ => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : L a = L b` using `congrArg (fun φ : IndSp e ρ => φ.1.1 1) h`. Conclude with `L.injective h1`. Use `⟨L.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun g => ?_))⟩` and prove the remaining obligations.
+
+Rewrite using `[hg g]`. Conclude with `L.apply_symm_apply _`.
+-/
 theorem nonempty_equiv_parInd_zero {α V : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [AddCommGroup V] [Module ℂ V] (e : (Σ a, m a) ≃ Fin 0)
     (ρ : Representation ℂ (Levi k m) V) (L : ℂ ≃ₗ[ℂ] V) :
@@ -126,6 +171,11 @@ theorem nonempty_equiv_parInd_zero {α V : Type} {m : α → Type} [Fintype α] 
     rw [hg g]
     exact L.apply_symm_apply _
 
+/- English proof (translation)
+Establish `h0 : 𝔪 = 0` using `Multiset.eq_zero_of_forall_notMem fun Δ hΔ => by`. Use `Multiset.sum_eq_zero_iff.1 (Tests.IsL_deg h) _ (Multiset.mem_map_of_mem _ hΔ)` as an intermediate fact. Conclude with `(Nat.mul_pos Δ.len_pos Δ.d_pos).ne' this`. Substitute `h0` using the available equality. Take `⟨s, x, hd, ⟨Δ, ⟨hm, -⟩, -⟩, hc⟩` from `h`.
+
+Take `rfl : s = 0` from `by simpa using congrArg Multiset.card hm`. Take `⟨φ⟩` from `Tests.nonempty_equiv_prodIrr_zero x hd`. Conclude with `⟨rfl, ((isCosocle_self (isIrreducible_ofChar _)).of_equiv (.refl _) φ).unique hc⟩`.
+-/
 theorem isL_rank_zero {𝔪 : Multiset (Segment k)} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin 0) k) V} (h : IsL 𝔪 π) :
     𝔪 = 0 ∧ Nonempty (π.Equiv (detRep (Fin 0) (1 : kˣ →* ℂˣ))) := by
@@ -138,6 +188,11 @@ theorem isL_rank_zero {𝔪 : Multiset (Segment k)} {V : Type} [AddCommGroup V] 
   obtain ⟨φ⟩ := Tests.nonempty_equiv_prodIrr_zero x hd
   exact ⟨rfl, ((isCosocle_self (isIrreducible_ofChar _)).of_equiv (.refl _) φ).unique hc⟩
 
+/- English proof (translation)
+Take `⟨rfl, ⟨a⟩⟩` from `isL_rank_zero h₁`. Take `⟨rfl, ⟨b⟩⟩` from `isL_rank_zero h₂`. Use `⟨⟨π₁, h₁⟩, fun π h => ?_⟩` and prove the remaining obligations. Take `⟨-, ⟨c⟩⟩` from `isL_rank_zero h`. Take `⟨φ⟩` from `nonempty_equiv_parInd_zero (two (stdSum (rfl : 0 + 0 = 0 + 0))) ((extTensor π₁.ρ π₂.ρ).comp (leviTwo k _ _).symm.toMonoidHom) ((TensorProduct.lid ℂ ℂ).symm.trans (TensorProduct.congr a.symm.toLinearEquiv b.symm.toLinearEquiv))`.
+
+Establish `h1` using `jhMult_congr_right (detRep (Fin 0) (1 : kˣ →* ℂˣ)) φ`. Rewrite `h1` using `[jhMult_self (σ := detRep (Fin 0) (1 : kˣ →* ℂˣ)) (isIrreducible_ofChar _)]`. Conclude with `(jhMult_congr_left c _).trans h1.symm`.
+-/
 theorem rank_zero_case (𝔪 𝔫 : Multiset (Segment k)) (π₁ π₂ : IrrRep (GL (Fin 0) k)) (h₁ : IsL 𝔪 π₁.ρ)
     (h₂ : IsL 𝔫 π₂.ρ) : (∃ π : IrrRep (GL (Fin (0 + 0)) k), IsL (𝔪 + 𝔫) π.ρ) ∧
       ∀ π : IrrRep (GL (Fin (0 + 0)) k), IsL (𝔪 + 𝔫) π.ρ → jhMult π.ρ (prod₂ π₁.ρ π₂.ρ) = 1 := by

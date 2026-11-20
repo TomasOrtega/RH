@@ -9,6 +9,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.SegNu
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `haveI := hi`. Use `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤) (Subrepresentation.toSubmodule_injective ?_)` and prove the remaining obligations. Use `show (⊥ : Submodule ℂ V) = ⊤`.
+
+Use extensionality with `v`. Simplify using `[h v]`.
+-/
 theorem exists_ne_zero_of_irr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} (hi : π.IsIrreducible) : ∃ v : V, v ≠ 0 := by
   by_contra h
@@ -19,6 +24,15 @@ theorem exists_ne_zero_of_irr {G V : Type} [Group G] [AddCommGroup V] [Module �
   ext v
   simp [h v]
 
+/- English proof (translation)
+Use `haveI := hi`. Set `E : Subrepresentation π` to `{ toSubmodule := LinearMap.ker (π z - c • (1 : Module.End ℂ V)) apply_mem_toSubmodule := fun g v hv => by`. Establish `hv' : π z v = c • v`. Simplify `hv` using `[sub_eq_zero]`. Establish `h1 : π z (π g v) = π g (π z v)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, hz, map_mul, Module.End.mul_apply]`. Simplify using `[sub_eq_zero, h1, hv'] }`. Establish `hE : E ≠ ⊥` using `fun h => hw (by`. Establish `h1 : w ∈ E.toSubmodule` using `by show w ∈ LinearMap.ker (π z - c • (1 : Module.End ℂ V))`. Simplify using `[sub_eq_zero, hc]`.
+
+Rewrite `h1` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 h1)`. Establish `hT : E = ⊤` using `(eq_bot_or_eq_top E).resolve_left hE`. Establish `h2 : v ∈ E.toSubmodule`. Rewrite using `[hT]`.
+
+Conclude with `Submodule.mem_top`. Establish `h3 : v ∈ LinearMap.ker (π z - c • (1 : Module.End ℂ V))` using `h2`. Simplify `h3` using `[sub_eq_zero]`.
+-/
 theorem eq_smul_of_eigenvector {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ G V} (hi : π.IsIrreducible) {z : G} (hz : ∀ g, z * g = g * z) {c : ℂ} {w : V}
     (hw : w ≠ 0) (hc : π z w = c • w) (v : V) : π z v = c • v := by
@@ -46,6 +60,21 @@ theorem eq_smul_of_eigenvector {G V : Type} [Group G] [AddCommGroup V] [Module �
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne_zero_of_irr hi`. Set `S : Subgroup (GL (Fin n) k)` to `{ carrier := {g | π g v = v} mul_mem' := fun {a b} ha hb => by`. Establish `ha' : π a v = v` using `ha`. Establish `hb' : π b v = v` using `hb`. Use `show π (a * b) v = v`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `one_mem' := by show π 1 v = v`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := fun {a} ha => by`. Establish `ha' : π a v = v` using `ha`.
+
+Use `show π a⁻¹ v = v`. Use `conv_lhs => rw [← ha']`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `hSo : IsOpen (S : Set (GL (Fin n) k))` using `ha.1 v`.
+
+Set `K : Subgroup (GL (Fin n) k)` to `S ⊓ KO k (Fin n)`. Establish `hKo : IsOpen (K : Set (GL (Fin n) k))` using `hSo.inter SplitFlip.isOpen_KO`. Establish `hKc : IsCompact (K : Set (GL (Fin n) k))` using `SplitFlip.isCompact_KO.of_isClosed_subset (K.isClosed_of_isOpen hKo) Set.inter_subset_right`. Use `haveI : FiniteDimensional ℂ (fixed π K) := ha.2 K hKo hKc`. Establish `hvK : v ∈ fixed π K` using `fun h => by`.
+
+Establish `h' : π (h : GL (Fin n) k) v = v` using `h.2.1`. Simplify using `using h'`. Use `haveI : Nontrivial (fixed π K) := ⟨⟨⟨v, hvK⟩, 0, fun e => hv (congrArg Subtype.val e)⟩⟩`. Establish `hst : ∀ u ∈ fixed π K, π z u ∈ fixed π K` using `fun u hu h => by`. Establish `hu'` using `hu h`.
+
+Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul] at hu' ⊢`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hz, map_mul, Module.End.mul_apply, hu']`. Set `T : Module.End ℂ (fixed π K)` to `(π z).restrict hst`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`.
+
+Establish `h1 : π z (w : V) = c • (w : V)` using `congrArg Subtype.val hw.apply_eq_smul`. Establish `h2 : (w : V) ≠ 0` using `fun e => hw.2 (Subtype.ext e)`. Conclude with `⟨c, eq_smul_of_eigenvector hi hz h2 h1⟩`.
+-/
 theorem exists_scalar {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) k) V}
     (ha : IsAdmissible π) (hi : π.IsIrreducible) {z : GL (Fin n) k} (hz : ∀ g, z * g = g * z) :
     ∃ ω : ℂ, ∀ v, π z v = ω • v := by
@@ -87,6 +116,23 @@ theorem exists_scalar {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π :
   have h2 : (w : V) ≠ 0 := fun e => hw.2 (Subtype.ext e)
   exact ⟨c, eq_smul_of_eigenvector hi hz h2 h1⟩
 
+/- English proof (translation)
+Establish `h1` using `IrrGL.tw_of x.rep x.2.rep.smooth x.2.rep.irr (absPow k (s : ℂ)) (isSmoothChar_absPow _)`. Rewrite `h1` using `[IrrGL.of_rep]`. Take `⟨φ⟩` from `IrrGL.of_eq_of.1 (h1.symm.trans (hs.trans (IrrGL.of_rep x).symm))`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Set `z : GL (Fin x.1) k` to `GeneralLinearGroup.scalar (Fin x.1) ϖ`.
+
+Establish `hz : ∀ g, z * g = g * z` using `fun g => by`. Use extensionality with `i j`. Simplify using `[z, GeneralLinearGroup.scalar, Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`. Establish `hdet : GeneralLinearGroup.det z = ϖ ^ x.1`. Use `ext`.
+
+Simplify using `[z, GeneralLinearGroup.scalar]`. Take `⟨ω, hω⟩` from `exists_scalar (hA k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr) x.2.rep.irr hz`. Take `⟨v, hv⟩` from `exists_ne_zero_of_irr x.2.rep.irr`. Establish `hω0 : ω ≠ 0` using `fun e => hv (by`. Establish `h2 : x.rep z⁻¹ (x.rep z v) = v`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[hω, e, zero_smul, map_zero]`. Conclude with `h2.symm)`. Establish `h3` using `LinearMap.congr_fun (φ.isIntertwining' z) v`.
+
+Establish `hLv : φ.toLinearEquiv v ≠ 0` using `fun e => hv (φ.toLinearEquiv.map_eq_zero_iff.1 e)`. Establish `h4 : φ.toLinearEquiv (((absPow k (s : ℂ) (ϖ ^ x.1) : ℂˣ) : ℂ) • x.rep z v) = x.rep z (φ.toLinearEquiv v)`. Establish `h5 : φ.toLinearEquiv ((twist x.rep (detChar _ (absPow k (s : ℂ)))) z v) = x.rep z (φ.toLinearEquiv v)` using `h3`. Rewrite `h5` using `[twist_apply, detChar_apply, hdet]`. Then use the resulting hypothesis. Rewrite `h4` using `[hω, hω, map_smul, map_smul, smul_smul]`.
+
+Establish `h6 : ((absPow k (s : ℂ) (ϖ ^ x.1) : ℂˣ) : ℂ) * ω = ω` using `smul_left_injective ℂ hLv h4`. Establish `h7 : ((absPow k (s : ℂ) (ϖ ^ x.1) : ℂˣ) : ℂ) = 1` using `mul_right_cancel₀ hω0 (h6.trans (one_mul ω).symm)`. Establish `h8 : ((absPow k (s : ℂ) ϖ : ℂˣ) : ℂ) ^ x.1 = 1`. Rewrite using `[← h7, map_pow, Units.val_pow_eq_pow_val]`. Rewrite `h8` using `[val_absPow_ofReal]`.
+
+Establish `h9 : (nabs k ϖ ^ s) ^ x.1 = 1` using `by exact_mod_cast h8`. Establish `hpos : 0 < nabs k ϖ` using `nabs_pos' k ϖ`. Establish `h10 : nabs k ϖ ^ s = 1` using `(pow_eq_one_iff_of_nonneg (Real.rpow_nonneg hpos.le s) hd.ne').1 h9`. Establish `hne : nabs k ϖ ≠ 1` using `fun e => ValuativeRel.uniformizer_lt_one.ne (hϖ ▸ (nabs_eq_one_iff ϖ).1 e)`. Establish `h11` using `congrArg Real.log h10`.
+
+Rewrite `h11` using `[Real.log_rpow hpos, Real.log_one]`. Conclude with `(mul_eq_zero.1 h11).resolve_right (Real.log_ne_zero_of_pos_of_ne_one hpos hne)`.
+-/
 theorem eq_zero_of_nu_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) (hd : 0 < x.1) {s : ℝ}
     (hs : x.nu (s : ℂ) = x) : s = 0 := by
   have h1 := IrrGL.tw_of x.rep x.2.rep.smooth x.2.rep.irr (absPow k (s : ℂ)) (isSmoothChar_absPow _)
@@ -127,6 +173,11 @@ theorem eq_zero_of_nu_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (
   rw [Real.log_rpow hpos, Real.log_one] at h11
   exact (mul_eq_zero.1 h11).resolve_right (Real.log_ne_zero_of_pos_of_ne_one hpos hne)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA x hx a b h`. Establish `h1 : x.nu (((a : ℝ) - (b : ℝ) : ℝ) : ℂ) = x`. Establish `h2` using `congrArg (fun y => IrrGL.nu y (-(b : ℂ))) h`. Simplify using `only [IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero] at h2`. Rewrite using `[← h2]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `eq_zero_of_nu_eq hA x hx.1 h1`. Conclude with `sub_eq_zero.1 h3` after adjusting the coercions.
+-/
 theorem nu_natCast_inj : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (x : IrrGL k) (hx : x.IsCusp) (a b : ℕ)
     (h : x.nu (a : ℂ) = x.nu (b : ℂ)), a = b := by

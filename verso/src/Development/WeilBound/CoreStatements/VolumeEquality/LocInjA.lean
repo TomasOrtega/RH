@@ -8,6 +8,21 @@ namespace SheetDecomposition
 
 open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hv`. Establish `nn : ∀ v, 0 ≤ B v v` using `fun v => by`. Distinguish the cases in `h : v = 0`. Simplify using `[h]`. Conclude with `(pos v h).le`.
+
+Set `W : Set Λ` to `{z | z ≠ 0 ∧ ∃ k : ℕ, 0 < k ∧ ∃ x, k • z = γ x - x}`. Establish `h1 : γ v - v ∈ W` using `⟨sub_ne_zero.2 hv, 1, one_pos, v, one_smul _ _⟩`. Take `⟨z, ⟨⟨hz0, k, hk, x, hx⟩, hzC⟩, hmin⟩` from `Set.exists_min_image (W ∩ {w | B w w ≤ B (γ v - v) (γ v - v)}) (fun w => B w w) ((fin _).inter_of_right _) ⟨_, h1, Set.mem_setOf_eq ▸ le_refl _⟩`. Take `⟨e, he⟩` from `hγ z`. Establish `he' : M • e = γ z - z` using `by rw [he]; abel`.
+
+Establish `hz` using `pos z hz0`. Establish `hb : (M : ℝ) * (M * B e e) + B (γ z + z) (γ z + z) = 4 * B z z`. Establish `: B (M • e) (M • e) = (M : ℝ) * (M * B e e)`. Simplify using `only [map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul]`. Rewrite using `[← this, he']`.
+
+Simplify using `only [map_sub, map_add, AddMonoidHom.sub_apply, AddMonoidHom.add_apply, iso]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlt : B e e < B z z`. Establish `a1` using `nn e`.
+
+Establish `a2` using `nn (γ z + z)`. Establish `a3 : 9 * B e e ≤ (M : ℝ) * (M * B e e)`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by nlinarith) a1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e0 : e = 0`. Assume the negation of the conclusion as `e0`. Use `hmin e ⟨⟨e0, M, by omega, z, he'⟩, hlt.le.trans hzC⟩` as an intermediate fact. Conclude with `absurd hlt (not_lt.2 this)`. Establish `hfix : γ z = z` using `by simpa [e0] using he`.
+
+Establish `h0 : (k : ℝ) * B z z = 0`. Establish `: B (k • z) z = (k : ℝ) * B z z` using `by simp only [map_nsmul, AddMonoidHom.nsmul_apply, nsmul_eq_mul]`. Rewrite using `[← this, hx, map_sub, AddMonoidHom.sub_apply, ← iso x z, hfix, sub_self]`. Establish `: (0 : ℝ) < k` using `by exact_mod_cast hk`. Conclude with `absurd h0 (mul_pos this hz).ne'`.
+-/
 theorem rigid_of_congr {Λ : Type} [AddCommGroup Λ] (B : Λ →+ Λ →+ ℝ) (pos : ∀ v, v ≠ 0 → 0 < B v v)
     (fin : ∀ C : ℝ, {v | B v v ≤ C}.Finite) (γ : Λ →+ Λ) (iso : ∀ x y, B (γ x) (γ y) = B x y) (M : ℕ) (hM : 3 ≤ M)
     (hγ : ∀ v, ∃ e, γ v = v + M • e) (v : Λ) : γ v = v := by
@@ -56,8 +71,16 @@ def reForm (R : RiemLat E g Λ) : Λ →+ Λ →+ ℝ :=
     ext y
     simp only [map_add, PeriodIso.ip_add_left', Complex.add_re, AddMonoidHom.mk'_apply, AddMonoidHom.add_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reForm_apply (R : RiemLat E g Λ) (x y : Λ) : reForm R x y = (R.ip (R.P x) (R.P y)).re := rfl
 
+/- English proof (translation)
+Use `R.pos _ fun h => hv (R.unimod.1 ?_)` and prove the remaining obligations. Use extensionality with `y`. Use `R.im v y` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `only [zero_dotProduct, Complex.zero_im] at this`.
+
+Simplify using `using this.symm`.
+-/
 theorem reForm_pos (R : RiemLat E g Λ) (v : Λ) (hv : v ≠ 0) : 0 < reForm R v v := by
   refine R.pos _ fun h => hv (R.unimod.1 ?_)
   ext y
@@ -66,6 +89,15 @@ theorem reForm_pos (R : RiemLat E g Λ) (v : Λ) (hv : v ≠ 0) : 0 < reForm R v
   simp only [zero_dotProduct, Complex.zero_im] at this
   simpa using this.symm
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Set `Wz : Matrix ι ι ℤ` to `Matrix.of fun i j => R.form (b i) (b j)`. Set `Wr : Matrix ι ι ℝ` to `Wz.map (Int.castRingHom ℝ)`. Establish `hWz : Wz.det ≠ 0` using `HmCont.gram_det_ne_zero b R.form R.unimod.1`.
+
+Establish `hWr : Wr.det ≠ 0`. Establish `: Wr.det = ((Wz.det : ℤ) : ℝ)`. Use `(Int.castRingHom ℝ).map_det Wz` as an intermediate fact. Simplify `this.symm` using `[Wr, RingHom.mapMatrix_apply]`. Rewrite using `[this]`.
+
+Conclude with `hWz` after adjusting the coercions. Establish `h0 : a ᵥ* Wr = 0`. Use function extensionality and compare the values at `j`. Establish `h` using `congrArg (fun z => (z ⬝ᵥ R.Hm *ᵥ star (R.P (b j))).im) ha`. Simplify using `only [sum_dotProduct, smul_dotProduct, Complex.im_sum, Complex.smul_im, R.im, zero_dotProduct, Complex.zero_im, smul_eq_mul] at h`.
+
+Simplify `h` using `[Wr, Wz, vecMul, dotProduct]`. Conclude with `congrFun (Matrix.eq_zero_of_vecMul_eq_zero hWr h0)`.
+-/
 theorem periods_li (R : RiemLat E g Λ) {ι : Type} [Fintype ι] (b : Module.Basis ι ℤ Λ) :
     LinearIndependent ℝ fun i => R.P (b i) := by
   classical
@@ -88,6 +120,11 @@ theorem periods_li (R : RiemLat E g Λ) {ι : Type} [Fintype ι] (b : Module.Bas
     simpa [Wr, Wz, vecMul, dotProduct] using h
   exact congrFun (Matrix.eq_zero_of_vecMul_eq_zero hWr h0)
 
+/- English proof (translation)
+Use `R.free` as an intermediate fact. Use `R.fin` as an intermediate fact. Set `b` to `Module.finBasisOfFinrankEq ℤ Λ R.rank`. Establish `h` using `(periods_li R b).span_eq_top_of_card_eq_finrank' (by`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm])`.
+
+Use `top_le_iff.1 (h ▸ Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem periods_span (R : RiemLat E g Λ) : Submodule.span ℝ (Set.range R.P) = ⊤ := by
   have := R.free
   have := R.fin
@@ -98,15 +135,44 @@ theorem periods_span (R : RiemLat E g Λ) : Submodule.span ℝ (Set.range R.P) =
   rintro _ ⟨i, rfl⟩
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `h`. Rewrite using `[reForm_apply, reForm_apply, hφ, hφ, PeriodIso.isometry_of_periods R R' (periods_span R) γ φ hf hφ]`.
+-/
 theorem reForm_eqv {R R' : RiemLat E g Λ} {γ : Λ ≃ₗ[𝓞 E] Λ} (hf : ∀ x y, R'.form (γ x) (γ y) = R.form x y)
     (h : R.EqvBy R' γ) (x y : Λ) : reForm R' (γ x) (γ y) = reForm R x y := by
   obtain ⟨φ, hφ⟩ := h
   rw [reForm_apply, reForm_apply, hφ, hφ, PeriodIso.isometry_of_periods R R' (periods_span R) γ φ hf hφ]
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_re.comp ((hP v).dotProduct (hH.matrix_mulVec (hP u).star))`.
+-/
 theorem reForm_cont {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fun x => (R x).P v)
     (hH : Continuous fun x => (R x).Hm) (u v : Λ) : Continuous fun x => reForm (R x) u v :=
   Complex.continuous_re.comp ((hP v).dotProduct (hH.matrix_mulVec (hP u).star))
 
+/- English proof (translation)
+Use `(R x₀).free` as an intermediate fact. Use `(R x₀).fin` as an intermediate fact. Set `b` to `Module.finBasisOfFinrankEq ℤ Λ (R x₀).rank`. Set `T : X → (Fin (2 * g) → ℝ) → Fin g → ℂ` to `fun x a => ∑ i, a i • (R x).P (b i)`. Set `Q : X × (Fin (2 * g) → ℝ) → ℝ` to `fun p => ((R p.1).ip (T p.1 p.2) (T p.1 p.2)).re`.
+
+Establish `hT : Continuous fun p : X × (Fin (2 * g) → ℝ) => T p.1 p.2` using `continuous_finsetSum _ fun i _ => ((continuous_apply i).comp continuous_snd).smul ((hP _).comp continuous_fst)`. Establish `hQ : Continuous Q` using `Complex.continuous_re.comp (hT.dotProduct ((hH.comp continuous_fst).matrix_mulVec hT.star))`. Establish `hom : ∀ x (r : ℝ) a, Q (x, r • a) = r ^ 2 * Q (x, a)` using `fun x r a => by`. Establish `: T x (r • a) = (r : ℂ) • T x a`. Rewrite using `[← PeriodIso.real_smul_eq']`.
+
+Simplify using `only [T, Finset.smul_sum, smul_smul, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Q, this, PeriodIso.ip_smul_left', PeriodIso.ip_smul_right', Complex.star_def, Complex.conj_ofReal, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : IsCompact (Metric.sphere (0 : Fin (2 * g) → ℝ) 1)` using `isCompact_sphere _ _`. Take `⟨c, hc, hc'⟩` from `hK.exists_forall_le' (f := fun a => Q (x₀, a)) (a := 0) (hQ.comp (continuous_const.prodMk continuous_id)).continuousOn (fun a ha => (R x₀).pos _ fun h => by`.
+
+Establish `h0 : a = 0` using `funext (Fintype.linearIndependent_iff.1 (periods_li (R x₀) b) a h)`. Simplify using `[h0] at ha)`. Establish `hev : ∀ᶠ x in 𝓝 x₀, ∀ a ∈ Metric.sphere (0 : Fin (2 * g) → ℝ) 1, c / 2 < Q (x, a)`. Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `a ha`.
+
+Conclude with `(isOpen_lt continuous_const hQ).mem_nhds (lt_of_lt_of_le (by linarith) (hc' a ha))`. Take `⟨N, hN⟩` from `exists_nat_gt (2 * C / c + 1)`. Use `⟨b.equivFun ⁻¹' {f | ∀ i, f i ∈ Set.Icc (-(N : ℤ)) N}, (Set.Finite.pi' fun _ => Set.finite_Icc _ _).preimage b.equivFun.injective.injOn, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with x hx v hv i`. Set `a : Fin (2 * g) → ℝ` to `fun i => (b.equivFun v i : ℝ)`.
+
+Establish `hTa : T x a = (R x).P v` using `by conv_rhs => rw [← b.sum_equivFun v]`. Simplify using `only [T, a, map_sum, map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `hQa : Q (x, a) ≤ C`. Simplify using `only [Q, hTa]`. Conclude with `hv`.
+
+Establish `hn : ‖a‖ ≤ N`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hn : 0 < ‖a‖` using `lt_of_le_of_lt (Nat.cast_nonneg N) hlt`. Establish `h1` using `hx (‖a‖⁻¹ • a) (by`.
+
+Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne'])`. Establish `h2 : Q (x, a) = ‖a‖ ^ 2 * Q (x, ‖a‖⁻¹ • a)`. Rewrite using `[← hom, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Establish `h3 : ‖a‖ ^ 2 * (c / 2) ≤ C`. Use `le_trans ?_ hQa` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_left h1.le (sq_nonneg _)`. Establish `h4 : ‖a‖ ^ 2 ≤ 2 * C / c`. Rewrite using `[le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h5 : |a i| ≤ N` using `(norm_le_pi_norm a i).trans hn`. Establish `h6 : |b.equivFun v i| ≤ (N : ℤ)`. Simplify using `only [a] at h5`. Conclude with `h5` after adjusting the coercions.
+
+Conclude with `abs_le.1 h6`.
+-/
 theorem short_finite {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fun x => (R x).P v)
     (hH : Continuous fun x => (R x).Hm) (x₀ : X) (C : ℝ) :
     ∃ S : Set Λ, S.Finite ∧ ∀ᶠ x in 𝓝 x₀, ∀ v, reForm (R x) v v ≤ C → v ∈ S := by
@@ -168,6 +234,19 @@ theorem short_finite {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) 
     exact_mod_cast h5
   exact abs_le.1 h6
 
+/- English proof (translation)
+Use `(R x₀).free` as an intermediate fact. Use `(R x₀).fin` as an intermediate fact. Set `b` to `Module.finBasisOfFinrankEq ℤ Λ (R x₀).rank`. Take `⟨C, hC⟩` from `Finite.exists_le fun i => reForm (R x₀) (b i) (b i)`. Take `⟨S, hS, hS'⟩` from `short_finite R hP hH x₀ (C + 1)`.
+
+Establish `h1 : ∀ᶠ x in 𝓝 x₀, ∀ i, reForm (R x) (b i) (b i) < C + 1` using `eventually_all.2 fun i => (isOpen_lt (reForm_cont R hP hH _ _) continuous_const).mem_nhds (lt_of_le_of_lt (hC i) (lt_add_one C))`. Set `G : Set (Λ ≃ₗ[𝓞 E] Λ)` to `(fun γ i => γ (b i)) ⁻¹' {f | ∀ i, f i ∈ S}`. Establish `hG : G.Finite` using `(Set.Finite.pi' fun _ => hS).preimage fun γ _ γ' _ h => by`. Use extensionality with `v`. Rewrite using `[← b.sum_equivFun v]`.
+
+Simplify using `only [map_sum, map_zsmul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [show γ (b i) = γ' (b i) from congrFun h i]`. Establish `h2 : ∀ᶠ p : X × X in 𝓝 (x₀, x₀), ∀ γ ∈ G, (∀ v, ∃ e, γ v = v + M • e) → (∀ u v, reForm (R p.2) (γ u) (γ v) = reForm (R p.1) u v) → γ = 1`. Use `(eventually_all_finite hG).2 fun γ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ u v, reForm (R x₀) (γ u) (γ v) = reForm (R x₀) u v`.
+
+Use `Eventually.of_forall fun p hγ _ => ?_` and prove the remaining obligations. Use extensionality with `v`. Use `rigid_of_congr (reForm (R x₀)) (reForm_pos _) (fun C' => ?_) γ.toLinearMap.toAddMonoidHom h M hM hγ v` and prove the remaining obligations. Take `⟨S', hS₁, hS₂⟩` from `short_finite R hP hH x₀ C'`. Conclude with `hS₁.subset hS₂.self_of_nhds`.
+
+Use `push Not at h`. Take `⟨u, v, huv⟩` from `h`. Establish `: ∀ᶠ p : X × X in 𝓝 (x₀, x₀), reForm (R p.2) (γ u) (γ v) ≠ reForm (R p.1) u v` using `(isOpen_ne_fun ((reForm_cont R hP hH _ _).comp continuous_snd) ((reForm_cont R hP hH _ _).comp continuous_fst)).mem_nhds huv`. Use `filter_upwards [this] with p hp _ h using absurd (h u v) hp`. Establish `h3` using `(continuous_fst.tendsto (x₀, x₀)).eventually h1`.
+
+Establish `h4` using `(continuous_snd.tendsto (x₀, x₀)).eventually hS'`. Use `filter_upwards [h2, h3, h4] with p a2 a3 a4 γ hγ h`. Conclude with `a2 γ (fun i => a4 _ ((h _ _).trans_le (a3 i).le)) hγ h`.
+-/
 theorem near_trivial {X : Type} [TopologicalSpace X] (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fun x => (R x).P v)
     (hH : Continuous fun x => (R x).Hm) (x₀ : X) (M : ℕ) (hM : 3 ≤ M) :
     ∀ᶠ p : X × X in 𝓝 (x₀, x₀), ∀ γ : Λ ≃ₗ[𝓞 E] Λ, (∀ v, ∃ e, γ v = v + M • e) →

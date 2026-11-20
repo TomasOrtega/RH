@@ -23,6 +23,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LocalGlobalOfGel
 
 namespace GlobalTheory.NRows.HypothesesBridge
 
+/- English proof (translation)
+Introduce `hBZ hBern hGeo hTD hMP hMin hJS hFin hCT hTSI hESS hGK hGRP hCLGD hCP hCC hArt hChA hAlg hBerger hCheb hLL`. Establish `hCSD` using `GlobalTheory.T.local_global_of_gelfand_kazhdan hGK`. Conclude with `{ bz := hBZ bern := hBern geo := hGeo unl := GlobalTheory.TotDisjUnlinked.main hTD mp := GlobalTheory.depthZeroJacquetInjective_of_admissible hBZ hMP howe := GlobalTheory.T.howe_duality_of_minguez hMin js := hJS fin := hFin temp := GlobalTheory.T.cohomological_csd_tempered_of_seg …`.
+-/
 theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.BernsteinUnitaryProductIrreducible → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.TotallyDisjointProductIrreducible → GlobalTheory.Published.MoyPrasadJacquetIso → GlobalTheory.Published.MinguezThetaGL → GlobalTheory.Published.JacquetShalika → GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.CaraianiTempered → GlobalTheory.Published.TemperedProductOfSquareIntegrable → GlobalTheory.Published.EssSquareIntegrableSegments → GlobalTheory.Published.GelfandKazhdanDual → GlobalTheory.Published.GaloisRepOfPolarizedPair → GlobalTheory.Published.CaraianiLocalGlobalDual → GlobalTheory.Published.ClozelPurity → GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.AlgebraicCharacterWD → GlobalTheory.Published.DeRhamPotSemistable → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.LocalLanglandsGL → GlobalTheory.NRows.Hypotheses₂ := by
   intro hBZ hBern hGeo hTD hMP hMin hJS hFin hCT hTSI hESS hGK hGRP hCLGD hCP hCC hArt hChA hAlg hBerger hCheb hLL
   have hCSD := GlobalTheory.T.local_global_of_gelfand_kazhdan hGK

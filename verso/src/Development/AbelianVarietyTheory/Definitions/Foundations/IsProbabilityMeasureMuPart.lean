@@ -55,6 +55,11 @@ variable [StarRing K]
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Simplify using `[Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, sq]`.
+-/
 theorem norm_realize_sq {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι K V)
     (X : InfinitePlace K → Matrix ι ι ℂ) (x : V) :
     ‖Formalism.HermitianLatticesTheory.realize b X x‖ ^ 2 = ∑ v, Formalism.HermitianLatticesTheory.normAt b X v x ^ 2 := by
@@ -67,6 +72,9 @@ theorem norm_realize_sq {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι 
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), norm_realize_sq, norm_realize_sq]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [(h v).2, (h' v).2]`.
+-/
 theorem IsGram.norm_realize {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] {b : Basis ι K V}
     {X : InfinitePlace K → Matrix ι ι ℂ} {b' : Basis κ K V} {X' : InfinitePlace K → Matrix κ κ ℂ}
     {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) (h' : IsGram b' X' N) (x : V) :
@@ -74,6 +82,11 @@ theorem IsGram.norm_realize {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintyp
   rw [← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), norm_realize_sq, norm_realize_sq]
   exact Finset.sum_congr rfl fun v _ => by rw [(h v).2, (h' v).2]
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `Formalism.HN.plLat K V ι b X (fun v => (h v).1) L hL`. Take `⟨h1', h2', -⟩` from `Formalism.HN.plLat K V κ b' X' (fun v => (h' v).1) L hL`. Use `⟨h2.trans h2'.symm, ?_⟩` and prove the remaining obligations. Use `haveI := h1.2`. Use `haveI := h1'.2`.
+
+Unfold `Formalism.HN.deg Formalism.F.deg`. Rewrite using `[Formalism.HN.QuotientRealization.covol_eq_of_norm_eq ((Formalism.HermitianLatticesTheory.realize b X).comp L.toAddSubgroup.subtype) ((Formalism.HermitianLatticesTheory.realize b' X').comp L.toAddSubgroup.subtype) (Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize b X) L …`.
+-/
 theorem IsGram.rk_deg {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] {b : Basis ι K V}
     {X : InfinitePlace K → Matrix ι ι ℂ} {b' : Basis κ K V} {X' : InfinitePlace K → Matrix κ κ ℂ}
     {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) (h' : IsGram b' X' N) {L : Submodule (𝓞 K) V} (hL : L.FG) :
@@ -94,6 +107,13 @@ theorem IsGram.rk_deg {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] 
 
 omit [NumberField K] [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin ι`. Use `⟨⟨_, ⟨(b.reindex e, fun v => Matrix.reindex e e (X v)), fun v => ⟨?_, fun x => ?_⟩⟩⟩⟩` and prove the remaining obligations. Simplify using `using (h v).1`. Rewrite using `[← (h v).2 x]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord]`.
+
+Use `congr 1`. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Matrix.inv_reindex]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← e.sum_comp]`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`.
+-/
 theorem IsGram.hasGram {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V} {X : InfinitePlace K → Matrix ι ι ℂ}
     {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) : HasGram N := by
   let e := Fintype.equivFin ι
@@ -110,6 +130,11 @@ theorem IsGram.hasGram {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K
     rw [← e.sum_comp]
     simp [Formalism.HermitianLatticesTheory.vecAt]
 
+/- English proof (translation)
+Rewrite using `[slope_sq, dif_pos h.hasGram]`. Use `show Formalism.HN.muDef h.hasGram.some.2.1.1 h.hasGram.some.2.1.2 L = _`. Take `⟨h1, h2⟩` from `IsGram.rk_deg h.hasGram.some.2.2 h hL`. Unfold `Formalism.HN.rk at h1`. Unfold `Formalism.HN.deg at h2`.
+
+Unfold `Formalism.HN.muDef Formalism.HN.slope Formalism.F.slope`. Rewrite using `[h1, h2]`.
+-/
 theorem slope_sq_eq {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V} {X : InfinitePlace K → Matrix ι ι ℂ}
     {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) {L : Submodule (𝓞 K) V} (hL : L.FG) :
     slope_sq N L = Formalism.HN.muDef b X L := by
@@ -121,6 +146,11 @@ theorem slope_sq_eq {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V}
   unfold Formalism.HN.muDef Formalism.HN.slope Formalism.F.slope
   rw [h1, h2]
 
+/- English proof (translation)
+Establish `h'` using `h.hasGram.some.2.2`. Establish `key` using `(Formalism.HN.shiftInvariance (𝓞 K) V _ _ _ _ L 0 (Formalism.HN.plLat K V ι b X (fun v => (h v).1) L hL).1 (Formalism.HN.plLat K V _ _ _ (fun v => (h' v).1) L hL).1 (fun M hM => by`. Establish `hM' : M.FG` using `by haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL`. Conclude with `isNoetherian_submodule.1 inferInstance M hM`. Simplify using `using IsGram.rk_deg h' h hM')).2.1 h0`.
+
+Rewrite using `[slopeMax_sq, slopeMin_sq, dif_pos h.hasGram, dif_pos h.hasGram]`. Use `show Formalism.HN.muMaxDef h.hasGram.some.2.1.1 h.hasGram.some.2.1.2 L = _ ∧ Formalism.HN.muMinDef h.hasGram.some.2.1.1 h.hasGram.some.2.1.2 L = _`. Unfold `Formalism.HN.muMaxDef Formalism.HN.muMinDef`. Rewrite using `[key.1, key.2, add_zero, add_zero]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem slopeMax_slopeMin_eq {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basis ι K V}
     {X : InfinitePlace K → Matrix ι ι ℂ} {N : (K →+* ℂ) → V → ℝ} (h : IsGram b X N) {L : Submodule (𝓞 K) V}
     (hL : L.FG) (h0 : L ≠ ⊥) :
@@ -143,9 +173,17 @@ theorem slopeMax_slopeMin_eq {ι : Type} [Fintype ι] [DecidableEq ι] {b : Basi
 
 end Indep
 
+/- English proof (translation)
+Simplify using `[deg, Formalism.HN.rkK]`.
+-/
 theorem deg_bot (N : (K →+* ℂ) → V → ℝ) : deg N (⊥ : Submodule (𝓞 K) V) = 0 := by
   simp [deg, Formalism.HN.rkK]
 
+/- English proof (translation)
+Use `letI : StarRing K := starRingOfComm`. Establish `hn : ∀ v y, Formalism.HermitianLatticesTheory.normAt (Basis.singleton Unit K) (fun _ : InfinitePlace K => (1 : Matrix Unit Unit ℂ)) v y = ‖v.embedding y‖` using `fun v y => by`. Simplify using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]`. Establish `h : IsGram (Basis.singleton Unit K) (fun _ : InfinitePlace K => (1 : Matrix Unit Unit ℂ)) (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖)` using `fun v => ⟨by simp, hn v⟩`. Rewrite using `[slope_sq_eq h (Submodule.fg_span (Set.finite_singleton x)), Formalism.ExtensionFiltration.muDef_line_eq _ _ (fun v => (h v).1) x hx]`.
+
+Simplify using `[hn, InfinitePlace.norm_embedding_eq]`.
+-/
 theorem slope_sq_line [IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
     slope_sq (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {x}) =
       -((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v : InfinitePlace K, 2 * Real.log (v x)) := by
@@ -159,6 +197,9 @@ theorem slope_sq_line [IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
     Formalism.ExtensionFiltration.muDef_line_eq _ _ (fun v => (h v).1) x hx]
   simp [hn, InfinitePlace.norm_embedding_eq]
 
+/- English proof (translation)
+Rewrite using `[slope_sq_line 1 one_ne_zero]`. Simplify using the standard rewrite rules.
+-/
 example [IsTotallyComplex K] :
     slope_sq (fun (σ : K →+* ℂ) (y : K) => ‖σ y‖) (Submodule.span (𝓞 K) {(1 : K)}) = 0 := by
   rw [slope_sq_line 1 one_ne_zero]; simp
@@ -187,13 +228,27 @@ def wtOf (Dw : Datum H) (la : Weight Dw) (m : ℤ) : WTZ E :=
 
 def exOf (Dw : Datum H) (la : Weight Dw) (m : ℤ) : Ix Dw → ℤ := exZ Dw (wtOf Dw la m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wtOf_snd (la : Weight Dw) (m : ℤ) : (wtOf Dw la m).2 = 2 * m := rfl
 
+/- English proof (translation)
+The claim follows from `even_two_mul m`.
+-/
 theorem even_wtOf (la : Weight Dw) (m : ℤ) : Even (wtOf Dw la m).2 := even_two_mul m
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[conjEmb]`.
+-/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   ext a; simp [conjEmb]
 
+/- English proof (translation)
+Introduce `h'`. Establish `h1 : starRingEnd ℂ H.rt0 = H.rt0`. Establish `: starRingEnd ℂ (τ.1 (H.rt : E)) = H.rt0` using `h'`. Rewrite `this` using `[τ.2]`. Then use the resulting hypothesis. Establish `him : H.rt0.im = 0` using `Complex.conj_eq_iff_im.1 h1`.
+
+Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Simplify using `only [sq, Complex.mul_re, him, Complex.neg_re, Complex.natCast_re] at hre`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+-/
 theorem conj_not_mem (τ : Psi H) : ¬ conjEmb τ.1 (H.rt : E) = H.rt0 := by
   intro h'
   have h1 : starRingEnd ℂ H.rt0 = H.rt0 := by
@@ -205,36 +260,59 @@ theorem conj_not_mem (τ : Psi H) : ¬ conjEmb τ.1 (H.rt : E) = H.rt0 := by
   simp only [sq, Complex.mul_re, him, Complex.neg_re, Complex.natCast_re] at hre
   nlinarith [mul_self_nonneg H.rt0.re]
 
+/- English proof (translation)
+Simplify using `only [wtOf, dif_pos τ.2, dif_pos hi]`.
+-/
 theorem wtOf_big (la : Weight Dw) (m : ℤ) (τ : Psi H) (i : ℕ) (hi : i < Dw.p) :
     (wtOf Dw la m).1 (τ.1, i) = la τ ⟨i, by omega⟩ - m := by
   simp only [wtOf, dif_pos τ.2, dif_pos hi]
 
+/- English proof (translation)
+Establish `h' : conjEmb (conjEmb τ.1) (H.rt : E) = H.rt0` using `by rw [conjEmb_conjEmb]; exact τ.2`. Establish `e : (⟨conjEmb (conjEmb τ.1), h'⟩ : Psi H) = τ` using `Subtype.ext (conjEmb_conjEmb _)`. Simplify using `only [wtOf, dif_neg (conj_not_mem τ), dif_pos h', dif_pos hi, e]`.
+-/
 theorem wtOf_small (la : Weight Dw) (m : ℤ) (τ : Psi H) (i : ℕ) (hi : i < Dw.q) :
     (wtOf Dw la m).1 (conjEmb τ.1, i) = -la τ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩ - m := by
   have h' : conjEmb (conjEmb τ.1) (H.rt : E) = H.rt0 := by rw [conjEmb_conjEmb]; exact τ.2
   have e : (⟨conjEmb (conjEmb τ.1), h'⟩ : Psi H) = τ := Subtype.ext (conjEmb_conjEmb _)
   simp only [wtOf, dif_neg (conj_not_mem τ), dif_pos h', dif_pos hi, e]
 
+/- English proof (translation)
+Use `Prod.ext (funext fun x => ?_) (by simp only [wtOf, Prod.snd_add]; ring)` and prove the remaining obligations. Simplify using `only [wtOf, Prod.fst_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem wtOf_add (la la' : Weight Dw) (m m' : ℤ) :
     wtOf Dw (la + la') (m + m') = wtOf Dw la m + wtOf Dw la' m' := by
   refine Prod.ext (funext fun x => ?_) (by simp only [wtOf, Prod.snd_add]; ring)
   simp only [wtOf, Prod.fst_add, Pi.add_apply]
   split_ifs <;> ring
 
+/- English proof (translation)
+Use `Prod.ext (funext fun x => ?_) (by simp [wtOf])` and prove the remaining obligations. Simplify using `[wtOf]`.
+-/
 theorem wtOf_zero : wtOf Dw 0 0 = 0 := by
   refine Prod.ext (funext fun x => ?_) (by simp [wtOf])
   simp [wtOf]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[exOf, wtOf_add, exZ_add]`. Both sides reduce to the same expression.
+-/
 theorem exOf_add (la la' : Weight Dw) (m m' : ℤ) :
     exOf Dw (la + la') (m + m') = exOf Dw la m + exOf Dw la' m' := by
   funext i; rw [exOf, wtOf_add, exZ_add]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; cases i <;> rfl`.
+-/
 theorem exZ_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : exZ Dw (wtZ a n) = fun i => (ex Dw a n i : ℤ) := by
   funext i; cases i <;> rfl
 
 def weightOf (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) : Weight Dw :=
   fun τ j => if (j : ℕ) < Dw.p then a (τ.1, j) + m else -a (conjEmb τ.1, Dw.q - 1 - ((j : ℕ) - Dw.p)) - m
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ j`. Establish `hj` using `j.2`. Unfold `weightOf`. Use `split_ifs with h`. Rewrite using `[wtOf_big la m τ j h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[wtOf_small la m τ _ (by omega)]`. Establish `: (⟨Dw.p + (Dw.q - 1 - (Dw.q - 1 - ((j : ℕ) - Dw.p))), by omega⟩ : Fin (Dw.p + Dw.q)) = j` using `Fin.ext (by simp only; omega)`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weightOf_wtOf (la : Weight Dw) (m : ℤ) : weightOf Dw (wtOf Dw la m).1 m = la := by
   funext τ j
   have hj := j.2
@@ -246,6 +324,15 @@ theorem weightOf_wtOf (la : Weight Dw) (m : ℤ) : weightOf Dw (wtOf Dw la m).1 
       Fin.ext (by simp only; omega)
     rw [this]; ring
 
+/- English proof (translation)
+Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hsq : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, hE, map_neg, map_natCast]`.
+
+Establish `h3` using `(sq_eq_sq_iff_eq_or_eq_neg.1 hsq).resolve_left h`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `him` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`.
+
+Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.mp this).resolve_left hne`.
+
+Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (τ (H.rt : E)) = H.rt0`. Rewrite using `[h3]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+-/
 theorem conj_mem {τ : E →+* ℂ} (h : ¬ τ (H.rt : E) = H.rt0) : conjEmb τ (H.rt : E) = H.rt0 := by
   have hE : ((H.rt : E)) ^ 2 = -(H.d : E) := by
     have := congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq
@@ -268,6 +355,15 @@ theorem conj_mem {τ : E →+* ℂ} (h : ¬ τ (H.rt : E) = H.rt0) : conjEmb τ 
   rw [h3]
   apply Complex.ext <;> simp [h0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Break down `i with _ | ⟨τ, i⟩` into its components or cases. Both sides reduce to the same expression. Use `show (wtOf Dw (weightOf Dw a m) m).1 (τ, i) = a (τ, i)`. Establish `hi` using `i.2`.
+
+Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `hp : (i : ℕ) < Dw.p` using `by simpa [Datum.mult, h] using hi`. Rewrite using `[wtOf_big _ m ⟨τ, h⟩ i hp]`. Simplify using `[weightOf, hp]`. Establish `hq : (i : ℕ) < Dw.q` using `by simpa [Datum.mult, h] using hi`.
+
+Establish `e` using `wtOf_small (weightOf Dw a m) m ⟨conjEmb τ, conj_mem h⟩ i hq`. Simplify using `only [conjEmb_conjEmb] at e`. Rewrite using `[e]`. Establish `h1 : ¬ Dw.p + (Dw.q - 1 - (i : ℕ)) < Dw.p` using `by omega`. Establish `h2 : Dw.q - 1 - (Dw.p + (Dw.q - 1 - (i : ℕ)) - Dw.p) = i` using `by omega`.
+
+Simplify using `only [weightOf, h1, if_false, h2, conjEmb_conjEmb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exOf_weightOf (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) : exOf Dw (weightOf Dw a m) m = exZ Dw (a, 2 * m) := by
   funext i
   rcases i with _ | ⟨τ, i⟩
@@ -287,10 +383,16 @@ theorem exOf_weightOf (a : (E →+* ℂ) × ℕ → ℤ) (m : ℤ) : exOf Dw (we
       simp only [weightOf, h1, if_false, h2, conjEmb_conjEmb]
       ring
 
+/- English proof (translation)
+Rewrite using `[wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]`. Simplify using the standard rewrite rules.
+-/
 example (w : ℤ) (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < Dw.q) :
     (wtOf Dw (fun _ _ => w) 0).1 (τ.1, i) = w ∧ (wtOf Dw (fun _ _ => w) 0).1 (conjEmb τ.1, j) = -w := by
   rw [wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]; simp
 
+/- English proof (translation)
+Rewrite using `[wtOf_big _ _ _ _ hi, wtOf_small _ _ _ _ hj]`. Simplify using `[hi]`.
+-/
 example (τ : Psi H) (i j : ℕ) (hi : i < Dw.p) (hj : j < Dw.q) :
     (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then 0 else -1) 0).1 (τ.1, i) = 0 ∧
       (wtOf Dw (fun _ k => if (k : ℕ) < Dw.p then 0 else -1) 0).1 (conjEmb τ.1, j) = 1 := by
@@ -314,19 +416,33 @@ def secZ (e : Ix Dw → ℤ) : Submodule c.F (Rul Xo c) where
 
 variable {Xo c}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_secZ {e : Ix Dw → ℤ} {f : Rul Xo c} : f ∈ secZ Xo c e ↔
     IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f ∧
     ∀ (p : TRing c.F) (t : Ix Dw → (p.R)ˣ) (y y' : FrPt Xo c p.R), FrBor t y y' →
       f p y' = ((∏ i, t i ^ e i : (p.R)ˣ) : p.R) * f p y := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_secZ_exZ {G : WTZ E} {f : Rul Xo c} : f ∈ secZ Xo c (exZ Dw G) ↔ GlobalTheory.IndefiniteRowSideFullHecke.ZeroWeightSections.IsSecZ G f := Iff.rfl
 
 variable (Xo c) in
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[← exZ_wtZ, mem_secZ_exZ, GlobalTheory.IndefiniteRowSideFullHecke.ZeroWeightSections.isSecZ_wtZ]`.
+-/
 theorem secZ_nat (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : secZ Xo c (fun i => (ex Dw a n i : ℤ)) = sec Xo c a n := by
   ext f
   rw [← exZ_wtZ, mem_secZ_exZ, GlobalTheory.IndefiniteRowSideFullHecke.ZeroWeightSections.isSecZ_wtZ]
 
+/- English proof (translation)
+Use `⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩` and prove the remaining obligations. Use `show f q z * g q z = φ (f p y * g p y)`. Rewrite using `[hf.1 p q φ y z h, hg.1 p q φ y z h, map_mul]`. Use `show f p y' * g p y' = _ * (f p y * g p y)`. Rewrite using `[hf.2 p t y y' h, hg.2 p t y y' h]`.
+
+Simplify using `only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_mem_secZ {e e' : Ix Dw → ℤ} {f g : Rul Xo c} (hf : f ∈ secZ Xo c e) (hg : g ∈ secZ Xo c e') :
     f * g ∈ secZ Xo c (e + e') := by
   refine ⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩
@@ -339,12 +455,27 @@ theorem mul_mem_secZ {e e' : Ix Dw → ℤ} {f g : Rul Xo c} (hf : f ∈ secZ Xo
 
 variable (Xo c) in
 
+/- English proof (translation)
+The claim follows from `Submodule.mul_le.2 fun _ hf _ hg => mul_mem_secZ hf hg`.
+-/
 theorem secZ_mul_le (e e' : Ix Dw → ℤ) : secZ Xo c e * secZ Xo c e' ≤ secZ Xo c (e + e') :=
   Submodule.mul_le.2 fun _ hf _ hg => mul_mem_secZ hf hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun p q φ y z _ => by simp, fun p t y y' _ => by simp⟩`.
+-/
 theorem one_mem_secZ : (1 : Rul Xo c) ∈ secZ Xo c 0 :=
   ⟨fun p q φ y z _ => by simp, fun p t y y' _ => by simp⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ p y, (u : Rul Xo c) p y * (u⁻¹ : (Rul Xo c)ˣ).val p y = 1` using `fun p y => congrFun (congrFun u.mul_inv p) y`. Use `⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩` and prove the remaining obligations. Establish `a1` using `h1 q z`. Establish `a2` using `congrArg φ (h1 p y)`. Rewrite `a2` using `[map_mul, map_one, ← hu.1 p q φ y z h]`.
+
+Take the linear combination `(φ ((u⁻¹ : (Rul Xo c)ˣ).val p y)) * a1 - ((u⁻¹ : (Rul Xo c)ˣ).val q z) * a2`. Establish `a1` using `h1 p y'`. Establish `a2` using `h1 p y`. Rewrite `a1` using `[hu.2 p t y y' h]`. Establish `a3 : ((∏ i, t i ^ (-e) i : (p.R)ˣ) : p.R) * ((∏ i, t i ^ e i : (p.R)ˣ) : p.R) = 1`.
+
+Rewrite using `[← Units.val_mul, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Generalize the expression as in `((∏ i, t i ^ (-e) i : (p.R)ˣ) : p.R) = A at *`. Generalize the expression as in `((∏ i, t i ^ e i : (p.R)ˣ) : p.R) = B at *`. Generalize the expression as in `(u⁻¹ : (Rul Xo c)ˣ).val p y' = v' at *`.
+
+Generalize the expression as in `(u⁻¹ : (Rul Xo c)ˣ).val p y = v at *`. Generalize the expression as in `(u : Rul Xo c) p y = w at *`. Take the linear combination `(A * v) * a1 - (A * B * v') * a2 - v' * a3`.
+-/
 theorem inv_mem_secZ {e : Ix Dw → ℤ} {u : (Rul Xo c)ˣ} (hu : (u : Rul Xo c) ∈ secZ Xo c e) :
     ((u⁻¹ : (Rul Xo c)ˣ) : Rul Xo c) ∈ secZ Xo c (-e) := by
   have h1 : ∀ p y, (u : Rul Xo c) p y * (u⁻¹ : (Rul Xo c)ˣ).val p y = 1 := fun p y =>
@@ -377,11 +508,17 @@ def modelWt {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (G : WTZ E) (k : U.Comp) : 
       G.1 (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0) + G.2 / 2
     else -G.1 (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ)) - G.2 / 2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k τ i`. Simplify using `only [modelWt, wtZ, laU, Int.natCast_div, Nat.cast_ofNat]`.
+-/
 theorem modelWt_wtZ {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     modelWt U (wtZ a n) = laU U a n := by
   funext k τ i
   simp only [modelWt, wtZ, laU, Int.natCast_div, Nat.cast_ofNat]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Take `⟨a, ha⟩` from `hG`. Take `⟨b, hb⟩` from `hG'`. Simplify using `only [modelWt, Prod.fst_add, Prod.snd_add, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem modelWt_add {σ : c.F →+* ℂ} (U : Unf Xo c σ r) {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2)
     (k : U.Comp) : modelWt U (G + G') k = modelWt U G k + modelWt U G' k := by
   funext τ i
@@ -390,11 +527,17 @@ theorem modelWt_add {σ : c.F →+* ℂ} (U : Unf Xo c σ r) {G G' : WTZ E} (hG 
   simp only [modelWt, Prod.fst_add, Prod.snd_add, Pi.add_apply]
   split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `τ τ' h` and use `by ext a have h1 : σ (embF c τ a) = σ (embF c τ' a) := congrArg (fun f : E →+* ℂ => f a) h exact congrArg Subtype.val (σ.injective h1)`.
+-/
 theorem relab_injective (σ : c.F →+* ℂ) : Function.Injective (relab (E := E) c σ) := fun τ τ' h => by
   ext a
   have h1 : σ (embF c τ a) = σ (embF c τ' a) := congrArg (fun f : E →+* ℂ => f a) h
   exact congrArg Subtype.val (σ.injective h1)
 
+/- English proof (translation)
+Use extensionality with `a`. Establish `h1 : embF c (conjEmb τ) a = embF c τ (IsCMField.complexConj E a)` using `Subtype.ext (IsCMField.complexEmbedding_complexConj E τ a).symm`. Use `show σ (embF c (conjEmb τ) a) = starRingEnd ℂ (relab c σ τ a)`. Rewrite using `[h1]`. Conclude with `IsCMField.complexEmbedding_complexConj E (relab c σ τ) a`.
+-/
 theorem relab_conj (σ : c.F →+* ℂ) (τ : E →+* ℂ) : relab c σ (conjEmb τ) = conjEmb (relab c σ τ) := by
   ext a
   have h1 : embF c (conjEmb τ) a = embF c τ (IsCMField.complexConj E a) :=
@@ -403,6 +546,9 @@ theorem relab_conj (σ : c.F →+* ℂ) (τ : E →+* ℂ) : relab c σ (conjEmb
   rw [h1]
   exact IsCMField.complexEmbedding_complexConj E (relab c σ τ) a
 
+/- English proof (translation)
+Simplify using `only [modelWt, hq, Nat.le_add_right, if_true, Nat.add_sub_cancel_left, Function.leftInverse_invFun (relab_injective σ) τ.1, wtOf_big la m τ i hi, wtOf_snd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem modelWt_wtOf_big {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (la : Weight Dw) (m : ℤ) (k : U.Comp)
     (hq : (U.X k).p0 = Dw.q) (τ : Psi H) (hτ : relab c σ τ.1 ∈ (U.X k).Ψ) (i : ℕ) (hi : i < Dw.p)
     (hr : Dw.q + i < r) : modelWt U (wtOf Dw la m) k ⟨_, hτ⟩ ⟨_, hr⟩ = la τ ⟨i, by omega⟩ := by
@@ -410,6 +556,9 @@ theorem modelWt_wtOf_big {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (la : Weight D
     Function.leftInverse_invFun (relab_injective σ) τ.1, wtOf_big la m τ i hi, wtOf_snd]
   omega
 
+/- English proof (translation)
+Establish `h1 : ¬ Dw.q ≤ j` using `by omega`. Establish `h2 : Dw.q - 1 - (Dw.q - 1 - j) = j` using `by omega`. Simplify using `only [modelWt, hq, h1, if_false, ← relab_conj, Function.leftInverse_invFun (relab_injective σ) (conjEmb τ.1), wtOf_small la m τ (Dw.q - 1 - j) (by omega), wtOf_snd, h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem modelWt_wtOf_small {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (la : Weight Dw) (m : ℤ) (k : U.Comp)
     (hq : (U.X k).p0 = Dw.q) (τ : Psi H) (hτ : relab c σ τ.1 ∈ (U.X k).Ψ) (j : ℕ) (hj : j < Dw.q)
     (hr : j < r) : modelWt U (wtOf Dw la m) k ⟨_, hτ⟩ ⟨_, hr⟩ = la τ ⟨Dw.p + j, by omega⟩ := by
@@ -430,15 +579,37 @@ def cuspZ (la : Weight Dw) (m : ℤ) : Submodule c.F (Rul Xo c) := cuspW Xo c U 
 
 variable {Xo c U}
 
+/- English proof (translation)
+Simplify using `[cuspW, Submodule.mem_iInf]`.
+-/
 theorem mem_cuspW {G : WTZ E} {f : Rul Xo c} : f ∈ cuspW Xo c U G ↔ f ∈ secZ Xo c (exZ Dw G) ∧
     ∀ σ : c.F →+* ℂ, GoodEmb c σ → rdU (U σ) f ∈ holSub (U σ).X (modelWt (U σ) G) := by
   simp [cuspW, Submodule.mem_iInf]
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem cuspW_le_secZ (G : WTZ E) : cuspW Xo c U G ≤ secZ Xo c (exZ Dw G) := inf_le_left
 
+/- English proof (translation)
+Simplify using `only [cuspW, cusp, exZ_wtZ, secZ_nat, modelWt_wtZ]`.
+-/
 theorem cuspW_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : cuspW Xo c U (wtZ a n) = cusp Xo c U a n := by
   simp only [cuspW, cusp, exZ_wtZ, secZ_nat, modelWt_wtZ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k τ j`. Establish `h2 : G.2 = G'.2` using `congrFun h none`. Establish `h1 : ∀ (ρ : E →+* ℂ) (i : ℕ), i < Dw.mult ρ → G.1 (ρ, i) = G'.1 (ρ, i)` using `fun ρ i hi => congrFun h (some ⟨ρ, ⟨i, hi⟩⟩)`. Establish `hsurj : Function.Surjective (relab (E` using `E) c σ) := Finite.injective_iff_surjective.1 (relab_injective σ)`. Take `⟨hp0, hΨ⟩` from `hU.2.1 k`.
+
+Establish `hr` using `hU.1`. Establish `hj` using `j.2`. Take `⟨ρ, hρ⟩` from `hsurj τ.1`. Establish `hρΨ : ρ (H.rt : E) = H.rt0`. Assume the negation of the conclusion as `hn`.
+
+Establish `h3 : relab c σ (conjEmb ρ) (H.rt : E) = H.rt0`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext (conj_mem hn))).trans hσ0`. Rewrite `h3` using `[relab_conj, hρ]`. Conclude with `conj_not_mem ⟨τ.1, (hΨ _).1 τ.2⟩ h3`.
+
+Establish `e1 : Function.invFun (relab c σ) τ.1 = ρ`. Rewrite using `[← hρ]`. Conclude with `Function.leftInverse_invFun (relab_injective σ) ρ`. Establish `e2 : Function.invFun (relab c σ) (conjEmb τ.1) = conjEmb ρ`. Rewrite using `[← hρ, ← relab_conj]`.
+
+Conclude with `Function.leftInverse_invFun (relab_injective σ) _`. Unfold `modelWt`. Rewrite using `[e1, e2, h2]`. Use `split_ifs with hj'`. Rewrite using `[h1 ρ _ (by rw [Datum.mult, if_pos hρΨ]; omega)]`.
+
+Rewrite using `[h1 (conjEmb ρ) _ (by rw [Datum.mult, if_neg (conj_not_mem ⟨ρ, hρΨ⟩)]; omega)]`.
+-/
 theorem modelWt_congr {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) {G G' : WTZ E}
     (h : exZ Dw G = exZ Dw G') : modelWt U G = modelWt U G' := by
   funext k τ j
@@ -467,6 +638,11 @@ theorem modelWt_congr {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c 
   · rw [h1 ρ _ (by rw [Datum.mult, if_pos hρΨ]; omega)]
   · rw [h1 (conjEmb ρ) _ (by rw [Datum.mult, if_neg (conj_not_mem ⟨ρ, hρΨ⟩)]; omega)]
 
+/- English proof (translation)
+Establish `h : exZ Dw (wtOf Dw (weightOf Dw (fun x => (a x : ℤ)) m) m) = exZ Dw (wtZ a (2 * m))`. Use `exOf_weightOf (Dw := Dw) (fun x => (a x : ℤ)) m` as an intermediate fact. Rewrite `this` using `[exOf]`. Rewrite using `[this, wtZ]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[← cuspW_wtZ]`. Use extensionality with `f`. Rewrite using `[cuspZ, mem_cuspW, mem_cuspW, h]`. Conclude with `and_congr_right fun _ => forall₂_congr fun σ hσ => by rw [modelWt_congr (U σ) hσ (hU σ hσ) h]`.
+-/
 theorem cuspZ_weightOf (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ) :
     cuspZ Xo c U (weightOf Dw (fun x => (a x : ℤ)) m) m = cusp Xo c U a (2 * m) := by
   have h : exZ Dw (wtOf Dw (weightOf Dw (fun x => (a x : ℤ)) m) m) = exZ Dw (wtZ a (2 * m)) := by
@@ -490,6 +666,9 @@ def LiesOn (Z : Comp Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo 
 def LiesOff (Z : Comp Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : Prop :=
   ∀ s : Sp S, ptF y s ∉ (Z : Set (Xo.XF c))
 
+/- English proof (translation)
+Establish `hs : ∀ s s' : Sp S, s = s'` using `fun s s' => Subsingleton.elim (α := PrimeSpectrum S) s s'`. Establish `s₀ : Sp S` using `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum S)`. Conclude with `⟨fun h h' => h s₀ (h' s₀), fun h s hs' => h fun s' => hs s s' ▸ hs'⟩`.
+-/
 theorem liesOff_iff (Z : Comp Xo c) {S : Type} [Field S] [Algebra c.F S] (y : FrPt Xo c S) :
     LiesOff Z y ↔ ¬ LiesOn Z y := by
   have hs : ∀ s s' : Sp S, s = s' := fun s s' => Subsingleton.elim (α := PrimeSpectrum S) s s'
@@ -506,14 +685,27 @@ def suppOn (Z : Comp Xo c) : Submodule c.F (Rul Xo c) where
     have := evalAt_smul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) a f y
     exact this.trans ((congrArg (algebraMap c.F S a * ·) (hf S y h)).trans (mul_zero _))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_suppOn {Z : Comp Xo c} {f : Rul Xo c} : f ∈ suppOn Z ↔
     ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOff Z y → evR Xo c f y = 0 := Iff.rfl
 
+/- English proof (translation)
+Introduce `S _ _ y h` and use `by have := evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) g f y exact this.trans ((congrArg (evR Xo c g y * ·) (hf S y h)).trans (mul_zero _))`.
+-/
 theorem mul_mem_suppOn {Z : Comp Xo c} (g : Rul Xo c) {f : Rul Xo c} (hf : f ∈ suppOn Z) : g * f ∈ suppOn Z :=
   fun S _ _ y h => by
     have := evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) g f y
     exact this.trans ((congrArg (evR Xo c g y * ·) (hf S y h)).trans (mul_zero _))
 
+/- English proof (translation)
+Establish `e : ptF (genFr h Z) = spMap (algebraMap (kap Z) (Om Z)) ≫ genSp Z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, (isGenFr_genFr h Z).1, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[ptF, pullback.lift_snd, Category.assoc]`.
+
+Establish `h1 : genSp Z ≫ strK = spMap (algebraMap c.F (kap Z))` using `(Spec.map_preimage _).symm`. Use `Eq.trans ?_ (congrArg (spMap (algebraMap (kap Z) (Om Z)) ≫ ·) h1.symm)` and prove the remaining obligations. Use `show _ = spMap (algebraMap (kap Z) (Om Z)) ≫ spMap (algebraMap c.F (kap Z))`. Rewrite using `[← Spec.map_comp, IsScalarTower.algebraMap_eq c.F (kap Z) (Om Z)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`.
+-/
 theorem ptF_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) (s : Sp (Om Z)) : ptF (genFr h Z) s = genPt Z := by
   have e : ptF (genFr h Z) = spMap (algebraMap (kap Z) (Om Z)) ≫ genSp Z := by
     apply pullback.hom_ext
@@ -526,11 +718,17 @@ theorem ptF_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) (s : Sp (Om Z)) : ptF (genF
   rw [e, Scheme.Hom.comp_apply]
   exact Scheme.fromSpecResidueField_apply _ _
 
+/- English proof (translation)
+Introduce `s` and use `by rw [ptF_genFr] exact ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)).mem`.
+-/
 theorem liesOn_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) : LiesOn Z (genFr h Z) := fun s => by
   rw [ptF_genFr]
   exact ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint
     (isClosed_of_mem_irreducibleComponents _ Z.2)).mem
 
+/- English proof (translation)
+Introduce `s hs` and use `by rw [ptF_genFr] at hs have hg := (Z'.2.1 : IsIrreducible (Z' : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z'.2) have hle : (Z' : Set (Xo.XF c)) ⊆ Z := (hg.mem_closed_set_iff (isClosed_of_mem_irreducibleComponents _ Z.2)).1 hs exact hne …`.
+-/
 theorem liesOff_genFr (h : GenFrEx Xo c) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) : LiesOff Z (genFr h Z') := fun s hs => by
   rw [ptF_genFr] at hs
   have hg := (Z'.2.1 : IsIrreducible (Z' : Set (Xo.XF c))).isGenericPoint_genericPoint
@@ -538,10 +736,16 @@ theorem liesOff_genFr (h : GenFrEx Xo c) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) : L
   have hle : (Z' : Set (Xo.XF c)) ⊆ Z := (hg.mem_closed_set_iff (isClosed_of_mem_irreducibleComponents _ Z.2)).1 hs
   exact hne (Subtype.ext (hle.antisymm (Z'.2.2 Z.2.1 hle)))
 
+/- English proof (translation)
+The claim follows from `hf _ _ (liesOff_genFr h hne)`.
+-/
 theorem evC_eq_zero (h : GenFrEx Xo c) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) {f : Rul Xo c} (hf : f ∈ suppOn Z) :
     evC h Z' f = 0 :=
   hf _ _ (liesOff_genFr h hne)
 
+/- English proof (translation)
+Introduce `h1` and use `one_ne_zero ((evalAt_one _ _ _ (ht Z')).symm.trans (evC_eq_zero h hne h1))`.
+-/
 example (h : GenFrEx Xo c) (ht : GenFromTest Xo c h) {Z Z' : Comp Xo c} (hne : Z' ≠ Z) :
     (1 : Rul Xo c) ∉ suppOn Z := fun h1 =>
   one_ne_zero ((evalAt_one _ _ _ (ht Z')).symm.trans (evC_eq_zero h hne h1))
@@ -551,6 +755,9 @@ section Inst
 abbrev subModuleInt {K R : Type} [Field K] [CommRing R] [Algebra K R] [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R]
     (C : Submodule K R) : Module (𝓞 K) C := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem subTower {K R : Type} [Field K] [CommRing R] [Algebra K R] [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) K R]
     (C : Submodule K R) : IsScalarTower (𝓞 K) K C := inferInstance
 
@@ -569,14 +776,23 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 
 def cuspOn (Z : Comp Xo c) (G : WTZ E) : Submodule c.F (Rul Xo c) := cuspW Xo c U G ⊓ suppOn Z
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem cuspOn_le (Z : Comp Xo c) (G : WTZ E) : cuspOn U Z G ≤ cuspW Xo c U G := inf_le_left
 
 def supLat (C : Submodule c.F (Rul Xo c)) : Submodule (𝓞 c.F) C :=
   latOf C (valSet Xo c (algCls Xo c)) isVal_valSet
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_supLat {C : Submodule c.F (Rul Xo c)} {f : C} :
     f ∈ supLat C ↔ ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v (f : Rul Xo c) := Iff.rfl
 
+/- English proof (translation)
+Introduce `la v hv` and use `by show 0 ≤ v ((f : Rul Xo c) * g) rw [(isVal_valSet la v hv).mul] exact add_nonneg (hf la v hv) (hg la v hv)`.
+-/
 theorem mul_mem_supLat {C C' C'' : Submodule c.F (Rul Xo c)} {f : C} {g : C'} (hf : f ∈ supLat C)
     (hg : g ∈ supLat C') (h : (f : Rul Xo c) * g ∈ C'') : (⟨_, h⟩ : C'') ∈ supLat C'' := fun la v hv => by
   show 0 ≤ v ((f : Rul Xo c) * g)
@@ -589,6 +805,9 @@ def latOn (Z : Comp Xo c) (G : WTZ E) : Submodule (𝓞 c.F) (cuspOn U Z G) := s
 
 def latZ (la : Weight Dw) (m : ℤ) : Submodule (𝓞 c.F) (cuspW Xo c U (wtOf Dw la m)) := latW U (wtOf Dw la m)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latOn {Z : Comp Xo c} {G : WTZ E} {f : cuspOn U Z G} :
     f ∈ latOn U Z G ↔ (⟨f, cuspOn_le U Z G f.2⟩ : cuspW Xo c U G) ∈ latW U G := Iff.rfl
 
@@ -600,6 +819,9 @@ variable {r : ℕ} {Cp : Type} {X : Cp → Data E r} {D : D7} (V : HSp D) (dict 
 
 def ptN (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X) (z : Σ k, Frame (X k).Ψ r) : ℝ := (X z.1).pnorm (la z.1) (P z.1) z.2
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (norm_nonneg _) (pnorm_fac_nonneg _ _ _)`.
+-/
 theorem ptN_nonneg (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X) (z : Σ k, Frame (X k).Ψ r) : 0 ≤ ptN la P z :=
   mul_nonneg (norm_nonneg _) (pnorm_fac_nonneg _ _ _)
 
@@ -609,14 +831,23 @@ def muPart (A : Set (Σ k, Frame (X k).Ψ r)) : Measure (AutQ V) := ProbabilityT
 
 def muComp (k : Cp) : Measure (AutQ V) := muPart V dict {z | z.1 = k}
 
+/- English proof (translation)
+The claim follows from `ProbabilityTheory.cond_isProbabilityMeasure h`.
+-/
 theorem isProbabilityMeasure_muPart {A : Set (Σ k, Frame (X k).Ψ r)} (h : muQ1 V (classesOver V dict A) ≠ 0) :
     IsProbabilityMeasure (muPart V dict A) :=
   ProbabilityTheory.cond_isProbabilityMeasure h
 
+/- English proof (translation)
+Establish `: classesOver V dict Set.univ = Set.univ` using `rfl`. Rewrite using `[muPart, this, ProbabilityTheory.cond_univ]`.
+-/
 theorem muPart_univ : muPart V dict Set.univ = muQ1 V := by
   have : classesOver V dict Set.univ = Set.univ := rfl
   rw [muPart, this, ProbabilityTheory.cond_univ]
 
+/- English proof (translation)
+Use `haveI : IsZeroOrProbabilityMeasure (muPart V dict A) := by unfold muPart; infer_instance`. Conclude with `prob_le_one`.
+-/
 theorem muPart_univ_le (A : Set (Σ k, Frame (X k).Ψ r)) : muPart V dict A Set.univ ≤ 1 := by
   haveI : IsZeroOrProbabilityMeasure (muPart V dict A) := by unfold muPart; infer_instance
   exact prob_le_one
@@ -625,12 +856,20 @@ variable (μ : Measure (AutQ V))
 
 def petE (la : ∀ k, Wt (X k).Ψ r) (P : FDSec X) : ENNReal := eLpNorm (fun q : AutQ V => ptN la P (dict q.out)) 2 μ
 
+/- English proof (translation)
+Establish `: (fun q : AutQ V => ptN la (a • P) (dict q.out)) = ‖a‖ • fun q : AutQ V => ptN la P (dict q.out)`. Use function extensionality and compare the values at `fun q => pnorm_smul _ _ a _ _`. Rewrite using `[petE, this, eLpNorm_const_smul, petE, Real.enorm_eq_ofReal (norm_nonneg a)]`.
+-/
 theorem petE_smul (la : ∀ k, Wt (X k).Ψ r) (a : ℂ) (P : FDSec X) :
     petE V dict μ la (a • P) = ENNReal.ofReal ‖a‖ * petE V dict μ la P := by
   have : (fun q : AutQ V => ptN la (a • P) (dict q.out)) = ‖a‖ • fun q : AutQ V => ptN la P (dict q.out) :=
     funext fun q => pnorm_smul _ _ a _ _
   rw [petE, this, eLpNorm_const_smul, petE, Real.enorm_eq_ofReal (norm_nonneg a)]
 
+/- English proof (translation)
+Establish `h : ∀ q : AutQ V, ‖ptN la P (dict q.out)‖ₑ ≤ supE X la P` using `fun q => by`. Rewrite using `[Real.enorm_eq_ofReal (ptN_nonneg _ _ _)]`. Conclude with `le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (P p.1) p.2)) ⟨(dict q.out).1, ⟨(dict q.out).2, hd _⟩⟩`. Use `(eLpNorm_le_of_ae_enorm_bound (Filter.Eventually.of_forall h)).trans ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+
+Use `(mul_le_mul_right (ENNReal.rpow_le_one hμ (by positivity)) _).trans (by simp)` and prove the remaining obligations.
+-/
 theorem petE_le_supE (hμ : μ Set.univ ≤ 1) (hd : ∀ g, (dict g).2 ∈ (X (dict g).1).dom) (la : ∀ k, Wt (X k).Ψ r)
     (P : FDSec X) : petE V dict μ la P ≤ supE X la P := by
   have h : ∀ q : AutQ V, ‖ptN la P (dict q.out)‖ₑ ≤ supE X la P := fun q => by
@@ -641,6 +880,9 @@ theorem petE_le_supE (hμ : μ Set.univ ≤ 1) (hd : ∀ g, (dict g).2 ∈ (X (d
   rw [smul_eq_mul]
   refine (mul_le_mul_right (ENNReal.rpow_le_one hμ (by positivity)) _).trans (by simp)
 
+/- English proof (translation)
+The claim follows from `ne_top_of_le_ne_top (supE_ne_top X la hP) (petE_le_supE V dict μ hμ hd la P)`.
+-/
 theorem petE_ne_top [Fintype Cp] (hμ : μ Set.univ ≤ 1) (hd : ∀ g, (dict g).2 ∈ (X (dict g).1).dom)
     {la : ∀ k, Wt (X k).Ψ r} {P : FDSec X} (hP : P ∈ holSub X la) : petE V dict μ la P ≠ ⊤ :=
   ne_top_of_le_ne_top (supE_ne_top X la hP) (petE_le_supE V dict μ hμ hd la P)
@@ -648,6 +890,9 @@ theorem petE_ne_top [Fintype Cp] (hμ : μ Set.univ ≤ 1) (hd : ∀ g, (dict g)
 def bergE (la : ∀ k, Wt (X k).Ψ r) (y : FPt X) : ENNReal :=
   ⨆ P ∈ holSub X la, ENNReal.ofReal (ptN la P ⟨y.1, y.2.1⟩) ^ 2 / petE V dict μ la P ^ 2
 
+/- English proof (translation)
+Simplify using `only [bergE, iSup_le_iff]`. Conclude with `forall₂_congr fun P hP => ENNReal.div_le_iff_le_mul (Or.inr hB) (Or.inl (ENNReal.pow_ne_top (hfin P hP)))`.
+-/
 theorem bergE_le_iff {la : ∀ k, Wt (X k).Ψ r} (hfin : ∀ P ∈ holSub X la, petE V dict μ la P ≠ ⊤) (y : FPt X) {B : ENNReal} (hB : B ≠ ⊤) :
     bergE V dict μ la y ≤ B ↔
       ∀ P ∈ holSub X la, ENNReal.ofReal (ptN la P ⟨y.1, y.2.1⟩) ^ 2 ≤ B * petE V dict μ la P ^ 2 := by
@@ -664,11 +909,20 @@ variable {r : ℕ}
 def lieFacZ (Dw : Datum H) (x : ℝ) (G : WTZ E) : ℝ :=
   Real.exp (-((∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (G.1 (τ, i) : ℝ)) / 2) * Real.log (2 * Real.pi * x))
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem lieFacZ_pos (x : ℝ) (G : WTZ E) : 0 < lieFacZ Dw x G := Real.exp_pos _
 
+/- English proof (translation)
+Simplify using `[lieFacZ, lieFac, wtZ]`.
+-/
 theorem lieFacZ_wtZ (x : ℝ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : lieFacZ Dw x (wtZ a n) = lieFac Dw x a := by
   simp [lieFacZ, lieFac, wtZ]
 
+/- English proof (translation)
+Simplify using `only [lieFacZ, ← Real.exp_add, Prod.fst_add, Pi.add_apply, Int.cast_add, Finset.sum_add_distrib]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lieFacZ_add (x : ℝ) (G G' : WTZ E) : lieFacZ Dw x (G + G') = lieFacZ Dw x G * lieFacZ Dw x G' := by
   simp only [lieFacZ, ← Real.exp_add, Prod.fst_add, Pi.add_apply, Int.cast_add, Finset.sum_add_distrib]
   congr 1; ring
@@ -680,9 +934,15 @@ variable {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (x : ℝ)
 def homN (G : WTZ E) (f : Rul Xo c) (z : Σ k, Frame (U.X k).Ψ r) : ℝ :=
   lieFacZ Dw x G * ptN (modelWt U G) (rdU U f) z
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (lieFacZ_pos _ _).le (ptN_nonneg _ _ _)`.
+-/
 theorem homN_nonneg (G : WTZ E) (f : Rul Xo c) (z : Σ k, Frame (U.X k).Ψ r) : 0 ≤ homN U x G f z :=
   mul_nonneg (lieFacZ_pos _ _).le (ptN_nonneg _ _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k y`. Distinguish the cases in `h : y ∈ (U.X k).dom`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, Pi.mul_apply, h, dif_pos]`. Conclude with `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g (U.un k ⟨y, h⟩)`. Simplify using `[rdU, h]`.
+-/
 theorem rdU_mul (f g : Rul Xo c) : rdU U (f * g) = rdU U f * rdU U g := by
   funext k y
   by_cases h : y ∈ (U.X k).dom
@@ -690,6 +950,15 @@ theorem rdU_mul (f g : Rul Xo c) : rdU U (f * g) = rdU U f * rdU U g := by
     exact evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g (U.un k ⟨y, h⟩)
   · simp [rdU, h]
 
+/- English proof (translation)
+Establish `hd : ∀ τ i, dmin (U.X z.1).Gm z.2 τ i ≠ 0` using `fun τ i h0 => by`. Use `(hz τ).2 i` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `key : ∀ la la' : Wt (U.X z.1).Ψ r, (U.X z.1).nfac (la + la') z.2 = (U.X z.1).nfac la z.2 * (U.X z.1).nfac la' z.2` using `fun la la' => by`.
+
+Unfold `Data.nfac`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_add (norm_pos_iff.mpr (div_ne_zero (hd τ _) (hd τ _)))]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show _ * (‖rdU U (f * g) z.1 z.2‖ * (U.X z.1).nfac (modelWt U (G + G') z.1) z.2) = _ * (‖rdU U f z.1 z.2‖ * (U.X z.1).nfac (modelWt U G z.1) z.2) * (_ * (‖rdU U g z.1 z.2‖ * (U.X z.1).nfac (modelWt U G' z.1) z.2))`. Rewrite using `[modelWt_add U hG hG', key, lieFacZ_add, rdU_mul, Pi.mul_apply, Pi.mul_apply, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homN_mul {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (f g : Rul Xo c) (z : Σ k, Frame (U.X k).Ψ r)
     (hz : z.2 ∈ (U.X z.1).dom) : homN U x (G + G') (f * g) z = homN U x G f z * homN U x G' g z := by
   have hd : ∀ τ i, dmin (U.X z.1).Gm z.2 τ i ≠ 0 := fun τ i h0 => by
@@ -716,6 +985,11 @@ theorem homN_mul {G G' : WTZ E} (hG : Even G.2) (hG' : Even G'.2) (f g : Rul Xo 
 def framesOn (Z : Comp Xo c) : Set (Σ k, Frame (U.X k).Ψ r) :=
   {z | ∃ h : z.2 ∈ (U.X z.1).dom, LiesOn Z (U.un z.1 ⟨z.2, h⟩)}
 
+/- English proof (translation)
+Distinguish the cases in `h : z.2 ∈ (U.X z.1).dom`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, h, dif_pos]`. Use `hf (CAt σ) _ fun s hs => hz ⟨h, fun s' => ?_⟩` and prove the remaining obligations. Establish `: s = s'` using `Subsingleton.elim (α := PrimeSpectrum ℂ) s s'`. Conclude with `this ▸ hs`.
+
+Simplify using `[rdU, h]`.
+-/
 theorem rdU_eq_zero {Z : Comp Xo c} {f : Rul Xo c} (hf : f ∈ suppOn Z) {z : Σ k, Frame (U.X k).Ψ r}
     (hz : z ∉ framesOn U Z) : rdU U f z.1 z.2 = 0 := by
   by_cases h : z.2 ∈ (U.X z.1).dom
@@ -733,15 +1007,24 @@ variable (μ : Measure (AutQ V))
 
 def petAt (G : WTZ E) (f : Rul Xo c) : ℝ := lieFacZ Dw x G * (petE V dict μ (modelWt U G) (rdU U f)).toReal
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (lieFacZ_pos _ _).le ENNReal.toReal_nonneg`.
+-/
 theorem petAt_nonneg (G : WTZ E) (f : Rul Xo c) : 0 ≤ petAt U x V dict μ G f :=
   mul_nonneg (lieFacZ_pos _ _).le ENNReal.toReal_nonneg
 
+/- English proof (translation)
+Unfold `petAt`. Rewrite using `[map_smulₛₗ, petE_smul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (norm_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem petAt_smul (G : WTZ E) (a : c.F) (f : Rul Xo c) :
     petAt U x V dict μ G (a • f) = ‖σ a‖ * petAt U x V dict μ G f := by
   unfold petAt
   rw [map_smulₛₗ, petE_smul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (norm_nonneg _)]
   ring
 
+/- English proof (translation)
+Establish `: (fun q : AutQ V => homN U x G f (dict q.out)) = lieFacZ Dw x G • fun q : AutQ V => ptN (modelWt U G) (rdU U f) (dict q.out)` using `rfl`. Rewrite using `[this, eLpNorm_const_smul, ENNReal.toReal_mul, Real.enorm_eq_ofReal (lieFacZ_pos x G).le, ENNReal.toReal_ofReal (lieFacZ_pos x G).le]`. Both sides reduce to the same expression.
+-/
 theorem petAt_eq (G : WTZ E) (f : Rul Xo c) :
     petAt U x V dict μ G f = (eLpNorm (fun q : AutQ V => homN U x G f (dict q.out)) 2 μ).toReal := by
   have : (fun q : AutQ V => homN U x G f (dict q.out)) =
@@ -752,6 +1035,11 @@ theorem petAt_eq (G : WTZ E) (f : Rul Xo c) :
 
 def bergOn (Z : Comp Xo c) (G : WTZ E) (y : FPt U.X) : ENNReal := bergE V dict (muOn U V dict Z) (modelWt U G) y
 
+/- English proof (translation)
+Establish `hfin` using `petE_ne_top V dict μ hμ hd hf`. Establish `h` using `(bergE_le_iff V dict μ (fun P hP => petE_ne_top V dict μ hμ hd hP) y ENNReal.ofReal_ne_top).1 hB _ hf`. Establish `h2` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.pow_ne_top hfin)) h`. Rewrite `h2` using `[ENNReal.toReal_pow, ENNReal.toReal_ofReal (ptN_nonneg _ _ _), ENNReal.toReal_mul, ENNReal.toReal_ofReal hB0, ENNReal.toReal_pow]`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (sq_nonneg (lieFacZ Dw x G))`.
+
+Unfold `homN petAt`. Use polynomial arithmetic with `[h3]`.
+-/
 theorem homN_sq_le {G : WTZ E} (hμ : μ Set.univ ≤ 1) (hd : ∀ g, (dict g).2 ∈ (U.X (dict g).1).dom) (y : FPt U.X)
     {B : ℝ} (hB0 : 0 ≤ B) (hB : bergE V dict μ (modelWt U G) y ≤ ENNReal.ofReal B) {f : Rul Xo c}
     (hf : rdU U f ∈ holSub U.X (modelWt U G)) :
@@ -769,6 +1057,11 @@ end One
 
 variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) {D : D7}
 
+/- English proof (translation)
+Rewrite using `[l2C, dif_pos hf, petAt, lieFacZ_wtZ]`. Use `congr 1`. Use `show _ = ‖(h ⟨f, hf⟩).toLp _‖`. Rewrite using `[Lp.norm_toLp, petE]`. Use `congr 1`.
+
+Use `eLpNorm_congr_norm_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (ptN_nonneg _ _ _), ptN, pnorm_eq_of_unit _ _ _ _ (hm.2.2.2 _)]`. Use `show _ = ‖mu q.out * rdU (U σ) f (dict q.out).1 (dict q.out).2‖`. Rewrite using `[norm_mul, hm.2.1, one_mul]`.
+-/
 theorem petAt_wtZ {σ : c.F →+* ℂ} (V : HSp D) (dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r) (mu : GA D V → ℂ)
     (hm : MuUnit V dict mu) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (h : JMemL2 V σ (rdC U σ a n) dict mu) {f : Rul Xo c}
     (hf : f ∈ cusp Xo c U a n) : petAt (U σ) x V dict (muQ1 V) (wtZ a n) f = l2C U σ V dict mu x a n h f := by
@@ -791,10 +1084,16 @@ def petOn (Z : Comp Xo c) (G : WTZ E) (σ : c.F →+* ℂ) (f : Rul Xo c) : ℝ 
   petAt (U (goodOf c σ)) x (V (goodOf c σ)) (dict (goodOf c σ))
     (muOn (U (goodOf c σ)) (V (goodOf c σ)) (dict (goodOf c σ)) Z) G f
 
+/- English proof (translation)
+Rewrite using `[petW, petAt_smul, norm_goodOf]`. Both sides reduce to the same expression.
+-/
 theorem petW_smul (G : WTZ E) (σ : c.F →+* ℂ) (a : c.F) (f : Rul Xo c) :
     petW U x V dict G σ (a • f) = ‖σ a‖ * petW U x V dict G σ f := by
   rw [petW, petAt_smul, norm_goodOf]; rfl
 
+/- English proof (translation)
+Rewrite using `[petOn, petAt_smul, norm_goodOf]`. Both sides reduce to the same expression.
+-/
 theorem petOn_smul (Z : Comp Xo c) (G : WTZ E) (σ : c.F →+* ℂ) (a : c.F) (f : Rul Xo c) :
     petOn U x V dict Z G σ (a • f) = ‖σ a‖ * petOn U x V dict Z G σ f := by
   rw [petOn, petAt_smul, norm_goodOf]; rfl
@@ -823,6 +1122,9 @@ def degOn (Z : Comp Xo c) (G : WTZ E) : ℝ := deg (normOn U x V dict Z G) (latO
 
 def degZ (la : Weight Dw) (m : ℤ) : ℝ := degW U x V dict (wtOf Dw la m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degW_eq (G : WTZ E) : degW U x V dict G = (rankW U G : ℝ) * (slopeW_sq U x V dict G / 2) := rfl
 
 end Norms

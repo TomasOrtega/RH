@@ -32,6 +32,11 @@ noncomputable section
 
 namespace GlobalTheory.HSApp.BigMoving
 
+/- English proof (translation)
+Introduce `k _ X _ p D hp`. Establish `hc (U : X.Opens) (hU : IsAffineOpen U) (h : (U : Set X).Nonempty) : topologicalKrullDim (U : Set X) = D`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding hU.fromSpec.isOpenEmbedding.isEmbedding hU.range_fromSpec]`. Conclude with `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := Γ(X, U))).trans (GlobalTheory.SmoothDim.ringKrullDim_affineOpen k X p D hp U hU h)`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ?_` and prove the remaining obligations.
+
+Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top x)`. Conclude with `⟨U, U.isOpen, hx, (hc U hU ⟨x, hx⟩).le⟩`. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top (genericPoint X))`. Conclude with `(hc U hU ⟨_, hx⟩).ge.trans (topologicalKrullDim_subspace_le _ _)`.
+-/
 theorem dim_eq : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     SmoothOfRelativeDimension D p → topologicalKrullDim X = D := by
   intro k _ X _ p D hp

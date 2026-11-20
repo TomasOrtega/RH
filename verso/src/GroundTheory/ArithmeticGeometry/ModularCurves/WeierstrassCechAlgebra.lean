@@ -11,6 +11,9 @@ namespace Weierstrass
 
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Polynomial.eval₂_C_X (p := q)]`. Rewrite using `[Polynomial.hom_eval₂]`.
+-/
 theorem ringHom_eq_eval₂ {S : Type*} [CommRing S] (φ : R[X] →+* S) (q : R[X]) :
     φ q = q.eval₂ (φ.comp C) (φ X) := by
   conv_lhs => rw [← Polynomial.eval₂_C_X (p := q)]
@@ -21,6 +24,13 @@ noncomputable def coordA [Nontrivial R] (a : W.toAffine.CoordinateRing) : Fin 3 
 
 noncomputable def coordI [Nontrivial R] (b : InfChart W) : Fin 3 →₀ R[X] := (basisI W).repr b
 
+/- English proof (translation)
+Apply `(xAlgEquiv W).injective` to reduce the goal to its premises. Use `conv_lhs => rw [← (basisX W).sum_repr (xAlgEquiv W a)]`. Simplify using `only [map_sum, map_mul, map_pow, xAlgEquiv_xC, basisX_apply, coordA]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Use `congr 1`. Establish `e : ∀ q : R[X], xAlgEquiv W (q.eval₂ (algebraMap R _) (yC W)) = q.eval₂ ((xAlgEquiv W).toRingHom.comp (algebraMap R _)) (xAlgEquiv W (yC W))` using `fun q => Polynomial.hom_eval₂ q (algebraMap R _) (xAlgEquiv W).toRingEquiv.toRingHom (yC W)`. Rewrite using `[ringHom_eq_eval₂ (algebraMap R[X] (XRing W)), e, xAlgEquiv_yC]`. Use `congr 1`. Use extensionality with `r`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem eq_sum_coordA [Nontrivial R] (a : W.toAffine.CoordinateRing) :
     a = ∑ i : Fin 3, (coordA W a i).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ) := by
   apply (xAlgEquiv W).injective
@@ -38,6 +48,11 @@ theorem eq_sum_coordA [Nontrivial R] (a : W.toAffine.CoordinateRing) :
   simp
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (basisI W).sum_repr b]`. Simplify using `only [basisI_apply, coordI]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `congr 1`.
+
+Rewrite using `[ringHom_eq_eval₂ (algebraMap R[X] (InfChart W))]`. Both sides reduce to the same expression.
+-/
 theorem eq_sum_coordI [Nontrivial R] (b : InfChart W) :
     b = ∑ i : Fin 3, (coordI W b i).eval₂ (algebraMap R _) (zI W) * xI W ^ (i : ℕ) := by
   conv_lhs => rw [← (basisI W).sum_repr b]
@@ -52,6 +67,13 @@ section Coordinates
 
 variable [Nontrivial R]
 
+/- English proof (translation)
+Establish `e : ∀ q : R[X], xAlgEquiv W (q.eval₂ (algebraMap R _) (yC W)) = algebraMap R[X] _ q`. Introduce `q`. Rewrite using `[ringHom_eq_eval₂ (algebraMap R[X] (XRing W))]`. Rewrite using `[show xAlgEquiv W (q.eval₂ (algebraMap R _) (yC W)) = q.eval₂ ((xAlgEquiv W).toRingEquiv.toRingHom.comp (algebraMap R _)) (xAlgEquiv W (yC W)) from Polynomial.hom_eval₂ q (algebraMap R _) (xAlgEquiv W).toRingEquiv.toRingHom (yC W)]`. Rewrite using `[xAlgEquiv_yC]`.
+
+Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `h : xAlgEquiv W (∑ i : Fin 3, (P i).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)) = (basisX W).equivFun.symm P`.
+
+Simplify using `only [map_sum, map_mul, map_pow, e, xAlgEquiv_xC, Module.Basis.equivFun_symm_apply, basisX_apply, Algebra.smul_def]`. Rewrite using `[coordA, h]`. Use extensionality with `i : 1`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem coordA_sum (P : Fin 3 → R[X]) :
     coordA W (∑ i : Fin 3, (P i).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)) =
       Finsupp.equivFunOnFinite.symm P := by
@@ -75,10 +97,18 @@ theorem coordA_sum (P : Fin 3 → R[X]) :
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `(xAlgEquiv W).injective ((basisX W).repr.injective h)`.
+-/
 theorem coordA_injective : Function.Injective (coordA W) := by
   intro a b h
   exact (xAlgEquiv W).injective ((basisX W).repr.injective h)
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum_coordA W a, Finset.mul_sum]`. Establish `: ∀ i : Fin 3, yC W ^ n * ((coordA W a i).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)) = (X ^ n * coordA W a i).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)`. Introduce `i`. Rewrite using `[eval₂_mul, eval₂_X_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this, coordA_sum]`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem coordA_yC_pow_mul (n : ℕ) (a : W.toAffine.CoordinateRing) :
     coordA W (yC W ^ n * a) = (X ^ n : R[X]) • coordA W a := by
   conv_lhs => rw [eq_sum_coordA W a, Finset.mul_sum]
@@ -91,6 +121,11 @@ theorem coordA_yC_pow_mul (n : ℕ) (a : W.toAffine.CoordinateRing) :
   ext i
   simp
 
+/- English proof (translation)
+Apply `coordA_injective W` to reduce the goal to its premises. Establish `h2` using `coordA_yC_pow_mul W 1 a`. Rewrite `h2` using `[pow_one, h]`. Use extensionality with `i k`. Establish `h3` using `congrArg (fun f : Fin 3 →₀ R[X] => (f i).coeff (k + 1)) h2`.
+
+Simplify using `only [Finsupp.smul_apply, smul_eq_mul, pow_one, coeff_X_mul] at h3`. Rewrite using `[← h3]`. Simplify using `[coordA]`.
+-/
 theorem yC_mul_eq_zero {a : W.toAffine.CoordinateRing} (h : yC W * a = 0) : a = 0 := by
   apply coordA_injective W
   have h2 := coordA_yC_pow_mul W 1 a
@@ -109,8 +144,16 @@ noncomputable instance invertibleY :
     Invertible (algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)) :=
   ⟨yInv W, by rw [mul_comm]; exact yC_mul_yInv W, yC_mul_yInv W⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invOf_yC : ⅟(algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)) = yInv W := rfl
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Establish `: Subsingleton W.toAffine.CoordinateRing` using `Module.subsingleton R _`. Conclude with `fun a b _ => Subsingleton.elim a b`. Establish `hy : Submonoid.powers (yC W) ≤ nonZeroDivisors _`. Rewrite using `[Submonoid.powers_le]`.
+
+Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun z hz => yC_mul_eq_zero W hz, fun z hz => yC_mul_eq_zero W (by rwa [mul_comm])⟩` and prove the remaining obligations. Conclude with `IsLocalization.injective (Overlap W) hy`.
+-/
 theorem algebraMap_overlap_injective :
     Function.Injective (algebraMap W.toAffine.CoordinateRing (Overlap W)) := by
   rcases subsingleton_or_nontrivial R with hR | hR
@@ -122,6 +165,9 @@ theorem algebraMap_overlap_injective :
     refine ⟨fun z hz => yC_mul_eq_zero W hz, fun z hz => yC_mul_eq_zero W (by rwa [mul_comm])⟩
   exact IsLocalization.injective (Overlap W) hy
 
+/- English proof (translation)
+Rewrite using `[show infToOverlap W (q.eval₂ (algebraMap R _) (zI W)) = q.eval₂ ((infToOverlap W).toRingHom.comp (algebraMap R _)) (infToOverlap W (zI W)) from Polynomial.hom_eval₂ _ _ (infToOverlap W).toRingHom _, infToOverlap_zI]`. Establish `hc : (infToOverlap W).toRingHom.comp (algebraMap R (InfChart W)) = algebraMap R (Overlap W)` using `(infToOverlap W).comp_algebraMap`. Rewrite using `[hc]`.
+-/
 theorem infToOverlap_eval₂ (q : R[X]) :
     infToOverlap W (q.eval₂ (algebraMap R _) (zI W)) =
       q.eval₂ (algebraMap R (Overlap W)) (yInv W) := by
@@ -134,6 +180,9 @@ theorem infToOverlap_eval₂ (q : R[X]) :
 
 variable [Nontrivial R]
 
+/- English proof (translation)
+Establish `h` using `congrArg (infToOverlap W) (eq_sum_coordI W b)`. Rewrite using `[h, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, infToOverlap_xI, infToOverlap_eval₂]`.
+-/
 theorem infToOverlap_eq (b : InfChart W) :
     infToOverlap W b = ∑ i : Fin 3, (coordI W b i).eval₂ (algebraMap R (Overlap W)) (yInv W) *
       (algebraMap _ (Overlap W) (xC W) * yInv W) ^ (i : ℕ) := by
@@ -142,6 +191,13 @@ theorem infToOverlap_eq (b : InfChart W) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, map_pow, infToOverlap_xI, infToOverlap_eval₂]
 
+/- English proof (translation)
+Rewrite using `[infToOverlap_eq, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hq : (coordI W b i).natDegree ≤ N - i` using `by have := hN i; omega`. Establish `hNi : N = (N - i) + i` using `by have := hN i; omega`. Use `set y := algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)`.
+
+Use `set x := algebraMap W.toAffine.CoordinateRing (Overlap W) (xC W)`. Use `set q := coordI W b i`. Establish `key : q.eval₂ (algebraMap R (Overlap W)) (yInv W) * y ^ (N - i) = (reflect (N - i) q).eval₂ (algebraMap R (Overlap W)) y`. Use `eval₂_reflect_mul_pow (algebraMap R (Overlap W)) y (N - i) (reflect (N - i) q) (natDegree_reflect_le.trans (by simp [hq]))` as an intermediate fact. Rewrite `this` using `[reflect_reflect, invOf_yC]`. Then use the resulting hypothesis.
+
+Rewrite using `[map_mul, map_pow, show algebraMap W.toAffine.CoordinateRing (Overlap W) ((reflect (N - i) q).eval₂ (algebraMap R _) (yC W)) = (reflect (N - i) q).eval₂ (algebraMap R (Overlap W)) y by`. Rewrite using `[Polynomial.hom_eval₂, ← IsScalarTower.algebraMap_eq], ← key]`. Establish `hyu : y * yInv W = 1` using `yC_mul_yInv W`. Use `conv_lhs => rw [hNi, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem yC_pow_mul_infToOverlap (b : InfChart W) (N : ℕ)
     (hN : ∀ i : Fin 3, (coordI W b i).natDegree + i ≤ N) :
     algebraMap _ (Overlap W) (yC W) ^ N * infToOverlap W b =
@@ -178,6 +234,9 @@ variable [Nontrivial R]
 
 noncomputable def degBound (b : InfChart W) : ℕ := (∑ i : Fin 3, (coordI W b i).natDegree) + 3
 
+/- English proof (translation)
+Establish `h1 : (coordI W b i).natDegree ≤ ∑ j : Fin 3, (coordI W b j).natDegree` using `Finset.single_le_sum (f := fun j => (coordI W b j).natDegree) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2 : (i : ℕ) < 3` using `i.isLt`. Unfold `degBound`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_degBound (b : InfChart W) (i : Fin 3) :
     (coordI W b i).natDegree + i ≤ degBound W b := by
   have h1 : (coordI W b i).natDegree ≤ ∑ j : Fin 3, (coordI W b j).natDegree :=
@@ -187,6 +246,15 @@ theorem le_degBound (b : InfChart W) (i : Fin 3) :
   unfold degBound
   omega
 
+/- English proof (translation)
+Use `set N := degBound W b`. Establish `hN3 : 3 ≤ N` using `by unfold N degBound; omega`. Establish `hy` using `yC_pow_mul_infToOverlap W b N (le_degBound W b)`. Establish `hA : yC W ^ N * a = ∑ i : Fin 3, (reflect (N - i) (coordI W b i) + if i = 2 then C r * X ^ (N - 1) else 0).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)`. Apply `algebraMap_overlap_injective W` to reduce the goal to its premises.
+
+Establish `h' : algebraMap _ (Overlap W) a = infToOverlap W b + r • (algebraMap _ (Overlap W) (xC W) ^ 2 * yInv W)` using `by rw [← h]; ring`. Establish `hsplit : ∑ i : Fin 3, (reflect (N - i) (coordI W b i) + if i = 2 then C r * X ^ (N - 1) else 0).eval₂ (algebraMap R W.toAffine.CoordinateRing) (yC W) * xC W ^ (i : ℕ) = (∑ i : Fin 3, (reflect (N - i) (coordI W b i)).eval₂ (algebraMap R _) (yC W) * xC W ^ (i : ℕ)) + r • (xC W ^ 2 …`. Simplify using `only [Fin.sum_univ_three, eval₂_add]`. Simplify using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit, map_add, ← hy, map_mul, map_pow, h', mul_add]`. Use `congr 1`. Simplify using `only [Algebra.smul_def, map_mul, map_pow, ← IsScalarTower.algebraMap_apply]`. Establish `hyu` using `yC_mul_yInv W`. Establish `hN : N = (N - 1) + 1` using `by omega`.
+
+Use `conv_lhs => rw [hN, pow_succ]`. Take the linear combination `(algebraMap R (Overlap W) r * algebraMap W.toAffine.CoordinateRing (Overlap W) (xC W) ^ 2 * algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W) ^ (N - 1)) * hyu`. Rewrite using `[← coordA_yC_pow_mul, hA, coordA_sum]`.
+-/
 theorem coordA_eq_of_sub_eq (a : W.toAffine.CoordinateRing) (b : InfChart W) (r : R)
     (h : algebraMap _ (Overlap W) a - infToOverlap W b =
       r • (algebraMap _ (Overlap W) (xC W) ^ 2 * yInv W)) :
@@ -226,6 +294,11 @@ section Main2
 
 variable [Nontrivial R]
 
+/- English proof (translation)
+Establish `hc` using `congrArg (fun f : Fin 3 →₀ R[X] => (f 2).coeff (degBound W b - 1)) (coordA_eq_of_sub_eq W a b r h)`. Establish `hN3 : 3 ≤ degBound W b` using `by unfold degBound; omega`. Establish `hq` using `le_degBound W b 2`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul, Finsupp.coe_equivFunOnFinite_symm] at hc`. Simplify using `only [coeff_add, coeff_X_pow_mul', coeff_reflect] at hc`.
+
+Establish `hrev : revAt (degBound W b - ((2 : Fin 3) : ℕ)) (degBound W b - 1) = degBound W b - 1` using `revAt_eq_self_of_lt (by simp; omega)`. Rewrite `hc` using `[if_neg (by omega), hrev, coeff_eq_zero_of_natDegree_lt (by simp at hq; omega), if_pos trivial, coeff_C_mul_X_pow, if_pos rfl, zero_add]`. Conclude with `hc.symm`.
+-/
 theorem eq_zero_of_sub_eq_smul (a : W.toAffine.CoordinateRing) (b : InfChart W) (r : R)
     (h : algebraMap _ (Overlap W) a - infToOverlap W b =
       r • (algebraMap _ (Overlap W) (xC W) ^ 2 * yInv W)) : r = 0 := by
@@ -257,6 +330,9 @@ noncomputable def cechMap : (W.toAffine.CoordinateRing × InfChart W) →ₗ[R] 
     (infToOverlap W).toLinearMap.comp (LinearMap.snd R _ _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechMap_apply (p : W.toAffine.CoordinateRing × InfChart W) :
     cechMap W p = algebraMap _ (Overlap W) p.1 - infToOverlap W p.2 := rfl
 
@@ -265,6 +341,19 @@ noncomputable def cechGen : Overlap W := algebraMap _ (Overlap W) (xC W) ^ 2 * y
 noncomputable def cechSpan : Submodule R (Overlap W) :=
   LinearMap.range (cechMap W) ⊔ Submodule.span R {cechGen W}
 
+/- English proof (translation)
+Use `set y := algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)`. Use `set x := algebraMap W.toAffine.CoordinateRing (Overlap W) (xC W)`. Establish `hyu : y * yInv W = 1` using `yC_mul_yInv W`. Rewrite using `[map_mul, map_pow, map_pow]`. Distinguish the cases in `hnk : n ≤ k`.
+
+Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Use `⟨(yC W ^ (k - n) * xC W ^ (i : ℕ), 0), ?_⟩` and prove the remaining obligations. Simplify using `only [cechMap_apply, map_zero, sub_zero, map_mul, map_pow]`. Establish `hk : k = (k - n) + n` using `by omega`. Use `conv_rhs => rw [hk, pow_add]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hyu, one_pow, mul_one]`. Use `_ = _ := by ring`. Establish `hm : n = k + (n - k)` using `by omega`. Establish `hval : y ^ k * x ^ (i : ℕ) * yInv W ^ n = x ^ (i : ℕ) * yInv W ^ (n - k)` using `by conv_lhs => rw [hm, pow_add]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hval]`. Distinguish the cases in `hi : (i : ℕ) ≤ n - k`. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Use `⟨(0, -(zI W ^ (n - k - i) * xI W ^ (i : ℕ))), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [cechMap_apply, map_zero, zero_sub, map_neg, neg_neg, map_mul, map_pow, infToOverlap_xI, infToOverlap_zI]`. Establish `: n - k = (n - k - i) + i` using `by omega`. Use `conv_rhs => rw [this, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Apply `Submodule.mem_sup_right` to reduce the goal to its premises.
+
+Establish `hi2 : (i : ℕ) = 2` using `by have := i.isLt; omega`. Establish `hnk1 : n - k = 1` using `by omega`. Rewrite using `[hi2, hnk1, pow_one]`. Conclude with `Submodule.subset_span rfl`.
+-/
 theorem monomial_mem_cechSpan (k n : ℕ) (i : Fin 3) :
     algebraMap _ (Overlap W) (yC W ^ k * xC W ^ (i : ℕ)) * yInv W ^ n ∈ cechSpan W := by
   set y := algebraMap W.toAffine.CoordinateRing (Overlap W) (yC W)
@@ -306,6 +395,9 @@ variable [Nontrivial R]
 noncomputable def basisXR : Module.Basis (ℕ × Fin 3) R (XRing W) :=
   (Polynomial.basisMonomials R).smulTower (basisX W)
 
+/- English proof (translation)
+Rewrite using `[AlgEquiv.symm_apply_eq, map_mul, map_pow, map_pow, xAlgEquiv_xC, xAlgEquiv_yC, basisXR, Module.Basis.smulTower_apply, basisX_apply, Polynomial.coe_basisMonomials, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[← map_pow]`. Simplify using `[Polynomial.monomial_one_right_eq_X_pow]`.
+-/
 theorem xAlgEquiv_symm_basisXR (k : ℕ) (i : Fin 3) :
     (xAlgEquiv W).symm (basisXR W (k, i)) = yC W ^ k * xC W ^ (i : ℕ) := by
   rw [AlgEquiv.symm_apply_eq, map_mul, map_pow, map_pow, xAlgEquiv_xC, xAlgEquiv_yC, basisXR,
@@ -314,6 +406,13 @@ theorem xAlgEquiv_symm_basisXR (k : ℕ) (i : Fin 3) :
   rw [← map_pow]
   simp [Polynomial.monomial_one_right_eq_X_pow]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨⟨a, ⟨_, n, rfl⟩⟩, hv⟩` from `IsLocalization.surj (Submonoid.powers (yC W)) v`. Simplify using `only at hv`. Establish `hv' : v = algebraMap _ (Overlap W) a * yInv W ^ n`.
+
+Rewrite using `[← hv, mul_assoc, map_pow, ← mul_pow, yC_mul_yInv W, one_pow, mul_one]`. Rewrite using `[hv']`. Set `Ψ : XRing W →ₗ[R] Overlap W` to `(LinearMap.mulRight R (yInv W ^ n)).comp ((IsScalarTower.toAlgHom R W.toAffine.CoordinateRing (Overlap W)).toLinearMap.comp (xAlgEquiv W).symm.toLinearMap)`. Establish `hrange : LinearMap.range Ψ ≤ cechSpan W`. Rewrite using `[LinearMap.range_eq_map, ← (basisXR W).span_eq, Submodule.map_span_le]`.
+
+Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Simplify using `only [Ψ, LinearMap.coe_comp, Function.comp_apply, AlgEquiv.toLinearMap_apply, xAlgEquiv_symm_basisXR, AlgHom.toLinearMap_apply, IsScalarTower.coe_toAlgHom', LinearMap.mulRight_apply]`. Conclude with `monomial_mem_cechSpan W k n i`. Use `hrange ⟨xAlgEquiv W a, rfl⟩` as an intermediate fact. Simplify `this` using `[Ψ]`.
+-/
 theorem cechSpan_eq_top : cechSpan W = ⊤ := by
   rw [eq_top_iff]
   intro v _
@@ -340,10 +439,16 @@ end Span
 
 section Cohomology
 
+/- English proof (translation)
+Establish `: Subsingleton W.toAffine.CoordinateRing` using `Module.subsingleton R _`. Conclude with `Module.subsingleton W.toAffine.CoordinateRing _`.
+-/
 theorem subsingleton_of_subsingleton [Subsingleton R] : Subsingleton (Overlap W) := by
   have : Subsingleton W.toAffine.CoordinateRing := Module.subsingleton R _
   exact Module.subsingleton W.toAffine.CoordinateRing _
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `Subsingleton.elim _ _`. Take `⟨⟨a, b⟩, hab⟩` from `h`. Conclude with `eq_zero_of_sub_eq_smul W a b r hab`.
+-/
 theorem eq_zero_of_smul_cechGen_mem {r : R} (h : r • cechGen W ∈ LinearMap.range (cechMap W)) :
     r = 0 := by
   rcases subsingleton_or_nontrivial R with hR | hR

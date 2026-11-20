@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Introduce `K _ W Z Y q i π D d B α k V y h`. Establish `hmem : (MvPolynomial.X k - 1 : MvPolynomial (Fin d) Γ(Z, B.V α)) ∈ RingHom.ker (MvPolynomial.eval₂Hom ((π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k)).hom) ((B.c α).u k))`. Rewrite using `[(B.c α).rel k]`. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Establish `hu : (B.c α).u k k = 1`.
+
+Establish `h0` using `RingHom.mem_ker.mp hmem`. Rewrite `h0` using `[map_sub, map_one, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X]`. Conclude with `sub_eq_zero.mp h0`. Unfold `uV`. Rewrite using `[hu, map_one]`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.uSelf :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) (α : B.ι) (k : Fin d) {V : Scheme.{0}} (y : V ⟶ Y) (h : ⊤ ≤ y ⁻¹ᵁ (B.c α).C k), uV B α k y h k = 1 := by
   intro K _ W Z Y q i π D d B α k V y h

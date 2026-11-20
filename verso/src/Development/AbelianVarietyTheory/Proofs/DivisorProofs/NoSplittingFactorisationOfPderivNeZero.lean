@@ -5,6 +5,21 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ σ f g i D hsmooth hirr ⟨u, v, _, _, huv, P, Q, hPu, hPg, hQv, hQg⟩`. Substitute `huv` using the available equality. Set `pt : (σ → Ω) → PrimeSpectrum (MvPolynomial σ Ω)` to `fun R => ⟨RingHom.ker (MvPolynomial.eval R), RingHom.ker_isPrime _⟩`. Establish `mem_pt : ∀ R h, h ∈ (pt R).asIdeal ↔ MvPolynomial.eval R h = 0` using `fun R h => RingHom.mem_ker`. Establish `inS : ∀ R, MvPolynomial.eval R (u * v) = 0 → MvPolynomial.eval R g ≠ 0 → pt R ∈ PrimeSpectrum.zeroLocus {u * v} \ PrimeSpectrum.zeroLocus {g}`.
+
+Introduce `R h1 h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`. Conclude with `(mem_pt R _).2 h1`. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`.
+
+Conclude with `fun h => h2 ((mem_pt R _).1 h)`. Establish `hcov : PrimeSpectrum.zeroLocus {u * v} \ PrimeSpectrum.zeroLocus {g} ⊆ PrimeSpectrum.zeroLocus {u} ∪ PrimeSpectrum.zeroLocus {v}`. Introduce `x hx`. Establish `hx1` using `hx.1`. Rewrite `hx1` using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`.
+
+Break down `x.isPrime.mem_or_mem hx1 with h | h` into its components or cases. Use `left`. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`. Conclude with `h`. Use `right`.
+
+Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`. Conclude with `h`. Establish `key : ∀ R, MvPolynomial.eval R u = 0 → MvPolynomial.eval R v = 0 → MvPolynomial.eval R g ≠ 0 → False`. Introduce `R hu hv hg`. Apply `hsmooth R (by simp [hu]) hg` to reduce the goal to its premises.
+
+Simplify using `[Derivation.leibniz, hu, hv]`. Break down `(isPreirreducible_iff_isClosed_union_isClosed.1 hirr) _ _ (PrimeSpectrum.isClosed_zeroLocus _) (PrimeSpectrum.isClosed_zeroLocus _) hcov with h | h` into its components or cases. Establish `hm` using `h (inS Q (by simp [hQv]) hQg)`. Rewrite `hm` using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`. Conclude with `key Q ((mem_pt Q _).1 hm) hQv hQg`.
+
+Establish `hm` using `h (inS P (by simp [hPu]) hPg)`. Rewrite `hm` using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff]`. Conclude with `key P hPu ((mem_pt P _).1 hm) hPg`.
+-/
 theorem hypersurface_part_no_splitting_factorisation :
     ∀ (Ω : Type) [Field Ω] (σ : Type) (f g : MvPolynomial σ Ω) (i : σ) (D : ℕ),
       (∀ Q : σ → Ω, MvPolynomial.eval Q f = 0 → MvPolynomial.eval Q g ≠ 0 →

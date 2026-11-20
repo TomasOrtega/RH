@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.LieBase.HodgeChart
 
+/- English proof (translation)
+Simplify using `only [hermForm, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.smul_apply, smul_eq_mul, dotProduct, Matrix.mulVec, Pi.star_apply, star_mul', Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_entry {m m' g : ℕ} (R : Matrix (Fin m) (Fin g) ℂ) (R' : Matrix (Fin m') (Fin g) ℂ)
     (M : Matrix (Fin g) (Fin g) ℂ) (s t : ℂ) (b : Fin m) (b' : Fin m') :
     ((s • R) * M * (t • R')ᴴ) b b' = s * star t * hermForm M (R b) (R' b') := by
@@ -26,6 +29,9 @@ theorem gram_entry {m m' g : ℕ} (R : Matrix (Fin m) (Fin g) ℂ) (R' : Matrix 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ X j hj z`. Rewrite using `[mem_ptsIn]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_openPart_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (X : Var F) (j : X.X ⟶ gen T.Z) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str) (z : GlobalTheory.CxPts X.str (σ.comp e.toRingHom)), z ∈ GlobalTheory.CxPts.ptsIn X.str (σ.comp e.toRingHom) (openPart j) ↔ Inner (cxOf e σ hj z) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ X j hj z
   rw [mem_ptsIn]
@@ -33,6 +39,25 @@ theorem mem_openPart_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
 
 open GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram in
 
+/- English proof (translation)
+Introduce `n a ha g rk τ₀ B r hP hr hr1`. Use `set cst : ℂ := (((Real.log r : ℝ) : ℂ) / (2 * Real.pi * Complex.I)) with hcst`. Establish `him : cst.im = -Real.log r / (2 * Real.pi)`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `e : cst = ((-Real.log r / (2 * Real.pi) : ℝ) : ℂ) * Complex.I`.
+
+Rewrite using `[hcst]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Complex.im_ofReal_mul, Complex.I_im, mul_one]`. Establish `hBs : ∀ i (j k : Fin g), B i k j = B i j k` using `fun i j k => by`. Use `(hP.psd i).isHermitian.apply j k` as an intermediate fact. Simplify using `at this`. Conclude with `this` after adjusting the coercions.
+
+Establish `hmaps : ∀ z ∈ polydisc n 1, r • z ∈ polydisc n 1` using `fun z hz k => by`. Rewrite using `[Pi.smul_apply, norm_smul, Real.norm_of_nonneg hr.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdiff : DifferentiableOn ℂ (fun z : Fin n → ℂ => r • z) (polydisc n 1)` using `((differentiable_id.const_smul (r : ℂ)).differentiableOn).congr fun u _ => by`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Complex.real_smul]`. Use `⟨⟨hP.rk_le, fun j k => ?_, fun z hz => ?_, hP.psd, hP.supp, hP.toric, fun z hz => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hP.holo j k).comp hdiff hmaps`. Use `(h1.add (differentiableOn_const (∑ i, cst * (B i j k : ℂ)))).congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.add_apply, Matrix.sum_apply, Function.comp]`.
+
+Use `Matrix.IsSymm.ext fun j k => ?_` and prove the remaining obligations. Use `(hP.symm _ (hmaps z hz)).apply j k` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, hBs, this]`. Establish `h1` using `hP.abelian _ (hmaps z hz)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `⟨j, hj⟩ ⟨k, hk⟩`. Simplify using `[Matrix.sum_apply, hP.supp _ j k (Or.inl hj)]`. Use extensionality with `j k`. Establish `hu' : ∀ i : Fin a, tlog ((r • u) (Fin.castLE ha i)) = -Real.log r / (2 * Real.pi) + tlog (u (Fin.castLE ha i))`. Introduce `i`.
+
+Rewrite using `[Pi.smul_apply, tlog, tlog, norm_smul, Real.norm_of_nonneg hr.le, Real.log_mul hr.ne' (norm_ne_zero_iff.2 (hu i))]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hodgeGram, imPeriod, Matrix.map_apply, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, hu', Complex.add_im, Complex.im_sum, smul_eq_mul]`. Use `push_cast`. Simplify using `only [Complex.smul_im, Complex.intCast_im, Complex.intCast_re, smul_eq_mul, him, add_mul, Finset.sum_add_distrib]`.
+
+Simplify using `only [Complex.mul_im, Complex.intCast_re, Complex.intCast_im, mul_zero, add_zero, him]`. Use `push_cast`. Simplify using `only [zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem periodChart_rescale : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (τ₀ : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (r : ℝ), GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.IsPeriodChart rk τ₀ B → 0 < r → r ≤ 1 → GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.IsPeriodChart rk (fun u => τ₀ (r • u) + ∑ i, (((Real.log r : ℝ) : ℂ) / (2 * Real.pi * Complex.I)) • (B i).map (Int.cast : ℤ → ℂ)) B ∧ ∀ u : Fin n → ℂ, (∀ i : Fin a, u (Fin.castLE ha i) ≠ 0) → GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha (fun u => τ₀ (r • u) + ∑ i, (((Real.log r : ℝ) : ℂ) / (2 * Real.pi * Complex.I)) • (B i).map (Int.cast : ℤ → ℂ)) B u = GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B (r • u) := by
   intro n a ha g rk τ₀ B r hP hr hr1
   set cst : ℂ := (((Real.log r : ℝ) : ℂ) / (2 * Real.pi * Complex.I)) with hcst
@@ -78,6 +103,35 @@ theorem periodChart_rescale : ∀ (n a : ℕ) (ha : a ≤ n) (g rk : ℕ) (τ₀
     simp only [zero_add]
     ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU C X j f f₀ Eb A₀ hj hL y hy`. Take `⟨n, a, ha, g, rk, τ₀, B, ch₀, ex, κ, hP, hE, hx₀, h0, hcard, hκ, hInner, hHodge⟩` from `GlobalTheory.T.exists_periodChart_hodgeMetric_genericFibre E H Dw l Xo c O β Y T σ U hσ hU (cxOf e σ hj y)`. Take `⟨A, hA, r, hr, W, hWd, hWli, hWfr⟩` from `GlobalTheory.T.exists_holomorphic_eigenFrame_dirs_in_expChart E H Dw l Xo c O β Y T F e σ C X j f f₀ Eb A₀ hj hL y n g ch₀ ex hE hx₀ h0`. Take `⟨hn, r', ch, hr', hr'r, hr'1, hHolo, hy', hch0, hpoly, hrel⟩` from `GlobalTheory.T.exists_holomorphicChart_of_expChart_genericFibre E H Dw l Xo c O β Y T F e σ X j hj hL.1 y n g ch₀ ex hE hx₀ h0 r hr`. Substitute `hn` using the available equality.
+
+Establish `hrel' : ∀ z ∈ ch.source, cxOf e σ hj z ∈ ch₀.source ∧ ch₀ (cxOf e σ hj z) = r' • (ch z).ofLp`. Introduce `z hz`. Use `⟨(hrel z hz).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hrel z hz).2]`. Apply the tactic sequence `try (funext k; simp [Complex.real_smul])`.
+
+Take `⟨hP1, hY⟩` from `periodChart_rescale X.dim a ha g rk τ₀ B r' hP hr' hr'1.le`. Establish `hr'0 : (r' : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr'.ne'`. Establish `hball : ∀ u ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc X.dim 1, r' • u ∈ Metric.ball (0 : Fin X.dim → ℂ) r`. Introduce `u hu`. Rewrite using `[mem_ball_zero_iff, norm_smul, Real.norm_of_nonneg hr'.le]`.
+
+Establish `: ‖u‖ < 1` using `(pi_norm_lt_iff one_pos).2 hu`. Combine the equalities or inequalities in the displayed calculation. Establish `hnz : ∀ z ∈ ch.source, Inner (cxOf e σ hj z) → ∀ i : Fin a, (ch z).ofLp (Fin.castLE ha i) ≠ 0`. Introduce `z hz hI i h`. Use `((hInner _ (hrel' z hz).1).1 hI) i` as an intermediate fact.
+
+Rewrite `this` using `[(hrel' z hz).2, Pi.smul_apply, h, smul_zero]`. Conclude with `this rfl`. Set `Q : ∀ τ : E →+* ℂ, (Fin X.dim → ℂ) → Matrix (Fin (Dw.mult τ)) (Fin g) ℂ` to `fun τ u => ((Real.sqrt (κ τ) : ℝ) : ℂ) • Matrix.of fun b k => W (r' • u) ⟨τ, b⟩ k`. Use `⟨ch, a, ha, g, rk, _, B, hP1, hHolo, hy', hch0, hpoly, ?_, A, hA, Q, ?_, hcard, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Rewrite using `[mem_openPart_iff E H Dw l Xo c O β Y T F e σ X j hj z, hInner _ (hrel' z hz).1, (hrel' z hz).2]`. Simplify using `only [Pi.smul_apply, ne_eq, not_forall, not_not]`. Use `exists_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_zero, or_iff_right hr'.ne']`. Apply the tactic sequence `try rfl`.
+
+Introduce `τ i k`. Establish `hd` using `(hWd ⟨τ, i⟩ k).comp (f := fun u : Fin X.dim → ℂ => r' • u) ((differentiable_id.const_smul (r' : ℂ)).differentiableOn.congr fun u _ => by`. Simplify using `[Complex.real_smul, Pi.smul_def]) (fun u hu => hball u hu)`. Conclude with `(hd.const_mul ((Real.sqrt (κ τ) : ℝ) : ℂ)).congr fun u _ => by simp [Q]`. Establish `hW0 : (fun p : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) => Q p.1 0 p.2) = (fun p => Units.mk0 (((Real.sqrt (κ p.1) : ℝ) : ℂ)) (Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 (hκ p.1)).ne') • W 0 p)`.
+
+Use function extensionality and compare the values at `p k`. Simplify using `[Q]`. Rewrite using `[hW0]`. Conclude with `hWli.units_smul _`. Introduce `z hz hzO τ`.
+
+Establish `hI : Inner (cxOf e σ hj z)` using `(mem_openPart_iff E H Dw l Xo c O β Y T F e σ X j hj z).1 hzO`. Establish `hb : ch₀ (cxOf e σ hj z) ∈ Metric.ball (0 : Fin X.dim → ℂ) r`. Rewrite using `[(hrel' z hz).2]`. Conclude with `hball _ (hpoly z hz)`. Take `⟨hex, hDirs⟩` from `hWfr z (hrel' z hz).1 hb`.
+
+Unfold `lieGram`. Rewrite using `[dif_pos hex]`. Take `⟨hgram, -⟩` from `hHodge _ (hrel' z hz).1 hI hex.choose _ (hDirs _ hex.choose_spec)`. Rewrite using `[hgram τ, hY _ (hnz z hz hI), ← (hrel' z hz).2]`. Use extensionality with `b b'`.
+
+Rewrite using `[gram_entry]`. Simplify using `only [Matrix.transpose_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Q]`. Rewrite using `[← (hrel' z hz).2]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hκ τ).le]`.
+
+Both sides reduce to the same expression. Introduce `z hz hzO τ τ' hττ`. Establish `hI : Inner (cxOf e σ hj z)` using `(mem_openPart_iff E H Dw l Xo c O β Y T F e σ X j hj z).1 hzO`. Establish `hb : ch₀ (cxOf e σ hj z) ∈ Metric.ball (0 : Fin X.dim → ℂ) r`. Rewrite using `[(hrel' z hz).2]`.
+
+Conclude with `hball _ (hpoly z hz)`. Take `⟨hex, hDirs⟩` from `hWfr z (hrel' z hz).1 hb`. Take `⟨-, horth⟩` from `hHodge _ (hrel' z hz).1 hI hex.choose _ (hDirs _ hex.choose_spec)`. Rewrite using `[hY _ (hnz z hz hI), ← (hrel' z hz).2]`. Use extensionality with `b b'`.
+
+Rewrite using `[gram_entry]`. Establish `h1` using `horth ⟨τ, b⟩ ⟨τ', b'⟩ hττ`. Simplify using `only [Matrix.zero_apply]`. Rewrite using `[← (hrel' z hz).2]`. Conclude with `mul_eq_zero_of_right _ h1`.
+-/
 theorem exists_hodge_period_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (C : FlagCpt T.Z e), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : C.Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e C X j f f₀ Eb A₀ → ∀ y : GlobalTheory.CxPts X.str (σ.comp e.toRingHom), y ∉ GlobalTheory.CxPts.ptsIn X.str (σ.comp e.toRingHom) (openPart j) → ∃ (ch : OpenPartialHomeomorph (GlobalTheory.CxPts X.str (σ.comp e.toRingHom)) (ReciprocityTheory.L2DbarEstimates.V X.dim)) (a : ℕ) (ha : a ≤ X.dim) (g rk : ℕ) (τ₀ : (Fin X.dim → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ), GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.IsPeriodChart rk τ₀ B ∧ IsHoloChart ch ∧ y ∈ ch.source ∧ ch y = 0 ∧ (∀ z ∈ ch.source, (ch z).ofLp ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc X.dim 1) ∧ (∀ z ∈ ch.source, z ∉ GlobalTheory.CxPts.ptsIn X.str (σ.comp e.toRingHom) (openPart j) ↔ ∃ i : Fin a, ch z (Fin.castLE ha i) = 0) ∧ ∃ A ∈ Eb.S (GlobalTheory.Cartier.under y), ∃ Q : ∀ τ : E →+* ℂ, (Fin X.dim → ℂ) → Matrix (Fin (Dw.mult τ)) (Fin g) ℂ, (∀ τ i k, DifferentiableOn ℂ (fun w => Q τ w i k) (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc X.dim 1)) ∧ Fintype.card (Σ τ, Fin (Dw.mult τ)) = g ∧ LinearIndependent ℂ (fun p : Σ τ, Fin (Dw.mult τ) => Q p.1 0 p.2) ∧ (∀ z ∈ ch.source, z ∈ GlobalTheory.CxPts.ptsIn X.str (σ.comp e.toRingHom) (openPart j) → ∀ τ, lieGram e U hj f₀ A₀ A z τ = Q τ (ch z).ofLp * (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B (ch z).ofLp)⁻¹ * (Q τ (ch z).ofLp)ᴴ) ∧ (∀ z ∈ ch.source, z ∈ GlobalTheory.CxPts.ptsIn X.str (σ.comp e.toRingHom) (openPart j) → ∀ τ τ', τ ≠ τ' → Q τ (ch z).ofLp * (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram ha τ₀ B (ch z).ofLp)⁻¹ * (Q τ' (ch z).ofLp)ᴴ = 0) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU C X j f f₀ Eb A₀ hj hL y hy
   obtain ⟨n, a, ha, g, rk, τ₀, B, ch₀, ex, κ, hP, hE, hx₀, h0, hcard, hκ, hInner, hHodge⟩ :=

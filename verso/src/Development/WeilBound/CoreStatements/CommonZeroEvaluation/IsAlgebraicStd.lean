@@ -5,6 +5,11 @@ open Polynomial Filter Topology
 
 namespace ModelDimension.Alg
 
+/- English proof (translation)
+Use `haveI : Algebra.IsStandardEtale A B := ⟨⟨P⟩⟩`. Establish `hx : IsIntegral A P.x` using `⟨P.f, P.monic_f, P.hasMap.1⟩`. Establish `hp : ∀ p : A[X], IsAlgebraic A (aeval P.x p)` using `fun p => (IsIntegral.of_mem_of_fg _ hx.fg_adjoin_singleton _ (aeval_mem_adjoin_singleton _ _)).isAlgebraic`. Take `⟨p, n, h⟩` from `P.exists_mul_aeval_x_g_pow_eq_aeval_x g`. Establish `hu : aeval P.x P.g ^ n ≠ 0` using `(P.hasMap.2.pow n).ne_zero`.
+
+Use `IsAlgebraic.of_mul (y := aeval P.x P.g ^ n) (mem_nonZeroDivisors_of_ne_zero hu) ((hp _).pow n) ?_` and prove the remaining obligations. Rewrite using `[mul_comm, h]`. Conclude with `hp p`.
+-/
 theorem isAlgebraic_std {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B]
     (P : StandardEtalePresentation A B) (g : B) : IsAlgebraic A g := by
   haveI : Algebra.IsStandardEtale A B := ⟨⟨P⟩⟩
@@ -17,6 +22,45 @@ theorem isAlgebraic_std {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsD
   rw [mul_comm, h]
   exact hp p
 
+/- English proof (translation)
+Take `⟨P⟩` from `Algebra.IsStandardEtale.nonempty_standardEtalePresentation (R := MvPolynomial (Fin n) F) (S := B)`. Take `⟨c, hc0, hc⟩` from `(isAlgebraic_std P g).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hg)`. Set `ev : (Fin n → K) → (MvPolynomial (Fin n) F →+* K)` to `fun b => (MvPolynomial.aeval b : _ →ₐ[F] K)`. Establish `hev : ∀ r, Continuous fun b => ev b r`. Introduce `r`.
+
+Proceed by induction on `r using MvPolynomial.induction_on with`. Consider the case `C a => simpa [ev] using continuous_const`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`.
+
+Establish `: Continuous fun b : Fin n → K => ev b p * b i` using `hp.mul (continuous_apply i)`. Simplify `this` using `[ev]`. Set `a : Fin n → K` to `fun i => ψ (algebraMap (MvPolynomial (Fin n) F) B (MvPolynomial.X i))`. Establish `ha : ev a = (ψ : B →+* K).comp (algebraMap (MvPolynomial (Fin n) F) B)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => by simp [ev, a])` and prove the remaining obligations.
+
+Establish `: algebraMap (MvPolynomial (Fin n) F) B (MvPolynomial.C r) = algebraMap F B r` using `(IsScalarTower.algebraMap_apply F (MvPolynomial (Fin n) F) B r).symm`. Simplify using `[ev, this]`. Establish `hψ : ∀ p : (MvPolynomial (Fin n) F)[X], p.eval₂ (ev a) (ψ P.x) = ψ (aeval P.x p)`. Introduce `p`. Rewrite using `[ha, aeval_def]`.
+
+Conclude with `(hom_eval₂ p _ (ψ : B →+* K) P.x).symm`. Establish `hc2 : ∀ p : (MvPolynomial (Fin n) F)[X], Continuous fun t : (Fin n → K) × K => p.eval₂ (ev t.1) t.2`. Introduce `p`. Simplify using `only [eval₂_eq_sum, Polynomial.sum]`. Conclude with `continuous_finsetSum _ fun k _ => ((hev _).comp continuous_fst).mul (continuous_snd.pow _)`.
+
+Use `choose p m hpm using P.exists_mul_aeval_x_g_pow_eq_aeval_x`. Establish `hg0 : P.g.eval₂ (ev a) (ψ P.x) ≠ 0`. Rewrite using `[hψ]`. Conclude with `(P.hasMap.2.map ψ).ne_zero`. Establish `E1 : ∀ᶠ t : (Fin n → K) × K in 𝓝 (a, ψ P.x), P.g.eval₂ (ev t.1) t.2 ≠ 0` using `(hc2 P.g).continuousAt.eventually_ne hg0`.
+
+Establish `E2 : ∀ᶠ t : (Fin n → K) × K in 𝓝 (a, ψ P.x), ∀ s ∈ S, ‖(p s).eval₂ (ev t.1) t.2 / P.g.eval₂ (ev t.1) t.2 ^ m s - ψ s‖ < ε`. Rewrite using `[eventually_all_finset]`. Introduce `s _`. Establish `hca : ContinuousAt (fun t : (Fin n → K) × K => ‖(p s).eval₂ (ev t.1) t.2 / P.g.eval₂ (ev t.1) t.2 ^ m s - ψ s‖) (a, ψ P.x)`. Establish `h3 : ContinuousAt (fun t : (Fin n → K) × K => P.g.eval₂ (ev t.1) t.2 ^ m s) (a, ψ P.x)` using `((hc2 P.g).pow (m s)).continuousAt`.
+
+Establish `h4` using `(hc2 (p s)).continuousAt.div h3 (pow_ne_zero (m s) hg0)`. Conclude with `(h4.sub continuousAt_const).norm`. Use `hca.eventually (gt_mem_nhds ?_)` and prove the remaining obligations. Use `show ‖(p s).eval₂ (ev a) (ψ P.x) / P.g.eval₂ (ev a) (ψ P.x) ^ m s - ψ s‖ < ε`. Rewrite using `[hψ (p s), ← hpm, map_mul, map_pow, ← hψ, mul_div_cancel_right₀ _ (pow_ne_zero _ hg0), sub_self, norm_zero]`.
+
+Conclude with `hε`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff.1 (E1.and E2)`. Establish `E3` using `eventually_root hH h0 h1 ev hev P.f a (ψ P.x) (by rw [hψ, P.hasMap.1, map_zero]) (by rw [hψ]; exact (P.hasMap.isUnit_derivative_f.map ψ).ne_zero) r hr`. Take `⟨r', hr', hball'⟩` from `Metric.eventually_nhds_iff.1 E3`. Establish `hb : ∃ b : Fin n → K, (∀ i, b i ∈ {x : K | IsAlgebraic F x} ∩ Metric.ball (a i) (min r r')) ∧ ev b c ≠ 0`.
+
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `hc0` to reduce the goal to its premises. Apply `MvPolynomial.map_injective (algebraMap F K) (algebraMap F K).injective` to reduce the goal to its premises. Use `MvPolynomial.funext_set (fun i => {x : K | IsAlgebraic F x} ∩ Metric.ball (a i) (min r r')) (fun i => infinite_inter h0 h1 hD _ _ (lt_min hr hr')) fun b hb => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero, map_zero, MvPolynomial.eval_map]`. Conclude with `hne b fun i => hb i trivial`. Take `⟨b, hb, hbc⟩` from `hb`. Establish `hba : dist b a < min r r'` using `(dist_pi_lt_iff (lt_min hr hr')).2 fun i => (hb i).2`. Take `⟨x, hx, hfx⟩` from `hball' (hba.trans_le (min_le_right _ _))`.
+
+Take `⟨e1, e2⟩` from `hball (y := (b, x)) (by`. Rewrite using `[Prod.dist_eq]`. Conclude with `max_lt (hba.trans_le (min_le_left _ _)) (by rwa [dist_eq_norm]))`. Set `L` to `algebraicClosure F K`. Set `φ : MvPolynomial (Fin n) F →ₐ[F] L` to `MvPolynomial.aeval fun i => ⟨b i, mem_algebraicClosure_iff.2 (hb i).1⟩`.
+
+Establish `hφ : (algebraMap L K).comp (φ : _ →+* L) = ev b`. Use `MvPolynomial.ringHom_ext (fun r => by simp [ev, φ]) (fun i => by simp [ev, φ])` and prove the remaining obligations. Establish `hxL : x ∈ L`. Establish `: IsIntegral L x` using `⟨P.f.map (φ : _ →+* L), P.monic_f.map _, by rw [eval₂_map, hφ, hfx]⟩`. Conclude with `mem_algebraicClosure_iff.2 (this.isAlgebraic.restrictScalars F)`.
+
+Use `letI : Algebra (MvPolynomial (Fin n) F) L := (φ : _ →+* L).toAlgebra`. Use `haveI : IsScalarTower F (MvPolynomial (Fin n) F) L := IsScalarTower.of_algebraMap_eq fun r => (φ.commutes r).symm`. Establish `hval : ∀ q : (MvPolynomial (Fin n) F)[X], algebraMap L K (aeval (⟨x, hxL⟩ : L) q) = q.eval₂ (ev b) x`. Introduce `q`. Rewrite using `[aeval_def, hom_eval₂, ← hφ]`.
+
+Both sides reduce to the same expression. Establish `hm : P.HasMap (⟨x, hxL⟩ : L)`. Use `⟨(algebraMap L K).injective (by rw [hval, hfx, map_zero]), Ne.isUnit fun h => e1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hval, h, map_zero]`. Set `χ : B →ₐ[MvPolynomial (Fin n) F] L` to `(P.lift _ hm).comp P.equivRing.toAlgHom`.
+
+Establish `hχ : χ P.x = ⟨x, hxL⟩` using `by simp [χ]`. Establish `hχ' : ∀ q : (MvPolynomial (Fin n) F)[X], algebraMap L K (χ (aeval P.x q)) = q.eval₂ (ev b) x`. Introduce `q`. Rewrite using `[← aeval_algHom_apply, hχ, hval]`. Use `⟨L.val.comp (χ.restrictScalars F), fun y => mem_algebraicClosure_iff.1 (χ y).2, fun s hs => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `e2 s hs`. Establish `h3` using `hχ' (p s)`. Rewrite `h3` using `[← hpm, map_mul, map_pow, map_mul, map_pow, hχ']`. Simplify using `only at h2 e1`. Rewrite `h2` using `[← h3, mul_div_cancel_right₀ _ (pow_ne_zero _ e1)]`.
+
+Conclude with `h2`. Introduce `h`. Take `⟨u, hu⟩` from `hc`. Apply `hbc` to reduce the goal to its premises. Establish `h2 : ev b c = algebraMap L K (χ (algebraMap _ B c))`.
+
+Rewrite using `[χ.commutes, ← hφ]`. Both sides reduce to the same expression. Establish `h3 : algebraMap L K (χ g) = 0` using `h`. Rewrite using `[h2, hu, map_mul, map_mul, h3, zero_mul]`.
+-/
 theorem approx_std {F K : Type} [Field F] [NormedField K] [Algebra F K] (hH : HenselN K) {π : K} (h0 : π ≠ 0)
     (h1 : ‖π‖ < 1) (hD : Dense {x : K | IsAlgebraic F x}) {n : ℕ} {B : Type} [CommRing B] [IsDomain B] [Algebra F B]
     [Algebra (MvPolynomial (Fin n) F) B] [IsScalarTower F (MvPolynomial (Fin n) F) B]
@@ -122,6 +166,15 @@ theorem approx_std {F K : Type} [Field F] [NormedField K] [Algebra F K] (hH : He
     have h3 : algebraMap L K (χ g) = 0 := h
     rw [h2, hu, map_mul, map_mul, h3, zero_mul]
 
+/- English proof (translation)
+Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime _`. Use `haveI : Algebra.IsSmoothAt F (RingHom.ker ψ) := by`. Unfold `Algebra.IsSmoothAt`. Use `infer_instance`. Take `⟨f, hf, n, _, _, _⟩` from `Algebra.IsSmoothAt.exists_isStandardEtale_mvPolynomial (R := F) (p := RingHom.ker ψ)`.
+
+Establish `hψf : ψ f ≠ 0` using `hf`. Establish `hf0 : f ≠ 0` using `fun h => hψf (by rw [h, map_zero])`. Establish `hle : Submonoid.powers f ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf0`. Use `haveI : IsDomain (Localization.Away f) := IsLocalization.isDomain_localization hle`. Establish `hinj : Function.Injective (algebraMap R (Localization.Away f))` using `IsLocalization.injective _ hle`.
+
+Set `ψ₁ : Localization.Away f →ₐ[F] K` to `IsLocalization.Away.liftAlgHom f (f := ψ) hψf.isUnit`. Establish `hψ₁ : ∀ s, ψ₁ (algebraMap R _ s) = ψ s` using `fun s => by simp [ψ₁]`. Take `⟨ψ', ha, hs, hg'⟩` from `approx_std (n := n) hH h0 h1 hD ψ₁ (S.image (algebraMap R _)) ε hε (algebraMap R _ g) ((map_ne_zero_iff _ hinj).2 hg)`. Use `⟨ψ'.comp (IsScalarTower.toAlgHom F R _), fun x => ha _, fun s h => ?_, hg'⟩` and prove the remaining obligations. Rewrite using `[← hψ₁]`.
+
+Conclude with `hs _ (Finset.mem_image_of_mem _ h)`.
+-/
 theorem approx_smooth {F K : Type} [Field F] [NormedField K] [Algebra F K] (hH : HenselN K) {π : K} (h0 : π ≠ 0)
     (h1 : ‖π‖ < 1) (hD : Dense {x : K | IsAlgebraic F x}) {R : Type} [CommRing R] [IsDomain R] [Algebra F R]
     [Algebra.Smooth F R] (ψ : R →ₐ[F] K) (S : Finset R) (ε : ℝ) (hε : 0 < ε) (g : R)

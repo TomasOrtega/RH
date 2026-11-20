@@ -17,6 +17,27 @@ noncomputable section
 
 namespace GlobalTheory.ChainMetric
 
+/- English proof (translation)
+Establish `left : ∀ (w : ⨂[ℂ] i, E i) (v' : ∀ i, E i), IntegrableOn (fun x => f w x * conj (g (PiTensorProduct.tprod ℂ v') x)) A μ ∧ ∫ x in A, f w x * conj (g (PiTensorProduct.tprod ℂ v') x) ∂μ = k * B w (PiTensorProduct.tprod ℂ v')`. Introduce `w v'`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Take `⟨h1, h2⟩` from `h v v'`.
+
+Establish `e : (fun x => f (r • PiTensorProduct.tprod ℂ v) x * conj (g (PiTensorProduct.tprod ℂ v') x)) = fun x => r * (f (PiTensorProduct.tprod ℂ v) x * conj (g (PiTensorProduct.tprod ℂ v') x))`. Use function extensionality and compare the values at `x`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `Integrable.const_mul h1 r`. Rewrite using `[e, integral_const_mul, h2]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb`.
+
+Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Establish `e : (fun x => f (a + b) x * conj (g (PiTensorProduct.tprod ℂ v') x)) = fun x => f a x * conj (g (PiTensorProduct.tprod ℂ v') x) + f b x * conj (g (PiTensorProduct.tprod ℂ v') x)`. Use function extensionality and compare the values at `x`. Simplify using `only [map_add, Pi.add_apply, add_mul]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Integrable.add ha1 hb1`. Rewrite using `[e, integral_add ha1 hb1, ha2, hb2]`. Simplify using `only [map_add, LinearMap.add_apply, mul_add]`.
+
+Introduce `w w'`. Proceed by induction on `w' using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v'`. Take `⟨h1, h2⟩` from `left w v'`. Establish `e : (fun x => f w x * conj (g (r • PiTensorProduct.tprod ℂ v') x)) = fun x => conj r * (f w x * conj (g (PiTensorProduct.tprod ℂ v') x))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `Integrable.const_mul h1 (conj r)`. Rewrite using `[e, integral_const_mul, h2]`. Simplify using `only [LinearMap.map_smulₛₗ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb`.
+
+Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Establish `e : (fun x => f w x * conj (g (a + b) x)) = fun x => f w x * conj (g a x) + f w x * conj (g b x)`. Use function extensionality and compare the values at `x`. Simplify using `only [map_add, Pi.add_apply, mul_add]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Integrable.add ha1 hb1`. Rewrite using `[e, integral_add ha1 hb1, ha2, hb2]`. Simplify using `only [map_add, mul_add]`.
+-/
 theorem integ_pair {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)]
     {X : Type} [MeasurableSpace X] {μ : Measure X} {A : Set X}
     (f g : (⨂[ℂ] i, E i) →ₗ[ℂ] (X → ℂ)) (B : (⨂[ℂ] i, E i) →ₗ[ℂ] (⨂[ℂ] i, E i) →ₗ⋆[ℂ] ℂ) (k : ℂ)
@@ -85,10 +106,54 @@ theorem integ_pair {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, AddCommGro
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[PiTensorProduct.lift_symm, LinearMap.compMultilinearMap_apply]`.
+-/
 theorem val_tprod {V' : HSp D} {S' : D.what₂.Tau → SPar} {M' : DSModel V' S'} (x : (⨂[ℂ] τ, M'.sm τ) →ₗ[ℂ] (GA D V' → ℂ))
     (v : M'.Vec) : x (PiTensorProduct.tprod ℂ v) = PiTensorProduct.lift.symm x v := by
   rw [PiTensorProduct.lift_symm, LinearMap.compMultilinearMap_apply]
 
+/- English proof (translation)
+Introduce `hP D c hc j _ s hs`. Take `⟨ipD, hpure, hhermD, hposD⟩` from `GlobalTheory.T.exists_inner_product_smooth_vectors_tensor D s.V s.par s.M`. Establish `hθ : IsInfFam c.θ` using `hc.inf`. Establish `hμ` using `hs.haar`. Establish `h𝓕` using `hs.fund`.
+
+Establish `hSM : SchurMult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) s.ν s.fd` using `GlobalTheory.MultFinite.schurMult hP s.ν s.fd`. Establish `hmem : ∀ x : s.CC c, PiTensorProduct.lift.symm (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L)` using `fun x => (mem_multT c.θ s.M _ _ _).1 x.2`. Distinguish the cases in `hsm : ∀ τ, s.M.sm τ ≠ ⊥`. Take `⟨hlin, hpos⟩` from `GlobalTheory.SchurConst.ipM_posDef D c.θ s.V s.par s.M _ _ s.ν s.fd hθ hμ h𝓕 hSM hsm`. Establish `hherm : ∀ T ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ T' ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ipM s.M s.ν s.fd T' T = star (ipM s.M s.ν s.fd T T')` using `fun T hT T' hT' => (hlin T hT T' hT' T' hT' 0).2`.
+
+Establish `hadd : ∀ T ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ T' ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ T'' ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ipM s.M s.ν s.fd T (T' + T'') = ipM s.M s.ν s.fd T T' + ipM s.M s.ν s.fd T T''`. Introduce `T hT T' hT' T'' hT''`. Use `(hlin T hT T' hT' T'' hT'' 1).1` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Then use the resulting hypothesis. Establish `hzero : ∀ T ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ipM s.M s.ν s.fd T 0 = 0`.
+
+Introduce `T hT`. Use `hadd T hT 0 (zero_mem _) 0 (zero_mem _)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Take the linear combination `-this`. Establish `hsmul : ∀ T ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ T' ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ a : ℂ, ipM s.M s.ν s.fd T (a • T') = a * ipM s.M s.ν s.fd T T'`.
+
+Introduce `T hT T' hT' a`. Use `(hlin T hT 0 (zero_mem _) T' hT' a).1` as an intermediate fact. Rewrite `this` using `[zero_add, hzero T hT, zero_add]`. Then use the resulting hypothesis. Establish `hIP : ∀ x y : s.CC c, ∀ w w', IntegrableOn (fun g => (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w g * conj ((y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w' g)) s.fd s.ν ∧ ∫ g in s.fd, (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w g * conj ((y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) w' g) ∂s.ν = ipM s.M s.ν s.fd (P …`. Introduce `x y`.
+
+Apply `integ_pair` to reduce the goal to its premises. Introduce `v v'`. Establish `hex` using `hSM hθ hμ h𝓕 _ (hmem y) _ (hmem x)`. Establish `hc : IsMultIP s.M s.ν s.fd (PiTensorProduct.lift.symm (y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))) (PiTensorProduct.lift.symm (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))) (ipM s.M s.ν s.fd (PiTensorProduct.lift.symm (y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))) (PiTensorProduct.lift.symm (x : SmT s.M →ₗ[ℂ] …`. Rewrite using `[ipM, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`. Take `⟨h1, h2⟩` from `hc v' v`. Establish `e : (fun g => (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) (PiTensorProduct.tprod ℂ v) g * conj ((y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) (PiTensorProduct.tprod ℂ v') g)) = fun g => star (PiTensorProduct.lift.symm (y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v' g) * PiTensorProduct.lift.symm (x : SmT s.M …`. Use function extensionality and compare the values at `g`. Rewrite using `[val_tprod, val_tprod, mul_comm, starRingEnd_apply]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h1`. Rewrite using `[e, h2, hpure]`. Use `⟨ipD, LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y : s.CC c => ipM s.M s.ν s.fd (PiTensorProduct.lift.symm (y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))) (PiTensorProduct.lift.symm (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)))) ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x x' y`. Simplify using `only [Submodule.coe_add, map_add]`. Conclude with `hadd _ (hmem y) _ (hmem x) _ (hmem x')`. Introduce `a x y`. Simplify using `only [Submodule.coe_smul, map_smul, RingHom.id_apply, smul_eq_mul]`.
+
+Conclude with `hsmul _ (hmem y) _ (hmem x) a`. Introduce `x y y'`. Simplify using `only [Submodule.coe_add, map_add]`. Rewrite using `[hherm _ (hmem x) _ (add_mem (hmem y) (hmem y')), hadd _ (hmem x) _ (hmem y) _ (hmem y'), star_add, ← hherm _ (hmem x) _ (hmem y), ← hherm _ (hmem x) _ (hmem y')]`. Introduce `a x y`.
+
+Simplify using `only [Submodule.coe_smul, map_smul, smul_eq_mul]`. Rewrite using `[hherm _ (hmem x) _ (Submodule.smul_mem _ a (hmem y)), hsmul _ (hmem x) _ (hmem y), star_mul', ← hherm _ (hmem x) _ (hmem y), starRingEnd_apply]`. Use `⟨hpure, hhermD, hposD, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`.
+
+Rewrite using `[hherm _ (hmem x) _ (hmem y), starRingEnd_apply]`. Introduce `x hx`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Use `hpos _ (hmem x) fun h0 => hx ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_zero]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 h0`. Introduce `x y w w'`. Conclude with `(hIP x y w w').1`. Introduce `x y w w'`.
+
+Simplify using `only [Lift.pet, LinearMap.mk₂'ₛₗ_apply]`. Conclude with `(hIP x y w w').2`. Use `push_neg at hsm`. Take `⟨τ₀, hτ₀⟩` from `hsm`. Establish `htp : ∀ v : s.M.Vec, PiTensorProduct.tprod ℂ v = 0`.
+
+Introduce `v`. Apply `(PiTensorProduct.tprod ℂ).map_coord_zero τ₀` to reduce the goal to its premises. Establish `: (v τ₀ : s.M.H τ₀) ∈ (⊥ : Submodule ℂ (s.M.H τ₀))` using `hτ₀ ▸ (v τ₀).2`. Conclude with `Subtype.ext ((Submodule.mem_bot ℂ).1 this)`. Establish `hz : ∀ w : SmT s.M, w = 0`.
+
+Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v => rw [htp v, smul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Use `⟨ipD, 0, hpure, hhermD, hposD, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y`. Simplify using the standard rewrite rules. Introduce `x hx`. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hz w]`. Simplify using the standard rewrite rules.
+
+Introduce `x y w w'`. Rewrite using `[hz w, hz w']`. Simplify using the standard rewrite rules. Introduce `x y w w'`. Rewrite using `[hz w, hz w']`.
+
+Simplify using `[Lift.pet]`.
+-/
 theorem metEx : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D := by
   intro hP D c hc j _ s hs
   obtain ⟨ipD, hpure, hhermD, hposD⟩ := GlobalTheory.T.exists_inner_product_smooth_vectors_tensor D s.V s.par s.M

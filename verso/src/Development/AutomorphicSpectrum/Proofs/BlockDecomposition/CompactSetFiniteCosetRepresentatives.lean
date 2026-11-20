@@ -3,6 +3,19 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.OpenSubgroupCosets
 
+/- English proof (translation)
+Introduce `E _ _ _ D hD R hR`. Take `⟨t, ht⟩` from `hR.elim_finite_subcover (fun x : E => (fun y => y - x) ⁻¹' (D : Set E)) (fun x => hD.preimage (continuous_sub_right x)) (fun r _ => Set.mem_iUnion.2 ⟨r, by simp⟩)`. Use `set π : E → E ⧸ D := QuotientAddGroup.mk with hπ`. Establish `hfin : (π '' R).Finite`. Apply `(t.finite_toSet.image π).subset` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨r, hr, rfl⟩`. Take `⟨x, hx, hrx⟩ : ∃ x ∈ t, r - x ∈ D` from `by simpa using ht hr`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Apply `QuotientAddGroup.eq_iff_sub_mem.2` to reduce the goal to its premises. Rewrite using `[← neg_sub]`.
+
+Conclude with `D.neg_mem hrx`. Establish `hrep : ∀ c ∈ π '' R, ∃ r, r ∈ R ∧ π r = c`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Conclude with `⟨r, hr, rfl⟩`. Use `choose! f hfR hfπ using hrep`.
+
+Use `⟨hfin.toFinset.image f, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `hfR c (hfin.mem_toFinset.1 hc)`. Introduce `x hx`.
+
+Establish `hxc : π x ∈ π '' R` using `⟨x, hx, rfl⟩`. Use `⟨f (π x), ⟨Finset.mem_image.2 ⟨π x, hfin.mem_toFinset.2 hxc, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `QuotientAddGroup.eq_iff_sub_mem.1 (hfπ (π x) hxc).symm`. Introduce and unpack `s ⟨hs, hxs⟩`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hs`.
+
+Establish `hc'` using `hfin.mem_toFinset.1 hc`. Establish `h1 : π x = c`. Rewrite using `[← hfπ c hc']`. Conclude with `QuotientAddGroup.eq_iff_sub_mem.2 hxs`. Rewrite using `[h1]`.
+-/
 theorem exists_finset_unique_coset_reps :
     ∀ {E : Type} [AddCommGroup E] [TopologicalSpace E] [IsTopologicalAddGroup E]
       (D : AddSubgroup E), IsOpen (D : Set E) → ∀ (R : Set E), IsCompact R →

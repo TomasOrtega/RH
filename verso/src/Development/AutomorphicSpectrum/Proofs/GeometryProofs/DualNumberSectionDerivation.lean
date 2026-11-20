@@ -14,26 +14,41 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HtPull
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem secVal_congr {B : Type} [CommRing B] {Z : Scheme.{0}} {x x' : Spec (CommRingCat.of B) ⟶ Z} (e : x = x')
     (W : Z.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (h' : ⊤ ≤ x' ⁻¹ᵁ W) (s : Γ(Z, W)) : secVal x W h s = secVal x' W h' s := by
   subst e
   rfl
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.CompanionTheory.Ar.epsMul]`.
+-/
 theorem epsMul_snd {C : Type} [CommRing C] (c : C) (a : DualNumber C) :
     (GlobalTheory.CompanionTheory.Ar.epsMul c a).snd = c * a.snd := by
   simp [GlobalTheory.CompanionTheory.Ar.epsMul]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Hom.one_def]`. Simplify using the standard rewrite rules.
+-/
 theorem one_left_eps {S : Scheme.{0}} (G : Over S) [GrpObj G] {C : Type} [CommRing C] (y : Sp C ⟶ S) :
     (1 : GlobalTheory.CompanionTheory.Ar.epsAt y ⟶ G).left = spMap (algebraMap C (DualNumber C)) ≫ (1 : Over.mk y ⟶ G).left := by
   rw [Hom.one_def, Hom.one_def]
   simp
 
+/- English proof (translation)
+Use `M.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem pt_zero {S : Scheme.{0}} {G : Over S} [GrpObj G] {C : Type} [CommRing C] {y : Sp C ⟶ S} {L : Type}
     [AddCommGroup L] [Module C L] (M : LieModel G y L) : M.pt 0 = 1 := by
   have := M.add 0 0
   rw [add_zero] at this
   exact left_eq_mul.1 this
 
+/- English proof (translation)
+Establish `e` using `one_left_eps G y`. Establish `h2 : ⊤ ≤ (spMap (algebraMap C (DualNumber C)) ≫ (1 : Over.mk y ⟶ G).left) ⁻¹ᵁ W` using `e ▸ h1`. Rewrite using `[secVal_congr e W h1 h2 s, secring C (DualNumber C) _ G.left _ W h0 h2 s]`. Conclude with `TrivSqZeroExt.snd_inl _ _`.
+-/
 theorem one_snd {S : Scheme.{0}} (G : Over S) [GrpObj G] {C : Type} [CommRing C] (y : Sp C ⟶ S) (W : G.left.Opens)
     (h0 : ⊤ ≤ (1 : Over.mk y ⟶ G).left ⁻¹ᵁ W) (h1 : ⊤ ≤ (1 : GlobalTheory.CompanionTheory.Ar.epsAt y ⟶ G).left ⁻¹ᵁ W) (s : Γ(G.left, W)) :
     (secVal (B := DualNumber C) (1 : GlobalTheory.CompanionTheory.Ar.epsAt y ⟶ G).left W h1 s).snd = 0 := by
@@ -42,6 +57,19 @@ theorem one_snd {S : Scheme.{0}} (G : Over S) [GrpObj G] {C : Type} [CommRing C]
   rw [secVal_congr e W h1 h2 s, secring C (DualNumber C) _ G.left _ W h0 h2 s]
   exact TrivSqZeroExt.snd_inl _ _
 
+/- English proof (translation)
+Introduce `S G _ C _ y L _ _ M W h s`. Establish `p0` using `pt_zero M`. Establish `h1 : ⊤ ≤ (1 : GlobalTheory.CompanionTheory.Ar.epsAt y ⟶ G).left ⁻¹ᵁ W` using `p0 ▸ h 0`. Establish `h0 : ⊤ ≤ (1 : Over.mk y ⟶ G).left ⁻¹ᵁ W`. Introduce `z _`.
+
+Establish `t : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ (M.pt 0).left = (1 : Over.mk y ⟶ G).left` using `M.tan 0`. Use `show (1 : Over.mk y ⟶ G).left z ∈ W`. Rewrite using `[← t]`. Conclude with `h 0 (show spMap (TrivSqZeroExt.fstHom C C C).toRingHom z ∈ (⊤ : Scheme.Opens _) from trivial)`. Use `⟨{ toFun := fun l => (secVal (B := DualNumber C) (M.pt l).left W (h l) s).snd, map_add' := ?_, map_smul' := ?_ }, fun l => rfl⟩` and prove the remaining obligations.
+
+Introduce `l l'`. Establish `e : (M.pt (l + l')).left = (M.pt l * M.pt l').left` using `by rw [M.add]`. Establish `hvw : ⊤ ≤ (M.pt l * M.pt l').left ⁻¹ᵁ W` using `e ▸ h (l + l')`. Establish `key` using `GlobalTheory.T.tangent_section_additive S G C y (M.pt l) (M.pt l') (M.tan l) (M.tan l') W (h l) (h l') hvw h1 s`. Establish `key'` using `congrArg (fun t => (Scheme.ΓSpecIso (CommRingCat.of (DualNumber C))).hom.hom t) key`.
+
+Simplify using `only [map_add] at key'`. Establish `key'' : secVal (B` using `DualNumber C) (M.pt l * M.pt l').left W hvw s + secVal (B := DualNumber C) (1 : GlobalTheory.CompanionTheory.Ar.epsAt y ⟶ G).left W h1 s = secVal (B := DualNumber C) (M.pt l).left W (h l) s + secVal (B := DualNumber C) (M.pt l').left W (h l') s := key'`. Establish `key3` using `congrArg TrivSqZeroExt.snd key''`. Rewrite `key3` using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_add, one_snd G y W h0 h1 s, add_zero]`. Use `show (secVal (B := DualNumber C) (M.pt (l + l')).left W (h (l + l')) s).snd = _`.
+
+Rewrite using `[secVal_congr e W (h (l + l')) hvw s]`. Conclude with `key3`. Introduce `c l`. Establish `e` using `M.smul c l`. Establish `h2 : ⊤ ≤ (spMap (GlobalTheory.CompanionTheory.Ar.epsMul c) ≫ (M.pt l).left) ⁻¹ᵁ W` using `e ▸ h (c • l)`.
+
+Use `show (secVal (B := DualNumber C) (M.pt (c • l)).left W (h (c • l)) s).snd = c • _`. Rewrite using `[secVal_congr e W (h (c • l)) h2 s, secring _ _ _ G.left _ W (h l) h2 s, epsMul_snd]`. Both sides reduce to the same expression.
+-/
 theorem exists_linear_snd : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (C : Type) [CommRing C] (y : Sp C ⟶ S) (L : Type) [AddCommGroup L] [Module C L] (M : LieModel G y L) (W : G.left.Opens) (h : ∀ l, ⊤ ≤ (M.pt l).left ⁻¹ᵁ W) (s : Γ(G.left, W)), ∃ D : L →ₗ[C] C, ∀ l, D l = (secVal (B := DualNumber C) (M.pt l).left W (h l) s).snd := by
   intro S G _ C _ y L _ _ M W h s
   have p0 := pt_zero M

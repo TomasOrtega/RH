@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S X Y f h1 h0 h2 h3 H` and use `flat_of_isFinite_of_finitePresentation_of_flat_geometric_fibres S X Y f h1 h0 h2 h3 H`.
+-/
 theorem flat_of_isFinite_of_flat_geometric_fibres_over :
     ∀ (S : Scheme.{0}) (X Y : Over S) (f : X ⟶ Y), Flat X.hom → LocallyOfFinitePresentation X.hom →
     LocallyOfFinitePresentation Y.hom → IsFinite f.left →

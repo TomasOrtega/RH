@@ -12,6 +12,9 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.PolScale
 
+/- English proof (translation)
+Simplify using `only [InvFun.eval, comb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_comb_mul {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     (ψ φ : InvFun O) (a b u : ℕ) (B : X → X → ℝ) :
     (comb (u * a) ψ (u * b) φ).eval X B = u * (comb a ψ b φ).eval X B := by
@@ -21,6 +24,9 @@ theorem eval_comb_mul {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Modul
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Introduce `σ hσ n B` and use `by simp only [comb] rw [hψ σ hσ n B, hφ σ hσ n B]`.
+-/
 theorem isTwInv_comb {ψ φ : InvFun (𝓞 E)} (hψ : IsTwInv H ψ) (hφ : IsTwInv H φ) (a b : ℕ) :
     IsTwInv H (comb a ψ b φ) := fun σ hσ n B => by
   simp only [comb]
@@ -28,6 +34,13 @@ theorem isTwInv_comb {ψ φ : InvFun (𝓞 E)} (hψ : IsTwInv H ψ) (hφ : IsTwI
 
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Introduce `W _ _ _ hW ϖ hϖ χ t ht P hχ be hbe hmon`. Take `⟨n, hn, hI⟩` from `h W hW ϖ hϖ χ t ht P hχ be hbe hmon`. Use `⟨u * n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[InvFun.evalZ, eval_comb_mul, ← InvFun.evalZ, ← hn]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨i, hi⟩` from `BD.exists_mem (χ (closedPoint W))`. Unfold `idlAlong at hI ⊢`. Rewrite `hI` using `[BD.stalkId_idealSheaf i _ hi, Ideal.map_span, Set.image_singleton]`. Rewrite using `[(BD.nsmul u).stalkId_idealSheaf i _ hi, Ideal.map_span, Set.image_singleton]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.span {(Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.germ _ _ hi).hom (BD.f i ^ u))} = _`. Rewrite using `[map_pow, map_pow, ← Ideal.span_singleton_pow, hI, Ideal.span_singleton_pow, ← pow_mul, mul_comm]`.
+-/
 theorem isPhiDiv_nsmul {ψ φ : InvFun (𝓞 E)} {a b : ℕ} {Z : Model Xo c β} {BD : EffCartierData Z.X}
     (h : IsPhiDiv (comb a ψ b φ) Z BD) (u : ℕ) : IsPhiDiv (comb (u * a) ψ (u * b) φ) Z (BD.nsmul u) := by
   intro W _ _ _ hW ϖ hϖ χ t ht P hχ be hbe hmon
@@ -43,6 +56,15 @@ theorem isPhiDiv_nsmul {ψ φ : InvFun (𝓞 E)} {a b : ℕ} {Z : Model Xo c β}
     change Ideal.span {(Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.germ _ _ hi).hom (BD.f i ^ u))} = _
     rw [map_pow, map_pow, ← Ideal.span_singleton_pow, hI, Ideal.span_singleton_pow, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z ψ φ a b u m BD BD' hψ hφ hu hP hB'`. Take `⟨hβ, hft, -⟩` from `CoeffRings.coeff_isDedFrac E H l c`. Establish `hI : BD'.idealSheaf = (BD.nsmul u).idealSheaf`. Use `PolDiv.idealSheaf_eq_comap E H D l l Xo Xo c c _ _ _ _ Z Z (BD.nsmul u) BD' (comb (u * a) ψ (u * b) φ) (RingEquiv.refl _) (𝟙 _) ((TwMap.reflEquiv _ _ _).symm (ObjComp.sabMapId _)) hβ hβ hft (isTwInv_comb hψ hφ _ _) rfl (isPhiDiv_nsmul hP.1 u) hB' (𝟙 _) (by simp)` as an intermediate fact. Rewrite `this` using `[Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis.
+
+Use `⟨hB', ?_⟩` and prove the remaining obligations. Establish `hA` using `hP.2`. Establish `hd : (FlagMod.detOm Z).IsLB` using `CechPic.isLB_dual (PolFin.isLB_detLie_of_polOf hA.isLB)`. Establish `cl : ∀ (k : ℕ) (B : EffCartierData Z.X) (h : (polOf Z k B).IsLB), CechPic.cls _ h = k • CechPic.cls _ hd + -CechPic.cls _ B.isLB_lb` using `fun k B h => by`. Establish `e` using `CechPic.cls_tens (isLB_lbPow hd k) (CechPic.isLB_dual B.isLB_lb) h`.
+
+Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_lbPow hd, CechPic.cls_dual B.isLB_lb]`. Establish `hBc : CechPic.cls _ BD'.isLB_lb = u • CechPic.cls _ BD.isLB_lb`. Rewrite using `[(CechPic.cls_eq_iff BD'.isLB_lb (BD.nsmul u).isLB_lb).2 (EffCartierData.lbIso_of_idealSheaf_eq _ _ hI), (CechPic.cls_eq_iff (BD.nsmul u).isLB_lb (isLB_lbPow BD.isLB_lb u)).2 (BD.lbIso_nsmul u), CechPic.cls_lbPow BD.isLB_lb]`. Establish `hP' : (polOf Z (u * m) BD').IsLB` using `CechPic.isLB_tens (isLB_lbPow hd _) (CechPic.isLB_dual BD'.isLB_lb)`.
+
+Establish `hPu` using `(isAmpleLB_pow_iff hA.isLB hu).2 hA`. Use `hPu.of_lbIso hP' ((CechPic.cls_eq_iff hP' (isLB_lbPow hA.isLB u)).1 ?_)` and prove the remaining obligations. Rewrite using `[cl _ _ hP', CechPic.cls_lbPow hA.isLB, cl _ _ hA.isLB, hBc, smul_add, smul_neg, mul_smul]`.
+-/
 theorem isPol_scale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (Z : GMod Xo c) (ψ φ : InvFun (𝓞 E)) (a b u m : ℕ) (BD BD' : EffCartierData Z.X),
     IsTwInv H ψ → IsTwInv H φ → 0 < u → IsPol (comb a ψ b φ) m Z BD → IsPhiDiv (comb (u * a) ψ (u * b) φ) Z BD' →

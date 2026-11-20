@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DualCon.abelianScheme_locally_relDim | exact GlobalTheory.DualCon.abelianScheme_locally_relDim | (intros; apply GlobalTheory.DualCon.abelianScheme_locally_relDim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianScheme_locally_constant_relDim : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ s : S, ∃ (V : S.Opens) (g : ℕ), IsAffineOpen V ∧ s ∈ V ∧ SmoothOfRelativeDimension g (pullback.snd A.hom V.ι) := by
   first | exact @GlobalTheory.DualCon.abelianScheme_locally_relDim | exact GlobalTheory.DualCon.abelianScheme_locally_relDim | (intros; apply GlobalTheory.DualCon.abelianScheme_locally_relDim <;> assumption)

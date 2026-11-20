@@ -8,10 +8,18 @@ noncomputable def shiftHom (D : ℕ) (c : Fin D → ℂ) :
     MvPolynomial (Fin D) ℂ →ₐ[ℂ] MvPowerSeries (Fin D) ℂ :=
   MvPolynomial.aeval (fun i => MvPowerSeries.X i + MvPowerSeries.C (c i))
 
+/- English proof (translation)
+Simplify using `[shiftHom]`.
+-/
 theorem shiftHom_X (D : ℕ) (c : Fin D → ℂ) (i : Fin D) :
     shiftHom D c (MvPolynomial.X i) = MvPowerSeries.X i + MvPowerSeries.C (c i) := by
   simp [shiftHom]
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [shiftHom, RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, MvPolynomial.aeval_C, MvPolynomial.eval_C]`. Apply the tactic sequence `first | rfl | simp [MvPowerSeries.algebraMap_apply] | simp [Algebra.algebraMap_eq_smul_one]`. Introduce `i`.
+
+Simplify using `[shiftHom]`.
+-/
 theorem constantCoeff_comp_shiftHom (D : ℕ) (c : Fin D → ℂ) :
     (MvPowerSeries.constantCoeff (σ := Fin D) (R := ℂ)).comp (shiftHom D c).toRingHom
       = MvPolynomial.eval c := by
@@ -21,6 +29,15 @@ theorem constantCoeff_comp_shiftHom (D : ℕ) (c : Fin D → ℂ) :
     first | rfl | simp [MvPowerSeries.algebraMap_apply] | simp [Algebra.algebraMap_eq_smul_one]
   · intro i; simp [shiftHom]
 
+/- English proof (translation)
+Set `τ : MvPolynomial (Fin D) ℂ →ₐ[ℂ] MvPolynomial (Fin D) ℂ` to `MvPolynomial.aeval (fun i => MvPolynomial.X i + MvPolynomial.C (c i))`. Set `τ' : MvPolynomial (Fin D) ℂ →ₐ[ℂ] MvPolynomial (Fin D) ℂ` to `MvPolynomial.aeval (fun i => MvPolynomial.X i - MvPolynomial.C (c i))`. Establish `hinv : τ'.comp τ = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Simplify using `[τ, τ']`. Establish `hτ : Function.Injective τ`. Introduce `a b h`. Use `congrArg τ' h` as an intermediate fact. Simplify `this` using `[← AlgHom.comp_apply, hinv]`.
+
+Establish `hfac : shiftHom D c = (MvPolynomial.coeToMvPowerSeries.algHom ℂ).comp τ`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[shiftHom, τ]`. Rewrite using `[hfac]`.
+
+Conclude with `(MvPolynomial.coe_injective _ _).comp hτ`.
+-/
 theorem shiftHom_injective (D : ℕ) (c : Fin D → ℂ) : Function.Injective (shiftHom D c) := by
   let τ : MvPolynomial (Fin D) ℂ →ₐ[ℂ] MvPolynomial (Fin D) ℂ :=
     MvPolynomial.aeval (fun i => MvPolynomial.X i + MvPolynomial.C (c i))
@@ -43,6 +60,23 @@ namespace GlobalTheory
 
 open GlobalTheory.ShiftHomomorphism in
 
+/- English proof (translation)
+Introduce `D P c hP hsep`. Use `haveI : IsDomain (MvPowerSeries (Fin D) ℂ) := NoZeroDivisors.to_isDomain _`. Use `set ψ := shiftHom D c with hψ`. Use `set Q := P.map ψ.toRingHom with hQ`. Establish `hQm : Q.Monic` using `hP.map _`.
+
+Establish `hred : Q.map (MvPowerSeries.constantCoeff (σ` using `Fin D) (R := ℂ)) = P.map (MvPolynomial.eval c) := by`. Rewrite using `[hQ, Polynomial.map_map, constantCoeff_comp_shiftHom]`. Take `⟨θ, hθi, hθr⟩` from `GlobalTheory.T.exists_lifts_of_separable_reduction D Q hQm (by rw [hred]; exact hsep)`. Establish `hroot : ∀ j, P.eval₂ ψ.toRingHom (θ j) = 0`. Introduce `j`.
+
+Use `hθr j` as an intermediate fact. Rewrite `this` using `[Polynomial.IsRoot.def, hQ, Polynomial.eval_map]`. Conclude with `this`. Use `⟨Q.natDegree, fun j => AdjoinRoot.liftAlgHom P ψ (θ j) (hroot j), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Take `⟨R, rfl⟩` from `AdjoinRoot.mk_surjective u`. Establish `hR : AdjoinRoot.mk P R = AdjoinRoot.mk P (R %ₘ P)`. Rewrite using `[← AdjoinRoot.modByMonicHom_mk hP R, AdjoinRoot.mk_leftInverse hP]`. Rewrite `hu`, the goal using `[hR]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hR0 : R %ₘ P ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `hdeg : (R %ₘ P).natDegree < P.natDegree` using `Polynomial.natDegree_lt_natDegree hR0 (Polynomial.degree_modByMonic_lt R hP)`.
+
+Establish `hz : (R %ₘ P).map ψ.toRingHom = 0`. Use `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero _ hθi ?_ ?_` and prove the remaining obligations. Introduce `j`. Use `hu j` as an intermediate fact. Simplify `this` using `[AdjoinRoot.liftAlgHom, AdjoinRoot.lift_mk, Polynomial.eval_map]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `hR0` to reduce the goal to its premises. Conclude with `Polynomial.map_injective _ (shiftHom_injective D c) (by rw [hz, Polynomial.map_zero])`. Introduce `j i`. Simplify using `[AdjoinRoot.liftAlgHom]`.
+
+Rewrite using `[hψ]`. Conclude with `shiftHom_X D c i`.
+-/
 theorem branches_of_unramified_point : ∀ (D : ℕ) (P : Polynomial (MvPolynomial (Fin D) ℂ)) (c : Fin D → ℂ), P.Monic → (P.map (MvPolynomial.eval c)).Separable → ∃ (n : ℕ) (φ : Fin n → (AdjoinRoot P →ₐ[ℂ] MvPowerSeries (Fin D) ℂ)), (∀ u, (∀ j, φ j u = 0) → u = 0) ∧ ∀ j i, φ j (AdjoinRoot.of P (MvPolynomial.X i)) = MvPowerSeries.X i + MvPowerSeries.C (c i) := by
   intro D P c hP hsep
   haveI : IsDomain (MvPowerSeries (Fin D) ℂ) := NoZeroDivisors.to_isDomain _

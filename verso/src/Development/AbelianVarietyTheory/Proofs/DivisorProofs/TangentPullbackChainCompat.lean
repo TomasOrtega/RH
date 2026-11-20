@@ -25,11 +25,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TangentBaseChange
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `R₀ R ic hic G₀ _ G _ A _ g p hg hp v₀ v' hv₀ hv'`. Establish `hw : (spMap (Chart.dualMapR ic) ≫ v₀.left) ≫ G₀.hom = spMap (algebraMap R (DualNumber R)) ≫ spMap ic`. Rewrite using `[Category.assoc, Over.w v₀]`. Use `show spMap (Chart.dualMapR ic) ≫ spMap (algebraMap R₀ (DualNumber R₀)) = _`. Rewrite using `[spMap_comp_ring, spMap_comp_ring]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `[Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `vl : (epsR R).left ⟶ G.left` to `hg.1.lift _ _ hw`.
+
+Establish `hvg : vl ≫ g = spMap (Chart.dualMapR ic) ≫ v₀.left` using `hg.1.lift_fst _ _ hw`. Establish `hvG : vl ≫ G.hom = spMap (algebraMap R (DualNumber R))` using `hg.1.lift_snd _ _ hw`. Use `⟨Over.homMk vl hvG, ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ vl = η[G].left`. Apply `hg.1.hom_ext` to reduce the goal to its premises.
+
+Establish `e : η[G].left ≫ g = spMap ic ≫ η[G₀].left` using `GlobalTheory.PolBaseChange.eSec_comm hg`. Establish `t : spMap (TrivSqZeroExt.fstHom R₀ R₀ R₀).toRingHom ≫ v₀.left = η[G₀].left` using `hv₀`. Establish `hr : ((TrivSqZeroExt.fstHom R R R).toRingHom).comp (Chart.dualMapR ic) = ic.comp (TrivSqZeroExt.fstHom R₀ R₀ R₀).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[Chart.dualMapR]`.
+
+Rewrite using `[Category.assoc, hvg, ← Category.assoc, spMap_comp_ring, hr, ← spMap_comp_ring, Category.assoc, t, e]`. Establish `hr : ((TrivSqZeroExt.fstHom R R R).toRingHom).comp (algebraMap R (DualNumber R)) = RingHom.id R`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[Category.assoc, hvG, spMap_comp_ring, hr, Over.w η[G]]`.
+
+Simplify using the standard rewrite rules. Apply `hg.1.hom_ext` to reduce the goal to its premises. Establish `hr : (Chart.dualMapR R.subtype).comp (Chart.dualMapR ic) = Chart.dualMapR R₀.subtype`. Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Chart.dualMapR, hic]`.
+
+Simplify using `[Chart.dualMapR, hic]`. Use `show (v'.left ≫ p) ≫ g = (spMap (Chart.dualMapR R.subtype) ≫ vl) ≫ g`. Rewrite using `[Category.assoc, hv', Category.assoc, hvg, ← Category.assoc, spMap_comp_ring, hr]`. Use `show (v'.left ≫ p) ≫ G.hom = (spMap (Chart.dualMapR R.subtype) ≫ vl) ≫ G.hom`. Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, Over.w v', Category.assoc, hvG]`.
+
+Use `show spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap R.subtype = spMap (Chart.dualMapR R.subtype) ≫ spMap (algebraMap R (DualNumber R))`. Rewrite using `[spMap_comp_ring, spMap_comp_ring]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Simplify using `[Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem exists_tangent_baseChange : ∀ (R₀ R : Subring ℂ) (ic : R₀ →+* R), (∀ x, ((ic x : R) : ℂ) = x) →
   ∀ (G₀ : Over (Sp R₀)) [GrpObj G₀] (G : Over (Sp R)) [GrpObj G] (A : Over (Sp ℂ)) [GrpObj A]
     (g : G.left ⟶ G₀.left) (p : A.left ⟶ G.left), IsGrpPullback G G₀ (spMap ic) g → IsGrpPullback A G (spMap R.subtype) p →

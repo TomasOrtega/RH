@@ -18,6 +18,9 @@ def repR {G : Type} [Group G] (x : R →ₐ[O] O) (ρ : G →* Matrix (Fin n) (F
     MonoidAlgebra R G →+* Matrix (Fin n) (Fin n) O :=
   (GDet.repAlg ρ O).toRingHom.comp (MonoidAlgebra.mapRingHom G x.toRingHom)
 
+/- English proof (translation)
+Simplify using `[repR, GDet.repAlg, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]`.
+-/
 theorem repR_single {G : Type} [Group G] (x : R →ₐ[O] O) (ρ : G →* Matrix (Fin n) (Fin n) O) (g : G) (a : R) :
     repR x ρ (MonoidAlgebra.single g a) = x a • ρ g := by
   simp [repR, GDet.repAlg, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.lift_single]

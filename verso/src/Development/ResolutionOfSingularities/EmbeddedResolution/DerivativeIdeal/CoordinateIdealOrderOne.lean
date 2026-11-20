@@ -16,6 +16,11 @@ namespace FunctorialResolution.EmbeddedResolution
 
 variable {X : Scheme.{u}} {k : Type u} [Field k] (p : X ⟶ Spec (CommRingCat.of k))
 
+/- English proof (translation)
+Break down `eq_or_ne a ⊤ with rfl | ha` into its components or cases. Conclude with `absurd le_top h`. Take `⟨m, rfl⟩` from `ENat.ne_top_iff_exists.mp ha`. Establish `hm : ¬ (2 ≤ m)` using `fun hh => h (by exact_mod_cast hh)`. Establish `hm1 : m ≤ 1` using `by omega`.
+
+Conclude with `hm1` after adjusting the coercions.
+-/
 private theorem le_one_of_not_two_le {a : ℕ∞} (h : ¬ ((2 : ℕ) : ℕ∞) ≤ a) : a ≤ 1 := by
   rcases eq_or_ne a ⊤ with rfl | ha
   · exact absurd le_top h
@@ -24,6 +29,17 @@ private theorem le_one_of_not_two_le {a : ℕ∞} (h : ¬ ((2 : ℕ) : ℕ∞) �
     have hm1 : m ≤ 1 := by omega
     exact_mod_cast hm1
 
+/- English proof (translation)
+Set `instS : Algebra (CoordPolynomialRing k n) Γ(X, V)` to `c.algebra`. Establish `instEt : Algebra.Etale (CoordPolynomialRing k n) Γ(X, V)` using `EtaleChart.algebra_etale c hV`. Set `instAlg : Algebra Γ(X, V) (X.presheaf.stalk y)` to `(X.presheaf.germ V y hy).hom.toAlgebra`. Establish `hloc : IsLocalization (hV.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl (X.presheaf.stalk y)` using `hV.isLocalization_stalk ⟨y, hy⟩`. Establish `hreg : IsRegularLocalRing (X.presheaf.stalk y)` using `isRegularLocalRing_of_isLocalization_etale k n Γ(X, V) (hV.primeIdealOf ⟨y, hy⟩).asIdeal (X.presheaf.stalk y)`.
+
+Establish `hcoord : ∀ i : Fin n, etaleChartCoord k n Γ(X, V) i = c.coord i` using `fun i => EtaleChart.coordRingHom_X c i`. Establish `hJ : ∀ i ∈ ({j} : Finset (Fin n)), etaleChartCoord k n Γ(X, V) i ∈ (hV.primeIdealOf ⟨y, hy⟩).asIdeal`. Introduce `i hi`. Establish `hij : i = j` using `Finset.mem_singleton.mp hi`. Rewrite using `[hij, hcoord j]`.
+
+Conclude with `hmem`. Establish `hJA : ∀ i ∈ ({j} : Finset (Fin n)), algebraMap Γ(X, V) (X.presheaf.stalk y) (etaleChartCoord k n Γ(X, V) i) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk y)`. Introduce `i hi`. Establish `hij : i = j` using `Finset.mem_singleton.mp hi`. Rewrite using `[hij, hcoord j]`.
+
+Conclude with `(germ_mem_maximalIdeal_iff hV y hy (c.coord j)).mpr hmem`. Establish `hli` using `linearIndependent_toCotangent_etaleChartCoord k n Γ(X, V) (hV.primeIdealOf ⟨y, hy⟩).asIdeal (X.presheaf.stalk y) ({j} : Finset (Fin n)) hJ hJA`. Establish `hnot` using `IsRegularLocalRing.notMem_maximalIdeal_sq (fun i : {x : Fin n // x ∈ ({j} : Finset (Fin n))} => algebraMap Γ(X, V) (X.presheaf.stalk y) (etaleChartCoord k n Γ(X, V) (i : Fin n))) (fun i => hJA (i : Fin n) i.2) hli ⟨j, Finset.mem_singleton_self j⟩`. Introduce `hcon`. Establish `h2 : algebraMap Γ(X, V) (X.presheaf.stalk y) (etaleChartCoord k n Γ(X, V) j) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk y) ^ 2`.
+
+Rewrite using `[hcoord j]`. Conclude with `hcon`. Conclude with `hnot h2`.
+-/
 theorem germ_coord_notMem_maximalIdeal_sq {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (j : Fin n) (y : X) (hy : y ∈ V)
     (hmem : c.coord j ∈ (hV.primeIdealOf ⟨y, hy⟩).asIdeal) :
@@ -68,6 +84,13 @@ theorem germ_coord_notMem_maximalIdeal_sq {V : X.Opens} (hV : IsAffineOpen V) {n
     exact hcon
   exact hnot h2
 
+/- English proof (translation)
+Distinguish the cases in `hys : y ∈ D.support`. Establish `hgerm : (X.presheaf.germ V y hy).hom (c.coord j) ∈ stalkIdeal D y`. Use `germ_mem_stalkIdeal D y ⟨V, hV⟩ hy ?_` and prove the remaining obligations. Rewrite using `[EtaleChart.ideal_eq_span_coord c hV D S hD]`. Conclude with `Ideal.subset_span ⟨j, Finset.mem_coe.mpr hj, rfl⟩`.
+
+Establish `hmax : stalkIdeal D y ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk y)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal D y).mp hys`. Establish `hmem : c.coord j ∈ (hV.primeIdealOf ⟨y, hy⟩).asIdeal` using `(germ_mem_maximalIdeal_iff hV y hy (c.coord j)).mp (hmax hgerm)`. Use `le_one_of_not_two_le ?_` and prove the remaining obligations. Introduce `h2`. Rewrite `h2` using `[le_orderAt_iff]`.
+
+Conclude with `germ_coord_notMem_maximalIdeal_sq p hV c j y hy hmem (h2 hgerm)`. Rewrite using `[(orderAt_eq_zero_iff_not_mem_support D y).mpr hys]`. Conclude with `zero_le_one`.
+-/
 private theorem orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal {V : X.Opens} (hV : IsAffineOpen V) {n : ℕ}
     (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n) (hj : j ∈ S) (D : X.IdealSheafData)
     (hD : restrictIdeal D V = c.coordIdeal S) (y : X) (hy : y ∈ V) :
@@ -89,6 +112,9 @@ private theorem orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal {V : X.Open
   · rw [(orderAt_eq_zero_iff_not_mem_support D y).mpr hys]
     exact zero_le_one
 
+/- English proof (translation)
+The claim follows from `le_antisymm (orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c {j} j (Finset.mem_singleton_self j) D hD y hy) ((one_le_orderAt_iff_mem_support D y).mpr hys)`.
+-/
 theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (j : Fin n) (D : X.IdealSheafData)
     (hD : restrictIdeal D V = c.coordIdeal {j}) (y : X) (hy : y ∈ V) (hys : y ∈ D.support) :
@@ -96,6 +122,9 @@ theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal_singleton {V : X.Opens}
   le_antisymm (orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c {j} j (Finset.mem_singleton_self j) D hD y hy)
     ((one_le_orderAt_iff_mem_support D y).mpr hys)
 
+/- English proof (translation)
+The claim follows from `orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c S j hj D hD y hy`.
+-/
 theorem orderAt_le_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n)
     (hj : j ∈ S) (D : X.IdealSheafData) (hD : restrictIdeal D V = c.coordIdeal S)
@@ -103,6 +132,9 @@ theorem orderAt_le_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     orderAt D y ≤ 1 :=
   orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c S j hj D hD y hy
 
+/- English proof (translation)
+The claim follows from `le_antisymm (orderAt_le_one_of_mem_of_restrictIdeal_eq_coordIdeal p hV c S j hj D hD y hy) ((one_le_orderAt_iff_mem_support D y).mpr hys)`.
+-/
 theorem orderAt_eq_one_of_restrictIdeal_eq_coordIdeal {V : X.Opens}
     (hV : IsAffineOpen V) {n : ℕ} (c : EtaleChart p V n) (S : Finset (Fin n)) (j : Fin n)
     (hj : j ∈ S) (D : X.IdealSheafData) (hD : restrictIdeal D V = c.coordIdeal S)

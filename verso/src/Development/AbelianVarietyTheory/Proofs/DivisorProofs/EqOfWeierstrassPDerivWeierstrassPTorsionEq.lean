@@ -7,6 +7,17 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 
 namespace GlobalTheory.WpFam
 
+/- English proof (translation)
+Introduce `N _ τ x y hx hy h1 h2`. Take `⟨hsub, -, hmem, -, -⟩` from `GlobalTheory.T.torsionPointOfLatticeTau_lattice_membership N τ`. Establish `hc : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `hz : tors N τ x ∉ (tauPair τ).lattice` using `fun h => hx ((hmem x).1 h)`. Establish `hw : tors N τ y ∉ (tauPair τ).lattice` using `fun h => hy ((hmem y).1 h)`.
+
+Rewrite `h1` using `[wp, wp, div_left_inj' (pow_ne_zero _ hc)]`. Rewrite `h2` using `[wpd, wpd, div_left_inj' (pow_ne_zero _ hc)]`. Break down `(Formalism.L2.Th1.F.pInjective (tauPair τ) _ _ hz hw).1 h1 with h | h` into its components or cases. Conclude with `(hsub x y).1 h`. Apply `(hsub x y).1` to reduce the goal to its premises.
+
+Establish `e : tors N τ x = -tors N τ y + ((⟨_, h⟩ : (tauPair τ).lattice) : ℂ)`. Simplify using the standard rewrite rules. Establish `h3 : (tauPair τ).derivWeierstrassP (tors N τ x) = -(tauPair τ).derivWeierstrassP (tors N τ y)` using `by conv_lhs => rw [e]`. Rewrite using `[PeriodPair.derivWeierstrassP_add_coe, PeriodPair.derivWeierstrassP_neg]`. Establish `h0 : (tauPair τ).derivWeierstrassP (tors N τ y) = 0`.
+
+Rewrite `h3` using `[h2]`. Take the linear combination `h3 / 2`. Establish `h4` using `(Formalism.L2.Th1.F.pDerivZero (tauPair τ) _ hw).1 h0`. Establish `h5` using `(tauPair τ).lattice.sub_mem h h4`. Use `h5 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wp_wpd_separate : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (x y : Fin 2 → ZMod N), x ≠ 0 → y ≠ 0 →
     wp N x τ = wp N y τ → wpd N x τ = wpd N y τ → x = y := by
   intro N _ τ x y hx hy h1 h2

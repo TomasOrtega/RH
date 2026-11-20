@@ -16,6 +16,9 @@ open GlobalTheory.FlatModel
 attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_normBlowup_off_basicOpen | exact GlobalTheory.FlatModel.exists_normBlowup_off_basicOpen | (intros; apply GlobalTheory.FlatModel.exists_normBlowup_off_basicOpen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_blowup_normalization_cartier : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) (p : ℕ) [Fact p.Prime],
     (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V), IsIntegral X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X →
     IsProjOver s → Flat s → ∀ J : X.IdealSheafData, (∀ x ∈ J.support, x ∉ X.basicOpen (p : Γ(X, ⊤))) →

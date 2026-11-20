@@ -11,6 +11,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `L K _ _ cL cK Q hQ S ψ F hSQ hc hF m z zs hz hu P hP`. Set `j : Q →+* S.ring` to `Q.subtype.codRestrict S.ring fun q => hSQ q q.2`. Establish `h1 : (ψ.comp j).comp (cL.codRestrict Q hQ.const_mem) = cK` using `RingHom.ext fun a => hc a`. Establish `h2 : (fun i => (ψ.comp j) (z i)) = fun i => ψ (zs i)`. Use function extensionality and compare the values at `fun i => congrArg ψ (Subtype.ext (hz i).symm)`.
+
+Establish `h3 : (ψ.comp j) (MvPolynomial.eval₂ (cL.codRestrict Q hQ.const_mem) z P) = MvPolynomial.eval₂ cK (fun i => ψ (zs i)) P`. Rewrite using `[MvPolynomial.hom_eval₂, h1, h2]`. Take `⟨q, hq⟩` from `(hu P hP).exists_right_inv`. Establish `h4 : MvPolynomial.eval₂ cK (fun i => ψ (zs i)) P * (ψ.comp j) q = 1`. Rewrite using `[← h3, ← map_mul, hq, map_one]`.
+
+Use `⟨left_ne_zero_of_mul_eq_one h4, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right h4]`. Conclude with `(hF _).2 ⟨j q, q.2, rfl⟩`.
+-/
 theorem eval₂_residue_ne_zero_and_inv_mem_of_isUnit :
     ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (Q : Subring L) (hQ : IsLocModel cL Q)
   (S : Place cL) (ψ : S.ring →+* K) (F : Place cK), S.Contains Q → (∀ a, ψ (S.const a) = cK a) →

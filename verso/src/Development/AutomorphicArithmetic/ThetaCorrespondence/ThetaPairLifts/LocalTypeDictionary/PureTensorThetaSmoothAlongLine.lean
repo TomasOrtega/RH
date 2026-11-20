@@ -17,6 +17,17 @@ open Filter Topology
 open GlobalTheory.AdelicU
 open scoped Classical
 namespace GlobalTheory.Twist.SmoothLine
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hCM hψ hM hW γ hγ f φ hSB hvac hne c hc`. Take `⟨c₁, c', h0, hlim, hacts⟩` from `_root_.GlobalTheory.WeilArchSmooth.exists_weilRep_archimedean_smooth_orbit hP M ψ χX χW om hCM hψ hW γ hγ f`. Set `r : (Fin n × Fin d → AF F) → ℂ` to `fun x => ∏ᶠ v, φ v fun i => evFin F v (x i)`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hM.std).mono fun v h => h.1.trans h.2`. Establish `hRest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evI F) (⇑f) r` using `⟨fun x z hz => finprod_add_of_at φ x z hz, GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩`.
+
+Take `⟨y, hy⟩` from `hne`. Establish `heq : ∀ t, c t = c₁ t`. Introduce `t`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c t) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evI F) (⇑(c₁ t)) r` using `(hc t).symm.trans (hacts t r hRest)`. Use extensionality with `x`.
+
+Set `z : Fin n × Fin d → AF F` to `fun i => (show InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F from ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), (show InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F from y i).2))`. Establish `hzI : (fun i => evI F (z i)) = x`. Use function extensionality and compare the values at `i`. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)) = x i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+
+Establish `hzF : (∏ᶠ v, φ v fun i => evFin F v (z i)) = ∏ᶠ v, φ v fun i => evFin F v (y i)` using `rfl`. Establish `e` using `congrFun h1 z`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, r, hzI, hzF] at e`. Conclude with `mul_right_cancel₀ hy e`. Establish `hc' : c = c₁` using `funext heq`.
+
+Substitute `hc'` using the available equality. Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `hlim`.
+-/
 theorem smooth_line_of_pure_tensor_theta : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),
@@ -75,6 +86,9 @@ open Filter Topology
 open GlobalTheory.AdelicU
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta | exact _root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta | (intros; apply _root_.GlobalTheory.Twist.SmoothLine.smooth_line_of_pure_tensor_theta <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pure_tensor_theta_smooth_along_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd),

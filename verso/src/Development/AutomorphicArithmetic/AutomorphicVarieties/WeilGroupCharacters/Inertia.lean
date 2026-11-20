@@ -38,6 +38,9 @@ attribute [instance] DetObj.ring DetObj.alg DetObj.co
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
   (r : Resid F O n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem GFrame.mu_eq (v : F.Vl) : F.mu v = muG l (F.Gv v) := rfl
 
 structure LamTObj : Type 1 where

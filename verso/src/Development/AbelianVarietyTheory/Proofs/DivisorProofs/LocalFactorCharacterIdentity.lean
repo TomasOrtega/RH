@@ -11,6 +11,19 @@ noncomputable section
 
 namespace GlobalTheory.ConeLawAChar
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G X om om' T t`. Take `⟨k, hk⟩` from `T.geo.even`. Establish `hlt` using `T.geo.lt`. Establish `hα : X.α (Units.map (cA σ : AE F E →* AE F E) t) = (X.α t)⁻¹` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' T) t`. Establish `hβ : X.β (Units.map (cA σ : AE F E →* AE F E) t) = (X.β t)⁻¹` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV T) t`.
+
+Establish `habs : absE F E (Units.map (cA σ : AE F E →* AE F E) t) = absE F E t`. Establish `: Units.map (cA σ : AE F E →* AE F E) t = GlobalTheory.Doubling.conjUnit σ t`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, GlobalTheory.Doubling.absE_conjUnit]`. Establish `hν : X.ν (Units.map (cA σ : AE F E →* AE F E) t) = X.β t / X.α t`. Rewrite using `[Chars.ν, MonoidHom.div_apply, hα, hβ, inv_div_inv]`. Establish `hpos : (0 : ℝ) < absE F E t`. Establish `h` using `map_mul (absE F E) t t⁻¹`.
+
+Rewrite `h` using `[mul_inv_cancel, map_one]`. Establish `: absE F E t ≠ 0` using `left_ne_zero_of_mul_eq_one h.symm`. Conclude with `pos_iff_ne_zero.mpr this` after adjusting the coercions. Establish `hexp : ((b + 2 : ℕ) : ℝ) / 2 = (a' : ℝ) / 2 + (((b + 2 - a') / 2 : ℕ) : ℝ)`. Establish `h2 : 2 * ((b + 2 - a') / 2) + a' = b + 2` using `by omega`.
+
+Establish `h3 : (2 * (((b + 2 - a') / 2 : ℕ) : ℝ) + a' : ℝ) = ((b + 2 : ℕ) : ℝ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `GlobalTheory.ThK.LemF.fac`. Rewrite using `[hν, habs, hexp, Real.rpow_add hpos, Real.rpow_natCast, Complex.ofReal_mul, Complex.ofReal_pow, Circle.coe_div]`. Establish `h0 : ((absE F E t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hpos.ne'`.
+
+Establish `hA : (X.α t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Establish `hB : (X.β t : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fac_div_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ t : (AE F E)ˣ, GlobalTheory.ThK.LemF.fac X.β (((b + 2 : ℕ) : ℝ) / 2) t *

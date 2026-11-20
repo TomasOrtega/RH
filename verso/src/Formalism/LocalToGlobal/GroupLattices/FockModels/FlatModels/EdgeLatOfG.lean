@@ -8,6 +8,43 @@ namespace Formalism.L2.G.Model
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.G.LatticeSystems
 
+/- English proof (translation)
+Take `⟨hg, hsrc, htgt⟩` from `hgE`. Unfold `lb_D`. Use `set c : G.Kf := algebraMap G.O G.Kf G.P.w with hc`. Establish `hw : c ≠ 0` using `ch_w_ne_zero G v`. Establish `hpK : (p : G.Kf) = c ^ 2` using `nt_p_eq G v`.
+
+Establish `hpK0 : (p : G.Kf) ≠ 0` using `by rw [hpK]; exact pow_ne_zero _ hw`. Establish `hpQ0 : (p : G.P.Qq v) ≠ 0`. Introduce `h0`. Apply `hpK0` to reduce the goal to its premises. Use `congrArg (G.P.ι v) h0` as an intermediate fact.
+
+Simplify using `using this`. Use `set dK : Fin (G.P.m + 1) → G.Kf := fun a => if a.val < G.P.r then c⁻¹ else 1 with hdK`. Use `set dQ : Fin (G.P.m + 1) → G.P.Qq v := fun a => if a.val < G.P.r then ((p : G.P.Qq v))⁻¹ else 1 with hdQ`. Establish `hDD : ∀ s, la_tw (G.P.ι v) (G.P.σ v) s (g * Matrix.diagonal dQ) = la_tw (G.P.ι v) (G.P.σ v) s g * Matrix.diagonal dK * Matrix.diagonal dK`. Introduce `s`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul_diagonal, Matrix.mul_diagonal, lb_tw_apply, lb_tw_apply, Matrix.mul_diagonal, map_mul, map_mul]`. Use `congr 1`. Simplify using `only [hdQ, hdK]`. Use `split_ifs`.
+
+Rewrite using `[map_inv₀, map_inv₀, map_natCast, map_natCast, hpK, pow_two, mul_inv]`. Simplify using the standard rewrite rules. Establish `e1 : ∀ s, extO G.O (G.P.ι v) (G.P.σ v) s e.src = colSpan G.O (la_tw (G.P.ι v) (G.P.σ v) s g)` using `fun s => by rw [hsrc]; exact la_extO_G G v s g`. Establish `e3 : ∀ s, extO G.O (G.P.ι v) (G.P.σ v) s e.tgt = colSpan G.O (la_tw (G.P.ι v) (G.P.σ v) s g * Matrix.diagonal dK * Matrix.diagonal dK)` using `fun s => by rw [htgt, la_extO_G, hDD]`. Use `⟨e1, ?_, e3⟩` and prove the remaining obligations.
+
+Introduce `s`. Use `set gK := la_tw (G.P.ι v) (G.P.σ v) s g with hgK`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `LeAt`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[e1]`. Introduce `x hx`. Establish `h1 : gK = gK * Matrix.diagonal dK * Matrix.diagonal (fun a : Fin (G.P.m + 1) => if a.val < G.P.r then c else 1)`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`. Establish `h2 : (fun a : Fin (G.P.m + 1) => dK a * (if a.val < G.P.r then c else 1)) = fun _ => 1`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [hdK]`. Use `split_ifs`. Conclude with `inv_mul_cancel₀ hw`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2, Matrix.diagonal_one, Matrix.mul_one]`. Establish `hx' : x ∈ colSpan G.O gK` using `hx`. Rewrite `hx'` using `[h1]`. Apply the tactic sequence `have h3 := lb_col (gK * Matrix.diagonal dK) _ (fun a : Fin (G.P.m + 1) => if a.val < G.P.r then G.P.w else 1) 1 (by intro j; split_ifs <;> simp [hc]) x hx'`. Rewrite `h3` using `[one_smul]`.
+
+Conclude with `h3`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : c⁻¹ • twistVec (G.P.ι v) (G.P.σ v) s ((p : G.P.W v) • x) = G.P.w • twistVec (G.P.ι v) (G.P.σ v) s x`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, Pi.smul_apply, lb_tw_p, smul_eq_mul, Algebra.smul_def, ← hc, hpK]`. Use `show c⁻¹ * (c ^ 2 * _) = c * (G.P.ι v) ((G.P.σ v ^ s) (x i))`. Clear the denominators using the available nonvanishing facts. Establish `h2 : twistVec (G.P.ι v) (G.P.σ v) s x ∈ colSpan G.O (gK * Matrix.diagonal dK * Matrix.diagonal dK)`. Rewrite using `[← e3]`.
+
+Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Use `show c⁻¹ • twistVec (G.P.ι v) (G.P.σ v) s ((p : G.P.W v) • x) ∈ _`. Rewrite using `[h1]`. Conclude with `lb_col (gK * Matrix.diagonal dK) dK (fun a : Fin (G.P.m + 1) => if a.val < G.P.r then 1 else G.P.w) G.P.w (by`. Introduce `j`.
+
+Simplify using `only [hdK]`. Use `split_ifs`. Rewrite using `[← hc, mul_inv_cancel₀ hw, map_one]`. Rewrite using `[mul_one]) _ h2`. Unfold `colSpan`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Unfold `LeAt`. Distinguish the cases in `hj : j.val < G.P.r`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun i => (g * Matrix.diagonal dQ) i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htgt]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Use function extensionality and compare the values at `i show c⁻¹ • twistVec (G.P.ι v) (G.P.σ v) s ((p : G.P.W v) • fun i => (g * Matrix.diagonal dQ) i j) i = (gK * Matrix.diagonal dK) i j`.
+
+Rewrite using `[lb_tw_p, Matrix.mul_diagonal, Matrix.mul_diagonal, smul_eq_mul, hgK, lb_tw_apply]`. Simplify using `only [hdQ, hdK, hj, if_true, map_mul, map_inv₀, map_natCast]`. Clear the denominators using the available nonvanishing facts. Apply `Submodule.mem_sup_left` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨fun i => g i j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsrc]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using `only [twistVec, Matrix.mul_diagonal, hdK, hj, if_false, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem edgeLat_of_G {p : ℕ} (G : GAtP p) (v : Fin G.P.nV) (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1))
     (g : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) (hgE : IsEdgeBasis p G.P.r e g) :
     (∀ s, extO G.O (G.P.ι v) (G.P.σ v) s e.src = colSpan G.O (la_tw (G.P.ι v) (G.P.σ v) s g)) ∧
@@ -119,6 +156,9 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
+/- English proof (translation)
+The claim follows from `edgeLat_of_G (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) e g hgE`.
+-/
 theorem edgeLat_of (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge W Qq (m + 1))
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hgE : IsEdgeBasis p r e g) :
     (∀ s, extO O ι σ s e.src = colSpan O (la_tw ι σ s g)) ∧
@@ -127,6 +167,23 @@ theorem edgeLat_of (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : E
           lb_D (m + 1) r (algebraMap O Kf w))) :=
   edgeLat_of_G (mkG h m r (fun _ _ => 0) (fun _ _ _ _ => le_rfl)) (0 : Fin 1) e g hgE
 
+/- English proof (translation)
+Establish `hσ : ∀ (n : ℕ) (a : W), ∃ b : W, (σ ^ n) (algebraMap W Qq a) = algebraMap W Qq b`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a; exact ⟨a, by simp⟩`. Consider the case `succ n ih`.
+
+Introduce `a`. Take `⟨y, hy⟩` from `h.frob a`. Take `⟨b, hb⟩` from `ih (a ^ p + (p : W) * y)`. Conclude with `⟨b, by rw [pow_succ]; show (σ ^ n) (σ ((algebraMap W Qq) a)) = _; rw [hy, hb]⟩`. Unfold `extO colSpan`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨c, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Consider the case `zero`. Establish `h0 : twistVec ι σ s (0 : Fin (m + 1) → Qq) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[twistVec]`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `h0 : twistVec ι σ s (x + y) = twistVec ι σ s x + twistVec ι σ s y`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[twistVec]`. Rewrite using `[h0]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Take `⟨b, hb⟩` from `hσ s a`. Establish `h0 : twistVec ι σ s (a • x) = j b • twistVec ι σ s x`. Use function extensionality and compare the values at `i`. Simplify using `only [twistVec, Pi.smul_apply, Algebra.smul_def, map_mul, hb, h.ι_comp]`. Rewrite using `[h0]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `Submodule.subset_span ⟨fun i => g i c, Submodule.subset_span ⟨c, rfl⟩, rfl⟩`.
+-/
 theorem extO_col (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (s : ℕ)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) : extO O ι σ s (colSpan W g) = colSpan O (la_tw ι σ s g) := by
   have hσ : ∀ (n : ℕ) (a : W), ∃ b : W, (σ ^ n) (algebraMap W Qq a) = algebraMap W Qq b := by

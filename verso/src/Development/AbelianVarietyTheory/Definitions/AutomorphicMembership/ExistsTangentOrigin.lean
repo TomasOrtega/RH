@@ -12,12 +12,18 @@ open GlobalTheory.Cartier GlobalTheory.Cartier.CartierDiv GlobalTheory.ProjVar G
 
 namespace GlobalTheory.TrueGeo.CutModel
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]`.
+-/
 theorem valAt_algebraMap {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     (a : Z.presheaf.stalk (below y)) :
     valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
   rw [valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Use `Scheme.isLocalHom_stalkClosedPointTo' (R := K) y` as an intermediate fact. Rewrite using `[valAt_algebraMap, ← not_iff_not, not_not, ← ne_eq, ← isUnit_iff_ne_zero, isUnit_map_iff]`. Use `⟨fun h => ⟨a, h, rfl⟩, fun ⟨b, hb, e⟩ => ?_⟩` and prove the remaining obligations. Conclude with `IsFractionRing.injective _ Z.functionField e ▸ hb`.
+-/
 theorem valAt_eq_zero_iff {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     {f : Z.functionField} (h : RegAt (below y) f) : valAt y f = 0 ↔ ¬ UnitAt (below y) f := by
   obtain ⟨a, rfl⟩ := h
@@ -26,6 +32,9 @@ theorem valAt_eq_zero_iff {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (
   refine ⟨fun h => ⟨a, h, rfl⟩, fun ⟨b, hb, e⟩ => ?_⟩
   exact IsFractionRing.injective _ Z.functionField e ▸ hb
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `h'`. Rewrite using `[← map_mul, valAt_algebraMap, valAt_algebraMap, valAt_algebraMap, map_mul]`.
+-/
 theorem valAt_mul {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     {f g : Z.functionField} (h : RegAt (below y) f) (h' : RegAt (below y) g) :
     valAt y (f * g) = valAt y f * valAt y g := by
@@ -38,6 +47,15 @@ variable {F : Type} [Field F] [NumberField F] (Y : Var F) (E : Type) [Field E] [
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Take `⟨_, ⟨j, rfl⟩, g, hg, hj⟩` from `h.2 x`. Establish `hr (l) : RegAt x (w l * g)` using `hg.regularAt_iff.1 (mem_sections.1 (h.mem _ ⟨l, rfl⟩) x)`. Rewrite using `[hg.generatesAt_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, hk⟩`.
+
+Take `⟨a, ha⟩` from `hk j`. Take `⟨b, hb⟩` from `hr k`. Take `⟨u, hu, e⟩` from `hj`. Use `⟨b, isUnit_of_mul_isUnit_right (x := a) ?_, hb⟩` and prove the remaining obligations. Establish `: a * b = u` using `IsFractionRing.injective _ Y.Fn (by`.
+
+Rewrite using `[map_mul, ha, hb, e, ← mul_assoc, div_mul_cancel₀ _ h0])`. Rewrite using `[this]`. Conclude with `hu`. Introduce `hk`. Establish `h0 : w k ≠ 0` using `left_ne_zero_of_mul hk.ne_zero`.
+
+Use `⟨h0, fun l => ?_⟩` and prove the remaining obligations. Use `(hr l).mul hk.inv.regAt` as an intermediate fact. Establish `hg0 : (g : Y.Fn) ≠ 0` using `g.ne_zero`. Rewrite `this` using `[← div_eq_mul_inv, mul_div_mul_right _ _ hg0]`. Then use the resulting hypothesis.
+-/
 theorem genAt_iff {Δ : Y.Dv} (h : Y.bpf Δ (Set.range w)) (x : Y.X) (k : Fin n) :
     GenAt Y w x k ↔ Δ.GeneratesAt x (w k) := by
   obtain ⟨_, ⟨j, rfl⟩, g, hg, hj⟩ := h.2 x
@@ -60,12 +78,18 @@ theorem genAt_iff {Δ : Y.Dv} (h : Y.bpf Δ (Set.range w)) (x : Y.X) (k : Fin n)
     rwa [← div_eq_mul_inv, mul_div_mul_right _ _ hg0] at this
 
 omit [NumberField F] in
+/- English proof (translation)
+Take `⟨_, ⟨j, rfl⟩, hj⟩` from `h.2 x`. Conclude with `⟨j, (genAt_iff Y w h x j).2 hj⟩`.
+-/
 theorem exists_genAt {Δ : Y.Dv} (h : Y.bpf Δ (Set.range w)) (x : Y.X) : ∃ k, GenAt Y w x k := by
   obtain ⟨_, ⟨j, rfl⟩, hj⟩ := h.2 x
   exact ⟨j, (genAt_iff Y w h x j).2 hj⟩
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Use `⟨fun h => h k hk, fun h k' hk' i => ?_⟩` and prove the remaining obligations. Establish `e (l) : valAt y.1 (w l / w k') = valAt y.1 (w l / w k) * valAt y.1 (w k / w k')`. Rewrite using `[← valAt_mul _ (hk.2 l) (hk'.2 k)]`. Rewrite using `[div_mul_div_cancel₀ hk.1]`. Rewrite using `[Finset.sum_congr rfl fun l _ => by rw [e l, ← mul_assoc], ← Finset.sum_mul, h i, zero_mul]`.
+-/
 theorem mem_cutSet_iff (y : GeomPt Y E) {k : Fin n} (hk : GenAt Y w (below y.1) k) :
     y ∈ cutSet Y E w c ↔ ∀ i, ∑ l, coef Y E c i l * valAt y.1 (w l / w k) = 0 := by
   refine ⟨fun h => h k hk, fun h k' hk' i => ?_⟩
@@ -76,6 +100,15 @@ theorem mem_cutSet_iff (y : GeomPt Y E) {k : Fin n} (hk : GenAt Y w (below y.1) 
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `h0 : 0 ∈ {a : ℕ | ∀ y ∈ cutSet Y E w c, ∃ b ∈ IsLocalRing.maximalIdeal (Y.X.presheaf.stalk (below y.1)) ^ a, algebraMap _ Y.Fn b = f * (eqn Δ (below y.1) : Y.Fn)}` using `fun y hy => by`. Take `⟨b, hb⟩` from `(Δ.exists_isEqn (below y.1)).choose_spec.regularAt_iff.1 (hr y hy)`. Conclude with `⟨b, by simp, hb⟩`. Establish `hb : BddAbove {a : ℕ | ∀ y ∈ cutSet Y E w c, ∃ b ∈ IsLocalRing.maximalIdeal (Y.X.presheaf.stalk (below y.1)) ^ a, algebraMap _ Y.Fn b = f * (eqn Δ (below y.1) : Y.Fn)}`. Take `⟨y, hy⟩` from `hS`.
+
+Take `⟨b, -, hb⟩` from `h0 y hy`. Establish `hk` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal (Y.X.presheaf.stalk (below y.1))) (IsLocalRing.maximalIdeal.isMaximal _).ne_top`. Establish `hb0 : b ≠ 0` using `fun e => mul_ne_zero hf (Units.ne_zero _) (by rw [← hb, e, map_zero])`. Take `⟨m, hm⟩ : ∃ m, b ∉ IsLocalRing.maximalIdeal (Y.X.presheaf.stalk (below y.1)) ^ m` from `by by_contra! h`. Conclude with `hb0 (Ideal.mem_bot.1 (hk ▸ Ideal.mem_iInf.2 h))`.
+
+Use `⟨m, fun a ha => ?_⟩` and prove the remaining obligations. Use `by_contra! hlt`. Take `⟨b', hb', e⟩` from `ha y hy`. Take `rfl` from `IsFractionRing.injective _ Y.Fn (e.trans hb.symm)`. Conclude with `hm (Ideal.pow_le_pow_right hlt.le hb')`.
+
+Use `⟨fun h y hy => ?_, fun h => le_csSup hb h⟩` and prove the remaining obligations. Take `⟨b, hb', e⟩` from `Nat.sSup_mem ⟨0, h0⟩ hb y hy`. Conclude with `⟨b, Ideal.pow_le_pow_right h hb', e⟩`.
+-/
 theorem le_cutOrd_iff (hS : (cutSet Y E w c).Nonempty) (Δ : Y.Dv) {f : Y.Fn} (hf : f ≠ 0)
     (hr : ∀ y ∈ cutSet Y E w c, Δ.RegularAt (below y.1) f) (a : ℕ) :
     a ≤ cutOrd Y E w c Δ f ↔ ∀ y ∈ cutSet Y E w c,
@@ -108,6 +141,9 @@ theorem le_cutOrd_iff (hS : (cutSet Y E w c).Nonempty) (Δ : Y.Dv) {f : Y.Fn} (h
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Use `Set.Infinite.Nat.sSup_eq_zero ?_` and prove the remaining obligations. Use `Set.infinite_univ.mono fun a _ y _ => ⟨0, zero_mem _, by rw [map_zero, zero_mul]⟩` and prove the remaining obligations.
+-/
 theorem cutOrd_zero (Δ : Y.Dv) : cutOrd Y E w c Δ 0 = 0 := by
   refine Set.Infinite.Nat.sSup_eq_zero ?_
   refine Set.infinite_univ.mono fun a _ y _ => ⟨0, zero_mem _, by rw [map_zero, zero_mul]⟩
@@ -121,11 +157,17 @@ abbrev crd : Fin (N + 1) → (proj F N).Fn := (proj F N).coordFn (proj_gen_mem F
 def unitCoef (i : Fin N) (l : Fin (N + 1)) : 𝓞 E := if l = i.succ then 1 else 0
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `(genAt_iff _ _ ((proj F N).bpf_hyp _) x k).trans ((proj F N).generatesAt_coordFn_iff _ k x)`.
+-/
 theorem genAt_crd (x : (proj F N).X) (k : Fin (N + 1)) :
     GenAt (proj F N) (crd F N) x k ↔ (proj F N).ι x ∈ chart F N k :=
   (genAt_iff _ _ ((proj F N).bpf_hyp _) x k).trans ((proj F N).generatesAt_coordFn_iff _ k x)
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single i.succ]`. Simplify using `[coef, unitCoef]`. Introduce `l _ hl`. Simplify using `[coef, unitCoef, hl]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_unitCoef (i : Fin N) (v : Fin (N + 1) → AlgebraicClosure E) :
     ∑ l, coef (proj F N) E (unitCoef E N) i l * v l = v i.succ := by
   rw [Finset.sum_eq_single i.succ]
@@ -134,6 +176,13 @@ theorem sum_unitCoef (i : Fin N) (v : Fin (N + 1) → AlgebraicClosure E) :
   · simp
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : Fin (N + 1), GenAt (proj F N) (crd F N) (below y.1) k` from `exists_genAt _ _ ((proj F N).bpf_hyp (proj_gen_mem F N 0)) (below y.1)`. Use `(mem_cutSet_iff _ E _ _ y hk).trans (forall_congr' fun i : Fin N => ?_)` and prove the remaining obligations. Rewrite using `[sum_unitCoef F E N i fun l => valAt y.1 (crd F N l / crd F N k), valAt_eq_zero_iff _ (hk.2 _), ← genAt_crd]`. Use `not_congr ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h0 : crd F N (Fin.succ i) ≠ 0` using `fun e => h.ne_zero (by rw [e, zero_div])`.
+
+Use `⟨h0, fun l => ?_⟩` and prove the remaining obligations. Use `(hk.2 l).mul h.inv.regAt` as an intermediate fact. Rewrite `this` using `[inv_div, div_mul_div_cancel₀ hk.1]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `hk.2 (Fin.succ i)`. Take `⟨b, hb⟩` from `h.2 k`.
+
+Use `⟨a, IsUnit.of_mul_eq_one b (IsFractionRing.injective _ (proj F N).Fn ?_), ha⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha, hb, map_one, div_mul_div_cancel₀ hk.1, div_self h.1]`.
+-/
 theorem mem_cutSet_unit (y : GeomPt (proj F N) E) :
     y ∈ cutSet (proj F N) E (crd F N) (unitCoef E N) ↔
       ∀ i : Fin N, (proj F N).ι (below y.1) ∉ chart F N i.succ := by
@@ -155,9 +204,15 @@ theorem mem_cutSet_unit (y : GeomPt (proj F N) E) :
 def back : PSpace F N ⟶ (proj F N).X := @inv _ _ _ _ _ (isIso_proj_ι F N)
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `@IsIso.inv_hom_id _ _ _ _ _ (isIso_proj_ι F N)`.
+-/
 theorem back_ι : back F N ≫ (proj F N).ι = 𝟙 _ := @IsIso.inv_hom_id _ _ _ _ _ (isIso_proj_ι F N)
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (back_ι F N)).trans (Category.id_comp _))`.
+-/
 theorem back_str : back F N ≫ (proj F N).str = PSpace.str F N :=
   (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (back_ι F N)).trans (Category.id_comp _))
 
@@ -168,12 +223,18 @@ def ptOf (v : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) : GeomPt (proj 
       rw [back_str]; exact pt_str _ _ _⟩
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (back_ι F N)).trans (Category.comp_id _))`.
+-/
 theorem ptOf_ι (v : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) : (ptOf F E N v hv).1 ≫ (proj F N).ι =
     pt ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E)) v (span_range_eq_top_iff_ne_zero.2 hv) := by
   exact (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (back_ι F N)).trans
     (Category.comp_id _))
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Establish `h : (proj F N).ι (below (ptOf F E N v hv).1) ∈ chart F N j ↔ IsLocalRing.closedPoint (AlgebraicClosure E) ∈ ((ptOf F E N v hv).1 ≫ (proj F N).ι) ⁻¹ᵁ chart F N j` using `Iff.rfl`. Rewrite using `[h, ptOf_ι]`. Use `(SetLike.ext_iff.1 (pt_preimage_chart _ v _ j) _).trans (mem_spOpen.trans ?_)` and prove the remaining obligations. Conclude with `(IsLocalRing.notMem_maximalIdeal).trans isUnit_iff_ne_zero`.
+-/
 theorem ptOf_mem_chart (v : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) (j : Fin (N + 1)) :
     (proj F N).ι (below (ptOf F E N v hv).1) ∈ chart F N j ↔ v j ≠ 0 := by
   have h : (proj F N).ι (below (ptOf F E N v hv).1) ∈ chart F N j ↔
@@ -183,6 +244,9 @@ theorem ptOf_mem_chart (v : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) (
   exact (IsLocalRing.notMem_maximalIdeal).trans isUnit_iff_ne_zero
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Take `⟨v, hv, e⟩` from `exists_eq_pt (N := N) ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E)) (y.1 ≫ (proj F N).ι) ((Category.assoc _ _ _).trans y.2)`. Use `⟨v, span_range_eq_top_iff_ne_zero.1 hv, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (proj F N).ι, ptOf_ι]`. Conclude with `e`.
+-/
 theorem exists_ptOf (y : GeomPt (proj F N) E) : ∃ v hv, y = ptOf F E N v hv := by
   obtain ⟨v, hv, e⟩ := exists_eq_pt (N := N) ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E))
     (y.1 ≫ (proj F N).ι) ((Category.assoc _ _ _).trans y.2)
@@ -190,6 +254,9 @@ theorem exists_ptOf (y : GeomPt (proj F N) E) : ∃ v hv, y = ptOf F E N v hv :=
   rw [← cancel_mono (proj F N).ι, ptOf_ι]; exact e
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← pt_eq_pt_iff ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E)) (span_range_eq_top_iff_ne_zero.2 hv) (span_range_eq_top_iff_ne_zero.2 hv'), ← ptOf_ι F E N v hv, ← ptOf_ι F E N v' hv']`. Conclude with `Subtype.ext_iff.trans (cancel_mono _).symm`.
+-/
 theorem ptOf_eq_iff (v v' : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) (hv' : v' ≠ 0) :
     ptOf F E N v hv = ptOf F E N v' hv' ↔ ∃ u : (AlgebraicClosure E)ˣ, v' = u • v := by
   rw [← pt_eq_pt_iff ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E))
@@ -199,6 +266,13 @@ theorem ptOf_eq_iff (v v' : Fin (N + 1) → AlgebraicClosure E) (hv : v ≠ 0) (
 
 def origin : GeomPt (proj F N) E := ptOf F E N (Pi.single 0 1) (by simp)
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_cutSet_unit, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨v, hv, rfl⟩` from `exists_ptOf F E N y`.
+
+Simplify using `only [ptOf_mem_chart, not_not] at h`. Establish `h0 : v 0 ≠ 0` using `fun e => hv (funext (Fin.cases e h))`. Use `((ptOf_eq_iff F E N _ _ _ _).2 ⟨Units.mk0 _ h0, funext (Fin.cases ?_ fun i => ?_)⟩).symm` and prove the remaining obligations. Simplify using `[Units.smul_def]`. Simplify using `[Units.smul_def, h i]`.
+
+Introduce and unpack `rfl i`. Rewrite using `[origin, ptOf_mem_chart]`. Simplify using the standard rewrite rules.
+-/
 theorem cutSet_unit : cutSet (proj F N) E (crd F N) (unitCoef E N) = {origin F E N} := by
   ext y
   rw [mem_cutSet_unit, Set.mem_singleton_iff]
@@ -216,6 +290,9 @@ theorem cutSet_unit : cutSet (proj F N) E (crd F N) (unitCoef E N) = {origin F E
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Introduce `h` and use `by refine Set.infinite_of_injective_forall_mem (s := cutSet (proj F (N + 1)) E (crd F (N + 1)) 0) (f := fun t : AlgebraicClosure E => ptOf F E (N + 1) (Fin.cons 1 fun _ => t) (fun e => one_ne_zero (congrFun e 0))) (fun t t' e => ?_) (fun t k _ i => ?_) h.2.1 · obtain ⟨u, hu⟩ := ( …`.
+-/
 theorem not_cutGood_zero (bd : (proj F (N + 1)).Cl) :
     ¬ cutGood (proj F (N + 1)) E (crd F (N + 1)) 0 bd := fun h => by
   refine Set.infinite_of_injective_forall_mem (s := cutSet (proj F (N + 1)) E (crd F (N + 1)) 0)
@@ -230,6 +307,13 @@ theorem not_cutGood_zero (bd : (proj F (N + 1)).Cl) :
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (Y.ι ⁻¹ᵁ chart F Y.N i)` using `(isAffineOpen_chart F Y.N i).preimage _`. Establish `key (s : Γ(Y.X, Y.ι ⁻¹ᵁ chart F Y.N i)) : ∃ g : MvPolynomial (Fin (Y.N + 1)) F, aeval (Y.coordFn hi) g = algebraMap (Y.X.presheaf.stalk x) Y.Fn (Y.X.presheaf.germ (Y.ι ⁻¹ᵁ chart F Y.N i) x hx s)`. Take `⟨s, rfl⟩` from `Y.ι.app_surjective _ (isAffineOpen_chart F Y.N i) s`. Take `⟨g, rfl⟩` from `aeval_ratio_surjective F Y.N i s`. Establish `e` using `Y.aeval_coordFn hi g`.
+
+Rewrite `e` using `[Var.chartHom, ← LB.resG_app, fnOf_resG]`. Conclude with `⟨g, e.trans (algebraMap_germ (U := Y.ι ⁻¹ᵁ chart F Y.N i) (x := x) hx _).symm⟩`. Use `letI := Y.X.presheaf.algebra_section_stalk (⟨x, hx⟩ : (Y.ι ⁻¹ᵁ chart F Y.N i :))`. Use `hU.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Take `⟨⟨r, s⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl (S := Y.X.presheaf.stalk x) a`.
+
+Take `⟨p, hp⟩` from `key r`. Take `⟨q, hq⟩` from `key s.1`. Use `⟨p, q, ⟨_, IsLocalization.map_units (Y.X.presheaf.stalk x) s, hq.symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hq, ← map_mul]`. Conclude with `congrArg _ e`.
+-/
 theorem exists_poly_quot {F : Type} [Field F] (Y : Var F) {i : Fin (Y.N + 1)}
     (hi : Y.ι (genericPoint Y.X) ∈ chart F Y.N i) {x : Y.X} (hx : Y.ι x ∈ chart F Y.N i)
     (a : Y.X.presheaf.stalk x) : ∃ p q : MvPolynomial (Fin (Y.N + 1)) F,
@@ -255,6 +339,15 @@ theorem exists_poly_quot {F : Type} [Field F] (Y : Var F) {i : Fin (Y.N + 1)}
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `key (p : MvPolynomial (Fin (Y.N + 1)) F) : ∃ b, algebraMap _ Y.Fn b = aeval (Y.coordFn hi) p ∧ δ b = 0`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C t`. Take `⟨b, hb⟩` from `Y.regAt_algebraMap (below y.1) t`. Conclude with `⟨b, by rw [algHom_C, hb], hδ.2 b t hb⟩`.
+
+Consider the case `add p q hp hq`. Take `⟨a, ha, ha'⟩` from `hp`. Take `⟨b, hb, hb'⟩` from `hq`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb], by rw [map_add, ha', hb', add_zero]⟩`. Consider the case `mul_X p j hp`.
+
+Take `⟨a, ha, ha'⟩` from `hp`. Conclude with `⟨a * u j, by rw [map_mul, map_mul, ha, hu, aeval_X], by rw [hδ.1, ha', h, mul_zero, mul_zero, add_zero]⟩`. Use extensionality with `a`. Take `⟨p, q, ⟨b, hb, eb⟩, e⟩` from `exists_poly_quot Y hi hx a`. Take `⟨b', eb', hb'⟩` from `key q`.
+
+Take `⟨d, ed, hd⟩` from `key p`. Take `rfl` from `IsFractionRing.injective _ Y.Fn (eb.trans eb'.symm)`. Take `rfl : a * b = d` from `IsFractionRing.injective _ Y.Fn (by rw [map_mul, eb, ed, e])`. Rewrite `hd` using `[hδ.1, hb', mul_zero, zero_add]`. Conclude with `(mul_eq_zero.1 hd).resolve_left (hb.map _).ne_zero`.
+-/
 theorem tangent_eq_zero {F : Type} [Field F] [Algebra F E] (Y : Var F) {i : Fin (Y.N + 1)}
     (hi : Y.ι (genericPoint Y.X) ∈ chart F Y.N i) (y : GeomPt Y E) (hx : Y.ι (below y.1) ∈ chart F Y.N i)
     (u : Fin (Y.N + 1) → Y.X.presheaf.stalk (below y.1)) (hu : ∀ l, algebraMap _ Y.Fn (u l) = Y.coordFn hi l)
@@ -283,11 +376,21 @@ theorem tangent_eq_zero {F : Type} [Field F] [Algebra F E] (Y : Var F) {i : Fin 
   rw [hδ.1, hb', mul_zero, zero_add] at hd
   exact (mul_eq_zero.1 hd).resolve_left (hb.map _).ne_zero
 
+/- English proof (translation)
+Rewrite using `[origin, ptOf_mem_chart]`. Apply the tactic sequence `by_cases h : j = 0 <;> simp [h]`.
+-/
 theorem origin_mem_chart (j : Fin (N + 1)) :
     (proj F N).ι (below (origin F E N).1) ∈ chart F N j ↔ j = 0 := by
   rw [origin, ptOf_mem_chart]
   by_cases h : j = 0 <;> simp [h]
 
+/- English proof (translation)
+Use `⟨exists_genAt _ _ ((proj F N).bpf_hyp (proj_gen_mem F N 0)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cutSet_unit]`. Conclude with `Set.finite_singleton _`. Rewrite using `[cutSet_unit]`. Introduce and unpack `_ rfl`.
+
+Establish `h0` using `(origin_mem_chart F E N 0).2 rfl`. Use `⟨fun k hk u hu δ hδ h => ?_, fun h => ((proj F N).mem_supp_hyp _ _).1 h h0⟩` and prove the remaining obligations. Take `rfl` from `(origin_mem_chart F E N k).1 ((genAt_crd F N _ k).1 hk)`. Establish `e1 : crd F N 0 = 1` using `(proj F N).coordFn_self _`. Simplify using `only [e1, div_one] at hu`.
+
+Use `tangent_eq_zero E (proj F N) (proj_gen_mem F N 0) _ h0 u hu δ hδ (Fin.cases ?_ fun i => ?_)` and prove the remaining obligations. Conclude with `hδ.2 _ 1 (by rw [map_one]; exact (hu 0).trans e1)`. Conclude with `(sum_unitCoef F E N i fun l => δ (u l)).symm.trans (h i)`.
+-/
 theorem cutGood_unit : cutGood (proj F N) E (crd F N) (unitCoef E N) ((proj F N).supp (projHyp F N)) := by
   refine ⟨exists_genAt _ _ ((proj F N).bpf_hyp (proj_gen_mem F N 0)), ?_, ?_⟩
   · rw [cutSet_unit]; exact Set.finite_singleton _
@@ -302,15 +405,26 @@ theorem cutGood_unit : cutGood (proj F N) E (crd F N) (unitCoef E N) ((proj F N)
     · exact hδ.2 _ 1 (by rw [map_one]; exact (hu 0).trans e1)
     · exact (sum_unitCoef F E N i fun l => δ (u l)).symm.trans (h i)
 
+/- English proof (translation)
+Introduce `h` and use `(h.2.2 (origin F E N) (by rw [cutSet_unit]; rfl)).2 trivial`.
+-/
 theorem not_cutGood_unit_top : ¬ cutGood (proj F N) E (crd F N) (unitCoef E N) ⊤ := fun h =>
   (h.2.2 (origin F E N) (by rw [cutSet_unit]; rfl)).2 trivial
 
+/- English proof (translation)
+Unfold `cutHt`. Rewrite using `[cutSet_unit]`. Conclude with `finsum_mem_singleton`.
+-/
 theorem cutHt_unit {C : CxSt F} (A : Adl C (proj F N)) :
     cutHt (proj F N) E (crd F N) (unitCoef E N) A = A.ht (below (origin F E N).1) := by
   unfold cutHt
   rw [cutSet_unit]
   exact finsum_mem_singleton
 
+/- English proof (translation)
+Establish `hg` using `((proj F N).generatesAt_coordFn_iff (proj_gen_mem F N 0) j _).2 (proj_gen_mem F N j)`. Establish `hr (x) : (projHyp F N).RegularAt x (crd F N j)` using `Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 ((proj F N).coordFn_mem (proj_gen_mem F N 0) j) x`. Use `(le_cutOrd_iff (proj F N) E (crd F N) (unitCoef E N) (by rw [cutSet_unit]; exact Set.singleton_nonempty _) _ hg.ne_zero (fun y _ => hr _) 1).trans ?_` and prove the remaining obligations. Rewrite using `[cutSet_unit]`. Simplify using `only [Set.mem_singleton_iff, forall_eq]`.
+
+Rewrite using `[pow_one, ne_eq, ← origin_mem_chart F E N j]`. Use `((projHyp F N).exists_isEqn _).choose_spec.vanishesAt_iff.symm.trans (vanishesAt_iff.trans ?_)` and prove the remaining obligations. Conclude with `(and_iff_right (hr _)).trans (not_congr ((proj F N).generatesAt_coordFn_iff (proj_gen_mem F N 0) j _))`.
+-/
 theorem one_le_cutOrd_iff (j : Fin (N + 1)) :
     1 ≤ cutOrd (proj F N) E (crd F N) (unitCoef E N) (projHyp F N) (crd F N j) ↔ j ≠ 0 := by
   have hg := ((proj F N).generatesAt_coordFn_iff (proj_gen_mem F N 0) j _).2 (proj_gen_mem F N j)
@@ -327,6 +441,19 @@ theorem one_le_cutOrd_iff (j : Fin (N + 1)) :
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `h1 (x : Y.X) (hx : z (IsLocalRing.closedPoint _) = x) : ∃ φ : Y.X.presheaf.stalk x →+* DualNumber (AlgebraicClosure E), spMap φ ≫ Y.X.fromSpecStalk x = z`. Substitute `hx` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of _) z⟩`. Take `⟨φ, hφ⟩` from `h1 (below y.1) (by`. Rewrite using `[← hy]`.
+
+Establish `: IsLocalHom (TrivSqZeroExt.fstHom (AlgebraicClosure E) (AlgebraicClosure E) (AlgebraicClosure E)).toRingHom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Establish `e` using `IsLocalRing.comap_closedPoint (TrivSqZeroExt.fstHom (AlgebraicClosure E) (AlgebraicClosure E) (AlgebraicClosure E)).toRingHom`. Conclude with `congrArg z e.symm)`. Establish `hy'` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of _) y.1`. Establish `hev : (TrivSqZeroExt.fstHom (AlgebraicClosure E) _ _).toRingHom.comp φ = (Scheme.stalkClosedPointTo y.1).hom`.
+
+Establish `e` using `hy.trans hy'.symm`. Rewrite `e` using `[← hφ, ← Category.assoc, ← Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e))`. Establish `hev' (a) : (Scheme.stalkClosedPointTo y.1).hom a = (φ a).fst` using `(RingHom.congr_fun hev a).symm`. Use `⟨((TrivSqZeroExt.sndHom _ _).toAddMonoidHom).comp φ.toAddMonoidHom, ⟨fun a b => ?_, fun a t h => ?_⟩, fun h0 => hne ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(φ (a * b)).snd = _ * (φ b).snd + _ * (φ a).snd`. Rewrite using `[map_mul, DualNumber.snd_mul, hev', hev', mul_comm (φ a).snd]`. Establish `e : Y.X.fromSpecStalk (below y.1) ≫ Y.str = Spec.map ((Scheme.ΓSpecIso (.of F)).inv ≫ Y.str.appTop ≫ Y.X.presheaf.germ ⊤ (below y.1) trivial)`. Rewrite using `[Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Rewrite `hz` using `[← hφ, Category.assoc, e, ← Spec.map_comp]`.
+
+Establish `e'` using `RingHom.congr_fun (congrArg CommRingCat.Hom.hom (Spec.map_injective hz)) t`. Establish `ea : a = Y.X.presheaf.germ ⊤ (below y.1) trivial (algebraMap F Γ(Y.X, ⊤) t)` using `IsFractionRing.injective _ Y.Fn (h.trans ((IsScalarTower.algebraMap_apply F Γ(Y.X, ⊤) Y.Fn t).trans (algebraMap_germ (U := ⊤) (x := below y.1) trivial _).symm))`. Express the relevant statement in the definitionally equal form `(φ a).snd = 0`. Rewrite using `[ea]`. Conclude with `(congrArg TrivSqZeroExt.snd e').trans (TrivSqZeroExt.snd_inl _ _)`.
+
+Rewrite using `[← hy', ← Category.assoc, ← Spec.map_comp]`. Use `Eq.trans (congrArg (fun ψ => spMap ψ ≫ _) (RingHom.ext fun a => ?_)) hφ` and prove the remaining obligations. Establish `: (φ a).snd = 0` using `DFunLike.congr_fun h0 a`. Conclude with `TrivSqZeroExt.ext (hev' a) this.symm`.
+-/
 theorem exists_tangent {F : Type} [Field F] [Algebra F E] (Y : Var F) (y : GeomPt Y E)
     (z : Sp (DualNumber (AlgebraicClosure E)) ⟶ Y.X)
     (hz : z ≫ Y.str = spMap ((algebraMap _ (DualNumber (AlgebraicClosure E))).comp
@@ -373,6 +500,13 @@ theorem exists_tangent {F : Type} [Field F] [Algebra F E] (Y : Var F) (y : GeomP
     have : (φ a).snd = 0 := DFunLike.congr_fun h0 a
     exact TrivSqZeroExt.ext (hev' a) this.symm
 
+/- English proof (translation)
+Establish `hv : Ideal.span (Set.range (![1, DualNumber.eps] : Fin 2 → DualNumber (AlgebraicClosure E))) = ⊤` using `(Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨0, rfl⟩)`. Use `exists_tangent E _ _ (pt (N := 1) ((algebraMap _ (DualNumber (AlgebraicClosure E))).comp ((algebraMap E (AlgebraicClosure E)).comp (algebraMap F E))) _ hv ≫ back F 1) ?_ ?_ fun h => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, back_str]`. Conclude with `pt_str _ _ _`. Rewrite using `[← Category.assoc, spMap_pt]`.
+
+Use `congrArg (· ≫ back F 1) ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Establish `h'` using `congrArg (· ≫ (proj F 1).ι) h`.
+
+Simplify using `only [Category.assoc] at h'`. Rewrite `h'` using `[origin, ptOf_ι, back_ι]`. Take `⟨u, hu⟩` from `(pt_eq_pt_iff _ _ _).1 ((spMap_pt _ _ _ _).symm.trans (h'.trans (Category.comp_id _)))`. Establish `h1` using `congrArg TrivSqZeroExt.snd (congrFun hu 1)`. Simplify using `[Units.smul_def] at h1`.
+-/
 theorem exists_tangent_origin : ∃ δ, IsTangent (proj F 1) E (origin F E 1) δ ∧ δ ≠ 0 := by
   have hv : Ideal.span (Set.range (![1, DualNumber.eps] : Fin 2 → DualNumber (AlgebraicClosure E))) = ⊤ :=
     (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨0, rfl⟩)
@@ -391,6 +525,9 @@ theorem exists_tangent_origin : ∃ δ, IsTangent (proj F 1) E (origin F E 1) δ
     have h1 := congrArg TrivSqZeroExt.snd (congrFun hu 1)
     simp [Units.smul_def] at h1
 
+/- English proof (translation)
+Introduce `h` and use `by have h0 := (origin_mem_chart F E 1 0).2 rfl have e1 : crd F 1 0 = 1 := (proj F 1).coordFn_self _ have hg := (genAt_crd F 1 _ 0).2 h0 obtain ⟨u, hu⟩ := hg.2 1 have hm := (mem_cutSet_iff (proj F 1) E (crd F 1) (unitCoef E 1) _ hg).1 (by rw [cutSet_unit]; rfl) (0 : Fin 1) rw [sum …`.
+-/
 theorem not_cutGood_double (bd : (proj F 1).Cl) :
     ¬ cutGood (proj F 1) E ![1, crd F 1 1, crd F 1 1 ^ 2] (fun _ => ![0, 0, 1]) bd := fun h => by
   have h0 := (origin_mem_chart F E 1 0).2 rfl
@@ -418,6 +555,11 @@ end Proj
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `hg (x : Y.X) : GenAt Y ![1] x 0` using `⟨one_ne_zero, fun l => ⟨1, by fin_cases l; simp⟩⟩`. Establish `e : cutSet Y E ![1] (fun _ _ => 1) = ∅` using `Set.eq_empty_of_forall_notMem fun y hy => by`. Establish `h` using `hy 0 (hg _) ⟨0, hd⟩`. Establish `h1` using `valAt_algebraMap y.1 1`. Rewrite `h1` using `[map_one, map_one]`.
+
+Simplify using `[coef, h1] at h`. Use `⟨e, ⟨fun x => ⟨0, hg x⟩, by rw [e]; exact Set.finite_empty, by rw [e]; exact fun _ h => h.elim⟩, ?_⟩` and prove the remaining obligations. Use `Set.Infinite.Nat.sSup_eq_zero (Set.infinite_univ.mono fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `fun _ h => h.elim`.
+-/
 theorem cutGood_empty (hd : 1 ≤ Y.dim) (bd : Y.Cl) (Δ : Y.Dv) (f : Y.Fn) :
     cutSet Y E ![1] (fun _ _ => 1) = ∅ ∧ cutGood Y E ![1] (fun _ _ => 1) bd ∧
       cutOrd Y E ![1] (fun _ _ => 1) Δ f = 0 := by

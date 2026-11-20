@@ -16,6 +16,9 @@ namespace GlobalTheory.HeightCounting.Up.ChoiceEx
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.TwistChoice
 
+/- English proof (translation)
+Introduce `x` and use `by have h2 : IsIntegral ℤ (star ((x : ↥D.LL0) : D.what₂.LL)) := IsIntegral.map_of_comp_eq (RingHom.id ℤ) ((starRingEnd D.what₂.LL).comp (algebraMap ↥D.LL0 D.what₂.LL)) (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe x) let y : 𝓞 ↥D.LL0 := ⟨⟨_, hs x⟩, (isIntegral_algebraMap_i …`.
+-/
 theorem readsAt_conj {D : D7} (hs : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) {i : D.ntw.Tw} {b : Bool} {w : D.what₂.places.Pl}
     (h : ReadsAt i b w) : ReadsAt i (!b) (D.what₂.places.conj w) := fun x => by
   have h2 : IsIntegral ℤ (star ((x : ↥D.LL0) : D.what₂.LL)) :=
@@ -26,6 +29,11 @@ theorem readsAt_conj {D : D7} (hs : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D
   rw [sideEmb_not i b hy, D.conj_val, ← hy]
   exact h y
 
+/- English proof (translation)
+Use `choose t _ ht using hc`. Establish `hr : ∀ w, ReadsAt (t w) true w` using `fun w x => Formalism.L2.emb0_mem_maximalIdeal_iff_val_pos_of_sidePl D w (t w) (ht w) (x : D.LL0)`. Take `⟨o, ho⟩` from `exists_orbitRep (D := D)`. Use `⟨fun v => t (o v), fun v => ?_, fun v => by simp only [(ho v).2]⟩` and prove the remaining obligations. Break down `(ho v).1 with h | h` into its components or cases.
+
+Conclude with `⟨true, by simpa only [h] using hr v⟩`. Establish `h1` using `readsAt_conj hs (hr (D.what₂.places.conj v))`. Rewrite `h1` using `[D.what₂.places.conj_conj]`. Conclude with `⟨_, by simpa only [h] using h1⟩`.
+-/
 theorem exists_settings_conj {D : D7} (hs : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (hc : ∀ w : D.what₂.places.Pl, ∃ i, D.ntw.l i = D.what₂.places.resChar w ∧ GlobalTheory.HeightCounting.SidePl D w i true) :
     ∃ s : D.what₂.places.Pl → D.ntw.Tw, (∀ v, ∃ b, ReadsAt (s v) b v) ∧ ∀ v, s (D.what₂.places.conj v) = s v := by
@@ -39,12 +47,18 @@ theorem exists_settings_conj {D : D7} (hs : ∀ x : D.LL0, star (x : D.what₂.L
     rw [D.what₂.places.conj_conj] at h1
     exact ⟨_, by simpa only [h] using h1⟩
 
+/- English proof (translation)
+The claim follows from `StepW.trans h (StepW.of_all fun _ _ _ _ _ _ _ H P x l => by obtain ⟨s, h1, h2⟩ := exists_settings_conj (D := Dof x) l.a.elem.star l.b.Bs.cover obtain ⟨c, -⟩ := H P x l s h1 h2 exact ⟨c⟩)`.
+-/
 theorem sc_of_sck {hL : GlobalTheory.Published.LocalLanglandsGL} (h : SCk hL) : SC hL :=
   StepW.trans h (StepW.of_all fun _ _ _ _ _ _ _ H P x l => by
     obtain ⟨s, h1, h2⟩ := exists_settings_conj (D := Dof x) l.a.elem.star l.b.Bs.cover
     obtain ⟨c, -⟩ := H P x l s h1 h2
     exact ⟨c⟩)
 
+/- English proof (translation)
+Introduce `hCo hCW hHM a b hL` and use `sc_of_sck (GlobalTheory.T.statement_c_of_casselman_wallach hCo hCW hHM a b hL)`.
+-/
 theorem choices_exist : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, SC hL :=
   fun hCo hCW hHM a b hL => sc_of_sck (GlobalTheory.T.statement_c_of_casselman_wallach hCo hCW hHM a b hL)
 

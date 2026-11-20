@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MeetOfSteps
 
 namespace PositivityTheory.jumpWindows
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.ClosedInvariantMeet.meet_of_steps`.
+-/
 theorem meet_of : S2 → MirabolicColumnBlock → G0 → G1 → AlmostEverywhereSpherical → G2a → G2b → G2c → G5 → G5b → FourierInductionSteps → G8 → StandardCharacterExists → WhittakerVanishingImpliesZero → Meet :=
   GlobalTheory.CompanionTheory.ClosedInvariantMeet.meet_of_steps
 

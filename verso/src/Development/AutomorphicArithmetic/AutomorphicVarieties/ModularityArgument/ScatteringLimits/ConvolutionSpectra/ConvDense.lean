@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `z` and use `by have c1 : ∀ w : ℂ, Continuous fun t : ℝ => Complex.exp (w * t) • κ t := fun w => (Complex.continuous_exp.comp (continuous_const.mul Complex.continuous_ofReal)).smul hk.1 have c2 : Continuous fun t : ℝ => (Complex.exp (z * t) * t) • κ t := ((Complex.continuous_exp.comp (continu …`.
+-/
 private theorem symb_diff {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V]
     (κ : ℝ → V →L[ℂ] V) (hk : Ker κ) : Differentiable ℂ (symb κ) := fun z => by
   have c1 : ∀ w : ℂ, Continuous fun t : ℝ => Complex.exp (w * t) • κ t := fun w =>
@@ -33,6 +36,25 @@ private theorem symb_diff {V : Type} [NormedAddCommGroup V] [InnerProductSpace �
     linarith
   · simpa using (((hasDerivAt_id w).mul_const (t : ℂ)).cexp).smul_const (κ t)
 
+/- English proof (translation)
+Introduce `V _ _ _ _ β hk hu`. Take `⟨k1, k2, k3⟩` from `convAdj β hk`. Set `D : ℂ → ℂ` to `fun z => LinearMap.det (symb (sharp β) z : V →ₗ[ℂ] V)`. Establish `hD : Differentiable ℂ D`. Set `b` to `Module.finBasis ℂ V`.
+
+Establish `e : D = fun z => ∑ s : Equiv.Perm (Fin (Module.finrank ℂ V)), ((Equiv.Perm.sign s : ℤ) : ℂ) * ∏ i, (b.coord (s i)).toContinuousLinearMap (symb (sharp β) z (b i))`. Use function extensionality and compare the values at `z`. Simplify using `only [D]`. Rewrite using `[← LinearMap.det_toMatrix b, Matrix.det_apply']`. Simplify using `[LinearMap.toMatrix_apply]`.
+
+Rewrite using `[e]`. Use `Differentiable.fun_sum fun s _ => (differentiable_const _).mul (Differentiable.fun_finset_prod fun i _ => ?_)` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.differentiable _).comp ((symb_diff _ k1).clm_apply (differentiable_const _))`. Establish `h0 : D 0 ≠ 0`. Establish `: IsUnit (symb (sharp β) 0)`.
+
+Rewrite using `[k3, map_zero, neg_zero]`. Conclude with `hu.star`. Conclude with `((LinearMap.isUnit_iff_isUnit_det _).1 ((Module.End.isUnit_iff _).2 (ContinuousLinearMap.isUnit_iff_bijective.1 this))).ne_zero`. Set `g : ℝ → ℂ` to `fun ξ => D (2 * Real.pi * Complex.I * ξ)`. Establish `ga : AnalyticOnNhd ℝ g univ` using `fun ξ _ => by`.
+
+Establish `h1 : AnalyticAt ℝ (fun ξ : ℝ => (2 * Real.pi * Complex.I * ξ : ℂ)) ξ` using `analyticAt_const.mul (Complex.ofRealCLM.analyticAt ξ)`. Conclude with `(hD.analyticAt _).restrictScalars.comp h1`. Establish `gz : ∀ᵐ ξ : ℝ, g ξ ≠ 0`. Establish `h1` using `ga.preimage_zero_mem_codiscreteWithin (x := 0) (by simpa [g] using h0) trivial isConnected_univ`. Establish `h2` using `ae_restrict_le_codiscreteWithin (μ := (volume : Measure ℝ)) MeasurableSet.univ h1`.
+
+Rewrite `h2` using `[Measure.restrict_univ]`. Conclude with `h2`. Establish `inj : ∀ y : L V, conv (sharp β) y = 0 → y = 0` using `fun y hy => by`. Rewrite using `[← (Lp.fourierTransformₗᵢ ℝ V).map_eq_zero_iff]`. Use `Lp.ext ?_` and prove the remaining obligations.
+
+Establish `h1` using `fourConv (sharp β) k1 y`. Rewrite `h1` using `[hy, map_zero]`. Use `filter_upwards [h1, gz, Lp.coeFn_zero V 2 (volume : Measure ℝ)] with ξ a b c`. Rewrite `a`, the goal using `[c]`. Use `((Module.End.isUnit_iff _).1 ((LinearMap.isUnit_iff_isUnit_det _).2 (Ne.isUnit b))).1` as an intermediate fact.
+
+Conclude with `this (a₁ := _) (a₂ := 0) (a.symm.trans (map_zero _).symm)`. Establish `bot : (LinearMap.range (conv β : L V →ₗ[ℂ] L V))ᗮ = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `y hy`. Use `inj y (ext_inner_left ℂ fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← k2, ContinuousLinearMap.adjoint_inner_right, inner_zero_right]`. Conclude with `hy _ ⟨x, rfl⟩`. Conclude with `Submodule.dense_iff_topologicalClosure_eq_top.2 (Submodule.topologicalClosure_eq_top_iff.2 bot)`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.convDense :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (β : ℝ → V →L[ℂ] V), Ker β → IsUnit (symb β 0) → DenseRange (conv β) := by
   intro V _ _ _ _ β hk hu

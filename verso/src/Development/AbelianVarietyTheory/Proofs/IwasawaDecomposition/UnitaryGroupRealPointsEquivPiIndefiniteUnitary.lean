@@ -19,11 +19,17 @@ def lift (e : S ≃+* (I → ℂ)) (m : I → Matrix (Fin M) (Fin M) ℂ) : Matr
 
 variable {e : S ≃+* (I → ℂ)} {θ : I → (S →+* ℂ)}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[lift, ← he]`.
+-/
 theorem lift_map (he : ∀ x i, e x i = θ i x) (m : I → Matrix (Fin M) (Fin M) ℂ) (i : I) :
     (lift e m).map (θ i) = m i := by
   ext a b
   simp [lift, ← he]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[he, he]`. Conclude with `congrFun (congrFun (h i) a) b`.
+-/
 theorem ext_map (he : ∀ x i, e x i = θ i x) {X Y : Matrix (Fin M) (Fin M) S}
     (h : ∀ i, X.map (θ i) = Y.map (θ i)) : X = Y := by
   ext a b
@@ -32,23 +38,35 @@ theorem ext_map (he : ∀ x i, e x i = θ i x) {X Y : Matrix (Fin M) (Fin M) S}
   rw [he, he]
   exact congrFun (congrFun (h i) a) b
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Formalism.UG.cT, hs]`.
+-/
 theorem cT_map {s : S →+* S} {t : S →+* ℂ} (hs : ∀ x, t (s x) = star (t x))
     (X : Matrix (Fin M) (Fin M) S) : (Formalism.UG.cT s X).map t = (X.map t)ᴴ := by
   ext a b
   simp [Formalism.UG.cT, hs]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mul {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] {A : Matrix m n ℂ}
     {B : Matrix n m ℂ} (hBA : B * A = 1) (X Y : Matrix n n ℂ) :
     A * X * B * (A * Y * B) = A * (X * Y) * B := by
   calc A * X * B * (A * Y * B) = A * X * (B * A) * Y * B := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [hBA]; simp only [Matrix.mul_assoc, Matrix.mul_one]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_conj {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] {A : Matrix m n ℂ}
     {B : Matrix n m ℂ} (hBA : B * A = 1) (X : Matrix n n ℂ) :
     B * (A * X * B) * A = X := by
   calc B * (A * X * B) * A = (B * A) * X * (B * A) := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [hBA]; simp
 
+/- English proof (translation)
+Rewrite using `[← hK]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [hBA, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hX]`.
+-/
 theorem conj_unitary {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] {A : Matrix m n ℂ}
     {B : Matrix n m ℂ} (hBA : B * A = 1) {G X : Matrix n n ℂ} {K : Matrix m m ℂ}
     (hK : Bᴴ * G * B = K) (hX : Xᴴ * G * X = G) :
@@ -59,6 +77,35 @@ theorem conj_unitary {m n : Type} [Fintype m] [Fintype n] [DecidableEq n] {A : M
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [hBA, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hX]
 
+/- English proof (translation)
+Establish `hB : ∀ i, (B i)ᴴ * J.map (θ i) * B i = Formalism.UG.Jpq (P i) (Q i)`. Introduce `i`. Rewrite using `[← hA]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hAB]; simp`. Establish `hone : ∀ i, (1 : Matrix (Fin M) (Fin M) S).map (θ i) = 1` using `fun i => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hθ : ∀ i, Continuous (θ i)` using `fun i => by`. Establish `: (θ i : S → ℂ) = fun x => e x i` using `funext fun x => (he x i).symm`. Rewrite using `[this]`.
+
+Conclude with `(continuous_apply i).comp hc`. Establish `hfw : ∀ (h : Formalism.UG.UJ s J) (i : I), ∃ g : UpqT (P i) (Q i), UpqT.mat g = A i * h.1.1.map (θ i) * B i`. Introduce `h i`. Establish `hh : Formalism.UG.cT s h.1.1 * J * h.1.1 = J` using `h.2`. Establish `h2` using `congrArg (fun X => Matrix.map X (θ i)) hh`.
+
+Simplify using `only [Matrix.map_mul, cT_map (fun x => hs x i)] at h2`. Establish `: A i * h.1.1.map (θ i) * B i ∈ Set.range (UpqT.mat (P` using `P i) (Q := Q i)) := by`. Rewrite using `[GlobalTheory.UpqTopology.range_mat]`. Conclude with `conj_unitary (hBA i) (hB i) h2`. Conclude with `this`.
+
+Use `choose fw hfw using hfw`. Establish `hmul : ∀ {p q : ℕ} (a b : UpqT p q), UpqT.mat (a * b) = UpqT.mat a * UpqT.mat b` using `fun _ _ => rfl`. Establish `hm1 : ∀ {p q : ℕ}, UpqT.mat (1 : UpqT p q) = 1` using `rfl`. Establish `hinj : ∀ (p q : ℕ), Function.Injective (UpqT.mat (P` using `p) (Q := q)) := fun _ _ => GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective`. Set `L : (∀ i, UpqT (P i) (Q i)) → Matrix (Fin M) (Fin M) S` to `fun g => lift e fun i => B i * UpqT.mat (g i) * A i`.
+
+Establish `hL : ∀ g i, (L g).map (θ i) = B i * UpqT.mat (g i) * A i` using `fun g i => lift_map he _ i`. Establish `hLmul : ∀ g g', L g * L g' = L (g * g')`. Introduce `g g'`. Use `ext_map he fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hL, hL, hL, conj_mul (hAB i), Pi.mul_apply, hmul]`.
+
+Establish `hL1 : L 1 = 1`. Use `ext_map he fun i => ?_` and prove the remaining obligations. Rewrite using `[hL, Pi.one_apply, hm1, Matrix.mul_one, hBA, hone]`. Establish `hLu : ∀ g, Formalism.UG.cT s (L g) * J * L g = J`. Introduce `g`.
+
+Use `ext_map he fun i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map (fun x => hs x i), hL]`. Conclude with `conj_unitary (hAB i) (hA i) (GlobalTheory.UpqTopology.mat_unitary (g i))`. Establish `hLc : Continuous L`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations.
+
+Use `hc'.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Establish `: Continuous fun g : ∀ i, UpqT (P i) (Q i) => B i * UpqT.mat (g i) * A i` using `(continuous_const.matrix_mul (GlobalTheory.UpqTopology.continuous_mat.comp (continuous_apply i))).matrix_mul continuous_const`. Conclude with `this.matrix_elem a b`. Set `bw : (∀ i, UpqT (P i) (Q i)) → Formalism.UG.UJ s J` to `fun g => ⟨⟨L g, L g⁻¹, by rw [hLmul, mul_inv_cancel, hL1], by rw [hLmul, inv_mul_cancel, hL1]⟩, hLu g⟩`. Use `haveI : ∀ i, IsTopologicalGroup (UpqT (P i) (Q i)) := fun i => (GlobalTheory.UpqTopology.upq_lcsc _ _).1`.
+
+Use `⟨ { toFun := fw invFun := bw left_inv := fun h => ?_ right_inv := fun g => ?_ map_mul' := fun h h' => ?_ continuous_toFun := ?_ continuous_invFun := ?_ }, fun h i => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext (ext_map he fun i => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(L (fw h)).map (θ i) = _`. Rewrite using `[hL, hfw, conj_conj (hBA i)]`. Use function extensionality and compare the values at `i`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[hfw]`. Express the relevant statement in the definitionally equal form `A i * (L g).map (θ i) * B i = _`. Rewrite using `[hL, conj_conj (hAB i)]`. Use function extensionality and compare the values at `i`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[Pi.mul_apply, hmul, hfw, hfw, hfw, conj_mul (hBA i), ← Matrix.map_mul]`. Both sides reduce to the same expression. Use `continuous_pi fun i => GlobalTheory.UpqTopology.isInducing_mat.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: (UpqT.mat ∘ fun h => fw h i) = fun h : Formalism.UG.UJ s J => A i * h.1.1.map (θ i) * B i`.
+
+Use function extensionality and compare the values at `fun h => hfw h i`. Rewrite using `[this]`. Conclude with `(continuous_const.matrix_mul ((Units.continuous_val.comp continuous_subtype_val).matrix_map (hθ i))).matrix_mul continuous_const`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨hLc, hLc.comp continuous_inv⟩) _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UpqT.mat (fw h i) * A i = _`.
+
+Rewrite using `[hfw, Matrix.mul_assoc, hBA, Matrix.mul_one]`.
+-/
 theorem exists_equiv [TopologicalSpace S] (he : ∀ x i, e x i = θ i x) (hc : Continuous e)
     (hc' : Continuous e.symm) (s : S →+* S) (hs : ∀ x i, θ i (s x) = star (θ i x))
     (J : Matrix (Fin M) (Fin M) S) (P Q : I → ℕ)
@@ -154,6 +201,11 @@ theorem exists_equiv [TopologicalSpace S] (he : ∀ x i, e x i = θ i x) (hc : C
 
 end General
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J I _ τ θ P Q A hcm hfam hθ hsig hA`. Take `⟨e, he, hc, hc', hs⟩` from `GlobalTheory.T.exists_archAdeleTensor_equiv_complex_cmType F E σ I τ θ hcm hfam hθ`. Use `choose B hAB hBA using fun i => (GlobalTheory.Mem.SignatureFactor.exists_factor M (P i) (Q i) _ (hsig i)).2.2 (A i) (hA i)`. Use `exists_equiv he hc hc' (sigR (Ainf F) σ) (fun x i => by rw [← he, ← he, hs]) (JR (Ainf F) J) P Q A B hAB hBA fun i => ?_` and prove the remaining obligations. Rewrite using `[hA]`.
+
+Use extensionality with `a b`. Conclude with `((hθ i).1 (J a b)).symm`.
+-/
 theorem real_points : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (I : Type) [Fintype I] (τ : I → (E →+* ℂ)) (θ : I → (Ainf F ⊗[F] E →+* ℂ)) (P Q : I → ℕ) (A : ∀ i, Matrix (Fin (P i) ⊕ Fin (Q i)) (Fin M) ℂ), IsCMExt F E σ → IsCMFam τ → (∀ i, IsInfEmb (τ i) (θ i)) → (∀ i, Formalism.UG.HasSignature (J.map (τ i)) (P i) (Q i)) → (∀ i, (A i)ᴴ * Formalism.UG.Jpq (P i) (Q i) * A i = J.map (τ i)) → ∃ e : HA (Ainf F) σ J ≃ₜ* (∀ i, UpqT (P i) (Q i)), ∀ h i, UpqT.mat (e h i) * A i = A i * ((HA.mat (Ainf F) σ J h : GL (Fin M) (Ainf F ⊗[F] E)) : Matrix (Fin M) (Fin M) (Ainf F ⊗[F] E)).map (θ i) := by
   intro F E _ _ _ _ _ σ M J I _ τ θ P Q A hcm hfam hθ hsig hA
   obtain ⟨e, he, hc, hc', hs⟩ := GlobalTheory.T.exists_archAdeleTensor_equiv_complex_cmType F E σ I τ θ hcm hfam hθ

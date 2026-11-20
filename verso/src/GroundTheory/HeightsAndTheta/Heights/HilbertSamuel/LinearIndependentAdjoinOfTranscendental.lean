@@ -7,6 +7,13 @@ namespace TranscRatioDeg
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hR : ∀ x, x ∈ Algebra.adjoin ℤ (Set.range u) ↔ x ∈ Subring.closure (Set.range u)` using `fun x => by`. Rewrite using `[Algebra.adjoin_int]`. Both sides reduce to the same expression. Use `set R := Algebra.adjoin ℤ (Set.range u)`. Use `set Q := Subfield.closure (Set.range u)`.
+
+Establish `hmem : ∀ x : R, (x : E) ∈ Q` using `fun x => Subfield.subring_closure_le _ ((hR x).1 x.2)`. Set `_ : Algebra R Q` to `RingHom.toAlgebra { toFun := fun x => ⟨x.1, hmem x⟩, map_one' := rfl, map_mul' := fun _ _ => rfl, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `: IsScalarTower R Q E` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `: FaithfulSMul R Q` using `(faithfulSMul_iff_algebraMap_injective R Q).2 (fun a b h => Subtype.ext (congrArg Subtype.val h :))`. Establish `: IsFractionRing R Q` using `IsFractionRing.of_field R Q (fun z => by`.
+
+Take `⟨y, hy, z', hz', h⟩` from `Subfield.mem_closure_iff.1 z.2`. Conclude with `⟨⟨y, (hR y).2 hy⟩, ⟨z', (hR z').2 hz'⟩, Subtype.ext (by rw [Subfield.coe_div]; exact h.symm)⟩)`. Introduce `halg`. Conclude with `ht ((IsFractionRing.isAlgebraic_iff R Q E).2 halg)`.
+-/
 theorem transcendental_subfieldClosure {E : Type*} [Field E] {ι : Type*} (u : ι → E) (t : E)
     (ht : Transcendental (Algebra.adjoin ℤ (Set.range u)) t) :
     Transcendental (Subfield.closure (Set.range u)) t := by
@@ -27,6 +34,11 @@ theorem transcendental_subfieldClosure {E : Type*} [Field E] {ι : Type*} (u : �
   intro halg
   exact ht ((IsFractionRing.isAlgebraic_iff R Q E).2 halg)
 
+/- English proof (translation)
+Introduce and unpack `⟨p, hp0, hp⟩`. Set `φ : S →+* Q` to `(algebraMap S E).codRestrict Q h`. Establish `hφ : Function.Injective φ` using `fun a b hab => hinj (congrArg Subtype.val hab :)`. Use `ht ⟨p.map φ, (Polynomial.map_ne_zero_iff hφ).2 hp0, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_map]`.
+
+Conclude with `hp`.
+-/
 theorem transcendental_of_subfield {E : Type*} [Field E] {S : Type*} [CommRing S] [Algebra S E]
     (Q : Subfield E) (h : ∀ x : S, algebraMap S E x ∈ Q) (hinj : Function.Injective (algebraMap S E))
     {t : E} (ht : Transcendental Q t) : Transcendental S t := by
@@ -39,6 +51,21 @@ theorem transcendental_of_subfield {E : Type*} [Field E] {S : Type*} [CommRing S
 
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
+/- English proof (translation)
+Use `(LinearIndependent.iff_fractionRing (Algebra.adjoin K {t}) (IntermediateField.adjoin K {t})).1 ?_` and prove the remaining obligations. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `hp : ∀ j, ∃ p : K[X], aeval t p = (g j : E)` using `fun j => by`. Establish `h : (g j : E) ∈ (aeval t : K[X] →ₐ[K] E).range`.
+
+Rewrite using `[← Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `(g j).2`. Take `⟨p, hp⟩` from `h`. Conclude with `⟨p, hp⟩`. Use `choose p hp using hp`.
+
+Establish `hsum : ∑ j ∈ s, aeval t (p j) * (b j : E) = 0`. Simplify `hg` using `[hp, Subalgebra.smul_def]`. Set `P : A[X]` to `∑ j ∈ s, C (b j) * (p j).map (algebraMap K A)`. Establish `hP : aeval t P = 0`. Simplify using `only [P, map_sum, map_mul, aeval_C, aeval_map_algebraMap]`.
+
+Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hP0 : P = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `ht ⟨P, hne, hP⟩`. Establish `hcoeff : ∀ n, ∑ j ∈ s, (p j).coeff n • b j = 0`. Introduce `n`. Use `congrArg (fun q => q.coeff n) hP0` as an intermediate fact.
+
+Simplify using `only [P, finsetSum_coeff, coeff_C_mul, coeff_map, coeff_zero] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`. Establish `hpi : p i = 0`.
+
+Use extensionality with `n`. Conclude with `linearIndependent_iff'.1 hb s (fun j => (p j).coeff n) (hcoeff n) i hi`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hp i, hpi, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem linearIndependent_adjoin_of_transcendental {K E : Type*} [Field K] [Field E] [Algebra K E]
     (A : IntermediateField K E) {t : E} (ht : Transcendental A t) {κ : Type*} {b : κ → A}
     (hb : LinearIndependent K b) :
@@ -80,6 +107,15 @@ theorem linearIndependent_adjoin_of_transcendental {K E : Type*} [Field K] [Fiel
   rw [← hp i, hpi, map_zero]
   rfl
 
+/- English proof (translation)
+Use `set L := IntermediateField.adjoin K {t}`. Set `a` to `Module.Free.chooseBasis K A`. Establish `hind : LinearIndependent L (A.val ∘ a)` using `linearIndependent_adjoin_of_transcendental A ht a.linearIndependent`. Distinguish the cases in `hfin : Module.Finite K A`. Establish `H : A.LinearDisjoint L` using `IntermediateField.LinearDisjoint.of_basis_left a hind`.
+
+Establish `hr` using `H.adjoin_rank_eq_rank_left_of_isAlgebraic_left`. Conclude with `congrArg Cardinal.toNat hr`. Rewrite using `[Module.finrank_of_not_finite hfin]`. Apply `Module.finrank_of_not_finite` to reduce the goal to its premises. Introduce `hfin'`.
+
+Apply `hfin` to reduce the goal to its premises. Use `set M := IntermediateField.adjoin L (A : Set E)`. Set `f : Module.Free.ChooseBasisIndex K A → M` to `fun k => ⟨A.val (a k), IntermediateField.subset_adjoin L _ (a k).2⟩`. Establish `hf : LinearIndependent L f` using `LinearIndependent.of_comp M.val.toLinearMap hind`. Establish `: Finite (Module.Free.ChooseBasisIndex K A)` using `hf.finite`.
+
+Conclude with `Module.Finite.of_basis a`.
+-/
 theorem finrank_adjoin_eq_of_transcendental {K E : Type*} [Field K] [Field E] [Algebra K E]
     (A : IntermediateField K E) {t : E} (ht : Transcendental A t) :
     Module.finrank (IntermediateField.adjoin K {t})
@@ -103,6 +139,13 @@ theorem finrank_adjoin_eq_of_transcendental {K E : Type*} [Field K] [Field E] [A
     have : Finite (Module.Free.ChooseBasisIndex K A) := hf.finite
     exact Module.Finite.of_basis a
 
+/- English proof (translation)
+Set `i : Φ ≃+* L` to `((algebraMap Φ E).rangeRestrictFieldEquiv.trans (RingEquiv.subfieldCongr h)).trans (algebraMap L E).rangeRestrictFieldEquiv.symm`. Establish `hi : ∀ r, algebraMap L E (i r) = algebraMap Φ E r` using `fun r => by`. Simplify using `only [i, RingEquiv.trans_apply, RingHom.rangeRestrictFieldEquiv_apply_symm_apply]`. Both sides reduce to the same expression. Establish `hmem : ∀ x : E, x ∈ IntermediateField.adjoin Φ S ↔ x ∈ IntermediateField.adjoin L T` using `fun x => by`.
+
+Rewrite using `[← IntermediateField.mem_toSubfield, ← IntermediateField.mem_toSubfield, IntermediateField.adjoin_toSubfield, IntermediateField.adjoin_toSubfield, hST]`. Set `j : IntermediateField.adjoin Φ S ≃+ IntermediateField.adjoin L T` to `{ toFun := fun x => ⟨x.1, (hmem x.1).1 x.2⟩, invFun := fun x => ⟨x.1, (hmem x.1).2 x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl }`. Establish `hr` using `rank_eq_of_equiv_equiv i j i.bijective (fun r m => Subtype.ext (by`. Simplify using `only [j, AddEquiv.coe_mk, Equiv.coe_fn_mk, Algebra.smul_def]`. Rewrite using `[IntermediateField.coe_mul, IntermediateField.coe_mul]`.
+
+Conclude with `congrArg (· * (m : E)) (hi r).symm))`. Conclude with `congrArg Cardinal.toNat hr`.
+-/
 theorem finrank_adjoin_congr {E Φ L : Type*} [Field E] [Field Φ] [Field L] [Algebra Φ E] [Algebra L E]
     {S T : Set E} (h : (algebraMap Φ E).fieldRange = (algebraMap L E).fieldRange)
     (hST : Subfield.closure (Set.range (algebraMap Φ E) ∪ S) =

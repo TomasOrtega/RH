@@ -27,6 +27,9 @@ namespace GlobalTheory.MovedDict
 
 open scoped Matrix
 
+/- English proof (translation)
+Establish `h1 : ∑ i, ∑ j, star ((B *ᵥ c) i) * G i j * (B *ᵥ d) j = star (B *ᵥ c) ⬝ᵥ (G *ᵥ (B *ᵥ d))`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Finset.mul_sum, mul_assoc]`. Rewrite using `[h1, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hB, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem sum_form_orthoFrame {K : Type} [Field K] [StarRing K] {n : ℕ} (G B : Matrix (Fin n) (Fin n) K)
     (hB : Bᴴ * G * B = 1) (c d : Fin n → K) :
     ∑ i, ∑ j, star ((B *ᵥ c) i) * G i j * (B *ᵥ d) j = ∑ i, star (c i) * d i := by
@@ -36,6 +39,27 @@ theorem sum_form_orthoFrame {K : Type} [Field K] [StarRing K] {n : ℕ} (G B : M
     Matrix.one_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `D S fr hfr Ls hLs`. Establish `hB : fr.1ᴴ * S.gram * fr.1 = 1` using `hfr`. Take `⟨hfg, hspan, hdual⟩` from `hLs`. Set `f : (Fin S.rank → D.host.E) →ₗ[D.host.E] (Fin S.rank → D.host.E)` to `Matrix.toLin' fr.1`. Establish `hinv : ∀ y, fr.1 *ᵥ ((fr⁻¹).1 *ᵥ y) = y` using `fun y => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hinv' : ∀ y, (fr⁻¹).1 *ᵥ (fr.1 *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hmem : ∀ y, y ∈ Ls.map (f.restrictScalars (𝓞 D.host.E)) ↔ (fr⁻¹).1 *ᵥ y ∈ Ls`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[f, Matrix.toLin'_apply, hinv']`. Introduce `h`. Conclude with `⟨_, h, by simp [f, Matrix.toLin'_apply, hinv]⟩`.
+
+Establish `hform : ∀ x y : Fin S.rank → D.host.E, ∑ i, ∑ j, star (x i) * S.gram i j * y j = ∑ i, star (((fr⁻¹).1 *ᵥ x) i) * ((fr⁻¹).1 *ᵥ y) i`. Introduce `x y`. Use `sum_form_orthoFrame S.gram fr.1 hB ((fr⁻¹).1 *ᵥ x) ((fr⁻¹).1 *ᵥ y)` as an intermediate fact. Rewrite `this` using `[hinv, hinv]`. Then use the resulting hypothesis. Use `⟨Ls.map (f.restrictScalars (𝓞 D.host.E)), ?_, ⟨hfg.map _, ?_⟩, fun y => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `[inV, f, Matrix.toLin'_apply]`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[← hinv y]`.
+
+Establish `hz : (fr⁻¹).1 *ᵥ y ∈ Submodule.span D.host.E (Ls : Set (Fin S.rank → D.host.E))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Establish `hle : Submodule.span D.host.E (Ls : Set (Fin S.rank → D.host.E)) ≤ (Submodule.span D.host.E ((Ls.map (f.restrictScalars (𝓞 D.host.E)) : Submodule (𝓞 D.host.E) _) : Set (Fin S.rank → D.host.E))).comap f`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `x hx`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Conclude with `hle hz`. Rewrite using `[hmem, hdual]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Rewrite `hx` using `[hmem]`. Take `⟨b, hb⟩` from `h _ hx`. Conclude with `⟨b, by rw [hform]; exact hb⟩`. Introduce `h x' hx'`.
+
+Establish `hx : fr.1 *ᵥ x' ∈ Ls.map (f.restrictScalars (𝓞 D.host.E))`. Rewrite using `[hmem, hinv']`. Conclude with `hx'`. Take `⟨b, hb⟩` from `h _ hx`. Rewrite `hb` using `[hform, hinv']`.
+
+Conclude with `⟨b, hb⟩`.
+-/
 theorem isSelfDualC_inV : ∀ {D : D7} (S : HSp D) (fr : GL (Fin S.rank) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * S.gram * fr.1 = 1 → ∀ Ls : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E), SD D Ls → ∃ Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E), (Λ : Set (Fin S.rank → D.host.E)) = GlobalTheory.MovedDict.inV fr Ls ∧ IsSelfDualC S Λ := by
   intro D S fr hfr Ls hLs
   classical

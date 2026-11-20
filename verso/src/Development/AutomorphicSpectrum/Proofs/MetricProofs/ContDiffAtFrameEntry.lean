@@ -24,6 +24,11 @@ def mob2 {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (z : Fin
 end GlobalTheory.CompanionTheory.Ar.PB.FibPt
 end
 
+/- English proof (translation)
+Establish `hg' : ∀ i j, ContDiffAt ℝ 2 (fun y' => g y' i j) y` using `fun i j => ((ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg i j).differentiableOn y (Set.mem_univ _)).contDiffAt).restrict_scalars ℝ`. Establish `hs : ∀ i j, ContDiffAt ℝ 2 (fun y' => star (g y' i j)) y` using `fun i j => by`. Establish `h` using `(Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp y (hg' i j)`. Simplify `h` using `[Function.comp_def]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Fin.sum_univ_two]`.
+
+Conclude with `((((hs 0 p).mul (hC 0 0)).add ((hs 1 p).mul (hC 1 0))).mul (hg' 0 q)).add ((((hs 0 p).mul (hC 0 1)).add ((hs 1 p).mul (hC 1 1))).mul (hg' 1 q))`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_frame_entry {d : ℕ} (G g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (y : Fin d → ℂ)
     (hC : ∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (p q : Fin 2) :
     ContDiffAt ℝ 2 (fun y' => ((g y')ᴴ * G y' * g y') p q) y := by
@@ -36,6 +41,17 @@ theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_frame_entry {d : ℕ
   exact ((((hs 0 p).mul (hC 0 0)).add ((hs 1 p).mul (hC 1 0))).mul (hg' 0 q)).add
     ((((hs 0 p).mul (hC 0 1)).add ((hs 1 p).mul (hC 1 1))).mul (hg' 1 q))
 
+/- English proof (translation)
+Establish `hb' : ContDiffAt ℝ 2 (fun w => star (b w)) w₀`. Establish `h` using `(Complex.conjCLE.contDiff (n := 2)).contDiffAt.comp w₀ hb`. Simplify `h` using `[Function.comp_def]`. Establish `h00` using `hC 0 0`. Establish `h01` using `hC 0 1`.
+
+Establish `h10` using `hC 1 0`. Establish `h11` using `hC 1 1`. Establish `hq : ContDiffAt ℝ 2 (fun w => herm2 (H w) ![1, b w] ![1, b w]) w₀`. Simplify using `only [herm2, dotProduct, mulVec, Fin.sum_univ_two, Pi.star_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, star_one, one_mul, mul_one]`. Use `fun_prop`.
+
+Establish `hd : ContDiffAt ℝ 2 (fun w => (H w).det) w₀`. Simplify using `only [Matrix.det_fin_two]`. Use `fun_prop`. Establish `hqr : ContDiffAt ℝ 2 (fun w => (herm2 (H w) ![1, b w] ![1, b w]).re) w₀` using `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp w₀ hq`. Establish `hdr : ContDiffAt ℝ 2 (fun w => (H w).det.re) w₀` using `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp w₀ hd`.
+
+Establish `hv : (![1, b w₀] : Fin 2 → ℂ) ≠ 0`. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`. Establish `hp1 : 0 < herm2 (H w₀) ![1, b w₀] ![1, b w₀]`.
+
+Conclude with `hpd.dotProduct_mulVec_pos hv`. Establish `hp2 : 0 < (H w₀).det` using `hpd.det_pos`. Simplify using `only [xiPot]`. Conclude with `(hqr.log (Complex.pos_iff.1 hp1).1.ne').neg.add (contDiffAt_const.mul (hdr.log (Complex.pos_iff.1 hp2).1.ne'))`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_xiPot {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (H : E → Matrix (Fin 2) (Fin 2) ℂ) (b : E → ℂ) (w₀ : E) (hpd : (H w₀).PosDef)
     (hC : ∀ p q, ContDiffAt ℝ 2 (fun w => H w p q) w₀) (hb : ContDiffAt ℝ 2 b w₀) :

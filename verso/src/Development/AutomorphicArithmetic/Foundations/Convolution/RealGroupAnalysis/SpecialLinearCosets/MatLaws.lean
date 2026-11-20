@@ -12,33 +12,60 @@ section
 
 variable {F : Type} [Field F] [NumberField F] (v : P F)
 
+/- English proof (translation)
+Establish `h1 : Continuous (pLoc F v)` using `RestrictedProduct.continuous_eval (R := fun v : P F => v.adicCompletion F) v`. Establish `h2 : Continuous (pFin F)` using `continuous_snd`. Conclude with `h1.comp h2`.
+-/
 private theorem cp_cont : Continuous (cp v) := by
   have h1 : Continuous (pLoc F v) :=
     RestrictedProduct.continuous_eval (R := fun v : P F => v.adicCompletion F) v
   have h2 : Continuous (pFin F) := continuous_snd
   exact h1.comp h2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cp_rt (c : F) : cp v (rt c) = algebraMap F (Kv v) c := rfl
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.2.1 x`.
+-/
 private theorem cp_sg (x : Kv v) : cp v (sg v x) = x := (UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.2.1 x
 
+/- English proof (translation)
+Rewrite using `[(UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.1 a 1, mul_one]`.
+-/
 private theorem sg_cp (a : A F) : sg v (cp v a) = a * sg v 1 := by
   rw [(UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.1 a 1, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← sg_cp v (sg v 1), cp_sg]`.
+-/
 private theorem e_idem : sg v 1 * sg v 1 = sg v 1 := by
   rw [← sg_cp v (sg v 1), cp_sg]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `X i - sg v (cp v (X i)) = _`. Rewrite using `[sg_cp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem away_eq (X : V4 F) (i : Fin 4) : away v X i = (1 - sg v 1) * X i := by
   change X i - sg v (cp v (X i)) = _
   rw [sg_cp]; ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `cp v (X i - sg v (cp v (X i))) = 0`. Rewrite using `[map_sub, cp_sg, sub_self]`.
+-/
 private theorem cp_away (X : V4 F) (i : Fin 4) : cp v (away v X i) = 0 := by
   change cp v (X i - sg v (cp v (X i))) = 0
   rw [map_sub, cp_sg, sub_self]
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).1 x y`.
+-/
 private theorem sg_add' (x y : Kv v) : sg v (x + y) = sg v x + sg v y :=
   (UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).1 x y
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : algebraMap F (Kv v) 2 = algebraMap F (Kv v) 0`. Rewrite using `[map_ofNat, map_zero]`. Conclude with `h`. Conclude with `two_ne_zero ((algebraMap F (Kv v)).injective h')`.
+-/
 private theorem two_ne : (2 : Kv v) ≠ 0 := by
   intro h
   have h' : algebraMap F (Kv v) 2 = algebraMap F (Kv v) 0 := by
@@ -49,6 +76,33 @@ end
 
 end UpperTheory.ConvolutionTheory.R2.I
 
+/- English proof (translation)
+Introduce `F _ _ v δ θ hθ hθ0`. Establish `h2` using `two_ne v`. Establish `hc` using `cp_cont v`. Establish `hs : Continuous (sg v)` using `(UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.2.2.2.2.2.2.2.2`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `m`. Use `⟨![sg v (m 1 1), sg v (m 0 0), sg v ((m 0 1 + m 1 0) / 2), sg v ((m 0 1 - m 1 0) / (2 * θ))], fun X => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e1 : (m 0 1 + m 1 0) / 2 + (m 0 1 - m 1 0) / (2 * θ) * θ = m 0 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : (m 0 1 + m 1 0) / 2 - (m 0 1 - m 1 0) / (2 * θ) * θ = m 1 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Express the relevant statement in the definitionally equal form `cp v (X 1 + sg v (m 0 0)) = cp v (X 1) + m 0 0`. Rewrite using `[map_add, cp_sg]`. Express the relevant statement in the definitionally equal form `cp v (X 2 + sg v ((m 0 1 + m 1 0) / 2)) + cp v (X 3 + sg v ((m 0 1 - m 1 0) / (2 * θ))) * θ = cp v (X 2) + cp v (X 3) * θ + m 0 1`. Rewrite using `[map_add, map_add, cp_sg, cp_sg]`. Take the linear combination `e1`.
+
+Express the relevant statement in the definitionally equal form `cp v (X 2 + sg v ((m 0 1 + m 1 0) / 2)) - cp v (X 3 + sg v ((m 0 1 - m 1 0) / (2 * θ))) * θ = cp v (X 2) - cp v (X 3) * θ + m 1 0`. Rewrite using `[map_add, map_add, cp_sg, cp_sg]`. Take the linear combination `e2`. Express the relevant statement in the definitionally equal form `cp v (X 0 + sg v (m 1 1)) = cp v (X 0) + m 1 1`. Rewrite using `[map_add, cp_sg]`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(X i + _) - sg v (cp v (X i + _)) = X i - sg v (cp v (X i))`. Rewrite using `[map_add, sg_add']`. Apply the tactic sequence `fin_cases i <;> simp [cp_sg] <;> ring`. Introduce `X Y`.
+
+Establish `hB : BM (mat v θ Y) (mat v θ X) = cp v (B4 δ Y X)`. Simplify using `only [BM, mat, B4, map_sub, map_add, map_mul, cp_rt, ← hθ, map_ofNat]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hB, sg_cp]`.
+
+Establish `he` using `e_idem v`. Simplify using `only [B4, away_eq]`. Generalize the expression as in `sg v 1 = e at he`. Generalize the expression as in `rt δ = d`. Take the linear combination `(-(2 * (Y 2 * X 2 - d * (Y 3 * X 3)) - Y 1 * X 0 - Y 0 * X 1)) * he`.
+
+Introduce `b X`. Establish `hq : -(b * (mat v θ X).det) = cp v (q4 δ X) * b`. Simplify using `only [mat, q4, Matrix.det_fin_two_of, map_sub, map_mul, map_pow, cp_rt, ← hθ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq, mul_comm, (UpperTheory.ConvolutionTheory.R2.H.sgLaws F v).2.1]`.
+
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `h : ∀ k : Fin 4, Continuous fun X : V4 F => cp v (X k)` using `fun k => hc.comp (continuous_apply k)`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat]`. Conclude with `h 1`. Conclude with `(h 2).add ((h 3).mul continuous_const)`.
+
+Conclude with `(h 2).sub ((h 3).mul continuous_const)`. Conclude with `h 0`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).sub (hs.comp (hc.comp (continuous_apply i)))`. Introduce `X`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `away v X i - sg v (cp v (away v X i)) = _`. Rewrite using `[cp_away]`. Establish `: sg v 0 = 0`. Use `sg_add' v 0 0` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[this, sub_zero]`. Introduce `X`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat, cp_away]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.matLaws :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (δ : F) (θ : Kv v), θ ^ 2 = algebraMap F (Kv v) δ → θ ≠ 0 →
       (∀ m : M2 v, ∃ y : V4 F, ∀ X, mat v θ (X + y) = mat v θ X + m ∧ away v (X + y) = away v X) ∧

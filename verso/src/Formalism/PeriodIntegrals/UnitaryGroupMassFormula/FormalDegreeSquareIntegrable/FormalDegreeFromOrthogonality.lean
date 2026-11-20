@@ -49,6 +49,11 @@ def FormalDegreeValue : Prop :=
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam lam → IsDS ε lam σ →
       ∀ d : ℝ, IsFdeg (muG ε) σ d → d = c * fdegHC lam
 
+/- English proof (translation)
+Introduce `n ε`. Take `⟨c, hc, h⟩` from `h23 n ε`. Use `⟨c, hc, fun lam H _ _ _ σ hl hσ => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial H := hσ.2.1`. Take `⟨d, hd⟩` from `h1 n ε H σ hσ.2.2.1 hσ.2.2.2.1 hσ.2.2.2.2.1`.
+
+Rewrite using `[← h lam H σ hl hσ d hd]`. Conclude with `hd`.
+-/
 theorem hCFdeg_of (h1 : StableSubspaceMobius) (h23 : FormalDegreeValue) : PI.HCFdeg := by
   intro n ε
   obtain ⟨c, hc, h⟩ := h23 n ε

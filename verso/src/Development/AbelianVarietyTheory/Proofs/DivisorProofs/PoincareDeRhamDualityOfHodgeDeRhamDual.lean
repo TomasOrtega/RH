@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PoincareDeRhamDualityProof
 
+/- English proof (translation)
+Introduce `R _ A B _ _ g hA hB hg hg' P hP φ hφ`. Conclude with `GlobalTheory.T.deRham_pairing_perfect_and_hodge_filtration_isotropic H R A B g hA hB hg hg' P (GlobalTheory.Published.PoincareDeRhamDuality.Test.isPerfect_of_isDual D hA hP) φ hφ`.
+-/
 theorem poincareDeRhamDuality_of_hodge (H : GlobalTheory.Published.AbelianHodgeDeRham) (D : GlobalTheory.Published.DualAbelianScheme) :
     GlobalTheory.Published.PoincareDeRhamDuality := by
   intro R _ A B _ _ g hA hB hg hg' P hP φ hφ

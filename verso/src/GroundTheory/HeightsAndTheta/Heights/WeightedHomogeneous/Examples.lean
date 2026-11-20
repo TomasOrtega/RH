@@ -10,12 +10,18 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_eq_single k₀ (fun k _ hk ↦ by rw [Pi.single_eq_of_ne hk, zpow_zero]) (fun h ↦ absurd (Finset.mem_univ k₀) h), Pi.single_eq_same, zpow_one]`.
+-/
 theorem prod_zpow_single {M : Type*} [CommGroupWithZero M] (f : ι → M) (k₀ : ι) :
     ∏ k, f k ^ ((Pi.single k₀ 1 : ι → ℤ) k) = f k₀ := by
   rw [Finset.prod_eq_single k₀ (fun k _ hk ↦ by rw [Pi.single_eq_of_ne hk, zpow_zero])
     (fun h ↦ absurd (Finset.mem_univ k₀) h), Pi.single_eq_same, zpow_one]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Distinguish the cases in `h : k = k₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem single_cast (k₀ k : ι) : (((Pi.single k₀ 1 : ι → ℕ) k : ℕ) : ℤ) = (Pi.single k₀ 1 : ι → ℤ) k := by
   by_cases h : k = k₀
   · subst h; simp
@@ -26,20 +32,32 @@ namespace ArithVariety
 variable (n : ι → ℕ)
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `fun _ h ↦ X_ne_zero _ ((Submodule.mem_bot _).mp h)`.
+-/
 theorem whole_isLive (c : (k : ι) → Fin (n k + 1)) : (whole n).IsLive c := fun _ h ↦
   X_ne_zero _ ((Submodule.mem_bot _).mp h)
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `fun h ↦ X_ne_zero v ((Submodule.mem_bot _).mp (((whole n).mkF_eq_zero_iff _).mp h))`.
+-/
 theorem whole_mkF_X_ne_zero (v : Coord n) : (whole n).mkF (X v) ≠ 0 := fun h ↦
   X_ne_zero v ((Submodule.mem_bot _).mp (((whole n).mkF_eq_zero_iff _).mp h))
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).mpr fun f hf ↦ ?_` and prove the remaining obligations. Conclude with `(Submodule.mem_bot _).mp (((whole n).mkF_eq_zero_iff f).mp hf)`.
+-/
 theorem whole_mkF_injective : Function.Injective (whole n).mkF := by
   refine (injective_iff_map_eq_zero _).mpr fun f hf ↦ ?_
   exact (Submodule.mem_bot _).mp (((whole n).mkF_eq_zero_iff f).mp hf)
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `i.elim0 span_eq := by rw [Set.range_eq_empty, Ideal.span_empty] rfl`.
+-/
 theorem whole_isHomogGenerators :
     (whole n).IsHomogGenerators (fun i : Fin 0 ↦ i.elim0) (fun i : Fin 0 ↦ i.elim0) where
   homog i := i.elim0
@@ -75,6 +93,9 @@ def blockForms : ((k : ι) → Fin (n k + 1)) → Fin ((blockAddData n k₀).siz
     MvPolynomial (Coord n) ℤ :=
   fun c j ↦ chartMonomial c 1 * X ⟨k₀, j⟩
 
+/- English proof (translation)
+The claim follows from `le_rfl nonneg k := by have : (0 : ℤ) ≤ (Pi.single k₀ 1 : ι → ℤ) k := by by_cases h : k = k₀ · subst h; simp · simp [Pi.single_eq_of_ne h] change (0 : ℤ) ≤ ((1 : ι → ℕ) k : ℤ) + (Pi.single k₀ 1 : ι → ℤ) k simp only [Pi.one_apply, Nat.cast_one] linarith homog c j := ⟨1 + (Pi.single …`.
+-/
 theorem blockForms_isFormSystem : (blockAddData n k₀).IsFormSystem 1 (blockForms n k₀) where
   pos _ := le_rfl
   nonneg k := by
@@ -109,6 +130,9 @@ def blockSubst :
     MvPolynomial (Coord (blockAddData n k₀).extSizes) ℤ →+* MvPolynomial (Option ι) (MvPolynomial (Coord n) ℤ) :=
   eval₂Hom (Int.castRingHom _) fun v ↦ C (blockVal n k₀ v) * X v.1
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun r ↦ ?_) (fun v ↦ ?_)` and prove the remaining obligations. Simplify using `[AddBlockData.extMap, blockSubst]`. Rewrite using `[RingHom.comp_apply, AddBlockData.extMap, blockSubst, eval₂Hom_X', eval₂Hom_X', map_mul, map_C, map_X]`. Apply the tactic sequence `rcases v with ⟨_ | k, i⟩ <;> rfl`.
+-/
 theorem blockAddData_extMap :
     (blockAddData n k₀).extMap = (MvPolynomial.map (ArithVariety.whole n).mkF).comp (blockSubst n k₀) := by
   refine MvPolynomial.ringHom_ext (fun r ↦ ?_) (fun v ↦ ?_)
@@ -116,6 +140,9 @@ theorem blockAddData_extMap :
   · rw [RingHom.comp_apply, AddBlockData.extMap, blockSubst, eval₂Hom_X', eval₂Hom_X', map_mul, map_C, map_X]
     rcases v with ⟨_ | k, i⟩ <;> rfl
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.map (ArithVariety.whole n).mkF) (blockSubst n k₀ f) = 0`. Rewrite using `[← RingHom.comp_apply, ← blockAddData_extMap]`. Conclude with `RingHom.mem_ker.mp hf`. Conclude with `map_injective _ (ArithVariety.whole_mkF_injective n) (h.trans (map_zero _).symm)`.
+-/
 theorem blockSubst_eq_zero {f : MvPolynomial (Coord (blockAddData n k₀).extSizes) ℤ}
     (hf : f ∈ (blockAddData n k₀).extIdeal) : blockSubst n k₀ f = 0 := by
   have h : (MvPolynomial.map (ArithVariety.whole n).mkF) (blockSubst n k₀ f) = 0 := by
@@ -123,6 +150,11 @@ theorem blockSubst_eq_zero {f : MvPolynomial (Coord (blockAddData n k₀).extSiz
     exact RingHom.mem_ker.mp hf
   exact map_injective _ (ArithVariety.whole_mkF_injective n) (h.trans (map_zero _).symm)
 
+/- English proof (translation)
+Use `⟨fun o ↦ ?_, fun f hf ↦ ?_⟩` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact hz k₀`. Consider the case `some k => exact hz k`. Set `ev : MvPolynomial (Option ι) (MvPolynomial (Coord n) ℤ) →+* ℂ` to `eval₂Hom (eval₂Hom (Int.castRingHom ℂ) fun v ↦ z v.1 v.2) fun _ ↦ 1`.
+
+Establish `hev : (eval₂Hom (Int.castRingHom ℂ) fun v : Coord (blockAddData n k₀).extSizes ↦ (blockAddData n k₀).joinPt z (z k₀) v.1 v.2) = ev.comp (blockSubst n k₀)`. Use `MvPolynomial.ringHom_ext (fun r ↦ by simp [ev, blockSubst]) (fun v ↦ ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases v with ⟨_ | k, i⟩ <;> simp [ev, blockSubst, blockVal, AddBlockData.joinPt]`. Express the relevant statement in the definitionally equal form `(eval₂Hom (Int.castRingHom ℂ) fun v : Coord (blockAddData n k₀).extSizes ↦ (blockAddData n k₀).joinPt z (z k₀) v.1 v.2) f = 0`. Rewrite using `[hev, RingHom.comp_apply, blockSubst_eq_zero n k₀ hf, map_zero]`.
+-/
 theorem blockAddData_joinPt_mem (z : Cone n ℂ) (hz : BlockNonzero z) :
     (blockAddData n k₀).joinPt z (z k₀) ∈ (blockAddData n k₀).extPoints := by
   refine ⟨fun o ↦ ?_, fun f hf ↦ ?_⟩
@@ -139,6 +171,9 @@ theorem blockAddData_joinPt_mem (z : Cone n ℂ) (hz : BlockNonzero z) :
         (blockAddData n k₀).joinPt z (z k₀) v.1 v.2) f = 0
     rw [hev, RingHom.comp_apply, blockSubst_eq_zero n k₀ hf, map_zero]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `blockSubst_eq_zero n k₀ h`. Simplify using `[blockForms, chartMonomial, AddBlockData.liftOld, AddBlockData.oldCoord, blockSubst, blockVal, Finset.prod_eq_zero_iff, X_ne_zero] at h2`.
+-/
 theorem blockForms_not_mem (c : (k : ι) → Fin (n k + 1)) (j : Fin ((blockAddData n k₀).size + 1)) :
     (blockAddData n k₀).liftOld (blockForms n k₀ c j) ∉ (blockAddData n k₀).extIdeal := by
   intro h
@@ -148,17 +183,29 @@ theorem blockForms_not_mem (c : (k : ι) → Fin (n k + 1)) (j : Fin ((blockAddD
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+The claim follows from `fun _ h ↦ one_ne_zero (congrFun h 0)`.
+-/
 theorem blockNonzero_one : BlockNonzero (fun _ _ ↦ (1 : ℂ) : Cone n ℂ) :=
   fun _ h ↦ one_ne_zero (congrFun h 0)
 
+/- English proof (translation)
+Simplify using `[evalCone, blockForms, chartMonomial]`.
+-/
 theorem evalCone_one_blockForms (c : (k : ι) → Fin (n k + 1)) (j : Fin ((blockAddData n k₀).size + 1)) :
     evalCone (fun _ _ ↦ (1 : ℂ) : Cone n ℂ) (blockForms n k₀ c j) ≠ 0 := by
   simp [evalCone, blockForms, chartMonomial]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `eval₂_mul _ _`.
+-/
 theorem evalCone_mul {F : Type*} [CommRing F] (z : Cone n F) (f g : MvPolynomial (Coord n) ℤ) :
     evalCone z (f * g) = evalCone z f * evalCone z g := eval₂_mul _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(ArithVariety.whole n).mkF (chartMonomial c 1) / (ArithVariety.whole n).mkF 1 ≠ 0`. Rewrite using `[map_one, div_one, Ne, ArithVariety.mkF_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `¬ (_ ∈ (⊥ : Ideal (MvPolynomial (Coord n) ℤ)))`. Rewrite using `[Submodule.mem_bot, chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (X_ne_zero _)`.
+-/
 theorem chartSection_toFun_ne_zero (c : (k : ι) → Fin (n k + 1)) :
     (IntegralSection.chartSection (ArithVariety.whole n) c).toFun ≠ 0 := by
   change (ArithVariety.whole n).mkF (chartMonomial c 1) / (ArithVariety.whole n).mkF 1 ≠ 0
@@ -168,11 +215,21 @@ theorem chartSection_toFun_ne_zero (c : (k : ι) → Fin (n k + 1)) :
   exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (X_ne_zero _)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[HermLine.pow, HermLine.mul, HermLine.inv, HermLine.standard]`.
+-/
 theorem standard_quot_deg :
     (0 : ι → ℤ) = (((HermLine.standard n).pow 1).mul (HermLine.standard n).inv).deg := by
   funext k
   simp [HermLine.pow, HermLine.mul, HermLine.inv, HermLine.standard]
 
+/- English proof (translation)
+Introduce `z hz c' d' e he hc'`. Establish `he' : e = chartMonomial c' d'`. Establish `h` using `(Submodule.mem_bot _).mp he.2`. Express the relevant statement in the definitionally equal form `1 * e - 1 * chartMonomial c' d' = 0 at h`. Take the linear combination `h`.
+
+Establish `hne : evalCone z (chartMonomial c' d') ≠ 0`. Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc' k)`. Establish `hpos : 0 < (HermLine.standard n).metric z` using `(HermLine.standard n).metric_pos z hz.1`. Establish `hm : (((HermLine.standard n).pow 1).mul (HermLine.standard n).inv).metric z = 1`.
+
+Express the relevant statement in the definitionally equal form `(HermLine.standard n).metric z ^ 1 * ((HermLine.standard n).metric z)⁻¹ = 1`. Rewrite using `[pow_one, mul_inv_cancel₀ hpos.ne']`. Rewrite using `[he', hm, mul_one, div_self (norm_ne_zero_iff.mpr hne), Real.exp_zero]`.
+-/
 theorem one_supNormLE :
     ((IntegralSection.one (ArithVariety.whole n)).cast (standard_quot_deg n)).SupNormLE
       (((HermLine.standard n).pow 1).mul (HermLine.standard n).inv) 0 := by
@@ -190,11 +247,19 @@ theorem one_supNormLE :
     rw [pow_one, mul_inv_cancel₀ hpos.ne']
   rw [he', hm, mul_one, div_self (norm_ne_zero_iff.mpr hne), Real.exp_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `P.mkF 1 / P.mkF 1 ≠ 0`. Rewrite using `[map_one, div_one]`. Conclude with `one_ne_zero`.
+-/
 theorem one_toFun_ne_zero (P : ArithVariety n) : (IntegralSection.one P).toFun ≠ 0 := by
   change P.mkF 1 / P.mkF 1 ≠ 0
   rw [map_one, div_one]
   exact one_ne_zero
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv ((Ideal.quotEquivOfEq (show (ArithVariety.whole (fun _ : Unit ↦ N)).ideal = ⊥ from rfl)).trans (RingEquiv.quotientBot _)), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Establish `hc : Nat.card (Coord (fun _ : Unit ↦ N)) = N + 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`.
+
+Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem whole_ringKrullDim (N : ℕ) :
     ringKrullDim (ArithVariety.whole (fun _ : Unit ↦ N)).CoordRing =
       ((N + 1 + Fintype.card Unit : ℕ) : WithBot ℕ∞) := by
@@ -219,11 +284,21 @@ def gaussianIntegerBasis : Module.Basis (Fin (1 + 1)) ℤ (𝓞 GaussianField) :
 def ratIntegerBasis : Module.Basis (Fin (0 + 1)) ℤ (𝓞 ℚ) :=
   (Module.Basis.singleton (Fin 1) ℤ).map Rat.ringOfIntegersEquiv.symm.toAddEquiv.toIntLinearEquiv
 
+/- English proof (translation)
+Simplify using `[ratIntegerBasis, Module.Basis.singleton_apply]`.
+-/
 theorem ratIntegerBasis_apply (a : Fin (0 + 1)) : ((ratIntegerBasis a : 𝓞 ℚ) : ℚ) = 1 := by
   simp [ratIntegerBasis, Module.Basis.singleton_apply]
 
 open Matrix in
 
+/- English proof (translation)
+Introduce `σ w _`. Express the relevant statement in the definitionally equal form `∏ _u : Unit, l2Norm (oneBlockPoint ratIntegerBasis σ w ()) = Real.sqrt (star w ⬝ᵥ ((1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) *ᵥ w)).re`. Rewrite using `[Fintype.prod_unique, l2Norm, one_mulVec]`. Use `congr 1`. Establish `h1 : ∀ p, ‖oneBlockPoint ratIntegerBasis σ w () p‖ ^ 2 = ‖w (oneBlockIndex 0 r p).2‖ ^ 2`.
+
+Introduce `p`. Simplify using `[oneBlockPoint, ratIntegerBasis_apply]`. Simplify using `only [h1]`. Rewrite using `[Fintype.sum_equiv (oneBlockIndex 0 r) _ (fun q ↦ ‖w q.2‖ ^ 2) (fun _ ↦ rfl), Fintype.sum_prod_type, Fin.sum_univ_one, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+-/
 theorem ratStandard_metricAgrees (r : ℕ) :
     OneBlockMetricAgrees ratIntegerBasis (HermLattice.standard ℚ (r + 1))
       (HermLine.standard (oneBlockSizes 0 r)) := by
@@ -242,6 +317,9 @@ theorem ratStandard_metricAgrees (r : ℕ) :
   rw [Pi.star_apply, Complex.star_def, Complex.conj_mul']
   norm_cast
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hx`. Rewrite using `[neg_zero, Real.exp_zero, zsmul_eq_mul, mul_one, Real.norm_eq_abs]`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at h0`. Conclude with `Int.one_le_abs ha` after adjusting the coercions.
+-/
 theorem int_span_norm_ge (x : ℝ) (hx : x ∈ Submodule.span ℤ ({1} : Set ℝ)) (h0 : x ≠ 0) :
     Real.exp (-0) ≤ ‖x‖ := by
   obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.mp hx
@@ -249,6 +327,9 @@ theorem int_span_norm_ge (x : ℝ) (hx : x ∈ Submodule.span ℤ ({1} : Set ℝ
   have ha : a ≠ 0 := by rintro rfl; simp at h0
   exact_mod_cast Int.one_le_abs ha
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `fin_cases i`. Simplify using `using hg`.
+-/
 theorem linearIndependent_one_real : LinearIndependent ℝ ![(1 : ℝ)] := by
   rw [Fintype.linearIndependent_iff]
   intro g hg i

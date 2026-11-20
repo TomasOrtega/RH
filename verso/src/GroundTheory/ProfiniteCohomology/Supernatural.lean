@@ -11,14 +11,26 @@ def mk (f : Nat.Primes → ℕ∞) : Supernatural := f
 
 def exp (a : Supernatural) (p : Nat.Primes) : ℕ∞ := a p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem exp_mk (f : Nat.Primes → ℕ∞) (p : Nat.Primes) : (mk f).exp p = f p := rfl
 
+/- English proof (translation)
+The claim follows from `funext h`.
+-/
 @[ext] theorem ext {a b : Supernatural} (h : ∀ p, a.exp p = b.exp p) : a = b := funext h
 
 noncomputable instance : CompleteLattice Supernatural := inferInstanceAs (CompleteLattice (Nat.Primes → ℕ∞))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem le_def {a b : Supernatural} : a ≤ b ↔ ∀ p, a.exp p ≤ b.exp p := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `iSup_apply (f := fun i => (f i : Nat.Primes → ℕ∞)) (a := p)`.
+-/
 @[simp] theorem exp_iSup {ι : Sort*} (f : ι → Supernatural) (p : Nat.Primes) :
     (⨆ i, f i).exp p = ⨆ i, (f i).exp p :=
   iSup_apply (f := fun i => (f i : Nat.Primes → ℕ∞)) (a := p)
@@ -27,8 +39,14 @@ instance : One Supernatural := ⟨mk fun _ => 0⟩
 
 instance : Mul Supernatural := ⟨fun a b => mk fun p => a.exp p + b.exp p⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem exp_one (p : Nat.Primes) : (1 : Supernatural).exp p = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem exp_mul (a b : Supernatural) (p : Nat.Primes) :
     (a * b).exp p = a.exp p + b.exp p := rfl
 
@@ -38,6 +56,11 @@ instance : CommMonoid Supernatural where
   mul_one a := by ext p; simp
   mul_comm a b := by ext p; simp [add_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[le_def]`. Introduce `p`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Use `⟨mk fun p => b.exp p - a.exp p, ?_⟩` and prove the remaining obligations. Use extensionality with `p`. Simplify using `[add_tsub_cancel_of_le (le_def.mp h p)]`.
+-/
 theorem dvd_iff_le {a b : Supernatural} : a ∣ b ↔ a ≤ b := by
   constructor
   · rintro ⟨c, rfl⟩
@@ -51,14 +74,28 @@ theorem dvd_iff_le {a b : Supernatural} : a ∣ b ↔ a ≤ b := by
 
 def ofNat (n : ℕ) : Supernatural := mk fun p => (n.factorization p : ℕ∞)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem exp_ofNat (n : ℕ) (p : Nat.Primes) : (ofNat n).exp p = n.factorization p := rfl
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem ofNat_one : ofNat 1 = 1 := by ext p; simp
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `[Nat.factorization_mul hm hn]`.
+-/
 theorem ofNat_mul {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat (m * n) = ofNat m * ofNat n := by
   ext p
   simp [Nat.factorization_mul hm hn]
 
+/- English proof (translation)
+Rewrite using `[dvd_iff_le, le_def, ← Nat.factorization_le_iff_dvd hm hn, Finsupp.le_def]`. Prove the components needed by the constructor for the conclusion. Introduce `h q`. Distinguish the cases in `hq : q.Prime`. Establish `h' : ((m.factorization q : ℕ) : ℕ∞) ≤ n.factorization q` using `h ⟨q, hq⟩`.
+
+Conclude with `h'` after adjusting the coercions. Simplify using `[Nat.factorization_eq_zero_of_not_prime _ hq]`. Introduce `h p show ((m.factorization p : ℕ) : ℕ∞) ≤ n.factorization p`. Conclude with `h p` after adjusting the coercions.
+-/
 theorem ofNat_dvd_ofNat {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat m ∣ ofNat n ↔ m ∣ n := by
   rw [dvd_iff_le, le_def, ← Nat.factorization_le_iff_dvd hm hn, Finsupp.le_def]
   constructor
@@ -71,11 +108,21 @@ theorem ofNat_dvd_ofNat {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat m ∣ 
     show ((m.factorization p : ℕ) : ℕ∞) ≤ n.factorization p
     exact_mod_cast h p
 
+/- English proof (translation)
+Use `⟨fun h => Nat.dvd_antisymm ?_ ?_, fun h => h ▸ rfl⟩` and prove the remaining obligations. Conclude with `(ofNat_dvd_ofNat hm hn).mp (h ▸ dvd_rfl)`. Conclude with `(ofNat_dvd_ofNat hn hm).mp (h ▸ dvd_rfl)`.
+-/
 theorem ofNat_injective {m n : ℕ} (hm : m ≠ 0) (hn : n ≠ 0) : ofNat m = ofNat n ↔ m = n := by
   refine ⟨fun h => Nat.dvd_antisymm ?_ ?_, fun h => h ▸ rfl⟩
   · exact (ofNat_dvd_ofNat hm hn).mp (h ▸ dvd_rfl)
   · exact (ofNat_dvd_ofNat hn hm).mp (h ▸ dvd_rfl)
 
+/- English proof (translation)
+Establish `h1 : (ofNat p).exp p = 1`. Rewrite using `[exp_ofNat]`. Simplify using `[p.prop.factorization_self]`. Rewrite using `[dvd_iff_le, le_def]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `h1 ▸ h p`. Introduce `h q`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+
+Conclude with `h1 ▸ h`. Establish `hq' : (p : ℕ) ≠ q` using `fun e => hq (Subtype.ext e.symm)`. Simplify using `[p.prop.factorization, hq']`.
+-/
 theorem ofNat_prime_dvd_iff (p : Nat.Primes) (a : Supernatural) :
     ofNat p ∣ a ↔ 1 ≤ a.exp p := by
   have h1 : (ofNat p).exp p = 1 := by
@@ -92,6 +139,11 @@ theorem ofNat_prime_dvd_iff (p : Nat.Primes) (a : Supernatural) :
     · have hq' : (p : ℕ) ≠ q := fun e => hq (Subtype.ext e.symm)
       simp [p.prop.factorization, hq']
 
+/- English proof (translation)
+Simplify using `only [ofNat_prime_dvd_iff p, Order.one_le_iff_ne_zero]`. Rewrite using `[exp_iSup]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`.
+
+Simplify using `only [not_exists, ne_eq, not_not] at h'`. Conclude with `h (le_antisymm (iSup_le fun i => (h' i).le) zero_le)`. Introduce and unpack `⟨i, hi⟩ h`. Conclude with `hi (le_antisymm (h ▸ le_iSup (fun i => (f i).exp p) i) zero_le)`.
+-/
 theorem ofNat_prime_dvd_iSup_iff (p : Nat.Primes) {ι : Sort*} (f : ι → Supernatural) :
     ofNat p ∣ ⨆ i, f i ↔ ∃ i, ofNat p ∣ f i := by
   simp only [ofNat_prime_dvd_iff p, Order.one_le_iff_ne_zero]
@@ -104,6 +156,9 @@ theorem ofNat_prime_dvd_iSup_iff (p : Nat.Primes) {ι : Sort*} (f : ι → Super
   · rintro ⟨i, hi⟩ h
     exact hi (le_antisymm (h ▸ le_iSup (fun i => (f i).exp p) i) zero_le)
 
+/- English proof (translation)
+Use extensionality with `p`. Simplify using `only [exp_mul, exp_iSup]`. Conclude with `ENat.iSup_add_iSup fun i j => (h i j).imp fun k hk => add_le_add (le_def.mp hk.1 p) (le_def.mp hk.2 p)`.
+-/
 theorem iSup_mul_iSup {ι : Sort*} {f g : ι → Supernatural}
     (h : ∀ i j, ∃ k, f i ≤ f k ∧ g j ≤ g k) :
     (⨆ i, f i) * (⨆ i, g i) = ⨆ i, f i * g i := by

@@ -8,6 +8,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ Φ hΦ`. Take `⟨κ, hκc, hκ⟩` from `finTr F E D`. Establish `hfo : IsOpen {k | TR.finRep F 2 k f = f}` using `(π.cusp f hf).1.level`. Establish `h1 : ∀ᶠ k in 𝓝 (1 : GL (Fin 2) (Af E)), TR.finRep F 2 (κ k) f = f`. Establish `hm : {k | TR.finRep F 2 k f = f} ∈ 𝓝 (κ 1)` using `hfo.mem_nhds (by simp)`.
+
+Conclude with `hκc.continuousAt.eventually hm`. Set `S : Subgroup (GL (Fin 2) (Af E))` to `{ carrier := {k | GlobalTheory.CuspRep.finRep E 2 k Φ = Φ} one_mem' := by simp mul_mem' := fun {k l} hk hl => by`. Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.finRep E 2 (k * l) Φ = Φ`. Rewrite using `[map_mul, Module.End.mul_apply, hl, hk]`. Use the proof step `inv_mem' := fun {k} hk => by`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.CuspRep.finRep E 2 k⁻¹ Φ = Φ`. Use `conv_lhs => rw [← show GlobalTheory.CuspRep.finRep E 2 k Φ = Φ from hk, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Use `rfl }`. Use `Subgroup.isOpen_of_mem_nhds (H := S) (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [lLevel F E D W φ, h1] with k hL hk`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ.1 (g * finGL E 2 k) = Φ.1 g`. Rewrite using `[hΦ, transl F E D W M, hL, hκ k]`. Conclude with `congrFun (congrArg (fun u => lift W M u φ) (congrArg Subtype.val hk)) g`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.level :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), Level W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ Φ hΦ

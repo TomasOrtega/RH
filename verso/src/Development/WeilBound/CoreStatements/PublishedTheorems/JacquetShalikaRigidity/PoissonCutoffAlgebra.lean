@@ -16,15 +16,24 @@ namespace PoissonCutoffAlgebra
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField E)⟩⟩`.
+-/
 theorem exists_pl : Nonempty (Pl E) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 E)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField E)⟩⟩
 
+/- English proof (translation)
+Take `⟨w⟩` from `exists_pl (E := E)`. Take `⟨y, hy⟩` from `hψ.loc w`. Conclude with `⟨_, hy⟩`.
+-/
 theorem psi_nontriv {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : ∃ a : Ad E, ψ a ≠ 1 := by
   obtain ⟨w⟩ := exists_pl (E := E)
   obtain ⟨y, hy⟩ := hψ.loc w
   exact ⟨_, hy⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `psi_nontriv hψ`. Use `haveI : Nontrivial (Ad E) := ⟨⟨a, 0, fun h => ha (by rw [h, AddChar.map_zero_eq_one])⟩⟩`. Conclude with `(algebraMap E (Ad E)).injective`.
+-/
 theorem alg_inj {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) : Function.Injective (algebraMap E (Ad E)) := by
   obtain ⟨a, ha⟩ := psi_nontriv hψ
   haveI : Nontrivial (Ad E) := ⟨⟨a, 0, fun h => ha (by rw [h, AddChar.map_zero_eq_one])⟩⟩
@@ -35,20 +44,41 @@ noncomputable def eL (hi : Function.Injective (algebraMap E (Ad E))) : (Fin k �
     ⟨fun a b h => funext fun i => hi (congrFun (congrArg Subtype.val h) i),
      fun γ => by obtain ⟨ξ, hξ⟩ := γ.2; exact ⟨ξ, Subtype.ext hξ⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eL_val (hi : Function.Injective (algebraMap E (Ad E))) (ξ : Fin k → E) :
     ((eL hi ξ : vecLattice E (Fin k)) : Fin k → Ad E) = fun i => algebraMap E (Ad E) (ξ i) := rfl
 
 def B (ψ : AddChar (Ad E) ℂ) (x y : Fin k → Ad E) : ℂ := ψ (∑ i, x i * y i)
 
+/- English proof (translation)
+The claim follows from `hψ.cont.comp (continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const)`.
+-/
 theorem B_cont {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (y : Fin k → Ad E) : Continuous fun x => B ψ x y :=
   hψ.cont.comp (continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const)
 
+/- English proof (translation)
+Simplify using `only [B, mul_comm]`.
+-/
 theorem B_symm (ψ : AddChar (Ad E) ℂ) (x y : Fin k → Ad E) : B ψ x y = B ψ y x := by
   simp only [B, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [B, ← AddChar.map_add_eq_mul, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem B_add (ψ : AddChar (Ad E) ℂ) (x x' y : Fin k → Ad E) : B ψ (x + x') y = B ψ x y * B ψ x' y := by
   simp only [B, ← AddChar.map_add_eq_mul, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: ∀ i, ∃ d : E, x i = algebraMap E (Ad E) d`. Introduce `i`. Use `hψ.ann (x i) fun c => ?_` and prove the remaining obligations.
+
+Use `h (fun j => algebraMap E (Ad E) ((Pi.single i c : Fin k → E) j)) (algebraMap_mem_vecLattice _)` as an intermediate fact. Establish `e : (∑ j, (fun j => algebraMap E (Ad E) ((Pi.single i c : Fin k → E) j)) j * x j) = x i * algebraMap E (Ad E) c`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (fun h => absurd (Finset.mem_univ i) h)]`. Simplify using `[mul_comm]`. Simplify using `only [B] at this`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `choose d hd using this`. Conclude with `⟨d, funext fun i => (hd i).symm⟩`. Introduce and unpack `⟨d, rfl⟩ γ ⟨ξ, rfl⟩`. Establish `: (∑ i, (fun i => algebraMap E (Ad E) (ξ i)) i * (fun i => algebraMap E (Ad E) (d i)) i) = algebraMap E (Ad E) (∑ i, ξ i * d i)` using `by simp [map_sum, map_mul]`.
+
+Simplify using `only [B]`. Conclude with `this ▸ hψ.rat _`.
+-/
 theorem B_ker {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (x : Fin k → Ad E) :
     (∀ γ ∈ vecLattice E (Fin k), B ψ γ x = 1) ↔ x ∈ vecLattice E (Fin k) := by
   classical
@@ -73,6 +103,15 @@ theorem B_ker {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (x : Fin k → Ad E) :
     simp only [B]
     exact this ▸ hψ.rat _
 
+/- English proof (translation)
+Take `⟨ξ, hξ⟩` from `hγ`. Establish `hξ' : γ = fun i => algebraMap E (Ad E) (ξ i)` using `hξ.symm`. Substitute `hξ'` using the available equality. Assume the negation of the conclusion as `hne`. Establish `: ∃ i, ξ i ≠ 0`.
+
+Assume the negation of the conclusion as `h0`. Use `push_neg at h0`. Conclude with `hne (funext fun i => by simp [h0 i])`. Take `⟨i, hi⟩` from `this`. Take `⟨a, ha⟩` from `psi_nontriv hψ`.
+
+Apply `ha` to reduce the goal to its premises. Use `h (Pi.single i (algebraMap E (Ad E) (ξ i)⁻¹ * a) : Fin k → Ad E)` as an intermediate fact. Establish `e : (∑ j, (fun j => algebraMap E (Ad E) (ξ j)) j * (Pi.single i (algebraMap E (Ad E) (ξ i)⁻¹ * a) : Fin k → Ad E) j) = a`. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, one_mul]`.
+
+Simplify using `only [B] at this`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem B_inj {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (γ : Fin k → Ad E) (hγ : γ ∈ vecLattice E (Fin k))
     (h : ∀ x, B ψ γ x = 1) : γ = 0 := by
   classical
@@ -102,6 +141,11 @@ noncomputable def T (g : GA E k) : (Fin k → Ad E) ≃ₜ (Fin k → Ad E) wher
   continuous_toFun := Continuous.matrix_vecMul continuous_id continuous_const
   continuous_invFun := Continuous.matrix_vecMul continuous_id continuous_const
 
+/- English proof (translation)
+Establish `hpos : 0 < Dt g` using `(hD E k).1 g`. Establish `hmap : Measure.map (T g) (vecMeasure E (Fin k)) = ENNReal.ofReal (Dt g)⁻¹ • vecMeasure E (Fin k)`. Use extensionality with `A hA`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ← lintegral_indicator_one hA, ← lintegral_indicator_one hA, lintegral_map (measurable_one.indicator hA) (T g).continuous.measurable]`. Conclude with `(hM E k g (A.indicator 1) (measurable_one.indicator hA)).2`.
+
+Use `integral_map_equiv (T g).toMeasurableEquiv h (μ := vecMeasure E (Fin k))` as an intermediate fact. Rewrite `this` using `[Homeomorph.toMeasurableEquiv_coe, hmap, integral_smul_measure, ENNReal.toReal_ofReal (inv_nonneg.2 hpos.le)]`. Conclude with `this.symm`.
+-/
 theorem cov (hD : D0) (hM : AdelicLinearChange) (g : GA E k) (h : (Fin k → Ad E) → ℂ) :
     ∫ x, h (x ᵥ* g.val) ∂vecMeasure E (Fin k) = ((Dt g)⁻¹ : ℝ) • ∫ y, h y ∂vecMeasure E (Fin k) := by
   have hpos : 0 < Dt g := (hD E k).1 g
@@ -129,9 +173,17 @@ def Jf (ψ : AddChar (Ad E) ℂ) (η : (Fin k → Ad E) → ℝ) (s : (Fin k →
   ∫ y, (η y : ℂ) * φ (g * (s y)⁻¹) * ψ (∑ i, y i * ((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i)
     ∂vecMeasure E (Fin k)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem alg_zero : (fun i => algebraMap E (Ad E) ((0 : Fin k → E) i)) = 0 := by
   ext i; simp
 
+/- English proof (translation)
+Establish `e` using `cov hD hM g (fun y => (η y : ℂ) * φ (g * (s y)⁻¹) * ψ (∑ i, y i * ((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i))`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Ps, B]`. Use `congr 2`.
+
+Express the relevant statement in the definitionally equal form `x ⬝ᵥ _ = (x ᵥ* g.val) ⬝ᵥ (_ ᵥ* (g⁻¹.val)ᵀ)`. Rewrite using `[Matrix.vecMul_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]`. Simplify using the standard rewrite rules.
+-/
 theorem stepA (hD : D0) (hM : AdelicLinearChange) (ψ : AddChar (Ad E) ℂ) (η : (Fin k → Ad E) → ℝ) (s : (Fin k → Ad E) → GA E k)
     (φ : XB E k) (g : GA E k) (ξ : Fin k → E) :
     ∫ x, Ps η s φ g (x ᵥ* g.val) * B ψ x (fun i => algebraMap E (Ad E) (ξ i)) ∂vecMeasure E (Fin k) =
@@ -149,6 +201,33 @@ theorem stepA (hD : D0) (hM : AdelicLinearChange) (ψ : AddChar (Ad E) ℂ) (η 
 end PoissonCutoffAlgebra
 
 open PoissonCutoffAlgebra in
+/- English proof (translation)
+Introduce `hD hM hN _hH hG hK E _ _ _ k hk ψ hψ S U φ η s hcut hinv g`. Establish `hi` using `alg_inj hψ`. Establish `hDpos : ∀ h : GA E k, 0 < Dt h` using `(hD E k).1`. Establish `hΨc : Continuous (Ps η s φ g)`. Use `(continuous_eval_const g).comp hcut.contV` as an intermediate fact.
+
+Use `this.congr fun y => ?_` and prove the remaining obligations. Simplify using `[Rt_apply, Ps]`. Establish `hΨs : HasCompactSupport (Ps η s φ g)`. Establish `: HasCompactSupport fun y => (η y : ℂ)` using `hcut.cpt.comp_left Complex.ofReal_zero`. Conclude with `this.mul_right`.
+
+Establish `hΨ0 : Ps η s φ g 0 = 0` using `by simp [Ps, hcut.zero]`. Establish `hfc : Continuous fun x : Fin k → Ad E => Ps η s φ g (x ᵥ* g.val)` using `hΨc.comp (T g).continuous`. Establish `hfs : HasCompactSupport fun x : Fin k → Ad E => Ps η s φ g (x ᵥ* g.val)` using `hΨs.comp_homeomorph (T g)`. Take `⟨Cf, hCf, hft⟩` from `hcut.ft`. Take `⟨M, C0, hG3⟩` from `hG E k Cf hCf k le_rfl`.
+
+Take `⟨C, hC⟩` from `hft M`. Take `⟨-, hdpos, hdle, -⟩` from `hK E k hk`. Establish `hp : 0 < Dt (invT g) ^ ((k : ℝ)⁻¹)` using `Real.rpow_pos_of_pos (hDpos _) _`. Establish `hr : 0 < dmin (invT g) * Dt (invT g) ^ ((k : ℝ)⁻¹)` using `mul_pos (hdpos _) hp`. Establish `hrle : ∀ ξ : Fin k → E, ξ ≠ 0 → dmin (invT g) * Dt (invT g) ^ ((k : ℝ)⁻¹) ≤ height (invT g) ξ`.
+
+Introduce `ξ hξ`. Use `hdle (invT g) ξ hξ` as an intermediate fact. Rewrite `this` using `[ht, le_div_iff₀ hp]`. Then use the resulting hypothesis. Establish `hsumG` using `hG3 (invT g) _ hr hrle`. Establish `hu0 : ∀ ξ : Fin k → E, 0 ≤ Cf.indicator (fun _ => ((1 + ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i)‖) ^ M)⁻¹) (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i))` using `fun ξ => Set.indicator_nonneg (fun _ _ => inv_nonneg.2 (pow_nonneg (by positivity) _)) _`.
+
+Establish `hus : Summable fun ξ : Fin k → E => Cf.indicator (fun _ => ((1 + ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i)‖) ^ M)⁻¹) (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i))`. Establish `hne` using `ne_top_of_le_ne_top ENNReal.ofReal_ne_top hsumG`. Establish `h1` using `(ENNReal.summable_toReal hne).congr fun ξ => ENNReal.toReal_ofReal (hu0 ξ.1)`. Conclude with `(Set.finite_singleton (0 : Fin k → E)).summable_compl_iff.1 h1`. Establish `hJs : Summable fun ξ => ‖Jf ψ η s φ g ξ‖`.
+
+Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => (hC _ g).trans (le_of_eq ?_)) (hus.mul_left C)` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : (fun i => pFin E (((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* (invT g).val) i)) ∈ Cf <;> simp [hx]`. Establish `hsumΓ : Summable fun γ : vecLattice E (Fin k) => ‖∫ x, Ps η s φ g (x ᵥ* g.val) * B ψ x γ ∂vecMeasure E (Fin k)‖`. Use `(eL hi).summable_iff.1 ((hJs.mul_left (Dt g)⁻¹).congr fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, eL_val, stepA hD hM, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 (hDpos g))]`.
+
+Take `⟨hdisc, K, hK, hcov⟩` from `isCoLat_ratV E (Fin k)`. Use `haveI : DiscreteTopology (vecLattice E (Fin k)) := hdisc`. Establish `hP` using `GlobalTheory.CovolumeOneSelfDual.poisson (vecLattice E (Fin k)) K hK hcov (B ψ) (B_cont hψ) (B_symm ψ) (B_add ψ) (fun x y => hψ.norm _) (B_ker hψ) (fun γ hγ h => B_inj hψ γ hγ h) (vecMeasure E (Fin k)) (vecDomain E (Fin k)) isAddFundamentalDomain_vecDomain vecMeasure_vecDomain hf …`. Take `⟨-, -, -, -, -, -, -, -, -, hlast⟩` from `hN E k k hk le_rfl`. Establish `hL : sumF (fun h => (η (lastRow h) : ℂ) * φ (h * (s (lastRow h))⁻¹)) g = ∑' ξ : Fin k → E, Ps η s φ g ((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val)`.
+
+Unfold `sumF`. Rewrite using `[← (eR (E := E) (k := k)).symm.tsum_eq]`. Rewrite using `[← tsum_subtype_eq_of_support_subset (s := {ξ : Fin k → E | ξ ≠ 0})]`. Use `tsum_congr fun ξ => ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[hlast, mul_assoc, hinv (gam (eR.symm ξ))]`.
+
+Both sides reduce to the same expression. Introduce `ξ hξ`. Simplify using `only [Set.mem_setOf_eq]`. Introduce and unpack `rfl`. Apply `hξ` to reduce the goal to its premises.
+
+Simplify using `only [alg_zero, Matrix.zero_vecMul, hΨ0]`. Establish `hR : ∑' ξ : Fin k → E, Ps η s φ g ((fun i => algebraMap E (Ad E) (ξ i)) ᵥ* g.val) = ∑' ξ : Fin k → E, ((Dt g)⁻¹ : ℝ) • Jf ψ η s φ g ξ`. Establish `h1` using `(eL hi).tsum_eq fun γ : vecLattice E (Fin k) => Ps η s φ g ((γ : Fin k → Ad E) ᵥ* g.val)`. Establish `h2` using `(eL hi).tsum_eq fun γ : vecLattice E (Fin k) => ∫ x, Ps η s φ g (x ᵥ* g.val) * B ψ x γ ∂vecMeasure E (Fin k)`. Simplify using `only [eL_val] at h1 h2`.
+
+Rewrite using `[h1, hP, ← h2]`. Conclude with `tsum_congr fun ξ => stepA hD hM ψ η s φ g ξ`. Establish `hJsum : Summable (Jf ψ η s φ g)` using `hJs.of_norm`. Establish `hJ0 : Jf ψ η s φ g 0 = ∫ y, (η y : ℂ) * φ (g * (s y)⁻¹) ∂vecMeasure E (Fin k)`. Rewrite using `[Jf, alg_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hL, hR]`. Simplify using `only [Complex.real_smul, tsum_mul_left, Complex.ofReal_inv]`. Rewrite using `[mul_inv_cancel_left₀ (Complex.ofReal_ne_zero.2 (hDpos g).ne'), ← hJsum.tsum_subtype_add_tsum_subtype_compl {0}, tsum_singleton, hJ0]`. Both sides reduce to the same expression.
+-/
 theorem poisson_cutoff_of : D0 → AdelicLinearChange → N0 → H0 → ThetaSeriesBound → K1 → PoissonCutoffFormula := by
   intro hD hM hN _hH hG hK E _ _ _ k hk ψ hψ S U φ η s hcut hinv g
   classical

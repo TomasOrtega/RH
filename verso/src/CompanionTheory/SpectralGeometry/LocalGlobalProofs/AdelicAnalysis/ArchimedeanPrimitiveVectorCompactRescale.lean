@@ -9,6 +9,35 @@ namespace GlobalTheory.CompanionTheory.SW.PrimInf
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Set `e : K ≃ₜ (W → ℂ)` to `hΦ.homeomorph`. Establish `he : ∀ x, e x = Φ x` using `fun _ => rfl`. Set `H : (Fin 1 → Fin M → K) ≃ₜ (Fin 1 → Fin M → W → ℂ)` to `Homeomorph.piCongrRight fun _ => Homeomorph.piCongrRight fun _ => e`. Set `P : Set (Fin 1 → Fin M → W → ℂ)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall 0 1`. Establish `hP : IsCompact P` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`.
+
+Establish `hmem : ∀ y, y ∈ H ⁻¹' P ↔ ∀ a i w, ‖Φ (y a i) w‖ ≤ 1`. Introduce `y`. Simplify using `only [Set.mem_preimage, P, Set.mem_pi, Set.mem_univ, true_imp_iff, mem_closedBall_zero_iff]`. Both sides reduce to the same expression. Use `⟨H ⁻¹' P, H.isCompact_preimage.mpr hP, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨z₀, hz₀⟩`. Establish `hsum : ∀ w, ∑ i, Φ (z₀ i) w * Φ (y 0 i) w = 1`. Introduce `w`. Use `congrFun (congrArg Φ hz₀) w` as an intermediate fact. Simplify `this` using `[dotProduct, map_sum, Finset.sum_apply]`.
+
+Establish `hmax : ∀ w, ∃ i, (∀ j, ‖Φ (y 0 j) w‖ ≤ ‖Φ (y 0 i) w‖) ∧ Φ (y 0 i) w ≠ 0`. Introduce `w`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, Φ (y 0 i) w ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Use `hsum w` as an intermediate fact. Simplify using `[hall] at this`. Use `haveI : Nonempty (Fin M) := ⟨i₀⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun j => ‖Φ (y 0 j) w‖`. Use `⟨i, hi, fun h0 => hi₀ ?_⟩` and prove the remaining obligations.
+
+Use `hi i₀` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `norm_le_zero_iff.mp this`. Use `choose I hI hI0 using hmax`. Set `u : W → ℂ` to `fun w => Φ (y 0 (I w)) w`.
+
+Establish `hu : ∀ w, u w ≠ 0` using `hI0`. Set `a : Kˣ` to `{ val := Φ.symm fun w => (u w)⁻¹ inv := Φ.symm u val_inv := by`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `[hu w]`.
+
+Use `inv_val := by`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Simplify using `[hu w] }`. Establish `hΦa : ∀ w, Φ (a : K) w = (u w)⁻¹` using `fun w => by simp [a]`.
+
+Set `z : Fin 1 → Fin M → K` to `fun _ i => Φ.symm fun w => if I w = i then 1 else 0`. Establish `hΦz : ∀ b i w, Φ (z b i) w = if I w = i then 1 else 0` using `fun b i w => by simp [z]`. Use `⟨a, z, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Introduce `b i w`.
+
+Take `rfl : b = 0` from `Subsingleton.elim _ _`. Establish `: Φ (((a : K) • y) 0 i) w = (u w)⁻¹ * Φ (y 0 i) w`. Simplify using `[hΦa]`. Rewrite using `[this, norm_mul, norm_inv]`. Establish `hpos : 0 < ‖u w‖` using `norm_pos_iff.mpr (hu w)`.
+
+Rewrite using `[inv_mul_le_iff₀ hpos, mul_one]`. Conclude with `hI w i`. Rewrite using `[hmem]`. Introduce `b i w`. Rewrite using `[hΦz b i w]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Establish `h1 : ∀ i, Φ (z 0 i) w * Φ (((a : K) • y) 0 i) w = if I w = i then (u w)⁻¹ * Φ (y 0 i) w else 0`. Introduce `i`.
+
+Establish `: Φ (((a : K) • y) 0 i) w = (u w)⁻¹ * Φ (y 0 i) w` using `by simp [hΦa]`. Rewrite using `[this, hΦz 0 i w]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [dotProduct, map_sum, Finset.sum_apply, map_mul, Pi.mul_apply, map_one, Pi.one_apply]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i]`.
+
+Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `inv_mul_cancel₀ (hu w)`.
+-/
 theorem reduce_of_equiv {K : Type} [CommRing K] [TopologicalSpace K] {W : Type} [Fintype W]
     (Φ : K ≃+* (W → ℂ)) (hΦ : IsHomeomorph Φ) (M : ℕ) :
     ∃ Ω : Set (Fin 1 → Fin M → K), IsCompact Ω ∧ ∀ y : Fin 1 → Fin M → K,
@@ -95,6 +124,13 @@ section
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨-, hC, -, hτ⟩` from `h`. Set `τ₀ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Establish `hnr : ¬ ComplexEmbedding.IsReal τ₀` using `fun hr => InfinitePlace.not_isReal_iff_isComplex.mpr (hC.isComplex (InfinitePlace.mk τ₀)) (InfinitePlace.isReal_mk_iff.mpr hr)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Apply `hnr` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `hτ τ₀ x` as an intermediate fact. Rewrite `this` using `[hall x]`. Conclude with `this.symm`. Establish `hσσ : ∀ x, σ (σ x) = x` using `fun x => τ₀.injective (by rw [hτ, hτ, star_star])`. Use `⟨x - σ x, by simp [hσσ], sub_ne_zero.mpr (Ne.symm hx)⟩` and prove the remaining obligations.
+-/
 theorem exists_delta (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ δ : E, σ δ = -δ ∧ δ ≠ 0 := by
   obtain ⟨-, hC, -, hτ⟩ := h
   let τ₀ : E →+* ℂ := (IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom
@@ -114,6 +150,19 @@ theorem exists_delta (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ δ : E, σ 
   have hσσ : ∀ x, σ (σ x) = x := fun x => τ₀.injective (by rw [hτ, hτ, star_star])
   refine ⟨x - σ x, by simp [hσσ], sub_ne_zero.mpr (Ne.symm hx)⟩
 
+/- English proof (translation)
+Establish `hli : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h2 : s • (1 : E) - t • δ = 0`. Use `congrArg σ.toLinearMap hst` as an intermediate fact.
+
+Rewrite `this` using `[map_add, LinearMap.map_smul, LinearMap.map_smul, map_zero]`. Simplify using `only [AlgHom.toLinearMap_apply, map_one, hδ, smul_neg] at this`. Rewrite using `[sub_eq_add_neg]` and apply the resulting hypothesis. Establish `h3 : (2 * t) • δ = 0`. Establish `: (2 * t) • δ = (s • (1 : E) + t • δ) - (s • (1 : E) - t • δ)`.
+
+Rewrite using `[mul_smul, two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hst, h2, sub_zero]`. Establish `ht : t = 0`. Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases.
+
+Simplify using `using h4`. Conclude with `absurd h4 h0`. Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using hst`.
+
+Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E`. Rewrite using `[h.2.2.1]`. Both sides reduce to the same expression. Use `⟨basisOfLinearIndependentOfCardEqFinrank hli hcard, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_basis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {δ : E} (hδ : σ δ = -δ) (h0 : δ ≠ 0) :
     ∃ b : Module.Basis (Fin 2) F E, b 0 = 1 ∧ b 1 = δ := by
   have hli : LinearIndependent F ![(1 : E), δ] := by
@@ -143,6 +192,9 @@ theorem exists_basis (σ : E →ₐ[F] E) (h : IsCMExt F E σ) {δ : E} (hδ : �
   · simp
   · simp
 
+/- English proof (translation)
+Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨(IsAlgClosed.lift : E →ₐ[F] ℂ).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(IsAlgClosed.lift : E →ₐ[F] ℂ).commutes x`.
+-/
 theorem exists_tau (w : InfinitePlace F) : ∃ τ : E →+* ℂ, τ.comp (algebraMap F E) = w.embedding := by
   letI : Algebra F ℂ := w.embedding.toAlgebra
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -156,6 +208,23 @@ section
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Set `inv : (InfinitePlace F → ℂ) → Fin 2 → Ainf F` to `fun z k => if k = 0 then fun w => (ρ w).symm (z w).re else fun w => (ρ w).symm ((z w).im / (t w).im)`. Establish `hinv0 : ∀ z w, inv z 0 w = (ρ w).symm (z w).re` using `fun z w => rfl`. Establish `hinv1 : ∀ z w, inv z 1 w = (ρ w).symm ((z w).im / (t w).im)` using `fun z w => rfl`. Set `fwd : (Fin 2 → Ainf F) → InfinitePlace F → ℂ` to `fun p w => ((ρ w (p 0 w) : ℝ) : ℂ) + ((ρ w (p 1 w) : ℝ) : ℂ) * t w`. Establish `hre : ∀ p w, (fwd p w).re = ρ w (p 0 w)` using `fun p w => by`.
+
+Simplify using `[fwd, htre w]`. Establish `him : ∀ p w, (fwd p w).im = ρ w (p 1 w) * (t w).im` using `fun p w => by`. Simplify using `[fwd]`. Establish `hl : Function.LeftInverse inv fwd`. Introduce `p`.
+
+Use function extensionality and compare the values at `k`. Use `revert k`. Rewrite using `[Fin.forall_fin_two]`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[hinv0, hre, RingEquiv.symm_apply_apply]`. Use function extensionality and compare the values at `w`. Rewrite using `[hinv1, him, mul_div_cancel_right₀ _ (htim w), RingEquiv.symm_apply_apply]`. Establish `hr : Function.RightInverse inv fwd`. Introduce `z`.
+
+Use function extensionality and compare the values at `w`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[hre, hinv0, RingEquiv.apply_symm_apply]`. Rewrite using `[him, hinv1, RingEquiv.apply_symm_apply, div_mul_cancel₀ _ (htim w)]`. Establish `hc1 : Continuous fwd`.
+
+Use `continuous_pi fun w => ?_` and prove the remaining obligations. Establish `hc : ∀ k : Fin 2, Continuous fun p : Fin 2 → Ainf F => ((ρ w (p k w) : ℝ) : ℂ)` using `fun k => Complex.continuous_ofReal.comp ((hρc w).comp ((continuous_apply w).comp (continuous_apply k)))`. Conclude with `(hc 0).add ((hc 1).mul continuous_const)`. Establish `hc2 : Continuous inv`. Use `continuous_pi fun k => ?_` and prove the remaining obligations.
+
+Use `revert k`. Rewrite using `[Fin.forall_fin_two]`. Prove the components needed by the constructor for the conclusion. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(hρs w).comp (Complex.continuous_re.comp (continuous_apply w))`.
+
+Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(hρs w).comp ((Complex.continuous_im.comp (continuous_apply w)).div_const _)`. Conclude with `⟨⟨⟨fwd, inv, hl, hr⟩, hc1, hc2⟩, fun _ _ => rfl⟩`.
+-/
 theorem exists_psi (ρ : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ) (hρc : ∀ w, Continuous (ρ w))
     (hρs : ∀ w, Continuous (ρ w).symm) (t : InfinitePlace F → ℂ) (htre : ∀ w, (t w).re = 0)
     (htim : ∀ w, (t w).im ≠ 0) :
@@ -210,6 +279,29 @@ section
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδ0⟩` from `exists_delta σ h`. Take `⟨b, hb0, hb1⟩` from `exists_basis σ h hδ hδ0`. Use `haveI hTR : IsTotallyReal F := h.1`. Use `choose τ hτ using fun w : InfinitePlace F => exists_tau (E := E) w`. Set `ρ : ∀ w : InfinitePlace F, w.Completion ≃+* ℝ` to `fun w => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)`.
+
+Establish `hρc : ∀ w, Continuous (ρ w)` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous`. Establish `hρs : ∀ w, Continuous (ρ w).symm` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.continuous`. Establish `hρF : ∀ (w : InfinitePlace F) (x : F), ((ρ w (algebraMap F (Ainf F) x w) : ℝ) : ℂ) = τ w (algebraMap F E x)`. Introduce `w x`. Establish `h1 : τ w (algebraMap F E x) = w.embedding x` using `DFunLike.congr_fun (hτ w) x`.
+
+Rewrite using `[h1, InfiniteAdeleRing.algebraMap_apply]`. Simplify using `only [ρ]`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _`. Set `t : InfinitePlace F → ℂ` to `fun w => τ w δ`.
+
+Establish `htre : ∀ w, (t w).re = 0`. Introduce `w`. Establish `h1 : τ w (σ δ) = star (τ w δ)` using `h.2.2.2 (τ w) δ`. Rewrite `h1` using `[hδ, map_neg]`. Establish `h2` using `congrArg Complex.re h1`.
+
+Simplify using `only [Complex.neg_re, Complex.star_def, Complex.conj_re] at h2`. Simplify using `only [t]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htim : ∀ w, (t w).im ≠ 0`. Introduce `w h0`.
+
+Conclude with `hδ0 ((map_eq_zero (τ w)).mp (Complex.ext (htre w) h0))`. Set `f : Ainf F →+* (InfinitePlace F → ℂ)` to `Pi.ringHom fun w => (Complex.ofRealHom.comp (ρ w).toRingHom).comp (Pi.evalRingHom _ w)`. Set `g : E →+* (InfinitePlace F → ℂ)` to `Pi.ringHom τ`. Use `letI alg : Algebra F (InfinitePlace F → ℂ) := (g.comp (algebraMap F E)).toAlgebra`. Set `fA : Ainf F →ₐ[F] (InfinitePlace F → ℂ)` to `{ toRingHom := f commutes' := fun x => funext fun w => hρF w x }`.
+
+Set `gA : E →ₐ[F] (InfinitePlace F → ℂ)` to `{ toRingHom := g commutes' := fun _ => rfl }`. Set `Φ₀ : Ainf F ⊗[F] E →ₐ[F] (InfinitePlace F → ℂ)` to `Algebra.TensorProduct.productMap fA gA`. Take `⟨Ψ, hΨ⟩` from `exists_psi ρ hρc hρs t htre htim`. Set `C : (Ainf F ⊗[F] E) ≃ₜ (Fin 2 → Ainf F)` to `TopK.coordHomeo (Ainf F) b`. Establish `hC : ∀ x k, C x k = (Algebra.TensorProduct.basis (Ainf F) b).repr x k` using `fun _ _ => rfl`.
+
+Establish `hform : ∀ a c : Ainf F, Φ₀ (a ⊗ₜ[F] (1 : E) + c ⊗ₜ[F] δ) = fun w => ((ρ w (a w) : ℝ) : ℂ) + ((ρ w (c w) : ℝ) : ℂ) * t w`. Introduce `a c`. Use function extensionality and compare the values at `w`. Rewrite using `[map_add]`. Simplify using `only [Φ₀, Algebra.TensorProduct.productMap_apply_tmul]`.
+
+Use `show ((ρ w (a w) : ℝ) : ℂ) * τ w 1 + ((ρ w (c w) : ℝ) : ℂ) * τ w δ = _`. Rewrite using `[map_one, mul_one]`. Establish `hΦ : ⇑Φ₀ = Ψ ∘ C`. Use function extensionality and compare the values at `x`. Establish `hx : x = (C x 0) ⊗ₜ[F] (1 : E) + (C x 1) ⊗ₜ[F] δ` using `by conv_lhs => rw [← (Algebra.TensorProduct.basis (Ainf F) b).sum_repr x]`.
+
+Rewrite using `[Fin.sum_univ_two, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, hb0, hb1, hC, hC, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hhom : IsHomeomorph Φ₀`. Rewrite using `[hΦ]`. Conclude with `(C.trans Ψ).isHomeomorph`.
+
+Conclude with `⟨RingEquiv.ofBijective (Φ₀ : Ainf F ⊗[F] E →+* (InfinitePlace F → ℂ)) hhom.bijective, hhom⟩`.
+-/
 theorem exists_equiv (σ : E →ₐ[F] E) (h : IsCMExt F E σ) :
     ∃ Φ : (Ainf F ⊗[F] E) ≃+* (InfinitePlace F → ℂ), IsHomeomorph Φ := by
   obtain ⟨δ, hδ, hδ0⟩ := exists_delta σ h
@@ -280,6 +372,9 @@ theorem exists_equiv (σ : E →ₐ[F] E) (h : IsCMExt F E σ) :
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h M`. Take `⟨Φ, hΦ⟩` from `exists_equiv σ h`. Conclude with `reduce_of_equiv Φ hΦ M`.
+-/
 theorem unimodular_mod_units_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ), ∃ Ω : Set (Fin 1 → Fin M → Ainf F ⊗[F] E), IsCompact Ω ∧ ∀ y : Fin 1 → Fin M → Ainf F ⊗[F] E, (∃ z : Fin M → Ainf F ⊗[F] E, z ⬝ᵥ y 0 = 1) → ∃ (a : (Ainf F ⊗[F] E)ˣ) (z : Fin 1 → Fin M → Ainf F ⊗[F] E), (a : Ainf F ⊗[F] E) • y ∈ Ω ∧ z ∈ Ω ∧ z 0 ⬝ᵥ ((a : Ainf F ⊗[F] E) • y) 0 = 1 := by
   intro F E _ _ _ _ _ σ h M
   obtain ⟨Φ, hΦ⟩ := exists_equiv σ h

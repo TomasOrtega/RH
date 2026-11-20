@@ -11,6 +11,9 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Fin
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun a b hab he => ?_⟩` and prove the remaining obligations. Simplify using `using h.1 (s.symm a)`. Establish `h1 : (ε ∘ s) (s.symm a) = (ε ∘ s) (s.symm b)` using `by simpa using he`. Simplify using `using h.2 (s.symm a) (s.symm b) (GlobalTheory.DSId.PermK.mono_symm hs a b hab h1) h1`.
+-/
 theorem kHighest_of_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {E : Fin n → Fin n → Module.End ℂ V}
     {μ : Fin n → ℝ} {x : V} (h : KHighest (ε ∘ s) (fun a b => E (s a) (s b)) μ x) :
@@ -20,6 +23,9 @@ theorem kHighest_of_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n 
   · have h1 : (ε ∘ s) (s.symm a) = (ε ∘ s) (s.symm b) := by simpa using he
     simpa using h.2 (s.symm a) (s.symm b) (GlobalTheory.DSId.PermK.mono_symm hs a b hab h1) h1
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun a b hab he => h.2 _ _ (hs a b hab he) he⟩` and prove the remaining obligations. Simplify using `using h.1 (s a)`.
+-/
 theorem kHighest_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n → Bool} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) {E : Fin n → Fin n → Module.End ℂ V}
     {μ : Fin n → ℝ} {x : V} (h : KHighest ε E (μ ∘ s.symm) x) :
@@ -27,6 +33,15 @@ theorem kHighest_perm {V : Type} [AddCommGroup V] [Module ℂ V] {ε : Fin n →
   refine ⟨fun a => ?_, fun a b hab he => h.2 _ _ (hs a b hab he) he⟩
   simpa using h.1 (s a)
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ D E hK s mu hSq hA`. Take `⟨-, hord, hmin, v, hv0, hv⟩` from `hA`. Take `⟨hT, -, -, hS, -⟩` from `GlobalTheory.DSId.PermK.permKType n ε s H σ hord`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS.1 hSq`. Establish `e : ∀ f : Fin n → ℝ, (f ∘ s.symm) ∘ s = f` using `fun f => by funext a; simp`.
+
+Use `⟨h1, h2, h3, h4, h5, ?_, ?_⟩` and prove the remaining obligations. Take `⟨T, hT'⟩` from `hK.ty _ v hv0 (kHighest_of_perm hord hv)`. Use `⟨T, ?_⟩` and prove the remaining obligations. Establish `h6` using `(hT _ T).1 hT'`. Rewrite `h6` using `[e]`. Then use the resulting hypothesis.
+
+Introduce `μ S hS'`. Establish `h6 : Formalism.MainNotions.S.IsKTypeOf ε σ (μ ∘ s.symm) S`. Use `(hT _ S).2 ?_` and prove the remaining obligations. Rewrite using `[e]` and apply the resulting hypothesis. Take `⟨w, hw0, -, hw⟩` from `hK.hw _ S h6`.
+
+Conclude with `hmin μ w hw0 (kHighest_perm hord hw)`.
+-/
 theorem dsOfData : DSOfData := by
   intro n ε H _ _ σ D E hK s mu hSq hA
   obtain ⟨-, hord, hmin, v, hv0, hv⟩ := hA

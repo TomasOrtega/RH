@@ -27,6 +27,9 @@ def reesPr : reesScheme I X ⟶ X := pullback.fst _ _
 
 def reesSnd : reesScheme I X ⟶ Spec (.of (reesAlgebra I)) := pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback _ _`.
+-/
 lemma isPullback_rees :
     IsPullback (reesPr I X) (reesSnd I X) (X ↘ Spec (.of A)) (reesStructure I) :=
   IsPullback.of_hasPullback _ _
@@ -47,6 +50,9 @@ def reesPolyMap : reesPolyScheme I X ⟶ reesScheme I X := pullback.fst _ _
 
 def reesPolySnd : reesPolyScheme I X ⟶ Spec (.of (Polynomial A)) := pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback _ _`.
+-/
 lemma isPullback_reesPoly :
     IsPullback (reesPolyMap I X) (reesPolySnd I X) (reesSnd I X) (reesPolyStructure I) :=
   IsPullback.of_hasPullback _ _
@@ -80,6 +86,9 @@ def polyInr (V : X.Opens) : CommRingCat.of (Polynomial A) ⟶
 
 include hV in
 
+/- English proof (translation)
+Use `(isPushout_app_of_isPullback (isPullback_rees I X) hV).of_iso (Scheme.ΓSpecIso (.of A)) (Iso.refl _) (Scheme.ΓSpecIso (.of (reesAlgebra I))) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[algV]`. Conclude with `Scheme.ΓSpecIso_naturality _`. Simplify using the standard rewrite rules. Simplify using `[reesInr]`.
+-/
 theorem isPushout_rees :
     IsPushout (CommRingCat.ofHom (algV X V)) (CommRingCat.ofHom (algebraMap A (reesAlgebra I)))
       ((reesPr I X).app V) (reesInr I V) := by
@@ -93,6 +102,11 @@ theorem isPushout_rees :
 
 include hV in
 
+/- English proof (translation)
+Establish `h1` using `(isPushout_app_of_isPullback (isPullback_rees I X) hV).flip`. Establish `h2` using `(isPushout_app_of_isPullback (isPullback_reesPoly I X) (hV.preimage (reesPr I X))).flip`. Establish `h` using `(h1.paste_horiz h2).flip`. Use `h.of_iso (Scheme.ΓSpecIso (.of A)) (Iso.refl _) (Scheme.ΓSpecIso (.of (Polynomial A))) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[algV]`.
+
+Rewrite using `[Category.assoc, Scheme.ΓSpecIso_naturality, ← Category.assoc, Scheme.ΓSpecIso_naturality, Category.assoc]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using `[polyInr]`.
+-/
 theorem isPushout_reesPoly :
     IsPushout (CommRingCat.ofHom (algV X V)) (CommRingCat.ofHom (Polynomial.C))
       ((reesPr I X).app V ≫ (reesPolyMap I X).app _) (polyInr I V) := by

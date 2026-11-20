@@ -16,13 +16,22 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.OneParam
 variable {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Unfold `mnorm`. Simplify using `only [Matrix.smul_apply, norm_smul, Real.norm_eq_abs, Finset.mul_sum]`.
+-/
 theorem mnorm_real_smul (s : ℝ) (X : Matrix (Fin n) (Fin n) ℂ) : mnorm (s • X) = |s| * mnorm X := by
   unfold mnorm
   simp only [Matrix.smul_apply, norm_smul, Real.norm_eq_abs, Finset.mul_sum]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem mnorm_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ mnorm X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hs`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `(GlobalTheory.T.derived_action_of_smooth_vector hG hrep ih hX).2`.
+-/
 theorem iterate_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hs : IsSmoothVec G π v)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (m : ℕ) :
     IsSmoothVec G π ((dRep π X)^[m] v) := by
@@ -32,6 +41,9 @@ theorem iterate_smooth (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.I
     rw [Function.iterate_succ_apply']
     exact (GlobalTheory.T.derived_action_of_smooth_vector hG hrep ih hX).2
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `hsm` using `iterate_smooth hG hrep hs hX m`. Rewrite using `[Function.iterate_succ_apply', ih, Function.iterate_succ_apply', GlobalTheory.GKLie.dRep_smul, (GlobalTheory.T.derived_action_additive hG hrep hsm hsm hX hX).2.2, ← Complex.coe_smul, smul_smul, pow_succ']`.
+-/
 theorem iterate_real_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) {v : H} (hs : IsSmoothVec G π v)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ HCSS.lieOf G) (s : ℝ) (m : ℕ) :
     (dRep π (s • X))^[m] v = ((s : ℂ) ^ m) • (dRep π X)^[m] v := by
@@ -42,6 +54,29 @@ theorem iterate_real_smul (hG : IsLinRed G) (hrep : Formalism.QuantumDeterminant
     rw [Function.iterate_succ_apply', ih, Function.iterate_succ_apply', GlobalTheory.GKLie.dRep_smul,
       (GlobalTheory.T.derived_action_additive hG hrep hsm hsm hX hX).2.2, ← Complex.coe_smul, smul_smul, pow_succ']
 
+/- English proof (translation)
+Introduce `n G H _ _ _ π hG hU v hs hw X hX w t₀ _`. Take `⟨r, hr, hsum⟩` from `GlobalTheory.T.analytic_vector_exponential_series hG hU.1 hU.2.2 hs hw`. Establish `hrep` using `hU.1`. Set `L : H →L[ℂ] ℂ` to `(innerSL ℂ w).comp (π (NormedSpace.exp (t₀ • X)))`. Set `a : ℕ → ℂ` to `fun m => ((m.factorial : ℂ)⁻¹) * L ((dRep π X)^[m] v)`.
+
+Establish `key : ∀ s : ℝ, |s| * mnorm X < r → HasSum (fun m : ℕ => (s : ℂ) ^ m * a m) (⟪w, π (NormedSpace.exp ((t₀ + s) • X)) v⟫_ℂ)`. Introduce `s hs'`. Establish `h1` using `hsum (s • X) ((GlobalTheory.T.lie_algebra_of_linear_group_closed hG).2.1 s X hX) (by rwa [mnorm_real_smul])`. Establish `h2` using `L.hasSum h1`. Establish `e : ⟪w, π (NormedSpace.exp ((t₀ + s) • X)) v⟫_ℂ = L (π (NormedSpace.exp (s • X)) v)`.
+
+Establish `hc : Commute (t₀ • X) (s • X)` using `((Commute.refl X).smul_left t₀).smul_right s`. Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ hc, hrep.2 _ (hX t₀) _ (hX s)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `h2 using 2 with m` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[iterate_real_smul hG hrep hs hX s m]`. Simplify using `only [a, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `p : FormalMultilinearSeries ℝ ℝ ℂ` to `fun m => ContinuousMultilinearMap.mkPiRing ℝ (Fin m) (a m)`. Establish `hpa : ∀ (m : ℕ) (s : ℝ), p m (fun _ => s) = (s : ℂ) ^ m * a m`.
+
+Introduce `m s`. Simplify using `[p, ContinuousMultilinearMap.mkPiRing_apply]`. Establish `hM : 0 < mnorm X + 1` using `by linarith [mnorm_nonneg X]`. Establish `hsmall : ∀ s : ℝ, |s| < r / (mnorm X + 1) → |s| * mnorm X < r`. Introduce `s h`.
+
+Rewrite `h` using `[lt_div_iff₀ hM]`. Use polynomial arithmetic with `[abs_nonneg s]`. Use `set ε : ℝ := r / (mnorm X + 1) with hε`. Establish `hεpos : 0 < ε` using `div_pos hr hM`. Establish `hrad : 0 < p.radius`.
+
+Establish `hs0 : |ε / 2| < ε` using `by rw [abs_of_pos (by linarith)]; linarith`. Establish `hS` using `(key (ε / 2) (hsmall _ hs0)).summable.norm`. Set `ρ : NNReal` to `⟨ε / 2, by linarith⟩`. Establish `hρ : (0 : NNReal) < ρ`. Express the relevant statement in the definitionally equal form `(0 : ℝ) < ε / 2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (ρ : ENNReal) ≤ p.radius`. Use `p.le_radius_of_summable_norm ?_` and prove the remaining obligations. Use `hS.congr fun m => ?_` and prove the remaining obligations. Establish `hρc : ((ρ : NNReal) : ℝ) = ε / 2` using `rfl`.
+
+Simplify using `[p, hρc, ContinuousMultilinearMap.norm_mkPiRing, abs_of_pos hεpos, mul_comm]`. Conclude with `lt_of_lt_of_le (by exact_mod_cast hρ) this`. Establish `han : AnalyticAt ℝ p.sum 0` using `(p.hasFPowerSeriesOnBall hrad).analyticAt`. Establish `han2 : AnalyticAt ℝ (fun t : ℝ => p.sum (t - t₀)) t₀` using `AnalyticAt.comp_of_eq (g := p.sum) (f := fun t : ℝ => t - t₀) han (analyticAt_id.sub analyticAt_const) (by simp)`. Use `han2.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Metric.ball_mem_nhds t₀ hεpos] with t ht`. Establish `hd : |t - t₀| < ε` using `by simpa [Real.dist_eq] using ht`. Establish `h3` using `key (t - t₀) (hsmall _ hd)`. Rewrite `h3` using `[show t₀ + (t - t₀) = t by ring]`. Simplify using `only [FormalMultilinearSeries.sum, hpa]`.
+
+Conclude with `h3.tsum_eq`.
+-/
 theorem analytic_coeff : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)
     (hU : IsURepOn G π) {v : H} (hs : IsSmoothVec G π v) (hw : WordBound G π v)

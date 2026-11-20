@@ -27,6 +27,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.Up
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
+/- English proof (translation)
+Use `GlobalTheory.T.goodTwist_of_seed_character_powers (Dof x) (Dof y) (w'.st Z).toD7 A σ l.c.ch C xd (plUnder h) hc.exp hk (avPrimes_st _ _) rfl hx hA fun v₂ v₃ hv ht => ?_` and prove the remaining obligations. Take `rfl : v₂ = v₃` from `eq_of_heq hv`. Establish `h1` using `hZ v₂ ht`. Establish `h2 : TwistedAt (Dof x) (plUnder h v₂)` using `(twisted_st x _).2 ((hW _).2 h1)`. Establish `h3 : TwistedAt (Dof y) v₂` using `(twisted_st y _).2 h1`.
+
+Take `⟨hQ, hk', ι, χ, hF, hχ⟩` from `(hT.2 v₂).1 h2`. Establish `hg` using `(((σ.good _ h2).2 1 (by simp)).1)`. Rewrite `hg` using `[zpow_one]`. Establish `e1 : l.c.ch.Q v₂ = T'.Q v₂` using `(congrFun l.c.Q_eq v₂).trans (if_pos h1)`. Establish `e2 : l.c.ch.k' v₂ = T'.k v₂` using `l.c.k_eq v₂ h3`.
+
+Use `⟨h2, _root_.GlobalTheory.HeightCounting.Rigid.rigid_raw_packet_eq_pow_alt hP (Dof x) (Dof y) (σ.pack (plUnder h v₂)) _ ι χ (cfOf y) l.c.ch l.c.tp v₂ hc.exp hg hF l.c.side.psi h3 (hs v₂) ((heq_of_eq e1).trans hQ) (e2.trans hk') ((heq_of_eq (congrFun l.c.psi_eq v₂)).trans hχ) fun z …` and prove the remaining obligations. Rewrite `hz` using `[e2]`. Conclude with `hT.1 v₂ z hz`.
+-/
 theorem goodO_of_alt_alt (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {B' : Base} {f' : Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'}
     (h : Enl B B') {P : Pre2 K w} (x : St P) {A} (σ : Seed (Dof x) A) (hA : ∀ i, avD (Dof x) (avDesign (Dof x)) i ⊆ A i)
     (hT : TwFrom (w.st x.o.Z) σ h T') {P' : Pre2 K w'} (hW : ∀ v', plUnder h v' ∈ P.Wt ↔ v' ∈ P'.Wt) {y : St P'} (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL y)
@@ -49,6 +56,9 @@ theorem goodO_of_alt_alt (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedIn
     (hs v₂) ((heq_of_eq e1).trans hQ) (e2.trans hk') ((heq_of_eq (congrFun l.c.psi_eq v₂)).trans hχ) fun z hz => ?_⟩
   rw [e2] at hz
   exact hT.1 v₂ z hz
+/- English proof (translation)
+Establish `eT : (Dof x).ntw.Tw = (Dof y).ntw.Tw` using `(same_basic hc.exp.gal hc.exp.set hc.exp.frm).1`. Take `⟨c, hs⟩` from `ck (fun v' => cast eT (σ.s (plUnder h v'))) (fun v' => (σ.reads (plUnder h v')).imp fun b hb => GlobalTheory.HeightCounting.Up.readsAt_of_plUnder (w.st x.o.Z) (w'.st y.o.Z) h hc v' _ _ b (cast_heq eT _).symm hb) (fun v' => congrArg (cast eT) ((congrArg σ.s (TwChar.plUnder_conj h …`. Take `⟨Z, v, h1, h2⟩` from `fin { toStrictHenselianAcyclic := l, c := c } S Γ hl`. Establish `hg : GoodO (w'.st Z).toD7 v.nch v.xd` using `_root_.GlobalTheory.HeightCounting.Up.goodO_of_alt_alt hP h x σ hA hT hW { toStrictHenselianAcyclic := l, c := c } hc (fun v' => (heq_of_eq (congrFun hs v')).trans (cast_heq eT _)) h2 v.nx.2.1.1.1.xd fun v' hv' => h1 ▸ ((TupTieW.tupTied_of_muIsW (w'.st Z) f' T' v.Wt w'.I.xi v.wha …`. Conclude with `⟨Z, ⟨{ g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd, chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨hg⟩⟩ }⟩⟩`.
+-/
 theorem has3_of_carried_levelB2 {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {cDep : ℝ} (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (S : SExt) (Γ : GeoP) {B' : Base} {f' : Fr B'.toPre}
     {T' : TwDat B'} {w' : ColW B' f' T'} (h : Enl B B') {P : Pre2 K w} (x : St P) {A} (σ : Seed (Dof x) A)
     (hA : ∀ i, avD (Dof x) (avDesign (Dof x)) i ⊆ A i) (hT : TwFrom (w.st x.o.Z) σ h T') {P' : Pre2 K w'}
@@ -69,6 +79,19 @@ theorem has3_of_carried_levelB2 {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {c
       v.nx.2.1.1.1.xd fun v' hv' => h1 ▸ ((TupTieW.tupTied_of_muIsW (w'.st Z) f' T' v.Wt w'.I.xi v.what₂.mu).1 v').1 hv'
   exact ⟨Z, ⟨{ g := v.g, coh := v.coh, Wt := v.Wt, p0 := v.p0, what₂ := v.what₂, rx := v.rx, nch := v.nch, n := v.n, xd := v.xd,
                chiT := v.chiT, nx := ⟨v.nx.1, v.nx.2, ⟨hg⟩⟩ }⟩⟩
+/- English proof (translation)
+Introduce `S Γ`. Establish `h3` using `GlobalTheory.Mem.R3.Rw.Second.exists_ext_twisted_places hP.greenC hD`. Establish `h4` using `(GlobalTheory.T.constructionStartingChoices_of_fine_adelicData GlobalTheory.weilRepresentationUnitaryPair hds hP.hc hP.decay hH).and ((_root_.GlobalTheory.T.bareK_of_discreteSeriesExists hP hds).and ((_root_.GlobalTheory.T.stageAExists_of_inputs_phtCmp hP hc hL).and (hMt.and (hRa …`. Use `pass_of (p := fun _ _ _ _ => True) (Step.of_all fun _ _ _ _ _ _ _ h => h) (Step.and h3 h4) (EvG.imp GlobalTheory.Mem.Top.ReW.extend_pinned fun K _ _ _ _ hw2 => ?_)` and prove the remaining obligations. Introduce `B f T hO hKP hT _ C W V S' N G c₀ hQ hE A S₂ hS₂`.
+
+Take `⟨w, Z, c, ⟨b, -⟩, e⟩` from `exists_of_position hQ hE`. Establish `hSt : Start K B f T w` using `⟨⟨b.pin⟩, Or.inl hT, b.coh⟩`. Take `⟨P, x, l, hl, hσ⟩` from `_root_.GlobalTheory.HeightCounting.Up.exists_pre_point_with_henselian_level b e`. Take `⟨A₁, S₁, a₁, hw'⟩` from `hw2 B f T w hO ⟨b.pin⟩`. Take `⟨σ⟩` from `hσ fun i => avD (Dof x) (avDesign (Dof x)) i ∪ avoidPlaces B.toPre (A ((Dof x).ntw.l i) ∪ A₁ ((Dof x).ntw.l i))`.
+
+Take `⟨B', f', T', h, hf, hpl, hAv, hS', hCoh, hTw⟩` from `_root_.GlobalTheory.HeightCounting.Up.exists_twisted_cohomology_class_lift_alt hP (w.st x.o.Z) f T.pl _ σ (fun p => A p ∪ A₁ p) (fun v hv => P.sub v ((twisted_st x v).1 hv)) (fun v v' ho hv => (twisted_st x v').2 (hl.2 hT v v' ho ((twisted_st x v).1 hv))) (fun i p hp hp' v hv => …`. Take `⟨w', hPin, epx, esel, eJ, eδ⟩` from `hw' B' f' T' h hf (fun v u hu hA => hAv v u hu (Finset.mem_union_right _ hA)) fun z hz => hS' z (Finset.mem_union_right _ hz)`. Establish `eP : B'.toPre = B.toPre` using `h.1`. Use `⟨B', f', T', h, hf, hpl, fun v u hu hA => hAv v u hu (Finset.mem_union_left _ hA), fun z hz => hS' z (Finset.mem_union_left _ hz), ⟨⟨w'.δ, w'.exact⟩, eP ▸ hKP.2⟩, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨Z', hX', z', g1, g2, g3, g4, g5, g6, g7, g8, g9⟩` from `hq.1 w' hPin B f T w h hf ⟨b.pin⟩ epx hpl P.Z₀ P.hX P.Wt P.z P.grp P.grpAt P.kap ⟨P.exAt, P.inGeo, P.core, P.std⟩ (HoldsL.of_holds P.intersectionNumber_baseChange) P.exact P.sub (fun Z' v' hv => (hTw.2 v').2 fun ht => hv _ (below_plUnder h P.Z₀ Z' v') ((twisted_st x _).1 ht))`.
+
+Establish `hSt' : Start K B' f' T' w'` using `⟨hPin, Or.inr ⟨Z', hX', z', g1, g2, g3, g4, g5.1, g5.2.1, g5.2.2.1, g5.2.2.2, g6, g7⟩, hCoh⟩`. Take `⟨pre, bare, sa, mt, rat, cu, mv, ck, fin⟩` from `hq.2 w' hSt'`. Take `⟨P', -, eW, g10⟩` from `pre Z' hX' z' g1 g2 g3 g4 g5 g6 g7`. Establish `hExt : Ext P.z P'.z` using `GlobalTheory.T.standardReading_transport_and_extension_trans.2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h (enl_refl B') g8 g10`. Take `⟨x0, hE0, s0⟩` from `bare P' (w.st x.o.Z) f eP hf x.fits.grp`.
+
+Take `⟨x1, ⟨la⟩, s1⟩` from `sa P' x0 hE0`. Take `⟨imt⟩` from `mt P' x1`. Take `⟨irat⟩` from `rat P' x1 la`. Take `⟨y, ⟨l2⟩, hcar, hlist⟩` from `mv B f T w h hf hSt epx esel eJ eδ P x l.toStrictHenselianAcyclic P' hExt x1 { toLA := la, mt := imt, rat := irat, cusp := cu P' x1 la } (s0.trans s1)`. Establish `hWt : ∀ v', plUnder h v' ∈ P.Wt ↔ v' ∈ P'.Wt` using `fun v' => eW ▸ g9 _ v' (below_plUnder h P.Z₀ Z' v')`.
+
+Conclude with `⟨w', hSt', _root_.GlobalTheory.HeightCounting.Up.has3_of_carried_levelB2 hP S Γ h x σ (fun i => Finset.subset_union_left) hTw hWt l2 hcar ⟨hlist cDep hl.1, fun _ v₁ v₂ ho hv => (hWt v₂).1 (hl.2 hT _ _ (overOne_plUnder_of h P.Z₀ P'.Z₀ ho) ((hWt v₁).2 hv))⟩ (ck P' y l2) (fin P' y)⟩`.
+-/
 theorem secondNo_of_sMt_sRat_sCusp_sFinl (hCo : GlobalTheory.Published.DiscreteSeriesCover) (hCW : GlobalTheory.Published.CasselmanWallach) (hHM : GlobalTheory.Published.HarishChandraModules) (hP : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt) (hS : SerN) (hD : DatExt) (hH : WeightCaseCondition) (hds : GlobalTheory.Published.DiscreteSeriesExists)
     (hc : PhtCmp) {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hMt : SMt) (hRat : _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL) (hCu : _root_.GlobalTheory.HeightCounting.Up.CuspStatement' hL) {cDep : ℝ}
     (hF : _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep) : _root_.GlobalTheory.HeightCounting.Up.SecondNonvanishing hL cDep := by
@@ -113,6 +136,9 @@ theorem secondNo_of_sMt_sRat_sCusp_sFinl (hCo : GlobalTheory.Published.DiscreteS
   exact ⟨w', hSt', _root_.GlobalTheory.HeightCounting.Up.has3_of_carried_levelB2 hP S Γ h x σ (fun i => Finset.subset_union_left) hTw hWt l2 hcar
     ⟨hlist cDep hl.1, fun _ v₁ v₂ ho hv => (hWt v₂).1 (hl.2 hT _ _ (overOne_plUnder_of h P.Z₀ P'.Z₀ ho) ((hWt v₁).2 hv))⟩
     (ck P' y l2) (fin P' y)⟩
+/- English proof (translation)
+Introduce `hCo hCW hHM hP hS hD hH hds hc _ hMt hRat hCu _ hF` and use `⟨_root_.GlobalTheory.HeightCounting.Up.sFino_of_alt hF, _root_.GlobalTheory.HeightCounting.Up.secondNo_of_sMt_sRat_sCusp_sFinl hCo hCW hHM hP hS hD hH hds hc hMt hRat hCu hF⟩`.
+-/
 theorem sFino_and_secondNo_of_rat_cusp_finl : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → DatExt → WeightCaseCondition → GlobalTheory.Published.DiscreteSeriesExists → PhtCmp →
     ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, SMt → _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL → _root_.GlobalTheory.HeightCounting.Up.CuspStatement' hL → ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep → _root_.GlobalTheory.HeightCounting.Up.SpectralFiniteness hL cDep ∧ _root_.GlobalTheory.HeightCounting.Up.SecondNonvanishing hL cDep :=
   fun hCo hCW hHM hP hS hD hH hds hc _ hMt hRat hCu _ hF => ⟨_root_.GlobalTheory.HeightCounting.Up.sFino_of_alt hF, _root_.GlobalTheory.HeightCounting.Up.secondNo_of_sMt_sRat_sCusp_sFinl hCo hCW hHM hP hS hD hH hds hc hMt hRat hCu hF⟩
@@ -122,6 +148,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up GlobalTheory.TwistChoice
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl | exact _root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl | (intros; apply _root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sFino_and_secondNo_of_sFinl' : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → DatExt → WeightCaseCondition → GlobalTheory.Published.DiscreteSeriesExists → PhtCmp → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, SMt → _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL → _root_.GlobalTheory.HeightCounting.Up.CuspStatement' hL → ∀ cDep : ℝ, _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep → _root_.GlobalTheory.HeightCounting.Up.SpectralFiniteness hL cDep ∧ _root_.GlobalTheory.HeightCounting.Up.SecondNonvanishing hL cDep := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl | exact _root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl | (intros; apply _root_.GlobalTheory.HeightCounting.Up.sFino_and_secondNo_of_rat_cusp_finl <;> assumption)
 end

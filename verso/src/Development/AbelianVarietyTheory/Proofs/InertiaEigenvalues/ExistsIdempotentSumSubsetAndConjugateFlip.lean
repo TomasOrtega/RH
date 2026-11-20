@@ -16,6 +16,25 @@ open GlobalTheory.LevelSeries
 
 namespace GlobalTheory.IdemFlip
 
+/- English proof (translation)
+Introduce `D e P T he hT`. Establish `hnc` using `GlobalTheory.ChainOnto.FlagAct.not_isConjPl_of_idemSum he`. Take `⟨⟨es, hes, hsum⟩, h0⟩` from `he`. Establish `hmul : ∀ S R : Finset (Formalism.L2.DIV.Pl D.host.E), S ⊆ R → R ⊆ P → (∑ a ∈ S, es a) * (∑ b ∈ R, es b) = ∑ a ∈ S, es a`. Introduce `S R hSR hRP`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single a]`. Conclude with `(hes a (hRP (hSR ha))).1.1`. Introduce `b hb hba`.
+
+Conclude with `Formalism.IndefR.Fin.idem_orth (hnc a (hRP (hSR ha)) a (hRP (hSR ha))) (hes a (hRP (hSR ha))) (hes b (hRP hb)) (Ne.symm hba)`. Introduce `h`. Conclude with `absurd (hSR ha) h`. Establish `h1 : (∑ a ∈ T, es a) * e = ∑ a ∈ T, es a` using `by rw [hsum]; exact hmul T P hT subset_rfl`. Establish `h2 : (∑ a ∈ T, es a) * (∑ a ∈ T, es a) = ∑ a ∈ T, es a` using `hmul T T subset_rfl hT`.
+
+Establish `hTT : (∑ a ∈ T, es a) * cA D (∑ a ∈ T, es a) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hIT : IsIdemSum (∑ a ∈ T, es a) T` using `⟨⟨es, fun a ha => hes a (hT ha), rfl⟩, hTT⟩`. Use `⟨⟨_, hIT⟩, ?_⟩` and prove the remaining obligations. Take `⟨⟨es2, hes2, hsum2⟩, -⟩` from `Formalism.IndefR.Fin.LevelGroupLemmas.isIdemSum_conj hIT`.
+
+Establish `hdisj : Disjoint (P \ T) (T.image Formalism.L2.DIV.conjPl)`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha ha'`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 ha'`. Conclude with `hnc b (hT hb) _ (Finset.mem_sdiff.1 ha).1 (fun c hc => ⟨Formalism.L2.DIV.starO c, (Formalism.L2.DIV.isConjPl_conjPl b c _ (by rw [Formalism.L2.DIV.starO_coe])).1 hc, by rw [Formalism.L2.DIV.starO_coe]⟩)`.
+
+Establish `hf : ∑ a ∈ P \ T, es a = e - ∑ a ∈ T, es a`. Rewrite using `[eq_sub_iff_add_eq, Finset.sum_sdiff hT, hsum]`. Use `⟨(e - ∑ a ∈ T, es a) + cA D (∑ a ∈ T, es a), ⟨⟨fun a => if a ∈ P \ T then es a else es2 a, ?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `a ha`. Break down `Finset.mem_union.1 ha with h | h` into its components or cases.
+
+Simplify using `only [if_pos h]`. Conclude with `hes a (Finset.mem_sdiff.1 h).1`. Simplify using `only [if_neg (Finset.disjoint_right.1 hdisj h)]`. Conclude with `hes2 a h`. Rewrite using `[Finset.sum_union hdisj, ← hf, hsum2]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a ha => (if_pos ha).symm`. Conclude with `Finset.sum_congr rfl fun a ha => (if_neg (Finset.disjoint_right.1 hdisj ha)).symm`. Generalize the expression as in `(∑ a ∈ T, es a) = t at h1 h2 hTT ⊢`. Establish `h4 : cA D t * cA D e = cA D t` using `by rw [← map_mul, h1]`.
+
+Establish `h5 : cA D t * cA D t = cA D t` using `by rw [← map_mul, h2]`. Rewrite using `[map_add, map_sub, Formalism.L2.Theta.cA_cA]`. Take the linear combination `h0 - (-(e) * h4 + cA D t * h0) + h1 - (-(cA D e) * h1 + t * h0) + 2 * hTT - h2 + h4 - h5`.
+-/
 theorem idemSum_sub_and_flip : ∀ (D : D7) (e : AE D) (P T : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e P → T ⊆ P →
     (∃ eT : AE D, IsIdemSum eT T) ∧ ∃ e' : AE D, IsIdemSum e' ((P \ T) ∪ T.image Formalism.L2.DIV.conjPl) := by
   intro D e P T he hT

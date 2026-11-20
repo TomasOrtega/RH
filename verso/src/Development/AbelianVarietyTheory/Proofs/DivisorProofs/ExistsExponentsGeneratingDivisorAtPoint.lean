@@ -23,6 +23,15 @@ open scoped ComplexOrder
 
 open GlobalTheory.HodgeLocGeo in
 
+/- English proof (translation)
+Introduce `p2 ph D O hc hR A T H h c a j y hy hZ f hf`. Take `⟨Zm, GW, GΩ, cW, cΩ, g, hcW, hcΩ, hg0, hev⟩` from `GlobalTheory.T.divisor_generates_local_period_matrix p2 ph D O hc hR A T H h c a j y hy hZ f hf`. Take `⟨U, hUsub, hUo, hyU⟩` from `eventually_nhds_iff.1 hev`. Establish `hpq : O.j + (O.N - O.j) = O.N` using `by have := O.indef; omega`. Use `⟨fun _ => O.j, fun _ => O.N - O.j, fun _ => hpq, Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y), inferInstance, U, fun τ v => modelHodgeGram (Zm τ v), cW, fun τ => (cΩ τ)⁻¹, U, id, fun τ v => (GW τ v)ᵀ, fun τ v => ((GΩ τ v).submatrix Fin.rev id)⁻¹, g, fun τ => ?_, hcW, …` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.model_hodge_gram_hodge_frame U (Zm τ) hUo (fun a b v hv => ((hUsub v hv).1 τ a b).differentiableAt.differentiableWithinAt) fun v hv => (hUsub v hv).2.2.2.2.1 τ`. Use `⟨hUo, contDiffOn_id, fun v hv => hv, fun a b v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `((hUsub v hv).2.1 τ b a).contDiffAt.contDiffWithinAt`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(hUsub v hv).2.2.2.2.2.1 τ`.
+
+Establish `hR : ∀ v ∈ U, IsUnit ((GΩ τ v).submatrix Fin.rev id).det` using `fun v hv => by`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, show ((GΩ τ v).submatrix Fin.rev id) = (GΩ τ v).submatrix Fin.revPerm (Equiv.refl _) from rfl, Matrix.isUnit_submatrix_equiv, Matrix.isUnit_iff_isUnit_det]`. Conclude with `(hUsub v hv).2.2.2.2.2.2.1 τ`. Use `⟨hUo, contDiffOn_id, fun v hv => hv, fun a b v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ShFam.Hor.LogCh.analyticAt_inv_apply (fun a' b' => (hUsub v hv).2.2.1 τ (Fin.rev a') b') (hR v hv).ne_zero a b).contDiffAt.contDiffWithinAt`.
+
+Conclude with `Matrix.isUnit_nonsing_inv_det _ (hR v hv)`. Use `filter_upwards [hUo.mem_nhds hyU] with v hv`. Take `⟨-, -, -, -, hpos, hu1, hu2, hln⟩` from `hUsub v hv`. Simplify using `only [hln, mul_add, Finset.sum_add_distrib]`. Rewrite using `[GlobalTheory.T.weighted_sum_log_rootNorm_eq_neg_log_pairWeightNormSq hpq Zm GW GΩ cW cΩ v hcW hcΩ hpos hu1 hu2 u, add_comm]`.
+-/
 theorem GlobalTheory.HodgeLocGeo.hodge_potential_local : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ h => ∀ (c : O.Y.Comp) (a : Fin ((T.M c).n + 1)) (j : Fin ((T.M c).A a).n),
   ∀ y ∈ (((T.M c).A a).chart j).target, (((T.M c).A a).chart j).symm y ∉ (T.M c).Z a →
   ∀ f : DV.Rt D.what₂.Tau O.N → (O.var c).Fn,

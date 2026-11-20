@@ -11,6 +11,11 @@ namespace GlobalTheory.TwSys.ResidualCompare
 
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Take `⟨x, hx⟩` from `(RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv).surjective y`. Establish `hy : (y : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[← hx]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h x y hy, ← h' x y hy]`.
+-/
 theorem isConjPl_unique {P v v' : PlE D.host} (h : IsConjPl D.host P v) (h' : IsConjPl D.host P v') : v = v' := by
   apply HeightOneSpectrum.ext
   ext y
@@ -19,6 +24,9 @@ theorem isConjPl_unique {P v v' : PlE D.host} (h : IsConjPl D.host P v) (h' : Is
     rw [← hx]; rfl
   rw [← h x y hy, ← h' x y hy]
 
+/- English proof (translation)
+Establish `hf : (⋃ q, {v | Over (P q) v}).Finite`. Use `Set.finite_iUnion fun q => ?_` and prove the remaining obligations. Establish `h2 : {v | IsConjPl D.host (P q) v}.Subsingleton` using `fun _ h _ h' => isConjPl_unique h h'`. Conclude with `((Set.finite_singleton (P q)).union h2.finite).subset fun v hv => hv`. Conclude with `⟨hf.toFinset, fun v => by simp⟩`.
+-/
 theorem exists_isQ {ι : Type} [Finite ι] (P : ι → PlE D.host) : ∃ Q, IsQ P Q := by
   have hf : (⋃ q, {v | Over (P q) v}).Finite := by
     refine Set.finite_iUnion fun q => ?_
@@ -26,9 +34,15 @@ theorem exists_isQ {ι : Type} [Finite ι] (P : ι → PlE D.host) : ∃ Q, IsQ 
     exact ((Set.finite_singleton (P q)).union h2.finite).subset fun v hv => hv
   exact ⟨hf.toFinset, fun v => by simp⟩
 
+/- English proof (translation)
+The claim follows from `Finset.ext fun v => (h v).trans (h' v).symm`.
+-/
 theorem isQ_unique {ι : Type} {P : ι → PlE D.host} {Q Q' : Finset (PlE D.host)} (h : IsQ P Q) (h' : IsQ P Q') :
     Q = Q' := Finset.ext fun v => (h v).trans (h' v).symm
 
+/- English proof (translation)
+Introduce `h`. Establish `: Fact (1 < X.l i ^ M)` using `⟨Nat.one_lt_pow (by omega) (X.lPrime i).out.one_lt⟩`. Take `⟨σ, -, hσ⟩` from `h.2.2.2.2 P (Or.inl rfl) _ (N.plOm.2 P) (Multiplicative.ofAdd 1)`. Establish `h1 : (0 : ZMod (X.l i ^ M)) = 1` using `congrArg Multiplicative.toAdd hσ`. Conclude with `zero_ne_one h1`.
+-/
 theorem not_goodChar_one (i : X.Tw) {M : ℕ} (hM : 1 ≤ M) (P : PlE D.host) : ¬ GoodChar X i M P 1 := by
   intro h
   have : Fact (1 < X.l i ^ M) := ⟨Nat.one_lt_pow (by omega) (X.lPrime i).out.one_lt⟩
@@ -36,6 +50,9 @@ theorem not_goodChar_one (i : X.Tw) {M : ℕ} (hM : 1 ≤ M) (P : PlE D.host) : 
   have h1 : (0 : ZMod (X.l i ^ M)) = 1 := congrArg Multiplicative.toAdd hσ
   exact zero_ne_one h1
 
+/- English proof (translation)
+Rewrite using `[nonpos_iff_eq_zero, IsDiscreteValuationRing.addVal_eq_zero_iff]`.
+-/
 theorem addVal_le_zero_iff {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (x : O) :
     IsDiscreteValuationRing.addVal O x ≤ 0 ↔ IsUnit x := by
   rw [nonpos_iff_eq_zero, IsDiscreteValuationRing.addVal_eq_zero_iff]
@@ -64,13 +81,24 @@ def AtLevel₂ (i : X.Tw) (T : Set (X.Sig i)) (R n M : ℕ) : Prop :=
         ∀ s ∈ T, ∀ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M (Fin R ⊕ Fin R))),
           Computes bkP i s M (fun q => d (P q)) Q Φ → OrdLE X i M (Fin R ⊕ Fin R) n Φ.det
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem ordBound_zero_iff (i : X.Tw) : OrdBound bkP i 0 ↔
     ∀ T : Set (X.Sig i), (∀ s ∈ T, GalHyp bkP i s) → ∃ R n M₀ : ℕ, ∀ M, M₀ ≤ M → AtLevel₁ bkP i T R n M := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem residualBoundOn_iff (i : X.Tw) (T : Set (X.Sig i)) : ResidualBoundOn bkP i T ↔
     (nu X i = 0 → (∀ s ∈ T, GalHyp bkP i s) →
       ∃ R : ℕ, ∀ M : ℕ, 4 * D.R.r * R + 1 < X.l i ^ M → AtLevel₂ bkP i T R (4 * D.R.r * R) M) := Iff.rfl
 
+/- English proof (translation)
+Introduce `H S d hd z hz H' ho hn A`. Take `⟨P, Q, -, h2, h3, h4, h5⟩` from `h H S d hd z hz H' ho hn A`. Use `⟨P, h2, h3, fun s hs Q' hQ' a Φ hΦ F hF => ?_⟩` and prove the remaining obligations. Take `rfl` from `isQ_unique h4 hQ'`. Take `⟨m, hm, hu⟩` from `h5 s hs a Φ hΦ F hF`.
+
+Conclude with `⟨m, hm, (addVal_le_zero_iff _).2 hu⟩`.
+-/
 theorem atLevel₁_of_atLevel₂ {i : X.Tw} {T : Set (X.Sig i)} {R n M : ℕ} (h : AtLevel₂ bkP i T R n M) :
     AtLevel₁ bkP i T R n M := by
   intro H S d hd z hz H' ho hn A
@@ -80,6 +108,17 @@ theorem atLevel₁_of_atLevel₂ {i : X.Tw} {T : Set (X.Sig i)} {R n M : ℕ} (h
   obtain ⟨m, hm, hu⟩ := h5 s hs a Φ hΦ F hF
   exact ⟨m, hm, (addVal_le_zero_iff _).2 hu⟩
 
+/- English proof (translation)
+Introduce `H S d hd z hz H' ho hn A`. Set `d' : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))` to `fun P => if AdmPl H S P then d P else 1`. Establish `hd' : AdmFam X i M H S d'`. Use `⟨hd.1, hd.2.1, hd.2.2.1, fun P h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `: d' P = d P` using `if_pos ⟨h1, h2, h3⟩`.
+
+Rewrite using `[this]`. Conclude with `hd.2.2.2 P h1 h2 h3`. Take `⟨P, h2, h3, h5⟩` from `h H S d' hd' z hz H' ho hn A`. Establish `hadm : ∀ q, AdmPl H S (P q)`. Introduce `q`.
+
+Assume the negation of the conclusion as `hq`. Establish `h6 : GoodChar X i M (P q) (d' (P q))` using `h2.2.2 q`. Establish `: d' (P q) = 1` using `if_neg hq`. Rewrite `h6` using `[this]`. Conclude with `not_goodChar_one i hM _ h6`.
+
+Establish `he : (fun q => d' (P q)) = fun q => d (P q)` using `funext fun q => if_pos (hadm q)`. Rewrite `h2`, `h3`, `h5` using `[he]`. Take `⟨Q, hQ⟩` from `exists_isQ P`. Use `⟨P, Q, hadm, h2, h3, hQ, fun s hs a Φ hΦ F hF => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hu⟩` from `h5 s hs Q hQ a Φ hΦ F hF`.
+
+Conclude with `⟨m, hm, (addVal_le_zero_iff _).1 hu⟩`.
+-/
 theorem atLevel₂_of_atLevel₁ {i : X.Tw} {T : Set (X.Sig i)} {R n M : ℕ} (hM : 1 ≤ M) (h : AtLevel₁ bkP i T R n M) :
     AtLevel₂ bkP i T R n M := by
   classical
@@ -105,10 +144,18 @@ theorem atLevel₂_of_atLevel₁ {i : X.Tw} {T : Set (X.Sig i)} {R n M : ℕ} (h
   obtain ⟨m, hm, hu⟩ := h5 s hs Q hQ a Φ hΦ F hF
   exact ⟨m, hm, (addVal_le_zero_iff _).1 hu⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨atLevel₂_of_atLevel₁ bkP hM, atLevel₁_of_atLevel₂ bkP⟩`.
+-/
 theorem atLevel_iff (i : X.Tw) (T : Set (X.Sig i)) (R n : ℕ) {M : ℕ} (hM : 1 ≤ M) :
     AtLevel₁ bkP i T R n M ↔ AtLevel₂ bkP i T R n M :=
   ⟨atLevel₂_of_atLevel₁ bkP hM, atLevel₁_of_atLevel₂ bkP⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i T hl hT`. Take `⟨R, n, M₀, hM⟩` from `(ordBound_zero_iff bkP i).1 (h i hl) T hT`. Conclude with `⟨R, n, max M₀ 1, fun M hle => atLevel₂_of_atLevel₁ bkP (le_trans (le_max_right _ _) hle) (hM M (le_trans (le_max_left _ _) hle))⟩`. Introduce `h i hl`.
+
+Use `(ordBound_zero_iff bkP i).2 fun T hT => ?_` and prove the remaining obligations. Take `⟨R, n, M₀, hM⟩` from `h i T hl hT`. Conclude with `⟨R, n, M₀, fun M hle => atLevel₁_of_atLevel₂ bkP (hM M hle)⟩`.
+-/
 theorem residual_bound_iff_free_level : ResidualBoundOddPrimes bkP ↔ ∀ (i : X.Tw) (T : Set (X.Sig i)), nu X i = 0 → (∀ s ∈ T, GalHyp bkP i s) →
     ∃ R n M₀ : ℕ, ∀ M, M₀ ≤ M → AtLevel₂ bkP i T R n M := by
   constructor
@@ -121,6 +168,9 @@ theorem residual_bound_iff_free_level : ResidualBoundOddPrimes bkP ↔ ∀ (i : 
     obtain ⟨R, n, M₀, hM⟩ := h i T hl hT
     exact ⟨R, n, M₀, fun M hle => atLevel₁_of_atLevel₂ bkP (hM M hle)⟩
 
+/- English proof (translation)
+Rewrite using `[residualBoundOn_iff]`. Use `forall₂_congr fun _ _ => exists_congr fun R => forall₂_congr fun M hM => (atLevel_iff bkP i T R _ ?_).symm` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos M with rfl | h` into its components or cases. Simplify using `at hM`. Conclude with `h`.
+-/
 theorem residualBoundOn_iff_sharp (i : X.Tw) (T : Set (X.Sig i)) : ResidualBoundOn bkP i T ↔
     (nu X i = 0 → (∀ s ∈ T, GalHyp bkP i s) →
       ∃ R : ℕ, ∀ M : ℕ, 4 * D.R.r * R + 1 < X.l i ^ M → AtLevel₁ bkP i T R (4 * D.R.r * R) M) := by
@@ -130,32 +180,50 @@ theorem residualBoundOn_iff_sharp (i : X.Tw) (T : Set (X.Sig i)) : ResidualBound
   · simp at hM
   · exact h
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `(residualBoundOn_iff_sharp bkP i T).1 h hl hT`. Use `⟨R, 4 * D.R.r * R, 4 * D.R.r * R + 1, fun M hM => hR M ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt hM (Nat.lt_pow_self (X.lPrime i).out.one_lt)`.
+-/
 theorem loose_of_residualBoundOn {i : X.Tw} {T : Set (X.Sig i)} (h : ResidualBoundOn bkP i T) (hl : nu X i = 0)
     (hT : ∀ s ∈ T, GalHyp bkP i s) : ∃ R n M₀ : ℕ, ∀ M, M₀ ≤ M → AtLevel₁ bkP i T R n M := by
   obtain ⟨R, hR⟩ := (residualBoundOn_iff_sharp bkP i T).1 h hl hT
   refine ⟨R, 4 * D.R.r * R, 4 * D.R.r * R + 1, fun M hM => hR M ?_⟩
   exact lt_of_le_of_lt hM (Nat.lt_pow_self (X.lPrime i).out.one_lt)
 
+/- English proof (translation)
+Introduce `i hl` and use `(ordBound_zero_iff bkP i).2 fun T hT => loose_of_residualBoundOn bkP (h i T) hl hT`.
+-/
 theorem residual_bound_of_bound_on_sets (h : ∀ (i : X.Tw) (T : Set (X.Sig i)), ResidualBoundOn bkP i T) : ResidualBoundOddPrimes bkP :=
   fun i hl => (ordBound_zero_iff bkP i).2 fun T hT => loose_of_residualBoundOn bkP (h i T) hl hT
 
+/- English proof (translation)
+Introduce `H S d hd z hz H' ho hn A`. Take `⟨P, h2, h3, h5⟩` from `h H S d hd z hz H' ho hn A`. Conclude with `⟨P, h2, h3, fun s hs => h5 s (hT hs)⟩`.
+-/
 theorem AtLevel₁.mono {i : X.Tw} {T T' : Set (X.Sig i)} {R n M : ℕ} (hT : T' ⊆ T) (h : AtLevel₁ bkP i T R n M) :
     AtLevel₁ bkP i T' R n M := by
   intro H S d hd z hz H' ho hn A
   obtain ⟨P, h2, h3, h5⟩ := h H S d hd z hz H' ho hn A
   exact ⟨P, h2, h3, fun s hs => h5 s (hT hs)⟩
 
+/- English proof (translation)
+Use `(ordBound_zero_iff bkP i).2 fun T hT => ?_` and prove the remaining obligations. Take `⟨R, n, M₀, hM⟩` from `loose_of_residualBoundOn bkP h hl fun s hs => (hg s).1 hs`. Conclude with `⟨R, n, M₀, fun M hle => (hM M hle).mono bkP fun s hs => (hg s).2 (hT s hs)⟩`.
+-/
 theorem ordBound_of_residualBound (i : X.Tw) (hl : nu X i = 0) (hg : ∀ s, goodS bkP i s ↔ GalHyp bkP i s)
     (h : ResidualBound bkP i) : OrdBound bkP i 0 := by
   refine (ordBound_zero_iff bkP i).2 fun T hT => ?_
   obtain ⟨R, n, M₀, hM⟩ := loose_of_residualBoundOn bkP h hl fun s hs => (hg s).1 hs
   exact ⟨R, n, M₀, fun M hle => (hM M hle).mono bkP fun s hs => (hg s).2 (hT s hs)⟩
 
+/- English proof (translation)
+The claim follows from `(residual_bound_iff_free_level bkP).1 h i _ hl hg`.
+-/
 theorem good_rows_at_level_of_residual (h : ResidualBoundOddPrimes bkP) (i : X.Tw) (hl : nu X i = 0)
     (hg : ∀ s, goodS bkP i s → GalHyp bkP i s) :
     ∃ R n M₀ : ℕ, ∀ M, M₀ ≤ M → AtLevel₂ bkP i {s | goodS bkP i s} R n M :=
   (residual_bound_iff_free_level bkP).1 h i _ hl hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i T R n _ hM => atLevel_iff bkP i T R n hM, residual_bound_iff_free_level bkP, residualBoundOn_iff_sharp bkP, residual_bound_of_bound_on_sets bkP⟩`.
+-/
 theorem comparison :
     (∀ (i : X.Tw) (T : Set (X.Sig i)) (R n M : ℕ), 1 ≤ M → (AtLevel₁ bkP i T R n M ↔ AtLevel₂ bkP i T R n M)) ∧
     (ResidualBoundOddPrimes bkP ↔ ∀ (i : X.Tw) (T : Set (X.Sig i)), nu X i = 0 → (∀ s ∈ T, GalHyp bkP i s) →

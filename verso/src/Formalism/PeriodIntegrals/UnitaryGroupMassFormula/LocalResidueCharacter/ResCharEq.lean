@@ -7,6 +7,11 @@ open IsDedekindDomain NumberField ValuativeRel WithZero
 
 namespace PI.PinHostLoc.UnitaryGroupMassFormula
 
+/- English proof (translation)
+Establish `: Nontrivial (𝓞 F ⧸ p.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr p.isPrime.ne_top`. Establish `h0 : ((n : ℕ) : 𝓞 F ⧸ p.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk p.asIdeal) n]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hp`. Use `show ringChar (𝓞 F ⧸ p.asIdeal) = n`.
+
+Conclude with `CharP.ringChar_of_prime_eq_zero (R := 𝓞 F ⧸ p.asIdeal) hn h0`.
+-/
 theorem resChar_eq {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
     {n : ℕ} (hn : n.Prime) (hp : ((n : ℕ) : 𝓞 F) ∈ p.asIdeal) :
     Formalism.MainNotions.S.Loc.resChar p = n := by
@@ -17,6 +22,11 @@ theorem resChar_eq {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (
   show ringChar (𝓞 F ⧸ p.asIdeal) = n
   exact CharP.ringChar_of_prime_eq_zero (R := 𝓞 F ⧸ p.asIdeal) hn h0
 
+/- English proof (translation)
+Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log ha]`. Establish `h' : WithZero.exp (WithZero.log a) < WithZero.exp (0 : ℤ)`. Rewrite using `[WithZero.exp_zero]` and apply the resulting hypothesis.
+
+Rewrite `h'` using `[WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_exp_neg_one_of_lt_one {a : ℤᵐ⁰} (h : a < 1) : a ≤ exp (-1) := by
   rcases eq_or_ne a 0 with rfl | ha
   · exact zero_le
@@ -31,13 +41,22 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)} (A : Formalism.MainNotions.S.Loc.LocAt F E sig p)
 
+/- English proof (translation)
+The claim follows from `((ValuativeRel.valuation A.Fp).vle_iff_le).symm.trans (A.val x y)`.
+-/
 theorem vF (x y : F) :
     valuation A.Fp (A.ιF x) ≤ valuation A.Fp (A.ιF y) ↔ p.valuation F x ≤ p.valuation F y := ((ValuativeRel.valuation A.Fp).vle_iff_le).symm.trans (A.val x y)
 
+/- English proof (translation)
+Rewrite using `[le_antisymm_iff, le_antisymm_iff, vF A, vF A]`.
+-/
 theorem vF_eq (x y : F) :
     valuation A.Fp (A.ιF x) = valuation A.Fp (A.ιF y) ↔ p.valuation F x = p.valuation F y := by
   rw [le_antisymm_iff, le_antisymm_iff, vF A, vF A]
 
+/- English proof (translation)
+Use `A.lf` as an intermediate fact. Establish `hv : ValuativeRel.valuation A.Fp a ≠ 0` using `(ValuativeRel.valuation A.Fp).ne_zero_iff.mpr ha`. Take `⟨x, hx⟩` from `A.dense.mem_nhds ((ValuativeRel.valuation A.Fp).locally_const hv)`. Conclude with `⟨x, hx⟩`.
+-/
 theorem exists_val (a : A.Fp) (ha : a ≠ 0) :
     ∃ x : F, valuation A.Fp (A.ιF x) = valuation A.Fp a := by
   have := A.lf
@@ -45,14 +64,41 @@ theorem exists_val (a : A.Fp) (ha : a ≠ 0) :
   obtain ⟨x, hx⟩ := A.dense.mem_nhds ((ValuativeRel.valuation A.Fp).locally_const hv)
   exact ⟨x, hx⟩
 
+/- English proof (translation)
+Establish `h` using `p.valuation_of_algebraMap (K := F) ((n : ℕ) : 𝓞 F)`. Conclude with `h` after adjusting the coercions.
+-/
 theorem natVal (n : ℕ) : p.valuation F ((n : ℕ) : F) = p.intValuation ((n : ℕ) : 𝓞 F) := by
   have h := p.valuation_of_algebraMap (K := F) ((n : ℕ) : 𝓞 F)
   exact_mod_cast h
 
+/- English proof (translation)
+Rewrite using `[← not_le, ← not_le, vF A]`.
+-/
 theorem vF_lt (x y : F) :
     valuation A.Fp (A.ιF x) < valuation A.Fp (A.ιF y) ↔ p.valuation F x < p.valuation F y := by
   rw [← not_le, ← not_le, vF A]
 
+/- English proof (translation)
+Establish `hne : ((g : ℕ) : 𝓞 F) ≠ 0` using `fun h => hg0 (by`. Establish `h'` using `congrArg (algebraMap (𝓞 F) F) h`. Rewrite `h'` using `[map_natCast, map_zero]`. Conclude with `h')` after adjusting the coercions. Establish `hge : WithZero.exp (-1) ≤ p.valuation F ((g : ℕ) : F)`.
+
+Rewrite using `[natVal]`. Establish `h2 : ¬ p.intValuation ((g : ℕ) : 𝓞 F) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hnot ((p.intValuation_le_pow_iff_mem _ 2).mp h)`. Establish `hz : p.intValuation ((g : ℕ) : 𝓞 F) ≠ 0` using `p.intValuation_ne_zero _ hne`. Rewrite `h2`, the goal using `[← WithZero.exp_log hz]`. Rewrite `h2`, the goal using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlt : ValuativeRel.valuation A.Fp (A.ιF ((g : ℕ) : F)) < 1`. Establish `h` using `(vF_lt A ((g : ℕ) : F) 1).mpr (by`. Rewrite using `[map_one, natVal]`. Conclude with `(p.intValuation_lt_one_iff_mem _).mpr hin)`.
+
+Simplify using `only [map_one] at h`. Conclude with `h`. Establish `hcoe : (((g : ℕ) : 𝒪[A.Fp]) : A.Fp) = A.ιF ((g : ℕ) : F)` using `by simp`. Establish `hgne : A.ιF ((g : ℕ) : F) ≠ 0` using `(map_ne_zero A.ιF).mpr (Nat.cast_ne_zero.mpr hg0)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Valuation.Integer.not_isUnit_iff_valuation_lt_one, hcoe]`. Conclude with `hlt`. Introduce `a b hab`. Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_or]`.
+
+Take `⟨ha, hb⟩` from `hcon`. Rewrite `ha`, `hb` using `[Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Establish `hab' : (a : A.Fp) * (b : A.Fp) = A.ιF ((g : ℕ) : F)`. Rewrite using `[← hcoe, hab]`. Use `norm_cast`.
+
+Establish `hab0 : (a : A.Fp) * (b : A.Fp) ≠ 0`. Rewrite using `[hab']`. Conclude with `hgne`. Establish `ha0 : (a : A.Fp) ≠ 0` using `left_ne_zero_of_mul hab0`. Establish `hva : ValuativeRel.valuation A.Fp (a : A.Fp) ≠ 0` using `(ValuativeRel.valuation A.Fp).ne_zero_iff.mpr ha0`.
+
+Take `⟨x, hx⟩` from `exists_val A (a : A.Fp) ha0`. Establish `hxlt : p.valuation F x < 1`. Establish `h` using `(vF_lt A x 1).mp (by`. Simplify using `only [map_one]`. Rewrite using `[hx]`.
+
+Conclude with `ha)`. Simplify using `only [map_one] at h`. Conclude with `h`. Establish `hle : ValuativeRel.valuation A.Fp (a : A.Fp) ≤ ValuativeRel.valuation A.Fp (A.ιF ((g : ℕ) : F))`. Rewrite using `[← hx, vF A]`.
+
+Conclude with `(le_exp_neg_one_of_lt_one hxlt).trans hge`. Rewrite `hle` using `[← hab', map_mul]`. Establish `h1` using `mul_le_mul' (le_refl (ValuativeRel.valuation A.Fp (a : A.Fp))⁻¹) hle`. Rewrite `h1` using `[← mul_assoc, inv_mul_cancel₀ hva, one_mul]`. Conclude with `absurd hb (not_lt.mpr h1)`.
+-/
 theorem irr {g : ℕ} (hg0 : g ≠ 0) (hin : ((g : ℕ) : 𝓞 F) ∈ p.asIdeal)
     (hnot : ((g : ℕ) : 𝓞 F) ∉ p.asIdeal ^ 2) : Irreducible ((g : ℕ) : 𝒪[A.Fp]) := by
   have hne : ((g : ℕ) : 𝓞 F) ≠ 0 := fun h => hg0 (by
@@ -109,6 +155,13 @@ theorem irr {g : ℕ} (hg0 : g ≠ 0) (hin : ((g : ℕ) : 𝓞 F) ∈ p.asIdeal)
     rw [← mul_assoc, inv_mul_cancel₀ hva, one_mul] at h1
     exact absurd hb (not_lt.mpr h1)
 
+/- English proof (translation)
+Establish `hw : p.valuation F ((n : ℕ) : F) = 1`. Rewrite using `[natVal]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.mpr hn`. Establish `hv : ValuativeRel.valuation A.Fp (A.ιF ((n : ℕ) : F)) = 1`. Establish `h` using `(vF_eq A ((n : ℕ) : F) 1).mpr (by rw [hw, map_one])`.
+
+Simplify using `only [map_one] at h`. Conclude with `h`. Establish `hmem : A.ιF ((n : ℕ) : F) ∈ 𝒪[A.Fp]`. Rewrite using `[Valuation.mem_integer_iff, hv]`. Use `⟨⟨A.ιF ((n : ℕ) : F), hmem⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hu`. Rewrite `hu` using `[Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Conclude with `absurd hv (ne_of_lt hu)`.
+-/
 theorem unit {n : ℕ} (hn : ((n : ℕ) : 𝓞 F) ∉ p.asIdeal) :
     ∃ u : 𝒪[A.Fp], IsUnit u ∧ (u : A.Fp) = A.ιF ((n : ℕ) : F) := by
   have hw : p.valuation F ((n : ℕ) : F) = 1 := by
@@ -127,6 +180,13 @@ theorem unit {n : ℕ} (hn : ((n : ℕ) : 𝓞 F) ∉ p.asIdeal) :
 
 end
 
+/- English proof (translation)
+Unfold `PI.PinHostLoc.Target`. Introduce `F E _ _ _ _ _ sig p A g hg hne i hin hnot`. Establish `hres : Formalism.MainNotions.S.Loc.resChar p = g i` using `resChar_eq p (hg i) hin`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hres]`.
+
+Conclude with `irr A (hg i).ne_zero hin hnot`. Apply the tactic sequence `obtain rfl | rfl : i = 0 ∨ i = 1 := by fin_cases i <;> simp`. Establish `h1 : ((g 1 : ℕ) : 𝓞 F) ∉ p.asIdeal` using `fun h1 => hne ((resChar_eq p (hg 1) h1).symm.trans hres).symm`. Take `⟨u, hu, hu'⟩` from `unit A h1`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu', mul_div_cancel_left₀ _ (Nat.cast_ne_zero.mpr (hg 0).ne_zero)]`. Establish `h0 : ((g 0 : ℕ) : 𝓞 F) ∉ p.asIdeal` using `fun h0 => hne ((resChar_eq p (hg 0) h0).symm.trans hres)`. Take `⟨u, hu, hu'⟩` from `unit A h0`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', mul_div_cancel_right₀ _ (Nat.cast_ne_zero.mpr (hg 1).ne_zero)]`.
+-/
 theorem target : PI.PinHostLoc.Target := by
   unfold PI.PinHostLoc.Target
   intro F E _ _ _ _ _ sig p A g hg hne i hin hnot

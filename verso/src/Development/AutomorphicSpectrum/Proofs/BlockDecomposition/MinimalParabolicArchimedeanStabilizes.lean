@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CFin
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n r J X p hp w τ j`. Use `h.1` as an intermediate fact. Take `⟨B, hB, hE, -⟩` from `hp`. Set `φ` to `(infEmb τ).comp (compInf F E w)`. Establish `h0 : ∀ x : E, φ (inclR (F` using `F) (AF F) x) = τ.1 x := fun x => by`.
+
+Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w 1 ⊗ₜ[F] x) = _`. Simplify using the standard rewrite rules. Establish `h2 : (adMat F X).map φ = X.map τ.1` using `Matrix.ext fun i j => h0 _`. Establish `h3 : archMat σ J τ (projArch σ J w p) = (matHom _ σ J p).1.map φ` using `rfl`. Establish `key : archMat σ J τ (projArch σ J w p) * X.map τ.1 = X.map τ.1 * B.map φ`.
+
+Rewrite using `[h3, ← h2, ← Matrix.map_mul, hE, Matrix.map_mul]`. Introduce `l hl`. Use `⟨fun m => φ (B m l), ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify `congrFun (congrFun key a) l` using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+
+Establish `e : B m l = 0` using `hB (show id l < id m from lt_of_le_of_lt hl hm)`. Express the relevant statement in the definitionally equal form `φ (B m l) = 0`. Rewrite using `[e, map_zero]`.
+-/
 theorem stabUpTo_archMat_of_mem_minParOne : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E) (p : GAd σ J), p ∈ minParOne σ J X → ∀ (w : InfinitePlace F) (τ : EmbOver E w) (j : Fin r), StabUpTo (X.map τ.1) (archMat σ J τ (projArch σ J w p)) j := by
   intro F E _ _ _ _ _ σ h n r J X p hp w τ j
   have := h.1

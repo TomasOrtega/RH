@@ -12,18 +12,31 @@ namespace GlobalTheory.CompanionTheory.IwEntries
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one`.
+-/
 theorem rel_le_one_iff (w : Pl E) (x : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) x ≤ 1 ↔ Valued.v x ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).lt_one_iff_lt_one`.
+-/
 theorem rel_lt_one_iff (w : Pl E) (x : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) x < 1 ↔ Valued.v x < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).lt_one_iff_lt_one
 
+/- English proof (translation)
+Establish `key : ∀ x : GLw n w, x ∈ GlobalTheory.LFun.KGL w n → ∀ i j, Valued.v (x.val i j) ≤ 1`. Introduce and unpack `x ⟨u, rfl⟩ i j`. Conclude with `(u.val i j).2`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨key g h, key _ (inv_mem h)⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) (Ov E w) => A.map (Ov E w).subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨(g⁻¹ : GLw n w).1 i j, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul`.
+-/
 theorem mem_KGL_iff (w : Pl E) (n : ℕ) (g : GLw n w) :
     g ∈ GlobalTheory.LFun.KGL w n ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1 := by
   have key : ∀ x : GLw n w, x ∈ GlobalTheory.LFun.KGL w n → ∀ i j, Valued.v (x.val i j) ≤ 1 := by
@@ -41,6 +54,13 @@ theorem mem_KGL_iff (w : Pl E) (n : ℕ) (g : GLw n w) :
     · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
       exact g.inv_mul
 
+/- English proof (translation)
+Establish `key : ∀ x : GLw n w, x ∈ GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n) → ∀ i j, Valued.v (x.val i j) ≤ 1`. Introduce and unpack `x ⟨u, rfl⟩ i j`. Conclude with `(rel_le_one_iff w _).1 (u.val i j).2`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨key g h, key _ (inv_mem h)⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Set `O` to `ValuativeRel.valuation (w.adicCompletion E) |>.integer`. Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, (rel_le_one_iff w _).2 (h1 i j)⟩, Matrix.of fun i j => ⟨(g⁻¹ : GLw n w).1 i j, (rel_le_one_iff w _).2 (h2 i j)⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul`.
+-/
 theorem mem_KO_iff (w : Pl E) (n : ℕ) (g : GLw n w) :
     g ∈ GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n) ↔
       (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1 := by
@@ -62,6 +82,9 @@ theorem mem_KO_iff (w : Pl E) (n : ℕ) (g : GLw n w) :
     · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
       exact g.inv_mul
 
+/- English proof (translation)
+Introduce `E _ _ _ w n g`. Use `⟨?_, mem_KGL_iff w n g⟩` and prove the remaining obligations. Use `show g ∈ GlobalTheory.SmGL.iwahori (w.adicCompletion E) (Fin n) ↔ _`. Rewrite using `[GlobalTheory.SmGL.mem_iwahori, mem_KO_iff, and_assoc]`. Conclude with `and_congr_right' (and_congr_right' (forall₃_congr fun i j _ => rel_lt_one_iff w _))`.
+-/
 theorem iwGL_KGL_entries : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (n : ℕ) (g : GLw n w), (g ∈ iwGL n w ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ (∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1) ∧ ∀ i j, j < i → Valued.v (g.val i j) < 1) ∧ (g ∈ GlobalTheory.LFun.KGL w n ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1) := by
   intro E _ _ _ w n g
   refine ⟨?_, mem_KGL_iff w n g⟩

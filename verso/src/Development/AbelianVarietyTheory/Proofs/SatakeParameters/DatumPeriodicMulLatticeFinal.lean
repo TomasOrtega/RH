@@ -8,6 +8,9 @@ namespace GlobalTheory.TopInv
 
 open Formalism.L2.Col.LocE Formalism.L2.Col.Loc
 
+/- English proof (translation)
+Distinguish the cases in `hc : c`. Rewrite using `[if_pos hc, if_pos (h.2 hc), ht hc]`. Rewrite using `[if_neg hc, if_neg fun hb => hc (h.1 hb)]`.
+-/
 theorem ite_ctx {α : Type} {b c : Prop} {db : Decidable b} {dc : Decidable c} {x y u : α} (h : b ↔ c) (ht : c → x = u) :
     @ite _ b db x y = @ite _ c dc u y := by
   by_cases hc : c
@@ -26,6 +29,9 @@ def intS (P : HeightOneSpectrum (𝓞 E)) : Subring E where
   zero_mem' := by simpa using IntAt.coe P 0
   neg_mem' := fun {a} ha => by simpa using IntAt.mul (IntAt.coe P (-1)) ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intS {P : HeightOneSpectrum (𝓞 E)} {a : E} : a ∈ intS P ↔ IntAt P a := Iff.rfl
 
 def redH (P : HeightOneSpectrum (𝓞 E)) : intS P →+* 𝓞 E ⧸ P.asIdeal where
@@ -37,11 +43,22 @@ def redH (P : HeightOneSpectrum (𝓞 E)) : intS P →+* 𝓞 E ⧸ P.asIdeal wh
 
 variable {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using mem_intS.1 ((intS P).sub_mem h hz), fun h => h.add hz⟩`.
+-/
 theorem intAt_add_iff {a z : E} (hz : IntAt P z) : IntAt P (a + z) ↔ IntAt P a :=
   ⟨fun h => by simpa using mem_intS.1 ((intS P).sub_mem h hz), fun h => h.add hz⟩
 
+/- English proof (translation)
+The claim follows from `natCast_mem (intS P) q`.
+-/
 theorem intAt_nat (q : ℕ) : IntAt P (q : E) := natCast_mem (intS P) q
 
+/- English proof (translation)
+Establish `key : ∀ (C : Matrix n n E) (hC : ∀ i j, IntAt P (C i j)), redP P C.det = Matrix.det (Matrix.of fun i j => redP P (C i j))`. Introduce `C hC`. Set `C' : Matrix n n (intS P)` to `Matrix.of fun i j => ⟨C i j, hC i j⟩`. Establish `h1 : C.det = ((C'.det : intS P) : E)`. Use `(intS P).subtype.map_det C'` as an intermediate fact.
+
+Conclude with `this.symm`. Rewrite using `[h1]`. Conclude with `(redH P).map_det C'`. Rewrite using `[key A hA, key B hB]`. Simplify using `only [h]`.
+-/
 theorem redP_det_congr {n : Type} [Fintype n] [DecidableEq n] (A B : Matrix n n E)
     (hA : ∀ i j, IntAt P (A i j)) (hB : ∀ i j, IntAt P (B i j)) (h : ∀ i j, redP P (A i j) = redP P (B i j)) :
     redP P A.det = redP P B.det := by
@@ -57,16 +74,29 @@ theorem redP_det_congr {n : Type} [Fintype n] [DecidableEq n] (A B : Matrix n n 
   rw [key A hA, key B hB]
   simp only [h]
 
+/- English proof (translation)
+Unfold `unitV`. Rewrite using `[h]`.
+-/
 theorem unitV_congr (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E} (h : redP P a = redP P b) : unitV χ a = unitV χ b := by
   unfold unitV
   rw [h]
 
 variable {q : ℕ}
 
+/- English proof (translation)
+Use `IntAt.mul (intAt_nat q) hz` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hq0]`. Then use the resulting hypothesis.
+-/
 theorem intAt_of_div (hq0 : (q : E) ≠ 0) {z : E} (hz : IntAt P (z / q)) : IntAt P z := by
   have := IntAt.mul (intAt_nat q) hz
   rwa [mul_div_cancel₀ _ hq0] at this
 
+/- English proof (translation)
+Distinguish the cases in `ha : IntAt P a`. Rewrite using `[reduction_add ha (intAt_of_div hq0 hz)]`. Establish `h1 : redP P z = 0`. Establish `h2 : redP P (q : E) = 0`. Use `reduction_coe P (q : 𝓞 E)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Rewrite using `[this, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hq`. Use `reduction_mul (intAt_nat q) hz` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hq0, h2, zero_mul]`. Then use the resulting hypothesis.
+
+Rewrite using `[h1, add_zero]`. Rewrite using `[reduction_eq_zero_of_not_integral P ha, reduction_eq_zero_of_not_integral P fun h => ha ((intAt_add_iff (intAt_of_div hq0 hz)).1 h)]`.
+-/
 theorem redP_add_q (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (a : E) {z : E} (hz : IntAt P (z / q)) :
     redP P (a + z) = redP P a := by
   by_cases ha : IntAt P a
@@ -82,11 +112,17 @@ theorem redP_add_q (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (a : 
     rw [h1, add_zero]
   · rw [reduction_eq_zero_of_not_integral P ha, reduction_eq_zero_of_not_integral P fun h => ha ((intAt_add_iff (intAt_of_div hq0 hz)).1 h)]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_div]`. Conclude with `(intS P).sum_mem fun i _ => h i`.
+-/
 theorem intAt_sum_div {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i, IntAt P (f i / q)) :
     IntAt P ((∑ i ∈ s, f i) / q) := by
   rw [Finset.sum_div]
   exact (intS P).sum_mem fun i _ => h i
 
+/- English proof (translation)
+The claim follows from `unitV_congr χ (redP_det_congr _ _ (fun s s' => (hM s s').add (intAt_of_div hq0 (hZ _ _))) hM fun s s' => redP_add_q hq hq0 _ (hZ _ _))`.
+-/
 theorem unitV_det_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {t : ℕ}
     (M Z : ℕ → ℕ → E) (hZ : ∀ p p', IntAt P (Z p p' / q)) (f : Fin t → ℕ) (hM : ∀ s s', IntAt P (M (f s) (f s'))) :
     unitV χ (Matrix.det (Matrix.of fun s s' : Fin t => M (f s) (f s') + Z (f s) (f s'))) =
@@ -94,6 +130,11 @@ theorem unitV_det_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (�
   unitV_congr χ (redP_det_congr _ _ (fun s s' => (hM s s').add (intAt_of_div hq0 (hZ _ _))) hM
     fun s s' => redP_add_q hq hq0 _ (hZ _ _))
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Use `unitV_det_add hq hq0 (χ i) M Z hZ (fun s => r + i * t + s.1) fun s s' => hM _ _ ?_` and prove the remaining obligations. Establish `h1 : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t (Finset.mem_range.1 hi)`. Use `s'.2` as an intermediate fact. Rewrite `h1` using `[add_mul, one_mul]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem prod_det_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (r t j : ℕ)
     (M Z : ℕ → ℕ → E) (hZ : ∀ p p', IntAt P (Z p p' / q)) (hM : ∀ p p', p' < r + j * t → IntAt P (M p p')) :
     ∏ i ∈ Finset.range j, unitV (χ i) (Matrix.det (Matrix.of fun s s' : Fin t =>
@@ -107,34 +148,59 @@ theorem prod_det_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (χ
   rw [add_mul, one_mul] at h1
   omega
 
+/- English proof (translation)
+Unfold `atN`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem atN_add {N : ℕ} (v w : Fin N → E) (i : ℕ) : atN (v + w) i = atN v i + atN w i := by
   unfold atN
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p p'`. Simplify using `only [entB, LinearMap.add_apply, atN_add, add_mul]`.
+-/
 theorem entB_add {N' N : ℕ} (k₀ c' n' c n : ℕ) (ex' ex : ℕ → ℕ) (x z : HomE E N' N) :
     entB q k₀ c' n' c n ex' ex (x + z) = fun p p' => entB q k₀ c' n' c n ex' ex x p p' + entB q k₀ c' n' c n ex' ex z p p' := by
   funext p p'
   simp only [entB, LinearMap.add_apply, atN_add, add_mul]
 
+/- English proof (translation)
+Unfold `fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem fIdx_zero (k₀ n p : ℕ) : fIdx k₀ 0 n p = p := by
   unfold fIdx
   split_ifs <;> omega
 
+/- English proof (translation)
+Simplify using `only [entB, fIdx_zero, atN, dif_neg hp, zero_mul]`.
+-/
 theorem entB_row {n' c' n : ℕ} (k₀ : ℕ) (ex' ex : ℕ → ℕ) (x : HomE E (n' + c') (n + 0)) {p : ℕ} (p' : ℕ) (hp : ¬ p < n + 0) :
     entB q k₀ c' n' 0 n ex' ex x p p' = 0 := by
   simp only [entB, fIdx_zero, atN, dif_neg hp, zero_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Use `l.2` as an intermediate fact. Simplify using `only [eN, Pi.zero_apply]`. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem eN_out {N p : ℕ} (hp : ¬ p < N) : eN E N p = 0 := by
   funext l
   have := l.2
   simp only [eN, Pi.zero_apply]
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Simplify using `only [entB, fIdx_zero, eN_out hp, map_zero, atN]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem entB_col {n' n : ℕ} (k₀ : ℕ) (ex' ex : ℕ → ℕ) (x : HomE E (n' + 0) (n + 0)) (p : ℕ) {p' : ℕ} (hp : ¬ p' < n' + 0) :
     entB q k₀ 0 n' 0 n ex' ex x p p' = 0 := by
   simp only [entB, fIdx_zero, eN_out hp, map_zero, atN]
   split_ifs <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hp : p < n + 0`. Distinguish the cases in `hp' : p' < n' + 0`. Establish `e : eN E (n' + 0) p' = Pi.single ⟨p', hp'⟩ 1`. Use function extensionality and compare the values at `l`. Simplify using `[eN, Pi.single_apply, Fin.ext_iff]`.
+
+Simplify using `only [entB, fIdx_zero, atN, dif_pos hp, scE, e]`. Rewrite using `[if_pos (by omega), if_pos (by omega)]`. Simplify using `using hz ⟨p', hp'⟩ ⟨p, hp⟩`. Rewrite using `[entB_col k₀ ex' ex z p hp', zero_div]`. Conclude with `zero_mem (intS P)`.
+
+Rewrite using `[entB_row k₀ ex' ex z p' hp, zero_div]`. Conclude with `zero_mem (intS P)`.
+-/
 theorem entB_int {n' n : ℕ} (k₀ : ℕ) (ex' ex : ℕ → ℕ) (z : HomE E (n' + 0) (n + 0))
     (hz : ∀ s l, IntAt P (z (Pi.single s 1) l / q)) (p p' : ℕ) : IntAt P (entB q k₀ 0 n' 0 n ex' ex z p p' / q) := by
   by_cases hp : p < n + 0
@@ -152,6 +218,15 @@ theorem entB_int {n' n : ℕ} (k₀ : ℕ) (ex' ex : ℕ → ℕ) (z : HomE E (n
 
 variable [StarRing E]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `hZ` using `entB_int k₀ (fun i => i + 1) (fun i => i + 1) z hz`. Establish `h0` using `fun p p' => entB_row (q := q) k₀ (fun i => i + 1) (fun i => i + 1) x (p := p) p'`. Unfold `PhiG lamGv`. Simplify using `only`.
+
+Rewrite using `[entB_add]`. Generalize the expression as in `entB q k₀ 0 n' 0 n (fun i => i + 1) (fun i => i + 1) x = M at *`. Generalize the expression as in `entB q k₀ 0 n' 0 n (fun i => i + 1) (fun i => i + 1) z = Z at *`. Establish `a1` using `fun a p p' => intAt_add_iff (a := a) (hZ p p')`. Establish `a2` using `fun a p p' => intAt_add_iff (a := a) (intAt_of_div hq0 (hZ p p'))`.
+
+Establish `a3` using `fun a p p' => redP_add_q hq hq0 a (hZ p p')`. Use `ite_ctx (by simp only [add_div, a1, a2, a3]) fun h => ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `hM : ∀ p p', p' < r + (j - 1) * t → IntAt P (M p p')` using `fun p p' hp' => by`. Distinguish the cases in `hp : p < n + 0`.
+
+Conclude with `h.1 p p' hp hp'`. Rewrite using `[h0 p p' hp]`. Conclude with `zero_mem (intS P)`. Rewrite using `[prod_det_add hq hq0 χ r t (j - 1) M Z hZ hM, unitV_det_add hq hq0 _ M Z hZ (fun s : Fin (r + (j - 1) * t) => s.1) fun s s' => hM _ _ s'.2, Finset.sum_add_distrib, redP_add_q hq hq0 _ (intAt_sum_div _ _ fun i => hZ _ _)]`.
+-/
 theorem PhiG_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (sharp : Bool) (k₀ r t j c' n' n : ℕ) (hc : c' = 0) (x z : HomE E (n' + c') (n + 0))
     (hz : ∀ s l, IntAt P (z (Pi.single s 1) l / q)) :
@@ -177,6 +252,17 @@ theorem PhiG_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ 
       unitV_det_add hq hq0 _ M Z hZ (fun s : Fin (r + (j - 1) * t) => s.1) fun s s' => hM _ _ s'.2,
       Finset.sum_add_distrib, redP_add_q hq hq0 _ (intAt_sum_div _ _ fun i => hZ _ _)]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `hZ` using `entB_int k₀ (fun i => i + 1) (fun i => i + 1) z hz`. Establish `h0` using `fun p p' => entB_row (q := q) k₀ (fun i => i + 1) (fun i => i + 1) x (p := p) p'`. Unfold `PhiGS lamGvS`. Simplify using `only`.
+
+Rewrite using `[entB_add]`. Generalize the expression as in `entB q k₀ 0 n' 0 n (fun i => i + 1) (fun i => i + 1) x = M at *`. Generalize the expression as in `entB q k₀ 0 n' 0 n (fun i => i + 1) (fun i => i + 1) z = Z at *`. Establish `a1` using `fun a p p' => intAt_add_iff (a := a) (hZ p p')`. Establish `a2` using `fun a p p' => intAt_add_iff (a := a) (intAt_of_div hq0 (hZ p p'))`.
+
+Establish `a3` using `fun a p p' => redP_add_q hq hq0 a (hZ p p')`. Use `ite_ctx (by simp only [add_div, a1, a2, a3]) fun h => ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `hM : ∀ p p', p' < r + (j - 1) * t → IntAt P (M p p')` using `fun p p' hp' => by`. Distinguish the cases in `hp : p < n + 0`.
+
+Conclude with `h.1 p p' hp hp'`. Rewrite using `[h0 p p' hp]`. Conclude with `zero_mem (intS P)`. Rewrite using `[prod_det_add hq hq0 χ r t (j - 1) M Z hZ hM, unitV_det_add hq hq0 _ M Z hZ (fun s : Fin (r + (j - 1) * t) => s.1) fun s s' => hM _ _ s'.2, Finset.sum_add_distrib, Finset.sum_add_distrib, add_add_add_comm, redP_add_q hq hq0]`. Rewrite using `[add_div]`.
+
+Conclude with `(intAt_sum_div _ _ fun i => hZ _ _).add (intAt_sum_div _ _ fun i => hZ _ _)`.
+-/
 theorem PhiGS_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ rS r t j c' n' n : ℕ) (hc : c' = 0) (x z : HomE E (n' + c') (n + 0))
     (hz : ∀ s l, IntAt P (z (Pi.single s 1) l / q)) :
@@ -204,6 +290,17 @@ theorem PhiGS_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ψ₀
     rw [add_div]
     exact (intAt_sum_div _ _ fun i => hZ _ _).add (intAt_sum_div _ _ fun i => hZ _ _)
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `hZ` using `entB_int k₀ 0 0 z hz`. Establish `h0` using `fun p p' => entB_row (q := q) k₀ 0 0 x (p := p) p'`. Establish `h1` using `fun p p' => entB_col (q := q) k₀ 0 0 x p (p' := p')`. Unfold `PhiQ`.
+
+Rewrite using `[entB_add]`. Generalize the expression as in `entB q k₀ 0 n' 0 n 0 0 x = M at *`. Generalize the expression as in `entB q k₀ 0 n' 0 n 0 0 z = Z at *`. Establish `a1` using `fun a p p' => intAt_add_iff (a := a) (hZ p p')`. Establish `a2` using `fun a p p' => intAt_add_iff (a := a) (intAt_of_div hq0 (hZ p p'))`.
+
+Use `ite_ctx (by simp only [add_div, a1, a2]) fun h => ?_` and prove the remaining obligations. Use `beta_reduce`. Establish `hM : ∀ p p', IntAt P (M p p')` using `fun p p' => by`. Distinguish the cases in `hp : p < n + 0`. Distinguish the cases in `hp' : p' < n' + 0`.
+
+Conclude with `h.1 p p' hp hp'`. Rewrite using `[h1 p p' hp']`. Conclude with `zero_mem (intS P)`. Rewrite using `[h0 p p' hp]`. Conclude with `zero_mem (intS P)`.
+
+Rewrite using `[unitV_det_add hq hq0 _ M Z hZ (fun s : Fin r => s.1) fun s s' => hM _ _]`.
+-/
 theorem PhiQ_add (hq : (q : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ r c' n' n : ℕ) (hc : c' = 0) (x z : HomE E (n' + c') (n + 0))
     (hz : ∀ s l, IntAt P (z (Pi.single s 1) l / q)) :
@@ -234,6 +331,11 @@ section Transform
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `IntAt.mul (intAt_nat (P := P) (q ^ c)) hz` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intAt_div_pow_le (hq0 : (q : E) ≠ 0) {a b : ℕ} (h : a ≤ b) {z : E} (hz : IntAt P (z / (q : E) ^ b)) :
     IntAt P (z / (q : E) ^ a) := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -243,10 +345,24 @@ theorem intAt_div_pow_le (hq0 : (q : E) ≠ 0) {a b : ℕ} (h : a ≤ b) {z : E}
   field_simp
   ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [pi_eq_sum_univ' y]`. Simplify using `[map_sum]`.
+-/
 theorem form_apply {n : ℕ} (f : Sp E n →ₗ[E] E) (y : Sp E n) : f y = ∑ i, y i * f (Pi.single i 1) := by
   conv_lhs => rw [pi_eq_sum_univ' y]
   simp [map_sum]
 
+/- English proof (translation)
+Establish `he : IntAt P (e : E)` using `intCast_mem (intS P) e`. Establish `h1 : IntAt P ((e : E) * ζ y)`. Rewrite using `[form_apply]`. Use `he.mul ((intS P).sum_mem fun i _ => ?_)` and prove the remaining obligations. Use `(hy i).mul (hζ i)` as an intermediate fact.
+
+Rewrite using `[mem_intS]`. Use `this using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Establish `h2 : IntAt P ((q : E) ^ D * ((e : E) * η y))`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hD`.
+
+Rewrite using `[form_apply, mul_left_comm, Finset.mul_sum]`. Use `he.mul ((intS P).sum_mem fun i _ => ?_)` and prove the remaining obligations. Use `(intAt_nat (P := P) (q ^ c)).mul ((hy i).mul (hη i))` as an intermediate fact. Rewrite using `[mem_intS]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : IntAt P ((q : E) ^ D * ((e : E) * ζ y))`. Use `(intAt_nat (P := P) (q ^ D)).mul h1` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[LinearMap.add_apply, mul_add, hadd _ _ h2 h3, hint _ h1, mul_one]`.
+-/
 theorem psi_shift (hq0 : (q : E) ≠ 0) (psi : E → K) (D a b : ℕ) (hD : a + b ≤ D)
     (hadd : ∀ x y : E, IntAt P ((q : E) ^ D * x) → IntAt P ((q : E) ^ D * y) → psi (x + y) = psi x * psi y)
     (hint : ∀ x : E, IntAt P x → psi x = 1) {n : ℕ} (η ζ : Sp E n →ₗ[E] E) (y : Sp E n) (e : ℤ)
@@ -274,12 +390,21 @@ theorem psi_shift (hq0 : (q : E) ≠ 0) (psi : E → K) (D a b : ℕ) (hD : a + 
     simpa using this
   rw [LinearMap.add_apply, mul_add, hadd _ _ h2 h3, hint _ h1, mul_one]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_ne_zero]`. Conclude with `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+-/
 theorem qOf_ne (P : HeightOneSpectrum (𝓞 E)) : ((qOf P : ℕ) : E) ≠ 0 := by
   rw [Nat.cast_ne_zero]
   exact fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
 
+/- English proof (translation)
+The claim follows from `Ideal.absNorm_mem _`.
+-/
 theorem qOf_mem (P : HeightOneSpectrum (𝓞 E)) : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal := Ideal.absNorm_mem _
 
+/- English proof (translation)
+Unfold `atNL`. Use `split_ifs with hi`. Conclude with `h _`. Rewrite using `[LinearMap.zero_apply, zero_div]`. Conclude with `zero_mem (intS P)`.
+-/
 theorem atNL_int {N : ℕ} (i : ℕ) (w : Sp E N) (c : E) (h : ∀ l, IntAt P (w l / c)) : IntAt P (atNL E N i w / c) := by
   unfold atNL
   split_ifs with hi
@@ -287,6 +412,9 @@ theorem atNL_int {N : ℕ} (i : ℕ) (w : Sp E N) (c : E) (h : ∀ l, IntAt P (w
   · rw [LinearMap.zero_apply, zero_div]
     exact zero_mem (intS P)
 
+/- English proof (translation)
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem (intS P)`. Conclude with `zero_mem (intS P)`.
+-/
 theorem single_int {N : ℕ} (s i : Fin N) : IntAt P ((Pi.single s 1 : Sp E N) i) := by
   rw [Pi.single_apply]
   split_ifs
@@ -301,6 +429,15 @@ variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → He
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 open Classical in
+/- English proof (translation)
+Establish `hq0` using `qOf_ne P.1`. Establish `h0 : ∀ i, IntAt P.1 (ζ (Pi.single i 1))` using `fun i => by`. Simplify using `using intAt_div_pow_le hq0 (Nat.zero_le _) (hζ i)`. Establish `h1 : ∀ i, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * ζ (Pi.single i 1))` using `fun i => by`. Simplify using `using (intAt_nat (P := P.1) (qOf P.1 ^ cst.M)).mul (h0 i)`.
+
+Unfold `ftY`. Establish `e1 : (∀ i : Fin n, IntAt P.1 ((η + ζ) (Pi.single i 1))) ↔ ∀ i : Fin n, IntAt P.1 (η (Pi.single i 1))`. Conclude with `forall_congr' fun i => intAt_add_iff (h0 i)`. Establish `e2 : (∀ i : Fin n, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * (η + ζ) (Pi.single i 1))) ↔ ∀ i : Fin n, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * η (Pi.single i 1))`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.add_apply, mul_add, intAt_add_iff (h1 i)]`. Simplify using `only [e1, e2]`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Simplify using `only [if_pos hP] at hy ⊢ split_ifs with h`. Conclude with `psi_shift hq0 (cst.psi P) (cst.D P) 0 1 (by simpa using hc.D_pos P) (hc.psi_add P) (hc.psi_int P) η ζ y _ (by simpa using h) (fun i => intAt_div_pow_le hq0 hc.B_pos (hζ i)) hy`.
+
+Both sides reduce to the same expression. Simplify using `only [if_neg hP] at hy ⊢ split_ifs with h`. Rewrite using `[psi_shift hq0 (cst.psi P) (cst.D P) cst.M cst.M (by have := hD hP; omega) (hc.psi_add P) (hc.psi_int P) η ζ y _ h (fun i => intAt_div_pow_le hq0 hc.M_le_B (hζ i)) hy]`. Both sides reduce to the same expression.
+-/
 theorem ftY_add (hc : cst.Ok) (P : rowSG Pr sel mu) (hD : P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) {n : ℕ}
     (η ζ : Sp X.E n →ₗ[X.E] X.E) (y : Sp X.E n)
     (hζ : ∀ i, IntAt P.1 (ζ (Pi.single i 1) / (qOf P.1 : X.E) ^ cst.B))
@@ -332,6 +469,17 @@ theorem ftY_add (hc : cst.Ok) (P : rowSG Pr sel mu) (hD : P.1 ∉ Pr.vGs → 2 *
     · rfl
 
 open Classical in
+/- English proof (translation)
+Take `⟨y, hy, hY⟩` from `hY`. Establish `hmem : repY Y ∈ Y` using `Classical.epsilon_spec (p := fun z => z ∈ Y) ⟨y, by`. Rewrite using `[hY]`. Use the proof step `simp⟩`. Generalize the expression as in `repY Y = z at *`.
+
+Rewrite `hmem` using `[hY]`. Establish `hq0` using `qOf_ne P.1`. Establish `h1` using `(Submodule.mem_iInf _).1 hy P`. Establish `h2` using `(Submodule.mem_iInf _).1 hmem P`. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.smul_apply, LinearMap.id_apply] at h1 h2`.
+
+Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Simplify using `only [if_pos hP] at h1 h2 ⊢`. Use `add_mem (Submodule.smul_mem _ ((qOf P.1 : ℕ) : 𝓞 X.E) h2) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul X.E]`.
+
+Simplify using `[smul_sub]`. Simplify using `only [if_neg hP] at h1 h2 ⊢`. Use `add_mem (Submodule.smul_mem _ ((qOf P.1 ^ (cst.M + cst.M) : ℕ) : 𝓞 X.E) h2) h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul X.E, smul_smul]`.
+
+Establish `e : ((qOf P.1 ^ (cst.M + cst.M) : ℕ) : X.E) * ((qOf P.1 : X.E) ^ (cst.M : ℤ))⁻¹ = (qOf P.1 : X.E) ^ cst.M`. Use `push_cast`. Rewrite using `[zpow_natCast, pow_add, mul_inv_cancel_right₀ (pow_ne_zero _ hq0)]`. Rewrite using `[e]`. Simplify using `[smul_sub]`.
+-/
 theorem repY_mem {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (Y : Set (Sp X.E n)) (hY : Y ∈ ybSet sel mu cst N)
     (P : rowSG Pr sel mu) :
     ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 1 else cst.M)) • repY Y ∈ localization₂ P.1.asIdeal N := by
@@ -360,6 +508,11 @@ theorem repY_mem {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (Y : Set (Sp X.
     rw [e]
     simp [smul_sub]
 
+/- English proof (translation)
+Establish `hc : cOf R (m2 + 1) = 0` using `by unfold cOf; omega`. Unfold `PhiTop`. Use `split_ifs`. Conclude with `PhiGS_add (qOf_mem P) (qOf_ne P) _ _ _ _ _ _ _ _ _ _ hc x z hz`. Conclude with `PhiG_add (qOf_mem P) (qOf_ne P) _ _ _ _ _ _ _ _ _ _ hc x z hz`.
+
+Conclude with `PhiQ_add (qOf_mem P) (qOf_ne P) _ _ _ _ _ _ hc x z hz`.
+-/
 theorem PhiTop_add {R : Ranks} (Ch : Chars X Pr R.m) (sharp : Bool) (m2 : ℕ) (hm : R.m = m2 + 2) (P : HeightOneSpectrum (𝓞 X.E))
     (x z : HomE X.E (R.N (m2 + 1) + cOf R (m2 + 1)) ((R.N R.m - 1) + 0))
     (hz : ∀ s l, IntAt P (z (Pi.single s 1) l / (qOf P : X.E))) :
@@ -377,6 +530,11 @@ section Hom
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {a b : ℕ}
 
+/- English proof (translation)
+Unfold `phiT`. Use `ite_ctx (forall_congr' fun P => forall_congr' fun v => forall_congr' fun hv => ?_) fun _ => rfl` and prove the remaining obligations. Establish `h1 : c • y₀ v ∈ d'.at P.1` using `Submodule.smul_mem _ c (hy P v hv)`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Submodule.add_mem_iff_left _ h1]`. Use `and_congr_right fun h => ?_` and prove the remaining obligations.
+
+Rewrite using `[hd'.f_add P _ h _ h1, hd'.f_smul P c _ (hy P v hv), Ideal.Quotient.eq_zero_iff_mem.2 (hc P), zero_mul, add_zero]`.
+-/
 theorem phiT_add {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a ST SG) (d' : Deco E b ST SG') (hd' : d'.Ok)
     (x y₀ : HomE E a b) (c : 𝓞 E) (hc : ∀ P : ST, c ∈ P.1.asIdeal)
     (hy : ∀ P : ST, ∀ v ∈ d.at P.1, y₀ v ∈ d'.at P.1) : phiT K d d' (x + c • y₀) = phiT K d d' x := by
@@ -388,6 +546,9 @@ theorem phiT_add {ST SG SG' : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E a
   refine and_congr_right fun h => ?_
   rw [hd'.f_add P _ h _ h1, hd'.f_smul P c _ (hy P v hv), Ideal.Quotient.eq_zero_iff_mem.2 (hc P), zero_mul, add_zero]
 
+/- English proof (translation)
+Use extensionality with `v l`. Simplify using `[inFr]`.
+-/
 theorem inFr_add (f : Sp E a ≃ₗ[E] Sp E a) (f' : Sp E b ≃ₗ[E] Sp E b) (x y : HomE E a b) :
     inFr f f' (x + y) = inFr f f' x + inFr f f' y := by
   ext v l

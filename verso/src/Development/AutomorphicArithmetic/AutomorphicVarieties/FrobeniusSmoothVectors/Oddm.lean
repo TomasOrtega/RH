@@ -2,6 +2,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `O _ _ a g G hG hlin`. Set `M : Fin g → MvPowerSeries (Fin a ⊕ Fin g) O` to `fun j m => if ∀ k : Fin g, k < j → m (Sum.inr k) = 0 then MvPowerSeries.coeff (m + Finsupp.single (Sum.inr j) 1) G else 0`. Establish `hM : ∀ j m, MvPowerSeries.coeff m (M j) = if ∀ k : Fin g, k < j → m (Sum.inr k) = 0 then MvPowerSeries.coeff (m + Finsupp.single (Sum.inr j) 1) G else 0` using `fun _ _ => rfl`. Use `⟨M, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hM]`. Simplify using `using hlin (Sum.inr j)`. Use extensionality with `n`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[MvPowerSeries.X_def, MvPowerSeries.coeff_mul_monomial, mul_one, hM]`.
+
+Distinguish the cases in `hex : ∃ j : Fin g, n (Sum.inr j) ≠ 0`. Set `S` to `Finset.univ.filter (fun j : Fin g => n (Sum.inr j) ≠ 0)`. Establish `hS : S.Nonempty`. Take `⟨j, hj⟩` from `hex`. Conclude with `⟨j, by simp [S, hj]⟩`.
+
+Establish `hj0 : n (Sum.inr (S.min' hS)) ≠ 0`. Use `S.min'_mem hS` as an intermediate fact. Simplify `this` using `[S]`. Establish `hmin : ∀ k : Fin g, n (Sum.inr k) ≠ 0 → S.min' hS ≤ k` using `fun k hk => S.min'_le k (by simp [S, hk])`. Establish `hle : ∀ j : Fin g, n (Sum.inr j) ≠ 0 → Finsupp.single (Sum.inr j : Fin a ⊕ Fin g) 1 ≤ n`.
+
+Introduce `j hj`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single (S.min' hS)]`. Rewrite using `[if_pos (hle _ hj0), if_pos, tsub_add_cancel_of_le (hle _ hj0)]`.
+
+Introduce `k hk`. Assume the negation of the conclusion as `hne`. Use `hmin k (by simpa [Finsupp.tsub_apply, Finsupp.single_apply, ne_of_gt hk] using hne)` as an intermediate fact. Conclude with `absurd hk (not_lt.mpr this)`. Introduce `j _ hj`.
+
+Distinguish the cases in `hjl : Finsupp.single (Sum.inr j : Fin a ⊕ Fin g) 1 ≤ n`. Rewrite using `[if_pos hjl]`. Establish `hnj : n (Sum.inr j) ≠ 0`. Use `hjl (Sum.inr j)` as an intermediate fact. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlt : S.min' hS < j` using `lt_of_le_of_ne (hmin j hnj) (Ne.symm hj)`. Rewrite using `[if_neg]`. Introduce `hall`. Use `hall _ hlt` as an intermediate fact.
+
+Simplify using `[Finsupp.tsub_apply, Finsupp.single_apply, Ne.symm (ne_of_lt hlt)] at this`. Conclude with `hj0 this`. Rewrite using `[if_neg hjl]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Use `push_neg at hex`. Establish `hz : ∀ j : Fin g, ¬ Finsupp.single (Sum.inr j : Fin a ⊕ Fin g) 1 ≤ n`. Introduce `j hj`. Use `hj (Sum.inr j)` as an intermediate fact. Simplify using `[hex j] at this`.
+
+Simplify using `only [hz, if_false, Finset.sum_const_zero]`. Apply `hG` to reduce the goal to its premises. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_eq_zero]`. Evaluate the decidable proposition. Introduce `i _`.
+
+Break down `i with i | i` into its components or cases. Simplify using `[Space.Loc.par]`. Simplify using `[hex i]`.
+-/
 theorem UpperTheory.V.Fr.oddm :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (a g : ℕ) (G : MvPowerSeries (Fin a ⊕ Fin g) O), G ∈ wtPart O (Space.Loc.par a g) 1 → (∀ s, MvPowerSeries.coeff (Finsupp.single s 1) G ∈ maximalIdeal O) → ∃ M : Fin g → MvPowerSeries (Fin a ⊕ Fin g) O, (∀ j, MvPowerSeries.constantCoeff (M j) ∈ maximalIdeal O) ∧ G = ∑ j, M j * MvPowerSeries.X (.inr j) := by
   classical

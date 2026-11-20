@@ -29,6 +29,9 @@ def pull (A : Type) [CommRing A] (e : X₁ ≃ X₀) : (X₀ → A) ≃ₐ[A] (X
 def pullT (e : X₁ ≃ X₀) (T : Subalgebra A (X₀ → A)) : Subalgebra A (X₁ → A) :=
   T.map (pull A e : (X₀ → A) →ₐ[A] (X₁ → A))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨f, hf, rfl⟩`.
+-/
 theorem pull_mem (e : X₁ ≃ X₀) {T : Subalgebra A (X₀ → A)} {f : X₀ → A} (hf : f ∈ T) :
     (fun x => f (e x)) ∈ pullT e T := ⟨f, hf, rfl⟩
 
@@ -37,6 +40,9 @@ def pullR (e : X₁ ≃ X₀) (γ : Γ₁ ≃* Γ₀) (rep : X₀ → (Γ₀ →
 
 variable (e : X₁ ≃ X₀) (γ : Γ₁ ≃* Γ₀)
 
+/- English proof (translation)
+Take `⟨m, f, g, hf, rfl⟩` from `h`. Use `⟨m, fun k x => f k (e x), fun k => γ.symm (g k), fun k => pull_mem e (hf k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[pullR, mat, Finset.sum_apply]`.
+-/
 theorem inRing_pull {T : Subalgebra A (X₀ → A)} {rep : X₀ → (Γ₀ →* GL (Fin n) A)}
     {a : X₀ → Matrix (Fin n) (Fin n) A} (h : InRing T rep a) :
     InRing (pullT e T) (pullR e γ rep) (fun x => a (e x)) := by
@@ -45,6 +51,9 @@ theorem inRing_pull {T : Subalgebra A (X₀ → A)} {rep : X₀ → (Γ₀ →* 
   funext x
   simp [pullR, mat, Finset.sum_apply]
 
+/- English proof (translation)
+Take `⟨m, j, b, hj, rfl⟩` from `h`. Use `⟨m, fun k x => j k (e x), fun k x => b k (e x), fun k => ⟨pull_mem e (hj k).1, (hj k).2.1, inRing_pull e γ (hj k).2.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply]`.
+-/
 theorem inCongruenceModule_pull_equivPoints {T : Subalgebra A (X₀ → A)} {rep : X₀ → (Γ₀ →* GL (Fin n) A)} {π : X₁}
     {a s : X₀ → Matrix (Fin n) (Fin n) A} (h : InMatrixCongruenceModule T rep (e π) a s) :
     InMatrixCongruenceModule (pullT e T) (pullR e γ rep) π (fun x => a (e x)) (fun x => s (e x)) := by
@@ -54,20 +63,34 @@ theorem inCongruenceModule_pull_equivPoints {T : Subalgebra A (X₀ → A)} {rep
   funext x
   simp [Finset.sum_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapRep_comp {B : Type} [CommRing B] (f : A →+* B) (ρ : Γ₀ →* GL (Fin n) A) (γ : Γ₁ →* Γ₀) :
     mapRep f (ρ.comp γ) = (mapRep f ρ).comp γ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem overK_comp (ρ : Γ₀ →* GL (Fin n) A) (γ : Γ₁ →* Γ₀) :
     overK (ρ.comp γ) = (overK ρ).comp γ := rfl
 
 section Rep
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', h1, h2⟩` from `h W fun g v hv => by simpa using hW (γ.symm g) v hv`. Conclude with `⟨W', fun g v hv => h1 (γ g) v hv, h2⟩`.
+-/
 theorem isSS_comp {ρ : Representation K Γ₀ V} (h : IsSS ρ) : IsSS (ρ.comp γ.toMonoidHom : Representation K Γ₁ V) := by
   intro W hW
   obtain ⟨W', h1, h2⟩ := h W fun g v hv => by simpa using hW (γ.symm g) v hv
   exact ⟨W', fun g v hv => h1 (γ g) v hv, h2⟩
 
+/- English proof (translation)
+Take `⟨ι, i1, i2, Vs, hs, h1, h2, h3, h4⟩` from `h`. Use `⟨ι, i1, i2, Vs, fun j g => hs j (γ g), h1, h2, fun j => ?_, fun j j' hj f hf => h4 j j' hj f fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 j]`. Use `congr 1`. Conclude with `γ.surjective.range_comp fun g => (ρ g).restrict (hs j g)`.
+
+Take `⟨g, rfl⟩` from `γ.surjective g`. Conclude with `hf g v`.
+-/
 theorem absIrrDistinct_comp {ρ : Representation K Γ₀ V} (h : AbsIrrDistinct ρ) :
     AbsIrrDistinct (ρ.comp γ.toMonoidHom : Representation K Γ₁ V) := by
   obtain ⟨ι, i1, i2, Vs, hs, h1, h2, h3, h4⟩ := h
@@ -78,19 +101,31 @@ theorem absIrrDistinct_comp {ρ : Representation K Γ₀ V} (h : AbsIrrDistinct 
   · obtain ⟨g, rfl⟩ := γ.surjective g
     exact hf g v
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h g => by obtain ⟨g, rfl⟩ := γ.surjective g; exact h g, fun h g => h (γ g)⟩`.
+-/
 theorem isInv_comp {a : ℕ} {ρ : Γ₀ →* GL (Fin a) K} {W : Submodule K (Fin a → K)} :
     IsInv (ρ.comp γ.toMonoidHom) W ↔ IsInv ρ W :=
   ⟨fun h g => by obtain ⟨g, rfl⟩ := γ.surjective g; exact h g, fun h g => h (γ g)⟩
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨W', h1, h2⟩` from `h W ((isInv_comp γ).1 hW)`. Conclude with `⟨W', (isInv_comp γ).2 h1, h2⟩`.
+-/
 theorem isSSRep_comp {a : ℕ} {ρ : Γ₀ →* GL (Fin a) K} (h : IsSSRep ρ) : IsSSRep (ρ.comp γ.toMonoidHom) := by
   intro W hW
   obtain ⟨W', h1, h2⟩ := h W ((isInv_comp γ).1 hW)
   exact ⟨W', (isInv_comp γ).2 h1, h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, (isInv_comp γ).2 h.2.1, fun W' h1 h2 => h.2.2 W' h1 ((isInv_comp γ).1 h2)⟩`.
+-/
 theorem isIrrSub_comp {a : ℕ} {ρ : Γ₀ →* GL (Fin a) K} {W : Submodule K (Fin a → K)} (h : IsIrrSub ρ W) :
     IsIrrSub (ρ.comp γ.toMonoidHom) W :=
   ⟨h.1, (isInv_comp γ).2 h.2.1, fun W' h1 h2 => h.2.2 W' h1 ((isInv_comp γ).1 h2)⟩
 
+/- English proof (translation)
+Unfold `AbsIrrSub at h ⊢`. Rewrite using `[mapRep_comp]`. Conclude with `isIrrSub_comp γ h`.
+-/
 theorem absIrrSub_comp {a : ℕ} {ρ : Γ₀ →* GL (Fin a) K} {W : Submodule K (Fin a → K)} (h : AbsIrrSub ρ W) :
     AbsIrrSub (ρ.comp γ.toMonoidHom) W := by
   unfold AbsIrrSub at h ⊢
@@ -101,6 +136,13 @@ end Rep
 
 variable [IsDomain A] [IsLocalRing A]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Use `⟨((pull A e).subalgebraMap T).toRingEquiv.isLocalRing, fun x y hxy => ?_, fun x => ?_, fun g d => pull_mem e (h4 (γ g) d), fun x => ?_, fun x y g => h6 (e x) (e y) (γ g), fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hne⟩` from `h2 (e x) (e y) (e.injective.ne hxy)`. Conclude with `⟨_, pull_mem e hf, hne⟩`. Rewrite using `[pullR, overK_comp]`.
+
+Conclude with `isSS_comp γ (h3 (e x))`. Rewrite using `[pullR, overK_comp]`. Conclude with `absIrrDistinct_comp γ (h5 (e x))`. Take `⟨d, hd⟩` from `h7 _ (hZ x hx)`. Conclude with `⟨d, fun g => hd (γ g)⟩`.
+
+Rewrite using `[pullR, mapRep_comp]`. Conclude with `absIrrSub_comp γ (h8 _ (hZ x hx))`.
+-/
 theorem setting_pull {T : Subalgebra A (X₀ → A)} {Z₀ : Finset X₀} {Z₁ : Finset X₁} (hZ : ∀ x ∈ Z₁, e x ∈ Z₀)
     {rep : X₀ → (Γ₀ →* GL (Fin n) A)} {ρ : X₀ → (Γ₀ →* GL (Fin r) A)} {χ : ℕ → (Γ₀ →* Aˣ)}
     (h : HidaSetting t T Z₀ rep ρ χ) :
@@ -121,6 +163,9 @@ theorem setting_pull {T : Subalgebra A (X₀ → A)} {Z₀ : Finset X₀} {Z₁ 
     exact absIrrSub_comp γ (h8 _ (hZ x hx))
 
 omit [IsLocalRing A] in
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4, h5, h6⟩, ⟨d, hd, hd'⟩, ⟨ϖ, s, hϖ, hs, hX⟩, h9⟩` from `h`. Use `⟨⟨inRing_pull e γ h1, inRing_pull e γ h2, funext fun x => congrFun h3 (e x), funext fun x => congrFun h4 (e x),` and prove the remaining obligations. Use function extensionality and compare the values at `fun x => congrFun h5 (e x), funext fun x => congrFun h6 (e x)⟩, ⟨d, fun g => hd (γ g), hd'⟩,`. Use the proof step `⟨ϖ, fun x => s (e x), hϖ, inCongruenceModule_pull_equivPoints e γ hs, funext fun x => congrFun hX (e x)⟩, fun x => h9 (e x)⟩`.
+-/
 theorem isChoice_pull {T : Subalgebra A (X₀ → A)}
     {rep : X₀ → (Γ₀ →* GL (Fin n) A)} {ρ : X₀ → (Γ₀ →* GL (Fin r) A)} {χ : ℕ → (Γ₀ →* Aˣ)} {π : X₁} {g : Γ₁} {L : ℕ}
     {eB e1 X0 : X₀ → Matrix (Fin n) (Fin n) A} (h : IsChoice t T rep ρ χ (e π) (γ g) L eB e1 X0) :
@@ -133,6 +178,9 @@ theorem isChoice_pull {T : Subalgebra A (X₀ → A)}
 
 end Plain
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨inferInstance, inferInstance, IsScalarTower.of_algebraMap_eq fun z => (hφ z z HEq.rfl).symm⟩`.
+-/
 theorem exists_algebra {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (A B : Type) [CommRing A] [CommRing B]
     [Algebra ℤ_[p] A] [Module.Finite ℤ_[p] A] [Algebra ℤ_[q] B] [Algebra A B]
     (hφ : ∀ (z : ℤ_[p]) (z' : ℤ_[q]), HEq z z' → algebraMap A B (algebraMap _ _ z) = algebraMap _ _ z') :
@@ -140,6 +188,11 @@ theorem exists_algebra {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) (A 
   subst h
   exact ⟨inferInstance, inferInstance, IsScalarTower.of_algebraMap_eq fun z => (hφ z z HEq.rfl).symm⟩
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, hR.hasBasis_nhds_zero.tendsto_iff hS.hasBasis_nhds_zero]`. Introduce `n _`. Use `⟨n, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : (IsLocalRing.maximalIdeal R).map f ≤ IsLocalRing.maximalIdeal S` using `Ideal.map_le_iff_le_comap.2 (fun y hy => map_nonunit f y hy)`.
+
+Establish `h2` using `Ideal.mem_map_of_mem f hx`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+-/
 theorem continuous_of_isLocalHom {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] [IsLocalRing R] [IsLocalRing S]
     (hR : IsAdic (IsLocalRing.maximalIdeal R)) (hS : IsAdic (IsLocalRing.maximalIdeal S))
@@ -154,6 +207,17 @@ theorem continuous_of_isLocalHom {R S : Type} [CommRing R] [CommRing S] [Topolog
   rw [Ideal.map_pow] at h2
   exact Ideal.pow_right_mono h1 n h2
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_eq_span]`. Use `Submodule.span_mono fun f hf => ?_` and prove the remaining obligations. Proceed by induction on `hf using Submonoid.closure_induction with`. Consider the case `mem f hf => exact Set.image_mono Algebra.subset_adjoin hf`.
+
+Consider the case `one => exact ⟨1, one_mem _, by ext; simp⟩`. Consider the case `mul f g _ _ hf hg`. Take `⟨f, hf, rfl⟩` from `hf`. Take `⟨g, hg, rfl⟩` from `hg`. Conclude with `⟨f * g, mul_mem hf hg, by ext; simp⟩`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Express the relevant statement in the definitionally equal form `_ ∈ Algebra.adjoin B _`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf => exact Algebra.subset_adjoin ⟨f, hf, rfl⟩`.
+
+Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ (φ c)`. Consider the case `add f g _ _ hf hg => convert add_mem hf hg using 1`. Use `ext`. Simplify using the standard rewrite rules. Consider the case `mul f g _ _ hf hg => convert mul_mem hf hg using 1`.
+
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem adjoin_eq_span {A B X : Type} [CommRing A] [CommRing B] (φ : A →+* B) (s : Set (X → A)) :
     Subalgebra.toSubmodule (Algebra.adjoin B ((fun f : X → A => fun x => φ (f x)) '' s)) =
       Submodule.span B ((fun f : X → A => fun x => φ (f x)) '' (Algebra.adjoin A s : Set (X → A))) := by
@@ -181,6 +245,11 @@ section Record
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N₀ N₁ : NData R H what₂} {A₀ : NAut N₀} {A₁ : NAut N₁}
   {i₀ : N₀.Loc} {i₁ : N₁.Loc} (a : LocExt N₀ N₁ A₀ A₁ i₀ i₁)
 
+/- English proof (translation)
+Use `letI := a.φ.toAlgebra`. Take `⟨_, _, _⟩` from `exists_algebra a.l_eq (N₀.O i₀) (N₁.O i₁) a.φ_alg`. Use `haveI : Algebra.IsIntegral (N₀.O i₀) (N₁.O i₁) := Algebra.IsIntegral.tower_top ℤ_[N₁.l i₁]`. Use `haveI : FaithfulSMul (N₀.O i₀) (N₁.O i₁) := (faithfulSMul_iff_algebraMap_injective _ _).2 (Model.φ_injective a)`. Use `haveI : IsLocalHom a.φ := Algebra.IsIntegral.isLocalHom (N₀.O i₀) (N₁.O i₁)`.
+
+Conclude with `continuous_of_isLocalHom (N₀.O_adic i₀) (N₁.O_adic i₁) a.φ`.
+-/
 theorem continuous_φ : Continuous a.φ := by
   letI := a.φ.toAlgebra
   obtain ⟨_, _, _⟩ := exists_algebra a.l_eq (N₀.O i₀) (N₁.O i₁) a.φ_alg
@@ -189,6 +258,13 @@ theorem continuous_φ : Continuous a.φ := by
   haveI : IsLocalHom a.φ := Algebra.IsIntegral.isLocalHom (N₀.O i₀) (N₁.O i₁)
   exact continuous_of_isLocalHom (N₀.O_adic i₀) (N₁.O_adic i₁) a.φ
 
+/- English proof (translation)
+Introduce `x`. Take `⟨h1, h2, h3⟩` from `h (a.e x)`. Use `⟨(h1.comp a.γ_cont).matrix_map (continuous_φ a), ?_, fun w hw B σ hB hσ => ?_⟩` and prove the remaining obligations. Set `ψ : Kf N₀ i₀ →+* Kf N₁ i₁` to `IsFractionRing.map (Model.φ_injective a)`. Establish `hψ : ∀ z, ψ (algebraMap _ _ z) = algebraMap _ _ (a.φ z)` using `fun z => by simp [ψ, IsFractionRing.map]`.
+
+Use `letI := ψ.toAlgebra`. Use `haveI : CharZero (Kf N₀ i₀) := ((A₀.iotaQC i₀).toRingHom.comp (A₀.iotaQ i₀)).charZero`. Establish `h4 : IsSSRep (mapRep ψ _)` using `ssAscent (Kf N₀ i₀) (Kf N₁ i₁) _ _ _ (isSSRep_comp a.γ h2)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g b c`.
+
+Conclude with `(hψ _).symm`. Take `⟨B', hB', hσ'⟩` from `(a.frob w σ).1 ⟨B, hB, hσ⟩`. Rewrite using `[Model.heckePol_map a x w hw, ← h3 w ((a.out w).1 hw) B' _ hB' hσ', ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 theorem goodR_ext {rep : N₀.X i₀ → (GE N₀ →* GL (Fin R.nV) (N₀.O i₀))} (h : GoodR N₀ i₀ rep) :
     GoodR N₁ i₁ fun x => mapRep a.φ (pullR a.e a.γ rep x) := by
   intro x
@@ -206,6 +282,11 @@ theorem goodR_ext {rep : N₀.X i₀ → (GE N₀ →* GL (Fin R.nV) (N₀.O i�
     rw [Model.heckePol_map a x w hw, ← h3 w ((a.out w).1 hw) B' _ hB' hσ', ← Matrix.charpoly_map]
     rfl
 
+/- English proof (translation)
+Rewrite using `[← N₁.T_gen i₁, ← N₀.T_gen i₀, pullT, AlgHom.map_adjoin, ← adjoin_eq_span]`. Use `congr 2`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩`.
+
+Take `⟨k1, k2, k3, k4⟩` from `(a.out v).1 ⟨h1, h2, h3, h4⟩`. Conclude with `⟨_, ⟨_, ⟨v, k, k1, k2, k3, k4, h5, h6, rfl⟩, rfl⟩, funext fun x => (a.hT v k x ⟨h1, h2, h3, h4⟩ h5 h6).symm⟩`. Introduce and unpack `⟨_, ⟨_, ⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩, rfl⟩, rfl⟩`. Take `⟨k1, k2, k3, k4⟩` from `(a.out v).2 ⟨h1, h2, h3, h4⟩`. Conclude with `⟨v, k, k1, k2, k3, k4, h5, h6, funext fun x => (a.hT v k x ⟨k1, k2, k3, k4⟩ h5 h6).symm⟩`.
+-/
 theorem T_ext : Subalgebra.toSubmodule (N₁.T i₁) = Submodule.span (N₁.O i₁)
     ((fun f : N₁.X i₁ → N₀.O i₀ => fun x => a.φ (f x)) '' (pullT a.e (N₀.T i₀) : Set _)) := by
   rw [← N₁.T_gen i₁, ← N₀.T_gen i₀, pullT, AlgHom.map_adjoin, ← adjoin_eq_span]
@@ -221,6 +302,15 @@ theorem T_ext : Subalgebra.toSubmodule (N₁.T i₁) = Submodule.span (N₁.O i�
 
 end Record
 
+/- English proof (translation)
+Introduce `R H what₂ N₀ N₁ A₀ A₁ i₀ i₁ a S hC hS`. Take `⟨rep, ρ, hG, hSet, hch⟩` from `hC`. Use `letI := a.φ.toAlgebra`. Take `⟨j1, j2, j3⟩` from `exists_algebra a.l_eq (N₀.O i₀) (N₁.O i₁) a.φ_alg`. Use `⟨_, fun x => mapRep a.φ (pullR a.e a.γ ρ x), goodR_ext a hG, N₀.O i₀, inferInstance, inferInstance, inferInstance, j1, j2, inferInstance, j3, pullT a.e (N₀.T i₀), pullR a.e a.γ rep, pullR a.e a.γ ρ, fun c => (N₀.chi i₀ c).comp a.γ.toMonoidHom, ⟨Model.φ_injective a, T_ext a, fun _ …` and prove the remaining obligations.
+
+Take `⟨g0, L, eB, e1, X0, hg, hc, hr⟩` from `hch _ ((a.Z π).1 hπ)`. Take `⟨g, rfl⟩` from `a.γ.surjective g0`. Use `⟨g, L, _, _, _, (Model.localisationCoefficientExtension_isWildInertiaCyclotomic_iff a g).2 hg, isChoice_pull a.e a.γ hc, fun x => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hP⟩` from `hr (a.e x)`. Use `choose β hβ using fun c => hS (α c) (hα c)`.
+
+Use `⟨β, ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective ((A₁.iotaQC i₁).toRingHom.comp (A₁.iotaQ i₁)) (RingHom.injective _)` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, Polynomial.map_prod]`. Use `Eq.trans ?_ (hP.trans ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `RingHom.ext a.φ_iota`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[← hβ c]`.
+-/
 theorem takenWild_of_locExt : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N₀ N₁ : NData R H what₂) (A₀ : NAut N₀) (A₁ : NAut N₁) (i₀ : N₀.Loc) (i₁ : N₁.Loc), LocExt N₀ N₁ A₀ A₁ i₀ i₁ → ∀ S : Set ℂ, Chosen N₀ A₀ i₀ S → Contains N₁ A₁ i₁ S → ∃ r ρ, GoodR N₁ i₁ r ∧ TakenWild N₁ i₁ r ρ := by
   intro R H what₂ N₀ N₁ A₀ A₁ i₀ i₁ a S hC hS
   obtain ⟨rep, ρ, hG, hSet, hch⟩ := hC

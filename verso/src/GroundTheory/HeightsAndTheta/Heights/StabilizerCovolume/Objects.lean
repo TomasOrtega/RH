@@ -22,6 +22,11 @@ def twistData : ComponentData II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) :
     W := fun _ => twistBundle (segreCoord yLine)
     h := fun _ => twistMetric }
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Set.mem_image, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Rewrite using `[show i = 0 from Fin.ext (Nat.lt_one_iff.mp hi)]`.
+
+Simplify using `[twistVec, twW]`. Introduce and unpack `rfl`. Conclude with `⟨0, by simp, by simp [twistVec, twW]⟩`.
+-/
 theorem twistVec_image (c : Unit → Fin 2) :
     twistVec (segreCoord yLine) c '' {i : Fin 2 | (i : ℕ) < 1} = {Pi.single 0 1} := by
   ext v
@@ -33,10 +38,16 @@ theorem twistVec_image (c : Unit → Fin 2) :
   · rintro rfl
     exact ⟨0, by simp, by simp [twistVec, twW]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, one_mem _, one_ne_zero, twistVec_linearIndependent hc, twist_frame_iff hc⟩`.
+-/
 theorem isFrameOver_twist {c : Unit → Fin 2} (hc : segreCoord yLine c ≠ 0) :
     IsFrameOver yLine (twistBundle (segreCoord yLine)) c 1 (twistVec (segreCoord yLine) c) :=
   ⟨hc, one_mem _, one_ne_zero, twistVec_linearIndependent hc, twist_frame_iff hc⟩
 
+/- English proof (translation)
+Introduce `c hc`. Use `⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ _ => ?_⟩` and prove the remaining obligations. Use `⟨twistVec (segreCoord yLine) c, isFrameOver_twist hc, ?_⟩` and prove the remaining obligations. Rewrite using `[twistVec_image]`. Both sides reduce to the same expression.
+-/
 theorem isSubbundle_twist : IsSubbundle yLine (twistBundle (segreCoord yLine)) lineF 1 := by
   intro c hc
   refine ⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ _ => ?_⟩
@@ -49,11 +60,17 @@ def twistDataHodge : ComponentDataHodge II Unit Unit (PBlk 2) Ω (fun _ => Fin 2
   F _ := lineF
   hodge _ := isSubbundle_twist
 
+/- English proof (translation)
+Establish `h` using `AlternatingMap.map_smul_univ (exteriorPower.ιMulti K n) (fun _ => r) (fun _ => v)`. Simplify `h` using `[Finset.prod_const]`.
+-/
 theorem ιMulti_const_smul {K M : Type*} [Field K] [AddCommGroup M] [Module K M] (n : ℕ) (r : K) (v : M) :
     exteriorPower.ιMulti K n (fun _ => r • v) = r ^ n • exteriorPower.ιMulti K n (fun _ => v) := by
   have h := AlternatingMap.map_smul_univ (exteriorPower.ιMulti K n) (fun _ => r) (fun _ => v)
   simpa [Finset.prod_const] using h
 
+/- English proof (translation)
+Establish `h` using `MultilinearMap.map_smul_univ (PiTensorProduct.tprod K (s := fun _ : Unit => M)) (fun _ => (x⁻¹) ^ (2 - 1)) (fun _ => v)`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton] at h`. Rewrite using `[h, smul_smul]`. Evaluate the numerical expressions using `[hx]`.
+-/
 theorem tprod_unit_scale {K M : Type*} [Field K] [AddCommGroup M] [Module K M] (x : K) (hx : x ≠ 0) (v : M) :
     PiTensorProduct.tprod K (fun _ : Unit => v) =
       (1 * x) • PiTensorProduct.tprod K (fun _ : Unit => (x⁻¹) ^ (2 - 1) • v) := by
@@ -65,6 +82,9 @@ theorem tprod_unit_scale {K M : Type*} [Field K] [AddCommGroup M] [Module K M] (
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Substitute `hxy` using the available equality. Substitute `hw` using the available equality. Conclude with `tprod_unit_scale y hx v`.
+-/
 theorem tprod_unit_scale' {K M : Type*} [Field K] [AddCommGroup M] [Module K M] (x y : K) (hxy : y = x)
     (hx : x ≠ 0) (v w : M) (hw : w = (x⁻¹) ^ (2 - 1) • v) :
     PiTensorProduct.tprod K (fun _ : Unit => v) = (1 * y) • PiTensorProduct.tprod K (fun _ : Unit => w) := by
@@ -75,6 +95,11 @@ theorem tprod_unit_scale' {K M : Type*} [Field K] [AddCommGroup M] [Module K M] 
 def eBar : ⋀[Ω]^(2 - 1) ((Fin 2 → Ω) ⧸ lineF) := exteriorPower.ιMulti Ω (2 - 1) fun _ => lineF.mkQ (Pi.single 1 1)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `hv : ∀ a : Fin (2 - 1), lineF.mkQ (twistVec (segreCoord yLine) c (tailIdx hj a)) = (segreCoord yLine c)⁻¹ • lineF.mkQ (Pi.single 1 1)`. Introduce `a`. Establish `ha : tailIdx hj a = 1` using `Fin.ext (by have := a.isLt; simp only [tailIdx]; omega)`. Rewrite using `[ha, twistVec, twW, if_neg (by decide), map_smul]`. Unfold `quotWedge eBar`.
+
+Rewrite using `[← ιMulti_const_smul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hv a`.
+-/
 theorem quotWedge_twist (c : Unit → Fin 2) (hj : 1 ≤ 2) :
     quotWedge lineF hj (twistVec (segreCoord yLine) c) = (segreCoord yLine c)⁻¹ ^ (2 - 1) • eBar := by
   have hv : ∀ a : Fin (2 - 1), lineF.mkQ (twistVec (segreCoord yLine) c (tailIdx hj a)) =
@@ -88,6 +113,11 @@ theorem quotWedge_twist (c : Unit → Fin 2) (hj : 1 ≤ 2) :
   funext a
   exact hv a
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Set.mem_range, Function.comp_apply, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Fin.fin_one_eq_zero a]`.
+
+Simplify using `[headIdx, twistVec, twW]`. Introduce and unpack `rfl`. Conclude with `⟨0, by simp [headIdx, twistVec, twW]⟩`.
+-/
 theorem headIdx_range (c : Unit → Fin 2) (hj : 1 ≤ 2) :
     Set.range (twistVec (segreCoord yLine) c ∘ headIdx hj) = {Pi.single 0 1} := by
   ext v
@@ -100,6 +130,9 @@ theorem headIdx_range (c : Unit → Fin 2) (hj : 1 ≤ 2) :
     exact ⟨0, by simp [headIdx, twistVec, twW]⟩
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `hx : chartMono yLine c 1 = segreCoord yLine c`. Simplify using `[chartMono, segreCoord]`. Conclude with `tprod_unit_scale' _ _ hx hc eBar _ (quotWedge_twist c _)`.
+-/
 theorem twistMu_eq (c : Unit → Fin 2) (hc : segreCoord yLine c ≠ 0) :
     (PiTensorProduct.tprod Ω fun _ : Unit => eBar) = (1 * chartMono yLine c 1) •
       PiTensorProduct.tprod Ω fun _ : Unit => quotWedge lineF (show 1 ≤ 2 by decide) (twistVec (segreCoord yLine) c) := by
@@ -148,10 +181,19 @@ def lineFuller : FullerData II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) Gau
 def lineFullerZero : FullerData zeroSystem Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) Gauss.Em :=
   lineFuller zeroSystem fun _ _ => le_rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineFuller_n : (lineFuller II hII).n = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineFuller_aMu : (lineFuller II hII).mu.aMu = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[FullerData.cuspU, lineFuller, Real.iSup_of_isEmpty]`.
+-/
 theorem lineFuller_cuspU (z : (Σ _ : Unit, Fin 2) → ℂ) : (lineFuller II hII).cuspU z = 0 := by
   simp [FullerData.cuspU, lineFuller, Real.iSup_of_isEmpty]
 

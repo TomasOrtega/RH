@@ -8,6 +8,9 @@ namespace PI.FinOrdValD.WA
 
 variable {L : Type*} [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation v a`. Consider the case `simp`.
+-/
 lemma val_alg (v : HeightOneSpectrum (𝓞 L)) (a : L) :
     Valued.v (algebraMap L (v.adicCompletion L) a) = v.valuation L a := by
   first
@@ -15,16 +18,27 @@ lemma val_alg (v : HeightOneSpectrum (𝓞 L)) (a : L) :
   | exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation v a
   | simp
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k : ℤ, exp k = δ` from `⟨log δ, exp_log hδ⟩`. Use `⟨k.natAbs + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma exists_pow_lt {δ : ℤᵐ⁰} (hδ : δ ≠ 0) : ∃ n : ℕ, exp (-(n : ℤ)) < δ := by
   obtain ⟨k, rfl⟩ : ∃ k : ℤ, exp k = δ := ⟨log δ, exp_log hδ⟩
   refine ⟨k.natAbs + 1, ?_⟩
   rw [exp_lt_exp]
   omega
 
+/- English proof (translation)
+Establish `h` using `v.valuation_le_one (K := L) (m : 𝓞 L)`. Simplify using `using h`.
+-/
 lemma val_nat_le_one (v : HeightOneSpectrum (𝓞 L)) (m : ℕ) : v.valuation L (m : L) ≤ 1 := by
   have h := v.valuation_le_one (K := L) (m : 𝓞 L)
   simpa using h
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[zero_pow (Nat.succ_ne_zero n)]`. Take `⟨k, rfl⟩ : ∃ k : ℤ, exp k = x` from `⟨log x, exp_log h0⟩`.
+
+Establish `hk : k ≤ -1`. Establish `: k < 0` using `by rwa [← exp_zero, exp_lt_exp] at hx`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← exp_nsmul, exp_le_exp, nsmul_eq_mul]`. Use polynomial arithmetic with `[(Int.natCast_nonneg n : (0 : ℤ) ≤ n)]`.
+-/
 private lemma pow_le_exp_neg_of_lt_one (x : ℤᵐ⁰) (hx : x < 1) (n : ℕ) : x ^ n ≤ exp (-(n : ℤ)) := by
   rcases eq_or_ne x 0 with rfl | h0
   · rcases n with _ | n
@@ -37,6 +51,15 @@ private lemma pow_le_exp_neg_of_lt_one (x : ℤᵐ⁰) (hx : x < 1) (n : ℕ) : 
     rw [← exp_nsmul, exp_le_exp, nsmul_eq_mul]
     nlinarith [(Int.natCast_nonneg n : (0 : ℤ) ≤ n)]
 
+/- English proof (translation)
+Establish `hpos : ∀ w : HeightOneSpectrum (𝓞 L), 0 < Ideal.absNorm w.asIdeal` using `fun w => Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact w.ne_bot)`. Use `set M : ℕ := ∏ w ∈ T, Ideal.absNorm w.asIdeal with hM`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun w _ => hpos w`. Establish `hMv : ∀ w ∈ T, w.valuation L (M : L) < 1`. Introduce `w hw`.
+
+Establish `hmem : ((M : ℕ) : 𝓞 L) ∈ w.asIdeal`. Take `⟨c, hc⟩ : Ideal.absNorm w.asIdeal ∣ M` from `Finset.dvd_prod_of_mem _ hw`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Use `(w.valuation_lt_one_iff_mem (K := L) _).mpr hmem` as an intermediate fact.
+
+Simplify using `using this`. Set `n : HeightOneSpectrum (𝓞 L) → ℕ` to `fun w => if h : δ w ≠ 0 then Classical.choose (exists_pow_lt h) else 0`. Use `⟨M ^ (∑ w ∈ T, n w), pow_pos hM0 _, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hn : exp (-((n w : ℕ) : ℤ)) < δ w`. Simplify using `only [n, dif_pos (hδ w hw)]`.
+
+Conclude with `Classical.choose_spec (exists_pow_lt (hδ w hw))`. Establish `hle : n w ≤ ∑ u ∈ T, n u` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hw`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma exists_nat_small (T : Finset (HeightOneSpectrum (𝓞 L))) (δ : HeightOneSpectrum (𝓞 L) → ℤᵐ⁰)
     (hδ : ∀ v ∈ T, δ v ≠ 0) :
     ∃ N : ℕ, 0 < N ∧ ∀ v ∈ T, v.valuation L (N : L) < δ v := by
@@ -66,6 +89,15 @@ lemma exists_nat_small (T : Finset (HeightOneSpectrum (𝓞 L))) (δ : HeightOne
     _ ≤ exp (-((n w : ℕ) : ℤ)) := by rw [exp_le_exp]; omega
     _ < δ w := hn
 
+/- English proof (translation)
+Establish `hd : DenseRange (algebraMap L (v.adicCompletion L))` using `IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap L v`. Establish `hs : {y : v.adicCompletion L | Valued.v (y - x) < δ} ∈ nhds x`. Take `⟨N, hN, hNv⟩` from `exists_nat_small {v} (fun _ => δ) (fun _ _ => hδ)`. Establish `hNv'` using `hNv v (Finset.mem_singleton_self v)`. Use `set z : v.adicCompletion L := algebraMap L (v.adicCompletion L) (N : L) with hz`.
+
+Establish `hz0 : z ≠ 0`. Rewrite using `[hz, Ne, map_eq_zero_iff _ (algebraMap L (v.adicCompletion L)).injective]`. Conclude with `hN.ne'` after adjusting the coercions. Establish `hvz : Valued.v z < δ` using `by rw [hz, val_alg]; exact hNv'`. Rewrite using `[Valued.mem_nhds]`.
+
+Use `⟨Units.mk0 (Valued.v.restrict z) ((Valuation.ne_zero_iff _).mpr hz0), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : Valued.v.restrict (y - x) < Valued.v.restrict z` using `hy`. Rewrite `hy'` using `[Valuation.restrict_lt_iff]`. Conclude with `lt_trans hy' hvz`. Take `⟨_, hy, ⟨b, rfl⟩⟩` from `mem_closure_iff_nhds.mp (hd x) _ hs`.
+
+Conclude with `⟨b, hy⟩`.
+-/
 lemma exists_near (v : HeightOneSpectrum (𝓞 L)) (x : v.adicCompletion L) {δ : ℤᵐ⁰} (hδ : δ ≠ 0) :
     ∃ b : L, Valued.v (algebraMap L (v.adicCompletion L) b - x) < δ := by
   have hd : DenseRange (algebraMap L (v.adicCompletion L)) :=
@@ -86,6 +118,33 @@ lemma exists_near (v : HeightOneSpectrum (𝓞 L)) (x : v.adicCompletion L) {δ 
   obtain ⟨_, hy, ⟨b, rfl⟩⟩ := mem_closure_iff_nhds.mp (hd x) _ hs
   exact ⟨b, hy⟩
 
+/- English proof (translation)
+Establish `hnear : ∀ w : T, ∃ b : L, Valued.v (algebraMap L (w.1.adicCompletion L) b - x w.1) < γ w.1` using `fun w => exists_near w.1 (x w.1) (hγ w.1 w.2)`. Use `choose b hb using hnear`. Take `⟨⟨d, hd⟩, hdint⟩` from `IsLocalization.exist_integer_multiples (M := nonZeroDivisors (𝓞 L)) (S := L) (s := (Finset.univ : Finset T)) (f := b)`. Establish `hr : ∀ w : T, ∃ r : 𝓞 L, algebraMap (𝓞 L) L r = algebraMap (𝓞 L) L d * b w`. Introduce `w`.
+
+Take `⟨r, hr⟩` from `hdint w (Finset.mem_univ _)`. Conclude with `⟨r, by rw [hr, Algebra.smul_def]⟩`. Use `choose r hr using hr`. Use `set dL : L := algebraMap (𝓞 L) L d with hdL`. Establish `hdL0 : dL ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`.
+
+Establish `hvd : ∀ w : HeightOneSpectrum (𝓞 L), w.valuation L dL ≠ 0` using `fun w => (Valuation.ne_zero_iff _).mpr hdL0`. Set `e : HeightOneSpectrum (𝓞 L) → ℕ` to `fun w => if h : w ∈ T then Classical.choose (exists_pow_lt (mul_ne_zero (hγ w h) (hvd w))) else 0`. Establish `he : ∀ w (h : w ∈ T), exp (-((e w : ℕ) : ℤ)) < γ w * w.valuation L dL`. Introduce `w h`. Simplify using `only [e, dif_pos h]`.
+
+Conclude with `Classical.choose_spec (exists_pow_lt (mul_ne_zero (hγ w h) (hvd w)))`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := T) (fun w : HeightOneSpectrum (𝓞 L) => w.asIdeal) e (fun w _ => Ideal.prime_of_isPrime w.ne_bot w.isPrime) (fun w _ u _ hne h => hne (HeightOneSpectrum.ext h)) r`. Use `set a0 : L := algebraMap (𝓞 L) L y / dL with ha0`. Establish `hclose : ∀ w ∈ T, Valued.v (algebraMap L (w.adicCompletion L) a0 - x w) < γ w`. Introduce `w hw`.
+
+Establish `hmem` using `hy w hw`. Establish `hval : w.valuation L (algebraMap (𝓞 L) L (y - r ⟨w, hw⟩)) ≤ exp (-((e w : ℕ) : ℤ))`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Use `first`. Consider the case `exact (w.intValuation_le_pow_iff_mem _ _).mpr hmem`.
+
+Consider the case `exact (w.intValuation_le_pow_iff_dvd _ _).mpr (Ideal.dvd_span_singleton.mpr hmem)`. Establish `hnum : algebraMap (𝓞 L) L (y - r ⟨w, hw⟩) = (a0 - b ⟨w, hw⟩) * dL`. Rewrite using `[map_sub, hr, ha0, sub_mul, div_mul_cancel₀ _ hdL0, mul_comm dL]`. Rewrite `hval` using `[hnum, Valuation.map_mul]`. Establish `h1 : w.valuation L (a0 - b ⟨w, hw⟩) < γ w`.
+
+Assume the negation of the conclusion as `hle`. Use `push_neg at hle`. Conclude with `absurd (lt_of_le_of_lt hval (he w hw)) (not_lt.mpr (mul_le_mul_of_nonneg_right hle zero_le'))`. Establish `hsplit : algebraMap L (w.adicCompletion L) a0 - x w = algebraMap L (w.adicCompletion L) (a0 - b ⟨w, hw⟩) + (algebraMap L (w.adicCompletion L) (b ⟨w, hw⟩) - x w)`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Conclude with `Valuation.map_add_lt _ (by rw [val_alg]; exact h1) (hb ⟨w, hw⟩)`. Take `⟨N, hN, hNs⟩` from `exists_nat_small T γ hγ`. Use `haveI : Finite (L →+* ℝ) := Finite.of_injective (fun σ : L →+* ℝ => Complex.ofRealHom.comp σ) (fun σ τ h => RingHom.ext fun z => Complex.ofReal_injective (RingHom.congr_fun h z))`.
+
+Take `⟨B, hB⟩` from `(Set.finite_range (fun σ : L →+* ℝ => |σ a0|)).bddAbove`. Take `⟨t, ht⟩` from `exists_nat_gt B`. Establish `good : ∀ s : ℕ, B < s → (∀ w ∈ T, Valued.v (algebraMap L (w.adicCompletion L) (a0 + (N : L) * (s : L)) - x w) < γ w) ∧ ∀ σ : L →+* ℝ, 0 < σ (a0 + (N : L) * (s : L))`. Introduce `s hs`. Use `⟨fun w hw => ?_, fun σ => ?_⟩` and prove the remaining obligations.
+
+Establish `hsplit : algebraMap L (w.adicCompletion L) (a0 + (N : L) * (s : L)) - x w = (algebraMap L (w.adicCompletion L) a0 - x w) + algebraMap L (w.adicCompletion L) ((N : L) * (s : L))`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `Valuation.map_add_lt _ (hclose w hw) ?_` and prove the remaining obligations.
+
+Rewrite using `[val_alg, Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : |σ a0| ≤ B` using `hB ⟨σ, rfl⟩`. Establish `hN1 : (1 : ℝ) ≤ N` using `Nat.one_le_cast.mpr hN`. Establish `hs0 : (0 : ℝ) ≤ s` using `Nat.cast_nonneg s`.
+
+Rewrite using `[map_add, map_mul, map_natCast, map_natCast]`. Use polynomial arithmetic with `[neg_abs_le (σ a0), mul_nonneg (sub_nonneg.mpr hN1) hs0]`. Distinguish the cases in `h0 : a0 + (N : L) * (t : L) = 0`. Establish `ht1 : B < ((t + 1 : ℕ) : ℝ)` using `by push_cast; linarith`. Use `⟨a0 + (N : L) * ((t + 1 : ℕ) : L), ?_, (good (t + 1) ht1).1, (good (t + 1) ht1).2⟩` and prove the remaining obligations.
+
+Introduce `h1`. Establish `hN0 : (N : L) = 0` using `by push_cast at h1; linear_combination h1 - h0`. Conclude with `hN.ne' (by exact_mod_cast hN0)`. Conclude with `⟨a0 + (N : L) * (t : L), h0, (good t ht).1, (good t ht).2⟩`.
+-/
 theorem weakApprox (T : Finset (HeightOneSpectrum (𝓞 L)))
     (x : (v : HeightOneSpectrum (𝓞 L)) → v.adicCompletion L)
     (γ : HeightOneSpectrum (𝓞 L) → ℤᵐ⁰) (hγ : ∀ v ∈ T, γ v ≠ 0) :
@@ -171,6 +230,13 @@ theorem weakApprox (T : Finset (HeightOneSpectrum (𝓞 L)))
     exact hN.ne' (by exact_mod_cast hN0)
   · exact ⟨a0 + (N : L) * (t : L), h0, (good t ht).1, (good t ht).2⟩
 
+/- English proof (translation)
+Establish `hx0 : ∀ w : HeightOneSpectrum (𝓞 L), Valued.v (x w : w.adicCompletion L) ≠ 0` using `fun w => (Valuation.ne_zero_iff _).mpr (x w).ne_zero`. Take `⟨a, ha0, hT, hpos⟩` from `weakApprox T (fun w => (x w : w.adicCompletion L)) (fun w => exp (-e w) * Valued.v (x w : w.adicCompletion L)) (fun w _ => mul_ne_zero (exp_ne_zero) (hx0 w))`. Use `⟨Units.mk0 a ha0, fun w hw => ?_, fun σ => hpos σ⟩` and prove the remaining obligations. Establish `h` using `hT w hw`. Establish `key : algebraMap L (w.adicCompletion L) a * (((x w)⁻¹ : (w.adicCompletion L)ˣ) : w.adicCompletion L) - 1 = (algebraMap L (w.adicCompletion L) a - x w) * (((x w)⁻¹ : (w.adicCompletion L)ˣ) : w.adicCompletion L)`.
+
+Rewrite using `[sub_mul, Units.mul_inv]`. Establish `hinv : Valued.v (((x w)⁻¹ : (w.adicCompletion L)ˣ) : w.adicCompletion L) * Valued.v (x w : w.adicCompletion L) = 1`. Rewrite using `[← Valuation.map_mul, Units.inv_mul, Valuation.map_one]`. Rewrite using `[Units.val_mk0, key, Valuation.map_mul]`. Assume the negation of the conclusion as `hle`.
+
+Use `push_neg at hle`. Establish `h2` using `mul_le_mul_of_nonneg_right hle (zero_le' : 0 ≤ Valued.v (x w : w.adicCompletion L))`. Rewrite `h2` using `[mul_assoc, hinv, mul_one]`. Conclude with `absurd h (not_lt.mpr h2)`.
+-/
 theorem weakApprox_units (T : Finset (HeightOneSpectrum (𝓞 L)))
     (x : (v : HeightOneSpectrum (𝓞 L)) → (v.adicCompletion L)ˣ) (e : HeightOneSpectrum (𝓞 L) → ℤ) :
     ∃ a : Lˣ, (∀ v ∈ T, Valued.v (algebraMap L (v.adicCompletion L) (a : L) * ((x v)⁻¹ : (v.adicCompletion L)ˣ) - 1) <

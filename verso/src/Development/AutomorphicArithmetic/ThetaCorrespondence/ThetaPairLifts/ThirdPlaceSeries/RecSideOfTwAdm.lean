@@ -16,6 +16,17 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 namespace GlobalTheory.BigOn.Exp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Introduce `hA`. Use `Formalism.MainNotions.Closed.imp hA fun Fm CH _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p hr hm w hw j Z hRat => ?_⟩` and prove the remaining obligations. Take `⟨hOK, -, -⟩` from `H x hx h0 i p hr hm w hw j`. Establish `hL` using `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hr hm.1`. Establish `hU : p.R.toRealDat.LUnif` using `hL.2.2.1`.
+
+Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `T` using `Z.tie ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Establish `hAR` using `GlobalTheory.SeriesTie.actRead_realRd _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ Z.ρ Z.good ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) (Z.ν ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)) Z.pin hU hW`. Establish `hS : Formalism.MainNotions.IntegralHeckeForms.SgJ (Fm.D x i).nexp (twE Fm x hx i) ((Fm.ex x hx i).nch.twI w) ((j : ℕ) + 1) ((Fm.ex x hx i).nch.sd w) = Set.univ`. Use `Set.eq_univ_of_forall fun a => hr.ties.data _ j _ a fun u => ?_` and prove the remaining obligations.
+
+Establish `hm0` using `GlobalTheory.ExportType.thetaSeriesDatum_mem_levelTypeForms T hAR a`. Conclude with `sub_eq_zero.1 (LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 hm0 u))`. Establish `hb : baseSet (rdAt p w j Z.good (Z.ν ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w))) = Set.range ((Fm.D x i).nexp.th ((Fm.ex x hx i).nch.twI w) ((j : ℕ) + 1) ((Fm.ex x hx i).nch.sd w))` using `(range_th T).symm`. Establish `ht : (⋃ a ∈ Formalism.MainNotions.IntegralHeckeForms.SgJ (Fm.D x i).nexp (twE Fm x hx i) ((Fm.ex x hx i).nch.twI w) ((j : ℕ) + 1) ((Fm.ex x hx i).nch.sd w), (Fm.D x i).nexp.thPsi _ _ _ ((Fm.ex x hx i).nch.k' w) ((Fm.ex x hx i).nch.Q w) (GlobalTheory.TwistIndex.chosenChar (Fm.ex x …`. Rewrite using `[hS, Set.biUnion_univ, iUnion_thPsi T hOK]`.
+
+Use extensionality with `y`. Conclude with `⟨fun ⟨s, h, P, hd, _, hy⟩ => ⟨s, h, P, hd, hy⟩, fun ⟨s, h, P, hd, hy⟩ => ⟨s, h, P, hd, hRat.1 s h P hd, hy⟩⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `baseLat`. Rewrite using `[hb, hS, Set.image_univ, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Unfold `twLat`. Rewrite using `[ht]`.
+-/
 theorem recSide_of_twAdm_alt : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.RecursiveSide := by
   intro hA
   refine Formalism.MainNotions.Closed.imp hA fun Fm CH _ ⟨x0, H⟩ => ⟨x0, fun x hx h0 i p hr hm w hw j Z hRat => ?_⟩

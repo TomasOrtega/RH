@@ -19,6 +19,17 @@ def cvec2 (k r : ℕ) (z e : Fin (2 * r + k + 1) → ℂ) : JJ r ⊕ Unit → Fi
 def cvec2' (k r : ℕ) (z e : Fin (2 * r + k + 1) → ℂ) : JJ r ⊕ Unit → Fin (2 * r + k + 1) → ℂ :=
   Sum.elim (cvec' k r z) (fun _ => e)
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hu : ∀ a b, unitB (Hpk k r) Bs a b i j = Bs a i * ∑ q, star (Bs b q) * Hpk k r q j`. Introduce `a b`. Simplify using `only [unitB, Matrix.of_apply, herm, dotProduct, Matrix.mulVec, bvec, Pi.star_apply]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, hu, Matrix.mul_apply, colM, Matrix.of_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, b]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_unitB {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (B : Matrix (Fin m) (Fin m) ℂ) :
     colM Bs * B * ((colM Bs)ᴴ * Hpk k r) = ∑ p : Fin m × Fin m, B p.1 p.2 • unitB (Hpk k r) Bs p.1 p.2 := by
   ext i j
@@ -45,6 +56,35 @@ theorem sum_unitB {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (B : Ma
   intro q _
   ring
 
+/- English proof (translation)
+Establish `hzz : herm (Hpk k r) z z ≠ 0`. Introduce `e0`. Unfold `Tz at hT`. Rewrite `hT` using `[e0]`. Simplify using `at hT`.
+
+Establish `hBz : IsFrameOf k r [z] Bs` using `⟨hB.1, hB.2.1, fun a v hv => hB.2.2 a v (by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv ⊢`. Conclude with `Or.inl hv)⟩`. Establish `hE : IsFrameOf k r [z] (fun _ : Fin 1 => e)` using `⟨fun _ => he, fun a b => by`. Simplify using `[Subsingleton.elim a b, hee], fun _ v hv => by`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality. Conclude with `hez⟩`. Establish `hBe : ∀ a, herm (Hpk k r) (Bs a) e = 0` using `fun a => hB.2.2 a e (by simp)`. Establish `hBe' : ∀ a, herm (Hpk k r) e (Bs a) = 0` using `fun a => by rw [← Qx2.herm_star, hBe a, star_zero]`.
+
+Establish `g1 : (colM Bs)ᴴ * Hpk k r * colM Bs = 1`. Use extensionality with `a b`. Rewrite using `[gramM_apply, hB.2.1, Matrix.one_apply]`. Simplify using `[eq_comm]`. Establish `g2 : (colM Bs)ᴴ * Hpk k r * colM (cvec2 k r z e) = 0`.
+
+Use extensionality with `a j`. Rewrite using `[gramM_apply]`. Break down `j with j | _` into its components or cases. Conclude with `gram_VC hBz a j`. Conclude with `hBe' a`.
+
+Establish `g3 : (colM (cvec2' k r z e))ᴴ * Hpk k r * colM Bs = 0`. Use extensionality with `j a`. Rewrite using `[gramM_apply]`. Break down `j with j | _` into its components or cases. Conclude with `gram_CV hBz a j`.
+
+Conclude with `hBe a`. Establish `g4 : (colM (cvec2' k r z e))ᴴ * Hpk k r * colM (cvec2 k r z e) = 1`. Use extensionality with `i j`. Rewrite using `[gramM_apply, Matrix.one_apply]`. Apply the tactic sequence `rcases i with i | _ <;> rcases j with j | _`.
+
+Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.inl.injEq]`. Conclude with `gram_CC hz hzz i j`. Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`. Conclude with `gram_CV hE 0 i`. Simplify using `only [cvec2, cvec2', Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`.
+
+Conclude with `gram_VC hE 0 j`. Simplify using `[cvec2, cvec2', hee]`. Establish `hJ : Fintype.card (JJ r ⊕ Unit) ≤ Fintype.card (Fin (2 * r + k + 1))`. Establish `h1` using `Matrix.rank_mul_le_right ((colM (cvec2' k r z e))ᴴ * Hpk k r) (colM (cvec2 k r z e))`. Rewrite `h1` using `[g4, Matrix.rank_one]`.
+
+Conclude with `h1.trans (Matrix.rank_le_card_height _)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit] at hJ`. Establish `hc` using `complete (Fintype.equivOfCardEq (by simp; omega)) g1 g2 g3 g4`. Establish `hC : h * colM (cvec2 k r z e) = colM (cvec2 k r z e)`. Rewrite using `[mul_colM]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Break down `j with j | _` into its components or cases. Conclude with `fix_c hh j`. Conclude with `hhe`.
+
+Establish `hC' : h * colM (cvec2' k r z e) = colM (cvec2' k r z e)`. Rewrite using `[mul_colM]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Break down `j with j | _` into its components or cases.
+
+Conclude with `fix_c' hh j`. Conclude with `hhe`. Establish `hCd` using `dual_fix hh.1 hC'`. Take `⟨e1, e2⟩` from `decomp hc g3 h hC hCd`. Take `⟨B, hBs, hBe⟩` from `unitary_log _ (unitary_of Qx8.hpk_herm hh.1 g1 e1)`.
+
+Use `⟨B, hBs, ?_⟩` and prove the remaining obligations. Rewrite using `[exp_lift hc g1 g2 B, hBe, ← e2]`.
+-/
 theorem stab_exp {z e : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (he : inWb k r e)
     (hez : herm (Hpk k r) e z = 0) (hee : herm (Hpk k r) e e = 1) {Bs : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ}
     (hB : IsFrameOf k r [z, e] Bs) {h : Mx k r} (hh : h ∈ UWset k r z) (hhe : h *ᵥ e = e) :

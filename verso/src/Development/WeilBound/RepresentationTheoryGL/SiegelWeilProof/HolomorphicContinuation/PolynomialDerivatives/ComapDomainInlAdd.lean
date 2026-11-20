@@ -14,6 +14,13 @@ abbrev Ix (m n : ℕ) := Fin m × Fin n × Bool
 
 abbrev Dk (k : Ix m n) : Module.End ℂ (PX m n) := (pderiv (R := ℂ) k).toLinearMap
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p k hp`. Establish `hc : ∀ a b : Ix m n, pderiv a (pderiv b (X k : PX m n)) = 0`.
+
+Introduce `a b`. Rewrite using `[pderiv_X]`. Distinguish the cases in `h : b = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, h]`. Simplify using `only [pderiv_mul, map_add, hp, hc, mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_comm (i j : Ix m n) (p : PX m n) : pderiv i (pderiv j p) = pderiv j (pderiv i p) := by
   induction p using MvPolynomial.induction_on with
   | C a => simp
@@ -26,12 +33,24 @@ theorem pderiv_comm (i j : Ix m n) (p : PX m n) : pderiv i (pderiv j p) = pderiv
     simp only [pderiv_mul, map_add, hp, hc, mul_zero, add_zero]
     ring
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun p => pderiv_comm i j p`.
+-/
 theorem dk_comm (i j : Ix m n) : Commute (Dk i) (Dk j) :=
   LinearMap.ext fun p => pderiv_comm i j p
 
 def dvE (e : Ix m n → ℕ) : Module.End ℂ (PX m n) :=
   ((Finset.univ : Finset (Ix m n)).toList.map fun k => Dk k ^ e k).prod
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Establish `hc : Commute (l.map fun k => Dk k ^ a k).prod (Dk x ^ b x)`.
+
+Apply `Commute.symm` to reduce the goal to its premises. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [List.mem_map] at hy`. Take `⟨z, -, rfl⟩` from `hy`.
+
+Conclude with `((dk_comm x z).pow_pow _ _)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = Dk x ^ a x * (Dk x ^ b x * (l.map fun k => Dk k ^ a k).prod) * (l.map fun k => Dk k ^ b k).prod := by`. Rewrite using `[hc.eq]`.
+
+Use `_ = Dk x ^ (a x + b x) * ((l.map fun k => Dk k ^ a k).prod * (l.map fun k => Dk k ^ b k).prod) := by`. Simplify using `only [pow_add, mul_assoc]`. Use `_ = _ := by rw [ih]`.
+-/
 theorem list_dv_mul (l : List (Ix m n)) (a b : Ix m n → ℕ) :
     (l.map fun k => Dk k ^ a k).prod * (l.map fun k => Dk k ^ b k).prod = (l.map fun k => Dk k ^ (a k + b k)).prod := by
   induction l with
@@ -54,9 +73,17 @@ theorem list_dv_mul (l : List (Ix m n)) (a b : Ix m n → ℕ) :
           simp only [pow_add, mul_assoc]
       _ = _ := by rw [ih]
 
+/- English proof (translation)
+Unfold `dvE`. Rewrite using `[list_dv_mul]`. Both sides reduce to the same expression.
+-/
 theorem dvE_mul (a b : Ix m n → ℕ) : dvE a * dvE b = dvE (a + b) := by
   unfold dvE; rw [list_dv_mul]; rfl
 
+/- English proof (translation)
+Unfold `dvE`. Rewrite using `[List.prod_map_eq_pow_single k]`. Simplify using `only [Pi.single_eq_same, pow_one]`. Use `pow_one (Dk k)` and compare the differences between its conclusion and the goal. Conclude with `@List.count_eq_one_of_mem _ instBEqOfDecidableEq inferInstance _ _ (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ k))`.
+
+Introduce `a' ha' _`. Simplify using `[Pi.single_apply, ha']`.
+-/
 theorem dvE_single (k : Ix m n) : dvE (Pi.single k 1) = Dk k := by
   unfold dvE
   rw [List.prod_map_eq_pow_single k]
@@ -67,15 +94,27 @@ theorem dvE_single (k : Ix m n) : dvE (Pi.single k 1) = Dk k := by
   · intro a' ha' _
     simp [Pi.single_apply, ha']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opMono_eq (t : Ix m n ⊕ Ix m n →₀ ℕ) (f : PX m n) :
     opMono t f = monomial (t.comapDomain Sum.inl Sum.inl_injective.injOn) 1 * dvE (fun k => t (Sum.inr k)) f := rfl
 
+/- English proof (translation)
+Simplify using `only [opMono_eq, map_add, mul_add]`.
+-/
 theorem opMono_add (t : Ix m n ⊕ Ix m n →₀ ℕ) (f g : PX m n) : opMono t (f + g) = opMono t f + opMono t g := by
   simp only [opMono_eq, map_add, mul_add]
 
+/- English proof (translation)
+Simplify using `only [opMono_eq, map_smul, mul_smul_comm]`.
+-/
 theorem opMono_smul (t : Ix m n ⊕ Ix m n →₀ ℕ) (a : ℂ) (f : PX m n) : opMono t (a • f) = a • opMono t f := by
   simp only [opMono_eq, map_smul, mul_smul_comm]
 
+/- English proof (translation)
+Unfold `op`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `t _ ht`. Rewrite using `[MvPolynomial.notMem_support_iff.1 ht, zero_smul]`.
+-/
 theorem op_eq_of_subset (s : Sym m n) (S : Finset (Ix m n ⊕ Ix m n →₀ ℕ)) (h : s.support ⊆ S) (f : PX m n) :
     op s f = ∑ t ∈ S, s.coeff t • opMono t f := by
   unfold op
@@ -83,6 +122,9 @@ theorem op_eq_of_subset (s : Sym m n) (S : Finset (Ix m n ⊕ Ix m n →₀ ℕ)
   intro t _ ht
   rw [MvPolynomial.notMem_support_iff.1 ht, zero_smul]
 
+/- English proof (translation)
+Rewrite using `[op_eq_of_subset (u + v) (u.support ∪ v.support) MvPolynomial.support_add, op_eq_of_subset u (u.support ∪ v.support) Finset.subset_union_left, op_eq_of_subset v (u.support ∪ v.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add, add_smul]`.
+-/
 theorem op_add (u v : Sym m n) (f : PX m n) : op (u + v) f = op u f + op v f := by
   classical
   rw [op_eq_of_subset (u + v) (u.support ∪ v.support) MvPolynomial.support_add,
@@ -91,48 +133,83 @@ theorem op_add (u v : Sym m n) (f : PX m n) : op (u + v) f = op u f + op v f := 
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [coeff_add, add_smul]
 
+/- English proof (translation)
+Rewrite using `[op_eq_of_subset (a • u) u.support MvPolynomial.support_smul, op, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, mul_smul]`.
+-/
 theorem op_smul (a : ℂ) (u : Sym m n) (f : PX m n) : op (a • u) f = a • op u f := by
   classical
   rw [op_eq_of_subset (a • u) u.support MvPolynomial.support_smul, op, Finset.smul_sum]
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [coeff_smul, smul_eq_mul, mul_smul]
 
+/- English proof (translation)
+Simplify using `[op]`.
+-/
 theorem op_zero (f : PX m n) : op (0 : Sym m n) f = 0 := by simp [op]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [op_zero]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, op_add, ih]`.
+-/
 theorem op_sum {ι : Type*} (S : Finset ι) (u : ι → Sym m n) (f : PX m n) : op (∑ i ∈ S, u i) f = ∑ i ∈ S, op (u i) f := by
   classical
   induction S using Finset.induction_on with
   | empty => simp [op_zero]
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, op_add, ih]
 
+/- English proof (translation)
+Rewrite using `[op_eq_of_subset _ {t} (MvPolynomial.support_monomial_subset), Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 theorem op_monomial (t : Ix m n ⊕ Ix m n →₀ ℕ) (a : ℂ) (f : PX m n) : op (monomial t a) f = a • opMono t f := by
   classical
   rw [op_eq_of_subset _ {t} (MvPolynomial.support_monomial_subset), Finset.sum_singleton, coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Simplify using `only [op, opMono_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem op_add_f (u : Sym m n) (f g : PX m n) : op u (f + g) = op u f + op u g := by
   simp only [op, opMono_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [op, opMono_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+-/
 theorem op_smul_f (u : Sym m n) (a : ℂ) (f : PX m n) : op u (a • f) = a • op u f := by
   simp only [op, opMono_smul, Finset.smul_sum]
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [smul_comm]
 
+/- English proof (translation)
+Simplify using `[op, opMono_eq]`.
+-/
 theorem op_zero_f (u : Sym m n) : op u 0 = 0 := by simp [op, opMono_eq]
 
+/- English proof (translation)
+Unfold `dvE`. Simplify using the standard rewrite rules.
+-/
 theorem dvE_zero : dvE (0 : Ix m n → ℕ) = 1 := by
   unfold dvE; simp
 
+/- English proof (translation)
+Rewrite using `[← monomial_zero', op_monomial, opMono_eq]`. Establish `h0 : (fun k : Ix m n => (0 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr k)) = 0` using `by ext; simp`. Rewrite using `[h0, dvE_zero, Finsupp.comapDomain_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem op_C (a : ℂ) (f : PX m n) : op (C a : Sym m n) f = a • f := by
   rw [← monomial_zero', op_monomial, opMono_eq]
   have h0 : (fun k : Ix m n => (0 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr k)) = 0 := by ext; simp
   rw [h0, dvE_zero, Finsupp.comapDomain_zero]
   simp
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Finsupp.comapDomain_apply]`.
+-/
 theorem comapDomain_inl_add (t s : Ix m n ⊕ Ix m n →₀ ℕ) :
     (t + s).comapDomain Sum.inl Sum.inl_injective.injOn =
       t.comapDomain Sum.inl Sum.inl_injective.injOn + s.comapDomain Sum.inl Sum.inl_injective.injOn := by
   ext k; simp [Finsupp.comapDomain_apply]
 
+/- English proof (translation)
+Rewrite using `[opMono_eq, opMono_eq, comapDomain_inl_add]`. Establish `h1 : (Finsupp.single (Sum.inl k) 1 : Ix m n ⊕ Ix m n →₀ ℕ).comapDomain Sum.inl Sum.inl_injective.injOn = Finsupp.single k 1`. Use extensionality with `j`. Simplify using `[Finsupp.comapDomain_apply, Finsupp.single_apply]`. Establish `h2 : (fun j : Ix m n => (t + Finsupp.single (Sum.inl k) 1 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr j)) = fun j => t (Sum.inr j)`.
+
+Use extensionality with `j`. Simplify using `[Finsupp.single_apply]`. Rewrite using `[h1, h2, monomial_add_single, pow_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem opMono_add_inl (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m n) :
     opMono (t + Finsupp.single (Sum.inl k) 1) f = X k * opMono t f := by
   rw [opMono_eq, opMono_eq, comapDomain_inl_add]
@@ -144,6 +221,11 @@ theorem opMono_add_inl (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m
   rw [h1, h2, monomial_add_single, pow_one]
   ring
 
+/- English proof (translation)
+Rewrite using `[opMono_eq, opMono_eq, comapDomain_inl_add]`. Establish `h1 : (Finsupp.single (Sum.inr k) 1 : Ix m n ⊕ Ix m n →₀ ℕ).comapDomain Sum.inl Sum.inl_injective.injOn = 0`. Use extensionality with `j`. Simplify using `[Finsupp.comapDomain_apply, Finsupp.single_apply]`. Establish `h2 : (fun j : Ix m n => (t + Finsupp.single (Sum.inr k) 1 : Ix m n ⊕ Ix m n →₀ ℕ) (Sum.inr j)) = (fun j => t (Sum.inr j)) + Pi.single k 1`.
+
+Use extensionality with `j`. Simplify using `[Finsupp.single_apply, Pi.single_apply, eq_comm]`. Rewrite using `[h1, add_zero, h2, ← dvE_mul, dvE_single]`. Both sides reduce to the same expression.
+-/
 theorem opMono_add_inr (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m n) :
     opMono (t + Finsupp.single (Sum.inr k) 1) f = opMono t (pderiv k f) := by
   rw [opMono_eq, opMono_eq, comapDomain_inl_add]
@@ -155,6 +237,9 @@ theorem opMono_add_inr (t : Ix m n ⊕ Ix m n →₀ ℕ) (k : Ix m n) (f : PX m
   rw [h1, add_zero, h2, ← dvE_mul, dvE_single]
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [u.as_sum, Finset.sum_mul]`. Rewrite using `[op_sum]`. Use `conv_rhs => rw [op, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[X, monomial_mul, mul_one, op_monomial, opMono_add_inl, mul_smul_comm]`.
+-/
 theorem op_mul_inl (u : Sym m n) (k : Ix m n) (f : PX m n) : op (u * X (Sum.inl k)) f = X k * op u f := by
   classical
   conv_lhs => rw [u.as_sum, Finset.sum_mul]
@@ -163,6 +248,9 @@ theorem op_mul_inl (u : Sym m n) (k : Ix m n) (f : PX m n) : op (u * X (Sum.inl 
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [X, monomial_mul, mul_one, op_monomial, opMono_add_inl, mul_smul_comm]
 
+/- English proof (translation)
+Use `conv_lhs => rw [u.as_sum, Finset.sum_mul]`. Rewrite using `[op_sum]`. Use `conv_rhs => rw [op]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[X, monomial_mul, mul_one, op_monomial, opMono_add_inr]`.
+-/
 theorem op_mul_inr (u : Sym m n) (k : Ix m n) (f : PX m n) : op (u * X (Sum.inr k)) f = op u (pderiv k f) := by
   classical
   conv_lhs => rw [u.as_sum, Finset.sum_mul]
@@ -171,6 +259,17 @@ theorem op_mul_inr (u : Sym m n) (k : Ix m n) (f : PX m n) : op (u * X (Sum.inr 
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [X, monomial_mul, mul_one, op_monomial, opMono_add_inr]
 
+/- English proof (translation)
+Proceed by induction on `u using MvPolynomial.induction_on with`. Consider the case `C a => intro k g`. Simplify using `[op_C, op_zero, mul_smul_comm]`. Consider the case `add p q hp hq => intro k g`. Rewrite using `[op_add, op_add, hp, hq, map_add, op_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p j hp`. Introduce `k g`. Break down `j with j | j` into its components or cases. Rewrite using `[op_mul_inl, op_mul_inl, hp, pderiv_mul, pderiv_X, op_add, op_mul_inl]`.
+
+Simplify using `only [Pi.single_apply, Sum.inl.injEq, reduceCtorEq, if_false, mul_zero, op_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[op_mul_inr, op_mul_inr, pderiv_mul, pderiv_mul, pderiv_X, pderiv_X, op_add_f, op_add, hp, op_mul_inr]`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality.
+
+Simplify using `only [Pi.single_apply, if_true, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : (Sum.inr k : Ix m n ⊕ Ix m n) ≠ Sum.inr j` using `fun e => h (Sum.inr_injective e).symm`. Establish `e1 : ¬ (k = j)` using `fun e => h e.symm`. Establish `e2 : ¬ ((Sum.inr j : Ix m n ⊕ Ix m n) = Sum.inr k)` using `fun e => h (Sum.inr_injective e)`.
+
+Simplify using `only [Pi.single_apply, e1, e2, if_false, zero_mul, mul_zero, op_zero, add_zero, op_zero_f, zero_add]`.
+-/
 theorem op_X_mul (u : Sym m n) : ∀ (k : Ix m n) (g : PX m n),
     op u (X k * g) = X k * op u g + op (pderiv (Sum.inr k) u) g := by
   induction u using MvPolynomial.induction_on with

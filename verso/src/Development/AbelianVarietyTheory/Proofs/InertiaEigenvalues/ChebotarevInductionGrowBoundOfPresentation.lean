@@ -21,12 +21,18 @@ variable {R : Type} [CommRing R] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
 
 def val (y : H1 rho) (g : Γ) : M := (Quotient.out y).1 g
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(mk_eq_mk_iff rho (Quotient.out (Submodule.Quotient.mk z : H1 rho)) z).1 (Quotient.out_eq' _)`. Conclude with `sub_eq_zero.1 ((hm g).trans (by rw [hg, sub_self]))`.
+-/
 theorem val_mk {g : Γ} (hg : ∀ m, rho g m = m) (z : Z1 rho) : val (Submodule.Quotient.mk z : H1 rho) g = z.1 g := by
   obtain ⟨m, hm⟩ := (mk_eq_mk_iff rho (Quotient.out (Submodule.Quotient.mk z : H1 rho)) z).1 (Quotient.out_eq' _)
   exact sub_eq_zero.1 ((hm g).trans (by rw [hg, sub_self]))
 
 end Val
 
+/- English proof (translation)
+Use `Iff.trans (Submodule.Quotient.mk_eq_zero _) ((mem_coboundaries1 _ _).trans ⟨?_, fun hz => ⟨0, fun g => ?_⟩⟩)` and prove the remaining obligations. Introduce and unpack `⟨m, hm⟩ σ hσ`. Conclude with `(hm ⟨⟨σ, Ine_le_Dec A hσ⟩, hσ⟩).trans (sub_eq_zero.2 (h σ hσ m))`. Conclude with `(hz _ g.2).trans (by rw [map_zero, sub_self])`.
+-/
 theorem mem_unrAt_iff {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {R : Type} [CommRing R]
     {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
     {rho : Representation R (G F Ω) M} {A : ValuationSubring Ω} (h : ∀ σ ∈ Ine (F := F) A, ∀ m, rho σ m = m) (z : Z1 rho) :
@@ -37,6 +43,13 @@ theorem mem_unrAt_iff {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebr
     exact (hm ⟨⟨σ, Ine_le_Dec A hσ⟩, hσ⟩).trans (sub_eq_zero.2 (h σ hσ m))
   · exact (hz _ g.2).trans (by rw [map_zero, sub_self])
 
+/- English proof (translation)
+Unfold `Formalism.GaloisCohomology.bkCond at hy ⊢`. Distinguish the cases in `h1 : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite `hy`, the goal using `[if_pos h1]`. Then use the resulting hypothesis. Rewrite `hy`, the goal using `[if_neg h1]`. Distinguish the cases in `h2 : v ∈ S'`.
+
+Rewrite using `[if_pos h2]`. Conclude with `Submodule.mem_top`. Rewrite using `[if_neg h2]`. Break down `h h1 h2 with h3 | h3` into its components or cases. Rewrite `hy` using `[if_neg h3]`. Then use the resulting hypothesis.
+
+Conclude with `h3`.
+-/
 theorem mem_bkCond_of {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {R : Type} [CommRing R]
     {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul R M]
     {rho : Representation R (G F Ω) M} {A : Formalism.GaloisCohomology.Places F Ω} {l : ℕ} {S S' : Set (HeightOneSpectrum (𝓞 F))}
@@ -64,6 +77,9 @@ section Two
 variable {r : ℕ} {ρ : GE N →* GL (Fin r) (X.O0 i)} {R : Type} [CommRing R] [Algebra (X.O0 i) R] {κ : GE N →* Rˣ}
   {Q Q' : Finset (PlE D.host)} {V : Fin 2 → PlE D.host}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(κ g : R) • matAct ((ρ g : Matrix (Fin r) (Fin r) (X.O0 i)).map (algebraMap (X.O0 i) R)) m = _`. Rewrite using `[h, matAct_one]`. Both sides reduce to the same expression.
+-/
 theorem repOn_of_triv {B : Type} [AddCommGroup B] [Module R B] {g : GE N}
     (h : (ρ g : Matrix (Fin r) (Fin r) (X.O0 i)).map (algebraMap (X.O0 i) R) = 1) (m : Fin r → B) :
     repOn ρ κ B g m = (κ g : R) • m := by
@@ -71,6 +87,13 @@ theorem repOn_of_triv {B : Type} [AddCommGroup B] [Module R B] {g : GE N}
   rw [h, matAct_one]
   rfl
 
+/- English proof (translation)
+Use `(mem_Sel _ _ _ _ _).trans (Iff.trans ?_ (and_congr_left' (mem_Sel _ _ _ _ _).symm))` and prove the remaining obligations. Use `⟨fun h => ⟨fun v => ?_, fun j => ?_⟩, fun ⟨h, h'⟩ v => ?_⟩` and prove the remaining obligations. Conclude with `mem_bkCond_of (h v) fun _ h2 => Or.inl fun h3 => h2 (Or.imp id (fun h => (hQ v).2 (Or.inl h)) h3)`. Establish `hv` using `h (V j)`. Unfold `Formalism.GaloisCohomology.bkCond at hv`.
+
+Rewrite `hv` using `[if_neg (hV j).1, if_neg fun h => h.elim (hV j).2.1 (hV j).2.2]`. Conclude with `(mem_unrAt_iff (hI j) z).1 hv`. Use `mem_bkCond_of (h v) fun _ h3 => ?_` and prove the remaining obligations. Distinguish the cases in `h2 : v ∈ Spl i ∪ (Q' : Set (PlE D.host))`. Break down `h2 with h2 | h2` into its components or cases.
+
+Conclude with `absurd (Or.inl h2) h3`. Break down `(hQ v).1 h2 with h4 | ⟨j, rfl⟩` into its components or cases. Conclude with `absurd (Or.inr h4) h3`. Conclude with `Or.inr ((mem_unrAt_iff (hI j) z).2 (h' j))`. Conclude with `Or.inl h2`.
+-/
 theorem mem_selOn_iff {B : Type} [AddCommGroup B] [Module R B] [TopologicalSpace B] [DiscreteTopology B]
     (hQ : ∀ v, v ∈ Q' ↔ v ∈ Q ∨ ∃ j, v = V j)
     (hV : ∀ j, ((X.l i : ℕ) : 𝓞 D.host.E) ∉ (V j).asIdeal ∧ V j ∉ Spl i ∧ V j ∉ Q)
@@ -93,6 +116,21 @@ theorem mem_selOn_iff {B : Type} [AddCommGroup B] [Module R B] [TopologicalSpace
         · exact Or.inr ((mem_unrAt_iff (hI j) z).2 (h' j))
     · exact Or.inl h2
 
+/- English proof (translation)
+Take `⟨E, e1, e2, e3, e4⟩` from `h`. Take `⟨E', e1', e2', e3', e4'⟩` from `h'`. Use `X.lPrime i` as an intermediate fact. Use `choose γ hγ hloc using fun j => GlobalTheory.TameRead.exists_gen_read hT D.host.E N.Om (X.l i) (N.plOm.1 (V j)) (V j) (N.plOm.2 _) (hV j).1`. Establish `tI : ∀ (B : Type) [AddCommGroup B] [Module R B] j, ∀ σ ∈ Ine (F` using `D.host.E) (N.plOm.1 (V j)), ∀ m, repOn ρ κ B σ m = m := fun B _ _ j σ hσ m => by`.
+
+Rewrite using `[repOn_of_triv (hI j σ hσ).2, (hI j σ hσ).1, Units.val_one, one_smul]`. Establish `tk : ∀ (B : Type) [AddCommGroup B] [Module R B] (m : Fin r → B), (X.l i ^ k) • m = 0` using `fun B _ _ m => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul R, hk, zero_smul]`. Use `GlobalTheory.MatKerCokernel.cok_equiv_of_exact R a a' (2 * r) Φ Φ' x (fun B _ _ _ _ u w => E B u = E' B w) (fun B _ _ _ _ w j => val (E' B w) (γ (finProdFinEquiv.symm j).1) (finProdFinEquiv.symm j).2) (fun B _ _ _ _ u u' w hu hu' h1 h2 => e2 B u u' hu hu' (h1.trans h2.symm)) (fun …` and prove the remaining obligations. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (E B u)`.
+
+Take `⟨h1, h2⟩` from `(mem_selOn_iff hQ hV (tI B) z).1 (hz ▸ e1 B u hu)`. Take `⟨w, hw, h3⟩` from `e3' B _ h1`. Use `⟨w, hw, hz.symm.trans h3.symm, funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[h3, val_mk (tI B _ _ (hγ _)), h2 _ _ (hγ _)]`. Both sides reduce to the same expression.
+
+Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (E' B w)`. Use `e3 B _ (hz ▸ (mem_selOn_iff hQ hV (tI B) z).2 ⟨hz ▸ e1' B w hw, fun j => ?_⟩)` and prove the remaining obligations. Use `(hloc j R _ _ k (tk B) (hn j) (tI B j) z).1 (funext fun c => ?_)` and prove the remaining obligations. Establish `h1` using `congrFun ht (finProdFinEquiv (j, c))`. Use `beta_reduce at h1`.
+
+Rewrite `h1` using `[← hz, val_mk (tI B _ _ (hγ _)), Equiv.symm_apply_apply]`. Conclude with `h1`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (E' B w)`. Rewrite using `[← hz, val_mk (tI B _ _ (hγ _))]`. Take `⟨φ, h1, h2, y, rfl⟩` from `hF (finProdFinEquiv.symm j).1`.
+
+Establish `h3` using `(hloc _ R _ _ k (tk B) (hn _) (tI B _) z).2 φ h1`. Rewrite `h3` using `[repOn_of_triv h2]`. Rewrite using `[mul_comm, mul_smul, sub_smul, one_smul, ← Pi.smul_apply (κ φ : R), h3, sub_self, smul_zero]`. Use `beta_reduce at h1 ⊢`. Rewrite using `[e4 B B' f u hu, e4' B B' f w hw, h1]`.
+
+Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (E' B w)`. Use function extensionality and compare the values at `j`. Rewrite using `[e4' B B' f w hw, ← hz, val_mk (tI B _ _ (hγ _))]`. Conclude with `congrFun (val_mk (tI B' _ _ (hγ _)) (cocycles1MapOfEquivariant _ _ (f.compLeft _) continuous_of_discreteTopology (repOn_map _ _ f) z)) _`.
+-/
 theorem exists_gens (hT : TameQuotient) {k : ℕ} (hk : ((X.l i ^ k : ℕ) : R) = 0) {x : R}
     (hQ : ∀ v, v ∈ Q' ↔ v ∈ Q ∨ ∃ j, v = V j)
     (hV : ∀ j, ((X.l i : ℕ) : 𝓞 D.host.E) ∉ (V j).asIdeal ∧ V j ∉ Spl i ∧ V j ∉ Q)
@@ -158,10 +196,20 @@ def restr (j : ι → ι') : abelian₂ X i M ι' →ₐ[X.O0 i] abelian₂ X i 
   MonoidAlgebra.mapDomainAlgHom (X.O0 i) (X.O0 i)
     (MonoidHom.mk' (fun g : Del X i M ι' => (Multiplicative.ofAdd (Multiplicative.toAdd g ∘ j) : Del X i M ι)) fun _ _ => rfl)
 
+/- English proof (translation)
+Simplify using `[restr]`.
+-/
 theorem restr_of (j : ι → ι') (g : Del X i M ι') : restr X i M j (MonoidAlgebra.of _ _ g) =
     MonoidAlgebra.of (X.O0 i) (Del X i M ι) (Multiplicative.ofAdd (Multiplicative.toAdd g ∘ j)) := by
   simp [restr]
 
+/- English proof (translation)
+Establish `: (restr X i M j).comp (toLam X i M ι') = (toLam X i M ι).comp (MvPolynomial.killCompl hj)`. Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, toLam, MvPolynomial.aeval_X, map_sub, map_one, restr_of]`. Distinguish the cases in `hq : q ∈ Set.range j`. Take `⟨q, rfl⟩` from `hq`.
+
+Rewrite using `[← MvPolynomial.rename_X, MvPolynomial.killCompl_rename_app, toLam, MvPolynomial.aeval_X]`. Use `congr 3`. Use function extensionality and compare the values at `q'`. Simplify using `[Pi.single_apply, hj.eq_iff]`. Rewrite using `[MvPolynomial.killCompl, MvPolynomial.aeval_X, dif_neg hq, map_zero, sub_eq_zero, ← map_one (MonoidAlgebra.of _ _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q'`. Conclude with `Pi.single_eq_of_ne (fun h => hq ⟨q', h⟩) _`. Conclude with `DFunLike.congr_fun this F`.
+-/
 theorem restr_toLam {j : ι → ι'} (hj : Function.Injective j) (F : MvPolynomial ι' (X.O0 i)) :
     restr X i M j (toLam X i M ι' F) = toLam X i M ι (MvPolynomial.killCompl hj F) := by
   classical
@@ -183,6 +231,11 @@ theorem restr_toLam {j : ι → ι'} (hj : Function.Injective j) (F : MvPolynomi
 def genPoly [Fintype ι] (g : Del X i M ι) : MvPolynomial ι (X.O0 i) :=
   ∏ q, (MvPolynomial.X q + 1) ^ (Multiplicative.toAdd g q).val - 1
 
+/- English proof (translation)
+Establish `: NeZero (X.l i ^ M)` using `⟨pow_ne_zero _ (X.lPrime i).out.ne_zero⟩`. Establish `h1 : g = ∏ q, (Multiplicative.ofAdd (Pi.single q (1 : ZMod (X.l i ^ M)) : ι → ZMod (X.l i ^ M))) ^ (Multiplicative.toAdd g q).val`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_prod]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [toAdd_pow, toAdd_ofAdd, Finset.sum_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, nsmul_one, ZMod.natCast_zmod_val]`. Use `conv_rhs => rw [h1]`. Simplify using `only [genPoly, toLam, map_sub, map_prod, map_pow, map_add, map_one, MvPolynomial.aeval_X, sub_add_cancel]`.
+-/
 theorem toLam_genPoly [Fintype ι] (g : Del X i M ι) :
     toLam X i M ι (genPoly X i M g) = MonoidAlgebra.of (X.O0 i) (Del X i M ι) g - 1 := by
   classical
@@ -197,10 +250,20 @@ theorem toLam_genPoly [Fintype ι] (g : Del X i M ι) :
   conv_rhs => rw [h1]
   simp only [genPoly, toLam, map_sub, map_prod, map_pow, map_add, map_one, MvPolynomial.aeval_X, sub_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.constantCoeff_eq]`. Simplify using `[genPoly]`.
+-/
 theorem genPoly_coeff_zero [Fintype ι] (g : Del X i M ι) : (genPoly X i M g).coeff 0 = 0 := by
   rw [← MvPolynomial.constantCoeff_eq]
   simp [genPoly]
 
+/- English proof (translation)
+Establish `h` using `MvPolynomial.coeff_pderiv (i := q) (genPoly X i M g) 0`. Simplify using `only [zero_add, Finsupp.coe_zero, Pi.zero_apply, Nat.cast_zero, mul_one] at h`. Rewrite using `[← h, ← MvPolynomial.constantCoeff_eq, genPoly, map_sub, Derivation.map_one_eq_zero, sub_zero]`. Establish `key : ∀ s : Finset ι, MvPolynomial.constantCoeff (MvPolynomial.pderiv q (∏ b ∈ s, ((MvPolynomial.X b + 1) ^ (Multiplicative.toAdd g b).val : MvPolynomial ι (X.O0 i)))) = if q ∈ s then ((Multiplicative.toAdd g q).val : X.O0 i) else 0` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert b s hb ih`. Rewrite using `[Finset.prod_insert hb, Derivation.leibniz, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, ih]`. Distinguish the cases in `hq : b = q`. Substitute `hq` using the available equality.
+
+Simplify using `[hb, -ZMod.natCast_val]`. Simplify using `[MvPolynomial.pderiv_X_of_ne hq, Ne.symm hq]`. Simplify using `using key Finset.univ`.
+-/
 theorem genPoly_coeff_single [Fintype ι] (g : Del X i M ι) (q : ι) :
     (genPoly X i M g).coeff (Finsupp.single q 1) = ((Multiplicative.toAdd g q).val : X.O0 i) := by
   classical
@@ -246,6 +309,9 @@ variable (X i) in
 
 abbrev toRed (M : ℕ) (ι : Type) : abelian₂ X i M ι →ₐ[X.O0 i] Red X i M ι := Ideal.Quotient.mkₐ _ _
 
+/- English proof (translation)
+Rewrite using `[pow_succ, Nat.cast_mul, Nat.cast_pow]`. Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) fun h => ?_` and prove the remaining obligations. Establish `h2` using `h.map (algebraMap (X.O0 i) (X.O i))`. Rewrite `h2` using `[map_natCast]`. Conclude with `X.O_l i h2`.
+-/
 theorem sq_mem_idl : ((X.l i ^ (nu X i + 1) : ℕ) : X.O0 i) ∈ idl i := by
   rw [pow_succ, Nat.cast_mul, Nat.cast_pow]
   refine Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) fun h => ?_
@@ -253,9 +319,19 @@ theorem sq_mem_idl : ((X.l i ^ (nu X i + 1) : ℕ) : X.O0 i) ∈ idl i := by
   rw [map_natCast] at h2
   exact X.O_l i h2
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hy)`.
+-/
 theorem algebraMap_eq_zero {M : ℕ} {ι : Type} {y : X.O0 i} (hy : y ∈ idl i) : algebraMap (X.O0 i) (Red X i M ι) y = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hy)
 
+/- English proof (translation)
+Establish `hs : Function.Surjective ((toRed X i M ι).comp (toLam X i M ι))` using `(Ideal.Quotient.mkₐ_surjective (X.O0 i) _).comp (toLam_surjective X i M ι)`. Establish `h1 : Ideal.span (Set.range y) ≤ (lowIdeal I K c).map ((toRed X i M ι).comp (toLam X i M ι))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨W, hW, e⟩` from `hy t`.
+
+Conclude with `e ▸ Ideal.mem_map_of_mem ((toRed X i M ι).comp (toLam X i M ι)) hW`. Take `⟨W, hW, e⟩` from `(Ideal.mem_map_iff_of_surjective _ hs).1 (h1 hH)`. Establish `h2 : H - W ∈ lowIdeal I K c` using `fun m hm _ => by`. Use `hI (GlobalTheory.StepTwo.LowCoeff.coeff_mem_of_toLam_mem D N X i M ι (idl i) hl hM ?_ _ ?_ m (lt_of_lt_of_le hm hc))` and prove the remaining obligations. Use `sq_mem_idl (X := X) (i := i)` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_pow]`. Then use the resulting hypothesis. Rewrite using `[map_sub]`. Conclude with `Ideal.Quotient.eq.1 e.symm`. Simplify using `using add_mem h2 hW`.
+-/
 theorem mem_lowIdeal_of_span (hl : 0 < nu X i) {M : ℕ} (hM : nu X i + 1 ≤ M) {ι : Type} [Fintype ι] {I : Ideal (X.O0 i)}
     (hI : idl i ≤ I) {K : Set ι} {c : ℕ} (hc : c ≤ X.l i ^ (M - nu X i - 1)) {T : Type} {y : T → Red X i M ι}
     (hy : ∀ t, ∃ W ∈ lowIdeal I K c, toRed X i M ι (toLam X i M ι W) = y t) {H : MvPolynomial ι (X.O0 i)}
@@ -276,6 +352,13 @@ theorem mem_lowIdeal_of_span (hl : 0 < nu X i) {M : ℕ} (hM : nu X i + 1 ≤ M)
       exact Ideal.Quotient.eq.1 e.symm
   simpa using add_mem h2 hW
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Use `swap`. Conclude with `⟨a, Φ, ha, hΦ⟩`. Substitute `ha` using the available equality. Take `⟨e, he⟩` from `hΦ`.
+
+Establish `hs : ∀ (B : Type) [AddCommGroup B] [Module (abelian₂ X i M ι) B], Subsingleton ↥(LinearMap.ker (matAct (M` using `B) (1 : Matrix (Fin 1) (Fin 1) (abelian₂ X i M ι)))) := fun B _ _ => by`. Rewrite using `[matAct_one, Submodule.subsingleton_iff_eq_bot]`. Conclude with `LinearMap.ker_id`. Use `⟨1, 1, one_ne_zero, fun B _ _ _ _ hB => (haveI := hs B; LinearEquiv.ofSubsingleton _ _).trans (e B hB), ?_⟩` and prove the remaining obligations. Introduce `B B' _ _ _ _ _ _ _ _ hB hB' f x x' z z' _ hz hx`.
+
+Conclude with `he B B' hB hB' f _ _ z z' (fun c => c.elim0) hz hx`.
+-/
 theorem exists_computes_pos {s : X.Sig i} {M : ℕ} {ι : Type} {d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))}
     {Q : Finset (PlE D.host)} {a : ℕ} {Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M ι)} (hΦ : Computes bkP i s M d Q Φ) :
     ∃ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M ι)), a ≠ 0 ∧ Computes bkP i s M d Q Φ := by
@@ -298,13 +381,22 @@ variable {s : X.Sig i} {M R n : ℕ} {d : PlE D.host → (GE N →* Multiplicati
   {A : Finset (PlE D.host)} {L : Subgroup (GE N)} {z : GE N} {P : Fin R ⊕ Fin n → PlE D.host}
   {P' : Fin R ⊕ Fin (n + 1) → PlE D.host}
 
+/- English proof (translation)
+The claim follows from `Sum.map_injective.2 ⟨Function.injective_id, Fin.castSucc_injective n⟩`.
+-/
 theorem inj_ext : Function.Injective (Sum.map id Fin.castSucc : Fin R ⊕ Fin n → Fin R ⊕ Fin (n + 1)) :=
   Sum.map_injective.2 ⟨Function.injective_id, Fin.castSucc_injective n⟩
 
+/- English proof (translation)
+Take `rfl : P = fun q => P' (Sum.map id Fin.castSucc q)` from `funext fun q => (hE q).symm`. Conclude with `SlopeTestRemainingChoices.empty ⟨fun q => h.1 _, fun q q' hq => inj_ext (h.2.1 _ _ hq), fun q => h.2.2 _⟩`.
+-/
 theorem isAuxiliaryPlaceFamily_of_onePlaceExtension (h : SlopeTestRemainingChoices X i M A P' fun q => d (P' q)) (hE : Ext P P') : SlopeTestRemainingChoices X i M ∅ P fun q => d (P q) := by
   obtain rfl : P = fun q => P' (Sum.map id Fin.castSucc q) := funext fun q => (hE q).symm
   exact SlopeTestRemainingChoices.empty ⟨fun q => h.1 _, fun q q' hq => inj_ext (h.2.1 _ _ hq), fun q => h.2.2 _⟩
 
+/- English proof (translation)
+Use `⟨Q'.filter fun v => ∃ q, Over (P q) v, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, and_iff_right_iff_imp]`. Introduce and unpack `⟨q, hq⟩`. Conclude with `(hQ' v).2 ⟨_, hE q ▸ hq⟩`.
+-/
 theorem exists_isQ {Q' : Finset (PlE D.host)} (hQ' : IsQ P' Q') (hE : Ext P P') : ∃ Q, IsQ P Q := by
   classical
   refine ⟨Q'.filter fun v => ∃ q, Over (P q) v, fun v => ?_⟩
@@ -312,6 +404,55 @@ theorem exists_isQ {Q' : Finset (PlE D.host)} (hQ' : IsQ P' Q') (hE : Ext P P') 
   rintro ⟨q, hq⟩
   exact (hQ' v).2 ⟨_, hE q ▸ hq⟩
 
+/- English proof (translation)
+Establish `hp : (X.l i).Prime` using `(X.lPrime i).out`. Take `⟨hA', -, hS⟩` from `hS`. Take `⟨hdec, hfr⟩` from `hS (Fin.last n)`. Establish `hA` using `isAuxiliaryPlaceFamily_of_onePlaceExtension hA' hE`. Use `set P₀ := P' (.inr (Fin.last n)) with hP₀`.
+
+Take `⟨P₁, hP₁⟩` from `exists_isConjPl P₀`. Set `V : Fin 2 → PlE D.host` to `![P₀, P₁]`. Establish `hVo : ∀ j, Over P₀ (V j)` using `Fin.forall_fin_two.2 ⟨Or.inl rfl, Or.inr hP₁⟩`. Establish `hno : ∀ q j, ¬ Over (P q) (V j)` using `fun q j h => by`. Use `hA'.2.1 (Sum.map id Fin.castSucc q) (.inr (Fin.last n)) (hE q ▸ over_trans h (over_symm (hVo j)))` as an intermediate fact.
+
+Break down `q with q | q` into its components or cases. Conclude with `Sum.inl_ne_inr this`. Conclude with `(Fin.castSucc_lt_last q).ne (Sum.inr.inj this)`. Set `p` to `toRed X i M (Fin R ⊕ Fin n)`. Set `π` to `restr X i M (Sum.map id Fin.castSucc : Fin R ⊕ Fin n → Fin R ⊕ Fin (n + 1))`.
+
+Set `δ` to `delAll X i M fun q => d (P q)`. Set `χ : Del X i M (Fin R ⊕ Fin n) →* (Red X i M (Fin R ⊕ Fin n))ˣ` to `(p.toRingHom.toMonoidHom.comp (MonoidAlgebra.of _ _)).toHomUnits`. Set `κ : GE N →* (Red X i M (Fin R ⊕ Fin n))ˣ` to `(χ.comp δ)⁻¹`. Establish `hκ : ∀ g, (κ g : Red X i M (Fin R ⊕ Fin n)) = p (MonoidAlgebra.of _ _ (δ g)⁻¹)` using `fun g => rfl`. Establish `hk : ((X.l i ^ (nu X i + 1) : ℕ) : Red X i M (Fin R ⊕ Fin n)) = 0`.
+
+Rewrite using `[← map_natCast (algebraMap (X.O0 i) _)]`. Conclude with `algebraMap_eq_zero sq_mem_idl`. Establish `ps : Function.Surjective p` using `Ideal.Quotient.mkₐ_surjective (X.O0 i) _`. Establish `πs : Function.Surjective π` using `fun y => by`. Take `⟨F, rfl⟩` from `toLam_surjective X i M _ y`.
+
+Conclude with `⟨_, (restr_toLam X i M inj_ext _).trans (congrArg _ (MvPolynomial.killCompl_rename_app inj_ext F))⟩`. Establish `r1` using `represents_of_computes hΦ p ps κ (fun g => rfl) (nu X i + 1) hk`. Establish `r2` using `represents_of_computes hΦ' (p.comp π) (ps.comp πs) κ (fun g => by`. Rewrite using `[hκ]`. Use `congrArg p ((restr_of X i M _ (delAll X i M (fun q => d (P' q)) g)⁻¹).trans (congrArg _ ?_))` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `q`. Conclude with `congrArg (fun v => -Multiplicative.toAdd (d v g)) (hE q)) (nu X i + 1) hk`. Establish `hδI : ∀ j, ∀ σ ∈ Ine (F` using `D.host.E) (N.plOm.1 (V j)), δ σ = 1 := fun j σ hσ => by`. Use function extensionality and compare the values at `q`. Conclude with `congrArg Multiplicative.toAdd ((hA.2.2 q).2.2.2.1 _ (hno q j) _ (N.plOm.2 _) σ hσ)`.
+
+Establish `hδc : ∀ g, δ (cConj X g) = (δ g)⁻¹` using `fun g => by`. Use function extensionality and compare the values at `q`. Conclude with `congrArg Multiplicative.toAdd (antiHom_cConj X (hA.2.2 q).2.1 g)`. Establish `htr : ∀ g ∈ L, (Tgl i s g : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (algebraMap (X.O0 i) (Red X i M (Fin R ⊕ Fin n))) = 1` using `fun g hg => by`. Rewrite using `[Tgl_coe, ← Matrix.map_one (algebraMap (X.O0 i) _) (map_zero _) (map_one _)]`.
+
+Use extensionality with `b c`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← sub_eq_zero, ← map_sub]`. Conclude with `algebraMap_eq_zero (hL.2.2 g hg b c)`. Take `⟨φ, hφ⟩ : ∃ φ : GE N, IsFrob (N.plOm.1 P₀) (normV P₀) φ` from `exists_isFrob (N.plOm.2 _)`. Establish `hF1 : ∀ σ : GE N, IsFrob (N.plOm.1 P₁) (normV P₁) σ → σ ∈ L ∧ δ σ = (δ φ)⁻¹` using `fun σ hσ => by`.
+
+Take `⟨σ₀, g, h0, rfl⟩` from `exists_frob_of_conj X hP₁ hσ`. Use `⟨hL.1.2.1.conj_mem _ ((hL.1.2.2.1 σ₀ _ (cConj_apply X σ₀)).1 (hdec h0.1)) g, ?_⟩` and prove the remaining obligations. Establish `h1` using `hδI 0 _ (inv_mul_mem_Ine_of_isFrob hφ h0)`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm, hδc, h1]`.
+
+Take `⟨ψ, hψ⟩ : ∃ ψ : GE N, IsFrob (N.plOm.1 P₁) (normV P₁) ψ` from `exists_isFrob (N.plOm.2 _)`. Establish `hIL : ∀ j, ∀ σ ∈ Ine (F` using `D.host.E) (N.plOm.1 (V j)), σ ∈ L := Fin.forall_fin_two.2 ⟨fun σ hσ => hdec (Ine_le_Dec _ hσ), fun σ hσ => (L.mul_mem_cancel_left (hF1 ψ hψ).1).1 (hF1 _ (isFrob_mul_of_mem_Ine hψ hσ)).1⟩`. Establish `hx : p (toLam X i M _ (genPoly X i M (δ φ))) = (χ (δ φ) : Red X i M (Fin R ⊕ Fin n)) - 1`. Rewrite using `[toLam_genPoly, map_sub, map_one]`. Both sides reduce to the same expression.
+
+Take `⟨v, hv, ⟨e⟩⟩` from `exists_gens (V := V) (x := p (toLam X i M _ (genPoly X i M (δ φ)))) hT hk (fun v => by`. Rewrite using `[hQ, hQ']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q | q, hq⟩`. Conclude with `Or.inl ⟨.inl q, hE (.inl q) ▸ hq⟩`.
+
+Proceed by induction on `q using Fin.lastCases with`. Consider the case `last => exact Or.inr (hq.elim (fun h => ⟨0, h⟩) fun h => ⟨1, isConjPl_unique h hP₁⟩)`. Consider the case `cast q => exact Or.inl ⟨.inr q, hE (.inr q) ▸ hq⟩`. Introduce and unpack `(⟨q, hq⟩ | ⟨j, rfl⟩)`. Conclude with `⟨_, hE q ▸ hq⟩`.
+
+Conclude with `⟨_, hVo j⟩)`. Use the proof step `(fun j => by`. Establish `h0` using `(hA'.1 _ _ (hVo j)).2.2.2.1`. Use `⟨fun h => h0 (X.twistExcludedPlaces_contains_residueChar i h), fun h => h0 ?_, fun h => ?_⟩` and prove the remaining obligations. Break down `h.1 with h | h` into its components or cases.
+
+Take `⟨k, hk⟩` from `Set.mem_iUnion.1 h`. Conclude with `X.placesOver_subset_exceptional i k hk`. Conclude with `X.primes_subset_exceptional i h`. Take `⟨q, hq⟩` from `(hQ _).1 h`. Conclude with `hno q j hq)`.
+
+Use the proof step `(fun j => by`. Establish `h0` using `(hA'.1 _ _ (hVo j)).2.2.2.2.2`. Establish `h1 : normV (V j) ≡ 1 [MOD 2 * X.l i ^ M]`. Rewrite using `[← h0]`. Conclude with `(Nat.mod_modEq _ _).symm`.
+
+Conclude with `h1.of_dvd ((pow_dvd_pow _ hM).mul_left 2))`. Use the proof step `(fun j σ hσ => ⟨by`. Express the relevant statement in the definitionally equal form `(χ (δ σ))⁻¹ = 1`. Rewrite using `[hδI j σ hσ, map_one, inv_one], htr σ (hIL j σ hσ)⟩)`. Use the proof step `(Fin.forall_fin_two.2 ⟨⟨φ, hφ, htr φ (hdec hφ.1), -(χ (δ φ) : Red X i M (Fin R ⊕ Fin n)), by`.
+
+Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `_ = ((((χ (δ φ))⁻¹ : _ˣ) : Red X i M (Fin R ⊕ Fin n)) - 1) * _`. Rewrite using `[mul_neg, sub_mul, Units.inv_mul, one_mul, neg_sub]⟩, ⟨ψ, hψ, htr ψ (hF1 ψ hψ).1, 1, by`. Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `_ = ((((χ (δ ψ))⁻¹ : _ˣ) : Red X i M (Fin R ⊕ Fin n)) - 1) * _`.
+
+Rewrite using `[(hF1 ψ hψ).2, map_inv, inv_inv, mul_one]⟩⟩) r1 r2`. Take `⟨f1, f2⟩` from `GlobalTheory.FitSquare.fitting_exact _ _ _ _ (Submodule.span _ (Set.range v)).subtype (Submodule.span _ (Set.range v)).mkQ (LinearMap.exact_subtype_mkQ _) (Submodule.mkQ_surjective _) (2 * D.R.r) (p (toLam X i M _ (genPoly X i M (δ φ)))) (fun j => ⟨v j, Submodule.subset_span ⟨j, …`. Establish `: Submodule.span _ (Set.range v) ≤ LinearMap.ker (LinearMap.lsmul _ _ (p (toLam X i M _ (genPoly X i M (δ φ)))))` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hv j)`. Conclude with `this m.2))`. Use the proof step `a' a _ _ ⟨LinearEquiv.refl _ _⟩ ⟨e⟩`.
+
+Use `⟨genPoly X i M (δ φ), genPoly_coeff_zero X i M _, ?_, ?_, f2.imp id fun f2 b c => ?_⟩` and prove the remaining obligations. Establish `h1 : Multiplicative.toAdd (δ φ) (.inl ⟨n, hn⟩) = 1`. Use `hfr ⟨n, hn⟩ φ hφ` as an intermediate fact. Rewrite `this` using `[if_pos (Fin.val_last n)]`. Conclude with `congrArg Multiplicative.toAdd ((congrArg (fun v => d v φ) (hE (.inl ⟨n, hn⟩))).symm.trans this)`.
+
+Establish `: Fact (1 < X.l i ^ M)` using `⟨Nat.one_lt_pow (by omega) hp.one_lt⟩`. Rewrite using `[genPoly_coeff_single, h1, ZMod.val_one, Nat.cast_one]`. Conclude with `isUnit_one`. Rewrite `f1` using `[Matrix.det_transpose, Matrix.det_transpose]`. Rewrite using `[map_mul, map_pow, AlgHom.map_det p, ← AlgHom.comp_apply, AlgHom.map_det (p.comp π)]`.
+
+Conclude with `f1`. Establish `f3` using `f2.1 c b`. Establish `a1 : ∀ b c, (Φ.map p).transpose.adjugate c b = p (Φ.adjugate b c)` using `fun b c => by`. Rewrite using `[← Matrix.adjugate_transpose, Matrix.transpose_apply]`. Conclude with `(congrFun (congrFun (AlgHom.map_adjugate p Φ) b) c).symm`.
+
+Establish `a2 : ∀ b c, (Φ'.map (p.comp π)).transpose.adjugate c b = p (π (Φ'.adjugate b c))` using `fun b c => by`. Rewrite using `[← Matrix.adjugate_transpose, Matrix.transpose_apply]`. Conclude with `(congrFun (congrFun (AlgHom.map_adjugate (p.comp π) Φ') b) c).symm`. Simplify using `only [a1, a2] at f3`. Rewrite using `[map_mul, map_pow]`.
+
+Conclude with `f3`.
+-/
 theorem compare (hT : TameQuotient) (hn : n < R) (hM : nu X i + 1 ≤ M) (hL : Small2 i s M L z) (hS : PiLocalization₂ i M d A L z P')
     (hE : Ext P P') {Q Q' : Finset (PlE D.host)} (hQ : IsQ P Q) (hQ' : IsQ P' Q') {a a' : ℕ}
     {Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M (Fin R ⊕ Fin n))} {Φ' : Matrix (Fin a') (Fin a') (abelian₂ X i M (Fin R ⊕ Fin (n + 1)))}
@@ -452,6 +593,9 @@ theorem compare (hT : TameQuotient) (hn : n < R) (hM : nu X i + 1 ≤ M) (hL : S
 
 end Main
 
+/- English proof (translation)
+Introduce `m h1 h2` and use `by rw [MvPolynomial.coeff_killCompl] exact hF m h1 h2`.
+-/
 theorem killCompl_mem {O : Type} [CommRing O] {ι ι' : Type} {j : ι → ι'} (hj : Function.Injective j) {I : Ideal O}
     {K : Set ι} {c : ℕ} {F : MvPolynomial ι' O}
     (hF : ∀ m : ι →₀ ℕ, m.degree < c → (∀ q ∈ K, m q = 0) → F.coeff (m.mapDomain j) ∈ I) :
@@ -459,6 +603,21 @@ theorem killCompl_mem {O : Type} [CommRing O] {ι ι' : Type} {j : ι → ι'} (
   rw [MvPolynomial.coeff_killCompl]
   exact hF m h1 h2
 
+/- English proof (translation)
+Introduce `hT D N X bkP hS i s hG hl M R n d A L z P P' c hn hc hM _ hL hSt hE`. Establish `key : ∀ Q', IsQ P' Q' → ∃ Q, IsQ P Q ∧ ∃ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) (abelian₂ X i M (Fin R ⊕ Fin n))), a ≠ 0 ∧ Computes bkP i s M (fun q => d (P q)) Q Φ` using `fun Q' hQ' => by`. Take `⟨Q, hQ⟩` from `exists_isQ hQ' hE`. Take `⟨a, Φ, hΦ, -⟩` from `hS i s hG M _ P _ Q (by omega) (isAuxiliaryPlaceFamily_of_onePlaceExtension hSt.1 hE) hQ`. Conclude with `⟨Q, hQ, exists_computes_pos hΦ⟩`.
+
+Use `⟨fun h Q' hQ' a' Φ' hΦ' F' hF' => ?_, fun h Q' hQ' a' Φ' hΦ' => ?_⟩` and prove the remaining obligations. Take `⟨Q, hQ, a, Φ, -, hΦ⟩` from `key Q' hQ'`. Take `⟨u, u0, u1, h1, -⟩` from `compare hT.1 hn (by omega) hL hSt hE hQ hQ' hΦ hΦ'`. Take `⟨F, hF⟩` from `toLam_surjective X i M _ Φ.det`. Take `⟨m, hm, hm'⟩` from `h Q hQ a Φ hΦ F hF`.
+
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Rewrite `h1` using `[← hF, ← map_pow, ← map_mul, ← Set.range_const (ι := Unit)]`. Use `hm' (GlobalTheory.OrdMul.coeff_mem_of_pow_mul _ (idl i) _ ∅ _ (Set.notMem_empty _) u F c (2 * D.R.r) u0 u1 (mem_lowIdeal_of_span hl (by omega) le_rfl hc (fun _ => ⟨MvPolynomial.killCompl inj_ext F', killCompl_mem _ fun m h1 _ => hno _ (by rwa [Finsupp.degree_mapDomain]), by rw [← …` and prove the remaining obligations. Take `⟨Q, hQ, a, Φ, ha, hΦ⟩` from `key Q' hQ'`.
+
+Take `⟨u, u0, u1, -, h1⟩` from `compare hT.1 hn (by omega) hL hSt hE hQ hQ' hΦ hΦ'`. Use `h1.imp id fun h1 => ?_` and prove the remaining obligations. Take `⟨b, b', hb⟩` from `(h Q hQ a Φ hΦ).resolve_left ha`. Take `⟨F, hF⟩` from `toLam_surjective X i M _ (Φ.adjugate b b')`. Take `⟨m, hm, hm0, hm'⟩` from `hb F hF`.
+
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `h2` using `h1 b b'`. Rewrite `h2` using `[← hF, ← map_pow, ← map_mul]`. Use `GlobalTheory.OrdMul.coeff_mem_of_pow_mul _ (IsLocalRing.maximalIdeal _) _ {q | ∃ j : Fin R, n + 1 ≤ j.val ∧ q = .inl j} (.inl ⟨n, hn⟩) ?_ u F c (2 * D.R.r) u0 u1 (mem_lowIdeal_of_span hl (by omega) Ideal.mul_le_right hc (fun t => ?_) h2) m hm ?_ hm'` and prove the remaining obligations.
+
+Introduce and unpack `⟨j, h3, h4⟩`. Rewrite `h3` using `[← Sum.inl.inj h4]`. Conclude with `Nat.not_succ_le_self _ h3`. Take `⟨F', hF', h3⟩` from `hno t.2 t.1`. Use `⟨MvPolynomial.killCompl inj_ext F', killCompl_mem _ fun m h4 h5 => h3 _ (by rwa [Finsupp.degree_mapDomain]) fun j hj => ?_, by rw [← hF', restr_toLam X i M inj_ext]⟩` and prove the remaining obligations.
+
+Conclude with `(Finsupp.mapDomain_apply inj_ext m (.inl j)).trans (h5 _ ⟨j, hj, rfl⟩)`. Introduce and unpack `_ ⟨j, h3, rfl⟩`. Conclude with `hm0 j (by omega)`.
+-/
 theorem grow : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N)
     (bkP : BKPh X), ThmS bkP → ∀ (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → Grow bkP i s := by
   intro hT D N X bkP hS i s hG hl M R n d A L z P P' c hn hc hM _ hL hSt hE

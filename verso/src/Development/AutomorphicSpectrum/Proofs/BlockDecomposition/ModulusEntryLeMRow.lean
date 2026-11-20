@@ -11,10 +11,16 @@ namespace GlobalTheory.CompanionTheory.SphTheta.RowIwasawa
 section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max x y`. Conclude with `h` after adjusting the coercions.
+-/
 theorem modulus_add_le_sup (x y : F) : modulus (x + y) ≤ max (modulus x) (modulus y) := by
   have h := GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max x y
   exact_mod_cast h
 
+/- English proof (translation)
+Unfold `mRow`. Use `split_ifs with h`. Conclude with `(max_eq_right h.le).symm`. Conclude with `(max_eq_left (not_lt.1 h)).symm`.
+-/
 theorem modulus_mRow (g : GL (Fin 2) F) :
     modulus (mRow g) = max (modulus (g.val 1 0)) (modulus (g.val 1 1)) := by
   unfold mRow
@@ -22,6 +28,11 @@ theorem modulus_mRow (g : GL (Fin 2) F) :
   · exact (max_eq_right h.le).symm
   · exact (max_eq_left (not_lt.1 h)).symm
 
+/- English proof (translation)
+Introduce `h0`. Establish `hm : max (modulus (g.val 1 0)) (modulus (g.val 1 1)) = 0`. Rewrite using `[← modulus_mRow, h0, modulus_zero]`. Establish `hc : g.val 1 0 = 0` using `modulus_eq_zero.1 (le_antisymm (hm ▸ le_max_left _ _) zero_le')`. Establish `hd : g.val 1 1 = 0` using `modulus_eq_zero.1 (le_antisymm (hm ▸ le_max_right _ _) zero_le')`.
+
+Establish `hdet : (g.val).det ≠ 0` using `(Matrix.GeneralLinearGroup.det g).ne_zero`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two, hc, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mRow_ne_zero (g : GL (Fin 2) F) : mRow g ≠ 0 := by
   intro h0
   have hm : max (modulus (g.val 1 0)) (modulus (g.val 1 1)) = 0 := by
@@ -35,6 +46,9 @@ theorem mRow_ne_zero (g : GL (Fin 2) F) : mRow g ≠ 0 := by
   rw [Matrix.det_fin_two, hc, hd]
   ring
 
+/- English proof (translation)
+Rewrite using `[modulus_mRow]`. Use `fin_cases j`. Conclude with `le_max_left _ _`. Conclude with `le_max_right _ _`.
+-/
 theorem modulus_entry_le_mRow (g : GL (Fin 2) F) (j : Fin 2) :
     modulus (g.val 1 j) ≤ modulus (mRow g) := by
   rw [modulus_mRow]
@@ -42,6 +56,9 @@ theorem modulus_entry_le_mRow (g : GL (Fin 2) F) (j : Fin 2) :
   · exact le_max_left _ _
   · exact le_max_right _ _
 
+/- English proof (translation)
+Use `(modulus_add_le_sup _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[modulus_mul]`. Conclude with `(mul_le_of_le_one_right' (modulus_le_one_iff.2 hs)).trans hu`. Rewrite using `[modulus_mul]`. Conclude with `(mul_le_of_le_one_right' (modulus_le_one_iff.2 ht)).trans hv`.
+-/
 theorem modulus_comb_le {u v s t : F} {B : NNReal} (hu : modulus u ≤ B) (hv : modulus v ≤ B)
     (hs : s ∈ 𝒪[F]) (ht : t ∈ 𝒪[F]) : modulus (u * s + v * t) ≤ B := by
   refine (modulus_add_le_sup _ _).trans (max_le ?_ ?_)
@@ -50,6 +67,9 @@ theorem modulus_comb_le {u v s t : F} {B : NNReal} (hu : modulus u ≤ B) (hv : 
   · rw [modulus_mul]
     exact (mul_le_of_le_one_right' (modulus_le_one_iff.2 ht)).trans hv
 
+/- English proof (translation)
+Establish `key : ∀ j, modulus ((g * k).val 1 j) ≤ modulus (mRow g)` using `fun j => by`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Conclude with `modulus_comb_le (modulus_entry_le_mRow g 0) (modulus_entry_le_mRow g 1) (hk 0 j) (hk 1 j)`. Rewrite using `[modulus_mRow]`. Conclude with `max_le (key 0) (key 1)`.
+-/
 theorem modulus_mRow_mul_le (g k : GL (Fin 2) F) (hk : ∀ i j, k.val i j ∈ 𝒪[F]) :
     modulus (mRow (g * k)) ≤ modulus (mRow g) := by
   have key : ∀ j, modulus ((g * k).val 1 j) ≤ modulus (mRow g) := fun j => by
@@ -58,6 +78,9 @@ theorem modulus_mRow_mul_le (g k : GL (Fin 2) F) (hk : ∀ i j, k.val i j ∈ �
   rw [modulus_mRow]
   exact max_le (key 0) (key 1)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Use `le_antisymm (modulus_mRow_mul_le g k h1) ?_` and prove the remaining obligations. Use `modulus_mRow_mul_le (g * k) k⁻¹ h2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem modulus_mRow_mul (g k : GL (Fin 2) F) (hk : k ∈ GLnLocal.integralGL F 2) :
     modulus (mRow (g * k)) = modulus (mRow g) := by
   obtain ⟨h1, h2⟩ := (GLnLocal.mem_integralGL_iff F 2).1 hk
@@ -65,11 +88,17 @@ theorem modulus_mRow_mul (g k : GL (Fin 2) F) (hk : k ∈ GLnLocal.integralGL F 
   have := modulus_mRow_mul_le (g * k) k⁻¹ h2
   rwa [mul_inv_cancel_right] at this
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.det_mul, modulus_mul, GlobalTheory.CompanionTheory.GJTwo.WhB.modulus_det_integral hk, mul_one]`.
+-/
 theorem modulus_det_mul [MeasurableSpace F] [BorelSpace F] (g k : GL (Fin 2) F) (hk : k ∈ GLnLocal.integralGL F 2) :
     modulus ((g * k).val).det = modulus (g.val).det := by
   rw [Units.val_mul, Matrix.det_mul, modulus_mul,
     GlobalTheory.CompanionTheory.GJTwo.WhB.modulus_det_integral hk, mul_one]
 
+/- English proof (translation)
+Unfold `mRow xRow`. Use `split_ifs with h`. Conclude with `⟨1, rfl, rfl⟩`. Conclude with `⟨0, rfl, rfl⟩`.
+-/
 theorem exists_column (g : GL (Fin 2) F) :
     ∃ j, mRow g = g.val 1 j ∧ xRow g = g.val 0 j / g.val 1 j := by
   unfold mRow xRow
@@ -77,6 +106,23 @@ theorem exists_column (g : GL (Fin 2) F) :
   · exact ⟨1, rfl, rfl⟩
   · exact ⟨0, rfl, rfl⟩
 
+/- English proof (translation)
+Establish `hm` using `mRow_ne_zero g`. Establish `hpos : 0 < modulus (mRow g)` using `modulus_pos hm`. Establish `hdiv : modulus ((g.val).det / mRow g) ≤ modulus (mRow g)`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv, ← div_eq_mul_inv, div_le_iff₀ hpos, ← sq]`. Conclude with `hD`.
+
+Distinguish the cases in `h : modulus (g.val 1 0) < modulus (g.val 1 1)`. Establish `hmd : mRow g = g.val 1 1` using `by simp [mRow, h]`. Establish `hxd : xRow g = g.val 0 1 / g.val 1 1` using `by simp [xRow, h]`. Establish `hd : g.val 1 1 ≠ 0` using `hmd ▸ hm`. Rewrite using `[hxd]`.
+
+Use `fin_cases j`. Establish `e : g.val 0 0 - g.val 0 1 / g.val 1 1 * g.val 1 0 = (g.val).det / mRow g`. Rewrite using `[hmd, Matrix.det_fin_two]`. Clear the denominators using the available nonvanishing facts. Simplify `hdiv` using `[e]`.
+
+Establish `e : g.val 0 1 - g.val 0 1 / g.val 1 1 * g.val 1 1 = 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[e]`. Establish `hmc : mRow g = g.val 1 0` using `by simp [mRow, h]`.
+
+Establish `hxc : xRow g = g.val 0 0 / g.val 1 0` using `by simp [xRow, h]`. Establish `hc : g.val 1 0 ≠ 0` using `hmc ▸ hm`. Rewrite using `[hxc]`. Use `fin_cases j`. Establish `e : g.val 0 0 - g.val 0 0 / g.val 1 0 * g.val 1 0 = 0`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[e]`. Establish `e : g.val 0 1 - g.val 0 0 / g.val 1 0 * g.val 1 1 = -((g.val).det / mRow g)`. Rewrite using `[hmc, Matrix.det_fin_two]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: modulus (g.val 0 1 - g.val 0 0 / g.val 1 0 * g.val 1 1) ≤ modulus (mRow g)`. Rewrite using `[e, GlobalTheory.CompanionTheory.LFCoords.modulus_neg_self]`. Conclude with `hdiv`.
+
+Simplify using `using this`.
+-/
 theorem modulus_sub_xRow_le (g : GL (Fin 2) F)
     (hD : modulus (g.val).det ≤ modulus (mRow g) ^ 2) (j : Fin 2) :
     modulus (g.val 0 j - xRow g * g.val 1 j) ≤ modulus (mRow g) := by
@@ -117,6 +163,15 @@ theorem modulus_sub_xRow_le (g : GL (Fin 2) F)
         exact hdiv
       simpa using this
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`. Take `⟨j, hmj, hxj⟩` from `exists_column (g * k)`. Establish `hne : (g * k).val 1 j ≠ 0` using `hmj ▸ mRow_ne_zero (g * k)`. Establish `hmod : modulus ((g * k).val 1 j) = modulus (mRow g)`. Rewrite using `[← hmj, modulus_mRow_mul g k hk]`.
+
+Establish `hnum : (g * k).val 0 j - xRow g * (g * k).val 1 j = (g.val 0 0 - xRow g * g.val 1 0) * k.val 0 j + (g.val 0 1 - xRow g * g.val 1 1) * k.val 1 j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : modulus ((g * k).val 0 j - xRow g * (g * k).val 1 j) ≤ modulus (mRow g)`. Rewrite using `[hnum]`.
+
+Conclude with `modulus_comb_le (modulus_sub_xRow_le g hD 0) (modulus_sub_xRow_le g hD 1) (h1 0 j) (h1 1 j)`. Establish `hx : xRow (g * k) - xRow g = ((g * k).val 0 j - xRow g * (g * k).val 1 j) * ((g * k).val 1 j)⁻¹`. Rewrite using `[hxj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx, ← modulus_le_one_iff, modulus_mul, modulus_inv, hmod]`.
+
+Conclude with `mul_inv_le_one_of_le₀ hle zero_le'`.
+-/
 theorem xRow_mul_sub_mem (g k : GL (Fin 2) F) (hk : k ∈ GLnLocal.integralGL F 2)
     (hD : modulus (g.val).det ≤ modulus (mRow g) ^ 2) : xRow (g * k) - xRow g ∈ 𝒪[F] := by
   obtain ⟨h1, -⟩ := (GLnLocal.mem_integralGL_iff F 2).1 hk
@@ -142,6 +197,9 @@ theorem xRow_mul_sub_mem (g k : GL (Fin 2) F) (hk : k ∈ GLnLocal.integralGL F 
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ g k hk`. Conclude with `⟨mRow_ne_zero g, modulus_det_mul g k hk, modulus_mRow_mul g k hk, xRow_mul_sub_mem g k hk⟩`.
+-/
 theorem iwasawa_lower_row : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F], ∀ (g k : GL (Fin 2) F), k ∈ GLnLocal.integralGL F 2 → mRow g ≠ 0 ∧ modulus ((g * k).val).det = modulus (g.val).det ∧ modulus (mRow (g * k)) = modulus (mRow g) ∧ (modulus (g.val).det ≤ modulus (mRow g) ^ 2 → xRow (g * k) - xRow g ∈ 𝒪[F]) := by
   intro F _ _ _ _ _ _ g k hk
   exact ⟨mRow_ne_zero g, modulus_det_mul g k hk, modulus_mRow_mul g k hk,

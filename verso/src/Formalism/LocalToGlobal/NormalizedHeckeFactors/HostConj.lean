@@ -4,6 +4,9 @@ open Formalism.BasicNotions Formalism.FrobeniusOrbits NumberField
 
 namespace Formalism.L2
 
+/- English proof (translation)
+Use `symm`. Use `(D.host.toHostAx.eq_conjE_iff _).mpr ?_` and prove the remaining obligations. Set `φ : D.host.E →+* ℂ` to `Classical.choice inferInstance`. Conclude with `(D.host.isConj_iff_galE φ _).mp (fun x => IsCMField.complexEmbedding_complexConj D.host.E φ x)`.
+-/
 theorem hostConj_eq_restrict (D : D7) :
     D.host.conj = (IsCMField.complexConj D.host.E).restrictScalars ℚ := by
   symm
@@ -12,12 +15,18 @@ theorem hostConj_eq_restrict (D : D7) :
   exact (D.host.isConj_iff_galE φ _).mp
     (fun x => IsCMField.complexEmbedding_complexConj D.host.E φ x)
 
+/- English proof (translation)
+Introduce `z`. Rewrite using `[hostConj_eq_restrict D]`. Both sides reduce to the same expression.
+-/
 theorem hostConj_eq_complexConj (D : D7) :
     ∀ z : D.host.E, D.host.conj z = IsCMField.complexConj D.host.E z := by
   intro z
   rw [hostConj_eq_restrict D]
   rfl
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `hfam`. Use `linkEtaTw_main Fm h ⟨x0, fun x hx' i => ?_⟩` and prove the remaining obligations. Take `⟨M, T, HT⟩` from `hx x hx' i`. Conclude with `⟨M, T, HT, hostConj_eq_complexConj (Fm.D x i)⟩`.
+-/
 theorem locs_cover_twists_of_hecke {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement)
     (hfam : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ (M : MtFam (Fm.D x i)) (_ : NormalizedLocalCompatibility (Fm.D x i) M),
       HeckeTied (Fm.D x i) M) :
@@ -27,23 +36,35 @@ theorem locs_cover_twists_of_hecke {eps : ℝ} (Fm : Formalism.MainNotions.FamP 
   obtain ⟨M, T, HT⟩ := hx x hx' i
   exact ⟨M, T, HT, hostConj_eq_complexConj (Fm.D x i)⟩
 
+/- English proof (translation)
+The claim follows from `(linkEta_iff_tw Fm).2 (locs_cover_twists_of_hecke Fm h hfam)`.
+-/
 theorem link_eta_of_hecke_standard {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement)
     (hfam : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∃ (M : MtFam (Fm.D x i)) (_ : NormalizedLocalCompatibility (Fm.D x i) M),
       HeckeTied (Fm.D x i) M) :
     Formalism.MainNotions.LinkEta Fm :=
   (linkEta_iff_tw Fm).2 (locs_cover_twists_of_hecke Fm h hfam)
 
+/- English proof (translation)
+The claim follows from `etaN_eq_etaJ_main T h HT (hostConj_eq_complexConj D) h1 h2 hw`.
+-/
 theorem etaN_eq_etaJ_of_muAt_ne {D : D7} {M : MtFam D} (T : NormalizedLocalCompatibility D M)
     (h : ReciprocityTheory.ChartRestriction.L3H.HeckeStdStatement) (HT : HeckeTied D M) {j : ℕ}
     {w : D.what₂.places.Pl} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :
     etaN T j w = D.what₂.etaJ j w :=
   etaN_eq_etaJ_main T h HT (hostConj_eq_complexConj D) h1 h2 hw
 
+/- English proof (translation)
+The claim follows from `hostConj_eq_complexConj D z`.
+-/
 example (D : D7) (z : D.host.E) :
     letI : IsCMField D.host.E := hostCM D.host
     D.host.conj z = IsCMField.complexConj D.host.E z :=
   hostConj_eq_complexConj D z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (K : Type) [Field K] [NumberField K] (i₁ i₂ : IsCMField K) : i₁ = i₂ := rfl
 
 end Formalism.L2

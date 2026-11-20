@@ -34,9 +34,19 @@ def twSet (k : ℕ) (Q : Finset (Pl D.host.E)) (ψ : Formalism.ConjugateSelfDual
 
 def SameBut (ρ ρ' : Setup D.ntw) : Prop := ρ'.rc = ρ.rc ∧ ρ'.ch = ρ.ch ∧ ρ'.bad = ρ.bad ∧ ρ'.B = ρ.B ∧ ρ'.om = ρ.om
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.symm, h.2.1.symm, h.2.2.1.symm, h.2.2.2.1.symm, h.2.2.2.2.symm⟩`.
+-/
 theorem SameBut.symm {ρ ρ' : Setup D.ntw} (h : SameBut ρ ρ') : SameBut ρ' ρ :=
   ⟨h.1.symm, h.2.1.symm, h.2.2.1.symm, h.2.2.2.1.symm, h.2.2.2.2.symm⟩
 
+/- English proof (translation)
+Set `f : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)`. Establish `h1 : P.asIdeal ≤ P'.asIdeal.comap f` using `fun c hc => by`. Take `⟨c', h2, h3⟩` from `h c hc`. Establish `e : f c = c'` using `RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `D.host.conj (c : D.host.E) = (c' : D.host.E)`.
+
+Rewrite using `[h3, Formalism.BasicNotions.Examples₂.star_eq_conj])`. Conclude with `Ideal.mem_comap.2 (e ▸ h2)`. Establish `h2` using `P.isMaximal.eq_of_le (Ideal.comap_ne_top f P'.isPrime.ne_top) h1`. Introduce `x y hxy`. Establish `e : f x = y` using `RingOfIntegers.ext hxy.symm`.
+
+Rewrite using `[h2, Ideal.mem_comap, e]`.
+-/
 theorem isConjPl_of_lev {P P' : Pl D.host.E} (h : Lev.IsConjPl P P') : Formalism.BasicNotions.IsConjPl D.host P P' := by
   let f : 𝓞 D.host.E →+* 𝓞 D.host.E := RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)
   have h1 : P.asIdeal ≤ P'.asIdeal.comap f := fun c hc => by
@@ -80,6 +90,15 @@ structure RatHyp (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A
   low : ∀ P : Pl D.host.E, ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK *
     (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ D.ntw.S0 i
 
+/- English proof (translation)
+Establish `k` using `hρ.e_LL0`. Establish `k'` using `hρ'.e_LL0`. Establish `g` using `hp.grp`. Establish `g'` using `hp'.grp`. Establish `q` using `hp.Pg`.
+
+Take `⟨h1, h2⟩` from `h`. Use `clear hρ hρ' hp hp'`. Consider the cases of `ρ`. Consider the cases of `ρ'`. Consider the cases of `hB`.
+
+Name the introduced variables `eG _ _ _ _ _ _ _ _ _ _ eG'`. Establish `e : ∀ i j b a, eG' i j b a = eG i j b a` using `fun i j b a => funext fun P => Units.ext (Matrix.ext fun c d => (g' i j b a P.1 P.2 (q i j b ▸ P.2) c d).trans (g i j b a P.1 P.2 (q i j b ▸ P.2) c d).symm)`. Use `⟨fun i j b a => (e i j b a ▸ h1 i j b a :), fun i j b u hu => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hv i b u`. Establish `h3` using `h2 i j b u ((h1 i j b u).2 u.2)`.
+
+Rewrite `h3` using `[hx, k]`. Rewrite using `[hx, k', ← h3]`. Use `congr 2`. Conclude with `Subtype.ext (e i j b u)`.
+-/
 theorem levelOf_congr {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {Rl : RealDat3 D A3 Ks}
     {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ ρ' : Setup D.ntw} (hρ : ρ.Good) (hρ' : ρ'.Good) (hp : RealPin Rl cG ρ)
     (hp' : RealPin Rl cG ρ') (hB : ρ'.B = ρ.B)
@@ -179,21 +198,42 @@ namespace Fit
 variable {ρ : Setup D.ntw} {hρ : ρ.Good} {ν : ℂ} (h : Fit p w j hρ ν)
 include h
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem adapted : Adapted p w ρ := h.1
 
+/- English proof (translation)
+The claim follows from `h.1.1`.
+-/
 theorem pin : RealPin p.R p.cG ρ := h.1.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem norm : IsNorm p.R p.v₀ (ρ.B (ex.nch.twI w) j (ex.nch.sd w)) ν := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.1`.
+-/
 theorem rat : RatAt p w j hρ ν := h.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2`.
+-/
 theorem level : ρ.LevelOf D.nexp := h.2.2.2
 
 end Fit
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j b => (Z.tie i j b).U_eq, fun i j b => (Z.tie i j b).psiU_eq⟩`.
+-/
 theorem levelOf_exportTie (Z : ExportTie p.nexp p.v₀) : Z.ρ.LevelOf D.nexp :=
   ⟨fun i j b => (Z.tie i j b).U_eq, fun i j b => (Z.tie i j b).psiU_eq⟩
 
+/- English proof (translation)
+Use `levelOf_congr hρ hρ' hp hp' hs.2.2.2.1 (fun i b ⟨u, hu⟩ => ?_) h` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(p.R.eG.trans p.cG).surjective u`. Take `⟨x, -, hx⟩` from `hm.level.2 i b ⟨g, (hm.level.1 g).1 hu⟩ hu`. Conclude with `⟨x, hx⟩`.
+-/
 theorem levelOf_of_sameBut (hm : RecTies p) {ρ ρ' : Setup D.ntw} (hρ : ρ.Good) (hρ' : ρ'.Good) (hp : RealPin p.R p.cG ρ)
     (hp' : RealPin p.R p.cG ρ') (hs : SameBut ρ ρ') (h : ρ.LevelOf D.nexp) : ρ'.LevelOf D.nexp := by
   refine levelOf_congr hρ hρ' hp hp' hs.2.2.2.1 (fun i b ⟨u, hu⟩ => ?_) h
@@ -201,10 +241,18 @@ theorem levelOf_of_sameBut (hm : RecTies p) {ρ ρ' : Setup D.ntw} (hρ : ρ.Goo
   obtain ⟨x, -, hx⟩ := hm.level.2 i b ⟨g, (hm.level.1 g).1 hu⟩ hu
   exact ⟨x, hx⟩
 
+/- English proof (translation)
+The claim follows from `(h.U_eq i j b _).trans (hm.level.1 g)`.
+-/
 theorem mem_level_iff (hm : RecTies p) {ρ : Setup D.ntw} (h : ρ.LevelOf D.nexp) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (g : p.P.Gp) : ρ.eG i j b ((p.R.eG.trans p.cG) g) ∈ (ρ.B i j b).G.P.H ↔ g ∈ p.P.P0 :=
   (h.U_eq i j b _).trans (hm.level.1 g)
 
+/- English proof (translation)
+Establish `hU` using `(hm.level.1 u).2 u.2`. Take `⟨x, hx, hy⟩` from `hm.level.2 i b u hU`. Establish `e` using `h.psiU_eq i j b ⟨_, hU⟩ hu`. Rewrite `e` using `[hy, hρ.e_LL0]`. Use `⟨e.trans ?_, x, e.symm⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `D.what₂.embLL (x : D.what₂.LL) = _`. Rewrite using `[hx, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`.
+-/
 theorem level_chi (hm : RecTies p) {ρ : Setup D.ntw} (hρ : ρ.Good) (h : ρ.LevelOf D.nexp) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (u : p.P.P0) (hu : ρ.eG i j b ((p.R.eG.trans p.cG) u) ∈ (ρ.B i j b).G.P.H) :
     (((ρ.B i j b).G.P.chi ⟨_, hu⟩ : ℂˣ) : ℂ) = (D.what₂.embLL (p.P.ψ0 u : D.what₂.LLˣ))⁻¹ ∧
@@ -217,6 +265,23 @@ theorem level_chi (hm : RecTies p) {ρ : Setup D.ntw} (hρ : ρ.Good) (h : ρ.Le
   change D.what₂.embLL (x : D.what₂.LL) = _
   rw [hx, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]
 
+/- English proof (translation)
+Establish `hw'` using `(p.tw_iff w).1 hw`. Establish `hL` using `p.charW.base.lev`. Establish `hψ` using `p.Tp.psi_is w hw'`. Establish `h2 : p.R.toRealDat.toLevCh.xiH (p.R.mu (D.plEq w)) = p.R.C.delAt (D.ntw.l (ex.nch.twI w)) * p.Tp.psi w`. Rewrite using `[← p.tupAt w, p.tupXi _ (Or.inr ⟨w, rfl⟩), (D.what₂.muAt_or w).resolve_left hw', p.Tp.xi_tw, ex.nch.twI_l]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q, hδ, hq⟩ : ∃ q : ℕ, Formalism.L2.Host.IsDelta q (p.R.C.delAt (D.ntw.l (ex.nch.twI w))) ∧ ∀ P : Pl D.host.E, P ∈ D.ntw.pD (ex.nch.twI w) ↔ (q : 𝓞 D.host.E) ∈ P.asIdeal := by`. Use `⟨if D.ntw.l (ex.nch.twI w) = D.host.pde then D.host.pde' else D.host.pde, ?_, fun P => ?_⟩` and prove the remaining obligations. Unfold `Formalism.L2.Host.CharFrame.delAt split_ifs exacts [p.R.C.isDel', p.R.C.isDel]`. Rewrite using `[← Finset.mem_coe, D.ntw.pD_eq]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ P, (P ∈ p.R.Q (p.R.mu (D.plEq w)) ∨ ∃ P' ∈ p.R.Q (p.R.mu (D.plEq w)), Lev.IsConjPl P' P) ↔ P ∈ D.ntw.pD (ex.nch.twI w) ∨ P ∈ ex.nch.Q w` using `fun P => by`. Use `(hL.Q_ram _ P).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h2]`. Establish `hm : ∀ x, (p.R.C.delAt (D.ntw.l (ex.nch.twI w)) * p.Tp.psi w).loc P x = (p.R.C.delAt (D.ntw.l (ex.nch.twI w))).loc P x * (p.Tp.psi w).loc P x` using `fun _ => rfl`. Distinguish the cases in `hP : P ∈ D.ntw.pD (ex.nch.twI w)`.
+
+Use `iff_of_true (fun hu => ?_) (Or.inl hP)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hψ.ord`. Establish `h15` using `(hδ.ine P ((hq P).1 hP) (D.what₂.places.resChar w ^ a)).1 fun x hx => by`. Establish `h3 : (p.Tp.psi w).loc P x ^ (D.what₂.places.resChar w ^ a) = 1` using `(MonoidHom.pow_apply ..).symm.trans (congrArg (fun χ : Formalism.L2.Host.HChar D.host.E => χ.loc P x) ha)`. Rewrite using `[eq_inv_of_mul_eq_one_left ((hm x).symm.trans (hu x hx)), inv_pow, h3, inv_one]`.
+
+Establish `hl : (D.what₂.places.resChar w).Prime` using `ex.nch.twI_l w ▸ (D.ntw.lPrime _).out`. Establish `h3` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_three hl).1 (Nat.prime_three.dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`. Establish `h5` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_five hl).1 (Nat.prime_five.dvd_of_dvd_pow (dvd_trans (by norm_num) h15))`. Use linear arithmetic over natural numbers and integers. Establish `hd` using `hδ.unr P fun h => hP ((hq P).2 h)`.
+
+Rewrite using `[or_iff_right hP, ← not_iff_not, not_not, ← hψ.ram]`. Conclude with `forall₂_congr fun x hx => by rw [hm, hd x hx, one_mul]`. Use `⟨fun P => ?_, key⟩` and prove the remaining obligations. Rewrite using `[hρ.delta]`. Use `mem_half.trans ⟨fun ⟨h1, hc⟩ => ⟨?_, h1⟩, fun ⟨h1, h3⟩ => ⟨h3, hp.deltaPl _ _ P h1 h3⟩⟩` and prove the remaining obligations.
+
+Use `((key P).2 (Or.inl h1)).elim id fun ⟨P', h3, h4⟩ => ?_` and prove the remaining obligations. Establish `h5` using `isConjPl_of_lev h4`. Establish `h6 : P' ∈ D.ntw.pD (ex.nch.twI w)` using `(hq P').2 ((h5 _ _ (by simp)).2 ((hq P).1 h1))`. Distinguish the cases in `e : P' = P`. Conclude with `e ▸ h3`.
+
+Conclude with `absurd hc (((hρ.ch _).pair _ _ h5 e).1 (hp.deltaPl _ _ P' h3 h6))`.
+-/
 theorem placesAt (hw : D.plEq w ∈ p.R.twPl) {ρ : Setup D.ntw} (hρ : ρ.Good) (hp : RealPin p.R p.cG ρ) : PlacesAt p w j ρ := by
   have hw' := (p.tw_iff w).1 hw
   have hL := p.charW.base.lev
@@ -272,15 +337,24 @@ section AtTw
 variable {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i →
   (Fm.D x i).what₂.places.Pl → Fin (Fm.D x i).R.m → Prop}
 
+/- English proof (translation)
+The claim follows from `Closed.imp (Closed.and h h') fun _ _ _ H => let ⟨x0, K⟩ := EvPt.and H.1 H.2 ⟨x0, fun x hx h0 i p r m w hw j => ⟨(K x hx h0 i p r).1 m w hw j, (K x hx h0 i p r).2 m w hw j⟩⟩`.
+-/
 theorem AtTw.and (h : AtTw Q) (h' : AtTw Q') : AtTw fun Fm x hx i p w j => Q Fm x hx i p w j ∧ Q' Fm x hx i p w j :=
   Closed.imp (Closed.and h h') fun _ _ _ H =>
     let ⟨x0, K⟩ := EvPt.and H.1 H.2
     ⟨x0, fun x hx h0 i p r m w hw j => ⟨(K x hx h0 i p r).1 m w hw j, (K x hx h0 i p r).2 m w hw j⟩⟩
 
+/- English proof (translation)
+The claim follows from `Closed.imp h fun Fm _ _ ⟨x0, K⟩ => ⟨x0, fun x hx h0 i p r m w hw j => f Fm x hx i p r m w hw j (K x hx h0 i p r m w hw j)⟩`.
+-/
 theorem AtTw.imp (h : AtTw Q) (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows →
     More p → ∀ w, (Fm.D x i).plEq w ∈ p.R.twPl → ∀ j, Q Fm x hx i p w j → Q' Fm x hx i p w j) : AtTw Q' :=
   Closed.imp h fun Fm _ _ ⟨x0, K⟩ => ⟨x0, fun x hx h0 i p r m w hw j => f Fm x hx i p r m w hw j (K x hx h0 i p r m w hw j)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, fun x hx _ i p => f Fm x hx i p⟩⟩⟩`.
+-/
 theorem AtTw.of_forall (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows →
     More p → ∀ w, (Fm.D x i).plEq w ∈ p.R.twPl → ∀ j, Q Fm x hx i p w j) : AtTw Q :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, fun x hx _ i p => f Fm x hx i p⟩⟩⟩
@@ -317,6 +391,9 @@ def RatHypAt : Prop := AtTw fun Fm x hx i p w j =>
       ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (b : Bool), RatRow YS' v₀' hρ ((Fm.ex x hx i).nch.twI w) j b →
         RatRow p.nexp p.v₀ hρ ((Fm.ex x hx i).nch.twI w) j b
 
+/- English proof (translation)
+The claim follows from `AtTw.imp h fun Fm x hx i _ _ _ _ _ j ⟨T', _, Rl', cG', S', YS', F', κ', v₀', O', hV', h1, h2, h3⟩ ρ hρ hp hL => h3 ρ hρ _ (hR _ _ _ _ _ _ T' Rl' cG' S' YS' F' κ' v₀' O' ρ hρ _ j _ hV' (h2 ρ hp) hL ⟨(Fm.params x hx i).level_split _ (Fm.D x i).host.pde_level.1, (Fm.params x hx i).l …`.
+-/
 theorem rowAt_of_ratStep (h : RatHypAt) (hR : RatStep) : RowAt :=
   AtTw.imp h fun Fm x hx i _ _ _ _ _ j ⟨T', _, Rl', cG', S', YS', F', κ', v₀', O', hV', h1, h2, h3⟩ ρ hρ hp hL =>
     h3 ρ hρ _ (hR _ _ _ _ _ _ T' Rl' cG' S' YS' F' κ' v₀' O' ρ hρ _ j _ hV' (h2 ρ hp) hL
@@ -353,6 +430,9 @@ def TwChr : Prop := AtTw fun Fm x hx i p w j => ∀ ρ : Setup (Fm.D x i).ntw, �
 
 def TwPl : Prop := AtTw fun Fm x _ i p w j => ∀ ρ : Setup (Fm.D x i).ntw, ρ.Good → RealPin p.R p.cG ρ → PlacesAt p w j ρ
 
+/- English proof (translation)
+The claim follows from `AtTw.of_forall fun _ _ _ _ _ _ _ _ hw _ _ hρ hp => placesAt hw hρ hp`.
+-/
 theorem twPl : TwPl := AtTw.of_forall fun _ _ _ _ _ _ _ _ hw _ _ hρ hp => placesAt hw hρ hp
 
 def AtFit (Q : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i) (w : (Fm.D x i).what₂.places.Pl)
@@ -370,6 +450,9 @@ def TwGe : Prop := AtFit fun _ _ _ _ p w j _ hρ ν rd => twLat p w j hρ ν ≤
 
 def Steps : Prop := CanEx ∧ CanProj ∧ TwAdm ∧ RowAt ∧ TieRat ∧ RecSide ∧ AdaptEx ∧ ConjBase ∧ ConjTw ∧ BaseLe ∧ BaseGe ∧ TwLe ∧ TwGe
 
+/- English proof (translation)
+The claim follows from `AtTw.imp (AtTw.and h1 (AtTw.and h2 h3)) fun _ _ _ _ _ _ hm _ _ _ ⟨a1, a2, a3⟩ => ⟨hm.2.2.series, fun Z => let ⟨ρ, hρ, hs, ha⟩ := a3 Z.ρ Z.good Z.pin have hL := levelOf_of_sameBut hm.2.2 Z.good hρ Z.pin ha.1 hs (levelOf_exportTie Z) let ⟨ν, hn, hr⟩ := a2 ρ hρ ha.1 hL ⟨ρ, hρ, ν, hs …`.
+-/
 theorem exists_fit (h1 : TwAdm) (h2 : RowAt) (h3 : AdaptEx) : AtTw fun Fm x _ i p w j => Nonempty (ExportTie p.nexp p.v₀) ∧
     ∀ Z : ExportTie p.nexp p.v₀, ∃ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ), SameBut Z.ρ ρ ∧ Fit p w j hρ ν :=
   AtTw.imp (AtTw.and h1 (AtTw.and h2 h3)) fun _ _ _ _ _ _ hm _ _ _ ⟨a1, a2, a3⟩ => ⟨hm.2.2.series, fun Z =>
@@ -378,6 +461,11 @@ theorem exists_fit (h1 : TwAdm) (h2 : RowAt) (h3 : AdaptEx) : AtTw fun Fm x _ i 
     let ⟨ν, hn, hr⟩ := a2 ρ hρ ha.1 hL
     ⟨ρ, hρ, ν, hs, ha, hn, ⟨hr.1, hr.2.1 _ _ _ a1.1 a1.2.1⟩, hL⟩⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `h`. Use `Closed.imp (AtTw.and (exists_fit h3 h4 h7) (AtTw.and h1 (AtTw.and h2 (AtTw.and h5 (AtTw.and h6 (AtTw.and h8 (AtTw.and h9 (AtTw.and h10 (AtTw.and h11 (AtTw.and h12 h13)))))))))) fun Fm _ _ ⟨x0, K⟩ => ⟨x0, fun x hx h0 i p r m v hv j => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨Z⟩, a0⟩, ⟨rd, hc, hβ⟩, a2, a5, a6, a8, a9, a10, a11, a12, a13⟩` from `K x hx h0 i p r m ((Fm.D x i).plEq.symm v) (by rwa [Equiv.apply_symm_apply]) j`. Take `⟨ρ, hρ, ν, hs, hf⟩` from `a0 Z`. Take `⟨hN, hR⟩` from `a5 Z`.
+
+Take `⟨r1, r2⟩` from `a6 Z hR`. Establish `b1` using `le_antisymm (a10 ρ hρ ν rd hf hc) (a11 ρ hρ ν rd hf hc)`. Establish `b2` using `le_antisymm (a12 ρ hρ ν rd hf hc) (a13 ρ hρ ν rd hf hc)`. Simplify using `only [realBase, realTw, Equiv.apply_symm_apply] at b1 b2`. Conclude with `⟨rd, hβ, a2 rd hc, (b1.trans (a8 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r1.symm, (b2.trans (a9 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r2.symm⟩`.
+-/
 theorem Steps.exportSt (h : Steps) : ExportSt := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩ := h
   refine Closed.imp (AtTw.and (exists_fit h3 h4 h7) (AtTw.and h1 (AtTw.and h2 (AtTw.and h5 (AtTw.and h6 (AtTw.and h8 (AtTw.and h9
@@ -393,8 +481,14 @@ theorem Steps.exportSt (h : Steps) : ExportSt := by
   exact ⟨rd, hβ, a2 rd hc, (b1.trans (a8 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r1.symm,
     (b2.trans (a9 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r2.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+-/
 example {D : D7} (ρ : Setup D.ntw) : SameBut ρ ρ := ⟨rfl, rfl, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨s, h, 0, hd, rd.map_zero.trans (LinearMap.map_zero _).symm⟩`.
+-/
 example {D : D7} {ρ : Setup D.ntw} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (rd : Rd ρ D.nexp i j b) {s h}
     (hd : ρ.IsDatum i j b s h 0) : 0 ∈ baseSet rd := ⟨s, h, 0, hd, rd.map_zero.trans (LinearMap.map_zero _).symm⟩
 

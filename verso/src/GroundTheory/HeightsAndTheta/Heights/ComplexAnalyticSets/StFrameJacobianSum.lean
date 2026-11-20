@@ -13,6 +13,9 @@ def frameProjLin {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ
     (I : Finset (Fin n)) : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ I :=
   (WithLp.linearEquiv 2 ℂ (I → ℂ)).symm.toLinearMap ∘ₗ LinearMap.pi fun i : I => innerₛₗ ℂ (b i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameProjLin_apply {n : ℕ} (b : OrthonormalBasis (Fin n) ℂ (EuclideanSpace ℂ (Fin n)))
     (I : Finset (Fin n)) (z : EuclideanSpace ℂ (Fin n)) :
     WithLp.ofLp (frameProjLin b I z) = frameProj b I z := rfl

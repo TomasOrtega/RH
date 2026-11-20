@@ -15,6 +15,31 @@ noncomputable section
 
 namespace GlobalTheory.TInj.FromRefine
 
+/- English proof (translation)
+Introduce `o W _ _ _ T I _ ε n R _ _ V _ _ ρ ω s Q e D e' hρ hDF hR`. Take `⟨βQ, β₂Q, wQ, pbQ, sqQ, genQ, cQ, τQ⟩` from `hDF`. Take `⟨βR, β₂R, wR, pbR, sqR, genR, cR, τR⟩` from `hR`. Establish `hΛT : (abelian₂ T.B T.M.L).IsLB` using `DVR.linComb_isLB _ T.M.isLB _ _`. Establish `hΛQ : (abelian₂ Q.B Q.M.L).IsLB` using `DVR.linComb_isLB _ Q.M.isLB _ _`.
+
+Establish `hΛD : (abelian₂ D.P.A D.P.L).IsLB` using `DVR.linComb_isLB _ D.P.isLB _ _`. Take `⟨w'', hT⟩` from `exists_comp hΛQ wQ wR ((isGen_iff _).1 genQ) ((isGen_iff _).1 genR) hΛT hΛD`. Establish `key : ∀ (Z : Scheme.{0}) (p : Z ⟶ (G2 D.P.A).left) (z : Z) J JQ J', Good T.M.L z J → Good Q.M.L z JQ → Good D.P.L z J' → lamVal w'' p z J J' = lamVal wQ (p ≫ β₂R) z J JQ * lamVal wR p z JQ J'`. Introduce `Z p z J JQ J' hJ hJQ hJ'`. Establish `t` using `hT Z p z (fun I => J (p ≫ (β₂R ≫ β₂Q) ≫ lamφ T.B I)) (fun I => JQ ((p ≫ β₂R) ≫ lamφ Q.B I)) (fun I => J' (p ≫ lamφ D.P.A I)) (Set.mem_iInter.2 fun I => hJ (p ≫ (β₂R ≫ β₂Q) ≫ lamφ T.B I)) (Set.mem_iInter.2 fun I => hJQ ((p ≫ β₂R) ≫ lamφ Q.B I)) (Set.mem_iInter.2 fun I => hJ' (p ≫ …`.
+
+Use `t.trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `show _ = gw wQ (p ≫ β₂R) z (fun I => J ((p ≫ β₂R) ≫ β₂Q ≫ lamφ T.B I)) (fun I => JQ ((p ≫ β₂R) ≫ lamφ Q.B I))`. Simplify using `only [Category.assoc]`. Use `show _ = gw wR p z (fun I => JQ (p ≫ β₂R ≫ lamφ Q.B I)) (fun I => J' (p ≫ lamφ D.P.A I))`. Simplify using `only [Category.assoc]`.
+
+Use `⟨βR ≫ βQ, β₂R ≫ β₂Q, w'', ?_, isSquare_comp sqR sqQ, (isGen_iff _).2 (hT.pgen_comp hΛQ ((isGen_iff _).1 genQ) ((isGen_iff _).1 genR)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsGrpPullback.comp pbR pbQ).congr (GlobalTheory.HalfBC.spMap_comp_spMap' ω ρ) rfl`. Introduce `a show (D.c a).left ≫ βR ≫ βQ = spMap (ρ.comp ω) ≫ (T.c₀ ((n : ℤ) • e (e' a))).left`. Rewrite using `[← Category.assoc, cR, Category.assoc, cQ, ← Category.assoc, GlobalTheory.HalfBC.spMap_comp_spMap']`. Introduce `a b`.
+
+Take `⟨k, hk, hv⟩` from `τQ (e' a) (e' b)`. Set `m : FractionRing R →+* FractionRing V` to `IsLocalization.map (FractionRing V) ρ (M := nonZeroDivisors R) (T := nonZeroDivisors V) (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective ρ hρ)`. Establish `hm : ∀ r, m (algebraMap R _ r) = algebraMap V _ (ρ r)` using `fun r => IsLocalization.map_eq _ _`. Set `κ : (TK V).left ⟶ (TK R).left` to `spMap m`. Establish `hκ : κ ≫ jK R = jK V ≫ spMap ρ` using `GlobalTheory.HalfBC.gam_comm ρ m hm`.
+
+Use `⟨Units.map m.toMonoidHom k, ?_, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map] show m (k : FractionRing R) = _`. Rewrite using `[hk, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, hm]`.
+
+Both sides reduce to the same expression. Use `choose JQ hJQ0 using fun χ : (TK V).left ⟶ Q.B.left => exists_chart Q.M.isLB (χ z)`. Establish `hJQ : Good Q.M.L z JQ` using `hJQ0`. Establish `r1` using `τR κ hκ a b z JQ J' hJQ hJ'`. Establish `nQ : val (Q.tau (e' a) (e' b)) (κ ≫ 𝟙 _) z JQ = Units.map (κ.stalkMap z).hom.toMonoidHom (val (Q.tau (e' a) (e' b)) (𝟙 _) (κ z) (fun ψ => JQ (κ ≫ ψ)))` using `Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ (𝟙 _) κ z JQ hJQ).2.2.1 _)`.
+
+Rewrite `nQ` using `[Category.comp_id]`. Establish `r2` using `hv (κ z) (fun ψ => J (κ ≫ ψ)) (fun ψ => JQ (κ ≫ ψ)) (fun ψ => hJ (κ ≫ ψ)) (fun ψ => hJQ (κ ≫ ψ))`. Rewrite `nQ` using `[r2, map_mul, map_mul]`. Establish `g1 : Units.map (κ.stalkMap z).hom.toMonoidHom (gm (𝟙 _) (κ z) ⊤ (unitOn k)) = gm (𝟙 _) z ⊤ (unitOn (Units.map m.toMonoidHom k))`. Rewrite using `[← GlobalTheory.ConstFam.gm_comp_stalkMap κ (𝟙 _) z ⊤ trivial, Category.comp_id]`.
+
+Conclude with `GlobalTheory.PolDeg.gm_spMap_unitOn m k z`. Establish `g2` using `(GlobalTheory.HalfBC.lamVal_comp wQ κ (lift (toUnit (TK R) ≫ Q.c (e' a)) (toUnit (TK R) ≫ Q.c (e' b))).left z J JQ hJ hJQ).symm`. Establish `g3 : Units.map (κ.stalkMap z).hom.toMonoidHom (val (T.τ₀ ((n : ℤ) • e (e' a)) ((n : ℤ) • e (e' b))) ((TK R).hom ≫ spMap ω) (κ z) (fun ψ => J (κ ≫ ψ))) = val (T.τ₀ ((n : ℤ) • e (e' a)) ((n : ℤ) • e (e' b))) (κ ≫ (TK R).hom ≫ spMap ω) z J` using `(Units.ext ((GlobalTheory.values_natural _ _ _ _ _ _ _ _ ((TK R).hom ≫ spMap ω) κ z J hJ).2.2.1 _)).symm`. Establish `hx : ∀ χ, (toUnit (TK V) ≫ D.c χ).left ≫ βR = κ ≫ (toUnit (TK R) ≫ Q.c (e' χ)).left` using `fun χ => by show (jK V ≫ (D.c χ).left) ≫ βR = κ ≫ jK R ≫ (Q.c (e' χ)).left`. Rewrite using `[Category.assoc, cR, ← Category.assoc, ← hκ, Category.assoc]`.
+
+Establish `hP : (lift (toUnit (TK V) ≫ D.c a) (toUnit (TK V) ≫ D.c b)).left ≫ β₂R = κ ≫ (lift (toUnit (TK R) ≫ Q.c (e' a)) (toUnit (TK R) ≫ Q.c (e' b))).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst Q.B Q.B).left = _ ≫ (fst Q.B Q.B).left`. Rewrite using `[Category.assoc, sqR.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `hx a`.
+
+Use `show _ ≫ (snd Q.B Q.B).left = _ ≫ (snd Q.B Q.B).left`. Rewrite using `[Category.assoc, sqR.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Conclude with `hx b`. Establish `hb : κ ≫ (TK R).hom ≫ spMap ω = (TK V).hom ≫ spMap (ρ.comp ω)`. Rewrite using `[← GlobalTheory.HalfBC.spMap_comp_spMap', ← Category.assoc, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ spMap ω) hκ`. Rewrite `nQ` using `[g1, g2, g3, ← hP, hb]`. Rewrite using `[r1, nQ, key _ _ z J JQ J' hJ hJQ hJ']`. The two sides agree by associativity and commutativity.
+-/
 theorem from_of_refines : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {I : Type} [Fintype I] (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (R : Type) [CommRing R] [IsDomain R] (V : Type) [CommRing V] [IsDomain V] (ρ : R →+* V) (ω : W →+* R) (s : I → R) (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)) (D : DegPre V) (e' : D.X ≃+ Q.X), Function.Injective ρ → DataFrom T ω s ε n Q e → Refines Q ρ D e' → ∃ β ββ w, From T (ρ.comp ω) (fun i => ρ (s i)) ε n D (e'.trans e) β ββ w := by
   intro o W _ _ _ T I _ ε n R _ _ V _ _ ρ ω s Q e D e' hρ hDF hR
   obtain ⟨βQ, β₂Q, wQ, pbQ, sqQ, genQ, cQ, τQ⟩ := hDF

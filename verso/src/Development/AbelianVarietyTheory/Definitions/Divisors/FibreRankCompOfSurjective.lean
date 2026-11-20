@@ -12,6 +12,9 @@ open TensorProduct Coalgebra Bialgebra WithConv Module
 
 namespace GlobalTheory.PDiv
 
+/- English proof (translation)
+Take `⟨e⟩` from `GlobalTheory.HopfShear.shear k A B f`. Conclude with `GlobalTheory.finrank_eq_mul_of_basis_tensor_self k (AlgHom.range (f : B →ₐ[k] A)) A _ Subtype.val_injective ⟨((Module.finBasis k _).baseChange A).map e.symm⟩`.
+-/
 theorem finrank_eq_ker_mul_range (k A B : Type) [Field k] [CommRing A] [CommRing B]
     [HopfAlgebra k A] [HopfAlgebra k B] [Module.Finite k A] (f : B →ₐc[k] A) :
     finrank k A = finrank k (A ⧸ kerIdeal f) *
@@ -34,15 +37,24 @@ section Linear
 variable {M N P : Type} [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]
   [AddCommGroup P] [Module O P]
 
+/- English proof (translation)
+The claim follows from `(e.baseChange O _ M N).finrank_eq`.
+-/
 theorem fibreDim_congr (e : M ≃ₗ[O] N) (q : PrimeSpectrum O) : fibreDim M q = fibreDim N q :=
   (e.baseChange O _ M N).finrank_eq
 
+/- English proof (translation)
+Rewrite using `[fibreRank, LinearMap.baseChange_comp, LinearMap.range_comp_of_range_eq_top]`. Conclude with `LinearMap.range_eq_top.2 (LinearMap.lTensor_surjective _ hf)`.
+-/
 theorem fibreRank_comp_of_surjective (g : N →ₗ[O] P) {f : M →ₗ[O] N}
     (hf : Function.Surjective f) (q : PrimeSpectrum O) :
     fibreRank (g ∘ₗ f) q = fibreRank g q := by
   rw [fibreRank, LinearMap.baseChange_comp, LinearMap.range_comp_of_range_eq_top]
   exact LinearMap.range_eq_top.2 (LinearMap.lTensor_surjective _ hf)
 
+/- English proof (translation)
+Rewrite using `[fibreRank, LinearMap.baseChange_comp, LinearMap.range_comp]`. Conclude with `LinearEquiv.finrank_map_eq (e.baseChange O _ N P) _`.
+-/
 theorem fibreRank_equiv_comp (e : N ≃ₗ[O] P) (f : M →ₗ[O] N) (q : PrimeSpectrum O) :
     fibreRank (e.toLinearMap ∘ₗ f) q = fibreRank f q := by
   rw [fibreRank, LinearMap.baseChange_comp, LinearMap.range_comp]
@@ -50,14 +62,23 @@ theorem fibreRank_equiv_comp (e : N ≃ₗ[O] P) (f : M →ₗ[O] N) (q : PrimeS
 
 variable [Module.Finite O M] [Module.Projective O M] [Module.Finite O N] [Module.Projective O N]
 
+/- English proof (translation)
+The claim follows from `(fibreDim_congr (CartierDual.toDual O M) q).trans (GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange O M M _ LinearMap.id).1`.
+-/
 theorem fibreDim_dual (q : PrimeSpectrum O) : fibreDim (CartierDual O M) q = fibreDim M q :=
   (fibreDim_congr (CartierDual.toDual O M) q).trans (GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange O M M _ LinearMap.id).1
 
+/- English proof (translation)
+Rewrite using `[rankAtStalk_eq, rankAtStalk_eq]`. Conclude with `fibreDim_dual q`.
+-/
 theorem rankAtStalk_dual (q : PrimeSpectrum O) :
     rankAtStalk (CartierDual O M) q = rankAtStalk M q := by
   rw [rankAtStalk_eq, rankAtStalk_eq]
   exact fibreDim_dual q
 
+/- English proof (translation)
+Establish `h : CartierDual.transpose f = (CartierDual.toDual O M).symm.toLinearMap ∘ₗ (f.dualMap ∘ₗ (CartierDual.toDual O N).toLinearMap)` using `rfl`. Rewrite using `[h, fibreRank_equiv_comp, fibreRank_comp_of_surjective _ (CartierDual.toDual O N).surjective]`. Conclude with `(GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange O M N _ f).2`.
+-/
 theorem fibreRank_transpose (f : M →ₗ[O] N) (q : PrimeSpectrum O) :
     fibreRank (CartierDual.transpose f) q = fibreRank f q := by
   have h : CartierDual.transpose f = (CartierDual.toDual O M).symm.toLinearMap ∘ₗ
@@ -70,10 +91,16 @@ end Linear
 variable {A B : Type} [CommRing A] [CommRing B] [HopfAlgebra O A] [HopfAlgebra O B]
   [Module.Finite O A]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.hopf_order_formula_fibre finrank_eq_ker_mul_range O A B _ f`.
+-/
 theorem fibreDim_eq_ker_mul_range (f : B →ₐc[O] A) (q : PrimeSpectrum O) :
     fibreDim A q = fibreDim (A ⧸ kerIdeal f) q * fibreRank (f : B →ₐ[O] A).toLinearMap q :=
   GlobalTheory.hopf_order_formula_fibre finrank_eq_ker_mul_range O A B _ f
 
+/- English proof (translation)
+Establish `: Nontrivial (q.asIdeal.ResidueField ⊗[O] A)` using `(counitAlgHom q.asIdeal.ResidueField (q.asIdeal.ResidueField ⊗[O] A)).domain_nontrivial`. Conclude with `finrank_pos.ne'`.
+-/
 theorem fibreDim_ne_zero (q : PrimeSpectrum O) : fibreDim A q ≠ 0 := by
   have : Nontrivial (q.asIdeal.ResidueField ⊗[O] A) :=
     (counitAlgHom q.asIdeal.ResidueField (q.asIdeal.ResidueField ⊗[O] A)).domain_nontrivial
@@ -81,6 +108,9 @@ theorem fibreDim_ne_zero (q : PrimeSpectrum O) : fibreDim A q ≠ 0 := by
 
 variable [Module.Projective O A] [Module.Finite O B] [Module.Projective O B]
 
+/- English proof (translation)
+Use `(GlobalTheory.surjective_injective_of_fibre_rank O _ _ (CartierDual.transpose (f : B →ₐ[O] A).toLinearMap)).1 fun q => ?_` and prove the remaining obligations. Use `(fibreRank_transpose _ q).trans (Eq.trans ?_ (fibreDim_dual q).symm)` and prove the remaining obligations. Establish `h1` using `fibreDim_eq_ker_mul_range f q`. Establish `h2 : fibreDim (A ⧸ kerIdeal f) q ≠ 0` using `fun h0 => fibreDim_ne_zero (A := A) q (by rw [h1, h0, zero_mul])`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero h2) (h1.symm.trans (h q))`.
+-/
 theorem dual_map_surjective (f : B →ₐc[O] A)
     (h : ∀ q : PrimeSpectrum O, fibreDim A q = fibreDim (A ⧸ kerIdeal f) q * fibreDim B q) :
     Function.Surjective (CartierDual.map f) := by
@@ -91,6 +121,11 @@ theorem dual_map_surjective (f : B →ₐc[O] A)
     fibreDim_ne_zero (A := A) q (by rw [h1, h0, zero_mul])
   exact Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero h2) (h1.symm.trans (h q))
 
+/- English proof (translation)
+Establish `h1` using `fibreDim_eq_ker_mul_range g q`. Establish `h2` using `fibreDim_eq_ker_mul_range (CartierDual.map g) q`. Establish `h3 : fibreRank (CartierDual.map g : CartierDual O A →ₐ[O] CartierDual O A).toLinearMap q = fibreRank (g : A →ₐ[O] A).toLinearMap q` using `fibreRank_transpose (g : A →ₐ[O] A).toLinearMap q`. Rewrite `h2` using `[h3, fibreDim_dual, h1]`. Establish `h4 : fibreRank (g : A →ₐ[O] A).toLinearMap q ≠ 0` using `fun h0 => fibreDim_ne_zero (A := A) q (by rw [h1, h0, mul_zero])`.
+
+Conclude with `(Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h4) h2).symm`.
+-/
 theorem fibreDim_ker_dual [IsCocomm O A] (g : A →ₐc[O] A) (q : PrimeSpectrum O) :
     fibreDim (CartierDual O A ⧸ kerIdeal (CartierDual.map g)) q =
       fibreDim (A ⧸ kerIdeal g) q := by
@@ -103,6 +138,11 @@ theorem fibreDim_ker_dual [IsCocomm O A] (g : A →ₐc[O] A) (q : PrimeSpectrum
     fibreDim_ne_zero (A := A) q (by rw [h1, h0, mul_zero])
   exact (Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero h4) h2).symm
 
+/- English proof (translation)
+Use `le_antisymm (fun d hd => ?_) hI` and prove the remaining obligations. Set `π' : (D ⧸ I) →ₐ[O] E` to `Ideal.Quotient.liftₐ I π hI`. Establish `hs : Function.Surjective π'` using `fun e => by`. Take `⟨d, rfl⟩` from `hπ e`. Conclude with `⟨Ideal.Quotient.mk I d, rfl⟩`.
+
+Establish `hi` using `(GlobalTheory.surjective_injective_of_fibre_rank O _ _ π'.toLinearMap).2 inferInstance inferInstance hs h`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (hi (a₁ := Ideal.Quotient.mk I d) (a₂ := 0) (by rw [map_zero]; exact hd))`.
+-/
 theorem ker_eq_of_fibreDim_eq {D E : Type} [CommRing D] [CommRing E] [Algebra O D] [Algebra O E]
     [Module.Finite O D] [Module.Finite O E] [Module.Projective O E] (π : D →ₐ[O] E)
     (hπ : Function.Surjective π) (I : Ideal D) (hI : I ≤ RingHom.ker π)

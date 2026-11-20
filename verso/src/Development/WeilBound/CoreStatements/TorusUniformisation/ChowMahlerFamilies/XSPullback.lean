@@ -23,6 +23,11 @@ section Expand
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {K : Type} [DecidableEq K] {ι : K → Type}
 
+/- English proof (translation)
+Establish `: LeftCommutative (diffStep (K` using `K)) := ⟨fun a b h => by`. Use function extensionality and compare the values at `m`. Simplify using `only [diffStep]`. Rewrite using `[sub_right_comm m a b]`. Use the proof step `ring⟩`.
+
+Simplify using `only [vNumL, vNum, intNum, mixedDiff, List.ofFn_get]`. Rewrite using `[h.foldr_eq]`.
+-/
 theorem vNumL_perm (W : Ideal (MRing ι O)) {l₁ l₂ : List (K → ℤ)} (h : l₁.Perm l₂) :
     vNumL W l₁ = vNumL W l₂ := by
   have : LeftCommutative (diffStep (K := K)) := ⟨fun a b h => by
@@ -38,6 +43,21 @@ open Classical in
 noncomputable def vertEval (ϖ : O) (P : Ideal (MRing ι O)) (f : MRing ι O) (l : List (K → ℤ)) : ℤ :=
   cycEval (fun W => if (C ϖ : MRing ι O) ∈ W then vNumL W l else 0) (divCycle P f)
 
+/- English proof (translation)
+Establish `hf` using `DivCycleFiniteSupport.proof O K ι P f`. Establish `hg` using `DivCycleFiniteSupport.proof O K ι P g`. Use `set S : Finset (Ideal (MRing ι O)) := hf.toFinset ∪ hg.toFinset with hS`. Establish `hSf : ∀ W, divCycle P f W ≠ 0 → W ∈ S` using `fun W hW => by`. Simplify using `only [hS, Finset.mem_union, Set.Finite.mem_toFinset, Function.mem_support]`.
+
+Conclude with `Or.inl hW`. Establish `hSg : ∀ W, divCycle P g W ≠ 0 → W ∈ S` using `fun W hW => by`. Simplify using `only [hS, Finset.mem_union, Set.Finite.mem_toFinset, Function.mem_support]`. Conclude with `Or.inr hW`. Establish `key : ∀ (n Z : Ideal (MRing ι O) → ℤ), (∀ W, Z W ≠ 0 → W ∈ S) → cycEval n Z = ∑ W ∈ S, Z W * n W`.
+
+Introduce `n Z hZ`. Use `finsum_eq_sum_of_support_subset _ fun W hW => ?_` and prove the remaining obligations. Conclude with `hZ W (left_ne_zero_of_mul hW)`. Establish `hSr : ∀ W, ratDiv P f g W ≠ 0 → W ∈ S` using `fun W hW => by`. Assume the negation of the conclusion as `hn`.
+
+Apply `hW` to reduce the goal to its premises. Establish `h1 : divCycle P f W = 0`. Assume the negation of the conclusion as `h`. Conclude with `hn (hSf W h)`. Establish `h2 : divCycle P g W = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hn (hSg W h)`. Simplify using `[ratDiv, h1, h2]`. Simplify using `only [vertEval]`. Rewrite using `[key _ _ hSr]`.
+
+Simplify using `only [key _ _ hSf, key _ _ hSg, ← Finset.sum_sub_distrib, Finset.mul_sum, classNum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun μ _ => Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Express the relevant statement in the definitionally equal form `ratDiv P f g W * _ = _ * (ratDiv P f g W * _)`.
+
+Distinguish the cases in `h0 : ratDiv P f g W = 0`. Simplify using `[h0]`. Rewrite using `[if_pos (hv W h0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cycEval_expand [Fintype K] [∀ k, Fintype (ι k)] (ϖ : O) (P : Ideal (MRing ι O))
     (f g : MRing ι O) (hv : ∀ W, ratDiv P f g W ≠ 0 → (C ϖ : MRing ι O) ∈ W)
     {σ : Type} (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) (Q : List (K → ℤ)) :
@@ -81,12 +101,20 @@ theorem cycEval_expand [Fintype K] [∀ k, Fintype (ι k)] (ϖ : O) (P : Ideal (
   · rw [if_pos (hv W h0)]
     ring
 
+/- English proof (translation)
+Simplify using `only [vertEval, vNumL_perm _ h]`.
+-/
 theorem vertEval_perm (ϖ : O) (P : Ideal (MRing ι O)) (f : MRing ι O) {l₁ l₂ : List (K → ℤ)}
     (h : l₁.Perm l₂) : vertEval ϖ P f l₁ = vertEval ϖ P f l₂ := by
   simp only [vertEval, vNumL_perm _ h]
 
 end Expand
 
+/- English proof (translation)
+Rewrite using `[List.map_append]`. Use `List.Perm.append ?_ (List.Perm.refl _)` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe]`. Simplify using `only [classList, Multiset.coe_toList, Multiset.map_map]`. Use `Multiset.map_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases s with s | s <;> rfl`.
+-/
 theorem classList_join_perm {K K' : Type} {N : ℕ} (x x' : Fin N → K → ℤ) (μ : (Fin N ⊕ Fin N) →₀ ℕ)
     (Q : List (K → ℤ)) :
     (classList (Sum.elim (fun i => joinDeg (K' := K') (x i)) (fun i => joinDeg (x' i))) μ ++
@@ -98,6 +126,11 @@ theorem classList_join_perm {K K' : Type} {N : ℕ} (x x' : Fin N → K → ℤ)
   refine Multiset.map_congr rfl fun s _ => ?_
   rcases s with s | s <;> rfl
 
+/- English proof (translation)
+Establish `h : μ.degree = t`. Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hμ) (hH.coeff_eq_zero hne)`. Rewrite using `[← h]`. Unfold `classList`.
+
+Rewrite using `[Multiset.length_toList, Multiset.card_map, Finsupp.card_toMultiset]`. Both sides reduce to the same expression.
+-/
 theorem length_classList {K σ : Type} (cls : σ → K → ℤ) {H : MvPolynomial σ ℤ} {t : ℕ}
     (hH : H.IsHomogeneous t) {μ : σ →₀ ℕ} (hμ : μ ∈ H.support) :
     (classList cls μ).length = t := by
@@ -109,6 +142,13 @@ theorem length_classList {K σ : Type} (cls : σ → K → ℤ) {H : MvPolynomia
   rw [Multiset.length_toList, Multiset.card_map, Finsupp.card_toMultiset]
   rfl
 
+/- English proof (translation)
+Establish `hC : ∀ j, Gs j = C ((Gs j).coeff 0)` using `fun j => totalDegree_eq_zero_iff_eq_C.mp (Nat.le_zero.mp (h.homogeneous j).totalDegree_le)`. Establish `hGC : G = C (G.coeff 0)` using `totalDegree_eq_zero_iff_eq_C.mp (Nat.le_zero.mp hG.totalDegree_le)`. Establish `e` using `h.expansion`. Rewrite `e` using `[hGC, rename_C, rename_C, sub_self]`. Establish `e2` using `congrArg (eval (fun s : Fin N ⊕ Fin N => if s = Sum.inl i then (1 : ℤ) else 0)) e`.
+
+Rewrite `e2` using `[map_zero, map_sum, Finset.sum_eq_single i]`. Rewrite `e2`, the goal using `[hC i]`. Simplify using `only [map_mul, map_sub, eval_X, eval_C] at e2`. Simplify using `only [if_true, reduceCtorEq, if_false, sub_zero, one_mul] at e2`. Rewrite using `[← e2, map_zero]`.
+
+Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+-/
 theorem expansion_zero {N : ℕ} {G : MvPolynomial (Fin N) ℤ} (hG : G.IsHomogeneous 0)
     {Gs : Fin N → MvPolynomial (Fin N ⊕ Fin N) ℤ} (h : IsPairExpansion 0 G Gs) (i : Fin N) :
     Gs i = 0 := by
@@ -129,6 +169,9 @@ theorem expansion_zero {N : ℕ} {G : MvPolynomial (Fin N) ℤ} (hG : G.IsHomoge
     simp [hj]
   · simp
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Rewrite `hμ` using `[expansion_zero hG h i]`. Simplify using `at hμ`. Rewrite using `[List.length_append, length_classList cls (h.homogeneous i) hμ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem length_term {K : Type} {N m n : ℕ} {G : MvPolynomial (Fin N) ℤ} (hG : G.IsHomogeneous m)
     {Gs : Fin N → MvPolynomial (Fin N ⊕ Fin N) ℤ} (h : IsPairExpansion m G Gs)
     {Q : List (K → ℤ)} (hQ : Q.length + m = n + 1) (cls : Fin N ⊕ Fin N → K → ℤ) (i : Fin N)
@@ -146,18 +189,31 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : 
   [Algebra O Ω] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
   {K' : Type} [Fintype K'] [DecidableEq K'] {ι' : K' → Type}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `h.multiProj.relevant k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Simplify using `[pointIdeal, RingHom.mem_ker, pointConeMap, h0]`.
+-/
 theorem exists_coord_ne {y : (Σ k, ι k) → Ω} {d : ℕ} (h : IsModelOver (pointIdeal O y) d) (k : K) :
     ∃ i, y ⟨k, i⟩ ≠ 0 := by
   obtain ⟨i, hi⟩ := h.multiProj.relevant k
   refine ⟨i, fun h0 => hi ?_⟩
   simp [pointIdeal, RingHom.mem_ker, pointConeMap, h0]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).mpr fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← Ideal.mem_bot, ← h.noTorsion]`. Simplify using `[pointIdeal, RingHom.mem_ker, pointConeMap, ha]`.
+-/
 theorem algebraMap_inj {y : (Σ k, ι k) → Ω} {d : ℕ} (h : IsModelOver (pointIdeal O y) d) :
     Function.Injective (algebraMap O Ω) := by
   refine (injective_iff_map_eq_zero _).mpr fun a ha => ?_
   rw [← Ideal.mem_bot, ← h.noTorsion]
   simp [pointIdeal, RingHom.mem_ker, pointConeMap, ha]
 
+/- English proof (translation)
+Establish `h1` using `DvrConeDimTrdeg.proof O K ι _ h.multiProj h.noTorsion`. Establish `h2 : Algebra.trdeg O (MRing ι O ⧸ pointIdeal O y) = _` using `ConeTrdegFnField.proof O Ω (algebraMap_inj h) K ι y (exists_coord_ne h)`. Rewrite `h1` using `[h.dim, h2, map_add, map_natCast]`. Generalize the expression as in `Cardinal.toENat (Algebra.trdeg O (Algebra.adjoin O (fnField O y : Set Ω))) = t at h1`. Establish `h3 : ((d + 1 + Fintype.card K : ℕ) : ℕ∞) = t + Fintype.card K + 1` using `by exact_mod_cast h1`.
+
+Proceed by induction on `t using ENat.recTopCoe with`. Consider the case `top => simp at h3`. Consider the case `coe t`. Establish `: d + 1 + Fintype.card K = t + Fintype.card K + 1` using `by exact_mod_cast h3`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem trdeg_fnField [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → Ω} {d : ℕ}
     (h : IsModelOver (pointIdeal O y) d) :
     Cardinal.toENat (Algebra.trdeg O (Algebra.adjoin O (fnField O y : Set Ω))) = d := by
@@ -175,6 +231,11 @@ theorem trdeg_fnField [∀ k, Fintype (ι k)] {y : (Σ k, ι k) → Ω} {d : ℕ
     omega
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [DecidableEq K] in
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Simplify using `only [segreVec]`. Rewrite using `[← Finset.prod_div_distrib]`.
+
+Conclude with `Subfield.prod_mem _ fun k _ => Subfield.subset_closure (Or.inr ⟨⟨k, t k, c k⟩, rfl⟩)`. Consider the case `algebraMap r => exact Subfield.subset_closure (Or.inl ⟨r, rfl⟩)`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+-/
 theorem chartRing_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {a : Ω}
     (ha : a ∈ chartRing O (segreVec y) c) : a ∈ fnField O y := by
   induction ha using Algebra.adjoin_induction with
@@ -188,6 +249,19 @@ theorem chartRing_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {a : Ω}
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [DecidableEq K] in
+/- English proof (translation)
+Use `choose c hc using hy`. Use `choose c' hc' using hy'`. Establish `hc0 : segreVec y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Establish `main : ∀ (k : K') (i j : ι' k), y' ⟨k, i⟩ / y' ⟨k, j⟩ ∈ fnField O y`. Introduce `k i j`.
+
+Distinguish the cases in `hj : y' ⟨k, j⟩ = 0`. Rewrite using `[hj, div_zero]`. Conclude with `zero_mem _`. Establish `hR : ∏ l ∈ Finset.univ \ {k}, y' ⟨l, c' l⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun l _ => hc' l`. Establish `h2 : segreVec y' (Function.update c' k j) ≠ 0`.
+
+Rewrite using `[BirationalJoin.segreVec_update]`. Conclude with `mul_ne_zero hj hR`. Take `⟨a, ha, b, hb', hb0, e⟩` from `hb c hc0 (Function.update c' k i) _ h2`. Rewrite `e` using `[BirationalJoin.segreVec_update, BirationalJoin.segreVec_update]`. Establish `: y' ⟨k, i⟩ / y' ⟨k, j⟩ = a / b`.
+
+Rewrite using `[div_eq_div_iff hj hb0]`. Apply `mul_right_cancel₀ hR` to reduce the goal to its premises. Take the linear combination `e`. Rewrite using `[this]`. Conclude with `div_mem (chartRing_mem y c ha) (chartRing_mem y c hb')`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨⟨k | k, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨k, i, j⟩, rfl⟩)`.
+
+Conclude with `main k i j`. Use `Subfield.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨⟨k, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨.inl k, i, j⟩, rfl⟩)`.
+-/
 theorem fnField_join {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω} (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0)
     (hy' : ∀ k, ∃ i, y' ⟨k, i⟩ ≠ 0) (hb : IsBirationalJoin O y y') :
     fnField O (joinCoord y y') = fnField O y := by
@@ -224,6 +298,9 @@ theorem fnField_join {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω} (hy :
     · exact Subfield.subset_closure (Or.inr ⟨⟨.inl k, i, j⟩, rfl⟩)
 
 omit [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K'] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+-/
 theorem joinCoords_eq_joinCoord (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω) :
     joinCoords y y' = joinCoord y y' := by
   funext p
@@ -231,6 +308,9 @@ theorem joinCoords_eq_joinCoord (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) �
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [Fintype K] [DecidableEq K] [Fintype K']
   [DecidableEq K'] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Module.finrank (fnField O y) (IntermediateField.adjoin (fnField O y) (fnField O (joinCoord y y') : Set Ω)) = 1`. Rewrite using `[h, IntermediateField.finrank_eq_one_iff, IntermediateField.adjoin_eq_bot_iff]`. Introduce `a ha`. Conclude with `IntermediateField.mem_bot.mpr ⟨⟨a, ha⟩, rfl⟩`.
+-/
 theorem modelDeg_eq_one {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω}
     (h : fnField O (joinCoord y y') = fnField O y) : modelDeg O y y' = 1 := by
   change Module.finrank (fnField O y)
@@ -241,6 +321,15 @@ theorem modelDeg_eq_one {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω}
 
 variable [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Unfold `vertEval cycEval`. Use `finsum_eq_zero_of_forall_eq_zero fun W => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : divCycle (pointIdeal O (joinCoords y y')) (joinForm f) W = 0`. Rewrite using `[h0, zero_mul]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations.
+
+Use `beta_reduce`. Distinguish the cases in `hW : (C ϖ : MRing (Sum.elim ι ι') O) ∈ W`. Use `swap`. Conclude with `if_neg hW`. Use `(if_pos hW).trans ?_` and prove the remaining obligations.
+
+Establish `hf'` using `isMultiHomog_joinForm (ι' := ι') hf`. Establish `hdim` using `ComponentDim.proof O ϖ hϖ _ _ _ _ hj _ _ hf' (fun h => hfP ((joinForm_mem_pointIdeal_iff O y y' f).mp h)) W h0 hW`. Establish `hm : W ∈ (pointIdeal O (joinCoords y y') ⊔ Ideal.span {joinForm f}).minimalPrimes ∧ IsRelevant W`. Assume the negation of the conclusion as `hn`. Conclude with `h0 (by unfold divCycle; rw [dif_neg hn])`.
+
+Establish `hh` using `MinimalPrimeMultiHomog.proof O _ _ _ W (SupSpanMultiHomog.proof O _ _ _ _ _ hj.multiProj.multiHomog hf') hm.1`. Use `GlobalTheory.T.multi_projective_prime_intersection O Ω K ι y ϖ hϖ d r hr hy K' ι' y' W ⟨hm.1.1.1, hh, hm.2⟩ ?_ hW l hl hdim.le` and prove the remaining obligations. Rewrite using `[← joinCoords_eq_joinCoord]`. Conclude with `le_sup_left.trans hm.1.1.2`.
+-/
 theorem vertEval_contract {ϖ : O} (hϖ : Irreducible ϖ) {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω}
     {d r : ℕ} (hr : 0 < r) (hy : IsModelOver (pointIdeal O y) d)
     (hj : IsModelOver (pointIdeal O (joinCoords y y')) (d + r)) {f : MRing ι O} {b : K → ℕ}
@@ -270,6 +359,9 @@ theorem vertEval_contract {ϖ : O} (hϖ : Irreducible ϖ) {y : (Σ k, ι k) → 
   rw [← joinCoords_eq_joinCoord]
   exact le_sup_left.trans hm.1.1.2
 
+/- English proof (translation)
+Rewrite `hj`, the goal using `[joinCoords_eq_joinCoord]`. Establish `h` using `GlobalTheory.T.field_extension_intersection_invariance O Ω K ι y ϖ hϖ d hy Ω K' ι' y' hj b f hf hfP l hl`. Rewrite `h` using `[modelDeg_eq_one hF, Nat.cast_one, one_mul]`. Conclude with `h`.
+-/
 theorem vertEval_push {ϖ : O} (hϖ : Irreducible ϖ) {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι' k) → Ω}
     {d : ℕ} (hy : IsModelOver (pointIdeal O y) d)
     (hj : IsModelOver (pointIdeal O (joinCoords y y')) d)
@@ -287,6 +379,19 @@ end Fields
 end PositivityTheory.Xgn.A_s_pullback
 
 open PositivityTheory.Xgn.A_s_pullback in
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ K' _ _ ι' _ y y' d r hy hj N x x' f g hv m G hG Gs hGs Q hQ`. Establish `hv'` using `fun i => VerticalDivisorJoinPullback.proof O ϖ Ω K ι K' ι' y y' _ _ _ (hv i)`. Establish `hL : pairNum (pointIdeal O (joinCoords y y')) (fun i => joinDeg (x i)) (fun i => joinDeg (x' i)) (fun i => joinForm (f i)) (fun i => joinForm (g i)) Gs (Q.map joinDeg) = ∑ i, ∑ μ ∈ (Gs i).support, (Gs i).coeff μ * (vertEval ϖ (pointIdeal O (joinCoords y y')) (joinForm (f i)) ((cl …`. Unfold `pairNum`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[cycEval_expand ϖ _ _ _ (hv' i).vertical]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[vertEval_perm ϖ _ _ (classList_join_perm x x' μ Q), vertEval_perm ϖ _ _ (classList_join_perm x x' μ Q)]`. Rewrite using `[hL]`. Use `⟨fun hr => ?_, fun hb => ?_⟩` and prove the remaining obligations.
+
+Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun μ hμ => ?_` and prove the remaining obligations. Take `⟨bf, bg, hf, hg, -⟩` from `(hv i).degrees`. Establish `hl` using `length_term hG hGs hQ (Sum.elim x x') i hμ`. Rewrite using `[vertEval_contract hϖ hr hy hj hf (hv i).num_not_mem hl, vertEval_contract hϖ hr hy hj hg (hv i).den_not_mem hl, sub_self, mul_zero]`. Establish `hF : fnField O (joinCoord y y') = fnField O y` using `fnField_join (exists_coord_ne hy) (fun k => exists_coord_ne hj (Sum.inr k)) hb`.
+
+Establish `hr : r = 0`. Establish `h1` using `trdeg_fnField hy`. Establish `h2` using `trdeg_fnField hj`. Rewrite `h2` using `[joinCoords_eq_joinCoord, hF, h1]`. Establish `: d = d + r` using `by exact_mod_cast h2`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `hr` using the available equality. Unfold `pairNum`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cycEval_expand ϖ _ _ _ (hv i).vertical]`.
+
+Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Take `⟨bf, bg, hf, hg, -⟩` from `(hv i).degrees`. Establish `hl : (classList (Sum.elim x x') μ ++ Q).length = d` using `length_term hG hGs hQ (Sum.elim x x') i hμ`. Rewrite using `[vertEval_push hϖ hy hj hF hf (hv i).num_not_mem hl, vertEval_push hϖ hy hj hF hg (hv i).den_not_mem hl]`.
+-/
 theorem PositivityTheory.Xgn.t_s_pullback : GroundTheory.Heights₂.Heights.NumbersDVR.PairNumberPullback.Statement := by
   intro O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ K' _ _ ι' _ y y' d r hy hj N x x' f g hv m G hG Gs hGs Q hQ
   have hv' := fun i => VerticalDivisorJoinPullback.proof O ϖ Ω K ι K' ι' y y' _ _ _ (hv i)

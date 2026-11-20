@@ -15,6 +15,11 @@ variable {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
 include hO in
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simpa using hr`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul o x _ hx`. Rewrite using `[map_smul, Algebra.smul_def, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hO o)).trans hx`.
+-/
 theorem norm_le_of_mem_span (f : M →ₗ[O] C) {s : Set M} {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ m ∈ s, ‖f m‖ ≤ r) {m : M} (hm : m ∈ Submodule.span O s) : ‖f m‖ ≤ r := by
   induction hm using Submodule.span_induction with
@@ -28,6 +33,11 @@ theorem norm_le_of_mem_span (f : M →ₗ[O] C) {s : Set M} {r : ℝ} (hr : 0 �
 
 include hO in
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := O) (M := M)`. Use `⟨∑ m ∈ s, ‖f m‖, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`. Use `norm_le_of_mem_span hO f (s := s) (Finset.sum_nonneg fun _ _ => norm_nonneg _) (fun m hm => Finset.single_le_sum (f := fun m => ‖f m‖) (fun _ _ => norm_nonneg _) hm) ?_` and prove the remaining obligations. Rewrite using `[hs]`.
+
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem bddAbove_norm [Module.Finite O M] (f : M →ₗ[O] C) :
     BddAbove (Set.range fun m => ‖f m‖) := by
   obtain ⟨s, hs⟩ := Module.Finite.fg_top (R := O) (M := M)
@@ -41,21 +51,33 @@ def supN (f : WithConv (M →ₗ[O] C)) : ℝ := ⨆ m, ‖f.ofConv m‖
 
 include hO in
 
+/- English proof (translation)
+The claim follows from `le_ciSup (bddAbove_norm hO f.ofConv) m`.
+-/
 theorem le_supN [Module.Finite O M] (f : WithConv (M →ₗ[O] C)) (m : M) :
     ‖f.ofConv m‖ ≤ supN f := le_ciSup (bddAbove_norm hO f.ofConv) m
 
 omit [IsUltrametricDist C] in
 
+/- English proof (translation)
+The claim follows from `ciSup_le h`.
+-/
 theorem supN_le {f : WithConv (M →ₗ[O] C)} {r : ℝ} (h : ∀ m, ‖f.ofConv m‖ ≤ r) :
     supN f ≤ r := ciSup_le h
 
 omit [IsUltrametricDist C] in
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+-/
 theorem supN_nonneg (f : WithConv (M →ₗ[O] C)) : 0 ≤ supN f :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
 omit [IsUltrametricDist C] in
 
+/- English proof (translation)
+Rewrite using `[supN, supN, Real.mul_iSup_of_nonneg (norm_nonneg c)]`. Use `congr 1`. Use extensionality with `m`. Rewrite using `[← norm_mul]`. Both sides reduce to the same expression.
+-/
 theorem supN_smul (c : C) (f : WithConv (M →ₗ[O] C)) :
     supN (c • f) = ‖c‖ * supN f := by
   rw [supN, supN, Real.mul_iSup_of_nonneg (norm_nonneg c)]
@@ -66,6 +88,9 @@ theorem supN_smul (c : C) (f : WithConv (M →ₗ[O] C)) :
 
 include hO in
 
+/- English proof (translation)
+The claim follows from `supN_le fun m => (IsUltrametricDist.norm_add_le_max (f.ofConv m) (g.ofConv m)).trans (max_le_max (le_supN hO f m) (le_supN hO g m))`.
+-/
 theorem supN_add_le [Module.Finite O M] (f g : WithConv (M →ₗ[O] C)) :
     supN (f + g) ≤ max (supN f) (supN g) :=
   supN_le fun m => (IsUltrametricDist.norm_add_le_max (f.ofConv m) (g.ofConv m)).trans
@@ -73,6 +98,11 @@ theorem supN_add_le [Module.Finite O M] (f g : WithConv (M →ₗ[O] C)) :
 
 include hO in
 
+/- English proof (translation)
+Use `supN_le fun m => ?_` and prove the remaining obligations. Establish `h` using `(Coalgebra.Repr.arbitrary O m).convMul_apply f g`. Rewrite using `[h]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (supN_nonneg _) (supN_nonneg _)) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (le_supN hO f _) (le_supN hO g _) (norm_nonneg _) (supN_nonneg _)`.
+-/
 theorem supN_mul_le [Module.Finite O M] [Coalgebra O M]
     (f g : WithConv (M →ₗ[O] C)) : supN (f * g) ≤ supN f * supN g := by
   refine supN_le fun m => ?_
@@ -83,6 +113,11 @@ theorem supN_mul_le [Module.Finite O M] [Coalgebra O M]
   rw [norm_mul]
   exact mul_le_mul (le_supN hO f _) (le_supN hO g _) (norm_nonneg _) (supN_nonneg _)
 
+/- English proof (translation)
+Use `supN_le fun t => ?_` and prove the remaining obligations. Proceed by induction on `t with`. Consider the case `zero => simpa using hr`. Consider the case `tmul a b => exact h a b`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`.
+-/
 theorem supN_le_of_tmul {f : WithConv (M ⊗[O] M →ₗ[O] C)} {r : ℝ}
     (hr : 0 ≤ r) (h : ∀ a b, ‖f.ofConv (a ⊗ₜ b)‖ ≤ r) : supN f ≤ r := by
   refine supN_le fun t => ?_
@@ -94,6 +129,11 @@ theorem supN_le_of_tmul {f : WithConv (M ⊗[O] M →ₗ[O] C)} {r : ℝ}
 
 include hO in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `supN_le_of_tmul (mul_nonneg (supN_nonneg _) (supN_nonneg _)) fun a b => ?_` and prove the remaining obligations. Rewrite using `[hh, norm_mul]`. Conclude with `mul_le_mul (le_supN hO f _) (le_supN hO g _) (norm_nonneg _) (supN_nonneg _)`. Rewrite using `[supN.eq_1 f, Real.iSup_mul_of_nonneg (supN_nonneg g)]`.
+
+Use `ciSup_le fun a => ?_` and prove the remaining obligations. Rewrite using `[supN.eq_1 g, Real.mul_iSup_of_nonneg (norm_nonneg _)]`. Use `ciSup_le fun b => ?_` and prove the remaining obligations. Rewrite using `[← norm_mul, ← hh]`. Conclude with `le_supN hO h _`.
+-/
 theorem supN_eq_mul [Module.Finite O M] (f g : WithConv (M →ₗ[O] C))
     (h : WithConv (M ⊗[O] M →ₗ[O] C))
     (hh : ∀ a b, h.ofConv (a ⊗ₜ b) = f.ofConv a * g.ofConv b) :
@@ -111,6 +151,11 @@ theorem supN_eq_mul [Module.Finite O M] (f g : WithConv (M →ₗ[O] C))
 
 include hO in
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hy.fg_adjoin_singleton`. Use `⟨∑ f ∈ s, supN f, fun k => supN_le fun m => ?_⟩` and prove the remaining obligations. Establish `hk : y ^ k ∈ Submodule.span O (s : Set (WithConv (M →ₗ[O] C)))`. Rewrite using `[hs]`. Conclude with `pow_mem (Algebra.self_mem_adjoin_singleton _ y) k`.
+
+Set `ev : WithConv (M →ₗ[O] C) →ₗ[O] C` to `{ toFun := fun f => f.ofConv m map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `norm_le_of_mem_span hO ev (Finset.sum_nonneg fun _ _ => supN_nonneg _) (fun f hf => (le_supN hO f m).trans (Finset.single_le_sum (f := fun f => supN f) (fun _ _ => supN_nonneg _) hf)) hk`.
+-/
 theorem exists_supN_pow_le [Module.Finite O M] [Coalgebra O M]
     [IsCocomm O M] {y : WithConv (M →ₗ[O] C)} (hy : IsIntegral O y) :
     ∃ K : ℝ, ∀ k : ℕ, supN (y ^ k) ≤ K := by
@@ -129,6 +174,21 @@ theorem exists_supN_pow_le [Module.Finite O M] [Coalgebra O M]
 
 end Norm
 
+/- English proof (translation)
+Establish `hO' : ∀ o : O, ‖algebraMap O C o‖ ≤ 1` using `fun o => (hO _).2 ⟨o, rfl⟩`. Establish `hq' : algebraMap O C q ≠ 0` using `fun h => hq (hinj (by rw [h, map_zero]))`. Establish `hdvd : ∀ x : O, q ∣ x ↔ ‖(algebraMap O C q)⁻¹ * algebraMap O C x‖ ≤ 1` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+
+Rewrite using `[map_mul, inv_mul_cancel_left₀ hq']`. Conclude with `hO' z`. Introduce `h`. Take `⟨z, hz⟩` from `(hO _).1 h`. Use `⟨z, hinj ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hz, mul_inv_cancel_left₀ hq']`. Use `set y : WithConv (A →ₗ[O] C) := (algebraMap O C q)⁻¹ • extendHom O C A (toConv D) with hy`. Establish `hya : ∀ a, y.ofConv a = (algebraMap O C q)⁻¹ * algebraMap O C (D a)` using `fun _ => rfl`. Establish `: IsScalarTower O C (WithConv (A →ₗ[O] C))` using `⟨fun o x f => WithConv.ext (LinearMap.ext fun a => smul_assoc o x (f.ofConv a))⟩`. Establish `hint : IsIntegral O y` using `GlobalTheory.IntegralOfPointValues.isIntegral_inv_smul_of_closed (B₀ := GlobalTheory.CartierDual O A) hinj hcl (extendHom O C A) (toConv D) q hq fun χ => by`.
+
+Take `⟨u, h1, h2⟩` from `exists_isGroupLikeElem χ`. Rewrite using `[← h2]`. Conclude with `hu u h1`. Establish `key` using `GlobalTheory.T.norm_smul_le_one_of_primitive_bounded_powers C p hp _ _ supN supN (mulHom O C A) (inlHom O C A) (inrHom O C A) supN_smul supN_smul supN_nonneg supN_nonneg (supN_add_le hO') (supN_mul_le hO') (fun f => supN_le fun t => le_supN hO' f _) (fun f g => supN_eq_mul hO' f …`. Establish `h` using `(hdvd _).1 (hD a b)`.
+
+Use `h using 2` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `y.ofConv (a * b) - (extProd y 1).ofConv (a ⊗ₜ b) - (extProd 1 y).ofConv (a ⊗ₜ b) = _`. Rewrite using `[extProd_tmul, extProd_tmul, hya, hya, hya, LinearMap.convOne_apply, LinearMap.convOne_apply]`. Simplify using `only [map_sub, map_mul]`. Use the proof step `ring)`.
+
+Use the proof step `(algebraMap O C c) hc`. Rewrite using `[hdvd]`. Establish `h : (algebraMap O C q)⁻¹ * algebraMap O C (c * D a) = (algebraMap O C c • y).ofConv a`. Express the relevant statement in the definitionally equal form `_ = algebraMap O C c * y.ofConv a`. Rewrite using `[hya, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(le_supN hO' _ a).trans key`.
+-/
 theorem dvd_mul_of_norm (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     [IsAlgClosed C] [CharZero C] (p : ℕ) [Fact p.Prime] (hp : ‖(p : C)‖ = (p : ℝ)⁻¹)
     (O : Type) [CommRing O] [Algebra O C] (hinj : Function.Injective (algebraMap O C))
@@ -200,6 +260,23 @@ def powAbs {C : Type} [Field C] (v : Valuation C NNReal) (s : ℝ) (hs : 0 < s) 
     · exact (Real.rpow_le_rpow (NNReal.coe_nonneg _) (NNReal.coe_le_coe.2 h) hs.le).trans
         (le_add_of_nonneg_left (Real.rpow_nonneg (NNReal.coe_nonneg _) _))
 
+/- English proof (translation)
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hpp.one_lt`. Establish `hp0 : (0 : ℝ) < ((v (p : C) : NNReal) : ℝ)`. Establish `: (p : C) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Conclude with `NNReal.coe_pos.2 ((Valuation.pos_iff v).2 this)`.
+
+Establish `hlog : Real.log ((v (p : C) : NNReal) : ℝ) < 0` using `Real.log_neg hp0 (by exact_mod_cast hp)`. Set `s : ℝ` to `Real.log p / (-Real.log ((v (p : C) : NNReal) : ℝ))`. Establish `hs : 0 < s` using `div_pos (Real.log_pos hp1) (neg_pos.2 hlog)`. Use `letI : NormedField C := (powAbs v s hs).toNormedField`. Establish `hn : ∀ x : C, ‖x‖ = ((v x : NNReal) : ℝ) ^ s` using `fun _ => rfl`.
+
+Establish `hpn : ‖(p : C)‖ = (p : ℝ)⁻¹`. Rewrite using `[hn, Real.rpow_def_of_pos hp0]`. Establish `: Real.log ((v (p : C) : NNReal) : ℝ) * s = -Real.log p`. Use `hlog.ne` as an intermediate fact. Simplify using `only [s]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.exp_neg, Real.exp_log (by linarith)]`. Use `letI : NontriviallyNormedField C := { non_trivial := ⟨(p : C)⁻¹, by rw [norm_inv, hpn, inv_inv]; exact hp1⟩ }`. Use `haveI : IsUltrametricDist C := IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm fun x y => by`. Rewrite using `[hn, hn, hn]`.
+
+Break down `le_max_iff.1 (v.map_add x y) with h | h` into its components or cases. Conclude with `le_max_of_le_left (Real.rpow_le_rpow (NNReal.coe_nonneg _) (NNReal.coe_le_coe.2 h) hs.le)`. Conclude with `le_max_of_le_right (Real.rpow_le_rpow (NNReal.coe_nonneg _) (NNReal.coe_le_coe.2 h) hs.le)`. Use `dvd_mul_of_norm C p hpn O hv.hom_inj (fun x => ?_) (fun z hz => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 hz)) A q hq D hD hu c ?_ a` and prove the remaining obligations. Rewrite using `[hn]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hv.exists_of_le_one ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `absurd h (not_le.2 (Real.one_lt_rpow (by exact_mod_cast not_le.1 h1) hs))`.
+
+Introduce and unpack `⟨o, rfl⟩`. Conclude with `Real.rpow_le_one (NNReal.coe_nonneg _) (by exact_mod_cast hv.map_le_one o) hs.le`. Establish `h1 : ‖algebraMap O C c‖ ^ (p - 1) ≤ (p : ℝ)⁻¹`. Rewrite using `[← hpn, ← norm_pow, hn, hn, map_pow]`. Conclude with `Real.rpow_le_rpow (NNReal.coe_nonneg _) (NNReal.coe_le_coe.2 hc) hs.le`.
+
+Establish `h2 : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`. Establish `h3 : (((p - 1 : ℕ) : ℝ)) = (p : ℝ) - 1` using `by rw [Nat.cast_sub hpp.one_le, Nat.cast_one]`. Establish `h4` using `Real.rpow_le_rpow (pow_nonneg (norm_nonneg _) _) h1 (one_div_pos.2 h2).le`. Rewrite `h4` using `[← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _), h3, mul_one_div_cancel h2.ne', Real.rpow_one, Real.inv_rpow (by linarith), ← Real.rpow_neg (by linarith)]`. Conclude with `h4`.
+-/
 theorem dvd_mul_of_val (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O)
     (hp : v (p : C) < 1)

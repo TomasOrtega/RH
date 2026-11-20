@@ -12,6 +12,11 @@ namespace GlobalTheory.GaussMean.ProdDensity
 
 open GlobalTheory.GaussMean.Density Filter Topology
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `setIntegral_mono_set (integrable_gauss n).integrableOn (Filter.Eventually.of_forall fun y => (gauss_pos y).le) (HasSubset.Subset.eventuallyLE fun y (hy : qEps ε y < a) => hy.le)`. Establish `hc : Tendsto (cdf ε) (𝓝[<] a) (𝓝 (cdf ε a))` using `(differentiableAt_cdf ε ha).continuousAt.tendsto.mono_left nhdsWithin_le_nhds`. Use `le_of_tendsto hc ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with t (ht : t < a)`.
+
+Conclude with `setIntegral_mono_set (integrable_gauss n).integrableOn (Filter.Eventually.of_forall fun y => (gauss_pos y).le) (HasSubset.Subset.eventuallyLE fun y (hy : qEps ε y ≤ t) => lt_of_le_of_lt hy ht)`.
+-/
 theorem integral_lt_eq {n : ℕ} (ε : Fin n → Bool) {a : ℝ} (ha : a ≠ 0) :
     ∫ y in {y : Fin n → ℂ | qEps ε y < a}, gauss y = cdf ε a := by
   apply le_antisymm
@@ -26,6 +31,11 @@ theorem integral_lt_eq {n : ℕ} (ε : Fin n → Bool) {a : ℝ} (ha : a ≠ 0) 
       (Filter.Eventually.of_forall fun y => (gauss_pos y).le)
       (HasSubset.Subset.eventuallyLE fun y (hy : qEps ε y ≤ t) => lt_of_le_of_lt hy ht)
 
+/- English proof (translation)
+Establish `hm : MeasurableSet {y : Fin n → ℂ | qEps ε y < a}` using `measurableSet_lt (continuous_qEps ε).measurable measurable_const`. Establish `h` using `integral_diff hm ((integrable_gauss n).integrableOn (s := {y | qEps ε y ≤ c})) (fun y (hy : qEps ε y < a) => show qEps ε y ≤ c by linarith)`. Rewrite `h` using `[integral_lt_eq ε ha]`. Rewrite using `[cdf, ← h]`. Use `congr 2`.
+
+Use extensionality with `y`. Simplify using `[and_comm]`.
+-/
 theorem integral_Icc_eq {n : ℕ} (ε : Fin n → Bool) {a c : ℝ} (ha : a ≠ 0) (hac : a ≤ c) :
     ∫ y in qEps ε ⁻¹' Set.Icc a c, gauss y = cdf ε c - cdf ε a := by
   have hm : MeasurableSet {y : Fin n → ℂ | qEps ε y < a} :=
@@ -38,6 +48,13 @@ theorem integral_Icc_eq {n : ℕ} (ε : Fin n → Bool) {a c : ℝ} (ha : a ≠ 
   ext y
   simp [and_comm]
 
+/- English proof (translation)
+Establish `hm : MeasurableSet ((fun (y : ι → Fin n → ℂ) (v : ι) => qEps (ε v) (y v)) ⁻¹' Set.Icc a c)` using `measurableSet_Icc.preimage (continuous_pi fun v => (continuous_qEps (ε v)).comp (continuous_apply v)).measurable`. Rewrite using `[← integral_indicator hm, ← Finset.prod_congr rfl fun v _ => integral_Icc_eq (ε v) (ha v) (hac v), ← Finset.prod_congr rfl fun v _ => integral_indicator (measurableSet_Icc.preimage (continuous_qEps (ε v)).measurable), ← integral_fintype_prod_volume_eq_prod]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ (fun (y : ι → Fin n → ℂ) (v : ι) => qEps (ε v) (y v)) ⁻¹' Set.Icc a c`.
+
+Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `Finset.prod_congr rfl fun v _ => (Set.indicator_of_mem (s := qEps (ε v) ⁻¹' Set.Icc (a v) (c v)) ⟨hy.1 v, hy.2 v⟩ _).symm`. Rewrite using `[Set.indicator_of_notMem hy]`. Take `⟨v, hv⟩ : ∃ v, y v ∉ qEps (ε v) ⁻¹' Set.Icc (a v) (c v)` from `by by_contra! h`. Conclude with `hy ⟨fun v => (h v).1, fun v => (h v).2⟩`.
+
+Conclude with `(Finset.prod_eq_zero (Finset.mem_univ v) (Set.indicator_of_notMem hv _)).symm`.
+-/
 theorem integral_box {ι : Type} [Fintype ι] {n : ℕ} (ε : ι → Fin n → Bool) (a c : ι → ℝ) (ha : ∀ v, a v ≠ 0)
     (hac : a ≤ c) :
     ∫ y in (fun (y : ι → Fin n → ℂ) (v : ι) => qEps (ε v) (y v)) ⁻¹' Set.Icc a c, ∏ v, gauss (y v) =
@@ -61,6 +78,19 @@ theorem integral_box {ι : Type} [Fintype ι] {n : ℕ} (ε : ι → Fin n → B
       exact hy ⟨fun v => (h v).1, fun v => (h v).2⟩
     exact (Finset.prod_eq_zero (Finset.mem_univ v) (Set.indicator_of_notMem hv _)).symm
 
+/- English proof (translation)
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `e he`. Take `⟨d, hd, hδ⟩` from `Metric.continuousAt_iff.1 (hG.continuousAt (x := b)) (e / 2) (half_pos he)`. Use `filter_upwards [Ioo_mem_nhdsGT hd] with r hr`. Establish `hr0` using `hr.1`.
+
+Establish `hk : 0 < r ^ Fintype.card ι` using `pow_pos hr0 _`. Establish `hvol : volume.real (Set.Icc b (fun v => b v + r)) = r ^ Fintype.card ι`. Rewrite using `[Measure.real, Real.volume_Icc_pi_toReal (fun v => by simp [hr0.le])]`. Simplify using the standard rewrite rules. Establish `hfin : volume (Set.Icc b (fun v => b v + r)) < ⊤` using `isCompact_Icc.measure_lt_top`.
+
+Establish `h1 : ∫ x in Set.Icc b (fun v => b v + r), (G x - G b) = (∫ x in Set.Icc b (fun v => b v + r), G x) - (r ^ Fintype.card ι) • G b`. Rewrite using `[integral_sub hG.continuousOn.integrableOn_Icc continuousOn_const.integrableOn_Icc, setIntegral_const, hvol]`. Establish `h2 : ‖∫ x in Set.Icc b (fun v => b v + r), (G x - G b)‖ ≤ e / 2 * r ^ Fintype.card ι`. Rewrite using `[← hvol]`. Use `norm_setIntegral_le_of_norm_le_const hfin fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[← dist_eq_norm]`. Use `(hδ (lt_of_le_of_lt ?_ hr.2)).le` and prove the remaining obligations. Rewrite using `[dist_pi_le_iff hr0.le]`. Introduce `v`. Establish `h3` using `hx.1 v`.
+
+Establish `h4` using `hx.2 v`. Rewrite using `[Real.dist_eq, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `h3 : (r ^ Fintype.card ι)⁻¹ • (∫ x in Set.Icc b (fun v => b v + r), G x) - G b = (r ^ Fintype.card ι)⁻¹ • ∫ x in Set.Icc b (fun v => b v + r), (G x - G b)`. Rewrite using `[h1, smul_sub, smul_smul, inv_mul_cancel₀ hk.ne', one_smul]`.
+
+Rewrite using `[dist_eq_norm, h3, norm_smul, Real.norm_of_nonneg (inv_pos.2 hk).le, inv_mul_lt_iff₀ hk]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tendsto_mean_cube {ι : Type} [Fintype ι] {G : (ι → ℝ) → ℂ} (hG : Continuous G) (b : ι → ℝ) :
     Tendsto (fun r : ℝ => (r ^ Fintype.card ι)⁻¹ • ∫ x in Set.Icc b (fun v => b v + r), G x) (𝓝[>] 0)
       (𝓝 (G b)) := by
@@ -95,6 +125,11 @@ theorem tendsto_mean_cube {ι : Type} [Fintype ι] {G : (ι → ℝ) → ℂ} (h
   rw [dist_eq_norm, h3, norm_smul, Real.norm_of_nonneg (inv_pos.2 hk).le, inv_mul_lt_iff₀ hk]
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun r : ℝ => ∏ v, r⁻¹ • (cdf (ε v) (b v + r) - cdf (ε v) (b v))) (𝓝[>] 0) (𝓝 (∏ v, gaussDens (ε v) (b v)))` using `tendsto_finset_prod _ fun v _ => (differentiableAt_cdf (ε v) (hb v)).hasDerivAt.tendsto_slope_zero_right`. Establish `h2` using `(Complex.continuous_ofReal.tendsto _).comp h1`. Use `tendsto_nhds_unique (tendsto_mean_cube hG b) (h2.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r (hr : 0 < r)`. Rewrite using `[← h _ isCompact_Icc, integral_complex_ofReal, integral_box ε b _ hb (fun v => by simp [hr.le])]`.
+
+Simplify using `[Finset.prod_mul_distrib]`.
+-/
 theorem density_eq_prod (ι : Type) [Fintype ι] (n : ℕ) (ε : ι → Fin n → Bool) (G : (ι → ℝ) → ℂ)
     (hG : Continuous G)
     (h : ∀ S : Set (ι → ℝ), IsCompact S →

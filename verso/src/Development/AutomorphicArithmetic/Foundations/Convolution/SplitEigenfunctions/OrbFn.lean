@@ -7,6 +7,31 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperTheory.ConvolutionTheory.RankTwoDescent
 open scoped Classical
 
+/- English proof (translation)
+Introduce `hS E _ _ _ D M j hj c hc hcs`. Establish `hstab` using `(hS E D).2.1`. Use `haveI : PolishSpace (G1 E) := GroundTheory.Automorphic.polishSpace_of_locallyCompact`. Use `haveI := M.haar`. Use `haveI := M.right`.
+
+Establish `hval : ∀ g : G1 ℚ, (j g).1 = g.1.map (AdeleBaseChange.adeleMap ℚ E)` using `fun g => by`. Use `congrArg Units.val (hj g)` as an intermediate fact. Simplify `this` using `[em]`. Establish `hjc : Continuous j`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_subtype_val.matrix_map AdeleBaseChange.continuous_adeleMap).congr fun g => (hval g).symm`. Use `set O : G1 E → V4 ℚ := fun h => D.act (gl h)⁻¹ (rp X0) with hO`. Use `set cc : G1 E → ℂ := fun h => ∫ g, c (j g * h) ∂M.μ with hcc`. Establish `hgl : Continuous fun h : G1 E => gl h`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ h : G1 E, ((gl h)⁻¹ : GL (Fin 2) (A E)).val = (h⁻¹ : G1 E).1` using `fun h => by`. Establish `: (gl h)⁻¹ = gl h⁻¹` using `by simp only [gl, map_inv]`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hi : Continuous fun h : G1 E => (h⁻¹ : G1 E).1` using `(continuous_subtype_val : Continuous fun g : G1 E => g.1).comp continuous_inv`.
+
+Conclude with `hi.congr fun h => (e h).symm`. Establish `hglc : Continuous fun h : G1 E => (gl h)⁻¹` using `hgl.inv`. Establish `hOc : Continuous O` using `D.continuous_act' hglc continuous_const`. Establish `hccm : Measurable cc`. Establish `hF : StronglyMeasurable (Function.uncurry fun (h : G1 E) (g : G1 ℚ) => c (j g * h))` using `(hc.comp ((hjc.comp continuous_snd).mul continuous_fst)).stronglyMeasurable`.
+
+Conclude with `(hF.integral_prod_right (ν := M.μ)).measurable`. Establish `hfac : Function.FactorsThrough cc O`. Introduce `a b hab`. Establish `h1 : D.act (gl (b * a⁻¹)) (rp X0) = rp X0`. Establish `hab' : D.act (gl a)⁻¹ (rp X0) = D.act (gl b)⁻¹ (rp X0)` using `hab`.
+
+Establish `e : gl (b * a⁻¹) = gl b * (gl a)⁻¹` using `by simp only [gl, map_mul, map_inv]`. Rewrite using `[e, Dat.act_mul, hab', Dat.act_act_inv]`. Take `⟨g0, hg0⟩` from `(hstab (b * a⁻¹)).1 h1`. Establish `h2 : b * a⁻¹ = j g0` using `Matrix.SpecialLinearGroup.toGL_injective (hg0.trans (hj g0).symm)`. Establish `h3 : b = j g0 * a` using `by rw [← h2]; group`.
+
+Simplify using `only [hcc]`. Rewrite using `[h3]`. Use `integral_mul_right_eq_self (μ := M.μ) (fun g => c (j g * a)) g0` as an intermediate fact. Simplify using `only [map_mul, mul_assoc] at this`. Conclude with `this.symm`.
+
+Use `⟨Function.extend O cc 0, ?_, fun h => hfac.extend_apply 0 h⟩` and prove the remaining obligations. Establish `hR : MeasurableSet (Set.range O)`. Take `⟨K, hK, hU⟩` from `isSigmaCompact_range hOc`. Rewrite using `[← hU]`. Conclude with `MeasurableSet.iUnion fun n => (hK n).measurableSet`.
+
+Use `measurable_of_restrict_of_restrict_compl hR ?_ ?_` and prove the remaining obligations. Establish `hr : Measurable (Set.rangeFactorization O)` using `hOc.measurable.subtype_mk`. Use `(Measurable.measurable_comp_iff_of_surjective hr Set.rangeFactorization_surjective).1 ?_` and prove the remaining obligations. Establish `e : (Set.range O).domRestrict (Function.extend O cc 0) ∘ Set.rangeFactorization O = cc`. Use function extensionality and compare the values at `h`.
+
+Conclude with `hfac.extend_apply 0 h`. Rewrite using `[e]`. Conclude with `hccm`. Establish `e : (Set.range O)ᶜ.domRestrict (Function.extend O cc 0) = fun _ => 0`. Use function extensionality and compare the values at `x`.
+
+Conclude with `Function.extend_apply' cc (0 : V4 ℚ → ℂ) x.1 fun ⟨a, ha⟩ => x.2 ⟨a, ha⟩`. Rewrite using `[e]`. Conclude with `measurable_const`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.orbFn :
     OrbS → OrbFn := by
   intro hS E _ _ _ D M j hj c hc hcs

@@ -13,10 +13,18 @@ namespace Formalism.FourierDecayAlt.P.CutMP.ER
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ s Y A m F _ hF`. Conclude with `Formalism.FourierDecayAlt.P.CutMP.En.coefficient_vector_in_L2_class k r _ A m F Y s hF`.
+-/
 theorem coefficient_vector_in_class : CVCC := by
   intro k r Wp Wq _ _ _ _ _ _ s Y A m F _ hF
   exact Formalism.FourierDecayAlt.P.CutMP.En.coefficient_vector_in_L2_class k r _ A m F Y s hF
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ s Y F F₁ hF hF₁ heq g hg`. Establish `hmono : ∀ G : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV k r) G → B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (Set.univ ∩ B.GV k r) G`. Introduce `G hG g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, hfe⟩` from `hG g₀ hg₀.2`. Conclude with `⟨U, f', hU, hgU, hcd.of_le (WithTop.coe_le_coe.mpr le_top), hfe⟩`.
+
+Establish `h` using `Formalism.FourierDecayAlt.P.CutMP.En.coefficient_vector_locality k r (Wq →L[ℂ] Wp) Set.univ F F₁ Y isOpen_univ (hmono F hF) (hmono F₁ hF₁) (fun x hx => heq x hx.2) g ⟨trivial, hg⟩`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[h]`.
+-/
 theorem coefficient_vector_congr : CVCongr := by
   intro k r Wp Wq _ _ _ _ _ _ s Y F F₁ hF hF₁ heq g hg
   have hmono : ∀ G : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV k r) G →
@@ -29,6 +37,15 @@ theorem coefficient_vector_congr : CVCongr := by
   simp only [Pi.smul_apply]
   rw [h]
 
+/- English proof (translation)
+Establish `hop : ∀ (u : ℂ) (a b : Fin (2 * r + k + 1)), Formalism.QuantumDeterminants.Top (Q.EH k r) u a b (0 : B.Mat k r → E) = 0`. Introduce `u a b`. Use function extensionality and compare the values at `g`. Simplify using `[Formalism.QuantumDeterminants.Top, Q.EH, Formalism.QuantumDeterminants.EabH, Formalism.REAL.RdV]`. Establish `hfold : ∀ l : List ((B.Mat k r → E) → (B.Mat k r → E)), (∀ T ∈ l, T 0 = 0) → l.foldr (fun T h => T h) 0 = 0`.
+
+Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons T l ih`. Simplify using `only [List.foldr_cons]`.
+
+Rewrite using `[ih (fun T' hT' => hl T' (List.mem_cons_of_mem _ hT'))]`. Conclude with `hl T List.mem_cons_self`. Unfold `Q.CV Q.capL Formalism.QuantumDeterminants.qminorOp`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hfold _ ?_, smul_zero]`.
+
+Introduce `T hT`. Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Conclude with `hop _ _ _`.
+-/
 theorem cV_zero {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (Y : ℂ) :
     Q.CV k r Y (0 : B.Mat k r → E) = 0 := by
   have hop : ∀ (u : ℂ) (a b : Fin (2 * r + k + 1)),
@@ -53,6 +70,15 @@ theorem cV_zero {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E
   obtain ⟨i, rfl⟩ := hT
   exact hop _ _ _
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ z z' c s Y F hF hsupp g hg hne`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hU : IsOpen {x | Gf k r z z' x < c}` using `isOpen_lt (Formalism.FourierDecayAlt.P.Ux8.cont_Gf k r z z') continuous_const`. Establish `hF0 : ∀ x ∈ {x | Gf k r z z' x < c} ∩ B.GV k r, F x = (0 : B.Mat k r → (Wq →L[ℂ] Wp)) x`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hne'`. Conclude with `absurd (hsupp x hx.2 hne') (not_le.mpr hx.1)`. Establish `hCk0 : B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) ({x | Gf k r z z' x < c} ∩ B.GV k r) (0 : B.Mat k r → (Wq →L[ℂ] Wp))` using `fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Establish `hCkF : B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) ({x | Gf k r z z' x < c} ∩ B.GV k r) F`.
+
+Introduce `g₀ hg₀`. Take `⟨U, f', hU', hgU, hcd, hfe⟩` from `hF g₀ hg₀.2`. Conclude with `⟨U, f', hU', hgU, hcd.of_le (WithTop.coe_le_coe.mpr le_top), hfe⟩`. Establish `h` using `Formalism.FourierDecayAlt.P.CutMP.En.coefficient_vector_locality k r (Wq →L[ℂ] Wp) {x | Gf k r z z' x < c} F 0 Y hU hCkF hCk0 hF0 g ⟨hlt, hg⟩`. Apply `hne` to reduce the goal to its premises.
+
+Simplify using `only [Pi.smul_apply]`. Rewrite using `[h, cV_zero, Pi.zero_apply, smul_zero]`.
+-/
 theorem coefficient_vector_support : CVSupp := by
   intro k r Wp Wq _ _ _ _ _ _ z z' c s Y F hF hsupp g hg hne
   by_contra hlt
@@ -77,6 +103,27 @@ theorem coefficient_vector_support : CVSupp := by
   simp only [Pi.smul_apply]
   rw [h, cV_zero, Pi.zero_apply, smul_zero]
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ s Y F hF`. Establish `hadd : ∀ {f g : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) g → B.CkOn ⊤ (B.GV k r) (f + g)`. Introduce `f g hf hg g₀ hg₀`. Take `⟨U1, f1, hU1, h1, hc1, he1⟩` from `hf g₀ hg₀`. Take `⟨U2, f2, hU2, h2, hc2, he2⟩` from `hg g₀ hg₀`.
+
+Use `⟨U1 ∩ U2, f1 + f2, hU1.inter hU2, ⟨h1, h2⟩, (hc1.mono Set.inter_subset_left).add (hc2.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `x hx hxG`. Simplify using `[he1 x hx.1 hxG, he2 x hx.2 hxG]`. Establish `hsmul : ∀ (c : ℂ) {f : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) (c • f)`. Introduce `c f hf g₀ hg₀`.
+
+Take `⟨U1, f1, hU1, h1, hc1, he1⟩` from `hf g₀ hg₀`. Use `⟨U1, c • f1, hU1, h1, hc1.const_smul c, ?_⟩` and prove the remaining obligations. Introduce `x hx hxG`. Simplify using `[he1 x hx hxG]`. Establish `hzero : B.CkOn ⊤ (B.GV k r) (0 : B.Mat k r → (Wq →L[ℂ] Wp))` using `fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+
+Establish `hrd : ∀ X : B.Mat k r, B.inLie k r X → ∀ {f : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) (Formalism.REAL.RdV X f)`. Introduce `X hX f hf`. Establish `h1 : B.CkOn ((⊤ : ℕ∞) + 1) (B.GV k r) f`. Rewrite using `[top_add]`. Conclude with `hf`.
+
+Conclude with `Formalism.FourierDecayAlt.P.B5.ckOn_RdV hX h1`. Establish `hTop : ∀ (u : ℂ) (a b : Fin (2 * r + k + 1)) {f : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) (Formalism.QuantumDeterminants.Top (Q.EH k r) u a b f)`. Introduce `u a b f hf`. Establish `e : Formalism.QuantumDeterminants.Top (Q.EH k r) u a b f = (if a = b then u • f else 0) + (Formalism.REAL.RdV (hpart1 (Hpk k r) (Matrix.single a b 1)) f + Complex.I • Formalism.REAL.RdV (hpart2 (Hpk k r) (Matrix.single a b 1)) f)`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Formalism.QuantumDeterminants.Top, Q.EH, Formalism.QuantumDeterminants.EabH, Pi.add_apply, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e]`. Use `hadd ?_ (hadd (hrd _ (Formalism.FourierDecayAlt.P.Qb1.lie1 _) hf) (hsmul _ (hrd _ (Formalism.FourierDecayAlt.P.Qb1.lie2 _) hf)))` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `hsmul u hf`. Conclude with `hzero`. Establish `hfold : ∀ l : List ((B.Mat k r → (Wq →L[ℂ] Wp)) → (B.Mat k r → (Wq →L[ℂ] Wp))), (∀ T ∈ l, ∀ f, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) (T f)) → ∀ f, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) (l.foldr (fun T h => T h) f)`. Introduce `l hl f hf`. Proceed by induction on `l with`.
+
+Consider the case `nil => exact hf`. Consider the case `cons T l ih`. Simplify using `only [List.foldr_cons]`. Conclude with `hl T List.mem_cons_self _ (ih (fun T' hT' => hl T' (List.mem_cons_of_mem _ hT')))`. Apply `hsmul s` to reduce the goal to its premises.
+
+Unfold `Q.CV Q.capL Formalism.QuantumDeterminants.qminorOp`. Use `Finset.sum_induction _ (fun f => B.CkOn ⊤ (B.GV k r) f) (fun a b ha hb => hadd ha hb) hzero ?_` and prove the remaining obligations. Introduce `σ _`. Apply `hsmul` to reduce the goal to its premises. Use `hfold _ ?_ F hF` and prove the remaining obligations.
+
+Introduce `T hT f hf`. Rewrite `hT` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hT`. Conclude with `hTop _ _ _ hf`.
+-/
 theorem coefficient_vector_smoothness : CVSmooth := by
   intro k r Wp Wq _ _ _ _ _ _ s Y F hF
   have hadd : ∀ {f g : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) f → B.CkOn ⊤ (B.GV k r) g →

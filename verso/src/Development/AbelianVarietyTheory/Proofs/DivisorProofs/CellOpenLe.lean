@@ -54,6 +54,9 @@ def cellOpen (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : 
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) : C.Y.X.Opens :=
   sSup {U | ∃ a, CellAt C hV f₀ w U a}
 
+/- English proof (translation)
+The claim follows from `sSup_le fun _ ⟨_, _, hUV, _⟩ => hUV`.
+-/
 theorem cellOpen_le (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) :
     cellOpen C hV f₀ w ≤ C.π ⁻¹ᵁ V :=
@@ -64,6 +67,9 @@ def cellMap (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c
     (cellOpen C hV f₀ w).toScheme ⟶ V.toScheme :=
   C.π.resLE V _ (cellOpen_le C hV f₀ w)
 
+/- English proof (translation)
+The claim follows from `Scheme.Hom.resLE_comp_ι _ _`.
+-/
 theorem cellMap_ι (C : FlagCpt Z e) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)}
     (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) :
     cellMap C hV f₀ w ≫ V.ι = (cellOpen C hV f₀ w).ι ≫ C.π :=

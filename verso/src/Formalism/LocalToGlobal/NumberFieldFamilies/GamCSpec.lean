@@ -37,6 +37,9 @@ def chiC (chi1 : ∀ i : LocT B, G H.E (OmC H) →* (OOf B i)ˣ) (i : LocT B) (c
   letI : Algebra ℤ_[lOf B i] (OOf B i) := B.algOc _ _
   chi1 i * ((Units.map (algebraMap ℤ_[lOf B i] (OOf B i)).toMonoidHom).comp (cycZ H.E (OmC H) (lOf B i))) ^ (-((c : ℤ) - 1))
 
+/- English proof (translation)
+Simplify using `[chiC]`.
+-/
 theorem chiC_one (chi1 : ∀ i : LocT B, G H.E (OmC H) →* (OOf B i)ˣ) (i : LocT B) : chiC B chi1 i 1 = chi1 i := by
   simp [chiC]
 
@@ -44,6 +47,13 @@ def finOf {X : Type} (hX : Finite X) (Z : Set X) : Finset X := by
   classical
   exact @Finset.filter _ (· ∈ Z) _ (@Finset.univ _ (@Fintype.ofFinite _ hX))
 
+/- English proof (translation)
+Unfold `TOf`. Use `congr 1`. Use extensionality with `f`. Simplify using `only [Set.mem_setOf_eq, Set.Finite.mem_toFinset]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, k, h1, h2, h3, h4, h5, h6, rfl⟩`. Establish `hg : GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k` using `⟨h1, h2, h3, h4, h5, h6⟩`. Conclude with `⟨v, k, hg, by simp [hTOf, dif_pos hg]⟩`. Introduce and unpack `⟨v, k, hg, rfl⟩`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hg`.
+
+Conclude with `⟨v, k, h1, h2, h3, h4, h5, h6, by simp [hTOf, dif_pos (show GenAt0 H (lOf B i) (B.Qw (wOf B i)) v k from ⟨h1, h2, h3, h4, h5, h6⟩)]⟩`.
+-/
 theorem tGen (hS : ∀ l, (exceptionalPlaces H l).Finite) (i : LocT B) :
     Algebra.adjoin (OOf B i) {f : XOf B i → OOf B i | ∃ v k, IsSplitPl H v ∧ v ∉ placesOver H.E (lOf B i) ∧
       v ∉ (hS (lOf B i)).toFinset ∧ v ∉ B.Qw (wOf B i) ∧ 1 ≤ k ∧ k ≤ R.nV ∧ f = (hTOf B i v k : XOf B i → OOf B i)} = TOf B i := by
@@ -67,6 +77,11 @@ def TgEx {R : Ranks} (H : Host R) (h : PlOverEx H) : Prop :=
 def gamC {R : Ranks} (H : Host R) (h : PlOverEx H) (v : HeightOneSpectrum (𝓞 H.E)) : G H.E (OmC H) :=
   Formalism.L2.Fam.NPCTyp.gamG H (plOmC H h) (gamW H h) v
 
+/- English proof (translation)
+Unfold `gamC Formalism.L2.Fam.NPCTyp.gamG`. Use `split_ifs with h0 h1`. Use `haveI : Fact (H.g 0).Prime := ⟨H.g_prime 0⟩`. Conclude with `(Classical.epsilon_spec (hg 0 v h0)).1`. Use `haveI : Fact (H.g 1).Prime := ⟨H.g_prime 1⟩`.
+
+Conclude with `(Classical.epsilon_spec (hg 1 v h1)).1`. Conclude with `gamW_gen H h ht v`.
+-/
 theorem gamC_spec {R : Ranks} (H : Host R) (h : PlOverEx H) (ht : TameEx H h) (hg : TgEx H h) (v : HeightOneSpectrum (𝓞 H.E)) :
     TameGenAt ((plOmC H h).1 v) (gamC H h v) := by
   unfold gamC Formalism.L2.Fam.NPCTyp.gamG

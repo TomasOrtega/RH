@@ -15,6 +15,9 @@ instance reductionLocalRing.isDiscreteValuationRing :
     IsDiscreteValuationRing (reductionLocalRing v) :=
   IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) v.ne_bot _
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]`. Conclude with `fun h => ha (h.symm ▸ v.asIdeal.zero_mem)`.
+-/
 theorem reductionLocalRing.primeCompl_le : v.asIdeal.primeCompl ≤ nonZeroDivisors (𝓞 K) := by
   intro a ha
   rw [mem_nonZeroDivisors_iff_ne_zero]

@@ -12,12 +12,20 @@ namespace GroundTheory.Heights₂.Heights.Model
 
 open CategoryTheory AlgebraicGeometry
 
+/- English proof (translation)
+Rewrite using `[Scheme.opensRange_homOfLE]`. Both sides reduce to the same expression.
+-/
 lemma opensRange_homOfLE_invOpen {X : Scheme.{0}} (f : X ⟶ SpecZ) {a k : ℤ}
     (h : invOpen f k ≤ invOpen f a) :
     (X.homOfLE h).opensRange = invOpen ((invOpen f a).ι ≫ f) k := by
   rw [Scheme.opensRange_homOfLE]
   rfl
 
+/- English proof (translation)
+Introduce `X f _ _ a ha F G hF hG φ`. Take `⟨m₁, hm₁, H₁⟩` from `h₂ X f a ha G hG`. Take `⟨m₂, hm₂, H₂⟩` from `h₃ X f a ha F G hF hG φ`. Establish `hn : 0 < m₁ * m₂` using `Nat.mul_pos hm₁ hm₂`. Establish `hWa : invOpen f ((a : ℤ) * ((m₁ * m₂ : ℕ) : ℤ)) ≤ invOpen f a` using `invOpen_mul_le_left f a _`.
+
+Establish `hW` using `range_baseChangeMap_subset f ℚ ((a : ℤ) * ((m₁ * m₂ : ℕ) : ℤ)) (isUnit_intCast_rat _ (by positivity))`. Establish `hR` using `opensRange_homOfLE_invOpen f hWa`. Use `⟨_, hWa, hW, h₁ _ _ _ (X.homOfLE hWa) (toOpen f ℚ _ hW) _ (toOpen_homOfLE f ℚ _ hW (isUnit_intCast_rat a (by exact_mod_cast ha.ne')) hWa) F G φ (fun V hV => H₁ _ hn (dvd_mul_right _ _) V (hR ▸ hV)) (fun V hV => H₂ _ hn (dvd_mul_left _ _) V (hR ▸ hV))⟩` and prove the remaining obligations.
+-/
 theorem SpreadHomNbhd.proof (h₁ : DescendHom.Statement) (h₂ : GenericPullInj.Statement)
     (h₃ : SpreadHomSections.Statement) : SpreadHomNbhd.Statement := by
   intro X f _ _ a ha F G hF hG φ

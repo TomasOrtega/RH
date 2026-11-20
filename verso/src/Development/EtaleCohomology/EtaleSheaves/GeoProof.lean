@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.GeoProof
 open LateralTheory.E.E4 LateralTheory.E.Bridge_yfiPf
 
+/- English proof (translation)
+Set `f` to `U.left.affineCover.f (U.left.affineCover.idx u)`. Establish `: IsOpenImmersion f` using `U.left.affineCover.map_prop _`. Use `⟨Scheme.Etale.mk (f ≫ U.hom), MorphismProperty.Over.homMk f rfl trivial, _, Iso.refl _, ?_⟩` and prove the remaining obligations. Conclude with `U.left.affineCover.covers u`.
+-/
 theorem affNbhd {B : Scheme.{0}} (U : B.Etale) (u : U.left) :
     ∃ (U' : B.Etale) (a : U' ⟶ U) (R : CommRingCat.{0}) (_ : U'.left ≅ Spec R) (u' : U'.left), a.left u' = u := by
   let f := U.left.affineCover.f (U.left.affineCover.idx u)
@@ -20,6 +23,9 @@ def AffGeo : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], IsU
 def Shrink : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) (U U' : B.Etale)
   (a : U' ⟶ U) (m : ℤ) (u' : U'.left), Sys q i p ι U' m u' → Nonempty (Sys q i p ι U m (a.left u'))
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y toK ι _ p hp U m u`. Take `⟨U', a, R, e, u', rfl⟩` from `affNbhd U u`. Take `⟨S⟩` from `hA hH q k hq i toK ι p hp U' R e m u'`. Conclude with `hS q i p ι U U' a m u' S`.
+-/
 theorem Geo_of (hA : AffGeo) (hS : Shrink) : Geo := by
   intro hH q _ k _ hq i B W Y toK ι _ p hp U m u
   obtain ⟨U', a, R, e, u', rfl⟩ := affNbhd U u

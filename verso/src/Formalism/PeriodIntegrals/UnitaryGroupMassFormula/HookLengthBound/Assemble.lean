@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HookLengthBound.HookNor
 
 namespace PI.HookSteps
 
+/- English proof (translation)
+The claim follows from `hookBound_of_steps hook_bound hook_norm determinant_shift_norm rename_isomorphism highest_weight_det_mul highest_weight_last_zero determinant_adjugate hD polynomial_eq_divisibility`.
+-/
 theorem hookBound_of (hD : DetDetId) : PI.HookBound :=
   hookBound_of_steps hook_bound hook_norm determinant_shift_norm rename_isomorphism
     highest_weight_det_mul highest_weight_last_zero determinant_adjugate hD polynomial_eq_divisibility

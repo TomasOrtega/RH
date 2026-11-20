@@ -30,6 +30,11 @@ namespace GlobalTheory.HalfBInt
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨h.1, fun y => ?_⟩` and prove the remaining obligations. Establish `h2 : Formalism.HermitianLatticesTheory.dual (Formalism.L2.Col.hStd D.host.E V.rank) N = N` using `h.2`. Use `conv_lhs => rw [← h2]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Use `forall_congr' fun x => imp_congr_right fun _ => ?_` and prove the remaining obligations.
+
+Establish `e : Formalism.L2.Col.hStd D.host.E V.rank x y = ∑ i, ∑ j, star (x i) * V.gram i j * y j`. Rewrite using `[hV]`. Simplify using `[Formalism.L2.Col.hStd, Matrix.one_apply]`. Rewrite using `[e]`.
+-/
 theorem selfDualC_of (V : HSp D) (hV : V.gram = 1) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (h : Formalism.L2.Col.IsSdLat N) : IsSelfDualC V N := by
   refine ⟨h.1, fun y => ?_⟩
@@ -43,6 +48,9 @@ theorem selfDualC_of (V : HSp D) (hV : V.gram = 1) (N : Submodule (𝓞 D.host.E
     simp [Formalism.L2.Col.hStd, Matrix.one_apply]
   rw [e]
 
+/- English proof (translation)
+Take `⟨⟨es, hes, he⟩, hc⟩` from `hE`. Introduce `P hP hP'`. Establish `hv : Formalism.IndefR.Fin.belowPl P = Formalism.IndefR.Fin.belowPl (Formalism.L2.Col.conjPrime₂ P)` using `HeightOneSpectrum.ext (congrArg HeightOneSpectrum.asIdeal (GlobalTheory.GridPlaces.under_conjP P)).symm`. Establish `h` using `Formalism.IndefR.Fin.LevelGroupLemmas.idemSum_below_inj hes he hc hP hP' hv`. Conclude with `GlobalTheory.ModulusNorm.conjPl_ne_of_isIdemAt (hes P hP) ((GlobalTheory.PlaceDict.conjP_eq_conjPl D P).symm.trans h.symm)`.
+-/
 theorem noConj {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (hE : IsIdemSum e SS) :
     ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS := by
   obtain ⟨⟨es, hes, he⟩, hc⟩ := hE
@@ -56,6 +64,15 @@ end GlobalTheory.HalfBInt
 
 open GlobalTheory.HalfBInt in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc _ _ ΛS ΛT dS dT eS eT y hy`. Substitute `hS hT` using the available equality. Take `rfl : ΛS = N` from `SetLike.coe_injective eS`. Take `rfl : ΛT = N'` from `SetLike.coe_injective eT`. Establish `hnc` using `noConj hE`.
+
+Establish `hyT : y ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ΛS (twist₂ ΛT c (expS SS))`. Rewrite using `[← Formalism.L2.Ker.twist_homomorphism _ _ _ _ ΛS ΛT c _ dS.1.fg hc]`. Conclude with `hy`. Establish `hsdT` using `(GlobalTheory.ThetaMove.TwistSd.isSdLat_twO_expS _ _ ΛT c SS hnc (GlobalTheory.StdMove.isSdLat_of T hP.gT ΛT dT) hc).1`. Establish `dT' : IsSelfDualC T (twist₂ ΛT c (expS SS))` using `selfDualC_of T hP.gT _ hsdT`.
+
+Establish `hrat` using `GlobalTheory.AdForm.RatLatPer.finRat_mem_latO_of_perO D ψ θ S T _ _ rfl rfl δ sc hP ΛS (twist₂ ΛT c (expS SS)) ΛS (twist₂ ΛT c (expS SS)) dS dT' rfl rfl y hyT`. Establish `hneg : GlobalTheory.VacUnique.finRat S T (-((LinearMap.toMatrix' y).reindex (finCongr (rfl : T.rank = T.rank).symm) (finCongr (rfl : S.rank = S.rank).symm))) ∈ latO S T ((ΛS : Set (Fin S.rank → D.host.E))) ((twist₂ ΛT c (expS SS) : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) …`. Rewrite using `[map_neg]`. Conclude with `neg_mem hrat`. Establish `h0 : IsLatVac (heisO ψ S T) (latO S T ((ΛS : Set (Fin S.rank → D.host.E))) ((twist₂ ΛT c (expS SS) : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) : Set (Fin T.rank → D.host.E)) (fun _ => True)) (0 : WO S T → ℂ)` using `⟨fun _ _ => by funext w; simp [heisO], fun _ _ _ _ _ => by funext w; simp [heisO]⟩`.
+
+Take `⟨k, hk, -⟩` from `GlobalTheory.LatVacSign.heisO_finRat_sign ψ S T ΛS (twist₂ ΛT c (expS SS)) hP.std dS dT' 0 h0 _ hneg`. Conclude with `⟨k, hk⟩`.
+-/
 theorem GlobalTheory.HalfBInt.trace_int : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (c : ℕ), 0 < c → Odd c → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → (ΛS : Set (Fin S.rank → D.host.E)) = latFr S hS N → (ΛT : Set (Fin T.rank → D.host.E)) = latFr T hT N' → ∀ y ∈ halfBO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, ∃ k : ℤ, (k : ℚ) = Algebra.trace ℚ D.host.E (D.host.xi0 * ((1 + D.host.sqrtMinusD) / 2) ^ 2 * GlobalTheory.LatVac.hRat S T ((LinearMap.toMatrix' (y)).reindex (finCongr hT.symm) (finCongr hS.symm)) ((LinearMap.toMatrix' (y)).reindex (finCongr hT.symm) (finCongr hS.symm))) := by
   intro D ψ θ S T a b hS hT δ sc hP e SS hE N N' c hc _ _ ΛS ΛT dS dT eS eT y hy
   subst hS hT

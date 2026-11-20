@@ -19,6 +19,13 @@ section Ord
 variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) {v : HeightOneSpectrum (𝓞 K.1)}
   (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) (hv : v ∉ S)
 
+/- English proof (translation)
+Use `symm`. Apply `ordAbove_eq_of_isOrdAbove S hv hx` to reduce the goal to its premises. Establish `hZ : ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄) ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(x : maxUnramifiedOutside K.1 ℚ̄ S).2`. Establish `hF` using `levelOf_subset_max S hZ`. Establish `e1` using `valuation_placeOfEmbedding_eq S ι hv (levelOf K ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄)) hF (maxUnitsToUnits S x) (mem_levelOf _)`.
+
+Set `E' : IntermediateField K.1 ℚ̄` to `IntermediateField.extendScalars (show K.1 ≤ (levelOf K ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄)).1 from (fact_le_levelOf ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄)).out)`. Establish `hfd : FiniteDimensional K.1 E'`. Establish `: FiniteDimensional ℚ E'` using `(levelOf K ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄)).2`. Conclude with `Module.Finite.of_restrictScalars_finite ℚ K.1 E'`. Use `⟨E', hfd, fun y hy => hF y hy, mem_levelOf _, ?_⟩` and prove the remaining obligations.
+
+Use `⟨(placeOfEmbedding ι (levelOf K ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄))).1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(liesOver_iff_eq_underPlace.1 (placeOfEmbedding ι (levelOf K ((maxUnitsToUnits S x : ℚ̄ˣ) : ℚ̄))).2).symm`. Conclude with `e1`.
+-/
 theorem ordEmb_eq_ordAbove (x : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) (hx : IsSInvariant S x) :
     ordEmb S ι hv (Additive.ofMul x) = ordAbove S v x := by
   symm
@@ -51,6 +58,9 @@ def globalUniformizer : K.1ˣ :=
     rw [h, map_zero] at h'
     exact WithZero.exp_ne_zero h'.symm)
 
+/- English proof (translation)
+Establish `h` using `valuation_eq_exp_neg_ordAt v (globalUniformizer v)`. Rewrite `h` using `[show ((globalUniformizer v : K.1ˣ) : K.1) = (v.valuation_exists_uniformizer K.1).choose from rfl, (v.valuation_exists_uniformizer K.1).choose_spec]`. Use `WithZero.exp_injective h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordAt_globalUniformizer : ordAt v (globalUniformizer v) = 1 := by
   have h := valuation_eq_exp_neg_ordAt v (globalUniformizer v)
   rw [show ((globalUniformizer v : K.1ˣ) : K.1) = (v.valuation_exists_uniformizer K.1).choose from rfl,
@@ -58,10 +68,16 @@ theorem ordAt_globalUniformizer : ordAt v (globalUniformizer v) = 1 := by
   have := WithZero.exp_injective h
   omega
 
+/- English proof (translation)
+Simplify using `only [ordAt, map_zpow, toAdd_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordAt_zpow' (x : K.1ˣ) (m : ℤ) : ordAt v (x ^ m) = m * ordAt v x := by
   simp only [ordAt, map_zpow, toAdd_zpow, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem map_globalUniformizer :
     Units.map (algebraMap K.1 (v.adicCompletion K.1) : K.1 →* v.adicCompletion K.1) (globalUniformizer v) =
       localUniformizer v :=
@@ -69,6 +85,9 @@ theorem map_globalUniformizer :
 
 variable {S : Set (HeightOneSpectrum (𝓞 K.1))} [Finite S]
 
+/- English proof (translation)
+Rewrite using `[sPresentation_apply, map_one, one_mul, toAdd_ofAdd, divisorIdele_single, map_zpow, map_globalUniformizer, map_zpow]`.
+-/
 theorem mk_finiteEmbedding_globalUniformizer (hv : v ∉ S) (m : ℤ) :
     SIdeleClassGroup.mk S (finiteEmbedding v (Units.map (algebraMap K.1 (v.adicCompletion K.1) : K.1 →* _)
       (globalUniformizer v ^ m))) = sPresentation S (1, Multiplicative.ofAdd (Finsupp.single ⟨v, hv⟩ m)) := by
@@ -87,6 +106,15 @@ variable (F E : Type) [Field F] [Field E] [Algebra F E] [IsGalois F E]
   {A : Rep.{0} (ULift.{0} ℤ) Γ} [IsDiscreteRep A] [IsDiscreteRep (uliftIntToIntRep A)]
   (f : Rep.res ψ (uliftIntToIntRep A) ⟶ galUnitsZ F E)
 
+/- English proof (translation)
+Take `⟨w', hw', hw'v⟩` from `exists_cocycle_cupCharClassProf (galUnitsZ F E) χ' (unitsInvariant F E b)`. Rewrite using `[cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMapAlong_cohomologyπ]`. Express the relevant statement in the definitionally equal form `_ = (cupCharClassProf (galUnitsZ F E) χ').hom (unitsInvariant F E b)`. Rewrite using `[← hw']`. Use `congr 1`.
+
+Apply `cocycles_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt]`. Use `beta_reduce`. Rewrite using `[hw'v]`.
+
+Establish `hs : (⇑ψ ∘ s) = ![ψ (s 0), ψ (s 1)]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hχf : ∀ σ, charAdd χ' (Additive.ofMul σ) = QZ.toAddCircle (zmodToQZ m ((fun σ => zmodCocycleHom z (ψ σ)) σ))` using `fun σ => by rw [charAdd_apply, hχ']`. Rewrite using `[hs, hw, charCocycle_eq_bockInt _ _ hχf]`.
+
+Express the relevant statement in the definitionally equal form `f.hom (bockInt (zmodCocycleHom z) (ψ (s 0)) (ψ (s 1)) • a) = _`. Rewrite using `[map_zsmul, ha]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMapAlong_cohomologyπ_bock (z : cocycles (zmodRep.{0} Γ m) 1)
     (χ' : Additive Gal(E/F) →ₜ+ QZ)
     (hχ' : ∀ σ : Gal(E/F), χ' (Additive.ofMul σ) = zmodToQZ m (zmodCocycleHom z (ψ σ))) (b : Fˣ) (a : A)
@@ -119,6 +147,9 @@ end General
 variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) {v : HeightOneSpectrum (𝓞 K.1)}
   (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) {n : ℕ} [NeZero n]
 
+/- English proof (translation)
+The claim follows from `cohomologyMapAlong_cohomologyπ_bock _ _ (decompHomS (v.adicCompletion K.1) S ι) (continuous_decompHomS (Kv := v.adicCompletion K.1) S ι) (embUnitsMorZ S ι) z _ (fun σ => (charQZ_apply χ _).trans (congrArg (zmodToQZ n) (hχ _))) _ _ (by apply Additive.toMul.injective apply Units.ex …`.
+-/
 theorem gsLocalRes_cohomologyπ_bock (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
     (hχ : ∀ g, Multiplicative.toAdd (χ g) = zmodCocycleHom z g) (b : K.1ˣ)
@@ -150,6 +181,21 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨wb, hwb, hwbv⟩` from `exists_cocycle_cupPairing_δ_bockSeq (NeZero.ne n) (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) z (unitsToInvariants K.1 (maxUnramifiedOutside K.1 ℚ̄ S) (Additive.ofMul (globalUniformizer v ^ ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ))))`. Establish `hWv : ∀ g h, ordEmb S ι hv (cochainOf _ (cocycleι _ 2 W) ![g, h]) = bockInt (zmodCocycleHom z) g h * ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)`. Introduce `g h`. Establish `hu` using `hW g h`. Establish `e : cochainOf _ (cocycleι _ 2 W) ![g, h] = Additive.ofMul ((Additive.toMul (cochainOf _ (cocycleι _ 2 W) ![g, h]) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) * ((t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ^ bockInt (zmodCocycleHom z) g h)⁻¹) + bockInt (zmodCocycleHom z) g h • Additive.ofMul ( …`.
+
+Rewrite using `[← ofMul_zpow, ← ofMul_mul, inv_mul_cancel_right, ofMul_toMul]`. Rewrite using `[e, map_add, map_zsmul, ordEmb_eq_zero_of_mem S ι hv hu, zero_add, ordEmb_eq_ordAbove S ι hv _ t.2, smul_eq_mul]`. Establish `hbv : ordEmb S ι hv (Additive.ofMul (Units.map (algebraMap K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).toMonoidHom (globalUniformizer v ^ ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)))) = ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)`. Rewrite using `[ordEmb_algebraMap, ordAt_zpow', ordAt_globalUniformizer, mul_one]`. Establish `hval : (cohomologyMapAlong (decompHomS (v.adicCompletion K.1) S ι) (continuous_decompHomS (Kv` using `v.adicCompletion K.1) S ι) (ordEmbMor S ι hv) 2).hom (cohomologyπ _ 2 W - cohomologyπ _ 2 wb) = 0 := by`.
+
+Rewrite using `[map_sub, sub_eq_zero, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`.
+
+Use `beta_reduce`. Establish `hu : ∀ u : Fin 2 → galUnramifiedOutside K.1 ℚ̄ S, u = ![u 0, u 1]` using `fun u => by`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Establish `hW' : ∀ u : Fin 2 → galUnramifiedOutside K.1 ℚ̄ S, ordEmb S ι hv (cochainOf _ (cocycleι _ 2 W) u) = bockInt (zmodCocycleHom z) (u 0) (u 1) * ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)` using `fun u => by conv_lhs => rw [hu u]`.
+
+Conclude with `hWv _ _`. Establish `hwb' : ∀ u : Fin 2 → galUnramifiedOutside K.1 ℚ̄ S, cochainOf _ (cocycleι _ 2 wb) u = bockInt (zmodCocycleHom z) (u 0) (u 1) • ((unitsToInvariants K.1 (maxUnramifiedOutside K.1 ℚ̄ S) (Additive.ofMul (globalUniformizer v ^ ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ))) : (g …` using `fun u => by conv_lhs => rw [hu u]`. Conclude with `hwbv _ _`. Use `(hW' _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (ordEmb S ι hv) (hwb' _)).symm` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (map_zsmul (ordEmb S ι hv) _ _).symm` and prove the remaining obligations. Conclude with `(congrArg (_ * ·) hbv.symm).trans (smul_eq_mul _ _).symm`. Establish `hloc` using `(gsLocalRes_eq_zero_iff S ι hv _).2 hval`. Rewrite `hloc` using `[map_sub, map_sub, sub_eq_zero]`. Use `(congrArg (placeInv (K := K) (.inr v)) (hloc.trans (gsLocalRes_cohomologyπ_bock S ι z χ hχ (globalUniformizer v ^ ordAbove S v (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) wb (fun g h => hwbv g h)))).trans ?_` and prove the remaining obligations.
+
+Use `(placeInv_galCupClass_decompHomS (Set.toFinite S) hodd χ v ι _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun x => zmodToQZ n (Multiplicative.toAdd (charEquiv ℚ̄ (Set.toFinite S) hodd χ x))) (mk_finiteEmbedding_globalUniformizer v hv _)`.
+-/
 theorem placeInv_gsLocalRes_of_bock (t : sInvariantSubgroup ℚ̄ S)
     (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
@@ -226,18 +272,59 @@ def divChar (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multip
   (zmodToQZ n).comp (MonoidHom.toAdditiveRight ((charEquiv ℚ̄ (Set.toFinite S) hodd χ).comp
     ((sPresentation S).comp (MonoidHom.inr _ _))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divChar_apply (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
     (D : sDivisor S) :
     divChar S hodd χ D = zmodToQZ n (Multiplicative.toAdd (charEquiv ℚ̄ (Set.toFinite S) hodd χ
       (sPresentation S (1, Multiplicative.ofAdd D)))) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[divChar_apply, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero]`.
+-/
 theorem nsmul_divChar (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
     (D : sDivisor S) : n • divChar S hodd χ D = 0 := by
   rw [divChar_apply, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Set `ιL` to `gsLocalEmbeddings S ιs`. Set `B : cohomology (unitsLimitRep K) 2` to `(gsBrauerInfl K S 2).hom (cohomologyULiftIntAddEquiv _ 2 (cohomologyπ _ 2 W)) - sUnitsBrauer K S y`. Establish `hBv : ∀ w : HeightOneSpectrum (𝓞 K.1), placeInv (K` using `K) (.inr w) (brauerLocal ιL B (.inr w)) = placeInv (K := K) (.inr w) ((gsLocalRes S (ιL.fin w) 2).hom (cohomologyULiftIntAddEquiv _ 2 (cohomologyπ _ 2 W))) - placeInv (K := K) (.inr w) (brauerLocal ιL (sUnitsBrauer K S y) (.inr w)) := fun w => by`. Establish `e : brauerLocal ιL B (.inr w) = brauerLocal ιL ((gsBrauerInfl K S 2).hom (cohomologyULiftIntAddEquiv _ 2 (cohomologyπ _ 2 W))) (.inr w) - brauerLocal ιL (sUnitsBrauer K S y) (.inr w)`. Rewrite using `[map_sub, DFinsupp.sub_apply]`.
+
+Rewrite using `[e, map_sub, brauerLocal_gsBrauerInfl_inr]`. Establish `hS' : ∀ v : S, placeInv (K` using `K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal ιL B (.inr (v : HeightOneSpectrum (𝓞 K.1)))) = localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v) := by`. Introduce `v`. Establish `hfin : ιL.fin (v : HeightOneSpectrum (𝓞 K.1)) = ιs v` using `gsLocalEmbeddings_fin S ιs v`. Establish `h2 : brauerLocal ιL (sUnitsBrauer K S y) (.inr (v : HeightOneSpectrum (𝓞 K.1))) = (gsLocalRes S (ιs v) 2).hom (cohomologyULiftIntAddEquiv _ 2 ((cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) 2).hom y))`.
+
+Rewrite using `[sUnitsBrauer_apply, brauerLocal_gsBrauerInfl_inr, hfin]`. Establish `hyv : (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsUnitsLocalMor S ιs v) 2).hom (cohomologyπ _ 2 W) - (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsSUnitsLocalMor S ιs v) 2).hom y = β' v`. Conclude with `(congrArg (_ - ·) (hy v).symm).trans (sub_sub_cancel _ _)`. Use `(hBv (v : HeightOneSpectrum (𝓞 K.1))).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· - ·) (congrArg (fun ι => placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) ((gsLocalRes S ι 2).hom (cohomologyULiftIntAddEquiv _ 2 (cohomologyπ _ 2 W)))) hfin) (congrArg (placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1)))) h2)).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (localInvU (v : HeightOneSpectrum (𝓞 K.1))) hyv)` and prove the remaining obligations. Use `Eq.trans ?_ (map_sub _ _ _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (· - ·) (localInvU_cohomologyMapAlong_gsUnitsLocalMor S ιs v _).symm (localInvU_cohomologyMapAlong_gsSUnitsLocalMor S ιs v y).symm`. Establish `hout : ∀ (w : HeightOneSpectrum (𝓞 K.1)) (hw : w ∉ S), placeInv (K` using `K) (.inr w) (brauerLocal ιL B (.inr w)) = divChar S hodd χ (Finsupp.single ⟨w, hw⟩ (ordAbove S w (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ))) := by`. Introduce `w hw`.
+
+Use `(hBv w).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· - ·) rfl ((congrArg (placeInv (K := K) (.inr w)) (brauerLocal_sUnitsBrauer_inr K S ιL y w hw)).trans (map_zero _))).trans ((sub_zero _).trans ?_)` and prove the remaining obligations. Conclude with `(placeInv_gsLocalRes_of_bock S (ιL.fin w) hw hodd t z χ hχ W hW).trans (divChar_apply S hodd χ _).symm`. Set `D` to `divAbove S (Additive.ofMul t)`. Set `T1` to `Finset.univ.image (fun v : S => (Sum.inr (v : HeightOneSpectrum (𝓞 K.1)) : Place K.1))`.
+
+Set `T2` to `D.support.image (fun u : {v // v ∉ S} => (Sum.inr u.1 : Place K.1))`. Set `T3` to `Finset.univ.image (fun w : InfinitePlace K.1 => (Sum.inl w : Place K.1))`. Establish `hT : ∀ w ∉ T1 ∪ (T2 ∪ T3), placeInv w (brauerLocal ιL B w) = 0`. Introduce `w hw`. Break down `w with w | w` into its components or cases.
+
+Conclude with `absurd (Finset.mem_union_right _ (Finset.mem_union_right _ (Finset.mem_image.2 ⟨w, Finset.mem_univ _, rfl⟩))) hw`. Distinguish the cases in `hwS : w ∈ S`. Conclude with `absurd (Finset.mem_union_left _ (Finset.mem_image.2 ⟨(⟨w, hwS⟩ : S), Finset.mem_univ _, rfl⟩)) hw`. Establish `hD0 : D ⟨w, hwS⟩ = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hw (Finset.mem_union_right _ (Finset.mem_union_left _ (Finset.mem_image.2 ⟨⟨w, hwS⟩, Finsupp.mem_support_iff.2 hne, rfl⟩)))`. Rewrite using `[hout w hwS, show ordAbove S w (t : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) = D ⟨w, hwS⟩ from rfl, hD0, Finsupp.single_zero, map_zero]`. Establish `hd12 : Disjoint T1 (T2 ∪ T3)`. Rewrite using `[Finset.disjoint_left]`. Introduce `w hw1 hw23`.
+
+Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 hw1`. Break down `Finset.mem_union.1 hw23 with h | h` into its components or cases. Take `⟨u, hu, hu'⟩` from `Finset.mem_image.1 h`. Conclude with `u.2 (Sum.inr_injective hu' ▸ v.2)`. Take `⟨u, -, hu⟩` from `Finset.mem_image.1 h`.
+
+Conclude with `Sum.inl_ne_inr hu`. Establish `hd23 : Disjoint T2 T3`. Rewrite using `[Finset.disjoint_left]`. Introduce `w hw2 hw3`. Take `⟨u, -, rfl⟩` from `Finset.mem_image.1 hw2`.
+
+Take `⟨x, -, hx⟩` from `Finset.mem_image.1 hw3`. Conclude with `Sum.inl_ne_inr hx`. Establish `hsum : ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v) + (divChar S hodd χ D + ∑ w : InfinitePlace K.1, placeInv (.inl w) (brauerLocal ιL B (.inl w))) = 0`. Establish `e` using `(AddMonoidHom.comp_apply _ _ _).symm.trans (brauerSumInv_eq_zero ιL B)`. Rewrite `e` using `[sumPlaceInv_eq_sum_of_placeInv _ _ hT, Finset.sum_union hd12, Finset.sum_union hd23, Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inr_injective h)), Finset.sum_image (fun u _ x _ h => Subtype.ext (Sum.inr_injective h)), Finset.sum_image (fun u _ x _ h => Sum.inl_injective …`.
+
+Establish `e1 : ∑ v : S, placeInv (K` using `K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal ιL B (.inr (v : HeightOneSpectrum (𝓞 K.1)))) = ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v) := Finset.sum_congr rfl fun v _ => hS' v`. Establish `e2 : ∑ u ∈ D.support, placeInv (K` using `K) (.inr u.1) (brauerLocal ιL B (.inr u.1)) = divChar S hodd χ D := by`. Rewrite using `[Finset.sum_congr rfl fun u _ => hout u.1 u.2]`. Use `conv_rhs => rw [← Finsupp.sum_single D]`. Rewrite using `[map_finsuppSum]`.
+
+Both sides reduce to the same expression. Conclude with `(congrArg₂ (· + ·) e1.symm (congrArg₂ (· + ·) e2.symm rfl)).trans e`. Generalize the expression as in `hs1 : ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (β' v) = s1 at hsum hβ' ⊢`. Generalize the expression as in `hs3 : ∑ w : InfinitePlace K.1, placeInv (.inl w) (brauerLocal ιL B (.inl w)) = s3 at hsum`. Establish `h32 : 2 • s3 = 0`.
+
+Rewrite using `[← hs3, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun w _ => two_nsmul_placeInv_inl w _`. Establish `h3 : s3 = 0`. Break down `id hodd with ⟨m, hm⟩ | hc` into its components or cases. Establish `h3n : n • s3 = 0`.
+
+Establish `: s3 = -(s1 + divChar S hodd χ D)`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm, add_assoc]`. Conclude with `hsum`. Rewrite using `[this, smul_neg, smul_add, hβ', nsmul_divChar, add_zero, neg_zero]`. Rewrite `h3n` using `[hm]`.
+
+Establish `: s3 = (2 * m + 1) • s3 - m • (2 • s3)`. Rewrite using `[← mul_nsmul', add_nsmul, one_nsmul, mul_comm m 2]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, h3n, h32, smul_zero, sub_zero]`. Rewrite using `[← hs3]`.
+
+Conclude with `Finset.sum_eq_zero fun w _ => by`. Use `subsingleton_cohomology_two_of_isComplex w (hc.isComplex w)` as an intermediate fact. Rewrite using `[show brauerLocal ιL B (.inl w) = 0 from Subsingleton.elim (α := cohomology (galUnitsZ w.Completion (AlgebraicClosure w.Completion)) 2) _ 0, map_zero]`. Rewrite `hsum` using `[h3, add_zero]`. Conclude with `eq_neg_of_add_eq_zero_left hsum`.
+-/
 theorem sum_localInvU_eq_neg_divChar (t : sInvariantSubgroup ℚ̄ S)
     (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))

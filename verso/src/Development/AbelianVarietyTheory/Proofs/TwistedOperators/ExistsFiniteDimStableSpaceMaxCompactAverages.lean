@@ -16,6 +16,11 @@ namespace GlobalTheory.KFinAvgSpan
 open Formalism.REAL MeasureTheory GlobalTheory.SeriesToClosure Matrix
 open GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.PointAtPlaceHom
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (muK ε) := ⟨isCompact_univ.measure_lt_top⟩`. Set `L : C(KG ε, ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun g => ∫ k, g k ∂(muK ε) map_add' := fun g h => by`. Simplify using `only [ContinuousMap.add_apply]`. Conclude with `integral_add (GlobalTheory.ExpansionAverage.integrable_K g.continuous) (GlobalTheory.ExpansionAverage.integrable_K h.continuous)`. Use the proof step `map_smul' := fun c g => by`.
+
+Simplify using `only [ContinuousMap.smul_apply, RingHom.id_apply]`. Conclude with `integral_smul c _ }`. Establish `hL : Continuous L` using `AddMonoidHomClass.continuous_of_bound L ((muK ε).real Set.univ) fun g => by show ‖∫ k, g k ∂(muK ε)‖ ≤ _`. Conclude with `(norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun k => ContinuousMap.norm_coe_le_norm g k)).trans (le_of_eq (mul_comm _ _))`. Conclude with `hL.comp (ContinuousMap.curry ⟨_, hF⟩).continuous`.
+-/
 theorem continuous_integral_K {n : ℕ} {ε : Fin n → Bool} {X : Type*} [TopologicalSpace X] (F : X → KG ε → ℂ)
     (hF : Continuous (Function.uncurry F)) : Continuous fun x => ∫ k, F x k ∂(muK ε) := by
   haveI : IsFiniteMeasure (muK ε) := ⟨isCompact_univ.measure_lt_top⟩
@@ -37,47 +42,78 @@ theorem continuous_integral_K {n : ℕ} {ε : Fin n → Bool} {X : Type*} [Topol
 variable {D : D7} {θ : InfFam D} {V : HSp D} {τ : D.what₂.Tau} {ε : Fin V.rank → Bool}
   {P : Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp_continuous continuous_conjK fun k => conj_inv_mem hP hJ (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k))`.
+-/
 theorem continuous_conjAt (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ) :
     Continuous fun k : KG ε => atTau θ V τ (P⁻¹ * toMK k * P) :=
   (GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp_continuous continuous_conjK
     fun k => conj_inv_mem hP hJ (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k))
 
+/- English proof (translation)
+The claim follows from `(he.comp continuous_snd).mul (hφ.comp (continuous_fst.mul ((continuous_conjAt hθ hP hJ).comp continuous_snd)))`.
+-/
 theorem continuous_integrand (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {e : KG ε → ℂ} (he : Continuous e) {φ : GA D V → ℂ} (hφ : Continuous φ) :
     Continuous (Function.uncurry fun (x : GA D V) (k : KG ε) => e k * φ (x * atTau θ V τ (P⁻¹ * toMK k * P))) :=
   (he.comp continuous_snd).mul (hφ.comp (continuous_fst.mul ((continuous_conjAt hθ hP hJ).comp continuous_snd)))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ExpansionAverage.integrable_K (he.mul (hφ.comp (continuous_const.mul (continuous_conjAt hθ hP hJ))))`.
+-/
 theorem integrable_integrand (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {e : KG ε → ℂ} (he : Continuous e) {φ : GA D V → ℂ} (hφ : Continuous φ) (x : GA D V) :
     Integrable (fun k => e k * φ (x * atTau θ V τ (P⁻¹ * toMK k * P))) (muK ε) :=
   GlobalTheory.ExpansionAverage.integrable_K (he.mul (hφ.comp (continuous_const.mul (continuous_conjAt hθ hP hJ))))
 
+/- English proof (translation)
+The claim follows from `continuous_integral_K _ (continuous_integrand hθ hP hJ he hφ)`.
+-/
 theorem continuous_avg (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {e : KG ε → ℂ} (he : Continuous e) {φ : GA D V → ℂ} (hφ : Continuous φ) : Continuous (avg θ V τ ε P e φ) :=
   continuous_integral_K _ (continuous_integrand hθ hP hJ he hφ)
 
+/- English proof (translation)
+The claim follows from `funext fun x => by simp only [avg, Pi.add_apply, add_mul] exact integral_add (integrable_integrand hθ hP hJ h₁ hφ x) (integrable_integrand hθ hP hJ h₂ hφ x)`.
+-/
 theorem avg_add_left (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {e₁ e₂ : KG ε → ℂ} (h₁ : Continuous e₁) (h₂ : Continuous e₂) {φ : GA D V → ℂ} (hφ : Continuous φ) :
     avg θ V τ ε P (e₁ + e₂) φ = avg θ V τ ε P e₁ φ + avg θ V τ ε P e₂ φ := funext fun x => by
   simp only [avg, Pi.add_apply, add_mul]
   exact integral_add (integrable_integrand hθ hP hJ h₁ hφ x) (integrable_integrand hθ hP hJ h₂ hφ x)
 
+/- English proof (translation)
+The claim follows from `funext fun x => by simp only [avg, Pi.smul_apply, smul_eq_mul, mul_assoc] exact integral_const_mul c _`.
+-/
 theorem avg_smul_left (c : ℂ) (e : KG ε → ℂ) (φ : GA D V → ℂ) :
     avg θ V τ ε P (c • e) φ = c • avg θ V τ ε P e φ := funext fun x => by
   simp only [avg, Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact integral_const_mul c _
 
+/- English proof (translation)
+The claim follows from `funext fun x => by simp only [avg, Pi.add_apply, mul_add] exact integral_add (integrable_integrand hθ hP hJ he h₁ x) (integrable_integrand hθ hP hJ he h₂ x)`.
+-/
 theorem avg_add_right (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {e : KG ε → ℂ} (he : Continuous e) {φ₁ φ₂ : GA D V → ℂ} (h₁ : Continuous φ₁) (h₂ : Continuous φ₂) :
     avg θ V τ ε P e (φ₁ + φ₂) = avg θ V τ ε P e φ₁ + avg θ V τ ε P e φ₂ := funext fun x => by
   simp only [avg, Pi.add_apply, mul_add]
   exact integral_add (integrable_integrand hθ hP hJ he h₁ x) (integrable_integrand hθ hP hJ he h₂ x)
 
+/- English proof (translation)
+The claim follows from `funext fun x => by simp only [avg, Pi.smul_apply, smul_eq_mul, mul_left_comm (e _) c] exact integral_const_mul c _`.
+-/
 theorem avg_smul_right (c : ℂ) (e : KG ε → ℂ) (φ : GA D V → ℂ) :
     avg θ V τ ε P e (c • φ) = c • avg θ V τ ε P e φ := funext fun x => by
   simp only [avg, Pi.smul_apply, smul_eq_mul, mul_left_comm (e _) c]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Take `⟨k₀, hk₀'⟩ : P * g * P⁻¹ ∈ Set.range (fun k : KG ε => toMK k)` from `by rw [range_toMK]; exact hg`. Establish `hk₀ : toMK k₀ = P * g * P⁻¹` using `hk₀'`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `eg : g = P⁻¹ * toMK k₀ * P`. Rewrite using `[hk₀]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨k₀, fun e φ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : KG ε, atTau θ V τ g * atTau θ V τ (P⁻¹ * toMK k * P) = atTau θ V τ (P⁻¹ * toMK (k₀ * k) * P)` using `fun k => by`. Rewrite using `[eg, ← at_mul hθ hP hJ (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k₀)) (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k))]`. Both sides reduce to the same expression.
+
+Simplify using `only [rTr, avg, mul_assoc x, key]`. Rewrite using `[← integral_mul_left_eq_self (μ := muK ε) (fun k => e (k₀⁻¹ * k) * φ (x * atTau θ V τ (P⁻¹ * toMK k * P))) k₀]`. Simplify using `only [inv_mul_cancel_left]`.
+-/
 theorem rTr_avg_same (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : P * g * P⁻¹ ∈ Kset ε) :
     ∃ k₀ : KG ε, ∀ (e : KG ε → ℂ) (φ : GA D V → ℂ),
@@ -99,6 +135,9 @@ theorem rTr_avg_same (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P 
     (fun k => e (k₀⁻¹ * k) * φ (x * atTau θ V τ (P⁻¹ * toMK k * P))) k₀]
   simp only [inv_mul_cancel_left]
 
+/- English proof (translation)
+The claim follows from `funext fun x => by simp only [rTr, avg, mul_assoc x] congr 1 funext k rw [GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ V τ τ' hne _ (conj_inv_mem hP hJ (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k))) g hg]`.
+-/
 theorem rTr_avg_other (hθ : IsInfFam θ) (hP : IsUnit P) (hJ : Pᴴ * Jm ε * P = gramAt D V τ)
     {τ' : D.what₂.Tau} (hne : τ ≠ τ') {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ')) (e : KG ε → ℂ) (φ : GA D V → ℂ) :
@@ -115,6 +154,25 @@ namespace GlobalTheory.KFinAvgSpan
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D θ hθ N τ e he s hτs W' hW'fin hW'c hW'stab`. Take `⟨F, hFfin, heF, hFc, hFtr⟩` from `he`. Establish `hP` using `N.M.fr_unit τ`. Establish `hJ` using `N.M.fr_gram τ`. Use `haveI := hFfin`.
+
+Use `haveI := hW'fin`. Set `B : F →ₗ[ℂ] W' →ₗ[ℂ] (GA D N.V → ℂ)` to `LinearMap.mk₂ ℂ (fun a b => GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) (a : Formalism.REAL.KG (N.M.ε τ) → ℂ) (b : GA D N.V → ℂ)) (fun a₁ a₂ b => avg_add_left hθ hP hJ (hFc _ a₁.2) (hFc _ a₂.2) (hW'c _ b.2)) (fun c a b => avg_smul_left c _ _) (fun a b₁ b₂ => avg …`. Establish `hB : ∀ (a : F) (b : W'), TensorProduct.lift B (a ⊗ₜ b) = GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) (a : Formalism.REAL.KG (N.M.ε τ) → ℂ) (b : GA D N.V → ℂ)` using `fun a b => by rw [TensorProduct.lift.tmul]; rfl`. Establish `hcont : ∀ t, Continuous (TensorProduct.lift B t)` using `fun t => by`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `continuous_const`. Consider the case `tmul a b => rw [hB]`. Conclude with `continuous_avg hθ hP hJ (hFc _ a.2) (hW'c _ b.2)`. Consider the case `add u v hu hv => rw [map_add]`.
+
+Conclude with `hu.add hv`. Use `⟨LinearMap.range (TensorProduct.lift B), inferInstance, ?_, ?_, fun f hf => ⟨⟨e, heF⟩ ⊗ₜ ⟨f, hf⟩, hB _ _⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `hcont t`. Introduce `τ'' hτ'' g hg hK w hw`.
+
+Take `⟨t, rfl⟩` from `hw`. It suffices to establish `h : ∀ (a : F) (b : W'), rTr N.V (atTau θ N.V τ'' g) (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) (a : Formalism.REAL.KG (N.M.ε τ) → ℂ) (b : GA D N.V → ℂ)) ∈ LinearMap.range (TensorProduct.lift B) by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `tmul a b => rw [hB]`. Conclude with `h a b`. Consider the case `add u v hu hv`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hu hv`. Introduce `a b`. Break down `hτ'' with h | hs` into its components or cases. Rewrite `hK`, the goal using `[h]`. Take `⟨k₀, hk⟩` from `rTr_avg_same hθ hP hJ hK`.
+
+Establish `hk'` using `hk (a : Formalism.REAL.KG (N.M.ε τ) → ℂ) (b : GA D N.V → ℂ)`. Use `⟨⟨_, (hFtr _ a.2 k₀⁻¹).1⟩ ⊗ₜ b, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hk']`. Establish `hne : τ ≠ τ''` using `fun h => hτs (h ▸ hs)`. Rewrite using `[rTr_avg_other hθ hP hJ hne hg]`.
+
+Conclude with `⟨a ⊗ₜ ⟨_, hW'stab τ'' hs g hg hK b b.2⟩, hB _ _⟩`.
+-/
 theorem exists_stab_insert : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → ∀ s : Set D.what₂.Tau, τ ∉ s → ∀ W' : Submodule ℂ (GA D N.V → ℂ), FiniteDimensional ℂ W' → (∀ f ∈ W', Continuous f) → GlobalTheory.KFinCuspApprox.KStab θ N s W' → ∃ W : Submodule ℂ (GA D N.V → ℂ), FiniteDimensional ℂ W ∧ (∀ f ∈ W, Continuous f) ∧ GlobalTheory.KFinCuspApprox.KStab θ N (insert τ s) W ∧ ∀ f ∈ W', GlobalTheory.KFinCuspApprox.avgN θ N τ e f ∈ W := by
   intro D θ hθ N τ e he s hτs W' hW'fin hW'c hW'stab
   obtain ⟨F, hFfin, heF, hFc, hFtr⟩ := he

@@ -5,6 +5,13 @@ open MeasureTheory Matrix
 namespace GlobalTheory.CompanionTheory.SecToC
 open Ad3.K.LC Ad3.K.LC.B
 
+/- English proof (translation)
+Set `e : E ≃ₜ E` to `(LinearMap.equivOfDetNeZero L hL).toContinuousLinearEquiv.toHomeomorph`. Establish `hef : (e : E → E) = L` using `rfl`. Establish `hmap : Measure.map L μ = ENNReal.ofReal |(LinearMap.det L)⁻¹| • μ` using `Measure.map_linearMap_addHaar_eq_smul_addHaar _ hL`. Establish `hpos : 0 ≤ |(LinearMap.det L)⁻¹|` using `abs_nonneg _`. Prove the components needed by the constructor for the conclusion.
+
+Establish `h1 : ∫ x, F (L x) ∂μ = ∫ y, F y ∂(Measure.map L μ)`. Rewrite using `[← hef, e.measurableEmbedding.integral_map]`. Rewrite using `[h1, hmap, integral_smul_measure, ENNReal.toReal_ofReal hpos]`. Introduce `hF`. Establish `h2 : Integrable F (Measure.map L μ)`.
+
+Rewrite using `[hmap]`. Conclude with `hF.smul_measure ENNReal.ofReal_ne_top`. Rewrite `h2` using `[← hef]`. Conclude with `(e.measurableEmbedding.integrable_map_iff.1 h2)`.
+-/
 theorem comp_lin {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
     [NormedAddCommGroup V] [NormedSpace ℝ V] (L : E →ₗ[ℝ] E) (hL : LinearMap.det L ≠ 0) (F : E → V) :
@@ -29,9 +36,15 @@ theorem comp_lin {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [Finit
 def rowL (v : Fin 2 → ℂ) : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ) :=
   LinearMap.pi fun j => (v j • (LinearMap.id : ℂ →ₗ[ℂ] ℂ)).comp (LinearMap.proj j)
 
+/- English proof (translation)
+Simplify using `[rowL]`.
+-/
 theorem rowL_apply (v x : Fin 2 → ℂ) (j : Fin 2) : rowL v x j = v j * x j := by
   simp [rowL]
 
+/- English proof (translation)
+Rewrite using `[rowL, LinearMap.det_pi]`. Simplify using `[Fin.prod_univ_two]`.
+-/
 theorem det_rowL (v : Fin 2 → ℂ) : LinearMap.det (rowL v) = v 0 * v 1 := by
   rw [rowL, LinearMap.det_pi]
   simp [Fin.prod_univ_two]
@@ -39,13 +52,30 @@ theorem det_rowL (v : Fin 2 → ℂ) : LinearMap.det (rowL v) = v 0 * v 1 := by
 def matL (v : Fin 2 → ℂ) : M22 →ₗ[ℂ] M22 :=
   LinearMap.pi fun i => (rowL v).comp (LinearMap.proj i)
 
+/- English proof (translation)
+Rewrite using `[matL, LinearMap.det_pi]`. Simplify using `[det_rowL, sq]`.
+-/
 theorem det_matL (v : Fin 2 → ℂ) : LinearMap.det (matL v) = (v 0 * v 1) ^ 2 := by
   rw [matL, LinearMap.det_pi]
   simp [det_rowL, sq]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`.
+-/
 theorem normSq_det (z : ℂ) : Algebra.norm ℝ z = ‖z‖ ^ 2 := by
   rw [Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Introduce `F c d e hc hd he hF`. Use `set L : M22 × ℂ →ₗ[ℂ] M22 × ℂ := (matL ![c, d]).prodMap (e • LinearMap.id) with hL`. Establish `hdet : LinearMap.det (L.restrictScalars ℝ) = ‖c‖ ^ 4 * ‖d‖ ^ 4 * ‖e‖ ^ 2`. Rewrite using `[LinearMap.det_restrictScalars, hL, LinearMap.det_prodMap, det_matL, LinearMap.det_smul, LinearMap.det_id, normSq_det]`. Simplify using `only [norm_mul, norm_pow, Module.finrank_self, pow_one, mul_one, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < ‖c‖ ^ 4 * ‖d‖ ^ 4 * ‖e‖ ^ 2` using `by positivity`. Establish `hfun : ∀ p : M22 × ℂ, (Matrix.of.symm (Matrix.of p.1 * Matrix.diagonal ![c, d]), e * p.2) = (L.restrictScalars ℝ) p`. Introduce and unpack `⟨h, t⟩`. Use `Prod.ext ?_ (by simp [hL])` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i j`. Simplify using `only [hL, LinearMap.coe_restrictScalars, LinearMap.prodMap_apply, matL, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, rowL_apply]`. Simplify using `[Matrix.mul_diagonal, mul_comm]`. Establish `: (volume : Measure (Fin 2 → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure M22).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`.
+
+Establish `: (volume : Measure (M22 × ℂ)).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`. Take `⟨h1, h2⟩` from `comp_lin (volume : Measure (M22 × ℂ)) (L.restrictScalars ℝ) (by rw [hdet]; exact hpos.ne') F`. Simplify using `only [hfun]`.
+
+Use `⟨h2 hF, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hdet, abs_of_pos (inv_pos.2 hpos), smul_eq_mul]`.
+-/
 theorem integral_scale : ∀ (F : Ad3.K.LC.M22 × ℂ → ℝ) (c d e : ℂ), c ≠ 0 → d ≠ 0 → e ≠ 0 → Integrable F →
     Integrable (fun p : Ad3.K.LC.M22 × ℂ =>
       F (Matrix.of.symm (Matrix.of p.1 * Matrix.diagonal ![c, d]), e * p.2)) ∧
@@ -77,6 +107,25 @@ theorem integral_scale : ∀ (F : Ad3.K.LC.M22 × ℂ → ℝ) (c d e : ℂ), c 
   refine ⟨h2 hF, ?_⟩
   rw [h1, hdet, abs_of_pos (inv_pos.2 hpos), smul_eq_mul]
 
+/- English proof (translation)
+Introduce `Ψ a b o h t`. Establish `ha : (a : ℂ) ≠ 0` using `a.ne_zero`. Establish `hb : (b : ℂ) ≠ 0` using `b.ne_zero`. Use `set L : (Fin 2 → ℂ) × ℂ →ₗ[ℂ] (Fin 2 → ℂ) × ℂ := (rowL ![(a : ℂ) * b, (b : ℂ)]).prodMap ((a : ℂ) • LinearMap.id) with hL`. Establish `hdet : LinearMap.det (L.restrictScalars ℝ) = ‖(a : ℂ)‖ ^ 4 * ‖(b : ℂ)‖ ^ 4`.
+
+Rewrite using `[LinearMap.det_restrictScalars, hL, LinearMap.det_prodMap, det_rowL, LinearMap.det_smul, LinearMap.det_id, normSq_det]`. Simplify using `only [norm_mul, Module.finrank_self, pow_one, mul_one, Matrix.cons_val_zero, Matrix.cons_val_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 < ‖(a : ℂ)‖ ^ 4 * ‖(b : ℂ)‖ ^ 4`. Use `norm_pos_iff.2 ha` as an intermediate fact.
+
+Use `norm_pos_iff.2 hb` as an intermediate fact. Check the signs of the components of the expression. Use `set δ : Matrix (Fin 2) (Fin 2) ℂ := Matrix.diagonal ![(a : ℂ) * b, (b : ℂ)] with hδ`. Use `set g : GL (Fin 3) ℂ := Ad3.dg (a * b) b 1 * o with hg`. Use `set G : (Fin 2 → ℂ) × ℂ → ℂ := fun p => Ψ (Matrix.of.symm (h * blk p.1 * (g : Matrix (Fin 3) (Fin 3) ℂ)), rowv t p.2 h) * Ad3.K.psiC (-(p.1 1)) * Ad3.K.psiC (-p.2) with hG`.
+
+Establish `: (volume : Measure (Fin 2 → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure ((Fin 2 → ℂ) × ℂ)).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`. Establish `h1` using `(comp_lin (volume : Measure ((Fin 2 → ℂ) × ℂ)) (L.restrictScalars ℝ) (by rw [hdet]; exact hpos.ne') G).1`.
+
+Establish `hδinv : δ⁻¹ = Matrix.diagonal ![((a : ℂ) * b)⁻¹, (b : ℂ)⁻¹]`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hδ, hb] <;> field_simp`. Establish `hpt : ∀ p : (Fin 2 → ℂ) × ℂ, rt o (Ψ : E5 → ℂ) (Matrix.of.symm (Matrix.of (Matrix.of.symm (h * δ)) * blk p.1), rowv ((a : ℂ) * b * t) p.2 (Matrix.of (Matrix.of.symm (h * δ)))) * Ad3.K.psiC (-((b : ℂ) * p.1 1)) * Ad3.K.psiC (-((a : ℂ) * p.2)) = G ((L.restrictScalars ℝ) p)`.
+
+Introduce and unpack `⟨x, y⟩`. Establish `e1 : blk (rowL ![(a : ℂ) * b, (b : ℂ)] x) * ((Ad3.dg (a * b) b 1 : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ) = δ * blk x`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[blk, Ad3.dg, hδ, rowL_apply, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two, mul_comm]`.
+
+Establish `e2 : rowv ((a : ℂ) * b * t) y (h * δ) = rowv t ((a : ℂ) * y) h`. Unfold `rowv`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.vecMul_vecMul, hδinv]`. Use `congr 1`. Use extensionality with `j`.
+
+Apply the tactic sequence `fin_cases j <;> simp [Matrix.vecMul_diagonal] <;> field_simp`. Establish `e3 : h * blk (rowL ![(a : ℂ) * b, (b : ℂ)] x) * (g : Matrix (Fin 3) (Fin 3) ℂ) = h * δ * blk x * (o : Matrix (Fin 3) (Fin 3) ℂ)`. Rewrite using `[hg, Units.val_mul, ← Matrix.mul_assoc, Matrix.mul_assoc h, e1, ← Matrix.mul_assoc]`. Simplify using `only [hG, hL, LinearMap.coe_restrictScalars, LinearMap.prodMap_apply, e3, rt]`. Simplify using `only [Equiv.apply_symm_apply, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul, e2, rowL_apply]`.
+
+Both sides reduce to the same expression. Establish `hi : innB (rt o (Ψ : E5 → ℂ)) (Matrix.of.symm (h * δ)) ((a : ℂ) * b * t) a b = ∫ p, G ((L.restrictScalars ℝ) p)` using `integral_congr_ae (Filter.Eventually.of_forall hpt)`. Rewrite using `[hi, h1, hdet, abs_of_pos (inv_pos.2 hpos), Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem inn_torus : ∀ (Ψ : Ad3.K.LC.Sw) (a b : ℂˣ) (o : GL (Fin 3) ℂ) (h : Matrix (Fin 2) (Fin 2) ℂ) (t : ℂ),
     Ad3.K.LC.inn Ψ (Ad3.dg (a * b) b 1 * o) h t =
       ((‖(a : ℂ)‖ ^ 4 * ‖(b : ℂ)‖ ^ 4 : ℝ) : ℂ) *
@@ -153,6 +202,11 @@ noncomputable def rM (m : Matrix (Fin 3) (Fin 3) ℂ) : M23 →ₗ[ℝ] M23 wher
     rw [Matrix.smul_mul]
     rfl
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `hX : ∀ k, ‖X i k‖ ≤ ‖X‖` using `fun k => (norm_le_pi_norm (X i) k).trans (norm_le_pi_norm X i)`. Establish `hterm : ∀ k, ‖X i k * m k j‖ ≤ ‖X‖` using `fun k => by`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hexp : rM m X i j = X i 0 * m 0 j + X i 1 * m 1 j + X i 2 * m 2 j`. Simplify using `[rM, Matrix.mul_apply, Fin.sum_univ_three]`. Rewrite using `[hexp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_rM_le (m : Matrix (Fin 3) (Fin 3) ℂ) (hm : ∀ i j, ‖m i j‖ ≤ 1) (X : M23) :
     ‖rM m X‖ ≤ 3 * ‖X‖ := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_
@@ -172,6 +226,11 @@ theorem norm_rM_le (m : Matrix (Fin 3) (Fin 3) ℂ) (hm : ∀ i j, ‖m i j‖ �
 noncomputable def tM (m : Matrix (Fin 3) (Fin 3) ℂ) : E5 →L[ℝ] E5 :=
   (LinearMap.toContinuousLinearMap (rM m)).prodMap (ContinuousLinearMap.id ℝ (Fin 2 → ℂ))
 
+/- English proof (translation)
+Establish `h1 : ‖p.1‖ ≤ ‖p‖` using `norm_fst_le p`. Establish `h2 : ‖p.2‖ ≤ ‖p‖` using `norm_snd_le p`. Use `max_le ?_ ?_` and prove the remaining obligations. Conclude with `(norm_rM_le m hm p.1).trans (by linarith)`. Use `show ‖p.2‖ ≤ _`.
+
+Combine the linear relations using `[norm_nonneg p]`.
+-/
 theorem norm_tM_le (m : Matrix (Fin 3) (Fin 3) ℂ) (hm : ∀ i j, ‖m i j‖ ≤ 1) (p : E5) :
     ‖tM m p‖ ≤ 3 * ‖p‖ := by
   have h1 : ‖p.1‖ ≤ ‖p‖ := norm_fst_le p
@@ -181,12 +240,22 @@ theorem norm_tM_le (m : Matrix (Fin 3) (Fin 3) ℂ) (hm : ∀ i j, ‖m i j‖ �
   · show ‖p.2‖ ≤ _
     linarith [norm_nonneg p]
 
+/- English proof (translation)
+Break down `p with ⟨X, v⟩` into its components or cases. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show Matrix.of.symm (Matrix.of (Matrix.of.symm (Matrix.of X * m)) * m') = X`. Simplify using `[Matrix.mul_assoc, h]`.
+-/
 theorem tM_tM (m m' : Matrix (Fin 3) (Fin 3) ℂ) (h : m * m' = 1) (p : E5) : tM m' (tM m p) = p := by
   rcases p with ⟨X, v⟩
   refine Prod.ext ?_ rfl
   show Matrix.of.symm (Matrix.of (Matrix.of.symm (Matrix.of X * m)) * m') = X
   simp [Matrix.mul_assoc, h]
 
+/- English proof (translation)
+Establish `h1 : (o.val * o.valᴴ) i i = 1`. Rewrite using `[show o.val * o.valᴴ = 1 from ho, Matrix.one_apply_eq]`. Establish `h2 : ∑ k, ‖o.val i k‖ ^ 2 = 1`. Establish `: ((∑ k, ‖o.val i k‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h1, Matrix.mul_apply]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Conclude with `this` after adjusting the coercions. Establish `h3 : ‖o.val i j‖ ^ 2 ≤ 1`. Rewrite using `[← h2]`. Conclude with `Finset.single_le_sum (f := fun k => ‖o.val i k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Use polynomial arithmetic with `[norm_nonneg (o.val i j)]`.
+-/
 theorem entry_le (o : GL (Fin 3) ℂ) (ho : o ∈ Ad3.K.U3) (i j : Fin 3) :
     ‖(o : Matrix (Fin 3) (Fin 3) ℂ) i j‖ ≤ 1 := by
   have h1 : (o.val * o.valᴴ) i i = 1 := by
@@ -205,6 +274,19 @@ theorem entry_le (o : GL (Fin 3) ℂ) (ho : o ∈ Ad3.K.U3) (i j : Fin 3) :
     exact Finset.single_le_sum (f := fun k => ‖o.val i k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)
   nlinarith [norm_nonneg (o.val i j)]
 
+/- English proof (translation)
+Introduce `N M Ψ`. Use `set S : ℝ := 2 ^ M * (Finset.Iic (M, N)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) Ψ with hS`. Use `⟨3 ^ M * 3 ^ N * S, fun o ho => ?_⟩` and prove the remaining obligations. Use `set T := tM (o : Matrix (Fin 3) (Fin 3) ℂ) with hT`. Establish `hm` using `entry_le o ho`.
+
+Establish `hm' : ∀ i j, ‖(o : Matrix (Fin 3) (Fin 3) ℂ)ᴴ i j‖ ≤ 1` using `fun i j => by`. Rewrite using `[Matrix.conjTranspose_apply, norm_star]`. Conclude with `hm j i`. Establish `hrt : rt o (Ψ : E5 → ℂ) = (Ψ : E5 → ℂ) ∘ T` using `rfl`. Establish `hsm : ContDiff ℝ (⊤ : ℕ∞) (Ψ : E5 → ℂ)` using `Ψ.smooth _`.
+
+Use `⟨by rw [hrt]; exact hsm.comp T.contDiff, fun n hn X => ?_⟩` and prove the remaining obligations. Establish `hTn : ‖T‖ ≤ 3` using `ContinuousLinearMap.opNorm_le_bound _ (by norm_num) (norm_tM_le _ hm)`. Establish `hX : 1 + ‖X‖ ≤ 3 * (1 + ‖T X‖)`. Establish `h` using `norm_tM_le _ hm' (T X)`. Rewrite `h` using `[tM_tM _ _ ho]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hit : ‖iteratedFDeriv ℝ n ((Ψ : E5 → ℂ) ∘ T) X‖ ≤ ‖iteratedFDeriv ℝ n (Ψ : E5 → ℂ) (T X)‖ * 3 ^ N`. Rewrite using `[T.iteratedFDeriv_comp_right (hsm.of_le (by exact_mod_cast le_top)) X (le_refl (n : WithTop ℕ∞))]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsch` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (M, N)) (k := M) (n := n) le_rfl hn Ψ (T X)`. Rewrite using `[hrt]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 3 ^ M * 3 ^ N * S := by gcongr`.
+-/
 theorem rt_uniform : ∀ (N M : ℕ) (Ψ : Ad3.K.LC.Sw), ∃ B : ℝ, ∀ o ∈ Ad3.K.U3,
     ContDiff ℝ (⊤ : ℕ∞) (Ad3.K.LC.B.rt o (Ψ : Ad3.K.LC.B.E5 → ℂ)) ∧
     ∀ n ≤ N, ∀ X : Ad3.K.LC.B.E5,
@@ -242,16 +324,29 @@ theorem rt_uniform : ∀ (N M : ℕ) (Ψ : Ad3.K.LC.Sw), ∃ B : ℝ, ∀ o ∈ 
     _ ≤ 3 ^ M * 3 ^ N * S := by
         gcongr
 
+/- English proof (translation)
+Unfold `jm`. Check the signs of the components of the expression.
+-/
 theorem jm_nonneg (N : ℕ) (h : M22) (t α β : ℂ) : 0 ≤ jm N h t α β := by
   unfold jm
   positivity
 
+/- English proof (translation)
+Establish `h : ‖z / (‖z‖ : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 hz)]`. Unfold `ph`. Rewrite using `[norm_zpow, h, _root_.one_zpow]`.
+-/
 theorem norm_ph (n : ℤ) (z : ℂ) (hz : z ≠ 0) : ‖ph n z‖ = 1 := by
   have h : ‖z / (‖z‖ : ℂ)‖ = 1 := by
     rw [norm_div, Complex.norm_real, norm_norm, div_self (norm_ne_zero_iff.2 hz)]
   unfold ph
   rw [norm_zpow, h, _root_.one_zpow]
 
+/- English proof (translation)
+Establish `hu : ‖(o : Matrix (Fin 3) (Fin 3) ℂ).det‖ = 1`. Establish `h1 : (o.val * o.valᴴ).det = 1` using `by rw [show o.val * o.valᴴ = 1 from ho, Matrix.det_one]`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h2 : ‖o.val.det‖ ^ 2 = 1`. Use `congrArg norm h1` as an intermediate fact.
+
+Simplify `this` using `[norm_mul, norm_star, sq]`. Use polynomial arithmetic with `[norm_nonneg o.val.det, sq_nonneg (‖o.val.det‖ - 1)]`. Establish `hd : ((Ad3.dg (a * b) b 1 : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ).det = (a : ℂ) * b * b`. Simplify using `[Ad3.dg, Matrix.det_fin_three]`. Rewrite using `[Units.val_mul, Matrix.det_mul, hd, norm_mul, hu]`.
+
+Simplify using `only [norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_g (a b : ℂˣ) (o : GL (Fin 3) ℂ) (ho : o ∈ Ad3.K.U3) :
     ‖((Ad3.dg (a * b) b 1 * o : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ).det‖ ^ 2 =
       ‖(a : ℂ)‖ ^ 2 * ‖(b : ℂ)‖ ^ 4 := by
@@ -268,6 +363,39 @@ theorem det_g (a b : ℂˣ) (o : GL (Fin 3) ℂ) (ho : o ∈ Ad3.K.U3) :
   simp only [norm_mul]
   ring
 
+/- English proof (translation)
+Introduce `hI hM hF k hk Ψ ε hε`. Take `⟨N, hN⟩` from `hM ε hε`. Take `⟨C₂, hC₂⟩` from `hN N le_rfl`. Take `⟨C₁, hC₁⟩` from `hI N`. Take `⟨B, hB⟩` from `rt_uniform (2 * N) (2 * N + 20) Ψ`.
+
+Use `⟨|C₁ * B| * C₂, ?_⟩` and prove the remaining obligations. Introduce `a b o ho`. Establish `ha : (a : ℂ) ≠ 0` using `a.ne_zero`. Establish `hb : (b : ℂ) ≠ 0` using `b.ne_zero`. Establish `ha' : 0 < ‖(a : ℂ)‖` using `norm_pos_iff.2 ha`.
+
+Establish `hb' : 0 < ‖(b : ℂ)‖` using `norm_pos_iff.2 hb`. Use `set G : M22 × ℂ → ℝ := fun p => (‖(Matrix.of p.1).det‖ ^ 2)⁻¹ * jm N p.1 p.2 a b with hG`. Take `⟨hGi, hGle⟩` from `hC₂ a b ha hb`. Use `set g : GL (Fin 3) ℂ := Ad3.dg (a * b) b 1 * o with hg`. Use `set δ : Matrix (Fin 2) (Fin 2) ℂ := Matrix.diagonal ![(a : ℂ) * b, (b : ℂ)] with hδ`.
+
+Establish `hdδ : δ.det = (a : ℂ) * b * b` using `by simp [hδ]`. Take `⟨hGLi, hGLe⟩` from `integral_scale G ((a : ℂ) * b) b ((a : ℂ) * b) (mul_ne_zero ha hb) hb (mul_ne_zero ha hb) hGi`. Use `set GL' : M22 × ℂ → ℝ := fun p => G (Matrix.of.symm (Matrix.of p.1 * δ), (a : ℂ) * b * p.2) with hGL'`. Establish `hpt : ∀ p : M22 × ℂ, ‖secI k Ψ g p‖ ≤ (‖(a : ℂ)‖ ^ 6 * ‖(b : ℂ)‖ ^ 8 * |C₁ * B|) * GL' p`. Introduce and unpack `⟨h, t⟩`.
+
+Establish `hGnn : 0 ≤ GL' (h, t)`. Simplify using `only [hGL', hG]`. Conclude with `mul_nonneg (by positivity) (jm_nonneg _ _ _ _ _)`. Establish `hR : 0 ≤ (‖(a : ℂ)‖ ^ 6 * ‖(b : ℂ)‖ ^ 8 * |C₁ * B|) * GL' (h, t)` using `by positivity`. Distinguish the cases in `hdet : (Matrix.of h).det = 0`.
+
+Simplify `hR` using `[secI, hdet, Real.zero_rpow]`. Distinguish the cases in `ht : t = 0`. Establish `hk' : (4 * (k : ℤ) - 4) ≠ 0` using `by omega`. Establish `h0 : ph (4 * (k : ℤ) - 4) (0 : ℂ) = 0`. Simplify using `only [ph, zero_div]`.
+
+Conclude with `_root_.zero_zpow _ hk'`. Simplify `hR` using `[secI, ht, h0]`. Establish `hdet' : 0 < ‖(Matrix.of h).det‖` using `norm_pos_iff.2 hdet`. Establish `hdh : (Matrix.of (Matrix.of.symm (Matrix.of h * δ))).det = (Matrix.of h).det * ((a : ℂ) * b * b)`. Simplify using `[Matrix.det_mul, hdδ]`.
+
+Establish `hinn` using `inn_torus Ψ a b o (Matrix.of h) t`. Establish `hbound` using `(hC₁ (rt o (Ψ : E5 → ℂ)) B (hB o ho).1 (hB o ho).2 (Matrix.of.symm (Matrix.of h * δ)) ((a : ℂ) * b * t) a b (by rw [hdh]; exact mul_ne_zero hdet (mul_ne_zero (mul_ne_zero ha hb) hb)) (mul_ne_zero (mul_ne_zero ha hb) ht) ha)`. Use `set I := ‖innB (rt o (Ψ : E5 → ℂ)) (Matrix.of.symm (Matrix.of h * δ)) ((a : ℂ) * b * t) a b‖ with hIdef`. Use `set J := jm N (Matrix.of.symm (Matrix.of h * δ)) ((a : ℂ) * b * t) a b with hJ`. Establish `hJ0 : 0 ≤ J` using `jm_nonneg _ _ _ _ _`.
+
+Establish `hIJ : I ≤ |C₁ * B| * J` using `hbound.trans (mul_le_mul_of_nonneg_right (le_abs_self _) hJ0)`. Establish `hnorm : ‖secI k Ψ g (h, t)‖ = ‖(a : ℂ)‖ ^ 4 * ‖(b : ℂ)‖ ^ 4 * I * (‖(Matrix.of h).det‖ ^ 2)⁻¹`. Establish `hr : ‖(Matrix.of h).det‖ ^ (-(2 : ℝ)) = (‖(Matrix.of h).det‖ ^ 2)⁻¹`. Rewrite using `[Real.rpow_neg hdet'.le, show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Simplify using `only [secI]`.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, norm_ph _ _ ht, norm_ph _ _ hdet, Complex.norm_real, Real.norm_of_nonneg (by positivity), hr, show inn Ψ g (Matrix.of h) t = _ from hinn, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGLv : GL' (h, t) = ((‖(Matrix.of h).det‖ * (‖(a : ℂ)‖ * ‖(b : ℂ)‖ * ‖(b : ℂ)‖)) ^ 2)⁻¹ * J`. Simplify using `only [hGL', hG]`. Rewrite using `[hdh]`.
+
+Simplify using `only [norm_mul]`. Both sides reduce to the same expression. Rewrite using `[hnorm, hGLv]`. Establish `hfin : (‖(a : ℂ)‖ ^ 6 * ‖(b : ℂ)‖ ^ 8 * |C₁ * B|) * (((‖(Matrix.of h).det‖ * (‖(a : ℂ)‖ * ‖(b : ℂ)‖ * ‖(b : ℂ)‖)) ^ 2)⁻¹ * J) = ‖(a : ℂ)‖ ^ 4 * ‖(b : ℂ)‖ ^ 4 * (|C₁ * B| * J) * (‖(Matrix.of h).det‖ ^ 2)⁻¹`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hfin]`. Use `gcongr`. Establish `hint : ∫ p, ‖secI k Ψ g p‖ ≤ (‖(a : ℂ)‖ ^ 6 * ‖(b : ℂ)‖ ^ 8 * |C₁ * B|) * ∫ p, GL' p`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _) (hGLi.const_mul _) (Filter.Eventually.of_forall hpt)`.
+
+Establish `hsec : ‖sec k Ψ g‖ ≤ ‖(a : ℂ)‖ ^ 2 * ‖(b : ℂ)‖ ^ 4 * ∫ p, ‖secI k Ψ g p‖`. Rewrite using `[hF k hk Ψ g, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity), det_g a b o ho]`. Conclude with `mul_le_mul_of_nonneg_left (norm_integral_le_integral_norm _) (by positivity)`. Establish `hGLe' : ∫ p, GL' p = (‖(a : ℂ)‖ ^ 6 * ‖(b : ℂ)‖ ^ 10)⁻¹ * ∫ p, G p`. Rewrite using `[show (∫ p, GL' p) = _ from hGLe]`.
+
+Use `congr 1`. Simplify using `only [norm_mul]`. Put the polynomial expressions in normal form. Establish `hpowa : ‖(a : ℂ)‖ ^ (2 - ε) = ‖(a : ℂ)‖ ^ 2 * ‖(a : ℂ)‖ ^ (-ε)`. Rewrite using `[sub_eq_add_neg, Real.rpow_add ha', show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+
+Establish `hpowb : ‖(b : ℂ)‖ ^ (2 - ε) = ‖(b : ℂ)‖ ^ 2 * ‖(b : ℂ)‖ ^ (-ε)`. Rewrite using `[sub_eq_add_neg, Real.rpow_add hb', show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `hmul : (‖(a : ℂ)‖ * ‖(b : ℂ)‖) ^ (-ε) = ‖(a : ℂ)‖ ^ (-ε) * ‖(b : ℂ)‖ ^ (-ε)` using `Real.mul_rpow ha'.le hb'.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGLe']`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ ≤ ‖(a : ℂ)‖ ^ 2 * ‖(b : ℂ)‖ ^ 2 * |C₁ * B| * (C₂ * (‖(a : ℂ)‖ * ‖(b : ℂ)‖) ^ (-ε)) := mul_le_mul_of_nonneg_left hGle (by positivity)`. Use `_ = |C₁ * B| * C₂ * ‖(a : ℂ)‖ ^ (2 - ε) * ‖(b : ℂ)‖ ^ (2 - ε) := by`. Rewrite using `[hpowa, hpowb, hmul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : Ad3.K.LC.B.IbpBound → Ad3.K.LC.B.MajScaled → Ad3.K.LC.B.SecFub → Ad3.K.LC.B.SecTo := by
   intro hI hM hF k hk Ψ ε hε
   obtain ⟨N, hN⟩ := hM ε hε

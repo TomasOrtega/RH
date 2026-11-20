@@ -30,6 +30,9 @@ def sliceEmptySecCubeIso (M : LB Y) (E : ν → Y.Opens) (e : κ ↪o ν) {s₀ 
     fun {s t} _ x => (SecOnR.restrict_restrict f _ (h t).ge x).trans
       (SecOnR.restrict_restrict f (h s).ge _ x).symm
 
+/- English proof (translation)
+Establish `: IsSeparated (terminal.from Y)`. Rewrite using `[← terminal.comp_from f]`. Use `infer_instance`. Use `acyclic_slice_secCube_of_isAffineOpen R Y f M ν κ E e s₀ hM (hc ▸ le_top) fun t => ?_` and prove the remaining obligations. Conclude with `IsAffineOpen.biInf _ (Finset.finite_toSet _) (h₀.mono Finset.subset_union_left) fun i _ => hE i`.
+-/
 theorem acyclic_slice_secCube_of_isSeparated [Fintype κ] (hM : M.IsLB) [IsSeparated f]
     (E : ν → Y.Opens) (hE : ∀ i, IsAffineOpen (E i)) (e : κ ↪o ν) (hc : ⨆ k, E (e k) = ⊤)
     {s₀ : Finset ν} (h₀ : s₀.Nonempty) :
@@ -41,6 +44,13 @@ theorem acyclic_slice_secCube_of_isSeparated [Fintype κ] (hM : M.IsLB) [IsSepar
   exact IsAffineOpen.biInf _ (Finset.finite_toSet _)
     (h₀.mono Finset.subset_union_left) fun i _ => hE i
 
+/- English proof (translation)
+Introduce `R _ Y f M κ _ _ D κ' _ _ D' hM hf hD hc hD' hc' n`. Set `E : κ ⊕ₗ κ' → Y.Opens` to `fun u => Sum.elim D D' (ofLex u)`. Establish `hE (u : κ ⊕ₗ κ') : IsAffineOpen (E u)`. Break down `u with i | i` into its components or cases. Use `exacts [hD i, hD' i]`.
+
+Set `e₁` to `trunc₂HomologyIsoFst (secCube f M E) (fun s hs => acyclic_slice_secCube_of_isSeparated f hM E hE (Cube.inrEmb κ κ') hc' hs.map) n`. Set `e₂` to `trunc₂HomologyIsoSnd (secCube f M E) (fun t ht => by`. Rewrite using `[Cube.sliceFst_eq_slice]`. Conclude with `acyclic_slice_secCube_of_isSeparated f hM E hE (Cube.inlEmb κ κ') hc ht.map) n`. Set `i₁ : Cube.sliceFst (secCube f M E) ∅ ≅ secCube f M D` to `eqToIso (Cube.sliceFst_eq_slice _ _) ≪≫ sliceEmptySecCubeIso f M E (Cube.inlEmb κ κ') (Finset.map_empty _)`.
+
+Set `i₂ : Cube.sliceSnd (secCube f M E) ∅ ≅ secCube f M D'` to `sliceEmptySecCubeIso f M E (Cube.inrEmb κ κ') (Finset.map_empty _)`. Conclude with `⟨((HomologicalComplex.homologyMapIso ((cechFunctor κ R).mapIso i₁) n).symm ≪≫ e₁.symm ≪≫ e₂ ≪≫ HomologicalComplex.homologyMapIso ((cechFunctor κ' R).mapIso i₂) n).toLinearEquiv⟩`.
+-/
 theorem cechLB_homology_equiv_of_affine_covers :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens) (κ' : Type) [LinearOrder κ'] [Fintype κ'] (D' : κ' → Y.Opens), M.IsLB → IsSeparated f → (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (∀ i, IsAffineOpen (D' i)) → ⨆ i, D' i = ⊤ → ∀ n, Nonempty ((cechLB f M D).homology n ≃ₗ[R] (cechLB f M D').homology n) := by
   intro R _ Y f M κ _ _ D κ' _ _ D' hM hf hD hc hD' hc' n

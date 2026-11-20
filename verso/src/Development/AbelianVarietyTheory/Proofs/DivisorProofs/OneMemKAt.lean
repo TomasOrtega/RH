@@ -19,6 +19,9 @@ def latAt {d : ℕ} (W : Spc F E d) (v : Pl F) : AddSubgroup (Fin d → AE F E) 
 def KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Set (UA σ W.J) :=
   {h | h ∈ UAt σ W (evFin F v) ∧ ∀ z ∈ latAt W v, mat h *ᵥ z ∈ latAt W v ∧ mat h⁻¹ *ᵥ z ∈ latAt W v}
 
+/- English proof (translation)
+Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `u _ show u • (mat (1 : UA σ W.J) - 1) = 0`. Simplify using `[mat]`. Simplify using `[mat, hz]`.
+-/
 theorem one_mem_KAt (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : (1 : UA σ W.J) ∈ KAt σ W v := by
   refine ⟨?_, fun z hz => ?_⟩
   · intro u _

@@ -74,6 +74,13 @@ def MoveLaw : Prop :=
         moveScal Ch mu u i N₁ N₂ N₁' N₂' •
           kerOf (stepT W Ch sel mu cst (ambOf s B χ cD) u i lam') (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) N₂ fr N₂' fr' Ξ
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.t_odd`. Establish `h1 : R.N (i + 1) = R.N i + 2 * (c + 1)`. Unfold `Ranks.N`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : (R.t + 1) / 2 = c + 1` using `by omega`. Establish `h3 : (((R.N (i + 1) / 2 : ℕ) : ℤ) * 1 - ((R.N i / 2 : ℕ) : ℤ) * 1) = ((c + 1 : ℕ) : ℤ)`. Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Unfold `locScal`.
+
+Rewrite using `[h3, h2, sub_self, zpow_zero, Units.val_one, one_mul, zpow_natCast]`.
+-/
 theorem locScal_one_one {K : Type} [Field K] (R : Ranks) (i q : ℕ) (w : Kˣ) :
     locScal (R.N i) (R.N (i + 1)) q w 1 1 = (q : K) ^ ((R.t + 1) / 2) := by
   obtain ⟨c, hc⟩ := R.t_odd
@@ -88,9 +95,15 @@ theorem locScal_one_one {K : Type} [Field K] (R : Ranks) (i q : ℕ) (w : Kˣ) :
   unfold locScal
   rw [h3, h2, sub_self, zpow_zero, Units.val_one, one_mul, zpow_natCast]
 
+/- English proof (translation)
+Simplify using `[locScal]`.
+-/
 theorem locScal_zero_zero {K : Type} [Field K] (a b q : ℕ) (w : Kˣ) : locScal a b q w 0 0 = 1 := by
   simp [locScal]
 
+/- English proof (translation)
+The claim follows from `R.k_even.add ((R.t_odd.add_one).mul_left j)`.
+-/
 theorem even_N (R : Ranks) (j : ℕ) : Even (R.N j) :=
   R.k_even.add ((R.t_odd.add_one).mul_left j)
 

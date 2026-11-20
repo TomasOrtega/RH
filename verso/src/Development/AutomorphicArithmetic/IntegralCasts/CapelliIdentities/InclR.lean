@@ -6,6 +6,9 @@ import Mathlib
     fun (F : Type) [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) ↦
       IsDedekindDomain.HeightOneSpectrum.adicCompletion F v
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qh24.aux2 :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F]
       (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)),
@@ -39,6 +42,17 @@ noncomputable def UpperTheory.Reformulated.B.Qh24.OEv :
               Set.univ)) :
         Set (TensorProduct F (UpperTheory.Reformulated.B.Qh24.Fv F v) E))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v s t hs ht`. Unfold `UpperTheory.Reformulated.B.Qh24.OEv at *`. Simplify using `only [SetLike.mem_coe] at *`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `zero => rw [zero_mul]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c ha`.
+
+Consider the case `mem a ha`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`. Consider the case `mem b hb`. Take `⟨x, -, rfl⟩` from `ha`.
+
+Take `⟨y, -, rfl⟩` from `hb`. Use `Submodule.subset_span ⟨x * y, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.Qh24.oev_mul :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E]
       (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))

@@ -12,6 +12,33 @@ namespace GlobalTheory.TypeDim.Coset
 def Pres (r t : ℕ) (v : Equiv.Perm (Fin (r + t))) : Prop :=
   ∀ (i : Fin t) (j : Fin r), Fin.natAdd r i ≠ v (Fin.castAdd t j)
 
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A : Finset (Fin r), A = Finset.univ.filter (fun s => ¬ ((w₀ (Fin.castAdd t s) : ℕ) < r))` from `⟨_, rfl⟩`. Take `⟨C, hC⟩ : ∃ C : Finset (Fin t), C = Finset.univ.filter (fun x => (w₀ (Fin.natAdd r x) : ℕ) < r)` from `⟨_, rfl⟩`. Establish `hmemA : ∀ s, s ∈ A ↔ ¬ ((w₀ (Fin.castAdd t s) : ℕ) < r)` using `fun s => by simp [hA]`. Establish `hmemC : ∀ x, x ∈ C ↔ (w₀ (Fin.natAdd r x) : ℕ) < r` using `fun x => by simp [hC]`. Establish `hsum : ∑ p : Fin (r + t), (if ((w₀ p : Fin (r + t)) : ℕ) < r then 1 else 0) = r`.
+
+Use `(Equiv.sum_comp w₀ (fun q : Fin (r + t) => if (q : ℕ) < r then 1 else 0)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Rewrite `hsum` using `[Fin.sum_univ_add]`. Simplify using `only [Finset.sum_boole, Nat.cast_id] at hsum`.
+
+Establish `hsplit` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin r))) (fun s => (w₀ (Fin.castAdd t s) : ℕ) < r)`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at hsplit`. Establish `hcard : A.card = C.card`. Rewrite using `[hA, hC]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨e⟩ : Nonempty (A ≃ C)` from `Fintype.card_eq.mp (by simpa using hcard)`. Set `φ : Fin r ⊕ Fin t → Fin r ⊕ Fin t` to `Sum.elim (fun s => if h : s ∈ A then Sum.inr (e ⟨s, h⟩).1 else Sum.inl s) (fun x => if h : x ∈ C then Sum.inl (e.symm ⟨x, h⟩).1 else Sum.inr x)`. Establish `hφ : Function.Involutive φ`. Introduce and unpack `(s | x)`. Distinguish the cases in `h : s ∈ A`.
+
+Simplify using `[φ, h, (e ⟨s, h⟩).2]`. Simplify using `[φ, h]`. Distinguish the cases in `h : x ∈ C`. Simplify using `[φ, h, (e.symm ⟨x, h⟩).2]`. Simplify using `[φ, h]`.
+
+Set `w : Equiv.Perm (Fin (r + t))` to `finSumFinEquiv.permCongr (Function.Involutive.toPerm φ hφ)`. Establish `hw : ∀ z, w (finSumFinEquiv z) = finSumFinEquiv (φ z)` using `fun z => by`. Simplify using `[w, Equiv.permCongr_apply]`. Establish `hww : ∀ x, w (w x) = x` using `fun x => by`. Take `⟨z, rfl⟩` from `finSumFinEquiv.surjective x`.
+
+Rewrite using `[hw, hw, hφ]`. Establish `hwA : ∀ s, s ∈ A → ∃ x ∈ C, w (Fin.castAdd t s) = Fin.natAdd r x` using `fun s h => ⟨_, (e ⟨s, h⟩).2, by rw [← finSumFinEquiv_apply_left, hw]; simp [φ, h]⟩`. Establish `hwA' : ∀ s, s ∉ A → w (Fin.castAdd t s) = Fin.castAdd t s` using `fun s h => by`. Rewrite using `[← finSumFinEquiv_apply_left, hw]`. Simplify using `[φ, h]`.
+
+Use `⟨w₀ * w, w, 1, A, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.TypeDim.Nice`. Use `⟨fun i hi => hwA' i hi, fun i hi => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨x, -, hx⟩` from `hwA i hi`. Establish `hsymm : w.symm (Fin.castAdd t i) = w (Fin.castAdd t i)` using `(Equiv.symm_apply_eq w).mpr (hww _).symm`.
+
+Rewrite using `[hsymm, hx]`. Simplify using the standard rewrite rules. Establish `hC0 : C = ∅` using `Finset.card_eq_zero.mp (by rw [← hcard, h0, Finset.card_empty])`. Use `Equiv.ext fun x => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `finSumFinEquiv.surjective x`.
+
+Rewrite using `[hw]`. Apply the tactic sequence `rcases z with s | y <;> simp [φ, h0, hC0]`. Introduce `i j hij`. Establish `hlt : ((w₀ (w (Fin.castAdd t j)) : Fin (r + t)) : ℕ) < r`. Distinguish the cases in `hj : j ∈ A`.
+
+Take `⟨x, hx, hxw⟩` from `hwA j hj`. Rewrite using `[hxw]`. Conclude with `(hmemC x).mp hx`. Rewrite using `[hwA' j hj]`. Simplify `hj` using `[hmemA]`.
+
+Rewrite `hij` using `[Equiv.Perm.mul_apply]`. Rewrite `hlt` using `[← hij]`. Simplify using `at hlt`. Introduce `i j hij`. Establish `h1` using `congrArg Fin.val hij`.
+
+Establish `h2` using `j.2`. Simplify using `only [Equiv.Perm.one_apply, Fin.coe_natAdd, Fin.coe_castAdd] at h1`. Use linear arithmetic over natural numbers and integers. Establish `hww' : w * w = 1` using `Equiv.ext fun x => hww x`. Rewrite using `[mul_one, mul_assoc, hww', mul_one]`.
+-/
 theorem perm_normal (r t : ℕ) (w₀ : Equiv.Perm (Fin (r + t))) :
     ∃ (v w u : Equiv.Perm (Fin (r + t))) (S : Finset (Fin r)),
       Nice r t w S ∧ Pres r t v ∧ Pres r t u ∧ w₀ = v * w * u := by
@@ -90,12 +117,25 @@ theorem perm_normal (r t : ℕ) (w₀ : Equiv.Perm (Fin (r + t))) :
   · have hww' : w * w = 1 := Equiv.ext fun x => hww x
     rw [mul_one, mul_assoc, hww', mul_one]
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [part])`.
+-/
 private theorem blockIndex_true_eq_natAdd (r t : ℕ) (i : Fin t) :
     part r t ⟨true, i⟩ = Fin.natAdd r i := Fin.ext (by simp [part])
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [part])`.
+-/
 private theorem blockIndex_false_eq_castAdd (r t : ℕ) (i : Fin r) :
     part r t ⟨false, i⟩ = Fin.castAdd t i := Fin.ext (by simp [part])
 
+/- English proof (translation)
+Rewrite using `[mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h true false i j (by decide)` as an intermediate fact. Rewrite `this` using `[blockIndex_true_eq_natAdd, blockIndex_false_eq_castAdd]`. Then use the resulting hypothesis.
+
+Introduce `h a b i j hab`. Apply the tactic sequence `cases a <;> cases b`. Conclude with `absurd hab (by decide)`. Conclude with `absurd hab (by decide)`. Rewrite using `[blockIndex_true_eq_natAdd, blockIndex_false_eq_castAdd]`.
+
+Conclude with `h i j`. Conclude with `absurd hab (by decide)`.
+-/
 private theorem mem_parab_iff_lower_left_eq_zero {R : Type} [CommRing R] {r t : ℕ} {g : GL (Fin (r + t)) R} :
     g ∈ parab R (part r t) ↔ ∀ (i : Fin t) (j : Fin r), g.val (Fin.natAdd r i) (Fin.castAdd t j) = 0 := by
   rw [mem_parab_iff]
@@ -111,6 +151,9 @@ private theorem mem_parab_iff_lower_left_eq_zero {R : Type} [CommRing R] {r t : 
       exact h i j
     · exact absurd hab (by decide)
 
+/- English proof (translation)
+Rewrite using `[mem_parab_iff_lower_left_eq_zero]`. Introduce `i j`. Rewrite using `[GlobalTheory.Parabolic.permGL_apply, if_neg (hv i j)]`.
+-/
 theorem permGL_mem_parab (F : Type) [Field F] {r t : ℕ} {v : Equiv.Perm (Fin (r + t))} (hv : Pres r t v) :
     Parabolic.permGL F v ∈ parab F (part r t) := by
   rw [mem_parab_iff_lower_left_eq_zero]
@@ -119,6 +162,9 @@ theorem permGL_mem_parab (F : Type) [Field F] {r t : ℕ} {v : Equiv.Perm (Fin (
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hM : (IsLocalRing.residue 𝒪[k]).mapMatrix M = B.val` using `Matrix.ext fun i j => h i j`. Establish `hdet : IsUnit M.det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, hM]`. Conclude with `(Matrix.isUnits_det_units B).ne_zero`. Conclude with `⟨(M.isUnit_iff_isUnit_det.mpr hdet).unit, rfl⟩`.
+-/
 theorem exists_unit {n : ℕ} (M : Matrix (Fin n) (Fin n) 𝒪[k]) (B : GL (Fin n) 𝓀[k])
     (h : ∀ i j, IsLocalRing.residue 𝒪[k] (M i j) = B.val i j) : ∃ u : GL (Fin n) 𝒪[k], u.val = M := by
   have hM : (IsLocalRing.residue 𝒪[k]).mapMatrix M = B.val := Matrix.ext fun i j => h i j
@@ -128,6 +174,11 @@ theorem exists_unit {n : ℕ} (M : Matrix (Fin n) (Fin n) 𝒪[k]) (B : GL (Fin 
     exact (Matrix.isUnits_det_units B).ne_zero
   exact ⟨(M.isUnit_iff_isUnit_det.mpr hdet).unit, rfl⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.TypeDim.Coset.exists_unit (k := k) (fun i j => if B.val i j = 0 then 0 else Function.surjInv IsLocalRing.residue_surjective (B.val i j)) B (fun i j => by`. Distinguish the cases in `h : B.val i j = 0`. Simplify using `[h]`. Simplify using `[h, Function.surjInv_eq])`. Use `⟨u, Matrix.GeneralLinearGroup.ext fun i j => ?_, fun i j h => by rw [hu]; simp [h]⟩` and prove the remaining obligations.
+
+Rewrite using `[red_val, hu]`. Distinguish the cases in `h : B.val i j = 0`. Simplify using `[h]`. Simplify using `[h, Function.surjInv_eq]`.
+-/
 theorem exists_lift {n : ℕ} (B : GL (Fin n) 𝓀[k]) :
     ∃ u : GL (Fin n) 𝒪[k], red k n u = B ∧ ∀ i j, B.val i j = 0 → u.val i j = 0 := by
   classical
@@ -149,20 +200,36 @@ variable (k) in
 def permO (n : ℕ) : Equiv.Perm (Fin n) →* GL (Fin n) 𝒪[k] := (Matrix.permMatrixHom (R := 𝒪[k])).toHomUnits
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[permO, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.symm_apply_eq]`.
+-/
 theorem permO_apply {n : ℕ} (w : Equiv.Perm (Fin n)) (i j : Fin n) :
     (permO k n w).val i j = if i = w j then 1 else 0 := by
   simp [permO, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.symm_apply_eq]
 
+/- English proof (translation)
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[incl_val, permO_apply, GlobalTheory.Parabolic.permGL_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem incl_permO {n : ℕ} (w : Equiv.Perm (Fin n)) : incl k n (permO k n w) = Parabolic.permGL k w := by
   refine Matrix.GeneralLinearGroup.ext fun i j => ?_
   rw [incl_val, permO_apply, GlobalTheory.Parabolic.permGL_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[red_val, permO_apply, GlobalTheory.Parabolic.permGL_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem red_permO {n : ℕ} (w : Equiv.Perm (Fin n)) : red k n (permO k n w) = Parabolic.permGL 𝓀[k] w := by
   refine Matrix.GeneralLinearGroup.ext fun i j => ?_
   rw [red_val, permO_apply, GlobalTheory.Parabolic.permGL_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GlobalTheory.TypeDim.Coset.exists_unit (k := k) (fun i j => y.val (Fin.castAdd t i) (Fin.castAdd t j)) (GlobalTheory.SmGL.leviProj 𝓀[k] (part r t) ⟨_, hy⟩ false) (fun i j => by`. Rewrite using `[GlobalTheory.SmGL.leviProj_apply, blockIndex_false_eq_castAdd, blockIndex_false_eq_castAdd]`. Simplify using `only [Subgroup.coe_mk]`. Rewrite using `[red_val])`. Take `⟨d, hd⟩` from `GlobalTheory.TypeDim.Coset.exists_unit (k := k) (fun i j => y.val (Fin.natAdd r i) (Fin.natAdd r j)) (GlobalTheory.SmGL.leviProj 𝓀[k] (part r t) ⟨_, hy⟩ true) (fun i j => by`.
+
+Rewrite using `[GlobalTheory.SmGL.leviProj_apply, blockIndex_true_eq_natAdd, blockIndex_true_eq_natAdd]`. Simplify using `only [Subgroup.coe_mk]`. Rewrite using `[red_val])`. Use `⟨a, d, ?_⟩` and prove the remaining obligations. Unfold `HasBlocks`.
+
+Use `⟨fun i j => by rw [ha], fun i j => by rw [hd], fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, ← red_val]`. Conclude with `mem_parab_iff_lower_left_eq_zero.mp hy i j`.
+-/
 theorem exists_blocks {r t : ℕ} (y : GL (Fin (r + t)) 𝒪[k]) (hy : red k (r + t) y ∈ parab 𝓀[k] (part r t)) :
     ∃ a d, HasBlocks y a d := by
 
@@ -184,6 +251,13 @@ theorem exists_blocks {r t : ℕ} (y : GL (Fin (r + t)) 𝒪[k]) (hy : red k (r 
   rw [← IsLocalRing.residue_eq_zero_iff, ← red_val]
   exact mem_parab_iff_lower_left_eq_zero.mp hy i j
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Unfold `HasBlocks`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [diagO_ul, diagO_ur, h1, zero_mul, Finset.sum_const_zero, add_zero]`.
+
+Rewrite using `[← Matrix.mul_apply, ← Units.val_mul, inv_mul_cancel]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `only [diagO_ll, diagO_lr, h2, zero_mul, Finset.sum_const_zero, zero_add]`. Rewrite using `[← Matrix.mul_apply, Units.val_one, Matrix.one_mul]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_add]`.
+
+Simplify using `only [diagO_ll, diagO_lr, zero_mul, Finset.sum_const_zero, zero_add, Units.val_one, Matrix.one_apply, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `h3 i j`.
+-/
 theorem hasBlocks_split {r t : ℕ} {y : GL (Fin (r + t)) 𝒪[k]} {a : GL (Fin r) 𝒪[k]} {d : GL (Fin t) 𝒪[k]}
     (h : HasBlocks y a d) : HasBlocks (diagO a⁻¹ 1 * y) 1 d := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -200,6 +274,9 @@ theorem hasBlocks_split {r t : ℕ} {y : GL (Fin (r + t)) 𝒪[k]} {a : GL (Fin 
       Matrix.one_apply, ite_mul, one_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
     exact h3 i j
 
+/- English proof (translation)
+Rewrite using `[mem_parab_iff_lower_left_eq_zero]`. Introduce `i j`. Use `Formalism.L2.DIV.mem_blockTri.mp hg _ _ ?_` and prove the remaining obligations. Establish `hj` using `j.2`. Simplify using `[hj]`.
+-/
 theorem blockTri_mem_parab {F : Type} [Field F] {r t : ℕ} {g : GL (Fin (r + t)) F}
     (hg : g ∈ Formalism.L2.DIV.blockTri (κ := F) (fun i : Fin (r + t) => if (i : ℕ) < r then 0 else 1)) :
     g ∈ parab F (part r t) := by
@@ -209,6 +286,27 @@ theorem blockTri_mem_parab {F : Type} [Field F] {r t : ℕ} {g : GL (Fin (r + t)
   have hj := j.2
   simp [hj]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t g`. Take `⟨b, hb, w', hw', hg⟩` from `GlobalTheory.SplitWeil.iwasawa_blockTriangular k (Fin (r + t)) (fun i : Fin (r + t) => if (i : ℕ) < r then 0 else 1) g`. Take `⟨κ, hκ⟩` from `hw'`. Establish `hκ' : incl k (r + t) κ = w'` using `hκ`. Establish `hbP : b ∈ parab k (part r t)` using `blockTri_mem_parab (Formalism.L2.DIV.mem_blockTri.mpr fun i j hij => hb hij)`.
+
+Establish `hmono : Monotone (fun i : Fin (r + t) => if (i : ℕ) < r then 0 else 1)`. Introduce `x y hxy`. Establish `: (x : ℕ) ≤ y` using `hxy`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Take `⟨w₀, p', p, hbr⟩` from `GlobalTheory.FinGL.Bruhat.exists_perm_rep_blockTri 𝓀[k] (r + t) _ _ hmono hmono (red k (r + t) κ)`. Take `⟨v, w, u, S, hN, hv, hu, hw₀⟩` from `perm_normal r t w₀`. Establish `hq' : (p' : GL (Fin (r + t)) 𝓀[k]) * GlobalTheory.Parabolic.permGL 𝓀[k] v ∈ parab 𝓀[k] (part r t)` using `mul_mem (blockTri_mem_parab p'.2) (permGL_mem_parab _ hv)`. Establish `hq : GlobalTheory.Parabolic.permGL 𝓀[k] u * (p : GL (Fin (r + t)) 𝓀[k]) ∈ parab 𝓀[k] (part r t)` using `mul_mem (permGL_mem_parab _ hu) (blockTri_mem_parab p.2)`. Take `⟨Q', hQ'red, hQ'0⟩` from `exists_lift (k := k) ((p' : GL (Fin (r + t)) 𝓀[k]) * GlobalTheory.Parabolic.permGL 𝓀[k] v)`.
+
+Take `⟨Q, hQred, -⟩` from `exists_lift (k := k) (GlobalTheory.Parabolic.permGL 𝓀[k] u * (p : GL (Fin (r + t)) 𝓀[k]))`. Establish `hredκ : red k (r + t) κ = red k (r + t) Q' * red k (r + t) (permO k (r + t) w) * red k (r + t) Q`. Rewrite using `[hQ'red, hQred, red_permO, hbr, hw₀, map_mul, map_mul]`. Simplify using `only [mul_assoc]`. Take `⟨κ₁, hκ₁⟩ : ∃ κ₁, κ₁ = (Q' * permO k (r + t) w * Q)⁻¹ * κ` from `⟨_, rfl⟩`.
+
+Establish `hκ₁red : red k (r + t) κ₁ = 1`. Rewrite using `[hκ₁]`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[← hredκ, inv_mul_cancel]`. Take `⟨y, hy⟩ : ∃ y, y = Q * κ₁` from `⟨_, rfl⟩`.
+
+Establish `hyP : red k (r + t) y ∈ parab 𝓀[k] (part r t)`. Rewrite using `[hy, map_mul, hκ₁red, mul_one, hQred]`. Conclude with `hq`. Take `⟨a, d, had⟩` from `exists_blocks y hyP`. Establish `hInclQ' : incl k (r + t) Q' ∈ parab k (part r t)`.
+
+Rewrite using `[mem_parab_iff_lower_left_eq_zero]`. Introduce `i j`. Rewrite using `[incl_val, hQ'0 _ _ (mem_parab_iff_lower_left_eq_zero.mp hq' i j)]`. Simplify using the standard rewrite rules. Establish `hdiag : diagO a 1 * diagO a⁻¹ 1 = (1 : GL (Fin (r + t)) 𝒪[k])`.
+
+Unfold `diagO`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one, Prod.mk_one_one, map_one]`. Take `⟨h, hh⟩ : ∃ h, h = diagO a⁻¹ 1 * y` from `⟨_, rfl⟩`. Establish `hhb : HasBlocks h 1 d`. Rewrite using `[hh]`.
+
+Conclude with `hasBlocks_split had`. Use `⟨⟨b * incl k (r + t) Q', mul_mem hbP hInclQ'⟩, w, S, a, 1, h, d, hN, map_one _, hhb, ?_⟩` and prove the remaining obligations. Establish `hcancel : diagO a 1 * (diagO a⁻¹ 1 * y) = y` using `by rw [← mul_assoc, hdiag, one_mul]`. Establish `hκeq : κ = Q' * permO k (r + t) w * (diagO a 1 * h)`. Rewrite using `[hh, hcancel, hy, hκ₁]`.
+
+Use `group`. Rewrite using `[hg, ← hκ', hκeq, map_mul, map_mul, map_mul, incl_permO, incl_diagO_one]`. Simplify using `only [Subgroup.coe_mk, mul_assoc]`.
+-/
 theorem coset : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (g : GL (Fin (r + t)) k), ∃ (p : parab k (part r t)) (w : Equiv.Perm (Fin (r + t))) (S : Finset (Fin r)) (a a₁ : GL (Fin r) 𝒪[k]) (h : GL (Fin (r + t)) 𝒪[k]) (d : GL (Fin t) 𝒪[k]), Nice r t w S ∧ red k r a₁ = 1 ∧ HasBlocks h a₁ d ∧ g = p * (GlobalTheory.Parabolic.permGL k w * diagOne k r t a * incl k (r + t) h) := by
   intro k _ _ _ _ r t g
   classical

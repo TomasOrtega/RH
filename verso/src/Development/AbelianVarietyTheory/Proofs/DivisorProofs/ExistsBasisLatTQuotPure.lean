@@ -24,10 +24,18 @@ def HasIndex (n : ℕ) (L L' : Submodule O U) (I : Ideal O) : Prop :=
   ∃ (w : Fin n → U) (g : Matrix (Fin n) (Fin n) O), LinearIndependent C w ∧ Submodule.span O (Set.range w) = L ∧
     Submodule.span O (Set.range fun i => ∑ j, g i j • w j) = L' ∧ g.det ≠ 0 ∧ Ideal.span {g.det} = I
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => x, Matrix.of fun _ _ => a, by simpa using hx, by simp, by simp, by simpa using ha, by simp⟩`.
+-/
 example {x : U} (hx : x ≠ 0) {a : O} (ha : a ≠ 0) :
     HasIndex C 1 (Submodule.span O {x}) (Submodule.span O {a • x}) (Ideal.span {a}) :=
   ⟨fun _ => x, Matrix.of fun _ _ => a, by simpa using hx, by simp, by simp, by simpa using ha, by simp⟩
 
+/- English proof (translation)
+Set `e : Fin n ≃ κ` to `(Fintype.equivFinOfCardEq hn).symm`. Use `⟨w ∘ e, g.submatrix e e, hw.comp _ e.injective, by rw [e.surjective.range_comp], ?_, by rwa [Matrix.det_submatrix_equiv_self], by rw [Matrix.det_submatrix_equiv_self]⟩` and prove the remaining obligations. Rewrite using `[← e.surjective.range_comp fun i => ∑ j, g i j • w j]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Conclude with `e.sum_comp fun j => g (e i) j • w j`.
+-/
 theorem hasIndex_of_fintype {κ : Type} [Fintype κ] [DecidableEq κ] {n : ℕ} (hn : Fintype.card κ = n) {w : κ → U}
     (g : Matrix κ κ O) (hw : LinearIndependent C w) (hg : g.det ≠ 0) :
     HasIndex C n (Submodule.span O (Set.range w)) (Submodule.span O (Set.range fun i => ∑ j, g i j • w j))
@@ -40,27 +48,48 @@ theorem hasIndex_of_fintype {κ : Type} [Fintype κ] [DecidableEq κ] {n : ℕ} 
   funext i
   exact e.sum_comp fun j => g (e i) j • w j
 
+/- English proof (translation)
+Take `⟨w, g, -, rfl, rfl, -⟩` from `h`. Conclude with `Submodule.span_le.2 (Set.range_subset_iff.2 fun i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`.
+-/
 theorem HasIndex.le {n : ℕ} {L L' : Submodule O U} {I : Ideal O} (h : HasIndex C n L L' I) : L' ≤ L := by
   obtain ⟨w, g, -, rfl, rfl, -⟩ := h
   exact Submodule.span_le.2 (Set.range_subset_iff.2 fun i =>
     Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))
 
+/- English proof (translation)
+Use `choose a ha using fun i => (Submodule.mem_span_range_iff_exists_fun O).1 (h (Submodule.subset_span ⟨i, rfl⟩))`. Conclude with `⟨Matrix.of a, fun i => by simp only [Matrix.map_apply, Matrix.of_apply, algebraMap_smul, ha]⟩`.
+-/
 theorem exists_matrix {n : ℕ} {x y : Fin n → U} (h : Submodule.span O (Set.range x) ≤ Submodule.span O (Set.range y)) :
     ∃ a : Matrix (Fin n) (Fin n) O, ∀ i, x i = ∑ j, (a.map (algebraMap O C)) i j • y j := by
   choose a ha using fun i => (Submodule.mem_span_range_iff_exists_fun O).1 (h (Submodule.subset_span ⟨i, rfl⟩))
   exact ⟨Matrix.of a, fun i => by simp only [Matrix.map_apply, Matrix.of_apply, algebraMap_smul, ha]⟩
 
 omit [Module O U] [IsScalarTower O C U] in
+/- English proof (translation)
+Simplify using `only [h i, h', Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem comb_comb {n : ℕ} {x y z : Fin n → U} {a b : Matrix (Fin n) (Fin n) C} (h : ∀ i, x i = ∑ j, a i j • y j)
     (h' : ∀ i, y i = ∑ j, b i j • z j) (i : Fin n) : x i = ∑ j, (a * b) i j • z j := by
   simp only [h i, h', Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]
   exact Finset.sum_comm
 
 omit [Module O U] [IsScalarTower O C U] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i => Fintype.linearIndependent_iffₛ.1 hz _ _ ((h i).symm.trans (h' i))`.
+-/
 theorem comb_inj {n : ℕ} {x z : Fin n → U} (hz : LinearIndependent C z) {a b : Matrix (Fin n) (Fin n) C}
     (h : ∀ i, x i = ∑ j, a i j • z j) (h' : ∀ i, x i = ∑ j, b i j • z j) : a = b :=
   Matrix.ext fun i => Fintype.linearIndependent_iffₛ.1 hz _ _ ((h i).symm.trans (h' i))
 
+/- English proof (translation)
+Take `⟨w, g, hw, h1, h2, hg, rfl⟩` from `h`. Use `haveI : IsDomain O := hi.isDomain (algebraMap O C)`. Establish `hd : ∀ b : Matrix (Fin n) (Fin n) O, (b.map (algebraMap O C)).det = algebraMap O C b.det` using `fun b => ((algebraMap O C).map_det b).symm`. Establish `hw' : ∀ i, (fun i => ∑ j, g i j • w j) i = ∑ j, (g.map (algebraMap O C)) i j • w j` using `fun i => by`. Simplify using `only [Matrix.map_apply, algebraMap_smul]`.
+
+Take `⟨s, hs⟩` from `exists_matrix (C := C) (hL.trans h1.symm).le`. Take `⟨t, ht⟩` from `exists_matrix (C := C) (h1.trans hL.symm).le`. Take `⟨s', hs'⟩` from `exists_matrix (C := C) (hL'.trans h2.symm).le`. Take `⟨t', ht'⟩` from `exists_matrix (C := C) (h2.trans hL'.symm).le`. Establish `e1` using `congrArg Matrix.det (comb_inj hw (comb_comb ht hs) (b := 1) fun i => by simp [Matrix.one_apply])`.
+
+Establish `e2` using `congrArg Matrix.det (comb_inj hw (comb_comb ha hs) (comb_comb hs' hw'))`. Establish `e3` using `congrArg Matrix.det (comb_inj hw (comb_comb ht' (comb_comb hs' hw')) hw')`. Simplify using `only [Matrix.det_mul, hd, Matrix.det_one] at e1 e2 e3`. Establish `f1 : t.det * s.det = 1` using `hi (by rw [map_mul, e1, map_one])`. Establish `f3 : t'.det * s'.det = 1` using `mul_right_cancel₀ hg (hi (by rw [map_mul, map_mul, mul_assoc, e3, _root_.one_mul]))`.
+
+Use `⟨t.det * s'.det * g.det, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_assoc, ← e2, mul_left_comm, e1, _root_.mul_one]`. Conclude with `Ideal.span_singleton_mul_left_unit ((IsUnit.of_mul_eq_one _ f1).mul (IsUnit.of_mul_eq_one_right _ f3)) _`.
+-/
 theorem HasIndex.det (hi : Function.Injective (algebraMap O C)) {n : ℕ} {L L' : Submodule O U} {I : Ideal O}
     (h : HasIndex C n L L' I) {x x' : Fin n → U} (hL : Submodule.span O (Set.range x) = L)
     (hL' : Submodule.span O (Set.range x') = L') {a : Matrix (Fin n) (Fin n) C} (ha : ∀ i, x' i = ∑ j, a i j • x j) :
@@ -85,6 +114,9 @@ theorem HasIndex.det (hi : Function.Injective (algebraMap O C)) {n : ℕ} {L L' 
   · rw [map_mul, map_mul, mul_assoc, ← e2, mul_left_comm, e1, _root_.mul_one]
   · exact Ideal.span_singleton_mul_left_unit ((IsUnit.of_mul_eq_one _ f1).mul (IsUnit.of_mul_eq_one_right _ f3)) _
 
+/- English proof (translation)
+Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Take `⟨d', h1, h2⟩` from `h.det hv.hom_inj hL hL' ha`. Take `⟨u, rfl⟩` from `Ideal.span_singleton_eq_span_singleton.1 h2`. Rewrite using `[← h1, map_mul, map_mul, hv.one_of_isUnit u.isUnit, mul_one]`.
+-/
 theorem HasIndex.val_det {v : Valuation C ℝ≥0} (hv : v.Integers O) {n : ℕ} {L L' : Submodule O U} {d : O}
     (h : HasIndex C n L L' (Ideal.span {d})) {x x' : Fin n → U} (hL : Submodule.span O (Set.range x) = L)
     (hL' : Submodule.span O (Set.range x') = L') {a : Matrix (Fin n) (Fin n) C} (ha : ∀ i, x' i = ∑ j, a i j • x j) :
@@ -107,6 +139,13 @@ variable {A R Λ O C : Type} [CommRing A] [CommRing R] [CommRing Λ] [CommRing O
 def part (j : κ) : C ⊗[A] T := proj hs (baseChangeAction C ρ) k (1 ⊗ₜ f (Pi.single j 1))
 
 include hι hχ hf in
+/- English proof (translation)
+Establish `h1 : ∀ (s : R) (r : κ → R), proj hs (baseChangeAction C ρ) k (1 ⊗ₜ f (s • r)) = χ s • proj hs (baseChangeAction C ρ) k (1 ⊗ₜ f r)` using `fun s r => by`. Establish `hm : s ∈ Submodule.span A (Set.range ι)` using `hι ▸ Submodule.mem_top`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+
+Establish `e` using `(isEquivariant_action (baseChangeAction C ρ) a).proj hs k (1 ⊗ₜ f r)`. Rewrite `e` using `[mem_eigenSub.1 (proj_mem hs _ k _) a]`. Rewrite using `[hf, hχ, ← algebraMap_smul C]`. Conclude with `e.symm`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [add_smul, map_add, TensorProduct.tmul_add, map_add, hx, hy, map_add, add_smul]`. Consider the case `smul a x _ hx`. Rewrite using `[smul_assoc, map_smul, TensorProduct.tmul_smul, LinearMap.map_smul_of_tower, hx, map_smul, smul_assoc]`. Use `conv_lhs => rw [pi_eq_sum_univ' r, map_sum, TensorProduct.tmul_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => h1 _ _`.
+-/
 theorem proj_frame (r : κ → R) :
     proj hs (baseChangeAction C ρ) k (1 ⊗ₜ f r) = ∑ j, χ (r j) • part hs k ρ f j := by
   have h1 : ∀ (s : R) (r : κ → R), proj hs (baseChangeAction C ρ) k (1 ⊗ₜ f (s • r)) =
@@ -127,6 +166,15 @@ theorem proj_frame (r : κ → R) :
   exact Finset.sum_congr rfl fun j _ => h1 _ _
 
 include hχ hf in
+/- English proof (translation)
+Set `g : κ → (C ⊗[A] T →ₗ[C] C)` to `fun j => LinearMap.liftBaseChange C ((Algebra.linearMap O C).restrictScalars A ∘ₗ χ.toLinearMap ∘ₗ LinearMap.proj j ∘ₗ f.symm.toLinearMap)`. Set `ρ' : Λ →+* Module.End C C` to `(algebraMap C _).comp (embC C σ k)`. Establish `hg : ∀ j, IsEquivariant (baseChangeAction C ρ) ρ' (g j)` using `fun j a x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c t`. Take `⟨r, rfl⟩` from `f.surjective t`. Establish `: baseChangeAction C ρ a (c ⊗ₜ f r) = c ⊗ₜ f (ι a • r)` using `by rw [hf]; rfl`. Rewrite using `[this]`.
+
+Simplify using `[g, ρ', hχ, mul_left_comm]`. Establish `hd : ∀ j l, g j (part hs k ρ f l) = if j = l then 1 else 0` using `fun j l => by`. Rewrite using `[part, (hg j).proj hs k, proj_of_mem hs (mem_eigenSub.2 fun a => by simp [ρ'])]`. Simplify using `[g, Pi.single_apply, apply_ite]`. Use `Fintype.linearIndependent_iff.2 fun c hc j => ?_` and prove the remaining obligations.
+
+Simplify `congrArg (g j) hc` using `[hd]`.
+-/
 theorem linearIndependent_part : LinearIndependent C (part hs k ρ f) := by
   let g : κ → (C ⊗[A] T →ₗ[C] C) := fun j => LinearMap.liftBaseChange C
     ((Algebra.linearMap O C).restrictScalars A ∘ₗ χ.toLinearMap ∘ₗ LinearMap.proj j ∘ₗ f.symm.toLinearMap)
@@ -147,6 +195,13 @@ theorem linearIndependent_part : LinearIndependent C (part hs k ρ f) := by
   simpa [hd] using congrArg (g j) hc
 
 include hι hχ hf in
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 fun j => ⟨_, ⟨1 ⊗ₜ f (Pi.single j 1), ?_⟩, rfl⟩)) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul c t`. Take `⟨r, rfl⟩` from `f.surjective t`. Rewrite using `[LinearMap.liftBaseChange_tmul, map_smul]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `e` using `proj_frame hι hs k χ hχ ρ f hf r`. Conclude with `e ▸ Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_part : Submodule.span O (Set.range (part hs k ρ f)) = eigQuotLat (baseChangeAction C ρ) hs k
     (LinearMap.range ((TensorProduct.mk A C T 1).liftBaseChange O)) := by
   refine le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 fun j => ⟨_, ⟨1 ⊗ₜ f (Pi.single j 1), ?_⟩, rfl⟩)) ?_
@@ -176,6 +231,11 @@ variable {A R Λ O C : Type} [CommRing A] [CommRing R] [CommRing Λ] [CommRing O
 
 include hι hχ hf hf' in
 
+/- English proof (translation)
+Establish `he : IsEquivariant (baseChangeAction C ρ') (baseChangeAction C ρ) (φ.baseChange C)` using `fun a x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c t => exact congrArg (c ⊗ₜ ·) (hφ a t)`.
+
+Rewrite using `[← span_part hι hs k χ hχ ρ' f' hf', Set.range_unique, Submodule.map_span, Set.image_singleton, ← proj_frame hι hs k χ hχ ρ f hf, hm]`. Use `congr 2`. Use `(he.proj hs k _).trans ?_` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_tmul]`. Use `congr 4`.
+-/
 theorem map_quot_eq (φ : T' →ₗ[A] T) (hφ : ∀ a x, φ (ρ' a x) = ρ a (φ x)) {m : κ → R} (hm : f m = φ (f' 1)) :
     (eigQuotLat (baseChangeAction C ρ') hs k (LinearMap.range ((TensorProduct.mk A C T' 1).liftBaseChange O))).map
       ((φ.baseChange C).restrictScalars O) = Submodule.span O {∑ j, χ (m j) • part hs k ρ f j} := by
@@ -199,6 +259,11 @@ variable (ℓ : ℕ) [Fact ℓ.Prime] (Λ : Type) [CommRing Λ]
 
 abbrev toCompl : Λ →+* ℤ_[ℓ] ⊗[ℤ] Λ := (Algebra.TensorProduct.includeRight : Λ →ₐ[ℤ] ℤ_[ℓ] ⊗[ℤ] Λ).toRingHom
 
+/- English proof (translation)
+Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy => exact Submodule.add_mem _ (hx trivial) (hy trivial)`. Consider the case `tmul c a`.
+
+Establish `: c ⊗ₜ[ℤ] a = c • toCompl ℓ Λ a` using `by simp [TensorProduct.smul_tmul']`. Conclude with `this ▸ Submodule.smul_mem _ c (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem span_toCompl : Submodule.span ℤ_[ℓ] (Set.range (toCompl ℓ Λ)) = ⊤ := by
   refine top_le_iff.1 fun x _ => ?_
   induction x using TensorProduct.induction_on with
@@ -214,6 +279,9 @@ def extChar {O : Type} [CommRing O] [Algebra ℤ_[ℓ] O] (χ : Λ →+* O) : �
   Algebra.TensorProduct.lift (Algebra.ofId _ _) χ.toIntAlgHom fun _ _ => Commute.all _ _
 
 variable {Λ} in
+/- English proof (translation)
+Simplify using `[extChar]`.
+-/
 theorem extChar_toCompl {O : Type} [CommRing O] [Algebra ℤ_[ℓ] O] (χ : Λ →+* O) (a : Λ) :
     extChar ℓ χ (toCompl ℓ Λ a) = χ a := by simp [extChar]
 
@@ -235,6 +303,15 @@ def IsFrame {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point ℓ v O Λ) {κ :
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hT : ThetaUnifAV` using `thetaUnifAV_all`. Take `⟨u, HA, χA, -, hu, -⟩` from `PureType.exists_isThetaUnif hT P.A`. Take `⟨-, -, -, -, h1, h2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT P.A _ u HA χA hu`. Set `α` to `P.oA.toRingAct`. Use `choose F hF using fun a : 𝓞 E => (HomLinear.exists_linear_of_isMonHom P.A.A P.A.A P.A.isAb P.A.isAb _ _ _ _ u u h1 h2 (α.act a) (α.hom a)).imp fun _ h => h.1`.
+
+Establish `hu0 : ∀ M N : (Fin P.A.g → ℂ) →ₗ[ℂ] (Fin P.A.g → ℂ), (∀ z, u.ex (M z) = u.ex (N z)) → M = N` using `fun M N h => by`. Use `sub_eq_zero.1 (PointUnif.linear_eq_zero_of_discrete u.Λ u.discrete _ fun z => (u.ker _).1 ?_)` and prove the remaining obligations. Use `u.ex_add ((M - N) z) (N z)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, sub_add_cancel, h]`. Conclude with `mul_eq_right.1 this.symm`.
+
+Set `ρ : 𝓞 E →+* Module.End ℂ (Fin P.A.g → ℂ)` to `RingHom.mk' (MonoidHom.mk (OneHom.mk F (hu0 _ _ fun z => by rw [hF, α.map_one, Category.comp_id]; rfl)) fun a b => hu0 _ _ fun z => by`. Express the relevant statement in the definitionally equal form `u.ex (F (a * b) z) = u.ex (F a (F b z))`. Rewrite using `[hF, hF, hF, α.map_mul, Category.assoc])`. Use `fun a b => hu0 _ _ fun z => by`. Express the relevant statement in the definitionally equal form `u.ex (F (a + b) z) = u.ex (F a z + F b z)`.
+
+Rewrite using `[u.ex_add, hF, hF, hF, actPts_add]`. Use `haveI := u.discrete`. Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`. Conclude with `GlobalTheory.T.exponential_lattice_endomorphism_lift E ℓ _ ρ (ChTor.Pts P.A.A) u.ex u.ex_add u.ex_onto u.Λ u.ker (ZLattice.module_finite ℝ u.Λ) (actPts α _) hF P.actT (fun _ _ _ => rfl) inferInstance inferInstance κ (by rw [ZLattice.rank ℝ u.Λ, Module.finrank_pi_fintype, ← h]; si …`.
+-/
 theorem exists_isFrame_complex [StarRing (𝓞 E)] {v : Valuation ℂ ℝ≥0} {O : Type} [CommRing O] [Algebra O ℂ]
     (P : Point ℓ v O (𝓞 E)) (κ : Type) [Fintype κ] (h : 2 * P.A.g = Fintype.card κ * Module.finrank ℚ E) :
     ∃ f : (κ → ℤ_[ℓ] ⊗[ℤ] 𝓞 E) ≃ₗ[ℤ_[ℓ]] P.T, IsFrame P f := by
@@ -266,6 +343,11 @@ theorem exists_isFrame_complex [StarRing (𝓞 E)] {v : Valuation ℂ ℝ≥0} {
 variable [IsCMField E] {H : Host E} {K : Type} [Field K] [NumberField K] [IsAlgClosed C] [CharZero C]
   (hv : v.Integers O) (ε : Eps ℓ C) (i : K →+* C)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨ε'⟩ : Nonempty (Eps ℓ ℂ)` from `inferInstance`. Establish `hv' : (1 : Valuation ℂ ℝ≥0).Integers ℂ` using `⟨fun _ _ h => h, fun x => Valuation.one_apply_le_one x, fun {x} _ => ⟨x, rfl⟩⟩`. Set `i' : K →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := K) (M := ℂ)).toRingHom`. Take `⟨e, he, -⟩` from `exists_patT_equiv (H := H) hv' ε' i' hv ε i`.
+
+Take `⟨f, hf⟩` from `exists_isFrame_complex (patPoint hv' ε' i' T) κ h`. Conclude with `⟨f.trans (e T), fun a r => (congrArg (e T) (hf a r)).trans (he T a _)⟩`.
+-/
 theorem exists_isFrame (T : PAT H (Sp (𝓞 K))) (κ : Type) [Fintype κ]
     (h : 2 * T.g = Fintype.card κ * Module.finrank ℚ E) : letI := H.starRing
     ∃ f : (κ → ℤ_[ℓ] ⊗[ℤ] 𝓞 E) ≃ₗ[ℤ_[ℓ]] (patPoint hv ε i T).T, IsFrame (patPoint hv ε i T) f := by
@@ -287,12 +369,20 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] {v : Valuation C ℝ�
   {Λ : Type} [CommRing Λ] [StarRing Λ] [Algebra ℤ_[ℓ] C] [Algebra ℤ_[ℓ] O] [IsScalarTower ℤ_[ℓ] O C]
   {J : Type} [DecidableEq J] {σ : J → Λ →+* O} (hs : IsSplitting (embC C σ)) (k : J)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨part hs k P.actT f, linearIndependent_part hs k (extChar ℓ (σ k)) (extChar_toCompl ℓ _) P.actT f hf, span_part (span_toCompl ℓ Λ) hs k (extChar ℓ (σ k)) (extChar_toCompl ℓ _) P.actT f hf⟩`.
+-/
 theorem IsFrame.exists_basis {P : Point ℓ v O Λ} {n : ℕ} {f : (Fin n → ℤ_[ℓ] ⊗[ℤ] Λ) ≃ₗ[ℤ_[ℓ]] P.T}
     (hf : IsFrame P f) :
     ∃ w : Fin n → P.V, LinearIndependent C w ∧ Submodule.span O (Set.range w) = P.latTQuot hs k :=
   ⟨part hs k P.actT f, linearIndependent_part hs k (extChar ℓ (σ k)) (extChar_toCompl ℓ _) P.actT f hf,
     span_part (span_toCompl ℓ Λ) hs k (extChar ℓ (σ k)) (extChar_toCompl ℓ _) P.actT f hf⟩
 
+/- English proof (translation)
+Establish `hχ` using `extChar_toCompl ℓ (σ k)`. Establish `e` using `hasIndex_of_fintype (n := p + q) (by simp) (M.map (extChar ℓ (σ k))) (linearIndependent_part hs k _ hχ B.actT f h) (((extChar ℓ (σ k)).map_det M).symm.trans_ne hd)`. Rewrite `e` using `[span_part (span_toCompl ℓ Λ) hs k _ hχ B.actT f h, Submodule.span_range_eq_iSup, iSup_sum]`. Establish `e₁ : ∀ a, (A.latTQuot hs k).map (((φ a).baseChange C).restrictScalars O) = _` using `fun a => map_quot_eq (span_toCompl ℓ Λ) hs k _ hχ B.actT f h A.actT f₁ h₁ (φ a) (hφ a) (hM₁ a)`. Establish `e₂ : ∀ a, (A'.latTQuot hs k).map (((φ' a).baseChange C).restrictScalars O) = _` using `fun a => map_quot_eq (span_toCompl ℓ Λ) hs k _ hχ B.actT f h A'.actT f₂ h₂ (φ' a) (hφ' a) (hM₂ a)`.
+
+Rewrite using `[iSup_congr e₁, iSup_congr e₂, (extChar ℓ (σ k)).map_det M]`. Conclude with `e`.
+-/
 theorem hasIndex_of_frames {A A' B : Point ℓ v O Λ} {p q : ℕ} (φ : Fin p → (A.T →ₗ[ℤ_[ℓ]] B.T))
     (φ' : Fin q → (A'.T →ₗ[ℤ_[ℓ]] B.T)) (hφ : ∀ a c x, φ a (A.actT c x) = B.actT c (φ a x))
     (hφ' : ∀ a c x, φ' a (A'.actT c x) = B.actT c (φ' a x)) {f₁ : (Unit → ℤ_[ℓ] ⊗[ℤ] Λ) ≃ₗ[ℤ_[ℓ]] A.T}
@@ -339,10 +429,18 @@ def IsFrameDet (δ : ℤ_[ℓ] ⊗[ℤ] 𝓞 E) : Prop :=
 variable [IsAlgClosed C] [CharZero C]
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `Nat.mul_div_cancel' ⟨Module.finrank ℚ (maximalRealSubfield E), by rw [← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]⟩`.
+-/
 theorem two_mul_half : 2 * (Module.finrank ℚ E / 2) = Module.finrank ℚ E :=
   Nat.mul_div_cancel' ⟨Module.finrank ℚ (maximalRealSubfield E), by
     rw [← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]⟩
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨h1, h2, -⟩` from `dims X`. Take `⟨f₁, h₁⟩` from `exists_isFrame hv ε i (X.A true) Unit (by simp [h1, two_mul_half])`. Take `⟨f₂, h₂⟩` from `exists_isFrame hv ε i (X.A false) Unit (by simp [h1, two_mul_half])`. Take `⟨f, h⟩` from `exists_isFrame hv ε i X.B (Fin p ⊕ Fin q) (by`.
+
+Rewrite using `[h2, ← mul_assoc, two_mul_half, mul_comm]`. Use the proof step `simp)`. Conclude with `⟨_, f₁, f₂, f, Matrix.of (Sum.elim (fun a => f.symm (phiTP hv ε i X a (f₁ 1))) fun a => f.symm (phiTQ hv ε i X a (f₂ 1))), h₁, h₂, h, fun a => f.apply_symm_apply _, fun a => f.apply_symm_apply _, rfl⟩`.
+-/
 theorem exists_isFrameDet : ∃ δ, IsFrameDet hv ε i X δ := by
   letI := H.starRing
   obtain ⟨h1, h2, -⟩ := dims X
@@ -356,6 +454,9 @@ theorem exists_isFrameDet : ∃ δ, IsFrameDet hv ε i X δ := by
 
 variable {hv ε i X}
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨f₁, f₂, f, M, h₁, h₂, h, hM₁, hM₂, hd⟩` from `h`. Take `⟨e, he, he'⟩` from `exists_patT_equiv (H := H) hv ε i hv' ε' i'`. Conclude with `⟨f₁.trans (e (X.A true)), f₂.trans (e (X.A false)), f.trans (e X.B), M, fun a r => (congrArg (e _) (h₁ a r)).trans (he _ a _), fun a r => (congrArg (e _) (h₂ a r)).trans (he _ a _), fun a r => (congrArg (e _) (h a r)).trans (he _ a _), fun a => (congrArg (e _) (hM₁ a)).trans (he' …`.
+-/
 theorem IsFrameDet.transport {δ : ℤ_[ℓ] ⊗[ℤ] 𝓞 E} (h : IsFrameDet hv ε i X δ) {C' : Type} [Field C']
     {v' : Valuation C' ℝ≥0} {O' : Type} [CommRing O'] [Algebra O' C'] [IsAlgClosed C'] [CharZero C']
     (hv' : v'.Integers O') (ε' : Eps ℓ C') (i' : K →+* C') : IsFrameDet hv' ε' i' X δ := by
@@ -368,6 +469,9 @@ theorem IsFrameDet.transport {δ : ℤ_[ℓ] ⊗[ℤ] 𝓞 E} (h : IsFrameDet hv
     fun a => (congrArg (e _) (hM₁ a)).trans (he' (X.A true) X.B _ (X.lin (.inl a)) _),
     fun a => (congrArg (e _) (hM₂ a)).trans (he' (X.A false) X.B _ (X.lin (.inr a)) _), hd⟩
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨f₁, f₂, f, M, h₁, h₂, h, hM₁, hM₂, rfl⟩` from `h`. Take `⟨hP, hQ, hO⟩` from `tateModule_gram_relations_blocks_orthogonal hv ε i X hg`. Conclude with `GlobalTheory.T.conjugate_linear_tensor_module_decomposition ℤ_[ℓ] _ (𝓞 E) (toCompl ℓ _) (span_toCompl ℓ _) (H.bar : 𝓞 E →+* 𝓞 E) _ (fun _ => rfl) (fun a => star_star a) _ _ _ (pointA hv ε i X true).actT (pointA hv ε i X false).actT (pointB hv ε i X).actT (pairT (pointA hv ε i X t …`.
+-/
 theorem IsFrameDet.associated {δ : ℤ_[ℓ] ⊗[ℤ] 𝓞 E} (h : IsFrameDet hv ε i X δ) {gP : Matrix (Fin p) (Fin p) (𝓞 E)}
     {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (hg : IsGram X gP gQ) :
     Associated (δ * Algebra.TensorProduct.map (AlgHom.id ℤ_[ℓ] ℤ_[ℓ]) (H.bar : 𝓞 E →+* 𝓞 E).toIntAlgHom δ)
@@ -394,6 +498,9 @@ abbrev quotImage : letI := H.starRing; Submodule O (pointB hv ε i X).V :=
   (⨆ a, ((pointA hv ε i X true).latTQuot hs k).map ((phiVP hv ε i X a).restrictScalars O)) ⊔
     ⨆ b, ((pointA hv ε i X false).latTQuot hs k).map ((phiVQ hv ε i X b).restrictScalars O)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨f, h⟩` from `exists_isFrame hv ε i (X.A b) (Fin 1) (by simp [(dims X).1, two_mul_half])`. Conclude with `h.exists_basis hs k`.
+-/
 theorem exists_basis_latTQuot_pure (b : Bool) : letI := H.starRing
     ∃ w : Fin 1 → (pointA hv ε i X b).V, LinearIndependent C w ∧
       Submodule.span O (Set.range w) = (pointA hv ε i X b).latTQuot hs k := by
@@ -403,6 +510,17 @@ theorem exists_basis_latTQuot_pure (b : Bool) : letI := H.starRing
 
 end At
 
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `hD : gP.det * gQ.det ≠ 0` using `mul_ne_zero (gram_det X h).1 (gram_det X h).2.1`. Establish `hex : ∀ (ℓ : ℕ) [Fact ℓ.Prime], ∃ δ, IsFrameDet (PadicComplexInt.integers ℓ) (Classical.arbitrary (Eps ℓ ℂ_[ℓ])) (IsAlgClosed.lift (R` using `ℚ) (S := K) (M := ℂ_[ℓ])).toRingHom X δ := fun ℓ _ => exists_isFrameDet _ _ _ X`. Use `choose δ hδ using hex`. Establish `hm : 0 < Ideal.absNorm (Ideal.span {gP.det * gQ.det})` using `Nat.pos_of_ne_zero fun h0 => hD (Ideal.span_singleton_eq_bot.1 (Ideal.absNorm_eq_zero_iff.1 h0))`.
+
+Take `⟨𝔫, h1, h2⟩` from `GlobalTheory.T.ideal_norm_equation_from_local_associates (𝓞 E) (H.bar : 𝓞 E →+* 𝓞 E) _ _ hm (Ideal.absNorm_mem _) δ fun ℓ _ => (hδ ℓ).associated h`. Use `⟨𝔫, h1, fun ℓ _ C _ _ _ v O _ _ _ _ _ hv ε i J _ σ hs k => ?_⟩` and prove the remaining obligations. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : CharZero O := (algebraMap O C).charZero`. Establish `e : 𝔫.map (σ k) = Ideal.span {extChar ℓ (σ k) (δ ℓ)}`.
+
+Establish `e' : (extChar ℓ (σ k)).toRingHom.comp (toCompl ℓ _) = σ k` using `RingHom.ext (extChar_toCompl ℓ (σ k))`. Use `(congrArg 𝔫.map e').symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_map, h2, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `h0 : extChar ℓ (σ k) (δ ℓ) ≠ 0` using `fun h0 => by`.
+
+Establish `: (Ideal.span {gP.det * gQ.det}).map (σ k) = ⊥`. Rewrite using `[← h1, Ideal.map_mul, e, h0]`. Simplify using the standard rewrite rules. Establish `h3` using `Ideal.mem_map_of_mem (σ k) (Ideal.absNorm_mem (Ideal.span {gP.det * gQ.det}))`. Rewrite `h3` using `[this, map_natCast, Ideal.mem_bot, Nat.cast_eq_zero]`.
+
+Conclude with `hm.ne' h3`. Take `⟨f₁, f₂, f, M, h₁, h₂, h', hM₁, hM₂, hd⟩` from `(hδ ℓ).transport hv ε i`. Rewrite using `[e, ← hd]`. Conclude with `hasIndex_of_frames hs k (A := pointA hv ε i X true) (A' := pointA hv ε i X false) (B := pointB hv ε i X) (phiTP hv ε i X) (phiTQ hv ε i X) (fun a => patT_actT (T := X.A true) hv ε i (X.lin (.inl a))) (fun a => patT_actT (T := X.A false) hv ε i (X.lin (.inr a))) h₁ h₂ h' hM₁ hM₂ ( …`.
+-/
 theorem exists_indexIdeal (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin p) (𝓞 E)}
     {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) : letI := H.starRing
     ∃ 𝔫 : Ideal (𝓞 E), 𝔫 * 𝔫.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {gP.det * gQ.det} ∧
@@ -442,6 +560,11 @@ theorem exists_indexIdeal (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hi : Function.Injective ((algebraMap O C).comp χ)`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h0`. Establish `h` using `Ideal.absNorm_mem (RingHom.ker ((algebraMap O C).comp χ))`. Rewrite `h` using `[RingHom.mem_ker, map_natCast, Nat.cast_eq_zero]`.
+
+Conclude with `h0 (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `⟨IsFractionRing.lift hi, RingHom.ext fun a => hv.hom_inj ((algebraMap_embO hv _ a).trans (IsFractionRing.lift_algebraMap hi a))⟩`.
+-/
 theorem exists_embO_eq {C : Type} [Field C] [CharZero C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C]
     (hv : v.Integers O) (χ : 𝓞 E →+* O) : ∃ φ : E →+* C, embO hv φ = χ := by
   have hi : Function.Injective ((algebraMap O C).comp χ) := by
@@ -455,6 +578,9 @@ theorem exists_embO_eq {C : Type} [Field C] [CharZero C] {v : Valuation C ℝ≥
 
 open Classical GlobalTheory.HTLat.OmegaRank in
 
+/- English proof (translation)
+The claim follows from `towerPadic ℓ ∃ φ : E →+* ℂ_[ℓ], embO (PadicComplexInt.integers ℓ) φ = (embO (PadicComplexInt.integers ℓ) i).comp τ ∧ HasIndex ℂ_[ℓ] (p + q) ((pointB (PadicComplexInt.integers ℓ) ε i X).latTQuot (σ := fun φ : E →+* ℂ_[ℓ] => embO (PadicComplexInt.integers ℓ) φ) (isSplitting_embO (P …`.
+-/
 theorem index_ideal (X : CMObj H K ρ σ₁ p q) {gP : Matrix (Fin p) (Fin p) (𝓞 E)}
     {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ) :
     ∃ 𝔫 : Ideal (𝓞 E), 𝔫 * 𝔫.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {gP.det * gQ.det} ∧

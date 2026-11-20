@@ -16,6 +16,23 @@ variable {K F V V' : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Num
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
+/- English proof (translation)
+Rewrite using `[LocalizedFibreSets.fibLoc_eq_card]`. Establish `hN : Submodule.IsLattice K (S.adjoin Λ')` using `(VecSplit.isLattice_adjoin_iff S Λ').2 hΛ'`. Establish `hmk : algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) n) = algebraMap F K (n : F)` using `rfl`. Establish `hn1 : h S.x₀ S.x₀ ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[hn, ← hmk]`.
+
+Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`. Establish `hNi : Formalism.HermitianLatticesTheory.IsIntegralLat h (S.adjoin Λ')` using `LocalizedFibreSets.isIntegralLat_adjoin hs S hn1 hΛi`. Take `⟨P, hP, hPc⟩` from `LocalizedFibreSets.exists_max_over (K := K) h𝔭`. Establish `hne : algebraMap F K (n : F) ≠ 0`. Rewrite using `[← hn]`.
+
+Conclude with `S.hx₀`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by simp)`. Establish `hnP : n ∉ 𝔭` using `LocalizedFibreSets.notMem_of_vF_zero h𝔭 hn0 hvn`.
+
+Establish `hmP : algebraMap (𝓞 F) (𝓞 K) n ∉ P`. Introduce `hm`. Apply `hnP` to reduce the goal to its premises. Rewrite using `[← hPc]`. Conclude with `hm`.
+
+Establish `hvN : vd h (S.adjoin Λ') 𝔭 = 0`. Rewrite using `[← hPc, ← isUnimodularAt_iff_vd hK hF hs hd hN hNi hP]`. Use `LocalizedFibreSets.unimod_adjoin hs S ?_ ?_ ?_` and prove the remaining obligations. Use `show ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) P, s • h S.x₀ S.x₀ ∈ (1 : Submodule (𝓞 K) K)`. Conclude with `⟨1, Submonoid.one_mem _, by simpa using hn1⟩`.
+
+Use `show ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) P, s • (h S.x₀ S.x₀)⁻¹ ∈ (1 : Submodule (𝓞 K) K)`. Use `⟨algebraMap (𝓞 F) (𝓞 K) n, Submonoid.subset_closure ⟨hmP, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `hst : star (algebraMap F K (n : F)) = algebraMap F K (n : F)` using `(hF _).2 ⟨_, rfl⟩`. Rewrite `ht` using `[hmk, hst, ← hmk]`.
+
+Rewrite using `[FaithfulSMul.algebraMap_injective (𝓞 K) K ht]`. Conclude with `hmP`. Rewrite using `[Algebra.smul_def, hmk, hn, mul_inv_cancel₀ hne]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[isUnimodularAt_iff_vd hK hF (S.isSymm hs) (S.isTotPosDef hd) hΛ' hΛi hP, hPc]`.
+
+Conclude with `hvΛ`. Rewrite using `[LocalizedFibreSets.fibSet_eq_singleton hK hF hs hd S hL hLi hN hNi h𝔭 hvL hvN]`. Simplify using the standard rewrite rules.
+-/
 theorem fibLoc_eq_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {Λ' : Submodule (𝓞 K) V'}
@@ -62,6 +79,15 @@ theorem fibLoc_eq_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF :
   rw [LocalizedFibreSets.fibSet_eq_singleton hK hF hs hd S hL hLi hN hNi h𝔭 hvL hvN]
   simp
 
+/- English proof (translation)
+Distinguish the cases in `hne : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, (LocalizedFibreSets.fibSet S L 𝔭.1 Λ').Nonempty`. Establish `hN : Submodule.IsLattice K (S.adjoin Λ')` using `(VecSplit.isLattice_adjoin_iff S Λ').2 hΛ'`. Establish `hNi` using `LocalizedFibreSets.adjoin_integral_of_nonempty hK hF S hLi hne`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, ∀ 𝔭 ∉ t, vd h L 𝔭.1 = 0 ∧ vd h (S.adjoin Λ') 𝔭.1 = 0 := by`. Establish `hfin` using `(finite_vd_ne_zero hK hF hs hd hL hLi).union (finite_vd_ne_zero hK hF hs hd hN hNi)`.
+
+Use `⟨hfin.toFinset, fun 𝔭 h𝔭 => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at h𝔭`. Conclude with `h𝔭`. Establish `ht1 : ∀ 𝔭 ∉ t, LocalizedFibreSets.fibSet S L 𝔭.1 Λ' = {locF 𝔭.1 (S.adjoin Λ')}` using `fun 𝔭 h𝔭 => LocalizedFibreSets.fibSet_eq_singleton hK hF hs hd S hL hLi hN hNi 𝔭.2 (ht 𝔭 h𝔭).1 (ht 𝔭 h𝔭).2`. Rewrite using `[LocalizedFibreSets.card_fibG_eq_card_pi hK hF S hL hΛ' t ht1, Nat.card_pi, Nat.cast_prod, tprod_eq_prod (s := t) (fun 𝔭 h𝔭 => by rw [LocalizedFibreSets.fibLoc_eq_card, ht1 𝔭 h𝔭]; simp)]`.
+
+Rewrite using `[← Finset.prod_coe_sort t]`. Conclude with `Finset.prod_congr rfl fun 𝔭 _ => by rw [LocalizedFibreSets.fibLoc_eq_card]`. Use `push Not at hne`. Take `⟨𝔭, h𝔭⟩` from `hne`. Establish `hE : fibG S L Λ' = ∅` using `Set.eq_empty_of_forall_notMem fun Λ hΛ => by`.
+
+Establish `h1` using `LocalizedFibreSets.locF_mem_fibSet hK hF S hΛ 𝔭.2`. Rewrite `h1` using `[h𝔭]`. Conclude with `h1`. Rewrite using `[hE, tprod_of_exists_eq_zero ⟨𝔭, by rw [LocalizedFibreSets.fibLoc_eq_card, h𝔭]; simp⟩]`. Simplify using the standard rewrite rules.
+-/
 theorem card_fibG_eq_prod (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {Λ' : Submodule (𝓞 K) V'}

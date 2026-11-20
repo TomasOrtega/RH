@@ -22,6 +22,9 @@ variable (Y h) in
 def coords (W : Y.Opens) : Γ(freeModule Y (Fin h), W) ≃ₗ[Γ(Y, W)] (Fin h → Γ(Y, W)) :=
   ((isFrame_freeFrame Y (Fin h)).basis (le_top : W ≤ ⊤)).equivFun
 
+/- English proof (translation)
+The claim follows from `funext fun l => (isFrame_freeFrame Y (Fin h)).repr_resM le_top hle s l`.
+-/
 theorem coords_resM {W W' : Y.Opens} (hle : W' ≤ W) (s : Γ(freeModule Y (Fin h), W)) :
     coords Y h W' (resM _ hle s) = piMap (resG Y hle) (Fin h) (coords Y h W s) :=
   funext fun l => (isFrame_freeFrame Y (Fin h)).repr_resM le_top hle s l
@@ -34,6 +37,13 @@ def localSpan (V : I → Y.Opens) (P : ∀ i, Submodule Γ(Y, V i) (Fin h → Γ
 
 variable {V : I → Y.Opens} {P : ∀ i, Submodule Γ(Y, V i) (Fin h → Γ(Y, V i))}
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, u, hu, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨i, hle.trans hi, u, hu, funext fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [piMap_apply]`.
+
+Conclude with `(GlobalTheory.LB.resG_resG hi hle (u l))`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem piMap_mem_localSpan {W W' : Y.Opens} (hle : W' ≤ W) {v : Fin h → Γ(Y, W)} (hv : v ∈ localSpan V P W) :
     piMap (resG Y hle) (Fin h) v ∈ localSpan V P W' := by
   induction hv using Submodule.span_induction with
@@ -83,6 +93,9 @@ def glueSub : Sub (freeModule Y (Fin h)) where
     rw [resM_resM] at m₂
     exact m₂
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_glueSub_sec {W : Y.Opens} {s : Γ(freeModule Y (Fin h), W)} :
     s ∈ (glueSub V P).sec W ↔ ∀ y ∈ W, ∃ (W' : Y.Opens) (hle : W' ≤ W), y ∈ W' ∧
       coords Y h W' (resM _ hle s) ∈ localSpan V P W' := Iff.rfl

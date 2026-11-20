@@ -20,6 +20,69 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `hp11 : 11 ≤ PD.p` using `hB.1`. Establish `hSet` using `hB.2.1`. Establish `hl5 : 5 ≤ PD.p` using `by omega`. Establish `hsur : Formalism.MainNotions.LiftingTheory.Sur W F` using `hSet.2.1`. Establish `hηs : ∀ i, η < size i` using `hSet.2.2.1`.
+
+Establish `hup1 : up (c - 1) = false`. Establish `h` using `(halt (c - 2)).1`. Establish `e : c - 2 + 1 = c - 1` using `by ring`. Rewrite `h` using `[e, hU]`. Simplify using `using h`.
+
+Establish `hup0 : up c = true`. Establish `h` using `(halt (c - 1)).1`. Establish `e : c - 1 + 1 = c` using `by ring`. Rewrite `h` using `[e, hup1]`. Simplify using `using h`.
+
+Establish `hty0 : (arcOf b w S η up size).ty (c - ((0 : ℕ) : ZMod n)) = .up (size c)`. Simplify using `[arcOf, hup0]`. Establish `hty1 : (arcOf b w S η up size).ty (c - ((1 : ℕ) : ZMod n)) = .down (size (c - 1))`. Simplify using `[arcOf, hup1]`. Establish `hty2 : (arcOf b w S η up size).ty (c - ((2 : ℕ) : ZMod n)) = .up (size (c - 2))`.
+
+Simplify using `[arcOf, hU]`. Establish `hthick : ∀ t < (arcOf b w S η up size).len c, ((arcOf b w S η up size).ty (c - (t : ZMod n))).thick`. Introduce `t _`. Simplify using `only [arcOf]`. Apply the tactic sequence `split <;> rfl`.
+
+Establish `hps : ∀ t, ps W t ∈ W.AΔ` using `fun t => GS.ps_mem W t`. Establish `hnn : nnDen W (arcOf b w S η up size) c = ps W 0 ^ size c * ps W 2 ^ size (c - 2)`. Unfold `nnDen prodTy`. Rewrite using `[hlen]`. Simplify using `only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]`.
+
+Rewrite using `[hty0, hty1, hty2]`. Simplify using the standard rewrite rules. Take `⟨κ, x, hx⟩` from `hf.2 1 (by rw [hlen]; norm_num) (size (c - 1)) hty1`. Take `⟨s, hs, hdvd⟩` from `arc_length_four_denominator W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb halt hsm hlen hU hOK hσ κ x hx`. Take `⟨x₀, hx₀⟩` from `hdvd`.
+
+Establish `hBn : 1 ≤ size (c - 1) + S` using `by have := hηs (c - 1); omega`. Take `⟨fa, si, hfa1, hfa2, hsi⟩` from `exists_fraction_in_frame W hcase hP9 hO hinj T₁ hW₁.1 c (size (c - 2)) (size (c - 1) + S) η s hBn x₀`. Take `⟨d₁, b₁, sol₁, c₁, hb₁, hlt, hpr⟩` from `exists_horizontal_lift_of_len_three_of_up W hcase F hB CR hWR hW₁ hW₂ hArc hR2 hO hOv hinj hP9 hSec hHF hFL c hc bb sol hbb k₀ hk₀ halt hlen hU hOK hth`. Use `set σ := (arcOf b w S η up size).σ PD.p with hσdef`. Use `set e₄ := s - si with he₄`.
+
+Establish `hfaC : LiftsAt W (arcOf b w S η up size) F c bb sol k₀ fa (2 * σ + 1 + σ)`. Use `liftsAt_thin_letter_type W (arcOf b w S η up size) F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hW₁ hW₂ hbb {2} ?_ b₁ sol₁ hb₁ c₁ (2 * σ + 1) ?_ hpr fa ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht` using `[Finset.mem_singleton]`. Substitute `ht` using the available equality.
+
+Conclude with `⟨by rw [hlen]; norm_num, _, hty2⟩`. Introduce `t ht bs hbs`. Rewrite `ht` using `[Finset.mem_singleton]`. Substitute `ht` using the available equality. Rewrite `hbs` using `[hty2]`.
+
+Consider the cases of `hbs`. Conclude with `hlt`. Simplify using `only [Finset.prod_singleton, hty2]`. Conclude with `hfa1`. Introduce `t ht bs hbs`.
+
+Rewrite `ht` using `[hlen]`. Use `interval_cases t`. Rewrite `hbs` using `[hty0]`. Consider the cases of `hbs`. Rewrite `hbs` using `[hty1]`.
+
+Consider the cases of `hbs`. Simplify using `only [Finset.prod_singleton, hty2]`. Use `⟨s, ((PD.p : ℕ) : O) ^ e₄ * x₀, ?_⟩` and prove the remaining obligations. Establish `e : lE W s * fa - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE (((PD.p : ℕ) : O) ^ e₄ * x₀) = lE W s * fa - lE W e₄ * (algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x₀)`. Rewrite using `[map_mul, map_pow, map_natCast]`.
+
+Unfold `lE`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ArcLengthFourSecond.inFr_num_left hfa2 (W.AΔ.pow_mem (hps 0) _)`. Rewrite `hbs` using `[hty2]`.
+
+Consider the cases of `hbs`. Introduce `t ht hnt bs hbs`. Rewrite `ht` using `[hlen]`. Use `interval_cases t`. Rewrite `hbs` using `[hty0]`.
+
+Consider the cases of `hbs`. Simplify using `only [Finset.prod_singleton, hty2]`. Use `⟨s, ((PD.p : ℕ) : O) ^ e₄ * x₀, ?_⟩` and prove the remaining obligations. Establish `e : lE W s * fa - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE (((PD.p : ℕ) : O) ^ e₄ * x₀) = lE W s * fa - lE W e₄ * (algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x₀)`. Rewrite using `[map_mul, map_pow, map_natCast]`.
+
+Unfold `lE`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ArcLengthFourSecond.inFr_num_right hfa2 (W.AΔ.pow_mem (hps 1) _)`. Rewrite `hbs` using `[hty1]`.
+
+Consider the cases of `hbs`. Conclude with `absurd (Finset.mem_singleton_self 2) hnt`. Establish `hfa_nn : InFr W c 1 (nnDen W (arcOf b w S η up size) c) fa`. Rewrite using `[hnn]`. Conclude with `ArcLengthFourSecond.inFr_den_mul _ hfa1 (W.AΔ.pow_mem (hps 0) _)`.
+
+Establish `hgN : LiftsAt W (arcOf b w S η up size) F c bb sol k₀ (lE W e₄ * f - fa) (rr + σ)`. Use `liftsAt_thick_letter_type W (arcOf b w S η up size) F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hNN hW₁ hW₂ hsur rr hkill hbb hk₀ _ (ArcLengthFourSecond.inFr_sub (ArcLengthFourSecond.inFr_lE e₄ hf.1) hfa_nn) ?_` and prove the remaining obligations. Introduce `t ht bs hbs`. Rewrite `ht` using `[hlen]`. Use `interval_cases t`.
+
+Rewrite `hbs` using `[hty0]`. Consider the cases of `hbs`. Rewrite `hbs` using `[hty1]`. Consider the cases of `hbs`. Establish `hnum : ps W 1 ^ (size (c - 1) + (arcOf b w S η up size).S) ∈ PiPs W` using `Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_insert_of_mem _ (Set.mem_range_self 1))) _`.
+
+Use `ArcLengthFourSecond.inFr_sat W hcase hP9 hinj hnum (ArcLengthFourSecond.inFr_sub (ArcLengthFourSecond.inFr_lE e₄ hf.1) hfa_nn) ⟨κ + s, ?_⟩` and prove the remaining obligations. Establish `h2 : InFr W c (ps W 1 ^ (size (c - 1) + S)) (nnDen W (arcOf b w S η up size) c) (lE W s * fa - lE W e₄ * (algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x₀))`. Rewrite using `[hnn]`. Conclude with `ArcLengthFourSecond.inFr_den_mul _ (ArcLengthFourSecond.inFr_num_left hfa2 (W.AΔ.pow_mem (hps 0) _)) (W.AΔ.pow_mem (hps 0) _)`. Establish `hxE : lE W s * algebraMap O W.EE x = lE W κ * algebraMap O W.EE x₀`.
+
+Use `congrArg (algebraMap O W.EE) hx₀` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_pow, map_pow, map_natCast]`. Unfold `lE`. Conclude with `this`. Establish `e : lE W (κ + s) * (lE W e₄ * f - fa) = lE W (s + e₄) * (lE W κ * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x) - lE W κ * (lE W s * fa - lE W e₄ * (algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x₀))`.
+
+Unfold `lE at hxE ⊢`. Take the linear combination `(((PD.p : ℕ) : W.EE) ^ e₄ * algebraMap (LetA O n) W.EE (letE c)) * hxE`. Rewrite using `[e]`. Conclude with `ArcLengthFourSecond.inFr_sub (ArcLengthFourSecond.inFr_lE _ hx) (ArcLengthFourSecond.inFr_lE _ h2)`. Rewrite `hbs` using `[hty2]`.
+
+Consider the cases of `hbs`. Establish `hE1 : rr + σ ≤ rr + 3 * σ + 1` using `by omega`. Establish `hE2 : 2 * σ + 1 + σ ≤ rr + 3 * σ + 1` using `by omega`. Establish `hsum` using `LiftsAt.add_proof W (arcOf b w S η up size) F c bb sol k₀ (LiftsAt.liftsAt_mono W (arcOf b w S η up size) F c bb sol k₀ hE1 hgN) (LiftsAt.liftsAt_mono W (arcOf b w S η up size) F c bb sol k₀ hE2 hfaC)`. Rewrite `hsum` using `[sub_add_cancel]`.
+
+Use `⟨rr + 3 * σ + 1 + e₄, ?_, ?_⟩` and prove the remaining obligations. Establish `hT : ∃ i, Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size i`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℕ) ∉ {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}`. Apply `Nat.notMem_of_lt_sInf` to reduce the goal to its premises.
+
+Use `hlen` as an intermediate fact. Simplify using `only [arcOf] at this`. Rewrite using `[this]`. Evaluate the numerical expressions. Simplify using `only [Set.mem_setOf_eq, le_refl, true_and, not_not, Nat.cast_one, sub_add_cancel] at h1`.
+
+Conclude with `h1`. Rewrite `hrr`, `hσ`, `hs`, `hsm`, the goal using `[sigma_eq_of_thick_letter PD.p b w S η size hT]`. Establish `hb1 : 1 ≤ b`. Take `⟨-, -, -, -, -, -, h1⟩` from `CaseA.sg_ge PD.p (b + η + S) w S η hp11 (by`. Use `hηs c` as an intermediate fact.
+
+Use `hT` as an intermediate fact. Take `⟨i, hi⟩` from `hT`. Use `hηs i` as an intermediate fact. Use `hi.2` as an intermediate fact. Use the proof step `omega)`.
+
+Establish `: (1 : ℝ) ≤ b` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hsi' : (size (c - 2) : ℝ) - ((size (c - 1) : ℝ) + S) / PD.p - η / (PD.p : ℝ) ^ 2 - 1 ≤ si`. Move the coercions through the operations in `at hsi`. Conclude with `hsi`.
+
+Conclude with `arc_length_four_cost_bound PD.p hp11 b w (size (c - 2)) S η hb1 ((size (c - 1) : ℝ) + S) s si rr σ hs hsi' hrr hσ`. Establish `e : lE W (rr + 3 * σ + 1 + e₄) * f = lE W (rr + 3 * σ + 1) * (lE W e₄ * f)`. Unfold `lE`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w₁, z, h1, h2, h3, h4, h5⟩` from `hsum`.
+
+Conclude with `⟨w₁, z, h1, h2, h3, h4, by rw [e]; exact h5⟩`.
+-/
 theorem exists_liftsAt_le_of_len_three_of_up [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

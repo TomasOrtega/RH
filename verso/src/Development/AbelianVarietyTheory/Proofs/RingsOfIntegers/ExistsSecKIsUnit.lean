@@ -17,6 +17,9 @@ namespace GlobalTheory.GenericGenerated
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `(gs_res r z inf_le_left hz _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gs r z (A.U a ⊓ B.U b)) (secOfIso_spec t hu hA hB a b)).trans ?_` and prove the remaining obligations. Unfold `isoCand`. Use `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ?_ (gs_res r z inf_le_right hz _))` and prove the remaining obligations. Rewrite using `[gs_unit r z _ hz, map_inv, gm_res r z (divLe a b) hz]`.
+-/
 theorem gs_secOfIso {Y Z : Scheme.{0}} {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec B) (hu : u.IsGen) (hA : A.IsLB)
     (hB : B.IsLB) (a : A.ι) (b : B.ι) (r : Z ⟶ Y) (z : Z) (hz : r z ∈ A.U a ⊓ B.U b) :
     gs r z (A.U a) ((secOfIso t hu hA hB).f a) =
@@ -27,6 +30,17 @@ theorem gs_secOfIso {Y Z : Scheme.{0}} {A B : LB Y} (u : LB.Iso A B) (t : LB.Sec
   refine (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ?_ (gs_res r z inf_le_right hz _))
   rw [gs_unit r z _ hz, map_inv, gm_res r z (divLe a b) hz]
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : LBIso L (M.pull (gi ≫ p))` from `LBIso.chartPull (chartPullSec L g gi e₁) (chartPullSame M (fun _ : PUnit => gi ≫ p) (fun _ => p) (fun _ => 1) gi fun _ => rfl) H`. Establish `H₂` using `iso_linComb ((isGen_iff w).1 hw) (fun _ : Fin 1 => g) (fun _ => (k : ℤ))`. Establish `ep : (fun _ : Fin 1 => g ≫ gi ≫ p) = fun _ => p`. Use function extensionality and compare the values at `_`. Rewrite using `[← Category.assoc, e₂, Category.id_comp]`.
+
+Rewrite `H₂` using `[ep]`. Take `⟨u, hu⟩` from `LBIso.symm H₂`. Use `choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Establish `hI' : Good L z I` using `hI`. Establish `h1 : (LB.oneGen L (Y` using `Y)).IsGen := fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+
+Take `⟨s', hs'⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => g) (ε' := fun _ => (k : ℤ)) (fun V _ h => by simp [Fintype.prod_sum_type, hρ]) (pullMulSec s ρ (LB.oneGen L (Y := Y)) h1)`. Establish `u₁ : IsUnit (sval s (r ≫ ρ) z I)`. Take `⟨j, hj, hu⟩` from `(mem_nonzeroLocus s _).1 hs`. Establish `hj' : (r ≫ ρ) z ∈ LB.wchart L (fun _ : Fin k => i) j` using `hj`. Establish `h₁ : IsUnit (gs (r ≫ ρ) z (LB.wchart L (fun _ : Fin k => i) j) (s.f j))` using `(congrArg IsUnit (gs_stalkMap (r ≫ ρ) z _ hj' _)).mpr (hu.map _)`.
+
+Conclude with `isUnit_of_mul_isUnit_right ((congrArg IsUnit (sec_trans s (r ≫ ρ) z hj' (hI'.mem _ _))).mp h₁)`. Establish `u₂ : IsUnit (sval s' r z I)`. Rewrite using `[hs' Z r z I hI', sval_pullMulSec s ρ _ _ r z hI']`. Conclude with `u₁.mul (Units.isUnit _)`. Use `⟨secOfIso s' hu (linComb_isLB M hM _ _) (linComb_isLB L hL _ _), ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `gs_secOfIso u s' hu (linComb_isLB M hM _ _) (linComb_isLB L hL _ _) (fun _ => J (r ≫ p)) (fun _ => I (r ≫ g)) r z ⟨hJ.mem (fun _ : Fin 1 => p) r, hI'.mem (fun _ : Fin 1 => g) r⟩`. Conclude with `(congrArg IsUnit e).mpr ((Units.isUnit _).mul u₂)`.
+-/
 theorem exists_sec_isUnit {X X' Y W Z : Scheme.{0}} {L : LB X} {M : LB X'} (hL : L.IsLB) (hM : M.IsLB)
     (g : Y ⟶ X) (gi : X ⟶ Y) (e₁ : gi ≫ g = 𝟙 X) (e₂ : g ≫ gi = 𝟙 Y) (p : Y ⟶ X')
     (H : LBIso (L.pull g) (M.pull p)) (i : W ⟶ X) (ρ : Y ⟶ W) (hρ : ρ ≫ i = g) (k : ℕ)
@@ -63,6 +77,11 @@ theorem exists_sec_isUnit {X X' Y W Z : Scheme.{0}} {L : LB X} {M : LB X'} (hL :
     ⟨hJ.mem (fun _ : Fin 1 => p) r, hI'.mem (fun _ : Fin 1 => g) r⟩
   exact (congrArg IsUnit e).mpr ((Units.isUnit _).mul u₂)
 
+/- English proof (translation)
+Introduce `hA R _ _ I D A G _ _ U k hk Z r z J hJ`. Take `⟨N, s, hcov⟩` from `(hA _ A k hk).1 ⊤ (isAffineOpen_top _)`. Take `⟨ρ, hρ⟩ : ∃ ρ : pullback G.hom (jK R) ⟶ (A.A.hom ⁻¹ᵁ ⊤).toScheme, ρ ≫ (A.A.hom ⁻¹ᵁ ⊤).ι = U.gen.hom.left` from `⟨IsOpenImmersion.lift _ U.gen.hom.left (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Use the proof step `trivial), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show ρ (r z) ∈ ⨆ i, nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `exists_sec_isUnit A.isLB U.LG.isLB U.gen.hom.left U.gen.inv.left (congrArg (fun q => q.left) U.gen.inv_hom_id) (congrArg (fun q => q.left) U.gen.hom_inv_id) _ U.ext _ ρ hρ k (s i) r z hi J hJ`.
+-/
 theorem exists_secK_isUnit : AmpleSt → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (k : ℕ), 4 ≤ k → ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback G.hom (jK R)) (z : Z) (J), Geo.Tor.Good U.LG.L z J → ∃ s : U.SecK k, IsUnit (Geo.Tor.sval s r z J) := by
   intro hA R _ _ I D A G _ _ U k hk Z r z J hJ
   obtain ⟨N, s, hcov⟩ := (hA _ A k hk).1 ⊤ (isAffineOpen_top _)

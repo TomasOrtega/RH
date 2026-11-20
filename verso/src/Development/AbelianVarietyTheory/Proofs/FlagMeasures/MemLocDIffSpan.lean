@@ -11,6 +11,11 @@ namespace GlobalTheory.Mass.SemiBasis
 variable {K : Type} [Field K] [NumberField K]
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Introduce `h`. Establish `h1 : IsUnit (Algebra.norm ℤ (algebraMap ℤ (𝓞 F) (N : ℤ)))`. Establish `: algebraMap ℤ (𝓞 F) (N : ℤ) = (N : 𝓞 F)` using `by simp`. Rewrite using `[this]`. Conclude with `h.map _`.
+
+Rewrite `h1` using `[Algebra.norm_algebraMap, Int.isUnit_iff]`. Establish `hk : 0 < Module.finrank ℤ (𝓞 F)` using `Module.finrank_pos`. Establish `h2 : (2 : ℤ) ≤ (N : ℤ) ^ Module.finrank ℤ (𝓞 F)`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem natCast_not_isUnit_lemma_3 {F : Type} [Field F] [NumberField F] {N : ℕ} (hN : 2 ≤ N) :
     ¬ IsUnit (N : 𝓞 F) := by
   intro h
@@ -26,6 +31,9 @@ private theorem natCast_not_isUnit_lemma_3 {F : Type} [Field F] [NumberField F] 
   omega
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(N : 𝓞 F)}) (by rw [Ne, Ideal.span_singleton_eq_top]; exact natCast_not_isUnit_lemma_3 hN)`. Conclude with `hx Q hQ (hle (Ideal.mem_span_singleton_self _)) Q.zero_mem`.
+-/
 private theorem mem_primeTo_ne_zero_lemma_2 {F : Type} [Field F] [NumberField F] {N : ℕ} (hN : 2 ≤ N)
     {x : 𝓞 F} (hx : x ∈ _root_.GlobalTheory.Mass.primeTo (N : 𝓞 F)) : x ≠ 0 := by
   rintro rfl
@@ -34,6 +42,9 @@ private theorem mem_primeTo_ne_zero_lemma_2 {F : Type} [Field F] [NumberField F]
   exact hx Q hQ (hle (Ideal.mem_span_singleton_self _)) Q.zero_mem
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Introduce `_ hx` and use `mem_nonZeroDivisors_of_ne_zero (mem_primeTo_ne_zero_lemma_2 hN hx)`.
+-/
 private theorem primeTo_le_nonZeroDivisors__lemma {F : Type} [Field F] [NumberField F] {N : ℕ}
     (hN : 2 ≤ N) : _root_.GlobalTheory.Mass.primeTo (N : 𝓞 F) ≤ nonZeroDivisors (𝓞 F) :=
   fun _ hx => mem_nonZeroDivisors_of_ne_zero (mem_primeTo_ne_zero_lemma_2 hN hx)
@@ -41,6 +52,9 @@ private theorem primeTo_le_nonZeroDivisors__lemma {F : Type} [Field F] [NumberFi
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K : Type} [Field K] [NumberField K] in
+/- English proof (translation)
+The claim follows from `primeTo_le_nonZeroDivisors__lemma hd`.
+-/
 theorem _root_.GlobalTheory.Mass.SemiBasis.primeTo_le {d : ℕ} (hd : 2 ≤ d) :
     _root_.GlobalTheory.Mass.primeTo (d : 𝓞 K) ≤ nonZeroDivisors (𝓞 K) :=
   primeTo_le_nonZeroDivisors__lemma hd
@@ -48,15 +62,36 @@ theorem _root_.GlobalTheory.Mass.SemiBasis.primeTo_le {d : ℕ} (hd : 2 ≤ d) :
 abbrev A (K : Type) [Field K] [NumberField K] {d : ℕ} (hd : 2 ≤ d) : Subalgebra (𝓞 K) K :=
   Localization.subalgebra.ofField K (primeTo (d : 𝓞 K)) (primeTo_le hd)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_A {d : ℕ} (hd : 2 ≤ d) (x : K) :
     x ∈ A K hd ↔ ∃ (a s : 𝓞 K) (_ : s ∈ primeTo (d : 𝓞 K)),
       x = algebraMap (𝓞 K) K a * (algebraMap (𝓞 K) K s)⁻¹ :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (primeTo_le hd hs)`.
+-/
 theorem alg_ne_zero {d : ℕ} (hd : 2 ≤ d) {s : 𝓞 K}
     (hs : s ∈ primeTo (d : 𝓞 K)) : algebraMap (𝓞 K) K s ≠ 0 :=
   IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (primeTo_le hd hs)
 
+/- English proof (translation)
+Establish `hd0 : (d : 𝓞 K) ≠ 0` using `by exact_mod_cast (by omega : d ≠ 0)`. Establish `hfin : {P : Ideal (𝓞 K) | P.IsMaximal ∧ (d : 𝓞 K) ∈ P}.Finite`. Establish `h0 : Ideal.span {(d : 𝓞 K)} ≠ 0`. Simplify `hd0` using `[Ideal.span_singleton_eq_bot]`. Use `((Ideal.finite_factors h0).image (fun v => v.asIdeal)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `P ⟨hP, hdP⟩`. Establish `hb : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hd0 (by simpa using hdP)`. Conclude with `⟨⟨P, hP.isPrime, hb⟩, Ideal.dvd_span_singleton.2 hdP, rfl⟩`.
+
+Apply `((hfin.insert ⊥).image (Ideal.map (algebraMap (𝓞 K) (A K hd)))).subset` to reduce the goal to its premises. Introduce `P hP`. Establish `hP' : P.IsPrime` using `hP`. Take `⟨hQ, hdisj⟩` from `(IsLocalization.isPrime_iff_isPrime_disjoint (primeTo (d : 𝓞 K)) (A K hd) P).mp hP'`. Use `⟨P.comap (algebraMap (𝓞 K) (A K hd)), ?_, IsLocalization.map_under (primeTo (d : 𝓞 K)) (A K hd) P⟩` and prove the remaining obligations.
+
+Use `set Q := P.comap (algebraMap (𝓞 K) (A K hd))`. Establish `hsub : (Q : Set (𝓞 K)) ⊆ ⋃ i ∈ (hfin.toFinset : Set (Ideal (𝓞 K))), ((id i : Ideal (𝓞 K)) : Set (𝓞 K))`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Use `Set.disjoint_left.mp hdisj (?_ : x ∈ primeTo (d : 𝓞 K)) hx` and prove the remaining obligations.
+
+Introduce `I hI hdI hxI`. Apply `hn` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨I, by simpa using ⟨hI, hdI⟩, hxI⟩`. Distinguish the cases in `hb : Q = ⊥`.
+
+Conclude with `Or.inl hb`. Establish `hmax : Q.IsMaximal` using `hQ.isMaximal hb`. Take `⟨I, hI, hle⟩` from `(Ideal.subset_union_prime ⊥ ⊥ (fun i hi _ _ => by`. Establish `: i.IsMaximal ∧ (d : 𝓞 K) ∈ i` using `by simpa using hi`. Conclude with `this.1.isPrime)).1 hsub`.
+
+Establish `hI' : I.IsMaximal ∧ (d : 𝓞 K) ∈ I` using `by simpa using hI`. Establish `: Q = I` using `hmax.eq_of_le hI'.1.ne_top hle`. Use `right`. Rewrite using `[this]`. Conclude with `hI'`.
+-/
 theorem primes_finite {d : ℕ} (hd : 2 ≤ d) : {P : Ideal (A K hd) | P.IsPrime}.Finite := by
   have hd0 : (d : 𝓞 K) ≠ 0 := by exact_mod_cast (by omega : d ≠ 0)
   have hfin : {P : Ideal (𝓞 K) | P.IsMaximal ∧ (d : 𝓞 K) ∈ P}.Finite := by
@@ -96,6 +131,9 @@ theorem primes_finite {d : ℕ} (hd : 2 ≤ d) : {P : Ideal (A K hd) | P.IsPrime
   rw [this]
   exact hI'
 
+/- English proof (translation)
+Establish `: IsDedekindDomain (A K hd)` using `IsLocalization.isDedekindDomain (𝓞 K) (primeTo_le hd) (A K hd)`. Conclude with `IsPrincipalIdealRing.of_finite_primes (primes_finite hd)`.
+-/
 theorem isPID {d : ℕ} (hd : 2 ≤ d) : IsPrincipalIdealRing (A K hd) := by
   have : IsDedekindDomain (A K hd) :=
     IsLocalization.isDedekindDomain (𝓞 K) (primeTo_le hd) (A K hd)
@@ -103,6 +141,19 @@ theorem isPID {d : ℕ} (hd : 2 ≤ d) : IsPrincipalIdealRing (A K hd) := by
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hs0` using `alg_ne_zero hd hs`. Establish `hu : (algebraMap (𝓞 K) K s)⁻¹ ∈ A K hd` using `(mem_A hd _).mpr ⟨1, s, hs, by simp⟩`. Establish `hx : x = (⟨_, hu⟩ : A K hd) • (s • x)`.
+
+Rewrite using `[Subalgebra.smul_def, ← algebraMap_smul K s x, smul_smul]`. Simplify using `[hs0]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`. Introduce `hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_mem _, by simpa using hy⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`.
+
+Take `⟨s, hs, hsy⟩` from `hy`. Take `⟨r, t, ht, hat⟩` from `(mem_A hd (a : K)).mp a.2`. Use `⟨t * s, mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `ht0` using `alg_ne_zero hd ht`. Establish `he : (t * s) • (a • y) = r • (s • y)`.
+
+Rewrite using `[Subalgebra.smul_def, hat, ← algebraMap_smul K (t * s), ← algebraMap_smul K r, ← algebraMap_smul K s, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`.
+
+Conclude with `M.smul_mem r hsy`.
+-/
 theorem mem_locD_iff_span {d : ℕ} (hd : 2 ≤ d) (M : Submodule (𝓞 K) V) (x : V) :
     x ∈ locD (d : 𝓞 K) M ↔ x ∈ Submodule.span (A K hd) (M : Set V) := by
   constructor
@@ -133,6 +184,13 @@ theorem mem_locD_iff_span {d : ℕ} (hd : 2 ≤ d) (M : Submodule (𝓞 K) V) (x
       rw [he]
       exact M.smul_mem r hsy
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hsx`. Use `(mem_A hd x).2 ⟨r, s, hs, ?_⟩` and prove the remaining obligations. Establish `hs0` using `alg_ne_zero hd hs`.
+
+Rewrite using `[hr, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts. Introduce `hx`. Take `⟨r, s, hs, rfl⟩` from `(mem_A hd x).1 hx`. Use `⟨s, hs, Submodule.mem_one.2 ⟨r, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hs0` using `alg_ne_zero hd hs`. Rewrite using `[Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_locD_one {d : ℕ} (hd : 2 ≤ d) (x : K) :
     x ∈ locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K) ↔ x ∈ A K hd := by
   constructor
@@ -149,6 +207,9 @@ theorem mem_locD_one {d : ℕ} (hd : 2 ≤ d) (x : K) :
     rw [Algebra.smul_def]
     field_simp
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hM.fg`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, Submodule.span_span_of_tower]`. Use `span_eq_top := by`. Rewrite using `[Submodule.span_span_of_tower, hM.span_eq_top]`.
+-/
 theorem isLattice_span {d : ℕ} (hd : 2 ≤ d) (M : Submodule (𝓞 K) V) (hM : Submodule.IsLattice K M) :
     Submodule.IsLattice K (Submodule.span (A K hd) (M : Set V)) where
   fg := by
@@ -158,6 +219,13 @@ theorem isLattice_span {d : ℕ} (hd : 2 ≤ d) (M : Submodule (𝓞 K) V) (hM :
   span_eq_top := by
     rw [Submodule.span_span_of_tower, hM.span_eq_top]
 
+/- English proof (translation)
+Establish `h : Submodule.span (A K hd) (Set.range (c.extendOfIsLattice K)) = L`. Establish `: Set.range (c.extendOfIsLattice K) = L.subtype '' Set.range c`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Submodule.span_image, c.span_eq, Submodule.map_top, Submodule.range_subtype]`. Use `conv_lhs => rw [← h]`. Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`. Use `forall_congr' fun i => ⟨?_, fun h => ⟨⟨_, h⟩, rfl⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem mem_iff_repr {d : ℕ} (hd : 2 ≤ d) {ι : Type} (L : Submodule (A K hd) V)
     [Submodule.IsLattice K L] (c : Module.Basis ι (A K hd) L) (x : V) :
     x ∈ L ↔ ∀ i, (c.extendOfIsLattice K).repr x i ∈ A K hd := by
@@ -172,6 +240,15 @@ theorem mem_iff_repr {d : ℕ} (hd : 2 ≤ d) {ι : Type} (L : Submodule (A K hd
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Set `f : L' →+ (ι → B')` to `{ toFun := fun x i => ⟨b.repr x i, (h' x).1 x.2 i⟩ map_zero' := by funext i; ext; simp map_add' := fun x y => by funext i; ext; simp }`. Establish `hf : Function.Surjective f`. Introduce `y`. Use `⟨⟨b.equivFun.symm fun i => (y i : K), (h' _).2 fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← b.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `(y i).2`. Use function extensionality and compare the values at `i`. Use `ext`. Express the relevant statement in the definitionally equal form `b.repr (b.equivFun.symm fun i => (y i : K)) i = _`. Rewrite using `[← b.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+
+Establish `hc : L.addSubgroupOf L' = (AddSubgroup.pi Set.univ fun i => (B i).addSubgroupOf B').comap f`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, h, AddSubgroup.mem_comap, AddSubgroup.mem_pi]`. Conclude with `⟨fun H i _ => H i, fun H i => H i trivial⟩`. Rewrite using `[AddSubgroup.relIndex, hc, AddSubgroup.index_comap_of_surjective _ hf, AddSubgroup.index_pi]`.
+
+Both sides reduce to the same expression.
+-/
 theorem relIndex_of_repr {ι : Type} [Fintype ι] (b : Module.Basis ι K V) (L L' : AddSubgroup V)
     (B' : AddSubgroup K) (B : ι → AddSubgroup K)
     (h' : ∀ x, x ∈ L' ↔ ∀ i, b.repr x i ∈ B') (h : ∀ x, x ∈ L ↔ ∀ i, b.repr x i ∈ B i) :
@@ -197,6 +274,31 @@ theorem relIndex_of_repr {ι : Type} [Fintype ι] (b : Module.Basis ι K V) (L L
   rw [AddSubgroup.relIndex, hc, AddSubgroup.index_comap_of_surjective _ hf, AddSubgroup.index_pi]
   rfl
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ M M' d hd hM hM' hle`. Use `isPID (K := K) hd` as an intermediate fact. Use `set N := Submodule.span (A K hd) (M : Set V) with hN`. Use `set N' := Submodule.span (A K hd) (M' : Set V) with hN'`. Establish `lN : Submodule.IsLattice K N` using `isLattice_span hd M hM`.
+
+Establish `lN' : Submodule.IsLattice K N'` using `isLattice_span hd M' hM'`. Establish `hNle : N ≤ N'` using `Submodule.span_mono hle`. Establish `r : Module.finrank (A K hd) N = Module.finrank K V`. Unfold `Module.finrank`. Rewrite using `[Submodule.IsLattice.rank' K N]`.
+
+Establish `r' : Module.finrank (A K hd) N' = Module.finrank K V`. Unfold `Module.finrank`. Rewrite using `[Submodule.IsLattice.rank' K N']`. Establish `: Module.Free (A K hd) N'` using `Submodule.IsLattice.free K N'`. Set `e` to `Submodule.comapSubtypeEquivOfLe hNle`.
+
+Take `⟨c', α, c, hc⟩` from `Submodule.exists_smith_normal_form_of_rank_eq (N := N.comap N'.subtype) (Module.finBasisOfFinrankEq (A K hd) N' r') (by rw [e.finrank_eq, r, r'])`. Use `choose a s hs has using fun i => (mem_A hd (α i : K)).1 (α i).2`. Use `set b := c'.extendOfIsLattice K with hb`. Use `set b₀ := (c.map e).extendOfIsLattice K with hb₀`. Establish `hbb : ∀ i, b₀ i = (α i : K) • b i`.
+
+Introduce `i`. Use `congrArg Subtype.val (hc i)` as an intermediate fact. Rewrite using `[hb₀, hb, Module.Basis.extendOfIsLattice_apply, Module.Basis.extendOfIsLattice_apply]`. Conclude with `this`. Establish `hα : ∀ i, (α i : K) ≠ 0`.
+
+Introduce `i h0`. Apply `b₀.ne_zero i` to reduce the goal to its premises. Rewrite using `[hbb, h0, zero_smul]`. Establish `ha : ∀ i, a i ≠ 0`. Introduce `i h0`.
+
+Apply `hα i` to reduce the goal to its premises. Rewrite using `[has, h0]`. Simplify using the standard rewrite rules. Establish `hrep : ∀ x i, b.repr x i = (α i : K) * b₀.repr x i`. Introduce `x i`.
+
+Use `conv_lhs => rw [← b₀.sum_repr x]`. Simplify using `[hbb, smul_smul, Finsupp.single_apply, mul_comm]`. Establish `h1 : ∀ x, x ∈ locD (d : 𝓞 K) M' ↔ ∀ i, b.repr x i ∈ locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K)`. Introduce `x`. Rewrite using `[mem_locD_iff_span hd, ← hN', mem_iff_repr hd N' c']`.
+
+Simplify using `only [mem_locD_one hd, hb]`. Establish `h2 : ∀ x, x ∈ locD (d : 𝓞 K) M ↔ ∀ i, b.repr x i ∈ scl (a i) (locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K))`. Introduce `x`. Rewrite using `[mem_locD_iff_span hd, ← hN, mem_iff_repr hd N (c.map e)]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hb₀, hrep, has]`. Establish `hs0` using `alg_ne_zero hd (hs i)`. Establish `ha0 : algebraMap (𝓞 K) K (a i) ≠ 0` using `by simpa using ha i`. Simplify using `only [scl, Submodule.mem_map, LinearMap.lsmul_apply, mem_locD_one hd, Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨(algebraMap (𝓞 K) K (s i))⁻¹ * b₀.repr x i, mul_mem ((mem_A hd _).mpr ⟨1, s i, hs i, by simp⟩) h, by ring⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, hy'⟩`. Establish `: b₀.repr x i = algebraMap (𝓞 K) K (s i) * y`. Clear denominators, using `at hy' ⊢` for the nonvanishing conditions.
+
+Take the linear combination `-hy'`. Rewrite using `[this]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) hy`. Conclude with `⟨b, a, ha, h1, h2, relIndex_of_repr b _ _ _ _ h1 h2⟩`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (M M' : Submodule (𝓞 K) V) (d : ℕ), 2 ≤ d → Submodule.IsLattice K M → Submodule.IsLattice K M' → M ≤ M' → ∃ (b : Module.Basis (Fin (Module.finrank K V)) K V) (a : Fin (Module.finrank K V) → 𝓞 K), (∀ i, a i ≠ 0) ∧ (∀ x, x ∈ locD (d : 𝓞 K) M' ↔ ∀ i, b.repr x i ∈ locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K)) ∧ (∀ x, x ∈ locD (d : 𝓞 K) M ↔ ∀ i, b.repr x i ∈ scl (a i) (locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K))) ∧ idxN (locD (d : 𝓞 K) M') (locD (d : 𝓞 K) M) = ∏ i, idxN (locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K)) (scl (a i) (locD (d : 𝓞 K) (1 : Submodule (𝓞 K) K))) := by
   intro K V _ _ _ _ _ _ _ M M' d hd hM hM' hle
   have := isPID (K := K) hd

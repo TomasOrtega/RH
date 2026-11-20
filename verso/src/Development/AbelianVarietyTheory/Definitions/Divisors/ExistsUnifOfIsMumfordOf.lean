@@ -67,6 +67,9 @@ def Data.IsMonomialTau (Q : Data R) {m : ℕ} (t : Fin m → R) (β : Fin m → 
 def Data.IsPos (Q : Data R) (I : Ideal R) : Prop :=
   ∀ y : Q.X, y ≠ 0 → ∃ r ∈ I, ∃ k : (FractionRing R)ˣ, (k : FractionRing R) = algebraMap R (FractionRing R) r ∧ Q.TauCoord y y k
 
+/- English proof (translation)
+Introduce `y hy` and use `by obtain ⟨k, hk, hc⟩ := h y y obtain ⟨i, hi⟩ := h₁ y hy refine ⟨∏ i, t i ^ (β i y y).toNat, Ideal.mem_of_dvd I (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) (I.pow_mem_of_mem (ht i) _ (by omega)), k, ?_, hc⟩ rw [hk, map_prod] exact Finset.prod_congr rfl fun i _ => by rw [map_po …`.
+-/
 theorem Data.IsMonomialTau.isPos {Q : Data R} {m : ℕ} {t : Fin m → R} {β : Fin m → LinearMap.BilinForm ℤ Q.X}
     (h : Q.IsMonomialTau t β) {I : Ideal R} (ht : ∀ i, t i ∈ I) (h₀ : ∀ i y, 0 ≤ β i y y)
     (h₁ : ∀ y, y ≠ 0 → ∃ i, 0 < β i y y) : Q.IsPos I := fun y hy => by
@@ -77,6 +80,11 @@ theorem Data.IsMonomialTau.isPos {Q : Data R} {m : ℕ} {t : Fin m → R} {β : 
   rw [hk, map_prod]
   exact Finset.prod_congr rfl fun i _ => by rw [map_pow, ← zpow_natCast, Int.toNat_of_nonneg (h₀ i y)]
 
+/- English proof (translation)
+Establish `h` using `Q.tau_add 0 0 b z J hJ`. Establish `c0 : Q.c 0 = 1` using `mul_eq_left.1 ((Q.c_add 0 0).symm.trans (by rw [add_zero]))`. Establish `f : cubV Q.cub z J (toUnit (TK R) ≫ Q.c 0) (toUnit (TK R) ≫ Q.c 0) (toUnit (TK R) ≫ Q.c b) = 1`. Rewrite using `[c0, MonObj.comp_one]`. Conclude with `(isCub_cubV Q.cub hJ).face _ _`.
+
+Rewrite `h` using `[f, _root_.mul_one, add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem Data.val_tau_zero (Q : Data R) (b : Q.X) (z J) (hJ : Good Q.M.L z J) : val (Q.tau 0 b) (𝟙 _) z J = 1 := by
   have h := Q.tau_add 0 0 b z J hJ
   have c0 : Q.c 0 = 1 := mul_eq_left.1 ((Q.c_add 0 0).symm.trans (by rw [add_zero]))
@@ -115,15 +123,24 @@ def IsMumfordOf [IsLocalRing R] (ξ : Sp R ⟶ S) (Q : Data R) : Prop :=
 
 variable {F j e} in
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsMumfordOf.isCN [IsLocalRing R] {ξ : Sp R ⟶ S} {Q : Data R} (h : IsMumfordOf F j e ξ Q) : IsCN R := h.1
 
 variable {F j e} in
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem IsMumfordOf.isPos [IsLocalRing R] {ξ : Sp R ⟶ S} {Q : Data R} (h : IsMumfordOf F j e ξ Q) :
     Q.IsPos (maximalIdeal R) := h.2.1
 
 variable {F j e} in
 
+/- English proof (translation)
+The claim follows from `h.2.2`.
+-/
 theorem IsMumfordOf.unif [IsLocalRing R] {ξ : Sp R ⟶ S} {Q : Data R} (h : IsMumfordOf F j e ξ Q) :
   ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), IsCN R' → Function.Injective ρ → ρ.Finite →
     ∀ (D : DegData R' (maximalIdeal R')) (ε : D.toPre.X ≃+ Q.X), Refines Q ρ D.toPre ε →
@@ -146,6 +163,11 @@ end Charts
 
 namespace Wit
 
+/- English proof (translation)
+Use `exists_gen D.P.isLB (fun U _ h => ?_) (D.tau a b) (DVR.tau_isGen D a b)` and prove the remaining obligations. Establish `e₁ : ptK (D.c (a + b)) = ((toUnit (TK R) ≫ D.c a) * (toUnit (TK R) ≫ D.c b)).left`. Rewrite using `[D.c_add]`. Conclude with `congrArg (fun q : TK R ⟶ D.P.A => q.left) (MonObj.comp_mul (toUnit (TK R)) (D.c a) (D.c b))`. Establish `e₂ : (toUnit (TK R)).left ≫ eSec D.P.A = (1 : TK R ⟶ D.P.A).left` using `rfl`.
+
+Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, e₁, e₂]`. Simplify using `[lamPts, negε, ptK]`.
+-/
 theorem exists_tau (D : DegPre R) (a b : D.X) :
     ∃ t : LB.Gen (LB.LinComb D.P.L (lamPts (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)) negε), t.IsGen ∧
       ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK R).left) (z : Z) (J), Good D.P.L z J → val t r z J = val (D.tau a b) r z J := by
@@ -181,15 +203,26 @@ def idPull {X : Scheme.{0}} (L : LB X) : LB.Iso L (L.pull (𝟙 X)) :=
   ⟨fun p => res (inf_le_inf_right _ (fun _ hx => mem_pull.1 hx) :
     (L.pull (𝟙 X)).U p.1 ⊓ L.U p.2 ≤ L.U (p.1 PUnit.unit) ⊓ L.U p.2) (L.g (p.1 PUnit.unit) p.2)⟩
 
+/- English proof (translation)
+The claim follows from `gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull.2 hj, hk⟩) _`.
+-/
 theorem gw_idPull {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (y : Y) (j k : L.ι) (hj : f y ∈ L.U j) (hk : f y ∈ L.U k) :
     gw (idPull L) f y j k = gm f y _ (L.g j k) :=
   gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull.2 hj, hk⟩) _
 
+/- English proof (translation)
+Use `(isGen_iff _).2 fun Y f y j j' k k' hj hj' hk hk' => ?_` and prove the remaining obligations. Rewrite using `[gw_idPull L f y j k hj hk, gw_idPull L f y j' k' hj' hk', Category.comp_id, mul_right_comm, gm_cocycle hL f y hj hj' hk', ← gm_cocycle hL f y hj hk hk', mul_inv_cancel_right]`.
+-/
 theorem idPull_isGen {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : (idPull L).IsGen := by
   refine (isGen_iff _).2 fun Y f y j j' k k' hj hj' hk hk' => ?_
   rw [gw_idPull L f y j k hj hk, gw_idPull L f y j' k' hj' hk', Category.comp_id, mul_right_comm,
     gm_cocycle hL f y hj hj' hk', ← gm_cocycle hL f y hj hk hk', mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem grpPullback_id {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
   let ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T := Over.homMk (𝟙 T.left) (by simp)
@@ -198,16 +231,31 @@ theorem grpPullback_id {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback 
   rw [ex, ey, ← MonObj.comp_mul]
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Use `infer_instance`.
+-/
 theorem mono_jK : Mono (jK R) := by
   have : IsPreimmersion (jK R) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)
   infer_instance
 
+/- English proof (translation)
+Simplify using `only [Category.id_comp, Fin.prod_univ_four]`. Simplify using `[lamPts, negε]`.
+-/
 theorem prod_neg_lamPts {S : Scheme.{0}} {B : Over S} [GrpObj B] {T : Over S} (x y : T ⟶ B) {U : Type} [CommGroup U]
     (h : (T.left ⟶ B.left) → U) : ∏ k, (h (𝟙 _ ≫ lamPts x y k))⁻¹ ^ negε k =
       h (x * y).left * (h x.left)⁻¹ * (h y.left)⁻¹ * h (1 : T ⟶ B).left := by
   simp only [Category.id_comp, Fin.prod_univ_four]
   simp [lamPts, negε]
 
+/- English proof (translation)
+Establish `hs : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Use `⟨𝟙 _, 𝟙 _, idPull _, ?_, ⟨(Category.id_comp _).trans (Category.comp_id _).symm, (Category.id_comp _).trans (Category.comp_id _).symm⟩, idPull_isGen (DVR.linComb_isLB _ D.P.isLB _ _), fun a => ?_, fun κ hκ a b z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `grpPullback_id D.P.A`. Rewrite using `[hs]`.
+
+Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Choose the witnesses or unpack the hypotheses as in `rfl : κ = 𝟙 _ := by`. Rewrite `hκ` using `[hs, Category.comp_id]`. Establish `: Mono (jK R)` using `mono_jK`. Conclude with `(cancel_mono (jK R)).1 (hκ.trans (Category.id_comp _).symm)`.
+
+Use `((exists_tau D a b).choose_spec.2 _ _ z J' hJ').symm.trans ?_` and prove the remaining obligations. Use `(gen_trans (exists_tau D a b).choose_spec.1 (𝟙 _) z (hJ'.mem _ _) (hJ.mem _ _)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Establish `hm : ∀ {J}, Good D.P.L z J → (lift (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)).left z ∈ (abelian₂ D.P.A D.P.L).U (fun I => J ((lift (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)).left ≫ (psum D.P.A (x2 D.P.A) I.down).left))` using `fun hJ => hJ.mem _ _`. Use `Eq.trans ?_ (gw_idPull (abelian₂ D.P.A D.P.L) _ z _ _ (hm hJ) (hm hJ')).symm` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb D.P.L _ _ _ z _ _ (hm hJ) (hm hJ')).symm` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (GlobalTheory.PrimCocycle.prod_lam (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b) (fun q => gm q z _ (D.P.L.g (J q) (J' q)))).symm` and prove the remaining obligations. Establish `inv : ∀ q, gm q z _ (D.P.L.g (J' q) (J q)) = (gm q z _ (D.P.L.g (J q) (J' q)))⁻¹` using `fun q => eq_inv_of_mul_eq_one_left ((gm_cocycle D.P.isLB q z (hJ' q) (hJ q) (hJ' q)).trans (gm_self D.P.isLB q z (hJ' q)))`. Use `(Finset.prod_congr rfl fun k _ => congrArg (· ^ negε k) (inv (𝟙 _ ≫ _))).trans ?_` and prove the remaining obligations. Conclude with `prod_neg_lamPts _ _ (fun q => gm q z _ (D.P.L.g (J q) (J' q)))`.
+-/
 theorem refines_ofDeg (D : DegPre R) (hB : D.TauBimult) : Refines (ofDeg D hB) (RingHom.id R) D (AddEquiv.refl _) := by
   have hs : spMap (RingHom.id R) = 𝟙 (Sp R) := Spec.map_id _
   refine ⟨𝟙 _, 𝟙 _, idPull _, ?_, ⟨(Category.id_comp _).trans (Category.comp_id _).symm,
@@ -259,6 +307,9 @@ instance (k : ℤ) : Nontrivial (tate k).X := inferInstanceAs (Nontrivial ℤ)
 
 open InhTate in
 
+/- English proof (translation)
+Introduce `(a b : ℤ)` and use `by refine ⟨piK ^ (k * a * b), ?_, cg _ _ 1, cg_isGen _ _ _, fun z J hJ => ?_⟩ · rw [Fin.prod_univ_one, _root_.mul_assoc]; exact Units.val_zpow_eq_zpow_val _ _ refine (gm_res _ z _ (hJ.mem _ _) _).trans (Eq.trans ?_ (congrArg (_ * ·) ((gm_res _ z _ (hJ.mem _ _) _).trans (map_one _ …`.
+-/
 theorem tate_isMonomialTau (k : ℤ) : (tate k).IsMonomialTau ![PowerSeries.X] ![k • mulForm] := fun (a b : ℤ) => by
   refine ⟨piK ^ (k * a * b), ?_, cg _ _ 1, cg_isGen _ _ _, fun z J hJ => ?_⟩
   · rw [Fin.prod_univ_one, _root_.mul_assoc]; exact Units.val_zpow_eq_zpow_val _ _
@@ -267,6 +318,9 @@ theorem tate_isMonomialTau (k : ℤ) : (tate k).IsMonomialTau ![PowerSeries.X] !
   rw [_root_.mul_one]
   exact congrArg (gm (𝟙 _) z ⊤) (map_zpow _ _ _).symm
 
+/- English proof (translation)
+The claim follows from `(tate_isMonomialTau k).isPos (fun i => by rw [Subsingleton.elim i 0, PowerSeries.maximalIdeal_eq_span_X]; exact Ideal.mem_span_singleton_self _) (fun i (y : ℤ) => by rw [Subsingleton.elim i 0]; exact (mul_nonneg hk.le (mul_self_nonneg y) : 0 ≤ k * (y * y))) (fun (y : ℤ) hy => ⟨0, …`.
+-/
 theorem tate_isPos {k : ℤ} (hk : 0 < k) : (tate k).IsPos (maximalIdeal (PowerSeries ℚ)) :=
   (tate_isMonomialTau k).isPos
     (fun i => by
@@ -277,6 +331,9 @@ theorem tate_isPos {k : ℤ} (hk : 0 < k) : (tate k).IsPos (maximalIdeal (PowerS
 
 open InhTate in
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨r, hr, k, hk, u, -, hu⟩ := h (1 : ℤ) (one_ne_zero (α := ℤ)) let J : ((TK InhTate.R).left ⟶ (tate 0).B.left) → (tate 0).M.L.ι := fun _ => PUnit.unit have hJ : ∀ z, Good (tate 0).M.L z J := fun _ _ => trivial have hle : (⊤ : (Sp InhTate.R).Opens) ≤ (LB.LinComb (tate 0).M …`.
+-/
 theorem not_isPos_tate_zero : ¬ (tate 0).IsPos (maximalIdeal (PowerSeries ℚ)) := fun h => by
   obtain ⟨r, hr, k, hk, u, -, hu⟩ := h (1 : ℤ) (one_ne_zero (α := ℤ))
   let J : ((TK InhTate.R).left ⟶ (tate 0).B.left) → (tate 0).M.L.ι := fun _ => PUnit.unit
@@ -304,6 +361,11 @@ theorem not_isPos_tate_zero : ¬ (tate 0).IsPos (maximalIdeal (PowerSeries ℚ))
 
 open InhTate in
 
+/- English proof (translation)
+Take `⟨β, β₂, w, h₁, h₂, h₃, h₄, h₅⟩` from `refines_ofDeg tatePre tauBimult`. Use `⟨β, β₂, w, h₁, h₂, h₃, h₄, fun κ hκ a b z J J' hJ hJ' => (h₅ κ hκ a b z J J' hJ hJ').trans (congrArg (_ * ·) ?_)⟩` and prove the remaining obligations. Use `((exists_tau tatePre a b).choose_spec.2 _ κ z J hJ).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_res κ z _ (hJ.mem _ _) _).symm` and prove the remaining obligations. Unfold `val`.
+
+Use `erw [tau_isConst a b]`. Conclude with `gm_res _ z _ (hJ.mem _ _) _`.
+-/
 theorem refines_tate : Refines (tate 2) (RingHom.id _) tatePre (AddEquiv.refl _) := by
   obtain ⟨β, β₂, w, h₁, h₂, h₃, h₄, h₅⟩ := refines_ofDeg tatePre tauBimult
   refine ⟨β, β₂, w, h₁, h₂, h₃, h₄, fun κ hκ a b z J J' hJ hJ' => (h₅ κ hκ a b z J J' hJ hJ').trans (congrArg (_ * ·) ?_)⟩
@@ -313,9 +375,15 @@ theorem refines_tate : Refines (tate 2) (RingHom.id _) tatePre (AddEquiv.refl _)
   erw [tau_isConst a b]
   exact gm_res _ z _ (hJ.mem _ _) _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, algebraRat.charZero _⟩`.
+-/
 theorem isCN_powerSeries : IsCN (PowerSeries ℚ) :=
   ⟨inferInstance, inferInstance, inferInstance, algebraRat.charZero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tate 2, ⟨InhTate.tatePre, InhTate.psiEven, InhTate.tauBimult, by rw [PowerSeries.maximalIdeal_eq_span_X]; exact InhTate.tateData.psi_pos, by rw [PowerSeries.maximalIdeal_eq_span_X]; exact InhTate.tateData.psi_tendsto⟩, AddEquiv.refl _, inferInstance, isCN_powerSeries, tate_isPos …`.
+-/
 theorem exists_pos_refined : ∃ (Q : Data (PowerSeries ℚ)) (D : DegData (PowerSeries ℚ) (maximalIdeal _))
     (ε : D.toPre.X ≃+ Q.X), Nontrivial Q.X ∧ IsCN (PowerSeries ℚ) ∧ Q.IsPos (maximalIdeal _) ∧
       Refines Q (RingHom.id _) D.toPre ε :=
@@ -324,6 +392,9 @@ theorem exists_pos_refined : ∃ (Q : Data (PowerSeries ℚ)) (D : DegData (Powe
     by rw [PowerSeries.maximalIdeal_eq_span_X]; exact InhTate.tateData.psi_tendsto⟩, AddEquiv.refl _,
     inferInstance, isCN_powerSeries, tate_isPos two_pos, refines_tate⟩
 
+/- English proof (translation)
+The claim follows from `h.unif R (RingHom.id R) h.isCN Function.injective_id (RingHom.Finite.id R) D _ (refines_ofDeg _ _)`.
+-/
 theorem exists_unif_of_isMumfordOf {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) {S : Scheme.{0}} (j : F.X ⟶ S)
     {G : Over S} [GrpObj G] (e : F.univ.A.left ⟶ G.left) [IsLocalRing R] (ξ : Sp R ⟶ S)
     (D : DegData R (maximalIdeal R)) (h : IsMumfordOf F j e ξ (ofDeg D.toPre D.tau_bimult)) :

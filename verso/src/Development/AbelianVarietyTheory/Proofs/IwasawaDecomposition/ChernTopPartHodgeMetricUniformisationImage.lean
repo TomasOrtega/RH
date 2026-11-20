@@ -22,6 +22,53 @@ namespace GlobalTheory.UnifDens
 
 open Filter Topology GlobalTheory.UnifDens in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ A hAD hAm hinj`. Establish `hdim` using `GlobalTheory.T.flagSpaceComponent_base_dim_eq_cmType_card_mul_pq E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL`. Take `⟨hcont, hana⟩` from `GlobalTheory.T.componentUniformisation_continuousOn_analyticAt_charts E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ`. Establish `h3a` using `GlobalTheory.T.point_class_density_uniformisation_chart_change E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ hdim`. Establish `h3b` using `GlobalTheory.T.pointClassDensity_hodgeMetric_boundedDomain E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ hdim`.
+
+Use `set D := DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) with hDdef`. Establish `hDo : IsOpen D` using `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat`. Use `set L := flatL hdim with hLdef`. Use `set C : ℝ := grassConst Dw.p (Dw.p + Dw.q - Dw.p) ^ Fintype.card (U.X k).Ψ with hCdef`. Establish `hC : 0 ≤ C`.
+
+Rewrite using `[hCdef, grassConst]`. Use `pow_nonneg (div_nonneg (Finset.prod_nonneg fun i _ => by positivity) (by positivity)) _` and prove the remaining obligations. Use `set dens : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → ℝ := fun w => ∏ i, ((hQ (unflat w i)).det.re) ^ (-((Dw.p + (Dw.p + Dw.q - Dw.p) : ℕ) : ℤ)) with hdens`. Use `set μD := muD (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) with hμD`. Use `set ρ : AlgChart X.str (σ.comp e.toRingHom) X.dim → CxPts X.str (σ.comp e.toRingHom) → ENNReal := fun ch y => ENNReal.ofReal ((((1 : ℤˣ) : ℤ) : ℝ) * chernTop (pointPoly H Dw) (fun v => lieGram e U hj f₀ A₀ (Eb.nonempty (under y)).choose (ch.e.symm v)) (ch.e y)) with hρ`.
+
+Establish `hμ : chernTopPart Eb (lieGram e U hj f₀ A₀) (pointPoly H Dw) 1 = glueMeas (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => ch.e) ρ` using `rfl`. Establish `hpre : ∀ S : Set (CxPts X.str (σ.comp e.toRingHom)), MeasurableSet S → MeasurableSet (D ∩ ψ ⁻¹' S)`. Introduce `S hS`. Establish `hm : Measurable (D.restrict ψ)` using `(continuousOn_iff_continuous_restrict.1 hcont).measurable`. Use `hDo.measurableSet.subtype_image (hm hS)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hwS⟩`. Conclude with `⟨⟨w, hw⟩, hwS, rfl⟩`.
+
+Introduce and unpack `⟨⟨w, hw⟩, hwS, rfl⟩`. Conclude with `⟨hw, hwS⟩`. Establish `key : ∀ (ch : AlgChart X.str (σ.comp e.toRingHom) X.dim) (B : Set ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ)), MeasurableSet B → B ⊆ D → Set.InjOn ψ B → chartMeas ch.e (ρ ch) (ψ '' B) = ENNReal.ofReal C * μD (B ∩ ψ ⁻¹' ch.e.source)`. Introduce `ch B hB hBD hBi`. Use `set B' := B ∩ ψ ⁻¹' ch.e.source with hB'`.
+
+Establish `hB'm : MeasurableSet B'`. Establish `e0 : B' = B ∩ (D ∩ ψ ⁻¹' ch.e.source)`. Use extensionality with `w`. Simplify using `only [hB', Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, hBD h1, h2⟩`. Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`. Rewrite using `[e0]`.
+
+Conclude with `hB.inter (hcont.isOpen_inter_preimage hDo ch.e.open_source).measurableSet`. Establish `hψB : MeasurableSet (ψ '' B)` using `hB.image_of_continuousOn_injOn (hcont.mono hBD) hBi`. Rewrite using `[chartMeas_apply ch.e (ρ ch) hψB]`. Establish `e1 : ch.e.source ∩ ψ '' B = ψ '' B'`. Rewrite using `[hB', Set.image_inter_preimage, Set.inter_comm]`.
+
+Use `set φ : ReciprocityTheory.L2DbarEstimates.V X.dim → ReciprocityTheory.L2DbarEstimates.V X.dim := fun u => ch.e (ψ (L u)) with hφ`. Use `set S := L ⁻¹' B' with hS`. Establish `e2 : ch.e '' (ψ '' B') = φ '' S`. Rewrite using `[hS, hφ, ← Set.image_image (fun w => ch.e (ψ w)) L, Set.image_preimage_eq _ L.surjective, Set.image_image]`. Establish `hSm : MeasurableSet S` using `L.continuous.measurable hB'm`.
+
+Establish `hdiff : ∀ u ∈ S, DifferentiableAt ℂ φ u`. Introduce `u hu`. Establish `hu' : L u ∈ B'` using `hu`. Conclude with `(hana (L u) (hBD hu'.1) ch hu'.2).differentiableAt.comp u L.differentiableAt`. Establish `hder : ∀ u ∈ S, HasFDerivWithinAt φ ((fderiv ℂ φ u).restrictScalars ℝ) S u` using `fun u hu => ((hdiff u hu).hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`.
+
+Establish `hinjφ : Set.InjOn φ S`. Introduce `u1 h1 u2 h2 h12`. Establish `h1' : L u1 ∈ B'` using `h1`. Establish `h2' : L u2 ∈ B'` using `h2`. Establish `h3 : ψ (L u1) = ψ (L u2)` using `ch.e.injOn h1'.2 h2'.2 h12`.
+
+Conclude with `L.injective (hBi h1'.1 h2'.1 h3)`. Rewrite using `[e1, e2, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hSm hder hinjφ]`. Establish `hint : ∀ u ∈ S, ENNReal.ofReal |((fderiv ℂ φ u).restrictScalars ℝ).det| * ρ ch (ch.e.symm (φ u)) = ENNReal.ofReal (C * dens (L u))`. Introduce `u hu`. Establish `hu' : L u ∈ B'` using `hu`.
+
+Establish `hsym : ch.e.symm (φ u) = ψ (L u)` using `ch.e.left_inv hu'.2`. Rewrite using `[hsym]`. Establish `hdet : ((fderiv ℂ φ u).restrictScalars ℝ).det = Complex.normSq (LinearMap.det (fderiv ℂ φ u : ReciprocityTheory.L2DbarEstimates.V X.dim →ₗ[ℂ] ReciprocityTheory.L2DbarEstimates.V X.dim))`. Use `LinearMap.det_restrictScalars (R := ℝ) (f := (fderiv ℂ φ u : ReciprocityTheory.L2DbarEstimates.V X.dim →ₗ[ℂ] ReciprocityTheory.L2DbarEstimates.V X.dim))` as an intermediate fact. Rewrite `this` using `[Algebra.norm_complex_apply]`.
+
+Conclude with `this`. Establish `hA` using `(Eb.nonempty (under (ψ (L u)))).choose_spec`. Establish `ha` using `h3a u (hBD hu'.1) ch hu'.2 _ hA`. Establish `hb` using `h3b u (hBD hu'.1) _ hA`. Rewrite using `[hdet, abs_of_nonneg (Complex.normSq_nonneg _), hρ, ← ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`.
+
+Use `congr 1`. Simplify using `only [Units.val_one, Int.cast_one, one_mul]`. Rewrite using `[← ha, hb]`. Rewrite using `[setLIntegral_congr_fun hSm hint]`. Establish `hmp` using `(flatL_mp hdim).setLIntegral_comp_preimage_emb L.toHomeomorph.measurableEmbedding (fun w => ENNReal.ofReal (C * dens w)) B'`.
+
+Rewrite using `[hS]`. Use `hmp.trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[ENNReal.ofReal_mul hC]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, hμD, muD, withDensity_apply _ hB'm, Measure.restrict_restrict hB'm, Set.inter_eq_left.2 (Set.inter_subset_left.trans hBD)]`. Use `set ν : Measure (CxPts X.str (σ.comp e.toRingHom)) := ENNReal.ofReal C • Measure.map ψ (μD.restrict A) with hν`.
+
+Establish `hae : AEMeasurable ψ (μD.restrict A)` using `(hcont.mono hAD).aemeasurable hAm`. Establish `hνT : ∀ S, MeasurableSet S → ν S = ENNReal.ofReal C * μD (A ∩ ψ ⁻¹' S)`. Introduce `S hS`. Rewrite using `[hν, Measure.smul_apply, Measure.map_apply_of_aemeasurable hae hS, Measure.restrict_apply' hAm, Set.inter_comm, smul_eq_mul]`. Establish `hAS : ∀ S : Set (CxPts X.str (σ.comp e.toRingHom)), MeasurableSet S → MeasurableSet (A ∩ ψ ⁻¹' S)`.
+
+Introduce `S hS`. Establish `e0 : A ∩ ψ ⁻¹' S = A ∩ (D ∩ ψ ⁻¹' S)`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage]`. Conclude with `⟨fun h => ⟨h.1, hAD h.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`.
+
+Rewrite using `[e0]`. Conclude with `hAm.inter (hpre S hS)`. Establish `hψA : MeasurableSet (ψ '' A)` using `hAm.image_of_continuousOn_injOn (hcont.mono hAD) hinj`. Establish `hle : (glueMeas (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => ch.e) ρ).restrict (ψ '' A) ≤ ν`. Rewrite using `[glueMeas, GlobalTheory.ChernScale.restrict_iSup_eq _ hψA]`.
+
+Use `iSup_le fun ch => Measure.le_iff.2 fun S hS => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hS, hνT S hS, Set.inter_comm, ← Set.image_inter_preimage, key ch _ (hAS S hS) (Set.inter_subset_left.trans hAD) (hinj.mono Set.inter_subset_left)]`. Conclude with `mul_le_mul' le_rfl (measure_mono Set.inter_subset_left)`. Establish `heq : (glueMeas (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => ch.e) ρ).restrict (ψ '' A) = ν`. Use `ext_of_cover (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => ch.e.source) (fun ch => ch.e.open_source) (fun y => AlgChart.exists_mem_source y) fun ch S hS hSc => le_antisymm (Measure.le_iff'.1 hle S) ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.restrict_apply hS, hνT S hS]`. Establish `e3 : A ∩ ψ ⁻¹' S = (A ∩ ψ ⁻¹' S) ∩ ψ ⁻¹' ch.e.source` using `(Set.inter_eq_left.2 fun w (hw : w ∈ A ∩ ψ ⁻¹' S) => hSc hw.2).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key ch _ (hAS S hS) (Set.inter_subset_left.trans hAD) (hinj.mono Set.inter_subset_left), ← e3]`. Use `_ = chartMeas ch.e (ρ ch) (S ∩ ψ '' A) := by rw [Set.image_inter_preimage, Set.inter_comm]`.
+
+Use `_ ≤ glueMeas (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => ch.e) ρ (S ∩ ψ '' A) := Measure.le_iff'.1 (le_iSup (fun ch : AlgChart X.str (σ.comp e.toRingHom) X.dim => chartMeas ch.e (ρ ch)) ch) _`. Rewrite using `[hμ, ← Measure.restrict_apply_self, heq, hνT _ hψA, Set.inter_eq_left.2 (Set.subset_preimage_image ψ A)]`.
+-/
 theorem chernTopPart_image : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ A ⊆ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), MeasurableSet A → Set.InjOn ψ A → chernTopPart Eb (lieGram e U hj f₀ A₀) (pointPoly H Dw) 1 (ψ '' A) = ENNReal.ofReal (grassConst Dw.p (Dw.p + Dw.q - Dw.p) ^ Fintype.card (U.X k).Ψ) * muD (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) A := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ A hAD hAm hinj
   have hdim := GlobalTheory.T.flagSpaceComponent_base_dim_eq_cmType_card_mul_pq E H Dw l Xo c O β Y T F e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL

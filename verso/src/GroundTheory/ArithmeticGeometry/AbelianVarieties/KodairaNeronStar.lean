@@ -17,6 +17,11 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   (hπ : Irreducible π)
 include hπ
 
+/- English proof (translation)
+Take `⟨Y, rfl⟩` from `dy`. Substitute `hx` using the available equality. Rewrite `e` using `[equation_iff, h1, h2, h3, h4, h6]`. Establish `hπ2 : π ^ 2 ≠ 0` using `pow_ne_zero _ hπ.ne_zero`. Establish `hY : π ∣ Y ^ 2` using `⟨X ^ 3 + A₂ * X ^ 2 + A₄ * X + A₆ - A₁ * X * Y - A₃ * Y, mul_left_cancel₀ hπ2 (by linear_combination e)⟩`.
+
+Take `⟨Y', rfl⟩` from `hπ.prime.dvd_of_dvd_pow hY`. Use `⟨⟨Y', by ring⟩, Y' ^ 2 + A₁ * X * Y' + A₃ * Y', ?_⟩` and prove the remaining obligations. Establish `hπ3 : π ^ 3 ≠ 0` using `pow_ne_zero _ hπ.ne_zero`. Conclude with `mul_left_cancel₀ hπ3 (by linear_combination -e)`.
+-/
 theorem pi_sq_dvd_y_of_double_root {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a₁ = π * A₁) (h2 : W.a₂ = π * A₂)
     (h3 : W.a₃ = π ^ 2 * A₃) (h4 : W.a₄ = π ^ 2 * A₄) (h6 : W.a₆ = π ^ 3 * A₆) {x y X : 𝒪}
     (e : W.toAffine.Equation x y) (hx : x = π * X) (dy : π ∣ y) :
@@ -32,6 +37,11 @@ theorem pi_sq_dvd_y_of_double_root {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a�
   have hπ3 : π ^ 3 ≠ 0 := pow_ne_zero _ hπ.ne_zero
   exact mul_left_cancel₀ hπ3 (by linear_combination -e)
 
+/- English proof (translation)
+Introduce `W'`. Simplify using `only [W', variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul]`. Take `⟨Z, hZ⟩` from `hD`. Take `⟨Z', hZ'⟩` from `hP`. Rewrite using `[h1, h2, h3, h4, h6]`.
+
+Use `⟨⟨A₁, by ring⟩, ⟨A₂ + 3 * X₁, by ring⟩, ⟨A₃ + X₁ * A₁, by ring⟩, ⟨Z, ?_⟩, ⟨Z', ?_⟩⟩` and prove the remaining obligations. Take the linear combination `π ^ 2 * hZ`. Take the linear combination `π ^ 3 * hZ'`.
+-/
 theorem variableChange_raises_divisibility {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a₁ = π * A₁) (h2 : W.a₂ = π * A₂)
     (h3 : W.a₃ = π ^ 2 * A₃) (h4 : W.a₄ = π ^ 2 * A₄) (h6 : W.a₆ = π ^ 3 * A₆) {X₁ : 𝒪}
     (hP : π ∣ X₁ ^ 3 + A₂ * X₁ ^ 2 + A₄ * X₁ + A₆) (hD : π ∣ 3 * X₁ ^ 2 + 2 * A₂ * X₁ + A₄) :
@@ -47,6 +57,13 @@ theorem variableChange_raises_divisibility {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1
   · linear_combination π ^ 2 * hZ
   · linear_combination π ^ 3 * hZ'
 
+/- English proof (translation)
+Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨B₂, hB₂⟩` from `h2`. Take `⟨B₄, hB₄⟩` from `h4`. Take `⟨X, rfl⟩` from `dx`. Take `⟨hy2, hP⟩` from `pi_sq_dvd_y_of_double_root W hπ hA₁ (A₂ := π * B₂) (by rw [hB₂]; ring) h3 (A₄ := π * B₄) (by rw [hB₄]; ring) (A₆ := π * A₆) (by rw [h6]; ring) e rfl dy`.
+
+Establish `hX : π ∣ X`. Apply `hπ.prime.dvd_of_dvd_pow (n := 3)` to reduce the goal to its premises. Take `⟨c, hc⟩` from `hP`. Conclude with `⟨c - B₂ * X ^ 2 - B₄ * X - A₆, by linear_combination hc⟩`. Take `⟨X', rfl⟩` from `hX`.
+
+Take `⟨Y, rfl⟩` from `hy2`. Use `⟨⟨X', by ring⟩, Y, rfl, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[equation_iff, hA₁, hB₂, h3, hB₄, h6]`. Establish `hπ4 : π ^ 4 ≠ 0` using `pow_ne_zero _ hπ.ne_zero`. Conclude with `⟨π * X' ^ 3 + π * B₂ * X' ^ 2 + B₄ * X' - A₁ * X' * Y, mul_left_cancel₀ hπ4 (by linear_combination e)⟩`.
+-/
 theorem star_point (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π ^ 2 * A₃)
     (h4 : π ^ 3 ∣ W.a₄) (h6 : W.a₆ = π ^ 4 * A₆) {x y : 𝒪} (e : W.toAffine.Equation x y)
     (dx : π ∣ x) (dy : π ∣ y) :
@@ -69,6 +86,13 @@ theorem star_point (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : �
   exact ⟨π * X' ^ 3 + π * B₂ * X' ^ 2 + B₄ * X' - A₁ * X' * Y,
     mul_left_cancel₀ hπ4 (by linear_combination e)⟩
 
+/- English proof (translation)
+Introduce `W'`. Simplify using `only [W', variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul]`. Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨B₂, hB₂⟩` from `h2`. Take `⟨B₄, hB₄⟩` from `h4`.
+
+Take `⟨Z, hZ⟩` from `hD`. Take `⟨Z', hZ'⟩` from `hQ`. Rewrite using `[hA₁, hB₂, h3, hB₄, h6]`. Use `⟨⟨A₁, by ring⟩, ⟨B₂, by ring⟩, ⟨Z, ?_⟩, ⟨B₄ - Y₁ * A₁, by ring⟩, ⟨-Z', ?_⟩⟩` and prove the remaining obligations. Take the linear combination `π ^ 2 * hZ`.
+
+Take the linear combination `(-π ^ 4) * hZ'`.
+-/
 theorem vc_star_step (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π ^ 2 * A₃)
     (h4 : π ^ 3 ∣ W.a₄) (h6 : W.a₆ = π ^ 4 * A₆) {Y₁ : 𝒪} (hQ : π ∣ Y₁ ^ 2 + A₃ * Y₁ - A₆)
     (hD : π ∣ 2 * Y₁ + A₃) :
@@ -87,6 +111,11 @@ theorem vc_star_step (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : 
   · linear_combination π ^ 2 * hZ
   · linear_combination (-π ^ 4) * hZ'
 
+/- English proof (translation)
+Take `⟨B₃, hB₃⟩` from `h3`. Take `⟨B₆, hB₆⟩` from `h6`. Take `⟨hx, Y, rfl, hQ⟩` from `star_point W hπ h1 h2 (A₃ := π * B₃) (by rw [hB₃]; ring) h4 (A₆ := π * B₆) (by rw [hB₆]; ring) e dx dy`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `hY : π ∣ Y`.
+
+Apply `hπ.prime.dvd_of_dvd_pow (n := 2)` to reduce the goal to its premises. Take `⟨c, hc⟩` from `hQ`. Conclude with `⟨c - B₃ * Y + B₆, by linear_combination hc⟩`. Take `⟨Y', rfl⟩` from `hY`. Conclude with `⟨Y', by ring⟩`.
+-/
 theorem pi_sq_dvd_x_of_normal_form (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) (h3 : π ^ 3 ∣ W.a₃) (h4 : π ^ 3 ∣ W.a₄)
     (h6 : π ^ 5 ∣ W.a₆) {x y : 𝒪} (e : W.toAffine.Equation x y) (dx : π ∣ x) (dy : π ∣ y) :
     π ^ 2 ∣ x ∧ π ^ 3 ∣ y := by
@@ -114,6 +143,23 @@ include hπ
 
 local notation "ι" => algebraMap 𝒪 K
 
+/- English proof (translation)
+Establish `d1 : π ∣ W.a₁` using `⟨A₁, h1⟩`. Establish `d2 : π ∣ W.a₂` using `⟨A₂, h2⟩`. Establish `d3 : π ∣ W.a₃` using `⟨π * A₃, by rw [h3]; ring⟩`. Establish `d4 : π ∣ W.a₄` using `⟨π * A₄, by rw [h4]; ring⟩`. Establish `d6 : π ∣ W.a₆` using `⟨π ^ 2 * A₆, by rw [h6]; ring⟩`.
+
+Establish `hcard` using `card_cubicRoots (a := (1 : ResidueField 𝒪)) (b := residue 𝒪 A₂) (c := residue 𝒪 A₄) (d := residue 𝒪 A₆) one_ne_zero`. Use `(knBound_of_rel K W (cubicRoots 1 (residue 𝒪 A₂) (residue 𝒪 A₄) (residue 𝒪 A₆)) (fun P c => ∃ (x y X : 𝒪) (h : (curveK K W).Nonsingular (ι x) (ι y)), P = Point.some _ _ h ∧ x = π * X ∧ π ∣ y ∧ residue 𝒪 X = c) ?_ ?_).mono K (by omega)` and prove the remaining obligations. Introduce `P hP`. Take `⟨x, y, h, rfl, e, ⟨X, rfl⟩, dy⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 d6 hP`. Use `⟨residue 𝒪 X, mem_cubicRoots one_ne_zero ?_, π * X, y, X, h, rfl, rfl, dy, rfl⟩` and prove the remaining obligations.
+
+Use `(dvd_iff_residue_eq_zero hπ).1 (pi_sq_dvd_y_of_double_root W hπ h1 h2 h3 h4 h6 e rfl dy).2` as an intermediate fact. Simplify using `only [map_add, map_mul, map_pow] at this`. Take the linear combination `this`. Introduce and unpack `P Q c hP hQ ⟨x, y, X, h, rfl, rfl, dy, rfl⟩ ⟨x', y', X', h', rfl, rfl, dy', hc⟩`. Assume the negation of the conclusion as `hPQ`.
+
+Take `⟨hn, hneg⟩` from `neg_some_integral K W h'`. Establish `hR` using `sub_notMem_E0Set K W hPQ`. Establish `hQ'` using `neg_notMem_E0Set K W hQ`. Rewrite `hQ'` using `[hneg]`. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, ⟨g₁, e₁⟩, ⟨g₂, e₂⟩, -, -, -, -, -, -, -, -, ⟨X₃, rfl⟩, -, ⟨L, rfl⟩, -, l1, -, -, v1, v2, -⟩` from `triple_cusp K W hπ d1 d2 d3 d4 d6 hP hQ' hR (by rw [← hneg]; abel)`.
+
+Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₁`. Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₂`. Establish `ey` using `equation_of_map K W h.1`. Take `⟨hy2, -⟩` from `pi_sq_dvd_y_of_double_root W hπ h1 h2 h3 h4 h6 ey rfl dy`. Take `⟨Y, rfl⟩` from `hy2`.
+
+Establish `hν : ν = π ^ 2 * (Y - L * X)` using `by linear_combination -l1`. Substitute `hν` using the available equality. Rewrite `v1` using `[h1, h2]`. Rewrite `v2` using `[h1, h3, h4]`. Establish `hπ0` using `hπ.ne_zero`.
+
+Establish `s1 : π ∣ X + X' + X₃ + A₂` using `⟨L ^ 2 + A₁ * L, mul_left_cancel₀ hπ0 (by linear_combination v1)⟩`. Establish `s2 : π ∣ X * X' + X * X₃ + X' * X₃ - A₄` using `⟨-2 * L * (Y - L * X) - A₁ * (Y - L * X) - A₃ * L, mul_left_cancel₀ (pow_ne_zero 2 hπ0) (by linear_combination v2)⟩`. Establish `s0 : π ∣ X - X'`. Rewrite using `[dvd_iff_residue_eq_zero hπ, map_sub, hc, sub_self]`. Apply `hD (π * X) (π ^ 2 * Y) X ey rfl ⟨π * Y, by ring⟩` to reduce the goal to its premises.
+
+Use `dvd_sub (dvd_add (dvd_mul_of_dvd_left s0 (X - X₃)) (dvd_mul_of_dvd_right s1 (2 * X))) s2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem knBound_I0star {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a₁ = π * A₁) (h2 : W.a₂ = π * A₂)
     (h3 : W.a₃ = π ^ 2 * A₃) (h4 : W.a₄ = π ^ 2 * A₄) (h6 : W.a₆ = π ^ 3 * A₆)
     (hD : ∀ x y X : 𝒪, W.toAffine.Equation x y → x = π * X → π ∣ y →
@@ -164,6 +210,23 @@ theorem knBound_I0star {A₁ A₂ A₃ A₄ A₆ : 𝒪} (h1 : W.a₁ = π * A�
     have := dvd_sub (dvd_add (dvd_mul_of_dvd_left s0 (X - X₃)) (dvd_mul_of_dvd_right s1 (2 * X))) s2
     convert this using 1; ring
 
+/- English proof (translation)
+Establish `d2 : π ∣ W.a₂` using `(dvd_pow_self π two_ne_zero).trans h2`. Establish `d3 : π ∣ W.a₃` using `⟨π * A₃, by rw [h3]; ring⟩`. Establish `d4 : π ∣ W.a₄` using `(dvd_pow_self π three_ne_zero).trans h4`. Establish `d6 : π ∣ W.a₆` using `⟨π ^ 3 * A₆, by rw [h6]; ring⟩`. Establish `hcard` using `card_quadRoots (a := (1 : ResidueField 𝒪)) (b := residue 𝒪 A₃) (c := -residue 𝒪 A₆) one_ne_zero`.
+
+Use `(knBound_of_rel K W (quadRoots 1 (residue 𝒪 A₃) (-residue 𝒪 A₆)) (fun P c => ∃ (x y Y : 𝒪) (h : (curveK K W).Nonsingular (ι x) (ι y)), P = Point.some _ _ h ∧ π ∣ x ∧ y = π ^ 2 * Y ∧ residue 𝒪 Y = c) ?_ ?_).mono K (by omega)` and prove the remaining obligations. Introduce `P hP`. Take `⟨x, y, h, rfl, e, dx, dy⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 d6 hP`. Take `⟨-, Y, rfl, hQ⟩` from `star_point W hπ h1 h2 h3 h4 h6 e dx dy`. Use `⟨residue 𝒪 Y, mem_quadRoots one_ne_zero ?_, x, π ^ 2 * Y, Y, h, rfl, dx, rfl, rfl⟩` and prove the remaining obligations.
+
+Use `(dvd_iff_residue_eq_zero hπ).1 hQ` as an intermediate fact. Simplify using `only [map_sub, map_add, map_mul, map_pow] at this`. Take the linear combination `this`. Introduce and unpack `P Q c hP hQ ⟨x, y, Y, h, rfl, dx, rfl, rfl⟩ ⟨x', y', Y', h', rfl, dx', rfl, hc⟩`. Assume the negation of the conclusion as `hPQ`.
+
+Take `⟨hn, hneg⟩` from `neg_some_integral K W h'`. Establish `hR` using `sub_notMem_E0Set K W hPQ`. Establish `hQ'` using `neg_notMem_E0Set K W hQ`. Rewrite `hQ'` using `[hneg]`. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, ⟨g₁, e₁⟩, ⟨g₂, e₂⟩, -, -, -, -, -, -, -, -, -, -, ⟨L, rfl⟩, -, l1, l2, -, -, -, -⟩` from `triple_cusp K W hπ h1 d2 d3 d4 d6 hP hQ' hR (by rw [← hneg]; abel)`.
+
+Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₁`. Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₂`. Establish `ey` using `equation_of_map K W h.1`. Establish `ey'` using `equation_of_map K W h'.1`. Take `⟨⟨X, rfl⟩, -⟩` from `star_point W hπ h1 h2 h3 h4 h6 ey dx ⟨π * Y, by ring⟩`.
+
+Take `⟨⟨X', rfl⟩, -⟩` from `star_point W hπ h1 h2 h3 h4 h6 ey' dx' ⟨π * Y', by ring⟩`. Take `⟨A₁, hA₁⟩` from `h1`. Establish `hc' : π ∣ Y - Y'`. Rewrite using `[dvd_iff_residue_eq_zero hπ, map_sub, hc, sub_self]`. Apply `hD _ _ Y ey dx rfl` to reduce the goal to its premises.
+
+Rewrite `l2` using `[hA₁, h3]`. Establish `key : π ^ 2 * (Y + Y' + A₃) = π ^ 2 * (π * (L * (X - X') - A₁ * X'))`. Take the linear combination `l1 - l2`. Establish `h5 : π ∣ Y + Y' + A₃` using `⟨_, mul_left_cancel₀ (pow_ne_zero 2 hπ.ne_zero) key⟩`. Use `dvd_add h5 hc'` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem knBound_IVstar (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π ^ 2 * A₃)
     (h4 : π ^ 3 ∣ W.a₄) (h6 : W.a₆ = π ^ 4 * A₆)
     (hD : ∀ x y Y : 𝒪, W.toAffine.Equation x y → π ∣ x → y = π ^ 2 * Y → ¬π ∣ 2 * Y + A₃) :
@@ -211,6 +274,19 @@ theorem knBound_IVstar (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ 
     convert this using 1
     ring
 
+/- English proof (translation)
+Establish `d2 : π ∣ W.a₂` using `(dvd_pow_self π two_ne_zero).trans h2`. Establish `d3 : π ∣ W.a₃` using `(dvd_pow_self π three_ne_zero).trans h3`. Establish `d4 : π ∣ W.a₄` using `(dvd_pow_self π three_ne_zero).trans h4`. Establish `d6 : π ∣ W.a₆` using `(dvd_pow_self π (by norm_num : 5 ≠ 0)).trans h6`. Distinguish the cases in `h4' : π ^ 4 ∣ W.a₄`.
+
+Distinguish the cases in `h6' : π ^ 6 ∣ W.a₆`. Conclude with `absurd ⟨h1, h2, h3, h4', h6'⟩ hmin`. Use `(knBound_one K W fun P => ?_).mono K (by norm_num)` and prove the remaining obligations. Assume the negation of the conclusion as `hP`. Take `⟨x, y, h, rfl, e, dx, dy⟩` from `exists_of_notMem_E0Set K W hπ d3 d4 d6 hP`.
+
+Take `⟨⟨X, rfl⟩, ⟨Y, rfl⟩⟩` from `pi_sq_dvd_x_of_normal_form W hπ h1 h2 h3 h4 h6 e dx dy`. Apply `h6'` to reduce the goal to its premises. Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨B₂, hB₂⟩` from `h2`. Take `⟨B₃, hB₃⟩` from `h3`.
+
+Take `⟨B₄, hB₄⟩` from `h4'`. Rewrite `e` using `[equation_iff, hA₁, hB₂, hB₃, hB₄]`. Conclude with `⟨Y ^ 2 + A₁ * X * Y + B₃ * Y - X ^ 3 - B₂ * X ^ 2 - B₄ * X, by linear_combination -e⟩`. Use `knBound_two K W fun P Q R hP hQ hR hs => ?_` and prove the remaining obligations. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, -, -, -, e₁, e₂, e₃, dx₁, dy₁, dx₂, dy₂, dx₃, dy₃, ⟨L, rfl⟩, -, l1, -, -, -, v2, -⟩` from `triple_cusp K W hπ h1 d2 d3 d4 d6 hP hQ hR hs`.
+
+Take `⟨⟨X₁, rfl⟩, ⟨Y₁, rfl⟩⟩` from `pi_sq_dvd_x_of_normal_form W hπ h1 h2 h3 h4 h6 e₁ dx₁ dy₁`. Take `⟨⟨X₂, rfl⟩, -⟩` from `pi_sq_dvd_x_of_normal_form W hπ h1 h2 h3 h4 h6 e₂ dx₂ dy₂`. Take `⟨⟨X₃, rfl⟩, -⟩` from `pi_sq_dvd_x_of_normal_form W hπ h1 h2 h3 h4 h6 e₃ dx₃ dy₃`. Establish `hν : ν = π ^ 3 * (Y₁ - L * X₁)` using `by linear_combination -l1`. Substitute `hν` using the available equality.
+
+Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨B₃, hB₃⟩` from `h3`. Apply `h4'` to reduce the goal to its premises. Rewrite `v2` using `[hA₁, hB₃]`. Conclude with `⟨X₁ * X₂ + X₁ * X₃ + X₂ * X₃ + 2 * L * (Y₁ - L * X₁) + A₁ * (Y₁ - L * X₁) + B₃ * L, by linear_combination -v2⟩`.
+-/
 theorem kodairaNeron_bound_IIIstar_IIstar (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) (h3 : π ^ 3 ∣ W.a₃) (h4 : π ^ 3 ∣ W.a₄)
     (h6 : π ^ 5 ∣ W.a₆) (hmin : ¬Scalable π W) : KNBound K W 2 := by
   have d2 : π ∣ W.a₂ := (dvd_pow_self π two_ne_zero).trans h2
@@ -246,6 +322,11 @@ theorem kodairaNeron_bound_IIIstar_IIstar (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ 
     exact ⟨X₁ * X₂ + X₁ * X₃ + X₂ * X₃ + 2 * L * (Y₁ - L * X₁) + A₁ * (Y₁ - L * X₁) + B₃ * L,
       by linear_combination -v2⟩
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ x y Y : 𝒪, W.toAffine.Equation x y ∧ π ∣ x ∧ y = π ^ 2 * Y ∧ π ∣ 2 * Y + A₃`. Take `⟨x, y, Y, e, dx, rfl, hD⟩` from `hex`. Take `⟨-, Y', hY', hQ⟩` from `star_point W hπ h1 h2 h3 h4 h6 e dx ⟨π * Y, by ring⟩`. Establish `hYY : Y' = Y` using `mul_left_cancel₀ (pow_ne_zero 2 hπ.ne_zero) hY'.symm`. Substitute `hYY` using the available equality.
+
+Take `⟨s1, s2, s3, s4, s6⟩` from `vc_star_step W hπ h1 h2 h3 h4 h6 hQ hD`. Use `(KNBound.of_vc K W ⟨1, 0, 0, π ^ 2 * Y'⟩ ?_).mono K (by norm_num : 2 ≤ 3)` and prove the remaining obligations. Conclude with `kodairaNeron_bound_IIIstar_IIstar K _ hπ s1 s2 s3 s4 s6 (hmin _)`. Use `push Not at hex`. Conclude with `knBound_IVstar K W hπ h1 h2 h3 h4 h6 fun x y Y e dx hy hD => hex x y Y e dx hy hD`.
+-/
 theorem knBound_star (h1 : π ∣ W.a₁) (h2 : π ^ 2 ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π ^ 2 * A₃)
     (h4 : π ^ 3 ∣ W.a₄) (h6 : W.a₆ = π ^ 4 * A₆)
     (hmin : ∀ C : VariableChange 𝒪, ¬Scalable π (C • W)) : KNBound K W 3 := by

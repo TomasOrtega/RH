@@ -6,6 +6,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Introduce and unpack `B ⟨X₁, _, _, hP, r, B₁, hr, h1, h2, h3⟩`. Use `haveI : Module.Projective ℤ X₁ := by`. Take `⟨s, hs⟩` from `Module.projective_def'.1 hP`. Conclude with `Module.Projective.of_split (s.restrictScalars ℤ) ((Finsupp.linearCombination O id).restrictScalars ℤ) (by ext x; exact congrArg (· x) hs)`. Use `⟨X₁, inferInstance, inferInstance, inferInstance, r.toAddMonoidHom.toIntLinearMap, B₁, hr, ⟨h1.1, fun a y z => ?_⟩, h2, h3⟩` and prove the remaining obligations.
+
+Use `show B₁ (a • y) z = B₁ y (a • z)`. Rewrite using `[map_zsmul, map_zsmul, LinearMap.smul_apply]`.
+-/
 theorem psdCone_subset_psdCone_int (O : Type) [CommRing O] [Module.Finite ℤ O] [Module.Free ℤ O] (bar : O → O)
     (X : Type) [AddCommGroup X] [Module O X] : psdCone bar X ⊆ psdCone (id : ℤ → ℤ) X := by
   rintro B ⟨X₁, _, _, hP, r, B₁, hr, h1, h2, h3⟩

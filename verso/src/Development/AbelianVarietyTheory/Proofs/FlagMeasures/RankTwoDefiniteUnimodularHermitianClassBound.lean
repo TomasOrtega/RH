@@ -12,6 +12,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.RankTwoCount
 
+/- English proof (translation)
+Use `haveI : Finite α := ENat.card_lt_top.1 (lt_of_le_of_lt ha (ENat.coe_lt_top a))`. Use `haveI : ∀ i, Finite (β i) := fun i => ENat.card_lt_top.1 (lt_of_le_of_lt (hb i) (ENat.coe_lt_top b))`. Use `haveI := Fintype.ofFinite α`. Rewrite `ha`, the goal using `[ENat.card_eq_coe_natCard]`. Establish `ha' : Nat.card α ≤ a` using `by exact_mod_cast ha`.
+
+Establish `hb' : ∀ i, Nat.card (β i) ≤ b` using `fun i => by`. Use `hb i` as an intermediate fact. Rewrite `this` using `[ENat.card_eq_coe_natCard]`. Conclude with `this` after adjusting the coercions. Rewrite using `[Nat.card_sigma]`.
+
+Establish `h1 : ∑ i, Nat.card (β i) ≤ Fintype.card α * b`. Simplify using `using Finset.sum_le_card_nsmul Finset.univ (fun i => Nat.card (β i)) b (fun i _ => hb' i)`. Rewrite `h1` using `[← Nat.card_eq_fintype_card]`. Conclude with `h1.trans (Nat.mul_le_mul_right b ha')` after adjusting the coercions.
+-/
 theorem enat_card_sigma_le {α : Type*} {β : α → Type*} (a b : ℕ) (ha : ENat.card α ≤ a)
     (hb : ∀ i, ENat.card (β i) ≤ b) : ENat.card (Σ i, β i) ≤ ((a * b : ℕ) : ENat) := by
   classical
@@ -30,6 +37,9 @@ theorem enat_card_sigma_le {α : Type*} {β : α → Type*} (a b : ℕ) (ha : EN
   rw [← Nat.card_eq_fintype_card] at h1
   exact_mod_cast h1.trans (Nat.mul_le_mul_right b ha')
 
+/- English proof (translation)
+Use `choose f hf using h`. Conclude with `ENat.card_le_card_of_injective (f := f) fun a a' e => hu a a' (f a) (hf a) (e ▸ hf a')`.
+-/
 theorem enat_card_le_of_rel {α β : Type*} (P : α → β → Prop) (h : ∀ a, ∃ b, P a b)
     (hu : ∀ a a' b, P a b → P a' b → a = a') : ENat.card α ≤ ENat.card β := by
   choose f hf using h
@@ -40,6 +50,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def LineRel (X Y : E × Submodule (𝓞 E) E) : Prop :=
   ∃ c : E, c ≠ 0 ∧ star c * Y.1 * c = X.1 ∧ ∀ y, c * y ∈ Y.2 ↔ y ∈ X.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_ne_zero, by simp, by simp⟩ symm := by rintro X Y ⟨c, hc, h1, h2⟩ have hs : star c ≠ 0 := by simpa using hc refine ⟨c⁻¹, inv_ne_zero hc, ?_, fun y => ?_⟩ · rw [← h1, star_inv₀]; field_simp · rw [← h2, mul_inv_cancel_left₀ hc] trans := by rintro X Y Z ⟨c, hc, h1, h2⟩ ⟨d, hd …`.
+-/
 theorem lineRel_equivalence : Equivalence (LineRel (E := E)) where
   refl X := ⟨1, one_ne_zero, by simp, by simp⟩
   symm := by
@@ -54,6 +67,9 @@ theorem lineRel_equivalence : Equivalence (LineRel (E := E)) where
     · rw [← h1, ← k1, star_mul]; ring
     · rw [← h2, ← k2, mul_assoc]
 
+/- English proof (translation)
+Establish `he : Equivalence (fun X Y : {X // p X} => LineRel X.1 Y.1)` using `⟨fun X => lineRel_equivalence.refl _, fun h => lineRel_equivalence.symm h, fun h k => lineRel_equivalence.trans h k⟩`. Conclude with `he.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq _))`.
+-/
 theorem lineRel_out {p : E × Submodule (𝓞 E) E → Prop} (Y : {X // p X}) :
     LineRel (Quot.out (Quot.mk (fun X Y : {X // p X} => LineRel X.1 Y.1) Y)).1 Y.1 := by
   have he : Equivalence (fun X Y : {X // p X} => LineRel X.1 Y.1) :=
@@ -61,6 +77,9 @@ theorem lineRel_out {p : E × Submodule (𝓞 E) E → Prop} (Y : {X // p X}) :
       fun h k => lineRel_equivalence.trans h k⟩
   exact he.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq _))
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem form_transport {r : ℕ} (J g : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     star y ⬝ᵥ ((gᴴ * J * g) *ᵥ x) = star (g *ᵥ y) ⬝ᵥ (J *ᵥ (g *ᵥ x)) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
@@ -68,17 +87,35 @@ theorem form_transport {r : ℕ} (J g : Matrix (Fin r) (Fin r) E) (x y : Fin r �
 def pull {r : ℕ} (γ : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) : Submodule (𝓞 E) (Fin r → E) :=
   Λ.comap ((Matrix.mulVecLin (γ : Matrix (Fin r) (Fin r) E)).restrictScalars (𝓞 E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pull {r : ℕ} (γ : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (y : Fin r → E) :
     y ∈ pull γ Λ ↔ (γ : Matrix (Fin r) (Fin r) E) *ᵥ y ∈ Λ := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`.
+-/
 theorem mulVec_inv_cancel {r : ℕ} (γ : GL (Fin r) E) (y : Fin r → E) :
     (γ : Matrix (Fin r) (Fin r) E) *ᵥ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ y) = y := by
   rw [mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+-/
 theorem inv_mulVec_cancel {r : ℕ} (γ : GL (Fin r) E) (y : Fin r → E) :
     ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ y) = y := by
   rw [mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]
 
+/- English proof (translation)
+Establish `hm : pull γ Λ = Λ.map ((Matrix.mulVecLin ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)).restrictScalars (𝓞 E))`. Use extensionality with `y`. Rewrite using `[mem_pull, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨_, hy, inv_mulVec_cancel γ y⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `(γ : Matrix (Fin r) (Fin r) E) *ᵥ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) ∈ Λ`. Rewrite using `[mulVec_inv_cancel]` and apply the resulting hypothesis. Use `⟨hm ▸ h.fg.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hy : (γ : Matrix (Fin r) (Fin r) E) *ᵥ y ∈ Submodule.span E (Λ : Set (Fin r → E))`. Rewrite using `[h.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+
+Use `Submodule.mem_map_of_mem (f := Matrix.mulVecLin ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)) hy` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Matrix.mulVecLin_apply, inv_mulVec_cancel]`. Rewrite using `[hm]`. Conclude with `this`.
+-/
 theorem pull_isLattice {r : ℕ} (γ : GL (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E))
     (h : Submodule.IsLattice E Λ) : Submodule.IsLattice E (pull γ Λ) := by
   have hm : pull γ Λ = Λ.map ((Matrix.mulVecLin
@@ -102,6 +139,11 @@ theorem pull_isLattice {r : ℕ} (γ : GL (Fin r) E) (Λ : Submodule (𝓞 E) (F
   rw [hm]
   exact this
 
+/- English proof (translation)
+Rewrite using `[mem_pull, h]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy`. Rewrite using `[form_transport]`. Conclude with `H _ hy`.
+
+Introduce `H y hy`. Use `H (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ y) (by rw [mem_pull, mulVec_inv_cancel]; exact hy)` as an intermediate fact. Rewrite `this` using `[form_transport, mulVec_inv_cancel]`. Then use the resulting hypothesis.
+-/
 theorem pull_unimodular {r : ℕ} (γ : GL (Fin r) E) (J : Matrix (Fin r) (Fin r) E)
     (Λ : Submodule (𝓞 E) (Fin r → E))
     (h : ∀ x, x ∈ Λ ↔ ∀ y ∈ Λ, star y ⬝ᵥ (J *ᵥ x) ∈ (algebraMap (𝓞 E) E).range) (x : Fin r → E) :
@@ -117,6 +159,9 @@ theorem pull_unimodular {r : ℕ} (γ : GL (Fin r) E) (J : Matrix (Fin r) (Fin r
       (by rw [mem_pull, mulVec_inv_cancel]; exact hy)
     rwa [form_transport, mulVec_inv_cancel] at this
 
+/- English proof (translation)
+Rewrite using `[form_transport]`. Use `h φ _ fun h0 => hy ?_` and prove the remaining obligations. Rewrite using `[← inv_mulVec_cancel γ y, h0, mulVec_zero]`.
+-/
 theorem pull_pos {r : ℕ} (γ : GL (Fin r) E) (J : Matrix (Fin r) (Fin r) E)
     (h : ∀ (φ : E →+* ℂ) (y : Fin r → E), y ≠ 0 → 0 < (φ (star y ⬝ᵥ (J *ᵥ y))).re)
     (φ : E →+* ℂ) (y : Fin r → E) (hy : y ≠ 0) :
@@ -129,6 +174,9 @@ theorem pull_pos {r : ℕ} (γ : GL (Fin r) E) (J : Matrix (Fin r) (Fin r) E)
 noncomputable def diagGL (c d : E) (hc : c ≠ 0) (hd : d ≠ 0) : GL (Fin 2) E :=
   Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal ![c, d]) (by simp [Fin.prod_univ_two, hc, hd])
 
+/- English proof (translation)
+Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 theorem diag_conj (c d b e : E) :
     (Matrix.diagonal ![c, d])ᴴ * Matrix.diagonal ![b, e] * Matrix.diagonal ![c, d] =
       Matrix.diagonal ![star c * b * c, star d * e * d] := by
@@ -137,6 +185,9 @@ theorem diag_conj (c d b e : E) :
   ext i
   fin_cases i <;> simp
 
+/- English proof (translation)
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [mulVec_diagonal]`.
+-/
 theorem diag_mulVec (c d s t : E) : Matrix.diagonal ![c, d] *ᵥ ![s, t] = ![c * s, d * t] := by
   ext i
   fin_cases i <;> simp [mulVec_diagonal]
@@ -165,6 +216,13 @@ abbrev GlueData (Y : ℝ) : Type :=
       Σ q₂ : LineCls (Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫.1),
         Glued (Quot.out q₁).1 (Quot.out q₂).1
 
+/- English proof (translation)
+Use `enat_card_sigma_le _ _ ?_ fun 𝔫 => enat_card_sigma_le _ _ (GlobalTheory.T.card_rankOne_hermitian_lattice_classes_le E hE _) fun q₁ => enat_card_sigma_le _ _ (GlobalTheory.T.card_rankOne_hermitian_lattice_classes_le E hE _) fun q₂ => ?_` and prove the remaining obligations. Establish `hf : (realIdeals E Y).Finite` using `(GlobalTheory.T.ncard_realGenerated_ideals_le E hE Y hY).1`. Rewrite using `[hf.cast_ncard_eq]`. Conclude with `le_rfl`. Take `⟨a1, a2, a3, a4⟩` from `(Quot.out q₁).2`.
+
+Take `⟨b1, b2, b3, b4⟩` from `(Quot.out q₂).2`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `ha : (Quot.out q₁).1.1 ≠ 0` using `fun h => by simpa [h] using a2 φ`. Establish `hb : (Quot.out q₂).1.1 ≠ 0` using `fun h => by simpa [h] using b2 φ`. Use `(GlobalTheory.T.card_unimodular_gluings_two_lines_le E hE _ _ _ _ 𝔫.1 a1 b1 ha hb a3 b3 a4).trans ?_` and prove the remaining obligations.
+
+Conclude with `Nat.le_floor 𝔫.2.2.2` after adjusting the coercions.
+-/
 theorem card_glueData_le (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (Y : ℝ) (hY : 1 ≤ Y) :
     ENat.card (GlueData E Y) ≤ (((realIdeals E Y).ncard * ((classNumber E * 2 ^ Formalism.HermitianLatticesTheory.fDeg E) *
       ((classNumber E * 2 ^ Formalism.HermitianLatticesTheory.fDeg E) * ⌊Y ^ 2⌋₊)) : ℕ) : ENat) := by
@@ -181,6 +239,21 @@ theorem card_glueData_le (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (Y
     refine (GlobalTheory.T.card_unimodular_gluings_two_lines_le E hE _ _ _ _ 𝔫.1 a1 b1 ha hb a3 b3 a4).trans ?_
     exact_mod_cast Nat.le_floor 𝔫.2.2.2
 
+/- English proof (translation)
+Unfold `defClassNum`. Use `enat_card_le_of_rel (fun c t => ∃ X, Quot.mk _ X = c ∧ X.1 = (Matrix.diagonal ![(Quot.out t.2.1).1.1, (Quot.out t.2.2.1).1.1], t.2.2.2.1)) ?_ ?_` and prove the remaining obligations. Introduce `c`. Take `⟨⟨⟨J, Λ⟩, hJ, hpos, hlat, huni⟩, rfl⟩` from `Quot.exists_rep c`. Take `⟨u, hu, hu0, hub⟩` from `GlobalTheory.T.exists_short_vector_unimodular_hermitian_lattice_rank_two E hE J hJ hpos Λ hlat huni`.
+
+Take `⟨γ, β₁, β₂, N₁, N₂, 𝔫, hγ, s₁, s₂, hp, l₁, l₂, m₁, m₂, e₁, e₂, n0, nr, nb⟩` from `GlobalTheory.T.definiteUnimodularPlane_split_along_vector E hE J hJ hpos Λ hlat huni u hu hu0 _ hub`. Establish `h𝔫 : 𝔫 ∈ realIdeals E ((2 * Formalism.HermitianLatticesTheory.vInv E) ^ Formalism.HermitianLatticesTheory.fDeg E)` using `⟨n0, nr, by rwa [← pow_mul, mul_comm _ 2]⟩`. Set `Y₁ : Lines (Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫)` to `⟨(β₁, N₁), s₁, fun φ => (hp φ).1, l₁, e₁⟩`. Set `Y₂ : Lines (Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫)` to `⟨(β₂, N₂), s₂, fun φ => (hp φ).2, l₂, e₂⟩`. Take `⟨c₁, hc₁, k₁, j₁⟩` from `lineRel_out Y₁`.
+
+Take `⟨c₂, hc₂, k₂, j₂⟩` from `lineRel_out Y₂`. Use `set q₁ : LineCls (Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫) := Quot.mk _ Y₁ with hq₁`. Use `set q₂ : LineCls (Submodule.map (Algebra.linearMap (𝓞 E) E) 𝔫) := Quot.mk _ Y₂ with hq₂`. Set `δ : GL (Fin 2) E` to `γ * diagGL c₁ c₂ hc₁ hc₂`. Establish `hδv : (δ : Matrix (Fin 2) (Fin 2) E) = γ * Matrix.diagonal ![c₁, c₂]` using `rfl`.
+
+Establish `hδ : (δ : Matrix (Fin 2) (Fin 2) E)ᴴ * J * (δ : Matrix (Fin 2) (Fin 2) E) = Matrix.diagonal ![(Quot.out q₁).1.1, (Quot.out q₂).1.1]`. Rewrite using `[← k₁, ← k₂, ← diag_conj, ← hγ, hδv, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hu'` using `pull_unimodular δ J Λ huni`. Establish `hp'` using `pull_pos δ J hpos`.
+
+Establish `hh : ((δ : Matrix (Fin 2) (Fin 2) E)ᴴ * J * (δ : Matrix (Fin 2) (Fin 2) E))ᴴ = (δ : Matrix (Fin 2) (Fin 2) E)ᴴ * J * (δ : Matrix (Fin 2) (Fin 2) E)`. Establish `hJ' : Jᴴ = J` using `hJ`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hJ', Matrix.mul_assoc]`. Rewrite `hu'`, `hp'`, `hh` using `[hδ]`. Establish `hl'` using `pull_isLattice δ Λ hlat`.
+
+Use `⟨⟨⟨𝔫, h𝔫⟩, q₁, q₂, pull δ Λ, hl', hu', fun t => ?_, fun t => ?_⟩, ⟨(_, pull δ Λ), hh, hp', hl', hu'⟩, Quot.sound ⟨δ, hδ, fun y => Iff.rfl⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_pull, hδv, ← mulVec_mulVec, diag_mulVec, mul_zero, ← m₁]`. Conclude with `(j₁ t).symm`. Rewrite using `[mem_pull, hδv, ← mulVec_mulVec, diag_mulVec, mul_zero, ← m₂]`. Conclude with `(j₂ t).symm`.
+
+Introduce and unpack `_ _ t ⟨X, rfl, hX⟩ ⟨X', rfl, hX'⟩`. Rewrite using `[Subtype.ext (hX.trans hX'.symm)]`.
+-/
 theorem defClassNum_le_card (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) :
     defClassNum E 2 ≤ ENat.card (GlueData E ((2 * Formalism.HermitianLatticesTheory.vInv E) ^ Formalism.HermitianLatticesTheory.fDeg E)) := by
   unfold defClassNum
@@ -222,6 +295,19 @@ theorem defClassNum_le_card (hE : Formalism.HermitianLatticesTheory.IsCMUnram E)
   · rintro _ _ t ⟨X, rfl, hX⟩ ⟨X', rfl, hX'⟩
     rw [Subtype.ext (hX.trans hX'.symm)]
 
+/- English proof (translation)
+Introduce `E _ _ _ hE`. Take `⟨hdeg, -, hrd, hsq⟩` from `GlobalTheory.T.rootDiscr_ge_three_halves_of_isTotallyComplex E hE.1`. Use `set f := Formalism.HermitianLatticesTheory.fDeg E with hf`. Use `set ρ := 2 * Formalism.HermitianLatticesTheory.vInv E with hρ`. Establish `hρ1 : 1 ≤ ρ` using `by linarith`.
+
+Establish `hY : 1 ≤ ρ ^ f` using `one_le_pow₀ hρ1`. Establish `h1` using `(defClassNum_le_card hE).trans (card_glueData_le hE _ hY)`. Establish `h2 : ((realIdeals E (ρ ^ f)).ncard : ℝ) ≤ ρ ^ f * (1 + Real.log (ρ ^ f)) ^ f` using `(GlobalTheory.T.ncard_realGenerated_ideals_le E hE _ hY).2`. Establish `h3` using `GlobalTheory.classNumber_le_minkowski_count E`. Rewrite `h1` using `[← hf, ← hρ]`.
+
+Rewrite `h3` using `[hsq, hdeg]`. Rewrite `h2`, `h3` using `[Real.log_pow]`. Establish `h4 : ((⌊(ρ ^ f) ^ 2⌋₊ : ℕ) : ℝ) ≤ (ρ ^ f) ^ 2` using `Nat.floor_le (by positivity)`. Establish `hL : 0 ≤ 1 + f * Real.log ρ`. Use `Real.log_nonneg hρ1` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `(ENat.toENNReal_le.2 h1).trans ?_` and prove the remaining obligations. Rewrite using `[ENat.toENNReal_coe, ← ENNReal.ofReal_natCast]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `push_cast`.
+
+Use `set L := 1 + f * Real.log ρ`. Combine the equalities or inequalities in the displayed calculation. Establish `h44 : (4 : ℝ) ^ f = 2 ^ f * 2 ^ f` using `by rw [← mul_pow]; norm_num`. Rewrite using `[h44]`. Use `clear_value L ρ f`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankTwoClasses : RankTwoClasses := by
   intro E _ _ _ hE
   obtain ⟨hdeg, -, hrd, hsq⟩ := GlobalTheory.T.rootDiscr_ge_three_halves_of_isTotallyComplex E hE.1

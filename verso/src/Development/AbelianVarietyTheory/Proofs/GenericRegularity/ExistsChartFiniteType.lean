@@ -12,6 +12,11 @@ namespace GlobalTheory.ModelPoints
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Establish `hP : (ValuativeCriterion ⊓ @QuasiCompact ⊓ @QuasiSeparated ⊓ @LocallyOfFiniteType) s`. Rewrite using `[← IsProper.eq_valuativeCriterion]`. Conclude with `‹IsProper s›`. Set `S : ValuativeCommSq s` to `{ R := W, K := L, i₁ := y, i₂ := r, commSq := ⟨h⟩ }`. Take `⟨u⟩` from `hP.1.1.1 S`.
+
+Use `⟨u.default.l, ⟨u.default.fac_right, u.default.fac_left⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx₁, hx₂⟩`. Conclude with `congrArg CommSq.LiftStruct.l (u.uniq ⟨x, hx₂, hx₁⟩)`.
+-/
 theorem existsUnique_extension {W L : Type} [CommRing W] [IsDomain W] [ValuationRing W] [Field L] [Algebra W L]
     [IsFractionRing W L] {X S : Scheme.{0}} (s : X ⟶ S) [IsProper s] (y : Sp L ⟶ X) (r : Sp W ⟶ S)
     (h : y ≫ s = spMap (algebraMap W L) ≫ r) :
@@ -25,6 +30,15 @@ theorem existsUnique_extension {W L : Type} [CommRing W] [IsDomain W] [Valuation
   rintro x ⟨hx₁, hx₂⟩
   exact congrArg CommSq.LiftStruct.l (u.uniq ⟨x, hx₂, hx₁⟩)
 
+/- English proof (translation)
+Establish `hsub : Set.range yt ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint (R := W) p).map yt.continuous).mem_open U.isOpen hy`. Set `g` to `IsOpenImmersion.lift hU.fromSpec yt hsub`.
+
+Establish `hg : g ≫ hU.fromSpec = yt` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨(Spec.preimage g).hom, ?_, ?_⟩` and prove the remaining obligations. Use `show Spec.map (CommRingCat.ofHom (Spec.preimage g).hom) ≫ hU.fromSpec = yt`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, hg]`. Introduce `ψ hψ`.
+
+Establish `h₁ : Spec.map (CommRingCat.ofHom ψ) = g`. Rewrite using `[← cancel_mono hU.fromSpec, hg]`. Conclude with `hψ`. Establish `h₂ : CommRingCat.ofHom ψ = Spec.preimage g` using `Spec.map_injective (h₁.trans (Spec.map_preimage g).symm)`. Rewrite using `[← h₂]`.
+
+Both sides reduce to the same expression.
+-/
 theorem existsUnique_chartHom {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (W : Type) [CommRing W]
     [IsLocalRing W] (yt : Sp W ⟶ X) (hy : yt (IsLocalRing.closedPoint W) ∈ U) :
     ∃! ψ : Γ(X, U) →+* W, spMap ψ ≫ hU.fromSpec = yt := by
@@ -46,6 +60,11 @@ theorem existsUnique_chartHom {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen 
     rw [← h₂]
     rfl
 
+/- English proof (translation)
+Use `⟨(Spec.preimage (hU.fromSpec ≫ s)).hom, ?_, ?_⟩` and prove the remaining obligations. Use `show _ = Spec.map (CommRingCat.ofHom _)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hlf : LocallyOfFiniteType (Spec.map (Spec.preimage (hU.fromSpec ≫ s)))`. Rewrite using `[Spec.map_preimage]`.
+
+Use `infer_instance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp hlf`.
+-/
 theorem exists_chart_finiteType {O : Type} [CommRing O] {X : Scheme.{0}} (s : X ⟶ Sp O) [LocallyOfFiniteType s]
     {U : X.Opens} (hU : IsAffineOpen U) : ∃ α : O →+* Γ(X, U), hU.fromSpec ≫ s = spMap α ∧ α.FiniteType := by
   refine ⟨(Spec.preimage (hU.fromSpec ≫ s)).hom, ?_, ?_⟩
@@ -56,6 +75,13 @@ theorem exists_chart_finiteType {O : Type} [CommRing O] {X : Scheme.{0}} (s : X 
       infer_instance
     exact (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp hlf
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y`. Use `haveI : IsProper Y.s := projProper O Y.X Y.s Y.proj`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W L _ _ _ _ _ _ oV fK y hc hy`. Apply `existsUnique_extension Y.s (y ≫ Y.j) (spMap oV)` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Model.j_s, ← Category.assoc, hy, ← spMap_comp, ← spMap_comp, hc]`. Introduce `S f`. Establish `hp` using `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull f Y.t`. Conclude with `⟨_, ⟨hp.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose⟩⟩`. Introduce `U hU`.
+
+Take `⟨α, hα, hft⟩` from `exists_chart_finiteType Y.s hU`. Conclude with `⟨α, hα, hft, fun W _ _ yt hyt => existsUnique_chartHom hU W yt hyt⟩`.
+-/
 theorem model_points_charts :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), (∀ (W L : Type) [CommRing W] [IsDomain W] [ValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (oV : O →+* W) (fK : c.F →+* L) (y : Sp L ⟶ Xo.XF c), (algebraMap W L).comp oV = fK.comp β → y ≫ pullback.snd _ _ = spMap fK → ∃! yt : Sp W ⟶ Y.X, yt ≫ Y.s = spMap oV ∧ spMap (algebraMap W L) ≫ yt = y ≫ Y.j) ∧ (∀ (S : Scheme.{0}) (f : S ⟶ Y.X), ∃ G : SAB H S, Nonempty (SABMap G Y.t f)) ∧ ∀ (U : Y.X.Opens) (hU : IsAffineOpen U), ∃ α : O →+* Γ(Y.X, U), hU.fromSpec ≫ Y.s = spMap α ∧ α.FiniteType ∧ ∀ (W : Type) [CommRing W] [IsLocalRing W] (yt : Sp W ⟶ Y.X), yt (IsLocalRing.closedPoint W) ∈ U → ∃! ψ : Γ(Y.X, U) →+* W, spMap ψ ≫ hU.fromSpec = yt := by
   intro E _ _ _ H D l Xo c O _ β Y

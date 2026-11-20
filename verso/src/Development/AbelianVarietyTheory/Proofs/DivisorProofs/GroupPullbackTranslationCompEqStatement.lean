@@ -17,5 +17,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TranslPull.transl_comp_of_isGrpPullback | exact GlobalTheory.TranslPull.transl_comp_of_isGrpPullback | (intros; apply GlobalTheory.TranslPull.transl_comp_of_isGrpPullback <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.groupPullback_translation_comp_eq : ∀ {S S' : Scheme.{0}} (G' : Over S') [GrpObj G'] (G : Over S) [GrpObj G] (f : S' ⟶ S) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (x : 𝟙_ (Over S') ⟶ G') (s : 𝟙_ (Over S) ⟶ G), x.left ≫ φ = f ≫ s.left → (lift (toUnit G' ≫ x) (𝟙 G') ≫ μ[G']).left ≫ φ = φ ≫ (lift (toUnit G ≫ s) (𝟙 G) ≫ μ[G]).left := by
   first | exact @GlobalTheory.TranslPull.transl_comp_of_isGrpPullback | exact GlobalTheory.TranslPull.transl_comp_of_isGrpPullback | (intros; apply GlobalTheory.TranslPull.transl_comp_of_isGrpPullback <;> assumption)

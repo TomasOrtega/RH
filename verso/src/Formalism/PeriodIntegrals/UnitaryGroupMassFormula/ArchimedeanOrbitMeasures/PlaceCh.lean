@@ -35,6 +35,15 @@ def PlaceChartV : Prop := ∀ (n : ℕ) (ε : Fin n → Bool) (S : Finset (Fin n
         Formalism.REAL.muG ε ((fun z : EuclideanSpace ℝ α × EuclideanSpace ℝ β => expU ε (L₀ z.1) * expU ε (L₁ z.2)) '' A) =
           ∫⁻ z in A, ENNReal.ofReal (D z)
 
+/- English proof (translation)
+Introduce `Tx`. Establish `hTx : ∀ x v, Tx x v = P₀ v (L x v)` using `fun x v => rfl`. Establish `hn : ∀ x, ∑ v, ‖Tx x v‖ ^ 2 = ‖x‖ ^ 2`. Introduce `x`. Rewrite using `[← hLn x]`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hTx, ← h4 v, h2 v _ (hLQ x v)]`. Use `⟨⟨fun x y hxy => ?_, fun z => ?_⟩, hn⟩` and prove the remaining obligations. Establish `h0 : Tx (x - y) = 0` using `by rw [map_sub, hxy, sub_self]`. Use `hn (x - y)` as an intermediate fact.
+
+Rewrite `this` using `[h0]`. Simplify using `only [Pi.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at this`. Establish `h00 : ‖x - y‖ = 0`. Use `this.symm` as an intermediate fact. Conclude with `pow_eq_zero_iff (n := 2) (by norm_num) |>.1 this`.
+
+Conclude with `sub_eq_zero.1 (norm_eq_zero.1 h00)`. Take `⟨x, hx⟩` from `hLs (fun v => L₀ v (z v)) fun v => h3 v (z v)`. Use `⟨x, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hTx, hx, h1]`.
+-/
 theorem coord_facts {ι V : Type} [Fintype ι] [Fintype V] {n : ℕ} {α : V → Type} [∀ v, Fintype (α v)]
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)) (Q : V → Matrix (Fin n) (Fin n) ℂ → Prop)
     (L₀ : ∀ v, EuclideanSpace ℝ (α v) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ)
@@ -66,6 +75,35 @@ theorem coord_facts {ι V : Type} [Fintype ι] [Fintype V] {n : ℕ} {α : V →
     refine ⟨x, funext fun v => ?_⟩
     rw [hTx, hx, h1]
 
+/- English proof (translation)
+Introduce `D X u' hb c S ι η _ _ L L₁ ctx`. Take `⟨⟨ψ, hT, μinf, νinf, fibInf, hP⟩, hc, hL, hB⟩` from `ctx`. Establish `hSε : ∀ v, ∀ i ∈ S v, X.B.I.ε v i = true` using `fun v => (hc.1 v).2`. Establish `hgd : ∀ v, Formalism.MainNotions.S.Gauge.GaugeDens (X.B.I.ε v)` using `hP.2.2.2.1`. Use `choose α β hα hβ L0 P0 L1 P1 r Dv h1 h2 h3 h4 h5 h6 h7 h8 hr hDc hD0 hDm hDnn hΦc hΦi hdens using fun v => h X.B.I.n (X.B.I.ε v) (S v) (hSε v) (hgd v)`.
+
+Use `letI : ∀ v, Fintype (α v) := hα`. Use `letI : ∀ v, Fintype (β v) := hβ`. Take `⟨hTxb, hTxn⟩` from `coord_facts L (fun v M => InCompl (X.B.I.ε v) (S v) M) L0 P0 h1 h2 h3 h4 (fun x v => hL.1 x v) (fun x => hL.2.1 x) (fun M hM => hL.2.2 M hM)`. Take `⟨hTyb, hTyn⟩` from `coord_facts L₁ (fun v M => InBlock (X.B.I.ε v) (S v) M) L1 P1 h5 h6 h7 h8 (fun x v => hB.1 x v) (fun x => hB.2.1 x) (fun M hM => hB.2.2 M hM)`. Use `set Tx : EuclideanSpace ℝ ι →ₗ[ℝ] (∀ v, EuclideanSpace ℝ (α v)) := LinearMap.pi fun v => (P0 v).comp ((LinearMap.proj v).comp L) with hTxd`.
+
+Use `set Ty : EuclideanSpace ℝ η →ₗ[ℝ] (∀ v, EuclideanSpace ℝ (β v)) := LinearMap.pi fun v => (P1 v).comp ((LinearMap.proj v).comp L₁) with hTyd`. Establish `hTxm` using `PI.AprimeInfG.measurePreserving_of_normSq Tx hTxb hTxn`. Establish `hTym` using `PI.AprimeInfG.measurePreserving_of_normSq Ty hTyb hTyn`. Set `Txe : EuclideanSpace ℝ ι ≃ᵐ (∀ v, EuclideanSpace ℝ (α v))` to `(LinearEquiv.ofBijective Tx hTxb).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`. Set `Tye : EuclideanSpace ℝ η ≃ᵐ (∀ v, EuclideanSpace ℝ (β v))` to `(LinearEquiv.ofBijective Ty hTyb).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`.
+
+Set `T : (EuclideanSpace ℝ ι × EuclideanSpace ℝ η) ≃ᵐ (∀ v, EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v))` to `(Txe.prodCongr Tye).trans (PI.AprimeInfG.piProdEquiv (fun v => EuclideanSpace ℝ (α v)) (fun v => EuclideanSpace ℝ (β v))).symm`. Establish `hTfun : ∀ p, T p = fun v => (Tx p.1 v, Ty p.2 v)` using `fun p => rfl`. Establish `hTmp : MeasurePreserving T volume (Measure.pi fun _ => volume)`. Establish `hprod` using `hTxm.prod hTym`. Establish `hpe` using `(PI.AprimeInfG.measurePreserving_piProdEquiv (fun v => EuclideanSpace ℝ (α v)) (fun v => EuclideanSpace ℝ (β v)) (fun _ => volume) (fun _ => volume)).symm`.
+
+Conclude with `hpe.comp hprod`. Establish `hTc : Continuous T`. Rewrite using `[show (T : _ → _) = fun p => fun v => (Tx p.1 v, Ty p.2 v) from funext hTfun]`. Conclude with `continuous_pi fun v => ((continuous_apply v).comp (Tx.continuous_of_finiteDimensional.comp continuous_fst)).prodMk ((continuous_apply v).comp (Ty.continuous_of_finiteDimensional.comp continuous_snd))`. Establish `hT0 : T 0 = 0`.
+
+Rewrite using `[hTfun]`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Use `set rr := (insert 1 (Finset.univ.image r)).min' ⟨1, Finset.mem_insert_self _ _⟩ with hrr`. Establish `hrr0 : 0 < rr`.
+
+Establish `hm` using `Finset.min'_mem (insert 1 (Finset.univ.image r)) ⟨1, Finset.mem_insert_self _ _⟩`. Break down `Finset.mem_insert.1 hm with e | e` into its components or cases. Rewrite using `[hrr, e]`. Evaluate the numerical expressions. Take `⟨v, -, hv⟩` from `Finset.mem_image.1 e`.
+
+Rewrite using `[hrr, ← hv]`. Conclude with `hr v`. Establish `hrrv : ∀ v, rr ≤ r v` using `fun v => Finset.min'_le _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem r (Finset.mem_univ v)))`. Establish `hle : ∀ {γ : NumberField.InfinitePlace X.B.I.F → Type} [∀ v, Fintype (γ v)] {κ' : Type} [Fintype κ'] (M : EuclideanSpace ℝ κ' →ₗ[ℝ] (∀ v, EuclideanSpace ℝ (γ v))), (∀ x, ∑ v, ‖M x v‖ ^ 2 = ‖x‖ ^ 2) → ∀ x v, ‖M x v‖ ≤ ‖x‖`. Introduce `γ _ κ' _ M hM x v`.
+
+Establish `: ‖M x v‖ ^ 2 ≤ ‖x‖ ^ 2`. Rewrite using `[← hM x]`. Conclude with `Finset.single_le_sum (f := fun v => ‖M x v‖ ^ 2) (fun v _ => sq_nonneg _) (Finset.mem_univ v)`. Conclude with `(sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this`. Use `⟨α, β, hα, hβ, fun v z => expU (X.B.I.ε v) (L0 v z.1) * expU (X.B.I.ε v) (L1 v z.2), Dv, fun v => ball 0 (r v), T, rr, fun v => measurableSet_ball, hΦc, hΦi, hDm, hDnn, hdens, hTmp, hTc, hrr0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp v _`. Rewrite using `[hTfun]`. Use `show (Tx p.1 v, Ty p.2 v) ∈ ball (0 : EuclideanSpace ℝ (α v) × EuclideanSpace ℝ (β v)) (r v)`. Rewrite using `[mem_ball_zero_iff, Prod.norm_def]`. Establish `hp' : ‖p‖ < rr` using `mem_ball_zero_iff.1 hp`.
+
+Rewrite `hp'` using `[Prod.norm_def]`. Use `max_lt ?_ ?_` and prove the remaining obligations. Conclude with `((hle Tx hTxn p.1 v).trans_lt ((le_max_left _ _).trans_lt hp')).trans_le (hrrv v)`. Conclude with `((hle Ty hTyn p.2 v).trans_lt ((le_max_right _ _).trans_lt hp')).trans_le (hrrv v)`. Introduce `p _`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[hTfun]`. Use `show expU (X.B.I.ε v) (L p.1 v) * expU (X.B.I.ε v) (L₁ p.2 v) = expU (X.B.I.ε v) (L0 v (P0 v (L p.1 v))) * expU (X.B.I.ε v) (L1 v (P1 v (L₁ p.2 v)))`. Rewrite using `[h2 v _ (hL.1 p.1 v), h6 v _ (hB.1 p.2 v)]`. Rewrite using `[hT0]`.
+
+Use `tendsto_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Establish `hv : ContinuousAt (fun z : (∀ w, EuclideanSpace ℝ (α w) × EuclideanSpace ℝ (β w)) => z v) 0` using `(continuous_apply v).continuousAt`. Establish `hd : ContinuousAt (Dv v) ((0 : ∀ w, EuclideanSpace ℝ (α w) × EuclideanSpace ℝ (β w)) v)` using `hDc v`. Establish `hdv` using `ContinuousAt.comp (f := fun z : (∀ w, EuclideanSpace ℝ (α w) × EuclideanSpace ℝ (β w)) => z v) hd hv`. Conclude with `hdv`.
+
+Rewrite using `[hT0]`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[Finset.prod_congr rfl fun v _ => hD0 v]`. Both sides reduce to the same expression.
+-/
 theorem placeCharts_of (h : PlaceChartV) : PlaceCharts := by
   intro D X u' hb c S ι η _ _ L L₁ ctx
   obtain ⟨⟨ψ, hT, μinf, νinf, fibInf, hP⟩, hc, hL, hB⟩ := ctx

@@ -12,6 +12,11 @@ namespace GlobalTheory.Hk3.FamModel
 
 open Formalism.L2.Col
 
+/- English proof (translation)
+Use extensionality with `d'`. Simplify using `only [DecoSet.inertSet, Set.mem_ofPred_eq, IsInertNbr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨e₁⟩, ⟨e₂⟩⟩, hf, hb⟩`. Conclude with `⟨⟨⟨e₁.trans f⟩, ⟨e₂.trans f⟩⟩, hf, hb⟩`.
+
+Introduce and unpack `⟨⟨⟨e₁⟩, ⟨e₂⟩⟩, hf, hb⟩`. Conclude with `⟨⟨⟨e₁.trans f.symm⟩, ⟨e₂.trans f.symm⟩⟩, hf, hb⟩`.
+-/
 theorem nb_congr {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
     {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {P : Ideal (𝓞 E)} {s y : List ℕ}
     (f : inType P s ≃ₗ[𝓞 E] inType P y) (d : DecoSet E n ST SG) : d.inertSet P s = d.inertSet P y := by
@@ -23,6 +28,15 @@ theorem nb_congr {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   · rintro ⟨⟨⟨e₁⟩, ⟨e₂⟩⟩, hf, hb⟩
     exact ⟨⟨⟨e₁.trans f.symm⟩, ⟨e₂.trans f.symm⟩⟩, hf, hb⟩
 
+/- English proof (translation)
+Take `⟨y, hy₁, hy₂, ⟨f⟩⟩` from `GlobalTheory.InertTypeIso.inType_iso_sorted_pos P.asIdeal s`. Establish `hnb : ∀ d, c.nbI P.asIdeal s d = c.nbI P.asIdeal y d`. Introduce `d`. Rewrite using `[DecoPts.nbI, DecoPts.nbI, DecoSet.inertNb, DecoSet.inertNb, nb_congr f]`. Establish `hop : (Col.heckeI c P.asIdeal s).op = (Col.heckeI c P.asIdeal y).op`.
+
+Use `LinearMap.ext fun φ => Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Rewrite using `[heckeI_op_apply, heckeI_op_apply, hnb]`. Distinguish the cases in `hlen : 2 * y.length ≤ n`. Conclude with `Or.inr ⟨y, ⟨hy₁, hy₂, hlen⟩, hop⟩`. Use `left`.
+
+Rewrite using `[hop]`. Use `LinearMap.ext fun φ => Subtype.ext (funext fun d => ?_)` and prove the remaining obligations. Rewrite using `[heckeI_op_apply]`. Establish `hempty : c.nbI P.asIdeal y d = ∅`. Use `Finset.eq_empty_of_forall_notMem fun e he => hlen ?_` and prove the remaining obligations.
+
+Rewrite `he` using `[DecoPts.mem_nbI, DecoSet.inertNb]`. Use `split_ifs at he with hfin`. Conclude with `GlobalTheory.InertRank.two_mul_length_le P y (c.pts d) (c.pts e) hy₂ (hfin.mem_toFinset.mp he)`. Simplify using `at he`. Simplify using `[hempty]`.
+-/
 theorem op_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} [Field E] [NumberField E]
     [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))} {S : Col.GSD K} (c : Col.DecoPts S E n ST SG)
     (P : HeightOneSpectrum (𝓞 E)) (s : List ℕ) :
@@ -48,6 +62,11 @@ theorem op_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} 
       · simp at he
     simp [hempty]
 
+/- English proof (translation)
+Break down `op_zero_or c (offSubI.lev Q).1 s with h0 | ⟨y, hy, hyeq⟩` into its components or cases. Use `left`. Simplify using `only [heckeCSDI, Col.heckeFamI]`. Rewrite using `[h0, map_zero]`. Use `right`.
+
+Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [heckeCSDI, Col.heckeFamI]`. Rewrite using `[hyeq]`.
+-/
 theorem csd_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type} [Field E] [NumberField E]
     [StarRing E] {n : ℕ} {ST SG' : Finset (HeightOneSpectrum (𝓞 E))} (S : Col.GSD K) (h : S.Ok) (c : Col.DecoPts S E n ST SG')
     (SG : Finset (HeightOneSpectrum (𝓞 E))) (S0 : Set (HeightOneSpectrum (𝓞 E))) (Q : offSubI ST SG SG' S0) (s : List ℕ) :
@@ -61,12 +80,20 @@ theorem csd_zero_or {K : Type} [Field K] [NumberField K] [StarRing K] {E : Type}
     simp only [heckeCSDI, Col.heckeFamI]
     rw [hyeq]
 
+/- English proof (translation)
+Establish `hm` using `R.two_le_m`. Simplify using `only [Ranks.N, Ranks.r, Nat.mul_succ]`. Generalize the expression as in `R.m * R.t = x`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_rows (R : Ranks) : R.N R.m - 1 = R.r + R.m * R.t := by
   have hm := R.two_le_m
   simp only [Ranks.N, Ranks.r, Nat.mul_succ]
   generalize R.m * R.t = x
   omega
 
+/- English proof (translation)
+Break down `csd_zero_or (Col.mtildeKGSD W Ch sel t.1) (Col.mtildeKOk W Ch sel t.1 hX) (formPts _ _) Pr.vGs S0 Q s with h | ⟨y, hy, hyeq⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨y, ?_, hyeq⟩ show Col.InertTypeOk (R.r + R.m * R.t) y` and prove the remaining obligations. Rewrite using `[← rank_rows R]`. Conclude with `hy`.
+
+Use `L j t Q s := by`. Break down `csd_zero_or (Col.mtKGSD W Ch sel t.1 (j.1 + 1)) (Col.mtKOk W Ch sel t.1 hX (j.1 + 1)) (formPts _ _) Pr.vGs S0 Q s with h | ⟨y, hy, hyeq⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨y, hy, hyeq⟩`.
+-/
 theorem inertJunk_col {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word R) (Ch : Col.Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (hX : X.Ok)
     (v0 : InfinitePlace X.K) (TU : Finset (Tup X.F X.E X.K S))
@@ -88,6 +115,13 @@ theorem inertJunk_col {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.
     · exact Or.inl h
     · exact Or.inr ⟨y, hy, hyeq⟩
 
+/- English proof (translation)
+Introduce `hJ`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Break down `hJ.R t ⟨(), Set.mem_univ _⟩ [0] with h | ⟨s', ⟨_, hpos, _⟩, heq⟩` into its components or cases. Simplify using `only at h`. Rewrite `h` using `[if_pos rfl, smul_eq_zero]`.
+
+Break down `h with h | h` into its components or cases. Conclude with `h2 h`. Conclude with `one_ne_zero h`. Establish `hs : s' ≠ [0]`. Introduce and unpack `rfl`.
+
+Conclude with `lt_irrefl 0 (hpos 0 (List.mem_singleton_self 0))`. Simplify using `only at heq`. Rewrite `heq` using `[if_pos rfl, if_neg hs, two_smul]`. Conclude with `one_ne_zero (add_eq_left.mp heq)`.
+-/
 theorem not_inertJunk {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     (A : FamIn K G Pl0 T m) (t : T) [Nontrivial (A.MtildeCSD t).Forms] :
     ¬ InertJunk (⟨A, fun _ => Set.univ, fun _ k => if k.2 = [0] then (2 : K) • 1 else 1, fun _ _ _ => 1, fun _ e => e⟩ :
@@ -107,6 +141,13 @@ theorem not_inertJunk {K : Type} [Field K] [NumberField K] [StarRing K] {G : Typ
     rw [if_pos rfl, if_neg hs, two_smul] at heq
     exact one_ne_zero (add_eq_left.mp heq)
 
+/- English proof (translation)
+Introduce `χ hχ`. Rewrite `hχ` using `[Finset.mem_singleton]`. Substitute `hχ` using the available equality. Introduce `h0`. Establish `hG : (Fintype.card G : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+
+Establish `hP : (Nat.card P : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `key` using `congrArg (MonoidAlgebra.lift K K G ((Units.coeHom K).comp ψ)) h0`. Rewrite `key` using `[map_mul, map_zero, chiIdem, lvlIdem, map_sum, map_sum]`. Simplify using `only [MonoidAlgebra.lift_single, MonoidHom.comp_apply, Units.coeHom_apply, Subgroup.coe_subtype, map_inv, map_one, Units.val_one, smul_eq_mul, mul_assoc, Units.inv_mul, mul_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at key`. Rewrite `key` using `[← Nat.card_eq_fintype_card (α := P), mul_inv_cancel₀ hP, mul_one, one_div, mul_inv_cancel₀ hG]`.
+
+Conclude with `one_ne_zero key`.
+-/
 theorem goodGeneric_linear {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G] (ψ : G →* Kˣ) (P : Subgroup G) :
     GoodGeneric {fun g => (ψ g : K)} P (ψ.comp P.subtype) := by
   classical
@@ -124,6 +165,11 @@ theorem goodGeneric_linear {K : Type} [Field K] [CharZero K] {G : Type} [Group G
   rw [← Nat.card_eq_fintype_card (α := P), mul_inv_cancel₀ hP, mul_one, one_div, mul_inv_cancel₀ hG] at key
   exact one_ne_zero key
 
+/- English proof (translation)
+Establish `h1 : χ 1 * χ 1 = χ 1` using `by rw [← hχ, one_mul]`. Establish `hh : χ h * χ h⁻¹ = χ 1` using `by rw [← hχ, mul_inv_cancel]`. Simplify using `only [chiIdem, Finset.sum_mul, MonoidAlgebra.single_mul_single, Finset.smul_sum, MonoidAlgebra.smul_single, smul_eq_mul]`. Use `Fintype.sum_equiv (Equiv.mulRight h) _ _ fun u => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, mul_inv_rev, hχ h⁻¹ u⁻¹]`.
+
+Use `congr 1`. Take the linear combination `(-(c * χ u⁻¹ / (Fintype.card G : K))) * h1 + (-(c * χ u⁻¹ * χ 1 / (Fintype.card G : K))) * hh`.
+-/
 private lemma chiIdem_mul_single {K : Type} [Field K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (h : G) (c : K) :
     chiIdem χ * MonoidAlgebra.single h c = (c * χ h) • chiIdem χ := by
@@ -136,6 +182,9 @@ private lemma chiIdem_mul_single {K : Type} [Field K] {G : Type} [Group G] [Fint
   congr 1
   linear_combination (-(c * χ u⁻¹ / (Fintype.card G : K))) * h1 + (-(c * χ u⁻¹ * χ 1 / (Fintype.card G : K))) * hh
 
+/- English proof (translation)
+Simplify using `only [lvlIdem, Finset.mul_sum, Finset.sum_smul, chiIdem_mul_single χ hχ]`. Use `congr 1`. Conclude with `congrArg (@Finset.univ (↥P)) (Subsingleton.elim _ _)`.
+-/
 private lemma chiIdem_mul_lvlIdem {K : Type} [Field K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (P : Subgroup G) [Fintype P] (ψ : P →* Kˣ) :
     chiIdem χ * lvlIdem P ψ = (∑ h : P, (Nat.card P : K)⁻¹ * ((ψ h⁻¹ : Kˣ) : K) * χ h) • chiIdem χ := by
@@ -143,6 +192,9 @@ private lemma chiIdem_mul_lvlIdem {K : Type} [Field K] {G : Type} [Group G] [Fin
   congr 1
   exact congrArg (@Finset.univ (↥P)) (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Establish `e` using `Fintype.sum_equiv (Equiv.mulLeft a) (fun h : P => χ ((a * h : P) : G)) (fun h : P => χ h) fun _ => rfl`. Simplify using `only [Subgroup.coe_mul, hχ, ha, neg_one_mul, Finset.sum_neg_distrib] at e`. Establish `h2 : (2 : K) * ∑ h : P, χ h = 0` using `by linear_combination -e`. Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`.
+-/
 private lemma sum_char_subgroup_eq_zero_of_eq_neg_one {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G] (χ : G → K)
     (hχ : ∀ a b, χ (a * b) = χ a * χ b) (P : Subgroup G) [Fintype P] (a : P) (ha : χ a = -1) :
     ∑ h : P, χ h = 0 := by
@@ -151,6 +203,11 @@ private lemma sum_char_subgroup_eq_zero_of_eq_neg_one {K : Type} [Field K] [Char
   have h2 : (2 : K) * ∑ h : P, χ h = 0 := by linear_combination -e
   exact (mul_eq_zero.mp h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Introduce `hG`. Establish `hχ : ∀ a b : ℤˣ, (((a * b).val : ℤ) : ℚ) = ((a.val : ℤ) : ℚ) * ((b.val : ℤ) : ℚ)` using `fun a b => by simp`. Apply `hG _ (Finset.mem_singleton_self _)` to reduce the goal to its premises. Establish `hs` using `sum_char_subgroup_eq_zero_of_eq_neg_one (fun g : ℤˣ => ((g.val : ℤ) : ℚ)) hχ ⊤ ⟨-1, Subgroup.mem_top _⟩ (by simp)`. Rewrite using `[chiIdem_mul_lvlIdem _ hχ]`.
+
+Simplify using `only [MonoidHom.one_apply, Units.val_one, mul_one, ← Finset.mul_sum, hs, mul_zero, zero_smul]`.
+-/
 theorem not_goodGeneric_sign : ¬ GoodGeneric (K := ℚ) (G := ℤˣ) {fun g : ℤˣ => ((g.val : ℤ) : ℚ)} ⊤ 1 := by
   classical
   intro hG
@@ -168,13 +225,22 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trISepWith_self : TrISepWith A3 A3.trI ↔ A3.fam3.TrISep := by
   rfl
 
+/- English proof (translation)
+Introduce `j p _ p' _ h`. Conclude with `h`.
+-/
 theorem trISepWith_id : TrISepWith A3 fun _ e => e := by
   intro j p _ p' _ h
   exact h
 
+/- English proof (translation)
+Rewrite using `[labW, evC, Finsupp.sum_single_index (by simp)]`. Simplify using `[h]`.
+-/
 theorem labW_single (j : Fin D.R.m) {I : Type} (pl : I → Pl D.host.E) (d : I → List ℤ) (c : Pl D.host.E → List ℤ → ℂ) (i : I)
     (h : IsLab (Wc D j) (pl i) (d i)) : labW j pl (fun i => Finsupp.single (d i) 1) c i = c (pl i) (d i) := by
   rw [labW, evC, Finsupp.sum_single_index (by simp)]
@@ -182,11 +248,17 @@ theorem labW_single (j : Fin D.R.m) {I : Type} (pl : I → Pl D.host.E) (d : I �
 
 variable {A3} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Conclude with `(H.op h hh i x).symm.trans ((congrArg (R.jV j t) (hx i)).trans (map_smulₛₗ (R.jV j t) (s i) x))`.
+-/
 theorem liftDict_eigen {R : RealDat3 D A3 Ks} {j : Fin D.R.m} {t : T} {pl cV cW} (H : LiftDict R j t pl cV cW) (h)
     (hh : IsOpsV R.toRealDat j t h) (x) (s : (A3.liftI j t).OpIx → D.what₂.LL) (hx : ∀ i, (A3.liftI j t).opAll i x = s i • x) (i) :
     h (pl i) (cV i) (R.jV j t x) = D.what₂.embLL (s i) • R.jV j t x := by
   exact (H.op h hh i x).symm.trans ((congrArg (R.jV j t) (hx i)).trans (map_smulₛₗ (R.jV j t) (s i) x))
 
+/- English proof (translation)
+Conclude with `(H.op h hh i x).symm.trans ((congrArg (R.jX t) (hx i)).trans (map_smulₛₗ (R.jX t) (s i) x))`.
+-/
 theorem rowDict_eigen {R : RealDat3 D A3 Ks} {t : T} {pl cX c0} (H : RowDict R t pl cX c0) (h)
     (hh : IsOpsX R.toRealDat t h) (x) (s : (A3.rowI t).OpIx → D.what₂.LL) (hx : ∀ i, (A3.rowI t).opAll i x = s i • x) (i) :
     h (pl i) (cX i) (R.jX t x) = D.what₂.embLL (s i) • R.jX t x := by

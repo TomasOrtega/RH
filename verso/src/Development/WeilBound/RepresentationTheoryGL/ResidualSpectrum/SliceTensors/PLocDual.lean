@@ -21,12 +21,26 @@ namespace PLocDual
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `U hU` and use `by obtain ⟨J, h1, h2, h3, -⟩ := exists_open_normalised_subgroup_subset k (Fin N) U hU exact ⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+-/
 theorem basis (N : ℕ) : ∀ U ∈ nhds (1 : GL (Fin N) k), ∃ K : Subgroup (GL (Fin N) k),
     IsOpen (K : Set (GL (Fin N) k)) ∧ IsCompact (K : Set (GL (Fin N) k)) ∧ (K : Set (GL (Fin N) k)) ⊆ U :=
   fun U hU => by
     obtain ⟨J, h1, h2, h3, -⟩ := exists_open_normalised_subgroup_subset k (Fin N) U hU
     exact ⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩
 
+/- English proof (translation)
+Introduce `l`. Take `⟨K, ho, hc, hKs⟩` from `basis N _ ((isSmooth_contra σ l).mem_nhds (by simp))`. Establish `hlK : l ∈ fixed (contra σ) K` using `GlobalTheory.ContraRefl.mem_fix.2 fun h hh => hKs hh`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective f.toLinearMap (LinearMap.ker_eq_bot.2 hf)`. Take `⟨l', h1, h2⟩` from `GlobalTheory.ContraRefl.exists_fixed_contra hτ ho hc (((l : Module.Dual ℂ X) ∘ₗ g) ∘ₗ (fixed τ K).subtype)`.
+
+Establish `hl'K : l' ∈ fixed (contra τ) K` using `GlobalTheory.ContraRefl.mem_fix.2 h1`. Use `⟨l', Subtype.ext (GlobalTheory.ContraRefl.form_ext hσ hc (fun h hh w => ?_) (fun h hh w => ?_) fun w hw => ?_)⟩` and prove the remaining obligations. Use `show (l' : Module.Dual ℂ Y) (f (σ h w)) = (l' : Module.Dual ℂ Y) (f w)`. Rewrite using `[f.isIntertwining]`. Conclude with `GlobalTheory.ContraRefl.invariant_of_fixed ⟨l', hl'K⟩ h hh (f w)`.
+
+Conclude with `GlobalTheory.ContraRefl.invariant_of_fixed ⟨l, hlK⟩ h hh w`. Establish `hfw : f w ∈ fixed τ K` using `GlobalTheory.ContraRefl.mem_fix.2 fun h hh => by`. Rewrite using `[← f.isIntertwining]`. Conclude with `congrArg f (GlobalTheory.ContraRefl.mem_fix.1 hw h hh)`. Use `show (l' : Module.Dual ℂ Y) (f w) = (l : Module.Dual ℂ X) w`.
+
+Establish `e1` using `h2 ⟨f w, hfw⟩`. Establish `e2` using `LinearMap.congr_fun hg w`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at e2`. Rewrite using `[show f w = ((⟨f w, hfw⟩ : fixed τ K) : Y) from rfl, e1]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`.
+
+Conclude with `congrArg _ e2`.
+-/
 theorem contraMap_surjective {N : ℕ} {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     {σ : Representation ℂ (GL (Fin N) k) X} {τ : Representation ℂ (GL (Fin N) k) Y} (hσ : IsSmooth σ)
     (hτ : IsSmooth τ) (f : σ.IntertwiningMap τ) (hf : Function.Injective f) :
@@ -64,6 +78,9 @@ def untwist {N : ℕ} {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup
     simp only [MonoidHom.comp_apply, GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW] at h
     exact h
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a, (x a).1 = N)
     (hy : ∑ a, (y a).1 = N) : Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := by
   subst e
@@ -71,6 +88,15 @@ theorem prodIrr_congr {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hA : GlobalTheory.Published.IrreducibleAdmissibleGL` using `GlobalTheory.CompanionTheory.BZCuspPair.irrAdm`. Establish `hGK : GKLocal k` using `GlobalTheory.CompanionTheory.GKLocalProof.gkLocal hA`. Establish `hinj : Function.Injective f` using `GlobalTheory.DiscreteSpectrumCM.injective_of_irreducible σ.irred f fun e => hf (Representation.IntertwiningMap.ext e)`. Take `⟨hd1, ⟨E1⟩⟩` from `GlobalTheory.CompanionTheory.ContraProd.contra_prodIrr hA x hd`. Establish `hs` using `contraMap_surjective σ.smooth (isSmooth_prodIrr x hd) f hinj`.
+
+Take `⟨E2⟩` from `GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra hGK N σ.ρ σ.smooth σ.irred`. Set `q : (prodIrr (fun a => dualCl (x a)) hd1).IntertwiningMap (σ.ρ.comp (thetaW k N))` to `(E2.symm.toIntertwiningMap.comp (GlobalTheory.ContraRefl.contraMap f)).comp E1.symm.toIntertwiningMap`. Establish `hq : Function.Surjective q` using `E2.symm.toLinearEquiv.surjective.comp (hs.comp E1.symm.toLinearEquiv.surjective)`. Take `⟨hd2, ⟨E3⟩⟩` from `GlobalTheory.CompanionTheory.ThetaProd.prodIrr_comp_thetaW hA hGK (fun a => dualCl (x a)) hd1`. Establish `e : (fun a => dualCl (dualCl (x (Fin.rev a)))) = fun a => x (Fin.rev a)`.
+
+Use function extensionality and compare the values at `fun a => GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl hA _`. Establish `hd' : ∑ a, (x (Fin.rev a)).1 = N`. Rewrite using `[← hd]`. Conclude with `Equiv.sum_comp Fin.revPerm (fun a => (x a).1)`. Take `⟨E4⟩` from `prodIrr_congr e hd2 hd'`.
+
+Conclude with `⟨hd', ((untwist q).comp E3.symm.toIntertwiningMap).comp E4.symm.toIntertwiningMap, (hq.comp E3.symm.toLinearEquiv.surjective).comp E4.symm.toLinearEquiv.surjective⟩`.
+-/
 theorem exists_surjective_rev {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N)
     (σ : GlobalTheory.CuspRep.SmIrr (GL (Fin N) k)) (f : σ.ρ.IntertwiningMap (prodIrr x hd)) (hf : f ≠ 0) :
     ∃ hd' : ∑ a, (x (Fin.rev a)).1 = N,
@@ -99,6 +125,11 @@ end PLocDual
 
 set_option maxHeartbeats 2000000 in
 open PLocDual in
+/- English proof (translation)
+Introduce `k _ _ _ _ _ N d x σ' _ _ hd f hf`. Take `⟨hd', g, hg⟩` from `exists_surjective_rev (fun i : Fin d => spehFactor x d i.rev) hd σ' f hf`. Establish `e : (fun a : Fin d => spehFactor x d (Fin.rev (Fin.rev a))) = spehFactor x d`. Use function extensionality and compare the values at `fun a => by rw [Fin.rev_rev]`. Establish `hd'' : ∑ i, (spehFactor x d i).1 = N` using `by simpa only [Fin.rev_rev] using hd'`.
+
+Take `⟨E⟩` from `prodIrr_congr e hd' hd''`. Conclude with `⟨hd'', g.comp E.symm.toIntertwiningMap, hg.comp E.symm.toLinearEquiv.surjective⟩`.
+-/
 theorem locDual_holds : LocDual := by
   intro k _ _ _ _ _ N d x σ' _ _ hd f hf
   obtain ⟨hd', g, hg⟩ := exists_surjective_rev (fun i : Fin d => spehFactor x d i.rev) hd σ' f hf

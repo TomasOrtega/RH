@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.W
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsAdaptedOfSurjective
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Polynomial
 
+/- English proof (translation)
+Introduce `l _ a`. Take `⟨T⟩` from `tiedP l`. Take `⟨t, ht⟩` from `((PP l).PD (botExt l)).t_unit`. Establish `hl : (l : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Use `⟨t ^ a, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.DRFil.tdR_zpow_mem T (botExt l) a`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR (PP l) (botExt l) = Units.map ((PP l).ιB : Bcr l →* (PP l).R.BdR) t`. Use `ext`. Express the relevant statement in the definitionally equal form `((PP l).PD (botExt l)).ι ((PP l).PD (botExt l)).t = (PP l).ιB (t : Bcr l)`. Rewrite using `[(PP l).PD_ι, ht]`.
+
+Rewrite `h` using `[e, ← map_zpow]`. Conclude with `h`. Establish `h1 : (PP l).φB (t : Bcr l) = algebraMap ℚ_[l] (Bcr l) (l : ℚ_[l]) * (t : Bcr l)`. Use `((PP l).PD (botExt l)).t_φ` as an intermediate fact. Rewrite `this` using `[(PP l).PD_φ, (PP l).PD_p, Algebra.smul_def, ← ht]`.
+
+Conclude with `this`. Establish `e : Units.map ((PP l).φB : Bcr l →* Bcr l) t = Units.map (algebraMap ℚ_[l] (Bcr l) : ℚ_[l] →* Bcr l) (Units.mk0 _ hl) * t` using `Units.ext h1`. Establish `e2` using `congrArg (fun x : (Bcr l)ˣ => ((x ^ a : (Bcr l)ˣ) : Bcr l)) e`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul, Units.coe_map, Units.val_zpow_eq_zpow_val, Units.val_mk0] at e2`. Conclude with `e2`.
+-/
 theorem UpperTheory.exists_crystalline_unit_frobenius_eigen :
     ∀ (l : ℕ) [Fact l.Prime] (a : ℤ), ∃ u : (Bcr l)ˣ, (PP l).ιB (u : Bcr l) ∈ ((PP l).PD (botExt l)).Fil a ∧ (PP l).φB (u : Bcr l) = algebraMap ℚ_[l] (Bcr l) ((l : ℚ_[l]) ^ a) * (u : Bcr l) := by
   intro l _ a

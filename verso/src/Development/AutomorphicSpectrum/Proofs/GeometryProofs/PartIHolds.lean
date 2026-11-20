@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.partI_of_semistableReduction GlobalTheory.SS.semistableReductionSt`.
+-/
 theorem partI_holds : PartI :=
   GlobalTheory.partI_of_semistableReduction GlobalTheory.SS.semistableReductionSt
 

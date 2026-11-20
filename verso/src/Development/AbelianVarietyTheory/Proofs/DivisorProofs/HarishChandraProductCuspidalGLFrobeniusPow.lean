@@ -7,17 +7,30 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hc_congr_deg {F : Type} [Field F] (a b b' : ℕ) (α : GL (Fin a) F → ℂ)
     (β : (m : ℕ) → GL (Fin m) F → ℂ) (n : ℕ) (h : b = b') :
     hc a b α (β b) n = hc a b' α (β b') n := by
   subst h; rfl
 
+/- English proof (translation)
+Unfold `deg`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem deg_map_mul (L : List (ℕ × ℕ)) (c : ℕ) :
     deg (L.map fun p => (p.1, p.2 * c)) = deg L := by
   unfold deg
   rw [List.map_map]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ θ t j ht L`. Proceed by induction on `L with`. Consider the case `nil => intro n x`. Both sides reduce to the same expression. Consider the case `cons p L ih`.
+
+Introduce `n x`. Rewrite using `[List.map_cons, J_cons, J_cons, GlobalTheory.T.harishChandraInductionGL_fieldAutomorphism F t]`. Establish `h1 : (fun y => cusp θ p.1 p.2 (gal (t : F →+* F) p.1 y)) = cusp θ p.1 (p.2 * ringChar F ^ j)`. Use function extensionality and compare the values at `y`. Conclude with `GlobalTheory.T.cuspidalCharacterGLFiniteField_frobenius_pow F θ t j ht p.1 p.2 y`.
+
+Establish `h2 : (fun y => J θ L (deg L) (gal (t : F →+* F) (deg L) y)) = J θ (L.map fun p => (p.1, p.2 * ringChar F ^ j)) (deg L)`. Use function extensionality and compare the values at `y`. Conclude with `ih (deg L) y`. Rewrite using `[h1, h2]`. Conclude with `congrFun (hc_congr_deg p.1 (deg L) _ _ (J θ (L.map fun p => (p.1, p.2 * ringChar F ^ j))) n (deg_map_mul L _).symm) x`.
+-/
 theorem J_gal : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (t : F ≃+* F) (j : ℕ),
     (∀ x, t x = x ^ (ringChar F ^ j)) → ∀ (L : List (ℕ × ℕ)) (n : ℕ) (x : GL (Fin n) F),
     J θ L n (gal (t : F →+* F) n x) = J θ (L.map fun p => (p.1, p.2 * ringChar F ^ j)) n x := by

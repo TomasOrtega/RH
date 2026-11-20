@@ -9,6 +9,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.R3
 
 namespace GlobalTheory.Mem.R3.RecPinsTie
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Yd cX ex x Rc S y r`. Use `⟨fun hp h => ⟨?_, ?_⟩, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `x.Y.stdPsi`. Conclude with `h`. Conclude with `h`.
+
+Conclude with `x.pins.keep.psi`.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Yd cX) (x : TwIn ex) (Rc : Formalism.L2.RecT ex) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (y : RealIn x Rc S), ∀ r : RecIn y, (∀ hp : RealPins (realTOf y), Formalism.IndefR.principalLevelFrame.RowLocPin Rc.T.n.gal.lp x.R.θ x.Y.PY (x.R.MY 0) (fun b => levS _ (x.R.βY 0) (x.R.dat0 (x.R.toRealDat.levR x.F.lv2 b))) (fun b => Formalism.IndefR.Lev.levChi _ (x.R.βY 0) (x.R.dat0 (x.R.toRealDat.levR x.F.lv2 b))) (fun _ => x.R.e0) x.Y.eFT → RealRecPins hp (realRecOf r)) ∧ (Formalism.IndefR.RecTie.PartsRec x.R.toRealDat x.F.lv2 x.Y.tupT x.Y.hm x.Y.PY x.Y.PW x.Y.eFT r.E r.labPi r.piOf x.Y.Ish.prt x.Y.IL.prtW → (realRecOf r).PartsRow) ∧ PsiPPTie D (divisionPairOfAdelicFormsFaceColumnsData x).P0 (divisionPairOfAdelicFormsFaceColumnsData x).ψ0 (divisionPairOfAdelicFormsFaceColumnsData x).Ps (divisionPairOfAdelicFormsFaceColumnsData x).ψs (divisionPairOfAdelicFormsFaceColumnsData x).I.eG := by
   intro D L hT Gi Gl K Yd cX ex x Rc S y r
   refine ⟨fun hp h => ⟨?_, ?_⟩, fun h => ?_, ?_⟩

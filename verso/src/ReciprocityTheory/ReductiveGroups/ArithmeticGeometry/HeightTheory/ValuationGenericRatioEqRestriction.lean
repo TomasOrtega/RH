@@ -27,10 +27,26 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Introduce `h0`. Conclude with `d.x4v4_gen_ne hp (by rw [h0, map_zero])`.
+-/
 theorem gen_ne_zero_of_htOne {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) : d.gen p ≠ 0 := by
   intro h0
   exact d.x4v4_gen_ne hp (by rw [h0, map_zero])
 
+/- English proof (translation)
+Establish `hg : d.w (d.jc c) c ≠ 0` using `hd.w_base c`. Establish `e0 : d.w j0 c = ratio (Ω` using `Ω c) (d.w j0 c) (d.w (d.jc c) c) • d.w (d.jc c) c := d.x4v4_eq_smul hd c (hd.w_mem j0 c)`. Establish `hr00 : ratio (Ω` using `Ω c) (d.w j0 c) (d.w (d.jc c) c) ≠ 0 := by`. Introduce `h0`. Apply `hj0` to reduce the goal to its premises.
+
+Rewrite using `[e0, h0, zero_smul]`. Establish `key : ∀ j, ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) = ratio (Ω := Ω c) (d.w j c) (d.w j0 c) * ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) := by`. Introduce `j`. Establish `ej : d.w j c = ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) • d.w (d.jc c) c := d.x4v4_eq_smul hd c (hd.w_mem j c)`. Establish `hrj : ratio (Ω` using `Ω c) (d.w j c) (d.w j0 c) = ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) / ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) := by`.
+
+Apply `x4v4_ratio_spec hj0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_cancel₀ _ hr00]`. Use `_ = (ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) / ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c)) • (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) • d.w (d.jc c) c) := by`. Rewrite using `[smul_smul]`.
+
+Use `_ = _ := by rw [← e0]`. Rewrite using `[hrj, div_mul_cancel₀ _ hr00]`. Establish `hsum : d.rationalBaseRow c = (∑ j, d.sH c (MvPolynomial.X (0, j)) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω` using `Ω c) (d.w j c) (d.w j0 c))) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c)) := by`. Unfold `Data.rationalBaseRow`. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[key j, map_mul, mul_assoc]`. Rewrite using `[hsum, AddValuation.map_mul, hunit, zero_add]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `simp [Data.Wres, AddValuation.comap_apply]`.
+-/
 theorem valuation_genericRatio_eq_restriction (hd : d.AxH 𝒜) (c : ι) (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ))
     (j0 : Fin (d.N + 1)) (hj0 : d.w j0 c ≠ 0)
     (hunit : w (∑ j, d.sH c (MvPolynomial.X (0, j)) *
@@ -72,6 +88,9 @@ theorem valuation_genericRatio_eq_restriction (hd : d.AxH 𝒜) (c : ι) (w : Ad
     | rfl
     | simp [Data.Wres, AddValuation.comap_apply]
 
+/- English proof (translation)
+Rewrite using `[d.ordMinMax_eq_ratio_untop_sub hd c _ hv j0 hj0 hint hf hf0, d.valuation_genericRatio_eq_restriction hd c w j0 hj0 hunit]`. Both sides reduce to the same expression.
+-/
 theorem ordMinMax_at_good_place (hd : d.AxH 𝒜) (c : ι) (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ))
     (hv : d.admitted c (d.Wres c w)) (j0 : Fin (d.N + 1)) (hj0 : d.w j0 c ≠ 0)
     (hint : ∀ j, 0 ≤ d.Wres c w (ratio (Ω := Ω c) (d.w j c) (d.w j0 c)))
@@ -84,12 +103,20 @@ theorem ordMinMax_at_good_place (hd : d.AxH 𝒜) (c : ι) (w : AddValuation (Om
   rw [d.ordMinMax_eq_ratio_untop_sub hd c _ hv j0 hj0 hint hf hf0, d.valuation_genericRatio_eq_restriction hd c w j0 hj0 hunit]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `h (by rw [finsum_mem_congr rfl hne, finsum_mem_zero])`.
+-/
 theorem exists_ne_zero_of_finsum_mem_ne_zero' {α M : Type*} [AddCommMonoid M] {s : Set α} {f : α → M}
     (h : ∑ᶠ i ∈ s, f i ≠ 0) : ∃ i ∈ s, f i ≠ 0 := by
   by_contra hne
   push_neg at hne
   exact h (by rw [finsum_mem_congr rfl hne, finsum_mem_zero])
 
+/- English proof (translation)
+Establish `hw` using `hd.w_base c`. Establish `hex : ∃ a : Ω c, d.w (d.jc c) c = a • d.w (d.jc c) c` using `⟨1, (one_smul _ _).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Establish `hs` using `hex.choose_spec`.
+
+Establish `h0 : (hex.choose - 1) • d.w (d.jc c) c = 0`. Rewrite using `[sub_smul, one_smul, ← hs, sub_self]`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hw`.
+-/
 theorem ratio_self_eq_one (hd : d.AxH 𝒜) (c : ι) :
     ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := by
   have hw := hd.w_base c
@@ -103,6 +130,9 @@ theorem ratio_self_eq_one (hd : d.AxH 𝒜) (c : ι) :
   · exact sub_eq_zero.1 h
   · exact absurd h hw
 
+/- English proof (translation)
+Take `⟨hov, a, ha0, hwa⟩` from `hw`. Break down `d.PlaceTrivialOrPositive hd h c p hp w hov with htriv | ⟨hadm, -, hrest⟩` into its components or cases. Conclude with `absurd (htriv a ha0) hwa`. Conclude with `⟨hadm, hrest⟩`.
+-/
 theorem good_place_admissible_unit (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.GoodP c p) :
     d.admitted c (d.Wres c w) ∧ ∃ j0, d.w j0 c ≠ 0 ∧
@@ -114,6 +144,9 @@ theorem good_place_admissible_unit (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Id
   · exact absurd (htriv a ha0) hwa
   · exact ⟨hadm, hrest⟩
 
+/- English proof (translation)
+Conclude with `d.x4v4_split hd h c hp hf hf0`.
+-/
 theorem multiplicity_split_finsum (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ideal (KTp K d.D d.N)}
     (hp : p ∈ d.HtOne) {f : A c} (hf : f ∈ 𝒜 c d.wL) (hf0 : f ≠ 0) :
     d.nPMM h c f p =
@@ -122,10 +155,30 @@ theorem multiplicity_split_finsum (hd : d.AxH 𝒜) (h : d.S1) (c : ι) {p : Ide
       d.nPMM h c (d.w (d.jc c) c) p := by
   exact d.x4v4_split hd h c hp hf hf0
 
+/- English proof (translation)
+Introduce `h` and use `d.gen_ne_zero_of_htOne hp ((IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)) (h.trans (map_zero _).symm))`.
+-/
 theorem algebraMap_gen_ne_zero {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne) :
     algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ≠ 0 := fun h => d.gen_ne_zero_of_htOne hp
   ((IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)) (h.trans (map_zero _).symm))
 
+/- English proof (translation)
+Use `set a := ratio (Ω := Ω c) (d.wx x c) (d.w (d.jc c) c) with ha_def`. Establish `hmem` using `d.linearCombination_mem_section hd x c`. Establish `ha : a ≠ 0` using `d.ratio_base_ne_zero hd c hmem (hx c)`. Take `⟨κ1, hκ1, e1⟩` from `d.SpecialFibreFactorization hd h c F hF x (hx c)`. Take `⟨κ3, hκ3, e3⟩` from `(d.norm_factorization hd h).1 c a ha`.
+
+Use `set na : Ideal (KTp K d.D d.N) → ℤ := fun p => ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (d.Wres c w a) with hna`. Establish `hsplit : ∀ p ∈ d.HtOne, d.nPMM h c (d.wx x c) p = na p + d.nPMM h c (d.w (d.jc c) c) p` using `fun p hp => d.multiplicity_split_finsum hd h c hp hmem (hx c)`. Establish `hyne : algebraMap (Ω c) (OmS (Ω c) d.D d.N) a ≠ 0` using `(map_ne_zero_iff _ (algebraMap (Ω c) (OmS (Ω c) d.D d.N)).injective).mpr ha`. Establish `hSa` using `((d.norm_by_places hd h c).2 _ hyne).1`. Establish `hSj` using `(d.good_primes_properties hd h c).2.2.2 _ (hd.w_mem _ c) (hd.w_base c)`.
+
+Use `set g : Ideal (KTp K d.D d.N) → KTf K d.D d.N := fun p => algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) with hg`. Establish `hfa : (d.HtOne ∩ Function.mulSupport fun p => g p ^ na p).Finite`. Use `hSa.subset fun p hp => ⟨hp.1, ?_⟩` and prove the remaining obligations. Establish `hn : na p ≠ 0`. Introduce `h0`.
+
+Apply `hp.2` to reduce the goal to its premises. Simplify using `only [h0, zpow_zero]`. Take `⟨w, hw, hne⟩` from `exists_ne_zero_of_finsum_mem_ne_zero' hn`. Use `⟨w, hw.1, fun h0 => hne ?_⟩` and prove the remaining obligations. Use `show (d.fze h c w : ℤ) * WithTop.untopD 0 (w _) = 0`.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hfj : (d.HtOne ∩ Function.mulSupport fun p => g p ^ d.nPMM h c (d.w (d.jc c) c) p).Finite`. Use `hSj.subset fun p hp => ⟨hp.1, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hp.2` to reduce the goal to its premises. Simplify using `only [h0, zpow_zero]`. Establish `hprod : (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), g p ^ d.nPMM h c (d.wx x c) p) = (∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), g p ^ na p) * ∏ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), g p ^ d.nPMM h c (d.w (d.jc c) c) p`. Rewrite using `[← finprod_mem_mul_distrib' hfa hfj]`. Use `finprod_mem_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsplit p hp, zpow_add₀ (d.algebraMap_gen_ne_zero hp)]`. Use `⟨κ1 / κ3, div_ne_zero hκ1 hκ3, ?_⟩` and prove the remaining obligations. Unfold `heightSubstitutionCondition translatedForm`. Rewrite using `[hF, e1, e3, hprod]`. Unfold `fZ`.
+
+Establish `h3 : algebraMap K (KTf K d.D d.N) κ3 ≠ 0` using `(map_ne_zero _).mpr hκ3`. Rewrite using `[map_div₀]`. Simplify using `only [hg, hna]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem substituted_factorization_exists (hd : d.AxH 𝒜) (h : d.S1) (x : Fin (d.N + 1) → K)
     (hx : ∀ c, d.wx x c ≠ 0) (c : ι) (F : KTp K d.D d.N)
     (hF : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c) :

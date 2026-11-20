@@ -21,6 +21,15 @@ def UniqWitSt : Prop :=
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hXu : ¬ IsUnit (PowerSeries.X : PowerSeries k)`. Introduce `hu`. Use `first`. Consider the case `(have h1 := hu.map (PowerSeries.constantCoeff k); simp at h1)`. Consider the case `(have h1 := hu.map (PowerSeries.constantCoeff (R := k)); simp at h1)`.
+
+Establish `hbot : x.asIdeal = ⊥`. Assume the negation of the conclusion as `hne`. Establish `hmax : x.asIdeal.IsMaximal` using `x.isPrime.isMaximal hne`. Apply `hx` to reduce the goal to its premises. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `hXu`. Establish `hx' : x ∈ Set.range (PrimeSpectrum.comap (algebraMap (PowerSeries k) (FractionRing (PowerSeries k))))`. Rewrite using `[PrimeSpectrum.localization_comap_range (FractionRing (PowerSeries k)) (nonZeroDivisors (PowerSeries k))]`. Use `show Disjoint _ _`. Rewrite using `[hbot, Set.disjoint_left]`.
+
+Introduce `a ha ha'`. Conclude with `nonZeroDivisors.ne_zero ha ((Submodule.mem_bot _).1 ha')`. Take `⟨y, hy⟩` from `hx'`. Conclude with `⟨y, hy⟩`.
+-/
 theorem mem_range_jK {k : Type} [Field k] (x : Sp (PowerSeries k)) (hx : PowerSeries.X ∉ x.asIdeal) :
     x ∈ Set.range (Out.jK (PowerSeries k)) := by
   have hXu : ¬ IsUnit (PowerSeries.X : PowerSeries k) := by
@@ -45,6 +54,9 @@ theorem mem_range_jK {k : Type} [Field k] (x : Sp (PowerSeries k)) (hx : PowerSe
   obtain ⟨y, hy⟩ := hx'
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Establish `h : Epi (CommRingCat.ofHom (algebraMap V F))` using `IsLocalization.epi (nonZeroDivisors V) F`. Use `show Mono (Spec.map (CommRingCat.ofHom (algebraMap V F)))`. Conclude with `Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap V F)).op`.
+-/
 theorem mono_spMap_subtype {F : Type} [Field F] (V : ValuationSubring F) : Mono (spMap V.subtype) := by
   have h : Epi (CommRingCat.ofHom (algebraMap V F)) := IsLocalization.epi (nonZeroDivisors V) F
   show Mono (Spec.map (CommRingCat.ofHom (algebraMap V F)))

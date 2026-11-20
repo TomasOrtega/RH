@@ -10,6 +10,9 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cmCharacters_of_nearestPlane_of_short_integers nearestPlane_rounding (exists_short_integral_rational_basis exists_short_integers_span)`.
+-/
 theorem charStatement_holds : CharStatement :=
   GlobalTheory.T.cmCharacters_of_nearestPlane_of_short_integers nearestPlane_rounding
     (exists_short_integral_rational_basis exists_short_integers_span)

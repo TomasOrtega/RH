@@ -48,12 +48,18 @@ def hgpIncl (m j : ℕ) : MirabolicParabolic k m j →* parab k (eGP m j) where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Use `first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]`.
+-/
 theorem blockIndex_true_last (m j : ℕ) : eGP m j ⟨true, Fin.last j⟩ = Fin.last (m + j) := by
   apply Fin.ext
   first
     | rfl
     | simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]
 
+/- English proof (translation)
+Establish `hb : ((GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩ : Fin (m + j + 1)) : ℕ) = m + (b : ℕ)` using `by first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]`. Rewrite using `[Fin.ext_iff, hb, Fin.ext_iff, Fin.val_last, Fin.val_last]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blockIndex_true_eq_last_iff (m j : ℕ) (b : Fin (j + 1)) : eGP m j ⟨true, b⟩ = Fin.last (m + j) ↔ b = Fin.last j := by
   have hb : ((GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩ : Fin (m + j + 1)) : ℕ) = m + (b : ℕ) := by
     first
@@ -62,6 +68,11 @@ theorem blockIndex_true_eq_last_iff (m j : ℕ) (b : Fin (j + 1)) : eGP m j ⟨t
   rw [Fin.ext_iff, hb, Fin.ext_iff, Fin.val_last, Fin.val_last]
   omega
 
+/- English proof (translation)
+Introduce `h`. Establish `ha : ((GlobalTheory.BZMir.Leib.eGP m j ⟨false, a⟩ : Fin (m + j + 1)) : ℕ) = (a : ℕ)` using `by first`. Consider the case `rfl`. Consider the case `simp [GlobalTheory.BZMir.Leib.eGP, GlobalTheory.SmGL.two, GlobalTheory.SmGL.stdSum]`. Establish `h2` using `congrArg Fin.val h`.
+
+Rewrite `h2` using `[ha, Fin.val_last]`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem blockIndex_false_ne_last (m j : ℕ) (a : Fin m) : eGP m j ⟨false, a⟩ ≠ Fin.last (m + j) := by
   intro h
   have ha : ((GlobalTheory.BZMir.Leib.eGP m j ⟨false, a⟩ : Fin (m + j + 1)) : ℕ) = (a : ℕ) := by
@@ -73,6 +84,13 @@ theorem blockIndex_false_ne_last (m j : ℕ) (a : Fin m) : eGP m j ⟨false, a�
   have := a.isLt
   omega
 
+/- English proof (translation)
+Use `(GlobalTheory.BZMir.mem_Mir_iff k _).2 ?_` and prove the remaining obligations. Establish `hg` using `(GlobalTheory.BZMir.mem_Mir_iff k _).1 (h : GlobalTheory.BZMir.Mir k (m + j)).2`. Use function extensionality and compare the values at `b`. Use `(GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j h) true (Fin.last j) b).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (GlobalTheory.BZMir.Leib.eGP m j ⟨true, Fin.last j⟩) (GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩)) = _`.
+
+Rewrite using `[GlobalTheory.BZMir.Leib.blockIndex_true_last, hg]`. Distinguish the cases in `hb : b = Fin.last j`. Substitute `hb` using the available equality. Simplify using `[GlobalTheory.BZMir.eLast, GlobalTheory.BZMir.Leib.blockIndex_true_last]`. Establish `hne : GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩ ≠ Fin.last (m + j)` using `fun h' => hb ((GlobalTheory.BZMir.Leib.blockIndex_true_eq_last_iff m j b).1 h')`.
+
+Simplify using `[GlobalTheory.BZMir.eLast, Pi.single_apply, hne, hb]`.
+-/
 theorem hgp_block_mem (m j : ℕ) (h : MirabolicParabolic k m j) :
     (leviProj k (eGP m j) (hgpIncl k m j h) true : GL (Fin (j + 1)) k) ∈ Mir k j := by
   refine (GlobalTheory.BZMir.mem_Mir_iff k _).2 ?_
@@ -121,10 +139,18 @@ def hpgIncl (i t : ℕ) : HPG k i t →* parab k (ePG i t) where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.BZMir.Leib.ePG, GlobalTheory.SmGL.two, finSumFinEquiv_symm_last]`.
+-/
 theorem ePG_false_last (i t : ℕ) : ePG i t ⟨false, Fin.last i⟩ = Fin.last (i + t) := by
   apply Fin.ext
   simp [GlobalTheory.BZMir.Leib.ePG, GlobalTheory.SmGL.two, finSumFinEquiv_symm_last]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hb`. Take `⟨a, rfl⟩` from `Fin.exists_castSucc_eq.2 hb`. Establish `h2` using `congrArg Fin.val h`.
+
+Establish `ha` using `a.isLt`. Apply the tactic sequence `simp [GlobalTheory.BZMir.Leib.ePG, GlobalTheory.SmGL.two, finSumFinEquiv_symm_apply_castSucc] at h2 <;> omega`. Introduce and unpack `rfl`. Conclude with `GlobalTheory.BZMir.Leib.ePG_false_last i t`.
+-/
 theorem ePG_false_eq_last_iff (i t : ℕ) (b : Fin (i + 1)) : ePG i t ⟨false, b⟩ = Fin.last (i + t) ↔ b = Fin.last i := by
   constructor
   · intro h
@@ -137,6 +163,13 @@ theorem ePG_false_eq_last_iff (i t : ℕ) (b : Fin (i + 1)) : ePG i t ⟨false, 
   · rintro rfl
     exact GlobalTheory.BZMir.Leib.ePG_false_last i t
 
+/- English proof (translation)
+Use `(GlobalTheory.BZMir.mem_Mir_iff k _).2 ?_` and prove the remaining obligations. Establish `hg` using `(GlobalTheory.BZMir.mem_Mir_iff k _).1 (h : GlobalTheory.BZMir.Mir k (i + t)).2`. Use function extensionality and compare the values at `b`. Use `(GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.ePG i t) (GlobalTheory.BZMir.Leib.hpgIncl k i t h) false (Fin.last i) b).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((((h : GlobalTheory.BZMir.Mir k (i + t)) : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, Fin.last i⟩) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩)) = _`.
+
+Rewrite using `[GlobalTheory.BZMir.Leib.ePG_false_last, hg]`. Distinguish the cases in `hb : b = Fin.last i`. Substitute `hb` using the available equality. Simplify using `[GlobalTheory.BZMir.eLast, GlobalTheory.BZMir.Leib.ePG_false_last]`. Establish `hne : GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩ ≠ Fin.last (i + t)` using `fun h' => hb ((GlobalTheory.BZMir.Leib.ePG_false_eq_last_iff i t b).1 h')`.
+
+Simplify using `[GlobalTheory.BZMir.eLast, Pi.single_apply, hne, hb]`.
+-/
 theorem hpg_block_mem (i t : ℕ) (h : HPG k i t) :
     (leviProj k (ePG i t) (hpgIncl k i t h) false : GL (Fin (i + 1)) k) ∈ Mir k i := by
   refine (GlobalTheory.BZMir.mem_Mir_iff k _).2 ?_

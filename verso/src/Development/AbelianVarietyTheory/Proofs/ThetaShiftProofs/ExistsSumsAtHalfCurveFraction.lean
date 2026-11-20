@@ -15,6 +15,11 @@ section Values
 
 variable {A : Type} [CommRing A] {Z : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[valR_eq _ _ le_top]`. Establish `h : (𝟙 (Sp A) : Sp A ⟶ Sp A).appLE ⊤ ⊤ le_top = 𝟙 _`. Simplify using `[Scheme.Hom.appLE]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((𝟙 (Sp A) : Sp A ⟶ Sp A).appLE ⊤ ⊤ le_top).hom _) = a`. Rewrite using `[h]`.
+
+Conclude with `(Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply a`.
+-/
 theorem valR_id_top (a : A) :
     valR (𝟙 (Sp A)) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) = a := by
   rw [valR_eq _ _ le_top]
@@ -25,11 +30,21 @@ theorem valR_id_top (a : A) :
   rw [h]
   exact (Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply a
 
+/- English proof (translation)
+Use `valR_spMap β (𝟙 (Sp O)) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)` as an intermediate fact. Rewrite `this` using `[Category.comp_id, valR_id_top]`. Then use the resulting hypothesis.
+-/
 theorem valR_spMap_top {O : Type} [CommRing O] (β : O →+* A) (a : O) :
     valR (spMap β) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a) = β a := by
   have := valR_spMap β (𝟙 (Sp O)) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)
   rwa [Category.comp_id, valR_id_top] at this
 
+/- English proof (translation)
+Set `x₀ : Sp Γ(Z, V) ⟶ Z` to `hV.fromSpec`. Establish `h₀ : ⊤ ≤ x₀ ⁻¹ᵁ V` using `hV.fromSpec_preimage_self.ge`. Use `⟨spMap ψ ≫ x₀, fun p _ => h₀ (x := spMap ψ p) trivial, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[valR_spMap ψ x₀ V h₀, valR_eq _ _ h₀]`. Use `congr 1`.
+
+Establish `h : hV.fromSpec.appLE V ⊤ h₀ = (Scheme.ΓSpecIso Γ(Z, V)).inv`. Rewrite using `[Scheme.Hom.appLE, hV.fromSpec_app_self]`. Simplify using `[← Functor.map_comp]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso Γ(Z, V)).hom.hom ((hV.fromSpec.appLE V ⊤ h₀).hom f) = f`. Rewrite using `[h]`.
+
+Conclude with `(Scheme.ΓSpecIso Γ(Z, V)).inv_hom_id_apply f`.
+-/
 theorem exists_point_of_ringHom {V : Z.Opens} (hV : IsAffineOpen V) (ψ : Γ(Z, V) →+* A) :
     ∃ x : Sp A ⟶ Z, ⊤ ≤ x ⁻¹ᵁ V ∧ ∀ f, valR x V f = ψ f := by
   let x₀ : Sp Γ(Z, V) ⟶ Z := hV.fromSpec
@@ -48,6 +63,17 @@ end Values
 
 variable {Z : Scheme.{0}}
 
+/- English proof (translation)
+Set `ρ : O →+* Γ(Z, V)` to `(s.appLE ⊤ V le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom`. Establish `hρ : ρ.FiniteType`. Use `(s.finiteType_appLE (isAffineOpen_top _) hV le_top).comp (RingHom.FiniteType.of_surjective _ ?_)` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv.surjective`. Establish `hval : ∀ {A : Type} [CommRing A] (x : Sp A ⟶ Z), ⊤ ≤ x ⁻¹ᵁ V → ∀ a : O, valR x V (ρ a) = valR (x ≫ s) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)` using `fun x hx a => valR_appLE x s ⊤ V le_top _ hx`.
+
+Use `letI := ρ.toAlgebra`. Use `haveI : Algebra.FiniteType O Γ(Z, V) := hρ`. Take `⟨T, hT, ψ, hψ, hψb⟩` from `exists_factor_halfRing_over (S := O) b (evalHom y V hyV) (RingHom.ext fun a => by`. Use `hval y hyV a` as an intermediate fact. Rewrite `this` using `[hy, valR_spMap_top, valR_eq _ _ hyV]`.
+
+Conclude with `this) T₀`. Take `⟨yT, hyT, hv⟩` from `exists_point_of_ringHom hV ψ`. Use `⟨T, hT, yT, hyT, ?_, ?_⟩` and prove the remaining obligations. Use `point_ext hV (fun p _ => hyT (x := spMap _ p) trivial) hyV fun f => ?_` and prove the remaining obligations. Rewrite using `[valR_spMap _ _ _ hyT, hv, valR_eq _ _ hyV, ← hψ]`.
+
+Both sides reduce to the same expression. Use `point_ext (isAffineOpen_top _) le_top le_top fun f => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv.surjective f`. Use `hval yT hyT a` as an intermediate fact. Rewrite `this` using `[hv]`.
+
+Conclude with `this.symm.trans ((DFunLike.congr_fun hψb a).trans (valR_spMap_top _ a).symm)`.
+-/
 theorem exists_halfRing_point {O : Type} [CommRing O] (s : Z ⟶ Sp O) [LocallyOfFiniteType s]
     (b : O →+* ℂ) (y : Sp convLaurent ⟶ Z)
     (hy : y ≫ s = spMap ((algebraMap ℂ convLaurent).comp b)) {V : Z.Opens} (hV : IsAffineOpen V)
@@ -82,6 +108,11 @@ theorem exists_halfRing_point {O : Type} [CommRing O] (s : Z ⟶ Sp O) [LocallyO
     rw [hv] at this
     exact this.symm.trans ((DFunLike.congr_fun hψb a).trans (valR_spMap_top _ a).symm)
 
+/- English proof (translation)
+Set `p : PrimeSpectrum (halfRing T)` to `spMap (halfIncl T : halfRing T →+* convLaurent) (default : PrimeSpectrum convLaurent)`. Establish `hp : p ∈ (show Set (PrimeSpectrum (halfRing T)) from (yT ⁻¹ᵁ U).carrier)` using `hU (x := (default : PrimeSpectrum convLaurent)) trivial`. Take `⟨_, ⟨r, rfl⟩, hr, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hp (yT ⁻¹ᵁ U).isOpen`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hr p.asIdeal.zero_mem`. Take `⟨T', h, hu⟩` from `exists_isUnit_halfRing hr0`. Use `⟨T', h, fun q _ => hle (a := spMap (Subalgebra.inclusion (halfRing_mono h) : halfRing T →+* halfRing T') q) fun hq => ?_⟩` and prove the remaining obligations. Conclude with `q.2.ne_top (Ideal.eq_top_of_isUnit_mem _ hq hu)`.
+-/
 theorem exists_le_preimage_inclusion {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) {U : Z.Opens}
     (hU : ⊤ ≤ (spMap (halfIncl T : halfRing T →+* convLaurent) ≫ yT) ⁻¹ᵁ U) :
     ∃ T', ∃ h : T ≤ T', ⊤ ≤ (spMap (Subalgebra.inclusion (halfRing_mono h) :
@@ -104,14 +135,23 @@ def halfCurve {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) (w : ℂ) : Sp ℂ ⟶ Z :=
   if hw : T < w.im then spMap (ev T w hw : halfRing T →+* ℂ) ≫ yT
   else spMap (ev T (((T + 1 : ℝ) : ℂ) * Complex.I) (by simp) : halfRing T →+* ℂ) ≫ yT
 
+/- English proof (translation)
+The claim follows from `dif_pos hw`.
+-/
 theorem halfCurve_eq {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) {w : ℂ} (hw : T < w.im) :
     halfCurve yT w = spMap (ev T w hw : halfRing T →+* ℂ) ≫ yT := dif_pos hw
 
+/- English proof (translation)
+Unfold `halfCurve`. Apply the tactic sequence `split_ifs <;> rw [Category.assoc]`.
+-/
 theorem halfCurve_comp {T : ℝ} {Z' : Scheme.{0}} (yT : Sp (halfRing T) ⟶ Z) (j : Z ⟶ Z') (w : ℂ) :
     halfCurve (yT ≫ j) w = halfCurve yT w ≫ j := by
   unfold halfCurve
   split_ifs <;> rw [Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[halfCurve_eq _ hw, halfCurve_eq _ (h.trans_lt hw), ← Category.assoc, ← spMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem halfCurve_inclusion {T T' : ℝ} (h : T ≤ T') (yT : Sp (halfRing T) ⟶ Z) {w : ℂ}
     (hw : T' < w.im) :
     halfCurve (spMap (Subalgebra.inclusion (halfRing_mono h) : halfRing T →+* halfRing T') ≫ yT) w =
@@ -119,12 +159,20 @@ theorem halfCurve_inclusion {T T' : ℝ} (h : T ≤ T') (yT : Sp (halfRing T) �
   rw [halfCurve_eq _ hw, halfCurve_eq _ (h.trans_lt hw), ← Category.assoc, ← spMap_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[halfCurve_eq _ hw]`. Conclude with `⟨fun p _ => hU (x := spMap _ p) trivial, fun f => valR_spMap _ yT U hU f⟩`.
+-/
 theorem valAt'_halfCurve {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) {U : Z.Opens} (hU : ⊤ ≤ yT ⁻¹ᵁ U)
     {w : ℂ} (hw : T < w.im) :
     ⊤ ≤ halfCurve yT w ⁻¹ᵁ U ∧ ∀ f, valAt' (halfCurve yT w) U f = ev T w hw (valR yT U f) := by
   rw [halfCurve_eq _ hw]
   exact ⟨fun p _ => hU (x := spMap _ p) trivial, fun f => valR_spMap _ yT U hU f⟩
 
+/- English proof (translation)
+Establish `ho : IsOpen {w : ℂ | T < w.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Use `isHolTo_of_holAt ho fun z hz => ?_` and prove the remaining obligations. Establish `h : HolAt (halfCurve (𝟙 (Sp (halfRing T)))) z`. Use `holAt_of_affine (isAffineOpen_top _) le_top (Eventually.of_forall fun _ => le_top) fun g => ?_` and prove the remaining obligations. Conclude with `(differentiableOn_of_eq_ev (valR (𝟙 (Sp (halfRing T))) ⊤ g) fun w hw => (valAt'_halfCurve (𝟙 _) le_top hw).2 g).differentiableAt (ho.mem_nhds hz)`.
+
+Use `h.comp yT` as an intermediate fact. Simplify `this` using `only [← halfCurve_comp, Category.id_comp]`.
+-/
 theorem isHolTo_halfCurve {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) :
     IsHolTo {w : ℂ | T < w.im} (halfCurve yT) := by
   have ho : IsOpen {w : ℂ | T < w.im} := isOpen_lt continuous_const Complex.continuous_im
@@ -137,6 +185,13 @@ theorem isHolTo_halfCurve {T : ℝ} (yT : Sp (halfRing T) ⟶ Z) :
   have := h.comp yT
   simpa only [← halfCurve_comp, Category.id_comp] using this
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Take `⟨T', h, hU'⟩` from `exists_le_preimage_inclusion yT hU`. Use `⟨T', h, fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← halfCurve_inclusion h yT hw]`. Conclude with `(valAt'_halfCurve _ hU' hw).1`.
+
+Establish `e` using `valR_spMap (halfIncl T' : halfRing T' →+* convLaurent) _ U hU' f`. Rewrite `e` using `[← Category.assoc, ← spMap_comp]`. Establish `e' : ((valR (spMap (halfIncl T : halfRing T →+* convLaurent) ≫ yT) U f : convLaurent) : ℂ⸨X⸩) = (valR (spMap (Subalgebra.inclusion (halfRing_mono h) : halfRing T →+* halfRing T') ≫ yT) U f : halfRing T')` using `congrArg (fun x : convLaurent => (x : ℂ⸨X⸩)) e`. Use `⟨e' ▸ Subtype.property _, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← halfCurve_inclusion h yT hw, (valAt'_halfCurve _ hU' hw).2]`.
+
+Conclude with `ev_congr hw hw e'.symm`.
+-/
 theorem exists_valAt'_halfCurve {T : ℝ} {yT : Sp (halfRing T) ⟶ Z} {y : Sp convLaurent ⟶ Z}
     (hy : spMap (halfIncl T : halfRing T →+* convLaurent) ≫ yT = y) {U : Z.Opens}
     (hU : ⊤ ≤ y ⁻¹ᵁ U) :
@@ -158,6 +213,13 @@ theorem exists_valAt'_halfCurve {T : ℝ} {yT : Sp (halfRing T) ⟶ Z} {y : Sp c
     rw [← halfCurve_inclusion h yT hw, (valAt'_halfCurve _ hU' hw).2]
     exact ev_congr hw hw e'.symm
 
+/- English proof (translation)
+Establish `hyU : ⊤ ≤ y ⁻¹ᵁ U`. Introduce `p _`. Establish `h1 : ⊤ ≤ (spMap (ι.comp (algebraMap convLaurent ℂ⸨X⸩)) ≫ y) ⁻¹ᵁ U`. Rewrite using `[← hχ]`. Conclude with `fun q _ => hU (x := spMap _ q) trivial`.
+
+Take `rfl : p = spMap (ι.comp (algebraMap convLaurent ℂ⸨X⸩)) (default : PrimeSpectrum F)` from `Subsingleton.elim (α := PrimeSpectrum convLaurent) _ _`. Conclude with `h1 (x := (default : PrimeSpectrum F)) trivial`. Take `⟨T', hT, h₁, h₂⟩` from `exists_valAt'_halfCurve hy hyU`. Use `⟨T', hT, fun w hw => ⟨h₁ w hw, fun f => ?_⟩⟩` and prove the remaining obligations. Take `⟨hf, hv⟩` from `h₂ f`.
+
+Rewrite using `[hv w hw]`. Use `sumsAt_ev_of_eq hw (ι.injective ?_)` and prove the remaining obligations. Establish `e` using `valR_spMap (ι.comp (algebraMap ℂ⟦X⟧ ℂ⸨X⸩)) χ U hU f`. Rewrite `e` using `[hχ, valR_spMap _ y U hyU]`. Conclude with `e.symm`.
+-/
 theorem exists_sumsAt_halfCurve {T : ℝ} {yT : Sp (halfRing T) ⟶ Z} {y : Sp convLaurent ⟶ Z}
     (hy : spMap (halfIncl T : halfRing T →+* convLaurent) ≫ yT = y) {χ : Sp ℂ⟦X⟧ ⟶ Z}
     {F : Type} [Field F] (ι : ℂ⸨X⸩ →+* F)

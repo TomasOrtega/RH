@@ -5,6 +5,23 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `n a`. Establish `hEq : GlobalTheory.ShFam.Hor.logDom n a = ⋂ k : Fin n, (fun s : Fin n → ℂ => s k) ⁻¹' (if (k : ℕ) < a then {z : ℂ | z.re < 0} else Metric.ball (0 : ℂ) 1)`. Use extensionality with `s`. Simplify using `only [GlobalTheory.ShFam.Hor.logDom, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [Metric.mem_ball, dist_zero_right]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hEq]`. Use `isOpen_iInter_of_finite fun k => ?_` and prove the remaining obligations. Use `IsOpen.preimage (continuous_apply k) ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `isOpen_lt Complex.continuous_re continuous_const`. Conclude with `Metric.isOpen_ball`. Rewrite using `[hEq]`. Use `convex_iInter fun k => ?_` and prove the remaining obligations.
+
+Establish `hc : Convex ℝ (if (k : ℕ) < a then {z : ℂ | z.re < 0} else Metric.ball (0 : ℂ) 1)` using `by split_ifs`. Conclude with `convex_halfSpace_lt (f := Complex.re) Complex.reLm.isLinear 0`. Conclude with `convex_ball 0 1`. Conclude with `hc.linear_preimage (LinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) k)`. Introduce `s`.
+
+Rewrite using `[analyticAt_pi_iff]`. Introduce `k`. Use `show AnalyticAt ℂ (fun s : Fin n → ℂ => if (k : ℕ) < a then Complex.exp (s k) else s k) s`. Establish `hp : AnalyticAt ℂ (fun s : Fin n → ℂ => s k) s` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) k).analyticAt s`. Use `split_ifs`.
+
+Conclude with `analyticAt_cexp.comp hp`. Conclude with `hp`. Introduce `s hs`. Rewrite using `[Metric.mem_ball, dist_zero_right, pi_norm_lt_iff one_pos]`. Introduce `k`.
+
+Establish `hk` using `hs k`. Simplify using `only [GlobalTheory.ShFam.Hor.logExp]`. Use `split_ifs at hk ⊢ with h`. Rewrite using `[Complex.norm_exp]`. Conclude with `Real.exp_lt_one_iff.mpr hk`.
+
+Conclude with `hk`.
+-/
 theorem GlobalTheory.logDom_chart_props : ∀ (n a : ℕ), IsOpen (GlobalTheory.ShFam.Hor.logDom n a) ∧ Convex ℝ (GlobalTheory.ShFam.Hor.logDom n a) ∧ (∀ s, AnalyticAt ℂ (GlobalTheory.ShFam.Hor.logExp a : (Fin n → ℂ) → Fin n → ℂ) s) ∧ Set.MapsTo (GlobalTheory.ShFam.Hor.logExp a) (GlobalTheory.ShFam.Hor.logDom n a) (Metric.ball (0 : Fin n → ℂ) 1) := by
   intro n a
   have hEq : GlobalTheory.ShFam.Hor.logDom n a = ⋂ k : Fin n, (fun s : Fin n → ℂ => s k) ⁻¹' (if (k : ℕ) < a then {z : ℂ | z.re < 0} else Metric.ball (0 : ℂ) 1) := by

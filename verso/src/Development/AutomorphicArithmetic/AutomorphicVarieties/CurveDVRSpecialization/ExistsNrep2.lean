@@ -15,43 +15,78 @@ variable {A : Type} [CommRing A]
 
 private def Bl (X : Matrix (Fin 3) (Fin 3) A) : Prop := X 0 1 = 0 ∧ X 1 0 = 0 ∧ X 1 2 = 0 ∧ X 2 1 = 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem c00 (X : Matrix (Fin 3) (Fin 3) A) : corner X 0 0 = X 0 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem c01 (X : Matrix (Fin 3) (Fin 3) A) : corner X 0 1 = X 0 2 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem c10 (X : Matrix (Fin 3) (Fin 3) A) : corner X 1 0 = X 2 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem c11 (X : Matrix (Fin 3) (Fin 3) A) : corner X 1 1 = X 2 2 := rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hX`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11, Matrix.mul_apply, Fin.sum_univ_three, h1, h4]`.
+-/
 private theorem corner_mul {X : Matrix (Fin 3) (Fin 3) A} (hX : Bl X) (Y : Matrix (Fin 3) (Fin 3) A) :
     corner (X * Y) = corner X * corner Y := by
   obtain ⟨h1, h2, h3, h4⟩ := hX
   ext i j
   fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11, Matrix.mul_apply, Fin.sum_univ_three, h1, h4]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11]`.
+-/
 private theorem corner_one : corner (1 : Matrix (Fin 3) (Fin 3) A) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11]`.
+-/
 private theorem corner_sub (X : Matrix (Fin 3) (Fin 3) A) (a : A) :
     corner (X - a • (1 : Matrix (Fin 3) (Fin 3) A)) = corner X - a • (1 : Matrix (Fin 2) (Fin 2) A) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [c00, c01, c10, c11]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hX`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp [*]`.
+-/
 private theorem block_sub {X : Matrix (Fin 3) (Fin 3) A} (hX : Bl X) (a : A) :
     Bl (X - a • (1 : Matrix (Fin 3) (Fin 3) A)) := by
   obtain ⟨h1, h2, h3, h4⟩ := hX
   refine ⟨?_, ?_, ?_, ?_⟩ <;> simp [*]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[c00, c01, c10, c11, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two, Jmat, Fin.rev]`.
+-/
 private theorem corner_J (X : Matrix (Fin 3) (Fin 3) A) :
     corner (Jmat A 3 * Xᵀ * Jmat A 3) = Jmat A 2 * (corner X)ᵀ * Jmat A 2 := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [c00, c01, c10, c11, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two, Jmat, Fin.rev]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two, Matrix.trace_fin_two] <;> ring`.
+-/
 private theorem ch2 (S : Matrix (Fin 2) (Fin 2) A) (y : A) :
     ((S.trace - y) • (1 : Matrix (Fin 2) (Fin 2) A) - S) * (S - y • 1) = (S - y • 1).det • 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two, Matrix.trace_fin_two] <;> ring
 
+/- English proof (translation)
+Establish `e : (σ a - (ψ a : A) • 1) * (((σ t).trace - y) • (1 : Matrix (Fin 2) (Fin 2) A) - σ t) = ((σ t).trace - y) • (σ a - (ψ a : A) • 1) - (σ (a * t) - (ψ (a * t) : A) • 1) + (ψ a : A) • (σ t - (ψ t : A) • 1)`. Rewrite using `[map_mul, map_mul, Units.val_mul, Matrix.mul_sub, Matrix.sub_mul (σ a) _ (σ t), Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, smul_sub (ψ a : A), smul_smul]`. Normalize the expressions using the abelian group laws. Establish `e2 : (σ t - y • 1).det • ((σ a - (ψ a : A) • 1) * Z) = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ch2, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Use `_ = 0 := by`. Rewrite using `[← Matrix.mul_assoc, e, Matrix.mul_assoc, Matrix.add_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, h, h, h]`. Simplify using the standard rewrite rules. Conclude with `(hu.smul_eq_zero).1 e2`.
+-/
 private theorem drop_mid {H : Type} [Group H] (σ : H →* Matrix (Fin 2) (Fin 2) A) (ψ : H →* Aˣ) (t : H) (y : A)
     (Z : Matrix (Fin 2) (Fin 2) A) (hu : IsUnit (σ t - y • 1).det)
     (h : ∀ a, (σ a - (ψ a : A) • 1) * ((σ t - y • 1) * Z) = 0) (a : H) : (σ a - (ψ a : A) • 1) * Z = 0 := by
@@ -72,13 +107,39 @@ private theorem drop_mid {H : Type} [Group H] (σ : H →* Matrix (Fin 2) (Fin 2
 
 end Mat
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem w_eq (i : Fin 2) : Fr.w 2 i = Fr.w 3 (![0, 2] i) := by fin_cases i <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem w_eq' (i : Fin 2) : Fr.w 2 i = wt1 (![0, 2] i) := by fin_cases i <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `revert h; fin_cases i <;> fin_cases j <;> decide`.
+-/
 private theorem ne_of {i j : Fin 2} (h : i ≠ j) : (![0, 2] i : Fin 3) ≠ ![0, 2] j := by
   revert h; fin_cases i <;> fin_cases j <;> decide
 
+/- English proof (translation)
+Set `σ : F.G0 →* Matrix (Fin 2) (Fin 2) A` to `{ toFun := fun g => corner (ρ.r g) map_one' := by rw [map_one, corner_one] map_mul' := fun g h => by rw [map_mul, corner_mul (hb g)] }`. Establish `hσ : ∀ g, σ g = corner (ρ.r g)` using `fun _ => rfl`. Use `⟨⟨σ, fun v i => ρ.ψ v (![0, 2] i), fun g => ?_, fun i j h => ρ.diag _ _ (ne_of h), fun v g => ?_⟩, ⟨⟨fun i j => hρ.cont.1 _ _, fun v i => hρ.cont.2 v _⟩, ⟨fun g i => ?_, fun v i g => ?_⟩, fun g i j h => hρ.diag g _ _ (ne_of h)⟩, fun _ => rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[hσ, hσ, ρ.pol, corner_J]`. Take `⟨t, ht⟩` from `f3 v`.
+
+Establish `hu : IsUnit (σ (F.loc0 v t) - (ρ.ψ v 1 t : A) • (1 : Matrix (Fin 2) (Fin 2) A)).det`. Rewrite using `[← residue_ne_zero_iff_isUnit]`. Establish `a0` using `hρ.bar.1 (F.loc0 v t) 0`. Establish `a2` using `hρ.bar.1 (F.loc0 v t) 2`. Establish `b1` using `hρ.bar.2 v 1 t`.
+
+Establish `c0` using `hρ.diag (F.loc0 v t) 0 2 (by decide)`. Rewrite `a0`, `a2`, `c0` using `[Fr.NRep.map_r]`. Rewrite `b1` using `[Fr.NRep.map_ψ]`. Establish `w0 : Fr.w 3 0 = 1` using `rfl`. Establish `w1 : Fr.w 3 1 = 0` using `rfl`.
+
+Establish `w2 : Fr.w 3 2 = -1` using `rfl`. Rewrite `a0` using `[w0, zpow_one]`. Rewrite `b1` using `[w1, zpow_zero, Units.val_one, map_one]`. Rewrite `a2` using `[w2, _root_.zpow_neg_one]`. Establish `hne : F.Ψ (F.loc0 v t : F.Γ) ≠ 1` using `fun e => ht (by show F.Ψ (F.loc0 v t : F.Γ) ^ 2 = 1`.
+
+Rewrite using `[e, one_pow])`. Establish `key : ∀ u : (ResidueField O)ˣ, u ≠ 1 → ResidueField.map (algebraMap O A) u - 1 ≠ 0` using `fun u hu e => by`. Rewrite `e` using `[sub_eq_zero, ← map_one (ResidueField.map (algebraMap O A))]`. Conclude with `hu (Units.ext ((ResidueField.map (algebraMap O A)).injective e))`. Establish `: residue A (σ (F.loc0 v t) - (ρ.ψ v 1 t : A) • (1 : Matrix (Fin 2) (Fin 2) A)).det = (residue A (ρ.r (F.loc0 v t) 0 0) - residue A (ρ.ψ v 1 t)) * (residue A (ρ.r (F.loc0 v t) 2 2) - residue A (ρ.ψ v 1 t)) - residue A (ρ.r (F.loc0 v t) 0 2) * residue A (ρ.r (F.loc0 v t) 2 0)`.
+
+Simplify using `[Matrix.det_fin_two, hσ, c00, c01, c10, c11]`. Rewrite using `[this, a0, a2, b1, c0, zero_mul, sub_zero]`. Conclude with `mul_ne_zero (key _ hne) (key _ (inv_ne_one.2 hne))`. Use `drop_mid (σ.comp (F.loc0 v)) (ρ.ψ v 0) t (ρ.ψ v 1 t : A) (σ (F.loc0 v (g 1)) - (ρ.ψ v 2 (g 1) : A) • 1) hu (fun a => by` as an intermediate fact. Establish `h` using `congrArg corner (ρ.ord v ![a, t, g 1])`.
+
+Simplify using `only [Fr.ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one] at h`. Rewrite `h` using `[corner_mul (block_sub (hb _) _), corner_mul (block_sub (hb _) _), corner_sub, corner_sub, corner_sub]`. Conclude with `h) (g 0)`. Simplify using `only [Fr.ordProd, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, mul_one]`. Conclude with `this`.
+
+Rewrite using `[w_eq]`. Conclude with `hρ.bar.1 g _`. Rewrite using `[w_eq]`. Conclude with `hρ.bar.2 v _ g`.
+-/
 private theorem ex_block {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : Fr.Frame l (ResidueField O)}
     (f3 : ∀ v, ∃ g, F.Ψ (F.loc v g) ^ 2 ≠ 1) {A : Type} [CommRing A] [IsLocalRing A] [Algebra O A]
     [IsLocalHom (algebraMap O A)] (ρ : Fr.NRep F 3 A) (hρ : IsLiftA O ρ) (hb : ∀ g, Bl (ρ.r g)) :
@@ -136,6 +197,15 @@ private theorem ex_block {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLoc
 end UpperTheory.V.Pr.LkPt2
 
 open UpperTheory.V.Pr.LkPt2 in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ Φ k _ C₀ hok hM hσ A _ _ _ _ _ _ r hr hb`. Take `⟨ρ, h1, h2, h3⟩` from `exists_nrep3 k hok hM hσ r hr`. Establish `hbl : ∀ g, Bl (ρ.r g)` using `fun g => by`. Take `⟨u, hu⟩` from `k.p_surj g.1`. Establish `hη : η u = 1` using `by rw [← k.del, hu]; exact g.2`.
+
+Establish `hm : u.1 ∈ (Base.galEmb ℚ L Ω).range`. Rewrite using `[Base.range_galEmb, k.gal]`. Conclude with `⟨u.2, hη⟩`. Take `⟨s, hs⟩` from `hm`. Establish `e : g = k.p0 s` using `Subtype.ext (hu.symm.trans (congrArg k.p (Subtype.ext hs.symm)))`.
+
+Rewrite using `[e, h2, hs]`. Conclude with `⟨hb _ hη _ _ (by decide), hb _ hη _ _ (by decide), hb _ hη _ _ (by decide), hb _ hη _ _ (by decide)⟩`. Take `⟨ρ', a1, a2, a3⟩` from `ex_block hok.f3 ρ h1 hbl`. Use `⟨ρ', a1, fun s => by rw [a2, h2], fun v i g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[a3, h3 v _ g hg, w_eq']`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pr.exists_nrep2 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}
       {L : Type} [Field L] [NumberField L] [Algebra L Ω] {Φ : Fr.Frame l (ResidueField O)} (k : GalLink η Ψ σ g₁ B M L Φ) [CharP (ResidueField O) l] {C₀ : ℕ}, Φ.Ok C₀ → l ∣ M → σ * σ = 1 →

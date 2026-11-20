@@ -20,6 +20,17 @@ section Noeth
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {κ : Type} [Finite κ]
 
+/- English proof (translation)
+Establish `sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q` using `fun q hq => ((hUm q).1 hq).1`. Set `A : Subalgebra ℤ Ω` to `Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Establish `hreg : ∀ a : Ω, a ∈ A ↔ ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q`. Introduce `a`. Use `(hT.ring c hc a).trans (forall_congr' fun q => imp_congr ?_ Iff.rfl)` and prove the remaining obligations.
+
+Conclude with `⟨fun hq => (hUm q.1).2 ⟨q.2, hq⟩, fun hq => ((hUm q.1).1 hq).2⟩`. Set `ρ : Γ(X, U) →+* A` to `(ev ξ U hη).codRestrict A fun s => (hreg _).2 fun q hq => ⟨_, genMap_germ hη q hq s⟩`. Establish `hinj : Function.Injective ρ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`.
+
+Establish `h0 : ev ξ U hη s = 0` using `congrArg Subtype.val hs`. Use `TopCat.Presheaf.section_ext X.sheaf U s 0 fun q hq => ?_` and prove the remaining obligations. Apply `hT.gen.inj ⟨q, sp q hq⟩` to reduce the goal to its premises. Establish `h1` using `genMap_germ hη ⟨q, sp q hq⟩ hq s`. Rewrite `h1` using `[h0]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [map_zero]`. Conclude with `(map_zero (genMap ξ ⟨q, sp q hq⟩)).symm`. Establish `hsurj : Function.Surjective ρ`. Introduce and unpack `⟨a, ha⟩`.
+
+Take `⟨s, hs⟩` from `exists_ev_eq hU hη sp a ((hreg a).1 ha)`. Conclude with `⟨s, Subtype.ext hs⟩`. Use `haveI : Algebra.FiniteType ℤ A := (Subalgebra.fg_iff_finiteType A).1 (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩)`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℤ A`. Conclude with `isNoetherianRing_of_ringEquiv A (RingEquiv.ofBijective ρ ⟨hinj, hsurj⟩).symm`.
+-/
 theorem isNoetherianRing_chart (ξ : Spec (CommRingCat.of Ω) ⟶ X) (x : κ → Ω) (hT : CoordTie ℤ ξ x) (c : κ)
     (hc : x c ≠ 0) (U : X.Opens) (hU : IsAffineOpen U)
     (hUm : ∀ q : X, q ∈ U ↔ ∃ h : genPt ξ ⤳ q, InChart ξ x c ⟨q, h⟩) (hη : genPt ξ ∈ U) :
@@ -52,6 +63,11 @@ theorem isNoetherianRing_chart (ξ : Spec (CommRingCat.of Ω) ⟶ X) (x : κ →
   haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℤ A
   exact isNoetherianRing_of_ringEquiv A (RingEquiv.ofBijective ρ ⟨hinj, hsurj⟩).symm
 
+/- English proof (translation)
+Establish `key : ∀ p : X, ∃ U : X.affineOpens, p ∈ U.1 ∧ IsNoetherianRing Γ(X, U.1)`. Introduce `p`. Take `⟨c, hch⟩` from `hT.cover ⟨p, hall p⟩`. Take `⟨U, hU, hUm⟩` from `hT.affine c hch.1`. Establish `hp : p ∈ U` using `(hUm p).2 ⟨hall p, hch⟩`.
+
+Conclude with `⟨⟨U, hU⟩, hp, isNoetherianRing_chart ξ x hT c hch.1 U hU hUm ((hall p).mem_open U.isOpen hp)⟩`. Use `choose S hS hN using key`. Conclude with `isLocallyNoetherian_of_affine_cover (S := S) (top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 ⟨p, hS p⟩) hN`.
+-/
 theorem isLocallyNoetherian_of_coordTie (ξ : Spec (CommRingCat.of Ω) ⟶ X) (x : κ → Ω) (hT : CoordTie ℤ ξ x)
     (hall : ∀ q : X, genPt ξ ⤳ q) : IsLocallyNoetherian X := by
   have key : ∀ p : X, ∃ U : X.affineOpens, p ∈ U.1 ∧ IsNoetherianRing Γ(X, U.1) := by
@@ -70,6 +86,37 @@ section Form
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Take `⟨c, hch⟩` from `hT.cover ⟨genPt ξ, specializes_rfl⟩`. Establish `hcx` using `hch.1`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hcx k (Finset.mem_univ k)`. Take `⟨U, hU, hUm⟩` from `hT.affine c hcx`. Establish `hη : genPt ξ ∈ U` using `(hUm _).2 ⟨specializes_rfl, hch⟩`.
+
+Establish `sp : ∀ q : X, q ∈ U → genPt ξ ⤳ q` using `fun q hq => ((hUm q).1 hq).1`. Establish `hreg : ∀ a : Ω, a ∈ chartRingZ y c ↔ ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q`. Introduce `a`. Establish `h` using `hT.ring c hcx a`. Rewrite `h` using `[show (Algebra.adjoin ℤ (Set.range fun j : (∀ k, J k) => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c k⟩)) = chartRingZ y c from segre_chart y c hc]`.
+
+Use `h.trans (forall_congr' fun q => imp_congr ?_ Iff.rfl)` and prove the remaining obligations. Conclude with `⟨fun hq => (hUm q.1).2 ⟨q.2, hq⟩, fun hq => ((hUm q.1).1 hq).2⟩`. Set `ρ : Γ(X, U) →+* chartRingZ y c` to `(ev ξ U hη).codRestrict (chartRingZ y c) fun s => (hreg _).2 fun q hq => ⟨_, genMap_germ hη q hq s⟩`. Take `⟨s, hsV, hsη⟩` from `hU.exists_basicOpen_le (V := V) ⟨genPt ξ, hV⟩ hη`. Establish `ha0 : ev ξ U hη s ≠ 0` using `(((Scheme.mem_basicOpen X s _ hη).1 hsη).map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+
+Take `⟨g₀, hg₀⟩` from `ratMap_surjective y c (ρ s)`. Take `⟨m, G₀, hG₀, eG⟩` from `exists_form c g₀`. Establish `hy₀ : aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) g₀ = ev ξ U hη s`. Rewrite using `[← ratMap_coe, hg₀]`. Both sides reduce to the same expression.
+
+Establish `hf0 : aeval y (G₀ * cMon c 1) ≠ 0`. Rewrite using `[map_mul, aeval_cMon, ← eG Ω y hc, hy₀]`. Conclude with `mul_ne_zero (mul_ne_zero ha0 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))) (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k))`. Use `⟨G₀ * cMon c 1, m + 1, homog_mul hG₀ (homog_cMon c 1), fun hmem => hf0 ?_, fun w hw hne => ?_⟩` and prove the remaining obligations. Establish `h` using `aeval_scaled y (fun _ => 1) (G₀ * cMon c 1)`.
+
+Establish `h0 : mConeMap y (G₀ * cMon c 1) = 0` using `hmem`. Rewrite `h` using `[h0, map_zero]`. Simplify `h` using `only [mul_one]`. Establish `hne' : aeval w (G₀ * cMon c 1) ≠ 0`. Rewrite using `[← evC_eq_aeval]`.
+
+Conclude with `hne`. Rewrite `hne'` using `[map_mul, aeval_cMon]`. Establish `hwc : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => by`. Use `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hne') k (Finset.mem_univ k)` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨e, he⟩` from `exists_chartEval y c hc w hw hwc`. Take `⟨z, hz, hval⟩` from `exists_pt hU (e.comp ρ)`. Establish `hval' : ∀ k i, ∃ s : Γ(X, U), ev ξ U hη s = y ⟨k, i⟩ / y ⟨k, c k⟩ ∧ (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz s) = w ⟨k, i⟩ / w ⟨k, c k⟩`. Introduce `k i`. Establish `hm : y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ chartRingZ y c` using `Algebra.subset_adjoin ⟨⟨k, i⟩, rfl⟩`.
+
+Take `⟨s, hs⟩` from `exists_ev_eq hU hη sp _ ((hreg _).1 hm)`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e1 : ρ s = ratMap y c (MvPolynomial.X ⟨k, i⟩)` using `Subtype.ext (by rw [ratMap_coe, aeval_X]; exact hs)`. Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `e (ρ s) = _`.
+
+Rewrite using `[e1, he, aeval_X]`. Establish `hs0 : (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz s) ≠ 0`. Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `e (ρ s) ≠ 0`. Rewrite using `[← hg₀, he]`.
+
+Introduce `h0`. Apply `left_ne_zero_of_mul hne'` to reduce the goal to its premises. Rewrite using `[← eG ℂ w hwc, h0, zero_mul]`. Use `⟨z, ⟨fun k => ⟨c k, (IsUnit.mk0 _ (hwc k))⟩, fun k c₀ hu => ?_⟩, hsV ?_⟩` and prove the remaining obligations. Establish `hw0 : w ⟨k, c₀⟩ ≠ 0` using `hu.ne_zero`.
+
+Take `⟨sv, hsv, hev⟩` from `hval' k c₀`. Establish `hev0 : (Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U _ hz sv) ≠ 0`. Rewrite using `[hev]`. Conclude with `div_ne_zero hw0 (hwc k)`. Establish `hy0 : y ⟨k, c₀⟩ ≠ 0`.
+
+Introduce `h0`. Apply `hev0` to reduce the goal to its premises. Establish `h1 : ρ sv = 0` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `ev ξ U hη sv = 0`. Rewrite using `[hsv, h0, zero_div])`.
+
+Rewrite using `[hval]`. Express the relevant statement in the definitionally equal form `e (ρ sv) = 0`. Rewrite using `[h1, map_zero]`. Use `⟨hy0, fun i => ?_⟩` and prove the remaining obligations. Take `⟨su, hsu, heu⟩` from `hval' k i`.
+
+Use `⟨w ⟨k, i⟩ / w ⟨k, c₀⟩, ?_, by field_simp⟩` and prove the remaining obligations. Establish `h` using `valAt_quot hη sp z hz su sv hev0`. Rewrite `h` using `[hsu, hsv, heu, hev, div_div_div_cancel_right₀ (hc k), div_div_div_cancel_right₀ (hwc k)]`. Conclude with `h`. Conclude with `(Scheme.mem_basicOpen X s _ hz).2 (isUnit_of_map_unit (Scheme.stalkClosedPointTo z).hom _ (IsUnit.mk0 _ hs0))`.
+-/
 theorem exists_homog_form_point (ξ : Spec (CommRingCat.of Ω) ⟶ X) (y : (Σ k, J k) → Ω)
     (hT : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) (V : X.Opens) (hV : genPt ξ ∈ V) :
     ∃ (f : MRing J) (d : K → ℕ), IsMultiHomog f d ∧ f ∉ mCoordIdeal y ∧ ∀ w ∈ mcPts (mCoordIdeal y), evC w f ≠ 0 →
@@ -161,6 +208,13 @@ end Form
 
 end GlobalTheory.CompanionTheory.Ar.Cmp.HInterior
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ ι _ y A x hx _`. Use `haveI : IsLocallyNoetherian A.X := GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.isLocallyNoetherian_of_coordTie A.ξ _ A.tie A.all`. Set `V : A.X.Opens` to `⟨abLocus A.t.G, GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian A.t.G A.t.semi⟩`. Establish `hV : genPt A.ξ ∈ V`. Use `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.abLocus_pullback abLocusOne Y.t.semi A.m.cart.1 (genPt A.ξ)).1 ?_` and prove the remaining obligations.
+
+Establish `h1 : A.f (genPt A.ξ) = Y.j (x (IsLocalRing.closedPoint Ω))`. Use `congrArg (fun g : Sp Ω ⟶ Y.X => g (IsLocalRing.closedPoint Ω)) hx` as an intermediate fact. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans (this.trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite using `[h1]`. Conclude with `GlobalTheory.ModelScope.range_j_subset_abLocus Y ⟨_, rfl⟩`.
+
+Take `⟨b, d, hb, hbI, hw⟩` from `GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.exists_homog_form_point A.ξ y A.tie V hV`. Use `⟨b, d, hb, hbI, fun w hwm hne => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hzV⟩` from `hw w hwm hne`. Conclude with `⟨z, hz, hzV⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.exists_form_interior : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → Ω) (A : HodgeCpt Y S y) (x : Sp Ω ⟶ Xo.XF c), A.ξ ≫ A.f = x ≫ Y.j → Mono (spMap β) → ∃ (b : MRing ι) (d : K → ℕ), IsMultiHomog b d ∧ b ∉ mCoordIdeal y ∧ ∀ w ∈ mcPts (mCoordIdeal y), evC w b ≠ 0 → ∃ z : Spec (CommRingCat.of ℂ) ⟶ A.X, CoordsAt A.ξ y z w ∧ A.Interior z := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ ι _ y A x hx _
   haveI : IsLocallyNoetherian A.X := GlobalTheory.CompanionTheory.Ar.Cmp.HInterior.isLocallyNoetherian_of_coordTie A.ξ _ A.tie A.all

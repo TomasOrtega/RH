@@ -9,6 +9,9 @@ open scoped ContDiff Real ComplexOrder
 
 namespace GlobalTheory.BcUnique
 
+/- English proof (translation)
+Introduce `k _ X p h S hS r s g G hi h₁ h₃ σ a y hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression. Conclude with `(g.met σ).quot_G hS h₁ h₃ a hy`.
+-/
 theorem isInduced_seq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1) (S : ShortComplex X.Modules) (hS : S.ShortExact) (r s : ℕ) (g : VMetric p S.X₂ (r + s)) (G : g.IsCInf) (hi : VB.IsSubbundle S.f) (h₁ : VB.IsVB S.X₁ r) (h₃ : VB.IsVB S.X₃ s) (σ : k →+* ℂ), IsInduced (h.seq hS (G.restrict hi h₁) G (G.quot hS h₁ h₃) σ) := by
   intro k _ X p h S hS r s g G hi h₁ h₃ σ a y hy
   refine ⟨?_, ?_⟩

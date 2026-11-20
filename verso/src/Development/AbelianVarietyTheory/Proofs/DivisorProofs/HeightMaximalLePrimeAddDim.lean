@@ -7,6 +7,13 @@ namespace GlobalTheory.FinTypeIntCatenary
 
 open ReciprocityTheory.CA
 
+/- English proof (translation)
+Establish `hdisj : Disjoint (𝔑.primeCompl : Set S) (𝔓 : Set S)` using `Set.disjoint_left.mpr fun x hx hxp => hx (hle hxp)`. Set `q : Ideal (Localization.AtPrime 𝔑)` to `𝔓.map (algebraMap S (Localization.AtPrime 𝔑))`. Use `haveI : q.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint 𝔑.primeCompl _ 𝔓 inferInstance hdisj`. Establish `h2` using `h.localization_atPrime q`. Establish `hc : q.comap (algebraMap S (Localization.AtPrime 𝔑)) = 𝔓` using `IsLocalization.under_map_of_isPrime_disjoint 𝔑.primeCompl _ inferInstance hdisj`.
+
+Use `haveI : IsLocalization 𝔓.primeCompl (Localization.AtPrime q) := by`. Establish `h0 : IsLocalization (q.comap (algebraMap S (Localization.AtPrime 𝔑))).primeCompl (Localization.AtPrime q)` using `IsLocalization.isLocalization_atPrime_localization_atPrime (M := 𝔑.primeCompl) q`. Establish `hsub : (q.comap (algebraMap S (Localization.AtPrime 𝔑))).primeCompl = 𝔓.primeCompl` using `Submonoid.ext fun x => by simp only [Ideal.mem_primeCompl_iff, hc]`. Rewrite `h0` using `[hsub]`. Conclude with `h0`.
+
+Conclude with `h2.of_ringEquiv (IsLocalization.algEquiv 𝔓.primeCompl (Localization.AtPrime q) (Localization.AtPrime 𝔓)).toRingEquiv`.
+-/
 theorem isCM_atPrime_of_le {S : Type*} [CommRing S] (𝔓 𝔑 : Ideal S) [𝔓.IsPrime] [𝔑.IsPrime]
     (hle : 𝔓 ≤ 𝔑) (h : IsCM (Localization.AtPrime 𝔑)) : IsCM (Localization.AtPrime 𝔓) := by
   have hdisj : Disjoint (𝔑.primeCompl : Set S) (𝔓 : Set S) :=
@@ -26,6 +33,9 @@ theorem isCM_atPrime_of_le {S : Type*} [CommRing S] (𝔓 𝔑 : Ideal S) [𝔓.
     exact h0
   exact h2.of_ringEquiv (IsLocalization.algEquiv 𝔓.primeCompl (Localization.AtPrime q) (Localization.AtPrime 𝔓)).toRingEquiv
 
+/- English proof (translation)
+Establish `hle : Q ≤ J.comap (Ideal.Quotient.mk Q)` using `fun x hx => by`. Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx, J.zero_mem]`. Use `height_eq_add_of_isCM_localization (J.comap (Ideal.Quotient.mk Q)) Q h hle` as an intermediate fact. Rewrite `this` using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Then use the resulting hypothesis.
+-/
 theorem height_comap_mk {S : Type*} [CommRing S] (Q : Ideal S) [Q.IsPrime] (J : Ideal (S ⧸ Q))
     [J.IsPrime] (h : IsCM (Localization.AtPrime (J.comap (Ideal.Quotient.mk Q)))) :
     (J.comap (Ideal.Quotient.mk Q)).height = Q.height + J.height := by
@@ -34,6 +44,17 @@ theorem height_comap_mk {S : Type*} [CommRing S] (Q : Ideal S) [Q.IsPrime] (J : 
   have := height_eq_add_of_isCM_localization (J.comap (Ideal.Quotient.mk Q)) Q h hle
   rwa [Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective] at this
 
+/- English proof (translation)
+Use `haveI hMt : (M.comap (Ideal.Quotient.mk Q)).IsMaximal := Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`. Take `⟨hCM1, hd1⟩` from `hS (M.comap (Ideal.Quotient.mk Q))`. Establish `e1` using `height_comap_mk Q M hCM1`. Take `⟨M', hM', hPM'⟩` from `Ideal.exists_le_maximal (P.comap (Ideal.Quotient.mk Q)) (Ideal.IsPrime.ne_top inferInstance)`. Take `⟨hCM2, hd2⟩` from `hS M'`.
+
+Establish `e2` using `height_eq_add_of_isCM_localization M' (P.comap (Ideal.Quotient.mk Q)) hCM2 hPM'`. Establish `e3` using `height_comap_mk Q P (isCM_atPrime_of_le _ M' hPM' hCM2)`. Establish `hQM : Q ≤ M.comap (Ideal.Quotient.mk Q)` using `fun x hx => by`. Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx, M.zero_mem]`. Establish `hQP : Q ≤ P.comap (Ideal.Quotient.mk Q)` using `fun x hx => by`.
+
+Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx, P.zero_mem]`. Establish `hQle : Q.height ≤ d` using `hd1 ▸ Ideal.height_mono hQM`. Establish `hQt : Q.height ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top d) hQle`. Establish `key : M.height = P.height + (M'.map (Ideal.Quotient.mk (P.comap (Ideal.Quotient.mk Q)))).height`. Establish `hsum : Q.height + M.height = Q.height + (P.height + (M'.map (Ideal.Quotient.mk (P.comap (Ideal.Quotient.mk Q)))).height)`.
+
+Rewrite using `[← e1, hd1, ← hd2, e2, e3, add_assoc]`. Conclude with `WithTop.add_left_cancel hQt hsum`. Use `haveI : (M'.map (Ideal.Quotient.mk (P.comap (Ideal.Quotient.mk Q)))).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPM')`. Establish `hb : ((M'.map (Ideal.Quotient.mk (P.comap (Ideal.Quotient.mk Q)))).height : WithBot ℕ∞) ≤ ringKrullDim (S ⧸ P.comap (Ideal.Quotient.mk Q))` using `Ideal.height_le_ringKrullDim_of_isPrime`. Establish `hdim : ringKrullDim ((S ⧸ Q) ⧸ (P.comap (Ideal.Quotient.mk Q)).map (Ideal.Quotient.mk Q)) = ringKrullDim (S ⧸ P.comap (Ideal.Quotient.mk Q))` using `ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hQP)`.
+
+Rewrite `hdim` using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Rewrite using `[key, hdim]`. Use `push_cast`. Conclude with `add_le_add le_rfl hb`.
+-/
 theorem height_le_of_equidim {S : Type*} [CommRing S] (d : ℕ)
     (hS : ∀ (𝔑 : Ideal S) [𝔑.IsMaximal], IsCM (Localization.AtPrime 𝔑) ∧ 𝔑.height = d)
     (Q : Ideal S) [Q.IsPrime] (P M : Ideal (S ⧸ Q)) [P.IsPrime] [M.IsMaximal] :
@@ -71,6 +92,9 @@ theorem height_le_of_equidim {S : Type*} [CommRing S] (d : ℕ)
   push_cast
   exact add_le_add le_rfl hb
 
+/- English proof (translation)
+Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`. Establish `hi` using `MvPolynomial.quotient_mk_comp_C_isIntegral_of_isJacobsonRing 𝔑`. Use `letI := Ideal.Quotient.field 𝔑`. Use `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' _ hi (⊥ : Ideal (MvPolynomial (Fin N) ℤ ⧸ 𝔑))` as an intermediate fact. Rewrite `this` using `[← Ideal.comap_comap, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Then use the resulting hypothesis.
+-/
 theorem isMaximal_comap_C_int (N : ℕ) (𝔑 : Ideal (MvPolynomial (Fin N) ℤ)) [𝔑.IsMaximal] :
     (𝔑.comap (MvPolynomial.C : ℤ →+* MvPolynomial (Fin N) ℤ)).IsMaximal := by
   haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int
@@ -80,6 +104,13 @@ theorem isMaximal_comap_C_int (N : ℕ) (𝔑 : Ideal (MvPolynomial (Fin N) ℤ)
     (⊥ : Ideal (MvPolynomial (Fin N) ℤ ⧸ 𝔑))
   rwa [← Ideal.comap_comap, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker] at this
 
+/- English proof (translation)
+Establish `hp : p ≠ ⊥`. Introduce `h`. Establish `: (⊥ : Ideal ℤ).IsMaximal` using `h ▸ inferInstance`. Conclude with `Int.not_isField (Ring.isField_iff_maximal_bot.mpr this)`. Use `haveI : IsDiscreteValuationRing (Localization.AtPrime p) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain ℤ hp _`.
+
+Establish `hd` using `IsDiscreteValuationRing.ringKrullDim_eq_one (Localization.AtPrime p)`. Use `⟨⟨inferInstance, 1, by rw [hd]; rfl, ?_⟩, hd⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime p)`. Establish `hm : ϖ ∈ IsLocalRing.maximalIdeal (Localization.AtPrime p)` using `hϖ.not_isUnit`. Use `⟨[ϖ], rfl, by simpa using hm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocalRing.isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal (by simpa using hm), RingTheory.Sequence.isWeaklyRegular_singleton_iff]`. Conclude with `IsSMulRegular.of_ne_zero hϖ.ne_zero`.
+-/
 theorem isCM_localization_int (p : Ideal ℤ) [p.IsMaximal] :
     IsCM (Localization.AtPrime p) ∧ ringKrullDim (Localization.AtPrime p) = 1 := by
   have hp : p ≠ ⊥ := by
@@ -97,6 +128,25 @@ theorem isCM_localization_int (p : Ideal ℤ) [p.IsMaximal] :
     RingTheory.Sequence.isWeaklyRegular_singleton_iff]
   exact IsSMulRegular.of_ne_zero hϖ.ne_zero
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)) := MvPolynomial.algebraMvPolynomial`. Set `W : Submonoid (MvPolynomial (Fin N) ℤ)` to `p.primeCompl.map (MvPolynomial.C (σ := Fin N))`. Use `haveI hL : IsLocalization W (MvPolynomial (Fin N) (Localization.AtPrime p)) := MvPolynomial.isLocalization p.primeCompl (Localization.AtPrime p)`. Establish `hdisj : Disjoint (W : Set (MvPolynomial (Fin N) ℤ)) (𝔑 : Set _)`. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `x ⟨m, hm, rfl⟩ hx`. Conclude with `hm (hc ▸ (show m ∈ 𝔑.comap MvPolynomial.C from hx))`. Set `𝔑'` to `𝔑.map (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))`. Use `haveI hP : 𝔑'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint W _ 𝔑 inferInstance hdisj`. Establish `hcm : 𝔑'.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) = 𝔑` using `IsLocalization.under_map_of_isPrime_disjoint W _ inferInstance hdisj`.
+
+Use `haveI hM : 𝔑'.IsMaximal := by`. Use `⟨⟨hP.ne_top, fun J hJ => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hJt`. Establish `h1 : 𝔑 ≤ J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))` using `hcm ▸ Ideal.comap_mono hJ.le`. Establish `h2 : J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p))) ≠ ⊤`.
+
+Introduce `h`. Apply `hJt` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : MvPolynomial (Fin N) ℤ) ∈ J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))` using `h ▸ Submodule.mem_top`. Simplify using `using this`.
+
+Establish `h3` using `(‹𝔑.IsMaximal›.eq_of_le h2 h1)`. Establish `h4 : J = 𝔑'`. Establish `h5` using `IsLocalization.map_comap W (MvPolynomial (Fin N) (Localization.AtPrime p)) J`. Express the relevant statement in the definitionally equal form `Ideal.map _ (J.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))) = J at h5`. Rewrite `h5` using `[← h3]`.
+
+Conclude with `h5.symm`. Conclude with `hJ.ne' h4`. Use `⟨𝔑', hM, ?_, ?_, IsLocalization.height_map_of_disjoint W 𝔑 hdisj⟩` and prove the remaining obligations. Use `haveI : (𝔑'.comap (MvPolynomial.C : Localization.AtPrime p →+* _)).IsPrime := Ideal.comap_isPrime _ _`. Use `le_antisymm (IsLocalRing.le_maximalIdeal (Ideal.IsPrime.ne_top inferInstance)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `e : (MvPolynomial.C (algebraMap ℤ (Localization.AtPrime p) x) : MvPolynomial (Fin N) (Localization.AtPrime p)) = algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)) (MvPolynomial.C x)`. Rewrite using `[MvPolynomial.algebraMap_def, MvPolynomial.map_C]`.
+
+Rewrite using `[e]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [← hc] at hx; exact hx)`. Use `haveI h0 : IsLocalization.AtPrime (Localization.AtPrime 𝔑') (𝔑'.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))) := IsLocalization.isLocalization_isLocalization_atPrime_isLocalization W _ 𝔑' haveI : IsLocalization 𝔑.primeCompl (Localiza …`. Establish `hsub : (𝔑'.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))).primeCompl = 𝔑.primeCompl` using `Submonoid.ext fun x => by simp only [Ideal.mem_primeCompl_iff, hcm]`. Establish `h0' : IsLocalization (𝔑'.comap (algebraMap (MvPolynomial (Fin N) ℤ) (MvPolynomial (Fin N) (Localization.AtPrime p)))).primeCompl (Localization.AtPrime 𝔑')` using `h0`.
+
+Rewrite `h0'` using `[hsub]`. Conclude with `h0'`. Conclude with `⟨(IsLocalization.algEquiv 𝔑.primeCompl (Localization.AtPrime 𝔑') (Localization.AtPrime 𝔑)).toRingEquiv⟩`.
+-/
 theorem exists_maximal_mvPolynomial_localization (N : ℕ) (p : Ideal ℤ) [p.IsMaximal] (𝔑 : Ideal (MvPolynomial (Fin N) ℤ)) [𝔑.IsMaximal]
     (hc : 𝔑.comap (MvPolynomial.C : ℤ →+* MvPolynomial (Fin N) ℤ) = p) :
     ∃ (𝔑' : Ideal (MvPolynomial (Fin N) (Localization.AtPrime p))) (_ : 𝔑'.IsMaximal),
@@ -157,6 +207,13 @@ theorem exists_maximal_mvPolynomial_localization (N : ℕ) (p : Ideal ℤ) [p.Is
       exact h0'
     exact ⟨(IsLocalization.algEquiv 𝔑.primeCompl (Localization.AtPrime 𝔑') (Localization.AtPrime 𝔑)).toRingEquiv⟩
 
+/- English proof (translation)
+Use `haveI := isMaximal_comap_C_int N 𝔑`. Take `⟨hCM, hdim⟩` from `isCM_localization_int (𝔑.comap (MvPolynomial.C : ℤ →+* MvPolynomial (Fin N) ℤ))`. Take `⟨𝔑', h𝔑', hc, ⟨e⟩, hh⟩` from `exists_maximal_mvPolynomial_localization N _ 𝔑 rfl`. Establish `h` using `isCM_localization_mvPolynomial hCM N 𝔑' hc`. Use `⟨h.1.of_ringEquiv e, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `h.2`. Rewrite `h2` using `[hdim, hh]`. Establish `h3 : ((𝔑.height : ℕ∞) : WithBot ℕ∞) = (((N + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[h2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `WithBot.coe_injective h3`.
+-/
 theorem isCM_and_height_of_isMaximal (N : ℕ) (𝔑 : Ideal (MvPolynomial (Fin N) ℤ)) [𝔑.IsMaximal] :
     IsCM (Localization.AtPrime 𝔑) ∧ 𝔑.height = ((N + 1 : ℕ) : ℕ∞) := by
   haveI := isMaximal_comap_C_int N 𝔑
@@ -170,6 +227,11 @@ theorem isCM_and_height_of_isMaximal (N : ℕ) (𝔑 : Ideal (MvPolynomial (Fin 
     rw [h2]; push_cast; ring
   exact WithBot.coe_injective h3
 
+/- English proof (translation)
+Take `⟨N, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp ‹Algebra.FiniteType ℤ A›`. Use `haveI : (RingHom.ker (f : MvPolynomial (Fin N) ℤ →+* A)).IsPrime := RingHom.ker_isPrime _`. Set `e : (MvPolynomial (Fin N) ℤ ⧸ RingHom.ker (f : MvPolynomial (Fin N) ℤ →+* A)) ≃+* A` to `RingHom.quotientKerEquivOfSurjective (f := (f : MvPolynomial (Fin N) ℤ →+* A)) hf`. Use `haveI : (P.comap e).IsPrime := Ideal.comap_isPrime _ _`. Use `haveI : (M.comap e).IsMaximal := Ideal.comap_isMaximal_of_surjective _ e.surjective`.
+
+Establish `h` using `height_le_of_equidim (N + 1) (isCM_and_height_of_isMaximal N) _ (P.comap e) (M.comap e)`. Rewrite `h` using `[RingEquiv.height_comap, RingEquiv.height_comap]`. Establish `hdim : ringKrullDim ((MvPolynomial (Fin N) ℤ ⧸ RingHom.ker (f : MvPolynomial (Fin N) ℤ →+* A)) ⧸ P.comap e) = ringKrullDim (A ⧸ P)` using `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ _ e (Ideal.map_comap_of_surjective _ e.surjective P).symm)`. Rewrite `h` using `[hdim]`. Then use the resulting hypothesis.
+-/
 theorem height_maximal_le (A : Type) [CommRing A] [IsDomain A] [Algebra.FiniteType ℤ A]
     (P M : Ideal A) [P.IsPrime] [M.IsMaximal] :
     (M.height : WithBot ℕ∞) ≤ (P.height : WithBot ℕ∞) + ringKrullDim (A ⧸ P) := by

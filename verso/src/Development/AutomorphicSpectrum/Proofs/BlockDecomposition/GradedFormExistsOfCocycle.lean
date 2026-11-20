@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.GrForm
 
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Establish `h` using `hP _ T.property`. Establish `h'` using `hP _ T'.property`. Express the relevant statement in the definitionally equal form `v T'.obj - φ.hom.φ (v T.obj) ∈ T'.obj.J`. Rewrite using `[← Ideal.Quotient.eq, hv _ h', ev_nat φ.hom h h' f, ← hv _ h]`. Both sides reduce to the same expression.
+-/
 theorem lift_sub_mem {W : X.Opens} {P : ObjectProperty (Thick (LL q))} (hP : ∀ T, P T → InU W T) (f : Γ(X, W))
     (v : ∀ T : Thick (LL q), T.B) (hv : ∀ (T : Thick (LL q)) (h : InU W T), Ideal.Quotient.mk T.J (v T) = ev T h f)
     {T T' : P.FullSubcategory} (φ : T ⟶ T') :
@@ -18,6 +21,13 @@ theorem lift_sub_mem {W : X.Opens} {P : ObjectProperty (Thick (LL q))} (hP : ∀
   rw [← Ideal.Quotient.eq, hv _ h', ev_nat φ.hom h h' f, ← hv _ h]
   rfl
 
+/- English proof (translation)
+Introduce `hC O _ X q W d t u hu P hP r x`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P`. Establish `hu' : ∀ i {T T' : P.FullSubcategory} (φ : T ⟶ T'), (show (sP P).A.obj T' from u i T'.obj) - ((sP P).A.map φ).hom (show (sP P).A.obj T from u i T.obj) ∈ (sP P).J.S T'` using `fun i _ _ φ => lift_sub_mem hP (t i) (u i) (hu i) φ`. Establish `hy : ∀ (I : Idx r d) {T T' : P.FullSubcategory} (φ : T ⟶ T'), (show (sP P).A.obj T' from lft W T'.obj (x I)) - ((sP P).A.map φ).hom (show (sP P).A.obj T from lft W T.obj (x I)) ∈ (sP P).J.S T'` using `fun I _ _ φ => lift_sub_mem hP (x I) (fun T => lft W T (x I)) (fun T h => lft_spec T h (x I)) φ`. Use `choose f hf hz using fun I : Idx r d => hC hF (fun i (T : P.FullSubcategory) => (show (sP P).A.obj T from u i T.obj)) hu' (fun T : P.FullSubcategory => (show (sP P).A.obj T from lft W T.obj (x I))) (hy I) I.1`.
+
+Establish `hd : CH.d (sq (sFil P r) (sFil P ((r : ℤ) + 1))) r (∑ I, f I) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun I _ => hf I`. Use `⟨(CH.cx (sq (sFil P r) (sFil P ((r : ℤ) + 1)))).cls (∑ I, f I) hd, ∑ I, f I, hd, rfl, ?_⟩` and prove the remaining obligations. Introduce `s`.
+
+Establish `e : (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from (∑ I, f I) s) = ∑ I, (show sqM (sFil P r) (sFil P ((r : ℤ) + 1)) _ from f I s)` using `Finset.sum_apply _ _ _`. Rewrite using `[e, AddSubmonoidClass.coe_finset_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => hz I s`.
+-/
 theorem exists_of_cocycle : StCocycle → StExists := by
   intro hC O _ X q W d t u hu P hP r x
   have hF := GlobalTheory.CompanionTheory.DPFil.isFil_sFil P

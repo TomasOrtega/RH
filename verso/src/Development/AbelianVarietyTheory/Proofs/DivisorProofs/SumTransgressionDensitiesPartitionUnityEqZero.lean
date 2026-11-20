@@ -13,6 +13,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `F _ σ X m E O H H₀ ι _ ρ hρ h1 c y hy`. Establish `hc : IsHoloChart c.e` using `c.holo`. Establish `key` using `GlobalTheory.T.sum_transgressionTopCoeffComplex_partitionOfUnity_eq_zero (fun i v => ρ i (c.e.symm v)) (fun v => H₀ (E.nonempty (under y)).choose (c.e.symm v) ()) (fun v => H (E.nonempty (under y)).choose (c.e.symm v) ()) (c.e y) (fun i => (contDiffAt_holoChart hc hy (hρ i y)).di …`. Simplify using `only [corrDens, corrTop]`. Rewrite using `[← Finset.mul_sum, ← Complex.re_sum, key]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_corrDens_eq_zero : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), ∀ {ι : Type} [Fintype ι] (ρ : ι → CxPts X.str σ → ℝ), (∀ i y, CInfAt (ρ i) y) → (∀ y, ∑ i, ρ i y = 1) → ∀ (c : AlgChart X.str σ X.dim) (y : CxPts X.str σ), y ∈ c.e.source → ∑ i, corrDens E H₀ H (ρ i) c y = 0 := by
   intro F _ σ X m E O H H₀ ι _ ρ hρ h1 c y hy
   have hc : IsHoloChart c.e := c.holo

@@ -18,6 +18,9 @@ namespace GlobalTheory.NormExpo
 
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `x y h`. Rewrite `h` using `[← GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap, ← GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap]`. Establish `h2` using `(GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (isCMExt_real E)).injective (a₁ := algebraMap _ _ x) (a₂ := algebraMap _ _ y) h`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := maximalRealSubfield E) (algebraMap (maximalRealSubfield E) E).injective h2`.
+-/
 theorem adeleMap_real_injective :
     Function.Injective (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalRealSubfield E) E) := by
   intro x y h
@@ -26,6 +29,9 @@ theorem adeleMap_real_injective :
   exact Algebra.TensorProduct.includeLeft_injective (S := maximalRealSubfield E)
     (algebraMap (maximalRealSubfield E) E).injective h2
 
+/- English proof (translation)
+Use `Units.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `infEq E (starRingEnd (Cinf E) ((infEq E).symm (1 - infEq E 1 + infEq E u))) = 1 - infEq E 1 + infEq E (starRingEnd (Cinf E) u)`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `conjFin _ ((1 : Af E) - 0 + 0) = (1 : Af E) - 0 + 0`. Simplify using the standard rewrite rules.
+-/
 theorem conjAd_infId (u : (Cinf E)ˣ) :
     Units.map (GlobalTheory.UnitaryBC.conjAd E).toMonoidHom (infId E u) = infId E (Units.map (starRingEnd (Cinf E)).toMonoidHom u) := by
   refine Units.ext (Prod.ext ?_ ?_)
@@ -35,6 +41,9 @@ theorem conjAd_infId (u : (Cinf E)ˣ) :
   · change conjFin _ ((1 : Af E) - 0 + 0) = (1 : Af E) - 0 + 0
     simp
 
+/- English proof (translation)
+Use `Units.ext (adeleMap_real_injective E ?_)` and prove the remaining obligations. Use `congrArg Units.val (a₁ := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap _ E _) (a₂ := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap _ E _) ?_` and prove the remaining obligations. Rewrite using `[ideleMap_ideleNorm, ideleMap_ideleNorm, GlobalTheory.PolChar.ideleConj_eq, GlobalTheory.PolChar.ideleConj_eq, conjAd_infId, conjAd_infId, mul_comm]`. Use `congr 2`. Conclude with `Units.ext (star_star _)`.
+-/
 theorem ideleNorm_infId_star (u : (Cinf E)ˣ) :
     ideleNorm E (infId E (Units.map (starRingEnd (Cinf E)).toMonoidHom u)) = ideleNorm E (infId E u) := by
   refine Units.ext (adeleMap_real_injective E ?_)
@@ -44,6 +53,11 @@ theorem ideleNorm_infId_star (u : (Cinf E)ˣ) :
   congr 2
   exact Units.ext (star_star _)
 
+/- English proof (translation)
+Use `Units.ext (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (Complex.exp (atEmb τ z w)) = Complex.exp (atEmb τ (starRingEnd ℂ z) w)`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Unfold `atEmb`.
+
+Distinguish the cases in `hw : w = InfinitePlace.mk τ`. Apply the tactic sequence `subst hw; split_ifs <;> simp`. Simplify using `[Pi.single_eq_of_ne hw]`.
+-/
 theorem star_expU_atEmb (τ : E →+* ℂ) (z : ℂ) :
     Units.map (starRingEnd (Cinf E)).toMonoidHom (expU (atEmb τ z)) = expU (atEmb τ (starRingEnd ℂ z)) := by
   classical
@@ -56,6 +70,11 @@ theorem star_expU_atEmb (τ : E →+* ℂ) (z : ℂ) :
   · subst hw; split_ifs <;> simp
   · simp [Pi.single_eq_of_ne hw]
 
+/- English proof (translation)
+Introduce `E _ _ _ χ τ`. Use `(GlobalTheory.CuspRep.expo_eq_of_exp _ τ _ (expo (compNorm E χ) τ) fun z => ?_).symm` and prove the remaining obligations. Establish `h : chiInf (compNorm E χ) (expU (atEmb τ z)) = chiInf (compNorm E χ) (expU (atEmb τ (starRingEnd ℂ z)))`. Rewrite using `[← star_expU_atEmb]`. Conclude with `congrArg χ.1 (ideleNorm_infId_star E _).symm`.
+
+Rewrite using `[h, chiInf_expU_atEmb, Complex.conj_conj, add_comm]`.
+-/
 theorem expo_compNorm_conjugate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (χ : HChar (maximalRealSubfield E)) (τ : E →+* ℂ),
     expo (compNorm E χ) (ComplexEmbedding.conjugate τ) = expo (compNorm E χ) τ := by

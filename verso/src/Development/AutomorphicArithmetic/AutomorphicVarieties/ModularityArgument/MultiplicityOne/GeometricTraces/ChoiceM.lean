@@ -21,6 +21,27 @@ open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 open UpperTheory.V.Af.Bc (cPl)
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn π hns μ e hμ S hS K' hK' hKn`. Take `⟨-, hc, hInf, hSec⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.places E`. Establish `hF` using `UpperTheory.V.Af.formsFiniteGL`. Establish `hbad : {w : Pl E | ¬ (((∃ B, (CG.mk π).HasSat w B) ∧ μ.UnrAt w) ∧ K' w = KL n w)}.Finite` using `Filter.eventually_cofinite.1 (((GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hF E n π).and (GlobalTheory.Mem.UnrAe.unr_ae_and_level E μ).1).and hK'.2)`. Take `⟨Bd, hBd⟩ : ∃ Bd : Finset (Pl E), ∀ w, w ∈ Bd ↔ ¬ (((∃ B, (CG.mk π).HasSat w B) ∧ μ.UnrAt w) ∧ K' w = KL n w)` from `⟨hbad.toFinset, fun w => by simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq]⟩`.
+
+Establish `hgood : ∀ w, w ∉ Bd → ((∃ B, (CG.mk π).HasSat w B) ∧ μ.UnrAt w) ∧ K' w = KL n w` using `fun w hw => by`. Assume the negation of the conclusion as `h`. Conclude with `hw ((hBd w).2 h)`. Establish `hsplit : ∀ w ∈ Bd, IsSplitAt w` using `fun w hw => by`. Assume the negation of the conclusion as `hs`.
+
+Conclude with `(hBd w).1 hw ⟨⟨hns w hs, fun x hx => by`. Rewrite using `[hμ.2.2.1 w hs]`. Conclude with `GlobalTheory.CompanionTheory.MuOpen.unrChar_apply_of_isUnitAt w _ x hx⟩, hKn w hs⟩`. Establish `hcs : ∀ w, IsSplitAt w → IsSplitAt (cPl w)` using `fun w hw => (hc (cPl w)).2.2 (by rw [(hc w).1]; exact ((hc w).2.1 hw).symm)`. Take `⟨m, hm, hmS⟩ : ∃ m : Pl E → Pl E, (∀ w, m w ∈ S ∧ (m w = w ∨ m w = cPl w)) ∧ ∀ w ∈ S, m w = w` from `⟨fun w => if w ∈ S then w else cPl w, fun w => by`.
+
+Distinguish the cases in `h : w ∈ S`. Simplify using `[h]`. Simplify `((hSec S hS w).1.resolve_left h), fun w h => by simp [h]⟩` using `[h]`. Establish `hms : ∀ w, IsSplitAt w → IsSplitAt (m w)` using `fun w hw => by`. Break down `(hm w).2 with e | e` into its components or cases.
+
+Rewrite using `[e]` and apply the resulting hypothesis. Rewrite using `[e]`. Conclude with `hcs w hw`. Take `⟨w₀, hw₀, hw₀'⟩` from `(hInf.diff (Bd ∪ Bd.image cPl).finite_toSet).nonempty`. Establish `hn₀ : w₀ ∉ Bd` using `fun h => hw₀' (by simp [h])`.
+
+Establish `hn₁ : cPl w₀ ∉ Bd` using `fun h => hw₀' (by`. Use `Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image.2 ⟨_, h, (hc w₀).1⟩)))` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨w₁, hw₁, hw₁S, hw₁s⟩ : ∃ w₁, w₁ ∉ Bd ∧ w₁ ∈ S ∧ IsSplitAt w₁ := by`. Use `⟨m w₀, ?_, (hm w₀).1, hms w₀ hw₀⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (hm w₀).2 with e | e <;> rwa [e]`.
+
+Use `choose! B hB using fun w (h : ∃ B, (CG.mk π).HasSat w B) => h`. Use `choose τ hτ using fun w => GlobalTheory.CuspRep.LocEx.exists_isLocComp hF E n π w`. Take `⟨b, hb⟩` from `(hgood w₁ hw₁).1.1`. Take `⟨g, h1, h2, h3⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.regFn E n w₁ (τ w₁) b (((GlobalTheory.Cong.satake_locComp E n π w₁ (τ w₁) (hτ w₁).1).1 b).1 hb)`. Use `⟨insert w₁ (Bd.image m), B, τ, w₁, g, fun w hw => ?_, fun w hw hwZ => ?_, fun w hw => ?_, fun w _ => (hτ w).1, Finset.mem_insert_self _ _, h1, h2, h3⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hw with rfl | h` into its components or cases. Conclude with `⟨hw₁S, hw₁s⟩`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `⟨(hm u).1, hms u (hsplit u hu)⟩`. Use `(hgood w fun h => hwZ ?_).2` and prove the remaining obligations.
+
+Establish `hi : m w ∈ insert w₁ (Bd.image m)` using `Finset.mem_insert_of_mem (Finset.mem_image_of_mem m h)`. Rewrite `hi` using `[hmS w hw]`. Then use the resulting hypothesis. Establish `hw' : w ∉ Bd` using `fun h => by`. Establish `hi : m w ∈ insert w₁ (Bd.image m)` using `Finset.mem_insert_of_mem (Finset.mem_image_of_mem m h)`. Break down `(hm w).2 with e | e` into its components or cases.
+
+Conclude with `hw.1 (e ▸ hi)`. Conclude with `hw.2 (e ▸ hi)`. Conclude with `⟨hB w (hgood w hw').1.1, (hgood w hw').1.2⟩`.
+-/
 theorem UpperTheory.V.Z.Mult.choiceM :
     UpperTheory.V.Z.Mult.ChoiceM := by
   classical

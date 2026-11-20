@@ -22,6 +22,11 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hB hLv t F`. Take `⟨-, -, -, hC, -⟩` from `hB.hyp`. Take `⟨⟨s, hs⟩, hRZ, gE, hU, hG, h2, hl0, hl1⟩` from `hLv`. Establish `hK` using `RealDat3.kFormR_of (R := W.Q.Rl) (F := W.Q.F) hC.models`. Establish `hJ` using `RealDat3.jIsoR_of (R := W.Q.Rl) (F := W.Q.F) hC.models`.
+
+Establish `hDn` using `Formalism.IndefR.CxPass.descent_of_types hs hK hJ hRZ hU hG h2 hl0 hl1 true`. Establish `hE` using `Formalism.IndefR.Links.EvTie.evTie_real ⟨s, hs⟩ W.Q.Rl W.Q.F`. Establish `hV : (_root_.GlobalTheory.MiS.packageCoefficientSpace W).jR t (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs t F) ∈ (_root_.GlobalTheory.MiS.packageCoefficientSpace W).V0C W.Q.F.cv true t` using `Submodule.subset_span ⟨_, hE.1 t F, rfl⟩`. Conclude with `hDn t (Submodule.mem_map_of_mem hV)`.
+-/
 theorem descent_eV_mem_level_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → _root_.GlobalTheory.MiS.LevelHypothesis W → (∀ t F, (_root_.GlobalTheory.MiS.packageCoefficientSpace W).Θ t ((_root_.GlobalTheory.MiS.packageCoefficientSpace W).jR t (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs t F)) ∈ (_root_.GlobalTheory.MiS.packageCoefficientSpace W).EEl true) := by
   intro D L hT Gi Gl Kc Yd cX ex W hB hLv t F
   obtain ⟨-, -, -, hC, -⟩ := hB.hyp

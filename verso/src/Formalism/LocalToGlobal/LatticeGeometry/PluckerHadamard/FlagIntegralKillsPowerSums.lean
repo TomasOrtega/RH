@@ -273,6 +273,11 @@ def LowerBoundOnShimura : Prop :=
 
 end Assembly
 
+/- English proof (translation)
+Establish `h` using `P.three_q_le i hi`. Establish `hm` using `D.R.two_le_m`. Rewrite using `[hN, hj]`. Unfold `Ranks.sigW Ranks.r at *`. Simplify using `only at *`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem threeLe_of_params {L : SizeData₂ D} (P : ParameterChoice' D L) (w : Dat D Lev) (i : ℕ) (hi : 1 ≤ i)
     (hN : w.N = D.R.r) (hj : w.j = (D.R.sigW i).1) : 3 * (w.N - w.j) + 1 ≤ w.N := by
   have h := P.three_q_le i hi

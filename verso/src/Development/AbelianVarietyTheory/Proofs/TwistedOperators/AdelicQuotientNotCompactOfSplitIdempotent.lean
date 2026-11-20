@@ -10,6 +10,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS
 
+/- English proof (translation)
+Set `φ : G ⧸ H → ℝ` to `Quotient.lift f fun a b hab => by`. Establish `h` using `hH _ (QuotientGroup.leftRel_apply.1 hab)`. Rewrite using `[← mul_one (f a), ← h, ← map_mul, mul_inv_cancel_left]`. Establish `hφ : Continuous φ` using `hf.quotient_lift _`. Take `⟨C, hC⟩` from `(isCompact_range hφ).bddAbove`.
+
+Conclude with `⟨C, fun g => hC ⟨(g : G ⧸ H), rfl⟩⟩`.
+-/
 theorem bddAbove_of_compact_quotient {G : Type} [Group G] [TopologicalSpace G] (H : Subgroup G)
     [CompactSpace (G ⧸ H)] (f : G →* ℝ) (hf : Continuous f) (hH : ∀ h ∈ H, f h = 1) :
     ∃ C : ℝ, ∀ g, f g ≤ C := by
@@ -20,6 +25,13 @@ theorem bddAbove_of_compact_quotient {G : Type} [Group G] [TopologicalSpace G] (
   obtain ⟨C, hC⟩ := (isCompact_range hφ).bddAbove
   exact ⟨C, fun g => hC ⟨(g : G ⧸ H), rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `P : HeightOneSpectrum (𝓞 F)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩`. Take `⟨ϖ, hϖ⟩` from `exists_isUniformiser P`. Establish `h1 : ‖(ϖ : P.adicCompletion F)‖ = (Ideal.absNorm P.asIdeal : ℝ)⁻¹`. Rewrite using `[FinitePlace.norm_def, hϖ, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`.
+
+Establish `: Multiplicative.toAdd (WithZero.unzero (WithZero.exp_ne_zero : WithZero.exp (-1 : ℤ) ≠ 0)) = -1` using `rfl`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `⟨(localIdele P ϖ)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, UnitaryHeckeChar.ideleNorm_localIdele, h1, inv_inv]`.
+
+Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm P` after adjusting the coercions.
+-/
 theorem exists_one_lt_ideleNorm (F : Type) [Field F] [NumberField F] :
     ∃ t : Idele F, 1 < ideleNorm t := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 F)
@@ -36,6 +48,15 @@ theorem exists_one_lt_ideleNorm (F : Type) [Field F] [NumberField F] :
   rw [map_inv, UnitaryHeckeChar.ideleNorm_localIdele, h1, inv_inv]
   exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm P
 
+/- English proof (translation)
+Establish `h : (g : Matrix n n (E ⊗[F] R)) * (γ : Matrix n n E).map (inclE (F` using `F) R) = (γ : Matrix n n E).map (inclE (F := F) R) * g := congrArg Units.val (Subgroup.mem_centralizer_singleton_iff.1 hg.2)`. Use `commute_of_mem_genAlg h ?_` and prove the remaining obligations. Proceed by induction on `hε using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`.
+
+Conclude with `Algebra.self_mem_adjoin_singleton _ _`. Consider the case `algebraMap r`. Establish `: (algebraMap E (Matrix n n E) r).map (inclE (F` using `F) R) = algebraMap (E ⊗[F] R) _ (inclE (F := F) R r) := by`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.algebraMap_matrix_apply, hij]`.
+
+Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.map_add _ (map_add _)]`. Conclude with `add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy`. Rewrite using `[Matrix.map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem commute_map_of_mem_centPts {F E : Type} [Field F] [CommRing E] [Algebra F E]
     {n : Type} [Fintype n] [DecidableEq n] {σ : E →ₐ[F] E} {J : Matrix n n E} {γ : GL n E}
     (R : Type) [CommRing R] [Algebra F R] {ε : Matrix n n E} (hε : ε ∈ genAlg (γ : Matrix n n E))
@@ -59,6 +80,21 @@ theorem commute_map_of_mem_centPts {F E : Type} [Field F] [CommRing E] [Algebra 
   | mul x y _ _ hx hy =>
     rw [Matrix.map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ n _ _ σ J γ hreg ε hε hε0 hεε ht hc`. Use `haveI := quad_finite hreg.quad`. Use `letI : TopologicalSpace (E ⊗[F] AdeleRing (𝓞 F) F) := Formalism.BasicNotions.tensTopL (F := F) (E := E) (AdeleRing (𝓞 F) F)`. Take `⟨d, χ, hd, hχ, h1, hmul, hrat, hval⟩` from `hD F E n ε hε0 hεε (AdeleRing (𝓞 F) F)`. Set `χ₀ : centPts σ J γ (AdeleRing (𝓞 F) F) →* AdeleRing (𝓞 F) F` to `{ toFun := fun g => χ (g.1 : Matrix n n _) map_one' := h1 map_mul' := fun g h => hmul _ _ (commute_map_of_mem_centPts _ hε h.2) }`.
+
+Establish `hχ₀ : Continuous χ₀` using `hχ.comp (Units.continuous_val.comp continuous_subtype_val)`. Establish `hχi : Continuous fun g => χ₀ g⁻¹` using `hχ.comp (Units.continuous_coe_inv.comp continuous_subtype_val)`. Establish `hχ₁ : Continuous χ₀.toHomUnits` using `Units.continuous_iff.2 ⟨hχ₀, hχi⟩`. Use `haveI : CompactSpace (centPts σ J γ (AdeleRing (𝓞 F) F) ⧸ ((centRat σ J γ).map (bc (inclE (F := F) (AdeleRing (𝓞 F) F)))).subgroupOf (centPts σ J γ (AdeleRing (𝓞 F) F))) := hc`. Take `⟨C, hC⟩` from `bddAbove_of_compact_quotient (((centRat σ J γ).map (bc (inclE (F := F) (AdeleRing (𝓞 F) F)))).subgroupOf (centPts σ J γ (AdeleRing (𝓞 F) F))) (ideleNorm.comp χ₀.toHomUnits) (continuous_ideleNorm.comp hχ₁) (by`.
+
+Introduce and unpack `g ⟨δ, -, hδ⟩`. Take `⟨c, hc⟩` from `hrat δ`. Establish `e : ((χ₀.toHomUnits g : Idele F) : AdeleRing (𝓞 F) F) = algebraMap F _ c`. Rewrite using `[← hc]`. Express the relevant statement in the definitionally equal form `χ (g.1 : Matrix n n _) = _`.
+
+Rewrite using `[show g.1 = _ from hδ.symm]`. Both sides reduce to the same expression. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `e` using `[map_zero]`.
+
+Use `haveI : Nontrivial (AdeleRing (𝓞 F) F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Conclude with `Units.ne_zero _ e`. Establish `e' : χ₀.toHomUnits g = principalIdele F (Units.mk0 c hc0)` using `Units.ext e`. Rewrite using `[MonoidHom.comp_apply, e', ideleNorm_principalIdele])`. Take `⟨t, ht1⟩` from `exists_one_lt_ideleNorm F`.
+
+Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C (one_lt_pow₀ ht1 hd.ne')`. Take `⟨g, hg, hgt⟩` from `ht (t ^ m)`. Establish `e : χ₀.toHomUnits ⟨g, hg⟩ = (t ^ m) ^ d` using `Units.ext (hval _ _ hgt)`. Use `hC ⟨g, hg⟩` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, e, map_pow, map_pow, ← pow_mul, mul_comm, pow_mul]`.
+
+Conclude with `absurd hm (not_lt.2 this)`.
+-/
 theorem notCompactOfIdempotent_of (hD : IdempotentDet) : NotCompactOfIdempotent := by
   intro F E _ _ _ _ n _ _ σ J γ hreg ε hε hε0 hεε ht hc
   haveI := quad_finite hreg.quad

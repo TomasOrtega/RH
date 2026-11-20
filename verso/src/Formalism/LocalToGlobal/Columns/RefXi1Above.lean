@@ -18,6 +18,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
 
 def refXi1 : XiFam Pr R u := fun i p p' x => XiRef Ch sel mu cst L m2 al i (liftQ hQ p) (liftQ hQ p') x
 
+/- English proof (translation)
+Unfold `refXi1 XiRef`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), if_neg (by omega)]`.
+-/
 theorem refXi1_above (hm : R.m = m2 + 2) (i : ℕ) (hi : R.m ≤ i) (p : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs)
     (p' : DecoSet X.E (R.N (i + 1)) (Pr.vT u) Pr.vGs) (x : HomE X.E (R.N i) (R.N (i + 1))) :
     refXi1 Ch sel mu cst L hQ m2 al u i p p' x = 0 := by

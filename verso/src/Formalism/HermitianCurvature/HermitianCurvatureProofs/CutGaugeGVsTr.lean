@@ -8,10 +8,16 @@ open Formalism.FourierDecayAlt.P.CutMP.Gauge
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_star_comm, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem star_algebraMap_real (P : M.Par) (Y : ℝ) :
     star (algebraMap ℂ (MA.A P (MA.DQ P)) (Y : ℂ)) = algebraMap ℂ (MA.A P (MA.DQ P)) (Y : ℂ) := by
   rw [← algebraMap_star_comm, Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Simplify using `only [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, star_add, star_mul, star_neg, neg_mul, mul_neg]`.
+-/
 theorem star_Ts_mul_0 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V : Wd.M2 (MA.A P (MA.DQ P))) :
     star ((Wd.Ts σ Y * V) 0 0) =
       star (V 0 0) * star (algebraMap ℂ (MA.A P (MA.DQ P)) Y + σ.p) + -(star (V 1 0) * star σ.c) := by
@@ -19,22 +25,34 @@ theorem star_Ts_mul_0 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V
     Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val',
     Matrix.cons_val_fin_one, star_add, star_mul, star_neg, neg_mul, mul_neg]
 
+/- English proof (translation)
+Simplify using `[Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, star_add, star_mul]`.
+-/
 theorem star_Ts_mul_1 (P : M.Par) (σ : Wd.Site (MA.A P (MA.DQ P))) (Y : ℂ) (V : Wd.M2 (MA.A P (MA.DQ P))) :
     star ((Wd.Ts σ Y * V) 1 0) = star (V 0 0) * star σ.ci := by
   simp [Wd.Ts, Formalism.YangianSpanCharacter.T.Tm, Matrix.mul_apply, Fin.sum_univ_two, star_add, star_mul]
 
+/- English proof (translation)
+Use `show MA.actA P (star (MA.sc P (MA.DQ P) _)) f = _`. Rewrite using `[star_sc, actA_sc]`. Both sides reduce to the same expression.
+-/
 theorem actA_sp (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (star (MA.siteA P (MA.DQ P) l).p) f = fun ρ => -MA.eulerQ (TT := P.TT) (M.vcb l) (f ρ) := by
   show MA.actA P (star (MA.sc P (MA.DQ P) _)) f = _
   rw [star_sc, actA_sc]
   rfl
 
+/- English proof (translation)
+Use `show MA.actA P (star (MA.sc P (MA.DQ P) _)) f = _`. Rewrite using `[star_sc, actA_sc]`. Both sides reduce to the same expression.
+-/
 theorem actA_sc' (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (star (MA.siteA P (MA.DQ P) l).c) f = fun ρ => MA.coordQ (TT := P.TT) (M.vcb l) * f ρ := by
   show MA.actA P (star (MA.sc P (MA.DQ P) _)) f = _
   rw [star_sc, actA_sc]
   rfl
 
+/- English proof (translation)
+Use `show MA.actA P (star (MA.sc P (MA.DQ P) _)) f = _`. Rewrite using `[star_sc, actA_sc]`. Both sides reduce to the same expression.
+-/
 theorem actA_sci (P : M.Par) (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (star (MA.siteA P (MA.DQ P) l).ci) f =
       fun ρ => Ring.inverse (MA.coordQ (TT := P.TT) (M.vcb l)) * f ρ := by
@@ -48,6 +66,27 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)}
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ Dc Φ hΦ`. Establish `h0 : Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) 0) 0) Φ = Φ` using `rfl`.
+
+Establish `h1 : Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) 0) 1) Φ = 0` using `rfl`. Establish `v0 : Vp P Y 0 0 0 = 1` using `by simp [Vp_zero]`. Establish `v1 : Vp P Y 0 1 0 = 0` using `by simp [Vp_zero]`. Rewrite using `[h0, h1, v0, v1, star_one, star_zero, actA_one, actA_zero, trR_zero]`. Use `⟨⟨hΦ, rfl⟩, ⟨?_, rfl⟩⟩` and prove the remaining obligations.
+
+Use `famR_smul hΦ 0` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Consider the case `succ i ih`. Introduce `hi Dc Φ hΦ`. Establish `h : i < P.r` using `hi`.
+
+Use `set l : Fin P.r := ⟨i, h⟩ with hl`. Establish `hv : Q.vABs (E` using `Wq →L[ℂ] Wp) P.r (Y : ℂ) (i + 1) = (fun f => (Q.vABs P.r (Y : ℂ) i).1 ((Y : ℂ) • f - pbOp l f) - (Q.vABs P.r (Y : ℂ) i).2 (cbOp l f), fun f => (Q.vABs P.r (Y : ℂ) i).1 (cbiOp l f)) := by`. Simplify using `only [Q.vABs, dif_pos h, hl]`. Use `set Ψ := (Y : ℂ) • Φ - Q.crd (pbOp l) Φ with hΨ`. Establish `hpb : FamR P Bs Dc (Q.crd (pbOp l) Φ)` using `famR_opL hΦ l 3`.
+
+Establish `hcb : FamR P Bs Dc (Q.crd (cbOp l) Φ)` using `famR_opL hΦ l 4`. Establish `hcbi : FamR P Bs Dc (Q.crd (cbiOp l) Φ)` using `famR_opL hΦ l 5`. Establish `hΨf : FamR P Bs Dc Ψ` using `famR_sub (famR_smul hΦ _) hpb`. Take `⟨⟨hA, tA⟩, -⟩` from `ih (Nat.le_of_lt h) Dc Ψ hΨf`. Take `⟨-, ⟨hB, tB⟩⟩` from `ih (Nat.le_of_lt h) Dc _ hcb`.
+
+Take `⟨⟨hA', tA'⟩, -⟩` from `ih (Nat.le_of_lt h) Dc _ hcbi`. Establish `e0 : Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) (i + 1)) 0) Φ = Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) i) 0) Ψ - Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) i) 1) (Q.crd (cbOp l) Φ)`. Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `e1 : Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) (i + 1)) 1) Φ = Q.crd (Q.cmp (Q.vABs P.r (Y : ℂ) i) 0) (Q.crd (cbiOp l) Φ)`.
+
+Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `tΨ : trR P Bs.μsec e Ψ = MA.actA P (star (algebraMap ℂ (MA.A P (MA.DQ P)) (Y : ℂ) + (MA.siteA P (MA.DQ P) l).p)) (trR P Bs.μsec e Φ)`. Rewrite using `[hΨ, trR_sub _ _ _ _ (fun ρ => smR hpl hk he (famR_smul hΦ _) ρ) (fun ρ => smR hpl hk he hpb ρ), trR_smul, trR_pb hpl hk he hΦ, star_add, star_algebraMap_real, actA_add, actA_algebraMap, actA_sp, sub_eq_add_neg]`. Both sides reduce to the same expression.
+
+Establish `tcb : trR P Bs.μsec e (Q.crd (cbOp l) Φ) = MA.actA P (star (MA.siteA P (MA.DQ P) l).c) (trR P Bs.μsec e Φ)`. Rewrite using `[actA_sc']`. Conclude with `trR_mul hpl hk he hΦ _ hcb (fun c => star (c l)) (fun _ _ => rfl) _ (fun q => coordE_vcb _ _)`. Establish `tcbi : trR P Bs.μsec e (Q.crd (cbiOp l) Φ) = MA.actA P (star (MA.siteA P (MA.DQ P) l).ci) (trR P Bs.μsec e Φ)`. Rewrite using `[actA_sci]`.
+
+Conclude with `trR_mul hpl hk he hΦ _ hcbi (fun c => (star (c l))⁻¹) (fun _ _ => rfl) _ (fun q => by`. Rewrite using `[inv_coordQ_apply _ (fun x hx => by rw [coordE_vcb]; exact (star_ne_zero).2 (hx.1 _)), coordE_vcb])`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e0]`. Conclude with `famR_sub hA hB`.
+
+Rewrite using `[e0, trR_sub _ _ _ _ (fun ρ => smR hpl hk he hA ρ) (fun ρ => smR hpl hk he hB ρ), tA, tB, tΨ, tcb, Vp_succ P Y i h, star_Ts_mul_0, actA_add, actA_mul, actA_neg, actA_mul, sub_eq_add_neg]`. Rewrite using `[e1]`. Conclude with `hA'`. Rewrite using `[e1, tA', tcbi, Vp_succ P Y i h, star_Ts_mul_1, actA_mul]`.
+-/
 theorem vabs_ind (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFrameB P Bs e) (Y : ℝ) :
     ∀ i : ℕ, i ≤ P.r → ∀ (Dc : (Fin P.r → ℂ) → Set (Q.Mx P.k P.r)) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)),
       FamR P Bs Dc Φ →
@@ -124,6 +163,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge
 
 open VLem
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk e he Dc Φ hΦ Y a`. Establish `h` using `vabs_ind hpl hk he Y P.r le_rfl Dc Φ hΦ`. Rewrite using `[sitesCommonSpace_v0_eq_Vp]`. Use `fin_cases a`. Conclude with `⟨h.1.1, fun ρ => congrFun h.1.2 ρ⟩`.
+
+Conclude with `⟨h.2.1, fun ρ => congrFun h.2.2 ρ⟩`.
+-/
 theorem gauge_conj_vector_transition : GVsTr := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk e he Dc Φ hΦ Y a
   have h := vabs_ind hpl hk he Y P.r le_rfl Dc Φ hΦ

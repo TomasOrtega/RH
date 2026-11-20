@@ -56,6 +56,11 @@ open GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal
 
 open Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CurvInterp in
 
+/- English proof (translation)
+Distinguish the cases in `h : Formalism.L2.PjFree.GoodEmb κ.c σ`. Conclude with `GlobalTheory.CurvInterp.HodgeGood.hodgeLocal_good D A N j S κ s x σ h`. Use `GlobalTheory.CurvInterp.HodgeConj.hodgeLocal_of_conj D A N j S κ s x σ h (GlobalTheory.CurvInterp.HodgeGood.hodgeLocal_good D A N j S κ s x _ ?_)` and prove the remaining obligations. Establish `h' : ¬ GoodEmb κ.c σ` using `h`. Establish `h1 : GoodEmb κ.c ((starRingEnd ℂ).comp σ)` using `by simpa only [goodOf, if_neg h'] using goodEmb_goodOf κ.c σ`.
+
+Conclude with `h1`.
+-/
 theorem hodgeLocal_all {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     (σ : κ.c.F →+* ℂ) : HodgeLocal x σ := by
   by_cases h : Formalism.L2.PjFree.GoodEmb κ.c σ

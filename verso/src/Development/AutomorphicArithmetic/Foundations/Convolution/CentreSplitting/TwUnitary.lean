@@ -7,6 +7,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ θ`. Take `⟨U, hU, hint, -⟩` from `UpperTheory.ConvolutionTheory.C.twistUnitary K n μ θ`. Establish `h : ∀ v, θ.U v = U v` using `fun v => by rw [← hU]; rfl`. Use `⟨fun v => ?_, fun w => ?_, fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `U.norm_map v`. Take `⟨v, hv⟩` from `U.surjective w`. Conclude with `⟨v, (h v).trans hv⟩`. Rewrite using `[h, h]`. Conclude with `hint g v`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.twUnitary :
     UpperTheory.ConvolutionTheory.Dp.TwUnitary := by
   intro K _ _ n μ _ θ

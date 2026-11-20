@@ -3,6 +3,11 @@ open NumberField IsDedekindDomain Filter
 
 namespace GlobalTheory.BddFinite
 
+/- English proof (translation)
+Proceed by induction on `B using WithZero.recZeroCoe with`. Consider the case `zero => exact ⟨0, zero_le'⟩`. Consider the case `coe m`. Use `⟨(Multiplicative.toAdd m).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[WithZero.exp, WithZero.coe_le_coe, ← Multiplicative.toAdd_le]`.
+
+Simplify using `only [toAdd_ofAdd]`. Conclude with `Int.self_le_toNat _`.
+-/
 theorem exists_le_exp_nat (B : WithZero (Multiplicative ℤ)) : ∃ n : ℕ, B ≤ WithZero.exp (n : ℤ) := by
   induction B using WithZero.recZeroCoe with
   | zero => exact ⟨0, zero_le'⟩
@@ -12,6 +17,11 @@ theorem exists_le_exp_nat (B : WithZero (Multiplicative ℤ)) : ∃ n : ℕ, B �
     simp only [toAdd_ofAdd]
     exact Int.self_le_toNat _
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_le_exp_nat B`. Establish `hne : w.asIdeal ^ n ≠ ⊥` using `pow_ne_zero n w.ne_bot`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨r, hr0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : w.intValuation r ≤ WithZero.exp (-(n : ℤ))` using `(w.intValuation_le_pow_iff_mem r n).2 hr`.
+
+Rewrite using `[map_mul]`. Establish `h2 : w.valuation K (r : K) = w.intValuation r` using `w.valuation_of_algebraMap r`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_clearing {K : Type} [Field K] [NumberField K] (A : Set K)
     (w : HeightOneSpectrum (𝓞 K)) (B : WithZero (Multiplicative ℤ))
     (hB : ∀ x ∈ A, w.valuation K x ≤ B) :
@@ -28,6 +38,23 @@ theorem exists_clearing {K : Type} [Field K] [NumberField K] (A : Set K)
         mul_le_mul' h1 ((hB x hx).trans hn)
     _ = 1 := by rw [← WithZero.exp_add]; simp
 
+/- English proof (translation)
+Introduce `K _ _ A R hR hB hcof`. Use `choose B hB using hB`. Use `choose a ha0 ha using fun w => exists_clearing A w (B w) (hB w)`. Establish `hF : {w : HeightOneSpectrum (𝓞 K) | ¬ ∀ x ∈ A, w.valuation K x ≤ 1}.Finite` using `Filter.eventually_cofinite.mp hcof`. Use `set F := hF.toFinset with hFdef`.
+
+Use `set d : 𝓞 K := ∏ w ∈ F, a w with hd`. Establish `hd0 : d ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun w _ => ha0 w)`. Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd0`. Establish `hval : ∀ x ∈ A, ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K ((d : K) * x) ≤ 1`. Introduce `x hx v`.
+
+Distinguish the cases in `hv : v ∈ F`. Establish `hsplit : (d : K) = ((∏ w ∈ F.erase v, a w : 𝓞 K) : K) * (a v : K)`. Rewrite using `[hd, ← Finset.prod_erase_mul F a hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit, mul_assoc, map_mul]`. Conclude with `mul_le_one' (v.valuation_le_one _) (ha v x hx)`. Establish `hv' : ∀ y ∈ A, v.valuation K y ≤ 1`. Establish `: v ∉ {w : HeightOneSpectrum (𝓞 K) | ¬ ∀ x ∈ A, w.valuation K x ≤ 1}`. Simplify `hv` using `[F]`.
+
+Simplify using `using this`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (v.valuation_le_one _) (hv' x hx)`. Use `set M : ℝ := ∑ τ : K →+* ℂ, ‖τ (d : K)‖ with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg (fun τ _ => norm_nonneg _)`.
+
+Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le K ℂ (M * R)`. Use `(hfin.image (fun y => (d : K)⁻¹ * y)).subset ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨(d : K) * x, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one K _ (hval x hx)`.
+
+Rewrite using `[← hy]`. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe y)`. Introduce `τ`. Rewrite using `[map_mul, norm_mul]`. Establish `h1 : ‖τ (d : K)‖ ≤ M` using `Finset.single_le_sum (f := fun τ : K →+* ℂ => ‖τ (d : K)‖) (fun τ _ => norm_nonneg _) (Finset.mem_univ τ)`.
+
+Conclude with `mul_le_mul h1 (hR x hx τ) (norm_nonneg _) hM0`. Simplify using `only`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hdK, one_mul]`.
+-/
 theorem finite_of_bdd : ∀ (K : Type) [Field K] [NumberField K] (A : Set K) (R : ℝ), (∀ x ∈ A, ∀ τ : K →+* ℂ, ‖τ x‖ ≤ R) → (∀ w : HeightOneSpectrum (𝓞 K), ∃ B : WithZero (Multiplicative ℤ), ∀ x ∈ A, w.valuation K x ≤ B) → (∀ᶠ w : HeightOneSpectrum (𝓞 K) in cofinite, ∀ x ∈ A, w.valuation K x ≤ 1) → A.Finite := by
   classical
   intro K _ _ A R hR hB hcof

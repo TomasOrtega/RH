@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldIntegralFunda
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero | exact GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero | (intros; apply GlobalTheory.UnfoldOrbits.integral_mul_tsum_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unfold_integral_fundamental_domain : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (Q : Type) [Countable Q]
     (act : Q → Γ → Q) (T : Q → G → ℂ) (f : G → ℂ),

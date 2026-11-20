@@ -17,6 +17,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotFormula
 end GlobalTheory.BotFormula
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hPr hK hM hI hB`. Take `⟨cA, hA⟩` from `_root_.GlobalTheory.T.bottomTheta_kernel_finiteDimensional hPr hK hM hI hB`. Take `⟨cB, hB'⟩` from `_root_.GlobalTheory.T.bottom_thetaIntegral_classSum_formula hPr hK hM hI hB`. Use `⟨max cA cB, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨CA, xA, hA⟩` from `hA ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨CB, xB, hB'⟩` from `hB' ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max CA CB, max xA xB, fun C hC0 D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Establish `hA` using `hA C (le_trans (le_max_left _ _) hC0) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Establish `hB'` using `hB' C (le_trans (le_max_right _ _) hC0) D large₂ he (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hL G`. Introduce `W hψ i j A A' WW X δ t0 hX hβ`.
+
+Take `⟨Ω₀, hΩ₀, HK⟩` from `hA W hψ i j A A' WW X δ t0 hX hβ`. Take `⟨v, hv, HC⟩` from `hB' W hψ i j A A' WW X δ t0 hX`. Use `⟨(v * Ω₀)⁻¹, inv_ne_zero (mul_ne_zero hv hΩ₀), fun s Q P P' hP => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, huQ, huU, HK⟩` from `HK s Q P P' hP`. Establish `huQ' : u⁻¹ ∈ Qbar` using `inv_mem huQ`.
+
+Use `⟨u⁻¹, inv_ne_zero hu, huQ', fun p _ hp lam => ?_, fun ea ed h g hg T => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.BotFormula.lamC_mul lam huQ huQ'`. Rewrite `h1` using `[mul_inv_cancel₀ hu]`. Establish `h2 : lamC lam (1 : ℂ) = 1`. Unfold `lamC`.
+
+Rewrite using `[dif_pos (one_mem Qbar)]`. Conclude with `(congrArg lam (Subtype.ext rfl : (⟨1, one_mem Qbar⟩ : Qbar) = 1)).trans (map_one lam)`. Rewrite `h1` using `[h2]`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_mul, huU p hp lam, one_mul, norm_one]`.
+
+Conclude with `h3.symm`. Establish `pts : ∀ x : GA D P.a, ∃ y : GA D A, GlobalTheory.BotFormula.IsFinPt A y x` using `fun x => GlobalTheory.T.exists_finiteAdelicPoint_unitaryGroup_gramOne A hX.std.1 x ea.symm`. Use `choose pt hpt using pts`. Rewrite using `[HC s Q P P' hP ea ed g pt hpt T]`. Repeatedly rewrite using `[HK ea ed h g _ (pt _) hg (hpt _) T]`.
+
+Rewrite using `[GlobalTheory.NormSum.Pair.coord, GlobalTheory.BotFormula.conj_finsum]`. Establish `e1 : ∀ x : GlobalTheory.NormSum.Cls D P.a (GlobalTheory.NormSum.intG D P.a), ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P.a) x.out : ℂ))⁻¹ * (Ω₀ * u * starRingEnd ℂ (P.term x.out h T)) = (Ω₀ * u) * starRingEnd ℂ (((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.i …`. Introduce `x`. Rewrite using `[map_mul, map_inv₀, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[e1, ← mul_finsum]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.BotFormula.rallis_bottom_formula_large_rank : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
@@ -76,6 +93,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotFormula.rallis_bottom_formula_large_rank | exact _root_.GlobalTheory.BotFormula.rallis_bottom_formula_large_rank | (intros; apply _root_.GlobalTheory.BotFormula.rallis_bottom_formula_large_rank <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_bottom_formula_large : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

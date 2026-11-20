@@ -23,19 +23,36 @@ def gau (ε ζ : ℝ) : ℝ := ε⁻¹ * Real.exp (-Real.pi * ζ ^ 2 / ε ^ 2)
 
 def wt (a l ζ : ℝ) : ℝ := ((1 + |ζ - l| / a) ^ 2)⁻¹
 
+/- English proof (translation)
+The claim follows from `inv_nonneg.2 (sq_nonneg _)`.
+-/
 lemma wt_nonneg (a l ζ : ℝ) : 0 ≤ wt a l ζ := inv_nonneg.2 (sq_nonneg _)
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (inv_nonneg.2 hε.le) (Real.exp_pos _).le`.
+-/
 lemma gau_nonneg (ε ζ : ℝ) (hε : 0 < ε) : 0 ≤ gau ε ζ :=
   mul_nonneg (inv_nonneg.2 hε.le) (Real.exp_pos _).le
 
+/- English proof (translation)
+Unfold `gau`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma gau_eq (ε ζ : ℝ) : gau ε ζ = ε⁻¹ * Real.exp (-(Real.pi / ε ^ 2) * ζ ^ 2) := by
   unfold gau; congr 2; ring
 
+/- English proof (translation)
+Establish `: gau ε = fun ζ => ε⁻¹ * Real.exp (-(Real.pi / ε ^ 2) * ζ ^ 2)` using `funext (gau_eq ε)`. Rewrite using `[this]`. Conclude with `(integrable_exp_neg_mul_sq (by positivity)).const_mul _`.
+-/
 lemma gau_integrable (ε : ℝ) (hε : 0 < ε) : Integrable (gau ε) := by
   have : gau ε = fun ζ => ε⁻¹ * Real.exp (-(Real.pi / ε ^ 2) * ζ ^ 2) := funext (gau_eq ε)
   rw [this]
   exact (integrable_exp_neg_mul_sq (by positivity)).const_mul _
 
+/- English proof (translation)
+Establish `: gau ε = fun ζ => ε⁻¹ * Real.exp (-(Real.pi / ε ^ 2) * ζ ^ 2)` using `funext (gau_eq ε)`. Rewrite using `[this, integral_const_mul, integral_gaussian]`. Establish `: Real.pi / (Real.pi / ε ^ 2) = ε ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.sqrt_sq hε.le]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 lemma gau_integral (ε : ℝ) (hε : 0 < ε) : ∫ ζ, gau ε ζ = 1 := by
   have : gau ε = fun ζ => ε⁻¹ * Real.exp (-(Real.pi / ε ^ 2) * ζ ^ 2) := funext (gau_eq ε)
   rw [this, integral_const_mul, integral_gaussian]

@@ -5,6 +5,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.One
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨C0n, CSt, hCSt, a₀, b₀, h2⟩` from `hF Cg cb Cw cT CT C0`. Use `⟨39, C0n, CSt, hCSt, a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν => ?_⟩` and prove the remaining obligations. Take `⟨s, hs1, hs0, hsb, hL⟩` from `h2 C' Cl e1 e2 D large₂ X Y u hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν`. Establish `hk4 : 4 * D.R.rS + 7 ≤ D.R.k`.
+
+Take `⟨⟨hH, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH`. Simplify using `only at hH`. Take `⟨-, -, h3, h4, -⟩` from `hH`. Establish `hm2` using `D.R.two_le_m`.
+
+Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : 2 * D.R.rS + 2 = D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.rS]; omega`. Establish `: 2 * D.R.m + 3 ≤ D.R.m ^ 4` using `by nlinarith [Nat.pow_le_pow_left hm2 3]`. Use linear arithmetic over natural numbers and integers. Establish `hQ : Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound D.R.k D.R.rS ((39 : ℕ) : ℝ)`.
+
+Use `hQ5 D hk4` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `⟨s, hs1, hs0, hsb, localLeG_of_fam _ _ 39 C0n _ (by omega) hQ hL⟩`.
+-/
 theorem stepLoc1_of_fam (hQ5 : ∀ D : D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39) (hF : StepFam1) : StepLoc1 := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C0n, CSt, hCSt, a₀, b₀, h2⟩ := hF Cg cb Cw cT CT C0

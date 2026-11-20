@@ -6,6 +6,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Use `set e := (Fintype.equivFin {i // 0 < t i}).symm with he`. Establish `key : ∀ a : Fin m₀ → ℝ, (∀ i, t i = 0 → a i = 0) → ∑ i', a (e i') • toReal (p (e i')) = ∑ i, a i • toReal (p i)`. Introduce `a ha`. Use `Fintype.sum_of_injective (fun i' => ((e i' : {i // 0 < t i}) : Fin m₀)) (Subtype.val_injective.comp e.injective) _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `i hi`.
+
+Establish `: t i = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hi ⟨e.symm ⟨i, lt_of_le_of_ne (ht i) (Ne.symm h0)⟩, by simp⟩`. Rewrite using `[ha i this, zero_smul]`. Take `⟨r1, r2⟩` from `GlobalTheory.T.coneMatch_rays_of_linearIndependent_intForms (fun i' => p (e i')) δ (hp.comp e e.injective) hδ (fun i' => t (e i')) c (fun i' => (e i').2) hc (by rw [key t (fun _ h => h), ← hβ, hβ']) (fun i' => h1 _ (e i').2) (fun j hj => by`.
+
+Take `⟨a, ha0, ha1, ha2⟩` from `h2 j hj`. Conclude with `⟨fun i' => a (e i'), fun i' => ha0 _, by rw [ha2, ← key a ha1]⟩)`. Use `⟨fun i hi => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `using r1 (e.symm ⟨i, hi⟩)`. Take `⟨i', h⟩` from `r2 j hj`.
+
+Conclude with `⟨e i', (e i').2, h⟩`.
+-/
 theorem cone_match_rays_of_nonneg {X : Type} [AddCommGroup X] {m₀ : ℕ}
     (p : Fin m₀ → LinearMap.BilinForm ℤ X) (t : Fin m₀ → ℝ) (ht : ∀ i, 0 ≤ t i)
     (hp : LinearIndependent ℤ (fun i : {i // 0 < t i} => p i))

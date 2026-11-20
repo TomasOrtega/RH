@@ -13,6 +13,9 @@ noncomputable section
 
 namespace Formalism.CoboundaryTransfers
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentialsComplex_holds, cochainsSubmodules_holds, cocyclesFinite_holds, homPreservesCochains_holds, gammaStableOfGammaQUnit_holds, cocycleLiftOfExact_holds, torsionKilledCriterion_holds, gammaGradedStep_holds, gammaImageProduct_holds, cokernelLengthBound_holds, finiteClasses …`.
+-/
 theorem wach_api : Complex ∧ Submods ∧ CocZf ∧ HomMaps ∧ GammaQNOf ∧ DiagramChase₂ ∧ CoboundaryTransfer ∧
     GradedStep ∧ GammaOnto ∧ ColBound ∧ LiftHf ∧ Mono ∧ IntDefs ∧ NonemptyQ ∧ NonemptyU ∧
     NonemptyG :=
@@ -20,6 +23,9 @@ theorem wach_api : Complex ∧ Submods ∧ CocZf ∧ HomMaps ∧ GammaQNOf ∧ D
     torsionKilledCriterion_holds, gammaGradedStep_holds, gammaImageProduct_holds, cokernelLengthBound_holds, finiteClassesLift_holds, liftsAt_mono,
     integral_wach_definitions, wach_lattice_nonempty_Q, wach_lattice_nonempty_unramified, wach_lattice_nonempty_gamma⟩
 
+/- English proof (translation)
+The claim follows from `cocycleLiftOfExact_holds O A B M D₀ D₁ D₂ W₀ W₁ W₂ S e _ hW hQ (torsionKilledCriterion_holds O A B M D₀ W₀ δ R a k _ hk ha hδ hR hZ hZu (gammaImageProduct_holds O A B M D₀ W₀ u a hgr) hφ)`.
+-/
 theorem lift_wach (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (B : Base O A) (M : ℕ)
     (D₀ D₁ D₂ : Type)
     [AddCommGroup D₀] [Module A D₀] [Module O D₀] [IsScalarTower O A D₀]

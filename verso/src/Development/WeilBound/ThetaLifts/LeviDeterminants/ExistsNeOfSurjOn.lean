@@ -13,6 +13,19 @@ namespace PositivityTheory.ThKF0
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `schA F κ ≤ (schA F κ).map e`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Take `⟨m, c, φ, hφSB, hφstd, hgeq⟩` from `Span.exists_sum_finprod hg`. Establish `h1 : pureA F (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) g = ∑ k, c k • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ k)`.
+
+Rewrite using `[hgeq]`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`.
+
+Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨f₀, rfl⟩` from `hi f`.
+
+Establish `hp : ∀ v, ∃ φ₀ ∈ SB (κ → Fv F v), ev v φ₀ = φ k v ∧ (ev v (φ k v) = φ k v → φ₀ = φ k v)` using `fun v => by`. Distinguish the cases in `h : ev v (φ k v) = φ k v`. Conclude with `⟨_, hφSB k v, h, fun _ => rfl⟩`. Take `⟨φ₀, h0, h1⟩` from `hSB v (hφSB k v)`. Conclude with `⟨φ₀, h0, h1, fun h' => absurd h' h⟩`.
+
+Use `choose φ₀ h0 h1 h2 using hp`. Establish `hs : ∀ᶠ v in cofinite, φ₀ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hφstd k, hstd] with v e1 e2`. Rewrite using `[h2 v (by rw [e1, e2]), e1]`. Use `⟨_, GlobalTheory.TensUniq.pure_mem_schA f₀ φ₀ h0 hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hloc f₀ φ₀ h0 hs]`.
+
+Simplify using `only [h1]`.
+-/
 theorem surjOn_of_pure (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (ei : SInf F κ →L[ℂ] SInf F κ)
     (ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)) (hi : Function.Surjective ei)
     (hSB : ∀ v, Set.SurjOn (ev v) (SB (κ → Fv F v) : Set _) (SB (κ → Fv F v) : Set _))
@@ -49,12 +62,20 @@ theorem surjOn_of_pure (e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) �
   rw [hloc f₀ φ₀ h0 hs]
   simp only [h1]
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F κ`. Take `⟨Φ, hΦ, rfl⟩` from `h hφ`. Conclude with `⟨Φ, hΦ, fun h1 => h0 (by rw [h1]; rfl)⟩`.
+-/
 theorem exists_ne_of_surjOn {e : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)} (h : Set.SurjOn e (schA F κ : Set _) (schA F κ : Set _)) :
     ∃ Φ ∈ schA F κ, e Φ ≠ 0 := by
   obtain ⟨φ, hφ, h0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F κ
   obtain ⟨Φ, hΦ, rfl⟩ := h hφ
   exact ⟨Φ, hΦ, fun h1 => h0 (by rw [h1]; rfl)⟩
 
+/- English proof (translation)
+Take `⟨e, ei, ev, h1, h2, h3, -, h5, h6⟩` from `hA F ψ hψ κ (d.e.symm.trans d₁.e) fun w w' => by`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, ← d₁.form, d.form, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hs` using `surjOn_of_pure e ei ev ei.surjective (fun v => (h3 v).surjOn) h5 h6`. Use `⟨e, ⟨h1, fun u Φ hΦ => ?_, Span.comp_mem_adm e ei ev (fun v φ hφ => (h3 v).mapsTo hφ) h5 h6, exists_ne_of_surjOn hs⟩, hs⟩` and prove the remaining obligations. Use `h2 (d.e u) Φ hΦ` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem tw_surj (hA : PositivityTheory.Mix.AdelSt) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} (d d₁ : Darboux B κ) : ∃ e, Tw ψ d d₁ e ∧ Set.SurjOn e (schA F κ : Set _) (schA F κ : Set _) := by
   obtain ⟨e, ei, ev, h1, h2, h3, -, h5, h6⟩ := hA F ψ hψ κ (d.e.symm.trans d₁.e) fun w w' => by
@@ -65,8 +86,18 @@ theorem tw_surj (hA : PositivityTheory.Mix.AdelSt) {ψ : AddChar (AF F) ℂ} (h�
   have := h2 (d.e u) Φ hΦ
   rwa [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply] at this
 
+/- English proof (translation)
+Introduce `_ _ _ _ hψ _ _ _ _ _ _ d d₁` and use `(tw_surj hA hψ d d₁).imp fun _ h => h.1`.
+-/
 theorem twEx (hA : PositivityTheory.Mix.AdelSt) : TwEx := fun _ _ _ _ hψ _ _ _ _ _ _ d d₁ => (tw_surj hA hψ d d₁).imp fun _ h => h.1
 
+/- English proof (translation)
+Take `⟨e, h, hs⟩` from `tw_surj hA hψ d d₁`. Take `⟨e', h', -⟩` from `tw_surj hA hψ d₁ d`. Take `⟨a, ha⟩` from `schur hψ d (e' ∘ₗ e) (fun Φ hΦ => h'.maps _ (h.maps Φ hΦ)) (fun l hl => h.adm _ (h'.adm l hl)) fun w Φ hΦ => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h.Heisenberg₂ w Φ hΦ, h'.Heisenberg₂ w _ (h.maps Φ hΦ)]`. Establish `a0 : a ≠ 0` using `fun a0 => by`.
+
+Take `⟨Φ, hΦ, hne⟩` from `h'.ne`. Take `⟨Ψ, hΨ, rfl⟩` from `hs hΦ`. Conclude with `hne ((ha Ψ hΨ).trans (by rw [a0, zero_smul]))`. Establish `h1 : ∀ Φ ∈ schA F κ, (a⁻¹ • e') (e Φ) = Φ` using `fun Φ hΦ => by`. Rewrite using `[LinearMap.smul_apply, show e' (e Φ) = a • Φ from ha Φ hΦ, smul_smul, inv_mul_cancel₀ a0, one_smul]`.
+
+Use `⟨e, _, h, h'.smul (inv_ne_zero a0), ⟨h.maps, fun x hx y hy hxy => ?_, hs⟩, h1, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h1 x hx, hxy, h1 y hy]`. Take `⟨Ψ, hΨ, rfl⟩` from `hs hΦ`. Rewrite using `[h1 Ψ hΨ]`.
+-/
 theorem tw_bij (hA : PositivityTheory.Mix.AdelSt) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} (d d₁ : Darboux B κ) : ∃ e e', Tw ψ d d₁ e ∧ Tw ψ d₁ d e' ∧
       Set.BijOn e (schA F κ : Set _) (schA F κ : Set _) ∧ (∀ Φ ∈ schA F κ, e' (e Φ) = Φ) ∧ ∀ Φ ∈ schA F κ, e (e' Φ) = Φ := by

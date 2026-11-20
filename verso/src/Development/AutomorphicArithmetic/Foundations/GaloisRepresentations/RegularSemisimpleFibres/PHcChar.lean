@@ -7,6 +7,9 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `F _ _ a b n hn A B hA hB`. Conclude with `GlobalTheory.T.harishChandraInductionGL_isCharacter F a b n hn A B hA hB`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.hcChar :
     HcChar := by
   intro F _ _ a b n hn A B hA hB

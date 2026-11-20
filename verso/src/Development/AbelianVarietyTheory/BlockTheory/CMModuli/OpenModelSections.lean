@@ -26,6 +26,15 @@ structure PushInvertible : Prop where
   invertible : ∀ x : X, ∃ V : X.Opens, x ∈ V ∧ ∃ θ, IsPushGen G L V θ
   nonzero : ∀ (V : X.Opens) θ, IsPushGen G L V θ → ∀ x ∈ V, NonzeroOnFibre G L θ x
 
+/- English proof (translation)
+Use `exists_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[Ne, ← basicOpen_eq_bot_iff, ← Scheme.preimage_basicOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `hne`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∈ Scheme.Hom.fiberι G.hom x ⁻¹ᵁ G.left.basicOpen (θ i) := by`.
+
+Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hne (le_bot_iff.mp fun y hy => (hh y hy).elim)`. Use `⟨_, ?_, hy⟩` and prove the remaining obligations. Establish `: Scheme.Hom.fiberι G.hom x y ∈ Set.range (Scheme.Hom.fiberι G.hom x)` using `⟨y, rfl⟩`.
+
+Rewrite `this` using `[Scheme.Hom.range_fiberι]`. Conclude with `this`. Introduce and unpack `⟨g, hg, hb⟩ h0`. Establish `: g ∈ Set.range (Scheme.Hom.fiberι G.hom x)`. Rewrite using `[Scheme.Hom.range_fiberι]`.
+
+Conclude with `hg`. Take `⟨y, rfl⟩` from `this`. Establish `: y ∈ Scheme.Hom.fiberι G.hom x ⁻¹ᵁ G.left.basicOpen (θ i)` using `hb`. Rewrite `this` using `[h0]`. Conclude with `this`.
+-/
 theorem nonzeroOnFibre_iff {V : X.Opens} (θ : ∀ i, Γ(G.left, G.hom ⁻¹ᵁ V ⊓ L.U i)) (x : X)
     [IsReduced (Scheme.Hom.fiber G.hom x)] :
     NonzeroOnFibre G L θ x ↔ ∃ (i : L.ι) (g : G.left), G.hom g = x ∧ g ∈ G.left.basicOpen (θ i) := by
@@ -86,6 +95,9 @@ variable {D : Datum H} {l : Level H} {X₀ : Scheme.{0}} {str : X₀ ⟶ Sp (KA 
 
 def incl : baseChange str h ⟶ m.X := m.j ≫ pullback.fst m.s (spMap φ)
 
+/- English proof (translation)
+Rewrite using `[incl, Category.assoc, pullback.condition, ← Category.assoc, m.j_over]`.
+-/
 theorem incl_over : m.incl ≫ m.s = baseChangeStr str h ≫ spMap φ := by
   rw [incl, Category.assoc, pullback.condition, ← Category.assoc, m.j_over]
 
@@ -95,12 +107,22 @@ def liftSec (σ : Over.mk (baseChangeFst str h) ⟶ univ.t.G) : baseChange str h
 def secMap (σ : Over.mk (baseChangeFst str h) ⟶ univ.t.G) : baseChange str h ⟶ m.t.G.left :=
   m.liftSec σ ≫ m.toModel.φ
 
+/- English proof (translation)
+Rewrite using `[secMap, Category.assoc, m.toModel.cart.1.w, ← Category.assoc, liftSec, IsPullback.lift_snd, Category.id_comp, incl]`.
+-/
 theorem secMap_over (σ : Over.mk (baseChangeFst str h) ⟶ univ.t.G) : m.secMap σ ≫ m.t.G.hom = m.incl := by
   rw [secMap, Category.assoc, m.toModel.cart.1.w, ← Category.assoc, liftSec, IsPullback.lift_snd, Category.id_comp, incl]
 
 def Extends (σ : Over.mk (baseChangeFst str h) ⟶ univ.t.G) (U : m.X.Opens) : Prop :=
   ∃ τ : Over.mk U.ι ⟶ m.t.G, (m.incl ∣_ U) ≫ τ.left = (m.incl ⁻¹ᵁ U).ι ≫ m.secMap σ
 
+/- English proof (translation)
+Establish `h1 : m.liftSec (toUnit _ ≫ MonObj.one) = eSec m.t₀.G`. Apply `m.toUniv.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[liftSec, IsPullback.lift_fst, m.toUniv.cm.e_comm, m.toUniv.base]`. Both sides reduce to the same expression. Rewrite using `[liftSec, IsPullback.lift_snd]`.
+
+Conclude with `(Over.w (MonObj.one (X := m.t₀.G))).symm`. Use `⟨toUnit _ ≫ MonObj.one, ?_⟩` and prove the remaining obligations. Establish `h2 : m.secMap (toUnit _ ≫ MonObj.one) = m.incl ≫ eSec m.t.G`. Rewrite using `[secMap, h1]`. Use `m.toModel.cm.e_comm` as an intermediate fact.
+
+Rewrite `this` using `[m.toModel.base]`. Conclude with `this`. Rewrite using `[h2, ← Category.assoc, ← morphismRestrict_ι, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem extends_one (U : m.X.Opens) : m.Extends (toUnit _ ≫ MonObj.one) U := by
   have h1 : m.liftSec (toUnit _ ≫ MonObj.one) = eSec m.t₀.G := by
     apply m.toUniv.cart.1.hom_ext
@@ -117,21 +139,33 @@ theorem extends_one (U : m.X.Opens) : m.Extends (toUnit _ ≫ MonObj.one) U := b
 
 def PPPushInvertible : Prop := PushInvertible m.t.G m.t.PP.L
 
+/- English proof (translation)
+Use `(m.ab (m.j y)).mpr ⟨y, rfl⟩` as an intermediate fact. Simplify `this` using `[incl]`.
+-/
 theorem incl_mem_abLocus (y : ↥(baseChange str h)) : m.incl y ∈ abLocus m.t.G := by
   have := (m.ab (m.j y)).mpr ⟨y, rfl⟩
   simpa [incl] using this
 
 end Model
 
+/- English proof (translation)
+The claim follows from `Model univ h (algebraMap (𝓞 F₀) F₀)`.
+-/
 example {D : Datum H} {l : Level H} {X₀ : Scheme.{0}} {str : X₀ ⟶ Sp (KA l)}
     (univ : Obj D l (baseKA l) str) {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : Type 1 :=
   Model univ h (algebraMap (𝓞 F₀) F₀)
 
+/- English proof (translation)
+The claim follows from `Model univ h (lam.valuation F₀).valuationSubring.subtype`.
+-/
 example {D : Datum H} {l : Level H} {X₀ : Scheme.{0}} {str : X₀ ⟶ Sp (KA l)}
     (univ : Obj D l (baseKA l) str) {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) [NumberField F₀]
     (lam : IsDedekindDomain.HeightOneSpectrum (𝓞 F₀)) : Type 1 :=
   Model univ h (lam.valuation F₀).valuationSubring.subtype
 
+/- English proof (translation)
+The claim follows from `toUnit _ ≫ univ.eta a`.
+-/
 example {D : Datum H} {l : Level H} {X₀ : Scheme.{0}} {str : X₀ ⟶ Sp (KA l)}
     (univ : Obj D l (baseKA l) str) {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) (a : D.La) :
     Over.mk (baseChangeFst str h) ⟶ univ.t.G := toUnit _ ≫ univ.eta a

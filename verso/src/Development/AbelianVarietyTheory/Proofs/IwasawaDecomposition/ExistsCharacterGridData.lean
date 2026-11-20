@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.Up.GridLg
 
+/- English proof (translation)
+Use `⟨⟨?_, h.distinct, h.splits⟩, GlobalTheory.T.lamOf_chi_is_chosen_hecke_character_of_placesOk D L _ G w0 h, fun j a g => ?_⟩` and prove the remaining obligations. Establish `h1` using `G.pl.basePlace_over_qZero`. Establish `h2` using `G.pl.w_over G.pl.v0 (Finset.mem_insert_self _ _)`. Use `show ((GlobalTheory.ChiGrid.q0 D : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w G.pl.v0).asIdeal`. Establish `h3 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((GlobalTheory.ChiGrid.q0 D : ℕ) : 𝓞 D.host.F) ∈ (G.pl.w G.pl.v0).asIdeal`.
+
+Rewrite `h1` using `[← h2]`. Conclude with `h1`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.BigTop.Fun.nFun_add_one_lt_eExp_add_cen 1 j a g`.
+-/
 theorem lamOf_ok (D : D7) {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (cDep b : ℝ) (G : GlobalTheory.ChiGrid.GridData L ⟨1, cDep, b⟩)
     (w0 : HeightOneSpectrum (𝓞 D.host.E)) (h : GlobalTheory.LamTie.PlacesOk D.host (AbsolutelyIrreducibleSpan.q0 D) w0) :
     (GlobalTheory.BigTop.Fun.lamOf G).Ok := by
@@ -27,6 +32,11 @@ theorem lamOf_ok (D : D7) {T : Type} (L : Formalism.IndefR.Links.LevCh D T) (cDe
     rwa [map_natCast] at h3
   · exact GlobalTheory.BigTop.Fun.nFun_add_one_lt_eExp_add_cen 1 j a g
 
+/- English proof (translation)
+Introduce `_ cDep`. Establish `hd : AllSt fun K _ _ _ _ _ x => ∃ w0, GlobalTheory.LamTie.PlacesOk (Dof x).host (AbsolutelyIrreducibleSpan.q0 (Dof x)) w0` using `(Step.of_evLgG GlobalTheory.T.eventually_sizes_congruences_hostFacts_columnChoices).trans (Step.of_all fun K B f T _ hk _ H w _ P x => (H hk T w x.o.Z).2.2.2.2.2.2)`. Use `(StepW.and (GlobalTheory.T.exists_grid_unit_gap_field_contains_values cDep) hd).trans (StepW.of_all fun K B f T w _ _ H P x => ?_)` and prove the remaining obligations. Take `⟨G, hG⟩` from `H.1 P x`. Take `⟨w0, h0⟩` from `H.2 P x`.
+
+Conclude with `⟨G, hG, lamOf_ok _ _ _ _ G w0 h0, x.m.z.lev.C.trans rfl, rfl⟩`.
+-/
 theorem exists_grid : PrN → ∀ cDep : ℝ, AllSt fun K _ _ _ _ _ x =>
     ∃ G : GlobalTheory.ChiGrid.GridData x.m.z.R.toRealDat.toLevCh ⟨1, cDep, K.s.b⟩, GlobalTheory.BigTop.Fun.FieldHas G (embLL0 (Dof x)) ∧
       (GlobalTheory.BigTop.Fun.lamOf G).Ok ∧ (GlobalTheory.BigTop.Fun.lamOf G).C = cfOf x ∧ (GlobalTheory.BigTop.Fun.lamOf G).q0 = AbsolutelyIrreducibleSpan.q0 (Dof x) := by

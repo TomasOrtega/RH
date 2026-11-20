@@ -14,8 +14,14 @@ namespace PositivityTheory.PlacePermOperatorBicommutantSpan
 
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Introduce `v` and use `mul_mem (hx v) (hy v)`.
+-/
 theorem oh_mul {x y : A F} (hx : x ∈ Oh F) (hy : y ∈ Oh F) : x * y ∈ Oh F := fun v => mul_mem (hx v) (hy v)
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => exact fun v => by rw [Nat.cast_zero]; exact zero_mem _`. Consider the case `succ n ih => exact fun v => by rw [Nat.cast_succ]; exact add_mem (ih v) (one_mem _)`.
+-/
 theorem oh_nat (N : ℕ) : (N : A F) ∈ Oh F := by
   induction N with
   | zero => exact fun v => by rw [Nat.cast_zero]; exact zero_mem _
@@ -32,6 +38,11 @@ def LN (F ι : Type) [Field F] [NumberField F] (N : ℕ) : AddSubgroup (ι → A
     obtain ⟨y, hy, e⟩ := ha i
     exact ⟨-y, fun v => neg_mem (hy v), by rw [Pi.neg_apply, e, mul_neg]⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, h1, -, -, -, -, -, h2⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `e : (LN F ι N : Set (ι → A F)) = Set.univ.pi fun _ => (fun y => (N : A F) * y) '' Oh F`. Use extensionality with `x`. Conclude with `⟨fun h i _ => (h i).imp fun y hy => ⟨hy.1, hy.2.symm⟩, fun h i => (h i trivial).imp fun y hy => ⟨hy.1, hy.2.symm⟩⟩`. Use `⟨e ▸ isCompact_univ_pi fun _ => h1.image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations.
+
+Establish `e' : (LN F ι N : Set (ι → A F)) = ⋂ i, (fun x => x i) ⁻¹' {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y}`. Use extensionality with `x`. Rewrite using `[Set.mem_iInter]`. Both sides reduce to the same expression. Conclude with `e' ▸ isOpen_iInter_of_finite fun i => (h2 N hN).preimage (continuous_apply i)`.
+-/
 theorem co_LN {N : ℕ} (hN : 0 < N) : CO (LN F ι N) := by
   obtain ⟨-, -, -, h1, -, -, -, -, -, h2⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
   have e : (LN F ι N : Set (ι → A F)) = Set.univ.pi fun _ => (fun y => (N : A F) * y) '' Oh F := by
@@ -42,6 +53,11 @@ theorem co_LN {N : ℕ} (hN : 0 < N) : CO (LN F ι N) := by
     ext x; rw [Set.mem_iInter]; rfl
   exact e' ▸ isOpen_iInter_of_finite fun i => (h2 N hN).preimage (continuous_apply i)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, h1, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Rewrite `hU` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hsub⟩` from `hU`. Take `⟨N, hN, h⟩` from `h1 (⋂ i, t i) (Filter.iInter_mem.2 ht)`. Use `⟨N, hN, fun x hx => hsub fun i _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, e⟩` from `hx i`. Conclude with `e ▸ Set.mem_iInter.1 (h y hy) i`.
+-/
 theorem LN_small {U : Set (ι → A F)} (hU : U ∈ 𝓝 (0 : ι → A F)) : ∃ N : ℕ, 0 < N ∧ (LN F ι N : Set (ι → A F)) ⊆ U := by
   obtain ⟨-, -, -, -, -, -, -, h1, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
   rw [nhds_pi, Filter.mem_pi'] at hU
@@ -51,6 +67,13 @@ theorem LN_small {U : Set (ι → A F)} (hU : U ∈ 𝓝 (0 : ι → A F)) : ∃
   obtain ⟨y, hy, e⟩ := hx i
   exact e ▸ Set.mem_iInter.1 (h y hy) i
 
+/- English proof (translation)
+Establish `hD` using `H.2.2.2.2.2`. Take `⟨L, L', hL, hL', -, h0, hinv⟩` from `sb_level hD hφ`. Take `⟨L₂, hL₂, hK⟩` from `co_cpt hD ((co_LN (F := F) (ι := ι) one_pos).1.image (continuous_const_smul h))`. Take `⟨N, hN, hsub⟩` from `LN_small (((hL'.2.inter (co_perp hD hL).2).inter (co_perp hD hL₂).2).mem_nhds ⟨⟨L'.zero_mem, (perpG hD L).zero_mem⟩, (perpG hD L₂).zero_mem⟩)`. Use `orbit_bd H (Oh F) (co_LN hN) (fun a ha x hx i => ?_) hφ fun x hx y hy => funext fun u => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy, e⟩` from `hx i`. Conclude with `⟨a * y, oh_mul ha hy, by rw [Pi.smul_apply, e, smul_eq_mul, mul_left_comm]⟩`. Establish `h1 : chiB ψ B (h • x) y = 1` using `(hsub hy).2 _ (hK ⟨x, fun i => by`. Take `⟨z, hz, e⟩` from `hx i`. Conclude with `⟨N * z, oh_mul (oh_nat N) hz, by rw [e, Nat.cast_one, one_mul]⟩, rfl⟩)`.
+
+Rewrite `h1` using `[chiB, smul_dotProduct, smul_eq_mul]`. Rewrite using `[Heisenberg₂, hinv u x (hsub hx).1.1, AddChar.map_add_eq_mul, h1, mul_one]`. Distinguish the cases in `hu : u ∈ L`. Rewrite using `[show ψ (u ⬝ᵥ (B *ᵥ y)) = 1 from (hsub hy).1.2 u hu, one_mul]`. Rewrite using `[h0 u hu, mul_zero]`.
+-/
 theorem orbit_adelic [MeasurableSpace (A F)] {ψ : AddChar (A F) ℂ} {h : A F} {B : Matrix ι ι (A F)}
     {μ : Measure (ι → A F)} (H : NAQuad ψ h B μ) {φ : (ι → A F) → ℂ} (hφ : SB φ) :
     ∃ (L' : AddSubgroup (ι → A F)) (s : Finset (ι → A F)) (C : ℝ), CO L' ∧ ∀ k : SL(2, A F), (∀ i j, k i j ∈ Oh F) →

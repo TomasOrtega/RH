@@ -39,8 +39,14 @@ instance (a : O) : DiscreteTopology (Lev a) := ⟨rfl⟩
 
 def Lev.mk (a : O) : O →ₗ[O] Lev a := (Ideal.span {a} : Submodule O O).mkQ
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem Lev.mk_surjective (a : O) : Function.Surjective (Lev.mk a) := Submodule.mkQ_surjective _
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_eq_zero _).trans Ideal.mem_span_singleton`.
+-/
 theorem Lev.mk_eq_zero (a x : O) : Lev.mk a x = 0 ↔ a ∣ x :=
   (Submodule.Quotient.mk_eq_zero _).trans Ideal.mem_span_singleton
 
@@ -51,8 +57,14 @@ structure IsLev (a : O) (θ : Γ →* Oˣ) (ρ : Representation O Γ M) : Prop w
   cyc : Nonempty (M ≃ₗ[O] (O ⧸ Ideal.span {a}))
   act : ∀ g m, ρ g m = (θ g : O) • m
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ha, ⟨LinearEquiv.refl O _⟩, fun g m => scalRep_apply (Lev a) θ g m⟩`.
+-/
 theorem isLev_lev {a : O} (ha : a ≠ 0) (θ : Γ →* Oˣ) : IsLev a θ (scalRep (Lev a) θ) := ⟨ha, ⟨LinearEquiv.refl O _⟩, fun g m => scalRep_apply (Lev a) θ g m⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.ne, h.cyc, fun g m => h.act (φ g) m⟩`.
+-/
 theorem IsLev.comp {a : O} {θ : Γ →* Oˣ} {ρ : Representation O Γ M} (h : IsLev a θ ρ) {D : Type} [Group D] (φ : D →* Γ) :
     IsLev a (θ.comp φ) (ρ.comp φ : Representation O D M) := ⟨h.ne, h.cyc, fun g m => h.act (φ g) m⟩
 
@@ -61,10 +73,16 @@ def Coc (θ : Γ →* Oˣ) (z : Γ → O) : Prop := ∀ g h, z (g * h) = z g + (
 def CobOn (θ : Γ →* Oˣ) (z : Γ → O) (D : Subgroup Γ) : Prop :=
   ∃ a : O, a ≠ 0 ∧ ∃ m : O, ∀ g ∈ D, a * z g = (θ g : O) * m - m
 
+/- English proof (translation)
+Take `⟨a, ha, m, hm⟩` from `h`. Conclude with `⟨a, ha, m, fun g hg => hm g (hD hg)⟩`.
+-/
 theorem CobOn.mono {θ : Γ →* Oˣ} {z : Γ → O} {D D' : Subgroup Γ} (h : CobOn θ z D) (hD : D' ≤ D) : CobOn θ z D' := by
   obtain ⟨a, ha, m, hm⟩ := h
   exact ⟨a, ha, m, fun g hg => hm g (hD hg)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_ne_zero, 0, fun g hg => by simp [h g hg]⟩`.
+-/
 theorem cobOn_of_eq_zero [Nontrivial O] (θ : Γ →* Oˣ) {z : Γ → O} {D : Subgroup Γ} (h : ∀ g ∈ D, z g = 0) : CobOn θ z D :=
   ⟨1, one_ne_zero, 0, fun g hg => by simp [h g hg]⟩
 
@@ -89,6 +107,9 @@ def h1MapOfAdditive : H1 τ →+ H1 σ :=
       obtain ⟨m, hm⟩ := (mem_coboundaries1 τ _).1 hz
       exact (mem_coboundaries1 σ _).2 ⟨ι m, fun g => (congrArg ι (hm g)).trans (by rw [map_sub, h])⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h1MapOfAdditive_mk (z : Z1 τ) :
     h1MapOfAdditive τ σ ι h (Submodule.Quotient.mk z) = Submodule.Quotient.mk (cocycleMapOfEquivariant τ σ ι h z) := rfl
 

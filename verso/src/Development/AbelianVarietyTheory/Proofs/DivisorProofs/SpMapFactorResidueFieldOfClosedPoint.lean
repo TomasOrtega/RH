@@ -6,6 +6,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Use `set φ : R →+* Ω := (Spec.preimage g).hom with hφ`. Establish `hgφ : g = spMap φ`. Simplify using `only [spMap, hφ, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hker : ∀ x ∈ maximalIdeal R, φ x = 0`. Introduce `x hx`.
+
+Set `w : Sp Ω` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `h1` using `hg w`. Rewrite `h1` using `[hgφ]`. Establish `h2 : (spMap φ w).asIdeal = Ideal.comap φ ⊥` using `rfl`. Rewrite `h2` using `[h1, closedPoint]`.
+
+Establish `: x ∈ Ideal.comap φ ⊥` using `h2 ▸ hx`. Simplify using `using this`. Use `⟨Ideal.Quotient.lift (maximalIdeal R) φ hker, ?_⟩` and prove the remaining obligations. Rewrite using `[hgφ]`. Use `congr 2`.
+-/
 theorem spMap_factor_residueField_of_closedPoint (R : Type) [CommRing R] [IsLocalRing R] (Ω : Type) [Field Ω]
     (g : Sp Ω ⟶ Sp R) (hg : ∀ w, g w = closedPoint R) :
     ∃ κ : ResidueField R →+* Ω, g = spMap (κ.comp (residue R)) := by

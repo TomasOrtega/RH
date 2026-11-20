@@ -4,6 +4,9 @@ universe u_1 u_2
 
 namespace GlobalTheory.BandLemmaFirst
 
+/- English proof (translation)
+Introduce `d1 k _ ι _ _ ℓ j X Y hX hY r s h`. Use `show (X + Y) r s = 0`. Rewrite using `[Matrix.add_apply, hX r s h, hY r s h, add_zero]`.
+-/
 theorem main :
     (let d1 : {k : Type u_1} → [Field k] → {ι : Type u_2} → (ι → ℕ) → ℕ → Matrix ι ι k → Prop :=
       @(fun {k : Type u_1} [Field k] {ι : Type u_2} (ℓ : ι → ℕ) (j : ℕ) (X : Matrix ι ι k) ↦

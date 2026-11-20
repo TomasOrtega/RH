@@ -5,6 +5,9 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, ih, hT, AlgEquiv.mul_apply, Module.End.mul_apply]`.
+-/
 theorem semilinear_pow_smul {F F' V : Type} [Field F] [Field F'] [Algebra F F'] [AddCommGroup V]
     [Module F' V] [Module F V] (s : F' ≃ₐ[F] F') (T : Module.End F V)
     (hT : ∀ (c : F') (v : V), T (c • v) = s c • T v) (m : ℕ) (c : F') (v : V) :
@@ -14,6 +17,11 @@ theorem semilinear_pow_smul {F F' V : Type} [Field F] [Field F'] [Algebra F F'] 
   | succ m ih =>
     rw [pow_succ', pow_succ', Module.End.mul_apply, ih, hT, AlgEquiv.mul_apply, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `h1 : T u = u`. Establish `h` using `LinearMap.mem_ker.mp hu`. Rewrite `h` using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih => rw [pow_succ, Module.End.mul_apply, h1, ih]`.
+-/
 theorem pow_apply_of_mem_ker_sub_one {F V : Type} [Field F] [AddCommGroup V] [Module F V]
     (T : Module.End F V) (u : V) (hu : u ∈ LinearMap.ker (T - 1)) (m : ℕ) : (T ^ m) u = u := by
   have h1 : T u = u := by
@@ -23,6 +31,13 @@ theorem pow_apply_of_mem_ker_sub_one {F V : Type} [Field F] [AddCommGroup V] [Mo
   | zero => simp
   | succ m ih => rw [pow_succ, Module.End.mul_apply, h1, ih]
 
+/- English proof (translation)
+Establish `: Finite F` using `Finite.of_injective _ (algebraMap F F').injective`. Establish `: FiniteDimensional F F'` using `Module.Finite.of_finite`. Rewrite using `[trace_eq_sum_automorphisms]`. Establish `hord : orderOf s = Module.finrank F F'`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hs, IsGalois.card_aut_eq_finrank]`.
+
+Establish `hinj : Function.Injective (fun j : Fin (Module.finrank F F') => s ^ (j : ℕ))`. Introduce `i j hij`. Simplify using `only at hij`. Rewrite `hij` using `[pow_inj_mod, hord, Nat.mod_eq_of_lt i.2, Nat.mod_eq_of_lt j.2]`. Conclude with `Fin.ext hij`.
+
+Establish `hbij : Function.Bijective (fun j : Fin (Module.finrank F F') => s ^ (j : ℕ))` using `(Fintype.bijective_iff_injective_and_card _).mpr ⟨hinj, by rw [Fintype.card_fin, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]⟩`. Conclude with `(Fintype.sum_bijective _ hbij _ _ (fun j => rfl)).symm`.
+-/
 theorem algebraMap_trace_eq_sum_pow {F F' : Type} [Field F] [Field F'] [Algebra F F'] [Finite F']
     (s : F' ≃ₐ[F] F') (hs : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) (x : F') :
     algebraMap F F' (Algebra.trace F F' x) = ∑ j : Fin (Module.finrank F F'), (s ^ (j : ℕ)) x := by
@@ -46,6 +61,37 @@ end GlobalTheory.Shin
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hs V _ _ _ _ T hT hTn ι _ b`. Establish `: Finite F` using `Finite.of_injective _ (algebraMap F F').injective`. Establish `: FiniteDimensional F F'` using `Module.Finite.of_finite`. Use `set n := Module.finrank F F' with hn`. Establish `hnd` using `traceForm_nondegenerate F F'`.
+
+Use `set d := (Algebra.traceForm F F').dualBasis hnd b with hd`. Establish `hdb : ∀ i j, Algebra.trace F F' (d i * b j) = if j = i then 1 else 0` using `fun i j => by`. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left hnd b i j`. Simplify `h` using `[Algebra.traceForm_apply]`. Establish `key1 : ∀ i j, ∑ k : Fin n, (s ^ (k : ℕ)) (d i) * (s ^ (k : ℕ)) (b j) = if i = j then 1 else 0`.
+
+Introduce `i j`. Establish `h` using `algebraMap_trace_eq_sum_pow s hs (d i * b j)`. Simplify using `only [map_mul] at h`. Rewrite using `[← h, hdb]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Establish `hTk : ∀ (k : ℕ) (c : F') (v : V), (T ^ k) (c • v) = (s ^ k) c • (T ^ k) v` using `semilinear_pow_smul s T hT`. Establish `hfix : ∀ (u : LinearMap.ker (T - 1)) (k : ℕ), (T ^ k) (u : V) = u` using `fun u k => pow_apply_of_mem_ker_sub_one T u u.2 k`.
+
+Establish `hn0 : 0 < n` using `Module.finrank_pos`. Establish `hcard : Fintype.card ι = n` using `(Module.finrank_eq_card_basis b).symm`. Set `e : ι ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`. Set `A : Matrix (Fin n) ι F'` to `fun k j => (s ^ (k : ℕ)) (b j)`. Set `B : Matrix ι (Fin n) F'` to `fun i k => (s ^ (k : ℕ)) (d i)`.
+
+Establish `hBA : B * A = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `key1 i j`. Establish `hAB : A * B = 1` using `(Matrix.mul_eq_one_comm_of_equiv e.symm).mpr hBA`.
+
+Set `k0 : Fin n` to `⟨0, hn0⟩`. Establish `key2 : ∀ l : Fin n, ∑ i, b i * (s ^ (l : ℕ)) (d i) = if k0 = l then 1 else 0`. Introduce `l`. Establish `h` using `congrFun (congrFun hAB k0) l`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Simplify `h` using `[A, B, k0]`. Prove the components needed by the constructor for the conclusion. Introduce `v w hvw`. Simplify using `only at hvw`. Establish `hk : ∀ k : ℕ, ∑ i, (s ^ k) (b i) • (v i : V) = ∑ i, (s ^ k) (b i) • (w i : V)`.
+
+Introduce `k`. Establish `h` using `congrArg (T ^ k) hvw`. Simplify `h` using `only [map_sum, hTk, hfix]`. Establish `expand : ∀ (u : ι → LinearMap.ker (T - 1)) (j : ι), (u j : V) = ∑ k : Fin n, (s ^ (k : ℕ)) (d j) • ∑ i, (s ^ (k : ℕ)) (b i) • (u i : V)`. Introduce `u j`.
+
+Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, key1]`. Simplify using `[ite_smul]`. Use function extensionality and compare the values at `j`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[expand v j, expand w j]`. Repeatedly rewrite using `[hk]`. Introduce `w`. Set `Q : V → V` to `fun u => ∑ k : Fin n, (T ^ (k : ℕ)) u`.
+
+Establish `hQ : ∀ u, Q u ∈ LinearMap.ker (T - 1)`. Introduce `u`. Simplify using `only [Q]`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero, map_sum]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => T ((T ^ k) u)), Fin.sum_univ_eq_sum_range (fun k => (T ^ k) u)]`.
+
+Establish `hs1 : ∀ k : ℕ, T ((T ^ k) u) = (T ^ (k + 1)) u` using `fun k => by`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Repeatedly rewrite using `[hs1]`. Establish `h1` using `Finset.sum_range_succ' (fun k => (T ^ k) u) n`. Establish `h2` using `Finset.sum_range_succ (fun k => (T ^ k) u) n`.
+
+Rewrite `h1` using `[h2, hTn, pow_zero]`. Conclude with `(add_right_cancel h1).symm`. Use `⟨fun i => ⟨Q (d i • w), hQ _⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Q, hTk, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_smul, key2]`. Simplify using `[ite_smul, k0]`.
+-/
 theorem galoisDescent_semilinear_bijective : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'), (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) → ∀ (V : Type) [AddCommGroup V] [Module F' V] [Module F V] [IsScalarTower F F' V] (T : Module.End F V), (∀ (c : F') (v : V), T (c • v) = s c • T v) → T ^ Module.finrank F F' = 1 → ∀ (ι : Type) [Fintype ι] (b : Module.Basis ι F F'), Function.Bijective (fun v : ι → LinearMap.ker (T - 1) => ∑ i, b i • (v i : V)) := by
   intro F F' _ _ _ _ s hs V _ _ _ _ T hT hTn ι _ b
   classical

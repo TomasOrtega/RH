@@ -31,8 +31,16 @@ def ball : ValuationSubring E where
       rw [norm_inv]
       exact inv_le_one_of_one_le₀ (le_of_lt (not_le.1 h))
 
+/- English proof (translation)
+The claim follows from `x.2`.
+-/
 theorem norm_le_one (x : (ball : ValuationSubring E)) : ‖(x : E)‖ ≤ 1 := x.2
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hx`. Establish `h0 : ((u : (ball : ValuationSubring E)) : E) * ((u⁻¹ : (ball : ValuationSubring E)ˣ) : E) = 1` using `congrArg Subtype.val u.mul_inv`. Establish `h` using `congrArg norm h0`. Rewrite `h` using `[norm_mul, norm_one]`. Establish `h1` using `norm_le_one (u : (ball : ValuationSubring E))`.
+
+Establish `h2` using `norm_le_one ((u⁻¹ : (ball : ValuationSubring E)ˣ) : (ball : ValuationSubring E))`. Use polynomial arithmetic with `[norm_nonneg ((u : (ball : ValuationSubring E)) : E), norm_nonneg (((u⁻¹ : (ball : ValuationSubring E)ˣ) : (ball : ValuationSubring E)) : E)]`.
+-/
 theorem norm_eq_one_of_isUnit {x : (ball : ValuationSubring E)} (hx : IsUnit x) : ‖(x : E)‖ = 1 := by
   obtain ⟨u, rfl⟩ := hx
   have h0 : ((u : (ball : ValuationSubring E)) : E) * ((u⁻¹ : (ball : ValuationSubring E)ˣ) : E) = 1 :=
@@ -53,6 +61,17 @@ instance : Finite (MaximalSpectrum (ball : ValuationSubring E)) := by
 
 abbrev ι : (ball : ValuationSubring E) →+* E := (ball : ValuationSubring E).subtype
 
+/- English proof (translation)
+Take `⟨u, v, hu, hv, huv⟩` from `hs`. Set `M' : Matrix (Fin n) (Fin n) (ball : ValuationSubring E)` to `Matrix.of fun i j => ⟨M i j, hM i j⟩`. Establish `hM' : M'.map ι = M` using `by ext i j; rfl`. Establish `lift : ∀ p : Polynomial E, (∀ i, ‖p.coeff i‖ ≤ 1) → ∃ q : Polynomial (ball : ValuationSubring E), q.map ι = p`. Introduce `p hp`.
+
+Conclude with `(Polynomial.mem_lifts p).1 ((Polynomial.lifts_iff_coeff_lifts p).2 fun i => ⟨⟨p.coeff i, hp i⟩, rfl⟩)`. Take `⟨u', hu'⟩` from `lift u hu`. Take `⟨v', hv'⟩` from `lift v hv`. Establish `hsep : M'.charpoly.Separable`. Use `⟨u', v', Polynomial.map_injective ι Subtype.val_injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, ← Matrix.charpoly_map, hM', hu', hv', Polynomial.map_one]`. Conclude with `huv`. Take `⟨w, hw⟩` from `GlobalTheory.RegSS.Semilocal.cyclicSemilocal_of_cyclicField GlobalTheory.RegSS.cyclicField _ (Fin n) M' hsep`. Set `σ : Equiv.Perm (Fin n)` to `(Fintype.equivFin (Fin n)).trans (finCongr (Fintype.card_fin n))`. Establish `hk : GlobalTheory.RegSS.krylov M' w = (GlobalTheory.ClassParam.krylov M' w).submatrix id σ`.
+
+Use extensionality with `i j`. Simplify using `[GlobalTheory.RegSS.krylov, GlobalTheory.ClassParam.krylov, σ]`. Use `⟨GlobalTheory.ClassParam.krylov M' w, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[hk, Matrix.det_permute']`. Conclude with `isUnit_of_mul_isUnit_right hw`.
+
+Rewrite using `[GlobalTheory.ClassParam.krylov_map, hM']`. Conclude with `GlobalTheory.Orb.mul_krylov_eq M _`.
+-/
 theorem exists_cyclic_basis {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (hM : ∀ i j, ‖M i j‖ ≤ 1)
     (hs : ∃ u v : Polynomial E, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧
       u * M.charpoly + v * Polynomial.derivative M.charpoly = 1) :
@@ -84,6 +103,25 @@ theorem exists_cyclic_basis {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (hM : ∀ i
   · rw [GlobalTheory.ClassParam.krylov_map, hM']
     exact GlobalTheory.Orb.mul_krylov_eq M _
 
+/- English proof (translation)
+Introduce `E _ _ _ n A x hA hs hx hy`. Take `⟨U, rfl⟩` from `hx`. Establish `hcp : ((U : Matrix (Fin n) (Fin n) E)⁻¹ * A * (U : Matrix (Fin n) (Fin n) E)).charpoly = A.charpoly` using `Matrix.charpoly_units_conj' U A`. Take `⟨KA, hKA, hA'⟩` from `exists_cyclic_basis A hA hs`. Take `⟨Ky, hKy, hy'⟩` from `exists_cyclic_basis _ hy (hcp ▸ hs)`.
+
+Rewrite `hy'` using `[hcp]`. Use `set C := GlobalTheory.Orb.companionMat n A.charpoly`. Use `set a := KA.map ι with ha_def`. Use `set b := Ky.map ι with hb_def`. Establish `ha : IsUnit a.det`.
+
+Rewrite using `[ha_def, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hKA.map ι`. Establish `hb : IsUnit b.det`. Rewrite using `[hb_def, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hKy.map ι`.
+
+Establish `hbinv : (Ky⁻¹).map ι = b⁻¹`. Use `(Matrix.inv_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[hb_def, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, Matrix.mul_nonsing_inv _ hKy, map_one]`. Establish `hk : (KA * Ky⁻¹).map ι = a * b⁻¹`. Rewrite using `[← RingHom.mapMatrix_apply, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hbinv]`.
+
+Establish `hUU : (U : Matrix (Fin n) (Fin n) E) * (U : Matrix (Fin n) (Fin n) E)⁻¹ = 1`. Rewrite using `[← Matrix.coe_units_inv]`. Conclude with `Units.mul_inv U`. Establish `haA : a⁻¹ * A = C * a⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one]`. Use `_ = C * a⁻¹ := by`. Rewrite using `[hA', ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ ha, Matrix.one_mul]`. Use `⟨(U : Matrix (Fin n) (Fin n) E) * b * a⁻¹, (KA * Ky⁻¹).map ι, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(U.isUnit.mul ((Matrix.isUnit_iff_isUnit_det _).2 hb)).mul ((Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_nonsing_inv_det a ha))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, haA, ← Matrix.mul_assoc, Matrix.mul_assoc ((U : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n) E)]`. Use `_ = (U : Matrix (Fin n) (Fin n) E) * ((U : Matrix (Fin n) (Fin n) E)⁻¹ * A * (U : Matrix (Fin n) (Fin n) E) * b) * a⁻¹ := by rw [hy']`. Use `_ = A * ((U : Matrix (Fin n) (Fin n) E) * b * a⁻¹) := by`. Simplify using `only [← Matrix.mul_assoc, hUU, Matrix.one_mul]`.
+
+Introduce `i j`. Conclude with `norm_le_one _`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `norm_eq_one_of_isUnit ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `hKA.mul (Matrix.isUnit_nonsing_inv_det Ky hKy)`. Rewrite using `[hk]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc a⁻¹ a, Matrix.nonsing_inv_mul _ ha, Matrix.one_mul, Matrix.mul_nonsing_inv _ hb, Matrix.mul_one]`.
+-/
 theorem split_place : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] [LocallyCompactSpace E] (n : ℕ) (A x : Matrix (Fin n) (Fin n) E), (∀ i j, ‖A i j‖ ≤ 1) → (∃ u v : Polynomial E, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧ u * A.charpoly + v * Polynomial.derivative A.charpoly = 1) → IsUnit x → (∀ i j, ‖(x⁻¹ * A * x) i j‖ ≤ 1) → ∃ t k : Matrix (Fin n) (Fin n) E, IsUnit t ∧ t * A = A * t ∧ (∀ i j, ‖k i j‖ ≤ 1) ∧ ‖k.det‖ = 1 ∧ x = t * k := by
   intro E _ _ _ n A x hA hs hx hy
   obtain ⟨U, rfl⟩ := hx

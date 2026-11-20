@@ -16,6 +16,13 @@ namespace GlobalTheory.StartCusp
 open Formalism.IndefR.Mult
 variable {D : D7}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP _`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t y`. Establish `hθ : ch.W.θ = R.θ` using `hch.toIsBase.weil.θ`. Establish `hT` using `GlobalTheory.ProjectedLift.thDn_mem R t y`.
+
+Establish `hT'` using `(GlobalTheory.MultMem.mem_mult_iff D R.θ _ _ (R.MY 0) _ _ _).1 hT`. Establish `hu : ch.cv.lift t y = PiTensorProduct.lift (PiTensorProduct.lift.symm (R.thDn t y)) ch.cv.w`. Rewrite using `[LinearEquiv.apply_symm_apply, ch.cv.thDn_w hS.core.chain]`. Rewrite using `[hθ, hu]`. Use `⟨GlobalTheory.EndCusp.isAutFunSm_lift hT' _, isCuspFun_lift hT' _, fun τ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `star_lift_isTypeAt R.θ hP.harishChandraModules (R.MY 0) hT ch.cv.w τ`. Rewrite using `[show Node.par D ch.sc.cGap (.grid 0 0) τ = (Ptw D).Dpar 0 τ from parV_zero D _ (Nat.zero_le _) τ]`. Simplify using `only [parB, dualPar_dualPar, Nat.zero_min] at h`. Conclude with `h`.
+-/
 theorem cusp_lift_mem_cuspList : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), IsCuspListed (G := ch.G) ch.W.θ (.grid 0 0) (ch.cv.lift t y) := by
   intro hP _
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch _ => ?_⟩⟩
@@ -40,6 +47,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim GlobalTheory.FlipRun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList | exact _root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList | (intros; apply _root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_cusp_lift_mem_cuspList : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {_} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (y : (R.HX t).H), IsCuspListed (G := ch.G) ch.W.θ (.grid 0 0) (ch.cv.lift t y) := by
   first | exact @_root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList | exact _root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList | (intros; apply _root_.GlobalTheory.StartCusp.cusp_lift_mem_cuspList <;> assumption)
 end

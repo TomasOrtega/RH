@@ -21,15 +21,24 @@ def rhoA : MvPolynomial σ A →ₐ[A] LA f g :=
   (IsScalarTower.toAlgHom A (MvPolynomial σ A ⧸ Ideal.span {f}) (LA f g)).comp
     (Ideal.Quotient.mkₐ A (Ideal.span {f}))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rhoK_apply (p : MvPolynomial σ k) :
     rhoK f g k p = algebraMap (MvPolynomial σ k ⧸ Ik f k) (Lk f g k) (Ideal.Quotient.mk (Ik f k) p) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rhoA_apply (p : MvPolynomial σ A) :
     rhoA f g p = algebraMap (MvPolynomial σ A ⧸ Ideal.span {f}) (LA f g) (Ideal.Quotient.mk _ p) := rfl
 
 def fwd0 : MvPolynomial σ A →ₐ[A] Lk f g k :=
   MvPolynomial.aeval (fun i => rhoK f g k (MvPolynomial.X i))
 
+/- English proof (translation)
+Rewrite using `[fwd0, ← MvPolynomial.aeval_map_algebraMap k]`. Use `conv_rhs => rw [MvPolynomial.aeval_unique (rhoK f g k)]`. Both sides reduce to the same expression.
+-/
 lemma fibreHypersurfaceForwardPolynomial_apply (p : MvPolynomial σ A) :
     fwd0 f g k p = rhoK f g k (MvPolynomial.map (algebraMap A k) p) := by
   rw [fwd0, ← MvPolynomial.aeval_map_algebraMap k]
@@ -45,6 +54,9 @@ def fwd1 : (MvPolynomial σ A ⧸ Ideal.span {f}) →ₐ[A] Lk f g k :=
       simp [rhoK, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self]
     rw [this, mul_zero])
 
+/- English proof (translation)
+Rewrite using `[← fibreHypersurfaceForwardPolynomial_apply]`. Both sides reduce to the same expression.
+-/
 lemma fibreHypersurfaceForwardQuotient_mk (p : MvPolynomial σ A) :
     fwd1 f g k (Ideal.Quotient.mk _ p) = rhoK f g k (MvPolynomial.map (algebraMap A k) p) := by
   rw [← fibreHypersurfaceForwardPolynomial_apply]; rfl
@@ -61,6 +73,9 @@ def fwd : k ⊗[A] LA f g →ₐ[k] Lk f g k :=
 def bwd0 : MvPolynomial σ k →ₐ[k] k ⊗[A] LA f g :=
   MvPolynomial.aeval (fun i => Algebra.TensorProduct.includeRight (rhoA f g (MvPolynomial.X i)))
 
+/- English proof (translation)
+Rewrite using `[bwd0, MvPolynomial.aeval_map_algebraMap]`. Express the relevant statement in the definitionally equal form `_ = ((Algebra.TensorProduct.includeRight (R := A) (A := k)).comp (rhoA f g)) p`. Use `conv_rhs => rw [MvPolynomial.aeval_unique ((Algebra.TensorProduct.includeRight (R := A) (A := k)).comp (rhoA f g))]`. Both sides reduce to the same expression.
+-/
 lemma fibreHypersurfaceBackwardPolynomial_map (p : MvPolynomial σ A) :
     bwd0 f g k (MvPolynomial.map (algebraMap A k) p) =
       Algebra.TensorProduct.includeRight (R := A) (A := k) (rhoA f g p) := by
@@ -78,6 +93,9 @@ def bwd1 : (MvPolynomial σ k ⧸ Ik f k) →ₐ[k] k ⊗[A] LA f g :=
       simp [rhoA, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self]
     rw [this, map_zero, mul_zero])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma fibreHypersurfaceBackwardQuotient_mk (p : MvPolynomial σ k) : bwd1 f g k (Ideal.Quotient.mk _ p) = bwd0 f g k p := rfl
 
 def bwd2 : Lk f g k →ₐ[k] k ⊗[A] LA f g :=
@@ -86,6 +104,11 @@ def bwd2 : Lk f g k →ₐ[k] k ⊗[A] LA f g :=
     exact (IsLocalization.Away.algebraMap_isUnit (S := LA f g)
       (Ideal.Quotient.mk (Ideal.span {f}) g)).map (Algebra.TensorProduct.includeRight (R := A) (A := k)))
 
+/- English proof (translation)
+Apply `IsLocalization.algHom_ext (Submonoid.powers (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g)))` to reduce the goal to its premises. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Establish `h1` using `fibreHypersurfaceForwardQuotient_mk f g k (MvPolynomial.X i)`.
+
+Establish `h2` using `fibreHypersurfaceBackwardPolynomial_map f g k (MvPolynomial.X i)`. Simplify using `only [MvPolynomial.map_X, rhoK_apply, rhoA_apply] at h1 h2`. Express the relevant statement in the definitionally equal form `fwd f g k (bwd2 f g k (algebraMap _ (Lk f g k) (Ideal.Quotient.mk (Ik f k) (MvPolynomial.X i)))) = algebraMap _ (Lk f g k) (Ideal.Quotient.mk (Ik f k) (MvPolynomial.X i))`. Simplify using `only [bwd2, IsLocalization.Away.coe_liftAlgHom, IsLocalization.Away.lift_eq, AlgHom.coe_toRingHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, fibreHypersurfaceBackwardQuotient_mk, h2, Algebra.TensorProduct.includeRight_apply, fwd, Algebra.TensorProduct.lift_tmul, map_one, _root_.o …`.
+-/
 lemma fwd_bwd : (fwd f g k).comp (bwd2 f g k) = AlgHom.id k _ := by
   apply IsLocalization.algHom_ext (Submonoid.powers (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g)))
   apply Ideal.Quotient.algHom_ext
@@ -100,6 +123,13 @@ lemma fwd_bwd : (fwd f g k).comp (bwd2 f g k) = AlgHom.id k _ := by
     fibreHypersurfaceBackwardQuotient_mk, h2, Algebra.TensorProduct.includeRight_apply, fwd, Algebra.TensorProduct.lift_tmul, map_one,
     _root_.one_mul, fwd2, h1]
 
+/- English proof (translation)
+Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Use `ext`. Apply `IsLocalization.algHom_ext (Submonoid.powers (Ideal.Quotient.mk (Ideal.span {f}) g))` to reduce the goal to its premises. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `i`. Establish `h1` using `fibreHypersurfaceForwardQuotient_mk f g k (MvPolynomial.X i)`. Establish `h2` using `fibreHypersurfaceBackwardPolynomial_map f g k (MvPolynomial.X i)`. Simplify using `only [MvPolynomial.map_X, rhoK_apply, rhoA_apply] at h1 h2`. Express the relevant statement in the definitionally equal form `bwd2 f g k (fwd f g k ((1 : k) ⊗ₜ[A] algebraMap _ (LA f g) (Ideal.Quotient.mk (Ideal.span {f}) (MvPolynomial.X i)))) = (1 : k) ⊗ₜ[A] algebraMap _ (LA f g) (Ideal.Quotient.mk (Ideal.span {f}) (MvPolynomial.X i))`.
+
+Simplify using `only [fwd, Algebra.TensorProduct.lift_tmul, map_one, _root_.one_mul, fwd2, IsLocalization.Away.coe_liftAlgHom, IsLocalization.Away.lift_eq, AlgHom.coe_toRingHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h1, bwd2, fibreHypersurfaceBackwardQuotient_mk, h2, Algebra.TensorProduct.in …`.
+-/
 lemma bwd_fwd : (bwd2 f g k).comp (fwd f g k) = AlgHom.id k _ := by
   apply Algebra.TensorProduct.ext
   · ext
@@ -116,15 +146,34 @@ lemma bwd_fwd : (bwd2 f g k).comp (fwd f g k) = AlgHom.id k _ := by
       IsLocalization.Away.lift_eq, AlgHom.coe_toRingHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h1, bwd2, fibreHypersurfaceBackwardQuotient_mk, h2,
       Algebra.TensorProduct.includeRight_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rhoK_comp : (rhoK f g k).toRingHom =
     (algebraMap (MvPolynomial σ k ⧸ Ik f k) (Lk f g k)).comp (Ideal.Quotient.mk (Ik f k)) := rfl
 
+/- English proof (translation)
+Rewrite using `[rhoK_comp, PrimeSpectrum.comap_comp]`. Conclude with `(PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ _ Ideal.Quotient.mk_surjective).isEmbedding.comp (PrimeSpectrum.localization_away_isOpenEmbedding (Lk f g k) (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g))).isEmbedding`.
+-/
 theorem isEmbedding_comap_rhoK : Topology.IsEmbedding (PrimeSpectrum.comap (rhoK f g k).toRingHom) := by
   rw [rhoK_comp, PrimeSpectrum.comap_comp]
   exact (PrimeSpectrum.isClosedEmbedding_comap_of_surjective _ _ Ideal.Quotient.mk_surjective).isEmbedding.comp
     (PrimeSpectrum.localization_away_isOpenEmbedding (Lk f g k)
       (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g))).isEmbedding
 
+/- English proof (translation)
+Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe, PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`.
+
+Establish `: (rhoK f g k).toRingHom (MvPolynomial.map (algebraMap A k) f) = 0`. Simplify using `[rhoK_apply, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton_self]`. Rewrite using `[this]`. Conclude with `q.asIdeal.zero_mem`. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe, PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`.
+
+Introduce `h`. Establish `hu : IsUnit ((rhoK f g k).toRingHom (MvPolynomial.map (algebraMap A k) g))` using `IsLocalization.Away.algebraMap_isUnit (S := Lk f g k) (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g))`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Introduce and unpack `⟨hf, hg⟩`. Establish `h1 : p ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk (Ik f k)))`.
+
+Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, PrimeSpectrum.zeroLocus_span]`. Conclude with `hf`. Take `⟨q0, rfl⟩` from `h1`. Establish `h2 : q0 ∈ Set.range (PrimeSpectrum.comap (algebraMap (MvPolynomial σ k ⧸ Ik f k) (Lk f g k)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Lk f g k) (Ideal.Quotient.mk (Ik f k) (MvPolynomial.map (algebraMap A k) g))]`.
+
+Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe, PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Conclude with `h`. Take `⟨q, rfl⟩` from `h2`.
+
+Conclude with `⟨q, by rw [rhoK_comp, PrimeSpectrum.comap_comp_apply]⟩`.
+-/
 theorem range_comap_rhoK : Set.range (PrimeSpectrum.comap (rhoK f g k).toRingHom) =
     PrimeSpectrum.zeroLocus {MvPolynomial.map (algebraMap A k) f} \
       PrimeSpectrum.zeroLocus {MvPolynomial.map (algebraMap A k) g} := by
@@ -163,6 +212,11 @@ theorem range_comap_rhoK : Set.range (PrimeSpectrum.comap (rhoK f g k).toRingHom
 
 end defs
 
+/- English proof (translation)
+Establish `key : ∀ {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y), PreirreducibleSpace X → PreirreducibleSpace Y`. Introduce `X Y _ _ e h`. Use `⟨?_⟩` and prove the remaining obligations. Use `(PreirreducibleSpace.isPreirreducible_univ (X := X)).image e e.continuous.continuousOn` as an intermediate fact. Rewrite `this` using `[Set.image_univ_of_surjective e.surjective]`. Then use the resulting hypothesis.
+
+Conclude with `⟨key e, key e.symm⟩`.
+-/
 theorem preirreducibleSpace_congr {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) :
     PreirreducibleSpace X ↔ PreirreducibleSpace Y := by
   have key : ∀ {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y),
@@ -173,6 +227,9 @@ theorem preirreducibleSpace_congr {X Y : Type} [TopologicalSpace X] [Topological
     rwa [Set.image_univ_of_surjective e.surjective] at this
   exact ⟨key e, key e.symm⟩
 
+/- English proof (translation)
+Set `e : (k ⊗[A] LA f g) ≃ₐ[k] Lk f g k` to `AlgEquiv.ofAlgHom (fwd f g k) (bwd2 f g k) (fwd_bwd f g k) (bwd_fwd f g k)`. Rewrite using `[preirreducibleSpace_congr (PrimeSpectrum.homeomorphOfRingEquiv e.toRingEquiv), ← range_comap_rhoK, isPreirreducible_iff_preirreducibleSpace]`. Conclude with `preirreducibleSpace_congr (isEmbedding_comap_rhoK f g k).toHomeomorph`.
+-/
 theorem spectrum_fibre_preirreducible_iff (A : Type) [CommRing A] (σ : Type) (f g : MvPolynomial σ A)
     (k : Type) [Field k] [Algebra A k] :
     PreirreducibleSpace (PrimeSpectrum (k ⊗[A] Localization.Away (Ideal.Quotient.mk (Ideal.span {f}) g))) ↔

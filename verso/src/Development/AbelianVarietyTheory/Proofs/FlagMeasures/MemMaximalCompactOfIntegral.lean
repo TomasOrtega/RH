@@ -17,6 +17,19 @@ namespace GlobalTheory.HL.Frames
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Rewrite using `[MulAction.mem_stabilizer_iff]`. Use `set N := Submodule.span L.O (Set.range g) with hN`. Establish `mem : ∀ (c : Matrix (Fin (r + 1)) (Fin (r + 1)) E), (∀ i j, c i j ∈ L.O) → ∀ j, ∑ i, c i j • g i ∈ N`. Introduce `c hc j`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: c i j • g i = (⟨c i j, hc i j⟩ : L.O) • g i` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.pointwise_smul_def, Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Use `show h (g j) ∈ N`. Rewrite using `[hg j]`. Conclude with `mem s hs j`. Rewrite using `[hN, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Establish `key : g j = h (∑ i, si i j • g i)`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul, hg, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `: ∀ x, ∑ i, si i j * s x i = (s * si) x j` using `fun x => by`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Repeatedly rewrite using `[this, hm, Matrix.one_apply, ite_smul, one_smul, zero_smul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `Submodule.smul_mem_pointwise_smul _ h _ (mem si hsi j)`.
+-/
 theorem stab_span_of_integral {L : LocE F E} {r k : ℕ} (S : Frames L r k) (h : S.GLV)
     (g : Fin (r + 1) → S.V) (s si : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hs : ∀ i j, s i j ∈ L.O) (hsi : ∀ i j, si i j ∈ L.O) (hm : s * si = 1)
@@ -51,6 +64,9 @@ theorem stab_span_of_integral {L : LocE F E} {r k : ℕ} (S : Frames L r k) (h :
     rw [key]
     exact Submodule.smul_mem_pointwise_smul _ h _ (mem si hsi j)
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ L r k S h s si s' si' hSt hs hsi hm hs' hsi' hm' hg hg'`. Unfold `Frames.K0`. Conclude with `⟨⟨hSt, S.stab_span_of_integral h S.f s si hs hsi hm hg⟩, S.stab_span_of_integral h S.f' s' si' hs' hsi' hm' hg'⟩`.
+-/
 theorem mem_K0_of_integral : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (h : S.GLV) (s si s' si' : Matrix (Fin (r + 1)) (Fin (r + 1)) E), h ∈ S.St → (∀ i j, s i j ∈ L.O) → (∀ i j, si i j ∈ L.O) → s * si = 1 → (∀ i j, s' i j ∈ L.O) → (∀ i j, si' i j ∈ L.O) → s' * si' = 1 → (∀ j, h (S.f j) = ∑ i, s i j • S.f i) → (∀ j, h (S.f' j) = ∑ i, s' i j • S.f' i) → h ∈ S.K0 := by
   intro F _ _ _ E _ _ _ L r k S h s si s' si' hSt hs hsi hm hs' hsi' hm' hg hg'
   unfold Frames.K0

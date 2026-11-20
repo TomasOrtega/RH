@@ -16,6 +16,23 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hUW hLM hCS hEH hAW hAS hUS hUO hFF hR E _ _ _ n π S T F₀ F hE hF ws hws`. Take `⟨hμ, hnorm, hgood, hP⟩` from `hFF hR E n π S T F₀ F`. Take `⟨hcnt, hsph⟩` from `hUS hR E n π S T F₀ F ws`. Establish `hk : 1 ≤ ws.length` using `List.length_pos_iff.2 hws`. Take `⟨hHecke, hsep, hall⟩` from `hLM E hE n F.d F.ok F.mok F₀.Sec F₀.hSec F.levOff F.T_ne hnorm hgood (lw F ws) F.m ws.length F.m_pos hk hcnt (ws.flatten.map (ul F)) (fun w _ => hsph w)`.
+
+Establish `hlU : ∀ x ∈ ws.flatten.map (ul F), U.UGen.Ok F₀.Sec F.d.B x`. Introduce `x hx`. Take `⟨p, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(hUO hR E n π S T F₀ F hE p).1`. Take `⟨hT, htr⟩` from `hUW E hE n F₀.Sec F₀.lam F.d.KU F.fam F.d.B (F.d.gU F.m) F.R F.levOff hHecke ws.length _ hlU`.
+
+Rewrite using `[htr hsep]`. Establish `hch` using `hCS E n F₀.μ F₀.e F₀.lam F₀.C F₀.Sec F₀.hSec F.d.KU _ F.levOff.2.1 hT F₀.u₁ F₀.u₂ F₀.hu (fun a => (prodL F.d (lw F ws) a).tr F.d.P F.d.one) (fun a => (prodL F.d (lw F ws) a).t) (fun a ha => by`. Take `⟨⟨h1, h2, h3, h4⟩, -⟩` from `hall a ha`. Use `⟨h1, h2, h3, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hμ w]`.
+
+Conclude with `h4 w hw)`. Use the proof step `(fun i => by`. Take `⟨-, w, hw, hns, hreg⟩` from `hall (F₀.C.a i) (F₀.C.le i)`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `: seen ((prodL F.d (lw F ws) (F₀.C.a i)).tr F.d.P F.d.one) (prodL F.d (lw F ws) (F₀.C.a i)).t w = (prodL F.d (lw F ws) (F₀.C.a i)).tr F.d.P F.d.one w`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[seen, hns]`. Rewrite using `[this]`. Conclude with `hreg)`. Use the proof step `(fun i v => (tw F i ws).va v ((F₀.A i).χa v) * (tw F i ws).vb v ((F₀.A i).χb v))`.
+
+Use the proof step `(fun i => (tw F i ws).arch (F₀.A i).Ta (F₀.A i).Tb)`. Use the proof step `(fun i v => ((hAW hR E n π S T F₀ F hF i ws).2.2 v))`. Use the proof step `(fun i => BGen.sc (ws.map (bw F i)).flatten) (U.UGen.sc (ws.flatten.map (ul F)))`. Use the proof step `(fun i => by`. Rewrite using `[Finset.prod_mul_distrib]`.
+
+Conclude with `hAS hR E n π S T F₀ F hF i ws)`. Rewrite using `[hch]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨h1, h2, -⟩` from `hAW hR E n π S T F₀ F hF i ws`. Rewrite using `[h1, hEH]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.traceword_pf :
     U.UWord → LocMatch → ChainSc → FBL.EllHom → AdelWord → ArchSc → USph → UOk → FrFacts → TraceWord := by
   intro hUW hLM hCS hEH hAW hAS hUS hUO hFF hR E _ _ _ n π S T F₀ F hE hF ws hws

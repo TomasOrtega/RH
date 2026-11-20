@@ -12,5 +12,8 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open Matrix
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KinfCompact.compactSpace_Kinf | exact GlobalTheory.KinfCompact.compactSpace_Kinf | (intros; apply GlobalTheory.KinfCompact.compactSpace_Kinf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_maximal_compact_is_compact : ∀ I : Formalism.MainNotions.S.AutInst, CompactSpace (GlobalTheory.Dec.Kinf I) := by
   first | exact @GlobalTheory.KinfCompact.compactSpace_Kinf | exact GlobalTheory.KinfCompact.compactSpace_Kinf | (intros; apply GlobalTheory.KinfCompact.compactSpace_Kinf <;> assumption)

@@ -9,10 +9,18 @@ open scoped MatrixGroups
 
 namespace GlobalTheory.ThEx
 
+/- English proof (translation)
+Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.T]`.
+-/
 theorem T_mem_Gamma1 (M : ℕ) : ModularGroup.T ∈ CongruenceSubgroup.Gamma1 M := by
   rw [CongruenceSubgroup.Gamma1_mem]
   simp [ModularGroup.T]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X A N l _ halg han hl2 hlN hN hA n w hw b hb`. Establish `: IsAlgClosure ℚ Ω` using `⟨inferInstance, halg⟩`. Take `⟨f, hfinv, hfcls, hfsq⟩` from `hlift Ω ε X N l hl2 hlN hN n w hw b hb`. Take `⟨ψ, hψan, hψd⟩` from `han`. Establish `hT : (f : X.K) ∈ GlobalTheory.Glue.KT X 1`.
+
+Rewrite using `[GlobalTheory.Glue.KT.mem_def, pow_one]`. Conclude with `hfinv _ (T_mem_Gamma1 _)`. Take `⟨φ, hdl, hden⟩` from `GlobalTheory.dl_exists ε X ⟨ψ, hψd, hψan⟩ l A hA n 1 (f : X.K) one_pos f.ne_zero hT`. Use `⟨φ, ⟨f, hfinv, hfcls, hfsq, by simpa using hdl⟩, fun r hr => ?_⟩` and prove the remaining obligations. Simplify using `using hden r hr`.
+-/
 theorem of_lift (hlift : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime], l ≠ 2 → ¬ l ∣ N → 1 ≤ N → ∀ (n w : ℕ), Odd w → ∀ b : X.Fn l, b ∈ X.B N l w → ∃ f : X.Kˣ, Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) (f : X.K) ∧ AdicCompletion.eval (idl l) (X.Kl l) n (b ![1, 0]) = X.cls l n f ∧ (∀ δ ∈ CongruenceSubgroup.Gamma1 N, -δ ∈ CongruenceSubgroup.Gamma (l ^ n) → ∃ g : X.K, Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) g ∧ (f : X.K) * X.sl (ofSL δ) f = g ^ (l ^ n))) : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime], Algebra.IsAlgebraic ℚ Ω → (∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs) → l ≠ 2 → ¬ l ∣ N → 1 ≤ N → ((l : Ω) ∈ A.nonunits) → ∀ (n w : ℕ), Odd w → ∀ b : X.Fn l, b ∈ X.B N l w → ∃ φ : HahnSeries ℚ Ω, IsThB X A N l n b φ ∧ IsLat 1 φ := by
   intro Ω _ _ _ ε X A N l _ halg han hl2 hlN hN hA n w hw b hb
   have : IsAlgClosure ℚ Ω := ⟨inferInstance, halg⟩
@@ -25,6 +33,9 @@ theorem of_lift (hlift : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClose
   refine ⟨φ, ⟨f, hfinv, hfcls, hfsq, by simpa using hdl⟩, fun r hr => ?_⟩
   simpa using hden r hr
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X A N l _ halg han hl2 hlN hN hA n w hw b hb`. Conclude with `of_lift (GlobalTheory.ThLift.exists_invariant_lift) Ω ε X A N l halg han hl2 hlN (by omega) hA n w hw b hb`.
+-/
 theorem thex : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosed Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime], Algebra.IsAlgebraic ℚ Ω → (∃ φ : ℂ → ℂ, X.an X.jK = (φ : Mero) ∧ DifferentiableOn ℂ φ Hs) → l ≠ 2 → ¬ l ∣ N → 5 ≤ N → ((l : Ω) ∈ A.nonunits) → ∀ (n w : ℕ), Odd w → ∀ b : X.Fn l, b ∈ X.B N l w → ∃ φ : HahnSeries ℚ Ω, IsThB X A N l n b φ ∧ IsLat 1 φ := by
   intro Ω _ _ _ ε X A N l _ halg han hl2 hlN hN hA n w hw b hb
   exact of_lift (GlobalTheory.ThLift.exists_invariant_lift) Ω ε X A N l halg han hl2 hlN (by omega) hA n w hw b hb

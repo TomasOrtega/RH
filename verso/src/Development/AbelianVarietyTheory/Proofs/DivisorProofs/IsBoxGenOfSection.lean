@@ -50,16 +50,28 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.SumDeg
 variable {X X₁ X₂ Z : Scheme.{0}} {M : LB X} {M₁ : LB X₁} {M₂ : LB X₂} {f₁ : X ⟶ X₁} {f₂ : X ⟶ X₂}
   {K : Type} [Fintype K] {Y Y₁ Y₂ : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CechPic.isLB_tens (pull_isLB h₁ f₁) (pull_isLB h₂ f₂)`.
+-/
 theorem isLB_extLB (h₁ : M₁.IsLB) (h₂ : M₂.IsLB) (f₁ : X ⟶ X₁) (f₂ : X ⟶ X₂) : (extLB M₁ M₂ f₁ f₂).IsLB :=
   GlobalTheory.CechPic.isLB_tens (pull_isLB h₁ f₁) (pull_isLB h₂ f₂)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mem_pull.2 h₁, mem_pull.2 h₂⟩`.
+-/
 theorem mem_extIdx {x : X} {j₁ : M₁.ι} {j₂ : M₂.ι} (h₁ : f₁ x ∈ M₁.U j₁) (h₂ : f₂ x ∈ M₂.U j₂) :
     x ∈ (extLB M₁ M₂ f₁ f₂).U (extIdx j₁ j₂) := ⟨mem_pull.2 h₁, mem_pull.2 h₂⟩
 
+/- English proof (translation)
+Introduce `ψ` and use `mem_extIdx (h₁ (ψ ≫ f₁)) (h₂ (ψ ≫ f₂))`.
+-/
 theorem good_ext {z : Z} {J₁ : (Z ⟶ X₁) → M₁.ι} {J₂ : (Z ⟶ X₂) → M₂.ι} (h₁ : Good M₁ z J₁) (h₂ : Good M₂ z J₂) :
     Good (extLB M₁ M₂ f₁ f₂) z (fun ψ => extIdx (J₁ (ψ ≫ f₁)) (J₂ (ψ ≫ f₂))) :=
   fun ψ => mem_extIdx (h₁ (ψ ≫ f₁)) (h₂ (ψ ≫ f₂))
 
+/- English proof (translation)
+Unfold `trF`. Use `Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_` and prove the remaining obligations. Rewrite using `[gm_pull_g M₁ F (r ≫ ψ k) z (a k) (b k) (Set.mem_iInter.1 ha k) (Set.mem_iInter.1 hb k), Category.assoc, e, Category.assoc]`.
+-/
 theorem trF_pull {F : X ⟶ X₁} {ψ : K → (Y ⟶ X)} {φ : K → (Y₁ ⟶ X₁)} {ε : K → ℤ} {h : Y ⟶ Y₁}
     (e : ∀ k, ψ k ≫ F = h ≫ φ k) (r : Z ⟶ Y) (z : Z) (a b : K → (M₁.pull F).ι)
     (ha : r z ∈ LB.wchart (M₁.pull F) ψ a) (hb : r z ∈ LB.wchart (M₁.pull F) ψ b) :
@@ -71,6 +83,11 @@ theorem trF_pull {F : X ⟶ X₁} {ψ : K → (Y ⟶ X)} {φ : K → (Y₁ ⟶ X
 
 variable {φ : K → (Y ⟶ X)} {φ₁ : K → (Y₁ ⟶ X₁)} {φ₂ : K → (Y₂ ⟶ X₂)} {ε : K → ℤ} {h₁ : Y ⟶ Y₁} {h₂ : Y ⟶ Y₂}
 
+/- English proof (translation)
+Establish `l₁ : ∀ jj : K → (extLB M₁ M₂ f₁ f₂).ι, LB.wchart (extLB M₁ M₂ f₁ f₂) φ jj ≤ h₁ ⁻¹ᵁ LB.wchart M₁ φ₁ (fun k => (jj k).1 ⟨⟩)` using `fun jj => (tens_le₁ _ _ φ jj).trans (GeneratorPullback.pullAlong_le M₁ f₁ h₁ φ₁ φ e₁ _)`. Establish `l₂ : ∀ jj : K → (extLB M₁ M₂ f₁ f₂).ι, LB.wchart (extLB M₁ M₂ f₁ f₂) φ jj ≤ h₂ ⁻¹ᵁ LB.wchart M₂ φ₂ (fun k => (jj k).2 ⟨⟩)` using `fun jj => (tens_le₂ _ _ φ jj).trans (GeneratorPullback.pullAlong_le M₂ f₂ h₂ φ₂ φ e₂ _)`. Take `⟨u, hu⟩ : ∃ u : ∀ jj : K → (extLB M₁ M₂ f₁ f₂).ι, Γ(Y, LB.wchart (extLB M₁ M₂ f₁ f₂) φ jj), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (jj : K → (extLB M₁ M₂ f₁ f₂).ι), r z ∈ LB.wchart (extLB M₁ M₂ f₁ f₂) φ jj → gs r z (LB.wchart (extLB M₁ M₂ f₁ f₂) φ jj) (u jj) = gs (r ≫ h₁) z (LB.w …` from `⟨fun jj => (Y.presheaf.map (homOfLE (l₁ jj)).op).hom ((h₁.app _).hom (s₁.f (fun k => (jj k).1 ⟨⟩))) * (Y.presheaf.map (homOfLE (l₂ jj)).op).hom ((h₂.app _).hom (s₂.f (fun k => (jj k).2 ⟨⟩))), fun Z r z jj hz => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_res r z _ hz _).t …`. Use `⟨⟨u, fun jj jj' => fn_ext fun y hy => ?_⟩, hu⟩` and prove the remaining obligations. Use `((gs_res (𝟙 Y) y _ hy _).trans (hu _ _ y jj hy.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) y _ hy _).trans (congrArg Units.val ((gm_linComb _ φ ε (𝟙 Y) y jj jj' hy.1 hy.2).trans ((trF_tens _ _ φ ε (𝟙 Y) y jj jj' hy.1 hy.2).trans (con …` and prove the remaining obligations.
+
+Rewrite using `[sec_trans s₁ (𝟙 Y ≫ h₁) y (l₁ jj hy.1) (l₁ jj' hy.2), sec_trans s₂ (𝟙 Y ≫ h₂) y (l₂ jj hy.1) (l₂ jj' hy.2), Units.val_mul, _root_.mul_mul_mul_comm]`.
+-/
 theorem exists_extSec (e₁ : ∀ k, φ k ≫ f₁ = h₁ ≫ φ₁ k) (e₂ : ∀ k, φ k ≫ f₂ = h₂ ≫ φ₂ k)
     (s₁ : LB.Sec (LB.LinComb M₁ φ₁ ε)) (s₂ : LB.Sec (LB.LinComb M₂ φ₂ ε)) :
     ∃ s : LB.Sec (LB.LinComb (extLB M₁ M₂ f₁ f₂) φ ε), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z)
@@ -106,6 +123,9 @@ theorem exists_extSec (e₁ : ∀ k, φ k ≫ f₁ = h₁ ≫ φ₁ k) (e₂ : �
   rw [sec_trans s₁ (𝟙 Y ≫ h₁) y (l₁ jj hy.1) (l₁ jj' hy.2), sec_trans s₂ (𝟙 Y ≫ h₂) y (l₂ jj hy.1) (l₂ jj' hy.2),
     Units.val_mul, _root_.mul_mul_mul_comm]
 
+/- English proof (translation)
+The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ((gm_res r z _ hz _).trans (gm_pull r (φ k) z (B.U (b k) ⊓ A.U (a k)) ⟨Set.mem_iInter.1 hz.1 k, Set.mem_iInter.1 hz.2 k⟩ _))))`.
+-/
 theorem gm_linCombIso' {A B : LB X} (w : LB.Iso A B) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z)
     (b : K → B.ι) (a : K → A.ι) (hz : r z ∈ LB.wchart B φ b ⊓ LB.wchart A φ a) :
     gm r z (LB.wchart B φ b ⊓ LB.wchart A φ a) ((LB.linCombIso w φ ε).s (b, a)) =
@@ -114,6 +134,13 @@ theorem gm_linCombIso' {A B : LB X} (w : LB.Iso A B) (φ : K → (Y ⟶ X)) (ε 
     ((gm_res r z _ hz _).trans (gm_pull r (φ k) z (B.U (b k) ⊓ A.U (a k))
       ⟨Set.mem_iInter.1 hz.1 k, Set.mem_iInter.1 hz.2 k⟩ _))))
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_extSec e₁ e₂ s₁ s₂`. Establish `hA` using `linComb_isLB _ hM φ ε`. Establish `hB` using `linComb_isLB _ (isLB_extLB hM₁ hM₂ f₁ f₂) φ ε`. Establish `hu` using `linCombIso_isGen w hw φ ε`. Use `⟨secOfIso (u := LB.linCombIso w φ ε) t hu hA hB, fun Z r z J₁ J₂ J hJ₁ hJ₂ hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `hE` using `good_ext (f₁ := f₁) (f₂ := f₂) hJ₁ hJ₂`. Establish `mB` using `hE.mem φ r`. Establish `mA` using `hJ.mem φ r`. Establish `hm : r z ∈ (LB.LinComb M φ ε).U (fun k => J (r ≫ φ k)) ⊓ (LB.LinComb (extLB M₁ M₂ f₁ f₂) φ ε).U (fun k => extIdx (J₁ ((r ≫ φ k) ≫ f₁)) (J₂ ((r ≫ φ k) ≫ f₂)))` using `⟨mA, mB⟩`. Establish `E` using `congrArg (gs r z _) (secOfIso_spec (u := LB.linCombIso w φ ε) t hu hA hB (fun k => J (r ≫ φ k)) (fun k => extIdx (J₁ ((r ≫ φ k) ≫ f₁)) (J₂ ((r ≫ φ k) ≫ f₂))))`.
+
+Establish `E'` using `(gs_res r z _ hm _).symm.trans (E.trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) ((gs_unit r z _ hm _).trans (congrArg Units.val ((map_inv _ _).trans (congrArg (·⁻¹) ((gm_res r z _ hm _).trans (gm_linCombIso' w φ ε r z _ _ ⟨mB, mA⟩)))))) ((gs_res r z _ hm _).trans (ht Z r …`. Rewrite using `[sval_of s₁ (r ≫ h₁) z J₁ (fun k => J₁ ((r ≫ φ k) ≫ f₁)) (fun k => by rw [Category.assoc, Category.assoc, e₁]), sval_of s₂ (r ≫ h₂) z J₂ (fun k => J₂ ((r ≫ φ k) ≫ f₂)) (fun k => by rw [Category.assoc, Category.assoc, e₂])]`. Use `(congrArg₂ (· * ·) rfl E').trans ?_` and prove the remaining obligations. Conclude with `Units.mul_inv_cancel_left _ _`.
+-/
 theorem exists_boxSec (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (hw : w.IsGen) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) (hM : M.IsLB)
     (e₁ : ∀ k, φ k ≫ f₁ = h₁ ≫ φ₁ k) (e₂ : ∀ k, φ k ≫ f₂ = h₂ ≫ φ₂ k)
     (s₁ : LB.Sec (LB.LinComb M₁ φ₁ ε)) (s₂ : LB.Sec (LB.LinComb M₂ φ₂ ε)) :
@@ -139,6 +166,13 @@ theorem exists_boxSec (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (hw : w.IsGen) 
   refine (congrArg₂ (· * ·) rfl E').trans ?_
   exact Units.mul_inv_cancel_left _ _
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_boxSec w hw hM₁ hM₂ hM e₁ e₂ (Geo.Tor.genSec t₁ ht₁) (Geo.Tor.genSec t₂ ht₂)`. Establish `hv : ∀ (Z : Scheme.{0}) (q : Z ⟶ Y) (y : Z) J₁ J₂ J, Good M₁ y J₁ → Good M₂ y J₂ → Good M y J → (∏ a, om w y J₁ J₂ J (q ≫ φ a) ^ ε a).val * sval s q y J = (val t₁ (q ≫ h₁) y J₁ * val t₂ (q ≫ h₂) y J₂).val` using `fun Z q y J₁ J₂ J hJ₁ hJ₂ hJ => (hs Z q y J₁ J₂ J hJ₁ hJ₂ hJ).trans (congrArg₂ (· * ·) (sval_genSec t₁ ht₁ _ y hJ₁) (sval_genSec t₂ ht₂ _ y hJ₂))`. Establish `hu : ∀ c, IsUnit (s.f c)` using `fun c => Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J, hJ, e⟩` from `sval_trans hM s y c hy`. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at hM₁ y`.
+
+Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at hM₂ y`. Establish `a : IsUnit (sval s (𝟙 Y) y J)` using `isUnit_of_mul_isUnit_right ((hv _ (𝟙 Y) y J₁ J₂ J hJ₁ hJ₂ hJ).symm ▸ Units.isUnit _)`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 Y) y (LB.wchart M φ c) hy _).symm.trans e)).mpr ((Units.isUnit _).mul a)`. Use `⟨⟨fun c => (hu c).unit⟩, fun a b => Units.ext (s.compat a b), fun Z q y J₁ J₂ J hJ₁ hJ₂ hJ => Units.ext ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hv Z q y J₁ J₂ J hJ₁ hJ₂ hJ)` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul]`. Conclude with `congrArg₂ (· * ·) rfl (gs_unit q y _ (hJ.mem φ q) _).symm`.
+-/
 theorem exists_boxGen (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (hw : w.IsGen) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) (hM : M.IsLB)
     (e₁ : ∀ k, φ k ≫ f₁ = h₁ ≫ φ₁ k) (e₂ : ∀ k, φ k ≫ f₂ = h₂ ≫ φ₂ k)
     (t₁ : LB.Gen (LB.LinComb M₁ φ₁ ε)) (ht₁ : t₁.IsGen) (t₂ : LB.Gen (LB.LinComb M₂ φ₂ ε)) (ht₂ : t₂.IsGen) :
@@ -163,6 +197,11 @@ theorem exists_boxGen (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (hw : w.IsGen) 
   rw [Units.val_mul]
   exact congrArg₂ (· * ·) rfl (gs_unit q y _ (hJ.mem φ q) _).symm
 
+/- English proof (translation)
+Take `⟨t', ht', H⟩` from `exists_boxGen w hw hM₁ hM₂ hM e₁ e₂ t₁ ht₁ t₂ ht₂`. Introduce `Z r z J₁ J₂ J hJ₁ hJ₂ hJ`. Rewrite using `[gen_unique hM p e he hp ht ht' (fun y I hI => ?_) Z r z J hJ]`. Conclude with `H Z r z J₁ J₂ J hJ₁ hJ₂ hJ`. Take `⟨I₁, hI₁⟩` from `BoxFamily.exists_good_at hM₁ y`.
+
+Take `⟨I₂, hI₂⟩` from `BoxFamily.exists_good_at hM₂ y`. Conclude with `mul_left_cancel ((h y I₁ I₂ I hI₁ hI₂ hI).trans (H _ e y I₁ I₂ I hI₁ hI₂ hI).symm)`.
+-/
 theorem isBoxGen_of_section {S₀ : Scheme.{0}} (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (hw : w.IsGen) (hM₁ : M₁.IsLB)
     (hM₂ : M₂.IsLB) (hM : M.IsLB) (e₁ : ∀ k, φ k ≫ f₁ = h₁ ≫ φ₁ k) (e₂ : ∀ k, φ k ≫ f₂ = h₂ ≫ φ₂ k)
     {t : LB.Gen (LB.LinComb M φ ε)} (ht : t.IsGen) {t₁ : LB.Gen (LB.LinComb M₁ φ₁ ε)} (ht₁ : t₁.IsGen)
@@ -179,6 +218,11 @@ theorem isBoxGen_of_section {S₀ : Scheme.{0}} (w : LB.Iso M (extLB M₁ M₂ f
     obtain ⟨I₂, hI₂⟩ := BoxFamily.exists_good_at hM₂ y
     exact mul_left_cancel ((h y I₁ I₂ I hI₁ hI₂ hI).trans (H _ e y I₁ I₂ I hI₁ hI₂ hI).symm)
 
+/- English proof (translation)
+Take `⟨b₁, b₂, H, c₁, c₂⟩` from `H`. Introduce `Z r z J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `hm : r z ∈ p ⁻¹ᵁ (LB.div (extLB M₁ M₂ f₁ f₂) M).U (extIdx (f₁` using `f₁) (f₂ := f₂) (J₁ ((r ≫ p) ≫ f₁)) (J₂ ((r ≫ p) ≫ f₂)), J (r ≫ p)) := ⟨mem_extIdx (hJ₁ ((r ≫ p) ≫ f₁)) (hJ₂ ((r ≫ p) ≫ f₂)), hJ (r ≫ p)⟩`. Establish `E` using `congrArg (gm r z _) (H (J₁ ((r ≫ p) ≫ f₁)) (J₂ ((r ≫ p) ≫ f₂)) (J (r ≫ p)))`. Rewrite using `[Category.comp_id, ← val_corr hJ₁ c₁, ← val_corr hJ₂ c₂, Fintype.prod_unique, val_of b₁ r z J₁ (fun _ => J₁ ((r ≫ p) ≫ f₁)) (fun _ => by rw [Category.assoc]), val_of b₂ r z J₂ (fun _ => J₂ ((r ≫ p) ≫ f₂)) (fun _ => by rw [Category.assoc])]`.
+
+Conclude with `((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n) (gm_pull r p z _ hm _))) (gm_res r z _ hm _))).symm.trans (E.symm.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hm _) (gm_res r z _ hm _))))`.
+-/
 theorem isBoxGen_of_mapsAt (w : LB.Iso M (extLB M₁ M₂ f₁ f₂)) (p : Y ⟶ X) (n : ℤ)
     {a : LB.Gen (LB.LinComb M (K := PUnit) (fun _ => p) (fun _ => n))} {p₁ : Y ⟶ X₁} {p₂ : Y ⟶ X₂}
     {t₁ : LB.Gen (LB.LinComb M₁ (K := PUnit) (fun _ => p₁) (fun _ => n))}
@@ -220,6 +264,9 @@ end Sq
 
 section Rel
 
+/- English proof (translation)
+Establish `e : (∏ k, oM k ^ ε k) * (∏ k, W k ^ ε k) = (∏ k, W₁ k ^ ε k) * (∏ k, W₂ k ^ ε k) * ∏ k, oL k ^ ε k`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← mul_zpow, Q, mul_zpow, mul_zpow]`. Apply `mul_left_cancel (a := ∏ k, oM k ^ ε k)` to reduce the goal to its premises. Rewrite using `[HM, ← _root_.mul_assoc, e, _root_.mul_assoc, HL, H₁, H₂, _root_.mul_mul_mul_comm]`.
+-/
 theorem rel_alg {U K : Type} [CommGroup U] [Fintype K] (ε : K → ℤ) (oM oL W W₁ W₂ : K → U)
     (Q : ∀ k, oM k * W k = W₁ k * W₂ k * oL k) {vM vM₁ vM₂ vL vL₁ vL₂ : U}
     (HM : (∏ k, oM k ^ ε k) * vM = vM₁ * vM₂) (HL : (∏ k, oL k ^ ε k) * vL = vL₁ * vL₂)
@@ -298,10 +345,16 @@ def IsBoxFam₂ {D D₁ D₂ : DegPre R} (p₁ : D.P.A ⟶ D₁.P.A) (p₂ : D.P
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem thick_fstG (I : Ideal R) (e : ℕ) {G H : Over (Sp R)} (π : G ⟶ H) :
     (fstG I e G).left ≫ π.left = ((Over.pullback (thick R I e)).map π).left ≫ (fstG I e H).left :=
   (pullback.lift_fst _ _ _).symm
 
+/- English proof (translation)
+Use `UnifPullRig.mono_fstG I (e + 1) H` as an intermediate fact. Use `(cancel_mono (fstG I (e + 1) H).left).1 ?_` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (thickMap R I e G ≫ ·) (thick_fstG I (e + 1) π).symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ π.left) (UnifPullRig.thickMap_fstG I e G)).trans ((thick_fstG I e π).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))))))` and prove the remaining obligations. Conclude with `congrArg (((Over.pullback (thick R I e)).map π).left ≫ ·) (UnifPullRig.thickMap_fstG I e H)`.
+-/
 theorem thickMap_nat (I : Ideal R) (e : ℕ) {G H : Over (Sp R)} (π : G ⟶ H) :
     thickMap R I e G ≫ ((Over.pullback (thick R I (e + 1))).map π).left =
       ((Over.pullback (thick R I e)).map π).left ≫ thickMap R I e H := by
@@ -312,6 +365,9 @@ theorem thickMap_nat (I : Ideal R) (e : ℕ) {G H : Over (Sp R)} (π : G ⟶ H) 
       ((thick_fstG I e π).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))))))
   exact congrArg (((Over.pullback (thick R I e)).map π).left ≫ ·) (UnifPullRig.thickMap_fstG I e H)
 
+/- English proof (translation)
+Establish `b : D.prBe I e ≫ p = (Over.map (thick R I e)).map ((Over.pullback (thick R I e)).map p) ≫ D₁.prBe I e` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _).symm`. Rewrite using `[Category.assoc, b, ← Category.assoc, ← Functor.map_comp, h, Functor.map_comp, Category.assoc]`.
+-/
 theorem pG_pr {I : Ideal R} {e : ℕ} {D D₁ : DegPre R} {G G₁ : Over (Sp R)} {p : D.P.A ⟶ D₁.P.A} {π : G ⟶ G₁}
     {q : thickObj R I e G ⟶ thickObj R I e D.P.A} {q₁ : thickObj R I e G₁ ⟶ thickObj R I e D₁.P.A}
     (h : q ≫ (Over.pullback (thick R I e)).map p = (Over.pullback (thick R I e)).map π ≫ q₁) :
@@ -322,10 +378,18 @@ theorem pG_pr {I : Ideal R} {e : ℕ} {D D₁ : DegPre R} {G G₁ : Over (Sp R)}
     Over.OverMorphism.ext (pullback.lift_fst _ _ _).symm
   rw [Category.assoc, b, ← Category.assoc, ← Functor.map_comp, h, Functor.map_comp, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[cP, cP, Category.assoc, hc]`.
+-/
 theorem cPoint_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} {q : D.X → D₁.X} (hc : ∀ x, D.c x ≫ p = D₁.c (q x))
     (T : Over (Sp R)) (χ : D.X) : cP D T χ ≫ p = cP D₁ T (q χ) := by
   rw [cP, cP, Category.assoc, hc]
 
+/- English proof (translation)
+Use `Eq.trans ?_ (WeightPf.Oφ_comp ρ P₁ (q x) κ).symm` and prove the remaining obligations. Rewrite using `[← hp]`. Use `fin_cases κ`. Use `congrArg (fun m : T ⟶ D₁.P.A => m.left) (?_ : (P * cP D _ x) ≫ p = (P ≫ p) * cP D₁ _ (q x))` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, cPoint_pr hc]`.
+
+Conclude with `congrArg (fun m : T ⟶ D₁.P.A => m.left) (cPoint_pr hc _ x)`. Both sides reduce to the same expression. Conclude with `congrArg (fun m : T ⟶ D₁.P.A => m.left) (MonObj.one_comp p)`.
+-/
 theorem Oφ_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X → D₁.X} (hc : ∀ x, D.c x ≫ p = D₁.c (q x))
     {T T₁ : Over (Sp R)} {P : T ⟶ D.P.A} {P₁ : T₁ ⟶ D₁.P.A} {ρ : T ⟶ T₁} (hp : P ≫ p = ρ ≫ P₁) (x : D.X) (κ : Fin 4) :
     D.Oφ P x κ ≫ p.left = ρ.left ≫ D₁.Oφ P₁ (q x) κ := by
@@ -338,6 +402,11 @@ theorem Oφ_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.
   · rfl
   · exact congrArg (fun m : T ⟶ D₁.P.A => m.left) (MonObj.one_comp p)
 
+/- English proof (translation)
+Use `fin_cases a`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Use `congrArg (fun m : D.P.A ⟶ D₁.P.A => m.left) (?_ : (𝟙 _ * cP D _ α) ≫ p = p ≫ (𝟙 _ * cP D₁ _ (q α)))` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, cPoint_pr hc, comp_cP, Category.id_comp, Category.comp_id]`. Conclude with `congrArg (fun m : D.P.A ⟶ D₁.P.A => m.left) ((cPoint_pr hc _ α).trans (comp_cP D₁ p _).symm)`.
+
+Conclude with `congrArg (fun m : D.P.A ⟶ D₁.P.A => m.left) ((MonObj.one_comp p).trans (MonObj.comp_one (M := D₁.P.A) p).symm)`.
+-/
 theorem famφB_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X → D₁.X}
     (hc : ∀ x, D.c x ≫ p = D₁.c (q x)) (α : D.X) (a : Fin 4) :
     D.famφB α a ≫ p.left = p.left ≫ D₁.famφB (q α) a := by
@@ -350,6 +419,11 @@ theorem famφB_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q :
   · exact congrArg (fun m : D.P.A ⟶ D₁.P.A => m.left)
       ((MonObj.one_comp p).trans (MonObj.comp_one (M := D₁.P.A) p).symm)
 
+/- English proof (translation)
+Establish `b : DegPre.prB D F ≫ p = (TF (R` using `R) F ◁ p) ≫ DegPre.prB D₁ F := (whiskerLeft_snd _ _).symm`. Use `fin_cases a`. Conclude with `congrArg (fun m => m.left) b`. Use `congrArg (fun m : DegPre.BF D F ⟶ D₁.P.A => m.left) (?_ : (DegPre.prB D F * cP D _ α) ≫ p = (TF (R := R) F ◁ p) ≫ (DegPre.prB D₁ F * cP D₁ _ (q α)))` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, MonObj.comp_mul, b, cPoint_pr hc, comp_cP]`.
+
+Conclude with `congrArg (fun m => m.left) ((cPoint_pr hc (DegPre.BF D F) α).trans (comp_cP D₁ (TF (R := R) F ◁ p) _).symm)`. Conclude with `congrArg (fun m : DegPre.BF D F ⟶ D₁.P.A => m.left) ((MonObj.one_comp p).trans (MonObj.comp_one (M := D₁.P.A) (TF (R := R) F ◁ p)).symm)`.
+-/
 theorem famφ_pr {D D₁ : DegPre R} {p : D.P.A ⟶ D₁.P.A} [IsMonHom p] {q : D.X → D₁.X}
     (hc : ∀ x, D.c x ≫ p = D₁.c (q x)) (F : Type) [Field F] [Algebra (FractionRing R) F] (α : D.X) (a : Fin 4) :
     DegPre.famφ D F α a ≫ p.left = (TF (R := R) F ◁ p).left ≫ DegPre.famφ D₁ F (q α) a := by

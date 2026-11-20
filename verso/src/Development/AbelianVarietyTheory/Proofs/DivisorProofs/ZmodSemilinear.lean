@@ -60,6 +60,9 @@ def unitSemi (I : Cx R) : SemiMap I ((extCx φ).obj I) where
     have h := (adj φ).unit.naturality (I.d s t)
     exact (congrArg (fun f : I.X s ⟶ (ext φ ⋙ restr φ).obj (I.X t) => ModuleCat.Hom.hom (f.hom.app (op U)) a) h).symm
 
+/- English proof (translation)
+Establish `h` using `(adj φ).homEquiv_unit (I.X s) (J.X s) (((adj φ).homEquiv _ _).symm (semiHom σ hl s))`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Use `Eq.trans ?_ ((congrArg (fun f => (f.hom.app (op U)).hom a) h).trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem semi_factor {I : Cx R} {J : Cx S} (σ : SemiMap I J)
     (hl : ∀ (U : Scheme.{0}) (s : ℤ) (r : ULift.{1} R) (a : Sec (I.X s) U), σ.app U s (r • a) = liftHom φ r • σ.app U s a)
     (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) :
@@ -70,6 +73,9 @@ theorem semi_factor {I : Cx R} {J : Cx S} (σ : SemiMap I J)
   · rfl
   · rfl
 
+/- English proof (translation)
+Establish `hr : r = ((r.down.val : ℕ) : ULift.{1} (ZMod Q))` using `ULift.ext _ _ (by first`. Consider the case `rw [ULift.natCast_down, ZMod.natCast_zmod_val]`. Consider the case `rw [ULift.down_natCast, ZMod.natCast_zmod_val])`. Rewrite using `[hr, map_natCast, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul]`.
+-/
 theorem zmod_semilinear {Q q : ℕ} [NeZero Q] (h : q ∣ Q) {I : Cx (ZMod Q)} {J : Cx (ZMod q)} (σ : SemiMap I J)
     (U : Scheme.{0}) (s : ℤ) (r : ULift.{1} (ZMod Q)) (a : Sec (I.X s) U) :
     σ.app U s (r • a) = liftHom (ZMod.castHom h (ZMod q)) r • σ.app U s a := by

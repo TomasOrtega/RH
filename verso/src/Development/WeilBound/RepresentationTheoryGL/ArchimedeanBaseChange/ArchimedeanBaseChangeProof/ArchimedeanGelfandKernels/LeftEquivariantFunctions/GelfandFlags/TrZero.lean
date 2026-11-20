@@ -4,6 +4,15 @@ noncomputable section
 
 namespace PositivityTheory.RgBcC.VC
 
+/- English proof (translation)
+Introduce `V _ _ _ B T e i c hc hei heB hTe`. Set `t : (V →L[ℂ] V) → ℂ` to `fun A => LinearMap.trace ℂ V (A : V →ₗ[ℂ] V)`. Establish `tadd : ∀ A A' : V →L[ℂ] V, t (A + A') = t A + t A'` using `fun A A' => by`. Simplify using `only [t, ContinuousLinearMap.coe_add, map_add]`. Establish `tneg : ∀ A : V →L[ℂ] V, t (-A) = -t A` using `fun A => by`.
+
+Simplify using `only [t, ContinuousLinearMap.coe_neg, map_neg]`. Establish `tsmul : ∀ (a : ℂ) (A : V →L[ℂ] V), t (a • A) = a * t A` using `fun a A => by`. Simplify using `only [t, ContinuousLinearMap.coe_smul, map_smul, smul_eq_mul]`. Establish `tcomm : ∀ A A' : V →L[ℂ] V, t (A * A') = t (A' * A)` using `fun A A' => LinearMap.trace_mul_comm ℂ (A : V →ₗ[ℂ] V) (A' : V →ₗ[ℂ] V)`. Use `set X := B * T with hXdef`.
+
+Establish `hX : e * X = -(X * e)`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : X * (e * i + i * e) = c • X` using `by rw [hei, mul_smul_comm, mul_one]`. Establish `key : c * t X = 0`. Rewrite using `[← tsmul, ← h1, mul_add, tadd, ← mul_assoc, ← mul_assoc, tcomm (X * i) e, ← mul_assoc, hX, neg_mul, tneg, add_neg_cancel]`.
+
+Conclude with `(mul_eq_zero.mp key).resolve_left hc`.
+-/
 theorem trZero : TrZero := by
   intro V _ _ _ B T e i c hc hei heB hTe
   let t : (V →L[ℂ] V) → ℂ := fun A => LinearMap.trace ℂ V (A : V →ₗ[ℂ] V)

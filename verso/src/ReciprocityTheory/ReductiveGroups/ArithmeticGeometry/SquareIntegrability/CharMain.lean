@@ -7,6 +7,13 @@ noncomputable section
 
 namespace ChA
 
+/- English proof (translation)
+Take `⟨n, ω, hωB, hspan⟩` from `omega_exists' (E := E)`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' (K := ℚ) (fun j => (ω j : E))`. Establish `htop : Submodule.span ℚ (Set.range ((fun j => (ω j : E)) ∘ a)) = ⊤`. Rewrite using `[hsp, eq_top_iff, ← (NumberField.integralBasis E).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Rewrite using `[NumberField.integralBasis_apply]`. Conclude with `hspan _`. Use `haveI : Finite κ := Finite.of_injective a ha`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = Module.finrank ℚ E`.
+
+Rewrite using `[← finrank_span_eq_card hli, htop, finrank_top]`. Set `e : Fin (Module.finrank ℚ E) ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Conclude with `⟨fun j => ω (a (e j)), hli.comp e e.injective, fun j τ => hωB _ τ⟩`.
+-/
 lemma omega_fin {E : Type} [Field E] [NumberField E] [IsCMField E] :
     ∃ ω : Fin (Module.finrank ℚ E) → 𝓞 E, LinearIndependent ℚ (fun j => (ω j : E)) ∧
       ∀ j (τ : E →+* ℂ), ‖τ (ω j : E)‖ ≤ omStar (E := E) := by
@@ -25,6 +32,73 @@ lemma omega_fin {E : Type} [Field E] [NumberField E] [IsCMField E] :
   exact ⟨fun j => ω (a (e j)), hli.comp e e.injective, fun j τ => hωB _ τ⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `E _ _ _ X DF P I hI σ ρ hρ`. Establish `hNP : Ext.NearestPlane` using `hx.2.2.2.2.1`. Take `⟨ω, hω, hωB⟩` from `omega_fin (E := E)`. Establish `hf1n : 1 ≤ PT.f E` using `le_trans (Nat.one_le_pow _ _ P.hm1) P.hmf`. Establish `hF1 : (1 : ℝ) ≤ PT.f E` using `by exact_mod_cast hf1n`.
+
+Establish `hm1 : (1 : ℝ) ≤ P.m` using `by exact_mod_cast P.hm1`. Establish `hrd` using `P.hrd`. Establish `hmf : ((P.m : ℝ)) ^ 4 ≤ PT.f E` using `by exact_mod_cast P.hmf`. Establish `hf2` using `P.hf2`. Establish `hdR : (dstar (E` using `E) P.m : ℝ) = 2 * PT.f E * P.m := by simp [dstar]`.
+
+Establish `hd2 : (2 : ℝ) ≤ dstar (E` using `E) P.m := by rw [hdR]; nlinarith`. Establish `hFd : (PT.f E : ℝ) ≤ dstar (E` using `E) P.m := by rw [hdR]; nlinarith`. Establish `hΩ2 : omStar (E` using `E) ^ 2 = 4 * (PT.f E : ℝ) ^ 3 * PT.rd E ^ 2 := by`. Rewrite using `[omStar, mul_pow, mul_pow, ← Real.rpow_natCast ((PT.f E : ℝ) ^ ((3 : ℝ) / 2)), ← Real.rpow_mul (by positivity)]`. Evaluate the numerical expressions.
+
+Establish `hK0 : (0 : ℝ) < (dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E := by positivity`. Establish `hK : (dstar (E` using `E) P.m : ℝ) * omStar (E := E) ^ 2 / 4 ≤ ((dstar (E := E) P.m : ℝ) ^ 2 * PT.rd E) ^ 2 := by`. Rewrite using `[hΩ2]`. Establish `h3 : (PT.f E : ℝ) ^ 3 ≤ (dstar (E` using `E) P.m : ℝ) ^ 3 := pow_le_pow_left₀ (by positivity) hFd 3`. Establish `h4 : 0 ≤ (dstar (E` using `E) P.m : ℝ) * PT.rd E ^ 2 := by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hD : Module.finrank ℝ (IR I) ≤ dstar (E` using `E) P.m := by`. Take `⟨ρ', hρ'm, hρ'⟩` from `hI.rank`. Rewrite using `[hρ', dstar, mul_assoc, mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ hρ'm)`.
+
+Take `⟨xb, ub, hxub, hspan, hbnd⟩` from `exists_short_real_span hI`. Establish `hex : ∀ W : Submodule ℂ (Vsp X.dim), Module.finrank ℂ W < ρ → ∃ y ∈ Xg X.L I, prj σ y ∉ W ∧ ‖y‖ ^ 2 ≤ PT.rd E ^ 2 * (dstar (E` using `E) P.m : ℝ) ^ 4 * P.ph / (2 * PT.f E) := by`. Introduce `W hW`. Take `⟨j, hj⟩` from `exists_out (by exact hρ) ub hspan W hW`. Conclude with `⟨ub j, ⟨xb j, (hxub j).1, (hxub j).2⟩, hj, hbnd j⟩`.
+
+Establish `hρm : ρ ≤ P.m` using `rho_le hI ω hω (by exact hρ)`. Establish `hρmR : (ρ : ℝ) ≤ P.m` using `by exact_mod_cast hρm`. Take `⟨χ, w, R, μ, ε, hinv⟩` from `inv_build hNP X.stable hI.stable hI.iso (sep_X hI) ω hω (omStar (E := E)) hωB (dstar (E := E) P.m) hD σ ρ _ _ hK0 hK hex ρ le_rfl`. Take `⟨hχX, hwW, hort, hdec, hεz, hεn, hRb, hred, hflag, hμB⟩` from `hinv`. Establish `hph : 0 ≤ P.ph`.
+
+Rewrite using `[Par.ph, PT.ph]`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`. Establish `hs2 : Real.sqrt 2 < 1.415` using `by rw [Real.sqrt_lt' (by norm_num)]; norm_num`.
+
+Establish `hcmp : ∀ s : Fin ρ, 30 ≤ 30 * (ρ : ℝ) ^ 2 ∧ Real.sqrt 2 * (30 * (ρ : ℝ) ^ 2 + 1) + 1 ≤ 3 / 2 * (30 * (ρ : ℝ) ^ 2)`. Introduce `s`. Establish `: (1 : ℝ) ≤ ρ` using `by exact_mod_cast (show 1 ≤ ρ by have := s.2; omega)`. Apply the tactic sequence `constructor <;> nlinarith [Real.sqrt_nonneg 2]`. Establish `hχn : ∀ s : Fin ρ, ‖χ s‖ ≤ 3 / 2 * (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) * μ s := by`.
+
+Introduce `s`. Establish `h1` using `(hRb s s.2).2`. Establish `h2` using `(hcmp s).2`. Establish `hμ` using `(hred s s.2).1`. Establish `h3 : 0 ≤ ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) * μ s := by positivity`.
+
+Use `mul_le_mul_of_nonneg_right h2 h3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `⟨fun s => w s, fun s => (hχX s s.2).choose, fun s => χ s, fun s => R s, fun s s' => ε s s', ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Use `Wk_le hI.stable σ χ (s + 1) (fun j hj => hχX j (by omega)) (hwW s s.2)` as an intermediate fact.
+
+Conclude with `⟨(Submodule.mem_inf.mp this).2, (Submodule.mem_inf.mp this).1⟩`. Introduce `s s' show Hf (w s) (w s') = _`. Rewrite using `[Hf_eq_inner, hort s' s'.2 s s.2]`. Distinguish the cases in `h : s = s'`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => h (Fin.ext e).symm), if_neg h]`. Introduce `s`. Conclude with `(hχX s s.2).choose_spec`. Introduce `s s' h`.
+
+Conclude with `hεz s s.2 s' (Fin.lt_def.mp h).le`. Introduce `s`. Establish `hsum : ∑ s' : Fin ρ, ‖ε s s'‖ ^ 2 = ∑ i ∈ Finset.range s, ‖ε s i‖ ^ 2`. Rewrite using `[show (∑ s' : Fin ρ, ‖ε s s'‖ ^ 2) = ∑ i ∈ Finset.range ρ, ‖ε s i‖ ^ 2 from Fin.sum_univ_eq_sum_range (fun i => ‖ε s i‖ ^ 2) ρ]`. Use `symm`.
+
+Use `Finset.sum_subset (Finset.range_mono s.2.le) fun i _ hi => ?_` and prove the remaining obligations. Rewrite using `[hεz s s.2 i (by simpa using hi), norm_zero]; norm_num`. Establish `hb` using `hεn s s.2`. Establish `hA` using `(hcmp s).1`. Establish `hq : 0 ≤ 1 / (30 * (ρ : ℝ) ^ 2)` using `by positivity`.
+
+Prove the components needed by the constructor for the conclusion. Use `show Real.sqrt (∑ s' : Fin ρ, ‖ε s s'‖ ^ 2) ≤ _`. Rewrite using `[hsum, ← Real.sqrt_sq hq]`. Conclude with `Real.sqrt_le_sqrt hb`. Use `show ∑ s' : Fin ρ, ‖ε s s'‖ ≤ _`.
+
+Establish `hcs` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun s' : Fin ρ => ‖ε s s'‖)`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at hcs`. Rewrite `hcs` using `[hsum]`. Establish `h0 : 0 ≤ ∑ s' : Fin ρ, ‖ε s s'‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `h1 : (∑ s' : Fin ρ, ‖ε s s'‖) ^ 2 ≤ (Real.sqrt ρ / (30 * (ρ : ℝ) ^ 2)) ^ 2`.
+
+Rewrite using `[div_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb0 : 0 ≤ Real.sqrt ρ / (30 * (ρ : ℝ) ^ 2)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Introduce `s v hv`.
+
+Establish `hR : (R s : ℂ) ≠ 0`. Establish `h1` using `(hRb s s.2).1`. Establish `hμ` using `(hred s s.2).1`. Establish `hA` using `(hcmp s).1`. Establish `h2 : 0 < (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) * μ s := mul_pos (mul_pos (by linarith) hK0) (by linarith)`.
+
+Establish `: 0 < R s` using `lt_of_lt_of_le h2 h1`. Conclude with `this.ne'` after adjusting the coercions. Use `show Hf v (χ s) / (R s : ℂ) = Hf v (w s) + ∑ s' : Fin ρ, ε s s' * Hf v (w s')`. Rewrite using `[← Hf_prj_right hv (χ s), hdec s s.2]`. Simplify using `only [Hf_eq_inner, inner_smul_left, inner_add_left, sum_inner, Complex.conj_ofReal, Complex.conj_conj]`.
+
+Rewrite using `[mul_div_cancel_left₀ _ hR]`. Use `congr 1`. Rewrite using `[show (∑ s' : Fin ρ, ε s s' * inner ℂ (w s') v) = ∑ i ∈ Finset.range ρ, ε s i * inner ℂ (w i) v from Fin.sum_univ_eq_sum_range (fun i => ε s i * inner ℂ (w i) v) ρ]`. Use `Finset.sum_subset (Finset.range_mono s.2.le) fun i _ hi => ?_` and prove the remaining obligations. Rewrite using `[hεz s s.2 i (by simpa using hi), zero_mul]`.
+
+Introduce `s show ‖χ s‖ ≤ 1.5 * R s ∧ 1 ≤ 2 * Real.pi * R s`. Establish `hRs` using `(hRb s s.2).1`. Establish `hμ` using `(hred s s.2).1`. Establish `hA` using `(hcmp s).1`. Establish `hn` using `hχn s`.
+
+Establish `hK1 : 1 ≤ ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) := by nlinarith`. Establish `h1 : 30 ≤ (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) := by nlinarith`. Establish `hX : 30 ≤ (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) * μ s := by nlinarith`. Establish `e15 : (1.5 : ℝ) = 3 / 2` using `by norm_num`. Rewrite using `[e15]`.
+
+Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[Real.pi_gt_three]`. Introduce `s y hy uy hU show |2 * inner ℝ (χ s) uy| ≤ M1 (E := E) P.m * ‖uy‖ ^ 2`. Establish `huy : uy ∈ Xg X.L I` using `⟨y, hy, hU⟩`.
+
+Establish `hA` using `(hcmp s).1`. Establish `hM : 3 * (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) ≤ M1 (E := E) P.m := by`. Rewrite using `[M1]`. Establish `h1 : (ρ : ℝ) ^ 2 ≤ (P.m : ℝ) ^ 2` using `pow_le_pow_left₀ (Nat.cast_nonneg _) hρmR 2`. Establish `h2` using `mul_le_mul_of_nonneg_right h1 hK0.le`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hK1 : 1 ≤ ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) := by nlinarith`. Establish `hM1 : 1 ≤ M1 (E` using `E) P.m := by nlinarith`. Establish `e1 : |2 * inner ℝ (χ s) uy| ≤ 2 * (‖χ s‖ * ‖uy‖)`. Rewrite using `[abs_mul, abs_two]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (abs_real_inner_le_norm _ _) (by norm_num)`. Break down `(hred s s.2).2 uy huy with h | h` into its components or cases. Use `mul_le_mul_of_nonneg_right hM1 (sq_nonneg ‖uy‖)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn` using `hχn s`.
+
+Establish `h2 : ‖χ s‖ ≤ 3 / 2 * (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) * ‖uy‖ := le_trans hn (mul_le_mul_of_nonneg_left h (by positivity))`. Establish `h3` using `mul_le_mul_of_nonneg_right h2 (norm_nonneg uy)`. Establish `h4` using `mul_le_mul_of_nonneg_right hM (sq_nonneg ‖uy‖)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `s show ‖χ s‖ ^ 2 ≤ Cchi (E := E) P.m * P.ph`.
+
+Establish `hn` using `hχn s`. Establish `hμ` using `(hred s s.2).1`. Establish `hB` using `hμB s s.2`. Establish `h0 : 0 ≤ 3 / 2 * (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E) := by positivity`. Establish `h1 : ‖χ s‖ ^ 2 ≤ (3 / 2 * (30 * (ρ : ℝ) ^ 2) * ((dstar (E` using `E) P.m : ℝ) ^ 2 * PT.rd E)) ^ 2 * (PT.rd E ^ 2 * (dstar (E := E) P.m : ℝ) ^ 4 * P.ph / (2 * (PT.f E : ℝ))) := by`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hFpos : (0 : ℝ) < (PT.f E : ℝ)` using `by linarith`. Establish `hd4 : (dstar (E` using `E) P.m : ℝ) ^ 4 ≤ 8 * (PT.f E : ℝ) * PT.rd E ^ 3 := by`. Rewrite using `[hdR]`. Establish `h5 : 16 * (PT.f E : ℝ) ^ 4 * (P.m : ℝ) ^ 4 ≤ 16 * (PT.f E : ℝ) ^ 5`.
+
+Use `mul_le_mul_of_nonneg_left hmf (by positivity : (0 : ℝ) ≤ 16 * (PT.f E : ℝ) ^ 4)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h6 : (PT.f E : ℝ) ^ 4 ≤ PT.rd E ^ 2`. Use `pow_le_pow_left₀ (by positivity) hf2 2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h7 : 16 * (PT.f E : ℝ) ^ 4 ≤ PT.rd E * PT.rd E ^ 2` using `by nlinarith`. Establish `h8a` using `mul_le_mul_of_nonneg_left h7 hFpos.le`. Establish `h8b : 0 ≤ (PT.f E : ℝ) * PT.rd E ^ 3` using `by positivity`. Establish `h8 : 16 * (PT.f E : ℝ) ^ 5 ≤ 8 * (PT.f E : ℝ) * PT.rd E ^ 3` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hρ4 : (ρ : ℝ) ^ 4 ≤ (P.m : ℝ) ^ 4` using `pow_le_pow_left₀ (Nat.cast_nonneg _) hρmR 4`. Establish `hdF : (dstar (E` using `E) P.m : ℝ) ^ 4 / (PT.f E : ℝ) ≤ 8 * PT.rd E ^ 3 := by rw [div_le_iff₀ hFpos]; linarith`. Establish `hC : 0 ≤ 2025 / 2 * (dstar (E` using `E) P.m : ℝ) ^ 4 * PT.rd E ^ 4 * P.ph := mul_nonneg (by positivity) hph`. Use `h1.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem char_main (hx : Ext.All) : CharStatement := by
   intro E _ _ _ X DF P I hI σ ρ hρ
   classical

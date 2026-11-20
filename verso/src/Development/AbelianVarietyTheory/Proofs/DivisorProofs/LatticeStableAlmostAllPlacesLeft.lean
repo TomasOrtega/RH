@@ -9,6 +9,17 @@ open scoped TensorProduct
 open Matrix
 namespace GlobalTheory.AdelMatLat
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hL.span_eq_top]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨d₁, h₁, hx⟩` from `hx`. Take `⟨d₂, h₂, hy⟩` from `hy`. Use `⟨d₁ * d₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Establish `: (d₁ * d₂) • (x + y) = d₂ • (d₁ • x) + d₁ • (d₂ • y)`. Rewrite using `[smul_add, mul_comm, mul_smul, mul_comm, mul_smul]`.
+
+Rewrite using `[this]`. Conclude with `add_mem (zsmul_mem hx _) (zsmul_mem hy _)`. Consider the case `smul e x _ hx`. Take `⟨d, hd, hx⟩` from `hx`. Take `⟨m, hm, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e}`.
+
+Set `o : 𝓞 E` to `⟨m • e, (hint e (Finset.mem_singleton_self e) :)⟩`. Use `⟨m * d, mul_ne_zero hm hd, ?_⟩` and prove the remaining obligations. Establish `: (m * d) • (e • x) = o • (d • x)`. Establish `ho : algebraMap (𝓞 E) E o = m • e` using `rfl`. Rewrite using `[← algebraMap_smul E o (d • x), ho, smul_assoc, smul_comm e d x, mul_smul]`.
+
+Rewrite using `[this]`. Conclude with `L.smul_mem o hx`.
+-/
 theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) (v : Fin n → E) : ∃ d : ℤ, d ≠ 0 ∧ d • v ∈ L := by
   have hv : v ∈ Submodule.span E (L : Set (Fin n → E)) := by rw [hL.span_eq_top]; trivial
@@ -34,6 +45,13 @@ theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : 
     rw [this]
     exact L.smul_mem o hx
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hL.fg`. Use `choose d hd hdm using fun g : Fin n → E => exists_int_smul_mem L hL (N *ᵥ g)`. Use `⟨∏ g ∈ s, d g, Finset.prod_ne_zero_iff.2 fun g _ => hd g, ?_⟩` and prove the remaining obligations. Set `f : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)` to `((∏ g ∈ s, d g) • N.mulVecLin).restrictScalars (𝓞 E)`. Establish `hf : ∀ x, f x = (∏ g ∈ s, d g) • (N *ᵥ x)` using `fun x => rfl`.
+
+Establish `hle : Submodule.span (𝓞 E) (s : Set (Fin n → E)) ≤ L.comap f`. Rewrite using `[Submodule.span_le]`. Introduce `g hg`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, hf]`. Rewrite using `[← Finset.mul_prod_erase s d hg, mul_comm, mul_smul]`.
+
+Conclude with `zsmul_mem (hdm g) _`. Introduce `x hx`. Rewrite `hx` using `[← hs]`. Use `hle hx` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, hf]`. Then use the resulting hypothesis.
+-/
 theorem exists_int_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (hL : L.IsLattice E) (N : Matrix (Fin n) (Fin n) E) : ∃ D : ℤ, D ≠ 0 ∧ ∀ x ∈ L, D • (N *ᵥ x) ∈ L := by
   obtain ⟨s, hs⟩ := hL.fg
@@ -53,11 +71,25 @@ theorem exists_int_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L 
   have := hle hx
   rwa [Submodule.mem_comap, hf] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply, map_zsmul, algebraMap_smul, Int.cast_smul_eq_zsmul]`.
+-/
 theorem incM_zsmul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m k : Type}
     (D : ℤ) (V : Matrix m k E) : incM F (D • V) = (algebraMap F (AF F) (D : F)) • incM F V := by
   ext i j
   simp only [incM, Matrix.map_apply, Matrix.smul_apply, map_zsmul, algebraMap_smul, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Introduce `γ hγ`. Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hint, x, hx, y, hy, rfl⟩` from `hz`. Establish `hDF : (D : F) ≠ 0` using `Int.cast_ne_zero.2 hD0`.
+
+Establish `heq : (c • incM F N) * (a • incM F (Matrix.vecMulVec x y)) = ((c * algebraMap F (AF F) (D : F)⁻¹) * a) • incM F (Matrix.vecMulVec (D • (N *ᵥ x)) y)`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.smul_vecMulVec, incM_zsmul, smul_smul, ← Matrix.mul_vecMulVec]`. Establish `hm : incM F (N * Matrix.vecMulVec x y) = incM F N * incM F (Matrix.vecMulVec x y)`. Simplify using `only [incM, Matrix.map_mul]`. Rewrite using `[hm]`.
+
+Use `congr 1`. Rewrite using `[mul_right_comm, mul_assoc c, ← map_mul, inv_mul_cancel₀ hDF, map_one, mul_one]`. Rewrite using `[heq]`. Use `AddSubgroup.subset_closure ⟨_, ?_, ?_, _, hD x hx, y, hy, rfl⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u a, ha u hu, mul_zero]`. Rewrite using `[map_mul]`. Conclude with `mul_mem hw hint`. Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem smul_incM_mul_stable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : Spc F E n) (Y : Spc F E d) (c : AF F) (N : Matrix (Fin n) (Fin n) E) (D : ℤ) (hD0 : D ≠ 0)
     (hD : ∀ x ∈ X.L, D • (N *ᵥ x) ∈ X.L) (w : Pl F)
@@ -87,10 +119,16 @@ theorem smul_incM_mul_stable {F E : Type} [Field F] [NumberField F] [Field E] [N
   | add x y _ _ hx hy => rw [Matrix.mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [Matrix.mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_cofinite.1 c.2.2`.
+-/
 theorem finite_not_integral {F : Type} [Field F] [NumberField F] (c : AF F) :
     {w : Pl F | evFin F w c ∉ w.adicCompletionIntegers F}.Finite :=
   Filter.eventually_cofinite.1 c.2.2
 
+/- English proof (translation)
+Take `⟨D, hD0, hD⟩` from `exists_int_mulVec_mem X.L hX N`. Use `(finite_not_integral (c * algebraMap F (AF F) (D : F)⁻¹)).subset ?_` and prove the remaining obligations. Introduce `w hw hint`. Conclude with `hw (smul_incM_mul_stable X Y c N D hD0 hD w hint)`.
+-/
 theorem finite_bad_smul_incM {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : Spc F E n) (Y : Spc F E d) (hX : X.L.IsLattice E) (c : AF F) (N : Matrix (Fin n) (Fin n) E) :
     {w : Pl F | ¬ ∀ γ ∈ latAtV X Y w, (c • incM F N) * γ ∈ latAtV X Y w}.Finite := by
@@ -99,6 +137,19 @@ theorem finite_bad_smul_incM {F E : Type} [Field F] [NumberField F] [Field E] [N
   intro w hw hint
   exact hw (smul_incM_mul_stable X Y c N D hD0 hD w hint)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d X Y hX M`. Set `bad : Matrix (Fin n) (Fin n) (AE F E) → Set (Pl F)` to `fun M => {w | ¬ ∀ γ ∈ latAtV X Y w, M * γ ∈ latAtV X Y w}`. Establish `hadd : ∀ M M', (bad M).Finite → (bad M').Finite → (bad (M + M')).Finite`. Introduce `M M' h h'`. Use `(h.union h').subset fun w hw => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, not_or, bad, Set.mem_setOf_eq, not_not] at hc hw`. Conclude with `hw fun γ hγ => by rw [Matrix.add_mul]; exact add_mem (hc.1 γ hγ) (hc.2 γ hγ)`. Establish `hzero : (bad 0).Finite`. Use `Set.finite_empty.subset fun w hw => hw fun γ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.zero_mul]`. Conclude with `zero_mem _`. Establish `hsingle : ∀ i j (t : AE F E), (bad (Matrix.single i j t)).Finite`. Introduce `i j t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `hzero`. Consider the case `tmul a e`. Establish `h : Matrix.single i j (a ⊗ₜ[F] e) = a • incM F (Matrix.single i j e)`. Use extensionality with `k l`.
+
+Simplify using `only [incM, Matrix.map_apply, Matrix.smul_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [inclR, TensorProduct.smul_tmul']`. Rewrite using `[h]`. Conclude with `finite_bad_smul_incM X Y hX a _`. Consider the case `add t t' ht ht' => rw [Matrix.single_add]`.
+
+Conclude with `hadd _ _ ht ht'`. Use `show (bad M).Finite`. Rewrite using `[Matrix.matrix_eq_sum_single M]`. Conclude with `Finset.sum_induction _ (fun M => (bad M).Finite) hadd hzero fun i _ => Finset.sum_induction _ (fun M => (bad M).Finite) hadd hzero fun j _ => hsingle i j _`.
+-/
 theorem almost_all_stable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ)
     (X : Spc F E n) (Y : Spc F E d), X.L.IsLattice E → ∀ M : Matrix (Fin n) (Fin n) (AE F E),
     Set.Finite {w : Pl F | ¬ ∀ γ ∈ latAtV X Y w, M * γ ∈ latAtV X Y w} := by

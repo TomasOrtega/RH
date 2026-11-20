@@ -14,6 +14,9 @@ section Gen
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Simplify using `only [sesq, Matrix.mul_apply, dotProduct, mulVec, transpose_apply, map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem gram_apply (c : R →+* R) (j : Matrix (Fin d) (Fin d) R) {m n : Type} [Fintype m] [Fintype n]
     (A : Matrix (Fin d) m R) (B : Matrix (Fin d) n R) (a : m) (b : n) :
     (Aᵀ * j * B.map c) a b = sesq c j (fun i => A i a) (fun i => B i b) := by
@@ -27,6 +30,21 @@ def colsMat {R : Type} {d d₁ : ℕ} (x y : Fin d → R) (ι : Matrix (Fin d) (
     Matrix (Fin d) (Fin d₁ ⊕ Fin 2) R :=
   Matrix.of fun i a => Sum.elim (fun k => ι i k) (fun l => ![x i, y i] l) a
 
+/- English proof (translation)
+Use `set P := colsMat x y ι with hP`. Establish `hyx : sesq c j y x = -1` using `by rw [sesq_skew hcc hj, hxy, map_one]`. Establish `hcol : ∀ k, (fun i => ι i k) = ι *ᵥ Pi.single k 1` using `fun k => by`. Rewrite using `[mulVec_single_one]`. Both sides reduce to the same expression.
+
+Establish `hιx : ∀ k, sesq c j (fun i => ι i k) x = 0` using `fun k => by rw [hcol]; exact (hι _).1`. Establish `hιy : ∀ k, sesq c j (fun i => ι i k) y = 0` using `fun k => by rw [hcol]; exact (hι _).2`. Establish `hxι : ∀ k, sesq c j x (fun i => ι i k) = 0` using `fun k => by rw [sesq_skew hcc hj, hιx, map_zero, neg_zero]`. Establish `hyι : ∀ k, sesq c j y (fun i => ι i k) = 0` using `fun k => by rw [sesq_skew hcc hj, hιy, map_zero, neg_zero]`. Establish `hG : Pᵀ * j * P.map c = fromBlocks j₁ 0 0 !![0, 1; -1, 0]`.
+
+Use extensionality with `a b`. Rewrite using `[gram_apply]`. Apply the tactic sequence `rcases a with k | l <;> rcases b with k' | l'`. Simplify using `only [hP, colsMat, of_apply, Sum.elim_inl, fromBlocks_apply₁₁, ← hj₁, gram_apply]`. Apply the tactic sequence `simp only [fromBlocks_apply₁₂, Matrix.zero_apply] fin_cases l' <;> simp [hP, colsMat, hιx, hιy]`.
+
+Apply the tactic sequence `simp only [fromBlocks_apply₂₁, Matrix.zero_apply] fin_cases l <;> simp [hP, colsMat, hxι, hyι]`. Apply the tactic sequence `fin_cases l <;> fin_cases l' <;> simp [hP, colsMat, hxx, hyy, hxy, hyx]`. Establish `hGdet : IsUnit (Pᵀ * j * P.map c).det`. Rewrite using `[hG, det_fromBlocks_zero₂₁, det_fin_two_of]`. Simplify using `using hdet`.
+
+Set `e : Fin d₁ ⊕ Fin 2 ≃ Fin (d₁ + 2)` to `finSumFinEquiv`. Set `Q : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) R` to `P.submatrix id e.symm`. Establish `hQ : Qᵀ * j * Q.map c = (Pᵀ * j * P.map c).submatrix e.symm e.symm` using `rfl`. Establish `hQdet : IsUnit Q.det`. Establish `h : IsUnit (Qᵀ * j * Q.map c).det` using `by rw [hQ, det_submatrix_equiv_self]; exact hGdet`.
+
+Rewrite `h` using `[det_mul, det_mul, det_transpose]`. Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left h)`. Use `⟨fun a => (Q⁻¹ *ᵥ v) (e a), ?_⟩` and prove the remaining obligations. Establish `hv : Q *ᵥ (Q⁻¹ *ᵥ v) = v` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hQdet, one_mulVec]`. Use `conv_rhs => rw [← hv]`.
+
+Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, Q, submatrix_apply, id]`. Conclude with `(e.symm.sum_comp _).symm.trans (by simp)`.
+-/
 theorem exists_coords {R : Type} [CommRing R] (c : R →+* R) (d₁ : ℕ)
     (j : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) R) (j₁ : Matrix (Fin d₁) (Fin d₁) R) (x y : Fin (d₁ + 2) → R)
     (ι : Matrix (Fin (d₁ + 2)) (Fin d₁) R) (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k)
@@ -69,6 +87,15 @@ theorem exists_coords {R : Type} [CommRing R] (c : R →+* R) (d₁ : ℕ)
   simp only [mulVec, dotProduct, Q, submatrix_apply, id]
   exact (e.symm.sum_comp _).symm.trans (by simp)
 
+/- English proof (translation)
+Introduce `R _ c d d₁ j j₁ x y ι hcc hj hd hxx hyy hxy hι hj₁ hdet v`. Substitute `hd` using the available equality. Take `⟨u, hu⟩` from `exists_coords c d₁ j j₁ x y ι hcc hj hxx hyy hxy hι hj₁ hdet v`. Establish `hyx : sesq c j y x = -1` using `by rw [sesq_skew hcc hj, hxy, map_one]`. Establish `hv : v = u (Sum.inr 0) • x + u (Sum.inr 1) • y + ι *ᵥ (fun k => u (Sum.inl k))`.
+
+Rewrite using `[← hu]`. Use extensionality with `i`. Simplify using `[colsMat, mulVec, dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : sesq c j v y = u (Sum.inr 0)`.
+
+Rewrite using `[hv]`. Simplify using `[sesq_add_left, sesq_smul_left, hxy, hyy, (hι _).2]`. Establish `h2 : sesq c j v x = -u (Sum.inr 1)`. Rewrite using `[hv]`. Simplify using `[sesq_add_left, sesq_smul_left, hxx, hyx, (hι _).1]`.
+
+Use `⟨fun k => u (Sum.inl k), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, neg_smul, sub_neg_eq_add]`. Conclude with `hv`.
+-/
 theorem exists_decomp : ∀ (R : Type) [CommRing R] (c : R →+* R) (d d₁ : ℕ) (j : Matrix (Fin d) (Fin d) R) (j₁ : Matrix (Fin d₁) (Fin d₁) R) (x y : Fin d → R) (ι : Matrix (Fin d) (Fin d₁) R), (∀ z, c (c z) = z) → (∀ i k, c (j k i) = -j i k) → d = d₁ + 2 → GlobalTheory.LeviTorusExists.sesq c j x x = 0 → GlobalTheory.LeviTorusExists.sesq c j y y = 0 → GlobalTheory.LeviTorusExists.sesq c j x y = 1 → (∀ z, GlobalTheory.LeviTorusExists.sesq c j (ι *ᵥ z) x = 0 ∧ GlobalTheory.LeviTorusExists.sesq c j (ι *ᵥ z) y = 0) → ιᵀ * j * ι.map c = j₁ → IsUnit j₁.det → ∀ v : Fin d → R, ∃ z, v = GlobalTheory.LeviTorusExists.sesq c j v y • x - GlobalTheory.LeviTorusExists.sesq c j v x • y + ι *ᵥ z := by
   intro R _ c d d₁ j j₁ x y ι hcc hj hd hxx hyy hxy hι hj₁ hdet v
   subst hd

@@ -14,6 +14,11 @@ namespace Formalism.L2.SG.KappaOffDiagonal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `Full.tO tOf`. Simplify using `only`. Unfold `vec ampN`. Rewrite using `[h]`. Simplify using `only [map_zero, smul_zero, ite_self]`.
+
+Use `first`. Consider the case `rfl`. Consider the case `simp`.
+-/
 theorem vector_eq_zero_of_orbital_zero {D : D7} {X : HidaSetting D} (Y : Full X) {u : D.what₂.Word} (t : GTu Y u)
     (h : OOt t = 0) : (Y.tO u u).vec t = 0 := by
   unfold Full.tO tOf
@@ -25,6 +30,9 @@ theorem vector_eq_zero_of_orbital_zero {D : D7} {X : HidaSetting D} (Y : Full X)
     | rfl
     | simp
 
+/- English proof (translation)
+The claim follows from `vector_eq_zero_of_orbital_zero Y t (Vanish.ooVanish_of Formalism.L2.SG.Closed.AvgCore_holds Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formali …`.
+-/
 theorem irrVec_nohyp {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) (t : GTu Y u) (ht : ¬ t.relevant) :
     (Y.tO u u).vec t = 0 :=
   vector_eq_zero_of_orbital_zero Y t
@@ -32,6 +40,9 @@ theorem irrVec_nohyp {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Wo
       Formalism.L2.SG.Closed.ChiTrivialC_holds Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds
       Formalism.L2.SG.Pf.roDiscreteC_holds Formalism.L2.SG.TermOp.Vanish.rational_cocompact_holds Formalism.L2.SG.NonRelPf.nonRelCharC_holds Y t ht)
 
+/- English proof (translation)
+Introduce `D X Y u _ _ t _ ht`. Conclude with `irrVec_nohyp Y u t ht`.
+-/
 theorem IrrVecC_holds : IrrVecC := by
   intro D X Y u _ _ t _ ht
   exact irrVec_nohyp Y u t ht

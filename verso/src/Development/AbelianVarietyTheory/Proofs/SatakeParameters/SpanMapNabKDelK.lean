@@ -10,6 +10,13 @@ open MvPolynomial NumberField IsDedekindDomain Formalism.GradedWeylDivisibility 
 
 namespace GlobalTheory.ValCmp
 
+/- English proof (translation)
+Establish `h1 : (MvPolynomial.map eK).comp (trAct B).toRingHom = (trAct (fun τ => Formalism.UG.bc eK (B τ))).toRingHom.comp (MvPolynomial.map eK)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trAct]`. Introduce `v`.
+
+Simplify using `[trAct, blockAct_X, bc_coe]`. Establish `h2 : MvPolynomial.map eK (trAct B F) = trAct (fun τ => Formalism.UG.bc eK (B τ)) (MvPolynomial.map eK F)` using `congrArg (fun φ : Pol K ι n →+* Pol Kf ι n => φ F) h1`. Establish `h3 : eK (detTwK lam B) = detTwK lam (fun τ => Formalism.UG.bc eK (B τ))`. Rewrite using `[detTw_eq, detTw_eq, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow₀, bc_coe, RingHom.map_det]`. Both sides reduce to the same expression. Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_eq_C_mul, map_mul, map_C, h2, h3]`.
+-/
 theorem use₂ {Kf K ι : Type} [Field Kf] [Field K] [Fintype ι] {n : ℕ} (eK : K →+* Kf) (lam : ι → DomWeight n)
     (B : ι → GL (Fin n) K) (F : Pol K ι n) :
     MvPolynomial.map eK (actP lam B F) = actP lam (fun τ => Formalism.UG.bc eK (B τ)) (MvPolynomial.map eK F) := by

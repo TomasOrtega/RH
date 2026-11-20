@@ -19,6 +19,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Establish `c0 : ∀ w, compInf F E w (algebraMap (AF F) (AF F ⊗[F] E) ε) = 0` using `fun w => by`. Express the relevant statement in the definitionally equal form `evInf F w ε ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[e0, TensorProduct.zero_tmul]`. Establish `c2 : ∀ u, u ≠ v → compFin F E u (algebraMap (AF F) (AF F ⊗[F] E) ε) = 0` using `fun u hu => by`. Express the relevant statement in the definitionally equal form `evFin F u ε ⊗ₜ[F] (1 : E) = 0`.
+
+Rewrite using `[e2 u hu, TensorProduct.zero_tmul]`. Establish `e' : compFin F E v ((matHom _ σ J g).1 i j) = compFin F E v ((matHom _ σ J h).1 i j)` using `congrArg (fun x => (matHom _ σ J x).1 i j) e`. Rewrite using `[← sub_eq_zero, ← add_eq_right (b := 1)]`. Use `Model.adTens_eq_one (fun w => ?_) fun u => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sub, map_mul, map_mul, c0, map_one]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_add, map_sub, map_mul, map_mul, map_one]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[e']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[c2 u hu]`. Simplify using the standard rewrite rules.
+-/
 theorem idem_mul_eq {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) (ε : AF F)
     (e0 : ∀ w, evInf F w ε = 0) (e2 : ∀ u, u ≠ v → evFin F u ε = 0) {g h : GAd σ J}
     (e : proj σ J v g = proj σ J v h) (i j : Fin n) :
@@ -54,10 +63,18 @@ variable {D : D7}
 def locPart (W : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) : GA D W →* GA D W :=
   (GlobalTheory.AdelicU.emb D.sp.cm.sig W.gram v).comp (GlobalTheory.AdelicU.proj D.sp.cm.sig W.gram v)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.AdelicU.Model.suppF_iff W hε _).2 ⟨_, rfl⟩`.
+-/
 theorem suppPl_locPart (W : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     (k : GA D W) : GlobalTheory.WeilParts.SuppPl ε W (locPart W v k) :=
   (GlobalTheory.AdelicU.Model.suppF_iff W hε _).2 ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `suppPl_locPart W hε k`. Take `⟨α, rfl, -, h2⟩` from `hε`. Use extensionality with `i j`. Establish `h3 : _ * Formalism.L2.Theta.mt W (locPart W v k) i j = _ * Formalism.L2.Theta.mt W k i j` using `idem_mul_eq D.sp.cm.sig W.gram v (pairA D.host.F 0 α) (fun _ => rfl) h2 (GlobalTheory.AdelicU.proj_emb_self D.sp.cm.sig W.gram v _) i j`. Establish `h4` using `h1 i j`.
+
+Rewrite `h4` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Take the linear combination `h3 - h4`.
+-/
 theorem mt_locPart (W : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε)
     (k : GA D W) : Formalism.L2.Theta.mt W (locPart W v k) =
       algebraMap (AF D.host.F) (AE D) ε • Formalism.L2.Theta.mt W k + (1 - algebraMap (AF D.host.F) (AE D) ε • 1) := by
@@ -72,16 +89,25 @@ theorem mt_locPart (W : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF 
   rw [Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]
   linear_combination h3 - h4
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one, show Formalism.L2.Theta.mt V 1 = 1 from rfl, Matrix.mul_one]`.
+-/
 theorem actO_one_left (V W : HSp D) (k : GA D W) (u : WO V W) :
     actO V W 1 k u = HMul.hMul (Formalism.L2.Theta.mt W k) (u : Matrix (Fin W.rank) (Fin V.rank) (AE D)) := by
   unfold actO
   rw [inv_one, show Formalism.L2.Theta.mt V 1 = 1 from rfl, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[actO_one_left, actO_one_left, ← Matrix.mul_assoc]`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]`.
+-/
 theorem actO_actO_inv (V W : HSp D) (k : GA D W) (u : WO V W) : actO V W 1 k (actO V W 1 k⁻¹ u) = u := by
   rw [actO_one_left, actO_one_left, ← Matrix.mul_assoc]
   unfold Formalism.L2.Theta.mt
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.PlaceModel.latO_le_top _ (GlobalTheory.PlaceModel.placeIdem_smul_mem hε hu)`. Establish `h2` using `GlobalTheory.PlaceModel.latO_le_top _ (GlobalTheory.PlaceModel.placeIdem_smul_mem hε hk)`. Rewrite `h2` using `[actO_one_left]`. Rewrite using `[actO_one_left, mt_locPart W hε, Matrix.add_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul]`. Conclude with `add_mem h2 (sub_mem hu h1)`.
+-/
 theorem actO_locPart_mem (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E))
     (v : HeightOneSpectrum (𝓞 D.host.F)) {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {k : GA D W} {u : WO V W}
     (hu : u ∈ latO V W LV LW fun _ => True) (hk : actO V W 1 k u ∈ latO V W LV LW fun _ => True) :
@@ -92,6 +118,9 @@ theorem actO_locPart_mem (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (LW 
   rw [actO_one_left, mt_locPart W hε, Matrix.add_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul]
   exact add_mem h2 (sub_mem hu h1)
 
+/- English proof (translation)
+Use `⟨fun hu => actO_locPart_mem V W LV LW v hε hu ((hk u).1 hu), fun hu => ?_⟩` and prove the remaining obligations. Establish `h` using `actO_locPart_mem V W LV LW v hε (k := k⁻¹) hu ((hk _).2 (by rwa [actO_actO_inv]))`. Establish `e` using `actO_actO_inv V W (locPart W v k)⁻¹ u`. Rewrite `e` using `[inv_inv]`. Rewrite `h` using `[map_inv, e]`. Then use the resulting hypothesis.
+-/
 theorem locPart_stab (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E))
     (v : HeightOneSpectrum (𝓞 D.host.F)) {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) {k : GA D W}
     (hk : ∀ u, u ∈ (latO V W LV LW fun _ => True) ↔ actO V W 1 k u ∈ latO V W LV LW fun _ => True) (u : WO V W) :
@@ -102,6 +131,19 @@ theorem locPart_stab (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (LW : Se
   rw [inv_inv] at e
   rwa [map_inv, e] at h
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om hP mu hmu H ΛV ΛW hV0 hV hW s hs f hf k hk hlat`. Take `⟨mu', h1, hmul, hn, -, hc⟩` from `GlobalTheory.Member.exists_muVal D W χV hP.weil.hecS fun a => hmu.eq_one_of_fixed _ (congrArg (fun y : D.host.E => (a : AF D.host.F) ⊗ₜ[D.host.F] y) (map_one D.sp.cm.sig))`. Take `rfl : mu = mu'` from `funext fun g => by`. Take `⟨x, hx⟩` from `hmu.1 g`. Rewrite using `[hmu.2 g x hx, h1.2 g x hx]`.
+
+Establish `h0 : ∀ g, mu g ≠ 0` using `fun g h => by simpa [h] using hn g`. Establish `hone : mu 1 = 1` using `mul_left_cancel₀ (h0 1) (by rw [← hmul, one_mul, mul_one])`. Establish `hm : ∀ a b : GA D W, om (1, a * b) f = om (1, a) (om (1, b) f)` using `fun a b => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `ho : om (1, 1) f = f` using `by rw [Prod.mk_one_one, map_one, Module.End.one_apply]`.
+
+Set `K : Subgroup (GA D W)` to `{ carrier := {g | om (1, g) f = mu g • f} one_mem' := by change om (1, 1) f = mu 1 • f; rw [ho, hone, one_smul] mul_mem' := fun {a b} (ha : om (1, a) f = _) (hb : om (1, b) f = _) => by`. Express the relevant statement in the definitionally equal form `om (1, a * b) f = mu (a * b) • f`. Rewrite using `[hm, hb, map_smul, ha, smul_smul, hmul, mul_comm]`. Use the proof step `inv_mem' := fun {a} (ha : om (1, a) f = _) => by`. Express the relevant statement in the definitionally equal form `om (1, a⁻¹) f = mu a⁻¹ • f`.
+
+Establish `e` using `hm a⁻¹ a`. Rewrite `e` using `[inv_mul_cancel, ho, ha, map_smul]`. Establish `e1 : mu a⁻¹ * mu a = 1` using `by rw [← hmul, inv_mul_cancel, hone]`. Use `conv_rhs => rw [e, smul_smul, e1, one_smul] }`. Establish `hK : IsClosed (K : Set (GA D W))` using `isClosed_eq (continuous_pi fun w => (hP.weil.om_cont f hf.2.theta w).comp (Continuous.prodMk_right 1)) (hc.smul continuous_const)`.
+
+Use `GlobalTheory.LevelClosure.mem_of_isClosed D.sp.cm.sig W.gram hK hk fun v => ?_` and prove the remaining obligations. Establish `hε : IsPlaceIdem D v (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin v 1))` using `⟨_, rfl, GlobalTheory.AdelicU.evalV_singleFin_self v 1, fun _ hu => GlobalTheory.AdelicU.evalV_singleFin_ne hu 1⟩`. Establish `hst` using `locPart_stab V W _ _ v hε hlat`. Establish `hsu` using `suppPl_locPart W hε k`. Express the relevant statement in the definitionally equal form `om (1, locPart W v k) f = mu (locPart W v k) • f`.
+
+Distinguish the cases in `hv : GlobalTheory.WeilParts.NonSplitAt D v (pairA D.host.F 0 (GlobalTheory.AdelicU.singleFin v 1))`. Take `⟨a1, a2⟩` from `GlobalTheory.T.nonSplitPlace_stabilizer_fixes_latticeVacuum D ψ θ V W χV χW om hP mu hmu H ΛV ΛW hV hW f hf.2.theta hf.2.lat v _ _ hv hsu hst`. Rewrite using `[a1, a2 hV0, one_smul]`. Take `⟨e, he, hee⟩` from `not_not.1 (fun h => hv ⟨hε, h⟩)`. Conclude with `GlobalTheory.AdTh.om_vacuum_split_stab D ψ θ V W χV χW om hP mu hmu ΛV ΛW hV hW s hs f hf e _ he (fun i j => by rw [hee]; exact hsu i j) hst`.
+-/
 theorem om_vacuum_eq_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ mu : GA D W → ℂ, Formalism.L2.Pj.MuVal W χV mu → ∀ (H : Geo.Tor.Host D.host.E) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)), V.rank ≠ 0 → IsSelfDualC V ΛV → IsSelfDualC W ΛW → ∀ (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), (∀ τ, IsCartanInv (gramAt D W τ) (s τ)) → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ k ∈ GfC W, (∀ u, u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔ actO V W 1 k u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True)) → om (1, k) f = mu k • f := by
   intro D ψ θ V W χV χW om hP mu hmu H ΛV ΛW hV0 hV hW s hs f hf k hk hlat
   obtain ⟨mu', h1, hmul, hn, -, hc⟩ := GlobalTheory.Member.exists_muVal D W χV hP.weil.hecS fun a =>

@@ -11,6 +11,21 @@ def IsPow (n : ℕ) (Z : Scheme.{0}) (p : Fin (n + 1) → (Z ⟶ V)) : Prop :=
   (∀ i, p i ≫ f = p 0 ≫ f) ∧ ∀ (U : Scheme.{0}) (y : Fin (n + 1) → (U ⟶ V)), (∀ i, y i ≫ f = y 0 ≫ f) →
     ∃! g : U ⟶ Z, ∀ i, g ≫ p i = y i
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨V, fun _ => 𝟙 V, ⟨fun _ => rfl, fun U y _ => ⟨y 0, fun i => ?_, fun g hg => ?_⟩⟩, P.id_mem V⟩` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using the standard rewrite rules.
+
+Simplify using `using hg 0`. Consider the case `succ n ih`. Take `⟨Z, p, ⟨hc, hu⟩, hP⟩` from `ih`. Set `q : Fin (n + 2) → (pullback (p 0 ≫ f) f ⟶ V)` to `Fin.snoc (α := fun _ => pullback (p 0 ≫ f) f ⟶ V) (fun j => pullback.fst _ _ ≫ p j) (pullback.snd _ _)`. Establish `qc : ∀ j : Fin (n + 1), q j.castSucc = pullback.fst _ _ ≫ p j` using `fun j => by simp [q]`.
+
+Establish `ql : q (Fin.last _) = pullback.snd _ _` using `by simp [q]`. Establish `hz : (Fin.castSucc (0 : Fin (n + 1)) : Fin (n + 2)) = 0` using `rfl`. Establish `q0 : q 0 = pullback.fst _ _ ≫ p 0` using `qc 0`. Use `⟨pullback (p 0 ≫ f) f, q, ⟨fun i => ?_, fun U y hy => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[q0]`.
+
+Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[ql, ← pullback.condition, Category.assoc]`. Rewrite using `[qc, Category.assoc, Category.assoc, hc j]`. Establish `h' : ∀ j : Fin (n + 1), y j.castSucc ≫ f = y (Fin.castSucc 0) ≫ f` using `fun j => by`. Rewrite using `[hy, hz, hy]`.
+
+Take `⟨g0, hg0, hg0u⟩` from `hu U (fun j => y j.castSucc) h'`. Establish `hw : g0 ≫ p 0 ≫ f = y (Fin.last _) ≫ f`. Rewrite using `[← Category.assoc, hg0 0, hy (Fin.last _), hz]`. Use `⟨pullback.lift g0 (y (Fin.last _)) hw, fun i => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+
+Rewrite using `[ql, pullback.lift_snd]`. Rewrite using `[qc, pullback.lift_fst_assoc, hg0 j]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst]`. Use `hg0u _ (fun j => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← qc, hg]`. Rewrite using `[pullback.lift_snd, ← ql, hg]`. Rewrite using `[q0]`. Conclude with `P.comp_mem _ _ (P.pullback_fst _ _ hf) hP`.
+-/
 theorem exists_pow (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange] [P.IsMultiplicative]
     (hf : P f) (n : ℕ) : ∃ (Z : Scheme.{0}) (p : Fin (n + 1) → (Z ⟶ V)), IsPow f n Z p ∧ P (p 0) := by
   induction n with
@@ -82,6 +97,13 @@ end
 
 end GlobalTheory.EtC.CechRep
 
+/- English proof (translation)
+Introduce `P _ _ V W f hf k`. Take `⟨Z, p, h, hP⟩` from `GlobalTheory.EtC.CechRep.exists_pow f P hf k.unop.len`. Establish `hY` using `isLimitOfPreserves yoneda (GlobalTheory.EtC.CechRep.isLimitPow f h)`. Set `D` to `WidePullbackShape.wideCospan (yoneda.obj W) (fun _ : Fin (k.unop.len + 1) => yoneda.obj V) (fun _ => yoneda.map f)`. Set `iso : WidePullbackShape.wideCospan W (fun _ : Fin (k.unop.len + 1) => V) (fun _ => f) ⋙ yoneda ≅ D` to `WidePullbackShape.diagramIsoWideCospan _`.
+
+Establish `hL` using `(IsLimit.postcomposeHomEquiv iso _).symm hY`. Use `⟨Z, p 0, IsLimit.conePointUniqueUpToIso hL (limit.isLimit D), hP, ?_⟩` and prove the remaining obligations. Use `IsLimit.conePointUniqueUpToIso_hom_comp hL (limit.isLimit D) none` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ≫ limit.π D none = _`. Use `this.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `yoneda.map (p 0 ≫ f) ≫ iso.hom.app none = _`. Simplify using `[iso, WidePullbackShape.diagramIsoWideCospan]`. Apply the tactic sequence `first | exact Category.comp_id _ | rfl | (erw [eqToHom_refl, Category.comp_id])`.
+-/
 theorem GlobalTheory.EtC.cech_level_representable : ∀ (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange] [P.IsMultiplicative] (V W : Scheme.{0}) (f : V ⟶ W), P f → ∀ k : SimplexCategoryᵒᵖ, ∃ (Z : Scheme.{0}) (π : Z ⟶ V) (e : yoneda.obj Z ≅ (cech f).obj k), P π ∧ e.hom ≫ (cechAug f).app k = yoneda.map (π ≫ f) := by
   intro P _ _ V W f hf k
   obtain ⟨Z, p, h, hP⟩ := GlobalTheory.EtC.CechRep.exists_pow f P hf k.unop.len

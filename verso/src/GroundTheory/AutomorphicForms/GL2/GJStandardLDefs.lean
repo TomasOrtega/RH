@@ -52,18 +52,27 @@ def localMat (v : HeightOneSpectrum (𝓞 K)) (x : Matrix (Fin n) (Fin n) 𝔸[K
     Matrix (Fin n) (Fin n) (v.adicCompletion K) :=
   x.map fun a ↦ a.2 v
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `AdelicGLn.prodEquiv_apply_fst K n g i j`.
+-/
 theorem coe_archComp (g : AdelicGLn.AdelicGL K n) :
     ((archComp K n g : AdelicGLn.InfiniteAdelicGL K n) : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) =
       archMat (g : Matrix (Fin n) (Fin n) 𝔸[K]) := by
   ext i j
   exact AdelicGLn.prodEquiv_apply_fst K n g i j
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem coe_localComp (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K n) :
     ((localComp n v g : GL (Fin n) (v.adicCompletion K)) : Matrix (Fin n) (Fin n) (v.adicCompletion K)) =
       localMat v (g : Matrix (Fin n) (Fin n) 𝔸[K]) := by
   ext i j
   rfl
 
+/- English proof (translation)
+The claim follows from `AdelicGLn.eventually_mem_integralGL K n g`.
+-/
 theorem eventually_localComp_mem (g : AdelicGLn.AdelicGL K n) :
     ∀ᶠ v in cofinite, localComp n v g ∈ integralGL (v.adicCompletion K) n :=
   AdelicGLn.eventually_mem_integralGL K n g
@@ -112,6 +121,9 @@ instance isHaarMeasure_localHaar (v : HeightOneSpectrum (𝓞 K)) : (localHaar n
   unfold localHaar
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Measure.haarMeasure_self`.
+-/
 theorem localHaar_integralGL (v : HeightOneSpectrum (𝓞 K)) :
     localHaar n v (integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))) = 1 :=
   Measure.haarMeasure_self

@@ -15,6 +15,15 @@ namespace GlobalTheory.Vanishing
 
 open TopologicalSpace Opposite H0
 
+/- English proof (translation)
+Introduce `k _ Y p B hB I g y`. Take `⟨i, hi⟩` from `exists_chart hB y`. Take `⟨W, hyW, hWi⟩` from `exists_affine hi`. Take `⟨J, rfl⟩ : ∃ J : (B.pull I.subschemeι).ι, J PUnit.unit = i` from `⟨fun _ => i, rfl⟩`. Establish `hJ (z : I.subscheme) (hz : I.subschemeι z ∈ W.1) : z ∈ (B.pull I.subschemeι).U J` using `mem_pull.2 (hWi hz)`.
+
+Establish `hle : I.subschemeι ⁻¹ᵁ W.1 ≤ ⊤ ⊓ (B.pull I.subschemeι).U J` using `fun z hz => ⟨trivial, hJ z hz⟩`. Take `⟨a, ha⟩` from `I.subschemeι_app_surjective W (resG I.subscheme hle (g.loc J))`. Set `b : H0 p B W.1` to `(LB.chartEquiv hB (J PUnit.unit) hWi).symm a`. Establish `hb (x : Y) (hx : x ∈ W.1) : germ (J PUnit.unit) x hx (hWi hx) b = ger x hx a` using `by conv_rhs =>`. Rewrite using `[← (LB.chartEquiv hB (J PUnit.unit) hWi).apply_symm_apply a, LB.chartEquiv_apply, ger_resG]`.
+
+Both sides reduce to the same expression. Use `⟨W.1, hyW, b, fun z hz j hj => ?_⟩` and prove the remaining obligations. Establish `h0 : germ J z (Opens.mem_top z) (hJ z hz) g = (I.subschemeι.stalkMap z).hom (germ (J PUnit.unit) (I.subschemeι z) hz (hWi hz) b)`. Rewrite using `[hb, germ_apply, ← ger_resG hle z hz, ← ha]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply _ _ z hz a).symm`.
+
+Rewrite using `[germ_change j J z _ hj (hJ z hz), h0, germ_change (j PUnit.unit) (J PUnit.unit) _ hz (mem_pull.1 hj) (hWi hz), map_mul, tr_pull B I.subschemeι z hj (hJ z hz), Units.coe_map]`. Both sides reduce to the same expression.
+-/
 theorem exists_local_lift_H0On : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (B : LB Y), B.IsLB → ∀ (I : Y.IdealSheafData) (g : sectionsOnClosedSubscheme p B I) (y : Y), ∃ (W : Y.Opens) (_ : y ∈ W) (b : Vanishing.H0 p B W), ∀ (z : I.subscheme) (hz : I.subschemeι z ∈ W) (j : (B.pull I.subschemeι).ι) (hj : z ∈ (B.pull I.subschemeι).U j), Vanishing.H0.germ j z (TopologicalSpace.Opens.mem_top z) hj g = (I.subschemeι.stalkMap z).hom (Vanishing.H0.germ (j PUnit.unit) (I.subschemeι z) hz (mem_pull.1 hj) b) := by
   intro k _ Y p B hB I g y
   obtain ⟨i, hi⟩ := exists_chart hB y

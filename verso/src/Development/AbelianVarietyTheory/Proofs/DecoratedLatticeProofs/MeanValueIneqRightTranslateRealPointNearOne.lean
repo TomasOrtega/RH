@@ -19,6 +19,19 @@ open GlobalTheory.SmoothForms
 
 variable {L G ι : Type} [NormedAddCommGroup L] [NormedSpace ℝ L] [Group G] [Fintype ι]
 
+/- English proof (translation)
+Establish `hc0 : ∀ i, 0 ≤ c i` using `fun i => (norm_nonneg _).trans (hc i 0 ⟨le_refl 0, zero_le_one⟩)`. Establish `hderiv : ∀ t : ℝ, HasDerivAt (fun s : ℝ => φ (g * e (s • Z))) (fderiv ℝ (fun X : L => φ (g * e (t • Z) * e X)) ((t - t) • Z) Z) t`. Introduce `t`. Establish `hF : Differentiable ℝ (fun X : L => φ (g * e (t • Z) * e X))` using `(hφ (g * e (t • Z))).differentiable (by simp)`. Establish `h1 : HasDerivAt (fun s : ℝ => (s - t) • Z) ((1 : ℝ) • Z) t` using `((hasDerivAt_id' t).sub_const t).smul_const Z`.
+
+Rewrite `h1` using `[one_smul]`. Establish `h2` using `(hF ((t - t) • Z)).hasFDerivAt.comp_hasDerivAt t h1`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show φ (g * e (s • Z)) = φ (g * e (t • Z) * e ((s - t) • Z))`. Rewrite using `[mul_assoc, ← he, show t + (s - t) = s by ring]`.
+
+Establish `key : ∀ t ∈ Set.Icc (0 : ℝ) 1, ‖fderiv ℝ (fun X : L => φ (g * e (t • Z) * e X)) 0 Z‖ ≤ a * ∑ i, c i`. Introduce `t ht`. Use `set F' := fderiv ℝ (fun X : L => φ (g * e (t • Z) * e X)) 0 with hF'`. Establish `hZ : F' Z = ∑ i, b.repr Z i • F' (b i)`. Establish `: F' Z = F' (∑ i, b.repr Z i • b i)` using `by rw [b.sum_repr]`.
+
+Rewrite using `[this, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[hZ, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs]`.
+
+Establish `hi : ‖F' (b i)‖ ≤ c i`. Use `hc i t ht` as an intermediate fact. Rewrite `this` using `[DerLinear.der_eq_fderiv hφ]`. Then use the resulting hypothesis. Conclude with `mul_le_mul (ha i) hi (norm_nonneg _) ((abs_nonneg _).trans (ha i))`. Establish `hmv` using `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun s : ℝ => φ (g * e (s • Z))) (fun t _ => (hderiv t).hasDerivWithinAt) (fun t ht => by`.
+
+Rewrite using `[sub_self, zero_smul]`. Conclude with `key t (Set.Ico_subset_Icc_self ht))`. Simplify `hmv` using `[he0]`.
+-/
 theorem norm_sub_le (e : L → G) (he0 : e 0 = 1) (he : ∀ (Z : L) (s t : ℝ), e ((s + t) • Z) = e (s • Z) * e (t • Z))
     (b : Module.Basis ι ℝ L) {φ : G → ℂ} (hφ : Sm e φ) (g : G) (Z : L) (a : ℝ) (ha : ∀ i, |b.repr Z i| ≤ a) (c : ι → ℝ)
     (hc : ∀ i, ∀ t ∈ Set.Icc (0 : ℝ) 1, ‖Der e (b i) φ (g * e (t • Z))‖ ≤ c i) :
@@ -60,6 +73,11 @@ theorem norm_sub_le (e : L → G) (he0 : e 0 = 1) (he : ∀ (Z : L) (s t : ℝ),
       exact key t (Set.Ico_subset_Icc_self ht))
   simpa [he0] using hmv
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℝ L` using `Module.Finite.of_basis b`. Set `f : ι → L →L[ℝ] ℝ` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`. Use `⟨∑ i, ‖f i‖, Finset.sum_nonneg fun i _ => norm_nonneg _, fun Z i => ?_⟩` and prove the remaining obligations. Establish `h1 : |b.repr Z i| = ‖f i Z‖`. Simplify using `[f, Real.norm_eq_abs]`.
+
+Rewrite using `[h1]`. Conclude with `((f i).le_opNorm Z).trans (mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun j _ => norm_nonneg (f j)) (Finset.mem_univ i)) (norm_nonneg Z))`.
+-/
 theorem exists_coord_bound (b : Module.Basis ι ℝ L) : ∃ K : ℝ, 0 ≤ K ∧ ∀ Z i, |b.repr Z i| ≤ K * ‖Z‖ := by
   have : FiniteDimensional ℝ L := Module.Finite.of_basis b
   let f : ι → L →L[ℝ] ℝ := fun i => LinearMap.toContinuousLinearMap (b.coord i)
@@ -80,6 +98,9 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
+/- English proof (translation)
+Establish `hE` using `isExpFam_expInf R`. Use `R.2.2.1 _ (hE (0 : LieN V)).1 _ (GinfC V).one_mem fun τ => ?_` and prove the remaining obligations. Rewrite using `[(hE (0 : LieN V)).2 τ, R.2.2.2.2.1 1 (GfC V).one_mem τ]`. Use `show NormedSpace.exp (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) = 1`. Conclude with `NormedSpace.exp_zero`.
+-/
 theorem expInf_zero (R : RealPoints θ V) : expInf θ V 0 = 1 := by
   have hE := isExpFam_expInf R
   refine R.2.2.1 _ (hE (0 : LieN V)).1 _ (GinfC V).one_mem fun τ => ?_
@@ -87,6 +108,11 @@ theorem expInf_zero (R : RealPoints θ V) : expInf θ V 0 = 1 := by
   show NormedSpace.exp (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) = 1
   exact NormedSpace.exp_zero
 
+/- English proof (translation)
+Establish `hE` using `isExpFam_expInf R`. Use `R.2.2.1 _ (hE ((s + t) • Z)).1 _ (mul_mem (hE (s • Z)).1 (hE (t • Z)).1) fun τ => ?_` and prove the remaining obligations. Rewrite using `[R.2.2.2.1, (hE ((s + t) • Z)).2 τ, (hE (s • Z)).2 τ, (hE (t • Z)).2 τ]`. Use `show NormedSpace.exp ((s + t) • (Z τ).1) = NormedSpace.exp (s • (Z τ).1) * NormedSpace.exp (t • (Z τ).1)`. Rewrite using `[add_smul]`.
+
+Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl (Z τ).1).smul_right t).smul_left s)`.
+-/
 theorem expInf_add (R : RealPoints θ V) (Z : LieN V) (s t : ℝ) :
     expInf θ V ((s + t) • Z) = expInf θ V (s • Z) * expInf θ V (t • Z) := by
   have hE := isExpFam_expInf R
@@ -96,6 +122,9 @@ theorem expInf_add (R : RealPoints θ V) (Z : LieN V) (s t : ℝ) :
   rw [add_smul]
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl (Z τ).1).smul_right t).smul_left s)
 
+/- English proof (translation)
+Establish `H` using `isLieData R`. Establish `h1 : Continuous fun X : LieN V => NormedSpace.exp (jInf V X)` using `(DerLinear.contDiff_exp H).continuous`. Conclude with `(GlobalTheory.Mem.DerClosed.continuousOn_secInf hθ V).comp_continuous h1 fun X => DerLinear.exp_unitary H X`.
+-/
 theorem continuous_expInf (hθ : IsInfFam θ) (R : RealPoints θ V) : Continuous (expInf θ V) := by
   have H := isLieData R
   have h1 : Continuous fun X : LieN V => NormedSpace.exp (jInf V X) :=
@@ -104,6 +133,9 @@ theorem continuous_expInf (hθ : IsInfFam θ) (R : RealPoints θ V) : Continuous
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨Σ τ, Fin (Module.finrank ℝ (lieU (gramAt D V τ)).toSubmodule), inferInstance, Pi.basis fun τ => Module.finBasis ℝ (lieU (gramAt D V τ)).toSubmodule, fun i => i.1, fun i => ⟨(Module.finBasis ℝ (lieU (gramAt D V i.1)).toSubmodule i.2).1, (Module.finBasis ℝ (lieU (gramAt D V i.1)). …` and prove the remaining obligations. Conclude with `(Pi.basis_apply _ i).trans rfl`.
+-/
 theorem exists_basis (V : HSp D) : ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℝ (LieN V)) (p : ι → D.what₂.Tau)
     (X : ∀ i, LieAt V (p i)), ∀ i, b i = atPlace V (p i) (X i) := by
   refine ⟨Σ τ, Fin (Module.finrank ℝ (lieU (gramAt D V τ)).toSubmodule), inferInstance,
@@ -115,6 +147,9 @@ theorem exists_basis (V : HSp D) : ∃ (ι : Type) (_ : Fintype ι) (b : Module.
 section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg hr).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_norm]`. Conclude with `(Matrix.norm_le_iff hr).2 (h τ)`.
+-/
 theorem norm_lieN_le (Z : LieN V) {r : ℝ} (hr : 0 ≤ r) (h : ∀ τ i j, ‖(Z τ).1 i j‖ ≤ r) : ‖Z‖ ≤ r := by
   refine (pi_norm_le_iff_of_nonneg hr).2 fun τ => ?_
   rw [Submodule.coe_norm]
@@ -122,6 +157,15 @@ theorem norm_lieN_le (Z : LieN V) {r : ℝ} (hr : 0 ≤ r) (h : ∀ τ i j, ‖(
 
 end
 
+/- English proof (translation)
+Establish `hG : ∀ τ, IsUnit (gramAt D V τ).det` using `fun τ => (R.1 τ).2`. Use `choose δτ Cτ hδτ hτ using fun τ => GlobalTheory.T.exists_log_near_one_unitaryGroup_of_form_linear_bound V.rank (gramAt D V τ) (hG τ)`. Choose the witnesses or unpack the hypotheses as in `⟨δ₁, hδ₁, hle⟩ : ∃ δ₁ : ℝ, 0 < δ₁ ∧ ∀ τ, δ₁ ≤ δτ τ := by`. Break down `isEmpty_or_nonempty D.what₂.Tau with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun τ => (IsEmpty.false τ).elim⟩`.
+
+Take `⟨τ₀, hτ₀⟩` from `Finite.exists_min δτ`. Conclude with `⟨δτ τ₀, hδτ τ₀, hτ₀⟩`. Establish `hC : ∀ τ, Cτ τ ≤ ∑ τ', |Cτ τ'|` using `fun τ => (le_abs_self _).trans (Finset.single_le_sum (fun τ' _ => abs_nonneg (Cτ τ')) (Finset.mem_univ τ))`. Use `⟨δ₁, ∑ τ, |Cτ τ|, hδ₁, Finset.sum_nonneg fun τ _ => abs_nonneg _, fun u δ hδ hδle hu => ?_⟩` and prove the remaining obligations. Establish `hX : ∀ τ, ∃ X : Matrix (Fin V.rank) (Fin V.rank) ℂ, Xᴴ * gramAt D V τ + gramAt D V τ * X = 0 ∧ NormedSpace.exp X = infMat D.sp.cm.sig V.gram (θ τ) u ∧ ∀ i j, ‖X i j‖ ≤ Cτ τ * δ` using `fun τ => hτ τ _ δ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V u τ) (hδle.trans (hle τ)) (hu.2 τ)`.
+
+Use `choose X hXl hXe hXn using hX`. Set `Z : LieN V` to `fun τ => ⟨X τ, (mem_lieAt_iff τ (X τ)).1 (hXl τ)⟩`. Use `⟨Z, ?_, ?_⟩` and prove the remaining obligations. Establish `hE` using `isExpFam_expInf R`. Use `R.2.2.1 _ (hE Z).1 _ hu.1 fun τ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(hE Z).2 τ]`. Conclude with `hXe τ`. Use `norm_lieN_le Z (mul_nonneg (Finset.sum_nonneg fun τ _ => abs_nonneg _) hδ) fun τ i j => ?_` and prove the remaining obligations. Conclude with `(hXn τ i j).trans (mul_le_mul_of_nonneg_right (hC τ) hδ)`.
+-/
 theorem exists_log (hθ : IsInfFam θ) (R : RealPoints θ V) : ∃ δ₁ C : ℝ, 0 < δ₁ ∧ 0 ≤ C ∧
     ∀ (u : GA D V) (δ : ℝ), 0 ≤ δ → δ ≤ δ₁ → CloseR θ V u δ → ∃ Z : LieN V, expInf θ V Z = u ∧ ‖Z‖ ≤ C * δ := by
   have hG : ∀ τ, IsUnit (gramAt D V τ).det := fun τ => (R.1 τ).2
@@ -148,6 +192,19 @@ theorem exists_log (hθ : IsInfFam θ) (R : RealPoints θ V) : ∃ δ₁ C : ℝ
   · refine norm_lieN_le Z (mul_nonneg (Finset.sum_nonneg fun τ _ => abs_nonneg _) hδ) fun τ i j => ?_
     exact (hXn τ i j).trans (mul_le_mul_of_nonneg_right (hC τ) hδ)
 
+/- English proof (translation)
+Introduce `D θ hθ V`. Establish `R : RealPoints θ V` using `(RealPts.realPoints D).2 θ hθ V`. Take `⟨ι, hι, b, p, X, hb⟩` from `exists_basis V`. Take `⟨K, hK, hKb⟩` from `exists_coord_bound b`. Take `⟨δ₁, C₀, hδ₁, hC₀, hlog⟩` from `exists_log hθ R`.
+
+Establish `: FiniteDimensional ℝ (LieN V)` using `Module.Finite.of_basis b`. Use `set B := Finset.univ.image fun i => (p i, (X i).1) with hB`. Establish `hmemB : ∀ i, (p i, (X i).1) ∈ B` using `fun i => Finset.mem_image_of_mem _ (Finset.mem_univ i)`. Establish `h0 : expInf θ V 0 ∈ expInf θ V '' Metric.closedBall 0 (C₀ * δ₁)` using `⟨0, Metric.mem_closedBall_self (mul_nonneg hC₀ hδ₁.le), rfl⟩`. Use `⟨B, expInf θ V '' Metric.closedBall 0 (C₀ * δ₁), K * C₀ * Fintype.card ι, δ₁, ?_, ?_, hδ₁, mul_nonneg (mul_nonneg hK hC₀) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations.
+
+Introduce `q hq`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `(mem_lieAt_iff _ _).2 (X i).2`. Conclude with `(isCompact_closedBall 0 _).image (continuous_expInf hθ R)`. Introduce `ψ hψ g u δ hδ hδle hu c hc`.
+
+Take `⟨Z, rfl, hZ⟩` from `hlog u δ hδ hδle hu`. Establish `hsm : Sm (expInf θ V) ψ` using `(isSmoothInf_iff ψ).1 ((smooth_iff R ψ).1 hψ)`. Establish `hcn : ∀ q ∈ B, 0 ≤ c q` using `fun q hq => (norm_nonneg _).trans (hc q hq _ h0)`. Establish `ha : ∀ i, |b.repr Z i| ≤ K * (C₀ * δ)` using `fun i => (hKb Z i).trans (mul_le_mul_of_nonneg_left hZ hK)`. Establish `hder : ∀ i, ∀ t ∈ Set.Icc (0 : ℝ) 1, ‖Der (expInf θ V) (b i) ψ (g * expInf θ V (t • Z))‖ ≤ c (p i, (X i).1)`.
+
+Introduce `i t ht`. Rewrite using `[hb i, ← lieDer_eq, ← Rder_eq R]`. Use `hc _ (hmemB i) _ ⟨t • Z, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key` using `norm_sub_le (expInf θ V) (expInf_zero R) (expInf_add R) b hsm g Z (K * (C₀ * δ)) ha (fun i => c (p i, (X i).1)) hder`. Establish `hsum : ∑ i, c (p i, (X i).1) ≤ Fintype.card ι * ∑ q ∈ B, c q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mean_value : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ V : HSp D, ∃ (B : Finset (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (Ω : Set (GA D V)) (C δ₁ : ℝ), (∀ p ∈ B, p.2 ∈ lieAt V p.1) ∧ IsCompact Ω ∧ 0 < δ₁ ∧ 0 ≤ C ∧ ∀ ψ : GA D V → ℂ, SmoothW θ V ψ → ∀ (g u : GA D V) (δ : ℝ), 0 ≤ δ → δ ≤ δ₁ → CloseR θ V u δ → ∀ c : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ → ℝ, (∀ p ∈ B, ∀ w ∈ Ω, ‖Rder θ V p.1 p.2 ψ (g * w)‖ ≤ c p) → ‖ψ (g * u) - ψ g‖ ≤ C * δ * ∑ p ∈ B, c p := by
   intro D θ hθ V
   classical

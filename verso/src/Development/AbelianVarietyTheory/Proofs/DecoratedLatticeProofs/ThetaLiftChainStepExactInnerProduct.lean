@@ -28,6 +28,11 @@ namespace GlobalTheory.ChainTw.ExactNS
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI := hν`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) (fun h => conj (f h) * conj (conj (g h)))` using `fun γ hγ h => by`. Simplify using `only [hf γ hγ, hg γ hγ]`. Express the relevant statement in the definitionally equal form `∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun h => conj (f h) * conj (conj (g h))) q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ V) ν = _`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure hX]`.
+
+Simplify using `only [hL.descend_mk]`. Unfold `Lift.pet`. Rewrite using `[← integral_conj]`. Simplify using `only [map_mul]`.
+-/
 theorem petersson_conj (V : HSp D) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasure) (X : Set (GA D V))
     (hX : IsFundamentalDomain (GQ V) X ν)
     (f g : GA D V → ℂ) (hf : ∀ γ ∈ GQ V, ∀ h, f (γ * h) = f h) (hg : ∀ γ ∈ GQ V, ∀ h, g (γ * h) = g h) :
@@ -42,6 +47,15 @@ theorem petersson_conj (V : HSp D) (ν : Measure (GA D V)) (hν : ν.IsHaarMeasu
   rw [← integral_conj]
   simp only [map_mul]
 
+/- English proof (translation)
+Use `haveI := hν`. Use function extensionality and compare the values at `h`. Establish `hΦ : IsThetaFunO c.ψ s.V s'.V (p.pt φ)` using `hp.theta φ`. Establish `hθl : ∀ γ ∈ GQ s.V, ∀ g, thetaKO p.ω (γ * g) h (p.pt φ) = thetaKO p.ω g h (p.pt φ)`. Introduce `γ hγ g`.
+
+Establish `e : ((γ * g, h) : GA D s.V × GA D s'.V) = (γ, 1) * (g, h)` using `by simp`. Simplify using `only [thetaKO, e, map_mul, Module.End.mul_apply]`. Conclude with `hp.weil.om_aut γ hγ 1 (one_mem _) _ (hp.weil.om_pres _ _ hΦ)`. Establish `hL : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ s.V) (fun g => thetaKO p.ω g h (p.pt φ) * conj (F g))` using `fun γ hγ x => by`. Simplify using `only [hθl γ hγ, hF γ hγ]`.
+
+Simplify using `only [GlobalTheory.Core.Rk.IP.up, Step.up]`. Express the relevant statement in the definitionally equal form `∫ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ s.V) _ q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure (GQ s.V) s.ν = _`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure hX]`. Simplify using `only [hL.descend_mk]`. Rewrite using `[← integral_conj]`.
+
+Simplify using `only [map_mul, Complex.conj_conj]`.
+-/
 theorem up_conj {c : Com D} {s s' : PiLocalization₂ D} {w : Twist D} {k : ℕ} (p : Step c s s') (hp : IsStep w (k + 1) p)
     (hν : s.ν.IsHaarMeasure) (hX : IsFundamentalDomain (GQ s.V) s.fd s.ν) (φ : PolF D s'.V.rank s.V.rank)
     (F : GA D s.V → ℂ) (hF : ∀ γ ∈ GQ s.V, ∀ g, F (γ * g) = F g) :
@@ -63,6 +77,11 @@ theorem up_conj {c : Com D} {s s' : PiLocalization₂ D} {w : Twist D} {k : ℕ}
   rw [← integral_conj]
   simp only [map_mul, Complex.conj_conj]
 
+/- English proof (translation)
+Establish `hΦ : IsThetaFunO c.ψ s.V s'.V (p.pt φ)` using `hp.theta φ`. Establish `hθr : ∀ g, ∀ γ ∈ GQ s'.V, ∀ h, thetaKO p.ω g (γ * h) (p.pt φ) = thetaKO p.ω g h (p.pt φ)`. Introduce `g γ hγ h`. Establish `e : ((g, γ * h) : GA D s.V × GA D s'.V) = (1, γ) * (g, h)` using `by simp`. Simplify using `only [thetaKO, e, map_mul, Module.End.mul_apply]`.
+
+Conclude with `hp.weil.om_aut 1 (one_mem _) γ hγ _ (hp.weil.om_pres _ _ hΦ)`. Introduce `γ hγ h`. Simplify using `only [Step.up, hθr _ γ hγ]`.
+-/
 theorem up_leftInv {c : Com D} {s s' : PiLocalization₂ D} {w : Twist D} {k : ℕ} (p : Step c s s') (hp : IsStep w (k + 1) p)
     (φ : PolF D s'.V.rank s.V.rank) (F : GA D s.V → ℂ) : ∀ γ ∈ GQ s'.V, ∀ h, p.up φ F (γ * h) = p.up φ F h := by
   have hΦ : IsThetaFunO c.ψ s.V s'.V (p.pt φ) := hp.theta φ
@@ -74,6 +93,39 @@ theorem up_leftInv {c : Com D} {s s' : PiLocalization₂ D} {w : Twist D} {k : �
   intro γ hγ h
   simp only [Step.up, hθr _ γ hγ]
 
+/- English proof (translation)
+Introduce `D hHF hSoft hPeel hLev hgap c w hw k hk s s' hs hs' p hp ipD ip hMet m X hmX mR hmR φ v hRC u₁ u₂ B hB hQ hNS l hl`. Establish `hc : c.Is` using `hw.com`. Take `⟨hr, -, hsF⟩` from `id hs`. Take `⟨hr', -, hs'F⟩` from `id hs'`. Establish `hv : PiTensorProduct.tprod ℂ v ∈ s.KF` using `Submodule.subset_span ⟨v, hRC.1, rfl⟩`.
+
+Distinguish the cases in `h0 : PiTensorProduct.tprod ℂ v = 0`. Establish `hz : ∀ g, zReal p m X φ v g = 0`. Introduce `g`. Establish `hp0` using `hMet.pure v v`. Simplify using `only [h0, map_zero, LinearMap.zero_apply] at hp0`.
+
+Take `⟨τ, -, hτ⟩` from `Finset.prod_eq_zero_iff.1 hp0.symm`. Establish `h0τ : ((v τ : s.M.sm τ) : s.M.H τ) = 0` using `inner_self_eq_zero.1 hτ`. Simplify using `only [zReal]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) (by rw [h0τ, inner_zero_left])]`. Simplify using the standard rewrite rules.
+
+Simplify using `[h0, hz, Step.up, Lift.pet]`. Establish `hF₁ : PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v) ≠ 0` using `fun h => hB.1 ((hSoft c w hw k hk.le s hs).2.2.1 u₁ _ h0 h)`. Establish `hparF : ParFun c s (PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v)) B` using `hB.2 _ hF₁`. Establish `hFlat` using `GlobalTheory.T.chain_stage_forms_twisted_level_le_finer_level D c w hw k hk.le s hs hr`. Take `⟨cA, a, hcA, hcart, hJ, hmaj, hmaj_eq, hA0⟩` from `GlobalTheory.ChainOnto.conj_stage_val_mem_A0_and_cartan_frame D c hc k hk.le _ hsF`.
+
+Take `⟨-, -, -, hcartB, -, -, -, -⟩` from `GlobalTheory.ChainOnto.conj_stage_val_mem_A0_and_cartan_frame D c hc (k + 1) hk _ hs'F`. Take `⟨hwitt, htwo⟩` from `GlobalTheory.ChainOnto.WittTwo.wittIndex_lt_and_two_split D c (k + 1) _ hk hs'F`. Take `⟨hfock, -, hunrT⟩` from `GlobalTheory.T.twistedChainStep_fockVectors_spherical_offS D hgap c w hw k hk s s' hs hs' p hp`. Use `set F₁ := PiLocalization₂.val u₁ (PiTensorProduct.tprod ℂ v) with hF₁def`. Use `set F₂ := PiLocalization₂.val u₂ (PiTensorProduct.tprod ℂ v) with hF₂def`.
+
+Establish `hu1 : (fun g => conj (F₁ g)) ∈ GlobalTheory.Cusp.A0 c.θ s.V cA` using `hA0 ⟨u₁.1, hFlat u₁.2⟩ _ hv`. Establish `hu2 : (fun g => conj (F₂ g)) ∈ GlobalTheory.Cusp.A0 c.θ s.V cA` using `hA0 ⟨u₂.1, hFlat u₂.2⟩ _ hv`. Establish `hrk0 : s.V.rank = D.R.rankY k` using `hsF.rank`. Establish `hrk1 : s'.V.rank = D.R.rankY (k + 1)` using `hs'F.rank`. Establish `hr1 : 1 ≤ s.V.rank`.
+
+Rewrite using `[hrk0]`. Simplify using `only [Ranks.rankY, Ranks.r]`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht2 : 2 ≤ D.R.t` using `by have := D.R.rank_add_five_le; omega`.
+
+Establish `hrk : s'.V.rank = s.V.rank + D.R.t` using `by rw [hrk1, hrk0]; simp only [Ranks.rankY]; ring`. Establish `hPair : GlobalTheory.Core.Rk.IP.Pair c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) (cart s.M) (cart s'.M) D.R.t cA a p.ω m X` using `{ setting := ⟨hr1, by omega, hrk, hc.inf, hsF.sigOK, hcA, hcart, hcartB, hJ⟩ maj := hmaj maj_eq := hmaj_eq weil := hp.weil covol := hmX }`. Establish `hUnr : GlobalTheory.Core.Rk.IP.Unram c.ψ s.V s'.V (c.chT (k + 1)) s.Λ s'.Λ c.S (p.pt φ) (p.pt φ)` using `⟨hsF.selfDual, hs'F.selfDual, fun w _ h2 => htwo w h2, hunrT, (hfock φ).2.1, (hfock φ).2.1⟩`. Establish `hsph : GlobalTheory.Core.Rk.IP.SphFun s.V s.Λ c.S (fun g => conj (F₂ g))`. Take `⟨-, hoffS, -⟩` from `GlobalTheory.ChainOnto.LevelFacts.levFacts D c hc k hk.le _ hsF`.
+
+Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 ((mem_multT ..).1 (hFlat u₂.2))`. Introduce `v' hv' κ hκ g`. Take `⟨hκL, hκχ⟩` from `hoffS v' hv' κ hκ`. Establish `e : F₂ = PiTensorProduct.lift.symm (u₂ : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) v`. Rewrite using `[PiTensorProduct.lift_symm]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Establish `hlev` using `hT.lev v _ hκL g`. Rewrite `hlev` using `[hκχ, one_mul]`. Conclude with `congrArg (starRingEnd ℂ) hlev`.
+
+Establish `hIM : IsMajOf c s a` using `⟨hmaj, hmaj_eq⟩`. Take `⟨s₁, hs₁, hLI⟩` from `hLev hgap c w hw k hk s s' hs hs' p hp ipD ip hMet m X hmX mR hmR φ v hRC a hIM`. Take `⟨hLint, hLeq⟩` from `hLI u₁ u₂`. Establish `hint : ∃ z : ℝ, z < (D.R.t : ℝ) / 2 ∧ IntegrableOn (GlobalTheory.Core.Rk.IP.integrand p.ω s.ν m X s.Λ a (p.pt φ) (p.pt φ) (fun x => conj (F₁ x)) (fun x => conj (F₂ x)) z) (GlobalTheory.Core.Rk.IP.openOff s.V s.Λ c.S) s.ν`. Use `⟨max s₁ ((D.R.t : ℝ) / 2 - 1 / 2), max_lt hs₁ (by linarith), ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hPeel hgap c w hw k hk s s' hs hs' p hp m X hmX a hIM u₁ u₂ φ hQ _ hv _ hv _ (lt_of_lt_of_le (by linarith) (le_max_right _ _)) (hLint _ (le_max_left _ _))).1`. Establish `hPt` using `hPeel hgap c w hw k hk s s' hs hs' p hp m X hmX a hIM u₁ u₂ φ hQ _ hv _ hv ((D.R.t : ℝ) / 2) (by linarith) (hLint _ hs₁.le)`. Take `⟨-, -, -, hval⟩` from `hHF c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) (cart s.M) (cart s'.M) D.R.t cA a p.ω m X hPair ht2 (Or.inr hwitt) s.Λ s'.Λ c.S (p.pt φ) (p.pt φ) (hfock φ).1 (hfock φ).1 hUnr s.ν s'.ν hsF.haar hs'F.haar _ hu1 _ hu2 B hparF hsph hNS hint`. Establish `key` using `hval l hl`. Establish `hsZ : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero s.V s'.V = (((D.R.t : ℝ) / 2 : ℝ) : ℂ)`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.sZero, hrk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∫ g in GlobalTheory.Core.Rk.IP.openOff s.V s.Λ c.S, GlobalTheory.Core.Rk.IP.wcoef p.ω m X (p.pt φ) (p.pt φ) g * GlobalTheory.Core.Rk.IP.rcoef s.ν (fun x => conj (F₁ x)) (fun x => conj (F₂ x)) g ∂s.ν = locQ c w k * ((∫ g, zReal p m X φ v g ∂mR) * conj (ip u₁ u₂))`. Rewrite using `[← hLeq, ← hPt.2 rfl]`.
+
+Express the relevant statement in the definitionally equal form `_ = ∫ g in GlobalTheory.Core.Rk.IP.openOff s.V s.Λ c.S, flatInt p m X a φ F₁ F₂ (((D.R.t : ℝ) / 2 : ℝ) : ℂ) g ∂s.ν`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [flatInt]`. Rewrite using `[← hsZ]`.
+
+Conclude with `(GlobalTheory.Core.Rk.IP.integrand_sZero (A := s.V) (B := s'.V) p.ω s.ν m X s.Λ a (p.pt φ) (p.pt φ) _ _ g).symm`. Establish `hFl : ∀ F : GA D s.V → ℂ, (fun g => conj (F g)) ∈ GlobalTheory.Cusp.A0 c.θ s.V cA → ∀ γ ∈ GQ s.V, ∀ g, F (γ * g) = F g` using `fun F hF γ hγ g => by`. Simplify using `using congrArg (starRingEnd ℂ) (hF.1.1.left γ hγ g)`. Rewrite `key` using `[ExactNS.up_conj p hp hsF.haar hsF.fund φ F₁ (hFl F₁ hu1), ExactNS.up_conj p hp hsF.haar hsF.fund φ F₂ (hFl F₂ hu2), ExactNS.petersson_conj s'.V s'.ν hs'F.haar s'.fd hs'F.fund _ _ (ExactNS.up_leftInv p hp φ F₁) (ExactNS.up_leftInv p hp φ F₂), hI]`. Establish `key'` using `congrArg (starRingEnd ℂ) key`.
+
+Rewrite `key'` using `[Complex.conj_conj]`. Express the relevant statement in the definitionally equal form `Lift.pet s'.ν s'.fd _ _ = _`. Rewrite using `[key']`. Simplify using `only [dS, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stepExactNS : ∀ D : D7, GlobalTheory.Core.Rk.SW.HeckeFormNS D → SoftQ D → QPeel D → LevInt D → StepExactNS D := by
   intro D hHF hSoft hPeel hLev hgap c w hw k hk s s' hs hs' p hp ipD ip hMet m X hmX mR hmR φ v hRC u₁ u₂ B hB hQ hNS l hl
   have hc : c.Is := hw.com

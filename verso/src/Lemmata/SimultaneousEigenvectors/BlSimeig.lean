@@ -7,6 +7,11 @@ universe u_1
 
 namespace Bl.SimultaneousEigenvectors
 
+/- English proof (translation)
+Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality. Both sides reduce to the same expression. Establish `h` using `hA c c d d`. Rewrite `h` using `[if_neg hcd, if_neg (Ne.symm hcd), sub_zero]`.
+
+Establish `h2` using `LinearMap.congr_fun h v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply] at h2`. Conclude with `sub_eq_zero.mp h2`.
+-/
 private lemma diagonal_apply_comm {n : ℕ} {X : Type u_1} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : ReciprocityTheory.ChartRestriction.DS.IsGlRep A) (c d : Fin n) (v : X) :
     A c c (A d d v) = A d d (A c c v) := by
@@ -18,6 +23,23 @@ private lemma diagonal_apply_comm {n : ℕ} {X : Type u_1} [NormedAddCommGroup X
     simp only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.zero_apply] at h2
     exact sub_eq_zero.mp h2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `T _ _ hT`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hT`. Conclude with `⟨w, hw, hw0, 0, fun c hc => absurd hc (Finset.notMem_empty c)⟩`.
+
+Consider the case `insert a s ha ih`. Introduce `T hfd hinv hT`. Establish `: Nontrivial T` using `Submodule.nontrivial_iff_ne_bot.mpr hT`. Set `f : Module.End ℂ T` to `(A a a).restrict (fun v hv => hinv a v hv)`. Take `⟨l, hl⟩` from `Module.End.exists_eigenvalue f`.
+
+Take `⟨⟨v, hvT⟩, hv⟩` from `hl.exists_hasEigenvector`. Establish `hv1 : A a a v = l • v`. Use `Module.End.mem_eigenspace_iff.mp hv.1` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hv0 : v ≠ 0`.
+
+Introduce `h0`. Apply `hv.2` to reduce the goal to its premises. Use `ext`. Conclude with `h0`. Set `T' : Submodule ℂ X` to `T ⊓ Module.End.eigenspace (A a a) l`.
+
+Establish `hvT' : v ∈ T'` using `Submodule.mem_inf.mpr ⟨hvT, Module.End.mem_eigenspace_iff.mpr hv1⟩`. Establish `hT' : T' ≠ ⊥` using `(Submodule.ne_bot_iff _).mpr ⟨v, hvT', hv0⟩`. Establish `: FiniteDimensional ℂ T'` using `Submodule.finiteDimensional_of_le (inf_le_left : T' ≤ T)`. Establish `hinv' : ∀ (c : Fin n) (u : X), u ∈ T' → A c c u ∈ T'`. Introduce `c u hu`.
+
+Take `⟨huT, huE⟩` from `Submodule.mem_inf.mp hu`. Establish `hu1 : A a a u = l • u` using `Module.End.mem_eigenspace_iff.mp huE`. Use `Submodule.mem_inf.mpr ⟨hinv c u huT, Module.End.mem_eigenspace_iff.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_apply_comm hA a c u, hu1, map_smul]`. Take `⟨w, hw, hw0, μ, hμ⟩` from `ih T' inferInstance hinv' hT'`.
+
+Take `⟨hwT, hwE⟩` from `Submodule.mem_inf.mp hw`. Establish `hw1 : A a a w = l • w` using `Module.End.mem_eigenspace_iff.mp hwE`. Use `⟨w, hwT, hw0, Function.update μ a l, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Distinguish the cases in `hca : c = a`.
+
+Substitute `hca` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hw1`. Rewrite using `[Function.update_of_ne hca]`. Conclude with `hμ c ((Finset.mem_insert.mp hc).resolve_left hca)`.
+-/
 private lemma exists_simultaneous_eigenvector {n : ℕ} {X : Type u_1} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : ReciprocityTheory.ChartRestriction.DS.IsGlRep A) (s : Finset (Fin n)) :
     ∀ (T : Submodule ℂ X), FiniteDimensional ℂ T → (∀ (c : Fin n) (v : X), v ∈ T → A c c v ∈ T) →
@@ -64,6 +86,9 @@ private lemma exists_simultaneous_eigenvector {n : ℕ} {X : Type u_1} [NormedAd
     · rw [Function.update_of_ne hca]
       exact hμ c ((Finset.mem_insert.mp hc).resolve_left hca)
 
+/- English proof (translation)
+Introduce `n X _ _ A hA s T hfd hinv hT`. Take `⟨w, hw, hw0, μ, hμ⟩` from `exists_simultaneous_eigenvector hA s T hfd hinv hT`. Conclude with `⟨w, hw, hw0, μ, hμ⟩`.
+-/
 theorem goal1 :
   ∀ {n : Nat} {X : Type u_1} [inst : NormedAddCommGroup.{u_1} X] [inst_1 : InnerProductSpace.{0, u_1} Complex X]
   {A : Fin n → Fin n → Module.End.{0, u_1} Complex X},

@@ -16,6 +16,9 @@ def hTransAB (a b : ℕ) (σ : ℂ) (ν y : ℝ) : ℂ :=
   ∫ t : ℝ, ((t : ℂ) + (y : ℂ) * I)⁻¹ ^ a * ((starRingEnd ℂ) ((t : ℂ) + (y : ℂ) * I))⁻¹ ^ b *
     ((‖(t : ℂ) + (y : ℂ) * I‖ : ℝ) : ℂ) ^ (-2 * σ) * Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))
 
+/- English proof (translation)
+Unfold `hTransAB hTrans phi`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [pow_zero, mul_one]`.
+-/
 theorem hTransAB_two_zero (σ : ℂ) (ν y : ℝ) : hTransAB 2 0 σ ν y = hTrans σ ν y := by
   unfold hTransAB hTrans phi
   congr 1; funext t
@@ -27,6 +30,9 @@ def termQ (σ : ℂ) (b ν : F) (q : Emb F → ℕ) (z : Emb F → ℂ) : ℂ :=
   ∏ τ : Emb F, (Complex.exp (2 * (Real.pi : ℂ) * I * ((τ ν * τ b * (z τ).re : ℝ) : ℂ)) *
     iteratedDeriv (q τ) (hTrans σ (τ ν)) (τ b * (z τ).im))
 
+/- English proof (translation)
+Unfold `termQ fTerm`. Simplify using `only [Pi.zero_apply, iteratedDeriv_zero]`.
+-/
 theorem termQ_zero (σ : ℂ) (b ν : F) (z : Emb F → ℂ) : termQ σ b ν 0 z = fTerm σ z b ν := by
   unfold termQ fTerm
   simp only [Pi.zero_apply, iteratedDeriv_zero]

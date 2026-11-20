@@ -8,6 +8,19 @@ open scoped ENNReal
 
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `E _ _ _ r G Λ g0 hΛ hua`. Take `⟨hG, hdet, hfg, hspan, hsd⟩` from `hΛ`. Take `⟨hunit, hpres⟩` from `hua`. Set `g : GL (Fin r) (RA (maximalRealSubfield E) E)` to `Matrix.nonsingInvUnit g0 hunit`. Establish `hg : (g : Matrix (Fin r) (Fin r) (RA (maximalRealSubfield E) E)) = g0` using `rfl`.
+
+Take `⟨L, hL, hLfg, hLspan, hLhat⟩` from `GlobalTheory.AdLat.exists_lattice_latOf (maximalRealSubfield E) E r Λ g hfg hspan`. Rewrite `hL`, `hLhat` using `[hg]`. Establish `hmem : ∀ x : E, x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ IsIntegral ℤ x`. Introduce `x`. Rewrite using `[FractionalIdeal.mem_one_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.isIntegral_coe`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Establish `hsd' : ∀ v : Fin r → E, (∀ y ∈ Λ, (∑ a, ∑ b, v a * G a b * (IsCMField.complexConj E) (y b)) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)) ↔ v ∈ Λ`. Introduce `v`. Simplify using `only [hmem]`. Conclude with `hsd v`. Establish `key` using `GlobalTheory.AdLat.latOf_selfDual (maximalRealSubfield E) E r Λ (IsCMField.complexConj E) G 1 g hfg hspan (IsCMField.complexConj_apply_apply E) hG hdet one_ne_zero hsd' (by rw [hg]; exact hpres)`.
+
+Rewrite `key` using `[hg]`. Use `⟨L, hL, hLhat, hG, hdet, hLfg, hLspan, fun x => ?_⟩` and prove the remaining obligations. Use `key x` as an intermediate fact. Rewrite `this` using `[← hL]`. Simplify using `only [hmem, SetLike.mem_coe] at this`.
+
+Conclude with `this`.
+-/
 theorem GlobalTheory.UCls.selfDual_latOf_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (g0 : Matrix (Fin r) (Fin r) (RA (maximalRealSubfield E) E)), SelfDualLat G Λ → IsUA (IsCMField.complexConj E) G g0 → ∃ L : Submodule (𝓞 E) (Fin r → E), (L : Set (Fin r → E)) = latOf (maximalRealSubfield E) g0 (Λ : Set (Fin r → E)) ∧ (hat (maximalRealSubfield E) (L : Set (Fin r → E)) : Set (Fin r → RA (maximalRealSubfield E) E)) = g0.mulVec '' (hat (maximalRealSubfield E) (Λ : Set (Fin r → E)) : Set (Fin r → RA (maximalRealSubfield E) E)) ∧ SelfDualLat G L := by
   intro E _ _ _ r G Λ g0 hΛ hua
   obtain ⟨hG, hdet, hfg, hspan, hsd⟩ := hΛ

@@ -22,6 +22,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HTPerf
 
+/- English proof (translation)
+Establish `hsw : (swap P).IsLB` using `pull_isLB hP _`. Establish `ec : cls P hP = cls _ hsw` using `(cls_eq_iff hP hsw).2 hsym`. Establish `key : ∀ (Y : Over (Sp K)) (a b : Y ⟶ A), evc hP a b = evc hP b a` using `fun Y a b ↦ by`. Rewrite using `[← evc_swap hP hsw a b]`. Use `show CechPic.pull _ (cls P hP) = CechPic.pull _ (cls _ hsw)`.
+
+Rewrite using `[ec]`. Take `⟨B, _, Q, hB, hBg, hd, hd'⟩` from `HD.1 (Sp K) A hA`. Establish `hBg` using `hBg _ hg`. Use `haveI : IsCommMonObj B := hB.comm`. Establish `hL` using `pull_isLB hP (lift (𝟙 A) (𝟙 A)).left`.
+
+Take `⟨H, hH, hamp⟩` from `GlobalTheory.BirigidLift.exists_relAmple_prod hA hA hL amp hL amp`. Take `⟨a₁, a₂⟩` from `GlobalTheory.BirigidLift.additive_of_triv hA hA hH hamp hP r₁ r₂`. Take `⟨lam, hlam, hcls⟩` from `GlobalTheory.BirigidLift.exists_hom hd hd'.additive hP a₁ a₂`. Establish `hkerl : ∀ (T : Over (Sp K)) (x : T ⟶ A), x ≫ lam = 1 → x ^ e = 1`. Introduce `T x hx`.
+
+Establish `tr : Triv (ev P (fst A T) (snd A T ≫ x))`. Rewrite using `[triv_ev_iff hP, GlobalTheory.BirigidLift.evc_of_cls hd.isLB hP hcls, Category.assoc, hx, comp_one]`. Conclude with `evc_one_right hd.isLB hd.zero _`. Use `hker T x ((triv_ev_iff hP _ _).2 ?_)` and prove the remaining obligations. Rewrite using `[key]`.
+
+Conclude with `(triv_ev_iff hP _ _).1 tr`. Take `⟨μ', hμ', e₁, e₂⟩` from `GlobalTheory.IsogenyQuasiInverse.exists_quasiInverse K A B g hA hB hg hBg lam hlam e he0 hkerl`. Use `haveI := hlam`. Use `haveI := hμ'`. Establish `hpush` using `GlobalTheory.PolPrimeTo.bijective_push (dp0 K) (𝟙 _) lam μ' e he e₁ e₂`.
+
+Take `⟨⟨φ, hφ, -⟩, hperf⟩` from `GlobalTheory.Published.AbelianDualCrystal.duality HR hA hg hB hBg (hd.isPerfect hd')`. Establish `C` using `cupSquare_of_free HR.1 (AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA) (smooth_prod hg hg)`. Establish `e' : LBIso (ev Q (fst A A) (snd A A ≫ lam)) (ev P (fst A A ≫ 𝟙 A) (snd A A))`. Use `(cls_eq_iff (pull_isLB hd.isLB _) (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hd.isLB, cls_ev hP, GlobalTheory.BirigidLift.evc_of_cls hd.isLB hP hcls, Category.comp_id]`.
+
+Establish `hadj : ∀ x y, φ x (push (dp0 K) (𝟙 _) lam y) = ψ x y` using `fun x y ↦ by`. Establish `k` using `IsCorrForm.adjoint C hd.isLB hP hφ hψ (𝟙 A) lam e' x y`. Rewrite `k` using `[push_id]`. Then use the resulting hypothesis. Use `haveI := (hperf φ hφ).1`. Establish `hφb : Function.Bijective φ` using `LinearMap.IsPerfPair.bijective_left φ`.
+
+Set `E` to `LinearEquiv.ofBijective _ hpush`. Establish `: ⇑ψ = ⇑E.dualMap ∘ ⇑φ`. Use function extensionality and compare the values at `x`. Use `LinearMap.ext fun y ↦ ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, LinearEquiv.dualMap_apply, ← hadj]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `E.dualMap.bijective.comp hφb`.
+-/
 theorem bijective_deRham (HR : GlobalTheory.Published.AbelianDeRham) (HD : GlobalTheory.Published.AbelianDualCrystal) {K : Type} [CommRing K]
     [IsNoetherianRing K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) (g : ℕ)
     (hg : SmoothOfRelativeDimension g A.hom) (P : LB (A ⊗ A).left) (hP : P.IsLB)
@@ -89,6 +108,47 @@ open GlobalTheory.Published.GrothendieckMessing IsLocalRing
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀ φ hφ`. Establish `hI2 : RingHom.ker π ^ 2 = ⊥` using `hsq`. Use `haveI : Nontrivial C₀ := by`. Use `⟨⟨0, 1, fun h ↦ ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : C) ∈ RingHom.ker π` using `by rw [RingHom.mem_ker, map_one]; exact h.symm`.
+
+Establish `h2 : (1 : C) ∈ RingHom.ker π ^ 2`. Rewrite using `[pow_two]`. Simplify using `using Ideal.mul_mem_mul h1 h1`. Rewrite `h2` using `[hI2]`. Conclude with `one_ne_zero ((Submodule.mem_bot C).1 h2)`.
+
+Use `haveI : IsLocalRing C₀ := IsLocalRing.of_surjective' π hπ`. Use `haveI : IsNoetherianRing C₀ := isNoetherianRing_of_surjective C C₀ π hπ`. Set `κ` to `divided₂ hsq`. Establish `hκ : IsNilDP κ` using `isDPNilpotent_squareZero hsq`. Establish `ADR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.abelianDeRham`.
+
+Establish `ADC : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal`. Establish `GD : GlobalTheory.Published.GrothendieckDeformation` using `GlobalTheory.Published.grothendieckDeformation_of_lifting GlobalTheory.abelianDeRham GlobalTheory.abelianScheme_hom_lifting_nilpotent_dividedPowers`. Establish `hA₀` using `o₀.ab`. Establish `hP₀` using `o₀.isLB`. Take `⟨g₀, hg₀⟩` from `GlobalTheory.AbelianDim.exists_relDim C₀ o₀.A hA₀`.
+
+Take `⟨A', _, i', h', hA'⟩` from `GlobalTheory.UnobTop.abelianUnobstructed C (RingHom.ker π) hsq C₀ π hπ rfl o₀.A hA₀`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim C A' hA'`. Establish `Cs` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl hA' hg hA' hg h' h'`. Establish `hsw : (swap o₀.P).IsLB` using `pull_isLB hP₀ _`. Establish `hs : LBIso (swap o₀.P) o₀.P` using `(cls_eq_iff hsw hP₀).1 ((cls_eq_iff hP₀ hsw).2 o₀.symm).symm`.
+
+Establish `skew : ∀ x y, φ x y = -φ y x` using `GlobalTheory.SymmPoincare.skew_of_symm Cs hP₀ hs hφ`. Use `⟨skew, ?_⟩` and prove the remaining obligations. Establish `HC` using `(GD C (RingHom.ker π) κ hκ C₀ π hπ rfl).1`. Take `⟨bij, -, -⟩` from `HC g o₀.A A' i' h' hA' hg`. Set `e` to `LinearEquiv.ofBijective (crysToDR κ h') (HC.crysToDR_bijective h' hA' hg)`.
+
+Establish `ee : ∀ xA, crysToDR κ h' (e.symm xA) = xA` using `e.apply_symm_apply`. Use `letI : Algebra C C₀ := π.toAlgebra`. Establish `hBC` using `(ADR.2.2.1 C A' g hA' hg C₀ o₀.A i' h').1`. Take `⟨hfinA, hprojA, -⟩` from `ADR.1.prim hA' hg`. Use `haveI := hfinA`.
+
+Use `haveI := hprojA`. Use `haveI : Module.Finite C (Crys κ (spMap π) o₀.A) := Module.Finite.equiv e.symm`. Use `haveI : Module.Projective C (Crys κ (spMap π) o₀.A) := Module.Projective.of_equiv e.symm`. Set `red : Crys κ (spMap π) o₀.A →ₛₗ[π] HdR o₀.A` to `hBC.bcMap.comp (crysToDR κ h')`. Establish `hm : ∀ x, (crysRedMor κ rfl o₀.A).Corr x (red x)` using `fun x ↦ (corr_crysToDR_iff rfl h' bij.2 x (red x)).1 (by exact hBC.corr_iff.2 rfl)`.
+
+Establish `iso : LBIso (o₀.P.pull (Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A)))) o₀.P` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB hP₀ _) hP₀).1 (by rw [GlobalTheory.CechPic.cls_pull hP₀, Over.id_left, GlobalTheory.CechPic.pull_id])`. Take `⟨φ', hφ', e'⟩` from `hφ.pull hP₀ (crysRedMor κ rfl o₀.A) (crysRedMor κ rfl o₀.A) (h := Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A))) (by simp) (by simp) hP₀ iso`. Establish `hrel : ∀ x y, φ' (red x) (red y) = π (φ x y)` using `fun x y ↦ e' x (red x) y (red y) (hm x) (hm y)`. Establish `hred : Function.Surjective red`. Introduce `y`.
+
+Set `l : primDR A' →ₗ[C] C₀` to `{ toFun c := y ((redMor h').pull c) map_add' := by simp map_smul' r c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }`. Take `⟨xA, hx⟩` from `Module.projective_lifting_property (Algebra.linearMap C C₀) l hπ`. Use `⟨e.symm xA, ?_⟩` and prove the remaining obligations. Use `show hBC.bcMap (crysToDR κ h' (e.symm xA)) = y`. Rewrite using `[ee]`.
+
+Conclude with `hBC.corr_iff.1 fun c ↦ (LinearMap.congr_fun hx c).symm`. Establish `hker : ∀ x, red x = 0 → x ∈ (RingHom.ker π) • (⊤ : Submodule C (Crys κ (spMap π) o₀.A))`. Introduce `x hx`. Establish `hc` using `hBC.corr_iff.2 hx`. Establish `hmem` using `GlobalTheory.BirigLift.mem_smul_top_of_forall_mem (RingHom.ker π) (crysToDR κ h' x) fun c ↦ RingHom.mem_ker.2 ((hc c).symm.trans (LinearMap.zero_apply _))`.
+
+Use `Submodule.mem_map_of_mem (f := e.symm.toLinearMap) hmem` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Establish `ex : e.symm.toLinearMap (crysToDR κ h' x) = x` using `e.symm_apply_apply x`. Rewrite `this` using `[ex]`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+
+Take `⟨k, hkp, hkerP⟩` from `o₀.kerP`. Establish `hk0 : 0 < k`. Use `Nat.pos_of_ne_zero fun h0 ↦ ?_` and prove the remaining obligations. Rewrite `hkp` using `[h0, Nat.coprime_zero_left]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' hkp`.
+
+Establish `hku : IsUnit (k : C₀)`. Use `(b.unit k hkp).map (π.comp tR)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hψb : Function.Bijective φ'` using `bijective_deRham ADR ADC o₀.A hA₀ g₀ hg₀ o₀.P hP₀ o₀.rig₁ o₀.rig₂ o₀.symm o₀.ample k hk0 hku hkerP φ' hφ'`. Establish `skew' : ∀ u v, φ' u v = -φ' v u` using `fun u v ↦ by`.
+
+Take `⟨x, rfl⟩` from `hred u`. Take `⟨y, rfl⟩` from `hred v`. Rewrite using `[hrel, hrel, skew, map_neg]`. Establish `hψf : Function.Surjective φ'.flip` using `fun l ↦ by`. Take `⟨x, hx⟩` from `hψb.2 (-l)`.
+
+Conclude with `⟨x, LinearMap.ext fun y ↦ by rw [LinearMap.flip_apply, skew', hx, LinearMap.neg_apply, neg_neg]⟩`. Establish `hperf` using `GlobalTheory.BirigLift.exists_perfect_mod π red φ φ' hπ hψf hred hker hrel`. Establish `htop : (⊤ : Submodule C (Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C)) ≤ LinearMap.range φ.flip ⊔ RingHom.ker π • ⊤` using `fun l _ ↦ by`. Take `⟨z, hz⟩` from `hperf l`. Establish `hmem` using `GlobalTheory.BirigLift.mem_smul_top_of_forall_mem (RingHom.ker π) (l - φ.flip z) fun c ↦ by`.
+
+Simplify `hz c` using `only [LinearMap.sub_apply, LinearMap.flip_apply]`. Conclude with `Submodule.mem_sup.2 ⟨φ.flip z, ⟨z, rfl⟩, l - φ.flip z, hmem, add_sub_cancel _ _⟩`. Establish `hIle : RingHom.ker π • (⊤ : Submodule C (Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C)) ≤ LinearMap.range φ.flip`. Combine the equalities or inequalities in the displayed calculation. Use `sup_le Submodule.smul_le_right ?_` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.mul_smul, ← pow_two, hI2, Submodule.bot_smul]`. Conclude with `bot_le`. Establish `hsurj : Function.Surjective φ.flip` using `LinearMap.range_eq_top.1 (top_le_iff.1 (htop.trans (sup_le le_rfl hIle)))`. Use `haveI : Module.Free C (Crys (divided₂ hsq) (spMap π) o₀.A) := Module.free_of_flat_of_isLocalRing`. Set `bs` to `Module.finBasis C (Crys (divided₂ hsq) (spMap π) o₀.A)`.
+
+Establish `hinj : Function.Injective φ.flip`. Establish `hs' : Function.Surjective (bs.toDualEquiv.symm.toLinearMap ∘ₗ φ.flip)` using `bs.toDualEquiv.symm.surjective.comp hsurj`. Establish `hi` using `OrzechProperty.injective_of_surjective_endomorphism _ hs'`. Conclude with `fun x y hxy ↦ hi (by simp only [LinearMap.coe_comp, Function.comp_apply, hxy])`. Establish `hneg : ∀ x, φ x = -φ.flip x` using `fun x ↦ LinearMap.ext fun y ↦ by rw [LinearMap.neg_apply, LinearMap.flip_apply, skew]`.
+
+Use `⟨fun x x' hxx ↦ hinj (neg_injective ?_), fun l ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hneg, ← hneg, hxx]`. Take `⟨z, hz⟩` from `hsurj (-l)`. Conclude with `⟨z, by rw [hneg, hz, neg_neg]⟩`.
+-/
 theorem skew_bijective : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → ∀ (hsq : RingHom.ker π ^ 2 = 0) (tR : R →+* C) (o₀ : GlobalTheory.UPel.HT.Obj b N (spMap π ≫ spMap tR)), ∀ φ : Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C, GlobalTheory.AbDual.IsCorrForm (divided₂ hsq) (spMap π) o₀.A o₀.A o₀.P φ → (∀ x y, φ x y = -φ y x) ∧ Function.Bijective φ := by
   intro p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀ φ hφ
   have hI2 : RingHom.ker π ^ 2 = ⊥ := hsq

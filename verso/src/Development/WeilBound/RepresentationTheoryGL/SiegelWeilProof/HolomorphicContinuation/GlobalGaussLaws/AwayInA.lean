@@ -16,6 +16,11 @@ namespace PositivityTheory.Rg.Sw.Glob.AwayPf
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Unfold `evalPoly`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂ (RingHom.id ℂ) _ p = MvPolynomial.eval₂ (RingHom.id ℂ) _ p`. Apply `MvPolynomial.eval₂_congr` to reduce the goal to its premises. Introduce `i c hi hc`. Establish `hv : i ∈ p.vars` using `(MvPolynomial.mem_vars i).2 ⟨c, (MvPolynomial.mem_support_iff).2 hc, hi⟩`.
+
+Establish `e` using `h i.1 (hp i hv)`. Simplify using `only [e]`.
+-/
 theorem evalPoly_congr {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) (τ : D.what₂.Tau)
     (hp : ∀ v ∈ p.vars, v.1 ≠ τ) (z z' : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) (h : ∀ τ', τ' ≠ τ → z τ' = z' τ') :
     evalPoly p z = evalPoly p z' := by
@@ -27,6 +32,9 @@ theorem evalPoly_congr {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fi
   have e := h i.1 (hp i hv)
   simp only [e]
 
+/- English proof (translation)
+Unfold `gAway`. Use `congr 2`. Use `Finset.sum_congr rfl (fun τ' hτ' => ?_)` and prove the remaining obligations. Rewrite using `[h τ' (Finset.mem_filter.1 hτ').2]`.
+-/
 theorem gAway_congr (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) (z z' : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ) (h : ∀ τ', τ' ≠ τ → z τ' = z' τ') :
     gAway V l s τ z = gAway V l s τ z' := by
@@ -36,6 +44,11 @@ theorem gAway_congr (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau �
   refine Finset.sum_congr rfl (fun τ' hτ' => ?_)
   rw [h τ' (Finset.mem_filter.1 hτ').2]
 
+/- English proof (translation)
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨p, g, _, hp, rfl⟩` from `hφ`. Simplify using `only`. Establish `hf' : (fun i j => finPart D (x i j)) = (fun i j => finPart D (x' i j))` using `hf`.
+
+Rewrite using `[evalPoly_congr p τ hp _ _ hx, gAway_congr V l s τ _ _ hx, hf']`. Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, ha, hb]`. Consider the case `smul c a _ ha => simp only [Pi.smul_apply, ha]`.
+-/
 theorem dep (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) {Ψ : Mx D V.rank n → ℂ} (hΨ : Ψ ∈ awayA θ V n l s τ) (x x' : Mx D V.rank n)
     (hx : ∀ τ', τ' ≠ τ → compAt θ τ' x = compAt θ τ' x') (hf : x.map (finPart D) = x'.map (finPart D)) :

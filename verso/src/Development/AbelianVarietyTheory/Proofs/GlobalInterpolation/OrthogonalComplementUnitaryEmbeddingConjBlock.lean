@@ -14,24 +14,39 @@ open scoped ENNReal NNReal
 
 variable {P Q P' Q' : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[Formalism.UG.Jpq, sg, Matrix.one_apply]`. Apply the tactic sequence `all_goals (split_ifs <;> simp)`.
+-/
 theorem jpq_apply (a b : Fin P ⊕ Fin Q) :
     Formalism.UG.Jpq P Q a b = if a = b then (sg a : ℂ) else 0 := by
   rcases a with a | a <;> rcases b with b | b <;>
     simp [Formalism.UG.Jpq, sg, Matrix.one_apply]
   all_goals (split_ifs <;> simp)
 
+/- English proof (translation)
+Simplify using `[herm, sg, Fintype.sum_sum_type, sub_eq_add_neg]`.
+-/
 theorem herm_eq_sum (x y : Sp P Q) : herm x y = ∑ i, (sg i : ℂ) * (x i * star (y i)) := by
   simp [herm, sg, Fintype.sum_sum_type, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `[herm_eq_sum, mul_comm]`.
+-/
 theorem herm_swap (x y : Sp P Q) : herm y x = star (herm x y) := by
   simp [herm_eq_sum, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, jpq_apply, herm_eq_sum, conjTranspose_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+-/
 theorem gram_apply (u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) (i l : Fin P ⊕ Fin Q) :
     (uᴴ * Formalism.UG.Jpq P Q * u) i l = herm (fun a => u a l) (fun a => u a i) := by
   simp only [Matrix.mul_apply, jpq_apply, herm_eq_sum, conjTranspose_apply, mul_ite, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
   exact Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Rewrite using `[herm_eq_sum, Finset.sum_eq_single a]`. Apply the tactic sequence `by_cases h : a = b <;> simp [h]`. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+-/
 theorem herm_single (a b : Fin P ⊕ Fin Q) :
     herm (Pi.single b 1 : Sp P Q) (Pi.single a 1) = if a = b then (sg a : ℂ) else 0 := by
   rw [herm_eq_sum, Finset.sum_eq_single a]
@@ -39,6 +54,25 @@ theorem herm_single (a b : Fin P ⊕ Fin Q) :
   · intro c _ hc; simp [hc]
   · simp
 
+/- English proof (translation)
+Introduce `P Q P' Q' e he j₀ hj₀ x₀ A j hx ⟨h1, h2, h3⟩`. Set `u : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ` to `Matrix.of fun a l => (e.symm l).elim (x₀ a) (fun b => A a b)`. Establish `un : ∀ a, u a (e none) = x₀ a` using `fun a => by simp [u]`. Establish `us : ∀ a b, u a (e (some b)) = A a b` using `fun a b => by simp [u]`. Establish `cn : (fun a => u a (e none)) = x₀` using `funext un`.
+
+Establish `cs : ∀ b, (fun a => u a (e (some b))) = A *ᵥ Pi.single b 1` using `fun b => by`. Use function extensionality and compare the values at `a`. Simplify using `[us]`. Establish `hu : u ∈ Set.range (UpqT.mat (P` using `P) (Q := Q)) := by`. Rewrite using `[GlobalTheory.UpqTopology.range_mat]`.
+
+Use extensionality with `i l`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨l, rfl⟩` from `e.surjective l`. Rewrite using `[gram_apply, jpq_apply]`. Apply the tactic sequence `rcases i with _ | i <;> rcases l with _ | l`.
+
+Rewrite using `[cn, herm_self, hx, if_pos rfl]`. Rewrite using `[cn, cs, (h2 _).2 ⟨_, rfl⟩, if_neg (by simp)]`. Rewrite using `[cn, cs, herm_swap, (h2 _).2 ⟨_, rfl⟩, if_neg (by simp), star_zero]`. Rewrite using `[cs, cs, h1, herm_single, he i]`. Simplify using the standard rewrite rules.
+
+Take `⟨g₀, hg₀⟩` from `hu`. Use `⟨g₀, ?_, fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[act, baseVec, hg₀, un]`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+
+Apply `GlobalTheory.UpqTopology.isClosedEmbedding_mat.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `UpqT.mat (j g) * UpqT.mat g₀ = UpqT.mat g₀ * UpqT.mat (j₀ g)`. Rewrite using `[hg₀]`. Take `⟨b1, b2, b3, b4⟩` from `hj₀ g`. Use extensionality with `a l`.
+
+Take `⟨l, rfl⟩` from `e.surjective l`. Rewrite using `[Matrix.mul_apply (M := u), ← e.sum_comp, Fintype.sum_option]`. Break down `l with _ | l` into its components or cases. Use `congrFun (h3 g).1 a` as an intermediate fact. Simplify using `only [b1, b3, un, mul_one, mul_zero, Finset.sum_const_zero, add_zero]`.
+
+Rewrite using `[← this]`. Simplify using `[act, Matrix.mul_apply, Matrix.mulVec, dotProduct, un]`. Use `congrFun ((h3 g).2 (Pi.single l 1)) a` as an intermediate fact. Simplify using `only [b2, b4, us, mul_zero, zero_add]`. Simplify using `only [act, Matrix.mulVec_single_one] at this`.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, us]`.
+-/
 theorem perp_conj : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)),
     SignCompat e → ∀ j₀ : UpqT P' Q' → UpqT P Q, IsBlockEmb e j₀ →
     ∀ (x₀ : Sp P Q) (A : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ) (j : UpqT P' Q' → UpqT P Q),

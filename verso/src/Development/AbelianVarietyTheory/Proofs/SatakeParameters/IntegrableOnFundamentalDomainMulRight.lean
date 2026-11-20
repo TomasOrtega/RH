@@ -12,6 +12,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Measu
 
 omit [μ.IsMulLeftInvariant] [Countable Γ] in
 
+/- English proof (translation)
+Use `h𝓕.image_of_equiv (Equiv.mulRight y) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right μ y⁻¹).quasiMeasurePreserving`. Introduce `γ h`. Simplify using `[Subgroup.smul_def, mul_assoc]`.
+-/
 theorem isFundamentalDomain_image_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (y : H) :
     IsFundamentalDomain Γ ((fun h => h * y) '' 𝓕) μ := by
   refine h𝓕.image_of_equiv (Equiv.mulRight y) ?_ (Equiv.refl _) ?_
@@ -19,6 +22,9 @@ theorem isFundamentalDomain_image_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕
   · intro γ h
     simp [Subgroup.smul_def, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[h𝓕.setIntegral_eq (isFundamentalDomain_image_mul_right h𝓕 y) (f := u) (fun γ h => hu γ γ.2 h)]`. Conclude with `((measurePreserving_mul_right μ y).setIntegral_image_emb (measurableEmbedding_mulRight y) u 𝓕).symm`.
+-/
 theorem setIntegral_fundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (y : H)
     (u : H → ℂ) (hu : ∀ γ ∈ Γ, ∀ h, u (γ * h) = u h) :
     ∫ h in 𝓕, u (h * y) ∂μ = ∫ h in 𝓕, u h ∂μ := by
@@ -27,6 +33,9 @@ theorem setIntegral_fundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ 
   exact ((measurePreserving_mul_right μ y).setIntegral_image_emb
     (measurableEmbedding_mulRight y) u 𝓕).symm
 
+/- English proof (translation)
+Rewrite `hi` using `[h𝓕.integrableOn_iff (isFundamentalDomain_image_mul_right h𝓕 y) (f := u) (fun γ h => hu γ γ.2 h)]`. Conclude with `((measurePreserving_mul_right μ y).integrableOn_image (measurableEmbedding_mulRight y)).1 hi`.
+-/
 theorem integrableOn_fundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (y : H)
     (u : H → ℂ) (hu : ∀ γ ∈ Γ, ∀ h, u (γ * h) = u h) (hi : IntegrableOn u 𝓕 μ) :
     IntegrableOn (fun h => u (h * y)) 𝓕 μ := by
@@ -37,6 +46,27 @@ theorem integrableOn_fundamentalDomain_mul_right (h𝓕 : IsFundamentalDomain Γ
 
 end
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ μ _ _ Γ K _ 𝓕 x A A' Kn F n c B h𝓕 hA hA' hcard hFl hFr hKl hKr hint hker g`. Establish `hu : ∀ γ ∈ Γ, ∀ h, (fun h => Kn g h * F (h * x)) (γ * h) = (fun h => Kn g h * F (h * x)) h`. Introduce `γ hγ h`. Simplify using `only [hKl g γ hγ, mul_assoc, hFl γ hγ]`. Establish `h1 : ∀ a ∈ A, ∫ h in 𝓕, Kn g h * F (h * a) ∂μ = ∫ h in 𝓕, Kn g h * F (h * x) ∂μ`.
+
+Introduce `a ha`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA a ha`. Use `Eq.trans ?_ (setIntegral_fundamentalDomain_mul_right h𝓕 k₁ (fun h => Kn g h * F (h * x)) hu)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[hKr g k₁ hk₁, ← mul_assoc, hFr k₂ hk₂, ← mul_assoc]`. Establish `h2e : ∀ a ∈ A', ∃ y, (fun h => Kn g (h * a) * F h) = fun h => (fun h => Kn g h * F (h * x)) (h * y)`. Introduce `a ha`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA' a ha`. Use `⟨k₁ * x⁻¹, funext fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `: h * (k₁ * x⁻¹) * x = h * k₁` using `by group`. Simplify using `only [this]`. Rewrite using `[hFr k₁ hk₁, ← mul_assoc, hKr g k₂ hk₂]`. Establish `h2 : ∀ a ∈ A', ∫ h in 𝓕, Kn g (h * a) * F h ∂μ = ∫ h in 𝓕, Kn g h * F (h * x) ∂μ`. Introduce `a ha`.
+
+Take `⟨y, hy⟩` from `h2e a ha`. Rewrite using `[hy]`. Conclude with `setIntegral_fundamentalDomain_mul_right h𝓕 y (fun h => Kn g h * F (h * x)) hu`. Establish `h2i : ∀ a ∈ A', IntegrableOn (fun h => Kn g (h * a) * F h) 𝓕 μ`. Introduce `a ha`.
+
+Take `⟨y, hy⟩` from `h2e a ha`. Rewrite using `[hy]`. Conclude with `integrableOn_fundamentalDomain_mul_right h𝓕 y (fun h => Kn g h * F (h * x)) hu (hint g x)`. Establish `hi1 : ∀ g, IntegrableOn (fun h => Kn g h * F h) 𝓕 μ` using `fun g => by`. Simplify using `using hint g 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `integral_finset_sum _ fun a _ => hint g a`. Use `_ = ∑ a ∈ A', ∫ h in 𝓕, Kn g (h * a) * F h ∂μ := by`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, Finset.sum_const, Finset.sum_const, hcard]`.
+
+Use `_ = ∫ h in 𝓕, ∑ a ∈ A', Kn g (h * a) * F h ∂μ := (integral_finset_sum _ h2i).symm`. Use `_ = ∫ h in 𝓕, ∑ j ∈ Finset.range n, c j * ∑ b ∈ B j, Kn (g * b) h * F h ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← Finset.sum_mul, hker, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Finset.sum_mul]`. Use `_ = _ := by`. Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, integral_finset_sum _ fun b _ => hi1 (g * b)]`. Introduce `j _`. Conclude with `(integrable_finset_sum _ fun b _ => hi1 (g * b)).const_mul _`.
+-/
 theorem setIntegral_kernel_doubleCoset_adjoint :
     ∀ {G H : Type} [Group G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ K : Subgroup H) [Countable Γ] (𝓕 : Set H) (x : H) (A A' : Finset H) (Kn : G → H → ℂ) (F : H → ℂ) (n : ℕ) (c : ℕ → ℂ) (B : ℕ → Finset G), IsFundamentalDomain Γ 𝓕 μ → (∀ a ∈ A, ∃ k₁ ∈ K, ∃ k₂ ∈ K, a = k₁ * x * k₂) → (∀ a ∈ A', ∃ k₁ ∈ K, ∃ k₂ ∈ K, a = k₁ * x⁻¹ * k₂) → A.card = A'.card → (∀ γ ∈ Γ, ∀ h, F (γ * h) = F h) → (∀ k ∈ K, ∀ h, F (h * k) = F h) → (∀ g, ∀ γ ∈ Γ, ∀ h, Kn g (γ * h) = Kn g h) → (∀ g, ∀ k ∈ K, ∀ h, Kn g (h * k) = Kn g h) → (∀ g y, IntegrableOn (fun h => Kn g h * F (h * y)) 𝓕 μ) → (∀ g h, ∑ a ∈ A', Kn g (h * a) = ∑ j ∈ Finset.range n, c j * ∑ b ∈ B j, Kn (g * b) h) → ∀ g, ∫ h in 𝓕, Kn g h * ∑ a ∈ A, F (h * a) ∂μ = ∑ j ∈ Finset.range n, c j * ∑ b ∈ B j, ∫ h in 𝓕, Kn (g * b) h * F h ∂μ := by
   intro G H _ _ _ _ _ _ μ _ _ Γ K _ 𝓕 x A A' Kn F n c B h𝓕 hA hA' hcard hFl hFr hKl hKr hint hker g

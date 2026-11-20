@@ -37,6 +37,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {D : D7} {T : WDTie D.nd D.naut}
   (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T)
 include hF in
+/- English proof (translation)
+The claim follows from `host_isCMField D.host; ReadsCusp D.naut fun a π => (C.e a π).1 := by have := host_isCMField D.host refine ⟨fun a _ => Subtype.val_injective.comp (C.e a).injective, fun a π _ => (C.e a π).2, fun a π w _ hu => ?_⟩ rw [T.frobEig w _ hu, C.loc] exact _root_.GlobalTheory.HeightCountin …`.
+-/
 theorem readsCusp_alt : haveI := host_isCMField D.host; ReadsCusp D.naut fun a π => (C.e a π).1 := by
   have := host_isCMField D.host
   refine ⟨fun a _ => Subtype.val_injective.comp (C.e a).injective, fun a π _ => (C.e a π).2, fun a π w _ hu => ?_⟩

@@ -19,10 +19,16 @@ def tp : MvPolynomial (Ix K n) ℂ →ₗ[ℂ] (H →L[ℂ] H) :=
 def yk (W : H →L[ℂ] H) (g : MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)) : H →L[ℂ] H :=
   ∑ β ∈ g.support, tp ev B (g.coeff β) * ev (monomial β 1) * W
 
+/- English proof (translation)
+Use `(basisMonomials (Ix K n) ℂ).constr_basis ℂ (fun α => B ^ α.degree * zm ev α) α` as an intermediate fact. Rewrite `this` using `[coe_basisMonomials]`. Then use the resulting hypothesis.
+-/
 theorem tp_monomial (α : Ix K n →₀ ℕ) : tp ev B (monomial α 1) = B ^ α.degree * zm ev α := by
   have := (basisMonomials (Ix K n) ℂ).constr_basis ℂ (fun α => B ^ α.degree * zm ev α) α
   rwa [coe_basisMonomials] at this
 
+/- English proof (translation)
+Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← tp_monomial, ← map_smul, smul_monomial, smul_eq_mul, mul_one]`.
+-/
 theorem tp_eq (p : MvPolynomial (Ix K n) ℂ) :
     tp ev B p = ∑ α ∈ p.support, p.coeff α • (B ^ α.degree * zm ev α) := by
   conv_lhs => rw [p.as_sum]
@@ -30,22 +36,40 @@ theorem tp_eq (p : MvPolynomial (Ix K n) ℂ) :
   refine Finset.sum_congr rfl fun α _ => ?_
   rw [← tp_monomial, ← map_smul, smul_monomial, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]`.
+-/
 theorem ev_comm (a b : PR K n) : Commute (ev a) (ev b) := by
   rw [Commute, SemiconjBy, ← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `[zm]`.
+-/
 theorem zm_zero : zm ev 0 = 1 := by simp [zm]
 
+/- English proof (translation)
+Rewrite using `[zm, zm, zm, ← map_mul, ← map_mul, ← map_mul, monomial_mul, one_mul]`.
+-/
 theorem zm_add (α β : Ix K n →₀ ℕ) : zm ev (α + β) = zm ev α * zm ev β := by
   rw [zm, zm, zm, ← map_mul, ← map_mul, ← map_mul, monomial_mul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[zm, ← X, rename_X]`.
+-/
 theorem zm_single (x : Ix K n) : zm ev (Finsupp.single x 1) = ev (C (X (some x))) := by
   rw [zm, ← X, rename_X]
 
+/- English proof (translation)
+Use `(le_totalDegree hα).trans h` as an intermediate fact. Simplify `this` using `[Finsupp.degree_apply, Finsupp.sum]`.
+-/
 theorem deg_le {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.totalDegree ≤ d) {α : ι →₀ ℕ}
     (hα : α ∈ p.support) : α.degree ≤ d := by
   have := (le_totalDegree hα).trans h
   simpa [Finsupp.degree_apply, Finsupp.sum] using this
 
+/- English proof (translation)
+Use `Commute.sum_right _ _ _ fun β hβ => (Commute.mul_right ?_ (h2 β hβ)).mul_right hW` and prove the remaining obligations. Rewrite using `[tp_eq]`. Conclude with `Commute.sum_right _ _ _ fun α _ => ((hB.pow_right _).mul_right (h1 _)).smul_right _`.
+-/
 theorem comm_yk {T W : H →L[ℂ] H} {g : MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)} (hB : Commute T B)
     (hW : Commute T W) (h1 : ∀ p, Commute T (ev (C p))) (h2 : ∀ β ∈ g.support, Commute T (ev (monomial β 1))) :
     Commute T (yk ev B W g) := by
@@ -53,6 +77,21 @@ theorem comm_yk {T W : H →L[ℂ] H} {g : MvPolynomial (Pl K × Fin n) (MvPolyn
   rw [tp_eq]
   exact Commute.sum_right _ _ _ fun α _ => ((hB.pow_right _).mul_right (h1 _)).smul_right _
 
+/- English proof (translation)
+Establish `h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`. Establish `h0 : 0 ≤ ∑ x, ‖zm ev (Finsupp.single x 1)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hz : ∀ (m : ℕ) (α : Ix K n →₀ ℕ), α.degree = m → ‖zm ev α‖ ≤ (1 + ∑ x, ‖zm ev (Finsupp.single x 1)‖) ^ m`. Introduce `m α`. Proceed by induction on `α using Finsupp.induction_linear generalizing m with`.
+
+Consider the case `zero => rintro rfl`. Simplify `h1` using `[zm_zero]`. Consider the case `add a b ha hb`. Introduce and unpack `rfl`. Rewrite using `[zm_add, map_add, pow_add]`.
+
+Conclude with `(norm_mul_le _ _).trans (mul_le_mul (ha _ rfl) (hb _ rfl) (norm_nonneg _) (by positivity))`. Consider the case `single i e`. Introduce and unpack `rfl`. Rewrite using `[Finsupp.degree_single]`. Establish `hi` using `Finset.single_le_sum (f := fun x => ‖zm ev (Finsupp.single x 1)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+
+Proceed by induction on `e with`. Consider the case `zero => simpa [zm_zero] using h1`. Consider the case `succ e ih`. Rewrite using `[Finsupp.single_add, zm_add, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))`.
+
+Establish `hb : ∀ m : ℕ, ‖B ^ m‖ ≤ (1 + ‖B‖) ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using h1`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih (by linarith) (norm_nonneg _) (by positivity))`. Use `⟨(1 + ‖B‖) * (1 + ∑ x, ‖zm ev (Finsupp.single x 1)‖), ?_, fun α => ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg B, mul_nonneg (norm_nonneg B) h0]`. Rewrite using `[mul_pow]`.
+
+Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hb _) (hz _ α rfl) (norm_nonneg _) (by positivity))`.
+-/
 theorem mono_norm : ∃ D : ℝ, 1 ≤ D ∧ ∀ α : Ix K n →₀ ℕ, ‖B ^ α.degree * zm ev α‖ ≤ D ^ α.degree := by
   have h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := ContinuousLinearMap.norm_id_le
   have h0 : 0 ≤ ∑ x, ‖zm ev (Finsupp.single x 1)‖ := Finset.sum_nonneg fun _ _ => norm_nonneg _
@@ -85,6 +124,15 @@ theorem mono_norm : ∃ D : ℝ, 1 ≤ D ∧ ∀ α : Ix K n →₀ ℕ, ‖B ^ 
   · rw [mul_pow]
     exact (norm_mul_le _ _).trans (mul_le_mul (hb _) (hz _ α rfl) (norm_nonneg _) (by positivity))
 
+/- English proof (translation)
+Take `⟨D, hD, hb⟩` from `mono_norm ev B`. Establish `ht : ∀ (k : ℕ) (p : MvPolynomial (Ix K n) ℂ), p.totalDegree ≤ k → ‖tp ev B p‖ ≤ l1 p * D ^ k`. Introduce `k p hp`. Rewrite using `[tp_eq, l1, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left ((hb α).trans (pow_le_pow_right₀ hD (deg_le hp hα))) (norm_nonneg _)`. Use `set E : ℝ := |K₀| + 1 with hE`. Establish `hE1 : 1 ≤ E` using `by have := abs_nonneg K₀; linarith`. Establish `hM : 0 ≤ ∑ β ∈ s, ‖ev (monomial β 1) * W‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Use `⟨E * ∑ β ∈ s, ‖ev (monomial β 1) * W‖, E * D, by positivity, by nlinarith, fun k => ?_⟩` and prove the remaining obligations. Establish `h3 : K₀ ^ (k + 1) ≤ E ^ (k + 1)` using `(le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) (by linarith) _)`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun β _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Use `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((ht k _ (hG k β).1).trans ?_) (norm_nonneg _))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right ((hG k β).2.trans (by gcongr)) (by positivity)`. Use `_ ≤ ∑ β ∈ s, E ^ (k + 1) / k.factorial * D ^ k * ‖ev (monomial β 1) * W‖ := Finset.sum_le_sum_of_subset_of_nonneg (hs k) fun _ _ _ => by positivity`. Use `_ = _ := by rw [← Finset.mul_sum, mul_pow]; ring`.
+-/
 theorem yk_norm (W : H →L[ℂ] H) (G : ℕ → MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ))
     (s : Finset ((Pl K × Fin n) →₀ ℕ)) (K₀ : ℝ) (hs : ∀ k, (G k).support ⊆ s)
     (hG : ∀ k β, ((G k).coeff β).totalDegree ≤ k ∧ l1 ((G k).coeff β) ≤ K₀ ^ (k + 1) / k.factorial) :
@@ -111,6 +159,13 @@ theorem yk_norm (W : H →L[ℂ] H) (G : ℕ → MvPolynomial (Pl K × Fin n) (M
         Finset.sum_le_sum_of_subset_of_nonneg (hs k) fun _ _ _ => by positivity
     _ = _ := by rw [← Finset.mul_sum, mul_pow]; ring
 
+/- English proof (translation)
+Establish `hs` using `Real.summable_pow_div_factorial x`. Establish `hy : Summable y` using `Summable.of_norm_bounded (hs.mul_left c) h`. Establish `hs0 : 0 ≤ ∑' k : ℕ, x ^ k / (k.factorial : ℝ)` using `tsum_nonneg fun _ => by positivity`. Use `set e := ∑' k : ℕ, x ^ k / (k.factorial : ℝ) with he`. Use `⟨hy, (c * e * M + 1) * x, fun d => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hy.sum_add_tsum_nat_add (d + 1), sub_add_cancel_left, norm_neg]`. Establish `h1 : ‖∑' k, y (k + (d + 1))‖ ≤ c * (x ^ (d + 1) / d.factorial) * e`. Use `tsum_of_norm_bounded (hs.hasSum.mul_left _) fun k => (h _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, div_mul_div_comm, ← pow_add, add_comm k]`. Use `mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_left (by positivity) (by positivity) ?_) hc` and prove the remaining obligations.
+
+Use `(Nat.le_of_dvd (Nat.factorial_pos _) (Nat.factorial_mul_factorial_dvd_factorial_add d k)).trans (Nat.factorial_le (show d + k ≤ d + 1 + k by omega))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h0 : 0 ≤ c * e * M` using `by positivity`. Establish `h7 : c * e * M ≤ (c * e * M + 1) ^ (d + 1)` using `(by linarith : c * e * M ≤ c * e * M + 1).trans (le_self_pow₀ (by linarith) (Nat.succ_ne_zero d))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tail {V : Type} [NormedAddCommGroup V] [CompleteSpace V] (y : ℕ → V) (c x : ℝ) (hc : 0 ≤ c) (hx : 1 ≤ x)
     (h : ∀ k, ‖y k‖ ≤ c * (x ^ k / k.factorial)) (M : ℝ) (hM : 0 ≤ M) :
     Summable y ∧ ∃ C' : ℝ, ∀ d : ℕ, ‖∑ k ∈ Finset.range (d + 1), y k - ∑' k, y k‖ * M ≤ C' ^ (d + 1) / d.factorial := by
@@ -137,10 +192,16 @@ theorem tail {V : Type} [NormedAddCommGroup V] [CompleteSpace V] (y : ℕ → V)
 
 variable {ev B}
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, ← (h1.mul_right h2).eq, mul_assoc, hW]`.
+-/
 theorem fix_mul (hB : ∀ R, Commute B (ev R)) {W T : H →L[ℂ] H} (hW : am ev * B * W = W) (h1 : Commute T (am ev)) (h2 : Commute T B) :
     am ev * B * (T * W) = T * W := by
   rw [← mul_assoc, ← (h1.mul_right h2).eq, mul_assoc, hW]
 
+/- English proof (translation)
+Establish `hc : Commute (am ev) B` using `(hB _).symm`. Rewrite using `[← mul_assoc, ← hc.mul_pow]`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih => rw [pow_succ, mul_assoc, hW, ih]`.
+-/
 theorem fix_pow (hB : ∀ R, Commute B (ev R)) {W : H →L[ℂ] H} (hW : am ev * B * W = W) (a : ℕ) :
     am ev ^ a * (B ^ a * W) = W := by
   have hc : Commute (am ev) B := (hB _).symm
@@ -149,6 +210,17 @@ theorem fix_pow (hB : ∀ R, Commute B (ev R)) {W : H →L[ℂ] H} (hW : am ev *
   | zero => simp
   | succ a ih => rw [pow_succ, mul_assoc, hW, ih]
 
+/- English proof (translation)
+Establish `h1 : ∀ (p : MvPolynomial (Ix K n) ℂ) (V : H →L[ℂ] H), p.totalDegree ≤ d → am ev * B * V = V → ev (C (homog d p)) * V = am ev ^ d * (tp ev B p * V)`. Introduce `p V hp hV`. Rewrite using `[homog, tp_eq, map_sum, map_sum, Finset.sum_mul, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hd` using `deg_le hp hα`.
+
+Establish `e : rename some (monomial α (p.coeff α) : MvPolynomial (Ix K n) ℂ) = C (p.coeff α) * rename some (monomial α 1)`. Rewrite using `[rename_monomial, rename_monomial, C_mul_monomial, mul_one]`. Establish `e2 : am ev ^ d = am ev ^ (d - α.degree) * am ev ^ α.degree` using `by rw [← pow_add]; congr 1; omega`. Establish `e3` using `fix_pow hB (fix_mul hB hV (T := zm ev α) (ev_comm ev _ _) (hB _).symm) α.degree`. Rewrite using `[e, map_mul, map_mul, map_mul, map_mul, map_pow, map_pow, hc, e2]`.
+
+Simplify using `only [smul_mul_assoc, mul_smul_comm, one_mul, mul_assoc, e3]`. Both sides reduce to the same expression. Rewrite using `[trunc, map_sum, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[yk, map_sum, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Establish `hd : ((G k).coeff β).totalDegree ≤ d` using `(hG k β).trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))`. Establish `e : (monomial β (homog d ((G k).coeff β)) : PR K n) = C (homog d ((G k).coeff β)) * monomial β 1`. Rewrite using `[C_mul_monomial, mul_one]`. Establish `hA : Commute (am ev) (tp ev B ((G k).coeff β) * ev (monomial β 1))`.
+
+Use `Commute.mul_right ?_ (ev_comm ev _ _)` and prove the remaining obligations. Rewrite using `[tp_eq]`. Conclude with `Commute.sum_right _ _ _ fun α _ => (((hB _).symm.pow_right _).mul_right (ev_comm ev _ _)).smul_right _`. Rewrite using `[e, map_mul, mul_assoc, h1 _ _ hd (fix_mul hB hW (ev_comm ev _ _) (hB _).symm), ← mul_assoc (am ev), hA.eq, mul_assoc _ (am ev), ← mul_assoc (am ev), hW, mul_assoc]`.
+-/
 theorem trunc_mul (hc : ∀ c : ℂ, ev (C (C c)) = c • 1) (hB : ∀ R, Commute B (ev R)) {W : H →L[ℂ] H} (hW : am ev * B * W = W)
     (G : ℕ → MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)) (hG : ∀ k β, ((G k).coeff β).totalDegree ≤ k) (d : ℕ) :
     ev (trunc d G) * W = am ev ^ d * (am ev * ∑ k ∈ Finset.range (d + 1), yk ev B (B * W) (G k)) := by

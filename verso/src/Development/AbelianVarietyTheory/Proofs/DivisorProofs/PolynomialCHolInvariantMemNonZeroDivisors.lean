@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CuspEmb
 
+/- English proof (translation)
+Establish `key : ∀ (X : Data E r) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin r) (Fin r) E) (p0 : ℕ), X.Ψ = Ψ → X.Gm = Gm → X.p0 = p0 → IsOpen (GG Ψ Gm p0) ∧ IsPreconnected (GG Ψ Gm p0)`. Introduce `X Ψ Gm p0 h1 h2 h3`. Substitute `h1 h2 h3` using the available equality. Conclude with `⟨FourierCoefficientDomain.isOpen_dom X, (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r X).isPreconnected⟩`. Conclude with `key (M.comp c).toData M.Ψ M.Gm M.p0 (M.comp_Ψ c) (M.comp_Gm c) (M.comp_basePoint c)`.
+-/
 theorem isOpen_isPreconnected_dom {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U]
     [MulAction U C] (M : TwoLevels E r U C) (c : C) : IsOpen M.dom ∧ IsPreconnected M.dom := by
   have key : ∀ (X : Data E r) (Ψ : Finset (E →+* ℂ)) (Gm : Matrix (Fin r) (Fin r) E) (p0 : ℕ),
@@ -19,6 +22,19 @@ theorem isOpen_isPreconnected_dom {E : Type} [Field E] [NumberField E] [IsCMFiel
     exact ⟨FourierCoefficientDomain.isOpen_dom X, (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r X).isPreconnected⟩
   exact key (M.comp c).toData M.Ψ M.Gm M.p0 (M.comp_Ψ c) (M.comp_Gm c) (M.comp_basePoint c)
 
+/- English proof (translation)
+Introduce `E _ _ _ r U C _ _ M D hD`. Establish `key : ∀ p : Polynomial (HA M), p * Polynomial.C D = 0 → p = 0`. Introduce `p hp`. Use extensionality with `i : 1`. Establish `hq : p.coeff i * D = 0`.
+
+Use `congrArg (fun q => Polynomial.coeff q i) hp` as an intermediate fact. Simplify using `only [Polynomial.coeff_mul_C, Polynomial.coeff_zero] at this`. Conclude with `this`. Establish `hq' : ((p.coeff i : HA M) : C → M.dom → ℂ) * (D : C → M.dom → ℂ) = 0`. Use `congrArg (fun f : HA M => (f : C → M.dom → ℂ)) hq` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[Polynomial.coeff_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c x`. Take `⟨x0, hx0⟩` from `hD c`.
+
+Take `⟨GD, hGD, hGD'⟩` from `D.2.1 c`. Take `⟨Gq, hGq, hGq'⟩` from `(p.coeff i).2.1 c`. Take `⟨hO, hC⟩` from `isOpen_isPreconnected_dom M c`. Establish `h0 : GD x0.1 ≠ 0` using `by rw [← hGD']; exact hx0`. Establish `hz` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_mul_eq_zero hO hC hGD hGq (fun y hy => by`.
+
+Use `congrFun (congrFun hq' c) ⟨y, hy⟩` as an intermediate fact. Simplify using `only [Pi.mul_apply, Pi.zero_apply] at this`. Rewrite using `[← hGD' ⟨y, hy⟩, ← hGq' ⟨y, hy⟩, mul_comm]`. Conclude with `this) x0.2 h0 x.1 x.2`. Use `show ((p.coeff i : HA M) : C → M.dom → ℂ) c x = ((0 : HA M) : C → M.dom → ℂ) c x`.
+
+Rewrite using `[hGq' x, hz]`. Both sides reduce to the same expression. Use `mem_nonZeroDivisors_iff.2 ⟨fun x hx => key x ?_, key⟩` and prove the remaining obligations. Rewrite `hx` using `[mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem C_mem_nonZeroDivisors : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U]
     [MulAction U C] (M : TwoLevels E r U C) (D : HA M), (∀ c, ∃ x : M.dom, (D : C → M.dom → ℂ) c x ≠ 0) →
     Polynomial.C D ∈ nonZeroDivisors (Polynomial (HA M)) := by

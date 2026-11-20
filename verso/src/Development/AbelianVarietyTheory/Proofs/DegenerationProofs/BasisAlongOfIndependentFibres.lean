@@ -12,6 +12,9 @@ open GlobalTheory.GenericSectionBasis
 
 namespace GlobalTheory.TraitBasis
 
+/- English proof (translation)
+Rewrite using `[valF, dif_pos ((top_le_iff_mem x U z).2 h), gs_eq x z U h]`. Use `show ((Sp F).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom _)) = _`. Rewrite using `[Iso.hom_inv_id_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE ((top_le_iff_mem x U z).2 h)) z trivial _`.
+-/
 theorem toStk_valF_eq_gs {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F)
     (h : x z ∈ U) (a : Γ(X, U)) : toStk z (valF x U a) = gs x z U a := by
   rw [valF, dif_pos ((top_le_iff_mem x U z).2 h), gs_eq x z U h]
@@ -20,9 +23,17 @@ theorem toStk_valF_eq_gs {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) 
   rw [Iso.hom_inv_id_apply]
   exact TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE ((top_le_iff_mem x U z).2 h)) z trivial _
 
+/- English proof (translation)
+Rewrite using `[cst, gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem toStk_eq_cst {F : Type} [Field F] (z : Sp F) (a : F) : toStk z a = cst (𝟙 (Sp F)) z a := by
   rw [cst, gs_eq _ z ⊤ trivial]; rfl
 
+/- English proof (translation)
+Distinguish the cases in `h0 : valF x U a = 0`. Rewrite using `[← toStk_valF_eq_gs x U z h, h0, map_zero]`. Use `(ha ?_).elim` and prove the remaining obligations. Establish `u : IsUnit (gs x z U a)`. Rewrite using `[← toStk_valF_eq_gs x U z h]`.
+
+Conclude with `(IsUnit.mk0 _ h0).map _`. Rewrite `u` using `[gs_stalkMap x z U h, isUnit_map_iff, gs_eq (𝟙 X) (x z) U h]`. Conclude with `(X.mem_basicOpen a (x z) h).2 u`.
+-/
 theorem gs_eq_zero_of_notMem {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (z : Sp F)
     (h : x z ∈ U) (a : Γ(X, U)) (ha : x z ∉ X.basicOpen a) : gs x z U a = 0 := by
   by_cases h0 : valF x U a = 0
@@ -33,6 +44,11 @@ theorem gs_eq_zero_of_notMem {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶
     rw [gs_stalkMap x z U h, isUnit_map_iff, gs_eq (𝟙 X) (x z) U h] at u
     exact (X.mem_basicOpen a (x z) h).2 u
 
+/- English proof (translation)
+Use `congrFun (H (spMap κ ≫ χ) (fun i => κ (c i)) fun g j hg => ?_) i` and prove the remaining obligations. Take `⟨g', rfl, h₂⟩ : ∃ g' : Sp K ⟶ Y, g' ≫ r = g ∧ g' ≫ p = spMap κ` from `⟨hp.lift g (spMap κ) hg, hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Set `z : Sp K` to `(default : PrimeSpectrum K)`. Distinguish the cases in `hz : (g' ≫ r) z ∈ M.U j`. Apply `(toStk z).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← h0 g' z j h₂ hz, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, toStk_valF_eq_gs _ _ z hz, toStk_eq_cst, h₂, H1.gs_spec]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[valF, dif_neg (fun h => hz ((top_le_iff_mem _ _ z).1 h)), mul_zero]`.
+-/
 theorem map_eq_zero_of_points {X B Y : Scheme.{0}} {M : LB X} (π : X ⟶ B) {n : ℕ} (b : Fin n → LB.Sec M)
     {K : Type} [Field K]
     (H : ∀ (x : Sp K ⟶ B) (c : Fin n → K),
@@ -53,6 +69,15 @@ theorem map_eq_zero_of_points {X B Y : Scheme.{0}} {M : LB X} (π : X ⟶ B) {n 
   · refine Finset.sum_eq_zero fun i _ => ?_
     rw [valF, dif_neg (fun h => hz ((top_le_iff_mem _ _ z).1 h)), mul_zero]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `H`. Use `choose m hm using fun i => (he (β i)).exists`. Establish `key : ∀ (c : Fin n → F) j, ∑ i, Out.resTop _ (Out.scal p (c i)) * (β i).f j = ∑ k, Out.resTop _ (Out.scal p (Matrix.vecMul c (Matrix.of m) k)) * (e k).f j` using `fun c j => by`. Simplify using `only [fun i => hm i j, SaturatedSections.cst_eq, Matrix.vecMul, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, Matrix.of_apply, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+
+Establish `inj : Function.Injective (Matrix.vecMulLinear (Matrix.of m))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Use `ind c fun j => ?_` and prove the remaining obligations. Establish `hc' : Matrix.vecMul c (Matrix.of m) = 0` using `hc`.
+
+Rewrite using `[key, hc']`. Simplify using `only [SaturatedSections.cst_eq, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]`. Take `⟨d, hd, -⟩` from `he s`. Take `⟨c, hc⟩` from `LinearMap.injective_iff_surjective.1 inj d`. Use `⟨c, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `hc' : Matrix.vecMul c (Matrix.of m) = d` using `hc`. Rewrite using `[key, hc']`. Conclude with `hd j`.
+-/
 theorem exists_comb_of_independent {F : Type} [Field F] {Y : Scheme.{0}} {M : LB Y} {p : Y ⟶ Sp F} {n : ℕ}
     (H : HasBasis M p n) (β : Fin n → LB.Sec M)
     (ind : ∀ c : Fin n → F, (∀ j, ∑ i, Out.resTop _ (Out.scal p (c i)) * (β i).f j = 0) → c = 0)
@@ -78,6 +103,27 @@ theorem exists_comb_of_independent {F : Type} [Field F] {Y : Scheme.{0}} {M : LB
   rw [key, hc']
   exact hd j
 
+/- English proof (translation)
+Substitute `hq hφ` using the available equality. Use `existsUnique_comb_of_independent_special_fibre W Y p _ (DVR.linComb_isLB L hL _ _) n s (fun c hc i => ?_) t ?_` and prove the remaining obligations. Set `k` to `IsLocalRing.ResidueField W`. Set `κ : W →+* AlgebraicClosure k` to `(algebraMap k (AlgebraicClosure k)).comp (IsLocalRing.residue W)`. Establish `hκ : ∀ w, κ w = 0 ↔ w ∈ IsLocalRing.maximalIdeal W` using `fun w => (map_eq_zero_iff _ (algebraMap k (AlgebraicClosure k)).injective).trans (IsLocalRing.residue_eq_zero_iff w)`.
+
+Use `(hκ _).1 (map_eq_zero_of_points π b (H _) hp κ c (fun g z j hg hz => ?_) i)` and prove the remaining obligations. Establish `hz' : g z ∈ LB.wchart L (fun _ : Fin 1 => r ≫ q) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k`. Establish `hcl : p (g z) = IsLocalRing.closedPoint W`. Establish `e : p (g z) = spMap κ z` using `congrArg (fun u : Sp (AlgebraicClosure k) ⟶ Sp W => u z) hg`. Rewrite using `[e]`.
+
+Use `PrimeSpectrum.ext (Ideal.ext fun w => ?_)` and prove the remaining obligations. Establish `e₂ : z = (⊥ : PrimeSpectrum (AlgebraicClosure k))` using `Subsingleton.elim (α := PrimeSpectrum (AlgebraicClosure k)) _ _`. Substitute `e₂` using the available equality. Conclude with `hκ w`. Establish `e` using `gs_eq_zero_of_notMem g _ z hz' _ (hc j (g z) hz' hcl)`.
+
+Use `Eq.trans ?_ ((gs_comb p s c g z j hz').symm.trans e)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => congrArg _ (hs i _ g z j hz').symm`. Use `choose s' hs' using fun i => exists_pull_gs (s i) ρ (fun _ : Fin 1 => ρ ≫ r ≫ q) (fun _ => rfl)`. Take `⟨t', ht'⟩` from `exists_pull_gs t ρ (fun _ : Fin 1 => ρ ≫ r ≫ q) (fun _ => rfl)`. Take `⟨c, hc⟩` from `exists_comb_of_independent hb s' (fun c hc => funext fun i => by`.
+
+Set `κ` to `algebraMap (FractionRing W) (AlgebraicClosure (FractionRing W))`. Use `κ.injective ((map_eq_zero_of_points π b (H _) (hρ.paste_horiz hp) κ c (fun g z j hg hz => ?_) i).trans (map_zero κ).symm)` and prove the remaining obligations. Establish `hz' : g z ∈ LB.wchart L (fun _ : Fin 1 => ρ ≫ r ≫ q) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k`. Establish `hz₂ : (g ≫ ρ) z ∈ LB.wchart L (fun _ : Fin 1 => r ≫ q) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz k`. Establish `e` using `gs_comb a s' c g z j hz'`.
+
+Rewrite `e` using `[hc j]`. Use `Eq.trans ?_ (e.symm.trans ((gs_eq g z _ hz' _).trans ((congrArg _ (map_zero _)).trans (map_zero _))))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => congrArg _ (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(hs' i _ g z j hz').trans ((hs i _ (g ≫ ρ) z j hz₂).trans (by rw [Category.assoc]; rfl))) t'`. Take `⟨⟨w, hw⟩, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors W) c`.
+
+Use `choose d hd using hd`. Use `⟨w, d, nonZeroDivisors.ne_zero hw, fun j => ?_⟩` and prove the remaining obligations. Establish `: IsDominant (Out.jK W)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective W (FractionRing W))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (Out.jK W)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant ρ` using `IsSchemeTheoreticallyDominant.of_isPullback hρ.flip`.
+
+Establish `: QuasiCompact ρ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hρ.flip inferInstance`. Use `ρ.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Use `(gs_pull (𝟙 _) ρ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) ρ y _ hy _).symm)` and prove the remaining obligations. Establish `hy' : (𝟙 A : A ⟶ A) y ∈ LB.wchart L (fun _ : Fin 1 => ρ ≫ r ≫ q) j` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `cc : ∀ v : W, cst ((𝟙 A ≫ ρ) ≫ p) y v = cst (𝟙 A ≫ a) y (algebraMap W (FractionRing W) v)` using `fun v => by`.
+
+Rewrite using `[Category.assoc, hρ.w, ← Category.assoc]`. Conclude with `cst_comp _ _ y v`. Use `Eq.trans ?_ (gs_comb p s d (𝟙 A ≫ ρ) y j hy).symm` and prove the remaining obligations. Use `(gs_mul (𝟙 A ≫ ρ) y _ hy _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (GlobalTheory.IndivisibleSection.gs_scal p (𝟙 A ≫ ρ) y _ hy w) ((ht' _ (𝟙 A) y j hy').symm.trans ((congrArg (gs (𝟙 A) y _) (hc j)).trans (gs_comb a s' c (𝟙 A) y j hy')))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cc, cc, hd i, Algebra.smul_def, H1.cst_mul, _root_.mul_assoc]`. Conclude with `congrArg (fun v => _ * (_ * v)) (hs' i _ (𝟙 A) y j hy')`.
+-/
 theorem existsUnique_comb {X B Y A G : Scheme.{0}} {L : LB G} (hL : L.IsLB) (q : X ⟶ G) (π : X ⟶ B) (N : ℤ)
     {n : ℕ} (b : Fin n → LB.Sec (LB.LinComb L (fun _ : Fin 1 => q) (fun _ => N)))
     (H : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ B) (c : Fin n → K),
@@ -156,6 +202,25 @@ end GlobalTheory.TraitBasis
 
 open GlobalTheory.TraitBasis in
 
+/- English proof (translation)
+Introduce `laws Z G _ L N n T b hL hG hN H W _ _ _ hW χ A φ hφ hiso hn t`. Use `hW.1` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Set `T' : Over Z` to `Over.mk (χ ≫ T.hom)`. Set `h : T' ⟶ T` to `Over.homMk χ rfl`.
+
+Establish `P₀ : IsPullback (snd T G).left (fst T G).left G.hom T.hom` using `(IsPullback.of_hasPullback T.hom G.hom).flip`. Establish `P₁ : IsPullback (snd T' G).left (fst T' G).left G.hom (χ ≫ T.hom)` using `(IsPullback.of_hasPullback T'.hom G.hom).flip`. Establish `e₁ : (h ▷ G).left ≫ (snd T G).left = (snd T' G).left` using `congrArg CommaMorphism.left (whiskerRight_snd h G)`. Establish `e₂ : (h ▷ G).left ≫ (fst T G).left = (fst T' G).left ≫ χ` using `congrArg CommaMorphism.left (whiskerRight_fst h G)`. Establish `hp : IsPullback (h ▷ G).left (fst T' G).left (fst T G).left χ` using `IsPullback.of_right (by rw [e₁]; exact P₁) e₂ P₀`.
+
+Set `ρ : A.A.left ⟶ (T' ⊗ G).left` to `P₁.lift φ (A.A.hom ≫ Out.jK W) (hφ.1.w.trans (Category.assoc _ _ _).symm)`. Establish `r₁ : ρ ≫ (snd T' G).left = φ` using `P₁.lift_fst _ _ _`. Establish `hρ : IsPullback ρ A.A.hom (fst T' G).left (Out.jK W)` using `IsPullback.of_right (by rw [r₁]; exact hφ.1) (P₁.lift_snd _ _ _) P₁`. Establish `: Flat (X` using `(T' ⊗ G).left) (Y := Sp W) (fst T' G).left := MorphismProperty.of_isPullback (P := @Flat) P₁ inferInstance`. Establish `hb : HasBasis (LB.LinComb L (fun _ : Fin 1 => φ) (fun _ => (N : ℤ))) A.A.hom n`.
+
+Take `⟨w, hw⟩` from `hiso`. Establish `i` using `iso_linComb ((isGen_iff w).1 hw) (fun _ : Fin 1 => 𝟙 A.A.left) (fun _ => (N : ℤ))`. Simplify using `only [Category.id_comp] at i`. Rewrite using `[hn]`. Conclude with `(hasBasis_field A N laws.secBaseChange hN).of_iso (DVR.linComb_isLB L hL _ _) (DVR.linComb_isLB _ A.isLB _ _) i.symm`.
+
+Use `choose s hs using fun i => exists_pull_gs (b i) (h ▷ G).left (fun _ : Fin 1 => (snd T' G).left) (fun _ => e₁)`. Establish `main` using `TraitBasis.existsUnique_comb hL (snd T G).left (fst T G).left (N : ℤ) b H hp hρ e₁ r₁ hb s hs t`. Set `ε : W ≃+* Γ(Sp W, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of W)).symm.commRingCatIsoToRingEquiv`. Establish `key : ∀ c : Fin n → W, IsComb (fst T' G).left s c t ↔ GlobalTheory.LN.Lin G L N h b (fun i => ε (c i)) t` using `fun c => by`. Take `⟨u, hu⟩` from `GenericSectionBasis.exists_comb (F := W) (fst T' G).left s c`.
+
+Establish `ev : ∀ (z : (T' ⊗ G).left) J, Good L z J → sval (L` using `L) (φ := fun _ : Fin 1 => (snd T' G).left) (ε := fun _ => (N : ℤ)) u (𝟙 _) z J = ∑ i, gs (fst T' G).left z ⊤ (ε (c i)) * sval (L := L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) (b i) (h ▷ G).left z J := by`. Introduce `z J hJ`. Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd T' G).left) (𝟙 _)`. Use `(congrArg (gs (𝟙 _) z _) (hu _)).trans ((gs_comb (F := W) (fst T' G).left s c (𝟙 _) z _ hm).trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Use `(hs i _ (𝟙 _) z _ hm).trans ?_` and prove the remaining obligations. Rewrite using `[sval_of (b i) (h ▷ G).left z J (fun _ => J (𝟙 _ ≫ (snd T' G).left)) (fun _ => by rw [e₁, Category.id_comp]), Category.id_comp (h ▷ G).left]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hc z J hJ`. Use `Eq.trans ?_ (ev z J hJ)` and prove the remaining obligations. Conclude with `congrArg (gs (𝟙 _) z _) ((hc _).trans (hu _).symm)`. Introduce `hc j`. Conclude with `(sec_ext_val hL (fun y J hJ => (hc y J hJ).trans (ev y J hJ).symm) j).trans (hu j)`.
+
+Take `⟨c, hc, hu⟩` from `main`. Use `⟨fun i => ε (c i), (key c).1 hc, fun c' hc' => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩ : ∃ d : Fin n → W, c' = fun i => ε (d i)` from `⟨fun i => ε.symm (c' i), funext fun i => (ε.apply_symm_apply _).symm⟩`. Rewrite using `[hu d ((key d).2 hc')]`.
+-/
 theorem GlobalTheory.basisAlong_of_independent_fibres : Out.Laws → ∀ (Z : Scheme.{0}) (G : Over Z) [GrpObj G] (L : LB G.left) (N n : ℕ) (T : Over Z) (b : Fin n → LB.Sec (Out.LPow G L (N : ℤ) T)), L.IsLB → IsSemiAbelian G → 1 ≤ N → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ T.left) (c : Fin n → K), (∀ (g : Sp K ⟶ (T ⊗ G).left) j, g ≫ (fst T G).left = x → ∑ i, c i * valF g _ ((b i).f j) = 0) → c = 0) → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (χ : Sp W ⟶ T.left) (A : Out.PolAV (Sp (FractionRing W))) (φ : A.A.left ⟶ G.left), IsGrpPullback A.A G (Out.jK W ≫ χ ≫ T.hom) φ → LBIso A.L (L.pull φ) → n = N ^ A.g → GlobalTheory.LN.BasisAlong G L N (Over.homMk χ rfl : Over.mk (χ ≫ T.hom) ⟶ T) b := by
   intro laws Z G _ L N n T b hL hG hN H W _ _ _ hW χ A φ hφ hiso hn t
   have := hW.1

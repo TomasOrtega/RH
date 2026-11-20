@@ -21,11 +21,19 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
 include hϖ
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.UnramVal.vE_valuation L ϖ hϖ).1 1 1 one_ne_zero one_ne_zero`. Rewrite `h` using `[mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vE_one : vE L ϖ (algebraMap F E 1) = 0 := by
   have h := (GlobalTheory.UnramVal.vE_valuation L ϖ hϖ).1 1 1 one_ne_zero one_ne_zero
   rw [mul_one] at h
   omega
 
+/- English proof (translation)
+Take `⟨hadd, -, hint, -⟩` from `GlobalTheory.UnramVal.vE_valuation L ϖ hϖ`. Take `⟨-, -, -, -, hO, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Take `⟨y, hy, hxy⟩` from `h2`. Establish `e : y = algebraMap F E x⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `a1` using `(hint x hx).2 ((hO x).1 h1)`. Establish `a2` using `(hint x⁻¹ (inv_ne_zero hx)).2 ((hO _).1 (e ▸ hy))`. Establish `a3` using `hadd x x⁻¹ hx (inv_ne_zero hx)`. Rewrite `a3` using `[mul_inv_cancel₀ hx, vE_one L ϖ hϖ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vE_unit (x : F) (hx : x ≠ 0) (h1 : algebraMap F E x ∈ L.O)
     (h2 : ∃ y ∈ L.O, algebraMap F E x * y = 1) : vE L ϖ (algebraMap F E x) = 0 := by
   obtain ⟨hadd, -, hint, -⟩ := GlobalTheory.UnramVal.vE_valuation L ϖ hϖ
@@ -40,6 +48,11 @@ theorem vE_unit (x : F) (hx : x ≠ 0) (h1 : algebraMap F E x ∈ L.O)
   rw [mul_inv_cancel₀ hx, vE_one L ϖ hϖ] at a3
   omega
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using vE_one L ϖ hϖ`. Consider the case `succ n ih`. Rewrite using `[pow_succ, (GlobalTheory.UnramVal.vE_valuation L ϖ hϖ).1 _ _ (pow_ne_zero n hx) hx, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vE_pow (x : F) (hx : x ≠ 0) (n : ℕ) :
     vE L ϖ (algebraMap F E (x ^ n)) = n * vE L ϖ (algebraMap F E x) := by
   induction n with
@@ -49,12 +62,20 @@ theorem vE_pow (x : F) (hx : x ≠ 0) (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h` using `vE_pow L ϖ hϖ (-1) (by simp) 2`. Rewrite `h` using `[neg_one_sq, vE_one L ϖ hϖ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vE_neg_one : vE L ϖ (algebraMap F E (-1)) = 0 := by
   have h := vE_pow L ϖ hϖ (-1) (by simp) 2
   rw [neg_one_sq, vE_one L ϖ hϖ] at h
   omega
 
 omit [IsNonarchimedeanLocalField F] [CharZero F] hϖ in
+/- English proof (translation)
+Establish `: Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)`. Take `⟨c, hc⟩` from `(L.cj_fix (x * L.cj x)).1 (by rw [map_mul, L.cj_cj, mul_comm])`. Use `⟨c, ?_, hc.symm⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`.
+
+Conclude with `(hx.mul (hx.map L.cj)).ne_zero hc.symm`.
+-/
 theorem norm_mem (x : E) (hx : IsUnit x) : ∃ c : F, c ≠ 0 ∧ x * L.cj x = algebraMap F E c := by
   have : Nontrivial E := Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)
   obtain ⟨c, hc⟩ := (L.cj_fix (x * L.cj x)).1 (by rw [map_mul, L.cj_cj, mul_comm])
@@ -73,6 +94,9 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M 
 variable {P : LocNG.FPair H r} {S : Frames M.L r k} (c : Coord P S)
 include c
 
+/- English proof (translation)
+Establish `hZ : H.Zhat P.A.f P.B.f = S.Zh`. Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Frames.Zh, Matrix.of_apply, c.f_eq, c.f'_eq, c.h_eq]`. Unfold `LocNG.FPair.Dm HermSp.Dl Frames.D lead`. Rewrite using `[dif_pos (Nat.lt_succ_iff.mp l.2), hZ]`.
+-/
 theorem Dm_eq (l : Fin (r + 2)) : P.Dm l = S.D l := by
   have hZ : H.Zhat P.A.f P.B.f = S.Zh := by
     ext a b
@@ -80,6 +104,9 @@ theorem Dm_eq (l : Fin (r + 2)) : P.Dm l = S.D l := by
   unfold LocNG.FPair.Dm HermSp.Dl Frames.D lead
   rw [dif_pos (Nat.lt_succ_iff.mp l.2), hZ]
 
+/- English proof (translation)
+Establish `h1` using `Dm_eq c (Fin.last (r + 1))`. Establish `h2` using `Dm_eq c (Fin.last r).castSucc`. Unfold `LocNG.FPair.Gv HermSp.Gdet HermSp.normE Frames.G`. Rewrite using `[← h1, ← h2, c.T_eq, c.T'_eq]`. Both sides reduce to the same expression.
+-/
 theorem Gv_eq : P.Gv = S.G := by
   have h1 := Dm_eq c (Fin.last (r + 1))
   have h2 := Dm_eq c (Fin.last r).castSucc
@@ -87,6 +114,11 @@ theorem Gv_eq : P.Gv = S.G := by
   rw [← h1, ← h2, c.T_eq, c.T'_eq]
   rfl
 
+/- English proof (translation)
+Unfold `LocNG.theta Frames.th`. Consider the cases of `h : M.split with`. Consider the case `none => simp [c.gg_none h]`. Consider the case `some g`. Take `⟨h1, h2⟩` from `c.gg_some g h`.
+
+Simplify using `[h1, h2]`.
+-/
 theorem theta_eq : LocNG.theta M = S.th := by
   unfold LocNG.theta Frames.th
   cases h : M.split with
@@ -97,6 +129,47 @@ theorem theta_eq : LocNG.theta M = S.th := by
 
 end Transport
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨hq, hmod⟩` from `GlobalTheory.BaseModule.modK_algebraMap M hM S.ϖ S.ϖ_irr`. Take `⟨-, -, ⟨g, hg0, hg⟩, -, hD, hth, -⟩` from `GlobalTheory.FrameBasic.main M.L r k S`.
+
+Take `⟨hadd, hvp, -, -⟩` from `GlobalTheory.UnramVal.vE_valuation M.L S.ϖ S.ϖ_irr`. Take `⟨-, hcj, -, -, -, -, hq2, -⟩` from `GlobalTheory.UnramOrder.order_facts M.L S.ϖ S.ϖ_irr`. Establish `hnt : Nontrivial E` using `Module.nontrivial_of_finrank_pos (R := F) (by rw [M.L.rank]; norm_num)`. Establish `hgram` using `GlobalTheory.det_gram_frame_generators M hM H r k P`. Rewrite `hgram` using `[theta_eq c, Gv_eq c, hg]`.
+
+Establish `hvth : vE M.L S.ϖ (algebraMap F E S.th) = S.vth`. Unfold `Frames.th Frames.vth`. Use `split_ifs`. Conclude with `hvp`. Conclude with `vE_one M.L S.ϖ S.ϖ_irr`.
+
+Establish `hends : ∀ l : Fin (r + 2), (l : ℕ) ∈ P.ends ↔ l ≠ 0 ∧ S.D l ≠ 0`. Introduce `l`. Unfold `LocNG.FPair.ends`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Rewrite using `[Dm_eq c]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h1, h2⟩`. Use `⟨?_, h2.ne_zero⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at h1`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨l.2, ?_, hD l h2⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.mpr fun h => h1 (Fin.ext h)`. Use `⟨?_, hq, ?_⟩` and prove the remaining obligations. Establish `hq0 : (0 : ℝ) < (resQ S.ϖ : ℝ)`.
+
+Establish `: 0 < resQ S.ϖ` using `by omega`. Conclude with `this` after adjusting the coercions. Use `set d : F := (-1) ^ (r + 1) * g * (S.th ^ (2 * (r + 1)))⁻¹ with hd`. Establish `hp0 : S.th ^ (2 * (r + 1)) ≠ 0` using `pow_ne_zero _ hth`. Establish `hs0 : ((-1 : F) ^ (r + 1)) ≠ 0` using `pow_ne_zero _ (by simp)`.
+
+Establish `hd0 : d ≠ 0` using `mul_ne_zero (mul_ne_zero hs0 hg0) (inv_ne_zero hp0)`. Establish `hdet : (H.gram P.MMgen).det = algebraMap F E d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ hp0, map_one, mul_one]`. Use `_ = algebraMap F E d := by`.
+
+Rewrite using `[map_mul, ← mul_assoc, map_pow, hgram, hd]`. Simplify using `only [map_mul, map_pow, map_neg, map_one]`. Establish `hva : vE M.L S.ϖ (algebraMap F E d) = S.a`. Establish `e : d * S.th ^ (2 * (r + 1)) = (-1) ^ (r + 1) * g`. Rewrite using `[hd, mul_assoc, inv_mul_cancel₀ hp0, mul_one]`.
+
+Establish `h1` using `hadd _ _ hd0 hp0`. Rewrite `h1` using `[e, hadd _ _ hs0 hg0, vE_pow M.L S.ϖ S.ϖ_irr _ hth, vE_pow M.L S.ϖ S.ϖ_irr _ (by simp), vE_neg_one M.L S.ϖ S.ϖ_irr, hvth]`. Unfold `Frames.a`. Rewrite using `[hg]`. Move the coercions through the operations in `at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : ∏ l ∈ P.ends, M.modK (P.Dm l * M.L.cj (P.Dm l)) = (resQ S.ϖ : ℝ) ^ (-(2 * S.vD))`. Establish `hsub : P.ends ⊆ Finset.range (r + 2)`. Unfold `LocNG.FPair.ends`. Conclude with `@Finset.filter_subset _ _ (_) _`.
+
+Rewrite using `[← Finset.inter_eq_right.mpr hsub, ← Finset.prod_ite_mem, Finset.prod_range]`. Unfold `Frames.vD`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Establish `hz : ∀ (s : Finset (Fin (r + 2))) (f : Fin (r + 2) → ℤ), (resQ S.ϖ : ℝ) ^ (∑ i ∈ s, f i) = ∏ i ∈ s, (resQ S.ϖ : ℝ) ^ f i`. Introduce `s f`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hq0.ne', ih]`. Rewrite using `[hz]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hl : l ≠ 0 ∧ S.D l ≠ 0`. Rewrite using `[if_pos ((hends l).2 hl), if_pos hl, Dm_eq c]`. Take `⟨n, hn0, hn⟩` from `norm_mem M.L _ (hD l hl.2)`. Rewrite using `[hn, hmod n hn0]`. Rewrite using `[if_neg (fun h => hl ((hends l).1 h)), if_neg hl]`.
+
+Simplify using the standard rewrite rules. Unfold `LocNG.FPair.Hp Frames.Hp Frames.q`. Rewrite using `[hprod, hdet, theta_eq c, hmod _ hth, hmod _ hd0, hvth, hva, ← zpow_add₀ hq0.ne', ← zpow_add₀ hq0.ne', ← Real.rpow_intCast, ← Real.rpow_mul hq0.le, ← Real.rpow_intCast]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨c.gg_none h1, ?_, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[Gv_eq c, hg]`. Rewrite using `[hg]`.
+
+Conclude with `vE_unit M.L S.ϖ S.ϖ_irr g hg0 h2.1 h2.2`. Establish `hu : LocNG.IsUnitO M (S.D l)`. Distinguish the cases in `h0 : l = 0`. Establish `: S.D l = 1`. Substitute `h0` using the available equality.
+
+Unfold `Frames.D lead`. Conclude with `Matrix.det_isEmpty (n := Fin 0)`. Rewrite using `[this]`. Conclude with `⟨M.L.O.one_mem, 1, M.L.O.one_mem, mul_one 1⟩`. Use `h3 l ((hends l).2 ⟨h0, hl⟩)` as an intermediate fact.
+
+Rewrite `this` using `[Dm_eq c]`. Then use the resulting hypothesis. Take `⟨n, hn0, hn⟩` from `norm_mem M.L _ (hD l hl)`. Take `⟨hm, y, hy, hxy⟩` from `hu`. Rewrite using `[hn]`. Use `vE_unit M.L S.ϖ S.ϖ_irr n hn0 ?_ ⟨y * M.L.cj y, M.L.O.mul_mem hy (hcj y hy).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn]`. Conclude with `M.L.O.mul_mem hm (hcj _ hm).1`. Rewrite using `[← hn, mul_mul_mul_comm, ← map_mul, hxy, map_one, mul_one]`.
+-/
 theorem height_eq : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), ∀ (S : Frames M.L r k) (c : Coord P S), P.Hp = S.Hp ∧ LocNG.qF F = S.q ∧ (P.PrimeTo → S.gg = false ∧ vE M.L S.ϖ S.G = 0 ∧ ∀ l, S.D l ≠ 0 → vE M.L S.ϖ (S.D l * M.L.cj (S.D l)) = 0) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P S c
   have := hM.loc

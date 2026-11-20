@@ -17,6 +17,11 @@ variable {R : Type} [CommRing R] {a k : ℕ}
 def colAct (M : Matrix (Fin a) (Fin a) R) (x : UnipotentBlockColumnIndex a k k → R) : UnipotentBlockColumnIndex a k k → R :=
   fun t => ∑ s, M t.1.1 s.1.1 * x s
 
+/- English proof (translation)
+Simplify using `only [posM, Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_single t]`. Simplify using the standard rewrite rules. Introduce `s _ hne`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `hne (Subtype.ext (Prod.ext h1 h2))`. Simplify using the standard rewrite rules.
+-/
 theorem posM_col_apply (x : UnipotentBlockColumnIndex a k k → R) (t : UnipotentBlockColumnIndex a k k) :
     posM (Subtype.val : UnipotentBlockColumnIndex a k k → Fin a × Fin a) x t.1.1 t.1.2 = x t := by
   simp only [posM, Matrix.sum_apply, Matrix.single_apply]
@@ -28,6 +33,11 @@ theorem posM_col_apply (x : UnipotentBlockColumnIndex a k k → R) (t : Unipoten
     exact hne (Subtype.ext (Prod.ext h1 h2))
   · simp
 
+/- English proof (translation)
+Simplify using `only [posM, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single t.1.2]`. Rewrite using `[hM _ _ t.2.2.1]`.
+
+Simplify using `only [Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `by_cases h1 : t.1.1 = i <;> by_cases h2 : t.1.2 = j <;> simp [h1, h2]`. Introduce `l _ hl`. Rewrite using `[Matrix.single_apply, if_neg (fun h => hl h.2.symm), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem posM_col_mul (M : Matrix (Fin a) (Fin a) R)
     (hM : ∀ i l : Fin a, k ≤ (i : ℕ) → M i l = (1 : Matrix (Fin a) (Fin a) R) i l) (x : UnipotentBlockColumnIndex a k k → R) :
     posM (Subtype.val : UnipotentBlockColumnIndex a k k → Fin a × Fin a) x * M = posM Subtype.val x := by
@@ -42,6 +52,29 @@ theorem posM_col_mul (M : Matrix (Fin a) (Fin a) R)
     rw [Matrix.single_apply, if_neg (fun h => hl h.2.symm), zero_mul]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hL : (M * posM (Subtype.val : UnipotentBlockColumnIndex a k k → Fin a × Fin a) x) i j = ∑ s : UnipotentBlockColumnIndex a k k, if s.1.2 = j then M i s.1.1 * x s else 0`. Simplify using `only [Matrix.mul_apply, posM, Matrix.sum_apply, Matrix.single_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single s.1.1]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Rewrite using `[if_neg (fun h => hl h.1.symm), mul_zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hL]`. Simplify using `only [posM, Matrix.sum_apply, Matrix.single_apply]`. Distinguish the cases in `hi : (i : ℕ) < k`. Distinguish the cases in `hj : (j : ℕ) = k`. Use `symm`.
+
+Rewrite using `[Finset.sum_eq_single (⟨(i, j), hi, hj.ge, hj.le⟩ : UnipotentBlockColumnIndex a k k)]`. Rewrite using `[if_pos (And.intro rfl rfl)]`. Simplify using `only [colAct]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos]`.
+
+Establish `h1` using `s.2.2`. Conclude with `Fin.ext (by omega)`. Introduce `t _ hne`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `hne (Subtype.ext (Prod.ext h1 h2))`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `t _`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨_, h2⟩`. Establish `h1` using `t.2.2`. Rewrite `hj` using `[← h2]`. Use linear arithmetic over natural numbers and integers. Introduce `t _`.
+
+Rewrite using `[if_neg]`. Introduce `h2`. Establish `h1` using `t.2.2`. Rewrite `hj` using `[← h2]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `t _`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, _⟩`. Establish `h2` using `t.2.1`.
+
+Rewrite `h2` using `[h1]`. Conclude with `hi h2`. Introduce `s _`. Establish `h2` using `s.2.1`. Rewrite using `[hM i _ (by omega), Matrix.one_apply_ne (fun h => by rw [h] at hi; exact hi h2)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mul_posM_col (M : Matrix (Fin a) (Fin a) R)
     (hM : ∀ i l : Fin a, k ≤ (i : ℕ) → M i l = (1 : Matrix (Fin a) (Fin a) R) i l) (x : UnipotentBlockColumnIndex a k k → R) :
     M * posM (Subtype.val : UnipotentBlockColumnIndex a k k → Fin a × Fin a) x = posM Subtype.val (colAct M x) := by
@@ -98,6 +131,9 @@ theorem mul_posM_col (M : Matrix (Fin a) (Fin a) R)
       rw [hM i _ (by omega), Matrix.one_apply_ne (fun h => by rw [h] at hi; exact hi h2)]
       simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Rewrite using `[← posM_col_apply (colAct M (colAct N x)) t, ← mul_posM_col M hM, ← mul_posM_col N hN, ← Matrix.mul_assoc, h, Matrix.one_mul, posM_col_apply]`.
+-/
 theorem colAct_colAct {M N : Matrix (Fin a) (Fin a) R}
     (hM : ∀ i l : Fin a, k ≤ (i : ℕ) → M i l = (1 : Matrix (Fin a) (Fin a) R) i l)
     (hN : ∀ i l : Fin a, k ≤ (i : ℕ) → N i l = (1 : Matrix (Fin a) (Fin a) R) i l)
@@ -106,6 +142,11 @@ theorem colAct_colAct {M N : Matrix (Fin a) (Fin a) R}
   rw [← posM_col_apply (colAct M (colAct N x)) t, ← mul_posM_col M hM, ← mul_posM_col N hN, ← Matrix.mul_assoc, h,
     Matrix.one_mul, posM_col_apply]
 
+/- English proof (translation)
+Introduce `i l hi`. Establish `h : γ.val * (γ⁻¹).val = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2` using `congrFun (congrFun h i) l`. Rewrite `h2` using `[Matrix.mul_apply]`.
+
+Simplify using `only [hγ i _ hi, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h2`. Simplify `h2` using `[Matrix.one_apply]`.
+-/
 theorem inv_rows (γ : GL (Fin a) R)
     (hγ : ∀ i l : Fin a, k ≤ (i : ℕ) → γ.val i l = (1 : Matrix (Fin a) (Fin a) R) i l) :
     ∀ i l : Fin a, k ≤ (i : ℕ) → (γ⁻¹).val i l = (1 : Matrix (Fin a) (Fin a) R) i l := by
@@ -117,6 +158,11 @@ theorem inv_rows (γ : GL (Fin a) R)
   simp only [hγ i _ hi, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h2
   simpa [Matrix.one_apply] using h2
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x) * γ.val = γ.val * (1 + posM Subtype.val (colAct (γ⁻¹).val x))`. Establish `h : γ.val * (γ⁻¹).val = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[← mul_posM_col _ (inv_rows γ hγ), add_mul, mul_add, posM_col_mul _ hγ, ← Matrix.mul_assoc, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem blkU_mul (γ : GL (Fin a) R)
     (hγ : ∀ i l : Fin a, k ≤ (i : ℕ) → γ.val i l = (1 : Matrix (Fin a) (Fin a) R) i l) (x : UnipotentBlockColumnIndex a k k → R) :
     blkU x * γ = γ * blkU (colAct (γ⁻¹).val x) := by
@@ -133,9 +179,15 @@ section Rat
 
 variable {E : Type} [Field E] [NumberField E] {a k : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratGL_val_apply (γ : GL (Fin a) E) (i l : Fin a) :
     (ratGL E a γ).val i l = algebraMap E (Ad E) (γ.val i l) := rfl
 
+/- English proof (translation)
+Introduce `i l hi`. Rewrite using `[ratGL_val_apply, hγ i l hi, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ratGL_rows (γ : GL (Fin a) E)
     (hγ : ∀ i l : Fin a, k ≤ (i : ℕ) → γ.val i l = (1 : Matrix (Fin a) (Fin a) E) i l) :
     ∀ i l : Fin a, k ≤ (i : ℕ) → (ratGL E a γ).val i l = (1 : Matrix (Fin a) (Fin a) (Ad E)) i l := by
@@ -143,12 +195,18 @@ theorem ratGL_rows (γ : GL (Fin a) E)
   rw [ratGL_val_apply, hγ i l hi, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [colAct, ratGL_val_apply, map_sum, map_mul]`.
+-/
 theorem colAct_rat (γ : GL (Fin a) E) (c : UnipotentBlockColumnIndex a k k → E) :
     colAct (ratGL E a γ).val (fun t => algebraMap E (Ad E) (c t)) =
       fun t => algebraMap E (Ad E) (colAct γ.val c t) := by
   funext t
   simp only [colAct, ratGL_val_apply, map_sum, map_mul]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_finset_sum _ fun s _ => continuous_const.mul (continuous_apply s)`.
+-/
 theorem continuous_colAct (M : Matrix (Fin a) (Fin a) (Ad E)) :
     Continuous (colAct M : (UnipotentBlockColumnIndex a k k → Ad E) → UnipotentBlockColumnIndex a k k → Ad E) :=
   continuous_pi fun _ => continuous_finset_sum _ fun s _ => continuous_const.mul (continuous_apply s)
@@ -168,6 +226,11 @@ def colEquiv (γ : GL (Fin a) E)
   continuous_toFun := continuous_colAct _
   continuous_invFun := continuous_colAct _
 
+/- English proof (translation)
+Establish `key : ∀ (δ : GL (Fin a) E) (y : UnipotentBlockColumnIndex a k k → Ad E), y ∈ ratV E (UnipotentBlockColumnIndex a k k) → colAct (ratGL E a δ).val y ∈ ratV E (UnipotentBlockColumnIndex a k k)`. Introduce and unpack `δ _ ⟨c, rfl⟩`. Conclude with `⟨colAct δ.val c, (colAct_rat δ c).symm⟩`. Use `⟨fun h => ?_, key γ x⟩` and prove the remaining obligations. Establish `h2` using `key γ⁻¹ _ h`.
+
+Rewrite `h2` using `[colAct_colAct (ratGL_rows _ (inv_rows γ hγ)) (ratGL_rows _ hγ) (by rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])]`. Then use the resulting hypothesis.
+-/
 theorem colEquiv_mem (γ : GL (Fin a) E)
     (hγ : ∀ i l : Fin a, k ≤ (i : ℕ) → γ.val i l = (1 : Matrix (Fin a) (Fin a) E) i l)
     (x : UnipotentBlockColumnIndex a k k → Ad E) : colAct (ratGL E a γ).val x ∈ ratV E (UnipotentBlockColumnIndex a k k) ↔ x ∈ ratV E (UnipotentBlockColumnIndex a k k) := by
@@ -180,6 +243,9 @@ theorem colEquiv_mem (γ : GL (Fin a) E)
   rwa [colAct_colAct (ratGL_rows _ (inv_rows γ hγ)) (ratGL_rows _ hγ)
     (by rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one])] at h2
 
+/- English proof (translation)
+Simplify using `only [dot, colAct, ratGL_val_apply, Finset.mul_sum, map_sum, Finset.sum_mul, map_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem dot_colAct (γ : GL (Fin a) E) (ξ : UnipotentBlockColumnIndex a k k → E) (y : UnipotentBlockColumnIndex a k k → Ad E) :
     dot ξ (colAct (ratGL E a γ).val y) = dot (fun t => ∑ s : UnipotentBlockColumnIndex a k k, ξ s * γ.val s.1.1 t.1.1) y := by
   simp only [dot, colAct, ratGL_val_apply, Finset.mul_sum, map_sum, Finset.sum_mul, map_mul]
@@ -192,6 +258,15 @@ end MirCol
 
 open MirCol
 
+/- English proof (translation)
+Introduce `E _ _ a ψ hψ m f hf hl γ hγ ξ g`. Establish `hr : ∀ i l : Fin a, m + 1 ≤ (i : ℕ) → γ.val i l = (1 : Matrix (Fin a) (Fin a) E) i l` using `fun i l h => hγ i l (Or.inl h)`. Establish `hri` using `inv_rows γ hr`. Establish `hper` using `per_coef hψ (fun t => ∑ s : UnipotentBlockColumnIndex a (m + 1) (m + 1), ξ s * γ.val s.1.1 t.1.1) hf (fun c g => hl _ (isMir_blkU c) g) g`. Establish `hmem : ∀ x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E, colEquiv γ⁻¹ hri x ∈ ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)) ↔ x ∈ ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))` using `fun x => colEquiv_mem γ⁻¹ hri x`.
+
+Establish `key` using `GlobalTheory.T.quotientAverage_map_lattice_equiv _ _ (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (isCoLat_ratV E _) (isCoLat_ratV E _) (colEquiv γ⁻¹ hri) hmem _ hper`. Express the relevant statement in the definitionally equal form `avg _ _ = avg _ _`. Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Establish `hx : colAct (ratGL E a γ).val (colEquiv γ⁻¹ hri x) = x` using `colAct_colAct (ratGL_rows _ hr) (ratGL_rows _ hri) (by rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]) x`. Establish `hd : dot (fun t => ∑ s : UnipotentBlockColumnIndex a (m + 1) (m + 1), ξ s * γ.val s.1.1 t.1.1) (colEquiv γ⁻¹ hri x) = dot ξ x`. Rewrite using `[← dot_colAct, hx]`. Establish `hu : blkU x * (ratGL E a γ * g) = ratGL E a γ * (blkU (colEquiv γ⁻¹ hri x) * g)`. Rewrite using `[← mul_assoc, blkU_mul (ratGL E a γ) (ratGL_rows _ hr), mul_assoc, ← map_inv]`.
+
+Both sides reduce to the same expression. Use `beta_reduce`. Rewrite using `[hd, hu, hl γ hγ]`.
+-/
 theorem coefF_ratGL_mul : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ψ : AddChar (Ad E) ℂ), StdPsi ψ → ∀ (m : ℕ)
     (f : GA E a → ℂ), Continuous f → (∀ γ : GL (Fin a) E, IsMir (m + 1) γ → ∀ g, f (ratGL E a γ * g) = f g) →
     ∀ γ : GL (Fin a) E, IsMir (m + 1) γ → ∀ (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E) (g : GA E a),

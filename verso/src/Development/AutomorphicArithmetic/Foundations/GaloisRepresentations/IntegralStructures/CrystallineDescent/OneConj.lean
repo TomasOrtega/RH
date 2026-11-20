@@ -11,6 +11,31 @@ open scoped Pointwise
 
 open GlobalTheory.RealGal.AttConj in
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ ι a sat r g c hc hsurj h`. Establish `hcs : ∀ s y, c s y = g (s ((g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) y))` using `fun s y => DFunLike.congr_fun (hc s) y`. Establish `hfwd : ∀ x : K, ∃ y : K, algebraMap K Ω y = g (algebraMap K Ω x)` using `fun x => by`. Apply `exists_of_fixed` to reduce the goal to its premises. Introduce `t`.
+
+Take `⟨s, rfl⟩` from `hsurj t`. Rewrite using `[hcs, inv_apply_apply, s.commutes]`. Establish `hbwd : ∀ x : K, ∃ y : K, algebraMap K Ω y = (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (algebraMap K Ω x)` using `fun x => by`. Apply `exists_of_fixed` to reduce the goal to its premises. Introduce `t`.
+
+Establish `h1` using `hcs t (algebraMap K Ω x)`. Rewrite `h1` using `[(c t).commutes]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨γ, hγ⟩` from `exists_ringEquiv g hfwd hbwd`. Establish `hγinv : ∀ x : K, algebraMap K Ω (γ.symm x) = (g⁻¹ : Formalism.ConjugateSelfDual.G F Ω) (algebraMap K Ω x)` using `fun x => by`.
+
+Establish `h1` using `hγ (γ.symm x)`. Rewrite `h1` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[h1, inv_apply_apply]`. Establish `hγF : ∀ x : F, γ.symm (algebraMap F K x) = algebraMap F K x` using `fun x => by`. Apply `(algebraMap K Ω).injective` to reduce the goal to its premises.
+
+Rewrite using `[hγinv, ← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]`. Use `set e : 𝓞 K ≃+* 𝓞 K := RingOfIntegers.mapRingEquiv γ with he`. Establish `heγ : ∀ y : 𝓞 K, ((e.symm y : 𝓞 K) : K) = γ.symm (y : K)` using `fun y => rfl`. Set `P : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K)` to `fun w => w.comap (e.symm : 𝓞 K →+* 𝓞 K) e.symm.surjective`. Establish `hPmem : ∀ w y, y ∈ (P w).asIdeal ↔ e.symm y ∈ w.asIdeal` using `fun _ _ => Iff.rfl`.
+
+Establish `hPinj : Function.Injective P`. Introduce `w1 w2 h12`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `h3` using `congrArg (fun w : HeightOneSpectrum (𝓞 K) => e x ∈ w.asIdeal) h12`. Simplify using `only [hPmem, RingEquiv.symm_apply_apply] at h3`.
+
+Conclude with `Iff.of_eq h3`. Establish `hPunder : ∀ w, (P w).under (𝓞 F) = w.under (𝓞 F)`. Introduce `w`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Use `show algebraMap (𝓞 F) (𝓞 K) x ∈ (P w).asIdeal ↔ algebraMap (𝓞 F) (𝓞 K) x ∈ w.asIdeal`.
+
+Rewrite using `[hPmem]`. Establish `h4 : e.symm (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 K) x` using `RingOfIntegers.ext (by rw [heγ]; exact hγF x)`. Rewrite using `[h4]`. Establish `hPnorm : ∀ w, normV (P w) = normV w`. Introduce `w`.
+
+Unfold `normV`. Use `Nat.card_congr (Ideal.quotientEquiv (P w).asIdeal w.asIdeal e.symm ?_).toEquiv` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective _ e.symm.surjective w.asIdeal).symm`. Establish `hPplace : ∀ w (A : ValuationSubring Ω), IsPlaceOver A w → IsPlaceOver (g • A) (P w)`. Introduce `w A hA y`.
+
+Rewrite using `[val_lt_one_smul, hPmem, ← hA (e.symm y), heγ, hγinv]`. Unfold `AttOne at h ⊢`. Use `filter_upwards [hPinj.tendsto_cofinite.eventually h] with w hw hp`. Take `⟨B, hB, hE⟩` from `hw (by rw [hPnorm]; exact hp)`. Rewrite `hB` using `[hPunder]`.
+
+Rewrite `hE` using `[hPnorm]`. Use `⟨B, hB, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨hI, hF⟩` from `hE (g • A) (hPplace w A hA)`. Use `⟨fun s hs => hI (c s) (ine_conj g c hc A s hs), fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `h5` using `hF (c σ) (by rw [hPnorm]; exact frob_conj g c hc A _ σ hσ)`.
+
+Rewrite using `[MonoidHom.comp_apply, map_inv]`. Conclude with `h5`.
+-/
 theorem UpperTheory.Gal.Int.Core.oneConj_holds :
     OneConj := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ ι a sat r g c hc hsurj h

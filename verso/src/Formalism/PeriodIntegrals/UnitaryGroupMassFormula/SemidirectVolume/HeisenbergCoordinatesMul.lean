@@ -10,6 +10,9 @@ namespace PI.VolSemiDirect.W.PG.Dat
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {r : ℕ} {D : Dat A n r}
 
+/- English proof (translation)
+Rewrite using `[L_apply, L_apply, pW_comm H hS hf hU]`. Establish `hw : ∀ a, D.h (S (w a)) (S (D.pW u)) = D.h (w a) (D.pW u)` using `fun a => hU _ _`. Simplify using `only [map_sub, map_add, map_sum, map_smul, hS.1, h_e_S hS hU, hw]`.
+-/
 theorem S_L (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hf : ∀ a, S (D.f a) = D.f a)
     (hU : D.Uni S) (w : Fin r → n → A) (s : Fin r → Fin r → A) (u : n → A) :
     S (D.L w s u) = D.L (fun a => S (w a)) s (S u) := by
@@ -17,11 +20,17 @@ theorem S_L (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hf
   have hw : ∀ a, D.h (S (w a)) (S (D.pW u)) = D.h (w a) (D.pW u) := fun a => hU _ _
   simp only [map_sub, map_add, map_sum, map_smul, hS.1, h_e_S hS hU, hw]
 
+/- English proof (translation)
+Use `D.h_add_left (-x) x y` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, h_zero_left]`. Take the linear combination `-this`.
+-/
 theorem h_neg_left' (x y : n → A) : D.h (-x) y = -D.h x y := by
   have := D.h_add_left (-x) x y
   rw [neg_add_cancel, h_zero_left] at this
   linear_combination -this
 
+/- English proof (translation)
+Use `D.h_add_right x (-y) y` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, h_zero_right]`. Take the linear combination `-this`.
+-/
 theorem h_neg_right' (x y : n → A) : D.h x (-y) = -D.h x y := by
   have := D.h_add_right x (-y) y
   rw [neg_add_cancel, h_zero_right] at this
@@ -42,10 +51,16 @@ section R
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ} {P : Frame E M r} {T : F}
 
+/- English proof (translation)
+Establish `: (1 / 2 : E) + 1 / 2 = 1` using `by rw [← two_mul, mul_one_div_cancel h2]`. Rewrite using `[half, ← map_add, this, map_one]`.
+-/
 theorem half_add_half (h2 : (2 : E) ≠ 0) : half F E R + half F E R = 1 := by
   have : (1 / 2 : E) + 1 / 2 = 1 := by rw [← two_mul, mul_one_div_cancel h2]
   rw [half, ← map_add, this, map_one]
 
+/- English proof (translation)
+Rewrite using `[half, sigR_inclR, map_div₀, map_one, map_ofNat]`.
+-/
 theorem sigR_half : sigR R σ (half F E R) = half F E R := by
   rw [half, sigR_inclR, map_div₀, map_one, map_ofNat]
 
@@ -65,20 +80,35 @@ def dat0 : PG.Dat (R ⊗[F] E) (Fin M) 0 where
   z := 0
   tz := 0
 
+/- English proof (translation)
+The claim follows from `PG.Dat.h_add_left (D := dat0 R σ J) x x' y`.
+-/
 theorem hR_add_left' (x x' y : Fin M → R ⊗[F] E) :
     hR R σ J (x + x') y = hR R σ J x y + hR R σ J x' y :=
   PG.Dat.h_add_left (D := dat0 R σ J) x x' y
 
+/- English proof (translation)
+The claim follows from `PG.Dat.h_add_right (dat0 R σ J) x y y'`.
+-/
 theorem hR_add_right' (x y y' : Fin M → R ⊗[F] E) :
     hR R σ J x (y + y') = hR R σ J x y + hR R σ J x y' :=
   PG.Dat.h_add_right (dat0 R σ J) x y y'
 
+/- English proof (translation)
+The claim follows from `PG.Dat.h_neg_left' (D := dat0 R σ J) x y`.
+-/
 theorem hR_neg_left' (x y : Fin M → R ⊗[F] E) : hR R σ J (-x) y = -hR R σ J x y :=
   PG.Dat.h_neg_left' (D := dat0 R σ J) x y
 
+/- English proof (translation)
+The claim follows from `PG.Dat.h_neg_right' (D := dat0 R σ J) x y`.
+-/
 theorem hR_neg_right' (x y : Fin M → R ⊗[F] E) : hR R σ J x (-y) = -hR R σ J x y :=
   PG.Dat.h_neg_right' (D := dat0 R σ J) x y
 
+/- English proof (translation)
+Establish `e : (fun a b => (0 : Fin r → Fin r → R ⊗[F] E) a b - half F E R * hR R σ J ((0 : Fin r → Fin M → R ⊗[F] E) a) ((0 : Fin r → Fin M → R ⊗[F] E) b)) = (0 : Fin r → Fin r → R ⊗[F] E)`. Use function extensionality and compare the values at `a b`. Simplify using `[hR_zero_left]`. Rewrite using `[Lr, e]`. Conclude with `PG.Dat.L_zero`.
+-/
 theorem Lr_zero : Lr σ J P T (0 : Fin r → Fin M → R ⊗[F] E) 0 = LinearMap.id := by
   have e : (fun a b => (0 : Fin r → Fin r → R ⊗[F] E) a b -
       half F E R * hR R σ J ((0 : Fin r → Fin M → R ⊗[F] E) a) ((0 : Fin r → Fin M → R ⊗[F] E) b)) =
@@ -91,6 +121,11 @@ theorem Lr_zero : Lr σ J P T (0 : Fin r → Fin M → R ⊗[F] E) 0 = LinearMap
 variable (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T) (h2 : (2 : E) ≠ 0)
 include hσσ hJ hP h2
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Rewrite using `[Lr, Lr, PG.Dat.L_comp H _ _ (fun a => hw a) (fun a => hw' a), Lr]`. Use `congr 2`. Use function extensionality and compare the values at `a b`. Simplify using `only [datR_h, Pi.add_apply, betaM]`.
+
+Rewrite using `[hR_add_left', hR_add_right', hR_add_right']`. Establish `hh` using `half_add_half (F := F) (R := R) h2`. Rewrite using `[show inclR (F := F) R (1 / 2 : E) = half F E R from rfl]`. Take the linear combination `(hR R σ J (w a) (w' b)) * hh`.
+-/
 theorem Lr_comp {w w' : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsub R σ J P)
     (hw' : ∀ a, w' a ∈ Wsub R σ J P) (c c' : Fin r → Fin r → R ⊗[F] E) (v : Fin M → R ⊗[F] E) :
     Lr σ J P T w c (Lr σ J P T w' c' v) = Lr σ J P T (w + w') (c + c' + betaM R σ J w w') v := by
@@ -104,6 +139,13 @@ theorem Lr_comp {w w' : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsu
   rw [show inclR (F := F) R (1 / 2 : E) = half F E R from rfl]
   linear_combination (hR R σ J (w a) (w' b)) * hh
 
+/- English proof (translation)
+Establish `hwn : ∀ a, (-w) a ∈ Wsub R σ J P` using `fun a => (Wsub R σ J P).neg_mem (hw a)`. Establish `b1 : c + -c + betaM R σ J w (-w) = 0`. Use function extensionality and compare the values at `a b`. Simplify using `only [betaM, Pi.add_apply, Pi.neg_apply, Pi.zero_apply, hR_neg_left' , hR_neg_right' ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `b2 : -c + c + betaM R σ J (-w) w = 0`. Use function extensionality and compare the values at `a b`. Simplify using `only [betaM, Pi.add_apply, Pi.neg_apply, Pi.zero_apply, hR_neg_left' , hR_neg_right' ]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Lr_comp hσσ hJ hP h2 hw hwn, b1, add_neg_cancel, Lr_zero]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, Lr_comp hσσ hJ hP h2 hwn hw, b2, neg_add_cancel, Lr_zero]`.
+-/
 theorem Lr_inv {w : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsub R σ J P)
     (c : Fin r → Fin r → R ⊗[F] E) :
     Lr σ J P T w c ∘ₗ Lr σ J P T (-w) (-c) = LinearMap.id ∧
@@ -125,6 +167,11 @@ theorem Lr_inv {w : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsub R 
   · refine LinearMap.ext fun v => ?_
     rw [LinearMap.comp_apply, Lr_comp hσσ hJ hP h2 hwn hw, b2, neg_add_cancel, Lr_zero]
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Use `PG.Dat.L_uni H (fun a => hw a) fun a b => ?_` and prove the remaining obligations. Establish `hsym : hR R σ J (w a) (w b) = sigR R σ (hR R σ J (w b) (w a))` using `PG.Dat.h_symm H (w b) (w a)`. Establish `hh` using `half_add_half (F := F) (R := R) h2`. Use `show c a b - half F E R * hR R σ J (w a) (w b) + sigR R σ (c b a - half F E R * hR R σ J (w b) (w a)) + hR R σ J (w a) (w b) = 0`.
+
+Rewrite using `[map_sub, map_mul, sigR_half, ← hsym]`. Take the linear combination `hc a b - hR R σ J (w a) (w b) * hh`.
+-/
 theorem Lr_uni {w : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsub R σ J P)
     {c : Fin r → Fin r → R ⊗[F] E} (hc : ∀ a b, c a b + sigR R σ (c b a) = 0) :
     (datR R σ J P T).Uni (Lr σ J P T w c) := by
@@ -150,6 +197,9 @@ def nU (w : Fin r → Wsub R σ J P) (c : Sk R σ r) : GL (Fin M) (R ⊗[F] E) w
     rw [← LinearMap.toMatrix'_comp, (Lr_inv hσσ hJ hP h2 (w := wv w) (fun a => (w a).2) _).2,
       LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Use `show Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (Lr σ J P T (wv w) c)) * JR R J * LinearMap.toMatrix' (Lr σ J P T (wv w) c) = JR R J`. Apply `uj_of_uni` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Conclude with `Lr_uni hσσ hJ hP h2 (fun a => (w a).2) (fun a b => c.2 a b) x y`.
+-/
 theorem nU_mem (w : Fin r → Wsub R σ J P) (c : Sk R σ r) : nU hσσ hJ hP h2 w c ∈ HR R σ J := by
   show Formalism.UG.cT (sigR R σ) (LinearMap.toMatrix' (Lr σ J P T (wv w) c)) * JR R J *
     LinearMap.toMatrix' (Lr σ J P T (wv w) c) = JR R J
@@ -161,10 +211,24 @@ theorem nU_mem (w : Fin r → Wsub R σ J P) (c : Sk R σ r) : nU hσσ hJ hP h2
 def nG (w : Fin r → Wsub R σ J P) (c : Sk R σ r) : HA R σ J :=
   ⟨nU hσσ hJ hP h2 w c, nU_mem hσσ hJ hP h2 w c⟩
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun v => LinearMap.toMatrix'_mulVec _ v`.
+-/
 theorem lin_nG (w : Fin r → Wsub R σ J P) (c : Sk R σ r) :
     lin R σ J (nG hσσ hJ hP h2 w c) = Lr σ J P T (wv w) c :=
   LinearMap.ext fun v => LinearMap.toMatrix'_mulVec _ v
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Establish `he : ∀ b, lin R σ J (nG hσσ hJ hP h2 w c) (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := fun b => by`. Rewrite using `[lin_nG]`. Conclude with `PG.Dat.L_e H _ _ b`. Establish `hz : lin R σ J (nG hσσ hJ hP h2 w c) (ratV (F` using `F) R P.z) = ratV (F := F) R P.z := by`.
+
+Rewrite using `[lin_nG]`. Conclude with `PG.Dat.reflection_fixes_normal H _ _`. Rewrite using `[FrameUnipotentSubgroup, Subgroup.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show UniC R σ J P.e _ ∧ ∀ v, InXperp R σ J P v → _`.
+
+Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[he b, sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[spanR_eq hσσ hJ hP, lin_nG]`. Conclude with `PG.Dat.L_perp H _ _ v hv`.
+
+Rewrite using `[S0, mem_stabT]`. Introduce `b`. Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Simplify using `only [F0, Fin.snoc_last]`. Conclude with `hz`.
+
+Simplify using `only [F0, Fin.snoc_castSucc]`. Conclude with `he a`.
+-/
 theorem nG_mem (w : Fin r → Wsub R σ J P) (c : Sk R σ r) :
     nG hσσ hJ hP h2 w c ∈ FrameUnipotentSubgroup R σ J P := by
   have H := datR_hyp (R := R) hσσ hJ hP
@@ -188,6 +252,9 @@ theorem nG_mem (w : Fin r → Wsub R σ J P) (c : Sk R σ r) :
     · simp only [F0, Fin.snoc_castSucc]; exact he a
 
 omit h2 in
+/- English proof (translation)
+The claim follows from `PG.Dat.isW_pW (datR_hyp hσσ hJ hP) _`.
+-/
 theorem phiW_mem (n : FrameUnipotentSubgroup R σ J P) (b : Fin r) :
     (datR R σ J P T).pW (lin R σ J n ((datR R σ J P T).f b)) ∈ Wsub R σ J P :=
   PG.Dat.isW_pW (datR_hyp hσσ hJ hP) _
@@ -203,6 +270,13 @@ def phiSv (n : FrameUnipotentSubgroup R σ J P) : Fin r → Fin r → R ⊗[F] E
   hR R σ J ((datR R σ J P T).f a) (lin R σ J n ((datR R σ J P T).f b)) +
     half F E R * hR R σ J (wv (phiW hσσ hJ hP n) a) (wv (phiW hσσ hJ hP n) b)
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Establish `hS0 : (n : HA R σ J) ∈ S0 R σ J P` using `(Subgroup.mem_inf.1 n.2).2`. Establish `hN` using `PG.Dat.N_skew H (stabilizer_fixes_frame_and_normal (T := T) hS0) (uni_lin (T := T) (n : HA R σ J))`. Establish `hh` using `half_add_half (F := F) (R := R) h2`. Introduce `a b`.
+
+Establish `hsym : hR R σ J (wv (phiW hσσ hJ hP n) a) (wv (phiW hσσ hJ hP n) b) = sigR R σ (hR R σ J (wv (phiW hσσ hJ hP n) b) (wv (phiW hσσ hJ hP n) a))` using `PG.Dat.h_symm H _ _`. Use `show phiSv hσσ hJ hP n a b + sigR R σ (phiSv hσσ hJ hP n b a) = 0`. Simplify using `only [phiSv]`. Rewrite using `[map_add, map_mul, sigR_half, ← hsym]`. Establish `k` using `hN a b`.
+
+Simplify using `only [datR_h] at k`. Express the relevant statement in the definitionally equal form `hR R σ J ((datR R σ J P T).f a) (lin R σ J n ((datR R σ J P T).f b)) + sigR R σ (hR R σ J ((datR R σ J P T).f b) (lin R σ J n ((datR R σ J P T).f a))) + hR R σ J (wv (phiW hσσ hJ hP n) a) (wv (phiW hσσ hJ hP n) b) = 0 at k`. Take the linear combination `k + hR R σ J (wv (phiW hσσ hJ hP n) a) (wv (phiW hσσ hJ hP n) b) * hh`.
+-/
 theorem phiSv_mem (n : FrameUnipotentSubgroup R σ J P) : phiSv hσσ hJ hP n ∈ Sk R σ r := by
   have H := datR_hyp (R := R) hσσ hJ hP
   have hS0 : (n : HA R σ J) ∈ S0 R σ J P := (Subgroup.mem_inf.1 n.2).2
@@ -226,6 +300,13 @@ def phiS (n : FrameUnipotentSubgroup R σ J P) : Sk R σ r := ⟨phiSv hσσ hJ 
 
 omit h2 in
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Establish `h1 : wv (phiW hσσ hJ hP n) = w`. Use function extensionality and compare the values at `b`. Use `show (datR R σ J P T).pW (lin R σ J n ((datR R σ J P T).f b)) = w b`. Rewrite using `[hn, Lr]`.
+
+Conclude with `PG.Dat.coordW_L H (fun a => hw a) _ b`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a b`. Simplify using `only [phiSv]`. Rewrite using `[h1, hn, Lr]`.
+
+Use `PG.Dat.coordS_L H (fun a => hw a) (fun a b => c a b - half F E R * hR R σ J (w a) (w b)) a b` as an intermediate fact. Rewrite `this` using `[datR_h]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_of_lin (n : FrameUnipotentSubgroup R σ J P) {w : Fin r → Fin M → R ⊗[F] E} (hw : ∀ a, w a ∈ Wsub R σ J P)
     (c : Fin r → Fin r → R ⊗[F] E) (hn : lin R σ J n = Lr σ J P T w c) :
     wv (phiW hσσ hJ hP n) = w ∧ phiSv hσσ hJ hP n = c := by
@@ -246,6 +327,13 @@ theorem phi_of_lin (n : FrameUnipotentSubgroup R σ J P) {w : Fin r → Fin M �
   ring
 
 omit h2 in
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Establish `hS0 : (n : HA R σ J) ∈ S0 R σ J P` using `(Subgroup.mem_inf.1 n.2).2`. Establish `hNs` using `(Subgroup.mem_inf.1 n.2).1`. Establish `hperp : (datR R σ J P T).PerpX (lin R σ J n)` using `fun v hv => by`. Use `hNs.2 v hv` as an intermediate fact.
+
+Rewrite `this` using `[spanR_eq hσσ hJ hP]`. Then use the resulting hypothesis. Establish `hs : (fun a b => phiSv hσσ hJ hP n a b - half F E R * hR R σ J (wv (phiW hσσ hJ hP n) a) (wv (phiW hσσ hJ hP n) b)) = fun a b => (datR R σ J P T).h ((datR R σ J P T).f a) (lin R σ J n ((datR R σ J P T).f b))`. Use function extensionality and compare the values at `a b`. Simplify using `only [phiSv]`. Rewrite using `[add_sub_cancel_right]`.
+
+Both sides reduce to the same expression. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Lr, hs]`. Conclude with `PG.Dat.N_eq_L H (stabilizer_fixes_frame_and_normal hS0) (uni_lin _) hperp v`.
+-/
 theorem lin_eq_Lr (n : FrameUnipotentSubgroup R σ J P) :
     lin R σ J n = Lr σ J P T (wv (phiW hσσ hJ hP n)) (phiSv hσσ hJ hP n) := by
   have H := datR_hyp (R := R) hσσ hJ hP
@@ -265,6 +353,9 @@ theorem lin_eq_Lr (n : FrameUnipotentSubgroup R σ J P) :
   rw [Lr, hs]
   exact PG.Dat.N_eq_L H (stabilizer_fixes_frame_and_normal hS0) (uni_lin _) hperp v
 
+/- English proof (translation)
+Establish `e : lin R σ J (nG hσσ hJ hP h2 (phiW hσσ hJ hP n) (phiS hσσ hJ hP h2 n)) = lin R σ J n` using `(lin_nG hσσ hJ hP h2 _ _).trans (lin_eq_Lr hσσ hJ hP n).symm`. Apply `HA_ext` to reduce the goal to its premises. Rewrite using `[← lin_eq_toLin', ← lin_eq_toLin', e]`.
+-/
 theorem nG_phi (n : FrameUnipotentSubgroup R σ J P) :
     nG hσσ hJ hP h2 (phiW hσσ hJ hP n) (phiS hσσ hJ hP h2 n) = n := by
   have e : lin R σ J (nG hσσ hJ hP h2 (phiW hσσ hJ hP n) (phiS hσσ hJ hP h2 n)) = lin R σ J n :=
@@ -272,6 +363,9 @@ theorem nG_phi (n : FrameUnipotentSubgroup R σ J P) :
   apply HA_ext
   rw [← lin_eq_toLin', ← lin_eq_toLin', e]
 
+/- English proof (translation)
+Take `⟨h1, h2'⟩` from `phi_of_lin hσσ hJ hP ⟨nG hσσ hJ hP h2 w c, nG_mem hσσ hJ hP h2 w c⟩ (fun a => (w a).2) c (lin_nG hσσ hJ hP h2 w c)`. Conclude with `⟨funext fun b => Subtype.ext (congrFun h1 b), Subtype.ext h2'⟩`.
+-/
 theorem phi_nG (w : Fin r → Wsub R σ J P) (c : Sk R σ r) :
     phiW hσσ hJ hP ⟨nG hσσ hJ hP h2 w c, nG_mem hσσ hJ hP h2 w c⟩ = w ∧
       phiS hσσ hJ hP h2 ⟨nG hσσ hJ hP h2 w c, nG_mem hσσ hJ hP h2 w c⟩ = c := by
@@ -285,6 +379,9 @@ def coordEquiv : FrameUnipotentSubgroup R σ J P ≃ ((Fin r → Wsub R σ J P) 
   left_inv n := Subtype.ext (nG_phi hσσ hJ hP h2 n)
   right_inv p := Prod.ext (phi_nG hσσ hJ hP h2 p.1 p.2).1 (phi_nG hσσ hJ hP h2 p.1 p.2).2
 
+/- English proof (translation)
+Establish `hl : lin R σ J ((n₀ * n : FrameUnipotentSubgroup R σ J P) : HA R σ J) = Lr σ J P T (wv (phiW hσσ hJ hP n₀) + wv (phiW hσσ hJ hP n)) (phiSv hσσ hJ hP n₀ + phiSv hσσ hJ hP n + betaM R σ J (wv (phiW hσσ hJ hP n₀)) (wv (phiW hσσ hJ hP n)))`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, lin_mul, lin_eq_Lr hσσ hJ hP n₀, lin_eq_Lr hσσ hJ hP n, Lr_comp hσσ hJ hP h2 (w := wv (phiW hσσ hJ hP n₀)) (w' := wv (phiW hσσ hJ hP n)) (fun a => (phiW hσσ hJ hP n₀ a).2) (fun a => (phiW hσσ hJ hP n a).2)]`. Conclude with `phi_of_lin hσσ hJ hP (n₀ * n) (fun a => (Wsub R σ J P).add_mem (phiW hσσ hJ hP n₀ a).2 (phiW hσσ hJ hP n a).2) _ hl`.
+-/
 theorem phi_mul (n₀ n : FrameUnipotentSubgroup R σ J P) :
     wv (phiW hσσ hJ hP (n₀ * n)) = wv (phiW hσσ hJ hP n₀) + wv (phiW hσσ hJ hP n) ∧
       phiSv hσσ hJ hP (n₀ * n) = phiSv hσσ hJ hP n₀ + phiSv hσσ hJ hP n +
@@ -300,6 +397,13 @@ theorem phi_mul (n₀ n : FrameUnipotentSubgroup R σ J P) :
   exact phi_of_lin hσσ hJ hP (n₀ * n)
     (fun a => (Wsub R σ J P).add_mem (phiW hσσ hJ hP n₀ a).2 (phiW hσσ hJ hP n a).2) _ hl
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Establish `hS` using `stabilizer_fixes_frame_and_normal (T := T) (heisenberg_le_stabilizer R σ J P hh)`. Establish `hf : ∀ b, lin R σ J h ((datR R σ J P T).f b) = (datR R σ J P T).f b` using `fun b => fix_f_of_H hσσ hJ hP hh b`. Establish `hU` using `uni_lin (T := T) (P := P) h`. Establish `hw : ∀ a, lin R σ J h (wv (phiW hσσ hJ hP n) a) ∈ Wsub R σ J P` using `fun a => lin_mem_Wsub hh (phiW hσσ hJ hP n a).2`.
+
+Establish `hl : lin R σ J (n' : HA R σ J) = Lr σ J P T (fun a => lin R σ J h (wv (phiW hσσ hJ hP n) a)) (phiSv hσσ hJ hP n)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hn, lin_mul, lin_mul, lin_eq_Lr hσσ hJ hP n, Lr, PG.Dat.S_L H hS hf hU, lin_lin_inv, Lr]`. Use `congr 2`. Use function extensionality and compare the values at `a b`.
+
+Rewrite using `[hR_lin]`. Conclude with `phi_of_lin hσσ hJ hP n' hw _ hl`.
+-/
 theorem phi_conj {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (n n' : FrameUnipotentSubgroup R σ J P)
     (hn : (n' : HA R σ J) = h * n * h⁻¹) :
     wv (phiW hσσ hJ hP n') = (fun a => lin R σ J h (wv (phiW hσσ hJ hP n) a)) ∧

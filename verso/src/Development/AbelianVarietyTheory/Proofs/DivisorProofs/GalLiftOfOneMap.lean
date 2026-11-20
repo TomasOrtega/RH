@@ -46,6 +46,11 @@ section Abstract
 variable {L : Type} [Field L] {G : Type} [Group G] [Fintype G] {C Y H : Type} [AddCommGroup Y] [Module L Y]
   [AddCommGroup H] [Module ℂ H]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_sum, map_sum, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, h, map_smul, smul_smul, smul_smul, smul_smul, ← map_mul, ← map_mul, ← map_mul]`.
+
+Use `congr 2`. Use `(chi g).inv_mul` as an intermediate fact. Take the linear combination `(e g * b k) * this`.
+-/
 theorem read_sum (σ : L →+* ℂ) (J : Y →ₛₗ[σ] H) (ι : C → Y) (act : G → C → C) (chi : G →* Lˣ) (ρ : Representation ℂ G H)
     (h : ∀ g f, J (ι (act g f)) = σ (chi g : L) • ρ g (J (ι f))) (e : G → L) {n : ℕ} (b : Fin n → L) (f : Fin n → C) :
     J (∑ g, (e g * (((chi g)⁻¹ : Lˣ) : L)) • ∑ k, b k • ι (act g (f k))) =
@@ -59,6 +64,11 @@ theorem read_sum (σ : L →+* ℂ) (J : Y →ₛₗ[σ] H) (ι : C → Y) (act 
   have := (chi g).inv_mul
   linear_combination (e g * b k) * this
 
+/- English proof (translation)
+Rewrite using `[mul_smul, ← map_smul (ρ (z₀ * z⁻¹)) κ, hT, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `h1 : ρ (z₀ * z⁻¹) (ρ g (ρ z S)) = ρ g (ρ z₀ S)`. Establish `e1 : z₀ * z⁻¹ * (g * z) = g * z₀`. Rewrite using `[Subgroup.mem_center_iff.1 hz g, Subgroup.mem_center_iff.1 h₀ g]`.
+
+Use `group`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_assoc, e1, map_mul, Module.End.mul_apply]`. Simplify using `only [map_smul, h1, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem shift_sum (ρ : Representation ℂ G H) (e : G → ℂ) {z₀ z : G} (h₀ : z₀ ∈ Subgroup.center G) (hz : z ∈ Subgroup.center G)
     (α β κ : ℂ) (hβ : β ≠ 0) (S T : H) (hT : κ • T = ∑ g, e g • ρ g (β • ρ z S)) :
     ∑ g, e g • ρ g (α • ρ z₀ S) = (α * β⁻¹ * κ) • ρ (z₀ * z⁻¹) T := by
@@ -72,15 +82,28 @@ theorem shift_sum (ρ : Representation ℂ G H) (e : G → ℂ) {z₀ z : G} (h�
   congr 1
   field_simp
 
+/- English proof (translation)
+The claim follows from `(pow_eq_one_iff_of_nonneg (norm_nonneg a) hm.ne').1 (by rw [← norm_pow, h, norm_one])`.
+-/
 theorem norm_of_pow {a : ℂ} {m : ℕ} (hm : 0 < m) (h : a ^ m = 1) : ‖a‖ = 1 :=
   (pow_eq_one_iff_of_nonneg (norm_nonneg a) hm.ne').1 (by rw [← norm_pow, h, norm_one])
 
+/- English proof (translation)
+The claim follows from `norm_of_pow (m := Fintype.card G) Fintype.card_pos (by rw [← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one, map_one])`.
+-/
 theorem norm_chi (σ : L →+* ℂ) (chi : G →* Lˣ) (g : G) : ‖σ (chi g : L)‖ = 1 :=
   norm_of_pow (m := Fintype.card G) Fintype.card_pos (by
     rw [← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one, map_one])
 
 variable {P : Type} [AddCommGroup P] [Module ℂ P]
 
+/- English proof (translation)
+Establish `e1 : ∑ k, σ (a k) • ev (J (ι (act z (f k)))) = ev (σ (chi z : L) • ρ z (∑ k, σ (a k) • J (ι (f k))))`. Rewrite using `[map_sum, Finset.smul_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp only [h, map_smul]; rw [smul_comm]`. Establish `h3 : ∑ k, σ (ze * a k) • J (ι (act z₀ (f k))) = (σ ze * σ (chi z₀ : L)) • ρ z₀ (∑ k, σ (a k) • J (ι (f k)))`. Rewrite using `[map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h, map_smul, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[read_sum σ J ι act chi ρ h e (fun k => ze * a k) (fun k => act z₀ (f k)), h3]`.
+
+Use `shift_sum ρ _ h₀ hz _ _ κ (norm_ne_zero_iff.1 (by rw [norm_chi]; exact one_ne_zero)) _ _ (hev ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hT, ← map_smul, hθ, e1, hW]`.
+-/
 theorem conj_abstract (σ : L →+* ℂ) (J : Y →ₛₗ[σ] H) (ι : C → Y) (act : G → C → C) (chi : G →* Lˣ) (ρ : Representation ℂ G H)
     (h : ∀ g f, J (ι (act g f)) = σ (chi g : L) • ρ g (J (ι f))) (e : G → L) (ev : H →ₗ[ℂ] P) (hev : Function.Injective ev)
     (W : P →ₗ[ℂ] P) (hW : ∀ y, W (ev y) = ev (∑ g, σ (e g) • ρ g y)) {z₀ z : G} (h₀ : z₀ ∈ Subgroup.center G)
@@ -101,6 +124,9 @@ theorem conj_abstract (σ : L →+* ℂ) (J : Y →ₛₗ[σ] H) (ι : C → Y) 
   refine shift_sum ρ _ h₀ hz _ _ κ (norm_ne_zero_iff.1 (by rw [norm_chi]; exact one_ne_zero)) _ _ (hev ?_)
   rw [map_smul, hT, ← map_smul, hθ, e1, hW]
 
+/- English proof (translation)
+Establish `hκ0 : κ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hκ]; exact one_ne_zero)`. Use `⟨κ⁻¹ • ∑ k, a k • t k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sum, ← inv_smul_smul₀ hκ0 θ, hθ]`. Simplify using `only [map_smul]`.
+-/
 theorem exists_ev (ev : H →ₗ[ℂ] P) {κ : ℂ} (hκ : ‖κ‖ = 1) {n : ℕ} (a : Fin n → ℂ) (t : Fin n → H) (θ : P)
     (hθ : κ • θ = ∑ k, a k • ev (t k)) : ∃ s, ev s = θ := by
   have hκ0 : κ ≠ 0 := norm_ne_zero_iff.1 (by rw [hκ]; exact one_ne_zero)
@@ -129,8 +155,14 @@ def ratOf (fw : FWTie T R κw v₀) (i : Fin D.R.m) (act : G → Cu T κw i → 
   ∑ g, ((idemOf A.X).coeff g * ((((R.FW i).chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL)) •
     ∑ k, (ze * a k) • crdF fw i (act g (act z (f k)))
 
+/- English proof (translation)
+The claim follows from `sgAt_mk _ R.hv0`.
+-/
 theorem sign_at_base_place_eq_embedding (R : RealDat D A T.Q.c.F) : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0
 
+/- English proof (translation)
+The claim follows from `(hP.2.tuple ()).reps`.
+-/
 theorem exists_reps {i : Fin D.R.m} {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)} (hP : OMPins T R κw v₀ O i) :
     ∃ h, RepsAt (O i) (v₀ i (sg0 D A)) h := (hP.2.tuple ()).reps
 
@@ -143,6 +175,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 variable {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {F : Face D A}
   {κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
 
+/- English proof (translation)
+Establish `h0 : κ' ≠ 0` using `norm_ne_zero_iff.1 (by rw [h]; exact one_ne_zero)`. Rewrite using `[e, map_smul, smul_smul, mul_assoc, inv_mul_cancel₀ h0, mul_one]`.
+-/
 theorem smul_inv_of {H : Type} [AddCommGroup H] [Module ℂ H] (L : H →ₗ[ℂ] H) {κ κ' : ℂ} (h : ‖κ'‖ = 1) {a b : H}
     (e : b = κ' • a) : κ • L a = (κ * κ'⁻¹) • L b := by
   have h0 : κ' ≠ 0 := norm_ne_zero_iff.1 (by rw [h]; exact one_ne_zero)

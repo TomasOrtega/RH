@@ -12,11 +12,17 @@ namespace BX
 
 variable (B : BX R₀) {R : LAlg R₀}
 
+/- English proof (translation)
+Take `⟨m, -, hm⟩` from `B.trans u u`. Conclude with `(hm l h).trans (hm 1 (B.one_smul u)).symm`.
+-/
 lemma smul_eq_self {x y : B.G R} {l : (R : Type u)ˣ} {u : B.P R x y} (h : B.smul l u = u) :
     l = 1 := by
   obtain ⟨m, -, hm⟩ := B.trans u u
   exact (hm l h).trans (hm 1 (B.one_smul u)).symm
 
+/- English proof (translation)
+Establish `h1 : B.smul (l'⁻¹ * l) u = u`. Rewrite using `[B.mul_smul, h, ← B.mul_smul, inv_mul_cancel, B.one_smul]`. Establish `h2` using `B.smul_eq_self h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma smul_inj {x y : B.G R} {l l' : (R : Type u)ˣ} {u : B.P R x y}
     (h : B.smul l u = B.smul l' u) : l = l' := by
   have h1 : B.smul (l'⁻¹ * l) u = u := by
@@ -25,53 +31,92 @@ lemma smul_inj {x y : B.G R} {l l' : (R : Type u)ˣ} {u : B.P R x y}
   calc l = l' * (l'⁻¹ * l) := (mul_inv_cancel_left l' l).symm
     _ = l' := by rw [h2, mul_one]
 
+/- English proof (translation)
+The claim follows from `(B.trans u w).exists`.
+-/
 lemma exists_smul {x y : B.G R} (u w : B.P R x y) : ∃ l, B.smul l u = w :=
   (B.trans u w).exists
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma heq_zero1 {y y' : B.G R} (h : y = y') : HEq (B.zero1 y) (B.zero1 y') := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma heq_zero2 {x x' : B.G R} (h : x = x') : HEq (B.zero2 x) (B.zero2 x') := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma castFst_heq {x x' y : B.G R} (h : x = x') (u : B.P R x y) : HEq (B.tr1 h u) u := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma castSnd_heq {x y y' : B.G R} (h : y = y') (u : B.P R x y) : HEq (B.tr2 h u) u := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `hx hx' hy` using the available equality. Consider the cases of `eq_of_heq hu`. Consider the cases of `eq_of_heq hw`. Both sides reduce to the same expression.
+-/
 lemma addFst_hcongr {x₁ x₂ x₁' x₂' y₁ y₂ : B.G R} (hx : x₁ = x₂) (hx' : x₁' = x₂') (hy : y₁ = y₂)
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} {w₁ : B.P R x₁' y₁} {w₂ : B.P R x₂' y₂}
     (hu : HEq u₁ u₂) (hw : HEq w₁ w₂) : HEq (B.add1 u₁ w₁) (B.add1 u₂ w₂) := by
   subst hx hx' hy; cases eq_of_heq hu; cases eq_of_heq hw; rfl
 
+/- English proof (translation)
+Substitute `hx hy hy'` using the available equality. Consider the cases of `eq_of_heq hu`. Consider the cases of `eq_of_heq hw`. Both sides reduce to the same expression.
+-/
 lemma addSnd_hcongr {x₁ x₂ y₁ y₂ y₁' y₂' : B.G R} (hx : x₁ = x₂) (hy : y₁ = y₂) (hy' : y₁' = y₂')
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} {w₁ : B.P R x₁ y₁'} {w₂ : B.P R x₂ y₂'}
     (hu : HEq u₁ u₂) (hw : HEq w₁ w₂) : HEq (B.add2 u₁ w₁) (B.add2 u₂ w₂) := by
   subst hx hy hy'; cases eq_of_heq hu; cases eq_of_heq hw; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma smul_hcongr {x₁ x₂ y₁ y₂ : B.G R} (hx : x₁ = x₂) (hy : y₁ = y₂) (l : (R : Type u)ˣ)
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} (hu : HEq u₁ u₂) :
     HEq (B.smul l u₁) (B.smul l u₂) := by
   subst hx hy; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma sw_hcongr {x₁ x₂ y₁ y₂ : B.G R} (hx : x₁ = x₂) (hy : y₁ = y₂)
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} (hu : HEq u₁ u₂) : HEq (B.sw u₁) (B.sw u₂) := by
   subst hx hy; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma pmap_hcongr {S : LAlg R₀} (f : LHom R S) {x₁ x₂ y₁ y₂ : B.G R} (hx : x₁ = x₂)
     (hy : y₁ = y₂) {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} (hu : HEq u₁ u₂) :
     HEq (B.pmap f u₁) (B.pmap f u₂) := by
   subst hx hy; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma nsmul1_hcongr {x₁ x₂ y₁ y₂ : B.G R} (hx : x₁ = x₂) (hy : y₁ = y₂) (n : ℕ)
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} (hu : HEq u₁ u₂) :
     HEq (B.nsmul1 u₁ n) (B.nsmul1 u₂ n) := by
   subst hx hy; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Consider the cases of `eq_of_heq hu`. Both sides reduce to the same expression.
+-/
 lemma nsmul2_hcongr {x₁ x₂ y₁ y₂ : B.G R} (hx : x₁ = x₂) (hy : y₁ = y₂) (n : ℕ)
     {u₁ : B.P R x₁ y₁} {u₂ : B.P R x₂ y₂} (hu : HEq u₁ u₂) :
     HEq (B.nsmul2 u₁ n) (B.nsmul2 u₂ n) := by
   subst hx hy; cases eq_of_heq hu; rfl
 
+/- English proof (translation)
+Substitute `hx hy` using the available equality. Conclude with `⟨u, HEq.rfl⟩`.
+-/
 lemma exists_cast {x x' y y' : B.G R} (hx : x = x') (hy : y = y') (u : B.P R x y) :
     ∃ u' : B.P R x' y', HEq u' u := by
   subst hx hy; exact ⟨u, HEq.rfl⟩
@@ -98,13 +143,24 @@ def S1mk {x y : B.G R} (u : B.P R x y) : B.S1 R y := ⟨x, u⟩
 
 def PrimaryComponentScale {y : B.G R} (l : (R : Type u)ˣ) (a : B.S1 R y) : B.S1 R y := ⟨a.1, B.smul l a.2⟩
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (B.addFst_smul l l' a.2 b.2))`.
+-/
 lemma S1smul_add {y : B.G R} (l l' : (R : Type u)ˣ) (a b : B.S1 R y) :
     B.PrimaryComponentScale l a + B.PrimaryComponentScale l' b = B.PrimaryComponentScale (l * l') (a + b) :=
   Sigma.ext rfl (heq_of_eq (B.addFst_smul l l' a.2 b.2))
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (B.one_smul a.2))`.
+-/
 lemma S1smul_one {y : B.G R} (a : B.S1 R y) : B.PrimaryComponentScale 1 a = a :=
   Sigma.ext rfl (heq_of_eq (B.one_smul a.2))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul]`. Conclude with `Sigma.ext (zero_nsmul x).symm (B.castFst_heq (zero_nsmul x).symm (B.zero1 y)).symm`. Consider the case `succ n ih`.
+
+Rewrite using `[succ_nsmul, ih]`. Conclude with `Sigma.ext (succ_nsmul x n).symm (B.castFst_heq (succ_nsmul x n).symm _).symm`.
+-/
 lemma fibreFst_nsmul_mk {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     (n • (B.S1mk u)) = ⟨n • x, B.nsmul1 u n⟩ := by
   induction n with
@@ -115,12 +171,22 @@ lemma fibreFst_nsmul_mk {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     rw [succ_nsmul, ih]
     exact Sigma.ext (succ_nsmul x n).symm (B.castFst_heq (succ_nsmul x n).symm _).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, pow_zero, S1smul_one]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, ih, S1smul_add, pow_succ]`.
+-/
 lemma fibreFst_nsmul_smul {y : B.G R} (l : (R : Type u)ˣ) (a : B.S1 R y) (n : ℕ) :
     n • B.PrimaryComponentScale l a = B.PrimaryComponentScale (l ^ n) (n • a) := by
   induction n with
   | zero => rw [zero_nsmul, zero_nsmul, pow_zero, S1smul_one]
   | succ n ih => rw [succ_nsmul, succ_nsmul, ih, S1smul_add, pow_succ]
 
+/- English proof (translation)
+Take `⟨x, u⟩` from `a`. Express the relevant statement in the definitionally equal form `B.S1mk u + B.S1mk u = B.S1mk u at h`. Express the relevant statement in the definitionally equal form `B.S1mk u = 0`. Establish `hx' : x + x = x` using `congrArg Sigma.fst h`. Establish `hx : x = 0` using `add_left_cancel (hx'.trans (add_zero x).symm)`.
+
+Substitute `hx` using the available equality. Take `⟨μ, rfl⟩` from `B.exists_smul (B.zero1 y) u`. Establish `e : (B.S1mk (B.smul μ (B.zero1 y))) = B.PrimaryComponentScale μ 0` using `rfl`. Rewrite `h`, the goal using `[e]`. Rewrite `h` using `[S1smul_add, add_zero]`.
+
+Establish `h2 : B.smul (μ * μ) (B.zero1 y) = B.smul μ (B.zero1 y)` using `eq_of_heq (Sigma.ext_iff.1 h).2`. Establish `h3 : μ * μ = μ * 1` using `by rw [B.smul_inj h2, mul_one]`. Rewrite using `[mul_left_cancel h3, S1smul_one]`.
+-/
 lemma fibreFst_idem {y : B.G R} (a : B.S1 R y) (h : a + a = a) : a = 0 := by
   obtain ⟨x, u⟩ := a
   change B.S1mk u + B.S1mk u = B.S1mk u at h
@@ -141,6 +207,9 @@ def PrimaryComponentMap {S : LAlg R₀} (f : LHom R S) (y : B.G R) : B.S1 R y �
   map_zero' := Sigma.ext (map_zero _) (B.zeroFst_nat f y)
   map_add' a b := Sigma.ext (map_add _ _ _) (B.addFst_nat f a.2 b.2)
 
+/- English proof (translation)
+Establish `h` using `(B.PrimaryComponentMap f y).map_nsmul n (B.S1mk u)`. Rewrite `h` using `[fibreFst_nsmul_mk]`. Establish `h' : (B.S1mk (B.pmap f (B.nsmul1 u n))) = n • (B.S1mk (B.pmap f u))` using `h`. Rewrite `h'` using `[fibreFst_nsmul_mk]`. Conclude with `(Sigma.ext_iff.1 h').2`.
+-/
 lemma pmap_nsmul1 {S : LAlg R₀} (f : LHom R S) {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     HEq (B.pmap f (B.nsmul1 u n)) (B.nsmul1 (B.pmap f u) n) := by
   have h := (B.PrimaryComponentMap f y).map_nsmul n (B.S1mk u)
@@ -172,13 +241,24 @@ def S2mk {x y : B.G R} (u : B.P R x y) : B.S2 R x := ⟨y, u⟩
 
 def SecondaryComponentScale {x : B.G R} (l : (R : Type u)ˣ) (a : B.S2 R x) : B.S2 R x := ⟨a.1, B.smul l a.2⟩
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (B.addSnd_smul l l' a.2 b.2))`.
+-/
 lemma S2smul_add {x : B.G R} (l l' : (R : Type u)ˣ) (a b : B.S2 R x) :
     B.SecondaryComponentScale l a + B.SecondaryComponentScale l' b = B.SecondaryComponentScale (l * l') (a + b) :=
   Sigma.ext rfl (heq_of_eq (B.addSnd_smul l l' a.2 b.2))
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (B.one_smul a.2))`.
+-/
 lemma S2smul_one {x : B.G R} (a : B.S2 R x) : B.SecondaryComponentScale 1 a = a :=
   Sigma.ext rfl (heq_of_eq (B.one_smul a.2))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul]`. Conclude with `Sigma.ext (zero_nsmul y).symm (B.castSnd_heq (zero_nsmul y).symm (B.zero2 x)).symm`. Consider the case `succ n ih`.
+
+Rewrite using `[succ_nsmul, ih]`. Conclude with `Sigma.ext (succ_nsmul y n).symm (B.castSnd_heq (succ_nsmul y n).symm _).symm`.
+-/
 lemma fibreSnd_nsmul_mk {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     (n • (B.S2mk u)) = ⟨n • y, B.nsmul2 u n⟩ := by
   induction n with
@@ -189,12 +269,22 @@ lemma fibreSnd_nsmul_mk {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     rw [succ_nsmul, ih]
     exact Sigma.ext (succ_nsmul y n).symm (B.castSnd_heq (succ_nsmul y n).symm _).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, pow_zero, S2smul_one]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, ih, S2smul_add, pow_succ]`.
+-/
 lemma fibreSnd_nsmul_smul {x : B.G R} (l : (R : Type u)ˣ) (a : B.S2 R x) (n : ℕ) :
     n • B.SecondaryComponentScale l a = B.SecondaryComponentScale (l ^ n) (n • a) := by
   induction n with
   | zero => rw [zero_nsmul, zero_nsmul, pow_zero, S2smul_one]
   | succ n ih => rw [succ_nsmul, succ_nsmul, ih, S2smul_add, pow_succ]
 
+/- English proof (translation)
+Take `⟨y, u⟩` from `a`. Express the relevant statement in the definitionally equal form `B.S2mk u + B.S2mk u = B.S2mk u at h`. Express the relevant statement in the definitionally equal form `B.S2mk u = 0`. Establish `hy' : y + y = y` using `congrArg Sigma.fst h`. Establish `hy : y = 0` using `add_left_cancel (hy'.trans (add_zero y).symm)`.
+
+Substitute `hy` using the available equality. Take `⟨μ, rfl⟩` from `B.exists_smul (B.zero2 x) u`. Establish `e : (B.S2mk (B.smul μ (B.zero2 x))) = B.SecondaryComponentScale μ 0` using `rfl`. Rewrite `h`, the goal using `[e]`. Rewrite `h` using `[S2smul_add, add_zero]`.
+
+Establish `h2 : B.smul (μ * μ) (B.zero2 x) = B.smul μ (B.zero2 x)` using `eq_of_heq (Sigma.ext_iff.1 h).2`. Establish `h3 : μ * μ = μ * 1` using `by rw [B.smul_inj h2, mul_one]`. Rewrite using `[mul_left_cancel h3, S2smul_one]`.
+-/
 lemma fibreSnd_idem {x : B.G R} (a : B.S2 R x) (h : a + a = a) : a = 0 := by
   obtain ⟨y, u⟩ := a
   change B.S2mk u + B.S2mk u = B.S2mk u at h
@@ -215,6 +305,9 @@ def SecondaryComponentMap {S : LAlg R₀} (f : LHom R S) (x : B.G R) : B.S2 R x 
   map_zero' := Sigma.ext (map_zero _) (B.zeroSnd_nat f x)
   map_add' a b := Sigma.ext (map_add _ _ _) (B.addSnd_nat f a.2 b.2)
 
+/- English proof (translation)
+Establish `h` using `(B.SecondaryComponentMap f x).map_nsmul n (B.S2mk u)`. Rewrite `h` using `[fibreSnd_nsmul_mk]`. Establish `h' : (B.S2mk (B.pmap f (B.nsmul2 u n))) = n • (B.S2mk (B.pmap f u))` using `h`. Rewrite `h'` using `[fibreSnd_nsmul_mk]`. Conclude with `(Sigma.ext_iff.1 h').2`.
+-/
 lemma pmap_nsmul2 {S : LAlg R₀} (f : LHom R S) {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     HEq (B.pmap f (B.nsmul2 u n)) (B.nsmul2 (B.pmap f u) n) := by
   have h := (B.SecondaryComponentMap f x).map_nsmul n (B.S2mk u)
@@ -224,6 +317,11 @@ lemma pmap_nsmul2 {S : LAlg R₀} (f : LHom R S) {x y : B.G R} (u : B.P R x y) (
   rw [fibreSnd_nsmul_mk] at h'
   exact (Sigma.ext_iff.1 h').2
 
+/- English proof (translation)
+Set `a : B.S1 R (y + y')` to `⟨0, B.add2 (B.zero1 y) (B.zero1 y')⟩`. Establish `h : a + a = a`. Use `Sigma.ext (add_zero (0 : B.G R)) ?_` and prove the remaining obligations. Use `show HEq (B.add1 (B.add2 (B.zero1 y) (B.zero1 y')) (B.add2 (B.zero1 y) (B.zero1 y'))) (B.add2 (B.zero1 y) (B.zero1 y'))`. Rewrite using `[← B.interchange]`.
+
+Conclude with `B.addSnd_hcongr (add_zero 0) rfl rfl (B.zeroFst_add _) (B.zeroFst_add _)`. Conclude with `eq_of_heq (Sigma.ext_iff.1 (B.fibreFst_idem a h)).2`.
+-/
 lemma zeroFst_addSnd (y y' : B.G R) : B.add2 (B.zero1 y) (B.zero1 y') = B.zero1 (y + y') := by
   let a : B.S1 R (y + y') := ⟨0, B.add2 (B.zero1 y) (B.zero1 y')⟩
   have h : a + a = a := by
@@ -234,6 +332,11 @@ lemma zeroFst_addSnd (y y' : B.G R) : B.add2 (B.zero1 y) (B.zero1 y') = B.zero1 
     exact B.addSnd_hcongr (add_zero 0) rfl rfl (B.zeroFst_add _) (B.zeroFst_add _)
   exact eq_of_heq (Sigma.ext_iff.1 (B.fibreFst_idem a h)).2
 
+/- English proof (translation)
+Set `a : B.S2 R (x + x')` to `⟨0, B.add1 (B.zero2 x) (B.zero2 x')⟩`. Establish `h : a + a = a`. Use `Sigma.ext (add_zero (0 : B.G R)) ?_` and prove the remaining obligations. Use `show HEq (B.add2 (B.add1 (B.zero2 x) (B.zero2 x')) (B.add1 (B.zero2 x) (B.zero2 x'))) (B.add1 (B.zero2 x) (B.zero2 x'))`. Rewrite using `[B.interchange]`.
+
+Conclude with `B.addFst_hcongr rfl rfl (add_zero 0) (B.zeroSnd_add _) (B.zeroSnd_add _)`. Conclude with `eq_of_heq (Sigma.ext_iff.1 (B.fibreSnd_idem a h)).2`.
+-/
 lemma zeroSnd_addFst (x x' : B.G R) : B.add1 (B.zero2 x) (B.zero2 x') = B.zero2 (x + x') := by
   let a : B.S2 R (x + x') := ⟨0, B.add1 (B.zero2 x) (B.zero2 x')⟩
   have h : a + a = a := by
@@ -244,6 +347,11 @@ lemma zeroSnd_addFst (x x' : B.G R) : B.add1 (B.zero2 x) (B.zero2 x') = B.zero2 
     exact B.addFst_hcongr rfl rfl (add_zero 0) (B.zeroSnd_add _) (B.zeroSnd_add _)
   exact eq_of_heq (Sigma.ext_iff.1 (B.fibreSnd_idem a h)).2
 
+/- English proof (translation)
+Set `a : B.S1 R 0` to `⟨0, B.zero2 0⟩`. Establish `h : a + a = a`. Use `Sigma.ext (add_zero (0 : B.G R)) ?_` and prove the remaining obligations. Use `show HEq (B.add1 (B.zero2 (0 : B.G R)) (B.zero2 0)) (B.zero2 (0 : B.G R))`. Rewrite using `[zeroSnd_addFst]`.
+
+Conclude with `B.heq_zero2 (add_zero 0)`. Conclude with `(eq_of_heq (Sigma.ext_iff.1 (B.fibreFst_idem a h)).2).symm`.
+-/
 lemma zeroFst_zero : B.zero1 (0 : B.G R) = B.zero2 0 := by
   let a : B.S1 R 0 := ⟨0, B.zero2 0⟩
   have h : a + a = a := by
@@ -252,6 +360,11 @@ lemma zeroFst_zero : B.zero1 (0 : B.G R) = B.zero2 0 := by
     rw [zeroSnd_addFst]; exact B.heq_zero2 (add_zero 0)
   exact (eq_of_heq (Sigma.ext_iff.1 (B.fibreFst_idem a h)).2).symm
 
+/- English proof (translation)
+Set `a : B.S2 R y` to `⟨0, B.sw (B.zero1 y)⟩`. Establish `h : a + a = a`. Use `Sigma.ext (add_zero (0 : B.G R)) ?_` and prove the remaining obligations. Use `show HEq (B.add2 (B.sw (B.zero1 y)) (B.sw (B.zero1 y))) (B.sw (B.zero1 y))`. Rewrite using `[← B.swap_addFst]`.
+
+Conclude with `B.sw_hcongr (add_zero 0) rfl (B.zeroFst_add _)`. Conclude with `eq_of_heq (Sigma.ext_iff.1 (B.fibreSnd_idem a h)).2`.
+-/
 lemma sw_zero1 (y : B.G R) : B.sw (B.zero1 y) = B.zero2 y := by
   let a : B.S2 R y := ⟨0, B.sw (B.zero1 y)⟩
   have h : a + a = a := by
@@ -261,9 +374,17 @@ lemma sw_zero1 (y : B.G R) : B.sw (B.zero1 y) = B.zero2 y := by
     exact B.sw_hcongr (add_zero 0) rfl (B.zeroFst_add _)
   exact eq_of_heq (Sigma.ext_iff.1 (B.fibreSnd_idem a h)).2
 
+/- English proof (translation)
+Rewrite using `[← B.sw_zero1 x, B.sw_sw]`.
+-/
 lemma sw_zero2 (x : B.G R) : B.sw (B.zero2 x) = B.zero1 x := by
   rw [← B.sw_zero1 x, B.sw_sw]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `(B.castSnd_heq _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← B.zeroFst_zero]`. Conclude with `B.heq_zero1 (zero_nsmul y).symm`.
+
+Consider the case `succ n ih`. Use `(B.castSnd_heq _ _).trans ?_` and prove the remaining obligations. Use `(B.addSnd_hcongr rfl rfl rfl ih HEq.rfl).trans ?_` and prove the remaining obligations. Rewrite using `[zeroFst_addSnd]`. Conclude with `B.heq_zero1 (succ_nsmul y n).symm`.
+-/
 lemma nsmul2_zero1 (y : B.G R) (n : ℕ) : HEq (B.nsmul2 (B.zero1 y) n) (B.zero1 (n • y)) := by
   induction n with
   | zero =>
@@ -274,6 +395,11 @@ lemma nsmul2_zero1 (y : B.G R) (n : ℕ) : HEq (B.nsmul2 (B.zero1 y) n) (B.zero1
     refine (B.addSnd_hcongr rfl rfl rfl ih HEq.rfl).trans ?_
     rw [zeroFst_addSnd]; exact B.heq_zero1 (succ_nsmul y n).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `(B.castFst_heq _ _).trans ?_` and prove the remaining obligations. Rewrite using `[B.zeroFst_zero]`. Conclude with `B.heq_zero2 (zero_nsmul x).symm`.
+
+Consider the case `succ n ih`. Use `(B.castFst_heq _ _).trans ?_` and prove the remaining obligations. Use `(B.addFst_hcongr rfl rfl rfl ih HEq.rfl).trans ?_` and prove the remaining obligations. Rewrite using `[zeroSnd_addFst]`. Conclude with `B.heq_zero2 (succ_nsmul x n).symm`.
+-/
 lemma nsmul1_zero2 (x : B.G R) (n : ℕ) : HEq (B.nsmul1 (B.zero2 x) n) (B.zero2 (n • x)) := by
   induction n with
   | zero =>
@@ -284,18 +410,27 @@ lemma nsmul1_zero2 (x : B.G R) (n : ℕ) : HEq (B.nsmul1 (B.zero2 x) n) (B.zero2
     refine (B.addFst_hcongr rfl rfl rfl ih HEq.rfl).trans ?_
     rw [zeroSnd_addFst]; exact B.heq_zero2 (succ_nsmul x n).symm
 
+/- English proof (translation)
+Establish `h` using `B.fibreFst_nsmul_mk (B.zero1 y) n`. Establish `h0 : (B.S1mk (B.zero1 y)) = 0` using `rfl`. Rewrite `h` using `[h0, nsmul_zero]`. Conclude with `(Sigma.ext_iff.1 h.symm).2`.
+-/
 lemma nsmul1_zero1 (y : B.G R) (n : ℕ) : HEq (B.nsmul1 (B.zero1 y) n) (B.zero1 y) := by
   have h := B.fibreFst_nsmul_mk (B.zero1 y) n
   have h0 : (B.S1mk (B.zero1 y)) = 0 := rfl
   rw [h0, nsmul_zero] at h
   exact (Sigma.ext_iff.1 h.symm).2
 
+/- English proof (translation)
+Establish `h` using `B.fibreSnd_nsmul_mk (B.zero2 x) n`. Establish `h0 : (B.S2mk (B.zero2 x)) = 0` using `rfl`. Rewrite `h` using `[h0, nsmul_zero]`. Conclude with `(Sigma.ext_iff.1 h.symm).2`.
+-/
 lemma nsmul2_zero2 (x : B.G R) (n : ℕ) : HEq (B.nsmul2 (B.zero2 x) n) (B.zero2 x) := by
   have h := B.fibreSnd_nsmul_mk (B.zero2 x) n
   have h0 : (B.S2mk (B.zero2 x)) = 0 := rfl
   rw [h0, nsmul_zero] at h
   exact (Sigma.ext_iff.1 h.symm).2
 
+/- English proof (translation)
+Establish `h` using `B.fibreFst_nsmul_smul l (B.S1mk u) n`. Establish `e : B.PrimaryComponentScale l (B.S1mk u) = B.S1mk (B.smul l u)` using `rfl`. Rewrite `h` using `[e, fibreFst_nsmul_mk, fibreFst_nsmul_mk]`. Conclude with `eq_of_heq (Sigma.ext_iff.1 h).2`.
+-/
 lemma nsmul1_smul {x y : B.G R} (l : (R : Type u)ˣ) (u : B.P R x y) (n : ℕ) :
     B.nsmul1 (B.smul l u) n = B.smul (l ^ n) (B.nsmul1 u n) := by
   have h := B.fibreFst_nsmul_smul l (B.S1mk u) n
@@ -303,6 +438,9 @@ lemma nsmul1_smul {x y : B.G R} (l : (R : Type u)ˣ) (u : B.P R x y) (n : ℕ) :
   rw [e, fibreFst_nsmul_mk, fibreFst_nsmul_mk] at h
   exact eq_of_heq (Sigma.ext_iff.1 h).2
 
+/- English proof (translation)
+Establish `h` using `B.fibreSnd_nsmul_smul l (B.S2mk u) n`. Establish `e : B.SecondaryComponentScale l (B.S2mk u) = B.S2mk (B.smul l u)` using `rfl`. Rewrite `h` using `[e, fibreSnd_nsmul_mk, fibreSnd_nsmul_mk]`. Conclude with `eq_of_heq (Sigma.ext_iff.1 h).2`.
+-/
 lemma nsmul2_smul {x y : B.G R} (l : (R : Type u)ˣ) (u : B.P R x y) (n : ℕ) :
     B.nsmul2 (B.smul l u) n = B.smul (l ^ n) (B.nsmul2 u n) := by
   have h := B.fibreSnd_nsmul_smul l (B.S2mk u) n
@@ -310,6 +448,13 @@ lemma nsmul2_smul {x y : B.G R} (l : (R : Type u)ˣ) (u : B.P R x y) (n : ℕ) :
   rw [e, fibreSnd_nsmul_mk, fibreSnd_nsmul_mk] at h
   exact eq_of_heq (Sigma.ext_iff.1 h).2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Apply `eq_of_heq` to reduce the goal to its premises. Use `(B.castSnd_heq _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← zeroSnd_addFst]`.
+
+Conclude with `B.addFst_hcongr rfl rfl (zero_nsmul y).symm (B.castSnd_heq (zero_nsmul y).symm (B.zero2 x)).symm (B.castSnd_heq (zero_nsmul y).symm (B.zero2 x')).symm`. Consider the case `succ n ih`. Apply `eq_of_heq` to reduce the goal to its premises. Use `(B.castSnd_heq _ _).trans ?_` and prove the remaining obligations. Rewrite using `[ih, B.interchange]`.
+
+Conclude with `B.addFst_hcongr rfl rfl (succ_nsmul y n).symm (B.castSnd_heq (succ_nsmul y n).symm (B.add2 (B.nsmul2 u n) u)).symm (B.castSnd_heq (succ_nsmul y n).symm (B.add2 (B.nsmul2 u' n) u')).symm`.
+-/
 lemma nsmulSnd_addFst {x x' y : B.G R} (u : B.P R x y) (u' : B.P R x' y) (n : ℕ) :
     B.nsmul2 (B.add1 u u') n = B.add1 (B.nsmul2 u n) (B.nsmul2 u' n) := by
   induction n with
@@ -332,6 +477,9 @@ def S1n2 (y : B.G R) (n : ℕ) : B.S1 R y →+ B.S1 R (n • y) where
   map_zero' := Sigma.ext rfl (B.nsmul2_zero1 y n)
   map_add' a b := Sigma.ext rfl (heq_of_eq (B.nsmulSnd_addFst a.2 b.2 n))
 
+/- English proof (translation)
+Establish `h` using `(B.S1n2 y n).map_nsmul m (B.S1mk u)`. Rewrite `h` using `[fibreFst_nsmul_mk]`. Establish `h' : (B.S1mk (B.nsmul2 (B.nsmul1 u m) n)) = m • (B.S1mk (B.nsmul2 u n))` using `h`. Rewrite `h'` using `[fibreFst_nsmul_mk]`. Conclude with `eq_of_heq (Sigma.ext_iff.1 h').2`.
+-/
 lemma nsmul_comm {x y : B.G R} (u : B.P R x y) (m n : ℕ) :
     B.nsmul2 (B.nsmul1 u m) n = B.nsmul1 (B.nsmul2 u n) m := by
   have h := (B.S1n2 y n).map_nsmul m (B.S1mk u)
@@ -341,9 +489,15 @@ lemma nsmul_comm {x y : B.G R} (u : B.P R x y) (m n : ℕ) :
   rw [fibreFst_nsmul_mk] at h'
   exact eq_of_heq (Sigma.ext_iff.1 h').2
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma swap_castFst {x x' y : B.G R} (h : x = x') (u : B.P R x y) :
     B.sw (B.tr1 h u) = B.tr2 h (B.sw u) := by subst h; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact (B.swap_castFst _ _).trans (by rw [sw_zero1]; rfl)`. Consider the case `succ n ih => exact (B.swap_castFst _ _).trans (by rw [B.swap_addFst, ih]; rfl)`.
+-/
 lemma sw_nsmul1 {x y : B.G R} (u : B.P R x y) (n : ℕ) :
     B.sw (B.nsmul1 u n) = B.nsmul2 (B.sw u) n := by
   induction n with

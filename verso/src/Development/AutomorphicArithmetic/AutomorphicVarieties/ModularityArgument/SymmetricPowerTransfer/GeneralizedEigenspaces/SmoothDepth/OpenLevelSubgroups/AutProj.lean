@@ -13,6 +13,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 open GlobalTheory.DefU in
+/- English proof (translation)
+Introduce `L _ _ _ n M hM`. Take `⟨h1, h2, h3, h4⟩` from `UpperTheory.unitary_adelic_t2_locallyCompact_secondCountable L n`. Take `⟨C, hC, hcov⟩` from `UpperTheory.exists_compact_fundamental_set_unitary L n`. Take `⟨B, hdef, hinv⟩` from `UpperTheory.exists_nondegenerate_right_invariant_form_of_compact_quotient (UA L n) (ratU L n) C hC hcov`. Establish `hsum` using `UpperTheory.mem_iSup_automorphicReps_of_invariant_form L n B (fun φ h => hdef φ h.cont h.left) (fun x φ ψ h h' => hinv x φ ψ h.cont h.left h'.cont h'.left)`.
+
+Establish `hi` using `Submodule.map_injective_of_injective (autU L n).injective_subtype`. Take `⟨κ, _, U, P, hU, hP, hPe, hPs⟩` from `UpperTheory.exists_equivariant_projections_of_sum_irreducible (UA L n) (autU L n) (autRep L n) (fun x => by`. Establish `key : ∀ (Z : Submodule ℂ (autU L n)), (∀ σ, IsAutRepU σ → σ.comap (autU L n).subtype ≤ Z) → x ∈ Z`. Introduce `Z hZ`. Establish `hle : (⨆ σ : {σ : Submodule ℂ (UA L n → ℂ) // IsAutRepU σ}, σ.1) ≤ Z.map (autU L n).subtype` using `iSup_le fun σ φ hφ => ⟨⟨φ, σ.2.aut φ hφ⟩, hZ σ.1 σ.2 hφ, rfl⟩`.
+
+Take `⟨y, hy, e⟩` from `hle (hsum x.1 x.2)`. Conclude with `Subtype.ext e ▸ hy`. Use `key _ fun σ hσ => ?_` and prove the remaining obligations. Establish `hm : (σ.comap (autU L n).subtype).map (autU L n).subtype = σ`. Rewrite using `[Submodule.map_comap_subtype]`.
+
+Conclude with `inf_eq_right.2 hσ.aut`. Use `le_iSup_of_le ⟨σ.comap (autU L n).subtype, fun h => hσ.ne_bot ?_, fun g u hu => hσ.stable g u.1 hu, fun N hN hst => ?_⟩ le_rfl` and prove the remaining obligations. Rewrite using `[← hm, h, Submodule.map_bot]`. Use `(hσ.irred (N.map (autU L n).subtype) (hm ▸ Submodule.map_mono hN) ?_).imp (fun h => hi (h.trans (Submodule.map_bot _).symm)) fun h => hi (h.trans hm.symm)` and prove the remaining obligations. Introduce and unpack `g _ ⟨u, hu, rfl⟩`.
+
+Conclude with `⟨_, hst g u hu, rfl⟩) M hM`. Use `⟨κ, inferInstance, fun i => (U i).map (autU L n).subtype, P, fun i => ⟨?_, ?_, ?_, fun N hN hst => ?_⟩, fun i φ => ⟨_, hP i φ, rfl⟩, hPe, hPs⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `u.2`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`.
+
+Conclude with `⟨_, (hU i).2.1 g u hu, rfl⟩`. Conclude with `fun h => (hU i).1 (hi (h.trans (Submodule.map_bot _).symm))`. Establish `hm : (N.comap (autU L n).subtype).map (autU L n).subtype = N`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hN.trans (Submodule.map_subtype_le _ _))`.
+
+Break down `(hU i).2.2 (N.comap (autU L n).subtype) (fun u hu => by` into its components or cases. Take `⟨w, hw, e⟩` from `hN hu`. Conclude with `Subtype.ext e ▸ hw) (fun g u hu => hst g u.1 hu) with h | h`. Use `left`. Rewrite using `[← hm, h, Submodule.map_bot]`.
+
+Use `right`. Rewrite using `[← hm, h]`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.autProj :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (M : Submodule ℂ (GlobalTheory.DefU.autU L n)), FiniteDimensional ℂ M →
         ∃ (κ : Type) (_ : Fintype κ) (σ : κ → Submodule ℂ (UA L n → ℂ)) (P : κ → GlobalTheory.DefU.autU L n →ₗ[ℂ] GlobalTheory.DefU.autU L n),

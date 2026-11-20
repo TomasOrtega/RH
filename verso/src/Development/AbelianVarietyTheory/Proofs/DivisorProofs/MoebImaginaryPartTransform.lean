@@ -6,6 +6,15 @@ open scoped ContDiff
 
 namespace GlobalTheory.SiegelMoeb
 
+/- English proof (translation)
+Establish `h` using `SymplecticGroup.mem_iff'.mp γ.2`. Establish `hm : (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ) = γ.mat` using `rfl`. Rewrite `h` using `[hm, ← fromBlocks_toBlocks γ.mat]`. Rewrite `h` using `[fromBlocks_transpose, J, fromBlocks_multiply, fromBlocks_multiply, fromBlocks_inj]`. Take `⟨h1, h2, h3, h4⟩` from `h`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.mul_neg, Matrix.mul_one, zero_add, add_zero, Matrix.neg_mul, Matrix.zero_mul] at h1 h2 h3 h4`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← sub_eq_zero]`. Rewrite using `[← h4]`. Normalize the expressions using the abelian group laws. Rewrite using `[← h3]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← neg_neg (1 : Matrix (Fin g) (Fin g) ℝ), ← h2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sp_block_rel {g : ℕ} (γ : Sp g) :
     γ.mat.toBlocks₂₁ᵀ * γ.mat.toBlocks₁₁ = γ.mat.toBlocks₁₁ᵀ * γ.mat.toBlocks₂₁ ∧
     γ.mat.toBlocks₂₂ᵀ * γ.mat.toBlocks₁₂ = γ.mat.toBlocks₁₂ᵀ * γ.mat.toBlocks₂₂ ∧
@@ -27,24 +36,51 @@ theorem sp_block_rel {g : ℕ} (γ : Sp g) :
 private abbrev cx {g : ℕ} (M : Matrix (Fin g) (Fin g) ℝ) : Matrix (Fin g) (Fin g) ℂ :=
   M.map (fun t : ℝ => (t : ℂ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cx_eq {g : ℕ} (M : Matrix (Fin g) (Fin g) ℝ) :
     cx M = (Complex.ofRealHom : ℝ →+* ℂ).mapMatrix M := rfl
 
+/- English proof (translation)
+Simplify using `only [cx_eq, map_mul]`.
+-/
 private theorem cx_mul {g : ℕ} (M N : Matrix (Fin g) (Fin g) ℝ) : cx (M * N) = cx M * cx N := by
   simp only [cx_eq, map_mul]
 
+/- English proof (translation)
+Simplify using `only [cx_eq, map_sub]`.
+-/
 private theorem cx_sub {g : ℕ} (M N : Matrix (Fin g) (Fin g) ℝ) : cx (M - N) = cx M - cx N := by
   simp only [cx_eq, map_sub]
 
+/- English proof (translation)
+Simplify using `only [cx_eq, map_one]`.
+-/
 private theorem cx_one {g : ℕ} : cx (1 : Matrix (Fin g) (Fin g) ℝ) = 1 := by
   simp only [cx_eq, map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 private theorem cx_transpose {g : ℕ} (M : Matrix (Fin g) (Fin g) ℝ) : cx Mᵀ = (cx M)ᵀ := by
   ext i j; rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`.
+-/
 private theorem cx_conjTranspose {g : ℕ} (M : Matrix (Fin g) (Fin g) ℝ) : (cx M)ᴴ = (cx M)ᵀ := by
   ext i j; simp [conjTranspose_apply]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `sp_block_rel γ`. Use `set a := γ.mat.toBlocks₁₁`. Use `set b := γ.mat.toBlocks₁₂`. Use `set c := γ.mat.toBlocks₂₁`. Use `set d := γ.mat.toBlocks₂₂`.
+
+Establish `e1 : (cx c)ᵀ * cx a - (cx a)ᵀ * cx c = 0`. Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, h1, sub_self]`. Establish `e2 : (cx d)ᵀ * cx b - (cx b)ᵀ * cx d = 0`. Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, h2, sub_self]`. Establish `e3 : (cx d)ᵀ * cx a - (cx b)ᵀ * cx c = 1`.
+
+Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, ← cx_sub, h3, cx_one]`. Establish `e4 : (cx a)ᵀ * cx d - (cx c)ᵀ * cx b = 1`. Rewrite using `[← cx_transpose, ← cx_transpose, ← cx_mul, ← cx_mul, ← cx_sub, h4, cx_one]`. Establish `hid : (Y * (cx c)ᵀ + (cx d)ᵀ) * (cx a * X + cx b) - (Y * (cx a)ᵀ + (cx b)ᵀ) * (cx c * X + cx d) = Y * ((cx c)ᵀ * cx a - (cx a)ᵀ * cx c) * X - Y * ((cx a)ᵀ * cx d - (cx c)ᵀ * cx b) + ((cx d)ᵀ * cx a - (cx b)ᵀ * cx c) * X + ((cx d)ᵀ * cx b - (cx b)ᵀ * cx d)` using `by noncomm_ring`. Rewrite using `[hid, e1, e2, e3, e4]`.
+
+Use `noncomm_ring`.
+-/
 private theorem key {g : ℕ} (γ : Sp g) (X Y : Matrix (Fin g) (Fin g) ℂ) :
     (Y * (cx γ.mat.toBlocks₂₁)ᵀ + (cx γ.mat.toBlocks₂₂)ᵀ) *
         (cx γ.mat.toBlocks₁₁ * X + cx γ.mat.toBlocks₁₂) -
@@ -70,6 +106,25 @@ private theorem key {g : ℕ} (γ : Sp g) (X Y : Matrix (Fin g) (Fin g) ℂ) :
   rw [hid, e1, e2, e3, e4]
   noncomm_ring
 
+/- English proof (translation)
+Introduce `g γ T hT hD`. Establish `hdet : IsUnit (den γ T).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hD`. Use `set D := den γ T with hDdef`. Use `set A := cx γ.mat.toBlocks₁₁ * T + cx γ.mat.toBlocks₁₂ with hAdef`. Establish `hm : moeb γ T = A * D⁻¹` using `rfl`.
+
+Establish `hDd : D = cx γ.mat.toBlocks₂₁ * T + cx γ.mat.toBlocks₂₂` using `rfl`. Establish `hTt : Tᵀ = T` using `hT`. Establish `hDt : Dᵀ = Tᵀ * (cx γ.mat.toBlocks₂₁)ᵀ + (cx γ.mat.toBlocks₂₂)ᵀ`. Rewrite using `[hDd, transpose_add, transpose_mul]`. Establish `hAt : Aᵀ = Tᵀ * (cx γ.mat.toBlocks₁₁)ᵀ + (cx γ.mat.toBlocks₁₂)ᵀ`.
+
+Rewrite using `[hAdef, transpose_add, transpose_mul]`. Establish `hDh : Dᴴ = Tᴴ * (cx γ.mat.toBlocks₂₁)ᵀ + (cx γ.mat.toBlocks₂₂)ᵀ`. Rewrite using `[hDd, conjTranspose_add, conjTranspose_mul, cx_conjTranspose, cx_conjTranspose]`. Establish `hAh : Aᴴ = Tᴴ * (cx γ.mat.toBlocks₁₁)ᵀ + (cx γ.mat.toBlocks₁₂)ᵀ`. Rewrite using `[hAdef, conjTranspose_add, conjTranspose_mul, cx_conjTranspose, cx_conjTranspose]`.
+
+Establish `kT : Dᵀ * A - Aᵀ * D = 0`. Rewrite using `[hDt, hAt, hDd, hAdef, key γ T Tᵀ, hTt, sub_self]`. Establish `kH : Dᴴ * A - Aᴴ * D = T - Tᴴ`. Rewrite using `[hDh, hAh, hDd, hAdef, key γ T Tᴴ]`. Establish `hDi : D * D⁻¹ = 1` using `mul_nonsing_inv D hdet`.
+
+Establish `hsym : (A * D⁻¹)ᵀ = A * D⁻¹`. Establish `h1 : (D⁻¹)ᵀ * Dᵀ = 1` using `by rw [← transpose_mul, hDi, transpose_one]`. Establish `h2 : Dᵀ * A = Aᵀ * D` using `sub_eq_zero.mp kT`. Combine the equalities or inequalities in the displayed calculation. Establish `hIm : ∀ M : Matrix (Fin g) (Fin g) ℂ, M - M.map star = (2 * Complex.I) • M.map (fun t => (t.im : ℂ))`.
+
+Introduce `M`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`. Establish `hmapT : T.map star = Tᴴ`.
+
+Rewrite using `[conjTranspose, hTt]`. Establish `hmapM : (A * D⁻¹).map star = (A * D⁻¹)ᴴ`. Rewrite using `[conjTranspose, hsym]`. Establish `hDh1 : (D⁻¹)ᴴ * Dᴴ = 1` using `by rw [← conjTranspose_mul, hDi, conjTranspose_one]`. Establish `main : A * D⁻¹ - (A * D⁻¹)ᴴ = (D⁻¹)ᴴ * (T - Tᴴ) * D⁻¹`.
+
+Rewrite using `[← kH]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDh1, hDi, Matrix.one_mul, Matrix.mul_one, conjTranspose_mul]`. Use `_ = (D⁻¹)ᴴ * (Dᴴ * A - Aᴴ * D) * D⁻¹ := by`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`.
+
+Establish `h2I : (2 * Complex.I) ≠ 0` using `by simp [Complex.I_ne_zero]`. Rewrite using `[hm]`. Apply `smul_right_injective _ h2I` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← hIm, hmapM, main, ← hmapT, hIm, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem im_moeb : ∀ {g : ℕ} (γ : Sp g) (T : Matrix (Fin g) (Fin g) ℂ), T.IsSymm →
     IsUnit (den γ T) → (moeb γ T).map (fun t => (t.im : ℂ)) =
       ((den γ T)⁻¹)ᴴ * T.map (fun t => (t.im : ℂ)) * (den γ T)⁻¹ := by

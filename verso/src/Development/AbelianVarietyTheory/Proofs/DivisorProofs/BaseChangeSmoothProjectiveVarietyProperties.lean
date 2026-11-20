@@ -26,6 +26,11 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory.BaseChangeVariety
 
+/- English proof (translation)
+Introduce `k E _ _ _ Y X p q π D _ H hP _`. Establish `hs : SmoothOfRelativeDimension D q` using `(smoothOfRelativeDimension_isStableUnderBaseChange D).of_isPullback H ‹_›`. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth D p`. Establish `: Smooth q` using `SmoothOfRelativeDimension.smooth D q`. Establish `hI : IsIntegral X` using `GlobalTheory.isIntegral_of_isPullback_of_smooth H`.
+
+Establish `hN : IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian q`. Conclude with `⟨hI, hN, hs, GlobalTheory.PosBaseChange.isProjOver_of_isPullback H hP, GlobalTheory.PosBaseChange.surjective_proj H⟩`.
+-/
 theorem baseChange_props : ∀ (k E : Type) [Field k] [Field E] [Algebra k E] (Y X : Scheme.{0}) (p : Y ⟶ Sp k) (q : X ⟶ Sp E) (π : X ⟶ Y) (D : ℕ) [SmoothOfRelativeDimension D p], IsPullback π q p (spMap (algebraMap k E)) → IsProjOver p → GeometricallyConnected p → IsIntegral X ∧ IsLocallyNoetherian X ∧ SmoothOfRelativeDimension D q ∧ IsProjOver q ∧ Function.Surjective π := by
   intro k E _ _ _ Y X p q π D _ H hP _
   have hs : SmoothOfRelativeDimension D q :=

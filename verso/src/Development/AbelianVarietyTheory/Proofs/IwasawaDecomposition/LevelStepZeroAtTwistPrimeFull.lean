@@ -8,6 +8,11 @@ section Loc
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use extensionality with `x`. Unfold `LocE.parL`. Rewrite using `[GlobalTheory.CongLevel.mem_sclLat, GlobalTheory.GO.ChRoot.mem_stdAt']`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by omega)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem parL_self (q kj n c : ℕ) (h : n ≤ kj) : LocE.parL P q kj n c = stdAt E (n + c) P := by
   ext x
   unfold LocE.parL
@@ -16,11 +21,19 @@ theorem parL_self (q kj n c : ℕ) (h : n ≤ kj) : LocE.parL P q kj n c = stdAt
   rw [if_neg (by omega)]
   simp
 
+/- English proof (translation)
+The claim follows from `Submodule.ext fun _ => GlobalTheory.GO.ChRoot.mem_lamY_zero`.
+-/
 theorem lamY_zero (q n c : ℕ) : LocE.lamY P q n c 0 = stdAt E (n + c) P :=
   Submodule.ext fun _ => GlobalTheory.GO.ChRoot.mem_lamY_zero
 
 omit [StarRing E] in
 
+/- English proof (translation)
+Unfold `LocE.lamQB`. Use `haveI : IsEmpty (Fin (n - kj)) := ⟨fun i => by have := i.2; omega⟩`. Establish `h1 : redP P (1 : E) = 1` using `by simpa using reduction_coe P 1`. Rewrite using `[Matrix.det_isEmpty]`. Unfold `LocE.unitV`.
+
+Rewrite using `[dif_pos (by rw [h1]; exact isUnit_one)]`. Establish `: ∀ hu : IsUnit (redP P (1 : E)), hu.unit = 1` using `fun hu => Units.ext (by simp [h1])`. Rewrite using `[this, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem lamQB_empty {K : Type} [Field K] (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (kj n : ℕ) (hn : n ≤ kj) {N : ℕ}
     (h : HomE E N N) : LocE.lamQB ξ kj n h = 1 := by
   unfold LocE.lamQB
@@ -35,6 +48,19 @@ theorem lamQB_empty {K : Type} [Field K] (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ
 
 end Loc
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst P hP hc`. Establish `hN : R.N 0 ≤ R.k + 0` using `by rw [Ranks.N_zero]; omega`. Establish `hJ : Jat (Pr` using `Pr) (R := R) cst.sharp 0 P.1 = stabL X.E _ (stdAt X.E (R.N 0 + cOf R 0) P.1) := by`. Unfold `Jat`. Rewrite using `[if_neg hP]`.
+
+Unfold `LocE.JQ`. Rewrite using `[parL_self _ _ _ _ hN, inf_idem]`. Establish `e : ∀ r : AutY X R 0, (MulAut.conj (1 : AutY X R 0)⁻¹).toMonoidHom r = r`. Introduce `r`. Simplify using the standard rewrite rules.
+
+Prove the components needed by the constructor for the conclusion. Unfold `GrpQ`. Use `symm`. Rewrite using `[eq_top_iff]`. Introduce `g _`.
+
+Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨GlobalTheory.CongLevel.extE _ g.1, ⟨GlobalTheory.CongLevel.extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ g.1, ?_⟩, GlobalTheory.CongLevel.extE_inX _ g.1⟩` and prove the remaining obligations. Use `show (MulAut.conj (1 : AutY X R 0)⁻¹).toMonoidHom (GlobalTheory.CongLevel.extE (cOf R 0) g.1) ∈ Jat (Pr := Pr) cst.sharp 0 P.1`. Rewrite using `[e, hJ, ← lamY_zero (qOf P.1)]`. Conclude with `GlobalTheory.CongLevel.extE_stab _ _ _ _ _ g.2`.
+
+Introduce `g r hr _`. Establish `h2 : (MulAut.conj (1 : AutY X R 0)⁻¹).toMonoidHom r ∈ Jat (Pr` using `Pr) cst.sharp 0 P.1 := hr.2`. Rewrite `h2` using `[e, hJ]`. Establish `hint : IntAt P.1 (1 * Loc.n1Arg r)` using `GlobalTheory.GO.ChRoot.intAt_n1Arg 1 r fun x hx => by rw [one_smul]; exact (h2 x).2 hx`. Rewrite `hint` using `[one_mul]`.
+
+Unfold `chiInv lamRow`. Rewrite using `[if_neg hP, hc.psi_int P _ hint, lamQB_empty _ _ _ hN]`. Simplify using the standard rewrite rules.
+-/
 theorem zero_level : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs → cst.Ok → GrpQ (R := R) sel mu cst 0 P 1 ⟨⊤, 1⟩ ∧ ChrQ Ch sel mu cst 0 P 1 ⟨⊤, 1⟩ := by
   intro X Pr R Ch sel S mu cst P hP hc
   have hN : R.N 0 ≤ R.k + 0 := by rw [Ranks.N_zero]; omega

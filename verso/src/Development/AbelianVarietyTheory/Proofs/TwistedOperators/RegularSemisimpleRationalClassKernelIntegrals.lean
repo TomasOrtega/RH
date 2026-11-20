@@ -24,6 +24,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Rewrite using `[show GQ V = (rat V).range from (range_ratEmb ..).symm]`. Conclude with `⟨g, rfl⟩`.
+-/
 theorem rat_mem (g : GF V) : rat V g ∈ GQ V := by
   rw [show GQ V = (rat V).range from (range_ratEmb ..).symm]; exact ⟨g, rfl⟩
 
@@ -39,10 +42,18 @@ def classEquiv (γ : GF V) : {δ : GF V | IsConj γ δ} ≃ ratClass (GQ V) (rat
       refine ⟨⟨c⁻¹ * γ * c, isConj_iff.2 ⟨c⁻¹, by group⟩⟩, Subtype.ext ?_⟩
       simp only [map_mul, map_inv]⟩
 
+/- English proof (translation)
+The claim follows from `((classEquiv γ).tsum_eq fun δ : ratClass (GQ V) (rat V γ) => f (x⁻¹ * δ * x)).symm`.
+-/
 theorem classKernel_eq (γ : GF V) (f : GA D V → ℂ) (x : GA D V) :
     classKernel (GQ V) (rat V γ) f x = ∑' δ : {δ : GF V | IsConj γ δ}, f (x⁻¹ * rat V δ * x) :=
   ((classEquiv γ).tsum_eq fun δ : ratClass (GQ V) (rat V γ) => f (x⁻¹ * δ * x)).symm
 
+/- English proof (translation)
+Establish `hmem : ∀ δ : ratClass (GQ V) γ, (δ : GA D V) ∈ GQ V` using `fun ⟨δ, k, hk, e⟩ => e ▸ mul_mem (mul_mem (inv_mem hk) hγ) hk`. Set `ι : ratClass (GQ V) γ → GQ V` to `fun δ => ⟨δ, hmem δ⟩`. Establish `hι : Function.Injective ι` using `fun a b e => Subtype.ext (congrArg (fun z : GQ V => (z : GA D V)) e)`. Apply `summable_of_hasFiniteSupport` to reduce the goal to its premises. Use `((GlobalTheory.AutomorphicL2Unitary.finite_support_kernel (Γ := GQ V) hf x x).preimage hι.injOn).subset ?_` and prove the remaining obligations.
+
+Introduce `δ hδ`. Conclude with `hδ`.
+-/
 theorem summable_class {f : GA D V → ℂ} (hf : HasCompactSupport f) {γ : GA D V} (hγ : γ ∈ GQ V) (x : GA D V) :
     Summable fun δ : ratClass (GQ V) γ => f (x⁻¹ * δ * x) := by
   have hmem : ∀ δ : ratClass (GQ V) γ, (δ : GA D V) ∈ GQ V := fun ⟨δ, k, hk, e⟩ => e ▸ mul_mem (mul_mem (inv_mem hk) hγ) hk
@@ -53,6 +64,11 @@ theorem summable_class {f : GA D V → ℂ} (hf : HasCompactSupport f) {γ : GA 
   intro δ hδ
   exact hδ
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.AutomorphicL2Unitary.memLp_quotMeasure_iff h𝓕 (F := descend (GQ V) φ) (p := 1))` as an intermediate fact. Rewrite `this` using `[hφ.lift_descend, memLp_one_iff_integrable, memLp_one_iff_integrable]`. Conclude with `this.symm`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕]`.
+
+Conclude with `congrArg (fun F => ∫ x in 𝓕, F x ∂μ) hφ.lift_descend.symm`.
+-/
 theorem fd_iff {μ : Measure (GA D V)} [μ.IsHaarMeasure] {𝓕 : Set (GA D V)} (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ)
     {φ : GA D V → ℂ} (hφ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) φ) :
     (IntegrableOn φ 𝓕 μ ↔ Integrable (descend (GQ V) φ) (autMeasure V μ)) ∧
@@ -64,6 +80,13 @@ theorem fd_iff {μ : Measure (GA D V)} [μ.IsHaarMeasure] {𝓕 : Set (GA D V)} 
   · rw [GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h𝓕]
     exact congrArg (fun F => ∫ x in 𝓕, F x ∂μ) hφ.lift_descend.symm
 
+/- English proof (translation)
+Introduce `D V γ hγ`. Use `⟨GlobalTheory.regSS_conjClass_isSSClass γ hγ, fun f => ⟨classKernel_eq γ f, fun _ hcs μ _ c => ?_⟩⟩` and prove the remaining obligations. Establish `hinv : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) (classKernel (GQ V) (rat V γ) f)` using `fun δ hδ x => classKernel_mul _ _ hδ x`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Establish `h𝓕` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom (GQ V) μ`. Take `⟨-, hi, hv⟩` from `H _ h𝓕`. Take `⟨e1, e2⟩` from `fd_iff h𝓕 hinv`. Conclude with `⟨e1.1 hi, e2 ▸ hv⟩`. Introduce and unpack `⟨hi, hv⟩ 𝓕 h𝓕`.
+
+Take `⟨e1, e2⟩` from `fd_iff h𝓕 hinv`. Conclude with `⟨summable_class hcs (rat_mem γ), e1.2 hi, e2.trans hv⟩`.
+-/
 theorem regClass : ∀ (D : D7) (V : HSp D) (γ : GF V), IsRegSS γ.1.1 → IsSSClass {δ | IsConj γ δ} ∧
     ∀ (f : GA D V → ℂ), (∀ x, GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f x =
       ∑' δ : {δ : GF V | IsConj γ δ}, f (x⁻¹ * rat V δ * x)) ∧
@@ -85,6 +108,9 @@ theorem regClass : ∀ (D : D7) (V : HSp D) (γ : GF V), IsRegSS γ.1.1 → IsSS
     obtain ⟨e1, e2⟩ := fd_iff h𝓕 hinv
     exact ⟨summable_class hcs (rat_mem γ), e1.2 hi, e2.trans hv⟩
 
+/- English proof (translation)
+The claim follows from `regClass`.
+-/
 theorem main : ∀ (D : D7) (V : HSp D) (γ : GF V), IsRegSS γ.1.1 → IsSSClass {δ | IsConj γ δ} ∧ ∀ (f : GA D V → ℂ), (∀ x, GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f x = ∑' δ : {δ : GF V | IsConj γ δ}, f (x⁻¹ * rat V δ * x)) ∧ (Continuous f → HasCompactSupport f → ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure] (c : ℂ), ((∀ 𝓕, IsFundamentalDomain (GQ V) 𝓕 μ → GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.HasClassInt (GQ V) μ 𝓕 (rat V γ) f c) ↔ Integrable (descend (GQ V) (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f)) (autMeasure V μ) ∧ ∫ q, descend (GQ V) (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f) q ∂autMeasure V μ = c)) := regClass
 
 end GlobalTheory.RegClass

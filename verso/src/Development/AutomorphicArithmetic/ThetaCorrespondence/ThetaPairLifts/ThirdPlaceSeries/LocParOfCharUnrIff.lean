@@ -18,6 +18,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 section Char
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsTotallyComplex E]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
+/- English proof (translation)
+Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Rewrite using `[_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity, H.one, Test.unr_lpOfChar_iff ha (ParLaws.isSmoothChar_loc χ w)]`. Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Rewrite using `[← ord_eq_zero_iff, SphCompletion.ord_completion, neg_eq_zero, IsUnitAt]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hl`. Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`. Introduce `hv`. Rewrite using `[hv, WithZero.log_one]`.
+-/
 theorem locParT_ofChar_unr_iff_unrAt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) (h : IsPlaceOver A w) :
     (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ) h).unr ↔ χ.UnrAt w := by
   first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h
@@ -30,6 +35,17 @@ theorem locParT_ofChar_unr_iff_unrAt (hL : _root_.UpperTheory.Zero.LLC.RecTExist
     rw [← WithZero.exp_log h0, hl, WithZero.exp_zero]
   · intro hv
     rw [hv, WithZero.log_one]
+/- English proof (translation)
+Establish `e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w)`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ ord (w.adicCompletion E) x)⁻¹)`.
+
+Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, SphCompletion.ord_completion]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`.
+
+Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Establish `e2 : _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ) h = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Rewrite using `[_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity, H.one]`.
+
+Establish `: ∀ (ξ : (w.adicCompletion E)ˣ →* ℂˣ) (hξ : WeilDeligne.IsSmooth (ξ.comp a)), ξ = SmGL.unrChar (w.adicCompletion E) (χ.val w) → WD.lpOfChar h (ξ.comp a) hξ = WD.mk (WDRep.diag h fun _ : Fin 1 => (χ.val w)⁻¹)`. Introduce and unpack `ξ hξ rfl`. Conclude with `Test.lpOfChar_unrChar ha _ _`. Conclude with `this _ _ e`. Rewrite using `[e2, WD.frobEig_diag]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem frobEig_locParT_ofChar_of_unrAt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (χ : HChar E) (h : IsPlaceOver A w) (hu : χ.UnrAt w) :
     (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ) h).frobEig = {(((χ.val w)⁻¹ : ℂˣ) : ℂ)} := by
   have e : χ.loc w = SmGL.unrChar (w.adicCompletion E) (χ.val w) := by
@@ -57,6 +73,21 @@ theorem frobEig_locParT_ofChar_of_unrAt (hL : _root_.UpperTheory.Zero.LLC.RecTEx
   rw [e2, WD.frobEig_diag]
   simp
 end Char
+/- English proof (translation)
+Introduce `_ hL D P π w ξ h`. Use `haveI := host_isCMField D.host`. Use `set χ' := (CGu.equivChar D.host.E (P.cg.e 1 π)).1 with hχ'`. Use `set χ := (P.chr.e1 π).1 with hχ`. Establish `hloc : ∀ v, P.T.e v (D.naut.locG π v) = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ') (D.nd.plOm.2 v)` using `fun v => by`.
+
+Rewrite using `[P.cg.loc, hχ', CGu.ofChar_equivChar]`. Both sides reduce to the same expression. Establish `unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v` using `fun v => by`. Rewrite using `[P.T.unr, hloc v]`. Conclude with `_root_.GlobalTheory.RankOneComp.locParT_ofChar_unr_iff_unrAt hL χ' _`.
+
+Establish `hchar : χ' = χ`. Rewrite using `[← mul_inv_eq_one]`. Apply `GlobalTheory.HeckeSplitRow.eq_one_of_split D.host` to reduce the goal to its premises. Use `filter_upwards [D.naut.locG_unr_ae π] with v hv _`. Establish `u1` using `(P.chr.unr_iff π v).1 hv`.
+
+Establish `u2` using `(unr' v).1 hv`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.loc_mul, HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`. Establish `hf` using `P.chr.frob π v u1`. Establish `hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)}`.
+
+Rewrite using `[P.T.frobEig _ _ hv, hloc v]`. Conclude with `_root_.GlobalTheory.RankOneComp.frobEig_locParT_ofChar_of_unrAt hL χ' _ u2`. Rewrite `hf` using `[hf', Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[HChar.val_mul, HChar.val_inv, hf, mul_inv_cancel]`. Establish `hcomp : IsComp χ w (χ.loc w)` using `⟨ParLaws.isSmoothChar_loc χ w, fun x => rfl⟩`.
+
+Take `⟨ξ₀, -, huniq, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E χ w`. Establish `hξ : ξ = χ.loc w` using `(huniq _ h).trans (huniq _ hcomp).symm`. Substitute `hξ` using the available equality. Rewrite using `[hloc, _root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity, _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep]`. Rewrite using `[hchar]`.
+
+Both sides reduce to the same expression.
+-/
 theorem e_locG_eq_rcAt_ofDet_of_isComp : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D),
     ∀ (π : D.naut.CG 1) (w : PlE D.host) (ξ : (w.adicCompletion D.host.E)ˣ →* ℂˣ) (h : IsComp (P.chr.e1 π).1 w ξ),
     P.T.e w (D.naut.locG π w) = _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D w 1 (Irr.ofDet 1 ξ h.1) := by

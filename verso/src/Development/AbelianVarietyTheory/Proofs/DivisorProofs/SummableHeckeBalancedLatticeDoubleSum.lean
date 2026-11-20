@@ -14,11 +14,22 @@ variable {F : Type} [Field F] [NumberField F]
 
 def absSum (x : F) : ℝ := ∑ τ : Emb F, |τ x|
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem absSum_nonneg (x : F) : 0 ≤ absSum x := Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+The claim follows from `Finset.single_le_sum (f := fun τ : Emb F => |τ x|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ)`.
+-/
 theorem abs_le_absSum (x : F) (τ : Emb F) : |τ x| ≤ absSum x :=
   Finset.single_le_sum (f := fun τ : Emb F => |τ x|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Establish `h1 : 0 ≤ ∑ j ∈ s, a j` using `Finset.sum_nonneg fun j _ => h j`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ih (by linarith [h i] : (0:ℝ) ≤ 1 + a i), mul_nonneg (h i) h1]`.
+-/
 theorem one_add_sum_le_prod {ι : Type} (s : Finset ι) (a : ι → ℝ) (h : ∀ i, 0 ≤ a i) :
     1 + ∑ i ∈ s, a i ≤ ∏ i ∈ s, (1 + a i) := by
   classical
@@ -29,6 +40,9 @@ theorem one_add_sum_le_prod {ι : Type} (s : Finset ι) (a : ι → ℝ) (h : �
     have h1 : 0 ≤ ∑ j ∈ s, a j := Finset.sum_nonneg fun j _ => h j
     nlinarith [mul_le_mul_of_nonneg_left ih (by linarith [h i] : (0:ℝ) ≤ 1 + a i), mul_nonneg (h i) h1]
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_pow, div_pow, pow_add s]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bound_eq (K₁ s x q : ℝ) (a b : ℕ) (hs : s ≠ 0) (hx : x ≠ 0) (hq : q ≠ 0) :
     (K₁ * s) ^ a / (x * (s / q)) ^ (a + b) = K₁ ^ a * q ^ (a + b) * ((s ^ b)⁻¹ * (x ^ (a + b))⁻¹) := by
   rw [mul_pow, mul_pow, div_pow, pow_add s]
@@ -38,6 +52,9 @@ variable [IsTotallyReal F]
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_apply, ← InfinitePlace.norm_embedding_of_isReal (IsTotallyReal.isReal w) x, Real.norm_eq_abs]`. Conclude with `abs_le_absSum x _`.
+-/
 theorem norm_mixedEmbedding_le (x : F) : ‖mixedEmbedding F x‖ ≤ absSum x := by
   rw [mixedEmbedding.norm_eq_sup'_normAtPlace]
   refine Finset.sup'_le _ _ fun w _ => ?_
@@ -46,6 +63,9 @@ theorem norm_mixedEmbedding_le (x : F) : ‖mixedEmbedding F x‖ ≤ absSum x :
   exact abs_le_absSum x _
 
 open scoped Classical in
+/- English proof (translation)
+Establish `h : 0 < ‖mixedEmbedding F x‖` using `norm_pos_iff.2 fun h => hx ((mixedEmbedding F).injective (h.trans (map_zero _).symm))`. Conclude with `h.trans_le (norm_mixedEmbedding_le x)`.
+-/
 theorem absSum_pos {x : F} (hx : x ≠ 0) : 0 < absSum x := by
   have h : 0 < ‖mixedEmbedding F x‖ := norm_pos_iff.2 fun h =>
     hx ((mixedEmbedding F).injective (h.trans (map_zero _).symm))
@@ -53,6 +73,13 @@ theorem absSum_pos {x : F} (hx : x ≠ 0) : 0 < absSum x := by
 
 open scoped Classical in
 
+/- English proof (translation)
+Set `L` to `mixedEmbedding.idealLattice F I`. Establish `hL` using `ZLattice.summable_norm_rpow L (-(k : ℝ)) (by`. Rewrite using `[ZLattice.rank ℝ L, mixedEmbedding.finrank F]`. Establish `: (Module.finrank ℚ F : ℝ) < k` using `by exact_mod_cast hk`. Use the proof step `linarith)`.
+
+Set `j : NZ (I : FractionalIdeal (𝓞 F)⁰ F) → L` to `fun x => ⟨mixedEmbedding F x.1, (mixedEmbedding.mem_idealLattice F I).2 ⟨x.1, x.2.1, rfl⟩⟩`. Establish `hj : Function.Injective j` using `fun x y h => Subtype.ext ((mixedEmbedding F).injective (congrArg Subtype.val h))`. Use `(hL.comp_injective hj).of_nonneg_of_le (fun x => inv_nonneg.2 (pow_nonneg (absSum_nonneg _) _)) (fun x => ?_)` and prove the remaining obligations. Establish `hpos : 0 < ‖mixedEmbedding F x.1‖` using `norm_pos_iff.2 fun h => x.2.2 ((mixedEmbedding F).injective (h.trans (map_zero _).symm))`. Use `show ((absSum x.1) ^ k)⁻¹ ≤ ‖mixedEmbedding F x.1‖ ^ (-(k : ℝ))`.
+
+Rewrite using `[Real.rpow_neg (norm_nonneg _), Real.rpow_natCast]`. Conclude with `inv_anti₀ (pow_pos hpos k) (pow_le_pow_left₀ hpos.le (norm_mixedEmbedding_le x.1) k)`.
+-/
 theorem summable_absSum_inv_pow (I : Frac F) {k : ℕ} (hk : Module.finrank ℚ F < k) :
     Summable (fun x : NZ (I : FractionalIdeal (𝓞 F)⁰ F) => ((absSum x.1) ^ k)⁻¹) := by
   let L := mixedEmbedding.idealLattice F I
@@ -72,11 +99,29 @@ theorem summable_absSum_inv_pow (I : Frac F) {k : ℕ} (hk : Module.finrank ℚ 
   rw [Real.rpow_neg (norm_nonneg _), Real.rpow_natCast]
   exact inv_anti₀ (pow_pos hpos k) (pow_le_pow_left₀ hpos.le (norm_mixedEmbedding_le x.1) k)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun z : ℂ => ‖z‖) (prod_emb x)`. Simplify using `only [norm_prod, Complex.norm_real, Real.norm_eq_abs] at h`. Rewrite using `[h, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`.
+-/
 theorem prod_abs_emb (x : F) : ∏ τ : Emb F, |τ x| = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   have h := congrArg (fun z : ℂ => ‖z‖) (prod_emb x)
   simp only [norm_prod, Complex.norm_real, Real.norm_eq_abs] at h
   rw [h, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `I.isFractional`. Establish `hd0 : ((d : 𝓞 F) : F) ≠ 0` using `by exact_mod_cast nonZeroDivisors.ne_zero hd`. Use `set D := |((Algebra.norm ℚ ((d : 𝓞 F) : F) : ℚ) : ℝ)| with hD`. Establish `hDpos : 0 < D` using `by simp [hD, Algebra.norm_eq_zero_iff, hd0]`. Establish `hn : 1 ≤ Fintype.card (Emb F)`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `Fintype.card_pos_iff.2 ⟨InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w)⟩`. Use `⟨min 1 D⁻¹, lt_min one_pos (inv_pos.2 hDpos), fun x hx hx0 => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `h x hx`. Establish `hg' : ((g : 𝓞 F) : F) = ((d : 𝓞 F) : F) * x`.
+
+Rewrite `*` using `[← Algebra.smul_def]`. Simplify using `using hg`. Establish `hg0 : g ≠ 0`. Introduce `h0`. Rewrite `hg'` using `[h0]`.
+
+Simplify using `at hg'`. Conclude with `hg'.elim (fun h => hd0 (by exact_mod_cast h)) hx0`. Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℤ g : ℤ) : ℝ)|`. Establish `: Algebra.norm ℤ g ≠ 0` using `Algebra.norm_ne_zero_iff.2 hg0`. Conclude with `Int.one_le_abs this` after adjusting the coercions.
+
+Establish `e1 : ((Algebra.norm ℤ g : ℤ) : ℚ) = Algebra.norm ℚ ((d : 𝓞 F) : F) * Algebra.norm ℚ x`. Rewrite using `[Algebra.coe_norm_int, hg', map_mul]`. Establish `e2 : ((Algebra.norm ℤ g : ℤ) : ℝ) = ((Algebra.norm ℚ ((d : 𝓞 F) : F) : ℚ) : ℝ) * ((Algebra.norm ℚ x : ℚ) : ℝ)`. Conclude with `congrArg (fun q : ℚ => (q : ℝ)) e1` after adjusting the coercions. Rewrite `h1` using `[e2, abs_mul, ← hD, ← prod_abs_emb]`.
+
+Establish `hle : ∏ τ : Emb F, |τ x| ≤ absSum x ^ Fintype.card (Emb F)`. Combine the equalities or inequalities in the displayed calculation. Establish `hS0` using `absSum_nonneg x`. Break down `le_or_gt 1 (absSum x) with hS | hS` into its components or cases. Conclude with `(min_le_left _ _).trans hS`.
+
+Establish `hpow : absSum x ^ Fintype.card (Emb F) ≤ absSum x` using `pow_le_of_le_one hS0 hS.le (by omega)`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Establish `: 1 ≤ D * absSum x` using `h1.trans (mul_le_mul_of_nonneg_left (hle.trans hpow) hDpos.le)`. Rewrite using `[inv_le_iff_one_le_mul₀ hDpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_absSum_lower (I : FractionalIdeal (𝓞 F)⁰ F) :
     ∃ β : ℝ, 0 < β ∧ ∀ x ∈ I, x ≠ 0 → β ≤ absSum x := by
   obtain ⟨d, hd, h⟩ := I.isFractional
@@ -119,6 +164,47 @@ end GlobalTheory.HeckeTwo.LatSum
 
 open GlobalTheory.HeckeTwo.LatSum in
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔞 𝔟 C₀ m`. Use `set n := Fintype.card (Emb F) with hn_def`. Use `set f := Module.finrank ℚ F with hf_def`. Use `⟨m * n + (f + 1), fun ε hbal => ?_⟩` and prove the remaining obligations. Use `set N := m * n + (f + 1) with hN`.
+
+Break down `isEmpty_or_nonempty (Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F))) with hE | ⟨⟨c₀⟩⟩` into its components or cases. Conclude with `summable_empty`. Establish `hn : 1 ≤ n`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `Fintype.card_pos_iff.2 ⟨InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w)⟩`.
+
+Take `⟨τ₀⟩ : Nonempty (Emb F)` from `Fintype.card_pos_iff.1 hn`. Take `⟨β, hβ, hβS⟩` from `exists_absSum_lower (𝔟 : FractionalIdeal (𝓞 F)⁰ F)`. Set `bp : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) → F` to `fun c => ((ε c : 𝓞 F) : F) * c.out.1`. Establish `hunit0 : ∀ u : (𝓞 F)ˣ, ((u : 𝓞 F) : F) ≠ 0` using `fun u h => u.ne_zero (by exact_mod_cast h)`. Establish `hbp_mem : ∀ c, bp c ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)` using `fun c => by`.
+
+Use `Submodule.smul_mem (𝔟 : FractionalIdeal (𝓞 F)⁰ F).coeToSubmodule (ε c : 𝓞 F) c.out.2.1` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Establish `hbp0 : ∀ c, bp c ≠ 0` using `fun c => mul_ne_zero (hunit0 _) c.out.2.2`. Establish `hC₀ : 1 ≤ C₀`. Establish `h` using `hbal c₀ τ₀ τ₀`.
+
+Establish `hpos : 0 < |τ₀ (bp c₀)|` using `abs_pos.2 ((map_ne_zero τ₀).2 (hbp0 c₀))`. Conclude with `le_of_mul_le_mul_right (by rw [one_mul]; exact h) hpos`. Establish `hq : 0 < (n : ℝ) * C₀` using `mul_pos (by exact_mod_cast hn) (by linarith)`. Establish `hlow : ∀ c (τ : Emb F), absSum (bp c) / (n * C₀) ≤ |τ (bp c)|`. Introduce `c τ`.
+
+Rewrite using `[div_le_iff₀ hq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `g : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) → ℝ` to `fun c => ((absSum (bp c)) ^ (f + 1))⁻¹`.
+
+Set `h : NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) → ℝ` to `fun y => ((absSum y.1) ^ N)⁻¹`. Establish `hg : Summable g`. Use `(summable_absSum_inv_pow 𝔟 (k := f + 1) (by omega)).comp_injective (i := fun c => (⟨bp c, hbp_mem c, hbp0 c⟩ : NZ (𝔟 : FractionalIdeal (𝓞 F)⁰ F))) ?_` and prove the remaining obligations. Introduce `c c' hcc`. Establish `e : bp c = bp c'` using `congrArg Subtype.val hcc`.
+
+Use `Quotient.out_equiv_out.1 ⟨(ε c')⁻¹ * ε c, ?_⟩` and prove the remaining obligations. Establish `h1 : (((ε c')⁻¹ : (𝓞 F)ˣ) : 𝓞 F) * ((ε c' : 𝓞 F) : F) = 1` using `unit_inv_mul (ε c')`. Simplify using `only [bp] at e`. Use `push_cast`. Take the linear combination `(-(c'.out.1) * h1) - ((((ε c')⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * e`.
+
+Establish `hh : Summable h` using `summable_absSum_inv_pow 𝔞 (k := N) (by omega)`. Set `e : (Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F))) × NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F) → (Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F))) × NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)` to `fun p => (p.1, ⟨((((ε p.1)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * p.2.1, by`. Use `Submodule.smul_mem (𝔞 : FractionalIdeal (𝓞 F)⁰ F).coeToSubmodule (((ε p.1)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) p.2.2.1` as an intermediate fact. Rewrite using `[Algebra.smul_def] at this, mul_ne_zero (hunit0 _) p.2.2.2⟩)` and apply the resulting hypothesis. Establish `he : Function.Injective e`.
+
+Introduce and unpack `⟨c, ν⟩ ⟨c', ν'⟩ hcc`. Establish `h1 : c = c'` using `congrArg Prod.fst hcc`. Substitute `h1` using the available equality. Establish `h2` using `congrArg (fun p => (p.2 : NZ (𝔞 : FractionalIdeal (𝓞 F)⁰ F)).1) hcc`. Simplify using `only [e] at h2`.
+
+Conclude with `Prod.ext rfl (Subtype.ext (mul_left_cancel₀ (hunit0 _) h2))`. Establish `hV` using `(hg.mul_of_nonneg hh (fun c => inv_nonneg.2 (pow_nonneg (absSum_nonneg _) _)) (fun y => inv_nonneg.2 (pow_nonneg (absSum_nonneg _) _))).comp_injective he`. Use `set K₁ : ℝ := 1 + n * C₀ / β ^ 2 with hK₁`. Use `(hV.mul_left (K₁ ^ (m * n) * (n * C₀) ^ N)).of_nonneg_of_le (fun p => Finset.prod_nonneg fun τ _ => div_nonneg (pow_nonneg (by positivity) _) (pow_nonneg (by positivity) _)) (fun p => ?_)` and prove the remaining obligations. Take `⟨c, ν⟩` from `p`.
+
+Use `set b' := bp c with hb'`. Use `set ν' := ((((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ν.1 with hν'`. Use `set s := absSum b' with hs`. Use `set x := absSum ν' with hx`. Establish `hsβ : β ≤ s` using `hβS _ (hbp_mem c) (hbp0 c)`.
+
+Establish `hs0 : 0 < s` using `hβ.trans_le hsβ`. Establish `hx0 : 0 < x` using `absSum_pos (mul_ne_zero (hunit0 _) ν.2.2)`. Establish `hid : ∀ τ : Emb F, |τ ν.1 * τ c.out.1| = |τ ν'| * |τ b'|`. Introduce `τ`. Establish `h1 : (((ε c)⁻¹ : (𝓞 F)ˣ) : 𝓞 F) * ((ε c : 𝓞 F) : F) = 1` using `unit_inv_mul (ε c)`.
+
+Rewrite using `[← abs_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Simplify using `only [hν', hb', bp]`. Take the linear combination `(-(ν.1 * c.out.1)) * h1`. Establish `hA : ∀ τ : Emb F, |τ b'| + |τ b'|⁻¹ ≤ K₁ * s`.
+
+Introduce `τ`. Establish `hlo` using `hlow c τ`. Establish `hpos : 0 < s / (n * C₀)` using `div_pos hs0 hq`. Establish `h1 : |τ b'|⁻¹ ≤ n * C₀ / s`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h2 : n * C₀ / s ≤ n * C₀ / β ^ 2 * s`. Rewrite using `[div_le_iff₀ hs0]`. Establish `hβ2 : β ^ 2 ≤ s * s` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : |τ b'| ≤ s` using `abs_le_absSum _ τ`.
+
+Rewrite using `[hK₁]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hnum : ∏ τ : Emb F, (|τ b'| + |τ b'|⁻¹) ^ m ≤ (K₁ * s) ^ (m * n)`. Combine the equalities or inequalities in the displayed calculation. Establish `hden : (x * (s / (n * C₀))) ^ N ≤ ∏ τ : Emb F, (1 + |τ ν.1 * τ c.out.1|) ^ N`.
+
+Rewrite using `[Finset.prod_pow]`. Use `pow_le_pow_left₀ (mul_nonneg hx0.le (div_pos hs0 hq).le) ?_ N` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hid]`. Conclude with `mul_le_mul_of_nonneg_left (hlow c τ) (abs_nonneg _)`.
+
+Use `_ ≤ 1 + ∑ τ : Emb F, |τ ν.1 * τ c.out.1| := by linarith`. Use `_ ≤ _ := one_add_sum_le_prod _ _ fun τ => abs_nonneg _`. Establish `hdpos : 0 < (x * (s / (n * C₀))) ^ N` using `pow_pos (mul_pos hx0 (div_pos hs0 hq)) N`. Use `show ∏ τ : Emb F, (|τ b'| + |τ b'|⁻¹) ^ m / (1 + |τ ν.1 * τ c.out.1|) ^ N ≤ K₁ ^ (m * n) * (n * C₀) ^ N * (((s) ^ (f + 1))⁻¹ * ((x) ^ N)⁻¹)`. Rewrite using `[Finset.prod_div_distrib]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hN]`. Conclude with `bound_eq _ _ _ _ _ _ hs0.ne' hx0.ne' hq.ne'`.
+-/
 theorem GlobalTheory.HeckeTwo.summable_balanced_latSum :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔞 𝔟 : Frac F) (C₀ : ℝ) (m : ℕ), ∃ N : ℕ,
     ∀ ε : Quotient (unitRel (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) → (𝓞 F)ˣ,

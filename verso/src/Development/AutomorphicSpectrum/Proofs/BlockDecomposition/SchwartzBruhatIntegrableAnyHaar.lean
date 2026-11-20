@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Coef.SBInt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M n dx hdx Φ hΦ`. Conclude with `(GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.continuous_integrable σ hCM dx hdx hΦ).2`.
+-/
 theorem integrable_isSchwartzBruhat_tuple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M n : ℕ) (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)), dx.IsAddHaarMeasure → ∀ Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ, GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat Φ → Integrable Φ dx := by
   intro F E _ _ _ _ _ σ hCM M n dx hdx Φ hΦ
   exact (GlobalTheory.CompanionTheory.SiegelND.Integ.Phase.continuous_integrable σ hCM dx hdx hΦ).2

@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbBaseChange
 
+/- English proof (translation)
+Introduce `R R' _ _ f A _ A' _ φ g h hA hg`. Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} g` as an intermediate fact. Conclude with `⟨GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h, MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h.1 hg⟩`.
+-/
 theorem isAbelianScheme_and_relDim_of_isGrpPullback : ∀ {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A'] (φ : A'.left ⟶ A.left) (g : ℕ), IsGrpPullback A' A (spMap f) φ → IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → IsAbelianScheme A' ∧ SmoothOfRelativeDimension g A'.hom := by
   intro R R' _ _ f A _ A' _ φ g h hA hg
   have := smoothOfRelativeDimension_isStableUnderBaseChange.{0} g

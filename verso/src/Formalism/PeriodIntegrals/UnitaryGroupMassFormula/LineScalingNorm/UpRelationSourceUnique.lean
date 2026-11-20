@@ -9,6 +9,9 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.MC.SR
 
 noncomputable section
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Establish `e1` using `h1 i`. Establish `e2` using `h2 i`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem up_relation_source_unique {P : M.Par} {l : ℕ} {a b c : M.Ty P} (h1 : M.Up P l a b) (h2 : M.Up P l c b) : a = c := by
   funext i
   apply Fin.ext
@@ -16,6 +19,9 @@ theorem up_relation_source_unique {P : M.Par} {l : ℕ} {a b c : M.Ty P} (h1 : M
   have e2 := h2 i
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Establish `e1` using `h1 i`. Establish `e2` using `h2 i`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem up_tgt {P : M.Par} {l : ℕ} {a b c : M.Ty P} (h1 : M.Up P l a b) (h2 : M.Up P l a c) : b = c := by
   funext i
   apply Fin.ext
@@ -28,6 +34,9 @@ section line
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `⟨fun p hp => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hE.1 p hp]`. Rewrite using `[ContinuousLinearMap.comp_smul, hE.2]`.
+-/
 theorem line_smul (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (Pr : M.Ty P → (Fin (2 * P.r + P.k + 1) → ℂ) → (Wp →L[ℂ] Wp)) (σ : M.Ty P) (ζ : ℂ) (c : ℂ)
     {E : Wq →L[ℂ] Wp} (hE : E ∈ Line P Bs Pr σ ζ) : c • E ∈ Line P Bs Pr σ ζ := by
@@ -35,6 +44,31 @@ theorem line_smul (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
   · rw [ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hE.1 p hp]
   · rw [ContinuousLinearMap.comp_smul, hE.2]
 
+/- English proof (translation)
+Establish `hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π'` using `hH.1`. Establish `hk : 2 ≤ P.k` using `hH.2.1`. Establish `hζT : P.TT < Complex.normSq ζ` using `hζ`. Take `⟨hOK, hz, hz', hTz, hTz', -, -⟩` from `id hpl`. Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`.
+
+Rewrite using `[hTz, hTz']`. Conclude with `hζT`. Establish `hT` using `Bs.T_pos`. Take `⟨hνfix, hνν, -, -⟩` from `DU.base hz hz' Bs.T_pos Bs.T'_pos Bs.sec hζ'`. Use `set ν := SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ with hνdef`.
+
+Use `set μ := NF.muZ P.k P.r Bs.μsec ζ with hμ`. Establish `hm` using `NFRadRedA.muZ_uwb Bs.sec hζ'`. Establish `hG` using `NFRadRedA.uwb_glev hm`. Establish `hy : inWb P.k P.r (μ *ᵥ Bs.z')` using `Qx8.inWb_mulVec hG hz'`. Establish `hνW : inWb P.k P.r ν` using `by show inWb P.k P.r (SSn.unitH P.k P.r (SSn.prWv P.k P.r Bs.z (μ *ᵥ Bs.z')))`.
+
+Unfold `SSn.unitH`. Conclude with `Qx8.inWb_smul (DU.prWv_inWb hz hy) _`. Establish `hνz : herm (Hpk P.k P.r) ν Bs.z = 0`. Rewrite using `[← hνfix]`. Conclude with `DU.prWv_perp hT hνW`.
+
+Establish `hpos : 0 < PRho.nrmW P.k P.r Bs.z ν`. Unfold `PRho.nrmW`. Rewrite using `[hνfix, hνν]`. Simplify using the standard rewrite rules. Establish `pass : ∀ Fr : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ, Q.IsFrameOf P.k P.r [Bs.z, ν] Fr → Q.IsFrameOf P.k P.r [μ⁻¹ *ᵥ Bs.z, Bs.z'] (fun a => μ⁻¹ *ᵥ Fr a) ∧ ∀ (w : ℂ) (v : Wq), Q.capRep P.k P.r Bs.π Fr w (E v) = E (qdet (Qr.EB Bs.π' (fun a => μ⁻¹ *ᵥ Fr a)) w v)`.
+
+Introduce `Fr hFr`. Take `⟨hFr', hpass⟩` from `PRho.GL.gauge_left_line_holds Wp Wq P Bs hpl hk ζ hζT Fr hFr`. Establish `hgl'` using `(Formalism.FourierDecayAlt.P.frame_general_linear Wq P.k P.r (P.k - 1) Bs.z' Bs.π' (fun a => μ⁻¹ *ᵥ Fr a) ⟨Bs.π'_rep, Bs.π'_cont⟩ (Formalism.FourierDecayAlt.P.Qx8.frame_sub hFr' (by simp))).2`. Use `⟨hFr', fun w v => ?_⟩` and prove the remaining obligations. Rewrite using `[hpass E hE, hgl']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hL`. Take `⟨Fr, hFr⟩` from `Topx1.typ_frame_exists P.k P.r (by omega) Bs.z ν hz hT hνW hνz hνν`. Take `⟨hFr', hp⟩` from `pass Fr hFr`. Establish `hcap : Gauge.GC.CapEig P Bs.π' (fun a => μ⁻¹ *ᵥ Fr a) σ E`.
+
+Introduce `Yc v`. Establish `hEv : Pr σ ν (E v) = E v`. Use `DFunLike.congr_fun hL.2 v` as an intermediate fact. Simplify `this` using `only [ContinuousLinearMap.comp_apply]`. Establish `hr` using `((hPr.2.2 ν hpos).2.2.2 σ (E v)).1 hEv Fr (by rw [hνfix]; exact hFr) (Yc + ((P.k : ℂ) - 2) / 2)`.
+
+Rewrite `hr` using `[hp]`. Establish `e : Yc + ((P.k : ℂ) - 2) / 2 - ((P.k : ℂ) - 2) / 2 = Yc` using `by ring`. Rewrite `hr` using `[e]`. Conclude with `hr`. Conclude with `(Gauge.GC.lie_eigenvalue_holds Wp Wq P Bs X d hH Qs hQ ζ hζT _ hFr' σ E hE).2 hcap`.
+
+Introduce `hEQ`. Use `⟨hE, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Use `show Pr σ ν (E v) = E v`. Use `((hPr.2.2 ν hpos).2.2.2 σ (E v)).2 fun Fr hFr w => ?_` and prove the remaining obligations.
+
+Rewrite `hFr` using `[hνfix]`. Take `⟨hFr', hp⟩` from `pass Fr hFr`. Establish `hcap` using `(Gauge.GC.lie_eigenvalue_holds Wp Wq P Bs X d hH Qs hQ ζ hζT _ hFr' σ E hE).1 hEQ`. Establish `h1` using `hcap (w - ((P.k : ℂ) - 2) / 2) v`. Rewrite `h1` using `[sub_add_cancel]`.
+
+Rewrite using `[hp, h1]`.
+-/
 theorem lineQ (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (hH : Gauge.GC.GTHyp P Bs X d)
     (Qs : M.Ty P → (Wq →L[ℂ] Wq)) (hQ : Gauge.GC.KapPt P Bs d Qs)

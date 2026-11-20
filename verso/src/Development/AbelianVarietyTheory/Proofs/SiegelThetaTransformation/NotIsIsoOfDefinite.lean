@@ -17,6 +17,13 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict.CuspClass
 
+/- English proof (translation)
+Simplify using `only [FD.hermC, FD.gram, FD.col, Matrix.of_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => arg 2`. Use extensionality with `k`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `conv_lhs => arg 2`. Use extensionality with `k`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hermC_mulVec_mulVec_eq_sum_gram {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) :
     FD.hermC τ G (P *ᵥ w) (P *ᵥ w) = ∑ a, ∑ b, w a * FD.gram τ G P a b * conj (w b) := by
@@ -33,6 +40,21 @@ private theorem hermC_mulVec_mulVec_eq_sum_gram {E : Type} [Field E] [NumberFiel
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Introduce and unpack `⟨-, hξ0, hne⟩`. Establish `τ0 : E →+* ℂ` using `Classical.choice inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ X.Ψ := by`. Distinguish the cases in `h : τ0 ∈ X.Ψ`. Conclude with `⟨τ0, h⟩`.
+
+Conclude with `⟨_, not_not.mp (mt (X.cmType τ0).mpr h)⟩`. Take `⟨P, hPdet, hP⟩` from `X.signature ⟨τ, hτ⟩`. Establish `hherm : FD.hermC τ X.Gm (fun a => τ (ξ a)) (fun a => τ (ξ a)) = 0`. Establish `h1` using `congrArg τ hξ0`. Rewrite `h1` using `[map_zero]`.
+
+Rewrite using `[← h1]`. Simplify using `[FD.herm, FD.hermC, FD.cc, map_sum, map_mul, NumberField.IsCMField.complexEmbedding_complexConj]`. Take `⟨w, hw⟩ : ∃ w, P *ᵥ w = fun a => τ (ξ a)` from `⟨P⁻¹ *ᵥ (fun a => τ (ξ a)), by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv P (isUnit_iff_ne_zero.mpr hPdet), Matrix.one_mulVec]⟩`. Establish `hsum : ∑ a, ((Complex.normSq (w a) : ℝ) : ℂ) = 0`.
+
+Rewrite using `[← hherm, ← hw, hermC_mulVec_mulVec_eq_sum_gram, hP]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[Matrix.diagonal_apply_eq, FD.sgn, h0, Complex.mul_conj]`. Introduce `b _ hb`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ (Ne.symm hb)]`. Simplify using the standard rewrite rules. Establish `hsum' : ∑ a, Complex.normSq (w a) = 0` using `by exact_mod_cast hsum`. Establish `hw0 : w = 0`. Use function extensionality and compare the values at `a`.
+
+Use `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Complex.normSq_nonneg (w a))).mp hsum' a (Finset.mem_univ a)` as an intermediate fact. Simplify using `using this`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun hw a` as an intermediate fact.
+
+Rewrite `this` using `[hw0, Matrix.mulVec_zero]`. Conclude with `(map_eq_zero τ).mp this.symm`.
+-/
 theorem not_isIso_of_definite {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (h0 : X.p0 = r) (ξ : Fin r → E) : ¬ X.IsIso ξ := by
   rintro ⟨-, hξ0, hne⟩
@@ -70,6 +92,11 @@ theorem not_isIso_of_definite {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [hw0, Matrix.mulVec_zero] at this
   exact (map_eq_zero τ).mp this.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hs hn k k' hk hrn φ hφ P hP Q hQ hΓ`. Take `⟨-, hlink⟩` from `GlobalTheory.SW.CharLink.harmonicTheta_eq_sum_thetaCharacteristic E r X g q0 hr bas idx n hs hn`. Take `⟨m, a, b, t, hab⟩` from `hlink φ hφ`. Use `GlobalTheory.ThFr.mem_SS_of_eq_sum_thFr (idx := idx) (hr := hr) (s := Finset.univ) (t := t) (a := fun j k i => (a j k i : ℝ)) (b := fun j k i => (b j k i : ℝ)) (P := fun _ => P) hs hn ?_ (fun _ _ => hP) ?_ hΓ` and prove the remaining obligations. Break down `hk with ⟨τ, i, hi, hki⟩ | hq` into its components or cases.
+
+Conclude with `Or.inl ⟨by omega, τ, Or.inl ⟨i, hi, hki⟩⟩`. Conclude with `Or.inr (not_isIso_of_definite X (by omega))`. Introduce `x hx`. Conclude with `(hQ x hx).trans (hab P x hx)`.
+-/
 theorem mem_SS_of_eq_thP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (k : X.Ψ → Fin q0 → ℕ) (k' : X.Ψ → Fin X.p0 → ℕ), ((∃ τ, ∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ k τ i) ∨ q0 = 0) → r ≤ n → ∀ φ : TF n g, IsSB φ → ∀ P ∈ Harm.rowHighest ℂ k k', ∀ Q : Frame X.Ψ r → ℂ, (∀ x ∈ X.dom, Q x = thP X hr bas idx φ P x) → (∀ ga ∈ X.Γ, ∀ x ∈ X.dom, Q (lact ga x) = X.χ (wtOf X hr k k' n) ga * Q x) → Q ∈ X.SS (wtOf X hr k k' n) := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn k k' hk hrn φ hφ P hP Q hQ hΓ
   obtain ⟨-, hlink⟩ := GlobalTheory.SW.CharLink.harmonicTheta_eq_sum_thetaCharacteristic E r X g q0 hr bas idx n hs hn

@@ -11,6 +11,11 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp Formalism.L2.SG.TermOp.IdBlocks Formalism.L2.SG.Full
   Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Use extensionality with `y`. Unfold `ROinf ROset Formalism.L2.SG.TermOp.KExpCut.NOcol`. Rewrite using `[hl, hl']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, hx, hy, hn, -⟩`.
+
+Conclude with `⟨x, n, hx, hy, hn⟩`. Introduce and unpack `⟨x, n, hx, hy, hn⟩`. Use `⟨x, n, hx, hy, hn, ?_⟩` and prove the remaining obligations. Set `H` to `NLamSub ((Y.cs u).lamOf ρ) (lf D (X.Fu u))`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hγ) hn) hγ`.
+-/
 theorem roinf_eq_nocol {D : D7} {X : HidaSetting D} (Y : Full X) {u : D.what₂.Word} (ρ : (Y.cs u).Cl)
     (t : GTerm X u u (X.Fu u) (X.Fu u) (Y.what₂ u) (Y.what₂ u)) (hl : t.lam = (Y.cs u).lamOf ρ)
     (hl' : t.lam' = (Y.cs u).lamOf ρ) (hγ : t.lin ∈ NLam ((Y.cs u).lamOf ρ) (lf D (X.Fu u))) :
@@ -26,6 +31,11 @@ theorem roinf_eq_nocol {D : D7} {X : HidaSetting D} (Y : Full X) {u : D.what₂.
     let H := NLamSub ((Y.cs u).lamOf ρ) (lf D (X.Fu u))
     exact H.mul_mem (H.mul_mem (H.inv_mem hγ) hn) hγ
 
+/- English proof (translation)
+Introduce `D X Y u hN hF ρ t ht hm`. Take `⟨-, hlin⟩` from `hK D X Y u hN ρ ρ t ht hm`. Establish `hR` using `roinf_eq_nocol Y ρ t hm.1.symm hm.2.1.symm hlin`. Establish `hex : ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) Ω` using `hF t`. Unfold `FundOf`.
+
+Rewrite using `[dif_pos hex]`. Apply `hV D X Y u ρ` to reduce the goal to its premises. Rewrite using `[← hR]`. Conclude with `hex.choose_spec`.
+-/
 theorem idMeetVolC_of (hK : IdMeetKeyC) (hV : VolColC) : IdMeetVolC := by
   intro D X Y u hN hF ρ t ht hm
   obtain ⟨-, hlin⟩ := hK D X Y u hN ρ ρ t ht hm

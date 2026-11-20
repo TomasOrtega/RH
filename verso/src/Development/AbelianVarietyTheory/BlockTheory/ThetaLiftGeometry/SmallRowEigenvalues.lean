@@ -13,6 +13,9 @@ def RowEigSmall {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H 
     ∀ w : PlE H, IsSplitPl H w → A.unr (A.locW i σ w) →
       ∀ α ∈ A.frobEig (A.locW i σ w), ‖α‖ < ((normV w : ℕ) : ℝ) ^ (((R.t : ℝ) - 1) / 2)
 
+/- English proof (translation)
+Unfold `normV`. Establish `: Finite (𝓞 E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Establish `: Nontrivial (𝓞 E ⧸ w.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top`. Conclude with `Finite.one_lt_card`.
+-/
 theorem one_lt_normV {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     1 < normV w := by
   unfold normV
@@ -20,6 +23,11 @@ theorem one_lt_normV {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum
   have : Nontrivial (𝓞 E ⧸ w.asIdeal) := Ideal.Quotient.nontrivial_iff.mpr w.isPrime.ne_top
   exact Finite.one_lt_card
 
+/- English proof (translation)
+Introduce `i σ hσ w hw hu α hα`. Establish `hrt : R.r < R.t` using `by have := R.rank_add_five_le; unfold Ranks.r; omega`. Use `lt_of_le_of_lt (h i σ hσ w hw hu α hα) ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `h2 : (R.r : ℝ) < (R.t : ℝ)` using `by exact_mod_cast hrt`.
+
+Conclude with `Real.rpow_lt_rpow_of_exponent_lt h1 (by linarith)`.
+-/
 theorem rowEigSmall_of_le {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂)
     (A : NAut N)
     (h : ∀ (i : N.Loc) (σ : what₂.FT), what₂.isot (N.j i) σ ≠ ⊥ →

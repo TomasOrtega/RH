@@ -31,6 +31,9 @@ def Perf (β : Y →+ Y' →+ ZMod n) : Prop :=
 def vecPair (r : ℕ) (β : Y →+ Y' →+ ZMod n) : (Fin r → Y) →+ (Fin r → Y') →+ ZMod n :=
   ∑ c : Fin r, ((β.comp (Pi.evalAddMonoidHom (fun _ => Y) c)).flip.comp (Pi.evalAddMonoidHom (fun _ => Y') c)).flip
 
+/- English proof (translation)
+Simplify using `[vecPair, AddMonoidHom.finset_sum_apply]`.
+-/
 theorem vecPair_apply (r : ℕ) (β : Y →+ Y' →+ ZMod n) (x : Fin r → Y) (y : Fin r → Y') :
     vecPair r β x y = ∑ c, β (x c) (y c) := by
   simp [vecPair, AddMonoidHom.finset_sum_apply]

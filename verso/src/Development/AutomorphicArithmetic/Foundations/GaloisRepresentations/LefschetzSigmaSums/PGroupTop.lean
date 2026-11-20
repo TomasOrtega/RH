@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.LefschetzSigmaSums.HeckeTraceSemi
 open UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Proceed by induction on `R using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b R ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons, ih, mul_add, Finset.sum_add_distrib]`.
+-/
 private lemma sum_swap {A : Type} (s : Finset A) (a : A → ℂ) (g : A → ℂ → ℂ) (R : Multiset ℂ) :
     (R.map fun μ => ∑ α ∈ s, a α * g α μ).sum = ∑ α ∈ s, a α * (R.map (g α)).sum := by
   induction R using Multiset.induction_on with
@@ -9,6 +12,27 @@ private lemma sum_swap {A : Type} (s : Finset A) (a : A → ℂ) (g : A → ℂ 
   | cons b R ih =>
     simp only [Multiset.map_cons, Multiset.sum_cons, ih, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Introduce `hW hT hR hInv hProps hMark hDP hDS hTest hOne p _ D G L lam i₀ h hh`. Establish `hcj : NumberField.ComplexEmbedding.conjugate (D.tau i₀) ≠ D.tau i₀` using `fun e => NumberField.IsTotallyComplex.complexEmbedding_not_isReal (D.tau i₀) (NumberField.ComplexEmbedding.isReal_iff.2 e)`. Take `⟨k₀, hk⟩` from `hR D.F G.n (D.tau i₀) (epsOf D) lam h hcj hh`. Use `⟨k₀, fun k hkk => ?_⟩` and prove the remaining obligations. Take `⟨c, hc1, hc2⟩` from `hk k hkk`.
+
+Use `⟨c, hc1, ?_⟩` and prove the remaining obligations. Introduce `ha hga hodd v hv V _ _ _ ξ hξ Lv f hf hG y`. Establish `hTf` using `hTest _ _ f hf`. Establish `hO` using `hOne p G`. Rewrite using `[hW p G hga hodd v hv _ Lv f hTf.1 hG.reg (Kp G) (oneP G) hO.1 hG.pairs]`.
+
+Establish `key : ∀ P : GlobalTheory.LKDef.DPair G, GlobalTheory.RootSumWeights.rootSum G v (fun P μ => c.sum fun α r => r * cW L i₀ v α y P μ) P.pol = (fun P => schW lam (endPol L P)) P.pol * ∑ i, y ^ h i`. Introduce `P`. Take `⟨h0, q, hq⟩` from `hDP p G P v`. Establish `hroots` using `hMark p D G L ha i₀ v hv hInv P.pol h0`. Establish `h0' : (P.pol.map (L.e.symm : G.F →+* D.F)).coeff 0 ≠ 0`.
+
+Rewrite using `[Polynomial.coeff_map]`. Conclude with `(map_ne_zero _).2 h0`. Take `⟨d1, d2, d3⟩` from `hProps D.F (P.pol.map (L.e.symm : G.F →+* D.F)) h0'`. Establish `hdeg : (endPol L P.pol).natDegree = G.n` using `by show (invPol _).natDegree = _`. Rewrite using `[d1, Polynomial.natDegree_map]`.
+
+Conclude with `P.reg.1`. Establish `hsep : (endPol L P.pol).Separable` using `d3 (P.reg.2.map)`. Establish `habs : ∃ q : ℝ, ∀ z ∈ UpperTheory.Gal.W2.rts (endPol L P.pol) (D.tau i₀), z * (starRingEnd ℂ) z = q`. Use `⟨q⁻¹, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← hroots, Multiset.mem_map]`.
+
+Take `⟨μ, hμ, rfl⟩` from `hz`. Establish `hm` using `hq μ hμ`. Establish `hq' : ((q⁻¹ : ℝ) : ℂ) = (μ * (starRingEnd ℂ) μ)⁻¹`. Rewrite using `[hm]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[hq']`. Unfold `markOf`. Use `split_ifs`. Rewrite using `[map_inv₀, mul_inv]`.
+
+Rewrite using `[map_inv₀, Complex.conj_conj, mul_inv, mul_comm]`. Use `hc2 (endPol L P.pol) hdeg hsep d2 habs y` as an intermediate fact. Use `show _ = schW lam (endPol L P.pol) * _`. Rewrite using `[← this]`. Unfold `GlobalTheory.RootSumWeights.rootSum`.
+
+Simplify using `only [Finsupp.sum]`. Rewrite using `[sum_swap]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← hroots, Multiset.map_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[hDS p G _ (fun P => schW lam (endPol L P)) (∑ i, y ^ h i) key Lv.K.toSubgroup f 1 (Kp G) (oneP G)]`. Rewrite using `[hT p G hga V ξ (fun P => schW lam (endPol L P)) hξ Lv f hTf.1 hTf.2 (Kp G) (oneP G) hO.1 hO.2 hG.forms]`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.groupTop_of :
     GlobalTheory.RootSumWeights.MarkWeightedFixedPointEqDefinitePairOdd → GlobalTheory.LKDef.TraceDefinitePairsEqAutomorphicTrace → RootW → InvRoots → InvPolProps → MarkRoots → DPairPol → DSumCongr → TestOf → TestOne → GroupTop := by
   classical

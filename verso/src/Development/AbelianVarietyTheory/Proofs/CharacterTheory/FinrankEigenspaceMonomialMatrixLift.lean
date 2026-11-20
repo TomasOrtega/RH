@@ -16,10 +16,16 @@ def GoodRep {K : Type} [CommMonoid K] {n : ℕ} (σ : Equiv.Perm (Fin n)) (a : F
 section
 variable {K : Type} [Field K] {n : ℕ} (σ : Equiv.Perm (Fin n)) (a : Fin n → K)
 
+/- English proof (translation)
+Simplify using `[orbProd, Finset.prod_range_succ]`.
+-/
 lemma orbProd_succ (m : ℕ) (j : Fin n) :
     orbProd σ a (m + 1) j = orbProd σ a m j * a ((σ ^ m) j) := by
   simp [orbProd, Finset.prod_range_succ]
 
+/- English proof (translation)
+Unfold `orbProd`. Rewrite using `[Finset.prod_range_add]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, Equiv.Perm.mul_apply]`.
+-/
 lemma orbProd_add (d m : ℕ) (j : Fin n) :
     orbProd σ a (d + m) j = orbProd σ a d j * orbProd σ a m ((σ ^ d) j) := by
   unfold orbProd
@@ -28,6 +34,11 @@ lemma orbProd_add (d m : ℕ) (j : Fin n) :
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [add_comm, pow_add, Equiv.Perm.mul_apply]
 
+/- English proof (translation)
+Use `wlog hle : m ≤ m' generalizing m m'`. Conclude with `(this m' m h.symm (le_of_not_ge hle)).symm`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' hle`. Establish `hd : (σ ^ d) j = j`. Rewrite `h` using `[add_comm, pow_add, Equiv.Perm.mul_apply]`.
+
+Conclude with `((σ ^ m).injective h).symm`. Rewrite using `[orbProd_add, hj d hd, hd, one_mul]`.
+-/
 lemma orbProd_eq {j : Fin n} (hj : ∀ m : ℕ, (σ ^ m) j = j → orbProd σ a m j = 1)
     (m m' : ℕ) (h : (σ ^ m) j = (σ ^ m') j) : orbProd σ a m j = orbProd σ a m' j := by
   wlog hle : m ≤ m' generalizing m m'
@@ -38,6 +49,9 @@ lemma orbProd_eq {j : Fin n} (hj : ∀ m : ℕ, (σ ^ m) j = j → orbProd σ a 
     exact ((σ ^ m).injective h).symm
   rw [orbProd_add, hj d hd, hd, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [orbProd]`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Equiv.Perm.mul_apply, hv, ih, orbProd_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma apply_pow {v : Fin n → K} (hv : ∀ j, v (σ j) = a j * v j) (m : ℕ) (j : Fin n) :
     v ((σ ^ m) j) = orbProd σ a m j * v j := by
   induction m with
@@ -45,11 +59,17 @@ lemma apply_pow {v : Fin n → K} (hv : ∀ j, v (σ j) = a j * v j) (m : ℕ) (
   | succ m ih =>
     rw [pow_succ', Equiv.Perm.mul_apply, hv, ih, orbProd_succ]; ring
 
+/- English proof (translation)
+Establish `h : σ.SameCycle ((σ ^ m) j) j`. Rewrite using `[Equiv.Perm.sameCycle_pow_left]`. Conclude with `h.exists_nat_pow_eq`.
+-/
 lemma exists_back (m : ℕ) (j : Fin n) : ∃ m' : ℕ, (σ ^ m') ((σ ^ m) j) = j := by
   have h : σ.SameCycle ((σ ^ m) j) j := by
     rw [Equiv.Perm.sameCycle_pow_left]
   exact h.exists_nat_pow_eq
 
+/- English proof (translation)
+Take `⟨j, hj, hmin⟩` from `Finset.exists_min_image (Finset.univ.filter fun j => ∃ m : ℕ, (σ ^ m) i = j) id ⟨i, by simpa using ⟨0, by simp⟩⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, id] at hj hmin`. Take `⟨m, rfl⟩` from `hj`. Use `⟨_, fun k => hmin _ ⟨k + m, by rw [pow_add, Equiv.Perm.mul_apply]⟩, exists_back σ m i⟩` and prove the remaining obligations.
+-/
 lemma exists_rep (i : Fin n) : ∃ j : Fin n, (∀ m : ℕ, j ≤ (σ ^ m) j) ∧ ∃ m : ℕ, (σ ^ m) j = i := by
   classical
   obtain ⟨j, hj, hmin⟩ := Finset.exists_min_image
@@ -58,6 +78,17 @@ lemma exists_rep (i : Fin n) : ∃ j : Fin n, (∀ m : ℕ, j ≤ (σ ^ m) j) �
   obtain ⟨m, rfl⟩ := hj
   refine ⟨_, fun k => hmin _ ⟨k + m, by rw [pow_add, Equiv.Perm.mul_apply]⟩, exists_back σ m i⟩
 
+/- English proof (translation)
+Set `v : Fin n → K` to `fun i => if h : ∃ m : ℕ, (σ ^ m) s = i then orbProd σ a h.choose s else 0`. Establish `hv : ∀ m : ℕ, v ((σ ^ m) s) = orbProd σ a m s`. Introduce `m`. Establish `h : ∃ m' : ℕ, (σ ^ m') s = (σ ^ m) s` using `⟨m, rfl⟩`. Simplify using `only [v, dif_pos h]`.
+
+Conclude with `orbProd_eq σ a hs.2 _ _ h.choose_spec`. Use `⟨v, fun j => ?_, by simpa [orbProd] using hv 0, fun t ht hts => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : ∃ m : ℕ, (σ ^ m) s = j`. Take `⟨m, rfl⟩` from `h`. Rewrite using `[← Equiv.Perm.mul_apply, ← pow_succ', hv, hv, orbProd_succ, mul_comm]`.
+
+Establish `h' : ¬ ∃ m : ℕ, (σ ^ m) s = σ j`. Introduce and unpack `⟨m, hm⟩`. Take `⟨m', hm'⟩` from `exists_back σ 1 j`. Use `h ⟨m' + m, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, Equiv.Perm.mul_apply, hm]`.
+
+Simplify using `using hm'`. Simplify using `only [v, dif_neg h, dif_neg h', mul_zero]`. Establish `h' : ¬ ∃ m : ℕ, (σ ^ m) s = t`. Introduce and unpack `⟨m, rfl⟩`. Take `⟨m', hm'⟩` from `exists_back σ m s`.
+
+Establish `h1` using `ht.1 m'`. Rewrite `h1` using `[hm']`. Conclude with `hts (le_antisymm h1 (hs.1 m))`. Simplify using `only [v, dif_neg h']`.
+-/
 lemma exists_vec {s : Fin n} (hs : GoodRep σ a s) :
     ∃ v : Fin n → K, (∀ j, v (σ j) = a j * v j) ∧ v s = 1 ∧
       ∀ t, GoodRep σ a t → t ≠ s → v t = 0 := by
@@ -87,6 +118,19 @@ lemma exists_vec {s : Fin n} (hs : GoodRep σ a s) :
       exact hts (le_antisymm h1 (hs.1 m))
     simp only [v, dif_neg h']
 
+/- English proof (translation)
+Set `f : E →ₗ[K] ({j // GoodRep σ a j} → K)` to `(LinearMap.funLeft K K Subtype.val).comp E.subtype`. Establish `hf : ∀ (v : E) s, f v s = v.1 s.1` using `fun _ _ => rfl`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v h0`.
+
+Establish `hv` using `(hE _).1 v.2`. Use extensionality with `i`. Take `⟨j, hj, m, rfl⟩` from `exists_rep σ i`. Establish `: v.1 j = 0`. Distinguish the cases in `hg : GoodRep σ a j`.
+
+Use `congrFun h0 ⟨j, hg⟩` as an intermediate fact. Simplify `this` using `[hf]`. Establish `: ¬ ∀ m : ℕ, (σ ^ m) j = j → orbProd σ a m j = 1` using `fun h => hg ⟨hj, h⟩ push_neg at this`. Take `⟨r, hr, hne⟩` from `this`. Establish `h2` using `apply_pow σ a hv r j`.
+
+Rewrite `h2` using `[hr]`. Assume the negation of the conclusion as `h3`. Conclude with `hne (mul_right_cancel₀ h3 (by rw [← h2, one_mul]))`. Simplify using `[apply_pow σ a hv, this]`. Establish `hsurj : Function.Surjective f`.
+
+Introduce `w`. Use `choose u hu h1 h0 using fun s : {j // GoodRep σ a j} => exists_vec σ a s.2`. Use `⟨∑ s, w s • ⟨u s, (hE _).2 (hu s)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_eq_single t]`.
+
+Simplify using `[hf, h1]`. Introduce `s _ hst`. Simplify using `[hf, h0 s t.1 t.2 (fun h => hst (Subtype.ext h).symm)]`. Simplify using the standard rewrite rules. Rewrite using `[(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+-/
 theorem finrank_eq_card (E : Submodule K (Fin n → K))
     (hE : ∀ v, v ∈ E ↔ ∀ j, v (σ j) = a j * v j) :
     Module.finrank K E = Nat.card {j // GoodRep σ a j} := by
@@ -125,6 +169,11 @@ theorem finrank_eq_card (E : Submodule K (Fin n → K))
   rw [(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).finrank_eq, Module.finrank_fintype_fun_eq_card,
     Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Rewrite using `[Module.End.mem_eigenspace_iff, funext_iff, ← σ.forall_congr_right]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Matrix.of_apply, EmbeddingLike.apply_eq_iff_eq, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-h`. Introduce `h`. Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma mem_eigenspace_iff (c : Fin n → K) (μ : K) (hμ : μ ≠ 0) (v : Fin n → K) :
     v ∈ Module.End.eigenspace
       (Matrix.toLin' (Matrix.of fun i j => if i = σ j then c j else 0)) μ ↔
@@ -143,6 +192,15 @@ lemma mem_eigenspace_iff (c : Fin n → K) (μ : K) (hμ : μ ≠ 0) (v : Fin n 
 
 end
 
+/- English proof (translation)
+Introduce `k _ θ hθ n σ c hc μ hμ`. Establish `hmul : θ μ * θ μ⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hμ, map_one]`. Establish `hθμ : θ μ ≠ 0` using `left_ne_zero_of_mul_eq_one hmul`. Establish `hinv : (θ μ)⁻¹ = θ μ⁻¹` using `inv_eq_of_mul_eq_one_right hmul`. Rewrite using `[finrank_eq_card σ (fun j => c j * μ⁻¹) _ (mem_eigenspace_iff σ c μ hμ), finrank_eq_card σ (fun j => θ (c j) * (θ μ)⁻¹) _ (mem_eigenspace_iff σ (fun j => θ (c j)) (θ μ) hθμ)]`.
+
+Use `Nat.card_congr (Equiv.subtypeEquivRight fun j => ?_)` and prove the remaining obligations. Use `and_congr_right fun _ => forall_congr' fun m => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h1 : orbProd σ (fun j => θ (c j) * (θ μ)⁻¹) m j = θ (orbProd σ (fun j => c j * μ⁻¹) m j)`. Simplify using `only [orbProd, map_prod, map_mul, hinv]`. Establish `h2 : orbProd σ (fun j => c j * μ⁻¹) m j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (hc _) (inv_ne_zero hμ)`.
+
+Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_one]`. Introduce `h`.
+
+Conclude with `hθ _ _ h2 one_ne_zero (by rw [h, map_one])`.
+-/
 theorem finrank_eigenspace_monomial_lift :
     ∀ (k : Type) [Field k] (θ : k →* ℂ), (∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) → ∀ (n : ℕ) (σ : Equiv.Perm (Fin n)) (c : Fin n → k), (∀ j, c j ≠ 0) → ∀ μ : k, μ ≠ 0 → Module.finrank k (Module.End.eigenspace (Matrix.toLin' (Matrix.of fun i j => if i = σ j then c j else 0)) μ) = Module.finrank ℂ (Module.End.eigenspace (Matrix.toLin' (Matrix.of fun i j => if i = σ j then θ (c j) else 0)) (θ μ)) := by
   intro k _ θ hθ n σ c hc μ hμ

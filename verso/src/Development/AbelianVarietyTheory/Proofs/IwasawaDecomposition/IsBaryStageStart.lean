@@ -72,12 +72,18 @@ section Basic
 
 variable {O : Type} [CommRing O] {bar : O → O} {q : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Pi.single j 1, fun i => by by_cases h : i = j <;> simp [Pi.single_apply, h], by rw [Finset.sum_eq_single j (fun i _ hi => by simp [Pi.single_apply, hi]) (by simp)] simp⟩`.
+-/
 theorem inRCone_self {X : Type} [AddCommGroup X] {m : ℕ} (γ : Fin m → LinearMap.BilinForm ℤ X) (j : Fin m) :
     InRCone γ (γ j) :=
   ⟨Pi.single j 1, fun i => by by_cases h : i = j <;> simp [Pi.single_apply, h], by
     rw [Finset.sum_eq_single j (fun i _ hi => by simp [Pi.single_apply, hi]) (by simp)]
     simp⟩
 
+/- English proof (translation)
+Use `⟨⟨![2], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc, h⟩`. Use `LinearMap.congr_fun₂ h 1 1` as an intermediate fact. Simplify using `at this`. Combine the linear relations using `[hc 0]`.
+-/
 example : InRCone ![mulForm] ((2 : ℤ) • mulForm) ∧ ¬ InRCone ![mulForm] (-mulForm) := by
   refine ⟨⟨![2], fun i => by fin_cases i; norm_num, LinearMap.ext₂ fun a b => by simp⟩, ?_⟩
   rintro ⟨c, hc, h⟩
@@ -85,14 +91,23 @@ example : InRCone ![mulForm] ((2 : ℤ) • mulForm) ∧ ¬ InRCone ![mulForm] (
   simp at this
   linarith [hc 0]
 
+/- English proof (translation)
+Introduce `X _ _ _ _ _` and use `⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h, fun _ _ _ β _ _ _ _ _ h => by simp at h⟩`.
+-/
 example (ψ : InvFun O) : IsCentreSet bar q ψ (zeroFun O) := fun X _ _ _ _ _ =>
   ⟨fun β _ _ => Or.inl (zeroFun_evalZ β), fun β _ _ h => by simp at h, fun _ _ _ β _ _ _ _ _ h => by simp at h⟩
 
+/- English proof (translation)
+Use `⟨fun j => by simp, fun j => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 example : IsFaceCut ![mulForm] (Function.Embedding.ofIsEmpty : Fin 0 ↪ Fin 1)
     (LinearMap.applyₗ 1 ∘ₗ LinearMap.applyₗ 1) := by
   refine ⟨fun j => by simp, fun j => ?_⟩
   simp
 
+/- English proof (translation)
+Use `⟨hψ, Subordinate.refl ψ, fun X _ _ _ _ hX m γ hγ => ?_⟩` and prove the remaining obligations. Establish `e : Fin.append γ (Fin.elim0 : Fin 0 → LinearMap.BilinForm ℤ X) = γ`. Use function extensionality and compare the values at `i`. Simplify using `[Fin.append_elim0]`. Use `⟨m, 0, γ, Fin.elim0, by rw [e]; exact hγ, hγ, fun j => by rw [e]; exact inRCone_self γ j, fun i => i.elim0, fun i => i.elim0, fun β hβ hp _ => hN X hX β hβ hp, fun β _ _ h h' => (h' (e ▸ h)).elim, fun d c _ => funext fun i => i.elim0⟩` and prove the remaining obligations.
+-/
 theorem isBaryStage_start {ψ lab : InvFun O} (hψ : IsPolyFan bar q ψ) {N : ℕ}
     (hN : ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q →
       ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → lab.evalZ β ≤ N) :
@@ -104,6 +119,9 @@ theorem isBaryStage_start {ψ lab : InvFun O} (hψ : IsPolyFan bar q ψ) {N : �
     fun i => i.elim0, fun i => i.elim0, fun β hβ hp _ => hN X hX β hβ hp, fun β _ _ h h' => (h' (e ▸ h)).elim,
     fun d c _ => funext fun i => i.elim0⟩
 
+/- English proof (translation)
+The claim follows from `isBaryStage_start isPolyFan_minVal_one fun _ _ _ _ _ _ β _ _ => by simp`.
+-/
 example : IsBaryStage id 1 (InvFun.minVal ℤ) (zeroFun ℤ) (InvFun.minVal ℤ) 0 :=
   isBaryStage_start isPolyFan_minVal_one fun _ _ _ _ _ _ β _ _ => by simp
 

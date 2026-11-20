@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, hX]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem submatrix_eq_pt_mul_map_mul_transpose {O H K Γ : Type} [CommRing O] [CommRing H] [Algebra O H] [Field K]
     [Algebra O K] {r : ℕ} (b : Module.Basis (Fin r) O H) (D : Matrix (Fin r) (Fin r) O)
     (pt : Γ → (H →ₐ[O] K)) (X : Γ → Γ → K)
@@ -20,6 +23,27 @@ private theorem submatrix_eq_pt_mul_map_mul_transpose {O H K Γ : Type} [CommRin
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `O H K Γ _ _ _ _ _ _ _ _ r b D pt X c hinj hred hpt hX hne hm₁ hm₂ hnd hc hr hdvd`. Use `haveI : Module.Free O H := Module.Free.of_basis b`. Use `haveI : Module.Finite O H := Module.Finite.of_basis b`. Take `⟨hfin, hcard, htrace⟩` from `finite_card_trace_algHom_of_isReduced_baseChange O H K hred`. Set `E : Γ ≃ (H →ₐ[O] K)` to `Equiv.ofBijective pt hpt`.
+
+Use `haveI : Finite Γ := Finite.of_equiv _ E.symm`. Use `letI : Fintype Γ := Fintype.ofFinite Γ`. Use `letI : Fintype (H →ₐ[O] K) := Fintype.ofFinite _`. Establish `hcardΓ : Fintype.card Γ = r`. Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr E, hcard, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+
+Set `e : Fin r ≃ Γ` to `(Fintype.equivFinOfCardEq hcardΓ).symm`. Set `P : Matrix (Fin r) (Fin r) K` to `Matrix.of fun i j => pt (e i) (b j)`. Set `D' : Matrix (Fin r) (Fin r) K` to `D.map (algebraMap O K)`. Establish `hXP : (Matrix.of X).submatrix e e = P * D' * Matrix.transpose P` using `submatrix_eq_pt_mul_map_mul_transpose b D pt X hX e`. Establish `hsum : ∀ h : H, algebraMap O K (Algebra.trace O H h) = ∑ i, pt (e i) h`.
+
+Introduce `h`. Rewrite using `[htrace h, finsum_eq_sum_of_fintype]`. Conclude with `(Fintype.sum_equiv (e.trans E) (fun i => pt (e i) h) (fun ga => ga h) fun _ => rfl).symm`. Establish `hdvd' : ∀ h : H, ∃ d, Algebra.trace O H h = c * d` using `fun h => hdvd h`. Use `choose T hT using hdvd'`.
+
+Set `Tm : Matrix (Fin r) (Fin r) O` to `Matrix.of fun j k => T (b j * b k)`. Establish `hPP : Matrix.transpose P * P = (algebraMap O K c) • Tm.map (algebraMap O K)`. Use extensionality with `j k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, P, Matrix.of_apply, Matrix.smul_apply, Matrix.map_apply, Tm, smul_eq_mul]`. Establish `hjk : algebraMap O K c * algebraMap O K (T (b j * b k)) = algebraMap O K (Algebra.trace O H (b j * b k))`.
+
+Rewrite using `[hT, map_mul]`. Rewrite using `[hjk, hsum]`. Conclude with `Finset.sum_congr rfl fun i _ => (map_mul (pt (e i)) (b j) (b k)).symm`. Establish `hTm : (Tm.map (algebraMap O K)).det = algebraMap O K Tm.det` using `((algebraMap O K).map_det Tm).symm`. Establish `hD' : D'.det = algebraMap O K D.det` using `((algebraMap O K).map_det D).symm`.
+
+Establish `hdetP : P.det ^ 2 = algebraMap O K c ^ r * algebraMap O K Tm.det`. Establish `h` using `congrArg Matrix.det hPP`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_smul, Fintype.card_fin, hTm]`. Rewrite using `[sq, h]`. Establish `h4` using `det_bicharacter_pow_four Γ K X hne hm₁ hm₂ hnd`.
+
+Rewrite `h4` using `[← Matrix.det_submatrix_equiv_self e (Matrix.of X), hXP, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hcardΓ]`. Establish `hrK : (r : K) = algebraMap O K c ^ 2`. Rewrite using `[← map_natCast (algebraMap O K) r, hr, map_pow]`. Establish `key : algebraMap O K c ^ (4 * r) * algebraMap O K (Tm.det ^ 4 * D.det ^ 4) = algebraMap O K c ^ (4 * r) * 1`. Rewrite using `[map_mul, map_pow, map_pow, ← hD', mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hrK, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : algebraMap O K c ^ (4 * r) ≠ 0` using `pow_ne_zero _ (by rwa [ne_eq, map_eq_zero_iff _ hinj])`.
+
+Establish `h1` using `mul_left_cancel₀ hu key`. Rewrite `h1` using `[← map_one (algebraMap O K)]`. Establish `h2` using `hinj h1`. Conclude with `isUnit_iff_exists_inv.mpr ⟨Tm.det ^ 4 * D.det ^ 3, by linear_combination h2⟩`.
+-/
 theorem isUnit_det_of_bicharacter_of_dvd_trace :
     ∀ (O H K Γ : Type) [CommRing O] [IsDomain O] [CommRing H] [Algebra O H] [Field K] [IsAlgClosed K] [Algebra O K] [CommGroup Γ] (r : ℕ) (b : Module.Basis (Fin r) O H) (D : Matrix (Fin r) (Fin r) O) (pt : Γ → (H →ₐ[O] K)) (X : Γ → Γ → K) (c : O), Function.Injective (algebraMap O K) → IsReduced (K ⊗[O] H) → Function.Bijective pt → (∀ a a', X a a' = ∑ i, ∑ j, algebraMap O K (D i j) * pt a (b i) * pt a' (b j)) → (∀ a b, X a b ≠ 0) → (∀ a a' b, X (a * a') b = X a b * X a' b) → (∀ a b b', X a (b * b') = X a b * X a b') → (∀ a, (∀ b, X a b = 1) → a = 1) → c ≠ 0 → (r : O) = c ^ 2 → (∀ h : H, c ∣ Algebra.trace O H h) → IsUnit D.det := by
   intro O H K Γ _ _ _ _ _ _ _ _ r b D pt X c hinj hred hpt hX hne hm₁ hm₂ hnd hc hr hdvd

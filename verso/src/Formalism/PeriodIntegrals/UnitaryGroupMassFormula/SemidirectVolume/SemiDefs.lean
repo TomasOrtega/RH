@@ -27,6 +27,11 @@ def ProjStep : Prop :=
       (∀ s : S0 (AF F) σ J P, (s : HA (AF F) σ J) ∈ HFinIn (AF F) σ J →
         ((π s : Hsub (AF F) σ J P) : HA (AF F) σ J) ∈ HFinIn (AF F) σ J)
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[Hsub, mem_stabT]`. Rewrite using `[S0, mem_stabT]`. Introduce `b`. Use `hg (Fin.castAdd r b)` as an intermediate fact.
+
+Simplify `this` using `[tupH, Fin.append_left]`.
+-/
 theorem heisenberg_le_stabilizer {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {r : ℕ}
     (P : Frame E M r) : Hsub R σ J P ≤ S0 R σ J P := by
@@ -37,6 +42,19 @@ theorem heisenberg_le_stabilizer {F E : Type} [Field F] [Field E] [Algebra F E] 
   have := hg (Fin.castAdd r b)
   simpa [tupH, Fin.append_left] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ r P T hr hS`. Take `⟨_, _, _, _⟩` from `hL F E σ hCM M J hJ`. Take `⟨π, hπc, hπH, hπN, hπS, hπR⟩` from `hP F E σ hCM M J hJ r P T hr hS`. Establish `hHS` using `heisenberg_le_stabilizer (AF F) σ J P`. Establish `hNS : FrameUnipotentSubgroup (AF F) σ J P ≤ S0 (AF F) σ J P` using `inf_le_right`.
+
+Establish `hπh : ∀ h : Hsub (AF F) σ J P, π ⟨h, hHS h.2⟩ = h` using `fun h => Subtype.ext (hπH _ h.2)`. Establish `hπn : ∀ n : FrameUnipotentSubgroup (AF F) σ J P, π ⟨n, hNS n.2⟩ = 1` using `fun n => hπN _ n.2`. Establish `hπnh : ∀ (n : FrameUnipotentSubgroup (AF F) σ J P) (h : Hsub (AF F) σ J P), π ⟨(n : HA (AF F) σ J) * h, (S0 (AF F) σ J P).mul_mem (hNS n.2) (hHS h.2)⟩ = h`. Introduce `n h`. Establish `: (⟨(n : HA (AF F) σ J) * h, (S0 (AF F) σ J P).mul_mem (hNS n.2) (hHS h.2)⟩ : S0 (AF F) σ J P) = ⟨n, hNS n.2⟩ * ⟨h, hHS h.2⟩` using `rfl`.
+
+Rewrite using `[this, map_mul, hπn, hπh, one_mul]`. Use `⟨⟨fun h hh n hn => hN F E σ hCM M J hJ r P T hr hS h hh n hn, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨{ toFun := fun p => ⟨(p.1 : HA (AF F) σ J) * p.2, (S0 (AF F) σ J P).mul_mem (hNS p.1.2) (hHS p.2.2)⟩ invFun := fun s => (⟨(s : HA (AF F) σ J) * ((π s : Hsub (AF F) σ J P) : HA (AF F) σ J)⁻¹, hπS s⟩, π s) left_inv := ?_ right_inv := ?_ continuous_toFun := ?_ continuous_invFun := …` and prove the remaining obligations. Introduce and unpack `⟨n, h⟩`. Simplify using `only [hπnh]`.
+
+Use `Prod.ext (Subtype.ext ?_) rfl` and prove the remaining obligations. Use `show (n : HA (AF F) σ J) * h * (h : HA (AF F) σ J)⁻¹ = n`. Use `group`. Introduce `s`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (s : HA (AF F) σ J) * ((π s : Hsub (AF F) σ J P) : HA (AF F) σ J)⁻¹ * ((π s : Hsub (AF F) σ J P) : HA (AF F) σ J) = s`. Use `group`. Conclude with `((continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)).subtype_mk _`. Conclude with `((continuous_subtype_val.mul (continuous_subtype_val.comp hπc).inv).subtype_mk _).prodMk hπc`. Introduce `n hn h hh hmem`.
+
+Establish `hs : (n : HA (AF F) σ J) * h ∈ S0 (AF F) σ J P` using `(S0 (AF F) σ J P).mul_mem (hNS hn) (hHS hh)`. Use `hπR ⟨n * h, hs⟩ hmem` as an intermediate fact. Establish `e : π ⟨n * h, hs⟩ = ⟨h, hh⟩` using `hπnh ⟨n, hn⟩ ⟨h, hh⟩`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem semiStep_of (hL : LcscHA) (hN : NormStep) (hP : ProjStep) : SemiStep := by
   intro F E _ _ _ _ _ σ hCM M J hJ r P T hr hS
   obtain ⟨_, _, _, _⟩ := hL F E σ hCM M J hJ

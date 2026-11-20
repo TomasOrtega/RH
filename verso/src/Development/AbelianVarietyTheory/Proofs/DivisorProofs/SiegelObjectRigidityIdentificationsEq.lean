@@ -11,6 +11,19 @@ namespace GlobalTheory.SiegRigidCyc
 
 open GlobalTheory.CechPic GlobalTheory.AmpleRigid GlobalTheory.SiegRigid
 
+/- English proof (translation)
+Introduce `h M hM S S' s s' c o f hamp φ ψ φ₂ ψ₂ g q w l g' q' w' l'`. Take `⟨σ, hσ, e⟩` from `exists_aut g g'`. Establish `hMu : IsUnit ((M : ℕ) : cycAway M)` using `isUnit_natCast (show M ≠ 0 by omega)`. Establish `key : σ.hom = 𝟙 _`. Use `eq_id_of_forall_geometric_fibre laws_without_cohomology.1 o.A o.ab σ.hom (IsMonHom.one_hom σ.hom) fun t => ?_` and prove the remaining obligations.
+
+Set `K : Type` to `AlgebraicClosure (S'.residueField t)`. Set `j : Sp K ⟶ S'` to `Spec.map (CommRingCat.ofHom (algebraMap (S'.residueField t) K)) ≫ S'.fromSpecResidueField t`. Establish `hp` using `isGrpPullback_pullback o.A j`. Use `o.ab.smooth` as an intermediate fact. Use `o.ab.proper` as an intermediate fact.
+
+Use `o.ab.geomConnected` as an intermediate fact. Establish `hab : IsAbelianScheme ((Over.pullback j).obj o.A)` using `{ comm := Functor.isCommMonObj_obj smooth := by change Smooth (pullback.snd o.A.hom j); infer_instance proper := by change IsProper (pullback.snd o.A.hom j); infer_instance geomConnected := by change GeometricallyConnected (pullback.snd o.A.hom j); infer_instance }`. Establish `hNK : (M : K) ≠ 0`. Establish `hu` using `hMu.map (Spec.preimage ((j ≫ f) ≫ s)).hom`. Rewrite `hu` using `[map_natCast]`.
+
+Conclude with `hu.ne_zero`. Establish `e'` using `eq_of_field (pull_isLB c.isLB _) hamp hab (hp.comp g) (hp.comp g') (by rw [pull_comp, pull_comp]; exact congrArg _ ((pull_cls_diag q w).trans (pull_cls_diag q' w').symm)) hM hNK fun Ω _ _ x y hy => by`. Establish `hy₁ : pushHom hp (Over.mk x) y ^ M = 1` using `by rw [← map_pow, hy, map_one]`. Establish `e₁` using `eq_on_torsion (GlobalTheory.LowChart.isUnit_zetaAway M hM) c g _ l l' Ω (x ≫ j) _ hy₁`. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+
+Conclude with `e₁`. Use `⟨_, _, j, _, _, (default : PrimeSpectrum K), ?_, hp.1, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply t _)`. Apply `g'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e]`.
+
+Conclude with `e'`. Rewrite using `[Category.assoc, Over.w]`. Rewrite using `[← e, key, Over.id_left, Category.id_comp]`.
+-/
 theorem eq_of_pullback : ∀ (h M : ℕ), 3 ≤ M → ∀ (S S' : Scheme.{0}) (s : S ⟶ Sp (cycAway M)) (s' : S' ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) s) (o : SiegPre h M (zetaAway M) s') (f : S' ⟶ S), Out.RelAmple c.A c.diag → ∀ (φ ψ : o.A.left ⟶ c.A.left) (φ₂ ψ₂ : (G2 o.A).left ⟶ (G2 c.A).left), IsGrpPullback o.A c.A f φ → IsSquare φ φ₂ → LBIso o.P (c.P.pull φ₂) → (∀ a, (o.lev a).left ≫ φ = f ≫ (c.lev a).left) → IsGrpPullback o.A c.A f ψ → IsSquare ψ ψ₂ → LBIso o.P (c.P.pull ψ₂) → (∀ a, (o.lev a).left ≫ ψ = f ≫ (c.lev a).left) → φ = ψ := by
   intro h M hM S S' s s' c o f hamp φ ψ φ₂ ψ₂ g q w l g' q' w' l'
   obtain ⟨σ, hσ, e⟩ := exists_aut g g'

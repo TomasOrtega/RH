@@ -13,6 +13,13 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.ArchLim
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w n r D ε σ c c' hc N y hy`. Take `⟨hs, -, hb⟩` from `hc`. Establish `hi : y ∈ ptsIn p σ ((N.pull π w).B.U fun _ => pick (N.φ σ).isLB (PtsOver.map π w (spMap σ) y))`. Introduce `x hx`. Conclude with `Set.mem_iInter.2 fun _ => mem_pick (N.φ σ).isLB (PtsOver.map π w (spMap σ) y) hx`.
+
+Rewrite using `[chernMat, c'.hess_eq ((N.pull π w).cInf σ) hy hi (mem_pick _ y)]`. Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_` and prove the remaining obligations. Use `filter_upwards [c'.e.open_target.mem_nhds (c'.e.map_source hy)] with v hv`. Establish `h₁` using `c'.e.map_target hv`. Establish `h₂` using `hb _ h₁`.
+
+Rewrite `h₂` using `[c'.e.right_inv hv]`. Establish `h₃ : PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ c.e.source` using `(hs ▸ h₁).1`. Rewrite using `[h₂, c.e.left_inv h₃]`. Conclude with `congrArg _ (Weight.pull_φ (N.φ σ) π w _ (c'.e.symm v))`.
+-/
 theorem chernMat_pull_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) (c : AlgChart q σ n) (c' : AlgChart p σ D), IsCell ε π w c c' → ∀ (N : HermLB q), ∀ y' ∈ c'.e.source, chernMat ((N.pull π w).φ σ) c' y' = cHess D (fun v => ((N.φ σ).φ (pick (N.φ σ).isLB (PtsOver.map π w (spMap σ) y')) (c.e.symm (base ε v)) : ℂ)) (c'.e y') := by
   intro k _ B Y q p π w n r D ε σ c c' hc N y hy
   obtain ⟨hs, -, hb⟩ := hc

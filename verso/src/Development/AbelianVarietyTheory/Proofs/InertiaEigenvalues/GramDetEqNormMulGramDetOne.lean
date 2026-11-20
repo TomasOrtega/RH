@@ -3,6 +3,13 @@ open GlobalTheory.UnitLemma Polynomial
 
 namespace GlobalTheory.UnitLemma.InvAlg
 
+/- English proof (translation)
+Use `set b := Module.finBasis K.E B.A`. Establish `hM : (Matrix.of fun i j => B.herm x (b i) (b j)) = (Algebra.leftMulMatrix b x).transpose * (Matrix.of fun i j => B.herm 1 (b i) (b j))`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, herm, one_mul, Algebra.leftMulMatrix_apply]`. Establish `h` using `b.sum_repr (x * b i)`.
+
+Use `conv_lhs => rw [← h]`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, LinearMap.toMatrix_apply]`. Simplify using the standard rewrite rules.
+
+Unfold `gramDet`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_transpose, Algebra.norm_eq_matrix_det b]`.
+-/
 theorem gramDet_eq_norm_mul (K : UQ) (B : InvAlg K) (x : B.A) :
     B.gramDet x = Algebra.norm K.E x * B.gramDet 1 := by
   classical

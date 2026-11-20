@@ -14,10 +14,16 @@ section General
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max x (-y)`.
+-/
 theorem norm_sub_le_max (x y : K) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   rw [sub_eq_add_neg, ← norm_neg y]
   exact IsUltrametricDist.norm_add_le_max x (-y)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hr`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem norm_sum_le {ι : Type} (s : Finset ι) (f : ι → K) {r : ℝ} (hr : 0 ≤ r) (h : ∀ i ∈ s, ‖f i‖ ≤ r) :
     ‖∑ i ∈ s, f i‖ ≤ r := by
   classical
@@ -28,6 +34,11 @@ theorem norm_sum_le {ι : Type} (s : Finset ι) (f : ι → K) {r : ℝ} (hr : 0
     exact (IsUltrametricDist.norm_add_le_max _ _).trans
       (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Rewrite using `[← geom_sum₂_mul, norm_mul]`. Establish `hs : ‖∑ i ∈ Finset.range n, a ^ i * b ^ (n - 1 - i)‖ ≤ 1`. Use `norm_sum_le _ _ zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) ha) (by positivity) (pow_le_one₀ (norm_nonneg _) hb)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pow_sub_pow_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (n : ℕ) :
     ‖a ^ n - b ^ n‖ ≤ ‖a - b‖ := by
   rw [← geom_sum₂_mul, norm_mul]
@@ -38,6 +49,17 @@ theorem norm_pow_sub_pow_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) 
   calc _ ≤ 1 * ‖a - b‖ := by gcongr
     _ = _ := one_mul _
 
+/- English proof (translation)
+Rewrite using `[← geom_sum₂_mul, norm_mul]`. Use `gcongr`. Establish `hsplit : ∑ i ∈ Finset.range l, a ^ i * b ^ (l - 1 - i) = ∑ i ∈ Finset.range l, (a ^ i - b ^ i) * b ^ (l - 1 - i) + (l : K) * b ^ (l - 1)`. Establish `h1 : ∀ i ∈ Finset.range l, a ^ i * b ^ (l - 1 - i) = (a ^ i - b ^ i) * b ^ (l - 1 - i) + b ^ (l - 1)`. Introduce `i hi`.
+
+Establish `hi' : i + (l - 1 - i) = l - 1`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[sub_mul, ← pow_add, hi']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Rewrite using `[hsplit]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `norm_sum_le _ _ (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_pow_sub_pow_le ha hb i`. Conclude with `pow_le_one₀ (norm_nonneg _) hb`. Use `_ ≤ _ := by rw [mul_one]; exact hab`. Rewrite using `[norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_one₀ (norm_nonneg _) hb`. Use `_ = _ := mul_one _`.
+-/
 theorem norm_pow_l_sub_le (l : ℕ) {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) (hab : ‖a - b‖ ≤ ‖(l : K)‖) :
     ‖a ^ l - b ^ l‖ ≤ ‖(l : K)‖ * ‖a - b‖ := by
   rw [← geom_sum₂_mul, norm_mul]
@@ -67,6 +89,11 @@ theorem norm_pow_l_sub_le (l : ℕ) {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖
           exact pow_le_one₀ (norm_nonneg _) hb
       _ = _ := mul_one _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `ha' : ‖a ^ (l ^ m)‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`. Establish `hb' : ‖b ^ (l ^ m)‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hb`.
+
+Establish `hpm : ‖(l : K)‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) hl`. Establish `hd : ‖a ^ (l ^ m) - b ^ (l ^ m)‖ ≤ ‖(l : K)‖` using `ih.trans ((mul_le_of_le_one_left (norm_nonneg _) hpm).trans hab)`. Rewrite using `[pow_succ, pow_mul, pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pow_l_pow_sub_le (l : ℕ) (hl : ‖(l : K)‖ ≤ 1) {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1)
     (hab : ‖a - b‖ ≤ ‖(l : K)‖) (m : ℕ) :
     ‖a ^ (l ^ m) - b ^ (l ^ m)‖ ≤ ‖(l : K)‖ ^ m * ‖a - b‖ := by
@@ -89,15 +116,28 @@ section Padic
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h : (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt_one : ‖(l : ℂ_[l])‖ < 1 := by
   have h : (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Rewrite using `[norm_pos_iff]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions.
+-/
 theorem norm_l_pos : 0 < ‖(l : ℂ_[l])‖ := by
   rw [norm_pos_iff]
   exact_mod_cast (Fact.out : l.Prime).ne_zero
 
+/- English proof (translation)
+Break down `eq_or_ne t 0 with rfl | h0` into its components or cases. Conclude with `(MaximalUnramifiedExtension l).zero_mem`. Establish `hp : l.Prime` using `Fact.out`. Establish `hq1 : 2 ≤ l ^ N` using `le_trans hp.two_le (Nat.le_self_pow hN.ne' l)`. Establish `hpow : t ^ (l ^ N - 1) = 1`.
+
+Establish `h2 : t ^ (l ^ N - 1) * t = 1 * t`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), ht, one_mul]`. Conclude with `mul_right_cancel₀ h0 h2`. Establish `hnd : ¬ l ∣ l ^ N - 1`. Introduce `hd`.
+
+Establish `h1 : l ∣ l ^ N` using `dvd_pow_self l hN.ne'`. Establish `h3 : l ∣ l ^ N - (l ^ N - 1)` using `Nat.dvd_sub h1 hd`. Rewrite `h3` using `[show l ^ N - (l ^ N - 1) = 1 by omega]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h3)`. Conclude with `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨l ^ N - 1, by omega, hnd, hpow⟩)`.
+-/
 theorem mem_Kur_of_pow_eq {N : ℕ} (hN : 0 < N) {t : ℂ_[l]} (ht : t ^ (l ^ N) = t) : t ∈ MaximalUnramifiedExtension l := by
   rcases eq_or_ne t 0 with rfl | h0
   · exact (MaximalUnramifiedExtension l).zero_mem
@@ -117,6 +157,13 @@ theorem mem_Kur_of_pow_eq {N : ℕ} (hN : 0 < N) {t : ℂ_[l]} (ht : t ^ (l ^ N)
 
 variable (F : Subfield ℂ_[l]) (N : ℕ)
 
+/- English proof (translation)
+Introduce `y hy hy1`. Take `⟨y', hy'F, hyy'⟩` from `Metric.mem_closure_iff.1 hy _ (norm_l_pos (l := l))`. Rewrite `hyy'` using `[dist_eq_norm]`. Establish `hl1` using `(norm_l_lt_one (l := l)).le`. Establish `hy'1 : ‖y'‖ ≤ 1`.
+
+Establish `: y' = y - (y - y')` using `by ring`. Rewrite using `[this]`. Conclude with `(norm_sub_le_max _ _).trans (max_le hy1 (hyy'.le.trans hl1))`. Establish `hF : ‖y' ^ (l ^ N) - y'‖ ≤ ‖(l : ℂ_[l])‖` using `h1 _ (F.sub_mem (F.pow_mem hy'F _) hy'F) (h2 y' hy'F hy'1)`. Establish `hP : ‖y ^ (l ^ N) - y' ^ (l ^ N)‖ ≤ ‖(l : ℂ_[l])‖` using `(norm_pow_sub_pow_le hy1 hy'1 _).trans hyy'.le`.
+
+Establish `: y ^ (l ^ N) - y = (y ^ (l ^ N) - y' ^ (l ^ N)) + ((y' ^ (l ^ N) - y') - (y - y'))` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hP ((norm_sub_le_max _ _).trans (max_le hF hyy'.le)))`.
+-/
 theorem closure_res (h1 : ∀ x ∈ F, ‖x‖ < 1 → ‖x‖ ≤ ‖(l : ℂ_[l])‖)
     (h2 : ∀ x ∈ F, ‖x‖ ≤ 1 → ‖x ^ (l ^ N) - x‖ < 1) :
     ∀ y ∈ F.topologicalClosure, ‖y‖ ≤ 1 → ‖y ^ (l ^ N) - y‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -137,6 +184,27 @@ theorem closure_res (h1 : ∀ x ∈ F, ‖x‖ < 1 → ‖x‖ ≤ ‖(l : ℂ_[
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hP
     ((norm_sub_le_max _ _).trans (max_le hF hyy'.le)))
 
+/- English proof (translation)
+Use `set q := l ^ N`. Use `set L := ‖(l : ℂ_[l])‖ with hL`. Establish `hl1 : L < 1` using `norm_l_lt_one`. Establish `hl0 : 0 < L` using `norm_l_pos`. Set `y : ℕ → ℂ_[l]` to `fun n => x ^ (q ^ n)`.
+
+Establish `hys : ∀ n, y (n + 1) = y n ^ q` using `fun n => by`. Simplify using `only [y, pow_succ, pow_mul]`. Establish `hy1 : ∀ n, ‖y n‖ ≤ 1` using `fun n => by`. Simplify using `only [y, norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hx1`.
+
+Establish `hyG : ∀ n, y n ∈ G` using `fun n => G.pow_mem hx _`. Establish `hLN : L ^ N ≤ L` using `pow_le_of_le_one hl0.le hl1.le hN.ne'`. Establish `hstep : ∀ n, ‖y (n + 1) - y n‖ ≤ L * L ^ n`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Simplify using `only [pow_zero, mul_one, hys]`. Simplify `hG x hx hx1` using `[y]`. Consider the case `succ n ih`. Establish `hd : ‖y (n + 1) - y n‖ ≤ L` using `ih.trans (mul_le_of_le_one_right hl0.le (pow_le_one₀ hl0.le hl1.le))`.
+
+Rewrite using `[hys (n + 1), hys n]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcau : CauchySeq y`. Use `cauchySeq_of_le_geometric L L hl1 fun n => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, norm_sub_rev]`.
+
+Conclude with `hstep n`. Take `⟨t, ht⟩` from `cauchySeq_tendsto_of_complete hcau`. Establish `htG : t ∈ G` using `hGc.mem_of_tendsto ht (Eventually.of_forall hyG)`. Establish `htq : t ^ q = t`. Establish `hA : Tendsto (fun n => y (n + 1)) atTop (𝓝 t)` using `(tendsto_add_atTop_iff_nat 1).2 ht`.
+
+Establish `hB : Tendsto (fun n => y (n + 1)) atTop (𝓝 (t ^ q))`. Simplify using `only [hys]`. Conclude with `ht.pow q`. Conclude with `tendsto_nhds_unique hB hA`. Establish `hball : ∀ n, y n ∈ Metric.closedBall x L`.
+
+Introduce `n`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm]`. Proceed by induction on `n with`. Consider the case `zero => simp [y, hl0.le]`. Consider the case `succ n ih`.
+
+Establish `: y (n + 1) - x = (y (n + 1) - y n) + (y n - x)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((hstep n).trans (mul_le_of_le_one_right hl0.le (pow_le_one₀ hl0.le hl1.le))) ih)`. Establish `htb` using `Metric.isClosed_closedBall.mem_of_tendsto ht (Eventually.of_forall hball)`. Rewrite `htb` using `[Metric.mem_closedBall, dist_eq_norm, norm_sub_rev]`.
+
+Conclude with `⟨t, htG, mem_Kur_of_pow_eq hN htq, htb⟩`.
+-/
 theorem teich (hN : 0 < N) (G : Subfield ℂ_[l]) (hGc : IsClosed (G : Set ℂ_[l]))
     (hG : ∀ y ∈ G, ‖y‖ ≤ 1 → ‖y ^ (l ^ N) - y‖ ≤ ‖(l : ℂ_[l])‖) {x : ℂ_[l]} (hx : x ∈ G) (hx1 : ‖x‖ ≤ 1) :
     ∃ t ∈ G, t ∈ MaximalUnramifiedExtension l ∧ ‖x - t‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -196,6 +264,15 @@ section Main
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact fun x _ hx1 => ⟨0, (MaximalUnramifiedExtension l).zero_mem, by simpa using hx1⟩`. Consider the case `succ k ih`. Introduce `x hx hx1`. Take `⟨t, htG, htK, hxt⟩` from `teich N hN G hGc hG hx hx1`.
+
+Establish `hl0 : 0 < ‖(l : ℂ_[l])‖` using `norm_l_pos`. Establish `hl0' : (l : ℂ_[l]) ≠ 0` using `norm_pos_iff.1 hl0`. Use `set x₁ := (x - t) / (l : ℂ_[l])`. Establish `hx₁G : x₁ ∈ G` using `G.div_mem (G.sub_mem hx htG) (natCast_mem G l)`. Establish `hx₁1 : ‖x₁‖ ≤ 1`.
+
+Rewrite using `[norm_div]`. Conclude with `(div_le_one hl0).2 hxt`. Take `⟨s₁, hs₁K, hs₁⟩` from `ih x₁ hx₁G hx₁1`. Use `⟨t + (l : ℂ_[l]) * s₁, (MaximalUnramifiedExtension l).add_mem htK ((MaximalUnramifiedExtension l).mul_mem (natCast_mem (MaximalUnramifiedExtension l) l) hs₁K), ?_⟩` and prove the remaining obligations. Establish `: x - (t + (l : ℂ_[l]) * s₁) = (l : ℂ_[l]) * (x₁ - s₁)`.
+
+Simplify using `only [x₁]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, norm_mul, pow_succ']`. Use `gcongr`.
+-/
 theorem approx {N : ℕ} (hN : 0 < N) (G : Subfield ℂ_[l]) (hGc : IsClosed (G : Set ℂ_[l]))
     (hG : ∀ y ∈ G, ‖y‖ ≤ 1 → ‖y ^ (l ^ N) - y‖ ≤ ‖(l : ℂ_[l])‖) (k : ℕ) :
     ∀ x ∈ G, ‖x‖ ≤ 1 → ∃ s ∈ MaximalUnramifiedExtension l, ‖x - s‖ ≤ ‖(l : ℂ_[l])‖ ^ k := by
@@ -221,6 +298,17 @@ end Main
 
 open GlobalTheory.SubKur in
 
+/- English proof (translation)
+Introduce `l _ F N hN h1 h2`. Establish `hG` using `closure_res F N h1 h2`. Establish `hGc` using `F.isClosed_topologicalClosure`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1` using `norm_l_lt_one`. Establish `hKc : IsClosed (MaximalUnramifiedExtension l : Set ℂ_[l])` using `Subfield.isClosed_topologicalClosure _`.
+
+Establish `hint : ∀ x ∈ F, ‖x‖ ≤ 1 → x ∈ MaximalUnramifiedExtension l`. Introduce `x hx hx1`. Establish `hxG : x ∈ F.topologicalClosure` using `F.le_topologicalClosure hx`. Rewrite using `[← SetLike.mem_coe, ← hKc.closure_eq]`. Use `Metric.mem_closure_iff.2 fun ε hε => ?_` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε hl1`. Take `⟨s, hsK, hs⟩` from `approx hN _ hGc hG k x hxG hx1`. Conclude with `⟨s, hsK, by rw [dist_eq_norm]; exact hs.trans_lt hk⟩`. Introduce `x hx`. Distinguish the cases in `hx1 : ‖x‖ ≤ 1`.
+
+Conclude with `hint x hx hx1`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx1`. Establish `hi : ‖x⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.1 hx1))`.
+
+Use `(MaximalUnramifiedExtension l).inv_mem (hint x⁻¹ (F.inv_mem hx) hi)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem le_Kur : ∀ (l : ℕ) [Fact l.Prime] (F : Subfield ℂ_[l]) (N : ℕ), 0 < N → (∀ x ∈ F, ‖x‖ < 1 → ‖x‖ ≤ ‖(l : ℂ_[l])‖) →
     (∀ x ∈ F, ‖x‖ ≤ 1 → ‖x ^ (l ^ N) - x‖ < 1) → F ≤ MaximalUnramifiedExtension l := by
   intro l _ F N hN h1 h2

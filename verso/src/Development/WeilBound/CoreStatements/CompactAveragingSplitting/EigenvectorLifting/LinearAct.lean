@@ -17,6 +17,29 @@ variable {k : Type} [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k]
   {α β ν κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype ν] [DecidableEq ν] [Fintype κ]
   {JA : Matrix α α K} {JB : Matrix β β K} {Cy : Matrix β ν K}
 
+/- English proof (translation)
+Establish `hiso` using `lagY_iso dd hL.1`. Establish `hdim` using `lagY_dim hq dd hL`. Establish `hcard` using `card_lagr hL`. Establish `hn` using `norm_char hc`. Establish `key : ∀ g, ∃ a : ℂ, ∀ φ ∈ SB (κ → k), l (om g φ) = a * l φ` using `fun g => line hc hn h1 _ hiso hdim l (l ∘ₗ om g) hl (by`.
+
+Introduce and unpack `_ ⟨z, rfl⟩ φ hφ`. Use `(congrArg l (hs.impl g (Cy * z) φ hφ)).trans (hl _ ?_ _ (hs.pres g φ hφ))` and prove the remaining obligations. Conclude with `mem_lagY.2 ⟨_, by rw [actB, Matrix.mul_assoc]⟩) hne`. Use `choose a ha using key`. Take `⟨φ₀, hφ₀, hl₀⟩` from `hne`.
+
+Set `A : UG c (dbl JA) →* ℂ` to `{ toFun := a map_one' := by`. Use `ha 1 φ₀ hφ₀` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Conclude with `(mul_eq_right₀ hl₀).1 this.symm`. Use the proof step `map_mul' := fun g h => by`.
+
+Use `ha (g * h) φ₀ hφ₀` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply, ha g _ (hs.pres h _ hφ₀), ha h _ hφ₀, ← mul_assoc]`. Conclude with `(mul_right_cancel₀ hl₀ this).symm }`. Take `⟨-, Cx, M, -, hM1, hM2⟩` from `id hL`. Take `⟨r, e, he⟩` from `exists_coord hq ν α`.
+
+Establish `hD` using `isLagr_diagCols (R := k) c JA`. Establish `hisoD : ∀ z z' : Matrix β α K, (dd.e (z * (diagCols (E` using `K) α)ᵀ)).1 ⬝ᵥ (dd.e (z' * (diagCols (E := K) α)ᵀ)).2 = (dd.e (z' * (diagCols (E := K) α)ᵀ)).1 ⬝ᵥ (dd.e (z * (diagCols (E := K) α)ᵀ)).2 := fun z z' => by`. Establish `h` using `dd.form (z * (diagCols (E := K) α)ᵀ) (z' * (diagCols (E := K) α)ᵀ)`. Rewrite `h` using `[symp, GlobalTheory.CompanionTheory.SplitUnique.hTens_eq_zero c JB hD.1, mul_zero, map_zero]`. Conclude with `sub_eq_zero.mp h.symm`.
+
+Set `X₀ : Matrix ν α K →ₗ[k] Matrix β (α ⊕ α) K` to `{ toFun := fun z => Cx * z * (diagCols (E := K) α)ᵀ map_add' := fun z z' => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun t z => by rw [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply] }`. Set `X : (Fin r → k) →ₗ[k] (κ → k) × (κ → k)` to `dd.e.toLinearMap ∘ₗ X₀ ∘ₗ e.toLinearMap`. Establish `hX : ∀ x, X x = dd.e (Cx * e x * (diagCols (E` using `K) α)ᵀ) := fun _ => rfl`. Take `⟨L, ⟨φ₁, hφ₁, hL₁⟩, hLX, hLY, hLT⟩` from `exists_avg hc h1 _ hiso hdim l hl ⟨φ₀, hφ₀, hl₀⟩ X (fun x x' => hisoD _ _) (fun x hx => by`. Take `⟨z, hz⟩` from `mem_lagY.1 hx`.
+
+Establish `h2` using `dd.e.injective (hz.trans (hX x))`. Establish `h3` using `(indep hM2 (z := -z) (z' := e x * (diagCols (E := K) α)ᵀ) (by`. Rewrite using `[Matrix.mul_neg, h2, Matrix.mul_assoc, neg_add_cancel])).2`. Rewrite `h3` using `[diagCols, transpose_fromRows, transpose_one, mul_fromCols, Matrix.mul_one, ← fromCols_zero]`. Conclude with `e.map_eq_zero_iff.1 (fromCols_ext_iff .. |>.1 h3).1)`.
+
+Establish `hinv : ∀ z : Matrix β α K, ∀ φ ∈ SB (κ → k), L (dd.rho ψ (z * (diagCols (E` using `K) α)ᵀ) φ) = L φ := fun z φ hφ => by`. Take `⟨x, hx⟩` from `e.surjective (M * z).toRows₂`. Establish `hz : z = Cy * (M * z).toRows₁ + Cx * e x`. Rewrite using `[hx, ← fromCols_mul_fromRows, fromRows_toRows, ← Matrix.mul_assoc, hM1, Matrix.one_mul]`. Rewrite using `[Darboux.rho, hz, Matrix.add_mul, map_add, ← schr_add (hisoD _ _), hLY _ (mem_lagY.2 ⟨_, by rw [Matrix.mul_assoc]⟩) (fun x => hisoD _ _) _ (schr_mem hc _ hφ), ← hX, hLX _ _ hφ]`.
+
+Establish `hA1` using `GlobalTheory.T.lagrangian_stabilizer_character_trivial k K c ξ₀ _ _ _ _ hq (GlobalTheory.CompanionTheory.WeilOneMember.isHerm_dbl hA) hD A.toHomUnits fun p t hp => by`. Take `⟨g, hg, hdet⟩` from `he t`. Establish `e1` using `hr L trivial hinv p t hp φ₁ hφ₁`. Establish `e2` using `hLT (om p) g (a p) (hs.pres p) (fun x φ hφ => by`. Use `(hs.impl p (Cx * e x * (diagCols (E := K) α)ᵀ) φ hφ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hX, hg, actB, Darboux.rho, Matrix.mul_assoc _ (diagCols (E := K) α)ᵀ, ← transpose_mul, hp, transpose_mul]`. Simplify using `only [Matrix.mul_assoc]) (ha p) φ₁ hφ₁`. Establish `e3` using `mul_right_cancel₀ hL₁ (e1.symm.trans e2)`. Establish `e4 : (Fintype.card β : ℝ) / 2 = (Fintype.card ν : ℕ)` using `by rw [hcard]; push_cast; ring`. Rewrite `e3` using `[hdet, map_pow, e4, Real.rpow_natCast, MonoidHom.one_apply, Circle.coe_one, one_mul, NNReal.coe_pow]`.
+
+Use `Units.ext ((mul_eq_left₀ ?_).1 e3.symm)` and prove the remaining obligations. Conclude with `pow_ne_zero _ distribHaarChar_pos.ne'` after adjusting the coercions. Introduce `g φ hφ`. Establish `: a g = 1` using `congrArg Units.val (DFunLike.congr_fun hA1 g)`. Rewrite using `[ha g φ hφ, this, one_mul]`.
+-/
 theorem dbl_fix (hc : Continuous ψ) (h1 : ψ ≠ 1) (hq : IsQuad c ξ₀) (hA : IsHerm c JA) (hL : IsLagr c JB Cy)
     (dd : Darboux (symp (R := k) c ξ JB (dbl JA)) κ) (om : UG c (dbl JA) →* Module.End ℂ ((κ → k) → ℂ))
     (hs : IsSplitting (sbClass k) ψ dd (actB c) om) (hr : SiegelRule c (sbClass k) ψ ξ JB (dbl JA) dd 1 (diagCols α) om)
@@ -87,6 +110,19 @@ theorem dbl_fix (hc : Continuous ψ) (h1 : ψ ≠ 1) (hq : IsQuad c ξ₀) (hA :
   have : a g = 1 := congrArg Units.val (DFunLike.congr_fun hA1 g)
   rw [ha g φ hφ, this, one_mul]
 
+/- English proof (translation)
+Take `⟨hs₀, dd, omd, hdd, hs, hr, hb⟩` from `hW`. Establish `hn` using `norm_char hc`. Take `⟨l₂, hne₂, hl₂⟩` from `GlobalTheory.CompanionTheory.LagFun.exists_invariant_form k _ ψ hc h1 _ (lagY_iso dd hL.1)`. Establish `hfix` using `dbl_fix hc h1 hq hA hL dd omd hs hr l₂ hl₂ hne₂`. Choose the witnesses or unpack the hypotheses as in `⟨φ₁, h₁, φ₂, h₂, h₁₂⟩ : ∃ φ₁ ∈ SB (κ → k), ∃ φ₂ ∈ SB (κ → k), l₂ (boxFun φ₁ φ₂) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨φ₀, h₀, hl₀⟩` from `hne`. Take `⟨φ, hφ, hφ0⟩` from `hne₂`. Take `⟨y, hy⟩` from `Function.ne_iff.mp fun h : φ₀ = 0 => hl₀ (by rw [h, map_zero])`.
+
+Use `hφ0 (cyc hc hn h1 (GlobalTheory.CompanionTheory.WeilOneMember.boxFun_mem h₀ h₀) (fun h => ?_) l₂ (fun w => ?_) φ hφ)` and prove the remaining obligations. Conclude with `mul_ne_zero hy hy (congrFun h (Sum.elim y y))`. Rewrite using `[schr_box]`. Conclude with `hcon _ (schr_mem hc _ h₀) _ (schr_mem hc _ h₀)`. Set `Bx : ((κ → k) → ℂ) →ₗ[ℂ] ((κ ⊕ κ → k) → ℂ)` to `{ toFun := fun φ => boxFun φ φ₂ map_add' := fun a b => funext fun x => add_mul _ _ _ map_smul' := fun t a => funext fun x => mul_assoc _ _ _ }`.
+
+Take `⟨a, ha⟩` from `line hc hn h1 _ (lagY_iso d hL.1) (lagY_dim hq d hL) l (l₂ ∘ₗ Bx) hl (by`. Introduce and unpack `_ ⟨z, rfl⟩ φ hφ`. Establish `e` using `hl₂ _ (mem_lagY.2 ⟨fromCols z 0, rfl⟩) _ (GlobalTheory.CompanionTheory.WeilOneMember.boxFun_mem hφ h₂)`. Establish `e0 : schr ψ (0, 0) φ₂ = φ₂` using `by funext x; simp [schr]`. Rewrite `e` using `[mul_fromCols, hdd, Matrix.mul_zero, map_zero, schr_box]`.
+
+Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr, Prod.fst_zero, Prod.snd_zero, neg_zero, e0] at e`. Conclude with `e) hne`. Establish `ha0 : a ≠ 0` using `fun h => h₁₂ ((ha φ₁ h₁).trans (by rw [h, zero_mul]))`. Introduce `g φ hφ`. Take `⟨gd, hgd⟩` from `GlobalTheory.CompanionTheory.WeilOneMember.exists_embed g`.
+
+Establish `e` using `hfix gd _ (GlobalTheory.CompanionTheory.WeilOneMember.boxFun_mem hφ h₂)`. Rewrite `e` using `[hb g gd hgd φ hφ φ₂ h₂]`. Conclude with `mul_left_cancel₀ ha0 ((ha _ (hs₀.pres g φ hφ)).symm.trans (e.trans (ha φ hφ)))`.
+-/
 theorem weilB_fix (hc : Continuous ψ) (h1 : ψ ≠ 1) (hq : IsQuad c ξ₀) (hA : IsHerm c JA) (hL : IsLagr c JB Cy)
     (d : Darboux (symp (R := k) c ξ JB JA) κ) (om : UG c JA →* Module.End ℂ ((κ → k) → ℂ))
     (hW : IsWeilB c (sbClass k) ψ ξ JB JA d 1 om)
@@ -126,6 +162,11 @@ theorem weilB_fix (hc : Continuous ψ) (h1 : ψ ≠ 1) (hq : IsQuad c ξ₀) (hA
 
 end LinAct
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ K _ _ _ _ c ψ hK ⟨ξ₀, hq⟩ hc h1 m n N κ _ JA JB d χ Cy om l hA _ hL ⟨_, d', hd', hW⟩ hev g φ hφ`. Use `hK.nontrivial` as an intermediate fact. Use `LinAct.weilB_fix hc h1 hq hA hL d' _ hW l ?_ hev.1 g φ hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩ φ hφ`. Establish `e` using `hev.2 zᵀ φ hφ`.
+
+Rewrite `e` using `[Darboux.rho, ← hd', transpose_mul, transpose_transpose, transpose_transpose]`. Conclude with `e`.
+-/
 theorem split_character_fixes_evaluation : LinearAct := by
   intro k _ _ _ _ _ _ K _ _ _ _ c ψ hK ⟨ξ₀, hq⟩ hc h1 m n N κ _ JA JB d χ Cy om l hA _ hL ⟨_, d', hd', hW⟩ hev g φ hφ
   have := hK.nontrivial

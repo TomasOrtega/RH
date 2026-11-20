@@ -10,6 +10,11 @@ namespace Formalism.HermitianLattices.Ext.L3.BoxSum
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Unfold `vF`. Establish `hne : ({e' : ℕ | n ∈ 𝔭 ^ e'} : Set ℕ).Nonempty` using `⟨0, by simp⟩`. Establish `hlt : ∀ k ∈ ({e' : ℕ | n ∈ 𝔭 ^ e'} : Set ℕ), k < e`. Introduce `k hk`. Assume the negation of the conclusion as `hke`.
+
+Use `push_neg at hke`. Conclude with `h (Ideal.pow_le_pow_right hke hk)`. Establish `hbdd : BddAbove ({e' : ℕ | n ∈ 𝔭 ^ e'} : Set ℕ)` using `⟨e, fun k hk => (hlt k hk).le⟩`. Conclude with `hlt _ (Nat.sSup_mem hne hbdd)`.
+-/
 theorem vF_lt_of_notMem {𝔭 : Ideal (𝓞 F)} {n : 𝓞 F} {e : ℕ} (h : n ∉ 𝔭 ^ e) : vF 𝔭 n < e := by
   unfold vF
   have hne : ({e' : ℕ | n ∈ 𝔭 ^ e'} : Set ℕ).Nonempty := ⟨0, by simp⟩
@@ -21,10 +26,18 @@ theorem vF_lt_of_notMem {𝔭 : Ideal (𝓞 F)} {n : 𝓞 F} {e : ℕ} (h : n �
   have hbdd : BddAbove ({e' : ℕ | n ∈ 𝔭 ^ e'} : Set ℕ) := ⟨e, fun k hk => (hlt k hk).le⟩
   exact hlt _ (Nat.sSup_mem hne hbdd)
 
+/- English proof (translation)
+Use `haveI := h𝔭`. Conclude with `Ideal.IsMaximal.ne_bot_of_isIntegral_int 𝔭`.
+-/
 theorem ne_bot_of_isMaximal {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : 𝔭 ≠ ⊥ := by
   haveI := h𝔭
   exact Ideal.IsMaximal.ne_bot_of_isIntegral_int 𝔭
 
+/- English proof (translation)
+Establish `h1 : Ideal.absNorm 𝔭 ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `h𝔭.ne_top`. Establish `h0 : Ideal.absNorm 𝔭 ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `ne_bot_of_isMaximal h𝔭`. Establish `h2 : 1 < Ideal.absNorm 𝔭` using `by omega`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem one_lt_absNorm {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : (1 : ℝ) < (Ideal.absNorm 𝔭 : ℝ) := by
   have h1 : Ideal.absNorm 𝔭 ≠ 1 := by
     rw [Ne, Ideal.absNorm_eq_one_iff]

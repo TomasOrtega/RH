@@ -18,10 +18,18 @@ variable {D : D7} {n r t : ℕ}
 
 def h0 (D : D7) (p : ℕ) : HermE D p := ⟨0, by simp⟩
 
+/- English proof (translation)
+Simplify using `[h0, halfTr]`.
+-/
 theorem j_zero (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {p : ℕ} (y : Mx D V.rank p) :
     ψ (halfTr (Matrix.trace (HMul.hMul ((h0 D p).1.map (incA D)) (GlobalTheory.StdUnn.inner V y y) : Mx D p p))) = 1 := by
   simp [h0, halfTr]
 
+/- English proof (translation)
+Establish `hmat : mat M.w = (repMat (D.sp.cm.sig : D.host.E →+* D.host.E) (h0 D r).1 1).map (incA D)`. Rewrite using `[h0, repMat_zero, mA_one, Matrix.mul_one, mat_w]`. Establish `hγ : M.w ∈ GF D n` using `mem_gf_of _ (wr_unit (D.sp.cm.sig : D.host.E →+* D.host.E) hn).1 (wr_unit (D.sp.cm.sig : D.host.E →+* D.host.E) hn).2 (mat_w hn M)`. Rewrite using `[partial_fourier_second_term hS Φ r (by omega) μr hμr (c₁ D hn) 1 (compl_c₁ hn) (h0 D r) M.w hγ hmat]`. Unfold `J pull`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[j_zero, mul_one]`. Conclude with `congrArg Φ.1 (mul_c₁ hn y)`.
+-/
 theorem clause1 {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω) (hn : r + t = n) (M : Maps D hn)
     (μr : Measure (Mx D V.rank r)) (hμr : ∃ 𝓕, IsCovolOne (ratMx D V.rank r) μr 𝓕) (Φ : schwartzA θ V.rank n) :
     (ω M.w Φ).1 0 = ∫ x, Φ.1 (jn hn x 0) ∂μr := by
@@ -35,6 +43,9 @@ theorem clause1 {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω) (h
   rw [j_zero, mul_one]
   exact congrArg Φ.1 (mul_c₁ hn y)
 
+/- English proof (translation)
+Use `GlobalTheory.T.pullback_schwartz_linear_independent D θ hθ V.rank r n (c₁ D hn) (linInd_c₁ hn) Φ.1 Φ.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `congrArg Φ.1 (mul_c₁ hn x).symm`.
+-/
 theorem clause2 {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hn : r + t = n) (Φ : schwartzA θ V.rank n) :
     (fun x => Φ.1 (jn hn x 0)) ∈ schwartzA θ V.rank r := by
   have := GlobalTheory.T.pullback_schwartz_linear_independent D θ hθ V.rank r n (c₁ D hn) (linInd_c₁ hn) Φ.1 Φ.2
@@ -42,6 +53,23 @@ theorem clause2 {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hn : r + t = n)
   funext x
   exact congrArg Φ.1 (mul_c₁ hn x).symm
 
+/- English proof (translation)
+Establish `hγ : M.emb w ∈ GF D n` using `mem_gf_of _ (second_block_weyl_unitary (D.sp.cm.sig : D.host.E →+* D.host.E) hn).1 (second_block_weyl_unitary (D.sp.cm.sig : D.host.E →+* D.host.E) hn).2 (mat_emb hn M w hw)`. Take `⟨γQ, hQ, hmQ⟩` from `(GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn D n).2.1 _ (gQ_unit (D.sp.cm.sig : D.host.E →+* D.host.E) hn).1 (gQ_unit (D.sp.cm.sig : D.host.E →+* D.host.E) hn).2`. Establish `hγ' : γQ⁻¹ * M.emb w ∈ GF D n` using `(GF D n).mul_mem ((GF D n).inv_mem hQ) hγ`. Establish `hmat' : mat (γQ⁻¹ * M.emb w) = (repMat (D.sp.cm.sig : D.host.E →+* D.host.E) (h0 D t).1 (Pm D.host.E hn)).map (incA D)`. Establish `h1 : mat γQ * (repMat (D.sp.cm.sig : D.host.E →+* D.host.E) (h0 D t).1 (Pm D.host.E hn)).map (incA D) = mat (M.emb w)`.
+
+Rewrite using `[hmQ, ← Matrix.map_mul, h0, key3, mat_emb hn M w hw]`. Rewrite using `[mat_mul', ← h1, ← Matrix.mul_assoc, mat_inv_mul', Matrix.one_mul]`. Establish `hψ` using `hS.1`. Establish `hθ` using `hS.2.2.1`. Establish `hΨm` using `GlobalTheory.T.eisenstein_heisenberg_schwartz D ψ hψ θ hθ V n (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) Φ.1 Φ.2`.
+
+Set `Ψ : schwartzA θ V.rank n` to `⟨Heisenberg₂ ψ V (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) Φ.1, hΨm⟩`. Establish `hc` using `covar_w hS (M.emb w) hγ (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) Φ Ψ rfl`. Establish `hv : HMul.hMul (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) (mat (M.emb w)⁻¹) = xz (jn hn x v₀)`. Rewrite using `[Matrix.mul_assoc, mat_mul_inv', Matrix.mul_one]`. Rewrite `hc` using `[hv]`.
+
+Establish `step1 : (ω (M.emb w) Φ).1 (jn hn x v₀) = (ω (M.emb w) Ψ).1 0` using `by rw [hc, heis_xz]`. Establish `step2 : (ω (M.emb w) Ψ).1 0 = (ω (γQ⁻¹ * M.emb w) Ψ).1 0` using `by conv_lhs => rw [show M.emb w = γQ * (γQ⁻¹ * M.emb w) by group]`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `levi_zero hS γQ (uP D hn) (mat_gQ hn hmQ) _`. Rewrite using `[step1, step2, partial_fourier_second_term hS Ψ t (by omega) μt hμt (c₃ D hn) (Pm D.host.E hn) (compl_c₃ hn) (h0 D t) _ hγ' hmat']`.
+
+Establish `hx : xPart (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) = jn hn x 0`. Rewrite using `[mat_emb' hn M w hw, x_part_mul_block, xPart_xz, yPart_xz, jn_mul_bl]`. Simplify using the standard rewrite rules. Establish `hy : yPart (HMul.hMul (xz (jn hn x v₀)) (mat (M.emb w))) = jn hn 0 v₀`. Rewrite using `[mat_emb' hn M w hw, y_part_mul_block, xPart_xz, yPart_xz, jn_mul_bl]`.
+
+Simplify using the standard rewrite rules. Establish `hip1 : ∀ {a b : ℕ} (z : Mx D V.rank b), ip V (0 : Mx D V.rank a) z = 0` using `fun z => by simp [ip, mm, adj]`. Establish `hip2 : ∀ {a b : ℕ} (z : Mx D V.rank a), ip V z (0 : Mx D V.rank b) = 0` using `fun z => by simp [ip, mm]`. Unfold `J pull`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[j_zero, mul_one]`. Use `show PositivityTheory.GramSchwartzFunctions.EC.Heisenberg₂ ψ V _ Φ.1 _ = _`. Rewrite using `[show (HMul.hMul y ((c₃ D hn).map (incA D)) : Mx D V.rank n) = jn hn 0 y from mul_c₃ hn y]`. Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.Heisenberg₂]`.
+
+Rewrite using `[hx, hy, jn_add, trace_inner_jn, trace_inner_jn, hip1, hip1, hip2]`. Simplify using `only [Matrix.trace_zero, zero_add, add_zero, halfTr, map_zero, mul_zero]`. Rewrite using `[psi_ip_symm, mul_comm]`.
+-/
 theorem clause3 {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω) (hn : r + t = n) (M : Maps D hn)
     (μt : Measure (Mx D V.rank t)) (hμt : ∃ 𝓕, IsCovolOne (ratMx D V.rank t) μt 𝓕) (Φ : schwartzA θ V.rank n)
     (w : G D t) (hw : IsW w) (x : Mx D V.rank r) (v₀ : Mx D V.rank t) :
@@ -90,6 +118,9 @@ end PositivityTheory.Rg.Rsw.L.LPartFT
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt Φ`. Establish `hS : LPartFT.SetW D n V ψ χ θ μ ω` using `⟨hψ, hχ, hθ, hμ, hω⟩`. Conclude with `⟨LPartFT.clause1 hS hn M μr hμr Φ, LPartFT.clause2 hθ hn Φ, fun w hw x v₀ => LPartFT.clause3 hS hn M μt hμt Φ w hw x v₀⟩`.
+-/
 theorem partFT : PartFT := by
   intro D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt Φ
   have hS : LPartFT.SetW D n V ψ χ θ μ ω := ⟨hψ, hχ, hθ, hμ, hω⟩

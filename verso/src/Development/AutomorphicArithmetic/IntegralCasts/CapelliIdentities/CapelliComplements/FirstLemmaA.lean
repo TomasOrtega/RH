@@ -4,6 +4,13 @@ universe u_1 u_2
 
 namespace Bl.FirstLemmaA
 
+/- English proof (translation)
+Introduce `B _ ι s v d hv`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Take `⟨h1, h2⟩` from `ih`.
+
+Establish `hA : (v a ^ d a).natDegree ≤ d a`. Simplify using `using Polynomial.natDegree_pow_le_of_le (d a) (hv a)`. Establish `hc : (v a ^ d a).coeff (d a) = (v a).coeff 1 ^ d a`. Simplify using `using Polynomial.coeff_pow_of_natDegree_le (m := d a) (hv a)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.prod_insert ha]`.
+
+Use `⟨Polynomial.natDegree_mul_le.trans (add_le_add hA h1), ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_mul_add_eq_of_natDegree_le hA h1, hc, h2]`.
+-/
 theorem goal1 :
   ∀ {B : Type u_1} [inst : CommRing.{u_1} B] {ι : Type u_2} (s : Finset.{u_2} ι) (v : ι → Polynomial.{u_1} B)
   (d : ι → Nat),

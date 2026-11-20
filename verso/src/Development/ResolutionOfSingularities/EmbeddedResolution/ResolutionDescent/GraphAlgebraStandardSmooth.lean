@@ -16,12 +16,18 @@ abbrev graphJacobianMinorDet [Fintype τ] [DecidableEq τ] (f : τ → MvPolynom
 abbrev GraphAlgebraAway [Fintype τ] [DecidableEq τ] (f : τ → MvPolynomial σ R) (v : τ → σ) : Type u :=
   Localization.Away (graphJacobianMinorDet f v)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_units (M := Submonoid.powers (graphJacobianMinorDet f v)) (GraphAlgebraAway f v) ⟨graphJacobianMinorDet f v, Submonoid.mem_powers _⟩`.
+-/
 theorem isUnit_algebraMap_graphJacobianMinorDet [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) :
     IsUnit (algebraMap (GraphAlgebra f) (GraphAlgebraAway f v) (graphJacobianMinorDet f v)) :=
   IsLocalization.map_units (M := Submonoid.powers (graphJacobianMinorDet f v)) (GraphAlgebraAway f v)
     ⟨graphJacobianMinorDet f v, Submonoid.mem_powers _⟩
 
+/- English proof (translation)
+Rewrite using `[graphPreSubmersivePresentation_jacobian, map_mul, map_pow, map_neg, map_one]`. Conclude with `((isUnit_one.neg).pow _).mul (isUnit_algebraMap_graphJacobianMinorDet f v)`.
+-/
 theorem isUnit_algebraMap_jacobian_graphPreSubmersive [Fintype τ] [DecidableEq τ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
     IsUnit (algebraMap (GraphAlgebra f) (GraphAlgebraAway f v)
@@ -40,6 +46,9 @@ private def graphAlgebraAwayPreSubmersivePresentation [Fintype τ] [DecidableEq 
   Algebra.PreSubmersivePresentation.comp (graphAlgebraAwayLocalizationPresentation f v).toPreSubmersivePresentation
     (graphPreSubmersivePresentation f v hv)
 
+/- English proof (translation)
+Rewrite using `[graphAlgebraAwayPreSubmersivePresentation, Algebra.PreSubmersivePresentation.comp_jacobian_eq_jacobian_smul_jacobian, Algebra.smul_def]`. Conclude with `(isUnit_algebraMap_jacobian_graphPreSubmersive f v hv).mul (graphAlgebraAwayLocalizationPresentation f v).jacobian_isUnit`.
+-/
 private theorem isUnit_jacobian_presentation_graphAlgebraAway [Fintype τ] [DecidableEq τ] [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
     IsUnit (graphAlgebraAwayPreSubmersivePresentation f v hv).jacobian := by
@@ -58,6 +67,9 @@ private def graphAlgebraAwaySubmersivePresentation [Fintype τ] [DecidableEq τ]
     (Equiv.sumCongr (Equiv.refl Unit) (Fintype.equivFin σ).symm)
     (Equiv.sumCongr (Equiv.refl Unit) (Fintype.equivFin τ).symm)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `⟨Unit ⊕ Fin (Fintype.card σ), Unit ⊕ Fin (Fintype.card τ), inferInstance, inferInstance, ⟨graphAlgebraAwaySubmersivePresentation f v hv⟩⟩`.
+-/
 theorem isStandardSmooth_graphAlgebraAway [Fintype τ] [DecidableEq τ] [Fintype σ]
     (f : τ → MvPolynomial σ R) (v : τ → σ) (hv : Function.Injective v) :
     Algebra.IsStandardSmooth (MvPolynomial τ R) (GraphAlgebraAway f v) := by

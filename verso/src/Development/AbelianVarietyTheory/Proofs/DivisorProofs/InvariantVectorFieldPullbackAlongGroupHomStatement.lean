@@ -15,5 +15,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Heat.PullField.isInv_pbT_single | exact GlobalTheory.Heat.PullField.isInv_pbT_single | (intros; apply GlobalTheory.Heat.PullField.isInv_pbT_single <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.invariant_vectorField_pullback_along_group_hom : ∀ (R : Type) [CommRing R] (G B : Over (Sp R)) [GrpObj G] [GrpObj B] [IsCommMonObj G] [IsCommMonObj B] (q : G ⟶ B) [IsMonHom q] (v : TanM (𝟙 (Sp R)) G) (u : TanM (𝟙 (Sp R)) B) (dd : Fld G.left) (e : Fld B.left), tv v ≫ q = tv u → IsInv G v dd → IsInv B u e → ∀ (V : B.left.Opens) (W : G.left.Opens), W ≤ q.left ⁻¹ᵁ V → ∀ f : Γ(B.left, V), dd W (pbT q.left f W) = pbT q.left (e V f) W := by
   first | exact @GlobalTheory.Heat.PullField.isInv_pbT_single | exact GlobalTheory.Heat.PullField.isInv_pbT_single | (intros; apply GlobalTheory.Heat.PullField.isInv_pbT_single <;> assumption)

@@ -11,25 +11,42 @@ namespace GlobalTheory.ConstLat.EigenMinor
 
 variable {K : Type} [Field K] (w : AbsoluteValue K ℝ)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (supN_le w le_rfl fun i => by simp) (supN_nonneg w _)`.
+-/
 theorem supN_zero' {n : ℕ} : supN w (0 : Fin n → K) = 0 :=
   le_antisymm (supN_le w le_rfl fun i => by simp) (supN_nonneg w _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `(le_supN w x i).trans h` as an intermediate fact. Conclude with `w.eq_zero.1 (le_antisymm this (w.nonneg _))`.
+-/
 theorem eq_zero_of_supN_le {n : ℕ} {x : Fin n → K} (h : supN w x ≤ 0) : x = 0 := by
   funext i
   have := (le_supN w x i).trans h
   exact w.eq_zero.1 (le_antisymm this (w.nonneg _))
 
+/- English proof (translation)
+Unfold `supN`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[Real.mul_iSup_of_nonneg (w.nonneg a)]`.
+-/
 theorem supN_smul' {n : ℕ} (a : K) (x : Fin n → K) : supN w (a • x) = w a * supN w x := by
   unfold supN
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
   rw [Real.mul_iSup_of_nonneg (w.nonneg a)]
 
+/- English proof (translation)
+Unfold `supN`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `w.map_neg (y i)`.
+-/
 theorem supN_neg' {n : ℕ} (y : Fin n → K) : supN w (-y) = supN w y := by
   unfold supN
   congr 1
   funext i
   exact w.map_neg (y i)
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin n) with hn | hn` into its components or cases. It suffices to derive a contradiction. Unfold `supN at h`. Rewrite `h` using `[Real.iSup_of_isEmpty]`. Conclude with `lt_irrefl _ h`.
+
+Conclude with `exists_eq_ciSup_of_finite (f := fun i => w (x i))`.
+-/
 theorem exists_eq_supN {n : ℕ} {x : Fin n → K} (h : 0 < supN w x) : ∃ i, w (x i) = supN w x := by
   rcases isEmpty_or_nonempty (Fin n) with hn | hn
   · exfalso
@@ -40,6 +57,9 @@ theorem exists_eq_supN {n : ℕ} {x : Fin n → K} (h : 0 < supN w x) : ∃ i, w
 
 variable {w}
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using hc) ?_` and prove the remaining obligations. Introduce `x s hx ih h`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `(hw _ _).trans (max_le (h x (Finset.mem_insert_self _ _)) (ih fun σ hσ => h σ (Finset.mem_insert_of_mem hσ)))`.
+-/
 theorem sum_le_of_nonarch (hw : IsNonarchimedean w) {α : Type} (s : Finset α) (a : α → K) {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ σ ∈ s, w (a σ) ≤ c) : w (∑ σ ∈ s, a σ) ≤ c := by
   revert h
@@ -49,6 +69,9 @@ theorem sum_le_of_nonarch (hw : IsNonarchimedean w) {α : Type} (s : Finset α) 
   exact (hw _ _).trans (max_le (h x (Finset.mem_insert_self _ _))
     (ih fun σ hσ => h σ (Finset.mem_insert_of_mem hσ)))
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s (fun _ => by simpa using hc) ?_` and prove the remaining obligations. Introduce `x s hx ih h`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `(hw _ _).trans_lt (max_lt (h x (Finset.mem_insert_self _ _)) (ih fun σ hσ => h σ (Finset.mem_insert_of_mem hσ)))`.
+-/
 theorem sum_lt_of_nonarch (hw : IsNonarchimedean w) {α : Type} (s : Finset α) (a : α → K) {c : ℝ} (hc : 0 < c)
     (h : ∀ σ ∈ s, w (a σ) < c) : w (∑ σ ∈ s, a σ) < c := by
   revert h
@@ -58,6 +81,11 @@ theorem sum_lt_of_nonarch (hw : IsNonarchimedean w) {α : Type} (s : Finset α) 
   exact (hw _ _).trans_lt (max_lt (h x (Finset.mem_insert_self _ _))
     (ih fun σ hσ => h σ (Finset.mem_insert_of_mem hσ)))
 
+/- English proof (translation)
+Apply `supN_le w (mul_nonneg hc (supN_nonneg w v))` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Apply `sum_le_of_nonarch hw _ _ (mul_nonneg hc (supN_nonneg w v))` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_le_mul (hM i j) (le_supN w v j) (w.nonneg _) hc`.
+-/
 theorem supN_mulVec_le (hw : IsNonarchimedean w) {n m : ℕ} (M : Matrix (Fin n) (Fin m) K) {c : ℝ} (hc : 0 ≤ c)
     (hM : ∀ i j, w (M i j) ≤ c) (v : Fin m → K) : supN w (M.mulVec v) ≤ c * supN w v := by
   apply supN_le w (mul_nonneg hc (supN_nonneg w v))
@@ -68,11 +96,19 @@ theorem supN_mulVec_le (hw : IsNonarchimedean w) {n m : ℕ} (M : Matrix (Fin n)
   rw [map_mul]
   exact mul_le_mul (hM i j) (le_supN w v j) (w.nonneg _) hc
 
+/- English proof (translation)
+The claim follows from `supN_le w (le_max_of_le_left (supN_nonneg w x)) fun i => (hw (x i) (y i)).trans (max_le_max (le_supN w x i) (le_supN w y i))`.
+-/
 theorem supN_add_le' (hw : IsNonarchimedean w) {n : ℕ} (x y : Fin n → K) :
     supN w (x + y) ≤ max (supN w x) (supN w y) :=
   supN_le w (le_max_of_le_left (supN_nonneg w x)) fun i =>
     (hw (x i) (y i)).trans (max_le_max (le_supN w x i) (le_supN w y i))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[sub_eq_add_neg]`. Use `(supN_add_le' hw x (-y)).trans ?_` and prove the remaining obligations. Rewrite using `[supN_neg']`. Conclude with `max_le le_rfl h.le`.
+
+Establish `h2` using `supN_add_le' hw (x - y) y`. Rewrite `h2` using `[sub_add_cancel]`. Break down `le_max_iff.1 h2 with h3 | h3` into its components or cases. Conclude with `h3`. Conclude with `absurd h3 (not_le.2 h)`.
+-/
 theorem supN_sub_of_lt (hw : IsNonarchimedean w) {n : ℕ} (x y : Fin n → K) (h : supN w y < supN w x) :
     supN w (x - y) = supN w x := by
   apply le_antisymm
@@ -92,6 +128,19 @@ namespace GlobalTheory.ConstLat.EigenMinor
 
 variable {K : Type} [Field K] {w : AbsoluteValue K ℝ}
 
+/- English proof (translation)
+Establish `hk : ∀ v : Fin g → K, (∀ l, β l ≠ τ → v l = 0) → (fun l => χ (β l) * v l) = χ τ • v`. Introduce `v hv`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : β l = τ`. Simplify using `[h]`.
+
+Simplify using `[hv l h]`. Establish `key : ∀ v : Fin g → K, (∀ l, β l ≠ τ → v l = 0) → supN w (H.mulVec v) ≤ 1 → supN w (R.mulVec (H.mulVec v) - χ τ • H.mulVec v) ≤ ε`. Introduce `v hv h1`. Use `happ v h1` as an intermediate fact. Rewrite `this` using `[hk v hv, Matrix.mulVec_smul]`. Then use the resulting hypothesis.
+
+Distinguish the cases in `hs : supN w (H.mulVec u) ≤ 0`. Establish `h0` using `eq_zero_of_supN_le w hs`. Rewrite using `[h0, Matrix.mulVec_zero, smul_zero, sub_zero, supN_zero', mul_zero]`. Use `push_neg at hs`. Take `⟨k, hk'⟩` from `exists_eq_supN w hs`.
+
+Establish `hwc : 0 < w (H.mulVec u k)` using `hk' ▸ hs`. Establish `hc0 : H.mulVec u k ≠ 0` using `fun h => by rw [h, map_zero] at hwc; exact lt_irrefl _ hwc`. Establish `hv : ∀ l, β l ≠ τ → ((H.mulVec u k)⁻¹ • u) l = 0`. Introduce `l hl`. Simplify using `[hu l hl]`.
+
+Establish `h1 : supN w (H.mulVec ((H.mulVec u k)⁻¹ • u)) ≤ 1`. Rewrite using `[Matrix.mulVec_smul, supN_smul', map_inv₀, ← hk', inv_mul_cancel₀ hwc.ne']`. Establish `h2` using `key _ hv h1`. Establish `e : R.mulVec (H.mulVec ((H.mulVec u k)⁻¹ • u)) - χ τ • H.mulVec ((H.mulVec u k)⁻¹ • u) = (H.mulVec u k)⁻¹ • (R.mulVec (H.mulVec u) - χ τ • H.mulVec u)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, smul_sub, smul_comm (χ τ) (H.mulVec u k)⁻¹]`.
+
+Rewrite `h2` using `[e, supN_smul', map_inv₀, inv_mul_le_iff₀ hwc]`. Rewrite using `[← hk']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem approx_kind (hw : IsNonarchimedean w) {N g : ℕ} {ι : Type} (H : Matrix (Fin N) (Fin g) K)
     (R : Matrix (Fin N) (Fin N) K) (β : Fin g → ι) (χ : ι → K) (ε : ℝ)
     (happ : ∀ u : Fin g → K, supN w (H.mulVec u) ≤ 1 →
@@ -129,6 +178,35 @@ theorem approx_kind (hw : IsNonarchimedean w) {N g : ℕ} {ι : Type} (H : Matri
     rw [← hk']
     linarith
 
+/- English proof (translation)
+Establish `hε0 : 0 ≤ ε`. Establish `h0` using `happ 0 (by rw [Matrix.mulVec_zero, supN_zero']; norm_num)`. Establish `e0 : (R.mulVec (H.mulVec 0) - H.mulVec fun l => χ (β l) * (0 : Fin g → K) l) = 0`. Rewrite using `[show (fun l => χ (β l) * (0 : Fin g → K) l) = 0 from funext fun l => by simp]`. Simplify using the standard rewrite rules.
+
+Rewrite `h0` using `[e0, supN_zero']`. Then use the resulting hypothesis. Establish `hyx : (P * H).mulVec u = P.mulVec (H.mulVec u)` using `(Matrix.mulVec_mulVec u P H).symm`. Establish `hQP : Q * P = 1` using `mul_eq_one_comm.1 hPQ`. Establish `hPR : P * R = Matrix.diagonal (fun r => χ (b r)) * P`. Rewrite using `[← hD, Matrix.mul_assoc (P * R) Q P, hQP, Matrix.mul_one]`.
+
+Establish `hηi : 0 ≤ η⁻¹` using `inv_nonneg.2 hη.le`. Establish `hbound : ∀ (M : Matrix (Fin N) (Fin N) K), (∀ i j, w (M i j) ≤ η⁻¹) → ∀ v, supN w (M.mulVec v) ≤ η⁻¹ * supN w v` using `fun M hM v => supN_mulVec_le hw M hηi hM v`. Establish `c1 : ∀ r, b r ≠ τ → w ((P * H).mulVec u r) ≤ η⁻¹ ^ 2 * ε * supN w (H.mulVec u)`. Introduce `r hr`. Establish `ha` using `approx_kind hw H R β χ ε happ τ u hu`.
+
+Establish `e : P.mulVec (R.mulVec (H.mulVec u) - χ τ • H.mulVec u) r = (χ (b r) - χ τ) * (P * H).mulVec u r`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hPR, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul, ← hyx]`. Simplify using `[Matrix.mulVec_diagonal, sub_mul]`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`. Establish `h1 : w (P.mulVec (R.mulVec (H.mulVec u) - χ τ • H.mulVec u) r) ≤ η⁻¹ * (ε * supN w (H.mulVec u))` using `(le_supN w _ r).trans ((hbound P (fun i j => (hb i j).1) _).trans (mul_le_mul_of_nonneg_left ha hηi))`.
+
+Rewrite `h1` using `[e, map_mul]`. Establish `h2 : η * w ((P * H).mulVec u r) ≤ η⁻¹ * (ε * supN w (H.mulVec u))` using `(mul_le_mul_of_nonneg_right (hsep _ _ hr) (w.nonneg _)).trans h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hη.ne', one_mul]`. Use `_ ≤ η⁻¹ * (η⁻¹ * (ε * supN w (H.mulVec u))) := mul_le_mul_of_nonneg_left h2 hηi`.
+
+Use `_ = η⁻¹ ^ 2 * ε * supN w (H.mulVec u) := by ring`. Use `⟨c1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hs : supN w (H.mulVec u) ≤ 0`. Establish `hx0 : H.mulVec u = 0` using `eq_zero_of_supN_le w hs`. Establish `hz : (fun r => if b r = τ then (P * H).mulVec u r else 0) = 0`.
+
+Use function extensionality and compare the values at `r`. Simplify using `[hyx, hx0]`. Rewrite using `[hz, supN_zero', hx0, supN_zero']`. Simplify using the standard rewrite rules. Use `push_neg at hs set x := H.mulVec u with hx set y := (P * H).mulVec u with hy set z : Fin N → K := fun r => if b r = τ then y r else 0 with hz`.
+
+Establish `hz' : ∀ r, b r ≠ τ → z r = 0` using `fun r hr => by simp [hz, hr]`. Establish `hK : 0 ≤ η⁻¹ ^ 2 * ε * supN w x` using `mul_nonneg (mul_nonneg (by positivity) hε0) hs.le`. Establish `hyz : supN w (y - z) ≤ η⁻¹ ^ 2 * ε * supN w x`. Apply `supN_le w hK` to reduce the goal to its premises. Introduce `r`.
+
+Distinguish the cases in `hr : b r = τ`. Establish `: (y - z) r = 0` using `by simp [hz, hr]`. Rewrite using `[this, map_zero]`. Conclude with `hK`. Establish `: (y - z) r = y r` using `by simp [hz, hr]`.
+
+Rewrite using `[this]`. Conclude with `c1 r hr`. Establish `hQy : Q.mulVec y = x`. Rewrite using `[hyx, Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`. Establish `hQz : Q.mulVec z = x - Q.mulVec (y - z)`.
+
+Rewrite using `[Matrix.mulVec_sub, hQy]`. Normalize the expressions using the abelian group laws. Establish `hsmall : supN w (Q.mulVec (y - z)) < supN w x`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_lt_mul_of_pos_right _ hs` to reduce the goal to its premises.
+
+Conclude with `(div_lt_one (by positivity)).2 hε`. Use `_ = supN w x := one_mul _`. Establish `hQzx : supN w (Q.mulVec z) = supN w x`. Rewrite using `[hQz]`. Conclude with `supN_sub_of_lt hw _ _ hsmall`.
+
+Establish `hzl` using `hlam τ z hz'`. Rewrite `hzl` using `[hQzx]`. Use `⟨hzl, ?_⟩` and prove the remaining obligations. Establish `h5` using `hbound Q (fun i j => (hb i j).2) z`. Rewrite `h5` using `[hQzx]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem core (hw : IsNonarchimedean w) {N g : ℕ} {ι : Type} (H : Matrix (Fin N) (Fin g) K)
     (P Q R : Matrix (Fin N) (Fin N) K) (b : Fin N → ι) (β : Fin g → ι) (χ : ι → K) (lam : ι → ℝ) (η ε : ℝ)
     (hη : 0 < η) (hε : ε < η ^ 3) (hPQ : P * Q = 1) (hb : ∀ i j, w (P i j) ≤ η⁻¹ ∧ w (Q i j) ≤ η⁻¹)
@@ -235,6 +313,15 @@ variable (hw : IsNonarchimedean w) {N g : ℕ} {ι : Type} (H : Matrix (Fin N) (
       supN w (R.mulVec (H.mulVec u) - H.mulVec fun l => χ (β l) * u l) ≤ ε)
 include hw hη hε hPQ hb hD hsep hlam happ
 
+/- English proof (translation)
+Take `⟨c1, c2, c3⟩` from `core hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ τ u hu`. Rewrite using `[← c2]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `supN_le w (supN_nonneg w _)` to reduce the goal to its premises. Introduce `r`.
+
+Distinguish the cases in `hr : b r = τ`. Use `le_supN w (fun r => if b r = τ then (P * H).mulVec u r else 0) r` as an intermediate fact. Simplify `this` using `[hr]`. Use `(c1 r hr).trans (le_trans ?_ c3)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (supN_nonneg w _)` to reduce the goal to its premises.
+
+Establish `e : η⁻¹ ^ 2 * ε = ε / η ^ 2` using `by rw [div_eq_mul_inv, inv_pow]; ring`. Rewrite using `[e, div_le_iff₀ (by positivity)]`. Establish `: η ^ 3 = η * η ^ 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `supN_le w (supN_nonneg w _)` to reduce the goal to its premises.
+
+Introduce `r`. Distinguish the cases in `hr : b r = τ`. Simplify `le_supN w ((P * H).mulVec u) r` using `[hr]`. Simplify using `only [hr, if_false, map_zero]`. Conclude with `supN_nonneg w _`.
+-/
 theorem eq_kind (τ : ι) (u : Fin g → K) (hu : ∀ l, β l ≠ τ → u l = 0) :
     supN w ((P * H).mulVec u) = lam τ * supN w (H.mulVec u) := by
   obtain ⟨c1, c2, c3⟩ := core hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ τ u hu
@@ -258,6 +345,29 @@ theorem eq_kind (τ : ι) (u : Fin g → K) (hu : ∀ l, β l ≠ τ → u l = 0
     · simp only [hr, if_false, map_zero]
       exact supN_nonneg w _
 
+/- English proof (translation)
+Set `S : Finset ι` to `insert τ (Finset.univ.image β)`. Set `uk : ι → Fin g → K` to `fun σ l => if β l = σ then u l else 0`. Set `f : ι → ℝ` to `fun σ => supN w (fun r => if b r = σ then (P * H).mulVec (uk σ) r else 0)`. Establish `hcore` using `fun σ => core hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ σ (uk σ) (fun l hl => by simp [uk, hl])`. Take `⟨σ0, hσ0, hmax⟩` from `S.exists_max_image f ⟨τ, Finset.mem_insert_self _ _⟩`.
+
+Use `show lam τ * supN w (H.mulVec (uk τ)) ≤ _`. Rewrite using `[← (hcore τ).2.1]`. Use `(hmax τ (Finset.mem_insert_self _ _)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hf : f σ0 ≤ 0`. Conclude with `hf.trans (supN_nonneg w _)`.
+
+Use `push_neg at hf`. Take `⟨r0, hr0⟩` from `exists_eq_supN w hf`. Establish `hb0 : b r0 = σ0`. Assume the negation of the conclusion as `h`. Simplify using `only [h, if_false, map_zero] at hr0`.
+
+Conclude with `absurd hr0 hf.ne`. Establish `hy0 : w ((P * H).mulVec (uk σ0) r0) = f σ0` using `by simpa [hb0] using hr0`. Establish `hdec : u = ∑ σ ∈ S, uk σ`. Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [uk]`. Rewrite using `[Finset.sum_ite_eq S (β l) (fun _ => u l)]`. Simplify using `[S]`. Establish `hsum : (P * H).mulVec u r0 = (P * H).mulVec (uk σ0) r0 + ∑ σ ∈ S.erase σ0, (P * H).mulVec (uk σ) r0` using `by conv_lhs => rw [hdec]`. Rewrite using `[Matrix.mulVec_sum, Finset.sum_apply, ← Finset.add_sum_erase _ _ hσ0]`.
+
+Establish `herr : w (∑ σ ∈ S.erase σ0, (P * H).mulVec (uk σ) r0) < f σ0`. Apply `sum_lt_of_nonarch hw _ _ hf` to reduce the goal to its premises. Introduce `σ hσ`. Establish `hne : b r0 ≠ σ` using `by rw [hb0]; exact (Finset.ne_of_mem_erase hσ).symm`. Establish `h1` using `(hcore σ).1 r0 hne`.
+
+Establish `h3` using `(hcore σ).2.2`. Establish `h4` using `hmax σ (Finset.mem_of_mem_erase hσ)`. Establish `hs0 : 0 ≤ supN w (H.mulVec (uk σ))` using `supN_nonneg w _`. Break down `hs0.eq_or_lt with h | h` into its components or cases. Rewrite `h1` using `[← h, mul_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: η⁻¹ ^ 2 * ε * supN w (H.mulVec (uk σ)) < η * supN w (H.mulVec (uk σ))`. Apply `mul_lt_mul_of_pos_right _ h` to reduce the goal to its premises. Establish `e : η⁻¹ ^ 2 * ε = ε / η ^ 2` using `by rw [div_eq_mul_inv, inv_pow]; ring`. Rewrite using `[e, div_lt_iff₀ (by positivity)]`.
+
+Establish `: η ^ 3 = η * η ^ 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : f σ0 ≤ w ((P * H).mulVec u r0)`. Rewrite using `[hsum, ← hy0]`.
+
+Establish `h6` using `hw ((P * H).mulVec (uk σ0) r0 + ∑ σ ∈ S.erase σ0, (P * H).mulVec (uk σ) r0) (-(∑ σ ∈ S.erase σ0, (P * H).mulVec (uk σ) r0))`. Rewrite `h6` using `[add_neg_cancel_right, w.map_neg]`. Break down `le_max_iff.1 h6 with h | h` into its components or cases. Conclude with `h`. Rewrite `h`, the goal using `[hy0]`.
+
+Conclude with `absurd h (not_le.2 herr)`. Conclude with `key.trans (le_supN w _ r0)`.
+-/
 theorem ge_kind (u : Fin g → K) (τ : ι) :
     lam τ * supN w (H.mulVec (fun l => if β l = τ then u l else 0)) ≤ supN w ((P * H).mulVec u) := by
   let S : Finset ι := insert τ (Finset.univ.image β)
@@ -323,6 +433,43 @@ end GlobalTheory.ConstLat.EigenMinor
 
 namespace GlobalTheory.ConstLat.EigenMinor
 
+/- English proof (translation)
+Introduce `K _ w hw N g ι H P Q R b β χ lam η ε hη _ hε hPQ hb hD hsep hlam happ hH`. Establish `hinjH : Function.Injective H.mulVec` using `(GlobalTheory.T.column_minor_norm_inequality w hw H).1.1 hH`. Establish `hQP : Q * P = 1` using `mul_eq_one_comm.1 hPQ`. Establish `hinjPH : Function.Injective (P * H).mulVec`. Introduce `u v huv`.
+
+Apply `hinjH` to reduce the goal to its premises. Establish `h2` using `congrArg Q.mulVec huv`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hQP, Matrix.one_mul] at h2`. Conclude with `h2`. Use `⟨(GlobalTheory.T.column_minor_norm_inequality w hw (P * H)).1.2 hinjPH, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hposH, hminH⟩` from `(GlobalTheory.T.column_minor_norm_inequality w hw H).2 hinjH`. Take `⟨hposPH, hminPH⟩` from `(GlobalTheory.T.column_minor_norm_inequality w hw (P * H)).2 hinjPH`. Establish `hlampos : 0 < lam (β i)`. Establish `hu : ∀ l, β l ≠ β i → (Pi.single i (1 : K) : Fin g → K) l = 0`. Introduce `l hl`.
+
+Establish `: l ≠ i` using `by rintro rfl; exact hl rfl`. Simplify using `[Pi.single_apply, this]`. Take `⟨_, c2, c3⟩` from `core hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ (β i) _ hu`. Establish `hne : H.mulVec (Pi.single i (1 : K)) ≠ 0`. Introduce `h`.
+
+Establish `h'` using `hinjH (h.trans (Matrix.mulVec_zero H).symm)`. Use `congrFun h' i` as an intermediate fact. Simplify using `at this`. Establish `hs : 0 < supN w (H.mulVec (Pi.single i (1 : K)))`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hne (eq_zero_of_supN_le w h)`. Rewrite `c3` using `[c2]`. Use `le_of_mul_le_mul_right c3 hs` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hiIio : i ∉ Finset.Iio i` using `by simp`. Establish `hiblk : i ∉ blkLt β i` using `by simp [blkLt]`. Establish `hIic : insert i (Finset.Iio i) = Finset.Iic i` using `Finset.Iio_insert i`. Establish `hblk : insert i (blkLt β i) = blkLe β i`. Use extensionality with `l`.
+
+Simplify using `only [Finset.mem_insert, blkLt, blkLe, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(rfl | ⟨h1, h2⟩)`. Conclude with `⟨le_rfl, rfl⟩`. Conclude with `⟨h1.le, h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Break down `h1.lt_or_eq with h | h` into its components or cases. Conclude with `Or.inr ⟨h, h2⟩`. Conclude with `Or.inl h`. Take `⟨hle1, u1, hu1i, hu1s, heq1⟩` from `hminPH (Finset.Iio i) i hiIio`.
+
+Take `⟨hle2, u2, hu2i, hu2s, heq2⟩` from `hminH (blkLt β i) i hiblk`. Rewrite `hle1`, `heq1` using `[hIic]`. Rewrite `hle2`, `heq2` using `[hblk]`. Establish `hup : supN w ((P * H).mulVec u1) ≤ lam (β i) * supN w (H.mulVec u2)`. Establish `hv : ∀ l, l ∉ Finset.Iio i → l ≠ i → u2 l = 0`.
+
+Introduce `l hl hne`. Apply `hu2s l _ hne` to reduce the goal to its premises. Simplify using `only [blkLt, Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce and unpack `⟨h, _⟩`. Conclude with `hl (Finset.mem_Iio.2 h)`.
+
+Establish `hk : ∀ l, β l ≠ β i → u2 l = 0`. Introduce `l hl`. Establish `hne : l ≠ i` using `by rintro rfl; exact hl rfl`. Apply `hu2s l _ hne` to reduce the goal to its premises. Simplify using `only [blkLt, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Introduce and unpack `⟨_, h⟩`. Conclude with `hl h`. Establish `h1` using `hle1 u2 hu2i hv`. Rewrite `h1` using `[heq1, eq_kind hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ (β i) u2 hk]`. Conclude with `le_of_mul_le_mul_left h1 (hposPH _)`.
+
+Establish `hlow : lam (β i) * supN w (H.mulVec u2) ≤ supN w ((P * H).mulVec u1)`. Establish `hv : ∀ l, l ∉ blkLt β i → l ≠ i → (fun l => if β l = β i then u1 l else 0) l = 0`. Introduce `l hl hne`. Distinguish the cases in `hβ : β l = β i`. Establish `hlt : ¬ l < i` using `fun h => hl (by simp [blkLt, h, hβ])`.
+
+Simplify using `only [hβ, if_true]`. Conclude with `hu1s l (by simpa using hlt) hne`. Simplify using `[hβ]`. Establish `h1` using `hle2 _ (by simp [hu1i]) hv`. Rewrite `h1` using `[heq2]`.
+
+Establish `h2` using `le_of_mul_le_mul_left h1 (hposH _)`. Conclude with `(mul_le_mul_of_nonneg_left h2 hlampos.le).trans (ge_kind hw H P Q R b β χ lam η ε hη hε hPQ hb hD hsep hlam happ u1 (β i))`. Establish `hab : supN w ((P * H).mulVec u1) = lam (β i) * supN w (H.mulVec u2)` using `le_antisymm hup hlow`. Establish `ha : 0 < supN w ((P * H).mulVec u1)`. Use `hposPH (Finset.Iic i)` as an intermediate fact.
+
+Rewrite `this` using `[heq1]`. Conclude with `pos_of_mul_pos_right this (hposPH _).le`. Establish `hb2 : 0 < supN w (H.mulVec u2)`. Use `hposH (blkLe β i)` as an intermediate fact. Rewrite `this` using `[heq2]`.
+
+Conclude with `pos_of_mul_pos_right this (hposH _).le`. Use `⟨hlampos, ?_⟩` and prove the remaining obligations. Rewrite using `[heq1, heq2, Real.log_mul (hposPH _).ne' ha.ne', Real.log_mul (hposH _).ne' hb2.ne', hab, Real.log_mul hlampos.ne' hb2.ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem graded_minor_log_eigen : ∀ {K : Type} [Field K] (w : AbsoluteValue K ℝ), IsNonarchimedean w → ∀ {N g : ℕ} {ι : Type}
     (H : Matrix (Fin N) (Fin g) K) (P Q R : Matrix (Fin N) (Fin N) K) (b : Fin N → ι) (β : Fin g → ι) (χ : ι → K)
     (lam : ι → ℝ) (η ε : ℝ), 0 < η → η ≤ 1 → ε < η ^ 3 → P * Q = 1 → (∀ i j, w (P i j) ≤ η⁻¹ ∧ w (Q i j) ≤ η⁻¹) →

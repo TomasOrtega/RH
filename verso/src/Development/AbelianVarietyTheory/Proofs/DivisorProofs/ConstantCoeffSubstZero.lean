@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.Katz.PullQuasiLog
 
+/- English proof (translation)
+Use extensionality with `α`. Rewrite using `[coeff_lift, coeff_X, coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lift_X (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : Type} (j : σ) :
     Katz.lift p (X j : MvPowerSeries σ k) = X j := by
   classical
@@ -20,21 +23,45 @@ theorem lift_X (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : T
   rw [coeff_lift, coeff_X, coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `f hf α`. Take `⟨w, hw⟩` from `hf α`. Conclude with `⟨c * w, by rw [hw, one_mul]⟩`.
+-/
 theorem intBy_le_one (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : Type}
     (c : WittVector p k) : intBy p k σ c ≤ intBy p k σ 1 := by
   intro f hf α
   obtain ⟨w, hw⟩ := hf α
   exact ⟨c * w, by rw [hw, one_mul]⟩
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha hf`.
+-/
 theorem constantCoeff_subst_zero {R : Type} [CommRing R] {σ τ : Type} [Finite σ]
     {a : σ → MvPowerSeries τ R} (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ R}
     (hf : constantCoeff f = 0) : constantCoeff (subst a f) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha hf
 
+/- English proof (translation)
+Introduce `s` and use `by cases s <;> simp [hu, hv]`.
+-/
 theorem elim_const {R : Type} [CommRing R] {d : ℕ} {τ : Type} {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
     ∀ s, constantCoeff (Sum.elim u v s) = 0 := fun s => by cases s <;> simp [hu, hv]
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ d e ν hν f hf`. Establish `hf' : f ∈ quasiInt p k (Fin e) ∧ cob1 (fun i => lift p (ν i)) f ∈ intBy p k _ 1` using `hf`. Establish `hred` using `fun (σ : Type) => GlobalTheory.T.mvPowerSeries_reduction_mod_prime_rules p k σ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun j => Katz.lift p (X j : MvPowerSeries (Fin e) k)) = X` using `funext fun j => lift_X p j`.
+
+Rewrite using `[this, subst_self]`. Both sides reduce to the same expression. Introduce `d' φ ψ hφ hψ`. Establish `hΦ : ∀ j, constantCoeff (lift p (φ j)) = 0` using `fun j => constantCoeff_lift p (hφ j)`. Establish `hΨ : ∀ j, constantCoeff (lift p (ψ j)) = 0` using `fun j => constantCoeff_lift p (hψ j)`.
+
+Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hΨ) (hasSubst_of_constantCoeff_zero hΦ)]`. Apply `intBy_le_one p (p : WittVector p k)` to reduce the goal to its premises. Use `GlobalTheory.T.subst_sub_subst_integral_of_integral_differential p k (Fin e) (Fin d') _ _ (fun l => subst φ (ψ l)) f (fun l => constantCoeff_lift p (constantCoeff_subst_zero hφ (hψ l))) (fun l => constantCoeff_subst_zero hΦ (hΨ l)) (fun l => (hred (Fin d')).2.2.1 _) (fun l => (Gl …` and prove the remaining obligations. Introduce `φ ψ hφ hψ set Φ : Fin e → MvPowerSeries (Fin d) (Fr p k) := fun l => lift p (φ l) with hΦdef set Ψ : Fin e → MvPowerSeries (Fin d) (Fr p k) := fun l => lift p (ψ l) with hΨdef`. Establish `hΦ : ∀ j, constantCoeff (Φ j) = 0` using `fun j => constantCoeff_lift p (hφ j)`.
+
+Establish `hΨ : ∀ j, constantCoeff (Ψ j) = 0` using `fun j => constantCoeff_lift p (hψ j)`. Establish `hL : ∀ i, constantCoeff (lift p (ν i)) = 0` using `fun i => constantCoeff_lift p (hν.const i)`. Establish `hcalc` using `GlobalTheory.T.powerSeriesEvalTwoGroups_rules (Fr p k) e (Fin d) (Fin d) Φ Ψ hΦ hΨ`. Establish `hredE : ∀ s, Red p (Sum.elim Φ Ψ s) (Sum.elim φ ψ s)` using `fun s => by`. Apply the tactic sequence `cases s <;> exact (hred (Fin d)).2.2.1 _`.
+
+Establish `hsub` using `GlobalTheory.T.isIntegralReducingToMvPowerSeries_subst p k (Fin e ⊕ Fin e) (Fin d) (Sum.elim Φ Ψ) (Sum.elim φ ψ) (elim_const hΦ hΨ) hredE`. Establish `hcob : at2 (cob1 (fun i => lift p (ν i)) f) Φ Ψ =`. Substitute `(op (fun i => lift p (ν i)) Φ Ψ) f - subst Φ f - subst Ψ f := by` using the available equality. Unfold `cob1`. Rewrite using `[(hcalc.2.2.1 _ _).2, (hcalc.2.2.1 _ _).2, hcalc.1, hcalc.2.1, hcalc.2.2.2.2.2.1 e _ hL f]`.
+
+Both sides reduce to the same expression. Establish `h1 : at2 (cob1 (fun i => lift p (ν i)) f) Φ Ψ ∈ intBy p k (Fin d) 1` using `hsub.2 1 _ hf'.2`. Establish `h2 : subst (fun l => lift p (op ν φ ψ l)) f - subst (op (fun i => lift p (ν i)) Φ Ψ) f ∈ intBy p k (Fin d) 1`. Apply `intBy_le_one p (p : WittVector p k)` to reduce the goal to its premises. Use `GlobalTheory.T.subst_sub_subst_integral_of_integral_differential p k (Fin e) (Fin d) _ _ (op ν φ ψ) f (fun l => constantCoeff_lift p (constantCoeff_subst_zero (elim_const hφ hψ) (hν.const l))) (fun l => constantCoeff_subst_zero (elim_const hΦ hΨ) (hL l)) (fun l => (hred (Fin d)). …` and prove the remaining obligations.
+
+Use `add_mem h2 h1` as an intermediate fact. Rewrite `this` using `[hcob]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (d e : ℕ) (ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k) (hν : IsLaw ν), ∀ f ∈ quasiLog p hν, subst (fun j => Katz.lift p (X j : MvPowerSeries (Fin e) k)) f = f ∧ (∀ (d' : ℕ) (φ : Fin d → MvPowerSeries (Fin d') k) (ψ : Fin e → MvPowerSeries (Fin d) k), (∀ j, constantCoeff (φ j) = 0) → (∀ j, constantCoeff (ψ j) = 0) → subst (fun l => Katz.lift p (subst φ (ψ l))) f - subst (fun j => Katz.lift p (φ j)) (subst (fun l => Katz.lift p (ψ l)) f) ∈ intBy p k (Fin d') 1) ∧ ∀ φ ψ : Fin e → MvPowerSeries (Fin d) k, (∀ j, constantCoeff (φ j) = 0) → (∀ j, constantCoeff (ψ j) = 0) → subst (fun l => Katz.lift p (op ν φ ψ l)) f - subst (fun l => Katz.lift p (φ l)) f - subst (fun l => Katz.lift p (ψ l)) f ∈ intBy p k (Fin d) 1 := by
   intro p _ k _ _ _ d e ν hν f hf
   have hf' : f ∈ quasiInt p k (Fin e) ∧ cob1 (fun i => lift p (ν i)) f ∈ intBy p k _ 1 := hf

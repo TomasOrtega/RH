@@ -14,6 +14,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CoverGenPt
 
+/- English proof (translation)
+Establish `key (W : Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X`. Use `(genericPoint_spec W.G).image W.π.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, W.π.surjective.range_eq, closure_univ]`. Conclude with `this.eq (genericPoint_spec _)`. Take `⟨U, hU, e⟩` from `isDiscrete_iff_forall_exists_isOpen.mp (V.π.isDiscrete_preimage_singleton (genericPoint Y.X)) (g (genericPoint V'.G)) (by rw [Set.mem_preimage, ← Scheme.Hom.comp_apply, h, key]; rfl)`.
+
+Establish `h₁ : g (genericPoint V'.G) ∈ U` using `(e.ge rfl).1`. Conclude with `(e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm`.
+-/
 theorem fibre_map_genericPoint {F : Type} [Field F] [NumberField F] {Y : Var F} {V' V : Cover Y} (g : V'.G ⟶ V.G)
     (h : g ≫ V.π = V'.π) : g (genericPoint V'.G) = genericPoint V.G := by
   have key (W : Cover Y) : W.π (genericPoint W.G) = genericPoint Y.X := by
@@ -25,6 +30,9 @@ theorem fibre_map_genericPoint {F : Type} [Field F] [NumberField F] {Y : Var F} 
   have h₁ : g (genericPoint V'.G) ∈ U := (e.ge rfl).1
   exact (e.le ⟨(genericPoint_specializes _).mem_open hU h₁, key V⟩).symm
 
+/- English proof (translation)
+Introduce `F _ _ Y V V' π h`. Take `⟨g, h₁, h₂⟩` from `h`. Use `specializes_of_eq ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CoverDeg.j_genericPoint V', ← Scheme.Hom.comp_apply, ← h₁, Scheme.Hom.comp_apply, fibre_map_genericPoint g h₂, GlobalTheory.CoverDeg.j_genericPoint V]`.
+-/
 theorem lies_genericPoint_specializes : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V V' : Cover Y) (π : V'.X ⟶ V.X), Lies V' V π → π (genericPoint V'.X) ⤳ genericPoint V.X := by
   intro F _ _ Y V V' π h
   obtain ⟨g, h₁, h₂⟩ := h

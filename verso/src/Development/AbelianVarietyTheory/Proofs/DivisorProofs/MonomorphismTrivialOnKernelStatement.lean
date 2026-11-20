@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KernelThickening.kernel_trivial_of_nilpotent | exact GlobalTheory.KernelThickening.kernel_trivial_of_nilpotent | (intros; apply GlobalTheory.KernelThickening.kernel_trivial_of_nilpotent <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.monomorphism_trivial_on_kernel : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π →
     (∃ N : ℕ, RingHom.ker π ^ N = ⊥) → ∀ (A : Over (Sp R)) [GrpObj A], IsProper A.hom →
     ∀ (n : ℕ) (D : Over (Sp R)) [GrpObj D], IsSeparated D.hom → ∀ (x : Fin n → (A ⟶ D)), (∀ j, IsMonHom (x j)) →

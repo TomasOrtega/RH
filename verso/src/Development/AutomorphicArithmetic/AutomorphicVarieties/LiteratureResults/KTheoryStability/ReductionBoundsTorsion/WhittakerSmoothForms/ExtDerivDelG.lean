@@ -12,6 +12,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {Γ : Type} [Grou
 
 variable (U : Set V) (A : Γ →* (V →L[ℝ] V)) (φ : V → ℝ)
 
+/- English proof (translation)
+Establish `e : delG n β σ = fun x => ∑ i ∈ Finset.range (n + 2), (-1 : ℝ) ^ i • β (skip i σ) x`. Use function extensionality and compare the values at `x`. Simplify using `[delG, Finset.sum_apply]`. Rewrite using `[e, extDeriv, fderiv_fun_sum (A := fun i y => (-1 : ℝ) ^ i • β (skip i σ) y) (fun i _ => (hd i).const_smul ((-1 : ℝ) ^ i))]`. Simplify using `only [fderiv_fun_const_smul (hd _), delG, Finset.sum_apply, Pi.smul_apply, extDeriv, ← ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply, map_sum, map_smul]`.
+-/
 theorem extDeriv_delG (n : ℕ) {q : ℕ} (β : (ℕ → Γ) → V → V [⋀^Fin q]→L[ℝ] ℝ) (σ : ℕ → Γ) (h : V)
     (hd : ∀ i, DifferentiableAt ℝ (β (skip i σ)) h) :
     delG n (fun τ => extDeriv (β τ)) σ h = extDeriv (delG n β σ) h := by
@@ -22,6 +25,19 @@ theorem extDeriv_delG (n : ℕ) {q : ℕ} (β : (ℕ → Γ) → V → V [⋀^Fi
   simp only [fderiv_fun_const_smul (hd _), delG, Finset.sum_apply, Pi.smul_apply, extDeriv,
     ← ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply, map_sum, map_smul]
 
+/- English proof (translation)
+Introduce `H k c hc j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ σ h _`. Use extensionality with `v`.
+
+Simplify using `only [delG, Finset.sum_apply, Pi.smul_apply, eta_zero, ContinuousAlternatingMap.sum_apply, ContinuousAlternatingMap.smul_apply, ContinuousAlternatingMap.constOfIsEmpty_apply, ContinuousAlternatingMap.coe_zero, Pi.zero_apply, smul_eq_mul, Nat.sub_zero]`. Rewrite using `[Finset.sum_range]`. Use `(Finset.sum_congr rfl fun i _ => ?_).trans (hc.coc fun l => σ l)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `l`.
+
+Conclude with `skip_succAbove σ i l`. Consider the case `succ j ih`. Introduce `hj σ h hh`. Establish `hj' : j ≤ k + 1` using `by omega`. Establish `e1 : k + 1 - (j + 1) = k - j` using `by omega`.
+
+Rewrite using `[e1]`. Establish `e2 : delG (k - j) (eta A φ c (j + 1)) σ h = delG (k - j) (fun τ => extDeriv (Kf A φ (eta A φ c j) τ)) σ h` using `rfl`. Rewrite using `[e2, extDeriv_delG (k - j) (Kf A φ (eta A φ c j)) σ h (fun i => ((hS H k c j _).2.contDiffAt (H.isOpen.mem_nhds hh)).differentiableAt (by simp))]`. Establish `hev : delG (k - j) (Kf A φ (eta A φ c j)) σ =ᶠ[𝓝 h] eta A φ c j σ` using `by filter_upwards [H.isOpen.mem_nhds hh] with x hx`. Rewrite using `[hH H j (k - j) (eta A φ c j) σ x hx]`.
+
+Establish `h0 : Kf A φ (delG (k - j + 1) (eta A φ c j)) σ x = 0`. Unfold `Kf`. Establish `e3 : k - j + 1 = k + 1 - j` using `by omega`. Simplify using `only [e3, ih hj' _ x hx, smul_zero, finsum_zero]`. Rewrite using `[h0, sub_zero]`.
+
+Rewrite using `[hev.extDeriv_eq]`. Conclude with `hC H k c j σ h hh`.
+-/
 theorem pCoc (hH : PHom U A φ) (hS : PSmooth U A φ) (hC : PClosed U A φ) :
     PCoc U A φ := by
   intro H k c hc j

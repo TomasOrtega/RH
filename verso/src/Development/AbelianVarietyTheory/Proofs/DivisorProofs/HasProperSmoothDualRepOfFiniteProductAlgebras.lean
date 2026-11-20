@@ -19,6 +19,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualCon.ProdGlue
 
+/- English proof (translation)
+Use `choose B b P hP using h`. Set `Bt : Over S` to `Over.mk (Sigma.desc fun i => (B i).hom)`. Set `j : ∀ i, B i ⟶ Bt` to `fun i => Over.homMk (Sigma.ι (fun i => (B i).left) i) (by simp [Bt])`. Establish `hjl : ∀ i, (j i).left = Sigma.ι (fun i => (B i).left) i` using `fun i => rfl`. Use `haveI : ∀ i, IsOpenImmersion (j i).left := fun i => by rw [hjl]; infer_instance`.
+
+Establish `hjc : ⨆ i, (j i).left.opensRange = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨⟨i, y⟩, rfl⟩` from `(sigmaMk fun i => (B i).left).surjective x`. Rewrite using `[sigmaMk_mk]`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, y, by rw [hjl]⟩`. Establish `hjd : Pairwise fun i i' => Disjoint (j i).left.opensRange (j i').left.opensRange` using `fun i i' hii' => by`. Simplify using `only [hjl]`. Conclude with `disjoint_opensRange_sigmaι _ i i' hii'`. Set `bt : Bt ⟶ X` to `Over.homMk (Sigma.desc fun i => (b i).left ≫ (V i).ι) (by`.
+
+Use `Sigma.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [Bt, Over.mk_hom, colimit.ι_desc_assoc, Cofan.mk_ι_app, Discrete.functor_obj_eq_as, colimit.ι_desc, Category.assoc]`. Conclude with `Over.w (b i))`. Establish `hb : ∀ i, j i ≫ bt = b i ≫ Over.homMk (V i).ι` using `fun i => by ext1; simp [j, bt]`. Establish `hk : ∀ i, IsOpenImmersion (A ◁ j i).left` using `fun i => (GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).1`.
+
+Establish `hkc : ⨆ i, (A ◁ j i).left.opensRange = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : (snd A Bt).left z ∈ ⨆ i, (j i).left.opensRange` using `by rw [hjc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`.
+
+Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z ∈ Set.range (A ◁ j i).left`. Rewrite using `[(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).2]`. Conclude with `hi`. Establish `hkd : Pairwise fun i i' => Disjoint (A ◁ j i).left.opensRange (A ◁ j i').left.opensRange`.
+
+Introduce `i i' hii'`. Rewrite using `[disjoint_iff, eq_bot_iff]`. Introduce and unpack `z ⟨h1, h2⟩`. Express the relevant statement in the definitionally equal form `z ∈ Set.range (A ◁ j i).left at h1`. Express the relevant statement in the definitionally equal form `z ∈ Set.range (A ◁ j i').left at h2`.
+
+Rewrite `h1` using `[(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i)).2]`. Rewrite `h2` using `[(GlobalTheory.T.isOpenImmersion_whiskerLeft_range_preimage_snd A (j i')).2]`. Conclude with `(disjoint_iff.1 (hjd hii')).le ⟨h1, h2⟩`. Take `⟨d, hd⟩` from `GlobalTheory.T.exists_cechPicard_glue_finite_disjoint_cover (fun i => (A ◁ j i).left) hkc hkd (fun i => cls (P i) (hP i).1.fam.isLB)`. Take `⟨Pt, hPt, rfl⟩` from `cls_surj d`.
+
+Establish `hPi : ∀ i, LBIso (Pt.pull (A ◁ j i).left) (P i)` using `fun i => (cls_eq_iff (pull_isLB hPt _) (hP i).1.fam.isLB).1 ((cls_pull hPt _ _).trans (hd i))`. Use `⟨Bt, bt, Pt, ⟨GlobalTheory.T.additiveLineBundleFamily_of_disjoint_open_pieces A Bt B j hjc hjd P Pt (fun i => (hP i).1.fam) hPt hPi, fun T t N hN => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxN⟩` from `GlobalTheory.T.exists_point_disjointUnion_representingAdditiveFamily A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T t N hN`. Use `⟨x, ⟨hx, hxN⟩, fun y hy => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.point_disjointUnion_representingFamily_unique A X V hcov hdisj Bt B j hjc hjd b bt hb P Pt (fun i => (hP i).1) hPt hPi T y x (hy.1.trans hx.symm) ?_` and prove the remaining obligations.
+
+Rewrite using `[Same, ← cls_eq_iff (pull_isLB hPt _) (pull_isLB hPt _), ← (cls_eq_iff hN.isLB (pull_isLB hPt _)).2 hy.2, ← (cls_eq_iff hN.isLB (pull_isLB hPt _)).2 hxN]`. Conclude with `GlobalTheory.T.properSmoothGeomConnected_sigmaDesc_disjoint_cover V hcov hdisj (fun i => (b i).left) g (fun i => (hP i).2.1)`. Conclude with `GlobalTheory.T.finiteSetsInAffineOpen_finite_coproduct (fun i => (B i).left) (fun i => (hP i).2.2)`.
+-/
 theorem hasRepAF_of_disjoint_cover {S : Scheme.{0}} (A : Over S) [GrpObj A] (g : ℕ) {κ : Type} [Finite κ] (X : Over S)
     (V : κ → X.left.Opens) (hcov : ⨆ i, V i = ⊤) (hdisj : Pairwise fun i i' => Disjoint (V i) (V i'))
     (h : ∀ i, HasRepAF A g (Over.mk ((V i).ι ≫ X.hom))) : HasRepAF A g X := by
@@ -74,6 +95,9 @@ theorem hasRepAF_of_disjoint_cover {S : Scheme.{0}} (A : Over S) [GrpObj A] (g :
   · exact GlobalTheory.T.properSmoothGeomConnected_sigmaDesc_disjoint_cover V hcov hdisj (fun i => (b i).left) g (fun i => (hP i).2.1)
   · exact GlobalTheory.T.finiteSetsInAffineOpen_finite_coproduct (fun i => (B i).left) (fun i => (hP i).2.2)
 
+/- English proof (translation)
+Introduce `R _ A _ g _ n D _ _ h`. Take `⟨V, hcov, hdisj, he⟩` from `GlobalTheory.T.spec_pi_disjoint_open_cover_factors R n D`. Conclude with `hasRepAF_of_disjoint_cover A g (Over.mk (spMap (algebraMap R (∀ i, D i)))) V hcov hdisj (fun i => GlobalTheory.T.hasProperSmoothDualRepresentativeFinAffine_of_iso A g (he i).some.symm (h i))`.
+-/
 theorem hasRepAF_pi : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → ∀ (n : ℕ) (D : Fin n → Type) [∀ i, CommRing (D i)] [∀ i, Algebra R (D i)], (∀ i, HasRepAF A g (Over.mk (spMap (algebraMap R (D i))))) → HasRepAF A g (Over.mk (spMap (algebraMap R (∀ i, D i)))) := by
   intro R _ A _ g _ n D _ _ h
   obtain ⟨V, hcov, hdisj, he⟩ := GlobalTheory.T.spec_pi_disjoint_open_cover_factors R n D

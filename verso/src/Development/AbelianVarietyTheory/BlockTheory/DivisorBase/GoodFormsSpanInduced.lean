@@ -64,10 +64,16 @@ def IsLift (V : HSp D) {r : ℕ} (hr : V.rank = r) (β : GL (Fin r) (Lev.EAf D))
 
 variable {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold Lev.actG0; split_ifs <;> simp [mul_add]`.
+-/
 theorem actG0_add (g : Formalism.L2.DIV.G0 L.Pg L.r) (F F' : GA D V → ℂ) (h : GA D V) :
     Lev.actG0 V β L g (F + F') h = Lev.actG0 V β L g F h + Lev.actG0 V β L g F' h := by
   unfold Lev.actG0; split_ifs <;> simp [mul_add]
 
+/- English proof (translation)
+Unfold `Lev.actG0`. Use `split_ifs`. Conclude with `mul_left_comm _ _ _`. Conclude with `(mul_zero a).symm`.
+-/
 theorem actG0_smul (g : Formalism.L2.DIV.G0 L.Pg L.r) (a : ℂ) (F : GA D V → ℂ) (h : GA D V) :
     Lev.actG0 V β L g (a • F) h = a * Lev.actG0 V β L g F h := by
   unfold Lev.actG0
@@ -180,17 +186,30 @@ def GoodFormsSpan : Prop :=
       LevSpanAt σ (T.V j _) (hr _ hσ) (laU (T.U j _) (wtA w) w.n) (rdC (T.U j) _ (wtA w) w.n) (T.dict j _)
         (muPin (T.V j _) (T.dict j _) (T.mu j _) (T.cE j _)) β ρ chi P e
 
+/- English proof (translation)
+Use `haveI : ∀ PP : Formalism.L2.DIV.Pl E, Finite (Formalism.L2.DIV.kP PP) := fun PP => Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`. Use `infer_instance`.
+-/
 example {E : Type} [Field E] [NumberField E] (Pg : Finset (Formalism.L2.DIV.Pl E)) (r : ℕ) : Finite (Formalism.L2.DIV.G0 Pg r) := by
   haveI : ∀ PP : Formalism.L2.DIV.Pl E, Finite (Formalism.L2.DIV.kP PP) := fun PP =>
     Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
   infer_instance
 
+/- English proof (translation)
+Use `show (levelAt σ P).conj = _`. Unfold `levelAt Formalism.L2.DIV.LevelP.conj`. Use `congr 1`.
+-/
 example {D : D7} {LL : Type} [Field LL] (V : HSp D) {r : ℕ} (hr : V.rank = r) {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (σ : LL →+* ℂ) (P : Formalism.L2.DIV.LevelP Pg r LL) : (datW V hr Pg (levelAt σ P)).P = levelAt σ P.conj := by
   show (levelAt σ P).conj = _
   unfold levelAt Formalism.L2.DIV.LevelP.conj
   congr 1
 
+/- English proof (translation)
+Establish `h1 : algProj (LL` using `LL) ρ chi 1 = LinearMap.id := by`. Unfold `algProj`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using `[MonoidAlgebra.one_def, Module.End.one_eq_id]`. Introduce `g _ hg`.
+
+Simplify using `[MonoidAlgebra.one_def, Finsupp.single_apply, hg.symm]`. Simplify using the standard rewrite rules. Establish `h2 : algType (LL` using `LL) ρ chi ⊥ 1 = ⊤ := by`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Simplify using `only [algType, Submodule.mem_iInf, LinearMap.mem_eqLocus]`. Introduce and unpack `⟨p, hp⟩`. Take `rfl` from `Subgroup.mem_bot.1 hp`. Simplify using the standard rewrite rules. Simplify using `[algGood, h1, h2]`.
+-/
 example {K LL : Type} [Field K] [Field LL] [NumberField LL] [Algebra K LL] {C : Type} [AddCommGroup C] [Module K C]
     {G : Type} [Group G] [Fintype G] (ρ : G →* (C →ₗ[K] C)) (chi : G →* Kˣ) :
     algGood (LL := LL) ρ chi ⊥ 1 1 = ⊤ := by

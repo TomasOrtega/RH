@@ -7,12 +7,70 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.LocalForm
 
+/- English proof (translation)
+Introduce `j z hz`. Conclude with `(analyticAt_pi_iff.1 ((hψ j).1 z hz)) i`.
+-/
 theorem holoOn_coord {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (hψ : IsCompatChart A ψ) (i : Fin e) :
     A.HoloOn ψ.source (fun y => ψ y i) := by
   intro j z hz
   exact (analyticAt_pi_iff.1 ((hψ j).1 z hz)) i
 
+/- English proof (translation)
+Introduce `e X _ A L s nb m W hsnc x`. Take `⟨ψ, hψ, hxψ, hψU, σ, hinj, -, u, hu, hu0, hs⟩` from `hsnc x`. Take `⟨c, hc⟩ : ∃ c, c = ψ x` from `⟨_, rfl⟩`. Establish `hev : ∀ᶠ z in 𝓝 c, z ∈ ψ.target ∧ ∀ i, c i ≠ 0 → z i ≠ 0`. Establish `h1 : ∀ᶠ z in 𝓝 c, z ∈ ψ.target` using `ψ.open_target.mem_nhds (hc ▸ ψ.map_source hxψ)`.
+
+Use `h1.and ?_` and prove the remaining obligations. Rewrite using `[eventually_all]`. Introduce `i`. Distinguish the cases in `h : c i = 0`. Simplify using `[h]`.
+
+Use `filter_upwards [((continuous_apply i).continuousAt (x := c)).eventually_ne h] with z hz _`. Conclude with `hz`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hV : IsOpen (ψ.source ∩ ψ ⁻¹' Metric.ball c r)` using `ψ.continuousOn.isOpen_inter_preimage ψ.open_source Metric.isOpen_ball`. Establish `hrC : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+
+Establish `ha : (3 / r : ℂ) ≠ 0` using `by simpa using hrC`. Take `⟨φ, hφ⟩ : ∃ φ, φ = (ψ.restrOpen _ hV).transHomeomorph (pa_aff (3 / r : ℂ) ha c)` from `⟨_, rfl⟩`. Establish `hφc : IsCompatChart A φ` using `hφ ▸ pa_compat_aff A _ (pa_compat_restr A _ hψ _ hV) _ ha _`. Establish `hsrc : ∀ y ∈ φ.source, y ∈ ψ.source ∧ ψ y ∈ Metric.ball c r`. Introduce `y hy`.
+
+Substitute `hφ` using the available equality. Conclude with `⟨hy.1, hy.2.2⟩`. Establish `hφapp : ∀ y, φ y = (3 / r : ℂ) • (ψ y - c)`. Introduce `y`. Substitute `hφ` using the available equality.
+
+Both sides reduce to the same expression. Establish `hxφ : x ∈ φ.source`. Substitute `hφ` using the available equality. Use `⟨hxψ, hxψ, ?_⟩` and prove the remaining obligations. Use `show ψ x ∈ Metric.ball c r`.
+
+Rewrite using `[← hc]`. Conclude with `Metric.mem_ball_self hr`. Establish `htarget : Metric.closedBall (0 : Fin e → ℂ) 2 ⊆ φ.target`. Introduce `z hz`. Substitute `hφ` using the available equality.
+
+Use `set w : Fin e → ℂ := (3 / r : ℂ)⁻¹ • z + c with hw`. Establish `hwb : w ∈ Metric.ball c r`. Rewrite using `[Metric.mem_ball, dist_eq_norm, hw, add_sub_cancel_right, norm_smul]`. Establish `hz' : ‖z‖ ≤ 2` using `by simpa using hz`. Establish `: ‖(3 / r : ℂ)⁻¹‖ = r / 3`.
+
+Rewrite using `[norm_inv, norm_div, Complex.norm_real, Real.norm_of_nonneg hr.le]`. Evaluate the numerical expressions. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hwT : w ∈ ψ.target` using `(hball _ hwb).1`.
+
+Establish `hmem : w ∈ (ψ.restrOpen _ hV).target` using `⟨hwT, ψ.map_target hwT, by simpa [ψ.right_inv hwT] using hwb⟩`. Conclude with `hmem`. Set `g : Fin nb → X → ℂ` to `fun k y => (σ k).elim 1 (fun i => ψ y i ^ m k)`. Establish `hg : ∀ k y, (match σ k with`. Consider the case `some i => ψ y i ^ m k`.
+
+Consider the case `none => 1) = g k y := by`. Introduce `k y`. Simplify using `only [g]`. Apply the tactic sequence `cases σ k <;> rfl`. Establish `hgholo : ∀ k, A.HoloOn ψ.source (g k)`.
+
+Introduce `k j z hz`. Simplify using `only [g]`. Consider the cases of `σ k with`. Consider the case `none => exact analyticAt_const`. Consider the case `some i => exact (holoOn_coord A ψ hψ i j z hz).pow (m k)`.
+
+Set `K : Finset (Fin nb)` to `Finset.univ.filter (fun k => ∃ i, σ k = some i ∧ c i = 0 ∧ 1 ≤ m k)`. Set `S : Finset (Fin e)` to `Finset.univ.filter (fun i => c i = 0 ∧ ∃ k, σ k = some i ∧ 1 ≤ m k)`. Set `μ : Fin e → ℕ` to `fun i => ∑ k, if σ k = some i then m k else 0`. Establish `hμ : ∀ k i, σ k = some i → μ i = m k`. Introduce `k i hk`.
+
+Use `(Finset.sum_eq_single k (fun b _ hb => if_neg fun h => hb (hinj _ _ i h hk)) (by simp)).trans (if_pos hk)` and prove the remaining obligations. Establish `hKS : ∀ y, ∏ k ∈ K, g k y = ∏ i ∈ S, ψ y i ^ μ i`. Introduce `y`. Use `Finset.prod_bij (fun k hk => Classical.choose (Finset.mem_filter.1 hk).2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk`.
+
+Take `⟨h1, h2, h3⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk).2`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, h2, k, h1, h3⟩`. Introduce `k hk k' hk' hkk`. Take `⟨h1, -, -⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk).2`. Take `⟨h1', -, -⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk').2`.
+
+Conclude with `hinj k k' _ h1 (hkk ▸ h1')`. Introduce `i hi`. Take `⟨-, h0, k, hk, hm⟩` from `Finset.mem_filter.1 hi`. Establish `hkK : k ∈ K` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, i, hk, h0, hm⟩`. Use `⟨k, hkK, ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, -, -⟩` from `Classical.choose_spec (Finset.mem_filter.1 hkK).2`. Conclude with `Option.some.inj (h1.symm.trans hk)`. Introduce `k hk`. Take `⟨h1, -, -⟩` from `Classical.choose_spec (Finset.mem_filter.1 hk).2`. Establish `key : ∀ i, σ k = some i → g k y = ψ y i ^ μ i`.
+
+Introduce `i hi`. Simplify using `only [g]`. Rewrite using `[hi, hμ k i hi]`. Both sides reduce to the same expression. Conclude with `key _ h1`.
+
+Set `T : Finset (Fin nb)` to `Finset.univ.filter (fun k => ¬ ∃ i, σ k = some i ∧ c i = 0 ∧ 1 ≤ m k)`. Set `C : ℂ` to `((r : ℂ) / 3) ^ (∑ i ∈ S, μ i)`. Establish `hC : C ≠ 0` using `pow_ne_zero _ (div_ne_zero hrC (by norm_num))`. Use `⟨φ, S, μ, fun y => u y * C * ∏ k ∈ T, g k y, hφc, hxφ, htarget, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hφapp, ← hc, sub_self, smul_zero]`.
+
+Conclude with `fun y hy => hψU (hsrc y hy).1`. Introduce `i hi`. Take `⟨-, -, k, hk, hm⟩` from `Finset.mem_filter.1 hi`. Rewrite using `[hμ k i hk]`. Conclude with `hm`.
+
+Introduce `j z hz`. Establish `hz' : z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' ψ.source` using `⟨hz.1, (hsrc _ hz.2).1⟩`. Conclude with `((hu j z hz').mul analyticAt_const).mul (Finset.analyticAt_fun_prod _ fun k _ => hgholo k j z hz')`. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `hsrc y hy`.
+
+Use `mul_ne_zero (mul_ne_zero (hu0 y hy1) hC) (Finset.prod_ne_zero_iff.2 ?_)` and prove the remaining obligations. Introduce `k hk`. Establish `hk'` using `(Finset.mem_filter.1 hk).2`. Simplify using `only [g]`. Consider the cases of `hσ : σ k with`.
+
+Consider the case `none => exact one_ne_zero`. Consider the case `some i`. Distinguish the cases in `hm : m k = 0`. Simplify using `[hm]`. Establish `hci : c i ≠ 0` using `fun h0 => hk' ⟨i, hσ, h0, Nat.one_le_iff_ne_zero.2 hm⟩`.
+
+Conclude with `pow_ne_zero _ ((hball _ hy2).2 i hci)`. Introduce `y hy`. Take `⟨hy1, -⟩` from `hsrc y hy`. Establish `hcoord : ∀ i ∈ S, ψ y i = ((r : ℂ) / 3) * φ y i`. Introduce `i hi`.
+
+Take `⟨-, h0, -⟩` from `Finset.mem_filter.1 hi`. Rewrite using `[hφapp]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, h0, sub_zero, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hsplit : ∏ k, g k y = (∏ k ∈ K, g k y) * ∏ k ∈ T, g k y` using `(Finset.prod_filter_mul_prod_filter_not _ _ _).symm`.
+
+Establish `hmono : ∏ i ∈ S, ψ y i ^ μ i = C * ∏ i ∈ S, φ y i ^ μ i`. Rewrite using `[Finset.prod_congr rfl (fun i hi => by rw [hcoord i hi, mul_pow]), Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `h2 : s x y = u y * ∏ k, g k y`. Rewrite using `[hs y hy1]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl (fun k _ => hg k y)`. Use `show s x y = u y * C * (∏ k ∈ T, g k y) * ∏ i ∈ S, φ y i ^ μ i`. Rewrite using `[h2, hsplit, hKS, hmono]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_local_form : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set X), IsSNC A L s m W → ∀ x, ∃ (φ : OpenPartialHomeomorph X (Fin e → ℂ)) (S : Finset (Fin e)) (μ : Fin e → ℕ) (v : X → ℂ), IsCompatChart A φ ∧ x ∈ φ.source ∧ Metric.closedBall (0 : Fin e → ℂ) 2 ⊆ φ.target ∧ φ x = 0 ∧ φ.source ⊆ L.U x ∧ (∀ i ∈ S, 1 ≤ μ i) ∧ A.HoloOn φ.source v ∧ (∀ y ∈ φ.source, v y ≠ 0) ∧ ∀ y ∈ φ.source, s x y = v y * ∏ i ∈ S, φ y i ^ μ i := by
   intro e X _ A L s nb m W hsnc x
   obtain ⟨ψ, hψ, hxψ, hψU, σ, hinj, -, u, hu, hu0, hs⟩ := hsnc x

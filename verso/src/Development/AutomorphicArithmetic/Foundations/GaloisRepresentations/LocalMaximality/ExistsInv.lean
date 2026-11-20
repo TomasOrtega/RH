@@ -13,6 +13,13 @@ end
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Introduce `b hb m hm`. Express the relevant statement in the definitionally equal form `b • m ∈ omB ℂ L B q`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, v, hv, rfl⟩` from `hy`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨b * a, B.mul_mem hb ha, v, hv, by rw [mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 private theorem stab_lemma {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L) (q : ℕ) :
     Stab (Algebra.lsmul ℂ ℂ (DR ℂ L)) B (omB ℂ L B q) := by
   intro b hb m hm
@@ -26,6 +33,11 @@ private theorem stab_lemma {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra 
   | add y z _ _ hy hz => rw [smul_add]; exact Submodule.add_mem _ hy hz
   | smul c y _ hy => rw [smul_comm]; exact Submodule.smul_mem _ c hy
 
+/- English proof (translation)
+Introduce `c hc`. Simplify using `only [GlobalTheory.PD.Cx.Z, kos, acx, Submodule.mem_inf, Submodule.mem_pi, Set.mem_univ, forall_const, true_implies, LinearMap.mem_ker] at hc ⊢`. Use `⟨fun s => ?_, hc.2⟩` and prove the remaining obligations. Establish `hs` using `hc.1 s`. Use `split_ifs at hs ⊢ with hcard`.
+
+Conclude with `h hs`. Conclude with `hs`.
+-/
 private theorem kos_Z_mono_of_le {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (act : S →ₐ[ℂ] Module.End ℂ E) {κ : Type} [LinearOrder κ] {M M' : Submodule ℂ E}
     (h : M ≤ M') (r : κ → S) (m : ℤ) : (kos act M r).Z m ≤ (kos act M' r).Z m := by
@@ -38,6 +50,33 @@ private theorem kos_Z_mono_of_le {S E : Type} [CommRing S] [Algebra ℂ S] [AddC
   · exact h hs
   · exact hs
 
+/- English proof (translation)
+Introduce `hLG hOm hFT hH hK1 hLR hVB hRB F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 hY κ _ _ r I J hI hr`. Establish `hact : (sysY x j2 d).act = Algebra.lsmul ℂ ℂ (DR ℂ K')` using `rfl`. Establish `hM : (sysY x j2 d).M I J = omB ℂ K' (RY (xv x) j2 I J) d` using `rfl`. Rewrite using `[hact, hM]`. Use `haveI : Algebra.FiniteType ℂ ↥(RY (xv x) j2 I J) := hFT F K K' d x j2 hY I J hI`.
+
+Use `set B := RY (xv x) j2 I J with hB`. Establish `hglob : ∀ (m : ℤ) (c : Finset κ → DR ℂ K'), (∀ e : ↥B →ₐ[ℂ] ℂ, c ∈ (kos (Algebra.lsmul ℂ ℂ (DR ℂ K')) (omB ℂ K' (loc B e) d) r).B m) → c ∈ (kos (Algebra.lsmul ℂ ℂ (DR ℂ K')) (omB ℂ K' B d) r).B m`. Introduce `m c hc`. Use `(hLG K' B (DR ℂ K') κ (fun _ => omB ℂ K' B d) r (fun _ => stab_lemma B d)).1 m c (fun e => ?_)` and prove the remaining obligations. Simplify using `only [(hOm K' B e d).1]`.
+
+Conclude with `hc e`. Establish `hloc : ∀ e : ↥B →ₐ[ℂ] ℂ, ¬ (∀ l, Val B e (r l) 0) → ∃ l, r l ≠ 0 ∧ (r l)⁻¹ ∈ loc B e`. Introduce `e h`. Use `push_neg at h`. Take `⟨l, hl⟩` from `h`.
+
+Take `⟨-, -, hval, hinv⟩` from `hVB K' B e`. Establish `hv` using `hval ⟨r l, hr l⟩`. Establish `hc0 : e ⟨r l, hr l⟩ ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0]`.
+
+Conclude with `hl hv`. Conclude with `⟨l, hinv _ _ hv hc0⟩`. Establish `hle : ∀ e : ↥B →ₐ[ℂ] ℂ, omB ℂ K' B d ≤ omB ℂ K' (loc B e) d` using `fun e => (hOm K' B e d).2.2 _ (hVB K' B e).1`. Establish `hbad : ∀ (m : ℤ) (c : Finset κ → DR ℂ K'), c ∈ (kos (Algebra.lsmul ℂ ℂ (DR ℂ K')) (omB ℂ K' B d) r).Z m → ∀ e : ↥B →ₐ[ℂ] ℂ, ¬ (∀ l, Val B e (r l) 0) → c ∈ (kos (Algebra.lsmul ℂ ℂ (DR ℂ K')) (omB ℂ K' (loc B e) d) r).B m`. Introduce `m c hc e h`.
+
+Take `⟨l, hl0, hlinv⟩` from `hloc e h`. Establish `hIn : InSp (loc B e) r 1`. Use `⟨fun l' => if l' = l then (r l)⁻¹ else 0, fun l' => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hlinv`.
+
+Conclude with `(loc B e).zero_mem`. Simplify using `[ite_mul, hl0]`. Use `hH K' (DR ℂ K') (Algebra.lsmul ℂ ℂ (DR ℂ K')) κ (loc B e) (omB ℂ K' (loc B e) d) r (stab_lemma _ d) m c (kos_Z_mono_of_le _ (hle e) r m hc) 1 hIn` as an intermediate fact. Simplify using `using this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hyp m hm c hc`. Apply `hglob m c` to reduce the goal to its premises. Introduce `e`. Distinguish the cases in `h : ∀ l, Val B e (r l) 0`. Take `⟨e0, hOv, hIn⟩` from `hyp e h`.
+
+Establish `hlocEq : loc B e = loc (rB ℂ K' (xv x) {0}) e0.1` using `hOv.2.1`. Establish `hReg : Reg (Algebra.lsmul ℂ ℂ (DR ℂ K')) (omB ℂ K' (loc B e) d) (tt K' x)`. Rewrite using `[hlocEq]`. Conclude with `hLR F K' d x hY.covY hY.red e0`. Establish `hKE` using `hK1 K' (DR ℂ K') (Algebra.lsmul ℂ ℂ (DR ℂ K')) κ (loc B e) (omB ℂ K' (loc B e) d) r d (tt K' x) (stab_lemma _ d) (fun l => (hVB K' B e).1 (hr l)) hReg (fun j => by rw [hlocEq]; exact hIn j)`.
+
+Conclude with `hKE m hm (kos_Z_mono_of_le _ (hle e) r m hc)`. Conclude with `hbad m c hc e h`. Introduce `m c hc hyp`. Apply `hglob m c` to reduce the goal to its premises. Introduce `e`.
+
+Distinguish the cases in `h : ∀ l, Val B e (r l) 0`. Conclude with `hyp e h`. Conclude with `hbad m c hc e h`. Introduce `y hy hyp`. Use `(hLG K' B (DR ℂ K') κ (fun _ => omB ℂ K' B d) r (fun _ => stab_lemma B d)).2 y (fun e => ?_)` and prove the remaining obligations.
+
+Simplify using `only [(hOm K' B e d).1]`. Distinguish the cases in `h : ∀ l, Val B e (r l) 0`. Conclude with `hyp e h`. Take `⟨l, hl0, hlinv⟩` from `hloc e h`. Unfold `sm`.
+
+Use `Submodule.mem_iSup_of_mem (r l) (Submodule.mem_iSup_of_mem (Set.mem_range_self l) ?_)` and prove the remaining obligations. Use `Submodule.mem_map.mpr ⟨_, stab_lemma (loc B e) d _ hlinv y (hle e hy), ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel₀ hl0, map_one, Module.End.one_apply]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.yKE_of :
     LG → OmLoc → RYFT → Htpy → K1 → LocReg → ValBasic → RYBasic → YKE := by
   intro hLG hOm hFT hH hK1 hLR hVB hRB F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 hY κ _ _ r I J hI hr

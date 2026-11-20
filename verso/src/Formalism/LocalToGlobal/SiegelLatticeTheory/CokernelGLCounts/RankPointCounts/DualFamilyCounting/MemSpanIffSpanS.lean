@@ -13,18 +13,33 @@ section
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hv`. Use `Exists.intro (fun i => a * c i) ⟨fun i => S.mul_mem ha (hc i), ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, smul_smul]`.
+-/
 theorem spanS_smul_mem {ι : Type} [Fintype ι] {b : ι → V} {a : K} (ha : a ∈ S) {v : V}
     (hv : v ∈ spanS S b) : a • v ∈ spanS S b := by
   obtain ⟨c, hc, rfl⟩ := hv
   refine Exists.intro (fun i => a * c i) ⟨fun i => S.mul_mem ha (hc i), ?_⟩
   simp only [Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hji => by rw [ho i j (Ne.symm hji), mul_zero]) (fun hi => absurd (Finset.mem_univ i) hi)]`.
+-/
 theorem form_sum_orth {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (c : ι → K) (i : ι) : h (b i) (∑ j, c j • b j) = c i * h (b i) (b i) := by
   simp only [map_sum, map_smul, smul_eq_mul]
   rw [Finset.sum_eq_single i (fun j _ hji => by rw [ho i j (Ne.symm hji), mul_zero])
     (fun hi => absurd (Finset.mem_univ i) hi)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, hc, rfl⟩, hv⟩`. Establish `hci : c i₀ = 0`. Rewrite `hv` using `[form_sum_orth ho c i₀]`. Conclude with `(mul_eq_zero.mp hv).resolve_right h0`.
+
+Use `Exists.intro (fun j => c j) ⟨fun j => hc j, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀, hci, zero_smul, zero_add]`. Introduce and unpack `⟨d, hd, rfl⟩`. Use `⟨Exists.intro (fun i => if hi : i = i₀ then 0 else d ⟨i, hi⟩) ⟨fun i => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs exacts [T.zero_mem, hd _]`.
+
+Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀] dsimp only`. Rewrite using `[dif_pos rfl, zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dif_neg j.2]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ho i₀ j (Ne.symm j.2), smul_zero]`.
+-/
 theorem mem_spanS_iff_sub {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (T : Subring K)
     (v : V) : (v ∈ spanS T b ∧ h (b i₀) v = 0) ↔
@@ -50,6 +65,11 @@ theorem mem_spanS_iff_sub {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → 
       refine Finset.sum_eq_zero fun j _ => ?_
       rw [map_smul, ho i₀ j (Ne.symm j.2), smul_zero]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `Exists.intro c ⟨fun _ => Subring.mem_top _, rfl⟩`. Introduce and unpack `⟨c, _, rfl⟩`.
+
+Conclude with `⟨c, rfl⟩`.
+-/
 theorem mem_span_iff_spanS {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     v ∈ Submodule.span K (Set.range b) ↔ v ∈ spanS (⊤ : Subring K) b := by
   rw [Submodule.mem_span_range_iff_exists_fun]
@@ -59,6 +79,9 @@ theorem mem_span_iff_spanS {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
   · rintro ⟨c, _, rfl⟩
     exact ⟨c, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [cutW, Submodule.mem_inf, LinearMap.mem_ker]`. Rewrite using `[mem_span_iff_spanS, mem_span_iff_spanS]`. Conclude with `mem_spanS_iff_sub ho h0 ⊤ v`.
+-/
 theorem mem_cutW_span_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (v : V) :
     v ∈ cutW h (Submodule.span K (Set.range b)) (b i₀) ↔
@@ -67,12 +90,18 @@ theorem mem_cutW_span_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → 
   rw [mem_span_iff_spanS, mem_span_iff_spanS]
   exact mem_spanS_iff_sub ho h0 ⊤ v
 
+/- English proof (translation)
+Simplify using `only [cutM, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker]`. Conclude with `mem_spanS_iff_sub ho h0 S v`.
+-/
 theorem mem_cutM_spanS_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (v : V) :
     v ∈ cutM h (spanS S b) (b i₀) ↔ v ∈ spanS S (fun j : {i // i ≠ i₀} => b j) := by
   simp only [cutM, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker]
   exact mem_spanS_iff_sub ho h0 S v
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hm`. Rewrite using `[form_sum_orth ho c i₀, mul_inv_cancel_right₀ h0]`. Conclude with `hc i₀`.
+-/
 theorem coef_mem {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) {m : V} (hm : m ∈ spanS S b) :
     h (b i₀) m * (h (b i₀) (b i₀))⁻¹ ∈ S := by
@@ -80,6 +109,19 @@ theorem coef_mem {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j 
   rw [form_sum_orth ho c i₀, mul_inv_cancel_right₀ h0]
   exact hc i₀
 
+/- English proof (translation)
+Establish `hcut' : ∀ v, (v ∈ M ∧ h x v = 0) ↔ (g v ∈ N ∧ h X (g v) = 0)`. Introduce `v`. Use `hcut v` as an intermediate fact. Simplify using `only [cutM, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker] at this`. Conclude with `this`.
+
+Establish `hiso : ∀ u w, h (g u) (g w) = h u w` using `hg`. Establish `hXX : h X X ≠ 0`. Rewrite using `[← hgx, hiso x x]`. Conclude with `hxx`. Introduce `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hαS : h x v * (h x x)⁻¹ ∈ S` using `hMx v hv`. Establish `h1 : v - (h x v * (h x x)⁻¹) • x ∈ M` using `M.sub_mem hv (hMs _ hαS x hx)`. Establish `h2 : h x (v - (h x v * (h x x)⁻¹) • x) = 0`.
+
+Rewrite using `[map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hxx, sub_self]`. Take `⟨h3, -⟩` from `(hcut' _).mp ⟨h1, h2⟩`. Rewrite `h3` using `[map_sub, map_smul, hgx]`. Use `N.add_mem h3 (hNs _ hαS X hX)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Introduce `hv`. Establish `hβS : h X (g v) * (h X X)⁻¹ ∈ S` using `hNX _ hv`. Establish `h1 : g (v - (h X (g v) * (h X X)⁻¹) • x) ∈ N`. Rewrite using `[map_sub, map_smul, hgx]`. Conclude with `N.sub_mem hv (hNs _ hβS X hX)`.
+
+Establish `h2 : h X (g (v - (h X (g v) * (h X X)⁻¹) • x)) = 0`. Rewrite using `[map_sub, map_smul, hgx, map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hXX, sub_self]`. Take `⟨h3, -⟩` from `(hcut' _).mpr ⟨h1, h2⟩`. Use `M.add_mem h3 (hMs _ hβS x hx)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_iff_of_cut' {M N : AddSubgroup V} (hMs : ∀ a ∈ S, ∀ m ∈ M, a • m ∈ M)
     (hNs : ∀ a ∈ S, ∀ m ∈ N, a • m ∈ N) {x X : V} (hx : x ∈ M) (hX : X ∈ N)
     (hMx : ∀ m ∈ M, h x m * (h x x)⁻¹ ∈ S) (hNX : ∀ m ∈ N, h X m * (h X X)⁻¹ ∈ S)

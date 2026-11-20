@@ -15,6 +15,9 @@ structure Hypotheses3 : Prop where
 
   g4 : GlobalTheory.Published.ChowFormHyperplaneSection
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.base.q6, h.base.q8, h.base.q13, h.base.q7, h.base.q10, GlobalTheory.Published.chowFormIntExists_holds, h.g4, h.base.q12⟩`.
+-/
 theorem Hypotheses3.quoted (h : Hypotheses3) : GlobalTheory.HSCore.Quoted :=
   ⟨h.base.q6, h.base.q8, h.base.q13, h.base.q7, h.base.q10, GlobalTheory.Published.chowFormIntExists_holds, h.g4, h.base.q12⟩
 

@@ -14,10 +14,16 @@ section Stabilizer
 
 variable {V : Type*} [AddCommGroup V] [Module k V] (ρ : Representation k G V)
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using the standard rewrite rules.
+-/
 theorem stabilizer_zero : stabilizer ρ 0 = ⊤ := by
   ext g
   simp
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[Subgroup.mem_inf]`. Simplify using `only [mem_stabilizer] at *`. Rewrite using `[map_add, hg.1, hg.2]`.
+-/
 theorem inf_le_stabilizer_add (a b : V) :
     stabilizer ρ a ⊓ stabilizer ρ b ≤ stabilizer ρ (a + b) := by
   intro g hg
@@ -25,12 +31,20 @@ theorem inf_le_stabilizer_add (a b : V) :
   simp only [mem_stabilizer] at *
   rw [map_add, hg.1, hg.2]
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [mem_stabilizer] at *`. Rewrite using `[map_smul, hg]`.
+-/
 theorem stabilizer_le_stabilizer_smul (r : k) (a : V) :
     stabilizer ρ a ≤ stabilizer ρ (r • a) := by
   intro g hg
   simp only [mem_stabilizer] at *
   rw [map_smul, hg]
 
+/- English proof (translation)
+Use extensionality with `h`. Simplify using `only [SetLike.mem_coe, Set.mem_preimage, mem_stabilizer, map_mul, Module.End.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Rewrite using `[H, Representation.inv_self_apply]`.
+
+Introduce `H`. Use `congrArg (ρ g) H` as an intermediate fact. Rewrite `this` using `[Representation.self_inv_apply]`. Then use the resulting hypothesis.
+-/
 theorem coe_stabilizer_apply (g : G) (a : V) :
     (stabilizer ρ (ρ g a) : Set G) = (fun h => g⁻¹ * h * g) ⁻¹' (stabilizer ρ a : Set G) := by
   ext h
@@ -42,18 +56,27 @@ theorem coe_stabilizer_apply (g : G) (a : V) :
     have := congrArg (ρ g) H
     rwa [Representation.self_inv_apply] at this
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using the standard rewrite rules.
+-/
 theorem stabilizer_eq_top_of_isTrivial [ρ.IsTrivial] (a : V) : stabilizer ρ a = ⊤ := by
   ext g
   simp
 
 end Stabilizer
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [mem_stabilizer] at *`. Rewrite using `[← Rep.hom_comm_apply, hg]`.
+-/
 theorem stabilizer_le_stabilizer_hom {A B : Rep.{w} k G} (f : A ⟶ B) (a : A) :
     stabilizer A.ρ a ≤ stabilizer B.ρ (f.hom a) := by
   intro g hg
   simp only [mem_stabilizer] at *
   rw [← Rep.hom_comm_apply, hg]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [mem_stabilizer]`. Rewrite using `[← Rep.hom_comm_apply]`. Conclude with `hf.eq_iff`.
+-/
 theorem stabilizer_hom_of_injective {A B : Rep.{w} k G} (f : A ⟶ B)
     (hf : Function.Injective f.hom) (a : A) :
     stabilizer B.ρ (f.hom a) = stabilizer A.ρ a := by
@@ -73,6 +96,9 @@ instance isDiscreteRep_of_discreteTopology [DiscreteTopology G] (A : Rep.{w} k G
 instance isDiscreteRep_of_isTrivial (A : Rep.{w} k G) [A.ρ.IsTrivial] : IsDiscreteRep A :=
   ⟨fun a => by rw [stabilizer_eq_top_of_isTrivial]; exact isOpen_univ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [Subsingleton.elim a 0, stabilizer_zero]; exact isOpen_univ⟩`.
+-/
 theorem IsDiscreteRep.of_subsingleton (A : Rep.{w} k G) [Subsingleton A] : IsDiscreteRep A :=
   ⟨fun a => by rw [Subsingleton.elim a 0, stabilizer_zero]; exact isOpen_univ⟩
 
@@ -80,11 +106,17 @@ variable [IsTopologicalGroup G]
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [← stabilizer_hom_of_injective f hf a]; exact GroundTheory.ProfCoh.isOpen_stabilizer B _⟩`.
+-/
 theorem IsDiscreteRep.of_injective {A B : Rep.{w} k G} (f : A ⟶ B)
     (hf : Function.Injective f.hom) [IsDiscreteRep B] : IsDiscreteRep A :=
   ⟨fun a => by
     rw [← stabilizer_hom_of_injective f hf a]; exact GroundTheory.ProfCoh.isOpen_stabilizer B _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun b => by obtain ⟨a, rfl⟩ := hf b exact Subgroup.isOpen_mono (stabilizer_le_stabilizer_hom f a) (GroundTheory.ProfCoh.isOpen_stabilizer A a)⟩`.
+-/
 theorem IsDiscreteRep.of_surjective {A B : Rep.{w} k G} (f : A ⟶ B)
     (hf : Function.Surjective f.hom) [IsDiscreteRep A] : IsDiscreteRep B :=
   ⟨fun b => by
@@ -92,6 +124,9 @@ theorem IsDiscreteRep.of_surjective {A B : Rep.{w} k G} (f : A ⟶ B)
     exact Subgroup.isOpen_mono (stabilizer_le_stabilizer_hom f a)
       (GroundTheory.ProfCoh.isOpen_stabilizer A a)⟩
 
+/- English proof (translation)
+The claim follows from `IsDiscreteRep.of_surjective e.hom fun b => ⟨e.inv.hom b, Rep.hom_inv_apply (e := e) (x := b)⟩`.
+-/
 theorem IsDiscreteRep.of_iso {A B : Rep.{w} k G} (e : A ≅ B) [IsDiscreteRep A] :
     IsDiscreteRep B :=
   IsDiscreteRep.of_surjective e.hom fun b => ⟨e.inv.hom b, Rep.hom_inv_apply (e := e) (x := b)⟩
@@ -113,28 +148,46 @@ def smoothSubmodule (A : Rep.{w} k G) : Submodule k A where
     exact ha.inter hb
   smul_mem' r a ha := Subgroup.isOpen_mono (stabilizer_le_stabilizer_smul A.ρ r a) ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smoothSubmodule (A : Rep.{w} k G) (a : A) :
     a ∈ smoothSubmodule A ↔ IsOpen (stabilizer A.ρ a : Set G) :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_smoothSubmodule, coe_stabilizer_apply]`. Conclude with `ha.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+-/
 theorem apply_mem_smoothSubmodule (A : Rep.{w} k G) (g : G) {a : A}
     (ha : a ∈ smoothSubmodule A) : A.ρ g a ∈ smoothSubmodule A := by
   rw [mem_smoothSubmodule, coe_stabilizer_apply]
   exact ha.preimage ((continuous_const.mul continuous_id).mul continuous_const)
 
+/- English proof (translation)
+Introduce `_ ha` and use `apply_mem_smoothSubmodule A g ha`.
+-/
 theorem smoothSubmodule_le_comap (A : Rep.{w} k G) (g : G) :
     smoothSubmodule A ≤ (smoothSubmodule A).comap (A.ρ g) :=
   fun _ ha => apply_mem_smoothSubmodule A g ha
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (stabilizer_le_stabilizer_hom f a) ha`.
+-/
 theorem hom_mem_smoothSubmodule {A B : Rep.{w} k G} (f : A ⟶ B) {a : A}
     (ha : a ∈ smoothSubmodule A) : f.hom a ∈ smoothSubmodule B :=
   Subgroup.isOpen_mono (stabilizer_le_stabilizer_hom f a) ha
 
+/- English proof (translation)
+Rewrite using `[isDiscreteRep_iff, Submodule.eq_top_iff']`. Both sides reduce to the same expression.
+-/
 theorem isDiscreteRep_iff_smoothSubmodule_eq_top (A : Rep.{w} k G) :
     IsDiscreteRep A ↔ smoothSubmodule A = ⊤ := by
   rw [isDiscreteRep_iff, Submodule.eq_top_iff']
   rfl
 
+/- English proof (translation)
+The claim follows from `isOpen_stabilizer A a`.
+-/
 theorem mem_smoothSubmodule_of_isDiscreteRep (A : Rep.{w} k G) [IsDiscreteRep A] (a : A) :
     a ∈ smoothSubmodule A :=
   isOpen_stabilizer A a
@@ -248,10 +301,16 @@ noncomputable instance : Abelian (DiscreteRep.{w} k G) := inferInstance
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+The claim follows from `(isDiscreteRep k G).prop_X₁_of_shortExact hS ‹_›`.
+-/
 theorem isDiscreteRep_X₁_of_shortExact {S : ShortComplex (Rep.{w} k G)} (hS : S.ShortExact)
     [IsDiscreteRep S.X₂] : IsDiscreteRep S.X₁ :=
   (isDiscreteRep k G).prop_X₁_of_shortExact hS ‹_›
 
+/- English proof (translation)
+The claim follows from `(isDiscreteRep k G).prop_X₃_of_shortExact hS ‹_›`.
+-/
 theorem isDiscreteRep_X₃_of_shortExact {S : ShortComplex (Rep.{w} k G)} (hS : S.ShortExact)
     [IsDiscreteRep S.X₂] : IsDiscreteRep S.X₃ :=
   (isDiscreteRep k G).prop_X₃_of_shortExact hS ‹_›
@@ -260,6 +319,11 @@ end Subcategory
 
 section LocallyConstant
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `b`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun h => g⁻¹ * h) ⁻¹' (stabilizer A.ρ a : Set G), ?_, (isOpen_stabilizer A a).preimage (continuous_const.mul continuous_id), by simp⟩` and prove the remaining obligations.
+
+Introduce `h hh`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, mem_stabilizer, Set.mem_singleton_iff] at hh hg ⊢`. Rewrite using `[← hg, show h = g * (g⁻¹ * h) by group, map_mul, Module.End.mul_apply, hh]`.
+-/
 theorem isLocallyConstant_apply (A : Rep.{w} k G) [IsDiscreteRep A] (a : A) :
     IsLocallyConstant fun g : G => A.ρ g a := by
   rw [IsLocallyConstant.iff_isOpen_fiber]
@@ -277,6 +341,9 @@ end LocallyConstant
 section Invariants
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Conclude with `h ⟨g, hg⟩`. Introduce `h g`. Conclude with `h g.2`.
+-/
 theorem mem_invariants_comp_subtype_iff (A : Rep.{w} k G) (U : Subgroup G) (a : A) :
     a ∈ Representation.invariants (A.ρ.comp U.subtype) ↔ U ≤ stabilizer A.ρ a := by
   constructor
@@ -285,6 +352,9 @@ theorem mem_invariants_comp_subtype_iff (A : Rep.{w} k G) (U : Subgroup G) (a : 
   · intro h g
     exact h g.2
 
+/- English proof (translation)
+Use `QuotientGroup.discreteTopology hU` as an intermediate fact. Use `infer_instance`.
+-/
 theorem isDiscreteRep_quotientToInvariants (A : Rep.{w} k G) (U : Subgroup G) [U.Normal]
     (hU : IsOpen (U : Set G)) : IsDiscreteRep (A.quotientToInvariants U) := by
   have := QuotientGroup.discreteTopology hU
@@ -294,6 +364,9 @@ instance isDiscreteRep_quotientToInvariants_openNormalSubgroup (A : Rep.{w} k G)
     (U : OpenNormalSubgroup G) : IsDiscreteRep (A.quotientToInvariants U.toSubgroup) :=
   isDiscreteRep_quotientToInvariants A U.toSubgroup U.isOpen
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by obtain ⟨U, hU, ha⟩ := h a exact Subgroup.isOpen_mono ((mem_invariants_comp_subtype_iff A U a).1 ha) hU⟩`.
+-/
 theorem IsDiscreteRep.of_forall_exists_mem_invariants (A : Rep.{w} k G)
     (h : ∀ a : A, ∃ U : Subgroup G, IsOpen (U : Set G) ∧ a ∈ Representation.invariants (A.ρ.comp U.subtype)) :
     IsDiscreteRep A :=
@@ -301,6 +374,11 @@ theorem IsDiscreteRep.of_forall_exists_mem_invariants (A : Rep.{w} k G)
     obtain ⟨U, hU, ha⟩ := h a
     exact Subgroup.isOpen_mono ((mem_invariants_comp_subtype_iff A U a).1 ha) hU⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `_ a`. Establish `ho` using `isOpen_stabilizer A a`. Take `⟨U, hU⟩` from `IsTopologicalGroup.exist_openNormalSubgroup_sub_clopen_nhds_of_one ⟨Subgroup.isClosed_of_isOpen _ ho, ho⟩ (one_mem (stabilizer A.ρ a))`. Conclude with `⟨U, (mem_invariants_comp_subtype_iff A _ a).2 hU⟩`.
+
+Introduce `h`. Conclude with `IsDiscreteRep.of_forall_exists_mem_invariants A fun a =>`. Set `⟨U, hU⟩` to `h a`. Use the proof step `⟨U.toSubgroup, U.isOpen, hU⟩`.
+-/
 theorem isDiscreteRep_iff_forall_exists_openNormalSubgroup [CompactSpace G] (A : Rep.{w} k G) :
     IsDiscreteRep A ↔
       ∀ a : A, ∃ U : OpenNormalSubgroup G, a ∈ Representation.invariants (A.ρ.comp U.toSubgroup.subtype) := by
@@ -316,6 +394,9 @@ theorem isDiscreteRep_iff_forall_exists_openNormalSubgroup [CompactSpace G] (A :
       ⟨U.toSubgroup, U.isOpen, hU⟩
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
+/- English proof (translation)
+Introduce `a ha`. Rewrite `*` using `[mem_invariants_comp_subtype_iff]`. Conclude with `h.trans ha`.
+-/
 theorem invariants_comp_subtype_antitone (A : Rep.{w} k G) {U V : Subgroup G} (h : U ≤ V) :
     Representation.invariants (A.ρ.comp V.subtype) ≤ Representation.invariants (A.ρ.comp U.subtype) := by
   intro a ha

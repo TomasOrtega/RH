@@ -34,6 +34,11 @@ end Gen
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨th, hr, hth, hd⟩` from `h.dictU σ hσ`. Establish `hN : 0 < D.host.g 0 * D.host.g 1 * Y.d.pd`. Rewrite using `[h.pd]`. Conclude with `Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) (pow_pos (by norm_num) _)`. Establish `hL` using `GlobalTheory.DictLocTest.locClause_of_unif_places hd (fun k hk => ((h.levelK k).1 hk).1) (GlobalTheory.LevelNbhd.level_mul_inf_mem_nhds D _ _ Y.Kf hN h.levelK) (fun c τ => ⟨_, hth c τ⟩)`.
+
+Conclude with `adelMeas_of_aut Y.d.Xo₂ Y.d.c₂ (U := Y.U) (σ := σ) (GlobalTheory.PetDef.adelAut_of_gamma (fun k la γ hγ => GlobalTheory.CovTop.Model.chi_eq_one h σ hσ k la γ hγ) hd (GlobalTheory.PetDef.muUnit_one Y h σ hσ) hL continuous_const)`.
+-/
 theorem adelMeas_one_of_good {D : D7} {T : Core D} {j : ℕ} (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o)
     (σ : Y.d.c₂.F →+* ℂ) (hσ : GoodEmb Y.d.c₂ σ) :
     AdelMeas Y.U σ (D.sp.W j) (Y.dict σ) (fun _ => (1 : ℂ)) := by

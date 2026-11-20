@@ -8,6 +8,11 @@ open scoped Classical
 
 namespace GlobalTheory.GLm.IndChar
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨V, hV⟩`. Set `e : V ≃ₗ[ℂ] (Fin (Module.finrank ℂ V) → ℂ)` to `(Module.finBasis ℂ V).equivFun`. Use `⟨Module.finrank ℂ V, GlobalTheory.BI.transportRep V.ρ e, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.BI.character_transportRep, ← hV g]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨n, ρ, hρ⟩`. Use `⟨FDRep.of ρ, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ g]`. Both sides reduce to the same expression.
+-/
 theorem isChar_iff_coord {G : Type} [Group G] (χ : G → ℂ) :
     GlobalTheory.GLq.IsChar χ ↔ GlobalTheory.BI.IsChar ℂ ℂ χ := by
   constructor
@@ -22,6 +27,11 @@ theorem isChar_iff_coord {G : Type} [Group G] (χ : G → ℂ) :
     rw [hρ g]
     rfl
 
+/- English proof (translation)
+Introduce `G _ _ H φ hφ`. Establish `hind : GlobalTheory.BI.IsChar ℂ ℂ (GlobalTheory.BI.ind H φ)` using `GlobalTheory.BI.isChar_ind ℂ ℂ G H φ ((isChar_iff_coord φ).mp hφ)`. Establish `heq : (fun x : G => (Nat.card H : ℂ)⁻¹ * ∑ y : G, if h : y⁻¹ * x * y ∈ H then φ ⟨_, h⟩ else 0) = GlobalTheory.BI.ind H φ`. Use function extensionality and compare the values at `x`. Unfold `GlobalTheory.BI.ind`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Use `congr 1`. Rewrite using `[heq]`. Conclude with `(isChar_iff_coord _).mpr hind`.
+-/
 theorem isChar_induced : ∀ (G : Type) [Group G] [Fintype G] (H : Subgroup G) (φ : H → ℂ), IsChar φ → IsChar (fun x : G => (Nat.card H : ℂ)⁻¹ * ∑ y : G, if h : y⁻¹ * x * y ∈ H then φ ⟨_, h⟩ else 0) := by
   intro G _ _ H φ hφ
 

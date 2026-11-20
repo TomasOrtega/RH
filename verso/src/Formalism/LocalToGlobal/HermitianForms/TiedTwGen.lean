@@ -16,6 +16,9 @@ def latCrd (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (L : letI := D.host.cmStar; Sub
       (D.sp.X i).V ≃ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)) :
       (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clsCrd_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     clsCrd D u i hi c = latCrd D i hi (D.clsLat u i c) := rfl
 
@@ -65,6 +68,9 @@ variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A :
 def lamTG (i : ℕ) : D.what₂.Tau → DomWeight (D.R.N i) :=
   fun τ => shW (M.lam i τ) ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamTG_fm (u : D.what₂.Word) (i : ℕ) : lamTG (D.fm u) i = lamT u i := rfl
 
 set_option maxHeartbeats 1000000 in

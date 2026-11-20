@@ -10,28 +10,75 @@ namespace Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly
 
 open Formalism.FourierDecayAlt.PairingProductCorollary
 
+/- English proof (translation)
+Unfold `F7.thGrid`. Conclude with `Finset.prod_nonneg fun b _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)`.
+-/
 theorem thGrid_nonneg {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (j : Fin K → Fin (d + 1)) :
     0 ≤ F7.thGrid grid j := by
   unfold F7.thGrid
   exact Finset.prod_nonneg fun b _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun i _ => abs_nonneg _)
 
+/- English proof (translation)
+Simplify using `only [coProd, Finset.abs_prod, cg]`. Conclude with `(Fintype.prod_sum (fun a i => |F7.lagCo (grid a) i|)).symm`.
+-/
 theorem sum_abs_coProd {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) :
     ∑ j, |coProd grid j| = ∏ a, cg grid a := by
   simp only [coProd, Finset.abs_prod, cg]
   exact (Fintype.prod_sum (fun a i => |F7.lagCo (grid a) i|)).symm
 
+/- English proof (translation)
+Unfold `lamPSq`. Rewrite using `[Finset.le_fold_max]`. Conclude with `Or.inr ⟨a, Finset.mem_univ _, le_rfl⟩`.
+-/
 theorem lamPSq_ge {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (Rw ZZ : ℝ) (a : Fin K) :
     cg grid a ^ 2 * Rw * ZZ ≤ lamPSq grid Rw ZZ := by
   unfold lamPSq
   rw [Finset.le_fold_max]
   exact Or.inr ⟨a, Finset.mem_univ _, le_rfl⟩
 
+/- English proof (translation)
+Unfold `lamPSq`. Rewrite using `[Finset.le_fold_max]`. Conclude with `Or.inl le_rfl`.
+-/
 theorem lamPSq_nonneg {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (Rw ZZ : ℝ) :
     0 ≤ lamPSq grid Rw ZZ := by
   unfold lamPSq
   rw [Finset.le_fold_max]
   exact Or.inl le_rfl
 
+/- English proof (translation)
+Introduce `V _ _ K d grid q x nn w e t X0 XK ρ E wt bw Rw ZZ hg he ht hpos hTop hFS hR hZ hwt hbw`. Take `⟨hρ, -, hE⟩` from `hFS`. Unfold `LeadingCoefficientVectorIdentity at hTop`. Establish `htn : 0 < ‖t‖` using `norm_pos_iff.mpr ht`. Apply the tactic sequence `have he1 : ‖e‖ = 1 := by rcases he with h | h <;> simp [h]`.
+
+Establish `h1 : ‖t‖⁻¹ ^ K * ‖X0‖ ≤ ∑ j, |coProd grid j| * ‖XK j‖`. Establish `: ‖(e / t) ^ K • X0‖ = ‖t‖⁻¹ ^ K * ‖X0‖` using `by rw [norm_smul, norm_pow, norm_div, he1, one_div]`. Rewrite using `[← this, hTop]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`.
+
+Establish `hCS : (∑ j, |coProd grid j| * ‖XK j‖) ^ 2 ≤ (∑ j, |coProd grid j|) * ∑ j, |coProd grid j| * ‖XK j‖ ^ 2`. Establish `h` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => Real.sqrt |coProd grid j|) (fun j => Real.sqrt |coProd grid j| * ‖XK j‖)`. Establish `hs : ∀ j, Real.sqrt |coProd grid j| * (Real.sqrt |coProd grid j| * ‖XK j‖) = |coProd grid j| * ‖XK j‖` using `fun j => by rw [← mul_assoc, Real.mul_self_sqrt (abs_nonneg _)]`. Establish `hs2 : ∀ j, Real.sqrt |coProd grid j| ^ 2 = |coProd grid j|` using `fun j => Real.sq_sqrt (abs_nonneg _)`. Establish `hs3 : ∀ j, (Real.sqrt |coProd grid j| * ‖XK j‖) ^ 2 = |coProd grid j| * ‖XK j‖ ^ 2` using `fun j => by rw [mul_pow, hs2]`.
+
+Simplify using `only [hs, hs2, hs3] at h`. Conclude with `h`. Establish `hnn : ∀ j, (∏ b, nn (grid b (j b))) ≤ (∏ _b : Fin K, (Rw * ZZ)) * ∏ b, ρ b j`. Introduce `j`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Apply `Finset.prod_le_prod (fun b _ => (hpos b (j b)).2.1.le)` to reduce the goal to its premises. Introduce `b _`. Establish `hq` using `(hpos b (j b)).1`. Establish `hnb` using `(hpos b (j b)).2.1`. Establish `hx0 : 0 < |x (grid b (j b) + 1)|` using `abs_pos.mpr (hpos b (j b)).2.2`.
+
+Establish `h1` using `hR b j`. Establish `h2` using `hZ b (j b)`. Establish `hZ0 : 0 ≤ ZZ` using `le_trans (div_nonneg (mul_nonneg hnb.le hx0.le) hq.le) h2`. Establish `hqne` using `hq.ne'`. Establish `hxne` using `hx0.ne'`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hn0 : ∀ j, 0 < nnProd nn 0 grid j` using `fun j => Finset.prod_pos fun b _ => by simpa using (hpos b (j b)).2.1`. Establish `hP0 : 0 < ∏ _b : Fin K, (Rw * ZZ)`. Establish `h` using `hnn (fun _ => 0)`. Establish `h1 : 0 < ∏ b, nn (grid b ((fun _ => (0 : Fin (d + 1))) b))` using `Finset.prod_pos fun b _ => (hpos b _).2.1`.
+
+Establish `h2 : 0 < ∏ b, ρ b (fun _ => 0)` using `Finset.prod_pos fun b _ => hρ b _`. Assume the negation of the conclusion as `hc`. Establish `hc'` using `not_lt.mp hc`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE0 : ∀ j, 0 ≤ E j` using `fun j => le_trans (mul_nonneg (Finset.prod_pos fun b _ => hρ b j).le (sq_nonneg _)) (hE j)`.
+
+Establish `hXK : ∀ j, ‖XK j‖ ^ 2 ≤ (∏ _b : Fin K, (Rw * ZZ)) * (E j / nnProd nn 0 grid j)`. Introduce `j`. Establish `hnn' : nnProd nn 0 grid j ≤ (∏ _b : Fin K, (Rw * ZZ)) * ∏ b, ρ b j`. Simplify `hnn j` using `[nnProd]`. Rewrite using `[mul_div_assoc', le_div_iff₀ (hn0 j)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hth` using `Formalism.FourierDecayAlt.P.SecondPolynomialClauses.co_eq grid hg`. Establish `step : (‖t‖⁻¹ ^ K) ^ 2 * ‖X0‖ ^ 2 ≤ (∏ a, cg grid a) ^ 2 * ((∏ _b : Fin K, (Rw * ZZ)) * ∑ j, F7.thGrid grid j * (E j / nnProd nn 0 grid j))`. Establish `hm0 : 0 ≤ ‖t‖⁻¹ ^ K * ‖X0‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sum_abs_coProd]`. Simplify using `only [hth]`. Use `_ = (∏ a, cg grid a) ^ 2 * ∑ j, F7.thGrid grid j * ‖XK j‖ ^ 2 := by`. Rewrite using `[sq, mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∏ a, cg grid a) ^ 2 * ∑ j, F7.thGrid grid j * ((∏ _b : Fin K, (Rw * ZZ)) * (E j / nnProd nn 0 grid j)) := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hXK j) (thGrid_nonneg grid j)) (sq_nonneg _)`.
+
+Use `_ = (∏ a, cg grid a) ^ 2 * ((∏ _b : Fin K, (Rw * ZZ)) * ∑ j, F7.thGrid grid j * (E j / nnProd nn 0 grid j)) := by`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : ‖t‖ ^ (-(2 * K : ℤ)) = (‖t‖⁻¹ ^ K) ^ 2`. Rewrite using `[← pow_mul, inv_pow, ← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ∏ a, (cg grid a ^ 2 * Rw * ZZ) = (∏ a, cg grid a) ^ 2 * ∏ _b : Fin K, (Rw * ZZ)`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ j, F7.thGrid grid j * (wt ^ 2 * E j / (bw * nnProd nn 0 grid j)) = wt ^ 2 / bw * ∑ j, F7.thGrid grid j * (E j / nnProd nn 0 grid j)`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[mul_div_mul_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, hprod, hsum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem p3aOfParts_ok : LeadingBlockRecursiveBoundFromComponents := by
   intro V _ _ K d grid q x nn w e t X0 XK ρ E wt bw Rw ZZ hg he ht hpos hTop hFS hR hZ hwt hbw
   obtain ⟨hρ, -, hE⟩ := hFS
@@ -127,6 +174,11 @@ theorem p3aOfParts_ok : LeadingBlockRecursiveBoundFromComponents := by
     _ = (∏ a, cg grid a) ^ 2 * (∏ _b : Fin K, (Rw * ZZ)) *
           (wt ^ 2 / bw * ∑ j, F7.thGrid grid j * (E j / nnProd nn 0 grid j)) := by ring
 
+/- English proof (translation)
+Introduce `hA hU hC V _ _ R x ex K d grid q nn w e t t' W RL RV bw Qw BB hR hbw ht ht' he hg hpos hQ hB hBB hRL hD hS`. Establish `hb` using `hU K d grid q w e (1 / t - 1 / t') (R (x t) (x t')) W RL RV he (fun j => Finset.prod_pos fun a _ => (hpos a (j a)).2.1) hRL hD hS`. Establish `hc` using `hC K d grid q nn w (1 / t - 1 / t') (R (x t) (x t')) RL RV (‖t‖ ^ ex) (‖t'‖ ^ ex) bw Qw BB hg hpos hQ hB hBB (by positivity) (by positivity) hbw hRL hb`. Establish `hN : ‖Npair R x (fun u => ‖u‖ ^ ex) bw t t'‖ = ‖t‖ ^ ex * ‖t'‖ ^ ex / bw * ‖R (x t) (x t')‖`. Unfold `Npair`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (by positivity) hbw.le)]`. Use `⟨hA V R x (fun u => ‖u‖ ^ ex) bw hR hbw (fun u => by positivity) t t', hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hN]`. Simplify using `only [pow_mul']`. Conclude with `hc`.
+-/
 theorem lower_block_lift_bound_reduction : LowerBlockLiftBoundFromComponents := by
   intro hA hU hC V _ _ R x ex K d grid q nn w e t t' W RL RV bw Qw BB hR hbw ht ht' he hg hpos hQ hB hBB
     hRL hD hS
@@ -143,6 +195,13 @@ theorem lower_block_lift_bound_reduction : LowerBlockLiftBoundFromComponents := 
   simp only [pow_mul']
   exact hc
 
+/- English proof (translation)
+Introduce `hA hB V _ _ ex K d grid q x nn w e t t' Ntt X0 XK ρ E bw Rw ZZ hg he ht ht' hpos hTop hFS hR hZ hRw hZZ hbw hG`. Establish `ha` using `hA V K d grid q x nn w e t (X0 t) XK ρ E (‖t‖ ^ ex) bw Rw ZZ hg he ht hpos hTop hFS hR hZ (by positivity) hbw`. Establish `hpw : (‖t‖ ^ ex) ^ 2 = ‖t‖ ^ (2 * ex)` using `by rw [← pow_mul, mul_comm]`. Rewrite `ha` using `[hpw]`. Use `⟨ha, fun ho hle => ?_⟩` and prove the remaining obligations.
+
+Establish `hE0 : ∀ j, 0 ≤ E j` using `fun j => le_trans (mul_nonneg (Finset.prod_pos fun b _ => hFS.1 b j).le (sq_nonneg _)) (hFS.2.2 j)`. Establish `hn0 : ∀ j, 0 < nnProd nn 0 grid j` using `fun j => Finset.prod_pos fun b _ => by simpa using (hpos b (j b)).2.1`. Establish `hS : 0 ≤ ∑ j, F7.thGrid grid j * (‖t‖ ^ (2 * ex) * E j / (bw * nnProd nn 0 grid j))` using `Finset.sum_nonneg fun j _ => mul_nonneg (thGrid_nonneg grid j) (div_nonneg (mul_nonneg (by positivity) (hE0 j)) (mul_pos hbw (hn0 j)).le)`. Use `hB K t t' Ntt (‖t‖ ^ (2 * ex) * ‖X0 t‖ ^ 2 / bw) (‖t'‖ ^ (2 * ex) * ‖X0 t'‖ ^ 2 / bw) (∑ j, F7.thGrid grid j * (‖t‖ ^ (2 * ex) * E j / (bw * nnProd nn 0 grid j))) (Real.sqrt (lamPSq grid Rw ZZ)) (fun a => cg grid a ^ 2 * Rw * ZZ) ht ht' ho hle (div_nonneg (by positivity) hbw.le) …` and prove the remaining obligations. Rewrite using `[Real.sq_sqrt (lamPSq_nonneg grid Rw ZZ)]`.
+
+Conclude with `lamPSq_ge grid Rw ZZ a`.
+-/
 theorem leading_block_lift_bound_reduction : LeadingBlockLiftBoundFromComponents := by
   intro hA hB V _ _ ex K d grid q x nn w e t t' Ntt X0 XK ρ E bw Rw ZZ hg he ht ht' hpos hTop hFS hR hZ
     hRw hZZ hbw hG
@@ -168,14 +227,29 @@ theorem leading_block_lift_bound_reduction : LeadingBlockLiftBoundFromComponents
 
 end Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.p3aOfParts_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.leading_block_recursive_bound_of_components : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockRecursiveBoundFromComponents := Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.p3aOfParts_ok
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.lower_block_lift_bound_reduction`.
+-/
 theorem Formalism.FourierDecayAlt.P.lower_block_lift_bound_of_components : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockLiftBoundFromComponents := Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.lower_block_lift_bound_reduction
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.leading_block_lift_bound_reduction`.
+-/
 theorem Formalism.FourierDecayAlt.P.leading_block_lift_bound_of_components : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockLiftBoundFromComponents := Formalism.FourierDecayAlt.P.PolynomialTheoremsAssembly.leading_block_lift_bound_reduction
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.lower_block_lift_bound_of_components Formalism.FourierDecayAlt.P.second_polynomial_first_identity Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts`.
+-/
 theorem Formalism.FourierDecayAlt.P.lower_block_lift_bound : Formalism.FourierDecayAlt.PairingProductCorollary.LowerBlockLiftBound :=
   Formalism.FourierDecayAlt.P.lower_block_lift_bound_of_components Formalism.FourierDecayAlt.P.second_polynomial_first_identity Formalism.FourierDecayAlt.P.unipotent_degree_three_of_clauses
     Formalism.FourierDecayAlt.P.second_polynomial_third_of_parts
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.leading_block_lift_bound_of_components Formalism.FourierDecayAlt.P.leading_block_recursive_bound_of_components Formalism.FourierDecayAlt.P.third_polynomial_second_of_first`.
+-/
 theorem Formalism.FourierDecayAlt.P.leading_block_lift_bound : Formalism.FourierDecayAlt.PairingProductCorollary.LeadingBlockLiftBound :=
   Formalism.FourierDecayAlt.P.leading_block_lift_bound_of_components Formalism.FourierDecayAlt.P.leading_block_recursive_bound_of_components Formalism.FourierDecayAlt.P.third_polynomial_second_of_first
 

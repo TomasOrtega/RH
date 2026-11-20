@@ -8,6 +8,11 @@ namespace Formalism.L2.Col
 
 open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos c with rfl | hc` into its components or cases. Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[if_pos ⟨hc, hj⟩, show c + j - 1 = (c - 1 + 1) + (j - 1) by omega, Finset.sum_range_add, Finset.sum_range_succ]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finset_range_sum_split {A : Type} [AddCommMonoid A] (f : ℕ → A) (c j : ℕ) :
     ∑ i ∈ Finset.range (c + j - 1), f i =
       ∑ i ∈ Finset.range (c - 1), f i + (if 1 ≤ c ∧ 1 ≤ j then f (c - 1) else 0) + ∑ i ∈ Finset.range (j - 1), f (c + i) := by
@@ -25,14 +30,23 @@ section ChrLoc
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
+/- English proof (translation)
+Unfold `LocE.fIdx`. Rewrite using `[if_pos hs]`.
+-/
 theorem frameIndex_of_lt {k₀ c n s : ℕ} (hs : s < k₀) : LocE.fIdx k₀ c n s = s := by
   unfold LocE.fIdx
   rw [if_pos hs]
 
+/- English proof (translation)
+Unfold `LocE.fIdx`. Rewrite using `[if_neg (show ¬ s < k₀ by omega), if_neg (show ¬ s < k₀ + c by omega)]`.
+-/
 theorem frameIndex_of_ge {k₀ c n s : ℕ} (h : k₀ + c ≤ s) : LocE.fIdx k₀ c n s = s - c := by
   unfold LocE.fIdx
   rw [if_neg (show ¬ s < k₀ by omega), if_neg (show ¬ s < k₀ + c by omega)]
 
+/- English proof (translation)
+Unfold `LocE.entB`. Rewrite using `[hpa, hpb, ciScE_lt _ ha, ciScE_lt _ hb, sub_self, zpow_zero, mul_one, ciEN hb]`. Use `show Loc.atN (rr (Loc.inX E n c (Pi.single ⟨b, hb⟩ 1))) a = _`. Rewrite using `[hg, ciAtN_inX ha]`.
+-/
 theorem frameEntry_eq_coord_of_extension {k₀ n c : ℕ} {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} {g : Sp E n ≃ₗ[E] Sp E n}
     (hg : ∀ x, rr (Loc.inX E n c x) = Loc.inX E n c (g x)) {a b : ℕ} (ha : a < n) (hb : b < n) {p p' : ℕ}
     (hpa : LocE.fIdx k₀ c n p = a) (hpb : LocE.fIdx k₀ c n p' = b) :
@@ -42,6 +56,9 @@ theorem frameEntry_eq_coord_of_extension {k₀ n c : ℕ} {rr : Sp E (n + c) ≃
   show Loc.atN (rr (Loc.inX E n c (Pi.single ⟨b, hb⟩ 1))) a = _
   rw [hg, ciAtN_inX ha]
 
+/- English proof (translation)
+Apply the tactic sequence `rw [frameEntry_eq_coord_of_extension hg ha hb hpa hpb, ← ciEntry hred]`. Unfold `ocbM`. Rewrite using `[dif_pos ⟨ha, hb⟩]`.
+-/
 theorem reduction_frameEntry_of_extension {k₀ n c : ℕ} {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} {g : Sp E n ≃ₗ[E] Sp E n}
     (hg : ∀ x, rr (Loc.inX E n c x) = Loc.inX E n c (g x)) {hbar : GL (Fin n) (𝓞 E ⧸ P.asIdeal)}
     (hred : ∀ x ∈ stdAt E n P, redV P (g x) = hbar.1.mulVec (redV P x)) {a b : ℕ} (ha : a < n) (hb : b < n) {p p' : ℕ}
@@ -51,6 +68,15 @@ theorem reduction_frameEntry_of_extension {k₀ n c : ℕ} {rr : Sp E (n + c) �
   unfold ocbM
   rw [dif_pos ⟨ha, hb⟩]
 
+/- English proof (translation)
+Establish `h1 : LocE.fIdx k₀ c n (k₀ + i) = n + i`. Unfold `LocE.fIdx`. Rewrite using `[if_neg (show ¬ k₀ + i < k₀ by omega), if_pos (show k₀ + i < k₀ + c by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : LocE.fIdx k₀ c n (k₀ + i + 1) = n + i + 1`.
+
+Unfold `LocE.fIdx`. Rewrite using `[if_neg (show ¬ k₀ + i + 1 < k₀ by omega), if_pos (show k₀ + i + 1 < k₀ + c by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : LocE.scE n (fun i => i + 1) (n + i + 1) = (i : ℤ) + 2`. Simplify using `only [LocE.scE, if_neg (show ¬ n + i + 1 < n by omega), show n + i + 1 - n = i + 1 by omega]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : LocE.scE n (fun i => i + 1) (n + i) = (i : ℤ) + 1`. Simplify using `only [LocE.scE, if_neg (show ¬ n + i < n by omega), show n + i - n = i by omega]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `LocE.entB`. Rewrite using `[h1, h2, h3, h4, show (i : ℤ) + 2 - (i + 1) = 1 by ring, zpow_one, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem frameEntry_auxiliary_superdiagonal {k₀ n c i : ℕ} (hi : i + 1 < c) (rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + i) (k₀ + i + 1) =
       (q : E) * Loc.atN (rr (Loc.eN E (n + c) (n + i + 1))) (n + i) := by
@@ -74,6 +100,15 @@ theorem frameEntry_auxiliary_superdiagonal {k₀ n c i : ℕ} (hi : i + 1 < c) (
   rw [h1, h2, h3, h4, show (i : ℤ) + 2 - (i + 1) = 1 by ring, zpow_one, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `h1 : LocE.fIdx k₀ c n (k₀ + (c - 1)) = n + (c - 1)`. Unfold `LocE.fIdx`. Rewrite using `[if_neg (show ¬ k₀ + (c - 1) < k₀ by omega), if_pos (show k₀ + (c - 1) < k₀ + c by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : LocE.fIdx k₀ c n (k₀ + (c - 1) + 1) = k₀`.
+
+Rewrite using `[frameIndex_of_ge (by omega)]`. Use linear arithmetic over natural numbers and integers. Unfold `LocE.entB`. Rewrite using `[h1, h2, ciEN hkn]`. Use `show Loc.atN (rr (Loc.inX E n c (Pi.single ⟨k₀, hkn⟩ 1))) (n + (c - 1)) * _ = 0`.
+
+Rewrite using `[hg]`. Unfold `Loc.atN`. Rewrite using `[dif_pos (show n + (c - 1) < n + c by omega), ciInX_apply]`. Use `split_ifs with h`. Simplify using `only at h`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[zero_mul]`.
+-/
 theorem frameEntry_last_auxiliary_zero {k₀ n c : ℕ} (hc : 1 ≤ c) (hkn : k₀ < n) {rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)} {g : Sp E n ≃ₗ[E] Sp E n}
     (hg : ∀ x, rr (Loc.inX E n c x) = Loc.inX E n c (g x)) :
     LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + (c - 1)) (k₀ + (c - 1) + 1) = 0 := by
@@ -95,6 +130,9 @@ theorem frameEntry_last_auxiliary_zero {k₀ n c : ℕ} (hc : 1 ≤ c) (hkn : k�
     omega
   · rw [zero_mul]
 
+/- English proof (translation)
+Unfold `Loc.n1Arg`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[frameEntry_auxiliary_superdiagonal (by have := Finset.mem_range.1 hi; omega)]`.
+-/
 theorem columns_fact {k₀ n c : ℕ} (rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c)) :
     (q : E) * Loc.n1Arg rr = ∑ i ∈ Finset.range (c - 1), LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + i) (k₀ + i + 1) := by
   unfold Loc.n1Arg
@@ -102,11 +140,29 @@ theorem columns_fact {k₀ n c : ℕ} (rr : Sp E (n + c) ≃ₗ[E] Sp E (n + c))
   refine Finset.sum_congr rfl fun i hi => ?_
   rw [frameEntry_auxiliary_superdiagonal (by have := Finset.mem_range.1 hi; omega)]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := AddChar.map_add_eq_mul ψ a (-a) rw [add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul] at h1 exact one_ne_zero h1`.
+-/
 theorem addChar_apply_ne_zero' {A : Type} [AddGroup A] (ψ : AddChar A K) (a : A) : ψ a ≠ 0 := fun h => by
   have h1 := AddChar.map_add_eq_mul ψ a (-a)
   rw [add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Establish `hq0` using `ciQ_ne_zero hu`. Establish `hk : k₀ ≤ n` using `by omega`. Establish `hint : ∀ p p', p < n + c → p' < n + c → IntAt P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap p p')` using `fun p p' hp hp' => frameEntry_integral_of_stabilizer hq0 hk hp hp' hrr`. Establish `hS : redP P (∑ i ∈ Finset.range (k₀ - 1), LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap i (i + 1) + ∑ i ∈ Finset.range (k₀ + c + j - k₀ - 1), LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + i) (k₀ + i + 1)) = (∑ i ∈ Finset.r …`. Rewrite using `[reduction_sum_superdiagonal (show k₀ < k₀ + c + j by omega) _ (fun p hp => hint p (p + 1) (by omega) (by omega)), show k₀ + c + j - k₀ - 1 = c + j - 1 by omega, finset_range_sum_split _ c j, columns_fact (k₀ := k₀) rr, redP_sum _ _ (fun i hi => hint _ _ (by have := Finset.mem_ra …`.
+
+Establish `hE : ∀ i ∈ Finset.range (k₀ - 1), redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap i (i + 1)) = ocbM hbar i (i + 1)`. Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Conclude with `reduction_frameEntry_of_extension hg hred (by omega) (by omega) (frameIndex_of_lt (by omega)) (frameIndex_of_lt (by omega))`. Establish `hF : ∀ i ∈ Finset.range (j - 1), redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + (c + i)) (k₀ + (c + i) + 1)) = ocbM hbar (k₀ + i) (k₀ + i + 1)`.
+
+Introduce `i hi`. Use `Finset.mem_range.1 hi` as an intermediate fact. Conclude with `reduction_frameEntry_of_extension hg hred (by omega) (by omega) (by rw [frameIndex_of_ge (s := k₀ + (c + i)) (by omega)]; omega) (by rw [frameIndex_of_ge (s := k₀ + (c + i) + 1) (by omega)]; omega)`. Establish `hM : (if 1 ≤ c ∧ 1 ≤ j then redP P (LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + (c - 1)) (k₀ + (c - 1) + 1)) else 0) = 0` using `by split_ifs with h`. Rewrite using `[frameEntry_last_auxiliary_zero h.1 (by omega) hg, redP_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl hE, Finset.sum_congr rfl hF, hM]`. Normalize the expressions using the abelian group laws. Establish `hBl : ∀ i ∈ Finset.range j, LocE.unitV (χ i) (Matrix.det (Matrix.of fun s s' : Fin t => LocE.entB q k₀ c n c n (fun i => i + 1) (fun i => i + 1) rr.toLinearMap (k₀ + c + j + i * t + s.1) (k₀ + c + j + i * t + s'.1))) = ocbChiK (χ i) (Matrix.det (Matrix.of fun s s' : Fin t => ocbM …`. Introduce `i hi`.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hjt : (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t hi'`. Rewrite `hjt` using `[Nat.succ_mul]`. Establish `hbd : ∀ u : Fin t, k₀ + j + i * t + u.1 < n` using `fun u => by have := u.2; omega`. Use `show ocbChiK (χ i) (redP P _) = _`.
+
+Rewrite using `[reduction_det_eq_det_reduction _ fun s s' => hint _ _ (by have := hbd s; omega) (by have := hbd s'; omega)]`. Use `congr 1`. Use `congr 1`. Use extensionality with `s s'`. Simplify using `only [Matrix.of_apply]`.
+
+Conclude with `reduction_frameEntry_of_extension hg hred (hbd s) (hbd s') (by rw [frameIndex_of_ge (s := k₀ + c + j + i * t + s.1) (by omega)]; omega) (by rw [frameIndex_of_ge (s := k₀ + c + j + i * t + s'.1) (by omega)]; omega)`. Unfold `LocE.lamGBS LocE.lamGvS ocbXLam`. Rewrite using `[hS, AddChar.map_add_eq_mul, Finset.prod_congr rfl hBl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamGBS_eq_addChar_mul_ocbXLam_of_mem_stabL (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2)
     (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {k₀ t j n c : ℕ}
     (hk1 : 1 ≤ k₀) (hcj : 1 ≤ c + j) (hn : k₀ + j + j * t ≤ n)
@@ -176,6 +232,23 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Introduce `hB j hj w hbar g r hr hg hred`. Establish `hw` using `w.2`. Establish `h2` using `R.two_le_m`. Establish `hm` using `hB.hm`. Establish `hk5` using `R.m_add_three_le_k`.
+
+Establish `e : j * (R.t + 1) = j * R.t + j` using `by ring`. Establish `hJ : r ∈ Jat (Pr` using `Pr) cst.sharp j w.1 := by`. Establish `h` using `hr.2`. Simplify `h` using `[MulAut.conj_apply]`. Rewrite `hJ` using `[hB.sharp]`.
+
+Establish `hJ' : r ∈ LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j)`. Unfold `Jat at hJ`. Rewrite `hJ` using `[if_pos hw, if_pos rfl]`. Then use the resulting hypothesis. Establish `hu` using `ciQ_notMem_sq hB.hX hB.hPr hw`. Establish `hq0` using `ciQ_ne_zero hu`.
+
+Establish `hrE : R.r = R.k + cOf R j + j`. Unfold `Ranks.r cOf`. Use linear arithmetic over natural numbers and integers. Establish `hn : R.k + j + j * R.t ≤ R.N j`. Unfold `Ranks.N`.
+
+Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `hint : IntAt w.1 ((qOf w.1 : X.E) * Loc.n1Arg r)`. Rewrite using `[columns_fact (k₀ := R.k) r]`. Use `ciIntAt_sum _ _ fun i hi => frameEntry_integral_of_stabilizer hq0 (by unfold Ranks.N; omega) ?_ ?_ hJ'.1` and prove the remaining obligations.
+
+Use `Finset.mem_range.1 hi` as an intermediate fact. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers. Use `Finset.mem_range.1 hi` as an intermediate fact. Unfold `Ranks.N`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hpsi` using `hB.psi0 ⟨w.1, by classical exact Finset.mem_union_left _ w.2⟩ ((qOf w.1 : X.E) * Loc.n1Arg r) hw hint`. Rewrite `hpsi` using `[mul_div_cancel_left₀ _ hq0]`. Simplify using `only at hpsi`. Unfold `chiInv lamRow`.
+
+Simplify using `only`. Rewrite using `[hB.sharp, if_pos hw, if_pos rfl, inv_one, one_mul, mul_one, hpsi, hrE, lamGBS_eq_addChar_mul_ocbXLam_of_mem_stabL hu _ _ (by omega) (by unfold cOf; omega) hn hJ'.1 hg hred, ← mul_assoc, inv_mul_cancel₀ (addChar_apply_ne_zero' _ _), one_mul]`.
+-/
 theorem ocbChrGLoc_holds (m2 : ℕ) : OcbChrGLoc Ch sel mu cst m2 := by
   intro hB j hj w hbar g r hr hg hred
   have hw := w.2

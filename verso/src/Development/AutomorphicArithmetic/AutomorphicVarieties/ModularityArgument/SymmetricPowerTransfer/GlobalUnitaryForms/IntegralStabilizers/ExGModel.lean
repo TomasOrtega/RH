@@ -8,45 +8,86 @@ open Loc
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL] <;> ring`.
+-/
 private theorem sg_mul (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   ext <;> simp [sigL] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL] <;> ring`.
+-/
 private theorem sg_add (x y : EL Δ τ) : sigL (x + y) = sigL x + sigL y := by
   ext <;> simp [sigL] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private theorem sg_sg (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private theorem sg_star (x : EL Δ τ) : sigL (star x) = star (sigL x) := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL] <;> ring`.
+-/
 private theorem sg_smul (a : Lsq K Δ) (x : EL Δ τ) : sigL (a • x) = star a • sigL x := by
   ext <;> simp [sigL] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL, QuadraticAlgebra.trace_def, two_mul] <;> ring`.
+-/
 private theorem sg_tr (x : EL Δ τ) : QuadraticAlgebra.trace (sigL x) = star (QuadraticAlgebra.trace x) := by
   ext <;> simp [sigL, QuadraticAlgebra.trace_def, two_mul] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL, ofE]`.
+-/
 private theorem sg_ofE (z : Etau K τ) : sigL (ofE Δ z) = ofE Δ z := by
   ext <;> simp [sigL, ofE]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private theorem ofE_mul (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private theorem ofE_star (x : Etau K τ) : ofE Δ (star x) = star (ofE Δ x) := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private theorem ofE_one : ofE Δ (1 : Etau K τ) = 1 := by
   ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem st_alg (c : K) : star (algebraMap K (Lsq K Δ) c) = algebraMap K _ c := by
   ext <;> simp
 
+/- English proof (translation)
+Simplify using `only [herm, semi, star_add, star_mul', star_star, st_alg, ← sg_tr, sg_mul, sg_sg, sg_star, h.m_sig]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem herm_semi {c : K} {d m : EL Δ τ} (h : IsDat c d m) (x y : Sp Δ τ) :
     herm c m (semi d x) (semi d y) = star (herm c m x y) := by
   simp only [herm, semi, star_add, star_mul', star_star, st_alg, ← sg_tr, sg_mul, sg_sg, sg_star, h.m_sig]
   congr 2
   ring
 
+/- English proof (translation)
+Establish `h1 : quo z * star (quo z) = 1`. Establish `e` using `z.mul_inv`. Establish `e'` using `congrArg star e`. Rewrite `e'` using `[star_mul', star_one]`. Simplify using `only [quo, star_mul', star_star]`.
+
+Take the linear combination `(star (z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)) * e + e'`. Establish `h2 : ofE Δ (quo z) * star (ofE Δ (quo z)) = 1` using `by rw [← ofE_star, ← ofE_mul, h1, ofE_one]`. Simplify using `only [herm, tor, sg_mul, sg_ofE, star_mul']`. Use `congr 2`. Take the linear combination `(m * x.2 * star (sigL y.2)) * h2`.
+-/
 private theorem herm_tor (c : K) (m : EL Δ τ) (z : (Etau K τ)ˣ) (x y : Sp Δ τ) :
     herm c m (tor Δ z x) (tor Δ z y) = herm c m x y := by
   have h1 : quo z * star (quo z) = 1 := by
@@ -60,6 +101,13 @@ private theorem herm_tor (c : K) (m : EL Δ τ) (z : (Etau K τ)ˣ) (x y : Sp Δ
   congr 2
   linear_combination (m * x.2 * star (sigL y.2)) * h2
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `h (Pi.single b 1) (Pi.single a 1)` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply] at this`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.star_apply, mul_comm (star _)]`. Rewrite using `[this, Matrix.one_apply, Finset.sum_eq_single a]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [hab]`. Introduce `i _ hi`. Simplify using `[hi]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem mem_unit (M : Matrix (Fin 3) (Fin 3) (Lsq K Δ))
     (h : ∀ u v, ∑ i, (M *ᵥ u) i * star ((M *ᵥ v) i) = ∑ i, u i * star (v i)) : M ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ) := by
   rw [Matrix.mem_unitaryGroup_iff']
@@ -74,6 +122,21 @@ private theorem mem_unit (M : Matrix (Fin 3) (Fin 3) (Lsq K Δ))
     simp [hi]
   · simp
 
+/- English proof (translation)
+Set `f : (Fin 3 → Lsq K Δ) →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)` to `{ toFun := fun w => P (semi d (P.symm (star w))) map_add' := fun u v => by`. Rewrite using `[← map_add, star_add, map_add]`. Use `congr 1`. Simplify using `[semi, sg_add, mul_add]`. Use the proof step `map_smul' := fun a u => by`.
+
+Rewrite using `[RingHom.id_apply, ← map_smul, star_smul, map_smul]`. Use `congr 1`. Simplify using `[semi, sg_smul] }`. Set `T : (Etau K τ)ˣ → Sp Δ τ →ₗ[Lsq K Δ] Sp Δ τ` to `fun z => { toFun := tor Δ z map_add' := fun u v => by simp [tor, mul_add] map_smul' := fun a u => by simp [tor] }`. Set `g : (Etau K τ)ˣ → Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `fun z => LinearMap.toMatrix' (P.toLinearMap ∘ₗ T z ∘ₗ P.symm.toLinearMap)`.
+
+Establish `hg : ∀ z w, g z *ᵥ w = P (tor Δ z (P.symm w))` using `fun z w => LinearMap.toMatrix'_mulVec _ _`. Establish `hf : ∀ w, LinearMap.toMatrix' f *ᵥ w = P (semi d (P.symm (star w)))` using `fun w => LinearMap.toMatrix'_mulVec _ _`. Establish `hgu : ∀ z, g z ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ)` using `fun z => mem_unit _ fun u v => by`. Simplify using `only [hg]`. Rewrite using `[← hP, herm_tor, hP]`.
+
+Simplify using the standard rewrite rules. Establish `hfu : LinearMap.toMatrix' f ∈ Matrix.unitaryGroup (Fin 3) (Lsq K Δ)` using `mem_unit _ fun u v => by`. Simplify using `only [hf]`. Rewrite using `[← hP, herm_semi h, hP]`. Simplify using `[star_mul']`.
+
+Use `⟨⟨_, hfu⟩, MonoidHom.mk' (fun z => ⟨g z, hgu z⟩) fun a b => Subtype.ext ?_, hP, fun x => ?_, fun z x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (a * b) = g a * g b`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hg, hg, hg, P.symm_apply_apply]`. Use `congr 1`.
+
+Establish `e : quo (a * b) = quo a * quo b`. Simplify using `only [quo, _root_.mul_inv_rev, Units.val_mul, star_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[tor, e, ofE_mul, mul_assoc]`. Express the relevant statement in the definitionally equal form `_ = LinearMap.toMatrix' f *ᵥ _`.
+
+Rewrite using `[hf, star_star, P.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `_ = g z *ᵥ _`. Rewrite using `[hg, P.symm_apply_apply]`.
+-/
 theorem exG_models {c : K} {d m : EL Δ τ} (h : IsDat c d m) (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     (hP : ∀ x y, herm c m x y = ∑ i, P x i * star (P y i)) : ∃ δ ι, Models c d m δ ι P := by
   let f : (Fin 3 → Lsq K Δ) →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ) :=
@@ -115,6 +178,19 @@ theorem exG_models {c : K} {d m : EL Δ τ} (h : IsDat c d m) (P : Sp Δ τ ≃�
   · change _ = g z *ᵥ _
     rw [hg, P.symm_apply_apply]
 
+/- English proof (translation)
+Establish `h1 : star m = sigL m` using `by conv_lhs => rw [← h.m_star, star_star]`. Apply the tactic sequence `have ho : ofE Δ (ω : Etau K τ) = ω := by ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Establish `hd : d * sigL d = ω` using `h.d_norm.trans ho`. Establish `hd' : star d * star (sigL d) = star ω` using `by rw [← star_mul', hd]`. Establish `hn : (ω : EL Δ τ) * star ω = 1` using `by rw [← algebraMap_norm_eq_mul_star]; simp [QuadraticAlgebra.norm_def]`.
+
+Establish `ht : (ω : EL Δ τ) + star ω = algebraMap _ _ (algebraMap K (Lsq K Δ) τ)`. Rewrite using `[← algebraMap_trace_eq_add_star, trace_omega]`. Establish `hs : sigL (1 + star ω : EL Δ τ) = 1 + star ω`. Apply the tactic sequence `ext <;> simp [sigL, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Use `set y : EL Δ τ := m * d * (1 + star ω) with hy`.
+
+Establish `hys : star y = y`. Rewrite using `[hy, star_mul', star_mul', h1, h.m_sig, star_add, star_one, star_star]`. Take the linear combination `(m * d * (1 + ω)) * hd' + m * d * hn`. Establish `him : y.im = 0`. Establish `e` using `congrArg QuadraticAlgebra.im hys`.
+
+Rewrite `e` using `[im_star]`. Establish `e1` using `congrArg QuadraticAlgebra.re e`. Establish `e2` using `congrArg QuadraticAlgebra.im e`. Simplify using `only [re_neg, im_neg] at e1 e2`. Use `ext`.
+
+Conclude with `self_eq_neg.1 e1.symm`. Conclude with `self_eq_neg.1 e2.symm`. Apply the tactic sequence `have hy1 : y = algebraMap _ _ y.re := by ext1 <;> simp [him]`. Apply the tactic sequence `have hy2 : sigL y = algebraMap _ _ (star y.re) := by ext1 <;> simp [him, sigL]`. Use `⟨y.re, QuadraticAlgebra.algebraMap_injective (a := -1) (b := algebraMap K (Lsq K Δ) τ) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, ← hy1, ← hy2, algebraMap_norm_eq_mul_star, hy, sg_mul, sg_mul, hs, ← h1, map_add, map_add, ← ht, map_ofNat, map_ofNat]`. Take the linear combination `(-(m * star m * (1 + star ω) ^ 2)) * hd - (m * star m * (2 + star ω)) * hn`.
+-/
 theorem exG_norm [CharZero K] {c : K} {d m : EL Δ τ} (h : IsDat c d m) :
     ∃ y : Lsq K Δ, algebraMap K (Lsq K Δ) (2 + τ) * QuadraticAlgebra.norm m = y * star y := by
   have h1 : star m = sigL m := by

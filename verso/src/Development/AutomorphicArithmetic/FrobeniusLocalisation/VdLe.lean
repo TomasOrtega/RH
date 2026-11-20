@@ -7,6 +7,13 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_div]`. Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Establish `hs : (∑ j ∈ Finset.range (k + 1), ((l ^ j).totient : ℝ)) = (l : ℝ) ^ k`. Conclude with `Formalism.HC.Der.Rd.sum_totient_pow hl k` after adjusting the coercions. Rewrite using `[hs, Nat.totient_prime_pow_succ hl]`.
+
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `hl0 : (l : ℝ) - 1 ≠ 0` using `by linarith`. Establish `hp : (l : ℝ) ^ k ≠ 0` using `pow_ne_zero _ (by linarith)`. Move the coercions through the operations in `[Nat.cast_sub hl.one_le]`. Use `congr 1`.
+
+Rewrite using `[div_mul_eq_div_div, div_self hp]`.
+-/
 private theorem arith {l : ℕ} (hl : l.Prime) (k : ℕ) :
     ∑ j ∈ Finset.range (k + 1), (1 - ((l ^ j).totient : ℝ) / ((l ^ (k + 1)).totient : ℝ)) =
       ((k + 1 : ℕ) : ℝ) - 1 / ((l : ℝ) - 1) := by
@@ -22,6 +29,11 @@ private theorem arith {l : ℕ} (hl : l.Prime) (k : ℕ) :
   congr 1
   rw [div_mul_eq_div_div, div_self hp]
 
+/- English proof (translation)
+Establish `hjd : (l ^ j).totient ∣ (l ^ e).totient` using `Nat.totient_dvd_of_dvd (pow_dvd_pow l hje)`. Establish `hj0 : 0 < (l ^ j).totient` using `Nat.totient_pos.2 (pow_pos hl.pos j)`. Establish `he0 : 0 < (l ^ e).totient` using `Nat.totient_pos.2 (pow_pos hl.pos e)`. Establish `hq0 : 0 < (l ^ e).totient / (l ^ j).totient` using `Nat.div_pos (Nat.le_of_dvd he0 hjd) hj0`. Establish `hc0 : 0 < c` using `Nat.pos_of_dvd_of_pos hd hq0`.
+
+Establish `hcle : c ≤ (l ^ e).totient / (l ^ j).totient` using `Nat.le_of_dvd hq0 hd`. Establish `hq : (((l ^ e).totient / (l ^ j).totient : ℕ) : ℝ) = ((l ^ e).totient : ℝ) / ((l ^ j).totient : ℝ)` using `Nat.cast_div hjd (by exact_mod_cast hj0.ne')`. Establish `h1 : (1 : ℝ) / (((l ^ e).totient / (l ^ j).totient : ℕ) : ℝ) ≤ 1 / (c : ℝ)` using `one_div_le_one_div_of_le (by exact_mod_cast hc0) (by exact_mod_cast hcle)`. Rewrite `h1` using `[hq, one_div_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem intCast_mul_mul_mul_eq_of_mul_eq {l : ℕ} (hl : l.Prime) {j e c : ℕ} (hje : j ≤ e)
     (hd : c ∣ (l ^ e).totient / (l ^ j).totient) :
     1 - 1 / (c : ℝ) ≤ 1 - ((l ^ j).totient : ℝ) / ((l ^ e).totient : ℝ) := by
@@ -39,6 +51,23 @@ private theorem intCast_mul_mul_mul_eq_of_mul_eq {l : ℕ} (hl : l.Prime) {j e c
   rw [hq, one_div_div] at h1
   linarith
 
+/- English proof (translation)
+Introduce `φ H l hl`. Establish `heN` using `(layer_bot H.toHostRaw hl (Nat.zero_le (H.condN.factorization l))).2.2`. Simplify using `only [UpperTheory.HF.Formalism.HC.HostRaw.sl]`. Generalize the expression as in `hE : (UpperTheory.HF.Formalism.HC.HostRaw.condE H.toHostRaw).factorization l = e at heN ⊢`. Establish `hcard : ∀ j ∈ Finset.range (H.condN.factorization l), (1 - 1 / (Nat.card (UpperTheory.HF.Formalism.HC.HostRaw.imgOne H.toHostRaw (H.condN / l ^ H.condN.factorization l * l ^ j)) : ℝ)) ≤ if j < e then 1 - ((l ^ j).totient : ℝ) / ((l ^ e).totient : ℝ) else 0`.
+
+Introduce `j hj`. Establish `hjN : j ≤ H.condN.factorization l` using `(Finset.mem_range.1 hj).le`. Take `⟨hbot, hdvd, -⟩` from `layer_bot H.toHostRaw hl hjN`. Rewrite `hbot`, `hdvd` using `[hE]`. Use `split_ifs with hje`.
+
+Conclude with `intCast_mul_mul_mul_eq_of_mul_eq hl hje.le (hdvd hje.le)`. Use `push_neg at hje`. Rewrite using `[hbot.2 hje, Subgroup.card_bot]`. Simplify using the standard rewrite rules. Establish `hsum` using `Finset.sum_le_sum hcard`.
+
+Rewrite `hsum` using `[← vd_formula H hl]`. Establish `hS : ∑ j ∈ Finset.range (H.condN.factorization l), (if j < e then 1 - ((l ^ j).totient : ℝ) / ((l ^ e).totient : ℝ) else 0) = ∑ j ∈ Finset.range e, (1 - ((l ^ j).totient : ℝ) / ((l ^ e).totient : ℝ))`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le heN`. Rewrite using `[hm, Finset.sum_range_add]`. Establish `h2 : ∑ x ∈ Finset.range m, (if e + x < e then 1 - ((l ^ (e + x)).totient : ℝ) / ((l ^ e).totient : ℝ) else 0) = 0` using `Finset.sum_eq_zero (fun x _ => if_neg (by omega))`.
+
+Rewrite using `[h2, add_zero]`. Conclude with `Finset.sum_congr rfl (fun j hj => if_pos (Finset.mem_range.1 hj))`. Rewrite `hsum` using `[hS]`. Establish `hle : ∑ j ∈ Finset.range e, (1 - ((l ^ j).totient : ℝ) / ((l ^ e).totient : ℝ)) ≤ (e : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨?_, hsum.trans hle⟩` and prove the remaining obligations. Break down `e with _ | k` into its components or cases. Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl.two_le`. Establish `h1 : 1 / ((l : ℝ) - 1) ≤ 1`. Rewrite using `[div_le_one (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Finset.range_zero, Finset.sum_empty] at hsum`. Simplify using `only [Nat.zero_eq, zero_le, max_eq_left, Nat.cast_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hsum` using `[arith hl k]`.
+
+Rewrite using `[max_eq_right (by omega)]`. Conclude with `hsum`.
+-/
 theorem UpperTheory.HF.vd_le :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → H.vdH l ≤ (H.sl l : ℝ) - 1 / ((l : ℝ) - 1) ∧ H.vdH l ≤ (H.condE.factorization l : ℝ) := by
   intro φ H l hl

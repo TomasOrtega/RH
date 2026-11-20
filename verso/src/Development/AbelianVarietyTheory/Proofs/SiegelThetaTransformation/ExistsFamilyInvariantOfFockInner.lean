@@ -8,6 +8,11 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.SW
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ V` as an intermediate fact. Establish `h (l : V →ₗ[ℂ] ℂ) : ∃ a : V, ∀ v, l v = inner ℂ a v` using `⟨(InnerProductSpace.toDual ℂ V).symm (LinearMap.toContinuousLinearMap l), fun v => by`. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Use the proof step `rfl⟩`. Take `⟨a, ha⟩` from `h l`.
+
+Take `⟨a', ha'⟩` from `h l'`. Simplify using `only [ha, ha', inner_conj_symm, OrthonormalBasis.sum_inner_mul_inner]`.
+-/
 theorem sum_mul_conj_orthonormalBasis {V ι : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [Fintype ι] (b b' : OrthonormalBasis ι ℂ V) (l l' : V →ₗ[ℂ] ℂ) :
     ∑ j, l (b j) * conj (l' (b j)) = ∑ j, l (b' j) * conj (l' (b' j)) := by
@@ -19,6 +24,15 @@ theorem sum_mul_conj_orthonormalBasis {V ι : Type*} [NormedAddCommGroup V] [Inn
   obtain ⟨a', ha'⟩ := h l'
   simp only [ha, ha', inner_conj_symm, OrthonormalBasis.sum_inner_mul_inner]
 
+/- English proof (translation)
+Set `cr : InnerProductSpace.Core ℂ W` to `{ inner := fun x y => MvPoly.fockInner (y : MvPolynomial σ ℂ) x conj_inner_symm := fun x y => MvPoly.fockInner_conj_symm _ _ re_inner_nonneg := fun x => by`. Rewrite using `[MvPoly.fockInner_self, RCLike.ofReal_re]`. Conclude with `MvPoly.fockNormSq_nonneg _`. Use `add_left := fun x y z => MvPoly.fockInner_add_right _ _ _`. Use `smul_left := fun x y r => MvPoly.fockInner_smul_right _ _ _`.
+
+Use `definite := fun x hx => by`. Rewrite `hx` using `[MvPoly.fockInner_self]`. Conclude with `Subtype.ext (MvPoly.fockNormSq_eq_zero.mp (RCLike.ofReal_eq_zero.mp hx)) }`. Use `letI : NormedAddCommGroup W := cr.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ W := InnerProductSpace.ofCore cr.toCore`.
+
+Set `b` to `stdOrthonormalBasis ℂ W`. Establish `hpos : 0 < Module.finrank ℂ W`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`. Conclude with `hW`. Use `⟨_, fun j => b j, fun j => (b j).2, ⟨⟨0, hpos⟩, fun e => ?_⟩, fun f hf hi l l' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `b.orthonormal.ne_zero _ (Subtype.ext e)`. Set `U : W →ₗᵢ[ℂ] W` to `(f.restrict hf).isometryOfInner fun x y => hi _ _`. Conclude with `sum_mul_conj_orthonormalBasis (b.map (U.toLinearIsometryEquiv rfl)) b (l ∘ₗ W.subtype) (l' ∘ₗ W.subtype)`.
+-/
 theorem exists_family_invariant_of_fockInner {σ : Type} (W : Submodule ℂ (MvPolynomial σ ℂ))
     [FiniteDimensional ℂ W] (hW : W ≠ ⊥) :
     ∃ (m : ℕ) (P : Fin m → MvPolynomial σ ℂ), (∀ j, P j ∈ W) ∧ (∃ j, P j ≠ 0) ∧
@@ -47,6 +61,11 @@ theorem exists_family_invariant_of_fockInner {σ : Type} (W : Submodule ℂ (MvP
     exact sum_mul_conj_orthonormalBasis (b.map (U.toLinearIsometryEquiv rfl)) b
       (l ∘ₗ W.subtype) (l' ∘ₗ W.subtype)
 
+/- English proof (translation)
+Introduce `T _ _ p q n c c' h`. Take `⟨m, P, h₁, h₂, h₃⟩` from `exists_family_invariant_of_fockInner (Harm.rowHighest (κ := Fin n) ℂ c c') (Harm.rowHighest_ne_bot h c c')`. Use `⟨m, P, h₁, h₂, fun u hu z w => ?_⟩` and prove the remaining obligations. Establish `hs : star u * u = 1` using `funext fun t => Units.ext (Matrix.mem_unitaryGroup_iff'.mp (hu t))`. Use `h₃ (Harm.colActHom u).toLinearMap (fun Q hQ => Harm.colAct_mem_rowHighest u hQ) (fun Q Q' => ?_) (MvPolynomial.aeval z).toLinearMap (MvPolynomial.aeval w).toLinearMap` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `MvPoly.fockInner (Harm.colAct ℂ T p q (Fin n) u Q) (Harm.colAct ℂ T p q (Fin n) u Q') = _`. Rewrite using `[Harm.fockInner_colAct, ← AlgEquiv.mul_apply, ← map_mul, hs, map_one, AlgEquiv.one_apply]`.
+-/
 theorem exists_invFam_rowHighest : ∀ (T : Type) [Fintype T] [DecidableEq T] (p q n : ℕ)
     (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ), p + q ≤ n →
     ∃ (m : ℕ) (P : Fin m → Harm.Poly ℂ T p q (Fin n)), (∀ j, P j ∈ Harm.rowHighest ℂ c c') ∧

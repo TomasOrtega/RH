@@ -11,6 +11,11 @@ open GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalThe
 section Generic
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[_root_.zpow_add_one, apow_mul, ih, ← apow_add]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Consider the case `pred n ih`. Rewrite using `[_root_.zpow_sub_one, apow_mul, ih, apow_inv, ← apow_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem apow_zpow (x : kˣ) (n : ℤ) (z : ℂ) : apow (x ^ n) z = apow x (n * z) := by
   induction n using Int.induction_on with
   | zero => simp
@@ -19,12 +24,18 @@ theorem apow_zpow (x : kˣ) (n : ℤ) (z : ℂ) : apow (x ^ n) z = apow x (n * z
   | pred n ih =>
     rw [_root_.zpow_sub_one, apow_mul, ih, apow_inv, ← apow_add]; push_cast; ring_nf
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih => rw [List.map_cons, List.prod_cons, ih, ← apow_add]`. Simplify using the standard rewrite rules.
+-/
 theorem prod_apow_list (ϖ : kˣ) {α : Type*} (l : List α) (f : α → ℂ) :
     (l.map fun b => apow ϖ (f b)).prod = apow ϖ (l.map f).sum := by
   induction l with
   | nil => simp
   | cons b l ih => rw [List.map_cons, List.prod_cons, ih, ← apow_add]; simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, ← apow_add]`.
+-/
 theorem prod_apow_finset (ϖ : kˣ) {α : Type*} (s : Finset α) (f : α → ℂ) :
     ∏ i ∈ s, apow ϖ (f i) = apow ϖ (∑ i ∈ s, f i) := by
   classical
@@ -32,6 +43,9 @@ theorem prod_apow_finset (ϖ : kˣ) {α : Type*} (s : Finset α) (f : α → ℂ
   | empty => simp
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, ← apow_add]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih => simp [ih]`.
+-/
 theorem cast_list_sum {α : Type*} (l : List α) (f : α → ℤ) : (((l.map f).sum : ℤ) : ℂ) = (l.map fun b => (f b : ℂ)).sum := by
   induction l with
   | nil => simp
@@ -46,6 +60,9 @@ open GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalThe
 section Vol
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h0 : 0 < valuation k (u : k)` using `zero_lt_iff.2 (by simp)`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, Valuation.mem_integer_iff, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Rewrite using `[inv_mul_le_one₀ h0]`.
+-/
 theorem setOf_le_eq_preimage (u : kˣ) :
     {x : k | valuation k x ≤ valuation k (u : k)} = (fun x => ((u⁻¹ : kˣ) : k) * x) ⁻¹' (𝒪[k] : Set k) := by
   ext x
@@ -56,10 +73,16 @@ theorem setOf_le_eq_preimage (u : kˣ) :
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Rewrite using `[setOf_le_eq_preimage]`. Conclude with `(Model.isOpen_int.preimage (continuous_const.mul continuous_id)).measurableSet`.
+-/
 theorem measurableSet_setOf_le (u : kˣ) : MeasurableSet {x : k | valuation k x ≤ valuation k (u : k)} := by
   rw [setOf_le_eq_preimage]
   exact (Model.isOpen_int.preimage (continuous_const.mul continuous_id)).measurableSet
 
+/- English proof (translation)
+Rewrite using `[← Model.nabs_vol ν hν u, setOf_le_eq_preimage]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+-/
 theorem vol_setOf_le (ν : Measure k) (hν : IsUnitVol ν) (u : kˣ) :
     ν {x : k | valuation k x ≤ valuation k (u : k)} = ENNReal.ofReal (nabs k u) := by
   rw [← Model.nabs_vol ν hν u, setOf_le_eq_preimage]
@@ -68,10 +91,18 @@ theorem vol_setOf_le (ν : Measure k) (hν : IsUnitVol ν) (u : kˣ) :
   rw [Set.mem_smul_set_iff_inv_smul_mem]
   rfl
 
+/- English proof (translation)
+The claim follows from `MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => measurableSet_setOf_le _`.
+-/
 theorem measurableSet_box (G : Grid k) (ϖ : kˣ) (a a' : ℤ) : MeasurableSet (box G ϖ a a') :=
   MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => measurableSet_setOf_le _
 
 open Classical in
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Use `hν.1` as an intermediate fact. Rewrite using `[varsVol, box, Measure.pi_pi, ENNReal.toReal_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.pi_pi, ENNReal.toReal_prod]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[vol_setOf_le ν hν, ENNReal.toReal_ofReal (Model.nabs_pos _).le]`.
+-/
 theorem vol_box (G : Grid k) (ν : Measure k) (hν : IsUnitVol ν) (ϖ : kˣ) (a a' : ℤ) :
     (varsVol G ν (box G ϖ a a')).toReal = ∏ j, ∏ v, nabs k (ϖ ^ boxExp G a a' j v) := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
@@ -91,6 +122,9 @@ open GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalThe
 section Expo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, _root_.zpow_add]`.
+-/
 theorem prod_zpow_units {α : Type*} (ϖ : kˣ) (s : Finset α) (f : α → ℤ) : ∏ i ∈ s, ϖ ^ f i = ϖ ^ ∑ i ∈ s, f i := by
   classical
   induction s using Finset.induction_on with
@@ -110,6 +144,9 @@ def expo (a a' : ℤ) : ℤ :=
 
 variable {G}
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `X`. Distinguish the cases in `hi : i = G.m`. Rewrite using `[show (i, j) = (G.m, j) by rw [hi], hg, vtxDet, if_pos rfl, colDiag, gdet, det_diagGL, prod_zpow_units]`. Rewrite using `[hg' i j hi, vtxDet, if_neg hi]`. Simplify using the standard rewrite rules.
+-/
 theorem gdet_eq (ϖ : kˣ) (a a' : ℤ) (g : G.VertexGroup) (hg : ∀ j, g (G.m, j) = colDiag G ϖ a a' j)
     (hg' : ∀ i j, i ≠ G.m → g (i, j) = 1) (X : ℕ × ℕ) : gdet (g X) = ϖ ^ vtxDet G a a' X := by
   obtain ⟨i, j⟩ := X

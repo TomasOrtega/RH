@@ -55,18 +55,32 @@ def ReadArchSt : Prop :=
           (∀ j, 0 < t j) ∧ ReadsSecAt Fr (U (goodOf c σ)) (goodTwist c σ) z k x t ∧
           ReadsRootsAt Or (U (goodOf c σ)) z k t
 
+/- English proof (translation)
+Unfold `goodOf goodTwist`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem goodOf_apply (σ : c.F →+* ℂ) (a : c.F) : goodOf c σ a = goodTwist c σ (σ a) := by
   unfold goodOf goodTwist
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `goodTwist`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem goodTwist_goodTwist (σ : c.F →+* ℂ) (a : ℂ) : goodTwist c σ (goodTwist c σ a) = a := by
   unfold goodTwist
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `goodTwist`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_goodTwist (σ : c.F →+* ℂ) (a : ℂ) : ‖goodTwist c σ a‖ = ‖a‖ := by
   unfold goodTwist
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨dg, dh, g, h, hg, hh, hd, hy, h0, hw⟩` from `hv`. Take `rfl : dg = dh` from `funext fun k => by simpa using hd k`. Establish `e : ∀ p : MRing ι, eval z (map (Int.castRingHom ℂ) p) = aeval z p` using `fun p => by`. Rewrite using `[aeval_def, eval_map]`. Both sides reduce to the same expression.
+
+Use `hz dg g h θ hg hh hy` as an intermediate fact. Rewrite `this` using `[e, e, hw]`. Conclude with `mul_right_cancel₀ h0 this`.
+-/
 theorem hasVal_const {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω F : Type} [Field Ω] [Field F]
     [Algebra F Ω] {y : (Σ k, ι k) → Ω} {σ : F →+* ℂ} {z : (Σ k, ι k) → ℂ} (hz : LiesOver y σ z) {θ : F} {v : ℂ}
     (hv : HasVal y 0 (algebraMap F Ω θ) z v) : v = σ θ := by
@@ -78,6 +92,9 @@ theorem hasVal_const {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (�
   rw [e, e, hw] at this
   exact mul_right_cancel₀ h0 this
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : ‖(1 : ℂ) * Complex.I + Complex.I * 1‖ ≠ ‖(1 : ℂ) * starRingEnd ℂ Complex.I + Complex.I * 1‖ := by
   simp
 

@@ -11,5 +11,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.SemiabelianTori.Geomet
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField TensorProduct Filter Topology Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.abPart_exists | exact GlobalTheory.CompanionTheory.Ar.abPart_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.abPart_exists <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_abelian_part_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (L : Type) [Field L] [NumberField L] (z : Sp L ⟶ S), ∃ (L' : Type) (_ : Field L') (_ : NumberField L') (e : L →+* L'), Nonempty (AbPart t (spMap e ≫ z)) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.abPart_exists | exact GlobalTheory.CompanionTheory.Ar.abPart_exists | (intros; apply GlobalTheory.CompanionTheory.Ar.abPart_exists <;> assumption)

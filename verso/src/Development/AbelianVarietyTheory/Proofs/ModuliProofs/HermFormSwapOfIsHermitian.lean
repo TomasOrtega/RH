@@ -13,6 +13,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.LatticeHom
 
+/- English proof (translation)
+Establish `hS : IsCompact (Metric.sphere (0 : E) 1)` using `isCompact_sphere 0 1`. Establish `hcont : ContinuousOn (fun z => q' z / q z) (Metric.sphere (0 : E) 1)`. Use `hq'.continuousOn.div hq.continuousOn ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz0 : z ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hz`. Conclude with `(hpos z hz0).ne'`. Take `⟨C, hC⟩` from `hS.bddAbove_image hcont`. Use `⟨C, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : ∀ f : E → ℝ, (∀ (t : ℝ) z, f (t • z) = t ^ 2 * f z) → f 0 = 0`. Introduce `f hf`. Simplify using `using hf 0 0`. Distinguish the cases in `hz : z = 0`. Rewrite using `[hz, h0 q hs, h0 q' hs', mul_zero]`.
+
+Establish `hr0 : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Establish `hwS : ‖z‖⁻¹ • z ∈ Metric.sphere (0 : E) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hr0.ne']`. Establish `hzw : z = ‖z‖ • (‖z‖⁻¹ • z)` using `by rw [smul_smul, mul_inv_cancel₀ hr0.ne', one_smul]`. Establish `hw0 : ‖z‖⁻¹ • z ≠ 0`.
+
+Introduce `h`. Rewrite `hwS` using `[h]`. Simplify using `at hwS`. Establish `hwpos` using `hpos _ hw0`. Establish `hCw : q' (‖z‖⁻¹ • z) / q (‖z‖⁻¹ • z) ≤ C` using `hC (Set.mem_image_of_mem _ hwS)`.
+
+Rewrite `hCw` using `[div_le_iff₀ hwpos]`. Rewrite using `[hzw, hs, hs']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_le_mul_of_homogeneous {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [ProperSpace E]
     (q q' : E → ℝ) (hq : Continuous q) (hq' : Continuous q') (hpos : ∀ z, z ≠ 0 → 0 < q z)
     (hs : ∀ (t : ℝ) z, q (t • z) = t ^ 2 * q z) (hs' : ∀ (t : ℝ) z, q' (t • z) = t ^ 2 * q' z) :
@@ -48,6 +61,11 @@ theorem exists_le_mul_of_homogeneous {E : Type*} [NormedAddCommGroup E] [NormedS
           mul_le_mul_of_nonneg_left hCw (sq_nonneg _)
       _ = C * (‖z‖ ^ 2 * q (‖z‖⁻¹ • z)) := by ring
 
+/- English proof (translation)
+Unfold `hermForm`. Express the relevant statement in the definitionally equal form `_ = star _`. Simplify using `only [dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h.apply j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_swap_of_isHermitian {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian)
     (z w : Fin g → ℂ) : hermForm Hm w z = (starRingEnd ℂ) (hermForm Hm z w) := by
   unfold hermForm
@@ -58,12 +76,18 @@ theorem hermForm_swap_of_isHermitian {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
   rw [h.apply j i]
   ring
 
+/- English proof (translation)
+Unfold `hermForm`. Simplify using `only [star_add, mulVec_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_add_add {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (z + w) (z + w) = hermForm Hm z z + hermForm Hm z w + hermForm Hm w z + hermForm Hm w w := by
   unfold hermForm
   simp only [star_add, mulVec_add, add_dotProduct, dotProduct_add]
   ring
 
+/- English proof (translation)
+Unfold `hermForm`. Establish `hst : star (t • z) = t • star z` using `by rw [star_smul, star_trivial]`. Rewrite using `[hst, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_smul, Complex.smul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_hermForm_real_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : ℝ) (z : Fin g → ℂ) :
     (hermForm Hm (t • z) (t • z)).re = t ^ 2 * (hermForm Hm z z).re := by
   unfold hermForm
@@ -71,12 +95,18 @@ theorem re_hermForm_real_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (t : �
   rw [hst, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_smul, Complex.smul_re]
   ring
 
+/- English proof (translation)
+Unfold `hermForm`. Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Use `fun_prop`.
+-/
 theorem continuous_re_hermForm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) :
     Continuous fun z : Fin g → ℂ => (hermForm Hm z z).re := by
   unfold hermForm
   simp only [dotProduct, mulVec, Pi.star_apply]
   fun_prop
 
+/- English proof (translation)
+Use `set M := LinearMap.toMatrix' F`. Establish `hF : ∀ z, F z = M *ᵥ z` using `fun z => by rw [← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Use `⟨Mᵀ * Hm * Mᵀᴴ, isHermitian_mul_mul_conjTranspose _ h, fun z w => ?_⟩` and prove the remaining obligations. Unfold `hermForm`. Rewrite using `[hF, hF, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec z Mᵀ, vecMul_transpose, ← star_vecMul, vecMul_transpose]`.
+-/
 theorem exists_hermForm_pull {g g' : ℕ} {Hm : Matrix (Fin g') (Fin g') ℂ} (h : Hm.IsHermitian)
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) :
     ∃ K : Matrix (Fin g) (Fin g) ℂ, K.IsHermitian ∧ ∀ z w, hermForm K z w = hermForm Hm (F z) (F w) := by
@@ -89,6 +119,19 @@ theorem exists_hermForm_pull {g g' : ℕ} {Hm : Matrix (Fin g') (Fin g') ℂ} (h
 
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g g' : ℕ}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `GlobalTheory.SymmetricSemicharacter.exists_chart u GlobalTheory.SymmetricSemicharacter.valueRules hL 0`. Establish `hfr` using `h.2.2.2`. Establish `hl : ⊤ ≤ (u.ex (0 + (l : Fin g → ℂ))).left ⁻¹ᵁ L.U i`. Rewrite using `[GlobalTheory.SectionTheta.ex_add_lattice]`. Conclude with `hi`.
+
+Establish `hex : u.ex ((l : Fin g → ℂ) + m) = u.ex 0`. Simplify using `using GlobalTheory.SectionTheta.ex_add_lattice u 0 (l + m)`. Establish `hX : u.fr i ((l : Fin g → ℂ) + m) ≠ 0` using `u.fr_ne i _ (by rw [hex]; exact hi)`. Establish `hz : ∀ x, hermForm Hm 0 x = 0` using `fun x => by simp [hermForm]`. Establish `e1 : u.fr i 0 = χ (l + m) * cexp (Real.pi * hermForm Hm 0 ((l + m : u.Λ) : Fin g → ℂ) + Real.pi / 2 * hermForm Hm ((l + m : u.Λ) : Fin g → ℂ) ((l + m : u.Λ) : Fin g → ℂ)) * u.fr i (0 + ((l + m : u.Λ) : Fin g → ℂ))` using `hfr (l + m) i 0 hi`.
+
+Establish `e2 : u.fr i 0 = χ l * cexp (Real.pi * hermForm Hm 0 l + Real.pi / 2 * hermForm Hm l l) * u.fr i (0 + (l : Fin g → ℂ))` using `hfr l i 0 hi`. Establish `e3 : u.fr i (0 + (l : Fin g → ℂ)) = χ m * cexp (Real.pi * hermForm Hm (0 + (l : Fin g → ℂ)) m + Real.pi / 2 * hermForm Hm m m) * u.fr i (0 + (l : Fin g → ℂ) + m)` using `hfr m i (0 + l) hl`. Simplify using `only [hz, zero_add, mul_zero, Submodule.coe_add] at e1 e2 e3`. Rewrite `e2` using `[e3]`. Rewrite `e1` using `[e2]`.
+
+Establish `hb : hermForm Hm (m : Fin g → ℂ) l = (starRingEnd ℂ) (hermForm Hm l m)` using `hermForm_swap_of_isHermitian h.1 l m`. Establish `hsc` using `Complex.sub_conj (hermForm Hm l m)`. Establish `hexp : cexp (Real.pi / 2 * hermForm Hm l l) * cexp (Real.pi * hermForm Hm l m + Real.pi / 2 * hermForm Hm m m) = cexp (Real.pi / 2 * hermForm Hm ((l : Fin g → ℂ) + m) ((l : Fin g → ℂ) + m)) * cexp (Real.pi * I * (hermForm Hm l m).im)`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hermForm_add_add, hb]`. Use `congr 1`.
+
+Move the coercions through the operations in `at hsc ⊢`. Take the linear combination `(Real.pi / 2 : ℂ) * hsc`. Establish `hC` using `Complex.exp_ne_zero (Real.pi / 2 * hermForm Hm ((l : Fin g → ℂ) + m) ((l : Fin g → ℂ) + m))`. Establish `key : (χ (l + m) - χ l * χ m * cexp (Real.pi * I * (hermForm Hm l m).im)) * (cexp (Real.pi / 2 * hermForm Hm ((l : Fin g → ℂ) + m) ((l : Fin g → ℂ) + m)) * u.fr i ((l : Fin g → ℂ) + m)) = 0`. Take the linear combination `-e1 + (χ l * χ m * u.fr i ((l : Fin g → ℂ) + m)) * hexp`.
+
+Break down `mul_eq_zero.1 key with h1 | h1` into its components or cases. Conclude with `sub_eq_zero.1 h1`. Conclude with `absurd h1 (mul_ne_zero hC hX)`.
+-/
 theorem semicharacter_add (u : HolUnif A L g) (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) (l m : u.Λ) :
     χ (l + m) = χ l * χ m * cexp (Real.pi * I * (hermForm Hm l m).im) := by
@@ -129,12 +172,42 @@ theorem semicharacter_add (u : HolUnif A L g) (hL : L.IsLB) {Hm : Matrix (Fin g)
   · exact sub_eq_zero.1 h1
   · exact absurd h1 (mul_ne_zero hC hX)
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, Complex.conj_I]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem conj_cexp_pi_mul_I_mul_real (t : ℝ) :
     (starRingEnd ℂ) (cexp (Real.pi * I * t)) = cexp (-(Real.pi * I * t)) := by
   rw [← Complex.exp_conj, map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal, Complex.conj_I]
   congr 1
   ring
 
+/- English proof (translation)
+Take `⟨K, hK, hKF⟩` from `exists_hermForm_pull h'.1 F`. Take `⟨Fl, hFl⟩ : ∃ Fl : u.Λ → u'.Λ, ∀ l, ((Fl l : u'.Λ) : Fin g' → ℂ) = F l` from `⟨fun l => ⟨F l, hF l l.2⟩, fun _ => rfl⟩`. Establish `hFl_add : ∀ l m, Fl (l + m) = Fl l + Fl m` using `fun l m => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, hFl, hFl, hFl, Submodule.coe_add, map_add]`.
+
+Take `⟨ρ, hρ⟩` from `hth g u.Λ u.discrete u.full Hm h.2.1`. Take `⟨C, hC⟩` from `exists_le_mul_of_homogeneous (fun z => (hermForm Hm z z).re) (fun z => (hermForm K z z).re) (continuous_re_hermForm Hm) (continuous_re_hermForm K) h.2.1 (re_hermForm_real_smul Hm) (re_hermForm_real_smul K)`. Take `⟨d, hd⟩` from `exists_nat_ge (ρ + N * C)`. Use `⟨d, fun z₀ => ?_⟩` and prove the remaining obligations. Take `⟨Hg, hHg⟩ : ∃ Hg : Matrix (Fin g) (Fin g) ℂ, Hg = (d : ℂ) • Hm - (N : ℂ) • K` from `⟨_, rfl⟩`.
+
+Take `⟨χg, hχg⟩ : ∃ f : u.Λ → ℂ, ∀ l, f l = χ l ^ d * (starRingEnd ℂ) (χ' (Fl l)) ^ N` from `⟨_, fun _ => rfl⟩`. Establish `hHg_form : ∀ z w, hermForm Hg z w = d * hermForm Hm z w - N * hermForm K z w`. Introduce `z w`. Simplify using `[hHg, hermForm, sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, dotProduct_smul]`. Establish `hHgH : Hg.IsHermitian`.
+
+Rewrite using `[hHg, IsHermitian, conjTranspose_sub, conjTranspose_smul, conjTranspose_smul, h.1.eq, hK.eq]`. Simplify using the standard rewrite rules. Establish `hbound : ∀ z : Fin g → ℂ, ρ * (hermForm Hm z z).re ≤ (hermForm Hg z z).re`. Introduce `z`. Establish `hre : (hermForm Hg z z).re = d * (hermForm Hm z z).re - N * (hermForm K z z).re`.
+
+Rewrite using `[hHg_form]`. Simplify using the standard rewrite rules. Rewrite using `[hre]`. Establish `h1` using `hC z`. Establish `h2 : 0 ≤ (hermForm Hm z z).re`.
+
+Distinguish the cases in `hz : z = 0`. Simplify using `[hz, hermForm]`. Conclude with `(h.2.1 z hz).le`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg N : (0 : ℝ) ≤ N) (sub_nonneg.2 h1), mul_nonneg (sub_nonneg.2 hd) h2]`. Establish `hnorm : ∀ l, ‖χg l‖ = 1`.
+
+Introduce `l`. Rewrite using `[hχg, norm_mul, norm_pow, norm_pow, h.2.2.1, Complex.norm_conj, h'.2.2.1, one_pow, one_pow, _root_.one_mul]`. Establish `hsemi : ∀ l m : u.Λ, χg (l + m) = χg l * χg m * cexp (Real.pi * I * ((l : Fin g → ℂ) ⬝ᵥ Hg.mulVec (star (m : Fin g → ℂ))).im)`. Introduce `l m`. Express the relevant statement in the definitionally equal form `χg (l + m) = χg l * χg m * cexp (Real.pi * I * (hermForm Hg l m).im)`.
+
+Establish `s1` using `semicharacter_add u hL h l m`. Establish `s2` using `semicharacter_add u' hL' h' (Fl l) (Fl m)`. Rewrite `s2` using `[hFl, hFl, ← hKF]`. Rewrite using `[hχg, hχg, hχg, hFl_add, s1, s2, hHg_form, map_mul, map_mul, conj_cexp_pi_mul_I_mul_real]`. Establish `him : ((d : ℂ) * hermForm Hm l m - N * hermForm K l m).im = d * (hermForm Hm l m).im - N * (hermForm K l m).im` using `by simp`.
+
+Rewrite using `[him]`. Establish `he : cexp (Real.pi * I * (hermForm Hm l m).im) ^ d * cexp (-(Real.pi * I * (hermForm K l m).im)) ^ N = cexp (Real.pi * I * ((d * (hermForm Hm l m).im - N * (hermForm K l m).im : ℝ) : ℂ))`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(χ l ^ d * χ m ^ d * (starRingEnd ℂ) (χ' (Fl l)) ^ N * (starRingEnd ℂ) (χ' (Fl m)) ^ N) * he`. Take `⟨G, hGd, hG0, hGt⟩` from `hρ Hg χg hHgH hbound hnorm hsemi z₀`. Use `⟨G, hG0, fun θ hθ => ⟨?_, fun l z => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hθ.1.comp (LinearMap.toContinuousLinearMap F).differentiable).mul hGd`.
+
+Establish `t1` using `hθ.2 (Fl l) (F z)`. Rewrite `t1` using `[hFl, ← hKF, ← hKF]`. Establish `t2 : G (z + l) = χg l * cexp (Real.pi * hermForm Hg z l + Real.pi / 2 * hermForm Hg l l) * G z` using `hGt l z`. Establish `hψ : χ' (Fl l) * (starRingEnd ℂ) (χ' (Fl l)) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, h'.2.2.1]`.
+
+Simplify using the standard rewrite rules. Establish `hψN : (χ' (Fl l) * (starRingEnd ℂ) (χ' (Fl l))) ^ N = 1` using `by rw [hψ, one_pow]`. Establish `hexp : cexp (Real.pi * (d * hermForm Hm z l - N * hermForm K z l) + Real.pi / 2 * (d * hermForm Hm l l - N * hermForm K l l)) * cexp (Real.pi * hermForm K z l + Real.pi / 2 * hermForm K l l) ^ N = cexp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) ^ d`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show θ (F (z + l)) * G (z + l) = _ * (θ (F z) * G z)`. Rewrite using `[map_add, t1, t2, hHg_form, hHg_form, hχg]`. Take the linear combination `(χ l ^ d * θ (F z) * G z * (cexp (Real.pi * (d * hermForm Hm z l - N * hermForm K z l) + Real.pi / 2 * (d * hermForm Hm l l - N * hermForm K l l)) * cexp (Real.pi * hermForm K z l + Real.pi / 2 * hermForm K l l) ^ N)) * hψN + (χ l ^ d * θ (F z) * G z) * hexp`.
+-/
 theorem exists_complementary_theta
     (hth : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ H₀ : Matrix (Fin g) (Fin g) ℂ, (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₀.mulVec (star z)).re) → ∃ ρ : ℝ, ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ), Hm.IsHermitian → (∀ z : Fin g → ℂ, ρ * (z ⬝ᵥ H₀.mulVec (star z)).re ≤ (z ⬝ᵥ Hm.mulVec (star z)).re) → (∀ l, ‖χ l‖ = 1) → (∀ l m : Λ, χ (l + m) = χ l * χ m * cexp (Real.pi * I * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ))).im)) → ∀ z₀, ∃ θ : (Fin g → ℂ) → ℂ, Differentiable ℂ θ ∧ θ z₀ ≠ 0 ∧ ∀ (l : Λ) z, θ (z + l) = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))) * θ z)
     (u : HolUnif A L g) (u' : HolUnif A' L' g') (hL : L.IsLB) (hL' : L'.IsLB)

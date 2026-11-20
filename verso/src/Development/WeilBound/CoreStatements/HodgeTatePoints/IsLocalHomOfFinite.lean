@@ -28,6 +28,9 @@ variable {R₀ O : Type} [CommRing R₀] [CommRing O] [Algebra R₀ O]
   {G : Over (Spec (CommRingCat.of R₀))} [GrpObj G]
   {G' : Over (Spec (CommRingCat.of O))} [GrpObj G'] {ψ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Simplify using `only [sp, Over.mk_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem sp_hom_comp (S : Type) [CommRing S] [Algebra O S] [Algebra R₀ S] [IsScalarTower R₀ O S] :
     (sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O)) = (sp (R₀ := R₀) S).hom := by
   simp only [sp, Over.mk_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
@@ -42,8 +45,18 @@ noncomputable def down (h : Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.of
 variable (h : Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom (algebraMap R₀ O))) ψ)
   {S : Type} [CommRing S] [Algebra O S] [Algebra R₀ S] [IsScalarTower R₀ O S]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem down_left (x : sp (R₀ := O) S ⟶ G') : (down h x).left = x.left ≫ ψ := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h1 : x.left ≫ ψ = y.left ≫ ψ`. Rewrite using `[← down_left h x, ← down_left h y, hxy]`. Establish `h2 : x.left ≫ G'.hom = y.left ≫ G'.hom`.
+
+Rewrite using `[Over.w x, Over.w y]`. Conclude with `Over.OverMorphism.ext (h.1.hom_ext h1 h2)`. Introduce `z`. Use `⟨Over.homMk (h.1.lift z.left (sp (R₀ := O) S).hom ?_) (h.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[Over.w z]`.
+
+Conclude with `(sp_hom_comp (R₀ := R₀) (O := O) S).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[down_left]`. Conclude with `h.1.lift_fst _ _ _`.
+-/
 theorem down_bij : Function.Bijective (down h (S := S)) := by
   constructor
   · intro x y hxy
@@ -60,6 +73,15 @@ theorem down_bij : Function.Bijective (down h (S := S)) := by
       rw [down_left]
       exact h.1.lift_fst _ _ _
 
+/- English proof (translation)
+Establish `hw : ∀ z : sp (R₀` using `O) S ⟶ G', (z.left ≫ ψ) ≫ G.hom = (Over.mk ((sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O)))).hom := by`. Introduce `z`. Express the relevant statement in the definitionally equal form `(z.left ≫ ψ) ≫ G.hom = (sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O))`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w z]`. Set `e : sp (R₀` to `R₀) S ⟶ Over.mk ((sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O))) := Over.homMk (𝟙 _) (by`.
+
+Express the relevant statement in the definitionally equal form `𝟙 _ ≫ (sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O)) = _`. Rewrite using `[Category.id_comp]`. Conclude with `sp_hom_comp (R₀ := R₀) (O := O) S)`. Establish `hd : ∀ z, down h z = e ≫ Over.homMk (z.left ≫ ψ) (hw z)`. Introduce `z`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[e, down_left]`. Rewrite using `[hd, hd, hd, ← MonObj.comp_mul]`. Use `congr 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Conclude with `(h.2 _ x y (Over.homMk (x.left ≫ ψ) (hw x)) (Over.homMk (y.left ≫ ψ) (hw y)) rfl rfl).symm`.
+-/
 theorem down_mul (x y : sp (R₀ := O) S ⟶ G') : down h (x * y) = down h x * down h y := by
   have hw : ∀ z : sp (R₀ := O) S ⟶ G', (z.left ≫ ψ) ≫ G.hom =
       (Over.mk ((sp (R₀ := O) S).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R₀ O)))).hom := by
@@ -80,6 +102,13 @@ theorem down_mul (x y : sp (R₀ := O) S ⟶ G') : down h (x * y) = down h x * d
   apply Over.OverMorphism.ext
   exact (h.2 _ x y (Over.homMk (x.left ≫ ψ) (hw x)) (Over.homMk (y.left ≫ ψ) (hw y)) rfl rfl).symm
 
+/- English proof (translation)
+Establish `h1 : down h (1 : sp (R₀` using `O) S ⟶ G') = 1 := by`. Establish `hm` using `down_mul h (1 : sp (R₀ := O) S ⟶ G') 1`. Rewrite `hm` using `[_root_.one_mul]`. Establish `hm' : down h (1 : sp (R₀` using `O) S ⟶ G') * down h 1 = down h 1 * 1 := by`. Rewrite using `[_root_.mul_one, ← hm]`.
+
+Conclude with `mul_left_cancel hm'`. Establish `hp : ∀ m : ℕ, down h (x ^ m) = down h x ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [_root_.pow_zero, _root_.pow_zero, h1]`.
+
+Consider the case `succ m ih => rw [_root_.pow_succ, _root_.pow_succ, down_mul, ih]`. Rewrite using `[← hp, ← h1, (down_bij h).1.eq_iff]`.
+-/
 theorem down_pow_eq_one (x : sp (R₀ := O) S ⟶ G') (n : ℕ) : down h x ^ n = 1 ↔ x ^ n = 1 := by
   have h1 : down h (1 : sp (R₀ := O) S ⟶ G') = 1 := by
     have hm := down_mul h (1 : sp (R₀ := O) S ⟶ G') 1
@@ -94,6 +123,9 @@ theorem down_pow_eq_one (x : sp (R₀ := O) S ⟶ G') (n : ℕ) : down h x ^ n =
     | succ m ih => rw [_root_.pow_succ, _root_.pow_succ, down_mul, ih]
   rw [← hp, ← h1, (down_bij h).1.eq_iff]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[down_left, Over.comp_left, Over.comp_left, down_left, spMap_left, spMap_left, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem down_nat {S' : Type} [CommRing S'] [Algebra O S'] [Algebra R₀ S'] [IsScalarTower R₀ O S']
     (f : S →ₐ[O] S') (x : sp (R₀ := O) S ⟶ G') :
     down h (spMap f ≫ x) = spMap (f.restrictScalars R₀) ≫ down h x := by
@@ -103,6 +135,11 @@ theorem down_nat {S' : Type} [CommRing S'] [Algebra O S'] [Algebra R₀ S'] [IsS
 
 end Pull
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Establish `hm : (IsLocalRing.maximalIdeal S).comap (algebraMap O S) = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (IsLocalRing.maximalIdeal S))`. Establish `hmem : a ∈ (IsLocalRing.maximalIdeal S).comap (algebraMap O S)`.
+
+Rewrite using `[hm]`. Conclude with `hna`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem ha`.
+-/
 theorem isLocalHom_of_finite (O S : Type) [CommRing O] [IsLocalRing O] [CommRing S] [IsLocalRing S]
     [Algebra O S] [Module.Finite O S] : IsLocalHom (algebraMap O S) := by
   constructor
@@ -115,6 +152,13 @@ theorem isLocalHom_of_finite (O S : Type) [CommRing O] [IsLocalRing O] [CommRing
     exact hna
   exact (IsLocalRing.mem_maximalIdeal _).mp hmem ha
 
+/- English proof (translation)
+Establish `h0 : e R 0 = 1`. Establish `hm` using `ha R 0 0`. Rewrite `hm` using `[add_zero]`. Establish `hm' : e R 0 * e R 0 = e R 0 * 1`. Rewrite using `[_root_.mul_one, ← hm]`.
+
+Conclude with `mul_left_cancel hm'`. Establish `hp : ∀ m : ℕ, e R (m • x) = e R x ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, _root_.pow_zero, h0]`.
+
+Consider the case `succ m ih => rw [succ_nsmul, ha, ih, _root_.pow_succ]`. Rewrite using `[← hp, ← h0, (hb R).1.eq_iff]`.
+-/
 theorem e_pow {R₀ : Type} [CommRing R₀] {B : BX R₀} {G : Over (Spec (CommRingCat.of R₀))} [GrpObj G]
     {e : ∀ R : LAlg R₀, B.G R → (sp (R₀ := R₀) (R : Type) ⟶ G)}
     (hb : ∀ R, Function.Bijective (e R)) (ha : ∀ R x y, e R (x + y) = e R x * e R y)
@@ -132,6 +176,11 @@ theorem e_pow {R₀ : Type} [CommRing R₀] {B : BX R₀} {G : Over (Spec (CommR
     | succ m ih => rw [succ_nsmul, ha, ih, _root_.pow_succ]
   rw [← hp, ← h0, (hb R).1.eq_iff]
 
+/- English proof (translation)
+Unfold `ptOf`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ZMod.val_add, ← add_nsmul]`. Use `conv_rhs => rw [← Nat.mod_add_div ((s j).val + (t j).val) p]`.
+
+Rewrite using `[add_nsmul, mul_nsmul, hτ j, nsmul_zero, add_zero]`.
+-/
 theorem ptOf_add {R₀ : Type} [CommRing R₀] {B : BX R₀} {O : LAlg R₀} {g p : ℕ} [NeZero p]
     (τ : Ix g → ℕ → B.G O) (hτ : ∀ j, p • τ j 0 = 0) (s t : Ix g → ZMod p) :
     ptOf B τ (s + t) = ptOf B τ s + ptOf B τ t := by
@@ -142,6 +191,105 @@ theorem ptOf_add {R₀ : Type} [CommRing R₀] {B : BX R₀} {O : LAlg R₀} {g 
   conv_rhs => rw [← Nat.mod_add_div ((s j).val + (t j).val) p]
   rw [add_nsmul, mul_nsmul, hτ j, nsmul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R₀ _ g B Tw Dt _ hv hp _ Oe _ _ σ cp D G _ _ e hb ha hn G' _ _ ψ h`. Establish `hτ : ∀ j, p • D.L.τ j 0 = 0`. Introduce `j`. Simplify using `using D.L.τ_tors j 0`. Establish `hinj : ∀ s t : Nb p g, ptOf B D.L.τ s = ptOf B D.L.τ t → s = t`.
+
+Introduce `s t hst`. Apply `D.L.τ_basis.1` to reduce the goal to its premises. Conclude with `Subtype.ext hst`. Set `pt : Nb p g → (sp (R₀` to `(Tw.O : Type)) (Tw.O : Type) ⟶ G') := fun t => Function.surjInv (down_bij h (S := (Tw.O : Type))).2 (e Tw.O (ptOf B D.L.τ t))`. Establish `hdpt : ∀ t, down h (pt t) = e Tw.O (ptOf B D.L.τ t)` using `fun t => Function.surjInv_eq (down_bij h (S := (Tw.O : Type))).2 _`.
+
+Establish `hpts : IsTorsPts G' p pt`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t hst`. Establish `hd` using `congrArg (down h) hst`. Rewrite `hd` using `[hdpt, hdpt]`.
+
+Conclude with `hinj s t ((hb _).1 hd)`. Introduce `s t`. Apply `(down_bij h).1` to reduce the goal to its premises. Rewrite using `[down_mul, hdpt, hdpt, hdpt, ptOf_add _ hτ, ha]`. Introduce `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Rewrite `hz` using `[← down_pow_eq_one h]`. Take `⟨w, hw⟩` from `(hb Tw.O).2 (down h z)`. Rewrite `hz` using `[← hw, e_pow hb ha]`.
+
+Take `⟨t, ht⟩` from `D.L.τ_basis.2 ⟨w, hz⟩`. Use `⟨t, (down_bij h).1 ?_⟩` and prove the remaining obligations. Rewrite using `[hdpt, ← hw]`. Conclude with `congrArg (e Tw.O) (congrArg Subtype.val ht)`. Introduce and unpack `⟨t, rfl⟩`.
+
+Rewrite using `[← down_pow_eq_one h, hdpt, e_pow hb ha]`. Conclude with `D.pt_p t`. Use `⟨pt, fun t => ?_, hpts, ?_⟩` and prove the remaining obligations. Rewrite using `[← down_left h, hdpt]`. Introduce `T`.
+
+Establish `hspec : ∀ t, (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = LHom.id Tw.O ∧ B.map (D.ptMap t) (D.fin.y (D.ptIdx t)) = ptOf B D.L.τ t` using `fun t => ⟨(Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) _ (D.pt_p t)))).1, (Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) _ (D.pt_p t)))).2.1⟩`. Take `⟨φT, hφT⟩` from `exists_pts T hpts`. Use `letI instA : ∀ i, Algebra (Tw.O : Type) (D.fin.AAx i).carrier := fun i => ((D.fin.sO i).1 : (Tw.O : Type) →+* (D.fin.AAx i).carrier).toAlgebra`. Use `haveI instT : ∀ i, IsScalarTower R₀ (Tw.O : Type) (D.fin.AAx i).carrier := fun i => IsScalarTower.of_algebraMap_eq (fun r => ((D.fin.sO i).1.commutes r).symm)`. Establish `hy : ∀ i, ∃ z : sp (R₀` using `(Tw.O : Type)) (D.fin.AAx i).carrier ⟶ G', down h z = e (D.fin.AAx i) (D.fin.y i) := fun i => (down_bij h).2 _`.
+
+Use `choose y' hy' using hy`. Establish `hyp : ∀ i, y' i ^ p = 1`. Introduce `i`. Rewrite using `[← down_pow_eq_one h, hy', e_pow hb ha]`. Conclude with `D.fin.y_p i`.
+
+Use `choose χ hχ using fun i => (T.univ _ (y' i) (hyp i)).exists`. Establish `hfac : ∀ t (a : T.A), φT t a = (D.ptMap t).1 (χ (D.ptIdx t) a)`. Introduce `t a`. Set `f : (D.fin.AAx (D.ptIdx t)).carrier →ₐ[(Tw.O : Type)] (Tw.O : Type)` to `{ toRingHom := (D.ptMap t).1.toRingHom commutes' := fun r => by`. Establish `hr` using `congrArg (fun φ : LHom Tw.O Tw.O => φ.1 r) (hspec t).1`.
+
+Conclude with `hr }`. Establish `hf : φT t = f.comp (χ _)`. Apply `tors_ext T` to reduce the goal to its premises. Rewrite using `[hφT, spc, hχ]`. Apply `(down_bij h).1` to reduce the goal to its premises.
+
+Rewrite using `[hdpt, down_nat, hy', ← (hspec t).2, hn]`. Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun hf a`. Use `haveI hTfin : Module.Finite (Tw.O : Type) T.A := T.fin`. Use `haveI hAfin : ∀ i, Module.Finite (Tw.O : Type) (D.fin.AAx i).carrier := fun i => (D.fin.free i).2`.
+
+Establish `hloc : ∀ (A S : LAlg R₀) [Algebra (Tw.O : Type) A.carrier] [Algebra (Tw.O : Type) S.carrier] [Module.Finite (Tw.O : Type) A.carrier] [IsLocalHom (algebraMap (Tw.O : Type) S.carrier)] (f : A.carrier →ₐ[(Tw.O : Type)] S.carrier), IsLocalHom (f : A.carrier →+* S.carrier)`. Introduce `A S _ _ _ _ f`. Establish `hc : (IsLocalRing.maximalIdeal S.carrier).comap (f : A.carrier →+* S.carrier) = IsLocalRing.maximalIdeal A.carrier`. Apply `IsLocalRing.eq_maximalIdeal` to reduce the goal to its premises. Apply `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := (Tw.O : Type))` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.comap_comap, AlgHom.comp_algebraMap, IsLocalRing.maximalIdeal_comap]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Assume the negation of the conclusion as `hna`.
+
+Establish `hmem : a ∈ (IsLocalRing.maximalIdeal S.carrier).comap (f : A.carrier →+* S.carrier)`. Rewrite using `[hc]`. Conclude with `hna`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem ha`. Establish `key : ∀ (S : LAlg R₀) [Algebra (Tw.O : Type) S.carrier] [IsScalarTower R₀ (Tw.O : Type) S.carrier] [Module.Finite (Tw.O : Type) S.carrier] (α : T.A →ₐ[(Tw.O : Type)] S.carrier), ∃ i, ∃ β : (D.fin.AAx i).carrier →ₐ[(Tw.O : Type)] S.carrier, β.comp (χ i) = α ∧ (∀ j (β' : (D.fin.AAx …`.
+
+Introduce `S _ _ _ α`. Use `haveI hOS : IsLocalHom (algebraMap (Tw.O : Type) S.carrier) := isLocalHom_of_finite _ _`. Set `s : LHom Tw.O S` to `⟨IsScalarTower.toAlgHom R₀ (Tw.O : Type) S.carrier, hOS⟩`. Establish `hcomp : ∀ j (β' : (D.fin.AAx j).carrier →ₐ[(Tw.O : Type)] S.carrier), down h (spMap (β'.comp (χ j)) ≫ T.y) = e S (B.map ⟨β'.restrictScalars R₀, hloc _ _ β'⟩ (D.fin.y j))`. Introduce `j β'`.
+
+Rewrite using `[spc, hχ, down_nat, hy']`. Conclude with `(hn ⟨β'.restrictScalars R₀, hloc _ _ β'⟩ (D.fin.y j)).symm`. Take `⟨w, hw⟩` from `(hb S).2 (down h (spMap α ≫ T.y))`. Establish `hwp : p • w = 0`. Rewrite using `[← e_pow hb ha, hw, down_pow_eq_one h]`.
+
+Conclude with `tors_pow T α`. Take `⟨i, β, hβs, hβy, huniq⟩` from `D.fin.univ S s w hwp`. Set `βO : (D.fin.AAx i).carrier →ₐ[(Tw.O : Type)] S.carrier` to `{ toRingHom := β.1.toRingHom commutes' := fun r => congrArg (fun φ : LHom Tw.O S => φ.1 r) hβs }`. Use `⟨i, βO, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `tors_ext T` to reduce the goal to its premises.
+
+Apply `(down_bij h).1` to reduce the goal to its premises. Rewrite using `[hcomp, ← hw, ← hβy]`. Both sides reduce to the same expression. Introduce `j β' hβ'`. Establish `h1 : LHom.comp (⟨β'.restrictScalars R₀, hloc _ _ β'⟩ : LHom (D.fin.AAx j) S) (D.fin.sO j) = s`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `r`. Conclude with `β'.commutes r`. Establish `h2 : B.map (⟨β'.restrictScalars R₀, hloc _ _ β'⟩ : LHom (D.fin.AAx j) S) (D.fin.y j) = w`.
+
+Apply `(hb S).1` to reduce the goal to its premises. Rewrite using `[← hcomp, hβ', hw]`. Conclude with `(huniq j _ h1 h2).1`. Introduce `β' hβ'`. Establish `h1 : LHom.comp (⟨β'.restrictScalars R₀, hloc _ _ β'⟩ : LHom (D.fin.AAx i) S) (D.fin.sO i) = s`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `r`. Conclude with `β'.commutes r`. Establish `h2 : B.map (⟨β'.restrictScalars R₀, hloc _ _ β'⟩ : LHom (D.fin.AAx i) S) (D.fin.y i) = w`.
+
+Apply `(hb S).1` to reduce the goal to its premises. Rewrite using `[← hcomp, hβ', hw]`. Establish `h3` using `eq_of_heq (huniq i _ h1 h2).2`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `a`.
+
+Conclude with `DFunLike.congr_fun (congrArg Subtype.val h3) a`. Establish `hidem : ∀ i (β' : (D.fin.AAx i).carrier →ₐ[(Tw.O : Type)] (D.fin.AAx i).carrier), β'.comp (χ i) = χ i → β' = AlgHom.id _ _`. Introduce `i β' hβ'`. Take `⟨i0, β0, -, hu1, hu2⟩` from `key (D.fin.AAx i) (χ i)`. Establish `hi` using `hu1 i (AlgHom.id _ _) (AlgHom.id_comp _)`.
+
+Substitute `hi` using the available equality. Rewrite using `[hu2 β' hβ', hu2 (AlgHom.id _ _) (AlgHom.id_comp _)]`. Establish `hidx : ∀ i j (β' : (D.fin.AAx j).carrier →ₐ[(Tw.O : Type)] (D.fin.AAx i).carrier), β'.comp (χ j) = χ i → j = i`. Introduce `i j β' hβ'`. Take `⟨i0, β0, -, hu1, -⟩` from `key (D.fin.AAx i) (χ i)`.
+
+Rewrite using `[hu1 j β' hβ', hu1 i (AlgHom.id _ _) (AlgHom.id_comp _)]`. Establish `hsurj : ∀ i, Function.Surjective (χ i)`. Introduce `i`. Set `Rg` to `(χ i).range`. Establish `hint : (algebraMap Rg (D.fin.AAx i).carrier).IsIntegral` using `fun a => (Algebra.IsIntegral.isIntegral (R := (Tw.O : Type)) a).tower_top`.
+
+Use `haveI hlh : IsLocalHom (algebraMap Rg (D.fin.AAx i).carrier) := hint.isLocalHom Subtype.val_injective`. Use `haveI hRl : IsLocalRing Rg := by`. Use `{ isUnit_or_isUnit_of_add_one := fun {a b} hab => ?_ }` and prove the remaining obligations. Establish `hab' : algebraMap Rg (D.fin.AAx i).carrier a + algebraMap Rg (D.fin.AAx i).carrier b = 1`. Rewrite using `[← map_add, hab, map_one]`.
+
+Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab' with hu | hu` into its components or cases. Conclude with `Or.inl (isUnit_of_map_unit _ _ hu)`. Conclude with `Or.inr (isUnit_of_map_unit _ _ hu)`. Use `haveI hRf : Module.Finite (Tw.O : Type) Rg := Module.Finite.of_surjective (χ i).rangeRestrict.toLinearMap (AlgHom.rangeRestrict_surjective _)`. Take `⟨i', β, hβ, -, -⟩` from `key (LAlg.mk Rg) (χ i).rangeRestrict`.
+
+Establish `hc : (Rg.val.comp β).comp (χ i') = χ i`. Rewrite using `[AlgHom.comp_assoc, hβ]`. Both sides reduce to the same expression. Establish `hi'` using `hidx i i' _ hc`. Substitute `hi'` using the available equality.
+
+Establish `hid` using `hidem i' _ hc`. Introduce `a`. Establish `ha' : (Rg.val.comp β) a = a`. Rewrite using `[hid]`. Both sides reduce to the same expression.
+
+Take `⟨x, hx⟩` from `(AlgHom.mem_range (χ i')).mp (β a).2`. Conclude with `⟨x, hx.trans ha'⟩`. Establish `hmax : ∀ i (M : Ideal T.A), M.IsMaximal → RingHom.ker (χ i) ≤ M → M = (IsLocalRing.maximalIdeal (D.fin.AAx i).carrier).comap (χ i)`. Introduce `i M hM hK`. Establish `hle : M ≤ (IsLocalRing.maximalIdeal (D.fin.AAx i).carrier).comap (χ i)`.
+
+Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨u, hu'⟩` from `hu.exists_right_inv`. Take `⟨y, rfl⟩` from `hsurj i u`.
+
+Establish `h1 : x * y - 1 ∈ RingHom.ker (χ i)`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, hu', map_one, sub_self]`. Establish `h2 : (1 : T.A) ∈ M`. Establish `h3` using `M.sub_mem (M.mul_mem_right y hx) (hK h1)`. Simplify using `using h3`.
+
+Conclude with `hM.ne_top ((Ideal.eq_top_iff_one M).mpr h2)`. Conclude with `hM.eq_of_le (Ideal.comap_isMaximal_of_surjective _ (hsurj i)).ne_top hle`. Establish `hcop : ∀ i j, i ≠ j → IsCoprime (RingHom.ker (χ i)) (RingHom.ker (χ j))`. Introduce `i j hij`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hMle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hMi` using `hmax i M hM (le_trans le_sup_left hMle)`. Establish `hMj` using `hmax j M hM (le_trans le_sup_right hMle)`. Set `I` to `RingHom.ker (χ i) ⊓ RingHom.ker (χ j)`.
+
+Use `letI : Algebra R₀ T.A := ((algebraMap (Tw.O : Type) T.A).comp (algebraMap R₀ (Tw.O : Type))).toAlgebra`. Use `haveI : IsScalarTower R₀ (Tw.O : Type) T.A := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hIne : I ≠ ⊤`. Introduce `hI`. Establish `h1 : (1 : T.A) ∈ RingHom.ker (χ i)`.
+
+Establish `h2 : (1 : T.A) ∈ I`. Rewrite using `[hI]`. Conclude with `Submodule.mem_top`. Conclude with `(Ideal.mem_inf.mp h2).1`. Rewrite `h1` using `[RingHom.mem_ker, map_one]`.
+
+Conclude with `one_ne_zero h1`. Use `haveI : Nontrivial (T.A ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hIne`. Use `haveI hQl : IsLocalRing (T.A ⧸ I) := by`. Take `⟨N0, hN0⟩` from `Ideal.exists_maximal (T.A ⧸ I)`. Establish `hall : ∀ N : Ideal (T.A ⧸ I), N.IsMaximal → N.comap (Ideal.Quotient.mk I) = (IsLocalRing.maximalIdeal (D.fin.AAx i).carrier).comap (χ i)`.
+
+Introduce `N hN`. Establish `hc` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective (K := N)`. Establish `hIle : I ≤ N.comap (Ideal.Quotient.mk I)`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+
+Conclude with `N.zero_mem`. Break down `(hc.isPrime.inf_le).mp hIle with h1 | h1` into its components or cases. Conclude with `hmax i _ hc h1`. Rewrite using `[hmax j _ hc h1, ← hMj, hMi]`. Use `IsLocalRing.of_unique_max_ideal ⟨N0, hN0, fun N hN => ?_⟩` and prove the remaining obligations.
+
+Apply `Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective` to reduce the goal to its premises. Rewrite using `[hall N hN, hall N0 hN0]`. Use `haveI : Module.Finite (Tw.O : Type) (T.A ⧸ I) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ (Tw.O : Type) I).toLinearMap (Ideal.Quotient.mkₐ_surjective (Tw.O : Type) I)`. Take `⟨k, β, hβ, -, -⟩` from `key (LAlg.mk (T.A ⧸ I)) (Ideal.Quotient.mkₐ (Tw.O : Type) I)`. Establish `hπ : ∀ l, l = i ∨ l = j → k = l`.
+
+Introduce `l hl`. Establish `hIl : ∀ a ∈ I, χ l a = 0`. Introduce `a ha`. Break down `hl with rfl | rfl` into its components or cases. Conclude with `(Ideal.mem_inf.mp ha).1`.
+
+Conclude with `(Ideal.mem_inf.mp ha).2`. Apply `hidx l k ((Ideal.Quotient.liftₐ I (χ l) hIl).comp β)` to reduce the goal to its premises. Rewrite using `[AlgHom.comp_assoc, hβ]`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `a`.
+
+Both sides reduce to the same expression. Conclude with `hij ((hπ i (Or.inl rfl)).symm.trans (hπ j (Or.inr rfl)))`. Use `haveI := D.fin.fι`. Establish `hcrt : ∀ F : (i : D.fin.ι) → (D.fin.AAx i).carrier, ∃ a : T.A, ∀ i, χ i a = F i`. Introduce `F`.
+
+Use `choose b hb' using fun i => hsurj i (F i)`. Take `⟨r, hr⟩` from `Ideal.quotientInfToPiQuotient_surj (I := fun i => RingHom.ker (χ i)) (fun i j hij => hcop i j hij) (fun i => Ideal.Quotient.mk _ (b i))`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Use `⟨a, fun i => ?_⟩` and prove the remaining obligations. Establish `hri` using `congrFun hr i`.
+
+Rewrite `hri` using `[Ideal.quotientInfToPiQuotient_mk', Ideal.Quotient.eq, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[hri, hb']`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨F, rfl⟩`.
+
+Take `⟨a, ha'⟩` from `hcrt F`. Rewrite using `[SetLike.mem_coe, mem_torsFun T hφT]`. Use `⟨a, funext fun t => ?_⟩` and prove the remaining obligations. Simplify using `only [Dat.evAll]`. Rewrite using `[hfac, ha']`.
+
+Introduce `f hf`. Rewrite `hf` using `[mem_torsFun T hφT]`. Take `⟨a, rfl⟩` from `hf`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun i => χ i a, funext fun t => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Dat.evAll]`. Rewrite using `[hfac]`.
+-/
 theorem htd_tie : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) {R₀ : Type} [CommRing R₀] (g : ℕ) (B : BX R₀) (Tw : ATowerL R₀ p) (Dt : DualTower Tw) [Algebra (Tw.O : Type) C], v.Integers (Tw.O : Type) → v (p : C) < 1 → ∀ [Algebra ℤ_[p] (Tw.O : Type)] (Oe : Type) [CommRing Oe] [Algebra ℤ_[p] Oe] (σ : Oe ≃ₐ[ℤ_[p]] Oe) (cp : (Tw.O : Type)) (D : Dat p g B Tw Dt Oe σ cp) (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] (e : ∀ R : LAlg R₀, B.G R → (sp (R₀ := R₀) (R : Type) ⟶ G)), (∀ R, Function.Bijective (e R)) → (∀ R x y, e R (x + y) = e R x * e R y) → (∀ {R S : LAlg R₀} (f : LHom R S) (x : B.G R), e S (B.map f x) = spMap f.1 ≫ e R x) → ∀ (G' : Over (Spec (CommRingCat.of (Tw.O : Type)))) [GrpObj G'] [IsCommMonObj G'] (ψ : G'.left ⟶ G.left), Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom (algebraMap R₀ (Tw.O : Type)))) ψ → ∃ pt : Nb p g → (sp (R₀ := (Tw.O : Type)) (Tw.O : Type) ⟶ G'), (∀ t, (pt t).left ≫ ψ = (e Tw.O (ptOf B D.L.τ t)).left) ∧ IsTorsPts G' p pt ∧ ∀ T : TorsRep G' p, D.evImg C = torsFun C T pt := by
   intro p _ C _ _ _ v R₀ _ g B Tw Dt _ hv hp _ Oe _ _ σ cp D G _ _ e hb ha hn G' _ _ ψ h
   have hτ : ∀ j, p • D.L.τ j 0 = 0 := by

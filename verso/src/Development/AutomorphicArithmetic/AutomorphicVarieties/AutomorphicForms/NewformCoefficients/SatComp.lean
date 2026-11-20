@@ -1,6 +1,11 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.NewformCoefficients.CuspCritAlt
 
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.CuspRep in
+/- English proof (translation)
+Introduce `F _ _ _ φ π ψ W h0 hW hd hφ w B h`. Establish `hle : ∀ g, W ≤ W.comap (locSm F w g)` using `fun g x hx => hW (.fin (locGL F 2 w g)) x hx`. Establish `hi : Function.Injective (W.mkQ ∘ₗ π.V.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_comp, Submodule.ker_mkQ]`. Conclude with `Submodule.disjoint_iff_comap_eq_bot.1 hd`.
+
+Establish `he : W.mkQ φ = (W.mkQ ∘ₗ π.V.subtype) ψ` using `(Submodule.Quotient.eq W).2 hφ`. Establish `h1` using `h.map (ρ' := (locSm F w).quotient W hle) W.mkQ (fun _ _ => rfl) (by rw [he]; exact fun e => h0 (hi (e.trans (map_zero _).symm)))`. Rewrite `h1` using `[he]`. Conclude with `GlobalTheory.LFun.IsSatVecGL.of_map _ (fun _ _ => rfl) hi h1`.
+-/
 theorem UpperTheory.V.Af.Nf.satComp :
     UpperTheory.V.Af.Nf.SatComp := by
   intro F _ _ _ φ π ψ W h0 hW hd hφ w B h

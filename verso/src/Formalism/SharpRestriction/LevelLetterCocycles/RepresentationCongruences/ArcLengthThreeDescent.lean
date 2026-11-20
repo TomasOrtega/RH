@@ -20,6 +20,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Take `⟨w₁, z, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨w₁, z, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `he : (fun k' => if k' = k₀ then lE W e * (lE W k * f) else 0) = (fun k' => if k' = k₀ then lE W (e + k) * f else 0)`. Use function extensionality and compare the values at `k'`. Unfold `lE`.
+
+Rewrite using `[← mul_assoc, ← pow_add]`. Rewrite using `[← he]`. Conclude with `h5`.
+-/
 theorem liftsAt_of_scaled_power (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (bb : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d) {f : W.EE}
     {e k : ℕ} (h : LiftsAt W A F c bb sol k₀ (lE W k * f) e) : LiftsAt W A F c bb sol k₀ f (e + k) := by
@@ -33,6 +38,51 @@ theorem liftsAt_of_scaled_power (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T�
   rw [← he]
   exact h5
 
+/- English proof (translation)
+Establish `hl11 : 11 ≤ PD.p` using `hB.1`. Establish `hηs : ∀ i, η < size i` using `hB.2.1.2.2.1`. Establish `hup1 : up (c - 1) = true`. Establish `h` using `(halt (c - 2)).1`. Establish `e : c - 2 + 1 = c - 1` using `by ring`.
+
+Rewrite `h` using `[e, hD]`. Simplify using `using h`. Establish `hup0 : up c = false`. Establish `h` using `(halt (c - 1)).1`. Establish `e : c - 1 + 1 = c` using `by ring`.
+
+Rewrite `h` using `[e, hup1]`. Simplify using `using h`. Establish `hnn : nnDen W (arcOf b w S η up size) c = ps W 1 ^ size (c - 1)`. Unfold `nnDen prodTy`. Rewrite using `[hlen]`.
+
+Simplify using `[Finset.prod_range_succ, arcOf, hup0, hup1, hD]`. Take `⟨hf1, hfd⟩` from `hf`. Rewrite `hf1` using `[hnn]`. Establish `hf2` using `hfd 2 (by rw [hlen]; norm_num) (size (c - 2)) (by simp [arcOf, hD])`. Establish `hf0` using `hfd 0 (by rw [hlen]; norm_num) (size c) (by simp [arcOf, hup0])`.
+
+Rewrite `hf2`, `hf0` using `[hnn]`. Take `⟨-, -, hcut, hnot⟩` from `hOK.2.2.1 c hc`. Rewrite `hcut`, `hnot` using `[hlen]`. Establish `hnth : ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - 2)`. Establish `h` using `hcut`.
+
+Simplify using `only [arcOf, Finset.mem_filter, Finset.mem_univ, true_and] at h`. Establish `e : c - ((3 : ℕ) : ZMod n) + 1 = c - 2` using `by push_cast; ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hth : Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - 1)`. Establish `h` using `hnot 2 (by norm_num) (by norm_num)`.
+
+Simplify using `only [arcOf, Finset.mem_filter, Finset.mem_univ, true_and, not_not] at h`. Establish `e : c - ((2 : ℕ) : ZMod n) + 1 = c - 1` using `by push_cast; ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hb1 : 1 ≤ size (c - 1)` using `by have := hηs (c - 1); omega`. Establish `hy1 : 1 ≤ size (c - 2) + S` using `by have := hηs (c - 2); omega`.
+
+Take `⟨X₂, f₂, hsplit, hlev2, hlev0⟩` from `ArcLengthThreeDescent.split W hcase hP9 T₁ hW₁.1 hO hinj c (size (c - 1)) (size (c - 2) + S) (size c + S) hy1 hb1 f hf1 hf2 hf0`. Establish `hval : v (algebraMap O LL (((PD.p : ℕ) : O) ^ ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S))) = (((ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S) : ℚ) : ℚ) : WithTop ℚ)`. Rewrite using `[map_pow, map_natCast, AddValuation.map_pow, W.v_l, nsmul_one]`. Simplify using the standard rewrite rules. Establish `heq : algebraMap O W.EE (((PD.p : ℕ) : O) ^ ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S)) * f = algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE X₂ + f₂`.
+
+Rewrite using `[← hsplit, map_pow, map_natCast]`. Both sides reduce to the same expression. Use `⟨((PD.p : ℕ) : O) ^ ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S), X₂, f₂, ⟨(ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S) : ℚ), hval, ?_⟩, heq, hlev2, hlev0⟩` and prove the remaining obligations. Rewrite using `[Rat.cast_natCast]`. Establish `: Fact PD.p.Prime` using `⟨PD.hp⟩`.
+
+Establish `hth1 : b ≤ size (c - 1)` using `hth.1`. Establish `hth2 : size (c - 1) ≤ b + η` using `hth.2`. Establish `hh : ((arcOf b w S η up size).h : ℕ) = Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size` using `rfl`. Establish `hhB : Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size = b + η + S`. Unfold `Formalism.MainNotions.TruncatedSeriesCountingBounds.hB`.
+
+Rewrite using `[if_pos ⟨c - 1, hth⟩]`. Rewrite using `[hh]`. Establish `hp1 : (1 : ℝ) < PD.p` using `by exact_mod_cast (by omega : 1 < PD.p)`. Establish `hlog0 : 0 ≤ Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ))`. Apply `Real.logb_nonneg hp1` to reduce the goal to its premises.
+
+Rewrite using `[hhB]`. Use `push_cast`. Establish `: (1 : ℝ) ≤ (size (c - 1) : ℝ)` using `by exact_mod_cast hb1`. Establish `: ((size (c - 1) : ℕ) : ℝ) ≤ b + η` using `by exact_mod_cast hth2`. Establish `: (0 : ℝ) ≤ S` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hη0 : (0 : ℝ) ≤ η` using `Nat.cast_nonneg _`. Distinguish the cases in `hlt : size (c - 1) < PD.p * (size (c - 2) + S)`. Establish `hK0 : ArcLengthThreeDescent.Kc PD.p (size (c - 1)) (size (c - 2) + S) = 0`. Unfold `ArcLengthThreeDescent.Kc`.
+
+Rewrite using `[if_pos hlt]`. Apply the tactic sequence `have hbd : 0 ≤ bandI PD.p b w S η size Cb := by unfold bandI; split_ifs <;> norm_num`. Rewrite using `[hK0, Nat.cast_zero]`. Conclude with `mul_nonneg (by linarith) hbd`. Use `push Not at hlt`.
+
+Establish `hK` using `ArcLengthThreeDescent.Kc_le PD.p (size (c - 1)) (size (c - 2) + S) η hy1 hlt hy`. Establish `hA : (PD.p : ℝ) * size (c - 2) + PD.p * S ≤ size (c - 1)`. Establish `: ((PD.p * (size (c - 2) + S) : ℕ) : ℝ) ≤ size (c - 1)` using `by exact_mod_cast hlt`. Move the coercions through the operations in `at this`. Combine the linear relations using `[mul_add (PD.p : ℝ) (size (c - 2)) S]`.
+
+Establish `hB' : (size (c - 1) : ℝ) < PD.p * size (c - 2) + PD.p * S + PD.p * η`. Establish `: ((size (c - 1) : ℕ) : ℝ) < ((PD.p * (size (c - 2) + S + η) : ℕ) : ℝ)` using `by exact_mod_cast hy`. Move the coercions through the operations in `at this`. Combine the linear relations using `[mul_add (PD.p : ℝ) (size (c - 2) + S) η, mul_add (PD.p : ℝ) (size (c - 2)) S]`. Establish `hC1 : (b : ℝ) ≤ size (c - 1)` using `by exact_mod_cast hth1`.
+
+Establish `hC2 : (size (c - 1) : ℝ) ≤ b + η` using `by exact_mod_cast hth2`. Establish `hband : bandI PD.p b w S η size Cb = 1`. Unfold `bandI`. Rewrite using `[if_pos]`. Use `⟨c - 2, hnth, Or.inl (by rwa [show c - 2 + 1 = c - 1 by ring]), ?_⟩` and prove the remaining obligations.
+
+Establish `hp0 : (0 : ℝ) < PD.p` using `by linarith`. Establish `hbl : (0 : ℝ) ≤ (b : ℝ) / PD.p` using `by positivity`. Establish `hpl : (0 : ℝ) ≤ PD.p * Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ))` using `mul_nonneg hp0.le hlog0`. Establish `hw0 : (0 : ℝ) ≤ size (c - 2)` using `Nat.cast_nonneg _`. Establish `hS0 : (0 : ℝ) ≤ S` using `Nat.cast_nonneg _`.
+
+Establish `hpη : (η : ℝ) ≤ PD.p * η` using `by nlinarith`. Use `set Q : ℝ := (PD.p : ℝ) * η + PD.p * S + b / PD.p + size (c - 2) + PD.p * Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ)) with hQ`. Establish `hpS : (0 : ℝ) ≤ PD.p * S` using `mul_nonneg hp0.le hS0`. Establish `hQ1 : (PD.p : ℝ) * η + PD.p * S ≤ Q` using `by rw [hQ]; linarith`. Establish `hQ2 : Q ≤ Cb * Q` using `by nlinarith`.
+
+Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[hband, mul_one]`. Establish `hlb : Real.logb PD.p (size (c - 1) : ℝ) ≤ Real.logb PD.p (2 * (Formalism.MainNotions.TruncatedSeriesCountingBounds.hB b w S η size : ℝ))`. Apply `Real.logb_le_logb_of_le hp1 (by exact_mod_cast (by omega : 0 < size (c - 1)))` to reduce the goal to its premises.
+
+Rewrite using `[hhB]`. Use `push_cast`. Establish `: (0 : ℝ) ≤ S` using `Nat.cast_nonneg _`. Establish `: (1 : ℝ) ≤ (size (c - 1) : ℝ)` using `by exact_mod_cast hb1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem arc_length_three_descent [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

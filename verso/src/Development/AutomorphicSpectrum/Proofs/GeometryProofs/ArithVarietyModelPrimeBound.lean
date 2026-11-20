@@ -19,9 +19,37 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.FamLat
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_surjective' (genMap ξ q).rangeRestrict (genMap ξ q).rangeRestrict_surjective`.
+-/
 theorem isLocalRing_regAt (q : Cpt ξ) : IsLocalRing (regAt ξ q) :=
   IsLocalRing.of_surjective' (genMap ξ q).rangeRestrict (genMap ξ q).rangeRestrict_surjective
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.dvr_localization_constants X Ω ξ K J y hT A hA m O c hc`. Set `Q : Type` to `{q : Cpt ξ // InChart ξ (mseg y) c q ∧ ∀ o : O, algebraMap O Ω o ∈ regAt ξ q}`. Set `Λ : Q → AddSubgroup (Fin r → Ω)` to `fun q => (L q.1).toAddSubgroup.comap (Fintype.linearCombination Ω b).toAddMonoidHom`. Establish `hcoord : coordLat O y L b c = ⨅ q, Λ q`. Use extensionality with `e`.
+
+Simplify using `only [coordLat, AddSubgroup.mem_iInf, Subtype.forall, Λ, Q]`. Conclude with `⟨fun h q hq => h q hq.1 hq.2, fun h q h1 h2 => h q ⟨h1, h2⟩⟩`. Establish `hinj : Function.Injective (Fintype.linearCombination Ω b)` using `hli.fintypeLinearCombination_injective`. Establish `hfr : ∀ q : Q, ∃ g ∈ chartRing O (mseg y) c, g ≠ 0 ∧ g⁻¹ ∈ regAt ξ q.1 ∧ ∃ f : Fin r → (Fin r → Ω), LinearIndependent Ω f ∧ ∀ q' : Q, g⁻¹ ∈ regAt ξ q'.1 → ∀ e, e ∈ Λ q' ↔ ∃ a : Fin r → Ω, (∀ i, a i ∈ regAt ξ q'.1) ∧ e = ∑ i, a i • f i`. Introduce `q`.
+
+Take `⟨U, hU, f, hfs, hf⟩` from `hVB q.1 q.2.2`. Take `⟨g, hg, hgu, hgU⟩` from `h4 q.1 q.2.1 q.2.2 U hU`. Establish `hmem : ∀ i, ∃ f' : Fin r → Ω, Fintype.linearCombination Ω b f' = f i`. Introduce `i`. Establish `: f i ∈ Submodule.span Ω (Set.range b)`.
+
+Rewrite using `[hsp, ← hfs]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 this`. Conclude with `⟨a, by rw [Fintype.linearCombination_apply]; exact ha⟩`. Use `choose f' hf' using hmem`.
+
+Use `⟨g, hg, hgu.1, hgu.2.2, f', ?_, fun q' hq' e => ?_⟩` and prove the remaining obligations. Establish `hl` using `(hf q.1 q.2.2 hU).1`. Establish `: (Fintype.linearCombination Ω b) ∘ f' = f` using `funext hf'`. Rewrite `hl` using `[← this]`. Conclude with `hl.of_comp _`.
+
+Establish `hu : unitAt ξ q'.1 g` using `⟨hgu.1, h1 g hg q'.1 q'.2.1 q'.2.2, hq'⟩`. Establish `hq'U` using `hgU q'.1 q'.2.1 q'.2.2 hu`. Establish `hfrm` using `(hf q'.1 q'.2.2 hq'U).2`. Use `show Fintype.linearCombination Ω b e ∈ L q'.1 ↔ _`. Rewrite using `[hfrm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `he`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (regAt ξ q'.1)).1 he`. Use `⟨fun i => (a i : Ω), fun i => (a i).2, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hf']`. Both sides reduce to the same expression. Introduce and unpack `⟨a, ha, rfl⟩`. Use `(Submodule.mem_span_range_iff_exists_fun (regAt ξ q'.1)).2 ⟨fun i => ⟨a i, ha i⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hf']`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.regular_lattice_local_free (chartRing O (mseg y) c) Q (fun q => regAt ξ q.1) r Λ (fun q => isLocalRing_regAt q.1) (fun q a ha => h1 a ha q.1 q.2.1 q.2.2) (fun P hP => by`.
+
+Take `⟨q, hq1, hq2, hq⟩` from `h2 P hP`. Use `⟨⟨q, hq1, hq2⟩, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hq s]`. Conclude with `⟨fun h => ⟨h.1, h.2.2⟩, fun h => ⟨h.1, h1 _ s.2 q hq1 hq2, h.2⟩⟩)`. Use the proof step `(fun q a ha => by`.
+
+Take `⟨s, hs, hu, hsa⟩` from `h3 q.1 q.2.1 q.2.2 a ha`. Conclude with `⟨s, hs, hu.1, hu.2.2, hsa⟩)`. Use `hfr`. Rewrite using `[hcoord]`. Use `⟨key.1, fun g hg e he => key.2 g hg e fun q h h' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `he q.1 q.2.1 q.2.2 h h'`.
+-/
 theorem coordLat_locFree (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K]
     [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (hT : CoordTie ℤ ξ (mseg y)) (A : Type)
     [CommRing A] [Algebra A Ω] (hA : HasConstants ℤ A y) (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [IsDomain O]
@@ -95,6 +123,13 @@ theorem coordLat_locFree (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Com
   refine ⟨key.1, fun g hg e he => key.2 g hg e fun q h h' => ?_⟩
   exact he q.1 q.2.1 q.2.2 h h'
 
+/- English proof (translation)
+Establish `key` using `coordLat_locFree X Ω ξ K J y hT A hA m O V L r Vg b hli hsp hVB`. Use `⟨fun s hs a ha v hv => (key s hs).1.1 a ha v hv, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Establish `hg : mseg y s / mseg y t ∈ chartRing O (mseg y) t` using `Algebra.subset_adjoin ⟨s, rfl⟩`. Use `(key t ht).2 _ hg v fun q hq hO hg0 hgi => ?_` and prove the remaining obligations. Establish `hqs : InChart ξ (mseg y) s q`.
+
+Use `⟨hs, fun c' => ?_⟩` and prove the remaining obligations. Establish `e : mseg y c' / mseg y s = mseg y c' / mseg y t * (mseg y s / mseg y t)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (hq.2 c') hgi`.
+
+Use `(AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hv q) hqs) hO)` as an intermediate fact. Conclude with `this`.
+-/
 theorem coordLat_family (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K]
     [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (hT : CoordTie ℤ ξ (mseg y)) (A : Type)
     [CommRing A] [Algebra A Ω] (hA : HasConstants ℤ A y) (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [IsDomain O]
@@ -116,6 +151,9 @@ theorem coordLat_family (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (Comm
   have := (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hv q) hqs) hO)
   exact this
 
+/- English proof (translation)
+Introduce `v hv`. Use `AddSubgroup.mem_iInf.2 fun q => AddSubgroup.mem_iInf.2 fun hq => AddSubgroup.mem_iInf.2 fun hO => ?_` and prove the remaining obligations. Conclude with `h q hO (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hv q) hq) hO)`.
+-/
 theorem coordLat_mono {O : Type} [CommRing O] [Algebra O Ω] {K : Type} [Fintype K] {J : K → Type}
     (y : (Σ k, J k) → Ω) {V : Type} [AddCommGroup V] [Module Ω V] {L L' : Lat ξ V} {r : ℕ} (b : Fin r → V)
     (c : ∀ k, J k) (h : ∀ q : Cpt ξ, (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → L q ≤ L' q) :
@@ -124,6 +162,11 @@ theorem coordLat_mono {O : Type} [CommRing O] [Algebra O Ω] {K : Type} [Fintype
   refine AddSubgroup.mem_iInf.2 fun q => AddSubgroup.mem_iInf.2 fun hq => AddSubgroup.mem_iInf.2 fun hO => ?_
   exact h q hO (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hv q) hq) hO)
 
+/- English proof (translation)
+Introduce `v hv`. Use `show a • v ∈ coordLat O y L b c`. Use `AddSubgroup.mem_iInf.2 fun q => AddSubgroup.mem_iInf.2 fun hq => AddSubgroup.mem_iInf.2 fun hO => ?_` and prove the remaining obligations. Use `h q hO _ (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 hv q) hq) hO)` as an intermediate fact. Use `show Fintype.linearCombination Ω b (a • v) ∈ L q`.
+
+Rewrite using `[map_smul]`. Conclude with `this`.
+-/
 theorem coordLat_le_divLat {O : Type} [CommRing O] [Algebra O Ω] {K : Type} [Fintype K] {J : K → Type}
     (y : (Σ k, J k) → Ω) {V : Type} [AddCommGroup V] [Module Ω V] {L L' : Lat ξ V} {r : ℕ} (b : Fin r → V)
     (c : ∀ k, J k) (a : Ω) (h : ∀ q : Cpt ξ, (∀ o : O, algebraMap O Ω o ∈ regAt ξ q) → ∀ e ∈ L' q, a • e ∈ L q) :
@@ -136,15 +179,24 @@ theorem coordLat_le_divLat {O : Type} [CommRing O] [Algebra O Ω] {K : Type} [Fi
   rw [map_smul]
   exact this
 
+/- English proof (translation)
+Simplify using `only [dotDual, AddSubgroup.mem_iInf]`. Both sides reduce to the same expression.
+-/
 theorem mem_dotDual' {o : Type} [CommRing o] [Algebra o Ω] (R : Subalgebra o Ω) {n : ℕ} (L : AddSubgroup (Fin n → Ω))
     (v : Fin n → Ω) : v ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ v ∈ R := by
   simp only [dotDual, AddSubgroup.mem_iInf]
   rfl
 
+/- English proof (translation)
+Introduce `v hv` and use `(mem_dotDual' R L v).2 fun l hl => (mem_dotDual' R L' v).1 hv l (h hl)`.
+-/
 theorem dotDual_anti {o : Type} [CommRing o] [Algebra o Ω] (R : Subalgebra o Ω) {n : ℕ} {L L' : AddSubgroup (Fin n → Ω)}
     (h : L ≤ L') : dotDual R L' ≤ dotDual R L := fun v hv =>
   (mem_dotDual' R L v).2 fun l hl => (mem_dotDual' R L' v).1 hv l (h hl)
 
+/- English proof (translation)
+Introduce `v hv`. Use `show a • v ∈ dotDual R L'`. Use `(mem_dotDual' R L' _).2 fun l hl => ?_` and prove the remaining obligations. Establish `h2` using `(mem_dotDual' R L v).1 hv _ (show a • l ∈ L from h hl)`. Rewrite using `[dotProduct_smul, ← smul_dotProduct]` and apply the resulting hypothesis.
+-/
 theorem dotDual_le_divLat {o : Type} [CommRing o] [Algebra o Ω] (R : Subalgebra o Ω) {n : ℕ}
     {L L' : AddSubgroup (Fin n → Ω)} (a : Ω) (h : L' ≤ divLat a L) : dotDual R L ≤ divLat a (dotDual R L') := by
   intro v hv
@@ -153,6 +205,19 @@ theorem dotDual_le_divLat {o : Type} [CommRing o] [Algebra o Ω] (R : Subalgebra
   have h2 := (mem_dotDual' R L v).1 hv _ (show a • l ∈ L from h hl)
   rwa [dotProduct_smul, ← smul_dotProduct]
 
+/- English proof (translation)
+Introduce `r hr hrp hf`. Establish `hco : IsCoprime (r : ℤ) (p : ℤ)`. Conclude with `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hr hp).2 hrp)`. Take `⟨a, b, hab⟩` from `hco`. Establish `hpO : (p : O) ∈ IsLocalRing.maximalIdeal O`.
+
+Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff O m (p : A)).2 hpm` as an intermediate fact. Simplify using `using this`. Establish `hrO : IsUnit (r : O)`. Assume the negation of the conclusion as `hn`. Establish `hr' : (r : O) ∈ IsLocalRing.maximalIdeal O` using `hn`.
+
+Establish `: (1 : O) ∈ IsLocalRing.maximalIdeal O`. Establish `e : (1 : O) = (a : O) * (r : O) + (b : O) * (p : O)`. Use `congrArg (Int.cast : ℤ → O) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`.
+
+Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hr') (Ideal.mul_mem_left _ _ hpO)`. Conclude with `(Ideal.ne_top_iff_one _).1 (IsLocalRing.maximalIdeal.isMaximal O).ne_top this`. Take `⟨u, hu⟩` from `hrO.exists_right_inv`. Establish `hu' : (r : Ω) * algebraMap O Ω u = 1`.
+
+Use `congrArg (algebraMap O Ω) hu` as an intermediate fact. Simplify using `using this`. Establish `hr0 : (r : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one hu'`. Use `hf ⟨hr0, natCast_mem _ r, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hu']`.
+
+Conclude with `hO u`.
+-/
 theorem unit_of_place {A : Type} [CommRing A] [Algebra A Ω] {m : Ideal A} [m.IsPrime] {O : Type} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω]
     [IsScalarTower A O Ω] {p : ℕ} (hpm : (p : A) ∈ m) (hp : p.Prime) {q : Cpt ξ}
@@ -184,6 +249,21 @@ theorem unit_of_place {A : Type} [CommRing A] [Algebra A Ω] {m : Ideal A} [m.Is
   rw [inv_eq_of_mul_eq_one_right hu']
   exact hO u
 
+/- English proof (translation)
+Introduce `hF E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hvar hpq p _ hpS hfree hp2 hdisc b hb A _ _ _ m _ hpm O _ _ _ _ _ _ _ w hw t`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hG : Nonempty (GenTors 𝔐 p)` using `GlobalTheory.T.arith_variety_hodge_prime_degree E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hvar hpq p hpS hfree hp2 hdisc`. Take `⟨κ, hκ, hS⟩` from `GlobalTheory.T.exists_sandwich_of_hodge_tate_free hF E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hpq hfree`. Take `⟨-, -, -, hcon, -⟩` from `GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hvar A`.
+
+Establish `hE` using `GlobalTheory.T.generic_torsion_unramified_prime E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hG hdisc`. Take `⟨hV1, hV2⟩` from `GlobalTheory.T.cm_flag_unramified_prime E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hdisc hE t`. Establish `hT : CoordTie ℤ 𝔐.ξ (mseg y)` using `𝔐.tie`. Establish `hO : ∀ q : Cpt 𝔐.ξ, (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q) → q ∈ overPrime 𝔐.ξ p` using `fun q h => unit_of_place (A := A) (m := m) (O := O) hpm hpp h`. Establish `hres : ∀ (L : Lat 𝔐.ξ 𝔐.Li), L.IsVBOn (overPrime 𝔐.ξ p) (labelRk D t) (𝔐.Vgen t) → L.IsVBOn {q | ∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q} (labelRk D t) (𝔐.Vgen t)`.
+
+Introduce `L hL q hq`. Take `⟨U, hU, f, hf, hfr⟩` from `hL q (hO q hq)`. Conclude with `⟨U, hU, f, hf, fun q' hq' hq'U => hfr q' (hO q' hq') hq'U⟩`. Establish `hdF` using `coordLat_family _ Ω 𝔐.ξ K J y hT A hcon m O _ (𝔐.dR t) _ _ (b t) (hb t).1 (hb t).2 (hres _ hV1)`. Establish `hhF` using `coordLat_family _ Ω 𝔐.ξ K J y hT A hcon m O _ (𝔐.HT p t) _ _ (b t) (hb t).1 (hb t).2 (hres _ hV2)`.
+
+Establish `hdL : ∀ c', mseg y c' ≠ 0 → LocFree (chartRing O (mseg y) c') (labelRk D t) (coordLat O y (𝔐.dR t) (b t) c')` using `fun c' hc' => (coordLat_locFree _ Ω 𝔐.ξ K J y hT A hcon m O _ (𝔐.dR t) _ _ (b t) (hb t).1 (hb t).2 (hres _ hV1) c' hc').1`. Establish `hhL : ∀ c', mseg y c' ≠ 0 → LocFree (chartRing O (mseg y) c') (labelRk D t) (coordLat O y (𝔐.HT p t) (b t) c')` using `fun c' hc' => (coordLat_locFree _ Ω 𝔐.ξ K J y hT A hcon m O _ (𝔐.HT p t) _ _ (b t) (hb t).1 (hb t).2 (hres _ hV2) c' hc').1`. Take `⟨hdD, hdDL⟩` from `GlobalTheory.T.dot_dual_lattice_family O Ω K J y _ _ hdF hdL`. Take `⟨hhD, hhDL⟩` from `GlobalTheory.T.dot_dual_lattice_family O Ω K J y _ _ hhF hhL`. Establish `hpt : ∀ q : Cpt 𝔐.ξ, (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ q) → 𝔐.dR t q ≤ 𝔐.HT p t q ∧ ∀ e ∈ 𝔐.HT p t q, algebraMap O Ω w • e ∈ 𝔐.dR t q`.
+
+Introduce `q hq`. Distinguish the cases in `hf : InFibre 𝔐.ξ p q`. Conclude with `GlobalTheory.T.cp_ratio_unramified_odd_prime E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS hp2 hdisc κ _ hκ hw hS q hf (hq w) t`. Establish `hall : ∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q` using `fun r hr => by`. Distinguish the cases in `hrp : r = p`.
+
+Conclude with `hrp ▸ hf`. Conclude with `hO q hq r hr hrp`. Rewrite using `[hE t q hall]`. Conclude with `⟨le_rfl, fun e he => (𝔐.dR t q).smul_mem (⟨_, hq w⟩ : regAt 𝔐.ξ q) he⟩`. Use `⟨hdF, hhF, hdD, hhD, fun c' hc' => ⟨hdL c' hc', hhL c' hc', hdDL c' hc', hhDL c' hc', ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `coordLat_mono y (b t) c' fun q hq => (hpt q hq).1`. Conclude with `coordLat_le_divLat y (b t) c' _ fun q hq => (hpt q hq).2`. Conclude with `dotDual_anti _ (coordLat_mono y (b t) c' fun q hq => (hpt q hq).1)`. Conclude with `dotDual_le_divLat _ _ (coordLat_le_divLat y (b t) c' _ fun q hq => (hpt q hq).2)`.
+-/
 theorem lat_main : GlobalTheory.CompanionTheory.Ar.HT.FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (b : ∀ t, Fin (labelRk D t) → 𝔐.Li), (∀ t, LinearIndependent Ω (b t) ∧ Submodule.span Ω (Set.range (b t)) = 𝔐.Vgen t) → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ w : O, HT.IsCp p (algebraMap O Ω w) → ∀ t : CMType H ⊕ CMType H, IsLatFamily O y (fun c' => coordLat O y (𝔐.dR t) (b t) c') ∧ IsLatFamily O y (fun c' => coordLat O y (𝔐.HT p t) (b t) c') ∧ IsLatFamily O y (fun c' => dotDual (CR O y c') (coordLat O y (𝔐.dR t) (b t) c')) ∧ IsLatFamily O y (fun c' => dotDual (CR O y c') (coordLat O y (𝔐.HT p t) (b t) c')) ∧ ∀ c' : ∀ k, J k, mseg y c' ≠ 0 → LocFree (CR O y c') (labelRk D t) (coordLat O y (𝔐.dR t) (b t) c') ∧ LocFree (CR O y c') (labelRk D t) (coordLat O y (𝔐.HT p t) (b t) c') ∧ LocFree (CR O y c') (labelRk D t) (dotDual (CR O y c') (coordLat O y (𝔐.dR t) (b t) c')) ∧ LocFree (CR O y c') (labelRk D t) (dotDual (CR O y c') (coordLat O y (𝔐.HT p t) (b t) c')) ∧ coordLat O y (𝔐.dR t) (b t) c' ≤ coordLat O y (𝔐.HT p t) (b t) c' ∧ coordLat O y (𝔐.HT p t) (b t) c' ≤ divLat (algebraMap O Ω w) (coordLat O y (𝔐.dR t) (b t) c') ∧ dotDual (CR O y c') (coordLat O y (𝔐.HT p t) (b t) c') ≤ dotDual (CR O y c') (coordLat O y (𝔐.dR t) (b t) c') ∧ dotDual (CR O y c') (coordLat O y (𝔐.dR t) (b t) c') ≤ divLat (algebraMap O Ω w) (dotDual (CR O y c') (coordLat O y (𝔐.HT p t) (b t) c')) := by
   intro hF E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hvar hpq p _ hpS hfree hp2 hdisc b hb A _ _ _ m _ hpm O _ _ _ _
     _ _ _ w hw t

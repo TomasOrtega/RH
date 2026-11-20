@@ -9,6 +9,9 @@ open scoped ComplexOrder MatrixOrder
 
 variable {r k : ℕ}
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ X` using `hX.nonneg`. Use `⟨CFC.sqrt X, ?_⟩` and prove the remaining obligations. Establish `h1 : (CFC.sqrt X).PosSemidef` using `(CFC.sqrt_nonneg X).posSemidef`. Rewrite using `[h1.1.eq, CFC.sqrt_mul_sqrt_self X h0]`.
+-/
 theorem exists_factor {X : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosSemidef) :
     ∃ S : Matrix (Fin r) (Fin r) ℂ, X = Sᴴ * S := by
   have h0 : 0 ≤ X := hX.nonneg
@@ -16,12 +19,25 @@ theorem exists_factor {X : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosSemidef) :
   have h1 : (CFC.sqrt X).PosSemidef := (CFC.sqrt_nonneg X).posSemidef
   rw [h1.1.eq, CFC.sqrt_mul_sqrt_self X h0]
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 hX.det_pos).1`.
+-/
 theorem det_re_pos {X : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosDef) : 0 < X.det.re :=
   (Complex.pos_iff.1 hX.det_pos).1
 
+/- English proof (translation)
+The claim follows from `Complex.ext (by simp) (by simpa using (Complex.pos_iff.1 hX.det_pos).2.symm)`.
+-/
 theorem det_eq_re {X : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosDef) : X.det = (X.det.re : ℂ) :=
   Complex.ext (by simp) (by simpa using (Complex.pos_iff.1 hX.det_pos).2.symm)
 
+/- English proof (translation)
+Establish `h1 : Z.det.re = ∏ i, hZ.1.eigenvalues i`. Rewrite using `[hZ.1.det_eq_prod_eigenvalues]`. Establish `: (∏ i, (RCLike.ofReal (hZ.1.eigenvalues i) : ℂ)) = ((∏ i, hZ.1.eigenvalues i : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`. Establish `h2 : Z.trace.re = ∑ i, hZ.1.eigenvalues i`.
+
+Rewrite using `[hZ.1.trace_eq_sum_eigenvalues]`. Establish `: (∑ i, (RCLike.ofReal (hZ.1.eigenvalues i) : ℂ)) = ((∑ i, hZ.1.eigenvalues i : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`. Rewrite using `[h1, h2, Real.log_prod fun i _ => (hZ.eigenvalues_pos i).ne']`. Establish `h3 : ∑ i, Real.log (hZ.1.eigenvalues i) ≤ ∑ i, (hZ.1.eigenvalues i - 1)` using `Finset.sum_le_sum fun i _ => Real.log_le_sub_one_of_pos (hZ.eigenvalues_pos i)`.
+
+Simplify `h3` using `[Finset.sum_sub_distrib]`.
+-/
 theorem logdet_le_trace {Z : Matrix (Fin r) (Fin r) ℂ} (hZ : Z.PosDef) :
     Real.log Z.det.re ≤ Z.trace.re - r := by
   have h1 : Z.det.re = ∏ i, hZ.1.eigenvalues i := by
@@ -39,6 +55,15 @@ theorem logdet_le_trace {Z : Matrix (Fin r) (Fin r) ℂ} (hZ : Z.PosDef) :
     Finset.sum_le_sum fun i _ => Real.log_le_sub_one_of_pos (hZ.eigenvalues_pos i)
   simpa [Finset.sum_sub_distrib] using h3
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_factor h₀.inv.posSemidef`. Establish `hd : IsUnit S.det`. Establish `h1` using `h₀.inv.det_pos.ne'`. Rewrite `h1` using `[hS, det_mul]`. Conclude with `IsUnit.mk0 _ (right_ne_zero_of_mul h1)`.
+
+Establish `hinj : Function.Injective (Sᴴ).mulVec` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (by rw [det_conjTranspose]; exact hd.star))`. Establish `hZ : (S * X * Sᴴ).PosDef`. Use `hX.conjTranspose_mul_mul_same hinj` as an intermediate fact. Rewrite `this` using `[conjTranspose_conjTranspose]`. Then use the resulting hypothesis. Establish `h1` using `logdet_le_trace hZ`.
+
+Establish `h2 : (S * X * Sᴴ).trace = (X₀⁻¹ * X).trace`. Rewrite using `[hS, trace_mul_cycle]`. Establish `h3 : (S * X * Sᴴ).det = X₀.det⁻¹ * X.det`. Rewrite using `[← Ring.inverse_eq_inv, ← det_nonsing_inv, hS, det_mul, det_mul, det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[h2, h3, det_eq_re hX, det_eq_re h₀, ← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.ofReal_re, Real.log_mul (inv_ne_zero (det_re_pos h₀).ne') (det_re_pos hX).ne', Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logdet_le {X X₀ : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosDef) (h₀ : X₀.PosDef) :
     Real.log X.det.re ≤ Real.log X₀.det.re + (X₀⁻¹ * X).trace.re - r := by
   obtain ⟨S, hS⟩ := exists_factor h₀.inv.posSemidef
@@ -60,6 +85,9 @@ theorem logdet_le {X X₀ : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosDef) (h₀ : 
     Real.log_mul (inv_ne_zero (det_re_pos h₀).ne') (det_re_pos hX).ne', Real.log_inv] at h1
   linarith
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_factor hX`. Establish `h1` using `(hY.mul_mul_conjTranspose_same S).trace_nonneg`. Establish `h2 : (S * Y * Sᴴ).trace = (X * Y).trace` using `by rw [hS, trace_mul_cycle]`. Rewrite `h1` using `[h2]`. Conclude with `(Complex.nonneg_iff.1 h1).1`.
+-/
 theorem trace_mul_re_nonneg {X Y : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosSemidef) (hY : Y.PosSemidef) :
     0 ≤ (X * Y).trace.re := by
   obtain ⟨S, hS⟩ := exists_factor hX
@@ -68,6 +96,9 @@ theorem trace_mul_re_nonneg {X Y : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosSemide
   rw [h2] at h1
   exact (Complex.nonneg_iff.1 h1).1
 
+/- English proof (translation)
+Establish `h1` using `logdet_le hP hG`. Establish `h2` using `trace_mul_re_nonneg hG.inv.posSemidef h`. Rewrite `h2` using `[Matrix.mul_sub, nonsing_inv_mul _ (IsUnit.mk0 _ hG.det_pos.ne'), trace_sub, trace_one]`. Simplify using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logdet_mono {P G : Matrix (Fin r) (Fin r) ℂ} (hP : P.PosDef) (hG : G.PosDef) (h : (G - P).PosSemidef) :
     Real.log P.det.re ≤ Real.log G.det.re := by
   have h1 := logdet_le hP hG
@@ -76,24 +107,43 @@ theorem logdet_mono {P G : Matrix (Fin r) (Fin r) ℂ} (hP : P.PosDef) (hG : G.P
   simp at h2
   linarith
 
+/- English proof (translation)
+The claim follows from `Matrix.PosDef.one.smul (by exact_mod_cast hc)`.
+-/
 theorem posDef_smul_one {c : ℝ} (hc : 0 < c) : ((c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).PosDef :=
   Matrix.PosDef.one.smul (by exact_mod_cast hc)
 
+/- English proof (translation)
+Rewrite using `[det_smul, det_one, mul_one, Fintype.card_fin, ← Complex.ofReal_pow, Complex.ofReal_re, Real.log_pow]`.
+-/
 theorem logdet_smul_one {c : ℝ} (hc : 0 < c) :
     Real.log ((c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).det.re = r * Real.log c := by
   rw [det_smul, det_one, mul_one, Fintype.card_fin, ← Complex.ofReal_pow, Complex.ofReal_re, Real.log_pow]
 
+/- English proof (translation)
+Rewrite using `[det_nonsing_inv, Ring.inverse_eq_inv, det_eq_re hX, ← Complex.ofReal_inv, Complex.ofReal_re, Complex.ofReal_re, Real.log_inv]`.
+-/
 theorem logdet_inv {X : Matrix (Fin r) (Fin r) ℂ} (hX : X.PosDef) :
     Real.log X⁻¹.det.re = -Real.log X.det.re := by
   rw [det_nonsing_inv, Ring.inverse_eq_inv, det_eq_re hX, ← Complex.ofReal_inv, Complex.ofReal_re, Complex.ofReal_re,
     Real.log_inv]
 
+/- English proof (translation)
+Use `(posDef_smul_one hc).add_posSemidef h` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `Matrix.posDef_inv_iff.1 this`.
+-/
 theorem posDef_of_inv_ge {Γ : Matrix (Fin r) (Fin r) ℂ} {c : ℝ} (hc : 0 < c)
     (h : (Γ⁻¹ - (c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).PosSemidef) : Γ.PosDef := by
   have := (posDef_smul_one hc).add_posSemidef h
   rw [add_sub_cancel] at this
   exact Matrix.posDef_inv_iff.1 this
 
+/- English proof (translation)
+Establish `hu : IsUnit Γ.det` using `IsUnit.mk0 _ hΓ.det_pos.ne'`. Establish `hK' : (K : ℂ) ≠ 0` using `by exact_mod_cast hK.ne'`. Establish `h1` using `hΓ.posSemidef.conjTranspose_mul_mul_same (1 - ((K⁻¹ : ℝ) : ℂ) • Γ⁻¹)`. Establish `h2` using `h.smul (a := (((K⁻¹ ^ 2 : ℝ)) : ℂ)) (by exact_mod_cast (by positivity : (0 : ℝ) ≤ K⁻¹ ^ 2))`. Use `h1.add h2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[conjTranspose_sub, conjTranspose_one, conjTranspose_smul, hΓ.inv.1.eq]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, nonsing_inv_mul _ hu, mul_nonsing_inv _ hu, smul_sub, smul_smul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Establish `e : (K : ℂ)⁻¹ ^ 2 * K = (K : ℂ)⁻¹` using `by field_simp`. Rewrite using `[e, pow_two]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem ge_of_inv_le {Γ : Matrix (Fin r) (Fin r) ℂ} {K : ℝ} (hK : 0 < K) (hΓ : Γ.PosDef)
     (h : ((K : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - Γ⁻¹).PosSemidef) :
     (Γ - ((K⁻¹ : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).PosSemidef := by
@@ -110,6 +160,13 @@ theorem ge_of_inv_le {Γ : Matrix (Fin r) (Fin r) ℂ} {K : ℝ} (hK : 0 < K) (h
   rw [e, pow_two]
   abel
 
+/- English proof (translation)
+Establish `hu : IsUnit Γ.det` using `IsUnit.mk0 _ hΓ.det_pos.ne'`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `h1` using `h.conjTranspose_mul_mul_same Γ`. Establish `h2` using `(posDef_smul_one (r := r) (inv_pos.2 hc)).posSemidef.conjTranspose_mul_mul_same (1 - (c : ℂ) • Γ)`. Use `h1.add h2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[conjTranspose_sub, conjTranspose_one, conjTranspose_smul, hΓ.1.eq]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, nonsing_inv_mul _ hu, mul_nonsing_inv _ hu, smul_sub, smul_smul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Establish `e1 : (c : ℂ)⁻¹ * c = 1` using `by field_simp`. Establish `e2 : (c : ℂ) * (c : ℂ)⁻¹ = 1` using `by field_simp`.
+
+Simplify using `only [e1, e2, one_smul, mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem le_of_inv_ge {Γ : Matrix (Fin r) (Fin r) ℂ} {c : ℝ} (hc : 0 < c) (hΓ : Γ.PosDef)
     (h : (Γ⁻¹ - (c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)).PosSemidef) :
     (((c⁻¹ : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - Γ).PosSemidef := by
@@ -127,6 +184,15 @@ theorem le_of_inv_ge {Γ : Matrix (Fin r) (Fin r) ℂ} {c : ℝ} (hc : 0 < c) (h
   simp only [e1, e2, one_smul, mul_one]
   abel
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_factor hΓ`. Establish `hd : ∀ p, ∑ i, ‖S i p‖ ^ 2 ≤ K` using `fun p => by`. Establish `h1` using `(Complex.nonneg_iff.1 (h.diag_nonneg (i := p))).1`. Establish `h2 : (Γ p p).re = ∑ i, ‖S i p‖ ^ 2`. Rewrite using `[hS, mul_apply, Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`. Simplify using `[h2] at h1`. Conclude with `h1`. Establish `h3 : ‖Γ p q‖ ≤ ∑ i, (‖S i p‖ ^ 2 + ‖S i q‖ ^ 2) / 2`.
+
+Rewrite using `[hS, mul_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, norm_mul, norm_star]`. Use polynomial arithmetic with `[sq_nonneg (‖S i p‖ - ‖S i q‖)]`. Rewrite `h3` using `[← Finset.sum_div, Finset.sum_add_distrib]`.
+
+Combine the linear relations using `[hd p, hd q]`.
+-/
 theorem norm_entry_le {Γ : Matrix (Fin r) (Fin r) ℂ} {K : ℝ} (hΓ : Γ.PosSemidef)
     (h : ((K : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - Γ).PosSemidef) (p q : Fin r) : ‖Γ p q‖ ≤ K := by
   obtain ⟨S, hS⟩ := exists_factor hΓ
@@ -146,6 +212,19 @@ theorem norm_entry_le {Γ : Matrix (Fin r) (Fin r) ℂ} {K : ℝ} (hΓ : Γ.PosS
   rw [← Finset.sum_div, Finset.sum_add_distrib] at h3
   linarith [hd p, hd q]
 
+/- English proof (translation)
+Use `set M := Cᴴ * Y * C with hMd`. Use `set N := Cᴴ * B with hNd`. Establish `huY : IsUnit Y.det` using `IsUnit.mk0 _ hY.det_pos.ne'`. Establish `huM : IsUnit M.det` using `IsUnit.mk0 _ hM.det_pos.ne'`. Establish `hP : (Nᴴ * M⁻¹ * N).PosDef` using `hM.inv.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (IsUnit.mk0 _ hN)))`.
+
+Establish `h1` using `hY.inv.posSemidef.conjTranspose_mul_mul_same (B - Y * C * M⁻¹ * N)`. Establish `e : (B - Y * C * M⁻¹ * N)ᴴ * Y⁻¹ * (B - Y * C * M⁻¹ * N) = Bᴴ * Y⁻¹ * B - Nᴴ * M⁻¹ * N`. Establish `a1 : (Y * C * M⁻¹ * N)ᴴ * Y⁻¹ = Nᴴ * M⁻¹ * Cᴴ`. Simplify using `only [conjTranspose_mul, hM.inv.1.eq, hY.1.eq, Matrix.mul_assoc, mul_nonsing_inv _ huY, Matrix.mul_one]`. Establish `a2 : Bᴴ * Y⁻¹ * (Y * C * M⁻¹ * N) = Nᴴ * M⁻¹ * N`.
+
+Rewrite using `[hNd, conjTranspose_mul, conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ huY]`. Establish `a3 : Nᴴ * M⁻¹ * Cᴴ * (Y * C * M⁻¹ * N) = Nᴴ * M⁻¹ * N`. Establish `: Nᴴ * M⁻¹ * Cᴴ * (Y * C * M⁻¹ * N) = Nᴴ * M⁻¹ * (M * M⁻¹) * N`. Rewrite using `[hMd]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, mul_nonsing_inv _ huM, Matrix.mul_one]`. Establish `a4 : Nᴴ * M⁻¹ * Cᴴ * B = Nᴴ * M⁻¹ * N` using `by rw [Matrix.mul_assoc _ Cᴴ]`. Rewrite using `[conjTranspose_sub, Matrix.sub_mul, a1, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, a2, a3, a4]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h1` using `[e]`. Establish `h2` using `logdet_mono hP hG h1`. Establish `h3 : (Nᴴ * M⁻¹ * N).det = ((‖N.det‖ ^ 2 * (M.det.re)⁻¹ : ℝ) : ℂ)`. Rewrite using `[det_mul, det_mul, det_conjTranspose, det_nonsing_inv, Ring.inverse_eq_inv, det_eq_re hM]`. Use `push_cast`.
+
+Rewrite using `[← Complex.conj_mul', Complex.star_def, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3, Complex.ofReal_re, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 hN)) (inv_ne_zero (det_re_pos hM).ne'), Real.log_pow, Real.log_inv]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logdet_dual_ge {Y : Matrix (Fin k) (Fin k) ℂ} (hY : Y.PosDef) (B C : Matrix (Fin k) (Fin r) ℂ)
     (hM : (Cᴴ * Y * C).PosDef) (hG : (Bᴴ * Y⁻¹ * B).PosDef) (hN : (Cᴴ * B).det ≠ 0) :
     2 * Real.log ‖(Cᴴ * B).det‖ - Real.log (Cᴴ * Y * C).det.re ≤ Real.log (Bᴴ * Y⁻¹ * B).det.re := by

@@ -23,6 +23,15 @@ namespace GlobalTheory.InertIwasawaLoc
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.LFun GlobalTheory.InertIwasawaIso
 
+/- English proof (translation)
+Establish `h` using `(InertChart.under_eq_iff hw w).2 rfl`. Take `⟨a, ha⟩` from `Frames.exists_isLatticeFrame (F := F) L`. Establish `hN` using `GlobalTheory.UnramSelfDual.exists_norm v hσ (GlobalTheory.UnramConjUnit.exists_sub_conj_unit _ _ _ hσ v hv)`. Establish `hO : ∀ z, z ∈ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryLatticeOrthogonal.OEv F E v ↔ z ∈ intLoc F E v` using `GlobalTheory.StabOrbit.mem_OEv_iff v`. Simplify using `only [hO] at hN`.
+
+Set `ι : E →+* Fv F v ⊗[F] E` to `inclR (Fv F v)`. Take `⟨k, h1, h2, h3⟩` from `exists_stab (intLoc F E v) (w.adicCompletionIntegers E) (InertChart.complEquiv hw h) (InertChart.mem_intLoc_iff hw h) (σ := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv F v) σ) (fun _ => sigR_mem_intLoc σ) (sigR_invol (InertChart.conj_conj hσ)) (τ := ι c) (t …`. Rewrite using `[← map_add, hc, map_one]) hN`. Use the proof step `(J := JR (Fv F v) J) (by ext i j; exact congrArg ι (hJ.1 i j))`. Use the proof step `((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_det_JR hJ.2)) (Λ := latLoc F L v)`.
+
+Use the proof step `(fun y => Submodule.ext_iff.1 hL y) (ha v) (X := e.map ι) (P := p.map ι)`. Use the proof step `(by rw [← Matrix.map_mul, hp, Matrix.map_one _ (map_zero _) (map_one _)])`. Use the proof step `(by rw [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map (σ : E →+* E) _ ι (fun _ => rfl), show JR (Fv F v) J = J.map ι from rfl, ← Matrix.map_mul, ← Matrix.map_mul, he, Matrix.map_zero _ (map_zero _)])`. Use the proof step `(g := matHom _ σ J y) y.2`. Set `κ : GLoc σ J v` to `⟨k, h1⟩`.
+
+Conclude with `⟨y * κ⁻¹, κ, h2, (inv_mul_cancel_right y κ).symm, h3⟩`.
+-/
 theorem exists_loc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {c : 𝓞 E} (hc : (c : E) + σ c = 1) {n r : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L]
@@ -59,6 +68,15 @@ namespace GlobalTheory.InertIwasawaLoc
 
 open scoped Matrix TensorProduct
 
+/- English proof (translation)
+Introduce `D V Φ L a hG v hv g`. Use `haveI := hG.1`. Use `v.isMaximal` as an intermediate fact. Take `⟨P, hP, hPv⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨P, hP.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+
+Establish `h : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPv.over.symm`. Establish `hi` using `GlobalTheory.LPositivity.split_or_inert D w`. Rewrite `hi` using `[h]`. Take `⟨c, hc⟩` from `D.host.exists_trace_one`. Rewrite `hc` using `[← show D.sp.cm.sig (c : D.host.E) = D.host.conj c from D.host.φ₀.injective (((isCMExt_host D).2.2.2 _ _).trans (Formalism.HC.HostAx.conjE_apply _ _ _).symm)]`.
+
+Establish `key : ∀ (x y : Fin (wittIndex V) → V.V) (j i : Fin (wittIndex V)), (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (Matrix.of fun z k => V.frame.repr (x k) z) * V.gram * Matrix.of fun z k => V.frame.repr (y k) z) j i = V.hD (y i) (x j)`. Introduce `x y j i`. Use `GlobalTheory.AutFunCompare.hT_col D.sp.cm V (Matrix.of fun z k => V.frame.repr (x k) z) j (y i)` as an intermediate fact. Establish `e : GlobalTheory.AutFunCompare.vecOf V ((Matrix.of fun z k => V.frame.repr (x k) z)ᵀ j) = x j` using `V.frame.equivFun.symm_apply_apply (x j)`. Rewrite `this` using `[e]`.
+
+Express the relevant statement in the definitionally equal form `_ = V.hT (x j) (y i)`. Rewrite using `[this]`. Both sides reduce to the same expression. Take `⟨q, k, hk, hg, β, hβ⟩` from `exists_loc (isCMExt_host D) (c := c) hc (GlobalTheory.Doubling.isHermND_gram V) (hi.resolve_left hv) ((GlobalTheory.SelfDualLatticeCompare.unram_iff ..).2 fun u hu => haveI := u.isPrime GlobalTheory.FinPl.TamePlaces.extUnramAt D v u.asIdeal hu) (hG.2.1 v) (e := Matrix.of fun z k …`. Conclude with `⟨q, k, hk, hg, β, hβ⟩`.
+-/
 theorem eq_mul_stab_of_not_split : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)), Φ.IsGood D.sp.cm L a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ (g : GLoc D.sp.cm.sig V.gram v), ∃ q k : GLoc D.sp.cm.sig V.gram v, k ∈ stabLoc D.sp.cm.sig V.gram L v ∧ g = q * k ∧ ∃ β : GL (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E), (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram q).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * β.1 := by
   intro D V Φ L a hG v hv g
   haveI := hG.1

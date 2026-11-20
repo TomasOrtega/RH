@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up.TypesAt
 
+/- English proof (translation)
+Establish `h1` using `t.r.z.lev.C`. Establish `hg` using `t.grp`. Rewrite using `[h1]`. Establish `h2` using `w.C_eq`. Rewrite using `[h2]`.
+
+Conclude with `hg`.
+-/
 theorem typesTrue_rows {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) : TypesTrue (w.D Z).ntypes t.r.z.R.C.P t.r.z.R.C.W := by
   have h1 := t.r.z.lev.C
@@ -25,6 +30,9 @@ theorem typesTrue_rows {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : 
   rw [h2]
   exact hg
 
+/- English proof (translation)
+Introduce `_ hL`. Use `EvG.imp evG_good fun K _ _ _ _ _ => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `B f T _ _ _ _ _ w Z Wt p0 t nch n xd c _ _ _`. Conclude with `typesTrue_rows t`.
+-/
 theorem types_atMem : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ _ => TypesTrue (w.D Z).ntypes t.r.z.R.C.P t.r.z.R.C.W := by
   intro _ hL
   refine EvG.imp evG_good fun K _ _ _ _ _ => ?_

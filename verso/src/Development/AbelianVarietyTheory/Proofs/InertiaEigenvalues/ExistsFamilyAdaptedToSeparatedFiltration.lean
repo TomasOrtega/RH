@@ -7,6 +7,35 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E W _ _ _ D F d hfin hd hF hex hsep`. Establish `anti : Antitone F` using `antitone_int_of_succ_le hF`. Proceed by induction on `d generalizing D with`. Consider the case `zero => exact ⟨Fin.elim0, Fin.elim0, fun k => k.elim0, fun _ _ _ _ k => k.elim0⟩`. Consider the case `succ d ih`.
+
+Establish `hne : D ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `at hd`. Establish `hinh : ∃ z, D ≤ F z`. Take `⟨s, hs⟩ : D.FG` from `Module.Finite.iff_fg.mp hfin`.
+
+Use `choose g hg using hex`. Take `⟨m, hm⟩` from `(s.image g).bddBelow`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, Submodule.span_le]`. Introduce `y hy`.
+
+Conclude with `anti (hm (by simpa using ⟨y, hy, rfl⟩)) (hg y)`. Establish `hbdd : ∃ b : ℤ, ∀ z, D ≤ F z → z ≤ b`. Take `⟨y, hyD, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `: ∃ b, y ∉ F b`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hy0 (hsep y h)`. Take `⟨b, hb⟩` from `this`. Use `⟨b, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hb (anti (not_le.mp h).le (hz hyD))`. Take `⟨lo, hlo, hmax⟩` from `Int.exists_greatest_of_bdd hbdd hinh`. Establish `hnot : ¬ D ≤ F (lo + 1)` using `fun h => by have := hmax _ h; omega`. Take `⟨x0, hx0D, hx0F⟩` from `SetLike.not_le_iff_exists.mp hnot`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_notMem hx0F`.
+
+Establish `hx0 : x0 ∉ D ⊓ LinearMap.ker f` using `fun h => hf0 h.2`. Establish `hfin' : Module.Finite E ↥(D ⊓ LinearMap.ker f)` using `Submodule.finiteDimensional_of_le (inf_le_left : D ⊓ LinearMap.ker f ≤ D)`. Establish `hsup : (D ⊓ LinearMap.ker f) ⊔ Submodule.span E {x0} = D`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le inf_le_left ((Submodule.span_singleton_le_iff_mem _ _).mpr hx0D)`.
+
+Introduce `y hy`. Establish `h1 : y - (f y / f x0) • x0 ∈ D ⊓ LinearMap.ker f`. Use `⟨D.sub_mem hy (D.smul_mem _ hx0D), ?_⟩` and prove the remaining obligations. Simplify using `[LinearMap.mem_ker, div_mul_cancel₀ _ hf0]`. Establish `h2 : (f y / f x0) • x0 ∈ Submodule.span E {x0}` using `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`.
+
+Simplify using `using Submodule.add_mem_sup h1 h2`. Establish `hd' : Module.finrank E ↥(D ⊓ LinearMap.ker f) = d`. Establish `hne0 : x0 ≠ 0` using `fun h => hf0 (by simp [h])`. Use `Submodule.finrank_sup_add_finrank_inf_eq (D ⊓ LinearMap.ker f) (Submodule.span E {x0})` as an intermediate fact. Rewrite `this` using `[hsup, hd, ((Submodule.disjoint_span_singleton' hne0).mpr hx0).eq_bot, finrank_bot, finrank_span_singleton hne0]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨x, u, h1, h2⟩` from `ih _ hfin' hd'`. Use `⟨Fin.cons x0 x, Fin.cons lo u, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations.
+
+Conclude with `⟨hx0D, hlo hx0D⟩`. Conclude with `⟨(h1 j).1.1, (h1 j).2⟩`. Introduce `a c hc hs`. Rewrite `hs` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hs`.
+
+Establish `hc0 : c 0 = 0`. Distinguish the cases in `ha : lo = a`. Substitute `ha` using the available equality. Establish `h3` using `hf hs`. Rewrite `h3` using `[LinearMap.mem_ker, map_add, map_sum, map_smul]`.
+
+Establish `h4 : ∑ j : Fin d, f (c j.succ • x j) = 0` using `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[map_smul, (LinearMap.mem_ker.mp (h1 j).1.2), smul_zero]`. Rewrite `h3` using `[h4, add_zero, smul_eq_mul]`. Conclude with `(mul_eq_zero.mp h3).resolve_right hf0`. Conclude with `hc 0 ha`.
+
+Rewrite `hs` using `[hc0, zero_smul, zero_add]`. Establish `h5` using `h2 a (fun j => c j.succ) (fun j hj => hc j.succ hj) hs`. Introduce `k`. Conclude with `Fin.cases hc0 h5 k`.
+-/
 theorem exists_family_adapted_filtration :
     ∀ (E W : Type) [Field E] [AddCommGroup W] [Module E W] (D : Submodule E W) (F : ℤ → Submodule E W) (d : ℕ), Module.Finite E ↥D → Module.finrank E ↥D = d → (∀ a, F (a + 1) ≤ F a) → (∀ x, ∃ a, x ∈ F a) → (∀ x, (∀ a, x ∈ F a) → x = 0) → ∃ (x : Fin d → W) (u : Fin d → ℤ), (∀ k, x k ∈ D ∧ x k ∈ F (u k)) ∧ ∀ (a : ℤ) (c : Fin d → E), (∀ k, u k ≠ a → c k = 0) → ∑ k, c k • x k ∈ F (a + 1) → ∀ k, c k = 0 := by
   intro E W _ _ _ D F d hfin hd hF hex hsep

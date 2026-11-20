@@ -11,6 +11,13 @@ open Formalism.FrobeniusOrbits Formalism.HC.Der
 
 variable {φ : Frame} (H : HostRaw φ)
 
+/- English proof (translation)
+Use `cyc_isGalois H.condN` as an intermediate fact. Rewrite using `[← IsGalois.fixedField_fixingSubgroup (adjoin ℚ {y : Cond.Cyc H.condN | y ^ m = 1}), mem_fixedField_iff]`. Introduce `τ hτ`. Take `⟨u, rfl⟩` from `(tauN H.condN).surjective τ`. Rewrite using `[← emb_art, hx u]`.
+
+Take `⟨k, hk⟩` from `hm`. Establish `hz : IsPrimitiveRoot ((H.cycZeta : Cond.Cyc H.condN) ^ k) m` using `H.cycZeta_prim.pow (Nat.pos_of_ne_zero H.condN_ne_zero) (hk.trans (mul_comm _ _))`. Establish `h1` using `(mem_fixingSubgroup_iff _ _).1 hτ _ (subset_adjoin _ _ (show _ ^ m = 1 from hz.pow_eq_one))`. Rewrite `h1` using `[tauN_root _ _ _ (hz.pow_eq_one_iff_dvd _ |>.2 ⟨k, hk⟩)]`. Take `⟨w, hw⟩` from `hz.isUnit (Nat.pos_of_ne_zero fun h => H.condN_ne_zero (by rw [hk, h, zero_mul])).ne'`.
+
+Rewrite using `[hz.eq_orderOf, ← hw, orderOf_units, ← pow_eq_pow_iff_modEq, pow_one]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hw]`. Conclude with `h1`.
+-/
 theorem emb_mem_adjoin_of_fixed {m : ℕ} (hm : m ∣ H.condN) (x : H.E)
     (hx : ∀ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD m] → H.gal.symm (H.art u) x = x) :
     emb H x ∈ adjoin ℚ {y : Cond.Cyc H.condN | y ^ m = 1} := by
@@ -30,6 +37,15 @@ theorem emb_mem_adjoin_of_fixed {m : ℕ} (hm : m ∣ H.condN) (x : H.E)
   rw [Units.val_pow_eq_pow_val, hw]
   exact h1
 
+/- English proof (translation)
+Set `_ : Algebra H.E (Cond.Cyc H.condN)` to `(emb H).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ H.E (Cond.Cyc H.condN)` using `IsScalarTower.of_algebraMap_eq fun x => ((emb H).commutes x).symm`. Establish `: Algebra.IsAlgebraic H.E (Cond.Cyc H.condN)` using `Algebra.IsAlgebraic.tower_top (K := ℚ) H.E`. Set `_ : Algebra H.E Ω` to `J.toAlgebra`. Set `Ψ : Cond.Cyc H.condN →ₐ[H.E] Ω` to `IsAlgClosed.lift`.
+
+Establish `h1 : Ψ (emb H x) = J x` using `Ψ.commutes x`. Rewrite using `[← h1]`. Establish `h2` using `H.emb_mem_adjoin_of_fixed hm x hx`. Generalize the expression as in `emb H x = z at h2`. Proceed by induction on `h2 using adjoin_induction with`.
+
+Consider the case `mem y hy => exact hM _ (by rw [← map_pow, show y ^ m = 1 from hy, map_one])`. Consider the case `algebraMap r`. Rewrite using `[eq_ratCast, map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem M r`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `M.add_mem ha hb`. Consider the case `inv a _ ha => rw [map_inv₀]`. Conclude with `M.inv_mem ha`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `M.mul_mem ha hb`.
+-/
 theorem image_mem_of_fixed {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+* Ω) (M : Subfield Ω) {m : ℕ}
     (hm : m ∣ H.condN) (hM : ∀ y : Ω, y ^ m = 1 → y ∈ M) (x : H.E)
     (hx : ∀ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD m] → H.gal.symm (H.art u) x = x) :
@@ -52,6 +68,9 @@ theorem image_mem_of_fixed {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+
   | inv a _ ha => rw [map_inv₀]; exact M.inv_mem ha
   | mul a b _ _ ha hb => rw [map_mul]; exact M.mul_mem ha hb
 
+/- English proof (translation)
+Establish `h1 : u = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_zmod_val (u : ZMod H.condN), (ZMod.natCast_eq_natCast_iff _ _ _).2 hu]`. Simplify using the standard rewrite rules. Rewrite using `[h1, map_one]`.
+-/
 theorem art_eq_one_of_modEq (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val ≡ 1 [MOD H.condN]) : H.art u = 1 := by
   have h1 : u = 1 := by
     apply Units.ext
@@ -59,6 +78,9 @@ theorem art_eq_one_of_modEq (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val 
     simp
   rw [h1, map_one]
 
+/- English proof (translation)
+The claim follows from `H.image_mem_of_fixed J M dvd_rfl hM x fun u hu => by rw [H.art_eq_one_of_modEq u hu, map_one]; rfl`.
+-/
 theorem image_mem_of_roots {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+* Ω) (M : Subfield Ω)
     (hM : ∀ y : Ω, y ^ H.condN = 1 → y ∈ M) (x : H.E) : J x ∈ M :=
   H.image_mem_of_fixed J M dvd_rfl hM x fun u hu => by rw [H.art_eq_one_of_modEq u hu, map_one]; rfl
@@ -66,6 +88,13 @@ theorem image_mem_of_roots {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+
 def congrGal (m : ℕ) : Subgroup (H.E ≃ₐ[ℚ] H.E) :=
   Subgroup.closure {σ | ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD m] ∧ H.gal σ = H.art u}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩` and prove the remaining obligations. Simplify using `only [val_modEq_one_iff hm]`. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem τ hτ => simpa only [Set.mem_setOf_eq, val_modEq_one_iff hm] using hτ`. Consider the case `one => exact ⟨1, map_one _, by rw [map_one, map_one]⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Take `⟨u, h1, h2⟩` from `ha`. Take `⟨v, h3, h4⟩` from `hb`. Conclude with `⟨u * v, by rw [map_mul, h1, h3, one_mul], by rw [map_mul, map_mul, h2, h4]⟩`. Consider the case `inv a _ ha`.
+
+Take `⟨u, h1, h2⟩` from `ha`. Conclude with `⟨u⁻¹, by rw [map_inv, h1, inv_one], by rw [map_inv, map_inv, h2]⟩`.
+-/
 theorem mem_congrGal_iff {m : ℕ} (hm : m ∣ H.condN) (σ : H.E ≃ₐ[ℚ] H.E) :
     σ ∈ H.congrGal m ↔ ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD m] ∧ H.gal σ = H.art u := by
   refine ⟨fun h => ?_, fun h => Subgroup.subset_closure h⟩
@@ -81,6 +110,9 @@ theorem mem_congrGal_iff {m : ℕ} (hm : m ∣ H.condN) (σ : H.E ≃ₐ[ℚ] H.
     obtain ⟨u, h1, h2⟩ := ha
     exact ⟨u⁻¹, by rw [map_inv, h1, inv_one], by rw [map_inv, map_inv, h2]⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Field.exists_primitive_element ℚ (fixedField (H.congrGal m))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1` using `IntermediateField.lift_adjoin_simple ℚ (fixedField (H.congrGal m)) a`. Establish `h2` using `congrArg IntermediateField.lift ha`. Conclude with `h1.symm.trans (h2.trans (IntermediateField.lift_top ℚ (fixedField (H.congrGal m))))`.
+-/
 theorem exists_thM (m : ℕ) : ∃ θ : H.E, ℚ⟮θ⟯ = fixedField (H.congrGal m) := by
   obtain ⟨a, ha⟩ := Field.exists_primitive_element ℚ (fixedField (H.congrGal m))
   refine ⟨a, ?_⟩
@@ -90,8 +122,16 @@ theorem exists_thM (m : ℕ) : ∃ θ : H.E, ℚ⟮θ⟯ = fixedField (H.congrGa
 
 def thM (m : ℕ) : H.E := (H.exists_thM m).choose
 
+/- English proof (translation)
+The claim follows from `(H.exists_thM m).choose_spec`.
+-/
 theorem adjoin_thM (m : ℕ) : ℚ⟮H.thM m⟯ = fixedField (H.congrGal m) := (H.exists_thM m).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← fixingSubgroup_fixedField (H.congrGal m), ← H.adjoin_thM, IntermediateField.mem_fixingSubgroup_iff]`. Use `⟨fun h x hx => ?_, fun h => h _ (mem_adjoin_simple_self _ _)⟩` and prove the remaining obligations. Establish `: ℚ⟮H.thM m⟯ ≤ fixedField (Subgroup.zpowers σ)`. Rewrite using `[adjoin_simple_le_iff, mem_fixedField_iff]`. Introduce `τ hτ`.
+
+Conclude with `(Subgroup.zpowers_le.2 (show σ ∈ MulAction.stabilizer _ (H.thM m) from h)) hτ`. Conclude with `(mem_fixedField_iff _ _).1 (this hx) σ (Subgroup.mem_zpowers σ)`.
+-/
 theorem fix_thM_iff (m : ℕ) (σ : H.E ≃ₐ[ℚ] H.E) : σ (H.thM m) = H.thM m ↔ σ ∈ H.congrGal m := by
   rw [← fixingSubgroup_fixedField (H.congrGal m), ← H.adjoin_thM, IntermediateField.mem_fixingSubgroup_iff]
   refine ⟨fun h x hx => ?_, fun h => h _ (mem_adjoin_simple_self _ _)⟩
@@ -101,15 +141,32 @@ theorem fix_thM_iff (m : ℕ) (σ : H.E ≃ₐ[ℚ] H.E) : σ (H.thM m) = H.thM 
     exact (Subgroup.zpowers_le.2 (show σ ∈ MulAction.stabilizer _ (H.thM m) from h)) hτ
   exact (mem_fixedField_iff _ _).1 (this hx) σ (Subgroup.mem_zpowers σ)
 
+/- English proof (translation)
+The claim follows from `H.image_mem_of_fixed J M hm hM _ fun u hu => (H.fix_thM_iff m _).2 ((H.mem_congrGal_iff hm _).2 ⟨u, hu, H.gal.apply_symm_apply _⟩)`.
+-/
 theorem thM_image_mem {Ω : Type} [Field Ω] [IsAlgClosed Ω] (J : H.E →+* Ω) (M : Subfield Ω) {m : ℕ}
     (hm : m ∣ H.condN) (hM : ∀ y : Ω, y ^ m = 1 → y ∈ M) : J (H.thM m) ∈ M :=
   H.image_mem_of_fixed J M hm hM _ fun u hu =>
     (H.fix_thM_iff m _).2 ((H.mem_congrGal_iff hm _).2 ⟨u, hu, H.gal.apply_symm_apply _⟩)
 
+/- English proof (translation)
+Rewrite using `[show H.condN = H.q ^ 1 * (H.QS * H.d) by ring]`. Conclude with `D7.ordCompl_eq H.q_prime _ ((Nat.Prime.coprime_iff_not_dvd H.q_prime).mp H.coprime_QSd_q.symm)`.
+-/
 theorem ordCompl_q : ordCompl[H.q] H.condN = H.QS * H.d := by
   rw [show H.condN = H.q ^ 1 * (H.QS * H.d) by ring]
   exact D7.ordCompl_eq H.q_prime _ ((Nat.Prime.coprime_iff_not_dvd H.q_prime).mp H.coprime_QSd_q.symm)
 
+/- English proof (translation)
+Establish `: Fact H.q.Prime` using `⟨H.q_prime⟩`. Establish `hc` using `H.coprime_QSd_q`. Take `⟨r, hr⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hj`. Establish `hcop : Nat.Coprime (u : ZMod H.condN).val H.q` using `(ZMod.val_coe_unit_coprime u).coprime_dvd_right H.q_dvd_condN`. Establish `hr2 : (u : ZMod H.condN).val ≡ r.val * r.val [MOD H.q]`.
+
+Rewrite using `[← ZMod.natCast_eq_natCast_iff]`. Move the coercions through the operations in `at hr ⊢`. Rewrite using `[hr, ZMod.natCast_zmod_val]`. Establish `hrc : Nat.Coprime r.val H.q` using `Nat.Coprime.coprime_mul_left (k := r.val) (hr2.gcd_eq.symm.trans hcop)`. Take `⟨n, hn1, hn2⟩` from `Nat.chineseRemainder hc 1 r.val`.
+
+Establish `hN : H.QS * H.d * H.q = H.condN` using `mul_right_comm _ _ _`. Take `⟨v, hv⟩` from `exists_unit_modEq (dvd_refl H.condN) n (hN ▸ Nat.Coprime.mul_right (hn1.gcd_eq.trans (Nat.coprime_one_left _)) (hn2.gcd_eq.trans hrc))`. Establish `hv1 : (v : ZMod H.condN).val ≡ 1 [MOD H.QS * H.d]` using `(hv.of_dvd ⟨H.q, hN.symm⟩).trans hn1`. Establish `huv : u = v ^ 2`. Establish `h1 : (u : ZMod H.condN).val ≡ n * n [MOD H.condN]`.
+
+Establish `h2` using `(Nat.modEq_and_modEq_iff_modEq_mul hc).1 ⟨hu.trans (hn1.mul hn1).symm, hr2.trans (hn2.mul hn2).symm⟩`. Rewrite `h2` using `[hN]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← ZMod.natCast_zmod_val (u : ZMod H.condN), (ZMod.natCast_eq_natCast_iff _ _ _).2 h1, Units.val_pow_eq_pow_val, ← ZMod.natCast_zmod_val (v : ZMod H.condN), (ZMod.natCast_eq_natCast_iff _ _ _).2 hv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[huv, map_pow, H.art_q v hv1]`.
+-/
 theorem art_eq_one_of_jacobi (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val ≡ 1 [MOD H.QS * H.d])
     (hj : jacobiSym (((u : ZMod H.condN).val : ℕ) : ℤ) H.q = 1) : H.art u = 1 := by
   have : Fact H.q.Prime := ⟨H.q_prime⟩
@@ -138,6 +195,13 @@ theorem art_eq_one_of_jacobi (u : (ZMod H.condN)ˣ) (hu : (u : ZMod H.condN).val
     ring
   rw [huv, map_pow, H.art_q v hv1]
 
+/- English proof (translation)
+Take `⟨u, hu, hg⟩` from `(H.mem_congrGal_iff (Nat.ordCompl_dvd _ _) σ).1 hσ`. Rewrite using `[← H.gal.map_eq_one_iff, hg]`. Rewrite `h1`, `h2` using `[hg]`. Distinguish the cases in `hq : l = H.q`. Rewrite `hu` using `[hq, H.ordCompl_q]`.
+
+Use `H.art_eq_one_of_jacobi u hu ?_` and prove the remaining obligations. Rewrite using `[← hps u, h1, Units.val_one]`. Distinguish the cases in `hd : l = H.d`. Rewrite `hu` using `[hd, ordCompl_d]`. Use `(H.art_d u hu).resolve_right fun h => ?_` and prove the remaining obligations.
+
+Rewrite `h2` using `[h]`. Conclude with `absurd h2 (by show ¬ (-1 : ℤˣ) = 1; decide)`. Establish `hN : ¬ l ∣ H.condN` using `(H.not_dvd_condN_iff hl).2 ⟨hlS, hq, hd⟩`. Rewrite `hu` using `[Nat.factorization_eq_zero_of_not_dvd hN, pow_zero, Nat.div_one]`. Conclude with `H.art_eq_one_of_modEq u hu`.
+-/
 theorem eq_one_of_mem_congrGal (hps : H.PsQ) {l : ℕ} (hl : l.Prime) (hlS : ¬ l ∣ H.QS) (σ : H.E ≃ₐ[ℚ] H.E)
     (hσ : σ ∈ H.congrGal (ordCompl[l] H.condN)) (h1 : (H.gal σ).1.1 = 1) (h2 : (H.gal σ).1.2 = 1) : σ = 1 := by
   obtain ⟨u, hu, hg⟩ := (H.mem_congrGal_iff (Nat.ordCompl_dvd _ _) σ).1 hσ

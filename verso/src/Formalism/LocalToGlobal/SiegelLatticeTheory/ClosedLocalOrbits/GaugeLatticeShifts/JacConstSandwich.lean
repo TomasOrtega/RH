@@ -9,6 +9,11 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.Pf.BH
 
+/- English proof (translation)
+Use `sandwich_of_chart Sw.lieG' Sw.lieWb' gauss_sum_unique phi_form' big_cell_g (phiDeriv_of Sw.w0Sq) Sw.lIso Sw.w0Sq ?_ ?_` and prove the remaining obligations. Unfold `PI.SwSand.LieEN`. Use `intros`. Conclude with `Formalism.MainNotions.BridgeCSB.lieE_N`. Use `intros`.
+
+Apply `Formalism.MainNotions.BridgeCSB.exp_mem_N` to reduce the goal to its premises.
+-/
 theorem sandwich' : Sandwich := by
   refine sandwich_of_chart Sw.lieG' Sw.lieWb' gauss_sum_unique phi_form' big_cell_g
     (phiDeriv_of Sw.w0Sq) Sw.lIso Sw.w0Sq ?_ ?_

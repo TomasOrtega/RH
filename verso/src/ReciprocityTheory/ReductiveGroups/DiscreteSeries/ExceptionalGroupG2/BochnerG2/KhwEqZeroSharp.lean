@@ -20,6 +20,11 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
 
 omit [NormedAddCommGroup M] [InnerProductSpace ℂ M] in
 
+/- English proof (translation)
+Establish `hab : a ≠ b` using `fun e => hε (by rw [e])`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Establish `hv : a.val ≠ b.val` using `fun e => hab (Fin.ext e)`. Establish `: (2 : ℝ) ≤ n` using `by exact_mod_cast (by omega : 2 ≤ n)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_lt_of_gap {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ} (hbig : 2 * (n : ℝ) < h) : 2 < h := by
   have hab : a ≠ b := fun e => hε (by rw [e])
   have ha := a.isLt
@@ -28,6 +33,9 @@ theorem two_lt_of_gap {a b : Fin n} (hε : ε a ≠ ε b) {h : ℝ} (hbig : 2 * 
   have : (2 : ℝ) ≤ n := by exact_mod_cast (by omega : 2 ≤ n)
   linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy0`. Establish `hle` using `kLowSpan_le (E := E) hTk hyT`. Establish `hfin : FiniteDimensional ℂ (kLowSpan ε E y)` using `Submodule.finiteDimensional_of_le hle`. Conclude with `sch_sharp hmono hh h2 hE hU hab hε (kLowSpan_kIrrHW hE hU hy hy0 hfin) (fun v hv => hTc v (hle hv))`.
+-/
 theorem khw_eq_zero_sharp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hmono : StrictAnti lam) {h : ℝ}
     (hh : GapAtLeast ε lam h) (h2 : 2 < h) {a b : Fin n} (hab : a < b) (hε : ε a ≠ ε b)
     {T : Submodule ℂ M} (hTf : FiniteDimensional ℂ T) (hTk : IsKStableSub ε E T)
@@ -39,6 +47,21 @@ theorem khw_eq_zero_sharp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hmono : Str
   exact sch_sharp hmono hh h2 hE hU hab hε (kLowSpan_kIrrHW hE hU hy hy0 hfin)
     (fun v hv => hTc v (hle hv))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `finiteDimensional_ncV (ε := ε) hV.1 1` as an intermediate fact. Establish `hfdW : FiniteDimensional ℂ (Wm ε E V)` using `Submodule.finiteDimensional_of_le Wm_le_ncV`. Establish `hWst : IsKStableSub ε (bAct E 1) (Wm ε E V)` using `Wm_kStable hE hU hV`. Use `set T : Submodule ℂ M := (Wm ε E V).map (phi E 1) with hTdef`.
+
+Establish `hfdT : FiniteDimensional ℂ T` using `inferInstance`. Establish `hTst : IsKStableSub ε E T`. Introduce `a b hab v hv`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hv`. Rewrite using `[← phi_bAct hE 1 hab y]`.
+
+Conclude with `Submodule.mem_map_of_mem (hWst a b hab y hy)`. Establish `hTne : T ≠ ⊥`. Introduce `hT`. Establish `: phi E 1 x ∈ T` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[hT, Submodule.mem_bot]`.
+
+Conclude with `hne this`. Establish `hKU : IsKUnitary ε E` using `isKUnitary_of_isInfUnitary hU`. Take `⟨y, hyT, hy0, μ, hyμ⟩` from `exists_khw hE hKU hfdT hTst hTne`. Take `⟨x₀, hx₀, rfl⟩` from `Submodule.mem_map.1 hyT`. Take `⟨x1, hx1, -, hkhw, hfx⟩` from `lift_khw (A := bAct E 1) (bAct_isKUnitary hU 1) (phi E 1) (fun a b hab z => phi_bAct hE 1 hab z) hfdW hWst hx₀ hyμ`.
+
+Establish `hx10 : x1 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hfx` using `[map_zero]`. Conclude with `hy0 hfx.symm`. Take `⟨a, b, hab, hε, hμ⟩` from `Wm_khw hE hU hV hmono hh hbig hx1 hx10 hkhw`.
+
+Establish `hTc : ∀ v ∈ T, casimir E v = (casVal lam : ℂ) • v`. Introduce `v hv`. Take `⟨x', hx', rfl⟩` from `Submodule.mem_map.1 hv`. Conclude with `casimir_genSub hE hc _ (layer_le_genSub (ε := ε) 1 (phi_mem_layer (Wm_le_ncV hx')))`. Rewrite `hyμ` using `[hμ]`.
+
+Conclude with `hy0 (khw_eq_zero_sharp hE hU hmono hh (two_lt_of_gap hε hbig) hab hε hfdT hTst hTc hyT hyμ)`.
+-/
 theorem phi_one_Wm (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : 2 * (n : ℝ) < h) {x : Big n 1 M} (hx : x ∈ Wm ε E V) : phi E 1 x = 0 := by
@@ -75,6 +98,13 @@ theorem phi_one_Wm (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E
   rw [hμ] at hyμ
   exact hy0 (khw_eq_zero_sharp hE hU hmono hh (two_lt_of_gap hε hbig) hab hε hfdT hTst hTc hyT hyμ)
 
+/- English proof (translation)
+Establish `key : ∀ init : Fin k → Fin n × Fin n, ∑ p : Fin n × Fin n, E p.1 p.2 (F (Fin.snoc init p : Fin (k + 1) → Fin n × Fin n)) = 0`. Introduce `init`. Break down `isEmpty_or_nonempty (Fin n × Fin n) with h0 | hne` into its components or cases. Simplify using `[Finset.univ_eq_empty]`. Take `⟨p0⟩` from `hne`.
+
+Use `phi_one_Wm hE hU hV hc hmono hh hbig (hF (Fin.snoc init p0))` as an intermediate fact. Rewrite `this` using `[sch_phi_one_apply]`. Simplify `this` using `only [sch_slice_apply, Fin.update_snoc_last]`. Unfold `phi`. Rewrite using `[LinearMap.sum_apply, ← (Fin.snocEquiv (fun _ => Fin n × Fin n)).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero (fun init _ => ?_)` and prove the remaining obligations. Establish `hs : ∀ p, (Fin.snocEquiv (fun _ => Fin n × Fin n)) (p, init) = (Fin.snoc init p : Fin (k + 1) → Fin n × Fin n)` using `fun p => rfl`. Simplify using `only [hs, LinearMap.comp_apply, sch_coord_apply, sch_word_snoc, Module.End.mul_apply]`. Rewrite using `[← map_sum, key, map_zero]`.
+-/
 theorem phi_Wm_last (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : 2 * (n : ℝ) < h) {k : ℕ} {F : Big n (k + 1) M}
@@ -97,6 +127,11 @@ theorem phi_Wm_last (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε 
   simp only [hs, LinearMap.comp_apply, sch_coord_apply, sch_word_snoc, Module.End.mul_apply]
   rw [← map_sum, key, map_zero]
 
+/- English proof (translation)
+Use `set σ : Equiv.Perm (Fin (k + 1)) := Equiv.swap i (Fin.last k) with hσ`. Establish `hperm : ∀ κ, slice (Fin.last k) κ (permute σ F) = slice i (κ ∘ σ) F`. Introduce `κ`. Unfold `slice`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ι`. Rewrite using `[sch_permute_apply, Function.update_comp_equiv, hσ, Equiv.symm_swap, Equiv.swap_apply_right]`. Establish `h0 : phi E (k + 1) (permute σ F) = 0` using `phi_Wm_last hE hU hV hc hmono hh hbig (fun κ => by rw [hperm]; exact hF _)`. Establish `hs` using `phi_permute_sub_mem hE hV.2.1 σ hF0`. Rewrite `hs` using `[h0, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem phi_Wm_position (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
     (hbig : 2 * (n : ℝ) < h) {k : ℕ} (i : Fin (k + 1)) {F : Big n (k + 1) M} (hF0 : F ∈ ncV ε V (k + 1))

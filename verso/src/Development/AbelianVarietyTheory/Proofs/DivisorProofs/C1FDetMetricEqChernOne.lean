@@ -25,6 +25,11 @@ section Coordinates
 
 variable {n m : ℕ}
 
+/- English proof (translation)
+Simplify using `only [ofValues, GlobalTheory.LineForm.OmReal.sesq_expand hα (L _), AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, sym, map_sum, map_smul, map_mul, (pull_dz L _).1, (pull_dz L _).2, Finset.sum_mul, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum, smul_mul_smul_comm, smul_s …`. Use `conv_lhs => enter [2, a, 2, b]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, a]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, c, 2, a]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, c]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem pull_ofValues (L : V n →L[ℂ] V m) {α : V m → V m → ℂ} (hα : IsSesq α) :
     pull L (ofValues α : Alt m) = ofValues (fun ξ η => α (L ξ) (L η)) := by
   simp only [ofValues, GlobalTheory.LineForm.OmReal.sesq_expand hα (L _), AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul,
@@ -36,9 +41,15 @@ theorem pull_ofValues (L : V n →L[ℂ] V m) {α : V m → V m → ℂ} (hα : 
   conv_lhs => enter [2, c, 2, a]; rw [Finset.sum_comm]
   conv_lhs => enter [2, c]; rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [ofValues, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem ofValues_add (α β : V n → V n → ℂ) : ofValues (fun ξ η => α ξ η + β ξ η) = ofValues α + ofValues β := by
   simp only [ofValues, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [ofValues, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Use `conv_lhs => enter [2, a]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem ofValues_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (α : ι → V n → V n → ℂ) :
     ofValues (fun ξ η => ∑ i ∈ s, c i * α i ξ η) = ∑ i ∈ s, c i • ofValues (α i) := by
   simp only [ofValues, Finset.sum_smul, Finset.smul_sum, mul_smul]
@@ -48,6 +59,9 @@ theorem ofValues_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (α : ι → V
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
   {r : Type} [Fintype r] [DecidableEq r]
 
+/- English proof (translation)
+Establish `hs` using `isSesq_curv h hu`. Apply the tactic sequence `constructor <;> intros <;>`. Apply the tactic sequence `simp only [lineCurv, hs.add_left, hs.add_right, hs.smul_left, hs.smul_right, add_mulVec, smul_mulVec, form_add_left, form_smul_left, smul_eq_mul] <;> ring`.
+-/
 theorem isSesq_lineCurv {G : E → Matrix r r ℂ} {z : E} (h : MContDiffAt 2 G z) (hu : IsUnit (G z).det) (w : r → ℂ) :
     IsSesq (lineCurv G z w) := by
   have hs := isSesq_curv h hu
@@ -55,6 +69,11 @@ theorem isSesq_lineCurv {G : E → Matrix r r ℂ} {z : E} (h : MContDiffAt 2 G 
     simp only [lineCurv, hs.add_left, hs.add_right, hs.smul_left, hs.smul_right, add_mulVec, smul_mulVec,
       form_add_left, form_smul_left, smul_eq_mul] <;> ring
 
+/- English proof (translation)
+Establish `hA2 : MContDiffAt 2 A z` using `fun a b => (hA a b).contDiffAt.restrict_scalars ℝ`. Establish `hA0 : ∀ᶠ x in 𝓝 z, ∀ η, mdbar A x η = 0`. Establish `hev : ∀ᶠ x in 𝓝 z, ∀ a b, AnalyticAt ℂ (fun w => A w a b) x` using `eventually_all.2 fun a => eventually_all.2 fun b => (hA a b).eventually_analyticAt`. Use `filter_upwards [hev] with x hx η`. Use extensionality with `a b`.
+
+Rewrite using `[mdbar_apply, GlobalTheory.dbar_eq_zero (hx a b).differentiableAt]`. Both sides reduce to the same expression. Establish `hGe : K =ᶠ[𝓝 z] fun u => (A u)ᵀ * G u * (A u)ᴴᵀ` using `hK`. Rewrite using `[curv_congr hGe, curv_changeFrame hG hu hA2 hAu hA0]`.
+-/
 theorem curv_chg {K G A : E → Matrix r r ℂ} {z : E} (hG : MContDiffAt 2 G z) (hu : IsUnit (G z).det)
     (hA : ∀ i j, AnalyticAt ℂ (fun w => A w i j) z) (hAu : IsUnit (A z).det)
     (hK : K =ᶠ[𝓝 z] fun w => chg (A w) (G w)) (ξ η : E) : curv K z ξ η = (A z)⁻¹ * curv G z ξ η * A z := by
@@ -69,6 +88,9 @@ theorem curv_chg {K G A : E → Matrix r r ℂ} {z : E} (hG : MContDiffAt 2 G z)
   have hGe : K =ᶠ[𝓝 z] fun u => (A u)ᵀ * G u * (A u)ᴴᵀ := hK
   rw [curv_congr hGe, curv_changeFrame hG hu hA2 hAu hA0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ξ η`. Rewrite using `[lineCurv, lineCurv, curv_chg hG hu hA hAu hK, hK.eq_of_nhds, form_chg, form_chg, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hAu]`.
+-/
 theorem lineCurv_chg {K G A : E → Matrix r r ℂ} {z : E} (hG : MContDiffAt 2 G z) (hu : IsUnit (G z).det)
     (hA : ∀ i j, AnalyticAt ℂ (fun w => A w i j) z) (hAu : IsUnit (A z).det)
     (hK : K =ᶠ[𝓝 z] fun w => chg (A w) (G w)) (w : r → ℂ) : lineCurv K z w = lineCurv G z (A z *ᵥ w) := by
@@ -76,6 +98,11 @@ theorem lineCurv_chg {K G A : E → Matrix r r ℂ} {z : E} (hG : MContDiffAt 2 
   rw [lineCurv, lineCurv, curv_chg hG hu hA hAu hK, hK.eq_of_nhds, form_chg, form_chg, mulVec_mulVec, mulVec_mulVec,
     Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hAu]
 
+/- English proof (translation)
+Establish `f (M : Matrix r r ℂ) (u u' : r → ℂ) : form (M.submatrix e e) (u ∘ e) (u' ∘ e) = form M u u'`. Simplify using `only [form_eq_sum, submatrix_apply, Function.comp_apply]`. Rewrite using `[← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [← e.sum_comp]`. Use function extensionality and compare the values at `ξ η`.
+
+Rewrite using `[lineCurv, lineCurv, curv_congr hK, curv_submatrix_equiv, hK.eq_of_nhds, submatrix_mulVec_equiv, f, show (w ∘ e) ∘ e.symm = w by ext; simp, f]`.
+-/
 theorem lineCurv_submatrix {r' : Type} [Fintype r'] [DecidableEq r'] (e : r' ≃ r) {G : E → Matrix r r ℂ}
     {K : E → Matrix r' r' ℂ} {z : E} (hK : K =ᶠ[𝓝 z] fun w => (G w).submatrix e e) (w : r → ℂ) :
     lineCurv K z (w ∘ e) = lineCurv G z w := by
@@ -87,6 +114,13 @@ theorem lineCurv_submatrix {r' : Type} [Fintype r'] [DecidableEq r'] (e : r' ≃
   rw [lineCurv, lineCurv, curv_congr hK, curv_submatrix_equiv, hK.eq_of_nhds, submatrix_mulVec_equiv, f,
     show (w ∘ e) ∘ e.symm = w by ext; simp, f]
 
+/- English proof (translation)
+Establish `hu : IsUnit P.det`. Use `congrArg det hP` as an intermediate fact. Rewrite `this` using `[det_chg, det_one]`. Use `IsUnit.mk0 _ fun h => ?_` and prove the remaining obligations. Simplify using `[h] at this`.
+
+Establish `e : curv G z ξ η *ᵥ (P *ᵥ u) = P *ᵥ ((P⁻¹ * curv G z ξ η * P) *ᵥ u)`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hu]`. Rewrite using `[lineCurv, e, ← form_chg, ← form_chg, hP]`. Generalize the expression as in `P⁻¹ * curv G z ξ η * P = M`. Establish `e₁ : form 1 u u = ((∑ a, ‖u a‖ ^ 2 : ℝ) : ℂ)`.
+
+Simplify using `[form, dotProduct, Complex.mul_conj']`. Rewrite using `[e₁, Fintype.sum_prod_type]`. Rewrite using `[form, one_mulVec]`. Simplify using `only [dotProduct, mulVec, Finset.sum_mul, Finset.sum_div, Finset.mul_sum, Pi.star_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem lineCurv_unitary (G : E → Matrix r r ℂ) (z : E) {P : Matrix r r ℂ} (hP : chg P (G z) = 1) (u : r → ℂ) (ξ η : E) :
     lineCurv G z (P *ᵥ u) ξ η = ∑ ab : r × r, (u ab.2 * conj (u ab.1) / ((∑ a, ‖u a‖ ^ 2 : ℝ) : ℂ)) *
       (kappa * (P⁻¹ * curv G z ξ η * P) ab.1 ab.2) := by
@@ -107,6 +141,11 @@ theorem lineCurv_unitary (G : E → Matrix r r ℂ) (z : E) {P : Matrix r r ℂ}
     Complex.star_def]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Establish `hs` using `fun z hz => GlobalTheory.IndefiniteRowSideFullHecke.CovariantSecondFundamentalForm.isUnit_sub h z hz`. Use `(SubQuotCurv.line_bundle_curvature_subquotient h hz rfl rfl (SubQuotCurv.gaussS h.isHermFrame hs hz) (SubQuotCurv.chernOne_add h.isHermFrame hs hz) (fun _ => 1) (fun e => one_ne_zero (congrFun e 0)) ξ η).1` as an intermediate fact. Establish `e : incl (Fin 1) (Fin 1) *ᵥ (fun _ => (1 : ℂ)) = Pi.single (.inl 0) 1`. Apply the tactic sequence `ext (i | i) <;> simp [incl, mulVec, dotProduct, Subsingleton.elim i 0]`. Rewrite `this` using `[e]`.
+
+Conclude with `eq_sub_of_add_eq (by rw [add_comm]; exact eq_sub_iff_add_eq.1 this)`.
+-/
 theorem extTrace_eq_lineCurv_sub {U : Set E} {K : E → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ} {z : E}
     (h : IsPosFrame U K) (hz : z ∈ U) (ξ η : E) :
     extTrace K z ξ η = lineCurv K z (Pi.single (.inl 0) 1) ξ η - chernOne (fun w => subGram (K w)) z ξ η := by
@@ -118,6 +157,23 @@ theorem extTrace_eq_lineCurv_sub {U : Set E} {K : E → Matrix (Fin 1 ⊕ Fin 1)
   rw [e] at this
   exact eq_sub_of_add_eq (by rw [add_comm]; exact eq_sub_iff_add_eq.1 this)
 
+/- English proof (translation)
+Establish `h2` using `h.isHermFrame.two hz`. Establish `hu` using `h.isHermFrame.isUnit _ hz`. Set `e : Fin 1 ⊕ Fin 1 ≃ Fin 2` to `finSumFinEquiv`. Establish `hK' : (fun w => K (φ w)) =ᶠ[𝓝 z] fun w => chg ((A w).submatrix e id) 1` using `hK.mono fun w hw => by`. Use `chg_submatrix (A w) 1 e id` as an intermediate fact.
+
+Rewrite `this` using `[submatrix_one_equiv, submatrix_id_id]`. Conclude with `hw.trans this.symm`. Establish `hAu : IsUnit ((A z).submatrix e id).det`. Use `IsUnit.mk0 _ fun h0 => hu.ne_zero ?_` and prove the remaining obligations. Rewrite using `[show K (φ z) = _ from hK'.eq_of_nhds, det_chg, h0]`.
+
+Simplify using the standard rewrite rules. Establish `e₁ : curv K (φ z) (fderiv ℂ φ z ξ) (fderiv ℂ φ z η) = 0`. Rewrite using `[← curv_comp_holo h2 hu hφ.contDiffAt, curv_chg (A := fun w => (A w).submatrix e id) (mContDiffAt_const 1) (by simp) (fun i j => hA _ _) hAu hK', curv_const, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hS` using `h.sub.isHermFrame`. Establish `ht` using `hA 0 (.inl 0)`.
+
+Establish `hf : ∀ᶠ w in 𝓝 z, subGram (K (φ w)) default default = ((‖A w 0 (.inl 0)‖ ^ 2 * (‖g w‖ ^ 2 + 1) : ℝ) : ℂ)` using `by filter_upwards [hK, hl] with w hw ⟨t, hwt⟩`. Establish `e0 : A w 0 (.inl 0) = t` using `by simpa [lineVec] using congrFun hwt 0`. Express the relevant statement in the definitionally equal form `K (φ w) (.inl 0) (.inl 0) = _`. Rewrite using `[hw, chg_apply, hwt, e0]`. Simplify using `[form, dotProduct, lineVec, Complex.mul_conj']`.
+
+Take the linear combination `(g w * conj (g w)) * Complex.mul_conj' t + (‖t‖ : ℂ) ^ 2 * Complex.mul_conj' (g w)`. Establish `ht0 : A z 0 (.inl 0) ≠ 0` using `fun h0 => by`. Use `(h.sub.posDef _ hz).diag_pos (i := default)` as an intermediate fact. Rewrite `this` using `[hf.self_of_nhds, h0]`. Simplify using `at this`.
+
+Establish `c₁ : ContDiffAt ℝ 2 (fun w => ‖A w 0 (.inl 0)‖ ^ 2) z` using `(ht.contDiffAt.restrict_scalars ℝ).norm_sq ℂ`. Establish `c₂ : ContDiffAt ℝ 2 (fun w => ‖g w‖ ^ 2 + 1) z` using `((hg.contDiffAt.restrict_scalars ℝ).norm_sq ℂ).add contDiffAt_const`. Establish `p₁ : ‖A z 0 (.inl 0)‖ ^ 2 ≠ 0` using `by positivity`. Establish `p₂ (w : E') : ‖g w‖ ^ 2 + 1 ≠ 0` using `by positivity`. Establish `e₂ : chernOne (fun w => subGram (K w)) (φ z) (fderiv ℂ φ z ξ) (fderiv ℂ φ z η) = -(kappa * leviForm (fun w => Real.log (‖g w‖ ^ 2 + 1)) z ξ η)`.
+
+Rewrite using `[chernOne, ← curv_comp_holo (H := fun w => subGram (K w)) (hS.two hz) (hS.isUnit _ hz) hφ.contDiffAt, ← chernOne, chernOne_line (c₁.mul c₂) (mul_ne_zero p₁ (p₂ z)) hf, ddc, leviForm_congr (u' := fun w => Real.log (‖A w 0 (.inl 0)‖ ^ 2) + Real.log (‖g w‖ ^ 2 + 1)), leviForm_add (c …`. Use `filter_upwards [c₁.continuousAt.eventually_ne p₁] with w hw using Real.log_mul hw (p₂ w)`. Rewrite using `[extTrace_eq_lineCurv_sub h hz, lineCurv, e₁, e₂, leviForm_log_normSq_add_comp hg.contDiffAt (p₂ z)]`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `p₃ : (‖g z‖ : ℂ) ^ 2 + 1 ≠ 0` using `by exact_mod_cast p₂ z`.
+
+Simplify using `only [zero_mulVec, form, zero_dotProduct, zero_div, mul_zero, zero_sub, neg_neg, kappa, fsDens, RCLike.inner_apply]`. Use `push_cast`. Rewrite using `[add_comm 1]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-fderiv ℂ g z ξ * conj (fderiv ℂ g z η)) * Complex.mul_conj' (g z)`.
+-/
 theorem extTrace_fibre {E' : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedSpace ℝ E'] [IsScalarTower ℝ ℂ E']
     [CompleteSpace E] {U : Set E} {K : E → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ} (h : IsPosFrame U K) {φ : E' → E} {z : E'}
     (hz : φ z ∈ U) (hφ : AnalyticAt ℂ φ z) {A : E' → Matrix (Fin 2) (Fin 1 ⊕ Fin 1) ℂ}
@@ -189,6 +245,9 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
 def lineCrd {E : X.Modules} (fl : Vert.Flag E 2) (c : Chart E 2) {σ : k →+* ℂ} (y : CxPts p σ) : Fin 2 → ℂ :=
   c.crd p σ ((frameAt fl y).frame (.inl 0)) y
 
+/- English proof (translation)
+Use `⟨(frameAt fl y).sub.crd p σ (a.e 0) y 0, ?_⟩` and prove the remaining obligations. Use `(c.crd_app (frameAt fl y).sub (fl.ι 1) (a.e 0) ha (mem_frameAt fl y)).trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_one, of_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_comm _ _`.
+-/
 theorem crd_frame_eq_smul {E : X.Modules} (fl : Vert.Flag E 2) (c : Chart E 2) {σ : k →+* ℂ} {y : CxPts p σ}
     (a : AdaptedChart (lineSC fl) 1 1) (ha : y ∈ ptsIn p σ a.U) :
     ∃ t : ℂ, c.crd p σ (a.frame (.inl 0)) y = t • lineCrd fl c y := by
@@ -198,6 +257,9 @@ theorem crd_frame_eq_smul {E : X.Modules} (fl : Vert.Flag E 2) (c : Chart E 2) {
   simp only [mulVec, dotProduct, Fin.sum_univ_one, of_apply, Pi.smul_apply, smul_eq_mul]
   exact mul_comm _ _
 
+/- English proof (translation)
+Introduce `h` and use `by have hS := lineSC_shortExact fl have ha := mem_frameAt fl y have e := ((frameAt fl y).mid hS).tr_mulVec c ((frameAt fl y).frame (.inl 0)) ha hc rw [show c.crd p σ ((frameAt fl y).frame (.inl 0)) y = 0 from h, mulVec_zero] at e have := (congrFun e _).trans ((frameAt fl y).crd_f …`.
+-/
 theorem lineCrd_ne_zero {E : X.Modules} (fl : Vert.Flag E 2) (c : Chart E 2) {σ : k →+* ℂ} {y : CxPts p σ}
     (hc : y ∈ ptsIn p σ c.U) : lineCrd fl c y ≠ 0 := fun h => by
   have hS := lineSC_shortExact fl
@@ -209,6 +271,9 @@ theorem lineCrd_ne_zero {E : X.Modules} (fl : Vert.Flag E 2) (c : Chart E 2) {σ
 
 variable (h : IsRegVar p D) (σ : k →+* ℂ)
 
+/- English proof (translation)
+Use `⟨ChartGlue.isOpen_over c.e (isOpen_ptsIn _), fun i j v hv => ?_, fun v hv => Met.posDef_gram_frame (S := lineSC fl) (r := 1) (s := 1) (m.met σ) (lineSC_shortExact fl) a hv.2⟩` and prove the remaining obligations. Use `((H σ).gram a.frame hv.2).mContDiffAt c (c.e.map_target hv.1) i j` as an intermediate fact. Rewrite `this` using `[c.e.right_inv hv.1]`. Conclude with `this.contDiffWithinAt`.
+-/
 theorem isPosFrame_gram {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2)
     (a : AdaptedChart (lineSC fl) 1 1) (c : AlgChart p σ D) :
     IsPosFrame (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ a.U) fun v => (m.met σ).gram a.frame (c.e.symm v) := by
@@ -218,6 +283,13 @@ theorem isPosFrame_gram {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl :
   rw [c.e.right_inv hv.1] at this
   exact this.contDiffWithinAt
 
+/- English proof (translation)
+Set `b : Chart L 1` to `pick ((VMetric.det H).φ σ).isLB x.pt`. Establish `hb : x.pt ∈ ptsIn p σ b.U` using `mem_pick ((VMetric.det H).φ σ).isLB x.pt`. Establish `e` using `SecondChernPull.chern_G_eq h (H σ) b c x hb hc 1`. Rewrite `e` using `[HolAtlas.chern, HolAtlas.chern, SecForm.chernAt_one_eq_ofValues, SecForm.chernAt_one_eq_ofValues]`. Rewrite using `[e]`.
+
+Express the relevant statement in the definitionally equal form `ofValues (ddc (fun v => -Real.log ((m.met σ).G b (x.ch.symm v)).det.re) x.crd) = _`. Use `congr 1`. Use function extensionality and compare the values at `ξ η`. Establish `hG : MContDiffAt 2 (fun v => (m.met σ).G b (x.ch.symm v)) x.crd` using `((H σ b _ hb).mContDiffAt x.1.1 x.2).of_le (by norm_cast)`. Establish `hp : ∀ᶠ v in 𝓝 x.crd, ((m.met σ).G b (x.ch.symm v)).PosDef` using `by filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 hb)] with v hv`.
+
+Conclude with `(m.met σ).posDef b _ hv.2`. Rewrite using `[chernOne_line (f := fun v => ((m.met σ).G b (x.ch.symm v)).det.re) (Complex.reCLM.contDiff.contDiffAt.comp _ hG.det) (det_re_pos hp.self_of_nhds).ne', ddc, ddc, leviForm_neg]`. Simplify using the standard rewrite rules. Use `filter_upwards [hp] with v hv`. Conclude with `(det_unique _).symm.trans (Complex.ext rfl (Complex.pos_iff.1 hv.det_pos).2.symm)`.
+-/
 theorem c1F_det_metric_eq_chernOne {L : X.Modules} {m : VMetric p L 1} (H : m.IsCInf) (c : Chart L 1) (x : (h.atlas σ).Pt)
     (hc : x.pt ∈ ptsIn p σ c.U) :
     c1F h σ (VMetric.det H) x = ofValues (chernOne (fun v => (m.met σ).G c (x.ch.symm v)) x.crd) := by
@@ -240,6 +312,9 @@ theorem c1F_det_metric_eq_chernOne {L : X.Modules} {m : VMetric p L 1} (H : m.Is
   · filter_upwards [hp] with v hv
     exact (det_unique _).symm.trans (Complex.ext rfl (Complex.pos_iff.1 hv.det_pos).2.symm)
 
+/- English proof (translation)
+Establish `hS₀` using `VMetric.stepSeq_shortExact fl 0`. Establish `i₂ : IsIso (VMetric.stepSeq fl 0).g` using `hS₀.isIso_g_iff.2 (isVB_zero_iff.1 (fl.isVB (Fin.castSucc 0)))`. Apply the tactic sequence `exact CurveDens.det_isometric_of_isIsometry k X p _ _ 1 (m.stepMet fl 0) (m.grMet fl 0) (H.restrict _ _) (H.grMet fl 0) (asIso (VMetric.stepSeq fl 0).g) ((VMetric.isIsometry_iff _).2 (VMetric.ext (funext fun σ => ChTwoModel.quot_eq_map ((m.stepMet fl 0).met σ) hS₀ (fl.isVB (Fin.c …`.
+-/
 theorem isometric_line {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) :
     (VMetric.det (H.restrict (fl.isSubbundle 1) (fl.isVB 1))).Isometric (VMetric.grLB fl 0 H) := by
   have hS₀ := VMetric.stepSeq_shortExact fl 0
@@ -249,6 +324,17 @@ theorem isometric_line {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : 
       (funext fun σ => ChTwoModel.quot_eq_map ((m.stepMet fl 0).met σ) hS₀
         (fl.isVB (Fin.castSucc 0)) _)))
 
+/- English proof (translation)
+Use `h.isIntegral` as an intermediate fact. Establish `hS` using `lineSC_shortExact fl`. Set `a` to `frameAt fl x.pt`. Establish `ha : x.pt ∈ ptsIn p σ a.U` using `mem_frameAt fl x.pt`. Establish `e : x.ch.symm x.crd = x.pt` using `x.ch.left_inv x.2`.
+
+Establish `hK` using `isPosFrame_gram σ H fl a x.1.1`. Establish `e₁ : thetaF h σ H fl x = ofValues (lineCurv (fun v => (m.met σ).gram a.frame (x.ch.symm v)) x.crd (Pi.single (.inl 0) 1))`. Rewrite using `[thetaF, Pi.add_apply, ← c1F_eq_of_isometric k X p D h σ _ _ (isometric_line H fl), c1F_det_metric_eq_chernOne h σ _ a.sub x ha, omF, ← ofValues_add]`. Use `congr 1`. Use function extensionality and compare the values at `ξ η`.
+
+Conclude with `(congrArg (_ + ·) (extTrace_eq_lineCurv_sub hK (ChartGlue.mem_over x.ch x.2 ha) ξ η)).trans (add_sub_cancel _ _)`. Establish `e₂ : (Pi.single (.inl 0) 1 : Fin 1 ⊕ Fin 1 → ℂ) = (Pi.single 0 1 : Fin (1 + 1) → ℂ) ∘ finSumFinEquiv`. Apply the tactic sequence `ext (i | i) <;> simp [Subsingleton.elim i 0, Pi.single_apply] <;> decide`. Rewrite using `[e₁, e₂, lineCurv_submatrix (G := fun v => (m.met σ).G (a.mid hS) (x.ch.symm v)), lineCurv_chg (z := x.crd) (G := fun v => (m.met σ).G c (x.ch.symm v)) (A := fun v => c.tr p σ (a.mid hS) (x.ch.symm v)) (((H σ c _ hc).mContDiffAt x.1.1 x.2).of_le (by norm_cast)), e, mulVec_single_ …`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `(isUnit_iff_isUnit_det _).1 ((m.met σ).posDef c _ hc).isUnit`. Conclude with `fun i j => GlobalTheory.SCV.analyticAt_of_differentiableOn (AlgChart.holo x.1.1 _ _) ((ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 (mem_ptsIn_inf.2 ⟨ha, hc⟩)))`. Rewrite using `[e]`. Conclude with `(isUnit_iff_isUnit_det _).1 (c.isUnit_tr _ hc ha)`.
+
+Use `filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 hc)] with v hv`. Conclude with `(m.met σ).trans c _ _ hv.2`. Use `filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 ha)] with v hv`. Conclude with `Met.gram_frame (S := lineSC fl) (r := 1) (s := 1) (m.met σ) hS _ hv.2`.
+-/
 theorem thetaF_eq_lineCurv {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) (c : Chart E 2)
     (x : (h.atlas σ).Pt) (hc : x.pt ∈ ptsIn p σ c.U) :
     thetaF h σ H fl x = ofValues (lineCurv (fun v => (m.met σ).G c (x.ch.symm v)) x.crd (lineCrd fl c x.pt)) := by
@@ -287,6 +373,11 @@ def curvH {E : X.Modules} (m : VMetric p E 2) (c : Chart E 2) (P : Matrix (Fin 2
   Matrix.of fun a b => ofValues fun ξ η =>
     kappa * (P⁻¹ * curv (fun v => (m.met σ).G c (x.ch.symm v)) x.crd ξ η * P) a b
 
+/- English proof (translation)
+Use `ext1 a b`. Establish `e (F : V D → V D → Matrix (Fin 2) (Fin 2) ℂ) : (fun ξ η => kappa * (P⁻¹ * F ξ η * P) a b) = fun ξ η => ∑ ij : Fin 2 × Fin 2, (kappa * (P⁻¹ a ij.1 * P ij.2 b)) * F ξ η ij.1 ij.2`. Use function extensionality and compare the values at `ξ η`. Simplify using `only [mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e' (i j : Fin 2) : MvPolynomial.aeval sym (curvPoly (fun v => (m.met σ).G c (x.ch.symm v)) x.crd i j) = ofValues fun ξ η => curv (fun v => (m.met σ).G c (x.ch.symm v)) x.crd ξ η i j`. Simplify using `only [curvPoly, of_apply, ofValues, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, ← Algebra.smul_def]`. Rewrite using `[curvH, of_apply, e, ofValues_sum]`. Simplify using `only [Matrix.smul_apply, mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, RingHom.mapMatrix_apply, map_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, e', Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem curvH_eq {E : X.Modules} (m : VMetric p E 2) (c : Chart E 2) (P : Matrix (Fin 2) (Fin 2) ℂ)
     (x : (h.atlas σ).Pt) : curvH h σ m c P x = kappa • ((algebraMap ℂ (Ev D)).mapMatrix P⁻¹ *
       (MvPolynomial.aeval sym : _ →ₐ[ℂ] Ev D).toRingHom.mapMatrix
@@ -306,6 +397,9 @@ theorem curvH_eq {E : X.Modules} (m : VMetric p E 2) (c : Chart E 2) (P : Matrix
     AlgHom.toRingHom_eq_coe, RingHom.coe_coe, e', Algebra.smul_def, map_mul]
   ring
 
+/- English proof (translation)
+Use `congrArg Matrix.det hP` as an intermediate fact. Rewrite `this` using `[det_chg, det_one]`. Use `IsUnit.mk0 _ fun h => ?_` and prove the remaining obligations. Simplify using `[h] at this`.
+-/
 theorem isUnit_det_of_chg_eq_one {r : Type} [Fintype r] [DecidableEq r] {P G : Matrix r r ℂ} (hP : chg P G = 1) :
     IsUnit P.det := by
   have := congrArg Matrix.det hP
@@ -313,6 +407,9 @@ theorem isUnit_det_of_chg_eq_one {r : Type} [Fintype r] [DecidableEq r] {P G : M
   refine IsUnit.mk0 _ fun h => ?_
   simp [h] at this
 
+/- English proof (translation)
+Establish `e : (-M).charpolyRev = Polynomial.C M.det * Polynomial.X ^ 2 + Polynomial.C M.trace * Polynomial.X + Polynomial.C 1`. Simplify using `[Matrix.charpolyRev, det_fin_two, trace_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Polynomial.coeff_add, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul, Polynomial.coeff_C]`. Simplify using `[Polynomial.coeff_X]`.
+-/
 theorem coeff_two_charpolyRev {R : Type} [CommRing R] (M : Matrix (Fin 2) (Fin 2) R) :
     (-M).charpolyRev.coeff 2 = M.det := by
   have e : (-M).charpolyRev = Polynomial.C M.det * Polynomial.X ^ 2 + Polynomial.C M.trace * Polynomial.X + Polynomial.C 1 := by
@@ -321,6 +418,15 @@ theorem coeff_two_charpolyRev {R : Type} [CommRing R] (M : Matrix (Fin 2) (Fin 2
   rw [e, Polynomial.coeff_add, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul, Polynomial.coeff_C]
   simp [Polynomial.coeff_X]
 
+/- English proof (translation)
+Establish `hi : (algebraMap ℂ (Ev D)).mapMatrix P * (algebraMap ℂ (Ev D)).mapMatrix P⁻¹ = 1`. Rewrite using `[← map_mul, mul_nonsing_inv _ hP, map_one]`. Establish `e₁ : c1EF h σ m fl x = (h.atlas σ).chern ((m.met σ).G c) 1 x`. Establish `hS` using `lineSC_shortExact fl`. Establish `ha` using `mem_frameAt fl x.pt`.
+
+Use `Eq.trans ?_ (SecondChernPull.chern_G_eq h (H σ) c ((frameAt fl x.pt).mid hS) x hc ha 1)` and prove the remaining obligations. Use `SecondChernPull.chernAt_reindex (r := Fin 2) (finSumFinEquiv (m := 1) (n := 1)) ?_ 1` and prove the remaining obligations. Use `filter_upwards [(ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 ha)] with v hv`. Conclude with `Met.gram_frame (S := lineSC fl) (r := 1) (s := 1) (m.met σ) hS _ hv.2`. Rewrite using `[e₁, SecondChernPull.c2F_eq_chern_of_mem_chart h σ H fl c x hc, curvH_eq, HolAtlas.chern, HolAtlas.chern, chernAt, chernAt, chernPoly, chernPoly]`.
+
+Generalize the expression as in `curvPoly (fun v => (m.met σ).G c (x.ch.symm v)) x.crd = M`. Prove the components needed by the constructor for the conclusion. Rewrite using `[trace_smul, trace_mul_cycle, hi, Matrix.one_mul, Matrix.coeff_charpolyRev_eq_neg_trace, trace_neg, neg_neg, pow_one]`. Simplify using `[trace]`. Rewrite using `[← algebraMap_smul (Ev D) kappa, det_smul, det_mul, det_mul, mul_right_comm, ← det_mul, mul_eq_one_comm.1 hi, det_one, one_mul, ← RingHom.map_det, coeff_two_charpolyRev, Fintype.card_fin, ← map_pow, ← Algebra.smul_def]`.
+
+Both sides reduce to the same expression.
+-/
 theorem trace_det_curvH {E : X.Modules} {m : VMetric p E 2} (H : m.IsCInf) (fl : Vert.Flag E 2) (c : Chart E 2)
     {P : Matrix (Fin 2) (Fin 2) ℂ} (hP : IsUnit P.det) (x : (h.atlas σ).Pt) (hc : x.pt ∈ ptsIn p σ c.U) :
     (curvH h σ m c P x).trace = c1EF h σ m fl x ∧ (curvH h σ m c P x).det = c2F h σ m fl x := by
@@ -352,6 +458,15 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
   (hB : IsRegVar q d) (hY : IsRegVar p d') (π : Y ⟶ B) (w : π ≫ q = p) {E : B.Modules} {m : VMetric q E 2}
   (H : m.IsCInf) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2) (σ : k →+* ℂ) (c : Chart E 2)
 
+/- English proof (translation)
+Use `set f : CxPts p σ → CxPts q σ := PtsOver.map π w (spMap σ) with hf`. Establish `hm : ∀ z, (f z).1 = z.1 ≫ π` using `fun _ => rfl`. Establish `hc' : f x.pt ∈ ptsIn q σ c.U` using `hx ▸ hc`. Establish `hs : x.pt ∈ f ⁻¹' x'.ch.source` using `by rw [mem_preimage, ← hx]; exact x'.2`. Establish `ho` using `ChartGlue.isOpen_over x.ch (x'.ch.open_source.preimage (continuous_of_comp hm))`.
+
+Establish `hn` using `ho.mem_nhds (ChartGlue.mem_over x.ch x.2 hs)`. Establish `hφ : AnalyticAt ℂ (x'.ch ∘ f ∘ x.ch.symm) x.crd` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (AlgChart.holo_map hm x.1.1 x'.1.1) hn`. Establish `hv : (x'.ch ∘ f ∘ x.ch.symm) x.crd = x'.crd` using `(congrArg (fun z => x'.ch (f z)) (x.ch.left_inv x.2)).trans (congrArg x'.ch hx.symm)`. Establish `h2 : MContDiffAt 2 (fun v => (m.met σ).G c (x'.ch.symm v)) x'.crd` using `((H σ c _ hc).mContDiffAt x'.1.1 x'.2).of_le (by norm_cast)`. Establish `hu : IsUnit ((m.met σ).G c (x'.ch.symm x'.crd)).det`.
+
+Rewrite using `[x'.ch.left_inv x'.2]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 ((m.met σ).posDef c _ hc).isUnit`. Establish `he : (fun v => ((m.pull π w).met σ).G (c.pull m.isVB π) (x.ch.symm v)) =ᶠ[𝓝 x.crd] fun v => (m.met σ).G c (x'.ch.symm ((x'.ch ∘ f ∘ x.ch.symm) v))` using `by filter_upwards [hn, (ChartGlue.isOpen_over x.ch ((isOpen_ptsIn c.U).preimage (continuous_of_comp hm))).mem_nhds (ChartGlue.mem_over x.ch x.2 (show x.pt ∈ f ⁻¹' ptsIn q σ c.U from hc'))] with v h₁ h₂`. Use `((m.met σ).pull_G π w c h₂.2).trans ?_` and prove the remaining obligations. Conclude with `congrArg ((m.met σ).G c) (x'.ch.left_inv h₁.2).symm`.
+
+Rewrite using `[thetaF_eq_lineCurv hY σ (H.pull π w) fl (c.pull m.isVB π) x hc', pull_ofValues _ (isSesq_lineCurv h2 hu _)]`. Use `congr 2`. Use function extensionality and compare the values at `ξ η`. Rewrite using `[lineCurv, lineCurv, curv_congr he, he.eq_of_nhds, curv_comp_holo (H := fun v => (m.met σ).G c (x'.ch.symm v)) (hv ▸ h2) (hv ▸ hu) hφ.contDiffAt, hv]`.
+-/
 theorem thetaF_eq_pull_lineCurv (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
     (hx : x'.pt = PtsOver.map π w (spMap σ) x.pt) (hc : x'.pt ∈ ptsIn q σ c.U) :
     (thetaF hY σ (H.pull π w) fl x : Alt d') = pull (fderiv ℂ (x'.ch ∘ PtsOver.map π w (spMap σ) ∘ x.ch.symm) x.crd)
@@ -382,6 +497,11 @@ theorem thetaF_eq_pull_lineCurv (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
   rw [lineCurv, lineCurv, curv_congr he, he.eq_of_nhds,
     curv_comp_holo (H := fun v => (m.met σ).G c (x'.ch.symm v)) (hv ▸ h2) (hv ▸ hu) hφ.contDiffAt, hv]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hu`. Establish `ht0 : t ≠ 0` using `fun h0 => lineCrd_ne_zero fl (c.pull m.isVB π) (y := x.pt) (show PtsOver.map π w (spMap σ) x.pt ∈ ptsIn q σ c.U from hx ▸ hc) (by rw [ht, h0, zero_smul])`. Rewrite using `[thetaF_eq_pull_lineCurv hB hY π w H fl σ c x x' hx hc, ht, lineCurv_smul _ _ _ ht0]`. Use `congr 2`. Use `Eq.trans (congrArg ofValues (funext₂ fun ξ η => lineCurv_unitary _ _ ?_ u ξ η)) (ofValues_sum _ _ _)` and prove the remaining obligations.
+
+Rewrite using `[x'.ch.left_inv x'.2, hP]`.
+-/
 theorem thetaF_eq_pull (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
     (hx : x'.pt = PtsOver.map π w (spMap σ) x.pt) (hc : x'.pt ∈ ptsIn q σ c.U) {P : Matrix (Fin 2) (Fin 2) ℂ}
     (hP : chg P ((m.met σ).G c x'.pt) = 1) {u : Fin 2 → ℂ}
@@ -397,6 +517,9 @@ theorem thetaF_eq_pull (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
   refine Eq.trans (congrArg ofValues (funext₂ fun ξ η => lineCurv_unitary _ _ ?_ u ξ η)) (ofValues_sum _ _ _)
   rw [x'.ch.left_inv x'.2, hP]
 
+/- English proof (translation)
+Rewrite using `[thetaF_eq_pull hB hY π w H fl σ c x x' hx hc hP hu, qMat]`. Simplify using `only [qCoef, Fin.sum_univ_two, lineVec, cons_val_zero, cons_val_one, norm_one, one_pow]`. Both sides reduce to the same expression.
+-/
 theorem thetaF_eq_pull_qMat (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
     (hx : x'.pt = PtsOver.map π w (spMap σ) x.pt) (hc : x'.pt ∈ ptsIn q σ c.U) {P : Matrix (Fin 2) (Fin 2) ℂ}
     (hP : chg P ((m.met σ).G c x'.pt) = 1) {z : ℂ}
@@ -407,6 +530,9 @@ theorem thetaF_eq_pull_qMat (x : (hY.atlas σ).Pt) (x' : (hB.atlas σ).Pt)
   simp only [qCoef, Fin.sum_univ_two, lineVec, cons_val_zero, cons_val_one, norm_one, one_pow]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, thetaF_eq_pull_lineCurv hB hY π w H fl σ (m.isVB.pick _) x ⟨(_, _), ((hB.atlas σ).cover (PtsOver.map π w (spMap σ) x.pt)).choose_spec⟩ rfl (m.isVB.mem_pick _)⟩`.
+-/
 theorem thetaF_horizontal (x : (hY.atlas σ).Pt) : ∃ β : Ev d, (thetaF hY σ (H.pull π w) fl x : Alt d') =
     pull (fderiv ℂ ((hB.atlas σ).e ((hB.atlas σ).cover (PtsOver.map π w (spMap σ) x.pt)).choose ∘
       PtsOver.map π w (spMap σ) ∘ x.ch.symm) x.crd) (β : Alt d) :=
@@ -415,6 +541,19 @@ theorem thetaF_horizontal (x : (hY.atlas σ).Pt) : ∃ β : Ev d, (thetaF hY σ 
 
 include H in
 
+/- English proof (translation)
+Establish `hPu` using `isUnit_det_of_chg_eq_one hP`. Set `a` to `frameAt fl x.pt`. Establish `ha : x.pt ∈ ptsIn p σ a.U` using `mem_frameAt fl x.pt`. Set `c'` to `c.pull m.isVB π`. Establish `hc' : x.pt ∈ ptsIn p σ c'.U`.
+
+Rewrite using `[← hz]`. Conclude with `show PtsOver.map π w (spMap σ) (f z) ∈ ptsIn q σ c.U from hb.self_of_nhds ▸ hc`. Establish `hv : (x.ch ∘ f) z = x.crd` using `congrArg x.ch hz`. Establish `n₁ : ∀ᶠ v in 𝓝 z, f v ∈ x.ch.source` using `hf.eventually_mem (x.ch.open_source.mem_nhds (hz ▸ x.2))`. Establish `n₂ : ∀ᶠ v in 𝓝 z, f v ∈ ptsIn p σ a.U` using `hf.eventually_mem ((isOpen_ptsIn _).mem_nhds (hz ▸ ha))`.
+
+Set `A : E' → Matrix (Fin 2) (Fin 1 ⊕ Fin 1) ℂ` to `fun v => Matrix.of fun i j => c'.crd p σ (a.frame j) (f v) i`. Establish `hA (i j) : AnalyticAt ℂ (fun v => A v i j) z`. Establish `h₀ : AnalyticAt ℂ (fun v => c'.crd p σ (a.frame j) (x.ch.symm v) i) ((x.ch ∘ f) z)`. Rewrite using `[hv]`. Conclude with `GlobalTheory.SCV.analyticAt_of_differentiableOn (AlgChart.holo x.1.1 _ _) ((ChartGlue.isOpen_over x.ch (isOpen_ptsIn _)).mem_nhds (ChartGlue.mem_over x.ch x.2 (mem_ptsIn_inf.2 ⟨ha, hc'⟩)))`.
+
+Use `(h₀.comp hφ).congr (n₁.mono fun v hv => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun y => c'.crd p σ (a.frame j) y i) (x.ch.left_inv hv)`. Rewrite using `[← hv]`. Use `extTrace_fibre (isPosFrame_gram σ (H.pull π w) fl a x.1.1) (hv ▸ ChartGlue.mem_over x.ch x.2 ha) hφ (A := fun v => P⁻¹ * A v) (fun i j => ?_) hg ?_ ?_ ξ η` and prove the remaining obligations. Simplify using `only [mul_apply]`.
+
+Conclude with `Finset.analyticAt_fun_sum _ fun l _ => analyticAt_const.mul (hA l j)`. Use `filter_upwards [n₁, n₂, hb] with v h₁ h₂ h₃`. Establish `h₄ : PtsOver.map π w (spMap σ) (f v) ∈ ptsIn q σ c.U` using `h₃ ▸ hc`. Rewrite using `[← hP, chg_chg, mul_nonsing_inv_cancel_left _ _ hPu, ← h₃, ← (m.met σ).pull_G π w c h₄]`. Conclude with `(congrArg _ (x.ch.left_inv h₁)).trans (((m.pull π w).met σ).gram_eq c' h₄ a.frame h₂)`.
+
+Use `filter_upwards [n₂, hl] with v h₂ ⟨t, ht⟩`. Take `⟨s, hs⟩` from `crd_frame_eq_smul fl c' a h₂`. Use `⟨s * t, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P⁻¹ *ᵥ c'.crd p σ (a.frame (.inl 0)) (f v) = _`. Rewrite using `[hs, ht, smul_smul, mulVec_smul, mulVec_mulVec, nonsing_inv_mul _ hPu, one_mulVec]`.
+-/
 theorem extTrace_along_fibre {E' : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedSpace ℝ E']
     [IsScalarTower ℝ ℂ E'] {b : CxPts q σ} (hc : b ∈ ptsIn q σ c.U) {P : Matrix (Fin 2) (Fin 2) ℂ}
     (hP : chg P ((m.met σ).G c b) = 1) (x : (hY.atlas σ).Pt) {f : E' → CxPts p σ} {g : E' → ℂ} {z : E'}
@@ -459,6 +598,9 @@ theorem extTrace_along_fibre {E' : Type} [NormedAddCommGroup E'] [NormedSpace �
 
 include H in
 
+/- English proof (translation)
+Establish `hK` using `isPosFrame_gram σ (H.pull π w) fl (frameAt fl x.pt) x.1.1`. Establish `hm` using `ChartGlue.mem_over x.ch x.2 (mem_frameAt fl x.pt)`. Use `(pull_ofValues _ (OmReal.isSesq_extTrace (hK.isHermFrame.one hm) (eventually_of_mem (hK.isOpen.mem_nhds hm) hK.posDef))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun α => (ofValues α : Alt n)) (funext₂ (extTrace_along_fibre hY π w H fl σ c hc hP x hz hf hφ hg hb hl))`.
+-/
 theorem pull_omF_fibre {n : ℕ} {b : CxPts q σ} (hc : b ∈ ptsIn q σ c.U) {P : Matrix (Fin 2) (Fin 2) ℂ}
     (hP : chg P ((m.met σ).G c b) = 1) (x : (hY.atlas σ).Pt) {f : V n → CxPts p σ} {g : V n → ℂ} {z : V n}
     (hz : f z = x.pt) (hf : ContinuousAt f z) (hφ : AnalyticAt ℂ (x.ch ∘ f) z) (hg : AnalyticAt ℂ g z)
@@ -473,6 +615,9 @@ theorem pull_omF_fibre {n : ℕ} {b : CxPts q σ} (hc : b ∈ ptsIn q σ c.U) {P
   exact congrArg (fun α => (ofValues α : Alt n))
     (funext₂ (extTrace_along_fibre hY π w H fl σ c hc hP x hz hf hφ hg hb hl))
 
+/- English proof (translation)
+Simplify using `only [ofValues, vol, Fin.sum_univ_one, Fin.prod_univ_one, smul_smul]`. Use `congr 1`. Simplify using `[coordVec, Complex.mul_conj']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ofValues_one (ρ α : ℂ) : (ofValues fun ξ η : V 1 => ρ * (Complex.I / 2) * (α * ξ 0 * conj (α * η 0))) =
     (ρ * ((‖α‖ ^ 2 : ℝ) : ℂ)) • vol 1 := by
   simp only [ofValues, vol, Fin.sum_univ_one, Fin.prod_univ_one, smul_smul]
@@ -482,6 +627,9 @@ theorem ofValues_one (ρ α : ℂ) : (ofValues fun ξ η : V 1 => ρ * (Complex.
 
 include H in
 
+/- English proof (translation)
+Set `L : V 1 →L[ℂ] ℂ` to `EuclideanSpace.proj 0`. Establish `hL : HasFDerivAt (fun v : V 1 => α * v 0 + β) (α • L) z` using `(L.hasFDerivAt.const_mul α).add_const β`. Use `(pull_omF_fibre hY π w H fl σ c hc hP x (f := fun v => Φ (v 0)) (g := fun v => α * v 0 + β) hz (ContinuousAt.comp (f := L) hf L.continuous.continuousAt) (AnalyticAt.comp (f := L) hφ (L.analyticAt z)) ((analyticAt_const.mul (L.analyticAt z)).add analyticAt_const) (L.continuous.con …` and prove the remaining obligations. Rewrite using `[hL.fderiv, Complex.ofReal_mul, ← Subalgebra.coe_smul, ← ofValues_one]`. Both sides reduce to the same expression.
+-/
 theorem pull_omF_affine {b : CxPts q σ} (hc : b ∈ ptsIn q σ c.U) {P : Matrix (Fin 2) (Fin 2) ℂ}
     (hP : chg P ((m.met σ).G c b) = 1) (x : (hY.atlas σ).Pt) {Φ : ℂ → CxPts p σ} (α β : ℂ) {z : V 1}
     (hz : Φ (z 0) = x.pt) (hf : ContinuousAt Φ (z 0)) (hφ : AnalyticAt ℂ (x.ch ∘ Φ) (z 0))
@@ -512,12 +660,22 @@ def gsLow (G : Matrix (Fin 2) (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
 
 variable {G : Matrix (Fin 2) (Fin 2) ℂ}
 
+/- English proof (translation)
+Establish `h₁` using `Complex.pos_iff.1 h`. Use `⟨by simpa using (Real.sqrt_pos.2 h₁.1).ne', ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt h₁.1.le]`. Conclude with `Complex.ext rfl h₁.2`.
+-/
 theorem sqrt_re_sq {a : ℂ} (h : 0 < a) : ((√a.re : ℝ) : ℂ) ≠ 0 ∧ ((√a.re : ℝ) : ℂ) ^ 2 = a := by
   have h₁ := Complex.pos_iff.1 h
   refine ⟨by simpa using (Real.sqrt_pos.2 h₁.1).ne', ?_⟩
   rw [← Complex.ofReal_pow, Real.sq_sqrt h₁.1.le]
   exact Complex.ext rfl h₁.2
 
+/- English proof (translation)
+Take `⟨a0, ha⟩` from `sqrt_re_sq (hG.diag_pos (i := 1))`. Take `⟨d0, hd⟩` from `sqrt_re_sq hG.det_pos`. Establish `hc : conj (G 0 1) = G 1 0` using `hG.isHermitian.apply 1 0`. Rewrite using `[gsLow]`. Generalize the expression as in `(√(G 1 1).re : ℝ) = a at *`.
+
+Generalize the expression as in `(√G.det.re : ℝ) = d at *`. Rewrite `hd` using `[det_fin_two]`. Use extensionality with `i j`. Rewrite using `[chg_apply, form_eq_sum]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Fin.sum_univ_two, hc, ← ha] <;> field_simp`.
+
+Rewrite `hd` using `[← ha]`. Take the linear combination `-hd`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chg_gsLow (hG : G.PosDef) : chg (gsLow G) G = 1 := by
   obtain ⟨a0, ha⟩ := sqrt_re_sq (hG.diag_pos (i := 1))
   obtain ⟨d0, hd⟩ := sqrt_re_sq hG.det_pos
@@ -534,6 +692,11 @@ theorem chg_gsLow (hG : G.PosDef) : chg (gsLow G) G = 1 := by
   · ring
   · ring
 
+/- English proof (translation)
+Take `⟨a0, ha⟩` from `sqrt_re_sq (hG.diag_pos (i := 1))`. Take `⟨d0, -⟩` from `sqrt_re_sq hG.det_pos`. Use `⟨(√G.det.re : ℝ) / (√(G 1 1).re : ℝ), ?_⟩` and prove the remaining obligations. Rewrite using `[gsLow]`. Generalize the expression as in `(√(G 1 1).re : ℝ) = a at *`.
+
+Generalize the expression as in `(√G.det.re : ℝ) = d at *`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [lineVec, mulVec, dotProduct, Fin.sum_univ_two, ← ha] <;> field_simp`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineVec_eq_gsLow (hG : G.PosDef) (x : ℂ) : ∃ t : ℂ, lineVec x =
     t • (gsLow G *ᵥ lineVec (G 1 1 / (√G.det.re : ℝ) * x + G 0 1 / (√G.det.re : ℝ))) := by
   obtain ⟨a0, ha⟩ := sqrt_re_sq (hG.diag_pos (i := 1))

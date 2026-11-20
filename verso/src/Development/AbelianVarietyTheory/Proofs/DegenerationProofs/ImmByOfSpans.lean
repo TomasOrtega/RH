@@ -14,6 +14,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Use `P.isAb.proper` as an intermediate fact. Establish `hT : IsAffine (baseOver (Sp R)).left` using `inferInstanceAs (IsAffine (Spec (CommRingCat.of R)))`. Establish `hL : IsLocallyNoetherian (Sp R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of R)))`. Establish `key` using `(AmpleSpan.embedsBy_of_isPullback P.A P.isLB (hA _ P N hN).2 (isAffineOpen_top (Sp R)) (g := (baseOver (Sp R)).hom ≫ (Sp R).topIso.inv) (φ := (snd (baseOver (Sp R)) P.A).left) (f' := (fst (baseOver (Sp R)) P.A).left) (K := Fin 1) (ε := fun _ => (N : ℤ)) (by rw [AmpleSpan.comp_top …`. Establish `e : (baseOver (Sp R) ⊗ P.A).hom = (fst (baseOver (Sp R)) P.A).left` using `(Over.w (fst (baseOver (Sp R)) P.A)).symm.trans (Category.comp_id _)`.
+
+Rewrite using `[SpanImm.immBy_iff, e]`. Conclude with `key`.
+-/
 theorem immBy_of_spans (hA : AmpleSt) {R : Type} [CommRing R] [IsNoetherianRing R] (P : PolAV (Sp R)) {N : ℕ}
     (hN : 4 ≤ N) {J : Type} [Fintype J] (s : J → LB.Sec (LPow P.A P.L N (baseOver (Sp R))))
     (hs : ∀ σ : LB.Sec (LPow P.A P.L N (baseOver (Sp R))), ∃ c : J → Γ((baseOver (Sp R)).left, ⊤),
@@ -32,6 +37,11 @@ theorem immBy_of_spans (hA : AmpleSt) {R : Type} [CommRing R] [IsNoetherianRing 
   rw [SpanImm.immBy_iff, e]
   exact key
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ`. Use `ArithBase.ded (o := o) (Ω := Ω)` as an intermediate fact. Establish `: Algebra.FiniteType o S.R` using `(Subalgebra.fg_iff_finiteType _).1 S.fg`. Establish `: IsNoetherianRing S.R` using `Algebra.FiniteType.isNoetherianRing o S.R`. Establish `hN : 4 ≤ S.N`.
+
+Establish `h : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Rewrite using `[ρ.N_eq]`. Conclude with `Nat.pow_le_pow_left h 2`. Conclude with `immBy_of_spans hL.1.ample ρ.P hN ρ.s fun σ => (ρ.s_basis σ).exists`.
+-/
 theorem ThetaSys.Real.immBy_basis : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real), ImmBy (baseOver (Sp S.R) ⊗ ρ.P.A).hom (LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))) ρ.s Set.univ := by
   intro hL o Ω _ _ _ _ S ρ
   have := ArithBase.ded (o := o) (Ω := Ω)

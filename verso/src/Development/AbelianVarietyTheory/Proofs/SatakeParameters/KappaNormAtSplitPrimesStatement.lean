@@ -9,5 +9,8 @@ open Formalism.L2.Th1.GD (LocNorm InMul frameM thetaLin)
 open Formalism.L2.Th1.E (IntCurve curveL Unif)
 open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.kappaSplit_all | exact GlobalTheory.kappaSplit_all | (intros; apply GlobalTheory.kappaSplit_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kappa_norm_at_splitPrimes : ∀ D : D7, KappaSplit D := by
   first | exact @GlobalTheory.kappaSplit_all | exact GlobalTheory.kappaSplit_all | (intros; apply GlobalTheory.kappaSplit_all <;> assumption)

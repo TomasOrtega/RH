@@ -17,22 +17,34 @@ set_option synthInstance.maxHeartbeats 400000
 
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
+/- English proof (translation)
+Use `haveI : Countable E := GroundTheory.Global.countable_numberField E`. Use `haveI : Countable (Matrix (Fin k) (Fin k) E) := inferInstanceAs (Countable (Fin k → Fin k → E))`. Conclude with `Units.val_injective.countable`.
+-/
 theorem countGL : Countable (GL (Fin k) E) := by
   haveI : Countable E := GroundTheory.Global.countable_numberField E
   haveI : Countable (Matrix (Fin k) (Fin k) E) := inferInstanceAs (Countable (Fin k → Fin k → E))
   exact Units.val_injective.countable
 
+/- English proof (translation)
+Introduce `i c hic`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val i c) = _`. Rewrite using `[h i c hic, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem blk_ratGL {j : ℕ} {γ : GL (Fin k) E} (h : GlobalTheory j γ) : GlobalTheory j (ratGL E k γ) := by
   intro i c hic
   change algebraMap E (Ad E) (γ.val i c) = _
   rw [h i c hic, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[nuG, lintegral_sum_measure]`. Conclude with `tsum_congr fun γ => lintegral_map hF (measurable_const_mul _)`.
+-/
 theorem lint_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) (F : GA E k → ℝ≥0∞) (hF : Measurable F) :
     ∫⁻ h, F h ∂nuG Γ d = ∑' γ : Γ, ∫⁻ h, F (ratGL E k γ * h) ∂nuD E k d := by
   rw [nuG, lintegral_sum_measure]
   exact tsum_congr fun γ => lintegral_map hF (measurable_const_mul _)
 
+/- English proof (translation)
+Establish `hG : Measurable fun x : GA E k => f (g⁻¹ * (g * x * g⁻¹))` using `hf.comp ((measurable_const_mul _).comp ((measurable_mul_const _).comp (measurable_const_mul _)))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_step (ν : Measure (GA E k)) (hinvν : Measure.map (fun h => h⁻¹) ν = ν) (g : GA E k)
     (hc : ∀ F : GA E k → ℝ≥0∞, Measurable F → ∫⁻ h, F (g * h * g⁻¹) ∂ν = ∫⁻ h, F h ∂ν)
     (f : GA E k → ℝ≥0∞) (hf : Measurable f) :
@@ -51,6 +63,9 @@ def invE (Γ : Set (GL (Fin k) E)) (hΓ : ∀ γ ∈ Γ, γ⁻¹ ∈ Γ) : Γ �
   left_inv γ := Subtype.ext (inv_inv γ.1)
   right_inv γ := Subtype.ext (inv_inv γ.1)
 
+/- English proof (translation)
+Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_step _ hinvν _ (hconj γ.1 γ.2) f hf, map_inv (ratGL E k) γ.1]`. Use `_ = ∑' γ : Γ, ∫⁻ h, f (ratGL E k γ * h) ∂nuD E k d := (invE Γ hΓ).tsum_eq (fun γ : Γ => ∫⁻ h, f (ratGL E k γ * h) ∂nuD E k d)`. Use `_ = ∫⁻ h, f h ∂nuG Γ d := (lint_nuG Γ d f hf).symm`.
+-/
 theorem inv_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ)
     (hinvν : Measure.map (fun h => h⁻¹) (nuD E k d) = nuD E k d)
     (hconj : ∀ γ ∈ Γ, ∀ F : GA E k → ℝ≥0∞, Measurable F →
@@ -67,10 +82,18 @@ theorem inv_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ)
         (invE Γ hΓ).tsum_eq (fun γ : Γ => ∫⁻ h, f (ratGL E k γ * h) ∂nuD E k d)
     _ = ∫⁻ h, f h ∂nuG Γ d := (lint_nuG Γ d f hf).symm
 
+/- English proof (translation)
+Use `haveI : Countable (GL (Fin k) E) := countGL`. Rewrite using `[nuG]`. Use `infer_instance`.
+-/
 theorem sf_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) [SFinite (nuD E k d)] : SFinite (nuG Γ d) := by
   haveI : Countable (GL (Fin k) E) := countGL
   rw [nuG]; infer_instance
 
+/- English proof (translation)
+Use `haveI : Countable (GL (Fin k) E) := countGL`. Rewrite `hae`, the goal using `[ae_iff]`. Rewrite using `[nuG, Measure.sum_apply_of_countable, ENNReal.tsum_eq_zero]`. Introduce `γ`. Rewrite using `[(measurableEmbedding_mulLeft (ratGL E k γ)).map_apply]`.
+
+Conclude with `measure_mono_null (fun u hu hUU => hu ⟨γ.1, u, γ.2, hUU, rfl⟩) hae`.
+-/
 theorem ae_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) (hae : ∀ᵐ u ∂nuD E k d, UU (k - d) u) :
     ∀ᵐ h ∂nuG Γ d, ∃ γ u, γ ∈ Γ ∧ UU (k - d) u ∧ h = ratGL E k γ * u := by
   haveI : Countable (GL (Fin k) E) := countGL
@@ -80,6 +103,13 @@ theorem ae_nuG (Γ : Set (GL (Fin k) E)) (d : ℕ) (hae : ∀ᵐ u ∂nuD E k d,
   rw [(measurableEmbedding_mulLeft (ratGL E k γ)).map_apply]
   exact measure_mono_null (fun u hu hUU => hu ⟨γ.1, u, γ.2, hUU, rfl⟩) hae
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `_ h`. Establish `h1` using `congrArg (fun μ : Measure (GA E k) => μ Set.univ) h`.
+
+Simplify using `[nuD] at h1`. Consider the case `succ d ih`. Introduce `hd h`. Use `haveI := hsf d (by omega)`. Establish `hm : Measurable fun p : (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1)) → Ad E) × GA E k => blkU p.1 * p.2` using `(((continuous_posU (isNil_blk k _ _)).comp continuous_fst).mul continuous_snd).measurable`.
+
+Establish `h3` using `(Measure.map_eq_zero_iff hm.aemeasurable).mp h`. Establish `h2` using `congrArg (fun μ => μ (vecDomain E (UnipotentBlockColumnIndex k (k - (d + 1)) (k - (d + 1))) ×ˢ Set.univ)) h3`. Simplify using `only [Measure.prod_prod, vecMeasure_vecDomain, one_mul, Measure.coe_zero, Pi.zero_apply] at h2`. Conclude with `ih (by omega) (Measure.measure_univ_eq_zero.mp h2)`.
+-/
 theorem nuD_ne_zero (hsf : ∀ d ≤ k, SFinite (nuD E k d)) : ∀ d ≤ k, nuD E k d ≠ 0 := by
   intro d
   induction d with
@@ -99,6 +129,9 @@ theorem nuD_ne_zero (hsf : ∀ d ≤ k, SFinite (nuD E k d)) : ∀ d ≤ k, nuD 
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+Take `⟨hsf, hae, hinvν, -, hconj⟩` from `hN1 E k d hd`. Use `haveI := hsf`. Use `⟨sf_nuG Γ d, inv_nuG Γ d hinvν (fun γ hγ F hF => ?_) hinv, ae_nuG Γ d hae⟩` and prove the remaining obligations. Rewrite using `[hconj _ (blk_ratGL (hblk γ hγ)) F hF, (hD0 E k).2.2.2.1 γ, inv_one, ENNReal.ofReal_one, one_pow, one_mul]`.
+-/
 theorem main_nuG (hD0 : D0) (hN1 : N1) (Γ : Set (GL (Fin k) E)) (d : ℕ) (hd : d ≤ k)
     (hinv : ∀ γ ∈ Γ, γ⁻¹ ∈ Γ) (hblk : ∀ γ ∈ Γ, GlobalTheory (k - d) γ) :
     SFinite (nuG Γ d) ∧ Measure.map (fun h => h⁻¹) (nuG Γ d) = nuG Γ d ∧
@@ -112,6 +145,27 @@ end MeasureInverseInduction
 
 open MeasureInverseInduction in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hD0 hN0 hN1 E _ _ _ k`. Establish `hP : ∀ m < k, SFinite (nuP E k m) ∧ Measure.map (fun h => h⁻¹) (nuP E k m) = nuP E k m ∧ ∀ᵐ h ∂nuP E k m, ∃ γ u, IsMir m γ ∧ UU (m + 1) u ∧ h = ratGL E k γ * u`. Introduce `m hm`. Establish `hN` using `hN0 E k (m + 1) (by omega) (by omega)`. Establish `h6 : ∀ γ : GL (Fin k) E, IsMir m γ → IsMir m γ⁻¹ ∧ GlobalTheory (m + 1) γ`.
+
+Simplify `hN.2.2.2.2.2.1` using `only [Nat.add_sub_cancel]`. Establish `e : k - (k - (m + 1)) = m + 1` using `by omega`. Take `⟨h1, h2, h3⟩` from `main_nuG hD0 hN1 {γ | IsMir m γ} (k - (m + 1)) (by omega) (fun γ hγ => (h6 γ hγ).1) (fun γ hγ => by rw [e]; exact (h6 γ hγ).2)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h3] with h ⟨γ, u, hγ, hu, hh⟩`.
+
+Conclude with `⟨γ, u, hγ, by rwa [e] at hu, hh⟩`. Establish `hB : ∀ j ≤ k, SFinite (nuB E k j) ∧ Measure.map (fun h => h⁻¹) (nuB E k j) = nuB E k j ∧ ∀ᵐ h ∂nuB E k j, ∃ γ u, GlobalTheory j γ ∧ UU j u ∧ h = ratGL E k γ * u`. Introduce `j hj`. Establish `hinv : ∀ γ : GL (Fin k) E, GlobalTheory j γ → GlobalTheory j γ⁻¹`. Introduce `γ hγ`.
+
+Break down `Nat.eq_zero_or_pos j with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Establish `: γ = 1` using `Units.ext (Matrix.ext fun i c => hγ i c (Or.inl (Nat.zero_le _)))`. Substitute `this` using the available equality. Rewrite using `[inv_one]`.
+
+Conclude with `hγ`. Conclude with `(hN0 E k j hpos hj).2.2.2.1 γ hγ`. Establish `e : k - (k - j) = j` using `by omega`. Take `⟨h1, h2, h3⟩` from `main_nuG hD0 hN1 {γ | GlobalTheory j γ} (k - j) (by omega) (fun γ hγ => hinv γ hγ) (fun γ hγ => by rw [e]; exact hγ)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [h3] with h ⟨γ, u, hγ, hu, hh⟩`. Conclude with `⟨γ, u, hγ, by rwa [e] at hu, hh⟩`. Establish `hall : ∀ γ : GL (Fin k) E, γ ∈ {γ : GL (Fin k) E | GlobalTheory k γ}` using `fun γ i c h => absurd h (not_or.mpr ⟨not_le.mpr i.isLt, not_le.mpr c.isLt⟩)`. Establish `hK : ∀ F : GA E k → ℝ≥0∞, Measurable F → ∫⁻ h, F h ∂nuB E k k = ∑' γ : GL (Fin k) E, F (ratGL E k γ)`. Introduce `F hF`.
+
+Rewrite using `[nuB, lint_nuG _ _ F hF, Nat.sub_self]`. Simplify using `only [nuD, lintegral_dirac, mul_one]`. Conclude with `(Equiv.subtypeUnivEquiv hall).tsum_eq (fun γ => F (ratGL E k γ))`. Establish `h4 : 1 ≤ k → (∀ᵐ h ∂nuP E k 0, UU 0 h) ∧ nuP E k 0 ≠ 0`. Introduce `hk`.
+
+Take `⟨-, -, hae⟩` from `hP 0 (by omega)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hae] with h ⟨γ, u, hγ, hu, hh⟩`. Establish `: γ = 1` using `Units.ext (Matrix.ext fun i c => hγ i c (Or.inl (Nat.zero_le _)))`. Rewrite using `[hh, this, map_one, one_mul]`.
+
+Conclude with `⟨hu.1, hu.2.1, fun i c hc => absurd hc (Nat.not_lt_zero _)⟩`. Introduce `h0 haveI : Countable (GL (Fin k) E) := countGL`. Establish `h1 : nuP E k 0 Set.univ = 0` using `by simp [h0]`. Rewrite `h1` using `[nuP, nuG, Measure.sum_apply_of_countable, ENNReal.tsum_eq_zero]`. Establish `h2` using `h1 ⟨1, show IsMir 0 (1 : GL (Fin k) E) from fun i c _ => rfl⟩`.
+
+Rewrite `h2` using `[(measurableEmbedding_mulLeft _).map_apply, Set.preimage_univ, Measure.measure_univ_eq_zero]`. Conclude with `nuD_ne_zero (fun d hd => (hN1 E k d hd).1) _ (by omega) h2`. Conclude with `⟨hP, hB, hK, h4⟩`.
+-/
 theorem galois_fixed_adelic_matrices_descend : D0 → N0 → N1 → N3 := by
   intro hD0 hN0 hN1 E _ _ _ k
   have hP : ∀ m < k, SFinite (nuP E k m) ∧ Measure.map (fun h => h⁻¹) (nuP E k m) = nuP E k m ∧

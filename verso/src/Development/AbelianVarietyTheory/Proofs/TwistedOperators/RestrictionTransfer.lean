@@ -17,6 +17,33 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.Twist.RestrictionTransfer
 
+/- English proof (translation)
+Introduce `F _ _ κ _ f r ⟨hinv, hsch⟩ ⟨x₀, hx₀⟩ f₁`. Use `⟨hinv, ?_⟩` and prove the remaining obligations. Use `set a₀ : κ → mixedEmbedding.mixedSpace F := fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (x₀ i) with ha₀`. Establish `hc : f a₀ ≠ 0`. Introduce `h`.
+
+Apply `hx₀` to reduce the goal to its premises. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`. Rewrite using `[← ha₀, h, zero_mul]`. Set `zz : (κ → AF F) → (κ → AF F)` to `fun x i => (((x₀ i).1 - (x i).1, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Establish `hz1 : ∀ x i, (x i + zz x i).1 = (x₀ i).1`.
+
+Introduce `x i`. Use `show (x i).1 + ((x₀ i).1 - (x i).1) = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hz2 : ∀ x i, (x i + zz x i).2 = (x i).2`. Introduce `x i`.
+
+Use `show (x i).2 + 0 = _`. Simplify using the standard rewrite rules. Establish `hev : ∀ x, (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((x + zz x) i)) = a₀`. Introduce `x`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI, ha₀]`. Rewrite using `[hz1]`. Establish `hAt : ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (zz x)`. Introduce `x u hu`. Establish `hu1 : u.1 = 0`.
+
+Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.mp hu`. Use function extensionality and compare the values at `i`. Use `show ((u.1 * ((x₀ i).1 - (x i).1), u.2 * 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) = (0, 0)`. Rewrite using `[hu1]`. Simplify using the standard rewrite rules.
+
+Set `L : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `{ toFun := fun Φ x => f₁ (fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (x i)) * Φ (x + zz x) map_add' := by intro Φ Ψ; funext x; simp [mul_add] map_smul' := by intro c Φ; funext x; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }`. Establish `key : ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, L Φ ∈ GlobalTheory.WeilM.schA F κ`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`.
+
+Take `⟨g, h, hh, rfl⟩` from `hΦ`. Establish `: L (GlobalTheory.WeilM.pureA F g h) = g a₀ • GlobalTheory.WeilM.pureA F f₁ h`. Use function extensionality and compare the values at `x`. Establish `e` using `hev x`. Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk, GlobalTheory.WeilM.pureA, Pi.smul_apply, smul_eq_mul]`.
+
+Simplify using `only [Pi.add_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI] at e ⊢`. Rewrite using `[e]`. Establish `: (fun i => (x i + zz x i).2) = fun i => (x i).2` using `funext fun i => hz2 x i`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f₁, h, hh, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add Φ Ψ _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`.
+
+Consider the case `smul c Φ _ h1 => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c h1`. Establish `hLt : L (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f r) = f a₀ • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f₁ …`. Use function extensionality and compare the values at `x`. Simplify using `only [L, LinearMap.coe_mk, AddHom.coe_mk, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hev x, hinv x (zz x) (hAt x)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `key _ hsch`. Rewrite `hm` using `[hLt]`. Use `Submodule.smul_mem _ (f a₀)⁻¹ hm` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem rest_transfer : ∀ (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (r : (κ → AF F) → ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f r → (∃ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f r x ≠ 0) →
     ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f₁ r := by

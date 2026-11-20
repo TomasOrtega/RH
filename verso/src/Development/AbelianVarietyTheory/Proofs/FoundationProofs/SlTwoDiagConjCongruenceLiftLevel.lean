@@ -12,6 +12,11 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FNCongLift
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `key : ∀ x y : ZMod N, x = y → ZMod.castHom hMN (ZMod M) x = ZMod.castHom hMN (ZMod M) y` using `fun x y hxy => by rw [hxy]`. Establish `k1` using `key _ _ h1`. Establish `k2` using `key _ _ h2`. Establish `k3` using `key _ _ h3`.
+
+Establish `k4` using `key _ _ h4`. Simplify using `only [map_mul, map_intCast] at k1 k2 k3 k4`. Conclude with `⟨k1, k2, k3, k4⟩`.
+-/
 theorem cong_of_dvd {M N : ℕ} (hMN : M ∣ N) {d : ℤ} {γ γ' : SL(2, ℤ)} (h : Cong N d γ γ') : Cong M d γ γ' := by
   obtain ⟨h1, h2, h3, h4⟩ := h
   have key : ∀ x y : ZMod N, x = y → ZMod.castHom hMN (ZMod M) x = ZMod.castHom hMN (ZMod M) y :=
@@ -23,12 +28,22 @@ theorem cong_of_dvd {M N : ℕ} (hMN : M ∣ N) {d : ℤ} {γ γ' : SL(2, ℤ)} 
   simp only [map_mul, map_intCast] at k1 k2 k3 k4
   exact ⟨k1, k2, k3, k4⟩
 
+/- English proof (translation)
+Unfold `Cong at hc ⊢`. Rewrite using `[← h]`. Conclude with `hc`.
+-/
 theorem cong_congr_d {M : ℕ} {d d' : ℤ} (h : (d : ZMod M) = d') {γ γ' : SL(2, ℤ)} (hc : Cong M d γ γ') :
     Cong M d' γ γ' := by
   unfold Cong at hc ⊢
   rw [← h]
   exact hc
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `h'`. Take `⟨b1, b2, b3, b4⟩` from `h''`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `only [Fin.zero_eta, Fin.isValue]`.
+
+Rewrite using `[a1, b1]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Rewrite using `[a2, b2]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one]`. Conclude with `hd.mul_left_cancel (a3.trans b3.symm)`.
+
+Simplify using `only [Fin.isValue, Fin.mk_one]`. Rewrite using `[a4, b4]`.
+-/
 theorem en_eq_of_cong {M : ℕ} {d : ℤ} (hd : IsUnit (d : ZMod M)) {γ γ' γ'' : SL(2, ℤ)}
     (h' : Cong M d γ γ') (h'' : Cong M d γ γ'') :
     ∀ i j, (en γ' i j : ZMod M) = en γ'' i j := by
@@ -42,12 +57,18 @@ theorem en_eq_of_cong {M : ℕ} {d : ℤ} (hd : IsUnit (d : ZMod M)) {γ γ' γ'
     exact hd.mul_left_cancel (a3.trans b3.symm)
   · simp only [Fin.isValue, Fin.mk_one]; rw [a4, b4]
 
+/- English proof (translation)
+Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[en]`.
+-/
 theorem mem_Gamma_iff_en {M : ℕ} (γ : SL(2, ℤ)) :
     γ ∈ CongruenceSubgroup.Gamma M ↔
       (en γ 0 0 : ZMod M) = 1 ∧ (en γ 0 1 : ZMod M) = 0 ∧ (en γ 1 0 : ZMod M) = 0 ∧ (en γ 1 1 : ZMod M) = 1 := by
   rw [CongruenceSubgroup.Gamma_mem]
   simp [en]
 
+/- English proof (translation)
+Rewrite using `[CongruenceSubgroup.Gamma_mem']`. Establish `: Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ' = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ''`. Use extensionality with `i j`. Simplify `h i j` using `[en]`. Rewrite using `[map_mul, map_inv, this, mul_inv_cancel]`.
+-/
 theorem mul_inv_mem_Gamma {M : ℕ} {γ' γ'' : SL(2, ℤ)} (h : ∀ i j, (en γ' i j : ZMod M) = en γ'' i j) :
     γ' * γ''⁻¹ ∈ CongruenceSubgroup.Gamma M := by
   rw [CongruenceSubgroup.Gamma_mem']
@@ -56,6 +77,19 @@ theorem mul_inv_mem_Gamma {M : ℕ} {γ' γ'' : SL(2, ℤ)} (h : ∀ i j, (en γ
     simpa [en] using h i j
   rw [map_mul, map_inv, this, mul_inv_cancel]
 
+/- English proof (translation)
+Introduce `M N d d' hN hMN hdd' hu`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hdM : IsUnit (d : ZMod M)`. Use `(hu.map (ZMod.castHom hMN (ZMod M)))` as an intermediate fact. Rewrite using `[hdd']`.
+
+Simplify using `using this`. Establish `hdM' : (d' : ZMod M) = d` using `hdd'.symm`. Take `⟨u, hu'⟩` from `hu`. Take `⟨ex1, ex2⟩` from `GlobalTheory.T.diagOneUnit_conj_lifts_sl2IntReductionMod N u`. Use `⟨fun γ γ' hγ => ?_, fun δ' hδ' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ'', hγ''⟩` from `ex1 γ`. Establish `hc : Cong N d' γ γ''` using `(GlobalTheory.T.slTwoDiagConjCongruence_iff_diagOneUnit_matrix_eq N d' u hu' γ γ'').2 hγ''`. Use `⟨γ'', hc, mul_inv_mem_Gamma (en_eq_of_cong hdM hγ ?_)⟩` and prove the remaining obligations. Conclude with `cong_congr_d hdM' (cong_of_dvd hMN hc)`. Take `⟨δ, hδ⟩` from `ex2 δ'`.
+
+Establish `hc : Cong N d' δ δ'` using `(GlobalTheory.T.slTwoDiagConjCongruence_iff_diagOneUnit_matrix_eq N d' u hu' δ δ').2 hδ`. Use `⟨δ, ?_, hc⟩` and prove the remaining obligations. Establish `hcM` using `cong_congr_d hdM' (cong_of_dvd hMN hc)`. Take `⟨c1, c2, c3, c4⟩` from `hcM`. Take `⟨g1, g2, g3, g4⟩` from `(mem_Gamma_iff_en δ').1 hδ'`.
+
+Rewrite using `[mem_Gamma_iff_en]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← c1, g1]`. Establish `: (d : ZMod M) * en δ 0 1 = d * 0` using `by rw [← c2, g2, mul_zero]`. Conclude with `hdM.mul_left_cancel this`.
+
+Rewrite using `[← c3, g3, mul_zero]`. Rewrite using `[← c4, g4]`.
+-/
 theorem cong_lift : ∀ (M N : ℕ) (d d' : ℤ), 0 < N → M ∣ N → (d : ZMod M) = d' → IsUnit (d' : ZMod N) → (∀ γ γ' : SL(2, ℤ), Cong M d γ γ' → ∃ γ'' : SL(2, ℤ), Cong N d' γ γ'' ∧ γ' * γ''⁻¹ ∈ CongruenceSubgroup.Gamma M) ∧ ∀ δ' ∈ CongruenceSubgroup.Gamma M, ∃ δ ∈ CongruenceSubgroup.Gamma M, Cong N d' δ δ' := by
   intro M N d d' hN hMN hdd' hu
   haveI : NeZero N := ⟨hN.ne'⟩

@@ -12,6 +12,11 @@ noncomputable section
 namespace GlobalTheory.ZH.PreInh
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Use `(AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ∀ h : S.Gam, eStd S.g _ a h = 0` using `fun h => ha h trivial`. Use function extensionality and compare the values at `k`. Break down `k with i | i` into its components or cases. Use `ha' (Pi.single (Sum.inr i) 1)` as an intermediate fact.
+
+Simplify `this` using `[eStd, Pi.single_apply]`. Use `ha' (Pi.single (Sum.inl i) 1)` as an intermediate fact. Simplify `this` using `[eStd, Pi.single_apply]`.
+-/
 theorem perp_top (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
   refine (AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_
   have ha' : ∀ h : S.Gam, eStd S.g _ a h = 0 := fun h => ha h trivial
@@ -22,6 +27,11 @@ theorem perp_top (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
   · have := ha' (Pi.single (Sum.inl i) 1)
     simpa [eStd, Pi.single_apply] using this
 
+/- English proof (translation)
+Establish `h : S.supI (RatModel.ofAffine o Ω S.R) z = {x | S.th x ≠ 0}`. Use `Set.ext fun x => ⟨fun hx => hx.1, fun hx => ⟨hx, fun j => ?_⟩⟩` and prove the remaining obligations. Use `(RatModel.mem_O_ofAffine (A := S.R) (z := z)).2 ⟨⟨S.th j * (S.th x)⁻¹, S.R.mul_mem (S.th_mem j) (hu x hx)⟩, 1, (Ideal.ne_top_iff_one _).1 (PrimeSpectrum.isPrime z).ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, div_one, div_eq_mul_inv]`. Both sides reduce to the same expression.
+
+Unfold `ThetaSys.TT ThetaSys.HH`. Rewrite using `[h, S.supp, perp_top]`.
+-/
 theorem TT_ofAffine (S : ThetaSys o Ω) [Algebra.FiniteType o S.R] [IsFractionRing S.R Ω]
     (hu : ∀ x, S.th x ≠ 0 → (S.th x)⁻¹ ∈ S.R) (z : (RatModel.ofAffine o Ω S.R).Z) :
     S.TT (RatModel.ofAffine o Ω S.R) z = ⊥ := by
@@ -35,6 +45,11 @@ theorem TT_ofAffine (S : ThetaSys o Ω) [Algebra.FiniteType o S.R] [IsFractionRi
   unfold ThetaSys.TT ThetaSys.HH
   rw [h, S.supp, perp_top]
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ hB S ρ _ _`. Establish `: Algebra.FiniteType ℤ o` using `hB.ft`. Establish `: IsNoetherianRing o` using `Algebra.FiniteType.isNoetherianRing ℤ o`. Establish `: IsNoetherianRing S.R` using `Algebra.FiniteType.isNoetherianRing o S.R`. Take `⟨c⟩` from `(hL.cube (Sp S.R) ρ.P ⟨ρ.P.L, ρ.rig, ρ.P.isLB, ρ.rig_gen⟩ rfl).1`.
+
+Take `⟨h1, h2, h3⟩` from `PreModel.pre_sec ρ c`. Use `⟨PreModel.pre ρ c, rfl, h1, fun hu => ⟨h2.trans ?_, fun W _ => h3 W⟩⟩` and prove the remaining obligations. Conclude with `(Set.eq_univ_of_forall fun z => TT_ofAffine S hu z).symm`.
+-/
 theorem exists_pre_ofAffine :
     Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) [Algebra.FiniteType o S.R] [IsFractionRing S.R Ω], ∃ Q : ZHPre ρ (RatModel.ofAffine o Ω S.R) ⊤, Q.G = ρ.P.A ∧ Q.Sec ∧ ((∀ x, S.th x ≠ 0 → (S.th x)⁻¹ ∈ S.R) → Q.Ab) := by
   intro hL o Ω _ _ _ hB S ρ _ _

@@ -10,6 +10,9 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Nef.existsUnique_centre | exact GlobalTheory.Nef.existsUnique_centre | (intros; apply GlobalTheory.Nef.existsUnique_centre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve : ∀ (k K E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] [Field E] [Algebra k E] [Algebra K E] [IsScalarTower k K E] [FiniteDimensional K E] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ p : Place k E, ∃! b : Sp p.O ⟶ C, spMap p.O.subtype ≫ b = spMap (algebraMap K E) ≫ x := by
   first | exact @GlobalTheory.Nef.existsUnique_centre | exact GlobalTheory.Nef.existsUnique_centre | (intros; apply GlobalTheory.Nef.existsUnique_centre <;> assumption)

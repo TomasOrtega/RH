@@ -8,6 +8,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Establish `hcoeff : ∀ c : C, ((algebraMap C (lauSub P) c : lauSub P) : AddMonoidAlgebra K ℤ).coeff 0 = algebraMap C K c`. Introduce `c`. Simplify using the standard rewrite rules. Use `⟨hn, ?_, alg_sep h hn, ?_, ?_⟩` and prove the remaining obligations. Introduce `c c' hcc`.
+
+Apply `hi` to reduce the goal to its premises. Rewrite using `[← hcoeff c, ← hcoeff c', hcc]`. Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, mem_vertex, hcoeff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨c', hc', he⟩`. Rewrite using `[← hi he]` and apply the resulting hypothesis. Introduce `hc`. Conclude with `⟨c, hc, rfl⟩`. Introduce `d`.
+
+Take `⟨c, hc⟩` from `h.zero _ (d.2 0)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_vertex]`. Use `⟨0, (maximalIdeal C).zero_mem, ?_⟩` and prove the remaining obligations. Simplify using `[hc]`.
+-/
 private theorem alg_vring {C K : Type} [CommRing C] [IsLocalRing C] [CommRing K] [Algebra C K]
     {P : ℤ → Submodule C K} [SetLike.GradedMonoid P] (h : HasVertex P) (hi : Function.Injective (algebraMap C K))
     (hn : IsNoetherianRing (lauSub P)) : IsVertexRing C (vertex h) := by
@@ -32,11 +41,29 @@ private theorem alg_vring {C K : Type} [CommRing C] [IsLocalRing C] [CommRing K]
     refine ⟨0, (maximalIdeal C).zero_mem, ?_⟩
     simp [hc]
 
+/- English proof (translation)
+Use `⟨AddMonoidAlgebra.liftNCAlgHom (AlgHom.id C K) 1 (fun _ _ => Commute.one_right _), fun j x => ?_⟩` and prove the remaining obligations. Conclude with `(AddMonoidAlgebra.liftNC_single _ _ _ _).trans (by simp)`.
+-/
 private theorem alg_ev (C K : Type) [CommRing C] [CommRing K] [Algebra C K] :
     ∃ e : AddMonoidAlgebra K ℤ →ₐ[C] K, ∀ j x, e (AddMonoidAlgebra.single j x) = x := by
   refine ⟨AddMonoidAlgebra.liftNCAlgHom (AlgHom.id C K) 1 (fun _ _ => Commute.one_right _), fun j x => ?_⟩
   exact (AddMonoidAlgebra.liftNC_single _ _ _ _).trans (by simp)
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn S C _ _ _ K _ _ _ _ hi ρ hcone`. Establish `hv` using `alg_vertex C ρ hcone`. Use `haveI := alg_ft C ρ hcone.fg`. Establish `hN : IsNoetherianRing (lauSub (NRep.part C ρ))` using `Algebra.FiniteType.isNoetherianRing C _`. Establish `hvr` using `alg_vring hv hi hN`.
+
+Take `⟨ρD, h1, h2⟩` from `alg_lau C ρ hcone`. Establish `hmod` using `alg_model C ρ hcone hv ρD h1 h2`. Use `letI : Algebra O (lauSub (NRep.part C ρ)) := ((algebraMap C (lauSub (NRep.part C ρ))).comp (algebraMap O C)).toAlgebra`. Use `haveI : IsScalarTower O C (lauSub (NRep.part C ρ)) := IsScalarTower.of_algebraMap_eq' rfl`. Take `⟨ξ, β, hξ, hβ⟩` from `alg_limit S C (vertex hv) ρD hvr hmod`.
+
+Take `⟨e, he⟩` from `alg_ev C K`. Set `ev : lauSub (NRep.part C ρ) →ₐ[O] K` to `(e.comp (lauSub (NRep.part C ρ)).val).restrictScalars O`. Use `⟨ev.comp ξ, β, ?_, fun b => ?_⟩` and prove the remaining obligations. Apply `NRep.ext` to reduce the goal to its premises. Use extensionality with `g i j`.
+
+Rewrite using `[NRep.map_r]`. Establish `hr` using `NRep.map_r (ξ : S.A →+* lauSub (NRep.part C ρ)) S.u g i j`. Rewrite `hr` using `[hξ]`. Use `show e ((ξ (S.u.r g i j) : lauSub (NRep.part C ρ)) : AddMonoidAlgebra K ℤ) = _`. Establish `hr' : ξ (S.u.r g i j) = ρD.r g i j` using `hr.symm`.
+
+Rewrite using `[hr', h1, he]`. Use function extensionality and compare the values at `v i`. Use extensionality with `g`. Rewrite using `[NRep.map_ψ]`. Establish `hp` using `NRep.map_ψ (ξ : S.A →+* lauSub (NRep.part C ρ)) S.u v i g`.
+
+Rewrite `hp` using `[hξ]`. Use `show e ((ξ ((S.u.ψ v i g : S.Aˣ) : S.A) : lauSub (NRep.part C ρ)) : AddMonoidAlgebra K ℤ) = _`. Establish `hp' : ξ ((S.u.ψ v i g : S.Aˣ) : S.A) = ((ρD.ψ v i g : (lauSub (NRep.part C ρ))ˣ) : lauSub (NRep.part C ρ))` using `hp.symm`. Rewrite using `[hp', h2, he]`. Use `show e ((ξ (S.inc b) : lauSub (NRep.part C ρ)) : AddMonoidAlgebra K ℤ) = _`.
+
+Rewrite using `[hβ b]`. Conclude with `e.commutes (β b)`.
+-/
 theorem UpperTheory.V.Fr.alg :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [CommRing K] [Algebra O K] [Algebra C K] [IsScalarTower O C K], Function.Injective (algebraMap C K) → ∀ ρ : NRep F n K, Cone O C ρ → ∃ (ξ : S.A →ₐ[O] K) (β : S.B →ₐ[O] C), S.u.map (ξ : S.A →+* K) = ρ ∧ ∀ b, ξ (S.inc b) = algebraMap C K (β b) := by
   intro l _ O _ _ _ _ F C₀ n hF hn S C _ _ _ K _ _ _ _ hi ρ hcone

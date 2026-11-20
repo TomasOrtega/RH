@@ -8,6 +8,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Odd UpperTheory.V.Stick UpperTheory.V.ML
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : Fact (1 < l ^ n) := ⟨Nat.one_lt_pow hn.ne' hl.one_lt⟩`.
+
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.mpr hl.ne_zero⟩`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Establish `h1 : (1 : ZMod (l ^ n)) = modularCyclotomicCharacter Ω (HasEnoughRootsOfUnity.natCard_rootsOfUnity Ω (l ^ n)) (MulSemiringAction.toRingAut (G ℚ Ω) Ω g)`.
+
+Apply `modularCyclotomicCharacter.unique` to reduce the goal to its premises. Introduce `t ht`. Rewrite using `[ZMod.val_one, pow_one]`. Rewrite `ht` using `[mem_rootsOfUnity]`. Conclude with `h (t : Ω) (by rw [← Units.val_pow_eq_pow_val, ht, Units.val_one])`.
+
+Establish `h2 : (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω g)).val.toZModPow n = 1`. Rewrite using `[cyclotomicCharacter.toZModPow, ← h1]`. Establish `h3 : (l : ℤ_[l]) ^ n ∣ (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω g)).val - 1`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, h2, map_one, sub_self]`. Establish `h4` using `map_dvd (algebraMap ℤ_[l] O) h3`.
+
+Simplify `h4` using `[chiO, cycZ]`.
+-/
 private theorem chi_dvd (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type)
     [CommRing O] [Algebra ℤ_[l] O] (n : ℕ) (g : G ℚ Ω) (h : g ∈ fixMu ℚ Ω (l ^ n)) :
     (l : O) ^ n ∣ (chiO ℚ Ω l O g : O) - 1 := by
@@ -34,6 +45,49 @@ private theorem chi_dvd (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   have h4 := map_dvd (algebraMap ℤ_[l] O) h3
   simpa [chiO, cycZ] using h4
 
+/- English proof (translation)
+Introduce `hRec Ω _ _ _ l _ O _ _ _ _ _ N₀ m F N q α hD hFN hN hq hq1 ν hν δ a₀ a w₀ ha₀a hal hw₀ hνa c hc hyp A hA g hg τ hτ y hy`. Take `⟨⟨hlc, hcoc⟩, -, hac0, hunrc, hlocc⟩` from `hc`. Establish `hl : l.Prime` using `Fact.out`. Establish `hF : F ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hN (zero_dvd_iff.mp hFN)`. Establish `hlmF : l ^ m ∣ F` using `Dvd.intro_left N₀ hD.lev.symm`. Establish `hlF : l ∣ F` using `(dvd_pow_self l (by have := hD.pos; omega)).trans hlmF`. Establish `hlN : l ∣ N` using `hlF.trans hFN`. Establish `hql : q ≠ l`.
+
+Introduce `hql`. Establish `h` using `hq1.of_dvd hlF`. Rewrite `h` using `[hql]`. Unfold `Nat.ModEq at h`. Rewrite `h` using `[Nat.mod_self, Nat.mod_eq_of_lt hl.one_lt]`.
+
+Conclude with `absurd h (by norm_num)`. Take `⟨-, hopen, -, -, -, -, -, -, -, -⟩` from `galBasic Ω F hF`. Take `⟨-, hfrobEx, hoverMul, hcopNot, hIne, -, hPows, -, hplace, -⟩` from `placeBasic Ω`. Establish `hcop : q.Coprime F` using `hq1.gcd_eq.trans (Nat.gcd_one_left F)`. Establish `hAF : ¬Over A F` using `hcopNot A q F hcop hA`.
+
+Establish `hIneA : Ine A ≤ fixMu ℚ Ω F` using `hIne A F hAF`. Establish `hdivA : ∀ x ∈ fixMu ℚ Ω F, a ∣ (α x : O) - 1` using `fun x hx => hal.trans (hD.triv x hx)`. Establish `hl0 : (l : O) ≠ 0`. Take `⟨hinj, -⟩` from `dvrFacts l O`. Introduce `h0`.
+
+Establish `h1 : algebraMap ℤ_[l] O (l : ℤ_[l]) = algebraMap ℤ_[l] O 0` using `by simpa using h0`. Conclude with `(Nat.cast_ne_zero.mpr hl.ne_zero : (l : ℤ_[l]) ≠ 0) (hinj h1)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `pow_ne_zero m hl0 (zero_dvd_iff.mp hal)`.
+
+Set `S : Subgroup (G ℚ Ω)` to `{ carrier := {x | a ∣ (α x : O) - 1} mul_mem' := fun {x z} hx hz => by`. Establish `e : (α (x * z) : O) - 1 = (α x : O) * ((α z : O) - 1) + ((α x : O) - 1)`. Rewrite using `[map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show a ∣ (α (x * z) : O) - 1`.
+
+Rewrite using `[e]`. Conclude with `dvd_add (dvd_mul_of_dvd_right hz _) hx`. Use the proof step `one_mem' := by show a ∣ (α 1 : O) - 1`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := fun {x} hx => by`.
+
+Establish `hxx : (α x⁻¹ : O) * (α x : O) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `e : (α x⁻¹ : O) - 1 = -(α x⁻¹ : O) * ((α x : O) - 1)`. Take the linear combination `hxx`. Use `show a ∣ (α x⁻¹ : O) - 1`.
+
+Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_right hx _ }`. Establish `hSo : IsOpen {x : G ℚ Ω | a ∣ (α x : O) - 1}` using `Subgroup.isOpen_mono (H₁ := fixMu ℚ Ω F) (H₂ := S) (fun x hx => hdivA x hx) hopen`. Take `⟨φ, hφ⟩` from `hfrobEx A q hq hA`. Establish `hφF : φ ∈ fixMu ℚ Ω F`.
+
+Introduce `z hz`. Rewrite using `[hPows A q F φ hφ hAF z hz, pow_eq_pow_mod q hz, hq1, ← pow_eq_pow_mod 1 hz, pow_one]`. Take `⟨v, hv, hnv, -⟩` from `hplace A q hq hA`. Establish `hfr : IsFrob A (normV v) φ` using `by rw [hnv]; exact hφ`. Establish `hDecA : Dec A ≤ fixMu ℚ Ω F` using `Kum.decGen ℚ Ω A v φ (fixMu ℚ Ω F) hv hfr hopen hIneA hφF`.
+
+Take `⟨δ', hδ'⟩` from `hD.notCyc`. Establish `hβ : IsUnit (((dualChar l α) δ' : O) - 1)`. Establish `hu : (((α δ')⁻¹ : Oˣ) : O) * (α δ' : O) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `e : ((dualChar l α) δ' : O) - 1 = -(((α δ')⁻¹ : Oˣ) : O) * ((α δ' : O) - (chiO ℚ Ω l O δ' : O))`.
+
+Simplify using `only [dualChar, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul]`. Take the linear combination `hu`. Rewrite using `[e]`. Conclude with `(Units.isUnit _).neg.mul hδ'`. Take `⟨n, hncoc, hnν, hnform⟩` from `ext Ω O (QO l O) (l ^ m) F (N * q) hF (dualChar l α) ν hν δ' hβ`.
+
+Establish `han : ∀ x, a • n x = 0`. Introduce `x`. Take `⟨u, hu, z, hz⟩` from `hnform x`. Rewrite using `[hz, smul_comm, hνa u hu, smul_zero]`. Establish `hac : ∀ x, a • c x = 0`.
+
+Introduce `x`. Take `⟨k, hk⟩` from `ha₀a`. Rewrite using `[hk, mul_comm, mul_smul, hac0, smul_zero]`. Establish `hnotF : ∀ B : ValuationSubring Ω, ¬Over B (N * q) → ¬Over B F`. Introduce `B hB hBF`.
+
+Take `⟨k, hk⟩` from `hFN`. Conclude with `hB ((hoverMul B N q).mpr (Or.inl (by rw [hk]; exact (hoverMul B F k).mpr (Or.inl hBF))))`. Establish `hunr : ∀ B : ValuationSubring Ω, ¬Over B (N * q) → ∀ x ∈ Ine B, a ∣ (α x : O) - 1 ∧ c x = 0 ∧ n x = 0`. Introduce `B hB x hx`. Establish `hBF` using `hnotF B hB`.
+
+Establish `hxF` using `hIne B F hBF hx`. Conclude with `⟨hdivA x hxF, hunrc B hBF x hx, by rw [hnν x hxF]; exact hν.unr B hB x hx⟩`. Establish `hloc : ∀ B : ValuationSubring Ω, Over B N → ¬Over B q → ∃ w, a • w = 0 ∧ ∀ x ∈ Dec B, c x = (α x : O) • w - w`. Introduce `B hBN hBq`. Distinguish the cases in `hBF : Over B F`.
+
+Take `⟨w, hw, hw'⟩` from `hlocc B hBF`. Take `⟨k, hk⟩` from `ha₀a`. Conclude with `⟨w, by rw [hk, mul_comm, mul_smul, hw, smul_zero], hw'⟩`. Conclude with `⟨0, smul_zero _, fun x hx => by rw [hyp B hBN hBF hBq x hx, smul_zero, sub_zero]⟩`. Establish `hdec : ∀ x ∈ Dec A, a ∣ (α x : O) - 1 ∧ a ∣ ((dualChar l α) x : O) - 1`.
+
+Introduce `x hx`. Establish `hxF` using `hDecA hx`. Use `⟨hdivA x hxF, ?_⟩` and prove the remaining obligations. Establish `hxl : x ∈ fixMu ℚ Ω (l ^ m)` using `fixMu_le ℚ Ω hlmF hxF`. Establish `h1` using `chi_dvd Ω l O m x hxl`.
+
+Establish `h2` using `hdivA x⁻¹ (inv_mem hxF)`. Establish `e : ((dualChar l α) x : O) - 1 = (chiO ℚ Ω l O x : O) * ((α x⁻¹ : O) - 1) + ((chiO ℚ Ω l O x : O) - 1)`. Simplify using `only [dualChar, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, map_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `dvd_add (dvd_mul_of_dvd_right h2 _) (hal.trans h1)`. Establish `hine : ∀ x ∈ Ine A, c x = 0` using `fun x hx => hunrc A hAF x hx`. Establish `hnτ : n τ = y • w₀` using `by rw [hnν τ (hIneA hτ)]; exact hy`. Conclude with `hRec Ω l hD.odd_l O α a ha0 w₀ hw₀ hSo N q hN hlN hq hql c n ⟨hlc, hcoc⟩ hncoc hac han hunr hloc A hA hdec hine g hg τ hτ y hnτ`.
+-/
 theorem UpperTheory.V.ML.step :
     Rec → ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (N₀ m F N q : ℕ) (α : G ℚ Ω →* Oˣ), Dat l N₀ m F α → F ∣ N → N ≠ 0 → q.Prime → q ≡ 1 [MOD F] →
     ∀ ν : G ℚ Ω → QO l O, IsNu (l ^ m) F (N * q) (dualChar l α) ν → ∀ (δ : G ℚ Ω) (a₀ a : O) (w₀ : QO l O), a₀ ∣ a → a ∣ (l : O) ^ m → (∀ y : O, y • w₀ = 0 ↔ a ∣ y) →

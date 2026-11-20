@@ -21,12 +21,18 @@ local notation "𝔸" => Localization.Away (p : AInf ℂ_[p] p)
 
 section Embeddings
 
+/- English proof (translation)
+Take `⟨m, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' (y : W̄) (nonZeroDivisors.coe_ne_zero y)`. Rewrite using `[hu, map_mul, map_pow]`. Conclude with `(hf.pow _).mul (u.isUnit.map _)`.
+-/
 theorem isUnit_of_isUnit_p {S : Type*} [CommRing S] (f : W̄ →+* S) (hf : IsUnit (f p))
     (y : nonZeroDivisors W̄) : IsUnit (f y) := by
   obtain ⟨m, u, hu⟩ := WittVector.exists_eq_pow_p_mul' (y : W̄) (nonZeroDivisors.coe_ne_zero y)
   rw [hu, map_mul, map_pow]
   exact (hf.pow _).mul (u.isUnit.map _)
 
+/- English proof (translation)
+The claim follows from `isUnit_of_isUnit_p _ (by rw [map_natCast]; exact isUnit_p_bCrisPlus) y`.
+-/
 theorem isUnit_wittFpbar_to_BCrisPlus (y : nonZeroDivisors W̄) :
     IsUnit (((algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)).comp
       ((algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p)).comp wittToAInf)) (y : W̄)) :=
@@ -37,22 +43,34 @@ variable (p) in
 def wittFpbarToBCrisPlus : WFrac p →+* BCrisPlus ℂ_[p] p :=
   IsLocalization.lift (M := nonZeroDivisors W̄) (isUnit_wittFpbar_to_BCrisPlus (p := p))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ w`.
+-/
 theorem wittFpbarToBCrisPlus_algebraMap (w : W̄) :
     wittFpbarToBCrisPlus p (algebraMap W̄ (WFrac p) w) =
       algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p)
         (algebraMap (AInf ℂ_[p] p) (ACris ℂ_[p] p) (wittToAInf w)) :=
   IsLocalization.lift_eq _ w
 
+/- English proof (translation)
+Rewrite using `[wittFpbarToBCrisPlus_algebraMap, iotaPlus_algebraMap, iota_algebraMap]`.
+-/
 theorem iotaPlus_wittFpbarToBCrisPlus_algebraMap (w : W̄) :
     iotaPlus ℂ_[p] p (wittFpbarToBCrisPlus p (algebraMap W̄ (WFrac p) w)) =
       wittToBDeRhamPlus (normInteger ℂ_[p]) p (wittToAInf w) := by
   rw [wittFpbarToBCrisPlus_algebraMap, iotaPlus_algebraMap, iota_algebraMap]
 
+/- English proof (translation)
+Use `(iotaPlus ℂ_[p] p).domain_nontrivial` as an intermediate fact. Conclude with `(wittFpbarToBCrisPlus p).injective`.
+-/
 theorem wittFpbarToBCrisPlus_injective : Function.Injective (wittFpbarToBCrisPlus p) := by
   have := (iotaPlus ℂ_[p] p).domain_nontrivial
   exact (wittFpbarToBCrisPlus p).injective
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `: (wittFpbarToBCrisPlus p).comp (frobFrac p) = (phiPlus ℂ_[p] p).comp (wittFpbarToBCrisPlus p)` using `IsLocalization.ringHom_ext (nonZeroDivisors W̄) (RingHom.ext fun w => by show wittFpbarToBCrisPlus p (frobFrac p (algebraMap W̄ (WFrac p) w)) = phiPlus ℂ_[p] p (wittFpbarToBCrisPlus p (algebraMap W̄ (WFrac p) w))`. Rewrite using `[frobFrac_algebraMap, wittFpbarToBCrisPlus_algebraMap, wittFpbarToBCrisPlus_algebraMap, phiPlus_algebraMap, phi_algebraMap, WittVector.frobeniusEquiv_apply, wittToAInf, map_frobenius_comm])`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem wittFpbarToBCrisPlus_frobFrac (x : WFrac p) :
     wittFpbarToBCrisPlus p (frobFrac p x) = phiPlus ℂ_[p] p (wittFpbarToBCrisPlus p x) := by
   have : (wittFpbarToBCrisPlus p).comp (frobFrac p) =
@@ -66,6 +84,9 @@ theorem wittFpbarToBCrisPlus_frobFrac (x : WFrac p) :
   exact RingHom.congr_fun this x
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Establish `: (wittFpbarToBCrisPlus p).comp (padicToWFrac p) = padicToBCrisPlus` using `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p]) (RingHom.ext fun z => by show wittFpbarToBCrisPlus p (padicToWFrac p (algebraMap ℤ_[p] ℚ_[p] z)) = padicToBCrisPlus (algebraMap ℤ_[p] ℚ_[p] z)`. Rewrite using `[padicToWFrac_padicInt, wittFpbarToBCrisPlus_algebraMap, wittToAInf_padicIntToWittFpbar, padicToBCrisPlus, IsLocalization.lift_eq]`. Use the proof step `rfl)`. Conclude with `RingHom.congr_fun this q`.
+-/
 theorem wittFpbarToBCrisPlus_padicToWFrac (q : ℚ_[p]) :
     wittFpbarToBCrisPlus p (padicToWFrac p q) = algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) q := by
   have : (wittFpbarToBCrisPlus p).comp (padicToWFrac p) = padicToBCrisPlus :=
@@ -77,6 +98,9 @@ theorem wittFpbarToBCrisPlus_padicToWFrac (q : ℚ_[p]) :
       rfl)
   exact RingHom.congr_fun this q
 
+/- English proof (translation)
+The claim follows from `isUnit_of_isUnit_p _ (by rw [RingHom.comp_apply, map_natCast] simpa using IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : AInf ℂ_[p] p)) y`.
+-/
 theorem isUnit_wittFpbar_to_away_p (y : nonZeroDivisors W̄) :
     IsUnit ((algebraMap (AInf ℂ_[p] p) 𝔸).comp wittToAInf (y : W̄)) :=
   isUnit_of_isUnit_p _ (by
@@ -88,10 +112,16 @@ variable (p) in
 def wittFpbarToAway : WFrac p →+* 𝔸 :=
   IsLocalization.lift (M := nonZeroDivisors W̄) (isUnit_wittFpbar_to_away_p (p := p))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ w`.
+-/
 theorem wittFpbarToAway_algebraMap (w : W̄) :
     wittFpbarToAway p (algebraMap W̄ (WFrac p) w) = algebraMap (AInf ℂ_[p] p) 𝔸 (wittToAInf w) :=
   IsLocalization.lift_eq _ w
 
+/- English proof (translation)
+Establish `: (toB ℂ_[p] p).comp (wittFpbarToAway p) = wittFpbarToB p` using `IsLocalization.ringHom_ext (nonZeroDivisors W̄) (RingHom.ext fun w => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[wittFpbarToAway_algebraMap, toB_algebraMap, wittFpbarToB_algebraMap]`. Use the proof step `rfl)`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem toB_wittFpbarToAway (x : WFrac p) : toB ℂ_[p] p (wittFpbarToAway p x) = wittFpbarToB p x := by
   have : (toB ℂ_[p] p).comp (wittFpbarToAway p) = wittFpbarToB p :=
     IsLocalization.ringHom_ext (nonZeroDivisors W̄) (RingHom.ext fun w => by
@@ -100,6 +130,9 @@ theorem toB_wittFpbarToAway (x : WFrac p) : toB ℂ_[p] p (wittFpbarToAway p x) 
       rfl)
   exact RingHom.congr_fun this x
 
+/- English proof (translation)
+Establish `: (toBDeRhamPlus (normInteger ℂ_[p]) p).comp (wittFpbarToAway p) = (iotaPlus ℂ_[p] p).comp (wittFpbarToBCrisPlus p)` using `IsLocalization.ringHom_ext (nonZeroDivisors W̄) (RingHom.ext fun w => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[wittFpbarToAway_algebraMap, iotaPlus_wittFpbarToBCrisPlus_algebraMap]`. Use the proof step `rfl)`. Conclude with `RingHom.congr_fun this x`.
+-/
 theorem toBDeRhamPlus_wittFpbarToAway (x : WFrac p) :
     toBDeRhamPlus (normInteger ℂ_[p]) p (wittFpbarToAway p x) =
       iotaPlus ℂ_[p] p (wittFpbarToBCrisPlus p x) := by
@@ -115,6 +148,19 @@ end Embeddings
 
 section Unramified
 
+/- English proof (translation)
+Use `set z : ℕ → PadicAlgCl p := fun n => ζ ^ p ^ (n * (m.totient - 1))`. Establish `hzm' : ∀ n, z n ^ m = 1` using `fun n => by`. Simplify using `only [z]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Establish `hzm : ∀ n, (z n : ℂ_[p]) ^ m = 1` using `fun n => by`.
+
+Rewrite using `[PadicComplex.coe_eq, ← map_pow, hzm' n, map_one]`. Establish `hmem : ∀ n, (z n : ℂ_[p]) ∈ normInteger ℂ_[p]` using `fun n => mem_normInteger.2 (ACris.norm_eq_one_of_pow_eq_one hm (hzm n)).le`. Use `set y : ℕ → normInteger ℂ_[p] := fun n => ⟨(z n : ℂ_[p]), hmem n⟩`. Establish `hy : ∀ n, y (n + 1) ^ p = y n` using `fun n => Subtype.ext (by`. Simplify using `only [y, SubmonoidClass.coe_pow]`.
+
+Rewrite using `[PadicComplex.coe_eq, PadicComplex.coe_eq, ← map_pow]`. Conclude with `congrArg _ (rootOfUnity_compatible hm hc hζ n))`. Use `set ζf : 𝒪♭ := IsPerfectoidField.ofCompatible p y hy`. Establish `hζf : ζf ^ m = 1` using `IsPerfectoidField.preTilt_ext p fun n => by`. Rewrite using `[map_pow, IsPerfectoidField.coeff_ofCompatible, ← map_pow, map_one]`.
+
+Establish `: y n ^ m = 1` using `Subtype.ext (by`. Simplify using `only [y, SubmonoidClass.coe_pow, OneMemClass.coe_one]`. Conclude with `hzm n)`. Rewrite using `[this, map_one]`. Establish `hfix : ζf ^ p ^ m.totient = ζf`.
+
+Establish `hmod : p ^ m.totient % m = 1 % m` using `Nat.ModEq.pow_totient (Nat.Coprime.symm hc)`. Rewrite using `[pow_eq_pow_mod_of_pow_eq_one hζf, hmod, ← pow_eq_pow_mod_of_pow_eq_one hζf, pow_one]`. Take `⟨a, ha⟩` from `exists_fpbarToPreTilt_eq (Nat.totient_pos.2 hm) hfix`. Use `⟨a, fpbarToPreTilt_injective (by rw [map_pow, ha, hζf, map_one]), ?_⟩` and prove the remaining obligations. Rewrite using `[ha, fontaineTheta_teichmuller, IsPerfectoidField.untilt_ofCompatible]`.
+
+Simplify using `[y, z]`.
+-/
 theorem exists_fpbar_rootOfUnity {ζ : PadicAlgCl p} {m : ℕ} (hm : 0 < m) (hc : m.Coprime p)
     (hζ : ζ ^ m = 1) :
     ∃ a : Fpbar p, a ^ m = 1 ∧ ((fontaineTheta (normInteger ℂ_[p]) p
@@ -146,6 +192,13 @@ theorem exists_fpbar_rootOfUnity {ζ : PadicAlgCl p} {m : ℕ} (hm : 0 < m) (hc 
   rw [ha, fontaineTheta_teichmuller, IsPerfectoidField.untilt_ofCompatible]
   simp [y, z]
 
+/- English proof (translation)
+Establish `hT : (teichmuller p (fpbarToPreTilt a) : AInf ℂ_[p] p) ^ m = 1`. Rewrite using `[← map_pow, ← map_pow, ha, map_one, map_one]`. Establish `hζ0 : (ζ : ℂ_[p]) ≠ 0`. Introduce `h`. Use `ACris.norm_eq_one_of_pow_eq_one hm (show (ζ : ℂ_[p]) ^ m = 1 by` as an intermediate fact.
+
+Rewrite using `[PadicComplex.coe_eq, ← map_pow, hζ, map_one])`. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Apply `eq_of_pow_eq_one_of_theta_eq hm` to reduce the goal to its premises. Rewrite using `[← map_pow, ← map_pow, hT, map_one, map_one]`.
+
+Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[thetaAlgHom_apply, thetaField_iota, theta_algebraMap, hθ, thetaAlgHom_algClToBdR]`. Rewrite using `[thetaAlgHom_algClToBdR]`. Conclude with `hζ0`.
+-/
 theorem iota_teichmuller_fpbar {ζ : PadicAlgCl p} {m : ℕ} (hm : 0 < m) {a : Fpbar p}
     (ha : a ^ m = 1) (hθ : ((fontaineTheta (normInteger ℂ_[p]) p
       (teichmuller p (fpbarToPreTilt a)) : normInteger ℂ_[p]) : ℂ_[p]) = (ζ : ℂ_[p]))
@@ -173,6 +226,11 @@ def wittFpbarRangeBdR : Subalgebra ℚ_[p] 𝔹 :=
     algebraMap_mem' := fun q => ⟨padicToWFrac p q, by
       rw [RingHom.comp_apply, wittFpbarToBCrisPlus_padicToWFrac, iotaPlus_algebraMap_padic]⟩ }
 
+/- English proof (translation)
+Rewrite using `[unramifiedClosure, IntermediateField.adjoin_toSubalgebra_of_isAlgebraic fun x _ => Algebra.IsAlgebraic.isAlgebraic x]`. Use `Algebra.adjoin_le fun ζ hζ => ?_` and prove the remaining obligations. Take `⟨m, hm, hc, hζm⟩` from `hζ`. Take `⟨a, ha, hθ⟩` from `exists_fpbar_rootOfUnity hm hc hζm`. Use `⟨algebraMap W̄ (WFrac p) (teichmuller p a), ?_⟩` and prove the remaining obligations.
+
+Use `show iotaPlus ℂ_[p] p (wittFpbarToBCrisPlus p (algebraMap W̄ (WFrac p) (teichmuller p a))) = algClToBdR p ζ`. Rewrite using `[iotaPlus_wittFpbarToBCrisPlus_algebraMap, wittToAInf, WittVector.map_teichmuller, ← iota_teichmuller_fpbar hm ha hθ hζm, iota_algebraMap]`.
+-/
 theorem unramifiedClosure_le_wittFpbarRange :
     (unramifiedClosure p).toSubalgebra ≤ (wittFpbarRangeBdR p).comap (algClToBdR p) := by
   rw [unramifiedClosure, IntermediateField.adjoin_toSubalgebra_of_isAlgebraic
@@ -186,6 +244,9 @@ theorem unramifiedClosure_le_wittFpbarRange :
   rw [iotaPlus_wittFpbarToBCrisPlus_algebraMap, wittToAInf, WittVector.map_teichmuller,
     ← iota_teichmuller_fpbar hm ha hθ hζm, iota_algebraMap]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `unramifiedClosure_le_wittFpbarRange u.2`. Use `⟨w, iotaPlus_injective (K := ℂ_[p]) (p := p) ?_⟩` and prove the remaining obligations. Rewrite using `[iotaPlus_unramifiedToBCrisPlus]`. Conclude with `hw`.
+-/
 theorem unramifiedToBCrisPlus_mem_range (u : unramifiedClosure p) :
     unramifiedToBCrisPlus u ∈ (wittFpbarToBCrisPlus p).range := by
   obtain ⟨w, hw⟩ := unramifiedClosure_le_wittFpbarRange u.2
@@ -206,25 +267,40 @@ def unramifiedToWFrac : unramifiedClosure p →+* WFrac p :=
   (wittFpbarRangeEquiv p).symm.toRingHom.comp
     ((unramifiedToBCrisPlus (p := p)).toRingHom.codRestrict _ unramifiedToBCrisPlus_mem_range)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((wittFpbarRangeEquiv p).apply_symm_apply ((unramifiedToBCrisPlus (p := p)).toRingHom.codRestrict _ unramifiedToBCrisPlus_mem_range u))`.
+-/
 theorem wittFpbarToBCrisPlus_unramifiedToWFrac (u : unramifiedClosure p) :
     wittFpbarToBCrisPlus p (unramifiedToWFrac p u) = unramifiedToBCrisPlus u :=
   congrArg Subtype.val ((wittFpbarRangeEquiv p).apply_symm_apply
     ((unramifiedToBCrisPlus (p := p)).toRingHom.codRestrict _ unramifiedToBCrisPlus_mem_range u))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h ▸ wittFpbarToBCrisPlus_unramifiedToWFrac u, fun h => wittFpbarToBCrisPlus_injective (by rw [h, wittFpbarToBCrisPlus_unramifiedToWFrac])⟩`.
+-/
 theorem unramifiedToWFrac_eq_iff {u : unramifiedClosure p} {x : WFrac p} :
     unramifiedToWFrac p u = x ↔ wittFpbarToBCrisPlus p x = unramifiedToBCrisPlus u :=
   ⟨fun h => h ▸ wittFpbarToBCrisPlus_unramifiedToWFrac u,
     fun h => wittFpbarToBCrisPlus_injective (by rw [h, wittFpbarToBCrisPlus_unramifiedToWFrac])⟩
 
+/- English proof (translation)
+The claim follows from `(unramifiedToWFrac p).injective`.
+-/
 theorem unramifiedToWFrac_injective : Function.Injective (unramifiedToWFrac p) :=
   (unramifiedToWFrac p).injective
 
+/- English proof (translation)
+Rewrite using `[toBDeRhamPlus_wittFpbarToAway, wittFpbarToBCrisPlus_unramifiedToWFrac, iotaPlus_unramifiedToBCrisPlus]`.
+-/
 theorem toBDeRhamPlus_unramifiedToWFrac (u : unramifiedClosure p) :
     toBDeRhamPlus (normInteger ℂ_[p]) p (wittFpbarToAway p (unramifiedToWFrac p u)) =
       algClToBdR p u := by
   rw [toBDeRhamPlus_wittFpbarToAway, wittFpbarToBCrisPlus_unramifiedToWFrac,
     iotaPlus_unramifiedToBCrisPlus]
 
+/- English proof (translation)
+Establish `hζ' : (ζ : PadicAlgCl p) ^ m = 1` using `by rw [← IntermediateField.coe_pow, hζ]; rfl`. Take `⟨a, ha, hθ⟩` from `exists_fpbar_rootOfUnity hm hc hζ'`. Use `⟨a, ha, unramifiedToWFrac_eq_iff.2 (iotaPlus_injective (K := ℂ_[p]) (p := p) ?_)⟩` and prove the remaining obligations. Rewrite using `[iotaPlus_unramifiedToBCrisPlus, iotaPlus_wittFpbarToBCrisPlus_algebraMap, wittToAInf, WittVector.map_teichmuller, ← iota_teichmuller_fpbar hm ha hθ hζ', iota_algebraMap]`.
+-/
 theorem exists_unramifiedToWFrac_rootOfUnity {ζ : unramifiedClosure p} {m : ℕ} (hm : 0 < m)
     (hc : m.Coprime p) (hζ : ζ ^ m = 1) :
     ∃ a : Fpbar p, a ^ m = 1 ∧

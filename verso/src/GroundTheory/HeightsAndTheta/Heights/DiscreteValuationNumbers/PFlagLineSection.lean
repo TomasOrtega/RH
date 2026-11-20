@@ -15,6 +15,9 @@ namespace FlagLineSectionProof
 
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type*} [Field F] {M : ℕ}
 
+/- English proof (translation)
+Unfold `chartMon`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨k, _, hk⟩`. Conclude with `hc k (hW.mem_of_pow_mem _ hk)`.
+-/
 theorem chartMon_not_mem {W : Ideal (MRing (bundleIdx ι M) F)} [hW : W.IsPrime] {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F) ∉ W) (α : K → ℕ) :
     chartMon F M c α ∉ W := by
@@ -27,6 +30,63 @@ end FlagLineSectionProof
 
 open FlagLineSectionProof in
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ _ ι _ y e hy _ N E _ _ B w b hB M a φ hφ Φ _ _ t ht h0`. Establish `hXn : ∀ l : Fin M, projMap F y w φ (truncCoord t 1) (X ⟨none, l⟩) = C (t ⟨0, h0⟩ * algebraMap Ω Φ (φ l (w ⟨0, h0⟩))) * X none`. Introduce `l`. Rewrite using `[projMap_X_none, sum_truncCoord_one t h0]`. Establish `ht0 : t ⟨0, h0⟩ ≠ 0` using `fun h => ht.transcendental ⟨0, h0⟩ (h ▸ isAlgebraic_zero)`.
+
+Establish `hyne : ∀ k (i : ι k), (X ⟨k, i⟩ : MRing ι F) ∉ pointIdeal F y → y ⟨k, i⟩ ≠ 0`. Introduce `k i hX h`. Apply `hX` to reduce the goal to its premises. Rewrite using `[pointIdeal, RingHom.mem_ker]`. Simplify using `[pointConeMap, h]`.
+
+Use `choose c0 hc0 using hy.relevant`. Establish `live0 : ∀ k, y ⟨k, c0 k⟩ ≠ 0` using `fun k => hyne k _ (hc0 k)`. Establish `hs0` using `segreVec_ne_zero_of_live live0`. Take `⟨hξ0, v0, -, hsum0⟩` from `chart_data y B w b hB a φ hφ c0 hs0 h0`. Choose the witnesses or unpack the hypotheses as in `⟨l0, hl0⟩ : ∃ l0, φ l0 (w ⟨0, h0⟩) * chartZ y c0 (b ⟨0, h0⟩ - a) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Simplify using `[hcon] at hsum0`. Establish `hu0 : φ l0 (w ⟨0, h0⟩) ≠ 0` using `left_ne_zero_of_mul hl0`. Take `⟨n0, A0, hA0⟩` from `exists_chartForm (M := M) y w φ (truncCoord t 1) c0 hs0 (hξ0 l0)`.
+
+Take `⟨p, q, hpq⟩ : ∃ p q : K → ℕ, ∀ k, (p k : ℤ) - q k = -(b ⟨0, h0⟩ k - a k) - n0` from `⟨fun k => (-(b ⟨0, h0⟩ k - a k) - n0).toNat, fun k => (-(-(b ⟨0, h0⟩ k - a k) - n0)).toNat, fun k => Int.toNat_sub_toNat_neg _⟩`. Establish `hfval : projMap F y w φ (truncCoord t 1) (X ⟨none, l0⟩ * chartMon F M c0 q) = C (t ⟨0, h0⟩ * algebraMap Ω Φ (φ l0 (w ⟨0, h0⟩))) * X none * (C (algebraMap Ω Φ (∏ k, y ⟨k, c0 k⟩ ^ q k)) * tMon q)`. Rewrite using `[map_mul, hXn, projMap_chartMon]`. Establish `hgval : projMap F y w φ (truncCoord t 1) (A0 * chartMon F M c0 p) = C (algebraMap Ω Φ (φ l0 (w ⟨0, h0⟩) * chartZ y c0 (b ⟨0, h0⟩ - a) * segreVec y c0 ^ n0)) * tMon (fun _ => n0) * (C (algebraMap Ω Φ (∏ k, y ⟨k, c0 k⟩ ^ p k)) * tMon p)`. Rewrite using `[map_mul, hA0.2, projMap_chartMon]`.
+
+Establish `hprod0 : ∀ r : K → ℕ, ∏ k, y ⟨k, c0 k⟩ ^ r k ≠ 0` using `fun r => Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (live0 k)`. Use `⟨Pi.single none 1 + liftN q, liftN (fun _ => n0) + liftN p, X ⟨none, l0⟩ * chartMon F M c0 q, A0 * chartMon F M c0 p, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isMultiHomog_X_none l0).mul (isMultiHomog_chartMon c0 q)`. Conclude with `hA0.1.mul (isMultiHomog_chartMon c0 p)`. Rewrite using `[mem_projIdeal_iff, hfval]`.
+
+Use `mul_ne_zero (mul_ne_zero ?_ (X_ne_zero _)) (mul_ne_zero ?_ (tMon_ne_zero q))` and prove the remaining obligations. Rewrite using `[Ne, C_eq_zero]`. Conclude with `mul_ne_zero ht0 ((map_ne_zero _).mpr hu0)`. Rewrite using `[Ne, C_eq_zero]`. Conclude with `(map_ne_zero _).mpr (hprod0 q)`.
+
+Rewrite using `[mem_projIdeal_iff, hgval]`. Use `mul_ne_zero (mul_ne_zero ?_ (tMon_ne_zero _)) (mul_ne_zero ?_ (tMon_ne_zero p))` and prove the remaining obligations. Rewrite using `[Ne, C_eq_zero]`. Conclude with `(map_ne_zero _).mpr (mul_ne_zero hl0 (pow_ne_zero _ hs0))`. Rewrite using `[Ne, C_eq_zero]`.
+
+Conclude with `(map_ne_zero _).mpr (hprod0 p)`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => simp [liftN, zetaDeg, liftDeg]`. Consider the case `some k`.
+
+Use `hpq k` as an intermediate fact. Simplify using `[liftN, zetaDeg, liftDeg]`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `W show divCycle _ _ W - divCycle _ _ W = 0`. Distinguish the cases in `hW : W.IsPrime ∧ projIdeal F y w φ (truncCoord t 1) ≤ W ∧ IsRelevant W`.
+
+Take `⟨hWp, hPW, hWrel⟩` from `hW choose cc hcc using fun k => hWrel (some k)`. Set `c : ∀ k, ι k` to `cc`. Establish `hcW : ∀ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F) ∉ W` using `hcc`. Take `⟨l1, hl1⟩ : ∃ l1 : Fin M, (X ⟨none, l1⟩ : MRing (bundleIdx ι M) F) ∉ W` from `hWrel none`. Establish `live : ∀ k, y ⟨k, c k⟩ ≠ 0`.
+
+Introduce `k h`. Apply `hcW k` to reduce the goal to its premises. Apply `hPW` to reduce the goal to its premises. Rewrite using `[mem_projIdeal_iff, projMap_X_some, h, map_zero, C_0, zero_mul]`. Establish `hs` using `segreVec_ne_zero_of_live live`.
+
+Take `⟨hξ, vc, hvc, hsumc⟩` from `chart_data y B w b hB a φ hφ c hs h0`. Take `⟨nξ, hnξ⟩` from `exists_chartForm_family (M := M) y w φ (truncCoord t 1) c hs _ hξ`. Take `⟨nv, hnv⟩` from `exists_chartForm_family (M := M) y w φ (truncCoord t 1) c hs _ hvc`. Use `set m := nξ + nv with hm`. Use `choose Ξ hΞ using hnξ m (by omega)`.
+
+Use `choose V hV using hnv m (by omega)`. Establish `htm : (tMon (fun _ : K => m + m) : MvPolynomial (Option K) Φ) = tMon (fun _ => m) * tMon (fun _ => m)` using `tMon_add (fun _ => m) (fun _ => m)`. Establish `hR0 : ∑ l, V l * Ξ l - chartMon F M c (fun _ => m + m) ∈ projIdeal F y w φ (truncCoord t 1)`. Rewrite using `[mem_projIdeal_iff, map_sub, map_sum, projMap_chartMon, htm, sub_eq_zero]`. Establish `e1 : ∀ l, projMap F y w φ (truncCoord t 1) (V l * Ξ l) = C (algebraMap Ω Φ (vc l * (φ l (w ⟨0, h0⟩) * chartZ y c (b ⟨0, h0⟩ - a)))) * (C (algebraMap Ω Φ (segreVec y c ^ (m + m))) * (tMon (fun _ => m) * tMon (fun _ => m)))`.
+
+Introduce `l`. Rewrite using `[map_mul, (hV l).2, (hΞ l).2]`. Simplify using `only [map_mul, map_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun l _ => e1 l), ← Finset.sum_mul, ← map_sum, ← map_sum, hsumc, map_one, map_one, one_mul]`.
+
+Simplify using `[segreVec, Finset.prod_pow]`. Establish `hS : chartMon F M c (fun _ => m + m) ∉ W` using `chartMon_not_mem hcW _`. Choose the witnesses or unpack the hypotheses as in `⟨l2, hl2⟩ : ∃ l2, Ξ l2 ∉ W := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `hsumW : ∑ l, V l * Ξ l ∈ W` using `Ideal.sum_mem _ fun l _ => W.mul_mem_left _ (hcon l)`. Apply `hS` to reduce the goal to its premises. Use `W.sub_mem hsumW (hPW hR0)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hR1 : X ⟨none, l1⟩ * Ξ l2 - X ⟨none, l2⟩ * Ξ l1 ∈ projIdeal F y w φ (truncCoord t 1)`.
+
+Rewrite using `[mem_projIdeal_iff, map_sub, map_mul, map_mul, hXn, hXn, (hΞ l2).2, (hΞ l1).2, sub_eq_zero]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h12 : X ⟨none, l1⟩ * Ξ l2 ∉ W` using `fun h => (hWp.mem_or_mem h).elim hl1 hl2`. Establish `h21 : X ⟨none, l2⟩ * Ξ l1 ∉ W` using `fun h => h12 (by`.
+
+Use `W.add_mem (hPW hR1) h` as an intermediate fact. Rewrite using `[sub_add_cancel] at this)` and apply the resulting hypothesis. Establish `hx2 : (X ⟨none, l2⟩ : MRing (bundleIdx ι M) F) ∉ W` using `fun h => h21 (W.mul_mem_right _ h)`. Take `⟨α, β, hαβ⟩ : ∃ α β : K → ℕ, ∀ k, (β k : ℤ) - α k = m + (b ⟨0, h0⟩ k - a k)` from `⟨fun k => (-(m + (b ⟨0, h0⟩ k - a k))).toNat, fun k => (m + (b ⟨0, h0⟩ k - a k)).toNat, fun k => Int.toNat_sub_toNat_neg _⟩`. Establish `hne1 : Ξ l2 * chartMon F M c α ∉ W` using `fun h => (hWp.mem_or_mem h).elim hl2 (chartMon_not_mem hcW α)`.
+
+Establish `hne2 : X ⟨none, l2⟩ * chartMon F M c β ∉ W` using `fun h => (hWp.mem_or_mem h).elim hx2 (chartMon_not_mem hcW β)`. Establish `hT : (tMon (fun _ => m) * tMon α * tMon q : MvPolynomial (Option K) Φ) = tMon β * tMon (fun _ => n0) * tMon p`. Rewrite using `[← tMon_add, ← tMon_add, ← tMon_add, ← tMon_add]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Establish `h1` using `hαβ k`. Establish `h2` using `hpq k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hc1 : chartZ y c (b ⟨0, h0⟩ - a) * segreVec y c ^ m * ∏ k, y ⟨k, c k⟩ ^ α k = ∏ k, y ⟨k, c k⟩ ^ β k`.
+
+Rewrite using `[segreVec_pow, ← chartZ_natCast, ← chartZ_natCast, ← chartZ_add live, ← chartZ_add live]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `h1` using `hαβ k`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hc0 : chartZ y c0 (b ⟨0, h0⟩ - a) * segreVec y c0 ^ n0 * ∏ k, y ⟨k, c0 k⟩ ^ p k = ∏ k, y ⟨k, c0 k⟩ ^ q k`. Rewrite using `[segreVec_pow, ← chartZ_natCast, ← chartZ_natCast, ← chartZ_add live0, ← chartZ_add live0]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Establish `h2` using `hpq k`. Simplify using `only [Pi.add_apply, Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hΩ : φ l2 (w ⟨0, h0⟩) * chartZ y c (b ⟨0, h0⟩ - a) * segreVec y c ^ m * (∏ k, y ⟨k, c k⟩ ^ α k) * φ l0 (w ⟨0, h0⟩) * (∏ k, y ⟨k, c0 k⟩ ^ q k) = φ l2 (w ⟨0, h0⟩) * (∏ k, y ⟨k, c k⟩ ^ β k) * (φ l0 (w ⟨0, h0⟩) * chartZ y c0 (b ⟨0, h0⟩ - a) * segreVec y c0 ^ n0) * (∏ k, y ⟨k, c0 k⟩ ^ …`. Rewrite using `[← hc1, ← hc0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcross : (Ξ l2 * chartMon F M c α) * (X ⟨none, l0⟩ * chartMon F M c0 q) - (X ⟨none, l2⟩ * chartMon F M c β) * (A0 * chartMon F M c0 p) ∈ projIdeal F y w φ (truncCoord t 1)`. Rewrite using `[mem_projIdeal_iff, map_sub, map_mul (projMap F y w φ (truncCoord t 1)) (Ξ l2 * _), map_mul (projMap F y w φ (truncCoord t 1)) (X ⟨none, l2⟩ * _), hfval, hgval, map_mul (projMap F y w φ (truncCoord t 1)) (Ξ l2), map_mul (projMap F y w φ (truncCoord t 1)) (X ⟨none, l2⟩), (hΞ l2).2 …`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = C (t ⟨0, h0⟩) * C (algebraMap Ω Φ (φ l2 (w ⟨0, h0⟩) * (∏ k, y ⟨k, c k⟩ ^ β k) * (φ l0 (w ⟨0, h0⟩) * chartZ y c0 (b ⟨0, h0⟩ - a) * segreVec y c0 ^ n0) * (∏ k, y ⟨k, c0 k⟩ ^ p k))) * X none * (tMon β * tMon (fun _ => n0) * tMon p) := by`. Rewrite using `[hΩ, hT]`. Use `_ = _ := by`. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[divCycle_eq_of_mul_sub_mem hne1 hne2 hcross, sub_self]`. Establish `hz : ∀ h, divCycle (projIdeal F y w φ (truncCoord t 1)) h W = 0`. Introduce `h`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hW (le_and_isRelevant_of_divCycle_ne_zero hne)`. Rewrite using `[hz, hz, sub_self]`.
+-/
 theorem FlagLineSection.proof : FlagLineSection.Statement := by
   intro F _ Ω _ _ K _ _ ι _ y e hy _ N E _ _ B w b hB M a φ hφ Φ _ _ t ht h0
   have hXn : ∀ l : Fin M, projMap F y w φ (truncCoord t 1) (X ⟨none, l⟩) =

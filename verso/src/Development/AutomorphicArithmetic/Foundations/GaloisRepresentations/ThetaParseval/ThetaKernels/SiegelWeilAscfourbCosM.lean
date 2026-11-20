@@ -19,6 +19,11 @@ namespace PositivityTheory.SiegelWeilFormula.Act.C4
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d)
 namespace Bq
+/- English proof (translation)
+Introduce `i`. Establish `hP` using `(ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p).1 hp`. Establish `e1 : ∀ j, inFrame d.b p (Sum.inr i) (Sum.inl j) = 0` using `fun j => by`. Use `congrFun (congrFun hP i) j` as an intermediate fact. Simplify `this` using `[Matrix.toBlocks₂₁]`.
+
+Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[e1, hγ _]`.
+-/
 theorem inStabilizer_parabolic_mul {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {p γ : d.G} (hp : p ∈ par2 σ d.Y) (hγ : _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L γ) : _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (p * γ) := by
   intro i
   have hP := (ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame p).1 hp
@@ -27,9 +32,17 @@ theorem inStabilizer_parabolic_mul {d : _root_.PositivityTheory.SiegelWeilFormul
     simpa [Matrix.toBlocks₂₁] using this
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Fintype.sum_sum_type]
   simp [e1, hγ _]
+/- English proof (translation)
+Introduce `i`. Conclude with `(L.j_out g (Sum.inl L.i₀) (by simp) (Sum.inr i)).2.trans (by simp [Matrix.one_apply])`.
+-/
 theorem inStabilizer_smallerGroupEmbed {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) (g : G2 σ L.Y) : _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (L.j g) := by
   intro i
   exact (L.j_out g (Sum.inl L.i₀) (by simp) (Sum.inr i)).2.trans (by simp [Matrix.one_apply])
+/- English proof (translation)
+Rewrite using `[ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame]`. Rewrite `h` using `[ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k]`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h (L.em a)) (L.em c)`. Establish `h2` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.padM_emS_k L (inFrame L.b g) (Sum.inr a) (Sum.inl c)`.
+
+Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, Sum.map_inr, Sum.map_inl] at h2`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at h1 ⊢`. Rewrite using `[← h2]`. Conclude with `h1`.
+-/
 theorem par_of_j_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (L : _root_.PositivityTheory.SiegelWeilFormula.LD_k d) {g : G2 σ L.Y} (h : L.j g ∈ par2 σ d.Y) : g ∈ par2 σ L.Y := by
   rw [ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block L.ok.frame]
   rw [ComplexParameterFamilyContinuity.mem_stabiliser_iff_frame_lower_block d.ok.frame, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.inFrame_j_k] at h

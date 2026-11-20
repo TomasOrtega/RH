@@ -17,6 +17,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe (transl per IsBundleI
 section
 open MonObj CartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨h₁, h₂, -, h₄, -⟩` from `H.2.2 v hv`. Set `e (w : Fin g → ℂ) : Over.mk (c.e.symm v).1 ⟶ A` to `Over.homMk (ex (v, w)).1 (h₁ w)`. Establish `h0 : (ex (v, 0)).1 = (c.e.symm v).1 ≫ GlobalTheory.LieVB.unitSec A` using `(h₄ 0).2 ⟨0, zero_mem _, by ext i; simp [per, Matrix.vecMul, dotProduct]⟩`. Establish `hm : e z * e (-z) = 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[h₂ z (-z) _ _ rfl rfl, add_neg_cancel, h0]`. Both sides reduce to the same expression. Establish `hi : e (-z) = (e z)⁻¹` using `eq_inv_of_mul_eq_one_right hm`. Conclude with `congrArg (·.left) hi`.
+-/
 theorem ex_neg {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+* ℂ} {A : Over S}
     [GrpObj A] {g : ℕ} {h : VMetric p (omega A) g} {c : AlgChart p σ 1}
     {τ : V 1 → Matrix (Fin g) (Fin g) ℂ} {ex : Pt (V 1) g → CxPts (A.hom ≫ p) σ}
@@ -37,6 +42,9 @@ end
 section Lift
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hy (show z ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+-/
 theorem range_sub (O : X.Opens) {y : Sp ℂ ⟶ X} (hy : ⊤ ≤ y ⁻¹ᵁ O) :
     Set.range y.base ⊆ Set.range O.ι.base := by
   rw [Scheme.Opens.range_ι]
@@ -47,21 +55,33 @@ def liftPt (O : X.Opens) (y : CxPts q σ) (h : y ∈ ptsIn q σ O) : CxPts (O.ι
   ⟨IsOpenImmersion.lift O.ι y.1 (range_sub O h), by
     rw [← Category.assoc, IsOpenImmersion.lift_fac]; exact y.2⟩
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem liftPt_fac (O : X.Opens) (y : CxPts q σ) (h : y ∈ ptsIn q σ O) :
     (liftPt O y h).1 ≫ O.ι = y.1 := IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem valR_eqToHom {C : Type} [CommRing C] {Y : Scheme.{0}} (x : Sp C ⟶ Y) {U U' : Y.Opens}
     (e : U = U') (f : Γ(Y, U')) :
     valR x U ((Y.presheaf.map (eqToHom e).op).hom f) = valR x U' f := by
   subst e
   simp
 
+/- English proof (translation)
+Establish `e : y.1 = (liftPt O y h).1 ≫ O.ι` using `(liftPt_fac O y h).symm`. Express the relevant statement in the definitionally equal form `⊤ ≤ (liftPt O y h).1 ⁻¹ᵁ W ↔ ⊤ ≤ y.1 ⁻¹ᵁ (O.ι ''ᵁ W)`. Rewrite using `[e, Scheme.Hom.comp_preimage, O.ι.preimage_image_eq]`.
+-/
 theorem mem_ptsIn_liftPt (O : X.Opens) (y : CxPts q σ) (h : y ∈ ptsIn q σ O) (W : O.toScheme.Opens) :
     liftPt O y h ∈ ptsIn (O.ι ≫ q) σ W ↔ y ∈ ptsIn q σ (O.ι ''ᵁ W) := by
   have e : y.1 = (liftPt O y h).1 ≫ O.ι := (liftPt_fac O y h).symm
   change ⊤ ≤ (liftPt O y h).1 ⁻¹ᵁ W ↔ ⊤ ≤ y.1 ⁻¹ᵁ (O.ι ''ᵁ W)
   rw [e, Scheme.Hom.comp_preimage, O.ι.preimage_image_eq]
 
+/- English proof (translation)
+Establish `e : s = (O.ι.appIso W).hom ((O.ι.appIso W).inv s)` using `by simp; rfl`. Express the relevant statement in the definitionally equal form `valR _ W s = valR y.1 _ _`. Use `conv_lhs => rw [e, Scheme.Hom.appIso_hom]`. Rewrite using `[CommRingCat.comp_apply, valR_eqToHom, ← GlobalTheory.Points.valR_comp, liftPt_fac]`.
+-/
 theorem ev_liftPt (O : X.Opens) (y : CxPts q σ) (h : y ∈ ptsIn q σ O) (W : O.toScheme.Opens)
     (s : Γ(O.toScheme, W)) :
     ev (O.ι ≫ q) σ W s (liftPt O y h) = ev q σ (O.ι ''ᵁ W) ((O.ι.appIso W).inv s) y := by
@@ -75,6 +95,9 @@ end Lift
 section Gen
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Establish `hy : y ∈ ptsIn p σ (B.U i ⊓ B.U j)` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `e` using `congrArg (fun u : Γ(Y, B.U i ⊓ B.U j)ˣ => ev p σ _ u.val y) (ht i j)`. Conclude with `(ev_res _ hy _).symm.trans (e.trans ((ev_mul _ _ y).trans (congrArg₂ (· * ·) rfl (ev_res _ hy _))))`.
+-/
 theorem ev_gen_rel {B : LB Y} {t : LB.Gen B} (ht : t.IsGen) {i j : B.ι} {y : CxPts p σ}
     (hi : y ∈ ptsIn p σ (B.U i)) (hj : y ∈ ptsIn p σ (B.U j)) :
     ev p σ _ (t.s i).val y = gv p σ B i j y * ev p σ _ (t.s j).val y := by
@@ -83,6 +106,9 @@ theorem ev_gen_rel {B : LB Y} {t : LB.Gen B} (ht : t.IsGen) {i j : B.ι} {y : Cx
   exact (ev_res _ hy _).symm.trans (e.trans ((ev_mul _ _ y).trans
     (congrArg₂ (· * ·) rfl (ev_res _ hy _))))
 
+/- English proof (translation)
+The claim follows from `ev_ne_zero hi (t.s i).isUnit`.
+-/
 theorem ev_gen_ne_zero {B : LB Y} (t : LB.Gen B) {i : B.ι} {y : CxPts p σ}
     (hi : y ∈ ptsIn p σ (B.U i)) : ev p σ _ (t.s i).val y ≠ 0 :=
   ev_ne_zero hi (t.s i).isUnit
@@ -90,6 +116,9 @@ theorem ev_gen_ne_zero {B : LB Y} (t : LB.Gen B) {i : B.ι} {y : CxPts p σ}
 variable {k' : Type} [CommRing k'] {Y' : Scheme.{0}} {p' : Y' ⟶ Sp k'} {σ' : k' →+* ℂ}
   {κ : Type} [Fintype κ] {f : κ → (Y' ⟶ Y)} {z : CxPts p' σ'} {m : κ → CxPts p σ}
 
+/- English proof (translation)
+Introduce `x hx`. Use `Set.mem_iInter.2 fun a => ?_` and prove the remaining obligations. Use `h a hx` as an intermediate fact. Rewrite `this` using `[hm a]`. Conclude with `this`.
+-/
 theorem mem_linComb_of_mem (hm : ∀ a, (m a).1 = z.1 ≫ f a) {B : LB Y} (ε : κ → ℤ) {j : κ → B.ι}
     (h : ∀ a, m a ∈ ptsIn p σ (B.U (j a))) : z ∈ ptsIn p' σ' ((LB.LinComb B f ε).U j) := by
   intro x hx
@@ -107,9 +136,17 @@ open Classical in
 def evLift (O : X.Opens) (W : O.toScheme.Opens) (s : Γ(O.toScheme, W)) (y : CxPts q σ) : ℂ :=
   if h : y ∈ ptsIn q σ O then ev (O.ι ≫ q) σ W s (liftPt O y h) else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem evLift_of_mem (O : X.Opens) (W : O.toScheme.Opens) (s : Γ(O.toScheme, W)) {y : CxPts q σ}
     (h : y ∈ ptsIn q σ O) : evLift O W s y = ev (O.ι ≫ q) σ W s (liftPt O y h) := dif_pos h
 
+/- English proof (translation)
+Take `⟨ho, hd⟩` from `hex (O.ι ''ᵁ W) ((O.ι.appIso W).inv s)`. Establish `hPN : P ∈ {b ∈ T | ⊤ ≤ (ex b).1 ⁻¹ᵁ (O.ι ''ᵁ W)}` using `⟨hP, (mem_ptsIn_liftPt O _ hO W).1 hW⟩`. Establish `hsub : O.ι ''ᵁ W ≤ O` using `Scheme.Opens.ι_image_le O W`. Use `(hd.differentiableAt (ho.mem_nhds hPN)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hPN] with Q hQ`.
+
+Establish `hQO : ex Q ∈ ptsIn q σ O` using `ptsIn_mono hsub hQ.2`. Rewrite using `[evLift_of_mem O W s hQO, ev_liftPt]`. Both sides reduce to the same expression.
+-/
 theorem differentiableAt_evLift {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {T : Set E}
     {ex : E → CxPts q σ} (hex : IsHolTo T (fun b => (ex b).1)) (O : X.Opens) (W : O.toScheme.Opens)
     (s : Γ(O.toScheme, W)) {P : E} (hP : P ∈ T) (hO : ex P ∈ ptsIn q σ O)
@@ -140,14 +177,23 @@ variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+*
   [GrpObj A] {g : ℕ} {h : VMetric p (omega A) g} {c : AlgChart p σ 1}
   {τ : V 1 → Matrix (Fin g) (Fin g) ℂ} {ex : Pt (V 1) g → CxPts (A.hom ≫ p) σ}
 
+/- English proof (translation)
+Simplify using `[IndefiniteRowSideFullHecke.SiegelReframe.mulN]`.
+-/
 theorem mulN_neg_one (Q : Pt (V 1) g) : IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) Q = (Q.1, -Q.2) := by
   simp [IndefiniteRowSideFullHecke.SiegelReframe.mulN]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[per, Matrix.vecMul, dotProduct, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem per_neg (T : Matrix (Fin g) (Fin g) ℂ) (x : Fl g) : per T (-x) = -per T x := by
   ext i
   simp [per, Matrix.vecMul, dotProduct, Finset.sum_neg_distrib]
   ring
 
+/- English proof (translation)
+Establish `h₁` using `(H.2.2 P.1 hP.1.1).1 P.2`. Establish `hU : ⊤ ≤ (c.e.symm P.1).1 ⁻¹ᵁ U` using `hP.1.2`. Rewrite `hU` using `[← h₁]`. Conclude with `hU`.
+-/
 theorem mem_O (H : IsPeriodChart h c τ ex) {U : S.Opens} {P : Pt (V 1) g}
     (hP : P ∈ cov (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ U) g) :
     ex P ∈ ptsIn (A.hom ≫ p) σ (A.hom ⁻¹ᵁ U) := by
@@ -156,6 +202,53 @@ theorem mem_O (H : IsPeriodChart h c τ ex) {U : S.Opens} {P : Pt (V 1) g}
   rw [← h₁] at hU
   exact hU
 
+/- English proof (translation)
+Take `⟨fr, hfr⟩` from `hF`. Use `set B' := c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ U with hB'`. Establish `hLB` using `L.isLB`. Set `tv (jj : Fin 2 → L.B.ι) (y : CxPts (A.hom ≫ p) σ) : ℂ` to `evLift (A.hom ⁻¹ᵁ U) ((symLB A U L.B).U jj) (t.s jj).val y`. Set `a0 (P : Pt (V 1) g) : L.B.ι` to `pick hLB (ex P)`.
+
+Set `b0 (P : Pt (V 1) g) : L.B.ι` to `pick hLB (ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P))`. Set `F (P : Pt (V 1) g) : ℂ` to `fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) / (tv ![b0 P, a0 P] (ex P) * fr (a0 P) P)`. Establish `hcov : ∀ P ∈ cov B' g, P ∈ cov c.e.target g` using `fun P hP => ⟨hP.1.1, trivial⟩`. Establish `hcovN : ∀ P ∈ cov B' g, IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P ∈ cov B' g` using `fun P hP => ⟨hP.1, trivial⟩`. Establish `hinv : ∀ P ∈ cov B' g, (ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)).1 = (ex P).1 ≫ (ι[A]).left`.
+
+Introduce `P hP`. Rewrite using `[mulN_neg_one]`. Conclude with `ex_neg H hP.1.1 P.2`. Establish `hmem : ∀ P (hP : P ∈ cov B' g) (a b : L.B.ι), ex P ∈ ptsIn _ σ (L.B.U a) → ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U b) → liftPt (A.hom ⁻¹ᵁ U) (ex P) (mem_O H hP) ∈ ptsIn ((A.hom ⁻¹ᵁ U).ι ≫ A.hom ≫ p) σ ((symLB A U L.B).U ![b, a])`. Introduce `P hP a b ha hb`.
+
+Use `mem_linComb_of_mem (m := ![ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P), ex P]) ?_ _ ?_` and prove the remaining obligations. Introduce `i fin_cases i`. Express the relevant statement in the definitionally equal form `(ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)).1 = _ ≫ (A.hom ⁻¹ᵁ U).ι ≫ _`. Rewrite using `[← Category.assoc, liftPt_fac, hinv P hP]`. Express the relevant statement in the definitionally equal form `(ex P).1 = _ ≫ (A.hom ⁻¹ᵁ U).ι`.
+
+Rewrite using `[liftPt_fac]`. Introduce `i fin_cases i`. Conclude with `hb`. Conclude with `ha`. Establish `hm : ∀ P (hP : P ∈ cov B' g) (i : Fin 2), (![ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P), ex P] i).1 = (liftPt (A.hom ⁻¹ᵁ U) (ex P) (mem_O H hP)).1 ≫ ![(A.hom ⁻¹ᵁ U).ι ≫ (ι[A]).left, (A.hom ⁻¹ᵁ U).ι] i`.
+
+Introduce `P hP i`. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `(ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)).1 = _ ≫ (A.hom ⁻¹ᵁ U).ι ≫ _`. Rewrite using `[← Category.assoc, liftPt_fac, hinv P hP]`. Express the relevant statement in the definitionally equal form `(ex P).1 = _ ≫ (A.hom ⁻¹ᵁ U).ι`.
+
+Rewrite using `[liftPt_fac]`. Establish `hgv : ∀ P (hP : P ∈ cov B' g) (a b a' b' : L.B.ι), ex P ∈ ptsIn _ σ (L.B.U a) → ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U b) → ex P ∈ ptsIn _ σ (L.B.U a') → ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U b') → tv ![ …`. Introduce `P hP a b a' b' ha hb ha' hb'`. Simplify using `only [tv]`. Rewrite using `[evLift_of_mem _ _ _ (mem_O H hP), evLift_of_mem _ _ _ (mem_O H hP), ev_gen_rel ht (hmem P hP a' b' ha' hb') (hmem P hP a b ha hb), gv_linComb (hm P hP) (hmem P hP a' b' ha' hb') (hmem P hP a b ha hb)]`.
+
+Simplify using `[Fin.prod_univ_two]`. Establish `htv0 : ∀ P (hP : P ∈ cov B' g) (a b : L.B.ι), ex P ∈ ptsIn _ σ (L.B.U a) → ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U b) → tv ![b, a] (ex P) ≠ 0`. Introduce `P hP a b ha hb`. Simplify using `only [tv]`. Rewrite using `[evLift_of_mem _ _ _ (mem_O H hP)]`.
+
+Conclude with `ev_gen_ne_zero t (hmem P hP a b ha hb)`. Establish `LF : ∀ P (hP : P ∈ cov B' g) (a b : L.B.ι), ex P ∈ ptsIn _ σ (L.B.U a) → ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U b) → F P = fr b (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) / (tv ![b, a] (ex P) * fr a P)`. Introduce `P hP a b ha hb`. Establish `ha0` using `mem_pick hLB (ex P)`. Establish `hb0` using `mem_pick hLB (ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P))`.
+
+Establish `e1 : fr (a0 P) P = gv _ σ L.B (a0 P) a (ex P) * fr a P` using `((hfr (a0 P)).2 P (hcov P hP) ha0).2.1 a ha`. Establish `e2 : fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) = gv _ σ L.B (b0 P) b (ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)) * fr b (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)` using `((hfr (b0 P)).2 _ (hcov _ (hcovN P hP)) hb0).2.1 b hb`. Establish `e3` using `hgv P hP a b (a0 P) (b0 P) ha hb ha0 hb0`. Establish `n1` using `gv_ne_zero ha0 ha`. Establish `n2` using `gv_ne_zero hb0 hb`.
+
+Establish `n3` using `htv0 P hP a b ha hb`. Establish `n4` using `((hfr a).2 P (hcov P hP) ha).1`. Simplify using `only [F]`. Rewrite using `[e1, e2, e3]`. Rewrite using `[div_eq_div_iff (mul_ne_zero (mul_ne_zero (mul_ne_zero n2 (inv_ne_zero n1)) n3) (mul_ne_zero n1 n4)) (mul_ne_zero n3 n4)]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hmeq : (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) : Pt (V 1) g → Pt (V 1) g) = fun Q => (Q.1, -Q.2)` using `funext mulN_neg_one`. Establish `hmd : Differentiable ℂ (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) : Pt (V 1) g → Pt (V 1) g)`. Rewrite using `[hmeq]`.
+
+Conclude with `differentiable_fst.prodMk differentiable_snd.neg`. Establish `hopen : ∀ i, IsOpen (cov c.e.target g ∩ ex ⁻¹' ptsIn _ σ (L.B.U i))` using `fun i => (H.2.1 (L.B.U i) 0).1`. Establish `hN : IsOpen (cov B' g)` using `(c.e.isOpen_inter_preimage_symm (isOpen_ptsIn U)).prod isOpen_univ`. Use `⟨F, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`.
+
+Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Establish `ha : ex P ∈ ptsIn _ σ (L.B.U (a0 P))` using `mem_pick hLB _`. Establish `hb : ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U (b0 P))` using `mem_pick hLB _`. Establish `hNb : IsOpen (cov B' g ∩ (cov c.e.target g ∩ ex ⁻¹' ptsIn _ σ (L.B.U (a0 P))) ∩ IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) ⁻¹' (cov c.e.target g ∩ ex ⁻¹' ptsIn _ σ (L.B.U (b0 P))))` using `(hN.inter (hopen _)).inter ((hopen _).preimage hmd.continuous)`. Establish `hPN : P ∈ cov B' g ∩ (cov c.e.target g ∩ ex ⁻¹' ptsIn _ σ (L.B.U (a0 P))) ∩ IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) ⁻¹' (cov c.e.target g ∩ ex ⁻¹' ptsIn _ σ (L.B.U (b0 P)))` using `⟨⟨hP, hcov P hP, ha⟩, hcov _ (hcovN P hP), hb⟩`.
+
+Establish `heq : F =ᶠ[𝓝 P] fun Q => fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) Q) / (tv ![b0 P, a0 P] (ex Q) * fr (a0 P) Q)` using `by filter_upwards [hNb.mem_nhds hPN] with Q hQ`. Conclude with `LF Q hQ.1.1 _ _ hQ.1.2.2 hQ.2.2`. Establish `d1 : DifferentiableAt ℂ (fun Q => fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) Q)) P` using `((hfr (b0 P)).1.differentiableAt ((hopen _).mem_nhds ⟨hcov _ (hcovN P hP), hb⟩)).comp P (hmd P)`. Establish `d2 : DifferentiableAt ℂ (fun Q => tv ![b0 P, a0 P] (ex Q)) P` using `differentiableAt_evLift H.2.1 (A.hom ⁻¹ᵁ U) _ _ (hcov P hP) (mem_O H hP) (hmem P hP _ _ ha hb)`. Establish `d3 : DifferentiableAt ℂ (fr (a0 P)) P` using `(hfr _).1.differentiableAt ((hopen _).mem_nhds ⟨hcov P hP, ha⟩)`.
+
+Establish `d4 : DifferentiableAt ℂ (fun Q => tv ![b0 P, a0 P] (ex Q) * fr (a0 P) Q) P` using `d2.mul d3`. Establish `d5 : DifferentiableAt ℂ (fun Q => fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) Q) * (tv ![b0 P, a0 P] (ex Q) * fr (a0 P) Q)⁻¹) P` using `d1.mul (d4.inv (mul_ne_zero (htv0 P hP _ _ ha hb) ((hfr _).2 P (hcov P hP) ha).1))`. Conclude with `d5.congr_of_eventuallyEq (heq.trans (Eventually.of_forall fun Q => div_eq_mul_inv _ _))`. Introduce `P hP`. Establish `ha : ex P ∈ ptsIn _ σ (L.B.U (a0 P))` using `mem_pick hLB _`.
+
+Establish `hb : ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U (b0 P))` using `mem_pick hLB _`. Conclude with `div_ne_zero ((hfr _).2 _ (hcov _ (hcovN P hP)) hb).1 (mul_ne_zero (htv0 P hP _ _ ha hb) ((hfr _).2 P (hcov P hP) ha).1)`. Introduce `l hl P hP`. Establish `ha : ex P ∈ ptsIn _ σ (L.B.U (a0 P))` using `mem_pick hLB _`. Establish `hb : ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ∈ ptsIn _ σ (L.B.U (b0 P))` using `mem_pick hLB _`.
+
+Establish `hl' : (-1 : ℤ) • l = -l` using `by simp`. Establish `hP' : transl τ l P ∈ cov B' g` using `⟨hP.1, trivial⟩`. Establish `hexP' : ex (transl τ l P) = ex P` using `((H.isUnifChart.2.2 P.1 hP.1.1).2.2 _ _).2 ⟨l, hl, rfl⟩`. Establish `hmP' : IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) (transl τ l P) = transl τ (-l) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)`. Rewrite using `[mulN_neg_one, mulN_neg_one]`.
+
+Simplify using `only [transl, per_neg, neg_add]`. Establish `hexmP' : ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) (transl τ l P)) = ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P)`. Rewrite using `[hmP']`. Conclude with `((H.isUnifChart.2.2 P.1 hP.1.1).2.2 _ _).2 ⟨-l, neg_mem hl, rfl⟩`. Establish `ha' : ex (transl τ l P) ∈ ptsIn _ σ (L.B.U (a0 P))` using `hexP' ▸ ha`.
+
+Establish `hb' : ex (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) (transl τ l P)) ∈ ptsIn _ σ (L.B.U (b0 P))` using `hexmP' ▸ hb`. Establish `e1` using `LF _ hP' _ _ ha' hb'`. Establish `f1 : fr (a0 P) P = j l P * fr (a0 P) (transl τ l P)` using `((hfr _).2 P (hcov P hP) ha).2.2.2 l hl`. Establish `f2 : fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) = j (-l) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) * fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) (transl τ l P))`. Rewrite using `[hmP']`.
+
+Conclude with `((hfr _).2 _ (hcov _ (hcovN P hP)) hb).2.2.2 (-l) (neg_mem hl)`. Establish `n0` using `((hfr _).2 P (hcov P hP) ha).1`. Establish `n0'` using `((hfr _).2 _ (hcov _ (hcovN P hP)) hb).1`. Establish `n1 : fr (a0 P) (transl τ l P) ≠ 0` using `((hfr _).2 _ (hcov _ hP') ha').1`. Establish `n2` using `htv0 P hP _ _ ha hb`.
+
+Establish `n3 : j l P ≠ 0` using `left_ne_zero_of_mul (f1 ▸ n0)`. Establish `n4 : j (-l) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) ≠ 0` using `left_ne_zero_of_mul (f2 ▸ n0')`. Simplify using `only [mulPullFactor]`. Rewrite using `[hl', e1, hexP']`. Use `show _ = j l P * (fr (b0 P) (IndefiniteRowSideFullHecke.SiegelReframe.mulN (-1) P) / (tv ![b0 P, a0 P] (ex P) * fr (a0 P) P))`.
+
+Rewrite using `[f1, f2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_isBundleIso_of_gen (H : IsPeriodChart h c τ ex) (L : HermLB (A.hom ≫ p))
     {j : Fl g → Pt (V 1) g → ℂ} {m : Pt (V 1) g → ℝ} (hF : IsFramed L c.e.target τ ex j m)
     (U : S.Opens)
@@ -313,6 +406,9 @@ theorem exists_isBundleIso_of_gen (H : IsPeriodChart h c τ ex) (L : HermLB (A.h
     field_simp
 end Core
 
+/- English proof (translation)
+Introduce `k _ S p _ P _ h L hθ σ c τ ex j m H hF _ v hv`. Take `⟨-, -, hSym, -⟩` from `hθ`. Take `⟨U, hsU, t, ht⟩` from `hSym ((c.e.symm v).1 (IsLocalRing.closedPoint ℂ))`. Take `⟨φ, hφ⟩` from `exists_isBundleIso_of_gen H L hF U t ht`. Conclude with `⟨_, inter_subset_left, c.e.isOpen_inter_preimage_symm (isOpen_ptsIn U), ⟨hv, mem_ptsIn.2 hsU⟩, φ, hφ⟩`.
+-/
 theorem exists_isBundleIso_neg : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S), IsArithVar (P.A.hom ≫ p) (P.g + 1) → ∀ (h : VMetric p (omega P.A) P.g) (L : HermLB (P.A.hom ≫ p)), IsTheta P L.B → ∀ (σ : k →+* ℂ) (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ) (ex : Pt (V 1) P.g → CxPts (P.A.hom ≫ p) σ) (j : Fl P.g → Pt (V 1) P.g → ℂ) (m : Pt (V 1) P.g → ℝ), IsPeriodChart h c τ ex → IsFramed L c.e.target τ ex j m → IsDatum c.e.target τ (stdLat P.g) j m → ∀ v ∈ c.e.target, ∃ B' ⊆ c.e.target, IsOpen B' ∧ v ∈ B' ∧ ∃ ι, GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.IsBundleIso B' τ (stdLat P.g) (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.mulPullFactor (-1) j) j ι := by
   intro k _ S p _ P _ h L hθ σ c τ ex j m H hF _ v hv
   obtain ⟨-, -, hSym, -⟩ := hθ

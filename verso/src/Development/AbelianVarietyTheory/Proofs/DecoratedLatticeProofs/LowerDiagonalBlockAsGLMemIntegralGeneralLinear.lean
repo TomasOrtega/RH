@@ -13,22 +13,40 @@ variable {k : Type} [Field k] [ValuativeRel k]
 
 def IsIntM {m n : Type} (M : Matrix m n k) : Prop := ∀ i j, M i j ∈ 𝒪[k]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [mul_apply]; exact sum_mem fun a _ => mul_mem (hM i a) (hN a j)`.
+-/
 theorem isIntM_mul {l m n : Type} [Fintype m] {M : Matrix l m k} {N : Matrix m n k} (hM : IsIntM M) (hN : IsIntM N) :
     IsIntM (M * N) := fun i j => by
   rw [mul_apply]; exact sum_mem fun a _ => mul_mem (hM i a) (hN a j)
 
+/- English proof (translation)
+Introduce `i j` and use `sub_mem (hM i j) (hN i j)`.
+-/
 theorem isIntM_sub {m n : Type} {M N : Matrix m n k} (hM : IsIntM M) (hN : IsIntM N) : IsIntM (M - N) :=
   fun i j => sub_mem (hM i j) (hN i j)
 
+/- English proof (translation)
+Introduce `i j` and use `neg_mem (hM i j)`.
+-/
 theorem isIntM_neg {m n : Type} {M : Matrix m n k} (hM : IsIntM M) : IsIntM (-M) :=
   fun i j => neg_mem (hM i j)
 
+/- English proof (translation)
+Introduce `_ _` and use `zero_mem _`.
+-/
 theorem isIntM_zero {m n : Type} : IsIntM (0 : Matrix m n k) := fun _ _ => zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [one_apply]; split_ifs exacts [one_mem _, zero_mem _]`.
+-/
 theorem isIntM_one {n : Type} [DecidableEq n] : IsIntM (1 : Matrix n n k) := fun i j => by
   rw [one_apply]; split_ifs
   exacts [one_mem _, zero_mem _]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i j => h (.inl i) (.inl j), fun i j => h (.inl i) (.inr j), fun i j => h (.inr i) (.inl j), fun i j => h (.inr i) (.inr j)⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩ (i | i) (j | j) exacts [h1 i j, h2 i j, h3 i j, h4 i j]`.
+-/
 theorem isIntM_fromBlocks_iff {a b c d : Type} {P : Matrix a c k} {Q : Matrix a d k} {R : Matrix b c k}
     {S : Matrix b d k} : IsIntM (fromBlocks P Q R S) ↔ IsIntM P ∧ IsIntM Q ∧ IsIntM R ∧ IsIntM S := by
   constructor
@@ -38,11 +56,17 @@ theorem isIntM_fromBlocks_iff {a b c d : Type} {P : Matrix a c k} {Q : Matrix a 
   · rintro ⟨h1, h2, h3, h4⟩ (i | i) (j | j)
     exacts [h1 i j, h2 i j, h3 i j, h4 i j]
 
+/- English proof (translation)
+Rewrite `h` using `[← fromBlocks_toBlocks M]`. Conclude with `isIntM_fromBlocks_iff.1 h`.
+-/
 theorem isIntM_toBlocks {a b c d : Type} {M : Matrix (a ⊕ b) (c ⊕ d) k} (h : IsIntM M) :
     IsIntM M.toBlocks₁₁ ∧ IsIntM M.toBlocks₁₂ ∧ IsIntM M.toBlocks₂₁ ∧ IsIntM M.toBlocks₂₂ := by
   rw [← fromBlocks_toBlocks M] at h
   exact isIntM_fromBlocks_iff.1 h
 
+/- English proof (translation)
+Introduce `i j` and use `by let M' : Matrix n n 𝒪[k] := fun i j => ⟨M i j, hM i j⟩ have eM : M = (algebraMap 𝒪[k] k).mapMatrix M' := rfl have hadj : ∀ i j, M.adjugate i j ∈ 𝒪[k] := fun i j => by rw [eM, ← RingHom.map_adjugate]; exact (M'.adjugate i j).2 rw [inv_def, Matrix.smul_apply, smul_eq_mul, Ring.i …`.
+-/
 theorem isIntM_inv {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n k} (hM : IsIntM M)
     (hd : valuation k M.det = 1) : IsIntM M⁻¹ := fun i j => by
   let M' : Matrix n n 𝒪[k] := fun i j => ⟨M i j, hM i j⟩
@@ -56,6 +80,9 @@ theorem isIntM_inv {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n k} (hM
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `isIntM_inv hg hd`.
+-/
 theorem mem_KO_of {n : Type} [Fintype n] [DecidableEq n] {g : GL n k} (hg : IsIntM g.val)
     (hd : valuation k g.val.det = 1) : g ∈ KO k n := by
   rw [GlobalTheory.SplitFlip.mem_KO_iff]
@@ -63,9 +90,15 @@ theorem mem_KO_of {n : Type} [Fintype n] [DecidableEq n] {g : GL n k} (hg : IsIn
   rw [Matrix.coe_units_inv]
   exact isIntM_inv hg hd
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg).1`.
+-/
 theorem isIntM_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {g : GL n k} (hg : g ∈ KO k n) : IsIntM g.val :=
   ((GlobalTheory.SplitFlip.mem_KO_iff g).1 hg).1
 
+/- English proof (translation)
+Use `nabs_det_of_mem_KO hg` as an intermediate fact. Rewrite `this` using `[nabs_eq_one_iff]`. Simplify `this` using `[GeneralLinearGroup.val_det_apply]`.
+-/
 theorem val_det_of_mem_KO {n : Type} [Fintype n] [DecidableEq n] {g : GL n k} (hg : g ∈ KO k n) :
     valuation k g.val.det = 1 := by
   have := nabs_det_of_mem_KO hg
@@ -81,18 +114,27 @@ variable {k : Type} [Field k] [ValuativeRel k]
 section Alg
 variable {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks W]`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem fromBlocks_diag_mul {D' c d : Type} [Fintype c] [Fintype d] (S : Matrix D' D k) (W : Matrix (A ⊕ D) (c ⊕ d) k) :
     fromBlocks (1 : Matrix A A k) 0 0 S * W =
       fromBlocks W.toBlocks₁₁ W.toBlocks₁₂ (S * W.toBlocks₂₁) (S * W.toBlocks₂₂) := by
   conv_lhs => rw [← fromBlocks_toBlocks W]
   rw [fromBlocks_multiply]; simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks W]`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_fromBlocks_diag {r s : Type} [Fintype r] [Fintype s] (W : Matrix (r ⊕ s) (A ⊕ D) k) (T : Matrix D D k) :
     W * fromBlocks (1 : Matrix A A k) 0 0 T =
       fromBlocks W.toBlocks₁₁ (W.toBlocks₁₂ * T) W.toBlocks₂₁ (W.toBlocks₂₂ * T) := by
   conv_lhs => rw [← fromBlocks_toBlocks W]
   rw [fromBlocks_multiply]; simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks W]`. Rewrite using `[fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+-/
 theorem fromBlocks_unip_mul {c d : Type} (u : Matrix A D k) (W : Matrix (A ⊕ D) (c ⊕ d) k) :
     fromBlocks (1 : Matrix A A k) u 0 1 * W =
       fromBlocks (W.toBlocks₁₁ + u * W.toBlocks₂₁) (W.toBlocks₁₂ + u * W.toBlocks₂₂) W.toBlocks₂₁ W.toBlocks₂₂ := by
@@ -107,16 +149,28 @@ def dg : GL D k →* GL (A ⊕ D) k where
   map_one' := by ext1; simp
   map_mul' G H := by ext1; simp [fromBlocks_multiply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_dg (G : GL D k) : (dg A G).val = fromBlocks 1 0 0 G.val := rfl
 
+/- English proof (translation)
+Rewrite using `[val_dg, det_fromBlocks_zero₂₁, det_one, one_mul]`.
+-/
 theorem det_dg (G : GL D k) : (dg A G).val.det = G.val.det := by
   rw [val_dg, det_fromBlocks_zero₂₁, det_one, one_mul]
 
 def nmat (u : Matrix A D k) : GL (A ⊕ D) k :=
   ⟨fromBlocks 1 u 0 1, fromBlocks 1 (-u) 0 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_nmat (u : Matrix A D k) : (nmat u).val = fromBlocks 1 u 0 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[val_nmat, det_fromBlocks_zero₂₁, det_one, det_one, one_mul]`.
+-/
 theorem det_nmat (u : Matrix A D k) : (nmat u).val.det = 1 := by
   rw [val_nmat, det_fromBlocks_zero₂₁, det_one, det_one, one_mul]
 
@@ -125,20 +179,32 @@ end Alg
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+The claim follows from `mem_parahoric.2 ⟨mem_KO_of hg hd, hl⟩`.
+-/
 theorem mem_parahoric_of {g : GL (A ⊕ D) k} (hg : IsIntM g.val) (hd : valuation k g.val.det = 1)
     (hl : ∀ i j, valuation k (g.val (.inr i) (.inl j)) < 1) : g ∈ parahoric k A D :=
   mem_parahoric.2 ⟨mem_KO_of hg hd, hl⟩
 
+/- English proof (translation)
+Use `mem_parahoric_of ?_ ?_ fun i j => by simp [val_dg]` and prove the remaining obligations. Rewrite using `[val_dg]`. Conclude with `isIntM_fromBlocks_iff.2 ⟨isIntM_one, isIntM_zero, isIntM_zero, isIntM_of_mem_KO hG⟩`. Rewrite using `[det_dg]`. Conclude with `val_det_of_mem_KO hG`.
+-/
 theorem dg_mem {G : GL D k} (hG : G ∈ KO k D) : dg A G ∈ parahoric k A D := by
   refine mem_parahoric_of ?_ ?_ fun i j => by simp [val_dg]
   · rw [val_dg]; exact isIntM_fromBlocks_iff.2 ⟨isIntM_one, isIntM_zero, isIntM_zero, isIntM_of_mem_KO hG⟩
   · rw [det_dg]; exact val_det_of_mem_KO hG
 
+/- English proof (translation)
+Use `mem_parahoric_of ?_ ?_ fun i j => by simp [val_nmat]` and prove the remaining obligations. Rewrite using `[val_nmat]`. Conclude with `isIntM_fromBlocks_iff.2 ⟨isIntM_one, hu, isIntM_zero, isIntM_one⟩`. Rewrite using `[det_nmat, map_one]`.
+-/
 theorem nmat_mem {u : Matrix A D k} (hu : IsIntM u) : nmat u ∈ parahoric k A D := by
   refine mem_parahoric_of ?_ ?_ fun i j => by simp [val_nmat]
   · rw [val_nmat]; exact isIntM_fromBlocks_iff.2 ⟨isIntM_one, hu, isIntM_zero, isIntM_one⟩
   · rw [det_nmat, map_one]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[mtor, val_torusElt, val_dg, val_torusElt]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [diagonal_apply, one_apply]`.
+-/
 theorem mtor_eq_dg (ϖ : kˣ) (e : D → ℤ) : mtor (A := A) ϖ e = dg A (torusElt k D ϖ e) := by
   ext1
   rw [mtor, val_torusElt, val_dg, val_torusElt]
@@ -151,14 +217,29 @@ namespace GlobalTheory.ParHeckeSource
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Introduce `i l` and use `GlobalTheory.DatumEigen.int_of_mem hj i l`.
+-/
 theorem isIntM_of_mem_parahoric {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : IsIntM j.val :=
   fun i l => GlobalTheory.DatumEigen.int_of_mem hj i l
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Conclude with `Valuation.map_sum_lt _ one_ne_zero fun m _ => GlobalTheory.DatumEigen.val_mul_lt (hP _ _) (hc _ _)`.
+-/
 theorem val_lt_mul {l m n : Type} [Fintype m] {P : Matrix l m k} {c : Matrix m n k} (hP : IsIntM P)
     (hc : ∀ i j, valuation k (c i j) < 1) (i j) : valuation k ((P * c) i j) < 1 := by
   rw [mul_apply]
   exact Valuation.map_sum_lt _ one_ne_zero fun m _ => GlobalTheory.DatumEigen.val_mul_lt (hP _ _) (hc _ _)
 
+/- English proof (translation)
+Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Establish `e : (torusElt k D ϖ (-indic s))⁻¹ = torusElt k D ϖ (indic s)`. Use `inv_eq_of_mul_eq_one_right (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, val_torusElt, val_torusElt, diagonal_mul_diagonal, Units.val_one, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ (Units.ne_zero ϖ)]`. Simplify using the standard rewrite rules. Rewrite using `[e, val_torusElt]`. Introduce `i j`.
+
+Rewrite using `[diagonal_apply]`. Use `split_ifs`. Use `show valuation k _ ≤ 1`. Rewrite using `[map_zpow₀]`. Apply the tactic sequence `exact zpow_le_one₀ (zero_lt_iff.2 (by simp)) hlt.le (by unfold indic; split_ifs <;> norm_num)`.
+
+Conclude with `zero_mem _`.
+-/
 theorem inv_torusElt_int {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D) :
     IsIntM ((torusElt k D ϖ (-indic s))⁻¹).val := by
   have hlt : valuation k (ϖ : k) < 1 := hϖ ▸ uniformizer_lt_one
@@ -175,6 +256,17 @@ theorem inv_torusElt_int {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k)
     exact zpow_le_one₀ (zero_lt_iff.2 (by simp)) hlt.le (by unfold indic; split_ifs <;> norm_num)
   · exact zero_mem _
 
+/- English proof (translation)
+Establish `hJ` using `isIntM_of_mem_parahoric hj`. Take `⟨i11, -, i21, -⟩` from `isIntM_toBlocks hJ`. Establish `hQ : IsIntM ((E * T)⁻¹).val`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `isIntM_mul hT (by rw [Matrix.coe_units_inv]; exact isIntM_inv (isIntM_of_mem_KO hE) (val_det_of_mem_KO hE))`.
+
+Establish `hv : ((dg A (E * T))⁻¹ * (j' * dg A T)).val = fromBlocks j'.val.toBlocks₁₁ (j'.val.toBlocks₁₂ * T.val) (((E * T)⁻¹).val * j'.val.toBlocks₂₁) 1`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, val_dg, val_dg, mul_fromBlocks_diag, fromBlocks_diag_mul]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Use `congr 1`. Rewrite using `[← hEj, ← Matrix.mul_assoc, ← Units.val_mul, ← Units.val_mul, mul_assoc, inv_mul_cancel, Units.val_one]`.
+
+Use `mem_parahoric_of ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `isIntM_fromBlocks_iff.2 ⟨i11, h12, isIntM_mul hQ i21, isIntM_one⟩`. Establish `h1 : valuation k (dg A (E * T)).val.det * valuation k ((dg A (E * T))⁻¹ * (j' * dg A T)).val.det = valuation k j'.val.det * valuation k (dg A T).val.det`. Rewrite using `[← map_mul, ← map_mul, ← det_mul, ← det_mul, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_left]`.
+
+Rewrite `h1` using `[det_dg, det_dg, Units.val_mul, det_mul, map_mul, val_det_of_mem_KO hE, one_mul, val_det_of_mem_KO (mem_parahoric.1 hj).1, one_mul]`. Establish `hT0 : valuation k T.val.det ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _ |>.1 T.isUnit).ne_zero`. Conclude with `mul_left_cancel₀ hT0 (h1.trans (mul_one _).symm)`.
+
+Introduce `i j`. Rewrite using `[hv]`. Conclude with `val_lt_mul hQ (fun a b => (mem_parahoric.1 hj).2 a b) i j`.
+-/
 theorem key_mem {j' : GL (A ⊕ D) k} (hj : j' ∈ parahoric k A D) {E T : GL D k} (hE : E ∈ KO k D)
     (hEj : E.val = j'.val.toBlocks₂₂) (hT : IsIntM (T⁻¹).val) (h12 : IsIntM (j'.val.toBlocks₁₂ * T.val)) :
     (dg A (E * T))⁻¹ * (j' * dg A T) ∈ parahoric k A D := by
@@ -215,6 +307,11 @@ open Classical in
 def lowerDiagonalBlockAsGL (j : GL (A ⊕ D) k) : GL D k :=
   if h : IsUnit j.val.toBlocks₂₂.det then nonsingInvUnit _ h else 1
 
+/- English proof (translation)
+Establish `h : IsUnit j.val.toBlocks₂₂.det`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Use `(GlobalTheory.DatumEigen.val_det_blocks hj).2` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`.
+
+Rewrite using `[lowerDiagonalBlockAsGL, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : (lowerDiagonalBlockAsGL j).val = j.val.toBlocks₂₂ := by
   have h : IsUnit j.val.toBlocks₂₂.det := by
     refine isUnit_iff_ne_zero.2 fun h0 => ?_
@@ -222,11 +319,19 @@ theorem lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two {j : GL (A ⊕ D) k} (hj 
     rw [h0, map_zero] at this; exact zero_ne_one this
   rw [lowerDiagonalBlockAsGL, dif_pos h]; rfl
 
+/- English proof (translation)
+Use `mem_KO_of ?_ ?_` and prove the remaining obligations. Rewrite using `[lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hj]`. Conclude with `(isIntM_toBlocks (isIntM_of_mem_parahoric hj)).2.2.2`. Rewrite using `[lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hj]`. Conclude with `(GlobalTheory.DatumEigen.val_det_blocks hj).2`.
+-/
 theorem lowerDiagonalBlockAsGL_mem_integralGeneralLinear {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : lowerDiagonalBlockAsGL j ∈ KO k D := by
   refine mem_KO_of ?_ ?_
   · rw [lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hj]; exact (isIntM_toBlocks (isIntM_of_mem_parahoric hj)).2.2.2
   · rw [lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hj]; exact (GlobalTheory.DatumEigen.val_det_blocks hj).2
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul (nmat u * j), val_dg, mul_fromBlocks_diag]`. Establish `h : (nmat u * j).val = fromBlocks (j.val.toBlocks₁₁ + u * j.val.toBlocks₂₁) (j.val.toBlocks₁₂ + u * j.val.toBlocks₂₂) j.val.toBlocks₂₁ j.val.toBlocks₂₂`. Rewrite using `[Units.val_mul, val_nmat]`. Conclude with `fromBlocks_unip_mul u j.val`. Establish `h21 : (nmat u * j).val.toBlocks₂₁ = j.val.toBlocks₂₁` using `by rw [h, toBlocks_fromBlocks₂₁]`.
+
+Establish `h22 : (nmat u * j).val.toBlocks₂₂ = j.val.toBlocks₂₂` using `by rw [h, toBlocks_fromBlocks₂₂]`. Rewrite using `[h21, h22]`.
+-/
 theorem val_nmat_mul_dg (u : Matrix A D k) (j : GL (A ⊕ D) k) (T : GL D k) :
     (nmat u * j * dg A T).val = fromBlocks (nmat u * j).val.toBlocks₁₁ ((nmat u * j).val.toBlocks₁₂ * T.val)
       j.val.toBlocks₂₁ (j.val.toBlocks₂₂ * T.val) := by
@@ -238,6 +343,9 @@ theorem val_nmat_mul_dg (u : Matrix A D k) (j : GL (A ⊕ D) k) (T : GL D k) :
   have h22 : (nmat u * j).val.toBlocks₂₂ = j.val.toBlocks₂₂ := by rw [h, toBlocks_fromBlocks₂₂]
   rw [h21, h22]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, val_nmat, fromBlocks_unip_mul, toBlocks_fromBlocks₂₂]`.
+-/
 theorem nmat_mul_22 (u : Matrix A D k) (j : GL (A ⊕ D) k) : (nmat u * j).val.toBlocks₂₂ = j.val.toBlocks₂₂ := by
   rw [Units.val_mul, val_nmat, fromBlocks_unip_mul, toBlocks_fromBlocks₂₂]
 
@@ -250,6 +358,37 @@ variable {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
 open Classical in
 
+/- English proof (translation)
+Rewrite `hR`, the goal using `[mtor_eq_dg]`. Use `set T := torusElt k D ϖ (-indic s) with hTdef`. Establish `hTi : IsIntM (T⁻¹).val` using `inv_torusElt_int hϖ s`. Establish `hW12 : ∀ j : GL (A ⊕ D) k, (nmat u * j * dg A T).val.toBlocks₁₂ = (nmat u * j).val.toBlocks₁₂ * T.val` using `fun j => by rw [val_nmat_mul_dg, toBlocks_fromBlocks₁₂]`. Establish `hW22 : ∀ j : GL (A ⊕ D) k, (nmat u * j * dg A T).val.toBlocks₂₂ = j.val.toBlocks₂₂ * T.val` using `fun j => by rw [val_nmat_mul_dg, toBlocks_fromBlocks₂₂]`.
+
+Establish `hJR : ∀ j ∈ R, j ∈ parahoric k A D` using `fun j hj => (hR.1 j hj).1`. Set `pick : GL (A ⊕ D) k → GL D k` to `fun j => if h : ∃ g, g ∈ RK ∧ g⁻¹ * (lowerDiagonalBlockAsGL j * T) ∈ KO k D then h.choose else 1`. Establish `spec : ∀ j ∈ parahoric k A D, pick j ∈ RK ∧ (pick j)⁻¹ * (lowerDiagonalBlockAsGL j * T) ∈ KO k D` using `fun j hj => by`. Establish `h` using `(hRK.2 (lowerDiagonalBlockAsGL j) (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hj)).exists`. Simplify using `only [pick, dif_pos h]`.
+
+Conclude with `h.choose_spec`. Establish `uniq : ∀ j ∈ parahoric k A D, ∀ g ∈ RK, g⁻¹ * (lowerDiagonalBlockAsGL j * T) ∈ KO k D → pick j = g` using `fun j hj g hg h => (hRK.2 (lowerDiagonalBlockAsGL j) (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hj)).unique (spec j hj) ⟨hg, h⟩`. Establish `hY : ∀ j ∈ parahoric k A D, IsIntM (nmat u * j * dg A T).val.toBlocks₁₂ → (dg A (lowerDiagonalBlockAsGL j * T))⁻¹ * (nmat u * j * dg A T) ∈ parahoric k A D` using `fun j hj h12 => by`. Establish `hNj : nmat u * j ∈ parahoric k A D` using `mul_mem (nmat_mem hu) hj`. Use `key_mem hNj (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hj) (by rw [lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hj, nmat_mul_22]) hTi (by rw [← hW12]; exact h12)` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Apply `Finset.card_nbij pick` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hj ⊢`. Take `⟨hjR, -, h22⟩` from `hj`.
+
+Establish `hJ` using `hJR j hjR`. Take `⟨hg, hK⟩` from `spec j hJ`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Establish `e : (pick j).val = (lowerDiagonalBlockAsGL j * T).val * (((pick j)⁻¹ * (lowerDiagonalBlockAsGL j * T))⁻¹).val`. Rewrite using `[← Units.val_mul]`.
+
+Use `congr 1`. Use `group`. Rewrite using `[e, ← Matrix.mul_assoc, Units.val_mul (lowerDiagonalBlockAsGL j), lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hJ, ← hW22]`. Conclude with `isIntM_mul h22 (isIntM_of_mem_KO (inv_mem hK))`. Introduce `j₁ hj₁ j₂ hj₂ he`.
+
+Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hj₁ hj₂`. Take `⟨h1R, h1a, -⟩` from `hj₁`. Take `⟨h2R, h2a, -⟩` from `hj₂`. Establish `hJ1` using `hJR _ h1R`. Establish `hJ2` using `hJR _ h2R`.
+
+Take `⟨-, hK1⟩` from `spec j₁ hJ1`. Take `⟨-, hK2⟩` from `spec j₂ hJ2`. Rewrite `hK1` using `[he]`. Establish `hκ : dg A ((lowerDiagonalBlockAsGL j₁ * T)⁻¹ * (lowerDiagonalBlockAsGL j₂ * T)) ∈ parahoric k A D`. Apply `dg_mem` to reduce the goal to its premises.
+
+Establish `: (lowerDiagonalBlockAsGL j₁ * T)⁻¹ * (lowerDiagonalBlockAsGL j₂ * T) = ((pick j₂)⁻¹ * (lowerDiagonalBlockAsGL j₁ * T))⁻¹ * ((pick j₂)⁻¹ * (lowerDiagonalBlockAsGL j₂ * T))` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem hK1) hK2`. Establish `hm : (j₁ * dg A T)⁻¹ * (j₂ * dg A T) ∈ parahoric k A D`. Use `mul_mem (mul_mem (inv_mem (hY j₁ hJ1 h1a)) hκ) (hY j₂ hJ2 h2a)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_inv]`. Use `group`. Conclude with `(hR.2 j₂ hJ2).unique ⟨h1R, hm⟩ ⟨h2R, by simp⟩`. Introduce `g hg`.
+
+Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter] at hg`. Take `⟨hgR, hSg⟩` from `hg`. Take `⟨κ, hκ, κ', hκ', hgdef⟩` from `hRK.1 g hgR`. Establish `hj₀ : (nmat u)⁻¹ * dg A κ ∈ parahoric k A D` using `mul_mem (inv_mem (nmat_mem hu)) (dg_mem hκ)`. Take `⟨j, ⟨hjR, hm⟩, -⟩` from `hR.2 _ hj₀`.
+
+Use `set m' := ((j * dg A T)⁻¹ * ((nmat u)⁻¹ * dg A κ * dg A T))⁻¹ with hm'def`. Establish `hm' : m' ∈ parahoric k A D` using `inv_mem hm`. Establish `hJ` using `hJR j hjR`. Establish `eW : nmat u * j * dg A T = dg A (κ * T) * m'`. Rewrite using `[hm'def]`.
+
+Simplify using `only [map_mul, map_inv]`. Use `group`. Establish `hv : (nmat u * j * dg A T).val = fromBlocks m'.val.toBlocks₁₁ m'.val.toBlocks₁₂ ((κ * T).val * m'.val.toBlocks₂₁) ((κ * T).val * m'.val.toBlocks₂₂)`. Rewrite using `[eW, Units.val_mul, val_dg, fromBlocks_diag_mul]`. Establish `hE : lowerDiagonalBlockAsGL j * T = κ * T * lowerDiagonalBlockAsGL m'` using `by ext1`.
+
+Rewrite using `[Units.val_mul, lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hJ, ← hW22, hv, toBlocks_fromBlocks₂₂, Units.val_mul (κ * T), lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hm']`. Establish `hE' : g⁻¹ * (lowerDiagonalBlockAsGL j * T) = κ'⁻¹ * lowerDiagonalBlockAsGL m'` using `by rw [hE, hgdef]; group`. Use `⟨j, ?_, uniq j hJ g hgR (by rw [hE']; exact mul_mem (inv_mem hκ') (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hm'))⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter]`. Use `⟨hjR, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv, toBlocks_fromBlocks₁₂]`. Conclude with `(isIntM_toBlocks (isIntM_of_mem_parahoric hm')).2.1`. Establish `e2 : lowerDiagonalBlockAsGL j * T = g * (κ'⁻¹ * lowerDiagonalBlockAsGL m')` using `by rw [← hE']; group`. Rewrite using `[hW22, ← lowerDiagonalBlockAsGL_val_eq_toBlocks_two_two hJ, ← Units.val_mul, e2, Units.val_mul, ← Matrix.mul_assoc]`. Conclude with `isIntM_mul hSg (isIntM_of_mem_KO (mul_mem (inv_mem hκ') (lowerDiagonalBlockAsGL_mem_integralGeneralLinear hm')))`.
+-/
 theorem card_filter_eq {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : Finset D)
     {R : Finset (GL (A ⊕ D) k)} {d : GL (A ⊕ D) k → kˣ} (hR : IsReps (mtor ϖ (-indic s)) R d)
     {RK : Finset (GL D k)} (hRK : IsRepsK (torusElt k D ϖ (-indic s)) RK) {D' : Type}
@@ -340,6 +479,11 @@ namespace GlobalTheory.ParHeckeSource
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hy`. Establish `hyI : IsIntM y` using `h1`. Take `⟨a, b, c, e⟩` from `isIntM_toBlocks hyI`. Rewrite using `[mul_fromBlocks_diag]`. Use `⟨isIntM_fromBlocks_iff.2 ⟨a, isIntM_mul b hQ, c, isIntM_mul e hQ⟩, by simpa using h2, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[fromBlocks_apply₂₁]`. Conclude with `h3 i j`.
+-/
 theorem inSupp_mul_diag {y : Matrix (A ⊕ D') (A ⊕ D) k} (hy : InSupp y) {Q : Matrix D D k} (hQ : IsIntM Q) :
     InSupp (y * (fromBlocks (1 : Matrix A A k) 0 0 Q : Matrix (A ⊕ D) (A ⊕ D) k)) := by
   obtain ⟨h1, h2, h3⟩ := hy
@@ -349,6 +493,11 @@ theorem inSupp_mul_diag {y : Matrix (A ⊕ D') (A ⊕ D) k} (hy : InSupp y) {Q :
   refine ⟨isIntM_fromBlocks_iff.2 ⟨a, isIntM_mul b hQ, c, isIntM_mul e hQ⟩, by simpa using h2, fun i j => ?_⟩
   rw [fromBlocks_apply₂₁]; exact h3 i j
 
+/- English proof (translation)
+Use `⟨fun h => h.1, fun h => ?_⟩` and prove the remaining obligations. Take `⟨-, h2, h3⟩` from `(GlobalTheory.DatumEigen.inSupp_mul hx hj).1`. Establish `e : x * (j * dg A T).val = fromBlocks (x * j.val).toBlocks₁₁ ((x * j.val).toBlocks₁₂ * T.val) (x * j.val).toBlocks₂₁ ((x * j.val).toBlocks₂₂ * T.val)`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, val_dg, mul_fromBlocks_diag]`. Use `⟨h, ?_, fun i l => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, toBlocks_fromBlocks₁₁]`. Conclude with `h2`. Rewrite using `[e, fromBlocks_apply₂₁]`. Conclude with `h3 i l`.
+-/
 theorem inSupp_iff_int {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) {j : GL (A ⊕ D) k}
     (hj : j ∈ parahoric k A D) (T : GL D k) :
     InSupp (x * (j * dg A T).val) ↔ IsIntM (x * (j * dg A T).val) := by
@@ -361,6 +510,19 @@ theorem inSupp_iff_int {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) {j : 
   · rw [e, toBlocks_fromBlocks₁₁]; exact h2
   · rw [e, fromBlocks_apply₂₁]; exact h3 i l
 
+/- English proof (translation)
+Establish `hxI : IsIntM x` using `hx.1`. Take `⟨i11, i12, i21, i22⟩` from `isIntM_toBlocks hxI`. Establish `hu : IsUnit x.toBlocks₁₁.det` using `isUnit_iff_ne_zero.2 hx.det_ne`. Establish `inv11 : IsIntM x.toBlocks₁₁⁻¹` using `isIntM_inv i11 hx.2.1`. Use `set L : Matrix (A ⊕ D') (A ⊕ D') k := fromBlocks x.toBlocks₁₁ 0 x.toBlocks₂₁ 1 with hL`.
+
+Use `set L' : Matrix (A ⊕ D') (A ⊕ D') k := fromBlocks x.toBlocks₁₁⁻¹ 0 (-(x.toBlocks₂₁ * x.toBlocks₁₁⁻¹)) 1 with hL'`. Use `set Z : Matrix (A ⊕ D') (A ⊕ D) k := fromBlocks (1 : Matrix A A k) 0 0 (schur x) * (nmat (x.toBlocks₁₁⁻¹ * x.toBlocks₁₂)).val with hZ`. Establish `e1 : L * Z = x`. Rewrite using `[hL, hZ, val_nmat, fromBlocks_multiply, fromBlocks_multiply]`. Use `conv_rhs => rw [← fromBlocks_toBlocks x]`.
+
+Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.one_mul]`. Rewrite using `[schur, ← Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Establish `e2 : L' * L = 1`. Rewrite using `[hL, hL', fromBlocks_multiply]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, nonsing_inv_mul _ hu, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_one, neg_add_cancel, fromBlocks_one]`. Establish `iL : IsIntM L` using `isIntM_fromBlocks_iff.2 ⟨i11, isIntM_zero, i21, isIntM_one⟩`. Establish `iL' : IsIntM L'` using `isIntM_fromBlocks_iff.2 ⟨inv11, isIntM_zero, isIntM_neg (isIntM_mul i21 inv11), isIntM_one⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: Z * M = L' * (x * M)` using `by rw [← e1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e2, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `isIntM_mul iL' h`.
+
+Introduce `h`. Rewrite using `[← e1, Matrix.mul_assoc]`. Conclude with `isIntM_mul iL h`.
+-/
 theorem isIntM_mul_iff {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) {c : Type} (M : Matrix (A ⊕ D) c k) :
     IsIntM (x * M) ↔ IsIntM (fromBlocks (1 : Matrix A A k) 0 0 (schur x) * (nmat (x.toBlocks₁₁⁻¹ * x.toBlocks₁₂)).val * M) := by
   have hxI : IsIntM x := hx.1
@@ -398,16 +560,39 @@ namespace GlobalTheory.ParHeckeSource
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {A D D' : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D']
 
+/- English proof (translation)
+Take `⟨i11, i12, i21, i22⟩` from `isIntM_toBlocks (show IsIntM x from hx.1)`. Conclude with `isIntM_sub i22 (isIntM_mul (isIntM_mul i21 (isIntM_inv i11 hx.2.1)) i12)`.
+-/
 theorem schur_int {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) : IsIntM (schur x) := by
   obtain ⟨i11, i12, i21, i22⟩ := isIntM_toBlocks (show IsIntM x from hx.1)
   exact isIntM_sub i22 (isIntM_mul (isIntM_mul i21 (isIntM_inv i11 hx.2.1)) i12)
 
+/- English proof (translation)
+Take `⟨i11, i12, -, -⟩` from `isIntM_toBlocks (show IsIntM x from hx.1)`. Conclude with `isIntM_mul (isIntM_inv i11 hx.2.1) i12`.
+-/
 theorem unip_int {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) : IsIntM (x.toBlocks₁₁⁻¹ * x.toBlocks₁₂) := by
   obtain ⟨i11, i12, -, -⟩ := isIntM_toBlocks (show IsIntM x from hx.1)
   exact isIntM_mul (isIntM_inv i11 hx.2.1) i12
 
 open Classical in
 
+/- English proof (translation)
+Use `set u := x.toBlocks₁₁⁻¹ * x.toBlocks₁₂ with hudef`. Establish `hu : IsIntM u` using `unip_int hx`. Establish `hiff : InSupp (x * (j * dg A T).val) ↔ (IsIntM (nmat u * j * dg A T).val.toBlocks₁₂ ∧ IsIntM (schur x * (nmat u * j * dg A T).val.toBlocks₂₂))`. Rewrite using `[inSupp_iff_int hx hj, isIntM_mul_iff hx, Matrix.mul_assoc, ← Units.val_mul, ← mul_assoc (nmat _), fromBlocks_diag_mul, isIntM_fromBlocks_iff]`. Establish `w11 : IsIntM (nmat u * j * dg A T).val.toBlocks₁₁`.
+
+Rewrite using `[val_nmat_mul_dg, toBlocks_fromBlocks₁₁]`. Conclude with `(isIntM_toBlocks (isIntM_of_mem_parahoric (mul_mem (nmat_mem hu) hj))).1`. Establish `w21 : IsIntM (schur x * (nmat u * j * dg A T).val.toBlocks₂₁)`. Rewrite using `[val_nmat_mul_dg, toBlocks_fromBlocks₂₁]`. Conclude with `isIntM_mul (schur_int hx) (isIntM_toBlocks (isIntM_of_mem_parahoric hj)).2.2.1`.
+
+Conclude with `⟨fun h => ⟨h.2.1, h.2.2.2⟩, fun h => ⟨w11, h.1, w21, h.2⟩⟩`. Use `split_ifs with hP`. Establish `hs` using `hiff.2 hP`. Take `⟨h11, h22⟩` from `GlobalTheory.DatumEigen.val_det_blocks hj`. Establish `hc` using `(GlobalTheory.DatumEigen.inSupp_mul hx hj).2`.
+
+Establish `n11 : j.val.toBlocks₁₁.det ≠ 0` using `fun h0 => by rw [h0, map_zero] at h11; exact zero_ne_one h11`. Use `set u₁ : kˣ := Units.mk0 _ n11 with hu₁`. Establish `hdv : valuation k (d : k) = 1` using `by rw [hd]; exact h22`. Establish `hz11 : (x * (j * dg A T).val).toBlocks₁₁ = (x * j.val).toBlocks₁₁`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, val_dg, mul_fromBlocks_diag, toBlocks_fromBlocks₁₁]`.
+
+Establish `t1 : ξ (GeneralLinearGroup.det j) = ξ (u₁ * d)`. Use `GlobalTheory.DatumEigen.tame_eq hξ (by rw [Units.val_mul, map_mul, hdv, mul_one]; exact h11) ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hd, GeneralLinearGroup.val_det_apply]`. Conclude with `GlobalTheory.DatumEigen.det_cong hj`. Establish `t2 : ξ (Units.mk0 _ hs.det_ne) = ξ (Units.mk0 _ hx.det_ne * u₁)`.
+
+Use `GlobalTheory.DatumEigen.tame_eq hξ (by rw [Units.val_mul, map_mul, Units.val_mk0, hx.2.1, one_mul]; exact h11) ?_` and prove the remaining obligations. Use `show valuation k ((x * (j * dg A T).val).toBlocks₁₁.det - x.toBlocks₁₁.det * j.val.toBlocks₁₁.det) < 1`. Rewrite using `[hz11]`. Conclude with `hc`. Simplify using `only [datum, dif_pos hs, dif_pos hx]`.
+
+Rewrite using `[t1, t2, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [map_mul]`. Use `group`. Establish `hs : ¬ InSupp (x * (j * dg A T).val)` using `fun h => hP (hiff.1 h)`.
+
+Simplify using `only [datum, dif_neg hs, mul_zero]`.
+-/
 theorem term_eq {ξ : kˣ →* ℂˣ} (hξ : IsTame ξ) {x : Matrix (A ⊕ D') (A ⊕ D) k} (hx : InSupp x) {j : GL (A ⊕ D) k}
     (hj : j ∈ parahoric k A D) {d : kˣ} (hd : (d : k) = j.val.toBlocks₂₂.det) (T : GL D k) :
     ((ξ (GeneralLinearGroup.det j) * (ξ d)⁻¹ : ℂˣ) : ℂ) * datum ξ (x * (j * dg A T).val) =
@@ -457,6 +642,19 @@ end GlobalTheory.ParHeckeSource
 
 namespace GlobalTheory.ParHeckeSource
 
+/- English proof (translation)
+Introduce `k _ _ _ _ A D D' _ _ _ _ _ _ ϖ hϖ ξ hξ s R d hR RK hRK x`. Establish `hcard` using `card_filter_eq hϖ s hR hRK (u := x.toBlocks₁₁⁻¹ * x.toBlocks₁₂) (D' := D')`. Rewrite `hR`, `hcard`, the goal using `[mtor_eq_dg]`. Use `set T := torusElt k D ϖ (-indic s) with hTdef`. Distinguish the cases in `hx : InSupp x`.
+
+Establish `hL : ∀ j ∈ R, ((ξ (GeneralLinearGroup.det j) * (ξ (d j))⁻¹ : ℂˣ) : ℂ) * datum ξ (x * (j * dg A T).1) = if IsIntM (nmat (x.toBlocks₁₁⁻¹ * x.toBlocks₁₂) * j * dg A T).val.toBlocks₁₂ ∧ IsIntM (schur x * (nmat (x.toBlocks₁₁⁻¹ * x.toBlocks₁₂) * j * dg A T).val.toBlocks₂₂) then datum ξ …` using `fun j hj => term_eq hξ hx (hR.1 j hj).1 (hR.1 j hj).2 T`. Establish `hRt : ∀ g ∈ RK, liftS ξ (fun y => intInd (y * g.1)) x = if IsIntM (schur x * g.val) then datum ξ x else 0`. Introduce `g _`. Simplify using `only [liftS, intInd]`. Distinguish the cases in `h : ∀ i j, (schur x * g.val) i j ∈ 𝒪[k]`.
+
+Rewrite using `[if_pos h, if_pos (show IsIntM (schur x * g.val) from h), mul_one]`. Rewrite using `[if_neg h, if_neg (show ¬ IsIntM (schur x * g.val) from h), mul_zero]`. Rewrite using `[Finset.sum_congr rfl hL, Finset.sum_congr rfl hRt, ← Finset.sum_filter, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const, hcard (unip_int hx) (schur x)]`. Establish `hL : ∀ j ∈ R, ((ξ (GeneralLinearGroup.det j) * (ξ (d j))⁻¹ : ℂˣ) : ℂ) * datum ξ (x * (j * dg A T).1) = 0`. Introduce `j hjR`.
+
+Establish `hj` using `(hR.1 j hjR).1`. Establish `hs : ¬ InSupp (x * (j * dg A T).val)` using `fun h => hx (by`. Establish `h1` using `inSupp_mul_diag h (inv_torusElt_int hϖ s)`. Establish `e : x * (j * dg A T).val * (fromBlocks (1 : Matrix A A k) 0 0 (T⁻¹).val : Matrix (A ⊕ D) (A ⊕ D) k) = x * j.val`. Rewrite using `[← val_dg (A := A), Matrix.mul_assoc, ← Units.val_mul, map_inv, mul_inv_cancel_right]`.
+
+Rewrite `h1` using `[e]`. Establish `h2` using `(GlobalTheory.DatumEigen.inSupp_mul h1 (inv_mem hj)).1`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one] at h2)` and apply the resulting hypothesis. Simplify using `only [datum, dif_neg hs, mul_zero]`. Rewrite using `[Finset.sum_eq_zero hL, Finset.sum_eq_zero]`.
+
+Introduce `g _`. Simplify using `only [liftS, datum, dif_neg hx, zero_mul]`.
+-/
 theorem sum_reps_datum_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D D' : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype D'] [DecidableEq D'] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (ξ : kˣ →* ℂˣ), IsTame ξ → ∀ (s : Finset D) (R : Finset (GL (A ⊕ D) k)) d, IsReps (mtor ϖ (-indic s)) R d → ∀ RK, IsRepsK (torusElt k D ϖ (-indic s)) RK → ∀ x : Matrix (A ⊕ D') (A ⊕ D) k, ∑ j ∈ R, ((ξ (GeneralLinearGroup.det j) * (ξ (d j))⁻¹ : ℂˣ) : ℂ) * datum ξ (x * (j * mtor ϖ (-indic s)).1) = ∑ g ∈ RK, liftS ξ (fun y => intInd (y * g.1)) x := by
   intro k _ _ _ _ A D D' _ _ _ _ _ _ ϖ hϖ ξ hξ s R d hR RK hRK x
   classical

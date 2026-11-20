@@ -35,21 +35,49 @@ def Pinned (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) {LP : 
   ∀ ρ : GLRep g, IsSC ρ → ∀ τ : FDRep ℂ (Gn g ρ.1), Simple τ → FiniteGL.IsCuspidal τ.ρ → Inflates ρ.2.ρ τ →
     ∀ f, Representation.asAlgebraHom τ.ρ (S.e ρ.1 f) = 1 → ine (rec ρ) = liftPoly teich f
 
+/- English proof (translation)
+Simplify using `[liftPoly, Formalism.CyclotomicNorms.rootsBar]`.
+-/
 theorem liftPoly_one (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) : liftPoly teich (1 : (ZMod g)[X]) = 1 := by
   simp [liftPoly, Formalism.CyclotomicNorms.rootsBar]
 
+/- English proof (translation)
+Unfold `liftPoly Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.map_mul, roots_mul (mul_ne_zero (map_ne_zero hf) (map_ne_zero hf')), Multiset.map_add, Multiset.prod_add]`.
+-/
 theorem liftPoly_mul (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) {f f' : (ZMod g)[X]} (hf : f ≠ 0) (hf' : f' ≠ 0) :
     liftPoly teich (f * f') = liftPoly teich f * liftPoly teich f' := by
   unfold liftPoly Formalism.CyclotomicNorms.rootsBar
   rw [Polynomial.map_mul, roots_mul (mul_ne_zero (map_ne_zero hf) (map_ne_zero hf')), Multiset.map_add,
     Multiset.prod_add]
 
+/- English proof (translation)
+Take `⟨v, -, hv⟩` from `h`. Use `(S.label n f fun e => hv ?_).1` and prove the remaining obligations. Simplify using `[e, actK]`.
+-/
 theorem Has.monic {S : Sys g} {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) ℚ_[g]) V} {f : (ZMod g)[X]} (h : Has S π f) : f.Monic := by
   obtain ⟨v, -, hv⟩ := h
   refine (S.label n f fun e => hv ?_).1
   simp [e, actK]
 
+/- English proof (translation)
+Set `P : Submodule ℂ W → Prop` to `fun U => U ≠ ⊥ ∧ FiniteDimensional ℂ U ∧ (∀ x, ∀ u ∈ U, σ x u ∈ U) ∧ ∀ u ∈ U, σ.asAlgebraHom e u = u`. Establish `hex : ∃ m, ∃ U, P U ∧ Module.finrank ℂ U = m`. Use `⟨_, Submodule.span ℂ (Set.range fun x => σ x w), ⟨?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hw (by simpa using (Submodule.span_eq_bot.1 h) _ ⟨1, rfl⟩)`.
+
+Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Introduce `x u hu`. Use `(show _ ≤ Submodule.comap (σ x) (Submodule.span ℂ (Set.range fun x => σ x w)) from Submodule.span_le.2 ?_) hu` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `Submodule.subset_span ⟨x * y, by simp⟩`.
+
+Introduce `u hu`. Use `(show _ ≤ LinearMap.eqLocus (σ.asAlgebraHom e) LinearMap.id from Submodule.span_le.2 ?_) hu` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show σ.asAlgebraHom e (σ y w) = σ y w`. Rewrite using `[← Representation.asAlgebraHom_single_one, ← Module.End.mul_apply, ← map_mul, he, map_mul, Module.End.mul_apply, hew]`.
+
+Take `⟨U, ⟨h0, hfin, hst, hfix⟩, hm⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ U', P U' → Module.finrank ℂ U ≤ Module.finrank ℂ U'` using `fun U' h => hm ▸ Nat.find_min' hex ⟨U', h, rfl⟩`. Set `σU : Representation ℂ G U` to `PRep.sub σ U hst`. Establish `hirr : IsIrrRep σU`. Use `⟨Submodule.nontrivial_iff_ne_bot.2 h0, fun T hT => or_iff_not_imp_left.2 fun hT0 => ?_⟩` and prove the remaining obligations.
+
+Establish `hP : P (T.map U.subtype)`. Use `⟨fun h => hT0 (Submodule.map_injective_of_injective U.injective_subtype (by simpa using h)), inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, hT x u hu, rfl⟩`. Introduce and unpack `_ ⟨u, -, rfl⟩`.
+
+Conclude with `hfix _ u.2`. Use `hmin _ hP` as an intermediate fact. Rewrite `this` using `[Submodule.finrank_map_subtype_eq]`. Conclude with `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le T) this)`. Use `⟨FDRep.of σU, U.subtype, ?_, U.injective_subtype, fun _ _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Use `(Model.isIrrRep_iff σU).1 hirr` as an intermediate fact. Rewrite using `[FDRep.simple_iff_char_is_norm_one]`. Establish `hc : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `invertibleOfNonzero hc` as an intermediate fact. Establish `h` using `Representation.char_orthonormal σU σU`.
+
+Rewrite `h` using `[if_pos ⟨Representation.Equiv.refl σU⟩, inv_mul_eq_one₀ hc]`. Conclude with `h.symm`. Use `LinearMap.ext fun u => Subtype.ext ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hfix _ u.2)` and prove the remaining obligations. Rewrite using `[alg_apply, alg_apply]`.
+
+Conclude with `(Submodule.coe_sum _ _ _).trans rfl`.
+-/
 theorem exists_simple {G W : Type} [Group G] [Fintype G] [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G W)
     (e : MonoidAlgebra ℂ G) (he : ∀ a, e * a = a * e) (w : W) (hw : w ≠ 0) (hew : σ.asAlgebraHom e w = w) :
     ∃ (τ : FDRep ℂ G) (φ : τ →ₗ[ℂ] W), Simple τ ∧ Function.Injective φ ∧ (∀ x u, φ (τ.ρ x u) = σ x (φ u)) ∧
@@ -100,6 +128,9 @@ theorem exists_simple {G W : Type} [Group G] [Fintype G] [AddCommGroup W] [Modul
     rw [alg_apply, alg_apply]
     exact (Submodule.coe_sum _ _ _).trans rfl
 
+/- English proof (translation)
+Take `⟨v, hv, hne⟩` from `h`. Use `exists_simple (repK π) (S.e n f) (S.central n f) ((repK π).asAlgebraHom (S.e n f) ⟨v, hv⟩) (fun e => hne ?_) ?_` and prove the remaining obligations. Rewrite using `[← repK_alg π _ ⟨v, hv⟩, e]`. Both sides reduce to the same expression. Rewrite using `[← Module.End.mul_apply, ← map_mul, S.idem]`.
+-/
 theorem exists_simple_of_has (S : Sys g) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (f : (ZMod g)[X]) (h : Has S π f) :
     ∃ (τ : FDRep ℂ (Gn g n)) (φ : τ →ₗ[ℂ] fixK1 π), Simple τ ∧ Function.Injective φ ∧
@@ -110,6 +141,11 @@ theorem exists_simple_of_has (S : Sys g) {n : ℕ} {V : Type} [AddCommGroup V] [
   · rw [← repK_alg π _ ⟨v, hv⟩, e]; rfl
   · rw [← Module.End.mul_apply, ← map_mul, S.idem]
 
+/- English proof (translation)
+Take `⟨τ, φ, hs, hinj, heq, he⟩` from `exists_simple_of_has S _ f h`. Establish `hφ : (fixK1 ρ.2.ρ).subtype ∘ₗ φ ≠ 0` using `fun e => by`. Establish `h0 : ∀ u : τ, u = 0` using `fun u => hinj (Subtype.ext (by simpa using LinearMap.congr_fun e u))`. Conclude with `id_nonzero τ (by ext u; exact (h0 _).trans (h0 _).symm)`. Establish `hfix : fixK1 ρ.2.ρ ≠ ⊥` using `fun e => hφ (LinearMap.ext fun u => (Submodule.eq_bot_iff _).1 e _ (φ u).2)`.
+
+Use `h3 ρ hρ τ hs (fun b hb hb' u hu => hinj ?_) ⟨_, hφ, fun k w => ?_⟩ f he` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `h2 ρ hρ hfix b hb hb' _ fun x hx => by rw [← heq, hu x hx]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, heq, repK_red]`.
+-/
 theorem ine_eq_of_isSC (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) {LP : Type} (ine : LP → ℂ[X]) (rec : GLRep g → LP)
     (h2 : DepthZeroCuspidal g) (h3 : Pinned S teich ine rec) (ρ : GLRep g) (hρ : IsSC ρ) (f : (ZMod g)[X])
     (h : Has S ρ.2.ρ f) : ine (rec ρ) = liftPoly teich f := by
@@ -123,6 +159,13 @@ theorem ine_eq_of_isSC (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g →
     exact h2 ρ hρ hfix b hb hb' _ fun x hx => by rw [← heq, hu x hx]
   · simp only [LinearMap.comp_apply, Submodule.subtype_apply, heq, repK_red]
 
+/- English proof (translation)
+Take `⟨L, hL, hsc, he⟩` from `h1 π hπ hs`. Take `⟨fs, hfs, rfl⟩` from `GlobalTheory.T.series_eq_prod_of_parabolic_induction_chain g S π L hL f h`. Rewrite using `[he]`. Express the relevant statement in the definitionally equal form `_ = liftPoly teich fs.prod`. Use `clear he hL h`.
+
+It suffices to establish `fs.prod.Monic ∧ (L.map fun ρ => ine (rec ρ)).prod = liftPoly teich fs.prod from this.2`. Proceed by induction on `hfs with`. Consider the case `nil => simp [liftPoly_one]`. Consider the case `@cons ρ f L fs hρ _ ih`. Take `⟨hm, ih⟩` from `ih fun ρ' h' => hsc ρ' (List.mem_cons_of_mem _ h')`.
+
+Use `⟨by simpa using (Has.monic hρ).mul hm, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, liftPoly_mul _ (Has.monic hρ).ne_zero hm.ne_zero, ih, ine_eq_of_isSC S teich ine rec h2 h3 ρ (hsc ρ List.mem_cons_self) f hρ]`.
+-/
 theorem ine_eq_of_has (g : ℕ) [Fact g.Prime] (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) (LP : Type) (ine : LP → ℂ[X])
     (rec : GLRep g → LP) (h1 : SupportCompat ine rec) (h2 : DepthZeroCuspidal g) (h3 : Pinned S teich ine rec)
     (π : GLRep g) (hπ : IsIrrRep π.2.ρ) (hs : PRep.IsSmooth π.2.ρ) (f : (ZMod g)[X]) (h : Has S π.2.ρ f) :
@@ -149,6 +192,19 @@ def LabelsCusp (S : Sys g) (L : LabelDatum g) : Prop :=
   ∀ (d : ℕ) (τ : FDRep ℂ (Gn g d)) (P : (ZMod g)[X]), IsCuspOf L P τ.character →
     Representation.asAlgebraHom τ.ρ (S.e d P) ≠ 0
 
+/- English proof (translation)
+Rewrite using `[FiniteGL.mem_unipRadical]`. Simplify using `only [FiniteGL.twoBlocks, Matrix.sub_apply, sub_eq_zero, Units.val_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hj hi => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h i j (by simp [hj]), Matrix.one_apply_ne (fun e => by subst e; omega)]`. Use extensionality with `i j`. Establish `hi : (i : ℕ) < d` using `by omega`. Establish `hj : (j : ℕ) < d` using `by omega`. Simplify using `only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, hi, hj, and_self, dif_pos]`.
+
+Rewrite using `[h _ _ (by simp)]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Use extensionality with `i j`. Establish `hi : a + (i : ℕ) < d` using `by omega`. Establish `hj : a + (j : ℕ) < d` using `by omega`.
+
+Simplify using `only [br, Formalism.MainNotions.ArithmeticCylinders.entN, hi, hj, and_self, dif_pos]`. Rewrite using `[h _ _ (by simp)]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Introduce and unpack `⟨h0, h1, h2⟩ i j hij`. Apply the tactic sequence `by_cases hi : (i : ℕ) < a <;> by_cases hj : (j : ℕ) < a`.
+
+Use `congrFun (congrFun h1 ⟨i, hi⟩) ⟨j, hj⟩` as an intermediate fact. Simplify `this` using `[tl, Formalism.MainNotions.ArithmeticCylinders.entN, Matrix.one_apply, Fin.ext_iff]`. Simplify using `[hi, hj] at hij`. Rewrite using `[h0 i j hj (by omega), Matrix.one_apply_ne (fun e => by subst e; omega)]`. Use `congrFun (congrFun h2 ⟨i - a, by omega⟩) ⟨j - a, by omega⟩` as an intermediate fact.
+
+Establish `ei : a + (i - a) = i` using `by omega`. Establish `ej : a + (j - a) = j` using `by omega`. Establish `e : ((i : ℕ) - a = j - a) ↔ (i : ℕ) = j` using `by omega`. Simplify `this` using `[br, Formalism.MainNotions.ArithmeticCylinders.entN, Matrix.one_apply, Fin.ext_iff, ei, ej, e]`.
+-/
 theorem mem_unipRadical_iff {d a : ℕ} (had : a < d) (x : Gn g d) :
     x ∈ FiniteGL.unipRadical (ZMod g) (FiniteGL.twoBlocks d a) ↔
       InPar a (x : Mt g d) ∧ tl a (x : Mt g d) = ((1 : Gn g a) : Mt g a) ∧
@@ -183,6 +239,13 @@ theorem mem_unipRadical_iff {d a : ℕ} (had : a < d) (x : Gn g d) :
       have e : ((i : ℕ) - a = j - a) ↔ (i : ℕ) = j := by omega
       simpa [br, Formalism.MainNotions.ArithmeticCylinders.entN, Matrix.one_apply, Fin.ext_iff, ei, ej, e] using this
 
+/- English proof (translation)
+Use `⟨hd, ⟨τ, hs, fun _ => rfl⟩, fun a h0 had => ?_⟩` and prove the remaining obligations. Use `set U := FiniteGL.unipRadical (ZMod g) (FiniteGL.twoBlocks d a)`. Establish `hz : ∑ u : U, τ.ρ u = 0`. Use `LinearMap.ext fun v => (FiniteGL.isCuspidal_iff_twoBlocks τ.ρ).1 hc a h0 had _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, map_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft (⟨x, hx⟩ : U)) _ _ fun u => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `ht` using `congrArg (LinearMap.trace ℂ τ) hz`. Rewrite `ht` using `[map_sum, map_zero]`. Unfold `res`.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_subtype (p := fun x => x ∈ U) _ (fun x => by rw [mem_unipRadical_iff had]; simp) τ.character]`. Conclude with `mul_eq_zero_of_right _ ht`.
+-/
 theorem isCusp_character {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (hs : Simple τ)
     (hc : FiniteGL.IsCuspidal τ.ρ) : IsCusp τ.character := by
   refine ⟨hd, ⟨τ, hs, fun _ => rfl⟩, fun a h0 had => ?_⟩
@@ -199,6 +262,11 @@ theorem isCusp_character {d : ℕ} (hd : 0 < d) (τ : FDRep ℂ (Gn g d)) (hs : 
     (fun x => by rw [mem_unipRadical_iff had]; simp) τ.character]
   exact mul_eq_zero_of_right _ ht
 
+/- English proof (translation)
+Introduce `ρ hρ τ hs hc hi f he`. Take `⟨t, h1, -, h3⟩` from `hG g L ρ.1 hρ.1`. Take `⟨P, hP, e⟩` from `h3 _ (isCusp_character hρ.1 τ hs hc)`. Establish `hP' : IsCuspOf L P τ.character` using `e ▸ (h1 P hP).1`. Establish `: f = P`.
+
+Assume the negation of the conclusion as `hne`. Apply `hS _ τ P hP'` to reduce the goal to its premises. Rewrite using `[← one_mul (Representation.asAlgebraHom τ.ρ _), ← he, ← map_mul, S.orth _ _ _ hne, map_zero]`. Rewrite using `[this]`. Conclude with `hT ρ hρ τ P hP' hi`.
+-/
 theorem pinned_of_green (S : Sys g) (L : LabelDatum g) {LP : Type} (ine : LP → ℂ[X]) (rec : GLRep g → LP)
     (hG : Green) (hT : TameParam L ine rec) (hS : LabelsCusp S L) : Pinned S L.teich ine rec := by
   intro ρ hρ τ hs hc hi f he
@@ -212,12 +280,32 @@ theorem pinned_of_green (S : Sys g) (L : LabelDatum g) {LP : Type} (ine : LP →
   rw [this]
   exact hT ρ hρ τ P hP' hi
 
+/- English proof (translation)
+The claim follows from `ine_eq_of_has g S L.teich LP ine rec h1 h2 (pinned_of_green S L ine rec hG hT hS) π hπ hs f h`.
+-/
 theorem ine_eq_of_has_green (S : Sys g) (L : LabelDatum g) (LP : Type) (ine : LP → ℂ[X]) (rec : GLRep g → LP)
     (h1 : SupportCompat ine rec) (h2 : DepthZeroCuspidal g) (hG : Green) (hT : TameParam L ine rec)
     (hS : LabelsCusp S L) (π : GLRep g) (hπ : IsIrrRep π.2.ρ) (hs : PRep.IsSmooth π.2.ρ) (f : (ZMod g)[X])
     (h : Has S π.2.ρ f) : ine (rec π) = ((Formalism.CyclotomicNorms.rootsBar f).map fun x => X - C (L.teich x)).prod :=
   ine_eq_of_has g S L.teich LP ine rec h1 h2 (pinned_of_green S L ine rec hG hT hS) π hπ hs f h
 
+/- English proof (translation)
+Introduce `v hv`. Set `T : Subgroup (GL (Fin n) ℚ_[g])` to `{ carrier := {x | π x v = v} mul_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_ofPred_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hy, hx]`.
+
+Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `x hx`. Simplify using `only [Set.mem_ofPred_eq] at *`. Use `conv_lhs => rw [← hx]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `ho : IsOpen {x : GL (Fin n) ℚ_[g] | ∀ i j, ‖(x.val - 1) i j‖ < 1}`. Simplify using `only [Set.ofPred_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt ?_ continuous_const` and prove the remaining obligations.
+
+Conclude with `((Units.continuous_val.sub continuous_const).matrix_elem i j).norm`. Use `T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (ho.mem_nhds (by simp)) fun x hx => ?_)` and prove the remaining obligations. Set `N : Matrix (Fin n) (Fin n) ℤ_[g]` to `Matrix.of fun i j => ⟨(x.val - 1) i j, (hx i j).le⟩`. Establish `hN : (PadicInt.toZMod (p` using `g)).mapMatrix N = 0 := by`. Use extensionality with `i j`.
+
+Establish `: N i j ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `hx i j`. Conclude with `this`. Establish `hM : (PadicInt.toZMod (p` using `g)).mapMatrix (N + 1) = 1 := by rw [map_add, hN, map_one, zero_add]`.
+
+Establish `hd : IsUnit (N + 1).det`. Assume the negation of the conclusion as `h`. Establish `h1 : (N + 1).det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod]`. Conclude with `h`.
+
+Rewrite `h1` using `[RingHom.mem_ker, RingHom.map_det, hM]`. Simplify using `at h1`. Set `k : GL (Fin n) ℤ_[g]` to `((Matrix.isUnit_iff_isUnit_det _).2 hd).unit`. Establish `e1 : red g n k = 1` using `Units.ext hM`. Establish `e2 : inc g n k = x`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap ℤ_[g] ℚ_[g]).mapMatrix (N + 1) = x.val`. Rewrite using `[map_add, map_one]`. Conclude with `(congrArg (· + 1) (show (algebraMap ℤ_[g] ℚ_[g]).mapMatrix N = x.val - 1 from rfl)).trans (sub_add_cancel _ _)`. Conclude with `e2 ▸ (Model.mem_principalCongruenceFixedVectors_iff π v).1 hv k e1`.
+-/
 theorem principalCongruenceFixedVectors_le_smoothVectors {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) : fixK1 π ≤ PRep.smoothPart π := by
   intro v hv
@@ -262,12 +350,18 @@ theorem principalCongruenceFixedVectors_le_smoothVectors {n : ℕ} {V : Type} [A
       (sub_add_cancel _ _)
   exact e2 ▸ (Model.mem_principalCongruenceFixedVectors_iff π v).1 hv k e1
 
+/- English proof (translation)
+Break down `hπ.2 _ (PRep.smoothPart_stable π) with e | e` into its components or cases. Conclude with `absurd (le_bot_iff.1 (e ▸ principalCongruenceFixedVectors_le_smoothVectors π)) h`. Conclude with `fun v => (e ▸ Submodule.mem_top : v ∈ PRep.smoothPart π)`.
+-/
 theorem isSmooth_of_fixK1 {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin n) ℚ_[g]) V} (hπ : IsIrrRep π) (h : fixK1 π ≠ ⊥) : PRep.IsSmooth π := by
   rcases hπ.2 _ (PRep.smoothPart_stable π) with e | e
   · exact absurd (le_bot_iff.1 (e ▸ principalCongruenceFixedVectors_le_smoothVectors π)) h
   · exact fun v => (e ▸ Submodule.mem_top : v ∈ PRep.smoothPart π)
 
+/- English proof (translation)
+Use `ine_eq_of_has g S teich LP ine rec h1 h2 h3 π hπ (isSmooth_of_fixK1 hπ fun e => ?_) f h` and prove the remaining obligations. Take `⟨v, hv, hne⟩` from `h`. Conclude with `hne (by rw [(Submodule.eq_bot_iff _).1 e v hv, map_zero])`.
+-/
 theorem ine_eq_of_has' (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g → ℂ) (LP : Type) (ine : LP → ℂ[X])
     (rec : GLRep g → LP) (h1 : SupportCompat ine rec) (h2 : DepthZeroCuspidal g) (h3 : Pinned S teich ine rec)
     (π : GLRep g) (hπ : IsIrrRep π.2.ρ) (f : (ZMod g)[X]) (h : Has S π.2.ρ f) :
@@ -276,6 +370,11 @@ theorem ine_eq_of_has' (S : Sys g) (teich : Formalism.CyclotomicNorms.Fbar g →
   obtain ⟨v, hv, hne⟩ := h
   exact hne (by rw [(Submodule.eq_bot_iff _).1 e v hv, map_zero])
 
+/- English proof (translation)
+Establish `hfix : fixK1 (Model.detRep 1 (Model.tame χ)) ≠ ⊥` using `fun e => one_ne_zero ((Submodule.eq_bot_iff _).1 e 1 (Model.tame_mem_fixK1 χ 1))`. Use `⟨⟨one_pos, Model.isIrrRep_chRep _, isSmooth_of_fixK1 (Model.isIrrRep_chRep _) hfix, fun v l _ => ⟨{1}, isCompact_singleton, fun (x : GL (Fin 1) ℚ_[g]) _ => ⟨x, ?_, 1, rfl, (mul_one x).symm⟩⟩⟩, hfix⟩` and prove the remaining obligations. Establish `hc : ∀ x y : GL (Fin 1) ℚ_[g], y * x = x * y` using `fun x y => Units.ext (by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm])`.
+
+Conclude with `Subgroup.mem_center_iff.2 (hc x)`.
+-/
 theorem isSC_tameRep (χ : (ZMod g)ˣ →* ℂˣ) : IsSC (tameRep χ) ∧ fixK1 (tameRep χ).2.ρ ≠ ⊥ := by
   have hfix : fixK1 (Model.detRep 1 (Model.tame χ)) ≠ ⊥ := fun e =>
     one_ne_zero ((Submodule.eq_bot_iff _).1 e 1 (Model.tame_mem_fixK1 χ 1))
@@ -286,6 +385,9 @@ theorem isSC_tameRep (χ : (ZMod g)ˣ →* ℂˣ) : IsSC (tameRep χ) ∧ fixK1 
     simp [Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm])
   exact Subgroup.mem_center_iff.2 (hc x)
 
+/- English proof (translation)
+Use `⟨LinearMap.id, fun e => one_ne_zero (LinearMap.congr_fun e (1 : ℂ)), fun k (w : ℂ) => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Model.chRep _ _ w = Model.chRep _ _ w`. Simplify using `[Model.tame_inc]`.
+-/
 theorem inflates_tameRep (χ : (ZMod g)ˣ →* ℂˣ) :
     Inflates (Model.detRep 1 (Model.tame χ))
       (FDRep.of (Model.chRep (χ.comp (Matrix.GeneralLinearGroup.det (n := Fin 1))))) := by

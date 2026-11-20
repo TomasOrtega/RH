@@ -39,13 +39,22 @@ def subFib (M : LieModel G ξ Li) (U : Submodule Ω Li) (z : Sp (𝓞 L) ⟶ X) 
     refine ⟨a, ha, ?_⟩
     rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_subFib {M : LieModel G ξ Li} {U : Submodule Ω Li} {z : Sp (𝓞 L) ⟶ X} {V : Type} [AddCommGroup V]
     [Module (𝓞 L) V] {MB : LieModel G z V} {x : V} :
     x ∈ subFib M U z MB ↔ ∃ a : 𝓞 L, a ≠ 0 ∧ a • x ∈ Submodule.span (𝓞 L) (subGens M U z MB) := Iff.rfl
 
+/- English proof (translation)
+Introduce `_` and use `Iff.rfl`.
+-/
 theorem isSubFibre_subFib (M : LieModel G ξ Li) (U : Submodule Ω Li) (z : Sp (𝓞 L) ⟶ X) {V : Type} [AddCommGroup V]
     [Module (𝓞 L) V] (MB : LieModel G z V) : IsSubFibre M U z MB (subFib M U z MB) := fun _ => Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `x ⟨a, ha, hx⟩`. Use `⟨a, ha, Submodule.span_mono ?_ hx⟩` and prove the remaining obligations. Introduce and unpack `y ⟨e, he, r⟩`. Conclude with `⟨e, h he, r⟩`.
+-/
 theorem subFib_mono (M : LieModel G ξ Li) {U U' : Submodule Ω Li} (h : U ≤ U') (z : Sp (𝓞 L) ⟶ X) {V : Type}
     [AddCommGroup V] [Module (𝓞 L) V] (MB : LieModel G z V) : subFib M U z MB ≤ subFib M U' z MB := by
   rintro x ⟨a, ha, hx⟩
@@ -53,6 +62,9 @@ theorem subFib_mono (M : LieModel G ξ Li) {U U' : Submodule Ω Li} (h : U ≤ U
   rintro y ⟨e, he, r⟩
   exact ⟨e, h he, r⟩
 
+/- English proof (translation)
+Introduce and unpack `a x ha ⟨b, hb, hx⟩`. Conclude with `⟨b * a, mul_ne_zero hb ha, by rwa [mul_smul]⟩`.
+-/
 theorem subFib_saturated (M : LieModel G ξ Li) (U : Submodule Ω Li) (z : Sp (𝓞 L) ⟶ X)
     (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel G z B.carrier) : B.Saturated (subFib M U z MB) := by
   rintro a x ha ⟨b, hb, hx⟩

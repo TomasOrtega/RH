@@ -16,6 +16,13 @@ section Orbit
 def qmass (Γ X : Type*) [Group Γ] [MulAction Γ X] : ℚ :=
   ∑ᶠ o : Quotient (MulAction.orbitRel Γ X), ((Nat.card (MulAction.stabilizer Γ o.out) : ℕ) : ℚ)⁻¹
 
+/- English proof (translation)
+Establish `key : ∀ O : Quotient (MulAction.orbitRel S X), ((Nat.card (MulAction.stabilizer S O.out) : ℕ) : ℚ)⁻¹ = (Nat.card (MulAction.orbit S O.out) : ℚ) / Nat.card S`. Introduce `O`. Establish `h : Nat.card (MulAction.stabilizer S O.out) * Nat.card (MulAction.orbit S O.out) = Nat.card S`. Rewrite using `[Nat.card_coe_set_eq, ← MulAction.index_stabilizer, Subgroup.card_mul_index]`. Establish `hs : (Nat.card (MulAction.stabilizer S O.out) : ℚ) ≠ 0`.
+
+Conclude with `(Nat.card_pos (α := MulAction.stabilizer S O.out)).ne'` after adjusting the coercions. Use `haveI : Nonempty (MulAction.orbit S O.out) := ⟨⟨O.out, MulAction.mem_orbit_self _⟩⟩`. Establish `ho : (Nat.card (MulAction.orbit S O.out) : ℚ) ≠ 0`. Conclude with `(Nat.card_pos (α := MulAction.orbit S O.out)).ne'` after adjusting the coercions. Rewrite using `[← h, Nat.cast_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[key, div_eq_mul_inv]`. Rewrite using `[← Finset.sum_mul, ← Nat.cast_sum]`. Use `congr 2`. Rewrite using `[Nat.card_congr (MulAction.selfEquivSigmaOrbits S X), Nat.card_sigma]`.
+-/
 theorem fib_sum_q (S X : Type*) [Group S] [MulAction S X] [Finite S] [Finite X]
     [Fintype (Quotient (MulAction.orbitRel S X))] :
     ∑ O : Quotient (MulAction.orbitRel S X), ((Nat.card (MulAction.stabilizer S O.out) : ℕ) : ℚ)⁻¹ =
@@ -40,6 +47,27 @@ theorem fib_sum_q (S X : Type*) [Group S] [MulAction S X] [Finite S] [Finite X]
 
 variable {Γ : Type*} [Group Γ]
 
+/- English proof (translation)
+Establish `hSA : ∀ a : A, Finite (MulAction.stabilizer Γ a)`. Introduce `a`. Use `letI := fibAct f hf (f a)`. Use `haveI := hS (f a)`. Conclude with `Finite.of_equiv _ (stabEquiv f hf (f a) ⟨a, rfl⟩)`.
+
+Establish `hposA : ∀ a : A, ((Nat.card (MulAction.stabilizer Γ a) : ℕ) : ℚ)⁻¹ ≠ 0` using `fun a => by haveI := hSA a`. Conclude with `inv_ne_zero (by exact_mod_cast (Nat.card_pos (α := MulAction.stabilizer Γ a)).ne')`. Establish `hposB : ∀ b : B, ((Nat.card (MulAction.stabilizer Γ b) : ℕ) : ℚ)⁻¹ ≠ 0` using `fun b => by haveI := hS b`. Conclude with `inv_ne_zero (by exact_mod_cast (Nat.card_pos (α := MulAction.stabilizer Γ b)).ne')`. Establish `hqfin : ∀ oB, Finite ↥(qmap f hf ⁻¹' {oB})`.
+
+Introduce `oB`. Use `letI := fibAct f hf oB.out`. Use `haveI := hfin oB.out`. Conclude with `Finite.of_equiv _ (orbEquiv f hf oB)`. Establish `hqsurj : Function.Surjective (qmap f hf)`.
+
+Introduce `oB`. Establish `hne : Nonempty {a : A // f a = oB.out}` using `by haveI := hfin oB.out`. Establish `: 0 < Nat.card {a : A // f a = oB.out}` using `by rw [hN]; exact Nat.pos_of_ne_zero hN0`. Conclude with `(Nat.card_pos_iff.1 this).1`. Take `⟨⟨a, ha⟩⟩` from `hne`.
+
+Conclude with `⟨Quotient.mk _ a, by rw [qmap_mk, ha]; exact Quotient.out_eq oB⟩`. Unfold `qmass`. Distinguish the cases in `hB : Finite (Quotient (MulAction.orbitRel Γ B))`. Use `haveI := hB haveI : Finite (Quotient (MulAction.orbitRel Γ A)) := Finite.of_surjective (fun p : Σ oB, ↥(qmap f hf ⁻¹' {oB}) => p.2.1) (fun x => ⟨⟨qmap f hf x, x, rfl⟩, rfl⟩)`. Use `letI := Fintype.ofFinite (Quotient (MulAction.orbitRel Γ B))`.
+
+Use `letI := Fintype.ofFinite (Quotient (MulAction.orbitRel Γ A))`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum, ← Fintype.sum_fiberwise (qmap f hf)]`. Use `Finset.sum_congr rfl fun oB _ => ?_` and prove the remaining obligations. Use `letI := fibAct f hf oB.out`. Use `haveI := hS oB.out`.
+
+Use `haveI := hfin oB.out`. Use `letI := Fintype.ofFinite (Quotient (MulAction.orbitRel (MulAction.stabilizer Γ oB.out) {a : A // f a = oB.out}))`. Establish `hc : ∀ O, Nat.card (MulAction.stabilizer Γ ((orbEquiv f hf oB O) : Quotient (MulAction.orbitRel Γ A)).out) = Nat.card (MulAction.stabilizer (MulAction.stabilizer Γ oB.out) O.out)`. Introduce `O`. Rewrite using `[Nat.card_congr (stabEquiv f hf oB.out O.out)]`.
+
+Apply `card_stab_of_orbitRel` to reduce the goal to its premises. Establish `e1 : ((orbEquiv f hf oB (Quotient.mk _ O.out)) : Quotient (MulAction.orbitRel Γ A)) = Quotient.mk _ O.out.1` using `rfl`. Rewrite `e1` using `[Quotient.out_eq]`. Rewrite using `[e1]`. Conclude with `Quotient.mk_out (s := MulAction.orbitRel Γ A) O.out.1`.
+
+Set `e : Quotient (MulAction.orbitRel (MulAction.stabilizer Γ oB.out) {a : A // f a = oB.out}) ≃ {x : Quotient (MulAction.orbitRel Γ A) // qmap f hf x = oB}` to `(orbEquiv f hf oB).trans (Equiv.subtypeEquivRight fun _ => Iff.rfl)`. Rewrite using `[← Fintype.sum_equiv e (fun O => ((Nat.card (MulAction.stabilizer (MulAction.stabilizer Γ oB.out) O.out) : ℕ) : ℚ)⁻¹) _ (fun O => by rw [← hc O]; rfl)]`. Rewrite using `[fib_sum_q, hN, div_eq_mul_inv]`. Establish `hA : ¬ Finite (Quotient (MulAction.orbitRel Γ A))` using `fun h => hB (Finite.of_surjective _ hqsurj)`. Establish `iA : (Function.support fun o : Quotient (MulAction.orbitRel Γ A) => ((Nat.card (MulAction.stabilizer Γ o.out) : ℕ) : ℚ)⁻¹).Infinite` using `Set.Infinite.mono (fun o _ => hposA o.out) (Set.infinite_univ_iff.2 (not_finite_iff_infinite.1 hA))`.
+
+Establish `iB : (Function.support fun o : Quotient (MulAction.orbitRel Γ B) => ((Nat.card (MulAction.stabilizer Γ o.out) : ℕ) : ℚ)⁻¹).Infinite` using `Set.Infinite.mono (fun o _ => hposB o.out) (Set.infinite_univ_iff.2 (not_finite_iff_infinite.1 hB))`. Rewrite using `[finsum_of_infinite_support iA, finsum_of_infinite_support iB, mul_zero]`.
+-/
 theorem qmass_eq_of_fibre {A B : Type*} [MulAction Γ A] [MulAction Γ B] (f : A → B)
     (hf : ∀ (g : Γ) (a : A), f (g • a) = g • f a) (N : ℕ) (hN0 : N ≠ 0)
     (hfin : ∀ b, Finite {a : A // f a = b}) (hN : ∀ b, Nat.card {a : A // f a = b} = N)
@@ -121,6 +149,11 @@ def dmass (A C : Subgroup H) : ℚ :=
   ∑ᶠ q : DoubleCoset.Quotient (A : Set H) (C : Set H),
     ((Nat.card (A ⊓ C.map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup H) : ℕ) : ℚ)⁻¹
 
+/- English proof (translation)
+Rewrite using `[MulAction.mem_stabilizer_iff]`. Express the relevant statement in the definitionally equal form `(((a : H) * g : H) : H ⧸ C) = g ↔ _`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Apply the tactic sequence `constructor <;> intro h`. Establish `h'` using `C.inv_mem h`.
+
+Simplify `h'` using `[mul_assoc]`. Establish `h'` using `C.inv_mem h`. Simplify `h'` using `[mul_assoc]`.
+-/
 theorem mem_stab_iff (A C : Subgroup H) (g : H) (a : A) :
     a ∈ MulAction.stabilizer A ((g : H ⧸ C)) ↔ (a : H) ∈ C.map (MulAut.conj g).toMonoidHom := by
   rw [MulAction.mem_stabilizer_iff]
@@ -167,6 +200,9 @@ def dqEquiv (A C : Subgroup H) :
     show Quotient.mk _ (((Quotient.out o).out : H) : H ⧸ C) = o
     rw [QuotientGroup.out_eq', Quotient.out_eq]
 
+/- English proof (translation)
+Establish `e : dqEquiv A C q = Quotient.mk _ ((Quotient.out q : H) : H ⧸ C)` using `by conv_lhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression. Rewrite using `[e, card_stab_of_orbitRel (Quotient.mk_out (s := MulAction.orbitRel A (H ⧸ C)) _), Nat.card_congr (stabEquivInf A C _)]`.
+-/
 theorem card_stab_dq (A C : Subgroup H) (q : DoubleCoset.Quotient (A : Set H) (C : Set H)) :
     Nat.card (MulAction.stabilizer A (dqEquiv A C q).out) =
       Nat.card (A ⊓ C.map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup H) := by
@@ -176,12 +212,20 @@ theorem card_stab_dq (A C : Subgroup H) (q : DoubleCoset.Quotient (A : Set H) (C
   rw [e, card_stab_of_orbitRel (Quotient.mk_out (s := MulAction.orbitRel A (H ⧸ C)) _),
     Nat.card_congr (stabEquivInf A C _)]
 
+/- English proof (translation)
+Unfold `dmass qmass`. Rewrite using `[← finsum_comp_equiv (dqEquiv A C)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[card_stab_dq]`.
+-/
 theorem dmass_eq_qmass (A C : Subgroup H) : dmass A C = qmass A (H ⧸ C) := by
   unfold dmass qmass
   rw [← finsum_comp_equiv (dqEquiv A C)]
   refine finsum_congr fun q => ?_
   rw [card_stab_dq]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FibreEquivalence.fibre_finite_card`. Consider the case `exact _root_.GlobalTheory.FibreEquivalence.fibre_finite_card`. Consider the case `(apply _root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FibreEquivalence.fibre_finite_card ..)`.
+-/
 theorem coset_fibre (D C : Subgroup H) (h : D ≤ C) (hDC : D.relIndex C ≠ 0)
     (z : H ⧸ C) : Finite {y : H ⧸ D // Subgroup.quotientMapOfLE h y = z} ∧
       Nat.card {y : H ⧸ D // Subgroup.quotientMapOfLE h y = z} = D.relIndex C := by
@@ -193,6 +237,11 @@ theorem coset_fibre (D C : Subgroup H) (h : D ≤ C) (hDC : D.relIndex C ≠ 0)
   | (intros; apply @_root_.GlobalTheory.FibreEquivalence.fibre_finite_card <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.FibreEquivalence.fibre_finite_card ..)
 
+/- English proof (translation)
+Rewrite using `[dmass_eq_qmass, dmass_eq_qmass]`. Use `qmass_eq_of_fibre (Subgroup.quotientMapOfLE hDC) ?_ _ hi (fun z => (coset_fibre D C hDC hi z).1) (fun z => (coset_fibre D C hDC hi z).2) ?_` and prove the remaining obligations. Introduce `g y`. Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H a => rfl`.
+
+Introduce `b`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective b`. Use `haveI := hfin g`. Conclude with `Finite.of_equiv _ (stabEquivInf A C g).symm`.
+-/
 theorem dmass_of_le (A C D : Subgroup H) (hDC : D ≤ C) (hi : D.relIndex C ≠ 0)
     (hfin : ∀ t : H, Finite (A ⊓ C.map (MulAut.conj t).toMonoidHom : Subgroup H)) :
     dmass A D = (D.relIndex C : ℚ) * dmass A C := by
@@ -209,6 +258,19 @@ theorem dmass_of_le (A C D : Subgroup H) (hDC : D ≤ C) (hi : D.relIndex C ≠ 
 
 end Coset
 
+/- English proof (translation)
+Introduce `G _ Γ' T C C' hC hC' h1 h2 hf hf'`. Establish `tr : ∀ E : Subgroup G, (∀ t ∈ T, ((Γ' ⊓ E.map (MulAut.conj t).toMonoidHom : Subgroup G) : Set G).Finite) → ∀ t : T, Finite (Γ'.subgroupOf T ⊓ (E.subgroupOf T).map (MulAut.conj t).toMonoidHom : Subgroup T)`. Introduce `E hfE t`. Use `haveI := (hfE t t.2).to_subtype`. Use `Finite.of_injective (β := ↥((Γ' ⊓ E.map (MulAut.conj (t : G)).toMonoidHom : Subgroup G) : Set G)) (fun x => ⟨((x : T) : G), ?_⟩) ?_` and prove the remaining obligations.
+
+Establish `hx` using `x.2`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply] at hx`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_inf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Simplify using `using hx.2`.
+
+Introduce `x y hxy`. Establish `hv` using `congrArg Subtype.val hxy`. Simplify using `only at hv`. Conclude with `Subtype.ext (Subtype.ext hv)`. Establish `hDC : (C ⊓ C').subgroupOf T ≤ C.subgroupOf T` using `fun x hx => Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hx)).1`.
+
+Establish `hDC' : (C ⊓ C').subgroupOf T ≤ C'.subgroupOf T` using `fun x hx => Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hx)).2`. Establish `i1 : ((C ⊓ C').subgroupOf T).relIndex (C.subgroupOf T) = C'.relIndex C`. Rewrite using `[Subgroup.relIndex_subgroupOf hC, Subgroup.inf_relIndex_left]`. Establish `i2 : ((C ⊓ C').subgroupOf T).relIndex (C'.subgroupOf T) = C.relIndex C'`. Rewrite using `[Subgroup.relIndex_subgroupOf hC', Subgroup.inf_relIndex_right]`.
+
+Establish `eD` using `dmass_of_le (Γ'.subgroupOf T) (C.subgroupOf T) ((C ⊓ C').subgroupOf T) hDC (by rw [i1]; exact h2) (tr C hf)`. Establish `eD'` using `dmass_of_le (Γ'.subgroupOf T) (C'.subgroupOf T) ((C ⊓ C').subgroupOf T) hDC' (by rw [i2]; exact h1) (tr C' hf')`. Rewrite `eD` using `[i1]`. Rewrite `eD'` using `[i2]`. Establish `eC : massC Γ' T C = dmass (Γ'.subgroupOf T) (C.subgroupOf T)` using `rfl`.
+
+Establish `eC' : massC Γ' T C' = dmass (Γ'.subgroupOf T) (C'.subgroupOf T)` using `rfl`. Establish `ha : ((C'.relIndex C : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast h2`. Rewrite using `[eC, eC', vol, mul_div_assoc', div_eq_iff ha]`. Take the linear combination `eD - eD'`.
+-/
 theorem massC_mul_vol : ∀ {G : Type} [Group G] (Γ' T C C' : Subgroup G), C ≤ T → C' ≤ T →
     C.relIndex C' ≠ 0 → C'.relIndex C ≠ 0 →
     (∀ t ∈ T, ((Γ' ⊓ C.map (MulAut.conj t).toMonoidHom : Subgroup G) : Set G).Finite) →

@@ -4,6 +4,11 @@ noncomputable def UpperTheory.Reformulated.B.Qm12.vandermondeOf.{u_1} :
     {R : Type u_1} → [CommRing R] → {m : ℕ} → (Fin m → R) → R :=
     fun {R : Type u_1} [CommRing R] {m : ℕ} (v : Fin m → R) ↦ ∏ i : Fin m, ∏ j > i, (v i - v j)
 
+/- English proof (translation)
+Introduce `m R _ v`. Establish `hM : ((Matrix.of : (Fin m → Fin m → R) → Matrix (Fin m) (Fin m) R) fun (i j : Fin m) ↦ v i ^ (m - (1 : ℕ) - (↑j : ℕ))) = Matrix.projVandermonde (fun _ ↦ (1 : R)) v`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.projVandermonde_apply, one_pow, one_mul, Fin.val_rev, Nat.sub_sub, Nat.add_comm]`. Rewrite using `[hM, Matrix.det_projVandermonde]`.
+
+Unfold `UpperTheory.Reformulated.B.Qm12.vandermondeOf`. Use `Finset.prod_congr rfl fun i _ ↦ Finset.prod_congr ?_ fun j _ ↦ ?_` and prove the remaining obligations. Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite using `[one_mul, one_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qm12.vandermondeOf_eq_det.{u_1} :
     ∀ {m : ℕ} {R : Type u_1} [inst : CommRing R] (v : Fin m → R),
       UpperTheory.Reformulated.B.Qm12.vandermondeOf v =

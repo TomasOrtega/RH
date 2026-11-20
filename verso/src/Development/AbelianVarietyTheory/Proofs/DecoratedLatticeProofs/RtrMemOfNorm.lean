@@ -18,6 +18,15 @@ namespace GlobalTheory.MiTop.CenIsom
 
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hT`. Use `⟨fun ξ => ⟨fun γ y => ?_, fun y κ => ?_⟩, fun g ξ y => ?_⟩` and prove the remaining obligations. Use `show T ξ ((_, _) * y * (1, δ)) = T ξ (y * (1, δ))`. Rewrite using `[mul_assoc]`. Conclude with `(h1 ξ).1 γ _`.
+
+Take `⟨κ', hκ', hψ⟩` from `hn κ`. Establish `hc : ((1 : Hinf X u), (κ : Hfin X u)) * (1, δ) = (1, δ) * (1, (κ' : Hfin X u))` using `Prod.ext rfl hκ'`. Establish `e : y * (1, (κ : Hfin X u)) * (1, δ) = y * (1, δ) * (1, (κ' : Hfin X u))`. Rewrite using `[mul_assoc, mul_assoc, hc]`. Use `(congrArg (T ξ) e).trans (((h1 ξ).2 _ κ').trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hψ]`. Both sides reduce to the same expression. Establish `hc : ((g : Hinf X u), (1 : Hfin X u)) * (1, δ) = (1, δ) * (g, 1)` using `Prod.ext ((mul_one g).trans (one_mul g).symm) ((one_mul δ).trans (mul_one δ).symm)`. Establish `e : y * (g, 1) * (1, δ) = y * (1, δ) * (g, 1)`. Rewrite using `[mul_assoc, mul_assoc, hc]`.
+
+Conclude with `(h2 g ξ (y * (1, δ))).trans (congrArg (T ξ) e.symm)`.
+-/
 theorem rtr_mem_of_norm (hK : X.LevelSubgroupCharacter) {δ : Hfin X u}
     (hn : ∀ κ : Ku X u hK, ∃ κ' : Ku X u hK, (κ : Hfin X u) * δ = δ * κ' ∧
       ((psiK X u hK κ' : ℂˣ) : ℂ) = ((psiK X u hK κ : ℂˣ) : ℂ))
@@ -41,6 +50,9 @@ theorem rtr_mem_of_norm (hK : X.LevelSubgroupCharacter) {δ : Hfin X u}
       rw [mul_assoc, mul_assoc, hc]
     exact (h2 g ξ (y * (1, δ))).trans (congrArg (T ξ) e.symm)
 
+/- English proof (translation)
+Use extensionality with `ξ y`. Establish `hc : ((1 : Hinf X u), δ') * (1, δ) = (1, δ) * (1, δ')` using `Prod.ext rfl h.symm`. Establish `e : y * (1, δ') * (1, δ) = y * (1, δ) * (1, δ')` using `by rw [mul_assoc, mul_assoc, hc]`. Conclude with `congrArg (T ξ) e`.
+-/
 theorem rtr_comm {δ δ' : Hfin X u} (h : δ * δ' = δ' * δ) (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) :
     rtr X δ' (rtr X δ T) = rtr X δ (rtr X δ' T) := by
   ext ξ y
@@ -51,6 +63,23 @@ theorem rtr_comm {δ δ' : Hfin X u} (h : δ * δ' = δ' * δ) (T : X.Vpi u →�
 set_option maxHeartbeats 3000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hW : WittX X u Tr.wt` using `⟨Tr.wt_isom, Tr.wt_e, Tr.wt_f, Tr.weight_z⟩`. Establish `hA : IsAdeleIso X Tr.ιA` using `⟨Tr.ιA_rat, Tr.ιA_int⟩`. Establish `hσ` using `GlobalTheory.St.G.IotaSigmaCompatibility.iotaA_sigA D X Tr.ιA hA`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.frame_action_mulEquiv D X u Tr.wt Tr.ιA hW hA hσ`. Take `⟨-, hΓ, hsT⟩` from `GlobalTheory.transport_rational_points D X u Tr.wt Tr.ιA hW hA Φ hΦ`.
+
+Take `⟨hψ, -, hφ, -, -⟩` from `cols_sharp_dictionary D X u hK`. Take `⟨k, hk, hkT⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.unit_lift_int_prime_field (D.mem u).A.T_prime ((D.mem u).A.card_Fv v) a`. Take `⟨e, he, hee, hσe⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.splitAtT_of_tied F.atT v`. Take `⟨y, hy⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.is_diamond_of_local_diamond F.cls0.lev (F.atT.eV v).1 (F.atT.eV v).2 k (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.local_diamond_of_split_idempotent F.cls0.lev _ _ (D.mem u).A.T_prime k hkT e he hee hσe)`. Establish `hlev` using `fun h => hL.2 h (Φ h) ((hΦ h (Φ h)).2 rfl)`.
+
+Take `⟨δ, hδ⟩ : ∃ δ : Hfin X u, Φ δ = Tr.h0 * y * Tr.h0⁻¹` from `Φ.surjective _`. Use `⟨δ, fun T hT => ⟨rtr_mem_of_norm hK (fun κ => ?_) hT, ?_⟩⟩` and prove the remaining obligations. Establish `hκ` using `(hlev κ).1.1 κ.2`. Establish `hm` using `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.diamond_conj_mem_level F.cls0.lev _ _ hy ⟨_, hκ⟩`. Establish `hχ` using `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_character_conj_diamond F.cls0.lev _ _ (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.level_places_not_bad F.atT v) hy ⟨_, hκ⟩`.
+
+Establish `e1 : Tr.h0⁻¹ * Φ (δ⁻¹ * κ * δ) * Tr.h0 = y⁻¹ * (Tr.h0⁻¹ * Φ κ * Tr.h0) * y`. Rewrite using `[map_mul, map_mul, map_inv, hδ]`. Use `group`. Establish `e2` using `congrArg Subtype.val e1`. Establish `hm' : (Tr.h0⁻¹ * Φ (δ⁻¹ * κ * δ) * Tr.h0).1 ∈ F.cls0.lev.U`.
+
+Rewrite using `[e2]`. Conclude with `hm`. Establish `hin` using `(hlev (δ⁻¹ * κ * δ)).1.2 hm'`. Use `⟨⟨δ⁻¹ * κ * δ, hin⟩, by simp only [← mul_assoc, mul_inv_cancel, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[(hlev _).2 hin hm', (hlev κ).2 κ.2 hκ, ← hχ]`.
+
+Conclude with `congrArg (fun x => ((F.cls0.lev.chi x : ℂˣ) : ℂ)) (Subtype.ext e2)`. Establish `key` using `GlobalTheory.adForms_of_equivariant D.host.F D.host.E (Formalism.L2.Forms.sigD D) (D.R.N 0) (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) _ _ _ F.cls0.lev (Gam X u) (Hinf X u) (Hfin X u) (iotaI X u) (iotaF X u) (Ku X u hK) (psiK X u hK) Φ Tr.h0 D.what₂.Tau (Formalism.L2.Forms.em …`. Establish `hc : ∀ c, Φ (Tr.hc c) = F.cls0.y c * Tr.h0⁻¹` using `fun c => (hΦ (Tr.hc c) _).1 (Tr.hc_rep c)`. Establish `e1 : dictA X Tr T = fun c s => (fun x => Tr.J (shP X u T (Φ.symm (x * Tr.h0⁻¹)))) (F.cls0.y c) (F.val0.eY s)`. Use function extensionality and compare the values at `c s`.
+
+Use `show Tr.J (shP X u T (Tr.hc c)) (F.val0.eY s) = Tr.J (shP X u T (Φ.symm (F.cls0.y c * Tr.h0⁻¹))) (F.val0.eY s)`. Rewrite using `[← hc, MulEquiv.symm_apply_apply]`. Rewrite using `[e1, Formalism.L2.Forms.rhoT_eq F.val0 v a k hk y hy _ key.1]`. Use function extensionality and compare the values at `c s`. Establish `e2 : Tr.hc c * δ = Φ.symm (F.cls0.y c * y * Tr.h0⁻¹)`.
+
+Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, MulEquiv.apply_symm_apply, hc, hδ]`. Use `group`. Use `show Tr.J (shP X u (rtr X δ T) (Tr.hc c)) (F.val0.eY s) = Tr.J (shP X u T (Φ.symm (F.cls0.y c * y * Tr.h0⁻¹))) (F.val0.eY s)`. Rewrite using `[Formalism.L2.SG.Pf.ColDictPf.rieszVector_rightTranslate, e2]`.
+-/
 theorem exists_rtr_dia {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F) (hK : X.LevelSubgroupCharacter) (hL : LevelMatch X Tr hK)
     (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) :
     ∃ δ : Hfin X u, ∀ T ∈ Cu X u hK, rtr X δ T ∈ Cu X u hK ∧
@@ -106,6 +135,13 @@ theorem exists_rtr_dia {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F
       Tr.J (shP X u T (Φ.symm (F.cls0.y c * y * Tr.h0⁻¹))) (F.val0.eY s)
     rw [Formalism.L2.SG.Pf.ColDictPf.rieszVector_rightTranslate, e2]
 
+/- English proof (translation)
+Use `⟨hI S, (Submodule.mem_iInf _).2 fun v => ?_⟩` and prove the remaining obligations. Establish `h0 : (D.mem u).A.Nm v (dictA X Tr T.1) = 0` using `(Submodule.mem_iInf _).1 hT.2 v`. Use `choose d hd using exists_rtr_dia Tr hK hL v`. Establish `hsum : ∀ P ∈ Cu X u hK, (D.mem u).A.Nm v (dictA X Tr P) = dictA X Tr (∑ a, rtr X (d a) P)`. Introduce `P hP`.
+
+Rewrite using `[map_sum, Formalism.BasicNotions.ColumnsAtT.Nm, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a _ => (hd a P hP).2.symm`. Establish `hmem : ∑ a, rtr X (d a) T.1 ∈ Cu X u hK` using `Submodule.sum_mem _ fun a _ => (hd a T.1 T.2).1`. Establish `hz : (⟨_, hmem⟩ : Cu X u hK) = 0` using `hB.1 (((hsum T.1 T.2).symm.trans h0).trans (map_zero (colDictL X Tr hK)).symm)`. Establish `hz' : ∑ a, rtr X (d a) T.1 = 0` using `congrArg Subtype.val hz`.
+
+Establish `e : ∑ a, rtr X (d a) S.1 = rtr X δ (∑ a, rtr X (d a) T.1)`. Rewrite using `[map_sum, hS]`. Conclude with `Finset.sum_congr rfl fun a _ => rtr_comm (hδ (d a)) T.1`. Use `show (D.mem u).A.Nm v (dictA X Tr S.1) = 0`. Rewrite using `[hsum S.1 S.2, e, hz', map_zero, map_zero]`.
+-/
 theorem ram_rtr {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F) (hK : X.LevelSubgroupCharacter) (hL : LevelMatch X Tr hK)
     (hI : ColDictInto X Tr hK) (hB : ColDictBij X Tr hK) (δ : Hfin X u) (hδ : ∀ k : Hfin X u, δ * k = k * δ)
     (T S : Cu X u hK) (hS : S.1 = rtr X δ T.1) (hT : colDictL X Tr hK T ∈ (D.mem u).A.Mram) :
@@ -127,6 +163,11 @@ theorem ram_rtr {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F) (hK :
   show (D.mem u).A.Nm v (dictA X Tr S.1) = 0
   rw [hsum S.1 S.2, e, hz', map_zero, map_zero]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.SG.Pf.ColDictPf.rieszVector_rightTranslate]`. Use `Formalism.L2.SG.Pf.ColDictPf.sum_reps X u (fun i => s i * δ) s (Ku X u hK) (fun h => ?_) hs (fun h => ⟪shP X u T'.1 h, shP X u T.1 h⟫_ℂ) (fun γ h κ => Formalism.L2.SG.Pf.ColDictPf.inner_shP_rat X u hK T T' γ h κ)` and prove the remaining obligations. Establish `e : ∀ (i : ι) (γ : Gam X u) (κ : Ku X u hK), h * δ⁻¹ = iotaF X u γ * s i * (κ : Hfin X u) ↔ h = iotaF X u γ * (s i * δ) * (κ : Hfin X u)`. Introduce `i γ κ`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc _ (κ : Hfin X u) δ, ← hδ κ]`.
+
+Simplify using `only [mul_assoc]`. Simplify `hs (h * δ⁻¹)` using `only [e]`.
+-/
 theorem sum_inner_rieszVector_rightTranslate (hK : X.LevelSubgroupCharacter) {ι : Type} [Fintype ι] (s : ι → Hfin X u)
     (hs : ∀ h, ∃! i, ∃ (γ : Gam X u) (κ : Ku X u hK), h = iotaF X u γ * s i * (κ : Hfin X u))
     (δ : Hfin X u) (hδ : ∀ k : Hfin X u, δ * k = k * δ) (T T' : Cu X u hK) :
@@ -150,6 +191,11 @@ variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h1 : ∀ P : Cu S.X u S.Y.hK, colDictL S.X (S.tr u) S.Y.hK P = (D.s_Cu u (((S.hI hF).eCu u).symm P)).1`. Introduce `P`. Establish `h` using `S.colPin hF u (((S.hI hF).eCu u).symm P)`. Establish `h' : @Eq (Cu S.X u S.Y.hK) ((S.hI hF).eCu u (((S.hI hF).eCu u).symm P)) P` using `((S.hI hF).eCu u).apply_symm_apply P`. Conclude with `congrArg Subtype.val ((congrArg (colDict S.X (S.tr u) S.Y.hK (S.into u) (S.bij u)) h').symm.trans h)`.
+
+Establish `h2` using `((S.hI hF).eCu u).symm.inner_map_map T T'`. Establish `h3 : @inner ℂ (Formalism.L2.SG.PackageTie2.ColT (hF.shInj u)) _ T T' = ∑ ρ, ⟪shP S.X u T'.1 ((S.Y.cs u).h ρ), shP S.X u T.1 ((S.Y.cs u).h ρ)⟫_ℂ` using `(Formalism.L2.SG.PackageTie2.inner_colT (hF.shInj u) T T').trans (PiLp.inner_apply _ _)`. Establish `h4` using `(congrArg₂ ((D.fm u).ipC 0) (h1 T) (h1 T')).trans (D.s_Cu_isom u _ _).symm`. Conclude with `h4.trans (h2.trans h3)`.
+-/
 theorem ipC_eq_sum (S : Formalism.L2.SG.SpectralTiesReal.STiesR R) (hF : Formalism.L2.SG.PackageTie2.FinX S.Y) (u : D.what₂.Word)
     (T T' : Cu S.X u S.Y.hK) :
     (D.fm u).ipC 0 (colDictL S.X (S.tr u) S.Y.hK T) (colDictL S.X (S.tr u) S.Y.hK T') =
@@ -167,6 +213,9 @@ theorem ipC_eq_sum (S : Formalism.L2.SG.SpectralTiesReal.STiesR R) (hF : Formali
   have h4 := (congrArg₂ ((D.fm u).ipC 0) (h1 T) (h1 T')).trans (D.s_Cu_isom u _ _).symm
   exact h4.trans (h2.trans h3)
 
+/- English proof (translation)
+Use `(ipC_eq_sum S hF u P P').trans (Eq.trans ?_ (ipC_eq_sum S hF u T T').symm)` and prove the remaining obligations. Rewrite using `[hP, hP']`. Conclude with `sum_inner_rieszVector_rightTranslate S.Y.hK _ (S.Y.colReps u) δ hδ T T'`.
+-/
 theorem isom_rtr (S : Formalism.L2.SG.SpectralTiesReal.STiesR R) (hF : Formalism.L2.SG.PackageTie2.FinX S.Y) (u : D.what₂.Word)
     (δ : Hfin S.X u) (hδ : ∀ k : Hfin S.X u, δ * k = k * δ) (T T' P P' : Cu S.X u S.Y.hK)
     (hP : P.1 = rtr S.X δ T.1) (hP' : P'.1 = rtr S.X δ T'.1) :

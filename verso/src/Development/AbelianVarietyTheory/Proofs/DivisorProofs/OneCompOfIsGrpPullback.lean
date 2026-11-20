@@ -17,6 +17,11 @@ namespace GlobalTheory.PPAS
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h A'))`. Set `g : Over.mk (A'.hom ≫ f) ⟶ A` to `Over.homMk φ h.1.w`. Establish `e2 : g ≫ (1 : A ⟶ A) = 1` using `by simp`. Establish `e3` using `congrArg (fun z : Over.mk (A'.hom ≫ f) ⟶ A => z.left) e2`. Simplify using `only [Over.comp_left] at e3`.
+
+Rewrite `e` using `[← e3]`. Conclude with `e`.
+-/
 theorem one_comp_of_isGrpPullback {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) :
     (1 : A' ⟶ A').left ≫ φ = φ ≫ (1 : A ⟶ A).left := by
@@ -28,6 +33,11 @@ theorem one_comp_of_isGrpPullback {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj
   rw [← e3] at e
   exact e
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Establish `k₁ : (lift a' b').left ≫ pullback.fst A'.hom A'.hom = a'.left` using `congrArg (fun z => z.left) (lift_fst a' b')`. Establish `k₂ : (lift a b).left ≫ pullback.fst A.hom A.hom = a.left` using `congrArg (fun z => z.left) (lift_fst a b)`. Rewrite using `[← Category.assoc, k₁, k₂, ha]`.
+
+Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc]`. Establish `k₁ : (lift a' b').left ≫ pullback.snd A'.hom A'.hom = b'.left` using `congrArg (fun z => z.left) (lift_snd a' b')`. Establish `k₂ : (lift a b).left ≫ pullback.snd A.hom A.hom = b.left` using `congrArg (fun z => z.left) (lift_snd a b)`. Rewrite using `[← Category.assoc, k₁, k₂, hb]`.
+-/
 theorem lift_sqMap {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) (a' b' : A' ⟶ A') (a b : A ⟶ A)
     (ha : a'.left ≫ φ = φ ≫ a.left) (hb : b'.left ≫ φ = φ ≫ b.left) :
@@ -44,16 +54,27 @@ theorem lift_sqMap {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' �
     have k₂ : (lift a b).left ≫ pullback.snd A.hom A.hom = b.left := congrArg (fun z => z.left) (lift_snd a b)
     rw [← Category.assoc, k₁, k₂, hb]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z => z.left) (lift_fst (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (fst _ _)) (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (snd _ _)))`.
+-/
 theorem sqToBase_fst {T : Scheme.{0}} (A : Over S) (s : T ⟶ S) :
     IndefiniteRowSideFullHecke.ZeroSectionBase.sqToBase A s ≫ pullback.fst A.hom A.hom =
       (fst ((Over.pullback s).obj A) ((Over.pullback s).obj A)).left ≫ pullback.fst A.hom s :=
   congrArg (fun z => z.left) (lift_fst (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (fst _ _)) (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (snd _ _)))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z => z.left) (lift_snd (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (fst _ _)) (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (snd _ _)))`.
+-/
 theorem sqToBase_snd {T : Scheme.{0}} (A : Over S) (s : T ⟶ S) :
     IndefiniteRowSideFullHecke.ZeroSectionBase.sqToBase A s ≫ pullback.snd A.hom A.hom =
       (snd ((Over.pullback s).obj A) ((Over.pullback s).obj A)).left ≫ pullback.fst A.hom s :=
   congrArg (fun z => z.left) (lift_snd (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (fst _ _)) (IndefiniteRowSideFullHecke.ZeroSectionBase.toBase A s (snd _ _)))
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_fst]`. Rewrite using `[sqToBase_fst, ← Category.assoc, sqToBase_fst]`. Use `show pullback.fst _ _ ≫ pullback.fst A'.hom s ≫ φ = pullback.lift _ _ _ ≫ pullback.fst _ _ ≫ pullback.fst A.hom (s ≫ f)`. Rewrite using `[pullback.lift_fst_assoc, Category.assoc, hψ]`.
+
+Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_snd]`. Rewrite using `[sqToBase_snd, ← Category.assoc, sqToBase_snd]`. Use `show pullback.snd _ _ ≫ pullback.fst A'.hom s ≫ φ = pullback.lift _ _ _ ≫ pullback.snd _ _ ≫ pullback.fst A.hom (s ≫ f)`. Rewrite using `[pullback.lift_snd_assoc, Category.assoc, hψ]`.
+-/
 theorem sqToBase_comp_sqMap {A : Over S} {A' : Over S'} {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (w : φ ≫ A.hom = A'.hom ≫ f) {T : Scheme.{0}} (s : T ⟶ S')
     {ψ : ((Over.pullback s).obj A').left ⟶ ((Over.pullback (s ≫ f)).obj A).left}
@@ -72,6 +93,13 @@ theorem sqToBase_comp_sqMap {A : Over S} {A' : Over S'} {f : S' ⟶ S}
       pullback.lift _ _ _ ≫ pullback.snd _ _ ≫ pullback.fst A.hom (s ≫ f)
     rw [pullback.lift_snd_assoc, Category.assoc, hψ]
 
+/- English proof (translation)
+Establish `h1` using `one_comp_of_isGrpPullback h`. Use `⟨?_, ?_, fun Ω _ _ s => ?_⟩` and prove the remaining obligations. Rewrite using `[← CechPic.pull_comp, lift_sqMap h _ _ 1 (𝟙 A) h1 (by simp), CechPic.pull_comp, hc.1, map_zero]`. Rewrite using `[← CechPic.pull_comp, lift_sqMap h _ _ (𝟙 A) 1 (by simp) h1, CechPic.pull_comp, hc.2.1, map_zero]`. Take `⟨L, hL, hA, hK, hcL⟩` from `hc.2.2 Ω (s ≫ f)`.
+
+Establish `hB'` using `(isGrpPullback_pullback A' s).comp h`. Establish `hB` using `isGrpPullback_pullback A (s ≫ f)`. Take `⟨e, he, hφ⟩` from `grpPullback_iso hB' hB`. Establish `h₁` using `isGrpPullback_of_iso e`. Establish `hL'` using `pull_isLB hL e.hom.left`.
+
+Take `⟨w, hw⟩` from `(CechPic.cls_eq_iff hL' hL').1 rfl`. Use `⟨_, hL', relAmple_pull h₁.1 hL hL' ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) hA, kTriv_pull h₁ hL hL' ((isGen_iff w).1 hw) hK, ?_⟩` and prove the remaining obligations. Rewrite using `[← CechPic.pull_comp, sqToBase_comp_sqMap h.1.w s h₁.1.w hφ, CechPic.pull_comp, hcL, pull_sqMap_lam h₁, CechPic.cls_pull hL]`.
+-/
 theorem isPrincipalPol_pull {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S}
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A f φ) {c : CechPic.Pic (A ⊗ A).left}
     (hc : IndefiniteRowSideFullHecke.ZeroSectionBase.IsPrincipalPol A c) :
@@ -92,6 +120,9 @@ theorem isPrincipalPol_pull {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {
     rw [← CechPic.pull_comp, sqToBase_comp_sqMap h.1.w s h₁.1.w hφ, CechPic.pull_comp, hcL,
       pull_sqMap_lam h₁, CechPic.cls_pull hL]
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback P.A f`. Conclude with `⟨{ A := (Over.pullback f).obj P.A isAb := PolPull.isAbelianScheme_of_isGrpPullback P.isAb h g := P.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim c := CechPic.pull (sqMap h.1.w) P.c isPol := isPrincipalPol_pull h P.isPol }, pull …`.
+-/
 theorem exists_pull (S S' : Scheme.{0}) (P : PPAS S) (f : S' ⟶ S) :
     ∃ (P' : PPAS S') (φ : P'.A.left ⟶ P.A.left), P'.g = P.g ∧ P'.IsPull P f φ := by
   have h := isGrpPullback_pullback P.A f

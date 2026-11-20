@@ -10,6 +10,11 @@ namespace GlobalTheory.ArtinInertia
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E' Ω _ _ _ _ _ A w' h' a' ha t`. Establish `h1` using `ha.ord_eq (ineIncl h' t)`. Rewrite `h1` using `[deg_ineIncl, neg_zero, SphCompletion.ord_completion, neg_eq_zero]`. Establish `h0 : Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') ≠ 0` using `by simp`. Use `show Valued.v ((a' (ineIncl h' t) : (w'.adicCompletion E')ˣ) : w'.adicCompletion E') = 1`.
+
+Rewrite using `[← WithZero.exp_log h0, h1, WithZero.exp_zero]`.
+-/
 theorem isUnitAt_artin_ine : ∀ {E' Ω : Type} [Field E'] [NumberField E'] [Field Ω] [Algebra E' Ω] [IsAlgClosure E' Ω]
     {A : ValuationSubring Ω} {w' : HeightOneSpectrum (𝓞 E')} (h' : IsPlaceOver A w')
     (a' : Weil h' →* (w'.adicCompletion E')ˣ) (ha : IsLocalArtin h' a') (t : Ine (F := E') A),

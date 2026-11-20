@@ -10,10 +10,16 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.CMVal.ObjModel
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `(FiniteAdeleRing.isUnit_iff.1 y.isUnit).1 v` as an intermediate fact. Simplify using `using this`.
+-/
 theorem coord_ne (y : (Af E)ˣ) (v : HeightOneSpectrum (𝓞 E)) : Valued.v ((y : Af E) v) ≠ 0 := by
   have := (FiniteAdeleRing.isUnit_iff.1 y.isUnit).1 v
   simpa using this
 
+/- English proof (translation)
+Use `(FiniteAdeleRing.isUnit_iff.1 y.isUnit).2` as an intermediate fact. Rewrite `this` using `[Filter.eventually_cofinite]`. Use `this.subset fun v hv h1 => hv ?_` and prove the remaining obligations. Simplify using `[h1]`.
+-/
 theorem modF_finite (y : (Af E)ˣ) : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 E) =>
     ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (WithZero.log (Valued.v ((y : Af E) v)))).Finite := by
   have := (FiniteAdeleRing.isUnit_iff.1 y.isUnit).2
@@ -21,11 +27,17 @@ theorem modF_finite (y : (Af E)ˣ) : (Function.mulSupport fun v : HeightOneSpect
   refine this.subset fun v hv h1 => hv ?_
   simp [h1]
 
+/- English proof (translation)
+Establish `: Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Check the signs of the components of the expression.
+-/
 theorem absNorm_pos (v : HeightOneSpectrum (𝓞 E)) : (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
   have : Ideal.absNorm v.asIdeal ≠ 0 := by
     rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot
   positivity
 
+/- English proof (translation)
+Unfold `modF`. Rewrite using `[← finprod_mul_distrib (modF_finite y) (modF_finite y')]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `: ((y * y' : (Af E)ˣ) : Af E) v = (y : Af E) v * (y' : Af E) v` using `rfl`. Rewrite using `[this, map_mul, WithZero.log_mul (coord_ne y v) (coord_ne y' v), zpow_add₀ (absNorm_pos v).ne']`.
+-/
 theorem modF_mul (y y' : (Af E)ˣ) : modF (y * y') = modF y * modF y' := by
   unfold modF
   rw [← finprod_mul_distrib (modF_finite y) (modF_finite y')]
@@ -33,9 +45,19 @@ theorem modF_mul (y y' : (Af E)ˣ) : modF (y * y') = modF y * modF y' := by
   have : ((y * y' : (Af E)ˣ) : Af E) v = (y : Af E) v * (y' : Af E) v := rfl
   rw [this, map_mul, WithZero.log_mul (coord_ne y v) (coord_ne y' v), zpow_add₀ (absNorm_pos v).ne']
 
+/- English proof (translation)
+The claim follows from `finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun v => zpow_pos (absNorm_pos v) _`.
+-/
 theorem modF_pos (y : (Af E)ˣ) : 0 < modF y :=
   finprod_induction (fun x : ℝ => 0 < x) one_pos (fun _ _ => mul_pos) fun v => zpow_pos (absNorm_pos v) _
 
+/- English proof (translation)
+Establish `h` using `FinitePlace.prod_eq_inv_abs_norm (K := E) k.ne_zero`. Move the coercions through the operations in `at h`. Rewrite using `[← h, ← finprod_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := E)).symm]`. Unfold `modF`. Use `finprod_congr fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[FinitePlace.equivHeightOneSpectrum_symm_apply, FinitePlace.norm_embedding']`. Establish `h0 : v.valuation E (k : E) ≠ 0` using `by simp`. Establish `h1 : Valued.v (((Units.map (algebraMap E (Af E)).toMonoidHom k : (Af E)ˣ) : Af E) v) = v.valuation E (k : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (k : E)`. Rewrite using `[h1, WithZeroMulInt.toNNReal_neg_apply _ h0]`. Use `push_cast`.
+
+Use `congr 1`. Use `conv_lhs => rw [← WithZero.coe_unzero h0]`. Both sides reduce to the same expression.
+-/
 theorem modF_princ (k : Eˣ) :
     modF (Units.map (algebraMap E (Af E)).toMonoidHom k) = (|((Algebra.norm ℚ (k : E) : ℚ) : ℝ)|)⁻¹ := by
   have h := FinitePlace.prod_eq_inv_abs_norm (K := E) k.ne_zero
@@ -53,6 +75,13 @@ theorem modF_princ (k : Eˣ) :
   conv_lhs => rw [← WithZero.coe_unzero h0]
   rfl
 
+/- English proof (translation)
+Establish `hc : IsClosed {y : Af E | y v ∈ v.adicCompletionIntegers E}` using `(Valued.isClosed_valuationSubring (v.adicCompletion E)).preimage (RestrictedProduct.continuous_eval v)`. Establish `: y ∈ {y : Af E | y v ∈ v.adicCompletionIntegers E}`. Use `closure_minimal ?_ hc hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨a, b, -, rfl⟩` from `mem_orderC.1 hx`.
+
+Establish `: algebraMap (OF E) E a + algebraMap (𝓞 E) E b = algebraMap (𝓞 E) E (algebraMap (OF E) (𝓞 E) a + b)`. Rewrite using `[map_add]`. Both sides reduce to the same expression. Rewrite using `[this]`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations.
+
+Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans_le (v.valuation_le_one _)`. Conclude with `this`.
+-/
 theorem hatO_integral {c : Ideal (OF E)} {y : Af E} (hy : y ∈ hatO c) (v : HeightOneSpectrum (𝓞 E)) :
     Valued.v (y v) ≤ 1 := by
   have hc : IsClosed {y : Af E | y v ∈ v.adicCompletionIntegers E} :=
@@ -68,6 +97,13 @@ theorem hatO_integral {c : Ideal (OF E)} {y : Af E} (hy : y ∈ hatO c) (v : Hei
     exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans_le (v.valuation_le_one _)
   exact this
 
+/- English proof (translation)
+Unfold `modF`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Establish `h1 : Valued.v ((u : Af E) v) ≤ 1` using `hatO_integral hu.1 v`. Establish `h2 : Valued.v ((↑u⁻¹ : Af E) v) ≤ 1` using `hatO_integral hu.2 v`. Establish `h3 : Valued.v ((u : Af E) v) * Valued.v ((↑u⁻¹ : Af E) v) = 1`.
+
+Rewrite using `[← map_mul]`. Establish `: (u : Af E) v * (↑u⁻¹ : Af E) v = 1` using `(coord v u).val_inv`. Rewrite using `[this, map_one]`. Establish `h4 : Valued.v ((u : Af E) v) = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `[h4]`.
+-/
 theorem modF_unit {c : Ideal (OF E)} {u : (Af E)ˣ} (hu : u ∈ hatOUnits c) : modF u = 1 := by
   unfold modF
   refine finprod_eq_one_of_forall_eq_one fun v => ?_
@@ -84,6 +120,11 @@ theorem modF_unit {c : Ideal (OF E)} {u : (Af E)ˣ} (hu : u ∈ hatOUnits c) : m
       _ = _ := mul_one _
   simp [h4]
 
+/- English proof (translation)
+Rewrite using `[mem_lattice, inv_one, Units.val_one, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E x fun v => (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).symm.trans_le (hatO_integral h v)`. Conclude with `⟨b, hb.symm⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Conclude with `algebraMap_mem_hatO (mem_orderC.2 ⟨0, b, by simp [Ideal.map_top], by simp⟩)`.
+-/
 theorem lattice_top_one (x : E) : x ∈ lattice (⊤ : Ideal (OF E)) 1 ↔ ∃ b : 𝓞 E, x = algebraMap (𝓞 E) E b := by
   rw [mem_lattice, inv_one, Units.val_one, mul_one]
   constructor
@@ -96,6 +137,13 @@ theorem lattice_top_one (x : E) : x ∈ lattice (⊤ : Ideal (OF E)) 1 ↔ ∃ b
 
 variable {I : Type} [Fintype I]
 
+/- English proof (translation)
+Establish `h1` using `InfinitePlace.prod_eq_abs_norm x`. Move the coercions through the operations in `at h1`. Rewrite using `[← h1]`. Use `Fintype.prod_bijective (fun i => InfinitePlace.mk (φ i)) ⟨fun i j hij => ?_, fun w => ?_⟩ _ _ fun i => ?_` and prove the remaining obligations. Take `⟨l, -, hl⟩` from `h (φ i)`.
+
+Establish `h2` using `InfinitePlace.mk_eq_iff.1 hij.symm`. Rewrite using `[hl i (Or.inl rfl), hl j (h2.imp Eq.symm Eq.symm)]`. Take `⟨l, hl, -⟩` from `h w.embedding`. Use `⟨l, ?_⟩` and prove the remaining obligations. Rewrite using `[← w.mk_embedding]`.
+
+Conclude with `InfinitePlace.mk_eq_iff.2 (hl.imp Eq.symm Eq.symm)`. Rewrite using `[IsTotallyComplex.mult_eq, InfinitePlace.apply]`.
+-/
 theorem prod_normSq [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) (x : E) :
     ∏ i, ‖φ i x‖ ^ 2 = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by
   have h1 := InfinitePlace.prod_eq_abs_norm x
@@ -111,6 +159,9 @@ theorem prod_normSq [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType 
     exact InfinitePlace.mk_eq_iff.2 (hl.imp Eq.symm Eq.symm)
   · rw [IsTotallyComplex.mult_eq, InfinitePlace.apply]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ih, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (hr a) (Finset.prod_nonneg fun i _ => hr i)]`.
+-/
 theorem prod_cpow (t : Finset I) (r : I → ℝ) (hr : ∀ i, 0 ≤ r i) (z : ℂ) :
     ∏ i ∈ t, ((r i : ℝ) : ℂ) ^ z = ((∏ i ∈ t, r i : ℝ) : ℂ) ^ z := by
   classical
@@ -120,6 +171,17 @@ theorem prod_cpow (t : Finset I) (r : I → ℝ) (hr : ∀ i, 0 ≤ r i) (z : �
     rw [Finset.prod_insert ha, Finset.prod_insert ha, ih, Complex.ofReal_mul,
       Complex.mul_cpow_ofReal_nonneg (hr a) (Finset.prod_nonneg fun i _ => hr i)]
 
+/- English proof (translation)
+Use `set x : E := algebraMap (OF E) E u with hx`. Establish `hn : ∏ i, ‖φ i x‖ ^ 2 = 1`. Rewrite using `[prod_normSq h]`. Use `NumberField.Units.norm E (Units.map (algebraMap (OF E) (𝓞 E)).toMonoidHom u)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `hn1 : ∏ i, ‖φ i x‖ = 1`. Rewrite `hn` using `[Finset.prod_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (Finset.prod_nonneg fun i _ => norm_nonneg _) two_ne_zero).1 hn`. Establish `hr : ∀ i, starRingEnd ℂ (φ i x) = φ i x` using `fun i => ((u : OF E) : maximalRealSubfield E).2 (φ i)`. Establish `h0 : ∀ i, φ i x ≠ 0` using `fun i => by`.
+
+Rewrite using `[map_ne_zero]`. Conclude with `(u.isUnit.map (algebraMap (OF E) E)).ne_zero`. Unfold `term`. Rewrite using `[Finset.prod_mul_distrib, prod_cpow _ _ (fun i => norm_nonneg _), hn1]`. Establish `: ∀ i, (φ i x)⁻¹ ^ (2 * s + κ i) * (starRingEnd ℂ (φ i x)) ^ κ i = (((‖φ i x‖ ^ 2 : ℝ) : ℂ)⁻¹) ^ s` using `fun i => by`.
+
+Establish `h2 : ((‖φ i x‖ ^ 2 : ℝ) : ℂ) = φ i x ^ 2`. Use `push_cast`. Rewrite using `[← Complex.mul_conj', hr, sq]`. Use `h0 i` as an intermediate fact. Rewrite using `[h2, hr, pow_add, pow_mul, mul_assoc, ← mul_pow, inv_mul_cancel₀ this, inv_pow]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [this]`. Rewrite using `[Finset.prod_pow, Finset.prod_inv_distrib, ← Complex.ofReal_prod, hn]`. Simplify using the standard rewrite rules.
+-/
 theorem term_unit [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (u : (OF E)ˣ) :
     term φ (2 * s) κ σ (algebraMap (OF E) E u) = 1 := by
   set x : E := algebraMap (OF E) E u with hx
@@ -146,11 +208,17 @@ theorem term_unit [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ
   rw [Finset.prod_pow, Finset.prod_inv_distrib, ← Complex.ofReal_prod, hn]
   simp
 
+/- English proof (translation)
+Take `⟨u, hu⟩ : (unitRel (E` from `E)).r x (Quotient.mk (unitRel (E := E)) x).out := Quotient.exact (Quotient.out_eq _).symm`. Rewrite using `[hu, term_mul, term_unit h, one_mul]`.
+-/
 theorem term_out [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) (σ : ℂ) (x : E) :
     term φ (2 * s) κ σ (Quotient.mk (unitRel (E := E)) x).out = term φ (2 * s) κ σ x := by
   obtain ⟨u, hu⟩ : (unitRel (E := E)).r x (Quotient.mk (unitRel (E := E)) x).out := Quotient.exact (Quotient.out_eq _).symm
   rw [hu, term_mul, term_unit h, one_mul]
 
+/- English proof (translation)
+Unfold `term`. Use `Differentiable.fun_finset_prod fun i _ => Differentiable.const_mul ?_ _` and prove the remaining obligations. Use `Differentiable.const_cpow (by fun_prop) (Or.inl ?_)` and prove the remaining obligations. Simplify using `using ha`.
+-/
 theorem term_differentiable (φ : I → E →+* ℂ) (k : ℕ) (κ : I → ℕ) {a : E} (ha : a ≠ 0) :
     Differentiable ℂ fun σ => term φ k κ σ a := by
   unfold term
@@ -158,6 +226,9 @@ theorem term_differentiable (φ : I → E →+* ℂ) (k : ℕ) (κ : I → ℕ) 
   refine Differentiable.const_cpow (by fun_prop) (Or.inl ?_)
   simpa using ha
 
+/- English proof (translation)
+Use `⟨term_differentiable φ _ κ ha, fun σ _ => ?_⟩` and prove the remaining obligations. Use `hasSum_single (f := fun q : modUnits ({a} : Set E) => term φ (2 * s) κ σ q.1.out) (⟨Quotient.mk _ a, a, rfl, ha, rfl⟩ : modUnits ({a} : Set E)) (by` as an intermediate fact. Introduce and unpack `⟨_, x, rfl, _, rfl⟩ hb`. Conclude with `absurd rfl hb)`. Rewrite `this` using `[term_out h]`. Then use the resulting hypothesis.
+-/
 theorem isLatSum_single [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) (s : ℕ) (κ : I → ℕ) {a : E} (ha : a ≠ 0) :
     IsLatSum φ (2 * s) κ {a} fun σ => term φ (2 * s) κ σ a := by
   refine ⟨term_differentiable φ _ κ ha, fun σ _ => ?_⟩
@@ -170,6 +241,15 @@ theorem isLatSum_single [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMT
 def mulQ (a : E) : Quotient (unitRel (E := E)) → Quotient (unitRel (E := E)) :=
   Quotient.map (a * ·) (by rintro x y ⟨u, rfl⟩; exact ⟨u, by ring⟩)
 
+/- English proof (translation)
+Set `f : modUnits L → modUnits L'` to `fun q => ⟨mulQ a q.1, by`. Take `⟨x, hx, h0, hq⟩` from `q.2`. Conclude with `⟨a * x, (hL x).2 hx, mul_ne_zero a.ne_zero h0, by rw [← hq]; rfl⟩⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, x, hx, h0, rfl⟩ ⟨_, x', hx', h0', rfl⟩ hq`. Take `⟨u, hu⟩ : (unitRel (E` from `E)).r (a * x) (a * x') := Quotient.exact (congrArg Subtype.val hq)`. Use `Subtype.ext (Quotient.sound ⟨u, mul_left_cancel₀ a.ne_zero ?_⟩)` and prove the remaining obligations. Rewrite using `[hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨_, x, hx, h0, rfl⟩`. Use `⟨⟨Quotient.mk _ ((↑a⁻¹ : E) * x), _, (hL _).1 (by simpa using hx), mul_ne_zero a⁻¹.ne_zero h0, rfl⟩, ?_⟩` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Use `show Quotient.mk _ ((a : E) * ((↑a⁻¹ : E) * x)) = Quotient.mk _ x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← (Equiv.ofBijective f hf).hasSum_iff]`. Use `(hS.mul_left (term φ (2 * s) κ σ a)).congr_fun ?_` and prove the remaining obligations. Introduce and unpack `⟨_, x, hx, h0, rfl⟩`. Use `show term φ (2 * s) κ σ (Quotient.mk (unitRel (E := E)) ((a : E) * x)).out = _`. Rewrite using `[term_out h, term_out h, term_mul]`.
+-/
 theorem hasSum_smul [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) {s : ℕ} {κ : I → ℕ} {L L' : Set E} (a : Eˣ)
     (hL : ∀ x, (a : E) * x ∈ L' ↔ x ∈ L) {σ S : ℂ} (hS : HasSum (fun q : modUnits L => term φ (2 * s) κ σ q.1.out) S) :
     HasSum (fun q : modUnits L' => term φ (2 * s) κ σ q.1.out) (term φ (2 * s) κ σ a * S) := by
@@ -193,11 +273,25 @@ theorem hasSum_smul [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType 
   show term φ (2 * s) κ σ (Quotient.mk (unitRel (E := E)) ((a : E) * x)).out = _
   rw [term_out h, term_out h, term_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(term_differentiable φ _ κ a.ne_zero).mul hS.1, fun σ hσ => hasSum_smul h a hL (hS.2 σ hσ)⟩`.
+-/
 theorem isLatSum_smul [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) {s : ℕ} {κ : I → ℕ} {L L' : Set E} (a : Eˣ)
     (hL : ∀ x, (a : E) * x ∈ L' ↔ x ∈ L) {S : ℂ → ℂ} (hS : IsLatSum φ (2 * s) κ L S) :
     IsLatSum φ (2 * s) κ L' fun σ => term φ (2 * s) κ σ a * S σ :=
   ⟨(term_differentiable φ _ κ a.ne_zero).mul hS.1, fun σ hσ => hasSum_smul h a hL (hS.2 σ hσ)⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨a, rfl⟩, u, hu, hau⟩` from `Subgroup.mem_sup.1 (QuotientGroup.eq.1 hy)`. Establish `hy' : y' = Units.map (algebraMap E (Af E)).toMonoidHom a * y * u`. Rewrite `hau` using `[eq_inv_mul_iff_mul_eq]`. Rewrite using `[← hau, mul_assoc, mul_left_comm]`. Rewrite `hS'` using `[hy', lattice_mul_unit _ hu]`.
+
+Establish `h1` using `hS'.unique (isLatSum_smul h a (mul_mem_lattice_princ c y a) hS)`. Establish `h2` using `term_mul_inf hi a`. Establish `h3 : ((finPart χ (Units.map (algebraMap E (Af E)).toMonoidHom a) : ℂˣ) : ℂ) * ((χ.inf a : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, finPart_mul_inf, Units.val_one]`. Establish `h4 : ∏ i, (φ i a * starRingEnd ℂ (φ i a)) ^ s = ((|((Algebra.norm ℚ (a : E) : ℚ) : ℝ)| ^ s : ℝ) : ℂ)`.
+
+Rewrite using `[← prod_normSq h, Finset.prod_pow]`. Simplify using `[Complex.mul_conj']`. Establish `h5 : (|((Algebra.norm ℚ (a : E) : ℚ) : ℝ)|) ≠ 0` using `by simp [Algebra.norm_eq_zero_iff]`. Rewrite `h2` using `[h4]`. Rewrite using `[h1, hy', map_mul, map_mul, hχ u hu, mul_one, modF_mul, modF_mul, modF_unit hu, mul_one, modF_princ]`.
+
+Generalize the expression as in `(|((Algebra.norm ℚ (a : E) : ℚ) : ℝ)|) = n at *`. Establish `h6 : (n : ℂ) ≠ 0` using `by exact_mod_cast h5`. Establish `h7 : ((modF y : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (modF_pos y).ne'`. Establish `h8 : ((χ.inf a : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Use `beta_reduce`.
+
+Rewrite using `[Units.val_mul, eq_inv_of_mul_eq_one_left h3, eq_inv_of_mul_eq_one_left h2]`. Use `push_cast`. Rewrite using `[mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem toric_term_class [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCMType φ) {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)}
     {χ : HChar E} (hχ : ∀ u ∈ hatOUnits c, finPart χ u = 1) (hi : HasInf χ φ fun i => (κ i : ℤ) + s)
     {y y' : (Af E)ˣ} (hy : (QuotientGroup.mk y : PicO c) = QuotientGroup.mk y') {S S' : ℂ → ℂ}
@@ -228,6 +322,19 @@ theorem toric_term_class [IsTotallyComplex E] {φ : I → E →+* ℂ} (h : IsCM
   rw [mul_pow, inv_pow]
   field_simp
 
+/- English proof (translation)
+Set `f : 𝓞 E →ₗ[ℤ] ℂ` to `(φ.comp (algebraMap (𝓞 E) E)).toAddMonoidHom.toIntLinearMap`. Establish `hf : Function.Injective f` using `φ.injective.comp RingOfIntegers.coe_injective`. Set `M : Submodule ℤ ℂ` to `LinearMap.range f`. Establish `hfin : {z : M | ‖z‖ < 1}.Finite`. Establish `h1` using `(Embeddings.finite_of_norm_le E ℂ 1).image φ`.
+
+Use `(h1.preimage (f := fun z : M => (z : ℂ)) Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨_, b, rfl⟩ hb`. Use `⟨b, ⟨b.isIntegral_coe, fun ψ => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hb' : ‖φ b‖ < 1` using `hb`. Take `⟨_, hψ | hψ, -⟩` from `h ψ`.
+
+Rewrite using `[hψ]`. Conclude with `hb'.le`. Rewrite using `[hψ]`. Simplify using `using hb'.le`. Use `haveI : DiscreteTopology M := by`.
+
+Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Establish `ho : IsOpen {z : M | ‖z‖ < 1}` using `isOpen_lt continuous_norm continuous_const`. Use `ho.sdiff (hfin.subset (Set.diff_subset (t := {0}))).isClosed` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+
+Apply the tactic sequence `by_cases hz : z = 0 <;> simp [hz]`. Establish `hrk : (Module.finrank ℤ M : ℝ) ≤ 2`. Use `LinearMap.finrank_range_le f` as an intermediate fact. Rewrite `this` using `[RingOfIntegers.rank, h2]`. Conclude with `this` after adjusting the coercions.
+
+Establish `hs` using `ZLattice.summable_norm_rpow M r (by linarith)`. Conclude with `hs.comp_injective (i := fun b : 𝓞 E => (⟨f b, b, rfl⟩ : M)) fun a b hab => hf (congrArg Subtype.val hab)`.
+-/
 theorem summable_int {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ) (h2 : Module.finrank ℚ E = 2) {r : ℝ} (hr : r < -2) :
     Summable fun b : 𝓞 E => ‖φ b‖ ^ r := by
   let f : 𝓞 E →ₗ[ℤ] ℂ := (φ.comp (algebraMap (𝓞 E) E)).toAddMonoidHom.toIntLinearMap
@@ -256,6 +363,11 @@ theorem summable_int {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ) (h2 : 
   have hs := ZLattice.summable_norm_rpow M r (by linarith)
   exact hs.comp_injective (i := fun b : 𝓞 E => (⟨f b, b, rfl⟩ : M)) fun a b hab => hf (congrArg Subtype.val hab)
 
+/- English proof (translation)
+Establish `h0 : 0 < ‖φ x‖` using `by simpa using hx`. Unfold `term`. Rewrite using `[Fintype.prod_unique, norm_mul, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos h0, norm_pow, norm_pow, norm_inv, Complex.norm_conj, sub_eq_add_neg, Real.rpow_add h0, Real.rpow_neg h0.le, Real.rpow_natCast]`. Use `congr 1`. Rewrite using `[pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ h0.ne', one_pow, mul_one, inv_pow]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_term_unit (φ : E →+* ℂ) (k κ : ℕ) (σ : ℂ) {x : E} (hx : x ≠ 0) :
     ‖term (fun _ : Unit => φ) k (fun _ => κ) σ x‖ = ‖φ x‖ ^ (-(k : ℝ) - 2 * σ.re) := by
   have h0 : 0 < ‖φ x‖ := by simpa using hx
@@ -266,6 +378,9 @@ theorem norm_term_unit (φ : E →+* ℂ) (k κ : ℕ) (σ : ℂ) {x : E} (hx : 
   · rw [pow_add, mul_assoc, ← mul_pow, inv_mul_cancel₀ h0.ne', one_pow, mul_one, inv_pow]
   · simp
 
+/- English proof (translation)
+Use `choose b hb using fun q : modUnits (lattice (⊤ : Ideal (OF E)) 1) => (lattice_top_one _).1 (out_mem_lattice q).1`. Establish `hi : Function.Injective b` using `fun q q' hq => Subtype.ext (Quotient.out_injective (by rw [hb, hb, hq]))`. Use `Summable.of_norm (((summable_int h h2 (r := -(k : ℝ) - 2 * σ.re) (by linarith)).comp_injective hi).congr fun q => ?_)` and prove the remaining obligations. Rewrite using `[norm_term_unit φ k κ σ (out_mem_lattice q).2, hb]`. Both sides reduce to the same expression.
+-/
 theorem summable_term {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ) (h2 : Module.finrank ℚ E = 2) (k κ : ℕ) {σ : ℂ}
     (hσ : 1 < (k : ℝ) / 2 + σ.re) :
     Summable fun q : modUnits (lattice (⊤ : Ideal (OF E)) 1) => term (fun _ : Unit => φ) k (fun _ => κ) σ q.1.out := by
@@ -275,6 +390,19 @@ theorem summable_term {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ) (h2 :
   rw [norm_term_unit φ k κ σ (out_mem_lattice q).2, hb]
   rfl
 
+/- English proof (translation)
+Use `⟨differentiable_const _, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hs` using `(summable_term h h2 (2 * s) κ hσ).hasSum`. Set `a : Eˣ` to `Units.map (algebraMap (𝓞 E) E).toMonoidHom z`. Establish `hL : ∀ x, (a : E) * x ∈ lattice (⊤ : Ideal (OF E)) 1 ↔ x ∈ lattice (⊤ : Ideal (OF E)) 1` using `fun x => by`. Rewrite using `[lattice_top_one, lattice_top_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Use `⟨(↑z⁻¹ : 𝓞 E) * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hb, ← mul_assoc]`. Use `show x = (↑a⁻¹ : E) * a * x`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨z * b, by rw [map_mul]; rfl⟩`. Establish `h3` using `hs.unique (hasSum_smul h a hL hs)`. Establish `h4 : term (fun _ : Unit => φ) (2 * s) (fun _ => κ) σ a ≠ 1`.
+
+Establish `ha : φ a ^ (2 * (s + κ)) ≠ 1` using `hz`. Establish `hn : ‖φ a‖ = 1`. Establish `h5` using `prod_normSq h (a : E)`. Establish `h6 : |((Algebra.norm ℚ (a : E) : ℚ) : ℝ)| = 1` using `by exact_mod_cast NumberField.Units.norm E z`. Rewrite `h5` using `[h6, Fintype.prod_unique]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h5`. Establish `hc : starRingEnd ℂ (φ a) = (φ a)⁻¹` using `by rw [Complex.inv_eq_conj hn]`. Unfold `term`. Rewrite using `[Fintype.prod_unique, hn, hc, ← pow_add, show 2 * s + κ + κ = 2 * (s + κ) by ring, inv_pow]`. Simplify using `using ha`.
+
+Establish `h5 : (∑' q : modUnits (lattice (⊤ : Ideal (OF E)) 1), term (fun _ : Unit => φ) (2 * s) (fun _ => κ) σ q.1.out) = 0`. Assume the negation of the conclusion as `h0`. Conclude with `h4 ((mul_left_eq_self₀.1 h3.symm).resolve_right h0)`. Rewrite `hs` using `[h5]`. Then use the resulting hypothesis.
+-/
 theorem isLatSum_int [IsTotallyComplex E] {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ) (h2 : Module.finrank ℚ E = 2)
     (z : (𝓞 E)ˣ) {s κ : ℕ} (hz : φ (z : 𝓞 E) ^ (2 * (s + κ)) ≠ 1) :
     IsLatSum (fun _ : Unit => φ) (2 * s) (fun _ => κ) (lattice (⊤ : Ideal (OF E)) 1) 0 := by
@@ -308,10 +436,28 @@ theorem isLatSum_int [IsTotallyComplex E] {φ : E →+* ℂ} (h : IsCMType fun _
     exact h4 ((mul_left_eq_self₀.1 h3.symm).resolve_right h0)
   rwa [h5] at hs
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hatO_integral, fun h => GlobalTheory.IntDense.mem_of_isClosed E (C := (hatO (⊤ : Ideal (OF E)) : Set (Af E))) (Subring.isClosed_topologicalClosure _) (fun b => algebraMap_mem_hatO (c := ⊤) (mem_orderC.2 ⟨0, b, by simp [Ideal.map_top], by simp⟩)) y h⟩`.
+-/
 theorem mem_hatO_top {y : Af E} : y ∈ hatO (⊤ : Ideal (OF E)) ↔ ∀ v, Valued.v (y v) ≤ 1 :=
   ⟨hatO_integral, fun h => GlobalTheory.IntDense.mem_of_isClosed E (C := (hatO (⊤ : Ideal (OF E)) : Set (Af E))) (Subring.isClosed_topologicalClosure _)
     (fun b => algebraMap_mem_hatO (c := ⊤) (mem_orderC.2 ⟨0, b, by simp [Ideal.map_top], by simp⟩)) y h⟩
 
+/- English proof (translation)
+Establish `hp : ∀ v : HeightOneSpectrum (𝓞 E), ∃ p : E, v.valuation E p = WithZero.exp (-1 : ℤ) ∧ ∀ w : HeightOneSpectrum (𝓞 E), w ≠ v → w.valuation E p = 1` using `fun v => by`. Take `⟨r, hr⟩` from `(IsPrincipalIdealRing.principal v.asIdeal).principal`. Establish `h0 : r ≠ 0` using `by rintro rfl; exact v.ne_bot (by simpa using hr)`. Use `⟨r, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Conclude with `v.intValuation_singleton h0 hr`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hm`. Use `hw (HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top ?_).symm)` and prove the remaining obligations. Rewrite using `[hr]`.
+
+Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hm`. Use `choose p hp1 hp2 using hp`. Establish `hf` using `(FiniteAdeleRing.isUnit_iff.1 y.isUnit).2`. Rewrite `hf` using `[Filter.eventually_cofinite]`. Set `a : E` to `∏ v ∈ hf.toFinset, p v ^ (-WithZero.log (Valued.v ((y : Af E) v)))`.
+
+Establish `ha : ∀ w : HeightOneSpectrum (𝓞 E), w.valuation E a = Valued.v ((y : Af E) w)` using `fun w => by`. Simplify using `only [a, map_prod, map_zpow₀]`. Rewrite using `[Finset.prod_eq_single w (fun v _ hv => by rw [hp2 v w hv.symm, one_zpow]) (fun hw => by`. Establish `: Valued.v ((y : Af E) w) = 1` using `by simpa using hw`. Simplify using `[this]), hp1, ← WithZero.exp_zsmul]`.
+
+Simplify using `[WithZero.exp_log (coord_ne y w)]`. Establish `ha0 : a ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => zpow_ne_zero _ fun h => by`. Use `hp1 v` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`.
+
+Set `b : (Af E)ˣ` to `Units.map (algebraMap E (Af E)).toMonoidHom (Units.mk0 a ha0)`. Establish `hb : ∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((b : Af E) w) = Valued.v ((y : Af E) w)` using `fun w => (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a).trans (ha w)`. Establish `key : ∀ b y : (Af E)ˣ, (∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((b : Af E) w) = Valued.v ((y : Af E) w)) → ((b⁻¹ * y : (Af E)ˣ) : Af E) ∈ hatO (⊤ : Ideal (OF E))` using `fun b y h => mem_hatO_top.2 fun w => by`. Establish `h1 : ((b⁻¹ * y : (Af E)ˣ) : Af E) w = (↑b⁻¹ : Af E) w * (y : Af E) w` using `rfl`. Establish `h2 : (↑b⁻¹ : Af E) w * (b : Af E) w = 1` using `(coord w b).inv_val`.
+
+Rewrite using `[h1, map_mul, ← h, ← map_mul, h2, map_one]`. Use `⟨Units.mk0 a ha0, b⁻¹ * y, ⟨key b y hb, ?_⟩, by simp [b]⟩` and prove the remaining obligations. Use `key y b fun w => (hb w).symm` as an intermediate fact. Rewrite `this` using `[show y⁻¹ * b = (b⁻¹ * y)⁻¹ by rw [mul_inv, inv_inv, mul_comm]]`. Conclude with `this`.
+-/
 theorem exists_princ [IsPrincipalIdealRing (𝓞 E)] (y : (Af E)ˣ) :
     ∃ (a : Eˣ) (u : (Af E)ˣ), u ∈ hatOUnits (⊤ : Ideal (OF E)) ∧ y = Units.map (algebraMap E (Af E)).toMonoidHom a * 1 * u := by
   classical
@@ -352,12 +498,20 @@ theorem exists_princ [IsPrincipalIdealRing (𝓞 E)] (y : (Af E)ˣ) :
   rw [show y⁻¹ * b = (b⁻¹ * y)⁻¹ by rw [mul_inv, inv_inv, mul_comm]] at this
   exact this
 
+/- English proof (translation)
+Use `QuotientGroup.subsingleton_iff.2 (eq_top_iff.2 fun y _ => ?_)` and prove the remaining obligations. Take `⟨a, u, hu, rfl⟩` from `exists_princ y`. Rewrite using `[mul_one]`. Conclude with `Subgroup.mul_mem_sup ⟨a, rfl⟩ hu`.
+-/
 theorem subsingleton_picO [IsPrincipalIdealRing (𝓞 E)] : Subsingleton (PicO (⊤ : Ideal (OF E))) := by
   refine QuotientGroup.subsingleton_iff.2 (eq_top_iff.2 fun y _ => ?_)
   obtain ⟨a, u, hu, rfl⟩ := exists_princ y
   rw [mul_one]
   exact Subgroup.mul_mem_sup ⟨a, rfl⟩ hu
 
+/- English proof (translation)
+Use `haveI := subsingleton_picO (E := E)`. Use `⟨inferInstance, fun _ => 0, fun q => ?_, by simp⟩` and prove the remaining obligations. Take `⟨a, u, hu, hq⟩` from `exists_princ q.out`. Rewrite using `[hq, lattice_mul_unit _ hu]`. Use `isLatSum_smul h a (mul_mem_lattice_princ ⊤ 1 a) (isLatSum_int h h2 z hz)` as an intermediate fact.
+
+Simplify `this` using `[Pi.zero_def]`.
+-/
 theorem isToricSum_int [IsTotallyComplex E] [IsPrincipalIdealRing (𝓞 E)] {φ : E →+* ℂ} (h : IsCMType fun _ : Unit => φ)
     (h2 : Module.finrank ℚ E = 2) (z : (𝓞 E)ˣ) {s κ : ℕ} (hz : φ (z : 𝓞 E) ^ (2 * (s + κ)) ≠ 1) (χ : HChar E) :
     IsToricSum (fun _ : Unit => φ) s (fun _ => κ) ⊤ χ 0 := by
@@ -374,6 +528,13 @@ instance : IsCyclotomicExtension {3} ℚ Eis := CyclotomicField.isCyclotomicExte
 
 instance : IsCMField Eis := IsCyclotomicExtension.Rat.isCMField Eis (S := {3}) ⟨3, rfl, by norm_num⟩
 
+/- English proof (translation)
+Establish `h2 : Module.finrank ℚ Eis = 2`. Rewrite using `[IsCyclotomicExtension.finrank (n := 3) Eis (Polynomial.cyclotomic.irreducible_rat (by norm_num))]; rfl`. Establish `hc : Fintype.card (InfinitePlace Eis) = 1`. Use `IsTotallyComplex.finrank Eis` as an intermediate fact. Establish `h3` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces Eis`.
+
+Rewrite `h3` using `[IsTotallyComplex.nrRealPlaces_eq_zero]`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw⟩` from `Fintype.card_eq_one_iff.1 hc`. Establish `hφ : IsCMType fun _ : Unit => w.embedding` using `fun σ => ⟨(), (InfinitePlace.mk_eq_iff.1 (w.mk_embedding.trans (hw _).symm)).imp Eq.symm Eq.symm, fun _ _ => rfl⟩`. Establish `hz` using `IsCyclotomicExtension.zeta_spec 3 ℚ Eis`.
+
+Use `haveI := IsCyclotomicExtension.Rat.three_pid Eis`. Use `⟨_, hφ, isToricSum_int hφ h2 (hz.toInteger_isPrimitiveRoot.isUnit (by norm_num)).unit ?_⟩` and prove the remaining obligations. Establish `h4 : IsPrimitiveRoot (w.embedding (IsCyclotomicExtension.zeta 3 ℚ Eis)) 3` using `hz.map_of_injective w.embedding.injective`. Introduce `h5`. Conclude with `absurd ((h4.pow_eq_one_iff_dvd _).1 h5) (by decide)`.
+-/
 theorem isToricSum_eis : ∃ φ : Eis →+* ℂ, IsCMType (fun _ : Unit => φ) ∧
     ∀ χ : HChar Eis, IsToricSum (fun _ : Unit => φ) 1 (fun _ => 1) ⊤ χ 0 := by
   have h2 : Module.finrank ℚ Eis = 2 := by
@@ -393,6 +554,9 @@ theorem isToricSum_eis : ∃ φ : Eis →+* ℂ, IsCMType (fun _ : Unit => φ) �
   intro h5
   exact absurd ((h4.pow_eq_one_iff_dvd _).1 h5) (by decide)
 
+/- English proof (translation)
+Use `h.2 0 ?_` and prove the remaining obligations. Establish `: (2 : ℝ) ≤ s` using `by exact_mod_cast hs`. Use `push_cast`. Simplify using `only [Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hasSum_zero_of_two_le {φ : I → E →+* ℂ} {s : ℕ} (hs : 2 ≤ s) {κ : I → ℕ} {L : Set E} {S : ℂ → ℂ}
     (h : IsLatSum φ (2 * s) κ L S) : HasSum (fun q : modUnits L => term φ (2 * s) κ 0 q.1.out) (S 0) := by
   refine h.2 0 ?_
@@ -401,6 +565,9 @@ theorem hasSum_zero_of_two_le {φ : I → E →+* ℂ} {s : ℕ} (hs : 2 ≤ s) 
   simp only [Complex.zero_re]
   linarith
 
+/- English proof (translation)
+Rewrite using `[hasInfRatio_iff, hasInfRatio_iff]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Establish `: ∀ i, (ComplexEmbedding.conjugate (φ i) (k : E) / starRingEnd ℂ (ComplexEmbedding.conjugate (φ i) (k : E))) ^ m i = (φ i (k : E) / starRingEnd ℂ (φ i (k : E))) ^ (-m i)` using `fun i => by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj, zpow_neg, ← inv_zpow, inv_div]`. Simplify using `only [this]`.
+-/
 theorem hasInfRatio_conj (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ) :
     HasInfRatio χ (fun i => ComplexEmbedding.conjugate (φ i)) m ↔ HasInfRatio χ φ fun i => -m i := by
   rw [hasInfRatio_iff, hasInfRatio_iff]
@@ -410,6 +577,9 @@ theorem hasInfRatio_conj (χ : HChar E) (φ : I → E →+* ℂ) (m : I → ℤ)
     rw [ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj, zpow_neg, ← inv_zpow, inv_div]
   simp only [this]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := (h.2 2 (by simp only [Complex.re_ofNat]; have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)).summable simp only [term, Finset.univ_eq_empty, Finset.prod_empty] at h1 haveI := hL.to_subtype have h2 := h1.tendsto_cofinite_zero exact one_ne_zero (tendsto_const_nhds_iff …`.
+-/
 theorem not_isLatSum_empty (φ : Empty → E →+* ℂ) (k : ℕ) (κ : Empty → ℕ) {L : Set E} (hL : (modUnits L).Infinite) (S : ℂ → ℂ) :
     ¬ IsLatSum φ k κ L S := fun h => by
   have h1 := (h.2 2 (by simp only [Complex.re_ofNat]; have : (0 : ℝ) ≤ k := Nat.cast_nonneg k; linarith)).summable
@@ -421,6 +591,11 @@ theorem not_isLatSum_empty (φ : Empty → E →+* ℂ) (k : ℕ) (κ : Empty �
 section RatL
 open GlobalTheory.CMVal.ValEx Rat.HeightOneSpectrum
 
+/- English proof (translation)
+Establish `e` using `Ideal.quotientEquiv p.asIdeal _ (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) (span_natGenerator p)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr e.toEquiv]`. Use `Ideal.absNorm_span_singleton ((natGenerator p : ℕ) : ℤ)` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[this]`.
+
+Simplify using `only [Algebra.norm_self, MonoidHom.id_apply, Int.natAbs_natCast]`. Both sides reduce to the same expression.
+-/
 theorem absNorm_rat (p : HeightOneSpectrum (𝓞 ℚ)) : Ideal.absNorm p.asIdeal = (primesEquiv p : ℕ) := by
   have e := Ideal.quotientEquiv p.asIdeal _ (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) (span_natGenerator p)
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_congr e.toEquiv]
@@ -430,6 +605,9 @@ theorem absNorm_rat (p : HeightOneSpectrum (𝓞 ℚ)) : Ideal.absNorm p.asIdeal
   simp only [Algebra.norm_self, MonoidHom.id_apply, Int.natAbs_natCast]
   rfl
 
+/- English proof (translation)
+Use `(primesEquiv (R := 𝓞 ℚ)).hasProd_iff.2 (riemannZeta_eulerProduct_hasProd hs)` as an intermediate fact. Use `this.congr_fun fun p => ?_` and prove the remaining obligations. Establish `h : (1 : HChar ℚ).UnrAt p` using `fun _ _ => rfl`. Establish `h' : (1 : HChar ℚ).val p = 1` using `rfl`. Simplify using `only [eulerFactor, if_pos h, h', absNorm_rat, Function.comp_apply, Units.val_one, one_mul]`.
+-/
 theorem hasProd_one {s : ℂ} (hs : 1 < s.re) : HasProd (eulerFactor (1 : HChar ℚ) s) (riemannZeta s) := by
   have := (primesEquiv (R := 𝓞 ℚ)).hasProd_iff.2 (riemannZeta_eulerProduct_hasProd hs)
   refine this.congr_fun fun p => ?_
@@ -437,6 +615,11 @@ theorem hasProd_one {s : ℂ} (hs : 1 < s.re) : HasProd (eulerFactor (1 : HChar 
   have h' : (1 : HChar ℚ).val p = 1 := rfl
   simp only [eulerFactor, if_pos h, h', absNorm_rat, Function.comp_apply, Units.val_one, one_mul]
 
+/- English proof (translation)
+Introduce and unpack `⟨h1, h2⟩`. Establish `hf : Differentiable ℂ fun s => (s - 1) * Λ s` using `by fun_prop`. Establish `hg : Differentiable ℂ (DirichletCharacter.LFunctionTrivChar₁ 1)` using `DirichletCharacter.differentiable_LFunctionTrivChar₁ 1`. Use `entire_eq_of_halfPlane hf hg 1 fun s hs => by` as an intermediate fact. Establish `hs1 : s ≠ 1` using `by rintro rfl; simp at hs`.
+
+Rewrite using `[(h2 s hs).unique (hasProd_one hs)]`. Simplify using `[DirichletCharacter.LFunctionTrivChar₁, Function.update_of_ne hs1, DirichletCharacter.LFunctionTrivChar, DirichletCharacter.LFunction_modOne_eq]`. Establish `h3` using `congrFun this 1`. Simplify using `[DirichletCharacter.LFunctionTrivChar₁] at h3`.
+-/
 theorem not_isHeckeL_one (Λ : ℂ → ℂ) : ¬ IsHeckeL (1 : HChar ℚ) Λ := by
   rintro ⟨h1, h2⟩
   have hf : Differentiable ℂ fun s => (s - 1) * Λ s := by fun_prop
@@ -449,20 +632,36 @@ theorem not_isHeckeL_one (Λ : ℂ → ℂ) : ¬ IsHeckeL (1 : HChar ℚ) Λ := 
   have h3 := congrFun this 1
   simp [DirichletCharacter.LFunctionTrivChar₁] at h3
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ natGenerator p ∣ n`. Rewrite using `[natGenerator_dvd_iff, ← map_natCast (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) n, Ideal.apply_mem_of_equiv_iff]`.
+-/
 theorem mem_rat (p : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ) : (n : 𝓞 ℚ) ∈ p.asIdeal ↔ (primesEquiv p : ℕ) ∣ n := by
   change _ ↔ natGenerator p ∣ n
   rw [natGenerator_dvd_iff, ← map_natCast (Rat.IsIntegralClosure.intEquiv (𝓞 ℚ)) n, Ideal.apply_mem_of_equiv_iff]
 
+/- English proof (translation)
+Establish `e : (n : ℚ) = algebraMap (𝓞 ℚ) ℚ n` using `by simp`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff, mem_rat]`. Conclude with `h`.
+-/
 theorem val_rat_one (p : HeightOneSpectrum (𝓞 ℚ)) {n : ℕ} (h : ¬ (primesEquiv p : ℕ) ∣ n) : p.valuation ℚ (n : ℚ) = 1 := by
   have e : (n : ℚ) = algebraMap (𝓞 ℚ) ℚ n := by simp
   rw [e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff, mem_rat]
   exact h
 
+/- English proof (translation)
+The claim follows from `val_prime (primesEquiv p).2 (by rw [Rat.numberField_discr] exact_mod_cast (primesEquiv p).2.not_dvd_one) p ((mem_rat p _).2 dvd_rfl)`.
+-/
 theorem val_rat_self (p : HeightOneSpectrum (𝓞 ℚ)) : p.valuation ℚ ((primesEquiv p : ℕ) : ℚ) = WithZero.exp (-1 : ℤ) :=
   val_prime (primesEquiv p).2 (by
     rw [Rat.numberField_discr]
     exact_mod_cast (primesEquiv p).2.not_dvd_one) p ((mem_rat p _).2 dvd_rfl)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ (k : ℚ) fun p => (h p).le`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ ((k⁻¹ : ℚˣ) : ℚ) fun p => by`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h p, inv_one]`. Take `⟨a', ha'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (show IsIntegral ℤ (k : ℚ) from ha ▸ a.isIntegral_coe)`. Take `⟨b', hb'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (show IsIntegral ℤ ((k⁻¹ : ℚˣ) : ℚ) from hb ▸ b.isIntegral_coe)`.
+
+Establish `h1 : a' * b' = 1`. Establish `: algebraMap ℤ ℚ (a' * b') = 1` using `by rw [map_mul, ha', hb', Units.mul_inv]`. Conclude with `(algebraMap ℤ ℚ).injective_int (this.trans (map_one _).symm)`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨2, two_pos, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← ha']`.
+
+Apply the tactic sequence `rcases Int.eq_one_or_neg_one_of_mul_eq_one h1 with rfl | rfl <;> simp`.
+-/
 theorem finOrder_rat (k : ℚˣ) (h : ∀ p : HeightOneSpectrum (𝓞 ℚ), p.valuation ℚ (k : ℚ) = 1) : IsOfFinOrder k := by
   obtain ⟨a, ha⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ (k : ℚ) fun p => (h p).le
   obtain ⟨b, hb⟩ := HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 ℚ) ℚ ((k⁻¹ : ℚˣ) : ℚ) fun p => by
@@ -476,6 +675,15 @@ theorem finOrder_rat (k : ℚˣ) (h : ∀ p : HeightOneSpectrum (𝓞 ℚ), p.va
   rw [Units.val_pow_eq_pow_val, ← ha']
   rcases Int.eq_one_or_neg_one_of_mul_eq_one h1 with rfl | rfl <;> simp
 
+/- English proof (translation)
+Establish `h3 : ∀ u : (ZMod 9)ˣ, ¬ 3 ∣ (u : ZMod 9).val` using `fun u h => by`. Use `Nat.Coprime.eq_one_of_dvd ((ZMod.val_coe_unit_coprime u).coprime_dvd_left h) (by norm_num)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h0 : ∀ u : (ZMod 9)ˣ, (((u : ZMod 9).val : ℕ) : ℚ) ≠ 0` using `fun u h => h3 u (by`. Establish `: (u : ZMod 9).val = 0` using `by exact_mod_cast h`.
+
+Simplify using `[this])`. Set `f : (ZMod 9)ˣ →* ℂˣ` to `MonoidHom.mk' (fun u => G (Units.mk0 _ (h0 u))) fun u v => by`. Rewrite using `[← map_mul, hG _ ((u : ZMod 9).val * (v : ZMod 9).val) _ (by push_cast; exact mul_ne_zero (h0 u) (h0 v)) (h3 _) (by rw [Units.val_mul, ZMod.val_mul]; exact Nat.mod_modEq _ _)]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules. Use `⟨MulChar.ofUnitHom f, fun n hn h => ?_⟩` and prove the remaining obligations. Establish `hc : n.Coprime 9`. Use `((Nat.Prime.coprime_iff_not_dvd Nat.prime_three).2 h).symm` as an intermediate fact. Conclude with `Nat.Coprime.pow_right 2 this`.
+
+Rewrite using `[← ZMod.coe_unitOfCoprime n hc, MulChar.ofUnitHom_coe]`. Use `congr 1`. Conclude with `hG _ _ _ _ (h3 _) (by rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast]; exact Nat.mod_modEq _ _)`.
+-/
 theorem exists_dirichlet (G : ℚˣ →* ℂˣ)
     (hG : ∀ (n m : ℕ) (hn : (n : ℚ) ≠ 0) (hm : (m : ℚ) ≠ 0), ¬ 3 ∣ n → n ≡ m [MOD 9] → G (Units.mk0 n hn) = G (Units.mk0 m hm)) :
     ∃ D : DirichletCharacter ℂ 9, ∀ (n : ℕ) (hn : (n : ℚ) ≠ 0), ¬ 3 ∣ n → D n = G (Units.mk0 n hn) := by
@@ -499,6 +707,35 @@ theorem exists_dirichlet (G : ℚˣ →* ℂˣ)
   congr 1
   exact hG _ _ _ _ (h3 _) (by rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast]; exact Nat.mod_modEq _ _)
 
+/- English proof (translation)
+Set `w : HeightOneSpectrum (𝓞 ℚ)` to `primesEquiv.symm ⟨3, Nat.prime_three⟩`. Establish `hw : (primesEquiv w : ℕ) = 3` using `congrArg Subtype.val (primesEquiv.apply_symm_apply _)`. Establish `hw3 : w.valuation ℚ ((3 : ℕ) : ℚ) = WithZero.exp (-1 : ℤ)` using `by rw [← hw]; exact val_rat_self w`. Set `u : ℚˣ` to `Units.mk0 ((4 : ℕ) : ℚ) (by norm_num)`. Take `⟨ch, hc1, hc2, hc3, hc4, hc5⟩` from `exists_locChar Nat.prime_three (by norm_num) w hw3 1 u (by simp [u]; norm_num)`.
+
+Take `⟨χ, h1, h3, h4, h5⟩` from `exists_unitary_char_of_open_subgroup_and_hom (Ideles ℚ) ℚˣ unitI isOpen_unitI (Neutral.B1.diagUnits ℚ) 1 (ch.comp ((locU w).comp finOf)) (hc1.comp ((continuous_locU w).comp continuous_finOf)) (fun x => hc2 _) (by simp) (fun k hk => by`. Use `hc4 k (finOrder_rat k fun p => by rw [← val_alg]; exact mem_unitI.1 hk p)` as an intermediate fact. Conclude with `this.symm)`. Set `X : HChar ℚ` to `⟨χ, h1, fun k => h5 k⟩`. Establish `hloc : ∀ P (x : (P.adicCompletion ℚ)ˣ), Valued.v (x : P.adicCompletion ℚ) = 1 → X.loc P x = ch (locU w (single P x))` using `fun P x hx => h4 _ (finIdele_mem (suppAt_single P x) (by rw [single_self, hx]))`.
+
+Take `⟨D, hD⟩` from `exists_dirichlet (ch.comp (toLoc w))⁻¹ fun n m hn hm h3n hnm => by`. Establish `h3m : ¬ 3 ∣ m` using `fun h => h3n ((hnm.dvd_iff (by norm_num)).2 h)`. Establish `vn` using `val_rat_one w (n := n) (by rwa [hw])`. Establish `vm` using `val_rat_one w (n := m) (by rwa [hw])`. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, inv_inj, eq_comm, ← div_eq_one, ← map_div]`.
+
+Take `⟨t, ht⟩` from `hnm.dvd`. Establish `ht' : (m : ℚ) - n = 3 * 3 * t` using `by exact_mod_cast ht`. Use `hc3 _ ⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (algebraMap ℚ (w.adicCompletion ℚ) _) = 1`. Rewrite using `[val_alg]`.
+
+Simplify using `[vn, vm]`. Express the relevant statement in the definitionally equal form `Valued.v (algebraMap ℚ (w.adicCompletion ℚ) _ - 1) ≤ _`. Rewrite using `[← map_one (algebraMap ℚ (w.adicCompletion ℚ)), ← map_sub, val_alg]`. Establish `e : ((Units.mk0 (m : ℚ) hm / Units.mk0 (n : ℚ) hn : ℚˣ) : ℚ) - 1 = ((3 : ℕ) : ℚ) * ((3 : ℕ) : ℚ) * t / n`. Rewrite using `[Units.val_div_eq_div_val, Units.val_mk0, Units.val_mk0]`.
+
+Use `push_cast`. Rewrite using `[← ht']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_div₀, vn, div_one, map_mul, map_mul, hw3, exp_one_sq]`. Conclude with `(mul_le_mul' le_rfl (val_int_le _ t)).trans (by simp)`.
+
+Establish `hram : ¬ X.UnrAt w` using `fun h => hc5 (by`. Establish `hv : Valued.v ((toLoc w u : (w.adicCompletion ℚ)ˣ) : w.adicCompletion ℚ) = 1` using `(val_alg w _).trans (val_rat_one w (n := 4) (by rw [hw]; norm_num))`. Use `h _ hv` as an intermediate fact. Rewrite using `[hloc _ _ hv, locU_single] at this)` and apply the resulting hypothesis. Establish `hD1 : D ≠ 1` using `fun h => hc5 (by`.
+
+Use `hD 4 (by norm_num) (by norm_num)` as an intermediate fact. Rewrite `this` using `[h, MulChar.one_apply (by rw [ZMod.isUnit_iff_coprime]; norm_num), MonoidHom.inv_apply]`. Establish `h2 : (ch (toLoc w u))⁻¹ = 1` using `Units.ext this.symm`. Conclude with `inv_eq_one.1 h2)`. Use `⟨X, D, h3, hD1, ⟨w, hram⟩, DirichletCharacter.differentiable_LFunction hD1, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[DirichletCharacter.LFunction_eq_LSeries D hs]`. Use `(primesEquiv (R := 𝓞 ℚ)).hasProd_iff.2 (DirichletCharacter.LSeries_eulerProduct_hasProd D hs)` as an intermediate fact. Use `this.congr_fun fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p = w`. Rewrite using `[hp]`.
+
+Establish `h0 : D ((primesEquiv w : ℕ) : ZMod 9) = 0` using `D.map_nonunit (by rw [hw, ZMod.isUnit_iff_coprime]; norm_num)`. Simplify using `only [eulerFactor, if_neg hram, h0, Function.comp_apply, zero_mul, sub_zero, inv_one]`. Establish `hun : X.UnrAt p` using `fun x hx => by`. Rewrite using `[hloc p x hx, locU_of_supp (suppAt_single p x) (Ne.symm hp), map_one]`. Establish `hne : ∀ q : HeightOneSpectrum (𝓞 ℚ), q ≠ p → ¬ (primesEquiv q : ℕ) ∣ (primesEquiv p : ℕ)` using `fun q hq h => hq (primesEquiv.injective (Subtype.ext ((Nat.prime_dvd_prime_iff_eq (primesEquiv q).2 (primesEquiv p).2).1 h)))`.
+
+Establish `hP0 : (((primesEquiv p : ℕ)) : ℚ) ≠ 0` using `by exact_mod_cast (primesEquiv p).2.ne_zero`. Set `k : ℚˣ` to `Units.mk0 _ hP0`. Establish `hk : X.loc p (toLoc p k) = X.val p` using `X.val_eq hun _ ((val_alg p _).trans (val_rat_self p))`. Establish `hfin : ∀ q, locU q (finOf (Neutral.B1.diagUnits ℚ k / finIdele ℚ (single p (toLoc p k)))) = toLoc q k / locU q (single p (toLoc p k))` using `fun q => by`. Rewrite using `[map_div, map_div]`.
+
+Both sides reduce to the same expression. Establish `hmem : Neutral.B1.diagUnits ℚ k / finIdele ℚ (single p (toLoc p k)) ∈ unitI` using `mem_unitI.2 fun q => by`. Use `(congrArg (fun y : (q.adicCompletion ℚ)ˣ => Valued.v (y : q.adicCompletion ℚ)) (hfin q)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+
+Rewrite using `[locU_single, div_self']`. Simplify using the standard rewrite rules. Rewrite using `[locU_of_supp (suppAt_single p _) hq, div_one]`. Conclude with `(val_alg q _).trans (val_rat_one q (hne q hq))`. Establish `h6` using `h4 _ hmem`.
+
+Rewrite `h6` using `[map_div, h5, MonoidHom.comp_apply, MonoidHom.comp_apply, hfin, locU_of_supp (suppAt_single p _) (Ne.symm hp), div_one, MonoidHom.one_apply, one_div]`. Establish `h7 : X.val p = (ch (toLoc w k))⁻¹` using `by rw [← hk, ← h6, inv_inv]; rfl`. Establish `h8` using `hD _ hP0 (by rw [← hw]; exact hne w (Ne.symm hp))`. Simplify using `only [eulerFactor, if_pos hun, Function.comp_apply, absNorm_rat, h8, h7]`. Both sides reduce to the same expression.
+-/
 theorem exists_isHeckeL : ∃ (χ : HChar ℚ) (D : DirichletCharacter ℂ 9), IsUnitary χ ∧ D ≠ 1 ∧ (∃ w, ¬ χ.UnrAt w) ∧
     IsHeckeL χ (DirichletCharacter.LFunction D) := by
   let w : HeightOneSpectrum (𝓞 ℚ) := primesEquiv.symm ⟨3, Nat.prime_three⟩

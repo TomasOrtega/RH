@@ -44,6 +44,9 @@ def cupCocycleZ1Z1 (hrho' : ContAction rho') : Z1 rho →ₗ[R] Z1 rho' →ₗ[R
     (fun x y y' => Subtype.ext (funext fun p => by simp))
     (fun r x y => Subtype.ext (funext fun p => by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cupCocycleZ1Z1_apply (hrho' : ContAction rho') (x : Z1 rho) (y : Z1 rho') (g h : G) :
     (cupCocycleZ1Z1 rho rho' rhoP b hb hbe hrho' x y).1 (g, h) = b (x.1 g) (rho' g (y.1 h)) := rfl
 
@@ -96,6 +99,9 @@ def cupCocycleH0Z2 : H0 rho →ₗ[R] Z2 rho' →ₗ[R] Z2 rhoP :=
     (fun m f f' => Subtype.ext (funext fun p => by simp))
     (fun r m f => Subtype.ext (funext fun p => by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cupCocycleH0Z2_apply (m : H0 rho) (f : Z2 rho') (p : G × G) :
     (cupCocycleH0Z2 rho rho' rhoP b hb hbe m f).1 p = b m.1 (f.1 p) := rfl
 
@@ -128,6 +134,9 @@ def cupCocycleZ2H0 : Z2 rho →ₗ[R] H0 rho' →ₗ[R] Z2 rhoP :=
     (fun f m m' => Subtype.ext (funext fun p => by simp))
     (fun r f m => Subtype.ext (funext fun p => by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cupCocycleZ2H0_apply (f : Z2 rho) (m : H0 rho') (p : G × G) :
     (cupCocycleZ2H0 rho rho' rhoP b hb hbe f m).1 p = b (f.1 p) m.1 := rfl
 
@@ -161,6 +170,9 @@ abbrev LocCond := ∀ i, Submodule R (H1 (rho.comp (phi i)))
 def Sel (L : LocCond rho phi) : Submodule R (H1 rho) :=
   ⨅ i, (L i).comap (resH1 rho (phi i) (hphi i))
 
+/- English proof (translation)
+Simplify using `only [Sel, Submodule.mem_iInf, Submodule.mem_comap]`.
+-/
 theorem mem_Sel (L : LocCond rho phi) (x : H1 rho) :
     x ∈ Sel rho phi hphi L ↔ ∀ i, resH1 rho (phi i) (hphi i) x ∈ L i := by
   simp only [Sel, Submodule.mem_iInf, Submodule.mem_comap]
@@ -181,6 +193,9 @@ def H1ur : Submodule R (H1 rhoD) :=
 
 variable (Mplus : Submodule R M) (hMplus : ∀ g, Mplus ≤ Mplus.comap (rhoD g))
 
+/- English proof (translation)
+Use `first`. Consider the case `exact continuous_quot_mk`. Consider the case `exact continuous_coinduced_rng`.
+-/
 theorem continuous_mkQ : Continuous (Mplus.mkQ) := by
   first
   | exact continuous_quot_mk

@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hr : ∀ x, w x ∈ LinearMap.range u` using `fun x => by`. Rewrite using `[← LinearMap.exact_iff.mp huv, LinearMap.mem_ker]`. Conclude with `LinearMap.congr_fun hw x`. Take `⟨l, hl⟩` from `Module.projective_lifting_property u.rangeRestrict (w.codRestrict _ hr) u.surjective_rangeRestrict`. Use `⟨l, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Use `congrArg Subtype.val (LinearMap.congr_fun hl x)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem resolution_lift_of_exact {O : Type} [CommRing O] {P A B C : Type}
     [AddCommGroup P] [Module O P] [Module.Projective O P]
     [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B] [AddCommGroup C] [Module O C]
@@ -25,6 +30,27 @@ theorem resolution_lift_of_exact {O : Type} [CommRing O] {P A B C : Type}
   have := congrArg Subtype.val (LinearMap.congr_fun hl x)
   simpa using this
 
+/- English proof (translation)
+Introduce `O _ N _ _ F₀ _ _ _ _ F₁ _ _ _ _ F₂ _ _ _ _ F₃ _ _ _ _ G₀ _ _ _ _ G₁ _ _ _ _ G₂ _ _ _ _ ε d₁ d₂ d₃ ν e₁ e₂ hε hd1 hd2 hd3 hν he1 he2`. Take `⟨a₀, ha₀⟩` from `Module.projective_lifting_property ν ε hν`. Take `⟨b₀, hb₀⟩` from `Module.projective_lifting_property ε ν hε`. Establish `ha₀' : ∀ x, ν (a₀ x) = ε x` using `fun x => LinearMap.congr_fun ha₀ x`. Establish `hb₀' : ∀ x, ε (b₀ x) = ν x` using `fun x => LinearMap.congr_fun hb₀ x`.
+
+Take `⟨a₁, ha₁⟩` from `resolution_lift_of_exact he1 (a₀ ∘ₗ d₁) (by`. Use extensionality with `x`. Simplify using `[ha₀', Function.Exact.apply_apply_eq_zero hd1])`. Establish `ha₁' : ∀ x, e₁ (a₁ x) = a₀ (d₁ x)` using `fun x => LinearMap.congr_fun ha₁ x`. Take `⟨a₂, ha₂⟩` from `resolution_lift_of_exact he2 (a₁ ∘ₗ d₂) (by`.
+
+Use extensionality with `x`. Simplify using `[ha₁', Function.Exact.apply_apply_eq_zero hd2])`. Take `⟨b₁, hb₁⟩` from `resolution_lift_of_exact hd1 (b₀ ∘ₗ e₁) (by`. Use extensionality with `x`. Simplify using `[hb₀', Function.Exact.apply_apply_eq_zero he1])`.
+
+Establish `hb₁' : ∀ x, d₁ (b₁ x) = b₀ (e₁ x)` using `fun x => LinearMap.congr_fun hb₁ x`. Take `⟨b₂, hb₂⟩` from `resolution_lift_of_exact hd2 (b₁ ∘ₗ e₂) (by`. Use extensionality with `x`. Simplify using `[hb₁', Function.Exact.apply_apply_eq_zero he2])`. Take `⟨h₀, hh₀⟩` from `resolution_lift_of_exact hd1 (LinearMap.id - b₀ ∘ₗ a₀) (by`.
+
+Use extensionality with `x`. Simplify using `[hb₀', ha₀'])`. Establish `hh₀' : ∀ x, d₁ (h₀ x) = x - b₀ (a₀ x)` using `fun x => by`. Simplify using `using LinearMap.congr_fun hh₀ x`. Take `⟨h₁, hh₁⟩` from `resolution_lift_of_exact hd2 (LinearMap.id - b₁ ∘ₗ a₁ - h₀ ∘ₗ d₁) (by`.
+
+Use extensionality with `x`. Simplify using `[hb₁', ha₁', hh₀'])`. Establish `hh₁' : ∀ x, d₂ (h₁ x) = x - b₁ (a₁ x) - h₀ (d₁ x)` using `fun x => by`. Simplify using `using LinearMap.congr_fun hh₁ x`. Take `⟨h₂, hh₂⟩` from `resolution_lift_of_exact hd3 (LinearMap.id - b₂ ∘ₗ a₂ - h₁ ∘ₗ d₂) (by`.
+
+Use extensionality with `x`. Establish `e1` using `LinearMap.congr_fun hb₂ (a₂ x)`. Establish `e2` using `LinearMap.congr_fun ha₂ x`. Simplify using `only [LinearMap.comp_apply] at e1 e2`. Simplify using `[hh₁', e1, e2, Function.Exact.apply_apply_eq_zero hd2])`.
+
+Take `⟨k₀, hk₀⟩` from `resolution_lift_of_exact he1 (LinearMap.id - a₀ ∘ₗ b₀) (by`. Use extensionality with `x`. Simplify using `[hb₀', ha₀'])`. Establish `hk₀' : ∀ x, e₁ (k₀ x) = x - a₀ (b₀ x)` using `fun x => by`. Simplify using `using LinearMap.congr_fun hk₀ x`.
+
+Take `⟨k₁, hk₁⟩` from `resolution_lift_of_exact he2 (LinearMap.id - a₁ ∘ₗ b₁ - k₀ ∘ₗ e₁) (by`. Use extensionality with `x`. Simplify using `[hb₁', ha₁', hk₀'])`. Use `⟨a₀, a₁, a₂, b₀, b₁, b₂, h₀, h₁, h₂, k₀, k₁, ha₁, ha₂, hb₁, hb₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hh₁, sub_add_cancel]`.
+
+Rewrite using `[hh₂, sub_add_cancel]`. Rewrite using `[hk₁, sub_add_cancel]`.
+-/
 theorem resolutions_homotopy_equivalent : ∀ (O : Type) [CommRing O] (N : Type) [AddCommGroup N] [Module O N] (F₀ : Type) [AddCommGroup F₀] [Module O F₀] [Module.Free O F₀] [Module.Finite O F₀] (F₁ : Type) [AddCommGroup F₁] [Module O F₁] [Module.Free O F₁] [Module.Finite O F₁] (F₂ : Type) [AddCommGroup F₂] [Module O F₂] [Module.Free O F₂] [Module.Finite O F₂] (F₃ : Type) [AddCommGroup F₃] [Module O F₃] [Module.Free O F₃] [Module.Finite O F₃] (G₀ : Type) [AddCommGroup G₀] [Module O G₀] [Module.Free O G₀] [Module.Finite O G₀] (G₁ : Type) [AddCommGroup G₁] [Module O G₁] [Module.Free O G₁] [Module.Finite O G₁] (G₂ : Type) [AddCommGroup G₂] [Module O G₂] [Module.Free O G₂] [Module.Finite O G₂] (ε : F₀ →ₗ[O] N) (d₁ : F₁ →ₗ[O] F₀) (d₂ : F₂ →ₗ[O] F₁) (d₃ : F₃ →ₗ[O] F₂) (ν : G₀ →ₗ[O] N) (e₁ : G₁ →ₗ[O] G₀) (e₂ : G₂ →ₗ[O] G₁), Function.Surjective ε → Function.Exact d₁ ε → Function.Exact d₂ d₁ → Function.Exact d₃ d₂ → Function.Surjective ν → Function.Exact e₁ ν → Function.Exact e₂ e₁ → ∃ (a₀ : F₀ →ₗ[O] G₀) (a₁ : F₁ →ₗ[O] G₁) (a₂ : F₂ →ₗ[O] G₂) (b₀ : G₀ →ₗ[O] F₀) (b₁ : G₁ →ₗ[O] F₁) (b₂ : G₂ →ₗ[O] F₂) (h₀ : F₀ →ₗ[O] F₁) (h₁ : F₁ →ₗ[O] F₂) (h₂ : F₂ →ₗ[O] F₃) (k₀ : G₀ →ₗ[O] G₁) (k₁ : G₁ →ₗ[O] G₂), e₁ ∘ₗ a₁ = a₀ ∘ₗ d₁ ∧ e₂ ∘ₗ a₂ = a₁ ∘ₗ d₂ ∧ d₁ ∘ₗ b₁ = b₀ ∘ₗ e₁ ∧ d₂ ∘ₗ b₂ = b₁ ∘ₗ e₂ ∧ LinearMap.id - b₁ ∘ₗ a₁ = d₂ ∘ₗ h₁ + h₀ ∘ₗ d₁ ∧ LinearMap.id - b₂ ∘ₗ a₂ = d₃ ∘ₗ h₂ + h₁ ∘ₗ d₂ ∧ LinearMap.id - a₁ ∘ₗ b₁ = e₂ ∘ₗ k₁ + k₀ ∘ₗ e₁ := by
   intro O _ N _ _ F₀ _ _ _ _ F₁ _ _ _ _ F₂ _ _ _ _ F₃ _ _ _ _ G₀ _ _ _ _ G₁ _ _ _ _ G₂ _ _ _ _
     ε d₁ d₂ d₃ ν e₁ e₂ hε hd1 hd2 hd3 hν he1 he2

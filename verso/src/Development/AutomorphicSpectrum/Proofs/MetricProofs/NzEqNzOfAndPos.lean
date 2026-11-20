@@ -11,6 +11,23 @@ open GlobalTheory.CompanionTheory.Ar.RiemannLimit GlobalTheory.CompanionTheory.A
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.NzCase
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ R σ I r y hσ hI hy hli hidx`. Distinguish the cases in `hbot : I = ⊥`. Substitute `hbot` using the available equality. Establish `hy0 : ∀ a, y a = 0` using `fun a => by simpa using hy a`. Establish `hr : r = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hli.ne_zero (⟨0, Nat.pos_of_ne_zero h⟩ : Fin r) (hy0 _)`. Substitute `hr` using the available equality. Establish `hno : ¬ ∃ r v, IsNzFamily (⊥ : Submodule (𝓞 E) Λ) r v`. Introduce and unpack `⟨ρ, v, h1, hv, hl, -⟩`.
+
+Conclude with `hl.ne_zero (⟨0, h1⟩ : Fin ρ) (by simpa using hv ⟨0, h1⟩)`. Establish `hnz : R.nz σ (⊥ : Submodule (𝓞 E) Λ) = 1`. Simplify using `only [RiemLat.nz]`. Conclude with `dif_neg hno`. Establish `hof : R.nzOf σ (⊥ : Submodule (𝓞 E) Λ) y = 1`.
+
+Establish `hs : Submodule.span (𝓞 E) (Set.range y) = ⊥`. Simplify using `[Set.range_eq_empty]`. Simplify using `[RiemLat.nzOf, hs]`. Rewrite using `[hnz, hof]`. Conclude with `⟨rfl, one_pos⟩`.
+
+Establish `hr : 1 ≤ r`. Assume the negation of the conclusion as `h`. Establish `hr0 : r = 0` using `by omega`. Substitute `hr0` using the available equality. Establish `hs : Submodule.span (𝓞 E) (Set.range y) = ⊥`.
+
+Simplify using `[Set.range_eq_empty]`. Establish `hb : (⊥ : Submodule (𝓞 E) Λ).toAddSubgroup = ⊥` using `rfl`. Rewrite `hidx` using `[hs, hb, AddSubgroup.relIndex_bot_left]`. Use `haveI : Finite I.toAddSubgroup := Nat.finite_of_card_ne_zero hidx`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`.
+
+Use `haveI := R.free`. Establish `hfin : IsOfFinAddOrder (⟨x, hx⟩ : I.toAddSubgroup)` using `isOfFinAddOrder_of_finite _`. Take `⟨n, hn, hnx⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 hfin`. Establish `hnx' : n • x = 0` using `congrArg Subtype.val hnx`. Establish `hzx : (n : ℤ) • x = 0` using `by rw [natCast_zsmul]; exact hnx'`.
+
+Conclude with `hx0 ((smul_eq_zero.1 hzx).resolve_left (by exact_mod_cast hn.ne'))`. Establish `hfam : IsNzFamily I r y` using `⟨hr, hy, hli, hidx⟩`. Establish `h` using `(GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hbot).2 r y hfam`. Conclude with `⟨h.1, h.2.1⟩`.
+-/
 theorem nz_eq_nzOf_of_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (I : Submodule (𝓞 E) Λ) (r : ℕ) (y : Fin r → Λ), IsCMFam σ → IsIsoSub R.form I → (∀ a, y a ∈ I) → LinearIndependent (𝓞 E) y → (Submodule.span (𝓞 E) (Set.range y)).toAddSubgroup.relIndex I.toAddSubgroup ≠ 0 → R.nz σ I = R.nzOf σ I y ∧ 0 < R.nz σ I := by
   intro E _ _ _ g Λ _ _ Ψ _ R σ I r y hσ hI hy hli hidx
   by_cases hbot : I = ⊥

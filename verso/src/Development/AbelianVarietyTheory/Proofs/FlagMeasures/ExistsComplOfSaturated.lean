@@ -5,6 +5,11 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SaturatedSublatticeComplement.main`. Consider the case `exact _root_.GlobalTheory.SaturatedSublatticeComplement.main`. Consider the case `(apply _root_.GlobalTheory.SaturatedSublatticeComplement.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SaturatedSublatticeComplement.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SaturatedSublatticeComplement.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SaturatedSublatticeComplement.main ..)`.
+-/
 theorem exists_compl_of_saturated {R V : Type*} [CommRing R] [IsDedekindDomain R]
     [AddCommGroup V] [Module R V] (N M : Submodule R V) (hNM : N ≤ M) (hM : M.FG)
     (hsat : ∀ (r : R) (y : V), r ≠ 0 → y ∈ M → r • y ∈ N → y ∈ N) :
@@ -17,6 +22,13 @@ theorem exists_compl_of_saturated {R V : Type*} [CommRing R] [IsDedekindDomain R
   | (intros; apply @_root_.GlobalTheory.SaturatedSublatticeComplement.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SaturatedSublatticeComplement.main ..)
 
+/- English proof (translation)
+Introduce `E _ _ n a S _ hmono hfg hsat`. Establish `key : ∀ i : Fin a, ∃ A : Submodule (𝓞 E) (Fin n → E), A ⊓ S i.castSucc = ⊥ ∧ A ⊔ S i.castSucc = S i.succ`. Introduce `i`. Establish `hle : S i.succ ≤ S (Fin.last a)` using `hmono (Fin.le_last _)`. Use `exists_compl_of_saturated _ _ (hmono (Fin.castSucc_lt_succ).le) (Submodule.FG.of_le hfg hle) ?_` and prove the remaining obligations.
+
+Introduce `r y hr hy hry`. Apply `hsat _ y (hle hy)` to reduce the goal to its premises. Establish `hr' : (algebraMap (𝓞 E) E r) ≠ 0`. Simplify using `using hr`. Establish `: y = (algebraMap (𝓞 E) E r)⁻¹ • (r • y)`.
+
+Rewrite using `[← algebraMap_smul E r y, smul_smul, inv_mul_cancel₀ hr', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hry)`. Use `choose A hA using key`. Conclude with `⟨A, hA⟩`.
+-/
 theorem saturatedFlag_splits : ∀ (E : Type) [Field E] [NumberField E] (n a : ℕ) (S : Fin (a + 1) → Submodule (𝓞 E) (Fin n → E)), S 0 = ⊥ → Monotone S → (S (Fin.last a)).FG → (∀ i, ∀ y ∈ S (Fin.last a), y ∈ Submodule.span E (S i : Set (Fin n → E)) → y ∈ S i) → ∃ A : Fin a → Submodule (𝓞 E) (Fin n → E), ∀ i, A i ⊓ S i.castSucc = ⊥ ∧ A i ⊔ S i.castSucc = S i.succ := by
   intro E _ _ n a S _ hmono hfg hsat
   have key : ∀ i : Fin a, ∃ A : Submodule (𝓞 E) (Fin n → E),

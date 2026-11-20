@@ -5,5 +5,8 @@ import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBou
 import Development.AbelianVarietyTheory.BlockTheory.NonGaloisCusps.SemisimplificationConstituents
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | exact GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | (intros; apply GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isIrred_of_absIrr : ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) k), AbsIrrSub ρ ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsIrred (matRep ((Units.coeHom _).comp ρ)) := by
   first | exact @GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | exact GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub | (intros; apply GlobalTheory.IrredOfAbsIrred.isIrred_of_absIrrSub <;> assumption)

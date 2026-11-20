@@ -12,6 +12,9 @@ open scoped Classical
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchrUnifDen.schr_fix_pure_uniform | exact GlobalTheory.SchrUnifDen.schr_fix_pure_uniform | (intros; apply GlobalTheory.SchrUnifDen.schr_fix_pure_uniform <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_bruhat_congruence_level : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)),
     ∃ M₀ : ℕ, 1 ≤ M₀ ∧ ∀ (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (a b : κ → AF F),

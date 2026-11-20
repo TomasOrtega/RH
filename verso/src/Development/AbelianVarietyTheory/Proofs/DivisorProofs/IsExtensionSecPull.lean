@@ -37,10 +37,19 @@ variable (E F : Type) [Field E] [Field F] [Algebra (FractionRing R) E] [Algebra 
 
 def secMap : TFK (R := R) F ⊗ A.A ⟶ TFK (R := R) E ⊗ A.A := lift (fst _ _ ≫ baseK E F) (snd _ _)
 
+/- English proof (translation)
+The claim follows from `lift_snd _ _`.
+-/
 theorem secMap_snd : secMap A E F ≫ snd _ _ = snd _ _ := lift_snd _ _
 
+/- English proof (translation)
+The claim follows from `lift_fst _ _`.
+-/
 theorem secMap_fst : secMap A E F ≫ fst _ _ = fst _ _ ≫ baseK E F := lift_fst _ _
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (secMap_fst A E F)`.
+-/
 theorem secMap_base : (secMap A E F).left ≫ secBase A E =
     secBase A F ≫ Spec.map (CommRingCat.ofHom (algebraMap E F)) :=
   congrArg (fun q => q.left) (secMap_fst A E F)
@@ -48,6 +57,11 @@ theorem secMap_base : (secMap A E F).left ≫ secBase A E =
 def secPull (N : ℕ) : SecF A E N →ₛₗ[algebraMap E F] SecF A F N :=
   pullOver A.L _ (secMap_base A E F) (fun _ => (congrArg (fun q => q.left) (secMap_snd A E F)).symm)
 
+/- English proof (translation)
+Establish `h₁ : IsPullback (snd (TFK (R` using `R) E) A.A).left (secBase A E) A.A.hom (TFK (R := R) E).hom := (IsPullback.of_hasPullback _ _).flip`. Establish `h₂ : IsPullback (snd (TFK (R` using `R) F) A.A).left (secBase A F) A.A.hom (TFK (R := R) F).hom := (IsPullback.of_hasPullback _ _).flip`. Use `IsPullback.of_right ?_ (secMap_base A E F) h₁` and prove the remaining obligations. Establish `e₁ : (secMap A E F).left ≫ (snd (TFK (R` using `R) E) A.A).left = (snd (TFK (R := R) F) A.A).left := congrArg (fun q => q.left) (secMap_snd A E F)`. Establish `e₂ : Spec.map (CommRingCat.ofHom (algebraMap E F)) ≫ (TFK (R` using `R) E).hom = (TFK (R := R) F).hom := Over.w (baseK (R := R) E F)`.
+
+Rewrite using `[e₁, e₂]`. Conclude with `h₂`.
+-/
 theorem isPullback_secMap : IsPullback (secMap A E F).left (secBase A F) (secBase A E)
     (Spec.map (CommRingCat.ofHom (algebraMap E F))) := by
   have h₁ : IsPullback (snd (TFK (R := R) E) A.A).left (secBase A E)
@@ -70,6 +84,9 @@ instance noeth : TopologicalSpace.NoetherianSpace (TFK (R := R) E ⊗ A.A).left 
   have : IsNoetherian (TFK (R := R) E ⊗ A.A).left := {}
   infer_instance
 
+/- English proof (translation)
+The claim follows from `isExtension_pullOver (isPullback_secMap A E F) A.isLB _ _`.
+-/
 theorem isExtension_secPull (N : ℕ) : IsExtension (secPull A E F N) :=
   isExtension_pullOver (isPullback_secMap A E F) A.isLB _ _
 

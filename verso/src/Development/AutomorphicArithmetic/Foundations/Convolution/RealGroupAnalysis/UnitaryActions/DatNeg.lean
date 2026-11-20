@@ -5,6 +5,19 @@ open Neutral.B1 Formalism.L2.Host GlobalTheory.CuspRep UpperTheory.V UpperTheory
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ δ θ b h0 h1 hθ φ`. Assume the negation of the conclusion as `hneg`. Establish `hpos : 0 ≤ φ δ` using `not_lt.mp hneg`. Use `haveI : Module.Finite F E := Module.Finite.of_basis b`. Use `haveI : Algebra.IsAlgebraic F E := Algebra.IsAlgebraic.of_finite F E`.
+
+Set `ψ : F →+* ℂ` to `Complex.ofRealHom.comp φ`. Set `τ : E →+* ℂ` to `NumberField.ComplexEmbedding.lift E ψ`. Establish `hτ : ∀ x : F, τ (algebraMap F E x) = ((φ x : ℝ) : ℂ)`. Introduce `x`. Conclude with `NumberField.ComplexEmbedding.lift_algebraMap_apply E ψ x`.
+
+Establish `hsq : (τ θ) ^ 2 = ((Real.sqrt (φ δ) : ℝ) : ℂ) ^ 2`. Rewrite using `[← map_pow, hθ, hτ, ← Complex.ofReal_pow, Real.sq_sqrt hpos]`. Establish `hreal : (starRingEnd ℂ) (τ θ) = τ θ`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Rewrite using `[h, Complex.conj_ofReal]`.
+
+Rewrite using `[h, map_neg, Complex.conj_ofReal]`. Establish `hall : ∀ z : E, (starRingEnd ℂ) (τ z) = τ z`. Introduce `z`. Establish `hz` using `b.sum_repr z`. Rewrite `hz` using `[Fin.sum_univ_two, h0, h1, Algebra.smul_def, Algebra.smul_def]`.
+
+Rewrite using `[← hz]`. Simplify using `only [map_add, map_mul, map_one, hτ, Complex.conj_ofReal, hreal]`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `z`.
+
+Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Conclude with `hall z`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.datNeg :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex E] (δ : F) (θ : E) (b : Module.Basis (Fin 2) F E),
       b 0 = 1 → b 1 = θ → θ ^ 2 = algebraMap F E δ → ∀ φ : F →+* ℝ, φ δ < 0 := by

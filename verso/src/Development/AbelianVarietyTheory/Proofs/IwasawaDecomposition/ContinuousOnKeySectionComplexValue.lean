@@ -24,6 +24,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)}
   {M : ModelsOf F r}
 
+/- English proof (translation)
+Take `⟨hu, hsym, hpos, -⟩` from `T.norm x hx`. Take `⟨-, w, hw⟩` from `(GlobalTheory.ThetaHalf.thetaChar_holomorphic_ne_zero g T.c₁ T.c₂ T.half₁ T.half₂).1 _ hsym hpos`. Take `⟨t, ht⟩` from `T.fr_sec x hx`. Take `⟨a, ha, hv⟩` from `GlobalTheory.GenFactor.exists_factor GlobalTheory.abelianSchemeLaws_all.2.secTwist y.x _ h₁ y.s y.gen (F.ex k (T.Pf (T.co x))) (fun z => thetaChar (T.ta x) T.c₁ T.c₂ (T.h x *ᵥ z)) (fun j z => T.fr j (x, z)) ⟨(T.h x)⁻¹ *ᵥ w, by show thetaChar _ _ _ (T.h x *ᵥ ((T.h x)⁻¹ *ᵥ w)) ≠ 0`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]⟩` and apply the resulting hypothesis.
+
+Use the proof step `(fun j z hz => T.fr_ne j x z hx hz) t ht`. Conclude with `⟨a, ha, h₁, h₂, hv⟩`.
+-/
 theorem exists_isThetaPt_of_adapted {k : Fin F.n} (T : ThetaData e F M k) (x : Fin T.m → ℂ)
     (hx : x ∈ T.co ⁻¹' (M.X k).dom) (y : FrPt Xo c (CAt σ)) (h₁ : y.x = F.u k (T.Pf (T.co x)))
     (h₂ : ∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex k (T.Pf (T.co x)) z).left)
@@ -40,6 +45,15 @@ theorem exists_isThetaPt_of_adapted {k : Fin F.n} (T : ThetaData e F M k) (x : F
     (fun j z hz => T.fr_ne j x z hx hz) t ht
   exact ⟨a, ha, h₁, h₂, hv⟩
 
+/- English proof (translation)
+Take `⟨κ, hκ, hθ⟩` from `hun ⟨T.co x, hx⟩`. Simplify using `only [ContinuousLinearEquiv.symm_apply_apply] at hκ hθ`. Establish `hC : (normConst (fun j => Formalism.L2.PjFree.relab c σ (e j).1) (M.X k).ξ0 : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Use `(Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))).ne'` and prove the remaining obligations.
+
+Establish `: Formalism.L2.PjFree.relab c σ (e j).1 (M.X k).ξ0 ≠ 0` using `(map_ne_zero _).2 (M.X k).ξ0_ne`. Check the signs of the components of the expression. Establish `k1 : κ ≠ 0` using `fun h0 => mul_ne_zero hC (T.norm _ hx).1.ne_zero (by rw [← hκ, h0]; simp)`. Set `t₀ : ℂˣ` to `Units.mk0 (a / κ) (div_ne_zero ha k1)`. Establish `hb` using `GlobalTheory.frBor_of_isThetaPt GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo c σ g e F r M k T x hx κ (show (CAt σ)ˣ from t₀) (un k ⟨T.co x, hx⟩) y hθ (by`.
+
+Establish `: a / κ * κ = a` using `div_mul_cancel₀ a k1`. Use `show IsThetaPt T x (a / κ * κ) y`. Rewrite using `[this])` and apply the resulting hypothesis. Use `⟨k, ⟨T.co x, hx⟩, _, hb, ?_⟩` and prove the remaining obligations. Establish `hk : kch (Dw` using `Dw) (S := ℂ) (fun i => Option.elim i t₀ (fun _ => 1)) = (t₀ ^ 2)⁻¹ := by`.
+
+Rewrite using `[kch_eq]`. Simplify using the standard rewrite rules. Use `Eq.trans ?_ (congrArg Units.val hk).symm` and prove the remaining obligations. Rewrite using `[← hκ, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, Units.val_mk0]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rootVal_of_isThetaPt {k : Fin F.n} (T : ThetaData e F M k) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ))
     (hun : IsNormUn T (un k)) (x : Fin T.m → ℂ) (hx : x ∈ T.co ⁻¹' (M.X k).dom) (a : ℂ) (ha : a ≠ 0)
     (y : FrPt Xo c (CAt σ)) (hy : IsThetaPt T x a y) :
@@ -69,6 +83,13 @@ theorem rootVal_of_isThetaPt {k : Fin F.n} (T : ThetaData e F M k) (un : ∀ k, 
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F r M T un hσ hM hξ hun hok A _ _ yA m B φ y ρ hB hφ hy hρ b₀ hb₀`. Take `⟨B', k, P, hB', hb', hsub, hP, hd⟩` from `GlobalTheory.AdaptedPeriods.exists_holPeriods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀`. Take `⟨x, hx, hxc⟩` from `GlobalTheory.FrameLiftAt.exists_frame_lift E H Dw l Xo c σ g e F r M k (T k) hσ hM hξ m B' P hB' hP b₀ hb'`. Establish `h₁ : ∀ b ∈ B', ∃ a : ℂ, a ≠ 0 ∧ IsThetaPt (T k) (x b) a (y b)` using `fun b hb => exists_isThetaPt_of_adapted (T k) (x b) (hx b hb).1 (y b) (by rw [(hx b hb).2]; exact (hd b hb).1) (by rw [(hx b hb).2]; exact (hd b hb).2)`. Use `choose! a ha hθ using h₁`.
+
+Establish `hac : ContinuousAt a b₀` using `GlobalTheory.ThetaScalar.continuousAt_scalar E H Dw l Xo c σ g e F r M k (T k) A yA m B' φ y P x a hB' (fun t => (hφ t).mono hsub) (fun b hb => hy b (hsub hb)) hP (fun b hb => ⟨(hx b hb).1, (hx b hb).2, hθ b hb⟩) b₀ hb' hxc`. Establish `hO : IsOpen ((T k).co ⁻¹' (M.X k).dom)` using `(FourierCoefficientDomain.isOpen_dom _).preimage (T k).co.continuous`. Establish `hh : ContinuousAt (T k).h (x b₀)` using `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => ((T k).hol i j).1.continuousOn.continuousAt (hO.mem_nhds (hx b₀ hb').1)`. Establish `hdet : ContinuousAt (fun b => ((T k).h (x b)).det) b₀` using `(continuous_id.matrix_det.continuousAt).comp (ContinuousAt.comp hh hxc)`. Establish `hq : ContinuousAt (fun b => (normConst (fun j => Formalism.L2.PjFree.relab c σ (e j).1) (M.X k).ξ0 : ℂ) * ((T k).h (x b)).det / a b ^ 2) b₀` using `(continuousAt_const.mul hdet).div (hac.pow 2) (pow_ne_zero 2 (ha b₀ hb'))`.
+
+Use `(hq.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [hB'.mem_nhds hb'] with b hb`. Conclude with `rootVal_unique E H Dw l Xo c σ g e F r M un hσ hM hξ hok (y b) _ _ (rootVal_of_isThetaPt (T k) un (hun k) (x b) (hx b hb).1 (a b) (ha b hb) (y b) (hθ b hb)) (hρ b (hsub hb))`.
+-/
 theorem continuousOn_rootVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (T : ∀ k, ThetaData e F M k) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)), Formalism.L2.PjFree.GoodEmb c σ → ModelBase M → NegXi M → (∀ k, IsNormUn (T k) (un k)) → FramesOK e F M un → ∀ (A : Type) [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) (m : ℕ) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ)) (y : (Fin m → ℂ) → FrPt Xo c (CAt σ)) (ρ : (Fin m → ℂ) → ℂ), IsOpen B → (∀ a, DifferentiableOn ℂ (fun b => Formalism.L2.PjFree.toC (φ b a)) B) → (∀ b ∈ B, FrMap (φ b) yA (y b)) → (∀ b ∈ B, RootVal (unfOf e F M un) (y b) (ρ b)) → ContinuousOn ρ B := by
   intro E _ _ _ H Dw l Xo c σ g e F r M T un hσ hM hξ hun hok A _ _ yA m B φ y ρ hB hφ hy hρ b₀ hb₀
   obtain ⟨B', k, P, hB', hb', hsub, hP, hd⟩ :=

@@ -13,6 +13,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets Function
 open scoped ContDiff
 
+/- English proof (translation)
+Establish `hle : J ⊔ Ideal.span {linForm u} ≤ W` using `hWm.1.2`. Use `⟨hWm.1.1, fun x hx q hq => hx q (hle (Ideal.mem_sup_left hq)), fun x hx => ?_⟩` and prove the remaining obligations. Use `hx _ (hle (Ideal.mem_sup_right (Ideal.subset_span rfl)))` as an intermediate fact. Simplify `this` using `[linForm, linEval]`.
+-/
 theorem mem_minimalPrimes_sup_linForm {n : ℕ} {J W : Ideal (MvPolynomial (Fin n) ℂ)}
     {u : Fin n → ℂ} (hWm : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes) :
     W.IsPrime ∧ zeroSet W ⊆ zeroSet J ∧ ∀ x ∈ zeroSet W, linEval u x = 0 := by
@@ -21,6 +24,13 @@ theorem mem_minimalPrimes_sup_linForm {n : ℕ} {J W : Ideal (MvPolynomial (Fin 
   have := hx _ (hle (Ideal.mem_sup_right (Ideal.subset_span rfl)))
   simpa [linForm, linEval] using this
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Use `hAdd n (d + 1) J g₁ g₂ _ hJ h1.continuous h1c h2.continuous h2c fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logReg u hε)`.
+
+Simplify using `using hφ j`. Rewrite using `[← finsum_mem_add_distrib (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _)]`. Use `finsum_mem_congr rfl fun W hWm => ?_` and prove the remaining obligations. Take `⟨hWp, hWJ, -⟩` from `mem_minimalPrimes_sup_linForm hWm`. Establish `hφW : ∀ i, SmoothNear (zeroSet W) (φ i)` using `fun i => by`.
+
+Take `⟨U, hU, hSU, hC⟩` from `hφ i`. Conclude with `⟨U, hU, hWJ.trans hSU, hC⟩`. Rewrite using `[hAdd n d W g₁ g₂ φ hWp h1.continuous h1c h2.continuous h2c hφW, mul_add]`.
+-/
 theorem lelongSides_add (hAdd : VarIntAdd.Statement) {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {u : Fin n → ℂ} {φ : Fin d → (Fin n → ℂ) → ℝ} (hJ : J.IsPrime)
     (hφ : ∀ i, SmoothNear (zeroSet J) (φ i)) (g₁ g₂ : (Fin n → ℂ) → ℝ) (h1 : ContDiff ℝ ∞ g₁)
@@ -48,6 +58,17 @@ theorem lelongSides_add (hAdd : VarIntAdd.Statement) {n d : ℕ} {J : Ideal (MvP
       exact ⟨U, hU, hWJ.trans hSU, hC⟩
     rw [hAdd n d W g₁ g₂ φ hWp h1.continuous h1c h2.continuous h2c hφW, mul_add]
 
+/- English proof (translation)
+Establish `hclosed : IsClosed (zeroSet J ∩ {x | linEval u x = 0})`. Use `IsClosed.inter ?_ (isClosed_eq ?_ continuous_const)` and prove the remaining obligations. Establish `: zeroSet J = ⋂ q ∈ J, {x : Fin n → ℂ | MvPolynomial.eval x q = 0}`. Use extensionality with `x`. Simplify using `[zeroSet]`.
+
+Rewrite using `[this]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.mul (continuous_apply j)`. Use `tendsto_of_forall_local_on_tsupport (fun ε g => varInt J (d + 1) g (vecCons (logReg u ε) φ)) (fun g => ∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes), (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d g φ) (fun g₁ g₂ h1 h1c …` and prove the remaining obligations. Distinguish the cases in `hq0 : q ∈ zeroSet J ∩ {x | linEval u x = 0}`.
+
+Conclude with `hloc q hq0.1 hq0.2 (Set.disjoint_left.1 hgI hq)`. Use `⟨_, hclosed.isOpen_compl.mem_nhds hq0, fun g' hg' hg'c hg'N => ?_⟩` and prove the remaining obligations. Establish `h0 : (∑ᶠ (W : Ideal (MvPolynomial (Fin n) ℂ)) (_ : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes), (localMult (J ⊔ Ideal.span {linForm u}) W : ℝ) * varInt W d g' φ) = 0`. Use `finsum_eq_zero_of_forall_eq_zero fun W => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_dif]`.
+
+Distinguish the cases in `hWm : W ∈ (J ⊔ Ideal.span {linForm u}).minimalPrimes`. Take `⟨-, hWJ, hWu⟩` from `mem_minimalPrimes_sup_linForm hWm`. Rewrite using `[dif_pos hWm, varInt_eq_zero_of_vanish W g' φ fun x hx => image_eq_zero_of_notMem_tsupport fun hxs => hg'N hxs ⟨hWJ hx, hWu x hx⟩, mul_zero]`. Rewrite using `[dif_neg hWm]`. Simplify using `only [h0]`.
+
+Conclude with `hOff n d J u g' φ hJ hdim hu hg' hg'c hφ (Set.disjoint_left.2 fun x hx hx' => hg'N hx hx')`.
+-/
 theorem lelongLimit_off_small (hOff : LelongLimitOffZero.Statement) (hAdd : VarIntAdd.Statement)
     {n d : ℕ} {J I : Ideal (MvPolynomial (Fin n) ℂ)} {u : Fin n → ℂ} {φ : Fin d → (Fin n → ℂ) → ℝ}
     (hJ : J.IsPrime) (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = (d + 1 : ℕ))
@@ -97,6 +118,19 @@ theorem lelongLimit_off_small (hOff : LelongLimitOffZero.Statement) (hAdd : VarI
     exact hOff n d J u g' φ hJ hdim hu hg' hg'c hφ
       (Set.disjoint_left.2 fun x hx hx' => hg'N hx hx')
 
+/- English proof (translation)
+Introduce `n d J u φ p hJ hdim hu hφ _ _`. Use `⟨Set.univ, Filter.univ_mem, fun f hf hfc _ => ?_⟩` and prove the remaining obligations. Take `⟨I, hI, hIdim, hloc⟩` from `hGood n d J u φ hJ hdim hu hφ`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `δ hδ`.
+
+Take `⟨χ, hχ, ⟨U, hU, hIU, hχ1⟩, hTχ, hLχ⟩` from `hSmall n d J I u φ f hJ hdim hu hφ hI hIdim hf hfc (δ / 3) (by positivity)`. Establish `hχf : ContDiff ℝ ∞ (fun x => χ x * f x)` using `hχ.mul hf`. Establish `hχfc : HasCompactSupport (fun x => χ x * f x)` using `hfc.mul_left`. Establish `hg : ContDiff ℝ ∞ (fun x => (1 - χ x) * f x)` using `(contDiff_const.sub hχ).mul hf`. Establish `hgc : HasCompactSupport (fun x => (1 - χ x) * f x)` using `hfc.mul_left`.
+
+Establish `hgI : Disjoint (tsupport fun x => (1 - χ x) * f x) (zeroSet I)`. Use `Disjoint.mono_right hIU (Disjoint.closure_left ?_ hU)` and prove the remaining obligations. Use `Set.disjoint_left.2 fun x hx hxU => hx ?_` and prove the remaining obligations. Simplify using `[hχ1 x hxU]`. Establish `hsum : (fun x => χ x * f x) + (fun x => (1 - χ x) * f x) = f`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hTadd, hLadd⟩` from `lelongSides_add hAdd (u := u) hJ hφ _ _ hχf hχfc hg hgc`. Rewrite `hTadd`, `hLadd` using `[hsum]`.
+
+Use `((Metric.tendsto_nhds.1 (lelongLimit_off_small hOff hAdd hJ hdim hu hφ hloc _ hg hgc hgI) (δ / 3) (by positivity)).and (hTχ.and hTadd)).mono fun ε ⟨h1, h2, h3⟩ => ?_` and prove the remaining obligations. Rewrite `h1`, the goal using `[Real.dist_eq]`. Rewrite using `[h3, hLadd]`. Rewrite `h1`, the goal using `[abs_lt]`. Rewrite `h2`, `hLχ` using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2, hLχ.1, hLχ.2]`.
+-/
 theorem LelongLimitOnZero.proof (hOff : LelongLimitOffZero.Statement)
     (hGood : LelongLimitGoodPoints.Statement) (hSmall : LelongMassNearSmall.Statement)
     (hAdd : VarIntAdd.Statement) : LelongLimitOnZero.Statement := by

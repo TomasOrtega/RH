@@ -17,6 +17,17 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
+/- English proof (translation)
+Use `⟨fun w hw w' hw' => ?_, fun a w hw => ?_, fun h hh m hm w hw => ?_, cont_on z c π μW μN σ hG hπ hM hD v hv ξ⟩` and prove the remaining obligations. Use `show be z c π μW μN σ (w + w') v ξ = be z c π μW μN σ w v ξ + be z c π μW μN σ w' v ξ`. Establish `e : be z c π μW μN σ (w + w') v = be z c π μW μN σ w v + be z c π μW μN σ w' v`. Unfold `be`. Rewrite using `[← integral_add (int_on z c π μW μN σ hG hπ hM hD w hw v hv) (int_on z c π μW μN σ hG hπ hM hD w' hw' v hv)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Unfold `beF`. Rewrite using `[map_add, inner_add_right, add_mul, add_smul]`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Use `show be z c π μW μN σ (a • w) v ξ = a • be z c π μW μN σ w v ξ`. Establish `e : be z c π μW μN σ (a • w) v = a • be z c π μW μN σ w v`. Unfold `be`. Rewrite using `[← integral_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Unfold `beF`. Rewrite using `[map_smul, inner_smul_right, mul_assoc, mul_smul]`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Use `show be z c π μW μN σ (σ (h * m) w) v ξ = psi k r z c m • π h (be z c π μW μN σ w v ξ)`. Rewrite using `[equiv_on z c π μW μN σ hG hσ hπ hψ hM hD h hh m hm w hw v hv]`. Both sides reduce to the same expression.
+-/
 theorem bessel_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -49,6 +60,9 @@ theorem bessel_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (
     rw [equiv_on z c π μW μN σ hG hσ hπ hψ hM hD h hh m hm w hw v hv]
     rfl
 
+/- English proof (translation)
+The claim follows from `bessel_on z c π μW μN σ hG hσ hπ hψ hM hD hv ξ`.
+-/
 theorem bessel_on_FI (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -57,6 +71,11 @@ theorem bessel_on_FI (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r �
       (fun u => (∫ p, Formalism.MainNotions.DoubleDerivativeSmoothness.FI z c π σ u v p ∂(μW.prod μN)) ξ) :=
   bessel_on z c π μW μN σ hG hσ hπ hψ hM hD hv ξ
 
+/- English proof (translation)
+Introduce `v hv ξ`. Establish `hG` using `grpAll k r z`. Establish `hS` using `sigAll k r ε lam H σ hσ`. Establish `hP` using `piAll k r z u Wp π hz hT hπ`. Establish `hψ` using `psiAll k r z c hz`.
+
+Establish `hD : DecayOn μW μN σ (fun v => v ∈ Formalism.MainNotions.BridgeLemma₄.DDsp σ w0)` using `decayOn_of_pt z π μW μN σ a hG hM (fun w => Formalism.MainNotions.LeviCoordinates.discrete_series_continuousOn hσ w) hgr (ptDec_DD hG hS ha h0)`. Conclude with `bessel_on_FI z c π μW μN σ hG hS hP hψ hM hD hv ξ`.
+-/
 theorem beBessel_DD {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ}
     (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (w0 : H) (a : ℝ)
@@ -76,6 +95,11 @@ theorem beBessel_DD {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 
     decayOn_of_pt z π μW μN σ a hG hM (fun w => Formalism.MainNotions.LeviCoordinates.discrete_series_continuousOn hσ w) hgr (ptDec_DD hG hS ha h0)
   exact bessel_on_FI z c π μW μN σ hG hS hP hψ hM hD hv ξ
 
+/- English proof (translation)
+Introduce `v hv ξ`. Establish `hG` using `grpAll k r z`. Establish `hS` using `sigAll k r ε lam H σ hσ`. Establish `hP` using `piAll k r z u Wp π hz hT hπ`. Establish `hψ` using `psiAll k r z c hz`.
+
+Establish `hD : DecayOn μW μN σ (fun v => IsKFinHpk (k` using `k) (r := r) σ v) := decayOn_of_pt z π μW μN σ a hG hM (fun w => Formalism.MainNotions.LeviCoordinates.discrete_series_continuousOn hσ w) hgr hK`. Conclude with `bessel_on_FI z c π μW μN σ hG hS hP hψ hM hD hv ξ`.
+-/
 theorem beBessel_K {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ}
     (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ)

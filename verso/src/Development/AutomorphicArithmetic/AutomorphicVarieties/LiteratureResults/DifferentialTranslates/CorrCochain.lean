@@ -4,20 +4,36 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit.Dr
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun z => Ξ.mat g⁻¹ *ᵥ z) h`. Simplify `h2` using `only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec]`.
+-/
 private theorem mat_cancel {E : Type} [Field E] [NumberField E] {a : ℕ} (Ξ : AlgRep E a) (g : GL (Fin a) (Cinf E))
     {v v' : Fin Ξ.d → ℂ} (h : Ξ.mat g *ᵥ v = Ξ.mat g *ᵥ v') : v = v' := by
   have h2 := congrArg (fun z => Ξ.mat g⁻¹ *ᵥ z) h
   simpa only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] using h2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change k.1 * (1 : Matrix (Fin a) (Fin a) (Cinf E)) * star k.1 = (1 : Matrix (Fin a) (Fin a) (Cinf E)) rw [mul_one] exact k.2.2)`.
+-/
 private theorem sand_unit_one {E : Type} [Field E] [NumberField E] {a : ℕ} (k : Kinf E a) :
     sand (Unitary.toUnits k) (hOne E a) = hOne E a := Subtype.ext (by
   change k.1 * (1 : Matrix (Fin a) (Fin a) (Cinf E)) * star k.1 = (1 : Matrix (Fin a) (Fin a) (Cinf E))
   rw [mul_one]
   exact k.2.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sand_unit_hv {E : Type} [Field E] [NumberField E] {a : ℕ} (k : Kinf E a) (X : Herm E a) :
     sand (Unitary.toUnits k) (hv X) = hv (adHerm k X) := rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Ξ q α w h`. Use `⟨fun k X => ?_, fun X u hu g => ?_⟩` and prove the remaining obligations. Use `(evFacts E a Ξ.d).1 (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[evK, ← infGL_mul_finGL g]`. Generalize the expression as in `GeneralLinearGroup.map (pInf E) g = y`.
+
+Generalize the expression as in `GeneralLinearGroup.map (pFin E) g = x`. Use `mat_cancel Ξ y ?_` and prove the remaining obligations. Establish `h1` using `h (y * Unitary.toUnits k) x X`. Rewrite using `[← h y x, Matrix.mulVec_mulVec, ← map_mul, mul_assoc, ← infGL_comm, ← mul_assoc, ← map_mul, ← h1]`. Simplify using `only [map_mul, ContinuousLinearMap.mul_apply, sand_unit_one, sand_unit_hv]`.
+
+Rewrite using `[← infGL_mul_finGL g]`. Generalize the expression as in `GeneralLinearGroup.map (pInf E) g = y`. Generalize the expression as in `GeneralLinearGroup.map (pFin E) g = x`. Use `mat_cancel Ξ y ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← map_mul, ← h y x, ← h y (x * u), QuotientGroup.mk_mul_of_mem x hu]`.
+-/
 theorem UpperTheory.V.Lit.Dr.corrCochain :
     CorrCochain := by
   intro E _ _ _ a U Ξ q α w h

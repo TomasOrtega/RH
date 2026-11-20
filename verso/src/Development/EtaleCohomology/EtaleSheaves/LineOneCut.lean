@@ -31,6 +31,15 @@ def ChartSurj : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] 
     w = pull _ (sch.map (pullback.fst (fibMap p ι₁) (fibMap p ι₂))) (tw q i) 0 a -
       pull _ (sch.map (pullback.snd (fibMap p ι₁) (fibMap p ι₂))) (tw q i) 0 b
 
+/- English proof (translation)
+Introduce `H q i A _ _ hSH hq Z p hp hZ`. Take `⟨U, V, ι₁, ι₂, h1, h2, hU, hV, hcov⟩` from `hC A p hp`. Take `⟨hf1, hf2, hfcov⟩` from `hF A p ι₁ ι₂ h1 h2 hcov`. Take `⟨δ, hex, -⟩` from `hMV H (ZMod q) (tw q i)`. Establish `e` using `hex (fibMap p ι₁) (fibMap p ι₂) hfcov 0`.
+
+Establish `aU` using `hA H q A p ι₁ h1 hU hZ hq`. Establish `aV` using `hA H q A p ι₂ h2 hV hZ hq`. Establish `key : ∀ x : Ht q (sch.obj (fib p)) 1 i, x = 0`. Introduce `x`. Establish `s1` using `aU 1 i one_pos`.
+
+Establish `s2` using `aV 1 i one_pos`. Take `⟨w, hw⟩` from `(e.2.2 x).1 ⟨@Subsingleton.elim _ s1 _ _, @Subsingleton.elim _ s2 _ _⟩`. Take `⟨a, b, hab⟩` from `hS H q i A hSH hq p hp hZ ι₁ ι₂ h1 h2 hU hV hcov w`. Rewrite using `[← hw]`. Conclude with `(e.2.1 w).2 ⟨a, b, hab⟩`.
+
+Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+-/
 theorem goal_of (hMV : MV) (hC : Charts) (hF : FibCover) (hA : ChartAcyc) (hS : ChartSurj) : LineOne := by
   intro H q i A _ _ hSH hq Z p hp hZ
   obtain ⟨U, V, ι₁, ι₂, h1, h2, hU, hV, hcov⟩ := hC A p hp

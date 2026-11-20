@@ -8,6 +8,11 @@ namespace PI.QmSandwichWork
 
 open Matrix Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P.W
 
+/- English proof (translation)
+Rewrite using `[mul_sub, sub_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = R * a * b * (e1 * e2 * u' * u) := by rw [hL]`.
+
+Use `_ = R * (a * b * e1 * e2 * u' * u) := by simp only [mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = b * a * e2 * e1 * (u * u' * R) := by rw [hU]`. Use `_ = b * a * e2 * e1 * u * u' * R := by simp only [mul_assoc]`.
+-/
 private theorem rtt_commutator_sandwich_eq_of_relations {B : Type*} [Ring B] (R a b u u' e1 e2 : B)
     (hL : b * a * R = R * a * b) (hU : R * u' * u = u * u' * R) :
     b * a * (R * e1 * e2 - e2 * e1 * R) * (u' * u) =
@@ -23,6 +28,19 @@ private theorem rtt_commutator_sandwich_eq_of_relations {B : Type*} [Ring B] (R 
       _ = b * a * e2 * e1 * (u * u' * R) := by rw [hU]
       _ = b * a * e2 * e1 * u * u' * R := by simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `A _ _ QQ p c ci p' c' ci' hW hW' hcomm hQ Y Y'`. Simplify using `only`. Establish `qc : ∀ x ∈ ({p, c, ci, p', c', ci'} : Set A), ∀ (y : ℂ) (i j : Fin 2), Commute x (QQ y i j)` using `fun x hx y i j => hQ x hx y i j`. Establish `PP : ∀ x ∈ ({p, c, ci} : Set A), ∀ y ∈ ({p', c', ci'} : Set A), Commute x y` using `fun x hx y hy => hcomm x hx y hy`. Establish `TQ : ∀ (y y' : ℂ) (i j k l : Fin 2), Commute (Formalism.YangianSpanCharacter.T.Tm y p c ci i j) (QQ y' k l)` using `fun y y' i j k l => tm_entry_comm y (qc p (by simp) y' k l) (qc c (by simp) y' k l) (qc ci (by simp) y' k l) i j`.
+
+Establish `TQ' : ∀ (y y' : ℂ) (i j k l : Fin 2), Commute (Formalism.YangianSpanCharacter.T.Tm y p' c' ci' i j) (QQ y' k l)` using `fun y y' i j k l => tm_entry_comm y (qc p' (by simp) y' k l) (qc c' (by simp) y' k l) (qc ci' (by simp) y' k l) i j`. Establish `TT : ∀ (y y' : ℂ) (i j k l : Fin 2), Commute (Formalism.YangianSpanCharacter.T.Tm y p c ci i j) (Formalism.YangianSpanCharacter.T.Tm y' p' c' ci' k l)` using `fun y y' i j k l => tm_entry_comm y (tm_entry_comm y' (PP p (by simp) p' (by simp)).symm (PP p (by simp) c' (by simp)).symm (PP p (by simp) ci' (by simp)).symm k l).symm (tm_entry_comm y' (PP c (by simp) p' (by simp)).symm (PP c (by simp) c' (by simp)).symm (PP c (by simp) ci' (b …`. Establish `t1 : ∀ (y : ℂ) (a b d : A), Formalism.YangianSpanCharacter.T.T1 y a b d = Formalism.YangianSpanCharacter.T.E1 (Formalism.YangianSpanCharacter.T.Tm y a b d)` using `fun _ _ _ _ => rfl`. Establish `t2 : ∀ (y : ℂ) (a b d : A), Formalism.YangianSpanCharacter.T.T2 y a b d = Formalism.YangianSpanCharacter.T.E2 (Formalism.YangianSpanCharacter.T.Tm y a b d)` using `fun _ _ _ _ => rfl`. Establish `hR` using `Formalism.YangianSpanCharacter.P.rttRelation ℂ A p c ci Y Y' hW`.
+
+Establish `hR'` using `Formalism.YangianSpanCharacter.P.rttRelation ℂ A p' c' ci' Y Y' hW'`. Establish `key` using `rtt_commutator_sandwich_eq_of_relations ((Y' - Y) • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) A) - Formalism.YangianSpanCharacter.T.Pf A) (Formalism.YangianSpanCharacter.T.T1 Y' p' c' ci') (Formalism.YangianSpanCharacter.T.T2 Y p' c' ci') (Formalism.YangianSpanCharacter.T.T2 Y …`. Establish `s1` using `(Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (QQ Y') (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') (fun i j k l => (TQ' Y Y' k l i j).symm.eq)).symm`. Establish `s2` using `(Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (Formalism.YangianSpanCharacter.T.Tm Y' p c ci) (QQ Y) (fun i j k l => (TQ Y' Y i j k l).eq)).symm`. Establish `s3` using `(Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (Formalism.YangianSpanCharacter.T.Tm Y' p c ci) (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') (fun i j k l => (TT Y' Y i j k l).eq)).symm`.
+
+Establish `r1` using `Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (Formalism.YangianSpanCharacter.T.Tm Y' p' c' ci') (QQ Y) (fun i j k l => (TQ' Y' Y i j k l).eq)`. Establish `r2` using `Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (QQ Y') (Formalism.YangianSpanCharacter.T.Tm Y p c ci) (fun i j k l => (TQ Y Y' k l i j).symm.eq)`. Establish `r3` using `Formalism.FourierDecayAlt.P.W.first_second_embedding_commute (Formalism.YangianSpanCharacter.T.Tm Y' p' c' ci') (Formalism.YangianSpanCharacter.T.Tm Y p c ci) (fun i j k l => (TT Y Y' k l i j).symm.eq)`. Establish `hK1 : Formalism.YangianSpanCharacter.T.E1 (Formalism.YangianSpanCharacter.T.Tm Y' p' c' ci') * Formalism.YangianSpanCharacter.T.E2 (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') * Formalism.YangianSpanCharacter.T.E1 (QQ Y') * Formalism.YangianSpanCharacter.T.E2 (QQ Y) * Formal …`. Rewrite using `[Formalism.FourierDecayAlt.P.W.first_embedding_mul, Formalism.FourierDecayAlt.P.W.first_embedding_mul, Formalism.FourierDecayAlt.P.W.entries_mem_mul, Formalism.FourierDecayAlt.P.W.entries_mem_mul]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[swap_l s1, swap_l s2, swap_l s3]`. Establish `hK2 : Formalism.YangianSpanCharacter.T.E2 (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') * Formalism.YangianSpanCharacter.T.E1 (Formalism.YangianSpanCharacter.T.Tm Y' p' c' ci') * Formalism.YangianSpanCharacter.T.E2 (QQ Y) * Formalism.YangianSpanCharacter.T.E1 (QQ Y') * Formal …`. Rewrite using `[Formalism.FourierDecayAlt.P.W.first_embedding_mul, Formalism.FourierDecayAlt.P.W.first_embedding_mul, Formalism.FourierDecayAlt.P.W.entries_mem_mul, Formalism.FourierDecayAlt.P.W.entries_mem_mul]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[swap_l r1, swap_l r2, swap_l r3]`. Rewrite using `[key, Matrix.sub_apply, flip_row, flip_col]`. Simplify using `only [t1, t2]`. Rewrite using `[hK1, hK2, block_embedding_mul_entry, block_embedding_mul_entry_swap, mul_sub]`.
+-/
 theorem main : PI.RTTSandwich := by
   intro A _ _ QQ p c ci p' c' ci' hW hW' hcomm hQ Y Y'
   dsimp only

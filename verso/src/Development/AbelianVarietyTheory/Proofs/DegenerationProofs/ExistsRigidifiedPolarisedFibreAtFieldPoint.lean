@@ -8,6 +8,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT GlobalTheory.LN GlobalTheory.Ex GlobalTheory.OneBasis
 
+/- English proof (translation)
+Introduce `_ _ E _ _ _ H Z t K _ x ⟨hp, hA, hK⟩`. Take `⟨PP', cub, sym, adj, prim, m₁, hm₁⟩` from `sabPull CubePf.cubePull x t`. Set `t' : SAB H (Spec (CommRingCat.of K))` to `⟨(Over.pullback x).obj t.G, IsSemiAbelian.pullback _ t.G t.semi, Geo.Tor.OAct.pullback _ t.G t.act, PP', cub, sym, adj, prim⟩`. Set `m₀ : SABMap t' t x` to `m₁`. Establish `hm₀ : m₀.cm.F = pullback.fst t.G.hom x` using `hm₁`.
+
+Take `⟨w, hw, hr, -⟩` from `m₀.lin`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull (pullback.fst t.G.hom x))` using `hm₀ ▸ ⟨w, hw⟩`. Establish `hM` using `pull_isLB t.PP.isLB (pullback.fst t.G.hom x)`. Establish `hL' : LBIso t'.PP.L ((t.PP.L.pull (pullback.fst t.G.hom x)).pull (𝟙 t'.G.left))` using `LBIso.chartPull (Geo.Tor.chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) hL`. Take `⟨v, hv⟩` from `hL'`.
+
+Establish `: IsMonHom (Iso.refl t'.G).hom` using `inferInstanceAs (IsMonHom (𝟙 t'.G))`. Establish `hid : IsGrpPullback t'.G t'.G (𝟙 _) (𝟙 t'.G.left)` using `isGrpPullback_of_iso (Iso.refl t'.G)`. Establish `hA' : RelAmple t'.G t'.PP.L` using `relAmple_pull hid.1 hM t'.PP.isLB ((isGen_iff v).1 hv) ⊤ (isAffineOpen_top _) (fun _ => trivial) hA`. Establish `hK' : KTriv t'.G t'.PP.L` using `kTriv_pull hid hM t'.PP.isLB ((isGen_iff v).1 hv) hK`. Use `t'.semi.smooth` as an intermediate fact.
+
+Use `t'.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace ↥t'.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t'.G.hom) (𝟙 _) (𝟙 _) t'.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨g, hg⟩` from `exists_dim_of_preconnected t'.G.hom (Classical.arbitrary _)`. Establish `hP : PMaps w (K` using `PUnit) (fun _ => eSec t'.G) (fun _ => eSec t.G) (fun _ => 1) t'.PP.rig t.PP.rig m₀.cm.e := (maps_iff w _ (fun _ => eSec t.G) _ t'.PP.rig t.PP.rig m₀.cm.e _ (rigPull_le m₀.cm.F m₀.cm.e m₀.cm.e_comm t.PP.L) (fun _ => rfl)).1 hr`. Rewrite `hP` using `[m₀.base]`.
+
+Conclude with `⟨GlobalTheory.GenericPol.toPolAV t' g hg hp hA' hK', m₀.cm.F, w, t'.PP.rig, m₀.cart, hw, t'.PP.rigGen, hP⟩`.
+-/
 theorem GlobalTheory.OneBasis.exists_rigPull_of_polAt : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Z : Scheme.{0}) (t : SAB H Z) (K : Type) [Field K] (x : Sp K ⟶ Z), PolAt t x → ∃ (A : PolAV (Sp K)) (φ : A.A.left ⟶ t.G.left) (w : LB.Iso A.L (t.PP.L.pull φ)) (ρ : LB.Gen (A.L.pull (eSec A.A))), RigPull A.A t.G x φ w ρ t.PP.rig := by
   intro _ _ E _ _ _ H Z t K _ x ⟨hp, hA, hK⟩
   obtain ⟨PP', cub, sym, adj, prim, m₁, hm₁⟩ := sabPull CubePf.cubePull x t

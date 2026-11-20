@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `A E _ _ _ E' _ _ f hf S _ _ x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul s e`. Take `⟨e', rfl⟩` from `hf e`.
+
+Conclude with `⟨TensorProduct.tmul A s e', by simp⟩`. Consider the case `add x y hx hy`. Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`. Conclude with `⟨x' + y', map_add _ _ _⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qk2.map_surj :
     ∀ {A E : Type} [inst : CommRing A] [inst_1 : Ring E]
     [inst_2 : Algebra A E] {E' : Type} [inst_3 : Ring E'] [inst_4 : Algebra A E'] (f : E' →ₐ[A] E),

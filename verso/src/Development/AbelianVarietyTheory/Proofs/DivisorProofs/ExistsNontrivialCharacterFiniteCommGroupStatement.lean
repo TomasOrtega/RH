@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CharKer
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CharExists.exists_character_ne_one | exact GlobalTheory.CharExists.exists_character_ne_one | (intros; apply GlobalTheory.CharExists.exists_character_ne_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_nontrivial_character_finite_comm_group : ∀ (K : Type) [Field K] (N : Over (Sp K)) [GrpObj N] [IsCommMonObj N], IsFinite N.hom → (𝟙 N ≠ (1 : N ⟶ N)) → ∃ (T : Over (Sp K)) (χ : Γ((N ⊗ T).left, ⊤)ˣ), IsCharacter χ ∧ χ ≠ 1 := by
   first | exact @GlobalTheory.CharExists.exists_character_ne_one | exact GlobalTheory.CharExists.exists_character_ne_one | (intros; apply GlobalTheory.CharExists.exists_character_ne_one <;> assumption)

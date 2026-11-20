@@ -14,6 +14,29 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
   {ρ0 : Set.Ioo (0 : ℝ) 1} [CompleteSpace L]
 
+/- English proof (translation)
+Use `set β := max (T.extNorm ρ0 σ b) (T.extNorm ρ0 (topRad ρ0) b)`. Use `set γ := max 1 (max (T.extNorm ρ0 σ y) (T.extNorm ρ0 (topRad ρ0) y))`. Establish `hβ0 : 0 ≤ β` using `le_max_of_le_left (T.extNorm_nonneg _ _)`. Establish `hγ1 : 1 ≤ γ` using `le_max_left _ _`. Take `⟨K, hK⟩` from `exists_pow_lt_of_lt_one (show 0 < ε / (β * γ + 1) by positivity) (show (1 : ℝ) / 2 < 1 by norm_num)`.
+
+Use `set W := g - 1`. Use `set t := b * ∑ j ∈ Finset.range K, (-W) ^ j`. Use `⟨a + t * y, b * (-W) ^ K, ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hgs : g * ∑ j ∈ Finset.range K, (-W) ^ j = 1 - (-W) ^ K`. Rewrite using `[← mul_neg_geom_sum (-W) K]`.
+
+Use `congr 1`. Simplify using `[W]`. Establish `: t * g = b - b * (-W) ^ K`. Rewrite using `[show t * g = b * (g * ∑ j ∈ Finset.range K, (-W) ^ j) by simp only [t]; ring, hgs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `hab + y * this`. Establish `hsρ : s ≤ ρ` using `by linarith [σ.2.1, hσ, hρ]`. Establish `hρ0` using `rad_pos ρ0 ρ`. Establish `hW : T.extNorm ρ0 ρ W ≤ 1 / 2`. Use `(hgW ρ hsρ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ hρ0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : T.extNorm ρ0 ρ b ≤ β` using `T.extNorm_le_max σ (topRad ρ0) ρ hρ ρ.2.2 b`. Establish `hy : T.extNorm ρ0 ρ y ≤ γ` using `(T.extNorm_le_max σ (topRad ρ0) ρ hρ ρ.2.2 y).trans (le_max_right _ _)`. Establish `hWK : T.extNorm ρ0 ρ ((-W) ^ K) ≤ (1 / 2) ^ K`.
+
+Rewrite using `[extNorm_pow, extNorm_neg]`. Conclude with `pow_le_pow_left₀ (T.extNorm_nonneg _ _) hW K`. Establish `hsmall : β * γ * (1 / 2) ^ K ≤ ε`. Establish `h1 : (1 / 2 : ℝ) ^ K * (β * γ + 1) < ε`. Rewrite using `[lt_div_iff₀ (by positivity)] at hK; exact hK`.
+
+Use polynomial arithmetic with `[pow_nonneg (show (0 : ℝ) ≤ 1 / 2 by norm_num) K, mul_nonneg hβ0 (zero_le_one.trans hγ1)]`. Establish `hb' : T.extNorm ρ0 ρ (b * (-W) ^ K) ≤ β * (1 / 2) ^ K`. Rewrite using `[extNorm_mul]`. Conclude with `mul_le_mul hb hWK (T.extNorm_nonneg _ _) hβ0`. Establish `hby : T.extNorm ρ0 ρ (b * (-W) ^ K * y) ≤ ε`.
+
+Rewrite using `[extNorm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hb'.trans ?_, hby, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `pow_nonneg (show (0 : ℝ) ≤ 1 / 2 by norm_num) K` as an intermediate fact.
+
+Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hβ0 this) (sub_nonneg.2 hγ1)]`. Use `_ ≤ ε := hsmall`. Establish `e : (a + t * y - 1) * g = -(b * (-W) ^ K * y + W)`. Establish `hgs : g * ∑ j ∈ Finset.range K, (-W) ^ j = 1 - (-W) ^ K`. Rewrite using `[← mul_neg_geom_sum (-W) K]`.
+
+Use `congr 1`. Simplify using `[W]`. Establish `: t * g = b - b * (-W) ^ K`. Rewrite using `[show t * g = b * (g * ∑ j ∈ Finset.range K, (-W) ^ j) by simp only [t]; ring, hgs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `hab + y * this`. Establish `e2` using `congrArg (T.extNorm ρ0 ρ) e`. Rewrite `e2` using `[extNorm_mul, hg1 ρ hsρ, mul_one, extNorm_neg]`. Rewrite using `[e2]`. Conclude with `(T.extNorm_add_le ρ _ _).trans (max_le_max hby (hgW ρ hsρ))`.
+-/
 theorem exists_adjusted {g y a b : T.RobbaExt ρ0} (hab : a * g + b * y = 1) {s : ℝ} (hs : 0 ≤ s)
     (hg1 : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, s ≤ ρ → T.extNorm ρ0 ρ g = 1)
     (hgW : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, s ≤ ρ → T.extNorm ρ0 ρ (g - 1) ≤ s / ρ)
@@ -86,6 +109,23 @@ theorem exists_adjusted {g y a b : T.RobbaExt ρ0} (hab : a * g + b * y = 1) {s 
 variable (hRE : T.RootExists)
 include hRE
 
+/- English proof (translation)
+Use `set S0 : T.GcdSt ρ0 := ⟨x, x, hx, hx⟩`. Establish `hl : ∀ k, ∀ P ∈ T.gcdRemoved hRE S0 k, T.ptRad P.1 ≤ annHi ρ0 k` using `fun k P hP => ((T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)).2.2.1 P hP).2`. Use `set D := InfProd.ofLists T ρ0 (T.gcdRemoved hRE S0) (annHi ρ0) annHi_nonneg tendsto_annHi hl`. Establish `hpart : ∀ k, D.part k = T.normProd ρ0 ((List.range k).flatMap (T.gcdRemoved hRE S0))` using `fun k => InfProd.ofLists_part T _ _ _ _ _ k`. Establish `hdx : ∀ k, D.part k ∣ x` using `fun k => by`.
+
+Rewrite using `[hpart, normProd_dvd_iff]`. Conclude with `⟨_, (T.gcdStates_spec hRE S0 k).1⟩`. Take `⟨w, hw⟩` from `D.dvd_of_forall hdx`. Establish `hw0 : w ≠ 0` using `by rintro rfl; rw [mul_zero] at hw; exact hx hw`. Use `⟨T.gcdRemoved hRE S0, hl, w, hw, hw0, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k P hP hr`. Rewrite using `[T.ptEval_eq_zero_iff P.2 hr]`. Establish `hmem : P ∈ (List.range (k + 1)).flatMap (T.gcdRemoved hRE S0)` using `List.mem_flatMap.2 ⟨k, List.mem_range.2 (Nat.lt_succ_self k), hP⟩`. Establish `hdvd : T.ξExt P.1 ρ0 ∣ T.ptProd ρ0 ((List.range (k + 1)).flatMap (T.gcdRemoved hRE S0))` using `List.dvd_prod (List.mem_map.2 ⟨P, hmem, rfl⟩)`. Conclude with `dvd_trans hdvd ⟨_, (T.gcdStates_spec hRE S0 (k + 1)).1⟩`.
+
+Introduce `Q hQ h1`. Establish `hs0` using `T.ptRad_pos' Q.2`. Take `⟨k, hk1, hk2⟩` from `exists_ann (ρ0 := ρ0) hs0 hQ`. Use `set F := (List.range (k + 1)).flatMap (T.gcdRemoved hRE S0)`. Establish `hQr : T.ptRad Q.1 ≤ ρ0` using `hQ.trans (half_le_self ρ0.2.1.le)`.
+
+Establish `e : T.ptProd ρ0 F * (T.gcdStates hRE S0 (k + 1)).x = T.ptProd ρ0 F * (T.unitProd ρ0 F * (D.shift (k + 1)).prod * w)`. Rewrite using `[← (T.gcdStates_spec hRE S0 (k + 1)).1]`. Express the relevant statement in the definitionally equal form `x = _`. Rewrite using `[hw, D.prod_eq_part_mul_shift (k + 1), hpart, normProd_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hW'` using `mul_left_cancel₀ (T.ptProd_ne_zero F) e`. Establish `hX : T.ptEval Q.2 hQr (T.gcdStates hRE S0 (k + 1)).x = 0`. Rewrite using `[hW', map_mul, h1, mul_zero]`. Establish `hY : T.ptEval Q.2 hQr (T.gcdStates hRE S0 (k + 1)).y = 0`. Establish `: (T.gcdStates hRE S0 (k + 1)).y = (T.gcdStates hRE S0 (k + 1)).x`.
+
+Establish `h1'` using `(T.gcdStates_spec hRE S0 (k + 1)).1`. Establish `h2'` using `(T.gcdStates_spec hRE S0 (k + 1)).2`. Conclude with `(mul_left_cancel₀ (T.ptProd_ne_zero F) (h2'.symm.trans h1'))`. Rewrite using `[this]`. Conclude with `hX`.
+
+Conclude with `(T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)).2.2.2 Q ⟨hk1, hk2⟩ ⟨hX, hY⟩`.
+-/
 theorem exists_full_factor {x : T.RobbaExt ρ0} (hx : x ≠ 0) :
     ∃ (ls : ℕ → List T.Pt) (hl : ∀ k, ∀ P ∈ ls k, T.ptRad P.1 ≤ annHi ρ0 k) (w : T.RobbaExt ρ0),
       x = (InfProd.ofLists T ρ0 ls (annHi ρ0) annHi_nonneg tendsto_annHi hl).prod * w ∧ w ≠ 0 ∧
@@ -132,12 +172,22 @@ theorem exists_full_factor {x : T.RobbaExt ρ0} (hx : x ≠ 0) :
     exact (T.gcdStep_spec hRE k (T.gcdStates hRE S0 k)).2.2.2 Q ⟨hk1, hk2⟩ ⟨hX, hY⟩
 
 omit hRE in
+/- English proof (translation)
+Unfold `annHi`. Conclude with `div_le_div_of_nonneg_left ρ0.2.1.le (by norm_num) (by calc (2 : ℝ) = 2 ^ 1 := by norm_num _ ≤ 2 ^ (k + 1) := pow_le_pow_right₀ (by norm_num) (by omega))`.
+-/
 theorem annHi_le_half (k : ℕ) : annHi ρ0 k ≤ (ρ0 : ℝ) / 2 := by
   unfold annHi
   exact div_le_div_of_nonneg_left ρ0.2.1.le (by norm_num)
     (by calc (2 : ℝ) = 2 ^ 1 := by norm_num
           _ ≤ 2 ^ (k + 1) := pow_le_pow_right₀ (by norm_num) (by omega))
 
+/- English proof (translation)
+Use `set ρ1 := halfRad ρ0`. Establish `hρ1 : (ρ1 : ℝ) = (ρ0 : ℝ) / 2` using `rfl`. Establish `hw1 : T.res (halfRad_le ρ0) w ≠ 0` using `fun h0 => hw0 (T.res_injective _ (h0.trans (map_zero _).symm))`. Rewrite using `[← T.ofRad_res (halfRad_le ρ0)]`. Use `T.isUnit_ofRad_of_mult_eq_zero hw1 fun σ hσ0 hσ1 => ?_` and prove the remaining obligations.
+
+Rewrite using `[T.mult_res (halfRad_le ρ0) w ⟨hσ0, hσ1⟩]`. Assume the negation of the conclusion as `hm`. Establish `hm1 : 1 ≤ T.mult w σ` using `by have := T.mult_nonneg w σ; omega`. Establish `hσρ0 : σ < ρ0` using `hσ1.trans_le (halfRad_le ρ0)`. Take `⟨ξ, hξ, hr, y, hy⟩` from `hRE ρ0 w hw0 σ hσ0 hσρ0 hm1`.
+
+Establish `hQ : T.ptRad ξ ≤ (ρ0 : ℝ) / 2` using `by rw [hr, ← hρ1]; exact hσ1.le`. Conclude with `hw ⟨ξ, hξ⟩ hQ ((T.ptEval_eq_zero_iff hξ _ w).2 ⟨y, hy⟩)`.
+-/
 theorem isUnit_ofRad_of_no_point {w : T.RobbaExt ρ0} (hw0 : w ≠ 0)
     (hw : ∀ Q : T.Pt, ∀ hQ : T.ptRad Q.1 ≤ (ρ0 : ℝ) / 2,
       T.ptEval Q.2 (hQ.trans (half_le_self ρ0.2.1.le)) w ≠ 0) :
@@ -156,6 +206,11 @@ theorem isUnit_ofRad_of_no_point {w : T.RobbaExt ρ0} (hw0 : w ≠ 0)
   exact hw ⟨ξ, hξ⟩ hQ ((T.ptEval_eq_zero_iff hξ _ w).2 ⟨y, hy⟩)
 
 omit hRE in
+/- English proof (translation)
+Use `⟨∑ j ∈ Finset.range (k1 + 1), c j, fun k => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ j ≤ k1, c j ≤ ∑ j ∈ Finset.range (k1 + 1), c j` using `fun j hj => Finset.single_le_sum (fun i _ => hc0 i) (Finset.mem_range.2 (by omega))`. Break down `le_total k k1 with hk | hk` into its components or cases. Conclude with `hsum k hk`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le hk`.
+
+Proceed by induction on `i with`. Consider the case `zero => exact hsum k1 le_rfl`. Consider the case `succ i ih => exact (h (k1 + i) (by omega)).trans (ih (by omega))`.
+-/
 theorem bound_of_eventually_antitone {c : ℕ → ℝ} (hc0 : ∀ k, 0 ≤ c k) {k1 : ℕ}
     (h : ∀ k ≥ k1, c (k + 1) ≤ c k) : ∃ M, ∀ k, c k ≤ M := by
   refine ⟨∑ j ∈ Finset.range (k1 + 1), c j, fun k => ?_⟩
@@ -168,6 +223,41 @@ theorem bound_of_eventually_antitone {c : ℕ → ℝ} (hc0 : ∀ k, 0 ≤ c k) 
     | zero => exact hsum k1 le_rfl
     | succ i ih => exact (h (k1 + i) (by omega)).trans (ih (by omega))
 
+/- English proof (translation)
+Take `⟨ls, hl, w, hxw, hw0, hlx, hwnz⟩` from `T.exists_full_factor hRE hx`. Use `set D := InfProd.ofLists T ρ0 ls (annHi ρ0) annHi_nonneg tendsto_annHi hl`. Establish `hDg : ∀ k, D.g k = T.normProd ρ0 (ls k)` using `fun k => rfl`. Establish `hAB : ∀ k, ∃ a b : T.RobbaExt ρ0, a * D.g k + b * y = 1`. Introduce `k`.
+
+Rewrite using `[hDg]`. Use `T.exists_bezout_list y (ls k) fun P hP => ⟨(hl k P hP).trans ((annHi_le_half k).trans (half_le_self ρ0.2.1.le)), fun h0 => ?_⟩` and prove the remaining obligations. Establish `hQ : T.ptRad P.1 ≤ (ρ0 : ℝ) / 2` using `(hl k P hP).trans (annHi_le_half k)`. Conclude with `hcop P hQ ⟨hlx k P hP _, h0⟩`. Establish `hσ : ∀ k : ℕ, 0 < 2 * annHi ρ0 k ∧ 2 * annHi ρ0 k ≤ ρ0` using `fun k => by`.
+
+Use `⟨by have := annLo_pos (ρ0 := ρ0) k; have := annLo_le (ρ0 := ρ0) k; linarith, ?_⟩` and prove the remaining obligations. Use `annHi_le_half (ρ0 := ρ0) k` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAdj : ∀ k, ∃ a' b' : T.RobbaExt ρ0, a' * D.g k + b' * y = 1 ∧ ∀ ρ : Set.Ioc (0 : ℝ) ρ0, 2 * annHi ρ0 k ≤ ρ → T.extNorm ρ0 ρ b' ≤ (1 / 2) ^ k ∧ T.extNorm ρ0 ρ (b' * y) ≤ (1 / 2) ^ k ∧ T.extNorm ρ0 ρ (a' - 1) ≤ max ((1 / 2) ^ k) (annHi ρ0 k / ρ)`. Introduce `k`.
+
+Take `⟨a, b, hab⟩` from `hAB k`. Rewrite `hab`, the goal using `[hDg]`. Conclude with `T.exists_adjusted hab (annHi_nonneg k) (fun ρ hρ => (T.norm_normProd_of_le (annHi_nonneg k) (hl k) ρ hρ).1) (fun ρ hρ => (T.norm_normProd_of_le (annHi_nonneg k) (hl k) ρ hρ).2) ⟨2 * annHi ρ0 k, (hσ k).1, (hσ k).2⟩ le_rfl (by positivity)`. Use `choose a' b' hab' hbnd using hAdj`. Use `set A : ℕ → T.RobbaExt ρ0 := fun k => ∏ j ∈ Finset.range k, a' j`.
+
+Use `set B : ℕ → T.RobbaExt ρ0 := fun k => ∑ j ∈ Finset.range k, A j * D.part j * b' j`. Establish `hA : ∀ k, A (k + 1) = A k * a' k` using `fun k => Finset.prod_range_succ _ _`. Establish `hB : ∀ k, B (k + 1) = B k + A k * D.part k * b' k` using `fun k => Finset.sum_range_succ _ _`. Establish `hinv : ∀ k, A k * D.part k + B k * y = 1`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp [A, B, InfProd.part_zero]`. Consider the case `succ k ih`. Rewrite using `[hA, hB, InfProd.part_succ]`. Take the linear combination `ih + A k * D.part k * hab' k`.
+
+Establish `hconv : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, Tendsto (fun k => T.extNorm ρ0 ρ (A (k + 1) - A k)) atTop (𝓝 0) ∧ Tendsto (fun k => T.extNorm ρ0 ρ (B (k + 1) - B k)) atTop (𝓝 0)`. Introduce `ρ`. Establish `hρ` using `rad_pos ρ0 ρ`. Establish `hs : Tendsto (fun k => 2 * annHi ρ0 k) atTop (𝓝 0)`. Simplify using `using (tendsto_annHi (ρ0 := ρ0)).const_mul 2`.
+
+Establish `he : Tendsto (fun k : ℕ => ((1 : ℝ) / 2) ^ k) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)`. Establish `hsr : Tendsto (fun k => annHi ρ0 k / ρ) atTop (𝓝 0)`. Simplify using `using (tendsto_annHi (ρ0 := ρ0)).div_const (ρ : ℝ)`. Establish `hm : Tendsto (fun k => max ((1 / 2 : ℝ) ^ k) (annHi ρ0 k / ρ)) atTop (𝓝 0)`. Simplify using `using he.max hsr`.
+
+Take `⟨k0, hk0⟩` from `eventually_atTop.1 (hs.eventually (ge_mem_nhds hρ))`. Take `⟨k1, hk1⟩` from `eventually_atTop.1 (hm.eventually (gt_mem_nhds one_pos))`. Establish `ha1 : ∀ k ≥ max k0 k1, T.extNorm ρ0 ρ (a' k) ≤ 1`. Introduce `k hk`. Establish `h1` using `(hbnd k ρ (hk0 k (le_of_max_le_left hk))).2.2`.
+
+Establish `h2` using `hk1 k (le_of_max_le_right hk)`. Use `T.extNorm_add_le ρ (a' k - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, extNorm_one]`. Conclude with `this.trans (max_le (h1.trans h2.le) le_rfl)`. Take `⟨M, hM⟩` from `bound_of_eventually_antitone (c := fun k => T.extNorm ρ0 ρ (A k)) (fun k => T.extNorm_nonneg _ _) (k1 := max k0 k1) fun k hk => by`.
+
+Rewrite using `[hA, extNorm_mul]`. Conclude with `mul_le_of_le_one_right (T.extNorm_nonneg _ _) (ha1 k hk)`. Take `⟨CP, hCP⟩` from `D.exists_bound ρ`. Establish `hM0 : 0 ≤ M` using `(T.extNorm_nonneg _ _).trans (hM 0)`. Establish `hCP0 : 0 ≤ CP` using `(T.extNorm_nonneg _ _).trans (hCP 0)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hlim` using `hm.const_mul M`. Rewrite `hlim` using `[mul_zero]`. Use `squeeze_zero' (Eventually.of_forall fun k => T.extNorm_nonneg _ _) ?_ hlim` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop k0] with k hk`.
+
+Rewrite using `[hA, show A k * a' k - A k = A k * (a' k - 1) by ring, extNorm_mul]`. Conclude with `mul_le_mul (hM k) (hbnd k ρ (hk0 k hk)).2.2 (T.extNorm_nonneg _ _) hM0`. Establish `hlim` using `he.const_mul (M * CP)`. Rewrite `hlim` using `[mul_zero]`. Use `squeeze_zero' (Eventually.of_forall fun k => T.extNorm_nonneg _ _) ?_ hlim` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop k0] with k hk`. Rewrite using `[hB, add_sub_cancel_left, extNorm_mul, extNorm_mul]`. Conclude with `mul_le_mul (mul_le_mul (hM k) (hCP k) (T.extNorm_nonneg _ _) hM0) (hbnd k ρ (hk0 k hk)).1 (T.extNorm_nonneg _ _) (mul_nonneg hM0 hCP0)`. Take `⟨Al, hAl⟩` from `cauchySeq_tendsto_of_complete (T.cauchySeq_of_increments fun ρ => (hconv ρ).1)`. Take `⟨Bl, hBl⟩` from `cauchySeq_tendsto_of_complete (T.cauchySeq_of_increments fun ρ => (hconv ρ).2)`.
+
+Establish `hlim : Tendsto (fun k => A k * D.part k + B k * y) atTop (𝓝 (Al * D.prod + Bl * y))` using `(hAl.mul D.tendsto_part).add (hBl.mul tendsto_const_nhds)`. Establish `hconst : (fun k => A k * D.part k + B k * y) = fun _ => (1 : T.RobbaExt ρ0)` using `funext hinv`. Rewrite `hlim` using `[hconst]`. Establish `hrel : Al * D.prod + Bl * y = 1` using `(tendsto_nhds_unique tendsto_const_nhds hlim).symm`. Take `⟨u, hu⟩` from `(T.isUnit_ofRad_of_no_point hRE hw0 hwnz).exists_right_inv`.
+
+Rewrite using `[Ideal.mem_span_pair]`. Use `⟨T.ofRad ρ0 Al * u, T.ofRad ρ0 Bl, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (T.ofRad ρ0) hrel`. Rewrite `e` using `[map_add, map_mul, map_mul, map_one]`. Rewrite using `[hxw, map_mul, ← e]`.
+
+Take the linear combination `T.ofRad ρ0 Al * T.ofRad ρ0 D.prod * hu`.
+-/
 theorem one_mem_span_of_coprime {x y : T.RobbaExt ρ0} (hx : x ≠ 0)
     (hcop : ∀ Q : T.Pt, ∀ hQ : T.ptRad Q.1 ≤ (ρ0 : ℝ) / 2,
       ¬ (T.ptEval Q.2 (hQ.trans (half_le_self ρ0.2.1.le)) x = 0 ∧
@@ -270,6 +360,19 @@ theorem one_mem_span_of_coprime {x y : T.RobbaExt ρ0} (hx : x ≠ 0)
   rw [hxw, map_mul, ← e]
   linear_combination T.ofRad ρ0 Al * T.ofRad ρ0 D.prod * hu
 
+/- English proof (translation)
+Rewrite using `[IsBezout.iff_span_pair_isPrincipal]`. Introduce `x y`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Use `⟨⟨y, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_insert_zero]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Use `⟨⟨x, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.pair_comm, Ideal.span_insert_zero]`.
+
+Take `⟨ρ0, x0, y0, rfl, rfl⟩` from `T.exists_ofRad₂ x y`. Establish `hx0 : x0 ≠ 0` using `by rintro rfl; exact hx (map_zero _)`. Establish `hy0 : y0 ≠ 0` using `by rintro rfl; exact hy (map_zero _)`. Take `⟨d, x', y', hd, hx', hy', hcop⟩` from `T.exists_gcd hRE hx0 hy0`. Establish `hx'0 : x' ≠ 0` using `by rintro rfl; rw [mul_zero] at hx'; exact hx0 hx'`.
+
+Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.1 (T.one_mem_span_of_coprime hRE hx'0 hcop)`. Use `⟨⟨T.ofRad ρ0 d, le_antisymm ?_ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `z hz`. Break down `hz with rfl | rfl` into its components or cases.
+
+Rewrite using `[hx', map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Rewrite using `[hy', map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+
+Establish `e : T.ofRad ρ0 d = a * T.ofRad ρ0 x0 + b * T.ofRad ρ0 y0`. Rewrite using `[hx', hy', map_mul, map_mul]`. Take the linear combination `(-(T.ofRad ρ0 d)) * hab`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))) (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))`.
+-/
 theorem isBezout_of_rootExists : IsBezout T.RobbaTilde := by
   rw [IsBezout.iff_span_pair_isPrincipal]
   intro x y

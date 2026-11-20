@@ -10,6 +10,13 @@ open MeasureTheory Filter Topology
 
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 
+/- English proof (translation)
+Introduce `v hv c`. Rewrite `hv` using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe]`. Take `⟨u, huS, hu⟩` from `mem_closure_iff_seq_limit.1 hv`. Establish `huc : Tendsto (fun k => u k c) atTop (𝓝 (v c))` using `tendsto_iff_dist_tendsto_zero.2 (squeeze_zero (fun _ => dist_nonneg) (fun k => PiLp.dist_apply_le _ _ c) (tendsto_iff_dist_tendsto_zero.1 hu))`. Take `⟨ns, hmono, hns⟩` from `(tendstoInMeasure_of_tendsto_Lp huc).exists_seq_tendsto_ae`.
+
+Establish `hall : ∀ᵐ g ∂μ, ∀ k, ((u k c : Lp ℂ 2 μ) : G → ℂ) g = inner ℂ (w c) (ρ g (u k))` using `ae_all_iff.2 (fun k => hS (u k) (huS k) c)`. Use `filter_upwards [hns, hall] with g hg hgall`. Establish `h2 : Tendsto (fun i => inner ℂ (w c) (ρ g (u (ns i)))) atTop (𝓝 (inner ℂ (w c) (ρ g v)))`. Establish `h3 : Tendsto (fun i => u (ns i)) atTop (𝓝 v)` using `hu.comp (hmono.tendsto_atTop)`. Conclude with `((continuous_const.inner continuous_id).tendsto _).comp ((ρ g).continuous.tendsto v |>.comp h3)`.
+
+Simplify using `only [hgall] at hg`. Conclude with `tendsto_nhds_unique hg h2`.
+-/
 theorem tf_rep_closure {n : ℕ} {G : Type*} [MeasurableSpace G] {μ : Measure G}
     (ρ : G → (PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ) →L[ℂ] PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ)))
     (hρ : ∀ g x, ‖ρ g x‖ ≤ ‖x‖) (w : Fin n → PiLp 2 (fun _ : Fin n => Lp ℂ 2 μ))

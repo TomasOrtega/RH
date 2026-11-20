@@ -32,6 +32,11 @@ variable {X : Type} [Group X]
 
 private def trl (z : X) (f : X → ℂ) : X → ℂ := fun g => f (z * g)
 
+/- English proof (translation)
+Take `⟨hb, S, hS⟩` from `hf`. Use `⟨fun a b g => ?_, S.image (z⁻¹ * ·), fun g hg => ?_⟩` and prove the remaining obligations. Use `show f (z * (a * g * b)) = f (z * g)`. Rewrite using `[← hb a b (z * g), ← mul_assoc, ← mul_assoc, hz a, mul_assoc (a : X) z g]`. Take `⟨s, hs, a, b, e⟩` from `hS _ hg`.
+
+Use `⟨z⁻¹ * s, Finset.mem_image_of_mem _ hs, a, b, ?_⟩` and prove the remaining obligations. Establish `h1 : (a : X) * z⁻¹ = z⁻¹ * a`. Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, ← hz a, inv_mul_cancel_left]`. Rewrite using `[← mul_assoc, h1, mul_assoc z⁻¹, mul_assoc z⁻¹, ← e, inv_mul_cancel_left]`.
+-/
 private theorem trl_mem {K : Subgroup X} {z : X} (hz : ∀ g, z * g = g * z) {f : X → ℂ} (hf : f ∈ Hecke ℂ K) :
     trl z f ∈ Hecke ℂ K := by
   obtain ⟨hb, S, hS⟩ := hf
@@ -44,6 +49,9 @@ private theorem trl_mem {K : Subgroup X} {z : X} (hz : ∀ g, z * g = g * z) {f 
       rw [mul_inv_eq_iff_eq_mul, mul_assoc, ← hz a, inv_mul_cancel_left]
     rw [← mul_assoc, h1, mul_assoc z⁻¹, mul_assoc z⁻¹, ← e, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `conv trl`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hz, mul_assoc]`.
+-/
 private theorem conv_trl_right (K : Subgroup X) {z : X} (hz : ∀ g, z * g = g * z) (f f' : X → ℂ) :
     conv K f (trl z f') = trl z (conv K f f') := by
   funext g
@@ -51,6 +59,13 @@ private theorem conv_trl_right (K : Subgroup X) {z : X} (hz : ∀ g, z * g = g *
   refine finsum_congr fun x => ?_
   rw [← mul_assoc, hz, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `conv trl`. Use `beta_reduce`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm z : X ⧸ K ≃ X ⧸ K) (f := fun x : X ⧸ K => f x.out * f' (x.out⁻¹ * (z * g)))]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations.
+
+Establish `hy : (MulAction.toPerm z : X ⧸ K ≃ X ⧸ K) y = (QuotientGroup.mk (z * y.out) : X ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K (z * y.out)`. Simplify using `only [hy, hh]`. Use `congr 1`.
+
+Simplify using `using (hf.1 1 h (z * y.out)).symm`. Rewrite using `[← hf'.1 h⁻¹ 1 (y.out⁻¹ * g)]`. Use `congr 1`. Simplify using `only [Subgroup.coe_inv, OneMemClass.coe_one]`. Use `group`.
+-/
 private theorem conv_trl_left {K : Subgroup X} (z : X) {f f' : X → ℂ} (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K) :
     conv K (trl z f) f' = trl z (conv K f f') := by
   funext g
@@ -70,6 +85,15 @@ private theorem conv_trl_left {K : Subgroup X} (z : X) {f f' : X → ℂ} (hf : 
     simp only [Subgroup.coe_inv, OneMemClass.coe_one]
     group
 
+/- English proof (translation)
+Establish `fin : ∀ a ∈ Hecke ℂ K, ∀ b : X ⧸ K → ℂ, (Function.support fun x : X ⧸ K => a x.out * b x).Finite` using `fun a ha b => (Formalism.UG.P.finite_support_cosets hK ha.2).subset fun x hx => left_ne_zero_of_mul hx`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f h => exact hs f h`. Consider the case `zero => exact ⟨zero_mem _, by funext g; simp [conv]⟩`.
+
+Consider the case `add f f' _ _ h h'`. Use `⟨add_mem h.1 h'.1, funext fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun h.2 g`. Establish `e'` using `congrFun h'.2 g`. Unfold `conv at e e' ⊢`.
+
+Simplify using `only [Pi.add_apply, mul_add, add_mul]`. Rewrite using `[finsum_add_distrib (fin u hu _) (fin u hu _), finsum_add_distrib (fin f h.1 _) (fin f' h'.1 _), e, e']`. Consider the case `smul c f _ h`. Use `⟨Submodule.smul_mem _ c h.1, funext fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun h.2 g`.
+
+Unfold `conv at e ⊢`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, mul_left_comm _ c]`. Rewrite using `[← mul_finsum, ← mul_finsum, e]`.
+-/
 private theorem comm_span {K : Subgroup X} (hK : IsCommensurated K) {u : X → ℂ} (hu : u ∈ Hecke ℂ K) {s : Set (X → ℂ)}
     (hs : ∀ f ∈ s, f ∈ Hecke ℂ K ∧ conv K u f = conv K f u) :
     ∀ f ∈ Submodule.span ℂ s, f ∈ Hecke ℂ K ∧ conv K u f = conv K f u := by
@@ -93,6 +117,9 @@ private theorem comm_span {K : Subgroup X} (hK : IsCommensurated K) {u : X → �
     simp only [Pi.smul_apply, smul_eq_mul, mul_assoc, mul_left_comm _ c]
     rw [← mul_finsum, ← mul_finsum, e]
 
+/- English proof (translation)
+Use `DoubleCoset.mem_doubleCoset.1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `e` to reduce the goal to its premises. Simplify using `[TyLev.tf, dosetInd, Set.indicator_of_notMem hn]`.
+-/
 private theorem tf_supp {M : Type} [Group M] (T : TyLev X M) {h g : X} (e : T.tf h g ≠ 0) :
     ∃ a ∈ T.K, ∃ b ∈ T.K, g = a * h * b := by
   refine DoubleCoset.mem_doubleCoset.1 ?_
@@ -102,6 +129,13 @@ private theorem tf_supp {M : Type} [Group M] (T : TyLev X M) {h g : X} (e : T.tf
 
 end Abstract
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (ValuativeRel.uniformizer k)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[map_zero]`. Conclude with `ValuativeRel.uniformizer_ne_zero hx.symm`.
+
+Establish `hν : StrictAnti fun i : Fin n => -(i : ℤ)` using `fun i j hij => by`. Establish `: (i : ℕ) < j` using `hij`. Use `show -((j : ℕ) : ℤ) < -((i : ℕ) : ℤ)`. Use linear arithmetic over natural numbers and integers. Use `⟨_, CertificateRingHomMap.iwInvT k n (Units.mk0 x hx0) hx _ hν.antitone, UpperTheory.iwahori_doubleCoset_torus_mul_of_strictAnti k n (Units.mk0 x hx0) hx _ hν, fun m hm y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy` using `[GlobalTheory.TorusElementPower.torusElt_pow_eq]`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hy`. Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Conclude with `(GlobalTheory.IwahoriRegular.regular_split k n (Units.mk0 x hx0) hx _ (fun i j hij => mul_lt_mul_of_pos_left (hν hij) hm') a ha b hb).1`.
+-/
 private theorem locT (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) :
     ∃ t : GL (Fin n) k,
       (∃ φ ∈ Hecke ℂ (GlobalTheory.SmGL.iwahori k (Fin n)), conv (GlobalTheory.SmGL.iwahori k (Fin n)) φ (dosetInd ℂ (GlobalTheory.SmGL.iwahori k (Fin n)) t) =
@@ -128,15 +162,24 @@ private theorem locT (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact (GlobalTheory.IwahoriRegular.regular_split k n (Units.mk0 x hx0) hx _
     (fun i j hij => mul_lt_mul_of_pos_left (hν hij) hm') a ha b hb).1
 
+/- English proof (translation)
+Introduce `v hv` and use `by rw [map_mul, Module.End.mul_apply] exact ha _ (hb v hv)`.
+-/
 private theorem integ_mul {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {a b : G.GAf}
     (ha : Integ L a) (hb : Integ L b) : Integ L (a * b) := fun v hv => by
   rw [map_mul, Module.End.mul_apply]
   exact ha _ (hb v hv)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Units.val_mul, Units.val_mul, hs, smul_mul_assoc, mul_smul_comm, one_mul, mul_one])`.
+-/
 private theorem scal_comm {k : Type} [Field k] {n : ℕ} {s : GL (Fin n) k} {a : k} (hs : s.val = a • (1 : Matrix (Fin n) (Fin n) k))
     (y : GL (Fin n) k) : Commute s y :=
   Units.ext (by rw [Units.val_mul, Units.val_mul, hs, smul_mul_assoc, mul_smul_comm, one_mul, mul_one])
 
+/- English proof (translation)
+Use `UpperTheory.charpoly_smul_separable k n (a ^ m)⁻¹ (inv_ne_zero (pow_ne_zero m ha)) _ h` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_pow_eq_pow_val, hs, _root_.smul_pow, one_pow, smul_mul_assoc, one_mul, smul_smul, inv_mul_cancel₀ (pow_ne_zero m ha), one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem scal_sep {k : Type} [Field k] {n : ℕ} {s : GL (Fin n) k} {a : k} (ha : a ≠ 0)
     (hs : s.val = a • (1 : Matrix (Fin n) (Fin n) k)) (m : ℕ) (y : GL (Fin n) k) (h : (s ^ m * y).val.charpoly.Separable) :
     y.val.charpoly.Separable := by
@@ -144,6 +187,9 @@ private theorem scal_sep {k : Type} [Field k] {n : ℕ} {s : GL (Fin n) k} {a : 
   rwa [Units.val_mul, Units.val_pow_eq_pow_val, hs, _root_.smul_pow, one_pow, smul_mul_assoc, one_mul, smul_smul,
     inv_mul_cancel₀ (pow_ne_zero m ha), one_smul] at this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact UpperTheory.exists_levelSubgroup_central_scalar_of_pos E A n p S F c hc`. Consider the case `(obtain ⟨y, -, -, h1, -, h2, h3⟩ := UpperTheory.exists_levelSubgroup_central_scalar_of_pos E A n p S F c hc; exact ⟨_, h2, h1, h3⟩)`.
+-/
 private theorem cen_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
     (F : Frame S) (c : ℕ) (hc : 0 < c) : ∃ d : GUf E n, (∀ g, F.j d * g = g * F.j d) ∧
       (∀ w : Plc E, (comp w d).val = (c : w.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))) ∧
@@ -154,6 +200,45 @@ private theorem cen_ex {E : Type} [Field E] [NumberField E] [IsCMField E] {A : A
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S F x U w₀ Up V hn hsc hgen hoff hq r W hA N hrN hst L hw Ty hTy`. Take `⟨hF, -, c, hc, -, hcK⟩` from `tyFact E A n p S F x U w₀ Up V hn hsc hgen hoff hq r W hA N hrN hst L hw Ty hTy`. Use `choose t hti htm hts using fun w : Spl E p => locT (w.1.adicCompletion E) n`. Take `⟨τ, hτ, hτ0, hτw, hcm, u', hu', hu'τ⟩` from `exists_invertible_hecke_function_at_finite_places _ _ Ty (Spl E p) (fun w => GLw n w.1) L (fun w => Iw n w.1) t W hF fun w _ => ⟨UpperTheory.isCommensurated_iwahoriSubgroup_gl_fin _ n, hti w⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀, hg₀u⟩ : ∃ g₀ : GUf E n, F.j g₀ = τ⁻¹ ∧ ∀ u : Plc E, (r : 𝓞 E) ∉ u.asIdeal → comp u g₀ = 1 := by`.
+
+Establish `hτ'` using `inv_mem hτ`. Generalize the expression as in `τ⁻¹ = σ at hτ'`. Use `haveI : Fact r.Prime := ⟨hA.prime⟩`. Proceed by induction on `hτ' using Subgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨w, hwW, rfl⟩` from `hy`. Conclude with `⟨CertificateRingHomMap.loc w.2.1 (t w), ((hTy.fac w).2 _).symm, fun u hu => CertificateRingHomMap.comp_loc_of_apart w.2.1 (Ne.symm (apart_of_not_mem hu (hA.half.above w hwW))) _⟩`. Consider the case `one => exact ⟨1, map_one _, fun _ _ => map_one _⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨a', rfl, ha⟩` from `ha`.
+
+Take `⟨b', rfl, hb⟩` from `hb`. Conclude with `⟨a' * b', map_mul _ _ _, fun u hu => by rw [map_mul, ha u hu, hb u hu, one_mul]⟩`. Consider the case `inv a _ ha`. Take `⟨a', rfl, ha⟩` from `ha`. Conclude with `⟨a'⁻¹, map_inv _ _, fun u hu => by rw [map_inv, ha u hu, inv_one]⟩`.
+
+Take `⟨M, hM⟩` from `UpperTheory.exists_primePow_scalar_integral_of_good_prime E A n p S F r hA.prime hA.good g₀ hg₀u`. Take `⟨dc, hdc, hdcw, hdcv⟩` from `cen_ex F c hc`. Take `⟨dr, hdr, hdrw, -⟩` from `cen_ex F (r ^ M) (pow_pos hA.prime.pos M)`. Establish `hI` using `hM dr hdrw`. Rewrite `hI` using `[map_mul, hg₀]`.
+
+Establish `hK : ∀ k ∈ Ty.K, Integ S.L (k * F.j dc)` using `fun k hk v hv => by`. Rewrite using `[map_mul, Module.End.mul_apply, hdcv, map_nsmul]`. Conclude with `hcK k hk v hv`. Take `⟨D, hD⟩ : ∃ D, D = F.j dc * F.j dr * F.j dc` from `⟨_, rfl⟩`. Establish `hDc : ∀ g, D * g = g * D` using `fun g => by`.
+
+Rewrite using `[hD, mul_assoc, hdc g, ← mul_assoc, mul_assoc _ _ g, hdr g, ← mul_assoc, hdc g]`. Simplify using `only [mul_assoc]`. Establish `hDc' : ∀ g, D⁻¹ * g = g * D⁻¹` using `fun g => by`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hDc g, mul_inv_cancel_right]`. Establish `hs : ∀ w : Spl E p, ((L w).pr D).val = ((c * r ^ M * c : ℕ) : w.1.adicCompletion E) • (1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E))` using `fun w => by`.
+
+Rewrite using `[hD, ← map_mul, ← map_mul, (hTy.fac w).1, map_mul, map_mul, Units.val_mul, Units.val_mul, hdcw, hdrw]`. Simplify using `only [smul_mul_assoc, one_mul, smul_smul, Nat.cast_mul]`. Establish `hs0 : ∀ w : Spl E p, ((c * r ^ M * c : ℕ) : w.1.adicCompletion E) ≠ 0` using `fun w => by haveI : CharZero (w.1.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Conclude with `Nat.cast_ne_zero.2 (Nat.mul_pos (Nat.mul_pos hc (pow_pos hA.prime.pos M)) hc).ne'`. Establish `hτH : Ty.tf τ ∈ Hecke ℂ Ty.K₀` using `(pTfAdm _ _ Ty τ hτ0).1.1`.
+
+Establish `h1H : Ty.tf 1 ∈ Hecke ℂ Ty.K₀` using `(pTfAdm _ _ Ty 1 (map_one _)).1.1`. Establish `hid` using `(tfIdem_holds _ _ Ty τ hτ0).2`. Establish `hue : conv Ty.K₀ (trl D (Ty.tf τ)) (Ty.tf 1) = trl D (Ty.tf τ)` using `by rw [conv_trl_left D hτH h1H, hid.1]`. Establish `hsupp : ∀ g, trl D (Ty.tf τ) g ≠ 0 → Integ S.L g⁻¹ ∧ ∀ w ∈ W, (L w).pr D * (L w).pr g ∈ DoubleCoset.doubleCoset (t w) (Iw n w.1 : Set (GLw n w.1)) (Iw n w.1)`. Introduce `g hg`.
+
+Take `⟨a, ha, b, hb, e⟩` from `tf_supp Ty hg`. Use `⟨?_, fun w hwW => ?_⟩` and prove the remaining obligations. Establish `e' : g⁻¹ = b⁻¹ * F.j dc * (τ⁻¹ * F.j dr * (a⁻¹ * F.j dc))`. Establish `e1 : g⁻¹ = b⁻¹ * τ⁻¹ * a⁻¹ * D`. Rewrite using `[← _root_.mul_inv_rev, ← _root_.mul_inv_rev, ← mul_assoc, ← e, _root_.mul_inv_rev, inv_mul_cancel_right]`.
+
+Rewrite using `[e1, mul_assoc b⁻¹ (F.j dc), hdc, mul_assoc τ⁻¹, hdr, hD]`. Simplify using `only [mul_assoc]`. Rewrite using `[e']`. Conclude with `integ_mul (hK _ (inv_mem hb)) (integ_mul hI (hK _ (inv_mem ha)))`. Rewrite using `[← map_mul, e, map_mul, map_mul, hτw w hwW]`.
+
+Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨_, (hF w hwW).1.2 a ha, _, (hF w hwW).1.2 b hb, rfl⟩`. Establish `hpow : ∀ m : ℕ, ∀ g, powFn Ty.K₀ (trl D (Ty.tf τ)) (Ty.tf 1) (m + 1) g ≠ 0 → Integ S.L g⁻¹ ∧ ∀ w ∈ W, (L w).pr D ^ (m + 1) * (L w).pr g ∈ DoubleCoset.doubleCoset (t w ^ (m + 1)) (Iw n w.1 : Set (GLw n w.1)) (Iw n w.1)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `g hg`. Simplify using `only [zero_add, pow_one]`. Use `hsupp g ?_` and prove the remaining obligations. Rewrite using `[← hue]`. Conclude with `hg`.
+
+Consider the case `succ m ih`. Introduce `g hg`. Unfold `powFn at hg`. Rewrite `hg` using `[Function.iterate_succ_apply']`. Take `⟨a, b, ha, hb, rfl⟩` from `pConvSupp _ _ _ _ _ hg`.
+
+Take `⟨a1, a2⟩` from `hsupp a ha`. Take `⟨b1, b2⟩` from `ih b hb`. Use `⟨by rw [_root_.mul_inv_rev]; exact integ_mul b1 a1, fun w hwW => ?_⟩` and prove the remaining obligations. Use `htm w (m + 1) _ (a2 w hwW) _ (b2 w hwW)` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← mul_assoc ((L w).pr a), ← ((scal_comm (hs w) ((L w).pr a)).pow_left (m + 1)).eq, mul_assoc, ← mul_assoc, ← pow_succ', ← map_mul]`. Then use the resulting hypothesis.
+
+Use `⟨trl D (Ty.tf τ), trl_mem hDc hτH, trl D⁻¹ u', trl_mem hDc' hu', ?_, hue, ?_, fun f hf => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[conv_trl_right _ hDc, hid.2]`. Rewrite using `[conv_trl_left _ hu' (trl_mem hDc hτH), conv_trl_right _ hDc, hu'τ]`. Use function extensionality and compare the values at `g`. Simplify using `[trl]`.
+
+Take `⟨hfH, hfc⟩` from `comm_span Ty.cms hτH (by`. Introduce and unpack `f ⟨h, h0, h1, rfl⟩`. Conclude with `⟨(pTfAdm _ _ Ty h h0).1.1, hcm h h0 h1⟩) f hf`. Rewrite using `[conv_trl_left D hτH hfH, conv_trl_right _ hDc, hfc]`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`.
+
+Use `⟨fun w => {y | (L w).pr D ^ (m + 1) * y ∈ DoubleCoset.doubleCoset (t w ^ (m + 1)) (Iw n w.1 : Set (GLw n w.1)) (Iw n w.1)}, fun w _ y hy => ⟨?_, fun a ha => ?_⟩, hpow m⟩` and prove the remaining obligations. Conclude with `scal_sep (hs0 w) (hs w) _ y (hts w _ hm _ hy)`. Take `⟨a₁, h₁, a₂, h₂, e⟩` from `DoubleCoset.mem_doubleCoset.1 hy`. Use `DoubleCoset.mem_doubleCoset.2 ⟨a * a₁, mul_mem ha h₁, a₂, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ((scal_comm (hs w) a).pow_left (m + 1)).eq, mul_assoc, e]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem auxFn : ExistsIdempotentHeckeOperatorWithRegularSupport := by
   intro E _ _ _ A n p _ S F x U w₀ Up V hn hsc hgen hoff hq r W hA N hrN hst L hw Ty hTy
   obtain ⟨hF, -, c, hc, -, hcK⟩ := tyFact E A n p S F x U w₀ Up V hn hsc hgen hoff hq r W hA N hrN hst L hw Ty hTy

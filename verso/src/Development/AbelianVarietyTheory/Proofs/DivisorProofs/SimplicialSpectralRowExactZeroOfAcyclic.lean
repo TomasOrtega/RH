@@ -12,10 +12,24 @@ namespace GlobalTheory.EtC.GmStep.DegRow
 
 variable {R : Type} [CommRing R] (F : Shv R)
 
+/- English proof (translation)
+Simplify using `[cobd, Fin.sum_univ_two, SimplicialObject.δ]`.
+-/
 theorem cobd_disc (P : PSh) (s : (free R).obj ((disc.obj P).obj (op ⦋0⦌)) ⟶ F) :
     cobd (E := disc.obj P) s = 0 := by
   simp [cobd, Fin.sum_univ_two, SimplicialObject.δ]
 
+/- English proof (translation)
+Take `⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩` from `GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F`. Take `⟨z, rfl⟩` from `x.mk_surjective`. Set `b` to `(z.1 : Cochain ((chains R).obj E) (res R F) 0).v 0 0 (add_zero 0)`. Establish `hb : b ≫ (res R F).d 0 1 = 0`. Establish `e` using `Cochain.congr_v (Cocycle.δ_eq_zero z 1) 0 1 (zero_add 1)`.
+
+Rewrite `e` using `[δ_v 0 1 (zero_add 1) _ 0 1 (zero_add 1) 0 1 (by omega) (zero_add 1), (hpos E 1 one_pos).eq_of_tgt (((chains R).obj E).d 0 1) 0, zero_comp, smul_zero, add_zero]`. Conclude with `e`. Use `haveI : Mono (ShortComplex.mk _ _ w).f := hmono`. Set `t' : ((chains R).obj E).X 0 ⟶ F` to `hex.lift b hb`. Establish `ht' : t' ≫ resι R F = b` using `hex.lift_f b hb`.
+
+Use `⟨(chainsXIso R E 0).inv ≫ t', z, rfl, ?_⟩` and prove the remaining obligations. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Take `rfl : q = 0` from `by omega`.
+
+Express the relevant statement in the definitionally equal form `b = (Cochain.single (p := -((0 : ℕ) : ℤ)) (q := 0) ((chainsXIso R E 0).hom ≫ ((chainsXIso R E 0).inv ≫ t') ≫ resι R F) ((0 : ℕ) : ℤ)).v (-((0 : ℕ) : ℤ)) 0 (by simp)`. Rewrite using `[Cochain.single_v, ← ht']`. Simplify using the standard rewrite rules. Break down `lt_or_gt_of_ne hp with hp | hp` into its components or cases. Conclude with `(hneg q (by omega)).eq_of_tgt _ _`.
+
+Conclude with `(hpos E p hp).eq_of_src _ _`.
+-/
 theorem exists_rep (E : Spc) (x : H R E F 0) : ∃ s : (free R).obj (E.obj (op ⦋0⦌)) ⟶ F, IsCls s x := by
   obtain ⟨-, hneg, hmono, ⟨w, hex⟩, -, hpos⟩ := GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_basic_properties R F
   obtain ⟨z, rfl⟩ := x.mk_surjective
@@ -43,9 +57,15 @@ theorem exists_rep (E : Spc) (x : H R E F 0) : ∃ s : (free R).obj (E.obj (op �
 def clsFun (P : PSh) (s : (free R).obj P ⟶ F) : H R (disc.obj P) F 0 :=
   Classical.choose ((isCls_basic R F (disc.obj P) 0).1 s (cobd_disc F P s))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec ((isCls_basic R F (disc.obj P) 0).1 s (cobd_disc F P s))`.
+-/
 theorem clsFun_spec (P : PSh) (s : (free R).obj P ⟶ F) : IsCls (E := disc.obj P) (n := 0) s (clsFun F P s) :=
   Classical.choose_spec ((isCls_basic R F (disc.obj P) 0).1 s (cobd_disc F P s))
 
+/- English proof (translation)
+The claim follows from `(isCls_basic R F (disc.obj P) 0).2.2.1 s _ _ (clsFun_spec F P s) h`.
+-/
 theorem clsFun_eq (P : PSh) (s : (free R).obj P ⟶ F) (x : H R (disc.obj P) F 0)
     (h : IsCls (E := disc.obj P) (n := 0) s x) : clsFun F P s = x :=
   (isCls_basic R F (disc.obj P) 0).2.2.1 s _ _ (clsFun_spec F P s) h
@@ -54,20 +74,35 @@ def cls0 (P : PSh) : ((free R).obj P ⟶ F) →+ H R (disc.obj P) F 0 :=
   AddMonoidHom.mk' (clsFun F P) fun s s' =>
     clsFun_eq F P (s + s') _ ((isCls_basic R F (disc.obj P) 0).2.1 s s' _ _ (clsFun_spec F P s) (clsFun_spec F P s'))
 
+/- English proof (translation)
+The claim follows from `clsFun_spec F P s`.
+-/
 theorem degreeZeroClassConstantSpaceAddHom_represents (P : PSh) (s : (free R).obj P ⟶ F) : IsCls (E := disc.obj P) (n := 0) s (cls0 F P s) :=
   clsFun_spec F P s
 
+/- English proof (translation)
+The claim follows from `clsFun_eq F P s x h`.
+-/
 theorem degreeZeroClassConstantSpaceAddHom_eq_of_represents (P : PSh) (s : (free R).obj P ⟶ F) (x : H R (disc.obj P) F 0)
     (h : IsCls (E := disc.obj P) (n := 0) s x) : cls0 F P s = x :=
   clsFun_eq F P s x h
 
+/- English proof (translation)
+The claim follows from `(degreeZeroClassConstantSpaceAddHom_eq_of_represents F P _ _ ((isCls_basic R F (disc.obj P') 0).2.2.2.2 (disc.obj P) (disc.map f) s _ (degreeZeroClassConstantSpaceAddHom_represents F P' s))).symm`.
+-/
 theorem etaleSpaceCohomologyPullback_degreeZeroClass {P P' : PSh} (f : P ⟶ P') (s : (free R).obj P' ⟶ F) :
     pull R (disc.map f) F 0 (cls0 F P' s) = cls0 F P ((free R).map f ≫ s) :=
   (degreeZeroClassConstantSpaceAddHom_eq_of_represents F P _ _ ((isCls_basic R F (disc.obj P') 0).2.2.2.2 (disc.obj P) (disc.map f) s _ (degreeZeroClassConstantSpaceAddHom_represents F P' s))).symm
 
+/- English proof (translation)
+The claim follows from `(leray_inj R F (disc.obj P) 0 (fun k m hm hkm _ => by omega)).1 s (h ▸ degreeZeroClassConstantSpaceAddHom_represents F P s)`.
+-/
 theorem degreeZeroClassConstantSpaceAddHom_eq_zero_imp (P : PSh) (s : (free R).obj P ⟶ F) (h : cls0 F P s = 0) : s = 0 :=
   (leray_inj R F (disc.obj P) 0 (fun k m hm hkm _ => by omega)).1 s (h ▸ degreeZeroClassConstantSpaceAddHom_represents F P s)
 
+/- English proof (translation)
+Simplify using `only [rowD, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply, etaleSpaceCohomologyPullback_degreeZeroClass, cobd, map_sum, map_zsmul]`.
+-/
 theorem simplicialSpectralRowDifferential_degreeZeroClass (E : Spc) (p : ℕ) (s : (free R).obj (E.obj (op ⦋p⦌)) ⟶ F) :
     rowD R E F 0 p (cls0 F _ s) = cls0 F _ (cobd s) := by
   simp only [rowD, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply, etaleSpaceCohomologyPullback_degreeZeroClass, cobd, map_sum, map_zsmul]
@@ -76,6 +111,11 @@ end GlobalTheory.EtC.GmStep.DegRow
 
 open GlobalTheory.EtC.GmStep.DegRow in
 
+/- English proof (translation)
+Introduce `R _ F E hlev htot p y hy`. Take `⟨s, hs⟩ : ∃ s : (free R).obj (E.obj (op ⦋p + 1⦌)) ⟶ F, IsCls (E` from `disc.obj (E.obj (op ⦋p + 1⦌))) (n := 0) s y := exists_rep F (disc.obj (E.obj (op ⦋p + 1⦌))) y`. Take `rfl : cls0 F (E.obj (op ⦋p + 1⦌)) s = y` from `degreeZeroClassConstantSpaceAddHom_eq_of_represents F _ s y hs`. Rewrite `hy` using `[simplicialSpectralRowDifferential_degreeZeroClass]`. Establish `hc : cobd s = 0` using `degreeZeroClassConstantSpaceAddHom_eq_zero_imp F _ _ hy`.
+
+Take `⟨x, hx⟩` from `(isCls_basic R F E (p + 1)).1 s hc`. Establish `hx0 : x = 0` using `@Subsingleton.elim _ (htot _ (by positivity)) x 0`. Rewrite `hx` using `[hx0]`. Take `⟨t, ht⟩` from `(leray_inj R F E p (fun k m hm _ y => @Subsingleton.elim _ (hlev k m (by exact_mod_cast hm)) y 0)).2 s hx`. Conclude with `⟨cls0 F _ t, by rw [simplicialSpectralRowDifferential_degreeZeroClass, ht]⟩`.
+-/
 theorem GlobalTheory.EtC.GmStep.rowExact_zero_of_acyclic : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc),
     (∀ (p : ℕ) (s : ℤ), 0 < s → Subsingleton (H R (disc.obj (E.obj (op ⦋p⦌))) F s)) →
     (∀ m : ℤ, 0 < m → Subsingleton (H R E F m)) → ∀ p : ℕ, RowExact R E F 0 p := by

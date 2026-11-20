@@ -27,6 +27,9 @@ def trEquiv (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hne : V.rank ≠ W.r
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Heisenberg₂, symplH_transpose V W hne, Matrix.transpose_add]`.
+-/
 theorem heis_transpose (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hne : V.rank ≠ W.rank) (u : WA V W)
     (f : WA W V → ℂ) :
     (fun x : WA V W => Heisenberg₂ ψ W V u.transpose f x.transpose) = Heisenberg₂ ψ V W u (fun x => f x.transpose) := by
@@ -37,10 +40,24 @@ def swapRep {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} (hne : V.rank ≠ W.r
     (om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)) : GA D W × GA D V →* Module.End ℂ (ThS ψ W V) :=
   ((trEquiv ψ hne).conjRingEquiv.toMonoidHom.comp om).comp (MulEquiv.prodComm (M := GA D W) (N := GA D V)).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapRep_apply {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} (hne : V.rank ≠ W.rank)
     (om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)) (h : GA D W) (g : GA D V) (Φ : ThS ψ W V) :
     swapRep hne om (h, g) Φ = trEquiv ψ hne (om (g, h) ((trEquiv ψ hne).symm Φ)) := rfl
 
+/- English proof (translation)
+Introduce `D ψ _ V W χ χ' om hne H`. Use `⟨swapRep hne om, ⟨fun h g w₀ Φ Φ' e => ?_, fun γ hγ γ' hγ' Φ => ?_, fun Φ w => ?_, fun μ 𝓕 hμ h𝓕 p Φ => ?_, fun e he h g hh hg y x hy hx => ?_⟩, fun g h Φ Φ' e x => ?_⟩` and prove the remaining obligations. Establish `k` using `H.Heisenberg₂ g h w₀.transpose ((trEquiv ψ hne).symm Φ) ((trEquiv ψ hne).symm Φ') (by show (fun x : WA V W => Φ'.1 x.transpose) = _`. Rewrite using `[e]`. Conclude with `heis_transpose ψ hne w₀.transpose Φ.1)`.
+
+Rewrite using `[swapRep_apply, swapRep_apply]`. Use `show (fun y : WA W V => (om (g, h) _).1 y.transpose) = _`. Rewrite using `[k, actHom_swap W V hne.symm]`. Conclude with `heis_transpose ψ hne.symm _ _`. Conclude with `H.aut γ' hγ' γ hγ ((trEquiv ψ hne).symm Φ)`.
+
+Conclude with `(H.cont ((trEquiv ψ hne).symm Φ) w.transpose).comp continuous_swap`. Use `haveI : IsTopologicalAddGroup (AE D) := IsTopologicalRing.to_topologicalAddGroup haveI : IsTopologicalAddGroup (WA V W) := Pi.topologicalAddGroup haveI : IsTopologicalAddGroup (WA W V) := Pi.topologicalAddGroup haveI : BorelSpace (WA V W) := ⟨rfl⟩ haveI : BorelSpace (WA W V) := ⟨ …`. Take `⟨ν, h1, h2, h3⟩` from `GlobalTheory.exists_isAddHaarMeasure_isAddFundamentalDomain_preimage (WA V W) (WA W V) (Matrix.transposeAddEquiv _ _ _) continuous_id.matrix_transpose continuous_id.matrix_transpose (ratL V W) (ratL W V) (fun x => ⟨fun ⟨γ, hγ⟩ => ⟨γ.transpose, congrArg Matrix.transpose hγ⟩, fun ⟨ …`. Rewrite using `[← h3 fun w => ‖(swapRep hne om p Φ).1 w‖ ^ 2, ← h3 fun w => ‖Φ.1 w‖ ^ 2]`. Conclude with `H.unit ν _ h1 h2 (p.2, p.1) ((trEquiv ψ hne).symm Φ)`.
+
+Take `⟨r, hr, k⟩` from `H.split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun ℓ hℓ Φ => ?_⟩` and prove the remaining obligations. Rewrite using `[splitFac_swap V W hne]`. Conclude with `k (ℓ.comp (trEquiv ψ hne).toLinearMap) (fun u hu Ψ Ψ' e' => hℓ u.transpose (fun i j => hu j i) (trEquiv ψ hne Ψ) (trEquiv ψ hne Ψ') (by show (fun y : WA W V => Ψ'.1 y.transpose) = _`. Rewrite using `[e']`.
+
+Conclude with `heis_transpose ψ hne.symm u.transpose Ψ.1)) ((trEquiv ψ hne).symm Φ)`. Establish `: (trEquiv ψ hne).symm Φ' = Φ` using `Subtype.ext (funext e)`. Rewrite using `[swapRep_apply, this]`. Both sides reduce to the same expression.
+-/
 theorem exists_isWeilOn_swap : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V W : HSp D) (χ χ' : IdC D) (om : GA D V × GA D W →* Module.End ℂ (ThS ψ V W)), V.rank ≠ W.rank → IsWeilOn ψ V W χ χ' om → ∃ om' : GA D W × GA D V →* Module.End ℂ (ThS ψ W V), IsWeilOn ψ W V χ' χ om' ∧ ∀ (g : GA D V) (h : GA D W) (Φ : ThS ψ V W) (Φ' : ThS ψ W V), (∀ x : WA V W, Φ'.1 x.transpose = Φ.1 x) → ∀ x : WA V W, (om' (h, g) Φ').1 x.transpose = (om (g, h) Φ).1 x := by
   intro D ψ _ V W χ χ' om hne H
   refine ⟨swapRep hne om, ⟨fun h g w₀ Φ Φ' e => ?_, fun γ hγ γ' hγ' Φ => ?_, fun Φ w => ?_,

@@ -17,6 +17,11 @@ namespace GlobalTheory.Poinc.Sep.MemberZeta
 
 open GlobalTheory.Points
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U` using `fun w _ => by`. Establish `: X.fromSpecStalk x w ∈ Set.range (X.fromSpecStalk x)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open (x := X.fromSpecStalk x w) this U.isOpen hU`. Establish `e : (X.fromSpecStalk x).appLE U ⊤ h = X.presheaf.germ U x hU ≫ (Scheme.ΓSpecIso _).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU, Category.assoc, Category.assoc, ← Functor.map_comp]`. Conclude with `congrArg (_ ≫ ·) ((congrArg (_ ≫ ·) ((Spec (X.presheaf.stalk x)).presheaf.map_id _)).trans (Category.comp_id _))`. Use `(valR_appLE (spMap ψ) (X.fromSpecStalk x) h (le_preimage_top _) a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `valR_specMap (CommRingCat.ofHom ψ) _`.
+-/
 theorem valR_through_stalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ : X.presheaf.stalk x →+* C)
     {U : X.Opens} (hU : x ∈ U) (a : Γ(X, U)) :
     valR (spMap ψ ≫ X.fromSpecStalk x) U a = ψ (X.presheaf.germ U x hU a) := by
@@ -31,6 +36,13 @@ theorem valR_through_stalk {X : Scheme.{0}} {x : X} {C : Type} [CommRing C] (ψ 
   rw [e]
   exact valR_specMap (CommRingCat.ofHom ψ) _
 
+/- English proof (translation)
+Take `⟨U, hz, f, rfl⟩` from `M.Z.presheaf.germ_exist x`. Establish `hr : Set.range (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) ⊆ U`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `: (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) w ∈ Set.range (M.Z.fromSpecStalk z)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`.
+
+Conclude with `Specializes.mem_open (x := (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) w) this U.isOpen hz`. Establish `e : jK V ≫ spMap ev = spMap ((algebraMap V (FractionRing V)).comp ev)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[RatModel.val_eq hr (RatModel.stalkHom_germ hz f).symm]`.
+
+Use `show valR _ U f = _`. Rewrite using `[← Category.assoc, e, valR_through_stalk _ hz]`. Both sides reduce to the same expression.
+-/
 theorem val_germ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {V : Type} [CommRing V] [IsDomain V]
     {z : M.Z} (ev : M.Z.presheaf.stalk z →+* V) (x : M.Z.presheaf.stalk z) :
     M.val (jK V ≫ spMap ev ≫ M.Z.fromSpecStalk z) (M.stalkHom z x) = algebraMap V (FractionRing V) (ev x) := by
@@ -47,6 +59,9 @@ theorem val_germ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatMo
   rw [← Category.assoc, e, valR_through_stalk _ hz]
   rfl
 
+/- English proof (translation)
+Introduce `g n F W Z i X z act V _ _ _ ev Y _ m t δ 𝔪 zt h`. Rewrite using `[𝔪.yK_eq]`. Conclude with `(val_germ ev zt).symm.trans (congrArg (X.M.val _) h)`.
+-/
 theorem algebraMap_ev_eq_yK : ∀ {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     (X : Setup F W i) (z : X.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V]
     [IsLocalRing V] (ev : X.M.Z.presheaf.stalk z →+* V) (Y : Type) [AddCommGroup Y] (m : ℕ) (t : Fin m → V)

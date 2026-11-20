@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 
 open UpperTheory.V UpperTheory.V.PropA
 
+/- English proof (translation)
+Introduce `l _ x r hx`. Establish `hne : ∀ u : Finset ℕ, ((Set.univ : Set ℤ_[l]) ∩ ⋂ a ∈ u, Metric.closedBall (x a) (r a)).Nonempty`. Introduce `u`. Break down `u.eq_empty_or_nonempty with hu | hu` into its components or cases. Conclude with `⟨0, by simp [hu]⟩`.
+
+Take `⟨a0, ha0, hmin⟩` from `u.exists_min_image r hu`. Use `⟨x a0, Set.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Metric.mem_closedBall, dist_eq_norm]`. Introduce `a ha`. Conclude with `(hx a0 a).trans (max_le (hmin a ha) le_rfl)`.
+
+Take `⟨s, -, hs⟩` from `isCompact_univ.inter_iInter_nonempty (fun a => Metric.closedBall (x a) (r a)) (fun a => Metric.isClosed_closedBall) hne`. Use `⟨s, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hs a`. Rewrite `h1` using `[Metric.mem_closedBall, dist_eq_norm]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.PropA.helly :
     ∀ (l : ℕ) [Fact l.Prime] (x : ℕ → ℤ_[l]) (r : ℕ → ℝ), (∀ a b, ‖x a - x b‖ ≤ max (r a) (r b)) →
       ∃ s : ℤ_[l], ∀ a, ‖s - x a‖ ≤ r a := by

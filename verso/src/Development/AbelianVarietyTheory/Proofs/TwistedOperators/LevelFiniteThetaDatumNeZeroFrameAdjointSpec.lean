@@ -10,6 +10,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinZeta
 
+/- English proof (translation)
+Introduce `hne`. Unfold `levDatum at hne`. Use `split_ifs at hne with h0`. Use `⟨h0.1, h0.2, ?_⟩` and prove the remaining obligations. Establish `hG : omegaG LT m (fun PP => redM PP (frMapAdj S T βS βT x)) ≠ 0` using `left_ne_zero_of_mul hne`.
+
+Establish `hQ : omegaQ Q T.rank m (-1) (fun PP => redM PP (frMapAdj S T βS βT x)) ≠ 0` using `right_ne_zero_of_mul hne`. Unfold `omegaG at hG`. Unfold `omegaQ at hQ`. Use `split_ifs at hG with hg`. Use `split_ifs at hQ with hq`.
+
+Take `⟨a, ha1, ha2, ha3⟩` from `hg.2`. Use `⟨?_, a, ha1, ha2, ha3⟩` and prove the remaining obligations. Introduce and unpack `PP (hP | hP)`. Rewrite using `[← ha1 ⟨PP, hP⟩]`. Conclude with `(a ⟨PP, hP⟩).isUnit.map Matrix.detMonoidHom`.
+
+Conclude with `(hq PP hP).2`. Conclude with `absurd rfl hQ`. Conclude with `absurd rfl hG`. Conclude with `absurd rfl hne`.
+-/
 theorem levDatum_ne_zero_spec {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (LT : LevDat D.host.E ℂ T.rank) (Q : Finset (Pl D.host.E)) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (e : AE D) (x : WO S T) :
     levDatum S T βS βT LT Q m e x ≠ 0 → IsHalf (cA D e) x ∧ IsIntM (frMapAdj S T βS βT x) ∧ (∀ PP, PP ∈ LT.Pg ∨ PP ∈ Q → IsUnit (topL T.rank (redM PP (frMapAdj S T βS βT x))).det) ∧ ∃ a : ∀ PP : ↥LT.Pg, GL (Fin T.rank) (kP PP.1), (∀ PP : ↥LT.Pg, ((a PP : GL (Fin T.rank) (kP PP.1)) : Matrix (Fin T.rank) (Fin T.rank) (kP PP.1)) = topL T.rank (redM PP.1 (frMapAdj S T βS βT x))) ∧ (∀ PP : ↥LT.Pg, a PP ∈ blockTri (blkOf LT.r LT.t)) ∧ (fun PP => upperLeftBlock LT.hr (a PP)) ∈ LT.P.H := by
   intro hne

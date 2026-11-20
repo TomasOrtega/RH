@@ -16,12 +16,24 @@ variable {K V I : Type} [Field K] [AddCommGroup V] [Module K V]
 def HeckePolyFor (op : I → Module.End K V) (p : K[X]) : Prop :=
   p ≠ 0 ∧ ∃ s : Finset I, (∀ x, ∃ c : I → K, op x = ∑ y ∈ s, c y • op y) ∧ ∀ y ∈ s, Polynomial.aeval (op y) p = 0
 
+/- English proof (translation)
+Take `⟨s, hs, hz⟩` from `h.2`. Take `⟨r, rfl⟩` from `hpq`. Conclude with `⟨hq, s, hs, fun y hy => by rw [map_mul, hz y hy, zero_mul]⟩`.
+-/
 theorem HeckePolyFor.of_dvd {op : I → Module.End K V} {p q : K[X]} (h : HeckePolyFor op p) (hq : q ≠ 0) (hpq : p ∣ q) :
     HeckePolyFor op q := by
   obtain ⟨s, hs, hz⟩ := h.2
   obtain ⟨r, rfl⟩ := hpq
   exact ⟨hq, s, hs, fun y hy => by rw [map_mul, hz y hy, zero_mul]⟩
 
+/- English proof (translation)
+Take `⟨b, hbsub, hbsp, hbli⟩` from `exists_linearIndependent K (Set.range op)`. Establish `hbfin : b.Finite` using `by first`. Consider the case `exact hbli.setFinite`. Consider the case `exact @Set.toFinite _ b hbli.finite`. Take `⟨s, -, hs⟩` from `Finset.subset_set_image_iff.1 (show (↑hbfin.toFinset : Set (Module.End K V)) ⊆ op '' Set.univ by`.
+
+Rewrite using `[Set.image_univ, Set.Finite.coe_toFinset]`. Conclude with `hbsub)`. Establish `h1 : ∀ x, op x ∈ Submodule.span K (op '' (s : Set I))`. Introduce `x`. Rewrite using `[← Finset.coe_image, hs, Set.Finite.coe_toFinset, hbsp]`.
+
+Conclude with `Submodule.subset_span ⟨x, rfl⟩`. Use `⟨∏ y ∈ s, minpoly K (op y), ?_, s, fun x => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 (fun y _ => minpoly.ne_zero (Algebra.IsIntegral.isIntegral (op y)))`. Take `⟨l, hl, hlx⟩` from `(Finsupp.mem_span_image_iff_linearCombination K).1 (h1 x)`. Use `⟨l, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hlx, Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset l (fun i hi => hl hi) _ (fun i _ => zero_smul K (op i))]`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem (fun y => minpoly K (op y)) hy`. Rewrite using `[hr, map_mul, minpoly.aeval, zero_mul]`.
+-/
 theorem hfs_exists_poly [FiniteDimensional K V] (op : I → Module.End K V) : ∃ p, HeckePolyFor op p := by
   classical
   obtain ⟨b, hbsub, hbsp, hbli⟩ := exists_linearIndependent K (Set.range op)
@@ -58,11 +70,17 @@ def Lifts (A' : Module.End L S'.EqFun) (A : Module.End K S.EqFun) : Prop := ∀ 
 
 variable {b}
 
+/- English proof (translation)
+Introduce `φ`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, hA φ, hB φ, lift_add]`.
+-/
 theorem Lifts.add {A' B' : Module.End L S'.EqFun} {A B : Module.End K S.EqFun} (hA : b.Lifts A' A) (hB : b.Lifts B' B) :
     b.Lifts (A' + B') (A + B) := by
   intro φ
   rw [LinearMap.add_apply, LinearMap.add_apply, hA φ, hB φ, lift_add]
 
+/- English proof (translation)
+Introduce `φ`. Establish `hs : ∀ φ ψ : S.EqFun, b.lift (φ - ψ) = b.lift φ - b.lift ψ` using `fun φ ψ => eq_sub_of_add_eq (by rw [← lift_add, sub_add_cancel])`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, hA φ, hB φ, hs]`.
+-/
 theorem Lifts.sub {A' B' : Module.End L S'.EqFun} {A B : Module.End K S.EqFun} (hA : b.Lifts A' A) (hB : b.Lifts B' B) :
     b.Lifts (A' - B') (A - B) := by
   intro φ
@@ -70,29 +88,49 @@ theorem Lifts.sub {A' B' : Module.End L S'.EqFun} {A B : Module.End K S.EqFun} (
     eq_sub_of_add_eq (by rw [← lift_add, sub_add_cancel])
   rw [LinearMap.sub_apply, LinearMap.sub_apply, hA φ, hB φ, hs]
 
+/- English proof (translation)
+Introduce `φ`. Use `show A' (B' (b.lift φ)) = b.lift (A (B φ))`. Rewrite using `[hB φ, hA]`.
+-/
 theorem Lifts.mul {A' B' : Module.End L S'.EqFun} {A B : Module.End K S.EqFun} (hA : b.Lifts A' A) (hB : b.Lifts B' B) :
     b.Lifts (A' * B') (A * B) := by
   intro φ
   show A' (B' (b.lift φ)) = b.lift (A (B φ))
   rw [hB φ, hA]
 
+/- English proof (translation)
+Introduce `φ`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hA φ, lift_smul]`.
+-/
 theorem Lifts.smul {A' : Module.End L S'.EqFun} {A : Module.End K S.EqFun} (hA : b.Lifts A' A) (a : K) :
     b.Lifts (ι a • A') (a • A) := by
   intro φ
   rw [LinearMap.smul_apply, LinearMap.smul_apply, hA φ, lift_smul]
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem Lifts.one : b.Lifts 1 1 := fun _ => rfl
 
+/- English proof (translation)
+Introduce `φ`. Simplify using `only [LinearMap.zero_apply, lift_zero]`.
+-/
 theorem Lifts.zero : b.Lifts 0 0 := by
   intro φ
   simp only [LinearMap.zero_apply, lift_zero]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `Lifts.one`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hA`.
+-/
 theorem Lifts.pow {A' : Module.End L S'.EqFun} {A : Module.End K S.EqFun} (hA : b.Lifts A' A) (k : ℕ) :
     b.Lifts (A' ^ k) (A ^ k) := by
   induction k with
   | zero => rw [pow_zero, pow_zero]; exact Lifts.one
   | succ k ih => rw [pow_succ, pow_succ]; exact ih.mul hA
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `Lifts.zero`. Consider the case `@insert x s hx ih`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`.
+
+Conclude with `((hA x (Finset.mem_insert_self x s)).smul (c x)).add (ih (fun y hy => hA y (Finset.mem_insert_of_mem hy)))`.
+-/
 theorem Lifts.sum {α : Type} (s : Finset α) (c : α → K) {A' : α → Module.End L S'.EqFun} {A : α → Module.End K S.EqFun}
     (hA : ∀ x ∈ s, b.Lifts (A' x) (A x)) : b.Lifts (∑ x ∈ s, ι (c x) • A' x) (∑ x ∈ s, c x • A x) := by
   classical
@@ -103,6 +141,9 @@ theorem Lifts.sum {α : Type} (s : Finset α) (c : α → K) {A' : α → Module
     exact ((hA x (Finset.mem_insert_self x s)).smul (c x)).add
       (ih (fun y hy => hA y (Finset.mem_insert_of_mem hy)))
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, Polynomial.natDegree_map]`. Simplify using `only [Polynomial.coeff_map]`. Conclude with `Lifts.sum _ _ (fun i _ => hA.pow i)`.
+-/
 theorem Lifts.aeval {A' : Module.End L S'.EqFun} {A : Module.End K S.EqFun} (hA : b.Lifts A' A) (p : K[X]) :
     b.Lifts (Polynomial.aeval A' (p.map ι)) (Polynomial.aeval A p) := by
   rw [Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range, Polynomial.natDegree_map]
@@ -111,6 +152,9 @@ theorem Lifts.aeval {A' : Module.End L S'.EqFun} {A : Module.End K S.EqFun} (hA 
 
 variable (b)
 
+/- English proof (translation)
+Use `LinearMap.ext_on (s := Set.range b.lift) ?_ ?_` and prove the remaining obligations. Conclude with `eq_top_iff.2 (fun φ _ => mem_span_lift (b := b) (F := F) φ)`. Introduce and unpack `_ ⟨φ, rfl⟩`. Rewrite using `[hA φ]`. Simplify using `only [LinearMap.zero_apply, lift_zero]`.
+-/
 theorem Lifts.eq_zero (F : CoefFrame ι) {A' : Module.End L S'.EqFun} (hA : b.Lifts A' 0) : A' = 0 := by
   refine LinearMap.ext_on (s := Set.range b.lift) ?_ ?_
   · exact eq_top_iff.2 (fun φ _ => mem_span_lift (b := b) (F := F) φ)
@@ -120,6 +164,13 @@ theorem Lifts.eq_zero (F : CoefFrame ι) {A' : Module.End L S'.EqFun} (hA : b.Li
 
 include b in
 
+/- English proof (translation)
+Set `B` to `Module.finBasis K S.EqFun`. Establish `hsp : ⊤ ≤ Submodule.span L (Set.range fun i => b.lift (B i))`. Introduce `φ' _`. Establish `h` using `mem_span_lift (b := b) (F := F) φ'`. Use `Submodule.span_le.2 ?_ h` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨φ, rfl⟩`. Rewrite using `[← B.sum_repr φ, lift_sum]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Conclude with `⟨⟨Finset.univ.image fun i => b.lift (B i), by`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+
+Conclude with `eq_top_iff.2 hsp⟩⟩`.
+-/
 theorem finiteDimensional (F : CoefFrame ι) [FiniteDimensional K S.EqFun] : FiniteDimensional L S'.EqFun := by
   classical
   let B := Module.finBasis K S.EqFun
@@ -133,6 +184,17 @@ theorem finiteDimensional (F : CoefFrame ι) [FiniteDimensional K S.EqFun] : Fin
   exact ⟨⟨Finset.univ.image fun i => b.lift (B i), by
     rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]; exact eq_top_iff.2 hsp⟩⟩
 
+/- English proof (translation)
+Use `haveI := b.finiteDimensional F`. Take `⟨hp0, s, hs, hd⟩` from `hp`. Establish `hcomm : ∀ y z, Commute (op' y) (op' z)` using `fun y z => by`. Establish `h0 : b.Lifts (op' y * op' z - op' z * op' y) 0`. Use `((hl y).mul (hl z)).sub ((hl z).mul (hl y))` as an intermediate fact.
+
+Rewrite `this` using `[(hc y z).eq, sub_self]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.mp (Lifts.eq_zero b F h0)`. Establish `hsplit : ∀ y ∈ s, ⨆ μ, (op' y).maxGenEigenspace μ = ⊤`. Introduce `y hy`. Apply `hfs_iSup_maxGen_of_splits` to reduce the goal to its premises.
+
+Establish `h0 : b.Lifts (Polynomial.aeval (op' y) (p.map ι)) 0`. Use `(hl y).aeval p` as an intermediate fact. Rewrite `this` using `[hd y hy]`. Then use the resulting hypothesis. Establish `hann : Polynomial.aeval (op' y) (p.map ι) = 0` using `Lifts.eq_zero b F h0`. Conclude with `hsp.of_dvd (Polynomial.map_ne_zero hp0) (minpoly.dvd L _ hann)`.
+
+Introduce `x`. Take `⟨c, hcx⟩` from `hs x`. Establish `h0 : b.Lifts (op' x - ∑ y ∈ s, ι (c y) • op' y) 0`. Use `(hl x).sub (Lifts.sum (b := b) s c fun y _ => hl y)` as an intermediate fact. Rewrite `this` using `[← hcx, sub_self]`. Then use the resulting hypothesis.
+
+Establish `hx : op' x = ∑ y ∈ s, ι (c y) • op' y` using `sub_eq_zero.mp (Lifts.eq_zero b F h0)`. Rewrite using `[hx]`. Conclude with `hfs_iSup_maxGen_sum s op' (fun y => ι (c y)) (fun y _ z _ => hcomm y z) hsplit`.
+-/
 theorem splitOver (F : CoefFrame ι) [FiniteDimensional K S.EqFun] {I : Type} (op : I → Module.End K S.EqFun)
     (op' : I → Module.End L S'.EqFun) (hl : ∀ x, b.Lifts (op' x) (op x)) (hc : PairComm op) {p : K[X]}
     (hp : HeckePolyFor op p) (hsp : (p.map ι).Splits) : SplitOver op' := by

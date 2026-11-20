@@ -13,6 +13,9 @@ def liftOf {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z →ₗ[O] 
   (Module.projective_lifting_property (headCols Z').mkQ (f ∘ₗ (headCols Z).mkQ)
     (Submodule.mkQ_surjective _)).choose
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (Module.projective_lifting_property (headCols Z').mkQ (f ∘ₗ (headCols Z).mkQ) (Submodule.mkQ_surjective _)).choose_spec y`.
+-/
 theorem liftOf_spec {Z Z' : Matrix (Fin (r + 1)) (Fin (r + 1)) O} (f : MbMod Z →ₗ[O] MbMod Z')
     (y : Fin (r + 1) → O) :
     (Submodule.Quotient.mk (liftOf O f y) : MbMod Z') = f (Submodule.Quotient.mk y) := LinearMap.congr_fun (Module.projective_lifting_property (headCols Z').mkQ (f ∘ₗ (headCols Z).mkQ)
@@ -31,12 +34,22 @@ def sumMap (g gs : (Fin (r + 1) → O) →ₗ[O] (Fin (r + 1) → O)) : (Ix r �
     rw [h1, h2, map_smul, map_smul]
     funext i; cases i <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sumMap_apply (g gs : (Fin (r + 1) → O) →ₗ[O] (Fin (r + 1) → O)) (Y : Ix r → O) :
     sumMap O g gs Y = Sum.elim (g fun j => Y (Sum.inl j)) (gs fun j => Y (Sum.inr j)) := rfl
 
 variable (hO : ∀ x ∈ O, cj x ∈ O) (t t' : O)
 variable {Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) O}
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Use `congr 1`. Unfold `bCls`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Establish `hsum : Z.mulVec c₂ - c₂ (Fin.last r) • (fun i => Z i (Fin.last r)) = ∑ a : Fin r, c₂ a.castSucc • (fun i => Z i a.castSucc)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [mul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem mk_gen (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c₂ : Fin (r + 1) → O) (s : O) :
     (Submodule.Quotient.mk (Z.mulVec c₂ - s • Pi.single (Fin.last r) 1) : MbMod Z) =
       c₂ (Fin.last r) • bCls Z - s • eCl Z := by
@@ -54,6 +67,11 @@ theorem mk_gen (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c₂ : Fin (r + 1) �
   rw [hsum]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Introduce `Y hY`. Rewrite using `[Submodule.mem_comap, sumMap_apply]`. Take `⟨c₁, c₂, h1, h2⟩` from `(mem_relC_iff O cj hO Z₁ t t' Y).1 hY`. Use `mem_relC_of_mk O cj hO Z₂ t t' _ _ (c₂ (Fin.last r)) (c₁ (Fin.last r)) ?_ ?_` and prove the remaining obligations. Rewrite using `[liftOf_spec, h1, mk_gen, map_sub, map_smul, map_smul, hb, he]`.
+
+Rewrite using `[liftOf_spec, h2, mk_gen, map_sub, map_smul, map_smul, hbs, hes]`.
+-/
 theorem sumMap_le (γ : MbMod Z₁ →ₗ[O] MbMod Z₂)
     (γs : MbMod (cjT O cj hO Z₁) →ₗ[O] MbMod (cjT O cj hO Z₂))
     (hb : γ (bCls Z₁) = bCls Z₂) (he : γ (eCl Z₁) = eCl Z₂)
@@ -68,6 +86,9 @@ theorem sumMap_le (γ : MbMod Z₁ →ₗ[O] MbMod Z₂)
   · rw [liftOf_spec, h1, mk_gen, map_sub, map_smul, map_smul, hb, he]
   · rw [liftOf_spec, h2, mk_gen, map_sub, map_smul, map_smul, hbs, hes]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem sumMap_comp_sub (g gs g' gs' : (Fin (r + 1) → O) →ₗ[O] (Fin (r + 1) → O)) (Y : Ix r → O) :
     sumMap O g gs (sumMap O g' gs' Y) - Y =
       Sum.elim (g (g' fun j => Y (Sum.inl j)) - fun j => Y (Sum.inl j))

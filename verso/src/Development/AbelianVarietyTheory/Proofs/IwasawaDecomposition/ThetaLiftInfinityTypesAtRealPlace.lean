@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PairInfTypes
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `h`. Use `⟨fun τ => n (D.eTau τ), fun τ => hn _, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[h k]`. Conclude with `(Fintype.prod_equiv D.eTau _ _ fun _ => rfl).symm`.
+-/
 theorem hasInfQ_tauE (D : D7) {χ : Formalism.L2.Host.HChar D.host.E} {a : D.R.Psi → ℚ}
     (h : χ.HasInfQ (Formalism.L2.Host.embPsi D.host) a) : χ.HasInfQ (tauE D) (fun τ => a (D.eTau τ)) := by
   obtain ⟨n, hn, h⟩ := h
@@ -21,6 +24,15 @@ theorem hasInfQ_tauE (D : D7) {χ : Formalism.L2.Host.HChar D.host.E} {a : D.R.P
   rw [h k]
   exact (Fintype.prod_equiv D.eTau _ _ fun _ => rfl).symm
 
+/- English proof (translation)
+Introduce `D T L μ0 hL i t τ`. Establish `h1 : HasInfExp D (L.mu0 ((i : ℕ) + 1)) τ (-GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.eS D i τ)`. Establish `h` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hL.mu0 i) (hasInfQ_tauE D (L.C.isMu0 i).inf) τ`. Simplify `h` using `only [Formalism.L2.Host.eExp, Equiv.symm_apply_apply]`. Establish `h2 : HasInfExp D L.eta τ (1 / 2)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (hasInfQ_tauE D (a := fun _ => 1 / 2) ⟨fun _ => 1, fun _ => by norm_num, L.C.isEta.inf⟩) τ`.
+
+Establish `h3 : HasInfExp D (L.xi t) τ 0`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Use `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun _ => 0) (hL.xi t) ⟨fun _ => 0, fun _ => by norm_num, fun k => ?_⟩ τ` and prove the remaining obligations. Rewrite using `[GlobalTheory.TypeValues.inf_eq_one _ hn ho k]`. Simplify using the standard rewrite rules.
+
+Establish `h4 : HasInfExp D (L.mu t ((i : ℕ) + 1)) τ (-GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.eS D i τ)`. Establish `h` using `GlobalTheory.Mem.HeckeExp.hasInfExp_mul h1 h3`. Rewrite `h` using `[add_zero]`. Conclude with `h`. Use `⟨h4, h2, h4, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.Mem.HeckeExp.hasInfExp_mul h4 (GlobalTheory.Mem.HeckeExp.hasInfExp_inv h2)`.
+-/
 theorem infTypesAt : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ (i : Fin D.R.m) (t : T) (τ : D.what₂.Tau), GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.InfTypesAt L i t τ := by
   intro D T L μ0 hL i t τ
   have h1 : HasInfExp D (L.mu0 ((i : ℕ) + 1)) τ (-GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.eS D i τ) := by

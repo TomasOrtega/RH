@@ -17,6 +17,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d d₁ r s r' s' r₁ s₁ i₀ i₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {M : Model σ X W}
   {M₁ : Model σ X W₁} {χX χW : Chr F E} {om : Rep σ X W} {om₁ : Rep σ X W₁} {e : Fn F n d →ₗ[ℂ] Fn F n d₁}
 
+/- English proof (translation)
+Establish `hB` using `hP.base`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨S, j, hS, hj, hE, hrel, -⟩` from `setW hB hP.herm hP.skew hP.good hH hP₁.good he`. Take `⟨π, ρ, hF⟩` from `fr_plane hB hH hP.skew.lat (-1) (fun i j => by simp [hP.skew.skew])`. Establish `pr : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d)` using `hP.weil.isUSplitting.pres`.
+
+Establish `hmul : ∀ u v : UA σ W.J, ∀ Φ, om (1, u * v) Φ = om (1, u) (om (1, v) Φ)` using `fun u v Φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Introduce `u hu`. Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem u hu => choose a ha using hu.2`.
+
+Establish `key` using `TU (ax_of hA hB.std) hS hj hE hF hrel hP.weil.1 hP₁.weil.1 (parabolic_character_trivial_on_diagonal F E σ hB.cm d₁ W₁.J (-1) (fun i j => by simp [hP₁.skew.skew]) (det_ne_of_sig _ (hP₁.skew.sig (Classical.arbitrary _)))) u 1 1 (replicateRow Unit fun k => a (Pi.single k 1)) (by`. Use extensionality with `i k`. Use `congrFun (ha (Pi.single k 1)) i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec]`. Simplify `this) (by` using `[mat, mul_comm, mul_apply (M := replicateCol _ _)]`.
+
+Use extensionality with `i k`. Conclude with `(congrFun hu.1 i).trans (by simp))`. Introduce `Φ hΦ`. Simplify `key Φ hΦ` using `[fac, Prod.mk_one_one]`. Consider the case `one => intro Φ _`.
+
+Rewrite using `[Prod.mk_one_one, map_one, Module.End.one_apply]`. Consider the case `mul u v _ _ hu hv => intro Φ hΦ`. Rewrite using `[hmul, hu _ (pr _ _ hΦ), hv _ hΦ]`. Consider the case `inv u _ hu`. Introduce `Φ hΦ`.
+
+Rewrite using `[← hu _ (pr _ _ hΦ), ← hmul, mul_inv_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`.
+-/
 theorem lawW_unip (hA : PositivityTheory.Mix.AdelSt) (hP : IsPair B M χX χW om r s r' s') (hH : H'.IsAdapted σ B W W₁ i₀ i₁)
     (hP₁ : IsPair B M₁ χX χW om₁ r s r₁ s₁) (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e) :
     ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, u) Φ) = e Φ := by
@@ -50,6 +63,9 @@ theorem lawW_unip (hA : PositivityTheory.Mix.AdelSt) (hP : IsPair B M χX χW om
 
 end PositivityTheory.ThKF0.Chr
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g t h₁ m hm u hu Φ hΦ`. Establish `pr : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d)` using `hP.weil.isUSplitting.pres`. Establish `h2 : om (g, u * m) = om (g, 1) * om (1, u) * om (1, m)`. Rewrite using `[← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_one, mul_one, one_mul]`. Rewrite using `[h2, Module.End.mul_apply, Module.End.mul_apply, Chr.lawW_left hA hP hH hP₁ he g _ (pr _ _ (pr _ _ hΦ)), Chr.lawW_unip hA hP hH hP₁ he u hu _ (pr _ _ hΦ), Chr.lawW_levi hA hP hH hP₁ he hm Φ hΦ, map_smul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+-/
 theorem PositivityTheory.ThKF0.mixW_of_adel (hA : PositivityTheory.Mix.AdelSt) : PositivityTheory.ThKG.MixW := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he g t h₁ m hm u hu Φ hΦ
   have pr : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d) := hP.weil.isUSplitting.pres

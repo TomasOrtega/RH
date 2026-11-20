@@ -15,6 +15,11 @@ open scoped ContDiff Topology
 
 namespace GlobalTheory.GardingVec
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral`. Consider the case `exact _root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral`. Consider the case `(apply _root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SetIntegralSmoothness.contDiff_setIntegral ..)`.
+-/
 theorem contDiff_setIntegral_nat {X P E : Type} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
     [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P] [NormedAddCommGroup E] [NormedSpace ℝ E]
     (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {K : Set X} (hK : IsCompact K) {a : X → E} (ha : Continuous a)
@@ -31,6 +36,9 @@ theorem contDiff_setIntegral_nat {X P E : Type} [TopologicalSpace X] [T2Space X]
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using contDiff_const`. Consider the case `cons f l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `(h f (by simp)).mul (ih fun g hg => h g (by simp [hg]))`.
+-/
 theorem contDiff_list_prod {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
     (l : List (P → Matrix (Fin n) (Fin n) ℂ)) (h : ∀ f ∈ l, ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ fun p => (l.map fun f => f p).prod := by
@@ -40,6 +48,11 @@ theorem contDiff_list_prod {n : ℕ} {P : Type} [NormedAddCommGroup P] [NormedSp
     simp only [List.map_cons, List.prod_cons]
     exact (h f (by simp)).mul (ih fun g hg => h g (by simp [hg]))
 
+/- English proof (translation)
+Use `contDiff_list_prod (List.ofFn fun i => fun t : Fin k → ℝ => NormedSpace.exp (t i • Xs i)) (by` as an intermediate fact. Introduce `f hf`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hf`. Establish `h1 : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Conclude with `h1.comp ((contDiff_apply ℝ ℝ i).smul contDiff_const))`.
+
+Simplify `this` using `[List.map_ofFn, Function.comp_def]`.
+-/
 theorem contDiff_expProd {n k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod := by
   have := contDiff_list_prod (List.ofFn fun i => fun t : Fin k → ℝ => NormedSpace.exp (t i • Xs i)) (by
@@ -50,6 +63,9 @@ theorem contDiff_expProd {n k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ)
     exact h1.comp ((contDiff_apply ℝ ℝ i).smul contDiff_const))
   simpa [List.map_ofFn, Function.comp_def] using this
 
+/- English proof (translation)
+Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun x => xᴴ map_add' := fun x y => conjTranspose_add x y map_smul' := fun c x => by simp [conjTranspose_smul] }`. Conclude with `(LinearMap.toContinuousLinearMap L).contDiff`.
+-/
 theorem contDiff_conjTranspose {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin n) (Fin n) ℂ => xᴴ := by
   let L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ :=
     { toFun := fun x => xᴴ
@@ -59,6 +75,33 @@ theorem contDiff_conjTranspose {n : ℕ} : ContDiff ℝ ∞ fun x : Matrix (Fin 
 
 open Formalism.MainNotions.S in
 
+/- English proof (translation)
+Take `⟨⟨h1, hmul⟩, -, hcont⟩` from `hσ`. Take `⟨hemb, hrange⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Take `⟨w, hw⟩` from `exists_ne (0 : H)`. Establish `hwpos : 0 < ‖w‖` using `norm_pos_iff.2 hw`. Use `set μ := Formalism.REAL.muG ε`.
+
+Establish `hmem : ∀ g : Formalism.REAL.UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hu : Continuous fun g : Formalism.REAL.UJ ε => umat g` using `hemb.continuous`. Establish `hb : Continuous fun g : Formalism.REAL.UJ ε => σ (umat g) w` using `(hcont w).comp_continuous hu hmem`. Establish `hone : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `hmem 1`. Establish `hnb : {g | ‖σ g w - w‖ < ‖w‖ / 2} ∈ 𝓝[UJset ε] (1 : Matrix (Fin n) (Fin n) ℂ)`.
+
+Establish `h` using `(hcont w 1 hone) (Metric.ball_mem_nhds _ (half_pos hwpos))`. Simplify `h` using `[h1, Set.preimage, dist_eq_norm]`. Take `⟨U, hU, hUs⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.1 hnb`. Take `⟨φ, hφU, hφc, hφ, hφr, hφ1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hU`. Establish `hφ0 : ∀ y, 0 ≤ φ y` using `fun y => (hφr ⟨y, rfl⟩).1`.
+
+Establish `hψ : Continuous fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφ.continuous.comp hu`. Establish `hψc : HasCompactSupport fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφc.comp_isClosedEmbedding hemb`. Establish `hint : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g) • σ (umat g) w) μ` using `(hψ.smul hb).integrable_of_hasCompactSupport hψc.smul_right`. Establish `hψi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) μ` using `hψ.integrable_of_hasCompactSupport hψc`. Establish `hpos : 0 < ∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ` using `hψ.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) hψc (fun g => hφ0 _) (by show φ 1 ≠ 0; rw [hφ1]; exact one_ne_zero)`.
+
+Use `⟨∫ g : Formalism.REAL.UJ ε, φ (umat g) • σ (umat g) w ∂μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `e1 : ∫ g : Formalism.REAL.UJ ε, (φ (umat g) • σ (umat g) w - φ (umat g) • w) ∂μ = -((∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ) • w)`. Rewrite using `[integral_sub hint (hψi.smul_const w), h0, integral_smul_const, zero_sub]`. Establish `e2 : ‖∫ g : Formalism.REAL.UJ ε, (φ (umat g) • σ (umat g) w - φ (umat g) • w) ∂μ‖ ≤ ∫ g : Formalism.REAL.UJ ε, φ (umat g) * (‖w‖ / 2) ∂μ`.
+
+Use `norm_integral_le_of_norm_le (hψi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← smul_sub, norm_smul, Real.norm_of_nonneg (hφ0 _)]`. Distinguish the cases in `hg : φ (umat g) = 0`. Simplify using `[hg]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (hUs ⟨hφU (subset_tsupport _ hg), hmem g⟩)) (hφ0 _)`.
+
+Rewrite `e2` using `[e1, norm_neg, norm_smul, Real.norm_of_nonneg hpos.le, integral_mul_const]`. Use polynomial arithmetic with `[mul_pos hpos hwpos]`. Introduce `k x hx hxG`. Set `y : (Fin k → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun t => Formalism.REAL.Jm ε * (x t)ᴴ * Formalism.REAL.Jm ε`. Establish `hy : ContDiff ℝ ∞ y` using `(contDiff_const.mul (contDiff_conjTranspose.comp hx)).mul contDiff_const`.
+
+Establish `hyx : ∀ t, y t * x t = 1` using `fun t => by`. Establish `h : (x t)ᴴ * Formalism.REAL.Jm ε * x t = Formalism.REAL.Jm ε` using `hxG t`. Combine the equalities or inequalities in the displayed calculation. Establish `hxy : ∀ t, x t * y t = 1` using `fun t => mul_eq_one_comm.1 (hyx t)`. Establish `hform : ∀ t, σ (x t) (∫ g : Formalism.REAL.UJ ε, φ (umat g) • σ (umat g) w ∂μ) = ∫ g : Formalism.REAL.UJ ε, φ (y t * umat g) • σ (umat g) w ∂μ`.
+
+Introduce `t`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : x t ∈ Set.range (fun g : Formalism.REAL.UJ ε => umat g) := by`. Rewrite using `[show Set.range (fun g : Formalism.REAL.UJ ε => umat g) = _ from hrange]`. Conclude with `hxG t`. Establish `hz' : umat z = x t` using `hz`.
+
+Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint, ← integral_mul_left_eq_self (fun g : Formalism.REAL.UJ ε => φ (y t * umat g) • σ (umat g) w) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : umat (z * g) = x t * umat g` using `by rw [← hz']; rfl`. Simplify using `only [e]`. Rewrite using `[← Matrix.mul_assoc, hyx, Matrix.one_mul, hmul _ (hxG t) _ (hmem g), ContinuousLinearMap.map_smul_of_tower]`.
+
+Both sides reduce to the same expression. Simplify using `only [hform]`. Use `contDiff_iff_contDiffAt.2 fun t₀ => ?_` and prove the remaining obligations. Establish `hC : IsCompact (Set.image2 (· * ·) (x '' Metric.closedBall t₀ 1) (tsupport φ))` using `((isCompact_closedBall t₀ 1).image hx.continuous).mul hφc`. Establish `hK` using `hemb.isCompact_preimage hC`.
+
+Establish `hs : ContDiff ℝ ∞ fun t => ∫ g in (fun g : Formalism.REAL.UJ ε => umat g) ⁻¹' (Set.image2 (· * ·) (x '' Metric.closedBall t₀ 1) (tsupport φ)), φ (y t * umat g) • σ (umat g) w ∂μ` using `contDiff_infty.2 fun m => contDiff_setIntegral_nat μ hK (hu.prodMk hb) m (fun z : (Fin k → ℝ) × (Matrix (Fin n) (Fin n) ℂ × H) => φ (y z.1 * z.2.1) • z.2.2) ((hφ.comp ((hy.comp contDiff_fst).mul (contDiff_fst.comp contDiff_snd))).smul (contDiff_snd.comp contDiff_snd))`. Use `hs.contDiffAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds t₀ one_pos] with t ht`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Use `hg ⟨x t, ⟨t, ht, rfl⟩, y t * umat g, subset_tsupport _ fun h => hne (by rw [h, zero_smul]), ?_⟩` and prove the remaining obligations. Use `show x t * (y t * umat g) = umat g`. Rewrite using `[← Matrix.mul_assoc, hxy, Matrix.one_mul]`.
+-/
 theorem exists_garding {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [Nontrivial H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsURepOn (UJset ε) σ) :
@@ -143,6 +186,11 @@ theorem exists_garding {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddComm
     show x t * (y t * umat g) = umat g
     rw [← Matrix.mul_assoc, hxy, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Use `show (P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`.
+
+Rewrite using `[h, hg', ← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+-/
 theorem conj_mem {n : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g : Matrix (Fin n) (Fin n) ℂ} (hg' : gᴴ * G * g = G) :
     P * g * P⁻¹ ∈ Formalism.MainNotions.S.UJset ε := by
@@ -155,6 +203,11 @@ theorem conj_mem {n : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) �
         rw [h, hg', ← h]; simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
+/- English proof (translation)
+Establish `hd : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `h1 : (t • X)ᴴ = G * (-(t • X)) * G⁻¹`. Establish `h2 : Xᴴ = G * (-X) * G⁻¹`. Rewrite using `[Matrix.mul_neg, ← eq_neg_of_add_eq_zero_left hX, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite using `[conjTranspose_smul, h2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hG, Matrix.exp_neg]`. Establish `hu : IsUnit (NormedSpace.exp (t • X)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _)`. Rewrite using `[Matrix.mul_assoc (G * _), Matrix.nonsing_inv_mul _ hd, Matrix.mul_one, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem exp_mem {n : ℕ} {G X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G) (hX : Xᴴ * G + G * X = 0) (t : ℝ) :
     (NormedSpace.exp (t • X))ᴴ * G * NormedSpace.exp (t • X) = G := by
   have hd : IsUnit G.det := (Matrix.isUnit_iff_isUnit_det G).1 hG
@@ -169,6 +222,11 @@ theorem exp_mem {n : ℕ} {G X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G) (hX
   rw [Matrix.mul_assoc (G * _), Matrix.nonsing_inv_mul _ hd, Matrix.mul_one, Matrix.mul_assoc,
     Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons g l ih`. Establish `h1` using `h g (by simp)`. Establish `h2` using `ih fun g hg => h g (by simp [hg])`.
+
+Rewrite using `[List.prod_cons, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem list_prod_mem {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (l : List (Matrix (Fin n) (Fin n) ℂ))
     (h : ∀ g ∈ l, gᴴ * G * g = G) : l.prodᴴ * G * l.prod = G := by
   induction l with
@@ -180,6 +238,11 @@ theorem list_prod_mem {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (l : List (Matr
     calc l.prodᴴ * gᴴ * G * (g * l.prod) = l.prodᴴ * (gᴴ * G * g) * l.prod := by simp only [Matrix.mul_assoc]
       _ = G := by rw [h1, h2]
 
+/- English proof (translation)
+Take `⟨v, hv, hs⟩` from `exists_garding hσ`. Establish `hG : IsUnit G`. Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`. Use `⟨v, hv, fun k Xs hX => hs k _ ((contDiff_const.mul (contDiff_expProd Xs)).mul contDiff_const) fun t => ?_⟩` and prove the remaining obligations.
+
+Use `conj_mem hP h (list_prod_mem _ fun g hg => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `exp_mem hG (hX i) _`.
+-/
 theorem exists_smoothVec {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [Nontrivial H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
@@ -201,6 +264,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -⟩` from `M.ds τ`. Take `⟨v, hv, hs⟩` from `exists_smoothVec h3 (M.fr_unit τ) (M.fr_gram τ)`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, Submodule.subset_span hs, hv⟩`.
+-/
 theorem sm_ne_bot (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) :
     M.sm τ ≠ ⊥ := by
   obtain ⟨h1, h2, h3, -⟩ := M.ds τ

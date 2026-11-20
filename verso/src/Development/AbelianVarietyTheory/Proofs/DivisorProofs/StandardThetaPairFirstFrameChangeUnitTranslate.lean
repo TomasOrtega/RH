@@ -25,11 +25,17 @@ variable {D : D7}
 
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun l _ => mul_mem (hN i l) (hκ l j)`.
+-/
 private theorem isIntM_mul {b a c : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} {κ : Matrix (Fin a) (Fin c) (EAf D)}
     (hN : IsIntM N) (hκ : IsIntM κ) : IsIntM (N * κ) := fun i j => by
   rw [Matrix.mul_apply]
   exact Subring.sum_mem _ fun l _ => mul_mem (hN i l) (hκ l j)
 
+/- English proof (translation)
+Introduce `i j` and use `by have hv : (fun k => β.val k j) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by refine (h _).2 fun i' => ?_ have e1 : (β⁻¹).val.mulVec (fun k => β.val k j) i' = ((β⁻¹).val * β.val) i' j := by simp only [Matrix.mulVec, dotProduct, Matrix.mul_apply] rw [e1, Units.inv_mul, Matrix …`.
+-/
 private theorem frame_ratio_int {n : ℕ} {β β' : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (h : Formalism.L2.DIV.IsFrame β Λ) (h' : Formalism.L2.DIV.IsFrame β' Λ) : IsIntM ((β'⁻¹).val * β.val) := fun i j => by
   have hv : (fun k => β.val k j) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
@@ -44,6 +50,11 @@ private theorem frame_ratio_int {n : ℕ} {β β' : GL (Fin n) (EAf D)} {Λ : Su
   have := (h' _).1 hv i
   simpa only [Matrix.mulVec, dotProduct, Matrix.mul_apply] using this
 
+/- English proof (translation)
+Establish `hm : (N * κ) i j ∈ OO`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (hN l).1 (hκ l j)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(N * κ) i j, hm⟩ : OO) = ∑ l, (⟨N i l, (hN l).1⟩ : OO) * ⟨κ l j, hκ l j⟩` using `Subtype.ext (by show (N * κ) i j = _`.
+
+Rewrite using `[Matrix.mul_apply]`. Use `push_cast`. Use the proof step `rfl)`. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hN l).2`.
+-/
 private theorem inId_mul {b a c : ℕ} {I : Ideal (𝓞 D.host.E)} {N : Matrix (Fin b) (Fin a) (EAf D)}
     {κ : Matrix (Fin a) (Fin c) (EAf D)} (hκ : IsIntM κ) (i : Fin b) (hN : ∀ l, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (N i l))
     (j : Fin c) : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I ((N * κ) i j) := by
@@ -59,6 +70,9 @@ private theorem inId_mul {b a c : ℕ} {I : Ideal (𝓞 D.host.E)} {N : Matrix (
   rw [e]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hN l).2
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [topL, Matrix.mul_apply]`. Distinguish the cases in `hi : i.1 < b`. Simplify using `[hi]`. Simplify using `[hi]`.
+-/
 private theorem topL_mul {b a : ℕ} (N : Matrix (Fin b) (Fin a) (EAf D)) (κ : Matrix (Fin a) (Fin a) (EAf D)) :
     topL a (N * κ) = topL a N * κ := by
   ext i j
@@ -77,6 +91,11 @@ variable {D : D7}
 
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Set `A : Matrix (Fin k) (Fin k) OO` to `fun i j => ⟨N i j, hN i j⟩`. Establish `eA : N.det = ((A.det : OO) : EAf D)`. Rewrite using `[show N = (OO).subtype.mapMatrix A from rfl]`. Conclude with `(RingHom.map_det (OO).subtype A).symm`. Rewrite using `[eA]`.
+
+Conclude with `A.det.2`.
+-/
 private theorem det_int {k : ℕ} {N : Matrix (Fin k) (Fin k) (EAf D)} (hN : IsIntM N) : N.det ∈ OO := by
   let A : Matrix (Fin k) (Fin k) OO := fun i j => ⟨N i j, hN i j⟩
   have eA : N.det = ((A.det : OO) : EAf D) := by
@@ -85,19 +104,33 @@ private theorem det_int {k : ℕ} {N : Matrix (Fin k) (Fin k) (EAf D)} (hN : IsI
   rw [eA]
   exact A.det.2
 
+/- English proof (translation)
+The claim follows from `Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (h.1.trans h'.1.symm) (h.2.1.trans h'.2.1.symm))`.
+-/
 private theorem isUnitDet_unique {e : AE D} {k : ℕ} {N : Matrix (Fin k) (Fin k) (EAf D)} {x x' : (AE D)ˣ}
     (h : IsUnitDet e N x) (h' : IsUnitDet e N x') : x = x' :=
   Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (h.1.trans h'.1.symm) (h.2.1.trans h'.2.1.symm))
 
+/- English proof (translation)
+Take the linear combination `(a * b - a - b + 1) * hε`.
+-/
 private theorem idem_mul {R : Type} [CommRing R] {ε a b : R} (hε : ε * ε = ε) :
     (1 - ε + ε * a) * (1 - ε + ε * b) = 1 - ε + ε * (a * b) := by
   linear_combination (a * b - a - b + 1) * hε
 
+/- English proof (translation)
+Substitute `hz hy` using the available equality. Take the linear combination `(1 - ε + ε * a) * hyy - (a * b - a - b + 1) * yi * hε`.
+-/
 private theorem succ_mul_succ_sub_one_div_succ {R : Type} [CommRing R] {ε z y yi a b : R} (hε : ε * ε = ε) (hz : z = 1 - ε + ε * (a * b))
     (hy : y = 1 - ε + ε * b) (hyy : y * yi = 1) : z * yi = 1 - ε + ε * a := by
   subst hz hy
   linear_combination (1 - ε + ε * a) * hyy - (a * b - a - b + 1) * yi * hε
 
+/- English proof (translation)
+Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hx.1, hy.1, mul_one]`. Rewrite using `[Units.val_mul, map_mul, hx.2.1, hy.2.1, Matrix.det_mul, idem_mul hε]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, map_mul]`.
+
+Conclude with `mul_mem hy.2.2 hx.2.2`.
+-/
 private theorem isUnitDet_mul {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {L κ : Matrix (Fin k) (Fin k) (EAf D)} {x y : (AE D)ˣ} (hx : IsUnitDet e L x) (hy : IsUnitDet e κ y) :
     IsUnitDet e (L * κ) (x * y) := by
@@ -109,6 +142,15 @@ private theorem isUnitDet_mul {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host
     exact mul_mem hy.2.2 hx.2.2
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hyy : toEAf D (y : AE D) * toEAf D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hinv : infPart D ((y⁻¹ : (AE D)ˣ) : AE D) = 1`.
+
+Use `congrArg (infPart D) (Units.mul_inv y)` as an intermediate fact. Rewrite `this` using `[map_mul, hy.1, one_mul, map_one]`. Then use the resulting hypothesis. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, hz.1, hinv, mul_one]`. Rewrite using `[Units.val_mul, map_mul]`.
+
+Conclude with `succ_mul_succ_sub_one_div_succ hε (hz.2.1.trans (by rw [Matrix.det_mul])) hy.2.1 hyy`. Establish `e0 : (z * y⁻¹)⁻¹ = y * z⁻¹` using `by rw [_root_.mul_inv_rev, inv_inv]`. Rewrite using `[e0]`. Rewrite using `[Units.val_mul]`. Rewrite using `[map_mul]`.
+
+Use `mul_mem ?_ hz.2.2` and prove the remaining obligations. Rewrite using `[hy.2.1]`. Conclude with `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ))`.
+-/
 private theorem isUnitDet_div {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {L κ : Matrix (Fin k) (Fin k) (EAf D)} (hκ : IsIntM κ) {z y : (AE D)ˣ} (hz : IsUnitDet e (L * κ) z)
     (hy : IsUnitDet e κ y) : IsUnitDet e L (z * y⁻¹) := by
@@ -131,6 +173,11 @@ private theorem isUnitDet_div {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host
     rw [hy.2.1]
     exact add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ))
 
+/- English proof (translation)
+Unfold `unitChar`. Distinguish the cases in `hL : ∃ x, IsUnitDet e L x`. Establish `hLκ : ∃ x, IsUnitDet e (L * κ) x` using `⟨_, isUnitDet_mul he hL.choose_spec hy⟩`. Rewrite using `[dif_pos hL, dif_pos hLκ, isUnitDet_unique hLκ.choose_spec (isUnitDet_mul he hL.choose_spec hy), map_mul, _root_.mul_inv_rev, Circle.coe_mul]`. Establish `hLκ : ¬ ∃ x, IsUnitDet e (L * κ) x` using `fun ⟨z, hz⟩ => hL ⟨_, isUnitDet_div he hκ hz hy⟩`.
+
+Rewrite using `[dif_neg hL, dif_neg hLκ, mul_zero]`.
+-/
 private theorem unitChar_mul (ν : (AE D)ˣ →* Circle) {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S)
     {k : ℕ} (L κ : Matrix (Fin k) (Fin k) (EAf D)) (hκ : IsIntM κ) {y : (AE D)ˣ} (hy : IsUnitDet e κ y) :
     unitChar ν e (L * κ) = (((ν y)⁻¹ : Circle) : ℂ) * unitChar ν e L := by
@@ -152,17 +199,28 @@ variable {D : D7}
 
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.mul_apply, Finset.mul_sum] exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]`.
+-/
 private theorem half_mul {e : AE D} {m m' n : ℕ} (P : Matrix (Fin m) (Fin m') (AE D)) {y : Mx D m' n} (h : IsHalf e y) :
     IsHalf e (P * y : Mx D m n) := fun i j => by
   simp only [Matrix.mul_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [mul_left_comm, h l j]
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt`. Rewrite using `[GlobalTheory.AdelicLatMove.mt_one, Matrix.mul_one]`.
+-/
 private theorem pull_eq (A WW : HSp D) (k : GA D WW) (y : WO A WW) :
     GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt (GlobalTheory.Grid.neg A) WW 1 k y =
       HMul.hMul (mt WW k⁻¹) (y : Matrix (Fin WW.rank) (Fin A.rank) (AE D)) := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.pullPt
   rw [GlobalTheory.AdelicLatMove.mt_one, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hε : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hu : (1 - toEAf D e + toEAf D e * κ.det) * (1 - toEAf D e + toEAf D e * κ'.det) = 1`. Rewrite using `[idem_mul hε, ← Matrix.det_mul, hkk, Matrix.det_one, mul_one, sub_add_cancel]`. Take `⟨x, a, b, c⟩` from `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_unit hu`.
+
+Establish `m1 : 1 - toEAf D e + toEAf D e * κ.det ∈ OO` using `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ))`. Establish `m2 : 1 - toEAf D e + toEAf D e * κ'.det ∈ OO` using `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (det_int hκ'))`. Conclude with `⟨x, ⟨a, b, c ▸ m2⟩, a, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (b ▸ m1), GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (c ▸ m2)⟩`.
+-/
 private theorem exists_unitDet {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e S) {k : ℕ}
     {κ κ' : Matrix (Fin k) (Fin k) (EAf D)} (hκ : IsIntM κ) (hκ' : IsIntM κ') (hkk : κ * κ' = 1) :
     ∃ x, IsUnitDet e κ x ∧ Formalism.L2.Pj.FinUnit x := by
@@ -179,6 +237,9 @@ private theorem exists_unitDet {e : AE D} {S : Finset (Formalism.L2.DIV.Pl D.hos
 set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Use `_ = (g⁻¹).val * (ε • g.val) * (B⁻¹).val := by rw [h]`. Use `_ = ε • (B⁻¹).val := by rw [Matrix.mul_smul, Units.inv_mul, Matrix.smul_mul, Matrix.one_mul]`.
+-/
 private theorem smul_inv_eq {n : ℕ} {ε : EAf D} {g B : GL (Fin n) (EAf D)} (h : ε • g.val = ε • B.val) :
     ε • (g⁻¹).val = ε • (B⁻¹).val := by
   calc ε • (g⁻¹).val = (g⁻¹).val * (ε • B.val) * (B⁻¹).val := by
@@ -189,6 +250,15 @@ private theorem smul_inv_eq {n : ℕ} {ε : EAf D} {g B : GL (Fin n) (EAf D)} (h
 set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hy : toEAf D e • y.map (toEAf D) = y.map (toEAf D)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, ← map_mul, hh i j]`. Establish `hK : toEAf D e • (Formalism.IndefR.Lev.finE WW k).val = toEAf D e • (βW' * βW⁻¹).val`. Use extensionality with `i j`.
+
+Conclude with `hk i j`. Establish `hKi` using `smul_inv_eq hK`. Establish `hm : (mt WW k⁻¹).map (toEAf D) = ((Formalism.IndefR.Lev.finE WW k)⁻¹).val`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+
+Establish `hB : ((βW' * βW⁻¹)⁻¹ : GL (Fin WW.rank) (EAf D)) = βW * βW'⁻¹` using `by rw [_root_.mul_inv_rev, inv_inv]`. Establish `key : ((Formalism.IndefR.Lev.finE WW k)⁻¹).val * y.map (toEAf D) = (βW * βW'⁻¹).val * y.map (toEAf D)`. Rewrite using `[← hy, Matrix.mul_smul, ← Matrix.smul_mul, hKi, Matrix.smul_mul, ← Matrix.mul_smul, hB]`. Unfold `frMapO`. Rewrite using `[Matrix.map_mul, hm, Matrix.mul_assoc (βW⁻¹).val, key, Units.val_mul]`.
+
+Simplify using `only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc _ βA'.val, Units.mul_inv, Matrix.mul_one]`.
+-/
 private theorem frMapO_change {e : AE D} (A WW : HSp D) (βA βA' : GL (Fin A.rank) (EAf D)) (βW βW' : GL (Fin WW.rank) (EAf D))
     (k : GA D WW) (hk : ∀ i j, toEAf D e * (Formalism.IndefR.Lev.finE WW k).1 i j = toEAf D e * (βW' * βW⁻¹).1 i j)
     {y : WO A WW} (hh : IsHalf e y) :
@@ -221,6 +291,19 @@ open Formalism.IndefR.Datum
 set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D ν e S he I A WW ΛA βA βA' hA hA' βW βW' k _ hk`. Establish `hκ` using `frame_ratio_int hA hA'`. Establish `hκ'` using `frame_ratio_int hA' hA`. Establish `hkk : (βA'⁻¹).val * βA.val * ((βA⁻¹).val * βA'.val) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc βA.val, Units.mul_inv, Matrix.one_mul, Units.inv_mul]`.
+
+Take `⟨x, hx, hxu⟩` from `exists_unitDet he hκ hκ' hkk`. Use `⟨x, hxu, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[pull_eq]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.stdFst`. Distinguish the cases in `hh : IsHalf e y`.
+
+Establish `hh' : IsHalf e (HMul.hMul (mt WW k⁻¹) (y : Matrix (Fin WW.rank) (Fin A.rank) (AE D)) : Mx D WW.rank A.rank)` using `half_mul _ hh`. Rewrite using `[frMapO_change A WW βA βA' βW βW' k hk hh, topL_mul, unitChar_mul ν he _ _ hκ hx]`. Establish `hI : IsIntM (frMapO A WW βA' βW' y * ((βA'⁻¹).val * βA.val)) ↔ IsIntM (frMapO A WW βA' βW' y)`. Use `⟨fun h => ?_, fun h => isIntM_mul h hκ⟩` and prove the remaining obligations. Use `isIntM_mul h hκ'` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hR : (∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I ((frMapO A WW βA' βW' y * ((βA'⁻¹).val * βA.val)) i j)) ↔ ∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (frMapO A WW βA' βW' y i j)`. Use `⟨fun h i j hi => ?_, fun h i j hi => inId_mul hκ i (fun l => h i l hi) j⟩` and prove the remaining obligations. Use `inId_mul hκ' i (fun l => h i l hi) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, hkk, Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Distinguish the cases in `hc : IsIntM (frMapO A WW βA' βW' y) ∧ ∀ i j, A.rank ≤ i.1 → GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (frMapO A WW βA' βW' y i j)`. Rewrite using `[if_pos ⟨hh, hc⟩, if_pos ⟨hh', hI.2 hc.1, hR.2 hc.2⟩, ← mul_assoc, ← Circle.coe_mul, mul_inv_cancel, Circle.coe_one, one_mul]`. Rewrite using `[if_neg fun h => hc h.2, if_neg fun h => hc ⟨hI.1 h.2.1, hR.1 h.2.2⟩, mul_zero]`. Establish `hh' : ¬ IsHalf e (HMul.hMul (mt WW k⁻¹) (y : Matrix (Fin WW.rank) (Fin A.rank) (AE D)) : Mx D WW.rank A.rank)` using `fun h => hh (by`. Use `half_mul (mt WW k) h` as an intermediate fact.
+
+Rewrite using `[← Matrix.mul_assoc, ← GlobalTheory.AdelicLatMove.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one, Matrix.one_mul] at this)` and apply the resulting hypothesis. Rewrite using `[if_neg fun h => hh h.1, if_neg fun h => hh' h.1, mul_zero]`.
+-/
 private theorem stdFst_change_frames : ∀ {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e S →
     ∀ (I : Ideal (𝓞 D.host.E)) (A WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
     (βA βA' : GL (Fin A.rank) (EAf D)), Formalism.L2.DIV.IsFrame βA ΛA → Formalism.L2.DIV.IsFrame βA' ΛA →
@@ -268,6 +351,9 @@ end GlobalTheory.frameChangeUnitDeterminant
 
 end
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.frameChangeUnitDeterminant.stdFst_change_frames`.
+-/
 theorem _root_.GlobalTheory.T.standardThetaPair_first_frameChange_unitTranslate : ∀ {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (S : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e S →
     ∀ (I : Ideal (𝓞 D.host.E)) (A WW : HSp D) (ΛA : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E))
     (βA βA' : GL (Fin A.rank) (EAf D)), Formalism.L2.DIV.IsFrame βA ΛA → Formalism.L2.DIV.IsFrame βA' ΛA →

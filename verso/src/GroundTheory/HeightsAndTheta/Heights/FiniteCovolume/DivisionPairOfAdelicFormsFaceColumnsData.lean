@@ -13,6 +13,11 @@ noncomputable section
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_unitaryGroupMatrix]`. Express the relevant statement in the definitionally equal form `_ ↔ (g : Matrix ι ι A)ᵀ * Hᵀ * (g : Matrix ι ι A).map s = Hᵀ`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Use `congrArg Matrix.transpose hg` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `hg`. Use `congrArg Matrix.transpose hg` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem unitaryGroupMatrix_eq_unitaryOf {A : Type*} [CommRing A] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (s : A →+* A) (H : Matrix ι ι A) :
     unitaryGroupMatrix s H = IndefiniteRowSideFullHecke.FiniteCovolume.unitaryOf s Hᵀ := by
@@ -27,6 +32,9 @@ theorem unitaryGroupMatrix_eq_unitaryOf {A : Type*} [CommRing A] {ι : Type*} [F
     have := congrArg Matrix.transpose hg
     simpa [Matrix.transpose_mul, Matrix.mul_assoc] using this
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hA, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = A := by rw [h, Matrix.mul_nonsing_inv _ hB, Matrix.one_mul]`.
+-/
 theorem mul_inv_mul_swap {ι : Type*} [Fintype ι] [DecidableEq ι] {A B : Matrix ι ι ℂ}
     (hA : IsUnit A.det) (hB : IsUnit B.det) (h : A * B⁻¹ * A = B) : B * A⁻¹ * B = A := by
   calc B * A⁻¹ * B = (A * B⁻¹ * A) * A⁻¹ * (A * B⁻¹ * A) := by rw [h]
@@ -39,6 +47,9 @@ def subgroupHomeo {G : Type*} [Group G] [TopologicalSpace G] {S T : Subgroup G} 
     S ≃ₜ T :=
   Homeomorph.setCongr (congrArg SetLike.coe e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subgroupHomeo_apply {G : Type*} [Group G] [TopologicalSpace G] {S T : Subgroup G}
     (e : S = T) (x : S) : subgroupHomeo e x = MulEquiv.subgroupCongr e x := rfl
 
@@ -50,10 +61,16 @@ variable {F : Type*} {E : Type} [Field F] [Field E] [NumberField F] [NumberField
 omit [NumberField F] in
 include F in
 
+/- English proof (translation)
+The claim follows from `IsCMField.ofCMExtension F E`.
+-/
 theorem isCMField : IsCMField E := IsCMField.ofCMExtension F E
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[IndefiniteRowSideFullHecke.FiniteCovolume.conjE_apply, IsCMField.complexEmbedding_complexConj]`. Conclude with `embedding_conj w.embedding x`.
+-/
 theorem conjHom_eq_conjE : conjHom F E = IndefiniteRowSideFullHecke.FiniteCovolume.conjE E := by
   ext x
   obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace E))
@@ -61,6 +78,9 @@ theorem conjHom_eq_conjE : conjHom F E = IndefiniteRowSideFullHecke.FiniteCovolu
   rw [IndefiniteRowSideFullHecke.FiniteCovolume.conjE_apply, IsCMField.complexEmbedding_complexConj]
   exact embedding_conj w.embedding x
 
+/- English proof (translation)
+The claim follows from `(CMExtension.equivMaximalRealSubfield F E).toRatAlgEquiv.toLinearEquiv.finrank_eq`.
+-/
 theorem fDeg.equiv : finrank ℚ F = IndefiniteRowSideFullHecke.FiniteCovolume.fDeg E :=
   (CMExtension.equivMaximalRealSubfield F E).toRatAlgEquiv.toLinearEquiv.finrank_eq
 
@@ -76,9 +96,15 @@ def divisionPairOfAdelicFormsFaceColumnsData (h : HermitianForm F E W) (v : Basi
     rw [Matrix.det_transpose]
     exact isUnit_det_gram h v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrixHermSpace_gram (h : HermitianForm F E W) (v : Basis (Fin N) E W) :
     (divisionPairOfAdelicFormsFaceColumnsData h v).J = (gram h.toSesq v)ᵀ := rfl
 
+/- English proof (translation)
+Rewrite using `[sesq_eq_sum h.toSesq v y x, Finset.sum_comm]`. Simplify using `only [IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, matrixHermSpace_gram, Matrix.transpose_apply, Basis.equivFun_apply, ← conjHom_eq_conjE (F := F)]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (conjHom F E) ((v.repr y) j) * _ * _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HermSpace.h.equiv (h : HermitianForm F E W) (v : Basis (Fin N) E W) (x y : W) :
     (divisionPairOfAdelicFormsFaceColumnsData h v).h (v.equivFun x) (v.equivFun y) = h.toSesq y x := by
   rw [sesq_eq_sum h.toSesq v y x, Finset.sum_comm]
@@ -90,6 +116,9 @@ theorem HermSpace.h.equiv (h : HermitianForm F E W) (v : Basis (Fin N) E W) (x y
 
 variable (h : HermitianForm F E W) (v : Basis (Fin N) E W)
 
+/- English proof (translation)
+Rewrite using `[unitaryGroupMatrix_eq_unitaryOf, conjHom_eq_conjE]`. Both sides reduce to the same expression.
+-/
 theorem unitaryGroup.equiv :
     unitaryGroupMatrix (conjHom F E) (gram h.toSesq v) =
       IndefiniteRowSideFullHecke.FiniteCovolume.unitaryGroup (divisionPairOfAdelicFormsFaceColumnsData h v) := by
@@ -99,15 +128,24 @@ theorem unitaryGroup.equiv :
 def unitaryEquiv : h.unitaryGroup ≃* IndefiniteRowSideFullHecke.FiniteCovolume.unitaryGroup (divisionPairOfAdelicFormsFaceColumnsData h v) :=
   (unitaryGroupEquivMatrix h v).trans (MulEquiv.subgroupCongr (unitaryGroup.equiv h v))
 
+/- English proof (translation)
+The claim follows from `MulEquiv.subgroupCongr_apply (unitaryGroup.equiv h v) _`.
+-/
 theorem unitaryEquiv_coe (g : h.unitaryGroup) :
     (unitaryEquiv h v g : GL (Fin N) E) = (unitaryGroupEquivMatrix h v g : GL (Fin N) E) :=
   MulEquiv.subgroupCongr_apply (unitaryGroup.equiv h v) _
 
+/- English proof (translation)
+The claim follows from `unitaryGroupEquivMatrix_apply h v g`.
+-/
 theorem unitaryEquiv_apply (g : h.unitaryGroup) :
     ((unitaryEquiv h v g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) =
       LinearMap.toMatrix v v ((g : W ≃ₗ[E] W) : W →ₗ[E] W) :=
   unitaryGroupEquivMatrix_apply h v g
 
+/- English proof (translation)
+Rewrite using `[unitaryEquiv_apply]`. Simplify using `only [Basis.equivFun_apply]`. Conclude with `LinearMap.toMatrix_mulVec_repr v v _ x`.
+-/
 theorem unitaryEquiv_mulVec (g : h.unitaryGroup) (x : W) :
     ((unitaryEquiv h v g : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ v.equivFun x =
       v.equivFun ((g : W ≃ₗ[E] W) x) := by
@@ -115,6 +153,9 @@ theorem unitaryEquiv_mulVec (g : h.unitaryGroup) (x : W) :
   simp only [Basis.equivFun_apply]
   exact LinearMap.toMatrix_mulVec_repr v v _ x
 
+/- English proof (translation)
+Unfold `archUnitary IndefiniteRowSideFullHecke.FiniteCovolume.realPoints`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[unitaryGroupMatrix_eq_unitaryOf]`. Use `congr 1`.
+-/
 theorem archUnitary.equiv : archUnitary h v = IndefiniteRowSideFullHecke.FiniteCovolume.realPoints (divisionPairOfAdelicFormsFaceColumnsData h v) := by
   unfold archUnitary IndefiniteRowSideFullHecke.FiniteCovolume.realPoints
   congr 1
@@ -126,6 +167,9 @@ def realEquiv : archUnitary h v ≃* IndefiniteRowSideFullHecke.FiniteCovolume.R
   MulEquiv.subgroupCongr (archUnitary.equiv h v)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `MulEquiv.subgroupCongr_apply _ g`.
+-/
 theorem coe_realEquiv (g : archUnitary h v) :
     ((realEquiv h v g : IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)) :
       InfinitePlace E → GL (Fin N) ℂ) = g :=
@@ -137,25 +181,40 @@ def realHomeo : archUnitary h v ≃ₜ IndefiniteRowSideFullHecke.FiniteCovolume
 def realMeas : archUnitary h v ≃ᵐ IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v) :=
   (realHomeo h v).toMeasurableEquiv
 
+/- English proof (translation)
+The claim follows from `subgroupHomeo_apply _ g`.
+-/
 theorem realHomeo_apply (g : archUnitary h v) : realHomeo h v g = realEquiv h v g :=
   subgroupHomeo_apply _ g
 
+/- English proof (translation)
+The claim follows from `realHomeo_apply h v g`.
+-/
 theorem realMeas_apply (g : archUnitary h v) : realMeas h v g = realEquiv h v g :=
   realHomeo_apply h v g
 
 omit [IsCMField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archEmbed_apply (γ : h.unitaryGroup) (w : InfinitePlace E) :
     ((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL (Fin N) ℂ) w =
       Matrix.GeneralLinearGroup.map w.embedding (unitaryGroupEquivMatrix h v γ : GL (Fin N) E) :=
   rfl
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toReal_apply (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N)
     (g : IndefiniteRowSideFullHecke.FiniteCovolume.unitaryGroup V) (w : InfinitePlace E) :
     ((IndefiniteRowSideFullHecke.FiniteCovolume.toReal V g : IndefiniteRowSideFullHecke.FiniteCovolume.RealPts V) :
       InfinitePlace E → GL (Fin N) ℂ) w = Matrix.GeneralLinearGroup.map w.embedding (g : GL (Fin N) E) :=
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_realEquiv]`. Use function extensionality and compare the values at `w`. Rewrite using `[archEmbed_apply, toReal_apply, unitaryEquiv_coe]`.
+-/
 theorem archEmbed.equiv (γ : h.unitaryGroup) :
     realEquiv h v (archEmbed h v γ) = IndefiniteRowSideFullHecke.FiniteCovolume.toReal (divisionPairOfAdelicFormsFaceColumnsData h v) (unitaryEquiv h v γ) :=
   by
@@ -164,6 +223,9 @@ theorem archEmbed.equiv (γ : h.unitaryGroup) :
     funext w
     rw [archEmbed_apply, toReal_apply, unitaryEquiv_coe]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext (archEmbed.equiv h v)`.
+-/
 theorem archEmbed_comp :
     (realEquiv h v).toMonoidHom.comp (archEmbed h v) =
       (IndefiniteRowSideFullHecke.FiniteCovolume.toReal (divisionPairOfAdelicFormsFaceColumnsData h v)).comp (unitaryEquiv h v).toMonoidHom :=
@@ -171,17 +233,29 @@ theorem archEmbed_comp :
 
 omit [NumberField E] [IsTotallyComplex E] [IsCMField E] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecAt.equiv (x : W) : vecAt v x = IndefiniteRowSideFullHecke.FiniteCovolume.realVec (v.equivFun x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invApply.equiv (g : archUnitary h v) (y : InfinitePlace E → Fin N → ℂ) :
     invApply g y = IndefiniteRowSideFullHecke.FiniteCovolume.gAct (realEquiv h v g)⁻¹ y := rfl
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] [IsCMField E] in
+/- English proof (translation)
+Use `(isUnit_det_gram h v).map w.embedding` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`.
+-/
 theorem isUnit_det_gramAt (w : InfinitePlace E) : IsUnit (gramAt h v w).det := by
   have := (isUnit_det_gram h v).map w.embedding
   rw [RingHom.map_det] at this
   exact this
 
+/- English proof (translation)
+Simplify using `[gramAt, IndefiniteRowSideFullHecke.FiniteCovolume.placeJ, matrixHermSpace_gram, Matrix.transpose_map]`.
+-/
 theorem placeGram_matrixHermSpace (w : InfinitePlace E) :
     IndefiniteRowSideFullHecke.FiniteCovolume.placeJ (divisionPairOfAdelicFormsFaceColumnsData h v) w = (gramAt h v w)ᵀ := by
   simp [gramAt, IndefiniteRowSideFullHecke.FiniteCovolume.placeJ, matrixHermSpace_gram, Matrix.transpose_map]
@@ -221,9 +295,17 @@ def majEquiv : Majorant h v ≃ IndefiniteRowSideFullHecke.FiniteCovolume.Majora
     cases M
     simp [majOf, majorantOfMatrixForm]
 
+/- English proof (translation)
+The claim follows from `majEquiv.bijective`.
+-/
 theorem Majorant.equiv : Function.Bijective (majOf (h := h) (v := v)) :=
   majEquiv.bijective
 
+/- English proof (translation)
+Unfold `Majorant.len IndefiniteRowSideFullHecke.FiniteCovolume.Majorant.norm`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [majOf, ReciprocityTheory.ChartRestriction.G.SA.hf, dotProduct, mulVec, Matrix.transpose_apply, Pi.star_apply, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Majorant.len.equiv (M : Majorant h v) (y : InfinitePlace E → Fin N → ℂ) :
     M.len y = (majOf M).norm y := by
   unfold Majorant.len IndefiniteRowSideFullHecke.FiniteCovolume.Majorant.norm
@@ -242,21 +324,37 @@ variable (v) in
 def latOf (L : Submodule (𝓞 E) (Fin N → E)) : AddSubgroup W :=
   L.toAddSubgroup.comap (v.equivFun : W →+ (Fin N → E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latOf {L : Submodule (𝓞 E) (Fin N → E)} {x : W} :
     x ∈ latOf v L ↔ v.equivFun x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Introduce `L L' hLL`. Use extensionality with `y`. Use `SetLike.ext_iff.mp hLL (v.equivFun.symm y)` as an intermediate fact. Rewrite `this` using `[mem_latOf, mem_latOf, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem latOf_injective : Function.Injective (latOf (W := W) v) := by
   intro L L' hLL
   ext y
   have := SetLike.ext_iff.mp hLL (v.equivFun.symm y)
   rwa [mem_latOf, mem_latOf, LinearEquiv.apply_symm_apply] at this
 
+/- English proof (translation)
+Unfold `latOf`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective (fun y => v.equivFun.surjective y)]`.
+-/
 theorem relIndex_latOf (A B : Submodule (𝓞 E) (Fin N → E)) :
     (latOf v A).relIndex (latOf v B) = A.toAddSubgroup.relIndex B.toAddSubgroup := by
   unfold latOf
   rw [AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective
     (fun y => v.equivFun.surjective y)]
 
+/- English proof (translation)
+Use `⟨{ carrier := {y | v.equivFun.symm y ∈ La} add_mem' := fun {a b} ha hb => by` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, map_add] at *`. Conclude with `La.add_mem ha hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c y hy => by`.
+
+Simplify using `only [Set.mem_ofPred_eq] at *`. Rewrite using `[← IsScalarTower.algebraMap_smul E c y, map_smul]`. Conclude with `hLa c _ hy }, ?_⟩`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `v.equivFun.symm (v.equivFun x) ∈ La ↔ x ∈ La`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem exists_latOf {La : AddSubgroup W} (hLa : ∀ (a : 𝓞 E) (x : W), x ∈ La → (a : E) • x ∈ La) :
     ∃ L : Submodule (𝓞 E) (Fin N → E), latOf v L = La := by
   refine ⟨{ carrier := {y | v.equivFun.symm y ∈ La}
@@ -272,6 +370,11 @@ theorem exists_latOf {La : AddSubgroup W} (hLa : ∀ (a : 𝓞 E) (x : W), x ∈
   change v.equivFun.symm (v.equivFun x) ∈ La ↔ x ∈ La
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_image, SetLike.mem_coe, mem_latOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, hx, v.equivFun.symm_apply_apply x⟩`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+-/
 theorem coe_latOf (L : Submodule (𝓞 E) (Fin N → E)) :
     (latOf v L : Set W) = v.equivFun.symm '' (L : Set (Fin N → E)) := by
   ext x
@@ -282,6 +385,9 @@ theorem coe_latOf (L : Submodule (𝓞 E) (Fin N → E)) :
   · rintro ⟨y, hy, rfl⟩
     rwa [LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_latOf, Submodule.coe_toAddSubgroup, Submodule.map_coe]`. Both sides reduce to the same expression.
+-/
 theorem latOf_eq_map (L : Submodule (𝓞 E) (Fin N → E)) :
     latOf v L = ((L.restrictScalars ℤ).map
       (((v.equivFun.symm : (Fin N → E) ≃ₗ[E] W) : (Fin N → E) →ₗ[E] W).restrictScalars ℤ)).toAddSubgroup := by
@@ -289,6 +395,15 @@ theorem latOf_eq_map (L : Submodule (𝓞 E) (Fin N → E)) :
   rw [coe_latOf, Submodule.coe_toAddSubgroup, Submodule.map_coe]
   rfl
 
+/- English proof (translation)
+Use `⟨fun L => ?_, fun La hLa => exists_latOf hLa.smul_mem⟩` and prove the remaining obligations. Establish `hfg : (latOf v L).FG ↔ L.FG`. Rewrite using `[latOf_eq_map, ← Submodule.fg_iff_addSubgroup_fg]`. Conclude with `(Submodule.fg_map_iff ((((v.equivFun.symm : (Fin N → E) ≃ₗ[E] W) : (Fin N → E) →ₗ[E] W).restrictScalars ℤ)) (fun a b hab => v.equivFun.symm.injective hab)).trans (Submodule.FG.restrictScalars_iff (R := ℤ) (A := 𝓞 E) (S := L))`. Establish `hspan : Submodule.span E (latOf v L : Set W) = ⊤ ↔ Submodule.span E (L : Set (Fin N → E)) = ⊤`.
+
+Rewrite using `[coe_latOf]`. Express the relevant statement in the definitionally equal form `Submodule.span E (((v.equivFun.symm : (Fin N → E) ≃ₗ[E] W) : (Fin N → E) →ₗ[E] W) '' (L : Set (Fin N → E))) = ⊤ ↔ _`. Rewrite using `[Submodule.span_image, Submodule.map_eq_top_iff]`. Establish `hsmul : ∀ (a : 𝓞 E) (x : W), x ∈ latOf v L → (a : E) • x ∈ latOf v L`. Introduce `a x hx`.
+
+Rewrite using `[mem_latOf, map_smul]`. Conclude with `L.smul_mem a hx`. Prove the components needed by the constructor for the conclusion. Introduce `hL`. Conclude with `⟨hfg.1 hL.fg, hspan.1 hL.span_eq_top⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨hsmul, hfg.2 h1, hspan.2 h2⟩`.
+-/
 theorem IsLattice.equiv :
     (∀ L : Submodule (𝓞 E) (Fin N → E),
       FiniteCovolume.IsLattice E (latOf v L) ↔ IndefiniteRowSideFullHecke.FiniteCovolume.IsLattice L) ∧
@@ -316,6 +431,11 @@ theorem IsLattice.equiv :
   · rintro ⟨h1, h2⟩
     exact ⟨hsmul, hfg.2 h1, hspan.2 h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Use `ha.map (conjHom F E).toIntAlgHom` as an intermediate fact. Simplify `this` using `[conj_conj]`. Introduce `ha`.
+
+Conclude with `ha.map (conjHom F E).toIntAlgHom`.
+-/
 theorem isIntegral_conj_iff (a : E) :
     IsIntegral ℤ (conjHom F E a) ↔ IsIntegral ℤ a := by
   constructor
@@ -325,6 +445,13 @@ theorem isIntegral_conj_iff (a : E) :
   · intro ha
     exact ha.map (conjHom F E).toIntAlgHom
 
+/- English proof (translation)
+Use extensionality with `y`. Express the relevant statement in the definitionally equal form `(∀ x ∈ L, IsIntegral ℤ ((divisionPairOfAdelicFormsFaceColumnsData h v).h (v.equivFun y) x)) ↔ ∀ x ∈ latOf v L, h.toSesq y x ∈ integralClosure ℤ E`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Use `hy _ (mem_latOf.mp hx)` as an intermediate fact.
+
+Rewrite `this` using `[HermSpace.h.equiv, ← h.isSymm.eq y x, isIntegral_conj_iff]`. Conclude with `this`. Introduce `hy x hx`. Use `hy (v.equivFun.symm x) (by rwa [mem_latOf, LinearEquiv.apply_symm_apply])` as an intermediate fact. Rewrite using `[← v.equivFun.apply_symm_apply x, HermSpace.h.equiv, ← h.isSymm.eq, isIntegral_conj_iff]`.
+
+Conclude with `this`.
+-/
 theorem dual.equiv (L : Submodule (𝓞 E) (Fin N → E)) :
     latOf v (IndefiniteRowSideFullHecke.FiniteCovolume.dual (divisionPairOfAdelicFormsFaceColumnsData h v) L) = dualLattice h (latOf v L) := by
   ext y
@@ -340,11 +467,19 @@ theorem dual.equiv (L : Submodule (𝓞 E) (Fin N → E)) :
     rw [← v.equivFun.apply_symm_apply x, HermSpace.h.equiv, ← h.isSymm.eq, isIntegral_conj_iff]
     exact this
 
+/- English proof (translation)
+Rewrite using `[← dual.equiv, relIndex_latOf]`.
+-/
 theorem relIndex_dual_latOf (L : Submodule (𝓞 E) (Fin N → E)) :
     (latOf v L).relIndex (dualLattice h (latOf v L)) =
       L.toAddSubgroup.relIndex (IndefiniteRowSideFullHecke.FiniteCovolume.dual (divisionPairOfAdelicFormsFaceColumnsData h v) L).toAddSubgroup := by
   rw [← dual.equiv, relIndex_latOf]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hL x hx y hy`. Rewrite using `[← v.equivFun.apply_symm_apply x, ← v.equivFun.apply_symm_apply y, HermSpace.h.equiv]`. Conclude with `hL _ (by rwa [mem_latOf, LinearEquiv.apply_symm_apply]) _ (by rwa [mem_latOf, LinearEquiv.apply_symm_apply])`. Introduce `hL x hx y hy`.
+
+Use `hL _ (mem_latOf.mp hy) _ (mem_latOf.mp hx)` as an intermediate fact. Rewrite `this` using `[HermSpace.h.equiv]`. Conclude with `this`.
+-/
 theorem isIntegralOn_latOf_iff (L : Submodule (𝓞 E) (Fin N → E)) :
     IsIntegralOn h (latOf v L) ↔ ∀ x ∈ L, ∀ y ∈ L, IsIntegral ℤ ((divisionPairOfAdelicFormsFaceColumnsData h v).h x y) := by
   constructor
@@ -357,6 +492,11 @@ theorem isIntegralOn_latOf_iff (L : Submodule (𝓞 E) (Fin N → E)) :
     rw [HermSpace.h.equiv] at this
     exact this
 
+/- English proof (translation)
+Establish `hidx` using `relIndex_dual_latOf (h := h) (v := v) L`. Establish `hint` using `isIntegralOn_latOf_iff (h := h) (v := v) L`. Prove the components needed by the constructor for the conclusion. Introduce `hD`. Conclude with `⟨⟨(IsLattice.equiv (v := v)).1 L |>.1 hD.isLattice, hint.1 hD.integral, hidx ▸ hD.index_le⟩, hidx ▸ hD.index_ne_zero⟩`.
+
+Introduce and unpack `⟨⟨hL, hI, hle⟩, hne⟩`. Conclude with `⟨(IsLattice.equiv (v := v)).1 L |>.2 hL, hint.2 hI, hidx ▸ hne, hidx ▸ hle⟩`.
+-/
 theorem IsDIntegral.equiv (D : ℕ) (L : Submodule (𝓞 E) (Fin N → E)) :
     IsDIntegral h D (latOf v L) ↔
       IndefiniteRowSideFullHecke.FiniteCovolume.IsDIntegral (divisionPairOfAdelicFormsFaceColumnsData h v) D L ∧
@@ -370,6 +510,9 @@ theorem IsDIntegral.equiv (D : ℕ) (L : Submodule (𝓞 E) (Fin N → E)) :
   · rintro ⟨⟨hL, hI, hle⟩, hne⟩
     exact ⟨(IsLattice.equiv (v := v)).1 L |>.2 hL, hint.2 hI, hidx ▸ hne, hidx ▸ hle⟩
 
+/- English proof (translation)
+Rewrite using `[IsDIntegral.equiv]`. Use `⟨And.left, fun hT => ⟨hT, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← relIndex_dual_latOf]`. Conclude with `hfin _ ((IsLattice.equiv (v := v)).1 L |>.2 hT.1) ((isIntegralOn_latOf_iff (h := h) (v := v) L).2 hT.2.1)`.
+-/
 theorem IsDIntegral.equiv_of_dualIndexFinite (hfin : DualIndexFinite.Statement h) (D : ℕ)
     (L : Submodule (𝓞 E) (Fin N → E)) :
     IsDIntegral h D (latOf v L) ↔ IndefiniteRowSideFullHecke.FiniteCovolume.IsDIntegral (divisionPairOfAdelicFormsFaceColumnsData h v) D L := by
@@ -379,6 +522,17 @@ theorem IsDIntegral.equiv_of_dualIndexFinite (hfin : DualIndexFinite.Statement h
   exact hfin _ ((IsLattice.equiv (v := v)).1 L |>.2 hT.1)
     ((isIntegralOn_latOf_iff (h := h) (v := v) L).2 hT.2.1)
 
+/- English proof (translation)
+Unfold `FiniteCovolume.IsIsotropicLine IndefiniteRowSideFullHecke.FiniteCovolume.IsIsotropicLine`. Rewrite using `[LinearEquiv.finrank_map_eq]`. Use `and_congr_right fun hl => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h0 y hy`.
+
+Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`. Rewrite using `[LinearEquiv.coe_coe, HermSpace.h.equiv]`. Conclude with `h0 x hx x hx`. Introduce `h0 x hx y hy`. Establish `hxx : h.toSesq x x = 0`.
+
+Use `h0 (v.equivFun x) (Submodule.mem_map_of_mem hx)` as an intermediate fact. Rewrite `this` using `[HermSpace.h.equiv]`. Then use the resulting hypothesis. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Rewrite using `[map_zero, LinearMap.zero_apply]`.
+
+Establish `hne : (⟨x, hx⟩ : l) ≠ 0` using `fun e => hx0 (congrArg Subtype.val e)`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).mp hl ⟨y, hy⟩`. Establish `hy' : y = c • x`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`.
+
+Rewrite using `[hy', map_smul, hxx, smul_zero]`.
+-/
 theorem IsIsotropicLine.equiv (l : Submodule E W) :
     FiniteCovolume.IsIsotropicLine h l ↔
       IndefiniteRowSideFullHecke.FiniteCovolume.IsIsotropicLine (divisionPairOfAdelicFormsFaceColumnsData h v)
@@ -405,8 +559,20 @@ theorem IsIsotropicLine.equiv (l : Submodule E W) :
         simpa using this.symm
       rw [hy', map_smul, hxx, smul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitary_smul (γ : h.unitaryGroup) (x : W) : γ • x = (γ : W ≃ₗ[E] W) x := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ ((γ : h.unitaryGroup) : W ≃ₗ[E] W) • latOf v L ↔ _`. Rewrite using `[AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem, show ((γ : W ≃ₗ[E] W))⁻¹ • x = γ⁻¹ • x from rfl, mem_latOf, mem_latOf]`. Express the relevant statement in the definitionally equal form `_ ↔ v.equivFun x ∈ L.map (IndefiniteRowSideFullHecke.FiniteCovolume.linO (unitaryEquiv h v γ : GL (Fin N) E))`. Rewrite using `[Submodule.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((unitaryEquiv h v γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ _ = _`. Rewrite using `[unitaryEquiv_mulVec, ← unitary_smul, smul_inv_smul]`.
+
+Introduce and unpack `⟨z, hz, hzx⟩`. Express the relevant statement in the definitionally equal form `((unitaryEquiv h v γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ z = _ at hzx`. Rewrite `hzx` using `[← v.equivFun.apply_symm_apply z, unitaryEquiv_mulVec, ← unitary_smul]`. Use `v.equivFun.injective hzx` as an intermediate fact. Rewrite using `[← this, inv_smul_smul, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `hz`.
+-/
 theorem smul_latOf (γ : h.unitaryGroup) (L : Submodule (𝓞 E) (Fin N → E)) :
     γ • latOf v L = latOf v (IndefiniteRowSideFullHecke.FiniteCovolume.act (unitaryEquiv h v γ : GL (Fin N) E) L) := by
   ext x
@@ -427,17 +593,26 @@ theorem smul_latOf (γ : h.unitaryGroup) (L : Submodule (𝓞 E) (Fin N → E)) 
     rw [← this, inv_smul_smul, LinearEquiv.apply_symm_apply]
     exact hz
 
+/- English proof (translation)
+Rewrite using `[latticeStab, MulAction.mem_stabilizer_iff, smul_latOf]`. Conclude with `latOf_injective.eq_iff`.
+-/
 theorem latticeStab.equiv (L : Submodule (𝓞 E) (Fin N → E)) (γ : h.unitaryGroup) :
     γ ∈ latticeStab h (latOf v L) ↔ unitaryEquiv h v γ ∈ IndefiniteRowSideFullHecke.FiniteCovolume.stab (divisionPairOfAdelicFormsFaceColumnsData h v) L := by
   rw [latticeStab, MulAction.mem_stabilizer_iff, smul_latOf]
   exact latOf_injective.eq_iff
 
+/- English proof (translation)
+Use extensionality with `γ`. Conclude with `latticeStab.equiv L γ`.
+-/
 theorem latticeStab_eq_comap (L : Submodule (𝓞 E) (Fin N → E)) :
     latticeStab h (latOf v L) =
       (IndefiniteRowSideFullHecke.FiniteCovolume.stab (divisionPairOfAdelicFormsFaceColumnsData h v) L).comap (unitaryEquiv h v).toMonoidHom := by
   ext γ
   exact latticeStab.equiv L γ
 
+/- English proof (translation)
+Unfold `archLatticeGroup IndefiniteRowSideFullHecke.FiniteCovolume.gammaInf`. Rewrite using `[Subgroup.map_map, archEmbed_comp, ← Subgroup.map_map, latticeStab_eq_comap, Subgroup.map_comap_eq_self_of_surjective (unitaryEquiv h v).surjective]`.
+-/
 theorem archLatticeGroup.equiv (L : Submodule (𝓞 E) (Fin N → E)) :
     (archLatticeGroup h v (latOf v L)).map (realEquiv h v).toMonoidHom =
       IndefiniteRowSideFullHecke.FiniteCovolume.gammaInf (divisionPairOfAdelicFormsFaceColumnsData h v) L := by
@@ -445,6 +620,17 @@ theorem archLatticeGroup.equiv (L : Submodule (𝓞 E) (Fin N → E)) :
   rw [Subgroup.map_map, archEmbed_comp, ← Subgroup.map_map, latticeStab_eq_comap,
     Subgroup.map_comap_eq_self_of_surjective (unitaryEquiv h v).surjective]
 
+/- English proof (translation)
+Establish `h1 : ringMultiples E x = latOf v (Submodule.span (𝓞 E) {v.equivFun x})`. Use extensionality with `y`. Rewrite using `[mem_latOf, Submodule.mem_span_singleton]`. Simplify using `only [ringMultiples, AddMonoidHom.mem_range, AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.flip_apply, smulAddHom_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, by rw [map_smul]; rfl⟩`. Introduce and unpack `⟨a, ha⟩`. Use `⟨a, v.equivFun.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_smul]`.
+
+Both sides reduce to the same expression. Establish `h2 : latOf v L ⊓ (Submodule.span E {x}).toAddSubgroup = latOf v (L ⊓ (Submodule.span E {v.equivFun x}).restrictScalars (𝓞 E))`. Use extensionality with `y`. Simplify using `only [AddSubgroup.mem_inf, mem_latOf, Submodule.mem_toAddSubgroup, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_span_singleton]`. Use `and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨c, (map_smul _ _ _).symm⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, v.equivFun.injective (by rw [map_smul, hc])⟩`. Unfold `FiniteCovolume.lineIndex IndefiniteRowSideFullHecke.FiniteCovolume.lineIndex`.
+
+Rewrite using `[h1, h2, relIndex_latOf]`.
+-/
 theorem lineIndex.equiv (L : Submodule (𝓞 E) (Fin N → E)) (x : W) :
     FiniteCovolume.lineIndex E (latOf v L) x = IndefiniteRowSideFullHecke.FiniteCovolume.lineIndex L (v.equivFun x) := by
   have h1 : ringMultiples E x = latOf v (Submodule.span (𝓞 E) {v.equivFun x}) := by
@@ -472,6 +658,9 @@ theorem lineIndex.equiv (L : Submodule (𝓞 E) (Fin N → E)) (x : W) :
   unfold FiniteCovolume.lineIndex IndefiniteRowSideFullHecke.FiniteCovolume.lineIndex
   rw [h1, h2, relIndex_latOf]
 
+/- English proof (translation)
+Establish `hset : {x ∈ v.equivFun ⁻¹' VV | M.len (invApply g (vecAt v x)) < t} = v.equivFun ⁻¹' {y | y ∈ VV ∧ (majOf M).norm (IndefiniteRowSideFullHecke.FiniteCovolume.gAct (realEquiv h v g)⁻¹ (IndefiniteRowSideFullHecke.FiniteCovolume.realVec y)) < t}`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Majorant.len.equiv, invApply.equiv, vecAt.equiv]`. Unfold `FiniteCovolume.countBelow IndefiniteRowSideFullHecke.FiniteCovolume.countBelow`. Rewrite using `[hset, Set.encard_preimage_of_injective_subset_range v.equivFun.injective (by rw [v.equivFun.surjective.range_eq]; exact Set.subset_univ _)]`.
+-/
 theorem countBelow.equiv (M : Majorant h v) (VV : Set (Fin N → E)) (g : archUnitary h v) (t : ℝ) :
     FiniteCovolume.countBelow M (v.equivFun ⁻¹' VV) g t =
       IndefiniteRowSideFullHecke.FiniteCovolume.countBelow (majOf M) VV t (realEquiv h v g) := by
@@ -486,6 +675,9 @@ theorem countBelow.equiv (M : Majorant h v) (VV : Set (Fin N → E)) (g : archUn
   rw [hset, Set.encard_preimage_of_injective_subset_range v.equivFun.injective
     (by rw [v.equivFun.surjective.range_eq]; exact Set.subset_univ _)]
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.restrict_map, MeasurableEquiv.preimage_image, lintegral_map_equiv]`. Unfold `massBelow`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[realMeas_apply, countBelow.equiv]`.
+-/
 theorem massBelow.equiv (M : Majorant h v) (μ : Measure (archUnitary h v))
     (FD : Set (archUnitary h v)) (VV : Set (Fin N → E)) (t : ℝ) :
     massBelow M μ FD (v.equivFun ⁻¹' VV) t =
@@ -497,6 +689,15 @@ theorem massBelow.equiv (M : Majorant h v) (μ : Measure (archUnitary h v))
   refine lintegral_congr fun g => ?_
   rw [realMeas_apply, countBelow.equiv]
 
+/- English proof (translation)
+Establish `hK : (MulAction.stabilizer (latticeStab h (latOf v L)) x).map (latticeStab h (latOf v L)).subtype = (IndefiniteRowSideFullHecke.FiniteCovolume.stab (divisionPairOfAdelicFormsFaceColumnsData h v) L ⊓ IndefiniteRowSideFullHecke.FiniteCovolume.fixVec (divisionPairOfAdelicFormsFaceCo …`. Use extensionality with `γ`. Simplify using `only [Subgroup.mem_map, Subgroup.mem_comap, Subgroup.mem_inf, MulAction.mem_stabilizer_iff, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ, rfl⟩`.
+
+Use `⟨(latticeStab.equiv L _).1 δ.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((unitaryEquiv h v (δ : h.unitaryGroup) : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ v.equivFun x = v.equivFun x`. Rewrite using `[unitaryEquiv_mulVec]`. Conclude with `congrArg v.equivFun hδ`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨⟨γ, (latticeStab.equiv L γ).2 h1⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((unitaryEquiv h v γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ v.equivFun x = v.equivFun x at h2`. Rewrite `h2` using `[unitaryEquiv_mulVec]`. Conclude with `v.equivFun.injective h2`. Unfold `vecStabGroup IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf`.
+
+Rewrite using `[← Subgroup.map_map, hK, Subgroup.map_map, archEmbed_comp, ← Subgroup.map_map, Subgroup.map_comap_eq_self_of_surjective (unitaryEquiv h v).surjective]`.
+-/
 theorem vecStabGroup.equiv (L : Submodule (𝓞 E) (Fin N → E)) (x : W) :
     (vecStabGroup h v (latOf v L) x).map (realEquiv h v).toMonoidHom =
       IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x) := by
@@ -523,16 +724,25 @@ theorem vecStabGroup.equiv (L : Submodule (𝓞 E) (Fin N → E)) (x : W) :
   rw [← Subgroup.map_map, hK, Subgroup.map_map, archEmbed_comp, ← Subgroup.map_map,
     Subgroup.map_comap_eq_self_of_surjective (unitaryEquiv h v).surjective]
 
+/- English proof (translation)
+Simplify using `[IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem matrixHermSpace_form_eq (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) (y x : Fin N → E) :
     V.h y x = y ⬝ᵥ (V.J *ᵥ fun j => IndefiniteRowSideFullHecke.FiniteCovolume.conjE E (x j)) := by
   simp [IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, dotProduct, mulVec,
     Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[matrixHermSpace_form_eq, single_dotProduct]`.
+-/
 theorem matrixHermSpace_form_single (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) (i : Fin N) (a : E)
     (x : Fin N → E) :
     V.h (Pi.single i a) x = a * (V.J *ᵥ fun j => IndefiniteRowSideFullHecke.FiniteCovolume.conjE E (x j)) i := by
   rw [matrixHermSpace_form_eq, single_dotProduct]
 
+/- English proof (translation)
+Establish `hJ : ∀ i j, IndefiniteRowSideFullHecke.FiniteCovolume.conjE E (V.J i j) = V.J j i` using `fun i j => (congrFun (congrFun V.herm i) j).symm`. Simplify using `only [IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, map_sum, map_mul, hJ, IndefiniteRowSideFullHecke.FiniteCovolume.conjE_apply, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_matrixHermSpace_form (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) (x y : Fin N → E) :
     IndefiniteRowSideFullHecke.FiniteCovolume.conjE E (V.h y x) = V.h x y := by
   have hJ : ∀ i j, IndefiniteRowSideFullHecke.FiniteCovolume.conjE E (V.J i j) = V.J j i := fun i j =>
@@ -543,6 +753,9 @@ theorem conj_matrixHermSpace_form (V : IndefiniteRowSideFullHecke.FiniteCovolume
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`. Simplify using `only [IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace.h, ReciprocityTheory.ChartRestriction.G.SA.hf, Matrix.transpose_apply, smul_eq_mul, RingHom.id_apply, conjHom_eq_conjE]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matrixSesq_apply (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) (x y : Fin N → E) :
     Matrix.toLinearMapₛₗ₂' E (conjHom F E) (RingHom.id E) V.Jᵀ x y = V.h y x := by
   rw [Matrix.toLinearMapₛₗ₂'_apply]
@@ -590,10 +803,18 @@ def hermitianFormOfMatrix (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpa
         · subst hk; simp
         · simp [hk], map_smul, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `matrixSesq_apply V x y`.
+-/
 theorem hermitianFormOfMatrix_apply (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) (x y : Fin N → E) :
     (hermitianFormOfMatrix F V).toSesq x y = V.h y x :=
   matrixSesq_apply V x y
 
+/- English proof (translation)
+Take `⟨J, hJ, hJ'⟩` from `V`. Unfold `divisionPairOfAdelicFormsFaceColumnsData`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Matrix.transpose_apply, Automorphic.gram_apply, hermitianFormOfMatrix_apply, Pi.basisFun_apply, Pi.basisFun_apply, matrixHermSpace_form_single, one_mul]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem matrixHermSpace_surjective (V : IndefiniteRowSideFullHecke.FiniteCovolume.HermSpace E N) :
     divisionPairOfAdelicFormsFaceColumnsData (hermitianFormOfMatrix F V) (Pi.basisFun E (Fin N)) = V := by
   obtain ⟨J, hJ, hJ'⟩ := V
@@ -608,6 +829,9 @@ end HidaSetting
 
 universe u w
 
+/- English proof (translation)
+Use `⟨fun F E _ _ _ _ _ _ _ _ => isCMField (F := F), fun F E _ _ _ _ _ _ _ _ _ W _ _ N h v => ?_, fun E _ _ _ N V => ⟨hermitianFormOfMatrix _ V, matrixHermSpace_surjective V⟩⟩` and prove the remaining obligations. Conclude with `⟨fDeg.equiv, by rw [Module.finrank_eq_card_basis v, Fintype.card_fin], HermSpace.h.equiv h v, unitaryGroup.equiv h v, unitaryEquiv_mulVec h v, archUnitary.equiv h v, archEmbed.equiv h v, vecAt.equiv v, invApply.equiv h v, Majorant.equiv, Majorant.len.equiv, (IsLattice.equiv (v := …`.
+-/
 theorem Objects.equiv :
     (∀ (F : Type u) (E : Type) [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]
       [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E], IsCMField E) ∧

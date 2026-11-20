@@ -15,6 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `c1 : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), cT (sigR (AF F) σ) (adMat F Z) = adMat F (cT (σ : E →+* E) Z)` using `fun Z => rfl`. Establish `hu : cT (sigR (AF F) σ) (matHom _ σ J g).1 * adMat F J * (matHom _ σ J g).1 = adMat F J` using `g.2`. Establish `h1 : adMat F (cT (σ : E →+* E) C * J) = cT (sigR (AF F) σ) (adMat F C) * adMat F J`. Rewrite using `[c1]`. Conclude with `Matrix.map_mul`.
+
+Rewrite using `[h1, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, ← e, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (adMat F J), hu]`.
+-/
 theorem dual_eq {k : ℕ} (C : Matrix (Fin n) (Fin k) E) (g : GAd σ J) (B : Matrix (Fin k) (Fin k) (AF F ⊗[F] E))
     (e : (matHom _ σ J g).1 * adMat F C = adMat F C * B) :
     cT (sigR (AF F) σ) B * adMat F (cT (σ : E →+* E) C * J) * (matHom _ σ J g).1 = adMat F (cT (σ : E →+* E) C * J) := by
@@ -27,6 +32,11 @@ theorem dual_eq {k : ℕ} (C : Matrix (Fin n) (Fin k) E) (g : GAd σ J) (B : Mat
     ← Matrix.mul_assoc _ (adMat F J), hu]
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `: unipRad σ J C ≤ frameStab σ J C ⊥` using `(Subgroup.closure_le _).2 fun g hg => ⟨1, one_mem _, by`. Establish `h1` using `hg.1`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Rewrite using `[h1]`. Use the proof step `simp⟩`.
+
+Take `⟨B, hB, e⟩` from `this hu`. Rewrite `e` using `[Subgroup.mem_bot.1 hB]`. Simplify using `using e`.
+-/
 theorem unipRad_fix {k : ℕ} {C : Matrix (Fin n) (Fin k) E} {u : GAd σ J} (hu : u ∈ unipRad σ J C) :
     (matHom _ σ J u).1 * adMat F C = adMat F C := by
   have : unipRad σ J C ≤ frameStab σ J C ⊥ := (Subgroup.closure_le _).2 fun g hg => ⟨1, one_mem _, by
@@ -39,6 +49,13 @@ theorem unipRad_fix {k : ℕ} {C : Matrix (Fin n) (Fin k) E} {u : GAd σ J} (hu 
 
 variable {X Y : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Establish `e1 : {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k'} = {i | i ≤ k}` using `by simp`. Use `⟨fun hg => ⟨unipRad_fix hg, fun y hy => ?_⟩, fun ⟨h1, h2⟩ => Subgroup.subset_closure ⟨?_, ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite `hg` using `[← unip_singleton hW]`. Use `hg.2.2 y (by rw [e1, mem_colPerp_iff]; exact hy)` as an intermediate fact. Rewrite `this` using `[e1, mem_colSpan_iff]`. Then use the resulting hypothesis.
+
+Rewrite using `[Matrix.sub_mul, h1, Matrix.one_mul, sub_self]`. Use `dual_eq (initCols X k) g 1 (by rw [h1, Matrix.mul_one])` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_one, Matrix.one_mul]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, this, sub_self]`. Use `h2 (fun i => inclR (F := F) (AF F) (x i)) (by` as an intermediate fact.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) _ x i).symm.trans (by rw [hx]; exact map_zero _))`. Conclude with `this.imp fun a ha => by rw [sub_mulVec, one_mulVec, ha]`.
+-/
 theorem mem_unipRad_iff (hW : IsWittFrame σ J X Y) (k : Fin r) (g : GAd σ J) :
     g ∈ unipRad σ J (initCols X k) ↔ (matHom _ σ J g).1 * adMat F (initCols X k) = adMat F (initCols X k) ∧
       ∀ y, adMat F (cT (σ : E →+* E) (initCols X k) * J) *ᵥ y = 0 →
@@ -57,6 +74,13 @@ theorem mem_unipRad_iff (hW : IsWittFrame σ J X Y) (k : Fin r) (g : GAd σ J) :
       exact (RingHom.map_mulVec (inclR (F := F) (AF F)) _ x i).symm.trans (by rw [hx]; exact map_zero _))
     exact this.imp fun a ha => by rw [sub_mulVec, one_mulVec, ha]
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_unipRad_iff hW]`. Take `⟨B', -, e'⟩` from `inv_mem hm`. Take `⟨B, -, e⟩` from `hm`. Establish `hmm : (matHom _ σ J m).1 * (matHom _ σ J m⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+
+Use `⟨?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, e', ← Matrix.mul_assoc (Units.val _) _ B'.1, hu.1, ← e', ← Matrix.mul_assoc, hmm, Matrix.one_mul]`. Establish `hd` using `dual_eq (initCols X k) m B.1 e`. Take `⟨a, ha⟩` from `hu.2 ((matHom _ σ J m⁻¹).1 *ᵥ y) (by`. Rewrite using `[← hd, mulVec_mulVec, Matrix.mul_assoc, hmm, Matrix.mul_one, ← mulVec_mulVec, hy, mulVec_zero])`.
+
+Use `⟨B.1 *ᵥ a, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_mulVec, ← e, ← mulVec_mulVec, ha, mulVec_sub, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, hmm, one_mulVec, map_mul, map_mul, Units.val_mul, Units.val_mul]`.
+-/
 theorem conj_mem (hW : IsWittFrame σ J X Y) (k : Fin r) {m u : GAd σ J} (hm : m ∈ frameStab σ J (initCols X k) ⊤)
     (hu : u ∈ unipRad σ J (initCols X k)) : m * u * m⁻¹ ∈ unipRad σ J (initCols X k) := by
   rw [mem_unipRad_iff hW] at hu ⊢
@@ -74,6 +98,21 @@ theorem conj_mem (hW : IsWittFrame σ J X Y) (k : Fin r) {m u : GAd σ J} (hm : 
     rw [mulVec_mulVec, ← e, ← mulVec_mulVec, ha, mulVec_sub, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, hmm, one_mulVec,
       map_mul, map_mul, Units.val_mul, Units.val_mul]
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_unipRad_iff hW]`. Take `⟨B, -, e⟩` from `hm`. Establish `hT : cT (σ : E →+* E) (initCols X k) * J * initCols Y k = 1` using `Matrix.ext fun i j => (congrFun (congrFun hW.xy (i.castLE k.2)) (j.castLE k.2)).trans (by simp [Matrix.one_apply])`. Establish `hT' : cT (σ : E →+* E) (initCols Y k) * J * initCols X k = 1` using `Matrix.ext fun i j => (congrFun (congrFun (yx h hJ hW) (i.castLE k.2)) (j.castLE k.2)).trans (by simp [Matrix.one_apply])`. Establish `aT : adMat F (cT (σ : E →+* E) (initCols X k) * J) * adMat F (initCols Y k) = 1`.
+
+Rewrite using `[← Matrix.map_mul, hT, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `aT' : adMat F (cT (σ : E →+* E) (initCols Y k) * J) * adMat F (initCols X k) = 1`. Rewrite using `[← Matrix.map_mul, hT', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `d1` using `dual_eq (initCols X k) g 1 (by rw [hg.1, Matrix.mul_one])`. Rewrite `d1` using `[Formalism.UG.cT_one, Matrix.one_mul]`.
+
+Establish `hB : B.1 = 1`. Use `congrArg (adMat F (cT (σ : E →+* E) (initCols X k) * J) * ·) e` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc] at this`. Rewrite `this` using `[d1, aT, Matrix.one_mul]`. Conclude with `this.symm`.
+
+Establish `d2` using `dual_eq (initCols Y k) g _ e`. Rewrite `d2` using `[hB, Formalism.UG.cT_one, Matrix.one_mul]`. Rewrite `e` using `[hB, Matrix.mul_one]`. Establish `h0 : ∀ y, adMat F (cT (σ : E →+* E) (initCols X k) * J) *ᵥ y = 0 → (matHom _ σ J g).1 *ᵥ y = y` using `fun y hy => by`. Take `⟨a, ha⟩` from `hg.2 y hy`.
+
+Use `congrArg (adMat F (cT (σ : E →+* E) (initCols Y k) * J) *ᵥ ·) ha` as an intermediate fact. Simplify using `only [mulVec_mulVec, mulVec_sub] at this`. Rewrite `this` using `[aT', d2, sub_self, one_mulVec]`. Rewrite `ha` using `[this, mulVec_zero]`. Conclude with `sub_eq_zero.1 ha.symm`.
+
+Establish `h1 : ∀ y, (matHom _ σ J g).1 *ᵥ y = y` using `fun y => by`. Use `h0 (y - adMat F (initCols Y k) *ᵥ adMat F (cT (σ : E →+* E) (initCols X k) * J) *ᵥ y) (by` as an intermediate fact. Rewrite using `[mulVec_sub, mulVec_mulVec (M := adMat F (cT (σ : E →+* E) (initCols X k) * J)), aT, one_mulVec, sub_self])`. Rewrite `this` using `[mulVec_sub, mulVec_mulVec (M := (matHom _ σ J g).1), e]`. Conclude with `sub_left_injective this`.
+
+Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Use `h1 (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[mulVec_single_one]`. Conclude with `(congrFun this i).trans (Pi.single_apply _ _ _)`.
+-/
 theorem eq_one (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (k : Fin r) {g : GAd σ J}
     (hg : g ∈ unipRad σ J (initCols X k)) (hm : g ∈ frameStab σ J (initCols Y k) ⊤) : g = 1 := by
   rw [mem_unipRad_iff hW] at hg
@@ -113,12 +152,26 @@ theorem eq_one (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J 
   rw [mulVec_single_one] at this
   exact (congrFun this i).trans (Pi.single_apply _ _ _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim j 0]`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+-/
 theorem mul_one_by_one {R : Type} [CommRing R] (C : Matrix (Fin n) (Fin 1) R) (B : Matrix (Fin 1) (Fin 1) R) :
     C * B = B.det • C := by
   ext i j
   rw [Subsingleton.elim j 0]
   simp [Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Rewrite `hγ` using `[← range_ratEmb]`. Take `⟨γ0, rfl⟩` from `hγ`. Establish `hmat : (matHom _ σ J (ratEmb σ J γ0)).1 = (γ0.1.1 : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) (AF F)) := by`. Use extensionality with `s t`. Both sides reduce to the same expression.
+
+Establish `hL' : adMat F L * adMat F x = 1`. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set c : E := (L * γ0.1.1 * x) 0 0 with hc`. Establish `hl : l.1 = inclR (F` using `F) (AF F) c := by`. Use `congrArg (adMat F L * ·) e` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_smul] at this`. Rewrite `this` using `[hL', hmat, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul]`. Use `congrFun (congrFun this 0) 0` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Conclude with `this.symm`.
+
+Distinguish the cases in `hc0 : c = 0`. Establish `: Subsingleton (AF F ⊗[F] E)`. Establish `h01` using `l.mul_inv`. Rewrite `h01` using `[hl, hc0, map_zero, zero_mul]`. Conclude with `subsingleton_of_zero_eq_one h01`.
+
+Rewrite using `[Subsingleton.elim l 1, map_one]`. Use `GlobalTheory.Doubling.absE_inclR (F := F) (E := E) (Units.mk0 c hc0)` as an intermediate fact. Rewrite `this` using `[show (Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 c hc0)) = l from Units.ext (by simp [hl])]`. Then use the resulting hypothesis.
+-/
 theorem absE_of_scales {x : Matrix (Fin n) (Fin 1) E} {L : Matrix (Fin 1) (Fin n) E} (hL : L * x = 1) {γ : GAd σ J}
     (hγ : γ ∈ ratPts σ J) {l : (AF F ⊗[F] E)ˣ} (e : Scales σ J x γ l) : absE F E l = 1 := by
   rw [← range_ratEmb] at hγ
@@ -145,6 +198,17 @@ theorem absE_of_scales {x : Matrix (Fin n) (Fin 1) E} {L : Matrix (Fin 1) (Fin n
     rwa [show (Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 c hc0)) = l from
       Units.ext (by simp [hl])] at this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW`. Establish `hc : ResLine.col X = initCols X 0`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression.
+
+Establish `hlev : ∀ m ∈ levi σ J X Y {0}, m ∈ frameStab σ J (initCols X 0) ⊤ ∧ m ∈ frameStab σ J (initCols Y 0) ⊤` using `fun m hm => by`. Simplify using `only [levi, Subgroup.mem_iInf] at hm`. Conclude with `hm 0 (Finset.mem_singleton_self _)`. Establish `hT' : cT (σ : E →+* E) (initCols Y 0) * J * initCols X 0 = 1` using `Matrix.ext fun i j => (congrFun (congrFun (yx h hJ hW) (i.castLE (0 : Fin (r + 1)).2)) (j.castLE (0 : Fin (r + 1)).2)).trans (by simp only [Matrix.one_apply, Fin.castLE_inj])`. Establish `h6 : ∀ γ ∈ ratPts σ J, ∀ l, Scales σ J (initCols X 0) γ l → absE F E l = 1` using `fun γ hγ l e => absE_of_scales hT' hγ e`.
+
+Rewrite using `[hc]`. Use `⟨fun m hm u hu => conj_mem hW 0 (hlev m hm).1 hu, fun g hg hm => eq_one h hJ hW 0 hg (hlev g hm).2, fun γ hγ hm => ⟨hm, ?_⟩, fun u hu => ?_, fun m hm => ?_, h6⟩` and prove the remaining obligations. Use `show γ ∈ ⨅ k ∈ ({0} : Finset (Fin (r + 1))), frameStab σ J (initCols X k) ((absE F E).comp Matrix.GeneralLinearGroup.det).ker`. Simplify using `only [Subgroup.mem_iInf]`. Introduce `k hk`.
+
+Take `rfl` from `Finset.mem_singleton.1 hk`. Take `⟨B, -, e⟩` from `(hlev γ hm).1`. Conclude with `⟨B, h6 γ hγ (Matrix.GeneralLinearGroup.det B) (e.trans (mul_one_by_one _ _)), e⟩`. Conclude with `(unipRad_fix hu).trans (one_smul _ _).symm`. Establish `h2 : m ∈ ⨅ k ∈ ({0} : Finset (Fin (r + 1))), frameStab σ J (initCols X k) ((absE F E).comp Matrix.GeneralLinearGroup.det).ker` using `hm.2`.
+
+Simplify using `only [Subgroup.mem_iInf] at h2`. Take `⟨B, hB, e⟩` from `h2 0 (Finset.mem_singleton_self _)`. Conclude with `⟨Matrix.GeneralLinearGroup.det B, e.trans (mul_one_by_one _ _), hB⟩`.
+-/
 theorem levi_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsCMExt F E σ → IsHermND σ J →
     IsWittFrame σ J X Y →

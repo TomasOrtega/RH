@@ -7,6 +7,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ X := Module.Finite.trans O X`. Unfold `cellMult`. Use `set M := balForms bar X ⧸ Submodule.span ℤ (Set.range δ)`. Use `set T := Submodule.torsion ℤ M`. Use `haveI : IsNoetherian ℤ (LinearMap.BilinForm ℤ X) := inferInstance`.
+
+Use `haveI : Module.Finite ℤ M := inferInstance`. Use `haveI : IsNoetherian ℤ M := inferInstance`. Use `haveI : Module.Finite ℤ T := inferInstance`. Use `haveI : AddGroup.FG T := by`. Rewrite using `[← Module.Finite.iff_addGroup_fg]`.
+
+Use `infer_instance`. Use `haveI : Finite T := by`. Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Take `⟨⟨a, ha⟩, hax⟩` from `hx`.
+
+Use `(isOfFinAddOrder_iff_zsmul_eq_zero).2 ⟨a, nonZeroDivisors.ne_zero ha, ?_⟩` and prove the remaining obligations. Use `ext`. Conclude with `hax`. Conclude with `Nat.card_pos`.
+-/
 theorem cellMult_pos {O : Type} [CommRing O] [Module.Finite ℤ O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m : ℕ} (δ : Fin m → balForms bar X) : 0 < cellMult bar δ := by
   haveI : Module.Finite ℤ X := Module.Finite.trans O X

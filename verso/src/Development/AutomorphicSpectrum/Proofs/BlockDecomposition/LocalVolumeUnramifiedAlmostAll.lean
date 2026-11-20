@@ -14,6 +14,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.StageGoodFree
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht n T hT d b`. Take `⟨hdet, hherm, -, -⟩` from `BlockAlg.block_alg F E σ hCM M J t`. Establish `hND : IsHermND σ (blockOne (algebraMap F E t) J)` using `⟨hherm hJ.1, by`. Rewrite using `[hdet]`. Conclude with `mul_ne_zero (by simpa using ht) hJ.2⟩`.
+
+Use `filter_upwards [GoodTrans.good_trans F E σ hCM (M + 1) _ hND t ht d b, (LatRat.latV_rational F E σ hCM d b n M).2.2, (LatRat.latV_rational F E σ hCM d b 0 M).2.2] with v hv hv1 hv0`. Introduce `μ ν m hμ hν hm h`. Establish `hLoc` using `LocFv.isLocR_Fv F v`. Take `⟨i1, i2, i3, i4, -⟩` from `id hLoc`. Establish `: BorelSpace (Fv F v)` using `⟨rfl⟩`.
+
+Take `⟨-, -, -, -, -, -, -, hBorel, -, -⟩` from `TopK.topTens_props F E σ hCM (Fv F v)`. Use `hBorel n M` as an intermediate fact. Establish `hOpen` using `((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2`. Take `⟨-, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 1) _ hND (Fv F v)`. Take `⟨-, -, -, -, -, hactJ⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ (Fv F v)`.
+
+Take `⟨-, hone, hmul, hgram⟩` from `hact 1`. Distinguish the cases in `he : actW (Fv F v) σ _ h (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0)) ∈ latV b v`. Rewrite using `[Set.indicator_of_mem he]`. Establish `he0 : (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → Fv F v ⊗[F] E)) ∈ latV b v`. Establish `h0` using `(hv0 (fun a : Fin 0 => a.elim0)).2 (fun a => a.elim0)`.
+
+Establish `hc : consTup (fun a : Fin 0 => a.elim0) = (fun _ : Fin 1 => (Fin.cons 1 (fun _ => 0) : Fin (M + 1) → Fv F v ⊗[F] E))`. Use function extensionality and compare the values at `a`. Conclude with `Fin.cases rfl (fun j => j.elim0) a`. Rewrite `h0` using `[hc]`. Then use the resulting hypothesis. Take `⟨k, hk, hkl⟩` from `hv _ _ he0 he (StageGood.gram_first (Fv F v) σ J t) (hgram h _)`.
+
+Take `⟨ι, -, -, hrange, -, hcons⟩` from `StabFirst.stab_first F E σ hCM M J hJ t ht (Fv F v)`. Establish `hg : actW (Fv F v) σ _ (k⁻¹ * h) (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0)) = (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))`. Rewrite using `[hmul, ← hk, ← hmul, inv_mul_cancel, hone]`. Take `⟨u, hu⟩` from `(hrange _).2 hg`. Establish `hh : h = k * ι u` using `by rw [hu]; group`.
+
+Establish `hset : {X : Fin n → Fin M → Fv F v ⊗[F] E | actW (Fv F v) σ _ h (consTup X) ∈ latV b v} = actW (Fv F v) σ J u ⁻¹' latV b v`. Use extensionality with `X`. Rewrite using `[Set.mem_ofPred_eq, Set.mem_preimage, hh]`. Use `(hact (n + 1)).2.2.1 k (ι u) (consTup X)` as an intermediate fact. Rewrite using `[this, hkl, hcons, hv1]`.
+
+Establish `hcont : Continuous (actW (Fv F v) σ J u : (Fin n → Fin M → Fv F v ⊗[F] E) → _)` using `(hactJ n).1.comp (Continuous.prodMk continuous_const continuous_id)`. Rewrite using `[hset, ← Measure.map_apply hcont.measurable hOpen.measurableSet, GlobalTheory.T.local_gram_fibration_disintegration F E σ hCM M J hJ (Fv F v) hLoc n μ ν m hμ hν hm u]`. Rewrite using `[Set.indicator_of_notMem he]`. Establish `hempty : {X : Fin n → Fin M → Fv F v ⊗[F] E | actW (Fv F v) σ _ h (consTup X) ∈ latV b v} = ∅`. Use extensionality with `X`.
+
+Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hX => he (StageGood.first_mem b v σ _ h X hX)`. Rewrite using `[hempty, measure_empty]`.
+-/
 theorem stage_good_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ (μ : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (ν : Measure (HermR (Fv F v) σ n)) m, μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFibFree (Fv F v) σ J n μ ν m → ∀ h : HA (Fv F v) σ (blockOne (algebraMap F E t) J), m (hermOf (Fv F v) σ T hT) {X | actW (Fv F v) σ _ h (consTup X) ∈ latV b v} = (latV b v).indicator (fun _ => m (hermOf (Fv F v) σ T hT) (latV b v)) (actW (Fv F v) σ _ h (fun _ : Fin 1 => Fin.cons 1 (fun _ => 0))) := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n T hT d b
   obtain ⟨hdet, hherm, -, -⟩ := BlockAlg.block_alg F E σ hCM M J t

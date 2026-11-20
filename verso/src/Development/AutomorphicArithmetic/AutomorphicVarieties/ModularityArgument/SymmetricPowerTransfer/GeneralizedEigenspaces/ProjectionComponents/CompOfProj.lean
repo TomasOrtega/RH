@@ -26,6 +26,15 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Establish `hle : π ≤ GlobalTheory.DefU.autU L n` using `hπ.aut`. Establish `hK : π ⊓ (LinearMap.ker P).map (GlobalTheory.DefU.autU L n).subtype = ⊥`. Use `(hπ.irred _ inf_le_left ?_).resolve_right fun e => h0 ?_` and prove the remaining obligations. Introduce and unpack `x _ ⟨h1, φ, h2, rfl⟩`. Use `⟨hπ.stable x _ h1, GlobalTheory.DefU.autRep L n x φ, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h2' : P φ = 0` using `h2`. Express the relevant statement in the definitionally equal form `P _ = 0`. Rewrite using `[he, h2', map_zero]`. Take `⟨-, φ, h2, h3⟩` from `e.ge hψ`. Take `rfl : φ = ψ` from `Subtype.ext h3`.
+
+Conclude with `h2`. Take `⟨h1, f, hf0, hf, h2⟩` from `h`. Set `g` to `f.codRestrict (GlobalTheory.DefU.autU L n) fun v => hle (hf v)`. Use `⟨h1, (GlobalTheory.DefU.autU L n).subtype ∘ₗ P ∘ₗ g, fun e => hf0 (LinearMap.ext fun v => ?_), fun v => hP _, fun x v => ?_⟩` and prove the remaining obligations. Establish `h3 : P (g v) = 0` using `Subtype.ext (LinearMap.congr_fun e v)`.
+
+Conclude with `hK.le ⟨hf v, g v, h3, rfl⟩`. Establish `h3 : g (τ.ρ (((cLoc w).comp (locU n w).subtype) x) v) = GlobalTheory.DefU.autRep L n x (g v)` using `Subtype.ext (h2 x v)`. Conclude with `congrArg Subtype.val ((congrArg P h3).trans (he x _))`.
+-/
 private theorem comp_of_proj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {π σ : Submodule ℂ (UA L n → ℂ)} (hπ : IsAutRepU π)
     (P : GlobalTheory.DefU.autU L n →ₗ[ℂ] GlobalTheory.DefU.autU L n) (hP : ∀ φ, (P φ).1 ∈ σ)
@@ -53,6 +62,17 @@ private theorem comp_of_proj {L : Type} [Field L] [NumberField L] [IsCMField L] 
       Subtype.ext (h2 x v)
     exact congrArg Subtype.val ((congrArg P h3).trans (he x _))
 
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ _ R hR U hU`. Use `afFin L n V R U hU` as an intermediate fact. Set `b` to `Module.finBasis ℂ V`. Set `T : Fin (Module.finrank ℂ V) → AF R U →ₗ[ℂ] GlobalTheory.DefU.autU L n` to `fun i => (((b.coord i).compLeft (UA L n)) ∘ₗ (AF R U).subtype).codRestrict _ fun φ => coefAut L n V R hR U hU φ.1 φ.2 (b.coord i)`. Take `⟨κ, _, σ, P, h1, h2, h3, h4⟩` from `autProj L n (⨆ i, LinearMap.range (T i)) inferInstance`.
+
+Use `⟨{s ∈ Set.range σ | ∃ φ ∈ s, φ ≠ 0 ∧ ∀ u ∈ U, RU L n u φ = φ}, (Set.finite_range σ).subset fun _ h => h.1, ?_, fun π hπ φ h0 hφ hc => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨i, rfl⟩, h⟩`. Conclude with `⟨h1 i, h⟩`. Take `⟨i, hi⟩ : ∃ i, T i ⟨φ, hφ⟩ ≠ 0` from `by by_contra! h`. Use `h0 (funext fun g => b.ext_elem fun i => ?_)` and prove the remaining obligations.
+
+Establish `h5 : b.coord i (φ g) = 0` using `congrFun (congrArg Subtype.val (h i)) g`. Simplify using `using h5`. Take `⟨k, hk⟩ : ∃ k, P k (T i ⟨φ, hφ⟩) ≠ 0` from `by by_contra! h`. Use `hi ?_` and prove the remaining obligations. Rewrite using `[← h4 (T i ⟨φ, hφ⟩) (Submodule.mem_iSup_of_mem i ⟨_, rfl⟩)]`.
+
+Simplify using `[h]`. Use `⟨σ k, ⟨⟨k, rfl⟩, (P k (T i ⟨φ, hφ⟩)).1, h2 k _, fun e => hk (Subtype.ext e), fun u hu => ?_⟩, comp_of_proj hπ (P k) (h2 k) (h3 k) _ (hc (b.coord i)) hk⟩` and prove the remaining obligations. Establish `e : GlobalTheory.DefU.autRep L n u (T i ⟨φ, hφ⟩) = T i ⟨φ, hφ⟩` using `Subtype.ext (funext fun g => congrArg (b.coord i) (hφ.level u hu g))`. Use `h3 k u (T i ⟨φ, hφ⟩)` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `congrArg Subtype.val this.symm`.
+-/
 theorem UpperTheory.V.Z.Sym.U.finFamU :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (R : Representation ℂ (InfinitePlace L → GL (Fin n) ℂ) V), ContCoef R → ∀ U, IsLevel U →
         ∃ A : Set (Submodule ℂ (UA L n → ℂ)), A.Finite ∧ (∀ σ ∈ A, IsAutRepU σ ∧ (∃ φ ∈ σ, φ ≠ 0 ∧ ∀ u ∈ U, RU L n u φ = φ)) ∧
@@ -86,6 +106,13 @@ theorem UpperTheory.V.Z.Sym.U.finFamU :
   rw [e] at this
   exact congrArg Subtype.val this.symm
 
+/- English proof (translation)
+Establish `hk : x ∈ Kall L n`. Use `((factor L n w).2.2.2.2.1 x hx).2 ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL]`. Conclude with `((Sig.finFacts _ (iw w)).2.2.2.2.2 n).2.2.2 hJ`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`.
+
+Use `⟨hK w hw ⟨hx, hk⟩, fun w' hw' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Conclude with `hJ`. Establish `hne : w.under (𝓞 (Lp L)) ≠ w'.under (𝓞 (Lp L))` using `fun h => e (hS.inj hw' hw h.symm)`.
+
+Use `(factor L n w').2.2.1 w hne hx` as an intermediate fact. Simplify using `only [away, Subgroup.mem_iInf] at this`. Rewrite using `[Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]`. Conclude with `one_mem _`.
+-/
 private theorem mem_lev {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {U : Subgroup (UA L n)} {S : Finset (Plc L)}
     (hS : Places (S : Set (Plc L))) (hK : ∀ w ∈ S, locU n w ⊓ Kall L n ≤ U) {w : Plc L} (hw : w ∈ S) {x : UA L n}
     (hx : x ∈ locU n w) (hJ : cLoc w x ∈ (iw w).J n) : x ∈ lev U S iw := by
@@ -117,6 +144,11 @@ def UpperTheory.V.Z.Sym.U.AdLiftU : Prop :=
     ∃ σ : Submodule ℂ (UA L 2 → ℂ), IsAutRepU σ ∧
       ∀ᶠ w in Filter.cofinite, w ∈ P → ∃ ψ', CompSub σ w ψ' ∧ ψ' 0 / ψ' 1 = (ψ w 0 / ψ w 1) ^ 2
 
+/- English proof (translation)
+Take `⟨φ, h1, h2, h3⟩` from `h`. Use `⟨φ, h1, h2, fun x hx hK => h3 x ?_⟩` and prove the remaining obligations. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf]`. Use `⟨((factor L n w).2.2.2.2.1 x hx).2 hK, fun w' hw' => ?_⟩` and prove the remaining obligations. Use `(factor L n w').2.2.1 w (hw w' hw').symm hx` as an intermediate fact.
+
+Simplify using `only [away, Subgroup.mem_iInf] at this`. Rewrite using `[Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]`. Conclude with `one_mem _`.
+-/
 private theorem unram_of {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (σ : Submodule ℂ (UA L n → ℂ)) (S : Finset (Plc L))
     (V : ∀ w : Plc L, Sig.Lev (Kw w)) (h : ∃ φ ∈ σ, φ ≠ 0 ∧ ∀ u ∈ lev (Kall L n) S V, RU L n u φ = φ) (w : Plc L)
     (hw : ∀ w' ∈ S, w'.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L))) : IsUnramU σ w := by
@@ -129,6 +161,11 @@ private theorem unram_of {L : Type} [Field L] [NumberField L] [IsCMField L] {n :
   rw [Subgroup.mem_comap, (MonoidHom.mem_ker.1 (this w' rfl))]
   exact one_mem _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `choose f hf using fun x : A => hn x.1 x.2`. Use `haveI := hA.fintype`. Take `⟨x, hx, h1⟩` from `h (Finset.univ.image f)`.
+
+Conclude with `hf ⟨x, hx⟩ (h1 _ (Finset.mem_image_of_mem f (Finset.mem_univ _)))`.
+-/
 private theorem pigeon {X I : Type} (A : Set X) (hA : A.Finite) (P : X → I → Prop)
     (h : ∀ S : Finset I, ∃ x ∈ A, ∀ i ∈ S, P x i) : ∃ x ∈ A, ∀ i, P x i := by
   classical

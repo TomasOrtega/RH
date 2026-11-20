@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `R _ G _ _ N C D _ _ _ _ ψ j W P hP`. Set `x : PrimeSpectrum C` to `PrimeSpectrum.comap (ψ : C →+* D) P`. Establish `key : ∀ (E : Type) [CommRing E] [Algebra R E] (φ : C →ₐ[R] E) (Q : PrimeSpectrum E), (torsMap φ j).1.left Q = j.1.left (PrimeSpectrum.comap (φ : C →+* E) Q)`. Introduce `E _ _ φ Q`. Both sides reduce to the same expression.
+
+Establish `hx : j.1.left x ∈ W` using `by rw [key] at hP; exact hP`. Establish `hopen : IsOpen (X` using `PrimeSpectrum C) ((fun y : PrimeSpectrum C => j.1.left y) ⁻¹' (W : Set G.left)) := W.isOpen.preimage j.1.left.continuous`. Take `⟨U, ⟨e, rfl⟩, hxe, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := x) hx hopen`. Use `⟨e, hxe, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, rfl⟩`.
+
+Establish `hQ : PrimeSpectrum.comap (algebraMap C (Localization.Away e)) Q ∈ (PrimeSpectrum.basicOpen e : Set (PrimeSpectrum C))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away e) e]`. Conclude with `⟨Q, rfl⟩`. Use `hsub hQ` as an intermediate fact. Conclude with `(key _ (IsScalarTower.toAlgHom R C (Localization.Away e)) Q) ▸ this`.
+-/
 theorem exists_away_range_torsMap_subset : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (C D : Type) [CommRing C] [Algebra R C] [CommRing D] [Algebra R D] (ψ : C →ₐ[R] D) (j : Tors G N C) (W : G.left.Opens) (P : PrimeSpectrum D), (torsMap ψ j).1.left P ∈ W → ∃ e : C, ψ e ∉ P.asIdeal ∧ Set.range (torsMap (IsScalarTower.toAlgHom R C (Localization.Away e)) j).1.left ⊆ W := by
   intro R _ G _ _ N C D _ _ _ _ ψ j W P hP
   let x : PrimeSpectrum C := PrimeSpectrum.comap (ψ : C →+* D) P

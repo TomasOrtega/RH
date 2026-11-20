@@ -15,6 +15,11 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
 
 local notation "LL" => IntermediateField.normalClosure E E' Ω
 
+/- English proof (translation)
+Establish `: Finite (𝓞 K ⧸ v.asIdeal)` using `v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Set `` to `Fintype.ofFinite (𝓞 K ⧸ v.asIdeal)`. Establish `hc : ((Fintype.card (𝓞 K ⧸ v.asIdeal) : ℕ) : 𝓞 K ⧸ v.asIdeal) = 0` using `Nat.cast_card_eq_zero _`. Rewrite `hc` using `[← Nat.card_eq_fintype_card, show Nat.card (𝓞 K ⧸ v.asIdeal) = g ^ n from hN, Nat.cast_pow]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+
+Conclude with `(pow_eq_zero_iff hn.ne').1 hc`.
+-/
 theorem natCast_mem_of_normV {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (g n : ℕ)
     (hn : 0 < n) (hN : normV v = g ^ n) : ((g : ℕ) : 𝓞 K) ∈ v.asIdeal := by
   have : Finite (𝓞 K ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot
@@ -24,6 +29,27 @@ theorem natCast_mem_of_normV {K : Type} [Field K] [NumberField K] (v : HeightOne
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact (pow_eq_zero_iff hn.ne').1 hc
 
+/- English proof (translation)
+Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: NumberField (LL)` using `{ to_charZero := charZero_of_injective_algebraMap (algebraMap E (LL)).injective to_finiteDimensional := Module.Finite.trans E (LL) }`. Establish `: IsGalois E' (LL)` using `IsGalois.tower_top_of_isGalois E E' (LL)`. Establish `hmem : ∀ x : 𝓞 (LL), (((x : LL) : Ω)) ∈ A` using `fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int A ((x.2).map (IsScalarTower.toAlgHom ℤ (LL) Ω))`. Set `ψ : 𝓞 (LL) →+* A` to `{ toFun := fun x => ⟨((x : LL) : Ω), hmem x⟩ map_one' := by ext; simp map_mul' := by intro x y; ext; simp map_zero' := by ext; simp map_add' := by intro x y; ext; simp }`.
+
+Set `P : Ideal (𝓞 (LL))` to `(IsLocalRing.maximalIdeal A).comap ψ`. Establish `hP : ∀ x : 𝓞 (LL), x ∈ P ↔ A.valuation (((x : LL) : Ω)) < 1` using `fun x => A.valuation_lt_one_iff (ψ x)`. Establish `: P.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hcE : ∀ x : 𝓞 E, (((algebraMap (𝓞 E) (𝓞 (LL)) x : 𝓞 (LL)) : LL) : Ω) = algebraMap E Ω (x : E)` using `fun x => rfl`. Establish `hcE' : ∀ x : 𝓞 E', (((algebraMap (𝓞 E') (𝓞 (LL)) x : 𝓞 (LL)) : LL) : Ω) = algebraMap E' Ω (x : E')` using `fun x => rfl`.
+
+Establish `: P.LiesOver w.asIdeal` using `⟨Ideal.ext fun x => by`. Rewrite using `[Ideal.under, Ideal.mem_comap, hP, hcE]`. Conclude with `(h x).symm⟩`. Establish `: P.LiesOver w'.asIdeal` using `⟨Ideal.ext fun x => by`. Rewrite using `[Ideal.under, Ideal.mem_comap, hP, hcE']`.
+
+Conclude with `(h' x).symm⟩`. Establish `: w'.asIdeal.LiesOver w.asIdeal` using `⟨Ideal.ext fun x => by`. Rewrite using `[Ideal.under, Ideal.mem_comap, ← h' _, ← h x]`. Establish `e1 : algebraMap E' Ω ((algebraMap (𝓞 E) (𝓞 E') x : 𝓞 E') : E') = algebraMap E Ω (x : E)` using `(IsScalarTower.algebraMap_apply E E' Ω (x : E)).symm`. Rewrite using `[e1]⟩`.
+
+Establish `: IsGaloisGroup (LL ≃ₐ[E] LL) (𝓞 E) (𝓞 (LL))` using `IsGaloisGroup.of_isFractionRing (LL ≃ₐ[E] LL) (𝓞 E) (𝓞 (LL)) E (LL)`. Establish `: IsGaloisGroup (LL ≃ₐ[E'] LL) (𝓞 E') (𝓞 (LL))` using `IsGaloisGroup.of_isFractionRing (LL ≃ₐ[E'] LL) (𝓞 E') (𝓞 (LL)) E' (LL)`. Establish `c1` using `Ideal.card_inertia_eq_ramificationIdxIn (G := LL ≃ₐ[E] LL) w.asIdeal P`. Establish `c2` using `Ideal.card_inertia_eq_ramificationIdxIn (G := LL ≃ₐ[E'] LL) w'.asIdeal P`. Rewrite `c1` using `[Ideal.ramificationIdxIn_eq_ramificationIdx w.asIdeal P (LL ≃ₐ[E] LL)]`.
+
+Rewrite `c2` using `[Ideal.ramificationIdxIn_eq_ramificationIdx w'.asIdeal P (LL ≃ₐ[E'] LL)]`. Establish `tower` using `Ideal.ramificationIdx_tower (R := 𝓞 E) w'.asIdeal P`. Establish `hcard : Nat.card (P.inertia (LL ≃ₐ[E] LL)) ≤ Nat.card (P.inertia (LL ≃ₐ[E'] LL))`. Rewrite using `[c1, c2, tower, he, one_mul]`. Set `f : P.inertia (LL ≃ₐ[E'] LL) → P.inertia (LL ≃ₐ[E] LL)` to `fun τ => ⟨τ.1.restrictScalars E, fun x => τ.2 x⟩`.
+
+Establish `hf : Function.Injective f` using `fun τ τ' hτ => Subtype.ext (AlgEquiv.restrictScalars_injective E (congrArg Subtype.val hτ))`. Establish `hbij` using `hf.bijective_of_nat_card_le hcard`. Set `σb : LL ≃ₐ[E] LL` to `σ.restrictNormal (LL)`. Establish `hcomm : ∀ y : LL, ((σb y : LL) : Ω) = σ ((y : LL) : Ω)` using `fun y => AlgEquiv.restrictNormal_commutes σ (LL) y`. Establish `hσb : σb ∈ P.inertia (LL ≃ₐ[E] LL)` using `fun x => by show σb • x - x ∈ P`.
+
+Rewrite using `[hP]`. Establish `e2 : (((σb • x - x : 𝓞 (LL)) : LL) : Ω) = ((σb (x : LL) : LL) : Ω) - ((x : LL) : Ω)` using `rfl`. Rewrite using `[e2, hcomm]`. Conclude with `hσ.2 _ ((A.valuation_le_one_iff _).2 (hmem x))`. Take `⟨τ, hτ⟩` from `hbij.2 ⟨σb, hσb⟩`.
+
+Establish `hτ' : τ.1.restrictScalars E = σb` using `congrArg Subtype.val hτ`. Establish `key : σb (algebraMap E' (LL) e) = algebraMap E' (LL) e`. Rewrite using `[← hτ']`. Conclude with `τ.1.commutes e`. Establish `e5 : (((algebraMap E' (LL) e : LL)) : Ω) = algebraMap E' Ω e` using `rfl`.
+
+Rewrite using `[← e5, ← hcomm, key]`.
+-/
 theorem fix_of_ine (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)
     (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A w')
     (he : ∀ [w'.asIdeal.LiesOver w.asIdeal], w'.asIdeal.ramificationIdx (𝓞 E) = 1)
@@ -93,6 +119,17 @@ theorem fix_of_ine (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h
 
 end Fix
 
+/- English proof (translation)
+Establish `hgw'` using `natCast_mem_of_normV w' g n hn hN`. Establish `hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal`. Use `(h _).1 ?_` and prove the remaining obligations. Establish `e1 : algebraMap E Ω (((g : ℕ) : 𝓞 E) : E) = algebraMap E' Ω (((g : ℕ) : 𝓞 E') : E')` using `by simp`. Rewrite using `[e1]`.
+
+Conclude with `(h' _).2 hgw'`. Establish `he : ∀ [w'.asIdeal.LiesOver w.asIdeal], w'.asIdeal.ramificationIdx (𝓞 E) = 1`. Introduce `_`. Establish `hmap : ¬ Ideal.map (algebraMap (𝓞 E) (𝓞 E')) w.asIdeal ≤ w'.asIdeal ^ 2` using `fun hle => hg (by`. Use `hle (Ideal.mem_map_of_mem (algebraMap (𝓞 E) (𝓞 E')) hgw)` as an intermediate fact.
+
+Rewrite using `[map_natCast] at this)` and apply the resulting hypothesis. Establish `hlt` using `Ideal.ramificationIdx'_lt hmap`. Rewrite `hlt` using `[Ideal.ramificationIdx'_eq_ramificationIdx w.asIdeal w'.asIdeal w.ne_bot]`. Establish `hpos` using `Ideal.ramificationIdx_pos w'.asIdeal (𝓞 E)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfix` using `fix_of_ine A w h w' h' he σ hσ`. Set `t : G E' Ω` to `{ σ.toRingEquiv with commutes' := hfix }`. Use `⟨t, ⟨?_, fun x hx => hσ.2 x hx⟩, AlgEquiv.ext fun x => rfl⟩` and prove the remaining obligations. Use `show t • A = A`. Establish `hd : σ • A = A` using `hσ.1`.
+
+Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Use `conv_rhs => rw [← hd]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `Iff.rfl`.
+-/
 theorem ine_lift {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E E']
     [Algebra E Ω] [Algebra E' Ω] [IsScalarTower E E' Ω] [IsAlgClosure E Ω] [IsAlgClosure E' Ω] (g : ℕ)
     [Fact g.Prime] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)

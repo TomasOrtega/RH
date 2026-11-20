@@ -13,6 +13,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.ProjVar
 
+/- English proof (translation)
+Introduce `Y` and use `⟨_, ProjSpace.veryAmpleBy_secPull_coord Y.ι⟩`.
+-/
 theorem exists_veryAmpleBy_O1 : ∀ Y : Var ℂ, ∃ s : Fin (Y.N + 1) → ((ProjSpace.O1 ℂ Y.N).pull Y.ι).Sec, GlobalTheory.AbLaw.VeryAmpleBy Y.str ((ProjSpace.O1 ℂ Y.N).pull Y.ι) s :=
   fun Y => ⟨_, ProjSpace.veryAmpleBy_secPull_coord Y.ι⟩
 

@@ -10,6 +10,31 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `A L mu0 N w w0 s De σ T f hn hD hF hX hσ hpos hT hf hint hvan`. Establish `h0` using `A.start_int hMVI hn hD hf hT hint hvan`. Establish `key : ∀ m, m ≤ T - n → ∃ hh : (Fin m → Fin n) → ι → Y → ℂ, (∀ q, A.IsSec (mu0 + (T - m) • L) (hh q) ∧ ∫⁻ y, ENNReal.ofReal (A.nsq (mu0 + (T - m) • L) (hh q) y * A.sqn L s y ^ (-(((T - m : ℕ) : ℝ) - 1 / 2)) * A.sqn L w y ^ (-(1 / 2 : ℝ))) ∂A.mu < ⊤) ∧ ∀ i y, y ∈ (A.chart i).source …`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Introduce `_`. Use `⟨fun _ => f, fun q => ⟨by simpa using hf, by simpa using h0⟩, fun i y _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `hm`. Take `⟨hh, hhP, hsum⟩` from `ih (by omega)`. Establish `hT' : n + 1 ≤ T - m` using `by omega`. Use `choose H hH hHsum using fun q => b_step A hS hE hN hLSE hn hD hF hX hσ hpos (T - m) hT' (hh q) (hhP q).1 (hhP q).2`. Use `⟨fun q' => H (Fin.tail q') (q' 0), fun q' => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : T - (m + 1) = T - m - 1` using `by omega`. Establish `e2 : (((T - m - 1 : ℕ) : ℝ) - 1 / 2) = ((T - m : ℕ) : ℝ) - 3 / 2`. Rewrite using `[Nat.cast_sub (show 1 ≤ T - m by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨h1, h2⟩` from `hH (Fin.tail q') (q' 0)`. Rewrite using `[e1, e2]`. Conclude with `⟨h1, h2⟩`. Introduce `i y hy`. Rewrite using `[hsum i y hy, ← (Fin.consEquiv (fun _ => Fin n)).sum_comp, Fintype.sum_prod_type]`.
+
+Simplify using `only [Fin.consEquiv_apply, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ,`. Use the proof step `]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[hHsum q i y hy, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Establish `et : Fin.tail ((Fin.consEquiv fun _ => Fin n) (k, q)) = q` using `Fin.tail_cons (α := fun _ => Fin n) k q`. Rewrite using `[et]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hh, hhP, hsum⟩` from `key (T - n) le_rfl`.
+
+Establish `eT : T - (T - n) = n` using `by omega`. Rewrite `hhP` using `[eT]`. Use `set cnt : (Fin (T - n) → Fin n) → Fin n → ℕ := fun q k => (Finset.univ.filter (fun j => q j = k)).card with hcnt`. Use `⟨fun α i y => ∑ q ∈ Finset.univ.filter (fun q => cnt q = α), hh q i y, fun α _ => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `A.isSec_sum _ (fun q _ => (hhP q).1)`.
+
+Conclude with `A.sum_int _ hh (fun q _ => (hhP q).1) (fun y => A.sqn L w y ^ (-(n : ℝ))) ((A.continuous_sqn hD.sec_w).measurable.pow_const _) (fun y => Real.rpow_nonneg (A.sqn_nonneg _ _ y) _) (fun q _ => A.end_int (by omega) hD (hhP q).2)`. Introduce `i y hy`. Rewrite using `[hsum i y hy]`. Establish `hmaps : ∀ q ∈ (Finset.univ : Finset (Fin (T - n) → Fin n)), cnt q ∈ Finset.Nat.antidiagonalTuple n (T - n)`. Introduce `q _`.
+
+Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`. Simplify using `only [cnt]`. Rewrite using `[← Finset.card_eq_sum_card_fiberwise (fun j _ => Finset.mem_univ (q j))]`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`.
+
+Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun q hq => ?_)` and prove the remaining obligations. Establish `hq' : cnt q = α` using `(Finset.mem_filter.1 hq).2`. Use `congr 1`.
+
+Rewrite using `[← hq', ← Finset.prod_fiberwise Finset.univ q (fun j => s (q j) i y)]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (fun j hj => by rw [(Finset.mem_filter.1 hj).2]), Finset.prod_const]`.
+-/
 theorem b (n : ℕ) (Y : Type u) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] (hS : SAll.{u} n) (hE : EXTStatement n) (hN : EXTNullStatement n)
     (hLSE : LSEAll.{u} n) (hMVI : MVIntStatement n) : BStatement n Y ι La := by
   classical

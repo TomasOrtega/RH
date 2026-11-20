@@ -26,6 +26,9 @@ open TrivSqZeroExt (inl inr)
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, Finset.prod_empty]`. Both sides reduce to the same expression. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, PullbackSections.tv_add, ih]`.
+-/
 theorem tv_finsum {κ : Type} (s : Finset κ) (f : κ → TanM (𝟙 (Sp R)) G) :
     tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   classical
@@ -33,6 +36,11 @@ theorem tv_finsum {κ : Type} (s : Finset κ) (f : κ → TanM (𝟙 (Sp R)) G) 
   | empty => simp only [Finset.sum_empty, Finset.prod_empty]; rfl
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, PullbackSections.tv_add, ih]
 
+/- English proof (translation)
+Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' h hW f => ?_⟩` and prove the remaining obligations. Establish `h1` using `fun c => (he c).1 W hW f f'`. Simplify using `only [h1, mul_add, Finset.sum_add_distrib]`. Establish `h1` using `fun c => (he c).2.1 W hW f f'`. Simplify using `only [h1, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`.
+
+Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun c _ => by ring`. Establish `h1` using `fun c => (he c).2.2 W W' h hW f`. Simplify using `only [h1, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ArcPts.SecValue.res_constFn G.hom h (a c)]`.
+-/
 theorem isField_comb (g : ℕ) (e : Fin g → Fld G.left) (he : ∀ c, IsField ⊤ (e c)) (a : Fin g → R) :
     IsField ⊤ (fun O f => ∑ c, constFn G.hom O (a c) * e c O f) := by
   refine ⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' h hW f => ?_⟩
@@ -46,6 +54,29 @@ theorem isField_comb (g : ℕ) (e : Fin g → Fld G.left) (he : ∀ c, IsField �
     refine Finset.sum_congr rfl fun c _ => ?_
     rw [← GlobalTheory.ArcPts.SecValue.res_constFn G.hom h (a c)]
 
+/- English proof (translation)
+Introduce `R _ G _ _ g w e hw a`. Use `⟨isField_comb g e (fun c => (hw c).1) a, ?_⟩` and prove the remaining obligations. Introduce `S _ φ x w' O f hx hO htr`. Use `letI : Algebra R S := φ.toAlgebra`. Establish `hG` using `GlobalTheory.Heat.CoeffWt.isGrpPullback_self G`.
+
+Use `choose u hu using fun c => PullbackSections.push_surj hG (tv (w c))`. Establish `hul : ∀ c, (u c).left = (tv (w c)).left` using `fun c => (Category.comp_id _).symm.trans (congrArg (fun q => q.left) (hu c))`. Establish `ht : ∀ c, IsTangent (u c)` using `fun c => (PullbackSections.isTangent_iff hG _).2 (by rw [hu c]; exact PullbackSections.tv_mem _)`. Set `z0 : Chart.sp (R₀` to `R) S ⟶ G := Over.homMk x hx`. Set `z : Chart.sp (R₀` to `R) (DualNumber S) ⟶ G := Chart.spMap (GlobalTheory.SqZero.inlS R S) ≫ z0`.
+
+Set `ee : Fin g → DualNumber S` to `fun c => inr (φ (a c))`. Establish `hee : ∀ i j, ee i * ee j = 0` using `fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _`. Take `⟨a₁, a₂⟩` from `GlobalTheory.ZH.CrdCalc.valR_spMap (GlobalTheory.SqZero.inlS R S).toRingHom x O hO`. Take `⟨b₁, b₂⟩` from `GlobalTheory.Heat.CoeffWt.valR_prod hul ht hw ee hee z O a₁ Finset.univ`. Use `choose U hU using PullbackSections.push_surj hG (tv (∑ c, a c • w c))`.
+
+Establish `hU' : U = ∏ c, PullbackSections.scK (a c) (u c)`. Use `PullbackSections.push_inj hG ?_` and prove the remaining obligations. Rewrite using `[hU, map_prod, tv_finsum]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[PullbackSections.push_scK, hu c, PullbackSections.tv_smul]`.
+
+Establish `hUl : U.left = (tv (∑ c, a c • w c)).left` using `(Category.comp_id _).symm.trans (congrArg (fun q => q.left) hU)`. Take `⟨g', v', hg', hv', rfl⟩` from `htr`. Set `ρ : Chart.sp (R₀` to `R) (DualNumber S) ⟶ tEpsG (x ≫ G.hom) := Over.homMk (𝟙 _) (by`. Rewrite using `[hx]`. Use `(Category.id_comp _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Spec.map_comp (CommRingCat.ofHom (algebraMap R S)) (CommRingCat.ofHom (algebraMap S (DualNumber S)))).symm)`. Establish `k₁ : ρ ≫ g' = z` using `Over.OverMorphism.ext ((Category.id_comp _).trans hg')`. Establish `k₂ : ρ ≫ v' = ∏ c, (Chart.spMap (GlobalTheory.SqZero.epsTo R (ee c) (hee c c)) ≫ u c : Chart.sp (R₀` using `R) (DualNumber S) ⟶ G) := by`. Establish `k₃ : ρ ≫ v' = Chart.spMap (GlobalTheory.SqZero.dualMap (Algebra.ofId R S)) ≫ U`. Use `Over.OverMorphism.ext ((Category.id_comp _).trans (hv'.trans ?_))` and prove the remaining obligations.
+
+Use `show _ = _ ≫ U.left`. Rewrite using `[hUl]`. Use `congrArg (fun q : DualNumber R →+* DualNumber S => spMap q ≫ _) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl] <;> rfl`. Rewrite using `[k₃, hU', comp_prodT]`.
+
+Use `Finset.prod_congr rfl fun c _ => Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show _ ≫ spMap (epsScaleR (a c)) ≫ (u c).left = _ ≫ (u c).left`. Rewrite using `[← Category.assoc]`. Use `congrArg (· ≫ (u c).left) ?_` and prove the remaining obligations. Simplify using `only [Chart.spMap_left, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Apply the tactic sequence `ext r <;> simp [epsScaleR, GlobalTheory.SqZero.epsTo, GlobalTheory.SqZero.dualTo_apply, ee, Algebra.smul_def] <;> rfl`. Establish `key : (g' * v').left = ((∏ c, (Chart.spMap (GlobalTheory.SqZero.epsTo R (ee c) (hee c c)) ≫ u c : Chart.sp (R₀` using `R) (DualNumber S) ⟶ G)) * z).left := by`. Rewrite using `[← k₂, ← k₁, _root_.mul_comm, ← MonObj.comp_mul]`. Conclude with `(Category.id_comp _).symm`.
+
+Rewrite using `[key, b₂ f]`. Establish `a₃ : ∀ h, valR z.left O h = inl (valR x O h)` using `a₂`. Simplify using `only [a₃]`. Use `show _ = valR x O (∑ c, constFn G.hom O (a c) * e c O f)`. Use `conv_rhs => rw [GlobalTheory.ZH.CrdCalc.valR_eq x O hO, map_sum]`.
+
+Simplify using `only [map_mul, ← GlobalTheory.ZH.CrdCalc.valR_eq x O hO]`. Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, zero_add, TrivSqZeroExt.snd_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ZH.CrdCalc.valR_mul x O hO, GlobalTheory.ArcPts.SecValue.valR_constFn G.hom φ x hx O hO]`. Simplify using `[ee, mul_comm]`.
+-/
 theorem isInv_comb : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g : ℕ)
     (w : Fin g → TanM (𝟙 (Sp R)) G) (e : Fin g → Fld G.left), (∀ c, IsInv G (w c) (e c)) →
     ∀ a : Fin g → R, IsInv G (∑ c, a c • w c) (fun O f => ∑ c, constFn G.hom O (a c) * e c O f) := by

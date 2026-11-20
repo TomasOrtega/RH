@@ -12,6 +12,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.DualQuot
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s V' _ _ S A' hA' B hB hB0`. Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Establish `hAd : GlobalTheory.Published.IrreducibleAdmissibleGL` using `fun k _ _ _ _ n V _ _ π => (hBZ k).1 (Fin n) V π`. Establish `hχ : IsSmoothChar (absPow k (s : ℂ))` using `isSmoothChar_absPow _`. Establish `hχ' : IsSmoothChar (absPow k (-(s : ℂ)))` using `isSmoothChar_absPow _`.
+
+Establish `hprod : ∀ g : GL (Fin n) k, ((detChar (Fin n) (absPow k (-(s : ℂ))) g : ℂˣ) : ℂ) * ((detChar (Fin n) (absPow k (s : ℂ)) g : ℂˣ) : ℂ) = 1`. Introduce `g`. Rewrite using `[absPow_neg, detChar_apply, detChar_apply, MonoidHom.inv_apply]`. Simplify using the standard rewrite rules. Establish `hT` using `isSmooth_twist hA' hχ'.detChar`.
+
+Establish `hBT : ∀ g a b, B (S.ρ g a) (twist A' (detChar (Fin n) (absPow k (-(s : ℂ)))) g b) = B a b`. Introduce `g a b`. Rewrite using `[twist_apply, map_smul, hB, smul_eq_mul, ← mul_assoc, hprod, one_mul]`. Set `f` to `GlobalTheory.InvPairing.pairMap S.ρ hT B hBT`. Establish `hc` using `GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hAd S.ρ S.smooth S.irr`.
+
+Establish `hsurj : Function.Surjective f`. Set `R : Subrepresentation (contra S.ρ)` to `{ toSubmodule := LinearMap.range f.toLinearMap apply_mem_toSubmodule := fun g v hv => by`. Take `⟨w, rfl⟩` from `hv`. Use `⟨twist A' (detChar (Fin n) (absPow k (-(s : ℂ)))) g w, ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (f.isIntertwining' g) w` as an intermediate fact.
+
+Simplify `this }` using `only [LinearMap.comp_apply]`. Break down `hc.eq_bot_or_eq_top R with hR | hR` into its components or cases. It suffices to derive a contradiction. Use `hB0 (GlobalTheory.InvPairing.eq_zero_of_pairMap S.ρ hT B hBT fun b => ?_)` and prove the remaining obligations. Establish `: f b ∈ R.toSubmodule` using `⟨b, rfl⟩`.
+
+Rewrite `this` using `[hR]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Introduce `l`. Establish `: l ∈ R.toSubmodule` using `by rw [hR]; exact Submodule.mem_top`. Take `⟨b, hb⟩` from `this`.
+
+Conclude with `⟨b, hb⟩`. Set `F : A'.IntertwiningMap (twist (contra S.ρ) (detChar (Fin n) (absPow k (s : ℂ))))` to `{ toLinearMap := f.toLinearMap isIntertwining' := fun g => by`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (f.isIntertwining' g) w`. Simplify using `only [LinearMap.comp_apply, twist_apply, map_smul] at h ⊢`.
+
+Rewrite using `[← h, smul_smul, mul_comm, hprod, one_smul] }`. Use `⟨⟨_, twist (contra S.ρ) (detChar (Fin n) (absPow k (s : ℂ))), isSmooth_twist (isSmooth_contra _) hχ.detChar, isIrreducible_twist hc _⟩, IsSubquotient.of_surjective F hsurj, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hAd, IrrGL.nu, IrrGL.tw_of]`. Conclude with `IrrGL.of_eq_of.2 ⟨(twistEquiv (GlobalTheory.ContraRefl.contraEquiv (IrrGL.equivOf S.ρ S.smooth S.irr)) _).symm⟩`.
+-/
 theorem exists_subquotient_dual_nu : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n s : ℕ) (V' : Type) [AddCommGroup V'] [Module ℂ V'] (S : IrrRep (GL (Fin n) k))
     (A' : Representation ℂ (GL (Fin n) k) V'), IsSmooth A' → ∀ B : S.V →ₗ[ℂ] V' →ₗ[ℂ] ℂ,

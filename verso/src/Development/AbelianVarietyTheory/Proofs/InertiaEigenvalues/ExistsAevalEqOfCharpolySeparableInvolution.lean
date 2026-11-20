@@ -5,6 +5,21 @@ open GlobalTheory.UnitLemma Polynomial
 
 namespace GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Establish `hint : IsIntegral E g` using `Algebra.IsIntegral.isIntegral g`. Establish `hm0 : minpoly E g ≠ 0` using `minpoly.ne_zero hint`. Establish `hf : aeval (LinearMap.mulLeft E g) (minpoly E g) = 0`.
+
+Use `aeval_algHom_apply (Algebra.lmul E A) g (minpoly E g)` as an intermediate fact. Rewrite `this` using `[minpoly.aeval, map_zero]`. Conclude with `this`. Establish `hn : 0 < Module.finrank E A` using `Module.finrank_pos`. Establish `h1` using `GlobalTheory.CharpolyDvd.charpoly_dvd_pow_finrank _ _ hf`.
+
+Establish `h2 : (LinearMap.mulLeft E g).charpoly ∣ minpoly E g` using `(hP.squarefree.dvd_pow_iff_dvd hn.ne').1 h1`. Establish `h3 : Module.finrank E A ≤ (minpoly E g).natDegree`. Use `natDegree_le_of_dvd h2 hm0` as an intermediate fact. Rewrite `this` using `[LinearMap.charpoly_natDegree]`. Then use the resulting hypothesis. Establish `hli` using `linearIndependent_pow (K := E) g`.
+
+Establish `h4` using `hli.fintype_card_le_finrank`. Rewrite `h4` using `[Fintype.card_fin]`. Use `haveI : Nonempty (Fin (minpoly E g).natDegree) := ⟨⟨0, by omega⟩⟩`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank (by rw [Fintype.card_fin]; omega)`. Establish `hle : Submodule.span E (Set.range fun i : Fin (minpoly E g).natDegree => g ^ (i : ℕ)) ≤ Subalgebra.toSubmodule (Algebra.adjoin E {g})`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hg : g ∈ Algebra.adjoin E {g}` using `Algebra.subset_adjoin (Set.mem_singleton g)`. Conclude with `Subalgebra.pow_mem (Algebra.adjoin E {g}) hg (i : ℕ)`. Establish `ha : a ∈ Algebra.adjoin E {g}`.
+
+Establish `: a ∈ Submodule.span E (Set.range fun i : Fin (minpoly E g).natDegree => g ^ (i : ℕ))`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hle this`. Rewrite `ha` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Take `⟨f, hf⟩` from `ha`. Conclude with `⟨f, hf.symm⟩`.
+-/
 theorem exists_aeval_eq_of_charpoly_separable {E A : Type} [Field E] [CommRing A] [Algebra E A]
     [Module.Finite E A] (g : A) (hP : (LinearMap.mulLeft E g).charpoly.Separable) (a : A) :
     ∃ f : E[X], a = aeval g f := by
@@ -43,6 +58,9 @@ theorem exists_aeval_eq_of_charpoly_separable {E A : Type} [Field E] [CommRing A
   obtain ⟨f, hf⟩ := ha
   exact ⟨f, hf.symm⟩
 
+/- English proof (translation)
+Introduce `_ B hP a` and use `exists_aeval_eq_of_charpoly_separable B.g hP a`.
+-/
 theorem InvAlg.exists_aeval_eq_of_separable :
     ∀ (K : UQ) (B : InvAlg K), B.P.Separable → ∀ a : B.A, ∃ f : K.E[X], a = aeval B.g f :=
   fun _ B hP a => exists_aeval_eq_of_charpoly_separable B.g hP a

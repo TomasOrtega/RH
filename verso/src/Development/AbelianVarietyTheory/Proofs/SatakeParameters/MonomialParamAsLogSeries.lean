@@ -10,6 +10,9 @@ namespace GlobalTheory.TwU
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits GlobalTheory.TwU Classical
 
+/- English proof (translation)
+Establish `h : Formalism.MainNotions.FormalGroupSystem.Pf.en_L p (K0 p) = logF p`. Use extensionality with `k`. Simplify using `[Formalism.MainNotions.FormalGroupSystem.Pf.en_L]`. Unfold `inParam Formalism.MainNotions.FormalGroupSystem.Pf.en_aL`. Rewrite using `[h]`.
+-/
 theorem inParam_eq_subst_log (p : ℕ) [Fact p.Prime] {ι : Type} (f : MvPowerSeries ι (K0 p)) :
     inParam p f = MvPowerSeries.subst (Formalism.MainNotions.FormalGroupSystem.Pf.en_aL p (K0 p)) f := by
   have h : Formalism.MainNotions.FormalGroupSystem.Pf.en_L p (K0 p) = logF p := by
@@ -17,6 +20,15 @@ theorem inParam_eq_subst_log (p : ℕ) [Fact p.Prime] {ι : Type} (f : MvPowerSe
   unfold inParam Formalism.MainNotions.FormalGroupSystem.Pf.en_aL
   rw [h]
 
+/- English proof (translation)
+Introduce `p _ ι _ n`. Establish `hs` using `Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec_hs p (K0 p) (ι := ι)`. Establish `hl` using `Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_hs p (K0 p) (ι := ι)`. Use `⟨MvPowerSeries.subst (Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec p (K0 p)) (MvPowerSeries.monomial n (1 : K0 p)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inParam_eq_subst_log, MvPowerSeries.subst_comp_subst_apply hs hl]`.
+
+Simplify using `only [Formalism.MainNotions.FormalGroupSystem.Pf.en_aL_Ec]`. Rewrite using `[MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Introduce `m hm`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises.
+
+Use `lt_of_lt_of_le (Nat.cast_lt.mpr hm) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_monomial hs, map_one, one_mul, Finsupp.prod]`. Use `le_trans ?_ (MvPowerSeries.le_order_prod _ _)` and prove the remaining obligations. Establish `hd : n.degree = ∑ i ∈ n.support, n i` using `rfl`. Rewrite using `[hd, Nat.cast_sum]`.
+
+Conclude with `Finset.sum_le_sum fun s _ => MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero _ (Formalism.MainNotions.FormalGroupSystem.Pf.en_Ec_zero p (K0 p) s)`.
+-/
 theorem monomial_param_as_log_series : ∀ (p : ℕ) [Fact p.Prime] (ι : Type) [Fintype ι] (n : ι →₀ ℕ),
     ∃ U : MvPowerSeries ι (K0 p), inParam p U = MvPowerSeries.monomial n 1 ∧
       (∀ m : ι →₀ ℕ, m.degree < n.degree → MvPowerSeries.coeff m U = 0) := by

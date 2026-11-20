@@ -22,6 +22,9 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A
 
 def W (U : A.left.Opens) : Opens (Tot Empty g) := ⟨{p | p.2 ∈ pre u.ex U}, (u.hol U 0).1.preimage continuous_snd⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn (W u U).isOpen ((u.hol U b).2.comp differentiableOn_snd fun _ h => h)`.
+-/
 theorem an (U : A.left.Opens) (b : Γ(A.left, U)) :
     AnalyticOnNhd ℂ (fun p : Tot Empty g => val u.ex U b p.2) (W u U) :=
   GlobalTheory.SCV.analyticOnNhd_of_differentiableOn (W u U).isOpen ((u.hol U b).2.comp differentiableOn_snd fun _ h => h)
@@ -36,6 +39,9 @@ def valHom (U : A.left.Opens) : Sec (str A) U →ₐ[ℂ] Hol (W u U) where
     obtain ⟨e, he⟩ := (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.2.2.2.2.1 U p.1.2 p.2
     exact (he _).trans (e.commutes c))
 
+/- English proof (translation)
+The claim follows from `Hol.fn_mk _ (an u U b) hp`.
+-/
 theorem fn_valHom (U : A.left.Opens) (b : Sec (str A) U) {p : Tot Empty g} (hp : p ∈ W u U) :
     (valHom u U b).fn p = val u.ex U b p.2 := Hol.fn_mk _ (an u U b) hp
 
@@ -48,6 +54,9 @@ theorem fn_valHom (U : A.left.Opens) (b : Sec (str A) U) {p : Tot Empty g} (hp :
   le_trans h h' := h'.trans h
   maps {l U U'} h p hp := ((GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.1 U.1 l p.2).2 ((GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.1 U.1 U'.1 h hp)
 
+/- English proof (translation)
+The claim follows from `Hol.ext_fn fun p hp => by rw [Charts.fn_sh h _ hp, fn_valHom u _ _ ((ch u).maps h p hp), fn_valHom u _ _ hp, (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2.2.2.2.2.2.1 U.1 V.1 h b p.2 hp] exact (GlobalTheory.T.uniformisation_preimage_value_rules A g L u).2.2.2 …`.
+-/
 theorem sh_valHom {l : u.Λ} {U V : A.left.affineOpens} (h : (ch u).le l V U) (b : Sec (str A) U.1) :
     Charts.sh h (valHom u U.1 b) = valHom u V.1 (Sec.res (str A) h b) :=
   Hol.ext_fn fun p hp => by
@@ -66,6 +75,9 @@ def rl : Real (ch u) (str A) (algebraMap ℂ (Hol (fibFam u).V)) where
     congr 2
     exact RingHom.ext (sh_valHom u h)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Spec.map (x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec _ hU (isAffineOpen_top _) h, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem spMap_valAtHom {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     spMap (valAtHom x U h) ≫ hU.fromSpec = x := by
   change Spec.map (x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom) ≫ _ = _
@@ -73,6 +85,9 @@ theorem spMap_valAtHom {X : Scheme.{0}} (x : Sp ℂ ⟶ X) {U : X.Opens} (hU : I
     IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id,
     Category.id_comp]
 
+/- English proof (translation)
+Introduce `U p hp`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ U.2.fromSpec = (u.ex p.2).left`. Establish `e : (Hol.ev p hp).toRingHom.comp (valHom u U.1 : Sec (str A) U.1 →+* Hol (W u U.1)) = valAtHom (u.ex p.2).left U.1 hp` using `RingHom.ext fun b => (Hol.ev_apply p hp _).trans ((fn_valHom u _ b hp).trans (valAt'_eq_valAtHom _ hp b))`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ U.2.fromSpec) ((Cris.spMap_comp _ _).symm.trans (congrArg spMap e))).trans ?_)` and prove the remaining obligations. Conclude with `spMap_valAtHom _ U.2 hp`.
+-/
 theorem isFor : (rl u).IsFor (fibUnif u) := by
   intro U p hp
   change spMap _ ≫ spMap _ ≫ U.2.fromSpec = (u.ex p.2).left
@@ -94,6 +109,11 @@ def evc (f : Z1 (O (dp0 ℂ) (str A))) {T T' : (ch u).Obj} (φ : T ⟶ T') : T'.
 
 def eva (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) : Hol (W u U.1) := ev f (al u U)
 
+/- English proof (translation)
+Use `letI : Algebra B O := α.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ B O := IsScalarTower.of_algebraMap_eq fun c => (α.commutes c).symm`. Use `⟨(LinearMap.pi fun a => ((d a).compAlgebraMap B).liftKaehlerDifferential).toAddMonoidHom, fun b ω => ?_, fun b a => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [LinearMap.toAddMonoidHom_coe, map_smul, Pi.smul_apply, smul_eq_mul, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.pi_apply, Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra ℂ O] (α : B →ₐ[ℂ] O)
     (d : Fin g → Derivation ℂ O O) : ∃ ℓ : Ω[B⁄ℂ] →+ (Fin g → O),
       (∀ (b : B) ω, ℓ (b • ω) = α b • ℓ ω) ∧ ∀ b a, ℓ (KaehlerDifferential.D ℂ B b) a = d a (α b) := by
@@ -120,9 +140,15 @@ def phi {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra ℂ O] (
     rw [TrivSqZeroExt.snd_mul]
     simp [this, h]
 
+/- English proof (translation)
+The claim follows from `add_zero _`.
+-/
 theorem fst_phi {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra ℂ O] (α : B →ₐ[ℂ] O) (ℓ : Ω[B⁄ℂ] →+ (Fin g → O))
     (h : ∀ (b : B) ω, ℓ (b • ω) = α b • ℓ ω) (c : TrivSqZeroExt B Ω[B⁄ℂ]) : (phi α ℓ h c).fst = α c.fst := add_zero _
 
+/- English proof (translation)
+The claim follows from `zero_add _`.
+-/
 theorem snd_phi {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra ℂ O] (α : B →ₐ[ℂ] O) (ℓ : Ω[B⁄ℂ] →+ (Fin g → O))
     (h : ∀ (b : B) ω, ℓ (b • ω) = α b • ℓ ω) (c : TrivSqZeroExt B Ω[B⁄ℂ]) : (phi α ℓ h c).snd = ℓ c.snd := zero_add _
 
@@ -159,6 +185,9 @@ abbrev sec1 (U : A.left.affineOpens) : TU U ⟶ (diagExt ℂ (Sec (str A) U.1)).
 def i0 (U : A.left.affineOpens) : Hol (W u U.1) →+* TrivSqZeroExt (Hol (W u U.1)) (Fin g → Hol (W u U.1)) :=
   (TrivSqZeroExt.inlHom _ _).comp (Charts.sh (K := ch u) (l := 0) (k := U) (k' := U) le_rfl)
 
+/- English proof (translation)
+Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[fst_phi]`. Conclude with `Charts.sh_refl (K := ch u) (k := U) le_rfl _`. Rewrite using `[snd_phi, TrivSqZeroExt.snd_inl, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem sq0 (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin g → Hol (W u U.1)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U.1 b • ℓ ω) (b : Sec (str A) U.1) :
     i0 u U (valHom u U.1 b) = phi (valHom u U.1) ℓ h (TrivSqZeroExt.inl b) := by
@@ -168,6 +197,9 @@ theorem sq0 (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin 
   · rw [snd_phi, TrivSqZeroExt.snd_inl, map_zero]
     rfl
 
+/- English proof (translation)
+Use `TrivSqZeroExt.ext ?_ (funext fun a => ?_)` and prove the remaining obligations. Rewrite using `[fst_phi, Charts.fst_tszeSec, fst_derSec]`. Rewrite using `[snd_phi, Charts.snd_tszeSec, snd_derSec, hD]`.
+-/
 theorem sq1 (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin g → Hol (W u U.1)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U.1 b • ℓ ω)
     (hD : ∀ b a, ℓ (KaehlerDifferential.D ℂ _ b) a = dw a (valHom u U.1 b)) (b : Sec (str A) U.1) :
@@ -176,12 +208,18 @@ theorem sq1 (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin 
   · rw [fst_phi, Charts.fst_tszeSec, fst_derSec]
   · rw [snd_phi, Charts.snd_tszeSec, snd_derSec, hD]
 
+/- English proof (translation)
+The claim follows from `ev_sq f (al u U) ((rl u).functor.map (Charts.jet0 (K := ch u) U)) (sec0 U) (Phi u U ℓ h) (sq0 u U ℓ h)`.
+-/
 theorem ev0 (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin g → Hol (W u U.1)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U.1 b • ℓ ω) :
     i0 u U (eva u f U) + (show TrivSqZeroExt (Hol (W u U.1)) (Fin g → Hol (W u U.1)) from evc u f (Charts.jet0 (K := ch u) U)) =
       phi (valHom u U.1) ℓ h (ev f (sec0 U)) + (show TrivSqZeroExt (Hol (W u U.1)) (Fin g → Hol (W u U.1)) from ev f (Phi u U ℓ h)) :=
   ev_sq f (al u U) ((rl u).functor.map (Charts.jet0 (K := ch u) U)) (sec0 U) (Phi u U ℓ h) (sq0 u U ℓ h)
 
+/- English proof (translation)
+The claim follows from `ev_sq f (al u U) ((rl u).functor.map (Charts.jet1 (K := ch u) U)) (sec1 U) (Phi u U ℓ h) (sq1 u U ℓ h hD)`.
+-/
 theorem ev1 (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin g → Hol (W u U.1)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U.1 b • ℓ ω)
     (hD : ∀ b a, ℓ (KaehlerDifferential.D ℂ _ b) a = dw a (valHom u U.1 b)) :
@@ -189,10 +227,18 @@ theorem ev1 (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) (ℓ : Ω[Se
       phi (valHom u U.1) ℓ h (ev f (sec1 U)) + (show TrivSqZeroExt (Hol (W u U.1)) (Fin g → Hol (W u U.1)) from ev f (Phi u U ℓ h)) :=
   ev_sq f (al u U) ((rl u).functor.map (Charts.jet1 (K := ch u) U)) (sec1 U) (Phi u U ℓ h) (sq1 u U ℓ h hD)
 
+/- English proof (translation)
+Take the linear combination `(norm := abel1) s1 - s0 - j0 + j1`.
+-/
 theorem grp {M : Type} [AddCommGroup M] {a0 a1 y0 y1 x0 x1 y G g0 g1 κ : M} (s0 : a0 + y0 = x0 + y) (s1 : a1 + y1 = x1 + y)
     (j0 : G - g0 = y0 - κ) (j1 : G - g1 = y1 - κ) : x0 - x1 = g1 - a1 - (g0 - a0) := by
   linear_combination (norm := abel1) s1 - s0 - j0 + j1
 
+/- English proof (translation)
+Establish `z : phi α ℓ h (x0 - x1) = Charts.tszeSec d (G0 - a0) - i (G0 - a0)`. Rewrite using `[map_sub, map_sub, map_sub]`. Conclude with `grp s0 s1 j0 j1`. Establish `z2` using `congrFun (congrArg TrivSqZeroExt.snd z) a`. Rewrite `z2` using `[snd_phi, TrivSqZeroExt.snd_sub (Charts.tszeSec d _), Pi.sub_apply, Charts.snd_tszeSec, hi]`.
+
+Conclude with `z2.trans (sub_zero _)`.
+-/
 theorem jet_alg {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra ℂ O] (α : B →ₐ[ℂ] O) (ℓ : Ω[B⁄ℂ] →+ (Fin g → O))
     (h : ∀ (b : B) ω, ℓ (b • ω) = α b • ℓ ω) (d : Fin g → Derivation ℂ O O) (i : O →+* TrivSqZeroExt O (Fin g → O))
     (hi : ∀ x, (i x).snd = 0) {x0 x1 : TrivSqZeroExt B Ω[B⁄ℂ]} {y y0 y1 Gj κ : TrivSqZeroExt O (Fin g → O)} {G0 a0 : O}
@@ -208,6 +254,9 @@ theorem jet_alg {B O : Type} [CommRing B] [Algebra ℂ B] [CommRing O] [Algebra 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Conclude with `jet_alg (valHom u U.1) ℓ h dw (i0 u U) (fun _ => rfl) (ev0 u f U ℓ h) (ev1 u f U ℓ h hD) j0 j1 a`.
+-/
 theorem jet_eq (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) (ℓ : Ω[Sec (str A) U.1⁄ℂ] →+ (Fin g → Hol (W u U.1)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U.1 b • ℓ ω)
     (hD : ∀ b a, ℓ (KaehlerDifferential.D ℂ _ b) a = dw a (valHom u U.1 b)) (G0 : Hol (W u U.1)) (Gj κ : TrivSqZeroExt (Hol (W u U.1)) (Fin g → Hol (W u U.1)))
@@ -216,6 +265,15 @@ theorem jet_eq (f : Z1 (O (dp0 ℂ) (str A))) (U : A.left.affineOpens) (ℓ : Ω
     ℓ (connForm f (affPt (str A) U) (affPt_w _ U)) a = dw a (G0 - eva u f U) := by
   exact jet_alg (valHom u U.1) ℓ h dw (i0 u U) (fun _ => rfl) (ev0 u f U ℓ h) (ev1 u f U ℓ h hD) j0 j1 a
 
+/- English proof (translation)
+Take `⟨-, e2, e3⟩` from `GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u U p.2 hp`. Establish `hm : ω ∈ Submodule.span (Sec (str A) U) (Set.range (KaehlerDifferential.D ℂ (Sec (str A) U)))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Rewrite using `[hD, e3, dw, Hol.fn_der _ _ hp, Hol.fderiv_fn_congr _ (F := val u.ex U b ∘ Prod.snd) (fun q hq => fn_valHom u U b hq) hp, fderiv_comp p (g := val u.ex U b) (((u.hol U b).2.differentiableAt ((u.hol U b).1.mem_nhds hp))) differentiableAt_snd, fderiv_snd]`. Both sides reduce to the same expression. Consider the case `zero`.
+
+Rewrite using `[map_zero, map_zero, Pi.zero_apply, ← Hol.ev_apply p hp, map_zero]`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, Pi.add_apply, Hol.fn_add _ _ hp, hx, hy]`. Both sides reduce to the same expression. Consider the case `smul b x _ hx => rw [h, e2, Pi.smul_apply, smul_eq_mul, Hol.fn_mul _ _ hp, hx, fn_valHom u U b hp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lift_fn (U : A.left.Opens) (ℓ : Ω[Sec (str A) U⁄ℂ] →+ (Fin g → Hol (W u U)))
     (h : ∀ b ω, ℓ (b • ω) = valHom u U b • ℓ ω)
     (hD : ∀ b a, ℓ (KaehlerDifferential.D ℂ _ b) a = dw a (valHom u U b)) (a : Fin g) {p : Tot Empty g} (hp : p ∈ W u U)
@@ -236,6 +294,25 @@ theorem lift_fn (U : A.left.Opens) (ℓ : Ω[Sec (str A) U⁄ℂ] →+ (Fin g �
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `A _ g L u c q per hper hP`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Establish `h1` using `hP (ch u) (rl u) (isFor u)`. Rewrite `h1` using `[CoefMap.pullCohomologyOne_class, Charts.perCl, H1.mk_eq_mk]`. Take `⟨G₀, hG⟩` from `h1`.
+
+Set `G : ∀ T : (ch u).Obj, T.C` to `G₀`. Establish `hG' : ∀ {T T' : (ch u).Obj} (φ : T ⟶ T'), G T' - φ.φ (G T) = evc u f φ - @algebraMap _ _ _ _ T'.alg (per φ.deg)` using `fun {T T'} φ => congrFun (congrFun (congrFun hG T) T') φ`. Set `H : ∀ U : A.left.affineOpens, Hol (W u U.1)` to `fun U => (G ((ch u).triv U) : Hol (W u U.1)) - eva u f U`. Set `pt : (Fin g → ℂ) → Tot Empty g` to `fun z => (0, z)`. Establish `key : ∀ (l : u.Λ) (U V : A.left.affineOpens) (a : Opposite.op U ⟶ Opposite.op V), ∀ z ∈ pre u.ex V.1, (H V).fn (pt z) + q l = (H U).fn (pt (z + l)) + val u.ex V.1 ((cmpZZ (str A) f).1.1 _ _ a) z`.
+
+Introduce `l U V a z hz`. Establish `hle : (ch u).le l V U` using `leOfHom a.unop`. Establish `hz' : pt z ∈ W u V.1` using `hz`. Establish `k1` using `hG' (Charts.ptHom ((ch u).triv V) hle)`. Establish `k2` using `ev_sq f (al u U) ((rl u).functor.map (Charts.ptHom ((ch u).triv V) hle)) (Thick.trivHom (hx := affPt_w (str A) U) (T := TU V) (Sec.res (str A) (leOfHom a.unop)) (affPt_res (str A) (leOfHom a.unop))) (al u V) (fun b => sh_valHom u hle b)`.
+
+Establish `k3 : H V + (ch u).cst V (per l) = Charts.sh hle (H U) + valHom u V.1 ((cmpZZ (str A) f).1.1 _ _ a)`. Establish `k1' : (G ((ch u).triv V) : Hol (W u V.1)) - Charts.sh hle (G ((ch u).triv U)) = evc u f (Charts.ptHom ((ch u).triv V) hle) - (ch u).cst V (per l)` using `k1`. Establish `k2' : Charts.sh hle (eva u f U) + evc u f (Charts.ptHom ((ch u).triv V) hle) = valHom u V.1 ((cmpZZ (str A) f).1.1 _ _ a) + eva u f V` using `k2`. Simplify using `only [H, map_sub]`. Take the linear combination `k1' + k2'`.
+
+Establish `k4` using `congrArg (fun x : Hol (W u V.1) => x.fn (pt z)) k3`. Simplify using `only [Hol.fn_add _ _ hz'] at k4`. Rewrite `k4` using `[Charts.fn_cst _ _ _ hz', Charts.fn_sh hle _ hz', fn_valHom u _ _ hz', hper, Hol.fn_algebraMap (W := ⊤) _ (Opens.mem_top _)]`. Conclude with `k4`. Establish `hd : ∀ U : A.left.affineOpens, ∀ z ∈ pre u.ex U.1, HasFDerivAt (fun z => (H U).fn (pt z)) ((fderiv ℂ (H U).fn (pt z)).comp (ContinuousLinearMap.inr ℂ _ _)) z` using `fun U z hz => ((H U).analytic (pt z) hz).differentiableAt.hasFDerivAt.comp z (hasFDerivAt_prodMk_right 0 z)`.
+
+Use `⟨cmpZZ (str A) f, fun U z => (H U).fn (pt z), rfl, ⟨fun U z hz => (hd U z hz).differentiableAt.differentiableWithinAt, fun U V a z hz => ?_, fun U z hz => ?_⟩, fun U l z hz => ?_⟩` and prove the remaining obligations. Use `key 0 U V a z hz` as an intermediate fact. Simplify using `using this`. Take `⟨ℓ, h, hD⟩` from `exists_lift (valHom u U.1) (dw (W := W u U.1))`. Establish `hz' : pt z ∈ W u U.1` using `hz`.
+
+Establish `m` using `jet_eq u f U ℓ h hD (G ((ch u).triv U)) (G ((ch u).jet U)) _ (hG' (Charts.jet0 (K := ch u) U)) (hG' (Charts.jet1 (K := ch u) U))`. Rewrite using `[(hd U z hz).fderiv]`. Use `ContinuousLinearMap.coe_injective (LinearMap.pi_ext' fun a => LinearMap.ext_ring ?_)` and prove the remaining obligations. Use `lift_fn u U.1 ℓ h hD a hz' (connForm f (affPt (str A) U) (affPt_w _ U))` as an intermediate fact. Rewrite `this` using `[m, dw, Hol.fn_der _ _ hz']`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.single_apply, ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inr_apply]`. Conclude with `this`. Use `key l U U (𝟙 _) z hz` as an intermediate fact. Establish `h0 : (cmpZZ (str A) f).1.1 _ _ (𝟙 (Opposite.op U)) = 0` using `Z1.id ⟨_, (mem_cechDeRhamTotalCocyclesOne_iff.1 (cmpZZ (str A) f).2).1⟩ _`. Rewrite `this` using `[h0]`.
+
+Establish `v0 : val u.ex U.1 (0 : Γ(A.left, U.1)) z = 0` using `valAt'_zero _ _`. Conclude with `(this.trans (by rw [add_eq_left]; exact v0)).symm`.
+-/
 theorem main : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), ∀ (c : FirstDeRham (str A)) (q : u.Λ →+ ℂ) (per : u.Λ →+ Hol (fibFam u).V), (∀ l, per l = algebraMap ℂ _ (q l)) → IsPeriod (fibUnif u) c per → IsPer u.ex u.Λ (cmp1 (str A) c) q := by
   intro A _ g L u c q per hper hP
   obtain ⟨f, rfl⟩ := H1.mk_surjective _ c

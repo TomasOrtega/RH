@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 open GroundTheory.Global.AdeleBaseChange in
+/- English proof (translation)
+Establish `h` using `mem_Sim.1 k.2`. Establish `h2` using `congrArg (RingHom.mapMatrix (pLoc E u)) h`. Rewrite `h2` using `[map_mul]`. Use `Eq.trans ?_ (h2.trans ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[RingHom.mapMatrix_apply, sim, Matrix.one_apply]`. Simplify using `[RingHom.mapMatrix_apply, sim, Matrix.one_apply, hij]`.
+-/
 private theorem rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (k : GUf E n) (u : Plc E) :
     ((comp (cj u) k).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u))ᵀ * (comp u k).val =
       pLoc E u (finiteAdeleMap ℚ E (sim k : AfQˣ)) • (1 : Matrix (Fin n) (Fin n) (u.adicCompletion E)) := by
@@ -20,6 +25,11 @@ private theorem rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     · simp [RingHom.mapMatrix_apply, sim, Matrix.one_apply, hij]
 
 open GroundTheory.Global.AdeleBaseChange in
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (rel k u) ⟨0, hn⟩) ⟨0, hn⟩`. Rewrite `h` using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Rewrite using `[← h]`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Matrix.transpose_apply, Matrix.map_apply, (conjLoc_spec _ u).2.2]`.
+
+Conclude with `mul_le_one' (((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val _ _).1 (hk _)).1 _ _) (((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val _ _).1 (hk _)).1 _ _)`.
+-/
 private theorem val_le {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (hn : 0 < n) (k : GUf E n)
     (hk : ∀ w, comp w k ∈ GlobalTheory.LFun.KGL w n) (u : Plc E) :
     Valued.v (pLoc E u (finiteAdeleMap ℚ E (sim k : AfQˣ))) ≤ 1 := by
@@ -32,6 +42,15 @@ private theorem val_le {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
     (((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val _ _).1 (hk _)).1 _ _)
 
 open GroundTheory.Global.AdeleBaseChange in
+/- English proof (translation)
+Introduce `E _ _ _ n hn k hk v`. Take `⟨P, hPm, hPo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`. Set `u : Plc E` to `⟨P, hPm.isPrime, hP0⟩`. Establish `hu : below ℚ u = v` using `(below_eq_iff u v).2 hPo`.
+
+Substitute `hu` using the available equality. Establish `h1` using `val_le hn k hk u`. Establish `h2` using `val_le hn k⁻¹ (fun w => by rw [map_inv]; exact inv_mem (hk w)) u`. Establish `hmul : pLoc E u (finiteAdeleMap ℚ E (sim k : AfQˣ)) * pLoc E u (finiteAdeleMap ℚ E (sim k⁻¹ : AfQˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, map_inv, Units.mul_inv, map_one, map_one]`.
+
+Establish `h3 : Valued.v (pLoc E u (finiteAdeleMap ℚ E (sim k : AfQˣ))) = 1`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, hmul, map_one]`. Use `_ ≤ Valued.v (pLoc E u (finiteAdeleMap ℚ E (sim k : AfQˣ))) * 1 := mul_le_mul_right h2 _`.
+
+Use `_ = _ := mul_one _`. Establish `h4 : Valued.v (GroundTheory.Global.SemiLocal.completionMap (below ℚ u) u (((sim k : AfQˣ) : AfQ) (below ℚ u))) = 1` using `h3`. Rewrite `h4` using `[GroundTheory.Global.SemiLocal.valued_completionMap]`. Conclude with `(pow_eq_one_iff.1 h4).resolve_right (Ideal.ramificationIdx_pos u.asIdeal (𝓞 ℚ)).ne'`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pIntSim_of :
     UpperTheory.Gal.CertificateRingHomMap.IntSim := by
   intro E _ _ _ n hn k hk v

@@ -16,11 +16,19 @@ def low (wt : ι → ℕ) (P : ι → Module.End L V) (m : ℕ) : Submodule L V 
   zero_mem' i _ := map_zero _
   smul_mem' c x hx i hi := by rw [map_smul, hx i hi, smul_zero]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun T : Module.End L V => T x) hP.sum`. Simplify `h` using `[LinearMap.sum_apply]`.
+-/
 theorem sum_pieces {P : ι → Module.End L V} (hP : IsPieces P) (x : V) :
     ∑ j, P j x = x := by
   have h := congrArg (fun T : Module.End L V => T x) hP.sum
   simpa [LinearMap.sum_apply] using h
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩ i hi`. Establish `hx' : x ∈ low wt P m` using `hx`. Rewrite using `[← sum_pieces hP x, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : m ≤ wt j`.
+
+Rewrite using `[hx' j hj, map_zero, map_zero]`. Establish `h` using `congrArg (fun T : Module.End L V => T x) (ha i j (by omega))`. Simplify using `using h`.
+-/
 theorem map_low_le {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces P)
     {a : Module.End L V} (ha : IsUpper wt P a) (m : ℕ) :
     (low wt P m).map a ≤ low wt P m := by
@@ -33,6 +41,9 @@ theorem map_low_le {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces 
   · have h := congrArg (fun T : Module.End L V => T x) (ha i j (by omega))
     simpa using h
 
+/- English proof (translation)
+Set `e : V ≃ₗ[L] V` to `LinearEquiv.ofLinear a a' h1 h2`. Conclude with `Submodule.eq_of_le_of_finrank_eq (map_low_le hP ha m) (LinearEquiv.finrank_map_eq e (low wt P m))`.
+-/
 theorem map_low_eq [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.End L V}
     (hP : IsPieces P) {a a' : Module.End L V} (h1 : a * a' = 1) (h2 : a' * a = 1)
     (ha : IsUpper wt P a) (m : ℕ) : (low wt P m).map a = low wt P m := by
@@ -40,6 +51,9 @@ theorem map_low_eq [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.
   exact Submodule.eq_of_le_of_finrank_eq (map_low_le hP ha m)
     (LinearEquiv.finrank_map_eq e (low wt P m))
 
+/- English proof (translation)
+Rewrite `hx` using `[← map_low_eq hP h1 h2 ha m]`. Take `⟨y, hy, rfl⟩` from `hx`. Establish `h` using `congrArg (fun T : Module.End L V => T y) h2`. Establish `h' : a' (a y) = y` using `by simpa using h`. Rewrite using `[h']` and apply the resulting hypothesis.
+-/
 theorem inv_mem_low [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module.End L V}
     (hP : IsPieces P) {a a' : Module.End L V} (h1 : a * a' = 1) (h2 : a' * a = 1)
     (ha : IsUpper wt P a) {m : ℕ} {x : V} (hx : x ∈ low wt P m) : a' x ∈ low wt P m := by
@@ -49,6 +63,11 @@ theorem inv_mem_low [FiniteDimensional L V] {wt : ι → ℕ} {P : ι → Module
   have h' : a' (a y) = y := by simpa using h
   rwa [h']
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h` using `congrArg (fun T : Module.End L V => T x) (hP.orth i j hij)`.
+
+Simplify using `using h`.
+-/
 theorem piece_mem_low {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPieces P) (j : ι) (x : V) :
     P j x ∈ low wt P (wt j + 1) := by
   intro i hi
@@ -58,6 +77,9 @@ theorem piece_mem_low {wt : ι → ℕ} {P : ι → Module.End L V} (hP : IsPiec
   have h := congrArg (fun T : Module.End L V => T x) (hP.orth i j hij)
   simpa using h
 
+/- English proof (translation)
+Introduce `L V ι _ _ _ _ _ wt P hP a a' h1 h2 ha i j hij`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `inv_mem_low hP h1 h2 ha (piece_mem_low (wt := wt) hP j x) i (by omega)`. Simplify using `using h`.
+-/
 theorem isUpper_inv : ∀ {L V ι : Type} [Field L] [AddCommGroup V] [Module L V]
     [FiniteDimensional L V] [Fintype ι] (wt : ι → ℕ) (P : ι → Module.End L V),
     GlobalTheory.CompanionTheory.Iwahori.IsPieces P → ∀ a a' : Module.End L V, a * a' = 1 → a' * a = 1 →

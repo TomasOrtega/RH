@@ -15,6 +15,33 @@ open NumberField MeasureTheory Topology in
 open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Introduce `r X d hd x hx τ0 W`. Take `⟨w, hli, hmem, hspan⟩` from `_root_.GlobalTheory.LatBasis.exists_basis_mem r X W`. Take `⟨e, -, hdet⟩` from `_root_.GlobalTheory.exists_maximal_minor_ne_zero_of_linearIndependent E r _ w hli`. Use `set N : X.Ψ → Matrix (Fin r) (Fin (Module.finrank E W)) ℂ := fun τ => Matrix.of fun k a => τ.1 (w a k) with hN`. Use `set M := (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0)⁻¹ * N τ0 with hM`.
+
+Establish `hA : IsUnit (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0).det` using `isUnit_iff_ne_zero.mpr (hx τ0)`. Establish `hminor : (Matrix.of fun k a => N τ0 (e k) a).det ≠ 0`. Establish `hmap : (Matrix.of fun k a => N τ0 (e k) a) = τ0.1.mapMatrix (Matrix.of fun k a => w a (e k))`. Use extensionality with `k a`. Both sides reduce to the same expression.
+
+Rewrite using `[hmap, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ0.1).mpr hdet`. Establish `hinj : Function.Injective M.mulVec`. Introduce `u v huv`. Rewrite using `[← sub_eq_zero]`.
+
+Establish `h0 : M *ᵥ (u - v) = 0` using `by rw [Matrix.mulVec_sub, huv, sub_self]`. Establish `h1 : N τ0 *ᵥ (u - v) = 0`. Establish `: N τ0 = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0 * M`. Rewrite using `[hM, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hA, Matrix.one_mul]`. Rewrite using `[this, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`.
+
+Apply `Matrix.eq_zero_of_mulVec_eq_zero hminor` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `congrFun h1 (e k)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct]`. Establish `hpos : 0 < ((Mᴴ * M).det.re)`.
+
+Use `(Matrix.PosDef.conjTranspose_mul_self M hinj).det_pos` as an intermediate fact. Conclude with `(Complex.pos_iff.mp this).1`. Use `⟨M, hpos, fun a ha => ?_⟩` and prove the remaining obligations. Use `set x' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r := @Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ) with hx'`. Establish `haU : IsUnit a.det` using `isUnit_iff_ne_zero.mpr ha`.
+
+Establish `hupd : ∀ τ, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x' τ = if τ = τ0 then _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0 * a⁻¹ else _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ`. Introduce `τ`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, hx']`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Conclude with `@Function.update_self _ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) _ _ _`. Rewrite using `[if_neg h, hx']`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.mat`. Conclude with `@Function.update_of_ne _ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) _ _ h _ _`.
+
+Establish `hx'det : ∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x' τ).det ≠ 0`. Introduce `τ`. Rewrite using `[hupd]`. Use `split_ifs`. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `mul_ne_zero (hx τ0) (Matrix.isUnit_nonsing_inv_det a haU).ne_zero`. Conclude with `hx τ`. Use `set F : X.Ψ → ℝ := fun τ => (((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * N τ)ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * N τ)).det.re with hF`. Establish `h1` using `hd x' hx'det _ w hli hmem`. Establish `h2` using `hd x hx _ w hli hmem`.
+
+Rewrite `h1`, `h2` using `[hspan]`. Rewrite using `[h1, h2]`. Establish `hprod' : ∏ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x' τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re) = (((a * M)ᴴ * (a * M)).det.re) * ∏ τ ∈ Finset.u …`. Rewrite using `[← Finset.prod_update_of_mem (Finset.mem_univ τ0)]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.update_apply, hupd]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv a haU, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+
+Establish `hprod : ∏ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re) = ((Mᴴ * M).det.re) * ∏ τ ∈ Finset.univ \ {τ0}, F τ`. Rewrite using `[← Finset.prod_update_of_mem (Finset.mem_univ τ0), Function.update_eq_self]`. Rewrite using `[hprod', hprod]`. Establish `hne : (Mᴴ * M).det.re ≠ 0` using `hpos.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.GlobalTheory.HeightStep.height_update : (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (d : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r, (∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ x : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r, (∀ τ : X.Ψ, (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ).det ≠ 0) → ∀ (τ0 : X.Ψ) (W : Submodule E (Fin r → E)), ∃ M : Matrix (Fin r) (Fin (Module.finrank E W)) ℂ, 0 < (((M)ᴴ * (M)).det.re) ∧ ∀ a : Matrix (Fin r) (Fin r) ℂ, a.det ≠ 0 → d (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) W = d x W * ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re))) := by
   classical
   intro r X d hd x hx τ0 W

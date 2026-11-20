@@ -18,6 +18,29 @@ open NumberField GlobalTheory.ExpFrame Formalism.BasicNotions Formalism.BasicNot
 
 namespace GlobalTheory.WachBlock
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ n t J bot hB`. Take `⟨r, a, ρ, χ, hat, hr, hρ, hχ, hcong⟩` from `hB`. Take `⟨LL, hζ, hτ, hrL, hρL, hχL⟩` from `GlobalTheory.T.exists_common_finiteExtension_galoisReps_characters E Ω l n a t r ρ χ hr.1 hρ (fun s => (hχ s).1)`. Take `⟨A, hA1, hA2, hAr⟩` from `GlobalTheory.T.exists_conj_integral_galoisRep E Ω l n LL r hr.1 hrL`. Take `⟨B, hB1, hB2, hBρ⟩` from `GlobalTheory.T.exists_conj_integral_galoisRep E Ω l a LL ρ hρ hρL`.
+
+Establish `memLL : ∀ {m : ℕ} (X Y Z : Matrix (Fin m) (Fin m) (PadicAlgCl l)), (∀ i j, X i j ∈ LL.1) → (∀ i j, Y i j ∈ LL.1) → (∀ i j, Z i j ∈ LL.1) → ∀ i j, (X * Y * Z) i j ∈ LL.1`. Introduce `m X Y Z hX hY hZ i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `LL.1.sum_mem fun k _ => LL.1.mul_mem (LL.1.sum_mem fun k' _ => LL.1.mul_mem (hX _ _) (hY _ _)) (hZ _ _)`. Establish `cj : ∀ {m : ℕ} (C : GL (Fin m) (PadicAlgCl l)) (x : GL (Fin m) (PadicAlgCl l)), (((MulAut.conj C⁻¹).toMonoidHom x : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l)) = ((C⁻¹ * x * C : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l))`.
+
+Introduce `m C x`. Simplify using `[MulAut.conj_apply]`. Take `⟨r', hr'⟩` from `(GlobalTheory.IntDescend.descend l LL (G E Ω)).1 n ((MulAut.conj A⁻¹).toMonoidHom.comp r) (fun g i j => by`. Rewrite using `[MonoidHom.comp_apply, cj]`. Use `⟨?_, hAr g i j⟩` and prove the remaining obligations.
+
+Simplify `memLL _ _ _ hA2 (hrL g) hA1 i j)` using `[Units.val_mul]`. Take `⟨ρ', hρ'⟩` from `(GlobalTheory.IntDescend.descend l LL (G E Ω)).1 a ((MulAut.conj B⁻¹).toMonoidHom.comp ρ) (fun g i j => by`. Rewrite using `[MonoidHom.comp_apply, cj]`. Use `⟨?_, hBρ g i j⟩` and prove the remaining obligations. Simplify `memLL _ _ _ hB2 (hρL g) hB1 i j)` using `[Units.val_mul]`.
+
+Use `choose ψ hψ using fun s => (GlobalTheory.IntDescend.descend l LL (G E Ω)).2 (χ s) (fun g => ⟨hχL s g, GlobalTheory.T.norm_galoisCharacter_padicAlgClosure_eq_one E Ω l (χ s) (hχ s).1 g⟩)`. Use `haveI : IsDiscreteValuationRing ↥(OL LL) := Examples₂.LB.OL_dvr LL`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Establish `hmat : ∀ g, (r' g : Matrix (Fin n) (Fin n) ↥(OL LL)).map (GlobalTheory.WachBlock.ofOL l LL) = ((A⁻¹ * r g * A : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l))`. Introduce `g`.
+
+Rewrite using `[← cj]`. Conclude with `congrArg (fun f : G E Ω →* GL (Fin n) (PadicAlgCl l) => ((f g : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l))) hr'`. Establish `hmatρ : ∀ g, (ρ' g : Matrix (Fin a) (Fin a) ↥(OL LL)).map (GlobalTheory.WachBlock.ofOL l LL) = ((B⁻¹ * ρ g * B : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))`. Introduce `g`. Rewrite using `[← cj]`.
+
+Conclude with `congrArg (fun f : G E Ω →* GL (Fin a) (PadicAlgCl l) => ((f g : GL (Fin a) (PadicAlgCl l)) : Matrix (Fin a) (Fin a) (PadicAlgCl l))) hρ'`. Establish `hψv : ∀ s g, GlobalTheory.WachBlock.ofOL l LL ((ψ s g : (↥(OL LL))ˣ) : ↥(OL LL)) = ((χ s g : (PadicAlgCl l)ˣ) : PadicAlgCl l)`. Introduce `s g`. Conclude with `congrArg (fun f : G E Ω →* (PadicAlgCl l)ˣ => ((f g : (PadicAlgCl l)ˣ) : PadicAlgCl l)) (hψ s)`. Establish `hcp : ∀ {m : ℕ} (C : GL (Fin m) (PadicAlgCl l)) (N : Matrix (Fin m) (Fin m) (PadicAlgCl l)), (((C⁻¹ : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l)) * N * (C : Matrix (Fin m) (Fin m) (PadicAlgCl l))).charpoly = N.charpoly`.
+
+Introduce `m C N`. Simplify using `using Matrix.charpoly_units_conj C⁻¹ N`. Establish `hc : ∀ g m, ((r' g : Matrix (Fin n) (Fin n) ↥(OL LL)).charpoly - (ρ' g : Matrix (Fin a) (Fin a) ↥(OL LL)).charpoly * ∏ s, (Polynomial.X - Polynomial.C ((ψ s g : (↥(OL LL))ˣ) : ↥(OL LL)))).coeff m ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Introduce `g m`. Rewrite using `[GlobalTheory.IntMaxFinExt.mem_maximalIdeal_iff_norm_lt_one]`.
+
+Establish `e : GlobalTheory.WachBlock.ofOL l LL (((r' g : Matrix (Fin n) (Fin n) ↥(OL LL)).charpoly - (ρ' g : Matrix (Fin a) (Fin a) ↥(OL LL)).charpoly * ∏ s, (Polynomial.X - Polynomial.C ((ψ s g : (↥(OL LL))ˣ) : ↥(OL LL)))).coeff m) = ((r g).val.charpoly - (ρ g).val.charpoly * ∏ s, (Polyno …`. Rewrite using `[← Polynomial.coeff_map, Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map, hmat, hmatρ]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hψv, Units.val_mul]`. Rewrite using `[hcp, hcp]`. Establish `h` using `hcong g m`.
+
+Rewrite `h` using `[← e]`. Conclude with `h`. Take `⟨R, M, rs, hM0, hML, hMm, hMs, hrs, hline⟩` from `GlobalTheory.integral_flag_lift_of_residue ↥(OL LL) (G E Ω) n a t r' ρ' ψ ϖ hϖ hat hc GlobalTheory.T.exists_stable_character_flag_of_charpoly_factor`. Use `⟨LL, r', ψ, ϖ, R, M, rs, hζ, hτ, ?_, fun s => ?_, hϖ, hM0, hML, hMm, hMs, hrs, hline⟩` and prove the remaining obligations. Establish `: (Matrix.GeneralLinearGroup.map (GlobalTheory.WachBlock.ofOL l LL)).comp r' = (MulAut.conj A⁻¹).toMonoidHom.comp r` using `hr'`.
+
+Rewrite using `[this]`. Conclude with `GlobalTheory.crysWith_conj E Ω l n r A LL _ (fun i j => ⟨hA1 i j, hA2 i j⟩) hr`. Establish `: (Units.map (GlobalTheory.WachBlock.ofOL l LL).toMonoidHom).comp (ψ s) = χ s` using `hψ s`. Rewrite using `[this]`. Conclude with `hχ s`.
+-/
 theorem integralBlock_of_blockPair : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (n t : ℕ) (J : (E →+* PadicAlgCl l) → Fin n → ℤ) (bot : (E →+* PadicAlgCl l) → ℤ), BlockPair E Ω l n t J bot → GlobalTheory.WachBlock.IntegralBlock E Ω l n t J bot := by
   intro E Ω _ _ _ _ _ l _ n t J bot hB
   obtain ⟨r, a, ρ, χ, hat, hr, hρ, hχ, hcong⟩ := hB

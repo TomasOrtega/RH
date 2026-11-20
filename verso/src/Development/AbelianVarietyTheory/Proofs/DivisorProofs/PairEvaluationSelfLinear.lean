@@ -20,6 +20,9 @@ def ratInc (F R κ : Type) [Field F] [CommRing R] [Algebra F R] : ((κ → F) ×
   map_add' a b := by ext <;> simp
   map_smul' a b := by ext <;> simp [Algebra.smul_def]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1` using `congrArg Prod.fst hab`. Establish `h2` using `congrArg Prod.snd hab`. Conclude with `Prod.ext (funext fun i => h (congrFun h1 i)) (funext fun i => h (congrFun h2 i))`.
+-/
 theorem ratInc_injective (F R κ : Type) [Field F] [CommRing R] [Algebra F R] (h : Function.Injective (algebraMap F R)) :
     Function.Injective (ratInc F R κ) := by
   intro a b hab
@@ -27,6 +30,11 @@ theorem ratInc_injective (F R κ : Type) [Field F] [CommRing R] [Algebra F R] (h
   have h2 := congrArg Prod.snd hab
   exact Prod.ext (funext fun i => h (congrFun h1 i)) (funext fun i => h (congrFun h2 i))
 
+/- English proof (translation)
+Establish `hmem : ∀ x, c x ∈ LinearMap.range (ratInc F R κ)` using `fun x => by`. Take `⟨w, hw⟩` from `hc x`. Conclude with `⟨w, hw.symm⟩`. Use `⟨(LinearEquiv.ofInjective _ (ratInc_injective F R κ h)).symm.toLinearMap ∘ₗ c.codRestrict _ hmem, fun x => ?_⟩` and prove the remaining obligations. Use `LinearEquiv.ofInjective_apply (ratInc F R κ) (h := ratInc_injective F R κ h) ((LinearEquiv.ofInjective _ (ratInc_injective F R κ h)).symm (c.codRestrict _ hmem x))` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+-/
 theorem exists_rat {F R κ V : Type} [Field F] [CommRing R] [Algebra F R] [AddCommGroup V] [Module F V]
     (h : Function.Injective (algebraMap F R)) (c : V →ₗ[F] ((κ → R) × (κ → R)))
     (hc : ∀ x, ∃ w, c x = ratInc F R κ w) :
@@ -40,6 +48,19 @@ theorem exists_rat {F R κ V : Type} [Field F] [CommRing R] [Algebra F R] [AddCo
   rw [LinearEquiv.apply_symm_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `exists_rat h c hc`. Take `⟨q₁, hq₁⟩` from `exists_rat h c₁ hc₁`. Establish `hqi : Function.Injective q` using `fun a b hab => hi (by rw [← hq, ← hq, hab])`. Establish `hqi₁ : Function.Injective q₁` using `fun a b hab => hi₁ (by rw [← hq₁, ← hq₁, hab])`. Establish `hqs : Function.Surjective q₁` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hV])).1 hqi₁`.
+
+Set `K : Submodule F V` to `LinearMap.ker (LinearMap.fst F _ _ ∘ₗ q₁)`. Establish `hK : Module.finrank F K = Fintype.card κ`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (LinearMap.fst F _ _ ∘ₗ q₁)`. Establish `h2 : LinearMap.range (LinearMap.fst F _ _ ∘ₗ q₁) = ⊤` using `LinearMap.range_eq_top.2 (Prod.fst_surjective.comp hqs)`. Rewrite `h1` using `[h2, finrank_top, hV, Module.finrank_fintype_fun_eq_card]`.
+
+Conclude with `Nat.add_left_cancel h1`. Establish `hL : ∀ w ∈ K.map q, ∃ x, ratInc F R κ w = c x ∧ (c₁ x).1 = 0`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨x, hq x, ?_⟩` and prove the remaining obligations. Establish `hx' : (q₁ x).1 = 0` using `hx`.
+
+Rewrite using `[← hq₁]`. Use function extensionality and compare the values at `i`. Simplify using `[ratInc, hx']`. Use `⟨K.map q, fun a ha b hb => ?_, ?_, hL⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `hL a ha`.
+
+Take `⟨y, hy, hy0⟩` from `hL b hb`. Establish `h1` using `hf x y`. Rewrite `h1` using `[hx0, hy0, ← hx, ← hy, zero_dotProduct, zero_dotProduct, sub_zero, sub_eq_zero]`. Apply `h` to reduce the goal to its premises. Simplify `h1` using `[dotProduct, ratInc]`.
+
+Rewrite using `[← hK]`. Conclude with `(Submodule.equivMapOfInjective q hqi K).finrank_eq.symm`.
+-/
 theorem exists_lagrangian {F R κ V : Type} [Field F] [CommRing R] [Algebra F R] [AddCommGroup V] [Module F V] [Fintype κ]
     [FiniteDimensional F V] (hV : Module.finrank F V = Fintype.card κ + Fintype.card κ)
     (h : Function.Injective (algebraMap F R)) (c c₁ : V →ₗ[F] ((κ → R) × (κ → R)))
@@ -84,11 +105,41 @@ def incL (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (n d : �
     Matrix (Fin n) (Fin d) E →ₗ[F] Matrix (Fin n) (Fin d) (AE F E) :=
   LinearMap.mapMatrix (Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E).toLinearMap
 
+/- English proof (translation)
+Introduce `a b hab`. Use extensionality with `i j`. Conclude with `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F) (congrFun (congrFun hab i) j)`.
+-/
 theorem incL_injective (n d : ℕ) : Function.Injective (incL F E n d) := by
   intro a b hab
   ext i j
   exact Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F) (congrFun (congrFun hab i) j)
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair M₁ e hM₁ hev f hfh`. Establish `hψ : IsStd B.ψ` using `hpair.base.std`. Establish `hM : M.IsGood B.ψ` using `hpair.good`. Establish `h2 : Module.finrank F E = 2` using `hpair.base.cm.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`.
+
+Set `ev0 : Fn F n d →ₗ[ℂ] ℂ` to `LinearMap.proj (R := ℂ) (φ := fun _ : (Fin n × Fin d → AF F) => ℂ) 0`. Establish `hmem : ∀ (w : Matrix (Fin n) (Fin d) (AE F E)) (Φ : Fn F n d), Φ ∈ schA F (Fin n × Fin d) → M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`. Establish `hrec : ∀ S : Fn F n d →ₗ[ℂ] Fn F n d, (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho B.ψ z Φ) = M₁.co.rho B.ψ z (S Φ)) → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ y, S Φ y = ev0 (S (M.co.rho B.ψ (M₁.co.e.symm (y, 0)) Φ))`. Introduce `S hS Φ hΦ y`. Rewrite using `[hS _ Φ hΦ]`.
+
+Simplify using `[ev0, Darboux.rho, schr]`. Take `⟨L, hiso, hrk, hL⟩` from `exists_lagrangian (F := F) (R := AF F) (κ := Fin n × Fin d) (V := Matrix (Fin n) (Fin d) E) (by rw [Module.finrank_matrix, h2]; simp; ring) (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F) (M.co.e.toLinearMap.restrictScalars F ∘ₗ incL F E n d) (M₁.co.e.toLinearMap.restrictSca …`. Establish `inv : ∀ S : Fn F n d →ₗ[ℂ] Fn F n d, (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho B.ψ z Φ) = M₁.co.rho B.ψ z (S Φ)) → ∀ (t : AF F), ∀ w ∈ L, ∀ Φ ∈ schA F (Fin n × Fin d), (ev0 ∘ₗ S) (schr B.ψ (t • ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i))) …`. Introduce `S hS t w hw Φ hΦ`. Take `⟨x, hx, hx0⟩` from `hL w hw`.
+
+Establish `hx' : ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i))) = M.co.e (incM F x)` using `hx`. Establish `hx1 : (M₁.co.e (incM F x)).1 = 0` using `hx0`. Establish `hz : (M₁.co.e (t • incM F x)).1 = 0` using `by rw [map_smul, Prod.smul_fst, hx1, smul_zero]`. Establish `he : schr B.ψ (t • M.co.e (incM F x)) Φ = M.co.rho B.ψ (t • incM F x) Φ`. Rewrite using `[Darboux.rho, map_smul]`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hx', he, hS _ Φ hΦ]`. Generalize the expression as in `t • incM F x = z at hz`. Simplify using `[ev0, Darboux.rho, schr, hz]`. Establish `hevh : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ z Φ) = M₁.co.rho B.ψ z (e Φ)`. Introduce `z Φ hΦ`.
+
+Use `hev.Heisenberg₂ z Φ hΦ` as an intermediate fact. Establish `h1 : ∀ m : ℕ, incM F (1 : Matrix (Fin m) (Fin m) E) = 1` using `fun m => by simp [incM]`. Rewrite `this` using `[h1, h1, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Take `⟨ei, ev, hei, hloc0, hloc⟩` from `hev.loc`. Establish `hex : ∀ v : Pl F, ∃ p : (Fin n × Fin d → Fv F v) → ℂ, p ∈ SB _ ∧ ev v p = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ (M₁.vac v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → p = M.vac v)`.
+
+Introduce `v`. Distinguish the cases in `h : M₁.vac v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Conclude with `⟨M.vac v, (hM.vac v).1, by rw [← h]; exact (hloc0 v).1, fun _ => rfl⟩`. Establish `hmem' : Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)`. Rewrite using `[(hloc0 v).2]`.
+
+Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB v`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.1 hmem'`. Conclude with `⟨p, hp, hpe, fun h' => absurd h' h⟩`. Use `choose φ hφSB hφev hφvac using hex`. Establish `hcof : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hM₁.std] with v hv`.
+
+Conclude with `hφvac v hv`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hM.std] with v h1 h2`. Rewrite using `[h1, h2]`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, ei g ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hei (ContinuousLinearMap.ext h)`. Establish `hΦ₀ : pure g φ ∈ schA F (Fin n × Fin d)` using `(GlobalTheory.ThK.EvUniqInf.rest_pure g φ hφSB hstd).2`. Establish `hne : e (pure g φ) ≠ 0`. Rewrite using `[hloc g φ hφSB hcof, show (fun v => ev v (φ v)) = fun v => Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 from funext hφev]`.
+
+Introduce `h0`. Apply `hg` to reduce the goal to its premises. Apply `GlobalTheory.ThK.EvUniqInf.eq_of_pure_std (ei g) 0` to reduce the goal to its premises. Rewrite using `[h0]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Take `⟨y₀, hy₀⟩` from `Function.ne_iff.1 hne`. Take `⟨c, hc⟩` from `GlobalTheory.SvNLinear.main hK.base F B.ψ hψ (Fin n × Fin d) L hiso hrk (ev0 ∘ₗ f) (ev0 ∘ₗ e) (inv f hfh) (inv e hevh) ⟨M.co.rho B.ψ (M₁.co.e.symm (y₀, 0)) (pure g φ), hmem _ _ hΦ₀, by`. Rewrite using `[LinearMap.comp_apply, ← hrec e hevh _ hΦ₀ y₀]`. Conclude with `hy₀⟩`.
+
+Use `⟨c, fun Φ hΦ => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hrec f hfh Φ hΦ y, Pi.smul_apply, hrec e hevh Φ hΦ y, smul_eq_mul]`. Conclude with `hc _ (hmem _ _ hΦ)`.
+-/
 theorem eq_smul_isEv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (M₁ : Model σ X W) (e : Fn F n d →ₗ[ℂ] Fn F n d),

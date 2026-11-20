@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FResProof
 
+/- English proof (translation)
+Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z))`.
+-/
 theorem pull_square {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] {σ : R₀ →+* R₁} {C₀ C₁ : Type 1}
     [Category.{0} C₀] [Category.{0} C₁] {F₀ : C₀ ⥤ ModuleCat.{0} R₀} {F₁ : C₀ ⥤ ModuleCat.{0} R₁}
     {F₀' : C₁ ⥤ ModuleCat.{0} R₀} {F₂ : C₁ ⥤ ModuleCat.{0} R₁} (m₁ : Mor F₀ F₁ σ) (e : Mor F₁ F₂ (RingHom.id R₁))
@@ -17,9 +20,15 @@ theorem pull_square {R₀ R₁ : Type} [CommRing R₀] [CommRing R₁] {σ : R�
   obtain ⟨⟨z, hz⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   exact congrArg Submodule.Quotient.mk (Subtype.ext (h z))
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem lcRes_id (q : ℕ) {U : Scheme.{0}} (f : LocallyConstant U (ZMod q)) : lcRes q (𝟙 U) f = f := by
   ext x; rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by change (𝟙 U : U ⟶ U).appTop.hom ζ.1 = ζ.1 simp)`.
+-/
 theorem primRes_id {q : ℕ} {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) : primRes (𝟙 U) ζ = ζ :=
   Subtype.ext (by
     change (𝟙 U : U ⟶ U).appTop.hom ζ.1 = ζ.1
@@ -34,6 +43,9 @@ def mG (H : RIn l) (r : Roots l) (M : Model l K) {C : Type 1} [Category.{0} C] (
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `pull_square (lcMor hN H r ((𝟭 (El M.P)) ⋙ CategoryOfElements.π _) n) (Mor.restrict (modF (AcrEl M.P n)) G) (mG H r M G n) (lcMor hN H r (G ⋙ CategoryOfElements.π _) n) j (fun z => rfl) y`.
+-/
 theorem square (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) {C : Type 1} [Category.{0} C] (G : C ⥤ El M.P)
     (n j : ℕ) (y : CH.H (probe H r ((𝟭 (El M.P)) ⋙ CategoryOfElements.π _) n).L j) :
     (Mor.restrict (modF (AcrEl M.P n)) G).pull j ((lcMor hN H r ((𝟭 (El M.P)) ⋙ CategoryOfElements.π _) n).pull j y) =
@@ -41,12 +53,18 @@ theorem square (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) {C : Type 
   pull_square (lcMor hN H r ((𝟭 (El M.P)) ⋙ CategoryOfElements.π _) n) (Mor.restrict (modF (AcrEl M.P n)) G)
     (mG H r M G n) (lcMor hN H r (G ⋙ CategoryOfElements.π _) n) j (fun z => rfl) y
 
+/- English proof (translation)
+Rewrite using `[CategoryTheory.Functor.map_id, GlobalTheory.EtC.pull_id]`.
+-/
 theorem pull_sch_id (q : ℕ) (i : ℤ) (j : ℕ) (X : Scheme.{0}) (x : Ht q (sch.obj X) j i) :
     pull _ (sch.map (𝟙 X)) _ j x = x := by
   rw [CategoryTheory.Functor.map_id, GlobalTheory.EtC.pull_id]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩ (mG H r M G n).pull j ((pts H r M (𝟭 _) n).et i j x) = (pts H r M G n).et i j x := by haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩ refine (hE hg (l ^ n) (El M.P) C (probe H r ((𝟭 (El M.P)) ⋙ CategoryOfElements …`.
+-/
 theorem et_restrict (hE : EtNat) (hg : InGen) (H : RIn l) (r : Roots l) (M : Model l K) {C : Type 1} [Category.{0} C]
     (G : C ⥤ El M.P) (n : ℕ) (i : ℤ) (j : ℕ) (x : Ht (l ^ n) (sch.obj (gb M)) j i) :
     haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
@@ -62,6 +80,9 @@ theorem et_restrict (hE : EtNat) (hg : InGen) (H : RIn l) (r : Roots l) (M : Mod
 
 end GlobalTheory.CompanionTheory.FResProof
 
+/- English proof (translation)
+Introduce `hE E hN l _ H r K M C _ G n i j x`. Conclude with `(GlobalTheory.CompanionTheory.FResProof.square hN H r M G n j _).trans (congrArg _ (GlobalTheory.CompanionTheory.FResProof.et_restrict hE E.gen H r M G n i j x))`.
+-/
 theorem GlobalTheory.CompanionTheory.FResProof.fRes : CrystallineSemistableComparison.E.EtNat → CrystallineSemistableComparison.E.FRes := by
   intro hE E hN l _ H r K M C _ G n i j x
   exact (GlobalTheory.CompanionTheory.FResProof.square hN H r M G n j _).trans

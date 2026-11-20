@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.LiftLevel
 
+/- English proof (translation)
+Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.subset_span ⟨a, by simp⟩`.
+-/
 theorem isLattice_stdL (E : Type) [Field E] [NumberField E] (n : ℕ) :
     Submodule.IsLattice E (stdL E n) := by
   refine ⟨Submodule.fg_span (Set.finite_range _), ?_⟩
@@ -21,6 +26,13 @@ theorem isLattice_stdL (E : Type) [Field E] [NumberField E] (n : ℕ) :
   refine Submodule.subset_span ?_
   exact Submodule.subset_span ⟨a, by simp⟩
 
+/- English proof (translation)
+Introduce `D S T C hn ΛT hΛT hAA βS βT hβS hβT Pg Q ξ hPg h2 e he`. Take `⟨k₂, hk₂, h₂⟩` from `GlobalTheory.PlaceVec.frMapAdj_down S T βS βT`. Take `⟨k₄, hk₄, h₄⟩` from `GlobalTheory.PlaceVec.exists_nsmul_int_mem_latO (S := S) (T := T) (ΛS := stdL D.host.E S.rank) (ΛT := ΛT) (isLattice_stdL D.host.E S.rank) hΛT.1`. Establish `hinf : infPart D (cA D e) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Use `⟨k₄ * k₂, Nat.mul_pos hk₄ hk₂, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hhalf, hint, -⟩` from `hx`. Establish `hx0 : (k₂ • x).map (infPart D) = 0`. Use extensionality with `i j`. Use `show infPart D ((k₂ • x) i j) = 0`. Rewrite using `[Matrix.smul_apply, ← hhalf i j, nsmul_eq_mul, RingHom.map_mul, RingHom.map_mul, hinf, zero_mul, mul_zero]`.
+
+Rewrite using `[mul_smul]`. Conclude with `h₄ (k₂ • x) hx0 (by rw [GlobalTheory.PlaceVec.map_toEAf_nsmul]; exact h₂ x hint)`.
+-/
 theorem liftL_nsmul_mem_latO : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∃ m : ℕ, 0 < m ∧ ∀ x ∈ GlobalTheory.LiftLevel.liftL S T βS βT Pg Q e, m • x ∈ latO S T (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True := by
   intro D S T C hn ΛT hΛT hAA βS βT hβS hβT Pg Q ξ hPg h2 e he
   obtain ⟨k₂, hk₂, h₂⟩ := GlobalTheory.PlaceVec.frMapAdj_down S T βS βT

@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.MemberDetLaws
 
+/- English proof (translation)
+Set `s : Setoid X` to `{ r := fun x y => ∃ g : G, v y = act g (v x) iseqv := { refl := fun x => ⟨1, (act_one _).symm⟩`. Use symmetry as in `:= fun {x y} ⟨g, hg⟩ => ⟨g⁻¹, by rw [hg, ← act_mul, inv_mul_cancel, act_one]⟩`. Use `trans := fun {x y z} ⟨g, hg⟩ ⟨h, hh⟩ => ⟨h * g, by rw [hh, hg, act_mul]⟩ } }`. Establish `hb : ∀ x : X, ∃ g : G, v x = act g (v (Quotient.mk s x).out)` using `fun x => Quotient.mk_out (s := s) x`. Use `choose c hc using hb`.
+
+Use `⟨fun x => χ (c x), fun x y g hg => ?_⟩` and prove the remaining obligations. Establish `hq : Quotient.mk s x = Quotient.mk s y` using `Quotient.sound ⟨g, hg⟩`. Establish `hx` using `hc x`. Establish `hy` using `hc y`. Rewrite `hy` using `[← hq]`.
+
+Establish `h1 : χ ((c y)⁻¹ * (g * c x)) = 1`. Apply `hχ (Quotient.mk s x).out` to reduce the goal to its premises. Rewrite using `[act_mul, act_mul, ← hx, ← hg, hy, ← act_mul, inv_mul_cancel, act_one]`. Rewrite `h1` using `[map_mul, map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1`.
+-/
 theorem exists_potential {G M X A : Type} [Group G] [CommGroup A] (act : G → M → M)
     (act_one : ∀ m, act 1 m = m) (act_mul : ∀ g h m, act (g * h) m = act g (act h m))
     (v : X → M) (χ : G →* A)
@@ -33,6 +40,9 @@ theorem exists_potential {G M X A : Type} [Group G] [CommGroup A] (act : G → M
   rw [map_mul, map_mul, map_inv, inv_mul_eq_one] at h1
   exact h1
 
+/- English proof (translation)
+Unfold `SDLat.smulLat`. Rewrite using `[Matrix.toLin'_one]`. Conclude with `Submodule.map_id L`.
+-/
 theorem smulLat_one {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
     (L : Submodule (𝓞 E) (Fin N → E)) :
     SDLat.smulLat (1 : Matrix (Fin N) (Fin N) E) L = L := by
@@ -40,6 +50,9 @@ theorem smulLat_one {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
   rw [Matrix.toLin'_one]
   exact Submodule.map_id L
 
+/- English proof (translation)
+Unfold `SDLat.smulLat`. Rewrite using `[Matrix.toLin'_mul, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem smulLat_mul {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
     (g h : Matrix (Fin N) (Fin N) E) (L : Submodule (𝓞 E) (Fin N → E)) :
     SDLat.smulLat (g * h) L = SDLat.smulLat g (SDLat.smulLat h L) := by
@@ -57,6 +70,9 @@ noncomputable def invProd {E ι : Type} [Field E] [StarRing E] [Fintype ι] (σ 
     unitary E →* ℂˣ :=
   ∏ i, ((Units.map (σ i : E →* ℂ)).comp Unitary.toUnits)⁻¹
 
+/- English proof (translation)
+Unfold `invProd`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+-/
 theorem invProd_coe {E ι : Type} [Field E] [StarRing E] [Fintype ι] (σ : ι → E →+* ℂ)
     (z : unitary E) : ((invProd σ z : ℂˣ) : ℂ) = ∏ i, (σ i (z : E))⁻¹ := by
   unfold invProd
@@ -65,6 +81,13 @@ theorem invProd_coe {E ι : Type} [Field E] [StarRing E] [Fintype ι] (σ : ι �
   rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val]
   rfl
 
+/- English proof (translation)
+Use `letI := H.cmStar`. Introduce `z hu hz`. Use `H.isCMField_hostE` as an intermediate fact. Take `⟨n, hn, hp⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one H.E ℂ hz (fun φ => by`. Establish `h1 : star z * z = 1` using `hu.1`.
+
+Establish `h2 : φ (star z) = starRingEnd ℂ (φ z)` using `IsCMField.complexEmbedding_complexConj H.E φ z`. Establish `h3` using `congrArg φ h1`. Rewrite `h3` using `[map_mul, h2, map_one, Complex.conj_mul']`. Establish `h4 : ‖φ z‖ ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4)`.
+
+Conclude with `⟨n, hn, hp⟩`.
+-/
 private theorem pow_eq_one_of_unitary {R : Ranks} (H : Formalism.BasicNotions.Host R) :
     letI := H.cmStar; ∀ z : H.E, z ∈ unitary H.E → IsIntegral ℤ z → ∃ m : ℕ, 0 < m ∧ z ^ m = 1 := by
   letI := H.cmStar
@@ -79,6 +102,19 @@ private theorem pow_eq_one_of_unitary {R : Ranks} (H : Formalism.BasicNotions.Ho
     exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4)
   exact ⟨n, hn, hp⟩
 
+/- English proof (translation)
+Use `H.galois` as an intermediate fact. Establish `: IsGalois H.K H.E` using `IsGalois.tower_top_of_isGalois ℚ _ _`. Establish `h` using `Algebra.norm_eq_prod_automorphisms H.K x`. Rewrite `h` using `[H.der.norm_mu x hx, map_one]`. Establish `h2` using `congrArg H.φ₀ h`.
+
+Rewrite `h2` using `[map_one, map_prod]`. Rewrite using `[h2]`. Use `symm`. Establish `hmem : ∀ σ : H.E ≃ₐ[H.K] H.E, H.gal (σ.restrictScalars ℚ) ∈ R.Psi` using `fun σ => (H.galE_mem_Psi_iff _).2 (σ.commutes ⟨H.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩)`. Use `Fintype.prod_bijective (fun σ : H.E ≃ₐ[H.K] H.E => (⟨H.gal (σ.restrictScalars ℚ), hmem σ⟩ : R.Psi)) ⟨fun σ τ hst => ?_, fun g => ?_⟩ _ _ fun σ => ?_` and prove the remaining obligations.
+
+Conclude with `AlgEquiv.restrictScalars_injective ℚ (H.gal.injective (congrArg Subtype.val hst))`. Establish `hfix : H.gal.symm g.1 H.sqd = H.sqd` using `(H.galE_mem_Psi_iff _).1 (by show H.gal (H.gal.symm g.1) ∈ _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `g.2)`. Establish `hK : ∀ y : H.K, H.gal.symm g.1 (y : H.E) = y`.
+
+Establish `hle : H.K ≤ IntermediateField.fixedField (Subgroup.zpowers (H.gal.symm g.1))`. Use `IntermediateField.adjoin_simple_le_iff.2 ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Conclude with `(Subgroup.zpowers_le.2 (show H.gal.symm g.1 ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) H.sqd from hfix)) hf`.
+
+Introduce `y`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 (hle y.2) _ (Subgroup.mem_zpowers _)`. Use `⟨AlgEquiv.ofRingEquiv (f := (H.gal.symm g.1).toRingEquiv) hK, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `H.gal.apply_symm_apply g.1`. Use `show H.φ₀ (σ x) = H.φ₀ (H.gal.symm (H.gal (σ.restrictScalars ℚ)) x)`.
+
+Rewrite using `[MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 private theorem prod_emb_eq_one {R : Ranks} (H : Formalism.BasicNotions.Host R) [Fintype R.Psi] (x : H.E)
     (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : ∏ τ : R.Psi, H.emb (τ : R.GG) x = 1 := by
   classical
@@ -114,6 +150,17 @@ private theorem prod_emb_eq_one {R : Ranks} (H : Formalism.BasicNotions.Host R) 
     rw [MulEquiv.symm_apply_apply]
     rfl
 
+/- English proof (translation)
+Introduce `R H`. Use `letI := H.cmStar`. Use `letI : Fintype (R.Psi) := Fintype.ofFinite _`. Set `e1 : unitary H.E →* ℂˣ` to `invProd fun τ : R.Psi => H.emb (τ : R.GG)`. Establish `he1 : ∀ z : unitary H.E, ((e1 z : ℂˣ) : ℂ) = ∏ τ : R.Psi, (H.emb (τ : R.GG) (z : H.E))⁻¹` using `invProd_coe _`.
+
+Establish `hφ : ∀ N, ∃ φ : SDLat H.E N → ℂˣ, ∀ (L L' : SDLat H.E N) (γ : Matrix.unitaryGroup (Fin N) H.E), L'.1 = SDLat.smulLat (γ : Matrix (Fin N) (Fin N) H.E) L.1 → φ L' = (e1.comp (detU H.E N)) γ * φ L`. Introduce `N`. Use `exists_potential (fun (γ : Matrix.unitaryGroup (Fin N) H.E) L => SDLat.smulLat (γ : Matrix (Fin N) (Fin N) H.E) L) (fun m => smulLat_one m) (fun g h m => smulLat_mul _ _ m) (fun L : SDLat H.E N => L.1) _ ?_` and prove the remaining obligations. Introduce `L γ hγ`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[MonoidHom.comp_apply, he1]`. Express the relevant statement in the definitionally equal form `∏ τ : R.Psi, (H.emb (τ : R.GG) (γ : Matrix (Fin N) (Fin N) H.E).det)⁻¹ = 1`. Rewrite using `[Finset.prod_inv_distrib, prod_emb_eq_one H _ (pow_eq_one_of_unitary H _ (Matrix.det_of_mem_unitary γ.2) (GlobalTheory.Mem.StabDet.isIntegral_det L.1 L.2.1 L.2.2.1 _ fun v hv => ?_)), inv_one]`. Rewrite using `[hγ]`. Conclude with `⟨v, hv, by simp⟩`.
+
+Use `choose φ hφ using hφ`. Use `⟨e1, fun N L L' => QuotientGroup.mk (φ N L' / φ N L), fun z => ?_, fun N L => ?_, fun N L L' L'' => ?_, fun N L L' γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[he1, finprod_eq_prod_of_fintype]`. Simplify using the standard rewrite rules. Rewrite using `[← QuotientGroup.mk_mul, mul_comm, div_mul_div_cancel]`.
+
+Use `show QuotientGroup.mk (φ N L' / φ N L) = _`. Rewrite using `[hφ N L L' γ hγ, mul_div_cancel_right]`. Both sides reduce to the same expression.
+-/
 theorem det_laws : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), letI := H.cmStar; ∃ (e1 : unitary H.E →* ℂˣ) (rel : ∀ N, SDLat H.E N → SDLat H.E N → ℂˣ ⧸ (⊥ : Subgroup ℂˣ)), (∀ z : unitary H.E, ((e1 z : ℂˣ) : ℂ) = ∏ᶠ τ : R.Psi, (H.emb (τ : R.GG) (z : H.E))⁻¹) ∧ (∀ N L, rel N L L = 1) ∧ (∀ N L L' L'', rel N L L' * rel N L' L'' = rel N L L'') ∧ ∀ N (L L' : SDLat H.E N) (γ : Matrix.unitaryGroup (Fin N) H.E), L'.1 = SDLat.smulLat (γ : Matrix (Fin N) (Fin N) H.E) L.1 → rel N L L' = QuotientGroup.mk (e1 ⟨(γ : Matrix (Fin N) (Fin N) H.E).det, Matrix.det_of_mem_unitary γ.2⟩) := by
   intro R H
   letI := H.cmStar

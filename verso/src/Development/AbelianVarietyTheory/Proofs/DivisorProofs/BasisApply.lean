@@ -38,16 +38,34 @@ instance : Module (𝓞 E) (Lat ρ g) :=
 
 variable {ρ g}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_apply (a : 𝓞 E) (x : Lat ρ g) (i : Fin r) : (a • x) i = ∑ j, ρ a i j • x j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem add_apply (x y : Lat ρ g) (i : Fin r) : (x + y) i = x i + y i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zsmul_apply (n : ℤ) (x : Lat ρ g) (i : Fin r) : (n • x) i = n • x i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_apply (x : Lat ρ g) (i : Fin r) : (-x) i = -x i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zero_apply (i : Fin r) : (0 : Lat ρ g) i = 0 := rfl
 
+/- English proof (translation)
+The claim follows from `funext h`.
+-/
 @[ext] theorem ext {x y : Lat ρ g} (h : ∀ i, x i = y i) : x = y := funext h
 
 variable (ρ g)
@@ -80,6 +98,9 @@ def form (S : Matrix (Fin r) (Fin r) ℤ) : LinearMap.BilinForm ℤ (Lat ρ g) :
       simp only [zsmul_apply, Prod.smul_fst, Prod.smul_snd, dotProduct_smul, smul_eq_mul, Finset.mul_sum]
       refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_apply (S : Matrix (Fin r) (Fin r) ℤ) (x y : Lat ρ g) :
     form ρ g S x y = ∑ i, ∑ j, S i j * ((x i).1 ⬝ᵥ (y j).2 - (x i).2 ⬝ᵥ (y j).1) := rfl
 
@@ -96,15 +117,27 @@ def cx : Lat ρ g →ₗ[ℤ] Lat ρ g where
     show -(n * (x i).1 k) = n * -(x i).1 k
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cx_apply (x : Lat ρ g) (i : Fin r) : cx ρ g x i = ((x i).2, -(x i).1) := rfl
 
 def act (a : 𝓞 E) : Lat ρ g →ₗ[ℤ] Lat ρ g := (DistribMulAction.toAddMonoidHom (Lat ρ g) a).toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_apply (a : 𝓞 E) (x : Lat ρ g) : act ρ g a x = a • x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem basis_repr (x : Lat ρ g) (p : Fin r × (Fin g ⊕ Fin g)) :
     (basis ρ g).repr x p = Sum.elim (x p.1).1 (x p.1).2 p.2 := rfl
 
+/- English proof (translation)
+Rewrite using `[basis, Module.Basis.coe_ofEquivFun]`. Both sides reduce to the same expression.
+-/
 theorem basis_apply (p : Fin r × (Fin g ⊕ Fin g)) (i : Fin r) :
     basis ρ g p i = (fun k => Pi.single (M := fun _ => ℤ) p 1 (i, Sum.inl k),
       fun k => Pi.single (M := fun _ => ℤ) p 1 (i, Sum.inr k)) := by

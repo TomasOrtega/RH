@@ -9,6 +9,13 @@ open scoped NumberField.LiesOver TensorProduct
 
 namespace Matrix
 
+/- English proof (translation)
+Set `_ : LinearOrder ι` to `LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective`. Rewrite using `[(Matrix.blockTriangular_blockDiagonal' M).det]`. Establish `hblock : ∀ a, ((Matrix.blockDiagonal' M).toSquareBlock Sigma.fst a).det = (M a).det`. Introduce `a`. Set `e : κ a ≃ {x : (i : ι) × κ i // x.1 = a}` to `{ toFun := fun x => ⟨⟨a, x⟩, rfl⟩ invFun := fun x => x.2 ▸ x.1.2 left_inv := fun x => rfl right_inv := by rintro ⟨⟨i, x⟩, rfl⟩; rfl }`.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Use `congr 1`. Use extensionality with `x y`. Simplify using `[Matrix.toSquareBlock, Matrix.toSquareBlockProp, e, Matrix.blockDiagonal'_apply_eq]`. Repeatedly rewrite using `[hblock]`.
+
+Use `Finset.prod_subset (Finset.subset_univ _) fun a _ ha => ?_` and prove the remaining obligations. Establish `: IsEmpty (κ a)` using `⟨fun x => ha (Finset.mem_image.2 ⟨⟨a, x⟩, Finset.mem_univ _, rfl⟩)⟩`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem det_blockDiagonal' {R ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] {κ : ι → Type*}
     [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)] (M : ∀ i, Matrix (κ i) (κ i) R) :
     (Matrix.blockDiagonal' M).det = ∏ i, (M i).det := by
@@ -41,6 +48,11 @@ variable {R ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι] {A : ι → T
 
 omit [∀ i, Module.Free R (A i)] [∀ i, Module.Finite R (A i)] in
 
+/- English proof (translation)
+Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_apply, Pi.basis_repr, Matrix.blockDiagonal'_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+
+Simplify using `[h]`.
+-/
 theorem leftMulMatrix_pi {κ : ι → Type*} [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
     (b : ∀ i, Module.Basis (κ i) R (A i)) (x : ∀ i, A i) :
     Algebra.leftMulMatrix (Pi.basis b) x =
@@ -52,12 +64,18 @@ theorem leftMulMatrix_pi {κ : ι → Type*} [∀ i, Fintype (κ i)] [∀ i, Dec
     simp [Algebra.leftMulMatrix_eq_repr_mul]
   · simp [h]
 
+/- English proof (translation)
+Set `b` to `fun i => Module.Free.chooseBasis R (A i)`. Rewrite using `[Algebra.norm_eq_matrix_det (Pi.basis b), leftMulMatrix_pi, GroundTheory.Global.Matrix.det_blockDiagonal']`. Conclude with `Finset.prod_congr rfl fun i _ => (Algebra.norm_eq_matrix_det (b i) (x i)).symm`.
+-/
 theorem norm_pi (x : ∀ i, A i) : Algebra.norm R x = ∏ i, Algebra.norm R (x i) := by
   let b := fun i => Module.Free.chooseBasis R (A i)
   rw [Algebra.norm_eq_matrix_det (Pi.basis b), leftMulMatrix_pi,
     GroundTheory.Global.Matrix.det_blockDiagonal']
   exact Finset.prod_congr rfl fun i _ => (Algebra.norm_eq_matrix_det (b i) (x i)).symm
 
+/- English proof (translation)
+Set `b` to `fun i => Module.Free.chooseBasis R (A i)`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis b), leftMulMatrix_pi, Matrix.trace_blockDiagonal']`. Conclude with `Finset.sum_congr rfl fun i _ => (Algebra.trace_eq_matrix_trace (b i) (x i)).symm`.
+-/
 theorem trace_pi (x : ∀ i, A i) : Algebra.trace R _ x = ∑ i, Algebra.trace R (A i) (x i) := by
   let b := fun i => Module.Free.chooseBasis R (A i)
   rw [Algebra.trace_eq_matrix_trace (Pi.basis b), leftMulMatrix_pi, Matrix.trace_blockDiagonal']
@@ -71,6 +89,9 @@ section NontriviallyNormed
 
 variable {K : Type*} [Field K] (v : InfinitePlace K)
 
+/- English proof (translation)
+Establish `h` using `(isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) 2`. Rewrite using `[← h, map_ofNat]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_two_completion : ‖(2 : v.Completion)‖ = 2 := by
   have h := (isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _) 2
   rw [← h, map_ofNat]
@@ -94,6 +115,9 @@ def tensorPiHom : v.Completion ⊗[K] L →ₐ[v.Completion] PiPlacesOver (L := 
     ((Algebra.ofId L (PiPlacesOver (L := L) v)).restrictScalars K) (fun _ _ => Commute.all _ _)
 
 @[simp]
+/- English proof (translation)
+Simplify using `[tensorPiHom]`.
+-/
 theorem tensorPiHom_tmul (x : v.Completion) (l : L) (w : v.placesOver L) :
     tensorPiHom v (x ⊗ₜ l) w =
       algebraMap v.Completion _ x * (l : (w : InfinitePlace L).Completion) := by
@@ -101,6 +125,9 @@ theorem tensorPiHom_tmul (x : v.Completion) (l : L) (w : v.placesOver L) :
 
 variable {v} in
 
+/- English proof (translation)
+Break down `w.isUnramified_or_isRamified K with h | h` into its components or cases. Rewrite using `[h.finrank_eq_one v]`. Evaluate the numerical expressions. Rewrite using `[h.finrank_eq_two v]`. Evaluate the numerical expressions.
+-/
 theorem finrank_completion_pos (w : InfinitePlace L) [w.LiesOver v] :
     0 < Module.finrank v.Completion w.Completion := by
   rcases w.isUnramified_or_isRamified K with h | h
@@ -115,6 +142,9 @@ variable [NumberField K] [NumberField L]
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[← sum_inertiaDeg_eq_finrank K L v]`. Use `Finset.sum_bij (fun w _ => w.1) (fun w _ => by simp) (fun a _ b _ h => Subtype.ext h) (fun b hb => ⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, rfl⟩) (fun w _ => (inertiaDeg_eq_finrank v w.1).symm)` and prove the remaining obligations.
+-/
 theorem sum_finrank_completion :
     ∑ w : v.placesOver L, Module.finrank v.Completion (w : InfinitePlace L).Completion =
       Module.finrank K L := by
@@ -124,17 +154,26 @@ theorem sum_finrank_completion :
     (fun a _ b _ h => Subtype.ext h) (fun b hb => ⟨⟨b, by simpa using hb⟩, Finset.mem_univ _, rfl⟩)
     (fun w _ => (inertiaDeg_eq_finrank v w.1).symm)
 
+/- English proof (translation)
+Rewrite using `[Module.finrank_pi_fintype, sum_finrank_completion]`.
+-/
 theorem finrank_piPlacesOver :
     Module.finrank v.Completion (PiPlacesOver (L := L) v) = Module.finrank K L := by
   classical
   rw [Module.finrank_pi_fintype, sum_finrank_completion]
 
+/- English proof (translation)
+The claim follows from `Module.finrank_baseChange`.
+-/
 theorem finrank_tensor :
     Module.finrank v.Completion (v.Completion ⊗[K] L) = Module.finrank K L :=
   Module.finrank_baseChange
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Set `π : InfiniteAdeleRing L → PiPlacesOver (L` to `L) v := fun x w => x w`. Establish `hπ : Continuous π` using `continuous_pi fun w => continuous_apply (w : InfinitePlace L)`. Establish `hs : Function.Surjective π` using `fun y => ⟨fun w => if h : w ∈ v.placesOver L then y ⟨w, h⟩ else 0, by ext w; simp [π]⟩`. Conclude with `hs.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap L) hπ`.
+-/
 theorem denseRange_algebraMap_piPlacesOver :
     DenseRange (algebraMap L (PiPlacesOver (L := L) v)) := by
   classical
@@ -144,6 +183,13 @@ theorem denseRange_algebraMap_piPlacesOver :
     ⟨fun w => if h : w ∈ v.placesOver L then y ⟨w, h⟩ else 0, by ext w; simp [π]⟩
   exact hs.denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap L) hπ
 
+/- English proof (translation)
+Set `f` to `(tensorPiHom (L := L) v).toLinearMap`. Establish `hclosed : IsClosed (LinearMap.range f : Set (PiPlacesOver (L` using `L) v)) := (LinearMap.range f).closed_of_finiteDimensional`. Establish `hsub : Set.range (algebraMap L (PiPlacesOver (L` using `L) v)) ⊆ LinearMap.range f := by`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨1 ⊗ₜ l, by ext w; simp [f]⟩`.
+
+Establish `huniv : (LinearMap.range f : Set (PiPlacesOver (L` using `L) v)) = Set.univ := by`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← (denseRange_algebraMap_piPlacesOver v).closure_range]`. Conclude with `closure_minimal hsub hclosed`. Introduce `y`.
+
+Establish `hy : y ∈ (LinearMap.range f : Set (PiPlacesOver (L` using `L) v)) := huniv ▸ Set.mem_univ y`. Take `⟨x, hx⟩` from `hy`. Conclude with `⟨x, hx⟩`.
+-/
 theorem tensorPiHom_surjective : Function.Surjective (tensorPiHom (L := L) v) := by
   let f := (tensorPiHom (L := L) v).toLinearMap
   have hclosed : IsClosed (LinearMap.range f : Set (PiPlacesOver (L := L) v)) :=
@@ -160,6 +206,9 @@ theorem tensorPiHom_surjective : Function.Surjective (tensorPiHom (L := L) v) :=
   obtain ⟨x, hx⟩ := hy
   exact ⟨x, hx⟩
 
+/- English proof (translation)
+Use `⟨?_, tensorPiHom_surjective v⟩` and prove the remaining obligations. Establish `h : Module.finrank v.Completion (v.Completion ⊗[K] L) = Module.finrank v.Completion (PiPlacesOver (L` using `L) v) := by`. Rewrite using `[finrank_tensor, finrank_piPlacesOver]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank h (f := (tensorPiHom (L := L) v).toLinearMap)).mpr (tensorPiHom_surjective v)`.
+-/
 theorem tensorPiHom_bijective : Function.Bijective (tensorPiHom (L := L) v) := by
   refine ⟨?_, tensorPiHom_surjective v⟩
   have h : Module.finrank v.Completion (v.Completion ⊗[K] L) =
@@ -172,11 +221,17 @@ def tensorPiEquiv : v.Completion ⊗[K] L ≃ₐ[v.Completion] PiPlacesOver (L :
   AlgEquiv.ofBijective (tensorPiHom v) (tensorPiHom_bijective v)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorPiEquiv_apply (x : v.Completion ⊗[K] L) :
     tensorPiEquiv (L := L) v x = tensorPiHom v x := rfl
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `isModuleTopologyOfFiniteDimensional`.
+-/
 theorem isModuleTopology_piPlacesOver : IsModuleTopology v.Completion (PiPlacesOver (L := L) v) :=
   isModuleTopologyOfFiniteDimensional
 
@@ -194,6 +249,9 @@ def tensorPiHomeomorph :
       IsModuleTopology.continuous_of_linearMap (tensorPiEquiv (L := L) v).symm.toLinearMap }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorPiHomeomorph_apply (x : v.Completion ⊗[K] L) :
     tensorPiHomeomorph (L := L) v x = tensorPiHom v x := rfl
 
@@ -204,6 +262,9 @@ def tensorPiEquivLeft : L ⊗[K] v.Completion ≃ₐ[L] PiPlacesOver (L := L) v 
     (fun l => by ext w; simp [Algebra.TensorProduct.algebraMap_apply])
 
 @[simp]
+/- English proof (translation)
+Simplify using `[tensorPiEquivLeft, mul_comm]`.
+-/
 theorem tensorPiEquivLeft_tmul (l : L) (x : v.Completion) (w : v.placesOver L) :
     tensorPiEquivLeft (L := L) v (l ⊗ₜ x) w =
       (l : (w : InfinitePlace L).Completion) * algebraMap v.Completion _ x := by
@@ -236,16 +297,25 @@ def tensorPiHomeomorphRight :
       IsModuleTopology.continuous_of_linearMap (tensorPiEquivRight (L := L) v).symm.toLinearMap }
 
 @[simp]
+/- English proof (translation)
+The claim follows from `tensorPiEquivLeft_tmul v l x w`.
+-/
 theorem tensorPiHomeomorphRight_tmul (l : L) (x : v.Completion) (w : v.placesOver L) :
     tensorPiHomeomorphRight (L := L) v (l ⊗ₜ x) w =
       (l : (w : InfinitePlace L).Completion) * algebraMap v.Completion _ x :=
   tensorPiEquivLeft_tmul v l x w
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← Algebra.baseChange_lmul, LinearMap.det_baseChange]`.
+-/
 theorem algebraMap_norm_eq_norm_tmul (l : L) :
     algebraMap K v.Completion (Algebra.norm K l) =
       Algebra.norm v.Completion ((1 : v.Completion) ⊗ₜ[K] l) := by
   rw [Algebra.norm_apply, Algebra.norm_apply, ← Algebra.baseChange_lmul, LinearMap.det_baseChange]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem algebraMap_trace_eq_trace_tmul (l : L) :
     algebraMap K v.Completion (Algebra.trace K L l) =
       Algebra.trace v.Completion _ ((1 : v.Completion) ⊗ₜ[K] l) := by
@@ -254,6 +324,9 @@ theorem algebraMap_trace_eq_trace_tmul (l : L) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[← Algebra.norm_eq_of_algEquiv (tensorPiEquiv (L := L) v) x, tensorPiEquiv_apply, GroundTheory.Global.Algebra.norm_pi]`.
+-/
 theorem norm_tensor_eq_prod (x : v.Completion ⊗[K] L) :
     Algebra.norm v.Completion x =
       ∏ w : v.placesOver L, Algebra.norm v.Completion (tensorPiHom v x w) := by
@@ -262,6 +335,9 @@ theorem norm_tensor_eq_prod (x : v.Completion ⊗[K] L) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[← Algebra.trace_eq_of_algEquiv (tensorPiEquiv (L := L) v) x, tensorPiEquiv_apply, GroundTheory.Global.Algebra.trace_pi]`.
+-/
 theorem trace_tensor_eq_sum (x : v.Completion ⊗[K] L) :
     Algebra.trace v.Completion _ x =
       ∑ w : v.placesOver L, Algebra.trace v.Completion _ (tensorPiHom v x w) := by
@@ -270,6 +346,9 @@ theorem trace_tensor_eq_sum (x : v.Completion ⊗[K] L) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[algebraMap_norm_eq_norm_tmul, norm_tensor_eq_prod]`. Simplify using the standard rewrite rules.
+-/
 theorem algebraMap_norm_eq_prod (l : L) :
     algebraMap K v.Completion (Algebra.norm K l) =
       ∏ w : v.placesOver L, Algebra.norm v.Completion (l : (w : InfinitePlace L).Completion) := by
@@ -278,6 +357,9 @@ theorem algebraMap_norm_eq_prod (l : L) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Rewrite using `[algebraMap_trace_eq_trace_tmul, trace_tensor_eq_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem algebraMap_trace_eq_sum (l : L) :
     algebraMap K v.Completion (Algebra.trace K L l) =
       ∑ w : v.placesOver L,
@@ -291,10 +373,16 @@ namespace InfinitePlace
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] (v : InfinitePlace K)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => NumberField.InfinitePlace.LiesOver.comap_eq w v, fun h => ⟨congrArg Subtype.val h⟩⟩`.
+-/
 theorem liesOver_iff_comap_eq (w : InfinitePlace L) :
     w.LiesOver v ↔ w.comap (algebraMap K L) = v :=
   ⟨fun _ => NumberField.InfinitePlace.LiesOver.comap_eq w v, fun h => ⟨congrArg Subtype.val h⟩⟩
 
+/- English proof (translation)
+Rewrite using `[comap_smul]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem comap_smul_algebraMap (σ : Gal(L/K)) (w : InfinitePlace L) :
     (σ • w).comap (algebraMap K L) = w.comap (algebraMap K L) := by
   rw [comap_smul]
@@ -309,9 +397,15 @@ instance : MulAction Gal(L/K) (v.placesOver L) where
   mul_smul σ τ w := Subtype.ext (mul_smul σ τ (w : InfinitePlace L))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul_placesOver (σ : Gal(L/K)) (w : v.placesOver L) :
     ((σ • w : v.placesOver L) : InfinitePlace L) = σ • (w : InfinitePlace L) := rfl
 
+/- English proof (translation)
+The claim follows from `exists_smul_eq_of_comap_eq <| by rw [(liesOver_iff_comap_eq v w).1 ‹_›, (liesOver_iff_comap_eq v w').1 ‹_›]`.
+-/
 theorem exists_smul_eq_of_liesOver [IsGalois K L] (w w' : InfinitePlace L) [w.LiesOver v]
     [w'.LiesOver v] : ∃ σ : Gal(L/K), σ • w = w' :=
   exists_smul_eq_of_comap_eq <| by

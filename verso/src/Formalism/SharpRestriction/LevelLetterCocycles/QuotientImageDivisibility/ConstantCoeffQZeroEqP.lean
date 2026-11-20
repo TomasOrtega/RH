@@ -22,14 +22,23 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Simplify using `[LocWach.Q, hs]`.
+-/
 theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
   simp [LocWach.Q, hs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply, letπ, LocWach.q, W.q₀_def]`.
+-/
 theorem q_mul : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1 := by
   funext i
   simp only [Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.add_apply, Pi.one_apply, letπ,
     LocWach.q, W.q₀_def]
 
+/- English proof (translation)
+Take `⟨E, hE0, -, hE⟩` from `W.lev_π c ζ hζ`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Take the linear combination `this`.
+-/
 theorem cc_lev_pi (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     PowerSeries.constantCoeff (W.lev c ζ letπ) = ζ - 1 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π c ζ hζ
@@ -37,6 +46,11 @@ theorem cc_lev_pi (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ 
   rw [map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one] at this
   linear_combination this
 
+/- English proof (translation)
+Establish `h` using `congrArg (PowerSeries.coeff 1) W.q₀_def`. Rewrite `h` using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[h, map_sub, PowerSeries.coeff_one, if_neg one_ne_zero, sub_zero]`. Establish `e : ((1 : PowerSeries O) + PowerSeries.X) ^ PD.p = (((Polynomial.X + 1) ^ PD.p : Polynomial O) : PowerSeries O)`. Rewrite using `[Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_X, Polynomial.coe_one, add_comm]`.
+
+Rewrite using `[e, Polynomial.coeff_coe, Polynomial.coeff_X_add_one_pow, Nat.choose_one_right]`.
+-/
 theorem constantCoeff_q_zero_eq_p : PowerSeries.constantCoeff W.q₀ = (PD.p : O) := by
   have h := congrArg (PowerSeries.coeff 1) W.q₀_def
   rw [PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply] at h
@@ -46,6 +60,11 @@ theorem constantCoeff_q_zero_eq_p : PowerSeries.constantCoeff W.q₀ = (PD.p : O
     rw [Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_X, Polynomial.coe_one, add_comm]
   rw [e, Polynomial.coeff_coe, Polynomial.coeff_X_add_one_pow, Nat.choose_one_right]
 
+/- English proof (translation)
+Establish `hq : W.q = (fun _ => PowerSeries.mk fun k => PowerSeries.coeff (k + 1) W.q₀) * letπ + (PD.p : LetA O n)`. Use function extensionality and compare the values at `i`. Simplify using `only [LocWach.q, Pi.add_apply, Pi.mul_apply, letπ, Pi.natCast_apply]`. Use `conv_lhs => rw [PowerSeries.eq_shift_mul_X_add_const W.q₀]`. Rewrite using `[constantCoeff_q_zero_eq_p, map_natCast]`.
+
+Rewrite using `[hq, map_add, map_mul, map_natCast, map_add, map_mul, cc_lev_pi W c 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩, sub_self, mul_zero, zero_add, map_natCast]`.
+-/
 theorem cc_lev_q_one (c : ZMod n) : PowerSeries.constantCoeff (W.lev c 1 W.q) = (PD.p : LL) := by
   have hq : W.q = (fun _ => PowerSeries.mk fun k => PowerSeries.coeff (k + 1) W.q₀) * letπ +
       (PD.p : LetA O n) := by
@@ -57,6 +76,13 @@ theorem cc_lev_q_one (c : ZMod n) : PowerSeries.constantCoeff (W.lev c 1 W.q) = 
     cc_lev_pi W c 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩, sub_self, mul_zero, zero_add,
     map_natCast]
 
+/- English proof (translation)
+Take `⟨-, ⟨m, hm⟩, hcc⟩` from `h`. Rewrite `hcc` using `[Q_eq_q W hs]`. Establish `hpr : PD.p.Prime` using `PD.hp`. Take `⟨j, -, hord⟩` from `(Nat.dvd_prime_pow hpr).1 (orderOf_dvd_of_pow_eq_one hm)`. Establish `hprim : IsPrimitiveRoot ζ (PD.p ^ j)` using `hord ▸ IsPrimitiveRoot.orderOf ζ`.
+
+Establish `hp1 : ζ ^ PD.p = 1`. Assume the negation of the conclusion as `hne`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.cc_lev_q W c ζ ⟨j, hprim⟩ hne hcc`. Establish `hdvd : PD.p ^ j ∣ PD.p ^ 1` using `by rw [pow_one]; exact hprim.dvd_of_pow_eq_one _ hp1`. Establish `hj1 : j ≤ 1` using `(Nat.pow_dvd_pow_iff_le_right hpr.one_lt).1 hdvd`.
+
+Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 hj1 with rfl | rfl` into its components or cases. Rewrite `hprim` using `[pow_zero]`. Take `rfl` from `IsPrimitiveRoot.one_right_iff.1 hprim`. Conclude with `absurd (cc_lev_q_one W c ▸ hcc) hp`. Rewrite `hprim` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL}
     (h : Formalism.MainNotions.DeltaInvariantLattices.QRoot W c ζ) : IsPrimitiveRoot ζ PD.p := by
   obtain ⟨-, ⟨m, hm⟩, hcc⟩ := h
@@ -75,6 +101,21 @@ theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL
     exact absurd (cc_lev_q_one W c ▸ hcc) hp
   · rwa [pow_one] at hprim
 
+/- English proof (translation)
+Establish `hζ' : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)` using `⟨1, by rwa [pow_one]⟩`. Take `⟨E, hE0, hE', hE⟩` from `W.lev_π c ζ hζ'`. Establish `h` using `congrArg (W.lev c ζ) (q_mul W)`. Rewrite `h` using `[map_mul, map_sub, map_pow, map_add, map_one, hE, mul_pow, ← map_pow, hζ.pow_eq_one, map_one, one_mul]`. Establish `hπ` using `cc_lev_pi W c ζ hζ'`.
+
+Establish `hζ1 : ζ - 1 ≠ 0` using `sub_ne_zero.2 (hζ.ne_one PD.hp.one_lt)`. Establish `hE1 : PowerSeries.coeff 1 E = 1`. Use `PowerSeries.coeff_derivative E 0` as an intermediate fact. Rewrite `this` using `[hE']`. Simplify using `only [Nat.cast_zero, zero_add, mul_one] at this`.
+
+Rewrite using `[← this, PowerSeries.coeff_zero_eq_constantCoeff_apply, hE0]`. Establish `hpow : ∀ k : ℕ, PowerSeries.coeff 1 (E ^ k) = k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [PowerSeries.coeff_one]`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ, PowerSeries.coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, Nat.sub_zero, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, hE0, one_pow, hE1, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF0 : PowerSeries.constantCoeff (E ^ PD.p - 1) = 0`. Rewrite using `[map_sub, map_pow, hE0, one_pow, map_one, sub_self]`. Take `⟨w, hw⟩` from `PowerSeries.X_dvd_iff.2 hF0`. Establish `hw0 : PowerSeries.constantCoeff w = (PD.p : LL)`. Establish `h1` using `congrArg (PowerSeries.coeff 1) hw`.
+
+Rewrite `h1` using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_sub, hpow, PowerSeries.coeff_one, if_neg one_ne_zero, sub_zero]`. Conclude with `h1.symm`. Establish `hne : PowerSeries.constantCoeff (W.lev c ζ letπ) ≠ 0` using `by rw [hπ]; exact hζ1`. Use `⟨(W.lev c ζ letπ)⁻¹ * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, PowerSeries.constantCoeff_inv, hπ, hw0]`.
+
+Conclude with `mul_ne_zero (inv_ne_zero hζ1) hp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, PowerSeries.inv_mul_cancel _ hne, one_mul]`. Use `_ = PowerSeries.X * ((W.lev c ζ letπ)⁻¹ * w) := by rw [h, hw]; ring`.
+-/
 theorem lev_q_eq (c : ZMod n) {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) (hp : (PD.p : LL) ≠ 0) :
     ∃ u : PowerSeries LL, PowerSeries.constantCoeff u ≠ 0 ∧
       W.lev c ζ W.q = PowerSeries.X * u := by
@@ -116,27 +157,44 @@ theorem lev_q_eq (c : ZMod n) {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) (hp : (P
           rw [← mul_assoc, PowerSeries.inv_mul_cancel _ hne, one_mul]
       _ = PowerSeries.X * ((W.lev c ζ letπ)⁻¹ * w) := by rw [h, hw]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+-/
 theorem letE_mul_self (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   funext i
   by_cases h : i = c
   · subst h; simp [letE]
   · simp [letE, h]
 
+/- English proof (translation)
+Take `⟨z, -, rfl⟩` from `hy`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[smul_smul, letE_mul_self]`.
+-/
 theorem letE_smul_of_mem_Nl {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
     (hy : y ∈ W.Nl T c) : (letE c : LetA O n) • y = y := by
   obtain ⟨z, -, rfl⟩ := hy
   simp only [LinearMap.smul_apply, LinearMap.id_apply]
   rw [smul_smul, letE_mul_self]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(W.N T).smul_mem _ hz`.
+-/
 theorem Nl_le_N (T : LocLat G Qp LL O) (c : ZMod n) : W.Nl T c ≤ W.N T := by
   rintro _ ⟨z, hz, rfl⟩
   simp only [LinearMap.smul_apply, LinearMap.id_apply]
   exact (W.N T).smul_mem _ hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨y, hy, by simp only [LinearMap.smul_apply, LinearMap.id_apply]; exact hc⟩`.
+-/
 theorem mem_Nl_of {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T} (hy : y ∈ W.N T)
     (hc : (letE c : LetA O n) • y = y) : y ∈ W.Nl T c :=
   ⟨y, hy, by simp only [LinearMap.smul_apply, LinearMap.id_apply]; exact hc⟩
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hc]`. Rewrite using `[← smul_assoc]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`.
+
+Substitute `h` using the available equality. Simplify using `[letE, PowerSeries.smul_eq_C_mul]`. Simplify using `[letE, h]`.
+-/
 theorem smul_eq_single {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
     (hc : (letE c : LetA O n) • y = y) (o : O) :
     o • y = (Pi.single c (PowerSeries.C o) : LetA O n) • y := by
@@ -148,6 +206,9 @@ theorem smul_eq_single {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
   · subst h; simp [letE, PowerSeries.smul_eq_C_mul]
   · simp [letE, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letπ]`. Simplify using `[letπ, h]`.
+-/
 theorem letπ_mul_single (c : ZMod n) (a : PowerSeries O) :
     (letπ : LetA O n) * Pi.single c a = Pi.single c (PowerSeries.X * a) := by
   funext i
@@ -155,6 +216,9 @@ theorem letπ_mul_single (c : ZMod n) (a : PowerSeries O) :
   · subst h; simp [letπ]
   · simp [letπ, h]
 
+/- English proof (translation)
+Establish `e : (⟨∑ m, a m • b m, hy⟩ : ↥(W.N T)) = ∑ m, a m • (⟨b m, hbN m⟩ : ↥(W.N T))` using `Subtype.ext (by simp [Submodule.coe_sum])`. Rewrite using `[e, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[W.levN_smul]`. Both sides reduce to the same expression.
+-/
 theorem levN_sum {T : LocLat G Qp LL O} (c : ZMod n) (ζ : LL) {r : ℕ} {b : Fin r → W.DD T}
     (hbN : ∀ m, b m ∈ W.N T) (a : Fin r → LetA O n) (hy : ∑ m, a m • b m ∈ W.N T) (j : ℤ) :
     W.levN T c ζ ⟨∑ m, a m • b m, hy⟩ j =
@@ -166,6 +230,27 @@ theorem levN_sum {T : LocLat G Qp LL O} (c : ZMod n) (ζ : LL) {r : ℕ} {b : Fi
   rw [W.levN_smul]
   rfl
 
+/- English proof (translation)
+Establish `hbN : ∀ m, b m ∈ W.N T` using `fun m => Nl_le_N W T c (hbS m)`. Set `bN : Fin r → ↥(W.N T)` to `fun m => ⟨b m, hbN m⟩`. Establish `hcmp : ∀ m, W.cmp T (bN m) ∈ DcrisL PD T.ρ (W.emb c)`. Introduce `m`. Establish `e : (letE c : LetA O n) • bN m = bN m` using `Subtype.ext (letE_smul_of_mem_Nl W (hbS m))`.
+
+Rewrite using `[← e]`. Conclude with `W.cmp_letter T c (bN m)`. Set `vv : Fin r → ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c)` to `fun m => ⟨ιV PD (LL := LL) (V := T.V) (W.cmp T (bN m)), Submodule.mem_map_of_mem (hcmp m)⟩`. Establish `hli : LinearIndependent LL vv`. Use `Fintype.linearIndependent_iff.2 fun g hg m => ?_` and prove the remaining obligations.
+
+Establish `hg' : ιV PD (LL` using `LL) (V := T.V) (∑ m, g m • W.cmp T (bN m)) = 0 := by`. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[vv, Submodule.coe_sum, map_sum, map_smul]`. Establish `hsum : ∑ m, g m • W.cmp T (bN m) = 0` using `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (PD := PD) (V := T.V) (hg'.trans (map_zero _).symm)`. Take `⟨⟨d, hd⟩, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset (Fin r)) g`.
+
+Use `choose o ho using fun i => hint i (Finset.mem_univ i)`. Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Establish `hdne : algebraMap O LL d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hcz : W.cmp T (∑ i, o i • bN i) = 0`. Rewrite using `[map_sum]`.
+
+Simplify using `only [W.cmp_smul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ho i, Algebra.smul_def, mul_smul]`. Use `_ = 0 := by rw [← Finset.smul_sum, hsum, smul_zero]`.
+
+Take `⟨y, hy, hyz⟩` from `h3.1 _ hcz`. Use `set z : W.DD T := ∑ i, o i • b i with hz`. Establish `hzc : ((∑ i, o i • bN i : ↥(W.N T)) : W.DD T) = z` using `by simp [hz, bN, Submodule.coe_sum]`. Establish `hy' : (letπ : LetA O n) • y = z`. Rewrite using `[← hzc, ← hyz]`.
+
+Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.smulA]`. Establish `hzl : z ∈ W.Nl T c` using `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (hbS i)`. Take `⟨a, ha, -⟩` from `hu _ (mem_Nl_of W ((W.N T).smul_mem (letE c) hy) (by rw [smul_smul, letE_mul_self]))`. Establish `rep1 : z = ∑ j, (Pi.single c (PowerSeries.C (o j)) : LetA O n) • b j`. Rewrite using `[hz]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => smul_eq_single W (letE_smul_of_mem_Nl W (hbS j)) (o j)`. Establish `rep2 : z = ∑ j, (Pi.single c (PowerSeries.X * a j) : LetA O n) • b j`. Establish `e1 : z = (letE c : LetA O n) • z` using `(letE_smul_of_mem_Nl W hzl).symm`. Rewrite using `[e1, ← hy', smul_comm, ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, letπ_mul_single]`. Establish `heq` using `(hu z hzl).unique rep1 rep2`. Establish `h0 : o m = 0`. Use `congrArg (fun f => PowerSeries.constantCoeff (f m)) heq` as an intermediate fact. Simplify using `using this`.
+
+Establish `: algebraMap O LL d * g m = 0`. Rewrite using `[← Algebra.smul_def, ← ho m, h0, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hdne`. Simplify using `using hli.fintype_card_le_finrank`.
+-/
 theorem rank_le (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) {r : ℕ}
     {b : Fin r → W.DD T} (hbS : ∀ j, b j ∈ W.Nl T c)
     (hu : ∀ x ∈ W.Nl T c, ∃! a : Fin r → PowerSeries O,

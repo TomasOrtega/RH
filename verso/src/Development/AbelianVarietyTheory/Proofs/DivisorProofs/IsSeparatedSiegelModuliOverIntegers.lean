@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.SepSiegel
 
+/- English proof (translation)
+Introduce `g n F`. Take `⟨N, i, hi, -, e⟩` from `F.qproj`. Establish `hs : IsSeparated F.s`. Rewrite using `[← e]`. Establish `: IsSeparated (PSpace.str (cycAway n) N)`.
+
+Unfold `PSpace.str`. Use `infer_instance`. Use `infer_instance`. Establish `ht : toZ F.X = F.s ≫ toZ (Sp (cycAway n))` using `by first`. Consider the case `exact specULiftZIsTerminal.hom_ext _ _`.
+
+Consider the case `exact specZIsTerminal.hom_ext _ _`. Rewrite using `[ht]`. Use `infer_instance`.
+-/
 theorem isSeparated_toZ : ∀ {g n : ℕ} (F : SFam g n (zetaAway n)), IsSeparated (toZ F.X) := by
   intro g n F
   obtain ⟨N, i, hi, -, e⟩ := F.qproj

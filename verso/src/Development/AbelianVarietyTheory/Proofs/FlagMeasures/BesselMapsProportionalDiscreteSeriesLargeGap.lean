@@ -10,11 +10,21 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.GapLine
 
+/- English proof (translation)
+Introduce `k r z c g`. Unfold `Formalism.QuantumDeterminants.psi Formalism.QuantumDeterminants.ell PI.BesselMapUniq.psiGen PI.BesselMapUniq.ellA`. Rewrite using `[Finset.mul_sum]`.
+-/
 theorem psi_const_gap : Formalism.FourierDecayAlt.ThreeDimData.PsiConst := by
   intro k r z c g
   unfold Formalism.QuantumDeterminants.psi Formalism.QuantumDeterminants.ell PI.BesselMapUniq.psiGen PI.BesselMapUniq.ellA
   rw [Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hpsi : Formalism.QuantumDeterminants.psi k r z c = PI.BesselMapUniq.psiGen k r z (fun _ => c)` using `funext (psi_const_gap k r z c)`. Rewrite `h0`, `h1` using `[hpsi]`. Take `⟨a, b, hab, hrel⟩` from `hU k r ε lam h H σ z (fun _ => c) u Wp π hk hg hh hl hσ hz hT (fun _ => hc) hπ B B0 h1 h0`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+
+Establish `hb : b ≠ 0` using `hab.resolve_left (fun h => h rfl)`. Use `hrel x0 hx0` as an intermediate fact. Simplify using `only [zero_smul, zero_add] at this`. Conclude with `hne ((smul_eq_zero.mp this).resolve_left hb)`. Use `⟨-(b / a), fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h' : a • B x = -(b • B0 x)` using `eq_neg_of_add_eq_zero_left (hrel x hx)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem line_of_uniqGap (hU : GlobalTheory.GapIn.UniqGap) {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ} {σ : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (H →L[ℂ] H)}
@@ -42,6 +52,11 @@ theorem line_of_uniqGap (hU : GlobalTheory.GapIn.UniqGap) {k r : ℕ} {H Wp : Ty
   calc B x = a⁻¹ • (a • B x) := by rw [smul_smul, inv_mul_cancel₀ ha, one_smul]
     _ = -(b / a) • B0 x := by rw [h', smul_neg, smul_smul, neg_smul, div_eq_inv_mul]
 
+/- English proof (translation)
+Introduce `hH k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l l₁ hDG hS hl hnz hl₁`. Take `⟨w, hw, hne⟩` from `hnz`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -⟩` from `hS`. Take `⟨h, hgap, hk, hh, -, -⟩` from `hDG.gap`. Establish `hc : Formalism.QuantumDeterminants.cStd ≠ 0`.
+
+Unfold `Formalism.QuantumDeterminants.cStd`. Conclude with `mul_ne_zero (by norm_num) Complex.I_ne_zero`. Conclude with `line_of_uniqGap hH.2.1 hk hgap hh hDG.hc hDG.ds hz hT hc hπ hl hl₁ hw hne`.
+-/
 theorem bessel_line_gap : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Formalism.FourierDecayAlt.ThreeDimData.Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (l l₁ : R.H → Wp), R.IsDG ε mu → SideG k r z π u μW μN μG νq → IsBes R z π l → NzOn R l → IsBes R z π l₁ → ∃ c : ℂ, ∀ v ∈ R.sm, l₁ v = c • l v := by
   intro hH k r ε mu R Wp _ _ _ _ z π u μW μN μG νq l l₁ hDG hS hl hnz hl₁
   obtain ⟨w, hw, hne⟩ := hnz

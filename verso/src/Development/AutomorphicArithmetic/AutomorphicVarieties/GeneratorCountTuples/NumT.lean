@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeneratorCountTupl
 
 open NumberField UpperTheory.V UpperTheory.V.K
 
+/- English proof (translation)
+Introduce `C`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (2304 * |C|) (one_lt_two : (1 : ℝ) < 2)`. Use `⟨((k + 6 : ℕ) : ℝ), fun e n D he hn hD => ?_⟩` and prove the remaining obligations. Unfold `tBound kBound`. Rewrite using `[Real.rpow_natCast, Real.exp_le_exp]`.
+
+Establish `he' : (1 : ℝ) ≤ e` using `by exact_mod_cast he`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hD' : (1 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hm : ((2 * e : ℕ) : ℝ) = 2 * e` using `by push_cast; ring`. Establish `hN : ((4 * e + 4 : ℕ) : ℝ) = 4 * e + 4` using `by push_cast; ring`.
+
+Rewrite using `[hm, hN]`. Use `set y : ℝ := 2 * (e : ℝ) * n with hy`. Use `set N : ℝ := 4 * (e : ℝ) + 4 with hNdef`. Use `set L : ℝ := Real.log (2 * (D : ℝ)) with hL`. Establish `hen : (e : ℝ) ≤ e * n` using `by nlinarith`.
+
+Establish `hne : (n : ℝ) ≤ e * n` using `by nlinarith`. Establish `hy2 : 2 ≤ y` using `by rw [hy]; nlinarith`. Establish `hmy : 2 * (e : ℝ) ≤ y` using `by rw [hy]; nlinarith`. Establish `hNy : N ≤ 4 * y` using `by rw [hNdef]; linarith`. Establish `hN1 : 1 ≤ N` using `by rw [hNdef]; linarith`.
+
+Establish `hdy : (n : ℝ) * N ≤ 4 * y` using `by rw [hNdef, hy]; nlinarith`. Establish `hd1 : 1 ≤ (n : ℝ) * N` using `by nlinarith`. Establish `hL2 : 1 / 2 ≤ L`. Establish `h1 : Real.log 2 ≤ L` using `Real.log_le_log (by norm_num) (by linarith)`. Use `Real.log_two_gt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogd : Real.log ((n : ℝ) * N) ≤ 4 * y` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`. Establish `hlogd0 : 0 ≤ Real.log ((n : ℝ) * N)` using `Real.log_nonneg hd1`. Establish `hsplit : Real.log (2 * (D : ℝ) * ((n : ℝ) * N)) = L + Real.log ((n : ℝ) * N)` using `Real.log_mul (by positivity) (by positivity)`. Use `set G : ℝ := Real.log (2 * (D : ℝ) * ((n : ℝ) * N)) with hG`.
+
+Establish `hG0 : 0 ≤ G` using `by rw [hsplit]; linarith`. Establish `hGle : G ≤ 9 * y * L` using `by rw [hsplit]; nlinarith`. Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hd0 : 0 ≤ (n : ℝ) * N` using `by linarith`.
+
+Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hA0 : 0 ≤ 2 * (e : ℝ) * ((n : ℝ) * N) ^ 3 * N * G` using `by positivity`. Establish `hA : 2 * (e : ℝ) * ((n : ℝ) * N) ^ 3 * N * G ≤ y * (4 * y) ^ 3 * (4 * y) * (9 * y * L)` using `by gcongr`. Establish `hk' : 2304 * |C| ≤ y ^ k` using `hk.le.trans (pow_le_pow_left₀ (by norm_num) hy2 k)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.K.numT :
     ∀ C : ℝ, ∃ C' : ℝ, ∀ e n D : ℕ, 1 ≤ e → 1 ≤ n → 1 ≤ D → tBound C (2 * e) (4 * e + 4) n D ≤ kBound C' e n D := by
   intro C

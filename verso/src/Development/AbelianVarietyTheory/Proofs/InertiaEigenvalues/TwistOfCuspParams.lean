@@ -29,6 +29,11 @@ section General
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero rd).2 fun x hx => ?_` and prove the remaining obligations. Establish `h1 : ((1 : D.ntw.Ok i 0) ⊗ₜ[D.ntw.O i] x : D.ntw.Ok i 0 ⊗[D.ntw.O i] D.nexp.Fm i ((j : ℕ) + 1) b) = 0` using `T.injective_rdK 0 (by rw [rdK_tmul, hx, smul_zero, map_zero])`. Use `haveI : Module.Flat (D.ntw.O i) (FractionRing (D.ntw.O i)) := IsLocalization.flat _ (nonZeroDivisors (D.ntw.O i))`. Use `haveI : Module.Flat (D.ntw.O i) (D.nexp.Fm i ((j : ℕ) + 1) b) := Module.Flat.trans (D.ntw.O i) (FractionRing (D.ntw.O i)) _`. Establish `h2` using `Module.Flat.rTensor_preserves_injective_linearMap (M := D.nexp.Fm i ((j : ℕ) + 1) b) (Algebra.linearMap (D.ntw.O i) (D.ntw.Ok i 0)) (D.ntw.Ok_inj i 0)`.
+
+Establish `h3 : ((1 : D.ntw.O i) ⊗ₜ[D.ntw.O i] x : D.ntw.O i ⊗[D.ntw.O i] D.nexp.Fm i ((j : ℕ) + 1) b) = 0` using `h2 (by`. Rewrite using `[LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one, h1, map_zero])`. Simplify using `using congrArg (TensorProduct.lid (D.ntw.O i) _) h3`.
+-/
 theorem injective_of_cellTie {ρ : Setup D.ntw} {hρ : ρ.Good} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {rd : Rd ρ D.nexp i j b}
     (T : CellTie hρ D.nexp rd) : Function.Injective rd := by
   refine (injective_iff_map_eq_zero rd).2 fun x hx => ?_
@@ -47,6 +52,17 @@ def IsFrobUnit (D : D7) (u : ∀ i : D.ntw.Tw, Bool → PlE D.host → (D.ntw.O 
   ∀ i b P, P ∉ D.ntw.S0 i → ∀ σ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om, IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) σ →
     u i b P = Units.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)).toMonoidHom (if b then D.ntw.delta i σ else (D.ntw.delta i σ)⁻¹)
 
+/- English proof (translation)
+Establish `hδ : IsDeltaInv Z.ρ u`. Introduce `i j b k P hk α z hα hz`. Establish `e : u i b P = HeckePinRead.uD D i b P`. Rewrite using `[hu i b P hk.2.2.2 _ (HeckePinRead.frobU_spec D P)]`. Apply the tactic sequence `cases b <;> rfl`.
+
+Rewrite using `[e]`. Conclude with `HeckePinRead.isDeltaInv_uD Z.good Z.pin i j b k P hk α z hα hz`. Use `⟨⟨hL, hs, fun i b k P => (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ k, fun _ _ _ => pow_zero _, fun i b P => ((u i b P).isUnit.map _).pow 1, fun i b k P => by rw [pow_one], ?_⟩, hr, ?_⟩` and prove the remaining obligations. Introduce `i j b h1 h2 k P x hP hsp hk`. Break down `Nat.eq_zero_or_pos k with rfl | k1` into its components or cases.
+
+Rewrite using `[hz i j b P x h1 h2 hP hsp, pow_zero, one_smul, (GlobalTheory.ExportPin.Model.hkFR_of_smul S i j b (hs j h1 h2) 0 P).2 (h0 j P)]`. Both sides reduce to the same expression. Take `⟨n, rfl⟩ : ∃ n, j = n + 1` from `⟨j - 1, by omega⟩`. Set `j' : Fin D.R.m` to `⟨n, h2⟩`. Establish `hk' : HkIdx i k P` using `⟨k1, hk, hsp, hP⟩`.
+
+Take `⟨α, R, z, d⟩` from `GlobalTheory.HeckeDatumExists.exists_isHeckeDatum D _ _ Z.ρ Z.good i j' b k P hk'`. Establish `e` using `(Z.hecke i j' b).eq (injective_of_cellTie (Z.tie i j' b)) hk' d (heckeAt_of_scaled YS X.geo.v₀ Z.pin X.char.lev X.char.allPl Z.good hr hδ i j' b (Z.ν i j' b) (hs _ (Nat.le_add_left _ _) j'.2) hk' (f := x) ((YS.eF i _ b (Nat.le_add_left _ _) j'.2).apply_symm_apply _))`. Conclude with `(congrArg (YS.eF i _ b h1 h2) e).trans ((YS.eF i _ b h1 h2).apply_symm_apply _)`. Introduce `i b P hP σ hσ`. Express the relevant statement in the definitionally equal form `(algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (u i b P)) ^ 1 = _`.
+
+Rewrite using `[pow_one, hu i b P hP σ hσ, Units.coe_map]`. Both sides reduce to the same expression.
+-/
 theorem exists_hecke (X : RealSide D) (S : RatDat D.ntw) (YS : NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀)
     (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (hs : ∀ j, 1 ≤ j → j ≤ D.R.m → HeckeStabR S j (hL j))
     (h0 : ∀ j P, hL j 0 P = 1) (hr : GlobalTheory.ExportPin.Reads X.R X.cG S YS hL)
@@ -83,6 +99,9 @@ theorem exists_hecke (X : RealSide D) (S : RatDat D.ntw) (YS : NExpRealS X.R X.c
     rw [pow_one, hu i b P hP σ hσ, Units.coe_map]
     rfl
 
+/- English proof (translation)
+Introduce `i j b P x h1 h2 hP hsp`. Use `(Bs.eF i j b h1 h2).injective ?_` and prove the remaining obligations. Rewrite using `[Bs.hkEq i j b h1 h2 0 P x hP hsp (Nat.zero_le _), pow_zero, one_smul]`. Conclude with `LinearMap.congr_fun ((GlobalTheory.ExportPin.Model.hkFR_of_smul S i j b (Bs.hs j h1 h2) 0 P).2 (h0 j P)) _`.
+-/
 theorem hkF_zero_of_sideB {cf Rw low Pq S hL eig θ} (Bs : SideB D cf Rw low Pq S hL eig θ) (h0 : ∀ j P, hL j 0 P = 1) :
     ∀ i j b P x, 1 ≤ j → j ≤ D.R.m → P ∉ D.ntw.S0 i → IsSplitPl D.host P → D.nexp.hkF i j b 0 P x = x := by
   intro i j b P x h1 h2 hP hsp
@@ -90,6 +109,9 @@ theorem hkF_zero_of_sideB {cf Rw low Pq S hL eig θ} (Bs : SideB D cf Rw low Pq 
   rw [Bs.hkEq i j b h1 h2 0 P x hP hsp (Nat.zero_le _), pow_zero, one_smul]
   exact LinearMap.congr_fun ((GlobalTheory.ExportPin.Model.hkFR_of_smul S i j b (Bs.hs j h1 h2) 0 P).2 (h0 j P)) _
 
+/- English proof (translation)
+Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Establish `h` using `hkF_zero_of_sideB (D := D0) Bs h0`. Conclude with `⟨⟨Bs.cHk, Bs.cHk_del⟩, fun i j s P x => h i j s P x⟩`.
+-/
 theorem exists_frobUnit_and_hkF_trivial {hL : GlobalTheory.Published.LocalLanglandsGL} (b : NBuilt hL D) (h0 : ∀ j P, b.hL j 0 P = 1) :
     (∃ u, IsFrobUnit D u) ∧
       ∀ i j s P x, 1 ≤ j → j ≤ D.R.m → P ∉ D.ntw.S0 i → IsSplitPl D.host P → D.nexp.hkF i j s 0 P x = x := by
@@ -105,6 +127,11 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f 
   {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0} {nch : NChoice (w.D Z)} {n : NchT w Z Wt nch}
   {xd : ThData (w.D Z)} {c : NCore hL t n}
 
+/- English proof (translation)
+Take `⟨g, h1, h2, ⟨cg⟩⟩` from `hG`. Take `⟨k1, k2⟩` from `hk_of_built c.a.nt.toNBuilt`. Take `⟨⟨u, hu⟩, hz⟩` from `exists_frobUnit_and_hkF_trivial c.a.nt.toNBuilt (c.a.ratIn_hL ▸ c.a.ratIn.hL_zero)`. Take `⟨f', s1, s2, s3⟩` from `hR _ (realOf t hH hV hs) _ c.row.nexp`. Take `⟨H, r1, r2⟩` from `exists_hecke (realOf t hH hV hs) _ c.row.nexp e.ser.ex f' s1 s2 s3 u hu hz`.
+
+Conclude with `⟨twOf (serOf e H r1 r2 k1 k2) rfl HEq.rfl g h1 h2 hF cg fun hT v hv => base_of_untw _ hT v hv⟩`.
+-/
 theorem nonempty_twOf {hH hV hs} (e : NE hL K B f T w Z Wt p0 t nch n xd c) (hF : FieldOk (realOf t hH hV hs))
     (hG : ∃ G : GalSide (w.st Z).toD7, G.cf = TC.cf w.I w.l Z ∧ G.lam.C = TC.cf w.I w.l Z ∧ Nonempty (CGTrue hL _ G.wd))
     (hR : ∀ (D : D7) (X : RealSide D) (S : RatDat D.ntw) (YS : NExpRealS X.R X.cG S),
@@ -126,6 +153,11 @@ namespace GlobalTheory.TwInputs.AtLayer
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `hP hS hL _`. Establish `e1` using `(evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)`. Establish `e2` using `EvG.inter (GlobalTheory.T.exists_galois_side hP hS hL) (GlobalTheory.TwInputs.SmallField.evLgG_fieldOk hP)`. Use `(e1.inter e2).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Take `⟨⟨hV, hH⟩, hG, hF⟩` from `H`.
+
+Use `(hG.inter hF).imp fun B f T hO G hK _ w Z Wt p0 t nch n xd c ⟨e⟩ hR hC => ?_` and prove the remaining obligations. Conclude with `nonempty_twOf (hH := (hH (w.st Z) hO).1) (hV := (hV (w.st Z) hO).1) (hs := (hV (w.st Z) hO).2) e.1 ((G.2 hK T w Z).1 _ t.r.z.lev.C) (G.1 hK w Z Wt p0 t nch n xd c ⟨e.1⟩ hR hC) (GlobalTheory.T.exists_rationalHeckeOperators_adelicReading hP.decay hS.hkTr hS.hkRead)`.
+-/
 theorem twOf_of_layer : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL (fun _ _ _ _ w Z _ _ _ _ _ c => ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam (w.D Z) Rw) → EvLgG fun K B f T => KPx B f → T = TwDat.untw B T.pl → ∀ w Z Wt p0 t nch n xd c, Nonempty (NEb hL K B f T w Z Wt p0 t nch n xd c) → Nonempty (RX K B f T w Z Wt p0 t) → ColPin w → Nonempty (GlobalTheory.TwInputs.TwOf hL K B f T w Z Wt p0 t nch n xd c) := by
   intro hP hS hL _
   have e1 := (evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)

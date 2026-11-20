@@ -4,6 +4,17 @@ open GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup Coalgebra Bialgebra
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Set `e : G.dual.A 1 ≃ₗ[k] Module.Dual k (G.A 1)` to `CartierDual.toDual k (G.A 1)`. Use `set W := LinearMap.range ((relFrob h G.dual).app 1 : (frobTwist h G.dual).A 1 →ₐ[k] G.dual.A 1).toLinearMap with hW`. Establish `hker : LinearMap.ker ((verschiebung h G).app 1 : G.A 1 →ₐ[k] (frobTwist h G).A 1).toLinearMap = (W.map e.toLinearMap).dualCoannihilator`. Use extensionality with `a`. Rewrite using `[Submodule.mem_dualCoannihilator, LinearMap.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `(verschiebung h G).app 1 a = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `ha _ ⟨_, ⟨x, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `e ((relFrob h G.dual).app 1 x) a = 0`. Proceed by induction on `x using frobTwist_induction h (G := G.dual) 1 with`.
+
+Consider the case `h0 => simp`. Consider the case `h2 x y hx hy => rw [map_add, map_add, LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `h1 r χ`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, relFrob_app_frobProj]`. Use `frobTwistDual_verschiebung h 1 χ a` as an intermediate fact.
+
+Rewrite `this` using `[ha, map_zero]`. Conclude with `(congrArg (r • ·) this.symm).trans (smul_zero r)`. Introduce `ha`. Use `frobTwist_ext_dual h 1 fun χ => ?_` and prove the remaining obligations. Rewrite using `[frobTwistDual_verschiebung, map_zero]`.
+
+Use `ha _ ⟨_, ⟨(frobProj h G.dual).app 1 χ, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg e (relFrob_app_frobProj h (G := G.dual) 1 χ)`. Rewrite using `[hker, ← e.finrank_map_eq W]`. Conclude with `Subspace.finrank_add_finrank_dualCoannihilator_eq _`.
+-/
 theorem finrank_range_relFrob_dual_add_finrank_ker_verschiebung (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (h : (p : k) = 0) (G : PDivGroup p k) : Module.finrank k (LinearMap.range ((relFrob h G.dual).app 1 : (frobTwist h G.dual).A 1 →ₐ[k] G.dual.A 1).toLinearMap) + Module.finrank k (LinearMap.ker ((verschiebung h G).app 1 : G.A 1 →ₐ[k] (frobTwist h G).A 1).toLinearMap) = Module.finrank k (G.A 1) := by
   let e : G.dual.A 1 ≃ₗ[k] Module.Dual k (G.A 1) := CartierDual.toDual k (G.A 1)
   set W := LinearMap.range ((relFrob h G.dual).app 1 : (frobTwist h G.dual).A 1 →ₐ[k] G.dual.A 1).toLinearMap with hW

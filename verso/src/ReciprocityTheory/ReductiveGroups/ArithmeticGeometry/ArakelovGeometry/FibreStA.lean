@@ -14,6 +14,11 @@ def homog {ι : Type*} [DecidableEq ι] (i₀ : ι) (N : ℕ) (G : MvPolynomial 
     MvPolynomial ι ℤ :=
   ∑ m ∈ G.support, monomial (m + Finsupp.single i₀ (N - m.degree)) (G.coeff m)
 
+/- English proof (translation)
+Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Apply `isHomogeneous_monomial` to reduce the goal to its premises. Establish `: m.degree ≤ N` using `le_trans (le_totalDegree hm) hN`. Establish `h` using `Finsupp.degree_single (R := ℕ) i₀ (N - m.degree)`.
+
+Simplify using `only [map_add, h]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem homog_isHomogeneous {ι : Type*} [DecidableEq ι] (i₀ : ι) {N : ℕ} (G : MvPolynomial ι ℤ)
     (hN : G.totalDegree ≤ N) : (homog i₀ N G).IsHomogeneous N := by
   apply IsHomogeneous.sum
@@ -24,6 +29,13 @@ theorem homog_isHomogeneous {ι : Type*} [DecidableEq ι] (i₀ : ι) {N : ℕ} 
   simp only [map_add, h]
   omega
 
+/- English proof (translation)
+Rewrite using `[homog, eval₂_sum, deh, coe_eval₂Hom, eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmN : m.degree ≤ N` using `le_trans (le_totalDegree hm) hN`. Rewrite using `[eval₂_monomial, Finsupp.prod_add_index' (by simp) (by intros; rw [pow_add]), Finsupp.prod_single_index (by simp)]`. Establish `h1 : (m.prod fun i k => v i ^ k) = ∏ i, v i ^ m i` using `Finsupp.prod_fintype _ _ (by simp)`.
+
+Establish `h2 : ∏ i, (v i / v i₀) ^ m i = (∏ i, v i ^ m i) / v i₀ ^ m.degree`. Rewrite using `[Finset.prod_congr rfl fun i _ => div_pow (v i) (v i₀) (m i), Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, Finsupp.degree_eq_sum]`. Rewrite using `[h1, h2]`. Establish `h3 : v i₀ ^ N = v i₀ ^ (N - m.degree) * v i₀ ^ m.degree`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem eval₂_homog {ι S : Type*} [Fintype ι] [DecidableEq ι] [Field S] (v : ι → S) (i₀ : ι)
     (hv : v i₀ ≠ 0) {N : ℕ} (G : MvPolynomial ι ℤ) (hN : G.totalDegree ≤ N) :
     eval₂ (Int.castRingHom S) v (homog i₀ N G) = v i₀ ^ N * deh v i₀ G := by
@@ -43,6 +55,11 @@ theorem eval₂_homog {ι S : Type*} [Fintype ι] [DecidableEq ι] [Field S] (v 
   rw [h3]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = d`. Use `hf (mem_support_iff.mp hm)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_smul_of_isHomogeneous {ι S : Type*} [Fintype ι] [CommRing S]
     {f : MvPolynomial ι ℤ} {d : ℕ} (hf : f.IsHomogeneous d) (c : S) (v : ι → S) :
     aeval (fun i => c * v i) f = c ^ d * aeval v f := by
@@ -56,6 +73,11 @@ theorem aeval_smul_of_isHomogeneous {ι S : Type*} [Fintype ι] [CommRing S]
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
   ring
 
+/- English proof (translation)
+Establish `h : v = fun i => v i₀ * (v i / v i₀)`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_div_cancel₀ _ hv]`. Use `conv_lhs => rw [h]`. Rewrite using `[aeval_smul_of_isHomogeneous hf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem aeval_eq_pow_mul_deh {ι S : Type*} [Fintype ι] [Field S] (v : ι → S) (i₀ : ι)
     (hv : v i₀ ≠ 0) {n : ℕ} {f : MvPolynomial ι ℤ} (hf : f.IsHomogeneous n) :
     aeval v f = v i₀ ^ n * deh v i₀ f := by
@@ -65,20 +87,34 @@ theorem aeval_eq_pow_mul_deh {ι S : Type*} [Fintype ι] [Field S] (v : ι → S
   rw [aeval_smul_of_isHomogeneous hf]
   rfl
 
+/- English proof (translation)
+Simplify using `[deh]`.
+-/
 theorem deh_X {ι S : Type*} [Field S] (v : ι → S) (i₀ i : ι) : deh v i₀ (X i) = v i / v i₀ := by
   simp [deh]
 
+/- English proof (translation)
+Simplify using `only [deh, coe_eval₂Hom, eval₂_rename]`. Both sides reduce to the same expression.
+-/
 theorem deh_rename {ι J S : Type*} [Field S] (v : ι → S) (e : J → ι) (j₀ : J)
     (m : MvPolynomial J ℤ) : deh v (e j₀) (rename e m) = deh (v ∘ e) j₀ m := by
   simp only [deh, coe_eval₂Hom, eval₂_rename]
   rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[deh]`. Conclude with `deh_rename v e j₀ (X m)`.
+-/
 theorem deh_comp_rename {ι J S : Type*} [Field S] (v : ι → S) (e : J → ι) (j₀ : J) :
     (deh v (e j₀)).comp (rename e).toRingHom = deh (v ∘ e) j₀ := by
   ext m
   · simp [deh]
   · exact deh_rename v e j₀ (X m)
 
+/- English proof (translation)
+Establish `hH` using `homog_isHomogeneous i₀ G le_rfl`. Establish `h1 : aeval x (homog i₀ G.totalDegree G) = 0`. Rewrite using `[aeval_def, algebraMap_int_eq, eval₂_homog x i₀ hx G le_rfl, hG, mul_zero]`. Establish `h2` using `hP _ (mem_coordIdeal_of_isHomogeneous ℤ x hH h1)`. Rewrite `h2` using `[eval_map, eval₂_homog z i₀ hz G le_rfl]`.
+
+Conclude with `(mul_eq_zero.mp h2).resolve_left (pow_ne_zero _ hz)`.
+-/
 theorem deh_eq_zero_of_deh_eq_zero {ι : Type*} [Fintype ι] {Ω : Type*} [Field Ω]
     (x : ι → Ω) (z : ι → ℂ) (i₀ : ι) (hx : x i₀ ≠ 0) (hz : z i₀ ≠ 0)
     (hP : ∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0)
@@ -91,6 +127,13 @@ theorem deh_eq_zero_of_deh_eq_zero {ι : Type*} [Fintype ι] {Ω : Type*} [Field
   rw [eval_map, eval₂_homog z i₀ hz G le_rfl] at h2
   exact (mul_eq_zero.mp h2).resolve_left (pow_ne_zero _ hz)
 
+/- English proof (translation)
+Use `⟨fun h0 => hz (by rw [h0]; rfl), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[coordIdeal, RingHom.mem_ker]`. Use `conv_lhs => rw [← sum_homogeneousComponent f]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations.
+
+Establish `hd` using `homogeneousComponent_isHomogeneous d f`. Establish `hx0 : aeval x (homogeneousComponent d f) = 0`. Rewrite using `[← coeff_coneMap, hf, Polynomial.coeff_zero]`. Rewrite `hx0` using `[aeval_eq_pow_mul_deh x i₀ hx hd]`. Establish `hz0` using `h _ ((mul_eq_zero.mp hx0).resolve_left (pow_ne_zero _ hx))`.
+
+Rewrite using `[eval_map, ← algebraMap_int_eq, ← aeval_def, aeval_eq_pow_mul_deh z i₀ hz hd, hz0, mul_zero]`.
+-/
 theorem mem_pts_of_deh {ι : Type} [Fintype ι] {Ω : Type*} [Field Ω] (x : ι → Ω) (z : ι → ℂ)
     (i₀ : ι) (hx : x i₀ ≠ 0) (hz : z i₀ ≠ 0)
     (h : ∀ G : MvPolynomial ι ℤ, deh x i₀ G = 0 → deh z i₀ G = 0) :
@@ -115,9 +158,19 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Fib
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deh_apply {ι S : Type*} [Field S] (v : ι → S) (i₀ : ι) (F : MvPolynomial ι ℤ) :
     deh v i₀ F = eval₂ (Int.castRingHom S) (fun i => v i / v i₀) F := rfl
 
+/- English proof (translation)
+Establish `hdec` using `Polynomial.modByMonic_add_div H P`. Establish `h1 : (H %ₘ P).eval₂ φ θ = 0`. Use `congrArg (Polynomial.eval₂ φ θ) hdec` as an intermediate fact. Rewrite `this` using `[Polynomial.eval₂_add, Polynomial.eval₂_mul, hθ, zero_mul, add_zero, hH]`. Conclude with `this`.
+
+Establish `h2` using `hmin _ (Polynomial.natDegree_modByMonic_lt H hP hP1) h1`. Establish `h3 : (H %ₘ P).eval₂ ψ ρ = 0`. Rewrite using `[← Polynomial.eval_map]`. Establish `: (H %ₘ P).map ψ = 0`. Use extensionality with `j`.
+
+Rewrite using `[Polynomial.coeff_map, hker _ (h2 j), Polynomial.coeff_zero]`. Rewrite using `[this, Polynomial.eval_zero]`. Rewrite using `[← hdec, Polynomial.eval₂_add, Polynomial.eval₂_mul, hρ, zero_mul, add_zero, h3]`.
+-/
 theorem eval₂_eq_zero_of_monic {R S T : Type*} [CommRing R] [CommRing S] [CommRing T]
     (φ : R →+* S) (ψ : R →+* T) (hker : ∀ m, φ m = 0 → ψ m = 0) {P : Polynomial R}
     (hP : P.Monic) {θ : S} {ρ : T}
@@ -168,6 +221,13 @@ def Gen.evQ (G : Gen x e) {S : Type*} [Field S] (ψ : MvPolynomial (Fin (D + 1))
     ι → S :=
   fun i => (G.Q i).eval₂ ψ t / ψ G.dd
 
+/- English proof (translation)
+Establish `h1 : (G.HG F).eval₂ ψ t = MvPolynomial.eval₂ (Int.castRingHom S) (fun o : Option ι => (o.elim (Polynomial.C G.dd) G.Q).eval₂ ψ t) (homog none F.totalDegree (rename some F))`. Rewrite using `[Gen.HG, ← Polynomial.coe_eval₂RingHom, MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Establish `hv : (fun o : Option ι => (o.elim (Polynomial.C G.dd) G.Q).eval₂ ψ t) none ≠ 0`.
+
+Simplify using `using hd`. Rewrite using `[h1, eval₂_homog _ none hv _ (totalDegree_rename_le _ _)]`. Simplify using `only [Option.elim, Polynomial.eval₂_C]`. Use `congr 1`. Rewrite using `[deh_apply, eval₂_rename]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Gen.evQ, Polynomial.eval₂_C]`.
+-/
 theorem Gen.HG_eval [DecidableEq ι] (G : Gen x e) {S : Type*} [Field S]
     (ψ : MvPolynomial (Fin (D + 1)) ℤ →+* S) (t : S) (hd : ψ G.dd ≠ 0) (F : MvPolynomial ι ℤ) :
     (G.HG F).eval₂ ψ t =
@@ -188,17 +248,26 @@ theorem Gen.HG_eval [DecidableEq ι] (G : Gen x e) {S : Type*} [Field S]
   funext i
   simp [Gen.evQ, Polynomial.eval₂_C]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Gen.evQ, ← G.hQ i, mul_div_cancel_left₀ _ G.dd_ne, deh_X]`.
+-/
 theorem Gen.dehomogenized_generator_eval (G : Gen x e) :
     G.evQ (deh (x ∘ e) 0) (deh x (e 0) G.Θ) = fun i => x i / x (e 0) := by
   funext i
   rw [Gen.evQ, ← G.hQ i, mul_div_cancel_left₀ _ G.dd_ne, deh_X]
 
+/- English proof (translation)
+Introduce `h1`. Use `G.root` as an intermediate fact. Rewrite `this` using `[h1, Polynomial.eval₂_one]`. Conclude with `one_ne_zero this`.
+-/
 theorem Gen.P_ne_one (G : Gen x e) : G.P ≠ 1 := by
   intro h1
   have := G.root
   rw [h1, Polynomial.eval₂_one] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Establish `key` using `eval₂_eq_zero_of_monic (deh (x ∘ e) 0) (deh w 0) hker G.monic G.min G.root hρ G.P_ne_one (H := G.HG F - Polynomial.C (G.dd ^ F.totalDegree) * H) (by`. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_C, G.HG_eval _ _ G.dd_ne, G.dehomogenized_generator_eval, ← deh_apply, h, map_pow, sub_self])`. Rewrite `key` using `[Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_C, G.HG_eval _ _ hdw, map_pow, ← mul_sub, mul_eq_zero]`. Conclude with `sub_eq_zero.mp (key.resolve_left (pow_ne_zero _ hdw))`.
+-/
 theorem Gen.transfer [DecidableEq ι] (G : Gen x e) (w : Fin (D + 1) → ℂ)
     (hker : ∀ m, deh (x ∘ e) 0 m = 0 → deh w 0 m = 0) (hdw : deh w 0 G.dd ≠ 0)
     {ρ : ℂ} (hρ : G.P.eval₂ (deh w 0) ρ = 0) {F : MvPolynomial ι ℤ}
@@ -224,6 +293,11 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.Fib
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_coneMap, Polynomial.coeff_zero]`. Establish `h` using `hz.2 _ (hP f hf d)`. Rewrite `h` using `[eval_map]`. Rewrite using `[aeval_def, show algebraMap ℤ ℂ = Int.castRingHom ℂ from Subsingleton.elim _ _]`.
+
+Conclude with `h`.
+-/
 theorem coneMap_eq_zero_of_mem_pts {J : Type} [Fintype J] {P : Ideal (MvPolynomial J ℤ)}
     (hP : IsHomogIdeal ℤ P) {z : J → ℂ} (hz : z ∈ pts P) {f : MvPolynomial J ℤ} (hf : f ∈ P) :
     coneMap ℤ z f = 0 := by
@@ -234,6 +308,9 @@ theorem coneMap_eq_zero_of_mem_pts {J : Type} [Fintype J] {P : Ideal (MvPolynomi
   rw [aeval_def, show algebraMap ℤ ℂ = Int.castRingHom ℂ from Subsingleton.elim _ _]
   exact h
 
+/- English proof (translation)
+Simplify using `only [coneMap, aeval_rename]`. Both sides reduce to the same expression.
+-/
 theorem coneMap_rename {J J' : Type} {R : Type*} [CommRing R] [Algebra ℤ R] (x : J → R) (e : J' → J)
     (g : MvPolynomial J' ℤ) : coneMap ℤ x (rename e g) = coneMap ℤ (x ∘ e) g := by
   simp only [coneMap, aeval_rename]

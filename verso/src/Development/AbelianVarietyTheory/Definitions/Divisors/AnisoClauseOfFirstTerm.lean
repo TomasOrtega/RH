@@ -59,6 +59,11 @@ def IsoClause : Prop :=
         ∀ Φ' Ψ : schwartzA θ T'.rank n, Φ'.1 = ikS d μ₁ (projS ν Φ.1) → Ψ.1 = cenH θ τ T' zH Φ'.1 → ∀ g (A B : ℂ),
           ResidueAt (eisS ω H Φ g) (StdUnn.s0 T n) A → ResidueAt (regIntS ω' d₀ l'.K m P Ψ g) (rhoH T' r') B → A = κ * B
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk`. Conclude with `(h D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk).1`.
+
+Introduce `D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk`. Conclude with `(h D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk).2`. Introduce and unpack `⟨ha, hi⟩ D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk`. Conclude with `⟨ha D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk, hi D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk⟩`.
+-/
 theorem firstTerm_iff : GlobalTheory.Published.FirstTermIdentityResidues ↔ AnisoClause ∧ IsoClause := by
   constructor
   · intro h
@@ -71,18 +76,33 @@ theorem firstTerm_iff : GlobalTheory.Published.FirstTermIdentityResidues ↔ Ani
     exact ⟨ha D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk,
       hi D n T T' t d h₁ h₂ h₃ ψ hψ θ hθ χ hχ hη μ 𝓕 hμ μ' 𝓕' hμ' μ₁ 𝓕₁ hμ₁ ω ω' hω hω' H hH l l' hl hl' hc hI ν hν hν' m hm lr hlr s hs hk⟩
 
+/- English proof (translation)
+The claim follows from `(firstTerm_iff.1 h).1`.
+-/
 theorem anisoClause_of_firstTerm (h : GlobalTheory.Published.FirstTermIdentityResidues) : AnisoClause :=
   (firstTerm_iff.1 h).1
 
+/- English proof (translation)
+The claim follows from `(firstTerm_iff.1 h).2`.
+-/
 theorem isoClause_of_firstTerm (h : GlobalTheory.Published.FirstTermIdentityResidues) : IsoClause :=
   (firstTerm_iff.1 h).2
 
+/- English proof (translation)
+The claim follows from `firstTerm_iff.2 ⟨ha, hi⟩`.
+-/
 theorem firstTerm_of_clauses (ha : AnisoClause) (hi : IsoClause) : GlobalTheory.Published.FirstTermIdentityResidues :=
   firstTerm_iff.2 ⟨ha, hi⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isoClause_of_firstTerm, firstTerm_of_clauses ha⟩`.
+-/
 example (ha : AnisoClause) : GlobalTheory.Published.FirstTermIdentityResidues ↔ IsoClause :=
   ⟨isoClause_of_firstTerm, firstTerm_of_clauses ha⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨anisoClause_of_firstTerm, fun ha => firstTerm_of_clauses ha hi⟩`.
+-/
 example (hi : IsoClause) : GlobalTheory.Published.FirstTermIdentityResidues ↔ AnisoClause :=
   ⟨anisoClause_of_firstTerm, fun ha => firstTerm_of_clauses ha hi⟩
 

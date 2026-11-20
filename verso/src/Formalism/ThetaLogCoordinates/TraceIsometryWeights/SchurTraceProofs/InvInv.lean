@@ -8,6 +8,11 @@ section nat
 
 variable {K W W' ι : Type} [Field K] [AddCommGroup W] [Module K W] [AddCommGroup W'] [Module K W'] [DecidableEq ι]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => intro x`. Simplify using `[Om]`. Consider the case `succ q ih`. Introduce `x`.
+
+Simplify using `only [Om, LinearMap.sum_apply, map_sum, Module.End.mul_apply, ih, h]`.
+-/
 theorem Om_nat (E : ι → ι → Module.End K W) (E' : ι → ι → Module.End K W') (θ : W →ₗ[K] W')
     (h : ∀ a b x, θ (E a b x) = E' a b (θ x)) (S : Finset ι) (z : ι) (q : ℕ) :
     ∀ x, θ (Om E S z q x) = Om E' S z q (θ x) := by
@@ -17,11 +22,19 @@ theorem Om_nat (E : ι → ι → Module.End K W) (E' : ι → ι → Module.End
     intro x
     simp only [Om, LinearMap.sum_apply, map_sum, Module.End.mul_apply, ih, h]
 
+/- English proof (translation)
+Simplify using `only [Pstep, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Om_nat E E' θ h]`.
+-/
 theorem Pstep_nat (E : ι → ι → Module.End K W) (E' : ι → ι → Module.End K W') (θ : W →ₗ[K] W')
     (h : ∀ a b x, θ (E a b x) = E' a b (θ x)) (S : Finset ι) (z : ι) (l : ℕ) (x : W) :
     θ (Pstep E S z l x) = Pstep E' S z l (θ x) := by
   simp only [Pstep, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Om_nat E E' θ h]
 
+/- English proof (translation)
+Introduce `K W W' ι _ _ _ _ _ _ E E' θ h l L`. Proceed by induction on `L with`. Consider the case `nil => intro x`. Simplify using `[InvOp]`. Consider the case `cons z L ih`.
+
+Introduce `x`. Simplify using `only [InvOp, Module.End.mul_apply]`. Rewrite using `[Pstep_nat E E' θ h, ih]`.
+-/
 theorem invariant_natural_holds : InvNat := by
   intro K W W' ι _ _ _ _ _ _ E E' θ h l L
   induction L with
@@ -37,6 +50,9 @@ section ring
 
 variable {R : Type} [Ring R]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he]`. Simplify using `only [mul_add, mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem der3 (x f o e f' o' e' : R) (hf : x * f = f * x + f') (ho : x * o = o * x + o')
     (he : x * e = e * x + e') :
     x * (f * o * e) = (f * o * e) * x + (f' * o * e + f * o' * e + f * o * e') := by
@@ -53,10 +69,24 @@ section gl
 variable {K W ι : Type} [Field K] [AddCommGroup W] [Module K W] [DecidableEq ι]
 variable {E : ι → ι → Module.End K W}
 
+/- English proof (translation)
+Conclude with `sub_eq_iff_eq_add'.mp (h a b c d)`.
+-/
 theorem GlRel.sw (h : GlRel E) (a b c d : ι) :
     E a b * E c d = E c d * E a b + ((if b = c then E a d else 0) - (if d = a then E c b else 0)) := by
   exact sub_eq_iff_eq_add'.mp (h a b c d)
 
+/- English proof (translation)
+Establish `hbz : b ≠ z` using `fun e => hz (e ▸ hb)`. Establish `haz : a ≠ z` using `fun e => hz (e ▸ ha)`. Proceed by induction on `q with`. Consider the case `zero => simp [Om]`. Consider the case `succ q ih`.
+
+Establish `key : ∀ i, E a b * (E z i * Om E S z q * E i z) = E z i * Om E S z q * E i z * E a b + ((if i = b then E z b * Om E S z q * E a z else 0) - (if i = a then E z b * Om E S z q * E a z else 0))`. Introduce `i`. Establish `ho : E a b * Om E S z q = Om E S z q * E a b + 0` using `by rw [ih, add_zero]`. Rewrite using `[der3 _ _ _ _ _ _ _ (h.sw a b z i) ho (h.sw a b i z)]`. Use `congr 1`.
+
+Establish `hza : ¬ z = a` using `fun e => haz e.symm`. Simplify using `only [if_neg hbz, if_neg hza]`. Apply the tactic sequence `by_cases hia : i = a <;> by_cases hib : i = b`. Substitute `hia` using the available equality. Substitute `hib` using the available equality.
+
+Simplify using the standard rewrite rules. Substitute `hia` using the available equality. Simplify using `[hib, Ne.symm hib]`. Substitute `hib` using the available equality. Simplify using `[hia]`.
+
+Simplify using `[hia, hib, Ne.symm hib]`. Simplify using `only [Om]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.sum_congr rfl (fun i _ => key i), Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos hb, if_pos ha, sub_self, add_zero]`.
+-/
 theorem Om_comm_S (h : GlRel E) {S : Finset ι} {z : ι} (hz : z ∉ S) {a b : ι} (ha : a ∈ S) (hb : b ∈ S)
     (q : ℕ) : E a b * Om E S z q = Om E S z q * E a b := by
   have hbz : b ≠ z := fun e => hz (e ▸ hb)
@@ -83,6 +113,11 @@ theorem Om_comm_S (h : GlRel E) {S : Finset ι} {z : ι} (hz : z ∉ S) {a b : �
     rw [Finset.mul_sum, Finset.sum_mul, Finset.sum_congr rfl (fun i _ => key i), Finset.sum_add_distrib,
       Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', if_pos hb, if_pos ha, sub_self, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp [Om]`. Consider the case `succ q ih`. Simplify using `only [Om]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hiz : i ≠ z` using `fun e => hz (e ▸ hi)`. Establish `ho : E z z * Om E S z q = Om E S z q * E z z + 0` using `by rw [ih, add_zero]`. Rewrite using `[der3 _ _ _ _ _ _ _ (h.sw z z z i) ho (h.sw z z i z)]`. Simplify using `[hiz, Ne.symm hiz]`.
+-/
 theorem diag_comm_omega (h : GlRel E) {S : Finset ι} {z : ι} (hz : z ∉ S)
     (q : ℕ) : E z z * Om E S z q = Om E S z q * E z z := by
   induction q with
@@ -96,9 +131,19 @@ theorem diag_comm_omega (h : GlRel E) {S : Finset ι} {z : ι} (hz : z ∉ S)
     rw [der3 _ _ _ _ _ _ _ (h.sw z z z i) ho (h.sw z z i z)]
     simp [hiz, Ne.symm hiz]
 
+/- English proof (translation)
+Rewrite using `[h.sw c c a b, if_neg (Ne.symm ha), if_neg hb, sub_zero, add_zero]`.
+-/
 theorem diag_comm (h : GlRel E) {a b c : ι} (ha : a ≠ c) (hb : b ≠ c) : E c c * E a b = E a b * E c c := by
   rw [h.sw c c a b, if_neg (Ne.symm ha), if_neg hb, sub_zero, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp [Om]`. Consider the case `succ q ih`. Simplify using `only [Om]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hic : i ≠ c` using `fun e => hc (e ▸ hi)`. Establish `ho : E c c * Om E S z q = Om E S z q * E c c + 0` using `by rw [ih, add_zero]`. Establish `hf : E c c * E z i = E z i * E c c + 0` using `by rw [diag_comm h hcz hic, add_zero]`. Establish `he : E c c * E i z = E i z * E c c + 0` using `by rw [diag_comm h hic hcz, add_zero]`.
+
+Rewrite using `[der3 _ _ _ _ _ _ _ hf ho he]`. Simplify using the standard rewrite rules.
+-/
 theorem Om_comm_out (h : GlRel E) {S : Finset ι} {z c : ι} (hc : c ∉ S) (hcz : z ≠ c)
     (q : ℕ) : E c c * Om E S z q = Om E S z q * E c c := by
   induction q with
@@ -117,9 +162,19 @@ theorem Om_comm_out (h : GlRel E) {S : Finset ι} {z c : ι} (hc : c ∉ S) (hcz
 def Cj (E : ι → ι → Module.End K W) (S : Finset ι) (z j : ι) : Module.End K W :=
   ∑ i ∈ S, E i z * E j i - E j z * E z z + ((S.card : K) + 1) • E j z
 
+/- English proof (translation)
+Rewrite using `[h.sw i z k z, if_neg (Ne.symm hk), if_neg (Ne.symm hi), sub_zero, add_zero]`.
+-/
 theorem EE_comm (h : GlRel E) {z i k : ι} (hi : i ≠ z) (hk : k ≠ z) : E i z * E k z = E k z * E i z := by
   rw [h.sw i z k z, if_neg (Ne.symm hk), if_neg (Ne.symm hi), sub_zero, add_zero]
 
+/- English proof (translation)
+Establish `hjz : j ≠ z` using `fun e => hz (e ▸ hj)`. Establish `h1 : ∀ i ∈ S, E j i * E i z = E i z * E j i + E j z`. Introduce `i _`. Rewrite using `[h.sw j i i z, if_pos (rfl : i = i), if_neg (show ¬ z = j from fun e => hjz e.symm), sub_zero]`. Establish `h2 : E z z * E j z = E j z * E z z - E j z`.
+
+Rewrite using `[h.sw z z j z, if_neg (show ¬ z = j from fun e => hjz e.symm), if_pos (rfl : z = z), zero_sub, ← sub_eq_add_neg]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_add_distrib]`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq', if_pos hj, h2, Cj, Finset.sum_const, add_smul, one_smul]`. Rewrite using `[← Nat.cast_smul_eq_nsmul K]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem sum_G (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈ S) :
     ∑ i ∈ S, (E j i - (if i = j then E z z else 0)) * E i z = Cj E S z j := by
   have hjz : j ≠ z := fun e => hz (e ▸ hj)
@@ -135,6 +190,17 @@ theorem sum_G (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j �
   rw [← Nat.cast_smul_eq_nsmul K]
   abel
 
+/- English proof (translation)
+Establish `hjz : j ≠ z` using `fun e => hz (e ▸ hj)`. Establish `hkz : k ≠ z` using `fun e => hz (e ▸ hk)`. Establish `a1 : ∀ i ∈ S, E i z * E j i * E k z = E k z * (E i z * E j i) + (if i = k then E k z * E j z else 0)`. Introduce `i hi`. Establish `hiz : i ≠ z` using `fun e => hz (e ▸ hi)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.sw j i k z, if_neg (show ¬ z = j from fun e => hjz e.symm), sub_zero]`. Use `_ = (E i z * E k z) * E j i + E i z * (if i = k then E j z else 0) := by rw [mul_add, mul_assoc]`. Use `_ = E k z * (E i z * E j i) + (if i = k then E k z * E j z else 0) := by`. Rewrite using `[EE_comm h hiz hkz, mul_assoc]`.
+
+Use `split_ifs with hik`. Substitute `hik` using the available equality. Both sides reduce to the same expression. Rewrite using `[mul_zero]`. Establish `a2 : E j z * E z z * E k z = E k z * (E j z * E z z) - E k z * E j z`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h.sw z z k z, if_neg (show ¬ z = k from fun e => hkz e.symm), if_pos (rfl : z = z), zero_sub, ← sub_eq_add_neg]`. Use `_ = (E j z * E k z) * E z z - E j z * E k z := by rw [mul_sub, mul_assoc]`. Use `_ = E k z * (E j z * E z z) - E k z * E j z := by rw [EE_comm h hjz hkz, mul_assoc]`. Simplify using `only [Cj, add_mul, sub_mul, Finset.sum_mul, smul_mul_assoc, mul_add, mul_sub, Finset.mul_sum, mul_smul_comm]`.
+
+Rewrite using `[Finset.sum_congr rfl a1, Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos hk, a2, EE_comm h hjz hkz, two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Cj_E (h : GlRel E) {S : Finset ι} {z j k : ι} (hz : z ∉ S) (hj : j ∈ S) (hk : k ∈ S) :
     Cj E S z j * E k z = E k z * Cj E S z j + (2 : K) • (E k z * E j z) := by
   have hjz : j ≠ z := fun e => hz (e ▸ hj)
@@ -165,6 +231,13 @@ theorem Cj_E (h : GlRel E) {S : Finset ι} {z j k : ι} (hz : z ∉ S) (hj : j �
     two_smul]
   abel
 
+/- English proof (translation)
+Establish `hjz : j ≠ z` using `fun e => hz (e ▸ hj)`. Establish `key : ∀ i ∈ S, E j z * (E z i * Om E S z q * E i z) = (E z i * Om E S z q * E i z) * E j z + (E z i * (E j z * Om E S z q - Om E S z q * E j z) * E i z + Om E S z q * ((E j i - (if i = j then E z z else 0)) * E i z))`. Introduce `i hi`. Establish `hiz : i ≠ z` using `fun e => hz (e ▸ hi)`. Rewrite using `[der3 _ _ _ _ _ (E j z * Om E S z q - Om E S z q * E j z) 0 (h.sw j z z i) (by abel) (by rw [EE_comm h hjz hiz, add_zero]), if_pos rfl]`.
+
+Establish `hc : (E j i - (if i = j then E z z else 0)) * Om E S z q = Om E S z q * (E j i - (if i = j then E z z else 0))`. Rewrite using `[sub_mul, mul_sub, Om_comm_S h hz hj hi]`. Use `split_ifs`. Rewrite using `[diag_comm_omega h hz]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hc, mul_zero, add_zero, mul_assoc (Om E S z q)]`. Normalize the expressions using the abelian group laws. Simplify using `only [Om, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, sum_G h hz hj]`.
+-/
 theorem Om_rec (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈ S) (q : ℕ) :
     E j z * Om E S z (q + 1) = Om E S z (q + 1) * E j z +
       (∑ i ∈ S, E z i * (E j z * Om E S z q - Om E S z q * E j z) * E i z + Om E S z q * Cj E S z j) := by
@@ -187,6 +260,17 @@ theorem Om_rec (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j �
   simp only [Om, Finset.mul_sum, Finset.sum_mul]
   rw [Finset.sum_congr rfl key, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, sum_G h hz hj]
 
+/- English proof (translation)
+Establish `hjz : j ≠ z` using `fun e => hz (e ▸ hj)`. Proceed by induction on `q with`. Consider the case `zero`. Rewrite using `[Om_rec h hz hj 0]`. Use `congr 1`.
+
+Simplify using `[Om]`. Consider the case `succ q ih`. Establish `hA : E j z * Om E S z (q + 1) - Om E S z (q + 1) * E j z = ((q : K) + 1) • (Om E S z q * (Cj E S z j + (q : K) • E j z))` using `sub_eq_iff_eq_add'.mpr ih`. Establish `hX : ∀ i ∈ S, (Cj E S z j + (q : K) • E j z) * E i z = E i z * (Cj E S z j + (q : K) • E j z + (2 : K) • E j z)`. Introduce `i hi`.
+
+Establish `hiz : i ≠ z` using `fun e => hz (e ▸ hi)`. Rewrite using `[add_mul, Cj_E h hz hj hi, smul_mul_assoc, EE_comm h hjz hiz, mul_add, mul_add, mul_smul_comm, mul_smul_comm]`. Normalize the expressions using the abelian group laws. Establish `hs : ∑ i ∈ S, E z i * (((q : K) + 1) • (Om E S z q * (Cj E S z j + (q : K) • E j z))) * E i z = ((q : K) + 1) • (Om E S z (q + 1) * (Cj E S z j + (q : K) • E j z + (2 : K) • E j z))`. Simplify using `only [Om, Finset.sum_mul, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`. Simplify using `only [mul_assoc]`. Rewrite using `[hX i hi]`.
+
+Rewrite using `[Om_rec h hz hj (q + 1), hA, hs]`. Use `congr 1`. Use `push_cast`. Simplify using `only [mul_add, mul_smul_comm]`. Use `module`.
+-/
 theorem Om_E (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈ S) (q : ℕ) :
     E j z * Om E S z (q + 1) = Om E S z (q + 1) * E j z +
       ((q : K) + 1) • (Om E S z q * (Cj E S z j + (q : K) • E j z)) := by
@@ -220,10 +304,18 @@ theorem Om_E (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈
     simp only [mul_add, mul_smul_comm]
     module
 
+/- English proof (translation)
+Simplify using `only [Pstep, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, hX]`.
+-/
 theorem Pstep_comm (S : Finset ι) (z : ι) (l : ℕ) (X : Module.End K W)
     (hX : ∀ q, X * Om E S z q = Om E S z q * X) : X * Pstep E S z l = Pstep E S z l * X := by
   simp only [Pstep, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, hX]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [InvOp]`. Consider the case `cons z L ih`. Establish `hcz : c ≠ z` using `by rintro rfl; exact hc (by simp)`. Establish `hcL : c ∉ L` using `fun m => hc (by simp [m])`.
+
+Establish `hP` using `Pstep_comm (E := E) L.toFinset z l (E c c) (fun q => Om_comm_out h (by simpa using hcL) (Ne.symm hcz) q)`. Simplify using `only [InvOp]`. Rewrite using `[← mul_assoc, hP, mul_assoc, ih hcL, ← mul_assoc]`.
+-/
 theorem InvOp_comm_out (h : GlRel E) (l : ℕ) (c : ι) (L : List ι) (hc : c ∉ L) :
     E c c * InvOp E l L = InvOp E l L * E c c := by
   induction L with
@@ -236,6 +328,11 @@ theorem InvOp_comm_out (h : GlRel E) (l : ℕ) (c : ι) (L : List ι) (hc : c �
     simp only [InvOp]
     rw [← mul_assoc, hP, mul_assoc, ih hcL, ← mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => intro x hx`. Simplify `hx` using `[Om]`. Consider the case `succ q ih`. Introduce `x hx`.
+
+Simplify using `only [Om, LinearMap.sum_apply, Module.End.mul_apply]`. Conclude with `Submodule.sum_mem _ (fun i _ => hN _ _ _ (ih _ (hN _ _ _ hx)))`.
+-/
 theorem Om_mem {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN) (S : Finset ι) (z : ι) (q : ℕ) :
     ∀ x ∈ NN, Om E S z q x ∈ NN := by
   induction q with
@@ -245,12 +342,24 @@ theorem Om_mem {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN)
     simp only [Om, LinearMap.sum_apply, Module.End.mul_apply]
     exact Submodule.sum_mem _ (fun i _ => hN _ _ _ (ih _ (hN _ _ _ hx)))
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Pstep, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ (fun q _ => Submodule.smul_mem _ _ (Om_mem hN S z q x hx))`.
+-/
 theorem Pstep_mem {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN) (S : Finset ι) (z : ι) (l : ℕ) :
     ∀ x ∈ NN, Pstep E S z l x ∈ NN := by
   intro x hx
   simp only [Pstep, LinearMap.sum_apply, LinearMap.smul_apply]
   exact Submodule.sum_mem _ (fun q _ => Submodule.smul_mem _ _ (Om_mem hN S z q x hx))
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero`. Introduce `k x hx hk hlt`. Establish `hx0 : x = 0` using `hev z (-(k : ℤ)) x hx (by push_cast; exact hk) (by rw [abs_neg, Nat.abs_cast]; omega)`. Simplify using `[Om, hx0]`.
+
+Consider the case `succ q ih`. Introduce `k x hx hk hlt`. Simplify using `only [Om, LinearMap.sum_apply, Module.End.mul_apply]`. Use `Finset.sum_eq_zero (fun i hi => ?_)` and prove the remaining obligations. Establish `hiz : i ≠ z` using `fun e => hz (e ▸ hi)`.
+
+Establish `hw : E z z (E i z x) = -((k + 1 : ℕ) : K) • E i z x`. Establish `e1` using `DFunLike.congr_fun (h.sw z z i z) x`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.sub_apply, if_neg (Ne.symm hiz), if_pos (rfl : z = z), LinearMap.zero_apply, zero_sub, LinearMap.neg_apply] at e1`. Rewrite using `[e1, hk, map_smul]`. Use `push_cast`.
+
+Use `module`. Rewrite using `[ih (k + 1) (E i z x) (hN _ _ _ hx) hw (by omega), map_zero]`.
+-/
 theorem Om_vanish (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN) {l : ℕ}
     (hev : ∀ (z : ι) (k : ℤ), ∀ x ∈ NN, E z z x = (k : K) • x → (l : ℤ) < |k| → x = 0)
     {S : Finset ι} {z : ι} (hz : z ∉ S) (q : ℕ) :
@@ -278,6 +387,13 @@ theorem Om_vanish (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN
 def cc (K : Type) [Field K] (m q : ℕ) : K :=
   ((-1 : K) ^ q * (m.factorial : K)) / (((q + m).factorial : K) * (q.factorial : K))
 
+/- English proof (translation)
+Unfold `cc`. Establish `h1 : (q + 1 + m).factorial = (q + m + 1) * (q + m).factorial`. Rewrite using `[show q + 1 + m = q + m + 1 by omega]; exact Nat.factorial_succ _`. Establish `h2 : (q + 1).factorial = (q + 1) * q.factorial` using `Nat.factorial_succ _`. Establish `f1 : ((q + m).factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`.
+
+Establish `f2 : (q.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Establish `f3 : ((q : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero q`. Establish `f4 : ((q : K) + m + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero (q + m)`. Rewrite using `[h1, h2]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cc_rec [CharZero K] (m q : ℕ) : cc K m q + cc K m (q + 1) * (((q : K) + 1) * ((q : K) + 1 + m)) = 0 := by
   unfold cc
   have h1 : (q + 1 + m).factorial = (q + m + 1) * (q + m).factorial := by
@@ -292,13 +408,24 @@ theorem cc_rec [CharZero K] (m q : ℕ) : cc K m q + cc K m (q + 1) * (((q : K) 
   field_simp
   ring
 
+/- English proof (translation)
+Establish `: (m.factorial : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)`. Simplify using `[cc, this]`.
+-/
 theorem cc_zero [CharZero K] (m : ℕ) : cc K m 0 = 1 := by
   have : (m.factorial : K) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero _)
   simp [cc, this]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pstep_eq (S : Finset ι) (z : ι) (l : ℕ) :
     Pstep E S z l = ∑ q ∈ range (l + 1), cc K S.card q • Om E S z q := rfl
 
+/- English proof (translation)
+Establish `h0 : ∑ i ∈ S, E i z (E j i u) = 0` using `Finset.sum_eq_zero (fun i hi => by rw [hS j hj i hi, map_zero])`. Establish `hC : Cj E S z j u = ((S.card : K) + 1) • E j z u`. Simplify using `only [Cj, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, hzz, map_zero, h0, sub_zero, zero_add]`. Establish `e1` using `DFunLike.congr_fun (Om_E h hz hj q) u`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, hC] at e1`.
+
+Rewrite using `[e1, ← add_smul, map_smul, smul_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem E_Om_apply (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈ S) {u : W}
     (hS : ∀ a ∈ S, ∀ b ∈ S, E a b u = 0) (hzz : E z z u = 0) (q : ℕ) :
     E j z (Om E S z (q + 1) u) = Om E S z (q + 1) (E j z u) +
@@ -314,6 +441,11 @@ theorem E_Om_apply (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj :
   congr 2
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Pstep_eq]`. Simplify using `[Om, cc_zero]`. Consider the case `succ n ih`.
+
+Rewrite using `[Pstep_eq, Finset.sum_range_succ, ← Pstep_eq]`. Simplify using `only [LinearMap.add_apply, map_add, ih, LinearMap.smul_apply, map_smul, E_Om_apply h hz hj hS hzz n]`. Rewrite using `[eq_neg_of_add_eq_zero_left (cc_rec (K := K) S.card n)]`. Use `module`.
+-/
 theorem E_Pstep_apply [CharZero K] (h : GlRel E) {S : Finset ι} {z j : ι} (hz : z ∉ S) (hj : j ∈ S) {u : W}
     (hS : ∀ a ∈ S, ∀ b ∈ S, E a b u = 0) (hzz : E z z u = 0) (n : ℕ) :
     E j z (Pstep E S z n u) = cc K S.card n • Om E S z n (E j z u) := by
@@ -328,6 +460,31 @@ theorem E_Pstep_apply [CharZero K] (h : GlRel E) {S : Finset ι} {z j : ι} (hz 
     rw [eq_neg_of_add_eq_zero_left (cc_rec (K := K) S.card n)]
     module
 
+/- English proof (translation)
+Establish `hpow : ∀ k, (E z i ^ (k + 1)) y = E z i ((E z i ^ k) y)`. Introduce `k`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Establish `hmem : ∀ k, (E z i ^ k) y ∈ NN`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simpa using hy`. Consider the case `succ k ih => rw [hpow]`. Conclude with `hN _ _ _ ih`. Establish `sZ : E z z * E z i = E z i * E z z + E z i`.
+
+Rewrite using `[h.sw z z z i, if_pos (rfl : z = z), if_neg hiz, sub_zero]`. Establish `sI : E i i * E z i = E z i * E i i - E z i`. Rewrite using `[h.sw i i z i, if_neg hiz, if_pos (rfl : i = i), zero_sub, ← sub_eq_add_neg]`. Establish `sE : E i z * E z i = E z i * E i z + (E i i - E z z)`. Rewrite using `[h.sw i z z i, if_pos (rfl : z = z), if_pos (rfl : i = i)]`.
+
+Establish `wZ : ∀ k : ℕ, E z z ((E z i ^ k) y) = (k : K) • (E z i ^ k) y`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hzz]`. Consider the case `succ k ih`.
+
+Rewrite using `[hpow, ← Module.End.mul_apply (E z z), sZ, LinearMap.add_apply, Module.End.mul_apply, ih, map_smul]`. Use `push_cast`. Use `module`. Establish `wI : ∀ k : ℕ, E i i ((E z i ^ k) y) = -(k : K) • (E z i ^ k) y`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp [hii]`. Consider the case `succ k ih`. Rewrite using `[hpow, ← Module.End.mul_apply (E i i), sI, LinearMap.sub_apply, Module.End.mul_apply, ih, map_smul]`. Use `push_cast`.
+
+Use `module`. Establish `wE : ∀ k : ℕ, E i z ((E z i ^ (k + 1)) y) = -(((k : K) + 1) * (k : K)) • (E z i ^ k) y`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Rewrite using `[hpow, ← Module.End.mul_apply (E i z), sE]`. Simplify using `[he, hii, hzz]`. Consider the case `succ k ih`. Rewrite using `[hpow (k + 1), ← Module.End.mul_apply (E i z), sE, LinearMap.add_apply, LinearMap.sub_apply, Module.End.mul_apply, ih, map_smul, wI, wZ, ← hpow]`. Use `push_cast`.
+
+Use `module`. Establish `top : ∀ k : ℕ, l < k → (E z i ^ k) y = 0`. Introduce `k hk`. Conclude with `hev z (k : ℤ) _ (hmem k) (by rw [wZ k, Int.cast_natCast]) (by rw [Nat.abs_cast]; exact_mod_cast hk)`. Establish `down : ∀ n : ℕ, ∀ k : ℕ, k + n = l + 1 → 1 ≤ k → (E z i ^ k) y = 0`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro k hk _; exact top k (by omega)`. Consider the case `succ n ih`. Introduce `k hk hk1`.
+
+Establish `h1 : (E z i ^ (k + 1)) y = 0` using `ih (k + 1) (by omega) (by omega)`. Establish `h2` using `wE k`. Rewrite `h2` using `[h1, map_zero]`. Establish `hk0 : (k : K) ≠ 0` using `by exact_mod_cast (show k ≠ 0 by omega)`. Establish `hk2 : (k : K) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero k`.
+
+Conclude with `(smul_eq_zero.mp h2.symm).resolve_left (neg_ne_zero.mpr (mul_ne_zero hk2 hk0))`. Use `down l 1 (by omega) le_rfl` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lower_kill [CharZero K] (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN) {l : ℕ}
     (hev : ∀ (z : ι) (k : ℤ), ∀ x ∈ NN, E z z x = (k : K) • x → (l : ℤ) < |k| → x = 0)
     {z i : ι} (hiz : i ≠ z) {y : W} (hy : y ∈ NN) (he : E i z y = 0) (hii : E i i y = 0) (hzz : E z z y = 0) :
@@ -391,10 +548,16 @@ theorem lower_kill [CharZero K] (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b
   have := down l 1 (by omega) le_rfl
   simpa using this
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem b (Submodule.mem_iSup_of_mem hab (LinearMap.mem_range_self _ _)))`.
+-/
 theorem range_mem {a b : ι} (hab : a ≠ b) (x : W) :
     E a b x ∈ ⨆ (a : ι) (b : ι) (_ : a ≠ b), LinearMap.range (E a b) := Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem b
       (Submodule.mem_iSup_of_mem hab (LinearMap.mem_range_self _ _)))
 
+/- English proof (translation)
+Rewrite using `[Pstep_eq, Finset.sum_range_succ']`. Simplify using `only [LinearMap.add_apply, cc_zero, one_smul, Om, Module.End.one_apply, add_sub_cancel_right, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Use `Submodule.sum_mem _ (fun q _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ (fun i hi => ?_)))` and prove the remaining obligations. Conclude with `range_mem (E := E) (show z ≠ i from fun e => hz (e ▸ hi)) _`.
+-/
 theorem Pstep_sub_mem [CharZero K] {S : Finset ι} {z : ι} (hz : z ∉ S) (l : ℕ) (u : W) :
     Pstep E S z l u - u ∈ ⨆ (a : ι) (b : ι) (_ : a ≠ b), LinearMap.range (E a b) := by
   rw [Pstep_eq, Finset.sum_range_succ']
@@ -403,6 +566,19 @@ theorem Pstep_sub_mem [CharZero K] {S : Finset ι} {z : ι} (hz : z ∉ S) (l : 
   refine Submodule.sum_mem _ (fun q _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ (fun i hi => ?_)))
   exact range_mem (E := E) (show z ≠ i from fun e => hz (e ▸ hi)) _
 
+/- English proof (translation)
+Establish `hP : Pstep E S z l u ∈ NN` using `Pstep_mem hN S z l u hu`. Establish `hSS : ∀ a ∈ S, ∀ b ∈ S, E a b (Pstep E S z l u) = 0`. Introduce `a ha b hb`. Establish `e1` using `DFunLike.congr_fun (Pstep_comm S z l (E a b) (fun q => Om_comm_S h hz ha hb q)) u`. Simplify using `only [Module.End.mul_apply, hS a ha b hb, map_zero] at e1`.
+
+Conclude with `e1`. Establish `hZ : E z z (Pstep E S z l u) = 0`. Establish `e1` using `DFunLike.congr_fun (Pstep_comm S z l (E z z) (fun q => diag_comm_omega h hz q)) u`. Simplify using `only [Module.End.mul_apply, hzz, map_zero] at e1`. Conclude with `e1`.
+
+Establish `hJ : ∀ j ∈ S, E j z (Pstep E S z l u) = 0`. Introduce `j hj`. Establish `hjz : j ≠ z` using `fun e => hz (e ▸ hj)`. Establish `hw : E z z (E j z u) = -((1 : ℕ) : K) • E j z u`. Establish `e1` using `DFunLike.congr_fun (h.sw z z j z) u`.
+
+Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.sub_apply, if_neg (show ¬ z = j from fun e => hjz e.symm), if_pos (rfl : z = z), ↓reduceIte, LinearMap.zero_apply, zero_sub, LinearMap.neg_apply, hzz, map_zero, zero_add] at e1`. Rewrite using `[e1, Nat.cast_one, neg_one_smul]`. Rewrite using `[E_Pstep_apply h hz hj hS hzz l, Om_vanish h hN hev hz l 1 (E j z u) (hN _ _ _ hu) hw (by omega), smul_zero]`. Establish `hne : ∀ b ∈ S, b ≠ z` using `fun b hb e => hz (e ▸ hb)`. Introduce `a ha b hb`.
+
+Rewrite `ha`, `hb` using `[Finset.mem_insert]`. Apply the tactic sequence `rcases ha with rfl | ha <;> rcases hb with rfl | hb`. Conclude with `hZ`. Conclude with `lower_kill h hN hev (hne b hb) hP (hJ b hb) (hSS b hb b hb) hZ`. Conclude with `hJ a ha`.
+
+Conclude with `hSS a ha b hb`.
+-/
 theorem Pstep_inv [CharZero K] (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b, ∀ x ∈ NN, E a b x ∈ NN) {l : ℕ}
     (hev : ∀ (z : ι) (k : ℤ), ∀ x ∈ NN, E z z x = (k : K) • x → (l : ℤ) < |k| → x = 0)
     {S : Finset ι} {z : ι} (hz : z ∉ S) {u : W} (hu : u ∈ NN)
@@ -438,6 +614,17 @@ theorem Pstep_inv [CharZero K] (h : GlRel E) {NN : Submodule K W} (hN : ∀ a b,
   · exact hJ a ha
   · exact hSS a ha b hb
 
+/- English proof (translation)
+Introduce `K W ι _ _ _ _ _ E h l NN hN hev L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_ u hu _`. Use `⟨fun a ha => by simp at ha, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `hu` using `[InvOp]`. Simplify using `[InvOp]`. Consider the case `cons z L ih`. Introduce `hnd u hu hdiag`. Rewrite `hnd` using `[List.nodup_cons]`.
+
+Take `⟨hzL, hnd⟩` from `hnd`. Take `⟨h1, h2, h3⟩` from `ih hnd u hu (fun a ha => hdiag a (List.mem_cons_of_mem _ ha))`. Establish `hz : z ∉ L.toFinset` using `by simpa using hzL`. Establish `hzz : E z z (InvOp E l L u) = 0`. Establish `e1` using `DFunLike.congr_fun (InvOp_comm_out h l z L hzL) u`.
+
+Simplify using `only [Module.End.mul_apply, hdiag z (by simp), map_zero] at e1`. Conclude with `e1`. Establish `hS : ∀ a ∈ L.toFinset, ∀ b ∈ L.toFinset, E a b (InvOp E l L u) = 0`. Introduce `a ha b hb`. Conclude with `h1 a (by simpa using ha) b (by simpa using hb)`.
+
+Establish `key` using `Pstep_inv h hN hev hz h2 hS hzz`. Simplify using `only [InvOp, Module.End.mul_apply]`. Use `⟨fun a ha b hb => key a (by simpa using ha) b (by simpa using hb), Pstep_mem hN _ _ _ _ h2, ?_⟩` and prove the remaining obligations. Establish `h4` using `Submodule.add_mem _ (Pstep_sub_mem (E := E) hz l (InvOp E l L u)) h3`. Simplify using `using h4`.
+-/
 theorem invariant_inverse_holds : InvInv := by
   intro K W ι _ _ _ _ _ E h l NN hN hev L
   induction L with

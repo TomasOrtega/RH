@@ -13,8 +13,22 @@ section Ops
 
 variable {p : ℕ} [hp : Fact p.Prime] {σ : Type} {r : ℕ}
 
+/- English proof (translation)
+Conclude with `hp.out.one_lt.le` after adjusting the coercions.
+-/
 theorem one_le_p : (1 : ℝ) ≤ p := by exact_mod_cast hp.out.one_lt.le
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) ≤ p` using `one_le_p`. Use `set Mc : ℝ := (p : ℝ) ^ (Nat.log p J) with hMc`. Establish `hM1 : 1 ≤ Mc` using `one_le_pow₀ hp1`. Establish `hM : ∀ j ≤ J, ∀ k ≤ j, ‖(((j.choose k : ℕ) : ℚ_[p]))⁻¹‖ ≤ Mc` using `fun j hj k hk => (norm_choose_inv_le j k hk).trans (pow_le_pow_right₀ hp1 (Nat.log_mono_right hj))`. Set `D : Fin r → (MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p])` to `fun c => (pderiv (w c) : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ∘ₗ (pderiv (e c)).toLinearMap`.
+
+Establish `hcomm : ∀ a b, Commute (D a) (D b)`. Introduce `a b`. Simplify using `only [D, ← Module.End.mul_eq_comp]`. Apply the tactic sequence `refine Commute.mul_left (Commute.mul_right ?_ ?_) (Commute.mul_right ?_ ?_) <;>`. Conclude with `commute_pderiv _ _`.
+
+Establish `hF` using `contr_Fsum D hcomm (fun a k => contr_D _ _ k) hM1 J hM Finset.univ`. Rewrite `hF` using `[Finset.card_univ, Fintype.card_fin]`. Establish `hFeq : Formalism.GM.tieF (k` using `ℚ_[p]) w e = ∑ c ∈ Finset.univ, D c := rfl`. Establish `h1` using `hF l hl B hB u hu`. Rewrite `h1` using `[← hFeq]`.
+
+Establish `h2` using `contr_pow zero_le_one (contr_E (p := p) w e) l _ (by positivity) _ h1`. Establish `eq : (((l.factorial : ℚ_[p]) ^ 2 * (J.choose l : ℚ_[p]))⁻¹) • ((tieE w e ^ l) ((tieF w e ^ l) u)) = (((J.choose l : ℕ) : ℚ_[p])⁻¹) • ((tieE w e ^ l) (((((l.factorial : ℚ_[p]) ^ 2))⁻¹ • (tieF w e ^ l)) u))`. Rewrite using `[LinearMap.smul_apply, map_smul, smul_smul, mul_inv, mul_comm]`. Rewrite using `[eq]`. Use `bnd_mono (bnd_smul _ h2) ?_` and prove the remaining obligations.
+
+Establish `hA` using `hM J le_rfl l hl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMc, one_pow, mul_one, ← pow_mul, mul_comm ((p : ℝ) ^ Nat.log p J), mul_assoc, ← pow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bnd_Xl (w e : Fin r → σ) (J l : ℕ) (hl : l ≤ J) (B : ℝ) (hB : 0 ≤ B) (u : MvPolynomial σ ℚ_[p])
     (hu : Bnd B u) :
     Bnd (B * (p : ℝ) ^ ((r + 1) * Nat.log p J))
@@ -49,6 +63,9 @@ theorem bnd_Xl (w e : Fin r → σ) (J l : ℕ) (hl : l ≤ J) (B : ℝ) (hB : 0
         rw [hMc, one_pow, mul_one, ← pow_mul, mul_comm ((p : ℝ) ^ Nat.log p J), mul_assoc, ← pow_add]
         congr 2; ring
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `lt_of_lt_of_le zero_lt_one one_le_p`. Establish `hk : (0 : ℝ) < (p : ℝ) ^ k` using `pow_pos hp0 k`. Use `forall_congr' fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ hk, mul_one]`.
+-/
 theorem bnd_pow_iff (k : ℕ) (u : MvPolynomial σ ℚ_[p]) :
     Bnd ((p : ℝ) ^ k) u ↔ M.IsIntegral' p (((p : ℚ_[p]) ^ k) • u) := by
   have hp0 : (0 : ℝ) < p := lt_of_lt_of_le zero_lt_one one_le_p
@@ -56,6 +73,11 @@ theorem bnd_pow_iff (k : ℕ) (u : MvPolynomial σ ℚ_[p]) :
   refine forall_congr' fun m => ?_
   rw [coeff_smul, smul_eq_mul, norm_mul, norm_pow, Padic.norm_p, inv_pow, inv_mul_le_iff₀ hk, mul_one]
 
+/- English proof (translation)
+Establish `h1` using `(bnd_pow_iff k u).1 hu`. Establish `h2` using `Formalism.GM.projectorIntegral p σ r w e hw he hwe hr o n z _ h1`. Rewrite `h2` using `[map_smul, smul_smul, ← pow_add]`. Use `bnd_mono ((bnd_pow_iff _ _).2 h2) (pow_le_pow_right₀ one_le_p ?_)` and prove the remaining obligations. Use `Nat.mul_le_mul_left (r + 1) hΛ` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem bnd_phi (w e : Fin r → σ) (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (hr : 1 ≤ r) (o n z Λ : ℕ) (hΛ : Nat.log p (o + n + r + z) + 1 ≤ Λ) (k : ℕ) (u : MvPolynomial σ ℚ_[p])
     (hu : Bnd ((p : ℝ) ^ k) u) : Bnd ((p : ℝ) ^ (k + (r + 1) * Λ)) (tiePhi w e o n z u) := by
@@ -66,6 +88,11 @@ theorem bnd_phi (w e : Fin r → σ) (hw : Function.Injective w) (he : Function.
   have := Nat.mul_le_mul_left (r + 1) hΛ
   omega
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using hu`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons, LinearMap.comp_apply, List.length_cons]`. Establish `h1` using `ih (fun i' hi' => h i' (List.mem_cons_of_mem _ hi'))`.
+
+Establish `h2` using `h i List.mem_cons_self _ _ h1`. Rewrite using `[show k + (l.length + 1) * c = k + l.length * c + c by ring]`. Conclude with `h2`.
+-/
 theorem bnd_foldr {ι : Type} (φ : ι → MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) (c : ℕ) (l : List ι)
     (h : ∀ i ∈ l, ∀ k u, Bnd ((p : ℝ) ^ k) u → Bnd ((p : ℝ) ^ (k + c)) (φ i u)) (k : ℕ) (u : MvPolynomial σ ℚ_[p])
     (hu : Bnd ((p : ℝ) ^ k) u) :
@@ -79,6 +106,17 @@ theorem bnd_foldr {ι : Type} (φ : ι → MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p
     rw [show k + (l.length + 1) * c = k + l.length * c + c by ring]
     exact h2
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) ≤ p` using `one_le_p`. Establish `hp0 : (0 : ℝ) < p` using `lt_of_lt_of_le zero_lt_one hp1`. Unfold `M.fockK`. Rewrite using `[Finset.sum_div]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun m _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hm : m ∈ v.support`. Establish `hne : (m.prod fun _ i => i.factorial) ≠ 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => Nat.factorial_ne_zero _`. Establish `hcast : (m.prod fun _ j => (j.factorial : ℚ_[p])) = (((m.prod fun _ i => i.factorial) : ℕ) : ℚ_[p])`.
+
+Simplify using `[Finsupp.prod]`. Rewrite using `[hcast, norm_div, norm_mul, norm_mul, Formalism.GM.MeanGammaLemmas.norm_nat p _ hne, Formalism.GM.MeanGammaLemmas.norm_nat p _ hdF, mul_div_assoc, ← zpow_sub₀ hp0.ne']`. Establish `h3 : (p : ℝ) ^ (-(padicValNat p (m.prod fun _ i => i.factorial) : ℤ) - -(padicValNat p dF : ℤ)) ≤ (p : ℝ) ^ E`. Rewrite using `[← zpow_natCast]`. Apply `zpow_le_zpow_right₀ hp1` to reduce the goal to its premises.
+
+Use `hval m hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Conclude with `hU m`. Conclude with `hv m`.
+
+Use `_ = (p : ℝ) ^ (k + E) := by rw [mul_one, pow_add]`. Rewrite using `[notMem_support_iff.1 hm, mul_zero, zero_mul, zero_div, norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem norm_fock_le (U v : MvPolynomial σ ℚ_[p]) (dF : ℕ) (hdF : dF ≠ 0) (k E : ℕ) (hU : Bnd ((p : ℝ) ^ k) U)
     (hv : Bnd 1 v)
     (hval : ∀ m ∈ v.support, padicValNat p dF ≤ padicValNat p (m.prod fun _ i => i.factorial) + E) :

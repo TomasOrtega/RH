@@ -7,6 +7,9 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 open scoped NumberField.AdeleRing
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinConj.exists_conj_unip_mem | exact GlobalTheory.FinConj.exists_conj_unip_mem | (intros; apply GlobalTheory.FinConj.exists_conj_unip_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_conj_finiteUnipotent_mem_openSubgroup : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (L : Subgroup (GL (Fin a) (Af E))),
     IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ ω : Set (GA E a), IsCompact ω →
     ∃ M : ℕ, 0 < M ∧ ∀ b ∈ ω, ∀ (ρ : Fin a → ℝ) (hρ : ∀ i, 0 < ρ i), ∀ k ∈ (GroundTheory.Automorphic.Reduction.maxCompact (K := E) (n := a)),

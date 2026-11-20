@@ -15,6 +15,11 @@ namespace GlobalTheory.FinPl.CoreIdele
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : Fintype.card m ≤ Fintype.card n`. Use `Matrix.rank_mul_le_left b b'` as an intermediate fact. Rewrite `this` using `[h, Matrix.rank_one]`. Conclude with `this.trans (Matrix.rank_le_card_width b)`. Establish `h2 : Fintype.card n ≤ Fintype.card m`.
+
+Use `Matrix.rank_mul_le_left b' b` as an intermediate fact. Rewrite `this` using `[h', Matrix.rank_one]`. Conclude with `this.trans (Matrix.rank_le_card_width b')`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_eq_of_inv {k : Type} [Field k] {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (b : Matrix m n k) (b' : Matrix n m k) (h : b * b' = 1) (h' : b' * b = 1) : Fintype.card n = Fintype.card m := by
   have h1 : Fintype.card m ≤ Fintype.card n := by
@@ -29,6 +34,23 @@ theorem card_eq_of_inv {k : Type} [Field k] {m n : Type} [Fintype m] [DecidableE
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `f : D.host.E →+* k` to `p.pr.comp (incA D)`. Set `r : Fin L.rank → D.host.E` to `(star ζ ⬝ᵥ L.gram *ᵥ ζ)⁻¹ • (star ζ ᵥ* L.gram)`. Establish `hr : r ⬝ᵥ ζ = 1`. Simplify using `only [r]`. Rewrite using `[smul_dotProduct, ← dotProduct_mulVec, smul_eq_mul, inv_mul_cancel₀ hζ.2]`.
+
+Set `bE : Matrix (Fin S.rank) (Fin A.rank ⊕ Fin 1) D.host.E` to `fromCols o.iA (replicateCol (Fin 1) (o.iB *ᵥ ζ))`. Set `bE' : Matrix (Fin A.rank ⊕ Fin 1) (Fin S.rank) D.host.E` to `fromRows o.qA (replicateRow (Fin 1) (r ᵥ* o.qB))`. Establish `h1 : bE' * bE = 1`. Simplify using `only [bE, bE']`. Rewrite using `[fromRows_mul_fromCols, ← Matrix.fromBlocks_one]`.
+
+Use `congr 1`. Conclude with `o.qA_iA`. Rewrite using `[← replicateCol_mulVec, Matrix.mulVec_mulVec, o.qA_iB, Matrix.zero_mulVec]`. Both sides reduce to the same expression. Rewrite using `[← replicateRow_vecMul, Matrix.vecMul_vecMul, show o.qB * o.iA = 0 from o.symm.qA_iB, Matrix.vecMul_zero]`.
+
+Both sides reduce to the same expression. Use extensionality with `i j`. Rewrite using `[replicateRow_mul_replicateCol_apply, dotProduct_mulVec, Matrix.vecMul_vecMul, show o.qB * o.iB = 1 from o.symm.qA_iA, Matrix.vecMul_one, hr, Subsingleton.elim i j, Matrix.one_apply_eq]`. Establish `hn : Fintype.card n = A.rank` using `by simpa using card_eq_of_inv β.b β.b' β.bb' β.b'b`. Set `X : Matrix (Fin A.rank ⊕ Fin 1) (n ⊕ Fin 1) k` to `fromBlocks β.b 0 0 1`.
+
+Set `X' : Matrix (n ⊕ Fin 1) (Fin A.rank ⊕ Fin 1) k` to `fromBlocks β.b' 0 0 1`. Establish `hX : X' * X = 1`. Simplify using `only [X, X', fromBlocks_multiply, β.b'b]`. Simplify using the standard rewrite rules. Establish `g1 : (X' * bE'.map f) * (bE.map f * X) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (bE'.map f), ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero f) (map_one f), Matrix.one_mul, hX]`. Establish `hc : Fintype.card (Fin S.rank) = Fintype.card (n ⊕ Fin 1)`. Use `o.rank_add` as an intermediate fact. Use `hζ.1` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_sum, hn]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `g2 : (bE.map f * X) * (X' * bE'.map f) = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq hc)).2 g1`. Take `⟨β₀, h₀⟩` from `((GlobalTheory.T.exists_splitPoint_frame_character D).2 k p).1 S (n ⊕ Fin 1) _ _ g2 g1`. Use `⟨β₀, ?_⟩` and prove the remaining obligations. Rewrite using `[IsSumFrame, h₀]`.
+
+Simplify using `only [bE, X, fromCols_map, fromCols_mul_fromBlocks, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]`. Apply the tactic sequence `ext i (j | j) <;> rfl`.
+-/
 theorem exists_sumFrame' (p : SplitPt D k) {S A L : HSp D} (o : OrthDec S A L) {ζ : Fin L.rank → D.host.E}
     (hζ : IsLineVec L ζ) {n : Type} [Fintype n] [DecidableEq n] (β : Frame p A n) :
     ∃ β₀ : Frame p S (n ⊕ Fin 1), IsSumFrame o ζ β β₀ := by
@@ -67,6 +89,9 @@ theorem exists_sumFrame' (p : SplitPt D k) {S A L : HSp D} (o : OrthDec S A L) {
   simp only [bE, X, fromCols_map, fromCols_mul_fromBlocks, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]
   ext i (j | j) <;> rfl
 
+/- English proof (translation)
+Establish `e : ratV (vecB o ζ) = o.jB *ᵥ ratV ζ`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, vecB, OrthDec.jB, rat, mulVec, dotProduct]`. Rewrite using `[ho, e, mulVec_smul, mulVec_smul, mulVec_mulVec, mulVec_mulVec, o.pA_jB, o.pB_jB, zero_mulVec, smul_zero, one_mulVec]`. Conclude with `and_iff_right (zero_mem _)`.
+-/
 theorem line_of_orth {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (M : Lat S) (LA : Lat A) (LL : Lat L)
     (v : Pl D) (ho : OrthAt o M LA LL v) (a : AE D) :
     a • ratV (vecB o ζ) ∈ latV S M (· = v) ↔ a • ratV ζ ∈ latV L LL (· = v) := by
@@ -78,6 +103,23 @@ theorem line_of_orth {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.
 
 end GlobalTheory.FinPl.CoreIdele
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p I P hP L ζ hζ m hm`. Use `set h := star ζ ⬝ᵥ L.gram *ᵥ ζ with hhdef`. Establish `hh : star h = h`. Establish `hG : ∀ i j, star (L.gram i j) = L.gram j i` using `fun i j => by`. Use `congrFun (congrFun (gram_conjTranspose L) j) i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.conjTranspose_apply]`. Establish `e : star (star ζ ⬝ᵥ L.gram *ᵥ ζ) = star ζ ⬝ᵥ L.gram *ᵥ ζ`. Simplify using `only [dotProduct, mulVec, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum, hG]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `e`. Take `⟨m', hoff, hon⟩` from `GlobalTheory.T.exists_idele_change_finitely_many_split_places D k ι p I P hP h hζ.2 hh m`. Take `⟨𝔞, h𝔞⟩` from `GlobalTheory.T.exists_fractionalIdeal_of_hermIdele D m'`. Establish `key : ∀ x, ¬ P x → ∀ a ∈ idAt D (· = x), ((m'⁻¹ : (AE D)ˣ) : AE D) * a = ((m⁻¹ : (AE D)ˣ) : AE D) * a`.
+
+Introduce `x hx a ha`. Establish `h1 : ((m⁻¹ : (AE D)ˣ) : AE D) * a ∈ idAt D (· = x)` using `Ideal.mul_mem_left _ _ ha`. Establish `h2` using `(hoff x hx _ h1).1`. Rewrite `h2` using `[← mul_assoc (m : AE D), Units.mul_inv, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2]`. Use `_ = ((m⁻¹ : (AE D)ˣ) : AE D) * a := by rw [← mul_assoc, Units.inv_mul, one_mul]`. Establish `hloc : ∀ x : Pl D, ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ (m' : AE D) * cA D (m' : AE D) * incA D h * a ∈ intAt D (· = x)`. Introduce `x a ha`. Distinguish the cases in `hx : P x`.
+
+Conclude with `hon x hx a ha`. Establish `h1 : incA D h * a ∈ idAt D (· = x)` using `Ideal.mul_mem_left _ _ ha`. Establish `h2 : cA D (m : AE D) * (incA D h * a) ∈ idAt D (· = x)` using `Ideal.mul_mem_left _ _ h1`. Establish `e : (m' : AE D) * cA D (m' : AE D) * incA D h * a = (m : AE D) * cA D (m : AE D) * incA D h * a`. Rewrite using `[mul_assoc, mul_assoc, (hoff x hx _ h1).2, (hoff x hx _ h2).1, ← mul_assoc, ← mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `hm x hx a ha`. Establish `hsd` using `GlobalTheory.T.fractionalIdeal_hermitianSelfDual_of_local_generators D h 𝔞 m' h𝔞 hloc`. Establish `hζ0 : ζ ≠ 0` using `fun e => hζ.2 (by rw [e]; simp)`. Use `⟨GlobalTheory.SeeSaw.LiftModel.lineLat L ζ 𝔞, GlobalTheory.SeeSaw.LiftModel.isSelfDualC_lineLat D L ζ hζ 𝔞 hsd, fun x hx a ha => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.SeeSaw.LiftModel.lineLatAt_lineLat L hζ0 𝔞 x a ha, h𝔞 x a ha, key x hx a ha]`.
+-/
 theorem GlobalTheory.FinPl.CoreIdele.lineLat_idele : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (L : HSp D) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ m : (AE D)ˣ, (∀ x, ¬ P x → ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ (m : AE D) * cA D (m : AE D) * incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ) * a ∈ intAt D (· = x)) → ∃ LL : Lat L, IsSelfDualC L LL ∧ ∀ x, ¬ P x → ∀ a ∈ idAt D (· = x), a • ratV ζ ∈ latV L LL (· = x) ↔ ((m⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x) := by
   intro D k _ _ _ _ ι p I P hP L ζ hζ m hm
   set h := star ζ ⬝ᵥ L.gram *ᵥ ζ with hhdef
@@ -119,6 +161,17 @@ theorem GlobalTheory.FinPl.CoreIdele.lineLat_idele : ∀ (D : D7) (k : Type) [Fi
 
 open GlobalTheory.FinPl.CoreIdele GlobalTheory.SeeSaw.CoreGlue in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p I P hP q n _ _ ρ B β Q LA hLA _ hnorm m hmP hmoff`. Take `⟨LL, hLL, hline⟩` from `lineLat_idele D k ι p I P hP B.L B.ζ B.line m hmoff`. Take `⟨M₁, hM₁, horth⟩` from `exists_orthSum B.o hLA hLL`. Establish `frames : ∀ i, ∃ β₀ : Frame (p i) B.V₀ (n ⊕ Fin 1), IsSumFrame B.o B.ζ (β i) β₀` using `fun i => exists_sumFrame' (p i) B.o B.line (β i)`. Use `choose β₀ hβ₀ using frames`.
+
+Take `⟨M, hM, hlat, hoff⟩` from `exists_modify hP.inj β₀ (fun i => gluedS q 1 (Q i).ker (Q i).vec) (fun i => by haveI := (Q i).ker_isLat; infer_instance) hM₁ I`. Establish `glued : ∀ i, GluedCore B M q (β i) (β₀ i) (Q i)` using `fun i => ⟨hP.unit i, hβ₀ i, hnorm i, hlat i (hP.all i)⟩`. Establish `offP : ∀ x, ¬ P x → ∀ i, x ≠ (p i).v` using `fun x hx i e => hx ((hP.mem x).2 ⟨i, e⟩)`. Establish `horthM : ∀ x, ¬ P x → OrthAt B.o M LA LL x` using `fun x hx y => by`. Rewrite using `[hoff x (offP x hx)]`.
+
+Conclude with `horth x y`. Use `⟨M, β₀, hM, glued, fun x hx => ⟨LL, hLL, horthM x hx, hline x hx⟩, fun x a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : P x`. Take `⟨i, rfl⟩` from `(hP.mem x).1 hx`. Rewrite using `[line_of_glued hM (glued i) ha]`.
+
+Establish `hma : ((m⁻¹ : (AE D)ˣ) : AE D) * a ∈ idAt D (· = (p i).v)` using `Ideal.mul_mem_left _ _ ha`. Use `hmP _ hx _ hma` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.mul_inv, one_mul]`. Conclude with `this.symm`. Rewrite using `[line_of_orth B.o B.ζ M LA LL x (horthM x hx) a]`.
+
+Conclude with `hline x hx a ha`.
+-/
 theorem GlobalTheory.FinPl.CoreIdele.exists_core : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (q : Unif k) (n : Type) [Fintype n] [DecidableEq n] (ρ : ℕ) (B : BesLev D ρ) (β : ∀ i, Frame (p i) B.A n) (Q : ι → Pair k n) (LA : Lat B.A), IsSelfDualC B.A LA → (∀ i, (β i).IsLat LA (Q i).lat) → (∀ i, valuation k ((p i).pr (incA D (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ))) = valuation k ((q.1 : 𝒪[k]) : k)) → ∀ m : (AE D)ˣ, (∀ x, P x → ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ (m : AE D) * a ∈ intAt D (· = x)) → (∀ x, ¬ P x → ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ (m : AE D) * cA D (m : AE D) * incA D (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ) * a ∈ intAt D (· = x)) → ∃ (M : Lat B.V₀) (β₀ : ∀ i, Frame (p i) B.V₀ (n ⊕ Fin 1)), IsSelfDualC B.V₀ M ∧ (∀ i, GluedCore B M q (β i) (β₀ i) (Q i)) ∧ (∀ x, ¬ P x → ∃ LL : Lat B.L, IsSelfDualC B.L LL ∧ OrthAt B.o M LA LL x ∧ ∀ a ∈ idAt D (· = x), a • ratV B.ζ ∈ latV B.L LL (· = x) ↔ ((m⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)) ∧ ∀ x, ∀ a ∈ idAt D (· = x), a • ratV (vecB B.o B.ζ) ∈ latV B.V₀ M (· = x) ↔ ((m⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x) := by
   intro D k _ _ _ _ ι p I P hP q n _ _ ρ B β Q LA hLA _ hnorm m hmP hmoff
   obtain ⟨LL, hLL, hline⟩ := lineLat_idele D k ι p I P hP B.L B.ζ B.line m hmoff

@@ -20,6 +20,15 @@ def num (L : PeriodPair) (z : ℂ) : ℂ := 1 + z ^ 2 * L.weierstrassPExcept 0 z
 
 def den (L : PeriodPair) (z : ℂ) : ℂ := 1 + -(1 / 2) * z ^ 3 * deriv (L.weierstrassPExcept 0) z
 
+/- English proof (translation)
+Take `⟨hadd, hC, hX, -⟩` from `hr`. Establish `hP` using `TaylorSigmaUniqueness.analyticAt_pExcept L`. Establish `hz : AnalyticAt ℂ (fun z : ℂ => z) 0` using `analyticAt_id`. Establish `hz2 : AnalyticAt ℂ (fun z : ℂ => z * z) 0` using `hz.mul hz`. Establish `hprod : AnalyticAt ℂ (fun z => z * z * L.weierstrassPExcept 0 z) 0` using `hz2.mul hP`.
+
+Establish `e : num L = fun z => (fun _ : ℂ => (1 : ℂ)) z + (fun z => z * z * L.weierstrassPExcept 0 z) z`. Use function extensionality and compare the values at `z`. Simplify using `only [num]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [e]; exact analyticAt_const.add hprod, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : taylor0 (num L) = taylor0 (fun _ : ℂ => (1 : ℂ)) + taylor0 (fun z => z * z * L.weierstrassPExcept 0 z)`. Rewrite using `[e]`. Conclude with `(hadd _ _ analyticAt_const hprod).1`. Establish `h2 : taylor0 (fun z => z * z * L.weierstrassPExcept 0 z) = taylor0 (fun z : ℂ => z * z) * taylor0 (L.weierstrassPExcept 0)` using `(hadd (fun z : ℂ => z * z) (L.weierstrassPExcept 0) hz2 hP).2`. Establish `h3 : taylor0 (fun z : ℂ => z * z) = taylor0 (fun z : ℂ => z) * taylor0 (fun z : ℂ => z)` using `(hadd (fun z : ℂ => z) (fun z : ℂ => z) hz hz).2`.
+
+Rewrite using `[h1, h2, h3, hC, hX, map_one, sq]`. Both sides reduce to the same expression.
+-/
 theorem T_num (hr : TaylorRing) (L : PeriodPair) : T (num L) (1 + X ^ 2 * pSeries L) := by
   obtain ⟨hadd, hC, hX, -⟩ := hr
   have hP := TaylorSigmaUniqueness.analyticAt_pExcept L
@@ -43,6 +52,17 @@ theorem T_num (hr : TaylorRing) (L : PeriodPair) : T (num L) (1 + X ^ 2 * pSerie
   rw [h1, h2, h3, hC, hX, map_one, sq]
   rfl
 
+/- English proof (translation)
+Take `⟨hadd, hC, hX, -⟩` from `hr`. Establish `hP` using `TaylorSigmaUniqueness.analyticAt_pExcept L`. Establish `hPd : AnalyticAt ℂ (deriv (L.weierstrassPExcept 0)) 0` using `hP.deriv`. Establish `hz : AnalyticAt ℂ (fun z : ℂ => z) 0` using `analyticAt_id`. Establish `hz2 : AnalyticAt ℂ (fun z : ℂ => z * z) 0` using `hz.mul hz`.
+
+Establish `hz3 : AnalyticAt ℂ (fun z : ℂ => z * z * z) 0` using `hz2.mul hz`. Establish `hc3 : AnalyticAt ℂ (fun z : ℂ => -(1 / 2 : ℂ) * (z * z * z)) 0` using `analyticAt_const.mul hz3`. Establish `hprod : AnalyticAt ℂ (fun z => -(1 / 2 : ℂ) * (z * z * z) * deriv (L.weierstrassPExcept 0) z) 0` using `hc3.mul hPd`. Establish `e : den L = fun z => (fun _ : ℂ => (1 : ℂ)) z + (fun z => -(1 / 2 : ℂ) * (z * z * z) * deriv (L.weierstrassPExcept 0) z) z`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [den]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [e]; exact analyticAt_const.add hprod, ?_⟩` and prove the remaining obligations. Establish `h1 : taylor0 (den L) = taylor0 (fun _ : ℂ => (1 : ℂ)) + taylor0 (fun z => -(1 / 2 : ℂ) * (z * z * z) * deriv (L.weierstrassPExcept 0) z)`. Rewrite using `[e]`.
+
+Conclude with `(hadd _ _ analyticAt_const hprod).1`. Establish `h2 : taylor0 (fun z => -(1 / 2 : ℂ) * (z * z * z) * deriv (L.weierstrassPExcept 0) z) = taylor0 (fun z : ℂ => -(1 / 2 : ℂ) * (z * z * z)) * taylor0 (deriv (L.weierstrassPExcept 0))` using `(hadd (fun z : ℂ => -(1 / 2 : ℂ) * (z * z * z)) (deriv (L.weierstrassPExcept 0)) hc3 hPd).2`. Establish `h3 : taylor0 (fun z : ℂ => -(1 / 2 : ℂ) * (z * z * z)) = taylor0 (fun _ : ℂ => -(1 / 2 : ℂ)) * taylor0 (fun z : ℂ => z * z * z)` using `(hadd (fun _ : ℂ => -(1 / 2 : ℂ)) (fun z : ℂ => z * z * z) analyticAt_const hz3).2`. Establish `h4 : taylor0 (fun z : ℂ => z * z * z) = taylor0 (fun z : ℂ => z * z) * taylor0 (fun z : ℂ => z)` using `(hadd (fun z : ℂ => z * z) (fun z : ℂ => z) hz2 hz).2`. Establish `h5 : taylor0 (fun z : ℂ => z * z) = taylor0 (fun z : ℂ => z) * taylor0 (fun z : ℂ => z)` using `(hadd (fun z : ℂ => z) (fun z : ℂ => z) hz hz).2`.
+
+Rewrite using `[h1, h2, h3, h4, h5, hC, hC, hX, hd.1 _ hP, map_one, map_neg]`. Use `show _ = 1 - PowerSeries.C (1 / 2 : ℂ) * PowerSeries.X ^ 3 * PowerSeries.derivative ℂ (taylor0 (L.weierstrassPExcept 0))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem T_den (hr : TaylorRing) (hd : TaylorDeriv) (L : PeriodPair) :
     T (den L) (1 - C (1 / 2 : ℂ) * X ^ 3 * derivative ℂ (pSeries L)) := by
   obtain ⟨hadd, hC, hX, -⟩ := hr
@@ -78,9 +98,31 @@ theorem T_den (hr : TaylorRing) (hd : TaylorDeriv) (L : PeriodPair) :
   show _ = 1 - PowerSeries.C (1 / 2 : ℂ) * PowerSeries.X ^ 3 * PowerSeries.derivative ℂ (taylor0 (L.weierstrassPExcept 0))
   ring
 
+/- English proof (translation)
+Simplify using `[den]`.
+-/
 theorem den_zero (L : PeriodPair) : den L 0 = 1 := by
   simp [den]
 
+/- English proof (translation)
+Establish `hPl : L.weierstrassP = fun w => L.weierstrassPExcept 0 w + 1 / w ^ 2` using `funext fun w => by`. Use `Formalism.L2.Th1.F.IsogenyPAux.P_local L 0 (zero_mem _) w` as an intermediate fact. Simplify using `using this`. Establish `hev` using `(TaylorSigmaUniqueness.analyticAt_pExcept L).eventually_analyticAt`. Use `filter_upwards [hev] with z hz`.
+
+Distinguish the cases in `hz0 : z = 0`. Substitute `hz0` using the available equality. Simplify using `[hPl, PeriodPair.weierstrassPExcept_zero]`. Establish `hd : L.derivWeierstrassP z = deriv (L.weierstrassPExcept 0) z - 2 / z ^ 3`. Rewrite using `[← L.deriv_weierstrassP, hPl]`.
+
+Establish `h1 : HasDerivAt (fun w => L.weierstrassPExcept 0 w) (deriv (L.weierstrassPExcept 0) z) z` using `hz.differentiableAt.hasDerivAt`. Establish `h2 : HasDerivAt (fun w : ℂ => 1 / w ^ 2) (-2 / z ^ 3) z`. Establish `h3` using `(hasDerivAt_pow 2 z).inv (pow_ne_zero 2 hz0)`. Establish `e : (fun w : ℂ => 1 / w ^ 2) = fun w => (w ^ 2)⁻¹` using `funext fun w => one_div _`. Rewrite using `[e]`.
+
+Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `e2 : (2 : ℕ) - 1 = 1` using `rfl`. Rewrite using `[e2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h4` using `(h1.add h2).deriv`. Rewrite using `[show (fun w => L.weierstrassPExcept 0 w + 1 / w ^ 2) = ((fun w => L.weierstrassPExcept 0 w) + fun w : ℂ => 1 / w ^ 2) from rfl, h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd, hPl]`. Simplify using `only [num, den]`.
+
+Distinguish the cases in `hD : (1 + -(1 / 2 : ℂ) * z ^ 3 * deriv (L.weierstrassPExcept 0) z) = 0`. Establish `hD' : deriv (L.weierstrassPExcept 0) z - 2 / z ^ 3 = 0`. Establish `e : deriv (L.weierstrassPExcept 0) z - 2 / z ^ 3 = (-2 / z ^ 3) * (1 + -(1 / 2 : ℂ) * z ^ 3 * deriv (L.weierstrassPExcept 0) z)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, hD, mul_zero]`. Rewrite using `[hD, hD', div_zero, div_zero]`. Establish `hD' : deriv (L.weierstrassPExcept 0) z - 2 / z ^ 3 ≠ 0`. Introduce `h`. Apply `hD` to reduce the goal to its premises.
+
+Establish `e : 1 + -(1 / 2 : ℂ) * z ^ 3 * deriv (L.weierstrassPExcept 0) z = (-(z ^ 3) / 2) * (deriv (L.weierstrassPExcept 0) z - 2 / z ^ 3)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h, mul_zero]`. Rewrite using `[div_eq_div_iff hD' hD]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem u_eventuallyEq (L : PeriodPair) :
     (fun z => -2 * L.weierstrassP z / L.derivWeierstrassP z)
       =ᶠ[nhds 0] fun z => z * num L z / den L z := by
@@ -131,6 +173,21 @@ theorem u_eventuallyEq (L : PeriodPair) :
       field_simp
       ring
 
+/- English proof (translation)
+Introduce `L`. Establish `hN` using `T_num hr L`. Establish `hD` using `T_den hr hd L`. Establish `hden0 : den L 0 = 1` using `den_zero L`. Establish `hev` using `u_eventuallyEq L`.
+
+Establish `hne : den L 0 ≠ 0` using `by rw [hden0]; exact one_ne_zero`. Establish `hzN : AnalyticAt ℂ (fun z => z * num L z) 0` using `analyticAt_id.mul hN.1`. Establish `hinv : AnalyticAt ℂ (fun z => (den L z)⁻¹) 0` using `hD.1.inv hne`. Establish `hquot : AnalyticAt ℂ (fun z => z * num L z / den L z) 0` using `hzN.div hD.1 hne`. Use `⟨hquot.congr hev.symm, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : taylor0 (fun z => -2 * L.weierstrassP z / L.derivWeierstrassP z) = taylor0 (fun z => z * num L z / den L z)` using `hr.2.2.2 _ _ hev`. Establish `h1 : taylor0 (fun z => z * num L z / den L z) = taylor0 (fun z => z * num L z) * taylor0 (fun z => (den L z)⁻¹)`. Establish `e : (fun z => z * num L z / den L z) = fun z => (z * num L z) * (den L z)⁻¹`. Use function extensionality and compare the values at `z`. Rewrite using `[div_eq_mul_inv]`.
+
+Rewrite using `[e]`. Conclude with `(hr.1 (fun z => z * num L z) (fun z => (den L z)⁻¹) hzN hinv).2`. Establish `h2 : taylor0 (fun z => z * num L z) = taylor0 (fun z : ℂ => z) * taylor0 (num L)` using `(hr.1 (fun z : ℂ => z) (num L) analyticAt_id hN.1).2`. Establish `hmul : taylor0 (fun z => (den L z)⁻¹) * taylor0 (den L) = 1`. Establish `e1 : taylor0 (fun z => (den L z)⁻¹ * den L z) = taylor0 (fun z => (den L z)⁻¹) * taylor0 (den L)` using `(hr.1 (fun z => (den L z)⁻¹) (den L) hinv hD.1).2`.
+
+Establish `hc` using `hD.1.continuousAt.eventually_ne hne`. Establish `e2 : taylor0 (fun z => (den L z)⁻¹ * den L z) = taylor0 (fun _ : ℂ => (1 : ℂ))`. Use `hr.2.2.2 _ _ ?_` and prove the remaining obligations. Use `filter_upwards [hc] with z hz`. Conclude with `inv_mul_cancel₀ hz`.
+
+Rewrite using `[← e1, e2, hr.2.1, map_one]`. Establish `hc0 : PowerSeries.constantCoeff (taylor0 (den L)) ≠ 0`. Rewrite using `[hD.2]`. Simplify using the standard rewrite rules. Establish `hinv2 : taylor0 (fun z => (den L z)⁻¹) = (taylor0 (den L))⁻¹` using `(PowerSeries.eq_inv_iff_mul_eq_one hc0).mpr hmul`.
+
+Rewrite using `[h0, h1, h2, hinv2, hr.2.2.1, hN.2, hD.2]`. Unfold `uSer`. Rewrite using `[(hn ℂ L.g₂ L.g₃).1, (hn ℂ L.g₂ L.g₃).2, ← hp L]`.
+-/
 theorem uSerLattice_gen (hr : TaylorRing) (hd : TaylorDeriv) (hp : POfLattice) (hn : WpNumDen) :
     USerLattice := by
   intro L
@@ -173,6 +230,17 @@ theorem uSerLattice_gen (hr : TaylorRing) (hd : TaylorDeriv) (hp : POfLattice) (
   unfold uSer
   rw [(hn ℂ L.g₂ L.g₃).1, (hn ℂ L.g₂ L.g₃).2, ← hp L]
 
+/- English proof (translation)
+Introduce `l _ L ι g2 g3 hG`. Take `⟨-, -, -, -, -, lam, hlam, h2, h3⟩` from `hG`. Take `⟨c, hιc⟩ : ∃ c : ℂ, ι c = lam⁻¹` from `⟨ι.symm lam⁻¹, ι.apply_symm_apply _⟩`. Establish `hc : c ≠ 0`. Introduce `h0`.
+
+Rewrite `hιc` using `[h0, map_zero]`. Conclude with `inv_ne_zero hlam hιc.symm`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, -, hg2, hg3⟩` from `hh L c hc`. Establish `e2 : ι (scalePair L c hc).g₂ = g2`.
+
+Rewrite using `[hg2, map_mul, map_inv₀, map_pow, hιc, inv_pow, inv_inv]`. Conclude with `h2.symm`. Establish `e3 : ι (scalePair L c hc).g₃ = g3`. Rewrite using `[hg3, map_mul, map_inv₀, map_pow, hιc, inv_pow, inv_inv]`. Conclude with `h3.symm`.
+
+Take `⟨-, -, hMp, hMu, hMs, hMst⟩` from `hm ℂ ℂ_[l] (ι : ℂ →+* ℂ_[l]) (scalePair L c hc).g₂ (scalePair L c hc).g₃ (s2 (scalePair L c hc)) (pSeries (scalePair L c hc))`. Establish `e4 : PowerSeries.map (ι : ℂ →+* ℂ_[l]) (pSeries (scalePair L c hc)) = pOf g2 g3`. Rewrite using `[hp (scalePair L c hc), hMp]`. Conclude with `congrArg₂ pOf e2 e3`. Use `⟨e2.symm, e3.symm, e4, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs (scalePair L c hc), hMs, e4]`. Rewrite using `[hst (scalePair L c hc), hMst, e4]`. Both sides reduce to the same expression. Rewrite using `[(hu (scalePair L c hc)).2, hMu]`. Conclude with `congrArg₂ uSer e2 e3`.
+-/
 theorem goodModelLattice_gen (hh : Homogeneity) (hp : POfLattice) (hm : SeriesMap) (hs : TaylorSigma)
     (hst : TaylorSgStar) (hu : USerLattice) : GoodModelLattice := by
   intro l _ L ι g2 g3 hG
@@ -204,16 +272,28 @@ theorem goodModelLattice_gen (hh : Homogeneity) (hp : POfLattice) (hm : SeriesMa
 
 end USer
 
+/- English proof (translation)
+The claim follows from `USer.uSerLattice_gen taylor_ring taylor_deriv hp hn`.
+-/
 theorem uSerLattice_of (hp : POfLattice) (hn : WpNumDen) : USerLattice := USer.uSerLattice_gen taylor_ring taylor_deriv hp hn
 
+/- English proof (translation)
+The claim follows from `USer.goodModelLattice_gen homogeneity_thm hp series_map (taylorSigma_of taylor_ring taylor_deriv) (taylorSgStar_of (taylorSigma_of taylor_ring taylor_deriv) taylor_ring taylor_exp sigmaEntire) (uSerLattice_of hp hn)`.
+-/
 theorem goodModelLattice_of (hp : POfLattice) (hn : WpNumDen) : GoodModelLattice := USer.goodModelLattice_gen homogeneity_thm hp series_map
     (taylorSigma_of taylor_ring taylor_deriv)
     (taylorSgStar_of (taylorSigma_of taylor_ring taylor_deriv) taylor_ring taylor_exp
       sigmaEntire)
     (uSerLattice_of hp hn)
 
+/- English proof (translation)
+The claim follows from `uSerLattice_of weierstrass_p_of_lattice weierstrass_numerator_denominator`.
+-/
 theorem u_series_lattice : USerLattice := uSerLattice_of weierstrass_p_of_lattice weierstrass_numerator_denominator
 
+/- English proof (translation)
+The claim follows from `goodModelLattice_of weierstrass_p_of_lattice weierstrass_numerator_denominator`.
+-/
 theorem good_model_lattice : GoodModelLattice := goodModelLattice_of weierstrass_p_of_lattice weierstrass_numerator_denominator
 
 end Formalism.L2.Th1.F

@@ -10,6 +10,13 @@ open GlobalTheory GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Glo
 
 namespace GlobalTheory.SmGL.Exponents
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `ext1 x`. Establish `key : ∀ φ : β → Rˣ →* ℂˣ, leviChar (fun _ : β => Unit) φ (Pi.mulSingle j (Matrix.GeneralLinearGroup.scalar Unit x)) = φ j x`. Introduce `φ`. Rewrite using `[leviChar_apply, Finset.prod_eq_single j]`.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one]`. Simplify using the standard rewrite rules. Rewrite using `[← key χ, ← key ψ, h]`.
+-/
 theorem leviChar_unit_injective {R β : Type} [CommRing R] [Fintype β] {χ ψ : β → Rˣ →* ℂˣ}
     (h : leviChar (fun _ : β => Unit) χ = leviChar (fun _ : β => Unit) ψ) : χ = ψ := by
   classical
@@ -30,6 +37,9 @@ theorem leviChar_unit_injective {R β : Type} [CommRing R] [Fintype β] {χ ψ :
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `leviChar`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) isSmoothChar_one fun a _ => ?_` and prove the remaining obligations. Conclude with `(h a).detChar.comp _ (continuous_apply a)`.
+-/
 theorem isSmoothChar_leviChar_of_smooth {β : Type} [Fintype β] (c : β → Type) [∀ j, Fintype (c j)]
     [∀ j, DecidableEq (c j)] {χ : β → kˣ →* ℂˣ} (h : ∀ j, IsSmoothChar (χ j)) :
     IsSmoothChar (leviChar c χ) := by
@@ -38,6 +48,9 @@ theorem isSmoothChar_leviChar_of_smooth {β : Type} [Fintype β] (c : β → Typ
     fun a _ => ?_
   exact (h a).detChar.comp _ (continuous_apply a)
 
+/- English proof (translation)
+Take `⟨a⟩` from `nonempty_piTensor_detRep_equiv k β (fun _ => Unit) fun j => ψ ((g j).symm ()).1 j`. Use `⟨Representation.Equiv.trans (LocGL.piTensorEquiv fun j => ?_) a⟩` and prove the remaining obligations. Conclude with `(LocGL.multiProdEquiv (g j) fun i => (e i j).some).trans (GlobalTheory.T.parabolicInduction_detCharacters_rank_one_equiv k α (fun i => c i j) (g j) (fun i => ψ i j) (fun i => hψ i j)).some`.
+-/
 theorem nonempty_cell_term_equiv {α β : Type} [Fintype α] [LinearOrder α] [Fintype β]
     {c : α → β → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
     (g : ∀ j, (Σ i, c i j) ≃ Unit) (s : ∀ i j, IrrRep (GL (c i j) k)) (ψ : α → β → kˣ →* ℂˣ)
@@ -49,6 +62,21 @@ theorem nonempty_cell_term_equiv {α β : Type} [Fintype α] [LinearOrder α] [F
   exact (LocGL.multiProdEquiv (g j) fun i => (e i j).some).trans
     (GlobalTheory.T.parabolicInduction_detCharacters_rank_one_equiv k α (fun i => c i j) (g j) (fun i => ψ i j) (fun i => hψ i j)).some
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hC α β _ _ _ _ m _ _ c _ _ f g X _ _ ρ hρ hl χ hχ`. Take `⟨T, hT0, hT⟩` from `hC α β m (fun _ => Unit) c f g X ρ hρ hl`. Establish `h1` using `hT (IrrRep.ofChar (leviChar (fun _ : β => Unit) χ) (isSmoothChar_leviChar_of_smooth _ hχ))`. Use `Eq.trans h1 ?_` and prove the remaining obligations. Set `s₀ : ∀ i j, IrrCl (GL (c i j) k)` to `fun i j => (IrrRep.det (c i j) (χ j) (hχ j)).cl`.
+
+Establish `e₀ : ∀ i j, Nonempty ((s₀ i j).rep.ρ.Equiv (detRep (c i j) (χ j)))` using `fun i j => (IrrRep.det (c i j) (χ j) (hχ j)).nonempty_equiv_rep`. Establish `hfac : ∀ i, jhMult (piTensor fun j => (s₀ i j).rep.ρ) (jac (f i) (ρ i)) = jhMult (ofChar (leviChar (c i) χ)) (jac (f i) (ρ i))` using `fun i => jhMult_congr_left ((LocGL.piTensorEquiv fun j => (e₀ i j).some).trans (nonempty_piTensor_detRep_equiv k β (c i) χ).some) _`. Rewrite using `[Finset.sum_eq_single s₀]`. Take `⟨a⟩` from `nonempty_cell_term_equiv g (fun i j => (s₀ i j).rep) (fun _ j => χ j) (fun _ j => hχ j) e₀`. Establish `h2 : jhMult (ofChar (leviChar (fun _ : β => Unit) χ)) (piTensor fun j => multiProd (g j) fun i => (s₀ i j).rep.ρ) = 1` using `(jhMult_congr_right _ a).trans (jhMult_self (isIrreducible_ofChar _))`.
+
+Conclude with `(congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => hfac i) h2).trans (mul_one _)`. Introduce `s _ hs`. Establish `hsub : ∀ i j, Subsingleton (c i j)` using `fun i j => ⟨fun x y => sigma_mk_injective (β := fun i => c i j) ((g j).injective (Subsingleton.elim _ _))⟩`. Use `choose ψ hψ e using fun i j => GlobalTheory.T.exists_equiv_detCharacter_of_irreducible_rank_le_one k (c i j) _ (s i j).rep.ρ (s i j).rep.smooth (s i j).rep.irr`. Take `⟨a⟩` from `nonempty_cell_term_equiv g (fun i j => (s i j).rep) ψ hψ e`.
+
+Use `mul_eq_zero_of_right _ ((jhMult_congr_right _ a).trans (Model.jhMult_ofChar_ne fun h => hs ?_))` and prove the remaining obligations. Establish `h3` using `leviChar_unit_injective h`. Use function extensionality and compare the values at `i j`. Establish `h4 : detChar (c i j) (ψ i j) = detChar (c i j) (χ j)`. Break down `isEmpty_or_nonempty (c i j) with hc | ⟨⟨x⟩⟩` into its components or cases.
+
+Use `ext1 y`. Rewrite using `[detChar_apply, detChar_apply, show Matrix.GeneralLinearGroup.det y = 1 from Units.ext (by simp), map_one, map_one]`. Establish `: (g j).symm () = ⟨i, x⟩` using `(g j).injective (Subsingleton.elim _ _)`. Rewrite using `[congrFun h3 j, this]`. Rewrite using `[← (s i j).cl_rep]`.
+
+Use `IrrRep.cl_eq_iff.2 ⟨(e i j).some.trans ?_⟩` and prove the remaining obligations. Use `show (ofChar (detChar (c i j) (ψ i j))).Equiv (ofChar (detChar (c i j) (χ j)))`. Rewrite using `[h4]`. Conclude with `.refl _`. Introduce `hs`.
+
+Take `⟨i, hi⟩` from `hT0 s₀ hs`. Conclude with `mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ i) hi) _`.
+-/
 theorem jhMult_leviChar_cellFunctor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], CellSemisimplification k → ∀ (α β : Type) [Fintype α] [LinearOrder α] [Fintype β] [LinearOrder β] (m : α → Type) [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (c : α → β → Type) [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ j, (Σ i, c i j) ≃ Unit) (X : α → Type) [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)] (ρ : ∀ i, Representation ℂ (GL (m i) k) (X i)), (∀ i, IsSmooth (ρ i)) → (∀ i, HasFiniteLength (ρ i)) → ∀ χ : β → kˣ →* ℂˣ, (∀ j, IsSmoothChar (χ j)) → jhMult (ofChar (leviChar (fun _ : β => Unit) χ)) (cellFunctor (m' := fun _ : β => Unit) f g (piTensor ρ)) = ∏ i, jhMult (ofChar (leviChar (c i) χ)) (jac (f i) (ρ i)) := by
   intro k _ _ _ _ hC α β _ _ _ _ m _ _ c _ _ f g X _ _ ρ hρ hl χ hχ
   obtain ⟨T, hT0, hT⟩ := hC α β m (fun _ => Unit) c f g X ρ hρ hl

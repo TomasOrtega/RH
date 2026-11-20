@@ -15,6 +15,15 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h0 : ι.app U a = 0` using `ι.ideal_ker_le ⟨U, hU⟩ ha`. Establish `e : (⊤ : (Spec D).Opens) ≤ (l ≫ ι) ⁻¹ᵁ U`. Rewrite using `[hl, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : (l ≫ ι).appLE U ⊤ e a = 0`. Rewrite using `[Scheme.Hom.comp_appLE]`. Simplify using `[h0]`. Establish `h2 : ∀ (g) (_ : g = Spec.map ψ ≫ hU.fromSpec) (e : (⊤ : (Spec D).Opens) ≤ g ⁻¹ᵁ U), g.appLE U ⊤ e = ψ ≫ (Scheme.ΓSpecIso D).inv`. Introduce and unpack `g rfl e`.
+
+Rewrite using `[Scheme.Hom.comp_appLE, IsAffineOpen.fromSpec_app_self, Category.assoc]`. Use `erw [Scheme.Hom.map_appLE]`. Rewrite using `[Iso.inv_comp_eq, ← cancel_mono (Scheme.ΓSpecIso D).hom]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[← Scheme.ΓSpecIso_naturality]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h2 _ hl e, CommRingCat.comp_apply]`. Rewrite using `[RingHom.mem_ker]`. Establish `h3` using `congrArg (Scheme.ΓSpecIso D).hom.hom h1`. Rewrite `h3` using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.ThickeningClosed.ker_ideal_le_ker {X Z : Scheme.{0}} (ι : Z ⟶ X) {U : X.Opens}
     (hU : IsAffineOpen U) {D : CommRingCat.{0}} (ψ : Γ(X, U) ⟶ D) (l : Spec D ⟶ Z)
     (hl : l ≫ ι = Spec.map ψ ≫ hU.fromSpec) :
@@ -45,6 +54,9 @@ def zeroLocusOpen {X : Scheme.{0}} (K : X.IdealSheafData) : Set X :=
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨V, hxV, hV⟩`. Conclude with `⟨V.1, fun y hy ↦ ⟨V, hy, hV⟩, V.1.2, hxV⟩`.
+-/
 theorem _root_.GlobalTheory.ThickeningClosed.isOpen_zeroLocusOpen {X : Scheme.{0}} (K : X.IdealSheafData) :
     IsOpen (_root_.GlobalTheory.ThickeningClosed.zeroLocusOpen K) := by
   rw [isOpen_iff_forall_mem_open]
@@ -54,6 +66,15 @@ theorem _root_.GlobalTheory.ThickeningClosed.isOpen_zeroLocusOpen {X : Scheme.{0
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory AlgebraicGeometry in
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
+/- English proof (translation)
+Establish `hq' : ∃ V : X.affineOpens, U.2.fromSpec q ∈ V.1 ∧ K.ideal V = ⊥` using `hq`. Take `⟨V, hyV, hV⟩` from `hq'`. Establish `hyU : U.2.fromSpec q ∈ U.1`. Establish `: U.2.fromSpec q ∈ Set.range U.2.fromSpec` using `⟨q, rfl⟩`. Rewrite `this` using `[U.2.range_fromSpec]`. Then use the resulting hypothesis.
+
+Take `⟨f, hfV, hyf⟩` from `U.2.exists_basicOpen_le (V := V.1) ⟨_, hyV⟩ hyU`. Establish `hW : K.ideal (X.affineBasicOpen f) = ⊥`. Rewrite using `[← K.map_ideal (U := X.affineBasicOpen f) (V := V) hfV, hV, Ideal.map_bot]`. Establish `hfq : f ∉ q.asIdeal`. Establish `: q ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen f` using `hyf`.
+
+Rewrite `this` using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `this`. Establish `ha'` using `Ideal.mem_map_of_mem (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom ha`. Rewrite `ha'` using `[K.map_ideal_basicOpen, hW]`. Establish `h0 : (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom a = 0` using `ha'`.
+
+Use `U.2.isLocalization_basicOpen f` as an intermediate fact. Take `⟨⟨m, n, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers f) _ a).mp h0`. Conclude with `⟨f ^ n, fun h ↦ hfq (q.2.mem_of_pow_mem n h), hm⟩`.
+-/
 theorem _root_.GlobalTheory.ThickeningClosed.exists_mul_eq_zero_of_mem {X : Scheme.{0}} (K : X.IdealSheafData)
     (U : X.affineOpens) (q : PrimeSpectrum Γ(X, U))
     (hq : U.2.fromSpec q ∈ _root_.GlobalTheory.ThickeningClosed.zeroLocusOpen K) {a : Γ(X, U)}
@@ -81,6 +102,37 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `(X.isBasis_affineOpens).exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Use `set φ : CommRingCat.of R ⟶ Γ(X, V) := Spec.preimage (hV.fromSpec ≫ f) with hφ`. Establish `hφ' : Spec.map φ = hV.fromSpec ≫ f` using `Spec.map_preimage _`. Use `set J : Ideal Γ(X, V) := I.map φ.hom with hJ`.
+
+Establish `hK : ∀ n : ℕ, ι.ker.ideal ⟨V, hV⟩ ≤ J ^ (n + 1)`. Introduce `n`. Take `⟨l, hl⟩` from `h n`. Establish `hle : I ^ (n + 1) ≤ (J ^ (n + 1)).comap φ.hom` using `Ideal.map_le_iff_le_comap.mp (Ideal.map_pow _ _ _).le`. Set `ψ : Γ(X, V) ⟶ CommRingCat.of (Γ(X, V) ⧸ J ^ (n + 1))` to `CommRingCat.ofHom (Ideal.Quotient.mk _)`.
+
+Set `τ : CommRingCat.of (R ⧸ I ^ (n + 1)) ⟶ CommRingCat.of (Γ(X, V) ⧸ J ^ (n + 1))` to `CommRingCat.ofHom (Ideal.quotientMap _ φ.hom hle)`. Establish `hcomm : φ ≫ ψ = CommRingCat.ofHom (Ideal.Quotient.mk _) ≫ τ`. Use extensionality with `r`. Both sides reduce to the same expression. Establish `hsq : (Spec.map ψ ≫ hV.fromSpec) ≫ f = Spec.map τ ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick R I n`.
+
+Rewrite using `[Category.assoc, ← hφ', ← Spec.map_comp, hcomm, Spec.map_comp]`. Use `_root_.GlobalTheory.ThickeningClosed.ker_ideal_le_ker ι hV ψ (pullback.lift _ _ hsq ≫ l) (by rw [Category.assoc, hl, pullback.lift_fst])` as an intermediate fact. Simplify `this` using `[ψ, Ideal.mk_ker]`. Use `set p := hV.primeIdealOf ⟨x, hxV⟩ with hp`. Establish `hpx : hV.fromSpec p = x` using `hV.fromSpec_primeIdealOf ⟨x, hxV⟩`.
+
+Establish `hJp : J ≤ p.asIdeal`. Rewrite using `[hJ, Ideal.map_le_iff_le_comap]`. Establish `: Spec.map φ p = f x` using `by rw [hφ', ← hpx]; rfl`. Establish `h2 : (Spec.map φ p).asIdeal = p.asIdeal.comap φ.hom` using `rfl`. Rewrite using `[← h2, this]`.
+
+Conclude with `hx`. Establish `hkrull : ∀ a ∈ ι.ker.ideal ⟨V, hV⟩, ∃ g ∉ p.asIdeal, g * a = 0`. Introduce `a ha`. Establish `hmem : a ∈ ⨅ n, J ^ n • (⊤ : Submodule Γ(X, V) Γ(X, V))`. Rewrite using `[Submodule.mem_iInf]`.
+
+Introduce `n`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) (hK n ha)`. Take `⟨g, hg1, hga⟩` from `_root_.GlobalTheory.exists_smul_eq_zero_of_mem_iInf_pow_smul J hmem`. Use `⟨g, fun hg ↦ p.2.ne_top ((Ideal.eq_top_iff_one _).mpr ?_), hga⟩` and prove the remaining obligations.
+
+Establish `: g - (g - 1) ∈ p.asIdeal` using `Ideal.sub_mem _ hg (hJp hg1)`. Simplify using `using this`. Establish `hfin : ∀ t : Finset Γ(X, V), (↑t : Set Γ(X, V)) ⊆ ι.ker.ideal ⟨V, hV⟩ → ∃ g ∉ p.asIdeal, ∀ a ∈ t, g * a = 0` using `by classical`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty`. Introduce `_`. Conclude with `⟨1, fun h1 ↦ p.2.ne_top ((Ideal.eq_top_iff_one _).mpr h1), by simp⟩`. Consider the case `insert b t _ ih`. Introduce `ht`.
+
+Take `⟨g, hg, hgt⟩` from `ih ((Finset.coe_subset.mpr (Finset.subset_insert b t)).trans ht)`. Take `⟨g', hg', hg'b⟩` from `hkrull b (ht (by simp))`. Use `⟨g * g', fun hm ↦ (p.2.mem_or_mem hm).elim hg hg', ?_⟩` and prove the remaining obligations. Introduce `a ha`. Break down `Finset.mem_insert.mp ha with rfl | ha` into its components or cases.
+
+Rewrite using `[mul_assoc, hg'b, mul_zero]`. Rewrite using `[mul_right_comm, hgt a ha, zero_mul]`. Take `⟨t, ht⟩` from `(IsNoetherian.noetherian (ι.ker.ideal ⟨V, hV⟩) :)`. Take `⟨g, hg, hgt⟩` from `hfin t (ht ▸ Submodule.subset_span)`. Establish `hgK : ∀ a ∈ ι.ker.ideal ⟨V, hV⟩, g * a = 0`.
+
+Introduce `a ha`. Rewrite `ha` using `[← ht]`. Use `Submodule.span_induction (fun b hb ↦ hgt b hb) (by simp) (fun b c _ _ hb hc ↦ ?_) (fun r b _ hb ↦ ?_) ha` and prove the remaining obligations. Rewrite using `[mul_add, hb, hc, add_zero]`. Rewrite using `[smul_eq_mul, mul_left_comm, hb, mul_zero]`.
+
+Use `show ∃ V : X.affineOpens, x ∈ V.1 ∧ ι.ker.ideal V = ⊥`. Use `⟨X.affineBasicOpen (U := ⟨V, hV⟩) g, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : p ∈ hV.fromSpec ⁻¹ᵁ X.basicOpen g`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `hg`.
+
+Rewrite using `[← hpx]`. Conclude with `hmem`. Use `hV.isLocalization_basicOpen g` as an intermediate fact. Rewrite using `[← ι.ker.map_ideal_basicOpen ⟨V, hV⟩ g]`. Use `(Ideal.map_eq_bot_iff_le_ker _).mpr fun a ha ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.mem_ker]`. Establish `hu : IsUnit ((X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom g)` using `IsLocalization.Away.algebraMap_isUnit g`. Establish `h0` using `congrArg (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom (hgK a ha)`. Rewrite `h0` using `[map_mul, map_zero]`. Conclude with `(hu.mul_right_eq_zero).mp h0`.
+-/
 theorem _root_.GlobalTheory.ThickeningClosed.mem_of_thickenings {R : Type} [CommRing R] (I : Ideal R)
     {X Z : Scheme.{0}} [IsLocallyNoetherian X] (f : X ⟶ Spec (CommRingCat.of R)) (ι : Z ⟶ X)
     (h : ∀ n : ℕ, ∃ l : pullback f (_root_.ReciprocityTheory.ChartRestriction.G.Out.thick R I n) ⟶ Z, l ≫ ι = pullback.fst f (_root_.ReciprocityTheory.ChartRestriction.G.Out.thick R I n))
@@ -171,6 +223,13 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial (p.asIdeal.Fiber C) with hs | hn` into its components or cases. Conclude with `⟨fun {a b} _ ↦ Or.inl (Subsingleton.elim a 0)⟩`. Set `e` to `Spec.fiberToSpecResidueFieldIso R C p`. Set `s` to `(Spec (CommRingCat.of R)).fromSpecResidueField p`. Set `u₁ : Spec (CommRingCat.of (p.asIdeal.Fiber C)) ⟶ pullback (Spec.map (CommRingCat.ofHom (algebraMap R C))) s` to `(Arrow.leftFunc.mapIso e).inv`.
+
+Set `u₂ : pullback (Spec.map (CommRingCat.ofHom (algebraMap R C))) s ⟶ pullback (j ≫ f) s` to `(pullback.congrHom hj rfl).hom`. Set `u₃ : pullback (j ≫ f) s ⟶ pullback j (pullback.fst f s)` to `(pullbackRightPullbackFstIso f s j).inv`. Set `u₄ : pullback j (pullback.fst f s) ⟶ f.fiber p` to `pullback.snd j (pullback.fst f s)`. Use `haveI : IsOpenImmersion u₁ := show IsOpenImmersion (Arrow.leftFunc.mapIso e).inv from inferInstance`. Use `haveI : IsOpenImmersion u₂ := show IsOpenImmersion (pullback.congrHom hj rfl).hom from inferInstance`.
+
+Use `haveI : IsOpenImmersion u₃ := show IsOpenImmersion (pullbackRightPullbackFstIso f s j).inv from inferInstance`. Use `haveI : IsOpenImmersion u₄ := show IsOpenImmersion (pullback.snd j (pullback.fst f s)) from inferInstance`. Use `haveI : AlgebraicGeometry.IsIntegral (Spec (CommRingCat.of (p.asIdeal.Fiber C))) := isIntegral_of_isOpenImmersion (u₁ ≫ u₂ ≫ u₃ ≫ u₄)`. Use `haveI : IsDomain (p.asIdeal.Fiber C) := (affine_isIntegral_iff (CommRingCat.of (p.asIdeal.Fiber C))).mp inferInstance`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.ThickeningClosed.noZeroDivisors_fiber {R C : Type} [CommRing R] [CommRing C]
     [Algebra R C] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R))
     (j : Spec (CommRingCat.of C) ⟶ X) [IsOpenImmersion j]
@@ -203,6 +262,35 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `R _ _ I hI H _ _ e hfib Z ι _ hth`. Rewrite using `[IsClosedImmersion.isIso_iff_ker_eq_bot]`. Establish `hpre : ∀ U : H.left.affineOpens, Spec.map (Spec.preimage (U.2.fromSpec ≫ H.hom)) = U.2.fromSpec ≫ H.hom` using `fun U ↦ Spec.map_preimage _`. Establish `hft : ∀ U : H.left.affineOpens, (Spec.preimage (U.2.fromSpec ≫ H.hom)).hom.FiniteType`. Introduce `U`.
+
+Use `haveI := U.2.isOpenImmersion_fromSpec`. Establish `: LocallyOfFiniteType (Spec.map (Spec.preimage (U.2.fromSpec ≫ H.hom)))`. Rewrite using `[hpre]`. Use `infer_instance`. Conclude with `HasRingHomProperty.Spec_iff.mp this`.
+
+Establish `hfl : ∀ U : H.left.affineOpens, (Spec.preimage (U.2.fromSpec ≫ H.hom)).hom.Flat`. Introduce `U`. Use `haveI := U.2.isOpenImmersion_fromSpec`. Rewrite using `[← Flat.SpecMap_iff, hpre]`. Use `infer_instance`.
+
+Use `haveI : IsLocallyNoetherian H.left := ⟨fun U ↦ by`. Use `letI := (Spec.preimage (U.2.fromSpec ≫ H.hom)).hom.toAlgebra`. Use `haveI : Algebra.FiniteType R Γ(H.left, U) := hft U`. Conclude with `Algebra.FiniteType.isNoetherianRing R _⟩`. Establish `hsec : ∀ s : Spec (CommRingCat.of R), H.hom (e.left s) = s`.
+
+Introduce `s`. Establish `hw` using `Over.w e`. Establish `: (e.left ≫ H.hom) s = s` using `by rw [hw]; rfl`. Conclude with `this`. Establish `hqU : ∀ (U : H.left.affineOpens) (q : PrimeSpectrum Γ(H.left, U)), U.2.fromSpec q ∈ U.1`.
+
+Introduce `U q`. Establish `: U.2.fromSpec q ∈ Set.range U.2.fromSpec` using `⟨q, rfl⟩`. Rewrite `this` using `[U.2.range_fromSpec]`. Then use the resulting hypothesis. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (fun U : H.left.affineOpens ↦ U) (iSup_affineOpens_eq_top _) fun U ↦ ?_` and prove the remaining obligations. Use `eq_bot_iff.mpr fun a ha ↦ ?_` and prove the remaining obligations.
+
+Use `show a = 0`. Use `letI : Algebra R Γ(H.left, U) := (Spec.preimage (U.2.fromSpec ≫ H.hom)).hom.toAlgebra`. Use `haveI : Module.Flat R Γ(H.left, U) := hfl U`. Use `haveI : IsNoetherianRing Γ(H.left, U) := IsLocallyNoetherian.component_noetherian U`. Use `haveI := U.2.isOpenImmersion_fromSpec`.
+
+Establish `hj : Spec.map (CommRingCat.ofHom (algebraMap R Γ(H.left, U))) = U.2.fromSpec ≫ H.hom` using `hpre U`. Establish `hpt : ∀ q : PrimeSpectrum Γ(H.left, U), Ideal.under R q.asIdeal = (H.hom (U.2.fromSpec q)).asIdeal`. Introduce `q`. Establish `: Spec.map (CommRingCat.ofHom (algebraMap R Γ(H.left, U))) q = H.hom (U.2.fromSpec q)`. Rewrite using `[hj]`.
+
+Both sides reduce to the same expression. Rewrite using `[← this]`. Both sides reduce to the same expression. Use `_root_.GlobalTheory.eq_zero_of_flat_of_forall_fiber (A := R) (B := Γ(H.left, U)) (L := Γ(H.left, U)) (fun p _ ↦ haveI := hfib p; _root_.GlobalTheory.ThickeningClosed.noZeroDivisors_fiber H.hom U.2.fromSpec hj p) (fun q _ ↦ ?_)` and prove the remaining obligations. Take `⟨m, hm, hPm⟩` from `Ideal.exists_le_maximal _ (H.hom (U.2.fromSpec q)).2.ne_top`.
+
+Set `M : Spec (CommRingCat.of R)` to `⟨m, hm.isPrime⟩`. Establish `hIM : I ≤ (H.hom (e.left M)).asIdeal`. Rewrite using `[hsec]`. Conclude with `hI.trans (sInf_le ⟨bot_le, hm⟩)`. Establish `hy` using `_root_.GlobalTheory.ThickeningClosed.mem_of_thickenings I H.hom ι hth (e.left M) hIM`.
+
+Establish `hPM : H.hom (U.2.fromSpec q) ⤳ H.hom (e.left M)`. Rewrite using `[hsec]`. Conclude with `(PrimeSpectrum.le_iff_specializes _ M).mp hPm`. Take `⟨y', hy'y, hy'P⟩` from `Flat.generalizingMap H.hom hPM`. Establish `hy'Z` using `hy'y.mem_open (_root_.GlobalTheory.ThickeningClosed.isOpen_zeroLocusOpen _) hy`.
+
+Use `haveI := hfib (H.hom (U.2.fromSpec q))`. Establish `hirr : IsIrreducible (H.hom ⁻¹' {H.hom (U.2.fromSpec q)})`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ (H.hom.fiberι _).continuous.continuousOn`. Take `⟨z, hzP, hzZ, hzU⟩` from `hirr.2 _ _ (_root_.GlobalTheory.ThickeningClosed.isOpen_zeroLocusOpen _) U.1.isOpen ⟨y', hy'P, hy'Z⟩ ⟨U.2.fromSpec q, rfl, hqU U q⟩`.
+
+Establish `hq'z : U.2.fromSpec (U.2.primeIdealOf ⟨z, hzU⟩) = z` using `U.2.fromSpec_primeIdealOf ⟨z, hzU⟩`. Use `⟨U.2.primeIdealOf ⟨z, hzU⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpt, hpt, hq'z]`. Conclude with `congrArg PrimeSpectrum.asIdeal hzP`. Rewrite using `[_root_.GlobalTheory.localizedModule_mk_one_eq_zero_iff]`.
+
+Conclude with `_root_.GlobalTheory.ThickeningClosed.exists_mul_eq_zero_of_mem ι.ker U _ (by rw [hq'z]; exact hzZ) ha`.
+-/
 theorem _root_.GlobalTheory.isIso_of_isClosedImmersion_of_thickenings :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ →
       ∀ (H : Over (Spec (CommRingCat.of R))) [Flat H.hom] [LocallyOfFiniteType H.hom]

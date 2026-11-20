@@ -6,6 +6,19 @@ open Classical
 
 namespace GlobalTheory.BaseVacuum
 
+/- English proof (translation)
+Introduce `D cc δ B n n'`. Establish `h0 : TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D (n * 2)) (StandardLatticesGL3.stdL D (n' * 2)) = powLat B.lamM (n * 2) (n' * 2)` using `Lat0 D cc δ`. Rewrite using `[h0]`. Establish `himg : ∀ x : Fin 4 × D.what₂.Tau → ℂ, B.gC x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM) ↔ x ∈ pow4 B.lamM`. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Establish `: y = x` using `B.gC.injective hxy`. Conclude with `this ▸ hy`. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_comap]`. Use `show (∀ i j, (fun τ => z τ i j) ∈ B.lamM) ↔ ∀ k, (fun w => phi B n n' z (k, w)) ∈ _`. Establish `e : ∀ k, (fun w => phi B n n' z (k, w)) = B.gC (blk D k z)` using `fun k => rfl`.
+
+Simplify using `only [e, himg]`. Prove the components needed by the constructor for the conclusion. Introduce `h k a`. Conclude with `h (posE n n' (k, a)).1 (posE n n' (k, a)).2`. Introduce `h i j`.
+
+Use `h ((posE n n').symm (i, j)).1 ((posE n n').symm (i, j)).2` as an intermediate fact. Establish `e2 : slice ((posE n n').symm (i, j)).2 (blk D ((posE n n').symm (i, j)).1 z) = fun τ => z τ i j`. Use function extensionality and compare the values at `τ`. Use `show z τ (posE n n' (((posE n n').symm (i, j)).1, ((posE n n').symm (i, j)).2)).1 (posE n n' (((posE n n').symm (i, j)).1, ((posE n n').symm (i, j)).2)).2 = z τ i j`. Simplify using `only [Prod.mk.eta, Equiv.apply_symm_apply]`.
+
+Rewrite using `[← e2]`. Conclude with `this`.
+-/
 theorem baseLattice_eq_comap_blockwise_lattice : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (n n' : ℕ),
     TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D (n * 2)) (StandardLatticesGL3.stdL D (n' * 2)) =
       (blkLat (ι := Fin n' × Fin n) (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ))

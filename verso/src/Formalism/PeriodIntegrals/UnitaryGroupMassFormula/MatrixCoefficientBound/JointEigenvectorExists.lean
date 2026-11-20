@@ -13,12 +13,20 @@ open Formalism.L2.SG.GGMirabolic
 
 variable {ι : Type} [Fintype ι] {Fq : ι → Type} [∀ v, Field (Fq v)] [∀ v, Fintype (Fq v)] {k : ℕ}
 
+/- English proof (translation)
+Unfold `gamProd`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `PI.GGConvScalarW.gam_conj (ψ v) (g v) (x v)`.
+-/
 theorem gamProd_conj (ψ : ∀ v, AddChar (Fq v) ℂ) (g x : ∀ v, GL (Fin k) (Fq v)) :
     gamProd ψ (g * x * g⁻¹) = gamProd ψ x := by
   unfold gamProd
   refine Finset.prod_congr rfl fun v _ => ?_
   exact PI.GGConvScalarW.gam_conj (ψ v) (g v) (x v)
 
+/- English proof (translation)
+Unfold `totOp`. Use `show π g * (∑ x, gamProd ψ x • π x) = (∑ x, gamProd ψ x • π x) * π g`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (MulAut.conj g).toEquiv _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [mul_smul_comm, smul_mul_assoc, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`.
+
+Rewrite using `[gamProd_conj]`. Use `congr 1`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`.
+-/
 theorem totOp_comm (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V) (g : ∀ v, GL (Fin k) (Fq v)) :
     π g ∘ₗ totOp ψ π = totOp ψ π ∘ₗ π g := by
@@ -34,6 +42,9 @@ theorem totOp_comm (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] 
   congr 1
   group
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h]`.
+-/
 theorem mulSingle_conj (v : ι) (g : ∀ v, GL (Fin k) (Fq v)) (y : GL (Fin k) (Fq v)) :
     g * Pi.mulSingle v y * g⁻¹ = Pi.mulSingle v (g v * y * (g v)⁻¹) := by
   funext w
@@ -41,6 +52,11 @@ theorem mulSingle_conj (v : ι) (g : ∀ v, GL (Fin k) (Fq v)) (y : GL (Fin k) (
   · subst h; simp
   · simp [Pi.mulSingle_eq_of_ne h]
 
+/- English proof (translation)
+Unfold `placeOp`. Use `show π g * (∑ y, gam (ψ v) y • π (Pi.mulSingle v y)) = (∑ y, gam (ψ v) y • π (Pi.mulSingle v y)) * π g`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Fintype.sum_equiv (MulAut.conj (g v)).toEquiv _ _ (fun y => ?_)` and prove the remaining obligations. Simplify using `only [mul_smul_comm, smul_mul_assoc, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply]`.
+
+Rewrite using `[PI.GGConvScalarW.gam_conj]`. Use `congr 1`. Rewrite using `[← map_mul, ← map_mul, ← mulSingle_conj]`. Use `congr 1`. Use `group`.
+-/
 theorem placeOp_comm (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V) (v : ι) (g : ∀ v, GL (Fin k) (Fq v)) :
     π g ∘ₗ placeOp ψ π v = placeOp ψ π v ∘ₗ π g := by
@@ -56,6 +72,9 @@ theorem placeOp_comm (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V
   congr 1
   group
 
+/- English proof (translation)
+Unfold `placeOp`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (hW _ x hx)`.
+-/
 theorem placeOp_mem (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (∀ v, GL (Fin k) (Fq v)) V) (v : ι) (W : Submodule ℂ V)
     (hW : ∀ g, ∀ x ∈ W, π g x ∈ W) (x : V) (hx : x ∈ W) : placeOp ψ π v x ∈ W := by
@@ -63,6 +82,31 @@ theorem placeOp_mem (ψ : ∀ v, AddChar (Fq v) ℂ) {V : Type} [AddCommGroup V]
   rw [LinearMap.sum_apply]
   exact Submodule.sum_mem _ fun y _ => Submodule.smul_mem _ _ (hW _ x hx)
 
+/- English proof (translation)
+Introduce `ι _ Fq _ _ k ψ V _ _ _ π w μ hw hμ`. Set `E : Submodule ℂ V` to `LinearMap.ker (totOp ψ π - μ • LinearMap.id)`. Establish `memE : ∀ x, x ∈ E ↔ totOp ψ π x = μ • x`. Introduce `x`. Use `show x ∈ LinearMap.ker _ ↔ _`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using the standard rewrite rules. Establish `Einv : ∀ g, ∀ x ∈ E, π g x ∈ E`. Introduce `g x hx`. Rewrite `hx`, the goal using `[memE]`.
+
+Establish `h1` using `congrArg (fun e : V →ₗ[ℂ] V => e x) (totOp_comm ψ π g)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[← h1, hx, map_smul]`. Establish `hex : ∃ n, ∃ W : Submodule ℂ V, W ≠ ⊥ ∧ W ≤ E ∧ (∀ g, ∀ x ∈ W, π g x ∈ W) ∧ Module.finrank ℂ W = n`. Use `⟨_, E, ?_, le_rfl, Einv, rfl⟩` and prove the remaining obligations.
+
+Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `: w ∈ E` using `(memE w).2 hμ`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`.
+
+Take `⟨W, hW, hWE, hWinv, hWn⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ W' : Submodule ℂ V, W' ≠ ⊥ → W' ≤ W → (∀ g, ∀ x ∈ W', π g x ∈ W') → W' = W`. Introduce `W' hW' hle hinv`. Establish `h1 : Nat.find hex ≤ Module.finrank ℂ W'` using `Nat.find_min' hex ⟨W', hW', hle.trans hWE, hinv, rfl⟩`. Conclude with `Submodule.eq_of_le_of_finrank_le hle (by omega)`.
+
+Use `⟨W, hW, hWinv, fun x hx => (memE x).1 (hWE hx), fun v => ?_⟩` and prove the remaining obligations. Establish `hmaps : ∀ x ∈ W, placeOp ψ π v x ∈ W` using `fun x hx => placeOp_mem ψ π v W hWinv x hx`. Set `A : W →ₗ[ℂ] W` to `(placeOp ψ π v).restrict hmaps`. Establish `: Nontrivial W` using `Submodule.nontrivial_iff_ne_bot.2 hW`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue A`.
+
+Take `⟨u, hu⟩` from `hc.exists_hasEigenvector`. Use `⟨c, ?_⟩` and prove the remaining obligations. Set `W' : Submodule ℂ V` to `W ⊓ LinearMap.ker (placeOp ψ π v - c • LinearMap.id)`. Establish `memW' : ∀ x, x ∈ W' ↔ x ∈ W ∧ placeOp ψ π v x = c • x`. Introduce `x`.
+
+Simplify using `only [W', Submodule.mem_inf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `hu' : (u : V) ∈ W'`. Rewrite using `[memW']`. Use `⟨u.2, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hu.apply_eq_smul`.
+
+Conclude with `h2`. Establish `hW'ne : W' ≠ ⊥`. Introduce `h`. Rewrite `hu'` using `[h]`. Conclude with `hu.2 (Subtype.ext ((Submodule.mem_bot ℂ).1 hu'))`.
+
+Establish `hW'inv : ∀ g, ∀ x ∈ W', π g x ∈ W'`. Introduce `g x hx`. Rewrite `hx`, the goal using `[memW']`. Use `⟨hWinv g x hx.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun e : V →ₗ[ℂ] V => e x) (placeOp_comm ψ π v g)`.
+
+Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[← h1, hx.2, map_smul]`. Establish `heq` using `hmin W' hW'ne inf_le_left hW'inv`. Introduce `x hx`. Establish `hx' : x ∈ W'` using `heq ▸ hx`.
+
+Conclude with `((memW' x).1 hx').2`.
+-/
 theorem joint_eigenvector_exists : JointEig := by
   intro ι _ Fq _ _ k ψ V _ _ _ π w μ hw hμ
   let E : Submodule ℂ V := LinearMap.ker (totOp ψ π - μ • LinearMap.id)

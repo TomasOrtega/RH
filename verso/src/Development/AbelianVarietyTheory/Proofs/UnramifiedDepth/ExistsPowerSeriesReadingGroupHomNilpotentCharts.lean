@@ -25,10 +25,28 @@ private def dbl (R : Type) [CommRing R] {S : Type} [CommRing S] [Algebra R S] (J
   AlgHom.equalizer ((Ideal.Quotient.mkₐ R J).comp (AlgHom.fst R S S))
     ((Ideal.Quotient.mkₐ R J).comp (AlgHom.snd R S S))
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq]`. Both sides reduce to the same expression.
+-/
 private theorem mem_dbl {R : Type} [CommRing R] {S : Type} [CommRing S] [Algebra R S] {J : Ideal S}
     {x : S × S} : x ∈ dbl R J ↔ x.1 - x.2 ∈ J := by
   rw [← Ideal.Quotient.eq]; rfl
 
+/- English proof (translation)
+Set `J : Ideal S` to `Ideal.span (Set.range a)`. Establish `hJ : IsNilpotent J`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical ⟨(Set.finite_range a).toFinset, by simp [J]⟩, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `ha i`.
+
+Set `ρ : dbl R J →ₐ[R] S` to `(AlgHom.fst R S S).comp (dbl R J).val`. Set `τ : dbl R J →ₐ[R] S` to `(AlgHom.snd R S S).comp (dbl R J).val`. Set `σ : S →ₐ[R] dbl R J` to `((AlgHom.id R S).prod (AlgHom.id R S)).codRestrict _ (fun x => by`. Simplify using `[mem_dbl])`. Establish `hker : IsNilpotent (RingHom.ker ρ)`.
+
+Take `⟨n, hn⟩` from `hJ`. Use `⟨n + 1, le_bot_iff.1 fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : x ∈ RingHom.ker ρ` using `Ideal.pow_le_self (Nat.succ_ne_zero n) hx`. Establish `h2 : RingHom.ker ρ ≤ J.comap τ` using `fun y hy => by`. Establish `h3` using `mem_dbl.1 y.2`.
+
+Establish `h4 : y.1.1 = 0` using `hy`. Rewrite `h3` using `[h4, zero_sub, neg_mem_iff]`. Conclude with `h3`. Establish `h5` using `Ideal.le_comap_pow τ (n + 1) (Ideal.pow_right_mono h2 (n + 1) hx)`. Rewrite `h5` using `[pow_succ, hn, zero_mul]`.
+
+Conclude with `Subtype.ext (Prod.ext h1 h5)`. Set `a' : Fin d → dbl R J` to `fun i => ⟨(0, a i), mem_dbl.2 (by`. Simplify using `using (Ideal.subset_span ⟨i, rfl⟩ : a i ∈ J))⟩`. Establish `hnil : ∀ y : dbl R J, ρ y = 0 → IsNilpotent y` using `fun y hy => by`. Take `⟨n, hn⟩` from `hker`.
+
+Conclude with `⟨n, by simpa [hn] using Ideal.pow_mem_pow (show y ∈ RingHom.ker ρ from hy) n⟩`. Establish `ha' : ∀ i, IsNilpotent (a' i)` using `fun i => hnil _ rfl`. Take `⟨b, hb, hz⟩` from `h'.surj (dbl R J) S ρ σ (by ext; rfl) hker (X _ a' ≫ f) (by`. Rewrite using `[← Category.assoc, h.nat _ _ ρ a' ha']`. Establish `: (fun i => ρ (a' i)) = 0` using `rfl`.
+
+Rewrite using `[this, h.zero, MonObj.one_comp])`. Use `⟨fun j => τ (b j), fun j => (hnil _ (hb j)).map τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← h'.nat _ _ τ b (fun j => hnil _ (hb j)), ← hz, ← Category.assoc, h.nat _ _ τ a' ha']`. Both sides reduce to the same expression.
+-/
 private theorem exists_coord {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     {G' : Over (Spec (CommRingCat.of R))} [GrpObj G'] {d e : ℕ} {F : Fin d → PS R 2 d} {F' : Fin e → PS R 2 e}
     {X : Fam G d} {X' : Fam G' e} (h : NilChart G F X) (h' : NilChart G' F' X') (f : G ⟶ G') [IsMonHom f]
@@ -69,6 +87,21 @@ private theorem exists_coord {R : Type} [CommRing R] {G : Over (Spec (CommRingCa
   rw [← h'.nat _ _ τ b (fun j => hnil _ (hb j)), ← hz, ← Category.assoc, h.nat _ _ τ a' ha']
   rfl
 
+/- English proof (translation)
+Introduce `R _ G _ _ G' _ _ d e F F' X X' h h' f hf`. Use `choose b hb hX using exists_coord h h' f`. Set `c : Fin e → ∀ (S : Type) [CommRing S] [Algebra R S], (Fin 1 × Fin d → S) → S` to `fun j S _ _ a => if ha : ∀ i, IsNilpotent (a (0, i)) then b S (fun i => a (0, i)) ha j else 0`. Establish `hc : ∀ j (S : Type) [CommRing S] [Algebra R S] (S' : Type) [CommRing S'] [Algebra R S'] (φ : S →ₐ[R] S') (a : Fin 1 × Fin d → S), (∀ i, IsNilpotent (a i)) → φ (c j S a) = c j S' (fun i => φ (a i))`. Introduce `j S _ _ S' _ _ φ a ha`.
+
+Establish `h1 : ∀ i, IsNilpotent (a (0, i))` using `fun i => ha _`. Establish `h2 : ∀ i, IsNilpotent (φ (a (0, i)))` using `fun i => (ha _).map φ`. Simplify using `only [c, dif_pos h1, dif_pos h2]`. Use `congrFun (h'.inj S' (fun j => φ (b S _ h1 j)) (b S' _ h2) (fun j => (hb S _ h1 j).map φ) (hb S' _ h2) ?_) j` and prove the remaining obligations. Rewrite using `[← hX, ← h'.nat _ _ φ _ (hb S _ h1), ← hX, ← Category.assoc, h.nat _ _ φ _ h1]`.
+
+Use `choose φ hφ using fun j => GlobalTheory.exists_series_of_natural_on_nilpotent GlobalTheory.nEval_basic (c j) (hc j)`. Establish `key : ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin d → S) (ha : ∀ i, IsNilpotent (a i)), b S a ha = fun j => nv (algebraMap R S) (φ j) ![a]`. Introduce `S _ inst a ha`. Use function extensionality and compare the values at `j`. Establish `h1` using `hφ j S (fun q => a q.2) (fun q => ha _)`.
+
+Simplify using `only [c, dif_pos ha] at h1`. Rewrite using `[h1, nv]`. Establish `: (algebraMap R S).toAlgebra = inst` using `Algebra.algebra_ext _ _ fun _ => rfl`. Rewrite using `[this]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Use `⟨φ, fun j => ?_, fun S _ _ a ha => by rw [hX S a ha, key]⟩` and prove the remaining obligations. Establish `h0 : ∀ i : Fin d, IsNilpotent ((0 : Fin d → R) i)` using `fun _ => IsNilpotent.zero`. Establish `h1 : b R 0 h0 = 0` using `h'.inj R _ _ (hb R 0 h0) (fun _ => IsNilpotent.zero) (by`.
+
+Rewrite using `[← hX, h.zero, h'.zero, MonObj.one_comp])`. Establish `h2` using `hφ j R 0 (fun _ => IsNilpotent.zero)`. Establish `h3 : c j R 0 = 0`. Conclude with `(dif_pos h0).trans (congrFun h1 j)`. Establish `h4` using `(Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; simp) : Ideal.span _ ≤ (⊥ : Ideal R)) (evBasic_nEval_sub_coeff_mem (φ j) (0 : Fin 1 × Fin d → R) (fun _ => IsNilpotent.zero))`.
+
+Rewrite `h4` using `[← h2, h3]`. Simplify using `using h4`.
+-/
 theorem exists_reads : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of R))) [GrpObj G'] [IsCommMonObj G'] (d e : ℕ) (F : Fin d → PS R 2 d) (F' : Fin e → PS R 2 e) (X : Fam G d) (X' : Fam G' e), NilChart G F X → NilChart G' F' X' → ∀ f : G ⟶ G', IsMonHom f → ∃ φ : Fin e → PS R 1 d, Reads X X' f φ := by
   intro R _ G _ _ G' _ _ d e F F' X X' h h' f hf
   classical

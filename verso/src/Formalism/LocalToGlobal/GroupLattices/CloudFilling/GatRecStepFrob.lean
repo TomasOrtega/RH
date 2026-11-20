@@ -11,6 +11,11 @@ namespace Formalism.L2.G
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hne : ∃ g, g ∈ frobSet D p` using `⟨_, P, inferInstance, inferInstance, σ, hσ, rfl⟩`. Take `⟨P₂, h1, h2, σ₂, hσ₂, he⟩` from `Classical.epsilon_spec hne`. Establish `hv` using `@Formalism.BasicNotions.Examples₂.LevelValuationRings.frob_val _ D.host p hg.1 hg.2.2.1 P₂ h1 h2 σ₂ hσ₂`. Establish `hh : D.R.iota (hP D p) = Formalism.BasicNotions.Examples₂.LevelValuationRings.hOf D.host p`. Unfold `hP`.
+
+Rewrite using `[Formalism.HC.Frame.iota_iotaInv, ← he, hv]`. Rewrite using `[hh]`. Conclude with `Formalism.BasicNotions.Examples₂.LevelValuationRings.frob_val D.host p hg.1 hg.2.2.1 P σ hσ`.
+-/
 theorem frob_eq (D : D7) {T p : ℕ} (hg : GIdx D.host T p) (P : Ideal (𝓞 D.host.E)) [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] (σ : D.host.E ≃ₐ[ℚ] D.host.E) (hσ : IsArithFrobAt ℤ σ P) :
     D.host.galE σ = (c0, D.R.iota (hP D p)) := by
@@ -35,6 +40,11 @@ variable (D : D7) (u : D.what₂.Word) {T : ℕ} (hg : GIdx D.host T p)
 
 include hg in
 
+/- English proof (translation)
+Rewrite using `[frob_eq D hg P τ hτ]`. Use `show orderOf (zPsi D.R.toFrame (D.R.iota (hP D p))) = orderOf (D.R.iota (hP D p))`. Rewrite using `[← Subgroup.orderOf_coe]`. Use `first`. Consider the case `(rw [show (((zPsi D.R.toFrame (D.R.iota (hP D p))) : D.R.Psi) : D.R.GG) = MonoidHom.inr _ _ (D.R.iota (hP D p)) from rfl]`.
+
+Conclude with `orderOf_injective _ (fun a b h => congrArg Prod.snd h) _)`. Consider the case `simp [zPsi, Prod.orderOf]`. Consider the case `simp [zPsi, Prod.orderOf_mk]`.
+-/
 theorem gatRec_n_frob (v : Fin (gatRec D u (D.R.iota (hP D p)) hS r L I ψ y e).P.nV)
     (P : Ideal (𝓞 D.host.E)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})] (τ : D.host.E ≃ₐ[ℚ] D.host.E)
     (hτ : IsArithFrobAt ℤ τ P) :
@@ -51,6 +61,13 @@ theorem gatRec_n_frob (v : Fin (gatRec D u (D.R.iota (hP D p)) hS r L I ψ y e).
 
 include hg in
 
+/- English proof (translation)
+Establish `hz : (((zPsi D.R.toFrame (D.R.iota (hP D p))) : D.R.Psi) : D.R.GG) = D.host.galE τ * D.R.cc`. Rewrite using `[frob_eq D hg P τ hτ]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ((1, 1) : G0) = c0 * c0 first`. Consider the case `rfl`.
+
+Consider the case `decide`. Consider the case `simp [c0]`. Use `show D.R.iota (hP D p) = D.R.iota (hP D p) * 1`. Rewrite using `[mul_one]`. Rewrite using `[mul_assoc, ← hz]`.
+
+Simplify using `only [gatRec_pos, Equiv.trans_apply, Equiv.apply_symm_apply]`. Use `first`. Consider the case `exact congrArg Subtype.val (posG_step (zPsi D.R.toFrame (D.R.iota (hP D p))) v s)`. Consider the case `exact congrArg Subtype.val (posG_step v s)`. Consider the case `exact congrArg Subtype.val (posG_step (z := (zPsi D.R.toFrame (D.R.iota (hP D p)))) v s)`.
+-/
 theorem gatRec_step_frob (v : Fin (gatRec D u (D.R.iota (hP D p)) hS r L I ψ y e).P.nV)
     (s : Fin ((gatRec D u (D.R.iota (hP D p)) hS r L I ψ y e).P.n' v))
     (P : Ideal (𝓞 D.host.E)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})] (τ : D.host.E ≃ₐ[ℚ] D.host.E)

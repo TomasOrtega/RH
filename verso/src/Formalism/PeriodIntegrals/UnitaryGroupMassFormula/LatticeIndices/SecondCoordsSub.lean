@@ -29,11 +29,17 @@ def EntA (π : Op X p →+* ZMod (gOf p)) (Y : GL (IdxD D) (Op X p)) : Prop :=
   (∀ i, i ∉ (fposA (D := D) '' Set.univ) →
     π (((Y⁻¹ : GL (IdxD D) (Op X p)) : Matrix (IdxD D) (IdxD D) (Op X p)) zI i) = if i = zI then 1 else 0)
 
+/- English proof (translation)
+Unfold `crd1`. Rewrite using `[map_sub, show (pr1 θ a - pr1 θ b) ∘ (idxEquiv X).symm = pr1 θ a ∘ (idxEquiv X).symm - pr1 θ b ∘ (idxEquiv X).symm from rfl, Matrix.mulVec_sub]`.
+-/
 theorem firstCoords_sub (a b : Fin X.B.I.n → TpX X p) : crd1 X p θ Q (a - b) = crd1 X p θ Q a - crd1 X p θ Q b := by
   unfold crd1
   rw [map_sub, show (pr1 θ a - pr1 θ b) ∘ (idxEquiv X).symm =
     pr1 θ a ∘ (idxEquiv X).symm - pr1 θ b ∘ (idxEquiv X).symm from rfl, Matrix.mulVec_sub]
 
+/- English proof (translation)
+Unfold `crd2`. Rewrite using `[map_sub, show (pr2 θ a - pr2 θ b) ∘ (idxEquiv X).symm = pr2 θ a ∘ (idxEquiv X).symm - pr2 θ b ∘ (idxEquiv X).symm from rfl, Matrix.mulVec_sub, Matrix.mulVec_sub]`.
+-/
 theorem secondCoords_sub (a b : Fin X.B.I.n → TpX X p) : crd2 X p θ Q (a - b) = crd2 X p θ Q a - crd2 X p θ Q b := by
   unfold crd2
   rw [map_sub, show (pr2 θ a - pr2 θ b) ∘ (idxEquiv X).symm =

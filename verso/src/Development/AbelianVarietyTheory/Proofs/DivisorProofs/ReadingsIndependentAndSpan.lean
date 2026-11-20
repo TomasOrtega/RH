@@ -27,6 +27,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HolRead
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K C`. Establish `hle : Submodule.span ℂ (Set.range j) ≤ Submodule.span ℂ (Set.range fun k => j (b k))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `h1` using `linearIndependent_le_span_aux' f hf (Set.range fun k => j (b k)) (by rintro _ ⟨k, rfl⟩; exact hle (hm k))`. Establish `h2 : Fintype.card (Set.range fun k => j (b k)) ≤ Module.finrank K C` using `(Fintype.card_range_le _).trans (Fintype.card_fin _).le`.
+
+Conclude with `(Fintype.card_fin m).symm.le.trans (h1.trans h2)`.
+-/
 theorem card_le_finrank_of_semilinear {K C Y : Type} [Field K] [AddCommGroup C] [Module K C] [FiniteDimensional K C]
     [AddCommGroup Y] [Module ℂ Y] {σ : K →+* ℂ} (j : C →ₛₗ[σ] Y) {m : ℕ} (f : Fin m → Y) (hf : LinearIndependent ℂ f)
     (hm : ∀ k, f k ∈ Submodule.span ℂ (Set.range j)) : m ≤ Module.finrank K C := by
@@ -44,6 +51,11 @@ theorem card_le_finrank_of_semilinear {K C Y : Type} [Field K] [AddCommGroup C] 
     (Fintype.card_range_le _).trans (Fintype.card_fin _).le
   exact (Fintype.card_fin m).symm.le.trans (h1.trans h2)
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `h` using `hf (fun k => starRingEnd ℂ (c k)) (funext fun x => by`. Use `congrArg (starRingEnd ℂ) (congrFun hc x)` as an intermediate fact. Simplify `this) k` using `[Finset.sum_apply, map_sum]`.
+
+Simplify using `using h`.
+-/
 theorem linearIndependent_conj {ι : Type} {m : ℕ} {f : Fin m → ι → ℂ} (hf : LinearIndependent ℂ f) :
     LinearIndependent ℂ fun k x => starRingEnd ℂ (f k x) := by
   rw [Fintype.linearIndependent_iff] at hf ⊢
@@ -53,6 +65,11 @@ theorem linearIndependent_conj {ι : Type} {m : ℕ} {f : Fin m → ι → ℂ} 
     simpa [Finset.sum_apply, map_sum] using this) k
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), he]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ c, IsMultIP M μ 𝓕 (e x) (e x) c`. Establish `h1` using `(ipM_spec M μ 𝓕 _ _ h v v).2`. Simplify using `only [hx, Pi.zero_apply, mul_zero, integral_zero, inner_self_eq_norm_sq_to_K, hv] at h1`.
+
+Simplify using `using h1.symm`. Conclude with `dif_neg h`.
+-/
 theorem eval_eq_zero {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (e : H →ₗ[ℂ] MMap M) (d : ℂ) (μ : Measure (GA D V)) (𝓕 : Set (GA D V))
     (he : ∀ x y, inner ℂ x y = d * ipM M μ 𝓕 (e x) (e y)) (v : M.Vec) (hv : ∀ τ, ‖(v τ : M.H τ)‖ = 1) (x : H)
@@ -67,6 +84,21 @@ theorem eval_eq_zero {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSMo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, hA, -, -, -, hdeg, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hr1 : 1 ≤ D.R.r` using `(hnum j hj).2.1`. Take `⟨hrk, hW⟩` from `h.modelW j hj σ hσ`. Take `⟨th, hrk', -, hdict⟩` from `h.dictU j hj σ hσ`. Establish `hG` using `GlobalTheory.RunIn.gamAt_of_lawsJ D T h`.
+
+Establish `hle` using `GlobalTheory.Dict.holSub0_le_span_cusp GlobalTheory.chartIndependence_unconditional D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun σ => Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hr1 hA (fun σ hσ => h.unf j hj σ hσ) σ hσ (fun k k' => ⟨(hW k).1.trans (hW k').1.symm, (hW …`. Introduce `k ga hga hv`. Use `hG j hj σ hσ k ga hga fun x hx => ?_` and prove the remaining obligations. Take `⟨u, hu, he⟩` from `hv x hx`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, Nat.cast_smul_eq_nsmul]`. Conclude with `add_sub_cancel_left _ _)`. Use `a n hD hL`. Use the proof step `(by`. Rewrite using `[hdeg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use the proof step `(fun k => h.chiTriv j hj σ hσ a n hD k)`. Establish `hle' : GlobalTheory.Dict.holSub0 (T.U j σ).X (laU (T.U j σ) a n) ≤ Submodule.span ℂ (Set.range (rdC (T.U j) σ a n))`. Use `le_trans hle (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+
+Conclude with `⟨⟨f, hf⟩, rfl⟩`. Establish `hmem : (fun k => ((T.U j σ).X k).dom.indicator (P k)) ∈ GlobalTheory.Dict.holSub0 (T.U j σ).X (laU (T.U j σ) a n)`. Use `⟨Submodule.subset_span fun k => ?_, fun k x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.DomCongr.bddSec_cusp_congr _ _ ((T.U j σ).X k) _ (P k) _ (fun x hx => (Set.indicator_of_mem hx _).symm)).2 (hP k)`. Establish `he : adel (T.V j σ) (T.dict j σ) (T.mu j σ) (fun k => ((T.U j σ).X k).dom.indicator (P k)) = adel (T.V j σ) (T.dict j σ) (T.mu j σ) P`.
+
+Use function extensionality and compare the values at `g`. Use `show T.mu j σ g * ((T.U j σ).X (T.dict j σ g).1).dom.indicator (P (T.dict j σ g).1) (T.dict j σ g).2 = T.mu j σ g * P (T.dict j σ g).1 (T.dict j σ g).2`. Rewrite using `[Set.indicator_of_mem (hdict.2.2.2.1 g)]`. Rewrite using `[← he]`. Establish `h2` using `Submodule.mem_map_of_mem (f := adel (T.V j σ) (T.dict j σ) (T.mu j σ)) (hle' hmem)`.
+
+Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`.
+-/
 theorem adel_mem_span {D : D7} (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hD : Dom a n) (hL : LastPos (T.Q.Dw j) a)
     (hn : 8 * D.R.f * D.R.r + 4 ≤ n) (P : FDSec (T.U j σ).X) (hP : IsHolCusp (T.U j σ).X (laU (T.U j σ) a n) P) :
@@ -114,6 +146,15 @@ theorem adel_mem_span {D : D7} (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `⟨hr, x₀, hB⟩` from `GlobalTheory.T.base_dictionary_exists_good_embedding D T h j hj σ hσ θ hθ`. Establish `hK` using `h.levelK j hj σ hσ`. Establish `hM` using `h.muUnit j hj σ hσ`. Establish `hq : ∀ k, ((T.U j σ).X k).p0 = (D.R.sigW j).2` using `fun k => ((h.unf j hj σ hσ).2.1 k).1.trans (h.pins.2.2.2 j hj).2.1`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.character_expansion_weight_compat D θ _ _ hr _ _ _ _ x₀ (laU (T.U j σ) a n) x _ (fun ρ c => w ρ c) e (T.mu j σ) hθ hB (fun k hk => ((hK k).1 hk).1) hq hx hM.1 hM.2.1 hM.2.2.1 hmu (GlobalTheory.T.archimedean_character_det_power D θ _ _ _ e hθ (h.muVal j hj σ hσ) hin …`. Rewrite `hc`, `hd` using `[← hq k]`. Simplify using `only [laU, if_pos hd, if_neg (not_le.2 hc)]`. Use the proof step `omega)`. Establish `: FiniteDimensional T.Q.c.F (T.cuspA j a n)` using `h.cuspFD j hj a n hD`.
+
+Use `card_le_finrank_of_semilinear ((adel (T.V j σ) (T.dict j σ) (T.mu j σ)).comp (rdC (T.U j) σ a n)) (fun k g => φ k (g * u)) ?_ fun k => ?_` and prove the remaining obligations. Rewrite `hφ`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Use `hφ c (funext fun g => ?_)` and prove the remaining obligations. Use `congrFun hc (g * u⁻¹)` as an intermediate fact.
+
+Simplify `this` using `[Finset.sum_apply]`. Take `⟨P, hP, hPe⟩` from `hu (φ k) (hh k) (hl k) (hk _ hK k) (hb k)`. Rewrite using `[show (fun g => φ k (g * u)) = adel (T.V j σ) (T.dict j σ) (T.mu j σ) P from funext hPe]`. Conclude with `adel_mem_span T h j hj σ hσ a n hD hL hn P hP`.
+-/
 theorem card_le_finrank_cusp {D : D7} (T : CoreJ D) (h : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ)
     (hσ : GoodEmb T.Q.c σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hD : Dom a n) (hL : LastPos (T.Q.Dw j) a)
     (hn : 8 * D.R.f * D.R.r + 4 ≤ n) (θ : InfFam D) (hθ : IsInfFam θ) (w : D.what₂.Tau → ℕ → ℤ) (e : D.what₂.Tau → ℤ)
@@ -159,6 +200,9 @@ def evL (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : (R.MW i σ).Vec) : (R
   map_add' x y := by simp [evAt]
   map_smul' c x := by simp [evAt]
 
+/- English proof (translation)
+Unfold `kapAt`. Rewrite using `[show (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]`.
+-/
 theorem parAt_sig (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau) :
     Formalism.L2.NTheta.holPar _ _ (kapAt (Wc D i) σ ρ) = Formalism.L2.NTheta.holPar (D.R.sigW ((i : ℕ) + 1)).1 (D.R.sigW ((i : ℕ) + 1)).2
       (Formalism.L2.NTheta.kapW (D.hc (lab σ ρ)) _ _) := by
@@ -167,6 +211,21 @@ theorem parAt_sig (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hpq : (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `i.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Choose the witnesses or unpack the hypotheses as in `⟨ρ₀⟩ : Nonempty D.what₂.Tau := by`. Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h1 : ∃ ρ, tauE D ρ = τ`. Conclude with `⟨h1.choose⟩`. Conclude with `⟨(not_not.1 (mt (GlobalTheory.SmoothForms.RealPts.tauE_cm D τ).2 h1)).choose⟩`.
+
+Establish `hn' : 8 * D.R.f * D.R.r + 4 ≤ (κ i).n` using `(h.kap i ρ₀).2.2 ▸ hn`. Set `β` to `Module.finBasis ℂ (R.HW i σ).H`. Establish `hM : ∀ x, IsMultMap R.θ (R.MW i σ) (levS _ (R.βW i) (R.datWp i R.triv)) (Lev.levChi _ (R.βW i) (R.datWp i R.triv)) ((R.HW i σ).e x)` using `fun x => (GlobalTheory.MultMem.mem_mult_iff D _ _ _ _ _ _ _).1 ((hH i σ).2.1.le ⟨x, rfl⟩)`. Establish `hind : LinearIndependent ℂ fun k => (R.HW i σ).e (β k) (v₀ i σ)` using `β.linearIndependent.map' (evL T R i σ (v₀ i σ)) (LinearMap.ker_eq_bot'.2 fun x hx => eval_eq_zero _ (R.HW i σ).e _ _ _ (hH i σ).2.2 _ ((h.hv₀ i σ).norm R) x hx)`. Establish `hlev : ∀ Kf, IsLevelK (Wc D i) (D.host.g 0 * D.host.g 1) Kf → ∀ k, ∀ c ∈ Kf, ∀ g, (R.HW i σ).e (β k) (v₀ i σ) (g * c) = (R.HW i σ).e (β k) (v₀ i σ) g` using `fun Kf hK k c hc g => by`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.level_character_trivial_on_subgroup D T0 R.toLevCh A.μ0 hL i Kf hK c hc`. Rewrite using `[(hM _).lev _ c h1, h2, one_mul]`. Establish `hbd : ∀ k, ∃ C : ℝ, ∀ g, ‖(R.HW i σ).e (β k) (v₀ i σ) g‖ ≤ C` using `fun k => GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ ((hM _).aut _) ((hM _).cusp _)`. Establish `key : ∀ σ' : D.what₂.LL →+* ℂ, GoodEmb T.Q.c (res T σ') → (∀ ρ, lab σ' ρ = lab σ ρ) → ∀ x, NegFirst (Wc D i) (D.R.sigW ((i : ℕ) + 1)).2 x → ∀ φ : Fin (Module.finrank ℂ (R.HW i σ).H) → GA D (Wc D i) → ℂ, LinearIndependent ℂ φ → (∀ k, IsHolFor R.θ (Wc D i) x (fun ρ c => wtCol (D.hc …`. Introduce `σ' hσ' hlab x hx φ h1 h2 h3 h4 h5`.
+
+Use `choose e he using fun ρ => (D.hc (lab σ' ρ)).e_int i`. Use `card_le_finrank_cusp T h.laws _ (inR i) _ hσ' _ _ (dom_wtA (κ i)) (GlobalTheory.T.last_weight_positive D T κ h.laws h.kap i) hn' R.θ hθ (fun ρ c => wtCol (D.hc (lab σ ρ)) (D.R.sigW ((i : ℕ) + 1)).1 (D.R.sigW ((i : ℕ) + 1)).2 c) e (GlobalTheory.T.level_character_trivial_on_level D …` and prove the remaining obligations. Rewrite using `[← hlab ρ]`. Conclude with `GlobalTheory.T.weight_label_at_unfolding D T κ h.laws h.alg h.kap i σ' hσ' e (fun ρ => (he ρ).symm) k ρ τ hτ c`. Distinguish the cases in `hσ : GoodEmb T.Q.c (res T σ)`.
+
+Take `⟨x, hx, hhol⟩` from `GlobalTheory.T.holomorphic_extremal_negative_first D R.θ _ _ (R.MW i σ) (fun ρ => D.hc (lab σ ρ)) _ _ hθ hpq (rank_Wc i) (fun ρ => (if_pos ((GlobalTheory.T.good_embedding_label_iff D T h.laws h.alg σ ρ).1.1 hσ)).trans (parAt_sig i σ ρ)) _ (h.hv₀ i σ).1`. Conclude with `key σ hσ (fun _ => rfl) x hx _ hind (fun k => hhol _ _ _ (hM _)) (fun k => ((hM _).aut _).left) hlev hbd`. Take `⟨x, hx, hhol⟩` from `GlobalTheory.T.antiholomorphic_extremal_negative_first D R.θ _ _ (R.MW i σ) (fun ρ => D.hc (lab σ ρ)) _ _ hθ hpq (rank_Wc i) (fun ρ => (if_neg (mt (GlobalTheory.T.good_embedding_label_iff D T h.laws h.alg σ ρ).1.2 hσ)).trans (congrArg dualPar (parAt_sig i σ ρ))) _ (h.hv₀ i σ).1`. Use `key ((starRingEnd ℂ).comp σ) (good_resC T hσ) (fun ρ => (GlobalTheory.T.good_embedding_label_iff D T h.laws h.alg σ ρ).2) x hx _ (linearIndependent_conj hind) (fun k => hhol _ _ _ (hM _)) (fun k γ hγ g => ?_) (fun Kf hK k c hc g => ?_) fun k => (hbd k).imp fun C hC g => ?_` and prove the remaining obligations. Conclude with `congrArg _ (((hM _).aut _).left γ hγ g)`.
+
+Conclude with `congrArg _ (hlev Kf hK k c hc g)`. Conclude with `(Complex.norm_conj _).trans_le (hC g)`.
+-/
 theorem finrank_model_le (hP : GlobalTheory.Published.CuspRapidDecay) (hn : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) (hL : R.toLevCh.Is A.μ0)
     (hθ : R.models_inf) (hH : R.models_HW) (h : TieIn T R κ v₀) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     Module.finrank ℂ (R.HW i σ).H ≤ Module.finrank T.Q.c.F (Cu T κ i) := by

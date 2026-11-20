@@ -17,13 +17,24 @@ def unitMono (F : Fock σ) (α : σ →₀ ℕ) : F.H := (wt α)⁻¹ • F.ι (
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal _`.
+-/
 theorem conj_wt (α : σ →₀ ℕ) : (starRingEnd ℂ) (wt α) = wt α := Complex.conj_ofReal _
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Rewrite using `[← star_wt_mul, conj_wt]`.
+-/
 theorem wt_mul_self (α : σ →₀ ℕ) : wt α * wt α = (mfact α : ℕ) := by
   rw [← star_wt_mul, conj_wt]
 
+/- English proof (translation)
+Rewrite using `[orthonormal_iff_ite]`. Introduce `α β`. Rewrite using `[unitMono, unitMono, inner_smul_left, inner_smul_right, F.fockIP, ← mfact_cast, map_inv₀, conj_wt]`. Distinguish the cases in `h : α = β`. Substitute `h` using the available equality.
+
+Use `wt_ne_zero α` as an intermediate fact. Rewrite using `[if_pos rfl, if_pos rfl, ← wt_mul_self]`. Clear the denominators using the available nonvanishing facts. Simplify using `[h]`.
+-/
 theorem orthonormal_unitMono (F : Fock σ) : Orthonormal ℂ (unitMono F) := by
   classical
   rw [orthonormal_iff_ite]
@@ -36,6 +47,13 @@ theorem orthonormal_unitMono (F : Fock σ) : Orthonormal ℂ (unitMono F) := by
     field_simp
   · simp [h]
 
+/- English proof (translation)
+Introduce `x _`. Use `closure_mono ?_ (F.dense x)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add f g hf hg => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hf hg`. Consider the case `monomial α c`. Establish `e : F.ι (monomial α c) = (c * wt α) • unitMono F α`. Rewrite using `[unitMono, smul_smul, mul_assoc, mul_inv_cancel₀ (wt_ne_zero α), mul_one, ← map_smul, smul_monomial]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)`.
+-/
 theorem dense_span_unitMono (F : Fock σ) :
     ⊤ ≤ (Submodule.span ℂ (Set.range (unitMono F))).topologicalClosure := by
   intro x _
@@ -50,12 +68,20 @@ theorem dense_span_unitMono (F : Fock σ) :
     rw [e]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)
 
+/- English proof (translation)
+Use `wt_ne_zero α` as an intermediate fact. Rewrite using `[unitMono, inner_smul_left, h α, ← mfact_cast, map_inv₀, conj_wt, ← wt_mul_self]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inner_unitMono {F : Fock σ} {v : F.H} {E : MvPowerSeries σ ℂ} (h : HasCoeff F v E) (α : σ →₀ ℕ) :
     inner ℂ (unitMono F α) v = wt α * MvPowerSeries.coeff α E := by
   have := wt_ne_zero α
   rw [unitMono, inner_smul_left, h α, ← mfact_cast, map_inv₀, conj_wt, ← wt_mul_self]
   field_simp
 
+/- English proof (translation)
+Use `⟨((orthonormal_unitMono F).inner_products_summable v).congr fun α => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inner_unitMono hv, norm_mul, mul_pow, wt, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (Nat.cast_nonneg _)]`. Set `b` to `HilbertBasis.mk (orthonormal_unitMono F) (dense_span_unitMono F)`. Rewrite using `[← b.tsum_inner_mul_inner v w]`. Use `tsum_congr fun α => ?_` and prove the remaining obligations.
+
+Rewrite using `[HilbertBasis.coe_mk, ← inner_conj_symm, inner_unitMono hv, inner_unitMono hw, map_mul, conj_wt, ← wt_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem parseval (σ : Type) [DecidableEq σ] (F : Fock σ) (v w : F.H) (E E' : MvPowerSeries σ ℂ)
     (hv : HasCoeff F v E) (hw : HasCoeff F w E') :
     Summable (fun α : σ →₀ ℕ => (GlobalTheory.FockSeq.mfact α : ℝ) * ‖MvPowerSeries.coeff α E‖ ^ 2) ∧

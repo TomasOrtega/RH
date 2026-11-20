@@ -11,12 +11,20 @@ namespace GlobalTheory.Dec
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `i`. Establish `hsub : (x.submatrix (Fin.castLE i.isLt) (Fin.castLE i.isLt)).PosDef` using `hx.submatrix (Fin.castLE_injective _)`. Conclude with `hsub.det_pos.ne'`.
+-/
 theorem posDef_mem_Omega {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) : x ∈ Omega n := by
   intro i
   have hsub : (x.submatrix (Fin.castLE i.isLt) (Fin.castLE i.isLt)).PosDef :=
     hx.submatrix (Fin.castLE_injective _)
   exact hsub.det_pos.ne'
 
+/- English proof (translation)
+Introduce `k hk`. Establish `hu : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.mp hk.1`. Rewrite using `[Matrix.inv_eq_left_inv hu, Matrix.star_eq_conjTranspose]`. Apply `posDef_mem_Omega` to reduce the goal to its premises. Apply `hx.conjTranspose_mul_mul_same` to reduce the goal to its premises.
+
+Introduce `v v' h`. Establish `h2` using `congrArg (fun u => (star k).mulVec u) h`. Simplify `h2` using `only [Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]`.
+-/
 theorem posDef_mem_kConjNonzeroMinorsSet (ε : Fin n → Bool) {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) : x ∈ U1 ε := by
   intro k hk
   have hu : star k * k = 1 := Matrix.mem_unitaryGroup_iff'.mp hk.1
@@ -27,6 +35,11 @@ theorem posDef_mem_kConjNonzeroMinorsSet (ε : Fin n → Bool) {x : Matrix (Fin 
   have h2 := congrArg (fun u => (star k).mulVec u) h
   simpa only [Matrix.mulVec_mulVec, hu, Matrix.one_mulVec] using h2
 
+/- English proof (translation)
+Establish `hinv : ∀ k : KG ε, (toMK k)⁻¹ = (toMK k)ᴴ` using `fun k => Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.mp ((mem_KG ε _).1 k.2).1)`. Repeatedly rewrite using `[hinv]`. Unfold `leadMinor`. Establish `hc : Continuous (fun k : KG ε => toMK k)` using `toMK_cont ε`. Establish `hz : Continuous (fun p : KG ε × (Fin n → Fin n → ℂ) => Matrix.of p.2)` using `continuous_snd`.
+
+Conclude with `((((hc.comp continuous_fst).matrix_conjTranspose).matrix_mul hz).matrix_mul (hc.comp continuous_fst)).matrix_submatrix _ _ |>.matrix_det`.
+-/
 theorem continuous_leadMinor_conj (ε : Fin n → Bool) (l : ℕ) (hl : l ≤ n) :
     Continuous (fun p : KG ε × (Fin n → Fin n → ℂ) =>
       leadMinor ((toMK p.1)⁻¹ * Matrix.of p.2 * toMK p.1) l hl) := by
@@ -39,6 +52,13 @@ theorem continuous_leadMinor_conj (ε : Fin n → Bool) (l : ℕ) (hl : l ≤ n)
   exact ((((hc.comp continuous_fst).matrix_conjTranspose).matrix_mul hz).matrix_mul
     (hc.comp continuous_fst)).matrix_submatrix _ _ |>.matrix_det
 
+/- English proof (translation)
+Establish `hset : {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε} = (Prod.snd '' {p : KG ε × (Fin n → Fin n → ℂ) | ∃ i : Fin n, leadMinor ((toMK p.1)⁻¹ * Matrix.of p.2 * toMK p.1) (i.val + 1) i.isLt = 0})ᶜ`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hz ⟨⟨k, z'⟩, ⟨i, hi⟩, rfl⟩`. Conclude with `hz (toMK k) ((mem_KG ε _).1 k.2) i hi`.
+
+Introduce `hz g hg i hi`. Take `⟨k, rfl⟩ : g ∈ Set.range (fun k : KG ε => toMK k)` from `by rw [range_toMK]; exact hg`. Conclude with `hz ⟨⟨k, z⟩, ⟨i, hi⟩, rfl⟩`. Rewrite using `[hset, isOpen_compl_iff]`. Use `isClosedMap_snd_of_compactSpace _ ?_` and prove the remaining obligations.
+
+Establish `hu : {p : KG ε × (Fin n → Fin n → ℂ) | ∃ i : Fin n, leadMinor ((toMK p.1)⁻¹ * Matrix.of p.2 * toMK p.1) (i.val + 1) i.isLt = 0} = ⋃ i : Fin n, {p | leadMinor ((toMK p.1)⁻¹ * Matrix.of p.2 * toMK p.1) (i.val + 1) i.isLt = 0}`. Use extensionality with `p`. Simplify using the standard rewrite rules. Rewrite using `[hu]`. Conclude with `isClosed_iUnion_of_finite fun i => isClosed_eq (continuous_leadMinor_conj ε (i.val + 1) i.isLt) continuous_const`.
+-/
 theorem isOpen_kConjNonzeroMinorsSet (ε : Fin n → Bool) : IsOpen {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε} := by
   have hset : {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε} =
       (Prod.snd '' {p : KG ε × (Fin n → Fin n → ℂ) | ∃ i : Fin n,
@@ -60,12 +80,26 @@ theorem isOpen_kConjNonzeroMinorsSet (ε : Fin n → Bool) : IsOpen {z : Fin n �
   exact isClosed_iUnion_of_finite fun i =>
     isClosed_eq (continuous_leadMinor_conj ε (i.val + 1) i.isLt) continuous_const
 
+/- English proof (translation)
+Unfold `leadMinor`. Simplify using `only [Matrix.det_apply', Matrix.submatrix_apply, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem differentiable_leadMinor_mul (a b : Matrix (Fin n) (Fin n) ℂ) (l : ℕ) (hl : l ≤ n) :
     Differentiable ℂ (fun z : Fin n → Fin n → ℂ => leadMinor (a * Matrix.of z * b) l hl) := by
   unfold leadMinor
   simp only [Matrix.det_apply', Matrix.submatrix_apply, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Take `⟨hfd, ⟨h1, hmul⟩, hdiff, hadj, -⟩` from `h`. Establish `hsub : ∀ g ∈ Formalism.REAL.Kset ε, g ∈ KC ε` using `fun g hg => ⟨⟨⟨g, star g, Matrix.mem_unitaryGroup_iff.mp hg.1, Matrix.mem_unitaryGroup_iff'.mp hg.1⟩, rfl⟩, hg.2⟩`. Use `⟨⟨h1, fun a ha b hb => hmul a (hsub a ha) b (hsub b hb)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg v`. Establish `hs : star g ∈ Formalism.REAL.Kset ε` using `Formalism.REAL.Kset_star ε hg`.
+
+Establish `hgg : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hg.1`. Establish `hc : (τ (star g)).comp (τ g) = 1`. Rewrite using `[← hmul _ (hsub _ hs) _ (hsub _ hg), hgg, h1]`. Establish `hv : τ (star g) (τ g v) = v`. Rewrite using `[← ContinuousLinearMap.comp_apply, hc, ContinuousLinearMap.one_apply]`.
+
+Establish `hi : ⟪τ g v, τ g v⟫_ℂ = ⟪v, v⟫_ℂ`. Rewrite using `[hadj g (hsub g hg) v (τ g v), ← Matrix.star_eq_conjTranspose, hv]`. Establish `h2 : ‖τ g v‖ ^ 2 = ‖v‖ ^ 2`. Rewrite using `[norm_sq_eq_re_inner (𝕜 := ℂ), norm_sq_eq_re_inner (𝕜 := ℂ) v, hi]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h2`.
+
+Introduce `v haveI := hfd`. Set `bs` to `stdOrthonormalBasis ℂ W`. Establish `hco : ∀ u : W, ContinuousOn (fun g : Matrix (Fin n) (Fin n) ℂ => ⟪u, τ g v⟫_ℂ) (Formalism.REAL.Kset ε)` using `fun u => (hdiff u v).continuousOn.mono (fun g hg => hsub g hg)`. Establish `heq : (fun g => τ g v) = fun g => ∑ i, ⟪bs i, τ g v⟫_ℂ • bs i`. Use function extensionality and compare the values at `g`.
+
+Conclude with `(bs.sum_repr' (τ g v)).symm`. Rewrite using `[heq]`. Conclude with `continuousOn_finset_sum _ fun i _ => (hco (bs i)).smul continuousOn_const`.
+-/
 theorem IsTau.isURepOn {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {τ : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)} {w : W} (h : IsTau ε abelian₂ τ w) :
     IsURepOn (Kset ε) τ := by
@@ -96,6 +130,37 @@ theorem IsTau.isURepOn {ε : Fin n → Bool} {abelian₂ : Fin n → ℝ} {W : T
     rw [heq]
     exact continuousOn_finset_sum _ fun i _ => (hco (bs i)).smul continuousOn_const
 
+/- English proof (translation)
+Introduce `n ε lam W _ _ τ w _hlam htau`. Establish `hrep : IsURepOn (Formalism.REAL.Kset ε) τ` using `htau.isURepOn`. Take `⟨hfd, -, -, -, hirr, hw, -⟩` from `htau`. Use `haveI := hfd`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`.
+
+Establish `hK : ∀ k : KG ε, toMK k ∈ Formalism.REAL.Kset ε` using `fun k => (mem_KG ε _).1 k.2`. Establish `hinv : ∀ k : KG ε, (toMK k)⁻¹ = star (toMK k)` using `fun k => Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.mp (hK k).1)`. Establish `hτc : Continuous (fun k : KG ε => τ (toMK k) w)` using `(hrep.2.2 w).comp_continuous (toMK_cont ε) hK`. Establish `hPc : Continuous (fun k : KG ε => (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w))`. Use `(ContinuousLinearMap.smulRightL ℂ W W).continuous₂.comp₂ ((innerSL ℂ).continuous.comp hτc) hτc` as an intermediate fact.
+
+Conclude with `this`. Use `⟨isOpen_kConjNonzeroMinorsSet ε, fun x hx => posDef_mem_kConjNonzeroMinorsSet ε hx, ?_, ?_⟩` and prove the remaining obligations. Establish `hU` using `isOpen_kConjNonzeroMinorsSet ε`. Establish `hmem : ∀ k : KG ε, ∀ z ∈ {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε}, ∀ i : Fin n, leadMinor ((toMK k)⁻¹ * Matrix.of z * toMK k) (i.val + 1) i.isLt ≠ 0` using `fun k z hz i => hz (toMK k) (hK k) i`. Establish `hcont : ContinuousOn (Function.uncurry fun (k : KG ε) (z : Fin n → Fin n → ℂ) => Phi lam ((toMK k)⁻¹ * Matrix.of z * toMK k) • (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w)) (Set.univ ×ˢ {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε})` using `by show ContinuousOn (fun q : KG ε × (Fin n → Fin n → ℂ) => Phi lam ((toMK q.1)⁻¹ * Matrix.of q.2 * toMK q.1) • (innerSL ℂ (τ (toMK q.1) w)).smulRight (τ (toMK q.1) w)) _`.
+
+Establish `hA : ContinuousOn (fun q : KG ε × (Fin n → Fin n → ℂ) => Phi lam ((toMK q.1)⁻¹ * Matrix.of q.2 * toMK q.1)) (Set.univ ×ˢ {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε})`. Unfold `Phi`. Conclude with `continuousOn_finset_prod _ fun i _ => (continuous_leadMinor_conj ε (i.val + 1) i.isLt).continuousOn.zpow₀ _ fun q hq => Or.inl (hmem q.1 q.2 hq.2 i)`. Establish `hB : ContinuousOn (fun q : KG ε × (Fin n → Fin n → ℂ) => (innerSL ℂ (τ (toMK q.1) w)).smulRight (τ (toMK q.1) w)) (Set.univ ×ˢ {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε})` using `(hPc.comp continuous_fst).continuousOn`. Conclude with `hA.smul hB`.
+
+Establish `hdiff : ∀ k : KG ε, DifferentiableOn ℂ (fun z : Fin n → Fin n → ℂ => Phi lam ((toMK k)⁻¹ * Matrix.of z * toMK k) • (innerSL ℂ (τ (toMK k) w)).smulRight (τ (toMK k) w)) {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε}`. Introduce `k`. Apply `DifferentiableOn.smul_const` to reduce the goal to its premises. Unfold `Phi`. Establish `hg : ∀ i : Fin n, DifferentiableOn ℂ (fun z : Fin n → Fin n → ℂ => leadMinor ((toMK k)⁻¹ * Matrix.of z * toMK k) (i.val + 1) i.isLt ^ (-(sInt lam i))) {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε}` using `fun i => ((differentiable_leadMinor_mul _ _ (i.val + 1) i.isLt).differentiableOn).zpow (Or.inl fun z hz => hmem k z hz i)`.
+
+Establish `hprod : ∀ s : Finset (Fin n), DifferentiableOn ℂ (fun z : Fin n → Fin n → ℂ => ∏ i ∈ s, leadMinor ((toMK k)⁻¹ * Matrix.of z * toMK k) (i.val + 1) i.isLt ^ (-(sInt lam i))) {z : Fin n → Fin n → ℂ | Matrix.of z ∈ U1 ε}`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `differentiableOn_const _`.
+
+Introduce `a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hg a).mul ih`. Conclude with `hprod Finset.univ`. Establish `hint` using `(GlobalTheory.differentiableOn_integral_of_holomorphic_of_continuousOn (μ := muK ε) hU hcont hdiff).1`.
+
+Unfold `ps`. Conclude with `DifferentiableOn.congr (hint.const_smul (Module.finrank ℂ W : ℂ)) fun z _ => rfl`. Establish `hI : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (f : KG ε → E), Continuous f → Integrable f (muK ε)` using `fun f hf => integrableOn_univ.mp (hf.continuousOn.integrableOn_compact isCompact_univ)`. Establish `h1 : ∀ k : KG ε, Phi lam ((toMK k)⁻¹ * 1 * toMK k) = 1` using `fun k => by`. Rewrite using `[hinv, Matrix.mul_one, Matrix.mem_unitaryGroup_iff'.mp (hK k).1, Phi_at_one]`.
+
+Unfold `ps`. Repeatedly rewrite using `[h1, one_smul]`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Take `⟨c, -, hc⟩` from `avgSchur n ε W τ w hfd hrep hirr hw0`. Establish `hnorm : ∀ k : KG ε, ‖τ (toMK k) w‖ = 1` using `fun k => by rw [hrep.2.1 _ (hK k), hw]`.
+
+Set `b` to `stdOrthonormalBasis ℂ W`. Establish `hsum : (Module.finrank ℂ W : ℂ) * c = 1`. Establish `e1 : ∀ i, ∫ k : KG ε, ⟪τ (toMK k) w, b i⟫_ℂ * ⟪b i, τ (toMK k) w⟫_ℂ ∂(muK ε) = c`. Introduce `i`. Establish `hbi : ⟪b i, b i⟫_ℂ = 1`.
+
+Rewrite using `[inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`. Simplify using the standard rewrite rules. Use `hc (b i) (innerSL ℂ (b i))` as an intermediate fact. Simplify using `only [show ∀ a b : W, (innerSL ℂ a) b = ⟪a, b⟫_ℂ from fun _ _ => rfl, hbi, mul_one] at this`. Conclude with `this`.
+
+Establish `e2 : ∑ i, ∫ k : KG ε, ⟪τ (toMK k) w, b i⟫_ℂ * ⟪b i, τ (toMK k) w⟫_ℂ ∂(muK ε) = 1`. Rewrite using `[← integral_finset_sum _ fun i _ => hI (fun k : KG ε => ⟪τ (toMK k) w, b i⟫_ℂ * ⟪b i, τ (toMK k) w⟫_ℂ) ((hτc.inner continuous_const).mul (continuous_const.inner hτc))]`. Repeatedly rewrite using `[b.sum_inner_mul_inner]`. Establish `hone : ∀ k : KG ε, ⟪τ (toMK k) w, τ (toMK k) w⟫_ℂ = 1` using `fun k => by`. Rewrite using `[inner_self_eq_norm_sq_to_K, hnorm]`.
+
+Simplify using the standard rewrite rules. Repeatedly rewrite using `[hone]`. Simplify using the standard rewrite rules. Rewrite `e2` using `[e1]`. Simplify `e2` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Use extensionality with `u`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.integral_apply (hI _ hPc), ContinuousLinearMap.id_apply]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, show ∀ a b : W, (innerSL ℂ a) b = ⟪a, b⟫_ℂ from fun _ _ => rfl]`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`.
+
+Rewrite using `[inner_smul_right, ← integral_inner (hI (fun k : KG ε => ⟪τ (toMK k) w, u⟫_ℂ • τ (toMK k) w) ((hτc.inner continuous_const).smul hτc))]`. Repeatedly rewrite using `[inner_smul_right]`. Use `hc u (innerSL ℂ y)` as an intermediate fact. Simplify using `only [show ∀ a b : W, (innerSL ℂ a) b = ⟪a, b⟫_ℂ from fun _ _ => rfl] at this`. Rewrite using `[this, ← mul_assoc, hsum, one_mul]`.
+-/
 theorem psBasic : PsBasic := by
   intro n ε lam W _ _ τ w _hlam htau
   have hrep : IsURepOn (Formalism.REAL.Kset ε) τ := htau.isURepOn

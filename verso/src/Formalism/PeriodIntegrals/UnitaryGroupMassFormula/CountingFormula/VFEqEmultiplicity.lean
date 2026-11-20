@@ -11,6 +11,11 @@ section
 
 variable {R : Type*} [CommRing R] [IsDedekindDomain R]
 
+/- English proof (translation)
+Establish `hs : Ideal.span {α} ≠ ⊥` using `by simpa using hα`. Establish `hfm : FiniteMultiplicity 𝔭 (Ideal.span {α})` using `FiniteMultiplicity.of_prime_left (Ideal.prime_of_isPrime h0 h𝔭) hs`. Rewrite using `[hfm.emultiplicity_eq_multiplicity]`. Use `congr 1`. Unfold `vF`.
+
+Establish `hset : {e : ℕ | α ∈ 𝔭 ^ e} = Set.Iic (multiplicity 𝔭 (Ideal.span {α}))`. Use extensionality with `e`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_Iic]`. Rewrite using `[← hfm.pow_dvd_iff_le_multiplicity, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Rewrite using `[hset, csSup_Iic]`.
+-/
 theorem vF_eq_emultiplicity {F : Type} [Field F] [NumberField F] (𝔭 : Ideal (𝓞 F)) (h𝔭 : 𝔭.IsPrime)
     (h0 : 𝔭 ≠ ⊥) (α : 𝓞 F) (hα : α ≠ 0) :
     ((vF 𝔭 α : ℕ) : ℕ∞) = emultiplicity 𝔭 (Ideal.span {α}) := by
@@ -28,6 +33,15 @@ theorem vF_eq_emultiplicity {F : Type} [Field F] [NumberField F] (𝔭 : Ideal (
 
 end
 
+/- English proof (translation)
+Establish `h0 : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Use `haveI : P.asIdeal.LiesOver 𝔭 := ⟨by rw [Ideal.under_def, hP]⟩`. Use `set β : 𝓞 K := algebraMap (𝓞 F) (𝓞 K) α`. Establish `hβ : β ≠ 0`. Introduce `h`.
+
+Apply `hα` to reduce the goal to its premises. Conclude with `(FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K)) (by rw [map_zero]; exact h)`. Establish `hsβ : Ideal.span {β} ≠ ⊥` using `by simpa using hβ`. Establish `hsα : Ideal.span {α} ≠ ⊥` using `by simpa using hα`. Establish `hK : algebraMap F K (α : F) = algebraMap (𝓞 K) K β` using `rfl`.
+
+Rewrite using `[hK, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K P hsβ, Ideal.count_associates_factors_eq hsβ P.isPrime P.ne_bot, HeightOneSpectrum.count_normalizedFactors_eq_multiplicity hsβ P]`. Use `congr 1`. Establish `hfmP : FiniteMultiplicity P.asIdeal (Ideal.span {β})` using `FiniteMultiplicity.of_prime_left P.prime hsβ`. Establish `hmap : Ideal.span {β} = (Ideal.span {α}).map (algebraMap (𝓞 F) (𝓞 K))`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+
+Establish `he` using `Ideal.IsDedekindDomain.emultiplicity_map_eq_ramificationIdx'_mul hsα (Ideal.prime_of_isPrime h0 h𝔭.isPrime).irreducible P.irreducible P.ne_bot`. Rewrite `he` using `[← hmap, hfmP.emultiplicity_eq_multiplicity, ← vF_eq_emultiplicity 𝔭 h𝔭.isPrime h0 α hα, Ideal.ramificationIdx'_eq_ramificationIdx 𝔭 P.asIdeal h0]`. Conclude with `he` after adjusting the coercions.
+-/
 theorem countExt_single (K F : Type) [Field K] [NumberField K] [Field F] [NumberField F] [Algebra F K]
     (𝔭 : Ideal (𝓞 F)) (P : HeightOneSpectrum (𝓞 K)) (α : 𝓞 F) (h𝔭 : 𝔭.IsMaximal)
     (hP : P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 K)) = 𝔭) (hα : α ≠ 0) :
@@ -57,6 +71,13 @@ theorem countExt_single (K F : Type) [Field K] [NumberField K] [Field F] [Number
     Ideal.ramificationIdx'_eq_ramificationIdx 𝔭 P.asIdeal h0] at he
   exact_mod_cast he
 
+/- English proof (translation)
+Introduce `K F _ _ _ _ _ n 𝔭 P α h𝔭 hP hα`. Establish `h0 : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Establish `hprod : (∏ j, ((α j : 𝓞 F) : F)) = ((∏ j, α j : 𝓞 F) : F)` using `by simp`. Establish `hne : (∏ j, α j) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => hα j`. Rewrite using `[hprod, countExt_single K F 𝔭 P _ h𝔭 hP hne]`.
+
+Use `congr 2`. Establish `key : ((vF 𝔭 (∏ j, α j) : ℕ) : ℕ∞) = ((∑ j, vF 𝔭 (α j) : ℕ) : ℕ∞)`. Rewrite using `[vF_eq_emultiplicity 𝔭 h𝔭.isPrime h0 _ hne, ← Ideal.prod_span_singleton, Nat.cast_sum]`. Rewrite using `[Finset.emultiplicity_prod (Ideal.prime_of_isPrime h0 h𝔭.isPrime)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[vF_eq_emultiplicity 𝔭 h𝔭.isPrime h0 _ (hα j)]`. Conclude with `key` after adjusting the coercions.
+-/
 theorem count_extension : CountExt := by
   intro K F _ _ _ _ _ n 𝔭 P α h𝔭 hP hα
   have h0 : 𝔭 ≠ ⊥ := Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)

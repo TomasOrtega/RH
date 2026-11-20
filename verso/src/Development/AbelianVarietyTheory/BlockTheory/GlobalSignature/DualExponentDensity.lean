@@ -83,9 +83,15 @@ def SelfDualLatticeDensity : Prop :=
           ∀ t : Fv F v, Valued.v (t - β) < 1 →
             g t = (densityValue (dualIndex F v c) (resCard F v) η M : ℂ))
 
+/- English proof (translation)
+Simplify using `[densityValue]`. Evaluate the numerical expressions.
+-/
 example : densityValue 1 3 (-1) 1 = 4 / 3 := by
   simp [densityValue]; norm_num
 
+/- English proof (translation)
+Rewrite using `[WithZero.exp_zero]`. Both sides reduce to the same expression.
+-/
 example (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) :
     Valued.v t ≤ WithZero.exp (0 : ℤ) ↔ t ∈ v.adicCompletionIntegers F := by
   rw [WithZero.exp_zero]; rfl

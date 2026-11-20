@@ -16,9 +16,17 @@ def coordSum (b : Module.Basis ι R O) (j : N →ₗ[R] N') : (ι → N) →ₗ[
   map_add' x y := by simp [Finset.sum_add_distrib]
   map_smul' r x := by simp [Finset.smul_sum, smul_comm r]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordSum_apply (b : Module.Basis ι R O) (j : N →ₗ[R] N') (x : ι → N) :
     coordSum b j x = ∑ i, b i • j (x i) := rfl
 
+/- English proof (translation)
+Set `e : (ι → N) ≃ₗ[R] O ⊗[R] N` to `(Finsupp.linearEquivFunOnFinite R N ι).symm ≪≫ₗ (TensorProduct.equivFinsuppOfBasisLeft b).symm`. Establish `he : ∀ x, e x = ∑ i, b i ⊗ₜ x i` using `fun x => by`. Simplify using `[e, TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum_fintype]`. Unfold `IsBaseChange IsTensorProduct`. Rewrite using `[← Function.Bijective.of_comp_iff _ e.bijective]`.
+
+Use `iff_of_eq (congrArg _ (funext fun x => ?_))` and prove the remaining obligations. Simplify using `[he, coordSum_apply]`.
+-/
 theorem isBaseChange_iff_coordSum (b : Module.Basis ι R O) (j : N →ₗ[R] N') :
     IsBaseChange O j ↔ Function.Bijective (coordSum b j) := by
   classical
@@ -31,6 +39,11 @@ theorem isBaseChange_iff_coordSum (b : Module.Basis ι R O) (j : N →ₗ[R] N')
   refine iff_of_eq (congrArg _ (funext fun x => ?_))
   simp [he, coordSum_apply]
 
+/- English proof (translation)
+Rewrite `hj`, the goal using `[isBaseChange_iff_coordSum b]`. Establish `e : ∀ x : ι → P, (coordSum b j' x : N') = coordSum b j fun i => x i` using `fun x => by`. Simplify using `[coordSum_apply, hj']`. Use `⟨fun x y hxy => funext fun i => Subtype.ext ?_, fun y => ?_⟩` and prove the remaining obligations. Conclude with `congrFun (hj.1 ((e x).symm.trans ((congrArg Subtype.val hxy).trans (e y)))) i`.
+
+Take `⟨x, hx⟩` from `hj.2 y`. Conclude with `⟨fun i => ⟨x i, (h x).1 (hx ▸ y.2) i⟩, Subtype.ext ((e _).trans hx)⟩`.
+-/
 theorem isBaseChange_restrict (b : Module.Basis ι R O) {j : N →ₗ[R] N'} (hj : IsBaseChange O j)
     (P : Submodule R N) (P' : Submodule O N') (h : ∀ x, coordSum b j x ∈ P' ↔ ∀ i, x i ∈ P)
     (j' : P →ₗ[R] P') (hj' : ∀ x, (j' x : N') = j x) : IsBaseChange O j' := by
@@ -42,12 +55,18 @@ theorem isBaseChange_restrict (b : Module.Basis ι R O) {j : N →ₗ[R] N'} (hj
   · obtain ⟨x, hx⟩ := hj.2 y
     exact ⟨fun i => ⟨x i, (h x).1 (hx ▸ y.2) i⟩, Subtype.ext ((e _).trans hx)⟩
 
+/- English proof (translation)
+Rewrite using `[← hj.equiv.length_eq, IsLocalRing.length_baseChange]`.
+-/
 theorem length_of_isBaseChange [IsLocalRing R] [IsLocalRing O] [IsLocalHom (algebraMap R O)] [Module.Flat R O]
     {j : N →ₗ[R] N'} (hj : IsBaseChange O j) :
     Module.length O N' =
       Module.length R N * Module.length O (O ⧸ (IsLocalRing.maximalIdeal R).map (algebraMap R O)) := by
   rw [← hj.equiv.length_eq, IsLocalRing.length_baseChange]
 
+/- English proof (translation)
+Simplify using `[coordSum_apply, h]`.
+-/
 theorem map_coordSum (b : Module.Basis ι R O) (j : N →ₗ[R] N') (f : N → N) (f' : N' →ₗ[O] N')
     (h : ∀ x, j (f x) = f' (j x)) (x : ι → N) : f' (coordSum b j x) = coordSum b j fun i => f (x i) := by
   simp [coordSum_apply, h]
@@ -71,6 +90,9 @@ def continuousCocycleMap : Z1U ρ U →ₗ[R] Z1U ρ' U where
   map_add' _ _ := Subtype.ext (funext fun _ => map_add j _ _)
   map_smul' _ _ := Subtype.ext (funext fun _ => map_smul j _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem continuousCocycleMap_apply (z : Z1U ρ U) (u : U) : (continuousCocycleMap ρ ρ' j hj U z).1 u = j (z.1 u) := rfl
 
 def h1Map : H1U ρ U →ₗ[R] H1U ρ' U :=
@@ -81,9 +103,15 @@ def h1Map : H1U ρ U →ₗ[R] H1U ρ' U :=
     show j (z.1 u) = ρ' u (j m) - j m
     rw [e, map_sub, hj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h1Map_mk (z : Z1U ρ U) :
     h1Map ρ ρ' j hj U (Submodule.Quotient.mk z) = Submodule.Quotient.mk (continuousCocycleMap ρ ρ' j hj U z) := rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[h1Map_mk, mk_mem_locSel]`. Introduce `D hD`. Take `⟨m, hm⟩` from `mk_mem_locSel.1 hx D hD`. Conclude with `⟨j m, fun u hu => by rw [continuousCocycleMap_apply, hm u hu, map_sub, hj]⟩`.
+-/
 theorem h1Map_mem_locSel (𝒟 : Set (Subgroup G)) {x : H1U ρ U} (hx : x ∈ LocSel ρ U 𝒟) :
     h1Map ρ ρ' j hj U x ∈ LocSel ρ' U 𝒟 := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -99,10 +127,16 @@ def selMap (𝒟 : Set (Subgroup G)) : LocSel ρ U 𝒟 →ₗ[R] LocSel ρ' U �
 
 variable {ι : Type} [Fintype ι] (b : Module.Basis ι R O)
 
+/- English proof (translation)
+Simplify using `[coordSum_apply, continuousCocycleMap_apply]`.
+-/
 theorem coordSum_z1Map (z : ι → Z1U ρ U) (u : U) :
     (coordSum b (continuousCocycleMap ρ ρ' j hj U) z).1 u = coordSum b j fun i => (z i).1 u := by
   simp [coordSum_apply, continuousCocycleMap_apply]
 
+/- English proof (translation)
+Simplify using `only [coordSum_apply, h1Map_mk, ← Submodule.mkQ_apply, map_sum, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem coordSum_h1Map (z : ι → Z1U ρ U) :
     coordSum b (h1Map ρ ρ' j hj U) (fun i => Submodule.Quotient.mk (z i)) =
       Submodule.Quotient.mk (coordSum b (continuousCocycleMap ρ ρ' j hj U) z) := by
@@ -110,6 +144,11 @@ theorem coordSum_h1Map (z : ι → Z1U ρ U) :
   rfl
 
 include hj in
+/- English proof (translation)
+Rewrite `hb` using `[isBaseChange_iff_coordSum b]`. Establish `e : ∀ (u : U) (m : ι → M), ρ' u (coordSum b j m) - coordSum b j m = coordSum b j fun i => ρ u (m i) - m i` using `fun u m => by`. Rewrite using `[map_coordSum b j (ρ u) (ρ' u) (hj u), ← map_sub]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m', hm⟩ i`. Take `⟨m, rfl⟩` from `hb.2 m'`. Conclude with `⟨m i, fun u hu => congrFun (hb.1 ((hm u hu).trans (e u m))) i⟩`. Introduce `h choose m hm using h`. Conclude with `⟨coordSum b j m, fun u hu => by rw [e]; exact congrArg _ (funext fun i => hm i u hu)⟩`.
+-/
 theorem exists_cob_iff (hb : IsBaseChange O j) (p : U → Prop) (z : ι → U → M) :
     (∃ m', ∀ u : U, p u → coordSum b j (fun i => z i u) = ρ' u m' - m') ↔
       ∀ i, ∃ m, ∀ u : U, p u → z i u = ρ u m - m := by
@@ -126,6 +165,13 @@ theorem exists_cob_iff (hb : IsBaseChange O j) (p : U → Prop) (z : ι → U �
     choose m hm using h
     exact ⟨coordSum b j m, fun u hu => by rw [e]; exact congrArg _ (funext fun i => hm i u hu)⟩
 
+/- English proof (translation)
+Rewrite `hb` using `[isBaseChange_iff_coordSum b]`. Introduce `y`. Set `e` to `LinearEquiv.ofBijective _ hb`. Establish `he : ∀ m, coordSum b j (e.symm m) = m` using `e.apply_symm_apply`. Use `⟨fun i => ⟨fun u => e.symm (y.1 u) i, (continuous_of_discreteTopology (f := fun m => e.symm m i)).comp y.2.1, fun g h => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `: e.symm (y.1 (g * h)) = e.symm (y.1 g) + fun i => ρ g (e.symm (y.1 h) i)`. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_add, ← map_coordSum b j (ρ g) (ρ' g) (hj g), he, he, he]`. Conclude with `y.2.2 g h`. Conclude with `congrFun this i`.
+
+Conclude with `Subtype.ext (funext fun u => (coordSum_z1Map ρ ρ' j hj U b _ u).trans (he _))`.
+-/
 theorem coordSum_z1Map_surjective [DiscreteTopology M'] (hb : IsBaseChange O j) :
     Function.Surjective (coordSum b (continuousCocycleMap ρ ρ' j hj U)) := by
   rw [isBaseChange_iff_coordSum b] at hb
@@ -142,6 +188,13 @@ theorem coordSum_z1Map_surjective [DiscreteTopology M'] (hb : IsBaseChange O j) 
   · exact Subtype.ext (funext fun u => (coordSum_z1Map ρ ρ' j hj U b _ u).trans (he _))
 
 include b in
+/- English proof (translation)
+Rewrite using `[isBaseChange_iff_coordSum b]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `choose z hz using fun i => Submodule.Quotient.mk_surjective _ (x i)`.
+
+Take `rfl : x = fun i => Submodule.Quotient.mk (z i)` from `funext fun i => (hz i).symm`. Rewrite `hx` using `[coordSum_h1Map]`. Take `⟨m', hm'⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Use function extensionality and compare the values at `i`. Take `⟨m, hm⟩` from `(exists_cob_iff ρ ρ' j hj U b hb (fun _ => True) fun i => (z i).1).1 ⟨m', fun u _ => (coordSum_z1Map ρ ρ' j hj U b z u).symm.trans (hm' u)⟩ i`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨m, fun u => hm u trivial⟩)`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨z, rfl⟩` from `coordSum_z1Map_surjective ρ ρ' j hj U b hb y`. Conclude with `⟨_, coordSum_h1Map ρ ρ' j hj U b z⟩`.
+-/
 private theorem isBaseChange_h1Map' [DiscreteTopology M'] (hb : IsBaseChange O j) :
     IsBaseChange O (h1Map ρ ρ' j hj U) := by
   rw [isBaseChange_iff_coordSum b]
@@ -161,6 +214,11 @@ private theorem isBaseChange_h1Map' [DiscreteTopology M'] (hb : IsBaseChange O j
     obtain ⟨z, rfl⟩ := coordSum_z1Map_surjective ρ ρ' j hj U b hb y
     exact ⟨_, coordSum_h1Map ρ ρ' j hj U b z⟩
 
+/- English proof (translation)
+Use `choose z hz using fun i => Submodule.Quotient.mk_surjective _ (x i)`. Take `rfl : x = fun i => Submodule.Quotient.mk (z i)` from `funext fun i => (hz i).symm`. Rewrite using `[coordSum_h1Map]`. Simplify using `only [mk_mem_locSel, coordSum_z1Map]`. Rewrite using `[forall_comm]`.
+
+Use `forall_congr' fun D => ?_` and prove the remaining obligations. Rewrite using `[forall_comm]`. Conclude with `imp_congr_right fun _ => exists_cob_iff ρ ρ' j hj U b hb (fun u => u.1 ∈ D) fun i => (z i).1`.
+-/
 theorem coordSum_mem_locSel (hb : IsBaseChange O j) (𝒟 : Set (Subgroup G)) (x : ι → H1U ρ U) :
     coordSum b (h1Map ρ ρ' j hj U) x ∈ LocSel ρ' U 𝒟 ↔ ∀ i, x i ∈ LocSel ρ U 𝒟 := by
   choose z hz using fun i => Submodule.Quotient.mk_surjective _ (x i)
@@ -174,12 +232,18 @@ theorem coordSum_mem_locSel (hb : IsBaseChange O j) (𝒟 : Set (Subgroup G)) (x
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `isBaseChange_h1Map' ρ ρ' j hj U (Module.Free.chooseBasis R O) hb`.
+-/
 theorem isBaseChange_h1Map [Module.Free R O] [Module.Finite R O] [DiscreteTopology M'] (hb : IsBaseChange O j) :
     IsBaseChange O (h1Map ρ ρ' j hj U) :=
   isBaseChange_h1Map' ρ ρ' j hj U (Module.Free.chooseBasis R O) hb
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `isBaseChange_restrict (Module.Free.chooseBasis R O) (isBaseChange_h1Map ρ ρ' j hj U hb) _ _ (coordSum_mem_locSel ρ ρ' j hj U _ hb 𝒟) _ fun _ => rfl`.
+-/
 theorem isBaseChange_selMap [Module.Free R O] [Module.Finite R O] [DiscreteTopology M'] (hb : IsBaseChange O j)
     (𝒟 : Set (Subgroup G)) : IsBaseChange O (selMap ρ ρ' j hj U 𝒟) :=
   isBaseChange_restrict (Module.Free.chooseBasis R O) (isBaseChange_h1Map ρ ρ' j hj U hb) _ _

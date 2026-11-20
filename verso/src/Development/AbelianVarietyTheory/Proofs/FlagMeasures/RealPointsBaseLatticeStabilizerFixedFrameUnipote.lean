@@ -17,6 +17,15 @@ namespace GlobalTheory.TypeAsm.GLinkPf
 section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Take `⟨⟨hiso, -⟩, hXa, hperp⟩` from `h`. Use `⟨fun x y => hiso y x, n.bijective, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TypeAsm.FibProof.frF_e, fv_cast, GlobalTheory.TypeAsm.FibProof.frF_Xa]`. Conclude with `hXa a.val (F.e a) (Submodule.subset_span ⟨a, Nat.lt_succ_self _, rfl⟩)`. Rewrite using `[GlobalTheory.TypeAsm.FibProof.frF_X]`.
+
+Apply `hperp` to reduce the goal to its premises. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ F.X at hx`. Rewrite `hx` using `[← GlobalTheory.TypeAsm.FibProof.frF_X F hT]`.
+
+Establish `hle : (frF F hT).X ≤ LinearMap.ker (S.hT.flip y)`. Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Use `hy a` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.TypeAsm.FibProof.spH_B]`. Conclude with `p_symm_zero S this`. Conclude with `hle hx`.
+-/
 theorem inN_of_nlam (F : FlagG S r T) (hT : T ≠ 0) {n : S.V ≃ₗ[E] S.V} {Λ : Submodule (𝓞 E) S.V}
     (h : n ∈ NLam Λ (⟨F, F.z⟩ : LFlag S r T)) : (frF F hT).InN (n : S.V →ₗ[E] S.V) := by
   obtain ⟨⟨hiso, -⟩, hXa, hperp⟩ := h
@@ -42,6 +51,9 @@ end Gen
 
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.TypeAsm.FibProof.gmap_eq_smul]`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.2 n.surjective`.
+-/
 theorem smul_top (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     n • (⊤ : Submodule (𝓞 D.host.E) (VS D).V) = ⊤ := by
   rw [← GlobalTheory.TypeAsm.FibProof.gmap_eq_smul]
@@ -49,6 +61,17 @@ theorem smul_top (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
   rw [Submodule.map_top]
   exact LinearMap.range_eq_top.2 n.surjective
 
+/- English proof (translation)
+Unfold `GlobalTheory.DegCnt.NF.Gam GlobalTheory.DegCnt.NF.R`. Rewrite using `[Subgroup.mem_inf, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hR, hst⟩`. Establish `hT : n ∈ NLam ⊤ (lf D (X.Fu u))` using `by clear hst`.
+
+Proceed by induction on `hR using Subgroup.closure_induction with`. Consider the case `mem s hs`. Establish `h1` using `hs.1`. Rewrite `h1` using `[hF]`. Conclude with `GlobalTheory.TypeAsm.FibProof.nlam_of_inN (lf D (X.Fu u)).fl (tu_ne D u) h1 (smul_top s)`.
+
+Consider the case `one => exact GlobalTheory.LoopC.FrEqv.one_mem_NLam`. Consider the case `mul x y _ _ hx hy => exact GlobalTheory.LoopC.FrEqv.mul_mem_NLam hy hx`. Consider the case `inv x _ hx => exact GlobalTheory.LoopC.FrEqv.symm_mem_NLam hx`. Conclude with `⟨⟨hT.1.1, by rw [GlobalTheory.TypeAsm.FibProof.gmap_eq_smul]; exact hst⟩, hT.2.1, hT.2.2⟩`. Introduce `h`.
+
+Use `⟨Subgroup.subset_closure ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (F0 X u).InN (n : (VS D).V →ₗ[D.host.E] (VS D).V)` using `inN_of_nlam (lf D (X.Fu u)).fl (tu_ne D u) h`. Rewrite using `[hF, hF']`. Conclude with `⟨h1, h1⟩`. Rewrite using `[← GlobalTheory.TypeAsm.FibProof.gmap_eq_smul]`.
+
+Conclude with `h.1.2`.
+-/
 theorem mem_gam_iff (u : D.what₂.Word) (N : GlobalTheory.DegCnt.NF (HV D) D.R.rS) (hF : N.F = F0 X u)
     (hF' : N.F' = F0 X u) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     n ∈ N.Gam (VS D).L0 ↔ n ∈ NLam (VS D).L0 (lf D (X.Fu u)) := by
@@ -74,6 +97,13 @@ theorem mem_gam_iff (u : D.what₂.Word) (N : GlobalTheory.DegCnt.NF (HV D) D.R.
       exact ⟨h1, h1⟩
     · rw [← GlobalTheory.TypeAsm.FibProof.gmap_eq_smul]; exact h.1.2
 
+/- English proof (translation)
+Take `⟨_, hQQi, _, _⟩` from `C.isT τ`. Take `⟨M, _, hM1, _, hM3⟩` from `hx`. Establish `hM1' : uMat (x.1 (vOf X τ)) = (X.B.I.P (vOf X τ))⁻¹ * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ (vOf X τ)) * X.B.I.P (vOf X τ)` using `hM1 _`. Establish `hM3' : X.crd (n y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y` using `hM3 y`. Establish `e : Matrix.of (trI C x.1 τ) = Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x.1 (vOf X τ))`.
+
+Unfold `trI`. Conclude with `Matrix.of.apply_symm_apply _`. Rewrite using `[e]`. Unfold `GlobalTheory.TypeAsm.phiV Formalism.L2.SG.RealObj.trG`. Rewrite using `[hM3', ← Formalism.L2.SG.Pf.rv_mulVec X (vOf X τ), ← hM1']`.
+
+Establish `hQ : ∀ w, C.Q τ *ᵥ (C.Qi τ *ᵥ w) = w` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Rewrite using `[hQ]`.
+-/
 theorem trI_act (C : Choice X 1) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n)
     (τ : D.what₂.Tau) (y : (VS D).V) :
     Matrix.of (trI C x.1 τ) *ᵥ phiV C τ y = phiV C τ (n y) := by
@@ -92,6 +122,11 @@ theorem trI_act (C : Choice X 1) {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (
   simp only [← Matrix.mulVec_mulVec]
   rw [hQ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hL : Matrix.mulVecLin (Matrix.of (m τ)) = Matrix.mulVecLin (Matrix.of (m' τ))` using `LinearMap.ext_on_range (GlobalTheory.TypeAsm.GramPf.phiV_span C τ) (fun y => by`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, h τ y, h' τ y])`. Apply `Matrix.of.injective` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Use `congrFun (LinearMap.congr_fun hL (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec_single_one]`.
+-/
 theorem eq_of_act (C : Choice X 1) {m m' : D.what₂.Tau → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS}
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (h : ∀ τ y, Matrix.of (m τ) *ᵥ phiV C τ y = phiV C τ (n y))
@@ -109,6 +144,13 @@ end GlobalTheory.TypeAsm.GLinkPf
 
 namespace GlobalTheory.TypeAsm
 
+/- English proof (translation)
+Introduce `D _ X _ u C _ N hF hF'`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, hm⟩`. Establish `hL` using `(GLinkPf.mem_gam_iff u N hF hF' n).1 hn`.
+
+Take `⟨x, hx⟩` from `Formalism.L2.SG.Pf.ratPt_holds D X n hL.1.1`. Use `⟨x.1, (Formalism.L2.SG.Pf.NcReal.JX.NOf.noratC_holds X u x.1).2 ⟨x, n, hx, rfl, hL⟩, ?_⟩` and prove the remaining obligations. Conclude with `GLinkPf.eq_of_act C (GLinkPf.trI_act C hx) (fun τ y => hm τ y)`. Introduce and unpack `⟨s, hs, rfl⟩`. Take `⟨x, n, hx, rfl, hL⟩` from `(Formalism.L2.SG.Pf.NcReal.JX.NOf.noratC_holds X u s).1 hs`.
+
+Conclude with `⟨n, (GLinkPf.mem_gam_iff u N hF hF' n).2 hL, fun τ y => GLinkPf.trI_act C hx τ y⟩`.
+-/
 theorem realPts_Gam_eq_trI_image_NOinf : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) (C : Choice X 1), Std D large₂ →
     ∀ N : GlobalTheory.DegCnt.NF (HV D) D.R.rS, N.F = F0 X u → N.F' = F0 X u →
       GlobalTheory.DegVol.realPts (fun τ => phiV C τ) (N.Gam (VS D).L0 : Set ((VS D).V ≃ₗ[D.host.E] (VS D).V)) =

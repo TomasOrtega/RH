@@ -11,6 +11,9 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.IdemFin
 
+/- English proof (translation)
+Introduce `D e he`. Establish `h1 : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he]`. Conclude with `GlobalTheory.LevSplit.swapAE_int (GlobalTheory.AdIdem.idempotent_mem_intAE D _ h1)`.
+-/
 theorem toEAf_mem_intAf_of_idem : ∀ {D : D7} {e : AE D}, e * e = e → toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D e he
   have h1 : finPart D e * finPart D e = finPart D e := by rw [← map_mul, he]

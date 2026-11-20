@@ -16,9 +16,15 @@ def mulDual (S : HSpace E) (M : ℕ) (L : Submodule (𝓞 E) S.V) : AddSubgroup 
 def IsoLat (S : HSpace E) (L L' : Submodule (𝓞 E) S.V) : Prop :=
   ∃ γ : S.V ≃ₗ[E] S.V, (∀ x y, S.hT (γ x) (γ y) = S.hT x y) ∧ ∀ x, x ∈ L ↔ γ x ∈ L'
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dualSub (S : HSpace E) (L : Submodule (𝓞 E) S.V) (x : S.V) :
     x ∈ dualSub S L ↔ ∀ y ∈ L, S.hT y x ∈ (algebraMap (𝓞 E) E).range := Iff.rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_dualSub]`. Introduce `y hy`. Establish `h1 : γ.symm y ∈ L` using `(hL _).2 (by simpa using hy)`. Establish `h2` using `hx _ h1`. Rewrite `h2` using `[← hγ, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem dual_map_of_isom (S : HSpace E) {L L' : Submodule (𝓞 E) S.V} (γ : S.V ≃ₗ[E] S.V)
     (hγ : ∀ x y, S.hT (γ x) (γ y) = S.hT x y) (hL : ∀ x, x ∈ L ↔ γ x ∈ L') {x : S.V}
     (hx : x ∈ dualSub S L) : γ x ∈ dualSub S L' := by
@@ -28,11 +34,33 @@ theorem dual_map_of_isom (S : HSpace E) {L L' : Submodule (𝓞 E) S.V} (γ : S.
   have h2 := hx _ h1
   rwa [← hγ, LinearEquiv.apply_symm_apply] at h2
 
+/- English proof (translation)
+Introduce `x y`. Rewrite using `[← hγ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem isom_symm (S : HSpace E) (γ : S.V ≃ₗ[E] S.V) (hγ : ∀ x y, S.hT (γ x) (γ y) = S.hT x y) :
     ∀ x y, S.hT (γ.symm x) (γ.symm y) = S.hT x y := by
   intro x y
   rw [← hγ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `choose ρ hρR hρ using hR`. Use `choose γ hγi hγL using hρ`. Establish `hfib : ∀ r ∈ R, (Finset.univ.filter (fun c => ρ c = r)).card ≤ Q ^ n`. Introduce `r hr`. Take `⟨h0, hle⟩` from `hQ r hr`.
+
+Use `set K := dualSub S (L r) with hK`. Use `set H := (mulDual S M (L r)).addSubgroupOf K with hH`. Establish `: H.FiniteIndex` using `⟨h0⟩`. Establish `: Finite (K ⧸ H)` using `AddSubgroup.finite_quotient_of_finiteIndex`. Establish `hm : ∀ (c : {c // ρ c = r}) (a : Fin n), γ c.1 (e c.1 a) ∈ K` using `fun c a => by`.
+
+Use `dual_map_of_isom S (γ c.1) (hγi c.1) (hγL c.1) (he c.1 a)` as an intermediate fact. Rewrite `this` using `[c.2]`. Conclude with `this`. Set `g : {c // ρ c = r} → (Fin n → K ⧸ H)` to `fun c a => ((⟨γ c.1 (e c.1 a), hm c a⟩ : K) : K ⧸ H)`. Establish `hg : Function.Injective g`.
+
+Introduce `c c' hcc`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hsep c.1 c'.1` to reduce the goal to its premises. Use `⟨(γ c.1).trans (γ c'.1).symm, fun x y => ?_, fun x => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply]`.
+
+Rewrite using `[isom_symm S _ (hγi c'.1), hγi c.1]`. Rewrite using `[hγL c.1 x, hγL c'.1 (((γ c.1).trans (γ c'.1).symm) x), LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, c.2, c'.2]`. Establish `h1` using `congrFun hcc a`. Simplify using `only [g] at h1`. Rewrite `h1` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+
+Take `⟨z0, hz0, hz⟩` from `AddSubgroup.mem_map.1 h1`. Simplify using `only [DistribSMul.toAddMonoidHom_apply, AddSubgroup.coe_add, AddSubgroup.coe_neg] at hz`. Establish `hLs : ∀ x, x ∈ L r ↔ (γ c'.1).symm x ∈ L c'.1` using `fun x => by`. Rewrite using `[hγL c'.1 ((γ c'.1).symm x), LinearEquiv.apply_symm_apply, c'.2]`. Use `⟨(γ c'.1).symm (-z0), dual_map_of_isom S (γ c'.1).symm (isom_symm S _ (hγi c'.1)) hLs (neg_mem hz0), ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : (M : E) • (-z0) = γ c.1 (e c.1 a) - γ c'.1 (e c'.1 a)`. Rewrite using `[smul_neg, hz]`. Normalize the expressions using the abelian group laws. Rewrite using `[← LinearEquiv.map_smul, h2, map_sub, LinearEquiv.symm_apply_apply, LinearEquiv.trans_apply]`. Establish `hc` using `Nat.card_le_card_of_injective g hg`.
+
+Rewrite `hc` using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin n), Fintype.card_fin]`. Establish `hKH : Nat.card (K ⧸ H) ≤ Q` using `hle`. Establish `hpow : Nat.card (K ⧸ H) ^ n ≤ Q ^ n` using `Nat.pow_le_pow_left hKH n`. Rewrite `hc` using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Conclude with `hc.trans hpow`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_le_of_frames (S : HSpace E) (M n : ℕ) {ι : Type} [Fintype ι]
     (L : ι → Submodule (𝓞 E) S.V) (e : ι → Fin n → S.V)
     (he : ∀ c a, e c a ∈ dualSub S (L c))

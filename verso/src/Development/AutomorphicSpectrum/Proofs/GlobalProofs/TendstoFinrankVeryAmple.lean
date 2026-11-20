@@ -31,6 +31,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2 (IsMode
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume
 
+/- English proof (translation)
+Break down `h.eq_or_lt with rfl | hlt` into its components or cases. Rewrite using `[if_pos rfl]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with n hn`. Establish `: (n : ℝ) ≠ 0` using `by positivity`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg hlt.ne]`. Establish `h0 : Tendsto (fun n : ℕ => (1 / (n : ℝ)) ^ (e - i)) atTop (𝓝 (0 ^ (e - i)))` using `tendsto_one_div_atTop_nhds_zero_nat.pow _`. Rewrite `h0` using `[zero_pow (by omega)]`. Use `h0.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_gt_atTop 0] with n hn`. Establish `hn0 : (n : ℝ) ≠ 0` using `by positivity`. Take `⟨r, rfl⟩ : ∃ r, e = i + r` from `⟨e - i, by omega⟩`. Rewrite using `[Nat.add_sub_cancel_left, pow_add, one_div, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tendsto_pow_div_pow {i e : ℕ} (h : i ≤ e) :
     Tendsto (fun n : ℕ => (n : ℝ) ^ i / (n : ℝ) ^ e) atTop (𝓝 (if i = e then 1 else 0)) := by
   rcases h.eq_or_lt with rfl | hlt
@@ -50,6 +57,11 @@ theorem tendsto_pow_div_pow {i e : ℕ} (h : i ≤ e) :
     rw [Nat.add_sub_cancel_left, pow_add, one_div, inv_pow]
     field_simp
 
+/- English proof (translation)
+Establish `h1 : ∀ n : ℕ, ((P.eval (n : ℚ) : ℚ) : ℝ) / (n : ℝ) ^ e = ∑ i ∈ Finset.range (e + 1), (P.coeff i : ℝ) * ((n : ℝ) ^ i / (n : ℝ) ^ e)`. Introduce `n`. Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hP), Rat.cast_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`. Establish `h2 : Tendsto (fun n : ℕ => ∑ i ∈ Finset.range (e + 1), (P.coeff i : ℝ) * ((n : ℝ) ^ i / (n : ℝ) ^ e)) atTop (𝓝 (∑ i ∈ Finset.range (e + 1), (P.coeff i : ℝ) * (if i = e then 1 else 0)))` using `tendsto_finset_sum _ fun i hi => (tendsto_pow_div_pow (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))).const_mul _`. Simplify `h2` using `[Finset.sum_ite_eq', Finset.mem_range]`.
+-/
 theorem tendsto_eval_div_pow (P : Polynomial ℚ) {e : ℕ} (hP : P.natDegree ≤ e) :
     Tendsto (fun n : ℕ => ((P.eval (n : ℚ) : ℚ) : ℝ) / (n : ℝ) ^ e) atTop (𝓝 (P.coeff e : ℝ)) := by
   have h1 : ∀ n : ℕ, ((P.eval (n : ℚ) : ℚ) : ℝ) / (n : ℝ) ^ e =
@@ -67,6 +79,17 @@ theorem tendsto_eval_div_pow (P : Polynomial ℚ) {e : ℕ} (hP : P.natDegree �
       (tendsto_pow_div_pow (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))).const_mul _
   simpa [Finset.sum_ite_eq', Finset.mem_range] using h2
 
+/- English proof (translation)
+Establish `hpos : 0 < Fintype.card (ι k₀)`. Take `⟨i, -⟩` from `hmod.1 k₀`. Conclude with `Fintype.card_pos_iff.2 ⟨i⟩`. Take `⟨N, hN'⟩ : ∃ N, Fintype.card (ι k₀) = N + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`. Take `⟨e⟩ : Nonempty (ι k₀ ≃ Fin (N + 1))` from `⟨(Fintype.equivFin _).trans (finCongr hN')⟩`.
+
+Take `⟨Q, hQ⟩` from `Kleiman.SectionsOverLocalization.BundleOfDeg.full F K ι Ω y k₀ N e hmod ν`. Establish `hsub` using `(Kleiman.SectionsOverLocalization.ModelDim.proof F K ι Ω y k₀ N e _ rfl hmod (d + 1)).2 hdim`. Establish `hvaQ` using `(PositivityTheory.HtPt.Ktw.a74 F K ι Ω y k₀ N e _ rfl hmod Q ν hQ).2 hva`. Establish `hnum` using `PositivityTheory.HtPt.Ktw.a18 F K ι Ω y k₀ N e _ rfl hmod (d + 1) (fun _ => Q) (fun _ => ν) (fun _ => hQ) hsub`. Take `⟨-, P, hdeg, hc, hev⟩` from `PositivityTheory.HtPt.Ktw.a37 F Ω N _ (d + 1) Q hsub hvaQ`.
+
+Establish `hsec : ∀ n : ℕ, (Q.toSubSystem.pow n).secs = secOver F y (n • ν)` using `fun n => by`. Establish `h` using `PositivityTheory.HtPt.Ktw.a66 F K ι Ω y k₀ N e _ rfl hmod Q ν hQ n 0`. Rewrite `h` using `[Kleiman.twistMul, Kleiman.SubSystem.twist_twistSys_zero, zero_smul, add_zero]`. Conclude with `h`. Establish `hfac : ((d + 1).factorial : ℝ) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`.
+
+Establish `hlim : (P.coeff (d + 1) : ℝ) = (NumbersDVR.intNum F (mIdealOver F y) (fun _ : Fin (d + 1) => ν) : ℝ) / ((d + 1).factorial : ℝ)`. Rewrite using `[eq_div_iff hfac, ← hnum]`. Conclude with `hc` after adjusting the coercions. Rewrite using `[← hlim]`. Use `(tendsto_eval_div_pow P hdeg).congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hev] with n hn`. Rewrite using `[← hn, hsec n]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem tendsto_finrank_veryAmple {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra F Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {d : ℕ} {ν : K → ℤ}
     (hmod : IsModelWithBase F y k₀)
@@ -105,6 +128,19 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume
 
+/- English proof (translation)
+Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp`. Establish `h1 : Tendsto (fun τ : ℕ => 1 / (p : ℝ) + (c : ℝ) * (1 / (τ : ℝ))) atTop (𝓝 (1 / (p : ℝ)))`. Simplify using `using ((tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (c : ℝ)).const_add (1 / (p : ℝ))`. Establish `h2 : Tendsto (fun τ : ℕ => 1 / (p : ℝ) - 1 / (τ : ℝ)) atTop (𝓝 (1 / (p : ℝ)))`. Simplify using `using (tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).const_sub (1 / (p : ℝ))`.
+
+Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' h2 h1 ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with τ hτ`. Establish `hτ0 : (0 : ℝ) < τ` using `by exact_mod_cast hτ`. Establish `hlt : τ < (τ / p + 1) * p`. Establish `h` using `Nat.div_add_mod τ p`.
+
+Establish `h'` using `Nat.mod_lt τ (by omega : p > 0)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt' : (τ : ℝ) ≤ (((τ / p : ℕ) : ℝ) + 1) * p` using `by exact_mod_cast hlt.le`. Establish `h3 : (τ : ℝ) / p ≤ ((τ / p : ℕ) : ℝ) + 1` using `(div_le_iff₀ hp0).2 hlt'`. Establish `e : 1 / (p : ℝ) - 1 / (τ : ℝ) = ((τ : ℝ) / p - 1) / τ` using `by field_simp`.
+
+Rewrite using `[e]`. Use `div_le_div_of_nonneg_right ?_ hτ0.le` and prove the remaining obligations. Use `push_cast`. Establish `: (0 : ℝ) ≤ c` using `Nat.cast_nonneg c`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `filter_upwards [eventually_gt_atTop 0] with τ hτ`. Establish `hτ0 : (0 : ℝ) < τ` using `by exact_mod_cast hτ`. Establish `h3 : ((τ / p : ℕ) : ℝ) ≤ (τ : ℝ) / p` using `Nat.cast_div_le`. Establish `e : 1 / (p : ℝ) + (c : ℝ) * (1 / (τ : ℝ)) = ((τ : ℝ) / p + c) / τ` using `by field_simp`. Rewrite using `[e]`.
+
+Use `div_le_div_of_nonneg_right ?_ hτ0.le` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_div_div (p c : ℕ) (hp : 1 ≤ p) :
     Tendsto (fun τ : ℕ => ((τ / p + c : ℕ) : ℝ) / (τ : ℝ)) atTop (𝓝 (1 / (p : ℝ))) := by
   have hp0 : (0 : ℝ) < p := by exact_mod_cast hp
@@ -136,12 +172,22 @@ theorem tendsto_div_div (p c : ℕ) (hp : 1 ≤ p) :
     push_cast
     linarith
 
+/- English proof (translation)
+Use `tendsto_atTop.2 fun b => ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (b * p)] with τ hτ`. Use `(Nat.le_div_iff_mul_le (by omega : 0 < p)).2 hτ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem tendsto_div_add (p c : ℕ) (hp : 1 ≤ p) : Tendsto (fun τ : ℕ => τ / p + c) atTop atTop := by
   refine tendsto_atTop.2 fun b => ?_
   filter_upwards [eventually_ge_atTop (b * p)] with τ hτ
   have := (Nat.le_div_iff_mul_le (by omega : 0 < p)).2 hτ
   omega
 
+/- English proof (translation)
+Introduce `ε hε`. Establish `h1` using `(hu.comp (tendsto_div_add p 1 hp)).mul ((tendsto_div_div p 1 hp).pow D)`. Establish `hX : X * (1 / (p : ℝ)) ^ D = X / (p : ℝ) ^ D`. Rewrite using `[one_div, inv_pow, div_eq_mul_inv]`. Rewrite `h1` using `[hX]`.
+
+Use `filter_upwards [h1.eventually_lt_const (lt_add_of_pos_right _ hε), hle, eventually_gt_atTop 0] with τ h2 h3 hτ`. Establish `hτ0 : (0 : ℝ) < τ` using `by exact_mod_cast hτ`. Establish `hn0 : (0 : ℝ) < ((τ / p + 1 : ℕ) : ℝ)` using `by positivity`. Establish `e : (Function.comp (fun n : ℕ => u n / (n : ℝ) ^ D) fun τ : ℕ => τ / p + 1) τ * (((τ / p + 1 : ℕ) : ℝ) / (τ : ℝ)) ^ D = u (τ / p + 1) / (τ : ℝ) ^ D`. Simplify using `only [Function.comp, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h2' : u (τ / p + 1) / (τ : ℝ) ^ D < X / (p : ℝ) ^ D + ε`. Rewrite using `[← e]`. Conclude with `h2`. Conclude with `(div_le_div_of_nonneg_right h3 (by positivity)).trans h2'.le`.
+-/
 theorem eventually_le_of_growth {D : ℕ} {f u : ℕ → ℝ} {X : ℝ} {p : ℕ} (hp : 1 ≤ p)
     (hu : Tendsto (fun n : ℕ => u n / (n : ℝ) ^ D) atTop (𝓝 X))
     (hle : ∀ᶠ τ : ℕ in atTop, f τ ≤ u (τ / p + 1)) :
@@ -164,6 +210,15 @@ theorem eventually_le_of_growth {D : ℕ} {f u : ℕ → ℝ} {X : ℝ} {p : ℕ
     exact h2
   exact (div_le_div_of_nonneg_right h3 (by positivity)).trans h2'.le
 
+/- English proof (translation)
+Introduce `ε hε`. Establish `hr : Tendsto (fun τ : ℕ => ((τ / p : ℕ) : ℝ) / (τ : ℝ)) atTop (𝓝 (1 / (p : ℝ)))`. Simplify using `using tendsto_div_div p 0 hp`. Establish `hz : Tendsto (fun τ : ℕ => 1 / (τ : ℝ)) atTop (𝓝 0)` using `tendsto_one_div_atTop_nhds_zero_nat`. Establish `h1 : Tendsto (fun τ : ℕ => X * (((τ / p : ℕ) : ℝ) / (τ : ℝ)) ^ (d + 1) - C * ((((τ / p : ℕ) : ℝ) / (τ : ℝ)) ^ d * (1 / (τ : ℝ))) - C₁ * (1 / (τ : ℝ))) atTop (𝓝 (X * (1 / (p : ℝ)) ^ (d + 1) - C * ((1 / (p : ℝ)) ^ d * 0) - C₁ * 0))` using `(((hr.pow _).const_mul X).sub (((hr.pow _).mul hz).const_mul C)).sub (hz.const_mul C₁)`.
+
+Establish `hX : X * (1 / (p : ℝ)) ^ (d + 1) - C * ((1 / (p : ℝ)) ^ d * 0) - C₁ * 0 = X / (p : ℝ) ^ (d + 1)`. Rewrite using `[one_div, inv_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[hX]`. Use `filter_upwards [h1.eventually_const_lt (sub_lt_self _ hε), hle, tendsto_div_add p 0 hp |>.eventually (eventually_ge_atTop 1), eventually_gt_atTop 0] with τ h2 h3 h4 hτ`.
+
+Establish `hτ0 : (0 : ℝ) < τ` using `by exact_mod_cast hτ`. Establish `h5` using `hv (τ / p) (by simpa using h4)`. Establish `e : X * (((τ / p : ℕ) : ℝ) / (τ : ℝ)) ^ (d + 1) - C * ((((τ / p : ℕ) : ℝ) / (τ : ℝ)) ^ d * (1 / (τ : ℝ))) - C₁ * (1 / (τ : ℝ)) = (X * ((τ / p : ℕ) : ℝ) ^ (d + 1) - C * ((τ / p : ℕ) : ℝ) ^ d - C₁ * (τ : ℝ) ^ d) / (τ : ℝ) ^ (d + 1)`. Establish `ht : (τ : ℝ) ^ (d + 1) = (τ : ℝ) ^ d * τ` using `pow_succ _ _`. Simplify using `only [div_pow]`.
+
+Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e]`. Use `h2.le.trans (div_le_div_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eventually_ge_of_growth {d : ℕ} {f v : ℕ → ℝ} {X C C₁ : ℝ} {p : ℕ} (hp : 1 ≤ p)
     (hv : ∀ n : ℕ, 1 ≤ n → X * (n : ℝ) ^ (d + 1) - C * (n : ℝ) ^ d ≤ v n)
     (hle : ∀ᶠ τ : ℕ in atTop, v (τ / p) ≤ f τ + C₁ * (τ : ℝ) ^ d) :
@@ -197,6 +252,11 @@ theorem eventually_ge_of_growth {d : ℕ} {f v : ℕ → ℝ} {X C C₁ : ℝ} {
   refine h2.le.trans (div_le_div_of_nonneg_right ?_ (by positivity))
   linarith
 
+/- English proof (translation)
+Use `tendsto_order.2 ⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hm : a + (G - a) / 3 < G` using `by linarith`. Establish `hs : Tendsto (fun q => Φ q - Ψ q) atTop (𝓝 G)` using `by simpa using hΦ.sub hΨ`. Take `⟨q, hq, h1⟩` from `((eventually_ge_atTop 1).and (hs.eventually_const_lt hm)).exists`. Use `filter_upwards [hL q hq ((G - a) / 3) (by linarith)] with τ hτ`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : G < b - (b - G) / 3` using `by linarith`. Take `⟨q, hq, h1⟩` from `((eventually_ge_atTop 1).and (hΦ.eventually_lt_const hm)).exists`. Use `filter_upwards [hU q hq ((b - G) / 3) (by linarith)] with τ hτ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_of_bounds {g Φ Ψ : ℕ → ℝ} {G : ℝ} (hΦ : Tendsto Φ atTop (𝓝 G)) (hΨ : Tendsto Ψ atTop (𝓝 0))
     (hU : ∀ q : ℕ, 1 ≤ q → ∀ ε > 0, ∀ᶠ τ : ℕ in atTop, g τ ≤ Φ q + ε)
     (hL : ∀ q : ℕ, 1 ≤ q → ∀ ε > 0, ∀ᶠ τ : ℕ in atTop, Φ q - Ψ q - ε ≤ g τ) :
@@ -212,6 +272,19 @@ theorem tendsto_of_bounds {g Φ Ψ : ℕ → ℝ} {G : ℝ} (hΦ : Tendsto Φ at
     filter_upwards [hU q hq ((b - G) / 3) (by linarith)] with τ hτ
     linarith
 
+/- English proof (translation)
+Establish `h1 : ∀ q : ℕ, g (fun _ => (q : ℤ) • β + e) = ∑ s : Finset (Fin n), (q : ℤ) ^ s.card * g (s.piecewise (fun _ => β) (fun _ => e))`. Introduce `q`. Establish `h` using `g.map_add_univ (fun _ => (q : ℤ) • β) (fun _ => e)`. Use `h.trans (Finset.sum_congr rfl fun s _ => ?_)` and prove the remaining obligations. Establish `h2` using `g.map_piecewise_smul (fun _ => (q : ℤ)) (s.piecewise (fun _ => β) (fun _ => e)) s`.
+
+Establish `e2 : s.piecewise (fun _ => (q : ℤ) • β) (fun _ => e) = s.piecewise (fun i => (q : ℤ) • s.piecewise (fun _ => β) (fun _ => e) i) (s.piecewise (fun _ => β) (fun _ => e))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [Finset.piecewise, hi]`. Rewrite using `[e2, h2, Finset.prod_const, smul_eq_mul]`. Establish `h3 : ∀ q : ℕ, (g (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ n = ∑ s : Finset (Fin n), (g (s.piecewise (fun _ => β) (fun _ => e)) : ℝ) * ((q : ℝ) ^ s.card / (q : ℝ) ^ n)`.
+
+Introduce `q`. Rewrite using `[h1 q]`. Use `push_cast`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h3]`. Establish `h4 : Tendsto (fun q : ℕ => ∑ s : Finset (Fin n), (g (s.piecewise (fun _ => β) (fun _ => e)) : ℝ) * ((q : ℝ) ^ s.card / (q : ℝ) ^ n)) atTop (𝓝 (∑ s : Finset (Fin n), (g (s.piecewise (fun _ => β) (fun _ => e)) : ℝ) * (if s.card = n then 1 else 0)))` using `tendsto_finset_sum _ fun s _ => (tendsto_pow_div_pow (by`. Simplify using `using s.card_le_univ)).const_mul _`. Use `h4 using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Finset.sum_eq_single Finset.univ]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Establish `: s.card ≠ n` using `fun h => hs (by`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises.
+
+Simplify using `using h)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem tendsto_multilinear {M : Type} [AddCommGroup M] {n : ℕ}
     (g : MultilinearMap ℤ (fun _ : Fin n => M) ℤ) (β e : M) :
     Tendsto (fun q : ℕ => (g (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ n) atTop
@@ -262,6 +335,15 @@ section Sections
 
 variable {F : Type} [Field F] {K : Type} [Fintype K] {ι : K → Type} {Ω : Type} [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule] at hs ⊢`. Introduce `c hc`. Establish `h1` using `hs c hc`. Establish `hq : ∀ k, y ⟨k, j k⟩ / y ⟨k, c k⟩ ∈ chartRingOver F y c` using `fun k => Algebra.subset_adjoin ⟨⟨k, j k⟩, rfl⟩`. Establish `h2 : ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ e k ∈ chartRingOver F y c` using `prod_mem fun k _ => pow_mem (hq k) _`.
+
+Establish `heq : s * (∏ k, y ⟨k, j k⟩ ^ e k) * ∏ k, y ⟨k, c k⟩ ^ (-(b + fun k => (e k : ℤ) : K → ℤ) k) = (s * ∏ k, y ⟨k, c k⟩ ^ (-b k)) * ∏ k, (y ⟨k, j k⟩ / y ⟨k, c k⟩) ^ e k`. Rewrite using `[mul_assoc, mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hck` using `hc k`.
+
+Establish `hz : y ⟨k, c k⟩ ^ (-(b + fun k => (e k : ℤ) : K → ℤ) k) = y ⟨k, c k⟩ ^ (-b k) * (y ⟨k, c k⟩ ^ e k)⁻¹`. Rewrite using `[← zpow_natCast, ← zpow_neg, ← zpow_add₀ hck]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hz, div_pow, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `mul_mem h1 h2`.
+-/
 theorem mul_monomial_mem_secOver (y : (Σ k, ι k) → Ω) (j : ∀ k, ι k) (e : K → ℕ) {b : K → ℤ} {s : Ω}
     (hs : s ∈ secOver F y b) :
     s * ∏ k, y ⟨k, j k⟩ ^ e k ∈ secOver F y (b + fun k => (e k : ℤ)) := by
@@ -290,6 +372,13 @@ theorem mul_monomial_mem_secOver (y : (Σ k, ι k) → Ω) (j : ∀ k, ι k) (e 
   rw [heq]
   exact mul_mem h1 h2
 
+/- English proof (translation)
+Use `choose j hj using hnz`. Use `set e : K → ℕ := fun k => (b' k - b k).toNat with he`. Establish `hb' : b + (fun k => (e k : ℤ)) = b'`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, he]`.
+
+Use `hb k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu0 : (∏ k, y ⟨k, j k⟩ ^ e k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hj k)`. Establish `hmem : ∀ s ∈ secOver F y b, s * ∏ k, y ⟨k, j k⟩ ^ e k ∈ secOver F y b'` using `fun s hs => by`. Use `mul_monomial_mem_secOver y j e hs` as an intermediate fact.
+
+Rewrite `this` using `[hb']`. Then use the resulting hypothesis. Set `f : secOver F y b →ₗ[F] secOver F y b'` to `{ toFun := fun s => ⟨s.1 * ∏ k, y ⟨k, j k⟩ ^ e k, hmem s.1 s.2⟩ map_add' := fun s t => Subtype.ext (add_mul _ _ _) map_smul' := fun r s => Subtype.ext (smul_mul_assoc _ _ _) }`. Use `LinearMap.finrank_le_finrank_of_injective (f := f) fun s t hst => ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_right_cancel₀ hu0 (congrArg Subtype.val hst))`.
+-/
 theorem finrank_secOver_mono {y : (Σ k, ι k) → Ω} (hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) {b b' : K → ℤ}
     (hb : ∀ k, b k ≤ b' k) (hfd : FiniteDimensional F (secOver F y b')) :
     Module.finrank F (secOver F y b) ≤ Module.finrank F (secOver F y b') := by
@@ -323,6 +412,11 @@ section Growth
 variable {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Ω : Type} [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Consider the cases of `k with`. Consider the case `inl u => simp [pullDeg, baseDeg, Pi.single_apply]`. Consider the case `inr k`. Simplify using `[pullDeg, baseDeg, Pi.single_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_pull_add (a : K → ℤ) (n p m : ℕ) :
     n • ((p • pullDeg (K₁ := Unit) a) + (m : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K)) =
       pullDeg ((((n * p : ℕ) : ℤ)) • a) + (((n * m : ℕ) : ℤ)) • baseDeg (Sum.inl () : Unit ⊕ K) := by
@@ -333,6 +427,9 @@ theorem smul_pull_add (a : K → ℤ) (n p m : ℕ) :
     simp [pullDeg, baseDeg, Pi.single_apply]
     ring
 
+/- English proof (translation)
+Rewrite using `[smul_pull_add]`. Conclude with `Kleiman.SectionsOverLocalization.SegreTwist.proof F K ι Ω y hnz _ _`.
+-/
 theorem secOver_segre (y : (Σ k, ι k) → Ω) (hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) (a : K → ℤ) (n p m : ℕ) :
     secOver F (Kleiman.SectionsOverLocalization.segreJoin y)
         (n • ((p • pullDeg (K₁ := Unit) a) + (m : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K))) =
@@ -351,10 +448,28 @@ section Main
 variable {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Ω : Type} [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Use polynomial arithmetic with `[mul_nonneg hr (by linarith : 0 ≤ a + A), mul_nonneg (by linarith : 0 ≤ p - r) hA]`.
+-/
 theorem smul_add_nonneg {a A r p n : ℤ} (ha : -A ≤ a) (hA : 0 ≤ A) (hr : 0 ≤ r) (hrp : r ≤ p) (hn : p * A ≤ n) :
     0 ≤ r * a + n := by
   nlinarith [mul_nonneg hr (by linarith : 0 ≤ a + A), mul_nonneg (by linarith : 0 ≤ p - r) hA]
 
+/- English proof (translation)
+Establish `hmod` using `(Kleiman.SectionsOverLocalization.SegreBase.proof F K ι Ω y hnz).1`. Establish `hdim` using `(Kleiman.SectionsOverLocalization.SegreDim.proof F K ι Ω y hnz).trans hd`. Establish `hu` using `tendsto_finrank_veryAmple hmod hdim hva`. Use `eventually_le_of_growth hp hu ?_` and prove the remaining obligations. Use `set A : ℤ := ∑ k, |a k| with hA`.
+
+Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun k _ => abs_nonneg _`. Establish `hak : ∀ k, -A ≤ a k` using `fun k => (neg_le_neg (Finset.single_le_sum (f := fun k => |a k|) (fun k _ => abs_nonneg _) (Finset.mem_univ k))).trans (neg_abs_le _)`. Use `filter_upwards [eventually_ge_atTop (p * p * A.toNat)] with τ hτ`. Rewrite using `[secOver_segre y hnz a]`. Establish `hfin` using `hfd ((((τ / p + 1) * p : ℕ) : ℤ) • a + fun _ => ((((τ / p + 1) * m : ℕ)) : ℤ))`.
+
+Use `Nat.cast_le.2 (finrank_secOver_mono hnz (fun k => ?_) hfin)` and prove the remaining obligations. Establish `hdiv` using `Nat.div_add_mod τ p`. Establish `hlt` using `Nat.mod_lt τ (by omega : p > 0)`. Use `set t := τ / p with ht`. Establish `htA : p * A.toNat ≤ t` using `(Nat.le_div_iff_mul_le (by omega)).2 (by`.
+
+Rewrite using `[show p * A.toNat * p = p * p * A.toNat by ring]`. Conclude with `hτ)`. Establish `hAn : (A.toNat : ℤ) = A` using `Int.toNat_of_nonneg hA0`. Establish `h1 : (τ : ℤ) = p * t + ((τ % p : ℕ) : ℤ)` using `by exact_mod_cast hdiv.symm`. Establish `h2 : ((τ % p : ℕ) : ℤ) < p` using `by exact_mod_cast hlt`.
+
+Establish `h3 : (0 : ℤ) ≤ ((τ % p : ℕ) : ℤ)` using `Int.natCast_nonneg _`. Establish `e1 : (((t + 1) * p : ℕ) : ℤ) = p * t + p` using `by push_cast; ring`. Establish `h4 : (p : ℤ) * A ≤ (((t + 1) * m : ℕ) : ℤ)`. Establish `h5 : t ≤ (t + 1) * m` using `by nlinarith`. Establish `h6 : p * A.toNat ≤ (t + 1) * m` using `htA.trans h5`.
+
+Rewrite using `[← hAn]`. Conclude with `h6` after adjusting the coercions. Establish `key` using `smul_add_nonneg (a := a k) (A := A) (r := (((t + 1) * p : ℕ) : ℤ) - τ) (p := p) (n := (((t + 1) * m : ℕ) : ℤ)) (hak k) hA0 (by rw [e1, h1]; linarith) (by rw [e1, h1]; linarith) h4`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e2 : ((((t + 1) * p : ℕ) : ℤ) - τ) * a k = (((t + 1) * p : ℕ) : ℤ) * a k - τ * a k` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem upper_of_veryAmple {y : (Σ k, ι k) → Ω} (hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) {d : ℕ} {a : K → ℤ}
     (hd : FieldNumbers.relDim (mIdealOver F y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ)))
     (hfd : ∀ b, FiniteDimensional F (secOver F y b)) {p m : ℕ} (hp : 1 ≤ p) (hm : 1 ≤ m)
@@ -400,6 +515,23 @@ theorem upper_of_veryAmple {y : (Σ k, ι k) → Ω} (hnz : ∀ k, ∃ i, y ⟨k
   have e2 : ((((t + 1) * p : ℕ) : ℤ) - τ) * a k = (((t + 1) * p : ℕ) : ℤ) * a k - τ * a k := by ring
   linarith
 
+/- English proof (translation)
+Establish `hmod` using `(Kleiman.SectionsOverLocalization.SegreBase.proof F K ι Ω y hnz).1`. Establish `hdim` using `(Kleiman.SectionsOverLocalization.SegreDim.proof F K ι Ω y hnz).trans hd`. Take `⟨C, hC⟩` from `hS F _ _ Ω (Kleiman.SectionsOverLocalization.segreJoin y) (Sum.inl ()) d _ m hmod hdim hva hm`. Use `set A : ℤ := ∑ k, |a k| with hA`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun k _ => abs_nonneg _`.
+
+Establish `hak : ∀ k, -A ≤ a k` using `fun k => (neg_le_neg (Finset.single_le_sum (f := fun k => |a k|) (fun k _ => abs_nonneg _) (Finset.mem_univ k))).trans (neg_abs_le _)`. Take `⟨C₁, hC₁⟩` from `hsh (p * A.toNat)`. Use `eventually_ge_of_growth (C := C) (C₁ := C₁) (v := fun n : ℕ => (Module.finrank F (secOver F (Kleiman.SectionsOverLocalization.segreJoin y) (n • ((p • pullDeg (K₁ := Unit) a) + (m : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K) - m • baseDeg (Sum.inl () : Unit ⊕ K)))) : ℝ)) hp (fun n hn => …` and prove the remaining obligations. Establish `h` using `hC n hn`. Rewrite using `[div_mul_eq_mul_div]`.
+
+Conclude with `h`. Use `filter_upwards [hC₁] with τ hτ`. Establish `hsec : ∀ n : ℕ, secOver F (Kleiman.SectionsOverLocalization.segreJoin y) (n • ((p • pullDeg (K₁` using `Unit) a) + (m : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K) - m • baseDeg (Sum.inl () : Unit ⊕ K))) = secOver F y (((n * p : ℕ) : ℤ) • a) := by`. Introduce `n`. Establish `e0 : n • ((p • pullDeg (K₁` using `Unit) a) + (m : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K) - m • baseDeg (Sum.inl () : Unit ⊕ K)) = pullDeg (((n * p : ℕ) : ℤ) • a) + (0 : ℤ) • baseDeg (Sum.inl () : Unit ⊕ K) := by`.
+
+Use function extensionality and compare the values at `k`. Consider the cases of `k with`. Consider the case `inl u => simp [pullDeg, baseDeg, Pi.single_apply]`. Consider the case `inr k`. Simplify using `[pullDeg, baseDeg, Pi.single_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e0, Kleiman.SectionsOverLocalization.SegreTwist.proof F K ι Ω y hnz]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Use `beta_reduce`. Rewrite using `[hsec]`. Use `le_trans (Nat.cast_le.2 (finrank_secOver_mono hnz (fun k => ?_) (hfd _))) hτ` and prove the remaining obligations. Establish `hdiv` using `Nat.div_add_mod τ p`. Establish `hlt` using `Nat.mod_lt τ (by omega : p > 0)`.
+
+Use `set t := τ / p with ht`. Establish `hAn : (A.toNat : ℤ) = A` using `Int.toNat_of_nonneg hA0`. Establish `h1 : (τ : ℤ) = p * t + ((τ % p : ℕ) : ℤ)` using `by exact_mod_cast hdiv.symm`. Establish `h2 : ((τ % p : ℕ) : ℤ) < p` using `by exact_mod_cast hlt`. Establish `h3 : (0 : ℤ) ≤ ((τ % p : ℕ) : ℤ)` using `Int.natCast_nonneg _`.
+
+Establish `e1 : ((t * p : ℕ) : ℤ) = p * t` using `by push_cast; ring`. Establish `key` using `smul_add_nonneg (a := a k) (A := A) (r := ((τ % p : ℕ) : ℤ)) (p := p) (n := ((p * A.toNat : ℕ) : ℤ)) (hak k) hA0 h3 h2.le (by push_cast; rw [hAn])`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e1, h1]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lower_of_veryAmple (hS : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.SectionCount.Statement)
     {y : (Σ k, ι k) → Ω} (hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) {d : ℕ} {a : K → ℤ}
     (hd : FieldNumbers.relDim (mIdealOver F y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ)))
@@ -484,6 +616,41 @@ def fixLast {M : Type} [AddCommGroup M] {d : ℕ} (f : MultilinearMap ℤ (fun _
     MultilinearMap ℤ (fun _ : Fin d => M) ℤ :=
   (LinearMap.applyₗ e).compMultilinearMap (f.curryRight)
 
+/- English proof (translation)
+Establish `hmod` using `(Kleiman.SectionsOverLocalization.SegreBase.proof F K ι Ω y hnz).1`. Establish `hdim` using `(Kleiman.SectionsOverLocalization.SegreDim.proof F K ι Ω y hnz).trans hd`. Establish `hnef'` using `(Kleiman.SectionsOverLocalization.SegreNef.proof Kleiman.SectionsOverLocalization.SegreDim.proof Kleiman.SectionsOverLocalization.SegreNum.proof F K ι Ω y hnz a).2 hnef`. Establish `hP` using `Kleiman.SectionsOverLocalization.isMultiProjPrime_mIdealOver (S := F) (Kleiman.SectionsOverLocalization.segreJoin y) hmod.1`. Take `⟨f, hf⟩` from `PositivityTheory.HtPt.Siub.exists_multilinear (M := Unit ⊕ K → ℤ) (n := d + 1) (fun v => NumbersDVR.intNum F (mIdealOver F (Kleiman.SectionsOverLocalization.segreJoin y)) v) (FieldNumbers.IntNumAdd.full F (Unit ⊕ K) _ (mIdealOver F (Kleiman.SectionsOverLocalization.segreJoin y)) …`.
+
+Use `set β : Unit ⊕ K → ℤ := pullDeg (K₁ := Unit) a with hβ`. Use `set e : Unit ⊕ K → ℤ := baseDeg (Sum.inl () : Unit ⊕ K) with he`. Establish `hG : NumbersDVR.intNum F (mIdealOver F y) (fun _ : Fin (d + 1) => a) = f (fun _ => β)`. Rewrite using `[hf]`. Conclude with `(Kleiman.SectionsOverLocalization.SegreNum.proof F K ι Ω y hnz (d + 1) (fun _ => a)).symm`.
+
+Establish `hfac : (0 : ℝ) < ((d + 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Establish `hΦ : Tendsto (fun q : ℕ => (f (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ)) atTop (𝓝 ((f (fun _ => β) : ℝ) / ((d + 1).factorial : ℝ)))` using `(tendsto_multilinear f β e).div_const _`. Establish `hΨ : Tendsto (fun q : ℕ => ((d + 1 : ℕ) : ℝ) * ((fixLast f e (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ d * (1 / (q : ℝ))) / ((d + 1).factorial : ℝ)) atTop (𝓝 0)`. Establish `h` using `(((tendsto_multilinear (fixLast f e) β e).mul (tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ))).const_mul ((d + 1 : ℕ) : ℝ)).div_const ((d + 1).factorial : ℝ)`. Simplify using `using h`.
+
+Establish `key : ∀ q : ℕ, 1 ≤ q → ∃ p m : ℕ, 1 ≤ p ∧ 1 ≤ m ∧ p = q * m ∧ VeryAmple F (Kleiman.SectionsOverLocalization.segreJoin y) ((p • β) + (m : ℤ) • e)`. Introduce `q hq`. Establish `hq0 : (0 : ℚ) < q` using `by exact_mod_cast hq`. Take `⟨p, m, hp, hm, hva⟩` from `hK (d + 1) F _ _ Ω (Kleiman.SectionsOverLocalization.segreJoin y) (Sum.inl ()) hmod hdim β hnef' (1 / (q : ℚ)) (by positivity)`. Establish `hp0 : (0 : ℚ) < p` using `by exact_mod_cast hp`.
+
+Establish `hmpos : 0 < m`. Establish `: (0 : ℚ) < m` using `by rw [hm]; positivity`. Conclude with `this` after adjusting the coercions. Take `⟨r, rfl⟩` from `Int.eq_ofNat_of_zero_le hmpos.le`. Establish `hr : 1 ≤ r` using `by exact_mod_cast hmpos`.
+
+Establish `hpq : p = q * r`. Establish `h1 : (r : ℚ) * q = p`. Establish `h2 : ((r : ℤ) : ℚ) = p * (1 / (q : ℚ))` using `hm`. Move the coercions through the operations in `at h2`. Rewrite using `[h2]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h3 : r * q = p` using `by exact_mod_cast h1`. Rewrite using `[← h3, mul_comm]`. Conclude with `⟨p, r, hp, hr, hpq, hva⟩`. Rewrite using `[hG]`.
+
+Establish `hν : ∀ {p m q : ℕ}, p = q * m → (p • β) + (m : ℤ) • e = (m : ℤ) • ((q : ℤ) • β + e)`. Introduce `p m q hpq`. Substitute `hpq` using the available equality. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : ∀ {p m q : ℕ}, p = q * m → f (fun _ => (p • β) + (m : ℤ) • e) = (m : ℤ) ^ (d + 1) * f (fun _ => (q : ℤ) • β + e)`. Introduce `p m q hpq`.
+
+Establish `h` using `f.map_smul_univ (fun _ => (m : ℤ)) (fun _ => (q : ℤ) • β + e)`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at h`. Rewrite using `[hν hpq]`. Conclude with `h`. Establish `hX : ∀ {p m q : ℕ}, 1 ≤ q → 1 ≤ m → p = q * m → (NumbersDVR.intNum F (mIdealOver F (Kleiman.SectionsOverLocalization.segreJoin y)) (fun _ : Fin (d + 1) => (p • β) + (m : ℤ) • e) : ℝ) / ((d + 1).factorial : ℝ) / (p : ℝ) ^ (d + 1) = (f (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ (d …`.
+
+Introduce `p m q hq hm hpq`. Establish `hq0 : (q : ℝ) ≠ 0` using `by positivity`. Establish `hm0 : (m : ℝ) ≠ 0` using `by positivity`. Establish `hf0` using `hfac.ne'`. Rewrite using `[← hf (fun _ => (p • β) + (m : ℤ) • e), hF hpq, hpq]`.
+
+Use `push_cast`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `tendsto_of_bounds hΦ hΨ (fun q hq ε hε => ?_) (fun q hq ε hε => ?_)` and prove the remaining obligations. Take `⟨p, m, hp, hm, hpq, hva⟩` from `key q hq`.
+
+Use `(upper_of_veryAmple hnz hd hfd hp hm hva ε hε).mono fun τ hτ => hτ.trans_eq ?_` and prove the remaining obligations. Conclude with `congrArg (· + ε) (hX hq hm hpq)`. Take `⟨p, m, hp, hm, hpq, hva⟩` from `key q hq`. Establish `hs : Fin.snoc (α` using `fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (p • β) + (m : ℤ) • e) (m • e) = fun i => (m : ℤ) • (Fin.snoc (α := fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (q : ℤ) • β + e) e : Fin (d + 1) → Unit ⊕ K → ℤ) i := by`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.snoc_last, natCast_zsmul]`. Simplify using `only [Fin.snoc_castSucc, hν hpq]`. Establish `hS1 : f (Fin.snoc (α` using `fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (p • β) + (m : ℤ) • e) (m • e)) = (m : ℤ) ^ (d + 1) * fixLast f e (fun _ => (q : ℤ) • β + e) := by`. Establish `h` using `f.map_smul_univ (fun _ => (m : ℤ)) (Fin.snoc (α := fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (q : ℤ) • β + e) e)`.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at h`. Rewrite using `[hs]`. Conclude with `h`. Establish `hY : (((NumbersDVR.intNum F (mIdealOver F (Kleiman.SectionsOverLocalization.segreJoin y)) (fun _ : Fin (d + 1) => (p • β) + (m : ℤ) • e) : ℝ) - ((d + 1 : ℕ) : ℝ) * (NumbersDVR.intNum F (mIdealOver F (Kleiman.SectionsOverLocalization.segreJoin y)) (Fin.snoc (α` using `fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (p • β) + (m : ℤ) • e) (m • e)) : ℝ)) / ((d + 1).factorial : ℝ)) / (p : ℝ) ^ (d + 1) = (f (fun _ => (q : ℤ) • β + e) : ℝ) / (q : ℝ) ^ (d + 1) / ((d + 1).factorial : ℝ) - ((d + 1 : ℕ) : ℝ) * ((fixLast f e (fun _ => (q : ℤ) • β + e) : ℝ) / ( …`. Establish `hq0 : (q : ℝ) ≠ 0` using `by positivity`.
+
+Establish `hm0 : (m : ℝ) ≠ 0` using `by positivity`. Establish `hf0` using `hfac.ne'`. Rewrite using `[← hf (fun _ => (p • β) + (m : ℤ) • e), ← hf (Fin.snoc (α := fun _ => Unit ⊕ K → ℤ) (fun _ : Fin d => (p • β) + (m : ℤ) • e) (m • e)), hF hpq, hS1, hpq]`. Establish `hqd : (q : ℝ) ^ (d + 1) = (q : ℝ) ^ d * q` using `pow_succ _ _`. Use `push_cast`.
+
+Rewrite using `[mul_pow, hqd]`. Clear the denominators using the available nonvanishing facts. Use `(lower_of_veryAmple hS hnz hd hfd hsh hp hm hva ε hε).mono fun τ hτ => le_trans (le_of_eq ?_) hτ` and prove the remaining obligations. Conclude with `(congrArg (· - ε) hY).symm`.
+-/
 theorem tendsto_finrank_nef (hK : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.VeryAmpleNefPlusAmple.Statement)
     (hS : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.SectionCount.Statement)
     {y : (Σ k, ι k) → Ω} (hnz : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) {d : ℕ} {a : K → ℤ}
@@ -617,6 +784,13 @@ section Final
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Use extensionality with `s`. Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Establish `h3 : ∀ (c : ∀ k, ι k) (j : K), -(((1 : ℕ) : ℤ) * b j) = -b j` using `fun _ j => by simp`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`.
+
+Establish `h1` using `h c hc`. Simplify using `only [h3 c] at h1`. Conclude with `h1`. Introduce `h c hc`. Establish `h1` using `h c hc`.
+
+Use `show s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * b k)) ∈ chartRingQ y c`. Simplify using `only [h3 c]`. Conclude with `h1`.
+-/
 theorem chartLatQ_eq_secOver (y : (Σ k, ι k) → Ω) (b : K → ℤ) : chartLatQ y b 1 = secOver ℚ y b := by
   ext s
   simp only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply,
@@ -633,6 +807,9 @@ theorem chartLatQ_eq_secOver (y : (Σ k, ι k) → Ω) (b : K → ℤ) : chartLa
     simp only [h3 c]
     exact h1
 
+/- English proof (translation)
+Use extensionality with `s`. Establish `h3 : ∀ j, -(((1 : ℕ) : ℤ) * ((τ : ℤ) • a) j) = -((τ : ℤ) * a j)` using `fun j => by simp`. Express the relevant statement in the definitionally equal form `(∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * ((τ : ℤ) • a) k)) ∈ chartRingQ y c) ↔ (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) ∈ chartRingQ y c)`. Simplify using `only [h3]`.
+-/
 theorem chartLatQ_smul (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) :
     chartLatQ y ((τ : ℤ) • a) 1 = chartLatQ y a τ := by
   ext s
@@ -643,12 +820,22 @@ theorem chartLatQ_smul (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) :
       s * ∏ k, y ⟨k, c k⟩ ^ (-((τ : ℤ) * a k)) ∈ chartRingQ y c)
   simp only [h3]
 
+/- English proof (translation)
+The claim follows from `have hL : SectionLatticeFinite.Statement := SectionLatticeFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond ShiftSectionBound.proof hL (ShiftQuotientBound.proof hL (HyperplaneQuotientBound.proof HyperplaneRegularSection.full DiagonalSectionDifferen …`.
+-/
 theorem shiftSectionBound : ShiftSectionBound.Statement :=
   have hL : SectionLatticeFinite.Statement := SectionLatticeFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond
   ShiftSectionBound.proof hL (ShiftQuotientBound.proof hL
     (HyperplaneQuotientBound.proof HyperplaneRegularSection.full DiagonalSectionDifference.proof hL)
     HyperplaneRegularSection.full)
 
+/- English proof (translation)
+Establish `hz : Tendsto (fun τ : ℕ => f τ / (τ : ℝ) ^ (d + 1) + C * (1 / (τ : ℝ))) atTop (𝓝 L)`. Simplify using `using hf.add ((tendsto_one_div_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul C)`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hf hz ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun τ => div_le_div_of_nonneg_right (h1 τ) (by positivity)`. Use `filter_upwards [h2, eventually_gt_atTop 0] with τ hτ hpos`.
+
+Establish `hτ0 : (0 : ℝ) < τ` using `by exact_mod_cast hpos`. Establish `e : f τ / (τ : ℝ) ^ (d + 1) + C * (1 / (τ : ℝ)) = (f τ + C * (τ : ℝ) ^ d) / (τ : ℝ) ^ (d + 1)`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `div_le_div_of_nonneg_right hτ (by positivity)`.
+-/
 theorem tendsto_div_of_squeeze {f g : ℕ → ℝ} {L C : ℝ} {d : ℕ}
     (hf : Tendsto (fun τ : ℕ => f τ / (τ : ℝ) ^ (d + 1)) atTop (𝓝 L))
     (h1 : ∀ τ, f τ ≤ g τ) (h2 : ∀ᶠ τ : ℕ in atTop, g τ ≤ f τ + C * (τ : ℝ) ^ d) :
@@ -668,6 +855,27 @@ theorem tendsto_div_of_squeeze {f g : ℕ → ℝ} {L C : ℝ} {d : ℕ}
 
 end Final
 
+/- English proof (translation)
+Take `⟨hK, hS⟩` from `(GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput).2`. Establish `: Nonempty K` using `hV.1`. Establish `hI : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.genIdeal y = mIdealOver ℚ y` using `LiftBirationalNef.genIdeal_eq y`. Establish `hP` using `isProjVarF_map_of_isArithVar hV`. Establish `hnz` using `GlobalTheory.CompanionTheory.Ar.Relevant.exists_coord_ne_zero K ι Ω y (d + 1) hV`.
+
+Establish `hdim : FieldNumbers.relDim (mIdealOver ℚ y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ))` using `hI ▸ (FieldNumbers.CutRegular.relDim_eq_natCast_iff _ (d + 1)).2 hP.2`. Establish `hnef : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.IsNef ℚ y a` using `fun W hW hle hW1 => NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg hN W ⟨(Bridge.isMultiProjPrime_iff W).mp hW, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩ (hI.le.trans hle)`. Establish `hfinQ : ∀ b, FiniteDimensional ℚ (chartLatQ y b 1)` using `fun b => GlobalTheory.CompanionTheory.GenericFibre.finiteDimensional_chartLatQ K ι Ω y (d + 1) b hV`. Establish `hfd : ∀ b, FiniteDimensional ℚ (secOver ℚ y b)` using `fun b => by`. Rewrite using `[← chartLatQ_eq_secOver]`.
+
+Conclude with `hfinQ b`. Establish `hsh : ∀ M : ℕ, ∃ C : ℝ, ∀ᶠ n : ℕ in atTop, (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a + fun _ => (M : ℤ))) : ℝ) ≤ (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a)) : ℝ) + C * (n : ℝ) ^ d`. Introduce `M`. Take `⟨C, hC⟩` from `shiftSectionBound K ι Ω y (d + 1) a M (by omega) hV hB`. Use `⟨C, hC.mono fun n hn => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hn.2`. Rewrite `h` using `[Nat.add_sub_cancel, chartLatQ_eq_secOver, chartLatQ_eq_secOver]`. Conclude with `h`. Establish `hlim` using `tendsto_finrank_nef hK hS hnz hdim hnef hfd hsh`. Take `⟨e, c, hc0, hcond⟩` from `GlobalTheory.CompanionTheory.Conductor.exists_conductor_section K ι Ω y (d + 1) hV hB`.
+
+Set `φ : ∀ τ : ℕ, Submodule.span ℚ (chartLatNm y a τ : Set Ω) →ₗ[ℚ] chartLatQ y ((τ : ℤ) • a + fun k => (e k : ℤ)) 1` to `fun τ => { toFun := fun s => ⟨c * s.1, hcond a τ s.1 s.2⟩ map_add' := fun s t => Subtype.ext (mul_add _ _ _) map_smul' := fun r s => Subtype.ext (mul_smul_comm _ _ _) }`. Establish `hφ : ∀ τ, Function.Injective (φ τ)` using `fun τ s t hst => Subtype.ext (mul_left_cancel₀ hc0 (congrArg Subtype.val hst))`. Establish `hfinS : ∀ τ, FiniteDimensional ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω))` using `fun τ => by`. Use `hfinQ ((τ : ℤ) • a + fun k => (e k : ℤ))` as an intermediate fact. Conclude with `FiniteDimensional.of_injective (φ τ) (hφ τ)`.
+
+Use `⟨hfinS, ?_⟩` and prove the remaining obligations. Use `set M : ℕ := ∑ k, e k with hM`. Establish `heM : ∀ k, e k ≤ M` using `fun k => Finset.single_le_sum (f := e) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Take `⟨C, hC⟩` from `hsh M`. Establish `hup : ∀ τ : ℕ, Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) ≤ Module.finrank ℚ (secOver ℚ y ((τ : ℤ) • a + fun _ => (M : ℤ)))` using `fun τ => by`.
+
+Establish `h1 : Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) ≤ Module.finrank ℚ (chartLatQ y ((τ : ℤ) • a + fun k => (e k : ℤ)) 1)`. Use `hfinQ ((τ : ℤ) • a + fun k => (e k : ℤ))` as an intermediate fact. Conclude with `LinearMap.finrank_le_finrank_of_injective (hφ τ)`. Establish `h2` using `GlobalTheory.CompanionTheory.ChartSections.finrank_chartLatQ_shift_le K ι Ω y ((τ : ℤ) • a) e M hnz heM (hfinQ _)`. Rewrite using `[← chartLatQ_eq_secOver]`.
+
+Conclude with `h1.trans h2`. Establish `hlow : ∀ τ : ℕ, Module.finrank ℚ (secOver ℚ y ((τ : ℤ) • a)) ≤ Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω))` using `fun τ => by`. Use `hfinS τ` as an intermediate fact. Rewrite using `[← chartLatQ_eq_secOver, chartLatQ_smul]`. Conclude with `Submodule.finrank_mono (GlobalTheory.CompanionTheory.Ar.ChartDenom.chartLatQ_le_span_chartLatNm K ι Ω y a τ)`.
+
+Establish `hg` using `tendsto_div_of_squeeze (C := C) (g := fun τ : ℕ => (Module.finrank ℚ (Submodule.span ℚ (chartLatNm y a τ : Set Ω)) : ℝ)) hlim (fun τ => Nat.cast_le.2 (hlow τ)) (hC.mono fun τ hτ => le_trans (Nat.cast_le.2 (hup τ)) hτ)`. Establish `hfac : ((d + 1).factorial : ℝ) ≠ 0` using `by exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `hgen : (genDeg (mCoordIdeal y) (d + 1) a : ℝ) = ((d + 1).factorial : ℝ) * ((NumbersDVR.intNum ℚ (mIdealOver ℚ y) (fun _ : Fin (d + 1) => a) : ℝ) / ((d + 1).factorial : ℝ))`. Rewrite using `[mul_div_cancel₀ _ hfac, ← hI]`. Both sides reduce to the same expression.
+
+Rewrite using `[hgen]`. Simplify using `only [mul_div_assoc]`. Conclude with `hg.const_mul _`.
+-/
 theorem nefRR_succ {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
     (y : (Σ k, ι k) → Ω) (d : ℕ) (a : K → ℤ) (hV : IsArithVar (mCoordIdeal y) (d + 1 + 1))
     (hB : Birational y) (hN : NefOnGenericDeg (mCoordIdeal y) a) :
@@ -750,6 +958,9 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D a hV hB hN`. Consider the cases of `D with`. Consider the case `zero => exact GlobalTheory.CompanionTheory.Ar.Pub.NefRRModel.nefRR_dimZero y a hV hB`. Consider the case `succ d => exact NefVolume.nefRR_succ y d a hV hB hN`.
+-/
 theorem nefRR : GlobalTheory.CompanionTheory.Ar.Pub.NefRR := by
   intro K _ ι _ Ω _ _ y D a hV hB hN
   cases D with

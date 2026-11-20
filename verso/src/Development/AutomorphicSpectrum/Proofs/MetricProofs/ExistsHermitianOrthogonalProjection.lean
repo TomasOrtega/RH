@@ -8,6 +8,19 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.PosFormProjection
 
+/- English proof (translation)
+Introduce `g k Hm hpos u hli z`. Set `A : (Fin k → ℂ) →ₗ[ℂ] (Fin k → ℂ)` to `{ toFun := fun c j => (∑ i, c i • u i) ⬝ᵥ Hm *ᵥ star (u j) map_add' := by`. Introduce `a b`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, add_dotProduct]`.
+
+Use the proof step `map_smul' := by`. Introduce `a b`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_smul, ← Finset.smul_sum, smul_dotProduct] }`. Establish `hinj : Function.Injective A`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `c hc`. Establish `hw : ∀ j, (∑ i, c i • u i) ⬝ᵥ Hm *ᵥ star (u j) = 0` using `fun j => congrFun hc j`. Establish `hww : (∑ i, c i • u i) ⬝ᵥ Hm *ᵥ star (∑ i, c i • u i) = 0`. Rewrite using `[star_sum, Matrix.mulVec_sum, dotProduct_sum]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, hw j, smul_zero]`. Establish `hw0 : ∑ i, c i • u i = 0`. Assume the negation of the conclusion as `hne`. Use `hpos _ hne` as an intermediate fact.
+
+Rewrite `this` using `[hww]`. Simplify using `at this`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp hli c hw0 i`. Take `⟨c, hc⟩` from `LinearMap.injective_iff_surjective.mp hinj (fun j => z ⬝ᵥ Hm *ᵥ star (u j))`.
+
+Use `⟨c, fun j => ?_⟩` and prove the remaining obligations. Establish `hcj : (∑ i, c i • u i) ⬝ᵥ Hm *ᵥ star (u j) = z ⬝ᵥ Hm *ᵥ star (u j)` using `congrFun hc j`. Rewrite using `[sub_dotProduct, hcj, sub_self]`.
+-/
 theorem exists_orthogonal_coefficients :
     ∀ (g k : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ),
       (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm *ᵥ star z).re) →

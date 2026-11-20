@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr x x' ψ ψ' kb kb' σ σ' i₀ i₀' V V' u u' _ _ hs hs' w hw`. Take `⟨⟨F, H, hc⟩, -, -, hVs, hVU, -, hu, hd, hn⟩` from `hs`. Take `⟨-, -, -, -, hVU', -, hu', hd', hn'⟩` from `hs'`. Distinguish the cases in `h0 : ψ w i₀ = 0`. Establish `h0' : ψ' w i₀' = 0` using `(hd' w hw.2).2 ((hd w hw.1).1 h0)`.
+
+Simplify using `[h0, h0']`. Establish `h0' : ψ' w i₀' ≠ 0` using `fun h => h0 ((hd w hw.1).2 ((hd' w hw.2).1 h))`. Take `⟨-, hF, -, -, -, hp⟩` from `hc`. Take `⟨hH, hG, z₀, z₁, hz₀, hz₁, hex⟩` from `hp w (hVs hw.1)`. Establish `hG' : M.GoodAt F (mCoordIdeal (basePart M.blk z₀))`.
+
+Take `⟨c, hc0, hzc⟩` from `hz₀`. Establish `e₀ : basePart M.blk z₀ = fun q : Σ k, baseIdx ι M.blk k => (fun k : NonPluckerBlocks M.blk => c k.1) q.1 * basePart M.blk (fstPt k₀ (RW.lift w w)) q`. Rewrite using `[hzc]`. Both sides reduce to the same expression. Rewrite using `[e₀, GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.mCoordIdeal_torus (K := NonPluckerBlocks M.blk) (ι := baseIdx ι M.blk) (fun k : NonPluckerBlocks M.blk => c k.1) (fun k => hc0 k.1) (basePart M.blk (fstPt k₀ (RW.lift w w)))]`.
+
+Conclude with `hG`. Establish `hD : IsPtData M τ a k₀ ca cb RW w z₀ z₁ F (H τ (ψ w)) (ψ w i₀)` using `⟨hF, hG', hz₀, hz₁, (hH τ).1, (hH τ).2, h0, fun i => (hex τ i).1, fun i => by`. Simplify using `using (hex τ i).2⟩`. Establish `e₁` using `hn w hw.1 h0 z₀ z₁ F _ _ hD`. Establish `e₂` using `hn' w hw.2 h0' z₀ z₁ F _ _ hD`.
+
+Establish `hA : 0 < (potA M τ a k₀).h (RW.lift x w)` using `(potA M τ a k₀).pos _ (RW.mem x w (hVU hw.1)).1`. Establish `hA' : 0 < (potA M τ a k₀).h (RW.lift x' w)` using `(potA M τ a k₀).pos _ (RW.mem x' w (hVU' hw.2)).1`. Establish `hN : 0 < ‖u w * ψ w i₀‖` using `norm_pos_iff.2 (mul_ne_zero (hu w hw.1) h0)`. Establish `hN' : 0 < ‖u' w * ψ' w i₀'‖` using `norm_pos_iff.2 (mul_ne_zero (hu' w hw.2) h0')`. Use `Real.log_injOn_pos (Set.mem_Ioi.2 (div_pos hN hA)) (Set.mem_Ioi.2 (div_pos hN' hA')) ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_div hN.ne' hA.ne', Real.log_div hN'.ne' hA'.ne', e₁, e₂]`.
+-/
 theorem locSec_norm_eq : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a : Fin N) (k₀ : K) (ca cb : Fin N) (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ e) (pr : RW.X → Rb.X) (x x' : RW.X) (ψ ψ' : OpenPartialHomeomorph RW.X (Fin e → ℂ)) (kb kb' : Fin Rb.A.n) (σ σ' : Fin n ↪ Fin e) (i₀ i₀' : Fin e) (V V' : Set RW.X) (u u' : RW.X → ℂ), M.blk (τ, a) = some k₀ → IsWAtlas M Rb τ a k₀ ca cb RW pr → IsLocSec M Rb τ a k₀ ca cb RW pr x ψ kb σ i₀ V u → IsLocSec M Rb τ a k₀ ca cb RW pr x' ψ' kb' σ' i₀' V' u' → ∀ w ∈ V ∩ V', ‖u w * ψ w i₀‖ / (potA M τ a k₀).h (RW.lift x w) = ‖u' w * ψ' w i₀'‖ / (potA M τ a k₀).h (RW.lift x' w) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr x x' ψ ψ' kb kb' σ σ' i₀ i₀' V V' u u' _ _ hs hs' w hw
   obtain ⟨⟨F, H, hc⟩, -, -, hVs, hVU, -, hu, hd, hn⟩ := hs

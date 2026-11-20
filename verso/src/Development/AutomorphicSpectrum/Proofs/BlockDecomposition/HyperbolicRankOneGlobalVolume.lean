@@ -12,6 +12,9 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimOne
 
+/- English proof (translation)
+The claim follows from `|P.toReal - 1| ≤ |L.toReal - 1| + 2 * (1 + A) * r := by have hP : P < ⊤ := lt_of_le_of_lt hPL hL have h1 : P.toReal ≤ L.toReal := ENNReal.toReal_mono hL.ne hPL have h2 : L.toReal ≤ P.toReal + 2 * r * L.toReal := by have hfin : P + ENNReal.ofReal (2 * r) * L ≠ ⊤ := ENNReal.add_ne_ …`.
+-/
 theorem abs_sub_one_le {P L : ℝ≥0∞} {r A : ℝ} (hr : 0 ≤ r) (hL : L < ⊤) (hPL : P ≤ L)
     (h : L ≤ P + ENNReal.ofReal (2 * r) * L) (hA : |L.toReal - 1| ≤ A) :
     |P.toReal - 1| ≤ |L.toReal - 1| + 2 * (1 + A) * r := by
@@ -36,6 +39,19 @@ theorem abs_sub_one_le {P L : ℝ≥0∞} {r A : ℝ} (hr : 0 ≤ r) (hL : L < �
     _ ≤ |P.toReal - L.toReal| + |L.toReal - 1| := abs_add_le _ _
     _ ≤ |L.toReal - 1| + 2 * (1 + A) * r := by linarith
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hM d b laminf lam hinf hlam h₂ minf m hfinf hfv I hE`. Establish `hND` using `(GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hCM M J hJ).1`. Establish `hSF` using `GlobalTheory.CompanionTheory.WeilSiegel.FreeLocal.free_fibre_zero F E σ hCM (M + 2) (hypOne J) hND (by omega) h₂ d b laminf lam hinf hlam minf hfinf m hfv`. Establish `hgood` using `(GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimLoc.prim_local F E σ hCM M J hJ (by omega) d b).and (GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimMeas.eventually_measurableSet_primV F E σ hCM M J hJ d b)`. Take `⟨hfin, hsumL, -⟩` from `id hE`.
+
+Establish `hsum : Summable (fun v => |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (primV σ J b v)).toReal - 1|)` using `by set A : ℝ := ∑' v, |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v)).toReal - 1| with hAdef`. Establish `hb` using `(hsumL.add (((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left (2 * (1 + A)))))`. Use `Summable.of_norm_bounded_eventually hb ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with v hv`. Take `⟨⟨hsub, hmass⟩, -⟩` from `hv`.
+
+Establish `h` using `hmass (lam v) (hlam v) (m v) (hfv v) h₂`. Establish `hle : |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (latV b v)).toReal - 1| ≤ A` using `hsumL.le_tsum v (fun _ _ => abs_nonneg _)`. Establish `hr : (0 : ℝ) ≤ 1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2` using `by positivity`. Establish `h'` using `abs_sub_one_le hr (hfin v) (measure_mono hsub) (by`. Establish `e : (2 : ℝ) * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2) = 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h) hle`. Rewrite using `[Real.norm_eq_abs, abs_abs]`. Simplify `h'` using `[mul_assoc]`.
+
+Use `⟨hsum, ?_⟩` and prove the remaining obligations. Establish `hfinS : {v | ¬ ((primV σ J b v ⊆ latV b v) ∧ MeasurableSet (primV σ J b v))}.Finite`. Establish `h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, (primV σ J b v ⊆ latV b v) ∧ MeasurableSet (primV σ J b v)` using `by filter_upwards [hgood] with v hv`. Conclude with `⟨hv.1.1, hv.2⟩`. Conclude with `Filter.eventually_cofinite.1 h`.
+
+Conclude with `GlobalTheory.CompanionTheory.WeilSiegel.HypStep.PrimFormula.prim_formula F E σ hCM M J hJ d b I _ _ hE hSF.1 hSF.2.1 hfinS.toFinset (fun v hv => by`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hfinS.mem_toFinset.2 hc)) hsum`.
+-/
 theorem prim_formula : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ (h₂ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b) (minf : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E)), IsGramFibFree (Ainf F) σ (hypOne J) 1 (coordW (Ainf F) b laminf 1 (M + 2)) (coordHerm (Ainf F) σ b laminf 1) minf → (∀ v, IsGramFibFree (Fv F v) σ (hypOne J) 1 (coordW (Fv F v) b (lam v) 1 (M + 2)) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) → ∀ I : Measure (Fin 1 → Fin (M + 2) → AF F ⊗[F] E), IsEulerProd b I 1 (minf (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂)) (fun v => m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂)) → Summable (fun v => |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (primV σ J b v)).toReal - 1|) ∧ ∃ S₃ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₃ ⊆ S → ∀ (Ψinf : (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞) (Ψ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable Ψinf → (∀ v, Measurable (Ψ v)) → ∫⁻ y, purePr σ J b S Ψinf Ψ y ∂I = ((∫⁻ y, Ψinf y ∂(minf (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂))) * ∏ v ∈ S, ∫⁻ y, Ψ v y ∂(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂))) * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ (0 : Matrix (Fin 1) (Fin 1) E) h₂) (primV σ J b v.1)).toReal) := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM d b laminf lam hinf hlam h₂ minf m hfinf hfv I hE
   have hND := (GlobalTheory.CompanionTheory.WeilSiegel.HypStep.hypOne_isHermND_and_e0_mem F E σ hCM M J hJ).1

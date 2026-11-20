@@ -6,6 +6,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open C2x2 CardInsertEmbedding DeterminantReindex
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `only [Matrix.submatrix_apply, hu.2, Finset.prod_const_one]`. Introduce `t s h`. Simplify using `only [Matrix.submatrix_apply]`. Apply `hu.1` to reduce the goal to its premises.
+
+Rewrite using `[Fin.lt_def, he, he]`. Conclude with `h`.
+-/
 lemma det_submatrix_unitriangular_eq_one {m k : ℕ} (u : Matrix (Fin m) (Fin m) ℂ) (hu : u ∈ C2.UTset m) (e : Fin k → Fin m)
     (he : ∀ t, (e t).val = t.val) : (u.submatrix e e).det = 1 := by
   rw [Matrix.det_of_upperTriangular]
@@ -16,6 +21,11 @@ lemma det_submatrix_unitriangular_eq_one {m k : ℕ} (u : Matrix (Fin m) (Fin m)
     rw [Fin.lt_def, he, he]
     exact h
 
+/- English proof (translation)
+Use `hl.2.1 x y hxy` as an intermediate fact. Rewrite `this` using `[monomialMatrix_conj_apply w d hd]`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Break down `mul_eq_zero.mp h with h' | h'` into its components or cases. Conclude with `absurd h' (inv_ne_zero (hd x))`.
+
+Conclude with `h'`. Conclude with `absurd h (hd y)`.
+-/
 lemma lower_parabolic_entry_zero {m : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (hd : ∀ a, d a ≠ 0)
     (l : Matrix (Fin m) (Fin m) ℂ) (hl : l ∈ C2.LPg (C2.monoP w d)) (x y : Fin m) (hxy : x < y) :
     l (w x) (w y) = 0 := by
@@ -27,6 +37,39 @@ lemma lower_parabolic_entry_zero {m : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m �
     · exact h'
   · exact absurd h (hd y)
 
+/- English proof (translation)
+Introduce `m w d hd a i hi`. Establish `ham : a.val + 1 ≤ m` using `a.isLt`. Establish `hR0c : (C2.wSet w (a.val + 1)).card = a.val + 1` using `c2x3_wSet_card w ham`. Establish `hIc : (C2.iSet m (a.val + 1)).card = a.val + 1` using `c2x3_iSet_card ham`. Establish `hR'c : (insert i (C2.wSet w a.val)).card = a.val + 1`.
+
+Rewrite using `[Finset.card_insert_of_notMem hi, c2x3_wSet_card w (by omega)]`. Use `set eR0 := (C2.wSet w (a.val + 1)).orderEmbOfFin rfl with heR0`. Use `set eR' := (insert i (C2.wSet w a.val)).orderEmbOfFin rfl with heR'`. Take `⟨ρ0, hρ0⟩ : ∃ ρ0 : Fin (C2.wSet w (a.val + 1)).card → Fin m, ∀ t, ρ0 t = w ⟨t.val, by have` from `t.isLt; omega⟩ := ⟨fun t => w ⟨t.val, by have := t.isLt; omega⟩, fun t => rfl⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ : Fin (insert i (C2.wSet w a.val)).card → Fin m, ∀ t, ρ t = if ht : t.val < a.val then w ⟨t.val, by omega⟩ else i` from `⟨fun t => if ht : t.val < a.val then w ⟨t.val, by omega⟩ else i, fun t => rfl⟩`.
+
+Take `⟨τ0, hτ0⟩` from `perm_of_range eR0 ρ0 eR0.injective (fun t => by`. Use `Finset.orderEmbOfFin_mem (C2.wSet w (a.val + 1)) rfl t` as an intermediate fact. Take `⟨j, hj, hw⟩` from `Finset.mem_image.mp this`. Establish `hjv : j.val < a.val + 1` using `by simpa [C2.iSet] using hj`. Use `⟨⟨j.val, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ0, ← hw])`. Take `⟨τ, hτ⟩` from `perm_of_range eR' ρ eR'.injective (fun t => by`. Use `Finset.orderEmbOfFin_mem (insert i (C2.wSet w a.val)) rfl t` as an intermediate fact. Break down `Finset.mem_insert.mp this with h | h` into its components or cases. Use `⟨⟨a.val, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ, dif_neg (lt_irrefl _)]`. Conclude with `h.symm`. Take `⟨j, hj, hw⟩` from `Finset.mem_image.mp h`. Establish `hjv : j.val < a.val` using `by simpa [C2.iSet] using hj`. Use `⟨⟨j.val, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ, dif_pos hjv, ← hw])`. Use `⟨((Equiv.Perm.sign τ0 : ℤ) : ℂ) * ((Equiv.Perm.sign τ : ℤ) : ℂ), ?_, fun l hl u' hu => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases sign_pm τ0 with h0 | h0 <;> rcases sign_pm τ with h1 | h1 <;> rw [h0, h1] <;> norm_num`. Unfold `C2.minorS`. Rewrite using `[dif_pos (hR0c.trans hIc.symm), dif_pos (hR'c.trans hIc.symm)]`.
+
+Use `set eI := (C2.iSet m (a.val + 1)).orderEmbOfFin (hR0c.trans hIc.symm).symm with heI`. Use `set eI' := (C2.iSet m (a.val + 1)).orderEmbOfFin (hR'c.trans hIc.symm).symm with heI'`. Establish `hI : ∀ t, (eI t).val = t.val` using `fun t => iemb ham _ t`. Establish `hI' : ∀ t, (eI' t).val = t.val` using `fun t => iemb ham _ t`. Rewrite using `[U_mul_sub (by omega) (l * C2.monoP w d) u' (fun x y h => hu.1 x y h) eR' eI' hI', Matrix.det_mul, det_submatrix_unitriangular_eq_one u' hu eI' hI', mul_one, submatrix_mul_monomialMatrix, Matrix.det_mul, Matrix.det_diagonal, det_reindex l eR' ρ _ τ hτ]`.
+
+Use `conv_lhs => rw [← Matrix.one_mul (C2.monoP w d)]`. Rewrite using `[submatrix_mul_monomialMatrix, Matrix.det_mul, Matrix.det_diagonal, det_reindex 1 eR0 ρ0 _ τ0 hτ0]`. Establish `h1 : ((1 : Matrix (Fin m) (Fin m) ℂ).submatrix ρ0 (fun s => w (eI s))).det = 1`. Establish `: (1 : Matrix (Fin m) (Fin m) ℂ).submatrix ρ0 (fun s => w (eI s)) = 1`. Use extensionality with `t s`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.one_apply, hρ0]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Rewrite using `[if_pos (congrArg w (Fin.ext (hI t).symm)), if_pos rfl]`. Rewrite using `[if_neg, if_neg hts]`.
+
+Introduce `e`. Apply `hts` to reduce the goal to its premises. Use `congrArg Fin.val (w.injective e)` as an intermediate fact. Simplify using `only [hI] at this`. Conclude with `Fin.ext this`.
+
+Rewrite using `[this, Matrix.det_one]`. Establish `hL : (l.submatrix ρ (fun s => w (eI' s))).det = l i (w a)`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Establish `ht0 : a.val < (insert i (C2.wSet w a.val)).card` using `by omega`. Rewrite using `[Finset.prod_eq_single ⟨a.val, ht0⟩]`.
+
+Simplify using `only [Matrix.submatrix_apply, hρ, dif_neg (lt_irrefl _)]`. Use `congr 2`. Conclude with `Fin.ext (hI' _)`. Introduce `t _ ht`. Establish `htv : t.val < a.val`.
+
+Use `t.isLt` as an intermediate fact. Establish `: t.val ≠ a.val` using `fun e => ht (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Matrix.submatrix_apply, hρ, dif_pos htv]`. Establish `: eI' t = ⟨t.val, by omega⟩` using `Fin.ext (hI' t)`.
+
+Rewrite using `[this]`. Conclude with `hl.1.2 _`. Simplify using the standard rewrite rules. Introduce `t s hts`. Establish `hts' : t.val < s.val`.
+
+Use `OrderDual.toDual_lt_toDual.mp hts` as an intermediate fact. Rewrite `this` using `[Fin.lt_def]`. Conclude with `this`. Establish `htv : t.val < a.val` using `by have := s.isLt; omega`. Simplify using `only [Matrix.submatrix_apply, hρ, dif_pos htv]`.
+
+Establish `: eI' s = ⟨s.val, by have` using `s.isLt; omega⟩ := Fin.ext (hI' s)`. Rewrite using `[this]`. Conclude with `lower_parabolic_entry_zero w d hd l hl _ _ (by rw [Fin.lt_def]; exact hts')`. Rewrite using `[h1, hL, prod_emb hR0c d eI hI, prod_emb hR'c d eI' hI']`. Take the linear combination `(-(((Equiv.Perm.sign τ0 : ℤ) : ℂ) * l i (w a) * ∏ j ∈ Finset.range (a.val + 1), (if h : j < m then d ⟨j, h⟩ else 1))) * sign_sq τ`.
+-/
 theorem lower_minor_identity : C2.MinorL := by
   intro m w d hd a i hi
   have ham : a.val + 1 ≤ m := a.isLt

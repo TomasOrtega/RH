@@ -14,12 +14,21 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 def cO : 𝓞 E ≃+* 𝓞 E := RingOfIntegers.mapRingEquiv (starRingAut : E ≃+* E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cO_coe (o : 𝓞 E) : algebraMap (𝓞 E) E (cO o) = star (algebraMap (𝓞 E) E o) := rfl
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `h`. Conclude with `⟨cO o, cO_coe o⟩`.
+-/
 theorem star_InO {x : E} (h : InO x) : InO (star x) := by
   obtain ⟨o, rfl⟩ := h
   exact ⟨cO o, cO_coe o⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem star_natCast_E (g : ℕ) : star (g : E) = g := by
   simp
 
@@ -38,9 +47,15 @@ def conjPrime₂ (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E) w
     rw [Ideal.mem_bot]
     simpa using congrArg cO this
 
+/- English proof (translation)
+Simplify using `[conjPrime₂]`.
+-/
 theorem mem_conjP (P : HeightOneSpectrum (𝓞 E)) (s : 𝓞 E) : s ∈ (conjPrime₂ P).asIdeal ↔ cO s ∈ P.asIdeal := by
   simp [conjPrime₂]
 
+/- English proof (translation)
+Rewrite using `[mem_conjP, map_natCast]`. Conclude with `hg`.
+-/
 theorem natCast_mem_conjP (P : HeightOneSpectrum (𝓞 E)) (g : ℕ) (hg : (g : 𝓞 E) ∈ P.asIdeal) :
     (g : 𝓞 E) ∈ (conjPrime₂ P).asIdeal := by
   rw [mem_conjP, map_natCast]; exact hg
@@ -49,16 +64,30 @@ section Loc
 
 variable {W : Type} [AddCommGroup W] [Module (𝓞 E) W]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locP (p : Ideal (𝓞 E)) [p.IsPrime] (M : Submodule (𝓞 E) W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p M ↔ ∃ s : 𝓞 E, s ∉ p ∧ s • x ∈ M := Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨1, p.primeCompl.one_mem, by simpa using hx⟩`.
+-/
 theorem le_locP (p : Ideal (𝓞 E)) [p.IsPrime] (M : Submodule (𝓞 E) W) : M ≤ Formalism.HermitianLatticesTheory.localization₂ p M :=
   fun x hx => ⟨1, p.primeCompl.one_mem, by simpa using hx⟩
 
+/- English proof (translation)
+Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨s, hs, h hx⟩`.
+-/
 theorem localization_mono (p : Ideal (𝓞 E)) [p.IsPrime] {M N : Submodule (𝓞 E) W} (h : M ≤ N) :
     Formalism.HermitianLatticesTheory.localization₂ p M ≤ Formalism.HermitianLatticesTheory.localization₂ p N := by
   rintro x ⟨s, hs, hx⟩; exact ⟨s, hs, h hx⟩
 
+/- English proof (translation)
+Introduce and unpack `x ⟨s, hs, hx⟩`. Take `⟨t, ht, htx⟩` from `h hx`. Use `⟨t * s, ?_, by rw [mul_smul]; exact htx⟩` and prove the remaining obligations. Introduce `hts`. Break down `hp.mem_or_mem hts with h1 | h1` into its components or cases.
+
+Conclude with `ht h1`. Conclude with `hs h1`.
+-/
 theorem localization_le_localization_of_le_localization' (p : Ideal (𝓞 E)) [hp : p.IsPrime] {M N : Submodule (𝓞 E) W}
     (h : N ≤ Formalism.HermitianLatticesTheory.localization₂ p M) : Formalism.HermitianLatticesTheory.localization₂ p N ≤ Formalism.HermitianLatticesTheory.localization₂ p M := by
   rintro x ⟨s, hs, hx⟩
@@ -69,6 +98,11 @@ theorem localization_le_localization_of_le_localization' (p : Ideal (𝓞 E)) [h
   · exact ht h1
   · exact hs h1
 
+/- English proof (translation)
+Use `choose f hf using hx`. Use `⟨∏ a, f a, ?_, fun a => ?_⟩` and prove the remaining obligations. Introduce `hmem`. Take `⟨c, -, hc⟩` from `(Ideal.IsPrime.prod_mem_iff).mp hmem`. Conclude with `(hf c).1 hc`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ f (Finset.mem_univ a), mul_comm, mul_smul]`. Conclude with `M.smul_mem _ (hf a).2`.
+-/
 theorem exists_smul_mem_of_forall_mem_localization (p : Ideal (𝓞 E)) [hp : p.IsPrime] (M : Submodule (𝓞 E) W) {n : ℕ} (x : Fin n → W)
     (hx : ∀ a, x a ∈ Formalism.HermitianLatticesTheory.localization₂ p M) : ∃ s : 𝓞 E, s ∉ p ∧ ∀ a, s • x a ∈ M := by
   classical
@@ -84,20 +118,37 @@ end Loc
 
 variable {S : HSpace E}
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul E o x).symm`.
+-/
 theorem smulO (o : 𝓞 E) (x : S.V) : o • x = (algebraMap (𝓞 E) E o) • x :=
   (algebraMap_smul E o x).symm
 
+/- English proof (translation)
+The claim follows from `(S.herm.eq x y).symm`.
+-/
 theorem hT_swap (x y : S.V) : S.hT y x = star (S.hT x y) :=
   (S.herm.eq x y).symm
 
+/- English proof (translation)
+Simplify using `[LinearMap.map_smulₛₗ, starRingEnd_apply]`.
+-/
 theorem hT_smul_left (c : E) (x y : S.V) : S.hT (c • x) y = star c * S.hT x y := by
   simp [LinearMap.map_smulₛₗ, starRingEnd_apply]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem hT_smul_right (c : E) (x y : S.V) : S.hT x (c • y) = c * S.hT x y := by
   simp
 
 variable (Λ : Submodule (𝓞 E) S.V)
 
+/- English proof (translation)
+Establish `hy' : y ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular at hU`. Rewrite using `[hU]`. Conclude with `hy`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one] at hy'`.
+
+Conclude with `hy' x hx`.
+-/
 theorem int_of_unimod (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {x y : S.V} (hx : x ∈ Λ) (hy : y ∈ Λ) :
     InO (S.hT x y) := by
   have hy' : y ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := by
@@ -106,6 +157,11 @@ theorem int_of_unimod (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT 
     LinearMap.restrictScalars_apply, Submodule.mem_one] at hy'
   exact hy' x hx
 
+/- English proof (translation)
+Establish `: w ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Introduce `l hl`. Rewrite using `[hT_swap]`. Conclude with `star_InO (hw l hl)`.
+
+Unfold `Formalism.HermitianLatticesTheory.IsUnimodular at hU`. Rewrite `this` using `[hU]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_left_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {w : S.V}
     (hw : ∀ l ∈ Λ, InO (S.hT w l)) : w ∈ Λ := by
   have : w ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := by
@@ -119,11 +175,24 @@ theorem mem_of_left_dual (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.
 
 variable {Λ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Xsp_eq {r : ℕ} {T : E} (F : LFlag S r T) : Xsp F = Submodule.span E (Set.range F.fl.e) := rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem e_mem_Xsp {r : ℕ} {T : E} (F : LFlag S r T) (a : Fin r) : F.fl.e a ∈ Xsp F :=
   Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Rewrite `hx`, `hy` using `[Xsp_eq]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨i, rfl⟩` from `ha`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem b hb => obtain ⟨j, rfl⟩ := hb`. Conclude with `F.fl.e_iso i j`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c _ _ h => simp [h]`.
+
+Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c _ _ h => simp [h]`.
+-/
 theorem hT_X {r : ℕ} {T : E} (F : LFlag S r T) {x y : S.V} (hx : x ∈ Xsp F) (hy : y ∈ Xsp F) :
     S.hT x y = 0 := by
   rw [Xsp_eq] at hx hy
@@ -139,11 +208,17 @@ theorem hT_X {r : ℕ} {T : E} (F : LFlag S r T) {x y : S.V} (hx : x ∈ Xsp F) 
   | add _ _ _ _ h1 h2 => simp [h1, h2]
   | smul c _ _ h => simp [h]
 
+/- English proof (translation)
+Use `show Submodule.span E (F.fl.e '' {i | i.1 < r}) = Submodule.span E (Set.range F.fl.e)`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem Xflag_r {r : ℕ} {T : E} (F : LFlag S r T) : Xflag F r = Xsp F := by
   show Submodule.span E (F.fl.e '' {i | i.1 < r}) = Submodule.span E (Set.range F.fl.e)
   congr 1
   ext x; simp
 
+/- English proof (translation)
+The claim follows from `Q.isPrime; F.fl.e a ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (XLam Λ F) := by have := Q.isPrime obtain ⟨c, -, hc1, heq⟩ := hFC.1 Q have hc := hc1 hgQ change Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (XLam Λ F) = _ at heq rw [heq] apply le_locP a …`.
+-/
 theorem e_mem_loc {g r : ℕ} {T : E} {F : LFlag S r T} (hFC : IsFixedConv Λ g F)
     (Q : HeightOneSpectrum (𝓞 E)) (hgQ : (g : 𝓞 E) ∈ Q.asIdeal) (a : Fin r) :
     haveI := Q.isPrime; F.fl.e a ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (XLam Λ F) := by
@@ -156,6 +231,9 @@ theorem e_mem_loc {g r : ℕ} {T : E} {F : LFlag S r T} (hFC : IsFixedConv Λ g 
   apply Submodule.subset_span
   exact ⟨a, by simp [hc a]⟩
 
+/- English proof (translation)
+The claim follows from `Q.isPrime; XLam Λ F ≤ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Submodule.span (𝓞 E) (Set.range F.fl.e)) := by have := Q.isPrime obtain ⟨c, -, hc1, heq⟩ := hFC.1 Q have hc := hc1 hgQ change Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (XLam Λ F) = _ …`.
+-/
 theorem XLam_le_loc {g r : ℕ} {T : E} {F : LFlag S r T} (hFC : IsFixedConv Λ g F)
     (Q : HeightOneSpectrum (𝓞 E)) (hgQ : (g : 𝓞 E) ∈ Q.asIdeal) :
     haveI := Q.isPrime;
@@ -169,15 +247,27 @@ theorem XLam_le_loc {g r : ℕ} {T : E} {F : LFlag S r T} (hFC : IsFixedConv Λ 
   rw [← heq]
   exact le_locP _ _
 
+/- English proof (translation)
+The claim follows from `algebraMap_smul E o x`.
+-/
 theorem coe_smul (o : 𝓞 E) (x : S.V) : ((o : E)) • x = o • x := algebraMap_smul E o x
 
+/- English proof (translation)
+Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem frame_castSucc {r : ℕ} {T : E} (F : LFlag S r T) (a : Fin r) :
     frame F (Fin.castSucc a) = F.fl.e a := by
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[frame, FlagG.fvec]`.
+-/
 theorem frame_last {r : ℕ} {T : E} (F : LFlag S r T) : frame F (Fin.last r) = F.fl.z := by
   simp [frame, FlagG.fvec]
 
+/- English proof (translation)
+The claim follows from `Q.isPrime; F.fl.e a ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ F') := by have := Q.isPrime set N := Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ F') with hN have hgΛ : Formalis …`.
+-/
 theorem flag_vector_mem_localization {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     {ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (hFC : IsFixedConv Λ g F) (hA : AdmWit Λ g F F' ξ)
     (Q : HeightOneSpectrum (𝓞 E)) (hgQ : (g : 𝓞 E) ∈ Q.asIdeal) (a : Fin r)
@@ -241,6 +331,9 @@ theorem flag_vector_mem_localization {g r : ℕ} {T T' : E} {F : LFlag S r T} {F
   rw [hfin]
   exact Submodule.sub_mem _ (Submodule.sub_mem _ he'_N (hgΛ hd)) (Submodule.sum_mem _ hterm_N)
 
+/- English proof (translation)
+The claim follows from `Q.isPrime; F.fl.e a ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ F') := by suffices h : ∀ n : ℕ, ∀ a : Fin r, a.val < n → F.fl.e a ∈ (haveI := Q.isPrime; Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal (Ideal.span {(g …`.
+-/
 theorem e_mem_loc_adm {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     {ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (hFC : IsFixedConv Λ g F) (hA : AdmWit Λ g F F' ξ)
     (Q : HeightOneSpectrum (𝓞 E)) (hgQ : (g : 𝓞 E) ∈ Q.asIdeal) (a : Fin r) :
@@ -256,13 +349,46 @@ theorem e_mem_loc_adm {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T
     intro a ha
     exact flag_vector_mem_localization hFC hA Q hgQ a (fun c hc => ihn c (by omega))
 
+/- English proof (translation)
+Rewrite using `[map_sum, LinearMap.sum_apply]`.
+-/
 theorem hT_sum_left {ι : Type*} (s : Finset ι) (f : ι → S.V) (y : S.V) :
     S.hT (∑ i ∈ s, f i) y = ∑ i ∈ s, S.hT (f i) y := by
   rw [map_sum, LinearMap.sum_apply]
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective (𝓞 E) E`.
+-/
 theorem algebraMap_injO : Function.Injective (algebraMap (𝓞 E) E) :=
   FaithfulSMul.algebraMap_injective (𝓞 E) E
 
+/- English proof (translation)
+Establish `hPp` using `P.isPrime`. Take `⟨π, hπP, hπ0, b, hbP, hbπ⟩` from `exists_pi_b P.asIdeal P.ne_bot`. Use `set πE := algebraMap (𝓞 E) E π with hπE_def`. Establish `hπE : πE ≠ 0`. Introduce `h`.
+
+Apply `hπ0` to reduce the goal to its premises. Apply `algebraMap_injO` to reduce the goal to its premises. Rewrite using `[← hπE_def, h, map_zero]`. Use `set bE := algebraMap (𝓞 E) E b`. Use `set s₀E := algebraMap (𝓞 E) E s₀`.
+
+Set `y : S.V` to `∑ a, star (algebraMap (𝓞 E) E (c a)) • (s₀ • F.fl.e a)`. Set `w : S.V` to `star (bE / πE) • y`. Establish `hwl : ∀ l ∈ Λ, InO (S.hT w l)`. Introduce `l hl`. Take `⟨p, hp, hpe⟩` from `hc l hl`.
+
+Establish `e1 : S.hT w l = bE / πE * algebraMap (𝓞 E) E p`. Simplify using `only [w, y, hT_smul_left, star_star, hT_sum_left, hpe]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (hbπ p hp)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+
+Establish `: algebraMap (𝓞 E) E t * πE = bE * algebraMap (𝓞 E) E p`. Rewrite using `[hπE_def, ← map_mul, ht, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Establish `hwΛ : w ∈ Λ` using `mem_of_left_dual Λ hU hwl`.
+
+Establish `hwX : w ∈ Xsp F`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `a _`. Apply `Submodule.smul_mem` to reduce the goal to its premises.
+
+Conclude with `Submodule.smul_of_tower_mem _ s₀ (e_mem_Xsp F a)`. Establish `hQ` using `natCast_mem_conjP P g hgP`. Take `⟨s', hs', hs'w⟩` from `XLam_le_loc (Λ := Λ) hFC (conjPrime₂ P) hQ ⟨hwΛ, hwX⟩`. Take `⟨o, ho⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp hs'w`. Establish `hind` using `Fintype.linearIndependent_iff.mp F.fl.e_indep (fun a => algebraMap (𝓞 E) E (o a) - algebraMap (𝓞 E) E s' * (star (bE / πE) * (star (algebraMap (𝓞 E) E (c a)) * s₀E))) (by`.
+
+Establish `h1 : ∑ a, algebraMap (𝓞 E) E (o a) • F.fl.e a = s' • w`. Rewrite using `[← ho]`. Simplify using `only [coe_smul]`. Establish `h2 : s' • w = ∑ a, (algebraMap (𝓞 E) E s' * (star (bE / πE) * (star (algebraMap (𝓞 E) E (c a)) * s₀E))) • F.fl.e a`. Simplify using `only [w, y, smulO, Finset.smul_sum, smul_smul, s₀E]`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, h1, h2, sub_self])`. Introduce `a`. Establish `ha` using `sub_eq_zero.mp (hind a)`. Establish `hst` using `congrArg star ha`. Rewrite `hst` using `[← cO_coe]`.
+
+Simplify using `only [star_mul, star_star, star_div₀] at hst`. Rewrite `hst` using `[← cO_coe, ← cO_coe]`. Establish `key : algebraMap (𝓞 E) E (cO (o a) * π) = algebraMap (𝓞 E) E (b * c a * cO s' * cO s₀)`. Simplify using `only [map_mul]`. Rewrite using `[hst]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `key'` using `algebraMap_injO key`. Establish `hmem : b * c a * cO s' * cO s₀ ∈ P.asIdeal`. Rewrite using `[← key']`.
+
+Conclude with `Ideal.mul_mem_left _ _ hπP`. Establish `hs'P : cO s' ∉ P.asIdeal` using `fun h => hs' ((mem_conjP P s').mpr h)`. Establish `hs₀P : cO s₀ ∉ P.asIdeal` using `fun h => hs₀ ((mem_conjP P s₀).mpr h)`. Break down `hPp.mem_or_mem hmem with h | h` into its components or cases. Break down `hPp.mem_or_mem h with h | h` into its components or cases.
+
+Break down `hPp.mem_or_mem h with h | h` into its components or cases. Conclude with `absurd h hbP`. Conclude with `h`. Conclude with `absurd h hs'P`. Conclude with `absurd h hs₀P`.
+-/
 theorem noKill {g r : ℕ} {T : E} {F : LFlag S r T} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ)
     (hFC : IsFixedConv Λ g F) (P : HeightOneSpectrum (𝓞 E)) (hgP : (g : 𝓞 E) ∈ P.asIdeal)
     (s₀ : 𝓞 E) (hs₀ : s₀ ∉ (conjPrime₂ P).asIdeal) (c : Fin r → 𝓞 E)
@@ -339,12 +465,60 @@ def iv (ε : S.V) (x : S.V) : 𝓞 E := by
   classical
   exact if h : InO (S.hT ε x) then h.choose else 0
 
+/- English proof (translation)
+Establish `h` using `int_of_unimod Λ hU hε hx`. Simplify using `only [iv, h, dif_pos]`. Conclude with `h.choose_spec`.
+-/
 theorem iv_spec (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {ε x : S.V} (hε : ε ∈ Λ) (hx : x ∈ Λ) :
     algebraMap (𝓞 E) E (iv ε x) = S.hT ε x := by
   have h := int_of_unimod Λ hU hε hx
   simp only [iv, h, dif_pos]
   exact h.choose_spec
 
+/- English proof (translation)
+Establish `hmax : P.asIdeal.IsMaximal` using `P.isMaximal`. Set `_ : Field (𝓞 E ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Set `mk` to `Ideal.Quotient.mk P.asIdeal`. Establish `iv_add : ∀ a, ∀ x ∈ Λ, ∀ y ∈ Λ, iv (ε a) (x + y) = iv (ε a) x + iv (ε a) y`. Introduce `a x hx y hy`.
+
+Apply `algebraMap_injO` to reduce the goal to its premises. Rewrite using `[map_add, iv_spec hU (hε a) hx, iv_spec hU (hε a) hy, iv_spec hU (hε a) (Λ.add_mem hx hy), map_add]`. Establish `iv_smul : ∀ a, ∀ (o : 𝓞 E), ∀ x ∈ Λ, iv (ε a) (o • x) = o * iv (ε a) x`. Introduce `a o x hx`. Apply `algebraMap_injO` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, iv_spec hU (hε a) hx, iv_spec hU (hε a) (Λ.smul_mem o hx), smulO, hT_smul_right]`. Establish `iv_zero : ∀ a, iv (ε a) 0 = 0`. Introduce `a`. Apply `algebraMap_injO` to reduce the goal to its premises. Rewrite using `[iv_spec hU (hε a) Λ.zero_mem, map_zero, map_zero]`.
+
+Set `ρ : S.V → Fin r → 𝓞 E ⧸ P.asIdeal` to `fun x a => mk (iv (ε a) x)`. Set `Wk : Submodule (𝓞 E ⧸ P.asIdeal) (Fin r → 𝓞 E ⧸ P.asIdeal)` to `{ carrier := {w | ∃ x ∈ Λ, ρ x = w} add_mem' := by`. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Use `⟨x + y, Λ.add_mem hx hy, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [ρ, Pi.add_apply, iv_add a x hx y hy, map_add]`. Use the proof step `zero_mem' := ⟨0, Λ.zero_mem, by funext a; simp [ρ, iv_zero]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `q _ ⟨x, hx, rfl⟩`. Take `⟨o, rfl⟩` from `Ideal.Quotient.mk_surjective q`.
+
+Use `⟨o • x, Λ.smul_mem o hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [ρ, Pi.smul_apply, iv_smul a o x hx, map_mul, smul_eq_mul]`. Use `rfl }`. Establish `hW : Wk = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hfW⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance`. Set `ef : Fin r → (Fin r → 𝓞 E ⧸ P.asIdeal)` to `fun a j => if a = j then 1 else 0`. Establish `hc : ∀ a, ∃ c : 𝓞 E, mk c = f (ef a)` using `fun a => Ideal.Quotient.mk_surjective _`. Use `choose c hc using hc`.
+
+Establish `hfw : ∀ w, f w = ∑ a, w a * f (ef a)`. Introduce `w`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f w]`. Simplify using `[ef, smul_eq_mul]`. Establish `hall` using `hnk c (by`.
+
+Introduce `l hl`. Use `⟨∑ a, c a * iv (ε a) l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1 : f (ρ l) = 0`. Establish `: f (ρ l) ∈ Wk.map f` using `Submodule.mem_map_of_mem ⟨l, hl, rfl⟩`.
+
+Rewrite `this` using `[hfW]`. Conclude with `(Submodule.mem_bot _).mp this`. Rewrite `h1` using `[hfw]`. Rewrite using `[map_sum]`. Simplify using `only [map_mul]`.
+
+Rewrite using `[← h1]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Use `show mk (c a) * mk (iv (ε a) l) = mk (iv (ε a) l) * f (ef a)`. Rewrite using `[hc a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[map_mul, iv_spec hU (hε a) hl])`.
+
+Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hfw]`. Simplify using `only [LinearMap.zero_apply]`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[← hc a, Ideal.Quotient.eq_zero_iff_mem.mpr (hall a), mul_zero]`. Establish `hlam : ∀ a, ∃ x ∈ Λ, ρ x = fun j => if a = j then 1 else 0`. Introduce `a`.
+
+Establish `: (fun j => if a = j then (1 : 𝓞 E ⧸ P.asIdeal) else 0) ∈ Wk` using `by rw [hW]; trivial`. Conclude with `this`. Use `choose lam hlamΛ hlamρ using hlam`. Set `Mo : Matrix (Fin r) (Fin r) (𝓞 E)` to `fun b a => iv (ε b) (lam a)`. Establish `hMo : Mo.map mk = 1`.
+
+Use extensionality with `b a`. Establish `h` using `congrFun (hlamρ a) b`. Simplify using `only [ρ] at h`. Use `show mk (iv (ε b) (lam a)) = (1 : Matrix (Fin r) (Fin r) _) b a`. Rewrite using `[h, Matrix.one_apply]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`. Establish `hdet : mk Mo.det = 1`.
+
+Rewrite using `[RingHom.map_det]`. Express the relevant statement in the definitionally equal form `(Mo.map mk).det = 1`. Rewrite using `[hMo, Matrix.det_one]`. Use `⟨Mo.det, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`.
+
+Establish `: mk Mo.det = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Rewrite `this` using `[hdet]`. Conclude with `one_ne_zero this`. Introduce `u`. Set `wv` to `Mo.adjugate.mulVec u`.
+
+Use `⟨∑ a, wv a • lam a, Submodule.sum_mem _ (fun a _ => Λ.smul_mem _ (hlamΛ a)), ?_⟩` and prove the remaining obligations. Introduce `b`. Establish `hmv : (Mo.mulVec wv) b = Mo.det * u b`. Simplify using `only [wv, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : S.hT (ε b) (∑ a, wv a • lam a) = algebraMap (𝓞 E) E ((Mo.mulVec wv) b)`.
+
+Rewrite using `[map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[smulO, hT_smul_right, ← iv_spec hU (hε b) (hlamΛ a)]`.
+
+Simplify using `only [Mo]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hmv, map_mul]`.
+-/
 theorem surj {r : ℕ} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (P : HeightOneSpectrum (𝓞 E))
     (ε : Fin r → S.V) (hε : ∀ a, ε a ∈ Λ)
     (hnk : ∀ c : Fin r → 𝓞 E, (∀ l ∈ Λ, ∃ p ∈ P.asIdeal, algebraMap (𝓞 E) E p =
@@ -460,17 +634,53 @@ theorem surj {r : ℕ} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT
       simp only [Mo]; ring
     rw [e1, hmv, map_mul]
 
+/- English proof (translation)
+Rewrite `hx` using `[Submodule.ideal_span_singleton_smul]`. Take `⟨l, hl, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx`. Conclude with `⟨l, hl, rfl⟩`.
+-/
 theorem mem_gΛ (g : ℕ) {x : S.V} (hx : x ∈ Ideal.span {(g : 𝓞 E)} • Λ) : ∃ l ∈ Λ, x = (g : 𝓞 E) • l := by
   rw [Submodule.ideal_span_singleton_smul] at hx
   obtain ⟨l, hl, rfl⟩ := (Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx
   exact ⟨l, hl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hl`.
+-/
 theorem g_mem_gΛ (g : ℕ) {l : S.V} (hl : l ∈ Λ) : (g : 𝓞 E) • l ∈ Ideal.span {(g : 𝓞 E)} • Λ :=
   Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hl
 
+/- English proof (translation)
+Rewrite using `[smulO, hT_smul_left, map_natCast, star_natCast_E]`.
+-/
 theorem hT_gl (g : ℕ) (l y : S.V) : S.hT ((g : 𝓞 E) • l) y = (g : E) * S.hT l y := by
   rw [smulO, hT_smul_left, map_natCast, star_natCast_E]
 
+/- English proof (translation)
+Establish `hPp` using `P.isPrime`. Use `set Q := conjPrime₂ P`. Establish `hQp` using `Q.isPrime`. Establish `hgQ` using `natCast_mem_conjP P g hgP`. Take `⟨s₀, hs₀, hs₀e⟩` from `exists_smul_mem_of_forall_mem_localization Q.asIdeal Λ F.fl.e (fun a => localization_mono _ inf_le_left (e_mem_loc hFC Q hgQ a))`.
+
+Set `ε : Fin r → S.V` to `fun a => s₀ • F.fl.e a`. Take `⟨t₀, ht₀, hsurj⟩` from `surj hU P ε hs₀e (noKill (Λ := Λ) hU hFC P hgP s₀ hs₀)`. Take `⟨s₁', hs₁', hs₁e⟩` from `exists_smul_mem_of_forall_mem_localization Q.asIdeal _ F.fl.e (fun a => e_mem_loc_adm (Λ := Λ) hFC hA Q hgQ a)`. Establish `hval : ∀ a, ∃ o : 𝓞 E, algebraMap (𝓞 E) E (cO s₁') * S.hT (ε a) x' = (g : E) * algebraMap (𝓞 E) E o`. Introduce `a`.
+
+Take `⟨y₁, hy₁, y₂, hy₂, hsum⟩` from `Submodule.mem_sup.mp (hs₁e a)`. Take `⟨l₁, hl₁, rfl⟩` from `mem_gΛ (Λ := Λ) g hy₁`. Take `⟨o, ho⟩` from `int_of_unimod Λ hU hl₁ hx'Λ`. Use `⟨cO s₀ * o, ?_⟩` and prove the remaining obligations. Establish `h0 : S.hT y₂ x' = 0` using `(mem_orth S).mp hx'o y₂ hy₂.2`.
+
+Establish `h1 : S.hT (s₁' • F.fl.e a) x' = (g : E) * algebraMap (𝓞 E) E o`. Rewrite using `[← hsum, map_add, LinearMap.add_apply, h0, add_zero, hT_gl, ho]`. Rewrite `h1` using `[smulO, hT_smul_left, ← cO_coe]`. Simplify using `only [ε]`. Rewrite using `[smulO, hT_smul_left, ← cO_coe, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `choose u hu using hval`. Take `⟨lam, hlam, hlamv⟩` from `hsurj u`. Set `t : 𝓞 E` to `t₀ * cO s₁'`. Set `l : S.V` to `t • x' - (g : 𝓞 E) • lam`.
+
+Establish `hs₁P : cO s₁' ∉ P.asIdeal` using `fun h => hs₁' ((mem_conjP P s₁').mpr h)`. Use `⟨t, fun h => ?_, l, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Break down `hPp.mem_or_mem h with h | h` into its components or cases. Conclude with `ht₀ h`. Conclude with `hs₁P h`.
+
+Conclude with `Λ.sub_mem (Λ.smul_mem _ hx'Λ) (Λ.smul_mem _ hlam)`. Establish `hεl : ∀ a, S.hT (ε a) l = 0`. Introduce `a`. Simplify using `only [l, map_sub, smulO, hT_smul_right, hlamv]`. Use `hu a` as an intermediate fact.
+
+Simplify using `only [t, map_mul]`. Rewrite using `[mul_assoc, this, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hel : ∀ a, S.hT (F.fl.e a) l = 0`. Introduce `a`.
+
+Establish `h` using `hεl a`. Simplify using `only [ε, smulO, hT_smul_left] at h`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: algebraMap (𝓞 E) E s₀ = 0`.
+
+Use `congrArg star h` as an intermediate fact. Rewrite `this` using `[star_star, star_zero]`. Then use the resulting hypothesis. Apply `hs₀` to reduce the goal to its premises. Rewrite using `[(algebraMap_injO (this.trans (map_zero _).symm))]`. Conclude with `zero_mem _`.
+
+Conclude with `h`. Use `show l ∈ orth S (Xsp F)`. Rewrite using `[mem_orth]`. Introduce `x hx`. Rewrite `hx` using `[Xsp_eq]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Conclude with `hel a`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ h1 h2 => simp [h1, h2]`.
+
+Consider the case `smul c _ _ h => simp [h]`. Establish `: l - t • x' = -((g : 𝓞 E) • lam)` using `by simp only [l]; abel`. Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (g_mem_gΛ (Λ := Λ) g hlam)`.
+-/
 theorem iotaLift {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     {ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ)
     (hFC : IsFixedConv Λ g F) (hA : AdmWit Λ g F F' ξ) (P : HeightOneSpectrum (𝓞 E))
@@ -545,6 +755,9 @@ theorem iotaLift {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' : LFlag S r T'}
     rw [this]
     exact Submodule.neg_mem _ (g_mem_gΛ (Λ := Λ) g hlam)
 
+/- English proof (translation)
+Establish `h2` using `h.2`. Unfold `Formalism.HermitianLatticesTheory.gmap at h2`. Rewrite `hx` using `[← h2]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+-/
 theorem symm_mem {β : S.V ≃ₗ[E] S.V} (h : IsAutLam S Λ β) {x : S.V} (hx : x ∈ Λ) : β.symm x ∈ Λ := by
   have h2 := h.2
   unfold Formalism.HermitianLatticesTheory.gmap at h2
@@ -552,6 +765,9 @@ theorem symm_mem {β : S.V ≃ₗ[E] S.V} (h : IsAutLam S Λ β) {x : S.V} (hx :
   obtain ⟨y, hy, rfl⟩ := hx
   simpa using hy
 
+/- English proof (translation)
+Rewrite `hx` using `[← Xflag_r, ← h r]`. Take `⟨y, hy, rfl⟩` from `hx`. Rewrite using `[← Xflag_r]`. Simplify using `using hy`.
+-/
 theorem symm_mem_X {r : ℕ} {T' : E} {F' F'' : LFlag S r T'} {β : S.V ≃ₗ[E] S.V}
     (h : ∀ j, (Xflag F' j).map (β : S.V →ₗ[E] S.V) = Xflag F'' j) {x : S.V} (hx : x ∈ Xsp F'') :
     β.symm x ∈ Xsp F' := by
@@ -560,6 +776,19 @@ theorem symm_mem_X {r : ℕ} {T' : E} {F' F'' : LFlag S r T'} {β : S.V ≃ₗ[E
   rw [← Xflag_r]
   simpa using hy
 
+/- English proof (translation)
+Establish `hPp` using `P.isPrime`. Take `⟨t, ht, l, hl, hlx⟩` from `iotaLift hU hFC hA' P hgP y hyΛ hyo`. Use `set x := t • y`. Establish `hx : x ∈ Lrep Λ F'` using `⟨Λ.smul_mem t hyΛ, Submodule.smul_of_tower_mem _ t hyo⟩`. Establish `hN' : l - x ∈ NgX Λ g F F'` using `Submodule.mem_sup_left (Submodule.mem_sup_left hlx)`.
+
+Establish `h1` using `(hP1.2.2.2 x hx l hl).mp hN'`. Establish `h2` using `(hP2.2.2.2 x hx l hl).mp hN'`. Establish `hd : β₂ x - β₁ x ∈ NgX Λ g F F''`. Establish `: β₂ x - β₁ x = (l - β₁ x) - (l - β₂ x)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sub_mem _ h1 h2`. Establish `hle : NgX Λ g F F'' ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {(g : 𝓞 E)} • Λ ⊔ XLam Λ F'')`. Apply `sup_le (sup_le ((le_sup_left).trans (le_locP _ _)) ?_) ((le_sup_right).trans (le_locP _ _))` to reduce the goal to its premises. Use `(XLam_le_loc hFC P hgP).trans (localization_le_localization_of_le_localization' _ ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `e_mem_loc_adm hFC hA'' P hgP a`. Take `⟨s, hs, hsd⟩` from `hle hd`. Take `⟨z₁, hz₁, z₂, hz₂, hz⟩` from `Submodule.mem_sup.mp hsd`. Take `⟨l₁, hl₁, rfl⟩` from `mem_gΛ (Λ := Λ) g hz₁`.
+
+Use `⟨s * t, fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `hPp.mem_or_mem h with h | h` into its components or cases. Conclude with `hs h`. Conclude with `ht h`. Establish `key : (s * t) • (β₁.symm (β₂ y) - y) = β₁.symm (s • (β₂ x - β₁ x))`.
+
+Simplify using `only [x, smulO, map_smul, map_sub, LinearEquiv.symm_apply_apply, smul_sub, map_mul, mul_smul]`. Rewrite using `[key, ← hz, map_add, smulO, map_smul, ← smulO]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (g_mem_gΛ (Λ := Λ) g (symm_mem hP1.1 hl₁))) (Submodule.mem_sup_right ⟨symm_mem hP1.1 hz₂.1, ?_⟩)` and prove the remaining obligations. Conclude with `symm_mem_X hP1.2.1 hz₂.2`.
+-/
 theorem cong {g r : ℕ} {T T' : E} {F : LFlag S r T} {F' F'' : LFlag S r T'}
     {ξ' ξ'' : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)} (β₁ β₂ : S.V ≃ₗ[E] S.V)
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hFC : IsFixedConv Λ g F) (hA' : AdmWit Λ g F F' ξ')

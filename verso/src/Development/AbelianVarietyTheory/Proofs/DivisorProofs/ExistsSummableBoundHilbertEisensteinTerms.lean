@@ -10,6 +10,9 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Unfold `qPow`. Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im, Complex.im_sum]`.
+-/
 theorem norm_qPow_eq_exp {F : Type} [Field F] [NumberField F] (ξ : F) (w : Emb F → ℂ) :
     ‖qPow ξ w‖ = Real.exp (-(2 * Real.pi * ∑ i : Emb F, i ξ * (w i).im)) := by
   unfold qPow
@@ -17,11 +20,35 @@ theorem norm_qPow_eq_exp {F : Type} [Field F] [NumberField F] (ξ : F) (w : Emb 
   congr 1
   simp [Complex.mul_re, Complex.mul_im, Complex.im_sum]
 
+/- English proof (translation)
+Unfold `eTr`. Rewrite using `[Complex.norm_exp]`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+-/
 theorem norm_eTr_eq_one {F : Type} [Field F] [NumberField F] (y : F) : ‖eTr y‖ = 1 := by
   unfold eTr
   rw [Complex.norm_exp]
   simp [Complex.mul_re, Complex.mul_im]
 
+/- English proof (translation)
+Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x τ c t hc hτ`. Take `⟨-, -, hpos, hsum⟩` from `hc`. Use `set w₀ : Emb F → ℂ := fun _ ↦ ((τ.im / 2 : ℝ) : ℂ) * Complex.I with hw₀`. Establish `him : ∀ i, (w₀ i).im = τ.im / 2` using `fun i ↦ by simp [hw₀]`. Establish `hw : w₀ ∈ upperHalf F` using `fun i ↦ by rw [him i]; positivity`.
+
+Establish `hs : Summable fun ξ : F ↦ ‖a ξ * qPow ξ w₀‖` using `summable_norm_iff.mpr (hsum w₀ hw).summable`. Use `⟨fun ξ ↦ ((2 : ℝ) ^ k) ^ Fintype.card (Emb F) * ‖a ξ * qPow ξ w₀‖, hs.mul_left _, ?_⟩` and prove the remaining obligations. Introduce `ξ z hz`. Distinguish the cases in `ha : a ξ = 0`. Simplify using `[ha]`.
+
+Establish `hnn : ∀ i : Emb F, 0 ≤ i ξ` using `fun i ↦ by`. Distinguish the cases in `h0 : ξ = 0`. Simplify using `[h0]`. Conclude with `((hpos ξ h0 ha).2 i).le`. Use `set w : Emb F → ℂ := fun i ↦ τ + t * z i / (1 + z i * c) with hwdef`.
+
+Establish `key : Complex.exp ((2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) * ∏ i : Emb F, Complex.exp ((2 * Real.pi * Complex.I) * (i ξ : ℂ) * t * z i / (1 + z i * c)) = qPow ξ w`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_add, ← GlobalTheory.HilbFam.sum_realEmb_eq_trace F ξ]`. Unfold `qPow`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Simplify using `only [hwdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : ‖qPow ξ w‖ ≤ ‖qPow ξ w₀‖`. Rewrite using `[norm_qPow_eq_exp, norm_qPow_eq_exp]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Apply `neg_le_neg` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Use `Finset.sum_le_sum fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[him i]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hz i).2 (hnn i)`. Establish `hp : ‖∏ i : Emb F, (1 + z i * c)⁻¹ ^ k‖ ≤ ((2 : ℝ) ^ k) ^ Fintype.card (Emb F)`. Rewrite using `[norm_prod, ← Finset.card_univ]`. Establish `h` using `Finset.prod_le_prod (s := Finset.univ) (f := fun i : Emb F ↦ ‖(1 + z i * c)⁻¹ ^ k‖) (g := fun _ ↦ (2 : ℝ) ^ k) (fun i _ ↦ norm_nonneg _) (fun i _ ↦ by`. Rewrite using `[norm_pow, norm_inv]`.
+
+Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use `(hz i).1` as an intermediate fact. Rewrite using `[inv_le_comm₀ (by linarith) (by norm_num)]`. Use the proof step `linarith)`. Rewrite `h` using `[Finset.prod_const]`. Then use the resulting hypothesis.
+
+Establish `e : a ξ * eTr (ξ * x) * Complex.exp ((2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) * ∏ i : Emb F, ((1 + z i * c)⁻¹ ^ k * Complex.exp ((2 * Real.pi * Complex.I) * (i ξ : ℂ) * t * z i / (1 + z i * c))) = (∏ i : Emb F, (1 + z i * c)⁻¹ ^ k) * (eTr (ξ * x) * (a ξ * …`. Rewrite using `[← key, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_mul, norm_eTr_eq_one, one_mul, norm_mul]`. Use `show _ ≤ ((2 : ℝ) ^ k) ^ Fintype.card (Emb F) * ‖a ξ * qPow ξ w₀‖`.
+
+Rewrite using `[norm_mul (a ξ)]`. Use `gcongr`.
+-/
 theorem exists_summable_bound_terms : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (τ c t : ℂ), IsCoef k 𝔞 𝔟 a₀ a → 0 < τ.im → ∃ M : F → ℝ, Summable M ∧ ∀ (ξ : F) (z : Emb F → ℂ), (∀ i, 1 / 2 ≤ ‖1 + z i * c‖ ∧ τ.im / 2 ≤ (τ + t * z i / (1 + z i * c)).im) → ‖a ξ * eTr (ξ * x) * Complex.exp ((2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) * ∏ i : Emb F, ((1 + z i * c)⁻¹ ^ k * Complex.exp ((2 * Real.pi * Complex.I) * (i ξ : ℂ) * t * z i / (1 + z i * c)))‖ ≤ M ξ := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x τ c t hc hτ
   obtain ⟨-, -, hpos, hsum⟩ := hc

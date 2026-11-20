@@ -25,6 +25,27 @@ private noncomputable def imgVal {Z S : Scheme.{0}} {p : Z ⟶ S} {R' R : Type} 
 
 end UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `Z S p R' R _ _ I J τ n`. Establish `evZ` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R' (E := sch.obj Z) (I := I) (n := n)`. Establish `ev_ext` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj S) (I := J) (n := n)).2.2.1`. Use `⟨fun α => ?_, fun m hm α β hαβ => ?_⟩` and prove the remaining obligations. Establish `hnat : ∀ (k : ℕ) (s : ℤ) (h : -(k : ℤ) + n = s) (V U : Scheme) (g : V ⟶ U) (u : Sx (sch.obj S) k U), Sec.res g (imgVal τ α k s h U u) = imgVal τ α k s h V (Sx.res g u)`.
+
+Introduce `k s h V U g u`. Establish `e1 : Sec.res g ((τ.deg s).app (Sq.of p u) (ev α k s h (pullback p u) (pullback.fst p u))) = (τ.deg s).app (Sq.of p (g ≫ u)) (Sec.res (ofTo p g u).k (ev α k s h (pullback p u) (pullback.fst p u)))` using `(τ.deg s).nat (ofTo p g u) _`. Establish `e2 : Sec.res (ofTo p g u).k (ev α k s h (pullback p u) (pullback.fst p u)) = ev α k s h (pullback p (g ≫ u)) (pullback.fst p (g ≫ u))`. Use `(evZ.2.1 α k s h _ _ (ofTo p g u).k (pullback.fst p u)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `show (ofTo p g u).k ≫ pullback.fst p u = pullback.fst p (g ≫ u)`. Conclude with `pullback.lift_fst _ _ _`. Conclude with `e1.trans (congrArg _ e2)`. Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_cochain_ev_eq_of_natural' R (E := sch.obj S) (I := J) (n := n) (fun k s h U u => imgVal τ α k s h U u) hnat`. Establish `hIm : τ.IsImage α β`.
+
+Introduce `k s h A`. Establish `e1 : Sec.res (toOf A).g ((τ.deg s).app (Sq.of p A.u) (ev α k s h (pullback p A.u) (pullback.fst p A.u))) = (τ.deg s).app A (Sec.res (toOf A).k (ev α k s h (pullback p A.u) (pullback.fst p A.u)))` using `(τ.deg s).nat (toOf A) _`. Establish `e2 : Sec.res (toOf A).k (ev α k s h (pullback p A.u) (pullback.fst p A.u)) = ev α k s h A.V A.v`. Use `(evZ.2.1 α k s h _ _ (toOf A).k (pullback.fst p A.u)).trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `show (toOf A).k ≫ pullback.fst p A.u = A.v`. Conclude with `pullback.lift_fst _ _ _`. Conclude with `(hβ k s h A.U A.u).trans (((res_id _).symm.trans e1).trans (congrArg _ e2))`. Use `⟨β, hIm, fun β' h' => ev_ext β' β (fun k s h U u => ?_)⟩` and prove the remaining obligations. Conclude with `(h' k s h (Sq.of p u)).trans (hIm k s h (Sq.of p u)).symm`.
+
+Introduce `k s h A`. Consider the cases of `k with`. Consider the case `zero`. Establish `hs : s = m` using `by simpa using h.symm`. Substitute `hs` using the available equality.
+
+Establish `eβ` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R (E := sch.obj S) (I := J) hm β A.U).1 A.u`. Establish `eα` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R' (E := sch.obj Z) (I := I) hm α A.V).1 A.v`. Use `eβ.trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ eα.symm)` and prove the remaining obligations. Use `(congrArg _ (hαβ 0 n (by simp) A)).trans ?_` and prove the remaining obligations.
+
+Conclude with `τ.comm A n s _`. Consider the case `succ q`. Establish `eβ` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R (E := sch.obj S) (I := J) hm β A.U).2 q (-((q + 1 : ℕ) : ℤ) + n) s rfl h A.u`. Establish `eα` using `(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values R' (E := sch.obj Z) (I := I) hm α A.V).2 q (-((q + 1 : ℕ) : ℤ) + n) s rfl h A.v`. Use `eβ.trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg _ eα.symm)` and prove the remaining obligations. Rewrite using `[map_add]`. Use `congr 1`. Conclude with `(congrArg _ (hαβ _ _ rfl A)).trans (τ.comm A _ s _)`. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, map_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`. Conclude with `hαβ q s _ A`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.imgBasic_of :
     ImgBasic := by
   intro Z S p R' R _ _ I J τ n

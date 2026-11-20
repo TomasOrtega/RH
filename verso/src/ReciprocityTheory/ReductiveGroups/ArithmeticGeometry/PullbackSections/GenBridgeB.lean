@@ -48,6 +48,11 @@ def θA (s0 : LB.Sec (PPx x)) : LB.Sec (tA x).PP.L := secCP (cpθ x) s0
 
 def σB (s0 : LB.Sec (PPx x)) : LB.Sec (tB ψ x).PP.L := secCP (cpσ ψ x) (θA x s0)
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `hgen (secCP (cpV x) σ)`. Use `⟨a, (sec_eq_iff _ σ (θA x s0) a).2 fun i q hq => ?_⟩` and prove the remaining obligations. Establish `hJ : gxU x q ∈ (PPx x).U (fun _ => i PUnit.unit)` using `(cpθ x).le i hq`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_of_id (gxU x) q hJ ((scal_eq_iff x _ _ a).1 ha _ (gxU x q) hJ)`. Rewrite `h2` using `[gs_secCP (cpV x) σ (gxU x) q _ hJ, gxU_gxV, gxU_fst]`.
+
+Establish `e3 : gs (𝟙 _) q ((tA x).PP.L.U i) ((θA x s0).f i) = gs (gxU x) q ((PPx x).U (fun _ => i PUnit.unit)) (s0.f (fun _ => i PUnit.unit))` using `(gs_secCP (cpθ x) s0 (𝟙 _) q i hq).trans (by rw [Category.id_comp]; rfl)`. Rewrite using `[e3]`. Conclude with `h2`.
+-/
 theorem hθ_of (s0 : LB.Sec (PPx x)) (hgen : ∀ s' : LB.Sec (PPx x), ∃! a : S, ∀ i, s'.f i = scal x a i * s0.f i)
     (σ : LB.Sec (tA x).PP.L) : ∃ a : S, ∀ i, σ.f i = constFn (tA x).G.hom _ a * (θA x s0).f i := by
   obtain ⟨a, ha, -⟩ := hgen (secCP (cpV x) σ)
@@ -61,6 +66,11 @@ theorem hθ_of (s0 : LB.Sec (PPx x)) (hgen : ∀ s' : LB.Sec (PPx x), ∃! a : S
   rw [e3]
   exact h2
 
+/- English proof (translation)
+Establish `hk' : (mB ψ x).φ y ∈ (tA x).PP.L.U (k PUnit.unit)` using `mem_pull.1 hk`. Establish `e1` using `gm_pull_g (tA x).PP.L (mB ψ x).φ (𝟙 _) y (fun _ => j) k (mem_pull.2 hj) hk`. Rewrite `e1` using `[Category.id_comp]`. Establish `e2 : gs (𝟙 _) y ((tB ψ x).PP.L.U k) ((σB ψ x s0).f k) = gs (mB ψ x).φ y ((tA x).PP.L.U (k PUnit.unit)) ((θA x s0).f (k PUnit.unit))` using `(gs_secCP (cpσ ψ x) (θA x s0) (𝟙 _) y k hk).trans (by rw [Category.id_comp]; rfl)`. Rewrite using `[e2, gs_compat (θA x s0) (mB ψ x).φ y hj hk']`.
+
+Conclude with `congrArg (· * _) (congrArg Units.val e1.symm)`.
+-/
 theorem hσ_of (s0 : LB.Sec (PPx x)) (y : (tB ψ x).G.left) (j : PUnit → Xo.univ.t.PP.L.ι)
     (k : PUnit → PUnit → Xo.univ.t.PP.L.ι) (hj : (mB ψ x).φ y ∈ (tA x).PP.L.U j) (hk : y ∈ (tB ψ x).PP.L.U k) :
     gs (mB ψ x).φ y _ ((θA x s0).f j) =

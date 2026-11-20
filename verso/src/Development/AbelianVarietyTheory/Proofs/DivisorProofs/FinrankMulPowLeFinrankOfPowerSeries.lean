@@ -12,15 +12,26 @@ open MvPowerSeries
 section LexLemmas
 variable {D : ℕ}
 
+/- English proof (translation)
+The claim follows from `le_antisymm (le_lexOrder_iff.mpr fun d hd => (H d).1 (coeff_eq_zero_of_lt_lexOrder hd)) (le_lexOrder_iff.mpr fun d hd => (H d).2 (coeff_eq_zero_of_lt_lexOrder hd))`.
+-/
 theorem lexOrder_congr' {g h : MvPowerSeries (Fin D) ℂ}
     (H : ∀ d, coeff d g = 0 ↔ coeff d h = 0) : lexOrder g = lexOrder h :=
   le_antisymm (le_lexOrder_iff.mpr fun d hd => (H d).1 (coeff_eq_zero_of_lt_lexOrder hd))
     (le_lexOrder_iff.mpr fun d hd => (H d).2 (coeff_eq_zero_of_lt_lexOrder hd))
 
+/- English proof (translation)
+The claim follows from `lexOrder_congr' fun d => by simp [hc]`.
+-/
 theorem lexOrder_smul' {c : ℂ} (hc : c ≠ 0) (g : MvPowerSeries (Fin D) ℂ) :
     lexOrder (c • g) = lexOrder g :=
   lexOrder_congr' fun d => by simp [hc]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Establish `hg : g ≠ 0` using `by rw [ne_eq, ← lexOrder_eq_top_iff_eq_zero]; exact ne_top_of_lt hlt`. Take `⟨d, hd⟩` from `exists_finsupp_eq_lexOrder_of_ne_zero hg`. Rewrite using `[hd]`. Apply `lexOrder_le_of_coeff_ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[map_add, coeff_eq_zero_of_lt_lexOrder (φ := h) (d := d) (by rw [← hd]; exact hlt), add_zero]`. Conclude with `coeff_ne_zero_of_lexOrder hd.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lexOrder_add_of_lt' {g h : MvPowerSeries (Fin D) ℂ} (hlt : lexOrder g < lexOrder h) :
     lexOrder (g + h) = lexOrder g := by
   apply le_antisymm
@@ -33,6 +44,13 @@ theorem lexOrder_add_of_lt' {g h : MvPowerSeries (Fin D) ℂ} (hlt : lexOrder g 
   · calc lexOrder g = min (lexOrder g) (lexOrder h) := (min_eq_left hlt.le).symm
       _ ≤ _ := min_lexOrder_le
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_finsupp_eq_lexOrder_of_ne_zero hg`. Establish `hhd` using `coeff_ne_zero_of_lexOrder (hd.symm.trans heq)`. Use `⟨coeff d g / coeff d h, lt_of_le_of_ne ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[le_lexOrder_iff]`. Introduce `d' hd'`.
+
+Establish `h1` using `coeff_eq_zero_of_lt_lexOrder hd'`. Establish `h2` using `coeff_eq_zero_of_lt_lexOrder (heq ▸ hd')`. Simplify using `[h1, h2]`. Introduce `heq2`. Apply `coeff_ne_zero_of_lexOrder (hd.symm.trans heq2)` to reduce the goal to its premises.
+
+Simplify using `[div_mul_cancel₀ _ hhd]`.
+-/
 theorem lexOrder_sub_smul' {g h : MvPowerSeries (Fin D) ℂ} (hg : g ≠ 0)
     (heq : lexOrder g = lexOrder h) : ∃ c : ℂ, lexOrder g < lexOrder (g - c • h) := by
   obtain ⟨d, hd⟩ := exists_finsupp_eq_lexOrder_of_ne_zero hg
@@ -47,6 +65,11 @@ theorem lexOrder_sub_smul' {g h : MvPowerSeries (Fin D) ℂ} (hg : g ≠ 0)
     apply coeff_ne_zero_of_lexOrder (hd.symm.trans heq2)
     simp [div_mul_cancel₀ _ hhd]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Apply `lexOrder_le_of_coeff_ne_zero` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[le_lexOrder_iff]`. Introduce `d hd`.
+
+Rewrite using `[coeff_monomial, if_neg]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ (WithTop.coe_lt_coe.mp hd)`.
+-/
 theorem lexOrder_monomial_one' (a : Fin D →₀ ℕ) :
     lexOrder (monomial a (1 : ℂ)) = ((toLex a : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) := by
   apply le_antisymm
@@ -57,10 +80,16 @@ theorem lexOrder_monomial_one' (a : Fin D →₀ ℕ) :
     rintro rfl
     exact lt_irrefl _ (WithTop.coe_lt_coe.mp hd)
 
+/- English proof (translation)
+Rewrite using `[← lexOrder_monomial_one' 0]`. Simplify using the standard rewrite rules.
+-/
 theorem lexOrder_one' :
     lexOrder (1 : MvPowerSeries (Fin D) ℂ) = ((toLex (0 : Fin D →₀ ℕ) : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) := by
   rw [← lexOrder_monomial_one' 0]; simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using lexOrder_one' (D := D)`. Consider the case `succ k ih => rw [pow_succ, lexOrder_mul, ih, he, succ_nsmul, ← WithTop.coe_add, ← toLex_add]`.
+-/
 theorem lexOrder_pow' {g : MvPowerSeries (Fin D) ℂ} {e : Fin D →₀ ℕ}
     (he : lexOrder g = ((toLex e : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ)))) (k : ℕ) :
     lexOrder (g ^ k) = ((toLex (k • e) : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) := by
@@ -68,6 +97,11 @@ theorem lexOrder_pow' {g : MvPowerSeries (Fin D) ℂ} {e : Fin D →₀ ℕ}
   | zero => simpa using lexOrder_one' (D := D)
   | succ k ih => rw [pow_succ, lexOrder_mul, ih, he, succ_nsmul, ← WithTop.coe_add, ← toLex_add]
 
+/- English proof (translation)
+It suffices to establish `∀ s : Finset (Fin D), lexOrder (∏ i ∈ s, (X i : MvPowerSeries (Fin D) ℂ) ^ a i) = ((toLex (∑ i ∈ s, Finsupp.single i (a i)) : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) from this _`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using lexOrder_one' (D := D)`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, lexOrder_mul, ih, X_pow_eq, lexOrder_monomial_one', ← WithTop.coe_add, ← toLex_add]`.
+-/
 theorem lexOrder_prod_X_pow' (a : Fin D → ℕ) :
     lexOrder (∏ i, (X i : MvPowerSeries (Fin D) ℂ) ^ a i) =
       ((toLex (∑ i, Finsupp.single i (a i)) : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))) := by
@@ -98,19 +132,43 @@ variable {D n : ℕ} {A : Type} [CommRing A] [Algebra ℂ A]
 noncomputable def evalAt (k : ℕ) (u : A) : MvPowerSeries (Fin D) ℂ :=
   if h : k < n then φ ⟨k, h⟩ u else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem evalAt_of_lt {k : ℕ} (h : k < n) (u : A) : evalAt φ k u = φ ⟨k, h⟩ u := dif_pos h
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem evalAt_of_not_lt {k : ℕ} (h : ¬ k < n) (u : A) : evalAt φ k u = 0 := dif_neg h
 
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_zero (k : ℕ) : evalAt φ k (0 : A) = 0 := by
   unfold evalAt; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_add (k : ℕ) (u v : A) : evalAt φ k (u + v) = evalAt φ k u + evalAt φ k v := by
   unfold evalAt; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_sub (k : ℕ) (u v : A) : evalAt φ k (u - v) = evalAt φ k u - evalAt φ k v := by
   unfold evalAt; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_smul (k : ℕ) (c : ℂ) (u : A) : evalAt φ k (c • u) = c • evalAt φ k u := by
   unfold evalAt; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp`.
+-/
 theorem evalAt_mul (k : ℕ) (u v : A) : evalAt φ k (u * v) = evalAt φ k u * evalAt φ k v := by
   unfold evalAt; split_ifs <;> simp
+/- English proof (translation)
+Apply the tactic sequence `unfold evalAt; split_ifs <;> simp [zero_pow hm]`.
+-/
 theorem evalAt_pow (k : ℕ) (u : A) {m : ℕ} (hm : m ≠ 0) : evalAt φ k (u ^ m) = evalAt φ k u ^ m := by
   unfold evalAt; split_ifs <;> simp [zero_pow hm]
 
@@ -121,6 +179,9 @@ noncomputable def firstIdx (u : A) : ℕ := if h : ∃ k, evalAt φ k u ≠ 0 th
 noncomputable def val (u : A) : Lex (ℕ × WithTop (Lex (Fin D →₀ ℕ))) :=
   toLex (firstIdx φ u, lexOrder (evalAt φ (firstIdx φ u) u))
 
+/- English proof (translation)
+Unfold `firstIdx`. Rewrite using `[dif_pos h]`. Conclude with `⟨Nat.find_spec h, fun i hi => not_not.mp (Nat.find_min h hi)⟩`.
+-/
 theorem firstIdx_spec {u : A} (h : ∃ k, evalAt φ k u ≠ 0) :
     evalAt φ (firstIdx φ u) u ≠ 0 ∧ ∀ i < firstIdx φ u, evalAt φ i u = 0 := by
   classical
@@ -128,6 +189,9 @@ theorem firstIdx_spec {u : A} (h : ∃ k, evalAt φ k u ≠ 0) :
   rw [dif_pos h]
   exact ⟨Nat.find_spec h, fun i hi => not_not.mp (Nat.find_min h hi)⟩
 
+/- English proof (translation)
+Establish `h : ∃ k, evalAt φ k u ≠ 0` using `⟨k, hk⟩`. Unfold `firstIdx`. Rewrite using `[dif_pos h, Nat.find_eq_iff]`. Conclude with `⟨hk, fun i hi => not_not.mpr (hlt i hi)⟩`.
+-/
 theorem firstIdx_eq {u : A} {k : ℕ} (hk : evalAt φ k u ≠ 0) (hlt : ∀ i < k, evalAt φ i u = 0) :
     firstIdx φ u = k := by
   classical
@@ -136,18 +200,29 @@ theorem firstIdx_eq {u : A} {k : ℕ} (hk : evalAt φ k u ≠ 0) (hlt : ∀ i < 
   rw [dif_pos h, Nat.find_eq_iff]
   exact ⟨hk, fun i hi => not_not.mpr (hlt i hi)⟩
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[firstIdx_eq φ hk hlt]`.
+-/
 theorem val_eq {u : A} {k : ℕ} (hk : evalAt φ k u ≠ 0) (hlt : ∀ i < k, evalAt φ i u = 0) :
     val φ u = toLex (k, lexOrder (evalAt φ k u)) := by
   unfold val; rw [firstIdx_eq φ hk hlt]
 
 variable {φ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu (hinj u fun j => by simpa [evalAt_of_lt φ j.2] using h j)`.
+-/
 theorem exists_evalAt_ne_zero (hinj : ∀ u : A, (∀ j, φ j u = 0) → u = 0) {u : A} (hu : u ≠ 0) :
     ∃ k, evalAt φ k u ≠ 0 := by
   by_contra h
   push_neg at h
   exact hu (hinj u fun j => by simpa [evalAt_of_lt φ j.2] using h j)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ k, evalAt φ k u ≠ 0`. Take `⟨h1, h2⟩` from `firstIdx_spec φ h`. Rewrite using `[val_eq φ (k := firstIdx φ u) (by rw [evalAt_smul]; exact smul_ne_zero hc h1) (fun i hi => by rw [evalAt_smul, h2 i hi, smul_zero]), evalAt_smul, lexOrder_smul' hc]`. Both sides reduce to the same expression. Use `push_neg at h`.
+
+Establish `: ∀ k, evalAt φ k (c • u) = evalAt φ k u` using `fun k => by rw [evalAt_smul, h, smul_zero]`. Establish `h' : ¬ ∃ k, evalAt φ k (c • u) ≠ 0` using `by simpa [this] using h`. Establish `h'' : ¬ ∃ k, evalAt φ k u ≠ 0` using `by simpa using h`. Unfold `val firstIdx`. Rewrite using `[dif_neg h', dif_neg h'', this]`.
+-/
 theorem val_smul (c : ℂ) (u : A) (hc : c ≠ 0) : val φ (c • u) = val φ u := by
   by_cases h : ∃ k, evalAt φ k u ≠ 0
   · obtain ⟨h1, h2⟩ := firstIdx_spec φ h
@@ -161,6 +236,17 @@ theorem val_smul (c : ℂ) (u : A) (hc : c ≠ 0) : val φ (c • u) = val φ u 
     unfold val firstIdx
     rw [dif_neg h', dif_neg h'', this]
 
+/- English proof (translation)
+Take `⟨hu1, hu2⟩` from `firstIdx_spec φ (exists_evalAt_ne_zero hinj hu)`. Take `⟨hv1, hv2⟩` from `firstIdx_spec φ (exists_evalAt_ne_zero hinj hv)`. Unfold `val at hlt`. Rewrite `hlt` using `[Prod.Lex.toLex_lt_toLex]`. Break down `hlt with hlt | ⟨heq, hlt⟩` into its components or cases.
+
+Simplify using `only at hlt`. Establish `e1 : evalAt φ (firstIdx φ u) (u + v) = evalAt φ (firstIdx φ u) u`. Rewrite using `[evalAt_add, hv2 _ hlt, add_zero]`. Establish `e2 : ∀ i < firstIdx φ u, evalAt φ i (u + v) = 0` using `fun i hi => by`. Rewrite using `[evalAt_add, hu2 i hi, hv2 i (hi.trans hlt), add_zero]`.
+
+Use `⟨fun h0 => hu1 (by rw [← e1, h0, evalAt_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[val_eq φ (by rw [e1]; exact hu1) e2, e1]; rfl`. Simplify using `only at heq hlt`. Rewrite `hlt` using `[← heq]`. Establish `e1 : lexOrder (evalAt φ (firstIdx φ u) (u + v)) = lexOrder (evalAt φ (firstIdx φ u) u)`.
+
+Rewrite using `[evalAt_add, lexOrder_add_of_lt' hlt]`. Establish `hne : evalAt φ (firstIdx φ u) (u + v) ≠ 0`. Rewrite using `[ne_eq, ← lexOrder_eq_top_iff_eq_zero, e1, lexOrder_eq_top_iff_eq_zero]`. Conclude with `hu1`. Establish `e2 : ∀ i < firstIdx φ u, evalAt φ i (u + v) = 0` using `fun i hi => by`.
+
+Rewrite using `[evalAt_add, hu2 i hi, hv2 i (heq ▸ hi), add_zero]`. Use `⟨fun h0 => hne (by rw [h0, evalAt_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[val_eq φ hne e2, e1]`. Both sides reduce to the same expression.
+-/
 theorem val_add (hinj : ∀ u : A, (∀ j, φ j u = 0) → u = 0) (u v : A) (hu : u ≠ 0) (hv : v ≠ 0)
     (hlt : val φ u < val φ v) : u + v ≠ 0 ∧ val φ (u + v) = val φ u := by
   obtain ⟨hu1, hu2⟩ := firstIdx_spec φ (exists_evalAt_ne_zero hinj hu)
@@ -186,6 +272,21 @@ theorem val_add (hinj : ∀ u : A, (∀ j, φ j u = 0) → u = 0) (u v : A) (hu 
     refine ⟨fun h0 => hne (by rw [h0, evalAt_zero]), ?_⟩
     rw [val_eq φ hne e2, e1]; rfl
 
+/- English proof (translation)
+Take `⟨hu1, hu2⟩` from `firstIdx_spec φ (exists_evalAt_ne_zero hinj hu)`. Take `⟨hv1, hv2⟩` from `firstIdx_spec φ (exists_evalAt_ne_zero hinj hv)`. Unfold `val at heq`. Establish `hk : firstIdx φ u = firstIdx φ v` using `congrArg (fun p => (ofLex p).1) heq`. Establish `hl : lexOrder (evalAt φ (firstIdx φ u) u) = lexOrder (evalAt φ (firstIdx φ u) v)`.
+
+Use `congrArg (fun p => (ofLex p).2) heq` as an intermediate fact. Simplify using `only [ofLex_toLex] at this`. Rewrite using `[this, hk]`. Take `⟨c, hc⟩` from `lexOrder_sub_smul' hu1 hl`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hw : u - c • v = 0`. Conclude with `Or.inl hw`. Use `right`. Use `set k := firstIdx φ u with hkdef`. Establish `e2 : ∀ i < k, evalAt φ i (u - c • v) = 0` using `fun i hi => by`.
+
+Rewrite using `[evalAt_sub, evalAt_smul, hu2 i hi, hv2 i (hk ▸ hi), smul_zero, sub_zero]`. Establish `e1 : evalAt φ k (u - c • v) = evalAt φ k u - c • evalAt φ k v`. Rewrite using `[evalAt_sub, evalAt_smul]`. Take `⟨hw1, hw2⟩` from `firstIdx_spec φ (exists_evalAt_ne_zero hinj hw)`. Establish `hge : k ≤ firstIdx φ (u - c • v)`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hw1 (e2 _ hlt)`. Distinguish the cases in `hz : evalAt φ k (u - c • v) = 0`. Establish `hlt : k < firstIdx φ (u - c • v)` using `lt_of_le_of_ne hge (fun h => hw1 (h ▸ hz))`.
+
+Unfold `val`. Rewrite using `[Prod.Lex.toLex_lt_toLex]`. Conclude with `Or.inl hlt`. Rewrite using `[val_eq φ hz e2]`. Unfold `val`.
+
+Rewrite using `[Prod.Lex.toLex_lt_toLex]`. Conclude with `Or.inr ⟨rfl, by rw [e1]; exact hc⟩`.
+-/
 theorem val_sub (hinj : ∀ u : A, (∀ j, φ j u = 0) → u = 0) (u v : A) (hu : u ≠ 0) (hv : v ≠ 0)
     (heq : val φ u = val φ v) : ∃ c : ℂ, u - c • v = 0 ∨ val φ u < val φ (u - c • v) := by
   obtain ⟨hu1, hu2⟩ := firstIdx_spec φ (exists_evalAt_ne_zero hinj hu)
@@ -230,6 +331,15 @@ namespace HilbertSamuelPS
 
 open MvPowerSeries
 
+/- English proof (translation)
+Establish `key : ∀ b : Fin D → ℕ, (∀ d, b d < m) → g ^ m * ∏ d, x d ^ b d ∈ G` using `fun b hb => by`. Simplify `hG (fun _ => g) b (fun _ => hg) hb` using `[Finset.prod_const]`. Establish `hexp : ∀ d, (x d - algebraMap ℂ A (c d)) ^ a d = ∑ j ∈ Finset.range (a d + 1), ((-c d) ^ (a d - j) * ((a d).choose j : ℂ)) • x d ^ j`. Introduce `d`. Rewrite using `[sub_eq_add_neg, add_pow]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Simplify using `only [map_mul, map_pow, map_neg, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hexp]`.
+
+Rewrite using `[Finset.prod_univ_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Rewrite `hb` using `[Fintype.mem_piFinset]`. Establish `hb' : ∀ d, b d < m` using `fun d => lt_of_le_of_lt (Nat.lt_succ_iff.mp (Finset.mem_range.mp (hb d))) (ha d)`. Establish `: ∏ d, ((-c d) ^ (a d - b d) * ((a d).choose (b d) : ℂ)) • x d ^ b d = (∏ d, ((-c d) ^ (a d - b d) * ((a d).choose (b d) : ℂ))) • ∏ d, x d ^ b d`.
+
+Simplify using `only [Algebra.smul_def, Finset.prod_mul_distrib, map_prod, map_mul]`. Rewrite using `[this, mul_smul_comm]`. Conclude with `G.smul_mem _ (key b hb')`.
+-/
 theorem expand_mem {D : ℕ} {A : Type} [CommRing A] [Algebra ℂ A] (x : Fin D → A) (c : Fin D → ℂ)
     (F G : Submodule ℂ A) (m : ℕ)
     (hG : ∀ (f : Fin m → A) (a : Fin D → ℕ), (∀ l, f l ∈ F) → (∀ i, a i < m) →
@@ -258,6 +368,11 @@ theorem expand_mem {D : ℕ} {A : Type} [CommRing A] [Algebra ℂ A] (x : Fin D 
   rw [this, mul_smul_comm]
   exact G.smul_mem _ (key b hb')
 
+/- English proof (translation)
+Establish `hm : 0 < m` using `by omega`. Establish `e1 : (m * x + y) / m = x` using `by rw [Nat.mul_add_div hm, Nat.div_eq_of_lt hy, add_zero]`. Establish `e2 : (m * x' + y') / m = x'` using `by rw [Nat.mul_add_div hm, Nat.div_eq_of_lt hy', add_zero]`. Establish `hx : x = x'` using `by rw [← e1, h, e2]`. Substitute `hx` using the available equality.
+
+Conclude with `⟨rfl, by omega⟩`.
+-/
 theorem nat_mul_add_inj {m x y x' y' : ℕ} (hy : y < m) (hy' : y' < m)
     (h : m * x + y = m * x' + y') : x = x' ∧ y = y' := by
   have hm : 0 < m := by omega
@@ -267,6 +382,9 @@ theorem nat_mul_add_inj {m x y x' y' : ℕ} (hy : y < m) (hy' : y' < m)
   subst hx
   exact ⟨rfl, by omega⟩
 
+/- English proof (translation)
+Simplify using `[Finsupp.single_apply]`.
+-/
 theorem finsupp_coord {D : ℕ} (e : Fin D →₀ ℕ) (a : Fin D → ℕ) (m : ℕ) (d : Fin D) :
     (m • e + ∑ d', Finsupp.single d' (a d')) d = m * e d + a d := by
   simp [Finsupp.single_apply]
@@ -275,6 +393,17 @@ section Vectors
 variable {D n : ℕ} {A : Type} [CommRing A] [Algebra ℂ A]
   {φ : Fin n → (A →ₐ[ℂ] MvPowerSeries (Fin D) ℂ)} {x : Fin D → A} {c : Fin D → ℂ}
 
+/- English proof (translation)
+Take `⟨hb1, hb2⟩` from `firstIdx_spec φ hb`. Use `set k := firstIdx φ b`. Establish `hkn : k < n`. Assume the negation of the conclusion as `h`. Conclude with `hb1 (evalAt_of_not_lt φ h b)`.
+
+Establish `hP : evalAt φ k (∏ d, (x d - algebraMap ℂ A (c d)) ^ a d) = ∏ d, (X d : MvPowerSeries (Fin D) ℂ) ^ a d`. Rewrite using `[evalAt_of_lt φ hkn]`. Simplify using `[map_prod, hx, MvPowerSeries.algebraMap_apply]`. Use `set w := b ^ m * ∏ d, (x d - algebraMap ℂ A (c d)) ^ a d with hw`. Establish `hwk : evalAt φ k w = evalAt φ k b ^ m * ∏ d, (X d : MvPowerSeries (Fin D) ℂ) ^ a d`.
+
+Rewrite using `[hw, evalAt_mul, evalAt_pow φ _ _ hm, hP]`. Establish `hlex : lexOrder (evalAt φ k w) = ((toLex (m • e + ∑ d, Finsupp.single d (a d)) : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ)))`. Rewrite using `[hwk, lexOrder_mul, lexOrder_pow' he, lexOrder_prod_X_pow', ← WithTop.coe_add, ← toLex_add]`. Establish `hne : evalAt φ k w ≠ 0`. Rewrite using `[ne_eq, ← lexOrder_eq_top_iff_eq_zero, hlex]`.
+
+Conclude with `WithTop.coe_ne_top`. Establish `hlt : ∀ i < k, evalAt φ i w = 0`. Introduce `i hi`. Rewrite using `[hw, evalAt_mul, evalAt_pow φ _ _ hm, hb2 i hi, zero_pow hm, zero_mul]`. Use `⟨fun h0 => hne (by rw [h0, evalAt_zero]), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[val_eq φ hne hlt, hlex]`.
+-/
 theorem vector_val (hx : ∀ j i, φ j (x i) = MvPowerSeries.X i + MvPowerSeries.C (c i))
     {m : ℕ} (hm : m ≠ 0) {b : A} (hb : ∃ k, evalAt φ k b ≠ 0) {e : Fin D →₀ ℕ}
     (he : lexOrder (evalAt φ (firstIdx φ b) b) = ((toLex e : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ))))
@@ -310,6 +439,21 @@ end HilbertSamuelPS
 
 open HilbertSamuelPS MvPowerSeries in
 
+/- English proof (translation)
+Introduce `D n A _ _ φ x c hinj hx F G _ _ m hm hG`. Establish `h1 : ∀ (c : ℂ) (u : A), c ≠ 0 → val φ (c • u) = val φ u` using `fun c u hc => val_smul c u hc`. Establish `h2` using `val_add hinj`. Establish `h3` using `val_sub hinj`. Take `⟨b, hbF, hbinj⟩` from `GlobalTheory.T.exists_injective_values_on_finrank_family ℂ A _ (val φ) h1 h2 h3 F`.
+
+Establish `hbne : ∀ i, ∃ k, evalAt φ k (b i) ≠ 0` using `fun i => exists_evalAt_ne_zero hinj (hbF i).2`. Establish `hex : ∀ i, ∃ e : Fin D →₀ ℕ, lexOrder (evalAt φ (firstIdx φ (b i)) (b i)) = ((toLex e : Lex (Fin D →₀ ℕ)) : WithTop (Lex (Fin D →₀ ℕ)))` using `fun i => exists_finsupp_eq_lexOrder_of_ne_zero (firstIdx_spec φ (hbne i)).1`. Use `choose e he using hex`. Set `w : Fin (Module.finrank ℂ F) × (Fin D → Fin m) → A` to `fun p => b p.1 ^ m * ∏ d, (x d - algebraMap ℂ A (c d)) ^ ((p.2 d : ℕ))`. Establish `hwv` using `fun p : Fin (Module.finrank ℂ F) × (Fin D → Fin m) => vector_val (φ := φ) hx hm.ne' (hbne p.1) (he p.1) (fun d => (p.2 d : ℕ))`.
+
+Establish `hwinj : Function.Injective (fun p => val φ (w p))`. Introduce and unpack `⟨i, a⟩ ⟨i', a'⟩ h`. Establish `e1` using `(hwv (i, a)).2`. Establish `e2` using `(hwv (i', a')).2`. Establish `h''` using `e1.symm.trans (h.trans e2)`.
+
+Establish `h'` using `congrArg ofLex h''`. Simplify using `only [ofLex_toLex, Prod.mk.injEq, WithTop.coe_inj, toLex_inj] at h'`. Take `⟨hk, hs⟩` from `h'`. Establish `hcoord : ∀ d, e i d = e i' d ∧ (a d : ℕ) = a' d` using `fun d => by`. Use `congrArg (fun f : Fin D →₀ ℕ => f d) hs` as an intermediate fact.
+
+Simplify using `only [finsupp_coord] at this`. Conclude with `nat_mul_add_inj (a d).2 (a' d).2 this`. Establish `hee : e i = e i'` using `Finsupp.ext fun d => (hcoord d).1`. Establish `hii : i = i'` using `hbinj (by show toLex (firstIdx φ (b i), lexOrder (evalAt φ (firstIdx φ (b i)) (b i))) = toLex (firstIdx φ (b i'), lexOrder (evalAt φ (firstIdx φ (b i')) (b i')))`. Rewrite using `[he i, he i', hk, hee])`.
+
+Substitute `hii` using the available equality. Establish `haa : a = a'` using `funext fun d => Fin.ext (hcoord d).2`. Rewrite using `[haa]`. Establish `hli : LinearIndependent ℂ w` using `GlobalTheory.T.linearIndependent_of_injective_valuationLike ℂ A _ _ (val φ) h1 h2 w (fun p => (hwv p).1) hwinj`. Establish `hwG : ∀ p, w p ∈ G` using `fun p => expand_mem x c F G m hG (b p.1) (hbF p.1).1 (fun d => (p.2 d : ℕ)) (fun d => (p.2 d).2)`.
+
+Set `wG : Fin (Module.finrank ℂ F) × (Fin D → Fin m) → G` to `fun p => ⟨w p, hwG p⟩`. Establish `hliG : LinearIndependent ℂ wG` using `LinearIndependent.of_comp G.subtype hli`. Use `hliG.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[Fintype.card_prod, Fintype.card_fun]`.
+-/
 theorem finrank_mul_pow_le_finrank_of_powerSeries :
     ∀ (D n : ℕ) (A : Type) [CommRing A] [Algebra ℂ A] (φ : Fin n → (A →ₐ[ℂ] MvPowerSeries (Fin D) ℂ)) (x : Fin D → A) (c : Fin D → ℂ), (∀ u : A, (∀ j, φ j u = 0) → u = 0) → (∀ j i, φ j (x i) = MvPowerSeries.X i + MvPowerSeries.C (c i)) → ∀ (F G : Submodule ℂ A) [Module.Finite ℂ F] [Module.Finite ℂ G] (m : ℕ), 0 < m → (∀ (f : Fin m → A) (a : Fin D → ℕ), (∀ l, f l ∈ F) → (∀ i, a i < m) → (∏ l, f l) * ∏ i, x i ^ a i ∈ G) → Module.finrank ℂ F * m ^ D ≤ Module.finrank ℂ G := by
   intro D n A _ _ φ x c hinj hx F G _ _ m hm hG

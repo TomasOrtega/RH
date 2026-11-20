@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.InterpCurv
 
+/- English proof (translation)
+Establish `hev : χ =ᶠ[𝓝 y] fun _ => 1` using `by filter_upwards [Ioo_mem_nhds hy0 hy2] with x hx`. Conclude with `hχ.eq_one x ⟨hx.1.le, hx.2.le⟩`. Establish `hd : deriv χ =ᶠ[𝓝 y] fun _ => 0` using `by filter_upwards [hev.eventually_nhds] with x hx`. Establish `hx' : χ =ᶠ[𝓝 x] fun _ => (1 : ℝ)` using `hx`. Rewrite using `[hx'.deriv_eq, deriv_const]`.
+
+Conclude with `⟨hev.self_of_nhds, by rw [hev.deriv_eq, deriv_const], by rw [hd.deriv_eq, deriv_const]⟩`.
+-/
 theorem cutoff_flat {χ : ℝ → ℝ} (hχ : IsCutoff χ) {y : ℝ} (hy0 : 0 < y) (hy2 : y < 2) :
     χ y = 1 ∧ deriv χ y = 0 ∧ deriv (deriv χ) y = 0 := by
   have hev : χ =ᶠ[𝓝 y] fun _ => 1 := by
@@ -26,6 +31,13 @@ theorem cutoff_flat {χ : ℝ → ℝ} (hχ : IsCutoff χ) {y : ℝ} (hy0 : 0 < 
     rw [hx'.deriv_eq, deriv_const]
   exact ⟨hev.self_of_nhds, by rw [hev.deriv_eq, deriv_const], by rw [hd.deriv_eq, deriv_const]⟩
 
+/- English proof (translation)
+Establish `hx : Cμ * u + 1 ≤ κ * (u - L)` using `by nlinarith`. Establish `h1 : logisticFactor κ L u ≤ Real.exp (-(κ * (u - L)))`. Rewrite using `[logisticFactor, Real.exp_neg, one_div]`. Conclude with `inv_anti₀ (Real.exp_pos _) (by linarith [Real.exp_pos (κ * (u - L))])`. Establish `h3 : Real.exp (-(κ * (u - L))) ≤ Real.exp (-Cμ * u + -1)` using `Real.exp_le_exp.2 (by linarith)`.
+
+Establish `h4 : Real.exp (-1 : ℝ) ≤ 1 / 2`. Rewrite using `[Real.exp_neg, one_div]`. Conclude with `inv_anti₀ (by norm_num) (by linarith [Real.add_one_le_exp (1 : ℝ)])`. Rewrite `h3` using `[Real.exp_add]`. Establish `h5 : Real.exp (-Cμ * u) ≤ 1` using `Real.exp_le_one_iff.2 (by nlinarith)`.
+
+Establish `h6` using `Real.exp_pos (-Cμ * u)`. Establish `h7` using `Real.exp_pos (-1 : ℝ)`. Use `⟨h1.trans (h3.trans ?_), h1.trans (h3.trans ?_)⟩` and prove the remaining obligations. Conclude with `mul_le_of_le_one_right h6.le (h4.trans (by norm_num))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logisticFactor_le {Cμ κ L u : ℝ} (hC : 0 ≤ Cμ) (hκ : 2 * Cμ + 2 < κ) (hL : 0 < L)
     (h2 : 2 * L ≤ u) (hu : 1 ≤ u) :
     logisticFactor κ L u ≤ Real.exp (-Cμ * u) ∧ logisticFactor κ L u ≤ 1 / 2 := by
@@ -48,6 +60,9 @@ theorem logisticFactor_le {Cμ κ L u : ℝ} (hC : 0 ≤ Cμ) (hκ : 2 * Cμ + 2
           mul_le_mul_of_nonneg_right h5 h7.le
       _ ≤ 1 / 2 := by rw [one_mul]; exact h4
 
+/- English proof (translation)
+The claim follows from `|deriv (weightProfile χ κ L t) u| + |deriv (deriv (weightProfile χ κ L t)) u| ≤ K₁ * (1 - weightProfile χ κ L t u) ∧ |deriv (weightProfile χ κ L t) u| + |deriv (deriv (weightProfile χ κ L t)) u| ≤ K₁ * (weightProfile χ κ L t u + Real.exp (-Cμ * u) * (1 - weightProfile χ κ L t u)) …`.
+-/
 theorem weightProfile_bounds {Cμ κ : ℝ} {χ : ℝ → ℝ} (hC : 0 ≤ Cμ) (hκ : 2 * Cμ + 2 < κ)
     (hχ : IsCutoff χ) : ∃ K₁ : ℝ, 0 ≤ K₁ ∧ ∀ t ∈ Icc (0 : ℝ) 1, ∀ L : ℝ, 1 / 2 ≤ L → ∀ u : ℝ, 1 ≤ u →
       ContDiffAt ℝ 2 (weightProfile χ κ L t) u ∧ 0 ≤ weightProfile χ κ L t u ∧
@@ -104,6 +119,23 @@ theorem weightProfile_bounds {Cμ κ : ℝ} {χ : ℝ → ℝ} (hC : 0 ≤ Cμ) 
     · exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_add_of_nonneg_left hK1)
         hf0) (add_nonneg hf0 (mul_nonneg hρ.le hg))
 
+/- English proof (translation)
+Introduce `Cμ CP κ χ hκ hχ`. Distinguish the cases in `hC : 0 ≤ Cμ`. Use `swap`. Conclude with `⟨0, fun ι _ U r G hC' => absurd hC' hC⟩`. Take `⟨K₁, hK₁, hb⟩` from `weightProfile_bounds hC hκ hχ`.
+
+Establish `hA0 : 0 ≤ 2 * Real.pi * |CP|` using `by positivity`. Use `⟨K₁ * (2 * Real.pi * |CP| + √(2 * Real.pi * |CP|) + 1), ?_⟩` and prove the remaining obligations. Introduce `ι _ U r G _ hU hr hre hG hgrad hddc t ht R hR z hz`. Use `beta_reduce`. Establish `hR0 : 0 < R` using `by linarith`.
+
+Establish `hL : 1 / 2 ≤ Real.log R`. Use `Real.log_le_log (by norm_num) hR` as an intermediate fact. Combine the linear relations using `[Real.log_two_gt_d9]`. Establish `hrz : 0 < r z` using `(Real.exp_pos 1).trans_le (hre z hz)`. Establish `hr2 : ContDiffAt ℝ 2 r z` using `(hr.contDiffAt (hU.mem_nhds hz)).of_le (by norm_cast)`.
+
+Establish `hu1 : 1 ≤ Real.log (r z)`. Rewrite using `[Real.le_log_iff_exp_le hrz]`. Conclude with `hre z hz`. Establish `heq : (fun x => t * cutWeight χ κ R r x) =ᶠ[𝓝 z] fun x => weightProfile χ κ (Real.log R) t (Real.log (r x))` using `by filter_upwards [hr2.continuousAt.eventually (lt_mem_nhds hrz)] with x hx`. Rewrite using `[cutWeight, weightProfile, Real.rpow_def_of_pos (div_pos hx hR0), Real.log_div hx.ne' hR0.ne', mul_comm (Real.log (r x) - Real.log R)]`.
+
+Take `⟨hcd, hf0, hf1, hb1, hb2, hb3⟩` from `hb t ht (Real.log R) hL (Real.log (r z)) hu1`. Establish `hsz : t * cutWeight χ κ R r z = weightProfile χ κ (Real.log R) t (Real.log (r z))` using `heq.self_of_nhds`. Establish `hlog : ContDiffAt ℝ 2 (fun x => Real.log (r x)) z` using `hr2.log hrz.ne'`. Establish `hρ : r z ^ (-Cμ) = Real.exp (-Cμ * Real.log (r z))`. Rewrite using `[Real.rpow_def_of_pos hrz, mul_comm]`.
+
+Rewrite using `[hsz, hρ]`. Use `⟨hf0, hf1.le, fun ξ => Or.inr ⟨hf1, ?_⟩⟩` and prove the remaining obligations. Establish `hdel : del (fun x => ((t * cutWeight χ κ R r x : ℝ) : ℂ)) z ξ = ((deriv (weightProfile χ κ (Real.log R) t) (Real.log (r z)) : ℝ) : ℂ) * del (fun x => ((Real.log (r x) : ℝ) : ℂ)) z ξ`. Rewrite using `[del_congr (f := fun x => ((t * cutWeight χ κ R r x : ℝ) : ℂ)) (g := fun x => ((weightProfile χ κ (Real.log R) t (Real.log (r x)) : ℝ) : ℂ)) (heq.mono fun x hx => congrArg Complex.ofReal hx)]`. Conclude with `del_ofReal_comp (t := fun x => Real.log (r x)) (h := weightProfile χ κ (Real.log R) t) (hcd.differentiableAt two_ne_zero).hasDerivAt (hlog.differentiableAt two_ne_zero) ξ`.
+
+Establish `hre2 : (leviForm (fun x => t * cutWeight χ κ R r x) z ξ ξ).re = deriv (weightProfile χ κ (Real.log R) t) (Real.log (r z)) * (leviForm (fun x => Real.log (r x)) z ξ ξ).re + deriv (deriv (weightProfile χ κ (Real.log R) t)) (Real.log (r z)) * ‖del (fun x => ((Real.log (r x) : ℝ) : ℂ …`. Rewrite using `[leviForm_congr heq, leviForm_real_comp (h := weightProfile χ κ (Real.log R) t) (t := fun x => Real.log (r x)) hcd hlog ξ ξ, dbar_ofReal, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.ofReal_re]`. Take `⟨ha, hl⟩` from `GlobalTheory.T.log_radius_del_norm_bound ι r (G z) CP z hr2 hrz (hG z hz) (hgrad z hz) (hddc z hz) ξ`. Take `⟨c1, c2, c3, c4⟩` from `GlobalTheory.T.quadratic_parameter_bounds_of_density K₁ (2 * Real.pi * |CP|) (gnorm (G z) ξ) (weightProfile χ κ (Real.log R) t (Real.log (r z))) (deriv (weightProfile χ κ (Real.log R) t) (Real.log (r z))) (deriv (deriv (weightProfile χ κ (Real.log R) t)) (Real.log (r z))) (Real.e …`.
+
+Rewrite using `[hdel, hre2, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `⟨c1, c2, c3, c4⟩`.
+-/
 theorem weightBound_cutWeight : ∀ (Cμ CP κ : ℝ) (χ : ℝ → ℝ), 2 * Cμ + 2 < κ → IsCutoff χ →
     ∃ K : ℝ, ∀ (ι : Type) [Fintype ι] (U : Set (ι → ℂ)) (r : (ι → ℂ) → ℝ)
       (G : (ι → ℂ) → Matrix ι ι ℂ), 0 ≤ Cμ → IsOpen U → ContDiffOn ℝ ∞ r U →

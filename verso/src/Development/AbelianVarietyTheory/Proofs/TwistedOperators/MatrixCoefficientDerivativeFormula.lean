@@ -15,6 +15,15 @@ namespace GlobalTheory.MatCoefDeriv
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `hJJ` using `GlobalTheory.GKLie.Jm_mul_self ε`. Establish `hJinv : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε` using `Matrix.inv_eq_right_inv hJJ`. Establish `hu : IsUnit (Formalism.REAL.Jm ε)` using `⟨⟨_, _, hJJ, hJJ⟩, rfl⟩`. Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX'`.
+
+Establish `hXh : Xᴴ = Formalism.REAL.Jm ε * (-X) * (Formalism.REAL.Jm ε)⁻¹`. Rewrite using `[hJinv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc : ((t : ℂ) • X)ᴴ = Formalism.REAL.Jm ε * (-((t : ℂ) • X)) * (Formalism.REAL.Jm ε)⁻¹`. Rewrite using `[conjTranspose_smul, hXh, Complex.star_def, Complex.conj_ofReal]`.
+
+Simplify using `[smul_neg, mul_smul_comm, smul_mul_assoc]`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[← Matrix.exp_conjTranspose, hc, Matrix.exp_conj _ _ hu, hJinv]`. Establish `hcomm : Commute (-((t : ℂ) • X)) ((t : ℂ) • X)` using `(Commute.refl _).neg_left`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc (Formalism.REAL.Jm ε * _) (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJJ, mul_one, mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hcomm, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+-/
 theorem exp_inUJ {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ GlobalTheory.SmoothGlob.lieSet ε) (t : ℝ) :
     Formalism.REAL.inUJ ε (NormedSpace.exp ((t : ℂ) • X)) := by
   have hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0 := hX
@@ -41,6 +50,17 @@ theorem exp_inUJ {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ GlobalTheory.Smoot
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Use `set γ : ℝ → H := fun t => ρ (NormedSpace.exp ((t : ℂ) • X)) u with hγ`. Set `L : H →L[ℝ] ℂ` to `((innerSL ℂ w).comp (ρ g)).restrictScalars ℝ`. Establish `hfun : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) = fun t => L (γ t)`. Use function extensionality and compare the values at `t`. Establish `he` using `exp_inUJ hX t`.
+
+Rewrite using `[hf _ (by`. Unfold `Formalism.REAL.inUJ at hg he ⊢`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hρ.2 g hg _ he]`.
+
+Both sides reduce to the same expression. Establish `hdiff : DifferentiableAt ℝ γ 0`. Establish `h` using `GlobalTheory.GKLie.differentiableAt_orbit hu hX`. Establish `e : γ = fun t : ℝ => ρ (NormedSpace.exp (t • X)) u`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [hγ, Complex.coe_smul]`. Rewrite using `[e]`. Conclude with `h`. Unfold `Formalism.REAL.Rd`. Rewrite using `[hfun]`.
+
+Use `show deriv (⇑L ∘ γ) 0 = _`. Rewrite using `[(L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hdiff.hasDerivAt).deriv]`. Both sides reduce to the same expression.
+-/
 theorem Rd_coef {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hρ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ)
     {u : H} (hu : Formalism.L2.Theta.SmoothVec (GlobalTheory.SmoothGlob.lieSet ε) ρ u) (w : H)
     {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : ∀ g, Formalism.REAL.inUJ ε g → f g = ⟪w, ρ g u⟫_ℂ)
@@ -71,14 +91,25 @@ theorem Rd_coef {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hρ : For
   rw [(L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hdiff.hasDerivAt).deriv]
   rfl
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.cpart1, PI.DSInfCharCap.thetaJ, sub_eq_add_neg]`.
+-/
 theorem cpart1_eq (Z : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.cpart1 ε Z = (1 / 2 : ℂ) • (Z + PI.DSInfCharCap.thetaJ ε Z) := by
   simp [Formalism.REAL.cpart1, PI.DSInfCharCap.thetaJ, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.cpart2, PI.DSInfCharCap.thetaJ, sub_eq_add_neg]`.
+-/
 theorem cpart2_eq (Z : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.cpart2 ε Z = (1 / (2 * Complex.I)) • (Z - PI.DSInfCharCap.thetaJ ε Z) := by
   simp [Formalism.REAL.cpart2, PI.DSInfCharCap.thetaJ, sub_eq_add_neg]
 
+/- English proof (translation)
+Introduce `n ε H _ _ ρ hρ u hu w f hf a b g hg`. Establish `h1` using `Rd_coef hρ hu w hf (GlobalTheory.GKLie.cre_mem (ε := ε) (Matrix.single a b 1)) hg`. Establish `h2` using `Rd_coef hρ hu w hf (GlobalTheory.GKLie.cim_mem (ε := ε) (Matrix.single a b 1)) hg`. Unfold `Formalism.REAL.Eab Formalism.REAL.Ec PI.DSInfCharCap.dsigC`. Rewrite using `[cpart1_eq, cpart2_eq]`.
+
+Unfold `GlobalTheory.GKLie.cre at h1`. Unfold `GlobalTheory.GKLie.cim at h2`. Rewrite using `[h1, h2, map_add, map_smul, inner_add_right, inner_smul_right]`.
+-/
 theorem Eab_coef : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ →
     ∀ u : H, Formalism.L2.Theta.SmoothVec (GlobalTheory.SmoothGlob.lieSet ε) ρ u → ∀ (w : H) (f : Matrix (Fin n) (Fin n) ℂ → ℂ),

@@ -11,6 +11,11 @@ private def Defect (k : D0.Hom D) (r : D.Hom D') (p : D'.C2) (c : ∀ w, Z2 (D0.
   ∃ q : D.C2, q.1 ∈ Z2 D.M.ρ ∧ (∀ w, Continuous (q.2 w)) ∧ r.c2 q = p ∧
     ∀ w g h, k.fq w ((c w).1 (g, h)) = D.π w (q.1 (P.φ w g, P.φ w h)) - d1 (D.Q w).ρ (q.2 w) (g, h)
 
+/- English proof (translation)
+Take `⟨q, hq1, hq2, hq3, hq4⟩` from `h`. Take `⟨q', hq1', hq2', hq3', hq4'⟩` from `h'`. Use `⟨q - q', Submodule.sub_mem _ hq1 hq1', fun w => (hq2 w).sub (hq2' w), by rw [map_sub, hq3, hq3'], fun w g h => ?_⟩` and prove the remaining obligations. Establish `e1` using `hq4 w g h`. Establish `e2` using `hq4' w g h`.
+
+Simplify using `only [Pi.sub_apply, Submodule.coe_sub, AddSubgroupClass.coe_sub, Prod.fst_sub, Prod.snd_sub, map_sub] at e1 e2 ⊢`. Rewrite using `[e1, e2]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem defect_sub {k : D0.Hom D} {r : D.Hom D'} {p p' : D'.C2} {c c' : ∀ w, Z2 (D0.Q w).ρ}
     (h : Defect k r p c) (h' : Defect k r p' c') : Defect k r (p - p') (c - c') := by
   obtain ⟨q, hq1, hq2, hq3, hq4⟩ := h
@@ -24,6 +29,15 @@ private theorem defect_sub {k : D0.Hom D} {r : D.Hom D'} {p p' : D'.C2} {c c' : 
   rw [e1, e2]
   abel
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h2 (Submodule.Quotient.mk z')`. Take `⟨z0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite `hy` using `[mapH2, Submodule.mapQ_apply, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, separated_dvr_second_cohomology_mem]`. Take `⟨b', hb'c, hb'⟩` from `hy`. Use `choose σ hσ using hs`.
+
+Set `b : Γ → D.M.X` to `fun g => σ (b' g)`. Establish `hbc : Continuous b` using `(continuous_of_discreteTopology (f := σ)).comp hb'c`. Use `⟨z0.1 - d1 D.M.ρ b, ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sub_mem _ z0.2 (coboundaries2_le_cocycles2 _ D.M.cont ((separated_dvr_second_cohomology_mem _ _).2 ⟨b, hbc, rfl⟩))`. Take `⟨g, h⟩` from `s`.
+
+Establish `e` using `congrFun hb' (g, h)`. Rewrite `e` using `[d1_apply]`. Express the relevant statement in the definitionally equal form `_ = r.f (z0.1 (g, h)) - z'.1 (g, h) at e`. Simplify using `only [b, Pi.sub_apply, map_sub, map_add, d1_apply, r.equiv, hσ]`. Rewrite using `[e]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem lift_two_cocycle_surjection [IsTopologicalGroup Γ] (r : D.Hom D') (hs : Function.Surjective r.f)
     (h2 : Function.Surjective (mapH2 D.M.ρ D'.M.ρ r.f continuous_of_discreteTopology r.equiv))
     (z' : Z2 D'.M.ρ) : ∃ z ∈ Z2 D.M.ρ, ∀ s, r.f (z s) = z'.1 s := by
@@ -45,6 +59,25 @@ private theorem lift_two_cocycle_surjection [IsTopologicalGroup Γ] (r : D.Hom D
     rw [e]
     abel
 
+/- English proof (translation)
+Take `⟨hp1, hp2⟩` from `p.2`. Take `⟨z, hz, hzr⟩` from `lift_two_cocycle_surjection r S.surj h2 ⟨p.1.1, hp1⟩`. Establish `hfq : ∀ w, Function.Surjective (r.fq w)`. Introduce `w y`. Take `⟨m', rfl⟩` from `D'.surj w y`.
+
+Take `⟨m, rfl⟩` from `S.surj m'`. Conclude with `⟨D.π w m, r.comm w m⟩`. Use `choose σ hσ using hfq`. Set `q : D.C2` to `(z, fun w g => σ w (p.1.2 w g))`. Establish `hqc : ∀ w, Continuous (q.2 w)` using `fun w => (continuous_of_discreteTopology (f := σ w)).comp (hp2 w).1`.
+
+Set `e : ∀ w, P.G w × P.G w → (D.Q w).X` to `fun w s => D.π w (z (P.φ w s.1, P.φ w s.2)) - d1 (D.Q w).ρ (q.2 w) s`. Establish `he : ∀ w s, r.fq w (e w s) = 0`. Introduce `w s`. Take `⟨g, h⟩` from `s`. Simplify using `only [e, q, map_sub, map_add, d1_apply, r.comm, hzr, r.equivq, hσ]`.
+
+Rewrite using `[(hp2 w).2 g h, d1_apply, sub_self]`. Establish `hex : ∀ w s, ∃ x, k.fq w x = e w s` using `fun w s => (S.exq w (e w s)).mp (he w s)`. Set `τ : ∀ w, (D.Q w).X → (D0.Q w).X` to `fun w => Function.invFun (k.fq w)`. Establish `hτ : ∀ w s, k.fq w (τ w (e w s)) = e w s` using `fun w s => Function.invFun_eq (hex w s)`. Establish `hec : ∀ w, Continuous (e w)`.
+
+Introduce `w`. Establish `hd : ∀ s : P.G w × P.G w, d1 (D.Q w).ρ (q.2 w) s = (D.Q w).ρ s.1 (q.2 w s.2) - q.2 w (s.1 * s.2) + q.2 w s.1` using `fun s => d1_apply _ _ s.1 s.2`. Establish `h1 : Continuous fun s : P.G w × P.G w => D.π w (z (P.φ w s.1, P.φ w s.2))` using `(continuous_of_discreteTopology (f := D.π w)).comp (hz.1.comp (((P.cont w).comp continuous_fst).prodMk ((P.cont w).comp continuous_snd)))`. Establish `h2' : Continuous fun s : P.G w × P.G w => d1 (D.Q w).ρ (q.2 w) s`. Simplify using `only [hd]`.
+
+Conclude with `(((D.Q w).cont.comp (continuous_fst.prodMk ((hqc w).comp continuous_snd))).sub ((hqc w).comp continuous_mul)).add ((hqc w).comp continuous_fst)`. Conclude with `h1.sub h2'`. Establish `hE : ∀ w (g h t : P.G w), (D.Q w).ρ g (e w (h, t)) - e w (g * h, t) + e w (g, h * t) - e w (g, h) = 0`. Introduce `w g h t`. Establish `key` using `congrArg (D.π w) (hz.2 (P.φ w g) (P.φ w h) (P.φ w t))`.
+
+Simplify using `only [map_sub, map_add, map_zero, D.equiv] at key`. Simplify using `only [e, d1_apply, map_sub, map_add, map_mul, Module.End.mul_apply, mul_assoc]`. Use `(sub_eq_zero.mp ?_).trans key` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Set `c : ∀ w, Z2 (D0.Q w).ρ` to `fun w => ⟨fun s => τ w (e w s), (continuous_of_discreteTopology (f := τ w)).comp (hec w), by`.
+
+Introduce `g h t`. Apply `S.injq w` to reduce the goal to its premises. Simplify using `only [map_sub, map_add, map_zero, k.equivq, hτ]`. Conclude with `hE w g h t⟩`. Use `⟨c, q, hz, hqc, ?_, fun w g h => hτ w (g, h)⟩` and prove the remaining obligations.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Conclude with `hzr s`. Use function extensionality and compare the values at `w g`. Conclude with `hσ w _`.
+-/
 private theorem defect_ex [IsTopologicalGroup Γ] {k : D0.Hom D} {r : D.Hom D'} (S : Dat.SES k r)
     (h2 : Function.Surjective (mapH2 D.M.ρ D'.M.ρ r.f continuous_of_discreteTopology r.equiv))
     (p : D'.selmerSecondCocycles) : ∃ c, Defect k r p.1 c := by
@@ -102,6 +135,23 @@ private theorem defect_ex [IsTopologicalGroup Γ] {k : D0.Hom D} {r : D.Hom D'} 
   · funext w g
     exact hσ w _
 
+/- English proof (translation)
+Take `⟨q, hq1, hq2, hq3, hq4⟩` from `h`. Take `⟨y, hy⟩` from `hc`. Take `⟨y0, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hw : ∀ w, ∃ b : P.G w → (D0.Q w).X, Continuous b ∧ ∀ g h, (c w).1 (g, h) = D0.π w (y0.1 (P.φ w g, P.φ w h)) - d1 (D0.Q w).ρ b (g, h)`. Introduce `w`.
+
+Establish `e` using `congrFun hy w`. Simplify using `only [Dat.loc2, LinearMap.pi_apply, compatiblePairH2, Submodule.mapQ_apply] at e`. Rewrite `e` using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, separated_dvr_second_cohomology_mem]`. Take `⟨b, hb, hbe⟩` from `e`. Use `⟨b, hb, fun g h => ?_⟩` and prove the remaining obligations.
+
+Establish `e2` using `congrFun hbe (g, h)`. Express the relevant statement in the definitionally equal form `_ = D0.π w (y0.1 (P.φ w g, P.φ w h)) - (c w).1 (g, h) at e2`. Rewrite using `[e2]`. Normalize the expressions using the abelian group laws. Use `choose b hbc hbe using hw`.
+
+Establish `hZ : (q.1 - fun s => k.f (y0.1 s), fun w g => q.2 w g - k.fq w (b w g)) ∈ D.selmerSecondCocycles`. Use `⟨Submodule.sub_mem _ hq1 (cocycles2Map D0.M.ρ D.M.ρ k.f continuous_of_discreteTopology k.equiv y0).2, fun w => ⟨?_, fun g h => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hq2 w).sub ((continuous_of_discreteTopology (f := k.fq w)).comp (hbc w))`. Establish `e1` using `hq4 w g h`. Rewrite `e1` using `[hbe w g h]`.
+
+Simplify using `only [Pi.sub_apply, map_sub, map_add, d1_apply, k.comm, k.equivq] at e1 ⊢`. Use `sub_eq_zero.mp (Eq.trans ?_ (sub_eq_zero.mpr e1.symm))` and prove the remaining obligations. Normalize the expressions using the abelian group laws. Use `⟨Submodule.Quotient.mk ⟨_, hZ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Dat.Hom.h2, Submodule.mapQ_apply]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r.c2 _ = p.1`. Rewrite using `[← hq3]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `r.f (q.1 s - k.f (y0.1 s)) = r.f (q.1 s)`. Rewrite using `[map_sub, (S.ex _).mpr ⟨_, rfl⟩, sub_zero]`. Use function extensionality and compare the values at `w g`. Express the relevant statement in the definitionally equal form `r.fq w (q.2 w g - k.fq w (b w g)) = r.fq w (q.2 w g)`.
+
+Rewrite using `[map_sub, (S.exq w _).mpr ⟨_, rfl⟩, sub_zero]`.
+-/
 private theorem defect_zero {k : D0.Hom D} {r : D.Hom D'} (S : Dat.SES k r) (p : D'.selmerSecondCocycles)
     {c : ∀ w, Z2 (D0.Q w).ρ} (h : Defect k r p.1 c)
     (hc : (fun w => (Submodule.Quotient.mk (c w) : H2 (D0.Q w).ρ)) ∈ LinearMap.range D0.loc2) :
@@ -148,6 +198,13 @@ private theorem defect_zero {k : D0.Hom D} {r : D.Hom D'} (S : Dat.SES k r) (p :
 
 end
 
+/- English proof (translation)
+Introduce `A Γ _ _ _ _ P D0 D D' k r S h2 hfin`. Establish `hp : ∀ a : D'.H2LocalConditions ⧸ LinearMap.range r.h2, ∃ p : D'.selmerSecondCocycles, Submodule.Quotient.mk (Submodule.Quotient.mk p : D'.H2LocalConditions) = a` using `fun a => by`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Conclude with `⟨p, rfl⟩`.
+
+Use `choose p hp using hp`. Use `choose c hc using defect_ex S h2`. Establish `hinj : Function.Injective fun a : D'.H2LocalConditions ⧸ LinearMap.range r.h2 => (Submodule.Quotient.mk (fun w => (Submodule.Quotient.mk (c (p a) w) : H2 (D0.Q w).ρ)) : D0.Ck2)`. Introduce `a b hab`. Establish `h1` using `(Submodule.Quotient.eq _).1 hab`.
+
+Establish `h3` using `defect_zero S (p a - p b) (defect_sub (hc (p a)) (hc (p b))) h1`. Rewrite using `[← hp a, ← hp b]`. Conclude with `(Submodule.Quotient.eq _).2 h3`. Conclude with `⟨Finite.of_injective _ hinj, Nat.card_le_card_of_injective _ hinj⟩`.
+-/
 theorem UpperTheory.V.Pa.B2.cokerBound :
     ∀ (A Γ : Type) [CommRing A] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (P : Pl Γ) (D0 D D' : Dat A P) (k : D0.Hom D) (r : D.Hom D'), Dat.SES k r → Function.Surjective (mapH2 D.M.ρ D'.M.ρ r.f continuous_of_discreteTopology r.equiv) → Finite D0.Ck2 → Finite (D'.H2LocalConditions ⧸ LinearMap.range r.h2) ∧ Nat.card (D'.H2LocalConditions ⧸ LinearMap.range r.h2) ≤ Nat.card D0.Ck2 := by
   intro A Γ _ _ _ _ P D0 D D' k r S h2 hfin

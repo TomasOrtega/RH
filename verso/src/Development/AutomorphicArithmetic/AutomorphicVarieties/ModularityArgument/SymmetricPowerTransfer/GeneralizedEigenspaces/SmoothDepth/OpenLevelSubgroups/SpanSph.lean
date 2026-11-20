@@ -17,9 +17,15 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 private noncomputable def intPts (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) : Subgroup (finU L n) :=
   (GroundTheory.Automorphic.AdelicGLn.integralFiniteGL L n).comap (GlobalTheory.BCT.GlobLev.finPart L n)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL L n).preimage GlobalTheory.BCT.GlobLev.continuous_finPart`.
+-/
 private theorem isOpen_intPts : IsOpen (intPts L n : Set (finU L n)) :=
   (GroundTheory.Automorphic.AdelicGLn.isOpen_integralFiniteGL L n).preimage GlobalTheory.BCT.GlobLev.continuous_finPart
 
+/- English proof (translation)
+Use `IsCompact.of_isClosed_subset (GlobalTheory.BCT.GlobLev.isClosedEmbedding_finU.isCompact_preimage ((GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL L n).image GlobalTheory.BCT.GlobLev.continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ isOpen_intPts) fun x hx => ⟨Gl …` and prove the remaining obligations. Establish `h1 : Matrix.GeneralLinearGroup.map (pInf L) ((x : UA L n) : GA L n) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+-/
 private theorem isCompact_intPts : IsCompact (intPts L n : Set (finU L n)) := by
   refine IsCompact.of_isClosed_subset (GlobalTheory.BCT.GlobLev.isClosedEmbedding_finU.isCompact_preimage
     ((GroundTheory.Automorphic.AdelicGLn.isCompact_integralFiniteGL L n).image GlobalTheory.BCT.GlobLev.continuous_finGL_ad))
@@ -27,6 +33,9 @@ private theorem isCompact_intPts : IsCompact (intPts L n : Set (finU L n)) := by
   have h1 : Matrix.GeneralLinearGroup.map (pInf L) ((x : UA L n) : GA L n) = 1 := x.2
   exact ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)
 
+/- English proof (translation)
+Rewrite using `[intPts, Subgroup.mem_comap, GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [GlobalTheory.BCT.GlobLev.mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles] at h ⊢`. Conclude with `⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩`.
+-/
 private theorem mem_intPts {k : finU L n} (h : ∀ u, cLoc u (k : UA L n) ∈ GlobalTheory.LFun.KGL u n) : k ∈ intPts L n := by
   rw [intPts, Subgroup.mem_comap, GroundTheory.Automorphic.AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]
   simp only [GlobalTheory.BCT.GlobLev.mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles] at h ⊢
@@ -38,6 +47,17 @@ namespace UpperTheory.V.Z.Sym.Al.SphericalSpanAlt
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : CompactSpace (intPts L n) := isCompact_iff_compactSpace.1 isCompact_intPts`. Set `U' : Subgroup (finU L n)` to `U.subgroupOf (finU L n)`. Establish `hU' : IsOpen (U' : Set (finU L n))` using `hU`. Set `H : Subgroup (intPts L n)` to `U'.subgroupOf (intPts L n)`. Establish `hH : IsOpen (H : Set (intPts L n))` using `hU'.preimage continuous_subtype_val`.
+
+Use `haveI : Finite (intPts L n ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Use `haveI : H.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hfin : ∀ k : (locU n w ⊓ Kall L n : Subgroup (UA L n)), (k : UA L n) ∈ finU L n` using `fun k => (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 k.2).2).1`. Establish `hint : ∀ (k : (locU n w ⊓ Kall L n : Subgroup (UA L n))) (u : Plc L), cLoc u (k : UA L n) ∈ GlobalTheory.LFun.KGL u n` using `fun k u => Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 k.2).2).2 u)`. Set `f : (locU n w ⊓ Kall L n : Subgroup (UA L n)) →* intPts L n` to `{ toFun := fun k => ⟨⟨k.1, hfin k⟩, mem_intPts (hint k)⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`.
+
+Establish `e : U.subgroupOf (locU n w ⊓ Kall L n) = H.comap f`. Use extensionality with `k`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Finite.of_injective (fun q : _ ⧸ H.comap f => ((f (Quotient.out q) : intPts L n) : intPts L n ⧸ H)) fun q q' e' => ?_` and prove the remaining obligations.
+
+Establish `e''` using `QuotientGroup.eq.1 e'`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Use `show f (_ * _) ∈ H`. Rewrite using `[map_mul, map_inv]`.
+
+Conclude with `e''`.
+-/
 private theorem finite_quot (w : Plc L) (U : Subgroup (UA L n))
     (hU : IsOpen {x : finU L n | (x : UA L n) ∈ U}) :
     Finite ((locU n w ⊓ Kall L n : Subgroup (UA L n)) ⧸ U.subgroupOf (locU n w ⊓ Kall L n)) := by
@@ -70,6 +90,13 @@ private theorem finite_quot (w : Plc L) (U : Subgroup (UA L n))
   rw [map_mul, map_inv]
   exact e''
 
+/- English proof (translation)
+Set `kk : K` to `⟨k, hk⟩`. Establish `step : ∀ q : K ⧸ K', F (t * k * ((Quotient.out q : K) : G)) = F (t * ((Quotient.out (kk • q) : K) : G))`. Introduce `q`. Establish `hm : (Quotient.out (kk • q))⁻¹ * (kk * Quotient.out q) ∈ K'`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+
+Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[← hF (t * ((Quotient.out (kk • q) : K) : G)) _ hm]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, kk, mul_assoc, mul_inv_cancel_left]`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => step q]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm kk) _ _ fun q => rfl`.
+-/
 private theorem sum_translate {G X : Type} [Group G] [AddCommMonoid X] (K : Subgroup G) (K' : Subgroup K)
     [Fintype (K ⧸ K')] (F : G → X) (hF : ∀ t, ∀ m ∈ K', F (t * ((m : K) : G)) = F t) (k : G) (hk : k ∈ K) (t : G) :
     ∑ q : K ⧸ K', F (t * k * ((Quotient.out q : K) : G)) = ∑ q : K ⧸ K', F (t * ((Quotient.out q : K) : G)) := by
@@ -90,6 +117,43 @@ private theorem sum_translate {G X : Type} [Group G] [AddCommMonoid X] (K : Subg
 end UpperTheory.V.Z.Sym.Al.SphericalSpanAlt
 
 open UpperTheory.V.Z.Sym.Al.SphericalSpanAlt in
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ _ π hπ w hw φ h0 hc`. Take `⟨f1, f2, -, -, f5, -⟩` from `factor L n w`. Take `⟨ψ, hψ, hψ0, hψK⟩` from `hw`. Take `⟨g0, hg0⟩` from `Function.ne_iff.1 h0`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : V →ₗ[ℂ] ℂ, f (φ g0) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hg0 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hcon)`. Establish `hhπ : f ∘ φ ∈ π` using `hc f`. Establish `hh0 : f ∘ φ ≠ 0` using `fun e => hf (congrFun e g0)`.
+
+Establish `rmul : ∀ (a b : UA L n) (F : UA L n → ℂ), RU L n (a * b) F = RU L n a (RU L n b F)` using `fun a b F => by rw [map_mul]; rfl`. Set `S` to `Submodule.span ℂ (Set.range fun g : UA L n => RU L n g (f ∘ φ))`. Establish `hSπ : S ≤ π` using `Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hπ.stable g _ hhπ)`. Establish `hSst : ∀ a, ∀ F ∈ S, RU L n a F ∈ S`. Introduce `a F hF`.
+
+Establish `hle : S ≤ S.comap (RU L n a)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `show RU L n a (RU L n g (f ∘ φ)) ∈ S`. Rewrite using `[← rmul]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩)`.
+
+Conclude with `hle hF`. Establish `hhS : f ∘ φ ∈ S`. Establish `h1 : RU L n 1 (f ∘ φ) = f ∘ φ` using `by rw [map_one]; rfl`. Rewrite using `[← h1]`. Conclude with `Submodule.subset_span ⟨1, rfl⟩`.
+
+Establish `hSeq : S = π`. Break down `hπ.irred S hSπ hSst with e | e` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (e ▸ hhS)) hh0`. Conclude with `e`. Take `⟨c, hcs⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (hSeq ▸ hψ : ψ ∈ S)`.
+
+Use `choose x hx y hy hxy using f2`. Set `φg : UA L n → UA L n → V` to `fun g t => φ (t * x g)`. Establish `hcoef : ∀ g, CoefIn (φg g) π` using `fun g f' => hπ.stable (x g) _ (hc f')`. Use `choose U hUo hUf using fun g => openLev L n V π hπ (φg g) (hcoef g)`. Set `U0 : Subgroup (UA L n)` to `⨅ g ∈ c.support, U g`.
+
+Establish `hU0 : IsOpen {k : finU L n | (k : UA L n) ∈ U0}`. Establish `e : {k : finU L n | (k : UA L n) ∈ U0} = ⋂ g ∈ c.support, {k : finU L n | (k : UA L n) ∈ U g}`. Use extensionality with `k`. Simplify using `only [U0, Subgroup.mem_iInf, Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[e]`.
+
+Conclude with `isOpen_biInter_finset fun g _ => hUo g`. Set `K : Subgroup (UA L n)` to `locU n w ⊓ Kall L n`. Set `K' : Subgroup K` to `U0.subgroupOf K`. Use `haveI : Finite (K ⧸ K') := finite_quot w U0 hU0`. Use `letI : Fintype (K ⧸ K') := Fintype.ofFinite _`.
+
+Set `rep : K ⧸ K' → UA L n` to `fun q => ((Quotient.out q : K) : UA L n)`. Establish `hrepK : ∀ q, rep q ∈ K` using `fun q => (Quotient.out q).2`. Establish `hrepl : ∀ q, rep q ∈ locU n w` using `fun q => (Subgroup.mem_inf.1 (hrepK q)).1`. Set `A : UA L n → UA L n → V` to `fun g t => ∑ q, φg g (t * rep q)`. Establish `hψfix : ∀ k ∈ K, ∀ t, ψ (t * k) = ψ t` using `fun k hk t => by`.
+
+Take `⟨k1, k2⟩` from `Subgroup.mem_inf.1 hk`. Conclude with `congrFun (hψK k k1 ((f5 k k1).1 k2)) t`. Establish `hψsum : ∀ s, ψ s = ∑ g ∈ c.support, c g * f (φ (s * g))`. Introduce `s`. Rewrite using `[← hcs, Finsupp.sum, Finset.sum_apply]`.
+
+Both sides reduce to the same expression. Establish `key : ∀ t, (Fintype.card (K ⧸ K') : ℂ) * ψ t = ∑ g ∈ c.support, c g * f (A g (t * y g))`. Introduce `t`. Establish `e1 : (Fintype.card (K ⧸ K') : ℂ) * ψ t = ∑ q : K ⧸ K', ψ (t * rep q)`. Rewrite using `[Finset.sum_congr rfl fun q _ => hψfix _ (hrepK q) t, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Rewrite using `[e1, Finset.sum_congr rfl fun q _ => hψsum _, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, map_sum]`. Use `congrArg (c g * ·) (Finset.sum_congr rfl fun q _ => ?_)` and prove the remaining obligations. Establish `hm : (rep q * x g) * y g = y g * (rep q * x g)` using `f1 _ ((locU n w).mul_mem (hrepl q) (hx g)) _ (hy g)`.
+
+Use `show f (φ (t * rep q * g)) = f (φ (t * y g * rep q * x g))`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = t * y g * rep q * x g := by rw [hm]; simp only [mul_assoc]`.
+
+Distinguish the cases in `hall : ∀ g ∈ c.support, A g = 0`. It suffices to derive a contradiction. Establish `hcard : (Fintype.card (K ⧸ K') : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Fintype.card_pos_iff.2 ⟨(QuotientGroup.mk 1 : K ⧸ K')⟩).ne'`. Use `hψ0 (funext fun t => ?_)` and prove the remaining obligations. Establish `h` using `key t`.
+
+Rewrite `h` using `[Finset.sum_eq_zero fun g hg => by rw [hall g hg]; simp]`. Conclude with `(mul_eq_zero.1 h).resolve_left hcard`. Use `push_neg at hall`. Take `⟨g, hg, hne⟩` from `hall`. Use `⟨A g, hne, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : A g = ∑ q : K ⧸ K', fun t => φ (t * (rep q * x g))`. Use function extensionality and compare the values at `t`. Simplify using `only [A, φg, Finset.sum_apply, mul_assoc]`. Unfold `InSpan`. Rewrite using `[e]`.
+
+Conclude with `Submodule.sum_mem _ fun q _ => Submodule.subset_span ⟨_, (locU n w).mul_mem (hrepl q) (hx g), rfl⟩`. Introduce `k hk t`. Conclude with `sum_translate K K' (φg g) (fun s m hm => hUf g _ (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_subgroupOf.1 hm) g) hg) s) k hk t`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.spanSph :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (π : Submodule ℂ (UA L n → ℂ)), IsAutRepU π → ∀ w : Plc L, IsUnramU π w →
         ∀ φ : UA L n → V, φ ≠ 0 → CoefIn φ π → ∃ φ', φ' ≠ 0 ∧ InSpan w φ φ' ∧ ∀ x ∈ locU n w ⊓ Kall L n, ∀ g, φ' (g * x) = φ' g := by

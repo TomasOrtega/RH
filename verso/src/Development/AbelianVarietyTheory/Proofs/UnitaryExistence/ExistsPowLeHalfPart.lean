@@ -22,6 +22,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice GlobalThe
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `and_congr_right' (and_congr_right' (and_congr_right' ⟨?_, ?_⟩))` and prove the remaining obligations. Introduce and unpack `⟨α₀, α, s₁, s₂, U₁, U₂, g₀, n₀, -, h⟩`. Conclude with `⟨α₀, α, s₁, s₂, U₁, U₂, g₀, n₀, h⟩`. Introduce and unpack `⟨α₀, α, s₁, s₂, U₁, U₂, g₀, n₀, cα, tw, h⟩`. Take `⟨β, gβ, cβ⟩` from `NormMulUniv.exists_pull L.isLB α₀ g₀ T`.
+
+Take `⟨r, tr, -⟩` from `existsUnique_isTwistPull _ _ _ L.isLB T (mulT A T N) (snd T A ^ N) (lift_snd _ _) ((N : ℤ) ^ 2) 1 β gβ s`. Take `rfl : s₁ = r` from `TranslExist.twist_congr L.isLB (fun y J hJ => (val_corr hJ cα _).trans (val_corr hJ cβ _).symm) tw tr`. Conclude with `⟨α₀, β, s₁, s₂, U₁, U₂, g₀, n₀, gβ, cβ, tr, h⟩`.
+-/
 theorem isTwoLifts_iff {X : Scheme.{0}} (A : Over X) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (N : ℕ) {T : Over X}
     (s : LB.Sec (LPow A L.L 1 T)) (x₁ x₂ : T ⟶ A) (F : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) T)) :
     IsTwoLifts A L N s x₁ x₂ F ↔ Odd N ∧ x₁ ^ (N ^ 2) = 1 ∧ x₂ ^ (N ^ 2) = 1 ∧ IsUUOver A L N s x₁ x₂ F := by
@@ -41,6 +46,15 @@ variable (Xo : Moduli Dw l) (c : Coeff l)
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) v.1`. Use `choose u hu using hd`. Establish `hd0 : algebraMap (𝓞 E) E d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero d.2`. Establish `h1 : ((d : 𝓞 E) * N) • v = ∑ j, u j • (⟨_, hN j⟩ : Lm)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single b (fun j _ hj => by simp [hj.symm]) (by simp)]`. Simplify using `only [Algebra.smul_def, hu, Pi.single_eq_same, map_mul, map_natCast, eq_natCast, Nat.cast_id]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `congrArg (fun z => algebraMap (𝓞 E) E (f z)) h1`. Simplify using `only [map_smul, map_sum, smul_eq_mul, map_mul, map_natCast, hu] at h2`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[← _root_.mul_assoc, Finset.mul_sum]`. Use `h2.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def]`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hom_eq_sum {n N : ℕ} {Lm : Submodule (𝓞 E) (Fin n → E)}
     (hN : ∀ j, N • (Pi.single j 1 : Fin n → E) ∈ Lm) (f : Lm →ₗ[𝓞 E] 𝓞 E) (v : Lm) :
     (N : E) * (f v : E) = ∑ j, (f ⟨_, hN j⟩ : E) * v.1 j := by
@@ -63,6 +77,17 @@ theorem hom_eq_sum {n N : ℕ} {Lm : Submodule (𝓞 E) (Fin n → E)}
   simp only [RingOfIntegers.coe_eq_algebraMap]
   ring
 
+/- English proof (translation)
+Establish `hNE : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN0`. Use `and_congr_right' ⟨fun h f i => ?_, fun h mu hmu cm hcm i => ?_⟩` and prove the remaining obligations. Rewrite using `[← List.prod_ofFn]`. Use `h (Matrix.of fun i j => (f ⟨_, hN j⟩ i : E) / N) (fun v hv => mem_stdMod.2 fun b => ⟨f ⟨v, hv⟩ b, ?_⟩) (fun i j => f ⟨_, hN j⟩ i) (fun i j => by simp only [Matrix.of_apply]; field_simp) i` and prove the remaining obligations. Apply `mul_left_cancel₀ hNE` to reduce the goal to its premises.
+
+Use `(hom_eq_sum hN (LinearMap.proj b ∘ₗ f) ⟨v, hv⟩).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f ⟨_, hN j⟩ b : E) * v j = _`. Clear the denominators using the available nonvanishing facts.
+
+Use `choose g hg using fun v : Γ.La => mem_stdMod.1 (hmu v.1 v.2)`. Set `f : Γ.La →ₗ[𝓞 E] (Fin n → 𝓞 E)` to `{ toFun := g map_add' := fun v w => funext fun b => RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `_ = ((g v b : E) + g w b)`. Rewrite using `[hg, hg, hg, Submodule.coe_add, Matrix.mulVec_add, Pi.add_apply])`. Use the proof step `map_smul' := fun o v => funext fun b => RingOfIntegers.ext (by`.
+
+Express the relevant statement in the definitionally equal form `_ = ((o : E) * g v b)`. Rewrite using `[hg, hg, Submodule.coe_smul, ← algebraMap_smul E, Matrix.mulVec_smul]`. Use the proof step `rfl) }`. Establish `hf : ∀ j, cm i j = f ⟨_, hN j⟩ i` using `fun j => RingOfIntegers.ext (by`. Express the relevant statement in the definitionally equal form `_ = (g _ i : E)`.
+
+Rewrite using `[hg, hcm, Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Use the proof step `simp)`. Rewrite using `[List.prod_ofFn]`. Simplify `h f i` using `only [hf]`.
+-/
 theorem inZh_iff_inKer {n N : ℕ} (hN0 : N ≠ 0) (Γ : GenLat E n)
     (hN : ∀ j, N • (Pi.single j 1 : Fin n → E) ∈ Γ.La) {T : Over Xo.X} (a : Fin n → (T ⟶ Xo.univ.t.G)) :
     InZh Xo Γ N a ↔ InKer Xo N Γ.La hN a := by
@@ -94,11 +119,19 @@ theorem inZh_iff_inKer {n N : ℕ} (hN0 : N ≠ 0) (Γ : GenLat E n)
     rw [List.prod_ofFn]
     simpa only [hf] using h f i
 
+/- English proof (translation)
+The claim follows from `inZh_iff_inKer Xo h.1.pos.ne' (toGen Λ) (nsmul_single_mem h) a`.
+-/
 theorem inZh_iff {n N : ℕ} {Λ : Lat E n} (h : Λ.Admissible l.M N) {T : Over Xo.X}
     (a : Fin n → (T ⟶ Xo.univ.t.G)) : InZh Xo (toGen Λ) N a ↔ InZ Xo h a :=
   inZh_iff_inKer Xo h.1.pos.ne' (toGen Λ) (nsmul_single_mem h) a
 
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `: Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN)`. Set `π` to `Ideal.Quotient.mk (Ideal.span {(N : 𝓞 E)})`. Take `⟨k, hk⟩` from `IsArtinian.monotone_stabilizes (R := 𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}) (M := 𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}) ⟨fun m => OrderDual.toDual ((I ^ m).map π), fun a b hab => Ideal.map_mono (Ideal.pow_le_pow_right hab)⟩`. Use `⟨k, le_iInf fun m => ?_⟩` and prove the remaining obligations. Break down `le_total m k with hm | hm` into its components or cases.
+
+Conclude with `(Ideal.pow_le_pow_right hm).trans le_sup_right`. Establish `h1 : (I ^ k).map π = (I ^ m).map π` using `hk m hm`. Use `Ideal.le_comap_map.trans (le_of_eq (b := _) (a := ((I ^ k).map π).comap π) ?_)` and prove the remaining obligations. Rewrite using `[h1, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_comm]`.
+-/
 theorem exists_pow_le_halfPart' (I : Ideal (𝓞 E)) {N : ℕ} (hN : N ≠ 0) :
     ∃ k : ℕ, I ^ k ≤ ⨅ m : ℕ, Ideal.span {(N : 𝓞 E)} ⊔ I ^ m := by
   have : Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN)
@@ -127,6 +160,13 @@ def ann {T : Over Xo.X} (t : T ⟶ Xo.univ.t.G) : Ideal (𝓞 E) where
     change t ≫ _ = 1
     rw [smul_eq_mul, mul_comm, Xo.univ.t.act.mul, ← Category.assoc, ha, MonObj.one_comp]
 
+/- English proof (translation)
+Use `and_congr_right fun h => ⟨fun ⟨j, hj⟩ => ?_, fun hk => ?_⟩` and prove the remaining obligations. Establish `h1 : l.Mb ^ j ≤ ann Xo t'` using `hj`. Establish `h2 : (N : 𝓞 E) * N ∈ ann Xo t'`. Express the relevant statement in the definitionally equal form `t' ≫ _ = 1`. Rewrite using `[← Nat.cast_mul, ZhStable.act_natCast, MonObj.comp_pow, Category.comp_id, pow_mul, h, ht]`.
+
+Establish `h3 : halfPart l N ≤ Ideal.span {(N : 𝓞 E)} ⊔ ann Xo t'` using `(iInf_le _ j).trans (sup_le_sup_left h1 _)`. Express the relevant statement in the definitionally equal form `halfPart l N ^ 2 ≤ ann Xo t'`. Use `(Ideal.pow_right_mono h3 2).trans ?_` and prove the remaining obligations. Rewrite using `[sq, Ideal.sup_mul, Ideal.mul_sup, Ideal.span_singleton_mul_span_singleton]`. Conclude with `sup_le (sup_le ((Ideal.span_singleton_le_iff_mem _).2 h2) Ideal.mul_le_right) Ideal.mul_le_left`.
+
+Take `⟨k, hk'⟩` from `exists_pow_le_halfPart' l.Mb hN`. Conclude with `⟨k * 2, fun a ha => hk a (Ideal.pow_right_mono hk' 2 (pow_mul l.Mb k 2 ▸ ha))⟩`.
+-/
 theorem isDivPt_iff {N : ℕ} (hN : N ≠ 0) {T : Over Xo.X} {t : T ⟶ Xo.univ.t.G} (ht : t ^ N = 1)
     (t' : T ⟶ Xo.univ.t.G) : (t' ^ N = t ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) t') ↔ IsDivPt Xo N t t' := by
   refine and_congr_right fun h => ⟨fun ⟨j, hj⟩ => ?_, fun hk => ?_⟩
@@ -143,6 +183,9 @@ theorem isDivPt_iff {N : ℕ} (hN : N ≠ 0) {T : Over Xo.X} {t : T ⟶ Xo.univ.
   · obtain ⟨k, hk'⟩ := exists_pow_le_halfPart' l.Mb hN
     exact ⟨k * 2, fun a ha => hk a (Ideal.pow_right_mono hk' 2 (pow_mul l.Mb k 2 ▸ ha))⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨k, rfl⟩` from `hN`. Rewrite using `[levPtCl_mk, levPt, pow_mul, ← MonObj.comp_pow, LevelPoints.eta_pow, MonObj.comp_one, one_pow]`.
+-/
 theorem levPtCl_pow {N : ℕ} (hN : l.M ∣ N) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (q : NamedCl Dw l) :
     levPtCl Xo x0 q ^ N = 1 := by
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -150,6 +193,13 @@ theorem levPtCl_pow {N : ℕ} (hN : l.M ∣ N) {S : Type} [CommRing S] (x0 : Sp 
   rw [levPtCl_mk, levPt, pow_mul, ← MonObj.comp_pow, LevelPoints.eta_pow, MonObj.comp_one, one_pow]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Establish `hex : ∃ k : ℕ, 0 < k ∧ k • x ∈ L`. Take `⟨k, hk, hx⟩` from `h 2 Nat.prime_two`. Conclude with `⟨k, Nat.pos_of_ne_zero fun e => hk (e ▸ dvd_zero 2), hx⟩`. Take `⟨hd, hx⟩` from `Nat.find_spec hex`. Distinguish the cases in `h1 : Nat.find hex = 1`.
+
+Rewrite `hx` using `[h1, one_smul]`. Then use the resulting hypothesis. Take `⟨k, hk, hkx⟩` from `h _ (Nat.minFac_prime h1)`. Use `absurd ((Nat.minFac_dvd _).trans ?_) hk` and prove the remaining obligations. Assume the negation of the conclusion as `hnd`. Use `Nat.find_min hex (Nat.mod_lt k hd) ⟨Nat.pos_of_ne_zero fun e => hnd (Nat.dvd_of_mod_eq_zero e), ?_⟩` and prove the remaining obligations.
+
+Establish `: (k % Nat.find hex) • x = k • x - (k / Nat.find hex) • Nat.find hex • x`. Rewrite using `[eq_sub_iff_add_eq, smul_smul, ← add_smul, Nat.mod_add_div']`. Rewrite using `[this]`. Conclude with `L.sub_mem hkx (nsmul_mem hx _)`.
+-/
 theorem mem_of_forall_prime {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (h : ∀ p : ℕ, p.Prime → ∃ k : ℕ, ¬ p ∣ k ∧ k • x ∈ L) : x ∈ L := by
   classical
@@ -168,10 +218,24 @@ theorem mem_of_forall_prime {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (x 
   rw [this]
   exact L.sub_mem hkx (nsmul_mem hx _)
 
+/- English proof (translation)
+Simplify using `only [stdForm, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum, Nat.cast_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem stdForm_nsmul {n : ℕ} (a b : ℕ) (x y : Fin n → E) : stdForm (a • x) (b • y) = (a * b) • stdForm x y := by
   simp only [stdForm, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum, Nat.cast_mul]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Use `fun x => ⟨fun hx y hy => ?_, fun hx => mem_of_forall_prime _ _ fun p hp => ?_⟩` and prove the remaining obligations. Use `mem_of_forall_prime (stdMod E 1) (fun _ => stdForm x y) fun p hp => by` as an intermediate fact. Take `⟨g, hg, h1, -⟩` from `h p hp`. Take `⟨a, ha, x', hx', ex⟩` from `h1 x hx`. Take `⟨b, hb, y', hy', ey⟩` from `h1 y hy`.
+
+Take `⟨o, ho⟩` from `(std_selfDual x').1 hx' y' hy'`. Use `⟨a * b, fun hd => (hp.dvd_mul.1 hd).elim ha hb, mem_stdMod.2 fun _ => ⟨o, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ho, ← hg]`. Conclude with `(congrArg₂ stdForm ex ey).trans (stdForm_nsmul a b x y)`. Conclude with `mem_stdMod.1 this 0`.
+
+Take `⟨g, hg, -, h2⟩` from `h p hp`. Take `⟨k, hk, hu⟩` from `exists_uniform hp ((Lat.std E n).map g).fg h2`. Use `⟨k * k, fun hd => (hp.dvd_mul.1 hd).elim hk hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Use `hu _ ⟨g.symm (k • x), (std_selfDual _).2 fun y hy => ?_, g.apply_symm_apply _⟩` and prove the remaining obligations.
+
+Take `⟨o, ho⟩` from `hx _ (hu _ ⟨y, hy, rfl⟩)`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, ← hg (g.symm _), g.apply_symm_apply]`. Establish `e1` using `stdForm_nsmul 1 k x (g y)`. Establish `e2` using `stdForm_nsmul k 1 x (g y)`.
+
+Rewrite `e1`, `e2` using `[one_smul]`. Rewrite using `[e2, mul_comm, ← e1]`. Both sides reduce to the same expression.
+-/
 theorem selfDual_of_inGenus {n : ℕ} {Λ : Lat E n} (h : Λ.InGenus) : Λ.SelfDual := by
   classical
   refine fun x => ⟨fun hx y hy => ?_, fun hx => mem_of_forall_prime _ _ fun p hp => ?_⟩
@@ -198,6 +262,17 @@ theorem selfDual_of_inGenus {n : ℕ} {Λ : Lat E n} (h : Λ.InGenus) : Λ.SelfD
     rw [e2, mul_comm, ← e1]
     rfl
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `Spec.map_surjective (x ≫ Xo.s)`. Take `⟨-, I, -⟩` from `Xo.univ.geom K x β.hom hβ.symm`. Establish `hN : 0 < N` using `h.1.pos`. Establish `hN2 : 0 < N ^ 2` using `pow_pos hN 2`. Take `⟨zz, h1, h2, h3⟩` from `ZCount.exists_class_representatives E H Dw n (toGen Λ) N ((unimod_iff Λ).2 hs) hN (((levOK_iff Λ N l.M).2 h).2.2.trans inf_le_left)`.
+
+Set `ev : Dw.La →+ Additive (ptO Xo x ⟶ Xo.univ.t.G)` to `AddMonoidHom.mk' (fun v => Additive.ofMul (I.ev (N ^ 2) v)) fun a b => congrArg Additive.ofMul (I.add _ a b)`. Establish `hsum : ∀ (cm : Fin n → 𝓞 E) (v : Fin n → Dw.La), I.ev (N ^ 2) (∑ j, cm j • v j) = (List.ofFn fun j => I.ev (N ^ 2) (v j) ≫ Xo.univ.t.act.act (cm j)).prod` using `fun cm v => by`. Rewrite using `[List.prod_ofFn]`. Use `(congrArg Additive.toMul (map_sum ev _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[toMul_sum]`.
+
+Conclude with `Finset.prod_congr rfl fun j _ => I.lin _ _ _`. Establish `heq : ∀ u v, I.ev (N ^ 2) u = I.ev (N ^ 2) v ↔ Dw.ModN (N ^ 2) (u - v)` using `fun u v => by`. Establish `e : I.ev (N ^ 2) u = I.ev (N ^ 2) (u - v) * I.ev (N ^ 2) v` using `by rw [← I.add, sub_add_cancel]`. Rewrite using `[e, mul_eq_right, I.ker _ hN2]`. Both sides reduce to the same expression.
+
+Use `⟨fun i b => I.ev (N ^ 2) (zz i b), fun i j hij => h2 i j fun b => (heq _ _).1 (congrFun hij b), fun a => (inZh_iff Xo h a).symm.trans ⟨fun ha => ?_, ?_⟩⟩` and prove the remaining obligations. Use `choose v hv using fun b => (I.onto _ hN2 (a b)).1 (ha.1 b)`. Take `⟨i, hi⟩` from `h3 v fun mu hmu cm hcm i => (I.ker _ hN2 _).1 (by`. Rewrite using `[hsum, ← ha.2 mu hmu cm hcm i]`. Simplify using `only [hv])`.
+
+Conclude with `⟨i, funext fun b => ((heq _ _).2 (hi b)).symm.trans (hv b)⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨fun b => (I.onto _ hN2 _).2 ⟨_, rfl⟩, fun mu hmu cm hcm j => (hsum _ _).symm.trans ((I.ker _ hN2 _).2 (h1 i mu hmu cm hcm j))⟩`.
+-/
 theorem exists_enum {K : Type} [Field K] [IsAlgClosed K] (x : Sp K ⟶ Xo.X) {n N : ℕ} {Λ : Lat E n}
     (hs : Λ.SelfDual) (h : Λ.Admissible l.M N) :
     ∃ e : Fin ((toGen Λ).zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x ⟶ Xo.univ.t.G),
@@ -231,10 +306,18 @@ theorem exists_enum {K : Type} [Field K] [IsAlgClosed K] (x : Sp K ⟶ Xo.X) {n 
     exact ⟨fun b => (I.onto _ hN2 _).2 ⟨_, rfl⟩, fun mu hmu cm hcm j =>
       (hsum _ _).symm.trans ((I.ker _ hN2 _).2 (h1 i mu hmu cm hcm j))⟩
 
+/- English proof (translation)
+The claim follows from `(inZh_iff Xo h _).1 (ZhStable.inZh_comp Xo _ N g a ((inZh_iff Xo h a).2 ha))`.
+-/
 theorem inZ_comp {n N : ℕ} {Λ : Lat E n} (h : Λ.Admissible l.M N) {T T' : Over Xo.X} (g : T' ⟶ T)
     {a : Fin n → (T ⟶ Xo.univ.t.G)} (ha : InZ Xo h a) : InZ Xo h fun b => g ≫ a b :=
   (inZh_iff Xo h _).1 (ZhStable.inZh_comp Xo _ N g a ((inZh_iff Xo h a).2 ha))
 
+/- English proof (translation)
+Use `⟨fun h k _ _ ψ => h k ψ _ rfl, fun h k _ ψ g hg i j hij => ?_⟩` and prove the remaining obligations. Use `h (AlgebraicClosure k) ((algebraMap k _).comp ψ) (funext fun b => Over.OverMorphism.ext ?_)` and prove the remaining obligations. Establish `h1 : g.left ≫ (z i b).left = g.left ≫ (z j b).left` using `congrArg (fun f => f.left) (congrFun hij b)`. Express the relevant statement in the definitionally equal form `spMap _ ≫ (z i b).left = spMap _ ≫ (z j b).left`. Rewrite `h1` using `[hg]`.
+
+Rewrite using `[spMap_comp, Category.assoc, Category.assoc, h1]`.
+-/
 theorem geoInj_iff {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {n : ℕ} {J : Type}
     (z : J → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) :
     GeoInj Xo x0 z ↔ ∀ (k : Type) [Field k] [IsAlgClosed k] (ψ : S →+* k),
@@ -246,6 +329,11 @@ theorem geoInj_iff {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {n : ℕ} {J : T
   rw [hg] at h1
   rw [spMap_comp, Category.assoc, Category.assoc, h1]
 
+/- English proof (translation)
+Simplify using `only [inZh_iff Xo h, geoInj_iff]`. Use `and_congr_right fun hz => ⟨fun hs => ⟨fun k _ _ ψ i j hij => ?_, fun k _ _ ψ a ha => ?_⟩, fun ⟨h1, h2⟩ k _ _ ψ a ha => ?_⟩` and prove the remaining obligations. Conclude with `(hs k ψ _ (inZ_comp Xo h _ (hz i))).unique (fun _ => rfl) (congrFun hij)`. Conclude with `(hs k ψ a ha).exists.imp fun i hi => (funext hi).symm`. Take `⟨i, hi⟩` from `h2 k ψ a ha`.
+
+Conclude with `⟨i, fun b => (congrFun hi b).symm, fun j hj => h1 k ψ ((funext hj).symm.trans hi.symm)⟩`.
+-/
 theorem splitsZ_iff {n N : ℕ} {Λ : Lat E n} (h : Λ.Admissible l.M N) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X)
     {J : Type} (z : J → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) :
     SplitsZ Xo h x0 z ↔ (∀ i, InZh Xo (toGen Λ) N (z i)) ∧ GeoInj Xo x0 z ∧
@@ -259,6 +347,11 @@ theorem splitsZ_iff {n N : ℕ} {Λ : Lat E n} (h : Λ.Admissible l.M N) {S : Ty
   · obtain ⟨i, hi⟩ := h2 k ψ a ha
     exact ⟨i, fun b => (congrFun hi b).symm, fun j hj => h1 k ψ ((funext hj).symm.trans hi.symm)⟩
 
+/- English proof (translation)
+Rewrite using `[splitsZ_iff]`. Use `and_congr_right fun hz => and_iff_left_of_imp fun hg k _ _ ψ a ha => ?_` and prove the remaining obligations. Take `⟨e, -, he⟩` from `exists_enum Xo (spMap ψ ≫ x0) hs h`. Use `choose τ hτ using fun i => (he _).1 (inZ_comp Xo h (ptRes Xo x0 ψ) ((inZh_iff Xo h _).1 (hz i)))`. Establish `hi : Function.Injective τ` using `fun i j hij => hg k ψ (ptRes Xo x0 ψ) rfl ((hτ i).symm.trans ((congrArg e hij).trans (hτ j)))`.
+
+Take `⟨j, rfl⟩` from `(he a).1 ((inZh_iff Xo h a).1 ha)`. Take `⟨i, rfl⟩` from `Finite.surjective_of_injective hi j`. Conclude with `⟨i, (hτ i).symm⟩`.
+-/
 theorem splitsZ_iff_of_card {n N : ℕ} {Λ : Lat E n} (hs : Λ.SelfDual) (h : Λ.Admissible l.M N) {S : Type}
     [CommRing S] (x0 : Sp S ⟶ Xo.X)
     (z : Fin ((toGen Λ).zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) :
@@ -273,6 +366,11 @@ theorem splitsZ_iff_of_card {n N : ℕ} {Λ : Lat E n} (hs : Λ.SelfDual) (h : �
   obtain ⟨i, rfl⟩ := Finite.surjective_of_injective hi j
   exact ⟨i, (hτ i).symm⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal S`. Set `` to `Ideal.Quotient.field m`. Set `ψ : S →+* AlgebraicClosure (S ⧸ m)` to `(algebraMap (S ⧸ m) _).comp (Ideal.Quotient.mk m)`. Take `⟨e, he1, he⟩` from `exists_enum Xo (spMap ψ ≫ x0) hs h`. Take `⟨h1, h2, h3⟩` from `(splitsZ_iff Xo h x0 z).1 hz`.
+
+Establish `hr : Set.range (fun i b => ptRes Xo x0 ψ ≫ z i b) = Set.range e` using `Set.ext fun a => ⟨fun ⟨i, hi⟩ => (he a).1 (hi ▸ inZ_comp Xo h _ (hz.1 i)), fun ha => h3 _ ψ a ((inZh_iff Xo h a).2 ((he a).2 ha))⟩`. Use `congrArg (fun s : Set _ => Nat.card s) hr` as an intermediate fact. Rewrite `this` using `[Nat.card_range_of_injective (h2 _ ψ _ rfl), Nat.card_range_of_injective he1, Nat.card_fin, Nat.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem card_of_splitsZ {n N : ℕ} {Λ : Lat E n} (hs : Λ.SelfDual) (h : Λ.Admissible l.M N) {S : Type}
     [CommRing S] [Nontrivial S] {x0 : Sp S ⟶ Xo.X} {r : ℕ} {z : Fin r → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)}
     (hz : SplitsZ Xo h x0 z) : r = (toGen Λ).zCard N (Dw.p + Dw.q) := by
@@ -289,6 +387,9 @@ theorem card_of_splitsZ {n N : ℕ} {Λ : Lat E n} (hs : Λ.SelfDual) (h : Λ.Ad
 def normCoef {n : ℕ} (w : (Fin n → LevQ Dw l) → c.F) : (Fin n → NamedCl Dw l) → c.F :=
   fun q => (Nat.card (Fin n → LevQ Dw l) : c.F)⁻¹ * w q
 
+/- English proof (translation)
+Rewrite using `[finsum_eq_sum_of_support_subset _ (s := levelIndex Dw l n) (fun q _ => by simp [levelIndex]), mIdx_eq]`. Simplify using `only [normFactor, normCoef, map_mul, _root_.mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_eq {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (Λ : Lat E n) (N : ℕ) (β : c.F)
     (w : (Fin n → LevQ Dw l) → c.F) (P : MvPolynomial (LtN Dw n) c.F) (u : (Fin n → LevQ Dw l) → S) :
     algebraMap c.F S (β⁻¹ * (((toGen Λ).mIdx N (Dw.p + Dw.q) : c.F))⁻¹ *
@@ -299,6 +400,15 @@ theorem sum_eq {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (Λ : Lat E n) 
   simp only [normFactor, normCoef, map_mul, _root_.mul_assoc, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Establish `hN : N ≠ 0` using `h.1.pos.ne'`. Establish `hsq : ∀ {T : Over Xo.X} {t t' : T ⟶ Xo.univ.t.G}, t ^ N = 1 → t' ^ N = t → t' ^ (N ^ 2) = 1` using `fun h1 h2 => by rw [sq, pow_mul, h2, h1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S', _, _, φ, y', z, tp, F, hφ, hy, hz, hg, ht, hF, hv⟩`. Simplify using `only [ShortDatumEq.levPt_levRep] at ht`.
+
+Conclude with `⟨S', _, _, φ, y', hφ, hy, _, z, tp, F, (splitsZ_iff_of_card Xo hs h _ z).2 ⟨hz, hg⟩, fun q b => (isDivPt_iff Xo hN (levPtCl_pow Xo h.2.1 _ _) _).1 (ht q b), fun q i b => (isTwoLifts_iff _ _ _ _ _ _ _).2 ⟨h.1, (hz i).1 b, hsq (levPtCl_pow Xo h.2.1 _ _) (ht q b).1, hF q i b⟩, hv.tr …`. Introduce and unpack `⟨S', _, _, φ, y', hφ, hy, r, z, tp, F, hz, ht, hF, hv⟩`. Establish `ht' : ∀ q b, tp q b ^ N = levPt Xo y'.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp q b)` using `fun q b => by`. Rewrite using `[ShortDatumEq.levPt_levRep]`. Conclude with `(isDivPt_iff Xo hN (levPtCl_pow Xo h.2.1 _ _) _).2 (ht q b)`.
+
+Break down `subsingleton_or_nontrivial S' with h0 | h0` into its components or cases. Use `choose G hG using fun q b => ((exists_isVtOver_and_existsUnique_isUUOver abelianSchemeLaws_all.1 E H Dw l Xo N h.1 _ y'.s).2 1 (tp q b) (one_pow _) (hsq (levPtCl_pow Xo h.2.1 _ _) (ht q b).1)).exists`. Conclude with `⟨S', _, _, φ, y', fun _ _ => 1, tp, fun q _ b => G q b, hφ, hy, fun _ => (inZh_iff Xo h _).2 (one_inZ Xo h), fun k _ ψ => (not_subsingleton k ψ.codomain_trivial).elim, ht', fun q _ b => hG q b, Subsingleton.elim _ _⟩`. Take `rfl` from `card_of_splitsZ Xo hs h hz`. Take `⟨h1, h2⟩` from `(splitsZ_iff_of_card Xo hs h _ z).1 hz`.
+
+Conclude with `⟨S', _, _, φ, y', z, tp, F, hφ, hy, h1, h2, ht', fun q i b => ((isTwoLifts_iff _ _ _ _ _ _ _).1 (hF q i b)).2.2.2, hv.trans (sum_eq c Λ N β w P _).symm⟩`.
+-/
 theorem shortValAt_iff_locVal (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     {n N : ℕ} {Λ : Lat E n} (hs : Λ.SelfDual) (h : Λ.Admissible l.M N) (β : c.F)
     (w : (Fin n → LevQ Dw l) → c.F) (P : MvPolynomial (LtN Dw n) c.F) (v : S) :
@@ -331,6 +441,9 @@ theorem shortValAt_iff_locVal (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra
       exact ⟨S', _, _, φ, y', z, tp, F, hφ, hy, h1, h2, ht',
         fun q i b => ((isTwoLifts_iff _ _ _ _ _ _ _).1 (hF q i b)).2.2.2, hv.trans (sum_eq c Λ N β w P _).symm⟩
 
+/- English proof (translation)
+Rewrite using `[trivAt_iff, harmL_eq, levOK_iff]`. Conclude with `and_congr_right fun hr => ⟨fun ⟨h, hv⟩ => ⟨h, (shortValAt_iff_locVal Xo c nab y (selfDual_of_inGenus hr.1) h β w P v).2 hv⟩, fun ⟨h, hv⟩ => ⟨h, (shortValAt_iff_locVal Xo c nab y (selfDual_of_inGenus hr.1) h β w P v).1 hv⟩⟩`.
+-/
 theorem thVal_iff (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {n : ℕ}
     (Λ : Lat E n) (N : ℕ) (β : c.F) (w : (Fin n → LevQ Dw l) → c.F) (a : (E →+* ℂ) × ℕ → ℕ)
     (P : MvPolynomial (LtN Dw n) c.F) (v : S) :
@@ -342,6 +455,9 @@ theorem thVal_iff (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y :
     ⟨fun ⟨h, hv⟩ => ⟨h, (shortValAt_iff_locVal Xo c nab y (selfDual_of_inGenus hr.1) h β w P v).2 hv⟩,
       fun ⟨h, hv⟩ => ⟨h, (shortValAt_iff_locVal Xo c nab y (selfDual_of_inGenus hr.1) h β w P v).1 hv⟩⟩
 
+/- English proof (translation)
+The claim follows from `funext fun q => ShortDatumEq.normalized_datum_eq_induced_coeff c x0 q`.
+-/
 theorem normCoef_x0Dat {n : ℕ} (x0 : Fin n → Dw.La) :
     normCoef c (x0Dat c x0) = fourier c (indicatorCl c (-ShortDatumEq.cls l x0)) :=
   funext fun q => ShortDatumEq.normalized_datum_eq_induced_coeff c x0 q

@@ -24,6 +24,9 @@ noncomputable def Pres.pull (P : Pres B) (f : Vert.Model.Hom B' B) : Pres B' whe
     rw [← Vert.Model.GenIso.pull_inv f.comp_str (φ := Vert.Model.GenIso.ofHom P.ψ) rfl]
     infer_instance
 
+/- English proof (translation)
+Use `haveI := P.iso`. Use `haveI := (P.pull f).iso`. Conclude with `Iso.ext <| (Iso.inv_eq_inv (Vert.Model.GenIso.ofHom (P.pull f).ψ) ((Vert.Model.GenIso.ofHom P.ψ).pull f.comp_str)).1 (Vert.Model.GenIso.pull_inv f.comp_str (φ := Vert.Model.GenIso.ofHom P.ψ) rfl).symm`.
+-/
 theorem Pres.ofHom_pull (P : Pres B) (f : Vert.Model.Hom B' B) :
     (haveI := (P.pull f).iso; Vert.Model.GenIso.ofHom (P.pull f).ψ) =
       (haveI := P.iso; (Vert.Model.GenIso.ofHom P.ψ).pull f.comp_str) := by

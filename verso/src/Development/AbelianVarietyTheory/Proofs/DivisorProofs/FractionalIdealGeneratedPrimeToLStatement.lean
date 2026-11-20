@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FracGen.exists_gen | exact GlobalTheory.FracGen.exists_gen | (intros; apply GlobalTheory.FracGen.exists_gen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fractional_ideal_generated_prime_to_l : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (l : ℕ) [Fact l.Prime],
     ∃ c₀ : 𝔠.elt, (c₀ : F) ≠ 0 ∧ ∀ c : 𝔠.elt, ∃ (n : ℕ) (t : 𝓞 F), n.Coprime l ∧ n • c = t • c₀ := by
   first | exact @GlobalTheory.FracGen.exists_gen | exact GlobalTheory.FracGen.exists_gen | (intros; apply GlobalTheory.FracGen.exists_gen <;> assumption)

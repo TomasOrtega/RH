@@ -11,6 +11,19 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl c hc`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Set `cX : ∀ k, ι k` to `fun k => c (Sum.inl k)`. Establish `hyX : ∀ p : Σ k, ι k, Pl.yY ⟨Sum.inl p.1, p.2⟩ = algebraMap Ω Pl.ΩY (D.y p)` using `fun p => (PlueckerData.yY_inl Pl p.1 p.2).trans (PlueckerData.ofΩ_eq Pl _)`. Establish `hcX : ∀ k, D.y ⟨k, cX k⟩ ≠ 0` using `fun k h => hc (Sum.inl k) (by`.
+
+Rewrite using `[hyX ⟨k, cX k⟩, h, map_zero])`. Establish `hbase : Set.range (algebraMap Ω Pl.ΩY) ⊆ Subfield.closure (coneRatios Pl.yY c)`. Establish `hle : Subfield.map (algebraMap Ω Pl.ΩY) (Subfield.closure (coneRatios D.y cX)) ≤ Subfield.closure (coneRatios Pl.yY c)`. Rewrite using `[Subfield.map_le_iff_le_comap, Subfield.closure_le]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Use `Subfield.subset_closure ⟨⟨Sum.inl p.1, p.2⟩, ?_⟩` and prove the remaining obligations. Use `show Pl.yY ⟨Sum.inl p.1, p.2⟩ / Pl.yY ⟨Sum.inl p.1, cX p.1⟩ = algebraMap Ω Pl.ΩY (D.y p / D.y ⟨p.1, cX p.1⟩)`. Rewrite using `[map_div₀, hyX p, hyX ⟨p.1, cX p.1⟩]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `hle ⟨x, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[h₁ K ι Ω D.y cX D.birational hcX]`. Discharge the goal by the elementary cases of `trivial`. Use `set Ef := IntermediateField.adjoin Ω (coneRatios Pl.yY c)`. Establish `hsub : Ef.toSubfield = Subfield.closure (coneRatios Pl.yY c)`. Rewrite using `[IntermediateField.adjoin_toSubfield]`.
+
+Conclude with `le_antisymm (Subfield.closure_le.2 (Set.union_subset hbase Subfield.subset_closure)) (Subfield.closure_mono Set.subset_union_right)`. Establish `e : Subfield.closure (coneRatios Pl.yY c) ≃+* Ef` using `(RingEquiv.subfieldCongr hsub).symm.trans (RingEquiv.refl Ef)`. Establish `hE : Algebra.trdeg ℤ (Subfield.closure (coneRatios Pl.yY c)) = Algebra.trdeg ℤ Ef` using `(AlgEquiv.ofRingEquiv (f := e) fun x => by rw [eq_intCast, eq_intCast, map_intCast]).trdeg_eq`. Rewrite using `[hE]`. Establish `: FaithfulSMul ℤ Ω` using `(faithfulSMul_iff_algebraMap_injective ℤ Ω).mpr Int.cast_injective`.
+
+Establish `: FaithfulSMul Ω Ef` using `(faithfulSMul_iff_algebraMap_injective Ω Ef).mpr (algebraMap Ω Ef).injective`. Rewrite using `[← trdeg_add_eq ℤ Ω (A := Ef), FnFieldTrdeg.full K ι Ω D.y D.n D.birational D.arith, ← (IntermediateField.equivOfEq (h₂ II Ψ K ι Ω E D Pl c hc)).symm.trdeg_eq, h₃ Ω Ψ D.N]`. Rewrite using `[← Nat.cast_add]`. Both sides reduce to the same expression.
+-/
 theorem PlueckerRatioTrdeg.proof (h₁ : BirationalRatioClosure.Statement) (h₂ : PlueckerRatioFieldEq.Statement)
     (h₃ : FlagRatioTrdeg.Statement) : PlueckerRatioTrdeg.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl c hc

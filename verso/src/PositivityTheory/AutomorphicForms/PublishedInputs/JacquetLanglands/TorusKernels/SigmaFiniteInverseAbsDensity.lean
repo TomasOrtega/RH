@@ -11,12 +11,21 @@ def nu1 : Measure Y1 := (Measure.comap Subtype.val volume).withDensity fun y => 
 
 def scl (t : ℝ) (ht : t ≠ 0) (y : Y1) : Y1 := ⟨t * y.1, mul_ne_zero ht y.2⟩
 
+/- English proof (translation)
+Conclude with `(measurableSet_singleton (0 : ℝ)).compl`.
+-/
 theorem measurableSet_ne : MeasurableSet {y : ℝ | y ≠ 0} := by
   exact (measurableSet_singleton (0 : ℝ)).compl
 
+/- English proof (translation)
+Conclude with `MeasurableEmbedding.subtype_coe (s := {y : ℝ | y ≠ 0}) measurableSet_ne`.
+-/
 theorem measurableEmbedding_val : MeasurableEmbedding (Subtype.val : Y1 → ℝ) := by
   exact MeasurableEmbedding.subtype_coe (s := {y : ℝ | y ≠ 0}) measurableSet_ne
 
+/- English proof (translation)
+Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hf.measurable hs, withDensity_apply _ (hf.measurable hs), withDensity_apply _ hs, hf.restrict_map, hf.lintegral_map]`.
+-/
 private theorem map_withDensity_comp_of_measurableEmbedding {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
     {f : α → β} (hf : MeasurableEmbedding f) (μ : Measure α) (g : β → ENNReal) :
     Measure.map f (μ.withDensity fun x => g (f x)) = (Measure.map f μ).withDensity g := by
@@ -24,6 +33,11 @@ private theorem map_withDensity_comp_of_measurableEmbedding {α β : Type*} [Mea
   rw [Measure.map_apply hf.measurable hs, withDensity_apply _ (hf.measurable hs),
     withDensity_apply _ hs, hf.restrict_map, hf.lintegral_map]
 
+/- English proof (translation)
+Establish `hr : Set.range (Subtype.val : Y1 → ℝ) = {0}ᶜ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h0 : Measure.map (Subtype.val : Y1 → ℝ) (Measure.comap Subtype.val volume) = volume`. Rewrite using `[measurableEmbedding_val.map_comap, hr]`.
+
+Conclude with `Measure.restrict_eq_self_of_ae_mem (compl_mem_ae_iff.mpr (measure_singleton 0))`. Unfold `nu1`. Rewrite using `[map_withDensity_comp_of_measurableEmbedding measurableEmbedding_val _ (fun y : ℝ => ENNReal.ofReal (1 / |y|)), h0]`.
+-/
 theorem map_val_inverse_abs_density_eq :
     Measure.map Subtype.val nu1 = (volume : Measure ℝ).withDensity fun y => ENNReal.ofReal (1 / |y|) := by
   have hr : Set.range (Subtype.val : Y1 → ℝ) = {0}ᶜ := by
@@ -35,6 +49,13 @@ theorem map_val_inverse_abs_density_eq :
   unfold nu1
   rw [map_withDensity_comp_of_measurableEmbedding measurableEmbedding_val _ (fun y : ℝ => ENNReal.ofReal (1 / |y|)), h0]
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding (fun x : ℝ => t * x)` using `(Homeomorph.mulLeft₀ t ht).measurableEmbedding`. Establish `hmeas : Measurable fun y : ℝ => ENNReal.ofReal (1 / |t * y|)` using `by fun_prop`. Establish `hpt : (volume : Measure ℝ).withDensity (fun y : ℝ => ENNReal.ofReal (1 / |y|)) = ENNReal.ofReal |t| • (volume : Measure ℝ).withDensity (fun y : ℝ => ENNReal.ofReal (1 / |t * y|))`. Rewrite using `[← withDensity_smul _ hmeas]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg t), abs_mul]`. Use `congr 1`. Rewrite using `[one_div, one_div, mul_inv, ← mul_assoc, mul_inv_cancel₀ (abs_ne_zero.mpr ht), one_mul]`.
+
+Establish `hc : ENNReal.ofReal |t| * ENNReal.ofReal |t⁻¹| = 1`. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg t), ← abs_mul, mul_inv_cancel₀ ht, abs_one, ENNReal.ofReal_one]`. Use `conv_lhs => rw [hpt]`. Rewrite using `[Measure.map_smul, map_withDensity_comp_of_measurableEmbedding hemb volume (fun y : ℝ => ENNReal.ofReal (1 / |y|)), Real.map_volume_mul_left ht, withDensity_smul_measure, smul_smul, hc, one_smul]`.
+-/
 theorem map_mul_rho (t : ℝ) (ht : t ≠ 0) :
     Measure.map (t * ·) ((volume : Measure ℝ).withDensity fun y => ENNReal.ofReal (1 / |y|)) =
       (volume : Measure ℝ).withDensity fun y => ENNReal.ofReal (1 / |y|) := by
@@ -59,6 +80,11 @@ theorem map_mul_rho (t : ℝ) (ht : t ≠ 0) :
 instance sigmaFinite_inverse_abs_density : SigmaFinite nu1 :=
   SigmaFinite.of_map nu1 measurableEmbedding_val.measurable.aemeasurable (by rw [map_val_inverse_abs_density_eq]; infer_instance)
 
+/- English proof (translation)
+Establish `hm : Measurable (scl t ht)` using `by show Measurable fun y : Y1 => (⟨t * y.1, mul_ne_zero ht y.2⟩ : Y1)`. Conclude with `Measurable.subtype_mk ((measurable_const_mul t).comp measurable_subtype_coe)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `hv : Measure.map Subtype.val (Measure.map (scl t ht) nu1) = Measure.map Subtype.val nu1`. Rewrite using `[Measure.map_map measurableEmbedding_val.measurable hm]`.
+
+Establish `hcomp : Subtype.val ∘ scl t ht = (fun x : ℝ => t * x) ∘ Subtype.val` using `rfl`. Rewrite using `[hcomp, ← Measure.map_map (measurable_const_mul t) measurableEmbedding_val.measurable, map_val_inverse_abs_density_eq, map_mul_rho t ht]`. Rewrite using `[← measurableEmbedding_val.comap_map (Measure.map (scl t ht) nu1), hv, measurableEmbedding_val.comap_map]`.
+-/
 theorem measurePreserving_scl (t : ℝ) (ht : t ≠ 0) : MeasurePreserving (scl t ht) nu1 nu1 := by
   have hm : Measurable (scl t ht) := by
     show Measurable fun y : Y1 => (⟨t * y.1, mul_ne_zero ht y.2⟩ : Y1)

@@ -14,6 +14,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace CrystallineSemistableComparison.Pb
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.RedInEx.redIn_ex`.
+-/
 theorem redIn_ex : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {A : Type} [CommRing A] [Algebra (OK l K) A]
     {I : Ideal A} (γ : DividedPowers I) (s : ℕ) (lam : Acris l →+* A), TFBase γ l s →
     lam (algebraMap (Ainf l) (Acris l) (xi0 l)) ∈ I →

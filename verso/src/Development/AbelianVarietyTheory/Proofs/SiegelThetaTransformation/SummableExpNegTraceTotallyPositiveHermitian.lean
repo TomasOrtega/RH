@@ -8,6 +8,15 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.SW.PosSum
 
+/- English proof (translation)
+Establish `hd : ∀ k, 0 ≤ (A k k).re` using `fun k => (Complex.nonneg_iff.1 (hA.diag_nonneg (i := k))).1`. Establish `hi : ∀ k, (A k k).im = 0` using `fun k => (Complex.nonneg_iff.1 (hA.diag_nonneg (i := k))).2.symm`. Establish `ht : ∀ k, (A k k).re ≤ A.trace.re` using `fun k => by`. Simplify using `only [Matrix.trace, Matrix.diag, Complex.re_sum]`. Conclude with `Finset.single_le_sum (f := fun k => (A k k).re) (fun k _ => hd k) (Finset.mem_univ k)`.
+
+Establish `h2` using `(Complex.nonneg_iff.1 (hA.submatrix ![i, j]).det_nonneg).1`. Establish `hji : A j i = conj (A i j)`. Use `hA.1.apply j i` as an intermediate fact. Simplify using `using this.symm`. Rewrite `h2` using `[Matrix.det_fin_two]`.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.cons_val_zero, Matrix.cons_val_one, hji, Complex.mul_conj, Complex.sub_re, Complex.mul_re, hi, Complex.ofReal_re, mul_zero, sub_zero, Matrix.cons_val_fin_one] at h2`. Establish `h0 : 0 ≤ A.trace.re` using `(hd i).trans (ht i)`. Use `abs_le_of_sq_le_sq' ?_ h0 |>.2` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, sq]`. Use `mul_le_mul (ht i) (ht j) (hd j) h0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_entry_le_trace {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.PosSemidef)
     (i j : Fin N) : ‖A i j‖ ≤ A.trace.re := by
   have hd : ∀ k, 0 ≤ (A k k).re := fun k => (Complex.nonneg_iff.1 (hA.diag_nonneg (i := k))).1
@@ -29,6 +38,9 @@ theorem norm_entry_le_trace {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.P
   have := mul_le_mul (ht i) (ht j) (hd j) h0
   linarith
 
+/- English proof (translation)
+The claim follows from `|(((RingOfIntegers.basis E).repr x j : ℤ) : ℝ)| ≤ C * house (x : E) := by let L := (canonicalEmbedding.latticeBasis E).equivFun.toLinearMap.toContinuousLinearMap refine ⟨‖L‖, norm_nonneg _, fun x j => ?_⟩ have h1 := L.le_opNorm (canonicalEmbedding E x) have h2 := norm_le_pi_norm …`.
+-/
 theorem exists_repr_le (E : Type) [Field E] [NumberField E] :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (x : 𝓞 E) (j : Module.Free.ChooseBasisIndex ℤ (𝓞 E)),
       |(((RingOfIntegers.basis E).repr x j : ℤ) : ℝ)| ≤ C * house (x : E) := by
@@ -43,6 +55,11 @@ theorem exists_repr_le (E : Type) [Field E] [NumberField E] :
   rw [h3, Complex.norm_intCast] at h2
   exact h2.trans h1
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg hB).2 fun τ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖τ x‖ ≤ B`. Distinguish the cases in `hτ : τ ∈ Ψ`. Conclude with `h τ hτ`. Use `h _ (not_not.1 fun h' => hτ ((hΨ τ).2 h'))` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem house_le_of_isType {E : Type} [Field E] [NumberField E] [IsCMField E]
     {Ψ : Finset (E →+* ℂ)} (hΨ : IsType Ψ) {x : E} {B : ℝ} (hB : 0 ≤ B)
     (h : ∀ τ ∈ Ψ, ‖τ x‖ ≤ B) : house x ≤ B := by
@@ -57,6 +74,19 @@ end GlobalTheory.SW.PosSum
 
 open GlobalTheory.SW.PosSum in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ N c δ hc hδ`. Take `⟨C, hC, hb⟩` from `exists_repr_le E`. Set `ι` to `Fin N × Fin N × Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `K : ℝ` to `Fintype.card ι * (C * c) + 1`. Establish `hK : 0 < K` using `by positivity`.
+
+Set `m : {T : Matrix (Fin N) (Fin N) E // ccT T = T ∧ Den c T ∧ ∀ τ : Ψ, (T.map τ.1).PosSemidef} → ι → ℤ` to `fun T q => (RingOfIntegers.basis E).repr ⟨_, T.2.2.1 q.1 q.2.1⟩ q.2.2`. Establish `hm : Function.Injective m`. Introduce `T T' h`. Use extensionality with `a b`. Establish `: (⟨_, T.2.2.1 a b⟩ : 𝓞 E) = ⟨_, T'.2.2.1 a b⟩` using `(RingOfIntegers.basis E).ext_elem fun j => congrFun h (a, b, j)`.
+
+Establish `h2 : (c : E) * T.1 a b = c * T'.1 a b` using `congrArg Subtype.val this`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hc.ne') h2`. Use `Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) (fun T => ?_) ((GlobalTheory.Koecher.summable_exp_neg_mul_sum_abs (ι := ι) (div_pos hδ hK)).comp_injective hm)` and prove the remaining obligations. Use `set S := ∑ τ : Ψ, (T.1.map τ.1).trace.re with hS`. Establish `h0 : ∀ τ : Ψ, 0 ≤ (T.1.map τ.1).trace.re` using `fun τ => (Complex.nonneg_iff.1 (T.2.2.2 τ).trace_nonneg).1`.
+
+Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun τ _ => h0 τ`. Establish `hq : ∀ q, |(m T q : ℝ)| ≤ C * c * S` using `fun q => by`. Use `(hb _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `C * house ((c : E) * T.1 q.1 q.2.1) ≤ _`. Rewrite using `[house_nat_mul, mul_assoc]`.
+
+Use `gcongr`. Use `house_le_of_isType hΨ hS0 fun τ hτ => ?_` and prove the remaining obligations. Conclude with `(norm_entry_le_trace (T.2.2.2 ⟨τ, hτ⟩) q.1 q.2.1).trans (Finset.single_le_sum (fun τ _ => h0 τ) (Finset.mem_univ (⟨τ, hτ⟩ : Ψ)))`. Establish `hs : ∑ q, |(m T q : ℝ)| ≤ K * S`. Use `(Finset.sum_le_card_nsmul _ _ _ fun q _ => hq q).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.card_univ, nsmul_eq_mul, K]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [Function.comp_apply]`. Use `Real.exp_le_exp.2 (neg_le_neg ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.SW.summable_exp_neg_trace : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (N c : ℕ) (δ : ℝ), 0 < c → 0 < δ → Summable fun T : {T : Matrix (Fin N) (Fin N) E // ccT T = T ∧ Den c T ∧ ∀ τ : Ψ, (T.map τ.1).PosSemidef} => Real.exp (-(δ * ∑ τ : Ψ, (T.1.map τ.1).trace.re)) := by
   intro E _ _ _ Ψ hΨ N c δ hc hδ
   obtain ⟨C, hC, hb⟩ := exists_repr_le E

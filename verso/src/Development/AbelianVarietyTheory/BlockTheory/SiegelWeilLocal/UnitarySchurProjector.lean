@@ -114,6 +114,11 @@ def UnitarySchurProjectorSharp : Prop :=
 
 def SchurProjector : Prop := AbstractSchurProjector ∧ UnitarySchurProjector
 
+/- English proof (translation)
+Unfold `SchurOrthogonality Formalism.MainNotions.S.IsFdeg Formalism.MainNotions.S.coefOn`. Use `and_congr Iff.rfl (forall_congr' fun u => forall_congr' fun v => forall_congr' fun u' => forall_congr' fun v' => and_congr Iff.rfl ?_)` and prove the remaining obligations. Establish `: (d : ℂ)⁻¹ * ⟪u', u⟫_ℂ * star ⟪v', v⟫_ℂ = ⟪u', u⟫_ℂ * ⟪v, v'⟫_ℂ / (d : ℂ)`. Rewrite using `[← inner_conj_symm v v', div_eq_mul_inv]`. Simplify using `only [RCLike.star_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+-/
 example {n : ℕ} (ε : Fin n → Bool) {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
     (σ : Matrix (Fin n) (Fin n) ℂ → (Hs →L[ℂ] Hs)) (d : ℝ) (μ : Measure (Formalism.REAL.UJ ε)) :
     SchurOrthogonality μ (fun g : Formalism.REAL.UJ ε => σ (Formalism.MainNotions.S.umat g)) d ↔ Formalism.MainNotions.S.IsFdeg μ σ d := by
@@ -126,6 +131,9 @@ example {n : ℕ} (ε : Fin n → Bool) {Hs : Type} [NormedAddCommGroup Hs] [Inn
     ring
   rw [this]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs] (w u : Hs) :
     ketBra w u = ⟪w, u⟫_ℂ • w := rfl
 

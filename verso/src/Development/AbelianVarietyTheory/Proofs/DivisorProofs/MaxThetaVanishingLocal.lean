@@ -25,6 +25,25 @@ noncomputable def locRep {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     UAtSub σ G.W (evFin F v) →* Module.End ℂ (Fn F a (a + a')) :=
   (om.comp (MonoidHom.inr _ _)).comp (UAtSub σ G.W (evFin F v)).subtype
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT N hmax hker v`. Use `set D := PolData B G.M with hDdef`. Use `set ρ := locRep (G := G) om v with hρ`. Establish `hρapp : ∀ g : UAtSub σ G.W (evFin F v), ρ g = om (1, g.1)` using `fun g => rfl`. Establish `hinv2 : ∀ x, σ (σ x) = x` using `GlobalTheory.ThK.Inhab.conj_conj hT.base.cm`.
+
+Set `𝒦 : Set (Subgroup (UAtSub σ G.W (evFin F v)))` to `{K | ∃ K' : Subgroup (UA σ G.W.J), K = K'.comap (UAtSub σ G.W (evFin F v)).subtype ∧ (∀ g ∈ K', g ∈ UAt σ G.W (evFin F v)) ∧ IsCompact (K' : Set (UA σ G.W.J)) ∧ (∃ O : Set (UA σ G.W.J), IsOpen O ∧ (1 : UA σ G.W.J) ∈ O ∧ ∀ g ∈ O, g ∈ UAt σ G.W (evFin F v) → g ∈ K')}`. Take `⟨Bf, hadd, hsmul, hherm, hpos, hinvB, hrad⟩` from `GlobalTheory.T.triple_exists_invariant_pairing hK F E σ B a a' G X om om' hT`. Establish `hD : ∀ g : UAtSub σ G.W (evFin F v), ∀ x ∈ D, ρ g x ∈ D` using `fun g x hx => GlobalTheory.ThKPolFin.polData_stable (GlobalTheory.T.theta_action_exists hK.base) B G.M (GlobalTheory.ThK.Inhab.pairV hT) v g.1 g.2 x hx`. Establish `hsm` using `GlobalTheory.T.polynomial_data_local_smooth_vector hK F E σ B a a' G X om om' hT v`. Take `⟨S, hSD, hS⟩` from `GlobalTheory.T.hermitian_form_invariant_quotient_definite ρ 𝒦 Bf D N hD hmax.le hmax.ne (fun g x hx => hmax.stab.fin v g.1 g.2 x hx) hadd hsmul hherm hpos (fun g x hx y hy => hinvB v g.1 g.2 x hx y hy) (fun x hx h0 => hker x hx ((hrad x hx).1 h0)) (by`.
+
+Introduce `x hx`. Take `⟨U, hU, hUx⟩` from `hsm x hx`. Take `⟨K', hK'1, hK'2, hK'3, hK'4⟩` from `GlobalTheory.T.exists_compactSubgroup_unitaryPoints_supportedAtPlace hinv2 G.W v U hU`. Use `⟨K'.comap (UAtSub σ G.W (evFin F v)).subtype, ⟨K', rfl, hK'1, hK'2, hK'3⟩, fun k hk => ?_⟩` and prove the remaining obligations. Conclude with `hUx k.1 (hK'4 hk) k.2)`.
+
+Use the proof step `(by`. Introduce and unpack `K ⟨K', rfl, hK'1, hK'2, -⟩ x hx`. Take `⟨U, hU, hUx⟩` from `hsm x hx`. Use `GlobalTheory.T.compact_orbit_smooth_vector_finite (om.comp (MonoidHom.inr _ _)) K' hK'2 x ⟨U, hU, fun h hh hk => hUx h hh (hK'1 h hk)⟩` as an intermediate fact. Use `this.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨k, hk, rfl⟩`. Conclude with `⟨k.1, hk, rfl⟩)`. Use the proof step `(by`. Introduce and unpack `K ⟨K', rfl, hK'1, hK'2, hK'3⟩ x hx`. Take `⟨s, hsD, hs⟩` from `GlobalTheory.T.triple_local_stabiliser_invariance hK F E σ B a a' G X om om' hT v K' hK'1 hK'2 hK'3 x hx`.
+
+Use `⟨s, hsD, fun y hy hfix => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hIz⟩` from `hs y hy (fun k hk => hfix ⟨k, hK'1 k hk⟩ hk)`. Establish `hyD : y ∈ D`. Use `Submodule.span_le.2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`.
+
+Conclude with `hD g x hx`. Establish `hzD : z ∈ D` using `Submodule.span_le.2 hsD hz`. Conclude with `⟨z, hz, (hrad _ (D.sub_mem hyD hzD)).2 hIz⟩)`. Use `⟨S, hSD, ?_⟩` and prove the remaining obligations. Establish `hT' : Set.range ρ = GlobalTheory.ThKLocSS.opsAt om v`.
+
+Use extensionality with `T`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨g.1, g.2, rfl⟩`. Introduce and unpack `⟨h, hh, rfl⟩`.
+
+Conclude with `⟨⟨h, hh⟩, rfl⟩`. Rewrite using `[← hT']` and apply the resulting hypothesis.
+-/
 theorem exsimple : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ N, GlobalTheory.ThetaFac.IsMaxTh B om (GlobalTheory.ThK.PolData B G.M) N → (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ S : Submodule ℂ (GlobalTheory.ThK.Fn F a (a + a')), S ≤ GlobalTheory.ThK.PolData B G.M ∧ GlobalTheory.ThKLocSS.IsSimpleOver (GlobalTheory.ThKLocSS.opsAt om v) N S := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT N hmax hker v
   set D := PolData B G.M with hDdef

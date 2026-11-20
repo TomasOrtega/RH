@@ -18,10 +18,32 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem arc_letter_type_eq_ite [NeZero n] {b w S η : ℕ} {up : ZMod n → Bool} {size : ZMod n → ℕ} (i : ZMod n) :
     (arcOf b w S η up size).ty i = if up i then Formalism.MainNotions.LocalTheoryWindows.LT.up (size i) else Formalism.MainNotions.LocalTheoryWindows.LT.down (size i) :=
   rfl
 
+/- English proof (translation)
+Use `set A := arcOf b w S η up size with hA`. Establish `hup1 : up (c - 1) = true`. Apply the tactic sequence `cases h : up (c - 1) <;> simp_all`. Establish `hty0 : A.ty c = Formalism.MainNotions.LocalTheoryWindows.LT.down (size c)`. Rewrite using `[hA, arc_letter_type_eq_ite, hup]`.
+
+Both sides reduce to the same expression. Establish `hty1 : A.ty (c - 1) = Formalism.MainNotions.LocalTheoryWindows.LT.up (size (c - 1))`. Rewrite using `[hA, arc_letter_type_eq_ite, hup1]`. Both sides reduce to the same expression. Establish `hl5 : 5 ≤ PD.p` using `by have := hB.1; omega`.
+
+Establish `hcase : Formalism.MainNotions.LiftingTheory.CaseA W` using `hB.2.1.1`. Establish `hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick`. Introduce `s _`. Rewrite using `[hA, arc_letter_type_eq_ite]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Establish `hden : nnDen W A c = ps W 1 ^ size (c - 1)`. Simplify using `only [nnDen, prodTy, hlen, Finset.prod_range_succ, Finset.prod_range_zero, Nat.cast_zero, sub_zero, Nat.cast_one, hty0, hty1, pow_zero, one_mul]`. Take `⟨hf1, hf2⟩` from `hf`. Establish `hL` using `liftsAt_thin_letter_type W A F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hW₁ hW₂ hbb ({1} : Finset ℕ) (by`. Introduce `s hs`.
+
+Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Use `⟨by omega, size (c - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, hty1]) b₁ sol₁ hb₁ c₁ (2 * A.σ PD.p) (by`. Introduce `s hs bs hbs`.
+
+Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Rewrite `hbs` using `[Nat.cast_one, hty1]`. Consider the cases of `hbs`. Conclude with `hlt) hpr f (by`.
+
+Simplify `hf1) (by` using `[Nat.cast_one, hty1, ← hden]`. Introduce `s hs bs hbs`. Take `⟨κ, x, hx⟩` from `hf2 s hs bs hbs`. Use `⟨κ, x, ?_⟩` and prove the remaining obligations. Simplify `hx) (by` using `[Nat.cast_one, hty1, ← hden]`.
+
+Introduce `s hs hs1 bs hbs`. Establish `hs0 : s = 0`. Rewrite `hs1` using `[Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Substitute `hs0` using the available equality.
+
+Rewrite `hbs` using `[Nat.cast_zero, sub_zero, hty0]`. Consider the cases of `hbs)`. Use `⟨2 * A.σ PD.p + A.σ PD.p, ?_, hL⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem arc_length_two_reduction [NeZero n] [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

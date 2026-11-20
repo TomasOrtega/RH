@@ -11,13 +11,26 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowVal
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levJ_grid_succ_indep {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t t' : T) (i j : ℕ) :
     levJ G t (.grid (i + 1) (j + 1)) = levJ G t' (.grid (i + 1) (j + 1)) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases j <;> rfl`.
+-/
 theorem levJ_top_indep {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t t' : T) (j : ℕ) :
     levJ G t (.top j) = levJ G t' (.top j) := by
   cases j <;> rfl
 
+/- English proof (translation)
+Introduce `D T L sc G t t' M M' hM hM'`. Use `⟨fun j hj1 hjm => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩ : ∃ i, D.R.m = i + 1` from `⟨D.R.m - 1, by omega⟩`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hX : levJ G t (.grid D.R.m (j' + 1)) = levJ G t' (.grid D.R.m (j' + 1))`.
+
+Rewrite using `[hi]`. Conclude with `levJ_grid_succ_indep G t t' i j'`. Establish `h1` using `hM.vtx (.grid D.R.m (j' + 1)) ⟨le_rfl, hjm⟩`. Establish `h2` using `hM'.vtx (.grid D.R.m (j' + 1)) ⟨le_rfl, hjm⟩`. Rewrite `h2` using `[← hX]`.
+
+Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M' _ _ h1 h2`. Establish `h1` using `hM.vtx (.top j) hj`. Establish `h2` using `hM'.vtx (.top j) hj`. Rewrite `h2` using `[← levJ_top_indep G t t' j]`. Conclude with `GlobalTheory.HaarNorm.vol_nu_eq_of_isAt M M' _ _ h1 h2`.
+-/
 theorem vol_row_top_indep : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t t' : T) (M M' : Vol G), M.Is t → M'.Is t' → (∀ j, 1 ≤ j → j ≤ D.R.m → M.ν (.grid D.R.m j) = M'.ν (.grid D.R.m j)) ∧ ∀ j, j ≤ D.R.m → M.ν (.top j) = M'.ν (.top j) := by
   intro D T L sc G t t' M M' hM hM'
   refine ⟨fun j hj1 hjm => ?_, fun j hj => ?_⟩

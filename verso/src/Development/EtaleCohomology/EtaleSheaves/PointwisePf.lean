@@ -14,14 +14,29 @@ def PushColim : Prop := ∀ {D Y' O : CommRingCat.{0}} (φ' : D ⟶ Y') (o : D �
     (∀ {j k : J} (f : j ⟶ k), ψ j ≫ G.map f = F.map f ≫ ψ k) ∧ (∀ j, u j ≫ c.ι.app j = u'') ∧
     (∀ j, ψ j ≫ c.ι.app j = s.app j ≫ φ'') ∧ IsPushout φ' o u'' φ''
 
+/- English proof (translation)
+Rewrite using `[Spec.map_comp, Functor.map_comp, pull_comp]`.
+-/
 theorem pc (q : ℕ) (i m : ℤ) {X Y Z : CommRingCat.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (v : H (ZMod q) (sch.obj (Spec X)) (tw q i) m) :
     pull _ (sch.map (Spec.map g)) (tw q i) m (pull _ (sch.map (Spec.map f)) (tw q i) m v) =
       pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) m v := by
   rw [Spec.map_comp, Functor.map_comp, pull_comp]
 
+/- English proof (translation)
+Use `hq.map h.hom` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unit_of {A B : CommRingCat.{0}} (h : A ⟶ B) (q : ℕ) (hq : IsUnit (q : A)) : IsUnit (q : B) := by
   have := hq.map h.hom; simpa using this
 
+/- English proof (translation)
+Introduce `hB1 q _ i A Y φ hq D d O o hIE hBC Y' w φ' hpo m y Q hQ`. Take `⟨J, _, _, F, t, s, hs, ht⟩` from `hIE`. Establish `ho : ∀ j, t.app j ≫ s.app j = o` using `fun j => (ht j).2`. Take `⟨G, c, hc, u, ψ, u'', φ'', hpj, hu, hψ, hcu, hcψ, hpo''⟩` from `hPC φ' o F t s hs ho`. Establish `hRE : RE q i φ''` using `hBC _ (w ≫ u'') φ'' (hpo.paste_vert hpo'')`.
+
+Take `⟨z, hz⟩` from `(hRE m).2 (pull _ (sch.map (Spec.map u'')) (tw q i) m y)`. Take `⟨j, zj, hzj⟩` from `(hB1 q F (Cocone.mk O s) hs m i).1 z (unit_of (d ≫ o) q hq)`. Express the relevant statement in the definitionally equal form `pull _ (sch.map (Spec.map (s.app j))) (tw q i) m zj = z at hzj`. Set `x : H (ZMod q) (sch.obj (Spec (G.obj j))) (tw q i) m` to `pull _ (sch.map (Spec.map (u j))) (tw q i) m y - pull _ (sch.map (Spec.map (ψ j))) (tw q i) m zj`. Establish `hx0 : pull _ (sch.map (Spec.map (c.ι.app j))) (tw q i) m x = 0`.
+
+Simplify using `only [x, map_sub, pc, hcu, hcψ, ← hz, ← hzj]`. Conclude with `sub_self _`. Take `⟨k, f, hk⟩` from `(hB1 q G c hc m i).2 j x (unit_of (d ≫ t.app j ≫ ψ j) q hq) hx0`. Express the relevant statement in the definitionally equal form `pull _ (sch.map (Spec.map (G.map f))) (tw q i) m x = 0 at hk`. Use `⟨F.obj k, t.app k, Q.comap (s.app k).hom, (ht k).1, Ideal.comap_isPrime _ _, ?_, G.obj k, u k, ψ k, hpj k, pull _ (sch.map (Spec.map (F.map f))) (tw q i) m zj, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.comap_comap, ← ho k]`. Both sides reduce to the same expression. Simplify using `only [x, map_sub, pc, hu, hψ, sub_eq_zero] at hk`. Rewrite using `[pc, hk]`. Use the proof step `@[simps]`.
+-/
 theorem Pointwise_of_pushColim (hPC : PushColim) : LateralTheory.E.KillCokPf.Pointwise := by
   intro hB1 q _ i A Y φ hq D d O o hIE hBC Y' w φ' hpo m y Q hQ
   obtain ⟨J, _, _, F, t, s, hs, ht⟩ := hIE
@@ -60,6 +75,15 @@ def cone {D O : CommRingCat.{0}} (o : D ⟶ O) {J : Type} [SmallCategory J] (F :
   ι := { app j := Under.homMk (s.app j) (by exact ho j)
          naturality j k f := by ext1; exact (s.naturality f).trans (Category.comp_id _) }
 
+/- English proof (translation)
+Introduce `D Y' O φ' o J _ _ F t s hs ho`. Establish `: ReflectsColimitsOfShape J (Under.forget D)` using `reflectsColimitsOfShape_of_reflectsIsomorphisms`. Establish `: (Under.pushout φ').IsLeftAdjoint` using `⟨_, ⟨Under.mapPushoutAdj φ'⟩⟩`. Establish `h1 : IsColimit ((Under.forget D).mapCocone (cone o F t s ho))` using `IsColimit.ofIsoColimit hs (Cocone.ext (Iso.refl _) (by intro j; exact Category.comp_id _))`. Establish `hK : IsColimit (cone o F t s ho)` using `isColimitOfReflects (Under.forget D) h1`.
+
+Establish `hP` using `isColimitOfPreserves (Under.pushout φ') hK`. Establish `hc` using `isColimitOfPreserves (Under.forget Y') hP`. Use `⟨_, _, hc, fun j => pushout.inr (t.app j) φ', fun j => pushout.inl (t.app j) φ', pushout.inr o φ', pushout.inl o φ', fun j => (IsPushout.of_hasPushout (t.app j) φ').flip, ?_, ?_, ?_, ?_, (IsPushout.of_hasPushout o φ').flip⟩` and prove the remaining obligations. Introduce `j k f`. Simplify using `[Under.pushout]`.
+
+Conclude with `pushout.inr_desc _ _ _`. Introduce `j k f`. Simplify using `[Under.pushout]`. Conclude with `pushout.inl_desc _ _ _`. Introduce `j`.
+
+Simplify using `[Under.pushout]`. Conclude with `pushout.inr_desc _ _ _`. Introduce `j`. Simplify using `[Under.pushout]`. Conclude with `pushout.inl_desc _ _ _`.
+-/
 theorem pushColim : PushColim := by
   intro D Y' O φ' o J _ _ F t s hs ho
   have : ReflectsColimitsOfShape J (Under.forget D) := reflectsColimitsOfShape_of_reflectsIsomorphisms
@@ -80,5 +104,8 @@ end LateralTheory.E.PointwisePf
 
 namespace LateralTheory.E.PointwisePf
 
+/- English proof (translation)
+The claim follows from `Pointwise_of_pushColim pushColim`.
+-/
 theorem Pointwise_of : LateralTheory.E.KillCokPf.Pointwise := Pointwise_of_pushColim pushColim
 end LateralTheory.E.PointwisePf

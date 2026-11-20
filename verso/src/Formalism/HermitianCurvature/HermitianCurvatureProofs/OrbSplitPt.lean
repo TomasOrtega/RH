@@ -12,6 +12,47 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 section dom
 
+/- English proof (translation)
+Take `⟨c₁, hPP⟩` from `Formalism.FourierDecayAlt.P.polynomial_map_proper`. Use `⟨16 * ((c₁ : ℝ) + 1), ?_⟩` and prove the remaining obligations. Introduce `k r Wp Wq _ _ _ _ Bs γ w d A hγ hd hZ hpos hA`. Use `set nn : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hnn`. Use `set bN : ℝ := 4 * ((r : ℝ) * nn + 1) with hbN`.
+
+Use `set c : ℕ := (c₁ + 1) * (r + 1) ^ 2 with hc`. Use `set M : ℝ := A / c - 2 * bN with hM`. Establish `hmono : C2.IsMonomial (Zhat k r Bs.z Bs.z' γ)` using `⟨w, d, hd, hZ⟩`. Take `⟨CP, hCP, -⟩` from `hPP k r Bs.z Bs.z' γ (P.Dx2.Rad.std Bs) ⟨hγ, hpos⟩ hmono`. Establish `hc1 : 1 ≤ c` using `Nat.one_le_iff_ne_zero.mpr (by positivity)`.
+
+Establish `hcpos : (0 : ℝ) < c` using `by exact_mod_cast hc1`. Establish `hnn0 : 0 ≤ nn` using `by positivity`. Establish `hrn : 0 ≤ (r : ℝ) * nn` using `by positivity`. Establish `hbN0 : 0 ≤ bN` using `by positivity`. Establish `hccast : (c : ℝ) = ((c₁ : ℝ) + 1) * ((r : ℝ) + 1) ^ 2` using `by rw [hc]; push_cast; ring`.
+
+Establish `hAc : 16 * ((r : ℝ) * nn + 1) ≤ A / c`. Rewrite using `[le_div_iff₀ hcpos, hccast]`. Combine the equalities or inequalities in the displayed calculation. Establish `hA4 : 4 * bN ≤ A / c` using `by rw [hbN]; linarith`. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast Bs.k_pos`.
+
+Establish `hMR : 2 * ((r : ℝ) + 1) ^ 2 < M`. Establish `hr2 : ((r : ℝ) + 1) ^ 2 ≤ (r : ℝ) * nn + 1`. Rewrite using `[hnn]`. Use `push_cast`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg r : (0 : ℝ) ≤ r) (show (0 : ℝ) ≤ r + k - 1 by linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)])]`.
+
+Rewrite using `[hM, hbN]`. Use polynomial arithmetic with `[sq_nonneg ((r : ℝ) + 1)]`. Establish `hM0 : 0 ≤ M` using `by nlinarith [sq_nonneg ((r : ℝ) + 1)]`. Establish `hG : P.Dx2.Rad.Good Bs γ w d` using `⟨P.Dx2.Rad.exists_rho Bs hγ hpos hd hZ, P.Dx2.Rad.u_inj Bs hγ hpos hd hZ, fun ρ hρ => P.Dx2.Rad.u_lstg Bs hγ hpos hd hZ hρ⟩`. Establish `hR` using `P.Dx2.Rad.haar_good Bs hγ hd hG`.
+
+Use `P.Dx2.OrbJ.sigmaF hR` as an intermediate fact. Establish `hI` using `Dx3.intR Bs hγ hd hG hMR`. Use `set μR := D.muR Bs γ w with hμR`. Use `set cR : ℝ := ∫ x, B.gN (Matrix.of x) ^ (-M) ∂μR with hcRdef`. Establish `hone : Matrix.of (Matrix.of.symm (1 : B.Mat k r)) ∈ B.GV k r`.
+
+Simplify using `using (P.unitary_group_closed k r).one_mem`. Establish `hcR : 0 < cR`. Use `Dx3.om_pos hR hM0 hI hone` as an intermediate fact. Simplify `this` using `[Dx3.Om]`. Take `⟨KW, hKW1, hKW⟩` from `Dx3.UW_bound Bs.z Bs.z_mem Bs.T_pos`.
+
+Take `⟨KW', hKW1', hKW'⟩` from `Dx3.UW_bound Bs.z' Bs.z'_mem Bs.T'_pos`. Use `set K1 := KW * KW' with hK1`. Use `set Kγ := B.gN γ⁻¹ * B.gN γ with hKγ`. Establish `hγi : B.gN γ⁻¹ = B.gN γ` using `(P.norm_of_inverse k r γ hγ).1`. Establish `hγ1 : 1 ≤ B.gN γ` using `P.BetaSesquilinearity.gN_ge_one hγ`.
+
+Establish `hKγ0 : 0 < Kγ` using `by rw [hKγ, hγi]; nlinarith`. Use `set K0 := K1 ^ A * CP ^ (A / c) * Kγ ^ bN / cR with hK0`. Use `⟨Dx3.cut μR M, fun p => K0 * (B.gN (Matrix.of p.1.2 : B.Mat k r) ^ (-(A / c - 3 * bN)) * B.gN (Matrix.of p.2.2 : B.Mat k r) ^ (-bN)), ⟨Dx3.cut_meas M, Dx3.cut_nonneg μR M, fun p hp => Dx3.cut_norm hR hM0 hI p hp.2.1⟩, fun _ => rfl, fun p hp => div_pos (Real.rpow_pos_of_pos (by li …` and prove the remaining obligations. Introduce `F cF hcF hFb`. Use `filter_upwards [P.Dx2.OrbJ.ae_inSS Bs] with p hp`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hp`. Take `⟨ρ, σ, X, hρ, hσ, hnρσ, hσX, hXY, hn'le⟩` from `Dx3.geom Bs hγ hpos hCP hmono h2 h4`. Establish `hN1 : 1 ≤ B.gN (Matrix.of p.1.2 : B.Mat k r)` using `P.BetaSesquilinearity.gN_ge_one h2.1`. Establish `hN1' : 1 ≤ B.gN (Matrix.of p.2.2 : B.Mat k r)` using `P.BetaSesquilinearity.gN_ge_one h4.1`. Establish `hS1 : 1 ≤ B.gN σ` using `P.BetaSesquilinearity.gN_ge_one hσ`.
+
+Establish `hg0 : (Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2 ∈ B.GV k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv h2.1) hγ) h4.1`. Establish `hY1 : 1 ≤ B.gN ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2)` using `P.BetaSesquilinearity.gN_ge_one hg0`. Establish `hsgs` using `P.B7.sgs_mem Bs ⟨h1, h2, h3, h4⟩ hγ`. Establish `hGg : 0 < B.gN (B.sgs p γ)` using `by linarith [P.BetaSesquilinearity.gN_ge_one hsgs]`. Establish `hYG : B.gN ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2) ≤ K1 * B.gN (B.sgs p γ)`.
+
+Establish `hhu : IsUnit (Matrix.of p.1.1 : B.Mat k r).det` using `(P.unitary_group_closed k r).unit _ h1.1`. Establish `hh'u : IsUnit (Matrix.of p.2.1 : B.Mat k r).det` using `(P.unitary_group_closed k r).unit _ h3.1`. Establish `e : (Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2 = (Matrix.of p.1.1 : B.Mat k r) * B.sgs p γ * (Matrix.of p.2.1 : B.Mat k r)⁻¹`. Simplify using `only [B.sgs, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hhu, Matrix.mul_nonsing_inv _ hh'u, Matrix.mul_one]`.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `a1` using `hKW _ h1`. Establish `a2` using `hKW' _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv h3)`. Establish `s0` using `P.B6.gN_nonneg (B.sgs p γ)`.
+
+Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right a1 s0) a2 (P.B6.gN_nonneg _) (mul_nonneg (by linarith) s0)`. Use `_ = K1 * B.gN (B.sgs p γ) := by rw [hK1]; ring`. Establish `hθ : Dx3.cut μR M p ≤ B.gN (Matrix.of p.1.2 : B.Mat k r) ^ (-M) * B.gN σ ^ M / cR`. Establish `hlow` using `Dx3.om_lower hR hM0 hI hρ hσ`. Establish `e : Matrix.of.symm (ρ * σ) = p.1.2` using `by rw [← hnρσ]; exact Equiv.symm_apply_apply _ _`.
+
+Rewrite `hlow` using `[e]`. Establish `hσp : 0 < B.gN σ ^ (-M)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hpos' : 0 < cR * B.gN σ ^ (-M)` using `mul_pos hcR hσp`. Unfold `Dx3.cut`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.rpow_neg (P.B6.gN_nonneg σ)]`. Establish `: 0 < B.gN σ ^ M` using `Real.rpow_pos_of_pos (by linarith) _`. Clear the denominators using the available nonvanishing facts. Establish `hθ0` using `Dx3.cut_nonneg μR M p`. Establish `hFv : ‖F (B.sgs p γ)‖ ≤ cF * B.gN (B.sgs p γ) ^ (-A)` using `hFb p ⟨h1, h2, h3, h4⟩`.
+
+Establish `hCP0 : 0 < CP`. Assume the negation of the conclusion as `hle'`. Establish `hle` using `not_lt.mp hle'`. Use `mul_nonpos_of_nonpos_of_nonneg hle (pow_nonneg (P.B6.gN_nonneg ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2)) (c₁ * (r + 1) ^ 2))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hec : c₁ * (r + 1) ^ 2 ≤ c` using `Nat.mul_le_mul_right _ (Nat.le_succ _)`. Establish `hXY' : X ≤ CP * B.gN ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * γ * Matrix.of p.2.2) ^ c` using `hXY.trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hY1 hec) hCP0.le)`. Establish `hK10 : 0 < K1` using `by rw [hK1]; positivity`. Establish `hkey` using `Dx3.key_real hN1 hS1 hσX hY1 hGg hc1 hXY' hn'le hN1' hYG hθ hθ0 hFv (norm_nonneg _) hcR hcF hCP0 hK10 hKγ0 hM hbN0 hA4`. Use `hkey.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hK0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orbJ_domL : ∃ c₃ : ℝ, ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r)
     (w : Equiv.Perm (Fin (r + 1))) (d : Fin (r + 1) → ℂ) (A : ℝ),
@@ -155,12 +196,20 @@ def rint (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) 
     Wq →L[ℂ] Wp :=
   star (psi k r Bs.z' cStd (Matrix.of y.2)) • (F (x * Matrix.of y.2 * Matrix.of y.1)).comp (Bs.π' (Matrix.of y.1)⁻¹)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(starRingEnd ℂ) (Complex.exp (Complex.I * (x : ℂ))) = _`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `[Complex.conj_ofReal]`.
+-/
 theorem star_exp_I (x : ℝ) : star (Complex.exp (Complex.I * (x : ℂ))) = Complex.exp (-(Complex.I * (x : ℂ))) := by
   change (starRingEnd ℂ) (Complex.exp (Complex.I * (x : ℂ))) = _
   rw [← Complex.exp_conj]
   congr 1
   simp [Complex.conj_ofReal]
 
+/- English proof (translation)
+Unfold `B.xiTau psi`. Rewrite using `[star_exp_I, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [B.lam, one_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xi11 (Bs : B.RealPlaceData k r Wp Wq) (p : B.SS k r) :
     B.xiTau Bs (1, 1) p = psi k r Bs.z cStd (Matrix.of p.1.2) * star (psi k r Bs.z' cStd (Matrix.of p.2.2)) := by
   unfold B.xiTau psi
@@ -170,6 +219,9 @@ theorem xi11 (Bs : B.RealPlaceData k r Wp Wq) (p : B.SS k r) :
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `D.orbIntegrand B.rho rint`. Rewrite using `[xi11, ContinuousLinearMap.comp_smul, smul_smul, ← Complex.coe_smul, smul_smul, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem orb_split_pt (Bs : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) (θ : B.SS k r → ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (x y : Mt k r × Mt k r) :
     θ (x, y) • D.orbIntegrand Bs γ F (x, y) =
@@ -179,6 +231,15 @@ theorem orb_split_pt (Bs : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) (θ : B.S
   rw [xi11, ContinuousLinearMap.comp_smul, smul_smul, ← Complex.coe_smul, smul_smul, mul_assoc]
   rfl
 
+/- English proof (translation)
+Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarW`. Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarN`. Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarW'`. Establish `hI' : Integrable (fun p => θ p • D.orbIntegrand Bs γ F p) ((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN))` using `hI`. Establish `hinner : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), ∫ y, θ (x, y) • D.orbIntegrand Bs γ F (x, y) ∂(Bs.μW'.prod Bs.μN) = lint Bs γ (fun x => θ (x, 0)) F x` using `by filter_upwards [hR] with x hx`.
+
+Repeatedly rewrite using `[orb_split_pt Bs γ θ F x]`. Rewrite using `[show (fun y => (((θ (x, y) : ℝ) : ℂ) * psi k r Bs.z cStd (Matrix.of x.2)) • (Bs.π (Matrix.of x.1)).comp (rint Bs F ((Matrix.of x.1)⁻¹ * (Matrix.of x.2)⁻¹ * γ) y)) = fun y => (((θ (x, 0) : ℝ) : ℂ) * psi k r Bs.z cStd (Matrix.of x.2)) • (ContinuousLinearMap.compL ℂ Wq Wp Wp (Bs.π …`. Use function extensionality and compare the values at `y`. Rewrite using `[hθ (x, y)]`. Use the proof step `rfl]`.
+
+Rewrite using `[integral_smul, ContinuousLinearMap.integral_comp_comm _ hx]`. Both sides reduce to the same expression. Establish `hint` using `hI'.integral_prod_left`. Use `⟨hint.congr hinner, ?_⟩` and prove the remaining obligations. Rewrite using `[show Bs.μSS = (Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN) from rfl, integral_prod _ hI']`.
+
+Conclude with `integral_congr_ae hinner`.
+-/
 theorem fub [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r)
     (θ : B.SS k r → ℝ) (hθ : ∀ p : B.SS k r, θ p = θ (p.1, 0)) (F : B.Mat k r → (Wq →L[ℂ] Wp))
     (hI : Integrable (fun p => θ p • D.orbIntegrand Bs γ F p) Bs.μSS)
@@ -214,6 +275,11 @@ section inner
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `psi ell`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul (continuous_finset_sum _ fun a _ => ?_)))))` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `continuous_finset_sum _ fun j _ => by show Continuous fun n : Mt k r => n (eI k r a) j * z j fun_prop`.
+-/
 theorem continuous_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     Continuous fun n : Mt k r => psi k r z c (Matrix.of n) := by
   unfold psi ell
@@ -226,11 +292,19 @@ theorem continuous_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
       show Continuous fun n : Mt k r => n (eI k r a) j * z j
       fun_prop
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : B.Mat k r) : ‖psi k r z c g‖ = 1 := by
   unfold psi
   rw [mul_comm]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Unfold `rint`. Rewrite using `[norm_smul, norm_star, norm_psi, one_mul]`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖Bs.π' (Matrix.of y.1)⁻¹‖ ≤ 1` using `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by`. Rewrite using `[Bs.π'_unitary _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hy), one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_rint (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x : B.Mat k r)
     (y : Mt k r × Mt k r) (hy : Matrix.of y.1 ∈ UWset k r Bs.z') :
     ‖rint Bs F x y‖ ≤ ‖F (x * Matrix.of y.2 * Matrix.of y.1)‖ := by
@@ -244,6 +318,17 @@ theorem norm_rint (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[�
       ≤ ‖F (x * Matrix.of y.2 * Matrix.of y.1)‖ * 1 := mul_le_mul_of_nonneg_left h1 (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarN`. Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarW'`. Use `set S : Set (Mt k r × Mt k r) := {y | (Matrix.of y.1 : B.Mat k r) ∈ UWset k r Bs.z' ∧ (Matrix.of y.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r} with hS`. Establish `hWc'` using `(P.weyl_subgroup_closed k r Bs.z').closed`. Establish `hNc` using `(P.unipotent_radical_closed k r).closed`.
+
+Establish `hSc : IsClosed S` using `(hWc'.preimage continuous_fst).inter (hNc.preimage continuous_snd)`. Establish `hinv : ContinuousOn (fun y : Mt k r × Mt k r => (Matrix.of y.1 : B.Mat k r)⁻¹) S` using `(P.B6.inv_continuousOn k r).comp continuous_fst.continuousOn (fun y hy => hy.1.1)`. Establish `hπ' : ContinuousOn (fun y : Mt k r × Mt k r => Bs.π' (Matrix.of y.1 : B.Mat k r)⁻¹) S` using `Bs.π'_cont.comp hinv (fun y hy => Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hy.1)`. Establish `hm : ContinuousOn (fun y : Mt k r × Mt k r => x * Matrix.of y.2 * Matrix.of y.1) S` using `((continuousOn_const.mul continuous_snd.continuousOn).mul continuous_fst.continuousOn)`. Establish `hmem : ∀ y ∈ S, x * Matrix.of y.2 * Matrix.of y.1 ∈ B.GV k r` using `fun y hy => Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hx hy.2.1) hy.1.1`.
+
+Establish `hFc : ContinuousOn (fun y : Mt k r × Mt k r => F (x * Matrix.of y.2 * Matrix.of y.1)) S` using `hF.comp hm hmem`. Establish `hψ : Continuous fun y : Mt k r × Mt k r => star (psi k r Bs.z' cStd (Matrix.of y.2))` using `continuous_star.comp ((continuous_psi Bs.z' cStd).comp continuous_snd)`. Establish `hcont : ContinuousOn (rint Bs F x) S`. Unfold `rint`. Conclude with `hψ.continuousOn.smul (hFc.clm_comp hπ')`.
+
+Establish `h1` using `hcont.aestronglyMeasurable (μ := Bs.μW'.prod Bs.μN) hSc.measurableSet`. Establish `hae : ∀ᵐ y ∂(Bs.μW'.prod Bs.μN), y ∈ S`. Establish `a1 : ∀ᵐ y ∂(Bs.μW'.prod Bs.μN), (Matrix.of y.1 : B.Mat k r) ∈ UWset k r Bs.z'` using `Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarW')`. Establish `a2 : ∀ᵐ y ∂(Bs.μW'.prod Bs.μN), (Matrix.of y.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarN)`. Use `filter_upwards [a1, a2] with y h1 h2 using ⟨h1, h2⟩`.
+
+Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+-/
 theorem rint_aesm (Bs : B.RealPlaceData k r Wp Wq) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (x : B.Mat k r) (hx : x ∈ B.GV k r)
     (hF : ContinuousOn F (B.GV k r)) :
     AEStronglyMeasurable (rint Bs F x) (Bs.μW'.prod Bs.μN) := by
@@ -277,6 +362,15 @@ theorem rint_aesm (Bs : B.RealPlaceData k r Wp Wq) {F : B.Mat k r → (Wq →L[�
     filter_upwards [a1, a2] with y h1 h2 using ⟨h1, h2⟩
   rwa [Measure.restrict_eq_self_of_ae_mem hae] at h1
 
+/- English proof (translation)
+Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarW`. Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarN`. Use `haveI := Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarW'`. Establish `hmaj' : Integrable maj ((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN))` using `hmaj`. Establish `hb' : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), θ p * ‖F (B.sgs p γ)‖ ≤ cF * maj p` using `hb`.
+
+Establish `hW' : ∀ᵐ p ∂((Bs.μW.prod Bs.μN).prod (Bs.μW'.prod Bs.μN)), (Matrix.of p.2.1 : B.Mat k r) ∈ UWset k r Bs.z'` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS Bs |>.mono fun p hp => hp.2.2.1`. Establish `hxW : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), (Matrix.of x.1 : B.Mat k r) ∈ UWset k r Bs.z ∧ (Matrix.of x.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r`. Establish `a1 : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), (Matrix.of x.1 : B.Mat k r) ∈ UWset k r Bs.z` using `Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarW)`. Establish `a2 : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), (Matrix.of x.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarN)`. Use `filter_upwards [a1, a2] with x h1 h2 using ⟨h1, h2⟩`.
+
+Use `filter_upwards [Measure.ae_ae_of_ae_prod hb', Measure.ae_ae_of_ae_prod hW', hmaj'.prod_right_ae, hxW] with x hbx hWx hmx hx`. Establish `hθx : 0 < θ (x, 0)` using `hθp (x, 0) hx.2`. Establish `hx0 : (Matrix.of x.1 : B.Mat k r)⁻¹ * (Matrix.of x.2)⁻¹ * γ ∈ B.GV k r` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hx.1.1) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hx.2.1)) hγ`. Use `Integrable.mono' (hmx.const_mul (cF / θ (x, 0))) (rint_aesm Bs _ hx0 hF) ?_` and prove the remaining obligations. Use `filter_upwards [hbx, hWx] with y hby hwy`.
+
+Use `(norm_rint Bs F _ y hwy).trans ?_` and prove the remaining obligations. Rewrite `hby` using `[hθ (x, y)]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hθx, mul_comm]`. Conclude with `hby`.
+-/
 theorem inner_int (Bs : B.RealPlaceData k r Wp Wq) (γ : B.Mat k r) (hγ : γ ∈ B.GV k r) (θ : B.SS k r → ℝ)
     (hθ : ∀ p : B.SS k r, θ p = θ (p.1, 0)) (hθp : ∀ p : B.SS k r, Matrix.of p.1.2 ∈ Formalism.QuantumDeterminants.Nset k r → 0 < θ p)
     (maj : B.SS k r → ℝ) (hmaj : Integrable maj Bs.μSS) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (cF : ℝ)

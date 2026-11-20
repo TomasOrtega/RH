@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.OmegaFactorizati
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.TraceDualDifferent
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisNonConst.nonconst_terms | exact GlobalTheory.EisNonConst.nonconst_terms | (intros; apply GlobalTheory.EisNonConst.nonconst_terms <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hilbertEisenstein_nonconstant_terms_hasSum : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F], GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.Lipschitz →
   ∀ (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (k : ℕ), 2 ≤ k → Even k →
   (∀ z ∈ GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F, Summable (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisClass 𝔞 𝔟 k 0 z)) →

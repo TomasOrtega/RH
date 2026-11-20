@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.NFJetProof
 
+/- English proof (translation)
+Use `haveI : Finite E := hE.to_subtype`. Use `⟨IntermediateField.adjoin ℚ E, IntermediateField.finiteDimensional_adjoin fun z hz => (hA z hz).isIntegral, fun z hz => ⟨⟨z, IntermediateField.subset_adjoin ℚ E hz⟩, rfl⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_nf_of_finite (E : Set ℂ) (hE : E.Finite) (hA : ∀ z ∈ E, IsAlgebraic ℚ z) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ E ⊆ Set.range (algebraMap M ℂ) := by
   haveI : Finite E := hE.to_subtype
@@ -37,6 +40,19 @@ end GlobalTheory.NFJetProof
 
 namespace GlobalTheory.NFJetProof
 
+/- English proof (translation)
+Establish `hok' : ∀ t Φ, ch.S.SumOK t Φ` using `fun t Φ => by`. Take `⟨a, rfl⟩` from `GlobalTheory.T.rowTestChoice_datum_surjective large₂ F hS ch hch Φ`. Conclude with `hok t a`. Use `haveI : Finite T := hS.fin`. Use `haveI : Finite ch.G.Datum := Finite.of_surjective ch.Phi fun Φ => GlobalTheory.T.rowTestChoice_datum_surjective large₂ F hS ch hch Φ`.
+
+Use `set S := ch.S.toGridChoice with hSdef`. Set `E : Set ℂ` to `⋃ t, ⋃ Φ, ⋃ β ∈ S.supp t Φ, ⋃ d ∈ dset S t Φ β (expDepth S t Φ β), ⋃ c : S.Classes t Φ β, ((⋃ j : Fin D.R.m, ⋃ a, ⋃ b, {S.Z.kk (d.1 j) (S.ptTop c j) (S.ptTop c (j + 1)) a b}) ∪ (⋃ i : Fin D.R.m, ⋃ a, ⋃ b, {S.Z.kk (d.2 i) (S.ptRow c i) (S.ptRow c (i + 1)) a b}))`. Establish `hE : E.Finite`. Use `Set.finite_iUnion fun t => Set.finite_iUnion fun Φ => Set.Finite.biUnion (hok' t Φ).fin fun β _ => Set.Finite.biUnion (GlobalTheory.T.finite_pureData_of_cosetIndicatorExpansions_depth S t Φ β _) fun d _ => ?_` and prove the remaining obligations. Use `haveI := (hok' t Φ).cls β`.
+
+Conclude with `Set.finite_iUnion fun c => Set.Finite.union (Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => Set.finite_singleton _) (Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => Set.finite_singleton _)`. Establish `hA : ∀ z ∈ E, IsAlgebraic ℚ z`. Introduce `z hz`. Simplify using `only [E, dset, Set.mem_iUnion, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, exists_prop] at hz`. Take `⟨t, Φ, β, hβ, d, ⟨τ, hτ, hdτ⟩, c, h⟩` from `hz`.
+
+Take `⟨hk, hexp, hcos⟩` from `hτ`. Take `⟨e, -, hP, -⟩` from `id hexp`. Establish `hw` using `(hok' t Φ).wts`. Establish `hv` using `(hok' t Φ).vec β τ hexp d hdτ`. Break down `h with ⟨j, a, b, rfl⟩ | ⟨i, a, b, rfl⟩` into its components or cases.
+
+Conclude with `GlobalTheory.T.normalisedDefiniteKernel_entries_isAlgebraic large₂ F hS ch hch hI hD t (.top t j) (show (j : ℕ) + 1 ≤ D.R.m from j.2) (hw j j.2).1 _ (d.1 j) hk ((hcos d hdτ).1 j) ((hP d hdτ).1 j).2.2 ((hP d hdτ).1 j).1 (hv.1 j) _ _ a b`. Conclude with `GlobalTheory.T.normalisedDefiniteKernel_entries_isAlgebraic large₂ F hS ch hch hI hD t (.chi i D.R.m) (show (i : ℕ) + 1 ≤ D.R.m ∧ D.R.m = D.R.m from ⟨i.2, rfl⟩) (hw i i.2).2 _ (d.2 i) hk ((hcos d hdτ).2 i) ((hP d hdτ).2 i).2.2 ((hP d hdτ).2 i).1 (hv.2 i) _ _ a b`. Take `⟨M, hM, hsub⟩` from `exists_nf_of_finite E hE hA`. Use `⟨M, hM, fun t Φ β hβ τ hτ d hd c => ⟨fun j a b => hsub ?_, fun i a b => hsub ?_⟩⟩` and prove the remaining obligations. Simplify using `only [E, dset, Set.mem_iUnion, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, exists_prop]`.
+
+Conclude with `⟨t, Φ, β, hβ, d, ⟨τ, hτ, hd⟩, c, Or.inl ⟨j, a, b, rfl⟩⟩`. Simplify using `only [E, dset, Set.mem_iUnion, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, exists_prop]`. Conclude with `⟨t, Φ, β, hβ, d, ⟨τ, hτ, hd⟩, c, Or.inr ⟨i, a, b, rfl⟩⟩`.
+-/
 theorem jetCl_of_choice {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A)
     (hS : HidaSetting large₂ R F) (ch : Choice R) (hch : ch.Is) (hI : GlobalTheory.NormSum.Inp D) (hok : ∀ t a, ch.S.SumOK t (ch.Phi a))
@@ -77,6 +93,9 @@ theorem jetCl_of_choice {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Ty
   · simp only [E, dset, Set.mem_iUnion, Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq, exists_prop]
     exact ⟨t, Φ, β, hβ, d, ⟨τ, hτ, hd⟩, c, Or.inr ⟨i, a, b, rfl⟩⟩
 
+/- English proof (translation)
+Introduce `h1 h2 h3`. Take `⟨C, hC⟩` from `Big.and h1 h3`. Use `⟨C, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hC ε CF hCF`. Conclude with `⟨x, fun D large₂ he hxx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => jetCl_of_choice large₂ F hS ch hch (h2 D) (hx D large₂ he hxx Γ Pl0 T A Ks R F hS ch hch hsc).1 (hx D large₂ he hxx Γ Pl0 T A Ks R F hS ch hch hsc).2⟩`.
+-/
 theorem nfJet_holds : SumOKK → (∀ D, GlobalTheory.NormSum.Inp D) → (Big fun ch => GlobalTheory.SumSize.DictAt ch) → NFJet := by
   intro h1 h2 h3
   obtain ⟨C, hC⟩ := Big.and h1 h3

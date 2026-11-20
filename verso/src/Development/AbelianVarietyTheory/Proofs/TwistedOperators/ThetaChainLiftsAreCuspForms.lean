@@ -23,6 +23,13 @@ namespace GlobalTheory.LiftCuspObj
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `Submodule.mem_map.1 hF`. Establish `key : ∀ m, P (T m)`. Introduce `m`. Establish `hT' : T ∈ Submodule.span ℂ {T | IsMultMap θ M J χ T}` using `hT`. Use `clear hF hT`.
+
+Proceed by induction on `hT' using Submodule.span_induction with`. Consider the case `mem x hx => exact hcusp _ ((show IsMultMap θ M J χ x from hx).aut m) ((show IsMultMap θ M J χ x from hx).cusp m)`. Consider the case `zero => simpa using h0`. Consider the case `add x y _ _ hx hy => simpa using hadd _ _ hx hy`. Consider the case `smul a x _ hx => simpa using hsmul a _ hx`.
+
+Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod a m => simpa using hsmul a _ (key m)`. Consider the case `add x y hx hy => simpa using hadd _ _ hx hy`.
+-/
 theorem multT_induction {W : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel W S)
     (J : Set (GA D W)) (χ : GA D W → ℂ) (P : (GA D W → ℂ) → Prop) (h0 : P 0)
     (hadd : ∀ φ φ', P φ → P φ' → P (φ + φ')) (hsmul : ∀ (c : ℂ) φ, P φ → P (c • φ))
@@ -42,6 +49,9 @@ theorem multT_induction {W : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D)
   | smul_tprod a m => simpa using hsmul a _ (key m)
   | add x y hx hy => simpa using hadd _ _ hx hy
 
+/- English proof (translation)
+Simplify using `only [Lift.liftInt, Pi.add_apply, mul_add]`. Conclude with `integral_add h h'`.
+-/
 theorem liftInt_add {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {s : S}
     {φ φ' : H → ℂ} {g : G} (h : IntegrableOn (fun x => th g x s * φ x) 𝓕 ν)
     (h' : IntegrableOn (fun x => th g x s * φ' x) 𝓕 ν) :
@@ -49,6 +59,9 @@ theorem liftInt_add {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 :
   simp only [Lift.liftInt, Pi.add_apply, mul_add]
   exact integral_add h h'
 
+/- English proof (translation)
+Simplify using `only [Lift.liftInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `x`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem liftInt_smul {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {s : S}
     (c : ℂ) (φ : H → ℂ) (g : G) :
     Lift.liftInt ν 𝓕 th s (c • φ) g = c * Lift.liftInt ν 𝓕 th s φ g := by
@@ -58,6 +71,9 @@ theorem liftInt_smul {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 
   ext x
   ring
 
+/- English proof (translation)
+Simplify using `[Lift.liftInt]`.
+-/
 theorem liftInt_zero {G H S : Type*} [MeasurableSpace H] {ν : Measure H} {𝓕 : Set H} {th : G → H → S → ℂ} {s : S}
     (g : G) : Lift.liftInt ν 𝓕 th s (0 : H → ℂ) g = 0 := by
   simp [Lift.liftInt]
@@ -79,6 +95,9 @@ variable {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
   {ν : Measure (GA D W)} {𝓕 : Set (GA D W)} {κ : Measure (NI V C)} {𝓝 : Set (NI V C)}
   {f : WO V W → ℂ} {f' : WO V' W → ℂ} {g : GA D V} {c : ℂ}
 
+/- English proof (translation)
+Simplify using `integ' := by simp mean := by`. Simplify using `only [liftInt_zero]`. Conclude with `integrableOn_zero`. Use `eq := by simp [liftInt_zero]`.
+-/
 theorem Good.zero : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c 0 where
   integ g₁ := by simp
   integ' := by simp
@@ -87,6 +106,11 @@ theorem Good.zero : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c 0 where
     exact integrableOn_zero
   eq := by simp [liftInt_zero]
 
+/- English proof (translation)
+Establish `e : ∀ x : GA D V, Lift.liftInt ν 𝓕 (thetaKO ω) f (φ + φ') x = Lift.liftInt ν 𝓕 (thetaKO ω) f φ x + Lift.liftInt ν 𝓕 (thetaKO ω) f φ' x` using `fun x => liftInt_add (h.integ x) (h'.integ x)`. Use `⟨fun g₁ => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add]`. Conclude with `Integrable.add (h.integ g₁) (h'.integ g₁)`. Simplify using `only [Pi.add_apply, mul_add]`.
+
+Conclude with `Integrable.add h.integ' h'.integ'`. Simplify using `only [e]`. Conclude with `Integrable.add h.mean h'.mean`. Simplify using `only [e]`. Rewrite using `[integral_add h.mean h'.mean, h.eq, h'.eq, liftInt_add h.integ' h'.integ', mul_add]`.
+-/
 theorem Good.add {φ φ' : GA D W → ℂ} (h : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c φ)
     (h' : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c φ') : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c (φ + φ') := by
   have e : ∀ x : GA D V, Lift.liftInt ν 𝓕 (thetaKO ω) f (φ + φ') x =
@@ -102,6 +126,15 @@ theorem Good.add {φ φ' : GA D W → ℂ} (h : Good C ω ω' ν 𝓕 κ 𝓝 f 
   · simp only [e]
     rw [integral_add h.mean h'.mean, h.eq, h'.eq, liftInt_add h.integ' h'.integ', mul_add]
 
+/- English proof (translation)
+Use `⟨fun g₁ => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun x => thetaKO ω g₁ x f * (a • φ) x) = fun x => a * (thetaKO ω g₁ x f * φ x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Integrable.const_mul (h.integ g₁) a`. Establish `e : (fun x => thetaKO ω' 1 x f' * (a • φ) x) = fun x => a * (thetaKO ω' 1 x f' * φ x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Integrable.const_mul h.integ' a`. Simplify using `only [liftInt_smul]`. Conclude with `Integrable.const_mul h.mean a`.
+
+Simplify using `only [liftInt_smul]`. Rewrite using `[integral_const_mul, h.eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Good.smul {φ : GA D W → ℂ} (a : ℂ) (h : Good C ω ω' ν 𝓕 κ 𝓝 f f' g c φ) :
     Good C ω ω' ν 𝓕 κ 𝓝 f f' g c (a • φ) := by
   refine ⟨fun g₁ => ?_, ?_, ?_, ?_⟩
@@ -125,6 +158,11 @@ theorem Good.smul {φ : GA D W → ℂ} (a : ℂ) (h : Good C ω ω' ν 𝓕 κ 
 
 end Good
 
+/- English proof (translation)
+Take `⟨μ, 𝓨, h𝓨⟩ : ∃ μ 𝓨, IsCovolOne (ratMx D W.rank r) μ 𝓨` from `GlobalTheory.MixModel.exists_isCovolOne D W.rank r`. Establish `hfor` using `hct V V' W r C B hs ψ χS χT χT' ω ω' hω hω' μ 𝓨 h𝓨 ν 𝓕 hν h𝓕 κ 𝓝 hκ h𝓝`. Establish `hgood : Good C ω ω' ν 𝓕 κ 𝓝 f (res V V' W C B μ 𝓨 (ω (g, 1) f)) g ((κ 𝓝).toReal : ℂ) (F v)` using `multT_induction θ M J χ (fun φ => Good C ω ω' ν 𝓕 κ 𝓝 f (res V V' W C B μ 𝓨 (ω (g, 1) f)) g ((κ 𝓝).toReal : ℂ) φ) Good.zero (fun _ _ h h' => Good.add h h') (fun a _ h => Good.smul a h) (fun φ hφ hc => by`. Take `⟨-, -, -, h1, h2, h3, h4⟩` from `hfor φ (GlobalTheory.Grow.rapidDec_of_cuspForm hP hθ hφ hc) hc f hf g`. Conclude with `⟨h1, h2, h3, h4⟩) F hF v`.
+
+Take `⟨-, -, hres, -⟩` from `hfor 0 GlobalTheory.Grow.RapidDec.zero (by intro _ _ _ _ _ _ _ _; simp) f hf g`. Rewrite using `[hgood.eq, hlow _ hres, mul_zero]`.
+-/
 theorem constTerm_multT (hct : TowerConstTerm D) (hP : GlobalTheory.Published.CuspRapidDecay)
     {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B)
@@ -150,6 +188,11 @@ theorem constTerm_multT (hct : TowerConstTerm D) (hP : GlobalTheory.Published.Cu
   obtain ⟨-, -, hres, -⟩ := hfor 0 GlobalTheory.Grow.RapidDec.zero (by intro _ _ _ _ _ _ _ _; simp) f hf g
   rw [hgood.eq, hlow _ hres, mul_zero]
 
+/- English proof (translation)
+Introduce `hDS hHC hP D k V W M M' θ ψ hθ hch ω hω ν 𝓕 hν h𝓕 J χ F hF v f hf r C hC κ 𝓝 hκ h𝓝 g`. Take `⟨V', B, hs, hsig⟩` from `GlobalTheory.T.exists_lowerWittTower_isotropicSplitEmbedding D V _ M r C hC`. Establish `hr : 1 ≤ r`. Take `⟨h0, -⟩` from `hC`. Conclude with `h0`.
+
+Take `⟨χS, χT, hW, hexp⟩` from `hω`. Take `⟨η, h1, h2, h3, h4⟩` from `GlobalTheory.Mem.EtaTilde.exists_etaTilde D`. Take `⟨ω', hW'⟩` from `GlobalTheory.T.exists_weilDatum_of_splittingCharacters D ψ hW.std V' W χS χT (Exists.intro η (And.intro h1 (And.intro h4 (And.intro h3 h2)))) hW.hecS hW.hecT (resEta_parity hW.resS (by have := hs.rank; omega)) hW.resT`. Establish `hst : GlobalTheory.Chain.IsStepWeil k ψ V' W ω'` using `Exists.intro χS (Exists.intro χT (And.intro hW' hexp))`. Conclude with `constTerm_multT (GlobalTheory.T.constantTermLift_isotropicSubspace D) hP hs hθ hW hW' hν h𝓕 M' J χ F hF v hf (fun f' hf' => congrFun (GlobalTheory.T.thetaLift_lowerTower_vanishing hDS hHC hP D k r V' W M' θ ψ hθ hch hr hsig ω' hst ν 𝓕 hν h𝓕 J χ F hF v f' hf') 1) κ 𝓝 hκ h𝓝 g`.
+-/
 theorem liftCusp : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay →
     ∀ D : D7, GlobalTheory.Chain.LiftCusp D := by
   intro hDS hHC hP D k V W M M' θ ψ hθ hch ω hω ν 𝓕 hν h𝓕 J χ F hF v f hf r C hC κ 𝓝 hκ h𝓝 g

@@ -14,6 +14,9 @@ namespace GlobalTheory.QLog.ChartMul
 
 variable {p : ℕ} {O : Type} [CommRing O] {G : PDivGroup p O} {d : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i => by simp [hE.1 i], fun m => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hE.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Use `map_dvd g (hN f hf)` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isEval_algHom_comp {A A' σ : Type} [CommRing A] [CommRing A'] [Algebra O A] [Algebra O A']
     {x : σ → A} {E : MvPowerSeries σ O →ₐ[O] A} (hE : IsEval p x E) (g : A →ₐ[O] A') :
     IsEval p (fun i => g (x i)) (g.comp E) := by
@@ -23,6 +26,13 @@ theorem isEval_algHom_comp {A A' σ : Type} [CommRing A] [CommRing A'] [Algebra 
   have := map_dvd g (hN f hf)
   rwa [map_pow, map_natCast] at this
 
+/- English proof (translation)
+Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [nmul]`. Consider the case `succ k ih`. Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ k) (fun i => (X i : MvPowerSeries (Fin d) R)) j) = 0`. Introduce and unpack `(j | j)`.
+
+Conclude with `ih j`. Conclude with `constantCoeff_X _`. Establish `e : nmul μ (k + 1) i = subst (Sum.elim (nmul μ k) fun i => (X i : MvPowerSeries (Fin d) R)) (μ i)`. Simplify using `only [nmul]`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ i)`.
+-/
 theorem constantCoeff_nmul {R : Type} [CommRing R] {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (k : ℕ) (i : Fin d) : constantCoeff (nmul μ k i) = 0 := by
   induction k generalizing i with
@@ -41,6 +51,15 @@ theorem constantCoeff_nmul {R : Type} [CommRing R] {μ : Fin d → MvPowerSeries
 
 variable [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n ⊗[O] G.A n)`. Establish `hnil : ∀ i, ∃ N : ℕ, (p : G.A n ⊗[O] G.A n) ∣ (Sum.elim (fun i => c.x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] c.x n i) i) ^ N`. Introduce and unpack `(i | i)`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Use `map_dvd (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact. Simplify `this` using `[map_pow, map_natCast]`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `map_dvd (Algebra.TensorProduct.includeRight (R := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact.
+
+Simplify `this` using `[map_pow, map_natCast]`. Establish `H` using `((CEval.continuous_eval p O (G.A n ⊗[O] G.A n) (Fin d ⊕ Fin d) _ hnil).2 (c.ev₂ n) (c.isEval₂ n)).1`. Establish `hx : (fun j => c.ev₂ n ((fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) O)) j)) = fun j => Algebra.TensorProduct.includeLeft (R` using `O) (S := O) (A := G.A n) (B := G.A n) (c.x n j) := funext fun j => (c.isEval₂ n).1 (Sum.inl j)`. Establish `hE` using `isEval_algHom_comp (c.isEval n) (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := G.A n) (B := G.A n))`. Rewrite `hE` using `[← hx]`.
+
+Conclude with `H (Fin d) _ _ (fun _ => constantCoeff_X _) hE f`.
+-/
 theorem ev₂_inL (c : QLog.Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
     c.ev₂ n (inL f) = c.ev n f ⊗ₜ[O] 1 := by
   haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) :=
@@ -66,6 +85,15 @@ theorem ev₂_inL (c : QLog.Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
   rw [← hx] at hE
   exact H (Fin d) _ _ (fun _ => constantCoeff_X _) hE f
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n ⊗[O] G.A n)`. Establish `hnil : ∀ i, ∃ N : ℕ, (p : G.A n ⊗[O] G.A n) ∣ (Sum.elim (fun i => c.x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] c.x n i) i) ^ N`. Introduce and unpack `(i | i)`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Use `map_dvd (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact. Simplify `this` using `[map_pow, map_natCast]`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `map_dvd (Algebra.TensorProduct.includeRight (R := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact.
+
+Simplify `this` using `[map_pow, map_natCast]`. Establish `H` using `((CEval.continuous_eval p O (G.A n ⊗[O] G.A n) (Fin d ⊕ Fin d) _ hnil).2 (c.ev₂ n) (c.isEval₂ n)).1`. Establish `hx : (fun j => c.ev₂ n ((fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) O)) j)) = fun j => Algebra.TensorProduct.includeRight (R` using `O) (A := G.A n) (B := G.A n) (c.x n j) := funext fun j => (c.isEval₂ n).1 (Sum.inr j)`. Establish `hE` using `isEval_algHom_comp (c.isEval n) (Algebra.TensorProduct.includeRight (R := O) (A := G.A n) (B := G.A n))`. Rewrite `hE` using `[← hx]`.
+
+Conclude with `H (Fin d) _ _ (fun _ => constantCoeff_X _) hE f`.
+-/
 theorem ev₂_inR (c : QLog.Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
     c.ev₂ n (inR f) = 1 ⊗ₜ[O] c.ev n f := by
   haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) :=
@@ -91,6 +119,19 @@ theorem ev₂_inR (c : QLog.Chart G d) (n : ℕ) (f : MvPowerSeries (Fin d) O) :
   rw [← hx] at hE
   exact H (Fin d) _ _ (fun _ => constantCoeff_X _) hE f
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n)`. Establish `H` using `((CEval.continuous_eval p O (G.A n) (Fin d) _ (c.nil n)).2 (c.ev n) (c.isEval n)).1`. Proceed by induction on `k generalizing i with`. Consider the case `zero`. Establish `h0 : nmul c.μ 0 i = 0` using `rfl`.
+
+Rewrite using `[h0, map_zero]`. Simplify using `[mulBy, c.aug n i]`. Consider the case `succ k ih`. Set `M : G.A n →ₐ[O] G.A n` to `(mulBy O (G.A n) k : G.A n →ₐ[O] G.A n)`. Set `L : G.A n ⊗[O] G.A n →ₐ[O] G.A n` to `Algebra.TensorProduct.lift M (AlgHom.id O (G.A n)) fun _ _ => Commute.all _ _`.
+
+Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul c.μ k) (fun i => (X i : MvPowerSeries (Fin d) O)) j) = 0`. Introduce and unpack `(j | j)`. Conclude with `constantCoeff_nmul c.isLaw.const k j`. Conclude with `constantCoeff_X _`. Establish `e : nmul c.μ (k + 1) i = subst (Sum.elim (nmul c.μ k) fun i => (X i : MvPowerSeries (Fin d) O)) (c.μ i)`.
+
+Simplify using `only [nmul]`. Rewrite using `[Function.iterate_succ_apply']`. Both sides reduce to the same expression. Establish `hE` using `isEval_algHom_comp (c.isEval₂ n) L`. Establish `hx : (fun j => L (Sum.elim (fun i => c.x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] c.x n i) j)) = fun j => c.ev n (Sum.elim (nmul c.μ k) (fun i => (X i : MvPowerSeries (Fin d) O)) j)`.
+
+Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases. Simplify using `[L, M, ih j]`. Simplify using `[L, (c.isEval n).1 j]`. Rewrite `hE` using `[hx]`.
+
+Rewrite using `[e, H _ _ _ hs hE, AlgHom.comp_apply, c.comul n i]`. Establish `h1 : mulBy O (G.A n) (k + 1) (c.x n i) = (WithConv.toConv (AlgHom.id O (G.A n)) ^ (k + 1)).ofConv (c.x n i)` using `DFunLike.congr_fun (comp_mulBy_pts (AlgHom.id O (G.A n)) (k + 1)) (c.x n i)`. Establish `h2 : (M : G.A n →ₐ[O] G.A n) = (WithConv.toConv (AlgHom.id O (G.A n)) ^ k).ofConv` using `comp_mulBy_pts (AlgHom.id O (G.A n)) k`. Rewrite using `[h1, pow_succ, AlgHom.convMul_apply]`. Simplify using `only [L, h2]`.
+-/
 theorem ev_nmul (c : QLog.Chart G d) (n k : ℕ) (i : Fin d) :
     c.ev n (nmul c.μ k i) = mulBy O (G.A n) k (c.x n i) := by
   haveI : IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n)
@@ -129,6 +170,11 @@ theorem ev_nmul (c : QLog.Chart G d) (n k : ℕ) (i : Fin d) :
     rw [h1, pow_succ, AlgHom.convMul_apply]
     simp only [L, h2]
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n)`. Establish `H` using `((CEval.continuous_eval p O (G.A n) (Fin d) _ (c.nil n)).2 (c.ev n) (c.isEval n)).1`. Set `M : G.A n →ₐ[O] G.A n` to `(mulBy O (G.A n) k : G.A n →ₐ[O] G.A n)`. Establish `hE` using `isEval_algHom_comp (c.isEval n) M`. Establish `hx : (fun j => M (c.x n j)) = fun j => c.ev n (nmul c.μ k j)`.
+
+Use function extensionality and compare the values at `fun j => (ev_nmul c n k j).symm`. Rewrite `hE` using `[hx]`. Conclude with `H (Fin d) _ _ (constantCoeff_nmul c.isLaw.const k) hE f`.
+-/
 theorem ev_subst_nmul (c : QLog.Chart G d) (n k : ℕ) (f : MvPowerSeries (Fin d) O) :
     c.ev n (subst (nmul c.μ k) f) = mulBy O (G.A n) k (c.ev n f) := by
   haveI : IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n)
@@ -140,6 +186,21 @@ theorem ev_subst_nmul (c : QLog.Chart G d) (n k : ℕ) (f : MvPowerSeries (Fin d
   rw [hx] at hE
   exact H (Fin d) _ _ (constantCoeff_nmul c.isLaw.const k) hE f
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) := T.isAdicComplete_of_finite_projective_algebra p O (G.A n ⊗[O] G.A n)`. Establish `hnil : ∀ i, ∃ N : ℕ, (p : G.A n ⊗[O] G.A n) ∣ (Sum.elim (fun i => c.x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] c.x n i) i) ^ N`. Introduce and unpack `(i | i)`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Use `map_dvd (Algebra.TensorProduct.includeLeft (R := O) (S := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact. Simplify `this` using `[map_pow, map_natCast]`. Take `⟨N, hN⟩` from `c.nil n i`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `map_dvd (Algebra.TensorProduct.includeRight (R := O) (A := G.A n) (B := G.A n)) hN` as an intermediate fact.
+
+Simplify `this` using `[map_pow, map_natCast]`. Establish `H` using `((CEval.continuous_eval p O (G.A n ⊗[O] G.A n) (Fin d ⊕ Fin d) _ hnil).2 (c.ev₂ n) (c.isEval₂ n)).1`. Set `M : G.A n →ₐ[O] G.A n` to `(mulBy O (G.A n) k : G.A n →ₐ[O] G.A n)`. Set `T : G.A n ⊗[O] G.A n →ₐ[O] G.A n ⊗[O] G.A n` to `Algebra.TensorProduct.map M M`. Establish `hs : ∀ j, constantCoeff (Sum.elim (fun j => inL (nmul c.μ k j)) (fun j => inR (nmul c.μ k j)) j) = 0`.
+
+Establish `hX : ∀ j : Fin d, constantCoeff (X (Sum.inl j) : MvPowerSeries (Fin d ⊕ Fin d) O) = 0` using `fun _ => constantCoeff_X _`. Establish `hY : ∀ j : Fin d, constantCoeff (X (Sum.inr j) : MvPowerSeries (Fin d ⊕ Fin d) O) = 0` using `fun _ => constantCoeff_X _`. Introduce and unpack `(j | j)`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hX) hX (constantCoeff_nmul c.isLaw.const k j)`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hY) hY (constantCoeff_nmul c.isLaw.const k j)`.
+
+Establish `hE` using `isEval_algHom_comp (c.isEval₂ n) T`. Establish `hx : (fun j => T (Sum.elim (fun i => c.x n i ⊗ₜ[O] (1 : G.A n)) (fun i => (1 : G.A n) ⊗ₜ[O] c.x n i) j)) = fun j => c.ev₂ n (Sum.elim (fun j => inL (nmul c.μ k j)) (fun j => inR (nmul c.μ k j)) j)`. Use function extensionality and compare the values at `j`. Break down `j with j | j` into its components or cases. Simplify using `[T, M, ev₂_inL, ev_nmul]`.
+
+Simplify using `[T, M, ev₂_inR, ev_nmul]`. Rewrite `hE` using `[hx]`. Establish `e : pull2 (nmul c.μ k) s =`. Substitute `(Sum.elim (fun j => inL (nmul c.μ k j)) (fun j => inR (nmul c.μ k j))) s := rfl` using the available equality. Rewrite using `[e, H _ _ _ hs hE, AlgHom.comp_apply]`.
+
+Generalize the expression as in `c.ev₂ n s = t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a b => simp [T, M]`.
+-/
 theorem ev₂_pull2_nmul (c : QLog.Chart G d) (n k : ℕ) (s : MvPowerSeries (Fin d ⊕ Fin d) O) :
     c.ev₂ n (pull2 (nmul c.μ k) s) = pullbackTwo (mulBy O (G.A n) k) (c.ev₂ n s) := by
   haveI : IsAdicComplete (Ideal.span {(p : G.A n ⊗[O] G.A n)}) (G.A n ⊗[O] G.A n) :=
@@ -188,6 +249,9 @@ theorem ev₂_pull2_nmul (c : QLog.Chart G d) (n k : ℕ) (s : MvPowerSeries (Fi
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | tmul a b => simp [T, M]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ c n k` and use `⟨ev_nmul c n k, ev_subst_nmul c n k, ev₂_pull2_nmul c n k⟩`.
+-/
 theorem nmul_ev : ∀ (p : ℕ) (O : Type) [CommRing O] [IsAdicComplete (Ideal.span {(p : O)}) O]
     (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ n k,
     (∀ i, c.ev n (nmul c.μ k i) = mulBy O (G.A n) k (c.x n i)) ∧

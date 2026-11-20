@@ -13,9 +13,15 @@ variable {k r : ℕ}
 
 attribute [local instance] Formalism.FourierDecayAlt.P.B7.properFD
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qG_invM (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (x a : Mt k r) :
     qG γ (x, Formalism.FourierDecayAlt.P.B7.invM a) = Matrix.of.symm (γ⁻¹ * (Matrix.of a)⁻¹ * γ * Matrix.of x) := rfl
 
+/- English proof (translation)
+Rewrite using `[qG_invM, Equiv.apply_symm_apply]`. Conclude with `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hγ) (Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv ha)) hγ) hx`.
+-/
 theorem qG_inv_mem {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hγ : γ ∈ UH (Hpk k r))
     {x a : Mt k r} (hx : Matrix.of x ∈ UH (Hpk k r)) (ha : Matrix.of a ∈ UH (Hpk k r)) :
     Matrix.of (qG γ (x, Formalism.FourierDecayAlt.P.B7.invM a)) ∈ UH (Hpk k r) := by
@@ -28,6 +34,9 @@ section Cell
 variable (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
   {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {μG μR νR : Measure (Mt k r)}
 
+/- English proof (translation)
+Establish `hq` using `qG_inv_mem hγ hx ha.1.1`. Rewrite using `[PsiM_eq L w0 v v' ξ ξ' hγ hp hq, qG_invM]`. Use `show PsiM L w0 v v' ξ ξ' γ (stabAct γ (Matrix.of a) p, x) = _`. Rewrite using `[PsiM_eq L w0 v v' ξ ξ' hγ (inPair_stab L hp ha) hx, Psi_stab L w0 v v' ξ ξ' hγ hrel hp ha x]`.
+-/
 theorem PsiM_stab (hγ : γ ∈ UH (Hpk k r)) (hrel : IsRelStab L γ) {p : PairSp k r} (hp : InPair L p)
     {a : Mt k r} (ha : Matrix.of a ∈ RStab k r γ) {x : Mt k r} (hx : Matrix.of x ∈ UH (Hpk k r)) :
     PsiM L w0 v v' ξ ξ' γ (mStab γ (p, a), x) = PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, Formalism.FourierDecayAlt.P.B7.invM a)) := by
@@ -36,6 +45,17 @@ theorem PsiM_stab (hγ : γ ∈ UH (Hpk k r)) (hrel : IsRelStab L γ) {p : PairS
   show PsiM L w0 v v' ξ ξ' γ (stabAct γ (Matrix.of a) p, x) = _
   rw [PsiM_eq L w0 v v' ξ ξ' hγ (inPair_stab L hp ha) hx, Psi_stab L w0 v v' ξ ξ' hγ hrel hp ha x]
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μR := hμR.1`. Use `haveI : SigmaFinite νR := sigmaFinite_nuR hμG hμR hQ`. Establish `hmeasP : Measurable (fun y : Mt k r => ‖PsiM L w0 v v' ξ ξ' γ (p, y)‖ₑ)` using `((sm_PsiM L w0 v v' ξ ξ' γ).measurable.comp measurable_prodMk_left).enorm`. Establish `hmeasQ : Measurable (fun q : Mt k r × Mt k r => ‖PsiM L w0 v v' ξ ξ' γ (p, qG γ q)‖ₑ)` using `hmeasP.comp (continuous_qG γ).measurable`. Establish `hR : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r γ` using `ae_iff.mpr hμR.2.2.1`.
+
+Establish `hU` using `ae_uh_nuR hγ hμG hμR hQ`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae (hR.mono (fun a ha => ?_))` and prove the remaining obligations. Use `lintegral_congr_ae (hU.mono (fun x hx => ?_))` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[PsiM_stab L w0 v v' ξ ξ' hγ hrel hp ha hx]`. Use `_ = ∫⁻ a, ∫⁻ x, ‖PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a))‖ₑ ∂νR ∂μR := hinv.lintegral_comp hmeasQ.lintegral_prod_left'`. Use `_ = ∫⁻ x, ∫⁻ a, ‖PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a))‖ₑ ∂μR ∂νR := lintegral_lintegral_swap (hmeasQ.comp measurable_swap).aemeasurable`. Use `_ = ∫⁻ q, ‖PsiM L w0 v v' ξ ξ' γ (p, qG γ q)‖ₑ ∂(νR.prod μR) := (lintegral_prod _ hmeasQ.aemeasurable).symm`. Use `_ = ∫⁻ y, ‖PsiM L w0 v v' ξ ξ' γ (p, y)‖ₑ ∂μG := by`.
+
+Rewrite using `[muG_eq_map hμR hQ, lintegral_map hmeasP (continuous_qG γ).measurable]`. Use `_ = ∫⁻ y, ‖Psi L w0 v v' ξ ξ' γ p y‖ₑ ∂μG := by`. Establish `hG : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r)` using `ae_iff.mpr hμG.2.2.1`. Use `lintegral_congr_ae (hG.mono (fun y hy => ?_))` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[PsiM_eq L w0 v v' ξ ξ' hγ hp hy]`.
+-/
 theorem lint_cell (hγ : γ ∈ UH (Hpk k r)) (hrel : IsRelStab L γ) (hμG : IsHaarOn (UH (Hpk k r)) μG)
     (hμR : IsHaarOn (RStab k r γ) μR) (hinv : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k := k) (r := r)) μR μR)
     (hQ : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR)
@@ -70,6 +90,19 @@ theorem lint_cell (hγ : γ ∈ UH (Hpk k r)) (hrel : IsRelStab L γ) (hμG : Is
         dsimp only
         rw [PsiM_eq L w0 v v' ξ ξ' hγ hp hy]
 
+/- English proof (translation)
+Use `haveI : SigmaFinite μR := hμR.1`. Use `haveI : SigmaFinite νR := sigmaFinite_nuR hμG hμR hQ`. Establish `hsmP : StronglyMeasurable (fun y : Mt k r => PsiM L w0 v v' ξ ξ' γ (p, y))` using `(sm_PsiM L w0 v v' ξ ξ' γ).comp_measurable measurable_prodMk_left`. Establish `hsmQ : StronglyMeasurable (fun q : Mt k r × Mt k r => PsiM L w0 v v' ξ ξ' γ (p, qG γ q))` using `hsmP.comp_measurable (continuous_qG γ).measurable`. Establish `hR : ∀ᵐ a ∂μR, Matrix.of a ∈ RStab k r γ` using `ae_iff.mpr hμR.2.2.1`.
+
+Establish `hU` using `ae_uh_nuR hγ hμG hμR hQ`. Establish `hG : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r)` using `ae_iff.mpr hμG.2.2.1`. Establish `hGeq : (fun y => PsiM L w0 v v' ξ ξ' γ (p, y)) =ᵐ[μG] fun y => Psi L w0 v v' ξ ξ' γ p y` using `hG.mono (fun y hy => PsiM_eq L w0 v v' ξ ξ' hγ hp hy)`. Establish `hintP : Integrable (fun y => PsiM L w0 v v' ξ ξ' γ (p, y)) μG` using `hint.congr hGeq.symm`. Establish `hμ` using `muG_eq_map hμR hQ`.
+
+Establish `hintQ : Integrable (fun q : Mt k r × Mt k r => PsiM L w0 v v' ξ ξ' γ (p, qG γ q)) (νR.prod μR)`. Rewrite `hintP` using `[hμ]`. Conclude with `(integrable_map_measure hsmP.aestronglyMeasurable (continuous_qG γ).measurable.aemeasurable).mp hintP`. Establish `hsmA : StronglyMeasurable (fun a => ∫ x, PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a)) ∂νR)` using `hsmQ.integral_prod_left`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (hR.mono (fun a ha => ?_))` and prove the remaining obligations. Use `integral_congr_ae (hU.mono (fun x hx => ?_))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[PsiM_stab L w0 v v' ξ ξ' hγ hrel hp ha hx]`. Use `_ = ∫ a, ∫ x, PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a)) ∂νR ∂μR := by`.
+
+Establish `h` using `integral_map (μ := μR) hinv.measurable.aemeasurable (f := fun a => ∫ x, PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a)) ∂νR) (by rw [hinv.map_eq]; exact hsmA.aestronglyMeasurable)`. Rewrite `h` using `[hinv.map_eq]`. Conclude with `h.symm`. Use `_ = ∫ x, ∫ a, PsiM L w0 v v' ξ ξ' γ (p, qG γ (x, a)) ∂μR ∂νR := integral_integral_swap hintQ.swap`. Use `_ = ∫ q, PsiM L w0 v v' ξ ξ' γ (p, qG γ q) ∂(νR.prod μR) := (integral_prod _ hintQ).symm`.
+
+Use `_ = ∫ y, PsiM L w0 v v' ξ ξ' γ (p, y) ∂μG := by`. Rewrite using `[hμ, integral_map (continuous_qG γ).measurable.aemeasurable hsmP.aestronglyMeasurable]`. Use `_ = ∫ y, Psi L w0 v v' ξ ξ' γ p y ∂μG := integral_congr_ae hGeq`.
+-/
 theorem int_cell (hγ : γ ∈ UH (Hpk k r)) (hrel : IsRelStab L γ) (hμG : IsHaarOn (UH (Hpk k r)) μG)
     (hμR : IsHaarOn (RStab k r γ) μR) (hinv : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k := k) (r := r)) μR μR)
     (hQ : PI.BesselPeriodGGP.IsQuotMeas μG (μR.map (fun x => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) νR)

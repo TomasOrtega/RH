@@ -12,6 +12,11 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Establish `hset : {g : GL (Fin n) K | IsInt R (g : Matrix (Fin n) (Fin n) K) ∧ IsInt R ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)} = (⋂ a, ⋂ b, {g : GL (Fin n) K | (g : Matrix (Fin n) (Fin n) K) a b ∈ R}) ∩ (⋂ a, ⋂ b, {g : GL (Fin n) K | ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) …`. Use extensionality with `g`. Simplify using `[IsInt, Set.mem_iInter]`. Rewrite using `[hset]`. Apply `IsOpen.inter` to reduce the goal to its premises.
+
+Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_` and prove the remaining obligations. Conclude with `hR.preimage (Units.continuous_val.matrix_elem a b)`. Use `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_` and prove the remaining obligations. Conclude with `hR.preimage (Units.continuous_coe_inv.matrix_elem a b)`.
+-/
 theorem isOpen_isInt_set (R : Subring K) (hR : IsOpen (R : Set K)) (n : ℕ) :
     IsOpen {g : GL (Fin n) K | IsInt R (g : Matrix (Fin n) (Fin n) K) ∧
       IsInt R ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)} := by
@@ -28,12 +33,18 @@ theorem isOpen_isInt_set (R : Subring K) (hR : IsOpen (R : Set K)) (n : ℕ) :
   · refine isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => ?_
     exact hR.preimage (Units.continuous_coe_inv.matrix_elem a b)
 
+/- English proof (translation)
+Conclude with `(isOpen_isInt_set R hR n).preimage continuous_subtype_val`.
+-/
 theorem isOpen_intSub (R : Subring K) (hR : IsOpen (R : Set K)) {n : ℕ}
     (H : Subgroup (GL (Fin n) K)) : IsOpen (intSub R H : Set H) := by
   exact (isOpen_isInt_set R hR n).preimage continuous_subtype_val
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Unfold `sLow`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hx _ _`. Conclude with `R.zero_mem`.
+-/
 theorem sLow_mem {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (x : Matrix (Fin n) (Fin n) K)
     (hx : IsInt R x) : sLow x ∈ R := by
   unfold sLow
@@ -42,6 +53,9 @@ theorem sLow_mem {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (x : Matrix (
   · exact hx _ _
   · exact R.zero_mem
 
+/- English proof (translation)
+Unfold `sUp`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hx _ _`. Conclude with `R.zero_mem`.
+-/
 theorem sUp_mem {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (x : Matrix (Fin n) (Fin n) K)
     (hx : IsInt R x) : sUp x ∈ R := by
   unfold sUp
@@ -50,6 +64,17 @@ theorem sUp_mem {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (x : Matrix (F
   · exact hx _ _
   · exact R.zero_mem
 
+/- English proof (translation)
+Introduce `a ha b hb x y`. Establish `haI : IsInt R (((a : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `ha.1`. Establish `hbI : IsInt R (((b : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `hb.1`. Establish `haL : IsLowUni (((a : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `a.2.1`. Establish `hxL : IsLowUni (((x : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `x.2.1`.
+
+Establish `hbU : IsUpUni (((b : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `b.2`. Establish `hyU : IsUpUni (((y : GL (Fin s.sum) K)) : Matrix (Fin s.sum) (Fin s.sum) K)` using `y.2`. Unfold `phi`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Establish `hM : ((a : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * (((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((b : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)) = ((a : GL (Fin s. …`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[(hSA K _ _ _).1 haL hxL, (hSA K _ _ _).2 hyU hbU]`. Establish `hI : IsInt R (((a : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * (((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((b : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K))) ↔ IsInt …`. Rewrite using `[hM]`. Conclude with `hIntInv K R _ _ _ _ haL hbU haI hbI`.
+
+Establish `hC : Nat.card (isoSet R (((a : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * (((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * ((b : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) …`. Rewrite using `[hM]`. Conclude with `hIsoInv K R _ _ _ _ haL hbU haI hbI C e lam`. Establish `hψ' : ψ (sLow ((a : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + sLow ((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + (sUp ((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + sUp ((b : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K))) = ψ …`. Rewrite using `[show sLow ((a : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + sLow ((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + (sUp ((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) + sUp ((b : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)) = (sLow …`.
+
+Rewrite using `[hψ']`. Use `congr 1`. Distinguish the cases in `h : IsInt R (((x : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * ((y : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K))`. Rewrite using `[if_pos (hI.2 h), if_pos h, hC]`. Rewrite using `[if_neg (fun h' => h (hI.1 h')), if_neg h]`.
+-/
 theorem phi_inv (hIntInv : IntInv) (hIsoInv : IsoInv) (hSA : SimpleAdd)
     {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (R : Subring K)
     (s : List ℕ) (t : ℕ → Kˣ) (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1)
@@ -91,6 +116,9 @@ theorem phi_inv (hIntInv : IntInv) (hIsoInv : IsoInv) (hSA : SimpleAdd)
   · rw [if_pos (hI.2 h), if_pos h, hC]
   · rw [if_neg (fun h' => h (hI.1 h')), if_neg h]
 
+/- English proof (translation)
+Introduce `hTS hII hIso hSA K _ _ _ R hR s t ψ hψ μ₁ μ₂ _ _ _ _ C _ _ e lam hcs`. Establish `h` using `hTS (lowW K s t) (upUniG K s.sum) μ₁ μ₂ (intSub R (lowW K s t)) (intSub R (upUniG K s.sum)) (isOpen_intSub R hR _) (isOpen_intSub R hR _) ℂ (phi R s t ψ C e lam) (phi_inv hII hIso hSA R s t ψ hψ C e lam) hcs`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[BB, h.2]`. Use `congr 1`.
+-/
 theorem bbFinite_of : IntTwoSided → IntInv → IsoInv → SimpleAdd → BBFinite := by
   intro hTS hII hIso hSA K _ _ _ R hR s t ψ hψ μ₁ μ₂ _ _ _ _ C _ _ e lam hcs
   have h := hTS (lowW K s t) (upUniG K s.sum) μ₁ μ₂ (intSub R (lowW K s t))
@@ -100,6 +128,9 @@ theorem bbFinite_of : IntTwoSided → IntInv → IsoInv → SimpleAdd → BBFini
   rw [BB, h.2]
   congr 1
 
+/- English proof (translation)
+Introduce `hBB K _ _ _ R hR s t ψ hψ μ₁ μ₂ _ _ _ _ h1 h2 C _ _ e lam hcs`. Rewrite using `[(hBB K R hR s t ψ hψ μ₁ μ₂ C e lam hcs).2, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem bbNorm_of : BBFinite → BBNorm := by
   intro hBB K _ _ _ R hR s t ψ hψ μ₁ μ₂ _ _ _ _ h1 h2 C _ _ e lam hcs
   rw [(hBB K R hR s t ψ hψ μ₁ μ₂ C e lam hcs).2, h1, h2]

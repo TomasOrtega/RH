@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[Finset.sum_range_succ, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussE_pow_odd (n : ℕ) : (∏ i ∈ range n, Real.pi ^ (2 * i + 1)) = Real.pi ^ (n ^ 2) := by
   rw [Finset.prod_pow_eq_pow_sum]
   congr 1
@@ -19,6 +24,11 @@ theorem gaussE_pow_odd (n : ℕ) : (∏ i ∈ range n, Real.pi ^ (2 * i + 1)) = 
     rw [Finset.sum_range_succ, ih]
     ring
 
+/- English proof (translation)
+Establish `hX : Real.pi ^ (N * (N - 1) / 2) * (∏ i ∈ range N, (i.factorial : ℝ)) / 2 ^ N = ∏ i ∈ range N, (Real.pi ^ i * (i.factorial : ℝ) / 2)`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.sum_range_id, Finset.prod_const, Finset.card_range]`. Rewrite using `[hX, volU, ← Finset.prod_mul_distrib, ← gaussE_pow_odd N]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hf : (i.factorial : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero i)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussE_volU_mul :
     volU N * (Real.pi ^ (N * (N - 1) / 2) * (∏ i ∈ range N, (i.factorial : ℝ)) / 2 ^ N) =
       Real.pi ^ (N ^ 2) := by
@@ -32,6 +42,17 @@ theorem gaussE_volU_mul :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hcont : Continuous fun Z : Fin N → Fin N → ℂ => hs (Matrix.of Z)`. Unfold `hs`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `h` using `hC (fun Z => ENNReal.ofReal (Real.exp (-hs (Matrix.of Z)))) (ENNReal.measurable_ofReal.comp (Real.continuous_exp.comp hcont.neg).measurable)`.
+
+Establish `hin : ∀ k : UNgrp N, (∫⁻ t in triPos N, ENNReal.ofReal (Real.exp (-hs (Matrix.of (qrMap (k, t))))) * ENNReal.ofReal (qrWt t)) = ENNReal.ofReal (Real.pi ^ (N * (N - 1) / 2) * (∏ i ∈ range N, (i.factorial : ℝ)) / 2 ^ N)`. Introduce `k`. Simplify using `only [qrMap, Equiv.apply_symm_apply, gaussB_hs_unitary_mul]`. Conclude with `gaussD_tri`. Simplify using `only [hin, lintegral_const, measure_univ, mul_one, gaussC_mat] at h`.
+
+Use `set X := Real.pi ^ (N * (N - 1) / 2) * (∏ i ∈ range N, (i.factorial : ℝ)) / 2 ^ N with hXdef`. Establish `hXpos : 0 < X`. Rewrite using `[hXdef]`. Establish `: 0 < ∏ i ∈ range N, (i.factorial : ℝ)` using `Finset.prod_pos fun i _ => Nat.cast_pos.2 (Nat.factorial_pos i)`. Check the signs of the components of the expression.
+
+Establish `hPpos : 0 < Real.pi ^ (N ^ 2)` using `pow_pos Real.pi_pos _`. Establish `hCpos : 0 < C`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[ENNReal.ofReal_of_nonpos (not_lt.mp hc), zero_mul, ENNReal.ofReal_eq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite `h` using `[← ENNReal.ofReal_mul hCpos.le, ENNReal.ofReal_eq_ofReal_iff hPpos.le (by positivity)]`. Establish `h2` using `gaussE_volU_mul (N := N)`. Rewrite `h2` using `[← hXdef]`. Conclude with `mul_right_cancel₀ hXpos.ne' (h.symm.trans h2.symm)`.
+-/
 theorem gaussE_qr_const (μ : Measure (UNgrp N)) [IsProbabilityMeasure μ] (C : ℝ)
     (hC : ∀ f : (Fin N → Fin N → ℂ) → ENNReal, Measurable f →
       ∫⁻ Z, f Z = ENNReal.ofReal C * ∫⁻ k, (∫⁻ t in triPos N, f (qrMap (k, t)) * ENNReal.ofReal (qrWt t)) ∂μ) :
@@ -65,19 +86,31 @@ theorem gaussE_qr_const (μ : Measure (UNgrp N)) [IsProbabilityMeasure μ] (C : 
   rw [← hXdef] at h2
   exact mul_right_cancel₀ hXpos.ne' (h.symm.trans h2.symm)
 
+/- English proof (translation)
+The claim follows from `gaussC_mat`.
+-/
 theorem lintegral_gauss_mat :
     ∫⁻ Z : Fin N → Fin N → ℂ, ENNReal.ofReal (Real.exp (-hs (Matrix.of Z))) =
       ENNReal.ofReal (Real.pi ^ (N ^ 2)) :=
   gaussC_mat
 
+/- English proof (translation)
+The claim follows from `gaussD_tri`.
+-/
 theorem lintegral_gauss_tri :
     ∫⁻ t in triPos N, ENNReal.ofReal (Real.exp (-hs (upMat t))) * ENNReal.ofReal (qrWt t) =
       ENNReal.ofReal (Real.pi ^ (N * (N - 1) / 2) * (∏ i ∈ range N, (i.factorial : ℝ)) / 2 ^ N) :=
   gaussD_tri
 
+/- English proof (translation)
+The claim follows from `gaussB_hs_unitary_mul k M`.
+-/
 theorem hs_unitary_mul (k : UNgrp N) (M : Matrix (Fin N) (Fin N) ℂ) : hs (toM k * M) = hs M :=
   gaussB_hs_unitary_mul k M
 
+/- English proof (translation)
+The claim follows from `gaussE_qr_const μ C hC`.
+-/
 theorem qr_const (μ : Measure (UNgrp N)) [IsProbabilityMeasure μ] (C : ℝ)
     (hC : ∀ f : (Fin N → Fin N → ℂ) → ENNReal, Measurable f →
       ∫⁻ Z, f Z = ENNReal.ofReal C * ∫⁻ k, (∫⁻ t in triPos N, f (qrMap (k, t)) * ENNReal.ofReal (qrWt t)) ∂μ) :

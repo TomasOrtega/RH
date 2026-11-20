@@ -4,6 +4,17 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnita
 
 namespace GlobalTheory.CompanionTheory.Hecke
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ K f hfin hbi v hv k hk`. Establish `hsupp : (Function.support fun q : G ⧸ K => f q.out • ρ q.out v).Finite`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `q hq h0`. Apply `hq` to reduce the goal to its premises.
+
+Establish `h0' : f q.out = 0` using `h0`. Simplify using `[h0']`. Establish `hstep : ∀ q : G ⧸ K, ρ k (f q.out • ρ q.out v) = f (MulAction.toPerm k q).out • ρ (MulAction.toPerm k q).out v`. Introduce `q`. Establish `hmk : ((MulAction.toPerm k q : G ⧸ K).out : G ⧸ K) = ((k * q.out : G) : G ⧸ K)`.
+
+Rewrite using `[QuotientGroup.out_eq', MulAction.toPerm_apply]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `hκ : (k * q.out)⁻¹ * (MulAction.toPerm k q : G ⧸ K).out ∈ K` using `QuotientGroup.eq.mp hmk.symm`. Take `⟨κ, hκK, hκ⟩ : ∃ κ ∈ K, (MulAction.toPerm k q : G ⧸ K).out = k * q.out * κ` from `⟨_, hκ, by group⟩`.
+
+Rewrite using `[hκ, (hbi κ hκK _).2, (hbi k hk _).1, map_mul, map_mul, map_smul]`. Simplify using `[hv κ hκK]`. Establish `h1` using `(ρ k).toAddMonoidHom.map_finsum hsupp`. Establish `h2 : ρ k (∑ᶠ q : G ⧸ K, f q.out • ρ q.out v) = ∑ᶠ q : G ⧸ K, ρ k (f q.out • ρ q.out v)` using `h1`. Rewrite using `[h2, finsum_congr hstep]`.
+
+Conclude with `finsum_comp_equiv (MulAction.toPerm k) (f := fun q : G ⧸ K => f q.out • ρ q.out v)`.
+-/
 theorem heckeSum_fixed :
     ∀ (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
       (K : Subgroup G) (f : G → ℂ), (Function.support fun q : G ⧸ K => f q.out).Finite →

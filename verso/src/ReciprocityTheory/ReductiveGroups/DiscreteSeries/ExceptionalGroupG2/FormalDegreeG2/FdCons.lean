@@ -19,6 +19,15 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hgt : ∀ t : ℕ, GapAtLeast ε (lamT lam t) h` using `fun t a b hab => le_trans (by linarith [(Nat.cast_nonneg t : (0:ℝ) ≤ t)]) (gap_lamT hlam.1 hgap t a b hab)`. Establish `hct` using `isHCParam_lamT hlam`. Establish `hT : ∀ t : ℕ, Nonempty (KType ε (lowK ε (lamT lam t)))` using `fun t => HW.kType_exists ε _ (hct t)`. Set `T : ∀ t : ℕ, KType ε (lowK ε (lamT lam t))` to `fun t => Classical.choice (hT t)`. Use `choose m hm hP using fun t => fdc_model hp hq (hct t) (hgt t) hh (T t)`.
+
+Establish `hsg : ∀ t, StdGap ε (lamT lam t)` using `fun t => fdc_stdGap (hct t) (hgt t) hh`. Establish `hDS : ∀ t, Formalism.MainNotions.S.IsDS ε (lamT lam t) (sigLam ε (PsiM (T t) (m t)) (T t).w)` using `fun t => isDS_sigLam (hsg t) (hP t) (fdc_w_ne (T t))`. Use `choose j hj1 hj2 hj3 hj4 using fun t => anyF (hDS t) (hsg t) (hP t)`. Use `thmFD Lap.Base.b3 hp hq hlam hgap hh (fdcD ε) (fdc_step hp hq hh) (fun t => ↥(Hlam ε (PsiM (T t) (m t)) (T t).w)) (fun t => sigLam ε (PsiM (T t) (m t)) (T t).w) T j ?_ ?_ ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun t => ⟨(hDS t).2.2.1, hj1 t, hj2 t, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hj4 t _ (exp_pmat_inUJ z), psiM_exp_pmat, psM_exp_pmat (hm t)]`. Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations. Take `⟨H', i1, i2, σ', w', hsm, heq⟩` from `exists_hilbert_rep_of_psi n ε (lamT lam t) (T t) _ (hsg t) (hP t)`. Use `⟨H', i1, i2, σ', w', hsm, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[heq _ (exp_pmat_inUJ z), psiM_exp_pmat, psM_exp_pmat (hm t)]`.
+
+Use `Filter.Eventually.of_forall fun t => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `fdcGood_of_isDS (hDS t)`. Rewrite using `[fdcD_eq (hct t) (hgt t) hh ⟨_, inferInstance, inferInstance, _, hDS t, hd⟩]`. Conclude with `hd`.
+-/
 theorem fdc_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {lam : Fin n → ℝ} (hlam : IsHCParam lam)
     {h : ℝ} (hgap : GapAtLeast ε lam h) (hh : thrS ε + 1 < h) : fdcD ε lam = dimVlam lam := by
   have hgt : ∀ t : ℕ, GapAtLeast ε (lamT lam t) h := fun t a b hab =>
@@ -44,6 +53,9 @@ theorem fdc_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {la
     rw [fdcD_eq (hct t) (hgt t) hh ⟨_, inferInstance, inferInstance, _, hDS t, hd⟩]
     exact hd
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `fdcGood_of_isDS hσ`. Rewrite using `[fdegOf_of_isFdeg' hd hv, ← fdcD_eq hlam hgap hh ⟨H, inferInstance, inferInstance, σ, hσ, hd⟩]`. Conclude with `fdc_cd hp hq hlam hgap hh`.
+-/
 theorem fdCons_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {lam : Fin n → ℝ} (hlam : IsHCParam lam)
     {h : ℝ} (hgap : GapAtLeast ε lam h) (hh : thrS ε + 1 < h)
     (hΨ : ∀ μ : Fin n → ℝ, IsHCParam μ → GapAtLeast ε μ h →
@@ -55,6 +67,13 @@ theorem fdCons_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) 
   rw [fdegOf_of_isFdeg' hd hv, ← fdcD_eq hlam hgap hh ⟨H, inferInstance, inferInstance, σ, hσ, hd⟩]
   exact fdc_cd hp hq hlam hgap hh
 
+/- English proof (translation)
+Use `muCD_isHaar ε` as an intermediate fact. Establish `hs` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (Formalism.REAL.muG ε) (muCD ε)`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul (Formalism.REAL.muG ε) (muCD ε)`. Establish `hc : (0 : ℝ) < (Measure.haarScalarFactor (Formalism.REAL.muG ε) (muCD ε) : ℝ)` using `by exact_mod_cast hs`. Take `⟨s, hs0, hEq⟩ : ∃ s : ℝ, 0 < s ∧ Formalism.REAL.muG ε = ENNReal.ofReal s • muCD ε` from `⟨_, hc, by rw [ENNReal.ofReal_coe_nnreal]; exact heq⟩`.
+
+Use `⟨1 / s, by positivity, fun lam H _ _ _ σ v hlam hσ h hgap hh hp hq hΨ hv => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `fdcGood_of_isDS hσ`. Establish `h1` using `fdCons_cd hp hq hlam hgap hh hΨ hσ hv`. Rewrite `h1` using `[fdegOf_of_isFdeg' hd hv]`. Rewrite using `[hEq, fdegOf_of_isFdeg' (isFdeg_smul hs0 hd) hv, h1]`.
+
+Use `show dimVlam lam / s = 1 / s * dimVlam lam`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fdCons_muG (n : ℕ) (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧
     ∀ (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
       (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H),

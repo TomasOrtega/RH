@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.ValCmp.Eqv
 
+/- English proof (translation)
+Rewrite using `[← h, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum]`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[colW, Pi.single_apply]`.
+-/
 theorem degree_of_colWeight {n : ℕ} {ν : Fin n → ℕ} (m : Fin n × Fin n →₀ ℕ)
     (h : Finsupp.weight (colW n n) m = ν) : (m.sum fun _ k => k) = ∑ j, ν j := by
   classical
@@ -18,6 +21,11 @@ theorem degree_of_colWeight {n : ℕ} {ν : Fin n → ℕ} (m : Fin n × Fin n �
   refine Finset.sum_congr rfl fun v _ => ?_
   simp [colW, Pi.single_apply]
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[← degree_of_colWeight m (hf (mem_support_iff.mp hm))]`.
+
+Establish `h1 : ∀ v : Fin n × Fin n, (∑ b : Fin n, C ((c • g) v.1 b) * X (b, v.2) : MvPolynomial (Fin n × Fin n) R) = C c * ∑ b : Fin n, C (g v.1 b) * X (b, v.2)`. Introduce `v`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, C_mul, Finset.mul_sum, mul_assoc]`. Simplify using `only [rowAct, aeval_monomial, h1, Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, smul_eq_C_mul, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rowAct_smul_matrix {n : ℕ} {R : Type} [CommRing R] {ν : Fin n → ℕ} (c : R) (g : Matrix (Fin n) (Fin n) R)
     (f : MvPolynomial (Fin n × Fin n) R) (hf : IsWeightedHomogeneous (colW n n) f ν) :
     rowAct R (c • g) f = c ^ (∑ j, ν j) • rowAct R g f := by
@@ -35,15 +43,28 @@ theorem rowAct_smul_matrix {n : ℕ} {R : Type} [CommRing R] {ν : Fin n → ℕ
     Finset.prod_pow_eq_pow_sum, smul_eq_C_mul, C_pow]
   ring
 
+/- English proof (translation)
+Use extensionality with `a s : 2`. Simplify using `[rowAct, genM, Matrix.mul_apply]`.
+-/
 theorem rowAct_genM {n : ℕ} {R : Type} [CommRing R] (g : Matrix (Fin n) (Fin n) R) :
     (rowAct R (n := n) g).mapMatrix (genM R n) = (C : R →+* MP R n).mapMatrix g * genM R n := by
   ext a s : 2
   simp [rowAct, genM, Matrix.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det, rowAct_genM, Matrix.det_mul, RingHom.map_det]`.
+-/
 theorem rowAct_det_genM {n : ℕ} {R : Type} [CommRing R] (g : Matrix (Fin n) (Fin n) R) :
     rowAct R (n := n) g (genM R n).det = C g.det * (genM R n).det := by
   rw [AlgHom.map_det, rowAct_genM, Matrix.det_mul, RingHom.map_det]
 
+/- English proof (translation)
+Establish `h : (rowAct R (n` using `n) g.transpose).comp (cofAct R n) = (cofAct R n).comp (rowAct R g.adjugate) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Establish `h1 : (rowAct R (n` using `n) g.transpose).mapMatrix (genM R n).adjugate = (genM R n).adjugate * (C : R →+* MP R n).mapMatrix g.transpose.adjugate := by`. Rewrite using `[AlgHom.map_adjugate, rowAct_genM, Matrix.adjugate_mul_distrib, RingHom.map_adjugate]`.
+
+Establish `h2` using `congrFun (congrFun h1 v.2.rev) v.1`. Rewrite `h2` using `[AlgHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, cofAct, aeval_X, h2, rowAct, aeval_X, map_sum, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, aeval_X, aeval_C, ← Matrix.adjugate_transpose, mul_comm]`.
+
+Both sides reduce to the same expression. Conclude with `DFunLike.congr_fun h f`.
+-/
 theorem rowAct_transpose_cofAct {n : ℕ} {R : Type} [CommRing R] (g : Matrix (Fin n) (Fin n) R) (f : MP R n) :
     rowAct R g.transpose (cofAct R n f) = cofAct R n (rowAct R g.adjugate f) := by
   have h : (rowAct R (n := n) g.transpose).comp (cofAct R n) = (cofAct R n).comp (rowAct R g.adjugate) := by
@@ -60,6 +81,13 @@ theorem rowAct_transpose_cofAct {n : ℕ} {R : Type} [CommRing R] (g : Matrix (F
     rfl
   exact DFunLike.congr_fun h f
 
+/- English proof (translation)
+Introduce `K _ m ν h hh f hf g hfg`. Establish `hd : h.det ≠ 0` using `hh.ne_zero`. Establish `hadj : h.adjugate = h.det • h⁻¹`. Rewrite using `[Matrix.inv_def, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hd, one_smul]`. Establish `hle : ν 0 ≤ ∑ i, ν i` using `Finset.single_le_sum (f := ν) (fun _ _ => Nat.zero_le _) (Finset.mem_univ 0)`.
+
+Unfold `CofRel at hfg ⊢`. Establish `h1` using `congrArg (rowAct K h.transpose) hfg`. Rewrite `h1` using `[rowAct_transpose_cofAct, hadj, rowAct_smul_matrix _ _ _ hf.1, map_smul, map_mul, map_pow, rowAct_det_genM, Matrix.det_transpose, mul_pow, ← C_pow, mul_assoc, ← smul_eq_C_mul]`. Take `⟨e, he⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite `h1`, the goal using `[he, Nat.add_sub_cancel_left]`.
+
+Rewrite `h1` using `[pow_add, mul_comm (h.det ^ ν 0), mul_smul]`. Establish `h2 : _ = _` using `smul_right_injective _ (pow_ne_zero e hd) h1`. Rewrite using `[mul_smul_comm, h2, smul_smul, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hd), one_smul]`.
+-/
 theorem cofRel_rowAct : ∀ (K : Type) [Field K] (m : ℕ) (ν : Fin (m + 1) → ℕ) (h : Matrix (Fin (m + 1)) (Fin (m + 1)) K), IsUnit h.det → ∀ f ∈ dualWeyl K (m + 1) (m + 1) ν, ∀ g : MP K (m + 1), CofRel K m ν f g → CofRel K m ν (rowAct K h⁻¹ f) (h.det ^ (-(ν 0 : ℤ)) • rowAct K h.transpose g) := by
   intro K _ m ν h hh f hf g hfg
   have hd : h.det ≠ 0 := hh.ne_zero

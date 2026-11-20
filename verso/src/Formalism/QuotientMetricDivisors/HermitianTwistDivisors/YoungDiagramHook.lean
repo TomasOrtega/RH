@@ -13,6 +13,9 @@ open Formalism.LatticeIndexTer (ph)
 
 namespace W8
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Simplify using `only [Nat.cast_zero, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.log_le_log (by exact_mod_cast h0) hr`.
+-/
 lemma log_nat_le {A : ℝ} (r : ℕ) (hA : 1 ≤ Real.log A) (hr : (r : ℝ) ≤ A) :
     Real.log (r : ℝ) ≤ Real.log A := by
   rcases Nat.eq_zero_or_pos r with h0 | h0
@@ -21,12 +24,22 @@ lemma log_nat_le {A : ℝ} (r : ℕ) (hA : 1 ≤ Real.log A) (hr : (r : ℝ) ≤
     linarith
   · exact Real.log_le_log (by exact_mod_cast h0) hr
 
+/- English proof (translation)
+Use `show (r : ℝ) * Real.log r - r ≤ r * La`. Establish `h0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `h1` using `mul_le_mul_of_nonneg_left h h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma ph_nat_le {La : ℝ} (r : ℕ) (h : Real.log (r : ℝ) ≤ La) : ph (r : ℝ) ≤ (r : ℝ) * La := by
   show (r : ℝ) * Real.log r - r ≤ r * La
   have h0 : (0 : ℝ) ≤ r := Nat.cast_nonneg r
   have h1 := mul_le_mul_of_nonneg_left h h0
   linarith
 
+/- English proof (translation)
+Use `show u * Real.log u - u - (v * Real.log v - v) ≤ (u - v) * Real.log u`. Establish `key : v * (Real.log u - Real.log v) ≤ u - v`. Break down `hv.lt_or_eq with hv' | hv'` into its components or cases. Establish `hne : v ≠ 0` using `hv'.ne'`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hu hv')`.
+
+Rewrite `h1` using `[Real.log_div hu.ne' hne]`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hv`. Establish `h3 : v * (u / v) = u`. Rewrite using `[mul_div_assoc', mul_comm, mul_div_assoc, div_self hne, mul_one]`. Establish `h4 : v * (u / v - 1) = v * (u / v) - v` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Substitute `hv'` using the available equality. Simplify using `only [zero_mul, sub_zero]`. Conclude with `hu.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma ph_sub_ph_le_mul_log {u v : ℝ} (hu : 0 < u) (hv : 0 ≤ v) :
     ph u - ph v ≤ (u - v) * Real.log u := by
   show u * Real.log u - u - (v * Real.log v - v) ≤ (u - v) * Real.log u
@@ -45,6 +58,15 @@ private lemma ph_sub_ph_le_mul_log {u v : ℝ} (hu : 0 < u) (hv : 0 ≤ v) :
       exact hu.le
   linarith
 
+/- English proof (translation)
+Establish `hlt : (y : ℝ) < y'` using `by exact_mod_cast h`. Establish `hy'pos : (0 : ℝ) < y'` using `lt_of_le_of_lt (Nat.cast_nonneg y) hlt`. Break down `Nat.eq_zero_or_pos y with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Establish `hne : (y' : ℝ) ≠ 0` using `hy'pos.ne'`.
+
+Establish `hl` using `Real.one_sub_inv_le_log_of_pos hy'pos`. Establish `e : (y' : ℝ) * (1 - (y' : ℝ)⁻¹) = y' - 1`. Rewrite using `[mul_sub, mul_one, mul_inv_cancel₀ hne]`. Establish `h2` using `mul_le_mul_of_nonneg_left hl hy'pos.le`. Simplify using `only [ph, Nat.cast_zero, Real.log_zero, mul_zero, sub_zero, zero_sub]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu : (0 : ℝ) < y` using `by exact_mod_cast h0`. Establish `ht` using `ph_sub_ph_le_mul_log hu (Nat.cast_nonneg (α := ℝ) y')`. Establish `hlog0 : 0 ≤ Real.log (y : ℝ)` using `Real.log_nonneg (Nat.one_le_cast.mpr h0)`. Establish `h3 : ((y : ℝ) - y') * Real.log y ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (by linarith) hlog0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma ph_nat_lt (y y' : ℕ) (h : y < y') : ph (y : ℝ) - ph (y' : ℝ) ≤ 1 := by
   have hlt : (y : ℝ) < y' := by exact_mod_cast h
   have hy'pos : (0 : ℝ) < y' := lt_of_le_of_lt (Nat.cast_nonneg y) hlt
@@ -64,6 +86,13 @@ lemma ph_nat_lt (y y' : ℕ) (h : y < y') : ph (y : ℝ) - ph (y' : ℝ) ≤ 1 :
       mul_nonpos_of_nonpos_of_nonneg (by linarith) hlog0
     linarith
 
+/- English proof (translation)
+Establish `hLa0 : 0 ≤ La` using `by linarith`. Establish `hdL : 0 ≤ d * La` using `mul_nonneg hd0 hLa0`. Break down `lt_or_ge y y' with hlt | hle` into its components or cases. Use `ph_nat_lt y y' hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Break down `Nat.eq_zero_or_pos y with h0 | h0` into its components or cases. Establish `hyy : y = y'` using `by omega`. Rewrite using `[hyy, sub_self]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu : (0 : ℝ) < y` using `by exact_mod_cast h0`.
+
+Establish `ht` using `ph_sub_ph_le_mul_log hu (Nat.cast_nonneg (α := ℝ) y')`. Establish `hlog0 : 0 ≤ Real.log (y : ℝ)` using `Real.log_nonneg (Nat.one_le_cast.mpr h0)`. Establish `h1 : ((y : ℝ) - y') * Real.log y ≤ d * Real.log y` using `mul_le_mul_of_nonneg_right hd hlog0`. Establish `h2 : d * Real.log y ≤ d * La` using `mul_le_mul_of_nonneg_left hy hd0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma pair_one {La d : ℝ} (y y' : ℕ) (hy : Real.log (y : ℝ) ≤ La) (hLa : 1 ≤ La) (hd0 : 0 ≤ d)
     (hd : (y : ℝ) - (y' : ℝ) ≤ d) : ph (y : ℝ) - ph (y' : ℝ) ≤ d * La + 1 := by
   have hLa0 : 0 ≤ La := by linarith
@@ -82,6 +111,17 @@ lemma pair_one {La d : ℝ} (y y' : ℕ) (hy : Real.log (y : ℝ) ≤ La) (hLa :
       have h2 : d * Real.log y ≤ d * La := mul_le_mul_of_nonneg_left hy hd0
       linarith
 
+/- English proof (translation)
+Establish `hd0 : 0 ≤ d` using `le_trans (abs_nonneg _) hd`. Break down `Nat.eq_zero_or_pos y with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Establish `hy'0 : (0 : ℝ) ≤ y'` using `Nat.cast_nonneg _`. Establish `hlog : 0 ≤ Real.log (y' : ℝ)`.
+
+Break down `Nat.eq_zero_or_pos y' with h1 | h1` into its components or cases. Rewrite using `[h1, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_nonneg (Nat.one_le_cast.mpr h1)`. Establish `habs : |((0 : ℕ) : ℝ) - (y' : ℝ)| = y'`. Rewrite using `[Nat.cast_zero, zero_sub, abs_neg, abs_of_nonneg hy'0]`.
+
+Establish `h2` using `mul_nonneg hy'0 hlog`. Establish `h3` using `mul_le_mul_of_nonneg_left hLa hd0`. Simplify using `only [ph, Nat.cast_zero, Real.log_zero, mul_zero, sub_zero, zero_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hu : (0 : ℝ) < y` using `by exact_mod_cast h0`.
+
+Establish `ht` using `ph_sub_ph_le_mul_log hu (Nat.cast_nonneg (α := ℝ) y')`. Establish `hlog0 : 0 ≤ Real.log (y : ℝ)` using `Real.log_nonneg (Nat.one_le_cast.mpr h0)`. Establish `h1 : ((y : ℝ) - y') ≤ d` using `le_trans (le_abs_self _) hd`. Establish `h2 : ((y : ℝ) - y') * Real.log y ≤ d * Real.log y` using `mul_le_mul_of_nonneg_right h1 hlog0`. Establish `h3 : d * Real.log y ≤ d * La` using `mul_le_mul_of_nonneg_left hy hd0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma pair_abs {La d : ℝ} (y y' : ℕ) (hy : Real.log (y : ℝ) ≤ La) (hLa : 1 ≤ La)
     (hd : |(y : ℝ) - (y' : ℝ)| ≤ d) : ph (y : ℝ) - ph (y' : ℝ) ≤ d * La := by
   have hd0 : 0 ≤ d := le_trans (abs_nonneg _) hd
@@ -106,31 +146,51 @@ lemma pair_abs {La d : ℝ} (y y' : ℕ) (hy : Real.log (y : ℝ) ≤ La) (hLa :
     have h3 : d * Real.log y ≤ d * La := mul_le_mul_of_nonneg_left hy hd0
     linarith
 
+/- English proof (translation)
+Unfold `phRows`. Rewrite using `[Multiset.map_add, Multiset.sum_add]`.
+-/
 lemma phRows_add (s t : Multiset ℕ) : phRows (s + t) = phRows s + phRows t := by
   unfold phRows
   rw [Multiset.map_add, Multiset.sum_add]
 
+/- English proof (translation)
+Unfold `phRows`. Rewrite using `[Multiset.map_cons, Multiset.sum_cons]`.
+-/
 lemma phRows_cons (a : ℕ) (s : Multiset ℕ) : phRows (a ::ₘ s) = ph (a : ℝ) + phRows s := by
   unfold phRows
   rw [Multiset.map_cons, Multiset.sum_cons]
 
+/- English proof (translation)
+Unfold `phRows`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 lemma phRows_univ {n : ℕ} (g : Fin n → ℕ) :
     phRows (Finset.univ.val.map g) = ∑ i, ph (g i : ℝ) := by
   unfold phRows
   rw [Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Unfold `logFactRows`. Rewrite using `[Multiset.map_add, Multiset.sum_add]`.
+-/
 lemma logFactRows_add (s t : Multiset ℕ) :
     logFactRows (s + t) = logFactRows s + logFactRows t := by
   unfold logFactRows
   rw [Multiset.map_add, Multiset.sum_add]
 
+/- English proof (translation)
+Unfold `logFactRows`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 lemma logFactRows_univ {n : ℕ} (g : Fin n → ℕ) :
     logFactRows (Finset.univ.val.map g) = ∑ i, Real.log ((g i).factorial : ℝ) := by
   unfold logFactRows
   rw [Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Unfold `logFactRows`. Apply `Multiset.sum_nonneg` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[Multiset.mem_map]`. Take `⟨r, -, rfl⟩` from `hx`.
+
+Conclude with `Real.log_nonneg (Nat.one_le_cast.mpr (Nat.factorial_pos r))`.
+-/
 lemma logFactRows_nonneg (s : Multiset ℕ) : 0 ≤ logFactRows s := by
   unfold logFactRows
   apply Multiset.sum_nonneg
@@ -139,6 +199,13 @@ lemma logFactRows_nonneg (s : Multiset ℕ) : 0 ≤ logFactRows s := by
   obtain ⟨r, -, rfl⟩ := hx
   exact Real.log_nonneg (Nat.one_le_cast.mpr (Nat.factorial_pos r))
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Simplify using `[ph]`. Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast h0`. Establish `hf : (0 : ℝ) < n.factorial` using `by exact_mod_cast Nat.factorial_pos n`.
+
+Establish `h1` using `Real.pow_div_factorial_le_exp (n : ℝ) hn.le n`. Establish `h2 : Real.log ((n : ℝ) ^ n / n.factorial) ≤ n`. Use `Real.log_le_log (div_pos (pow_pos hn n) hf) h1` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Rewrite `h2` using `[Real.log_div (pow_pos hn n).ne' hf.ne', Real.log_pow]`.
+
+Use `show (n : ℝ) * Real.log n - n ≤ Real.log (n.factorial : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma ph_natCast_le_log_factorial (n : ℕ) : ph (n : ℝ) ≤ Real.log (n.factorial : ℝ) := by
   rcases Nat.eq_zero_or_pos n with h0 | h0
   · subst h0
@@ -153,6 +220,9 @@ private lemma ph_natCast_le_log_factorial (n : ℕ) : ph (n : ℝ) ≤ Real.log 
     show (n : ℝ) * Real.log n - n ≤ Real.log (n.factorial : ℝ)
     linarith
 
+/- English proof (translation)
+Rewrite using `[logFactRows_add, logFactRows_univ]`. Establish `h0` using `logFactRows_nonneg sm`. Establish `h : ∑ i, ph (r i : ℝ) ≤ ∑ i, Real.log ((r i).factorial : ℝ)` using `Finset.sum_le_sum fun i _ => ph_natCast_le_log_factorial (r i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sum_ph_le_logFact {n : ℕ} (r : Fin n → ℕ) (sm : Multiset ℕ) :
     ∑ i, ph (r i : ℝ) ≤ logFactRows (Finset.univ.val.map r + sm) := by
   rw [logFactRows_add, logFactRows_univ]
@@ -161,6 +231,15 @@ lemma sum_ph_le_logFact {n : ℕ} (r : Fin n → ℕ) (sm : Multiset ℕ) :
     Finset.sum_le_sum fun i _ => ph_natCast_le_log_factorial (r i)
   linarith
 
+/- English proof (translation)
+Establish `hL0 : 0 ≤ Real.log A` using `by linarith`. Establish `hmem : ∀ r ∈ blk, (r : ℝ) ≤ A`. Introduce `r hr`. Establish `h1 : r ≤ blk.sum` using `Multiset.le_sum_of_mem hr`. Establish `h2 : (r : ℝ) ≤ blk.sum` using `by exact_mod_cast h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∀ s : Multiset ℕ, (∀ r ∈ s, (r : ℝ) ≤ A) → phRows s ≤ (s.sum : ℝ) * Real.log A`. Introduce `s`. Use `Multiset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`.
+
+Simplify using `[phRows]`. Introduce `a s ih hs`. Rewrite using `[phRows_cons, Multiset.sum_cons, Nat.cast_add]`. Establish `ha` using `ph_nat_le a (log_nat_le a hA (hs a (Multiset.mem_cons.mpr (Or.inl rfl))))`. Establish `hs'` using `ih (fun r hr => hs r (Multiset.mem_cons.mpr (Or.inr hr)))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hsum blk hmem`. Establish `h2` using `mul_le_mul_of_nonneg_right hb hL0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma phRows_blk {A Bl : ℝ} (blk : Multiset ℕ) (hA : 1 ≤ Real.log A) (hb : (blk.sum : ℝ) ≤ Bl)
     (hBl : Bl ≤ A) : phRows blk ≤ Bl * Real.log A := by
   have hL0 : 0 ≤ Real.log A := by linarith
@@ -184,11 +263,19 @@ lemma phRows_blk {A Bl : ℝ} (blk : Multiset ℕ) (hA : 1 ≤ Real.log A) (hb :
   have h2 := mul_le_mul_of_nonneg_right hb hL0
   linarith
 
+/- English proof (translation)
+Establish `h : (Finset.univ.val.map g).sum = ∑ i, g i` using `rfl`. Rewrite using `[h, Nat.cast_sum]`.
+-/
 lemma sum_univ_cast {n : ℕ} (g : Fin n → ℕ) :
     (((Finset.univ.val.map g).sum : ℕ) : ℝ) = ∑ i, (g i : ℝ) := by
   have h : (Finset.univ.val.map g).sum = ∑ i, g i := rfl
   rw [h, Nat.cast_sum]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `h : ∑ i : Fin m, (c i.castSucc.castSucc - c i.succ.castSucc) = c (0 : Fin (m + 1)).castSucc - c (Fin.last m).castSucc` using `ih (fun j => c j.castSucc)`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `only [Fin.succ_castSucc]`. Rewrite using `[h]`. Simplify using `only [Fin.castSucc_zero, Fin.succ_last]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma sum_castSucc_sub_succ_eq_sub_last {n : ℕ} (c : Fin (n + 1) → ℝ) :
     ∑ i : Fin n, (c i.castSucc - c i.succ) = c 0 - c (Fin.last n) := by
   induction n with
@@ -202,6 +289,9 @@ private lemma sum_castSucc_sub_succ_eq_sub_last {n : ℕ} (c : Fin (n + 1) → �
     simp only [Fin.castSucc_zero, Fin.succ_last]
     ring
 
+/- English proof (translation)
+Establish `hsum : ∑ i : Fin n, (c i.castSucc - c' i) ≤ ∑ i : Fin n, (c i.castSucc - c i.succ)` using `Finset.sum_le_sum fun i _ => by linarith [(h.2 i).2]`. Rewrite `hsum` using `[sum_castSucc_sub_succ_eq_sub_last]`. Combine the linear relations using `[(h.1 0).2, (h.1 (Fin.last n)).1]`.
+-/
 lemma telescope {n : ℕ} {c : Fin (n + 1) → ℝ} {c' : Fin n → ℝ} {S : ℝ}
     (h : Formalism.LatticeIndexTer.Interlaced n c c' S) : ∑ i : Fin n, (c i.castSucc - c' i) ≤ S := by
   have hsum : ∑ i : Fin n, (c i.castSucc - c' i) ≤ ∑ i : Fin n, (c i.castSucc - c i.succ) :=
@@ -209,6 +299,9 @@ lemma telescope {n : ℕ} {c : Fin (n + 1) → ℝ} {c' : Fin n → ℝ} {S : �
   rw [sum_castSucc_sub_succ_eq_sub_last] at hsum
   linarith [(h.1 0).2, (h.1 (Fin.last n)).1]
 
+/- English proof (translation)
+Establish `hsum : ∑ i : Fin n, (c' i - c i.succ) ≤ ∑ i : Fin n, (c i.castSucc - c i.succ)` using `Finset.sum_le_sum fun i _ => by linarith [(h.2 i).1]`. Rewrite `hsum` using `[sum_castSucc_sub_succ_eq_sub_last]`. Combine the linear relations using `[(h.1 0).2, (h.1 (Fin.last n)).1]`.
+-/
 lemma telescope' {n : ℕ} {c : Fin (n + 1) → ℝ} {c' : Fin n → ℝ} {S : ℝ}
     (h : Formalism.LatticeIndexTer.Interlaced n c c' S) : ∑ i : Fin n, (c' i - c i.succ) ≤ S := by
   have hsum : ∑ i : Fin n, (c' i - c i.succ) ≤ ∑ i : Fin n, (c i.castSucc - c i.succ) :=
@@ -220,6 +313,11 @@ end W8
 
 open W8
 
+/- English proof (translation)
+Establish `h0 : ph ((0 : ℕ) : ℝ) = 0` using `by simp [ph]`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Rewrite using `[hr, h0]`. Evaluate the numerical expressions. Use `ph_nat_lt 0 r hr` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma neg_ph_natCast_le_one (r : ℕ) : -ph (r : ℝ) ≤ 1 := by
   have h0 : ph ((0 : ℕ) : ℝ) = 0 := by simp [ph]
   rcases Nat.eq_zero_or_pos r with hr | hr
@@ -228,6 +326,13 @@ private lemma neg_ph_natCast_le_one (r : ℕ) : -ph (r : ℝ) ≤ 1 := by
   · have := ph_nat_lt 0 r hr
     linarith
 
+/- English proof (translation)
+Establish `hL0 : 0 ≤ Real.log A` using `by linarith`. Establish `hw0 : (0 : ℝ) ≤ w` using `Nat.cast_nonneg w`. Establish `hd : |((aT + w : ℕ) : ℝ) - (aT : ℝ)| ≤ (w : ℝ)`. Rewrite using `[abs_le]`. Use `push_cast`.
+
+Apply the tactic sequence `constructor <;> linarith`. Establish `h1` using `pair_abs (aT + w) aT (log_nat_le _ hA (by push_cast; linarith)) hA hd`. Establish `hr0' : (r0 : ℝ) ≤ w` using `by exact_mod_cast hr0`. Establish `h2 : ph (r0 : ℝ) ≤ (r0 : ℝ) * Real.log A` using `ph_nat_le r0 (log_nat_le r0 hA (by linarith))`. Establish `h3 : (r0 : ℝ) * Real.log A ≤ (w : ℝ) * Real.log A` using `mul_le_mul_of_nonneg_right hr0' hL0`.
+
+Establish `h4` using `neg_ph_natCast_le_one rz`. Establish `h5` using `phRows_blk blk hA hblk hBl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma ph_add_ph_sub_add_phRows_le_ph_add_log_mul {aT w r0 rz : ℕ} {A Bl : ℝ} {blk : Multiset ℕ}
     (hA : 1 ≤ Real.log A) (haT : (aT : ℝ) + w ≤ A) (hr0 : r0 ≤ w) (hwA : (w : ℝ) ≤ A)
     (hblk : (blk.sum : ℝ) ≤ Bl) (hBl : Bl ≤ A) :
@@ -247,6 +352,35 @@ private lemma ph_add_ph_sub_add_phRows_le_ph_add_log_mul {aT w r0 rz : ℕ} {A B
   have h5 := phRows_blk blk hA hblk hBl
   linarith
 
+/- English proof (translation)
+Introduce `n w S Bl sh A La fa ν ap hLaA hLa hwS hBl hfa`. Substitute `hLaA` using the available equality. Establish `hL0 : 0 ≤ Real.log A` using `by linarith`. Establish `hw0 : (0 : ℝ) ≤ w` using `Nat.cast_nonneg w`. Use `⟨fun hoff => ?_, fun aT haT htop => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, c', r, blk, sm, hI, hr, hblk, hν, hap⟩` from `hoff`. Substitute `hν` using the available equality. Substitute `hap` using the available equality. Establish `hcS : ∀ i, (c i : ℝ) ≤ S` using `fun i => (hI.1 i).2`. Establish `hcA : ∀ i, ((w + c i : ℕ) : ℝ) ≤ A` using `fun i => by`.
+
+Use `push_cast`. Combine the linear relations using `[hcS i]`. Establish `hν : phRows ((Finset.univ.val.map fun i => w + c i) + blk) = ∑ i : Fin n, ph ((w + c i.castSucc : ℕ) : ℝ) + ph ((w + c (Fin.last n) : ℕ) : ℝ) + phRows blk`. Rewrite using `[phRows_add, phRows_univ, Fin.sum_univ_castSucc]`. Establish `hfa' : ∑ i : Fin n, ph ((r i : ℕ) : ℝ) ≤ fa` using `le_trans (sum_ph_le_logFact r sm) hfa`.
+
+Establish `hpair : ∀ i : Fin n, ph ((w + c i.castSucc : ℕ) : ℝ) - ph ((r i : ℕ) : ℝ) ≤ ((c i.castSucc : ℝ) - c' i) * Real.log A + sh * Real.log A`. Introduce `i`. Take `⟨h1a, h1b⟩` from `abs_le.mp (hr i)`. Establish `h2 : (c' i : ℝ) ≤ c i.castSucc` using `(hI.2 i).1`. Establish `hd : |((w + c i.castSucc : ℕ) : ℝ) - ((r i : ℕ) : ℝ)| ≤ ((c i.castSucc : ℝ) - c' i) + sh`.
+
+Rewrite using `[abs_le]`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Use `pair_abs (w + c i.castSucc) (r i) (log_nat_le _ hLa (hcA _)) hLa hd` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsum : ∑ i : Fin n, ph ((w + c i.castSucc : ℕ) : ℝ) - ∑ i : Fin n, ph ((r i : ℕ) : ℝ) ≤ (∑ i : Fin n, ((c i.castSucc : ℝ) - c' i)) * Real.log A + (n : ℝ) * (sh * Real.log A)`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `le_trans (Finset.sum_le_sum fun i _ => hpair i) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `htel : ∑ i : Fin n, ((c i.castSucc : ℝ) - c' i) ≤ S` using `telescope hI`.
+
+Establish `hmul` using `mul_le_mul_of_nonneg_right htel hL0`. Establish `hlast : ph ((w + c (Fin.last n) : ℕ) : ℝ) ≤ ((w : ℝ) + S) * Real.log A`. Use `le_trans (ph_nat_le _ (log_nat_le _ hLa (hcA _))) ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ hL0` and prove the remaining obligations. Use `push_cast`.
+
+Combine the linear relations using `[hcS (Fin.last n)]`. Establish `hb` using `phRows_blk blk hLa hblk hBl`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨c, c', r, r0, blk, sm, hI, hr, hr0, hblk, hν, hap⟩` from `htop`. Substitute `hν` using the available equality.
+
+Substitute `hap` using the available equality. Establish `hS0 : 0 ≤ S` using `le_trans (hI.1 0).1 (hI.1 0).2`. Establish `hcS : ∀ i : Fin n, (c i : ℝ) ≤ S` using `fun i => le_trans (hI.2 i).1 (hI.1 i.castSucc).2`. Establish `hcA : ∀ i : Fin n, ((w + c i : ℕ) : ℝ) ≤ A` using `fun i => by`. Use `push_cast`.
+
+Combine the linear relations using `[hcS i]`. Establish `hν : phRows ((aT + w) ::ₘ r0 ::ₘ ((Finset.univ.val.map fun i => w + c i) + blk)) = ph ((aT + w : ℕ) : ℝ) + ph ((r0 : ℕ) : ℝ) + ∑ i : Fin n, ph ((w + c i : ℕ) : ℝ) + phRows blk`. Rewrite using `[phRows_cons, phRows_cons, phRows_add, phRows_univ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfa' : ∑ i : Fin (n + 1), ph ((r i : ℕ) : ℝ) ≤ fa` using `le_trans (sum_ph_le_logFact r sm) hfa`.
+
+Establish `hfa2 : ∑ i : Fin (n + 1), ph ((r i : ℕ) : ℝ) = ph ((r 0 : ℕ) : ℝ) + ∑ i : Fin n, ph ((r i.succ : ℕ) : ℝ)` using `Fin.sum_univ_succ _`. Establish `hpair : ∀ i : Fin n, ph ((w + c i : ℕ) : ℝ) - ph ((r i.succ : ℕ) : ℝ) ≤ ((c i : ℝ) - c' i.succ) * Real.log A + sh * Real.log A`. Introduce `i`. Take `⟨h1a, h1b⟩` from `abs_le.mp (hr i.succ)`. Establish `h2 : (c' i.succ : ℝ) ≤ c i` using `(hI.2 i).2`.
+
+Establish `hd : |((w + c i : ℕ) : ℝ) - ((r i.succ : ℕ) : ℝ)| ≤ ((c i : ℝ) - c' i.succ) + sh`. Rewrite using `[abs_le]`. Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Use `pair_abs (w + c i) (r i.succ) (log_nat_le _ hLa (hcA _)) hLa hd` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ i : Fin n, ph ((w + c i : ℕ) : ℝ) - ∑ i : Fin n, ph ((r i.succ : ℕ) : ℝ) ≤ (∑ i : Fin n, ((c i : ℝ) - c' i.succ)) * Real.log A + (n : ℝ) * (sh * Real.log A)`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `le_trans (Finset.sum_le_sum fun i _ => hpair i) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Establish `htel : ∑ i : Fin n, ((c i : ℝ) - c' i.succ) ≤ S` using `telescope' hI`. Establish `hmul` using `mul_le_mul_of_nonneg_right htel hL0`. Establish `hrest` using `ph_add_ph_sub_add_phRows_le_ph_add_log_mul (rz := r 0) hLa haT hr0 (by linarith) hblk hBl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem young_diagram_factorial : RowsFactorial := by
   intro n w S Bl sh A La fa ν ap hLaA hLa hwS hBl hfa
   subst hLaA
@@ -330,6 +464,9 @@ theorem young_diagram_factorial : RowsFactorial := by
     have hrest := ph_add_ph_sub_add_phRows_le_ph_add_log_mul (rz := r 0) hLa haT hr0 (by linarith) hblk hBl
     linarith
 
+/- English proof (translation)
+Rewrite using `[Multiset.sum_add, Nat.cast_add, sum_univ_cast]`. Simplify using `only [Nat.cast_add, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Nat.cast_one]`.
+-/
 private lemma cast_sum_map_add_offset_eq {n w : ℕ} (c : Fin (n + 1) → ℕ) (blk : Multiset ℕ) :
     ((((Finset.univ.val.map fun i => w + c i) + blk).sum : ℕ) : ℝ) =
       ((n : ℝ) + 1) * w + ∑ i, (c i : ℝ) + (blk.sum : ℝ) := by
@@ -337,6 +474,9 @@ private lemma cast_sum_map_add_offset_eq {n w : ℕ} (c : Fin (n + 1) → ℕ) (
   simp only [Nat.cast_add, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ,
     Fintype.card_fin, nsmul_eq_mul, Nat.cast_one]
 
+/- English proof (translation)
+Rewrite using `[Multiset.sum_cons, Multiset.sum_cons, Multiset.sum_add]`. Simplify using `only [Nat.cast_add]`. Rewrite using `[sum_univ_cast]`. Simplify using `only [Nat.cast_add, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma cast_sum_cons_cons_map_add_offset_eq {n aT w r0 : ℕ} (c : Fin n → ℕ) (blk : Multiset ℕ) :
     ((((aT + w) ::ₘ r0 ::ₘ ((Finset.univ.val.map fun i => w + c i) + blk)).sum : ℕ) : ℝ) =
       (aT : ℝ) + ((n : ℝ) + 1) * w + r0 + ∑ i, (c i : ℝ) + (blk.sum : ℝ) := by
@@ -347,6 +487,17 @@ private lemma cast_sum_cons_cons_map_add_offset_eq {n aT w r0 : ℕ} (c : Fin n 
     Fintype.card_fin, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `n w S Bl sh ν ap`. Establish `hw0 : (0 : ℝ) ≤ w` using `Nat.cast_nonneg w`. Use `⟨fun hoff => ?_, fun aT htop => ?_⟩` and prove the remaining obligations. Take `⟨c, c', r, blk, sm, hI, -, hblk, hν, -⟩` from `hoff`. Substitute `hν` using the available equality.
+
+Establish `hs` using `cast_sum_map_add_offset_eq (w := w) c blk`. Establish `hcS : ∑ i, (c i : ℝ) ≤ ((n : ℝ) + 1) * S`. Establish `h` using `Finset.sum_le_sum fun i (_ : i ∈ (Finset.univ : Finset (Fin (n + 1)))) => (hI.1 i).2`. Simplify using `using h`. Establish `hc0 : 0 ≤ ∑ i, (c i : ℝ)` using `Finset.sum_nonneg fun i _ => Nat.cast_nonneg _`.
+
+Establish `hb0 : (0 : ℝ) ≤ blk.sum` using `Nat.cast_nonneg _`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨c, c', r, r0, blk, sm, hI, -, hr0, hblk, hν, -⟩` from `htop`. Substitute `hν` using the available equality. Establish `hs` using `cast_sum_cons_cons_map_add_offset_eq (aT := aT) (w := w) (r0 := r0) c blk`.
+
+Establish `hcS : ∑ i, (c i : ℝ) ≤ (n : ℝ) * S`. Establish `h` using `Finset.sum_le_sum fun i (_ : i ∈ (Finset.univ : Finset (Fin n))) => le_trans (hI.2 i).1 (hI.1 i.castSucc).2`. Simplify using `using h`. Establish `hc0 : 0 ≤ ∑ i, (c i : ℝ)` using `Finset.sum_nonneg fun i _ => Nat.cast_nonneg _`. Establish `hb0 : (0 : ℝ) ≤ blk.sum` using `Nat.cast_nonneg _`.
+
+Establish `hr0' : (r0 : ℝ) ≤ w` using `by exact_mod_cast hr0`. Establish `hr00 : (0 : ℝ) ≤ r0` using `Nat.cast_nonneg _`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem young_diagram_period : RowsPeriod := by
   intro n w S Bl sh ν ap
   have hw0 : (0 : ℝ) ≤ w := Nat.cast_nonneg w
@@ -374,6 +525,11 @@ theorem young_diagram_period : RowsPeriod := by
     have hr00 : (0 : ℝ) ≤ r0 := Nat.cast_nonneg _
     constructor <;> linarith
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.prod_range_succ', Nat.factorial_succ]`. Establish `h : ∀ j ∈ Finset.range k, k + 1 - (j + 1) = k - j` using `fun j _ => by omega`.
+
+Rewrite using `[Finset.prod_congr rfl h, ih, Nat.sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma prod_range_sub_eq_factorial' (n : ℕ) : ∏ j ∈ Finset.range n, (n - j) = n.factorial := by
   induction n with
   | zero => simp
@@ -383,6 +539,19 @@ private lemma prod_range_sub_eq_factorial' (n : ℕ) : ∏ j ∈ Finset.range n,
     rw [Finset.prod_congr rfl h, ih, Nat.sub_zero]
     ring
 
+/- English proof (translation)
+Introduce `μ`. Establish `hcell : ∀ p : ℕ × ℕ, p ∈ μ.cells ↔ p.1 ∈ Finset.range (μ.colLen 0) ∧ p.2 ∈ Finset.range (μ.rowLen p.1)`. Introduce and unpack `⟨i, j⟩`. Simplify using `only [YoungDiagram.mem_cells, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `⟨YoungDiagram.mem_iff_lt_colLen.mp (μ.up_left_mem le_rfl (Nat.zero_le j) h), YoungDiagram.mem_iff_lt_rowLen.mp h⟩`. Introduce `h`. Conclude with `YoungDiagram.mem_iff_lt_rowLen.mpr h.2`. Establish `hle : ∏ x ∈ μ.cells, (μ.rowLen x.1 - x.2) ≤ Formalism.LatticeIndexTer.hookProd μ`.
+
+Unfold `Formalism.LatticeIndexTer.hookProd`. Apply `Finset.prod_le_prod (fun _ _ => Nat.zero_le _)` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩ h`. Establish `h1 : i < μ.colLen j` using `YoungDiagram.mem_iff_lt_colLen.mp h`. Use `show μ.rowLen i - j ≤ μ.rowLen i - j + (μ.colLen j - i) - 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `heq : ∏ x ∈ μ.cells, (μ.rowLen x.1 - x.2) = ∏ i ∈ Finset.range (μ.colLen 0), (μ.rowLen i).factorial`. Rewrite using `[Finset.prod_finset_product μ.cells (Finset.range (μ.colLen 0)) (fun i => Finset.range (μ.rowLen i)) hcell]`. Conclude with `Finset.prod_congr rfl fun i _ => prod_range_sub_eq_factorial' (μ.rowLen i)`. Establish `hpos : 0 < ∏ i ∈ Finset.range (μ.colLen 0), (μ.rowLen i).factorial` using `Finset.prod_pos fun i _ => Nat.factorial_pos _`.
+
+Establish `hlog : logFactRows (μ.rowLens : Multiset ℕ) = ∑ i ∈ Finset.range (μ.colLen 0), Real.log ((μ.rowLen i).factorial : ℝ)`. Unfold `logFactRows YoungDiagram.rowLens`. Rewrite using `[Multiset.map_coe, List.map_map]`. Both sides reduce to the same expression. Rewrite using `[hlog, ← Real.log_prod (s := Finset.range (μ.colLen 0)) (f := fun i => ((μ.rowLen i).factorial : ℝ)) (fun i _ => (Nat.cast_pos.mpr (Nat.factorial_pos _)).ne'), ← Nat.cast_prod]`.
+
+Apply `Real.log_le_log (by exact_mod_cast hpos)` to reduce the goal to its premises. Conclude with `heq.symm.le.trans hle` after adjusting the coercions.
+-/
 theorem young_diagram_hook : RowsHook := by
   intro μ
   have hcell : ∀ p : ℕ × ℕ, p ∈ μ.cells ↔
@@ -423,12 +592,22 @@ theorem young_diagram_hook : RowsHook := by
 
 namespace W8
 
+/- English proof (translation)
+Establish `hN : 0 ≤ N` using `by linarith`. Establish `h1` using `mul_le_mul_of_nonneg_right (hnk.trans hkN) (mul_nonneg hcs hN)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma arith_nN {n k N cs : ℝ} (hn : 0 ≤ n) (hnk : n ≤ k) (hkN : k ≤ N) (hcs : 0 ≤ cs) :
     n * (cs * N) ≤ cs * N ^ 2 := by
   have hN : 0 ≤ N := by linarith
   have h1 := mul_le_mul_of_nonneg_right (hnk.trans hkN) (mul_nonneg hcs hN)
   linarith
 
+/- English proof (translation)
+Establish `hN : 2 ≤ N` using `by linarith`. Establish `hnN` using `arith_nN hn (by linarith : n ≤ k) hkN hcs`. Establish `hN2 : 1 ≤ N ^ 2` using `by nlinarith`. Establish `h1` using `mul_le_mul_of_nonneg_right hC2 hw`. Establish `h2` using `mul_le_mul_of_nonneg_right hCcs (sq_nonneg N)`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_right (by linarith : (1 : ℝ) ≤ C0) hBl`. Establish `hin : 2 * w + Sc + n * (cs * N) + Bl + N ^ 2 ≤ C0 * (w + S + N ^ 2 + Bl)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLa0 : 0 ≤ La` using `by linarith`. Establish `h4` using `mul_le_mul_of_nonneg_right hin hLa0`.
+
+Establish `h5` using `mul_le_mul_of_nonneg_left hLa (sq_nonneg N)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma arith_fact_top {w S Sc N Bl cs C0 La n k : ℝ} (hw : 0 ≤ w) (hSc0 : 0 ≤ Sc) (hBl : 0 ≤ Bl)
     (hn : 0 ≤ n) (hk : k = n + 2) (hkN : k ≤ N) (hcs : 0 ≤ cs) (hC2 : 2 ≤ C0) (hCcs : cs + 1 ≤ C0)
     (hSc : 2 * Sc ≤ C0 * S) (hLa : 1 ≤ La) :
@@ -446,6 +625,11 @@ lemma arith_fact_top {w S Sc N Bl cs C0 La n k : ℝ} (hw : 0 ≤ w) (hSc0 : 0 �
   have h5 := mul_le_mul_of_nonneg_left hLa (sq_nonneg N)
   nlinarith
 
+/- English proof (translation)
+Establish `hnN` using `arith_nN hn (by linarith : n ≤ k) hkN hcs`. Establish `hN2 : 0 ≤ N ^ 2` using `sq_nonneg N`. Establish `h1` using `mul_le_mul_of_nonneg_right (by linarith : (1 : ℝ) ≤ C0) hw`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : cs ≤ C0) hN2`. Establish `h3` using `mul_le_mul_of_nonneg_right (by linarith : (1 : ℝ) ≤ C0) hBl`.
+
+Establish `hin : w + 2 * Sc + n * (cs * N) + Bl ≤ C0 * (w + S + N ^ 2 + Bl)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_mul_of_nonneg_right hin (by linarith)`.
+-/
 lemma arith_fact_off {w S Sc N Bl cs C0 La n k : ℝ} (hw : 0 ≤ w) (_hSc0 : 0 ≤ Sc) (hBl : 0 ≤ Bl)
     (hn : 0 ≤ n) (hk : k = n + 1) (hkN : k ≤ N) (hcs : 0 ≤ cs) (hC2 : 2 ≤ C0) (hCcs : cs + 1 ≤ C0)
     (hSc : 2 * Sc ≤ C0 * S) (hLa : 1 ≤ La) :
@@ -459,6 +643,9 @@ lemma arith_fact_off {w S Sc N Bl cs C0 La n k : ℝ} (hw : 0 ≤ w) (_hSc0 : 0 
     linarith
   exact mul_le_mul_of_nonneg_right hin (by linarith)
 
+/- English proof (translation)
+The claim follows from `|d| ≤ C0 * (w + k * (N + S) + Bl + X) := by have hk0 : 0 ≤ k := by linarith have hN0 : 0 ≤ N := by linarith have hCS : 0 ≤ C0 * S := by linarith have hC0 : 0 ≤ C0 := by linarith have e1 := mul_le_mul_of_nonneg_right hnk hSc0 have e2 := mul_le_mul_of_nonneg_left hSc hk0 have e3 := …`.
+-/
 lemma arith_per {d w S Sc N Bl C0 n k X : ℝ} (hw : 0 ≤ w) (hSc0 : 0 ≤ Sc) (hBl : 0 ≤ Bl)
     (hn : 0 ≤ n) (hnk : n ≤ k) (hkN : k ≤ N) (hC2 : 2 ≤ C0) (hSc : 2 * Sc ≤ C0 * S) (hX : 0 ≤ X)
     (h1 : -w ≤ d) (h2 : d ≤ n * Sc + Bl) :
@@ -477,11 +664,17 @@ lemma arith_per {d w S Sc N Bl C0 n k X : ℝ} (hw : 0 ≤ w) (hSc0 : 0 ≤ Sc) 
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Take `⟨c, c', r, blk, sm, hI, -, hblk, -, -⟩` from `h`. Conclude with `⟨le_trans (hI.1 0).1 (hI.1 0).2, le_trans (Nat.cast_nonneg _) hblk⟩`.
+-/
 lemma off_nonneg {n w : ℕ} {S Bl sh : ℝ} {ν ap : Multiset ℕ} (h : IsRowsOff n w S Bl sh ν ap) :
     0 ≤ S ∧ 0 ≤ Bl := by
   obtain ⟨c, c', r, blk, sm, hI, -, hblk, -, -⟩ := h
   exact ⟨le_trans (hI.1 0).1 (hI.1 0).2, le_trans (Nat.cast_nonneg _) hblk⟩
 
+/- English proof (translation)
+Take `⟨c, c', r, r0, blk, sm, hI, -, -, hblk, -, -⟩` from `h`. Conclude with `⟨le_trans (hI.1 0).1 (hI.1 0).2, le_trans (Nat.cast_nonneg _) hblk⟩`.
+-/
 lemma top_nonneg {n aT w : ℕ} {S Bl sh : ℝ} {ν ap : Multiset ℕ}
     (h : IsRowsTop n aT w S Bl sh ν ap) : 0 ≤ S ∧ 0 ≤ Bl := by
   obtain ⟨c, c', r, r0, blk, sm, hI, -, -, hblk, -, -⟩ := h
@@ -489,6 +682,25 @@ lemma top_nonneg {n aT w : ℕ} {S Bl sh : ℝ} {ν ap : Multiset ℕ}
 
 end W8
 
+/- English proof (translation)
+Introduce `J Pl _ _ TT _ n aT w ν ap fa a rd La k N S Sc t η m b' cs C0 hLa hLa1 hk hkN hb' hcs hC2 hCcs hSc hwA hBlA haTA hfa hoff htop`. Establish `hk0 : 0 ≤ k`. Rewrite using `[hk]`. Check the signs of the components of the expression. Use `⟨fun j ρ => phRows (ν j ρ) - fa j ρ - (if ρ ∈ TT then ph (aT ρ : ℝ) else 0), fun j ρ => ((ν j ρ).sum : ℝ) - (if ρ ∈ TT then (aT ρ : ℝ) else 0) - k * (w j ρ : ℝ), fun j ρ => by dsimp only; linarith, fun j ρ => by dsimp only; ring, fun j ρ => ?_, fun j ρ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Distinguish the cases in `hρ : ρ ∈ TT`. Rewrite using `[if_pos hρ]`. Establish `hT` using `htop j ρ hρ`. Establish `h0` using `top_nonneg hT`.
+
+Establish `hF` using `(young_diagram_factorial n (w j ρ) Sc (m * (t + 1) * η) (cs * N) (a * rd) La (fa j ρ) (ν j ρ) (ap j ρ) hLa hLa1 (hwA j ρ) hBlA (hfa j ρ)).2 (aT ρ) (haTA j ρ hρ) hT`. Establish `hA` using `arith_fact_top (w := (w j ρ : ℝ)) (n := (n : ℝ)) (Nat.cast_nonneg _) h0.1 h0.2 (Nat.cast_nonneg _) hk hkN hcs hC2 hCcs hSc hLa1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hρ]`. Establish `hO` using `hoff j ρ hρ`.
+
+Establish `h0` using `off_nonneg hO`. Establish `hF` using `(young_diagram_factorial (n + 1) (w j ρ) Sc (m * (t + 1) * η) (cs * N) (a * rd) La (fa j ρ) (ν j ρ) (ap j ρ) hLa hLa1 (hwA j ρ) hBlA (hfa j ρ)).1 hO`. Establish `hA` using `arith_fact_off (w := (w j ρ : ℝ)) (n := ((n + 1 : ℕ) : ℝ)) (k := k) (Nat.cast_nonneg _) h0.1 h0.2 (Nat.cast_nonneg _) (by push_cast; linarith) hkN hcs hC2 hCcs hSc hLa1`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only`.
+
+Distinguish the cases in `hρ : ρ ∈ TT`. Rewrite using `[if_pos hρ, if_pos hρ]`. Establish `hT` using `htop j ρ hρ`. Establish `h0` using `top_nonneg hT`. Establish `hP` using `(young_diagram_period n (w j ρ) Sc (m * (t + 1) * η) (cs * N) (ν j ρ) (ap j ρ)).2 (aT ρ) hT`.
+
+Establish `hX : 0 ≤ k * b'` using `mul_nonneg hk0 hb'`. Establish `e1 : k * (w j ρ : ℝ) = ((n : ℝ) + 2) * (w j ρ : ℝ)` using `by rw [hk]`. Take `⟨hP1, hP2⟩` from `hP`. Conclude with `arith_per (n := (n : ℝ)) (k := k) (Nat.cast_nonneg _) h0.1 h0.2 (Nat.cast_nonneg _) (by rw [hk]; linarith) hkN hC2 hSc hX (by linarith) (by linarith)`. Rewrite using `[if_neg hρ, if_neg hρ]`.
+
+Establish `hO` using `hoff j ρ hρ`. Establish `h0` using `off_nonneg hO`. Establish `hP` using `(young_diagram_period (n + 1) (w j ρ) Sc (m * (t + 1) * η) (cs * N) (ν j ρ) (ap j ρ)).1 hO`. Establish `e1 : k * (w j ρ : ℝ) = (((n + 1 : ℕ) : ℝ) + 1) * (w j ρ : ℝ)`. Rewrite using `[hk]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : k * Sc = (((n + 1 : ℕ) : ℝ) + 1) * Sc`. Rewrite using `[hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hw0 : (0 : ℝ) ≤ w j ρ` using `Nat.cast_nonneg _`. Take `⟨hP1, hP2⟩` from `hP`. Conclude with `arith_per (n := k) (k := k) (Nat.cast_nonneg _) h0.1 h0.2 hk0 le_rfl hkN hC2 hSc le_rfl (by linarith) (by linarith)`.
+-/
 theorem young_diagram_step : RowsStepE := by
   intro J Pl _ _ TT _ n aT w ν ap fa a rd La k N S Sc t η m b' cs C0 hLa hLa1 hk hkN hb' hcs hC2
     hCcs hSc hwA hBlA haTA hfa hoff htop

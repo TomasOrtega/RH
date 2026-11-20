@@ -12,5 +12,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair | exact GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair | (intros; apply GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ D : D7, SphFactor D := by
   first | exact @GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair | exact GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair | (intros; apply GlobalTheory.Core.Rk.IP.sphFactor_of_weilRepresentationUnitaryPair <;> assumption)

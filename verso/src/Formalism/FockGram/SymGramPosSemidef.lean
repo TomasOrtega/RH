@@ -14,10 +14,19 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 
 namespace Formalism.E
 
+/- English proof (translation)
+The claim follows from `fischerInnerConjSymm_holds`.
+-/
 theorem fockHerm : FockHerm := fischerInnerConjSymm_holds
 
+/- English proof (translation)
+The claim follows from `indexEqNormDet`.
+-/
 theorem subIndexNorm : SubIndexNorm := indexEqNormDet
 
+/- English proof (translation)
+The claim follows from `hermDual_of subIndexNorm`.
+-/
 theorem hermDual : HermDual := hermDual_of subIndexNorm
 
 end Formalism.E

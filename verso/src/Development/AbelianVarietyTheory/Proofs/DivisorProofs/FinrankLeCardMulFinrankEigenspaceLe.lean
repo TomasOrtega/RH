@@ -5,6 +5,23 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `H K R _ _ _ _ _ _ st h1 hmul χ u hdet Vm V Vp N _ _ _ hV hm hp hN`. Take `⟨hTr, hPhi, hPsi⟩` from `GlobalTheory.twistedTrace_equivariant_and_injective_of_groupDet H K R st h1 hmul χ u hdet`. Establish `hNV : N ≤ V` using `fun x hx => ((hN x).1 hx).1`. Establish `: FiniteDimensional K N` using `Submodule.finiteDimensional_of_le hNV`. Establish `hrk : Module.finrank K (H → N) = Fintype.card H * Module.finrank K N`.
+
+Rewrite using `[Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Rewrite using `[← hrk]`. Prove the components needed by the constructor for the conclusion. Establish `hmem : ∀ (f : Vm) (h : H), ∑ g, (((χ g)⁻¹ : Kˣ) : K) • st g ((f : R) * st h u) ∈ N` using `fun f h => (hN _).2 ⟨V.sum_mem fun g _ => V.smul_mem _ (hV g _ (hm h _ f.2)), fun g => hTr _ g⟩`.
+
+Set `Φ : Vm →ₗ[K] (H → N)` to `{ toFun := fun f h => ⟨_, hmem f h⟩ map_add' := fun f f' => by`. Use function extensionality and compare the values at `h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, add_mul, map_add, smul_add, Finset.sum_add_distrib, Pi.add_apply]`. Use the proof step `map_smul' := fun c f => by`.
+
+Use function extensionality and compare the values at `h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, smul_mul_assoc, map_smul, Pi.smul_apply, RingHom.id_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => smul_comm _ _ _ }`. Use `LinearMap.finrank_le_finrank_of_injective (f := Φ) ?_` and prove the remaining obligations.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hPhi f fun h => congrArg Subtype.val (congrFun hf h)`. Establish `hmem : ∀ F : H → N, ∑ h, (F h : R) * st h u ∈ Vp` using `fun F => Vp.sum_mem fun h _ => hp h _ (hNV (F h).2)`.
+
+Set `Ψ : (H → N) →ₗ[K] Vp` to `{ toFun := fun F => ⟨_, hmem F⟩ map_add' := fun F F' => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, add_mul, Finset.sum_add_distrib, Pi.add_apply]`. Use the proof step `map_smul' := fun c F => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.coe_smul, smul_mul_assoc, Pi.smul_apply, RingHom.id_apply, Finset.smul_sum] }`. Use `LinearMap.finrank_le_finrank_of_injective (f := Ψ) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Use `hPsi (fun h => (F h : R)) (fun h g => ((hN _).1 (F h).2).2 g) (congrArg Subtype.val hF)` as an intermediate fact.
+
+Use function extensionality and compare the values at `h`. Conclude with `Subtype.ext (congrFun this h)`.
+-/
 theorem finrank_le_card_mul_finrank_eigenspace_le :
     ∀ (H K R : Type) [Group H] [Fintype H] [DecidableEq H] [Field K] [CommRing R] [Algebra K R]
       (st : H → R →ₐ[K] R), (∀ x, st 1 x = x) → (∀ h h' x, st (h * h') x = st h' (st h x)) →

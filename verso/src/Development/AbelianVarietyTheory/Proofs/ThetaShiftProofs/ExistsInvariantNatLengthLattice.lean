@@ -3,6 +3,15 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ Y`. Use `⟨fun y => ∑ i, (b.repr y i).natAbs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, Finsupp.sub_apply]`. Conclude with `Int.natAbs_sub_le _ _`. Introduce `m y`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, Finsupp.smul_apply, nsmul_eq_mul, Int.natAbs_mul, Int.natAbs_natCast]`. Introduce `y hy`. Rewrite `hy` using `[Finset.sum_eq_zero_iff]`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Simplify using `using hy i (Finset.mem_univ i)`.
+-/
 theorem exists_nat_length_lattice (Y : Type*) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] :
     ∃ q : Y → ℕ, (∀ x y, q (x - y) ≤ q x + q y) ∧ (∀ (m : ℕ) y, q (m • y) = m * q y) ∧
       ∀ y, q y = 0 → y = 0 := by
@@ -24,6 +33,17 @@ theorem exists_nat_length_lattice (Y : Type*) [AddCommGroup Y] [Module.Free ℤ 
     ext i
     simpa using hy i (Finset.mem_univ i)
 
+/- English proof (translation)
+Take `⟨q, h1, h2, h3⟩` from `exists_nat_length_lattice Y`. Use `⟨fun y => ∑ j ∈ Finset.range n, q ((σ ^ j) y), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub]`. Conclude with `h1 _ _`. Introduce `m y`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, h2]`. Introduce `y hy`. Rewrite `hy` using `[Finset.sum_eq_zero_iff]`. Use `hy 0 (Finset.mem_range.mpr hn)` as an intermediate fact. Conclude with `h3 y (by simpa using this)`.
+
+Introduce `y`. Establish `e1` using `Finset.sum_range_succ (fun j => q ((σ ^ j) y)) n`. Establish `e2` using `Finset.sum_range_succ' (fun j => q ((σ ^ j) y)) n`. Establish `e3 : ∑ j ∈ Finset.range n, q ((σ ^ j) (σ y)) = ∑ j ∈ Finset.range n, q ((σ ^ (j + 1)) y)` using `Finset.sum_congr rfl fun j _ => by rw [pow_succ, Module.End.mul_apply]`. Rewrite `e1` using `[hσ]`.
+
+Rewrite `e2` using `[pow_zero]`. Simplify using `only [e3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_invariant_nat_length_lattice (Y : Type*) [AddCommGroup Y] [Module.Free ℤ Y]
     [Module.Finite ℤ Y] (σ : Module.End ℤ Y) (n : ℕ) (hn : 0 < n) (hσ : σ ^ n = 1) :
     ∃ p : Y → ℕ, (∀ x y, p (x - y) ≤ p x + p y) ∧ (∀ (m : ℕ) y, p (m • y) = m * p y) ∧
@@ -54,6 +74,23 @@ theorem exists_invariant_nat_length_lattice (Y : Type*) [AddCommGroup Y] [Module
     simp only [e3]
     omega
 
+/- English proof (translation)
+Take `⟨p, h1, h2, h3, h4⟩` from `exists_invariant_nat_length_lattice Y σ n hn hσ`. Establish `key : ∀ (k : ℕ) (y : Y), p y = k → σ y = y`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`.
+
+Introduce `y hy`. Take `⟨z, hz⟩` from `h y`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases. Establish `: y = 0` using `h3 y (hy.trans hk)`. Rewrite using `[this, map_zero]`.
+
+Establish `hle : M * p z ≤ k + k`. Use `h1 (σ y) y` as an intermediate fact. Rewrite `this` using `[h4, hy, hz, add_sub_cancel_left, h2]`. Conclude with `this`. Establish `hlt : p z < k` using `by nlinarith`.
+
+Establish `hzz : σ z = z` using `ih _ hlt z rfl`. Establish `hj : ∀ j : ℕ, (σ ^ j) y = y + (j * M) • z`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+
+Consider the case `succ j ihj`. Rewrite using `[pow_succ', Module.End.mul_apply, ihj, map_add, map_nsmul, hzz, hz, add_mul, one_mul, add_smul]`. Normalize the expressions using the abelian group laws. Establish `h0 : (n * M) • z = 0`. Use `hj n` as an intermediate fact.
+
+Rewrite `this` using `[hσ, Module.End.one_apply]`. Conclude with `left_eq_add.mp this`. Establish `h00 : p z = 0`. Establish `e` using `h2 (n * M) z`. Establish `e0` using `h2 0 z`.
+
+Rewrite `e0` using `[zero_smul, zero_mul]`. Rewrite `e` using `[h0, e0]`. Establish `: 0 < n * M` using `Nat.mul_pos hn (by omega)`. Break down `Nat.mul_eq_zero.mp e.symm with h' | h'` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h'`. Rewrite using `[hz, h3 z h00, smul_zero, add_zero]`. Use extensionality with `y`. Conclude with `key _ y rfl`.
+-/
 theorem end_eq_one_of_pow_eq_one_of_congr (Y : Type*) [AddCommGroup Y] [Module.Free ℤ Y]
     [Module.Finite ℤ Y] (σ : Module.End ℤ Y) (n M : ℕ) (hn : 0 < n) (hσ : σ ^ n = 1) (hM : 3 ≤ M)
     (h : ∀ y, ∃ z, σ y = y + M • z) : σ = 1 := by
@@ -98,6 +135,11 @@ theorem end_eq_one_of_pow_eq_one_of_congr (Y : Type*) [AddCommGroup Y] [Module.F
   ext y
   exact key _ y rfl
 
+/- English proof (translation)
+Introduce `Y _ _ _ σ n M hn hσ hM h`. Establish `hp : (σ : Module.End ℤ Y) ^ n = 1`. Use extensionality with `y`. Establish `: (σ ^ n) y = y` using `by rw [hσ]; rfl`. Rewrite `this` using `[LinearEquiv.pow_apply]`.
+
+Rewrite using `[Module.End.pow_apply]`. Conclude with `this`. Use `end_eq_one_of_pow_eq_one_of_congr Y (σ : Module.End ℤ Y) n M hn hp hM h` as an intermediate fact. Use extensionality with `y`. Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem latMinkowski : ReciprocityTheory.ChartRestriction.G.Geo.Tor.LatMinkowskiSt := by
   intro Y _ _ _ σ n M hn hσ hM h
   have hp : (σ : Module.End ℤ Y) ^ n = 1 := by

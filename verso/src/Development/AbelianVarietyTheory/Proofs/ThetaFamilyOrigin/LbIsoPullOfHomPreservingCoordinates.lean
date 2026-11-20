@@ -17,11 +17,19 @@ namespace GlobalTheory.ZH.PolAgree
 
 open FieldDescentGen
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r g z U h, gs_stalkMap r z _ h]`. Conclude with `congrArg _ ((gs_pull (𝟙 Y) g (r z) U h a).trans (by rw [Category.id_comp]))`.
+-/
 theorem gs_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (r z) ∈ U)
     (a : Γ(X, U)) : gs (r ≫ g) z U a = (r.stalkMap z).hom (gs g (r z) U a) := by
   rw [← gs_pull r g z U h, gs_stalkMap r z _ h]
   exact congrArg _ ((gs_pull (𝟙 Y) g (r z) U h a).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Take `⟨l, c, hl, hv⟩` from `h`. Establish `hl' : ⊤ ≤ y ⁻¹ᵁ (H.pull φ).U (fun _ => l)` using `fun z hz => mem_pull.2 (hl hz)`. Use `⟨fun _ => l, c, hl', fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hv j]`. Use `congr 1`.
+
+Unfold `valR`. Rewrite using `[dif_pos hl, dif_pos hl']`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = (y.appLE _ ⊤ hl').hom ((φ.appLE _ _ (pull_le H φ (fun _ => l))).hom ((s j).f l))`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem crd_pull {X Y : Scheme.{0}} (φ : X ⟶ Y) (H : LB Y) {J : Type} (s : J → H.Sec) {R : Type} [CommRing R]
     (y : Sp R ⟶ X) (v : J → R) (h : Crd H s (y ≫ φ) v) :
     Crd (H.pull φ) (fun j => secPull H φ (s j)) y v := by
@@ -36,6 +44,9 @@ theorem crd_pull {X Y : Scheme.{0}} (φ : X ⟶ Y) (H : LB Y) {J : Type} (s : J 
   change _ = (y.appLE _ ⊤ hl').hom ((φ.appLE _ _ (pull_le H φ (fun _ => l))).hom ((s j).f l))
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Unfold `Out.mulA`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Use `map_pow (IsMonHom.monoidHom φ A) (𝟙 A) m` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mulA_comp {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (φ : A ⟶ B) [IsMonHom φ] (m : ℕ) :
     Out.mulA A m ≫ φ = φ ≫ Out.mulA B m := by
   unfold Out.mulA
@@ -43,6 +54,25 @@ theorem mulA_comp {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] (φ : A 
   have := map_pow (IsMonHom.monoidHom φ A) (𝟙 A) m
   simpa using this
 
+/- English proof (translation)
+Introduce `h K _ _ P P' N m J s s' a θ θ' φ hm hφ hs hcrd hθ hP hP'`. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `hL` using `P.isLB`. Establish `hL'` using `P'.isLB`. Establish `hN : (lbPow P.L N).IsLB` using `LB.isLB_linComb hL _ _`.
+
+Establish `hN' : (lbPow P'.L N).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `h1 : (lbPow P.L 1).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h1' : (lbPow P'.L 1).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `hmul` using `h.mulN _ P m hm`. Establish `hfl : Flat (Out.mulA P.A m).left` using `hmul.2.1`.
+
+Establish `hsu : Surjective (Out.mulA P.A m).left` using `hmul.2.2.1`. Establish `hc : (Out.mulA P.A m).left ≫ φ.left = φ.left ≫ (Out.mulA P'.A m).left`. Rewrite using `[← Over.comp_left, mulA_comp, Over.comp_left]`. Establish `hw` using `CrdIso.exists_chart_unit (H := lbPow P.L N) (H' := (lbPow P'.L N).pull φ.left) (s := s) (s' := fun j => secPull _ φ.left (s' j)) hs (fun F _ y v hv => crd_pull _ _ _ _ _ (hcrd F y v hv))`. Establish `key : LBIso (lbPow P.L 1) ((lbPow P'.L 1).pull φ.left)`.
+
+Use `GlobalTheory.T.lbIso_of_associated_germs_flat _ _ (Out.mulA P.A m).left _ _ θ (secPull _ φ.left θ') h1 (pull_isLB h1' _) hθ fun y => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hN y`. Take `⟨k', hk'⟩` from `exists_chart hN' (φ.left y)`. Take `⟨l, hl⟩` from `exists_chart h1 ((Out.mulA P.A m).left y)`. Take `⟨l', hl'⟩` from `exists_chart h1' (φ.left ((Out.mulA P.A m).left y))`.
+
+Establish `hl'' : (Out.mulA P'.A m).left (φ.left y) ∈ (lbPow P'.L 1).U l'`. Rewrite using `[← Scheme.Hom.comp_apply, ← hc]`. Conclude with `hl'`. Establish `hlp : (Out.mulA P.A m).left y ∈ ((lbPow P'.L 1).pull φ.left).U (fun _ => l')` using `mem_pull.2 hl'`. Establish `hkp : y ∈ ((lbPow P'.L N).pull φ.left).U (fun _ => k')` using `mem_pull.2 hk'`.
+
+Use `⟨l, fun _ => l', hl, hlp, ?_⟩` and prove the remaining obligations. Establish `e1 : gs (Out.mulA P.A m).left y _ ((secPull _ φ.left θ').f (fun _ => l')) = (φ.left.stalkMap y).hom (gs (Out.mulA P'.A m).left (φ.left y) _ (θ'.f l'))`. Rewrite using `[← gs_comp _ _ _ _ hl'', ← hc]`. Conclude with `gs_appLE _ _ _ _ _ _ hlp _`. Establish `e2 : gs (𝟙 P.A.left) y _ ((secPull _ φ.left (s' a)).f (fun _ => k')) = (φ.left.stalkMap y).hom (gs (𝟙 P'.A.left) (φ.left y) _ ((s' a).f k'))`.
+
+Rewrite using `[← gs_stalkMap _ _ _ hk']`. Conclude with `(gs_appLE _ _ _ _ _ _ hkp _).trans (by rw [Category.id_comp])`. Take `⟨w, hw⟩` from `hw k (fun _ => k')`. Establish `hx : (𝟙 P.A.left : _ ⟶ _) y ∈ ((lbPow P'.L N).pull φ.left).U (fun _ => k') ⊓ (lbPow P.L N).U k` using `⟨hkp, hk⟩`. Establish `e` using `congrArg (gs (𝟙 P.A.left) y _) (hw a)`.
+
+Rewrite `e` using `[gs_mul _ _ _ hx, gs_res _ _ _ hx, gs_res _ _ _ hx, gs_unit _ _ _ hx, e2]`. Establish `a1` using `(hP' (φ.left y) k' l' hk' hl'').map (φ.left.stalkMap y).hom`. Rewrite using `[e1]`. Use `(hP y k l hk hl).symm.trans (Associated.trans ?_ a1)` and prove the remaining obligations. Conclude with `⟨_, (_root_.mul_comm _ _).trans e.symm⟩`.
+
+Establish `e` using `(CechPic.cls_eq_iff h1 (pull_isLB h1' _)).2 key`. Rewrite `e` using `[CechPic.cls_lbPow hL, CechPic.cls_pull h1', CechPic.cls_lbPow hL', one_smul, one_smul]`. Rewrite using `[← CechPic.cls_eq_iff (pull_isLB hL' _) hL, CechPic.cls_pull hL', e]`.
+-/
 theorem lbIso_pull : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P P' : Out.PolAV (Sp K)) (N m : ℕ) (J : Type) (s : J → (lbPow P.L N).Sec) (s' : J → (lbPow P'.L N).Sec) (a : J) (θ : (lbPow P.L 1).Sec) (θ' : (lbPow P'.L 1).Sec) (φ : P.A ⟶ P'.A), 1 ≤ m → IsMonHom φ → ⨆ j, Out.nonzeroLocus (s j) = ⊤ → (∀ (F : Type) [Field F] (y : Sp F ⟶ P.A.left) (v : J → F), Crd (lbPow P.L N) s y v → Crd (lbPow P'.L N) s' (y ≫ φ.left) v) → (∃ l, θ.f l ≠ 0) → (∀ (y : P.A.left) k l, y ∈ (lbPow P.L N).U k → (Out.mulA P.A m).left y ∈ (lbPow P.L 1).U l → Associated (gs (𝟙 P.A.left) y ((lbPow P.L N).U k) ((s a).f k)) (gs (Out.mulA P.A m).left y ((lbPow P.L 1).U l) ((θ).f l))) → (∀ (y : P'.A.left) k l, y ∈ (lbPow P'.L N).U k → (Out.mulA P'.A m).left y ∈ (lbPow P'.L 1).U l → Associated (gs (𝟙 P'.A.left) y ((lbPow P'.L N).U k) ((s' a).f k)) (gs (Out.mulA P'.A m).left y ((lbPow P'.L 1).U l) ((θ').f l))) → LBIso (P'.L.pull φ.left) P.L := by
   intro h K _ _ P P' N m J s s' a θ θ' φ hm hφ hs hcrd hθ hP hP'
   have := polAV_isIntegral_of_isAlgClosed K P

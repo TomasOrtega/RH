@@ -18,6 +18,9 @@ def comb (t : ∀ k, ι k) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) : ∀ k : K
   | .inl k => t k
   | .inr k => s (.inr k)
 
+/- English proof (translation)
+Simplify using `only [mseg, Fintype.prod_sum_type, map_prod]`. Both sides reduce to the same expression.
+-/
 theorem mseg_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     mseg (joinCoord (fun p => φ (x p)) z) s =
@@ -25,6 +28,9 @@ theorem mseg_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k
   simp only [mseg, Fintype.prod_sum_type, map_prod]
   rfl
 
+/- English proof (translation)
+Simplify using `only [chartMon, Fintype.prod_sum_type, pullDeg, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, mul_one, map_prod, map_zpow₀]`. Both sides reduce to the same expression.
+-/
 theorem chartMon_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (a : K → ℤ) :
     chartMon (joinCoord (fun p => φ (x p)) z) s (pullDeg (K' := K') a) =
@@ -33,6 +39,13 @@ theorem chartMon_join (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (
     zpow_zero, Finset.prod_const_one, mul_one, map_prod, map_zpow₀]
   rfl
 
+/- English proof (translation)
+Establish `hw : mseg z (fun k => s (.inr k)) ≠ 0`. Rewrite `hs` using `[mseg_join]`. Conclude with `right_ne_zero_of_mul hs`. Establish `hle : chartRing O (mseg x) (restrictChart s) ≤ (chartRing O (mseg (joinCoord (fun p => φ (x p)) z)) s).comap φ`. Unfold `chartRing`.
+
+Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `h : φ (mseg x t / mseg x (restrictChart s)) = mseg (joinCoord (fun p => φ (x p)) z) (comb t s) / mseg (joinCoord (fun p => φ (x p)) z) s`. Rewrite using `[mseg_join φ x z (comb t s), mseg_join φ x z s, map_div₀]`. Conclude with `(mul_div_mul_right _ _ hw).symm`.
+
+Establish `h2` using `div_mem_chartRing (o := O) (mseg (joinCoord (fun p => φ (x p)) z)) s (comb t s)`. Rewrite `h2` using `[← h]`. Conclude with `h2`. Conclude with `hle hr`.
+-/
 theorem map_mem (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (joinCoord (fun p => φ (x p)) z) s ≠ 0)
     (r : Ω) (hr : r ∈ chartRing O (mseg x) (restrictChart s)) :
@@ -54,6 +67,17 @@ theorem map_mem (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, 
     exact h2
   exact hle hr
 
+/- English proof (translation)
+Establish `hx : mseg x (restrictChart s) ≠ 0`. Rewrite `hs` using `[mseg_join]`. Introduce `h`. Conclude with `left_ne_zero_of_mul hs (by rw [h, map_zero])`. Rewrite using `[hB s hs, chartMon_join, ← map_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, hc, e, he, rfl⟩` from `hw`.
+
+Take `⟨r, hr, rfl⟩` from `(hA _ hx e).1 he`. Use `⟨c * φ r, mul_mem hc (map_mem φ x z s hs r hr), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, mul_assoc]`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [zero_mul]⟩`. Consider the case `add w₁ w₂ _ _ h₁ h₂`.
+
+Take `⟨r₁, hr₁, rfl⟩` from `h₁`. Take `⟨r₂, hr₂, rfl⟩` from `h₂`. Conclude with `⟨r₁ + r₂, add_mem hr₁ hr₂, by rw [add_mul]⟩`. Consider the case `neg w _ h`. Take `⟨r, hr, rfl⟩` from `h`.
+
+Conclude with `⟨-r, neg_mem hr, by rw [neg_mul]⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨r, hr, _, (hA _ hx _).2 ⟨1, one_mem _, (one_mul _).symm⟩, rfl⟩`.
+-/
 theorem main [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
     (φ : Ω →ₐ[O] Ω₁) (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω₁) (u : Ω) (a : K → ℤ)
     (A : (∀ k, ι k) → AddSubgroup Ω) (hA : IsLine O x u a A)

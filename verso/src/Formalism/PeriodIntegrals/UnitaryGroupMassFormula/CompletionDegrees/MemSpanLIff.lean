@@ -6,6 +6,17 @@ namespace PI.CompDegEF
 
 open IsDedekindDomain NumberField Module Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Establish `hl0' : ((l : ℕ) : Om l) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l))]`. Conclude with `(map_ne_zero _).mpr (Nat.cast_ne_zero.mpr hl.out.ne_zero)`. Establish `hl0 : ((l : ℕ) : ↥K.1) ≠ 0`. Introduce `h`.
+
+Apply `hl0'` to reduce the goal to its premises. Establish `h' : (((l : ℕ) : ↥K.1) : Om l) = 0` using `by rw [h]; rfl`. Simplify using `using h'`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, rfl⟩`. Establish `hz : ‖((z : ↥K.1) : Om l)‖ ≤ 1` using `z.2`. Establish `hc : (((z * ((l : ℕ) : ↥(ball K)) : ↥(ball K)) : ↥K.1) : Om l) = ((z : ↥K.1) : Om l) * ((l : ℕ) : Om l)` using `by simp`. Rewrite using `[hc, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hz`.
+
+Introduce `h`. Establish `hmem : ‖(((y : ↥K.1) / ((l : ℕ) : ↥K.1) : ↥K.1) : Om l)‖ ≤ 1`. Establish `hc : (((y : ↥K.1) / ((l : ℕ) : ↥K.1) : ↥K.1) : Om l) = ((y : ↥K.1) : Om l) / ((l : ℕ) : Om l)` using `by simp`. Rewrite using `[hc, norm_div, div_le_one (norm_pos_iff.mpr hl0')]`. Conclude with `h`.
+
+Use `⟨⟨(y : ↥K.1) / ((l : ℕ) : ↥K.1), hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul]`. Use `push_cast`. Conclude with `div_mul_cancel₀ _ hl0`.
+-/
 theorem mem_span_l_iff {l : ℕ} [hl : Fact l.Prime] (K : FinExt l) (y : ↥(ball K)) :
     y ∈ Ideal.span {((l : ℕ) : ↥(ball K))} ↔
       ‖((y : ↥K.1) : Om l)‖ ≤ ‖((l : ℕ) : Om l)‖ := by
@@ -37,6 +48,17 @@ theorem mem_span_l_iff {l : ℕ} [hl : Fact l.Prime] (K : FinExt l) (y : ↥(bal
     push_cast
     exact div_mul_cancel₀ _ hl0
 
+/- English proof (translation)
+Introduce `l hl E _ _ φ K hφK hdense v hv hφv`. Set `ψ : 𝓞 E →+* ↥(ball K)` to `{ toFun := fun x => ⟨⟨φ (x : E), hφK _⟩, (hφv x).1⟩ map_one' := Subtype.ext <| Subtype.ext <| by simp map_mul' := fun a b => Subtype.ext <| Subtype.ext <| by simp map_zero' := Subtype.ext <| Subtype.ext <| by simp map_add' := fun a b => Subtype.ext <| Subtype.ext <| by simp }`. Set `q` to `(Ideal.Quotient.mk (Ideal.span {((l : ℕ) : ↥(ball K))})).comp ψ`. Establish `hsurj : Function.Surjective q`. Introduce `w`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Take `⟨x, hx⟩` from `hD l E φ K hφK hdense ((y : ↥K.1) : Om l) (y : ↥K.1).2 y.2`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk _ (ψ x) = Ideal.Quotient.mk _ y`. Rewrite using `[Ideal.Quotient.eq, mem_span_l_iff]`.
+
+Establish `hc : (((ψ x - y : ↥(ball K)) : ↥K.1) : Om l) = φ (x : E) - ((y : ↥K.1) : Om l)` using `rfl`. Rewrite using `[hc, norm_sub_rev]`. Conclude with `hx`. Establish `hker : RingHom.ker q = v.asIdeal ^ v.asIdeal.ramificationIdx ℤ`. Use extensionality with `x`.
+
+Rewrite using `[RingHom.mem_ker]`. Use `show Ideal.Quotient.mk _ (ψ x) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(mem_span_l_iff K (ψ x)).trans (hK l E φ v hv hφv x)`. Establish `hcard : Nat.card (𝓞 E ⧸ v.asIdeal ^ v.asIdeal.ramificationIdx ℤ) = Nat.card (↥(ball K) ⧸ Ideal.span {((l : ℕ) : ↥(ball K))})`.
+
+Rewrite using `[← hker]`. Conclude with `Nat.card_congr (RingHom.quotientKerEquivOfSurjective hsurj).toEquiv`. Rewrite `hcard` using `[hN l E v hv, hB l K]`. Conclude with `(Nat.pow_right_injective hl.out.two_le hcard).symm`.
+-/
 theorem locDegOf_of (hB : BallCard) (hD : DenseSurj) (hK : KerProp) (hN : NormCard) :
     LocDegOf := by
   intro l hl E _ _ φ K hφK hdense v hv hφv

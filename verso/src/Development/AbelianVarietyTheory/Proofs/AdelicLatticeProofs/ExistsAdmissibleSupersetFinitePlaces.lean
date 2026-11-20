@@ -5,6 +5,13 @@ open scoped WithZero
 
 namespace GlobalTheory.QNorm
 
+/- English proof (translation)
+Establish `hvd : v.asIdeal ∣ Ideal.span {x}` using `⟨I, hx.symm⟩`. Establish `hsq : ¬ v.asIdeal ^ 2 ∣ Ideal.span {x}`. Introduce and unpack `⟨J, hJ⟩`. Apply `hv` to reduce the goal to its premises. Rewrite `hJ` using `[← hx, pow_two, mul_assoc]`.
+
+Conclude with `⟨J, mul_left_cancel₀ v.ne_bot hJ⟩`. Establish `h1 : v.intValuation x ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `(v.intValuation_le_pow_iff_dvd x 1).2 (by rwa [pow_one])`. Establish `h2 : ¬ v.intValuation x ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hsq ((v.intValuation_le_pow_iff_dvd x 2).1 h)`. Establish `hne : v.intValuation x ≠ 0` using `v.intValuation_ne_zero x hx0`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hne]`.
+
+Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem intValuation_of_span_eq_mul {R : Type} [CommRing R] [IsDedekindDomain R]
     (v : HeightOneSpectrum R) (I : Ideal R) (hI : I ≠ 0) (hv : ¬ v.asIdeal ∣ I) (x : R)
     (hx0 : x ≠ 0) (hx : v.asIdeal * I = Ideal.span {x}) :
@@ -26,6 +33,27 @@ theorem intValuation_of_span_eq_mul {R : Type} [CommRing R] [IsDedekindDomain R]
   push_cast at h1 h2
   omega
 
+/- English proof (translation)
+Introduce `F _ _ S₀`. Use `choose J hJ using fun c : ClassGroup (𝓞 F) => ClassGroup.mk0_surjective c`. Establish `h2 : (2 : 𝓞 F) ≠ 0` using `two_ne_zero`. Establish `hprod : (∏ c : ClassGroup (𝓞 F), (J c : Ideal (𝓞 F))) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+
+Introduce `c _`. Conclude with `nonZeroDivisors.coe_ne_zero (J c)`. Establish `hs : Ideal.span {(2 : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `h2`.
+
+Take `⟨M, hM, hM2, hMJ⟩ : ∃ M : Ideal (𝓞 F), M ≠ 0 ∧ Ideal.span {(2 : 𝓞 F)} ∣ M ∧ ∀ c, (J c : Ideal (𝓞 F)) ∣ M` from `⟨_, mul_ne_zero hs hprod, dvd_mul_right _ _, fun c => dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ c)) _⟩`. Take `⟨S, hS0, hSM⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 F)), S₀ ⊆ S ∧ ∀ u : HeightOneSpectrum (𝓞 F), u.asIdeal ∣ M → u ∈ S` from `⟨S₀ ∪ (Ideal.finite_factors hM).toFinset, Finset.subset_union_left, fun u h => Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 h)⟩`. Establish `hout : ∀ u : HeightOneSpectrum (𝓞 F), u ∉ S → ¬ u.asIdeal ∣ M` using `fun u hu h => hu (hSM u h)`. Establish `houtJ : ∀ u : HeightOneSpectrum (𝓞 F), u ∉ S → ∀ c, ¬ u.asIdeal ∣ (J c : Ideal (𝓞 F))` using `fun u hu c h => hout u hu (h.trans (hMJ c))`. Use `⟨S, hS0, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ¬ v.asIdeal ∣ Ideal.span {(2 : 𝓞 F)}` using `fun h => hout v hv (h.trans hM2)`. Establish `key : v.valuation F (algebraMap (𝓞 F) F 2) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`.
+
+Conclude with `fun hm => h2 (Ideal.dvd_span_singleton.2 hm)`. Rewrite `key` using `[map_ofNat]`. Then use the resulting hypothesis. Set `P : nonZeroDivisors (Ideal (𝓞 F))` to `⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩`. Set `c : ClassGroup (𝓞 F)` to `(ClassGroup.mk0 P)⁻¹`. Establish `hprod : ClassGroup.mk0 (P * J c) = 1`.
+
+Rewrite using `[map_mul, hJ c, mul_inv_cancel]`. Establish `hprin : (v.asIdeal * (J c : Ideal (𝓞 F))).IsPrincipal` using `(ClassGroup.mk0_eq_one_iff (P * J c).2).1 hprod`. Take `⟨y, hy⟩` from `hprin.principal`. Establish `hy' : v.asIdeal * (J c : Ideal (𝓞 F)) = Ideal.span {y}` using `hy`. Establish `hy0 : y ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hy'` using `[Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `(mul_ne_zero v.ne_bot (nonZeroDivisors.coe_ne_zero (J c))) hy'`. Use `⟨algebraMap (𝓞 F) F y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Conclude with `intValuation_of_span_eq_mul v _ (nonZeroDivisors.coe_ne_zero _) (houtJ v hv c) y hy0 hy'`. Introduce `w hw hwv`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Introduce `hyw`. Establish `hdvd : w.asIdeal ∣ v.asIdeal * (J c : Ideal (𝓞 F))`.
+
+Rewrite using `[hy']`. Conclude with `Ideal.dvd_span_singleton.2 hyw`. Break down `(Ideal.prime_of_isPrime w.ne_bot w.isPrime).dvd_or_dvd hdvd with h | h` into its components or cases. Apply `hwv` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ w.asIdeal` using `Ideal.le_of_dvd h`.
+
+Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le w.isPrime.ne_top hle).symm`. Conclude with `houtJ w hw c h`.
+-/
 theorem exists_admissible_superset_finite_places : ∀ (F : Type) [Field F] [NumberField F]
     (S₀ : Finset (HeightOneSpectrum (𝓞 F))), ∃ S, S₀ ⊆ S ∧ admitted F S := by
   intro F _ _ S₀

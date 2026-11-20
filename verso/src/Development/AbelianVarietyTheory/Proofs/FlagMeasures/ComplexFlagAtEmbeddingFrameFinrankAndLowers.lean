@@ -5,6 +5,21 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.RadCov
 
+/- English proof (translation)
+Set `f : (ι → E) →ₗ[E] (Fin n → E)` to `Fintype.linearCombination E v`. Establish `hf : ∀ c, f c = ∑ i, c i • v i` using `fun c => Fintype.linearCombination_apply E v c`. Establish `hker : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`.
+
+Rewrite `hc` using `[hf]`. Use function extensionality and compare the values at `i`. Conclude with `(Fintype.linearIndependent_iff.mp hv) c hc i`. Take `⟨L, hL⟩` from `f.exists_leftInverse_of_injective hker`. Establish `hB : ∀ i, LinearMap.toMatrix' L *ᵥ v i = Pi.single i 1`.
+
+Introduce `i`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Establish `h1` using `LinearMap.congr_fun hL (Pi.single i 1)`. Establish `h2 : f (Pi.single i 1) = v i`. Rewrite using `[hf]`.
+
+Simplify using `[Pi.single_apply]`. Rewrite `h1` using `[LinearMap.comp_apply, h2]`. Conclude with `h1`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`.
+
+Establish `hcol : ∀ i k, ((LinearMap.toMatrix' L).map φ *ᵥ fun l => φ (v i l)) k = if k = i then 1 else 0`. Introduce `i k`. Establish `h3` using `RingHom.map_mulVec φ (LinearMap.toMatrix' L) (v i) k`. Rewrite `h3` using `[hB i]`. Rewrite using `[show (fun l => φ (v i l)) = φ ∘ v i from rfl, ← h3]`.
+
+Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hki]`. Establish `h4` using `congrArg (fun w => ((LinearMap.toMatrix' L).map φ *ᵥ w) j) hc`.
+
+Simplify using `only [Matrix.mulVec_zero, Pi.zero_apply] at h4`. Rewrite using `[← h4, ← Matrix.mulVecLin_apply, map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply, Matrix.mulVecLin_apply, hcol, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 private lemma linearIndependent_map_ringHom_complex {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ) {ι : Type}
     [Fintype ι] {v : ι → Fin n → E} (hv : LinearIndependent E v) :
     LinearIndependent ℂ (fun i l => φ (v i l)) := by
@@ -45,6 +60,15 @@ private lemma linearIndependent_map_ringHom_complex {E : Type} [Field E] {n : �
   simp only [map_smul, Pi.smul_apply, Matrix.mulVecLin_apply, hcol, smul_eq_mul, mul_ite, mul_one,
     mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero`. Establish `h0 : (fun l => φ ((0 : Fin n → E) l)) = 0` using `by funext l; simp`. Rewrite using `[h0]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Establish `h1 : (fun l => φ ((y + z) l)) = (fun l => φ (y l)) + (fun l => φ (z l))`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Establish `h1 : (fun l => φ ((c • y) l)) = φ c • (fun l => φ (y l))`. Use function extensionality and compare the values at `l`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 private lemma map_mem_span_image_of_mem_span {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ)
     (t : Set (Fin n → E)) {x : Fin n → E} (hx : x ∈ Submodule.span E t) :
     (fun l => φ (x l)) ∈ Submodule.span ℂ ((fun (y : Fin n → E) l => φ (y l)) '' t) := by
@@ -65,6 +89,17 @@ private lemma map_mem_span_image_of_mem_span {E : Type} [Field E] {n : ℕ} (φ 
     rw [h1]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Set `V` to `Submodule.span E s`. Set `b` to `Module.finBasis E V`. Set `v : Fin (Module.finrank E V) → Fin n → E` to `fun i => (b i : Fin n → E)`. Establish `hv : LinearIndependent E v` using `b.linearIndependent.map' V.subtype V.ker_subtype`. Establish `hvV : ∀ i, v i ∈ V` using `fun i => (b i).2`.
+
+Establish `hspan : Submodule.span E (Set.range v) = V`. Establish `hr : Set.range v = V.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, b.span_eq, Submodule.map_subtype_top]`.
+
+Establish `heq : Submodule.span ℂ ((fun (y : Fin n → E) l => φ (y l)) '' s) = Submodule.span ℂ (Set.range fun i l => φ (v i l))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ Submodule.span E (Set.range v)`.
+
+Rewrite using `[hspan]`. Conclude with `Submodule.subset_span hx`. Establish `h` using `map_mem_span_image_of_mem_span φ _ hx'`. Rewrite `h` using `[← Set.range_comp]`. Conclude with `h`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `map_mem_span_image_of_mem_span φ s (hvV i)`. Rewrite using `[heq, finrank_span_eq_card (linearIndependent_map_ringHom_complex φ hv), Fintype.card_fin]`.
+-/
 theorem finrank_span_image_ringHom {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ)
     (s : Set (Fin n → E)) :
     Module.finrank ℂ (Submodule.span ℂ ((fun (y : Fin n → E) l => φ (y l)) '' s))
@@ -94,6 +129,17 @@ theorem finrank_span_image_ringHom {E : Type} [Field E] {n : ℕ} (φ : E →+* 
       exact map_mem_span_image_of_mem_span φ s (hvV i)
   rw [heq, finrank_span_eq_card (linearIndependent_map_ringHom_complex φ hv), Fintype.card_fin]
 
+/- English proof (translation)
+Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Use `⟨fun b => ?_, fun c T hT => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (Matrix.mulVecLin P⁻¹)`. Introduce `x y hxy`.
+
+Establish `h` using `congrArg (fun z => P *ᵥ z) hxy`. Simplify `h` using `[Matrix.mulVec_mulVec, hPP]`. Establish `himg : locFlag φ P F b = Submodule.map (Matrix.mulVecLin P⁻¹) (Submodule.span ℂ ((fun (y : Fin n → E) l => φ (y l)) '' (F b : Set (Fin n → E))))`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[himg, ← (Submodule.equivMapOfInjective _ hinj _).finrank_eq, finrank_span_image_ringHom]`. Both sides reduce to the same expression. Rewrite `hT`, the goal using `[GlobalTheory.RadCov.mem_lowers]`. Introduce `b y hy`. Establish `key : locFlag φ P F (b + c + 1) ≤ Submodule.comap (Matrix.mulVecLin (P⁻¹ * T.map φ * P)) (locFlag φ P F b)`.
+
+Rewrite using `[locFlag, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Use `Submodule.subset_span ⟨T *ᵥ x, hT b x hx, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun l => φ ((T *ᵥ x) l)) = T.map φ *ᵥ (fun l => φ (x l))`.
+
+Use function extensionality and compare the values at `l`. Conclude with `RingHom.map_mulVec φ T x l`. Simplify using `only`. Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc (P⁻¹ * T.map φ) P P⁻¹, hPP, Matrix.mul_one]`. Conclude with `key hy`.
+-/
 theorem finrank_locFlag_and_lowers (E : Type) [Field E] [NumberField E] (n : ℕ) (φ : E →+* ℂ)
     (P : Matrix (Fin n) (Fin n) ℂ) (F : ℕ → Submodule (𝓞 E) (Fin n → E)) (hP : IsUnit P) :
     (∀ b, Module.finrank ℂ (locFlag φ P F b) = Formalism.HN.rkK (F b)) ∧

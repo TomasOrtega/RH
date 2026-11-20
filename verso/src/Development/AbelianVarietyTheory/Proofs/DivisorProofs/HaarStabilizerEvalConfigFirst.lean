@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.ConeFubini
 
+/- English proof (translation)
+Use `set h : K × (L × Y) → ℂ := fun p => g p.1 p.2.1 p.2.2 with hh`. Establish `hR : ∫ k, ∫ l, ∫ y, g k l y ∂μY ∂μ ∂μK = ∫ p, h p ∂(μK.prod (μ.prod μY))`. Rewrite using `[integral_prod h hg]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg.prod_right_ae] with k hk`.
+
+Conclude with `(integral_prod (fun q : L × Y => g k q.1 q.2) hk).symm`. Set `e : Y × (K × L) ≃ᵐ K × (L × Y)` to `MeasurableEquiv.prodComm.trans MeasurableEquiv.prodAssoc`. Establish `he : MeasurePreserving e (μY.prod (μK.prod μ)) (μK.prod (μ.prod μY))` using `(measurePreserving_prodAssoc μK μ μY).comp (Measure.measurePreserving_swap)`. Establish `hg' : Integrable (h ∘ e) (μY.prod (μK.prod μ))` using `(he.integrable_comp_emb e.measurableEmbedding).2 hg`. Establish `hL : ∫ y, ∫ k, ∫ l, g k l y ∂μ ∂μK ∂μY = ∫ p, h p ∂(μK.prod (μ.prod μY))`.
+
+Rewrite using `[← he.integral_comp e.measurableEmbedding h, integral_prod (fun x => h (e x)) hg']`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hg'.prod_right_ae] with y hy`. Conclude with `(integral_prod (fun q : K × L => g q.1 q.2 y) hy).symm`. Rewrite using `[hL, hR]`.
+-/
 theorem iter_eq {K L Y : Type} [MeasurableSpace K] [MeasurableSpace L] [MeasurableSpace Y]
     (μK : Measure K) (μ : Measure L) (μY : Measure Y) [SFinite μK] [SFinite μ] [SFinite μY]
     (g : K → L → Y → ℂ) (hg : Integrable (fun p : K × (L × Y) => g p.1 p.2.1 p.2.2) (μK.prod (μ.prod μY))) :
@@ -38,6 +45,23 @@ theorem iter_eq {K L Y : Type} [MeasurableSpace K] [MeasurableSpace L] [Measurab
 
 open GlobalTheory.ThK in
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ μY hμY hint`. Use `haveI := hμK`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Take `⟨K', μK', μ', hK', hKc, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hKP.base F E σ B (b + 2) G.V (b + 2 - G.p) G.p hT.base hT.geo.hV`. Establish `hKK : K = K'` using `by ext g; rw [hK g, hK' g]`.
+
+Establish `hKc' : IsCompact (K : Set (UA σ G.V.J))` using `hKK ▸ hKc`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc'`. Use `haveI : IsFiniteMeasure μK := ⟨IsFiniteMeasureOnCompacts.lt_top_of_isCompact isCompact_univ⟩`. Use `haveI : SFinite μK := @instSFiniteOfSigmaFinite _ _ _ (@IsFiniteMeasure.toSigmaFinite _ _ μK this)`. Use `haveI := hμ`.
+
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨eq⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+
+Use `haveI : LocallyCompactSpace (AE F E) := eq.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := eq.secondCountableTopology`. Use `haveI : T2Space (AE F E) := eq.isEmbedding.t2Space`. Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
+
+Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : SigmaCompactSpace (AE F E)ˣ := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ (SigmaFinite.of_isFiniteMeasureOnCompacts μ)`. Use `letI : MeasurableSpace (Fin b × Fin (b + a') → AF F) := borel _`.
+
+Use `haveI := hμY`. Use `haveI : SigmaCompactSpace (Fin b × Fin (b + a') → AF F) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SFinite μY := @instSFiniteOfSigmaFinite _ _ _ (SigmaFinite.of_isFiniteMeasureOnCompacts μY)`. Establish `key` using `GlobalTheory.ConeFubini.iter_eq μK μ μY (fun k l y => e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ)) y * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2) * starRingEnd ℂ (φ y)) hint`. Use `(integral_congr_ae (Eventually.of_forall fun y => ?_)).trans (key.trans ?_)` and prove the remaining obligations.
+
+Use `show (∫ k, ∫ l, _ ∂μ ∂μK) * _ = _`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Conclude with `(integral_mul_const _ _).symm`. Use `integral_congr_ae (Eventually.of_forall fun k => integral_congr_ae (Eventually.of_forall fun l => ?_)) show _ = (∫ y, _ ∂μY) * _ * _` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneFub : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

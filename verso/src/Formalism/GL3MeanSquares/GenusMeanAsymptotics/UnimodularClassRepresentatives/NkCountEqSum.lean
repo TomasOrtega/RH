@@ -26,6 +26,11 @@ def IsMReps (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F
   ∀ M ∈ MSet S L 𝔭, ∃! M₀, M₀ ∈ R ∧
     ∃ g' ∈ Formalism.HermitianLatticesTheory.isom h', Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S g') M₀ = M
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hg, hx, hc⟩`. Conclude with `⟨⟨hg, hx⟩, hc.trans hT⟩`. Introduce and unpack `⟨⟨⟨g, hg, hgL⟩, hx⟩, hc⟩`. Use `⟨?_, ⟨g, hg, hgL⟩, hx, hc.trans hT.symm⟩` and prove the remaining obligations.
+
+Rewrite using `[← hgL, LocalizedFibreSets.gmap_locF, LocalizedFibreSets.locF_idem]`.
+-/
 theorem mem_fib_iff (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     {T : Submodule (𝓞 K) V'} (hT : locF 𝔭 T = T) (Λ : Submodule (𝓞 K) V) :
     (locF 𝔭 Λ = Λ ∧ (∃ g ∈ Formalism.HermitianLatticesTheory.isom h, Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L) = Λ) ∧ S.x₀ ∈ Λ ∧
@@ -37,12 +42,24 @@ theorem mem_fib_iff (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal
     refine ⟨?_, ⟨g, hg, hgL⟩, hx, hc.trans hT.symm⟩
     rw [← hgL, LocalizedFibreSets.gmap_locF, LocalizedFibreSets.locF_idem]
 
+/- English proof (translation)
+Unfold `fibLoc`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun Λ => (mem_fib_iff S L 𝔭 hT Λ).symm)`.
+-/
 theorem card_fib (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     {T : Submodule (𝓞 K) V'} (hT : locF 𝔭 T = T) :
     Nat.card {Λ // Λ ∈ MSet S L 𝔭 ∧ S.cut Λ = T} = fibLoc S L 𝔭 T := by
   unfold fibLoc
   exact Nat.card_congr (Equiv.subtypeEquivRight fun Λ => (mem_fib_iff S L 𝔭 hT Λ).symm)
 
+/- English proof (translation)
+Establish `hfin : {M | M ∈ MSet S L 𝔭 ∧ S.cut M ∈ s}.Finite`. Establish `hsub : {M | M ∈ MSet S L 𝔭 ∧ S.cut M ∈ s} ⊆ ⋃ T ∈ s, {M | M ∈ MSet S L 𝔭 ∧ S.cut M = T}`. Introduce and unpack `M ⟨h1, h2⟩`. Conclude with `Set.mem_biUnion h2 ⟨h1, rfl⟩`. Use `(Set.Finite.biUnion s.finite_toSet fun T hT => ?_).subset hsub` and prove the remaining obligations.
+
+Take `⟨hT1, -, hT3⟩` from `hsr.1 T hT`. Rewrite `hT3` using `[← card_fib S L 𝔭 hT1]`. Conclude with `Nat.finite_of_card_ne_zero hT3`. Establish `hcov : ∀ M ∈ MSet S L 𝔭, ∃ t ∈ {M | M ∈ MSet S L 𝔭 ∧ S.cut M ∈ s}, ∃ g' ∈ Formalism.HermitianLatticesTheory.isom h', Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S g') t = M`. Introduce `M hM`.
+
+Take `⟨⟨g, hg, rfl⟩, hxM⟩` from `hM`. Take `⟨a, b, c⟩` from `OrbF.cut_props hK hF hs hd S hL hLi h𝔭 hg hxM`. Take `⟨T₀, ⟨hT₀, g', hg', e⟩, -⟩` from `hsr.2 _ a b c`. Use `⟨Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S g'⁻¹) (Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L)), ⟨OrbF.through_smul hs S (inv_mem hg') ⟨⟨g, hg, rfl⟩, hxM⟩, ?_⟩, g', hg', OrbF.gmap_extOf_inv S g' _⟩` and prove the remaining obligations. Rewrite using `[StabilizerLattices.cut_gmap_extOf, ← e, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]`.
+
+Conclude with `hT₀`. Conclude with `OrbF.exists_reps _ (OrbF.orb_equiv S) (MSet S L 𝔭) _ hfin hcov`.
+-/
 theorem exists_mReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}
@@ -70,6 +87,27 @@ theorem exists_mReps (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     exact hT₀
   exact OrbF.exists_reps _ (OrbF.orb_equiv S) (MSet S L 𝔭) _ hfin hcov
 
+/- English proof (translation)
+Establish `hch : ∀ M : Submodule (𝓞 K) V, ∃ g : V ≃ₗ[K] V, M ∈ R → g ∈ Formalism.HermitianLatticesTheory.isom h ∧ Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L) = M`. Introduce `M`. Distinguish the cases in `hM : M ∈ R`. Take `⟨⟨⟨g, hg, e⟩, -⟩, -⟩` from `hR.1 M hM`. Conclude with `⟨g, fun _ => ⟨hg, e⟩⟩`.
+
+Conclude with `⟨1, fun hM' => absurd hM' hM⟩`. Use `choose γ hγ using hch`. Take `⟨c₀, hc₀⟩` from `exists_exact_near hK hF hs hd hL hLi h𝔭 hn ⟨S.x₀, hx⟩`. Use `filter_upwards [eventually_ge_atTop (4 * vF 𝔭 n + eA h (locF 𝔭 L) 𝔭 + 1)] with J hJ`. Use `filter_upwards [eventually_ge_atTop (c₀ + J)] with k hk`.
+
+Establish `hterm : ∀ M ∈ R, cnt h M 𝔭 k n (tube (autSub h M) M 𝔭 J S.x₀) = cnt h (locF 𝔭 L) 𝔭 k n (tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M).symm S.x₀))`. Introduce `M hM`. Take `⟨hg, e⟩` from `hγ M hM`. Establish `h1` using `cnt_gmap hg (locF 𝔭 L) 𝔭 k n (tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M).symm S.x₀))`. Rewrite `h1` using `[OrbF.image_tube hg, e]`.
+
+Conclude with `h1`. Establish `hst : ∀ M ∈ R, ∀ y ∈ tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M).symm S.x₀), ∀ z ∈ ((extP K 𝔭) ^ k • locF 𝔭 L : Submodule (𝓞 K) V), y + z ∈ tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M).symm S.x₀)` using `fun M _ y hy z hz => OrbF.tube_add _ _ 𝔭 (by omega) _ hy hz`. Establish `hdis : ∀ M ∈ R, ∀ M' ∈ R, M ≠ M' → Disjoint (tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M).symm S.x₀)) (tube (autSub h (locF 𝔭 L)) (locF 𝔭 L) 𝔭 J ((γ M').symm S.x₀))`. Introduce `M hM M' hM' hne`. Rewrite using `[Set.disjoint_left]`.
+
+Introduce `y h1 h2`. Take `⟨hg, e⟩` from `hγ M hM`. Take `⟨hg', e'⟩` from `hγ M' hM'`. Establish `hxM` using `(hR.1 M hM).1.2`. Establish `hxM'` using `(hR.1 M' hM').1.2`.
+
+Take `⟨g', hg'', e''⟩` from `OrbF.same_orbit hK hF hs hd S hL hLi h𝔭 hn hx hg hg' (by rw [e]; exact hxM) (by rw [e']; exact hxM') hJ h1 h2`. Rewrite `e''` using `[e, e']`. Conclude with `hne ((hR.2 M' (hR.1 M' hM').1).unique ⟨hM, g', hg'', e''⟩ ⟨hM', 1, one_mem _, by rw [OrbF.extOf_one, autSub_gmap_one]⟩)`. Rewrite using `[Finset.sum_congr rfl hterm, ← cnt_biUnion h (locF 𝔭 L) 𝔭 k n (finite_quot hL h𝔭 k) R _ hst hdis, ← nkCount_locF hF h L 𝔭 h𝔭 k n]`. Use `symm`.
+
+Apply `cnt_eq_nkCount` to reduce the goal to its premises. Introduce `y hy hyn`. Take `⟨y', hy', hn', hclose⟩` from `hc₀ k (by omega) y hy hyn`. Establish `hy0 : y' ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hn'` using `[map_zero]`. Conclude with `S.hx₀ (hx.trans hn'.symm)`. Take `⟨g, hg, hgy⟩` from `exists_isom_map_of_eq hK hs hd hy0 (hn'.trans hx.symm)`. Establish `hMS : Formalism.HermitianLatticesTheory.gmap g (locF 𝔭 L) ∈ MSet S L 𝔭` using `⟨⟨g, hg, rfl⟩, ⟨y', hy', hgy⟩⟩`. Take `⟨M₀, ⟨hM₀, g', hg', e⟩, -⟩` from `hR.2 _ hMS`.
+
+Take `⟨hγ₀, e₀⟩` from `hγ M₀ hM₀`. Rewrite `e` using `[← e₀]`. Take `⟨u, hu, hu'⟩` from `OrbF.exists_on_orbit hs S hg hγ₀ hg' e hgy`. Use `Set.mem_biUnion hM₀ ⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', ← neg_sub]`.
+
+Conclude with `neg_mem (pow_smul_anti 𝔭 _ (by omega) hclose)`.
+-/
 theorem nkCount_eq_sum (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}
@@ -137,6 +175,13 @@ theorem nkCount_eq_sum (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
   rw [hu', ← neg_sub]
   exact neg_mem (pow_smul_anti 𝔭 _ (by omega) hclose)
 
+/- English proof (translation)
+Establish `key` using `@sum_relIndex_fibre (Formalism.HermitianLatticesTheory.isom h') _ _ _ (OrbF.actV S) (OrbF.actV' h') S.cut (fun g M => StabilizerLattices.cut_gmap_extOf S g.1 M) (MSet S L 𝔭) (fun g M hM => OrbF.through_smul hs S g.2 hM) R s hR.1 (fun M hM => by`. Take `⟨t, ⟨ht, g', hg', e⟩, huniq⟩` from `hR.2 M hM`. Conclude with `⟨t, ⟨ht, ⟨g', hg'⟩, e⟩, fun t' ht' => huniq t' ⟨ht'.1, ht'.2.choose.1, ht'.2.choose.2, ht'.2.choose_spec⟩⟩)`. Use the proof step `(fun y hy y' hy' hg => by`. Take `⟨g, e⟩` from `hg`.
+
+Take `⟨a, b, c⟩` from `hsr.1 y' hy'`. Conclude with `(hsr.2 y' a b c).unique ⟨hy, g.1, g.2, e⟩ ⟨hy', 1, one_mem _, autSub_gmap_one _⟩)`. Use the proof step `(fun M hM => by`. Rewrite using `[OrbF.relIndex_stab hs]`. Take `⟨⟨⟨g, hg, rfl⟩, hxM⟩, -⟩` from `hR.1 M hM`.
+
+Rewrite `hxM`, the goal using `[LocalizedFibreSets.gmap_locF]`. Conclude with `oM_ne_zero hs S (LocalizedFibreSets.isLattice_gmap g hL) h𝔭 hxM) w`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_oM (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {𝔭 : Ideal (𝓞 F)}

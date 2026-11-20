@@ -22,11 +22,20 @@ structure Data : Prop where
 
 def cell (x : G) : G := x * (π x)⁻¹
 
+/- English proof (translation)
+The claim follows from `hD.id _ (hD.mem x)`.
+-/
 theorem π_π (hD : Data W S N' K π) (x : G) : π (π x) = π x := hD.id _ (hD.mem x)
 
+/- English proof (translation)
+Rewrite using `[hD.ker, cell, map_mul, map_inv, π_π W S N' K π hD, mul_inv_cancel]`.
+-/
 theorem cell_mem (hD : Data W S N' K π) (x : G) : cell π x ∈ N' := by
   rw [hD.ker, cell, map_mul, map_inv, π_π W S N' K π hD, mul_inv_cancel]
 
+/- English proof (translation)
+Rewrite using `[cell, mul_smul, (hD.stab _).mpr (S.inv_mem (hD.mem x))]`.
+-/
 theorem cell_smul (hD : Data W S N' K π) (x : G) : cell π x • W = x • W := by
   rw [cell, mul_smul, (hD.stab _).mpr (S.inv_mem (hD.mem x))]
 
@@ -44,6 +53,13 @@ def Hs : Subgroup G := K ⊓ MulAction.stabilizer G (g • W)
 def toCell (hD : Data W S N' K π) (k : K) : Cells W N' K g :=
   ⟨cell π ((k : G) * g), cell_mem W S N' K π hD _, k, k.2, by rw [cell_smul W S N' K π hD, mul_smul]⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hcN, k, hk, hc⟩`. Use `⟨⟨k, hk⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show cell π (k * g) = c`. Establish `hs : (k * g)⁻¹ * c ∈ S`. Rewrite using `[← hD.stab, mul_smul, hc, ← mul_smul k g W, inv_smul_smul]`.
+
+Take `⟨s, hsS, hc'⟩ : ∃ s ∈ S, c = k * g * s` from `⟨_, hs, by group⟩`. Establish `hπc : π c = 1` using `(hD.ker c).mp hcN`. Establish `hπ : π (k * g) = s⁻¹`. Rewrite `hπc` using `[hc', map_mul, hD.id s hsS]`. Conclude with `eq_inv_of_mul_eq_one_left hπc`.
+
+Rewrite using `[cell, hπ, inv_inv, ← hc']`.
+-/
 theorem toCell_surj (hD : Data W S N' K π) : Function.Surjective (toCell W S N' K π g hD) := by
   rintro ⟨c, hcN, k, hk, hc⟩
   refine ⟨⟨k, hk⟩, Subtype.ext ?_⟩

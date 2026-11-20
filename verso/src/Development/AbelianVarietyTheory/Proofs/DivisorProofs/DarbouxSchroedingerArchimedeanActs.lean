@@ -11,6 +11,19 @@ noncomputable section
 
 namespace GlobalTheory.ArchSch
 
+/- English proof (translation)
+Take `⟨e, he⟩ : ∃ e : AF F →+* mixedEmbedding.mixedSpace F, ∀ a, evI F a = e a` from `⟨(InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _), fun _ => rfl⟩`. Establish `hab : ∀ u : AF F, evI F u = 0 → u • (d.e z).1 = 0 ∧ u • (d.e z).2 = 0`. Introduce `u hu`. Establish `h0 : u • d.e z = 0` using `by rw [← LinearEquiv.map_smul, hz u hu, map_zero]`. Conclude with `⟨by simpa using congrArg Prod.fst h0, by simpa using congrArg Prod.snd h0⟩`.
+
+Introduce `r hr`. Use function extensionality and compare the values at `x`. Establish `hra : r (x + (d.e z).1) = r x` using `hr.1 x _ (fun u hu => (hab u hu).1)`. Establish `ht : At (evI F) (x ⬝ᵥ (d.e z).2 + ⅟(2 : AF F) * ((d.e z).1 ⬝ᵥ (d.e z).2))`. Introduce `u hu`.
+
+Establish `hb0` using `(hab u hu).2`. Rewrite using `[smul_eq_mul, mul_add, mul_left_comm, ← smul_eq_mul u (x ⬝ᵥ _), ← smul_eq_mul u ((d.e z).1 ⬝ᵥ _), ← dotProduct_smul, ← dotProduct_smul, hb0]`. Simplify using the standard rewrite rules. Establish `hpsi` using `hψ.2.2 _ ht`. Establish `h2 : e (⅟(2 : AF F)) + e (⅟(2 : AF F)) = 1` using `by rw [← map_add, invOf_two_add_invOf_two, map_one]`.
+
+Establish `hT : ∀ S : mixedEmbedding.mixedSpace F, Algebra.trace ℝ _ (e (⅟(2 : AF F)) * S) = Algebra.trace ℝ _ S / 2`. Introduce `S`. Establish `: Algebra.trace ℝ _ (e (⅟(2 : AF F)) * S) + Algebra.trace ℝ _ (e (⅟(2 : AF F)) * S) = Algebra.trace ℝ _ S` using `by rw [← map_add, ← add_mul, h2, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : (fun i => evI F ((x + (d.e z).1) i)) = (fun i => evI F (x i)) + fun i => evI F ((d.e z).1 i)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[he]`. Simplify using `only [Darboux.rho, schr, tens, hg, sch, ech, mixedTracePairing_apply, arch]`. Rewrite using `[hpsi, hra, hx]`. Simplify using `only [he, map_add, map_mul, dotProduct, map_sum, hT]`.
+
+Rewrite using `[show arch F (d.e z).1 = fun i => e ((d.e z).1 i) from funext fun i => he _]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem darboux_rho_acts_sch {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {V : Type} [AddCommGroup V]
     [Module (AF F) V] {B : V → V → AF F} (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (z : V)
     (hz : At (evI F) z) (f g : SInf F κ)

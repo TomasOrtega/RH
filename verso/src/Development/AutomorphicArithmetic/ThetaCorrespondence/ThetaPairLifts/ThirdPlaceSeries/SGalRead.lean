@@ -42,6 +42,13 @@ variable {C : CharFrame D} {art : Ideles D.host.E →* Gab D.host.E D.nd.Om} {X 
   {i : X.Tw} {b : Bool} {ρ : Reading X i b} {s : X.Sig i} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GalE D →* GL (Fin D.R.r) (Qbar (X.l i))} {ν : GalE D →* (X.O0 i)ˣ} {w : D.what₂.places.Pl}
   {red : Zbar (X.l i) →+* FbAt D w}
+/- English proof (translation)
+Establish `hu` using `h.param.unr P hg`. Take `⟨n, hn⟩` from `h.shift`. Establish `e1` using `((_root_.UpperTheory.GalS.galW' h.gal).2.2 P hl).2.2 hu B g hB hF`. Establish `e2` using `hn.frob ha (Or.inl hl) (shiftChar_unr C P) hB hF`. Rewrite `e1` using `[galPol, D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map]`.
+
+Establish `e3 : ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map ρ.toC = (((shiftChar C).val P : ℂˣ) : ℂ)⁻¹ • ((r g : GL (Fin D.R.r) (Qbar (X.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (X.l i))).map ρ.ι.toRingHom`. Use extensionality with `x y`. Use `congrArg ρ.ι (congrFun (congrFun (h.rho g) x) y)` as an intermediate fact. Simplify `this` using `[e2, Reading.toC_apply]`. Rewrite using `[← Matrix.charpoly_map, e3, charpoly_smul_of_prod _ _ _ e1, Multiset.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem IsGaloisTripleWithReduction.charpoly_frob_of_isTriple (ha : IsGlobalArtin art) (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) {P : PlE D.host}
     (hl : P ∉ placesOver D.host.E (X.l i)) (hg : ∀ k, P ∉ placesOver D.host.E (D.host.g k))
     {B : ValuationSubring D.nd.Om} (hB : IsPlaceOver B P) {g : GalE D} (hF : IsFrob (F := D.host.E) B (normV P) g) :
@@ -112,6 +119,19 @@ namespace GlobalTheory.ResLoc
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2 Formalism.L2.Host GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
+/- English proof (translation)
+Use `_root_.GlobalTheory.EigTie.residual_ties_of_charpoly_reduction hI fun w hw σ π r hg ⟨j, h1, h2, hσ⟩ hπ hr => ?_` and prove the remaining obligations. Take `⟨i, P, x, rfl, hPσ, hx⟩` from `hL j h1 h2 σ hσ w hw`. Take `⟨r', hr'⟩` from `_root_.GlobalTheory.ResLoc.exists_galRep_cast_alt (D.nd.w_l i) hr`. Rewrite `hr'` using `[← hι i]`. Use `replace hr' := _root_.UpperTheory.GalS.galW' hr'`.
+
+Take `⟨ρ, hR⟩` from `lattice_of_point D.nd D.naut hLaw hO hXi i x P hx π (fun v hv => by rw [hpair i σ P hPσ v hv, hW, hπ.2 v hv]) hπ.1.unr r' hr'.1 hr'.2.1 (fun v hv hu B s hB hs => by rw [Matrix.charpoly_map]; exact (hr'.2.2 v hv).2.2 hu B s hB hs)`. Establish `hr1 : 1 ≤ D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Simplify using `only [Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hP : HasParamW D.nd D.naut i σ [⟨D.R.r, π, 1⟩]` using `⟨by simp [hr1], by simp [rankIso], fun v hv => by rw [GlobalTheory.RowRepOcc.isoLoc_one, hW, hπ.2 v hv]⟩`. Take `⟨hss, hcp⟩` from `D.rbar_tie i σ _ ρ hP hR`. Use `⟨hss, fun g => ?_⟩` and prove the remaining obligations. Set `φ : D.nd.O i →+* Zbar (D.what₂.places.resChar (D.nd.w i))` to `((Pl.ι (D.nd.w i)).symm.toRingHom.comp (iotaO D.nd D.naut i)).codRestrict _ fun y => (Pl.plB_eq _ _).1 (hk i y).1`.
+
+Use `⟨((ρ g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_map]`. Conclude with `_root_.GlobalTheory.ResLoc.charpoly_lattice_alt hC i _ (hι i) (hW i σ) hP hR hπ hr g`. Apply `Polynomial.map_injective (fbCast (D.nd.w_l i) (D.what₂.places.resChar_prime (D.nd.w i)) (D.nd.lPrime i).out).toRingHom (RingEquiv.injective _)` to reduce the goal to its premises. Rewrite using `[hcp g, Polynomial.map_map, Polynomial.map_map]`.
+
+Use `congr 1`. Use extensionality with `y`. Take `⟨h, e⟩` from `hk i y`. Use `Eq.trans ?_ e` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fbCast _ _ _ (Pl.plκ (D.nd.w i) (IsLocalRing.residue (Pl.plB (D.nd.w i)) ⟨_, _⟩)) = _`.
+
+Use `congr 4`. Conclude with `(Pl.ι (D.nd.w i)).apply_symm_apply _`.
+-/
 theorem resTied_of_points_alt_alt {D : D7} (hC : GlobalTheory.RowTie.ChebSplit D.nd) (Rw : RowSide D) (Pl : PlSide D) (hI : IotaOk D Pl)
     (hι : ∀ i : D.nd.Loc, D.naut.iotaQC i = qCast (D.nd.w_l i) (Pl.ι (D.nd.w i)))
     (hk : ∀ (i : D.nd.Loc) (y : D.nd.O i), ∃ h : iotaO D.nd D.naut i y ∈ Pl.plB (D.nd.w i),
@@ -196,6 +216,19 @@ open GlobalTheory.TwistDet GlobalTheory.GalChar Formalism.L2.Host
 variable {D : D7}
 section Row
 variable {σ : D.what₂.FT} {π : D.naut.CG D.R.r} {w : D.what₂.places.Pl}
+/- English proof (translation)
+Substitute `hl` using the available equality. Establish `hr'` using `_root_.UpperTheory.GalS.galW' hr`. Establish `hlp` using `D.what₂.places.resChar_prime w`. Establish `hred : IsReduction D red r (D.ntypes.rbar σ w)` using `⟨D.ntypes.rbar_open σ w, hρ.ss, hρ.charpoly⟩`. Establish `hwild : ∀ k, D.what₂.places.resChar w ≠ D.host.g k → ∀ (v : D.nd.PlG k) u, WildAt (D.nd.plOm.1 (D.naut.plGw k v)) u → D.ntypes.rbar σ w u = 1` using `fun k hk v u hu => reduction_eq_one_of_wildAt hW (gw_fixed hW hg hπ k v) (by rw [← hπ.lab, (D.nd.lab_monic k σ v).2]) hk hr' hred hu`.
+
+Use `⟨?_, fun k hk v => ⟨fun s hs => ?_, hwild k hk v, fun j u hu h0 => ?_⟩⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, D.what₂.places.resChar w ∉ BB D.R.r (D.host.g k) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `Set.disjoint_left.1 D.ntypes.BB_disj (h 0) (h 1)`.
+
+Establish `hk' : D.what₂.places.resChar w ≠ D.host.g k` using `fun e => hk (Or.inl e)`. Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h0, h1, h2, -, h4, -⟩` from `(hg k).1`. Use `irredOn_of_labels (fun v => (h0 v).2.1) h1 h4 (fun v => D.ntypes.iota k v w) (fun v x hx y hy h => h2 _ hlp hk v x hx y hy (primeToPart_eq_of_eq _ (D.ntypes.iota_inj k v w) (root_ne_zero hg k v hx) (root_ne_zero hg k v hy) h)) _ (D.ntypes.tg k) (fun v => ?_) fun v => charpoly_rba …` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_isFrob (D.nd.plOm.2 (D.naut.plGw k v))`.
+
+Rewrite `hφ` using `[normV_eq_of_split (D.host.g_prime k) (D.nd.g_split k) (D.naut.plGw_over k v)]`. Establish `h3` using `hwild k hk' v _ (wild_of_frob (D.ntypes.tg_mem k v) hφ)`. Rewrite `h3` using `[map_mul, map_inv, inv_mul_eq_one, map_pow]`. Conclude with `⟨φ, h3.symm⟩`. Conclude with `_root_.GlobalTheory.TripleResidual.charpoly_cConj_eq_charpoly_inv_of_mem_ine Y (GlobalTheory.SplitFrobDense.frobDense D GlobalTheory.Published.cheb_holds) hπ.csd hr hred (not_mem_of_ne hlp hk) (D.nd.plOm.2 _) hs`.
+
+Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Rewrite `h0` using `[charpoly_rbar_tg_eq_prod_roots hW hg hπ hk v hr' hρ, IsRoot, eval_multiset_prod, Multiset.map_map, Multiset.prod_eq_zero_iff, Multiset.mem_map]`. Take `⟨x, hx, e⟩` from `h0`. Simplify using `only [Function.comp_apply, eval_sub, eval_X, eval_C, sub_eq_zero] at e`. Establish `h3` using `primeToPart_eq_of_eq _ (D.ntypes.iota_inj k v w) (root_ne_zero hg k v hx) (toFb_ne_zero k u) e.symm`.
+
+Break down `hu with rfl | rfl` into its components or cases. Conclude with `(hg k).1.2.2.2.1 _ hlp hk v j x hx h3`. Conclude with `(hg k).2.2.2.2.1 _ hlp hk v j x hx h3`.
+-/
 theorem irredOn_rbar_and_inertia_of_residual (Y : NTw D.R D.host D.what₂ D.LL0 D.nd) (hW : WildOne D) (hg : D.nd.goodRow σ) (hπ : IsParam σ π)
     {l : ℕ} [Fact l.Prime] (hl : D.what₂.places.resChar w = l) {ι : Qbar l ≃+* ℂ}
     {r : GalE D →* GL (Fin D.R.r) (Qbar l)} {red : Zbar l →+* FbAt D w} (hr : _root_.UpperTheory.GalS.IsGaloisRepOfN D π l ι r)

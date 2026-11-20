@@ -31,6 +31,9 @@ open Matrix
 noncomputable section
 namespace GlobalTheory.CosDual
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM i hi e he y hy h u hu`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `h1` using `h (e • u) (hu.2 e he)`. Rewrite `h1` using `[smul_smul, hee, symplO_smul_half _ _ e u y hy]`. Conclude with `h1`.
+-/
 theorem ann_depLat : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 →
     ∀ y : WO (G.pS (.core i)) (G.pT (.core i)), IsHalf (cA D e) y →
     (∀ v ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))), W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (e • v) y) = 1) →
@@ -43,6 +46,25 @@ theorem ann_depLat : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ e : A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM i hi x₀ hx₀ e he g hyp x hx`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Take `⟨X, hXdef⟩ : ∃ X : WO (G.pS (.core i)) (G.pT (.core i)), X = e • x₀.map (incA D)` from `⟨_, rfl⟩`. Establish `hXh : IsHalf e X` using `fun a b => by`. Simplify using `only [hXdef, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee]`.
+
+Take `⟨Z, hZdef⟩ : ∃ Z : WO (G.pS (.core i)) (G.pT (.core i)), Z = X - actO (G.pS (.core i)) (G.pT (.core i)) 1 g X` from `⟨_, rfl⟩`. Establish `hZ : IsHalf e Z` using `fun a b => by`. Simplify using `only [hZdef, Matrix.sub_apply, mul_sub, hXh a b, half_actO _ _ e g X hXh a b]`. Establish `key : ∀ y : WO (G.pS (.core i)) (G.pT (.core i)), IsHalf (cA D e) y → (∀ v ∈ GlobalTheory.ChiGrid.hatMx (G.modul • GlobalTheory.ChiGrid.homLat (G.latS (.core i)) (G.latT (.core i))), W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (e • v) y) = 1) → (∀ v ∈ GlobalTheory.ChiGrid.hatMx …`. Introduce `y hy h1 h2`.
+
+Establish `hy' : IsHalf (cA D e) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g⁻¹ y)` using `half_actO _ _ _ _ _ hy`. Establish `hA` using `ann_depLat D hq T L μ0 hL sc G W M hM i hi e he y hy h1`. Establish `hB` using `ann_depLat D hq T L μ0 hL sc G W M hM i hi e he _ hy' (fun v hv => by`. Establish `h3` using `h2 v hv`. Rewrite using `[← GlobalTheory.SymplOInv.symplO_actO D _ _ 1 g (e • v) (actO _ _ 1 g⁻¹ y), actO_inv]`.
+
+Conclude with `h3)`. Establish `H` using `hyp y hy hA hB`. Rewrite `H` using `[← hXdef]`. Rewrite `H` using `[← GlobalTheory.SymplOInv.symplO_actO D _ _ 1 g X (actO _ _ 1 g⁻¹ y), actO_inv]`. Establish `hsum : X = Z + actO (G.pS (.core i)) (G.pT (.core i)) 1 g X`.
+
+Rewrite using `[hZdef]`. Normalize the expressions using the abelian group laws. Establish `hs : symplO (G.pS (.core i)) (G.pT (.core i)) X y = symplO (G.pS (.core i)) (G.pT (.core i)) Z y + symplO (G.pS (.core i)) (G.pT (.core i)) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g X) y` using `by conv_lhs => rw [hsum]`. Conclude with `GlobalTheory.LatVac.symplO_add_left _ _ _ _ _`. Rewrite `H` using `[hs, AddChar.map_add_eq_mul]`.
+
+Generalize the expression as in `hcdef : W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g X) y) = c at H`. Establish `hc : c ≠ 0`. Introduce `h0`. Establish `h5 : W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g X) y) * W.ψ (-(symplO (G.pS (.core i)) (G.pT (.core i)) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g X) y)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+
+Rewrite `h5` using `[show W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) (actO (G.pS (.core i)) (G.pT (.core i)) 1 g X) y) = c from hcdef, h0, zero_mul]`. Conclude with `zero_ne_one h5`. Establish `H' : (W.ψ (symplO (G.pS (.core i)) (G.pT (.core i)) Z y) - 1) * c = 0`. Rewrite using `[sub_mul, H, one_mul, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 H').resolve_right hc)`.
+
+Take `⟨a, ha, b, hb, hZeq⟩` from `GlobalTheory.T.halfPoint_mem_sum_translate_of_annihilator D hq T L μ0 hL sc G W M hM i hi e he g Z hZ key`. Establish `heq : e • ((x₀.map (incA D) : WO (G.pS (.core i)) (G.pT (.core i))) - a) = actO (G.pS (.core i)) (G.pT (.core i)) 1 g (e • ((x₀.map (incA D) : WO (G.pS (.core i)) (G.pT (.core i))) - -b))`. Rewrite using `[smul_sub, sub_neg_eq_add, smul_add, actO_add, ← hXdef]`. Establish `h6 : X = Z + actO (G.pS (.core i)) (G.pT (.core i)) 1 g X` using `by rw [hZdef]; abel`. Rewrite `h6` using `[hZeq]`.
+
+Use `conv_lhs => rw [h6]`. Normalize the expressions using the abelian group laws. Take `⟨a₁, h1, a₂, h2, heq2⟩` from `GlobalTheory.T.coset_equation_mul_right_congruent_one_mod_depthIdeal_alt D hq T L μ0 hL sc G W M hM i hi x₀ hx₀ e he g a ha (-b) (neg_mem hb) heq`. Conclude with `GlobalTheory.T.gridCoreNode_unitReading_integral_congruent D hq T L μ0 hL sc G W M hM i hi e he g a₁ h1 a₂ h2 heq2 x hx`.
+-/
 theorem cosDual : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ x₀, IsOntoMod G i x₀ → ∀ e : AE D, IsIdemSum e G.pl.W0 →
     ∀ g : GA D (G.V (.core i)),
     (∀ y : WO (G.pS (.core i)) (G.pT (.core i)), IsHalf (cA D e) y →

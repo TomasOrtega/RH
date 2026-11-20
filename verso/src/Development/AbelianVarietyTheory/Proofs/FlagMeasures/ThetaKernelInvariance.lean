@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : cM (1 : Matrix (Fin L.rank) (Fin L.rank) (AE D)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Unfold `actHom`. Rewrite using `[if_pos hr, BesselCompare.mt_one, h1, Matrix.one_mul]`. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, tPt, Matrix.of_apply, Matrix.mulVec, dotProduct, Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem actHom_tPt {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E) (γ : GA D A) (a : Fin A.rank → AE D) :
     actHom L A 1 γ (tPt L A c a) = tPt L A c ((Formalism.L2.Theta.mt A γ).mulVec a) := by
   have h1 : cM (1 : Matrix (Fin L.rank) (Fin L.rank) (AE D)) = 1 :=
@@ -25,12 +30,20 @@ theorem actHom_tPt {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E) (γ : G
     ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Heisenberg₂, symplH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+-/
 theorem heis_at_zero (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (u : WA V W) (f : WA V W → ℂ) :
     Heisenberg₂ ψ V W u f 0 = f u := by
   simp only [Heisenberg₂, symplH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
 
 variable {X : ThetaX D} {T : ThetaTied D X}
 
+/- English proof (translation)
+Establish `h1 : Wl.evS V W Φ ∈ {f | IsThetaFun Wl.ψ V W f}`. Rewrite using `[← Wl.evS_range V W hne]`. Conclude with `⟨Φ, rfl⟩`. Establish `h2 : Heisenberg₂ Wl.ψ V W u (Wl.evS V W Φ) ∈ Set.range (Wl.evS V W)`. Rewrite using `[Wl.evS_range V W hne]`.
+
+Conclude with `GlobalTheory.Mem.ThetaClosed.isThetaFun_heis Wl.ψ_std h1 u`. Conclude with `h2`.
+-/
 theorem exists_heis (Wl : WeilTied D X T) {V W : HSp D} (hne : V.rank ≠ W.rank) (u : WA V W) (Φ : X.Sch V W) :
     ∃ Φ', Wl.evS V W Φ' = Heisenberg₂ Wl.ψ V W u (Wl.evS V W Φ) := by
   have h1 : Wl.evS V W Φ ∈ {f | IsThetaFun Wl.ψ V W f} := by
@@ -39,6 +52,9 @@ theorem exists_heis (Wl : WeilTied D X T) {V W : HSp D} (hne : V.rank ≠ W.rank
     rw [Wl.evS_range V W hne]; exact GlobalTheory.Mem.ThetaClosed.isThetaFun_heis Wl.ψ_std h1 u
   exact h2
 
+/- English proof (translation)
+Take `⟨Φ', h⟩` from `exists_heis Wl hne (tPt L A c a) Φ`. Establish `h2 : jacOp Wl.ψ L A c a t (Wl.evS L A Φ) ∈ Set.range (Wl.evS L A)` using `⟨Wl.ψ (cenCo L c t) • Φ', by rw [map_smul, h]; rfl⟩`. Rewrite `h2` using `[Wl.evS_range L A hne]`. Conclude with `h2`.
+-/
 theorem isThetaFun_jacOp (Wl : WeilTied D X T) {L A : HSp D} (hne : L.rank ≠ A.rank) (c : D.host.E)
     (a : Fin A.rank → AE D) (t : AE D) (Φ : X.Sch L A) :
     IsThetaFun Wl.ψ L A (jacOp Wl.ψ L A c a t (Wl.evS L A Φ)) := by
@@ -48,6 +64,15 @@ theorem isThetaFun_jacOp (Wl : WeilTied D X T) {L A : HSp D} (hne : L.rank ≠ A
   rw [Wl.evS_range L A hne] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `D X T Wl L A B ι d hA1 Φ g n hn`. Establish `hL : L.rank = 1` using `d.line.rank_one`. Establish `hlt : L.rank < A.rank` using `hL ▸ hA1`. Take `⟨hrat, -, -, hconj⟩` from `GlobalTheory.T.theta_unipotent_conjugation D L A B ι d`. Use `⟨fun γ hγ hq => ?_, fun γ hγ δ hδ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ha, ht, -⟩` from `GlobalTheory.T.theta_unipotent_action_cocycle D L A B ι d γ hγ n hn`. Establish `h1` using `((hrat Wl.ψ Wl.ψ_std.1).1 γ hq).2 _ (isThetaFun_jacOp Wl hlt.ne d.c (d.aCo n) (d.tCo n) (Wl.om L A X.etaT⁻¹ (X.etaT ^ A.rank) (1, g) Φ))`. Unfold `FJDat.theta FJDat.jac at *`. Rewrite using `[ha, ht, ← jacOp_mul Wl.ψ hlt.le]`. Conclude with `h1`.
+
+Take `⟨-, ha, ht, -⟩` from `hconj δ γ hδ n hn`. Rewrite using `[d.theta_eq, d.theta_eq, ha, ht, ← actHom_tPt hlt.le]`. Use `congr 1`. Take `⟨Φ', h⟩` from `exists_heis Wl hlt.ne (tPt L A d.c (d.aCo n)) (Wl.om L A X.etaT⁻¹ (X.etaT ^ A.rank) (1, g) Φ)`. Establish `h1` using `Wl.om_heis L A _ _ hlt.ne (resEta_line T hL) (resEta_pow T _) 1 γ _ _ _ h`.
+
+Establish `h2` using `Wl.om_aut L A _ _ hlt.ne (resEta_line T hL) (resEta_pow T _) 1 (one_mem _) γ hγ Φ'`. Rewrite `h2` using `[h1, h, heis_at_zero, heis_at_zero, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Conclude with `h2`.
+-/
 theorem theta_aut : ∀ (D : D7) (X : ThetaX D) (T : ThetaTied D X) (Wl : WeilTied D X T) (L A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : FJDat L A B ι), 1 < A.rank → ∀ (Φ : X.Sch L A) (g : GA D A), ∀ n ∈ d.N, (∀ γ ∈ d.N, γ ∈ GQ B → d.theta Wl.ψ (omZ Wl L A Φ) (γ * n) g = d.theta Wl.ψ (omZ Wl L A Φ) n g) ∧ ∀ γ ∈ GQ A, ∀ δ, EmbRel B A ι δ γ → d.theta Wl.ψ (omZ Wl L A Φ) (δ * n * δ⁻¹) (γ * g) = d.theta Wl.ψ (omZ Wl L A Φ) n g := by
   intro D X T Wl L A B ι d hA1 Φ g n hn
   have hL : L.rank = 1 := d.line.rank_one

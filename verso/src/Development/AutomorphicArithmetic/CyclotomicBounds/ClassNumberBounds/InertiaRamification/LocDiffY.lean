@@ -8,6 +8,19 @@ open nonZeroDivisors Module
 
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
+/- English proof (translation)
+Set `K` to `FractionRing A`. Set `L` to `FractionRing B`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid B A⁰) L` using `IsIntegralClosure.isLocalization _ K _ _`. Establish `: FiniteDimensional K L` using `.of_isLocalization A B A⁰`. Establish `hp'` using `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective A B)).not.mpr hp`.
+
+Establish `habot : a ≠ ⊥` using `fun ha' ↦ hp' (by simpa [ha'] using ha)`. Establish `hPbot : P ≠ ⊥`. Introduce and unpack `rfl`. Apply `hp'` to reduce the goal to its premises. Rewrite `ha` using `[Ideal.bot_mul]`. Then use the resulting hypothesis.
+
+Establish `hP : ((P :)⁻¹ : FractionalIdeal B⁰ L) = a / p.map (algebraMap A B)`. Apply `inv_involutive.injective` to reduce the goal to its premises. Simplify using `only [ha, FractionalIdeal.coeIdeal_mul, inv_div, mul_div_assoc]`. Rewrite using `[div_self (by simpa), mul_one, inv_inv]`. Rewrite using `[Ideal.dvd_iff_le, differentialIdeal_le_iff (K := K) (L := L) hPbot, hP, Submodule.map_le_iff_le_comap]`.
+
+Introduce `x hx`. Rewrite `hx` using `[Submodule.restrictScalars_mem, FractionalIdeal.mem_coe, FractionalIdeal.mem_div_iff_of_ne_zero (by simpa using hp')]`. Rewrite using `[Submodule.mem_comap, LinearMap.coe_restrictScalars, ← FractionalIdeal.coe_one, ← div_self (G₀ := FractionalIdeal A⁰ K) (a := p) (by simpa using hp), FractionalIdeal.mem_coe, FractionalIdeal.mem_div_iff_of_ne_zero (by simpa using hp)]`. Simplify using `only [FractionalIdeal.mem_coeIdeal, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂] at hx`. Introduce `y hy'`.
+
+Take `⟨y, hy, rfl : algebraMap A K _ = _⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hy'`. Take `⟨z, hz, hz'⟩` from `hx _ (Ideal.mem_map_of_mem _ hy)`. Establish `: Algebra.trace K L (algebraMap B L z) ∈ (p : FractionalIdeal A⁰ K)`. Rewrite using `[← Algebra.algebraMap_intTrace (A := A)]`. Conclude with `⟨Algebra.intTrace A B z, h z hz, rfl⟩`.
+
+Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, Algebra.smul_def, mul_comm, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A B L, ← hz']` and apply the resulting hypothesis.
+-/
 private theorem locDiffY_dvd_of_intTrace_mem {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [IsDedekindDomain A] [IsDedekindDomain B] [IsTorsionFree A B] [Module.Finite A B]
     [Algebra.IsSeparable (FractionRing A) (FractionRing B)]
@@ -47,6 +60,9 @@ private theorem locDiffY_dvd_of_intTrace_mem {A B : Type*} [CommRing A] [CommRin
   rwa [mul_comm, ← smul_eq_mul, ← map_smul, Algebra.smul_def, mul_comm,
     ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply A B L, ← hz']
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic (FractionRing A) (FractionRing B)` using `isAlgebraic_of_isFractionRing A B ..`. Use `infer_instance`.
+-/
 private theorem locDiffY_sep {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [IsDomain A] [IsDomain B] [IsTorsionFree A B] [Module.Finite A B] [CharZero A] :
     Algebra.IsSeparable (FractionRing A) (FractionRing B) := by
@@ -54,12 +70,18 @@ private theorem locDiffY_sep {A B : Type*} [CommRing A] [CommRing B] [Algebra A 
     isAlgebraic_of_isFractionRing A B ..
   infer_instance
 
+/- English proof (translation)
+Use `locDiffY_sep (A := A) (B := B)` as an intermediate fact. Conclude with `differentIdeal_ne_bot`.
+-/
 private theorem locDiffY_ne_bot {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [IsDedekindDomain A] [IsDedekindDomain B] [IsTorsionFree A B] [Module.Finite A B] [CharZero A] :
     differentIdeal A B ≠ ⊥ := by
   have := locDiffY_sep (A := A) (B := B)
   exact differentIdeal_ne_bot
 
+/- English proof (translation)
+Use `locDiffY_sep (A := A) (B := B)` as an intermediate fact. Use `⟨fun h x hx => ?_, locDiffY_dvd_of_intTrace_mem hp P a ha.symm⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `not_dvd_differentIdeal_of_intTrace_not_mem A P a ha x hx hc h`.
+-/
 private theorem locDiffY_iff {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [IsDedekindDomain A] [IsDedekindDomain B] [IsTorsionFree A B] [Module.Finite A B] [CharZero A]
     {p : Ideal A} (hp : p ≠ ⊥) (P a : Ideal B) (ha : P * a = p.map (algebraMap A B)) :
@@ -69,6 +91,11 @@ private theorem locDiffY_iff {A B : Type*} [CommRing A] [CommRing B] [Algebra A 
   by_contra hc
   exact not_dvd_differentIdeal_of_intTrace_not_mem A P a ha x hx hc h
 
+/- English proof (translation)
+Rewrite using `[← Algebra.trace_eq_of_algEquiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor B I), ← Ideal.Quotient.algebraMap_eq I, Algebra.trace_apply A x, ← LinearMap.trace_baseChange, Algebra.trace_apply]`. Use `congr 1`. Establish `: (Algebra.TensorProduct.quotIdealMapEquivQuotTensor B I) (Ideal.Quotient.mk _ x) = 1 ⊗ₜ x` using `rfl`. Rewrite using `[this]`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem locDiffY_trace_mk {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Module.Free A B] [Module.Finite A B] (I : Ideal A) (x : B) :
     Algebra.trace (A ⧸ I) (B ⧸ I.map (algebraMap A B)) (Ideal.Quotient.mk _ x) =
@@ -83,6 +110,13 @@ private theorem locDiffY_trace_mk {A B : Type*} [CommRing A] [CommRing B] [Algeb
   ext y
   simp
 
+/- English proof (translation)
+Establish `key : ∀ a : A, ¬ p ∣ a → IsUnit (Ideal.Quotient.mk (Ideal.span {p ^ n}) a)`. Introduce `a ha`. Take `⟨u, v, huv⟩` from `(hp.irreducible.coprime_iff_not_dvd.mpr ha).pow_left (m := n)`. Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk _ v) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk (Ideal.span {p ^ n})), Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+
+Conclude with `⟨-u, by rw [← huv]; ring⟩`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Distinguish the cases in `h : p ∣ a`. Use `right`.
+
+Use `key (1 - a) fun h' => hp.not_dvd_one (by simpa using dvd_add h' h)` as an intermediate fact. Simplify using `using this`. Conclude with `Or.inl (key a h)`.
+-/
 private theorem locDiffY_isLocalRing {A : Type*} [CommRing A] [IsDomain A]
     [IsPrincipalIdealRing A] {p : A} (hp : Prime p) (n : ℕ)
     [Nontrivial (A ⧸ Ideal.span {p ^ n})] : IsLocalRing (A ⧸ Ideal.span {p ^ n}) := by
@@ -101,6 +135,15 @@ private theorem locDiffY_isLocalRing {A : Type*} [CommRing A] [IsDomain A]
     simpa using this
   · exact Or.inl (key a h)
 
+/- English proof (translation)
+Set `: Algebra (A ⧸ I) (B ⧸ Q₂)` to `Ideal.Quotient.algebraQuotientOfLEComap (by`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← hP]`. Conclude with `Ideal.mul_le_right)`. Establish `: IsScalarTower A (A ⧸ I) (B ⧸ Q₂)` using `.of_algebraMap_eq' rfl`. Establish `: Module.Finite (A ⧸ I) (B ⧸ Q₂)` using `.of_restrictScalars_finite A _ _`.
+
+Establish `: Module.Finite (A ⧸ I) (B ⧸ Q₁)` using `.of_restrictScalars_finite A _ _`. Set `e : (B ⧸ I.map (algebraMap A B)) ≃ₐ[A ⧸ I] ((B ⧸ Q₁) × B ⧸ Q₂)` to `{ __ := (Ideal.quotEquivOfEq hP.symm).trans (Ideal.quotientMulEquivQuotientProd Q₁ Q₂ hc), commutes' := by`. Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+
+Conclude with `IsScalarTower.algebraMap_apply A (A ⧸ I) (B ⧸ Q₁) a }`. Establish `: Module.Free (A ⧸ I) (B ⧸ I.map (algebraMap A B))` using `.of_equiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor B I).symm.toLinearEquiv`. Establish `: Module.Free (A ⧸ I) ((B ⧸ Q₁) × B ⧸ Q₂)` using `.of_equiv e.toLinearEquiv`. Establish `: Module.Projective (A ⧸ I) (B ⧸ Q₁)` using `.of_split (LinearMap.inl _ _ (B ⧸ Q₂)) (LinearMap.fst _ _ _) (LinearMap.fst_comp_inl _ _ _)`. Establish `: Module.Projective (A ⧸ I) (B ⧸ Q₂)` using `.of_split (LinearMap.inr _ (B ⧸ Q₁) _) (LinearMap.snd _ _ _) (LinearMap.snd_comp_inr _ _ _)`.
+
+Establish `: Module.Free (A ⧸ I) (B ⧸ Q₁)` using `Module.free_of_flat_of_isLocalRing`. Establish `: Module.Free (A ⧸ I) (B ⧸ Q₂)` using `Module.free_of_flat_of_isLocalRing`. Establish `h2 : (e (Ideal.Quotient.mk _ x)).2 = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hx`. Rewrite using `[← locDiffY_trace_mk, ← Algebra.trace_eq_of_algEquiv e, Algebra.trace_prod_apply, h2, map_zero, add_zero]`. Both sides reduce to the same expression.
+-/
 private theorem locDiffY_trace_prod {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Module.Free A B] [Module.Finite A B] (I : Ideal A) [IsLocalRing (A ⧸ I)] {Q₁ Q₂ : Ideal B}
     (hc : IsCoprime Q₁ Q₂) (hP : Q₁ * Q₂ = I.map (algebraMap A B))
@@ -141,6 +184,9 @@ section
 variable {A B : Type*} [CommRing A] [IsDomain A] [IsPrincipalIdealRing A] [CommRing B]
   [IsDedekindDomain B] [Algebra A B] [Module.IsTorsionFree A B] [Module.Finite A B] [CharZero A]
 
+/- English proof (translation)
+Establish `: Module.Free A B` using `Module.free_of_finite_type_torsion_free'`. Rewrite using `[locDiffY_iff (p := Ideal.span {a}) (by simpa using ha) I J (by rw [h, Ideal.map_span, Set.image_singleton]), Algebra.intTrace_eq_trace]`. Simplify using `only [Ideal.mem_span_singleton]`.
+-/
 theorem dvd_differentIdeal_iff_trace {a : A} (ha : a ≠ 0) {I J : Ideal B}
     (h : I * J = Ideal.span {algebraMap A B a}) :
     I ∣ differentIdeal A B ↔ ∀ x ∈ J, a ∣ Algebra.trace A B x := by
@@ -151,6 +197,9 @@ theorem dvd_differentIdeal_iff_trace {a : A} (ha : a ≠ 0) {I J : Ideal B}
 
 omit [CharZero A] in
 
+/- English proof (translation)
+Establish `: Module.Free A B` using `Module.free_of_finite_type_torsion_free'`. Break down `subsingleton_or_nontrivial (A ⧸ Ideal.span {p ^ n}) with hs | hs` into its components or cases. Conclude with `Subsingleton.elim _ _`. Use `locDiffY_isLocalRing hp n` as an intermediate fact. Conclude with `locDiffY_trace_prod _ hc (by rw [h, Ideal.map_span, Set.image_singleton]) hx`.
+-/
 theorem mk_trace_eq_trace_quotient {p : A} (hp : Prime p) (n : ℕ) {Q₁ Q₂ : Ideal B}
     (hc : IsCoprime Q₁ Q₂) (h : Q₁ * Q₂ = Ideal.span {algebraMap A B (p ^ n)})
     [Algebra (A ⧸ Ideal.span {p ^ n}) (B ⧸ Q₁)]
@@ -164,18 +213,27 @@ theorem mk_trace_eq_trace_quotient {p : A} (hp : Prime p) (n : ℕ) {Q₁ Q₂ :
   exact locDiffY_trace_prod _ hc (by rw [h, Ideal.map_span, Set.image_singleton]) hx
 
 omit [IsPrincipalIdealRing A] [Module.Finite A B] [CharZero A] in
+/- English proof (translation)
+Rewrite using `[ne_eq, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective A B)]`. Simplify using `using hp`.
+-/
 private theorem locDiffY_span_ne {p : A} (hp : p ≠ 0) :
     (Ideal.span {p}).map (algebraMap A B) ≠ ⊥ := by
   rw [ne_eq, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective A B)]
   simpa using hp
 
 omit [IsPrincipalIdealRing A] [Module.Finite A B] [CharZero A] in
+/- English proof (translation)
+The claim follows from `ne_bot_of_le_ne_bot (locDiffY_span_ne hp) (Ideal.map_le_of_le_comap (P.over_def (Ideal.span {p})).le)`.
+-/
 private theorem locDiffY_P_ne {p : A} (hp : p ≠ 0) (P : Ideal B) [P.LiesOver (Ideal.span {p})] :
     P ≠ ⊥ :=
   ne_bot_of_le_ne_bot (locDiffY_span_ne hp)
     (Ideal.map_le_of_le_comap (P.over_def (Ideal.span {p})).le)
 
 omit [IsPrincipalIdealRing A] [Module.Finite A B] [CharZero A] in
+/- English proof (translation)
+Establish `: P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance (locDiffY_P_ne hp P)`. Take `⟨Q, h₁, h₂⟩` from `Ideal.eq_prime_pow_mul_coprime (locDiffY_span_ne (B := B) hp) P`. Rewrite `h₂` using `[← Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count _ _ (locDiffY_span_ne hp)]`. Use `⟨Q ^ n, (Ideal.isCoprime_iff_sup_eq.mpr h₁).pow_right, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm n, pow_mul, ← mul_pow, ← h₂, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_pow, map_pow]`.
+-/
 private theorem locDiffY_decomp {p : A} (hp : p ≠ 0) (P : Ideal B) [P.IsPrime]
     [P.LiesOver (Ideal.span {p})] (n : ℕ) :
     ∃ Q : Ideal B, IsCoprime P Q ∧
@@ -188,6 +246,15 @@ private theorem locDiffY_decomp {p : A} (hp : p ≠ 0) (P : Ideal B) [P.IsPrime]
   rw [mul_comm n, pow_mul, ← mul_pow, ← h₂, Ideal.map_span, Set.image_singleton,
     Ideal.span_singleton_pow, map_pow]
 
+/- English proof (translation)
+Take `⟨Q, hc, hQ⟩` from `locDiffY_decomp hp.ne_zero P n`. Establish `hc' : IsCoprime (P ^ (n * P.ramificationIdx A)) Q` using `hc.pow_left`. Rewrite using `[dvd_differentIdeal_iff_trace (a := p ^ n) (pow_ne_zero _ hp.ne_zero) (J := P ^ (n * P.ramificationIdx A - k) * Q) (by rw [← mul_assoc, ← pow_add, Nat.add_sub_cancel' hk, hQ])]`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`.
+
+Take `⟨u, hu, w, hw, huw⟩` from `Ideal.isCoprime_iff_exists.mp hc'`. Establish `h1 : Ideal.Quotient.mk (P ^ (n * P.ramificationIdx A)) x = Ideal.Quotient.mk _ (x * w)`. Rewrite using `[Ideal.Quotient.eq]`. Establish `: x - x * w = x * u` using `by linear_combination (-x) * huw`. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hu`. Rewrite using `[h1, ← mk_trace_eq_trace_quotient hp n hc' hQ (Ideal.mul_mem_left _ _ hw), Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `H _ (Ideal.mul_mem_mul hx hw)`. Introduce `H x hx`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, mk_trace_eq_trace_quotient hp n hc' hQ (Ideal.mul_le_right hx)]`.
+
+Conclude with `H x (Ideal.mul_le_left hx)`.
+-/
 theorem pow_dvd_differentIdeal_iff_trace_quotient {p : A} (hp : Prime p) (P : Ideal B) [P.IsPrime]
     [P.LiesOver (Ideal.span {p})] {n k : ℕ} (hk : k ≤ n * P.ramificationIdx A)
     [Algebra (A ⧸ Ideal.span {p ^ n}) (B ⧸ P ^ (n * P.ramificationIdx A))]
@@ -219,6 +286,9 @@ theorem pow_dvd_differentIdeal_iff_trace_quotient {p : A} (hp : Prime p) (P : Id
 
 end
 
+/- English proof (translation)
+Use `⟨Ideal.quotientMap_injective' h.le, fun y => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨x, hx⟩` from `hs y`. Conclude with `⟨Ideal.Quotient.mk _ x, by rw [Ideal.quotientMap_mk, eq_comm, Ideal.Quotient.eq]; exact hx⟩`.
+-/
 private theorem locDiffY_bij {B B' : Type*} [CommRing B] [CommRing B'] (g : B →+* B')
     {I : Ideal B} {J : Ideal B'} (h : J.comap g = I) (hs : ∀ y, ∃ x, y - g x ∈ J) :
     Function.Bijective (Ideal.quotientMap J g h.ge) := by
@@ -227,6 +297,33 @@ private theorem locDiffY_bij {B B' : Type*} [CommRing B] [CommRing B'] (g : B �
   obtain ⟨x, hx⟩ := hs y
   exact ⟨Ideal.Quotient.mk _ x, by rw [Ideal.quotientMap_mk, eq_comm, Ideal.Quotient.eq]; exact hx⟩
 
+/- English proof (translation)
+Establish `hfg' : ∀ a, g (algebraMap A B a) = algebraMap A' B' (f a)` using `fun a => congr($hfg a)`. Establish `hP0` using `locDiffY_P_ne hp.ne_zero P`. Establish `hP0'` using `locDiffY_P_ne hp'.ne_zero P'`. Establish `he : P.ramificationIdx A = P'.ramificationIdx A'`. Rewrite using `[Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {p}) P (locDiffY_span_ne hp.ne_zero), Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity (Ideal.span {f p}) P' (locDiffY_span_ne hp'.ne_zero)]`.
+
+Use `multiplicity_eq_of_emultiplicity_eq (emultiplicity_eq_emultiplicity_iff.mpr fun m => ?_)` and prove the remaining obligations. Simplify using `only [Ideal.dvd_iff_le, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Rewrite using `[← hg', Ideal.mem_comap, hfg']`. Establish `hfc : ∀ n : ℕ, (Ideal.span {f p ^ n}).comap f = Ideal.span {p ^ n}`. Introduce `n`.
+
+Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, Ideal.mem_span_singleton]`. Conclude with `⟨hf' n x, fun h => by simpa using map_dvd f h⟩`. Use `⟨he, ?_, ?_⟩` and prove the remaining obligations. Establish `: P.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hP0`.
+
+Establish `: P'.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hP0'`. Establish `: (Ideal.span {p}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible`. Establish `: (Ideal.span {f p}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp'.irreducible`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (Ideal.span {p}) P, Ideal.inertiaDeg_eq_of_isMaximal (Ideal.span {f p}) P']`. Establish `h1 : (Ideal.span {f p}).comap f = Ideal.span {p}` using `by simpa using hfc 1`.
+
+Establish `h2 : P'.comap g = P` using `by simpa using hg' 1`. Use `Algebra.finrank_eq_of_equiv_equiv (RingEquiv.ofBijective _ (locDiffY_bij f h1 fun y => by` and prove the remaining obligations. Simplify `hf 1 y))` using `[Ideal.mem_span_singleton]`. Use the proof step `(RingEquiv.ofBijective _ (locDiffY_bij g h2 fun y => by simpa using hg 1 y)) ?_`. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (Ideal.Quotient.mk P') (hfg' a).symm`. Use `multiplicity_eq_of_emultiplicity_eq (emultiplicity_eq_emultiplicity_iff.mpr fun k => ?_)` and prove the remaining obligations. Take `⟨Q, -, hQ⟩` from `locDiffY_decomp hp.ne_zero P k`. Take `⟨Q', -, hQ'⟩` from `locDiffY_decomp hp'.ne_zero P' k`. Establish `he0 : 0 < P.ramificationIdx A` using `Ideal.ramificationIdx_pos _ _`.
+
+Establish `hk : k ≤ k * P.ramificationIdx A` using `Nat.le_mul_of_pos_right _ he0`. Set `: Algebra (A ⧸ Ideal.span {p ^ k}) (B ⧸ P ^ (k * P.ramificationIdx A))` to `Ideal.Quotient.algebraQuotientOfLEComap (by`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_span, Set.image_singleton, ← hQ]`. Conclude with `Ideal.mul_le_left)`. Establish `: IsScalarTower A (A ⧸ Ideal.span {p ^ k}) (B ⧸ P ^ (k * P.ramificationIdx A))` using `.of_algebraMap_eq' rfl`.
+
+Set `: Algebra (A' ⧸ Ideal.span {f p ^ k}) (B' ⧸ P' ^ (k * P'.ramificationIdx A'))` to `Ideal.Quotient.algebraQuotientOfLEComap (by`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_span, Set.image_singleton, ← hQ']`. Conclude with `Ideal.mul_le_left)`. Establish `: IsScalarTower A' (A' ⧸ Ideal.span {f p ^ k}) (B' ⧸ P' ^ (k * P'.ramificationIdx A'))` using `.of_algebraMap_eq' rfl`. Rewrite using `[pow_dvd_differentIdeal_iff_trace_quotient hp P hk, pow_dvd_differentIdeal_iff_trace_quotient hp' P' (n := k) (he ▸ hk)]`.
+
+Establish `h2 : (P' ^ (k * P'.ramificationIdx A')).comap g = P ^ (k * P.ramificationIdx A)`. Rewrite using `[hg', he]`. Establish `key : ∀ x : B, Algebra.trace (A ⧸ Ideal.span {p ^ k}) (B ⧸ P ^ (k * P.ramificationIdx A)) (Ideal.Quotient.mk _ x) = 0 ↔ Algebra.trace (A' ⧸ Ideal.span {f p ^ k}) (B' ⧸ P' ^ (k * P'.ramificationIdx A')) (Ideal.Quotient.mk _ (g x)) = 0`. Introduce `x`. Rewrite using `[Algebra.trace_eq_of_equiv_equiv (RingEquiv.ofBijective _ (locDiffY_bij f (hfc k) fun y => by`.
+
+Simplify `hf k y))` using `[Ideal.mem_span_singleton]`. Use the proof step `(RingEquiv.ofBijective _ (locDiffY_bij g h2 (hg _)))`. Use the proof step `(Ideal.Quotient.ringHom_ext (RingHom.ext fun a => congrArg (Ideal.Quotient.mk _) (hfg' a).symm)), map_eq_zero_iff _ (RingEquiv.injective _)]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H y hy`. Take `⟨x, hx⟩` from `hg (k * P'.ramificationIdx A') y`. Rewrite using `[Ideal.Quotient.eq.mpr hx, ← key]`. Apply `H` to reduce the goal to its premises. Rewrite using `[← hg', Ideal.mem_comap, he]`.
+
+Use `Ideal.sub_mem _ hy (Ideal.pow_le_pow_right (Nat.sub_le _ k) hx)` as an intermediate fact. Simplify using `using this`. Introduce `H x hx`. Rewrite using `[key]`. Apply `H` to reduce the goal to its premises.
+
+Rewrite using `[← he, ← Ideal.mem_comap, hg']`. Conclude with `hx`.
+-/
 theorem multiplicity_differentIdeal_eq_of_quotient {A B A' B' : Type*}
     [CommRing A] [IsDomain A] [IsPrincipalIdealRing A] [CommRing B] [IsDedekindDomain B]
     [Algebra A B] [Module.IsTorsionFree A B] [Module.Finite A B] [CharZero A]

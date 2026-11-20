@@ -14,18 +14,33 @@ def Gen (O : Type) [CommRing O] (n : ℕ) : Submonoid (Matrix (Fin n) (Fin n) O)
 def bord {m : ℕ} (M : Matrix (Fin m) (Fin m) O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
   Matrix.of (Fin.cons (Fin.cons 1 0) (fun i => Fin.cons 0 (M i)))
 
+/- English proof (translation)
+Simplify using `[bord]`.
+-/
 @[simp] theorem bord_zero_zero {m : ℕ} (M : Matrix (Fin m) (Fin m) O) : bord M 0 0 = 1 := by
   simp [bord]
+/- English proof (translation)
+Simplify using `[bord]`.
+-/
 @[simp] theorem bord_zero_succ {m : ℕ} (M : Matrix (Fin m) (Fin m) O) (j : Fin m) :
     bord M 0 j.succ = 0 := by
   simp [bord]
+/- English proof (translation)
+Simplify using `[bord]`.
+-/
 @[simp] theorem bord_succ_zero {m : ℕ} (M : Matrix (Fin m) (Fin m) O) (i : Fin m) :
     bord M i.succ 0 = 0 := by
   simp [bord]
+/- English proof (translation)
+Simplify using `[bord]`.
+-/
 @[simp] theorem bord_succ_succ {m : ℕ} (M : Matrix (Fin m) (Fin m) O) (i j : Fin m) :
     bord M i.succ j.succ = M i j := by
   simp [bord]
 
+/- English proof (translation)
+The claim follows from `iff_false_intro (fun h => Fin.succ_ne_zero k h.symm)`.
+-/
 @[simp] theorem zero_eq_succ_iff {m : ℕ} (k : Fin m) : ((0 : Fin (m+1)) = k.succ) ↔ False := iff_false_intro (fun h => Fin.succ_ne_zero k h.symm)
 
 def colS {m : ℕ} (f : Fin m → O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
@@ -34,6 +49,9 @@ def colS {m : ℕ} (f : Fin m → O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
 def rowS {m : ℕ} (g : Fin m → O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
   1 + ∑ j, Matrix.single 0 j.succ (g j)
 
+/- English proof (translation)
+Simplify using `only [colS, Matrix.add_apply, Matrix.sum_apply, Matrix.single_apply]`. Use `congr 1`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ i => by_cases hj : j = 0 <;> simp [hj, eq_comm]`.
+-/
 @[simp] theorem colS_apply {m : ℕ} (f : Fin m → O) (i j : Fin (m+1)) :
     colS f i j = (1 : Matrix (Fin (m+1)) (Fin (m+1)) O) i j +
       Fin.cases 0 (fun k => if j = 0 then f k else 0) i := by
@@ -43,6 +61,9 @@ def rowS {m : ℕ} (g : Fin m → O) : Matrix (Fin (m+1)) (Fin (m+1)) O :=
   | zero => simp
   | succ i => by_cases hj : j = 0 <;> simp [hj, eq_comm]
 
+/- English proof (translation)
+Simplify using `only [rowS, Matrix.add_apply, Matrix.sum_apply, Matrix.single_apply]`. Use `congr 1`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j => by_cases hi : i = 0 <;> simp [hi, eq_comm]`.
+-/
 @[simp] theorem rowS_apply {m : ℕ} (g : Fin m → O) (i j : Fin (m+1)) :
     rowS g i j = (1 : Matrix (Fin (m+1)) (Fin (m+1)) O) i j +
       Fin.cases 0 (fun k => if i = 0 then g k else 0) j := by

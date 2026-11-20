@@ -37,6 +37,9 @@ section
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `e : a = (a - b) + b` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hb]; exact h.ne), hb, max_eq_right h.le]`.
+-/
 private theorem norm_of_cong {a b : Qbar l} (h : ‖a - b‖ < 1) (hb : ‖b‖ = 1) : ‖a‖ = 1 := by
   have e : a = (a - b) + b := by ring
   rw [e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hb]; exact h.ne), hb, max_eq_right h.le]

@@ -2,6 +2,45 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C σ Γ _ _ _ χ hT w J hJ`. It suffices to establish `H : ∀ n, ∀ φ ∈ J, φ.support.card = n → ∀ d : ℤ, φ.filter (fun m => w m = d) ∈ J by`. Introduce `φ hφ d`. Conclude with `H _ φ hφ rfl d`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `φ hφ hn`. Establish `IH : ∀ φ' ∈ J, φ'.support.card < n → ∀ d : ℤ, φ'.filter (fun m => w m = d) ∈ J` using `fun φ' h1 h2 d => ih _ h2 φ' h1 rfl d`. Distinguish the cases in `h0 : φ = 0`.
+
+Substitute `h0` using the available equality. Introduce `d`. Rewrite using `[Finsupp.filter_zero]`. Conclude with `J.zero_mem`. Take `⟨m0, hm0⟩` from `Finsupp.support_nonempty_iff.mpr h0`.
+
+Establish `hc : φ m0 ≠ 0` using `Finsupp.mem_support_iff.mp hm0`. Use `set c := φ m0 with hcdef`. Use `set φ0 : σ →₀ C := c⁻¹ • φ with hφ0def`. Establish `hφ0 : φ0 ∈ J` using `J.smul_mem _ hφ`. Establish `hsupp0 : φ0.support = φ.support` using `Finsupp.support_smul_eq (inv_ne_zero hc)`.
+
+Establish `h1 : φ0 m0 = 1`. Simplify using `only [φ0, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ hc`. Establish `hφeq : φ = c • φ0`. Simplify using `only [φ0, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+
+It suffices to establish `H0 : ∀ d : ℤ, φ0.filter (fun m => w m = d) ∈ J by`. Introduce `d`. Rewrite using `[hφeq, Finsupp.filter_smul]`. Conclude with `J.smul_mem _ (H0 d)`. Establish `hcard : φ0.support.card = n` using `by rw [hsupp0, hn]`.
+
+Establish `hm0' : m0 ∈ φ0.support` using `by rw [Finsupp.mem_support_iff, h1]; exact one_ne_zero`. Establish `hψ : ∀ g : Γ, ∃ ψ ∈ J, ∀ m, ψ m = ((χ g ^ (-w m0) : Cˣ) : C) * (((χ g ^ w m : Cˣ) : C) * (g • φ0 m)) - φ0 m`. Introduce `g`. Take `⟨ψ', hψ'J, hψ'⟩` from `hJ g φ0 hφ0`. Use `⟨((χ g ^ (-w m0) : Cˣ) : C) • ψ' - φ0, J.sub_mem (J.smul_mem _ hψ'J) hφ0, fun m => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, hψ']`. Use `choose ψ hψJ hψm using hψ`. Establish `hψm0 : ∀ g, ψ g m0 = 0`. Introduce `g`. Rewrite using `[hψm, h1, smul_one, mul_one, ← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero, Units.val_one, sub_self]`.
+
+Establish `hψ0 : ∀ g m, φ0 m = 0 → ψ g m = 0`. Introduce `g m h`. Rewrite using `[hψm, h, smul_zero, mul_zero, mul_zero, sub_zero]`. Establish `hψsupp : ∀ g, (ψ g).support ⊆ φ0.support.erase m0`. Introduce `g m hm`.
+
+Rewrite using `[Finset.mem_erase, Finsupp.mem_support_iff]`. Rewrite `hm` using `[Finsupp.mem_support_iff]`. Use `⟨?_, fun h => hm (hψ0 g m h)⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hm (hψm0 g)`.
+
+Establish `hlt : ∀ g, (ψ g).support.card < n` using `fun g => lt_of_le_of_lt (Finset.card_le_card (hψsupp g)) (hcard ▸ Finset.card_erase_lt_of_mem hm0')`. Distinguish the cases in `hall : ∀ g, ψ g = 0`. Establish `hw : ∀ m, φ0 m ≠ 0 → w m = w m0`. Introduce `m hm`. Assume the negation of the conclusion as `hne`.
+
+Apply `hm` to reduce the goal to its premises. Use `hT (w m0 - w m) (sub_ne_zero.mpr (Ne.symm hne)) (φ0 m) (fun g => ?_)` and prove the remaining obligations. Establish `e` using `hψm g m`. Rewrite `e` using `[hall g, Finsupp.zero_apply, eq_comm, sub_eq_zero]`. Establish `hex : w m0 - w m + -w m0 + w m = 0` using `by ring`.
+
+Use `conv_rhs => rw [← e]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← Units.val_mul, ← Units.val_mul, ← zpow_add, ← zpow_add, hex, zpow_zero, Units.val_one, one_mul]`. Introduce `d`. Distinguish the cases in `hd : w m0 = d`. Rewrite using `[(Finsupp.filter_eq_self_iff _ _).mpr (fun m hm => (hw m hm).trans hd)]`.
+
+Conclude with `hφ0`. Rewrite using `[(Finsupp.filter_eq_zero_iff _ _).mpr (fun m hm => by`. Assume the negation of the conclusion as `h`. Conclude with `hd ((hw m h).symm.trans hm))]`. Conclude with `J.zero_mem`.
+
+Use `push_neg at hall`. Take `⟨g, hg⟩` from `hall`. Take `⟨m1, hm1⟩` from `Finsupp.support_nonempty_iff.mpr hg`. Establish `hm1'` using `Finset.mem_of_mem_erase (hψsupp g hm1)`. Establish `hψm1 : ψ g m1 ≠ 0` using `Finsupp.mem_support_iff.mp hm1`.
+
+Use `set a := φ0 m1 / ψ g m1 with hadef`. Use `set φ' : σ →₀ C := φ0 - a • ψ g with hφ'def`. Establish `hφ'J : φ' ∈ J` using `J.sub_mem hφ0 (J.smul_mem _ (hψJ g))`. Establish `hφ'supp : φ'.support ⊆ φ0.support.erase m1`. Introduce `m hm`.
+
+Rewrite using `[Finset.mem_erase, Finsupp.mem_support_iff]`. Rewrite `hm` using `[Finsupp.mem_support_iff]`. Use `⟨?_, fun h => hm ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply `hm` to reduce the goal to its premises.
+
+Simplify using `only [φ', a, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hψm1, sub_self]`. Simplify using `only [φ', Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, h, hψ0 g m h, mul_zero, sub_zero]`. Establish `hlt' : φ'.support.card < n` using `lt_of_le_of_lt (Finset.card_le_card hφ'supp) (hcard ▸ Finset.card_erase_lt_of_mem hm1')`. Introduce `d`. Establish `hdec : φ0 = φ' + a • ψ g` using `by simp only [φ', sub_add_cancel]`.
+
+Rewrite using `[hdec, Finsupp.filter_add, Finsupp.filter_smul]`. Conclude with `J.add_mem (IH _ hφ'J hlt' d) (J.smul_mem _ (IH _ (hψJ g) (hlt g) d))`.
+-/
 theorem tate_weight_graded : ∀ {C σ Γ : Type} [Field C] [Group Γ] [MulSemiringAction Γ C] (χ : Γ →* Cˣ),
     (∀ m : ℤ, m ≠ 0 → ∀ a : C, (∀ g : Γ, g • a = ((χ g ^ m : Cˣ) : C) * a) → a = 0) →
     ∀ (w : σ → ℤ) (J : Submodule C (σ →₀ C)),

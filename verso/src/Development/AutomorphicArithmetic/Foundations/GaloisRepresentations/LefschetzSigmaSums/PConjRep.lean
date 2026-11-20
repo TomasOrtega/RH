@@ -17,14 +17,29 @@ private instance twMod (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] [Module 
 
 private def toTw (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] : V ≃+ Tw σ V := AddEquiv.refl V
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c • x = ((σ.symm : ℂ →+* ℂ) (σ c)) • x`. Simplify using the standard rewrite rules.
+-/
 private theorem tw_smul (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] [Module ℂ V] (c : ℂ) (x : V) :
     toTw σ V (c • x) = σ c • toTw σ V x := by
   change c • x = ((σ.symm : ℂ →+* ℂ) (σ c)) • x
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem tw_smul' (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] [Module ℂ V] (c : ℂ) (x : Tw σ V) :
     c • x = toTw σ V (σ.symm c • (toTw σ V).symm x) := rfl
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ V`. Establish `hsm : ∀ (c : ℂ) (y : Tw σ V), (toTw σ V).symm (c • y) = σ.symm c • (toTw σ V).symm y` using `fun c y => rfl`. Set `b' : Module.Basis (Fin (Module.finrank ℂ V)) ℂ (Tw σ V)` to `Module.Basis.ofRepr { toFun := fun y => Finsupp.mapRange σ (map_zero σ) (b.repr ((toTw σ V).symm y)) invFun := fun f => toTw σ V (b.repr.symm (Finsupp.mapRange σ.symm (map_zero _) f)) map_add' := fun x y => by`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_smul' := fun c y => by`. Use extensionality with `i`. Simplify using `[hsm]`. Use `left_inv := fun y => by`. Establish `hr : Finsupp.mapRange σ.symm (map_zero _) (Finsupp.mapRange σ (map_zero σ) (b.repr ((toTw σ V).symm y))) = b.repr ((toTw σ V).symm y)`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `only [hr, LinearEquiv.symm_apply_apply, AddEquiv.apply_symm_apply]`. Use `right_inv := fun f => by`. Use extensionality with `i`.
+
+Simplify using `}`. Conclude with `Module.Finite.of_basis b'`.
+-/
 private theorem tw_finite (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] : FiniteDimensional ℂ (Tw σ V) := by
   let b := Module.finBasis ℂ V
@@ -59,6 +74,11 @@ private def twMap (σ : ℂ ≃+* ℂ) (V : Type) [AddCommGroup V] [Module ℂ V
     rw [RingHom.id_apply, tw_smul', tw_smul']
     simp
 
+/- English proof (translation)
+Introduce `σ Γ V _ _ _ _ ξ`. Set `ξ' : Representation ℂ Γ (Tw σ V)` to `{ toFun := fun g => twMap σ V (ξ g) map_one' := by`. Use extensionality with `x`. Simplify using `[twMap]`. Use the proof step `map_mul' := fun g h => by`.
+
+Use extensionality with `x`. Simplify using `[twMap, Module.End.mul_apply] }`. Conclude with `⟨Tw σ V, twAdd σ V, twMod σ V, tw_finite σ V, ξ', toTw σ V, tw_smul σ V, fun g x => rfl⟩`.
+-/
 theorem conjRep_of : ConjRep := by
   intro σ Γ V _ _ _ _ ξ
   let ξ' : Representation ℂ Γ (Tw σ V) :=

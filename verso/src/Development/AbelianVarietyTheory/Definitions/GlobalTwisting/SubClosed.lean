@@ -27,6 +27,9 @@ def uniSeq (R : Type) [CommRing R] (n : ℕ) : Set (List (Fin n → R)) :=
 def splitSeq (R : Type) [CommRing R] (n : ℕ) : Set (List ((Fin n → R) × (Fin n → R))) :=
   {l | ∀ i j : Fin l.length, (l.get i).2 ⬝ᵥ (l.get j).1 = if i = j then 1 else 0}
 
+/- English proof (translation)
+Introduce `i j`. Take `rfl : i = j` from `Subsingleton.elim (α := Fin 1) i j`. Use `fin_cases i`. Simplify using `[dotProduct]`.
+-/
 example : [((fun _ => 1 : Fin 1 → ℤ), (fun _ => 1 : Fin 1 → ℤ))] ∈ splitSeq ℤ 1 := by
   intro i j
   obtain rfl : i = j := Subsingleton.elim (α := Fin 1) i j

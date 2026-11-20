@@ -12,6 +12,19 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP 𝒲 h𝒲ne h𝒲`. Use `hP.isPrime` as an intermediate fact. Establish `hne : ∀ g : MRing ι F, g ∉ P → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P g) ≠ 0` using `fun g hg => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg`.
+
+Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩ W hW`. Conclude with `⟨y, degZeroLoc_anti P (Set.singleton_subset_iff.mpr hW) hy, hxy⟩`. Introduce `h`.
+
+Take `⟨b, f, g, hf, hg, hgP, hgW, hx'⟩` from `DegZeroLocQuot.proof F K ι P 𝒲 (fun W hW => (h𝒲 W hW).1.isPrime) x hx`. Distinguish the cases in `hfW : ∃ W ∈ 𝒲, f ∈ W`. It suffices to derive a contradiction. Take `⟨W, hW, hfW⟩` from `hfW`. Establish `hWp : W.IsPrime` using `(h𝒲 W hW).1.isPrime`.
+
+Take `⟨y, hy, hxy⟩` from `h W hW`. Take `⟨b', f', g', -, -, hg'P, hg'W, hy'⟩` from `DegZeroLocQuot.proof F K ι P {W} (fun W' hW' => by rw [Set.mem_singleton_iff.mp hW']; exact hWp) y hy`. Rewrite `hxy` using `[hx', hy', div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (hne g hgP) (hne g' hg'P)), ← map_mul, ← map_mul, ← map_mul, ← map_mul]`. Establish `h2` using `Ideal.Quotient.eq.mp (IsFractionRing.injective _ _ hxy)`. Establish `h3 : g * g' ∈ W`.
+
+Use `W.sub_mem (W.mul_mem_right f' hfW) ((h𝒲 W hW).2 h2)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Break down `hWp.mem_or_mem h3 with h4 | h4` into its components or cases. Use `exacts [hgW W hW h4, hg'W W (Set.mem_singleton W) h4]`. Use `push Not at hfW`.
+
+Take `⟨W₀, hW₀⟩` from `h𝒲ne`. Establish `hfP : f ∉ P` using `fun h' => hfW W₀ hW₀ ((h𝒲 W₀ hW₀).2 h')`. Use `⟨_, div_mem_degZeroLoc P 𝒲 hg hf hfP hfW, ?_⟩` and prove the remaining obligations. Rewrite using `[hx', div_mul_div_comm, mul_comm (algebraMap _ _ _), div_self (mul_ne_zero (hne g hgP) (hne f hfP))]`.
+-/
 theorem DegZeroLocUnits.proof : DegZeroLocUnits.Statement.{u} := by
   intro F _ K _ _ ι _ P hP 𝒲 h𝒲ne h𝒲
   have := hP.isPrime

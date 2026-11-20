@@ -16,9 +16,15 @@ def vec (a : Fin n) : Ext n := ExteriorAlgebra.ι ℂ (Pi.single a 1 : Fin n →
 
 def gen (x : Fin n × Fin n) : Big n := vec n x.1 ⊗ₜ vec n x.2
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`.
+-/
 theorem vec_mul_vec_comm (a b : Fin n) : vec n a * vec n b = -(vec n b * vec n a) :=
   eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Simplify using `only [gen, Algebra.TensorProduct.tmul_mul_tmul, vec_mul_vec_comm n x.1, vec_mul_vec_comm n x.2, TensorProduct.neg_tmul, TensorProduct.tmul_neg, neg_neg]`.
+-/
 theorem gen_comm : ∀ u ∈ Set.range (gen n), ∀ v ∈ Set.range (gen n), u * v = v * u := by
   rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩
   simp only [gen, Algebra.TensorProduct.tmul_mul_tmul, vec_mul_vec_comm n x.1, vec_mul_vec_comm n x.2,
@@ -43,6 +49,9 @@ def topExt : Ext n →ₗ[ℂ] ℂ := ExteriorAlgebra.liftAlternating (topForm n
 
 def topBig : Big n →ₗ[ℂ] ℂ := TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₂ (topExt n) ∘ₗ topExt n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem topBig_tmul (x y : Ext n) : topBig n (x ⊗ₜ y) = topExt n x * topExt n y := rfl
 
 variable {n} {p q : ℕ}

@@ -11,6 +11,23 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.MixXLevi
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t g₁ m hm Φ hΦ`. Take `⟨mt, hmt⟩` from `GlobalTheory.T.hermitian_adapted_plane_restriction hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ t`. Establish `hinv : mat mt⁻¹ * mat mt = 1` using `by show ((mt⁻¹ : UA σ X.J).1.1) * mt.1.1 = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `hmul : mat (mt⁻¹ * m) = mat mt⁻¹ * mat m` using `rfl`. Establish `hone : mat (1 : UA σ X₁.J) = 1` using `rfl`. Establish `hcA : cA σ t.1 * cA σ (t⁻¹ : (AE F E)ˣ).1 = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Take `⟨hx, hy, hι⟩` from `hm`.
+
+Take `⟨hx', hy', hι'⟩` from `hmt`. Establish `key : IsLevi H 1 g₁ (mt⁻¹ * m)`. Establish `ex : mat mt⁻¹ *ᵥ incV F H.x = (t⁻¹ : (AE F E)ˣ).1 • incV F H.x`. Establish `h1 : t.1 • (mat mt⁻¹ *ᵥ incV F H.x) = incV F H.x`. Rewrite using `[← Matrix.mulVec_smul, ← hx', Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [h1]`. Establish `ey : mat mt⁻¹ *ᵥ incV F H.y = cA σ t.1 • incV F H.y`. Establish `h1 : cA σ (t⁻¹ : (AE F E)ˣ).1 • (mat mt⁻¹ *ᵥ incV F H.y) = incV F H.y`.
+
+Rewrite using `[← Matrix.mulVec_smul, ← hy', Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, hcA, one_smul]`. Use `_ = _ := by rw [h1]`. Establish `eι : mat mt⁻¹ * incM F H.ι = incM F H.ι`.
+
+Establish `h1 : mat mt * incM F H.ι = incM F H.ι` using `by rw [hι', hone, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_smul, ex, smul_smul, Units.mul_inv, Units.val_one]`. Rewrite using `[hmul, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_smul, ey, smul_smul, mul_comm, hcA, inv_one, Units.val_one, map_one]`.
+
+Rewrite using `[hmul, Matrix.mul_assoc, hι, ← Matrix.mul_assoc, eι]`. Establish `hsp` using `(IsUWeilPair.isUSplitting hP.weil).pres`. Establish `hpair : ((m, 1) : UA σ X.J × UA σ W.J) = (mt, 1) * (mt⁻¹ * m, 1)` using `Prod.ext (mul_inv_cancel_left mt m).symm (mul_one 1).symm`. Rewrite using `[hpair, map_mul, Module.End.mul_apply]`. Rewrite using `[GlobalTheory.T.hermitian_adapted_plane_theta_integral hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t mt ⟨hx', hy', hι'⟩ _ (hsp _ _ hΦ)]`.
+
+Rewrite using `[GlobalTheory.T.hermitian_adapted_plane_local_factor hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he g₁ _ key Φ hΦ]`.
+-/
 theorem evalZero_levi : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

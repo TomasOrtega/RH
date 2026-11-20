@@ -22,16 +22,27 @@ variable {n : ℕ}
 section Ops
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `: fderiv ℝ (b • f) = b • fderiv ℝ f` using `fderiv_const_smul_field b`. Simplify using `only [Rd, this, Pi.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem Rd_smul (b : ℂ) (X : Mat n) (f : Mat n → V) : Rd X (b • f) = b • Rd X f := by
   funext g
   have : fderiv ℝ (b • f) = b • fderiv ℝ f := fderiv_const_smul_field b
   simp only [Rd, this, Pi.smul_apply]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Eu, Rd_smul]`. Use `module`.
+-/
 theorem Eu_smul (b : ℂ) (s : Bool) (a c : Fin n) (f : Mat n → V) : Eu s a c (b • f) = b • Eu s a c f := by
   simp only [Eu, Rd_smul]
   module
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a c with`. Consider the case `zero`. Simplify using `only [Epow]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`.
+
+Simplify using `only [Epow, ih, Eu_smul, Finset.smul_sum]`.
+-/
 theorem Epow_smul (b : ℂ) (s : Bool) (m : ℕ) (a c : Fin n) (f : Mat n → V) :
     Epow s m a c (b • f) = b • Epow s m a c f := by
   induction m generalizing a c with
@@ -41,18 +52,32 @@ theorem Epow_smul (b : ℂ) (s : Bool) (m : ℕ) (a c : Fin n) (f : Mat n → V)
   | succ m ih =>
     simp only [Epow, ih, Eu_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `only [gel, Epow_smul, Finset.smul_sum]`.
+-/
 theorem gel_smul (b : ℂ) (s : Bool) (m : ℕ) (f : Mat n → V) : gel s m (b • f) = b • gel s m f := by
   simp only [gel, Epow_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `only [Om, gel_smul]`. Use `module`.
+-/
 theorem Om_smul (b : ℂ) (f : Mat n → V) : Om (b • f) = b • Om f := by
   simp only [Om, gel_smul]
   module
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => simp only [zOp, ih, gel_smul]`.
+-/
 theorem zOp_smul (b : ℂ) (w : List (Bool × ℕ)) (f : Mat n → V) : zOp w (b • f) = b • zOp w f := by
   induction w with
   | nil => rfl
   | cons p w ih => simp only [zOp, ih, gel_smul]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => intro x _`. Simplify using `[zOp, zVal]`. Consider the case `cons p w ih`. Introduce `x hx`.
+
+Establish `h` using `GlobalTheory.CompanionTheory.WaveMult.zOp_agree_GLs n [p] (zOp w f) (zVal w χ • f) (fun g hg => by simpa using ih g hg) x hx`. Establish `h1 : zOp (p :: w) f x = gel p.1 p.2 (zVal w χ • f) x` using `by simpa [zOp] using h`. Rewrite using `[h1, gel_smul, Pi.smul_apply, hf p.1 p.2 x hx, smul_smul]`. Simplify using `[zVal, mul_comm]`.
+-/
 theorem zOp_eig {χ : Inf n} {f : Mat n → V} (hf : IsEig χ f) (w : List (Bool × ℕ)) :
     ∀ x ∈ GLs n, zOp w f x = zVal w χ • f x := by
   induction w with
@@ -64,6 +89,9 @@ theorem zOp_eig {χ : Inf n} {f : Mat n → V} (hf : IsEig χ f) (w : List (Bool
     rw [h1, gel_smul, Pi.smul_apply, hf p.1 p.2 x hx, smul_smul]
     simp [zVal, mul_comm]
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, hf _ _ x hx, cas]`. Use `module`.
+-/
 theorem Om_eig {χ : Inf n} {f : Mat n → V} (hf : IsEig χ f) : ∀ x ∈ GLs n, Om f x = cas χ • f x := by
   intro x hx
   simp only [Om, Pi.smul_apply, Pi.add_apply, hf _ _ x hx, cas]
@@ -71,18 +99,33 @@ theorem Om_eig {χ : Inf n} {f : Mat n → V} (hf : IsEig χ f) : ∀ x ∈ GLs 
 
 end Ops
 
+/- English proof (translation)
+Establish `e : HasDerivAt (fun r : ℝ => (r : ℂ) * a) a s`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := s)).mul_const a`. Conclude with `(Complex.hasDerivAt_cosh ((s : ℂ) * a)).comp s e`.
+-/
 theorem hasDerivAt_cosh_mul (a : ℂ) (s : ℝ) :
     HasDerivAt (fun r : ℝ => Complex.cosh (r * a)) (Complex.sinh (s * a) * a) s := by
   have e : HasDerivAt (fun r : ℝ => (r : ℂ) * a) a s := by
     simpa using (Complex.ofRealCLM.hasDerivAt (x := s)).mul_const a
   exact (Complex.hasDerivAt_cosh ((s : ℂ) * a)).comp s e
 
+/- English proof (translation)
+Establish `e : HasDerivAt (fun r : ℝ => (r : ℂ) * a) a s`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := s)).mul_const a`. Conclude with `(Complex.hasDerivAt_sinh ((s : ℂ) * a)).comp s e`.
+-/
 theorem hasDerivAt_sinh_mul (a : ℂ) (s : ℝ) :
     HasDerivAt (fun r : ℝ => Complex.sinh (r * a)) (Complex.cosh (s * a) * a) s := by
   have e : HasDerivAt (fun r : ℝ => (r : ℂ) * a) a s := by
     simpa using (Complex.ofRealCLM.hasDerivAt (x := s)).mul_const a
   exact (Complex.hasDerivAt_sinh ((s : ℂ) * a)).comp s e
 
+/- English proof (translation)
+Establish `d1 : ∀ (v : E.V) (s : ℝ), HasDerivAt (fun r : ℝ => Complex.cosh (r * a) • v) ((Complex.sinh (s * a) * a) • v) s` using `fun v s => (hasDerivAt_cosh_mul a s).smul_const v`. Establish `d2 : ∀ (v : E.V) (s : ℝ), HasDerivAt (fun r : ℝ => (Complex.sinh (r * a) * a) • v) ((Complex.cosh (s * a) * a * a) • v) s` using `fun v s => ((hasDerivAt_sinh_mul a s).mul_const a).smul_const v`. Use `⟨?_, fun t => ⟨?_, fun g hg k => ?_⟩, fun t g hg => ?_, fun g _ => ?_⟩` and prove the remaining obligations. Establish `hc : ContDiff ℝ ∞ (fun t : ℝ => Complex.cosh (t * a))` using `(Complex.contDiff_cosh.restrict_scalars ℝ).comp (Complex.ofRealCLM.contDiff.mul contDiff_const)`. Establish `h1 : ContDiffOn ℝ ∞ (fun p : ℝ × Mat n => Complex.cosh (p.1 * a)) (Set.univ ×ˢ GLs n)` using `(hc.comp contDiff_fst).contDiffOn`.
+
+Establish `h2 : ContDiffOn ℝ ∞ (fun p : ℝ × Mat n => f p.2) (Set.univ ×ˢ GLs n)` using `hf.1.comp contDiff_snd.contDiffOn (fun p hp => hp.2)`. Conclude with `h1.smul h2`. Conclude with `contDiffOn_const.smul hf.1`. Simplify using `only [hf.2 g hg k, map_smul]`. Establish `hOm : Om (fun x => Complex.cosh (t * a) • f x) g = Complex.cosh (t * a) • Om f g` using `congrFun (Om_smul (Complex.cosh (t * a)) f) g`.
+
+Establish `D1 : deriv (fun r : ℝ => Complex.cosh (r * a) • f g) = fun r : ℝ => (Complex.sinh (r * a) * a) • f g`. Use function extensionality and compare the values at `fun s => (d1 (f g) s).deriv`. Rewrite using `[hOm, Om_eig he g hg, iteratedDeriv_succ, iteratedDeriv_one, D1, (d2 (f g) t).deriv, ← ha, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[(d1 (f g) 0).deriv]`. Simplify using the standard rewrite rules.
+-/
 theorem isWave_cosh (E : KMod n) {χ : Inf n} {f : Mat n → E.V} (hf : f ∈ CE E) (he : IsEig χ f) {a : ℂ}
     (ha : a ^ 2 = cas χ) : IsWave E (fun t x => Complex.cosh (t * a) • f x) := by
   have d1 : ∀ (v : E.V) (s : ℝ), HasDerivAt (fun r : ℝ => Complex.cosh (r * a) • v)
@@ -113,6 +156,13 @@ theorem isWave_cosh (E : KMod n) {χ : Inf n} {f : Mat n → E.V} (hf : f ∈ CE
 section Ker
 variable [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n)
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ E.V` as an intermediate fact. Establish `ha : ((cas χ) ^ (1 / 2 : ℂ)) ^ 2 = cas χ`. Use `Complex.cpow_nat_inv_pow (cas χ) (n := 2) two_ne_zero` as an intermediate fact. Simplify `this` using `[one_div]`. Establish `hw` using `hK.2.2.2 _ (isWave_cosh E hf he ha) x hx`.
+
+Establish `h0 : (fun x' => Complex.cosh (((0 : ℝ) : ℂ) * (cas χ) ^ (1 / 2 : ℂ)) • f x') = f`. Use function extensionality and compare the values at `x'`. Simplify using the standard rewrite rules. Establish `h1 : (fun x' => ∫ t : ℝ, (g t : ℂ) • (fun t' x'' => Complex.cosh ((t' : ℂ) * (cas χ) ^ (1 / 2 : ℂ)) • f x'') t x') = coshT g (cas χ) • f`. Use function extensionality and compare the values at `x'`.
+
+Simplify using `only [smul_smul, Pi.smul_apply, coshT]`. Conclude with `integral_smul_const _ _`. Rewrite `hw` using `[h0, h1, zOp_smul, Pi.smul_apply, zOp_eig he w x hx, smul_smul, mul_comm]`. Conclude with `hw`.
+-/
 theorem act_of_isKer {w : List (Bool × ℕ)} {g : ℝ → ℝ} {ks : Mat n → (E.V →L[ℂ] E.V)}
     (hK : IsKer μ E w g ks) {χ : Inf n} {f : Mat n → E.V} (hf : f ∈ CE E) (he : IsEig χ f) {x : Mat n}
     (hx : x ∈ GLs n) : act μ E ks f x = (zVal w χ * coshT g (cas χ)) • f x := by
@@ -138,6 +188,9 @@ end GlobalTheory.CompanionTheory.WaveMult.EigAct
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Introduce and unpack `hL n _ _ μ _ E k val T ⟨m, c, w, g, ks, h1, h2, h3⟩ χ f hf he x hx`. Establish `h` using `GlobalTheory.CompanionTheory.WaveMult.act_eq_sum_of_kernel hL n μ E c ks k f (fun i => ⟨(h1 i).2.1.continuousOn, (h1 i).2.2.1⟩) h2 hf.1.continuousOn x hx`. Rewrite using `[h, h3 χ, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[EigAct.act_of_isKer μ E (h1 i).2 hf he hx, smul_smul, mul_assoc]`.
+-/
 theorem act_eq_val_of_isMult : LgFacts → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V)) (val : Inf n → ℂ) (T : ℝ), IsMult μ E k val T → ∀ χ, ∀ f ∈ CE E, IsEig χ f → ∀ x ∈ GLs n, act μ E k f x = val χ • f x := by
   rintro hL n _ _ μ _ E k val T ⟨m, c, w, g, ks, h1, h2, h3⟩ χ f hf he x hx
   have h := GlobalTheory.CompanionTheory.WaveMult.act_eq_sum_of_kernel hL n μ E c ks k f (fun i => ⟨(h1 i).2.1.continuousOn, (h1 i).2.2.1⟩) h2

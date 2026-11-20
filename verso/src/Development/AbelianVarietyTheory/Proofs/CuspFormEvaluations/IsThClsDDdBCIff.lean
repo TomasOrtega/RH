@@ -16,10 +16,18 @@ namespace GlobalTheory.ClassSumFieldChange
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F) {n : ℕ} (d : DeltaDat Xo c n)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem eF_incF (a : c.F) :
     ((ddBC hle d).eF (incF c c' hle a) : (covCoeff hle d).F) =
       incF d.c₂ (covCoeff hle d) (le_covCoeff hle d) (d.eF a) := Subtype.ext rfl
 
+/- English proof (translation)
+Use `letI alg : Algebra c.F c'.F := (incF c c' hle).toAlgebra`. Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ c'.F), eq_ratCast (algebraMap ℚ c.F), map_ratCast]`. Use `haveI := c'.fin`. Use `haveI : FiniteDimensional c.F c'.F := Module.Finite.of_restrictScalars_finite ℚ c.F c'.F`.
+
+Set `φ : c'.F →ₐ[c.F] k` to `IsAlgClosed.lift`. Conclude with `⟨φ.toRingHom.toAlgebra, fun a => φ.commutes a⟩`.
+-/
 theorem exists_algOver (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] :
     ∃ _ : Algebra c'.F k, AlgOver c c' hle k := by
   letI alg : Algebra c.F c'.F := (incF c c' hle).toAlgebra
@@ -30,6 +38,11 @@ theorem exists_algOver (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] :
   let φ : c'.F →ₐ[c.F] k := IsAlgClosed.lift
   exact ⟨φ.toRingHom.toAlgebra, fun a => φ.commutes a⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.FieldBC.shortValAt_bc E H Dw d.l₂ d.Xo₂ d.c₂ (covCoeff hle d) (le_covCoeff hle d) d.nab₂ n (fun q => d.eF (w q)) La 1 N (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P) k h₂ y₂ v`. Establish `e : (MvPolynomial.map ((ddBC hle d).eF : c'.F →+* (ddBC hle d).c₂.F) (MvPolynomial.map (incF c c' hle) P) : MvPolynomial (LtN Dw n) (covCoeff hle d).F) = MvPolynomial.map (incF d.c₂ (covCoeff hle d) (le_covCoeff hle d)) (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P)`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Conclude with `congrArg (fun g => MvPolynomial.map g P) (RingHom.ext fun a => eF_incF hle d a)`. Rewrite `h` using `[map_one]`.
+
+Unfold `thLaValAt`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem thLa_iff (w : (Fin n → LevQ Dw d.l₂) → c.F) (La : GenLat E n) (N : ℕ) (P : MvPolynomial (LtN Dw n) c.F)
     (k : Type) [CommRing k] [Algebra d.c₂.F k] [A₂ : Algebra (covCoeff hle d).F k]
     (h₂ : AlgOver d.c₂ (covCoeff hle d) (le_covCoeff hle d) k) (y₂ : FrPt d.Xo₂ (covCoeff hle d) k) (v : k) :
@@ -51,6 +64,23 @@ theorem thLa_iff (w : (Fin n → LevQ Dw d.l₂) → c.F) (La : GenLat E n) (N :
   rw [e]
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c c' hle n d Cl _ w La Nc gam vol ep Vs _ _ io Vs' _ _ io' x x' hio hδ a m f hf`. Establish `hcoef : ∀ (k : Type) [Field k] [Algebra c.F k] [Algebra c'.F k], AlgOver c c' hle k → ∀ cl, algebraMap c'.F k (incF c c' hle vol * ((gam cl : c'.F))⁻¹ * incF c c' hle (ep cl)) = algebraMap c.F k (vol * ((gam cl : c.F))⁻¹ * ep cl)`. Introduce `k _ _ _ h cl`. Rewrite using `[← h, map_mul (incF c c' hle), map_mul (incF c c' hle), map_inv₀, map_natCast]`. Establish `hf'` using `((GlobalTheory.FieldBC.rulBC_sec_val_linear E H Dw l Xo c c' hle).1 a m f hf).2`.
+
+Establish `hδ'` using `((GlobalTheory.FieldBC.rulBC_sec_val_linear E H Dw d.l₂ d.Xo₂ d.c₂ (covCoeff hle d) (le_covCoeff hle d)).1 0 0 d.cδ hδ).2`. Establish `hov` using `(GlobalTheory.T.levelCover_larger_coeffField_lying_over E H Dw l Xo c c' hle n d).1`. Prove the components needed by the constructor for the conclusion. Introduce `H' k _ _ _ _ hk y y₂ hy`. Take `⟨A, h⟩` from `exists_algOver hle k`.
+
+Use `letI A₂ : Algebra (covCoeff hle d).F k := A`. Establish `h₂ : AlgOver d.c₂ (covCoeff hle d) (le_covCoeff hle d) k` using `fun b => by`. Take `⟨b, rfl⟩` from `d.eF.surjective b`. Rewrite using `[hk, ← h b]`. Both sides reduce to the same expression.
+
+Take `⟨vc, hv, he⟩` from `@H' k _ _ A A₂ (fun _ => rfl) (y.ext hle h) (y₂.ext (le_covCoeff hle d) h₂) ((hov k h h₂ _ _).2 hy)`. Use `⟨vc, fun cl => ?_, ?_⟩` and prove the remaining obligations. Use `hv cl` as an intermediate fact. Rewrite `this` using `[hio]`. Conclude with `(thLa_iff hle d (w cl) (La cl) (Nc cl) (io (x cl)) k h₂ _ _).1 this`.
+
+Establish `e1` using `hf' k h (y.ext hle h)`. Establish `e2` using `hδ' k h₂ (y₂.ext (le_covCoeff hle d) h₂)`. Simplify using `only [hcoef k h] at he`. Rewrite `he` using `[e1]`. Conclude with `he.trans (congrArg (· * _) e2)`.
+
+Introduce `H' k _ _ A A₂ hk y y₂ hy`. Use `letI A₂' : Algebra (covCoeff hle d).F k := A₂`. Use `letI := resAlg hle k`. Use `letI := resAlg (le_covCoeff hle d) k`. Establish `h : AlgOver c c' hle k` using `fun _ => rfl`.
+
+Establish `h₂ : AlgOver d.c₂ (covCoeff hle d) (le_covCoeff hle d) k` using `fun _ => rfl`. Take `⟨vc, hv, he⟩` from `H' k (fun b => hk (incF c c' hle b)) (y.res hle h) (FrPt.res (c' := covCoeff hle d) (le_covCoeff hle d) h₂ y₂) ((hov k h h₂ y₂ y).1 hy)`. Use `⟨vc, fun cl => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hio]`. Conclude with `(thLa_iff hle d (w cl) (La cl) (Nc cl) (io (x cl)) k h₂ y₂ _).2 (hv cl)`.
+
+Establish `e1` using `hf' k h y`. Establish `e2` using `hδ' k h₂ y₂`. Simplify using `only [hcoef k h]`. Rewrite using `[e1]`. Conclude with `he.trans (congrArg (· * _) e2.symm)`.
+-/
 theorem isThClsD_ddBC_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (n : ℕ) (d : DeltaDat Xo c n) (Cl : Type) [Fintype Cl] (w : Cl → (Fin n → LevQ Dw d.l₂) → c.F) (La : Cl → GenLat E n) (Nc gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F) (Vs : Type) [AddCommGroup Vs] [Module c.F Vs] (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (Vs' : Type) [AddCommGroup Vs'] [Module c'.F Vs'] (io' : Vs' →ₗ[c'.F] MvPolynomial (LtN Dw n) c'.F) (x : Cl → Vs) (x' : Cl → Vs'), (∀ k, io' (x' k) = MvPolynomial.map (incF c c' hle) (io (x k))) → d.cδ ∈ sec d.Xo₂ d.c₂ 0 0 → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (m : ℕ), ∀ f ∈ sec Xo c a m, (IsThClsD Xo c' (ddBC hle d) (fun k q => incF c c' hle (w k q)) La Nc gam (incF c c' hle vol) (fun k => incF c c' hle (ep k)) io' x' (rulBC hle f) ↔ IsThClsD Xo c d w La Nc gam vol ep io x f) := by
   intro E _ _ _ H Dw l Xo c c' hle n d Cl _ w La Nc gam vol ep Vs _ _ io Vs' _ _ io' x x' hio hδ a m f hf
   have hcoef : ∀ (k : Type) [Field k] [Algebra c.F k] [Algebra c'.F k], AlgOver c c' hle k → ∀ cl,

@@ -26,6 +26,11 @@ section Cover
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Take `⟨r, h₁, h₂, h₃, h₄⟩` from `h`. Use `⟨r, h₁, h₂, fun σ z y y' i e₁ e₂ hi => ?_, h₄⟩` and prove the remaining obligations. Use `h₃ σ z y y' i e₁ e₂ hi` as an intermediate fact. Express the relevant statement in the definitionally equal form `a σ y - t = _ - ((N.φ _).φ (i PUnit.unit) y' + 2 * t) / 2`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norms_shift {V : Cover Y} {N : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V N f a l) (t : ℝ) :
     Norms V (N.shift (fun _ => t) fun _ => rfl) f (fun σ y => a σ y - t) l := by
@@ -36,6 +41,11 @@ theorem norms_shift {V : Cover Y} {N : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ �
   rw [this]
   ring
 
+/- English proof (translation)
+Use `M.ar.isIntegral` as an intermediate fact. Take `⟨η, hη⟩` from `(hA.arExists _ V.X V.p Y.dim V.ar).1 N`. Take `⟨η₀, hη₀⟩` from `(hA.arExists _ M.X M.p Y.dim M.ar).1 N₀`. Establish `e₁` using `GlobalTheory.ArSelfObj.selfInter_eq hA V M hM h h₀ ⟨η, hη, rfl⟩ ⟨η₀, hη₀, rfl⟩`. Establish `e₂` using `GlobalTheory.ArSelfObj.selfInter_eq hA V M hM (norms_shift h 1) (norms_shift h₀ 1) (hA.arShift _ V.X V.p Y.dim V.ar N _ 1 ⟨η, hη, rfl⟩) (hA.arShift _ M.X M.p Y.dim M.ar N₀ _ 1 ⟨η₀, hη₀, rfl⟩)`.
+
+Establish `hd : ((Y.dim : ℝ) + 1) ≠ 0` using `by positivity`. Apply `mul_left_cancel₀ hd` to reduce the goal to its premises. Take the linear combination `e₂ - e₁`.
+-/
 theorem gdeg_eq (hA : ArCalc) (V : Cover Y) (M : TrueGeo.Model Y)
     (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.X) {N : HermLB V.p} {N₀ : HermLB M.p} {f : Y.X → Y.Fn}
     {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ} {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ}
@@ -50,6 +60,9 @@ theorem gdeg_eq (hA : ArCalc) (V : Cover Y) (M : TrueGeo.Model Y)
   apply mul_left_cancel₀ hd
   linear_combination e₂ - e₁
 
+/- English proof (translation)
+Establish `hN' : ∀ i, Norms V (N i) (fun x => genAt (A i).D x) (fun σ y => lnAdl (A i) σ y) fun v e' y => (A i).lg v e' y` using `fun i => (norms_of_induces (hN i)).congr (fun x => pow_one _) (fun σ y => by simp) fun v e' y => by simp`. Establish `n₀` using `fun i => norms_of_induces (Cover.induces_ofModel hP (hL i))`. Establish `n₁` using `(norms_comb hN' fun i => ((m : ℕ) : ℤ) * n i).congr (f' := fun x => ∏ i, (genAt (A i).D x ^ (m : ℕ)) ^ n i) (a' := fun σ y => ∑ i, (n i : ℝ) * ((m : ℕ) * lnAdl (A i) σ y)) (l' := fun v e y => ∑ i, (n i : ℝ) * ((m : ℕ) * (A i).lg v e y)) (fun x => Finset.prod_congr rfl fun i _ => …`. Conclude with `gdeg_eq hA V P hP n₁ (norms_comb n₀ n)`.
+-/
 theorem gdeg_comb (hA : ArCalc) {C : CxSt F} (V : Cover Y) (P : TrueGeo.Model Y)
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme P.X) {ι : Type} [Fintype ι] (A : ι → Adl C Y) (L : ι → HermLB P.p) (m : ℕ+)
     (hL : ∀ i, (A i).Induced P (L i) m 0) (N : ι → HermLB V.p) (hN : ∀ i, V.Induces (A i) (N i) 1) (n : ι → ℤ) :
@@ -75,6 +88,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def expoHom (Dw : Datum H) : (Pad.Sym E →₀ ℤ) →+ (Letter Dw → ℤ) :=
   AddMonoidHom.mk' (expo Dw) fun w w' => LineTest.expo_add Dw w w'
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `expoHom Dw _ = ∑ i, n i • expoHom Dw (w i)`. Simplify using `only [map_sum, map_zsmul]`.
+-/
 theorem expo_sum_zsmul {ι : Type} [Fintype ι] (n : ι → ℤ) (w : ι → Pad.Sym E →₀ ℤ) :
     expo Dw (∑ i, n i • w i) = ∑ i, n i • expo Dw (w i) := by
   change expoHom Dw _ = ∑ i, n i • expoHom Dw (w i)
@@ -82,6 +98,11 @@ theorem expo_sum_zsmul {ι : Type} [Fintype ι] (n : ι → ℤ) (w : ι → Pad
 
 end Expo
 
+/- English proof (translation)
+Introduce `a ha`. Unfold `rootSym at ha`. Apply the tactic sequence `split_ifs at ha <;>`. Rewrite `ha` using `[Finsupp.support_single_ne_zero _ (by norm_num)]`. Rewrite `ha` using `[Finset.mem_singleton]`.
+
+Substitute `ha` using the available equality. Conclude with `⟨Pc.finite_toSet.subset fun q hq => by simpa [ArIn.ind] using hq, rfl⟩`.
+-/
 theorem rootSym_support {D : D7} (O : Setup D) (Pc : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau O.N) :
     ∀ a ∈ (rootSym O.S.Dw (ArIn.ind Pc) (some R) (DV.tauEmb D x.1) x.2).support,
       {q | a.1 q = true}.Finite ∧ a.2.1 = some R := by
@@ -93,6 +114,11 @@ theorem rootSym_support {D : D7} (O : Setup D) (Pc : Finset ℕ) (R : ℝ) (x : 
     subst ha
     exact ⟨Pc.finite_toSet.subset fun q hq => by simpa [ArIn.ind] using hq, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompPropObj.interPoly_int (GlobalTheory.T.stronger_published_hypotheses_imply hP).p16 O c fun τ i => -n (τ, i)`. Simplify using `only [neg_neg] at h`. Rewrite `h` using `[← Fin.prod_const, GlobalTheory.ProjVar.Var.interPoly_prod_sum]`. Use `h.trans ?_` and prove the remaining obligations. Establish `hl : linRoot (fun τ i => ((-n (τ, i) : ℤ) : ℝ)) = lin fun x => (n x : ℝ)`.
+
+Simplify using `[linRoot, lin, Finset.sum_neg_distrib]`. Rewrite using `[← hl]`. Both sides reduce to the same expression.
+-/
 theorem inter_roots (hP : Hypotheses2) {D : D7} (O : Setup D) (c : O.s.Comp) (n : D.what₂.Tau × Fin O.N → ℤ) :
     (((O.var c).inter fun _ => ∑ x, n x • divOf (O.Φ.C c) (O.ex x) : ℤ) : ℝ) =
       (O.s.cx O.L O.B O.fl).volC c * degFl D.what₂.Tau O.N (lin (fun x => (n x : ℝ)) ^ dimFl D.what₂.Tau O.N) := by
@@ -105,6 +131,23 @@ theorem inter_roots (hP : Hypotheses2) {D : D7} (O : Setup D) (c : O.s.Comp) (n 
   rw [← hl]
   rfl
 
+/- English proof (translation)
+Take `⟨xa, _, hcw⟩` from `id hC`. Establish `hm : O.met.hm = metsOf xa O.Φ` using `hcw.hm_eq`. Establish `hdim : (O.var c).dim = dimFl D.what₂.Tau O.N` using `O.dim_eq c`. Set `e` to `blockEquiv D.what₂.Tau O.N O.j O.indef.2.le`. Set `w : (Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a)) → Pad.Sym D.host.E →₀ ℤ` to `fun z => rootSym O.S.Dw (ArIn.ind Pc) (some R) (DV.tauEmb D (e z).1) (e z).2`.
+
+Take `⟨-, hT⟩` from `GlobalTheory.ArTopTrue.arTop_true hP.p4 hH.deg GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s xa O.Φ c R hR`. Take `⟨M, L, m, -, hL, -, -⟩` from `hT _ w (fun z => rootSym_support O _ R (e z))`. Take `⟨P, π, -, hPn, hπ, -, hj, -, -, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating _ (O.var c) M M`. Establish `hL'` using `fun i => InducedPull.induced_pull _ _ _ _ M P π hπ hj (L i) m 0 (hL i)`. Establish `key : ∀ n : D.what₂.Tau × Fin O.N → ℤ, Ψ (lin (fun z => (n (e z) : ℝ)) ^ dimFl D.what₂.Tau O.N) = W.V.ν * (O.s.cx O.L O.B O.fl).volC c * degFl D.what₂.Tau O.N (lin (fun x => (n x : ℝ)) ^ dimFl D.what₂.Tau O.N)`.
+
+Introduce `n`. Establish `h₁` using `gdeg_comb hP.p4 W.V P hPn _ _ m hL' _ (fun z => by have := W.ind z.1 z.2; rw [hm] at this; exact this) fun z => n (e z)`. Establish `h₂` using `GlobalTheory.ReadModel.gdeg_induced hH.deg _ _ _ _ P _ m 0 (GlobalTheory.T.adelic_divisor_induced_linear D O.A O.N O.j O.S O.κ O.s xa O.Φ c R P _ w _ m (fun z a ha => (rootSym_support O _ R (e z) a ha).2) hL' fun z => n (e z))`. Establish `h₃` using `hΨ.1 fun z => ((m : ℕ) : ℤ) * n (e z)`. Establish `e₁ : lin (fun z => ((((m : ℕ) : ℤ) * n (e z) : ℤ) : ℝ)) = ((m : ℕ) : ℝ) • lin fun z => (n (e z) : ℝ)`.
+
+Simplify using `[lin, Finset.smul_sum, smul_eq_C_mul, mul_assoc]`. Establish `h₄ : (adlOf (O.Φ.C c) (metsOf xa O.Φ c) (∑ z, n (e z) • w z)).deg = (O.s.cx O.L O.B O.fl).volC c * degFl D.what₂.Tau O.N (lin (fun x => (n x : ℝ)) ^ dimFl D.what₂.Tau O.N)`. Rewrite using `[← inter_roots hP O c n]`. Establish `e₂ : divOf (O.Φ.C c) (expo O.S.Dw (∑ z, n (e z) • w z)) = ∑ x, n x • divOf (O.Φ.C c) (O.ex x)`. Rewrite using `[expo_sum_zsmul, ← e.sum_comp]`.
+
+Simplify using `only [w, expo_rootSym, divOf, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`. Simplify using `only [Adl.deg, adlOf, e₂, PNat.one_coe, Nat.cast_one, one_pow, div_one]`. Rewrite `h₃` using `[e₁, smul_pow, map_smul, h₁, h₂, h₄, NumberField.RingOfIntegers.rank, hdim]`. Establish `hm0 : ((m : ℕ) : ℝ) ^ dimFl D.what₂.Tau O.N ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 m.ne_zero)`.
+
+Apply `mul_left_cancel₀ hm0` to reduce the goal to its premises. Rewrite using `[← smul_eq_mul, h₃, Cover.ν]`. Simplify using `only [adlOf, PNat.one_coe, Nat.cast_one, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `fin` using `GlobalTheory.ArInt.Model.eq_zero_of_pow (dimFl D.what₂.Tau O.N) (Ψ - (W.V.ν * (O.s.cx O.L O.B O.fl).volC c) • Formalism.L2.Geo.degFlL D.what₂.Tau O.N ∘ₗ (rename e).toLinearMap) (fun n => by`.
+
+Use `key fun x => n (e.symm x)` as an intermediate fact. Simplify using `only [Equiv.symm_apply_apply] at this`. Rewrite using `[LinearMap.sub_apply, this, LinearMap.smul_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Formalism.L2.Geo.degFlL_apply, map_pow, ← rename_lin_comp e]`. Simplify using `only [Equiv.symm_apply_apply, smul_eq_mul, sub_self])`. Use the proof step `(fun Q d hd hQ => by`.
+
+Rewrite using `[LinearMap.sub_apply, hΨ.2 Q d (hdim ▸ hd) hQ, LinearMap.smul_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Formalism.L2.Geo.degFlL_apply, Formalism.DegreeFormula.degreeHomogeneousEqZero _ _ d _ hQ.rename_isHomogeneous hd]`. Use the proof step `simp)`. Use `LinearMap.congr_fun fin Q` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Formalism.L2.Geo.degFlL_apply, LinearMap.zero_apply, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem geo_eq (hP : Hypotheses2) (hH : HypothesesH) {D : D7} (O : Setup D) (hC : O.Core) (Pc : Finset ℕ) {R : ℝ} (hR : 2 ≤ R)
     (c : O.s.Comp) (W : BunModel O Pc R c)
     (Ψ : MvPolynomial (Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a)) ℝ →ₗ[ℝ] ℝ)

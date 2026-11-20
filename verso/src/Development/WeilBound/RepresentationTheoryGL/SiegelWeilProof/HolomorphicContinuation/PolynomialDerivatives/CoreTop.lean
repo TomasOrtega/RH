@@ -10,6 +10,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.LC
 
+/- English proof (translation)
+The claim follows from `Core.coreLC_of' bicomm (equivLift_of hF semiFam dens symKComm invOp formFacts) repB formFacts`.
+-/
 theorem coreLC_of (hF : PositivityTheory.Rg.Sw.FFT) : CoreLC :=
   Core.coreLC_of' bicomm (equivLift_of hF semiFam dens symKComm invOp formFacts) repB formFacts
 

@@ -3,6 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo.Cs
 open scoped ContDiff Topology
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ _ d G Φ hΦ R q η hη hinv`. Use `set χ : ℝ → ℝ := fun t => Real.smoothTransition (2 * (t - R) - 1) with hχ`. Establish `hχc : ContDiff ℝ ∞ χ` using `Real.smoothTransition.contDiff.comp ((contDiff_const.mul (contDiff_id.sub contDiff_const)).sub contDiff_const)`. Establish `hχ0 : ∀ t, t ≤ R + 1 / 2 → χ t = 0` using `fun t ht => Real.smoothTransition.zero_of_nonpos (by linarith)`. Establish `hχ1 : ∀ t, R + 1 ≤ t → χ t = 1` using `fun t ht => Real.smoothTransition.one_of_one_le (by linarith)`.
+
+Set `f : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)` to `fun s p => if p ∈ G.Y ∧ R < Φ s p then χ (Φ s p) • η s p else 0`. Establish `hf : f ∈ G.Om q` using `by show ∀ s, ContDiffOn ℝ ∞ (f s) G.Y ∧ ∀ p ∉ G.Y, f s p = 0`. Use `fun s => ⟨?_, fun p hp => by simp [f, hp]⟩` and prove the remaining obligations. Apply `contDiffOn_of_locally_contDiffOn` to reduce the goal to its premises. Introduce `p hp`.
+
+Distinguish the cases in `hR : R < Φ s p`. Use `⟨G.Y ∩ Φ s ⁻¹' Set.Ioi R, (hΦ.1 s).continuousOn.isOpen_inter_preimage G.isOpen isOpen_Ioi, ⟨hp, hR⟩, ?_⟩` and prove the remaining obligations. Establish `hsm : ContDiffOn ℝ ∞ (fun x => χ (Φ s x) • η s x) (G.Y ∩ (G.Y ∩ Φ s ⁻¹' Set.Ioi R))` using `((hχc.comp_contDiffOn (hΦ.1 s)).mono (fun x hx => hx.1)).smul ((hη s).mono (fun x hx => ⟨hx.2.1, hx.2.2⟩))`. Use `hsm.congr (fun x hx => ?_)` and prove the remaining obligations. Establish `hx' : x ∈ G.Y ∧ R < Φ s x` using `⟨hx.2.1, hx.2.2⟩`.
+
+Simplify using `only [f, if_pos hx']`. Use `push_neg at hR`. Use `⟨G.Y ∩ Φ s ⁻¹' Set.Iio (R + 1 / 2), (hΦ.1 s).continuousOn.isOpen_inter_preimage G.isOpen isOpen_Iio, ⟨hp, show Φ s p < R + 1 / 2 by linarith⟩, ?_⟩` and prove the remaining obligations. Use `(contDiffOn_const (c := (0 : V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)))).congr (fun x hx => ?_)` and prove the remaining obligations. Establish `hx2 : Φ s x < R + 1 / 2` using `hx.2.2`.
+
+Simplify using `only [f]`. Use `split_ifs with h`. Rewrite using `[hχ0 _ hx2.le, zero_smul]`. Both sides reduce to the same expression. Use `⟨⟨f, hf⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show G.tr q γ (f (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p)) = f s p`. Establish `hρ : ∀ x, G.ρ γ (G.ρ γ⁻¹ x) = x`.
+
+Introduce `x`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Distinguish the cases in `hp : p ∈ G.Y`. Establish `hp' : G.ρ γ⁻¹ p ∈ G.Y` using `G.maps _ _ hp`.
+
+Establish `hΦ' : Φ (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) = Φ s p` using `hΦ.2.1 γ⁻¹ s p hp`. Distinguish the cases in `hR : R < Φ s p`. Establish `h1 : G.ρ γ⁻¹ p ∈ G.Y ∧ R < Φ (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p)` using `⟨hp', by rw [hΦ']; exact hR⟩`. Establish `h2 : p ∈ G.Y ∧ R < Φ s p` using `⟨hp, hR⟩`. Simplify using `only [f, if_pos h1, if_pos h2]`.
+
+Rewrite using `[hΦ', map_smul, hinv γ s p hp hR]`. Establish `h1 : ¬ (G.ρ γ⁻¹ p ∈ G.Y ∧ R < Φ (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p))`. Rewrite using `[hΦ']`. Conclude with `fun h => hR h.2`. Establish `h2 : ¬ (p ∈ G.Y ∧ R < Φ s p)` using `fun h => hR h.2`.
+
+Simplify using `only [f, if_neg h1, if_neg h2, map_zero]`. Establish `hp' : G.ρ γ⁻¹ p ∉ G.Y` using `fun h => hp (by simpa [hρ] using G.maps γ _ h)`. Establish `h1 : ¬ (G.ρ γ⁻¹ p ∈ G.Y ∧ R < Φ (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p))` using `fun h => hp' h.1`. Establish `h2 : ¬ (p ∈ G.Y ∧ R < Φ s p)` using `fun h => hp h.1`. Simplify using `only [f, if_neg h1, if_neg h2, map_zero]`.
+
+Introduce `s p hp h1`. Establish `h2 : p ∈ G.Y ∧ R < Φ s p` using `⟨hp, by linarith⟩`. Use `show f s p = η s p`. Simplify using `only [f, if_pos h2, hχ1 _ h1, one_smul]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.geoCut :
     GeoCut := by
   intro Γ V S _ _ _ _ d G Φ hΦ R q η hη hinv

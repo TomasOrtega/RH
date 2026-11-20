@@ -22,10 +22,23 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {rc : IrrGL (w.adicCompletion E) → WD h}
 
+/- English proof (translation)
+The claim follows from `charZero_of_injective_algebraMap (algebraMap E _).injective`.
+-/
 private theorem cz : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Exh.geometricLemmaGL`.
+-/
 private theorem geo : GlobalTheory.Published.GeometricLemma := PositivityTheory.Exh.geometricLemmaGL
 
+/- English proof (translation)
+Take `⟨r, u, hu, hi, hc, e, hsub⟩` from `h`. Take `rfl : r = 1` from `by simpa using congrArg Multiset.card hu`. Take `rfl : u = fun _ => z` from `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using hu`.
+
+Take `⟨d, c⟩` from `y`. Take `rfl : z.1 = d` from `by simpa using Fintype.card_congr e`. Establish `hd : ∑ _ : Fin 1, z.1 = z.1` using `by simp`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ e (stdBlocks (fun _ : Fin 1 => z.1) hd) _).1 (piTensor fun _ => z.rep)`. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one z hd`.
+
+Set `χ` to `φ.trans ψ.symm`. Take `⟨θ⟩` from `SupportUnique.nonempty_equiv_of_isSubquotient hi z.2.rep.irr (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective))`. Conclude with `((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm`.
+-/
 private theorem eq_of_support_singleton {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {y z : IrrGL k} (h : HasSupport y.rep {z}) : y = z := by
   obtain ⟨r, u, hu, hi, hc, e, hsub⟩ := h
@@ -44,6 +57,11 @@ private theorem eq_of_support_singleton {k : Type} [Field k] [ValuativeRel k] [T
     (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective))
   exact ((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Establish `hL` using `GlobalTheory.T.isLanglandsClassification_detCharacter Pr.cos (w.adicCompletion E) t χ hχ`. Take `⟨φ⟩` from `(IrrRep.det (Fin t) χ hχ).nonempty_equiv_rep`. Rewrite using `[H.langlands _ (cls (IrrRep.det (Fin t) χ hχ)) (hL.of_equiv φ.symm), segSum, List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `show ((rc ((IrrGL.ofChar χ hχ).nu ((((t : ℝ) - 1) / 2 - j : ℝ) : ℂ))).lpTw ((((1 : ℕ) : ℝ) - 1) / 2)).lpChar (WD.lpSp h 1) = _`. Establish `h0 : ((((1 : ℕ) : ℝ) - 1) / 2) = 0` using `by norm_num`. Rewrite using `[h0, (GlobalTheory.T.weilDeligne_charpoly_twist_special E Ω A w h _).1, H.nu]`.
+-/
 private theorem det_law (H : LawsT a ha rc) (t : ℕ) (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     rc (cls (IrrRep.det (Fin t) χ hχ)) =
       sumList ((List.range t).map fun j : ℕ => (rc (.ofChar χ hχ)).lpTw (((t : ℝ) - 1) / 2 - j)) := by
@@ -59,6 +77,11 @@ private theorem det_law (H : LawsT a ha rc) (t : ℕ) (χ : (w.adicCompletion E)
   have h0 : ((((1 : ℕ) : ℝ) - 1) / 2) = 0 := by norm_num
   rw [h0, (GlobalTheory.T.weilDeligne_charpoly_twist_special E Ω A w h _).1, H.nu]
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Take `⟨𝔪, h𝔪⟩` from `Pr.exh _ (cls σ)`. Take `⟨𝔫, h𝔫⟩` from `Pr.exh _ (cls τ)`. Establish `hp` using `GlobalTheory.T.isLanglandsClassification_add_of_irreducible_product Pr.multi Pr.cos _ r t σ τ π 𝔪 𝔫 (h𝔪.of_equiv (equivRep σ).symm) (h𝔫.of_equiv (equivRep τ).symm) hπ`. Rewrite using `[H.langlands 𝔪.toList (cls σ) (by rwa [Multiset.coe_toList]), H.langlands 𝔫.toList (cls τ) (by rwa [Multiset.coe_toList]), H.langlands (𝔪.toList ++ 𝔫.toList) (cls π) (by`.
+
+Rewrite using `[← Multiset.coe_add, Multiset.coe_toList, Multiset.coe_toList]`. Conclude with `hp.of_equiv (equivRep π)), segSum_append_lpSum]`.
+-/
 private theorem prod_law (H : LawsT a ha rc) (r t : ℕ) (σ : IrrRep (GL (Fin r) (w.adicCompletion E)))
     (τ : IrrRep (GL (Fin t) (w.adicCompletion E))) (π : IrrRep (GL (Fin (r + t)) (w.adicCompletion E)))
     (hπ : Nonempty (π.ρ.Equiv (prod₂ σ.ρ τ.ρ))) : rc (cls π) = (rc (cls σ)).lpSum (rc (cls τ)) := by
@@ -73,6 +96,11 @@ private theorem prod_law (H : LawsT a ha rc) (r t : ℕ) (σ : IrrRep (GL (Fin r
       rw [← Multiset.coe_add, Multiset.coe_toList, Multiset.coe_toList]
       exact hp.of_equiv (equivRep π)), segSum_append_lpSum]
 
+/- English proof (translation)
+Rewrite using `[(GlobalTheory.T.weilDeligne_charpoly_twist_special E Ω A w h (rc Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]`. Establish `h1 : ∀ j : Fin Δ.len, (rc (Δ.term j)).charPol σ = ((rc Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ`. Introduce `j`. Rewrite using `[Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, H.nu]`. Express the relevant statement in the definitionally equal form `_ = ∏ j : Fin Δ.len, (fun y => (rc y).charPol σ) (Δ.term j)`.
+
+Simplify using `only [h1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => ((rc Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]`. Both sides reduce to the same expression.
+-/
 private theorem charPol_seg (H : LawsT a ha rc) (Δ : Segment (w.adicCompletion E)) (σ : Weil h) :
     (((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).charPol σ
       = (Δ.ms.map fun y => (rc y).charPol σ).prod := by
@@ -85,6 +113,11 @@ private theorem charPol_seg (H : LawsT a ha rc) (Δ : Segment (w.adicCompletion 
   rw [Fin.prod_univ_eq_prod_range (fun j => ((rc Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]
   rfl
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Take `⟨𝔪, hm⟩` from `Pr.exh (w.adicCompletion E) x`. Establish `h1` using `GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment Pr.zel _ 𝔪 x hm`. Take `rfl : s = msupp 𝔪` from `GlobalTheory.T.supercuspidalSupport_unique_GL geo Pr.bz Pr.zel _ x s _ hs h1`. Rewrite using `[H.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, SuppLaw.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`.
+
+Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => charPol_seg H Δ σ)`.
+-/
 private theorem supp_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (s : Multiset (IrrGL (w.adicCompletion E)))
     (hs : HasSupport x.rep s) (σ : Weil h) : (rc x).charPol σ = (s.map fun y => (rc y).charPol σ).prod := by
   haveI := cz (E := E) (w := w)
@@ -98,6 +131,11 @@ private theorem supp_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (s
   rw [hl, Multiset.coe_toList]
   exact congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => charPol_seg H Δ σ)
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Establish `hL` using `GlobalTheory.T.spherical_satake_eq_langlandsQuotient_unramified Pr.exh Pr.multi Pr.cos Pr.zel geo Pr.bz (w.adicCompletion E) x α hα`. Rewrite `hL` using `[Fin.univ_val_map]`. Rewrite using `[H.langlands _ x hL, segSum, List.map_ofFn, ← SatakeLaw.sumList_ofFn_diag]`. Use `congr 1`.
+
+Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, H.one]`. Conclude with `Test.lpOfChar_unrChar ha (α i) _`.
+-/
 private theorem sat_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (α : Fin x.1 → ℂˣ)
     (hα : HasSatake x.rep α) : rc x = WD.mk (WDRep.diag h fun i => (α i)⁻¹) := by
   haveI := cz (E := E) (w := w)
@@ -110,6 +148,9 @@ private theorem sat_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (α
     zero_div, WD.lpTw_zero, Test.lpChar_lpSp_one, H.one]
   exact Test.lpOfChar_unrChar ha (α i) _
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Use `⟨_, GlobalTheory.T.supercuspidalSupport_of_principalSeries_subquotient (w.adicCompletion E) x.1 (fun i => GlobalTheory.SmGL.unrChar _ (α i)) (fun i => isSmoothChar_of_isUnram (isUnram_unrChar _ (α i))) x.2.rep hα.2.2, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `Or.inl rfl`.
+-/
 private theorem good_of_hasSatake (x : IrrGL (w.adicCompletion E)) (α : Fin x.1 → ℂˣ) (hα : HasSatake x.rep α) :
     Good x := by
   haveI := cz (E := E) (w := w)
@@ -118,6 +159,13 @@ private theorem good_of_hasSatake (x : IrrGL (w.adicCompletion E)) (α : Fin x.1
   obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hy
   exact Or.inl rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.main Pr.bz (w.adicCompletion E) x.1 ⟨x.2.rep.V, x.2.rep.ρ, x.2.rep.smooth, x.2.rep.irr⟩ hs`. Rewrite using `[sat_law H x α hα]`. Conclude with `(WD.unr_mk _).2 (WDRep.unr_diag _)`.
+
+Introduce `hu`. Take `⟨α, hα⟩` from `GlobalTheory.T.unramified_weilDeligne_eq_diagonal_inv E Ω A w h (rc x) hu`. Take `⟨π, hπ⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake (k := w.adicCompletion E) α`. Establish `φ` using `equivRep π`. Establish `hπ' : HasSatake (cls π).rep α` using `⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hπ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hπ.2.2⟩`.
+
+Establish `e1` using `sat_law H (cls π) α hπ'`. Establish `e2 : x = cls π` using `H.inj _ _ (good_of_hasSatake _ α hπ') (hα.trans e1.symm)`. Rewrite using `[e2]`. Conclude with `hπ'.2.1`.
+-/
 private theorem sph_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) : IsSpherical x.rep ↔ (rc x).unr := by
   constructor
   · intro hs
@@ -136,6 +184,15 @@ private theorem sph_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) : I
     rw [e2]
     exact hπ'.2.1
 
+/- English proof (translation)
+Take `⟨n, b, rfl⟩` from `x.exists_rep`. Take `⟨m, c, rfl⟩` from `y.exists_rep`. Rewrite `hi` using `[WD.lpSum_mk, GlobalTheory.VWeil.isIrrWD_mk]`. Set `S : Subrepresentation (b.sum c).ρ` to `⟨LinearMap.ker (LinearMap.snd ℂ _ _), fun σ v hv => by`. Establish `hv' : v.2 = 0` using `hv`.
+
+Use `show c.ρ σ v.2 = 0`. Rewrite using `[hv', map_zero]⟩`. Rewrite using `[WD.lpDim_mk, WD.lpDim_mk, Module.finrank_zero_iff, Module.finrank_zero_iff]`. Break down `hi.eq_bot_or_eq_top S with hS | hS` into its components or cases. Use `Or.inl (subsingleton_of_forall_eq 0 fun v => ?_)` and prove the remaining obligations.
+
+Establish `hv : ((v, 0) : (Fin n → ℂ) × (Fin m → ℂ)) ∈ S.toSubmodule` using `rfl`. Rewrite `hv` using `[hS]`. Conclude with `congrArg Prod.fst (show ((v, 0) : (Fin n → ℂ) × (Fin m → ℂ)) = 0 from hv)`. Use `Or.inr (subsingleton_of_forall_eq 0 fun v => ?_)` and prove the remaining obligations. Establish `hv : ((0, v) : (Fin n → ℂ) × (Fin m → ℂ)) ∈ S.toSubmodule`.
+
+Rewrite using `[hS]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hv`.
+-/
 private theorem dim_zero_of_irr_sum {x y : WD h} (hi : IsIrrWD (x.lpSum y)) : x.lpDim = 0 ∨ y.lpDim = 0 := by
   obtain ⟨n, b, rfl⟩ := x.exists_rep
   obtain ⟨m, c, rfl⟩ := y.exists_rep
@@ -155,6 +212,11 @@ private theorem dim_zero_of_irr_sum {x y : WD h} (hi : IsIrrWD (x.lpSum y)) : x.
       rw [hS]; trivial
     exact hv
 
+/- English proof (translation)
+Take `⟨m, b, rfl⟩` from `x.exists_rep`. Rewrite `hd` using `[WD.lpDim_mk, Module.finrank_fin_fun]`. Rewrite `h0` using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Rewrite using `[WD.lpSp, WD.lpChar_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.tensor_N, h0, WDRep.sp_N, LinearMap.rTensor_zero, zero_add]`. Introduce `hN`.
+
+Use `shiftEnd_ne_zero hn (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Establish `h1` using `congrArg ((TensorProduct.lid ℂ (Fin n → ℂ)).toLinearMap ∘ₗ LinearMap.rTensor (Fin n → ℂ) (LinearMap.proj (R := ℂ) (φ := fun _ : Fin m => ℂ) ⟨0, hd⟩)) (LinearMap.congr_fun hN ((fun _ => 1) ⊗ₜ u))`. Simplify using `using h1`.
+-/
 private theorem not_mono0_sp {x : WD h} (h0 : x.mono0) (hd : 0 < x.lpDim) {n : ℕ} (hn : 2 ≤ n) :
     ¬ (x.lpChar (WD.lpSp h n)).mono0 := by
   obtain ⟨m, b, rfl⟩ := x.exists_rep
@@ -168,11 +230,31 @@ private theorem not_mono0_sp {x : WD h} (h0 : x.mono0) (hd : 0 < x.lpDim) {n : �
     (LinearMap.congr_fun hN ((fun _ => 1) ⊗ₜ u))
   simpa using h1
 
+/- English proof (translation)
+Rewrite using `[WD.lpDim_tensor, WD.lpDim_tw, H.dim, WD.lpSp, WD.lpDim_mk, Module.finrank_fin_fun]`. Conclude with `Nat.mul_pos Δ.isCusp_first.1 Δ.len_pos`.
+-/
 private theorem seg_dim_pos (H : LawsT a ha rc) (Δ : Segment (w.adicCompletion E)) :
     0 < (((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).lpDim := by
   rw [WD.lpDim_tensor, WD.lpDim_tw, H.dim, WD.lpSp, WD.lpDim_mk, Module.finrank_fin_fun]
   exact Nat.mul_pos Δ.isCusp_first.1 Δ.len_pos
 
+/- English proof (translation)
+Use `haveI := cz (E := E) (w := w)`. Take `⟨𝔪, hm⟩` from `Pr.exh (w.adicCompletion E) x`. Take `⟨l, rfl⟩ : ∃ l : List (Segment (w.adicCompletion E)), (l : Multiset _) = 𝔪` from `⟨_, 𝔪.coe_toList⟩`. Establish `hs` using `GlobalTheory.T.langlandsClassification_supercuspidalSupport_multisegment Pr.zel _ _ x hm`. Rewrite `hx` using `[H.langlands l x hm]`.
+
+Establish `key : ∀ (Δ : Segment (w.adicCompletion E)) (m : List (Segment (w.adicCompletion E))), segSum rc (Δ :: m) = (((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).lpSum (segSum rc m)` using `fun _ _ => rfl`. Use `match l, hs, hx with`. Consider the case `[], _, hx`. Conclude with `absurd (GlobalTheory.VWeil.IrrW.lpDim_pos ⟨_, hx⟩) (by show ¬ 0 < (WD.lpZero h).lpDim`. Rewrite using `[WD.lpDim_zero]`.
+
+Conclude with `lt_irrefl 0)`. Consider the case `[Δ], hs, hx`. Establish `e : segSum rc [Δ] = ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)` using `WD.lpSum_zero _`. Rewrite `hx` using `[e]`. Establish `hf` using `H.cusp _ Δ.isCusp_first`.
+
+Establish `hlen : Δ.len = 1`. Establish `hpos` using `Δ.len_pos`. Assume the negation of the conclusion as `hne`. Use `not_mono0_sp ?_ ?_ (by omega) (GlobalTheory.VWeil.IrrW.mono0 ⟨_, hx⟩)` and prove the remaining obligations. Conclude with `(WD.monomial_twist_iff _ _).2 (GlobalTheory.VWeil.IrrW.mono0 ⟨_, hf⟩)`.
+
+Rewrite using `[WD.lpDim_tw]`. Conclude with `GlobalTheory.VWeil.IrrW.lpDim_pos ⟨_, hf⟩`. Establish `e' : Δ = Segment.single Δ.first Δ.isCusp_first` using `Segment.ext_first rfl (by rw [hlen]; rfl)`. Establish `hms : msupp (([Δ] : List (Segment (w.adicCompletion E))) : Multiset _) = {Δ.first}`. Rewrite using `[msupp, Multiset.coe_singleton, Multiset.singleton_bind]`.
+
+Conclude with `(congrArg Segment.ms e').trans (Segment.ms_single _ _)`. Rewrite `hs` using `[hms]`. Rewrite using `[eq_of_support_singleton hs]`. Conclude with `Δ.isCusp_first`. Consider the case `Δ :: Δ' :: m, _, hx`.
+
+Rewrite `hx` using `[key]`. Break down `dim_zero_of_irr_sum hx with h0 | h0` into its components or cases. Conclude with `absurd h0 (seg_dim_pos H Δ).ne'`. Rewrite `h0` using `[key, WD.lpDim_sum]`. Use `seg_dim_pos H Δ'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem cusp_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (hx : IsIrrWD (rc x)) : x.IsCusp := by
   haveI := cz (E := E) (w := w)
   obtain ⟨𝔪, hm⟩ := Pr.exh (w.adicCompletion E) x
@@ -216,12 +298,18 @@ private theorem cusp_law (H : LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) (h
 end UpperTheory.V.Z.Win.Extra
 
 open UpperTheory.V.Z.Win.Extra in
+/- English proof (translation)
+Introduce and unpack `E Ω _ _ _ _ _ A w h rc ⟨a, ha, H⟩`. Conclude with `⟨a, ha, fun _ _ _ _ _ _ _ _ _ => 1, H.dim, H.one, H.langlands, det_law H, prod_law H, supp_law H, sph_law H, sat_law H, fun x => ⟨H.cusp x, cusp_law H x⟩, H.nu, H.absCentral, H.twist, H.central, H.dual, H.inj⟩`.
+-/
 theorem UpperTheory.V.Z.Win.extraV :
     UpperTheory.V.Z.Win.ExtraV := by
   rintro E Ω _ _ _ _ _ A w h rc ⟨a, ha, H⟩
   exact ⟨a, ha, fun _ _ _ _ _ _ _ _ _ => 1, H.dim, H.one, H.langlands, det_law H, prod_law H, supp_law H,
     sph_law H, sat_law H, fun x => ⟨H.cusp x, cusp_law H x⟩, H.nu, H.absCentral, H.twist, H.central, H.dual, H.inj⟩
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Z.Win.extraV E Ω A w h rc H`.
+-/
 theorem UpperTheory.V.Z.Win.toV' {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRecT h rc) : UpperTheory.V.Z.Win.IsRecV h rc :=

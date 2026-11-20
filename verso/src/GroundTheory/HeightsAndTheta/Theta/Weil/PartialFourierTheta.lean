@@ -29,12 +29,21 @@ def incP₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) : P₂ →ₗ[R] W :=
 def incQ₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) : Q₂ →ₗ[R] W :=
   F.e.symm.toLinearMap ∘ₗ LinearMap.inr R (P₁ × P₂) (Q₁ × Q₂) ∘ₗ LinearMap.inr R Q₁ Q₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incP₂_apply (F : FourPieces ω P₁ P₂ Q₁ Q₂) (p : P₂) :
     F.incP₂ p = F.e.symm ((0, p), (0, 0)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incQ₂_apply (F : FourPieces ω P₁ P₂ Q₁ Q₂) (q : Q₂) :
     F.incQ₂ q = F.e.symm ((0, 0), (0, q)) := rfl
 
+/- English proof (translation)
+Rewrite using `[F.form, incP₂_apply, incQ₂_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem form_incP₂_incQ₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) (p : P₂) (q : Q₂) :
     ω (F.incP₂ p) (F.incQ₂ q) = F.a₂ p q := by
   rw [F.form, incP₂_apply, incQ₂_apply]
@@ -66,6 +75,9 @@ def adelicPairing₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) (p : AdelicPoints K
     𝔸[K] :=
   ω.baseChange 𝔸[K] (F.incP₂.baseChange 𝔸[K] p) (F.incQ₂.baseChange 𝔸[K] q)
 
+/- English proof (translation)
+Rewrite using `[adelicPairing₂, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, form_incP₂_incQ₂, Algebra.smul_def]`.
+-/
 theorem adelicPairing₂_tmul (F : FourPieces ω P₁ P₂ Q₁ Q₂) (a a' : 𝔸[K]) (p : P₂) (q : Q₂) :
     F.adelicPairing₂ (a ⊗ₜ p) (a' ⊗ₜ q) = algebraMap K 𝔸[K] (F.a₂ p q) * (a * a') := by
   rw [adelicPairing₂, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul,
@@ -131,6 +143,9 @@ def lineFourForm : LinearMap.BilinForm R ((R × R) × (R × R)) :=
     (fun _ _ _ ↦ by simp only [Prod.fst_add, Prod.snd_add]; ring)
     (fun _ _ _ ↦ by simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineFourForm_apply (w w' : (R × R) × (R × R)) :
     lineFourForm R w w' = w.1.1 * w'.2.1 + w.1.2 * w'.2.2 - w'.1.1 * w.2.1 - w'.1.2 * w.2.2 := rfl
 

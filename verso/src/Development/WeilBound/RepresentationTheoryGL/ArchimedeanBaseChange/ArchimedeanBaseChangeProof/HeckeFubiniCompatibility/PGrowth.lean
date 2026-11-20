@@ -12,6 +12,13 @@ namespace PositivityTheory.Rg.BcB.CG.HeightGrowth
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Break down `le_or_gt x 1 with h | h` into its components or cases. Establish `: Real.posLog x = 0`. Rewrite using `[Real.posLog_def]`. Simplify using `only [Pi.sup_apply, Pi.zero_apply]`. Conclude with `max_eq_left (Real.log_nonpos hx h)`.
+
+Rewrite using `[this, Real.exp_zero, max_eq_left h]`. Establish `: Real.posLog x = Real.log x`. Rewrite using `[Real.posLog_def]`. Simplify using `only [Pi.sup_apply, Pi.zero_apply]`. Conclude with `max_eq_right (Real.log_nonneg h.le)`.
+
+Rewrite using `[this, Real.exp_log (by linarith), max_eq_right h.le]`.
+-/
 theorem exp_posLog {x : ℝ} (hx : 0 ≤ x) : Real.exp (Real.posLog x) = max 1 x := by
   rcases le_or_gt x 1 with h | h
   · have : Real.posLog x = 0 := by
@@ -23,14 +30,23 @@ theorem exp_posLog {x : ℝ} (hx : 0 ≤ x) : Real.exp (Real.posLog x) = max 1 x
       exact max_eq_right (Real.log_nonneg h.le)
     rw [this, Real.exp_log (by linarith), max_eq_right h.le]
 
+/- English proof (translation)
+Rewrite using `[Real.posLog_def]`. Simplify using `only [Pi.sup_apply, Pi.zero_apply]`. Conclude with `le_max_left _ _`.
+-/
 theorem posLog_nonneg' (x : ℝ) : 0 ≤ Real.posLog x := by
   rw [Real.posLog_def]; simp only [Pi.sup_apply, Pi.zero_apply]; exact le_max_left _ _
 
+/- English proof (translation)
+Use `exp_posLog hx` as an intermediate fact. Rewrite `this` using `[h, Real.exp_zero]`. Conclude with `this ▸ le_max_right 1 x`.
+-/
 theorem le_one_of_posLog_eq_zero {x : ℝ} (hx : 0 ≤ x) (h : Real.posLog x = 0) : x ≤ 1 := by
   have := exp_posLog hx
   rw [h, Real.exp_zero] at this
   exact this ▸ le_max_right 1 x
 
+/- English proof (translation)
+Establish `h1` using `exp_posLog (sq_nonneg y)`. Establish `h2 : max 1 (y ^ 2) ≤ Real.exp R` using `h1 ▸ Real.exp_le_exp.2 h`. Break down `le_or_gt y 1 with h3 | h3` into its components or cases. Conclude with `h3.trans (Real.one_le_exp hR)`. Use polynomial arithmetic with `[le_max_right 1 (y ^ 2)]`.
+-/
 theorem le_exp_of_posLog_sq_le {y R : ℝ} (hy : 0 ≤ y) (hR : 0 ≤ R) (h : Real.posLog (y ^ 2) ≤ R) :
     y ≤ Real.exp R := by
   have h1 := exp_posLog (sq_nonneg y)
@@ -39,13 +55,22 @@ theorem le_exp_of_posLog_sq_le {y R : ℝ} (hy : 0 ≤ y) (hR : 0 ≤ R) (h : Re
   · exact h3.trans (Real.one_le_exp hR)
   · nlinarith [le_max_right 1 (y ^ 2)]
 
+/- English proof (translation)
+Simplify using `[cV, pInf_algebraMap, InfinitePlace.norm_embedding_eq]`.
+-/
 theorem norm_cV_alg (v : InfinitePlace E) (α : E) : ‖cV v (algebraMap E (Ad E) α)‖ = v α := by
   simp [cV, pInf_algebraMap, InfinitePlace.norm_embedding_eq]
 
+/- English proof (translation)
+The claim follows from `FinitePlace.norm_embedding w α`.
+-/
 theorem norm_cW_alg (w : HeightOneSpectrum (𝓞 E)) (α : E) :
     ‖cW w (algebraMap E (Ad E) α)‖ = NumberField.HeightOneSpectrum.adicAbv E w α :=
   FinitePlace.norm_embedding w α
 
+/- English proof (translation)
+Establish `h0 : HeightOneSpectrum.valuation E w α ≠ 0` using `(Valuation.ne_zero_iff _).2 hα`. Use `⟨(WithZero.unzero h0).toAdd, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.adicAbv_def, WithZeroMulInt.toNNReal_neg_apply _ h0]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem adicAbv_eq_zpow (w : HeightOneSpectrum (𝓞 E)) {α : E} (hα : α ≠ 0) :
     ∃ z : ℤ, NumberField.HeightOneSpectrum.adicAbv E w α = ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ z := by
   have h0 : HeightOneSpectrum.valuation E w α ≠ 0 := (Valuation.ne_zero_iff _).2 hα
@@ -54,12 +79,22 @@ theorem adicAbv_eq_zpow (w : HeightOneSpectrum (𝓞 E)) {α : E} (hα : α ≠ 
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.adicAbv_def, ← WithZeroMulInt.toNNReal_le_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal w)]`. Conclude with `NNReal.coe_le_one`.
+-/
 theorem adicAbv_le_one_iff (w : HeightOneSpectrum (𝓞 E)) (α : E) :
     NumberField.HeightOneSpectrum.adicAbv E w α ≤ 1 ↔ HeightOneSpectrum.valuation E w α ≤ 1 := by
   rw [HeightOneSpectrum.adicAbv_def, ← WithZeroMulInt.toNNReal_le_one_iff
     (HeightOneSpectrum.one_lt_absNorm_nnreal w)]
   exact NNReal.coe_le_one
 
+/- English proof (translation)
+Use `set N := Ideal.absNorm w.asIdeal`. Establish `hN1 : 1 < N` using `HeightOneSpectrum.one_lt_absNorm w`. Establish `hmem : ((N : ℕ) : 𝓞 E) ∈ w.asIdeal` using `Ideal.absNorm_mem _`. Establish `hlt` using `(FinitePlace.norm_lt_one_iff_mem E w _).2 hmem`. Rewrite `hlt` using `[FinitePlace.norm_embedding, map_natCast]`.
+
+Establish `hne : ((N : ℕ) : E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨z, hz⟩` from `adicAbv_eq_zpow w hne`. Rewrite `hlt`, the goal using `[hz]`. Establish `hN : (1 : ℝ) < N` using `by exact_mod_cast hN1`. Establish `hz0 : z < 0`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `absurd hlt (not_lt.2 (one_le_zpow₀ hN.le h))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adicAbv_absNorm_le (w : HeightOneSpectrum (𝓞 E)) :
     NumberField.HeightOneSpectrum.adicAbv E w ((Ideal.absNorm w.asIdeal : ℕ) : E) ≤
       ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)⁻¹ := by
@@ -79,6 +114,25 @@ theorem adicAbv_absNorm_le (w : HeightOneSpectrum (𝓞 E)) :
   calc (N : ℝ) ^ z ≤ (N : ℝ) ^ (-1 : ℤ) := zpow_le_zpow_right₀ hN.le (by omega)
     _ = _ := zpow_neg_one _
 
+/- English proof (translation)
+Distinguish the cases in `hα : α = 0`. Use `⟨1, one_pos, ?_, 0, by simp [hα]⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one]`. Combine the equalities or inequalities in the displayed calculation. Use `set N : HeightOneSpectrum (𝓞 E) → ℕ := fun w => Ideal.absNorm w.asIdeal with hNdef`.
+
+Establish `hN1 : ∀ w, (1 : ℝ) < N w` using `fun w => by exact_mod_cast HeightOneSpectrum.one_lt_absNorm w`. Use `choose z hz using fun w => adicAbv_eq_zpow w hα`. Use `set k : HeightOneSpectrum (𝓞 E) → ℕ := fun w => (z w).toNat`. Establish `hk : ∀ w, ((N w : ℝ)) ^ k w = max 1 (NumberField.HeightOneSpectrum.adicAbv E w α)`. Introduce `w`.
+
+Rewrite using `[hz w]`. Break down `le_or_gt 0 (z w) with h | h` into its components or cases. Establish `e : ((k w : ℕ) : ℤ) = z w` using `Int.toNat_of_nonneg h`. Rewrite using `[← e, zpow_natCast, max_eq_right (one_le_pow₀ (hN1 w).le)]`. Establish `e : k w = 0` using `Int.toNat_eq_zero.2 h.le`.
+
+Rewrite using `[e, pow_zero, max_eq_left (zpow_le_one_of_nonpos₀ (hN1 w).le h.le)]`. Use `⟨∏ w ∈ S, N w ^ k w, Finset.prod_pos fun w _ => pow_pos (by have := hN1 w; exact_mod_cast (zero_lt_one.trans this)) _, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `le_of_eq (Finset.prod_congr rfl fun w _ => hk w)`. Establish `hint : ∀ w0 : HeightOneSpectrum (𝓞 E), NumberField.HeightOneSpectrum.adicAbv E w0 (((∏ w ∈ S, N w ^ k w : ℕ) : E) * α) ≤ 1`.
+
+Introduce `w0`. Use `set A := NumberField.HeightOneSpectrum.adicAbv E w0`. Establish `hnn : ∀ w, 0 ≤ A ((N w : E) ^ k w)` using `fun w => A.nonneg _`. Establish `hle1 : ∀ w, A ((N w : E) ^ k w) ≤ 1` using `fun w => by`. Rewrite using `[map_pow]`.
+
+Conclude with `pow_le_one₀ (A.nonneg _) (HeightOneSpectrum.adicAbv_natCast_le_one E w0 (N w))`. Rewrite using `[map_mul, Nat.cast_prod, map_prod]`. Use `push_cast`. Distinguish the cases in `hw0 : w0 ∈ S`. Rewrite using `[← Finset.mul_prod_erase S _ hw0]`.
+
+Establish `h1 : ∏ w ∈ S.erase w0, A ((N w : E) ^ k w) ≤ 1` using `Finset.prod_le_one (fun w _ => hnn w) (fun w _ => hle1 w)`. Establish `h2 : A ((N w0 : E) ^ k w0) ≤ ((N w0 : ℝ)⁻¹) ^ k w0`. Rewrite using `[map_pow]`. Conclude with `pow_le_pow_left₀ (A.nonneg _) (adicAbv_absNorm_le w0) _`. Establish `h3 : A α ≤ (N w0 : ℝ) ^ k w0` using `(hk w0).symm ▸ le_max_right _ _`.
+
+Establish `h4 : ((N w0 : ℝ)⁻¹) ^ k w0 * (N w0 : ℝ) ^ k w0 = 1`. Rewrite using `[← mul_pow, inv_mul_cancel₀ (by linarith [hN1 w0]), one_pow]`. Establish `hp0 : 0 ≤ ∏ w ∈ S.erase w0, A ((N w : E) ^ k w)` using `Finset.prod_nonneg fun w _ => hnn w`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : ∏ w ∈ S, A ((N w : E) ^ k w) ≤ 1` using `Finset.prod_le_one (fun w _ => hnn w) (fun w _ => hle1 w)`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one E _ fun w => (adicAbv_le_one_iff w _).1 (hint w)`. Conclude with `⟨y, hy⟩`.
+-/
 theorem exists_den (α : E) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (hS : ∀ w ∉ S, NumberField.HeightOneSpectrum.adicAbv E w α ≤ 1) :
     ∃ m : ℕ, 0 < m ∧ (m : ℝ) ≤ ∏ w ∈ S, max 1 (NumberField.HeightOneSpectrum.adicAbv E w α) ∧
@@ -139,10 +193,18 @@ theorem exists_den (α : E) (S : Finset (HeightOneSpectrum (𝓞 E)))
       fun w => (adicAbv_le_one_iff w _).1 (hint w)
     exact ⟨y, hy⟩
 
+/- English proof (translation)
+Rewrite using `[Real.posLog_def]`. Simplify using `only [Pi.sup_apply, Pi.zero_apply]`. Conclude with `max_eq_left (Real.log_nonpos hx0 hx1)`.
+-/
 theorem posLog_eq_zero_of_le_one {x : ℝ} (hx0 : 0 ≤ x) (hx1 : x ≤ 1) : Real.posLog x = 0 := by
   rw [Real.posLog_def]; simp only [Pi.sup_apply, Pi.zero_apply]
   exact max_eq_left (Real.log_nonpos hx0 hx1)
 
+/- English proof (translation)
+Establish `hev : ∀ p : Fin n × Fin n, ∀ᶠ w in Filter.cofinite, ‖cW w (A p.1 p.2)‖ ≤ 1`. Introduce `p`. Use `filter_upwards [RestrictedProduct.eventually _ _ (pFin E (A p.1 p.2))] with w hw`. Establish `e : cW w (A p.1 p.2) = (pFin E (A p.1 p.2)) w` using `rfl`. Rewrite using `[e, FinitePlace.norm_def, NNReal.coe_le_one, WithZeroMulInt.toNNReal_le_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal w)]`.
+
+Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 hw`. Establish `hall : ∀ᶠ w in Filter.cofinite, ∀ p : Fin n × Fin n, ‖cW w (A p.1 p.2)‖ ≤ 1` using `Filter.eventually_all.2 hev`. Use `(Filter.eventually_cofinite.1 hall).subset fun w hw => ?_` and prove the remaining obligations. Introduce `h`. Conclude with `hw (posLog_eq_zero_of_le_one (Real.iSup_nonneg fun _ => norm_nonneg _) (Real.iSup_le h zero_le_one))`.
+-/
 theorem supp_fin {n : ℕ} (A : Matrix (Fin n) (Fin n) (Ad E)) :
     (Function.support fun w : HeightOneSpectrum (𝓞 E) =>
       Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (A p.1 p.2)‖)).Finite := by
@@ -160,6 +222,9 @@ theorem supp_fin {n : ℕ} (A : Matrix (Fin n) (Fin n) (Ad E)) :
   exact hw (posLog_eq_zero_of_le_one (Real.iSup_nonneg fun _ => norm_nonneg _)
     (Real.iSup_le h zero_le_one))
 
+/- English proof (translation)
+The claim follows from `add_nonneg (Finset.sum_nonneg fun _ _ => posLog_nonneg' _) (finsum_nonneg fun _ => posLog_nonneg' _)`.
+-/
 theorem logSizeM_nonneg {n : ℕ} (A : Matrix (Fin n) (Fin n) (Ad E)) : 0 ≤ logSizeM A :=
   add_nonneg (Finset.sum_nonneg fun _ _ => posLog_nonneg' _) (finsum_nonneg fun _ => posLog_nonneg' _)
 
@@ -167,6 +232,21 @@ def Bx (E : Type) [Field E] [NumberField E] (R : ℝ) : Set E :=
   {α | (∀ v : InfinitePlace E, v α ≤ Real.exp R) ∧
     ∃ m : ℕ, 0 < m ∧ (m : ℝ) ≤ Real.exp R ∧ ∃ z : 𝓞 E, (z : E) = m * α}
 
+/- English proof (translation)
+Use `set A := (ratGL E n γ : Matrix (Fin n) (Fin n) (Ad E))`. Use `set α := (γ : Matrix (Fin n) (Fin n) E) i j`. Establish `hA : A i j = algebraMap E (Ad E) α` using `rfl`. Establish `hM : logSizeM A ≤ R` using `le_trans (le_add_of_nonneg_right (logSizeM_nonneg _)) h`. Use `set F : HeightOneSpectrum (𝓞 E) → ℝ := fun w => Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (A p.1 p.2)‖)`.
+
+Establish `hF0 : ∀ w, 0 ≤ F w` using `fun w => posLog_nonneg' _`. Establish `hinf0 : ∀ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2) ≤ R`. Introduce `v`. Use `le_trans ?_ hM` and prove the remaining obligations. Use `le_trans ?_ (le_add_of_nonneg_right (finsum_nonneg fun w => hF0 w))` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun v => Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2)) (fun _ _ => posLog_nonneg' _) (Finset.mem_univ v)`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖cV v (A i j)‖ ^ 2 ≤ ⨆ p : Fin n × Fin n, ‖cV v (A p.1 p.2)‖ ^ 2` using `le_ciSup (f := fun p : Fin n × Fin n => ‖cV v (A p.1 p.2)‖ ^ 2) (Set.finite_range _).bddAbove (i, j)`. Establish `h2` using `(Real.posLog_le_posLog (sq_nonneg _) h1).trans (hinf0 v)`. Rewrite `h2` using `[hA, norm_cV_alg]`.
+
+Conclude with `le_exp_of_posLog_sq_le (AbsoluteValue.nonneg _ _) hR h2`. Establish `hFfin` using `supp_fin A set S := hFfin.toFinset`. Establish `hG : ∀ w, Real.posLog (NumberField.HeightOneSpectrum.adicAbv E w α) ≤ F w`. Introduce `w`. Establish `h1 : ‖cW w (A i j)‖ ≤ ⨆ p : Fin n × Fin n, ‖cW w (A p.1 p.2)‖` using `le_ciSup (f := fun p : Fin n × Fin n => ‖cW w (A p.1 p.2)‖) (Set.finite_range _).bddAbove (i, j)`.
+
+Rewrite `h1` using `[hA, norm_cW_alg]`. Conclude with `Real.posLog_le_posLog (AbsoluteValue.nonneg _ _) h1`. Establish `hS : ∀ w ∉ S, NumberField.HeightOneSpectrum.adicAbv E w α ≤ 1`. Introduce `w hw`. Rewrite `hw` using `[Set.Finite.mem_toFinset, Function.mem_support, not_not]`.
+
+Use `le_one_of_posLog_eq_zero (AbsoluteValue.nonneg _ _) (le_antisymm ?_ (posLog_nonneg' _))` and prove the remaining obligations. Conclude with `(hG w).trans hw.le`. Take `⟨m, hm, hmle, z, hz⟩` from `exists_den α S hS`. Use `⟨m, hm, hmle.trans ?_, z, hz⟩` and prove the remaining obligations. Establish `e1 : ∏ w ∈ S, max 1 (NumberField.HeightOneSpectrum.adicAbv E w α) = Real.exp (∑ w ∈ S, Real.posLog (NumberField.HeightOneSpectrum.adicAbv E w α))`.
+
+Rewrite using `[Real.exp_sum]`. Conclude with `Finset.prod_congr rfl fun w _ => (exp_posLog (AbsoluteValue.nonneg _ _)).symm`. Rewrite using `[e1, Real.exp_le_exp]`. Establish `e2 : ∑ᶠ w, F w = ∑ w ∈ S, F w` using `finsum_eq_sum F hFfin`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem entry_mem {n : ℕ} {R : ℝ} (hR : 0 ≤ R) (γ : GL (Fin n) E) (h : logSize (ratGL E n γ) ≤ R)
     (i j : Fin n) : (γ : Matrix (Fin n) (Fin n) E) i j ∈ Bx E R := by
   classical
@@ -215,6 +295,23 @@ theorem entry_mem {n : ℕ} {R : ℝ} (hR : 0 ≤ R) (γ : GL (Fin n) E) (h : lo
       _ ≤ logSizeM A := le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => posLog_nonneg' _)
       _ ≤ R := hM
 
+/- English proof (translation)
+Take `⟨C₂, hC₂, hcount⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_ncard_integers_le E`. Use `set d := Module.finrank ℚ E`. Use `⟨C₂ * 2 ^ d, by positivity, fun R hR => ?_⟩` and prove the remaining obligations. Establish `hT : 0 ≤ Real.exp (2 * R)` using `(Real.exp_pos _).le`. Take `⟨hZf, hZc⟩` from `hcount (Real.exp (2 * R)) hT`.
+
+Use `set M := ⌊Real.exp R⌋₊`. Use `set T : Finset E := ((Finset.Icc 1 M) ×ˢ hZf.toFinset).image fun p : ℕ × 𝓞 E => (p.2 : E) / p.1`. Establish `hsub : Bx E R ⊆ (T : Set E)`. Introduce and unpack `α ⟨hv, m, hm, hmR, z, hz⟩`. Rewrite using `[Finset.mem_coe, Finset.mem_image]`.
+
+Use `⟨(m, z), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_product, Finset.mem_Icc, Set.Finite.mem_toFinset]`. Use `⟨⟨hm, Nat.le_floor hmR⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hz, map_mul, InfinitePlace.map_natCast]`. Establish `e : Real.exp (2 * R) = Real.exp R * Real.exp R` using `by rw [← Real.exp_add]; ring_nf`.
+
+Rewrite using `[e]`. Conclude with `mul_le_mul hmR (hv w) (AbsoluteValue.nonneg _ _) (Real.exp_pos _).le`. Establish `hm0 : (m : E) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne' show (z : E) / m = α`. Rewrite using `[hz]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨(Finset.finite_toSet T).subset hsub, ?_⟩` and prove the remaining obligations. Establish `h1 : (Bx E R).ncard ≤ T.card`. Rewrite using `[← Set.ncard_coe_finset]`. Conclude with `Set.ncard_le_ncard hsub (Finset.finite_toSet T)`. Establish `h2 : T.card ≤ M * hZf.toFinset.card`.
+
+Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_product, Nat.card_Icc, Nat.add_sub_cancel]`. Establish `h3 : (hZf.toFinset.card : ℝ) ≤ C₂ * (1 + Real.exp (2 * R)) ^ d`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hZf]`. Conclude with `hZc`.
+
+Establish `hM : (M : ℝ) ≤ Real.exp R` using `Nat.floor_le (Real.exp_pos _).le`. Establish `h4 : (1 + Real.exp (2 * R)) ^ d ≤ 2 ^ d * Real.exp (d * (2 * R))`. Rewrite using `[Real.exp_nat_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith [Real.one_le_exp (by linarith : (0:ℝ) ≤ 2 * R)]) _`. Establish `e : Real.exp ((2 * d + 1) * R) = Real.exp R * Real.exp (d * (2 * R))`.
+
+Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bx_count : ∃ C : ℝ, 0 ≤ C ∧ ∀ R : ℝ, 0 ≤ R → (Bx E R).Finite ∧
     ((Bx E R).ncard : ℝ) ≤ C * Real.exp ((2 * Module.finrank ℚ E + 1) * R) := by
   classical
@@ -257,6 +354,19 @@ theorem bx_count : ∃ C : ℝ, 0 ≤ C ∧ ∀ R : ℝ, 0 ≤ R → (Bx E R).Fi
         mul_le_mul hM (h3.trans (mul_le_mul_of_nonneg_left h4 hC₂)) (Nat.cast_nonneg _) (Real.exp_pos _).le
     _ = C₂ * 2 ^ d * Real.exp ((2 * d + 1) * R) := by rw [e]; ring
 
+/- English proof (translation)
+Take `⟨C, hC, hB⟩` from `bx_count (E := E)`. Use `set d := Module.finrank ℚ E`. Use `⟨C ^ (n * n), (2 * d + 1) * ((n * n : ℕ) : ℝ), by positivity, by positivity, fun R hR => ?_⟩` and prove the remaining obligations. Take `⟨hf, hc⟩` from `hB R hR`. Use `set F := hf.toFinset`.
+
+Use `set Φ : GL (Fin n) E → Fin n → Fin n → E := fun γ i j => (γ : Matrix (Fin n) (Fin n) E) i j`. Use `set box : Finset (Fin n → Fin n → E) := Fintype.piFinset fun _ => Fintype.piFinset fun _ => F`. Establish `hmaps : ∀ γ ∈ {γ : GL (Fin n) E | logSize (ratGL E n γ) ≤ R}, Φ γ ∈ (box : Set _)`. Introduce `γ hγ`. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`.
+
+Introduce `i`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `entry_mem hR γ hγ i j`.
+
+Establish `hinj : Set.InjOn Φ {γ : GL (Fin n) E | logSize (ratGL E n γ) ≤ R}` using `fun γ _ γ' _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)`. Establish `hfin : (box : Set (Fin n → Fin n → E)).Finite` using `Finset.finite_toSet _`. Use `⟨hfin.of_injOn hmaps hinj, ?_⟩` and prove the remaining obligations. Establish `hcard` using `Set.ncard_le_ncard_of_injOn Φ hmaps hinj hfin`. Rewrite `hcard` using `[Set.ncard_coe_finset]`.
+
+Simplify using `only [box, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at hcard`. Establish `hF : (F.card : ℝ) ≤ C * Real.exp ((2 * d + 1) * R)`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hf]`. Conclude with `hc`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gl_count (n : ℕ) : ∃ C K : ℝ, 0 ≤ C ∧ 0 ≤ K ∧ ∀ R : ℝ, 0 ≤ R →
     {γ : GL (Fin n) E | logSize (ratGL E n γ) ≤ R}.Finite ∧
     ({γ : GL (Fin n) E | logSize (ratGL E n γ) ≤ R}.ncard : ℝ) ≤ C * Real.exp (K * R) := by
@@ -299,28 +409,48 @@ open scoped ENNReal Pointwise
 
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+-/
 theorem countable_E : Countable E :=
   (Module.finBasis ℚ E).equivFun.injective.countable
 
+/- English proof (translation)
+Use `haveI := countable_E (E := E)`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Conclude with `Function.Injective.countable (f := (Units.val : GL (Fin n) E → Matrix (Fin n) (Fin n) E)) fun _ _ h => Units.ext h`.
+-/
 theorem countable_GL (n : ℕ) : Countable (GL (Fin n) E) := by
   haveI := countable_E (E := E)
   haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))
   exact Function.Injective.countable (f := (Units.val : GL (Fin n) E → Matrix (Fin n) (Fin n) E)) fun _ _ h => Units.ext h
 
+/- English proof (translation)
+Use `haveI := countable_GL (E := E) a`. Use `haveI := countable_GL (E := E) b`. Conclude with `((ratGL E a).prodMap (ratGL E b)).rangeRestrict_surjective.countable`.
+-/
 theorem countable_ratH (a b : ℕ) : Countable (ratH E a b) := by
   haveI := countable_GL (E := E) a
   haveI := countable_GL (E := E) b
   exact ((ratGL E a).prodMap (ratGL E b)).rangeRestrict_surjective.countable
 
+/- English proof (translation)
+The claim follows from `haveI : BorelSpace (H E a b) := ⟨rfl⟩ ⟨fun c => (continuous_const.mul continuous_id).measurable, fun c => (continuous_id.mul continuous_const).measurable⟩`.
+-/
 theorem measurableMul_H (a b : ℕ) : MeasurableMul (H E a b) :=
   haveI : BorelSpace (H E a b) := ⟨rfl⟩
   ⟨fun c => (continuous_const.mul continuous_id).measurable, fun c => (continuous_id.mul continuous_const).measurable⟩
 
+/- English proof (translation)
+Take `⟨⟨γ₁, γ₂⟩, h⟩` from `δ.2`. Conclude with `⟨γ₁, γ₂, h.symm⟩`.
+-/
 theorem mem_ratH {a b : ℕ} (δ : ratH E a b) :
     ∃ (γ₁ : GL (Fin a) E) (γ₂ : GL (Fin b) E), (δ : H E a b) = (ratGL E a γ₁, ratGL E b γ₂) := by
   obtain ⟨⟨γ₁, γ₂⟩, h⟩ := δ.2
   exact ⟨γ₁, γ₂, h.symm⟩
 
+/- English proof (translation)
+Use `haveI : BorelSpace (H E a b) := ⟨rfl⟩`. Use `haveI := measurableMul_H (E := E) a b`. Use `haveI := D.haar.1`. Use `haveI := countable_ratH (E := E) a b`. Use `haveI : MeasurableConstSMul (ratH E a b) (H E a b) := ⟨fun γ => (continuous_const.mul continuous_id).measurable⟩`.
+
+Use `haveI : SMulInvariantMeasure (ratH E a b) (H E a b) D.μ := ⟨fun γ s _ => measure_preimage_mul D.μ (γ : H E a b) s⟩`. Rewrite using `[D.fd.lintegral_eq_tsum'' g, Dom.ν, lintegral_tsum]`. Both sides reduce to the same expression. Introduce `γ`. Conclude with `(hg.comp (continuous_const.mul continuous_id).measurable).aemeasurable`.
+-/
 theorem fold {a b : ℕ} (D : Dom E a b) (g : H E a b → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ y, g y ∂D.μ = ∫⁻ y, ∑' γ : ratH E a b, g ((γ : H E a b) * y) ∂D.ν := by
   haveI : BorelSpace (H E a b) := ⟨rfl⟩
@@ -336,17 +466,29 @@ theorem fold {a b : ℕ} (D : Dom E a b) (g : H E a b → ℝ≥0∞) (hg : Meas
   · intro γ
     exact (hg.comp (continuous_const.mul continuous_id).measurable).aemeasurable
 
+/- English proof (translation)
+Unfold `logSize`. Rewrite using `[inv_inv, add_comm]`.
+-/
 theorem logSize_inv {n : ℕ} (g : GA E n) : logSize g⁻¹ = logSize g := by
   unfold logSize; rw [inv_inv, add_comm]
 
+/- English proof (translation)
+The claim follows from `le_ciInf fun γ => (hS E n).2.1 _`.
+-/
 theorem redSize_nonneg (hS : SizeBasic) {n : ℕ} (g : GA E n) : 0 ≤ redSize g :=
   le_ciInf fun γ => (hS E n).2.1 _
 
+/- English proof (translation)
+The claim follows from `ciInf_le (f := fun γ : GL (Fin n) E => logSize (ratGL E n γ * g)) ⟨0, by rintro _ ⟨δ, rfl⟩; exact (hS E n).2.1 _⟩ γ`.
+-/
 theorem redSize_le (hS : SizeBasic) {n : ℕ} (γ : GL (Fin n) E) (g : GA E n) :
     redSize g ≤ logSize (ratGL E n γ * g) :=
   ciInf_le (f := fun γ : GL (Fin n) E => logSize (ratGL E n γ * g))
     ⟨0, by rintro _ ⟨δ, rfl⟩; exact (hS E n).2.1 _⟩ γ
 
+/- English proof (translation)
+Rewrite using `[tsum_eq_sum (s := hT.toFinset) fun δ hδ => Set.indicator_of_notMem (by simpa using hδ) _]`. Rewrite using `[Finset.sum_congr rfl fun δ hδ => Set.indicator_of_mem (by simpa using hδ) (1 : α → ℝ≥0∞)]`. Simplify using `[Set.ncard_eq_toFinset_card _ hT]`.
+-/
 theorem tsum_indicator_one {α : Type} (T : Set α) (hT : T.Finite) :
     ∑' δ, T.indicator (1 : α → ℝ≥0∞) δ = (T.ncard : ℝ≥0∞) := by
   classical
@@ -363,6 +505,37 @@ open scoped ENNReal Pointwise
 
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
+/- English proof (translation)
+Take `⟨hc1, hn1, -, c1, hm1⟩` from `hS E a`. Take `⟨hc2, hn2, -, c2, hm2⟩` from `hS E b`. Take `⟨r1, hr1⟩` from `hc1 (Prod.fst '' Q) (hQ.image continuous_fst)`. Take `⟨r2, hr2⟩` from `hc2 (Prod.snd '' Q) (hQ.image continuous_snd)`. Take `⟨C1, K1, hC1, hK1, hA1⟩` from `gl_count (E := E) a`.
+
+Take `⟨C2, K2, hC2, hK2, hA2⟩` from `gl_count (E := E) b`. Use `set q1 := max 0 r1 + 2 * |c1|`. Use `set q2 := max 0 r2 + 2 * |c2|`. Establish `hq1 : 0 ≤ q1` using `by positivity`. Establish `hq2 : 0 ≤ q2` using `by positivity`.
+
+Use `⟨C1 * C2 * Real.exp (K1 * q1 + K2 * q2), 2 * (K1 + K2), by positivity, by positivity, fun x => ?_⟩` and prove the remaining obligations. Establish `hx1` using `hn1 x.1`. Establish `hx2` using `hn2 x.2`. Use `set R1 := 2 * logSize x.1 + q1`. Use `set R2 := 2 * logSize x.2 + q2`.
+
+Establish `hR1 : 0 ≤ R1` using `by positivity`. Establish `hR2 : 0 ≤ R2` using `by positivity`. Take `⟨hf1, hcard1⟩` from `hA1 R1 hR1`. Take `⟨hf2, hcard2⟩` from `hA2 R2 hR2`. Use `set A1 := {γ : GL (Fin a) E | logSize (ratGL E a γ) ≤ R1}`.
+
+Use `set A2 := {γ : GL (Fin b) E | logSize (ratGL E b γ) ≤ R2}`. Use `set e : GL (Fin a) E × GL (Fin b) E → ratH E a b := fun p => ⟨((ratGL E a).prodMap (ratGL E b)) p, ⟨p, rfl⟩⟩`. Use `set T := e '' (A1 ×ˢ A2)`. Establish `hT : T.Finite` using `(hf1.prod hf2).image e`. Establish `hle : ∀ δ : ratH E a b, Q.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * (δ : H E a b) * x) ≤ T.indicator 1 δ`.
+
+Introduce `δ`. Distinguish the cases in `hδ : x⁻¹ * (δ : H E a b) * x ∈ Q`. Take `⟨γ₁, γ₂, hγ⟩` from `mem_ratH δ set q := x⁻¹ * (δ : H E a b) * x`. Establish `hxq : (δ : H E a b) = x * q * x⁻¹` using `by simp only [q]; group`. Establish `e1 : ratGL E a γ₁ = x.1 * q.1 * x.1⁻¹`.
+
+Use `congrArg Prod.fst hxq` as an intermediate fact. Rewrite `this` using `[hγ]`. Simplify using `using this`. Establish `e2 : ratGL E b γ₂ = x.2 * q.2 * x.2⁻¹`. Use `congrArg Prod.snd hxq` as an intermediate fact.
+
+Rewrite `this` using `[hγ]`. Simplify using `using this`. Establish `hmem : δ ∈ T`. Use `⟨(γ₁, γ₂), ⟨?_, ?_⟩, Subtype.ext hγ.symm⟩` and prove the remaining obligations. Use `show logSize (ratGL E a γ₁) ≤ R1`.
+
+Rewrite using `[e1]`. Establish `h1` using `hm1 (x.1 * q.1) x.1⁻¹`. Establish `h2` using `hm1 x.1 q.1`. Establish `h3` using `hr1 q.1 ⟨q, hδ, rfl⟩`. Rewrite `h1` using `[logSize_inv]`.
+
+Use `le_max_right 0 r1` as an intermediate fact. Use `le_abs_self c1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `show logSize (ratGL E b γ₂) ≤ R2`. Rewrite using `[e2]`.
+
+Establish `h1` using `hm2 (x.2 * q.2) x.2⁻¹`. Establish `h2` using `hm2 x.2 q.2`. Establish `h3` using `hr2 q.2 ⟨q, hδ, rfl⟩`. Rewrite `h1` using `[logSize_inv]`. Use `le_max_right 0 r2` as an intermediate fact.
+
+Use `le_abs_self c2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Set.indicator_of_mem hδ, Set.indicator_of_mem hmem]`. Conclude with `le_rfl`. Rewrite using `[Set.indicator_of_notMem hδ]`.
+
+Conclude with `zero_le`. Use `(ENNReal.tsum_le_tsum hle).trans ?_` and prove the remaining obligations. Rewrite using `[tsum_indicator_one T hT, ← ENNReal.ofReal_natCast]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hT1 : (T.ncard : ℝ) ≤ (A1.ncard : ℝ) * A2.ncard`.
+
+Use `(Set.ncard_image_le (f := e) (hf1.prod hf2)).trans (le_of_eq (Set.ncard_prod (s := A1) (t := A2)))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hexp : Real.exp (K1 * R1) * Real.exp (K2 * R2) ≤ Real.exp (K1 * q1 + K2 * q2) * Real.exp (2 * (K1 + K2) * (logSize x.1 + logSize x.2))`. Rewrite using `[← Real.exp_add, ← Real.exp_add, Real.exp_le_exp]`. Simplify using `only [R1, R2]`.
+
+Use polynomial arithmetic with `[mul_nonneg hK1 hx2, mul_nonneg hK2 hx1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_count (hS : SizeBasic) {a b : ℕ} (Q : Set (H E a b)) (hQ : IsCompact Q) :
     ∃ n₀ k₀ : ℝ, 0 ≤ n₀ ∧ 0 ≤ k₀ ∧ ∀ x : H E a b,
       ∑' δ : ratH E a b, Q.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * (δ : H E a b) * x) ≤
@@ -460,6 +633,9 @@ open scoped ENNReal Pointwise
 
 attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
+/- English proof (translation)
+Break down `le_total p q with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem amgm (p q : ℝ≥0∞) : p * q ≤ p ^ 2 + q ^ 2 := by
   rcases le_total p q with h | h
   · calc p * q ≤ q * q := mul_le_mul_left h q
@@ -469,9 +645,83 @@ theorem amgm (p q : ℝ≥0∞) : p * q ≤ p ^ 2 + q ^ 2 := by
       _ = p ^ 2 := (sq p).symm
       _ ≤ _ := le_self_add
 
+/- English proof (translation)
+Rewrite using `[_root_.zpow_neg, show (2 * (M : ℤ)) = ((M * 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul, inv_pow]`.
+-/
 theorem inv_pow_sq (w : ℝ) (M : ℕ) : ((w ^ M)⁻¹) ^ 2 = w ^ (-(2 * M : ℤ)) := by
   rw [_root_.zpow_neg, show (2 * (M : ℤ)) = ((M * 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, pow_mul, inv_pow]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (H E a b) := ⟨rfl⟩`. Use `haveI := measurableMul_H (E := E) a b`. Use `haveI := D.haar.1`. Use `haveI := D.haar.2.2.2`. Use `haveI := countable_ratH (E := E) a b`.
+
+Take `⟨hc1, hn1, -, c1, hm1⟩` from `hS E a`. Take `⟨hc2, hn2, -, c2, hm2⟩` from `hS E b`. Use `set S : Set (H E a b) := ⋃ i, ⋃ j, tsupport (Φ i j) with hSdef`. Establish `hScpt : IsCompact S` using `isCompact_iUnion fun i => isCompact_iUnion fun j => (hΦ i j).2`. Establish `hSm : MeasurableSet S` using `(isClosed_iUnion_of_finite fun i => isClosed_iUnion_of_finite fun j => isClosed_tsupport _).measurableSet`.
+
+Establish `hμS : D.μ S ≠ ⊤` using `(hScpt.measure_lt_top_of_nhdsWithin fun x _ => (D.μ.finiteAt_nhds x).filter_mono inf_le_left).ne`. Use `choose Cb hCb using fun i j => (hΦ i j).1.bounded_above_of_compact_support (hΦ i j).2`. Use `set B0 : ℝ := ∑ i, ∑ j, |Cb i j|`. Establish `hB0 : 0 ≤ B0` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hΦB : ∀ i j y, ‖Φ i j y‖ ≤ B0` using `fun i j y => (hCb i j y).trans ((le_abs_self _).trans ((Finset.single_le_sum (f := fun j => |Cb i j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, |Cb i j|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ i …`.
+
+Establish `hΦS : ∀ i j y, ENNReal.ofReal ‖Φ i j y‖ ≤ ENNReal.ofReal B0 * S.indicator 1 y`. Introduce `i j y`. Distinguish the cases in `hy : y ∈ S`. Rewrite using `[Set.indicator_of_mem hy, Pi.one_apply, mul_one]`. Conclude with `ENNReal.ofReal_le_ofReal (hΦB i j y)`.
+
+Establish `: y ∉ tsupport (Φ i j)` using `fun h => hy (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, h⟩⟩)`. Rewrite using `[image_eq_zero_of_notMem_tsupport this]`. Simplify using the standard rewrite rules. Use `set Q : Set (H E a b) := S * S⁻¹`. Take `⟨n₀, k₀, hn₀, hk₀, hN⟩` from `conj_count hS Q (hScpt.mul hScpt.inv)`.
+
+Take `⟨scaledBoxRadiiAtEntry, hrS1⟩` from `hc1 (Prod.fst '' S) (hScpt.image continuous_fst)`. Take `⟨rS2, hrS2⟩` from `hc2 (Prod.snd '' S) (hScpt.image continuous_snd)`. Apply the tactic sequence `set w0 : ℝ := max 0 scaledBoxRadiiAtEntry + max 0 rS2 + |c1| + |c2|`. Establish `hw0 : 0 ≤ w0` using `by positivity`. Use `set I : ι → ℝ≥0∞ := fun j => ∫⁻ y, ENNReal.ofReal (wt y ^ (-(2 * M : ℤ))) * ‖f j y‖ₑ ^ 2 ∂D.ν`.
+
+Use `set i0 : ℝ := ∑ j, (I j).toReal`. Establish `hi0 : 0 ≤ i0` using `Finset.sum_nonneg fun _ _ => ENNReal.toReal_nonneg`. Establish `hI : ∀ j, I j ≤ ENNReal.ofReal i0` using `fun j => by`. Use `le_of_eq_of_le (ENNReal.ofReal_toReal (hW j).ne).symm ?_` and prove the remaining obligations. Conclude with `ENNReal.ofReal_le_ofReal (Finset.single_le_sum (f := fun j => (I j).toReal) (fun _ _ => ENNReal.toReal_nonneg) (Finset.mem_univ j))`.
+
+Use `set s0 : ℝ := (D.μ S).toReal`. Establish `hs0 : 0 ≤ s0` using `ENNReal.toReal_nonneg`. Use `set Kst : ℝ := B0 * (n₀ * Real.exp (2 * M * w0) * s0 + i0)`. Establish `hKst : 0 ≤ Kst` using `by positivity`. Use `set Kex : ℝ := k₀ + 2 * M`.
+
+Establish `hmi : ∀ x : H E a b, Measurable fun y : H E a b => S.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * y)` using `fun x => ((measurable_const (a := (1 : ℝ≥0∞))).indicator hSm).comp (measurable_const_mul x⁻¹)`. Establish `hfm : ∀ j, Measurable fun y => ‖f j y‖ₑ` using `fun j => (hf j).measurable.enorm`. Establish `key : ∀ i j x, ∫⁻ y, ENNReal.ofReal ‖Φ i j y * f j (x * y)‖ ∂D.μ ≤ ENNReal.ofReal (Kst * Real.exp (Kex * (logSize x.1 + logSize x.2)))`. Introduce `i j x`. Establish `hx1` using `hn1 x.1`.
+
+Establish `hx2` using `hn2 x.2`. Use `set Lx := logSize x.1 + logSize x.2`. Establish `hLx : 0 ≤ Lx` using `by positivity`. Use `set P : H E a b → ℝ≥0∞ := fun y => ∑' γ : ratH E a b, S.indicator 1 (x⁻¹ * ((γ : H E a b) * y))`. Establish `hPm : Measurable P` using `Measurable.ennreal_tsum fun γ => (hmi x).comp (measurable_const_mul _)`.
+
+Establish `s1 : ∫⁻ y, ENNReal.ofReal ‖Φ i j y * f j (x * y)‖ ∂D.μ ≤ ENNReal.ofReal B0 * ∫⁻ y, S.indicator 1 (x⁻¹ * y) * ‖f j y‖ₑ ∂D.μ`. Rewrite using `[← lintegral_mul_left_eq_self (fun y => S.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * y) * ‖f j y‖ₑ) x, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left]`. Rewrite using `[norm_mul, ENNReal.ofReal_mul (norm_nonneg _), ← mul_assoc, ofReal_norm_eq_enorm (f j (x * y))]`.
+
+Conclude with `mul_le_mul' (hΦS i j y) le_rfl`. Establish `s2 : ∫⁻ y, S.indicator 1 (x⁻¹ * y) * ‖f j y‖ₑ ∂D.μ = ∫⁻ y, P y * ‖f j y‖ₑ ∂D.ν`. Rewrite using `[fold D (fun y => S.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * y) * ‖f j y‖ₑ) ((hmi x).mul (hfm j))]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [P]`.
+
+Rewrite using `[← ENNReal.tsum_mul_right]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[hL j γ y]`. Establish `hP1 : ∀ y, P y ≠ 0 → P y ≤ ∑' δ : ratH E a b, Q.indicator 1 (x⁻¹ * (δ : H E a b) * x) ∧ wt y ≤ 1 + Lx + w0`. Introduce `y hy`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨γ0, hγ0⟩ : ∃ γ0 : ratH E a b, x⁻¹ * ((γ0 : H E a b) * y) ∈ S := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hy (ENNReal.tsum_eq_zero.2 fun γ => Set.indicator_of_notMem (hne γ) _)`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← (Equiv.mulRight γ0⁻¹).tsum_eq (fun δ : ratH E a b => Q.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * (δ : H E a b) * x))]`. Use `ENNReal.tsum_le_tsum fun γ => ?_` and prove the remaining obligations. Distinguish the cases in `hγ : x⁻¹ * ((γ : H E a b) * y) ∈ S`. Establish `hq : x⁻¹ * ((Equiv.mulRight γ0⁻¹ γ : ratH E a b) : H E a b) * x ∈ Q`. Establish `e : x⁻¹ * ((Equiv.mulRight γ0⁻¹ γ : ratH E a b) : H E a b) * x = (x⁻¹ * ((γ : H E a b) * y)) * (x⁻¹ * ((γ0 : H E a b) * y))⁻¹`.
+
+Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul hγ (Set.inv_mem_inv.2 hγ0)`. Rewrite using `[Set.indicator_of_mem hγ, Set.indicator_of_mem hq]`.
+
+Conclude with `le_rfl`. Rewrite using `[Set.indicator_of_notMem hγ]`. Conclude with `zero_le`. Take `⟨γ₁, γ₂, hγ⟩` from `mem_ratH γ0 set s := x⁻¹ * ((γ0 : H E a b) * y)`. Establish `hxs : (γ0 : H E a b) * y = x * s` using `by simp only [s, mul_inv_cancel_left]`.
+
+Establish `hs1 : ratGL E a γ₁ * y.1 = x.1 * s.1`. Use `congrArg Prod.fst hxs` as an intermediate fact. Rewrite `this` using `[hγ]`. Simplify using `using this`. Establish `hs2 : ratGL E b γ₂ * y.2 = x.2 * s.2`.
+
+Use `congrArg Prod.snd hxs` as an intermediate fact. Rewrite `this` using `[hγ]`. Simplify using `using this`. Establish `h1` using `redSize_le hS γ₁ y.1`. Establish `h2` using `redSize_le hS γ₂ y.2`.
+
+Rewrite `h1` using `[hs1]`. Rewrite `h2` using `[hs2]`. Establish `h3` using `hm1 x.1 s.1`. Establish `h4` using `hm2 x.2 s.2`. Establish `h5` using `hrS1 s.1 ⟨s, hγ0, rfl⟩`.
+
+Establish `h6` using `hrS2 s.2 ⟨s, hγ0, rfl⟩`. Use `le_max_right 0 scaledBoxRadiiAtEntry` as an intermediate fact. Use `le_max_right 0 rS2` as an intermediate fact. Use `le_abs_self c1` as an intermediate fact. Use `le_abs_self c2` as an intermediate fact.
+
+Use `show 1 + redSize y.1 + redSize y.2 ≤ 1 + Lx + w0`. Simplify using `only [Lx, w0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Nb := ENNReal.ofReal (n₀ * Real.exp (k₀ * Lx))`. Use `set Ub := ENNReal.ofReal ((1 + Lx + w0) ^ (2 * M))`.
+
+Establish `s3 : ∀ y, P y * ‖f j y‖ₑ ≤ (Nb * Ub) * P y + ENNReal.ofReal (wt y ^ (-(2 * M : ℤ))) * ‖f j y‖ₑ ^ 2`. Introduce `y`. Distinguish the cases in `hy : P y = 0`. Rewrite using `[hy, zero_mul]`. Conclude with `zero_le`.
+
+Take `⟨hPN, hwt⟩` from `hP1 y hy`. Establish `hw1 : 1 ≤ wt y` using `by show 1 ≤ 1 + redSize y.1 + redSize y.2`. Combine the linear relations using `[redSize_nonneg hS y.1, redSize_nonneg hS y.2]`. Establish `hwp : 0 < wt y ^ M` using `pow_pos (by linarith) M`. Use `set u := ENNReal.ofReal (wt y ^ M)`.
+
+Use `set v := ENNReal.ofReal ((wt y ^ M)⁻¹)`. Establish `huv : u * v = 1`. Rewrite using `[← ENNReal.ofReal_mul hwp.le, mul_inv_cancel₀ hwp.ne', ENNReal.ofReal_one]`. Establish `hv2 : v ^ 2 = ENNReal.ofReal (wt y ^ (-(2 * M : ℤ)))`. Rewrite using `[← ENNReal.ofReal_pow (inv_nonneg.2 hwp.le), inv_pow_sq]`.
+
+Establish `hu2 : u ^ 2 ≤ Ub`. Rewrite using `[← ENNReal.ofReal_pow hwp.le, ← pow_mul, mul_comm M 2]`. Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (by linarith) hwt _)`. Establish `hPu : P y * u ^ 2 ≤ Nb * Ub` using `mul_le_mul' (hPN.trans (hN x)) hu2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_mul_mul_comm, huv, mul_one]`. Use `_ ≤ (P y * u) ^ 2 + (‖f j y‖ₑ * v) ^ 2 := amgm _ _`. Use `_ = P y * (P y * u ^ 2) + v ^ 2 * ‖f j y‖ₑ ^ 2 := by ring`. Use `_ ≤ P y * (Nb * Ub) + ENNReal.ofReal (wt y ^ (-(2 * M : ℤ))) * ‖f j y‖ₑ ^ 2 := by`. Rewrite using `[hv2]`.
+
+Conclude with `add_le_add (mul_le_mul' le_rfl hPu) le_rfl`. Use `_ = _ := by ring`. Establish `s4 : ∫⁻ y, P y ∂D.ν = D.μ S`. Rewrite using `[← fold D _ (hmi x), ← lintegral_mul_left_eq_self (fun y => S.indicator (1 : H E a b → ℝ≥0∞) (x⁻¹ * y)) x]`. Simplify using `only [inv_mul_cancel_left]`.
+
+Conclude with `lintegral_indicator_one hSm`. Establish `s5 : ∫⁻ y, P y * ‖f j y‖ₑ ∂D.ν ≤ Nb * Ub * D.μ S + I j`. Use `(lintegral_mono s3).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[lintegral_add_left (hPm.const_mul _), lintegral_const_mul _ hPm, s4]`. Establish `hW' : (1 + Lx + w0) ^ (2 * M) ≤ Real.exp (2 * M * w0) * Real.exp (2 * M * Lx)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hE1 : 1 ≤ Real.exp (Kex * Lx)` using `Real.one_le_exp (by positivity)`. Establish `e : Real.exp (k₀ * Lx) * Real.exp (2 * M * Lx) = Real.exp (Kex * Lx)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Simplify using `only [Kex]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hreal : B0 * (n₀ * Real.exp (k₀ * Lx) * (1 + Lx + w0) ^ (2 * M) * s0 + i0) ≤ Kst * Real.exp (Kex * Lx)`. Establish `h1 : n₀ * Real.exp (k₀ * Lx) * (1 + Lx + w0) ^ (2 * M) * s0 ≤ n₀ * Real.exp (k₀ * Lx) * (Real.exp (2 * M * w0) * Real.exp (2 * M * Lx)) * s0` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hW' (by positivity)) hs0`. Establish `h2 : i0 ≤ i0 * Real.exp (Kex * Lx)` using `le_mul_of_one_le_right hi0 hE1`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_toReal hμS]`. Conclude with `mul_le_mul' le_rfl (s5.trans (add_le_add le_rfl (hI j)))`. Use `_ = ENNReal.ofReal (B0 * (n₀ * Real.exp (k₀ * Lx) * (1 + Lx + w0) ^ (2 * M) * s0 + i0)) := by`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) hi0, ← ENNReal.ofReal_mul hB0]`.
+
+Use `_ ≤ _ := ENNReal.ofReal_le_ofReal hreal`. Use `⟨(Fintype.card ι : ℝ) * Kst / ‖c‖, Kex, fun i x => ?_⟩` and prove the remaining obligations. Establish `hcx : ‖c‖ * ‖f i x‖ ≤ (Fintype.card ι : ℝ) * (Kst * Real.exp (Kex * (logSize x.1 + logSize x.2)))`. Establish `e` using `congrFun (congrFun hconv i) x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Pi.smul_apply, smul_eq_mul] at e`.
+
+Rewrite using `[← norm_mul, ← e]`. Combine the equalities or inequalities in the displayed calculation. Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.2 hc`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hc0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem growth_main (hS : SizeBasic) (a b : ℕ) (D : Dom E a b) (ι : Type) [Fintype ι]
     (Φ : Matrix ι ι (H E a b → ℂ)) (M : ℕ) (f : ι → H E a b → ℂ) (c : ℂ) (hΦ : IsTestM Φ)
     (hf : ∀ i, Continuous (f i)) (hL : LeftInv f) (hW : WL2 D M f) (hc : c ≠ 0)
@@ -699,6 +949,9 @@ end PositivityTheory.Rg.BcB.CG.HeightGrowth
 
 namespace PositivityTheory.Rg.BcB.CG
 
+/- English proof (translation)
+Introduce `_ _ _ _ a b D ι _ Φ M f c hΦ hf hL hW hc hconv` and use `HeightGrowth.growth_main hS a b D ι Φ M f c hΦ hf hL hW hc hconv`.
+-/
 theorem growthOf (hS : SizeBasic) : GrowthOf :=
   fun _ _ _ _ a b D ι _ Φ M f c hΦ hf hL hW hc hconv =>
     HeightGrowth.growth_main hS a b D ι Φ M f c hΦ hf hL hW hc hconv

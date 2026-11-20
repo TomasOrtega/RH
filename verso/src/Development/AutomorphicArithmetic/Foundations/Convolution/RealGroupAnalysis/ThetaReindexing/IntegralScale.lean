@@ -9,6 +9,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `letI : Algebra (A F) (A E) := AdeleBaseChange.algebraAdeleRing`. Establish `h : D.mkE u t = u • AdeleBaseChange.adeleBasis D.b 0 + t • AdeleBaseChange.adeleBasis D.b 1`. Rewrite using `[AdeleBaseChange.adeleBasis_apply, AdeleBaseChange.adeleBasis_apply, D.b0, D.b1, Algebra.smul_def, Algebra.smul_def, map_one, mul_one]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i`.
+
+Unfold `Dat.co`. Rewrite using `[h]`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 private theorem co_mkE (D : Dat F E) (u t : A F) : D.co (D.mkE u t) = ![u, t] := by
   letI : Algebra (A F) (A E) := AdeleBaseChange.algebraAdeleRing
   have h : D.mkE u t = u • AdeleBaseChange.adeleBasis D.b 0 + t • AdeleBaseChange.adeleBasis D.b 1 := by
@@ -20,6 +25,11 @@ private theorem co_mkE (D : Dat F E) (u t : A F) : D.co (D.mkE u t) = ![u, t] :=
   rw [h]
   fin_cases i <;> simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `D.conj`. Rewrite `h1` using `[h]`. Establish `h2 : (2 : E) * D.θ = 0`. Establish `: D.θ = -D.θ` using `h1`.
+
+Take the linear combination `this`. Establish `h3 : D.θ = 0` using `by simpa using h2`. Conclude with `D.b.ne_zero 1 (by rw [D.b1, h3])`.
+-/
 private theorem sigma_ne (D : Dat F E) : D.σ ≠ 1 := by
   intro h
   have h1 := D.conj
@@ -30,9 +40,17 @@ private theorem sigma_ne (D : Dat F E) : D.σ ≠ 1 := by
   have h3 : D.θ = 0 := by simpa using h2
   exact D.b.ne_zero 1 (by rw [D.b1, h3])
 
+/- English proof (translation)
+Simplify using `using Module.finrank_eq_card_basis D.b`.
+-/
 private theorem finrank_two (D : Dat F E) : Module.finrank F E = 2 := by
   simpa using Module.finrank_eq_card_basis D.b
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Basis.finiteDimensional_of_finite D.b`. Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises. Rewrite using `[finrank_two D]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← finrank_two D, Nat.card_congr (algEquivEquivAlgHom F E).toEquiv, Nat.card_eq_fintype_card]`.
+
+Conclude with `AlgHom.card_le`. Establish `: ({1, D.σ} : Finset (E ≃ₐ[F] E)).card = 2` using `Finset.card_pair (Ne.symm (sigma_ne D))`. Rewrite using `[← this, Nat.card_eq_fintype_card]`. Conclude with `Finset.card_le_univ _`.
+-/
 private theorem galois (D : Dat F E) : IsGalois F E := by
   haveI : FiniteDimensional F E := Module.Basis.finiteDimensional_of_finite D.b
   apply IsGalois.of_card_aut_eq_finrank
@@ -44,6 +62,11 @@ private theorem galois (D : Dat F E) : IsGalois F E := by
     rw [← this, Nat.card_eq_fintype_card]
     exact Finset.card_le_univ _
 
+/- English proof (translation)
+Use `haveI := galois D`. Rewrite using `[coe_ideleNorm, AdeleBaseChange.adeleMap_norm]`. Establish `hu : (Finset.univ : Finset (E ≃ₐ[F] E)) = {1, D.σ}` using `by haveI : FiniteDimensional F E := Module.Basis.finiteDimensional_of_finite D.b`. Use `symm`. Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises.
+
+Rewrite using `[Finset.card_pair (Ne.symm (sigma_ne D)), Finset.card_univ, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, finrank_two D]`. Rewrite using `[hu, Finset.prod_pair (Ne.symm (sigma_ne D))]`. Simplify using `[Dat.bar]`.
+-/
 private theorem mul_bar (D : Dat F E) (α : (A E)ˣ) :
     AdeleBaseChange.adeleMap F E ((ideleNorm F E α : (A F)ˣ) : A F) = (α : A E) * D.bar α := by
   haveI := galois D
@@ -63,6 +86,13 @@ section Aux2
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hinv : (((aE α)⁻¹ : GL (Fin 2) (A E))).val = !![((α⁻¹ : (A E)ˣ) : A E), 0; 0, 1]` using `rfl`. Establish `hN : AdeleBaseChange.adeleMap F E (((ideleNorm F E α)⁻¹ : (A F)ˣ) : A F) = ((α⁻¹ : (A E)ˣ) : A E) * D.bar ((α⁻¹ : (A E)ˣ) : A E)`. Rewrite using `[← map_inv, mul_bar]`. Establish `hz : D.mkE 0 0 = 0` using `by simp [Dat.mkE]`. Establish `h00 : ((α⁻¹ : (A E)ˣ) : A E) * D.mkE s 0 * D.bar ((α⁻¹ : (A E)ˣ) : A E) = D.mkE ((((ideleNorm F E α)⁻¹ : (A F)ˣ) : A F) * s) 0`.
+
+Simplify using `only [Dat.mkE, map_mul, hN, map_zero, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Dat.act Dat.unherm`. Rewrite using `[hinv]`. Establish `hm : (!![((α⁻¹ : (A E)ˣ) : A E), 0; 0, 1] * D.herm ![y, s, z₀, z₁] * ((!![((α⁻¹ : (A E)ˣ) : A E), 0; 0, 1] : Matrix (Fin 2) (Fin 2) (A E)).map D.bar)ᵀ) = !![D.mkE ((((ideleNorm F E α)⁻¹ : (A F)ˣ) : A F) * s) 0, ((α⁻¹ : (A E)ˣ) : A E) * D.mkE z₀ z₁; D.mkE z₀ (-z₁) * D.bar ((α⁻¹ : …`.
+
+Rewrite using `[← h00]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Dat.herm, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[hm]`. Simplify using `[co_mkE]`.
+-/
 private theorem act_aE (D : Dat F E) (α : (A E)ˣ) (y s z₀ z₁ : A F) :
     D.act (aE α)⁻¹ ![y, s, z₀, z₁] =
       ![y, (((ideleNorm F E α)⁻¹ : (A F)ˣ) : A F) * s, D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE z₀ z₁) 0,
@@ -88,9 +118,17 @@ private theorem act_aE (D : Dat F E) (α : (A E)ˣ) (y s z₀ z₁ : A F) :
   rw [hm]
   simp [co_mkE]
 
+/- English proof (translation)
+Simplify using `[ab]`.
+-/
 private theorem ab_inv (a : (A F)ˣ) : ab a⁻¹ = (ab a)⁻¹ := by
   simp [ab]
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding (fun x : A F => (a : IdeleGroup F) • x)` using `(Homeomorph.smul (a : IdeleGroup F)).measurableEmbedding`. Establish `h` using `hemb.integral_map (μ := adeleMeasure F) G`. Rewrite `h` using `[map_smul_adeleMeasure, integral_smul_measure]`. Establish `h2 : ∫ s, G ((a : A F) * s) ∂(adeleMeasure F) = ∫ x, G ((a : IdeleGroup F) • x) ∂(adeleMeasure F)` using `rfl`. Rewrite using `[h2, ← h, ENNReal.toReal_ofReal (inv_pos.2 (IdeleGroup.ideleModule F a).2).le, Complex.real_smul]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem integral_scale (a : (A F)ˣ) (G : A F → ℂ) :
     ∫ s, G ((a : A F) * s) ∂(adeleMeasure F) = (((ab a)⁻¹ : ℝ) : ℂ) * ∫ s, G s ∂(adeleMeasure F) := by
   have hemb : MeasurableEmbedding (fun x : A F => (a : IdeleGroup F) • x) :=
@@ -103,6 +141,21 @@ private theorem integral_scale (a : (A F)ˣ) (G : A F → ℂ) :
 
 end Aux2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W α φ y x z₀ z₁`. Establish `hdet : Matrix.GeneralLinearGroup.det (aE α) = α`. Use `ext`. Simplify using `[aE, Matrix.GeneralLinearGroup.det, Matrix.det_fin_two]`. Establish `hnu : nu F (aE α) = ideleNorm F E α`.
+
+Rewrite using `[nu, hdet]`. Establish `hup : ∀ a b c d s : A F, Function.update ![a, b, c, d] 1 s = ![a, s, c, d]`. Introduce `a b c d s`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+
+Use `set N : (A F)ˣ := ideleNorm F E α with hN`. Use `set c₀ := D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE z₀ z₁) 0`. Use `set c₁ := D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE z₀ z₁) 1`. Set `G : A F → ℂ` to `fun s => φ.1 ![y, s, c₀, c₁] * ψ (-(s * ((N : A F) * x)))`. Establish `hpt : ∀ s : A F, (W.L (aE α) φ).1 (Function.update ![y, x, z₀, z₁] 1 s) * ψ (-(s * (![y, x, z₀, z₁] : V4 F) 1)) = (((ab N)⁻¹ : ℝ) : ℂ) * G (((N⁻¹ : (A F)ˣ) : A F) * s)`.
+
+Introduce `s`. Establish `hs : ((N⁻¹ : (A F)ˣ) : A F) * s * ((N : A F) * x) = s * x`. Establish `: ((N⁻¹ : (A F)ˣ) : A F) * (N : A F) = 1` using `Units.inv_mul N`. Take the linear combination `(s * x) * this`. Rewrite using `[hup, W.L_apply, hnu, act_aE]`.
+
+Simplify using `only [G, hs]`. Conclude with `mul_assoc _ _ _`. Establish `hab : ab N ≠ 0` using `(IdeleGroup.ideleModule F N).2.ne'`. Establish `hL : hat (W.L (aE α) φ).1 ![y, x, z₀, z₁] = ∫ s, G s ∂(adeleMeasure F)`. Unfold `hat`.
+
+Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, integral_scale (N⁻¹) G, ab_inv, inv_inv, ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hab]`. Simplify using the standard rewrite rules. Rewrite using `[hL]`. Unfold `hat`.
+
+Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [G, hup]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.D.hatAE :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ (α : (A E)ˣ) φ y x z₀ z₁, hat (W.L (aE α) φ).1 ![y, x, z₀, z₁] =
       hat φ.1 ![y, (ideleNorm F E α : (A F)ˣ) * x, D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE z₀ z₁) 0,

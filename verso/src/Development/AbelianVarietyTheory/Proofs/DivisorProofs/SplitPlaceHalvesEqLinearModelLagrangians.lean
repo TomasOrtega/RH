@@ -19,6 +19,17 @@ open GlobalTheory.LFun GlobalTheory.LFun.SplitTie GlobalTheory.FlipMatch.RowChar
 
 variable {D : D7} {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
 
+/- English proof (translation)
+Use `set l : AF D.host.F := GlobalTheory.LatVac.liftV v 1 with hl`. Establish `hz1 : z = l • z`. Establish `h0` using `hz (1 - l) (by rw [map_sub, map_one, hl, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h0` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h0`.
+
+Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Establish `e : infPart D (algebraMap (AF D.host.F) (AE D) l) = 0`. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[hz1, Algebra.smul_def, RingHom.map_mul, e, zero_mul, map_zero]`.
+
+Rewrite using `[map_zero, map_zero]`. Distinguish the cases in `h : Q.under (𝓞 D.host.F) = v`. Establish `hm : Q.asIdeal ∈ v.asIdeal.primesOver (𝓞 D.host.E)` using `⟨Q.isPrime, ⟨h ▸ rfl⟩⟩`. Rewrite `hm` using `[primesOver_eq_split (isCMExt_host D) τ]`. Break down `hm with e | e` into its components or cases.
+
+Take `rfl : Q = splitPrime τ` from `HeightOneSpectrum.ext e`. Rewrite using `[← isPlaceIso_complEquiv τ, h1, map_zero]`. Take `rfl : Q = splitPrime (τ.comp D.sp.cm.sig)` from `HeightOneSpectrum.ext e`. Rewrite using `[← isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), h2, map_zero]`. Establish `e : cpt (D` using `D) Q (toEAf D (algebraMap (AF D.host.F) (AE D) l)) = GlobalTheory.AdeleBaseChange.locMap D.host.F Q (l.2 (Q.under (𝓞 D.host.F))) := (comp_toAd D).base l Q`.
+
+Establish `e2 : l.2 (Q.under (𝓞 D.host.F)) = 0` using `GlobalTheory.AdelicU.evalV_singleFin_ne h _`. Rewrite using `[hz1, Algebra.smul_def, RingHom.map_mul, RingHom.map_mul, e, e2, map_zero, zero_mul]`.
+-/
 theorem eq_zero_of_at {z : AE D} (hz : At (evFin D.host.F v) z) (h1 : piW τ z = 0)
     (h2 : piW (τ.comp D.sp.cm.sig) z = 0) : z = 0 := by
   classical
@@ -46,6 +57,11 @@ theorem eq_zero_of_at {z : AE D} (hz : At (evFin D.host.F v) z) (h1 : piW τ z =
       have e2 : l.2 (Q.under (𝓞 D.host.F)) = 0 := GlobalTheory.AdelicU.evalV_singleFin_ne h _
       rw [hz1, Algebra.smul_def, RingHom.map_mul, RingHom.map_mul, e, e2, map_zero, zero_mul]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun a ha => ?_, ?_⟩, fun ⟨h1, h2⟩ => sub_eq_zero.1 (hinj _ (fun a ha => ?_) ?_ ?_)⟩` and prove the remaining obligations. Rewrite using `[← h, ← smul_mul_assoc, hε a ha, zero_mul]`. Rewrite using `[← h, RingHom.map_mul, hq, zero_mul]`. Rewrite using `[smul_sub, ← smul_mul_assoc, hε a ha, zero_mul, h1 a ha, sub_zero]`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, hp, one_mul, sub_self]`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_mul, h2, mul_zero, sub_zero]`.
+-/
 theorem mul_eq_iff {ε : AE D} (hε : At (evFin D.host.F v) ε) {p q : AE D →+* Fv D.host.F v} (hp : p ε = 1) (hq : q ε = 0)
     (hinj : ∀ z : AE D, At (evFin D.host.F v) z → p z = 0 → q z = 0 → z = 0) (z : AE D) :
     ε * z = z ↔ At (evFin D.host.F v) z ∧ q z = 0 := by
@@ -56,17 +72,30 @@ theorem mul_eq_iff {ε : AE D} (hε : At (evFin D.host.F v) ε) {p q : AE D →+
   · rw [RingHom.map_sub, RingHom.map_mul, hp, one_mul, sub_self]
   · rw [RingHom.map_sub, RingHom.map_mul, h2, mul_zero, sub_zero]
 
+/- English proof (translation)
+Conclude with `(complEquiv τ (splitPrime_under τ)).injective (by`. Rewrite using `[isPlaceIso_complEquiv τ, (atPl_spec _ _).2, Pi.single_eq_same, map_one])`.
+-/
 theorem piW_atPl_one : piW τ (atPl (splitPrime τ) 1) = 1 := by
   classical
   exact (complEquiv τ (splitPrime_under τ)).injective (by
     rw [isPlaceIso_complEquiv τ, (atPl_spec _ _).2, Pi.single_eq_same, map_one])
 
+/- English proof (translation)
+Conclude with `(complEquiv (τ.comp D.sp.cm.sig) (splitPrime_under _)).injective (by`. Rewrite using `[isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), (atPl_spec _ _).2, Pi.single_eq_of_ne (splitPrime_comp_ne (isCMExt_host D) τ), map_zero])`.
+-/
 theorem piW_comp_atPl_one : piW (τ.comp D.sp.cm.sig) (atPl (splitPrime τ) 1) = 0 := by
   classical
   exact (complEquiv (τ.comp D.sp.cm.sig) (splitPrime_under _)).injective (by
     rw [isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), (atPl_spec _ _).2,
       Pi.single_eq_of_ne (splitPrime_comp_ne (isCMExt_host D) τ), map_zero])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Establish `hAB : (Gm⁻¹).map (incA D) * Gm.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hG), Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨b, rfl⟩` from `e.surjective b`.
+
+Conclude with `half_cancel (x := uᵀ.submatrix e id) hAB h b a`. Introduce `h a b`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
+
+Conclude with `congrArg (· * _) (h c (e a))`.
+-/
 theorem isHalf_iff (ε : AE D) {m k d : ℕ} (e : Fin d ≃ Fin k) (Gm : Matrix (Fin m) (Fin m) D.host.E) (hG : Gm.det ≠ 0)
     (u : Matrix (Fin m) (Fin k) (AE D)) :
     IsHalf ε (HMul.hMul (uᵀ.submatrix e id) (incM Gm) : Matrix (Fin d) (Fin m) (AE D)) ↔ ∀ a b, ε * u a b = u a b := by
@@ -82,11 +111,19 @@ theorem isHalf_iff (ε : AE D) {m k d : ℕ} (e : Fin d ≃ Fin k) (Gm : Matrix 
     rw [← mul_assoc]
     exact congrArg (· * _) (h c (e a))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun c hc => Matrix.ext fun a b => (h a b).1 c hc, Matrix.ext fun a b => (h a b).2⟩, fun h a b => ⟨fun c hc => congrFun (congrFun (h.1 c hc) a) b, congrFun (congrFun h.2 a) b⟩⟩`.
+-/
 theorem entries_iff {m k : ℕ} (u : Matrix (Fin m) (Fin k) (AE D)) (q : AE D →+* Fv D.host.F v) :
     (∀ a b, At (evFin D.host.F v) (u a b) ∧ q (u a b) = 0) ↔ At (evFin D.host.F v) u ∧ u.map q = 0 :=
   ⟨fun h => ⟨fun c hc => Matrix.ext fun a b => (h a b).1 c hc, Matrix.ext fun a b => (h a b).2⟩,
     fun h a b => ⟨fun c hc => congrFun (congrFun (h.1 c hc) a) b, congrFun (congrFun h.2 a) b⟩⟩
 
+/- English proof (translation)
+Introduce `D v τ w hw m k d e Gm hG u`. Substitute `hw` using the available equality. Establish `hε` using `at_atPl τ 1`. Prove the components needed by the constructor for the conclusion. Rewrite using `[isHalf_iff _ e Gm hG, ← entries_iff]`.
+
+Conclude with `forall₂_congr fun a b => mul_eq_iff hε (piW_atPl_one τ) (piW_comp_atPl_one τ) (fun z h0 h1 h2 => eq_zero_of_at τ h0 h1 h2) _`. Rewrite using `[isHalf_iff _ e Gm hG, ← entries_iff]`. Use `forall₂_congr fun a b => mul_eq_iff (p := piW (τ.comp D.sp.cm.sig)) (at_cA hε) ?_ ?_ (fun z h0 h1 h2 => eq_zero_of_at τ h0 h2 h1) _` and prove the remaining obligations. Rewrite using `[← piW_cA_eq, GlobalTheory.DualPairCheck.cA_cA, piW_atPl_one]`. Rewrite using `[piW_cA_eq, piW_comp_atPl_one]`.
+-/
 theorem halves : ∀ {D : D7} {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : Pl D.host.E), splitPrime τ = w →
     ∀ {m k d : ℕ} (e : Fin d ≃ Fin k) (Gm : Matrix (Fin m) (Fin m) D.host.E), Gm.det ≠ 0 → ∀ u : Matrix (Fin m) (Fin k) (AE D),
       (IsHalf (atPl w 1) (HMul.hMul (uᵀ.submatrix e id) (incM Gm) : Matrix (Fin d) (Fin m) (AE D)) ↔

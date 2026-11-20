@@ -14,22 +14,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+-/
 theorem mt_mul (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := by
   simp only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Theta.mt, map_one, Units.val_one]`.
+-/
 theorem mt_one (V : HSp D) : mt V 1 = 1 := by
   simp only [Formalism.L2.Theta.mt, map_one, Units.val_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.ext_iff]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`.
+-/
 theorem triv_iff (V : HSp D) (a : AE D) (g : GA D V) :
     (∀ i j, a * (mt V g - 1) i j = 0) ↔ a • (mt V g - 1) = 0 := by
   rw [← Matrix.ext_iff]
   simp only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]
 
+/- English proof (translation)
+Establish `e : B - 1 = -(B * (A - 1))` using `by rw [mul_sub, h, mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← mul_smul_comm, ha, mul_zero, neg_zero]`.
+-/
 theorem smul_sub_one_eq_zero_of_left_inv {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] (a : R) (A B : Matrix n n R)
     (h : B * A = 1) (ha : a • (A - 1) = 0) : a • (B - 1) = 0 := by
   have e : B - 1 = -(B * (A - 1)) := by rw [mul_sub, h, mul_one, neg_sub]
   rw [e, smul_neg, ← mul_smul_comm, ha, mul_zero, neg_zero]
 
+/- English proof (translation)
+The claim follows from `(triv_iff V a g⁻¹).2 (smul_sub_one_eq_zero_of_left_inv a (mt V g) (mt V g⁻¹) ((mt_mul V g⁻¹ g).symm.trans ((congrArg (mt V) (inv_mul_cancel g)).trans (mt_one V))) ((triv_iff V a g).1 h))`.
+-/
 theorem triv_inv (V : HSp D) (a : AE D) (g : GA D V) (h : ∀ i j, a * (mt V g - 1) i j = 0) :
     ∀ i j, a * (mt V g⁻¹ - 1) i j = 0 :=
   (triv_iff V a g⁻¹).2 (smul_sub_one_eq_zero_of_left_inv a (mt V g) (mt V g⁻¹)

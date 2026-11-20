@@ -7,6 +7,23 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open MeasureTheory
 open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot locDens MIntegrable)
 
+/- English proof (translation)
+Introduce `D X _ A V Φ Ψ hV hΦc hΨc hle g hg hΨ j K hK hKc`. Use `set e := A.chart j`. Use `set dΦ := locDens A Φ j`. Use `set dΨ := locDens A Ψ j`. Establish `hO : IsOpen (e.target ∩ e.symm ⁻¹' V)` using `e.isOpen_inter_preimage_symm hV`.
+
+Use `set W := (e.target ∩ e.symm ⁻¹' V) ∩ dΨ ⁻¹' Set.Ioi 0 with hWdef`. Establish `hW : IsOpen W` using `(hΨc j).isOpen_inter_preimage hO isOpen_Ioi`. Use `set q : (Fin D → ℂ) → ℝ := W.indicator (fun y => dΦ y / dΨ y) with hqdef`. Establish `hqc : ContinuousOn (fun y => dΦ y / dΨ y) W` using `((hΦc j).mono Set.inter_subset_left).div ((hΨc j).mono Set.inter_subset_left) (fun y hy => (ne_of_gt hy.2))`. Establish `hqm : AEStronglyMeasurable q (volume.restrict K)` using `((aestronglyMeasurable_indicator_iff hW.measurableSet).2 (hqc.aestronglyMeasurable hW.measurableSet)).restrict`.
+
+Establish `hqb : ∀ y, ‖q y‖ ≤ 1`. Introduce `y`. Distinguish the cases in `hy : y ∈ W`. Establish `hpos : 0 < dΨ y` using `hy.2`. Take `⟨h0, h1⟩` from `hle j y hy.1.1 hy.1.2`.
+
+Rewrite using `[hqdef, Set.indicator_of_mem hy, Real.norm_eq_abs, abs_of_nonneg (div_nonneg h0 hpos.le)]`. Conclude with `(div_le_one hpos).2 h1`. Rewrite using `[hqdef, Set.indicator_of_notMem hy, norm_zero]`. Conclude with `zero_le_one`. Establish `hint : IntegrableOn (fun y => (g (e.symm y) * dΨ y) * q y) K` using `Integrable.mul_bdd (hΨ j K hK hKc) hqm (Filter.Eventually.of_forall hqb)`.
+
+Use `hint.congr_fun ?_ hKc.measurableSet` and prove the remaining obligations. Introduce `y hy`. Establish `hyt : y ∈ e.target` using `hK hy`. Simplify using `only`. Distinguish the cases in `hyV : e.symm y ∈ V`.
+
+Take `⟨h0, h1⟩` from `hle j y hyt hyV`. Distinguish the cases in `hpos : 0 < dΨ y`. Establish `hyW : y ∈ W` using `⟨⟨hyt, hyV⟩, hpos⟩`. Rewrite using `[hqdef, Set.indicator_of_mem hyW]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hyW : y ∉ W` using `fun h => hpos h.2`. Establish `hz : dΦ y = 0` using `le_antisymm (h1.trans (not_lt.1 hpos)) h0`. Rewrite using `[hqdef, Set.indicator_of_notMem hyW, hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hg _ hyV]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem MIntegrableOfDensLe.proof : MIntegrableOfDensLe.Statement := by
   intro D X _ A V Φ Ψ hV hΦc hΨc hle g hg hΨ j K hK hKc
   set e := A.chart j

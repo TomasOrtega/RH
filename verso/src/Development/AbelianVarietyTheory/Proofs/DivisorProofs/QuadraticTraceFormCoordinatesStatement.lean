@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HermCoords.exists_herm_pair_coords | exact GlobalTheory.HermCoords.exists_herm_pair_coords | (intros; apply GlobalTheory.HermCoords.exists_herm_pair_coords <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.quadratic_trace_form_coordinates : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E), (∀ a, σ (σ a) = a) → Module.finrank F E = 2 → (∀ i j, σ (J j i) = J i j) → J.det ≠ 0 →
     ∃ p q : (Fin n → AE F E) ≃ₗ[AF F] (Fin n × Fin 2 → AF F),

@@ -19,14 +19,23 @@ section Alg
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K r (a • x), ← algebraMap_smul K r x, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem smul_comm_integers_field (r : 𝓞 K) (a : K) (x : V) : r • (a • x) = a • (r • x) := by
   rw [← algebraMap_smul K r (a • x), ← algebraMap_smul K r x, smul_smul, smul_smul, mul_comm]
 
 omit [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, ha, x, hx, rfl⟩`.
+-/
 theorem mem_idealSmul {I : Submodule (𝓞 K) K} {L : Submodule (𝓞 K) V} {a : K} {x : V}
     (ha : a ∈ I) (hx : x ∈ L) : a • x ∈ idealSmul I L :=
   Submodule.subset_span ⟨a, ha, x, hx, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, -, x, hx, rfl⟩`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span hx)`.
+-/
 theorem idealSmul_le_span (I : Submodule (𝓞 K) K) (L : Submodule (𝓞 K) V) :
     idealSmul I L ≤ (Submodule.span K (L : Set V)).restrictScalars (𝓞 K) := by
   refine Submodule.span_le.2 ?_
@@ -34,12 +43,22 @@ theorem idealSmul_le_span (I : Submodule (𝓞 K) K) (L : Submodule (𝓞 K) V) 
   exact Submodule.smul_mem _ a (Submodule.subset_span hx)
 
 omit [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, x, h hx, rfl⟩`.
+-/
 theorem idealSmul_mono_right (I : Submodule (𝓞 K) K) {L L' : Submodule (𝓞 K) V} (h : L ≤ L') :
     idealSmul I L ≤ idealSmul I L' := by
   refine Submodule.span_mono ?_
   rintro z ⟨a, ha, x, hx, rfl⟩
   exact ⟨a, ha, x, h hx, rfl⟩
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun y _ => a • y ∈ idealSmul I' L) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `z ⟨c, hc, x, hx, rfl⟩`. Rewrite using `[smul_smul]`. Conclude with `mem_idealSmul (h c hc) hx`. Rewrite using `[smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `r x _ hx`.
+
+Rewrite using `[← smul_comm_integers_field]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem smul_mem_idealSmul {I' J : Submodule (𝓞 K) K} {L : Submodule (𝓞 K) V} (a : K)
     (h : ∀ c ∈ J, a * c ∈ I') {y : V} (hy : y ∈ idealSmul J L) : a • y ∈ idealSmul I' L := by
   refine Submodule.span_induction (p := fun y _ => a • y ∈ idealSmul I' L) ?_ ?_ ?_ ?_ hy
@@ -52,6 +71,13 @@ theorem smul_mem_idealSmul {I' J : Submodule (𝓞 K) K} {L : Submodule (𝓞 K)
   · intro r x _ hx
     rw [← smul_comm_integers_field]; exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨c, hc, x, hx, rfl⟩`. Use `Submodule.mul_induction_on hc ?_ ?_` and prove the remaining obligations. Introduce `a ha c hc`.
+
+Rewrite using `[SetLike.mem_coe, mul_smul]`. Conclude with `mem_idealSmul ha (mem_idealSmul hc hx)`. Introduce `c d hc hd`. Rewrite `hc`, `hd`, the goal using `[SetLike.mem_coe]`. Rewrite using `[add_smul]`.
+
+Conclude with `Submodule.add_mem _ hc hd`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, y, hy, rfl⟩`. Conclude with `smul_mem_idealSmul a (fun c hc => Submodule.mul_mem_mul ha hc) hy`.
+-/
 theorem idealSmul_mul (I J : Submodule (𝓞 K) K) (L : Submodule (𝓞 K) V) :
     idealSmul (I * J) L = idealSmul I (idealSmul J L) := by
   apply le_antisymm
@@ -68,6 +94,11 @@ theorem idealSmul_mul (I J : Submodule (𝓞 K) K) (L : Submodule (𝓞 K) V) :
     rintro z ⟨a, ha, y, hy, rfl⟩
     exact smul_mem_idealSmul a (fun c hc => Submodule.mul_mem_mul ha hc) hy
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨r, rfl⟩` from `Submodule.mem_one.1 ha`. Rewrite using `[SetLike.mem_coe, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ r hx`. Introduce `x hx`. Use `mem_idealSmul (I := (1 : Submodule (𝓞 K) K)) (a := 1) (Submodule.mem_one.2 ⟨1, map_one _⟩) hx` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+-/
 theorem idealSmul_one (L : Submodule (𝓞 K) V) : idealSmul 1 L = L := by
   apply le_antisymm
   · refine Submodule.span_le.2 ?_
@@ -80,6 +111,11 @@ theorem idealSmul_one (L : Submodule (𝓞 K) V) : idealSmul 1 L = L := by
       (Submodule.mem_one.2 ⟨1, map_one _⟩) hx
     rwa [one_smul] at this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨r, hr, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (FractionalIdeal.mem_coe.1 ha)`. Rewrite using `[SetLike.mem_coe, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem_smul hr hx`. Use `Submodule.smul_le.2 fun r hr x hx => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K r x]`. Conclude with `mem_idealSmul (FractionalIdeal.mem_coe.2 ((FractionalIdeal.mem_coeIdeal _).2 ⟨r, hr, rfl⟩)) hx`.
+-/
 theorem idealSmul_coeIdeal (J : Ideal (𝓞 K)) (L : Submodule (𝓞 K) V) :
     idealSmul ((J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) L = J • L := by
   apply le_antisymm
@@ -94,6 +130,11 @@ theorem idealSmul_coeIdeal (J : Ideal (𝓞 K)) (L : Submodule (𝓞 K) V) :
 
 def lsm (c : K) : V →ₗ[𝓞 K] V := (LinearMap.lsmul K V c).restrictScalars (𝓞 K)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 (FractionalIdeal.mem_coe.1 ha)`. Use `⟨r • x, Submodule.smul_mem _ r hx, ?_⟩` and prove the remaining obligations.
+
+Use `show c • (r • x) = (r • c) • x`. Rewrite using `[smul_assoc, smul_comm_integers_field]`. Introduce and unpack `_ ⟨x, hx, rfl⟩ show c • x ∈ _`. Conclude with `mem_idealSmul (FractionalIdeal.mem_coe.2 (FractionalIdeal.mem_spanSingleton_self _ c)) hx`.
+-/
 theorem idealSmul_spanSingleton (c : K) (L : Submodule (𝓞 K) V) :
     idealSmul ((FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) c :
       FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) L = L.map (lsm c) := by
@@ -108,12 +149,18 @@ theorem idealSmul_spanSingleton (c : K) (L : Submodule (𝓞 K) V) :
     show c • x ∈ _
     exact mem_idealSmul (FractionalIdeal.mem_coe.2 (FractionalIdeal.mem_spanSingleton_self _ c)) hx
 
+/- English proof (translation)
+Take `⟨a, J, -, hI⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Rewrite using `[hI, FractionalIdeal.coe_mul, idealSmul_mul, idealSmul_coeIdeal, idealSmul_spanSingleton]`. Conclude with `(Submodule.FG.smul (IsNoetherian.noetherian J) hL).map _`.
+-/
 theorem idealSmul_fg (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) {L : Submodule (𝓞 K) V}
     (hL : L.FG) : (idealSmul (I : Submodule (𝓞 K) K) L).FG := by
   obtain ⟨a, J, -, hI⟩ := FractionalIdeal.exists_eq_spanSingleton_mul I
   rw [hI, FractionalIdeal.coe_mul, idealSmul_mul, idealSmul_coeIdeal, idealSmul_spanSingleton]
   exact (Submodule.FG.smul (IsNoetherian.noetherian J) hL).map _
 
+/- English proof (translation)
+Rewrite using `[← idealSmul_mul, ← FractionalIdeal.coe_mul, inv_mul_cancel₀ hI, FractionalIdeal.coe_one, idealSmul_one]`.
+-/
 theorem idealSmul_inv_cancel {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0)
     (L : Submodule (𝓞 K) V) :
     idealSmul ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K)
@@ -121,6 +168,9 @@ theorem idealSmul_inv_cancel {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} 
   rw [← idealSmul_mul, ← FractionalIdeal.coe_mul, inv_mul_cancel₀ hI, FractionalIdeal.coe_one,
     idealSmul_one]
 
+/- English proof (translation)
+Rewrite using `[← idealSmul_mul, ← FractionalIdeal.coe_mul, mul_inv_cancel₀ hI, FractionalIdeal.coe_one, idealSmul_one]`.
+-/
 theorem idealSmul_cancel_inv {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0)
     (L : Submodule (𝓞 K) V) :
     idealSmul (I : Submodule (𝓞 K) K)
@@ -128,6 +178,11 @@ theorem idealSmul_cancel_inv {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} 
   rw [← idealSmul_mul, ← FractionalIdeal.coe_mul, mul_inv_cancel₀ hI, FractionalIdeal.coe_one,
     idealSmul_one]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 (fun x hx => idealSmul_le_span _ _ hx)`. Use `Submodule.span_le.2 (fun x hx => ?_)` and prove the remaining obligations. Establish `h` using `idealSmul_le_span ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) (idealSmul (I : Submodule (𝓞 K) K) L)`. Rewrite `h` using `[idealSmul_inv_cancel hI]`.
+
+Conclude with `h hx`.
+-/
 theorem span_idealSmul {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0)
     (L : Submodule (𝓞 K) V) :
     Submodule.span K ((idealSmul (I : Submodule (𝓞 K) K) L : Submodule (𝓞 K) V) : Set V) =
@@ -140,11 +195,19 @@ theorem span_idealSmul {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : 
     rw [idealSmul_inv_cancel hI] at h
     exact h hx
 
+/- English proof (translation)
+Unfold `rkK`. Rewrite using `[span_idealSmul hI]`.
+-/
 theorem rkK_idealSmul {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0)
     (L : Submodule (𝓞 K) V) : rkK (idealSmul (I : Submodule (𝓞 K) K) L) = rkK L := by
   unfold rkK
   rw [span_idealSmul hI]
 
+/- English proof (translation)
+Unfold `rkK`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`. Introduce `h`. Apply `hL` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Establish `: x ∈ Submodule.span K (L : Set V)` using `Submodule.subset_span hx`. Rewrite `this` using `[h]`. Conclude with `this`.
+-/
 theorem rkK_pos [FiniteDimensional K V] {L : Submodule (𝓞 K) V} (hL : L ≠ ⊥) : 0 < rkK L := by
   unfold rkK
   rw [Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]
@@ -156,11 +219,17 @@ theorem rkK_pos [FiniteDimensional K V] {L : Submodule (𝓞 K) V} (hL : L ≠ �
   rw [h] at this
   exact this
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `h` using `[rkK, Submodule.bot_coe, Submodule.span_zero_singleton, finrank_bot]`. Conclude with `lt_irrefl _ h`.
+-/
 theorem ne_bot_of_rkK_pos {L : Submodule (𝓞 K) V} (h : 0 < rkK L) : L ≠ ⊥ := by
   rintro rfl
   rw [rkK, Submodule.bot_coe, Submodule.span_zero_singleton, finrank_bot] at h
   exact lt_irrefl _ h
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 K) M` using `Module.Finite.iff_fg.mpr hM`. Conclude with `Submodule.FG.of_le_of_isNoetherian h`.
+-/
 theorem fg_of_le {N M : Submodule (𝓞 K) V} (hM : M.FG) (h : N ≤ M) : N.FG := by
   have : Module.Finite (𝓞 K) M := Module.Finite.iff_fg.mpr hM
   exact Submodule.FG.of_le_of_isNoetherian h
@@ -173,10 +242,28 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
   [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
   [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `(place_lattice_structure K V ι b X hX L hL).2.2`.
+-/
 theorem ht_pos (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) : 0 < ht b X L :=
   (place_lattice_structure K V ι b X hX L hL).2.2
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hN : N.FG` using `fg_of_le hM hNM`. Take `⟨s, hsN, hspan, hli⟩` from `exists_linearIndependent K (N : Set V)`. Establish `hfin : s.Finite` using `hli.setFinite`. Set `_ : Fintype s` to `hfin.fintype`.
+
+Set `e : Fin (Fintype.card s) → V` to `fun i => ((Fintype.equivFin s).symm i : V)`. Establish `he : LinearIndependent K e` using `hli.comp _ (Fintype.equivFin s).symm.injective`. Establish `hrange : Set.range e = s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `((Fintype.equivFin s).symm i).2`. Introduce `hx; exact ⟨Fintype.equivFin s ⟨x, hx⟩, by simp [e]⟩`. Establish `hEN : Submodule.span (𝓞 K) (Set.range e) ≤ N`. Rewrite using `[hrange]`.
+
+Conclude with `Submodule.span_le.2 hsN`. Establish `hrkN : rkK N = Fintype.card s`. Establish `h0 : Submodule.span K (N : Set V) = Submodule.span K (Set.range e)`. Rewrite using `[hrange, hspan]`. Unfold `rkK`.
+
+Rewrite using `[h0, finrank_span_eq_card he, Fintype.card_fin]`. Take `⟨-, hG⟩` from `height_gram_determinant K V ι b X hX _ e he`. Establish `h1` using `hG N hN hEN hrkN`. Establish `h2` using `hG M hM (hEN.trans hNM) (hrk ▸ hrkN)`. Establish `hE : 0 < ht b X (Submodule.span (𝓞 K) (Set.range e))` using `ht_pos b X hX (Submodule.fg_span (Set.finite_range e))`.
+
+Establish `h3` using `AddSubgroup.relIndex_mul_relIndex (Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup N.toAddSubgroup M.toAddSubgroup ((Submodule.toAddSubgroup_le _ _).2 hEN) ((Submodule.toAddSubgroup_le _ _).2 hNM)`. Rewrite `h2` using `[← h3, Nat.cast_mul]`. Establish `ha : ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex N.toAddSubgroup : ℝ) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`.
+
+Conclude with `hE.ne h1`. Establish `h4 : ht b X N * ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex N.toAddSubgroup : ℝ) = (ht b X M * (N.toAddSubgroup.relIndex M.toAddSubgroup : ℝ)) * ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex N.toAddSubgroup : ℝ)`. Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ ha h4`.
+-/
 theorem ht_index (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {M N : Submodule (𝓞 K) V} (hM : M.FG) (hNM : N ≤ M)
     (hrk : rkK N = rkK M) :
@@ -219,6 +306,11 @@ theorem ht_index (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     rw [h1, ← h2]; ring
   exact mul_right_cancel₀ ha h4
 
+/- English proof (translation)
+Establish `h` using `(size_maximal_slope K V ι b X hX L hL hL0).2.1`. Rewrite using `[h, size, Real.log_rpow (ht_pos b X hX hL), sizeMu_finrank_eq K]`. Use `push_cast`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hj : (rkK L : ℝ) ≠ 0` using `by exact_mod_cast (rkK_pos hL0).ne'`.
+
+Establish `hf : (nPl K : ℝ) ≠ 0`. Establish `: 0 < nPl K` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Clear the denominators using the available nonvanishing facts.
+-/
 theorem muDef_eq_log (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥) :
     muDef b X L = -(2 * Real.log (ht b X L)) / ((Module.finrank ℚ K : ℝ) * (rkK L : ℝ)) := by
@@ -232,9 +324,17 @@ theorem muDef_eq_log (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
     exact_mod_cast this.ne'
   field_simp
 
+/- English proof (translation)
+Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ K)` after adjusting the coercions.
+-/
 theorem finrank_pos' : (0 : ℝ) < (Module.finrank ℚ K : ℝ) := by
   exact_mod_cast (Module.finrank_pos : 0 < Module.finrank ℚ K)
 
+/- English proof (translation)
+Establish `hN : N.FG` using `fg_of_le hM hNM`. Establish `hM0 : M ≠ ⊥` using `fun h => hN0 (eq_bot_iff.2 (h ▸ hNM))`. Establish `hi` using `ht_index b X hX hM hNM hrk`. Establish `hc : (N.toAddSubgroup.relIndex M.toAddSubgroup : ℝ) ≠ 0`. Introduce `h0`.
+
+Rewrite `hi` using `[h0, mul_zero]`. Conclude with `(ht_pos b X hX hN).ne' hi`. Rewrite using `[muDef_eq_log b X hX hN hN0, muDef_eq_log b X hX hM hM0, hi, hrk, Real.log_mul (ht_pos b X hX hM).ne' hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem muDef_index (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {M N : Submodule (𝓞 K) V} (hM : M.FG) (hNM : N ≤ M)
     (hN0 : N ≠ ⊥) (hrk : rkK N = rkK M) :
@@ -251,6 +351,11 @@ theorem muDef_index (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ
     Real.log_mul (ht_pos b X hX hM).ne' hc]
   ring
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hrk : rkK (J • L) = rkK L`. Unfold `rkK`. Rewrite using `[Formalism.HN.DualPolygon.twist_span_smul L J hJ]`. Rewrite using `[ht_index b X hX hL Submodule.smul_le_right hrk, Formalism.HN.DualPolygon.twist_index L hL J hJ]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ht_ideal (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) {J : Ideal (𝓞 K)}
     (hJ : J ≠ ⊥) : ht b X (J • L) = ht b X L * (Ideal.absNorm J : ℝ) ^ rkK L := by
@@ -261,6 +366,19 @@ theorem ht_ideal (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨a, J, ha, hIJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `haK : algebraMap (𝓞 K) K a ≠ 0`. Introduce `h0`. Conclude with `ha (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0))`. Establish `hJ : J ≠ ⊥`.
+
+Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises. Rewrite using `[hIJ]`. Simplify using the standard rewrite rules. Establish `hA : Ideal.span {a} ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Establish `hmul : ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) * I = (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, hIJ, ← mul_assoc, FractionalIdeal.spanSingleton_mul_spanSingleton, mul_inv_cancel₀ haK, FractionalIdeal.spanSingleton_one, one_mul]`. Establish `hlat : Ideal.span {a} • idealSmul (I : Submodule (𝓞 K) K) L = J • L`.
+
+Rewrite using `[← idealSmul_coeIdeal, ← idealSmul_mul, ← FractionalIdeal.coe_mul, hmul, idealSmul_coeIdeal]`. Establish `h1` using `ht_ideal b X hX (idealSmul_fg I hL) hA`. Rewrite `h1` using `[hlat, ht_ideal b X hX hL hJ, rkK_idealSmul hI]`. Establish `hnorm : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℝ) * ((FractionalIdeal.absNorm I : ℚ) : ℝ) = ((Ideal.absNorm J : ℕ) : ℝ)`. Use `congrArg FractionalIdeal.absNorm hmul` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, FractionalIdeal.coeIdeal_absNorm, FractionalIdeal.coeIdeal_absNorm]`. Conclude with `this` after adjusting the coercions. Establish `hA0 : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℝ) ≠ 0`. Conclude with `fun h => hA (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions. Rewrite `h1` using `[← hnorm, mul_pow]`.
+
+Establish `h2 : ht b X (idealSmul (I : Submodule (𝓞 K) K) L) * ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℝ) ^ rkK L = (ht b X L * ((FractionalIdeal.absNorm I : ℚ) : ℝ) ^ rkK L) * ((Ideal.absNorm (Ideal.span {a}) : ℕ) : ℝ) ^ rkK L`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ (pow_ne_zero _ hA0) h2`.
+-/
 theorem ht_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG)
     {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0) :
@@ -300,6 +418,9 @@ theorem ht_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
     rw [← h1]; ring
   exact mul_right_cancel₀ (pow_ne_zero _ hA0) h2
 
+/- English proof (translation)
+Establish `h1 : (0 : ℚ) < FractionalIdeal.absNorm I` using `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg I) (fun h => hI (FractionalIdeal.absNorm_eq_zero_iff.1 h.symm))`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem absNorm_pos {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0) :
     (0 : ℝ) < ((FractionalIdeal.absNorm I : ℚ) : ℝ) := by
   have h1 : (0 : ℚ) < FractionalIdeal.absNorm I :=
@@ -307,6 +428,11 @@ theorem absNorm_pos {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I �
       (fun h => hI (FractionalIdeal.absNorm_eq_zero_iff.1 h.symm))
   exact_mod_cast h1
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hj` using `rkK_pos hL0`. Establish `hIL0 : idealSmul (I : Submodule (𝓞 K) K) L ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI]; exact hj)`. Rewrite using `[muDef_eq_log b X hX (idealSmul_fg I hL) hIL0, muDef_eq_log b X hX hL hL0, ht_fractional b X hX hL hI, rkK_idealSmul hI, Real.log_mul (ht_pos b X hX hL).ne' (pow_ne_zero _ (absNorm_pos hI).ne'), Real.log_pow]`. Establish `hj' : (rkK L : ℝ) ≠ 0` using `by exact_mod_cast hj.ne'`.
+
+Establish `hq : (Module.finrank ℚ K : ℝ) ≠ 0` using `(finrank_pos' (K := K)).ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem muDef_fractional (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥)
     {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0) :
@@ -332,6 +458,13 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComple
   [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
   [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hL0 : L ≠ ⊥` using `fun h => hQ0 (eq_bot_iff.2 (h ▸ hQL))`. Establish `hlat` using `(place_lattice_structure K V ι b X hX L hL).1`. Establish `hch` using `((slope_characterization (𝓞 K) V _ (realize b X) L hlat hL0).1 (muMax (realize b X) L)).1 le_rfl Q hQL`. Establish `hrk` using `(place_lattice_structure K V ι b X hX Q (fg_of_le hL hQL)).2.1`.
+
+Establish `hpos : (0 : ℝ) < (rk (realize b X) Q : ℝ)`. Rewrite using `[hrk]`. Conclude with `Nat.mul_pos Module.finrank_pos (rkK_pos hQ0)` after adjusting the coercions. Establish `hs : slope (realize b X) Q ≤ muMax (realize b X) L` using `by show deg (realize b X) Q / (rk (realize b X) Q : ℝ) ≤ _`. Rewrite using `[div_le_iff₀ hpos]` and apply the resulting hypothesis.
+
+Unfold `muDef muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem muDef_le_muMaxDef (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L Q : Submodule (𝓞 K) V} (hL : L.FG) (hQL : Q ≤ L)
     (hQ0 : Q ≠ ⊥) : muDef b X Q ≤ muMaxDef b X L := by
@@ -350,6 +483,11 @@ theorem muDef_le_muMaxDef (b : Basis ι K V) (X : InfinitePlace K → Matrix ι 
   unfold muDef muMaxDef
   linarith
 
+/- English proof (translation)
+Establish `h1 : muMax (realize b X) L ≤ (B + Real.log 2 - logDisc K / (Module.finrank ℚ K : ℝ)) / 2`. Unfold `muMax`. Use `csSup_le ⟨_, L, le_rfl, hL0, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨Q, hQL, hQ0, rfl⟩`. Use `h Q hQL hQ0` as an intermediate fact.
+
+Unfold `muDef at this`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `muMaxDef`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem muMaxDef_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     {L : Submodule (𝓞 K) V} (hL0 : L ≠ ⊥) {B : ℝ}
     (h : ∀ Q : Submodule (𝓞 K) V, Q ≤ L → Q ≠ ⊥ → muDef b X Q ≤ B) : muMaxDef b X L ≤ B := by
@@ -364,11 +502,21 @@ theorem muMaxDef_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ
   unfold muMaxDef
   linarith
 
+/- English proof (translation)
+The claim follows from `muMaxDef_le b X hN0 fun _ hQ hQ0 => muDef_le_muMaxDef b X hX hM (hQ.trans hNM) hQ0`.
+-/
 theorem muMaxDef_mono (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {M N : Submodule (𝓞 K) V} (hM : M.FG) (hNM : N ≤ M)
     (hN0 : N ≠ ⊥) : muMaxDef b X N ≤ muMaxDef b X M :=
   muMaxDef_le b X hN0 fun _ hQ hQ0 => muDef_le_muMaxDef b X hX hM (hQ.trans hNM) hQ0
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hIL0 : idealSmul (I : Submodule (𝓞 K) K) L ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [rkK_idealSmul hI]; exact rkK_pos hL0)`. Use `muMaxDef_le b X hIL0 fun Q hQ hQ0 => ?_` and prove the remaining obligations. Establish `hQfg : Q.FG` using `fg_of_le (idealSmul_fg I hL) hQ`. Establish `hI' : I⁻¹ ≠ 0` using `inv_ne_zero hI`.
+
+Use `set Q' := idealSmul ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) Q with hQ'`. Establish `hQ'L : Q' ≤ L`. Use `idealSmul_mono_right ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) hQ` as an intermediate fact. Rewrite `this` using `[idealSmul_inv_cancel hI]`. Then use the resulting hypothesis. Establish `hQ'0 : Q' ≠ ⊥` using `ne_bot_of_rkK_pos (by rw [hQ', rkK_idealSmul hI']; exact rkK_pos hQ0)`.
+
+Establish `hQeq : Q = idealSmul (I : Submodule (𝓞 K) K) Q'` using `(idealSmul_cancel_inv hI Q).symm`. Rewrite using `[hQeq, muDef_fractional b X hX (fg_of_le hL hQ'L) hQ'0 hI]`. Use `muDef_le_muMaxDef b X hX hL hQ'L hQ'0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem muMaxDef_fractional_le (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) {L : Submodule (𝓞 K) V} (hL : L.FG) (hL0 : L ≠ ⊥)
     {I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K} (hI : I ≠ 0) :
@@ -398,20 +546,36 @@ section Pow
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Introduce `h`. Establish `hm` using `w.2`. Rewrite `hm` using `[h]`. Conclude with `NumberField.RingOfIntegers.not_isField K (Ring.isField_iff_maximal_bot.2 hm)`.
+-/
 theorem finPl_ne_bot (w : FinPl K) : w.1 ≠ ⊥ := by
   intro h
   have hm := w.2
   rw [h] at hm
   exact NumberField.RingOfIntegers.not_isField K (Ring.isField_iff_maximal_bot.2 hm)
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.coeIdeal_ne_zero.2 (finPl_ne_bot w)`.
+-/
 theorem finPl_coe_ne_zero (w : FinPl K) :
     (w.1 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≠ 0 :=
   FractionalIdeal.coeIdeal_ne_zero.2 (finPl_ne_bot w)
 
+/- English proof (translation)
+Unfold `idealPow Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => zpow_ne_zero _ (finPl_coe_ne_zero w)`.
+-/
 theorem idealPow_ne_zero (n : FinPl K →₀ ℤ) : idealPow n ≠ 0 := by
   unfold idealPow Finsupp.prod
   exact Finset.prod_ne_zero_iff.2 fun w _ => zpow_ne_zero _ (finPl_coe_ne_zero w)
 
+/- English proof (translation)
+Establish `h1 : ((FractionalIdeal.absNorm (idealPow n) : ℚ) : ℝ) = ∏ w ∈ n.support, ((Ideal.absNorm w.1 : ℕ) : ℝ) ^ (n w)`. Unfold `idealPow Finsupp.prod`. Rewrite using `[map_prod, Rat.cast_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm, Rat.cast_zpow, Rat.cast_natCast]`.
+
+Establish `hne : ∀ w : FinPl K, ((Ideal.absNorm w.1 : ℕ) : ℝ) ≠ 0` using `fun w => by`. Conclude with `fun h => finPl_ne_bot w (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions. Rewrite using `[h1, Real.log_prod (fun w _ => zpow_ne_zero _ (hne w))]`. Rewrite using `[← Finset.sum_subset hU]`. Conclude with `Finset.sum_congr rfl fun w _ => Real.log_zpow _ _`.
+
+Introduce `w _ hw`. Rewrite using `[Finsupp.notMem_support_iff.1 hw]`. Simplify using the standard rewrite rules.
+-/
 theorem log_absNorm_idealPow (n : FinPl K →₀ ℤ) (U : Finset (FinPl K)) (hU : n.support ⊆ U) :
     Real.log ((FractionalIdeal.absNorm (idealPow n) : ℚ) : ℝ) =
       ∑ w ∈ U, (n w : ℝ) * Real.log (Ideal.absNorm w.1 : ℝ) := by
@@ -429,6 +593,11 @@ theorem log_absNorm_idealPow (n : FinPl K →₀ ℤ) (U : Finset (FinPl K)) (hU
   · intro w _ hw
     rw [Finsupp.notMem_support_iff.1 hw]; simp
 
+/- English proof (translation)
+Rewrite using `[log_absNorm_idealPow (-σ) (σ.support ∪ τ.support) (by rw [Finsupp.support_neg]; exact Finset.subset_union_left), log_absNorm_idealPow τ (σ.support ∪ τ.support) Finset.subset_union_right]`. Unfold `sgSum ell`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_div, Finset.sum_div, ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr (by congr) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.neg_apply, Int.cast_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgSum_eq (σ τ : FinPl K →₀ ℤ) :
     sgSum σ τ = -(2 * Real.log ((FractionalIdeal.absNorm (idealPow (-σ)) : ℚ) : ℝ) /
         (Module.finrank ℚ K : ℝ)) -
@@ -446,6 +615,19 @@ theorem sgSum_eq (σ τ : FinPl K →₀ ℤ) :
 
 end Pow
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N hM hM0 hN hrk`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hτ` using `idealPow_ne_zero τ`. Establish `hσ` using `idealPow_ne_zero (-σ)`. Establish `hj` using `rkK_pos hM0`.
+
+Use `set M1 := idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M with hM1`. Establish `hM1fg : M1.FG` using `idealSmul_fg _ hM`. Establish `hM1rk : rkK M1 = rkK M` using `rkK_idealSmul hτ M`. Establish `hNfg : N.FG` using `fg_of_le hM1fg hN`. Establish `hN0 : N ≠ ⊥` using `ne_bot_of_rkK_pos (hrk ▸ hj)`.
+
+Establish `hN'0 : modLat σ N ≠ ⊥` using `ne_bot_of_rkK_pos (by unfold modLat; rw [rkK_idealSmul hσ, hrk]; exact hj)`. Prove the components needed by the constructor for the conclusion. Establish `hle : modLat σ N ≤ idealSmul ((idealPow (-σ) * idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M`. Rewrite using `[FractionalIdeal.coe_mul, idealSmul_mul]`. Conclude with `idealSmul_mono_right _ hN`.
+
+Establish `h1` using `muMaxDef_mono b X hX (idealSmul_fg _ hM) hle hN'0`. Establish `h2` using `muMaxDef_fractional_le b X hX hM hM0 (mul_ne_zero hσ hτ)`. Rewrite `h2` using `[map_mul, Rat.cast_mul, Real.log_mul (absNorm_pos hσ).ne' (absNorm_pos hτ).ne']`. Rewrite using `[sgSum_eq]`. Establish `e : 2 * (Real.log ((FractionalIdeal.absNorm (idealPow (-σ)) : ℚ) : ℝ) + Real.log ((FractionalIdeal.absNorm (idealPow τ) : ℚ) : ℝ)) / (Module.finrank ℚ K : ℝ) = 2 * Real.log ((FractionalIdeal.absNorm (idealPow (-σ)) : ℚ) : ℝ) / (Module.finrank ℚ K : ℝ) + 2 * Real.log ((FractionalI …`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `modLat`. Rewrite using `[muDef_fractional b X hX hNfg hN0 hσ, muDef_index b X hX hM1fg hN hN0 (hrk.trans hM1rk.symm), hM1rk, hM1, muDef_fractional b X hX hM hM0 hτ, sgSum_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem slope_formula : SlopeRelationsIndex := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N hM hM0 hN hrk
   have hfd : FiniteDimensional K V := Module.Finite.of_basis b
@@ -481,6 +663,9 @@ theorem slope_formula : SlopeRelationsIndex := by
       hM1rk, hM1, muDef_fractional b X hX hM hM0 hτ, sgSum_eq]
     ring
 
+/- English proof (translation)
+Establish `h` using `(slope_formula K V ι b X hX σ τ M _ hM hM0 le_rfl (rkK_idealSmul (idealPow_ne_zero τ) M)).2`. Rewrite using `[h, AddSubgroup.relIndex_self]`. Simplify using the standard rewrite rules.
+-/
 theorem slope_twisted_lattice {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
     [DecidableEq ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
@@ -500,6 +685,9 @@ variable {R : Type} [CommRing R]
 def locLen (w : Ideal R) [w.IsPrime] (Q : Type) [AddCommGroup Q] [Module R Q] : ℕ∞ :=
   Module.length (Localization.AtPrime w) (LocalizedModule w.primeCompl Q)
 
+/- English proof (translation)
+The claim follows from `Module.length_eq_add_of_exact (LocalizedModule.map w.primeCompl f) (LocalizedModule.map w.primeCompl g) (LocalizedModule.map_injective _ f hf) (LocalizedModule.map_surjective _ g hg) (LocalizedModule.map_exact _ f g H)`.
+-/
 theorem locLen_exact (w : Ideal R) [w.IsPrime] {N M P : Type} [AddCommGroup N] [Module R N]
     [AddCommGroup M] [Module R M] [AddCommGroup P] [Module R P] (f : N →ₗ[R] M) (g : M →ₗ[R] P)
     (hf : Function.Injective f) (hg : Function.Surjective g) (H : Function.Exact f g) :
@@ -508,6 +696,9 @@ theorem locLen_exact (w : Ideal R) [w.IsPrime] {N M P : Type} [AddCommGroup N] [
     (LocalizedModule.map w.primeCompl g) (LocalizedModule.map_injective _ f hf)
     (LocalizedModule.map_surjective _ g hg) (LocalizedModule.map_exact _ f g H)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (Module.length_le_of_injective (LocalizedModule.map w.primeCompl e.toLinearMap) (LocalizedModule.map_injective _ _ e.injective)) (Module.length_le_of_injective (LocalizedModule.map w.primeCompl e.symm.toLinearMap) (LocalizedModule.map_injective _ _ e.symm.injective))`.
+-/
 theorem locLen_congr (w : Ideal R) [w.IsPrime] {M N : Type} [AddCommGroup N] [Module R N]
     [AddCommGroup M] [Module R M] (e : M ≃ₗ[R] N) : locLen w M = locLen w N :=
   le_antisymm
@@ -516,11 +707,19 @@ theorem locLen_congr (w : Ideal R) [w.IsPrime] {M N : Type} [AddCommGroup N] [Mo
     (Module.length_le_of_injective (LocalizedModule.map w.primeCompl e.symm.toLinearMap)
       (LocalizedModule.map_injective _ _ e.symm.injective))
 
+/- English proof (translation)
+The claim follows from `Module.length_eq_zero_iff.2 (IsLocalizedModule.subsingleton_of_subsingleton w.primeCompl (LocalizedModule.mkLinearMap w.primeCompl Q))`.
+-/
 theorem locLen_subsingleton (w : Ideal R) [w.IsPrime] (Q : Type) [AddCommGroup Q] [Module R Q]
     [Subsingleton Q] : locLen w Q = 0 :=
   Module.length_eq_zero_iff.2 (IsLocalizedModule.subsingleton_of_subsingleton w.primeCompl
     (LocalizedModule.mkLinearMap w.primeCompl Q))
 
+/- English proof (translation)
+Use `Module.length_eq_zero_iff.2 ((IsLocalizedModule.subsingleton_iff w.primeCompl (LocalizedModule.mkLinearMap w.primeCompl (R ⧸ m))).2 ?_)` and prove the remaining obligations. Establish `hnle : ¬ m ≤ w` using `fun hle => h (hm.eq_of_le hw.ne_top hle).symm`. Take `⟨s, hsm, hsw⟩` from `SetLike.not_le_iff_exists.1 hnle`. Introduce `x`. Use `⟨s, hsw, ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `m.mul_mem_right _ hsm`.
+-/
 theorem locLen_quot_ne (w m : Ideal R) [hw : w.IsMaximal] [hm : m.IsMaximal] (h : w ≠ m) :
     locLen w (R ⧸ m) = 0 := by
   refine Module.length_eq_zero_iff.2 ((IsLocalizedModule.subsingleton_iff w.primeCompl
@@ -533,6 +732,17 @@ theorem locLen_quot_ne (w m : Ideal R) [hw : w.IsMaximal] [hm : m.IsMaximal] (h 
   rw [Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]
   exact m.mul_mem_right _ hsm
 
+/- English proof (translation)
+Use `Module.length_eq_one_iff.2 (isSimpleModule_iff_toSpanSingleton_surjective.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[← not_subsingleton_iff_nontrivial, IsLocalizedModule.subsingleton_iff m.primeCompl (LocalizedModule.mkLinearMap m.primeCompl (R ⧸ m))]`. Introduce `h`. Take `⟨r, hr, hr0⟩` from `h 1`. Rewrite `hr0` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_one, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hr hr0`. Introduce `x hx y`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h a s`. Proceed by induction on `y using LocalizedModule.induction_on with`.
+
+Consider the case `h c t`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨r', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `hr : r ∈ m.primeCompl`. Introduce `hrm`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hrm, LocalizedModule.zero_mk]`. Use `⟨Localization.mk (r' * s) (⟨r, hr⟩ * t), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Submonoid.coe_mul, Submonoid.coe_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locLen_quot_self (m : Ideal R) [hm : m.IsMaximal] : locLen m (R ⧸ m) = 1 := by
   refine Module.length_eq_one_iff.2 (isSimpleModule_iff_toSpanSingleton_surjective.2 ⟨?_, ?_⟩)
   · rw [← not_subsingleton_iff_nontrivial, IsLocalizedModule.subsingleton_iff m.primeCompl
@@ -561,6 +771,23 @@ theorem locLen_quot_self (m : Ideal R) [hm : m.IsMaximal] : locLen m (R ⧸ m) =
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Q _ _ _ hn`. Distinguish the cases in `hQ : Subsingleton Q`.
+
+Use `⟨0, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `w.2.isPrime` as an intermediate fact. Rewrite using `[locLen_subsingleton]`. Simplify using the standard rewrite rules. Rewrite using `[Finsupp.prod_zero_index]`.
+
+Conclude with `Nat.card_of_subsingleton 0`. Rewrite `hQ` using `[not_subsingleton_iff_nontrivial]`. Break down `eq_top_or_exists_le_coatom (⊥ : Submodule R Q) with h | ⟨Q1, hQ1, -⟩` into its components or cases. Conclude with `absurd h bot_ne_top`. Establish `hsimple : IsSimpleModule R (Q ⧸ Q1)` using `isSimpleModule_iff_isCoatom.2 hQ1`.
+
+Take `⟨m0, hm0, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hsimple`. Establish `hnt : Nontrivial (Q ⧸ Q1)` using `IsSimpleModule.nontrivial R _`. Establish `hcard : Nat.card Q = Nat.card Q1 * Nat.card (Q ⧸ Q1)` using `Submodule.card_eq_card_quotient_mul_card Q1`. Establish `hfq : Finite (Q ⧸ Q1)` using `Finite.of_surjective _ Q1.mkQ_surjective`. Establish `h1 : 1 < Nat.card (Q ⧸ Q1)` using `Finite.one_lt_card`.
+
+Establish `h2 : 0 < Nat.card Q1` using `Nat.card_pos`. Establish `hlt : Nat.card Q1 < n`. Rewrite using `[← hn, hcard]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨k1, hk1, hk1c⟩` from `ih _ hlt Q1 rfl`.
+
+Use `⟨k1 + Finsupp.single ⟨m0, hm0⟩ 1, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `w.2.isPrime` as an intermediate fact. Use `w.2` as an intermediate fact. Rewrite using `[locLen_exact w.1 Q1.subtype Q1.mkQ Q1.injective_subtype Q1.mkQ_surjective (LinearMap.exact_subtype_mkQ Q1), hk1 w, locLen_congr w.1 e, Finsupp.add_apply, Finsupp.single_apply]`. Distinguish the cases in `hw : (⟨m0, hm0⟩ : {p : Ideal R // p.IsMaximal}) = w`.
+
+Substitute `hw` using the available equality. Rewrite using `[if_pos rfl, locLen_quot_self]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hw, locLen_quot_ne w.1 m0 (fun h => hw (Subtype.ext h.symm))]`. Simplify using the standard rewrite rules.
+
+Establish `hz : ∀ w : {p : Ideal R // p.IsMaximal}, Nat.card (R ⧸ w.1) ^ 0 = 1` using `fun _ => pow_zero _`. Establish `ha : ∀ (w : {p : Ideal R // p.IsMaximal}) (a c : ℕ), Nat.card (R ⧸ w.1) ^ (a + c) = Nat.card (R ⧸ w.1) ^ a * Nat.card (R ⧸ w.1) ^ c` using `fun _ _ _ => pow_add _ _ _`. Rewrite using `[Finsupp.prod_add_index' (h := fun (w : {p : Ideal R // p.IsMaximal}) (j : ℕ) => Nat.card (R ⧸ w.1) ^ j) hz ha, Finsupp.prod_single_index (h := fun (w : {p : Ideal R // p.IsMaximal}) (j : ℕ) => Nat.card (R ⧸ w.1) ^ j) (hz _), pow_one, hcard, hk1c, Nat.card_congr e.toEquiv]`.
+-/
 theorem card_eq_prod_locLen : ∀ (n : ℕ) (Q : Type) [AddCommGroup Q] [Module R Q] [Finite Q],
     Nat.card Q = n → ∃ k : {p : Ideal R // p.IsMaximal} →₀ ℕ,
       (∀ w : {p : Ideal R // p.IsMaximal}, (haveI := w.2.isPrime; locLen w.1 Q) = (k w : ℕ∞)) ∧
@@ -613,6 +840,11 @@ end Loc
 
 section Len
 
+/- English proof (translation)
+Establish `h' : Nat.card (A ⧸ B.comap A.subtype) ≠ 0` using `h`. Establish `hfin : Finite (A ⧸ B.comap A.subtype)` using `Nat.finite_of_card_ne_zero h'`. Take `⟨k, hk, hc⟩` from `card_eq_prod_locLen (R := 𝓞 K) _ (A ⧸ B.comap A.subtype) rfl`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Nat.card (A ⧸ B.comap A.subtype) = _`.
+
+Rewrite using `[hc]`. Use `Finsupp.prod_congr fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem index_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V]
     (A B : Submodule (𝓞 K) V) (h : B.toAddSubgroup.relIndex A.toAddSubgroup ≠ 0) :
     ∃ k : FinPl K →₀ ℕ, (∀ w : FinPl K, lenAt w A B = (k w : ℕ∞)) ∧
@@ -626,6 +858,15 @@ theorem index_finsupp {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [M
   refine Finsupp.prod_congr fun w _ => ?_
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ A B h`. Take `⟨k, hk, hc⟩` from `index_finsupp A B h`. Use `⟨fun w => by rw [hk]; exact ENat.natCast_ne_top _, ?_, ?_⟩` and prove the remaining obligations. Use `k.support.finite_toSet.subset fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[Function.mem_support, hk]`.
+
+Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Conclude with `hw` after adjusting the coercions. Rewrite using `[hc, finprod_eq_prod_of_mulSupport_subset (s := k.support)]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hk, ENat.toNat_natCast]`.
+
+Introduce `w hw`. Rewrite `hw` using `[Function.mem_mulSupport, hk, ENat.toNat_natCast]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`. Rewrite `hw` using `[h0, pow_zero]`.
+
+Conclude with `hw rfl`.
+-/
 theorem index_eq_length : IndexLen := by
   intro K V _ _ _ _ A B h
   obtain ⟨k, hk, hc⟩ := index_finsupp A B h
@@ -644,6 +885,9 @@ theorem index_eq_length : IndexLen := by
       rw [h0, pow_zero] at hw
       exact hw rfl
 
+/- English proof (translation)
+Introduce `h0`. Establish `hi` using `ht_index b X hX hM hNM hrk`. Rewrite `hi` using `[h0, Nat.cast_zero, mul_zero]`. Conclude with `(ht_pos b X hX (fg_of_le hM hNM)).ne' hi`.
+-/
 theorem relIndex_ne_zero {K V ι : Type} [Field K] [NumberField K] [StarRing K]
     [IsTotallyComplex K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     [Fintype ι] [DecidableEq ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
@@ -654,6 +898,21 @@ theorem relIndex_ne_zero {K V ι : Type} [Field K] [NumberField K] [StarRing K]
   rw [h0, Nat.cast_zero, mul_zero] at hi
   exact (ht_pos b X hX (fg_of_le hM hNM)).ne' hi
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N β hM hM0 hN hrk hβ`. Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Take `⟨h1, h2⟩` from `slope_formula K V ι b X hX σ τ M N hM hM0 hN hrk`. Establish `hτ` using `idealPow_ne_zero τ`. Establish `hidx` using `relIndex_ne_zero b X hX (idealSmul_fg (idealPow τ) hM) hN (hrk.trans (rkK_idealSmul hτ M).symm)`.
+
+Take `⟨k, hk, hc⟩` from `index_finsupp _ N hidx`. Establish `hd : (rkK M : ℝ) ≠ 0` using `by exact_mod_cast (rkK_pos hM0).ne'`. Establish `hq : (Module.finrank ℚ K : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ K).ne'` after adjusting the coercions. Establish `hkβ : ∀ w, (k w : ℝ) = (rkK M : ℝ) * β w` using `fun w => by`.
+
+Rewrite using `[← hβ w, hk, ENat.toNat_natCast]`. Establish `hsupp : Function.support β ⊆ (k.support : Set (FinPl K))`. Introduce `w hw`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+
+Use `hkβ w` as an intermediate fact. Rewrite `this` using `[h0, Nat.cast_zero]`. Conclude with `hw ((mul_eq_zero.1 this.symm).resolve_left hd)`. Use `⟨fun w => by rw [hk]; exact ENat.natCast_ne_top _, k.support.finite_toSet.subset hsupp, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, hc]`.
+
+Use `congr 1`. Establish `hne : ∀ w : FinPl K, ((Ideal.absNorm w.1 : ℕ) : ℝ) ≠ 0` using `fun w => by`. Conclude with `fun h => finPl_ne_bot w (Ideal.absNorm_eq_zero_iff.1 h)` after adjusting the coercions. Rewrite using `[finsum_eq_sum_of_support_subset (s := k.support)]`. Unfold `Finsupp.prod ell`.
+
+Rewrite using `[Nat.cast_prod, Real.log_prod (fun w _ => by push_cast; exact pow_ne_zero _ (hne w)), Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Real.log_pow, hkβ w]`. Clear the denominators using the available nonvanishing facts. Introduce `w hw`.
+
+Apply `hsupp` to reduce the goal to its premises. Rewrite `hw`, the goal using `[Function.mem_support]`. Introduce `h0`. Rewrite `hw` using `[h0, mul_zero]`. Conclude with `hw rfl`.
+-/
 theorem slope_via_lengths : SlopeRelationsLength := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX σ τ M N β hM hM0 hN hrk hβ
   have hfd : FiniteDimensional K V := Module.Finite.of_basis b
@@ -693,6 +952,11 @@ theorem slope_via_lengths : SlopeRelationsLength := by
     rw [h0, mul_zero] at hw
     exact hw rfl
 
+/- English proof (translation)
+Introduce `K _ _ _ _ J V ι _ _ _ _ _ _ b X hX σ τ M N β Sg0 dr hM hM0 hN hrk hβ hSg`. Prove the components needed by the constructor for the conclusion. Introduce `u`. Use `(slope_via_lengths K (V u) (ι u) (b u) (X u) (hX u) (σ u) (τ u) (M u) (N u) (β u) (hM u) (hM0 u) (hN u) (hrk u) (hβ u)).2.2.1` as an intermediate fact. Rewrite `this` using `[hSg u]`.
+
+Conclude with `this`. Introduce `u`. Use `(slope_via_lengths K (V u) (ι u) (b u) (X u) (hX u) (σ u) (τ u) (M u) (N u) (β u) (hM u) (hM0 u) (hN u) (hrk u) (hβ u)).2.2.2` as an intermediate fact. Rewrite `this` using `[hSg u]`. Conclude with `this`.
+-/
 theorem slope_pair_of_slopes : SlopesHypothesisFinitePlaces := by
   intro K _ _ _ _ J V ι _ _ _ _ _ _ b X hX σ τ M N β Sg0 dr hM hM0 hN hrk hβ hSg
   constructor
@@ -711,6 +975,17 @@ end Len
 
 section Span
 
+/- English proof (translation)
+Establish `i0` using `isLocalizedModule_id w.primeCompl V (Localization.AtPrime w)`. Substitute `hA` using the available equality. Use `set f1 := A.toLocalized' (Localization.AtPrime w) w.primeCompl LinearMap.id with hf1`. Establish `hf1c : ∀ a : A, ((f1 a : V)) = (a : V)` using `fun a => rfl`. Establish `hB : (B.comap A.subtype).localized' (Localization.AtPrime w) w.primeCompl f1 = (Submodule.span (Localization.AtPrime w) (B : Set V)).comap (A.localized' (Localization.AtPrime w) w.primeCompl LinearMap.id).subtype`.
+
+Establish `hspan : Submodule.span (Localization.AtPrime w) (B : Set V) = B.localized' (Localization.AtPrime w) w.primeCompl LinearMap.id`. Rewrite using `[Submodule.localized'_eq_span]`. Simplify using the standard rewrite rules. Rewrite using `[hspan]`. Use extensionality with `x`.
+
+Rewrite using `[Submodule.mem_localized', Submodule.mem_comap, Submodule.mem_localized']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, s, hx⟩`. Use `⟨(m : V), hm, s, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[IsLocalizedModule.mk'_eq_iff]`.
+
+Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[hf1c]`. Introduce and unpack `⟨m, hm, s, hx⟩`. Use `⟨⟨m, hBA hm⟩, hm, s, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[IsLocalizedModule.mk'_eq_iff]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hx` using `[hf1c]`. Rewrite using `[← hB]`. Conclude with `((IsLocalizedModule.iso w.primeCompl ((B.comap A.subtype).toLocalizedQuotient' (Localization.AtPrime w) w.primeCompl f1)).extendScalarsOfIsLocalization w.primeCompl (Localization.AtPrime w)).length_eq`.
+-/
 theorem length_at_span_localized {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (w : Ideal R)
     [w.IsPrime] [Module (Localization.AtPrime w) V] [IsScalarTower R (Localization.AtPrime w) V]
     (A B : Submodule R V) (hBA : B ≤ A) (A'' : Submodule (Localization.AtPrime w) V)
@@ -747,6 +1022,11 @@ theorem length_at_span_localized {R V : Type} [CommRing R] [AddCommGroup V] [Mod
     (Localization.AtPrime w) w.primeCompl f1)).extendScalarsOfIsLocalization w.primeCompl
       (Localization.AtPrime w)).length_eq
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ w _ _ A B hBA`. Use `w.2.isPrime` as an intermediate fact. Establish `i0` using `isLocalizedModule_id w.1.primeCompl V (Localization.AtPrime w.1)`. Use `length_at_span_localized w.1 A B hBA _ ?_` and prove the remaining obligations. Rewrite using `[Submodule.localized'_eq_span]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem length_at_span : LenAtSpan := by
   intro K V _ _ _ _ w _ _ A B hBA
   have := w.2.isPrime
@@ -758,6 +1038,17 @@ end Span
 
 section Tests
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `hτ` using `idealPow_ne_zero τ`. Use `set M1 := idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M with hM1`. Establish `hM1fg : M1.FG` using `idealSmul_fg _ hM`. Establish `hM1rk : rkK M1 = rkK M` using `rkK_idealSmul hτ M`.
+
+Establish `hrk : rkK (J • M1) = rkK M`. Rewrite using `[← hM1rk]`. Unfold `rkK`. Rewrite using `[Formalism.HN.DualPolygon.twist_span_smul M1 J hJ]`. Establish `hd : (rkK M : ℝ) ≠ 0` using `by exact_mod_cast (rkK_pos hM0).ne'`.
+
+Establish `hq : (Module.finrank ℚ K : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ K).ne'` after adjusting the coercions. Establish `h1` using `(slope_formula K V ι b X hX 0 τ M (J • M1) hM hM0 Submodule.smul_le_right hrk).2`. Establish `h2` using `(slope_via_lengths K V ι b X hX 0 τ M (J • M1) (fun w => ((lenAt w M1 (J • M1)).toNat : ℝ) / (rkK M : ℝ)) hM hM0 Submodule.smul_le_right hrk (fun w => by field_simp; rfl)).2.2.2`. Rewrite `h1` using `[← hM1]`.
+
+Rewrite `h2` using `[h1, Formalism.HN.DualPolygon.twist_index M1 hM1fg J hJ]`. Establish `h3 : finrank K (Submodule.span K (M1 : Set V)) = rkK M` using `hM1rk`. Rewrite `h2` using `[h3, Nat.cast_pow, Real.log_pow]`. Establish `h4 : 2 * ((rkK M : ℝ) * Real.log (Ideal.absNorm J : ℝ)) / ((Module.finrank ℚ K : ℝ) * (rkK M : ℝ)) = 2 * Real.log (Ideal.absNorm J : ℝ) / (Module.finrank ℚ K : ℝ)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h2` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slope_via_lengths_ideal {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι]
     [DecidableEq ι] (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
@@ -794,6 +1085,9 @@ theorem slope_via_lengths_ideal {K V ι : Type} [Field K] [NumberField K] [StarR
   rw [h4] at h2
   linarith
 
+/- English proof (translation)
+Establish `hne : NeZero ((5 : ℕ) : ℚ)` using `⟨by norm_num⟩`. Establish `hcyc : IsCyclotomicExtension {5} ℚ (CyclotomicField 5 ℚ)` using `CyclotomicField.isCyclotomicExtension 5 ℚ`. Use `⟨CyclotomicField 5 ℚ, CyclotomicField 5 ℚ, Unit, inferInstance, inferInstance, starRingOfComm, IsCyclotomicExtension.Rat.isTotallyComplex (n := 5) _ (by norm_num), inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Basis.singleton Unit _, fu …` and prove the remaining obligations. Rewrite using `[Ne, Submodule.span_singleton_eq_bot]`. Conclude with `one_ne_zero`.
+-/
 example : ∃ (K V ι : Type) (_ : Field K) (_ : NumberField K) (_ : StarRing K)
     (_ : IsTotallyComplex K) (_ : AddCommGroup V) (_ : Module K V) (_ : Module (𝓞 K) V)
     (_ : IsScalarTower (𝓞 K) K V) (_ : Fintype ι) (_ : DecidableEq ι) (_ : Basis ι K V)
@@ -823,12 +1117,20 @@ def HalfUnit (w : Ideal (𝓞 K)) (J : FI) : Prop :=
 
 def WUnit (w : Ideal (𝓞 K)) (J : FI) : Prop := J ≠ 0 ∧ HalfUnit w J ∧ HalfUnit w J⁻¹
 
+/- English proof (translation)
+Use `⟨1, fun h1 => hw.ne_top ((Ideal.eq_top_iff_one w).2 h1), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(FractionalIdeal.mem_one_iff _).1 (h hx)`. Conclude with `⟨y, by rw [hy, map_one, one_mul]⟩`.
+-/
 theorem halfUnit_of_le_one (w : Ideal (𝓞 K)) [hw : w.IsPrime] {J : FI} (h : J ≤ 1) :
     HalfUnit w J := by
   refine ⟨1, fun h1 => hw.ne_top ((Ideal.eq_top_iff_one w).2 h1), fun x hx => ?_⟩
   obtain ⟨y, hy⟩ := (FractionalIdeal.mem_one_iff _).1 (h hx)
   exact ⟨y, by rw [hy, map_one, one_mul]⟩
 
+/- English proof (translation)
+Take `⟨t1, ht1, h1⟩` from `hI`. Take `⟨t2, ht2, h2⟩` from `hJ`. Use `⟨t1 * t2, fun h => (hw.mem_or_mem h).elim ht1 ht2, fun x hx => ?_⟩` and prove the remaining obligations. Use `FractionalIdeal.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`.
+
+Take `⟨y1, hy1⟩` from `h1 i hi`. Take `⟨y2, hy2⟩` from `h2 j hj`. Conclude with `⟨y1 * y2, by rw [map_mul, map_mul, hy1, hy2]; ring⟩`. Introduce and unpack `x y ⟨a, ha⟩ ⟨c, hc⟩`. Conclude with `⟨a + c, by rw [map_add, ha, hc]; ring⟩`.
+-/
 theorem halfUnit_mul (w : Ideal (𝓞 K)) [hw : w.IsPrime] {I J : FI} (hI : HalfUnit w I)
     (hJ : HalfUnit w J) : HalfUnit w (I * J) := by
   obtain ⟨t1, ht1, h1⟩ := hI
@@ -842,29 +1144,49 @@ theorem halfUnit_mul (w : Ideal (𝓞 K)) [hw : w.IsPrime] {I J : FI} (hI : Half
   · rintro x y ⟨a, ha⟩ ⟨c, hc⟩
     exact ⟨a + c, by rw [map_add, ha, hc]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_ne_zero, halfUnit_of_le_one w le_rfl, by rw [inv_one]; exact halfUnit_of_le_one w le_rfl⟩`.
+-/
 theorem wUnit_one (w : Ideal (𝓞 K)) [w.IsPrime] : WUnit w (1 : FI) :=
   ⟨one_ne_zero, halfUnit_of_le_one w le_rfl, by rw [inv_one]; exact halfUnit_of_le_one w le_rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero hI.1 hJ.1, halfUnit_mul w hI.2.1 hJ.2.1, by rw [mul_inv]; exact halfUnit_mul w hI.2.2 hJ.2.2⟩`.
+-/
 theorem wUnit_mul (w : Ideal (𝓞 K)) [w.IsPrime] {I J : FI} (hI : WUnit w I) (hJ : WUnit w J) :
     WUnit w (I * J) :=
   ⟨mul_ne_zero hI.1 hJ.1, halfUnit_mul w hI.2.1 hJ.2.1, by
     rw [mul_inv]; exact halfUnit_mul w hI.2.2 hJ.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inv_ne_zero hI.1, hI.2.2, by rw [inv_inv]; exact hI.2.1⟩`.
+-/
 theorem wUnit_inv (w : Ideal (𝓞 K)) {I : FI} (hI : WUnit w I) : WUnit w I⁻¹ :=
   ⟨inv_ne_zero hI.1, hI.2.2, by rw [inv_inv]; exact hI.2.1⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `wUnit_one w`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `wUnit_mul w ih hI`.
+-/
 theorem wUnit_pow (w : Ideal (𝓞 K)) [w.IsPrime] {I : FI} (hI : WUnit w I) (k : ℕ) :
     WUnit w (I ^ k) := by
   induction k with
   | zero => rw [pow_zero]; exact wUnit_one w
   | succ k ih => rw [pow_succ]; exact wUnit_mul w ih hI
 
+/- English proof (translation)
+Take `⟨n, rfl | rfl⟩` from `k.eq_nat_or_neg`. Rewrite using `[zpow_natCast]`. Conclude with `wUnit_pow w hI n`. Rewrite using `[zpow_neg, zpow_natCast]`. Conclude with `wUnit_inv w (wUnit_pow w hI n)`.
+-/
 theorem wUnit_zpow (w : Ideal (𝓞 K)) [w.IsPrime] {I : FI} (hI : WUnit w I) (k : ℤ) :
     WUnit w (I ^ k) := by
   obtain ⟨n, rfl | rfl⟩ := k.eq_nat_or_neg
   · rw [zpow_natCast]; exact wUnit_pow w hI n
   · rw [zpow_neg, zpow_natCast]; exact wUnit_inv w (wUnit_pow w hI n)
 
+/- English proof (translation)
+Use `w.2.isPrime` as an intermediate fact. Establish `h0` using `finPl_coe_ne_zero w'`. Use `⟨h0, halfUnit_of_le_one w.1 FractionalIdeal.coeIdeal_le_one, ?_⟩` and prove the remaining obligations. Establish `hnle : ¬ w'.1 ≤ w.1` using `fun hle => h (Subtype.ext (w'.2.eq_of_le w.2.ne_top hle))`. Take `⟨t, htw', htw⟩` from `SetLike.not_le_iff_exists.1 hnle`.
+
+Use `⟨t, htw, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem : algebraMap (𝓞 K) K t * x ∈ (w'.1 : FI) * (w'.1 : FI)⁻¹` using `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨t, htw', rfl⟩) hx`. Rewrite `hmem` using `[mul_inv_cancel₀ h0]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 hmem`.
+-/
 theorem wUnit_other (w w' : FinPl K) (h : w' ≠ w) : WUnit w.1 (w'.1 : FI) := by
   have := w.2.isPrime
   have h0 := finPl_coe_ne_zero w'
@@ -877,6 +1199,25 @@ theorem wUnit_other (w w' : FinPl K) (h : w' ≠ w) : WUnit w.1 (w'.1 : FI) := b
   rw [mul_inv_cancel₀ h0] at hmem
   exact (FractionalIdeal.mem_one_iff _).1 hmem
 
+/- English proof (translation)
+Use `w.2.isPrime` as an intermediate fact. Establish `hw0` using `finPl_coe_ne_zero w`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (Ideal.zero_mem _)`.
+
+Establish `hϖK : algebraMap (𝓞 K) K ϖ ≠ 0`. Introduce `h0`. Conclude with `hϖ0 (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0))`. Use `set Pw : FI := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ) with hPw`. Establish `hPw0 : Pw ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hϖK`.
+
+Establish `hPww : Pw ≤ (w.1 : FI)`. Rewrite using `[hPw, ← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.coeIdeal_le_coeIdeal]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 h1`. Establish `hC1 : Pw * (w.1 : FI)⁻¹ ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨mul_ne_zero hw0 (inv_ne_zero hPw0), ?_, ?_⟩` and prove the remaining obligations. Establish `hex : ∃ t : 𝓞 K, algebraMap (𝓞 K) K t ∈ Pw * (w.1 : FI)⁻¹ ∧ t ∉ w.1`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h2` to reduce the goal to its premises.
+
+Establish `hle : Pw * (w.1 : FI)⁻¹ * (w.1 : FI) ≤ ((w.1 ^ 2 : Ideal (𝓞 K)) : FI)`. Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Take `⟨t, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 (hC1 hi)`.
+
+Take `⟨s, hs, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hj`. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨t * s, ?_, map_mul _ _ _⟩` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `Ideal.mul_mem_mul (hcon t hi) hs`. Introduce `x y hx hy`.
+
+Conclude with `FractionalIdeal.mem_coe.1 (Submodule.add_mem _ (FractionalIdeal.mem_coe.2 hx) (FractionalIdeal.mem_coe.2 hy))`. Rewrite `hle` using `[mul_assoc, inv_mul_cancel₀ hw0, mul_one]`. Take `⟨z, hz, hzϖ⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (hle (FractionalIdeal.mem_spanSingleton_self _ _))`. Rewrite `hz` using `[FaithfulSMul.algebraMap_injective (𝓞 K) K hzϖ]`. Then use the resulting hypothesis. Take `⟨t, htC, htw⟩` from `hex`.
+
+Use `⟨t, htw, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hmem` using `FractionalIdeal.mul_mem_mul htC hx`. Establish `e : Pw * (w.1 : FI)⁻¹ * ((w.1 : FI) * Pw⁻¹) = 1`. Rewrite using `[mul_assoc, ← mul_assoc (w.1 : FI)⁻¹, inv_mul_cancel₀ hw0, one_mul, mul_inv_cancel₀ hPw0]`. Rewrite `hmem` using `[e]`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).1 hmem`. Rewrite using `[mul_inv, inv_inv, mul_comm]`. Conclude with `halfUnit_of_le_one w.1 hC1`.
+-/
 theorem wUnit_self (w : FinPl K) {ϖ : 𝓞 K} (h1 : ϖ ∈ w.1) (h2 : ϖ ∉ w.1 ^ 2) :
     WUnit w.1 ((w.1 : FI) *
       (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ))⁻¹) := by
@@ -927,11 +1268,27 @@ theorem wUnit_self (w : FinPl K) {ϖ : 𝓞 K} (h1 : ϖ ∈ w.1) (h2 : ϖ ∉ w.
   · rw [mul_inv, inv_inv, mul_comm]
     exact halfUnit_of_le_one w.1 hC1
 
+/- English proof (translation)
+Unfold `idealPow`. Conclude with `Finsupp.prod_add_index' (h := fun (w : FinPl K) (k : ℤ) => ((w.1 : FI)) ^ k) (fun _ => zpow_zero _) (fun w _ _ => zpow_add₀ (finPl_coe_ne_zero w) _ _)`.
+-/
 theorem idealPow_add (m n : FinPl K →₀ ℤ) : idealPow (m + n) = idealPow m * idealPow n := by
   unfold idealPow
   exact Finsupp.prod_add_index' (h := fun (w : FinPl K) (k : ℤ) => ((w.1 : FI)) ^ k)
     (fun _ => zpow_zero _) (fun w _ _ => zpow_add₀ (finPl_coe_ne_zero w) _ _)
 
+/- English proof (translation)
+Use `w.2.isPrime` as an intermediate fact. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (Ideal.zero_mem _)`. Establish `hϖK : algebraMap (𝓞 K) K ϖ ≠ 0`.
+
+Introduce `h0`. Conclude with `hϖ0 (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0))`. Use `set Pw : FI := FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ) with hPw`. Establish `hPw0 : Pw ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hϖK`. Proceed by induction on `n using Finsupp.induction_linear with`.
+
+Consider the case `zero`. Establish `: idealPow (0 : FinPl K →₀ ℤ) = 1` using `by unfold idealPow; exact Finsupp.prod_zero_index`. Rewrite using `[this, Finsupp.zero_apply, zpow_zero, inv_one, mul_one]`. Conclude with `wUnit_one w.1`. Consider the case `add f g hf hg`.
+
+Rewrite using `[idealPow_add, Finsupp.add_apply, zpow_add₀ hPw0, mul_inv, mul_mul_mul_comm]`. Conclude with `wUnit_mul w.1 hf hg`. Consider the case `single a k`. Establish `: idealPow (Finsupp.single a k) = (a.1 : FI) ^ k`. Unfold `idealPow`.
+
+Conclude with `Finsupp.prod_single_index (zpow_zero _)`. Rewrite using `[this, Finsupp.single_apply]`. Distinguish the cases in `ha : a = w`. Substitute `ha` using the available equality. Rewrite using `[if_pos rfl, ← inv_zpow, ← mul_zpow]`.
+
+Conclude with `wUnit_zpow a.1 (wUnit_self a h1 h2) k`. Rewrite using `[if_neg ha, zpow_zero, inv_one, mul_one]`. Conclude with `wUnit_zpow w.1 (wUnit_other w a ha) k`.
+-/
 theorem wUnit_idealPow (w : FinPl K) {ϖ : 𝓞 K} (h1 : ϖ ∈ w.1) (h2 : ϖ ∉ w.1 ^ 2)
     (n : FinPl K →₀ ℤ) : WUnit w.1 (idealPow n *
       ((FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ) : FI) ^
@@ -966,6 +1323,9 @@ theorem wUnit_idealPow (w : FinPl K) {ϖ : 𝓞 K} (h1 : ϖ ∈ w.1) (h2 : ϖ �
     · rw [if_neg ha, zpow_zero, inv_one, mul_one]
       exact wUnit_zpow w.1 (wUnit_other w a ha) k
 
+/- English proof (translation)
+Take `⟨n, rfl | rfl⟩` from `k.eq_nat_or_neg`. Rewrite using `[zpow_natCast, zpow_natCast, FractionalIdeal.spanSingleton_pow]`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, FractionalIdeal.spanSingleton_pow, FractionalIdeal.spanSingleton_inv]`.
+-/
 theorem spanSingleton_zpow (x : K) (k : ℤ) :
     (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) x : FI) ^ k =
       FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (x ^ k) := by
@@ -976,6 +1336,15 @@ theorem spanSingleton_zpow (x : K) (k : ℤ) :
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨t, ht, h⟩` from `hJ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨y, hy⟩` from `h a (FractionalIdeal.mem_coe.1 ha)`. Establish `e1 : t • (a • x) = y • x`.
+
+Rewrite using `[← algebraMap_smul K t (a • x), smul_smul, ← hy, algebraMap_smul]`. Take `⟨u, hu⟩` from `IsLocalization.map_units (Localization.AtPrime w) (⟨t, ht⟩ : w.primeCompl)`. Establish `e2 : a • x = (↑u⁻¹ : Localization.AtPrime w) • (y • x)`. Rewrite using `[← e1, ← algebraMap_smul (Localization.AtPrime w) t (a • x), smul_smul]`. Establish `: (↑u⁻¹ : Localization.AtPrime w) * algebraMap (𝓞 K) (Localization.AtPrime w) t = 1`.
+
+Establish `hu' : (u : Localization.AtPrime w) = algebraMap (𝓞 K) (Localization.AtPrime w) t` using `hu`. Rewrite using `[← hu']`. Conclude with `u.inv_mul`. Rewrite using `[this, one_smul]`. Use `show a • x ∈ Submodule.span (Localization.AtPrime w) (L : Set V)`.
+
+Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (L.smul_mem y hx))`.
+-/
 theorem idealSmul_le_span_loc (w : Ideal (𝓞 K)) [w.IsPrime] [Module (Localization.AtPrime w) V]
     [IsScalarTower (𝓞 K) (Localization.AtPrime w) V] {J : FI} (hJ : HalfUnit w J)
     (L : Submodule (𝓞 K) V) :
@@ -998,6 +1367,11 @@ theorem idealSmul_le_span_loc (w : Ideal (𝓞 K)) [w.IsPrime] [Module (Localiza
   rw [e2]
   exact Submodule.smul_mem _ _ (Submodule.subset_span (L.smul_mem y hx))
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun x hx => idealSmul_le_span_loc w hJ.2.1 L hx`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `h` using `idealSmul_le_span_loc w hJ.2.2 (idealSmul (J : Submodule (𝓞 K) K) L)`. Rewrite `h` using `[idealSmul_inv_cancel hJ.1]`.
+
+Conclude with `h hx`.
+-/
 theorem span_loc_idealSmul (w : Ideal (𝓞 K)) [w.IsPrime] [Module (Localization.AtPrime w) V]
     [IsScalarTower (𝓞 K) (Localization.AtPrime w) V] {J : FI} (hJ : WUnit w J)
     (L : Submodule (𝓞 K) V) :
@@ -1011,6 +1385,13 @@ theorem span_loc_idealSmul (w : Ideal (𝓞 K)) [w.IsPrime] [Module (Localizatio
     rw [idealSmul_inv_cancel hJ.1] at h
     exact h hx
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ w _ _ ϖ h1 h2 n M`. Use `w.2.isPrime` as an intermediate fact. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `h2 (Ideal.zero_mem _)`.
+
+Establish `hϖK : algebraMap (𝓞 K) K ϖ ≠ 0`. Introduce `h0`. Conclude with `hϖ0 (FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0))`. Establish `hU` using `wUnit_idealPow w h1 h2 n`. Establish `hPw0 : (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (n w) ≠ 0` using `zpow_ne_zero _ (FractionalIdeal.spanSingleton_ne_zero_iff.2 hϖK)`.
+
+Establish `hfac : idealPow n = idealPow n * ((FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ) : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ (n w))⁻¹ * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)) (algebraMap (𝓞 K) K ϖ ^ n w)`. Rewrite using `[← spanSingleton_zpow, mul_assoc, inv_mul_cancel₀ hPw0, mul_one]`. Use `conv_lhs => rw [hfac, FractionalIdeal.coe_mul, idealSmul_mul, idealSmul_spanSingleton]`. Rewrite using `[span_loc_idealSmul w.1 hU, Submodule.map_coe]`. Both sides reduce to the same expression.
+-/
 theorem local_ideal_pow : LocIdealPow := by
   intro K V _ _ _ _ _ _ w _ _ ϖ h1 h2 n M
   have := w.2.isPrime
@@ -1039,6 +1420,9 @@ section Local
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Unfold `locScal`. Simplify using the standard rewrite rules.
+-/
 theorem locScal_one (w : FinPl K) [Module (Rloc w) V] (L : Submodule (𝓞 K) V) :
     locScal w 1 L = Submodule.span (Rloc w) (L : Set V) := by
   unfold locScal
@@ -1046,6 +1430,17 @@ theorem locScal_one (w : FinPl K) [Module (Rloc w) V] (L : Submodule (𝓞 K) V)
 
 omit [Module K V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Introduce `x hx`. Set `I : Ideal (𝓞 K)` to `B.colon {x}`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hne`.
+
+Set `w : FinPl K` to `⟨m, hm⟩`. Use `w.2.isPrime` as an intermediate fact. Establish `i0` using `isLocalizedModule_id w.1.primeCompl V (Rloc w)`. Establish `hxB : x ∈ Submodule.span (Rloc w) (B : Set V)` using `h w (Submodule.subset_span hx)`. Establish `hspan : Submodule.span (Rloc w) (B : Set V) = B.localized' (Rloc w) w.1.primeCompl LinearMap.id`.
+
+Rewrite using `[Submodule.localized'_eq_span]`. Simplify using the standard rewrite rules. Rewrite `hxB` using `[hspan, Submodule.mem_localized']`. Take `⟨y, hy, s, hs⟩` from `hxB`. Rewrite `hs` using `[IsLocalizedModule.mk'_eq_iff]`.
+
+Establish `hsI : (s : 𝓞 K) ∈ I`. Rewrite using `[Submodule.mem_colon_singleton]`. Establish `: (s : 𝓞 K) • x = y` using `hs.symm`. Rewrite using `[this]`. Conclude with `hy`.
+
+Conclude with `s.2 (hIm hsI)`. Establish `h1 : (1 : 𝓞 K) ∈ I` using `by rw [hI]; exact Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_colon_singleton, one_smul]`. Conclude with `h1`.
+-/
 theorem le_of_loc [∀ w : FinPl K, Module (Rloc w) V]
     [∀ w : FinPl K, IsScalarTower (𝓞 K) (Rloc w) V] {A B : Submodule (𝓞 K) V}
     (h : ∀ w : FinPl K, Submodule.span (Rloc w) (A : Set V) ≤ Submodule.span (Rloc w) (B : Set V)) :
@@ -1074,6 +1469,9 @@ theorem le_of_loc [∀ w : FinPl K, Module (Rloc w) V]
   rw [Submodule.mem_colon_singleton, one_smul] at h1
   exact h1
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem length_congr_sub {R : Type} [CommRing R] [Module R V] {A1 A2 : Submodule R V}
     (h : A1 = A2) (B : Submodule R V) :
     Module.length R (A1 ⧸ B.comap A1.subtype) = Module.length R (A2 ⧸ B.comap A2.subtype) := by
@@ -1081,6 +1479,15 @@ theorem length_congr_sub {R : Type} [CommRing R] [Module R V] {A1 A2 : Submodule
 
 end Local
 
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ _ _ b X hX ϖ hϖ σ τ M N N' β hM hM0 hrk hN hN' hβ`. Establish `hloc : ∀ (n : FinPl K →₀ ℤ) (L : Submodule (𝓞 K) V) (w : FinPl K), Submodule.span (Rloc w) ((idealSmul ((idealPow n : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) L : Submodule (𝓞 K) V) : Set V) = locScal w (algebraMap (𝓞 K) K (ϖ w) ^ n w) L` using `fun n L w => local_ideal_pow K V w (ϖ w) (hϖ w).1 (hϖ w).2 n L`. Establish `hNle : N ≤ idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M`. Use `le_of_loc fun w => ?_` and prove the remaining obligations. Rewrite using `[hloc, ← locScal_one]`.
+
+Conclude with `hN w`. Establish `hN'eq : N' = modLat σ N`. Unfold `modLat`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_of_loc fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[hloc, ← locScal_one, hN' w, Finsupp.neg_apply]`. Use `le_of_loc fun w => ?_` and prove the remaining obligations. Rewrite using `[hloc, ← locScal_one, hN' w, Finsupp.neg_apply]`. Establish `hlen : ∀ w : FinPl K, lenAt w (idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M) N = Module.length (Rloc w) (locScal w (algebraMap (𝓞 K) K (ϖ w) ^ τ w) M ⧸ (locScal w 1 N).comap (locScal w (algebraMap (𝓞 K) K (ϖ w) ^ τ w) M).subtype)`. Introduce `w`.
+
+Rewrite using `[length_at_span K V w _ N hNle, locScal_one]`. Conclude with `length_congr_sub (hloc τ M w) _`. Establish `hmain` using `slope_via_lengths K V ι b X hX σ τ M N β hM hM0 hNle hrk (fun w => by rw [hlen w]; exact hβ w)`. Rewrite using `[hN'eq]`. Conclude with `⟨fun w => by rw [← hlen w]; exact hmain.1 w, hmain.2⟩`.
+-/
 theorem slope_local : SlopeRelationsLocal := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ _ _ b X hX ϖ hϖ σ τ M N N' β hM hM0 hrk hN hN' hβ
   have hloc : ∀ (n : FinPl K →₀ ℤ) (L : Submodule (𝓞 K) V) (w : FinPl K),
@@ -1121,6 +1528,13 @@ def rlocToK {K : Type} [Field K] [NumberField K] (w : FinPl K) : Rloc w →+* K 
     have : (y : 𝓞 K) = 0 := FaithfulSMul.algebraMap_injective (𝓞 K) K (by simpa using h0)
     rw [this]; exact Ideal.zero_mem _)
 
+/- English proof (translation)
+Set `i1 : ∀ w : FinPl K, Module (Rloc w) V` to `fun w => Module.compHom V (rlocToK w)`. Establish `i2 : ∀ w : FinPl K, IsScalarTower (𝓞 K) (Rloc w) V` using `fun w => ⟨fun r s x => by`. Use `w.2.isPrime` as an intermediate fact. Use `show rlocToK w (r • s) • x = r • (rlocToK w s • x)`. Establish `hr : rlocToK w (algebraMap (𝓞 K) (Rloc w) r) = algebraMap (𝓞 K) K r` using `IsLocalization.lift_eq _ r`.
+
+Rewrite using `[Algebra.smul_def, map_mul, mul_smul, hr, algebraMap_smul]⟩`. Establish `hex : ∀ w : FinPl K, ∃ x : 𝓞 K, x ∈ w.1 ∧ x ∉ w.1 ^ 2` using `fun w => by`. Take `⟨x, hx, hx'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ w.1 (finPl_ne_bot w) w.2.ne_top 1`. Conclude with `⟨x, by simpa using hx, hx'⟩`. Use `choose ϖ hϖ using hex`.
+
+Use `⟨i1, i2, ϖ, idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M, modLat σ (idealSmul ((idealPow τ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K) M), hϖ, rkK_idealSmul (idealPow_ne_zero τ) M, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[locScal_one]`. Conclude with `(local_ideal_pow K V w (ϖ w) (hϖ w).1 (hϖ w).2 τ M).le`. Rewrite using `[locScal_one, ← Finsupp.neg_apply]`. Conclude with `local_ideal_pow K V w (ϖ w) (hϖ w).1 (hϖ w).2 (-σ) _`.
+-/
 theorem slope_local_nonvacuous {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (σ τ : FinPl K →₀ ℤ)
     (M : Submodule (𝓞 K) V) :
@@ -1151,6 +1565,9 @@ theorem slope_local_nonvacuous {K V : Type} [Field K] [NumberField K] [AddCommGr
 
 end LocalTest
 
+/- English proof (translation)
+Introduce `K _ _ _ _ J _ _ V ι _ _ _ _ _ _ b X hX σ τ M N β Sg0 dr h hM hM0 hN hrk hβ hSg hdr`. Use `Formalism.LFunctionChainParameters.WeightedMeanLemmas.weighted_mean_claimU J _ _ _ _ _ h dr _ Sg0 (fun u => ?_) hdr (slope_pair_of_slopes K J V ι b X hX σ τ M N β Sg0 dr hM hM0 hN hrk hβ hSg)` and prove the remaining obligations. Establish `hfd : FiniteDimensional K (V u)` using `Module.Finite.of_basis (b u)`. Conclude with `rkK_pos (hM0 u)` after adjusting the coercions.
+-/
 theorem weighted_mean_lemma_of_slopes : LemmaUFinitePlaceFamily := by
   intro K _ _ _ _ J _ _ V ι _ _ _ _ _ _ b X hX σ τ M N β Sg0 dr h hM hM0 hN hrk hβ hSg hdr
   refine Formalism.LFunctionChainParameters.WeightedMeanLemmas.weighted_mean_claimU J _ _ _ _ _ h dr _ Sg0 (fun u => ?_) hdr

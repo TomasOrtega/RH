@@ -15,6 +15,9 @@ noncomputable section
 
 namespace IntegralCoordinateChange
 
+/- English proof (translation)
+Consider the cases of `L`. Consider the cases of `M`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+-/
 theorem hermLine_ext {ι : Unit → Type} [∀ k, Fintype (ι k)] {L M : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι}
     (ha : L.a = M.a) (hh : L.h = M.h) : L = M := by
   cases L
@@ -27,6 +30,15 @@ variable {T T₂ : Type} [Fintype T] [DecidableEq T] [Fintype T₂] [DecidableEq
 
 omit [DecidableEq T₂] in
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => show intCoordSubst A (intCoordSubst B (algebraMap ℤ _ a)) = algebraMap ℤ _ a`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Consider the case `add f g hf hg => rw [map_add, map_add, hf, hg]`. Consider the case `mul_X f p hf`.
+
+Rewrite using `[map_mul, map_mul, hf]`. Use `congr 1`. Take `⟨⟨⟩, t⟩` from `p`. Establish `hC : ∀ a : ℤ, (C a : MRing (dualBlocks T)) = (a : MRing (dualBlocks T))` using `fun a => map_intCast C a`. Simplify using `only [intCoordSubst, aeval_X, map_sum, map_mul, eq_intCast, hC, map_intCast, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← mul_assoc, ← Int.cast_mul, ← Finset.sum_mul, ← Int.cast_sum]`. Establish `h1 : ∀ x : T, ∑ s, B s t * A x s = (A * B) x t`. Introduce `x`. Simplify using `[Matrix.mul_apply, mul_comm]`.
+
+Repeatedly rewrite using `[h1, hAB, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem subst_subst {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (f : MRing (dualBlocks T)) :
     intCoordSubst A (intCoordSubst B f) = f := by
   induction f using MvPolynomial.induction_on with
@@ -50,6 +62,9 @@ theorem subst_subst {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B
 
 omit [DecidableEq T₂] in
 
+/- English proof (translation)
+Introduce `f` and use `⟨intCoordSubst B f, subst_subst hAB f⟩`.
+-/
 theorem subst_surjective {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) :
     Function.Surjective (intCoordSubst A) :=
   fun f => ⟨intCoordSubst B f, subst_subst hAB f⟩
@@ -59,6 +74,9 @@ def substEquiv {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1)
   (AlgEquiv.ofAlgHom (intCoordSubst A) (intCoordSubst B) (AlgHom.ext (subst_subst hAB))
     (AlgHom.ext (subst_subst hBA))).toRingEquiv
 
+/- English proof (translation)
+Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun x hx => ?_) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, subst_subst hBA]`. Conclude with `hx`. Rewrite using `[← subst_subst hAB x]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+-/
 theorem map_eq_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (P : Ideal (MRing (dualBlocks T₂))) : P.map (intCoordSubst A) = P.comap (intCoordSubst B) := by
   refine le_antisymm (Ideal.map_le_iff_le_comap.2 fun x hx => ?_) fun x hx => ?_
@@ -69,6 +87,9 @@ theorem map_eq_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * 
 
 omit [DecidableEq T] in
 
+/- English proof (translation)
+Establish `h : Finsupp.weight 1 m = m.degree`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression. Rewrite using `[h, Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_one_eq (m : (Σ _ : Unit, T) →₀ ℕ) : Finsupp.weight 1 m = ∑ i : T, m ⟨(), i⟩ := by
   have h : Finsupp.weight 1 m = m.degree := by
     rw [Finsupp.degree_eq_weight_one]
@@ -78,6 +99,11 @@ theorem weight_one_eq (m : (Σ _ : Unit, T) →₀ ℕ) : Finsupp.weight 1 m = �
 
 omit [DecidableEq T] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h m hm`. Rewrite using `[weight_one_eq]`. Conclude with `h m (mem_support_iff.mpr hm) ()`. Introduce `h m hm k`.
+
+Take `⟨⟩` from `k`. Rewrite using `[← weight_one_eq]`. Conclude with `h (mem_support_iff.mp hm)`.
+-/
 theorem isMultiHomog_iff (f : MRing (dualBlocks T)) (d : Unit → ℕ) :
     Geo.IsMultiHomog f d ↔ f.IsHomogeneous (d ()) := by
   constructor
@@ -91,6 +117,9 @@ theorem isMultiHomog_iff (f : MRing (dualBlocks T)) (d : Unit → ℕ) :
 
 omit [DecidableEq T] [DecidableEq T₂] in
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[isMultiHomog_iff]`. Establish `h` using `hf.eval₂ (algebraMap ℤ (MRing (dualBlocks T))) (fun p => ∑ t, C (M t p.2) * X ⟨(), t⟩) (fun r => by rw [MvPolynomial.algebraMap_eq]; exact isHomogeneous_C _ r) (fun p => IsHomogeneous.sum _ _ _ fun t _ => isHomogeneous_C_mul_X _ _)`. Rewrite `h` using `[one_mul]`. Conclude with `h`.
+-/
 theorem isMultiHomog_subst (M : Matrix T T₂ ℤ) {f : MRing (dualBlocks T₂)} {d : Unit → ℕ}
     (hf : Geo.IsMultiHomog f d) : Geo.IsMultiHomog (intCoordSubst M f) d := by
   rw [isMultiHomog_iff] at hf ⊢
@@ -102,6 +131,17 @@ theorem isMultiHomog_subst (M : Matrix T T₂ ℤ) {f : MRing (dualBlocks T₂)}
 
 omit [DecidableEq T₂] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨⟩`. Take `⟨s, hs⟩` from `h ()`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Apply `hs` to reduce the goal to its premises. Rewrite using `[Ideal.mem_comap]`. Simplify using `only [intCoordSubst, aeval_X]`. Conclude with `Ideal.sum_mem _ fun t _ => Ideal.mul_mem_left _ _ (hall t)`. Introduce and unpack `h ⟨⟩`.
+
+Take `⟨t, ht⟩` from `h ()`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Apply `ht` to reduce the goal to its premises. Rewrite using `[← subst_subst hAB (X ⟨(), t⟩)]`.
+
+Establish `e : intCoordSubst B (X ⟨(), t⟩ : MRing (dualBlocks T)) = ∑ s, C (B s t) * X ⟨(), s⟩`. Simplify using `only [intCoordSubst, aeval_X]`. Rewrite using `[e, map_sum]`. Use `Ideal.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (hall s)`.
+-/
 theorem isRelevant_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1)
     (W : Ideal (MRing (dualBlocks T))) : Geo.IsRelevant (W.comap (intCoordSubst A)) ↔ Geo.IsRelevant W := by
   constructor
@@ -126,6 +166,11 @@ theorem isRelevant_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : 
     rw [map_mul]
     exact Ideal.mul_mem_left _ _ (hall s)
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hQ`. Use `⟨intCoordSubst B '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, isMultiHomog_subst B ha⟩`.
+
+Rewrite using `[← map_eq_comap hBA hAB, Ideal.map_span]`.
+-/
 theorem isMultiHomogIdeal_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     {Q : Ideal (MRing (dualBlocks T))} (hQ : Geo.IsMultiHomogIdeal Q) :
     Geo.IsMultiHomogIdeal (Q.comap (intCoordSubst A)) := by
@@ -138,6 +183,9 @@ theorem isMultiHomogIdeal_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} 
 
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
 
+/- English proof (translation)
+Use extensionality with `c`. Simplify using `only [Ideal.mem_comap]`. Rewrite using `[show intCoordSubst A (C c) = C c from (intCoordSubst A).commutes c]`.
+-/
 theorem comap_C_comap (A : Matrix T T₂ ℤ) (W : Ideal (MRing (dualBlocks T))) :
     (W.comap (intCoordSubst A)).comap (C : ℤ →+* MRing (dualBlocks T₂)) = W.comap C := by
   ext c
@@ -145,16 +193,25 @@ theorem comap_C_comap (A : Matrix T T₂ ℤ) (W : Ideal (MRing (dualBlocks T)))
   rw [show intCoordSubst A (C c) = C c from (intCoordSubst A).commutes c]
 
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
+/- English proof (translation)
+Unfold `Geo.IsHorizontal`. Rewrite using `[comap_C_comap]`.
+-/
 theorem isHorizontal_comap (A : Matrix T T₂ ℤ) (W : Ideal (MRing (dualBlocks T))) :
     Geo.IsHorizontal (W.comap (intCoordSubst A)) ↔ Geo.IsHorizontal W := by
   unfold Geo.IsHorizontal
   rw [comap_C_comap]
 
 omit [DecidableEq T] [Fintype T₂] [DecidableEq T₂] in
+/- English proof (translation)
+Simplify using `only [Geo.charOf, comap_C_comap]`.
+-/
 theorem charOf_comap (A : Matrix T T₂ ℤ) (W : Ideal (MRing (dualBlocks T))) :
     Geo.charOf (W.comap (intCoordSubst A)) = Geo.charOf W := by
   simp only [Geo.charOf, comap_C_comap]
 
+/- English proof (translation)
+The claim follows from `ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ Q (substEquiv hAB hBA) (Ideal.map_comap_of_surjective _ (subst_surjective hAB) Q).symm)`.
+-/
 theorem ringKrullDim_quot_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (Q : Ideal (MRing (dualBlocks T))) :
     ringKrullDim (MRing (dualBlocks T₂) ⧸ Q.comap (intCoordSubst A)) =
@@ -162,6 +219,9 @@ theorem ringKrullDim_quot_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} 
   ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv _ Q (substEquiv hAB hBA)
     (Ideal.map_comap_of_surjective _ (subst_surjective hAB) Q).symm)
 
+/- English proof (translation)
+Take `⟨hK, ⟨hp, hmh, hrel⟩, hhor, hdim⟩` from `hQ`. Use `hp` as an intermediate fact. Use `⟨hK, ⟨Ideal.comap_isPrime _ _, isMultiHomogIdeal_comap hAB hBA hmh, (isRelevant_comap hAB Q).2 hrel⟩, (isHorizontal_comap A Q).2 hhor, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_quot_comap hAB hBA]`. Conclude with `hdim`.
+-/
 theorem isArithVar_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     {Q : Ideal (MRing (dualBlocks T))} {d : ℕ} (hQ : Geo.IsArithVar Q d) :
     Geo.IsArithVar (Q.comap (intCoordSubst A)) d := by
@@ -172,6 +232,11 @@ theorem isArithVar_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : 
   rw [ringKrullDim_quot_comap hAB hBA]
   exact hdim
 
+/- English proof (translation)
+Establish `hW' : (W.comap (intCoordSubst A)).IsPrime` using `Ideal.comap_isPrime _ _`. Unfold `Geo.multAt`. Rewrite using `[dif_pos hW', dif_pos hW]`. Use `congr 1`. Set `e` to `Ideal.quotientEquiv (J.comap (intCoordSubst A)) J (substEquiv hAB hBA) (Ideal.map_comap_of_surjective _ (subst_surjective hAB) J).symm`.
+
+Conclude with `NumbersDVR.length_localizedModule_eq_of_surjective ((intCoordSubst A : MRing (dualBlocks T₂) →ₐ[ℤ] MRing (dualBlocks T)) : MRing (dualBlocks T₂) →+* MRing (dualBlocks T)) (subst_surjective hAB) W (W.comap (intCoordSubst A)) rfl _ _ e.toAddEquiv fun s x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (intCoordSubst A (s * y)) = Ideal.Quotient.mk J (intCoordSubst A s) * Ideal.Quotient.mk J (intCoordSubst A y)`. Rewrite using `[map_mul, map_mul]`.
+-/
 theorem multAt_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (J W : Ideal (MRing (dualBlocks T))) (hW : W.IsPrime) :
     Geo.multAt (J.comap (intCoordSubst A)) (W.comap (intCoordSubst A)) = Geo.multAt J W := by
@@ -189,12 +254,22 @@ theorem multAt_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * 
         Ideal.Quotient.mk J (intCoordSubst A s) * Ideal.Quotient.mk J (intCoordSubst A y)
       rw [map_mul, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← map_eq_comap hBA hAB, ← map_eq_comap hBA hAB, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem sup_span_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (Q : Ideal (MRing (dualBlocks T))) (s : MRing (dualBlocks T)) :
     Q.comap (intCoordSubst A) ⊔ Ideal.span {intCoordSubst B s} =
       (Q ⊔ Ideal.span {s}).comap (intCoordSubst A) := by
   rw [← map_eq_comap hBA hAB, ← map_eq_comap hBA hAB, Ideal.map_sup, Ideal.map_span, Set.image_singleton]
 
+/- English proof (translation)
+Use extensionality with `W₂`. Establish `hm` using `Ideal.comap_minimalPrimes_eq_of_surjective (f := ((intCoordSubst A : MRing (dualBlocks T₂) →ₐ[ℤ] MRing (dualBlocks T)) : MRing (dualBlocks T₂) →+* MRing (dualBlocks T))) (subst_surjective hAB) (Q ⊔ Ideal.span {s})`. Simplify using `only [Ideal.comap_coe] at hm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hW, hrel⟩`.
+
+Rewrite `hW` using `[sup_span_comap hAB hBA, hm]`. Take `⟨W, hW, rfl⟩` from `hW`. Conclude with `⟨W, ⟨hW, (isRelevant_comap hAB W).1 hrel⟩, rfl⟩`. Introduce and unpack `⟨W, ⟨hW, hrel⟩, rfl⟩`. Use `⟨?_, (isRelevant_comap hAB W).2 hrel⟩` and prove the remaining obligations.
+
+Rewrite using `[sup_span_comap hAB hBA, hm]`. Conclude with `⟨W, hW, rfl⟩`.
+-/
 theorem divSupp_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (Q : Ideal (MRing (dualBlocks T))) (s : MRing (dualBlocks T)) :
     Geo.divSupp (Q.comap (intCoordSubst A)) (intCoordSubst B s) =
@@ -216,12 +291,18 @@ theorem divSupp_comap {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A *
 
 omit [DecidableEq T] [DecidableEq T₂] in
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun p => ?_` and prove the remaining obligations. Conclude with `ContDiff.sum fun t _ => (contDiff_apply ℝ ℂ _).mul contDiff_const`.
+-/
 theorem contDiff_intCoordPt (A : Matrix T T₂ ℤ) : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (intCoordPt A) := by
   refine contDiff_pi.2 fun p => ?_
   exact ContDiff.sum fun t _ => (contDiff_apply ℝ ℂ _).mul contDiff_const
 
 omit [DecidableEq T₂] in
 
+/- English proof (translation)
+The claim follows from `hL.comp (contDiff_intCoordPt A).contDiffOn fun _ hz => intCoordPt_ne_zero hA hz`.
+-/
 theorem isSmoothHerm_intCoordLine (A : Matrix T T₂ ℤ) (hA : ∃ B : Matrix T₂ T ℤ, A * B = 1)
     {L : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)} (hL : Geo.IsSmoothHerm L) :
     Geo.IsSmoothHerm (intCoordLine A hA L) :=
@@ -229,6 +310,11 @@ theorem isSmoothHerm_intCoordLine (A : Matrix T T₂ ℤ) (hA : ∃ B : Matrix T
 
 omit [DecidableEq T] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨⟨⟩, s⟩`. Simplify using `only [intCoordPt, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum]`. Establish `h1 : ∀ s', ∑ t, (B s' t : ℂ) * (A t s : ℂ) = (((B * A) s' s : ℤ) : ℂ)`.
+
+Introduce `s'`. Simplify using `[Matrix.mul_apply]`. Repeatedly rewrite using `[h1, hBA, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem pt_pt {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hBA : B * A = 1) (z : (Σ _ : Unit, T₂) → ℂ) :
     intCoordPt A (intCoordPt B z) = z := by
   funext ⟨⟨⟩, s⟩
@@ -241,6 +327,9 @@ theorem pt_pt {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hBA : B * A = 1) 
   simp_rw [h1, hBA, Matrix.one_apply]
   simp
 
+/- English proof (translation)
+The claim follows from `hermLine_ext rfl (funext fun z => by change L.h (intCoordPt A (intCoordPt B z)) = L.h z rw [pt_pt hBA])`.
+-/
 theorem line_line {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (L : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)) :
     intCoordLine B ⟨A, hBA⟩ (intCoordLine A ⟨B, hAB⟩ L) = L :=
@@ -250,6 +339,9 @@ theorem line_line {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B =
 
 omit [DecidableEq T₂] in
 
+/- English proof (translation)
+The claim follows from `hermLine_ext rfl rfl`.
+-/
 theorem line_tensor (A : Matrix T T₂ ℤ) (hA : ∃ B : Matrix T₂ T ℤ, A * B = 1)
     (L M : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)) :
     intCoordLine A hA (L.tensor M) = (intCoordLine A hA L).tensor (intCoordLine A hA M) :=
@@ -262,6 +354,9 @@ def transFam (A : Matrix T T₂ ℤ) (B : Matrix T₂ T ℤ) (hBA : B * A = 1)
 
 omit [Fintype T] [DecidableEq T] in
 
+/- English proof (translation)
+Establish `h : ((Geo.charOf V : ℕ) : ℤ) ∈ V.comap (C : ℤ →+* MRing (dualBlocks T))`. Rewrite using `[← Submodule.IsPrincipal.span_singleton_generator (V.comap C), Ideal.mem_span_singleton]`. Conclude with `Int.dvd_natAbs.mpr dvd_rfl`. Conclude with `h`.
+-/
 theorem C_charOf_mem (V : Ideal (MRing (dualBlocks T))) :
     (C ((Geo.charOf V : ℕ) : ℤ) : MRing (dualBlocks T)) ∈ V := by
   have h : ((Geo.charOf V : ℕ) : ℤ) ∈ V.comap (C : ℤ →+* MRing (dualBlocks T)) := by
@@ -269,6 +364,13 @@ theorem C_charOf_mem (V : Ideal (MRing (dualBlocks T))) :
     exact Int.dvd_natAbs.mpr dvd_rfl
   exact h
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn (fun W : Ideal (MRing (dualBlocks T)) => W.comap (intCoordSubst A)) (Geo.divSupp Q s)` using `fun W _ W' _ h => Ideal.comap_injective_of_surjective _ (subst_surjective hAB) h`. Unfold `Geo.recR`. Rewrite using `[divSupp_comap hAB hBA, finsum_mem_image hinj, hI T T₂ A B hAB hBA Q n M Ab s hQ hM hAb hs]`. Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations.
+
+Establish `hWp : W.IsPrime` using `hW.1.1.1`. Rewrite using `[sup_span_comap hAB hBA, multAt_comap hAB hBA _ _ hWp]`. Use `congr 1`. Distinguish the cases in `hh : Geo.IsHorizontal W`. Rewrite using `[if_pos ((isHorizontal_comap A W).2 hh), if_pos hh]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg (mt (isHorizontal_comap A W).1 hh), if_neg hh, charOf_comap]`. Take `⟨hmp, hp, hdim⟩` from `(Geo.divSuppArith Unit (dualBlocks T) Q n Ab s W hQ hs hW).2 hh`. Rewrite using `[hG T T₂ A B hAB hBA W n (Geo.charOf W) hmp hp (C_charOf_mem W) hdim]`. Both sides reduce to the same expression.
+-/
 theorem recR_trans {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (hG : IntCoordGeoNum.Statement) (hI : IntCoordArInt.Statement)
     (I : Ideal (MRing (dualBlocks T₂)) → (n : ℕ) → (Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)) → ℝ)
@@ -295,6 +397,11 @@ theorem recR_trans {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B 
     rw [hG T T₂ A B hAB hBA W n (Geo.charOf W) hmp hp (C_charOf_mem W) hdim]
     rfl
 
+/- English proof (translation)
+Establish `hsn : ∀ (n : ℕ) (M : Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T)) (N : ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T)), (fun j => intCoordLine B ⟨A, hBA⟩ (Fin.snoc (α` using `fun _ => ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T)) M N j)) = Fin.snoc (α := fun _ => ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)) (fun j => intCoordLine B ⟨A, hBA⟩ (M j)) (intCoordLine B ⟨A, hBA⟩ N) := fun n M N => Fin.comp_snoc (intC …`. Use `⟨fun Q n M Ab Bb hQ hM hA hB => ?_, fun Q n M Ab s a hQ hM hA ha hs hsQ => ?_⟩` and prove the remaining obligations. Unfold `transFam`. Rewrite using `[hsn, hsn, hsn, line_tensor]`. Conclude with `hIR.1 _ n _ _ _ (isArithVar_comap hAB hBA hQ) (fun j => isSmoothHerm_intCoordLine _ _ (hM j)) (isSmoothHerm_intCoordLine _ _ hA) (isSmoothHerm_intCoordLine _ _ hB)`.
+
+Use `show I (Q.comap (intCoordSubst A)) (n + 1) (fun j => intCoordLine B ⟨A, hBA⟩ (Fin.snoc (α := fun _ => ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T)) M Ab j)) = Geo.recR (transFam A B hBA I) Q M Ab s`. Rewrite using `[hsn, ← recR_trans hAB hBA hG hI I Q n M Ab s hQ hM hA ⟨a, ha, hs, hsQ⟩]`. Use `hIR.2 _ n _ _ (intCoordSubst B s) a (isArithVar_comap hAB hBA hQ) (fun j => isSmoothHerm_intCoordLine _ _ (hM j)) (isSmoothHerm_intCoordLine _ _ hA) ha (isMultiHomog_subst B hs) fun h => hsQ ?_` and prove the remaining obligations. Rewrite `h` using `[Ideal.mem_comap, subst_subst hAB]`. Conclude with `h`.
+-/
 theorem isRFamily_trans {A : Matrix T T₂ ℤ} {B : Matrix T₂ T ℤ} (hAB : A * B = 1) (hBA : B * A = 1)
     (hG : IntCoordGeoNum.Statement) (hI : IntCoordArInt.Statement)
     {I : Ideal (MRing (dualBlocks T₂)) → (n : ℕ) → (Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine (dualBlocks T₂)) → ℝ}
@@ -326,6 +433,13 @@ end IntegralCoordinateChange
 
 open IntegralCoordinateChange in
 
+/- English proof (translation)
+Introduce `T T₂ _ _ _ _ A B hAB hBA II hII P n L hn hP hL`. Establish `hIR : ∀ (T' : Type) [Fintype T'], AI.I2.IsRFamily (II Unit (dualBlocks T'))` using `fun T' _ => AI.I2.IsIntersectionFamily.isRFamily (hII Unit (dualBlocks T'))`. Establish `hJ` using `isRFamily_trans hAB hBA hG hI (hIR T₂)`. Establish `hPmap : P.map (intCoordSubst A) = P.comap (intCoordSubst B)` using `map_eq_comap hAB hBA P`. Establish `hP' : Geo.IsArithVar (P.map (intCoordSubst A)) n`.
+
+Rewrite using `[hPmap]`. Conclude with `isArithVar_comap hBA hAB hP`. Rewrite using `[hU Unit (dualBlocks T) (II Unit (dualBlocks T)) (transFam A B hBA (II Unit (dualBlocks T₂))) (hIR T) hJ (P.map (intCoordSubst A)) n (fun j => intCoordLine A ⟨B, hAB⟩ (L j)) hn hP' (fun j => isSmoothHerm_intCoordLine _ _ (hL j))]`. Establish `hcm : (P.map (intCoordSubst A)).comap (intCoordSubst A) = P`. Rewrite using `[hPmap]`.
+
+Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, subst_subst hBA]`. Express the relevant statement in the definitionally equal form `II Unit (dualBlocks T₂) ((P.map (intCoordSubst A)).comap (intCoordSubst A)) n (fun j => intCoordLine B ⟨A, hBA⟩ (intCoordLine A ⟨B, hAB⟩ (L j))) = _`. Rewrite using `[hcm]`. Simplify using `only [line_line hAB hBA]`.
+-/
 theorem IntCoordChange.proof (hU : AI.I2.UniqueStatement) (hG : IntCoordGeoNum.Statement)
     (hI : IntCoordArInt.Statement) : IntCoordChange.Statement := by
   intro T T₂ _ _ _ _ A B hAB hBA II hII P n L hn hP hL

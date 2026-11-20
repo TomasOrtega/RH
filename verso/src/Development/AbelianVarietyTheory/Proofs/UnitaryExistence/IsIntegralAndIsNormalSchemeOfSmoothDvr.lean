@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (algebraMap T K))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective T K)]`. Conclude with `bot_le`.
+-/
 theorem isDominant_spMap_of_isFractionRing (T K : Type) [CommRing T] [IsDomain T] [Field K]
     [Algebra T K] [IsFractionRing T K] : IsDominant (spMap (algebraMap T K)) := by
   refine ⟨?_⟩
@@ -17,6 +20,9 @@ theorem isDominant_spMap_of_isFractionRing (T K : Type) [CommRing T] [IsDomain T
     (RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective T K)]
   exact bot_le
 
+/- English proof (translation)
+Use `isDominant_spMap_of_isFractionRing T K` as an intermediate fact. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap T K))` as an intermediate fact. Use `infer_instance`.
+-/
 theorem isDominant_genericFibre_of_flat (T K : Type) [CommRing T] [IsDomain T] [Field K]
     [Algebra T K] [IsFractionRing T K] {X : Scheme.{0}} (f : X ⟶ Sp T) [Flat f] :
     IsDominant (pullback.fst f (spMap (algebraMap T K))) := by
@@ -24,6 +30,9 @@ theorem isDominant_genericFibre_of_flat (T K : Type) [CommRing T] [IsDomain T] [
   have := IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap T K))
   infer_instance
 
+/- English proof (translation)
+Use `isDominant_genericFibre_of_flat T K f` as an intermediate fact. Set `g` to `pullback.fst f (spMap (algebraMap T K))`. Establish `h : _root_.IsConnected (closure (Set.range g))` using `(isConnected_range g.continuous).closure`. Rewrite `h` using `[g.denseRange.closure_range]`. Conclude with `connectedSpace_iff_univ.mpr h`.
+-/
 theorem connectedSpace_of_flat_of_genericFibre (T K : Type) [CommRing T] [IsDomain T] [Field K]
     [Algebra T K] [IsFractionRing T K] {X : Scheme.{0}} (f : X ⟶ Sp T) [Flat f]
     [ConnectedSpace ↥(pullback f (spMap (algebraMap T K)))] : ConnectedSpace X := by
@@ -33,6 +42,9 @@ theorem connectedSpace_of_flat_of_genericFibre (T K : Type) [CommRing T] [IsDoma
   rw [g.denseRange.closure_range] at h
   exact connectedSpace_iff_univ.mpr h
 
+/- English proof (translation)
+Establish `hT : GlobalTheory.IsNormalScheme (Sp T)` using `inferInstance`. Establish `hX : GlobalTheory.IsNormalScheme X` using `(isNormalScheme_iff X).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth f ((isNormalScheme_iff _).mp hT))`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Use `connectedSpace_of_flat_of_genericFibre T K f` as an intermediate fact. Conclude with `⟨IsNormalScheme.isIntegral_of_connectedSpace X, hX.pred X⟩`.
+-/
 theorem isIntegral_and_isNormalScheme_of_smooth (T K : Type) [CommRing T] [IsDomain T]
     [IsNoetherianRing T] [IsIntegrallyClosed T] [Field K] [Algebra T K] [IsFractionRing T K]
     {X : Scheme.{0}} (f : X ⟶ Sp T) [Smooth f]
@@ -45,6 +57,9 @@ theorem isIntegral_and_isNormalScheme_of_smooth (T K : Type) [CommRing T] [IsDom
   have := connectedSpace_of_flat_of_genericFibre T K f
   exact ⟨IsNormalScheme.isIntegral_of_connectedSpace X, hX.pred X⟩
 
+/- English proof (translation)
+Introduce `T K _ _ _ _ _ _ G hG hc`. Establish `: ConnectedSpace ↥(pullback G.hom (spMap (algebraMap T K)))` using `hc`. Conclude with `isIntegral_and_isNormalScheme_of_smooth T K G.hom`.
+-/
 theorem isIntegral_and_isNormalScheme_of_smooth_dvr :
     ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K]
       [IsFractionRing T K] (G : Over (Sp T)), Smooth G.hom →

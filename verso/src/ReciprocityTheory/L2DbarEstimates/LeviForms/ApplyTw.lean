@@ -8,6 +8,87 @@ namespace ReciprocityTheory.L2DbarEstimates.I
 open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
+/- English proof (translation)
+Introduce `X g ph ph2 r j c W m χ ε δ hg hph hpl hph2 hpl2 hr hj hbd hS hJ hW hχ hε hε50 hm hδ hδε`. Establish `hz` using `X.isLocalHomeomorph`. Take `⟨hψs, hΦs, hΘ1, -⟩` from `hT X.z g ph ph2 r j ε δ hz hg hph hpl hph2 hpl2 hr hj hε hδ hbd`. Take `⟨hd1, hd2, hd3⟩` from `hD X.z g ph ph2 r j ε δ hz hg hph hpl hph2 hpl2 hr hj hε hδ hbd`. Take `⟨hb1, hΦb, hb8, -⟩` from `hB g ph ph2 r j ε δ hr hε hbd`.
+
+Take `⟨hχs, hχ1, hχ0, -, hχd⟩` from `hχ`. Establish `hε2 : 0 < ε ^ 2` using `by positivity`. Establish `hev` using `ap_smoothR_ev n X.z g hg ph hph r`. Establish `hevc` using `ap_cont_of_smoothR n X.z hz _ hev`. Establish `hψc` using `ap_cont_of_smoothR n X.z hz _ hψs`.
+
+Establish `hη1 : ∀ x, 1 ≤ eta n g ph r ε x` using `fun x => (hb1 x).2.1`. Establish `hΘ : ∀ x ξ, 0 ≤ (Levi n X.z (fun y => wgt n g ph ph2 r j δ y + twist n g ph r ε y) x ξ).re`. Introduce `x ξ`. Use `le_trans (mul_nonneg (add_nonneg (div_nonneg zero_le_one (mul_nonneg (sq_nonneg _) (by linarith [hη1 x]))) (sq_nonneg _)) (sq_nonneg _)) (hΘ1 x ξ)` and prove the remaining obligations. Establish `hF0s : Smooth n X.z (cutExt n X.z g ph r c W χ ε)` using `ap_smooth_cutExt n X.z hz g hg ph hph r c W m χ ε hS hW hχs hχ0 hε (by linarith)`.
+
+Establish `hF0c` using `Smooth.continuous n X.z hz _ hF0s`. Establish `hK : IsCompact (⋃ p ∈ hS.toFinset, closure (W p))` using `hS.toFinset.isCompact_biUnion (fun p hp => (hW.2 p (hS.mem_toFinset.1 hp)).2.2.1)`. Establish `hwint : wint n X.z (cutExt n X.z g ph r c W χ ε) (wgt n g ph ph2 r j δ) < ⊤`. Establish `hcs : HasCompactSupport (fun x => ‖cutExt n X.z g ph r c W χ ε x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))`. Use `HasCompactSupport.intro hK (fun x hx => ?_)` and prove the remaining obligations.
+
+Establish `h0` using `ap_cutExt_support n X.z g ph r c W χ ε hS x hx`. Simplify using `[h0]`. Establish `hcont : Continuous (fun x => ‖cutExt n X.z g ph r c W χ ε x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))` using `(hF0c.norm.pow 2).mul (Real.continuous_exp.comp hψc.neg)`. Conclude with `(integrable_of_continuous_real n X.z hz _ hcont hcs).lintegral_lt_top`. Establish `hevm : Measurable (ev n g ph r)` using `hevc.measurable`.
+
+Establish `hetam : Measurable (eta n g ph r ε)`. Unfold `eta xx lw`. Use `fun_prop`. Establish `hxxm : Measurable (xx n g ph r ε)`. Unfold `xx lw`.
+
+Use `fun_prop`. Establish `hgtm` using `ap_measurable_gt n X.z hz g hg ph r c W m hS hW`. Establish `hshm : MeasurableSet (shell n g ph r ε)`. Establish `hcl : IsClosed (shell n g ph r ε)` using `(isClosed_le continuous_const hevc).inter (isClosed_le hevc continuous_const)`. Conclude with `hcl.measurableSet`.
+
+Take `⟨a, ha⟩ : ∃ a : M → ℝ, a = (shell n g ph r ε).indicator (fun x => 36 * eta n g ph r ε x * ‖gt n X.z g c W x‖ ^ 2)` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b : M → ℝ, b = fun x => if ev n g ph r x ≤ ε ^ 2 then 2 / eta n g ph r ε x else bfun n g ph r ε x` from `⟨_, rfl⟩`. Establish `ha_in : ∀ x ∈ shell n g ph r ε, a x = 36 * eta n g ph r ε x * ‖gt n X.z g c W x‖ ^ 2`. Introduce `x hx`. Rewrite using `[ha]`.
+
+Conclude with `Set.indicator_of_mem hx _`. Establish `ha_out : ∀ x ∉ shell n g ph r ε, a x = 0`. Introduce `x hx`. Rewrite using `[ha]`. Conclude with `Set.indicator_of_notMem hx _`.
+
+Establish `hb_in : ∀ x, ev n g ph r x ≤ ε ^ 2 → b x = 2 / eta n g ph r ε x`. Introduce `x hx`. Rewrite using `[hb]`. Conclude with `if_pos hx`. Establish `hb_out : ∀ x, ¬ ev n g ph r x ≤ ε ^ 2 → b x = (xx n g ph r ε x + 1) ^ 2 / ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x)`.
+
+Introduce `x hx`. Rewrite using `[hb]`. Conclude with `if_neg hx`. Establish `ham : Measurable a`. Rewrite using `[ha]`.
+
+Conclude with `((measurable_const.mul hetam).mul (hgtm.norm.pow_const 2)).indicator hshm`. Establish `hbm : Measurable b`. Rewrite using `[hb]`. Use `Measurable.ite (measurableSet_le hevm measurable_const) (measurable_const.div hetam) ?_` and prove the remaining obligations. Unfold `bfun`.
+
+Use `fun_prop`. Establish `ha0 : ∀ x, 0 ≤ a x`. Introduce `x`. Distinguish the cases in `hx : x ∈ shell n g ph r ε`. Rewrite using `[ha_in x hx]`.
+
+Use `hη1 x` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[ha_out x hx]`. Establish `hb0 : ∀ x, 0 ≤ b x`. Introduce `x`.
+
+Distinguish the cases in `hx : ev n g ph r x ≤ ε ^ 2`. Rewrite using `[hb_in x hx]`. Use `hη1 x` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[hb_out x hx]`.
+
+Use `hη1 x` as an intermediate fact. Check the signs of the components of the expression. Establish `hb1' : ∀ x, b x ≤ 1`. Introduce `x`. Distinguish the cases in `hx : ev n g ph r x ≤ ε ^ 2`.
+
+Rewrite using `[hb_in x hx]`. Use `hb8 hε50 x hx` as an intermediate fact. Rewrite using `[div_le_one (by linarith)]; linarith`. Rewrite using `[hb_out x hx]`. Use `hη1 x` as an intermediate fact.
+
+Conclude with `div_le_one_of_le₀ (by linarith) (by positivity)`. Establish `hdF0 : ∀ (x : M) (ξ : Fin n → ℂ), ‖dbarDot n X.z (cutExt n X.z g ph r c W χ ε) x ξ‖ ^ 2 ≤ a x * (Levi n X.z (fun y => wgt n g ph ph2 r j δ y + twist n g ph r ε y) x ξ).re`. Introduce `x ξ`. Distinguish the cases in `hx : ev n g ph r x ≤ ε ^ 2`. Establish `hxm : ev n g ph r x < m` using `by linarith`.
+
+Rewrite using `[ap_dbar_cutExt n X.z hz g hg ph hph r c W m χ ε hS hW hχs x hxm ξ]`. Distinguish the cases in `hsh : x ∈ shell n g ph r ε`. Rewrite using `[ha_in x hsh]`. Conclude with `ap_bound _ ε _ _ _ _ hε (hχd _) (hd3 x ξ hx) (by linarith [hη1 x]) (hΘ x ξ)`. Establish `hlt : ev n g ph r x < ε ^ 2 / 2`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hsh ⟨not_lt.1 h, hx⟩`. Establish `hD0 : deriv χ (ev n g ph r x / ε ^ 2) = 0`. Establish `hloc : χ =ᶠ[𝓝 (ev n g ph r x / ε ^ 2)] fun _ => 1`. Establish `h12 : ev n g ph r x / ε ^ 2 < 1 / 2`.
+
+Rewrite using `[div_lt_iff₀ hε2]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [Iio_mem_nhds h12] with t ht`. Conclude with `hχ1 t (le_of_lt ht)`. Rewrite using `[hloc.deriv_eq]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hD0]`. Simplify using `using mul_nonneg (ha0 x) (hΘ x ξ)`. Establish `h0` using `ap_cutExt_zero n X.z g ph r c W χ ε hevc hχ0 hε x (not_le.1 hx)`. Establish `hz0 : dbarDot n X.z (cutExt n X.z g ph r c W χ ε) x ξ = 0`.
+
+Unfold `dbarDot`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[ap_db_congr n X.z hz i _ _ x h0, db_const]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hz0]`. Simplify using `using mul_nonneg (ha0 x) (hΘ x ξ)`. Establish `hdΦ : ∀ (x : M) (ξ : Fin n → ℂ), ‖dbarDot n X.z (fun y => (twist n g ph r ε y : ℂ)) x ξ‖ ^ 2 ≤ b x * (Levi n X.z (fun y => wgt n g ph ph2 r j δ y + twist n g ph r ε y) x ξ).re`. Introduce `x ξ`. Distinguish the cases in `hx : ev n g ph r x ≤ ε ^ 2`.
+
+Rewrite using `[hb_in x hx]`. Conclude with `hd2 x ξ hx`. Rewrite using `[hb]`. Simplify using `only [if_neg hx]`. Conclude with `hd1 x ξ`.
+
+Take `⟨⟨F, hF⟩, hTWb⟩` from `hTW X (wgt n g ph ph2 r j δ) (twist n g ph r ε) (cutExt n X.z g ph r c W χ ε) a b hψs hΦs hΦb (fun x ξ => hΘ x ξ) hF0s hwint ham hbm ha0 hb0 hb1' hdF0 hdΦ`. Establish `hbound` using `hTWb F hF`. Use `⟨F, hF.1, ?_⟩` and prove the remaining obligations. Establish `hexp : ∀ x, Real.exp (twist n g ph r ε x - wgt n g ph ph2 r j δ x) = Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x`. Introduce `x`.
+
+Establish `hη0 : 0 < eta n g ph r ε x` using `by linarith [hη1 x]`. Rewrite using `[twist, Real.exp_sub, Real.exp_neg, Real.exp_log hη0, Real.exp_neg, div_eq_mul_inv, div_eq_mul_inv, mul_comm]`. Establish `hD2 : ∀ x, 2 * eta n g ph r ε x ≤ ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x)` using `fun x => by linarith [(hb1 x).2.2.2]`. Establish `hPnn : ∀ x, 0 ≤ (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) - ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x)))`. Introduce `x`.
+
+Establish `hη0 : 0 < eta n g ph r ε x` using `by linarith [hη1 x]`. Conclude with `sub_nonneg.2 (mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_left (Real.exp_pos _).le hη0 (by linarith [hD2 x])) (sq_nonneg _))`. Establish `hQnn : ∀ x, 0 ≤ (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x)))` using `fun x => mul_nonneg (sq_nonneg _) (div_nonneg (Real.exp_pos _).le (by linarith [hD2 x, hη1 x]))`. Establish `hPQ : ∫⁻ x, ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) - ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x))) ∂vol n X.z + ∫⁻ x, …`. Use `le_trans (le_lintegral_add _ _) (le_of_eq (lintegral_congr fun x => ?_))` and prove the remaining obligations.
+
+Apply the tactic sequence `try dsimp only`. Rewrite using `[← ENNReal.ofReal_add (hPnn x) (hQnn x), hexp x]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hIm : Measurable (fun x => (shell n g ph r ε).indicator (fun x => 72 * ENNReal.ofReal (‖gt n X.z g c W x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))) x)`.
+
+Use `Measurable.indicator ?_ hshm` and prove the remaining obligations. Conclude with `measurable_const.mul (ENNReal.measurable_ofReal.comp ((hgtm.norm.pow_const 2).mul (Real.continuous_exp.comp hψc.neg).measurable))`. Establish `hTK : ∫⁻ x, ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * Real.exp (twist n g ph r ε x - wgt n g ph ph2 r j δ x)) ∂vol n X.z ≤ ∫⁻ x, ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) - ‖cutExt n X.z g …`. Use `le_trans hbound ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[hexp x]`. Establish `hη0 : 0 < eta n g ph r ε x` using `by linarith [hη1 x]`. Distinguish the cases in `hx : ev n g ph r x ≤ ε ^ 2`.
+
+Establish `h8` using `hb8 hε50 x hx`. Rewrite using `[hb_in x hx]`. Distinguish the cases in `hsh : x ∈ shell n g ph r ε`. Rewrite using `[ha_in x hsh, Set.indicator_of_mem hsh]`. Establish `e2 : 2 * (36 * eta n g ph r ε x * ‖gt n X.z g c W x‖ ^ 2) * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) = 72 * (‖gt n X.z g c W x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))`.
+
+Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hr` using `ap_pt_in ‖cutExt n X.z g ph r c W χ ε x - F x‖ (Real.exp (-wgt n g ph ph2 r j δ x)) (eta n g ph r ε x) ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x) (36 * eta n g ph r ε x * ‖gt n X.z g c W x‖ ^ 2) (72 * (‖gt n X.z g c W x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))) (norm_nonneg …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (hPnn x) (by positivity), ENNReal.ofReal_mul (by norm_num)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[ha_out x hsh, Set.indicator_of_notMem hsh, add_zero]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hr` using `ap_pt_in ‖cutExt n X.z g ph r c W χ ε x - F x‖ (Real.exp (-wgt n g ph ph2 r j δ x)) (eta n g ph r ε x) ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x) 0 0 (norm_nonneg _) (Real.exp_pos _).le h8 (hD2 x) le_rfl (by simp)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsh : x ∉ shell n g ph r ε` using `fun h => hx h.2`. Rewrite using `[hb_out x hx, ha_out x hsh, Set.indicator_of_notMem hsh, add_zero, ap_pt_out _ _ _ _ hη0]`. Use `_ = ∫⁻ x, ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) - ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / ((xx n g ph r ε x + 1) ^ 2 + eta n g ph r ε x))) ∂vol n X.z + ∫⁻ x, (s …`. Use `_ = _ := by`. Rewrite using `[lintegral_indicator hshm, lintegral_const_mul' _ _ (by simp)]`.
+
+Establish `hFc : Continuous F` using `Smooth.continuous n X.z hz _ (Holo.smooth n X.z _ hF.1)`. Establish `hT_fin : ∫⁻ x, ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * Real.exp (twist n g ph r ε x - wgt n g ph ph2 r j δ x)) ∂vol n X.z < ⊤`. Establish `hm1 : Measurable (fun x => 2 * ENNReal.ofReal (‖cutExt n X.z g ph r c W χ ε x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x)))` using `measurable_const.mul (ENNReal.measurable_ofReal.comp ((hF0c.norm.pow 2).mul (Real.continuous_exp.comp hψc.neg)).measurable)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `try dsimp only`. Rewrite using `[hexp x]`. Establish `hle : ‖cutExt n X.z g ph r c W χ ε x - F x‖ ≤ ‖cutExt n X.z g ph r c W χ ε x‖ + ‖F x‖` using `norm_sub_le _ _`. Establish `h1 : ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 ≤ (‖cutExt n X.z g ph r c W χ ε x‖ + ‖F x‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hle 2`. Establish `h1' : ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 ≤ 2 * ‖cutExt n X.z g ph r c W χ ε x‖ ^ 2 + 2 * ‖F x‖ ^ 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖cutExt n X.z g ph r c W χ ε x‖ - ‖F x‖)]`. Establish `hEη : Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x ≤ Real.exp (-wgt n g ph ph2 r j δ x)` using `div_le_self (Real.exp_pos _).le (hη1 x)`. Establish `hE0 : 0 ≤ Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x` using `div_nonneg (Real.exp_pos _).le (by linarith [hη1 x])`. Establish `h2 : ‖cutExt n X.z g ph r c W χ ε x - F x‖ ^ 2 * (Real.exp (-wgt n g ph ph2 r j δ x) / eta n g ph r ε x) ≤ 2 * (‖cutExt n X.z g ph r c W χ ε x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x)) + 2 * (‖F x‖ ^ 2 * Real.exp (-wgt n g ph ph2 r j δ x))`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`. Simplify using the standard rewrite rules. Use `_ = 2 * wint n X.z (cutExt n X.z g ph r c W χ ε) (wgt n g ph ph2 r j δ) + 2 * wint n X.z F (wgt n g ph ph2 r j δ) := by`. Rewrite using `[lintegral_add_left hm1, lintegral_const_mul' _ _ (by simp), lintegral_const_mul' _ _ (by simp)]`.
+
+Both sides reduce to the same expression. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top (by simp) hwint, ENNReal.mul_lt_top (by simp) hF.2.1⟩`. Establish `hPT` using `le_trans le_self_add hPQ`. Establish `hPne` using `ne_top_of_le_ne_top hT_fin.ne hPT`. Conclude with `(ENNReal.add_le_add_iff_left hPne).1 (hPQ.trans hTK)`.
+-/
 theorem applyTw (n : ℕ) (M : Type u) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M]
     (hTW : TWStatement n M) (hT : TwistLeviStatement n M) (hD : DualStatement n M)

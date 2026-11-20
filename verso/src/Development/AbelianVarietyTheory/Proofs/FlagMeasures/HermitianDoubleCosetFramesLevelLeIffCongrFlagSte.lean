@@ -12,6 +12,11 @@ namespace GlobalTheory.FrameLevel
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `(Finsupp.mem_span_image_iff_linearCombination E).mp hy`. Use `⟨c, ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Assume the negation of the conclusion as `hne`. Establish `hmem : i ∈ {i : Fin (r + 1) | (i : ℕ) < j}` using `(Finsupp.mem_supported _ _).mp hc (Finsupp.mem_support_iff.mpr hne)`.
+
+Conclude with `absurd hi (not_le.mpr hmem)`.
+-/
 theorem exists_coords {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r + 1) → S.V) (j : ℕ)
     {y : S.V} (hy : y ∈ S.spanTo g j) :
     ∃ a : Fin (r + 1) → E, y = ∑ i, a i • g i ∧ ∀ i : Fin (r + 1), j ≤ (i : ℕ) → a i = 0 := by
@@ -23,6 +28,11 @@ theorem exists_coords {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g : Fin (r 
       (Finsupp.mem_supported _ _).mp hc (Finsupp.mem_support_iff.mpr hne)
     exact absurd hi (not_le.mpr hmem)
 
+/- English proof (translation)
+Unfold `Frames.Mof at hy`. Rewrite `hy` using `[Submodule.span_union, Submodule.mem_sup]`. Take `⟨u, hu, u', hu', rfl⟩` from `hy`. Take `⟨β, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).mp hu`. Take `⟨γ, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).mp hu'`.
+
+Conclude with `⟨β, γ, rfl⟩`.
+-/
 theorem exists_coords_Mof {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : Fin (r + 1) → S.V)
     {y : S.V} (hy : y ∈ S.Mof g g') :
     ∃ β γ : Fin (r + 1) → L.O, y = ∑ i, (β i : E) • g i +
@@ -34,12 +44,44 @@ theorem exists_coords_Mof {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : 
   obtain ⟨γ, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun L.O).mp hu'
   exact ⟨β, γ, rfl⟩
 
+/- English proof (translation)
+Unfold `Frames.th`. Use `split_ifs`. Conclude with `fun h => S.ϖ_irr.ne_zero (by simpa using h)`. Conclude with `one_ne_zero`.
+-/
 theorem th_ne_zero {L : LocE F E} {r k : ℕ} (S : Frames L r k) : S.th ≠ 0 := by
   unfold Frames.th
   split_ifs
   · exact fun h => S.ϖ_irr.ne_zero (by simpa using h)
   · exact one_ne_zero
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hle`. Unfold `Frames.lev at hle`. Take `⟨u, hu, u', hu', huy⟩` from `Submodule.mem_sup.mp hy`. Take `⟨c, hc, -⟩` from `exists_coords S g (r + 1) hu`.
+
+Take `⟨c', hc', -⟩` from `exists_coords S g' (r + 1) hu'`. Take `⟨al, al', hrep, hRR⟩` from `Nat.sInf_mem (s := {j | ∃ al al' : Fin (r + 1) → E, algebraMap F E S.th • y = ∑ i, al i • g i + ∑ i, al' i • g' i ∧ ∀ i : Fin (r + 1), j ≤ (i : ℕ) → S.RR (al i) (al' i)}) ⟨r + 1, fun i => algebraMap F E S.th * c i, fun i => algebraMap F E S.th * c' i, by`. Rewrite using `[← huy, hc, hc', smul_add, Finset.smul_sum, Finset.smul_sum]`. Simplify using `only [smul_smul], fun i hi => absurd hi (not_le.mpr i.isLt)⟩`. Establish `hRR' : ∀ i : Fin (r + 1), j ≤ (i : ℕ) → S.RR (al i) (al' i)` using `fun i hi => hRR i (le_trans hle hi)`.
+
+Establish `htt : algebraMap F E S.th⁻¹ * algebraMap F E S.th = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ (th_ne_zero S), map_one]`. Establish `hyy : y = algebraMap F E S.th⁻¹ • (∑ i, al i • g i + ∑ i, al' i • g' i)`. Rewrite using `[← hrep, smul_smul, htt, one_smul]`. Use `⟨algebraMap F E S.th⁻¹ • (∑ i : Fin (r + 1), (if (i : ℕ) < j then al i else 0) • g i + ∑ i : Fin (r + 1), (if (i : ℕ) < j then al' i else 0) • g' i), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.smul_mem _ _ (Submodule.add_mem_sup (Submodule.sum_mem _ fun i _ => ?_) (Submodule.sum_mem _ fun i _ => ?_))` and prove the remaining obligations. Use `split_ifs with hi`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Use `split_ifs with hi`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `hdiff : y - algebraMap F E S.th⁻¹ • (∑ i : Fin (r + 1), (if (i : ℕ) < j then al i else 0) • g i + ∑ i : Fin (r + 1), (if (i : ℕ) < j then al' i else 0) • g' i) = ∑ i : Fin (r + 1), algebraMap F E S.th⁻¹ • (if (i : ℕ) < j then 0 else al i • g i + al' i • g' i)`.
+
+Rewrite using `[hyy, ← smul_sub, ← Finset.smul_sum]`. Use `congr 1`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[hdiff]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Take `⟨hO, cc, hcc, hsum⟩` from `hRR' i (not_lt.mp hi)`. Establish `hal : al i = algebraMap F E S.th * cc - al' i` using `eq_sub_of_add_eq hsum`. Establish `heq : algebraMap F E S.th⁻¹ • (al i • g i + al' i • g' i) = cc • g i + al' i • (algebraMap F E S.th⁻¹ • (g' i - g i))`. Rewrite using `[hal]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[heq]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem (S.Mof g g') (⟨cc, hcc⟩ : L.O) (Submodule.subset_span (Set.mem_union_left _ ⟨i, rfl⟩))`. Conclude with `Submodule.smul_mem (S.Mof g g') (⟨al' i, hO⟩ : L.O) (Submodule.subset_span (Set.mem_union_right _ ⟨i, rfl⟩))`. Introduce and unpack `⟨y₁, hy₁, hm⟩`.
+
+Take `⟨u, hu, u', hu', rfl⟩` from `Submodule.mem_sup.mp hy₁`. Take `⟨a, rfl, ha⟩` from `exists_coords S g j hu`. Take `⟨a', rfl, ha'⟩` from `exists_coords S g' j hu'`. Take `⟨β, γ, hβγ⟩` from `exists_coords_Mof S g g' hm`. Establish `htt : algebraMap F E S.th * algebraMap F E S.th⁻¹ = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ (th_ne_zero S), map_one]`. Establish `hy' : y = ∑ i, ((a i + (β i : E)) • g i + a' i • g' i + (γ i : E) • (algebraMap F E S.th⁻¹ • (g' i - g i)))`. Simplify using `only [add_smul, Finset.sum_add_distrib]`. Rewrite using `[eq_add_of_sub_eq hβγ]`. Normalize the expressions using the abelian group laws.
+
+Unfold `Frames.lev`. Apply `Nat.sInf_le` to reduce the goal to its premises. Use `⟨fun i => algebraMap F E S.th * a i + algebraMap F E S.th * (β i : E) - (γ i : E), fun i => algebraMap F E S.th * a' i + (γ i : E), ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hy', Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_add, smul_comm (algebraMap F E S.th) (γ i : E), smul_smul (algebraMap F E S.th) (algebraMap F E S.th⁻¹), htt, one_smul]`. Use `module`. Unfold `Frames.RR`. Use `⟨?_, (β i : E), (β i).2, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[ha' i hi, mul_zero, zero_add]`. Conclude with `(γ i).2`. Simplify using `only`. Rewrite using `[ha i hi, ha' i hi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lev_le_iff {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : Fin (r + 1) → S.V)
     (y : S.V) (hy : y ∈ S.spanTo g (r + 1) ⊔ S.spanTo g' (r + 1)) (j : ℕ) :
     S.lev g g' (algebraMap F E S.th • y) ≤ j ↔
@@ -131,6 +173,9 @@ theorem lev_le_iff {L : LocE F E} {r k : ℕ} (S : Frames L r k) (g g' : Fin (r 
         rw [ha i hi, ha' i hi]
         ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S g g' y hy j`. Conclude with `lev_le_iff S g g' y hy j`.
+-/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k) (g g' : Fin (r + 1) → S.V), ∀ y ∈ S.spanTo g (r + 1) ⊔ S.spanTo g' (r + 1), ∀ j : ℕ, S.lev g g' (algebraMap F E S.th • y) ≤ j ↔ ∃ y₁ ∈ S.spanTo g j ⊔ S.spanTo g' j, y - y₁ ∈ S.Mof g g' := by
   intro F _ _ _ _ _ E _ _ _ L r k S g g' y hy j
   exact lev_le_iff S g g' y hy j

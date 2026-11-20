@@ -16,6 +16,9 @@ variable {k : Type u} [CommRing k] {K L K' L' N N' : CochainComplex (ModuleCat.{
     (f'.f n).hom (μK.μ h x z) = μL.μ h ((f.f r).hom x) ((ρ.f s).hom z))
 
 omit [CommRing k] in
+/- English proof (translation)
+Rewrite using `[mappingCoconeNat_d]`. Both sides reduce to the same expression.
+-/
 theorem mappingCoconeNat_d_hom_apply' {k : Type u} [CommRing k] {K L : CochainComplex (ModuleCat.{u} k) ℕ} (f : K ⟶ L)
     (n : ℕ) (x : K.X n) (y : shiftNegOneX L n) :
     ((mappingCoconeNat f).d n (n + 1)).hom ((x, y) : K.X n × shiftNegOneX L n) =
@@ -24,6 +27,15 @@ theorem mappingCoconeNat_d_hom_apply' {k : Type u} [CommRing k] {K L : CochainCo
   rw [mappingCoconeNat_d]
   rfl
 
+/- English proof (translation)
+Rewrite using `[LeibnizPairing.homology_homologyπ]`. Take `⟨c', hc'1, hc'2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f' m w`. Rewrite using `[hc'1]`. Establish `key : (LeibnizPairing.coconeLeft μL ρ μK hc).cycles h X e = c' + ((mappingCoconeNat f').toCycles m (m + 1)).hom ((q, 0) : K'.X m × shiftNegOneX L' m)`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+
+Establish `e1` using `LeibnizPairing.iCycles_cycles (LeibnizPairing.coconeLeft μL ρ μK hc) h X e`. Establish `e2` using `iCycles_toCycles_hom_apply (mappingCoconeNat f') m (m + 1) ((q, 0) : K'.X m × shiftNegOneX L' m)`. Rewrite using `[map_add, e1, e2, mappingCoconeNat_d_hom_apply']`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `μK.μ h (((mappingCoconeNat f).iCycles (p + 1)).hom X).1 ((N.iCycles s).hom e) = (((mappingCoconeNat f').iCycles (m + 1)).hom c').1 + (K'.d m (m + 1)).hom q`.
+
+Rewrite using `[show (((mappingCoconeNat f').iCycles (m + 1)).hom c').1 = 0 from congrArg Prod.fst hc'2, zero_add, hq]`. Express the relevant statement in the definitionally equal form `μL.μ (show p + s = m by omega) (show L.X p from (((mappingCoconeNat f).iCycles (p + 1)).hom X).2) ((ρ.f s).hom ((N.iCycles s).hom e)) = (((mappingCoconeNat f').iCycles (m + 1)).hom c').2 + (shiftNegOneSucc L' m ((f'.f m).hom q) + (shiftNegOneD L' m).hom 0)`. Rewrite using `[show (((mappingCoconeNat f').iCycles (m + 1)).hom c').2 = shiftNegOneSucc L' m ((L'.iCycles m).hom w) from congrArg Prod.snd hc'2, map_zero, add_zero, shiftNegOneSucc_apply, shiftNegOneSucc_apply, hw]`. Conclude with `(sub_add_cancel _ _).symm`. Rewrite using `[key, map_add]`.
+
+Conclude with `(congrArg (_ + ·) (homologyπ_toCycles_hom_apply (mappingCoconeNat f') m (m + 1) ((q, 0) : K'.X m × shiftNegOneX L' m))).trans (add_zero _)`.
+-/
 theorem LeibnizPairing.coconeLeft_homology_eq_homologyδ {p s m : ℕ} (h : p + 1 + s = m + 1)
     (X : (mappingCoconeNat f).cycles (p + 1)) (e : N.cycles s) (q : K'.X m) (w : L'.cycles m)
     (hq : (K'.d m (m + 1)).hom q = μK.μ h (((mappingCoconeNat f).iCycles (p + 1)).hom X).1 ((N.iCycles s).hom e))
@@ -70,6 +82,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {Aᵥ Cᵥ : ∀ v, Rep.{u} k (H v)} [∀ v, IsDiscreteRep (Aᵥ v)] [∀ v, IsDiscreteRep (Cᵥ v)]
   {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
 
+/- English proof (translation)
+The claim follows from `LeibnizPairing.coconeLeft_homology_eq_homologyδ _ _ _ (localRes_cupPairingCochains φ μ μᵥ hμ) h X e q w hq hw`.
+-/
 theorem compactCup_homologyπ_eq_homologyδ (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Rep.res (φ v).toMonoidHom B ⟶ Cᵥ v)
     (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ ≫ c v =
       resTensorHom (φ v).toMonoidHom (a v) (𝟙 _) ≫ μᵥ v)
@@ -93,6 +108,9 @@ theorem compactCup_homologyπ_eq_homologyδ (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v,
 
 omit [IsDiscreteRep A] [IsDiscreteRep B] [∀ v, IsDiscreteRep (Aᵥ v)] in
 
+/- English proof (translation)
+Establish `e : (localCohomologyIso Cᵥ m).hom.hom (((piComplex fun v => cochainsComplex (Cᵥ v)).homologyπ m).hom w) = fun v => ((cochainsComplex (Cᵥ v)).homologyπ m).hom ((HomologicalComplex.cyclesMap (piProj (fun v => cochainsComplex (Cᵥ v)) v) m).hom w)`. Use function extensionality and compare the values at `fun v => (piHomologyIso_hom_apply _ m _ v).trans (homologyMap_homologyπ_apply _ m w)`. Rewrite using `[← e, localToCompact]`. Conclude with `(hom_apply_hom_apply_of_comp_eq (Iso.hom_inv_id_assoc (localCohomologyIso Cᵥ m) _) _).symm`.
+-/
 theorem homologyδ_homologyπ_eq_localToCompact {m : ℕ}
     (w : (piComplex fun v => cochainsComplex (Cᵥ v)).cycles m) :
     (mappingCoconeNat.homologyδ (localRes φ C Cᵥ c) m).hom

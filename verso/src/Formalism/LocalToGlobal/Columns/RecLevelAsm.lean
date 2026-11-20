@@ -47,19 +47,31 @@ section Dia
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST SG : Finset (Pl E)) (H : Subgroup (GLG E n SG))
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (d.1.dia c⁻¹).dia c = d.1`. Apply the tactic sequence `ext <;> simp [Deco.dia, ← mul_assoc]`.
+-/
 theorem rla_dia_inv (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c⁻¹).dia c = d := by
   apply Subtype.ext
   show (d.1.dia c⁻¹).dia c = d.1
   ext <;> simp [Deco.dia, ← mul_assoc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (d.1.dia c).dia c⁻¹ = d.1`. Apply the tactic sequence `ext <;> simp [Deco.dia, ← mul_assoc]`.
+-/
 theorem rla_dia_inv' (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).dia c⁻¹ = d := by
   apply Subtype.ext
   show (d.1.dia c).dia c⁻¹ = d.1
   ext <;> simp [Deco.dia, ← mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← rla_dia_inv' n ST SG c d, h, rla_dia_inv' n ST SG c d']`.
+-/
 theorem rla_dia_inj (c : DiaG E ST) {d d' : DecoSet E n ST SG} (h : d.dia c = d'.dia c) : d = d' := by
   rw [← rla_dia_inv' n ST SG c d, h, rla_dia_inv' n ST SG c d']
 
+/- English proof (translation)
+Use `show (d.1.dia c).L = d.1.L`. Unfold `Deco.L`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Deco.dia, Set.mem_setOf_eq, Units.mul_right_eq_zero]`.
+-/
 theorem DecoSet.dia_L (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).1.L = d.1.L := by
   show (d.1.dia c).L = d.1.L
   unfold Deco.L
@@ -67,14 +79,23 @@ theorem DecoSet.dia_L (c : DiaG E ST) (d : DecoSet E n ST SG) : (d.dia c).1.L = 
   ext x
   simp only [Deco.dia, Set.mem_setOf_eq, Units.mul_right_eq_zero]
 
+/- English proof (translation)
+Use `show (decoOf ST SG (ptOf hc n ST SG (d.dia c⁻¹) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).dia c = d`. Rewrite using `[decoOf_ptOf hc n ST SG hS (d.dia c⁻¹)]`. Conclude with `rla_dia_inv n ST SG c d`.
+-/
 theorem decoOfD_ptOfD (hS : DecoPtSurj hc n ST SG) (c : DiaG E ST) (d : DecoSet E n ST SG) :
     decoOfD n ST SG c (ptOfD hc n ST SG c d : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d := by
   show (decoOf ST SG (ptOf hc n ST SG (d.dia c⁻¹) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).dia c = d
   rw [decoOf_ptOf hc n ST SG hS (d.dia c⁻¹)]
   exact rla_dia_inv n ST SG c d
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rla_dia_smulH (c : DiaG E ST) (g : UF E n × H) (d : DecoSet E n ST SG) : (g • d).dia c = g • d.dia c := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp (Quotient.exact h))`. Introduce and unpack `⟨g, hg⟩`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, hg⟩))`.
+-/
 theorem rla_cls_eq {d d' : DecoSet E n ST SG} :
     decoCls n ST SG H d = decoCls n ST SG H d' ↔ ∃ g : UF E n × H, g • d' = d := by
   constructor
@@ -83,6 +104,21 @@ theorem rla_cls_eq {d d' : DecoSet E n ST SG} :
   · rintro ⟨g, hg⟩
     exact Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, hg⟩))
 
+/- English proof (translation)
+Set `Φ : DecoCl n ST SG H → DecoCl n ST SG H` to `fun q => Quotient.liftOn' q (fun d => decoCls n ST SG H (d.dia c₀⁻¹)) (fun a b hab => by`. Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp hab)`. Rewrite using `[← hg]`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, rfl⟩)))`. Set `Ψ : DecoCl n ST SG H → DecoCl n ST SG H` to `fun q => Quotient.liftOn' q (fun d => decoCls n ST SG H (d.dia c₀)) (fun a b hab => by`.
+
+Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp hab)`. Rewrite using `[← hg]`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.mpr (MulAction.mem_orbit_iff.mpr ⟨g, rfl⟩)))`. Establish `hΦΨ : ∀ q, Φ (Ψ q) = q`. Introduce `q`.
+
+Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h d => show decoCls n ST SG H ((d.dia c₀).dia c₀⁻¹) = _`. Rewrite using `[rla_dia_inv' n ST SG c₀ d]`. Both sides reduce to the same expression. Establish `hΨΦ : ∀ q, Ψ (Φ q) = q`.
+
+Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h d => show decoCls n ST SG H ((d.dia c₀⁻¹).dia c₀) = _`. Rewrite using `[rla_dia_inv n ST SG c₀ d]`. Both sides reduce to the same expression.
+
+Establish `hΦ : Function.Bijective Φ` using `Function.bijective_iff_has_inverse.mpr ⟨Ψ, hΨΦ, hΦΨ⟩`. Set `s' : DecoCl n ST SG H → DecoSet E n ST SG` to `fun c => (s (Ψ c)).dia c₀⁻¹`. Establish `hs' : ∀ c, decoCls n ST SG H (s' c) = c`. Introduce `c`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hF` using `levU_y_bij hc n ST SG H hS s' hs'`. Establish `heq : (fun c : DecoCl n ST SG H => (Quotient.mk'' (ptOfD hc n ST SG c₀ (s c)) : AdCl hc n ST SG H)) = (fun c => (Quotient.mk'' (ptOf hc n ST SG (s' (Φ c))) : AdCl hc n ST SG H))`. Use function extensionality and compare the values at `c`. Use `show _ = (Quotient.mk'' (ptOf hc n ST SG ((s (Ψ (Φ c))).dia c₀⁻¹)) : AdCl hc n ST SG H)`. Rewrite using `[hΨΦ c]`.
+
+Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `hF.comp hΦ`.
+-/
 theorem levU_y_bijD (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (s : DecoCl n ST SG H → DecoSet E n ST SG)
     (hs : ∀ c, decoCls n ST SG H (s c) = c) :
     Function.Bijective (fun c : DecoCl n ST SG H =>
@@ -130,6 +166,11 @@ theorem levU_y_bijD (hS : DecoPtSurj hc n ST SG) (c₀ : DiaG E ST) (s : DecoCl 
   rw [heq]
   exact hF.comp hΦ
 
+/- English proof (translation)
+Simplify using `only [MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `rla_dia_inj n ST SG c (d := g • d) (d' := d) h`. Introduce `h show (g • d).dia c = d.dia c`.
+
+Rewrite using `[h]`.
+-/
 theorem rla_mem_stab_dia (c : DiaG E ST) (d : DecoSet E n ST SG) (g : UF E n × H) :
     g ∈ MulAction.stabilizer (UF E n × H) (d.dia c) ↔ g ∈ MulAction.stabilizer (UF E n × H) d := by
   simp only [MulAction.mem_stabilizer_iff]
@@ -140,6 +181,11 @@ theorem rla_mem_stab_dia (c : DiaG E ST) (d : DecoSet E n ST SG) (g : UF E n × 
     show (g • d).dia c = d.dia c
     rw [h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[rlc_ratHom_stabRat hc n ST SG H d a]`. Conclude with `a.2`.
+
+Introduce and unpack `⟨h, hmem⟩`. Use `⟨⟨(ratHom hc n γ, h), hmem⟩, ?_⟩` and prove the remaining obligations. Apply `(ratHom_bijective hc n).1` to reduce the goal to its premises. Rewrite using `[rlc_ratHom_stabRat]`.
+-/
 theorem rla_mem_range_stabRat (d : DecoSet E n ST SG) (γ : URat hc n) :
     γ ∈ (stabRat hc n ST SG H d).range ↔ ∃ h : H, (ratHom hc n γ, h) ∈ MulAction.stabilizer (UF E n × H) d := by
   constructor
@@ -152,6 +198,9 @@ theorem rla_mem_range_stabRat (d : DecoSet E n ST SG) (γ : URat hc n) :
     apply (ratHom_bijective hc n).1
     rw [rlc_ratHom_stabRat]
 
+/- English proof (translation)
+Establish `hy' : decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d.dia c⁻¹`. Rewrite using `[← hy]`. Conclude with `(rla_dia_inv' n ST SG c _).symm`. Rewrite using `[← stabRat_range hc n ST SG H (d.dia c⁻¹) y hy' γ, rla_mem_range_stabRat, rla_mem_range_stabRat]`. Simplify using `only [rla_mem_stab_dia]`.
+-/
 theorem stabRat_rangeD (c : DiaG E ST) (d : DecoSet E n ST SG) (y : UAd hc n)
     (hy : decoOfD n ST SG c (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d) (γ : URat hc n) :
     γ ∈ (stabRat hc n ST SG H d).range ↔
@@ -163,6 +212,9 @@ theorem stabRat_rangeD (c : DiaG E ST) (d : DecoSet E n ST SG) (y : UAd hc n)
   rw [← stabRat_range hc n ST SG H (d.dia c⁻¹) y hy' γ, rla_mem_range_stabRat, rla_mem_range_stabRat]
   simp only [rla_mem_stab_dia]
 
+/- English proof (translation)
+Rewrite using `[← DecoSet.dia_L n ST SG c⁻¹ d]`. Conclude with `levU_y_lat hc n ST SG hS (d.dia c⁻¹) x`.
+-/
 theorem levU_y_latD (hS : DecoPtSurj hc n ST SG) (c : DiaG E ST) (d : DecoSet E n ST SG)
     (x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     x ∈ Formalism.UG.latS (F := F) (FiniteAdeleRing (𝓞 F) F)

@@ -1,25 +1,40 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.MopBase
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[], rfl, rfl⟩`.
+-/
 private theorem one_mem_entMon {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) : (1 : R) ∈ entMon r 0 :=
   ⟨[], rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨L, rfl, rfl⟩` from `ha`. Take `⟨M, rfl, rfl⟩` from `hb`. Conclude with `⟨L ++ M, by simp, by simp⟩`.
+-/
 private theorem mul_mem_entMon {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) {i j : ℤ} {a b : R}
     (ha : a ∈ entMon r i) (hb : b ∈ entMon r j) : a * b ∈ entMon r (i + j) := by
   obtain ⟨L, rfl, rfl⟩ := ha
   obtain ⟨M, rfl, rfl⟩ := hb
   exact ⟨L ++ M, by simp, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[(g, a, b)], by simp [wt], by simp⟩`.
+-/
 private theorem mat_mem_entMon {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (g : G) (a b : Fin 3) :
     (r g).mat a b ∈ entMon r (wt1 a - wt1 b) :=
   ⟨[(g, a, b)], by simp [wt], by simp⟩
 
+/- English proof (translation)
+Establish `h : (r c).left = 1` using `Units.ext h2`. Rewrite using `[map_mul, GG.mat, SemidirectProduct.mul_left, h, h1, one_mul, sgnAct_neg_one]`.
+-/
 private theorem theta_left {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (c : G)
     (h1 : (r c).right = -1) (h2 : (r c).mat = 1) (g : G) :
     (theta (r g).left : Matrix (Fin 3) (Fin 3) R) = (r (c * g)).mat := by
   have h : (r c).left = 1 := Units.ext h2
   rw [map_mul, GG.mat, SemidirectProduct.mul_left, h, h1, one_mul, sgnAct_neg_one]
 
+/- English proof (translation)
+Rewrite using `[emb_apply, theta_left r c h1 h2]`. Apply the tactic sequence `split_ifs <;> rcases a with a | a <;> rcases b with b | b <;> first`. Consider the case `exact Submodule.zero_mem _`. Consider the case `exact Submodule.subset_span (mat_mem_entMon r _ a b)`.
+-/
 private theorem emb_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [Algebra O R] (r : G →* GG 3 R) (c : G)
     (h1 : (r c).right = -1) (h2 : (r c).mat = 1) (g : G) (a b : Fin 3 ⊕ Fin 3) :
     emb (r g) a b ∈ Submodule.span O (entMon r (wt6 a - wt6 b)) := by
@@ -29,6 +44,15 @@ private theorem emb_mem {O G R : Type} [CommRing O] [Group G] [CommRing R] [Alge
     | exact Submodule.zero_mem _
     | exact Submodule.subset_span (mat_mem_entMon r _ a b)
 
+/- English proof (translation)
+Introduce `O G R σ _ _ _ _ _ η Ψ r c h1 h2 w Φ m hm hX j F hF n`. Use `approx w Φ m (fun j => Submodule.span O (entMon r j)) (Submodule.subset_span (one_mem_entMon r)) ?_ hm ?_ j F hF n` and prove the remaining obligations. Introduce `i j a ha b hb`. Establish `h` using `Submodule.mul_mem_mul ha hb`. Rewrite `h` using `[Submodule.span_mul_span]`.
+
+Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `mul_mem_entMon r hx hy`. Introduce `s`. Take `⟨g, a, b, hw, he⟩` from `hX s`.
+
+Rewrite using `[hw, he]`. Use `Submodule.sub_mem _ (emb_mem r c h1 h2 g a b) ?_` and prove the remaining obligations. Distinguish the cases in `h : wt6 a = wt6 b`. Rewrite using `[h, sub_self, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (one_mem_entMon r))`.
+
+Rewrite using `[unitaryEmbedding_residualRep_eq_zero_of_weight_ne η Ψ g a b h, map_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem UpperTheory.exists_span_entMon_approx_of_mem_wtPart :
     ∀ {O G R σ : Type} [CommRing O] [Group G] [CommRing R] [Algebra O R] [Finite σ] (η : G →* ℤˣ) (Ψ : G →* Oˣ) (r : G →* GG 3 R) (c : G),
           (r c).right = -1 → (r c).mat = 1 → ∀ (w : σ → ℤ) (Φ : MvPowerSeries σ O →ₐ[O] R) (m : Ideal R), (∀ s, Φ (MvPowerSeries.X s) ∈ m) →

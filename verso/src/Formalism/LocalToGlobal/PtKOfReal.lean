@@ -15,6 +15,11 @@ namespace Formalism.L2.RowDataTransport
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts} {Y : DivX D}
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `h'` using `eq_of_heq hd`. Consider the cases of `R1`. Consider the cases of `R2`. Simplify using `only at h'`.
+
+Substitute `h'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rows_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) (R1 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z1))
     (R2 : IndefRows (P.A3.side3 P.P0 P.ψ0 Z2)) (hd : HEq R1.toIndefData R2.toIndefData) : HEq R1 R2 := by
   subst h
@@ -25,6 +30,11 @@ theorem rows_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 
   subst h'
   rfl
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Take `rfl` from `eq_of_heq hD`. Take `rfl` from `eq_of_heq hS0`. Take `rfl` from `eq_of_heq hS1`. Take `rfl` from `eq_of_heq hI`.
+
+Conclude with `hDc`.
+-/
 theorem dcPt_move {P : RowSideFamily ex} (hDc : RowsHoldDcPt3 P) {Z : DefSub P.A3.fam3.amb3} (hZ : Z = P.Zs)
     {S0' : IndefData (P.A3.side3 P.P0 P.ψ0 Z)} {S1' : IndefData (P.A3.side3 P.Ps P.ψs Z)} {Dc' : DefCols (P.A3.side3 P.Ps P.ψs Z)}
     (hD : HEq Dc' P.Dc) (hS0 : HEq S0' P.S0) (hS1 : HEq S1' P.S1)
@@ -40,11 +50,17 @@ theorem dcPt_move {P : RowSideFamily ex} (hDc : RowsHoldDcPt3 P) {Z : DefSub P.A
   obtain rfl := eq_of_heq hI
   exact hDc
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+-/
 theorem kap_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) {S1 : IndefData (P.A3.side3 P.Ps P.ψs Z1)}
     {S2 : IndefData (P.A3.side3 P.Ps P.ψs Z2)} (hS : HEq S1 S2) : S1.κ = S2.κ := by
   subst h
   rw [eq_of_heq hS]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hS]`.
+-/
 theorem tw_heq {P : RowSideFamily ex} {Z1 Z2 : DefSub P.A3.fam3.amb3} (h : Z1 = Z2) {S1 : IndefData (P.A3.side3 P.P0 P.ψ0 Z1)}
     {S2 : IndefData (P.A3.side3 P.P0 P.ψ0 Z2)} (hS : HEq S1 S2) : S1.Tw = S2.Tw := by
   subst h
@@ -79,6 +95,11 @@ def InpAt [IsTotallyComplex D.what₂.LL] {Rc : Formalism.L2.RecT ex} {P : RowSi
           (I.wU u) (Cons.nuOf L u (I.eNu u)) (sgRec L u),
         ∃ hQ : ∀ u, ChainTie (inp u).ch (c.memQ (I.wU u)), ∀ u, FirstCols c.hE (hQ u)
 
+/- English proof (translation)
+Establish `hr` using `Q.rowsHold hOk hsep Cl CHl hP hI hbu`. Establish `hZs : (pkOf Q hOk hsep Cl CHl hP hI).Zs = P.Zs` using `Q.zs`. Establish `hS0 : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefData P.S0` using `Q.s0`. Establish `hS1 : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.cols.toIndefData P.S1` using `Q.s1`. Establish `hRows : HEq (pkOf Q hOk hsep Cl CHl hP hI).core.base.toIndefRows (Classical.choose hr.rows0)` using `rows_heq hZs _ _ (hS0.trans (heq_of_eq (Classical.choose_spec hr.rows0).symm))`.
+
+Establish `hDc : HEq (c.face (pkOf Q hOk hsep Cl CHl hP hI).Zs) P.Dc` using `(congr_arg_heq c.face hZs).trans (heq_of_eq hCT.1)`. Conclude with `pkg_of_rows Rc.T P hr X e c Sp Zsc hCT hCTT hR C Cabs Cl CHl _ (pkOf Q hOk hsep Cl CHl hP hI) hZs hRows hS1 Q.col Del h0 lam0 C0 ce Ch Sw C1 eJ H (fun NuC I hT hI' => ⟨Formalism.L2.G.ServJointF.brTied_of hT ⟨s, hOk.ok2⟩ (dcPt_move hPt hZs hDc hS0 hS1 hI'), hInp NuC I hT hI'⟩) hN …`.
+-/
 theorem pt_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (hpin : RowSideDetermined Rc.T P)
     (hkap : RowsHoldKap3 P) (hPt : RowsHoldDcPt3 P)
     (hR : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I)
@@ -109,6 +130,11 @@ theorem pt_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (
     hN Y (fun σ => (hkap σ).trans (congrFun (kap_heq hZs hS1) _).symm) (fun u => ⟨rfl, HEq.rfl, rfl, hDel, hh0⟩) hh hF
     hC0 hC1 hC2 hCabs hLa
 
+/- English proof (translation)
+Establish `hZs : (pkOf Q R.ok1 hsep Cl CHl hP hI).Zs = R.P.Zs` using `Q.zs`. Establish `hS0 : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefData R.P.S0` using `Q.s0`. Establish `hS1 : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.cols.toIndefData R.P.S1` using `Q.s1`. Establish `hRows : HEq (pkOf Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefRows (Classical.choose R.hr.rows0)` using `rows_heq hZs _ _ (hS0.trans (heq_of_eq (Classical.choose_spec R.hr.rows0).symm))`. Establish `hDc : HEq (R.c.face (pkOf Q R.ok1 hsep Cl CHl hP hI).Zs) R.P.Dc` using `(congr_arg_heq R.c.face hZs).trans (heq_of_eq R.colTie.1)`.
+
+Conclude with `pkg_of_rowsK R hR C Cabs Cl CHl _ (pkOf Q R.ok1 hsep Cl CHl hP hI) hZs hRows hS1 Q.col Del h0 lam0 C0 ce Ch Sw C1 eJ H (fun NuC I hT' hI' => ⟨Formalism.L2.G.ServJointF.brTied_of hT' ⟨1, R.ok1.ok2⟩ (dcPt_move hPt hZs hDc hS0 hS1 hI'), hInp NuC I hT' hI'⟩) hN Y (fun σ => (hkap σ).t …`.
+-/
 theorem ptK_of_real [IsTotallyComplex D.what₂.LL] (Rc : Formalism.L2.RecT ex) (R : DivisionRowsKernel ex) (hT : R.T = Rc.T)
     (hpin : RowSideDetermined Rc.T R.P) (hkap : RowsHoldKap3 R.P) (hPt : RowsHoldDcPt3 R.P)
     (hR : DivRows3 D R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.P.Zs R.P.S0 R.P.S1 ex.p0 R.P.C R.P.NuC R.P.I) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

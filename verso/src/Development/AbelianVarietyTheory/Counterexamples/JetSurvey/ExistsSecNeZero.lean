@@ -10,10 +10,16 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 
 namespace GlobalTheory.TwistSpanExample
 
+/- English proof (translation)
+The claim follows from `twistBCSpan_of GlobalTheory.twistBaseChange`.
+-/
 theorem span_holds : TwistBCSpanStatement := twistBCSpan_of GlobalTheory.twistBaseChange
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (D : DegPre R) {k : ℕ}
 
+/- English proof (translation)
+Take `⟨m, b, rfl, hb⟩` from `GlobalTheory.twistBaseChange R D k hk α`. Conclude with `⟨b, fun R' _ f s' => hb R' f _ (fun i j => rfl) s'⟩`.
+-/
 theorem span_any (hk : 1 ≤ k) (α : D.X) : ∃ s : Fin (k ^ D.P.g) → D.SecB k α,
     ∀ (R' : Type) [CommRing R'] (f : R →+* R')
       (s' : LB.Sec (LB.LinComb D.P.L
@@ -27,6 +33,11 @@ theorem span_any (hk : 1 ≤ k) (α : D.X) : ∃ s : Fin (k ^ D.P.g) → D.SecB 
   obtain ⟨m, b, rfl, hb⟩ := GlobalTheory.twistBaseChange R D k hk α
   exact ⟨b, fun R' _ f s' => hb R' f _ (fun i j => rfl) s'⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `span_any D hk α`. Establish `: Nontrivial Γ(Spec (CommRingCat.of R'), ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of R')).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Set `i₀ : Fin (k ^ D.P.g)` to `⟨0, pow_pos hk _⟩`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Establish `e` using `(hs R' f (pullSec D.P.L _ _ (s i₀) _)).unique (y₁ := fun _ => 1) (y₂ := fun _ => 0) (fun j => (h _ j).trans (Finset.sum_eq_zero fun i _ => mul_eq_zero_of_right _ (h _ j)).symm) (fun j => (h _ j).trans (Finset.sum_eq_zero fun i _ => mul_eq_zero_of_right _ (h _ j)).symm)`. Conclude with `one_ne_zero (congrFun e i₀)`.
+-/
 theorem exists_sec_ne_zero (hk : 1 ≤ k) (α : D.X) (R' : Type) [CommRing R'] [Nontrivial R'] (f : R →+* R') :
     ∃ s' : LB.Sec (LB.LinComb D.P.L
         (fun i => (snd (Over.mk (Spec.map (CommRingCat.ofHom f))) D.P.A).left ≫ DegPre.famφB D α i)
@@ -43,6 +54,9 @@ theorem exists_sec_ne_zero (hk : 1 ≤ k) (α : D.X) (R' : Type) [CommRing R'] [
     (fun j => (h _ j).trans (Finset.sum_eq_zero fun i _ => mul_eq_zero_of_right _ (h _ j)).symm)
   exact one_ne_zero (congrFun e i₀)
 
+/- English proof (translation)
+Take `⟨D, α, e, h⟩` from `GlobalTheory.TwistCompare.exists_degPre (GlobalTheory.WeierstrassCurve.ellPolAV W) c`. Conclude with `⟨D, α, e, by rw [e]; rfl, h⟩`.
+-/
 theorem exists_degPre_ell (W : _root_.WeierstrassCurve R) [W.IsElliptic]
     (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ (GlobalTheory.WeierstrassCurve.ellPolAV W).A) :
     ∃ (D : DegPre R) (α : D.X) (e : D.P = GlobalTheory.WeierstrassCurve.ellPolAV W), D.P.g = 1 ∧ e ▸ D.c α = c := by

@@ -11,6 +11,13 @@ open GlobalTheory.DefLift
 
 namespace GlobalTheory.MinorHarmonic
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p k hp`. Establish `h : ∀ a b : σ, MvPolynomial.pderiv a (MvPolynomial.pderiv b (MvPolynomial.X k : MvPolynomial σ R)) = 0`.
+
+Introduce `a b`. Rewrite using `[MvPolynomial.pderiv_X]`. Distinguish the cases in `hk : k = b`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne hk]`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, hp, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_comm {σ R : Type*} [CommRing R] (i j : σ) (f : MvPolynomial σ R) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j f) = MvPolynomial.pderiv j (MvPolynomial.pderiv i f) := by
   classical
@@ -44,6 +51,9 @@ def ker {σ : Type*} (v : σ) : Subring (MvPolynomial σ ℂ) where
     simp only [Set.mem_setOf_eq] at ha ⊢
     simp [ha]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Conclude with `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.prod_mem fun i _ => h _ _)`.
+-/
 theorem det_mem {R : Type*} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (Fin k) (Fin k) R)
     (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
   rw [Matrix.det_apply']
@@ -51,6 +61,11 @@ theorem det_mem {R : Type*} [CommRing R] (S : Subring R) {k : ℕ} (M : Matrix (
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Unfold `varF`. Use `split_ifs with h1`. Use `show MvPolynomial.pderiv _ _ = 0`. Apply `MvPolynomial.pderiv_X_of_ne` to reduce the goal to its premises. Introduce `he`.
+
+Simplify using `only [Prod.mk.injEq] at he`. Conclude with `h he.1 (congrArg Fin.val he.2.1) (congrArg Fin.val he.2.2)`. Conclude with `Subring.zero_mem _`.
+-/
 theorem varF_mem (τ τ' : D.what₂.Tau) (a : Fin m) (c : Fin n) (i j : ℕ)
     (h : τ' = τ → i = a → j = c → False) :
     (varF τ' i j : MvPolynomial (FVar D m n) ℂ) ∈ ker ((τ, a, c) : FVar D m n) := by
@@ -64,6 +79,13 @@ theorem varF_mem (τ τ' : D.what₂.Tau) (a : Fin m) (c : Fin n) (i j : ℕ)
     exact h he.1 (congrArg Fin.val he.2.1) (congrArg Fin.val he.2.2)
   · exact Subring.zero_mem _
 
+/- English proof (translation)
+Unfold `delta deltaAt`. Use `Subring.prod_mem _ fun τ' _ => Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Use `Subring.prod_mem _ fun i hi => Subring.pow_mem _ ?_ _` and prove the remaining obligations. Use `det_mem _ _ fun α β => varF_mem τ τ' a c _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl h1 h2`.
+
+Use `Finset.mem_range.1 hi` as an intermediate fact. Use `α.2` as an intermediate fact. Use `β.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Subring.prod_mem _ fun i hi => Subring.pow_mem _ ?_ _` and prove the remaining obligations.
+
+Use `det_mem _ _ fun α β => varF_mem τ τ' a c _ _ ?_` and prove the remaining obligations. Introduce and unpack `rfl h1 h2`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use `hpq τ'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem delta_mem (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (hpq : ∀ τ, p τ + q τ ≤ n)
     (τ : D.what₂.Tau) (a : Fin m) (c : Fin n)
     (h : ((a : ℕ) < p τ ∧ p τ ≤ c) ∨ (p τ ≤ (a : ℕ) ∧ (c : ℕ) < p τ)) :
@@ -84,6 +106,11 @@ theorem delta_mem (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ �
     have := hpq τ'
     omega
 
+/- English proof (translation)
+Introduce `D m n p q ap am hpq τ a b ha hb`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge (c : ℕ) (p τ) with hc | hc` into its components or cases. Rewrite using `[pderiv_comm]`. Establish `: MvPolynomial.pderiv (τ, a, c) (delta p q ap am : PolF D m n) = 0` using `delta_mem p q ap am hpq τ a c (Or.inr ⟨ha, hc⟩)`.
+
+Rewrite using `[this, map_zero]`. Establish `: MvPolynomial.pderiv (τ, b, c) (delta p q ap am : PolF D m n) = 0` using `delta_mem p q ap am hpq τ b c (Or.inl ⟨hb, hc⟩)`. Rewrite using `[this, map_zero]`.
+-/
 theorem laplacian_delta : ∀ (D : D7) (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ), (∀ τ, p τ + q τ ≤ n) → ∀ τ (a b : Fin m), p τ ≤ (a : ℕ) → (b : ℕ) < p τ → ∑ c : Fin n, MvPolynomial.pderiv (τ, a, c) (MvPolynomial.pderiv (τ, b, c) (delta p q ap am : PolF D m n)) = 0 := by
   intro D m n p q ap am hpq τ a b ha hb
   refine Finset.sum_eq_zero fun c _ => ?_

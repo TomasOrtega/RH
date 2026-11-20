@@ -11,6 +11,9 @@ namespace ReciprocityTheory.ChartRestriction.G.Chart
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Subsingleton.elim f g`. Consider the case `exact (IsLocalization.algHom_subsingleton (Submonoid.powers u)).elim f g`. Consider the case `exact AlgHom.coe_ringHom_injective (IsLocalization.ringHom_ext (Submonoid.powers u) (by ext x; simp))`.
+-/
 theorem away_ext {S : Type} [CommRing S] (u : S) {B : Type} [CommRing B] [Algebra S B]
     (f g : Localization.Away u →ₐ[S] B) : f = g := by
   first
@@ -25,6 +28,13 @@ variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `ut : IsUnit (algebraMap S (Rv a b t) t)`. Rewrite using `[IsScalarTower.algebraMap_apply S (Qv a b) (Rv a b t)]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Establish `ua : IsUnit (algebraMap S (Rv a b t) a)` using `unit_of_map (B := Qv a b) (unit_of_map (B := Localization.Away a) (away_unit a))`. Establish `ub : IsUnit (algebraMap S (Rv a b t) b)` using `unit_of_map (B := Qv a b) (isUnit_qv a b)`.
+
+Take `⟨ρa, -⟩ : ∃ f : Qv a t →ₐ[S] Rv a b t, True` from `⟨qHom a t _ ua ut, trivial⟩`. Take `⟨ρb, -⟩ : ∃ f : Qv b t →ₐ[S] Rv a b t, True` from `⟨qHom b t _ ub ut, trivial⟩`. Apply `tanS_away_uniq C (A := Qv a b) t (tanS_restrict _ ha) (tanS_restrict _ hb)` to reduce the goal to its premises. Establish `e1 : spMap (dualMapS (IsScalarTower.toAlgHom S (Qv a b) (Rv a b t))) ≫ spMap (dualMapS (qL a b)) ≫ za = spMap (scaleS (S` using `S) (algebraMap S (Rv a b t) t ^ N₁)) ≫ spMap (dualMapS (ρa.comp (qR a t))) ≫ y₀ := by`. Rewrite using `[res_res, show (IsScalarTower.toAlgHom S (Qv a b) (Rv a b t)).comp (qL a b) = ρa.comp (qL a t) from away_ext _ _ _, ← res_res, har, res_scale, map_pow, AlgHom.commutes, res_res]`.
+
+Establish `e2 : spMap (dualMapS (IsScalarTower.toAlgHom S (Qv a b) (Rv a b t))) ≫ spMap (dualMapS (qR a b)) ≫ zb = spMap (scaleS (S` using `S) (algebraMap S (Rv a b t) t ^ N₁)) ≫ spMap (dualMapS (ρb.comp (qR b t))) ≫ y₀ := by`. Rewrite using `[res_res, show (IsScalarTower.toAlgHom S (Qv a b) (Rv a b t)).comp (qR a b) = ρb.comp (qL b t) from away_ext _ _ _, ← res_res, hbr, res_scale, map_pow, AlgHom.commutes, res_res]`. Rewrite using `[e1, e2, show ρa.comp (qR a t) = ρb.comp (qR b t) from away_ext _ _ _]`.
+-/
 theorem pair_compat (a b t : S) (C : Chart (Gs G a)) {y₀ : sp (R₀ := S) (DualNumber (Localization.Away t)) ⟶ G}
     {za : sp (R₀ := S) (DualNumber (Localization.Away a)) ⟶ G} {zb : sp (R₀ := S) (DualNumber (Localization.Away b)) ⟶ G}
     (ha : TanS za) (hb : TanS zb) (N₁ : ℕ)
@@ -54,6 +64,17 @@ theorem pair_compat (a b t : S) (C : Chart (Gs G a)) {y₀ : sp (R₀ := S) (Dua
   rw [e1, e2, show ρa.comp (qR a t) = ρb.comp (qR b t) from away_ext _ _ _]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `h1 : ∀ k, ∃ N : ℕ, ∃ z : sp (R₀` using `S) (DualNumber (Localization.Away (s k))) ⟶ G, TanS z ∧ spMap (dualMapS (qL (s k) (s k0))) ≫ z = spMap (scaleS (S := S) (algebraMap S (Qv (s k) (s k0)) (s k0) ^ N)) ≫ spMap (dualMapS (qR (s k) (s k0))) ≫ y₀ := fun k => tanS_away_lift (C k) (A := Localization.Away (s k)) (s k0) (t …`. Use `choose N z hz hzr using h1`. Set `N₁` to `Finset.univ.sup N`. Take `⟨z', hz', hz'r⟩ : ∃ z' : ∀ k, sp (R₀` from `S) (DualNumber (Localization.Away (s k))) ⟶ G, (∀ k, TanS (z' k)) ∧ ∀ k, spMap (dualMapS (qL (s k) (s k0))) ≫ z' k = spMap (scaleS (S := S) (algebraMap S (Qv (s k) (s k0)) (s k0) ^ N₁)) ≫ spMap (dualMapS (qR (s k) (s k0))) ≫ y₀ := by`. Use `⟨fun k => spMap (scaleS (S := S) (algebraMap S (Localization.Away (s k)) (s k0) ^ (N₁ - N k))) ≫ z k, fun k => tanS_scale _ (hz k), fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[res_scale, hzr k, map_pow, AlgHom.commutes, scale_pow_add, Nat.sub_add_cancel (Finset.le_sup (f := N) (Finset.mem_univ k))]`. Establish `h3 : ∀ k l, ∃ M : ℕ, spMap (scaleS (S` using `S) (algebraMap S (Qv (s k) (s l)) (s k0) ^ M)) ≫ spMap (dualMapS (qL (s k) (s l))) ≫ z' k = spMap (scaleS (S := S) (algebraMap S (Qv (s k) (s l)) (s k0) ^ M)) ≫ spMap (dualMapS (qR (s k) (s l))) ≫ z' l := fun k l => pair_compat (s k) (s l) (s k0) (C k) (hz' k) (hz' l) N₁ (hz'r k) …`. Establish `h4 : ∃ M₀ : ℕ, spMap (scaleS (S` using `S) (algebraMap S (Localization.Away (s k0)) (s k0) ^ M₀)) ≫ z' k0 = spMap (scaleS (S := S) (algebraMap S (Localization.Away (s k0)) (s k0) ^ M₀)) ≫ spMap (scaleS (algebraMap S (Localization.Away (s k0)) (s k0) ^ N₁)) ≫ y₀ := by`. Apply `tanS_away_uniq (C k0) (A := Localization.Away (s k0)) (s k0) (hz' k0) (tanS_scale _ hy₀)` to reduce the goal to its premises. Rewrite using `[hz'r k0, res_scale, map_pow, AlgHom.commutes, show qR (s k0) (s k0) = qL (s k0) (s k0) from away_ext _ _ _]`.
+
+Use `choose M hM using h3`. Take `⟨M₀, hM₀⟩` from `h4`. Set `M₂` to `max M₀ (Finset.univ.sup fun p : Fin n × Fin n => M p.1 p.2)`. Take `⟨w, hwd⟩ : ∃ w : ∀ k, sp (R₀` from `S) (DualNumber (Localization.Away (s k))) ⟶ G, ∀ k, w k = spMap (scaleS (S := S) (algebraMap S (Localization.Away (s k)) (s k0) ^ M₂)) ≫ z' k := ⟨_, fun _ => rfl⟩`. Establish `hw : ∀ k, TanS (w k)` using `fun k => by rw [hwd]; exact tanS_scale _ (hz' k)`.
+
+Establish `hQ : ∀ k l, spMap (dualMapS (qL (s k) (s l))) ≫ w k = spMap (dualMapS (qR (s k) (s l))) ≫ w l`. Introduce `k l`. Rewrite using `[hwd k, hwd l, res_scale, res_scale (qR (s k) (s l)), map_pow, map_pow, AlgHom.commutes, AlgHom.commutes]`. Conclude with `scale_pow_mono _ (le_trans (Finset.le_sup (f := fun p : Fin n × Fin n => M p.1 p.2) (Finset.mem_univ (k, l))) (le_max_right _ _)) (hM k l)`. Take `⟨v, hv, hres⟩` from `glue_tan' s hs w hw hQ`.
+
+Use `⟨M₂ + N₁, v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hres k0, hwd k0, scale_pow_mono _ (le_max_left _ _) hM₀, scale_pow_add]`.
+-/
 theorem tan_extend {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤) (C : ∀ k, Chart (Gs G (s k)))
     (k0 : Fin n) {y₀ : sp (R₀ := S) (DualNumber (Localization.Away (s k0))) ⟶ G} (hy₀ : TanS y₀) :
     ∃ N : ℕ, ∃ w : sp (R₀ := S) (DualNumber S) ⟶ G, TanS w ∧

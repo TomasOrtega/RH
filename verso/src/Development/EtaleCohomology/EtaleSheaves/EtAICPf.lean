@@ -11,6 +11,11 @@ def Split : Prop := ∀ (T C : Type) [CommRing T] [IsDomain T] [CommRing C] [Alg
 def DomOpen : Prop := ∀ (T D : Type) [CommRing T] [IsDomain T] [CommRing D] [IsDomain D] [Algebra T D] [Algebra.Etale T D],
   AIC T → IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap T D)))
 
+/- English proof (translation)
+Introduce `T C _ _ _ _ _ hT`. Take `⟨n, e, he, hdom⟩` from `hS T C hT`. Use `⟨n, e, he, fun j => ?_⟩` and prove the remaining obligations. Establish `: Algebra.Etale C (Localization.Away (e j))` using `inferInstance`. Establish `: Algebra.Etale T (Localization.Away (e j))` using `Algebra.Etale.comp T C _`.
+
+Establish `h` using `hD T (Localization.Away (e j)) hT`. Rewrite `h` using `[IsScalarTower.algebraMap_eq T C (Localization.Away (e j))]`. Then use the resulting hypothesis.
+-/
 theorem EtAIC_of (hS : Split) (hD : DomOpen) : LateralTheory.E.t_E1Cut.EtAIC := by
   intro T C _ _ _ _ _ hT
   obtain ⟨n, e, he, hdom⟩ := hS T C hT

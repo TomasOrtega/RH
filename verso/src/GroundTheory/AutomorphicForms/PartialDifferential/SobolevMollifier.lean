@@ -19,10 +19,22 @@ section MultiplierFourier
 
 variable {m : E → ℂ} {C s t : ℝ}
 
+/- English proof (translation)
+Rewrite using `[fourierMultiplierCLM_apply, FourierTransform.fourier_fourierInv_eq, smulLeftCLM_apply_apply]`.
+-/
 theorem fourier_fourierMultiplierCLM_apply (m : E → ℂ) (u : 𝓢'(E, F)) (φ : 𝓢(E, ℂ)) :
     𝓕 (fourierMultiplierCLM F m u) φ = 𝓕 u (SchwartzMap.smulLeftCLM ℂ m φ) := by
   rw [fourierMultiplierCLM_apply, FourierTransform.fourier_fourierInv_eq, smulLeftCLM_apply_apply]
 
+/- English proof (translation)
+Establish `hmem : MemLp (fun ξ ↦ weight t ξ • (m ξ • fourierFun u ξ)) 2 (volume : Measure E)`. Use `(memLp_smul_of_bounded (hasTemperateGrowth_mul_weight hm (t - s)) (bounded_mul_weight hC) (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E))).congr_norm ?_ ?_` and prove the remaining obligations. Conclude with `(weight_hasTemperateGrowth t).1.continuous.aestronglyMeasurable.smul (hm.1.continuous.aestronglyMeasurable.smul (fourierFun_aestronglyMeasurable u))`. Use `ae_of_all _ fun ξ ↦ ?_` and prove the remaining obligations. Establish `e : m ξ * weight (t - s) ξ * weight s ξ = weight t ξ * m ξ`.
+
+Rewrite using `[mul_assoc, weight_mul_weight, sub_add_cancel, mul_comm]`. Rewrite using `[← weight_smul_fourierFun]`. Simplify using `only [smul_smul]`. Rewrite using `[e]`. Establish `hrep : ∀ φ : 𝓢(E, ℂ), 𝓕 (SobolevSpace.toDistribution (SobolevSpace.multiplier hm hC u)) φ = ∫ ξ, φ ξ • (m ξ • fourierFun u ξ)`.
+
+Introduce `φ`. Rewrite using `[SobolevSpace.toDistribution_multiplier, fourier_fourierMultiplierCLM_apply, fourier_apply_eq_integral]`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hm, smul_smul, smul_eq_mul, mul_comm]`.
+
+Establish `h` using `norm_sq_eq_integral_of_fourier _ _ hmem hrep`. Conclude with `⟨h.1.symm, h.2⟩`.
+-/
 theorem fourierFun_multiplier (hm : m.HasTemperateGrowth)
     (hC : ∀ ξ, ‖m ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) (u : SobolevSpace E F s) :
     fourierFun (SobolevSpace.multiplier hm hC u) =ᵐ[volume] (fun ξ ↦ m ξ • fourierFun u ξ) ∧
@@ -49,6 +61,9 @@ theorem fourierFun_multiplier (hm : m.HasTemperateGrowth)
   have h := norm_sq_eq_integral_of_fourier _ _ hmem hrep
   exact ⟨h.1.symm, h.2⟩
 
+/- English proof (translation)
+Establish `h` using `(memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable _)).1 (Lp.memLp (𝓕 (SobolevSpace.bessel s u) : Lp F 2 (volume : Measure E)))`. Use `h.congr (ae_of_all _ fun ξ ↦ ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← weight_smul_fourierFun, norm_smul, norm_weight, mul_pow, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Evaluate the numerical expressions.
+-/
 theorem integrable_weight_mul_norm_sq_fourierFun (u : SobolevSpace E F s) :
     Integrable (fun ξ ↦ (1 + ‖ξ‖ ^ 2) ^ s * ‖fourierFun u ξ‖ ^ 2) (volume : Measure E) := by
   have h := (memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable _)).1
@@ -59,6 +74,9 @@ theorem integrable_weight_mul_norm_sq_fourierFun (u : SobolevSpace E F s) :
     ← Real.rpow_mul (by positivity)]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[sub_self, zero_div, Real.rpow_zero, mul_one]`. Conclude with `hM ξ`.
+-/
 theorem bound_of_le {m : E → ℂ} {M : ℝ} (hM : ∀ ξ, ‖m ξ‖ ≤ M) (ξ : E) :
     ‖m ξ‖ ≤ M * (1 + ‖ξ‖ ^ 2) ^ ((s - s) / 2) := by
   rw [sub_self, zero_div, Real.rpow_zero, mul_one]; exact hM ξ
@@ -78,14 +96,25 @@ def convolution (ψ : 𝓢(E, ℂ)) : 𝓢'(E, F) →L[ℂ] 𝓢'(E, F) :=
   PointwiseConvergenceCLM.precomp F
     (SchwartzMap.convolution (ContinuousLinearMap.mul ℂ ℂ) (reflect E ψ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem convolution_apply_apply (ψ : 𝓢(E, ℂ)) (u : 𝓢'(E, F)) (φ : 𝓢(E, ℂ)) :
     convolution F ψ u φ =
       u (SchwartzMap.convolution (ContinuousLinearMap.mul ℂ ℂ) (reflect E ψ) φ) := rfl
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.fourier_coe, SchwartzMap.fourier_coe]`. Apply the tactic sequence `exact Real.fourier_comp_linearIsometry (LinearIsometryEquiv.neg ℝ) ψ x`.
+-/
 theorem fourier_reflect (ψ : 𝓢(E, ℂ)) (x : E) : 𝓕 (reflect E ψ) x = 𝓕 ψ (-x) := by
   rw [SchwartzMap.fourier_coe, SchwartzMap.fourier_coe]
   exact Real.fourier_comp_linearIsometry (LinearIsometryEquiv.neg ℝ) ψ x
 
+/- English proof (translation)
+Apply `SchwartzMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `hψ` using `(𝓕 ψ : 𝓢(E, ℂ)).hasTemperateGrowth`. Simplify using `only [SchwartzMap.convolution, LinearMap.coe_mk, AddHom.coe_mk, ContinuousLinearMap.comp_apply, fourierInvCLM_apply, fourierCLM_apply]`. Rewrite using `[SchwartzMap.fourierInv_coe, SchwartzMap.fourier_coe, Real.fourierInv_eq_fourier_comp_neg]`.
+
+Establish `h : (fun y ↦ (SchwartzMap.pairing (ContinuousLinearMap.mul ℂ ℂ) (𝓕 (reflect E ψ)) (𝓕 φ)) (-y)) = (⇑(SchwartzMap.smulLeftCLM ℂ ⇑(𝓕 ψ : 𝓢(E, ℂ)) (𝓕⁻ φ)) : E → ℂ)`. Use function extensionality and compare the values at `y`. Rewrite using `[SchwartzMap.pairing_apply_apply, SchwartzMap.smulLeftCLM_apply_apply hψ, fourier_reflect, neg_neg, ContinuousLinearMap.mul_apply', smul_eq_mul, SchwartzMap.fourierInv_coe, Real.fourierInv_eq_fourier_neg, SchwartzMap.fourier_coe]`. Both sides reduce to the same expression. Conclude with `congrArg (fun g : E → ℂ ↦ 𝓕 g x) h`.
+-/
 theorem convolution_reflect_eq (ψ φ : 𝓢(E, ℂ)) :
     SchwartzMap.convolution (ContinuousLinearMap.mul ℂ ℂ) (reflect E ψ) φ =
       𝓕 (SchwartzMap.smulLeftCLM ℂ ⇑(𝓕 ψ : 𝓢(E, ℂ)) (𝓕⁻ φ)) := by
@@ -103,6 +132,9 @@ theorem convolution_reflect_eq (ψ φ : 𝓢(E, ℂ)) :
     rfl
   exact congrArg (fun g : E → ℂ ↦ 𝓕 g x) h
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[convolution_apply_apply, convolution_reflect_eq, fourierMultiplierCLM_apply_apply]`.
+-/
 theorem convolution_eq_fourierMultiplierCLM (ψ : 𝓢(E, ℂ)) (u : 𝓢'(E, F)) :
     convolution F ψ u = fourierMultiplierCLM F ⇑(𝓕 ψ : 𝓢(E, ℂ)) u := by
   ext φ
@@ -112,11 +144,29 @@ end Convolution
 
 section Mollifier
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.fourier_coe]`. Conclude with `VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _`.
+-/
 theorem norm_fourier_le_integral (ψ : 𝓢(E, ℂ)) (ξ : E) :
     ‖(𝓕 ψ : 𝓢(E, ℂ)) ξ‖ ≤ ∫ x, ‖ψ x‖ := by
   rw [SchwartzMap.fourier_coe]
   exact VectorFourier.norm_fourierIntegral_le_integral_norm _ _ _ _ _
 
+/- English proof (translation)
+Use `set n : ℕ := ⌈-r / 2⌉₊`. Use `⟨2 ^ n * (SchwartzMap.seminorm ℂ 0 0 χ + SchwartzMap.seminorm ℂ (2 * n) 0 χ), fun ξ ↦ ?_⟩` and prove the remaining obligations. Establish `h0 : ‖χ ξ‖ ≤ SchwartzMap.seminorm ℂ 0 0 χ`. Use `SchwartzMap.le_seminorm ℂ 0 0 χ ξ` as an intermediate fact. Simplify `this` using `[norm_iteratedFDeriv_zero]`.
+
+Establish `h1 : ‖ξ‖ ^ (2 * n) * ‖χ ξ‖ ≤ SchwartzMap.seminorm ℂ (2 * n) 0 χ`. Use `SchwartzMap.le_seminorm ℂ (2 * n) 0 χ ξ` as an intermediate fact. Simplify `this` using `[norm_iteratedFDeriv_zero]`. Establish `hb : (1 : ℝ) ≤ 1 + ‖ξ‖ ^ 2` using `by nlinarith [sq_nonneg ‖ξ‖]`. Establish `hpow : (1 + ‖ξ‖ ^ 2) ^ n ≤ 2 ^ n * (1 + (‖ξ‖ ^ 2) ^ n)`.
+
+Break down `le_total (‖ξ‖ ^ 2) 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (by positivity); linarith` to reduce the goal to its premises. Use `_ ≤ 2 ^ n * (1 + (‖ξ‖ ^ 2) ^ n) := by`. Establish `: 0 ≤ (‖ξ‖ ^ 2) ^ n` using `by positivity`.
+
+Use polynomial arithmetic with `[pow_pos (two_pos (α := ℝ)) n]`. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (by positivity); linarith` to reduce the goal to its premises. Use `_ = 2 ^ n * (‖ξ‖ ^ 2) ^ n := by rw [mul_pow]`. Use `_ ≤ 2 ^ n * (1 + (‖ξ‖ ^ 2) ^ n) := by gcongr; linarith`.
+
+Establish `key : (1 + ‖ξ‖ ^ 2) ^ n * ‖χ ξ‖ ≤ 2 ^ n * (SchwartzMap.seminorm ℂ 0 0 χ + SchwartzMap.seminorm ℂ (2 * n) 0 χ)`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < (1 + ‖ξ‖ ^ 2) ^ n` using `by positivity`. Establish `hexp : (1 + ‖ξ‖ ^ 2) ^ (-(n : ℝ)) ≤ (1 + ‖ξ‖ ^ 2) ^ (r / 2)`. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises.
+
+Use `Nat.le_ceil (-r / 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hexp` using `[Real.rpow_neg (by positivity), Real.rpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ 2 ^ n * (SchwartzMap.seminorm ℂ 0 0 χ + SchwartzMap.seminorm ℂ (2 * n) 0 χ) * ((1 + ‖ξ‖ ^ 2) ^ n)⁻¹ := by gcongr`. Use `_ ≤ _ := by gcongr`.
+-/
 theorem exists_norm_le_weight (χ : 𝓢(E, ℂ)) (r : ℝ) :
     ∃ C, ∀ ξ : E, ‖χ ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ (r / 2) := by
   set n : ℕ := ⌈-r / 2⌉₊
@@ -161,12 +211,18 @@ namespace SobolevSpace
 
 variable {s : ℝ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_sub (u v : SobolevSpace E F s) :
     toDistribution (u - v) = toDistribution u - toDistribution v := rfl
 
 def convolutionCLM (ψ : 𝓢(E, ℂ)) : SobolevSpace E F s →L[ℂ] SobolevSpace E F s :=
   multiplier (𝓕 ψ : 𝓢(E, ℂ)).hasTemperateGrowth (bound_of_le (norm_fourier_le_integral ψ))
 
+/- English proof (translation)
+Rewrite using `[convolution_eq_fourierMultiplierCLM]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem toDistribution_convolutionCLM (ψ : 𝓢(E, ℂ)) (u : SobolevSpace E F s) :
     toDistribution (convolutionCLM ψ u) = convolution F ψ (toDistribution u) := by
   rw [convolution_eq_fourierMultiplierCLM]; rfl

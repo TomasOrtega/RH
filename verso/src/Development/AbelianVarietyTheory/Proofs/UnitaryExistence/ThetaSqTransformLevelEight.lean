@@ -8,6 +8,9 @@ open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Reciproci
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g γ hγ h τ hτ z`. Establish `h48 : (4 : ℤ) ∣ 8` using `by norm_num`. Conclude with `theta_halfVec_sq_transform hγ (fun i j => h48.trans (h i j).1) (fun i j => h48.trans (h i j).2) (k := 0) (k' := 0) (m := 0) (m' := 0) (fun i => by rw [mulVec_zero]) (fun i => by rw [mulVec_zero]) hτ z`.
+-/
 theorem theta_sq_transform_level_eight :
     ∀ (g : ℕ) (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ),
       γ ∈ Matrix.symplecticGroup (Fin g) ℤ →

@@ -12,9 +12,21 @@ section Red
 
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P 0`.
+-/
 theorem intAt_zero : IntAt P (0 : E) := by simpa using IntAt.coe P 0
+/- English proof (translation)
+Simplify using `using IntAt.coe P 1`.
+-/
 theorem intAt_one : IntAt P (1 : E) := by simpa using IntAt.coe P 1
+/- English proof (translation)
+Simplify using `using reduction_coe P 0`.
+-/
 theorem redP_zero' : redP P (0 : E) = 0 := by simpa using reduction_coe P 0
+/- English proof (translation)
+Simplify using `using reduction_coe P 1`.
+-/
 theorem reduction_one' : redP P (1 : E) = 1 := by simpa using reduction_coe P 1
 
 def intRing : Subring E where
@@ -34,9 +46,15 @@ def redHom : intRing P →+* 𝓞 E ⧸ P.asIdeal where
   map_zero' := redP_zero' P
   map_add' a b := reduction_add a.2 b.2
 
+/- English proof (translation)
+The claim follows from `(intRing P).sum_mem h`.
+-/
 theorem intAt_sum {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     IntAt P (∑ i ∈ s, f i) := (intRing P).sum_mem h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using redP_zero' P`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, reduction_add (h a (Finset.mem_insert_self _ _)) (intAt_sum P s f fun i hi => h i (Finset.mem_insert_of_mem hi)), ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem reduction_sum₂ {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i ∈ s, IntAt P (f i)) :
     redP P (∑ i ∈ s, f i) = ∑ i ∈ s, redP P (f i) := by
   classical
@@ -48,6 +66,11 @@ theorem reduction_sum₂ {ι : Type} (s : Finset ι) (f : ι → E) (h : ∀ i �
         (intAt_sum P s f fun i hi => h i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => h i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Set `B : Matrix (Fin t) (Fin t) (intRing P)` to `Matrix.of fun i j => ⟨A i j, h i j⟩`. Establish `h1 : A.det = (intRing P).subtype B.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `h2 : (Matrix.of fun i j => redP P (A i j)).det = redHom P B.det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem reduction_det {t : ℕ} (A : Matrix (Fin t) (Fin t) E) (h : ∀ i j, IntAt P (A i j)) :
     redP P A.det = (Matrix.of fun i j => redP P (A i j)).det := by
   let B : Matrix (Fin t) (Fin t) (intRing P) := Matrix.of fun i j => ⟨A i j, h i j⟩
@@ -57,6 +80,11 @@ theorem reduction_det {t : ℕ} (A : Matrix (Fin t) (Fin t) E) (h : ∀ i j, Int
     rw [RingHom.map_det]; rfl
   rw [h1, h2]; rfl
 
+/- English proof (translation)
+Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `e : a = algebraMap (𝓞 E) E (q : 𝓞 E) * ((q : E)⁻¹ * a)`. Rewrite using `[map_natCast, mul_inv_cancel_left₀ hq']`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e]`.
+
+Conclude with `(IntAt.coe P _).mul h`. Rewrite using `[e, reduction_mul (IntAt.coe P _) h, reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 hP, zero_mul]`.
+-/
 theorem of_inv_mul {q : ℕ} (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {a : E}
     (h : IntAt P ((q : E)⁻¹ * a)) : IntAt P a ∧ redP P a = 0 := by
   have hq' : (q : E) ≠ 0 := Nat.cast_ne_zero.2 hq
@@ -66,6 +94,11 @@ theorem of_inv_mul {q : ℕ} (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {a
   · rw [e]; exact (IntAt.coe P _).mul h
   · rw [e, reduction_mul (IntAt.coe P _) h, reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 hP, zero_mul]
 
+/- English proof (translation)
+Establish `ha : IsUnit (redP P a)` using `IsUnit.of_mul_eq_one _ h`. Establish `hb : IsUnit (redP P b)` using `IsUnit.of_mul_eq_one_right _ h`. Unfold `unitV`. Rewrite using `[dif_pos ha, dif_pos hb, ← Units.val_mul, ← map_mul]`. Establish `: ha.unit * hb.unit = 1` using `Units.ext (by simpa using h)`.
+
+Rewrite using `[this, map_one, Units.val_one]`.
+-/
 theorem unitV_mul_eq_one {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E}
     (h : redP P a * redP P b = 1) : unitV χ a * unitV χ b = 1 := by
   have ha : IsUnit (redP P a) := IsUnit.of_mul_eq_one _ h
@@ -81,13 +114,28 @@ section Comb
 
 variable {κ : Type} [CommRing κ]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold symIdx; split_ifs <;> omega`.
+-/
 theorem symIdx_cases (k rS i : ℕ) : (i < k ∧ symIdx k rS i = i + rS) ∨
     (k ≤ i ∧ i < k + rS ∧ symIdx k rS i = i - k) ∨ (k + rS ≤ i ∧ symIdx k rS i = i) := by
   unfold symIdx; split_ifs <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `unfold bd5; split_ifs <;> omega`.
+-/
 theorem symmetricBlockBoundary_cases (k rS s : ℕ) : (s = rS + k ∧ bd5 k rS s = rS) ∨ (s ≠ rS + k ∧ bd5 k rS s = s) := by
   unfold bd5; split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hle : ∀ s, bd5 k₀ rS (symIdx k₀ rS s) ≤ symIdx k₀ rS s`. Apply the tactic sequence `intro s; unfold bd5; split_ifs <;> omega`. Rewrite `hAB` using `[Finset.sum_eq_add_of_mem p (p + 1) (by simp; omega) (by simp; omega) (by omega)]`. Rewrite `hAB` using `[hA p p (by omega) (by omega) (hle p), hB (p + 1) (p + 1) (by omega) hp (hle _)]`. Simplify `hAB` using `[add_comm]`.
+
+Introduce and unpack `l hl ⟨h1, h2⟩`. Rewrite `hl` using `[Finset.mem_range]`. Distinguish the cases in `h : bd5 k₀ rS (symIdx k₀ rS (p + 1)) ≤ symIdx k₀ rS l`. Rewrite using `[hB l (p + 1) hl hp h, if_neg h2, mul_zero]`. Establish `h3 : l < r ∧ bd5 k₀ rS (symIdx k₀ rS l) ≤ symIdx k₀ rS p`.
+
+Establish `e1` using `symIdx_cases k₀ rS l`. Establish `e2` using `symIdx_cases k₀ rS p`. Establish `e3` using `symIdx_cases k₀ rS (p + 1)`. Establish `e4` using `symmetricBlockBoundary_cases k₀ rS (symIdx k₀ rS l)`. Establish `e5` using `symmetricBlockBoundary_cases k₀ rS (symIdx k₀ rS (p + 1))`.
+
+Apply the tactic sequence `constructor <;> omega`. Rewrite using `[hA p l (by omega) h3.1 h3.2, if_neg (Ne.symm h1), zero_mul]`.
+-/
 theorem superdiag {n k₀ rS r : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n) (A B : ℕ → ℕ → κ)
     (hA : ∀ l p', l < n → p' < r → bd5 k₀ rS (symIdx k₀ rS p') ≤ symIdx k₀ rS l →
       A l p' = if l = p' then 1 else 0)
@@ -114,6 +162,15 @@ theorem superdiag {n k₀ rS r : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n) (A B :
         constructor <;> omega
       rw [hA p l (by omega) h3.1 h3.2, if_neg (Ne.symm h1), zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul]`. Use `Matrix.det_one (n := Fin t) (R := κ)` and compare the differences between its conclusion and the goal. Use extensionality with `s s'`. Establish `hs` using `s.2`. Establish `hs'` using `s'.2`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => A (a + s.1) (a + l) * B (a + l) (a + s'.1)) t]`. Establish `h` using `hAB (a + s.1) (a + s'.1) (by omega) (by omega)`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hn`.
+
+Rewrite `h` using `[Finset.sum_range_add, Finset.sum_range_add, Finset.sum_eq_zero (s := Finset.range a), Finset.sum_eq_zero (s := Finset.range m), zero_add, add_zero]`. Rewrite using `[h, Matrix.one_apply]`. Simplify using `[Fin.ext_iff]`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`.
+
+Rewrite using `[hB _ _ (by omega) (by omega) (by omega), mul_zero]`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`. Rewrite using `[hA _ _ (by omega) (by omega) (by omega), zero_mul]`.
+-/
 theorem block {n a t : ℕ} (hn : a + t ≤ n) (A B : ℕ → ℕ → κ)
     (hA : ∀ l l', l < n → l' < a → a ≤ l → A l l' = 0)
     (hB : ∀ l l', l < n → l' < a + t → a + t ≤ l → B l l' = 0)
@@ -150,6 +207,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectru
 
 def mat {N : ℕ} (g : Sp E N → Sp E N) (p p' : ℕ) : E := atN (g (eN E N p')) p
 
+/- English proof (translation)
+Unfold `sclLat stdAt`. Rewrite using `[Submodule.mem_comap, mem_localization_standardLattice]`. Both sides reduce to the same expression.
+-/
 theorem mem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
   unfold sclLat stdAt
@@ -157,15 +217,27 @@ theorem mem_sclLat {N : ℕ} (e : ℕ → ℤ) (v : Sp E N) :
   rfl
 
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Apply the tactic sequence `unfold fIdx; split_ifs <;> omega`.
+-/
 theorem fIdx_zero (k₀ n s : ℕ) : fIdx k₀ 0 n s = s := by
   unfold fIdx; split_ifs <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `unfold fPos; split_ifs <;> omega`.
+-/
 theorem fPos_zero {k₀ n l : ℕ} (h : l < n) : fPos k₀ 0 n l = l := by
   unfold fPos; split_ifs <;> omega
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem scE_lt {n l : ℕ} (ex : ℕ → ℕ) (h : l < n) : scE n ex l = 0 := if_pos h
 
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Unfold `entB mat`. Rewrite using `[fIdx_zero, fIdx_zero, scE_lt _ hp, scE_lt _ hp']`. Simplify using the standard rewrite rules.
+-/
 theorem entB_zero (k₀ n : ℕ) (ex : ℕ → ℕ) (g : HomE E (n + 0) (n + 0)) {p p' : ℕ} (hp : p < n) (hp' : p' < n) :
     entB q k₀ 0 n 0 n ex ex g p p' = mat g p p' := by
   unfold entB mat
@@ -173,6 +245,13 @@ theorem entB_zero (k₀ n : ℕ) (ex : ℕ → ℕ) (g : HomE E (n + 0) (n + 0))
   simp
 
 omit [NumberField E] [StarRing E] in
+/- English proof (translation)
+Rewrite using `[← Fin.sum_univ_eq_sum_range (fun l => mat g p l * mat (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) l p') N]`. Use `set v := (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) (eN E N p') with hv`. Establish `h1 : g v = eN E N p'` using `LinearEquiv.apply_symm_apply g _`. Establish `h2 : v = ∑ l : Fin N, v l • eN E N l.1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Finset.sum_apply, eN, Fin.val_inj]`. Establish `h3` using `congrFun h1 ⟨p, hp⟩`. Rewrite `h3` using `[h2, map_sum, Finset.sum_apply]`. Use `Eq.trans ?_ (h3.trans rfl)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [mat, atN, dif_pos hp, dif_pos l.2, map_smul, Pi.smul_apply, smul_eq_mul, ← hv]`. Rewrite using `[mul_comm]`.
+-/
 theorem mat_mul_inv {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N) {p p' : ℕ} (hp : p < N) :
     ∑ l ∈ Finset.range N, mat g p l * mat (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) l p' = if p = p' then 1 else 0 := by
   rw [← Fin.sum_univ_eq_sum_range (fun l => mat g p l * mat (g⁻¹ : Sp E N ≃ₗ[E] Sp E N) l p') N]
@@ -190,11 +269,21 @@ theorem mat_mul_inv {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N) {p p' : ℕ} (hp : p
 
 variable {P q}
 
+/- English proof (translation)
+Use `split_ifs`. Conclude with `intAt_one P`. Conclude with `intAt_zero P`.
+-/
 theorem intAt_ite (c : Prop) [Decidable c] : IntAt P (if c then (1 : E) else 0) := by
   split_ifs
   · exact intAt_one P
   · exact intAt_zero P
 
+/- English proof (translation)
+Establish `h : eN E (n + 0) p' ∈ lamY P q n 0 fun i => i + 1`. Unfold `lamY`. Rewrite using `[mem_sclLat]`. Introduce `l`. Rewrite using `[scE_lt _ (show l.1 < n from l.2), zpow_zero, inv_one, one_mul]`.
+
+Conclude with `intAt_ite _`. Establish `h2` using `(hg.1 _).2 h`. Unfold `lamY at h2`. Rewrite `h2` using `[mem_sclLat]`. Establish `h3` using `h2 ⟨p, hp⟩`.
+
+Rewrite `h3` using `[scE_lt _ hp, zpow_zero, inv_one, one_mul]`. Unfold `mat atN`. Rewrite using `[dif_pos (show p < n + 0 from hp)]`. Conclude with `h3`.
+-/
 theorem mat_intAt {k₀ rS r t n : ℕ} {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0)
     (p p' : ℕ) (hp : p < n) : IntAt P (mat g p p') := by
   have h : eN E (n + 0) p' ∈ lamY P q n 0 fun i => i + 1 := by
@@ -212,6 +301,15 @@ theorem mat_intAt {k₀ rS r t n : ℕ} {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)
   rw [dif_pos (show p < n + 0 from hp)]
   exact h3
 
+/- English proof (translation)
+Establish `h1` using `(hg.2.2 (symIdx k₀ rS p') (symIdx_lt hr.le hp')).2`. Establish `e : bvecS E q k₀ rS n 0 (symIdx k₀ rS p') = eN E (n + 0) p'`. Unfold `bvecS bvecG`. Rewrite using `[symIdxInv_symIdx, fIdx_zero, scE_lt _ (show p' < n by omega), zpow_zero, one_smul]`. Rewrite `h1` using `[e]`.
+
+Unfold `flagS at h1`. Rewrite `h1` using `[mem_sclLat]`. Establish `h2` using `h1 ⟨l, hl⟩`. Simplify using `only [] at h2`. Rewrite `h2` using `[scE_lt _ hl, fPos_zero hl, if_pos h, zero_add, zpow_one]`.
+
+Take `⟨h3, h4⟩` from `of_inv_mul P hq hP h2`. Establish `e2 : mat g l p' = (g (eN E (n + 0) p') - eN E (n + 0) p') ⟨l, hl⟩ + if l = p' then 1 else 0`. Unfold `mat atN`. Rewrite using `[dif_pos (show l < n + 0 from hl), Pi.sub_apply]`. Conclude with `(sub_add_cancel _ _).symm`.
+
+Rewrite using `[e2, reduction_add h3 (intAt_ite _), h4, zero_add]`. Use `split_ifs`. Conclude with `reduction_one' P`. Conclude with `redP_zero' P`.
+-/
 theorem mat_col (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k₀ rS r t n : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0)
     (l p' : ℕ) (hl : l < n) (hp' : p' < r) (h : bd5 k₀ rS (symIdx k₀ rS p') ≤ symIdx k₀ rS l) :
@@ -236,6 +334,19 @@ theorem mat_col (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k₀ rS r t n 
   · exact reduction_one' P
   · exact redP_zero' P
 
+/- English proof (translation)
+Establish `key : ∀ x, bd5 k₀ rS (r + i * t) ≤ symIdx k₀ rS x ↔ r + i * t ≤ x`. Introduce `x`. Establish `e1` using `symIdx_cases k₀ rS x`. Establish `e2` using `symmetricBlockBoundary_cases k₀ rS (r + i * t)`. Generalize the expression as in `i * t = m at *`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h0 : eN E (n + 0) l' ∈ flagS P q k₀ rS n 0 (r + i * t)`. Unfold `flagS`. Rewrite using `[mem_sclLat]`. Introduce `x`.
+
+Establish `hx : x.1 < n` using `x.2`. Distinguish the cases in `hxl : x.1 = l'`. Rewrite using `[scE_lt _ hx, fPos_zero hx, if_neg (by rw [key]; omega), zero_add, zpow_zero, inv_one, one_mul]`. Conclude with `intAt_ite _`. Unfold `eN`.
+
+Rewrite using `[if_neg hxl, mul_zero]`. Conclude with `intAt_zero P`. Establish `h1` using `(hg.2.1 (r + i * t) ⟨i, rfl⟩ _).2 h0`. Unfold `flagS at h1`. Rewrite `h1` using `[mem_sclLat]`.
+
+Establish `h2` using `h1 ⟨l, hl⟩`. Simplify using `only [] at h2`. Rewrite `h2` using `[scE_lt _ hl, fPos_zero hl, if_pos ((key l).2 h), zero_add, zpow_one]`. Unfold `mat atN`. Rewrite using `[dif_pos (show l < n + 0 from hl)]`.
+
+Conclude with `(of_inv_mul P hq hP h2).2`.
+-/
 theorem mat_blk (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k₀ rS r t n : ℕ} (hr : k₀ + rS < r)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (i : ℕ)
     (l l' : ℕ) (hl : l < n) (hl' : l' < r + i * t) (h : r + i * t ≤ l) :
@@ -267,6 +378,11 @@ theorem mat_blk (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {k₀ rS r t n 
   rw [dif_pos (show l < n + 0 from hl)]
   exact (of_inv_mul P hq hP h2).2
 
+/- English proof (translation)
+Establish `hg'` using `inv_mem hg`. Establish `h` using `congrArg (redP P) (mat_mul_inv g (p' := p') (show p < n + 0 from hp))`. Rewrite `h` using `[reduction_sum₂ P (Finset.range (n + 0)) _ fun l hl => (mat_intAt hg p l hp).mul (mat_intAt hg' l p' (Finset.mem_range.1 hl))]`. Use `Eq.trans (Finset.sum_congr rfl fun l hl => ?_) (h.trans ?_)` and prove the remaining obligations. Conclude with `(reduction_mul (mat_intAt hg p l hp) (mat_intAt hg' l p' (Finset.mem_range.1 hl))).symm`.
+
+Use `split_ifs`. Conclude with `reduction_one' P`. Conclude with `redP_zero' P`.
+-/
 theorem red_mul_inv {k₀ rS r t n : ℕ}
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (p p' : ℕ) (hp : p < n) :
     ∑ l ∈ Finset.range n, redP P (mat g p l) *
@@ -280,6 +396,13 @@ theorem red_mul_inv {k₀ rS r t n : ℕ}
     · exact reduction_one' P
     · exact redP_zero' P
 
+/- English proof (translation)
+Establish `e1 : ∑ i ∈ Finset.range (k₀ - 1), entB q k₀ 0 n 0 n ex ex g.toLinearMap i (i + 1) = ∑ i ∈ Finset.range (k₀ - 1), mat g i (i + 1)` using `Finset.sum_congr rfl fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `entB_zero q k₀ n ex _ (by omega) (by omega)`. Establish `e2 : ∑ i ∈ Finset.range (r - k₀ - 1), entB q k₀ 0 n 0 n ex ex g.toLinearMap (k₀ + i) (k₀ + i + 1) = ∑ i ∈ Finset.range (r - k₀ - 1), mat g (k₀ + i) (k₀ + i + 1)` using `Finset.sum_congr rfl fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Conclude with `entB_zero q k₀ n ex _ (by omega) (by omega)`. Establish `i1 : ∀ i ∈ Finset.range (k₀ - 1), IntAt P (mat g i (i + 1))` using `fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `mat_intAt hg _ _ (by omega)`. Establish `i2 : ∀ i ∈ Finset.range (r - k₀ - 1), IntAt P (mat g (k₀ + i) (k₀ + i + 1))` using `fun i hi => by`.
+
+Rewrite `hi` using `[Finset.mem_range]`. Conclude with `mat_intAt hg _ _ (by omega)`. Rewrite using `[e1, e2, reduction_add (intAt_sum P _ _ i1) (intAt_sum P _ _ i2), reduction_sum₂ P _ _ i1, reduction_sum₂ P _ _ i2]`.
+-/
 theorem redP_superdiag {k₀ rS r t n : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (ex : ℕ → ℕ) :
     redP P (∑ i ∈ Finset.range (k₀ - 1), entB q k₀ 0 n 0 n ex ex g.toLinearMap i (i + 1) +
@@ -304,6 +427,11 @@ theorem redP_superdiag {k₀ rS r t n : ℕ} (hr : k₀ + rS < r) (hn : r ≤ n)
     exact mat_intAt hg _ _ (by omega)
   rw [e1, e2, reduction_add (intAt_sum P _ _ i1) (intAt_sum P _ _ i2), reduction_sum₂ P _ _ i1, reduction_sum₂ P _ _ i2]
 
+/- English proof (translation)
+Establish `e : (Matrix.of fun s s' : Fin t => entB q k₀ 0 n 0 n ex ex g.toLinearMap (a + s.1) (a + s'.1)) = Matrix.of fun s s' : Fin t => mat g (a + s.1) (a + s'.1)`. Use extensionality with `s s'`. Use `s.2` as an intermediate fact. Use `s'.2` as an intermediate fact. Conclude with `entB_zero q k₀ n ex _ (by omega) (by omega)`.
+
+Rewrite using `[e]`. Conclude with `reduction_det P (Matrix.of fun s s' : Fin t => mat g (a + s.1) (a + s'.1)) fun s s' => mat_intAt hg (a + s.1) (a + s'.1) (by have := s.2; omega)`.
+-/
 theorem redP_det_blk {k₀ rS r t n a : ℕ} (hn : a + t ≤ n)
     {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)} (hg : g ∈ JGsym P q k₀ rS r t n 0) (ex : ℕ → ℕ) :
     redP P (Matrix.det (Matrix.of fun s s' : Fin t =>
@@ -321,6 +449,17 @@ theorem redP_det_blk {k₀ rS r t n a : ℕ} (hn : a + t ≤ n)
 
 end Main
 
+/- English proof (translation)
+Introduce `E K _ _ _ _ P q hq hP ψ₀ χ k₀ rS r t j n hr hn g hg`. Establish `hg'` using `inv_mem hg`. Establish `hrn : r ≤ n` using `le_trans (Nat.le_add_right _ _) hn`. Establish `hsd : ∀ p, p + 1 < r → p + 1 ≠ k₀ → redP P (mat g p (p + 1)) + redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) p (p + 1)) = 0` using `fun p hp hp' => superdiag hr hrn (fun a b => redP P (mat g a b)) (fun a b => redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) a b)) (mat_col hq hP hr hrn hg) (mat_col hq hP hr hrn hg') p hp hp' ((red_mul_inv hg p (p + 1) (by omega)).trans (if_neg (by omega)))`. Unfold `lamGBS lamGvS`.
+
+Rewrite using `[mul_mul_mul_comm, ← AddChar.map_add_eq_mul, ← Finset.prod_mul_distrib, redP_superdiag hr hrn hg, redP_superdiag hr hrn hg', add_add_add_comm, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`. Use `Finset.prod_eq_one fun i hi => unitV_mul_eq_one P _ ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Establish `hi' : r + i * t + t ≤ n`. Establish `: (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t hi`.
+
+Rewrite `this` using `[add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[redP_det_blk hi' hg, redP_det_blk hi' hg']`. Use `block hi' (fun a b => redP P (mat g a b)) (fun a b => redP P (mat (g⁻¹ : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)) a b)) (mat_blk hq hP hr hg i) ?_ fun p p' hp _ => red_mul_inv hg p p' hp` and prove the remaining obligations. Establish `h` using `mat_blk hq hP hr hg' (i + 1)`.
+
+Rewrite `h` using `[add_mul, one_mul, ← add_assoc]`. Then use the resulting hypothesis. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `hsd _ (by omega) (by omega)`. Introduce `i hi`.
+
+Rewrite `hi` using `[Finset.mem_range]`. Conclude with `hsd _ (by omega) (by omega)`.
+-/
 theorem lamGBS_mul_inv : ∀ (E K : Type) [Field E] [NumberField E] [StarRing E] [Field K] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ), q ≠ 0 → (q : 𝓞 E) ∈ P.asIdeal → ∀ (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ rS r t j n : ℕ), k₀ + rS < r → r + j * t ≤ n → ∀ g ∈ LocE.JGsym P q k₀ rS r t n 0, LocE.lamGBS q ψ₀ χ k₀ r t j n 0 g.toLinearMap * LocE.lamGBS q ψ₀ χ k₀ r t j n 0 (g⁻¹).toLinearMap = 1 := by
   intro E K _ _ _ _ P q hq hP ψ₀ χ k₀ rS r t j n hr hn g hg
   have hg' := inv_mem hg

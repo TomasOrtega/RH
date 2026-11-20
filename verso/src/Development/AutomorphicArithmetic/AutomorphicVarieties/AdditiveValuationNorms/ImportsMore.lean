@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 
 open UpperTheory.V UpperTheory.V.PropA
 
+/- English proof (translation)
+Introduce `l _ X _ _ R w hG hw`. Use `haveI : Module.Finite ℤ_[l] X := by`. Take `⟨π, hπ⟩` from `hG`. Conclude with `Module.Finite.of_surjective π hπ`. Establish `h1` using `(UpperTheory.V.Base.lenComp ℤ_[l] X (∑ i ∈ Finset.range l, w ^ i) (w - 1)).2`.
+
+Rewrite `h1` using `[geom_sum_mul]`. Establish `h2` using `cokLen_le_of_range_le (phi l X w hw)`. Establish `h3` using `cokL l X R hG`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.PropA.step :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] (R : ℕ) (w : Module.End ℤ_[l] X), GenBy l R X → InPow 2 (w - 1) →
       cokLen (w ^ l - 1) ≤ cokLen (w - 1) + R := by

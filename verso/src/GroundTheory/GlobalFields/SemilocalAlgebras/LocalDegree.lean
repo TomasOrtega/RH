@@ -13,6 +13,9 @@ section Integers
 
 variable {F : Type*} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (u.adicCompletion F), HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self, RingHom.id_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`.
+-/
 theorem valued_algebraMap_int (b : 𝓞 F) :
     Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) b) = u.intValuation b := by
   rw [IsScalarTower.algebraMap_apply (𝓞 F) F (u.adicCompletion F),
@@ -20,21 +23,41 @@ theorem valued_algebraMap_int (b : 𝓞 F) :
     RingHom.id_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation',
     HeightOneSpectrum.valuation_of_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[valued_algebraMap_int]`. Conclude with `u.intValuation_le_one b`.
+-/
 theorem valued_algebraMap_int_le_one (b : 𝓞 F) :
     Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) b) ≤ 1 := by
   rw [valued_algebraMap_int]
   exact u.intValuation_le_one b
 
+/- English proof (translation)
+Rewrite using `[valued_algebraMap_int]`. Conclude with `u.intValuation_lt_one_iff_mem b`.
+-/
 theorem valued_algebraMap_int_lt_one_iff (b : 𝓞 F) :
     Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) b) < 1 ↔ b ∈ u.asIdeal := by
   rw [valued_algebraMap_int]
   exact u.intValuation_lt_one_iff_mem b
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self, RingHom.id_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+-/
 theorem valued_algebraMap_field (x : F) :
     Valued.v (algebraMap F (u.adicCompletion F) x) = u.valuation F x := by
   rw [HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self,
     RingHom.id_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : F, Valued.v (d - algebraMap F (u.adicCompletion F) x) < 1 := by`. Establish `ho : IsOpen {y : u.adicCompletion F | Valued.v (d - y) < 1}`. Establish `: {y : u.adicCompletion F | Valued.v (d - y) < 1} = Metric.ball d 1`. Use extensionality with `y`. Rewrite using `[Set.mem_ofPred_eq, Metric.mem_ball, dist_comm, dist_eq_norm, Valued.toNormedField.norm_lt_one_iff]`.
+
+Rewrite using `[this]`. Conclude with `Metric.isOpen_ball`. Conclude with `(HeightOneSpectrum.denseRange_algebraMap F u).exists_mem_open ho ⟨d, by simp⟩`. Establish `hx1 : u.valuation F x ≤ 1`. Rewrite using `[← valued_algebraMap_field]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨r, hr⟩` from `u.exists_valuation_sub_lt_of_integer hx1 1`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hr' : Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) r - algebraMap F (u.adicCompletion F) x) < 1`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (u.adicCompletion F), ← map_sub, valued_algebraMap_field]`.
+
+Simplify using `using hr`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ max _ _ := Valuation.map_sub _ _ _`.
+
+Use `_ < 1 := max_lt hx hr'`.
+-/
 theorem exists_int_valued_sub_lt_one (d : u.adicCompletion F) (hd : Valued.v d ≤ 1) :
     ∃ r : 𝓞 F, Valued.v (d - algebraMap (𝓞 F) (u.adicCompletion F) r) < 1 := by
   obtain ⟨x, hx⟩ : ∃ x : F, Valued.v (d - algebraMap F (u.adicCompletion F) x) < 1 := by
@@ -73,6 +96,9 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 variable (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L))
   [w.asIdeal.LiesOver v.asIdeal]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) K (v.adicCompletion K), algebraMap_completion_eq, completionMap_algebraMap, IsScalarTower.algebraMap_apply K L (w.adicCompletion L), IsScalarTower.algebraMap_apply (𝓞 L) L (w.adicCompletion L), ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 L) L, …`.
+-/
 theorem algebraMap_completion_algebraMap_int (r : 𝓞 K) :
     algebraMap (v.adicCompletion K) (w.adicCompletion L) (algebraMap (𝓞 K) _ r) =
       algebraMap (𝓞 L) (w.adicCompletion L) (algebraMap (𝓞 K) (𝓞 L) r) := by
@@ -81,6 +107,9 @@ theorem algebraMap_completion_algebraMap_int (r : 𝓞 K) :
     IsScalarTower.algebraMap_apply (𝓞 L) L (w.adicCompletion L),
     ← IsScalarTower.algebraMap_apply (𝓞 K) (𝓞 L) L, ← IsScalarTower.algebraMap_apply (𝓞 K) K L]
 
+/- English proof (translation)
+The claim follows from `valued_completionMap v w x`.
+-/
 theorem valued_algebraMap_completion (x : v.adicCompletion K) :
     Valued.v (algebraMap (v.adicCompletion K) (w.adicCompletion L) x) =
       Valued.v x ^ w.asIdeal.ramificationIdx (𝓞 K) :=
@@ -88,6 +117,9 @@ theorem valued_algebraMap_completion (x : v.adicCompletion K) :
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[map_mul, valued_algebraMap_completion]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valued_sum_le (ω : ι → 𝓞 L) (c : ι → v.adicCompletion K) (M : ℤᵐ⁰)
     (hM : ∀ j, Valued.v (c j) ≤ M) :
     Valued.v (∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (c j) *
@@ -99,6 +131,19 @@ theorem valued_sum_le (ω : ι → 𝓞 L) (c : ι → v.adicCompletion K) (M : 
         mul_le_mul' le_rfl (valued_algebraMap_int_le_one w (ω j))
     _ ≤ _ := by rw [mul_one]; exact pow_le_pow_left' (hM j) _
 
+/- English proof (translation)
+Use `le_antisymm (by simpa using valued_sum_le v w ω d 1 hd) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `replace hlt := not_le.1 hlt`. Establish `he0 : w.asIdeal.ramificationIdx (𝓞 K) ≠ 0` using `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)).ne'`. Use `choose r hr using fun j ↦ exists_int_valued_sub_lt_one v (d j) (hd j)`.
+
+Establish `h1 : Valued.v (algebraMap (𝓞 L) (w.adicCompletion L) (∑ j, algebraMap (𝓞 K) (𝓞 L) (r j) * ω j)) < 1`. Establish `heq : algebraMap (𝓞 L) (w.adicCompletion L) (∑ j, algebraMap (𝓞 K) (𝓞 L) (r j) * ω j) = (∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (d j) * algebraMap (𝓞 L) (w.adicCompletion L) (ω j)) - ∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (d j - algebraMap (𝓞 …`. Rewrite using `[← Finset.sum_sub_distrib, map_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, algebraMap_completion_algebraMap_int]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hlt ?_)` and prove the remaining obligations. Apply `Valuation.map_sum_lt _ one_ne_zero` to reduce the goal to its premises. Introduce `j _`.
+
+Rewrite using `[map_mul, valued_algebraMap_completion]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[valued_algebraMap_int_lt_one_iff, ← Ideal.Quotient.eq_zero_iff_mem, map_sum]`. Establish `hsum : ∑ j, Ideal.Quotient.mk v.asIdeal (r j) • Ideal.Quotient.mk w.asIdeal (ω j) = 0`. Rewrite using `[← h1]`.
+
+Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, Ideal.Quotient.algebraMap_mk_of_liesOver]`. Establish `hr0` using `Fintype.linearIndependent_iff.1 hω _ hsum j0`. Rewrite `hr0` using `[Ideal.Quotient.eq_zero_iff_mem, ← valued_algebraMap_int_lt_one_iff v]`. Establish `: Valued.v (d j0) < 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hj0 this.ne`.
+-/
 theorem valued_sum_eq_one (ω : ι → 𝓞 L)
     (hω : LinearIndependent (𝓞 K ⧸ v.asIdeal) (fun j ↦ Ideal.Quotient.mk w.asIdeal (ω j)))
     (d : ι → v.adicCompletion K) (hd : ∀ j, Valued.v (d j) ≤ 1) (j0 : ι)
@@ -146,6 +191,17 @@ theorem valued_sum_eq_one (ω : ι → 𝓞 L)
   exact absurd hj0 this.ne
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `he0 : w.asIdeal.ramificationIdx (𝓞 K) ≠ 0` using `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)).ne'`. Distinguish the cases in `h0 : c j0 = 0`. Establish `hc : ∀ j, c j = 0` using `fun j ↦ by`. Use `hj0 j` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `(Valuation.zero_iff _).1 (le_antisymm this zero_le)`. Simplify using `[hc, zero_pow he0]`. Establish `hv0 : Valued.v (c j0) ≠ 0` using `(Valuation.ne_zero_iff _).2 h0 set d : ι → v.adicCompletion K := fun j ↦ c j * (c j0)⁻¹ with hd_def`. Establish `hcd : ∀ j, c j = c j0 * d j` using `fun j ↦ by`. Simplify using `only [hd_def]`.
+
+Rewrite using `[mul_comm (c j), ← mul_assoc, mul_inv_cancel₀ h0, one_mul]`. Establish `hd : ∀ j, Valued.v (d j) ≤ 1` using `fun j ↦ by`. Simplify using `only [hd_def, map_mul, map_inv₀]`. Rewrite using `[← mul_inv_cancel₀ hv0]`. Conclude with `mul_le_mul_left (hj0 j) _`.
+
+Establish `hdj0 : Valued.v (d j0) = 1` using `by simp [hd_def, mul_inv_cancel₀ h0]`. Establish `: ∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (c j) * algebraMap (𝓞 L) (w.adicCompletion L) (ω j) = algebraMap (v.adicCompletion K) (w.adicCompletion L) (c j0) * ∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (d j) * algebraMap (𝓞 L) (w.adicCompletion L) …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hcd j, map_mul, mul_assoc]`.
+
+Rewrite using `[this, map_mul, valued_algebraMap_completion, valued_sum_eq_one v w ω hω d hd j0 hdj0, mul_one]`.
+-/
 theorem valued_sum_eq [Fintype ι] (ω : ι → 𝓞 L)
     (hω : LinearIndependent (𝓞 K ⧸ v.asIdeal) (fun j ↦ Ideal.Quotient.mk w.asIdeal (ω j)))
     (c : ι → v.adicCompletion K) (j0 : ι) (hj0 : ∀ j, Valued.v (c j) ≤ Valued.v (c j0)) :
@@ -180,6 +236,9 @@ theorem valued_sum_eq [Fintype ι] (ω : ι → 𝓞 L)
     rw [this, map_mul, valued_algebraMap_completion, valued_sum_eq_one v w ω hω d hd j0 hdj0,
       mul_one]
 
+/- English proof (translation)
+Rewrite `h` using `[← exp_log ha, ← exp_log hb, ← exp_nsmul, ← exp_nsmul, ← exp_add, ← exp_add, exp_inj]`. Simplify using `only [nsmul_eq_mul] at h`. Establish `hdvd : (e : ℤ) ∣ (i : ℤ) - i'` using `⟨log a - log b, by rw [mul_sub]; linarith⟩`. Apply the tactic sequence `have := Int.eq_zero_of_abs_lt_dvd hdvd (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_exp_mul_pow_eq {e i i' : ℕ} (hi : i < e) (hi' : i' < e) {a b : ℤᵐ⁰} (ha : a ≠ 0)
     (hb : b ≠ 0) (h : exp (-(i : ℤ)) * a ^ e = exp (-(i' : ℤ)) * b ^ e) : i = i' := by
   rw [← exp_log ha, ← exp_log hb, ← exp_nsmul, ← exp_nsmul, ← exp_add, ← exp_add, exp_inj] at h
@@ -190,6 +249,31 @@ theorem eq_of_exp_mul_pow_eq {e i i' : ℕ} (hi : i < e) (hi' : i' < e) {a b : �
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `linearIndependent_empty_type`. Use `set e := w.asIdeal.ramificationIdx (𝓞 K) with he`. Establish `he0 : e ≠ 0` using `(Ideal.ramificationIdx_pos w.asIdeal (𝓞 K)).ne'`.
+
+Use `set P := algebraMap L (w.adicCompletion L) π with hP`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Use `set s : Fin e → w.adicCompletion L := fun i ↦ ∑ j, algebraMap (v.adicCompletion K) (w.adicCompletion L) (g (i, j)) * algebraMap (𝓞 L) (w.adicCompletion L) (ω j) with hs_def`. Establish `hsum : ∑ i : Fin e, P ^ (i : ℕ) * s i = 0`.
+
+Rewrite using `[← hg, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hs_def, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hvP : ∀ n : ℕ, Valued.v (P ^ n) = exp (-(n : ℤ))`. Introduce `n`. Rewrite using `[map_pow, hP, valued_algebraMap_field, hπ, ← exp_nsmul]`. Simplify using the standard rewrite rules.
+
+Use `choose J hJ using fun i : Fin e ↦ Finite.exists_max (fun j ↦ Valued.v (g (i, j)))`. Use `set M : Fin e → ℤᵐ⁰ := fun i ↦ Valued.v (g (i, J i)) with hM_def`. Establish `hterm : ∀ i : Fin e, Valued.v (P ^ (i : ℕ) * s i) = exp (-((i : ℕ) : ℤ)) * M i ^ e`. Introduce `i`. Rewrite using `[map_mul, hvP, hs_def, valued_sum_eq v w ω hω _ (J i) (hJ i)]`.
+
+Establish `hM : ∀ i, M i = 0`. Assume the negation of the conclusion as `hne`. Take `⟨i1, hi1⟩` from `not_forall.1 hne`. Establish `: Nonempty (Fin e)` using `⟨i1⟩`. Take `⟨i0, hi0⟩` from `Finite.exists_max (fun i : Fin e ↦ Valued.v (P ^ (i : ℕ) * s i))`.
+
+Establish `hnz : ∀ i : Fin e, Valued.v (P ^ (i : ℕ) * s i) ≠ 0 → M i ≠ 0`. Introduce `i hi hMi`. Rewrite `hi` using `[hterm, hMi, zero_pow he0, mul_zero]`. Conclude with `hi rfl`. Establish `htop : Valued.v (P ^ (i0 : ℕ) * s i0) ≠ 0`.
+
+Introduce `h`. Use `hi0 i1` as an intermediate fact. Rewrite `this` using `[h, hterm]`. Establish `h' : exp (-((i1 : ℕ) : ℤ)) * M i1 ^ e = 0` using `le_antisymm this zero_le`. Rewrite `h'` using `[mul_eq_zero]`.
+
+Break down `h' with h' | h'` into its components or cases. Conclude with `exp_ne_zero h'`. Conclude with `hi1 (pow_eq_zero_iff he0 |>.1 h')`. Establish `hlt : ∀ i ∈ Finset.univ \ {i0}, Valued.v (P ^ (i : ℕ) * s i) < Valued.v (P ^ (i0 : ℕ) * s i0)`. Introduce `i hi`.
+
+Establish `hne : i ≠ i0` using `by simpa using hi`. Use `lt_of_le_of_ne (hi0 i) fun heq ↦ hne (Fin.ext ?_)` and prove the remaining obligations. Establish `hi_nz : Valued.v (P ^ (i : ℕ) * s i) ≠ 0` using `heq ▸ htop`. Rewrite `heq` using `[hterm, hterm]`. Conclude with `eq_of_exp_mul_pow_eq i.2 i0.2 (hnz i hi_nz) (hnz i0 htop) heq`.
+
+Use `Valuation.map_sum_eq_of_lt _ (Finset.mem_univ i0) hlt` as an intermediate fact. Rewrite `this` using `[hsum, map_zero]`. Conclude with `htop this.symm`. Introduce and unpack `⟨i, j⟩`. Use `hJ i j` as an intermediate fact.
+
+Rewrite `this` using `[show Valued.v (g (i, J i)) = M i from rfl, hM i]`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm this zero_le)`.
+-/
 theorem linearIndependent_uniformizer_pow_mul [Finite ι] (ω : ι → 𝓞 L)
     (hω : LinearIndependent (𝓞 K ⧸ v.asIdeal) (fun j ↦ Ideal.Quotient.mk w.asIdeal (ω j)))
     (π : L) (hπ : w.valuation L π = exp (-1 : ℤ)) :
@@ -259,6 +343,13 @@ theorem linearIndependent_uniformizer_pow_mul [Finite ι] (ω : ι → 𝓞 L)
   rw [show Valued.v (g (i, J i)) = M i from rfl, hM i] at this
   exact (Valuation.zero_iff _).1 (le_antisymm this zero_le)
 
+/- English proof (translation)
+Use `v.isMaximal` as an intermediate fact. Use `w.isMaximal` as an intermediate fact. Set `` to `Ideal.Quotient.field v.asIdeal`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal v.asIdeal w.asIdeal]`. Set `b` to `Module.finBasis (𝓞 K ⧸ v.asIdeal) (𝓞 L ⧸ w.asIdeal)`.
+
+Use `choose ω hω using fun j ↦ Ideal.Quotient.mk_surjective (b j)`. Establish `hli : LinearIndependent (𝓞 K ⧸ v.asIdeal) (fun j ↦ Ideal.Quotient.mk w.asIdeal (ω j))`. Use `b.linearIndependent with j` and compare the differences between its conclusion and the goal. Conclude with `hω j`. Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer L`.
+
+Use `(linearIndependent_uniformizer_pow_mul v w ω hli π hπ).fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ramificationIdx_mul_inertiaDeg_le_finrank :
     w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) ≤
       Module.finrank (v.adicCompletion K) (w.adicCompletion L) := by

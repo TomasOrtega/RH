@@ -10,6 +10,21 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `σ _ I w t hI hic hdim hw ht`. Take `⟨k, f, -, hk, hfI, hli, -, -⟩` from `hjac σ I w hI hic hdim hw`. Take `⟨_, _⟩` from `hdvr σ I w hI hic hdim hw`. Use `⟨k, f, hk, hfI, hli.finCons fun hmem ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem`.
+
+Use `set φ := algebraMap (MvPolynomial σ ℂ) (pointLocalRing I w) with hφ`. Establish `hfw : ∀ j, eval w (f j) = 0` using `fun j ↦ hw (f j) (hfI j)`. Establish `htw : eval w t = 0`. Assume the negation of the conclusion as `h`. Conclude with `ht.not_isUnit (isUnit_algebraMap_pointLocalRing I w t h)`.
+
+Use `set p := t - ∑ j, C (c j) * f j with hp`. Establish `hpm : p ∈ RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)`. Simplify using `[hp, RingHom.mem_ker, htw, hfw]`. Establish `hpg : GradientAtPoint.grad w p = 0`. Rewrite using `[hp, map_sub, map_sum]`.
+
+Repeatedly rewrite using `[GradientAtPoint.grad_mul_of_eval_eq_zero w _ _ (hfw _), eval_C]`. Establish `hg : ∀ q, GradientAtPoint.grad w q = fun i ↦ eval w (pderiv i q)` using `fun q ↦ funext (GradientAtPoint.grad_apply w q)`. Repeatedly rewrite using `[hg]`. Conclude with `sub_eq_zero.2 hc.symm`. Establish `hp2` using `GradientAtPoint.mem_sq_of_grad_eq_zero w hpm hpg`.
+
+Establish `hφf : ∀ j, φ (f j) = 0` using `fun j ↦ Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ (hfI j))`. Establish `hφt : φ t = φ p` using `by simp [hp, hφf]`. Establish `hmax : Ideal.map φ (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)) ≤ IsLocalRing.maximalIdeal (pointLocalRing I w)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`.
+
+Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu ↦ pointLocalRing_eval_ne_zero_of_isUnit I w hw g hu (RingHom.mem_ker.1 hg)`. Establish `ht2 : φ t ∈ IsLocalRing.maximalIdeal (pointLocalRing I w) ^ 2`. Rewrite using `[hφt]`. Conclude with `Ideal.pow_right_mono hmax 2 (Ideal.map_pow φ _ 2 ▸ Ideal.mem_map_of_mem φ hp2)`.
+
+Rewrite `ht2` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 ht, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `ht2`. Establish `h1 : φ t * (a * φ t) = φ t * 1` using `by rw [mul_one]; nth_rewrite 3 [← ha]; ring`. Conclude with `ht.not_isUnit (IsUnit.of_mul_eq_one a (by rw [mul_comm]; exact mul_left_cancel₀ ht.ne_zero h1))`.
+-/
 theorem UniformiserGradientIndependent.proof (hjac : NormalCurveJacobian.Statement)
     (hdvr : NormalCurvePointDVR.Statement) : UniformiserGradientIndependent.Statement := by
   intro σ _ I w t hI hic hdim hw ht

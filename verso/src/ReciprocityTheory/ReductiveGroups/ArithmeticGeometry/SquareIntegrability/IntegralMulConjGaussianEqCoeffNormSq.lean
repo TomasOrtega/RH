@@ -7,9 +7,15 @@ open MeasureTheory
 noncomputable def fa1M {g : ℕ} (α : Fin g →₀ ℕ) : ℝ :=
   (Real.pi ^ g)⁻¹ * ∫ z : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2)
 
+/- English proof (translation)
+The claim follows from `mul_pos (by positivity) (integral_norm_monomial_sq_gaussian_pos α)`.
+-/
 theorem monomialMass_pos {g : ℕ} (α : Fin g →₀ ℕ) : 0 < fa1M α :=
   mul_pos (by positivity) (integral_norm_monomial_sq_gaussian_pos α)
 
+/- English proof (translation)
+Unfold `fa1M`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ Real.pi_ne_zero), one_mul]`.
+-/
 theorem integral_norm_monomial_sq_gaussian_eq {g : ℕ} (α : Fin g →₀ ℕ) :
     ∫ z : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) =
       Real.pi ^ g * fa1M α := by
@@ -22,15 +28,24 @@ noncomputable def fa1K {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (z : EuclideanSp
 noncomputable def fa1N {g : ℕ} (p : MvPolynomial (Fin g) ℂ) : ℝ :=
   ∑ α ∈ p.support, ‖MvPolynomial.coeff α p‖ ^ 2 * fa1M α
 
+/- English proof (translation)
+Unfold `fa1K`. Conclude with `Finset.sum_nonneg fun α _ => div_nonneg (by positivity) (monomialMass_pos α).le`.
+-/
 theorem monomialKernel_nonneg {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (z : EuclideanSpace ℂ (Fin g)) :
     0 ≤ fa1K p z := by
   unfold fa1K
   exact Finset.sum_nonneg fun α _ => div_nonneg (by positivity) (monomialMass_pos α).le
 
+/- English proof (translation)
+Unfold `fa1N`. Conclude with `Finset.sum_nonneg fun α _ => mul_nonneg (by positivity) (monomialMass_pos α).le`.
+-/
 theorem coeffNormSq_nonneg {g : ℕ} (p : MvPolynomial (Fin g) ℂ) : 0 ≤ fa1N p := by
   unfold fa1N
   exact Finset.sum_nonneg fun α _ => mul_nonneg (by positivity) (monomialMass_pos α).le
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp [MvPolynomial.eval_eq', monomialOfMultiindex]; done)`. Consider the case `(simp [MvPolynomial.eval_eq, monomialOfMultiindex, Finsupp.prod]; done)`. Consider the case `(rw [MvPolynomial.eval_eq']; unfold monomialOfMultiindex; done)`.
+-/
 theorem eval_eq_sum_coeff_mul_monomial {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (z : EuclideanSpace ℂ (Fin g)) :
     MvPolynomial.eval (fun i => z i) p = ∑ α ∈ p.support, MvPolynomial.coeff α p * monomialOfMultiindex α z := by
   first
@@ -38,6 +53,13 @@ theorem eval_eq_sum_coeff_mul_monomial {g : ℕ} (p : MvPolynomial (Fin g) ℂ) 
   | (simp [MvPolynomial.eval_eq, monomialOfMultiindex, Finsupp.prod]; done)
   | (rw [MvPolynomial.eval_eq']; unfold monomialOfMultiindex; done)
 
+/- English proof (translation)
+Rewrite using `[eval_eq_sum_coeff_mul_monomial]`. Establish `hM : ∀ α : Fin g →₀ ℕ, 0 < fa1M α` using `monomialMass_pos`. Establish `h1 : ‖∑ α ∈ p.support, MvPolynomial.coeff α p * monomialOfMultiindex α z‖ ≤ ∑ α ∈ p.support, (‖MvPolynomial.coeff α p‖ * Real.sqrt (fa1M α)) * (‖monomialOfMultiindex α z‖ / Real.sqrt (fa1M α))`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun α _ => ?_))` and prove the remaining obligations. Establish `hs : Real.sqrt (fa1M α) ≠ 0` using `(Real.sqrt_pos.mpr (hM α)).ne'`.
+
+Rewrite using `[norm_mul]`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq p.support (fun α => ‖MvPolynomial.coeff α p‖ * Real.sqrt (fa1M α)) (fun α => ‖monomialOfMultiindex α z‖ / Real.sqrt (fa1M α))`.
+
+Establish `h3 : ∀ α, (‖MvPolynomial.coeff α p‖ * Real.sqrt (fa1M α)) ^ 2 = ‖MvPolynomial.coeff α p‖ ^ 2 * fa1M α` using `fun α => by rw [mul_pow, Real.sq_sqrt (hM α).le]`. Establish `h4 : ∀ α, (‖monomialOfMultiindex α z‖ / Real.sqrt (fa1M α)) ^ 2 = ‖monomialOfMultiindex α z‖ ^ 2 / fa1M α` using `fun α => by rw [div_pow, Real.sq_sqrt (hM α).le]`. Simplify using `only [h3, h4] at h2`. Unfold `fa1N fa1K`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_eval_sq_le {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (z : EuclideanSpace ℂ (Fin g)) :
     ‖MvPolynomial.eval (fun i => z i) p‖ ^ 2 ≤ fa1N p * fa1K p z := by
   rw [eval_eq_sum_coeff_mul_monomial]
@@ -63,6 +85,11 @@ theorem norm_eval_sq_le {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (z : EuclideanS
         (‖monomialOfMultiindex α z‖ / Real.sqrt (fa1M α))) ^ 2 := by gcongr
     _ ≤ _ := h2
 
+/- English proof (translation)
+Simplify using `only [fa1K, Finset.sum_mul]`. Use `integrable_finsetSum _ (fun α _ => ?_)` and prove the remaining obligations. Use `(integrable_norm_monomial_sq_gaussian α hb).const_mul (fa1M α)⁻¹` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_monomialKernel_mul_gaussian {g : ℕ} (p : MvPolynomial (Fin g) ℂ) {b : ℝ} (hb : 0 < b) :
     Integrable (fun z : EuclideanSpace ℂ (Fin g) => fa1K p z * Real.exp (-b * ‖z‖ ^ 2)) := by
   simp only [fa1K, Finset.sum_mul]
@@ -71,6 +98,15 @@ theorem integrable_monomialKernel_mul_gaussian {g : ℕ} (p : MvPolynomial (Fin 
   refine this.congr (Filter.Eventually.of_forall fun z => ?_)
   simp only; ring
 
+/- English proof (translation)
+Establish `hint : ∀ α : Fin g →₀ ℕ, MeasureTheory.Integrable (fun z : EuclideanSpace ℂ (Fin g) => ‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2))`. Introduce `α`. Assume the negation of the conclusion as `h`. Apply `(monomialMass_pos α).ne'` to reduce the goal to its premises. Unfold `fa1M`.
+
+Rewrite using `[MeasureTheory.integral_undef h, mul_zero]`. Unfold `fa1K`. Establish `hfun : (fun z : EuclideanSpace ℂ (Fin g) => (∑ α ∈ p.support, ‖monomialOfMultiindex α z‖ ^ 2 / fa1M α) * Real.exp (-‖z‖ ^ 2)) = fun z => ∑ α ∈ p.support, (fa1M α)⁻¹ * (‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2))`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, MeasureTheory.integral_finset_sum _ (fun α _ => (hint α).const_mul _)]`. Establish `h2 : ∀ α ∈ p.support, ∫ z, (fa1M α)⁻¹ * (‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2)) = Real.pi ^ g`. Introduce `α _`.
+
+Rewrite using `[MeasureTheory.integral_const_mul, integral_norm_monomial_sq_gaussian_eq, mul_comm (Real.pi ^ g), ← mul_assoc, inv_mul_cancel₀ (monomialMass_pos α).ne', one_mul]`. Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_monomialKernel_mul_gaussian {g : ℕ} (p : MvPolynomial (Fin g) ℂ) :
     ∫ z : EuclideanSpace ℂ (Fin g), fa1K p z * Real.exp (-‖z‖ ^ 2) = Real.pi ^ g * p.support.card := by
   have hint : ∀ α : Fin g →₀ ℕ,
@@ -97,6 +133,13 @@ theorem integral_monomialKernel_mul_gaussian {g : ℕ} (p : MvPolynomial (Fin g)
   rw [Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [fa1K, Finset.sum_mul]`. Rewrite using `[integral_finsetSum _ (fun α _ => ?_)]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Establish `: ∀ z : EuclideanSpace ℂ (Fin g), ‖monomialOfMultiindex α z‖ ^ 2 / fa1M α * Real.exp (-(1 / 2) * ‖z‖ ^ 2) = (fa1M α)⁻¹ * (‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-(1 / 2) * ‖z‖ ^ 2))` using `fun z => by ring`.
+
+Simplify using `only [this]`. Rewrite using `[integral_const_mul, integral_norm_monomial_sq_gaussian_half, integral_norm_monomial_sq_gaussian_eq]`. Use `(monomialMass_pos α).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Use `(integrable_norm_monomial_sq_gaussian α (b := 1 / 2) (by norm_num)).const_mul (fa1M α)⁻¹` as an intermediate fact.
+
+Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_monomialKernel_mul_gaussian_half {g : ℕ} (p : MvPolynomial (Fin g) ℂ) :
     ∫ z : EuclideanSpace ℂ (Fin g), fa1K p z * Real.exp (-(1 / 2) * ‖z‖ ^ 2) =
       Real.pi ^ g * ∑ α ∈ p.support, (2 : ℝ) ^ (g + ∑ i, α i) := by
@@ -115,6 +158,21 @@ theorem integral_monomialKernel_mul_gaussian_half {g : ℕ} (p : MvPolynomial (F
     refine this.congr (Filter.Eventually.of_forall fun z => ?_)
     simp only; ring
 
+/- English proof (translation)
+Establish `hexp : ∀ z, F z * (starRingEnd ℂ) (F z) * (Real.exp (-‖z‖ ^ 2) : ℂ) = ∑ α ∈ p.support, ∑ β ∈ p.support, (MvPolynomial.coeff α p * (starRingEnd ℂ) (MvPolynomial.coeff β p)) * (monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ))`. Introduce `z`. Rewrite using `[hF, eval_eq_sum_coeff_mul_monomial, map_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl (fun β _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hexp]`. Establish `hint : ∀ α β : Fin g →₀ ℕ, Integrable (fun z : EuclideanSpace ℂ (Fin g) => (MvPolynomial.coeff α p * (starRingEnd ℂ) (MvPolynomial.coeff β p)) * (monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ)))` using `fun α β => (integrable_monomial_mul_conj_gaussian α β).const_mul _`.
+
+Rewrite using `[integral_finsetSum _ (fun α _ => integrable_finsetSum _ (fun β _ => hint α β))]`. Establish `hin : ∀ α ∈ p.support, ∫ z : EuclideanSpace ℂ (Fin g), ∑ β ∈ p.support, (MvPolynomial.coeff α p * (starRingEnd ℂ) (MvPolynomial.coeff β p)) * (monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex β z) * (Real.exp (-‖z‖ ^ 2) : ℂ)) = (((‖MvPolynomial.coeff α p‖ ^ 2 * (R …`. Introduce `α hα`. Rewrite using `[integral_finsetSum _ (fun β _ => hint α β)]`. Rewrite using `[Finset.sum_eq_single_of_mem α hα (fun β _ hβ => by`.
+
+Rewrite using `[integral_const_mul, integral_monomial_mul_conj_gaussian_eq_zero (Ne.symm hβ), mul_zero])]`. Rewrite using `[integral_const_mul]`. Establish `h1 : ∀ z : EuclideanSpace ℂ (Fin g), monomialOfMultiindex α z * (starRingEnd ℂ) (monomialOfMultiindex α z) * (Real.exp (-‖z‖ ^ 2) : ℂ) = ((‖monomialOfMultiindex α z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) : ℝ) : ℂ)`. Introduce `z`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Rewrite using `[integral_complex_ofReal, integral_norm_monomial_sq_gaussian_eq, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hin, fa1N]`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations.
+
+Establish `: (Real.pi : ℂ) ^ g ≠ 0` using `pow_ne_zero _ (by exact_mod_cast Real.pi_ne_zero)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_mul_conj_gaussian_eq_coeffNormSq {g : ℕ} (p : MvPolynomial (Fin g) ℂ) (F : EuclideanSpace ℂ (Fin g) → ℂ)
     (hF : ∀ z, F z = MvPolynomial.eval (fun i => z i) p) :
     (((Real.pi ^ g)⁻¹ : ℝ) : ℂ) * ∫ z, F z * (starRingEnd ℂ) (F z) * (Real.exp (-‖z‖ ^ 2) : ℂ) =

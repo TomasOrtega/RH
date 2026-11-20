@@ -13,6 +13,9 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 local notation "𝐜" => AlgEquiv.toRingEquiv (IsCMField.complexConj L)
 
+/- English proof (translation)
+Establish `h1` using `h (Units.map (Neutral.B1.finiteSingle L w) (atFin w k))`. Rewrite `h1` using `[conjFin_finSingle 𝐜 hc, map_inv, finId_finSingle, finId_finSingle, map_inv]`. Express the relevant statement in the definitionally equal form `χ.1 (localIdele L w' (atFin w' (cU 𝐜 k))) = (χ.1 (localIdele L w (atFin w k)))⁻¹`. Rewrite using `[← h1, inv_inv]`.
+-/
 theorem loc_of_idelic (χ : HChar L)
     (h : ∀ u : (Af L)ˣ, χ.1 (finId L (Units.map (conjFin 𝐜).toMonoidHom u)⁻¹) = χ.1 (finId L u))
     {w w' : HeightOneSpectrum (𝓞 L)} (hc : GlobalTheory.Mem.Chr.ConjPl 𝐜 w w') (k : Lˣ) :
@@ -22,6 +25,13 @@ theorem loc_of_idelic (χ : HChar L)
   change χ.1 (localIdele L w' (atFin w' (cU 𝐜 k))) = (χ.1 (localIdele L w (atFin w k)))⁻¹
   rw [← h1, inv_inv]
 
+/- English proof (translation)
+Establish `h1 : ∀ v x, normFin 𝐜 χ (localIdele L v x) = 1` using `fun v => by`. Take `⟨v', hv', -⟩` from `GlobalTheory.Mem.Chr.existsUnique_conjPl 𝐜 v`. Use `loc_eq_one_of_prod (continuous_normFin _ χ) {v} (fun k => ?_) (Finset.mem_singleton_self v)` and prove the remaining obligations. Rewrite using `[Finset.prod_singleton, normFin_loc _ χ hv' k, h v v' hv' k, mul_inv_cancel]`. Establish `h3` using `GlobalTheory.FrobDense.eq_one_of_local _ (continuous_normFin 𝐜 χ) (finId L u) (by`.
+
+Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing L) - 0 + 0 = 1`. Use the proof step `simp) fun v => h1 v _`. Establish `e : Units.map (pFin L).toMonoidHom (finId L u) = u` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(1 : Af L) - 1 + u = u`. Use the proof step `simp)`.
+
+Express the relevant statement in the definitionally equal form `χ.1 (finId L (Units.map (pFin L).toMonoidHom (finId L u) * Units.map (conjFin 𝐜).toMonoidHom (Units.map (pFin L).toMonoidHom (finId L u)))) = 1 at h3`. Rewrite `h3` using `[e, map_mul, map_mul]`. Rewrite using `[map_inv, map_inv]`. Conclude with `(eq_inv_of_mul_eq_one_left h3).symm`.
+-/
 theorem idelic_of_loc (χ : HChar L)
     (h : ∀ w w', GlobalTheory.Mem.Chr.ConjPl 𝐜 w w' → ∀ k : Lˣ, χ.locK w' (cU 𝐜 k) = (χ.locK w k)⁻¹) (u : (Af L)ˣ) :
     χ.1 (finId L (Units.map (conjFin 𝐜).toMonoidHom u)⁻¹) = χ.1 (finId L u) := by
@@ -45,6 +55,9 @@ end GlobalTheory.CuspRep.CsdFin
 
 open GlobalTheory.CuspRep.CsdFin in
 
+/- English proof (translation)
+The claim follows from `host_isCMField H; (∀ u : (Af H.E)ˣ, χ.1 (finId H.E (Units.map (conjFin (IsCMField.complexConj H.E).toRingEquiv).toMonoidHom u)⁻¹) = χ.1 (finId H.E u)) ↔ ∀ w w', Formalism.BasicNotions.IsConjPl H w w' → ∀ k : H.Eˣ, χ.locK w' (Units.map (MonoidHomClass.toMonoidHom H.conj) k) = (χ.l …`.
+-/
 theorem GlobalTheory.CuspRep.csdFin_iff : ∀ {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E), haveI := host_isCMField H;
     (∀ u : (Af H.E)ˣ, χ.1 (finId H.E (Units.map (conjFin (IsCMField.complexConj H.E).toRingEquiv).toMonoidHom u)⁻¹) =
       χ.1 (finId H.E u)) ↔

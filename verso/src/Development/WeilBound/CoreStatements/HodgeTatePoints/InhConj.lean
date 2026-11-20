@@ -29,6 +29,9 @@ def ffCurve (k K : Type) [Field k] [Field K] [Algebra k K] [IsFunctionField k K]
     simp only [Finset.mem_coe, Finsupp.mem_support_iff]
     exact fun h0 => hv (by simp only [h0, zero_mul])
 
+/- English proof (translation)
+Take `⟨t, ht, -⟩` from `GroundTheory.FunctionField.IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)`. Establish `hR : IsIntegrallyClosedIn (integralClosure k K).toSubring K` using `by infer_instance`. Establish `htR : t ∉ (integralClosure k K).toSubring` using `fun h => ht (IsIntegral.isAlgebraic h)`. Take `⟨V, hV, htV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn htR`. Conclude with `⟨⟨V, fun h => htV (h ▸ trivial), fun c => hV (isIntegral_algebraMap (x := c))⟩⟩`.
+-/
 private theorem place_nonempty_of_isFunctionField (k K : Type) [Field k] [Field K] [Algebra k K]
     [GroundTheory.FunctionField.IsFunctionField k K] : Nonempty (GroundTheory.FunctionField.Place k K) := by
   obtain ⟨t, ht, -⟩ := GroundTheory.FunctionField.IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := K)
@@ -37,6 +40,13 @@ private theorem place_nonempty_of_isFunctionField (k K : Type) [Field k] [Field 
   obtain ⟨V, hV, htV⟩ := Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn htR
   exact ⟨⟨V, fun h => htV (h ▸ trivial), fun c => hV (isIntegral_algebraMap (x := c))⟩⟩
 
+/- English proof (translation)
+Introduce `k K _ _ _ _`. Use `⟨ffCurve k K, ⟨Equiv.refl _, fun i => ⟨rfl, rfl⟩⟩, place_nonempty_of_isFunctionField k K, ?_⟩` and prove the remaining obligations. Introduce `i x hx`. Take `⟨v, rfl⟩ : ∃ v : GroundTheory.FunctionField.Place k K, v = i` from `⟨i, rfl⟩`. Use `show v.valuation x ≤ 1`.
+
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Establish `hd` using `GroundTheory.FunctionField.divisor_eq_zero_of_isAlgebraic hx h0`. Establish `ho : v.ord x = 0`. Establish `e` using `GroundTheory.FunctionField.divisor_apply (k := k) x v`.
+
+Rewrite `e` using `[hd]`. Conclude with `e.symm`. Rewrite using `[v.valuation_eq_exp_neg_ord h0, ho]`. Simplify using the standard rewrite rules.
+-/
 theorem inh_ff : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] [GroundTheory.FunctionField.IsFunctionField k K], ∃ C : ACurve K, IsFFCurve k C ∧ Nonempty C.I ∧ ∀ i (x : K), IsAlgebraic k x → C.v i x ≤ 1 := by
   intro k K _ _ _ _
   refine ⟨ffCurve k K, ⟨Equiv.refl _, fun i => ⟨rfl, rfl⟩⟩, place_nonempty_of_isFunctionField k K, ?_⟩

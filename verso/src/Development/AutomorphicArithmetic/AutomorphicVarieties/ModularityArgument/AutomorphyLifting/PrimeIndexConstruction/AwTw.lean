@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LeviSmoothLocalization.PrincipalSeriesMatching.WindowMul
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.QuadraticTwists.AttTwist
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ n hn ι r κ hκ haut hW`. Take `⟨_, art, χ, a, hart, -, hL⟩` from `hκ`. Take `⟨π, hreg, hatt⟩` from `haut`. Take `⟨t, ht⟩` from `hW π hreg hatt`. Take `⟨b, hb⟩` from `UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winTw F χ`.
+
+Conclude with `UpperTheory.V.Z.Win.Birth.awOne F Ω l n hn ι _ (π.twist χ) (UpperTheory.V.Af.Cq.attTwist F Ω l ι n r π hatt art χ a κ hart hL) ⟨t + b, fun v => hb n (by omega) π t v (ht v)⟩`.
+-/
 theorem UpperTheory.V.Z.Win.Birth.awTw :
     UpperTheory.V.Z.Win.Birth.AwTw := by
   intro F Ω _ _ _ _ _ _ l _ n hn ι r κ hκ haut hW

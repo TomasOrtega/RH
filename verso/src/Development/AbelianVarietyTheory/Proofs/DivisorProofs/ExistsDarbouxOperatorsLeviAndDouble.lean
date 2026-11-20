@@ -14,6 +14,27 @@ namespace GlobalTheory.TowU.LeviModel
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Set `Am : Matrix ι ι (AF F)` to `A.map (algebraMap F (AF F))`. Set `Aim : Matrix ι ι (AF F)` to `A⁻¹.map (algebraMap F (AF F))`. Establish `e1 : Am * Aim = 1`.
+
+Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : Aim * Am = 1`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `{ pres := comp_mem A⁻¹ A h2 h1 pres' := comp_mem A A⁻¹ h1 h2 left := fun φ _ => funext fun x => ?_ right := fun φ _ => funext fun x => ?_ adm := fun l hl g hg => ?_ adm' := fun l hl g hg => ?_ Heisenberg₂ := fun w φ _ => funext fun x => ?_ theta := ⟨1, one_ne_zero, fun φ _ => ?_⟩ …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (Aim *ᵥ (Am *ᵥ x)) = φ x`.
+
+Rewrite using `[Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `φ (Am *ᵥ (Aim *ᵥ x)) = φ x`. Rewrite using `[Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Take `⟨T, hT⟩` from `hl _ ⟨hg.1.comp_continuous (finHomeo A⁻¹ A h2 h1).continuous, hg.2.comp_homeomorph (finHomeo A⁻¹ A h2 h1)⟩`. Use `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (archEquiv A⁻¹ A h2 h1)), fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, comp_pureA A⁻¹ A h2 h1, hT]`. Both sides reduce to the same expression. Take `⟨T, hT⟩` from `hl _ ⟨hg.1.comp_continuous (finHomeo A A⁻¹ h1 h2).continuous, hg.2.comp_homeomorph (finHomeo A A⁻¹ h1 h2)⟩`. Use `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (archEquiv A A⁻¹ h1 h2)), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, comp_pureA A A⁻¹ h1 h2, hT]`.
+
+Both sides reduce to the same expression. Rewrite using `[act_levi, Matrix.transpose_map]`. Express the relevant statement in the definitionally equal form `ψ ((Aim *ᵥ x) ⬝ᵥ w.2 + ⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)) * φ (Aim *ᵥ x + w.1) = ψ (x ⬝ᵥ (Aimᵀ *ᵥ w.2) + ⅟(2 : AdeleRing (𝓞 F) F) * ((Am *ᵥ w.1) ⬝ᵥ (Aimᵀ *ᵥ w.2))) * φ (Aim *ᵥ (x + Am *ᵥ w.1))`. Rewrite using `[dot_transpose, dot_transpose, Matrix.mulVec_add, Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Rewrite using `[one_mul]`.
+
+Unfold `thetaSum`. Set `e : (ι → F) ≃ (ι → F)` to `{ toFun := fun ξ => A⁻¹ *ᵥ ξ invFun := fun ξ => A *ᵥ ξ left_inv := fun ξ => by simp only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] right_inv := fun ξ => by simp only [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec] }`. Establish `he` using `Equiv.tsum_eq e (fun ξ : ι → F => φ fun i => algebraMap F (AF F) (ξ i))`. Use `Eq.trans (tsum_congr fun ξ => ?_) he` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (Aim *ᵥ _) = φ (fun i => algebraMap F (AF F) ((A⁻¹ *ᵥ ξ) i))`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (algebraMap F (AF F)) A⁻¹ ξ i).symm`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `letI : MeasurableSpace (ι → AF F) := borel _`.
+
+Use `haveI : BorelSpace (ι → AF F) := ⟨rfl⟩`. Set `L : (ι → AF F) ≃+ (ι → AF F)` to `{ toFun := fun x => Aim *ᵥ x invFun := fun x => Am *ᵥ x left_inv := fun x => by simp only [Matrix.mulVec_mulVec, e1, Matrix.one_mulVec] right_inv := fun x => by simp only [Matrix.mulVec_mulVec, e2, Matrix.one_mulVec] map_add' := fun x y => Matrix.mulVec_add _ _ _ }`. Establish `hc : Continuous L` using `continuous_const.matrix_mulVec continuous_id`. Establish `hc' : Continuous L.symm` using `continuous_const.matrix_mulVec continuous_id`. Set `H : (ι → AF F) ≃ₜ (ι → AF F)` to `{ toEquiv := L.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`.
+
+Use `haveI : (Measure.map L μ').IsAddHaarMeasure := L.isAddHaarMeasure_map μ' hc hc'`. Establish `e` using `Measure.isAddLeftInvariant_eq_smul (Measure.map L μ') μ`. Use `⟨Measure.addHaarScalarFactor (Measure.map L μ') μ, ?_, ENNReal.coe_ne_top, fun φ _ => ?_⟩` and prove the remaining obligations. Conclude with `(Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (Measure.map L μ') μ).ne'` after adjusting the coercions. Establish `hm` using `lintegral_map_equiv (fun y => ‖φ y‖ₑ ^ 2) H.toMeasurableEquiv (μ := μ')`.
+
+Express the relevant statement in the definitionally equal form `∫⁻ x, ‖φ (Aim *ᵥ x)‖ₑ ^ 2 ∂μ' = _`. Establish `hL : (Measure.map H.toMeasurableEquiv μ') = Measure.map L μ'` using `rfl`. Rewrite `hm` using `[hL, e, lintegral_smul_measure]`. Conclude with `hm.symm.trans rfl`.
+-/
 theorem isOp_levi (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F)
     (hA : IsUnit A.det) :
     IsOp ψ (AdelicSvN.act (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ)) (compM A⁻¹) (compM A) := by
@@ -89,12 +110,18 @@ theorem isOp_levi (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι] [DecidableE
       rw [hL, e, lintegral_smul_measure] at hm
       exact hm.symm.trans rfl
 
+/- English proof (translation)
+Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.nonsing_inv_mul A hA]`. Simplify using `[Matrix.fromBlocks_one]`.
+-/
 theorem inv_diag {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F) (hA : IsUnit A.det) :
     (Matrix.fromBlocks A 0 0 A)⁻¹ = Matrix.fromBlocks A⁻¹ 0 0 A⁻¹ := by
   refine Matrix.inv_eq_left_inv ?_
   rw [Matrix.fromBlocks_multiply, Matrix.nonsing_inv_mul A hA]
   simp [Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[inv_diag A hA, act_levi, Matrix.fromBlocks_transpose]`. Simplify using `only [dblAct, act_levi, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.fromBlocks_mulVec, Matrix.zero_mulVec, add_zero, zero_add, Matrix.transpose_zero, Matrix.mulVec_neg, neg_neg]`.
+-/
 theorem dblAct_levi {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F) (hA : IsUnit A.det) :
     dblAct (AdelicSvN.act (R := AF F) (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ)) =
       AdelicSvN.act (Matrix.fromBlocks (Matrix.fromBlocks A 0 0 A) 0 0 (Matrix.fromBlocks A 0 0 A)⁻¹ᵀ) := by
@@ -103,6 +130,13 @@ theorem dblAct_levi {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι 
   simp only [dblAct, act_levi, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.fromBlocks_mulVec,
     Matrix.zero_mulVec, add_zero, zero_add, Matrix.transpose_zero, Matrix.mulVec_neg, neg_neg]
 
+/- English proof (translation)
+Establish `hA2 : IsUnit (Matrix.fromBlocks A 0 0 A).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Conclude with `hA.mul hA`. Use `⟨isOp_levi ψ A hA, compM (Matrix.fromBlocks A 0 0 A)⁻¹, compM (Matrix.fromBlocks A 0 0 A), ?_, fun φ₁ _ φ₂ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[dblAct_levi A hA]`.
+
+Conclude with `isOp_levi ψ _ hA2`. Use function extensionality and compare the values at `x`. Rewrite using `[inv_diag A hA]`. Express the relevant statement in the definitionally equal form `boxFun φ₁ φ₂ _ = φ₁ _ * star (star (φ₂ _))`. Rewrite using `[star_star]`.
+
+Simplify using `only [boxFun, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.fromBlocks_mulVec, Matrix.zero_mulVec, add_zero, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem isOp2_levi (ψ : AddChar (AF F) ℂ) {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F)
     (hA : IsUnit A.det) :
     IsOp2 ψ (AdelicSvN.act (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ)) (compM A⁻¹) (compM A) := by
@@ -123,6 +157,9 @@ end GlobalTheory.TowU.LeviModel
 
 open GlobalTheory.TowU.LeviModel in
 
+/- English proof (translation)
+Introduce `_ _ _ ψ _ _ _ _ A hA` and use `⟨_, _, isOp2_levi ψ A hA⟩`.
+-/
 theorem GlobalTheory.TowU.realised_levi2 : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ (κ : Type) [Fintype κ] [DecidableEq κ], ∀ A : Matrix κ κ F, IsUnit A.det →
     ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (S' : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)),

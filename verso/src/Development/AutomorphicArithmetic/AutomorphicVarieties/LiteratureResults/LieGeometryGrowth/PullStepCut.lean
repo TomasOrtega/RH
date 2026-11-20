@@ -6,15 +6,26 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx`. Take `rfl : x = toL y.val` from `hy.symm`. Rewrite using `[chart_val, chart_val]`.
+-/
 private theorem cut_chart (Ψ : ℂ → ℂ) (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     chart (fun h => Ψ (φ h)) g x = Ψ (chart φ g x) := by
   obtain ⟨y, hy⟩ := hx
   obtain rfl : x = toL y.val := hy.symm
   rw [chart_val, chart_val]
 
+/- English proof (translation)
+Introduce `g` and use `(hΨ.comp_contDiffOn (φ.2 g)).congr fun _ hx => cut_chart Ψ φ.1 g hx`.
+-/
 private theorem cut_mem {Ψ : ℂ → ℂ} (hΨ : ContDiff ℝ ∞ Ψ) (φ : Sm E a) : (fun h => Ψ (φ.1 h)) ∈ Sm E a := fun g =>
   (hΨ.comp_contDiffOn (φ.2 g)).congr fun _ hx => cut_chart Ψ φ.1 g hx
 
+/- English proof (translation)
+Establish `hv : chart φ.1 g (oneL E a) = φ.1 g` using `by simpa using chart_val φ.1 g 1`. Rewrite using `[← hv]`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (fun h => Ψ (φ.1 h)) g) (oneL E a) X = fderiv ℝ Ψ _ (fderiv ℝ (chart φ.1 g) (oneL E a) X)`. Establish `e : chart (fun h => Ψ (φ.1 h)) g =ᶠ[𝓝 (oneL E a)] Ψ ∘ chart φ.1 g` using `by filter_upwards [isOpen_invSet.mem_nhds (val_mem_invSet (1 : GL (Fin a) (Cinf E)))] with x hx`. Conclude with `cut_chart Ψ φ.1 g hx`.
+
+Rewrite using `[e.fderiv_eq, fderiv_comp _ (hΨ.differentiable (by simp) _) (differentiableAt_chart φ.2 g)]`. Both sides reduce to the same expression.
+-/
 private theorem cut_lie {Ψ : ℂ → ℂ} (hΨ : ContDiff ℝ ∞ Ψ) (φ : Sm E a) (X : Lie E a) (g : GA E a) :
     (lie E a X ⟨_, cut_mem hΨ φ⟩).1 g = fderiv ℝ Ψ (φ.1 g) ((lie E a X φ).1 g) := by
   have hv : chart φ.1 g (oneL E a) = φ.1 g := by simpa using chart_val φ.1 g 1
@@ -26,6 +37,11 @@ private theorem cut_lie {Ψ : ℂ → ℂ} (hΨ : ContDiff ℝ ∞ Ψ) (φ : Sm 
   rw [e.fderiv_eq, fderiv_comp _ (hΨ.differentiable (by simp) _) (differentiableAt_chart φ.2 g)]
   rfl
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `banach_steinhaus (g := fun g : GA E a => fderiv ℝ (chart φ.1 g) (oneL E a)) fun X => by`. Take `⟨C, hC⟩` from `h X []`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Use `hC g` as an intermediate fact. Rewrite `this` using `[List.map_singleton, List.prod_singleton]`.
+
+Conclude with `this`. Conclude with `⟨K, (norm_nonneg _).trans (hK 1), fun X g => ((fderiv ℝ (chart φ.1 g) (oneL E a)).le_opNorm X).trans (mul_le_mul_of_nonneg_right (hK g) (norm_nonneg _))⟩`.
+-/
 private theorem cut_unif (φ : Sm E a) (h : BddDer φ) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ (X : Lie E a) g, ‖(lie E a X φ).1 g‖ ≤ K * ‖X‖ := by
   obtain ⟨K, hK⟩ := banach_steinhaus (g := fun g : GA E a => fderiv ℝ (chart φ.1 g) (oneL E a)) fun X => by
@@ -39,6 +55,13 @@ private theorem cut_unif (φ : Sm E a) (h : BddDer φ) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ 1 Real.smoothTransition` using `Real.smoothTransition.contDiff`. Establish `hc : HasCompactSupport (deriv Real.smoothTransition)`. Use `HasCompactSupport.intro (isCompact_Icc (a := (0 : ℝ)) (b := 1)) fun x hx => ?_` and prove the remaining obligations. Break down `not_and_or.1 hx with h | h` into its components or cases. Establish `e : Real.smoothTransition =ᶠ[𝓝 x] fun _ => 0` using `(eventually_lt_nhds (not_le.1 h)).mono fun y hy => Real.smoothTransition.zero_of_nonpos hy.le`.
+
+Rewrite using `[e.deriv_eq, deriv_const]`. Establish `e : Real.smoothTransition =ᶠ[𝓝 x] fun _ => 1` using `(eventually_gt_nhds (not_le.1 h)).mono fun y hy => Real.smoothTransition.one_of_one_le hy.le`. Rewrite using `[e.deriv_eq, deriv_const]`. Take `⟨C, hC⟩` from `(hs.continuous_deriv le_rfl).bounded_above_of_compact_support hc`. Conclude with `⟨C.toNNReal, lipschitzWith_of_nnnorm_deriv_le (hs.differentiable (by simp)) fun x => by`.
+
+Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm]`. Conclude with `(hC x).trans (Real.le_coe_toNNReal C)⟩`.
+-/
 private theorem cut_lip : ∃ M : NNReal, LipschitzWith M Real.smoothTransition := by
   have hs : ContDiff ℝ 1 Real.smoothTransition := Real.smoothTransition.contDiff
   have hc : HasCompactSupport (deriv Real.smoothTransition) := by
@@ -59,12 +82,23 @@ private noncomputable def cutRe (R : ℝ) (z : ℂ) : ℝ := Real.smoothTransiti
 
 private noncomputable def cutFn (R : ℝ) (z : ℂ) : ℂ := cutRe R z
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.contDiff.comp (contDiff_const.sub Complex.reCLM.contDiff)`.
+-/
 private theorem cutRe_smooth (R : ℝ) : ContDiff ℝ ∞ (cutRe R) :=
   Real.smoothTransition.contDiff.comp (contDiff_const.sub Complex.reCLM.contDiff)
 
+/- English proof (translation)
+The claim follows from `Complex.ofRealCLM.contDiff.comp (cutRe_smooth R)`.
+-/
 private theorem cutFn_smooth (R : ℝ) : ContDiff ℝ ∞ (cutFn R) :=
   Complex.ofRealCLM.contDiff.comp (cutRe_smooth R)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `cut_lip`. Use `⟨M, M.2, fun R z => norm_fderiv_le_of_lip' ℝ M.2 (Filter.Eventually.of_forall fun w => ?_)⟩` and prove the remaining obligations. Establish `h1` using `hM.dist_le_mul (R + 1 - w.re) (R + 1 - z.re)`. Rewrite `h1` using `[Real.dist_eq, Real.dist_eq]`. Establish `h2 : |R + 1 - w.re - (R + 1 - z.re)| ≤ ‖w - z‖`.
+
+Rewrite using `[show R + 1 - w.re - (R + 1 - z.re) = -(w - z).re by rw [Complex.sub_re]; ring, abs_neg]`. Conclude with `Complex.abs_re_le_norm _`. Rewrite using `[cutFn, cutFn, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h2 M.2)`.
+-/
 private theorem cutFn_der : ∃ M : ℝ, 0 ≤ M ∧ ∀ (R : ℝ) z, ‖fderiv ℝ (cutFn R) z‖ ≤ M := by
   obtain ⟨M, hM⟩ := cut_lip
   refine ⟨M, M.2, fun R z => norm_fderiv_le_of_lip' ℝ M.2 (Filter.Eventually.of_forall fun w => ?_)⟩
@@ -76,6 +110,13 @@ private theorem cutFn_der : ∃ M : ℝ, 0 ≤ M ∧ ∀ (R : ℝ) z, ‖fderiv 
   rw [cutFn, cutFn, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
   exact h1.trans (mul_le_mul_of_nonneg_left h2 M.2)
 
+/- English proof (translation)
+Establish `h0 : fderiv ℝ (cutRe R) z = 0`. Break down `h with h | h` into its components or cases. Conclude with `IsLocalMin.fderiv_eq_zero (Filter.Eventually.of_forall fun w => by`. Rewrite using `[h]`. Conclude with `Real.smoothTransition.nonneg _)`.
+
+Conclude with `IsLocalMax.fderiv_eq_zero (Filter.Eventually.of_forall fun w => by`. Rewrite using `[h]`. Conclude with `Real.smoothTransition.le_one _)`. Establish `h1` using `(Complex.ofRealCLM.hasFDerivAt.comp z ((cutRe_smooth R).differentiable (by simp) z).hasFDerivAt).fderiv`. Rewrite `h1` using `[h0, ContinuousLinearMap.comp_zero]`.
+
+Conclude with `h1`.
+-/
 private theorem cutFn_flat (R : ℝ) (z : ℂ) (h : cutRe R z = 0 ∨ cutRe R z = 1) : fderiv ℝ (cutFn R) z = 0 := by
   have h0 : fderiv ℝ (cutRe R) z = 0 := by
     rcases h with h | h
@@ -88,6 +129,25 @@ private theorem cutFn_flat (R : ℝ) (z : ℂ) (h : cutRe R z = 0 ∨ cutRe R z 
   rw [h0, ContinuousLinearMap.comp_zero] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `E _ _ _ a U f Y C c f₀ H`. Take `⟨φ, hφ, hb⟩` from `H.f_sm`. Take `⟨K, hK0, hK⟩` from `cut_unif φ hb`. Take `⟨M, hM0, hM⟩` from `cutFn_der`. Establish `hc : ∀ t g, f (splitCentre E a t * g) = f g` using `fun t g => by`.
+
+Use `H.f_left 1 t g` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis. Establish `hl : ∀ γ g, f (ratGL E a γ * g) = f g` using `fun γ g => by`. Establish `h1` using `H.f_left γ 0 ((splitCentre E a 0)⁻¹ * g)`. Establish `h2` using `hc 0 ((splitCentre E a 0)⁻¹ * g)`.
+
+Rewrite `h1` using `[mul_assoc, mul_inv_cancel_left]`. Rewrite `h2` using `[mul_inv_cancel_left]`. Conclude with `h1.trans h2.symm`. Use `⟨M * K, mul_nonneg hM0 hK0, fun R => ⟨⟨_, cut_mem (cutFn_smooth R) φ⟩, ⟨?_, ?_, ?_, ?_, ?_⟩, fun g => ⟨fun X => ?_, fun hg => ?_, fun hg => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `γ g`.
+
+Simplify using `only [hφ, hl]`. Introduce `t g`. Simplify using `only [hφ, hc]`. Introduce `k`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cutFn R (φ.1 (g * infGL E a (Unitary.toUnits k))) = cutFn R (φ.1 g)`. Rewrite using `[hφ, hφ, H.f_cpt]`. Introduce `k hk`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cutFn R (φ.1 (g * finGL E a k)) = cutFn R (φ.1 g)`.
+
+Rewrite using `[hφ, hφ, H.f_lev k hk]`. Introduce `g`. Conclude with `⟨_, Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _, rfl⟩`. Rewrite using `[cut_lie (cutFn_smooth R) φ X g, mul_assoc]`. Conclude with `((fderiv ℝ (cutFn R) _).le_opNorm _).trans (mul_le_mul (hM R _) (hK X g) (norm_nonneg _) hM0)`.
+
+Establish `h1 : cutRe R (φ.1 g) = 1`. Rewrite using `[hφ, cutRe, Complex.ofReal_re, Real.smoothTransition.one_of_one_le (by linarith)]`. Use `⟨?_, fun X => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cutFn R (φ.1 g) = 1`. Rewrite using `[cutFn, h1, Complex.ofReal_one]`.
+
+Rewrite using `[cut_lie (cutFn_smooth R) φ X g, cutFn_flat R _ (Or.inr h1)]`. Both sides reduce to the same expression. Establish `h1 : cutRe R (φ.1 g) = 0`. Rewrite using `[hφ, cutRe, Complex.ofReal_re, Real.smoothTransition.zero_of_nonpos (by linarith)]`. Use `⟨?_, fun X => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `cutFn R (φ.1 g) = 0`. Rewrite using `[cutFn, h1, Complex.ofReal_zero]`. Rewrite using `[cut_lie (cutFn_smooth R) φ X g, cutFn_flat R _ (Or.inl h1)]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Lit.Geo.stepCut :
     StepCut := by
   intro E _ _ _ a U f Y C c f₀ H

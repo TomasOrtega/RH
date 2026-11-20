@@ -13,6 +13,9 @@ section Alg
 
 variable {R : Type} [CommRing R] {n : ℕ} (i₀ : Fin n)
 
+/- English proof (translation)
+Use `delta wM`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.single_apply, map_add, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem wM_map {S : Type} [CommRing S] (f : R →+* S) (a b : R) : (wM i₀ a b).map f = wM i₀ (f a) (f b) := by
   delta wM
   ext i j
@@ -20,6 +23,9 @@ theorem wM_map {S : Type} [CommRing S] (f : R →+* S) (a b : R) : (wM i₀ a b)
     Matrix.single_apply, map_add, map_sub]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `delta wM`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Simplify using `[Matrix.single_apply, Matrix.one_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`.
+-/
 theorem wM_blocks (a b : R) : wM i₀ a b = Matrix.fromBlocks (1 - Matrix.single i₀ i₀ 1) (a • Matrix.single i₀ i₀ 1)
     (b • Matrix.single i₀ i₀ 1) (1 - Matrix.single i₀ i₀ 1) := by
   delta wM
@@ -27,6 +33,13 @@ theorem wM_blocks (a b : R) : wM i₀ a b = Matrix.fromBlocks (1 - Matrix.single
     simp [Matrix.single_apply, Matrix.one_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
       Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
 
+/- English proof (translation)
+Establish `hjw : kunf.jw n e = Matrix.fromBlocks 0 1 (e • 1) 0` using `rfl`. Establish `hEE : Matrix.single i₀ i₀ (1 : R) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1`. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Establish `hET : (Matrix.single i₀ i₀ (1 : R))ᵀ = Matrix.single i₀ i₀ 1` using `Matrix.transpose_single _ _ _`. Establish `h1' : e * b * f a = 1` using `by rw [mul_comm e b]; exact h1`.
+
+Rewrite using `[wM_map, wM_blocks, wM_blocks, hjw]`. Generalize the expression as in `Matrix.single i₀ i₀ (1 : R) = E at hEE hET ⊢`. Rewrite using `[Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_smul, hET, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, add_zero, zero_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_sub, Matrix.sub_mul, hEE, sub_self, smul_zero, sub_zero]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Discharge the goal by the elementary cases of `trivial`. Take the linear combination `(norm := module) h1' • E`. Take the linear combination `(norm := module) h2 • E`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem wM_unitary (f : R →+* R) (a b e : R) (h1 : b * e * f a = 1) (h2 : a * f b = e) :
     (wM i₀ a b)ᵀ * kunf.jw n e * (wM i₀ a b).map f = kunf.jw n e := by
   have hjw : kunf.jw n e = Matrix.fromBlocks 0 1 (e • 1) 0 := rfl

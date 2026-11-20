@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.EigGoodTypes
 
+/- English proof (translation)
+Establish `hLP : SumRepresentations.At.TieLP D.nd D.naut` using `h0.1`. Establish `hC` using `h4.2.2`. Establish `h` using `h5.1 [⟨a, D.naut.tw (D.naut.tw π D.naut.etaTinv) D.naut.etaT, 1⟩] [⟨a, π, 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by show isoLoc D.nd D.naut (twistIso D.nd D.naut (twistIso D.nd D.naut [⟨a, π, 1⟩] D.naut.etaTinv) D.naut.etaT) w = _`. Rewrite using `[GlobalTheory.RowThetaParam.isoLoc_twistIso D.nd D.naut hLP hC, GlobalTheory.RowThetaParam.isoLoc_twistIso D.nd D.naut hLP hC, (GlobalTheory.RowThetaParam.lpChar_eta_inv D.nd D.naut hLP _).2])`. Rewrite `h` using `[List.singleton_perm_singleton]`.
+
+Use `injection h with _ h2`.
+-/
 theorem tw_inv_eta {D : D7} (h0 : SumRepresentations.tie0 D) (h4 : SumRepresentations.ArchimedeanSignatureMatching D) (h5 : SumRepresentations.adm5 D) {a : ℕ} (ha : 1 ≤ a)
     (π : D.naut.CG a) : D.naut.tw (D.naut.tw π D.naut.etaTinv) D.naut.etaT = π := by
   have hLP : SumRepresentations.At.TieLP D.nd D.naut := h0.1
@@ -21,6 +26,19 @@ theorem tw_inv_eta {D : D7} (h0 : SumRepresentations.tie0 D) (h4 : SumRepresenta
   rw [List.singleton_perm_singleton] at h
   injection h with _ h2
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -, -, -⟩` from `hB`. Use `⟨fun p hp => ?_, ?_, ?_, fun k v => ⟨((hg k).1.1 v).1, ((hg k).1.1 v).2.1⟩⟩` and prove the remaining obligations. Establish `hm : (⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩ : Part D.naut.CG) ∈ twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv` using `List.mem_map.2 ⟨p, List.mem_append_left _ hp, rfl⟩`. Take `⟨ha, hd, hc⟩` from `h1 _ hm`. Use `⟨ha, hd, ?_⟩` and prove the remaining obligations.
+
+Use `D.naut.csd_tw _ _ h0.2.1.1.1 hc` as an intermediate fact. Rewrite `this` using `[tw_inv_eta h0 h4 h5 ha]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (fun p : Part D.naut.CG => ((⟨p.a, p.π⟩ : Σ a, D.naut.CG a), p.d))`. Introduce and unpack `⟨a, π, d⟩ ⟨a', π', d'⟩ h`. Simplify using `only [Prod.mk.injEq, Sigma.mk.inj_iff] at h`.
+
+Take `⟨⟨rfl, h⟩, rfl⟩` from `h`. Consider the cases of `h`. Both sides reduce to the same expression. Establish `hn : (Sig ++ [muPart D.nd D.naut i]).Nodup`. Unfold `twistIso at h2`.
+
+Rewrite `h2` using `[List.map_map]`. Conclude with `List.Nodup.of_map _ h2`. Conclude with `(hn.sublist (List.sublist_append_left _ _)).map hinj`. Establish `e1 : (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv).map (fun p => p.a * p.d) = (Sig ++ [muPart D.nd D.naut i]).map (fun p => p.a * p.d)`. Unfold `twistIso`.
+
+Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Unfold `rankIso at h3 ⊢`. Rewrite `h3` using `[e1, List.map_append, List.sum_append]`. Simplify using `only [muPart, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, one_mul, add_zero] at h3`.
+
+Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_parC {D : D7} (h0 : SumRepresentations.tie0 D) (h4 : SumRepresentations.ArchimedeanSignatureMatching D) (h5 : SumRepresentations.adm5 D) {i : D.nd.Loc} {P0 : D.naut.AV i}
     {Sig : List (Part D.naut.CG)}
     (hB : IsBCV D.nd D.naut i P0 (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv))
@@ -62,6 +80,13 @@ theorem sig_parC {D : D7} (h0 : SumRepresentations.tie0 D) (h4 : SumRepresentati
     have : D.R.nV = D.R.r + D.R.t := rfl
     omega
 
+/- English proof (translation)
+Take `⟨-, Sig, ⟨P0, hP0, hB0⟩, hg⟩` from `hx`. Set `σ' : D.ntypes.Par` to `P.ty.par.eP.symm ⟨Sig, sig_parC h0 h4 h5 hB0 hg⟩`. Establish `hloc : ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w` using `fun w => by`. Establish `e : P.ty.par.eP σ' = ⟨Sig, sig_parC h0 h4 h5 hB0 hg⟩` using `Equiv.apply_symm_apply _ _`. Rewrite using `[P.ty.par.locPar_def, e]`.
+
+Use `⟨σ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hMt i σ']`. Use `iSup₂_le fun Q hQ => le_iSup₂_of_le Q ⟨Sig, fun w => (hloc w).symm, ?_⟩ le_rfl` and prove the remaining obligations. Establish `hQ' : D.naut.ptV i Q = some x` using `hQ`. Take `⟨Pa, hPa⟩` from `hbc i Q`.
+
+Establish `hperm` using `((h41 i).2.1 P0 Q (by rw [hP0]; simp) (hP0.trans hQ'.symm)).1 _ _ hB0 hPa`. Conclude with `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm.symm hPa`. Introduce `k`. Simplify using `only [D.ntypes.labPar_def, hloc]`. Conclude with `hg k`.
+-/
 theorem eigC_le {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pin hL D) (h41 : Formalism.MainNotions.SumRepresentations.Conclusion41 D)
     (hMt : MtParTie D.nd D.naut D.ntypes) (hbc : Formalism.MainNotions.SumRepresentations.adm1 D) (h0 : SumRepresentations.tie0 D) (h4 : SumRepresentations.ArchimedeanSignatureMatching D)
     (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc) (x : D.nd.X i) (hx : x ∈ ZgoodN D.nd D.naut i) :
@@ -82,11 +107,17 @@ theorem eigC_le {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : Pin
     simp only [D.ntypes.labPar_def, hloc]
     exact hg k
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `H`.
+-/
 theorem onMt_cast {D : D7} {μ : D.what₂.Tup} {a b : ℕ} (h : a = b) (f : D.what₂.Mt μ a)
     (H : D.ntypes.onMt μ b D.ntypes.e0 (h ▸ f) = h ▸ f) : D.ntypes.onMt μ a D.ntypes.e0 f = f := by
   subst h
   exact H
 
+/- English proof (translation)
+Introduce `hL D P X h41 _ hMt hbc h0 h4 h5 hE0 hRead i hμ j hj x hx f hf y hy`. Take `⟨σ', hle, hgood⟩` from `eigC_le P h41 hMt hbc h0 h4 h5 i x hx`. Conclude with `(hRead _ hμ j f y hy).1 (onMt_cast hj f (hE0 i σ' _ (hle hf) hgood))`.
+-/
 theorem main : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp),
     Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.tieLab D → MtParTie D.nd D.naut D.ntypes → Formalism.MainNotions.SumRepresentations.adm1 D → Formalism.MainNotions.SumRepresentations.tie0 D →
     Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching D → Formalism.MainNotions.SumRepresentations.adm5 D → GlobalTheory.NRows.GoodIdempotentFixesLocalisationForms D → GlobalTheory.NRows.GoodIdempotentReadsAsGoodTypeProjector X → ∀ i, GlobalTheory.NJoin.EigGood X i := by

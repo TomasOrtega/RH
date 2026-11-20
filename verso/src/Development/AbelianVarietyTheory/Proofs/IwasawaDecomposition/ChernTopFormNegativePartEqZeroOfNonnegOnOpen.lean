@@ -5,6 +5,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hle : (⨆ i, μ i) ≤ (⨆ i, μ i).restrict Sᶜ`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_antisymm ?_ (zero_le)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem iSup_measure_apply_eq_zero {α κ : Type*} [MeasurableSpace α] (μ : κ → Measure α) {S : Set α}
     (hS : MeasurableSet S) (h : ∀ i, μ i S = 0) : (⨆ i, μ i) S = 0 := by
   have hle : (⨆ i, μ i) ≤ (⨆ i, μ i).restrict Sᶜ := by
@@ -16,6 +19,15 @@ theorem iSup_measure_apply_eq_zero {α κ : Type*} [MeasurableSpace α] (μ : κ
   calc (⨆ i, μ i) S ≤ (⨆ i, μ i).restrict Sᶜ S := Measure.le_iff'.1 hle S
     _ = 0 := by rw [Measure.restrict_apply hS, Set.inter_compl_self, measure_empty]
 
+/- English proof (translation)
+Establish `hS : MeasurableSet (ptsIn X.str σ O)` using `(isOpen_ptsIn O).measurableSet`. Unfold `chernTopPart glueMeas`. Use `iSup_measure_apply_eq_zero _ hS fun c => ?_` and prove the remaining obligations. Rewrite using `[chartMeas_apply c.e _ hS]`. Establish `hm : MeasurableSet (c.e '' (c.e.source ∩ ptsIn X.str σ O))` using `measurableSet_image c.e (c.e.open_source.measurableSet.inter hS) Set.inter_subset_left`.
+
+Rewrite using `[setLIntegral_congr_fun hm (g := fun _ => 0) ?_, MeasureTheory.lintegral_zero]`. Introduce and unpack `_ ⟨y, ⟨hys, hyS⟩, rfl⟩`. Establish `hz : c.e.symm (c.e y) ∈ c.e.source ∩ ptsIn X.str σ O`. Rewrite using `[c.e.left_inv hys]`. Conclude with `⟨hys, hyS⟩`.
+
+Use `beta_reduce`. Generalize the expression as in `c.e.symm (c.e y) = z at hz ⊢`. Apply `ENNReal.ofReal_eq_zero.2` to reduce the goal to its premises. Use `h z hz.2 c hz.1 _ (E.nonempty (under z)).choose_spec` as an intermediate fact. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chernTopPart_neg_eq_zero_of_nonneg {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} {m : ι → ℕ}
     (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ)
     (R : MvPolynomial (ι × ℕ) ℝ)

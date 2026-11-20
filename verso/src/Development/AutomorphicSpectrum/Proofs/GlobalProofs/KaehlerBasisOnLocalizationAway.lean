@@ -5,6 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.CompanionTheory.Glob.ResKCoords
 
+/- English proof (translation)
+Introduce `K _ Y g U s n x h`. Use `letI aU : Algebra K Γ(Y, U.1) := secAlgebra g U.1`. Use `letI aB : Algebra K Γ(Y, Y.basicOpen s) := secAlgebra g (Y.basicOpen s)`. Use `letI aUB : Algebra Γ(Y, U.1) Γ(Y, Y.basicOpen s) := (Y.presheaf.map (homOfLE (Y.basicOpen_le s)).op).hom.toAlgebra`. Use `haveI tower : IsScalarTower K Γ(Y, U.1) Γ(Y, Y.basicOpen s) := by`.
+
+Use `IsScalarTower.of_algebraMap_eq' ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ g.appLE ⊤ (Y.basicOpen s) (fun _ _ => trivial)).hom = _`. Establish `e : g.appLE ⊤ U.1 (fun _ _ => trivial) ≫ Y.presheaf.map (homOfLE (Y.basicOpen_le s)).op = g.appLE ⊤ (Y.basicOpen s) (fun _ _ => trivial)`. Conclude with `Scheme.Hom.appLE_map _ _ _`. Rewrite using `[← e]`.
+
+Both sides reduce to the same expression. Use `haveI loc : IsLocalization.Away s Γ(Y, Y.basicOpen s) := U.2.isLocalization_basicOpen s`. Conclude with `h Γ(Y, Y.basicOpen s)`.
+-/
 theorem isCoords_basicOpen_of_away :
     ∀ (K : Type) [Field K] (Y : Scheme.{0}) (g : Y ⟶ Sp K) (U : Y.affineOpens) (s : Γ(Y, U.1)) {n : ℕ}
       (x : Fin n → Γ(Y, U.1)),

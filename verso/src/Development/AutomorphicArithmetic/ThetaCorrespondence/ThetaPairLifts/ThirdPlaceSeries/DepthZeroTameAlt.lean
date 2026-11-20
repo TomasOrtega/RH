@@ -21,6 +21,11 @@ namespace UpperTheory.One.M
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 end
+/- English proof (translation)
+Introduce `hL D w w' c hc hA κ hκ hκE n σ σ' e he hg`. Set `π₁ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion D.host.E))` to `⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose n), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose n), GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose n g⟩) σ.irr⟩`. Establish `ha : GlobalTheory.PRep.IsAdmissible σ.ρ` using `(UpperTheory.Zero.LLC.Pr.bz _).1 (Fin n) σ.V σ.ρ σ.smooth σ.irr`. Establish `hE` using `GlobalTheory.GelfandKazhdan.equiv_contra _ n σ.V σ.ρ ha σ.irr`. Establish `hr` using `_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)`.
+
+Take `⟨b, b', h1, h2, h3, h4⟩` from `_root_.UpperTheory.One.M.New.field hL hr (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w')) c (D.host.conj : D.host.E →+* D.host.E) κ (fun z => (hA z).symm) hc hκ hκE n π₁ σ' e he (good_contra σ π₁ hE hg)`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (hr); obtain ⟨_, _, _, H⟩ := hOpn) | obtain ⟨_, _, _, -, H⟩ := hr`. Conclude with `⟨b, b', h1.trans (_root_.UpperTheory.One.M.LawsM.dual H n σ π₁ hg hE), h2, h3, h4⟩`.
+-/
 theorem conjDualParamF_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (w w' : PlE D.host) (c : D.nd.Om ≃+* D.nd.Om),
     (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) →
     (∀ y, y ∈ D.nd.plOm.1 w ↔ c y ∈ D.nd.plOm.1 w') →
@@ -56,6 +61,21 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin GlobalTheory.PendOf
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.ConjPlaceDual
+/- English proof (translation)
+Introduce `hPr hL D P hLab i PI k v w' hc`. Take `⟨γ, hγ1, hγ2, hγ3⟩` from `hLab`. Take `⟨c, hc1, hc2, hc3⟩` from `hγ2 k v w' hc`. Establish `hw'g : w' ∈ placesOver D.host.E (D.host.g k)`. Establish `h0` using `D.naut.plGw_over k v`.
+
+Simplify using `only [placesOver, Set.mem_setOf_eq] at h0 ⊢`. Conclude with `(hc _ _ (by simp)).1 h0`. Rewrite using `[hγ3 k w' hw'g, hγ3 k _ (D.naut.plGw_over k v), hγ1 k v]`. Take `⟨s, hs⟩` from `GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D ⟨k, v⟩`. Establish `hc3' : ∀ y, γ k w' (c y) = c (D.ntypes.tg k v y)` using `hc3`.
+
+Use `clear hγ1 hγ2 hγ3`. Generalize the expression as in `D.naut.plGw k v = w at hs hc hc2 ⊢`. Substitute `hs` using the available equality. Take `⟨hsw', -⟩` from `GlobalTheory.TypeTame.conjSP_w_of_isConjPl D s w' (conjPl_symm D hc)`. Substitute `hsw'` using the available equality.
+
+Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV (P.H.av.rep i PI) s`. Take `⟨κ, σ', e, hκ, hκc, hσ', he⟩` from `GlobalTheory.T.splitPlaceLocalComponent_conj_eq_inverseTranspose D D.R.nV (P.H.av.rep i PI) s σ hσ`. Establish `hloc : ∀ w, D.naut.locV i PI w = D.nbc.locAU (D.nd.j i) (P.H.au.cls (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI)) w` using `fun w => by rw [D.nbc.embAV_loc, P.H.emb]`. Establish `hA` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI) s σ hσ`. Establish `hA'` using `P.au (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 (P.H.av.rep i PI) _ σ' hσ'`.
+
+Rewrite `hA`, `hA'` using `[← hloc]`. Take `⟨b, b', hb, hb', hN, hρ⟩` from `_root_.UpperTheory.One.M.conjDualParamF_alt hL D s.w (GlobalTheory.TypeTame.conjSP s).w c hc1 hc2 κ hκ hκc D.R.nV σ σ' e he (_root_.UpperTheory.One.M.good_cls_of_isLocS_av P i PI s σ hσ)`. Rewrite `hb` using `[← hA]`. Rewrite `hb'` using `[← hA']`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.weilDeligneDualTransport_monodromy_dim_wild D _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ`.
+
+Establish `h4` using `GlobalTheory.T.weilDeligneLabel_transportDual_inverseRoots D k _ _ c hc1 hc2 _ _ D.R.nV b b' hb hb' hN hρ _ _ hc3'`. Use `⟨fun hm => (P.T.mono0 _ _).2 (h1 ((P.T.mono0 _ _).1 hm)), fun ht σ₁ hσ₁ hw₁ => ?_, h4⟩` and prove the remaining obligations. Rewrite using `[P.T.inePol _ _ σ₁ hσ₁, ← P.T.dim]`. Use `h3 (fun σ₂ hσ₂ hw₂ => ?_) σ₁ hσ₁ hw₁` and prove the remaining obligations. Rewrite using `[← P.T.inePol _ _ σ₂ hσ₂, P.T.dim]`.
+
+Conclude with `ht σ₂ hσ₂ hw₂`.
+-/
 theorem depthZero_tame_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), LabAll D P.T → ConjDual D := by
   intro hPr hL D P hLab i PI k v w' hc
   obtain ⟨γ, hγ1, hγ2, hγ3⟩ := hLab

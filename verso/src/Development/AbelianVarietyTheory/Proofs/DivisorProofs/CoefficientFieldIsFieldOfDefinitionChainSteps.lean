@@ -20,6 +20,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.ColRows.FldDef
 
+/- English proof (translation)
+Use `letI := B.host.cmStar`. Use `⟨h.1.1, h.1.2, fun y => ?_⟩` and prove the remaining obligations. Establish `h2 : y ∈ Formalism.HermitianLatticesTheory.dual (hStd B.fields.E n) L ↔ y ∈ L` using `by rw [h.2]`. Rewrite using `[← h2, Formalism.L2.Col.mem_dual]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_one]`. Both sides reduce to the same expression.
+-/
 theorem sd_of_isSdLat {B : Base} {n : ℕ} {L : Submodule (𝓞 B.host.E) (Fin n → B.host.E)}
     (h : Formalism.L2.Col.IsSdLat (E := B.fields.E) L) : letI := B.host.cmStar; IsSDLat B.host.E n L := by
   letI := B.host.cmStar
@@ -30,11 +35,25 @@ theorem sd_of_isSdLat {B : Base} {n : ℕ} {L : Submodule (𝓞 B.host.E) (Fin n
   rw [Submodule.mem_one]
   rfl
 
+/- English proof (translation)
+Conclude with `GlobalTheory.Glob.IntegralWittCoefficients.Model.isSDLat_std _ _`.
+-/
 theorem sd_stdL (D : D7) (n : ℕ) : StandardLatticesGL3.SD D (Th.stdL D.host n) := by
   exact GlobalTheory.Glob.IntegralWittCoefficients.Model.isSDLat_std _ _
 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
 
+/- English proof (translation)
+Use `letI := B.host.cmStar`. Set `S0 : SDLat B.host.E n` to `⟨Th.stdL B.host n, sd_stdL (I.rec7 l Z) n⟩`. Set `L1 : SDLat B.host.E n` to `⟨L, hL⟩`. Establish `h2 : idl ((I.rec7 l Z).relDet n S0 L1) = TaylorLogMetric.detId (I.rec7 l Z) S0.1 L1.1` using `hidl.2.2.2.2 n S0 L1`. Establish `e : TaylorLogMetric.detId (I.rec7 l Z) S0.1 L1.1 = Th.detId B.host (Th.stdL B.host n) L` using `rfl`.
+
+Establish `hl : TaylorLogMetric.chiRec (I.rec7 l Z) idl (Th.detId B.host (Th.stdL B.host n) L) = ((TaylorLogMetric.chiQ (I.rec7 l Z) ((I.rec7 l Z).relDet n S0 L1) : ℂˣ) : ℂ)`. Rewrite using `[← e, ← h2, TaylorLogMetric.chiRec_idl _ _ hidl.1]`. Rewrite using `[hl]`. Take `⟨t, ht⟩` from `QuotientGroup.mk_surjective ((I.rec7 l Z).relDet n S0 L1)`. Rewrite using `[← ht]`.
+
+Establish `hχ` using `I.C.isChi`. Establish `hK` using `(GlobalTheory.Mem.KerDet.kernel_open_and_factor B.R B.host).2.2.2 I.C.chiPsi hχ.triv (fun v y hy _ => hχ.unr v y hy) fun v _ => hχ.unr v`. Establish `hr : (QuotientGroup.mk (toDtT B.host I.SQ t) : DtT B.host ⧸ UOT B.host) = relDetT B.host n (Th.stdL B.host n) L`. Establish `h1` using `toDtTMod_mk B.host I.SQ (t : DtQ B.host I.SQ)`. Establish `h3` using `toDtTMod_relDetQ B.host I.SQ n (Th.stdL B.host n) L`.
+
+Establish `h6 : (QuotientGroup.mk (t : DtQ B.host I.SQ) : DtQ B.host I.SQ ⧸ UOQ B.host I.SQ) = relDetQ B.host I.SQ n (Th.stdL B.host n) L` using `ht`. Rewrite using `[← h1, h6, h3]`. Establish `h5 : ((tildeQ B.host I.SQ I.C.chiPsi t : ℂˣ) : ℂ) = ((tildeD B.host I.C.chiPsi (toDtT B.host I.SQ t) : ℂˣ) : ℂ)`. Rewrite using `[tildeQ_eq_comp B.host I.SQ hK]`. Both sides reduce to the same expression.
+
+Conclude with `h5.trans (GlobalTheory.Mem.ChiDet.tildeD_eq_chiId B.R B.host I.C.chiPsi hχ n L ⟨hL.1, hL.2.1⟩ _ hr)`.
+-/
 theorem chiRec_detId {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → TaylorLogMetric.IdE (I.rec7 l Z)}
     (hidl : TaylorLogMetric.RelDetPinned (I.rec7 l Z) idl) (n : ℕ) (L : Submodule (𝓞 B.host.E) (Fin n → B.host.E))
     (hL : StandardLatticesGL3.SD (I.rec7 l Z) L) :
@@ -66,6 +85,15 @@ end GlobalTheory.ColRows.FldDef
 namespace GlobalTheory.ColRows.FldDef
 open GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds
 
+/- English proof (translation)
+Introduce `h i hi L L' c x hR e hdeg`. Take `⟨y, hy⟩` from `h i hi L L' c x hR e hdeg`. Establish `hc : Th.chiFac B.host χ₁ (R.N i) (R.N (i + 1)) L L' = Th.chiFac B.host χ₂ (R.N i) (R.N (i + 1)) L L'`. Unfold `Th.chiFac`. Rewrite using `[hχ _ L hR.1, hχ _ L' hR.2.1]`.
+
+Establish `he : (J.amb B χ₁).e (R.N i) (R.N (i + 1)) L L' = (J.amb B χ₂).e (R.N i) (R.N (i + 1)) L L'`. Use function extensionality and compare the values at `z`. Use `show Th.chiFac B.host χ₁ _ _ L L' * _ = Th.chiFac B.host χ₂ _ _ L L' * _`. Rewrite using `[hc]`. Establish `hth : (J.amb B χ₁).thInd (Sall sel mu u) L L' c x = (J.amb B χ₂).thInd (Sall sel mu u) L L' c x`.
+
+Unfold `Amb.thInd`. Rewrite using `[he]`. Both sides reduce to the same expression. Use `⟨y, hy.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hth]`.
+
+Use `show (Th.chiFac B.host χ₁ _ _ L L')⁻¹ * _ = (Th.chiFac B.host χ₂ _ _ L L')⁻¹ * _`. Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem fieldOfDefinition_congr {B : Base} (J : AmbIn B.host) (χ₁ χ₂ : Submodule (𝓞 B.host.E) B.host.E → ℂ)
     (hχ : ∀ (n : ℕ) (L : Submodule (𝓞 B.host.E) (Fin n → B.host.E)), Formalism.L2.Col.IsSdLat (E := B.fields.E) L →
       χ₁ (Th.detId B.host (Th.stdL B.host n) L) = χ₂ (Th.detId B.host (Th.stdL B.host n) L))
@@ -95,6 +123,17 @@ end GlobalTheory.ColRows.FldDef
 
 open GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W hJ hS hW u a`. Take `⟨-, -, -, hFD⟩` from `GlobalTheory.Core.Ht2.analyticTies_trueCols I hOk (GlobalTheory.Mem.Col2.base_fields_primes_ok B X).1 l Z hJ`. Establish `hχ : ∀ (n : ℕ) (L : Submodule (𝓞 B.host.E) (Fin n → B.host.E)), Formalism.L2.Col.IsSdLat (E` using `B.fields.E) L → I.chi (Th.detId B.host (Th.stdL B.host n) L) = t.χ (Th.detId B.host (Th.stdL B.host n) L) := fun n L hL => by`. Establish `h1` using `GlobalTheory.ColRows.FldDef.chiRec_detId I l Z t.idl_ok n L (GlobalTheory.ColRows.FldDef.sd_of_isSdLat hL)`. Establish `h2` using `congrFun t.χ_rec (Th.detId B.host (Th.stdL B.host n) L)`.
+
+Conclude with `h1.symm.trans h2.symm`. Establish `hF : ∀ (u' : (B.primes X).Word) (a' : I.ι), FieldOfDefinition (Pr` using `B.primes X) B.wts I.sel (I.tup a') (I.cst a') u' (I.J.amb B t.χ) := fun u' a' => by`. Establish `h3` using `GlobalTheory.ColRows.FldDef.fieldOfDefinition_congr (R := B.R) I.J I.chi t.χ hχ B.wts I.sel (I.tup a') (I.cst a') u'`. Establish `h4 : FieldOfDefinition (Pr` using `B.primes X) B.wts I.sel (I.tup a') (I.cst a') u' (I.J.amb B I.chi) := hFD u' a'`. Conclude with `h3 h4`.
+
+Use `clear hFD hχ`. Take `⟨hX, -, hPr, -, hsel, hS', hword, htup, hcst, -, -, -, hamb, -, -⟩` from `hS`. Consider the cases of `t`. Substitute `hX` using the available equality. Take `rfl` from `eq_of_heq hPr`.
+
+Substitute `hS'` using the available equality. Take `rfl` from `eq_of_heq hsel`. Take `rfl` from `eq_of_heq htup`. Take `rfl` from `eq_of_heq hcst`. Take `rfl` from `eq_of_heq hword`.
+
+Take `rfl` from `eq_of_heq hW`. Establish `hamb'` using `eq_of_heq hamb`. Rewrite using `[hamb']`. Conclude with `hF u a`.
+-/
 theorem GlobalTheory.ColRows.fieldOfDefinition_of_stdKer : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (W : Formalism.L2.Col.Wts t.X t.Pr.Word (I.rec7 l Z).R), ColIn.JetsIn I → I.StdKer l Z t → HEq W B.wts → ∀ u a, GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds.FieldOfDefinition W t.sel (t.tup a) (t.cst a) (t.word u) t.amb := by
   intro B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W hJ hS hW u a
   obtain ⟨-, -, -, hFD⟩ := GlobalTheory.Core.Ht2.analyticTies_trueCols I hOk (GlobalTheory.Mem.Col2.base_fields_primes_ok B X).1 l Z hJ

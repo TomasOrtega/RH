@@ -11,6 +11,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.GapSetup
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN`. Introduce `ν hν`. Establish `hd` using `hF ν hν`. Conclude with `⟨hd.1, hd.2, ⟨h / 2, (H.2 ν hν).2.2.1, H.1.2.2.2.2⟩⟩`.
+-/
 theorem isFamG_of_num (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ)
     (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (hN : Num k r lam u b bv ga h q0) (hF : IsFam lam q0 R) :
     IsFamG lam q0 R := by
@@ -19,6 +22,11 @@ theorem isFamG_of_num (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ �
   have hd := hF ν hν
   exact ⟨hd.1, hd.2, ⟨h / 2, (H.2 ν hν).2.2.1, H.1.2.2.2.2⟩⟩
 
+/- English proof (translation)
+Use `⟨isFamG_of_num, ?_⟩` and prove the remaining obligations. Introduce `k r Wp _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, hF, hS, hSF⟩`. Conclude with `⟨hN, isFamG_of_num k r lam u b bv ga h q0 R hN hF, hS, hSF⟩`.
+
+Introduce and unpack `⟨hN, hF, hS, hSF⟩`. Conclude with `⟨hN, fun ν hν => GlobalTheory.isDS_of_isDG (hF ν hν), hS, hSF⟩`.
+-/
 theorem families_gap : (∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r), Num k r lam u b bv ga h q0 → IsFam lam q0 R → IsFamG lam q0 R) ∧ ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (lb : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R lb dg ↔ SetupG lam u b bv ga h q0 z π μW μN μG νq R lb dg := by
   refine ⟨isFamG_of_num, ?_⟩
   intro k r Wp _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg

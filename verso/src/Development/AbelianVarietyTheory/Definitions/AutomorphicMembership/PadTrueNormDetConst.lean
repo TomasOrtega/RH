@@ -23,6 +23,9 @@ def padTrue (L : LocSt D N j ng) (G : GlobSt fun p => (L.loc p).Mdl) : PadPkg D 
 
 variable (L : LocSt D N j ng) (G : GlobSt fun p => (L.loc p).Mdl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem padTrue_arDeg : (padTrue s Φ hm jC hj hA L G).arDeg = (arIn s Φ hm).arDeg := rfl
 
 section Prime
@@ -42,11 +45,17 @@ def padTrue_crv (z : (padTrue s Φ hm jC hj hA L G).Mp p la) :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (z : (padTrue s Φ hm jC hj hA L G).Mp p la) :
     (md (padTrue s Φ hm jC hj hA L G) p la z).Z.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1 := rfl
 
 end Prime
 
+/- English proof (translation)
+Rewrite using `[padTrue_arDeg, ArIn.arDeg, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `numL _ _ (MvPolynomial.rename _ _) = _`. Rewrite using `[map_pow, MvPolynomial.rename_X, numL_X_pow]`. Both sides reduce to the same expression.
+-/
 example (T : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau N) :
     (padTrue s Φ hm jC hj hA L G).arDeg T R (MvPolynomial.X x ^ (Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1)) =
       ∑ k, polar (fun w => (adlOf (Φ.C k) (hm k) w).arTop) (Multiset.replicate (Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1)
@@ -57,6 +66,9 @@ example (T : Finset ℕ) (R : ℝ) (x : DV.Rt D.what₂.Tau N) :
   rw [map_pow, MvPolynomial.rename_X, numL_X_pow]
   rfl
 
+/- English proof (translation)
+The claim follows from `(arIn s Φ hm).arDeg_homog T R 1 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_one _ _)`.
+-/
 example (T : Finset ℕ) (R : ℝ) : (padTrue s Φ hm jC hj hA L G).arDeg T R 1 = 0 :=
   (arIn s Φ hm).arDeg_homog T R 1 0 (Nat.succ_ne_zero _).symm (MvPolynomial.isHomogeneous_one _ _)
 

@@ -19,6 +19,11 @@ namespace GlobalTheory.LieBasis
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h` using `FlagTan.isHalf_psiSet H`. Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Rewrite using `[h.sum_univ (fun σ => Dw.mult σ), ← h.card, ← smul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases FlagTan.mult_conj (Dw := Dw) τ with ⟨a, b⟩ | ⟨a, b⟩ <;> rw [a, b]`. Conclude with `add_comm _ _`.
+-/
 theorem card_frameIdx (Dw : Datum H) :
     Fintype.card (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) = Module.finrank ℚ E / 2 * (Dw.p + Dw.q) := by
   have h := FlagTan.isHalf_psiSet H
@@ -29,6 +34,11 @@ theorem card_frameIdx (Dw : Datum H) :
   rcases FlagTan.mult_conj (Dw := Dw) τ with ⟨a, b⟩ | ⟨a, b⟩ <;> rw [a, b]
   exact add_comm _ _
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap c.F K).injective`. Use `EigenSplit.isSplitting_of_isDomain (S := c.F) (σ := fun σ : E →+* ℂ => embK c σ) (fun σ σ' e => ?_) (NumberField.Embeddings.card E ℂ) _ (isUnit_iff_ne_zero.2 (by exact_mod_cast NumberField.discr_ne_zero E))` and prove the remaining obligations. Establish `e' : embF c σ = embF c σ'` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) e`. Use extensionality with `x`. Use `congrArg (fun f : E →+* c.F => ((f x : c.F) : ℂ)) e'` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem isSplitting_embK {l : Level H} (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] :
     EigenSplit.IsSplitting fun σ : E →+* ℂ => (algebraMap c.F K).comp (embK c σ) := by
   have : CharZero K := charZero_of_injective_algebraMap (algebraMap c.F K).injective
@@ -39,6 +49,11 @@ theorem isSplitting_embK {l : Level H} (c : Coeff l) (K : Type) [Field K] [Algeb
   have := congrArg (fun f : E →+* c.F => ((f x : c.F) : ℂ)) e'
   exact this
 
+/- English proof (translation)
+Take `⟨-, -, hfin, -, hrk⟩` from `P.2.1 K A g hA hg`. Establish `hF : Module.finrank K (PrimitiveSubmodule A) = g`. Use `hrk ⟨⊥, Ideal.isPrime_bot⟩` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Set `e : (HdR A ⧸ Fil A) ≃ₗ[K] Module.Dual K (PrimitiveSubmodule A)` to `Subspace.quotAnnihilatorEquiv (PrimitiveSubmodule A)`.
+
+Use `⟨Module.Finite.equiv e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[e.finrank_eq, Subspace.dual_finrank_eq, hF]`.
+-/
 theorem finrank_quot_fil (P : GlobalTheory.Published.AbelianDeRham) {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {g : ℕ}
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     Module.Finite K (HdR A ⧸ Fil A) ∧ Module.finrank K (HdR A ⧸ Fil A) = g := by
@@ -50,6 +65,11 @@ theorem finrank_quot_fil (P : GlobalTheory.Published.AbelianDeRham) {K : Type} [
   refine ⟨Module.Finite.equiv e.symm, ?_⟩
   rw [e.finrank_eq, Subspace.dual_finrank_eq, hF]
 
+/- English proof (translation)
+Set `ρ : O →+* Module.End K (Serre.Lie a)` to `Module.toModuleEnd K (S := O) (Serre.Lie a)`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← EigenSplit.sum_proj hχ ρ x]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations.
+
+Establish `hx` using `EigenSplit.proj_mem hχ ρ σ x`. Take `⟨cf, hcf⟩` from `hbasis σ (EigenSplit.proj hχ ρ σ x).hom (EigenSplit.proj hχ ρ σ x).isTangent fun z => congrArg Serre.Lie.hom (EigenSplit.mem_eigenSub.1 hx z)`. Establish `e : EigenSplit.proj hχ ρ σ x = ∑ i, cf i • Serre.Lie.mk a (ub σ i) (hub σ i)` using `Serre.Lie.ext ((Serre.Lie.isLieComb_iff cf (fun i => Serre.Lie.mk a (ub σ i) (hub σ i)) _).1 hcf)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨σ, i⟩, rfl⟩)`.
+-/
 theorem span_eq_top {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] {O : Type} [CommRing O]
     (a : OAct O A) {ι : Type} [Fintype ι] [DecidableEq ι] {χ : ι → O →+* K} (hχ : EigenSplit.IsSplitting χ)
     {m : ι → ℕ} (ub : ∀ σ, Fin (m σ) → (epsR K ⟶ A)) (hub : ∀ σ k, IsTangent (ub σ k))
@@ -73,6 +93,19 @@ end GlobalTheory.LieBasis
 
 namespace GlobalTheory.LieBasis
 
+/- English proof (translation)
+Introduce `P E _ _ _ H Dw l Xo c K _ _ y A _ π hπ ub hub hb hhb`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback (ObjDim.isAbelianScheme Xo.univ) hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 (ObjDim.smoothOfRelativeDimension Xo.univ)`. Establish `: IsCommMonObj A` using `hA.comm`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_ringAction_of_isGrpPullback Xo.univ.t.act hπ`.
+
+Take `⟨ub', hub', htan, -, hbasis⟩` from `GlobalTheory.T.exists_frame_tangentVectors_of_isGrpPullback y hπ a ha`. Establish `e : ub' = ub` using `funext fun σ => funext fun k => Over.OverMorphism.ext (hπ.1.hom_ext ((hub' σ k).trans (hub σ k).symm) ((Over.w (ub' σ k)).trans (Over.w (ub σ k)).symm))`. Substitute `e` using the available equality. Establish `L` using `(P.2.1 K A _ hA gA).1`. Set `v : (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) → Serre.Lie a` to `fun k => Serre.Lie.mk a (ub' k.1 k.2) (htan _ _)`.
+
+Establish `hspan : Submodule.span K (Set.range v) = ⊤` using `span_eq_top a (isSplitting_embK c K) ub' htan hbasis`. Take `⟨hfin, hdim⟩` from `finrank_quot_fil P hA gA`. Establish `hcard : Fintype.card (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) = Module.finrank K (Serre.Lie a)`. Rewrite using `[← (L.quotEquiv a).finrank_eq, hdim, card_frameIdx]`. Establish `hind : LinearIndependent K v` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge hcard`.
+
+Establish `hv : (fun k => (Submodule.Quotient.mk (hb k) : HdR A ⧸ Fil A)) = (L.quotEquiv a).symm ∘ v`. Use function extensionality and compare the values at `k`. Rewrite using `[Function.comp_apply, LinearEquiv.eq_symm_apply, LieExact.quotEquiv_mk, L.toLie_eq_iff]`. Conclude with `hhb k`. Use `⟨?_, hv ▸ hind.map' _ (L.quotEquiv a).symm.ker⟩` and prove the remaining obligations.
+
+Establish `h1 : Submodule.map (Fil A).mkQ (Submodule.span K (Set.range hb)) = ⊤`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Express the relevant statement in the definitionally equal form `Submodule.span K (Set.range fun k => (Submodule.Quotient.mk (hb k) : HdR A ⧸ Fil A)) = ⊤`. Rewrite using `[hv, Set.range_comp, eq_top_iff]`. Introduce `q _`.
+
+Establish `hq : (L.quotEquiv a) q ∈ Submodule.span K (Set.range v)` using `hspan ▸ Submodule.mem_top`. Simplify using `using hq`. Establish `h2` using `congrArg (Submodule.comap (Fil A).mkQ) h1`. Rewrite `h2` using `[Submodule.comap_map_mkQ, Submodule.comap_top, sup_comm]`. Then use the resulting hypothesis.
+-/
 theorem lifts_basis_mod_fil : GlobalTheory.Published.AbelianDeRham → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K]
     (y : FrPt Xo c K) {A : Over (Sp K)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}, IsGrpPullback A Xo.univ.t.G y.x π →

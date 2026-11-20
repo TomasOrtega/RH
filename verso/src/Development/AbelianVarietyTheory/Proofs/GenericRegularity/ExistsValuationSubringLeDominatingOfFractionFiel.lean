@@ -40,6 +40,9 @@ def compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
       rw [h0]
       exact V.zero_mem
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`. Introduce and unpack `⟨h, hV⟩`. Conclude with `⟨⟨x, h⟩, hV, rfl⟩`.
+-/
 theorem mem_compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
     (V : ValuationSubring (ResidueField W)) (x : L) :
     x ∈ compositeValuationSubring W V ↔ ∃ h : x ∈ W, residue W ⟨x, h⟩ ∈ V := by
@@ -49,10 +52,22 @@ theorem mem_compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubrin
   · rintro ⟨h, hV⟩
     exact ⟨⟨x, h⟩, hV, rfl⟩
 
+/- English proof (translation)
+Introduce `x hx` and use `((mem_compositeValuationSubring W V x).1 hx).1`.
+-/
 theorem compositeValuationSubring_le {L : Type*} [Field L] (W : ValuationSubring L)
     (V : ValuationSubring (ResidueField W)) : compositeValuationSubring W V ≤ W :=
   fun x hx => ((mem_compositeValuationSubring W V x).1 hx).1
 
+/- English proof (translation)
+Set `g' : O →+* W` to `g.codRestrict W.toSubring hg`. Set `f : O →+* ResidueField W` to `(residue W).comp g'`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`. Use `⟨compositeValuationSubring W V, compositeValuationSubring_le W V, fun x => (mem_compositeValuationSubring W V _).2 ⟨hg x, hV x⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`.
+
+Break down `eq_or_ne (g x) 0 with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `Or.inr fun hinv => ?_` and prove the remaining obligations. Take `⟨h, hres⟩` from `(mem_compositeValuationSubring W V _).1 hinv`. Establish `hmul : f x * residue W ⟨(g x)⁻¹, h⟩ = 1`.
+
+Express the relevant statement in the definitionally equal form `residue W (g' x) * _ = 1`. Rewrite using `[← map_mul, ← map_one (residue W)]`. Use `congr 1`. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`. Establish `hu : IsUnit (f.codRestrict V.toSubring hV x)` using `isUnit_iff_exists_inv.2 ⟨⟨_, hres⟩, Subtype.ext hmul⟩`.
+
+Conclude with `(mem_maximalIdeal x).1 hx (hloc.1 x hu)`.
+-/
 theorem exists_valuationSubring_le_dominating {O L : Type*} [CommRing O] [IsLocalRing O]
     [Field L] (g : O →+* L) (W : ValuationSubring L) (hg : ∀ x, g x ∈ W) :
     ∃ W' : ValuationSubring L, W' ≤ W ∧ (∀ x : O, g x ∈ W') ∧
@@ -76,6 +91,9 @@ theorem exists_valuationSubring_le_dominating {O L : Type*} [CommRing O] [IsLoca
     isUnit_iff_exists_inv.2 ⟨⟨_, hres⟩, Subtype.ext hmul⟩
   exact (mem_maximalIdeal x).1 hx (hloc.1 x hu)
 
+/- English proof (translation)
+Introduce `O F L _ _ _ _ _ _ _ ι W hW`. Conclude with `exists_valuationSubring_le_dominating (ι.comp (algebraMap O F)) W fun x => hW _`.
+-/
 theorem exists_valuationSubring_le_dominating_of_fractionField :
     ∀ (O F L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field F]
       [Algebra O F] [IsFractionRing O F] [Field L] (ι : F →+* L) (W : ValuationSubring L),

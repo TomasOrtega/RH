@@ -9,6 +9,13 @@ open MvPolynomial Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnF
 open ReciprocityTheory.ChartRestriction.G.AI.I4 (imageZ)
 open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap)
 
+/- English proof (translation)
+Introduce `j t ht`. Take `⟨k, hk⟩` from `B.cover (ψ ((A.chart j).symm t))`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ ⁻¹' (B.chart k).source))` using `(A.chart j).isOpen_inter_preimage_symm ((B.chart k).open_source.preimage hψ.1)`. Establish `hm : t ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ ⁻¹' (B.chart k).source)` using `⟨ht.1, hk⟩`. Establish `hgk : AnalyticAt ℂ (B.chart k ∘ ψ ∘ (A.chart j).symm) t` using `hψ.2 j k t hm`.
+
+Establish `hF : AnalyticAt ℂ (g ∘ (B.chart k).symm) ((B.chart k ∘ ψ ∘ (A.chart j).symm) t)`. Use `hg k _ ⟨(B.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Use `show (B.chart k).symm (B.chart k (ψ ((A.chart j).symm t))) ∈ V`. Rewrite using `[(B.chart k).left_inv hk]`. Conclude with `ht.2`.
+
+Use `(hF.comp hgk).congr ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds hm] with u hu`. Simplify using `only [Function.comp_apply, (B.chart k).left_inv hu.2]`.
+-/
 theorem emb_holoOn {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas e X)
     (B : FinHolAtlas e Y) (ψ : X → Y) (hψ : HoloMap A B ψ) (V : Set Y) (g : Y → ℂ) (hg : B.HoloOn V g) :
     A.HoloOn (ψ ⁻¹' V) (g ∘ ψ) := by
@@ -27,6 +34,23 @@ theorem emb_holoOn {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace
   filter_upwards [hO.mem_nhds hm] with u hu
   simp only [Function.comp_apply, (B.chart k).left_inv hu.2]
 
+/- English proof (translation)
+Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ ⁻¹' (B.chart k).source))` using `(A.chart j).isOpen_inter_preimage_symm ((B.chart k).open_source.preimage hψ.1)`. Establish `hm : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (ψ ⁻¹' (B.chart k).source)`. Use `⟨(A.chart j).map_source hx, ?_⟩` and prove the remaining obligations. Use `show ψ ((A.chart j).symm (A.chart j x)) ∈ (B.chart k).source`. Rewrite using `[(A.chart j).left_inv hx]`.
+
+Conclude with `hk`. Establish `hg : AnalyticAt ℂ (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x)` using `hψ.2 j k _ hm`. Establish `hgt : (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x) = B.chart k (ψ x)`. Simplify using `only [Function.comp_apply, (A.chart j).left_inv hx]`. Establish `hh : AnalyticAt ℂ (A.chart j ∘ π ∘ (B.chart k).symm) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x))`.
+
+Rewrite using `[hgt]`. Use `hπ.2 k j _ ⟨(B.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Use `show π ((B.chart k).symm (B.chart k (ψ x))) ∈ (A.chart j).source`. Rewrite using `[(B.chart k).left_inv hk, h1]`. Conclude with `hx`.
+
+Establish `hid : (A.chart j ∘ π ∘ (B.chart k).symm) ∘ (B.chart k ∘ ψ ∘ (A.chart j).symm) =ᶠ[𝓝 (A.chart j x)] id` using `by filter_upwards [hO.mem_nhds hm] with u hu`. Simplify using `only [Function.comp_apply, id, (B.chart k).left_inv hu.2, h1, (A.chart j).right_inv hu.1]`. Establish `hfg : (fun y => f (ψ ((A.chart j).symm y))) =ᶠ[𝓝 (A.chart j x)] (fun y => f ((B.chart k).symm y)) ∘ (B.chart k ∘ ψ ∘ (A.chart j).symm)` using `by filter_upwards [hO.mem_nhds hm] with u hu`. Simplify using `only [Function.comp_apply, (B.chart k).left_inv hu.2]`. Establish `hcomp : (fderiv ℂ (A.chart j ∘ π ∘ (B.chart k).symm) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x))).comp (fderiv ℂ (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x)) = ContinuousLinearMap.id ℂ _`.
+
+Rewrite using `[← fderiv_comp _ hh.differentiableAt hg.differentiableAt, hid.fderiv_eq, fderiv_id]`. Rewrite `hf` using `[← hgt]`. Rewrite using `[hfg.fderiv_eq, eq_bot_iff]`. Introduce `v hv`. Establish `hv' : fderiv ℂ ((fun y => f ((B.chart k).symm y)) ∘ (B.chart k ∘ ψ ∘ (A.chart j).symm)) (A.chart j x) v = 0` using `hv`.
+
+Rewrite using `[Submodule.mem_bot]`. Distinguish the cases in `hF : DifferentiableAt ℂ (fun y => f ((B.chart k).symm y)) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x))`. Rewrite `hv'` using `[fderiv_comp _ hF hg.differentiableAt]`. Establish `h0 : fderiv ℂ (B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x) v ∈ (fderiv ℂ (fun y => f ((B.chart k).symm y)) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x))).ker` using `hv'`. Rewrite `h0` using `[hf, Submodule.mem_bot]`.
+
+Use `congrArg (fun L : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ) => L v) hcomp` as an intermediate fact. Simplify using `only [ContinuousLinearMap.comp_apply, h0, map_zero, ContinuousLinearMap.id_apply] at this`. Conclude with `this.symm`. Establish `h0 : v ∈ (fderiv ℂ (fun y => f ((B.chart k).symm y)) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x))).ker`. Establish `: fderiv ℂ (fun y => f ((B.chart k).symm y)) ((B.chart k ∘ ψ ∘ (A.chart j).symm) (A.chart j x)) v = 0`.
+
+Rewrite using `[fderiv_zero_of_not_differentiableAt hF]`. Both sides reduce to the same expression. Conclude with `this`. Rewrite `h0` using `[hf, Submodule.mem_bot]`. Conclude with `h0`.
+-/
 theorem emb_immersion {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {W : Type}
     [NormedAddCommGroup W] [NormedSpace ℂ W] (A : FinHolAtlas e X) (B : FinHolAtlas e Y) (ψ : X → Y) (π : Y → X)
     (hψ : HoloMap A B ψ) (hπ : HoloMap B A π) (h1 : ∀ x, π (ψ x) = x) (f : Y → W) (x : X) (j : Fin A.n)
@@ -84,6 +108,27 @@ theorem emb_immersion {e : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSp
     rw [hf, Submodule.mem_bot] at h0
     exact h0
 
+/- English proof (translation)
+Introduce `K _ ι _ P e σ S Re β b hJ hdeg hbr hβ hβP hbd`. Establish `hd` using `Re.degree`. Rewrite `hd` using `[hdeg, hbr]`. Establish `hbij : Function.Bijective Re.π`. Use `⟨fun x y hxy => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `Set.ncard_eq_one.1 (hd.2.2.2.2.1 (Re.π x) (by simp))`. Establish `hx : x ∈ Re.π ⁻¹' {Re.π x}` using `rfl`. Establish `hy : y ∈ Re.π ⁻¹' {Re.π x}` using `hxy.symm`. Rewrite `hx`, `hy` using `[ha]`. Conclude with `hx.trans hy.symm`.
+
+Take `⟨a, ha⟩` from `Set.ncard_eq_one.1 (hd.2.2.2.2.1 x (by simp))`. Establish `: a ∈ Re.π ⁻¹' {x}` using `by rw [ha]; rfl`. Conclude with `⟨a, this⟩`. Take `⟨ψ, hψ, h1, h2⟩` from `AnalyticReference.exists_inv S.A Re.R.A Re.π ∅ Re.holo hd hbij`. Establish `hmc : ∀ z, z ∉ mcPts Re.J`.
+
+Introduce `z hz`. Rewrite `hz` using `[hJ]`. Use `hz.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`. Establish `hI : imageZ (id : (Σ k, ι k) → Σ k, ι k) P = P`.
+
+Use extensionality with `f`. Simplify using `[imageZ]`. Use `⟨K, inferInstance, ι, inferInstance, id, id, fun x => ψ ⁻¹' Re.R.U (ψ x), fun x y => Re.R.lift (ψ x) (ψ y), β, b, ⟨Function.injective_id, Function.injective_id, fun _ => rfl, fun q _ => ⟨q, rfl⟩⟩, ⟨fun x => (Re.R.isOpen_U _).preimage hψ.1, fun x => Re.R.mem_U (ψ x), fun x p => em …` and prove the remaining obligations. Introduce `x y hy`. Rewrite using `[hI]`.
+
+Conclude with `Re.R.mem (ψ x) (ψ y) hy`. Introduce `x x' y hy`. Conclude with `Re.R.compat (ψ x) (ψ x') (ψ y) hy`. Introduce `z hz`. Rewrite `hz` using `[hI]`.
+
+Take `⟨x', hx'⟩` from `Re.R.surj z hz (hmc z)`. Use `⟨Re.π x', ?_⟩` and prove the remaining obligations. Use `show SameOrbit (Re.R.lift (ψ (Re.π x')) (ψ (Re.π x'))) z`. Rewrite using `[h2]`. Conclude with `hx'`.
+
+Introduce `x x' h`. Use `Re.R.inj (ψ x) (ψ x') (hmc _) h` as an intermediate fact. Rewrite using `[← h1 x, ← h1 x', this]`. Introduce `x p hp j hj`. Take `⟨k, hk⟩` from `Re.R.A.cover (ψ x)`.
+
+Conclude with `emb_immersion S.A Re.R.A ψ Re.π hψ Re.holo h1 (fun u => affCoord p (Re.R.lift (ψ x) u)) x j k hj hk (Re.R.immersion (ψ x) (hmc _) p hp k hk)`. Introduce `x show SameOrbit (Re.R.lift (ψ (Re.π x)) (ψ (Re.π x))) fun p => Re.R.lift x x p`. Rewrite using `[h2]`. Conclude with `⟨fun _ => 1, fun _ => one_ne_zero, by simp⟩`. Rewrite using `[hI]`.
+
+Conclude with `hβP`. Introduce `x hx`. Conclude with `hbd (ψ x) (by rw [h1]; exact hx)`.
+-/
 theorem stEmb : StEmb := by
   intro K _ ι _ P e σ S Re β b hJ hdeg hbr hβ hβP hbd
   have hd := Re.degree

@@ -16,6 +16,35 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR
 
+/- English proof (translation)
+Take `⟨A, τ, hτ⟩` from `GlobalTheory.T.exists_etaleHermitianPair_isGen_companion F E r a.1 hsep`. Take `⟨hbij, hmom⟩` from `GlobalTheory.T.jacquetRallis_invK_regular_iff_isUnit F E A r τ a.1 a.2.2 hτ`. Take `⟨a₀, ha₀⟩` from `hbij.2 a.2.1`. Establish `ha₀' : (fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * a₀)) = a.2.1` using `ha₀`. Establish `hinv : A.invK τ a.1 a.2.2 a₀ = a`.
+
+Simplify using `only [Et.invK, ha₀']`. Establish `hu₀ : IsUnit a₀` using `(hmom a₀).2.mp (by rw [hinv]; exact ha)`. Take `⟨⟨m⟩, -⟩` from `GlobalTheory.T.exists_selfDual_measures_and_absK_scale F E A ψ hψ`. Take `⟨-, -, -, -, -, -, ⟨S, -, hS⟩, -⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Take `⟨φ', κ, hφ', hlin⟩` from `GlobalTheory.T.jacquetRallis_linear_orbitalIntegral_descent F E A ψ hψ m r M τ a.1 a.2.2 hτ f' hf'`.
+
+Take `⟨-, -, huniq, -⟩` from `GlobalTheory.T.unitary_action_hermitian_invariants_transitive F E r`. Take `⟨-, horbU, -, -⟩` from `GlobalTheory.T.jacquetRallisOrbitalIntegrals_invariant_locallyConstant F E r M`. Apply the tactic sequence `obtain ⟨hL11a, hL11b⟩ := GlobalTheory.T.hermitianBlock_invariants_iff_isometry F E A r τ a.1 a.2.2 hτ`. Establish `key : ∀ x : A.Kˣ, ∃ φx : A.L → ℂ, IsTest φx ∧ ((∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom (x : A.K) j) → ∃ (j : A.L ≃ₗ[E] (Fin r → E)) (Ax : selfAdjoint (Matrix (Fin r) (Fin r) E)), A.IsIsom (x : A.K) j ∧ (∀ y, HasInv ((Ax, j y, a.2.2) : Hn r F E) (A.invK τ a.1 a.2.2 ((x : A.K) * A.N …`. Introduce `x`.
+
+Distinguish the cases in `hx : ∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom (x : A.K) j`. Take `⟨j, hj⟩` from `hx`. Take `⟨Ax, hAx, hinvAx⟩` from `hL11b (x : A.K) j hj`. Take `⟨φx, hφx, hrel⟩` from `GlobalTheory.T.exists_test_orbU_eq_orbL F E A ψ hψ m r M τ a.1 a.2.2 hτ x j hj Ax hAx f hf`. Conclude with `⟨φx, hφx, fun _ => ⟨j, Ax, hj, hinvAx, hrel⟩, fun h => absurd ⟨j, hj⟩ h⟩`.
+
+Conclude with `⟨0, ⟨IsLocallyConstant.const 0, HasCompactSupport.zero⟩, fun h => absurd h hx, fun _ => rfl⟩`. Use `choose φ hφt hφi hφ0 using key`. Use `choose γ Wr hWr using fun x : A.Kˣ => hW F E A ψ hψ x (m.μL x) (m.sdL x)`. Establish `hunit : ∀ (x : A.Kˣ) (y : A.L), IsUnit y → IsUnit ((x : A.K) * A.NL y)` using `fun x y hy => x.isUnit.mul (hy.map (Algebra.norm A.K))`. Establish `hyp : ∀ x ∈ S, ∀ y : A.L, IsUnit y → κ * A.orbK m.μK φ' (x * A.NL y) = A.orbL m.ν (φ x) y`.
+
+Introduce `x _ y hy`. Establish `hb` using `hunit x y hy`. Rewrite using `[← (hlin _ hb).1]`. Distinguish the cases in `hx : ∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom (x : A.K) j`. Take `⟨j, Ax, -, hinvAx, hrel⟩` from `hφi x hx`.
+
+Rewrite using `[← (hrel y hy).1]`. Conclude with `(hm _ ((hmom _).2.mpr hb)).1 _ (hinvAx y)`. Rewrite using `[hφ0 x hx]`. Establish `h0 : orbG M f' (sec (A.invK τ a.1 a.2.2 ((x : A.K) * A.NL y))) = 0`. Apply `(hm _ ((hmom _).2.mpr hb)).2` to reduce the goal to its premises.
+
+Introduce and unpack `⟨X, hX⟩`. Take `⟨j, hj, -⟩` from `hL11a _ X hb hX (x : A.K) y hy rfl`. Conclude with `hx ⟨j, hj⟩`. Rewrite using `[h0]`. Simplify using `[Et.orbL]`.
+
+Establish `hRk` using `hR F E A ψ hψ m S hS γ Wr (fun x _ => hWr x) φ' φ κ hφ' (fun x _ => hφt x) hyp`. Establish `hG1 : ∀ (x : A.Kˣ) (j : A.L ≃ₗ[E] (Fin r → E)), A.IsIsom (x : A.K) j → γ x = 1` using `fun x j hj => hG F E A ψ hψ x (m.μL x) (m.sdL x) A.etaK (γ x) (Wr x) (hWr x) r j hj`. Take `⟨x, ⟨hxS, y, hy, hxy⟩, -⟩` from `hS hu₀.unit`. Establish `hxy' : a₀ = x * A.NL y` using `by simpa using hxy`. Establish `hb` using `hunit x y hy`.
+
+Establish `hlhs : orbG M (fourG M ψ f') (sec a) = γ x * A.orbL m.ν (fourB (m.μL x) (A.kerL ψ x) (φ x)) y`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion. Introduce `X hX`. Establish `hX' : HasInv X (A.invK τ a.1 a.2.2 a₀)` using `by rw [hinv]; exact hX`.
+
+Take `⟨j₁, hj₁, -⟩` from `hL11a a₀ X hu₀ hX' (x : A.K) y hy hxy'`. Take `⟨j, Ax, hj, hinvAx, hrel⟩` from `hφi x ⟨j₁, hj₁⟩`. Establish `hXa : HasInv ((Ax, j y, a.2.2) : Hn r F E) a`. Use `hinvAx y` as an intermediate fact. Rewrite `this` using `[← hxy', hinv]`.
+
+Conclude with `this`. Take `⟨g, hg, -⟩` from `huniq _ X a ha hXa hX`. Rewrite using `[hlhs, hG1 x j hj, one_mul, ← (hrel y hy).2, ← hg, horbU]`. Introduce `hno`. Establish `hx : ¬ ∃ j : A.L ≃ₗ[E] (Fin r → E), A.IsIsom (x : A.K) j`.
+
+Introduce `hx`. Take `⟨j, Ax, -, hinvAx, -⟩` from `hφi x hx`. Use `hinvAx y` as an intermediate fact. Rewrite `this` using `[← hxy', hinv]`. Conclude with `hno ⟨_, this⟩`.
+
+Rewrite using `[hlhs, hφ0 x hx]`. Simplify using `[fourB, Et.orbL]`.
+-/
 theorem fourierMatchAt_of_weil (hW : WeilEt) (hR : RankOne) (hG : GammaOne) {r : ℕ} {F E : Type}
     [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E]
     (M : Meas r F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (f' : Gl r F → ℂ) (f : Hn r F E → ℂ)
@@ -102,6 +131,9 @@ theorem fourierMatchAt_of_weil (hW : WeilEt) (hR : RankOne) (hG : GammaOne) {r :
     rw [hlhs, hφ0 x hx]
     simp [fourB, Et.orbL]
 
+/- English proof (translation)
+Introduce `hW hR hG r F E _ _ _ _ _ M ψ hψ f' f hf' hf hm`. Take `⟨h4G, h4U, -⟩` from `GlobalTheory.T.partialFourier_preserves_test_fixes_unit F E r M ψ hψ`. Conclude with `(GlobalTheory.T.jacquetRallis_match_of_dense_separable F E r M _ _ (h4G f' hf') (h4U f hf)).1 (fun a ha hsep => fourierMatchAt_of_weil hW hR hG M ψ hψ f' f hf' hf hm a ha hsep)`.
+-/
 theorem fourierMatch_of_weil : WeilEt → RankOne → GammaOne → ∀ r, FourierMatch r := by
   intro hW hR hG r F E _ _ _ _ _ M ψ hψ f' f hf' hf hm
   obtain ⟨h4G, h4U, -⟩ := GlobalTheory.T.partialFourier_preserves_test_fixes_unit F E r M ψ hψ

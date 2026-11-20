@@ -13,9 +13,17 @@ namespace LocalResolutionData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {f : X ⟶ Spec (CommRingCat.of k)}
   [LocallyOfFiniteType f] {s : SequenceOfBlowups X}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem support_vanishingIdeal_eq {Y : Scheme.{u}} (Z : Closeds ↥Y) :
     (Scheme.IdealSheafData.vanishingIdeal Z).support = Z := rfl
 
+/- English proof (translation)
+Establish `hrad : ((Scheme.IdealSheafData.vanishingIdeal Z).comap g).radical = (Scheme.IdealSheafData.vanishingIdeal Z).comap g`. Use `Scheme.IdealSheafData.ext (funext fun U => ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.radical_ideal, Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion, Scheme.IdealSheafData.vanishingIdeal_ideal]`. Conclude with `((PrimeSpectrum.isRadical_vanishingIdeal _).comap _).radical`. Establish `hsupp : ((Scheme.IdealSheafData.vanishingIdeal Z).comap g).support = W`.
+
+Rewrite using `[Scheme.IdealSheafData.support_comap, support_vanishingIdeal_eq]`. Conclude with `TopologicalSpace.Closeds.ext hW.symm`. Rewrite using `[← hsupp, Scheme.IdealSheafData.vanishingIdeal_support, hrad]`.
+-/
 private theorem comap_vanishingIdeal_of_isOpenImmersion {Y T : Scheme.{u}} (g : T ⟶ Y)
     [IsOpenImmersion g] (Z : Closeds ↥Y) (W : Closeds ↥T)
     (hW : (W : Set ↥T) = g.base ⁻¹' (Z : Set ↥Y)) :
@@ -33,6 +41,15 @@ private theorem comap_vanishingIdeal_of_isOpenImmersion {Y T : Scheme.{u}} (g : 
     exact TopologicalSpace.Closeds.ext hW.symm
   rw [← hsupp, Scheme.IdealSheafData.vanishingIdeal_support, hrad]
 
+/- English proof (translation)
+Unfold `IsRegularParameterSystem at h ⊢`. Take `⟨h1, h2⟩` from `h`. Prove the components needed by the constructor for the conclusion. Establish `hmax : Ideal.comap (e : R →+* S) (IsLocalRing.maximalIdeal S) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective (e : R →+* S) e.surjective)`. Establish `hm : Ideal.map (e : R →+* S) (IsLocalRing.maximalIdeal R) = IsLocalRing.maximalIdeal S`.
+
+Rewrite using `[← hmax]`. Conclude with `Ideal.map_comap_of_surjective (e : R →+* S) e.surjective _`. Establish `himg : Ideal.span (Set.range fun i => e (x i)) = Ideal.map (e : R →+* S) (Ideal.span (Set.range x))`. Rewrite using `[Ideal.map_span]`. Use `congr 1`.
+
+Use extensionality with `b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨x i, ⟨i, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ⟨i, rfl⟩, rfl⟩`.
+
+Conclude with `⟨i, rfl⟩`. Rewrite using `[himg, h1, hm]`. Rewrite using `[h2]`. Conclude with `ringKrullDim_eq_of_ringEquiv e`.
+-/
 private theorem isRegularParameterSystem_map_ringEquiv {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (x : Fin n → R)
     (h : IsRegularParameterSystem R n x) :
@@ -62,6 +79,9 @@ private theorem isRegularParameterSystem_map_ringEquiv {R S : Type u} [CommRing 
   · rw [h2]
     exact ringKrullDim_eq_of_ringEquiv e
 
+/- English proof (translation)
+Establish `hy : y = fun i => e (x i)` using `(funext fun i => hxy i).symm`. Substitute `hy` using the available equality. Conclude with `isRegularParameterSystem_map_ringEquiv e n x h`.
+-/
 private theorem isRegularParameterSystem_of_ringEquiv_apply_eq {R S : Type u} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (x : Fin n → R) (y : Fin n → S)
     (hxy : ∀ i, e (x i) = y i) (h : IsRegularParameterSystem R n x) :
@@ -70,12 +90,18 @@ private theorem isRegularParameterSystem_of_ringEquiv_apply_eq {R S : Type u} [C
   subst hy
   exact isRegularParameterSystem_map_ringEquiv e n x h
 
+/- English proof (translation)
+Introduce `a`. Use `⟨(CommRingCat.Hom.hom e.hom) a, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem surjective_iso_inv {A B : CommRingCat.{u}} (e : A ≅ B) :
     Function.Surjective (CommRingCat.Hom.hom e.inv) := by
   intro a
   refine ⟨(CommRingCat.Hom.hom e.hom) a, ?_⟩
   simp
 
+/- English proof (translation)
+Establish `h' : U = V` using `congrArg Opposite.unop h`. Substitute `h'` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem map_eqToHom_germ {T : Scheme.{u}} {U V : T.Opens}
     (h : Opposite.op U = Opposite.op V) (z : ↥T) (hz : z ∈ U) (hz' : z ∈ V) :
     T.presheaf.map (eqToHom h) ≫ T.presheaf.germ V z hz' = T.presheaf.germ U z hz := by
@@ -83,6 +109,9 @@ private theorem map_eqToHom_germ {T : Scheme.{u}} {U V : T.Opens}
   subst h'
   simp
 
+/- English proof (translation)
+Establish `h1 : Y.presheaf.germ (g ''ᵁ U) (g.base z) hgz ≫ Scheme.Hom.stalkMap g z = Scheme.Hom.app g (g ''ᵁ U) ≫ T.presheaf.germ (g ⁻¹ᵁ (g ''ᵁ U)) z hgz` using `Scheme.Hom.germ_stalkMap g (g ''ᵁ U) z hgz`. Rewrite using `[h1, ← Category.assoc]`. Simplify using the standard rewrite rules. Conclude with `map_eqToHom_germ _ z hz hgz`.
+-/
 private theorem appIso_inv_germ_stalkMap {Y T : Scheme.{u}} (g : T ⟶ Y) [IsOpenImmersion g]
     (U : T.Opens) (z : ↥T) (hz : z ∈ U) (hgz : g.base z ∈ (g ''ᵁ U : Y.Opens)) :
     (Scheme.Hom.appIso g U).inv ≫ Y.presheaf.germ (g ''ᵁ U) (g.base z) hgz ≫
@@ -94,6 +123,9 @@ private theorem appIso_inv_germ_stalkMap {Y T : Scheme.{u}} (g : T ⟶ Y) [IsOpe
   simp
   exact map_eqToHom_germ _ z hz hgz
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun m : Γ(T, U) ⟶ T.presheaf.stalk z => (ConcreteCategory.hom m) a) (appIso_inv_germ_stalkMap g U z hz hgz)`. Simplify `h` using `only [CommRingCat.comp_apply]`.
+-/
 private theorem appIso_inv_germ_stalkMap_apply {Y T : Scheme.{u}} (g : T ⟶ Y) [IsOpenImmersion g]
     (U : T.Opens) (z : ↥T) (hz : z ∈ U) (hgz : g.base z ∈ (g ''ᵁ U : Y.Opens))
     (a : Γ(T, U)) :
@@ -105,6 +137,11 @@ private theorem appIso_inv_germ_stalkMap_apply {Y T : Scheme.{u}} (g : T ⟶ Y) 
     (appIso_inv_germ_stalkMap g U z hz hgz)
   simpa only [CommRingCat.comp_apply] using h
 
+/- English proof (translation)
+Establish `hcomp` using `d.chartToLastObj_comp_lastStructMap i`. Establish `hsl` using `d.preimage_smoothLocusComplement_cover_map i`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage]`. Establish `hx : s.lastStructMap.base ((d.chartToLastObj i).base x) = (d.cover.f i).base ((d.seq i).lastStructMap.base x)`.
+
+Establish `h` using `congrArg (fun g : (d.seq i).lastObj ⟶ X => g.base x) hcomp`. Simplify using `using h`. Rewrite using `[hx, ← Set.mem_preimage, hsl]`.
+-/
 theorem chartToLastObj_preimage_smoothLocusComplement (d : LocalResolutionData k f s) (i : d.cover.I₀)
     [LocallyOfFinitePresentation f] [LocallyOfFinitePresentation (d.cover.f i ≫ f)] :
     (d.chartToLastObj i).base ⁻¹'
@@ -121,6 +158,9 @@ theorem chartToLastObj_preimage_smoothLocusComplement (d : LocalResolutionData k
     simpa using h
   rw [hx, ← Set.mem_preimage, hsl]
 
+/- English proof (translation)
+Establish `h1` using `d.chartToLastObj_preimage_smoothLocusComplement i`. Unfold `reducedInverseImage`. Conclude with `comap_vanishingIdeal_of_isOpenImmersion (d.chartToLastObj i) _ _ h1.symm`.
+-/
 theorem comap_reducedInverseImage_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀)
     [LocallyOfFinitePresentation f] [LocallyOfFinitePresentation (d.cover.f i ≫ f)] :
     (reducedInverseImage s.lastStructMap (smoothLocusComplement f)).comap (d.chartToLastObj i)
@@ -129,6 +169,17 @@ theorem comap_reducedInverseImage_chartToLastObj (d : LocalResolutionData k f s)
   unfold reducedInverseImage
   exact comap_vanishingIdeal_of_isOpenImmersion (d.chartToLastObj i) _ _ h1.symm
 
+/- English proof (translation)
+Introduce `y`. Take `⟨T, g, hg, z, hzy, hSNC⟩` from `H y`. Substitute `hzy` using the available equality. Use `hg` as an intermediate fact. Take `⟨hreg, U, hzU, n, F, J, hpar, hid⟩` from `hSNC z`.
+
+Establish `: IsRegularLocalRing ↑(T.presheaf.stalk z)` using `hreg`. Take `⟨E, hE⟩ : ∃ E : (↑(Y.presheaf.stalk (g.base z)) : Type u) ≃+* ↑(T.presheaf.stalk z), ∀ x, E x = (ConcreteCategory.hom (Scheme.Hom.stalkMap g z)) x` from `⟨(asIso (Scheme.Hom.stalkMap g z)).commRingCatIsoToRingEquiv, fun _ => rfl⟩`. Establish `hgz : g.base z ∈ (g ''ᵁ (U : T.Opens) : Y.Opens)` using `⟨z, hzU, rfl⟩`. Establish `hVaff : IsAffineOpen (g ''ᵁ (U : T.Opens))` using `(U.2 : IsAffineOpen (U : T.Opens)).image_of_isOpenImmersion g`. Establish `hsurj : Function.Surjective (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv)` using `surjective_iso_inv (Scheme.Hom.appIso g (U : T.Opens))`.
+
+Use `⟨IsRegularLocalRing.of_ringEquiv E.symm, ⟨g ''ᵁ (U : T.Opens), hVaff⟩, hgz, n, fun i => (ConcreteCategory.hom (Scheme.Hom.appIso g (U : T.Opens)).inv) (F i), J, ?_, ?_⟩` and prove the remaining obligations. Use `isRegularParameterSystem_of_ringEquiv_apply_eq E.symm n _ _ ?_ hpar` and prove the remaining obligations. Introduce `i`. Establish `hgerm` using `appIso_inv_germ_stalkMap_apply g (U : T.Opens) z hzU hgz (F i)`. Rewrite `hgerm` using `[← hE]`.
+
+Rewrite using `[← hgerm, E.symm_apply_apply]`. Establish `h1` using `Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion I g U`. Rewrite `h1` using `[hid]`. Establish `h2 : Ideal.map (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv) (Ideal.span {∏ i ∈ J, F i}) = Ideal.span {∏ i ∈ J, (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv) (F i)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_prod]`.
+
+Establish `h3 : Ideal.map (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv) (Ideal.comap (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv) (I.ideal ⟨g ''ᵁ (U : T.Opens), hVaff⟩)) = I.ideal ⟨g ''ᵁ (U : T.Opens), hVaff⟩` using `Ideal.map_comap_of_surjective _ hsurj _`. Conclude with `(h3.symm.trans (congrArg (Ideal.map (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv)) h1.symm)).trans h2`.
+-/
 private theorem isStrictNormalCrossingsDivisor_of_openCover {Y : Scheme.{u}} (I : Y.IdealSheafData)
     (H : ∀ y : ↥Y, ∃ (T : Scheme.{u}) (g : T ⟶ Y) (_ : IsOpenImmersion g) (z : ↥T),
       g.base z = y ∧ IsStrictNormalCrossingsDivisor (I.comap g)) : IsStrictNormalCrossingsDivisor I := by
@@ -171,6 +222,11 @@ private theorem isStrictNormalCrossingsDivisor_of_openCover {Y : Scheme.{u}} (I 
       (congrArg (Ideal.map (CommRingCat.Hom.hom (Scheme.Hom.appIso g (U : T.Opens)).inv))
         h1.symm)).trans h2
 
+/- English proof (translation)
+Use `isStrictNormalCrossingsDivisor_of_openCover _ ?_` and prove the remaining obligations. Introduce `y`. Take `⟨i, z, hz⟩` from `d.exists_chartToLastObj_eq y`. Use `⟨(d.seq i).lastObj, d.chartToLastObj i, inferInstance, z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[d.comap_reducedInverseImage_chartToLastObj i]`.
+
+Conclude with `(d.isResolution i).2.2.2.2.2`.
+-/
 theorem isStrictNormalCrossingsDivisor_reducedInverseImage (d : LocalResolutionData k f s) [LocallyOfFinitePresentation f] :
     IsStrictNormalCrossingsDivisor (reducedInverseImage s.lastStructMap (smoothLocusComplement f)) := by
   refine isStrictNormalCrossingsDivisor_of_openCover _ ?_

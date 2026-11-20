@@ -8,6 +8,13 @@ namespace LateralTheory.CohomologicalPurity.Thom
 abbrev evNU (n : ℕ) (U : Scheme.{0}) : Spc ⥤ Type :=
   (evaluation _ _).obj (op (SimplexCategory.mk n)) ⋙ (evaluation _ _).obj (op U)
 
+/- English proof (translation)
+Set `G` to `evNU n U`. Set `I` to `PreservesPullback.iso G f g ≪≫ Types.pullbackIsoPullback (G.map f) (G.map g)`. Establish `hi : Function.Injective I.hom` using `(isIso_iff_bijective I.hom).1 inferInstance |>.1`. Apply `hi` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `a1` using `(ConcreteCategory.congr_hom (PreservesPullback.iso_hom_fst G f g))`. Establish `a2` using `(ConcreteCategory.congr_hom (PreservesPullback.iso_hom_snd G f g))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [I, Iso.trans_hom]`. Rewrite using `[types_comp_apply, types_comp_apply, Types.pullbackIsoPullback_hom_fst, Types.pullbackIsoPullback_hom_fst]`.
+
+Conclude with `(a1 x).trans (h1.trans (a1 y).symm)`. Simplify using `only [I, Iso.trans_hom]`. Rewrite using `[types_comp_apply, types_comp_apply, Types.pullbackIsoPullback_hom_snd, Types.pullbackIsoPullback_hom_snd]`. Conclude with `(a2 x).trans (h2.trans (a2 y).symm)`.
+-/
 theorem pb_ext {X Y Z : Spc} (f : X ⟶ Z) (g : Y ⟶ Z) {n : ℕ} {U : Scheme.{0}} (x y : Sx (pullback f g) n U)
     (h1 : ((pullback.fst f g).app _).app _ x = ((pullback.fst f g).app _).app _ y)
     (h2 : ((pullback.snd f g).app _).app _ x = ((pullback.snd f g).app _).app _ y) : x = y := by
@@ -26,6 +33,11 @@ theorem pb_ext {X Y Z : Spc} (f : X ⟶ Z) (g : Y ⟶ Z) {n : ℕ} {U : Scheme.{
     rw [types_comp_apply, types_comp_apply, Types.pullbackIsoPullback_hom_snd, Types.pullbackIsoPullback_hom_snd]
     exact (a2 x).trans (h2.trans (a2 y).symm)
 
+/- English proof (translation)
+Set `G` to `evNU n U`. Set `z : Types.PullbackObj (G.map f) (G.map g)` to `⟨(a, b), h⟩`. Use `⟨(PreservesPullback.iso G f g).inv ((Types.pullbackIsoPullback (G.map f) (G.map g)).inv z), ?_, ?_⟩` and prove the remaining obligations. Use `(ConcreteCategory.congr_hom (PreservesPullback.iso_inv_fst G f g)) ((Types.pullbackIsoPullback (G.map f) (G.map g)).inv z)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+
+Conclude with `(ConcreteCategory.congr_hom (Types.pullbackIsoPullback_inv_fst (G.map f) (G.map g))) z`. Use `(ConcreteCategory.congr_hom (PreservesPullback.iso_inv_snd G f g)) ((Types.pullbackIsoPullback (G.map f) (G.map g)).inv z)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (Types.pullbackIsoPullback_inv_snd (G.map f) (G.map g))) z`.
+-/
 theorem pb_mk {X Y Z : Spc} (f : X ⟶ Z) (g : Y ⟶ Z) {n : ℕ} {U : Scheme.{0}} (a : Sx X n U) (b : Sx Y n U)
     (h : (f.app _).app _ a = (g.app _).app _ b) : ∃ x : Sx (pullback f g) n U,
     ((pullback.fst f g).app _).app _ x = a ∧ ((pullback.snd f g).app _).app _ x = b := by
@@ -41,6 +53,13 @@ theorem pb_mk {X Y Z : Spc} (f : X ⟶ Z) (g : Y ⟶ Z) {n : ℕ} {U : Scheme.{0
     refine this.trans ?_
     exact (ConcreteCategory.congr_hom (Types.pullbackIsoPullback_inv_snd (G.map f) (G.map g))) z
 
+/- English proof (translation)
+Set `G` to `evNU n U`. Set `I` to `PreservesLimitPair.iso G X Y ≪≫ Types.binaryProductIso (G.obj X) (G.obj Y)`. Establish `hi : Function.Injective I.hom` using `(isIso_iff_bijective I.hom).1 inferInstance |>.1`. Apply `hi` to reduce the goal to its premises. Establish `a1` using `(ConcreteCategory.congr_hom (prodComparison_fst G X Y))`.
+
+Establish `a2` using `(ConcreteCategory.congr_hom (prodComparison_snd G X Y))`. Establish `b1` using `(ConcreteCategory.congr_hom (Types.binaryProductIso_hom_comp_fst (G.obj X) (G.obj Y)))`. Establish `b2` using `(ConcreteCategory.congr_hom (Types.binaryProductIso_hom_comp_snd (G.obj X) (G.obj Y)))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [I, Iso.trans_hom, types_comp_apply, PreservesLimitPair.iso_hom]`.
+
+Conclude with `(b1 _).trans ((a1 x).trans (h1.trans ((a1 y).symm.trans (b1 _).symm)))`. Simplify using `only [I, Iso.trans_hom, types_comp_apply, PreservesLimitPair.iso_hom]`. Conclude with `(b2 _).trans ((a2 x).trans (h2.trans ((a2 y).symm.trans (b2 _).symm)))`.
+-/
 theorem pr_ext {X Y : Spc} {n : ℕ} {U : Scheme.{0}} (x y : Sx (X ⨯ Y) n U)
     (h1 : ((prod.fst : X ⨯ Y ⟶ X).app _).app _ x = ((prod.fst : X ⨯ Y ⟶ X).app _).app _ y)
     (h2 : ((prod.snd : X ⨯ Y ⟶ Y).app _).app _ x = ((prod.snd : X ⨯ Y ⟶ Y).app _).app _ y) : x = y := by
@@ -58,6 +77,11 @@ theorem pr_ext {X Y : Spc} {n : ℕ} {U : Scheme.{0}} (x y : Sx (X ⨯ Y) n U)
   · simp only [I, Iso.trans_hom, types_comp_apply, PreservesLimitPair.iso_hom]
     exact (b2 _).trans ((a2 x).trans (h2.trans ((a2 y).symm.trans (b2 _).symm)))
 
+/- English proof (translation)
+Establish `h` using `iSup_basicOpen_of_span_eq_top (X := U) ⊤ (Set.range v) hv`. Establish `hp : p ∈ (⊤ : U.Opens)` using `trivial`. Rewrite `hp` using `[← h]`. Take `⟨_, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Take `⟨⟨i, rfl⟩, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`.
+
+Conclude with `⟨i, Nat.zero_le _, hi⟩`.
+-/
 theorem um_basic {U : Scheme.{0}} {N : ℕ} (v : Fin N → Γ(U, ⊤)) (hv : Ideal.span (Set.range v) = ⊤) (p : U) :
     ∃ i : Fin N, 0 ≤ i.val ∧ p ∈ U.basicOpen (v i) := by
   have h := iSup_basicOpen_of_span_eq_top (X := U) ⊤ (Set.range v) hv
@@ -67,6 +91,9 @@ theorem um_basic {U : Scheme.{0}} {N : ℕ} (v : Fin N → Γ(U, ⊤)) (hv : Ide
   obtain ⟨⟨i, rfl⟩, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 hp
   exact ⟨i, Nat.zero_le _, hi⟩
 
+/- English proof (translation)
+Rewrite using `[← (isAffineOpen_top (Spec (CommRingCat.of A))).iSup_basicOpen_eq_self_iff]`. Apply `le_antisymm le_top` to reduce the goal to its premises. Introduce `p _`. Take `⟨i, -, hi⟩` from `hv p`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨v i, i, rfl⟩, hi⟩`.
+-/
 theorem basic_um {A : Type} [CommRing A] {N : ℕ} (v : Fin N → Γ(Spec (CommRingCat.of A), ⊤))
     (hv : ∀ p, ∃ i : Fin N, 0 ≤ i.val ∧ p ∈ (Spec (CommRingCat.of A)).basicOpen (v i)) :
     Ideal.span (Set.range v) = ⊤ := by
@@ -96,11 +123,17 @@ def conv {N n : ℕ} {U : Scheme.{0}} (c : ComposableArrows (Um N Γ(U, ⊤)) n)
   map_id i := Subtype.ext (congrArg (fun p => (Subtype.val p).2) (c.map_id i))
   map_comp f g := Subtype.ext (congrArg (fun p => (Subtype.val p).2) (c.map_comp f g))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem conv_congr {N n : ℕ} {U : Scheme.{0}} {c c' : ComposableArrows (Um N Γ(U, ⊤)) n} (e : c = c')
     (hc : ∀ {i j : Fin (n + 1)} (h : i ⟶ j), (c.map h).1.1 = 1)
     (hc' : ∀ {i j : Fin (n + 1)} (h : i ⟶ j), (c'.map h).1.1 = 1) : conv c hc = conv c' hc' := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `e0` using `ConcreteCategory.congr_hom (congrArg (fun φ : pullback (cstV N E) (PGL.pr N) ⟶ ofCat (glCat N) => (φ.app n).app U) (pullback.condition (f := cstV N E) (g := PGL.pr N))) x`. Establish `e : ((Functor.const (Fin (n.unop.len + 1))).obj (SingleObj.star (GL (Fin N) Γ(U.unop, ⊤))) : ComposableArrows (SingleObj (GL (Fin N) Γ(U.unop, ⊤))) n.unop.len) = (((pullback.snd (cstV N E) (PGL.pr N)).app n).app U x : ComposableArrows (Um N Γ(U.unop, ⊤)) n.unop.len) ⋙ Um.toGL N Γ …` using `e0`. Use `Functor.congr_hom e.symm h` as an intermediate fact. Conclude with `this.trans ((Category.id_comp _).trans (Category.comp_id _))`.
+-/
 theorem pb_gl {N : ℕ} {E : Spc} {n : SimplexCategoryᵒᵖ} {U : Scheme.{0}ᵒᵖ}
     (x : ((pullback (cstV N E) (PGL.pr N)).obj n).obj U) {i j : Fin (n.unop.len + 1)} (h : i ⟶ j) :
     ((((pullback.snd (cstV N E) (PGL.pr N)).app n).app U x : ComposableArrows (Um N Γ(U.unop, ⊤)) n.unop.len).map h).1.1
@@ -142,28 +175,50 @@ def back {A : Type} [CommRing A] {N n : ℕ} (w : ComposableArrows (Vec N 0 (Spe
   map_id i := Subtype.ext (Prod.ext rfl (congrArg Subtype.val (w.map_id i)))
   map_comp f g := Subtype.ext (Prod.ext (one_mul 1).symm (congrArg Subtype.val (w.map_comp f g)))
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ h => heq_of_eq (Subtype.ext (Prod.ext (hc h).symm rfl)))`.
+-/
 theorem back_conv {A : Type} [CommRing A] {N n : ℕ} (c : ComposableArrows (Um N Γ(Spec (CommRingCat.of A), ⊤)) n)
     (hc : ∀ {i j : Fin (n + 1)} (h : i ⟶ j), (c.map h).1.1 = 1) : back (conv c hc) = c :=
   CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ h => heq_of_eq (Subtype.ext (Prod.ext (hc h).symm rfl)))
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => heq_of_eq (Subtype.ext rfl))`.
+-/
 theorem conv_back {A : Type} [CommRing A] {N n : ℕ} (w : ComposableArrows (Vec N 0 (Spec (CommRingCat.of A))) n) :
     conv (back w) (fun _ => rfl) = w :=
   CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => heq_of_eq (Subtype.ext rfl))
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)`.
+-/
 theorem back_gl {A : Type} [CommRing A] {N n : ℕ} (w : ComposableArrows (Vec N 0 (Spec (CommRingCat.of A))) n) :
     ((Functor.const (Fin (n + 1))).obj (SingleObj.star (GL (Fin N) Γ(Spec (CommRingCat.of A), ⊤))) :
       ComposableArrows (SingleObj (GL (Fin N) Γ(Spec (CommRingCat.of A), ⊤))) n) = back w ⋙ Um.toGL N _ :=
   CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)
 
+/- English proof (translation)
+The claim follows from `(back_conv c hc).symm.trans ((congrArg back e).trans (back_conv c' hc'))`.
+-/
 theorem conv_inj {A : Type} [CommRing A] {N n : ℕ} {c c' : ComposableArrows (Um N Γ(Spec (CommRingCat.of A), ⊤)) n}
     (hc : ∀ {i j : Fin (n + 1)} (h : i ⟶ j), (c.map h).1.1 = 1)
     (hc' : ∀ {i j : Fin (n + 1)} (h : i ⟶ j), (c'.map h).1.1 = 1) (e : conv c hc = conv c' hc') : c = c' :=
   (back_conv c hc).symm.trans ((congrArg back e).trans (back_conv c' hc'))
 
+/- English proof (translation)
+Use extensionality with `n U x`. Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)`.
+-/
 theorem fMap_line (N : ℕ) (E : Spc) : fMap N E ≫ Pj.line N 0 = pullback.snd (cstV N E) (PGL.pr N) ≫ PGL.line N := by
   ext n U x
   exact CategoryTheory.Functor.hext (fun _ => rfl) (fun _ _ _ => HEq.rfl)
 
+/- English proof (translation)
+Establish `k1` using `fun z => ConcreteCategory.congr_hom (congrArg (fun φ : pullback (cstV N (sp R)) (PGL.pr N) ⟶ Pj N 0 => (φ.app (op (SimplexCategory.mk n))).app (op (Spec (CommRingCat.of A)))) (prod.lift_fst (fMap N (sp R)) (pullback.fst (cstV N (sp R)) (PGL.pr N)))) z`. Establish `k2` using `fun z => ConcreteCategory.congr_hom (congrArg (fun φ : pullback (cstV N (sp R)) (PGL.pr N) ⟶ sp R => (φ.app (op (SimplexCategory.mk n))).app (op (Spec (CommRingCat.of A)))) (prod.lift_snd (fMap N (sp R)) (pullback.fst (cstV N (sp R)) (PGL.pr N)))) z`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `pb_ext` to reduce the goal to its premises.
+
+Conclude with `(k2 x).symm.trans ((congrArg _ hxy).trans (k2 y))`. Conclude with `conv_inj (pb_gl x) (pb_gl y) ((k1 x).symm.trans ((congrArg _ hxy).trans (k1 y)))`. Introduce `z`. Take `⟨x, hx1, hx2⟩` from `pb_mk (cstV N (sp R)) (PGL.pr N) (n := n) (U := Spec (CommRingCat.of A)) (((prod.snd : PR N 0 R ⟶ _).app (op (SimplexCategory.mk n))).app (op (Spec (CommRingCat.of A))) z) (back (((prod.fst : PR N 0 R ⟶ _).app (op (SimplexCategory.mk n))).app (op (Spec (CommRingCat.of A))) z)) (b …`. Use `⟨x, pr_ext _ _ ?_ ?_⟩` and prove the remaining obligations.
+
+Conclude with `(k1 x).trans ((conv_congr hx2 (pb_gl x) (fun _ => rfl)).trans (conv_back _))`. Conclude with `(k2 x).trans hx1`.
+-/
 theorem eMap_bij (N : ℕ) (R : Type) [CommRing R] (n : ℕ) (A : Type) [CommRing A] : Function.Bijective
       (fun x : Sx (pullback (cstV N (sp R)) (PGL.pr N)) n (Spec (CommRingCat.of A)) =>
         ((prod.lift (fMap N (sp R)) (pullback.fst (cstV N (sp R)) (PGL.pr N)) : _ ⟶ PR N 0 R).app
@@ -186,6 +241,9 @@ theorem eMap_bij (N : ℕ) (R : Type) [CommRing R] (n : ℕ) (A : Type) [CommRin
     · exact (k1 x).trans ((conv_congr hx2 (pb_gl x) (fun _ => rfl)).trans (conv_back _))
     · exact (k2 x).trans hx1
 
+/- English proof (translation)
+Introduce `N R _` and use `⟨cstV N (sp R), prod.lift (fMap N (sp R)) (pullback.fst _ _), prod.lift_snd _ _, by rw [prod.lift_fst_assoc]; exact fMap_line N (sp R), fun n A _ => eMap_bij N R n A⟩`.
+-/
 theorem LeafPBMap_of : LeafPBMap := fun N R _ =>
   ⟨cstV N (sp R), prod.lift (fMap N (sp R)) (pullback.fst _ _), prod.lift_snd _ _,
     by rw [prod.lift_fst_assoc]; exact fMap_line N (sp R), fun n A _ => eMap_bij N R n A⟩

@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.DFrame
 
+/- English proof (translation)
+Establish `n₁ : rho D ι z₁ s₁ ≠ 0` using `fun h => by simp [h] at h₁`. Establish `n₂ : rho D ι z₂ s₂ ≠ 0` using `fun h => by simp [h] at h₂`. Distinguish the cases in `hab : a = b`. Use `⟨(rho D ι z₁ (D.host.conj s₂) - rho D ι z₂ s₂) / (rho D ι z₂ s₂ * th), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_mul, h₂, one_mul]`.
+
+Conclude with `div_le_one_of_le₀ hc (norm_nonneg _)`. Substitute `hX` using the available equality. Simplify using `only [hab, if_true, mul_one, map_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Substitute `hX` using the available equality. Simplify using `[hab]`.
+-/
 theorem pair_value_eq {D : D7} {p : ℕ} [Fact p.Prime] {ι : ℂ ≃+* ℂ_[p]} {th : ℂ_[p]} (hth : th ≠ 0)
     {z₁ z₂ : Bool × HH D} {s₁ s₂ : D.host.E} (h₁ : ‖rho D ι z₁ s₁‖ = 1) (h₂ : ‖rho D ι z₂ s₂‖ = 1)
     (hc : ‖rho D ι z₁ (D.host.conj s₂) - rho D ι z₂ s₂‖ ≤ ‖th‖) {N : ℕ} {a b : Fin N} {X : D.host.E}
@@ -37,6 +44,11 @@ theorem pair_value_eq {D : D7} {p : ℕ} [Fact p.Prime] {ι : ℂ ≃+* ℂ_[p]}
     subst hX
     simp [hab]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single (z₁, a₁), Finset.sum_eq_single (z₂, a₂)]`. Simplify using `[pc]`. Introduce `b _ hb`. Simplify using `[pc, hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Simplify using `[pc, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem sum_pc_pc {D : D7} {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {N : ℕ}
     (σ : Bool × HH D → 𝓞 D.host.E) (z₁ z₂ : Bool × HH D) (a₁ a₂ : Fin N)
     (F : (Bool × HH D) × Fin N → (Bool × HH D) × Fin N → ℂ_[p]) :
@@ -49,6 +61,25 @@ theorem sum_pc_pc {D : D7} {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {N 
   · intro b _ hb; simp [pc, hb]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `D p _ ι th hth h2 N P σ hσ hP`. Establish `key : ∀ t : HH D, (P (tauPl D (false, t)))⁻¹ = ((P (tauPl D (true, t))).map D.host.conj).transpose ∧ (P (tauPl D (true, t)))⁻¹ * P (tauPl D (true, t)) = 1`. Introduce `t`. Establish `h` using `hP t`. Use `⟨Matrix.inv_eq_left_inv h, ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.nonsing_inv_mul` to reduce the goal to its premises. Establish `hd` using `congrArg Matrix.det h`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Establish `hd' : (P (tauPl D (true, t))).det ≠ 0`. Introduce `h0`.
+
+Establish `: ((P (tauPl D (true, t))).map D.host.conj).det = D.host.conj (P (tauPl D (true, t))).det`. Simplify using `using (RingHom.map_det (D.host.conj : D.host.E →+* D.host.E) (P (tauPl D (true, t)))).symm`. Rewrite `hd` using `[this, h0]`. Simplify using `at hd`. Conclude with `isUnit_iff_ne_zero.mpr hd'`.
+
+Use `⟨fun t a₁ a₂ => ?_, fun t b₁ b₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_pc_pc ι σ (false, t) (true, t) a₁ a₂ (fun l l₂ => rho D ι (false, t) (∑ j, rowL D P σ l j * D.host.conj (rowL D P σ l₂ j)))]`. Use `pair_value_eq hth (hσ _) (hσ _) (h2 t (σ (true, t))) ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `key t`. Establish `e` using `congrFun (congrFun k₂ a₂) a₁`.
+
+Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `e'` using `congrArg D.host.conj e`. Simplify using `only [rowL, k₁, map_mul, map_sum, Matrix.transpose_apply, Matrix.map_apply] at e' ⊢`. Establish `e'' : D.host.conj (if a₂ = a₁ then 1 else 0) = if a₁ = a₂ then 1 else 0`. Distinguish the cases in `h : a₁ = a₂`.
+
+Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[← e'', ← e', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Rewrite using `[sum_pc_pc ι σ (false, t) (true, t) b₁ b₂ (fun l l₂ => rho D ι (false, t) (∑ i, colR D P σ l i * D.host.conj (colR D P σ l₂ i)))]`.
+
+Use `pair_value_eq hth (hσ _) (hσ _) (h2 t (σ (true, t))) ?_` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (hP t) b₂) b₁`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at e`. Simplify using `only [colR, map_mul]`.
+
+Establish `e'' : (if b₂ = b₁ then (1 : D.host.E) else 0) = if b₁ = b₂ then 1 else 0`. Distinguish the cases in `h : b₁ = b₂`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[← e'', ← e, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+-/
 theorem dual_local_bases_pair : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (th : ℂ_[p]), th ≠ 0 → (∀ (t : HH D) (y : 𝓞 D.host.E), ‖GlobalTheory.DFrame.rho D ι (false, t) (D.host.conj (y : D.host.E)) - GlobalTheory.DFrame.rho D ι (true, t) (y : D.host.E)‖ ≤ ‖th‖) → ∀ {N : ℕ} (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (σ : Bool × HH D → 𝓞 D.host.E), (∀ z, ‖GlobalTheory.DFrame.rho D ι z (σ z : D.host.E)‖ = 1) → (∀ t, ((P (tauPl D (true, t))).map D.host.conj).transpose * P (tauPl D (false, t)) = 1) → (∀ (t : HH D) (a₁ a₂ : Fin N), ∃ e : ℂ_[p], ‖e‖ ≤ 1 ∧ ∑ l, ∑ l₂, GlobalTheory.DFrame.pc D ι σ (false, t) l a₁ * GlobalTheory.DFrame.rho D ι (false, t) (∑ j, GlobalTheory.DFrame.rowL D P σ l j * D.host.conj (GlobalTheory.DFrame.rowL D P σ l₂ j)) * GlobalTheory.DFrame.pc D ι σ (true, t) l₂ a₂ = (if a₁ = a₂ then 1 else 0) + th * e) ∧ (∀ (t : HH D) (b₁ b₂ : Fin N), ∃ e : ℂ_[p], ‖e‖ ≤ 1 ∧ ∑ r₁, ∑ r₂, GlobalTheory.DFrame.pc D ι σ (false, t) r₁ b₁ * GlobalTheory.DFrame.rho D ι (false, t) (∑ i, GlobalTheory.DFrame.colR D P σ r₁ i * D.host.conj (GlobalTheory.DFrame.colR D P σ r₂ i)) * GlobalTheory.DFrame.pc D ι σ (true, t) r₂ b₂ = (if b₁ = b₂ then 1 else 0) + th * e) := by
   intro D p _ ι th hth h2 N P σ hσ hP
   have key : ∀ t : HH D, (P (tauPl D (false, t)))⁻¹ = ((P (tauPl D (true, t))).map D.host.conj).transpose ∧

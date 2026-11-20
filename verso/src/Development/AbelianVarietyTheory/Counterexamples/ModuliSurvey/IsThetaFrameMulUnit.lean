@@ -22,6 +22,9 @@ def conjVec (g : ℕ) : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) where
   map_add' := star_add
   map_smul' := fun r z => by simp [star_smul]
 
+/- English proof (translation)
+Introduce `U f`. Use `⟨?_, differentiableOn_const _⟩` and prove the remaining obligations. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify `hB` using `[h]`. Simplify using `only [h, and_false, Set.setOf_false, isOpen_empty]`.
+-/
 theorem isHolTo_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B : Set V}
     (hB : IsOpen B) (x : Sp ℂ ⟶ X) : IsHolTo B (fun _ => x) := by
   intro U f

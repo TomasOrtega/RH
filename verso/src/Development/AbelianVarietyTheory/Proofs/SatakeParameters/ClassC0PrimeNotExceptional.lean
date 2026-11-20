@@ -16,16 +16,25 @@ noncomputable section
 
 namespace GlobalTheory.TwV.HalfDiffInt
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Ram.not_dvd_natAbs_discr D.host hp h2 hq hd`.
+-/
 theorem prime_not_dvd_discr (D : D7) {p : ℕ} (hp : p.Prime) (h2 : p ∉ D.host.small) (hq : p ≠ D.host.q) (hd : p ≠ D.host.d) :
     ¬ p ∣ (discr D.host.E).natAbs :=
   UpperTheory.Ram.not_dvd_natAbs_discr D.host hp h2 hq hd
 
+/- English proof (translation)
+Establish `htow` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow D.host.K (𝓞 D.host.K) D.host.E (𝓞 D.host.E)`. Rewrite using `[htow, D.host.𝔟_spec.1, map_mul, mul_assoc]`. Conclude with `Dvd.intro _ rfl`.
+-/
 theorem absNorm_dvd_discr (D : D7) : Ideal.absNorm D.host.𝔟 ∣ (discr D.host.E).natAbs := by
   have htow := natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow D.host.K (𝓞 D.host.K)
     D.host.E (𝓞 D.host.E)
   rw [htow, D.host.𝔟_spec.1, map_mul, mul_assoc]
   exact Dvd.intro _ rfl
 
+/- English proof (translation)
+Apply `Nat.Coprime.symm` to reduce the goal to its premises. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `h`. Conclude with `prime_not_dvd_discr D hp h2 hq hd (dvd_trans h (absNorm_dvd_discr D))`.
+-/
 theorem absNorm_coprime (D : D7) {p : ℕ} (hp : p.Prime) (h2 : p ∉ D.host.small) (hq : p ≠ D.host.q) (hd : p ≠ D.host.d) :
     Nat.Coprime (Ideal.absNorm D.host.𝔟) p := by
   apply Nat.Coprime.symm
@@ -33,6 +42,13 @@ theorem absNorm_coprime (D : D7) {p : ℕ} (hp : p.Prime) (h2 : p ∉ D.host.sma
   intro h
   exact prime_not_dvd_discr D hp h2 hq hd (dvd_trans h (absNorm_dvd_discr D))
 
+/- English proof (translation)
+Introduce `a ha`. Establish `hcop` using `absNorm_coprime D hp h2 hq hd`. Establish `hne : D.host.𝔟 ≠ ⊥`. Introduce `hb`. Rewrite `hcop` using `[hb, Ideal.absNorm_bot, Nat.coprime_zero_left]`.
+
+Conclude with `hp.one_lt.ne' hcop`. Use `⟨Ideal.absNorm D.host.𝔟, hcop, ?_⟩` and prove the remaining obligations. Establish `ha' : a ∈ ((D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹`. Establish `: a ∈ D.host.AA0` using `ha`. Rewrite `this` using `[Host.AA0]`. Then use the resulting hypothesis.
+
+Rewrite `ha'` using `[FractionalIdeal.mem_inv_iff (FractionalIdeal.coeIdeal_ne_zero.2 hne)]`. Establish `hs` using `ha' _ (FractionalIdeal.mem_coeIdeal_of_mem (S := nonZeroDivisors (𝓞 D.host.E)) (P := D.host.E) (Ideal.absNorm_mem D.host.𝔟))`. Take `⟨x, hx⟩` from `(FractionalIdeal.mem_one_iff _).1 hs`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_natCast, mul_comm]`.
+-/
 theorem inv_integral_off (D : D7) {p : ℕ} (hp : p.Prime) (h2 : p ∉ D.host.small) (hq : p ≠ D.host.q) (hd : p ≠ D.host.d) :
     ∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧
       (s : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -53,6 +69,9 @@ theorem inv_integral_off (D : D7) {p : ℕ} (hp : p.Prime) (h2 : p ∉ D.host.sm
   refine ⟨x, ?_⟩
   rw [hx, map_natCast, mul_comm]
 
+/- English proof (translation)
+The claim follows from `let k := (primeClass_eq_inert_iff H.toHostRaw).1 h ⟨k.1, k.2.1, k.2.2.1⟩`.
+-/
 theorem class_c0_prime_not_exceptional {R : Ranks} (H : Host R) {p : ℕ} (h : H.cls p = .inertClass) : p ∉ H.small ∧ p ≠ H.q ∧ p ≠ H.d :=
   let k := (primeClass_eq_inert_iff H.toHostRaw).1 h
   ⟨k.1, k.2.1, k.2.2.1⟩
@@ -61,6 +80,9 @@ end GlobalTheory.TwV.HalfDiffInt
 
 namespace GlobalTheory.TwV
 
+/- English proof (translation)
+Introduce `D T p hg`. Take `⟨h2, hq, hd⟩` from `HalfDiffInt.class_c0_prime_not_exceptional D.host hg.2.2.1`. Conclude with `HalfDiffInt.inv_integral_off D hg.1 h2 hq hd`.
+-/
 theorem halfDiffInv_integral_at_split : ∀ (D : D7) (T p : ℕ), GIdx D.host T p → (∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) := by
   intro D T p hg
   obtain ⟨h2, hq, hd⟩ := HalfDiffInt.class_c0_prime_not_exceptional D.host hg.2.2.1

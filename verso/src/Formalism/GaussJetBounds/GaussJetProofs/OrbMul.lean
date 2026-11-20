@@ -16,6 +16,9 @@ section Pair
 
 variable {K : Type} [Field K] {σ ι : Type}
 
+/- English proof (translation)
+Unfold `jetPairPoly`. Use `Finset.sum_subset hS fun κ _ hκ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hκ, zero_mul]`.
+-/
 lemma jetPairPoly_eq_sum (P : MvPolynomial ι (MvPolynomial σ K)) (Th : MvPowerSeries ι K)
     (S : Finset (ι →₀ ℕ)) (hS : P.support ⊆ S) :
     jetPairPoly P Th = ∑ κ ∈ S, MvPolynomial.coeff κ P *
@@ -24,6 +27,9 @@ lemma jetPairPoly_eq_sum (P : MvPolynomial ι (MvPolynomial σ K)) (Th : MvPower
   refine Finset.sum_subset hS fun κ _ hκ => ?_
   rw [MvPolynomial.notMem_support_iff.mp hκ, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[jetPairPoly_eq_sum (P + Q) Th (P.support ∪ Q.support) MvPolynomial.support_add, jetPairPoly_eq_sum P Th (P.support ∪ Q.support) Finset.subset_union_left, jetPairPoly_eq_sum Q Th (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, add_mul]`.
+-/
 lemma jetPairPoly_add_left (P Q : MvPolynomial ι (MvPolynomial σ K)) (Th : MvPowerSeries ι K) :
     jetPairPoly (P + Q) Th = jetPairPoly P Th + jetPairPoly Q Th := by
   classical
@@ -34,6 +40,9 @@ lemma jetPairPoly_add_left (P Q : MvPolynomial ι (MvPolynomial σ K)) (Th : MvP
   refine Finset.sum_congr rfl fun κ _ => ?_
   rw [MvPolynomial.coeff_add, add_mul]
 
+/- English proof (translation)
+Rewrite using `[jetPairPoly_eq_sum _ Th {κ} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 lemma jetPairPoly_monomial (κ : ι →₀ ℕ) (c : MvPolynomial σ K) (Th : MvPowerSeries ι K) :
     jetPairPoly (MvPolynomial.monomial κ c) Th =
       c * MvPolynomial.C (((mfact κ : ℕ) : K) * MvPowerSeries.coeff κ Th) := by
@@ -68,6 +77,11 @@ section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] {σ₁ σ₂ : Type}
 
+/- English proof (translation)
+Distinguish the cases in `hn : ∃ u : σ →₀ ℕ, u.mapDomain e = n`. Take `⟨u, rfl⟩` from `hn`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain e he]`. Conclude with `hA u`. Rewrite using `[MvPolynomial.coeff_rename_eq_zero e A n fun u hu => absurd ⟨u, hu⟩ hn, norm_zero]`.
+
+Conclude with `le_trans (norm_nonneg _) (hA 0)`.
+-/
 lemma norm_coeff_rename_le {σ τ : Type} (e : σ → τ) (he : Function.Injective e)
     (A : MvPolynomial σ K) {B : ℝ} (hA : ∀ n, ‖MvPolynomial.coeff n A‖ ≤ B) (n : τ →₀ ℕ) :
     ‖MvPolynomial.coeff n (MvPolynomial.rename e A)‖ ≤ B := by
@@ -84,12 +98,18 @@ end OrbMul
 
 namespace OrbMul
 
+/- English proof (translation)
+Unfold `linSub idM`. Simplify using the standard rewrite rules.
+-/
 lemma linSub_idM {K : Type} [Field K] {d N0 N1 : ℕ} [NeZero d] (x : ZV d N0 N1) :
     linSub (idM : ZV d N0 N1 → ZV d N0 N1 → K) x = MvPowerSeries.X x := by
   classical
   unfold linSub idM
   simp
 
+/- English proof (translation)
+Unfold `thetaZ`. Rewrite using `[show (linSub (idM : ZV d N0 N1 → ZV d N0 N1 → K) : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) K) = MvPowerSeries.X from funext linSub_idM, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 lemma thetaZ_eq {K : Type} [NormedField K] [CharZero K] {d N0 N1 : ℕ} [NeZero d]
     (g : ZV d N0 N1 → MvPowerSeries (ZV d N0 N1) K) (U : MvPowerSeries (ZV d N0 N1) K) (ε : K)
     (be : MvPowerSeries (ZMod d) K) :

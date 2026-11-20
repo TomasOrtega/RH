@@ -14,6 +14,9 @@ section
 noncomputable section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 namespace GlobalTheory.CovTop
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, le_rfl, 0, fun _ _ _ _ p hp i => ⟨_root_.GlobalTheory.T.row_norm_has_gram_of_conditions p hp.1 hp.2 i, _root_.GlobalTheory.T.row_lattice_fg_of_conditions p hp.1 hp.2 i, _root_.GlobalTheory.T.ro …`.
+-/
 theorem covering_gram_matrix_of_local_traces_alt (_h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : _root_.GlobalTheory.CovTop.GramCondition :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
     ⟨0, le_rfl, 0, fun _ _ _ _ p hp i =>
@@ -24,6 +27,9 @@ end
 section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt | exact _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_gram_of_prints : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition := by
   first | exact @_root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt | exact _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces_alt <;> assumption)
 end

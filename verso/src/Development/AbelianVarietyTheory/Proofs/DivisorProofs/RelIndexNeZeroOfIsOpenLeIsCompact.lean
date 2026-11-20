@@ -6,6 +6,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hO : IsOpen ((U.subgroupOf K : Subgroup K) : Set K)` using `hU.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ U.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hO`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_isOpen_le_isCompact {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (K U : Subgroup H) (hK : IsCompact (K : Set H))
     (hU : IsOpen (U : Set H)) (_hUK : U ≤ K) : U.relIndex K ≠ 0 := by

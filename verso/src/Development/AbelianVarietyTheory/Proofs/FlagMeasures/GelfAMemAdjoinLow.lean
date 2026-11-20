@@ -10,6 +10,15 @@ open GlobalTheory.SmoothForms.PermWord
 
 namespace GlobalTheory.SmoothForms.GelfGen
 
+/- English proof (translation)
+Use `set f : Module.End K (Fin n → K) := Matrix.toLin' Y`. Establish `htr : ∀ j, (Y ^ j).trace = ∑ μ ∈ (Formalism.SA.P.finite_eig f).toFinset, (Module.finrank K (f.maxGenEigenspace μ) : K) * μ ^ j`. Introduce `j`. Rewrite using `[← Formalism.SA.P.trace_pow_eq_sum, ← Matrix.toLin'_pow, LinearMap.trace_eq_matrix_trace K (Pi.basisFun K (Fin n)), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin']`. Use `set S := (Formalism.SA.P.finite_eig f).toFinset`.
+
+Set `d : K → ℕ` to `fun μ => Module.finrank K (f.maxGenEigenspace μ)`. Set `σ` to `Σ μ : S, Fin (d μ)`. Establish `hsum : ∀ j, ∑ x : σ, (x.1 : K) ^ j = (Y ^ j).trace`. Introduce `j`. Rewrite using `[htr, Fintype.sum_sigma, ← Finset.sum_coe_sort S]`.
+
+Simplify using `[d]`. Establish `hcard : Fintype.card σ = n`. Use `hsum 0` as an intermediate fact. Simplify using `at this`. Conclude with `this` after adjusting the coercions.
+
+Set `e` to `(Fintype.equivFinOfCardEq hcard).symm`. Conclude with `⟨fun i => ((e i).1 : K), fun j => by rw [← hsum, ← e.sum_comp]⟩`.
+-/
 theorem exists_eig {K : Type} [Field K] [IsAlgClosed K] [CharZero K] {n : ℕ} (Y : Matrix (Fin n) (Fin n) K) :
     ∃ l : Fin n → K, ∀ j : ℕ, (Y ^ j).trace = ∑ i, l i ^ j := by
   classical
@@ -33,6 +42,33 @@ theorem exists_eig {K : Type} [Field K] [IsAlgClosed K] [CharZero K] {n : ℕ} (
   let e := (Fintype.equivFinOfCardEq hcard).symm
   exact ⟨fun i => ((e i).1 : K), fun j => by rw [← hsum, ← e.sum_comp]⟩
 
+/- English proof (translation)
+Set `Q : ℕ → MvPolynomial (Fin n) ℂ → Prop` to `fun j p => P j (MvPolynomial.aeval l p)`. Establish `hps : ∀ j, MvPolynomial.aeval l (MvPolynomial.psum (Fin n) ℂ j) = ∑ i, l i ^ j`. Introduce `j`. Simplify using `[MvPolynomial.psum]`. Establish `qadd : ∀ j x y, Q j x → Q j y → Q j (x + y)` using `fun j x y hx hy => by`.
+
+Simplify `hadd j _ _ hx hy` using `[Q]`. Establish `qC : ∀ j (c : ℂ) x, Q j x → Q j (MvPolynomial.C c * x)` using `fun j c x hx => by`. Rewrite using `[MvPolynomial.C_mul']`. Simplify `hsmul j c _ hx` using `[Q]`. Establish `qmul : ∀ i j x y, Q i x → Q j y → Q (i + j) (x * y)` using `fun i j x y hx hy => by`.
+
+Simplify `hmul i j _ _ hx hy` using `[Q]`. Establish `qsign : ∀ j m x, Q j x → Q j ((-1) ^ m * x)` using `fun j m x hx => by`. Establish `: ((-1 : MvPolynomial (Fin n) ℂ)) ^ m = MvPolynomial.C ((-1) ^ m)` using `by simp`. Rewrite using `[this]`. Conclude with `qC j _ x hx`.
+
+Establish `qsub : ∀ j x y, Q j x → Q j y → Q j (x - y)` using `fun j x y hx hy => by`. Rewrite using `[sub_eq_add_neg, neg_eq_neg_one_mul, ← pow_one (-1 : MvPolynomial (Fin n) ℂ)]`. Conclude with `qadd j _ _ hx (qsign j 1 y hy)`. Establish `qsum : ∀ j (s : Finset (ℕ × ℕ)) (g : ℕ × ℕ → MvPolynomial (Fin n) ℂ), (∀ a ∈ s, Q j (g a)) → Q j (∑ a ∈ s, g a)` using `fun j s g hg => Finset.sum_induction _ (Q j) (qadd j) (by simpa [Q] using h0 j) hg`. Establish `qbase : ∀ j, 1 ≤ j → j ≤ n → Q j (MvPolynomial.psum (Fin n) ℂ j)` using `fun j h1 h2 => by`.
+
+Simplify `hbase j h1 h2` using `[Q, hps]`. Establish `hesymm : ∀ k, Q k (MvPolynomial.esymm (Fin n) ℂ k)`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`.
+
+Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify `h1` using `[Q]`. Distinguish the cases in `hkn : n < k`. Establish `: MvPolynomial.esymm (Fin n) ℂ k = 0`. Simplify using `only [MvPolynomial.esymm]`.
+
+Rewrite using `[Finset.powersetCard_eq_empty.2 (by rw [Finset.card_univ, Fintype.card_fin]; exact hkn), Finset.sum_empty]`. Rewrite using `[this]`. Simplify `h0 k` using `[Q]`. Establish `hm` using `MvPolynomial.mul_esymm_eq_sum (Fin n) ℂ k`. Establish `hQ : Q k ((k : MvPolynomial (Fin n) ℂ) * MvPolynomial.esymm (Fin n) ℂ k)`.
+
+Rewrite using `[hm]`. Use `qsign _ _ _ (qsum _ _ _ fun a ha => ?_)` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[mul_assoc]`. Use `qsign _ _ _ ?_` and prove the remaining obligations.
+
+Use `qmul _ _ _ _ (ih a.1 ha.2) (qbase a.2 (by omega) (by omega))` as an intermediate fact. Rewrite `this` using `[ha.1]`. Then use the resulting hypothesis. Use `qC k ((k : ℂ)⁻¹) _ hQ` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_natCast MvPolynomial.C k, ← map_mul, inv_mul_cancel₀ (by exact_mod_cast hk.ne'), map_one, one_mul]`. Then use the resulting hypothesis. Establish `hpsum : ∀ k, 1 ≤ k → Q k (MvPolynomial.psum (Fin n) ℂ k)`.
+
+Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `hk`. Distinguish the cases in `hkn : k ≤ n`.
+
+Conclude with `qbase k hk hkn`. Rewrite using `[MvPolynomial.psum_eq_mul_esymm_sub_sum (Fin n) ℂ k (by omega)]`. Use `qsub _ _ _ ?_ (qsum _ _ _ fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← map_natCast MvPolynomial.C k]`. Conclude with `qsign _ _ _ (qC _ _ _ (hesymm k))`.
+
+Rewrite `ha` using `[Finset.mem_filter, Finset.HasAntidiagonal.mem_antidiagonal, Set.mem_Ioo]`. Rewrite using `[mul_assoc]`. Use `qsign _ _ _ ?_` and prove the remaining obligations. Use `qmul _ _ _ _ (hesymm a.1) (ih a.2 (by omega) (by omega))` as an intermediate fact. Rewrite `this` using `[ha.1]`. Then use the resulting hypothesis.
+
+Introduce `j hj`. Simplify `hpsum j hj` using `[Q, hps]`.
+-/
 theorem newton_closure {K : Type} [Field K] [Algebra ℂ K] {n : ℕ} (l : Fin n → K) (P : ℕ → K → Prop)
     (h1 : P 0 1) (h0 : ∀ j, P j 0) (hadd : ∀ j x y, P j x → P j y → P j (x + y))
     (hsmul : ∀ j (c : ℂ) x, P j x → P j (c • x)) (hmul : ∀ i j x y, P i x → P j y → P (i + j) (x * y))
@@ -102,6 +138,21 @@ theorem newton_closure {K : Type} [Field K] [Algebra ℂ K] {n : ℕ} (l : Fin n
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
+/- English proof (translation)
+Use `set C := Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val)`. Set `R` to `MvPolynomial (Fin n × Fin n) ℂ`. Set `K` to `AlgebraicClosure (FractionRing R)`. Establish `hinj : Function.Injective (algebraMap R K)`. Rewrite using `[IsScalarTower.algebraMap_eq R (FractionRing R) K]`.
+
+Conclude with `(algebraMap (FractionRing R) K).injective.comp (IsFractionRing.injective _ _)`. Take `⟨l, hl⟩` from `exists_eig ((Matrix.of (gen n)).map (algebraMap R K))`. Establish `htr : ∀ j, algebraMap R K ((Matrix.of (gen n)) ^ j).trace = ∑ i, l i ^ j`. Introduce `j`. Rewrite using `[← hl, ← Matrix.map_pow]`.
+
+Simplify using `[Matrix.trace, map_sum]`. Set `P : ℕ → K → Prop` to `fun j p => ∃ q : R, ∃ c ∈ C, algebraMap R K q = p ∧ (q, c) ∈ symb E j`. Establish `key` using `newton_closure l P ⟨1, 1, one_mem _, map_one _, Submodule.subset_span ⟨[], rfl, by simp [wd]⟩⟩ (fun j => ⟨0, 0, zero_mem _, map_zero _, zero_mem _⟩) (by`. Introduce and unpack `j _ _ ⟨q, c, hc, rfl, h⟩ ⟨q', c', hc', rfl, h'⟩`. Conclude with `⟨q + q', c + c', add_mem hc hc', map_add _ _ _, by simpa using add_mem h h'⟩)`.
+
+Use the proof step `(by`. Introduce and unpack `j a _ ⟨q, c, hc, rfl, h⟩`. Use `⟨a • q, a • c, Subalgebra.smul_mem _ hc a, ?_, by simpa using Submodule.smul_mem _ a h⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply, Algebra.smul_def])`. Use the proof step `(by`.
+
+Introduce and unpack `i j _ _ ⟨q, c, hc, rfl, h⟩ ⟨q', c', hc', rfl, h'⟩`. Conclude with `⟨q * q', c * c', mul_mem hc hc', map_mul _ _ _, by simpa using symb_mul E h h'⟩)`. Use the proof step `(by`. Introduce `j hj1 hjn`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+
+Use `⟨_, gelfA E k, Algebra.subset_adjoin ⟨⟨k, by omega⟩, rfl⟩, htr _, ?_⟩` and prove the remaining obligations. Rewrite using `[trace_pow_eq]`. Unfold `gelfA`. Conclude with `sum_mem_symb E (fun idx : Fin (k + 1) → Fin n => idx) fun idx a => idx (a + 1))`. Use the proof step `(k + 1) (by omega)`.
+
+Take `⟨q, c, hc, hq, h⟩` from `key`. Rewrite `hq` using `[← htr]`. Rewrite `h` using `[hinj hq]`. Conclude with `⟨c, hc, h⟩`.
+-/
 theorem trace_symb (E : Fin n → Fin n → A) (k : ℕ) :
     ∃ c ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val),
       (((Matrix.of (gen n)) ^ (k + 1)).trace, c) ∈ symb E (k + 1) := by
@@ -143,6 +194,11 @@ theorem trace_symb (E : Fin n → Fin n → A) (k : ℕ) :
   rw [hinj hq] at h
   exact ⟨c, hc, h⟩
 
+/- English proof (translation)
+Establish `key` using `perm_sum_mem (Matrix.of (gen n)) (fun j p => ∃ c ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val), (p, c) ∈ symb E j) ⟨1, one_mem _, Submodule.subset_span ⟨[], rfl, by simp [wd]⟩⟩ (by`. Introduce and unpack `k j p ⟨c, hc, h⟩`. Take `⟨c', hc', h'⟩` from `trace_symb E k`. Conclude with `⟨c' * c, mul_mem hc' hc, by rw [← Prod.mk_mul_mk]; exact symb_mul E h' h⟩)`. Use `d π (fun _ => 0)`.
+
+Simplify using `only [zero_add, pow_one, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one, Matrix.of_apply] at key`. Simplify using `only [List.prod_ofFn]`. Conclude with `key`.
+-/
 theorem exists_symb_low (E : Fin n → Fin n → A) (d : ℕ)
     (π : Equiv.Perm (Fin d)) : ∃ c ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val),
       (∑ K : Fin d → Fin n, (List.ofFn fun a => gen n (K (π a)) (K a)).prod, c) ∈ symb E d := by
@@ -159,6 +215,11 @@ theorem exists_symb_low (E : Fin n → Fin n → A) (d : ℕ)
   simp only [List.prod_ofFn]
   exact key
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `exists_symb_low E d π`. Use `⟨c, hc, shorter_le_filt E d ?_⟩` and prove the remaining obligations. Establish `h2` using `symb_sub hE (sum_mem_symb E (fun (K : Fin d → Fin n) a => K (π a)) fun K => K)`. Establish `h1` using `symb_sub hE h`. Establish `h3` using `sub_mem h2 h1`.
+
+Rewrite `h3` using `[sub_sub_sub_cancel_right]`. Rewrite using `[wordMap_permMat]`. Conclude with `h3`.
+-/
 theorem permWord_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (d : ℕ) (π : Equiv.Perm (Fin d)) :
     ∃ c ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val),
       wordMap E d (permMat n d π) - c ∈ filt E d := by
@@ -171,10 +232,32 @@ theorem permWord_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (
   rw [wordMap_permMat]
   exact h3
 
+/- English proof (translation)
+The claim follows from `Algebra.adjoin_mono (by rintro _ ⟨k, rfl⟩; exact ⟨k.val, rfl⟩)`.
+-/
 theorem low_le (E : Fin n → Fin n → A) :
     Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val) ≤ Algebra.adjoin ℂ (Set.range (gelfA E)) :=
   Algebra.adjoin_mono (by rintro _ ⟨k, rfl⟩; exact ⟨k.val, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `z hz _`. Establish `: filt E 0 ≤ ⊥` using `iSup₂_le fun k hk => absurd hk (Nat.not_lt_zero k)`. Rewrite using `[(Submodule.mem_bot ℂ).1 (this hz)]`.
+
+Conclude with `zero_mem _`. Consider the case `succ d ih`. Introduce `z hz hc`. Take `⟨_, ⟨M, rfl⟩, y, hy, rfl⟩` from `Submodule.mem_sup.1 (filt_succ d hz)`. Take `⟨M₀, h1, h2⟩` from `GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ((filt E d).comap (wordMap E d)) (by rintro _ ⟨p, rfl⟩; exact ⟨(p.2, p.1), (polar_conjTranspose d p.1 p.2).symm⟩) (by`.
+
+Introduce and unpack `_ ⟨p, rfl⟩ N hN`. Rewrite using `[Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]`. Conclude with `filt_ad hE d _ _ hN) M`. Use the proof step `(by`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Rewrite using `[Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]`. Establish `h3` using `neg_mem (filt_ad hE d p.1 p.2 hy)`. Establish `h4` using `hc p.1 p.2`. Rewrite `h4` using `[mul_add, add_mul]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[neg_sub, sub_eq_sub_iff_add_eq_add, h4, add_comm])`. Establish `h3 : M₀ ∈ Submodule.span ℂ (Set.range (permMat n d))`. Use `GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d M₀ fun T hT => ?_` and prove the remaining obligations. Establish `: Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ≤ Subalgebra.centralizer ℂ {M₀}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `x hx _ rfl`. Conclude with `(h2 x hx).symm`. Conclude with `this (GlobalTheory.T.mem_adjoin_glAction_of_commute_tensorPerm n d T hT) _ rfl`. Establish `h4 : Submodule.span ℂ (Set.range (permMat n d)) ≤ (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val)) ⊔ filt E d).comap (wordMap E d)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨π, rfl⟩`. Take `⟨c, hc1, hc2⟩` from `permWord_low hE d π`. Conclude with `Submodule.mem_sup.2 ⟨c, hc1, _, hc2, by abel⟩`. Take `⟨c, hc1, u, hu, hcu⟩` from `Submodule.mem_sup.1 (h4 h3)`. Establish `h5 : wordMap E d M + y - c ∈ filt E d`.
+
+Establish `h6 : wordMap E d (M - M₀) ∈ filt E d` using `h1`. Use `add_mem (add_mem h6 hu) hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, ← hcu]`. Normalize the expressions using the abelian group laws.
+
+Establish `h7` using `ih _ h5 fun a b => by`. Rewrite using `[mul_sub, sub_mul, hc, gelf_adjoin_comm hE (low_le E hc1)]`. Simplify using `using add_mem h7 hc1`.
+-/
 theorem central_of_filt_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlRel E) (d : ℕ) :
     ∀ z ∈ filt E d, (∀ a b, E a b * z = z * E a b) →
       z ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val) := by
@@ -227,6 +310,9 @@ theorem central_of_filt_low {E : Fin n → Fin n → A} (hE : Formalism.REAL.GlR
       rw [mul_sub, sub_mul, hc, gelf_adjoin_comm hE (low_le E hc1)]
     simpa using add_mem h7 hc1
 
+/- English proof (translation)
+Use `shorter_le_filt E _ (Submodule.sum_mem _ fun idx _ => ?_)` and prove the remaining obligations. Rewrite using `[← wd_ofFn E (fun a : Fin (m + 1) => idx a) fun a => idx (a + 1)]`. Conclude with `wd_mem_shorter E (by simp)`.
+-/
 theorem gelfA_mem_filt (E : Fin n → Fin n → A) (m : ℕ) : gelfA E m ∈ filt E (m + 2) := by
   refine shorter_le_filt E _ (Submodule.sum_mem _ fun idx _ => ?_)
   rw [← wd_ofFn E (fun a : Fin (m + 1) => idx a) fun a => idx (a + 1)]
@@ -234,6 +320,9 @@ theorem gelfA_mem_filt (E : Fin n → Fin n → A) (m : ℕ) : gelfA E m ∈ fil
 
 end GlobalTheory.SmoothForms.GelfGen
 
+/- English proof (translation)
+Introduce `A _ _ n E hE m`. Conclude with `GlobalTheory.SmoothForms.GelfGen.central_of_filt_low hE (m + 2) _ (GlobalTheory.SmoothForms.GelfGen.gelfA_mem_filt E m) (GlobalTheory.T.commute_gelfandInvariantMatrixUnits_of_glRel A n E hE m)`.
+-/
 theorem GlobalTheory.SmoothForms.gelfA_mem_adjoin_low : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A),
     Formalism.REAL.GlRel E → ∀ m : ℕ, gelfA E m ∈ Algebra.adjoin ℂ (Set.range fun k : Fin n => gelfA E k.val) := by
   intro A _ _ n E hE m

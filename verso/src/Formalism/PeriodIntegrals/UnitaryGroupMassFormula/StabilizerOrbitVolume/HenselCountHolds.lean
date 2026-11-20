@@ -16,9 +16,17 @@ variable {V X : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGro
 def hlev (Λ0 : AddSubgroup V) (H : AddSubgroup X) (G : V → X) (y : V) (h : X) : Set V :=
   {Z | Z ∈ Λ0 ∧ G (y + Z) - h ∈ H}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_hlev_iff {Λ0 : AddSubgroup V} {H : AddSubgroup X} {G : V → X} {y : V} {h : X}
     {Z : V} : Z ∈ hlev Λ0 H G y h ↔ Z ∈ Λ0 ∧ G (y + Z) - h ∈ H := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `Z hZ`. Use `⟨(fun W => -Z + W) ⁻¹' (U : Set V), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW`. Establish `h` using `hA Z hZ (-Z + W) hW`.
+
+Simplify using `using h`. Conclude with `hU.preimage (continuous_const_add (-Z))`. Use `show -Z + Z ∈ (U : Set V)`. Simplify using the standard rewrite rules.
+-/
 private theorem isOpen_of_add_openSubgroup_stable (U : AddSubgroup V) (hU : IsOpen (U : Set V)) (A : Set V)
     (hA : ∀ Z ∈ A, ∀ W ∈ U, Z + W ∈ A) : IsOpen A := by
   rw [isOpen_iff_forall_mem_open]
@@ -31,6 +39,9 @@ private theorem isOpen_of_add_openSubgroup_stable (U : AddSubgroup V) (hU : IsOp
   · show -Z + Z ∈ (U : Set V)
     simp
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hLc.elim_finite_subcover (fun x : X => (fun z => -x + z) ⁻¹' (K : Set X)) (fun x => hKo.preimage (continuous_const_add (-x))) (fun l _ => Set.mem_iUnion.2 ⟨l, by simp⟩)`. Use `(T.finite_toSet.image (QuotientAddGroup.mk : X → X ⧸ K)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Take `⟨x, hx, hlx⟩` from `Set.mem_iUnion₂.1 (hT hl)`. Conclude with `⟨x, hx, QuotientAddGroup.eq.2 hlx⟩`.
+-/
 private theorem finite_image_mk_of_isOpen_of_isCompact' (K L : AddSubgroup X) (hKo : IsOpen (K : Set X))
     (hLc : IsCompact (L : Set X)) :
     ((QuotientAddGroup.mk : X → X ⧸ K) '' (L : Set X)).Finite := by
@@ -42,6 +53,39 @@ private theorem finite_image_mk_of_isOpen_of_isCompact' (K L : AddSubgroup X) (h
   obtain ⟨x, hx, hlx⟩ := Set.mem_iUnion₂.1 (hT hl)
   exact ⟨x, hx, QuotientAddGroup.eq.2 hlx⟩
 
+/- English proof (translation)
+Establish `hF` using `finite_image_mk_of_isOpen_of_isCompact' K L hKo hLc`. Establish `hqeq : ∀ a b : X, ((a : X ⧸ K) = (b : X ⧸ K) ↔ a - b ∈ K)`. Introduce `a b`. Rewrite using `[QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `K.neg_mem h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce `h`.
+
+Use `K.neg_mem h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hC : ∀ c, c ∈ hF.toFinset ↔ ∃ t ∈ L, (t : X ⧸ K) = c`. Introduce `c`.
+
+Rewrite using `[Set.Finite.mem_toFinset, Set.mem_image]`. Both sides reduce to the same expression. Set `A : X ⧸ K → Set V` to `fun c => {Z | Z ∈ P ∧ (f Z : X ⧸ K) = c}`. Set `B : X ⧸ K → Set X` to `fun c => (QuotientAddGroup.mk : X → X ⧸ K) ⁻¹' {c}`. Establish `hA : ∀ c ∈ hF.toFinset, MeasurableSet (A c) ∧ μ (A c) = m`.
+
+Introduce `c hc`. Take `⟨t, ht, rfl⟩` from `(hC c).1 hc`. Establish `e : A (t : X ⧸ K) = {Z | Z ∈ P ∧ f Z - t ∈ K}`. Use extensionality with `Z`. Simplify using `only [A, Set.mem_setOf_eq, hqeq]`.
+
+Rewrite using `[e]`. Conclude with `⟨hmeas t ht, hm t ht⟩`. Establish `hB : ∀ c ∈ hF.toFinset, MeasurableSet (B c) ∧ ν (B c) = ν K`. Introduce `c hc`. Take `⟨t, ht, rfl⟩` from `(hC c).1 hc`.
+
+Establish `e : B (t : X ⧸ K) = (fun x => -t + x) ⁻¹' (K : Set X)`. Use extensionality with `x`. Simplify using `only [B, Set.mem_preimage, Set.mem_singleton_iff, hqeq, SetLike.mem_coe, sub_eq_neg_add]`. Rewrite using `[e, measure_preimage_add]`. Conclude with `⟨(hKo.preimage (continuous_const_add (-t))).measurableSet, rfl⟩`.
+
+Establish `hPU : P = ⋃ c ∈ hF.toFinset, A c`. Use extensionality with `Z`. Simplify using `only [Set.mem_iUnion, A, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hZ`.
+
+Conclude with `⟨(f Z : X ⧸ K), (hC _).2 ⟨f Z, hfP Z hZ, rfl⟩, hZ, rfl⟩`. Introduce and unpack `⟨c, -, hZ, -⟩`. Conclude with `hZ`. Establish `hLU : (L : Set X) = ⋃ c ∈ hF.toFinset, B c`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_iUnion, B, Set.mem_preimage, Set.mem_singleton_iff, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨(x : X ⧸ K), (hC _).2 ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨c, hc, hxc⟩`.
+
+Take `⟨t, ht, rfl⟩` from `(hC c).1 hc`. Establish `h1` using `hKL ((hqeq x t).1 hxc)`. Establish `h2` using `L.add_mem h1 ht`. Simplify using `using h2`. Establish `hdA : (hF.toFinset : Set (X ⧸ K)).PairwiseDisjoint A`.
+
+Introduce `c _ c' _ hne`. Use `show Disjoint (A c) (A c')`. Rewrite using `[Set.disjoint_left]`. Introduce `Z h1 h2`. Establish `h1' : Z ∈ P ∧ (f Z : X ⧸ K) = c` using `h1`.
+
+Establish `h2' : Z ∈ P ∧ (f Z : X ⧸ K) = c'` using `h2`. Conclude with `hne (h1'.2.symm.trans h2'.2)`. Establish `hdB : (hF.toFinset : Set (X ⧸ K)).PairwiseDisjoint B`. Introduce `c _ c' _ hne`. Use `show Disjoint (B c) (B c')`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `x h1 h2`. Establish `h1' : (x : X ⧸ K) = c` using `h1`. Establish `h2' : (x : X ⧸ K) = c'` using `h2`. Conclude with `hne (h1'.symm.trans h2')`.
+
+Establish `hμP : μ P = hF.toFinset.card * m`. Rewrite using `[hPU, measure_biUnion_finset hdA (fun c hc => (hA c hc).1), Finset.sum_congr rfl (fun c hc => (hA c hc).2), Finset.sum_const, nsmul_eq_mul]`. Establish `hνL : ν L = hF.toFinset.card * ν K`. Establish `hLU' : ν (L : Set X) = ν (⋃ c ∈ hF.toFinset, B c)` using `congrArg ν hLU`. Rewrite using `[hLU', measure_biUnion_finset hdB (fun c hc => (hB c hc).1), Finset.sum_congr rfl (fun c hc => (hB c hc).2), Finset.sum_const, nsmul_eq_mul]`.
+
+Rewrite using `[hμP, hνL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem measure_mul_eq_of_const_fibres (μ : Measure V) (ν : Measure X) [ν.IsAddHaarMeasure]
     (K L : AddSubgroup X) (hKL : K ≤ L) (hKo : IsOpen (K : Set X)) (hLc : IsCompact (L : Set X))
     (P : Set V) (f : V → X) (hfP : ∀ Z ∈ P, f Z ∈ L) (m : ENNReal)
@@ -130,6 +174,9 @@ private theorem measure_mul_eq_of_const_fibres (μ : Measure V) (ν : Measure X)
   rw [hμP, hνL]
   ring
 
+/- English proof (translation)
+Establish `h3 : b * d * c = e * f * c`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem ennreal_mul_cross_cancel {a b c d e f : ENNReal} (hc0 : c ≠ 0) (hct : c ≠ ⊤)
     (h1 : a * f = b * c) (h2 : a * d = e * c) : b * d = e * f := by
   have h3 : b * d * c = e * f * c := by
@@ -143,6 +190,43 @@ private theorem ennreal_mul_cross_cancel {a b c d e f : ENNReal} (hc0 : c ≠ 0)
     _ = (e * f * c) * c⁻¹ := by rw [h3]
     _ = e * f := by rw [mul_assoc, ENNReal.mul_inv_cancel hc0 hct, mul_one]
 
+/- English proof (translation)
+Establish `hΛ0 : ∀ k, Λ k ≤ Λ 0` using `fun k => hΛa (Nat.zero_le k)`. Establish `hHa : ∀ k l, k ≤ l → H l ≤ H k`. Introduce `k l hkl`. Rewrite using `[← hD k, ← hD l]`. Conclude with `AddSubgroup.map_mono (hΛa hkl)`.
+
+Establish `hDm : ∀ k, ∀ W ∈ Λ k, D W ∈ H k`. Introduce `k W hW`. Rewrite using `[← hD k]`. Conclude with `AddSubgroup.mem_map_of_mem D hW`. Establish `hDs : ∀ k, ∀ t ∈ H k, ∃ W ∈ Λ k, D W = t`.
+
+Introduce `k t ht`. Rewrite `ht` using `[← hD k]`. Conclude with `AddSubgroup.mem_map.1 ht`. Establish `hstep : ∀ k, ∀ Z ∈ Λ 0, ∀ W ∈ Λ k, G (y + (Z + W)) - G (y + Z) - D W ∈ H (k + 1)`. Introduce `k Z hZ W hW`.
+
+Use `hG k Z hZ W hW` as an intermediate fact. Rewrite `this` using `[add_assoc y Z W]`. Then use the resulting hypothesis. Establish `hstab : ∀ k h', ∀ Z ∈ hlev (Λ 0) (H k) G y h', ∀ W ∈ Λ k, Z + W ∈ hlev (Λ 0) (H k) G y h'`. Introduce `k h' Z hZ W hW`. Rewrite `hZ`, the goal using `[mem_hlev_iff]`.
+
+Use `⟨(Λ 0).add_mem hZ.1 (hΛ0 k hW), ?_⟩` and prove the remaining obligations. Establish `h1` using `hHa k (k + 1) (Nat.le_succ k) (hstep k Z hZ.1 W hW)`. Establish `h2` using `(H k).add_mem ((H k).add_mem h1 hZ.2) (hDm k W hW)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `hopen : ∀ k h', IsOpen (hlev (Λ 0) (H k) G y h')` using `fun k h' => isOpen_of_add_openSubgroup_stable (Λ k) (hΛo k) _ (hstab k h')`. Establish `key : ∀ k, ∀ h', h' - G y ∈ H 0 → μ (hlev (Λ 0) (H k) G y h') * ν (H 0) = μ (Λ 0) * ν (H k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `h' hh'`. Establish `e : hlev (Λ 0) (H 0) G y h' = (Λ 0 : Set V)`. Use extensionality with `Z`. Rewrite using `[mem_hlev_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `fun hZ => hZ.1`. Introduce `hZ`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Establish `h1` using `hHa 0 1 (Nat.zero_le 1) (hstep 0 0 (Λ 0).zero_mem Z hZ)`. Establish `h2` using `(H 0).sub_mem ((H 0).add_mem h1 (hDm 0 Z hZ)) hh'`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [add_zero, zero_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Consider the case `succ k ih`.
+
+Introduce `h' hh'`. Establish `hpiece : ∀ t ∈ H k, {Z | Z ∈ hlev (Λ 0) (H k) G y h' ∧ (G (y + Z) - h') - t ∈ H (k + 1)} = hlev (Λ 0) (H (k + 1)) G y (h' + t)`. Introduce `t ht`. Use extensionality with `Z`. Simplify using `only [Set.mem_setOf_eq, mem_hlev_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hZ, -⟩, h2⟩`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_sub]`. Conclude with `h2`.
+
+Introduce and unpack `⟨hZ, h2⟩`. Rewrite `h2` using `[← sub_sub]`. Use `⟨⟨hZ, ?_⟩, h2⟩` and prove the remaining obligations. Use `(H k).add_mem (hHa k (k + 1) (Nat.le_succ k) h2) ht` as an intermediate fact. Simplify using `using this`.
+
+Establish `htrans : ∀ t ∈ H k, μ (hlev (Λ 0) (H (k + 1)) G y (h' + t)) = μ (hlev (Λ 0) (H (k + 1)) G y h')`. Introduce `t ht`. Take `⟨W, hW, rfl⟩` from `hDs k t ht`. Establish `hW0` using `hΛ0 k hW`. Establish `e : hlev (Λ 0) (H (k + 1)) G y h' = (fun Z => W + Z) ⁻¹' hlev (Λ 0) (H (k + 1)) G y (h' + D W)`.
+
+Use extensionality with `Z`. Simplify using `only [Set.mem_preimage, mem_hlev_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hZ, h2⟩`. Use `⟨(Λ 0).add_mem hW0 hZ, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `(H (k + 1)).add_mem (hstep k Z hZ W hW) h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[add_comm W Z]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨hWZ, h2⟩`.
+
+Establish `hZ : Z ∈ Λ 0`. Use `(Λ 0).sub_mem hWZ hW0` as an intermediate fact. Simplify using `using this`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Establish `h3` using `(H (k + 1)).sub_mem h2 (hstep k Z hZ W hW)`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[add_comm W Z]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, measure_preimage_add]`. Establish `hc` using `measure_mul_eq_of_const_fibres μ ν (H (k + 1)) (H k) (hHa k (k + 1) (Nat.le_succ k)) (hHo (k + 1)) (hHc k) (hlev (Λ 0) (H k) G y h') (fun Z => G (y + Z) - h') (fun Z hZ => (mem_hlev_iff.1 hZ).2) (μ (hlev (Λ 0) (H (k + 1)) G y h')) (fun t ht => by rw [hpiece t ht]; exact (hopen (k …`.
+
+Establish `hne0 : ν (H k : Set X) ≠ 0` using `(hHo k).measure_ne_zero ν ⟨0, (H k).zero_mem⟩`. Establish `hnetop : ν (H k : Set X) ≠ ⊤` using `(hHc k).measure_lt_top.ne`. Conclude with `ennreal_mul_cross_cancel hne0 hnetop hc (ih h' hh')`. Conclude with `key n h hh`.
+-/
 theorem hensel_main (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
     (Λ : ℕ → AddSubgroup V) (H : ℕ → AddSubgroup X) (hΛo : ∀ n, IsOpen (Λ n : Set V))
     (hΛa : Antitone Λ) (hHo : ∀ n, IsOpen (H n : Set X)) (hHc : ∀ n, IsCompact (H n : Set X))
@@ -253,6 +337,9 @@ theorem hensel_main (μ : Measure V) (ν : Measure X) [μ.IsAddHaarMeasure] [ν.
 
 end Hensel
 
+/- English proof (translation)
+Introduce `V X _ _ _ _ _ _ _ _ _ _ μ ν hμ hν Λ H hΛo _ hΛa hHo hHc D hD G y hG n h hh`. Use `hμ` as an intermediate fact. Use `hν` as an intermediate fact. Conclude with `hensel_main μ ν Λ H hΛo hΛa hHo hHc D hD G y hG h hh n`.
+-/
 theorem henselCount_holds : HenselCount := by
   intro V X _ _ _ _ _ _ _ _ _ _ μ ν hμ hν Λ H hΛo _ hΛa hHo hHc D hD G y hG n h hh
   have := hμ

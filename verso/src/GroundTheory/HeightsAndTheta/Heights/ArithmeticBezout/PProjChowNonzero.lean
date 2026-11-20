@@ -11,6 +11,11 @@ noncomputable section
 
 namespace ProjChowNonzero
 
+/- English proof (translation)
+Simplify using `only [aeval_def, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg` using `hφ.degree_eq_sum_deg_support hd`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← hdeg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_smul_of_isHomogeneous {Ω : Type*} [Field Ω] [Algebra ℂ Ω] {n m : ℕ}
     {φ : MvPolynomial (Fin n) ℂ} (hφ : φ.IsHomogeneous m) (c : Ω) (x : Fin n → Ω) :
     aeval (c • x) φ = c ^ m * aeval x φ := by
@@ -21,6 +26,9 @@ theorem aeval_smul_of_isHomogeneous {Ω : Type*} [Field Ω] [Algebra ℂ Ω] {n 
   rw [← hdeg]
   ring
 
+/- English proof (translation)
+Introduce `q hq`. Rewrite using `[← sum_homogeneousComponent q, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous d q), hx _ (hW q hq d), mul_zero]`.
+-/
 theorem aeval_smul_eq_zero {Ω : Type*} [Field Ω] [Algebra ℂ Ω] {n : ℕ}
     {W : Ideal (MvPolynomial (Fin n) ℂ)} (hW : IsHomogIdeal W) {x : Fin n → Ω}
     (hx : ∀ q ∈ W, aeval x q = 0) (c : Ω) : ∀ q ∈ W, aeval (c • x) q = 0 := by
@@ -29,6 +37,17 @@ theorem aeval_smul_eq_zero {Ω : Type*} [Field Ω] [Algebra ℂ Ω] {n : ℕ}
   refine Finset.sum_eq_zero fun d _ => ?_
   rw [aeval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous d q), hx _ (hW q hq d), mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Assume the negation of the conclusion as `hj`. Take `⟨p, hpm, hp⟩` from `hA.finite.to_isIntegral (Ideal.Quotient.mk W (X j))`. Use `set q := Polynomial.eval₂ (ComplexSets.pullback A).toRingHom (X j) p with hq_def`. Establish `hq : q ∈ W`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hq_def, Polynomial.hom_eval₂]`. Conclude with `hp`. Use `set ψ : MvPolynomial (Fin d) ℂ →+* Ω := (algebraMap ℂ Ω).comp (eval 0) with hψ`. Establish `hcomp : ∀ c : Ω, ((aeval (c • x) : MvPolynomial (Fin n) ℂ →ₐ[ℂ] Ω) : MvPolynomial (Fin n) ℂ →+* Ω).comp (ComplexSets.pullback A).toRingHom = ψ`. Introduce `c`.
+
+Use `MvPolynomial.ringHom_ext (fun a => by simp [hψ, ComplexSets.pullback]) fun i => ?_` and prove the remaining obligations. Establish `h1` using `aeval_smul_of_isHomogeneous (Ω := Ω) (m := 1) ?_ c x (φ := ComplexSets.linPoly A i)`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, ComplexSets.pullback, aeval_X, hψ, eval_X, Pi.zero_apply, map_zero]`. Rewrite using `[h1, hAx i, mul_zero]`. Conclude with `IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_C_mul_X _ _)`.
+
+Establish `hroot : ∀ c : Ω, (p.map ψ).eval (c * x j) = 0`. Introduce `c`. Establish `h` using `aeval_smul_eq_zero hW hx c q hq`. Rewrite `h` using `[hq_def, ← AlgHom.coe_toRingHom, Polynomial.hom_eval₂, hcomp c]`. Simplify `h` using `[Polynomial.eval_map]`.
+
+Establish `hzero : p.map ψ = 0` using `Polynomial.funext fun r => by`. Use `hroot (r / x j)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ r hj]`. Simplify using `using this`. Conclude with `(hpm.map ψ).ne_zero hzero`.
+-/
 theorem eq_zero_of_isFiniteProjection {Ω : Type*} [Field Ω] [IsAlgClosed Ω] [Algebra ℂ Ω] {n d : ℕ}
     {W : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} (hW : IsHomogIdeal W)
     (hA : ComplexSets.IsFiniteProjection W A) {x : Fin n → Ω} (hx : ∀ q ∈ W, aeval x q = 0)
@@ -62,6 +81,11 @@ theorem eq_zero_of_isFiniteProjection {Ω : Type*} [Field Ω] [IsAlgClosed Ω] [
     simpa using this
   exact (hpm.map ψ).ne_zero hzero
 
+/- English proof (translation)
+Introduce `h0`. Establish `hinc : ∀ g ∈ incIdeal W k, aeval v g = 0`. Introduce `g hg`. Establish `hmem : ∀ u ∈ incidence W k, aeval u g = 0`. Simplify `hg` using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`.
+
+Take `⟨h, rfl⟩` from `(hf.2 g).mp hmem`. Rewrite using `[map_mul, h0, zero_mul]`. Take `⟨y, hy0, hyW, hyv⟩` from `IncidenceZeroLocus.proof ℂ n k W hW (AlgebraicClosure ℂ) v hinc`. Conclude with `hy0 (hv y hyW hyv)`.
+-/
 theorem aeval_ne_zero_of_not_incidence {n k : ℕ} {W : Ideal (MvPolynomial (Fin n) ℂ)}
     {f : MvPolynomial (Fin k × Fin n) ℂ} (hW : IsHomogIdeal W) (hf : IsChowForm W k f)
     (v : Fin k × Fin n → AlgebraicClosure ℂ)
@@ -80,6 +104,9 @@ theorem aeval_ne_zero_of_not_incidence {n k : ℕ} {W : Ideal (MvPolynomial (Fin
 
 abbrev Loc (e : ℕ) : Type := Localization.Away (X 0 : MvPolynomial (Fin (e + 1)) ℂ)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial (Fin (e + 1)) ℂ) _)).mpr (X_ne_zero 0)`.
+-/
 theorem projVar_zero_ne (e : ℕ) : projVar e 0 ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial (Fin (e + 1)) ℂ) _)).mpr (X_ne_zero 0)
 
@@ -98,6 +125,9 @@ def locPar {n e : ℕ} (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (ij : Fin (e + 1) 
     (fun i => algebraMap (MvPolynomial (Fin (e + 1)) ℂ) (Loc e)
       (X i.succ * C (A 0 ij.2) - X 0 * C (A i.succ ij.2))) ij.1
 
+/- English proof (translation)
+Establish `h1 : Function.Injective (algebraMap (MvPolynomial (Fin (e + 1)) ℂ) (Loc e))` using `IsLocalization.injective (Loc e) (powers_le_nonZeroDivisors_of_noZeroDivisors (X_ne_zero 0))`. Establish `h2` using `IsFractionRing.injective (MvPolynomial (Fin (e + 1)) ℂ) (FractionRing (MvPolynomial (Fin (e + 1)) ℂ))`. Conclude with `(IsLocalization.lift_injective_iff _).mpr fun a b => h1.eq_iff.trans h2.eq_iff.symm`.
+-/
 theorem toK_injective (e : ℕ) : Function.Injective (toK e) := by
   have h1 : Function.Injective (algebraMap (MvPolynomial (Fin (e + 1)) ℂ) (Loc e)) :=
     IsLocalization.injective (Loc e) (powers_le_nonZeroDivisors_of_noZeroDivisors (X_ne_zero 0))
@@ -105,12 +135,18 @@ theorem toK_injective (e : ℕ) : Function.Injective (toK e) := by
     (FractionRing (MvPolynomial (Fin (e + 1)) ℂ))
   exact (IsLocalization.lift_injective_iff _).mpr fun a b => h1.eq_iff.trans h2.eq_iff.symm
 
+/- English proof (translation)
+Establish `h` using `congrArg (toK e) (IsLocalization.Away.mul_invSelf (S := Loc e) (X 0 : MvPolynomial (Fin (e + 1)) ℂ))`. Rewrite `h` using `[map_mul, map_one, toK, IsLocalization.Away.lift_eq]`. Conclude with `(eq_inv_of_mul_eq_one_right h)`.
+-/
 theorem toK_invSelf (e : ℕ) :
     toK e (IsLocalization.Away.invSelf (X 0 : MvPolynomial (Fin (e + 1)) ℂ)) = (projVar e 0)⁻¹ := by
   have h := congrArg (toK e) (IsLocalization.Away.mul_invSelf (S := Loc e) (X 0 : MvPolynomial (Fin (e + 1)) ℂ))
   rw [map_mul, map_one, toK, IsLocalization.Away.lift_eq] at h
   exact (eq_inv_of_mul_eq_one_right h)
 
+/- English proof (translation)
+Establish `h` using `congrArg (atPt e) (IsLocalization.Away.mul_invSelf (S := Loc e) (X 0 : MvPolynomial (Fin (e + 1)) ℂ))`. Rewrite `h` using `[map_mul, map_one]`. Unfold `atPt at h ⊢`. Rewrite `h` using `[IsLocalization.Away.lift_eq]`. Simplify `h` using `[pt]`.
+-/
 theorem atPt_invSelf (e : ℕ) :
     atPt e (IsLocalization.Away.invSelf (X 0 : MvPolynomial (Fin (e + 1)) ℂ)) = 1 := by
   have h := congrArg (atPt e) (IsLocalization.Away.mul_invSelf (S := Loc e) (X 0 : MvPolynomial (Fin (e + 1)) ℂ))
@@ -119,17 +155,28 @@ theorem atPt_invSelf (e : ℕ) :
   rw [IsLocalization.Away.lift_eq] at h
   simpa [pt] using h
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ) (Loc e), toK, IsLocalization.Away.lift_eq, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem toK_algebraMap (e : ℕ) (a : ℂ) :
     toK e (algebraMap ℂ (Loc e) a) = algebraMap ℂ (FractionRing (MvPolynomial (Fin (e + 1)) ℂ)) a := by
   rw [IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ) (Loc e), toK,
     IsLocalization.Away.lift_eq, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ) (Loc e), atPt, IsLocalization.Away.lift_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem atPt_algebraMap (e : ℕ) (a : ℂ) :
     atPt e (algebraMap ℂ (Loc e) a) = algebraMap ℂ (AlgebraicClosure ℂ) a := by
   rw [IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ) (Loc e), atPt,
     IsLocalization.Away.lift_eq]
   simp
 
+/- English proof (translation)
+Rewrite using `[Vertical.specRest, eval₂_comp_left, aeval_def, eval₂_comp_left]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[toK_algebraMap]`. Use function extensionality and compare the values at `⟨i, j⟩`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [locPar, projPar, map_mul, toK_algebraMap, toK_invSelf, div_eq_mul_inv]`. Consider the case `succ i`. Simplify using `[locPar, projPar, toK, IsLocalization.Away.lift_eq, projVar, IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ) (FractionRing (MvPolynomial (Fin (e + 1)) ℂ)), mul_comm]`.
+-/
 theorem value_eq {n e : ℕ} (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) :
     eval (fun j => projPar A (.inr j))
         (Vertical.specRest (algebraMap ℂ (FractionRing (MvPolynomial (Fin (e + 1)) ℂ))) f (projPar A)) =
@@ -146,6 +193,11 @@ theorem value_eq {n e : ℕ} (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (f : MvPolyn
         IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin (e + 1)) ℂ)
           (FractionRing (MvPolynomial (Fin (e + 1)) ℂ)), mul_comm]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, eval₂_comp_left, aeval_def]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[atPt_algebraMap]`. Use function extensionality and compare the values at `⟨i, j⟩`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [locPar, atPt_algebraMap, atPt_invSelf]`. Consider the case `succ i => simp [locPar, atPt, IsLocalization.Away.lift_eq, pt, Fin.succ_ne_zero]`.
+-/
 theorem atPt_aeval {n e : ℕ} (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) :
     atPt e (aeval (locPar A) f) =
       aeval (fun ij : Fin (e + 1) × Fin n => Fin.cases (motive := fun _ => AlgebraicClosure ℂ)
@@ -161,6 +213,13 @@ theorem atPt_aeval {n e : ℕ} (A : Matrix (Fin (e + 1)) (Fin n) ℂ) (f : MvPol
 
 end ProjChowNonzero
 
+/- English proof (translation)
+Introduce `n e W f A hW hf hA`. Rewrite using `[ProjChowNonzero.value_eq]`. Introduce `h0`. Establish `h1 : aeval (ProjChowNonzero.locPar A) f = 0` using `(map_eq_zero_iff _ (ProjChowNonzero.toK_injective e)).mp h0`. Establish `h2` using `congrArg (ProjChowNonzero.atPt e) h1`.
+
+Rewrite `h2` using `[map_zero, ProjChowNonzero.atPt_aeval]`. Use `ProjChowNonzero.aeval_ne_zero_of_not_incidence hW.isHomog hf _ (fun y hyW hyv => ?_) h2` and prove the remaining obligations. Use `ProjChowNonzero.eq_zero_of_isFiniteProjection hW.isHomog hA hyW fun i => ?_` and prove the remaining obligations. Establish `hi` using `hyv i`. Consider the cases of `i using Fin.cases with`.
+
+Consider the case `zero => simpa [ComplexSets.linPoly] using hi`. Consider the case `succ i`. Simplify using `only [Fin.cases_succ, neg_mul, Finset.sum_neg_distrib, neg_eq_zero] at hi`. Simplify `hi` using `[ComplexSets.linPoly]`.
+-/
 theorem ProjChowNonzero.proof : ProjChowNonzero.Statement := by
   intro n e W f A hW hf hA
   rw [ProjChowNonzero.value_eq]

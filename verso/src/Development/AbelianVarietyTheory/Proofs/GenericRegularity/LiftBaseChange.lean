@@ -24,6 +24,13 @@ def IsCompIso (w : LB.Iso L' (L.pull F)) (w' : LB.Iso L'' (L'.pull F')) (w'' : L
   ∀ (Y : Scheme.{0}) (f : Y ⟶ X'') (y : Y) (j : L.ι) (i : L'.ι) (k : L''.ι), F (F' (f y)) ∈ L.U j → F' (f y) ∈ L'.U i →
     f y ∈ L''.U k → gw w'' f y j k = gw w (f ≫ F') y j i * gw w' f y i k
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL' (F' y)`. Establish `hj : F (F' y) ∈ V ⊓ L.U j` using `h₁ hy`. Establish `hk : y ∈ L''.U k` using `(h₂ hy).2`.
+
+Set `W₀ : X'.Opens` to `F ⁻¹ᵁ (V ⊓ L.U j) ⊓ ((L.pull F).U (fun _ => j) ⊓ L'.U i)`. Establish `hW : (𝟙 X'' ≫ F') y ∈ W₀` using `⟨hj, mem_pull.2 hj.2, hi⟩`. Establish `e₀` using `congrArg (gs (𝟙 X'' ≫ F') y W₀) (h j i W₀ inf_le_left inf_le_right)`. Establish `e₁ : gs ((𝟙 X'' ≫ F') ≫ F) y _ (θ j) = (gw w (𝟙 X'' ≫ F') y j i).val * gs (𝟙 X'' ≫ F') y _ (σ.f i)` using `(gs_appLE F _ _ _ _ y hW _).symm.trans (e₀.trans ((gs_mul _ y _ hW _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ hW _).trans (gs_unit _ y _ hW.2 _)) (gs_res _ y _ hW _))))`. Establish `e₂` using `hσ _ (𝟙 X'') y i k hi hk`.
+
+Establish `e₃` using `T _ (𝟙 X'') y j i k hj.2 hi hk`. Use `(gs_appLE _ _ _ h₁ (𝟙 _) y hy _).trans (Eq.trans ?_ (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res _ y h₂ hy _).trans (gs_unit _ y _ (h₂ hy) _)) (gs_res _ y _ hy _)))))` and prove the remaining obligations. Rewrite using `[← Category.assoc, e₁, e₂, ← _root_.mul_assoc, ← Units.val_mul, ← e₃]`. Both sides reduce to the same expression.
+-/
 theorem tie_comp (hL' : L'.IsLB) (e : F'' = F' ≫ F) {w : LB.Iso L' (L.pull F)} {w' : LB.Iso L'' (L'.pull F')}
     {w'' : LB.Iso L'' (L.pull F'')} (T : IsCompIso w w' w'') (V : X.Opens) (θ : ∀ j, Γ(X, V ⊓ L.U j))
     (σ : LB.Sec L') (σ' : LB.Sec L'')
@@ -53,6 +60,13 @@ theorem tie_comp (hL' : L'.IsLB) (e : F'' = F' ≫ F) {w : LB.Iso L' (L.pull F)}
   rw [← Category.assoc, e₁, e₂, ← _root_.mul_assoc, ← Units.val_mul, ← e₃]
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨s', hs'⟩` from `thf_secUp ((isGen_iff w'').1 g) hL hL'' σ'`. Use `⟨s', fun (i : PUnit → L.ι) k => fn_ext fun y hy => ?_, fun J y hy => ?_⟩` and prove the remaining obligations. Conclude with `(gs_res _ y _ hy _).trans ((hs' _ (𝟙 _) y i k hy.1 hy.2).trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) y _ hy _) (gs_res _ y _ hy _)))))`. Take `⟨i, hi⟩` from `exists_chart hL' (F' y)`.
+
+Take `⟨k, hk⟩` from `exists_chart hL'' y`. Establish `hj : F (F' y) ∈ L.U (J PUnit.unit)` using `mem_pull₂.1 hy`. Establish `hW : (𝟙 X'' ≫ F') y ∈ (L.pull F).U J ⊓ L'.U i` using `⟨mem_pull.2 hj, hi⟩`. Establish `e₀` using `congrArg (gs (𝟙 X'' ≫ F') y _) (hs J i)`. Establish `e₁ : gs (𝟙 X'' ≫ F') y _ (s.f J) = (gw w (𝟙 X'' ≫ F') y (J PUnit.unit) i).val * gs (𝟙 X'' ≫ F') y _ (σ.f i)` using `(gs_res _ y _ hW _).symm.trans (e₀.trans ((gs_mul _ y _ hW _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hW _) (gs_res _ y _ hW _))))`.
+
+Rewrite using `[e₁, hσ _ (𝟙 X'') y i k hi hk, ← _root_.mul_assoc, ← Units.val_mul, ← T _ (𝟙 X'') y _ i k hj hi hk]`. Conclude with `hs' _ (𝟙 _) y J k hy hk`.
+-/
 theorem isoMaps_comp (hL : L.IsLB) (hL' : L'.IsLB) (hL'' : L''.IsLB) (e : F'' = F' ≫ F) {w : LB.Iso L' (L.pull F)}
     {w' : LB.Iso L'' (L'.pull F')} {w'' : LB.Iso L'' (L.pull F'')} (T : IsCompIso w w' w'') (g : w''.IsGen)
     (σ : LB.Sec L') (σ' : LB.Sec L'')
@@ -82,6 +96,9 @@ end Bundles
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+The claim follows from `and_congr (isGen_iff w) (maps_iff w _ (fun _ => eSec t.G) _ t'.PP.rig t.PP.rig m.cm.e _ (rigPull_le m.cm.F m.cm.e m.cm.e_comm t.PP.L) (fun _ => rfl))`.
+-/
 theorem rigIso_iff {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     (w : LB.Iso t'.PP.L (t.PP.L.pull m.φ)) :
     RigIso m w ↔ PGen w ∧
@@ -90,6 +107,11 @@ theorem rigIso_iff {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶
     (maps_iff w _ (fun _ => eSec t.G) _ t'.PP.rig t.PP.rig m.cm.e _ (rigPull_le m.cm.F m.cm.e m.cm.e_comm t.PP.L)
       (fun _ => rfl))
 
+/- English proof (translation)
+Establish `ee : n.cm.e = m'.cm.e ≫ m.cm.e` using `by rw [n.base, m'.base, m.base, eh]`. Simplify using `only [rigIso_iff] at hw hw' ⊢`. Take `⟨⟨F, F3, e, he, hp⟩, c, b, a, li⟩` from `n`. Simplify using `only [SABMap.φ] at ee eφ`. Substitute `ee eφ` using the available equality.
+
+Take `⟨w'', T⟩` from `exists_comp t'.PP.isLB w w' hw.1 hw'.1 t.PP.isLB t''.PP.isLB`. Conclude with `⟨w'', ⟨T.pgen_comp t'.PP.isLB hw.1 hw'.1, T.pmaps_comp t'.PP.isLB (fun _ => m'.cm.e_comm) hw.2 hw'.2⟩, T⟩`.
+-/
 theorem rigIso_comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     {h : S'' ⟶ S} (m : SABMap t' t f) (m' : SABMap t'' t' g) (n : SABMap t'' t h) (eh : h = g ≫ f)
     (eφ : n.φ = m'.φ ≫ m.φ) {w : LB.Iso t'.PP.L (t.PP.L.pull m.φ)} {w' : LB.Iso t''.PP.L (t'.PP.L.pull m'.φ)}
@@ -103,22 +125,34 @@ theorem rigIso_comp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' :
   obtain ⟨w'', T⟩ := exists_comp t'.PP.isLB w w' hw.1 hw'.1 t.PP.isLB t''.PP.isLB
   exact ⟨w'', ⟨T.pgen_comp t'.PP.isLB hw.1 hw'.1, T.pmaps_comp t'.PP.isLB (fun _ => m'.cm.e_comm) hw.2 hw'.2⟩, T⟩
 
+/- English proof (translation)
+Substitute `eh` using the available equality. Conclude with `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m'`.
+-/
 theorem exists_comp' {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     (m : SABMap t' t f) (m' : SABMap t'' t' g) (h : S'' ⟶ S) (eh : h = g ≫ f) :
     ∃ n : SABMap t'' t h, n.φ = m'.φ ≫ m.φ := by
   subst eh
   exact sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m'
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Chart.dualMapR (g.comp f) = (Chart.dualMapR g).comp (Chart.dualMapR f) := by
   refine RingHom.ext fun x => ?_
   ext <;> simp [Chart.dualMapR]
 
+/- English proof (translation)
+Establish `w : (spMap (Chart.dualMapR ψ) ≫ v.left) ≫ G.hom = (epsR S).hom ≫ spMap ψ`. Rewrite using `[Category.assoc, Over.w v]`. Conclude with `LieCombBaseChange.dualMap_over ψ`. Conclude with `⟨Over.homMk (h.lift _ _ w) (h.lift_snd _ _ w), h.lift_fst _ _ w⟩`.
+-/
 theorem exists_vec_lift {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) {G : Over (Sp R)} {G' : Over (Sp S)}
     {φ : G'.left ⟶ G.left} (h : IsPullback φ G'.hom G.hom (spMap ψ)) (v : epsR R ⟶ G) :
     ∃ v' : epsR S ⟶ G', v'.left ≫ φ = spMap (Chart.dualMapR ψ) ≫ v.left := by
@@ -135,6 +169,29 @@ open LiftBaseChange
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ S _ _ ψ`. Choose the witnesses or unpack the hypotheses as in `⟨t'', p⟩ : ∃ t'' : SAB H (Sp S), Nonempty (SABMap t'' Λ.t' (spMap ψ.toRingHom)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap ψ.toRingHom) Λ.t'`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨p⟩` from `p`.
+
+Establish `e2 : spMap (ψ.toRingHom.comp f) ≫ M.hU.fromSpec = spMap ψ.toRingHom ≫ spMap f ≫ M.hU.fromSpec`. Rewrite using `[spMap_comp', Category.assoc]`. Take `⟨n', hn'⟩` from `exists_comp' Λ.m' p _ rfl`. Take `⟨n1, hn1⟩` from `exists_comp' Λ.m1 p _ rfl`. Take `⟨n2, hn2⟩` from `exists_comp' Λ.m2 p _ e2`.
+
+Use `⟨⟨spMap ψ.toRingHom ≫ Λ.xF, by rw [Category.assoc, Λ.xF_fst], ?_, by rw [Category.assoc, Λ.xF_j, e2], t'', n', n1, n2, by rw [hn1, hn', Λ.liftedChartMap_eq, Category.assoc], by rw [hn2, hn', Λ.matrix_two_by_two_congr, Category.assoc]⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Λ.xF_snd, ← spMap_comp']`. Conclude with `congrArg spMap ψ.comp_algebraMap`. Introduce and unpack `cv w ⟨v, u, hv, hc, hu⟩ choose v' hv' using fun j => exists_vec_lift ψ.toRingHom p.cart.1 (v j)`. Take `⟨u', hu'⟩` from `exists_vec_lift ψ.toRingHom p.cart.1 u`.
+
+Use `⟨v', u', fun j => ?_, (lieComb_baseChange R S ψ.toRingHom _ _ _ p.cart _ v u cv v' u' hv' hc).1 hu', ?_⟩` and prove the remaining obligations. Use `show (v' j).left ≫ n2.φ = _`. Rewrite using `[hn2, ← Category.assoc, dualMapR_comp, spMap_comp', Category.assoc (spMap _), ← hv j]`. Conclude with `(congrArg (· ≫ Λ.m2.φ) (hv' j)).trans (Category.assoc _ _ _)`. Use `show u'.left ≫ n1.φ = _`.
+
+Rewrite using `[hn1, ← Category.assoc, ← hu]`. Conclude with `(congrArg (· ≫ Λ.m1.φ) hu').trans (Category.assoc _ _ _)`. Introduce and unpack `s s' pm hp₁ hp₂ hps ⟨w1, w2, σ, s1, r1, r2, hI, hθ, hg⟩`. Take `⟨w0, g0, r0, -⟩` from `p.lin`. Establish `R0 : RigIso p w0` using `⟨g0, r0⟩`.
+
+Take `⟨σ', hσ'⟩` from `sec_pull_down ((isGen_iff w0).1 g0) Λ.t'.PP.isLB t''.PP.isLB σ`. Take `⟨w1', r1', T1⟩` from `rigIso_comp Λ.m1 p n1 rfl hn1 r1 R0`. Take `⟨w2', r2', T2⟩` from `rigIso_comp Λ.m2 p n2 e2 hn2 r2 R0`. Take `⟨s1', hI', hs1'⟩` from `isoMaps_comp Xo.univ.t.PP.isLB Λ.t'.PP.isLB t''.PP.isLB hn1 T1 r1'.1 σ σ' hσ' s1 hI`. Use `⟨w1', w2', σ', s1', r1', r2', hI', tie_comp Λ.t'.PP.isLB hn2 T2 _ M.θ σ σ' hσ' hθ, ?_⟩` and prove the remaining obligations.
+
+Introduce `g' e₁ e₂ (j : PUnit → Xo.univ.t.PP.L.ι) hj`. Establish `e₁' : g' ≫ (snd (Over.mk (spMap ψ.toRingHom ≫ x)) Xo.univ.t.G).left = n1.φ` using `e₁`. Establish `e₂' : g' ≫ (fst (Over.mk (spMap ψ.toRingHom ≫ x)) Xo.univ.t.G).left = t''.G.hom` using `e₂`. Set `A` to `Xo.univ.t.G`. Set `a0 : Over.mk (Λ.t'.G.hom ≫ x) ⟶ Over.mk x` to `Over.homMk Λ.t'.G.hom rfl`.
+
+Set `b0 : Over.mk (Λ.t'.G.hom ≫ x) ⟶ A` to `Over.homMk Λ.m1.φ Λ.m1.cart.1.w`. Set `g : Λ.t'.G.left ⟶ Gx x` to `(lift a0 b0).left`. Establish `gf : g ≫ (fst (Over.mk x) A).left = Λ.t'.G.hom` using `congrArg (fun q => q.left) (lift_fst a0 b0)`. Establish `gs' : g ≫ (snd (Over.mk x) A).left = Λ.m1.φ` using `congrArg (fun q => q.left) (lift_snd a0 b0)`. Establish `sq : p.φ ≫ g = g' ≫ pm`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc] show p.φ ≫ g ≫ (fst (Over.mk x) A).left = g' ≫ pm ≫ (fst (Over.mk x) A).left`. Rewrite using `[gf, hp₂, ← Category.assoc, e₂']`. Conclude with `p.cart.1.w`. Rewrite using `[Category.assoc, Category.assoc] show p.φ ≫ g ≫ (snd (Over.mk x) A).left = g' ≫ pm ≫ (snd (Over.mk x) A).left`.
+
+Rewrite using `[gs', hp₁, e₁', hn1]`. Establish `le₁ : (Xo.univ.t.PP.L.pull Λ.m1.φ).U j ≤ g ⁻¹ᵁ (PPx x).U (fun _ => j PUnit.unit)` using `fun y hy => Set.mem_iInter.2 fun _ => (congrArg (fun q => q y ∈ Xo.univ.t.PP.L.U (j PUnit.unit)) gs').mpr (mem_pull.1 hy)`. Establish `le₂ : (PPx (spMap ψ.toRingHom ≫ x)).U (fun _ => j PUnit.unit) ≤ pm ⁻¹ᵁ (PPx x).U (fun _ => j PUnit.unit)` using `fun y hy => Set.mem_iInter.2 fun _ => (congrArg (fun q => q y ∈ Xo.univ.t.PP.L.U (j PUnit.unit)) hp₁).mpr (Set.mem_iInter.1 hy 0)`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hy₁ : (𝟙 _ ≫ p.φ) y ∈ (Xo.univ.t.PP.L.pull Λ.m1.φ).U j` using `mem_pull.2 ((congrArg (fun q => q y ∈ Xo.univ.t.PP.L.U (j PUnit.unit)) hn1).mp (mem_pull.1 hy))`.
+
+Establish `c₁ : (𝟙 _ ≫ p.φ) ≫ g = (𝟙 _ ≫ g') ≫ pm` using `by rw [Category.id_comp, Category.id_comp, sq]`. Use `(hs1' j y hy).trans ((congrArg (gs (𝟙 _ ≫ p.φ) y _) (hg g gs' gf j le₁)).trans ((gs_appLE g _ _ le₁ _ y hy₁ _).trans ((congrArg (fun q => gs q y _ (s.f (fun _ => j PUnit.unit))) c₁).trans ?_)))` and prove the remaining obligations. Conclude with `(gs_appLE pm _ _ le₂ (𝟙 _ ≫ g') y (hj hy) _).symm.trans ((congrArg (gs (𝟙 _ ≫ g') y _) (hps _ le₂)).trans (gs_appLE g' _ _ hj (𝟙 _) y hy _).symm)`.
+-/
 theorem lift_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (M : MChart Y), ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R) (x : Sp R ⟶ Xo.X) (Λ : M.Lift f x), ∀ (S : Type) [CommRing S] [Algebra c.F S] (ψ : R →ₐ[c.F] S), ∃ Λ' : M.Lift (ψ.toRingHom.comp f) (spMap ψ.toRingHom ≫ x), (∀ cv w, Λ.Vec cv w → Λ'.Vec (fun j => ψ (cv j)) (spMap (dualMap ψ.toRingHom) ≫ w)) ∧ ∀ (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx (spMap ψ.toRingHom ≫ x))) (pm : Gx (spMap ψ.toRingHom ≫ x) ⟶ Gx x), pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk (spMap ψ.toRingHom ≫ x)) Xo.univ.t.G).left → pm ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk (spMap ψ.toRingHom ≫ x)) Xo.univ.t.G).left ≫ spMap ψ.toRingHom → (∀ (i : Fin 1 → Xo.univ.t.PP.L.ι) (h : (PPx (spMap ψ.toRingHom ≫ x)).U i ≤ pm ⁻¹ᵁ (PPx x).U i), (pm.appLE _ _ h).hom (s.f i) = s'.f i) → Λ.ThTie s → Λ'.ThTie s' := by
   intro E _ _ _ H Dw l Xo c O _ β Y M R _ _ f x Λ S _ _ ψ
   obtain ⟨t'', p⟩ : ∃ t'' : SAB H (Sp S), Nonempty (SABMap t'' Λ.t' (spMap ψ.toRingHom)) := by

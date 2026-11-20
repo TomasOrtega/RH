@@ -18,6 +18,11 @@ namespace GlobalTheory.CompanionTheory.MPDict.Spec
 
 open TensorProduct
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun s hs => ?_` and prove the remaining obligations. Use `clear hs`. Take `⟨p, rfl⟩` from `aeval_ratio_surjective ℤ N i s`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using intCast_mem _ a`.
+
+Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hp (Subring.subset_closure ⟨j, rfl⟩)`.
+-/
 theorem closure_ratio (N : ℕ) (i : Fin (N + 1)) : Subring.closure (Set.range (ratio ℤ N i)) = ⊤ := by
   refine eq_top_iff.2 fun s hs => ?_
   clear hs
@@ -29,6 +34,11 @@ theorem closure_ratio (N : ℕ) (i : Fin (N + 1)) : Subring.closure (Set.range (
     rw [map_mul, aeval_X]
     exact mul_mem hp (Subring.subset_closure ⟨j, rfl⟩)
 
+/- English proof (translation)
+Set `q : pullback (hU.fromSpec ≫ f) (hV.fromSpec ≫ g) ⟶ pullback f g` to `pullback.map _ _ _ _ hU.fromSpec hV.fromSpec (𝟙 _) (by simp) (by simp)`. Establish `e : q.opensRange = pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V`. Apply `Opens.ext` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.coe_opensRange, Scheme.Pullback.range_map, hU.range_fromSpec, hV.range_fromSpec]`. Both sides reduce to the same expression.
+
+Conclude with `e ▸ isAffineOpen_opensRange q`.
+-/
 theorem isAffineOpen_fst_inf_snd {X Y : Scheme.{0}} (f : X ⟶ Spec (.of ℤ)) (g : Y ⟶ Spec (.of ℤ)) {U : X.Opens}
     {V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) :
     IsAffineOpen (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V) := by
@@ -40,6 +50,29 @@ theorem isAffineOpen_fst_inf_snd {X Y : Scheme.{0}} (f : X ⟶ Spec (.of ℤ)) (
     rfl
   exact e ▸ isAffineOpen_opensRange q
 
+/- English proof (translation)
+Establish `hW` using `isAffineOpen_fst_inf_snd f g hU hV`. Use `set W := pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V with hWdef`. Set `a` to `(pullback.fst f g).appLE U W inf_le_left`. Set `b` to `(pullback.snd f g).appLE V W inf_le_right`. Establish `f₁ : Spec.map (CommRingCat.ofHom (algebraMap ℤ Γ(X, U))) ≫ 𝟙 _ = hU.fromSpec ≫ f` using `specZIsTerminal.hom_ext _ _`.
+
+Establish `g₁ : Spec.map (CommRingCat.ofHom (algebraMap ℤ Γ(Y, V))) ≫ 𝟙 _ = hV.fromSpec ≫ g` using `specZIsTerminal.hom_ext _ _`. Set `q : pullback (Spec.map (CommRingCat.ofHom (algebraMap ℤ Γ(X, U)))) (Spec.map (CommRingCat.ofHom (algebraMap ℤ Γ(Y, V)))) ⟶ pullback f g` to `pullback.map _ _ _ _ hU.fromSpec hV.fromSpec (𝟙 _) f₁ g₁`. Set `e : Spec (.of (Γ(X, U) ⊗[ℤ] Γ(Y, V))) ⟶ pullback f g` to `(pullbackSpecIso ℤ Γ(X, U) Γ(Y, V)).inv ≫ q`. Establish `hq : q.opensRange = W`. Apply `Opens.ext` to reduce the goal to its premises.
+
+Rewrite using `[Scheme.Hom.coe_opensRange, Scheme.Pullback.range_map, hU.range_fromSpec, hV.range_fromSpec]`. Both sides reduce to the same expression. Establish `hr : e.opensRange = W` using `(Scheme.Hom.opensRange_comp_of_isIso _ _).trans hq`. Establish `hr' : Set.range e ⊆ Set.range hW.fromSpec`. Rewrite using `[hW.range_fromSpec, ← hr, Scheme.Hom.coe_opensRange]`.
+
+Set `ψ : Γ(X, U) ⊗[ℤ] Γ(Y, V) →ₐ[ℤ] Γ(pullback f g, W)` to `Algebra.TensorProduct.lift a.hom.toIntAlgHom b.hom.toIntAlgHom fun _ _ => Commute.all _ _`. Set `Ψ : CommRingCat.of (Γ(X, U) ⊗[ℤ] Γ(Y, V)) ⟶ Γ(pullback f g, W)` to `CommRingCat.ofHom ψ.toRingHom`. Establish `ha : CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R` using `ℤ) (A := Γ(X, U)) (B := Γ(Y, V))) ≫ Ψ = a := by`. Use extensionality with `u`. Simplify using `[Ψ, ψ]`.
+
+Establish `hb : CommRingCat.ofHom ((Algebra.TensorProduct.includeRight (R` using `ℤ) (A := Γ(X, U)) (B := Γ(Y, V))).toRingHom) ≫ Ψ = b := by`. Use extensionality with `v`. Simplify using `[Ψ, ψ]`. Establish `hψ : Spec.map Ψ ≫ e = hW.fromSpec`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Establish `e₁` using `IsAffineOpen.SpecMap_appLE_fromSpec (pullback.fst f g) hU hW inf_le_left`. Simplify using `only [e, q, Category.assoc, pullback.lift_fst, pullback.map]`. Rewrite using `[pullbackSpecIso_inv_fst_assoc, ← Spec.map_comp_assoc, ha]`. Conclude with `e₁`. Establish `e₁` using `IsAffineOpen.SpecMap_appLE_fromSpec (pullback.snd f g) hV hW inf_le_right`.
+
+Simplify using `only [e, q, Category.assoc, pullback.lift_snd, pullback.map]`. Rewrite using `[pullbackSpecIso_inv_snd_assoc, ← Spec.map_comp_assoc]`. Use `Eq.trans ?_ e₁` and prove the remaining obligations. Use `congr 2`. Set `l` to `IsOpenImmersion.lift hW.fromSpec e hr'`.
+
+Establish `hl : l ≫ hW.fromSpec = e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hiso : IsIso (Spec.map Ψ)`. Use `⟨l, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono hW.fromSpec, Category.assoc, hl, hψ, Category.id_comp]`. Rewrite using `[← cancel_mono e, Category.assoc, hψ, hl, Category.id_comp]`.
+
+Establish `hsurj : Function.Surjective ψ` using `(isIso_SpecMap_iff.1 hiso).2`. Use `eq_top_iff.2 fun s hs => ?_` and prove the remaining obligations. Use `clear hs`. Take `⟨t, rfl⟩` from `hsurj s`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `tmul u v`. Establish `: ψ (u ⊗ₜ v) = a.hom u * b.hom v` using `by simp [ψ]`.
+
+Rewrite using `[this]`. Conclude with `mul_mem ((le_sup_left : a.hom.range ≤ _) ⟨u, rfl⟩) ((le_sup_right : b.hom.range ≤ _) ⟨v, rfl⟩)`.
+-/
 theorem range_sup_range_eq_top {X Y : Scheme.{0}} (f : X ⟶ Spec (.of ℤ)) (g : Y ⟶ Spec (.of ℤ)) {U : X.Opens}
     {V : Y.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) :
     ((pullback.fst f g).appLE U (pullback.fst f g ⁻¹ᵁ U ⊓ pullback.snd f g ⁻¹ᵁ V) inf_le_left).hom.range ⊔
@@ -110,6 +143,9 @@ variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 def mratio (c : ∀ k, Bk n k) (p : Σ k, Bk n k) : Γ(MP ℤ m n, mchart c) :=
   pullRatio (prB n p.1) (mchart c) (c p.1) (mchart_le c p.1) p.2
 
+/- English proof (translation)
+Establish `e : (𝟙 X : X ⟶ X).appLE U U h = 𝟙 _`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app]`. Conclude with `(Category.id_comp _).trans (X.presheaf.map_id (Opposite.op U))`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem appLE_id_apply {X : Scheme.{0}} (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ U) (s : Γ(X, U)) :
     ((𝟙 X : X ⟶ X).appLE U U h).hom s = s := by
   have e : (𝟙 X : X ⟶ X).appLE U U h = 𝟙 _ := by
@@ -118,6 +154,9 @@ theorem appLE_id_apply {X : Scheme.{0}} (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ
   rw [e]
   rfl
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Conclude with `h`.
+-/
 theorem closure_mratio_of_eq (c : ∀ k, Bk n k) {W : (MP ℤ m n).Opens} (hW : W = mchart c)
     (hi : ∀ k, W ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c k))
     (h : Subring.closure (Set.range fun p : Σ k, Bk n k => pullRatio (prB n p.1) W (c p.1) (hi p.1) p.2) = ⊤) :
@@ -125,6 +164,9 @@ theorem closure_mratio_of_eq (c : ∀ k, Bk n k) {W : (MP ℤ m n).Opens} (hW : 
   subst hW
   exact h
 
+/- English proof (translation)
+The claim follows from `| 0, n, c => by let W : (MP ℤ 0 n).Opens := chart ℤ (n 0) (c 0) have e : W = mchart c := by apply Opens.ext ext x refine ⟨fun h => Set.mem_iInter.2 fun k => ?_, fun h => Set.mem_iInter.1 h 0⟩ have hk : k = 0 := Fin.fin_one_eq_zero k subst hk exact h have hi : ∀ k, W ≤ prB n k ⁻¹ᵁ …`.
+-/
 theorem isAffineOpen_mchart_and_closure : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (c : ∀ k, Bk n k),
     IsAffineOpen (mchart c) ∧ Subring.closure (Set.range (mratio c)) = ⊤
   | 0, n, c => by
@@ -182,9 +224,15 @@ theorem isAffineOpen_mchart_and_closure : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ
       rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
       rfl
 
+/- English proof (translation)
+The claim follows from `(isAffineOpen_mchart_and_closure m n c).1`.
+-/
 theorem isAffineOpen_mchart (c : ∀ k, Bk n k) : IsAffineOpen (mchart c) :=
   (isAffineOpen_mchart_and_closure m n c).1
 
+/- English proof (translation)
+The claim follows from `(isAffineOpen_mchart_and_closure m n c).2`.
+-/
 theorem closure_mratio (c : ∀ k, Bk n k) : Subring.closure (Set.range (mratio c)) = ⊤ :=
   (isAffineOpen_mchart_and_closure m n c).2
 
@@ -194,15 +242,24 @@ namespace GlobalTheory.CompanionTheory.MPDict.Spec
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+The claim follows from `pullRatio_self`.
+-/
 theorem mratio_self (c : ∀ k, Bk n k) (k : Fin (m + 1)) : mratio c ⟨k, c k⟩ = 1 :=
   pullRatio_self
 
+/- English proof (translation)
+Rewrite using `[← Scheme.germ_residue, ← Scheme.germ_residue]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.comp_apply]`. Rewrite using `[TopCat.Presheaf.germ_res_apply]`.
+-/
 theorem evaluation_resG' {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (x : X) (hx : x ∈ V) (s : Γ(X, U)) :
     X.evaluation V x hx (resG X h s) = X.evaluation U x (h hx) s := by
   rw [← Scheme.germ_residue, ← Scheme.germ_residue]
   simp only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.comp_apply]
   rw [TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Establish `e` using `(MP ℤ m n).evaluation_ne_zero_iff_mem_basicOpen x (mem_ptChart x k) (pullRatio (prB n k) (blockChart n k (ptChart x k)) (ptChart x k) le_rfl i)`. Rewrite `e` using `[basicOpen_pullRatio]`. Conclude with `e.trans ⟨fun h => h.2, fun h => ⟨mem_ptChart x k, h⟩⟩`.
+-/
 theorem ptCoord_ne_zero_iff (x : MP ℤ m n) (k : Fin (m + 1)) (i : Bk n k) :
     ptCoord x ⟨k, i⟩ ≠ 0 ↔ x ∈ blockChart n k i := by
   have e := (MP ℤ m n).evaluation_ne_zero_iff_mem_basicOpen x (mem_ptChart x k)
@@ -210,6 +267,13 @@ theorem ptCoord_ne_zero_iff (x : MP ℤ m n) (k : Fin (m + 1)) (i : Bk n k) :
   rw [basicOpen_pullRatio] at e
   exact e.trans ⟨fun h => h.2, fun h => ⟨mem_ptChart x k, h⟩⟩
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Set `W₀` to `blockChart n k (ptChart z k)`. Set `V : (MP ℤ m n).Opens` to `W₀ ⊓ mchart c`. Establish `hzV : z ∈ V` using `⟨mem_ptChart z k, hz⟩`. Establish `hV₀ : V ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (ptChart z k)` using `inf_le_left`.
+
+Establish `hV₁ : V ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c k)` using `inf_le_right.trans (mchart_le c k)`. Establish `e₀ : ∀ j : Bk n k, ptCoord z ⟨k, j⟩ = (MP ℤ m n).evaluation V z hzV (pullRatio (prB n k) V (ptChart z k) hV₀ j)` using `fun j => by`. Rewrite using `[← resG_pullRatio (φ := prB n k) (W := W₀) (i := ptChart z k) (hi := le_rfl) (inf_le_left : V ≤ W₀), evaluation_resG']`. Both sides reduce to the same expression. Establish `e₁ : (MP ℤ m n).evaluation (mchart c) z hz (mratio c ⟨k, i⟩) = (MP ℤ m n).evaluation V z hzV (pullRatio (prB n k) V (c k) hV₁ i)`.
+
+Rewrite using `[← resG_pullRatio (φ := prB n k) (W := mchart c) (i := c k) (hi := mchart_le c k) (inf_le_right : V ≤ mchart c), evaluation_resG']`. Both sides reduce to the same expression. Rewrite using `[e₀ i, e₀ (c k), e₁, ← map_mul]`. Conclude with `congrArg _ (pullRatio_mul_pullRatio (φ := prB n k) (hi := hV₀) (hj := hV₁) (k := i)).symm`.
+-/
 theorem ptCoord_eq_mul (c : ∀ k, Bk n k) {z : MP ℤ m n} (hz : z ∈ mchart c) (p : Σ k, Bk n k) :
     ptCoord z p = ptCoord z ⟨p.1, c p.1⟩ * (MP ℤ m n).evaluation (mchart c) z hz (mratio c p) := by
   obtain ⟨k, i⟩ := p
@@ -231,6 +295,11 @@ theorem ptCoord_eq_mul (c : ∀ k, Bk n k) {z : MP ℤ m n} (hz : z ∈ mchart c
   rw [e₀ i, e₀ (c k), e₁, ← map_mul]
   exact congrArg _ (pullRatio_mul_pullRatio (φ := prB n k) (hi := hV₀) (hj := hV₁) (k := i)).symm
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite `hf`, the goal using `[Geo.mCoordIdeal, RingHom.mem_ker]`. Set `S : MvPolynomial (Fin (m + 1)) Ω →ₐ[Ω] MvPolynomial (Fin (m + 1)) Ω` to `aeval fun k => C (l k) * X k`. Establish `e : (Geo.mConeMap y).toRingHom = S.toRingHom.comp (Geo.mConeMap r).toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun p => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `[Geo.mConeMap, S, h p, mul_comm, mul_left_comm, mul_assoc]`. Use `RingHom.congr_fun e f` as an intermediate fact. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this, hf, map_zero]`.
+-/
 theorem mCoordIdeal_le_of_scale {Ω : Type} [Field Ω] (y r : (Σ k, Bk n k) → Ω) (l : Fin (m + 1) → Ω)
     (h : ∀ p, y p = l p.1 * r p) :
     Geo.mCoordIdeal r ≤ Geo.mCoordIdeal y := by
@@ -245,6 +314,9 @@ theorem mCoordIdeal_le_of_scale {Ω : Type} [Field Ω] (y r : (Σ k, Bk n k) →
   simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this
   rw [this, hf, map_zero]
 
+/- English proof (translation)
+Establish `hl : ∀ k, ptCoord z ⟨k, c k⟩ ≠ 0` using `fun k => (ptCoord_ne_zero_iff z k (c k)).2 (mchart_le c k hz)`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `mCoordIdeal_le_of_scale _ _ (fun k => (ptCoord z ⟨k, c k⟩)⁻¹) fun p => by`. Rewrite using `[ptCoord_eq_mul c hz p, inv_mul_cancel_left₀ (hl p.1)]`. Conclude with `mCoordIdeal_le_of_scale _ _ (fun k => ptCoord z ⟨k, c k⟩) fun p => ptCoord_eq_mul c hz p`.
+-/
 theorem ptIdeal_eq (c : ∀ k, Bk n k) {z : MP ℤ m n} (hz : z ∈ mchart c) :
     ptIdeal z = Geo.mCoordIdeal fun p => (MP ℤ m n).evaluation (mchart c) z hz (mratio c p) := by
   have hl : ∀ k, ptCoord z ⟨k, c k⟩ ≠ 0 := fun k => (ptCoord_ne_zero_iff z k (c k)).2 (mchart_le c k hz)
@@ -256,9 +328,17 @@ theorem ptIdeal_eq (c : ∀ k, Bk n k) {z : MP ℤ m n} (hz : z ∈ mchart c) :
 def Phi (c : ∀ k, Bk n k) : Geo.MRing (Bk n) →+* MvPolynomial (Fin (m + 1)) Γ(MP ℤ m n, mchart c) :=
   eval₂Hom (Int.castRingHom _) fun p => C (mratio c p) * X p.1
 
+/- English proof (translation)
+Simplify using `[Phi]`.
+-/
 @[simp] theorem Phi_X (c : ∀ k, Bk n k) (p : Σ k, Bk n k) : Phi c (X p) = C (mratio c p) * X p.1 := by
   simp [Phi]
 
+/- English proof (translation)
+Rewrite using `[ptIdeal_eq c hz, Geo.mCoordIdeal, RingHom.mem_ker]`. Establish `e : (Geo.mConeMap (fun p => (MP ℤ m n).evaluation (mchart c) z hz (mratio c p))).toRingHom = (MvPolynomial.map ((MP ℤ m n).evaluation (mchart c) z hz).hom).comp (Phi c)`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun p => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Geo.mConeMap]`.
+
+Use `RingHom.congr_fun e f` as an intermediate fact. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this]`.
+-/
 theorem mem_ptIdeal_iff (c : ∀ k, Bk n k) {z : MP ℤ m n} (hz : z ∈ mchart c) (f : Geo.MRing (Bk n)) :
     f ∈ ptIdeal z ↔ MvPolynomial.map ((MP ℤ m n).evaluation (mchart c) z hz).hom (Phi c f) = 0 := by
   rw [ptIdeal_eq c hz, Geo.mCoordIdeal, RingHom.mem_ker]
@@ -277,15 +357,26 @@ namespace GlobalTheory.CompanionTheory.MPDict.Spec
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1 : y ∈ X.basicOpen s` using `(X.evaluation_ne_zero_iff_mem_basicOpen y hy s).1 hne`. Conclude with `(X.evaluation_ne_zero_iff_mem_basicOpen x hx s).2 (h.mem_open (X.basicOpen s).isOpen h1) hs`.
+-/
 theorem evaluation_eq_zero_of_specializes {X : Scheme.{0}} {U : X.Opens} {x y : X} (h : x ⤳ y) (hx : x ∈ U) (hy : y ∈ U)
     (s : Γ(X, U)) (hs : X.evaluation U x hx s = 0) : X.evaluation U y hy s = 0 := by
   by_contra hne
   have h1 : y ∈ X.basicOpen s := (X.evaluation_ne_zero_iff_mem_basicOpen y hy s).1 hne
   exact (X.evaluation_ne_zero_iff_mem_basicOpen x hx s).2 (h.mem_open (X.basicOpen s).isOpen h1) hs
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun k => mem_ptChart y k`.
+-/
 theorem mem_mchart_ptChart (y : MP ℤ m n) : y ∈ mchart (ptChart y) :=
   Set.mem_iInter.2 fun k => mem_ptChart y k
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hy` using `mem_mchart_ptChart y`. Establish `hx : x ∈ mchart (ptChart y)` using `h.mem_open (mchart (ptChart y)).isOpen hy`. Rewrite `hf` using `[mem_ptIdeal_iff _ hx]`. Rewrite using `[mem_ptIdeal_iff _ hy]`.
+
+Use extensionality with `a`. Rewrite using `[coeff_map, coeff_zero]`. Use `congrArg (coeff a) hf` as an intermediate fact. Rewrite `this` using `[coeff_map, coeff_zero]`. Conclude with `evaluation_eq_zero_of_specializes h hx hy _ this`.
+-/
 theorem ptIdeal_le_of_specializes {x y : MP ℤ m n} (h : x ⤳ y) : ptIdeal x ≤ ptIdeal y := by
   intro f hf
   have hy := mem_mchart_ptChart y
@@ -300,9 +391,23 @@ theorem ptIdeal_le_of_specializes {x y : MP ℤ m n} (h : x ⤳ y) : ptIdeal x �
 
 def mono (c : ∀ k, Bk n k) (a : Fin (m + 1) → ℕ) : Geo.MRing (Bk n) := ∏ k, X ⟨k, c k⟩ ^ a k
 
+/- English proof (translation)
+Simplify using `[mono, map_prod, mratio_self]`.
+-/
 theorem Phi_mono (c : ∀ k, Bk n k) (a : Fin (m + 1) → ℕ) : Phi c (mono c a) = ∏ k, X k ^ a k := by
   simp [mono, map_prod, mratio_self]
 
+/- English proof (translation)
+Establish `hs : s ∈ Subring.closure (Set.range (mratio c))` using `by rw [closure_mratio]; trivial`. Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem s hs`. Take `⟨p, rfl⟩` from `hs`. Use `⟨X p, Pi.single p.1 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Phi_X, Finset.prod_eq_single p.1 (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp)]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨1, 0, by simp⟩`. Consider the case `add s t _ _ hs ht`.
+
+Take `⟨f, a, hf⟩` from `hs`. Take `⟨g, b, hg⟩` from `ht`. Use `⟨f * mono c b + g * mono c a, a + b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, Phi_mono, hf, hg, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `neg s _ hs`. Take `⟨f, a, hf⟩` from `hs`. Conclude with `⟨-f, a, by simp [hf]⟩`. Consider the case `mul s t _ _ hs ht`. Take `⟨f, a, hf⟩` from `hs`.
+
+Take `⟨g, b, hg⟩` from `ht`. Use `⟨f * g, a + b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, hf, hg, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_form (c : ∀ k, Bk n k)
     (s : Γ(MP ℤ m n, mchart c)) :
     ∃ (f : Geo.MRing (Bk n)) (a : Fin (m + 1) → ℕ), Phi c f = C s * ∏ k, X k ^ a k := by
@@ -331,11 +436,21 @@ theorem exists_form (c : ∀ k, Bk n k)
     simp only [map_mul, hf, hg, Pi.add_apply, pow_add, Finset.prod_mul_distrib]
     ring
 
+/- English proof (translation)
+Rewrite using `[ptIdeal, Geo.mCoordIdeal, RingHom.mem_ker]`. Simplify using `[Geo.mConeMap]`.
+-/
 theorem X_mem_ptIdeal_iff (x : MP ℤ m n) (p : Σ k, Bk n k) :
     (X p : Geo.MRing (Bk n)) ∈ ptIdeal x ↔ ptCoord x p = 0 := by
   rw [ptIdeal, Geo.mCoordIdeal, RingHom.mem_ker]
   simp [Geo.mConeMap]
 
+/- English proof (translation)
+Take `⟨f, a, hf⟩` from `exists_form c s`. Establish `h1 : f ∈ ptIdeal x`. Rewrite using `[mem_ptIdeal_iff c hx, hf, map_mul, map_C]`. Use `erw [hs]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `h h1`. Rewrite `h2` using `[mem_ptIdeal_iff c hy, hf, map_mul, map_C, mul_eq_zero]`. Break down `h2 with h2 | h2` into its components or cases. Conclude with `C_eq_zero.1 h2`. It suffices to derive a contradiction.
+
+Simplify using `only [map_prod, map_pow, map_X] at h2`. Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) h2`.
+-/
 theorem evaluation_eq_zero_of_le
     {x y : MP ℤ m n} (h : ptIdeal x ≤ ptIdeal y) (c : ∀ k, Bk n k) (hx : x ∈ mchart c) (hy : y ∈ mchart c)
     (s : Γ(MP ℤ m n, mchart c)) (hs : (MP ℤ m n).evaluation (mchart c) x hx s = 0) :
@@ -353,6 +468,11 @@ theorem evaluation_eq_zero_of_le
     simp only [map_prod, map_pow, map_X] at h2
     exact (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)) h2
 
+/- English proof (translation)
+Establish `hy` using `mem_mchart_ptChart y`. Establish `hx : x ∈ mchart (ptChart y)` using `Set.mem_iInter.2 fun k => by`. Use `(ptCoord_ne_zero_iff x k _).1 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `h ((X_mem_ptIdeal_iff x ⟨k, ptChart y k⟩).2 h0)`. Conclude with `(ptCoord_ne_zero_iff y k _).2 (mem_ptChart y k) ((X_mem_ptIdeal_iff y _).1 h1)`.
+
+Use `specializes_iff_forall_open.2 fun V hV hyV => ?_` and prove the remaining obligations. Take `⟨s, hsV, hys⟩` from `(isAffineOpen_mchart (ptChart y)).exists_basicOpen_le (V := ⟨V, hV⟩) ⟨y, hyV⟩ hy`. Use `hsV ((MP ℤ m n).evaluation_ne_zero_iff_mem_basicOpen x hx s |>.1 fun h0 => ?_)` and prove the remaining obligations. Conclude with `((MP ℤ m n).evaluation_ne_zero_iff_mem_basicOpen y hy s).2 hys (evaluation_eq_zero_of_le h _ hx hy s h0)`.
+-/
 theorem specializes_of_ptIdeal_le
     {x y : MP ℤ m n} (h : ptIdeal x ≤ ptIdeal y) : x ⤳ y := by
   have hy := mem_mchart_ptChart y
@@ -366,6 +486,9 @@ theorem specializes_of_ptIdeal_le
   exact ((MP ℤ m n).evaluation_ne_zero_iff_mem_basicOpen y hy s).2 hys
     (evaluation_eq_zero_of_le h _ hx hy s h0)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ptIdeal_le_of_specializes, specializes_of_ptIdeal_le⟩`.
+-/
 theorem specializes_iff_ptIdeal_le (m : ℕ) (n : Fin (m + 1) → ℕ) (x y : MP ℤ m n) :
     x ⤳ y ↔ ptIdeal x ≤ ptIdeal y :=
   ⟨ptIdeal_le_of_specializes, specializes_of_ptIdeal_le⟩

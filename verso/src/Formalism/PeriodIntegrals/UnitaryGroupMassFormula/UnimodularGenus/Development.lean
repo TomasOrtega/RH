@@ -33,6 +33,9 @@ def IsomLocStd : Prop :=
       ∀ p : Ideal (𝓞 E), p.IsMaximal → IsUnimodularAt (hStd E n) p N →
         ∃ g ∈ isom (hStd E n), gmap g (loc (K := E) p (stdLat E n)) = loc (K := E) p N
 
+/- English proof (translation)
+Introduce `E _ _ _ n hE N hN hU p hp`. Conclude with `h2 E n hE N hN p hp (h1 E n N hN hU p hp)`.
+-/
 theorem unimodGenus_of (h1 : UnimodLocal) (h2 : IsomLocStd) : PI.UnimodGenus := by
   intro E _ _ _ n hE N hN hU p hp
   exact h2 E n hE N hN p hp (h1 E n N hN hU p hp)

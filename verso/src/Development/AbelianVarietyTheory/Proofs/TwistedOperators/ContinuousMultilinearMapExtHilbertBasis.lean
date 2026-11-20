@@ -5,6 +5,19 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, ∀ y : ∀ i, Hs i, (∀ i, i ∉ s → y i ∈ Set.range (e i)) → f y = g y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y hy`.
+
+Use `choose j hj using fun i => hy i (by simp)`. Establish `hy' : y = fun i => e i (j i)` using `funext fun i => (hj i).symm`. Rewrite using `[hy']`. Conclude with `h j`. Consider the case `insert a s ha ih`.
+
+Introduce `y hy`. Set `L : Hs a →L[ℂ] F` to `(f - g).toContinuousLinearMap y a`. Establish `hL : Set.EqOn (L : Hs a → F) (0 : Hs a →L[ℂ] F) (Set.range (e a))`. Introduce `z hz`. Simplify using `only [L, ContinuousMultilinearMap.toContinuousLinearMap_apply, ContinuousMultilinearMap.sub_apply, ContinuousLinearMap.zero_apply, sub_eq_zero]`.
+
+Apply `ih` to reduce the goal to its premises. Introduce `i hi`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `using hz`.
+
+Rewrite using `[Function.update_of_ne hia]`. Conclude with `hy i (by simp [hia, hi])`. Establish `hdense : Dense (Submodule.span ℂ (Set.range (e a)) : Set (Hs a))`. Conclude with `Submodule.dense_iff_topologicalClosure_eq_top.mpr (e a).dense_span`. Establish `hL0 : L = 0` using `ContinuousLinearMap.ext_on hdense hL`.
+
+Establish `hya` using `congrArg (fun M : Hs a →L[ℂ] F => M (y a)) hL0`. Simplify using `only [L, ContinuousMultilinearMap.toContinuousLinearMap_apply, ContinuousMultilinearMap.sub_apply, ContinuousLinearMap.zero_apply, sub_eq_zero, Function.update_eq_self] at hya`. Conclude with `hya`. Use extensionality with `y`. Conclude with `key Finset.univ y (by simp)`.
+-/
 theorem continuousMultilinearMap_ext_hilbertBasis (ι : Type) [Fintype ι] [DecidableEq ι]
     (Hs : ι → Type) [∀ i, NormedAddCommGroup (Hs i)] [∀ i, InnerProductSpace ℂ (Hs i)]
     (J : ι → Type) (e : ∀ i, HilbertBasis (J i) ℂ (Hs i)) (F : Type) [NormedAddCommGroup F]

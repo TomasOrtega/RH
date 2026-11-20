@@ -9,6 +9,11 @@ open scoped CategoryTheory.Obj
 
 namespace PositivityTheory.Xgn.CoordinateMapFiniteType
 
+/- English proof (translation)
+Establish `h1 : Algebra.FiniteType ℤ (Algebra.adjoin ℤ s)` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨s, hs, rfl⟩)`. Establish `hr : φ.toIntAlgHom.range = Algebra.adjoin ℤ s`. Use extensionality with `a`. Rewrite using `[h a]`. Both sides reduce to the same expression.
+
+Establish `h2 : Algebra.FiniteType ℤ A` using `Algebra.FiniteType.equiv h1 ((AlgEquiv.ofInjective φ.toIntAlgHom hφ).trans (Subalgebra.equivOfEq _ _ hr)).symm`. Establish `h3 : (ψ.comp (algebraMap ℤ R)).FiniteType`. Rewrite using `[Subsingleton.elim (ψ.comp (algebraMap ℤ R)) (algebraMap ℤ A)]`. Conclude with `RingHom.finiteType_algebraMap.2 h2`. Conclude with `RingHom.FiniteType.of_comp_finiteType h3`.
+-/
 theorem finiteType_of_range {A Ω R : Type} [CommRing A] [Field Ω] [CommRing R] (φ : A →+* Ω)
     (hφ : Function.Injective φ) (s : Set Ω) (hs : s.Finite)
     (h : ∀ a : Ω, a ∈ Algebra.adjoin ℤ s ↔ a ∈ φ.range) (ψ : R →+* A) : ψ.FiniteType := by
@@ -26,6 +31,15 @@ theorem finiteType_of_range {A Ω R : Type} [CommRing A] [Field Ω] [CommRing R]
     exact RingHom.finiteType_algebraMap.2 h2
   exact RingHom.FiniteType.of_comp_finiteType h3
 
+/- English proof (translation)
+Use `choose U h hU hUq _ hinj hran using fun c : {c // x c ≠ 0} => TieFrame.exists_chart hT c.2`. Establish `hcov : ∀ q : X, ∃ c, q ∈ U c` using `fun q => by`. Take `⟨c, hc⟩` from `hT.cover ⟨q, hq q⟩`. Conclude with `⟨⟨c, hc.1⟩, (hUq ⟨c, hc.1⟩ ⟨q, hq q⟩).2 hc⟩`. Prove the components needed by the constructor for the conclusion.
+
+Establish `htop : ⨆ c, ((⟨U c, hU c⟩ : X.affineOpens) : X.Opens) = ⊤`. Use `top_le_iff.1 fun q _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hcov q`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨c, hc⟩`. Use `(HasRingHomProperty.iff_of_iSup_eq_top (P := @LocallyOfFiniteType) (fun c => (⟨U c, hU c⟩ : X.affineOpens)) htop).2 fun c => ?_` and prove the remaining obligations.
+
+Conclude with `finiteType_of_range _ (hinj c) _ (Set.finite_range _) (hran c) _`. Establish `: CompactSpace X`. Use `⟨?_⟩` and prove the remaining obligations. Establish `e : (Set.univ : Set X) = ⋃ c, (U c : Set X)` using `(Set.eq_univ_of_forall fun q => Set.mem_iUnion.2 (hcov q)).symm`. Rewrite using `[e]`.
+
+Conclude with `isCompact_iUnion fun c => (hU c).isCompact`. Conclude with `(quasiCompact_iff_compactSpace f).2 this`.
+-/
 theorem main {X Y : Scheme.{0}} [IsAffine Y] (f : X ⟶ Y) {Ω : Type} [Field Ω] {κ : Type} [Finite κ] {x : κ → Ω}
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hq : ∀ q : X, genPt ξ ⤳ q) (hT : CoordTie ℤ ξ x) :
     LocallyOfFiniteType f ∧ QuasiCompact f := by
@@ -51,6 +65,9 @@ theorem main {X Y : Scheme.{0}} [IsAffine Y] (f : X ⟶ Y) {Ω : Type} [Field Ω
 
 end PositivityTheory.Xgn.CoordinateMapFiniteType
 
+/- English proof (translation)
+Introduce `X Ω _ K _ J _ y ξ hq hT`. Conclude with `PositivityTheory.Xgn.CoordinateMapFiniteType.main (toZ X) hq hT`.
+-/
 theorem PositivityTheory.Xgn.coordinate_map_finite_type : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), (∀ q : X, genPt ξ ⤳ q) →
     CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → LocallyOfFiniteType (toZ X) ∧ QuasiCompact (toZ X) := by

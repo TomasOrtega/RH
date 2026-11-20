@@ -8,6 +8,39 @@ open scoped Classical
 
 namespace GlobalTheory.FinTrace
 
+/- English proof (translation)
+Introduce `G _ Γ K W _ _ _ ξ hfin hloc f hf hsupp`. Establish `hR : ∀ k ∈ K, ∀ g, f (g * k) = f g` using `fun k hk g => by simpa using hf 1 K.one_mem k hk g`. Establish `hmk : ∀ (g : G) (y : G), f (((QuotientGroup.mk g : G ⧸ K).out)⁻¹ * y * (QuotientGroup.mk g : G ⧸ K).out) = f (g⁻¹ * y * g)`. Introduce `g y`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`.
+
+Rewrite using `[hk, mul_inv_rev, show (k : G)⁻¹ * g⁻¹ * y * (g * k) = (k : G)⁻¹ * (g⁻¹ * y * g) * k by group]`. Conclude with `hf _ (K.inv_mem k.2) _ k.2 _`. Set `Φ : (Γ → ℂ) → Γ → G ⧸ K → ℂ` to `fun χ γ x => f (x.out⁻¹ * γ * x.out) * χ γ`. Establish `hΦmk : ∀ χ γ (g : G), Φ χ γ (QuotientGroup.mk g) = f (g⁻¹ * γ * g) * χ γ` using `fun χ γ g => by`. Simplify using `only [Φ, hmk]`.
+
+Establish `hinv : ∀ (χ : Γ → ℂ), (∀ δ γ : Γ, χ (δ * γ * δ⁻¹) = χ γ) → ∀ δ γ : Γ, ∀ x : G ⧸ K, Φ χ (δ * γ * δ⁻¹) ((δ : G) • x) = Φ χ γ x`. Introduce `χ hχ δ γ x`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[MulAction.Quotient.smul_mk, hΦmk, hΦmk, hχ]`.
+
+Use `congr 2`. Simplify using `only [smul_eq_mul, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Establish `htr : ∀ δ γ : Γ, LinearMap.trace ℂ W (ξ (δ * γ * δ⁻¹)) = LinearMap.trace ℂ W (ξ γ)`. Introduce `δ γ`.
+
+Rewrite using `[map_mul ξ, map_mul ξ, LinearMap.trace_mul_comm ℂ, ← mul_assoc, ← map_mul ξ, inv_mul_cancel, map_one, one_mul]`. Establish `hstab : ∀ (H : Subgroup G) (x : G ⧸ K), H ≤ Γ → Finite (MulAction.stabilizer H x)`. Introduce `H x hH`. Take `⟨e⟩` from `GlobalTheory.FinTrace.stabilizer_equiv_locPart G H K x.out`. Rewrite `e` using `[QuotientGroup.out_eq']`.
+
+Establish `hle : GlobalTheory.LKLoc.locPart H K x.out ≤ GlobalTheory.LKLoc.locPart Γ K x.out` using `inf_le_inf_right _ hH`. Use `haveI : Finite (GlobalTheory.LKLoc.locPart H K x.out) := Finite.of_injective (Subgroup.inclusion hle) (Subgroup.inclusion_injective hle)`. Conclude with `Finite.of_equiv _ e.symm`. Establish `hsuppΦ : ∀ χ (x : G ⧸ K), (Function.support fun γ : Γ => Φ χ γ x).Finite`. Introduce `χ x`.
+
+Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`. Use `(GlobalTheory.FinTrace.finite_support_conj G Γ K f hR hsupp g (hloc g)).subset fun γ hγ => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support, hΦmk] at hγ ⊢`. Conclude with `left_ne_zero_of_mul hγ`.
+
+Establish `hOrb : Finite (MulAction.orbitRel.Quotient Γ (G ⧸ K))`. Use `Finite.of_surjective (fun q : DoubleCoset.Quotient (Γ : Set G) (K : Set G) => (Quotient.mk _ (QuotientGroup.mk (Quotient.out q) : G ⧸ K) : MulAction.orbitRel.Quotient Γ (G ⧸ K))) ?_` and prove the remaining obligations. Introduce `a`. Proceed by induction on `a using Quotient.inductionOn with`. Consider the case `h x`.
+
+Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g`. Take `⟨h, k, hh, hk, e⟩` from `DoubleCoset.mk_out_eq_mul Γ K g`. Use `⟨DoubleCoset.mk Γ K g, Quotient.sound ⟨⟨h, hh⟩, ?_⟩⟩` and prove the remaining obligations. Use `show (h : G) • (QuotientGroup.mk g : G ⧸ K) = QuotientGroup.mk (Quotient.out (DoubleCoset.mk Γ K g))`.
+
+Rewrite using `[MulAction.Quotient.smul_mk, e, QuotientGroup.eq]`. Simplify `hk` using `[smul_eq_mul, mul_assoc]`. Take `⟨-, hcE⟩` from `GlobalTheory.T.massFormula_conjugation_action G (G ⧸ K) Γ (Φ fun γ => LinearMap.trace ℂ W (ξ γ)) (hinv (fun γ => LinearMap.trace ℂ W (ξ γ)) htr) hOrb (fun x => hstab Γ x le_rfl) (hsuppΦ _)`. Take `⟨hcF, -⟩` from `GlobalTheory.T.massFormula_conjugation_action G (G ⧸ K) Γ (Φ fun _ => 1) (hinv (fun _ => 1) fun _ _ => rfl) hOrb (fun x => hstab Γ x le_rfl) (hsuppΦ _)`. Use `⟨hcF.subset fun c hc => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg⟩` from `hc`. Conclude with `⟨QuotientGroup.mk g, by rw [hΦmk (fun _ => 1) (Quotient.out c) g, mul_one]; exact hg⟩`. Set `F : G ⧸ K → ℂ` to `fun x => ∑ᶠ γ : Γ, Φ (fun γ => LinearMap.trace ℂ W (ξ γ)) γ x`. Establish `hFinv : ∀ h : Γ, ∀ x : G ⧸ K, F (h • x) = F x`. Introduce `h x`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hL : ∀ q : DoubleCoset.Quotient (Γ : Set G) (K : Set G), ∑ᶠ γ : Γ, f ((Quotient.out q)⁻¹ * γ * Quotient.out q) * LinearMap.trace ℂ W (ξ γ) = F (QuotientGroup.mk (Quotient.out q))` using `fun q => finsum_congr fun γ => (hΦmk (fun γ => LinearMap.trace ℂ W (ξ γ)) γ (Quotient.out q)).symm`. Repeatedly rewrite using `[hL]`. Rewrite using `[GlobalTheory.T.orbit_sum_local_parts G Γ K F hFinv]`. Use `Eq.trans hcE ?_` and prove the remaining obligations.
+
+Use `finsum_congr fun c => ?_` and prove the remaining obligations. Use `set Hc : Subgroup G := Γ ⊓ Subgroup.centralizer {((Quotient.out c : Γ) : G)} with hHc`. Establish `hcinv : ∀ h : Hc, ∀ x : G ⧸ K, Φ (fun γ => LinearMap.trace ℂ W (ξ γ)) (Quotient.out c) (h • x) = Φ (fun γ => LinearMap.trace ℂ W (ξ γ)) (Quotient.out c) x`. Introduce `h x`. Set `δ : Γ` to `⟨h, h.2.1⟩`.
+
+Establish `hδ : δ * Quotient.out c * δ⁻¹ = Quotient.out c`. Establish `hm` using `Subgroup.mem_centralizer_iff.mp h.2.2 _ (Set.mem_singleton _)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, δ]`. Rewrite using `[← hm]`.
+
+Use `group`. Use `hinv (fun γ => LinearMap.trace ℂ W (ξ γ)) htr δ (Quotient.out c) x` as an intermediate fact. Rewrite `this` using `[hδ]`. Conclude with `this`. Rewrite using `[mul_finsum]`.
+
+Use `(GlobalTheory.T.orbit_sum_local_parts G Hc K _ hcinv).symm.trans (finsum_congr fun y => ?_)` and prove the remaining obligations. Rewrite using `[hΦmk (fun γ => LinearMap.trace ℂ W (ξ γ)) (Quotient.out c) (Quotient.out y)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unfolded_eq_orbital : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
   (ξ : Representation ℂ Γ W),
   Finite (DoubleCoset.Quotient (Γ : Set G) (K : Set G)) → (∀ x : G, Finite (GlobalTheory.LKLoc.locPart Γ K x)) →
@@ -107,6 +140,13 @@ theorem unfolded_eq_orbital : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : 
   refine (GlobalTheory.T.orbit_sum_local_parts G Hc K _ hcinv).symm.trans (finsum_congr fun y => ?_)
   rw [hΦmk (fun γ => LinearMap.trace ℂ W (ξ γ)) (Quotient.out c) (Quotient.out y)]; ring
 
+/- English proof (translation)
+Establish `hEq : GlobalTheory.LKLoc.locPart A K (a * g * k) = (GlobalTheory.LKLoc.locPart B K g).map (MulAut.conj a).toMonoidHom`. Use extensionality with `y`. Simplify using `only [GlobalTheory.LKLoc.locPart, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hyA, k', hk', e⟩`.
+
+Use `⟨a⁻¹ * y * a, ⟨(hAB y).1 hyA, k * k' * k⁻¹, K.mul_mem (K.mul_mem hk hk') (K.inv_mem hk), ?_⟩, by group⟩` and prove the remaining obligations. Rewrite using `[← e]`. Use `group`. Introduce and unpack `⟨z, ⟨hzB, k', hk', e⟩, rfl⟩`. Use `⟨(hAB _).2 (by convert hzB using 1; group), k⁻¹ * k' * k, K.mul_mem (K.mul_mem (K.inv_mem hk) hk') hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e]`. Use `group`. Rewrite using `[hEq]`. Conclude with `Nat.card_congr (Subgroup.equivMapOfInjective _ _ (fun x y h => (MulAut.conj a).injective h)).toEquiv.symm`.
+-/
 theorem card_locPart_conj {G : Type} [Group G] (A B K : Subgroup G) (a g : G) {k : G} (hk : k ∈ K)
     (hAB : ∀ y, y ∈ A ↔ a⁻¹ * y * a ∈ B) :
     Nat.card (GlobalTheory.LKLoc.locPart A K (a * g * k)) = Nat.card (GlobalTheory.LKLoc.locPart B K g) := by
@@ -123,6 +163,23 @@ theorem card_locPart_conj {G : Type} [Group G] (A B K : Subgroup G) (a g : G) {k
   rw [hEq]
   exact Nat.card_congr (Subgroup.equivMapOfInjective _ _ (fun x y h => (MulAut.conj a).injective h)).toEquiv.symm
 
+/- English proof (translation)
+Set `F : DoubleCoset.Quotient (B : Set G) (K : Set G) → DoubleCoset.Quotient (A : Set G) (K : Set G)` to `fun q => DoubleCoset.mk A K (a * Quotient.out q)`. Establish `hB : ∀ y, y ∈ B → a * y * a⁻¹ ∈ A` using `fun y hy => (hAB _).2 (by convert hy using 1; group)`. Establish `hbij : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `q1 q2 h`.
+
+Rewrite `h` using `[DoubleCoset.eq]`. Take `⟨h', hh', k, hk, e⟩` from `h`. Rewrite using `[← DoubleCoset.out_eq' B K q1, ← DoubleCoset.out_eq' B K q2, DoubleCoset.eq]`. Use `⟨a⁻¹ * h' * a, (hAB h').1 hh', k, hk, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `p`. Use `⟨DoubleCoset.mk B K (a⁻¹ * Quotient.out p), ?_⟩` and prove the remaining obligations. Take `⟨b, k, hb, hk, e⟩` from `DoubleCoset.mk_out_eq_mul B K (a⁻¹ * Quotient.out p)`. Use `show DoubleCoset.mk A K (a * Quotient.out (DoubleCoset.mk B K (a⁻¹ * Quotient.out p))) = p`. Use `conv_rhs => rw [← DoubleCoset.out_eq' A K p]`.
+
+Rewrite using `[e, DoubleCoset.eq]`. Use `⟨(a * b * a⁻¹)⁻¹, A.inv_mem (hB b hb), k⁻¹, K.inv_mem hk, by group⟩` and prove the remaining obligations. Rewrite using `[← finsum_comp_equiv (Equiv.ofBijective F hbij)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Equiv.ofBijective_apply, F]`.
+
+Take `⟨h, k, hh, hk, e⟩` from `DoubleCoset.mk_out_eq_mul A K (a * Quotient.out q)`. Rewrite using `[e, show h * (a * Quotient.out q) * k = (h * a) * Quotient.out q * k by group]`. Establish `hAB' : ∀ y, y ∈ A ↔ (h * a)⁻¹ * y * (h * a) ∈ B`. Introduce `y`. Rewrite using `[show (h * a)⁻¹ * y * (h * a) = a⁻¹ * (h⁻¹ * y * h) * a by group, ← hAB]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `A.mul_mem (A.mul_mem (A.inv_mem hh) hy) hh`. Introduce `hy`. Use `A.mul_mem (A.mul_mem hh hy) (A.inv_mem hh)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[card_locPart_conj A B K (h * a) (Quotient.out q) hk hAB']`. Establish `hc : (h * a)⁻¹ * ρA * (h * a) = ρB`. Rewrite using `[show (h * a)⁻¹ * ρA * (h * a) = a⁻¹ * (h⁻¹ * (h * ρA)) * a by rw [hA h hh]; group]`.
+
+Rewrite using `[show a⁻¹ * (h⁻¹ * (h * ρA)) * a = a⁻¹ * ρA * a by group, hρ]`. Rewrite using `[show ((h * a) * Quotient.out q * k)⁻¹ * ρA * ((h * a) * Quotient.out q * k) = k⁻¹ * ((Quotient.out q)⁻¹ * ((h * a)⁻¹ * ρA * (h * a)) * Quotient.out q) * k by group, hc, hf _ (K.inv_mem hk) _ hk]`.
+-/
 theorem finsum_doubleCoset_conj {G : Type} [Group G] (A B K : Subgroup G) (f : G → ℂ)
     (hf : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, f (k * g * k') = f g) (a ρA ρB : G)
     (hAB : ∀ y, y ∈ A ↔ a⁻¹ * y * a ∈ B) (hA : ∀ y ∈ A, y * ρA = ρA * y) (hρ : a⁻¹ * ρA * a = ρB) :
@@ -170,6 +227,15 @@ theorem finsum_doubleCoset_conj {G : Type} [Group G] (A B K : Subgroup G) (f : G
       k⁻¹ * ((Quotient.out q)⁻¹ * ((h * a)⁻¹ * ρA * (h * a)) * Quotient.out q) * k by group, hc,
     hf _ (K.inv_mem hk) _ hk]
 
+/- English proof (translation)
+Introduce `G _ Γ K f hf ρ δ`. Use `finsum_doubleCoset_conj _ _ K f hf (δ : G) _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_centralizer_singleton_iff, Subgroup.coe_mul, Subgroup.coe_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hc, hy⟩`. Use `⟨?_, Γ.mul_mem (Γ.mul_mem (Γ.inv_mem δ.2) hy) δ.2⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨hc, hy⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Γ.mul_mem (Γ.mul_mem δ.2 hy) (Γ.inv_mem δ.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `y hy`.
+
+Conclude with `(Subgroup.mem_centralizer_singleton_iff.1 (Subgroup.mem_inf.1 hy).1)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`.
+-/
 theorem orbital_conj : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (f : G → ℂ), (∀ k ∈ K, ∀ k' ∈ K, ∀ g, f (k * g * k') = f g) →
     ∀ ρ δ : Γ,
     ∑ᶠ q : DoubleCoset.Quotient ((Subgroup.centralizer {((δ * ρ * δ⁻¹ : Γ) : G)} ⊓ Γ : Subgroup G) : Set G) (K : Set G),
@@ -199,6 +265,21 @@ theorem orbital_conj : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (f : G → �
     exact (Subgroup.mem_centralizer_singleton_iff.1 (Subgroup.mem_inf.1 hy).1)
   · simp only [Subgroup.coe_mul, Subgroup.coe_inv]; group
 
+/- English proof (translation)
+Introduce `G _ Γ K W _ _ _ ξ hfin hloc f hf hsupp R hR`. Rewrite using `[(unfolded_eq_orbital G Γ K W ξ hfin hloc f hf hsupp).2]`. Set `T : Γ → ℂ` to `fun ρ => LinearMap.trace ℂ W (ξ ρ) * ∑ᶠ q : DoubleCoset.Quotient ((Subgroup.centralizer {(ρ : G)} ⊓ Γ : Subgroup G) : Set G) (K : Set G), (1 / (Nat.card (GlobalTheory.LKLoc.locPart (Subgroup.centralizer {(ρ : G)} ⊓ Γ) K (Quotient.out q)) : ℂ)) * f ((Quotient.out q)⁻¹ * (ρ : G) * …`. Establish `htr : ∀ δ γ : Γ, LinearMap.trace ℂ W (ξ (δ * γ * δ⁻¹)) = LinearMap.trace ℂ W (ξ γ)`. Introduce `δ γ`.
+
+Rewrite using `[map_mul ξ, map_mul ξ, LinearMap.trace_mul_comm ℂ, ← mul_assoc, ← map_mul ξ, inv_mul_cancel, map_one, one_mul]`. Establish `hT : ∀ a b : Γ, IsConj a b → T a = T b`. Introduce `a b hab`. Take `⟨δ, hδ⟩` from `isConj_iff.1 hab`. Substitute `hδ` using the available equality.
+
+Simplify using `only [T]`. Rewrite using `[htr, orbital_conj G Γ K f hf a δ]`. Establish `hL : ∀ c : ConjClasses Γ, LinearMap.trace ℂ W (ξ (Quotient.out c)) * ∑ᶠ y : DoubleCoset.Quotient ((Γ ⊓ Subgroup.centralizer {((Quotient.out c : Γ) : G)} : Subgroup G) : Set G) (K : Set G), (1 / (Nat.card (GlobalTheory.LKLoc.locPart (Γ ⊓ Subgroup.centralizer {((Quotient.out c : Γ) …`. Introduce `c`. Rewrite using `[show (Γ ⊓ Subgroup.centralizer {((Quotient.out c : Γ) : G)}) = Subgroup.centralizer {((Quotient.out c : Γ) : G)} ⊓ Γ from inf_comm _ _]`.
+
+Repeatedly rewrite using `[hL]`. Set `e : R → ConjClasses Γ` to `fun ρ => ConjClasses.mk ρ.1`. Establish `he : Function.Bijective e`. Use `⟨fun a b hab => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `h1 : IsConj a.1 b.1` using `ConjClasses.mk_eq_mk_iff_isConj.1 hab`.
+
+Take `⟨ρ, -, hu⟩` from `hR a.1`. Conclude with `Subtype.ext ((hu a.1 ⟨a.2, IsConj.refl _⟩).trans (hu b.1 ⟨b.2, h1⟩).symm)`. Take `⟨γ, rfl⟩` from `ConjClasses.mk_surjective c`. Take `⟨ρ, ⟨hρ, hc⟩, -⟩` from `hR γ`. Conclude with `⟨⟨ρ, hρ⟩, ConjClasses.mk_eq_mk_iff_isConj.2 hc.symm⟩`.
+
+Rewrite using `[← finsum_set_coe_eq_finsum_mem, ← finsum_comp_equiv (Equiv.ofBijective e he)]`. Use `finsum_congr fun ρ => ?_` and prove the remaining obligations. Apply `hT` to reduce the goal to its premises. Use `show IsConj (Quotient.out (ConjClasses.mk ρ.1)) ρ.1`. Rewrite using `[← ConjClasses.mk_eq_mk_iff_isConj]`.
+
+Conclude with `Quotient.out_eq _`.
+-/
 theorem unfolded_eq_orbital_reps : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
   (ξ : Representation ℂ Γ W),
   Finite (DoubleCoset.Quotient (Γ : Set G) (K : Set G)) → (∀ x : G, Finite (GlobalTheory.LKLoc.locPart Γ K x)) →

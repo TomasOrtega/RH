@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.AdForm.FinComm
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP μ om hom g hg h hh f hf`. Establish `hθ : IsInfFam θ` using `hP.inf`. Establish `hg' : g⁻¹ ∈ GfC S` using `inv_mem hg`. Establish `e : ∀ τ z, Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z (om (g, h) f) = om (g, h) (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f)`. Introduce `τ z`.
+
+Rewrite using `[GlobalTheory.OrientedHeis.om_dRho hom hθ g h τ z hf.1, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hh, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S hg', Matrix.one_mul, Matrix.mul_one]`. Use `⟨⟨hom.om_pres _ f hf.1, fun τ z => ?_⟩, fun P => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h0` using `hf.2 τ z`. Unfold `annih at h0 ⊢`. Rewrite using `[e, e, ← map_smul, ← map_add, h0, map_zero]`.
+
+Apply the tactic sequence `refine (GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T μ μ om hom hθ (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) g h ?_ ?_ ?_ ?_ f hf.1 P).1 <;> intro τ`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S hg]`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hh]`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S hg, Matrix.one_mul]`. Rewrite using `[GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hh, Matrix.one_mul]`.
+
+Conclude with `GlobalTheory.OrientedHeis.om_fin_pureTensorO ψ S T μ μ om hom θ hθ g hg h hh _ _ _ _ f P hf.1`.
+-/
 theorem finite_comm_creation : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (μ : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T μ μ om → ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ f, IsHol θ S T ψ f → IsHol θ S T ψ (om (g, h) f) ∧ ∀ P, IsThetaFunO ψ S T (pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) f P) ∧ om (g, h) (pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) f P) = pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (om (g, h) f) P := by
   intro D ψ θ S T a b hS hT δ sc hP μ om hom g hg h hh f hf
   have hθ : IsInfFam θ := hP.inf

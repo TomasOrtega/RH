@@ -27,6 +27,13 @@ section Ops
 
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Introduce `y hy hR`. Unfold `LgFacts at hL`. Establish `hc : ContinuousOn lg (GLs n)` using `(hL n).2.2.2.1.continuousOn`. Establish `ho : IsOpen (GLs n)`. Unfold `GLs`.
+
+Conclude with `isOpen_ne_fun (by fun_prop) continuous_const`. Establish `hU : IsOpen (GLs n ∩ lg ⁻¹' Set.Ioi R)` using `hc.isOpen_inter_preimage ho isOpen_Ioi`. Establish `hev : u =ᶠ[nhds y] fun _ => 0` using `Filter.eventually_of_mem (hU.mem_nhds ⟨hy, hR⟩) fun z hz => hu z hz.1 hz.2`. Unfold `Rd`. Rewrite using `[hev.fderiv_eq]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Rd_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n, R < lg y → u y = 0)
     (X : Mat n) : ∀ y ∈ GLs n, R < lg y → Rd X u y = 0 := by
   intro y hy hR
@@ -42,6 +49,9 @@ theorem Rd_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n,
   rw [hev.fderiv_eq]
   simp
 
+/- English proof (translation)
+Introduce `y hy hR`. Establish `h1` using `Rd_van hL hu (single a b 1) y hy hR`. Establish `h2` using `Rd_van hL hu (single a b Complex.I) y hy hR`. Unfold `Eu`. Apply the tactic sequence `cases s <;> simp [h1, h2]`.
+-/
 theorem Eu_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n, R < lg y → u y = 0)
     (s : Bool) (a b : Fin n) : ∀ y ∈ GLs n, R < lg y → Eu s a b u y = 0 := by
   intro y hy hR
@@ -50,6 +60,11 @@ theorem Eu_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n,
   unfold Eu
   cases s <;> simp [h1, h2]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `y hy hR`. Distinguish the cases in `hab : a = b`. Simplify using `[Epow, hab, hu y hy hR]`.
+
+Simplify using `[Epow, hab]`. Consider the case `succ m ih`. Introduce `y hy hR`. Simplify using `only [Epow, Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun c _ => Eu_van hL (ih c b) s a c y hy hR`.
+-/
 theorem Epow_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n, R < lg y → u y = 0)
     (s : Bool) (m : ℕ) (a b : Fin n) : ∀ y ∈ GLs n, R < lg y → Epow s m a b u y = 0 := by
   induction m generalizing a b with
@@ -63,6 +78,9 @@ theorem Epow_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs 
     simp only [Epow, Finset.sum_apply]
     exact Finset.sum_eq_zero fun c _ => Eu_van hL (ih c b) s a c y hy hR
 
+/- English proof (translation)
+Introduce `y hy hR`. Unfold `gel`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun a _ => Epow_van hL hu s m a a y hy hR`.
+-/
 theorem gel_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n, R < lg y → u y = 0)
     (s : Bool) (m : ℕ) : ∀ y ∈ GLs n, R < lg y → gel s m u y = 0 := by
   intro y hy hR
@@ -70,6 +88,11 @@ theorem gel_van (hL : LgFacts) {u : Mat n → V} {R : ℝ} (hu : ∀ y ∈ GLs n
   rw [Finset.sum_apply]
   exact Finset.sum_eq_zero fun a _ => Epow_van hL hu s m a a y hy hR
 
+/- English proof (translation)
+Unfold `Cpt at hu ⊢`. Take `⟨R, hR⟩` from `hu`. Use `⟨R, ?_⟩` and prove the remaining obligations. Proceed by induction on `w with`. Consider the case `nil => exact hR`.
+
+Consider the case `cons p w ih => exact gel_van hL ih p.1 p.2`.
+-/
 theorem cpt_zOp (hL : LgFacts) (w : List (Bool × ℕ)) {u : Mat n → V} (hu : Cpt u) :
     Cpt (zOp w u) := by
   unfold Cpt at hu ⊢
@@ -79,12 +102,18 @@ theorem cpt_zOp (hL : LgFacts) (w : List (Bool × ℕ)) {u : Mat n → V} (hu : 
   | nil => exact hR
   | cons p w ih => exact gel_van hL ih p.1 p.2
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hu`. Consider the case `cons p w ih => exact GlobalTheory.CompanionTheory.RCalc.gel_contDiffOn p.1 p.2 ih`.
+-/
 theorem zOp_contDiffOn (w : List (Bool × ℕ)) {u : Mat n → V} (hu : ContDiffOn ℝ ∞ u (GLs n)) :
     ContDiffOn ℝ ∞ (zOp w u) (GLs n) := by
   induction w with
   | nil => exact hu
   | cons p w ih => exact GlobalTheory.CompanionTheory.RCalc.gel_contDiffOn p.1 p.2 ih
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => show gel p.1 p.2 (zOp (w ++ w') u) = gel p.1 p.2 (zOp w (zOp w' u))`. Rewrite using `[ih]`.
+-/
 theorem zOp_append (w w' : List (Bool × ℕ)) (u : Mat n → V) :
     zOp (w ++ w') u = zOp w (zOp w' u) := by
   induction w with
@@ -95,6 +124,17 @@ theorem zOp_append (w w' : List (Bool × ℕ)) (u : Mat n → V) :
 
 end Ops
 
+/- English proof (translation)
+Take `⟨M, d, w, hv, ho⟩` from `GlobalTheory.T.gelfand_operator_center_expansion n m`. Use `⟨M, fun j => (-1) ^ m * d j, fun j => (w j).map (fun k => (!s, k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`. Establish `h1 : zVal [(s, m)] χ = GlobalTheory.Dec.gelfVal (χ s) m` using `by simp [zVal]`. Rewrite using `[h1, conj_gelfVal_of_isHerm n χ hχ s m]`.
+
+Establish `h3 : ∀ j, zVal ((w j).map (fun k => (!s, k))) χ = ((w j).map (GlobalTheory.Dec.gelfVal (χ (!s)))).prod`. Introduce `j`. Simplify using `[zVal, List.map_map, Function.comp_def]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => by rw [h3 j, mul_assoc]), ← Finset.mul_sum, ← hv (χ (!s)), ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+
+Introduce `hL hR _ _ μ _ V _ _ _ f h hf hh cf ch`. Rewrite using `[GlobalTheory.T.gelfand_operator_adjoint hL hR n μ V s m f h hf hh cf ch]`. Establish `hpt : ∀ y : G n, ⟪f y.val, GlobalTheory.CompanionTheory.WaveMult.gelT (!s) m h y.val⟫_ℂ = ∑ j, d j * ⟪f y.val, zOp ((w j).map (fun k => (!s, k))) h y.val⟫_ℂ`. Introduce `y`. Rewrite using `[ho hR (!s) h hh y.val (val_mem_GLs y), inner_sum]`.
+
+Simplify using `only [inner_smul_right]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ (fun j _ => (integrable_inner μ hL hf (zOp_contDiffOn _ hh) (cpt_inner_left cf)).const_mul (d j)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isHecke_div_and_resEtaPow_div (n : ℕ) (s : Bool) (m : ℕ) : ∃ (M : ℕ) (e : Fin M → ℂ) (v : Fin M → List (Bool × ℕ)), (∀ χ : Inf n, IsHerm χ → conj (zVal [(s, m)] χ) = ∑ j, e j * zVal (v j) χ) ∧ (LgFacts → RCalc → ∀ [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (f h : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) → ContDiffOn ℝ ∞ h (GLs n) → Cpt f → Cpt h → ∫ y : G n, ⟪gel s m f y.val, h y.val⟫_ℂ ∂μ = ∑ j, e j * ∫ y : G n, ⟪f y.val, zOp (v j) h y.val⟫_ℂ ∂μ) := by
   obtain ⟨M, d, w, hv, ho⟩ := GlobalTheory.T.gelfand_operator_center_expansion n m
   refine ⟨M, fun j => (-1) ^ m * d j, fun j => (w j).map (fun k => (!s, k)), ?_, ?_⟩
@@ -118,9 +158,27 @@ private theorem isHecke_div_and_resEtaPow_div (n : ℕ) (s : Bool) (m : ℕ) : �
     rw [integral_const_mul]
     ring
 
+/- English proof (translation)
+The claim follows from `(Equiv.sum_comp finProdFinEquiv.symm (fun q => F q.1 q.2)).trans (Fintype.sum_prod_type _)`.
+-/
 private theorem isPair_and_isPair_of_isTriple {M N : ℕ} (F : Fin M → Fin N → ℂ) : ∑ k : Fin (M * N), F (finProdFinEquiv.symm k).1 (finProdFinEquiv.symm k).2 = ∑ j, ∑ i, F j i :=
   (Equiv.sum_comp finProdFinEquiv.symm (fun q => F q.1 q.2)).trans (Fintype.sum_prod_type _)
 
+/- English proof (translation)
+Introduce `n w`. Proceed by induction on `w with`. Consider the case `nil`. Use `⟨1, fun _ => 1, fun _ => [], ?_, ?_⟩` and prove the remaining obligations. Introduce `χ _`.
+
+Simplify using `[zVal]`. Introduce `_ _ _ _ μ _ V _ _ _ f h _ _ _ _`. Simplify using `[zOp]`. Consider the case `cons p w ih`. Take `⟨s, m⟩` from `p`.
+
+Take `⟨N, c, w₁, hz, hi⟩` from `ih`. Take `⟨M, e, v, hz1, hi1⟩` from `isHecke_div_and_resEtaPow_div n s m`. Use `⟨M * N, fun k => e (finProdFinEquiv.symm k).1 * c (finProdFinEquiv.symm k).2, fun k => w₁ (finProdFinEquiv.symm k).2 ++ v (finProdFinEquiv.symm k).1, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`. Establish `hs` using `isPair_and_isPair_of_isTriple (fun j i => e j * c i * zVal (w₁ i ++ v j) χ)`.
+
+Use `beta_reduce at hs`. Rewrite using `[hs]`. Establish `h1 : zVal ((s, m) :: w) χ = zVal [(s, m)] χ * zVal w χ` using `zVal_append [(s, m)] w χ`. Rewrite using `[h1, map_mul, hz1 χ hχ, hz χ hχ, Finset.sum_mul_sum]`. Simplify using `only [zVal_append]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`. Introduce `hL hR _ _ μ _ V _ _ _ f h hf hh cf ch`. Establish `hs` using `isPair_and_isPair_of_isTriple (fun j i => e j * c i * ∫ y : G n, ⟪f y.val, zOp (w₁ i ++ v j) h y.val⟫_ℂ ∂μ)`. Use `beta_reduce at hs`. Rewrite using `[hs]`.
+
+Establish `hwf` using `zOp_contDiffOn w hf`. Establish `cwf` using `cpt_zOp hL w cf`. Establish `step1 : ∫ y : G n, ⟪zOp ((s, m) :: w) f y.val, h y.val⟫_ℂ ∂μ = ∑ j, e j * ∫ y : G n, ⟪zOp w f y.val, zOp (v j) h y.val⟫_ℂ ∂μ` using `hi1 hL hR μ V (zOp w f) h hwf hh cwf ch`. Rewrite using `[step1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hi hL hR μ V f (zOp (v j) h) hf (zOp_contDiffOn _ hh) cf (cpt_zOp hL _ ch), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zOp_append]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem word_adjoint : ∀ (n : ℕ) (w : List (Bool × ℕ)), ∃ (N : ℕ) (c : Fin N → ℂ) (w₁ : Fin N → List (Bool × ℕ)), (∀ χ : Inf n, IsHerm χ → conj (zVal w χ) = ∑ i, c i * zVal (w₁ i) χ) ∧ (LgFacts → RCalc → ∀ [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (f h : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) → ContDiffOn ℝ ∞ h (GLs n) → Cpt f → Cpt h → ∫ y : G n, ⟪zOp w f y.val, h y.val⟫_ℂ ∂μ = ∑ i, c i * ∫ y : G n, ⟪f y.val, zOp (w₁ i) h y.val⟫_ℂ ∂μ) := by
   intro n w
   induction w with

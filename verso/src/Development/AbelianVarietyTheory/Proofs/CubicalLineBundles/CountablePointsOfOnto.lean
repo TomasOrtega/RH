@@ -12,6 +12,13 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CMCount
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hW`. Take `⟨v, -, hv⟩` from `SetLike.exists_of_lt (lt_top_iff_ne_top.2 hW)`. Use `choose a ha using h`. Establish `: Function.Injective fun c : ℂ => a (c • v)` using `fun c d e => by`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1` using `W.sub_mem (ha (c • v)) (ha (d • v))`. Simplify using `only at e`. Rewrite `h1` using `[e, sub_sub_sub_cancel_right, ← sub_smul]`. Conclude with `hv ((W.smul_mem_iff (sub_ne_zero.2 hne)).1 h1)`. Establish `: Countable ℂ` using `this.countable`.
+
+Conclude with `not_countable (Complex.ofReal_injective.countable)`.
+-/
 theorem eq_top_of_countable {V L : Type} [AddCommGroup V] [Module ℂ V] [Countable L] (W : Submodule ℂ V) (P : L → V)
     (h : ∀ z, ∃ a, z - P a ∈ W) : W = ⊤ := by
   by_contra hW
@@ -26,6 +33,11 @@ theorem eq_top_of_countable {V L : Type} [AddCommGroup V] [Module ℂ V] [Counta
   have : Countable ℂ := this.countable
   exact not_countable (Complex.ofReal_injective.countable)
 
+/- English proof (translation)
+Set `Λ : Submodule ℤ V` to `LinearMap.range P.toIntLinearMap`. Establish `: DiscreteTopology Λ` using `hd`. Establish `: IsZLattice ℝ Λ` using `⟨hs⟩`. Use `⟨(b.map (LinearEquiv.ofInjective P.toIntLinearMap hi)).ofZLatticeBasis ℝ Λ, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_basis {V L J : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [AddCommGroup L]
     (b : Module.Basis J ℤ L) (P : L →+ V) (hi : Function.Injective P) (hd : DiscreteTopology P.range)
     (hs : Submodule.span ℝ (Set.range P) = ⊤) : ∃ B : Module.Basis J ℝ V, ∀ i, B i = P (b i) := by
@@ -36,6 +48,11 @@ theorem exists_basis {V L J : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [
   rw [Module.Basis.ofZLatticeBasis_apply]
   rfl
 
+/- English proof (translation)
+Set `Λ : Submodule ℤ V` to `LinearMap.range P.toIntLinearMap`. Establish `: DiscreteTopology Λ` using `hd`. Establish `: IsZLattice ℝ Λ` using `⟨hs⟩`. Establish `: Module.Free ℤ L` using `Module.Free.of_equiv (LinearEquiv.ofInjective P.toIntLinearMap hi).symm`. Set `b` to `Module.Free.chooseBasis ℤ L`.
+
+Take `⟨B, hB⟩` from `exists_basis b P hi hd hs`. Take `⟨B', hB'⟩` from `exists_basis b P' hi' hd' hs'`. Use `⟨B.equiv B' (Equiv.refl _), fun a => ?_⟩` and prove the remaining obligations. Establish `: P'.toIntLinearMap = ((B.equiv B' (Equiv.refl _)).toLinearMap.restrictScalars ℤ).comp P.toIntLinearMap` using `b.ext fun i => by simp [← hB, ← hB']`. Conclude with `LinearMap.congr_fun this a`.
+-/
 theorem exists_real_equiv {V L : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [AddCommGroup L]
     (P P' : L →+ V) (hi : Function.Injective P) (hd : DiscreteTopology P.range)
     (hs : Submodule.span ℝ (Set.range P) = ⊤) (hi' : Function.Injective P') (hd' : DiscreteTopology P'.range)
@@ -52,6 +69,11 @@ theorem exists_real_equiv {V L : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
     b.ext fun i => by simp [← hB, ← hB']
   exact LinearMap.congr_fun this a
 
+/- English proof (translation)
+Establish `e' : ∀ j x, F' j x = h (F j x)` using `fun j x => LinearMap.congr_fun (LinearMap.ext_on (f := (F' j).restrictScalars ℝ) (g := h.toLinearMap.comp ((F j).restrictScalars ℝ)) hs (e j)) x`. Establish `hc : ∀ (c : ℂ) v, h (c • v) = c • h v` using `fun c v => by`. Establish `hv : v ∈ ⨆ j, LinearMap.range (F j)` using `hF ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.iSup_induction' with`. Consider the case `mem j x hx`.
+
+Take `⟨x, rfl⟩` from `hx`. Rewrite using `[← map_smul, ← e', ← e', map_smul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`. Conclude with `⟨{ h.toAddEquiv with map_smul' := hc }, fun _ => rfl⟩`.
+-/
 theorem exists_complex_equiv {U V I : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V]
     [Module ℝ U] [Module ℝ V] [IsScalarTower ℝ ℂ U] [IsScalarTower ℝ ℂ V]
     (h : V ≃ₗ[ℝ] V) (F F' : I → (U →ₗ[ℂ] V)) (s : Set U) (hs : Submodule.span ℝ s = ⊤)
@@ -70,6 +92,13 @@ theorem exists_complex_equiv {U V I : Type} [AddCommGroup U] [Module ℂ U] [Add
     | add x y _ _ hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
   exact ⟨{ h.toAddEquiv with map_smul' := hc }, fun _ => rfl⟩
 
+/- English proof (translation)
+Set `κ : A ⟶ B` to `Over.homMk (hB.1.lift α A.hom hA.1.w) (hB.1.lift_snd ..)`. Establish `hκ : κ.left ≫ β = α` using `hB.1.lift_fst ..`. Use `⟨κ, isMonHom_of_mul κ fun T x y => ?_, fun T z => ?_⟩` and prove the remaining obligations. Set `x₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk (x.left ≫ α) (by`. Rewrite using `[Category.assoc, hA.1.w, Over.w_assoc]`.
+
+Use the proof step `rfl)`. Set `y₀ : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk (y.left ≫ α) (by`. Rewrite using `[Category.assoc, hA.1.w, Over.w_assoc]`. Use the proof step `rfl)`. Use `Over.OverMorphism.ext (hB.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations.
+
+Rewrite using `[← hB.2 T (x ≫ κ) (y ≫ κ) x₀ y₀ (by simp [x₀, hκ]) (by simp [y₀, hκ]), hA.2 T x y x₀ y₀ rfl rfl, Over.comp_left, Category.assoc, hκ]`. Use `⟨Over.homMk (hA.1.lift (z.left ≫ β) T.hom (by rw [Category.assoc, hB.1.w, Over.w_assoc])) (hA.1.lift_snd ..), Over.OverMorphism.ext (hB.1.hom_ext ?_ ?_)⟩` and prove the remaining obligations. Simplify using `[hκ]`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem exists_compare {S S' : Scheme.{0}} {G : Over S} {A B : Over S'} [GrpObj G] [GrpObj A] [GrpObj B] {f : S' ⟶ S}
     {α : A.left ⟶ G.left} {β : B.left ⟶ G.left} (hA : IsGrpPullback A G f α) (hB : IsGrpPullback B G f β) :
     ∃ κ : A ⟶ B, IsMonHom κ ∧ ∀ (T : Over S') (z : T ⟶ B), ∃ y : T ⟶ A, y ≫ κ = z := by
@@ -88,6 +117,17 @@ theorem exists_compare {S S' : Scheme.{0}} {G : Over S} {A B : Over S'} [GrpObj 
     · simp [hκ]
     · rw [Over.w, Over.w]
 
+/- English proof (translation)
+Use `choose F hF hΛ _ using fun j => HomLinear.exists_linear_of_isMonHom A₀ B h₀ hB L₀ L g₀ g u₀ u d₁ d₂ (ψ j ≫ κ) (by have := hψ j; infer_instance)`. Use `⟨F, hΛ, fun z => ?_⟩` and prove the remaining obligations. Establish `key : ∀ l : List (𝟙_ (Over (Sp ℂ)) ⟶ A), (∀ y ∈ l, ∃ w ∈ ⨆ j, LinearMap.range (F j), y ≫ κ = u.ex w) → ∃ w ∈ ⨆ j, LinearMap.range (F j), l.prod ≫ κ = u.ex w`. Introduce `l`. Proceed by induction on `l with`.
+
+Consider the case `nil => exact fun _ => ⟨0, Submodule.zero_mem _, by rw [(u.ker 0).2 u.Λ.zero_mem, List.prod_nil, MonObj.one_comp]⟩`. Consider the case `cons y l ih`. Introduce `h`. Take `⟨w, hw, e⟩` from `h y (by simp)`. Take `⟨w', hw', e'⟩` from `ih fun y hy => h y (by simp [hy])`.
+
+Conclude with `⟨w + w', Submodule.add_mem _ hw hw', by rw [List.prod_cons, MonObj.mul_comp, e, e', u.ex_add]⟩`. Take `⟨y, hy⟩` from `hκ _ (u.ex z)`. Take `⟨n, i, x, e⟩` from `ho y`. Take `⟨w, hw, e'⟩` from `key (List.ofFn fun m => x m ≫ ψ (i m)) fun y hy => by`. Take `⟨m, rfl⟩` from `(List.mem_ofFn' _ _).1 hy`.
+
+Take `⟨a, ha⟩` from `u₀.ex_onto (x m)`. Use `⟨F (i m) a, Submodule.mem_iSup_of_mem (i m) ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hF, ha]`. Conclude with `Category.assoc ..`. Use `⟨w, hw, (u.ker _).1 ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : u.ex z = u.ex w` using `by rw [← hy, ← e', e]`. Establish `h2` using `u.ex_add (z - w) w`. Rewrite `h2` using `[sub_add_cancel, h1]`. Conclude with `mul_eq_right.1 h2.symm`.
+-/
 theorem exists_linear_onto {A B : Over (Sp ℂ)} [GrpObj A] [GrpObj B] {A₀ : Over (Sp ℂ)} [GrpObj A₀]
     (h₀ : IsAbelianScheme A₀) (hB : IsAbelianScheme B) {L₀ : LB A₀.left} {L : LB B.left} {g₀ g : ℕ}
     (u₀ : HolUnif A₀ L₀ g₀) (u : HolUnif B L g)
@@ -128,6 +168,21 @@ namespace GlobalTheory
 
 open CMCount
 
+/- English proof (translation)
+Introduce `hU hL E _ _ _ H D l Xo g ty FU P₀`. Take `⟨rig, hrig⟩` from `P₀.rigid`. Take `⟨u₀, -⟩` from `hU P₀ rig hrig`. Take `⟨s, hsΛ, hs, hli⟩` from `exists_linearIndependent ℝ (u₀.Λ : Set (Fin P₀.g → ℂ))`. Rewrite `hs` using `[u₀.full]`.
+
+Establish `: Finite s` using `hli.finite`. Establish `: Countable (𝓞 E)` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Establish `: ∀ i, Countable (FU.Di i).La` using `fun i =>`. Use `(FU.Di i).fin` as an intermediate fact. Use the proof step `Finsupp.Countable.of_moduleFinite (R := 𝓞 E)`.
+
+Set `R : (Sp ℂ ⟶ Xo.X) → (Σ i : Fin FU.n, Σ n : ℕ, Fin n → s → (FU.Di i).La) → Prop` to `fun y c => ∃ P, IsPeriod (FU.Di c.1) ty P ∧ FU.u c.1 P = y ∧ ∃ F : Fin c.2.1 → ((Fin P₀.g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), ⨆ j, LinearMap.range (F j) = ⊤ ∧ ∀ j (x : s), F j x = P (c.2.2 j x)`. Establish `huniq : ∀ c, {y | R y c}.Subsingleton`. Introduce and unpack `⟨i, n, c⟩ _ ⟨P, hP, rfl, F, hF, e⟩ _ ⟨P', hP', rfl, F', -, e'⟩`. Take `⟨h, hh⟩` from `exists_real_equiv P P' hP.2.1 hP.2.2.1 hP.2.2.2.1 hP'.2.1 hP'.2.2.1 hP'.2.2.2.1`. Take `⟨h', hh'⟩` from `exists_complex_equiv h F F' s hs hF fun j x hx => by`.
+
+Rewrite using `[e j ⟨x, hx⟩, e' j ⟨x, hx⟩, hh]`. Conclude with `(FU.fibre i P P' hP hP').2 ⟨LinearEquiv.refl _ _, h', fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, fun a => by rw [hh']; exact hh a⟩`. Use `(Set.countable_iUnion fun c => (huniq c).countable).mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, t, m, n, ψ, hψ, ho⟩`. Take `⟨i, P, hP, rfl⟩` from `FU.onto y hy`.
+
+Take `⟨Q, φ, -, hQ, hQL, -⟩` from `exists_polAV_pullback_of_isLocalRing E H _ Xo.univ.t Xo.univ.proper Xo.univ.ample Xo.univ.ktriv ℂ (FU.u i P)`. Take `⟨u, -, -, Φ, -, d₁, d₂, -, -, hΦ, -⟩` from `familyUnif_fibre_theta hU hL.weil E H D l Xo _ g ty FU i P hP Q φ hQ hQL`. Take `⟨κ, hκ, hκ'⟩` from `exists_compare m.cart hQ`. Take `⟨F, hF, hF'⟩` from `exists_linear_onto P₀.isAb Q.isAb u₀ u d₁ d₂ κ hκ' ψ hψ ho`. Establish `hm : ∀ j (x : s), ∃ a, P a = Φ.symm (F j x)` using `fun j x => (hΦ _).1 (by rw [Φ.apply_symm_apply]; exact hF j x (hsΛ x.2))`.
+
+Use `choose c hc using hm`. Use `Set.mem_iUnion.2 ⟨⟨i, n, c⟩, P, hP, rfl, fun j => Φ.symm.toLinearMap ∘ₗ F j, ?_, fun j x => (hc j x).symm⟩` and prove the remaining obligations. Use `eq_top_of_countable _ P fun z => ?_` and prove the remaining obligations. Take `⟨w, hw, hz⟩` from `hF' (Φ z)`. Take `⟨a, ha⟩` from `(hΦ (z - Φ.symm w)).1 (by rwa [map_sub, Φ.apply_symm_apply])`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, sub_sub_cancel]`. Simplify using `only [LinearMap.range_comp, ← Submodule.map_iSup]`. Conclude with `Submodule.mem_map_of_mem hw`.
+-/
 theorem countable_points_of_onto : ThetaUnifAV → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (P₀ : Out.PolAV (Sp ℂ)), Set.Countable {y : Sp ℂ ⟶ Xo.X | y ≫ Xo.s = spMap (algebraMap (KA l) ℂ) ∧ ∃ (t : SAB H (Sp ℂ)) (_ : SABMap t Xo.univ.t y) (n : ℕ) (ψ : Fin n → (P₀.A ⟶ t.G)), (∀ i, IsMonHom (ψ i)) ∧ OntoAt ψ (𝟙 (Sp ℂ))} := by
   intro hU hL E _ _ _ H D l Xo g ty FU P₀
   obtain ⟨rig, hrig⟩ := P₀.rigid

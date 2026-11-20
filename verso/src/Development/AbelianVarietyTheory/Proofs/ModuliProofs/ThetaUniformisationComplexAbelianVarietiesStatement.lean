@@ -9,5 +9,8 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.thetaUnifAV_closed | exact GlobalTheory.thetaUnifAV_closed | (intros; apply GlobalTheory.thetaUnifAV_closed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_uniformisation_complex_abelian_varieties : ThetaUnifAV := by
   first | exact @GlobalTheory.thetaUnifAV_closed | exact GlobalTheory.thetaUnifAV_closed | (intros; apply GlobalTheory.thetaUnifAV_closed <;> assumption)

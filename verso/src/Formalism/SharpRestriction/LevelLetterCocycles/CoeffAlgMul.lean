@@ -17,6 +17,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply O LL (PowerSeries LL)]`. Use `first`. Consider the case `rw [← PowerSeries.smul_eq_C_mul]`. Simplify using the standard rewrite rules. Consider the case `simp [Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem coeff_alg_mul (o : O) (F : PowerSeries LL) (j : ℕ) :
     coeff j (algebraMap O (PowerSeries LL) o * F) = algebraMap O LL o * coeff j F := by
   rw [IsScalarTower.algebraMap_apply O LL (PowerSeries LL)]
@@ -24,12 +27,74 @@ theorem coeff_alg_mul (o : O) (F : PowerSeries LL) (j : ℕ) :
     | rw [← PowerSeries.smul_eq_C_mul]; simp
     | simp [Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Rewrite using `[← dvL_apply, map_smul, dvL_apply]`.
+-/
 theorem dv_smul' (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (r : LL) (c : Fin d → LL) :
     dv W T e b (r • c) = r • dv W T e b c := by
   rw [← dvL_apply, map_smul, dvL_apply]
 
 variable [IsDomain O] [NeZero n] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
 
+/- English proof (translation)
+Use `set a : ZMod n := c' + ((e + 1 : ℕ) : ZMod n) with ha`. Use `set H : ℕ := A.Hs a (e + 1) 0 with hH`. Use `set LU := Formalism.MainNotions.UnusedSlot80.LevC.LamUp W A c' e with hLU`. Establish `hinj` using `C.hinj`. Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`.
+
+Set `Gf : ℤ → Submodule LL (Fin d → LL)` to `fun w => (FilS W T a 0 w).comap (dvL W T (e + 1) b)`. Establish `hGa : Antitone Gf` using `fun _ _ h => Submodule.comap_mono (crystalline_filtration_antitone W T a h)`. Establish `hlow : ∀ c₀ : Fin d → O, dvO W T (e + 1) b c₀ ∈ FilS W T a 0 (-(H : ℤ))` using `fun c₀ => Formalism.MainNotions.UnusedSlot80.LevC.dvO_filLow W C.hbij A hA c' hc' T hT b hb (e + 1) 0 (by omega) c₀`. Establish `hGtop : Gf (-(H : ℤ)) = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce `c _`. Use `show dv W T (e + 1) b c ∈ FilS W T a 0 (-(H : ℤ))`. Establish `hc : c = ∑ m, c m • (Pi.single m (1 : LL) : Fin d → LL)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite using `[hc, ← dvL_apply, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, dvL_apply]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h1` using `hlow (Pi.single m 1)`.
+
+Establish `h2 : dvO W T (e + 1) b (Pi.single m 1) = dv W T (e + 1) b (Pi.single m 1)`. Unfold `dvO`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = m`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Take `⟨I, P, Q, h, hPQ, hPG, hlev, hvan⟩` from `Formalism.MainNotions.UnusedSlot80.CrA.adapted Gf hGa (-(H : ℤ)) (H : ℤ) (by omega) hGtop`.
+
+Take `⟨κ1, hP1⟩` from `exists_lpow_fin W.v_l C.hO2 (fun im : Fin I × Fin d => P im.1 im.2)`. Take `⟨κ2, hQ1⟩` from `exists_lpow_fin W.v_l C.hO2 (fun im : Fin I × Fin d => Q im.1 im.2)`. Use `choose P' hP' using hP1`. Use `choose Q' hQ' using hQ1`. Set `k : Fin I → ℕ` to `fun i => ((H : ℤ) - h i).toNat`.
+
+Set `Vp : Fin I → LetA O n` to `fun i => ∑ m, algebraMap O (LetA O n) (Q' (i, m)) * u m`. Set `g : Fin I → W.EE` to `fun i => ∑ m, algebraMap O W.EE (Q' (i, m)) * f m`. Set `c₀ : Fin I → Fin d → O` to `fun i m => P' (i, m)`. Set `α : Fin I → ℕ → ℤ` to `fun i s => if s = 0 then (k i : ℤ) - H else (A.Hs a (e + 1) s : ℤ)`. Establish `hVpA : ∀ i, Vp i ∈ W.AΔ` using `fun i => Subalgebra.sum_mem _ fun m _ => Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (hu m)`.
+
+Establish `hvan' : ∀ i, ∀ j < k i, coeff j (W.lev a ζ (Vp i)) = 0`. Introduce `i`. Apply `X_pow_dvd_of_unit (cc_lev_piLamUp W C.hR A c' e a ζ hζ)` to reduce the goal to its premises. Introduce `j hj`. Establish `hjH : (j : ℤ) < (H : ℤ) - h i` using `Int.lt_toNat.mp hj`.
+
+Establish `hk2 : (j : ℤ) < 2 * (H : ℤ)`. Use `(hlev i).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmem : (fun m => coeff j (W.lev a ζ (W.π₀ * LU * u m))) ∈ Gf ((H : ℤ) - j)` using `hfil j hk2`. Establish `hz` using `hvan ((H : ℤ) - j) (by omega) _ hmem i (by omega)`.
+
+Rewrite using `[← map_mul]`. Establish `e1 : W.π₀ * LU * Vp i = ∑ m, algebraMap O (LetA O n) (Q' (i, m)) * (W.π₀ * LU * u m)`. Simplify using `only [Vp, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Establish `e2 : ∀ m, coeff j (W.lev a ζ (algebraMap O (LetA O n) (Q' (i, m)) * (W.π₀ * LU * u m))) = (PD.p : LL) ^ κ2 * (Q i m * coeff j (W.lev a ζ (W.π₀ * LU * u m)))`.
+
+Introduce `m`. Rewrite using `[map_mul, AlgHom.commutes, coeff_alg_mul, hQ']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_sum, map_sum, Finset.sum_congr rfl (fun m _ => e2 m), ← Finset.mul_sum, hz, mul_zero]`. Establish `hdiv : ∀ i, ∃ h' ∈ W.AΔ, letE a * Vp i = ps W 0 ^ k i * h'` using `fun i => Formalism.MainNotions.UnusedSlot80.DivLevR.divLev_of (W := W) C.hR (not_isUnit_p W C.hV) C.hinj a ζ hζ (Vp i) (hVpA i) (k i) (hvan' i)`.
+
+Use `choose h' hh'A hh' using hdiv`. Establish `hgV : ∀ i, algebraMap (LetA O n) W.EE (ps W 0 ^ H) * g i = algebraMap (LetA O n) W.EE (letE a * (W.π₀ * LU) * Vp i)`. Introduce `i`. Simplify using `only [g, Vp, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[IsScalarTower.algebraMap_apply O (LetA O n) W.EE, mul_left_comm, hf m, ← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (algebraMap (LetA O n) W.EE (ps W 0))` using `Formalism.MainNotions.UnusedSlot80.LevC.ps_unitE W C.hR 0`. Use `⟨κ1 + κ2, I, g, c₀, α, fun i => ⟨?_, ?_⟩, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `hnum : ∏ s ∈ Finset.range (e + 1), ps W s ^ (α i s).toNat = LU * ps W 0 ^ ((k i : ℤ) - H).toNat`. Rewrite using `[Finset.prod_range_succ', hLU, lamUp_eq]`. Use `congr 1`. Apply the tactic sequence `all_goals (try (refine Finset.prod_congr rfl fun s _ => ?_; simp only [α, if_neg (Nat.succ_ne_zero s), Int.toNat_natCast]))`. Establish `hden : ∏ s ∈ Finset.range (e + 1), ps W s ^ (-(α i s)).toNat = ps W 0 ^ ((H : ℤ) - k i).toNat`.
+
+Rewrite using `[Finset.prod_range_succ']`. Establish `h1 : ∏ s ∈ Finset.range e, ps W (s + 1) ^ (-(α i (s + 1))).toNat = 1` using `Finset.prod_eq_one fun s _ => by`. Simplify using `only [α, if_neg (Nat.succ_ne_zero s)]`. Rewrite using `[Int.toNat_eq_zero.2 (by omega), pow_zero]`. Rewrite using `[h1, one_mul]`.
+
+Simplify using `only [α, if_pos rfl, neg_sub]`. Use `⟨W.π₀ * h' i, W.AΔ.mul_mem C.hR.1 (hh'A i), ?_⟩` and prove the remaining obligations. Rewrite using `[hnum, hden]`. Establish `hk : ((H : ℤ) - k i).toNat + k i = H + ((k i : ℤ) - H).toNat` using `by omega`. Establish `hl2 : letE a * Vp i = letE a * (ps W 0 ^ k i * h' i)`.
+
+Rewrite using `[← hh' i, ← mul_assoc, Formalism.MainNotions.UnusedSlot80.DivLevR.letE_idem]`. Apply `(hunit.pow (k i)).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_pow, ← mul_assoc, ← map_mul, ← pow_add, add_comm, hk, pow_add, map_mul, mul_comm (algebraMap (LetA O n) W.EE (ps W 0 ^ H)), mul_assoc, hgV i, ← map_mul, ← map_mul]`. Use `congr 1`. Establish `e3 : letE a * (W.π₀ * LU) * Vp i = (W.π₀ * LU) * (letE a * Vp i)` using `by ring`.
+
+Rewrite using `[e3, hl2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`. Break down `Nat.eq_zero_or_pos s with rfl | hs1` into its components or cases. Establish `e1 : -(α i 0) = (H : ℤ) - k i` using `by simp only [α, if_pos rfl]; ring`.
+
+Rewrite using `[e1]`. Establish `e2 : dvO W T (e + 1) b (c₀ i) = ((PD.p : LL) ^ κ1) • dv W T (e + 1) b (P i)`. Unfold `dvO`. Rewrite using `[← dv_smul']`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Simplify using `[c₀, hP', smul_eq_mul]`. Rewrite using `[e2]`. Use `Submodule.smul_mem _ _ (crystalline_filtration_antitone W T a ?_ (hPG i))` and prove the remaining obligations. Use `(hlev i).1` as an intermediate fact.
+
+Use `show (H : ℤ) - ((H : ℤ) - h i).toNat ≤ h i`. Use linear arithmetic over natural numbers and integers. Establish `e1 : α i s = (A.Hs a (e + 1) s : ℤ)` using `by simp only [α, if_neg (by omega : s ≠ 0)]`. Rewrite using `[e1]`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevC.dvO_filLow W C.hbij A hA c' hc' T hT b hb (e + 1) s hs (c₀ i)`.
+
+Establish `hδ : ∀ m', ∑ i, Q' (i, m') * P' (i, m) = if m = m' then ((PD.p : ℕ) : O) ^ (κ1 + κ2) else 0`. Introduce `m'`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrFun (hPQ (Pi.single m' 1)) m`. Establish `h2 : ∀ i, ∑ m'', Q i m'' * (Pi.single m' (1 : LL) : Fin d → LL) m'' = Q i m'`.
+
+Introduce `i`. Simplify using `[Pi.single_apply]`. Simplify using `only [h2, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_mul, hQ', hP']`.
+
+Establish `h3 : ∑ i, (PD.p : LL) ^ κ2 * Q i m' * ((PD.p : LL) ^ κ1 * P i m) = (PD.p : LL) ^ (κ1 + κ2) * ∑ i, Q i m' * P i m`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[h3, ← h1]`. Distinguish the cases in `hmm : m = m'`. Substitute `hmm` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hmm, Pi.single_apply, Ne.symm hmm]`. Use `show lE W (κ1 + κ2) * f m = ∑ i, g i * algebraMap O W.EE (c₀ i m)`. Simplify using `only [g, c₀, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h4 : ∀ m', ∑ i, algebraMap O W.EE (Q' (i, m')) * f m' * algebraMap O W.EE (P' (i, m)) = f m' * algebraMap O W.EE (∑ i, Q' (i, m') * P' (i, m))`. Introduce `m'`. Rewrite using `[map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul]; ring`. Repeatedly rewrite using `[h4, hδ]`.
+
+Rewrite using `[Finset.sum_eq_single m]`. Simplify using `[lE, mul_comm]`. Introduce `m' _ hm'`. Simplify using `[Ne.symm hm']`. Introduce `h0`.
+
+Conclude with `absurd (Finset.mem_univ m) h0`.
+-/
 theorem secIn_of_fil (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n)
     (hc' : c' ∈ A.cuts) (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (e : ℕ) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)

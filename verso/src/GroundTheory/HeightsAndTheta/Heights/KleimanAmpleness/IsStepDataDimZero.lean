@@ -9,6 +9,11 @@ open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 
 open IndefiniteRowSideFullHecke.Kleiman2 (pnIdx pnField pnPt) in
 
+/- English proof (translation)
+Use `⟨IndefiniteRowSideFullHecke.Kleiman2.isModelWithBase_pnPt F 0, IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 0, IndefiniteRowSideFullHecke.Kleiman2.isNef_zero F _, by norm_num, by norm_num, by norm_num, le_rfl, ?_, one_ne_zero⟩` and prove the remaining obligations. Establish `e : IndefiniteRowSideFullHecke.Kleiman2.stepL () (0 : Unit → ℤ) 2 1 - ((1 : ℕ) : ℤ) • IndefiniteRowSideFullHecke.Kleiman2.baseDeg () = 0`. Use function extensionality and compare the values at `k`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.stepL, IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Rewrite using `[e]`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Introduce `c _`. Simplify using the standard rewrite rules.
+-/
 theorem isStepData_dimZero (F : Type) [Field F] :
     IndefiniteRowSideFullHecke.Kleiman2.IsStepData F (pnPt F 0) () 0 0 (1 / 2) 2 1 1 1 := by
   refine ⟨IndefiniteRowSideFullHecke.Kleiman2.isModelWithBase_pnPt F 0, IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 0, IndefiniteRowSideFullHecke.Kleiman2.isNef_zero F _,
@@ -31,6 +36,9 @@ def ClaimVanishDimZero.Statement : Prop :=
       Subsingleton (cechHc ι (quotPart F (mIdealOver F y))
         (b • IndefiniteRowSideFullHecke.Kleiman2.stepL k₀ μ a m + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) 1)
 
+/- English proof (translation)
+The claim follows from `h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) () 0 (1 / 2) 2 1 1 1 (isStepData_dimZero F)`.
+-/
 example (F : Type) [Field F] (h : ClaimVanishDimZero.Statement) :=
   h F Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 0) (IndefiniteRowSideFullHecke.Kleiman2.pnField F 0) (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 0) () 0 (1 / 2) 2 1 1 1
     (isStepData_dimZero F)

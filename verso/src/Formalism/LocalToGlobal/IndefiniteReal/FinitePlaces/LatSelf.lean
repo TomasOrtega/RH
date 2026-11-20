@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.IndefR.Datum
 
+/- English proof (translation)
+Introduce `ψ hψ S T ΛS ΛT hS hT`. Conclude with `⟨latO_isCompact S T ΛS ΛT hS hT, latO_isOpen S T ΛS ΛT hS hT, fun a ha u hu => latO_smul_mem S T ΛS ΛT ha hu, fun x hx => latO_ann_iff_of hψ S T hS hT (latO_nsmul_mem S T ΛS ΛT hS hT) (fun γ h => PDA.globalDual S T hS hT γ h) x hx⟩`.
+-/
 theorem latSelfDual (D : D7) : LatSelfDual D := by
   intro ψ hψ S T ΛS ΛT hS hT
   exact ⟨latO_isCompact S T ΛS ΛT hS hT, latO_isOpen S T ΛS ΛT hS hT,
@@ -23,6 +26,9 @@ theorem latSelfDual (D : D7) : LatSelfDual D := by
     fun x hx => latO_ann_iff_of hψ S T hS hT (latO_nsmul_mem S T ΛS ΛT hS hT)
       (fun γ h => PDA.globalDual S T hS hT γ h) x hx⟩
 
+/- English proof (translation)
+The claim follows from `placeLatDual_of (latSelfDual D)`.
+-/
 theorem placeLatDual (D : D7) : PlaceLatDual D := placeLatDual_of (latSelfDual D)
 
 end Formalism.IndefR.Fin

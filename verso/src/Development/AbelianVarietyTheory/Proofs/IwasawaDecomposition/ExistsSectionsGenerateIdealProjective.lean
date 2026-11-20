@@ -12,6 +12,11 @@ namespace GlobalTheory.ProjBlowup
 
 variable {R : Type} [CommRing R] {N : ℕ} {X : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `(chartAlgEquiv R N a).surjective s`. Take `⟨x, rfl⟩` from `(polyEquivAway R N a).symm.surjective p`. Take `⟨n, f, hf, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective _ (X_mem R N a) x`. Use `⟨n, f, by simpa using hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← chartAlgEquiv_dehom, ← awayToPoly_mk R N a n f hf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_formOn_eq (a : Fin (N + 1)) (s : Γ(PSpace R N, chart R N a)) :
     ∃ (d : ℕ) (F : MvPolynomial (Fin (N + 1)) R) (hF : F.IsHomogeneous d),
       formOn (chart R N a) a le_rfl d F hF = s := by
@@ -31,13 +36,22 @@ section
 variable {φ : X ⟶ PSpace R N} {W V : X.Opens} {i j : Fin (N + 1)} {hi : W ≤ φ ⁻¹ᵁ chart R N i}
   {d : ℕ} {F : MvPolynomial (Fin (N + 1)) R}
 
+/- English proof (translation)
+The claim follows from `resG_appLE φ hi h _`.
+-/
 theorem resG_pullForm (h : V ≤ W) (hF : F.IsHomogeneous d) :
     resG X h (pullForm φ W i hi d F hF) = pullForm φ V i (h.trans hi) d F hF :=
   resG_appLE φ hi h _
 
+/- English proof (translation)
+Rewrite using `[pullForm, formOn_zero, map_zero]`.
+-/
 theorem pullForm_zero : pullForm φ W i hi d 0 (isHomogeneous_zero _ R d) = 0 := by
   rw [pullForm, formOn_zero, map_zero]
 
+/- English proof (translation)
+Establish `hW : W ≤ φ ⁻¹ᵁ (chart R N i ⊓ chart R N j)` using `le_inf hi hj`. Use `congrArg (φ.appLE _ W hW).hom (formOn_eq_ratioOn_pow_mul (U := chart R N i ⊓ chart R N j) (hi := inf_le_left) inf_le_right hF)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, appLE_ratioOn, ← resG_formOn (hi := le_rfl) inf_le_left, ← resG_formOn (hi := le_rfl) inf_le_right, appLE_resG, appLE_resG]`. Conclude with `this`.
+-/
 theorem pullForm_eq_pow_mul (hj : W ≤ φ ⁻¹ᵁ chart R N j) (hF : F.IsHomogeneous d) :
     pullForm φ W i hi d F hF = pullRatio φ W i hi j ^ d * pullForm φ W j hj d F hF := by
   have hW : W ≤ φ ⁻¹ᵁ (chart R N i ⊓ chart R N j) := le_inf hi hj
@@ -47,6 +61,9 @@ theorem pullForm_eq_pow_mul (hj : W ≤ φ ⁻¹ᵁ chart R N j) (hF : F.IsHomog
     ← resG_formOn (hi := le_rfl) inf_le_right, appLE_resG, appLE_resG] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[pullForm, pullForm, pullRatio, formOn_eq_aeval, formOn_eq_aeval, map_mul, map_pow, aeval_X, map_mul, map_pow]`.
+-/
 theorem pullForm_X_pow_mul (n : ℕ) (hF : F.IsHomogeneous d) {e : ℕ}
     (hG : (MvPolynomial.X j ^ n * F).IsHomogeneous e) :
     pullForm φ W i hi e _ hG = pullRatio φ W i hi j ^ n * pullForm φ W i hi d F hF := by
@@ -72,6 +89,13 @@ def pullFormSec (φ : X ⟶ PSpace R N) {e : ℕ} (F : MvPolynomial (Fin (N + 1)
 abbrev affChart (φ : X ⟶ PSpace R N) [IsClosedImmersion φ] (i : Fin (N + 1)) : X.affineOpens :=
   ⟨φ ⁻¹ᵁ chart R N i, (isAffineOpen_chart R N i).preimage φ⟩
 
+/- English proof (translation)
+Set `r : Γ(X, (affChart φ b).1)` to `pullRatio φ _ b le_rfl a`. Establish `ha : X.basicOpen r ≤ φ ⁻¹ᵁ chart R N a` using `basicOpen_pullRatio.le.trans inf_le_right`. Establish `h1 : resG X ha (pullForm φ _ a le_rfl d F hF) ∈ J.ideal (X.affineBasicOpen r)` using `J.ideal_le_comap_ideal (U := X.affineBasicOpen r) (V := affChart φ a) ha h`. Establish `h2 : resG X (X.basicOpen_le r) (pullForm φ _ b le_rfl d F hF) ∈ J.ideal (X.affineBasicOpen r)`. Rewrite `h1`, the goal using `[resG_pullForm]`.
+
+Rewrite using `[pullForm_eq_pow_mul (j := a) ha]`. Conclude with `Ideal.mul_mem_left _ _ h1`. Rewrite `h2` using `[← J.map_ideal_basicOpen]`. Establish `inst` using `(affChart φ b).2.isLocalization_basicOpen r`. Take `⟨_, ⟨n, rfl⟩, hn⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (.powers r) Γ(X, X.basicOpen r) _ _).1 h2`.
+
+Conclude with `⟨n, hn⟩`.
+-/
 theorem exists_pow_mul_pullForm_mem (φ : X ⟶ PSpace R N) [IsClosedImmersion φ] (J : X.IdealSheafData)
     {a : Fin (N + 1)} {d : ℕ} {F : MvPolynomial (Fin (N + 1)) R} (hF : F.IsHomogeneous d)
     (h : pullForm φ _ a le_rfl d F hF ∈ J.ideal (affChart φ a)) (b : Fin (N + 1)) :
@@ -90,6 +114,13 @@ theorem exists_pow_mul_pullForm_mem (φ : X ⟶ PSpace R N) [IsClosedImmersion �
     Γ(X, X.basicOpen r) _ _).1 h2
   exact ⟨n, hn⟩
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `φ.app_surjective _ (isAffineOpen_chart R N a) g`. Take `⟨d, F, hF, rfl⟩` from `exists_formOn_eq a s`. Establish `e₁ : pullForm φ _ a le_rfl d F hF = (φ.app (chart R N a)).hom (formOn (chart R N a) a le_rfl d F hF)`. Rewrite using `[pullForm, Scheme.Hom.app_eq_appLE]`. Use `choose n hn using exists_pow_mul_pullForm_mem φ J hF (e₁ ▸ hg)`.
+
+Use `⟨Finset.univ.sup n + d, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' (le_of_add_le_right he)`. Use `⟨MvPolynomial.X a ^ k * F, (isHomogeneous_X_pow a k).mul hF, ?_, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[pullForm_X_pow_mul k hF, pullRatio_self, one_pow, one_mul]`. Conclude with `e₁`.
+
+Take `⟨l, rfl⟩` from `Nat.exists_eq_add_of_le' ((Finset.le_sup (f := n) (Finset.mem_univ b)).trans (Nat.le_of_add_le_add_right he))`. Rewrite using `[pullForm_X_pow_mul _ hF, pow_add, mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hn b)`.
+-/
 theorem exists_form_of_mem (φ : X ⟶ PSpace R N) [IsClosedImmersion φ] (J : X.IdealSheafData)
     (a : Fin (N + 1)) (g : Γ(X, (affChart φ a).1)) (hg : g ∈ J.ideal (affChart φ a)) :
     ∃ e₀, ∀ e, e₀ ≤ e → ∃ (F : MvPolynomial (Fin (N + 1)) R) (hF : F.IsHomogeneous e),
@@ -109,6 +140,17 @@ theorem exists_form_of_mem (φ : X ⟶ PSpace R N) [IsClosedImmersion φ] (J : X
     rw [pullForm_X_pow_mul _ hF, pow_add, mul_assoc]
     exact Ideal.mul_mem_left _ _ (hn b)
 
+/- English proof (translation)
+Take `⟨N, φ, _, -⟩` from `hs`. Establish `fg : ∀ a, (J.ideal (affChart φ a)).FG` using `fun a => by`. Establish `: IsNoetherianRing Γ(PSpace R N, chart R N a)` using `isNoetherianRing_of_ringEquiv _ (chartAlgEquiv R N a).toRingEquiv`. Establish `: IsNoetherianRing Γ(X, (affChart φ a).1)` using `isNoetherianRing_of_surjective _ _ _ (φ.app_surjective _ (isAffineOpen_chart R N a))`. Conclude with `IsNoetherian.noetherian _`.
+
+Use `choose S hS using fg`. Use `choose e₀ he₀ using fun p : Σ a, S a => exists_form_of_mem φ J p.1 p.2.1 (hS p.1 ▸ Ideal.subset_span p.2.2)`. Use `choose F hF hFa hFb using fun p => he₀ p (Finset.univ.sup e₀) (Finset.le_sup (Finset.mem_univ p))`. Set `q` to `(Fintype.equivFinOfCardEq (Fintype.card_option (α := Σ a, S a))).symm`. Set `τ : Option (Σ a, S a) → (pullO φ (Finset.univ.sup e₀)).Sec` to `fun o => o.elim (pullFormSec φ 0 (isHomogeneous_zero _ R _)) fun p => pullFormSec φ (F p) (hF p)`.
+
+Use `⟨_, _, fun j => τ (q j), (isCoordFamily_pullRatio φ).cover, fun k V h => ?_⟩` and prove the remaining obligations. Establish `key : J.ideal (affChart φ k) = Ideal.span (Set.range fun j => (τ (q j)).f k)`. Use `le_antisymm ?_ (Ideal.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[← hS k]`. Use `Ideal.span_mono fun g hg => ⟨q.symm (some ⟨k, g, hg⟩), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [q.apply_symm_apply]`. Conclude with `hFa ⟨k, g, hg⟩`. Introduce and unpack `_ ⟨j, rfl⟩ dsimp only`. Consider the cases of `q j with`. Consider the case `none`.
+
+Conclude with `(congrArg (· ∈ J.ideal (affChart φ k)) (pullForm_zero (φ := φ) (hi := le_rfl))).mpr (zero_mem _)`. Consider the case `some p => exact hFb p k`. Rewrite using `[← J.map_ideal (V := affChart φ k) h, key]`. Use `erw [Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_generates (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (s : X ⟶ Sp R)
     (hs : IsProjOver s) (J : X.IdealSheafData) :
     ∃ (L : LB X) (m : ℕ) (σ : Fin (m + 1) → L.Sec), Generates J σ := by

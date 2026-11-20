@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial Matrix UpperTheory.V UpperTheory.V.W
 
+/- English proof (translation)
+Establish `he : ∀ g : F.G₀, Units.map (f : B →* B') (F.eps O B g) = F.eps O B' g`. Introduce `g`. Use `ext`. Simplify using `[GFrame.eps, pushCh, IsScalarTower.algebraMap_apply O R B, IsScalarTower.algebraMap_apply O R B']`. Establish `hs : ∀ (C : Type) [CommRing C] [Algebra O C] (g : F.G₀) (b : C), F.star O C n (MonoidAlgebra.single g b) = MonoidAlgebra.single (F.conj g)⁻¹ (b * ↑(F.eps O C g ^ (1 - (n:ℤ))))`.
+
+Introduce `C _ _ g b`. Simplify using `[GFrame.star, GFrame.starOp, MonoidAlgebra.lift_single, MonoidAlgebra.smul_single']`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp [GFrame.star]`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`.
+
+Simplify using `[GFrame.star, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Consider the case `single g b`. Rewrite using `[MonoidAlgebra.mapRingHom_single, hs, hs, MonoidAlgebra.mapRingHom_single, map_mul, ← he g, ← map_zpow]`. Both sides reduce to the same expression.
+-/
 private theorem star_mapRingHom_algHom_eq {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (B B' : Type) [CommRing B] [Algebra R B] [Algebra O B] [IsScalarTower O R B] [CommRing B'] [Algebra R B'] [Algebra O B'] [IsScalarTower O R B'] (f : B →ₐ[R] B') (x : MonoidAlgebra B F.G₀) : F.star O B' n (MonoidAlgebra.mapRingHom F.G₀ (f : B →+* B') x) = MonoidAlgebra.mapRingHom F.G₀ (f : B →+* B') (F.star O B n x) := by
   have he : ∀ g : F.G₀, Units.map (f : B →* B') (F.eps O B g) = F.eps O B' g := by
     intro g
@@ -18,6 +25,17 @@ private theorem star_mapRingHom_algHom_eq {l : ℕ} [Fact l.Prime] (F : GFrame l
     rw [MonoidAlgebra.mapRingHom_single, hs, hs, MonoidAlgebra.mapRingHom_single, map_mul, ← he g, ← map_zpow]
     rfl
 
+/- English proof (translation)
+Introduce `l _ F O _ _ R _ _ n D`. Set `E : ∀ (B : Type) [CommRing B] [Algebra R B], MonoidAlgebra B F.G₀ →* B` to `fun B _ _ =>`. Use `letI : Algebra O B := ((algebraMap R B).comp (algebraMap O R)).toAlgebra`. Use the proof step `{ toFun := fun y => D.D B (F.star O B n y) map_one' := by simp [GFrame.star] map_mul' := fun x y => by`. Establish `hm : F.star O B n (x * y) = F.star O B n y * F.star O B n x` using `by simp [GFrame.star, map_mul]`.
+
+Simplify using `only [hm, map_mul, mul_comm] }`. Establish `hE : ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra O B] [IsScalarTower O R B] (y : MonoidAlgebra B F.G₀), E B y = D.D B (F.star O B n y)`. Introduce `B _ _ iO _ y`. Establish `hi : ((algebraMap R B).comp (algebraMap O R)).toAlgebra = iO` using `Algebra.algebra_ext _ _ (fun r => (IsScalarTower.algebraMap_apply O R B r).symm)`. Substitute `hi` using the available equality.
+
+Both sides reduce to the same expression. Use `⟨{ D := E, nat := ?_, homog := ?_ }, fun B _ _ _ _ y => hE B y⟩` and prove the remaining obligations. Introduce `B B' _ _ _ _ f x`. Use `letI : Algebra O B := ((algebraMap R B).comp (algebraMap O R)).toAlgebra`. Use `haveI : IsScalarTower O R B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `letI : Algebra O B' := ((algebraMap R B').comp (algebraMap O R)).toAlgebra`. Use `haveI : IsScalarTower O R B' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Rewrite using `[hE B', hE B, star_mapRingHom_algHom_eq F O R n B B' f x, D.nat]`. Introduce `B _ _ b x`. Use `letI : Algebra O B := ((algebraMap R B).comp (algebraMap O R)).toAlgebra`.
+
+Use `haveI : IsScalarTower O R B := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hsm : F.star O B n (b • x) = b • F.star O B n x` using `by simp [GFrame.star, map_smul]`. Rewrite using `[hE B, hE B, hsm, D.homog]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.starDet :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [Algebra ℤ_[l] O] (R : Type) [CommRing R] [Algebra O R] (n : ℕ) (D : GDet n R F.G₀), ∃ D' : GDet n R F.G₀,
     ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra O B] [IsScalarTower O R B] (y : MonoidAlgebra B F.G₀), D'.D B y = D.D B (F.star O B n y) := by

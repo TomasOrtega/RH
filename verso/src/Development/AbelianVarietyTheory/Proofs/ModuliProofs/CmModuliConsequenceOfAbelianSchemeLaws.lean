@@ -14,6 +14,9 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.familyUnif_of_laws _root_.GlobalTheory.abelianSchemeLaws_all.1`.
+-/
 theorem _root_.GlobalTheory.closing_of_abelianSchemeLaws : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.N1c :=
   _root_.GlobalTheory.familyUnif_of_laws _root_.GlobalTheory.abelianSchemeLaws_all.1
 

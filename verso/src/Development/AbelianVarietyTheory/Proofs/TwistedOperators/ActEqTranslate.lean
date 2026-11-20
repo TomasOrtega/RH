@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FormAction
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `x`. Take `⟨a, ha, k, hk, rfl⟩` from `h g`. Use `⟨k, hk, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show f k = f (a * k)`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 ha, one_mul]`.
+-/
 theorem exists_rangeRestrict_eq {G H : Type} [Group G] [Group H] (f : G →* H) (K : Subgroup G)
     (h : ∀ g, ∃ a ∈ f.ker, ∃ k ∈ K, g = a * k) (x : f.range) : ∃ k ∈ K, f.rangeRestrict k = x := by
   obtain ⟨_, g, rfl⟩ := x
@@ -18,6 +21,11 @@ theorem exists_rangeRestrict_eq {G H : Type} [Group G] [Group H] (f : G →* H) 
   show f k = f (a * k)
   rw [map_mul, MonoidHom.mem_ker.1 ha, one_mul]
 
+/- English proof (translation)
+Use `(exists_rangeRestrict_eq (finHom V) (GfC V) (GlobalTheory.UnitarySplit.real_finite_split D V).1 q.1).imp fun k hk => ?_` and prove the remaining obligations. Establish `e0 : finHom V k = q.1.1` using `congrArg Subtype.val hk.2`. Establish `e1 : finE V k = Formalism.UG.bc (swapAE D) q.1.1` using `(finE_eq V k).trans (congrArg (Formalism.UG.bc (swapAE D)) e0)`. Establish `e2 : (levEnv V β L).ch q = levFn β (flagL L) (Formalism.UG.bc (swapAE D) q.1.1)` using `rfl`. Establish `hc : levChi V β (flagL L) k = (((levEnv V β L).ch q : ℂˣ) : ℂ)` using `congrArg Units.val ((congrArg (levFn β (flagL L)) e1).trans e2.symm)`.
+
+Establish `h1 : Formalism.UG.bc (swapAE D) q.1.1 ∈ lev D.sp.cm V.gram β (flagL L)` using `q.2`. Establish `hp : finE V k ∈ parLev D.sp.cm V.gram β L` using `e1.symm ▸ h1.1`. Conclude with `⟨hk.2, ⟨hk.1, hp, congrArg (rTup β L) e1⟩, (Units.val_inv_eq_inv_val _).trans (congrArg (·⁻¹) hc.symm)⟩`.
+-/
 theorem exists_lift {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (q : (levEnv V β L).Q) : ∃ κ, (finHom V).rangeRestrict κ = q.1 ∧
     IsLevelLift V β L (rTup β L (Formalism.UG.bc (swapAE D) q.1.1)) κ ∧
@@ -32,6 +40,11 @@ theorem exists_lift {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L :
   have hp : finE V k ∈ parLev D.sp.cm V.gram β L := e1.symm ▸ h1.1
   exact ⟨hk.2, ⟨hk.1, hp, congrArg (rTup β L) e1⟩, (Units.val_inv_eq_inv_val _).trans (congrArg (·⁻¹) hc.symm)⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hred hj t g x`. Use `((R.B.R t).act_tie.red_surj g).elim fun q hq => ?_` and prove the remaining obligations. Establish `hg : rTup R.βX (R.datXt t) (Formalism.UG.bc (swapAE D) q.1.1) = R.eG g` using `(hred t q).symm.trans (congrArg R.eG hq)`. Establish `ha` using `(R.B.R t).act_tie.act_eq g q hq x`. Use `(exists_lift D.sp.X' R.βX (R.datXt t) q).imp fun κ hκ => ⟨hg ▸ hκ.2.1, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `congrFun (hj t ((A.fam.R t).r g x)) h`. Establish `e2` using `hj t x`. Establish `e3` using `congrFun ha h`. Use `(e1.trans e3).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun (a : ℂ) (z : R.cX.W) => a • z) hκ.2.2 ((congrFun e2 _).trans (congrArg (fun z => R.B.jR t x (h * z)) hκ.1)).symm`.
+-/
 theorem act_eq_translate : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.grp_red_R → R.models_jX → ∀ t (g : G) (x : (A.fam.R t).S.Forms), ∃ κ, IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ ∧ ∀ h, (R.HX t).e (R.jX t ((A.fam.R t).r g x)) h = (levChi _ R.βX (flagL (R.datXt t)) κ)⁻¹ • (R.HX t).e (R.jX t x) (h * (finHom _).rangeRestrict κ) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R hred hj t g x
   refine ((R.B.R t).act_tie.red_surj g).elim fun q hq => ?_

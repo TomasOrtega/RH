@@ -20,6 +20,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral (IsDefinit
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevelTr
+/- English proof (translation)
+Use `⟨Ideal.absNorm (Ideal.span {w}), Nat.pos_of_ne_zero fun h => hw ?_, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Then use the resulting hypothesis. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {w}))`. Conclude with `⟨q, by rw [← hq, mul_comm]⟩`.
+-/
 theorem exists_nat_mul_eq {E : Type} [Field E] [NumberField E] (w : 𝓞 E) (hw : w ≠ 0) :
     ∃ c : ℕ, 0 < c ∧ ∃ q : 𝓞 E, (c : 𝓞 E) = w * q := by
   refine ⟨Ideal.absNorm (Ideal.span {w}), Nat.pos_of_ne_zero fun h => hw ?_, ?_⟩
@@ -27,9 +30,27 @@ theorem exists_nat_mul_eq {E : Type} [Field E] [NumberField E] (w : 𝓞 E) (hw 
   · obtain ⟨q, hq⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {w}))
     exact ⟨q, by rw [← hq, mul_comm]⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.UG.CS.incl_int (F := ℚ) (⟨e, he⟩ : 𝓞 D.host.E)`.
+-/
 theorem inc_mem_OhE {D : D7} {e : D.host.E} (he : IsIntegral ℤ e) : Formalism.MainNotions.StandardLatticesGL3.inc D e ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D :=
   Formalism.UG.CS.incl_int (F := ℚ) (⟨e, he⟩ : 𝓞 D.host.E)
 
+/- English proof (translation)
+Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 D.host.E)) r⁻¹`. Take `⟨a0, ha0, hint⟩` from `D.host.AA0.isFractional`. Establish `hw : (s : 𝓞 D.host.E) * a0 ≠ 0` using `mul_ne_zero (nonZeroDivisors.ne_zero s.2) (nonZeroDivisors.ne_zero ha0)`. Take `⟨c, hc, q, hq⟩` from `exists_nat_mul_eq _ hw`. Use `⟨c, hc, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨k, hk, a, ha, s', hs', rfl⟩` from `hy`. Take `⟨b, hb⟩` from `hint a ha`. Establish `hcE : (c : D.host.E) = ((s : 𝓞 D.host.E) : D.host.E) * (a0 : D.host.E) * (q : D.host.E)`.
+
+Use `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) hq` as an intermediate fact. Simplify using `using this`. Establish `e1 : (c : D.host.E) * r⁻¹ * (((k : D.host.K) : D.host.E) * a) = (q : D.host.E) * (x : D.host.E) * ((k : D.host.K) : D.host.E) * (b : D.host.E)`. Establish `h1 : r⁻¹ * ((s : 𝓞 D.host.E) : D.host.E) = (x : D.host.E)` using `hxs`. Establish `h2 : (b : D.host.E) = (a0 : D.host.E) * a`.
+
+Use `hb` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`. Rewrite using `[hcE, h2, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk' : IsIntegral ℤ ((k : D.host.K) : D.host.E)` using `by first`. Consider the case `exact (NumberField.RingOfIntegers.isIntegral_coe k).algebraMap`. Consider the case `exact IsIntegral.algebraMap k.2`. Consider the case `exact (NumberField.RingOfIntegers.isIntegral_coe k).map (IsScalarTower.toAlgHom ℤ D.host.K D.host.E)`. Rewrite using `[← mul_assoc, ← map_mul, e1]`.
+
+Use `mul_mem (inc_mem_OhE ?_) hs'` and prove the remaining obligations. Conclude with `((q.2.mul x.2).mul hk').mul b.2`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `neg_mem ha`.
+-/
 theorem exists_nat_IhE (D : D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) :
     ∃ c : ℕ, 0 < c ∧ ∀ t ∈ Formalism.MainNotions.StandardLatticesGL3.IhE D cc,
       Formalism.MainNotions.StandardLatticesGL3.inc D ((c : D.host.E) * r⁻¹) * t ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D := by
@@ -68,6 +89,9 @@ end GlobalTheory.LevelTr
 namespace GlobalTheory.LevelTr
 open GlobalTheory.BotClassDict
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg (fun k : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank => ((k : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j) (finStd_of_isFinPt V hG hg)` as an intermediate fact. Rewrite `this` using `[finStd_apply]`. Conclude with `this`.
+-/
 theorem finQ_mt_of_isFinPt {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D V} {x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank}
     (hg : IsFinPt V g x) :
     (mt V g).map (finQ D) =
@@ -79,6 +103,9 @@ theorem finQ_mt_of_isFinPt {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D V} {
   rw [finStd_apply] at this
   exact this
 
+/- English proof (translation)
+Establish `h2 : finStd V hG g⁻¹ = x⁻¹` using `by rw [map_inv, finStd_of_isFinPt V hG hg]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg (fun k : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank => ((k : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j) h2` as an intermediate fact. Rewrite `this` using `[finStd_apply]`. Conclude with `this`.
+-/
 theorem finQ_mt_inv_of_isFinPt {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D V} {x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank}
     (hg : IsFinPt V g x) :
     (mt V g⁻¹).map (finQ D) =
@@ -91,6 +118,9 @@ theorem finQ_mt_inv_of_isFinPt {D : D7} (V : HSp D) (hG : V.gram = 1) {g : GA D 
   rw [finStd_apply] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[← finQ_inclR]`. Both sides reduce to the same expression.
+-/
 theorem finQ_finRat {D : D7} (S T : HSp D) (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (i : Fin T.rank) (j : Fin S.rank) :
     finQ D (GlobalTheory.VacUnique.finRat S T γ i j) = Formalism.MainNotions.StandardLatticesGL3.inc D (γ i j) := by
   rw [← finQ_inclR]
@@ -101,6 +131,9 @@ end GlobalTheory.LevelTr
 namespace GlobalTheory.LevelTr
 open GlobalTheory.BotClassDict
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, finPt, finQ_finRat]`. Simplify using `[Matrix.of_apply, map_neg, map_mul]`.
+-/
 theorem finQ_finPt {D : D7} (S T : HSp D) (r : D.host.E) (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (finPt (S := S) (T := T) rfl rfl r z).map (finQ D) =
       -(Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹ • z.map (Formalism.MainNotions.StandardLatticesGL3.inc D)) := by
@@ -108,6 +141,9 @@ theorem finQ_finPt {D : D7} (S T : HSp D) (r : D.host.E) (z : Matrix (Fin T.rank
   rw [Matrix.map_apply, finPt, finQ_finRat]
   simp [Matrix.of_apply, map_neg, map_mul]
 
+/- English proof (translation)
+Establish `e1 : (actO S T g h (finPt rfl rfl r z)).map (finQ D) = (mt T h).map (finQ D) * (finPt (S` using `S) (T := T) rfl rfl r z).map (finQ D) * (mt S g⁻¹).map (finQ D) := by`. Rewrite using `[actO, Matrix.map_mul, Matrix.map_mul]`. Rewrite using `[Matrix.map_sub _ (map_sub (finQ D)), e1, finQ_mt_of_isFinPt T hGT hh, finQ_mt_inv_of_isFinPt S hGS hg, finQ_finPt, finQ_finPt]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem finQ_actO_sub {D : D7} (S T : HSp D) (hGS : S.gram = 1) (hGT : T.gram = 1) (r : D.host.E)
     (x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank) (y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank) (g : GA D S) (h : GA D T)
     (hg : IsFinPt S g x) (hh : IsFinPt T h y) (z z' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -130,12 +166,18 @@ namespace GlobalTheory.LevelTr
 open GlobalTheory.BotClassDict
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `congrArg (fun k : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => k.val) (MonoidHom.mem_ker.1 hg)` as an intermediate fact. Conclude with `this`.
+-/
 theorem infPart_mt_of_mem_GfC {D : D7} (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) :
     (mt V g).map (infPart D) = 1 := by
   have := congrArg (fun k : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) =>
     k.val) (MonoidHom.mem_ker.1 hg)
   exact this
 
+/- English proof (translation)
+Establish `h0 : ∀ w : Matrix (Fin T.rank) (Fin S.rank) D.host.E, (finPt (S` using `S) (T := T) rfl rfl r w).map (infPart D) = 0 := fun w => GlobalTheory.VacUnique.finRat_inf S T _`. Rewrite using `[Matrix.map_sub _ (map_sub (infPart D)), actO, Matrix.map_mul, Matrix.map_mul, h0, h0, infPart_mt_of_mem_GfC T hh, infPart_mt_of_mem_GfC S (inv_mem hg)]`. Simplify using the standard rewrite rules.
+-/
 theorem infPart_actO_sub {D : D7} (S T : HSp D) (r : D.host.E) (g : GA D S) (h : GA D T) (hg : g ∈ GfC S)
     (hh : h ∈ GfC T) (z z' : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     (actO S T g h (finPt rfl rfl r z) - finPt rfl rfl r z').map (infPart D) = 0 := by
@@ -150,6 +192,9 @@ end GlobalTheory.LevelTr
 namespace GlobalTheory.LevelTr
 open GlobalTheory.BotClassDict
 
+/- English proof (translation)
+Take the linear combination `(b * c * t) * h`.
+-/
 theorem ennreal_volume_ratio_step_cancel {R : Type} [CommRing R] (a b c k t : R) (h : a * k = 1) :
     a * (b * (c * k * t)) = c * b * t := by
   linear_combination (b * c * t) * h
@@ -157,6 +202,25 @@ theorem ennreal_volume_ratio_step_cancel {R : Type} [CommRing R] (a b c k t : R)
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 160000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hset x y g h hg hh F hF z`. Substitute `hS` using the available equality. Substitute `hT` using the available equality. Take `⟨U, hUo, hU⟩` from `hF.level`. Establish `sdS` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`.
+
+Establish `sdT` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨m, hm, hmU⟩` from `Formalism.IndefR.Fin.exists_nsmul_mem_cpt' _ (Formalism.IndefR.Fin.latO_isCompact S T _ _ sdS sdT) (fun w hw n => AddSubgroup.nsmul_mem _ hw n) U hUo`. Take `⟨N, hN, hNΛ⟩` from `Formalism.IndefR.Fin.latO_nsmul_mem S T _ _ sdS sdT`. Take `⟨c, hc, hcI⟩` from `exists_nat_IhE D cc r`. Use `⟨c * (m * N), by positivity, fun z' hz' => ?_⟩` and prove the remaining obligations.
+
+Establish `hinf` using `infPart_actO_sub S T r g h hg.1 hh.1 z z'`. Establish `hfin` using `finQ_actO_sub S T hset.gS hset.gT r x y g h hg hh z z'`. Use `set u := actO S T g h (finPt rfl rfl r z) - finPt rfl rfl r z' with hu`. Establish `hk0 : ((m * N : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Use `set Y : WO S T := incA D ((m * N : ℕ) : D.host.E)⁻¹ • u with hY`.
+
+Establish `hYinf : ∀ i j, infPart D (Y i j) = 0`. Introduce `i j`. Establish `h1 : infPart D (u i j) = 0` using `congrFun (congrFun hinf i) j`. Rewrite using `[hY, Matrix.smul_apply, smul_eq_mul, map_mul, h1, mul_zero]`. Establish `hYfin : ∀ i j, finPart D (Y i j) ∈ intAE D`.
+
+Introduce `i j`. Rewrite using `[GlobalTheory.IdemSupport.mem_intAE_iff]`. Establish `e : finPart D (Y i j) = GlobalTheory.BotFormula.toAfE D (finQ D (Y i j))` using `(toAfE_finQ _).symm`. Rewrite using `[e]`. Use `(toAfE_int_iff _).2 ?_` and prove the remaining obligations.
+
+Establish `hu_ij : finQ D (u i j) = Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹ * (z'.map (Formalism.MainNotions.StandardLatticesGL3.inc D) - ((y : GL (Fin T.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin T.rank) (Fin T.rank) (Formalism.MainNotions.StandardLat …` using `congrFun (congrFun hfin i) j`. Take `⟨t, ht, et⟩` from `hz' i j`. Establish `hkk' : Formalism.MainNotions.StandardLatticesGL3.inc D ((m * N : ℕ) : D.host.E)⁻¹ * ((m * N : ℕ) : Formalism.MainNotions.StandardLatticesGL3.AE D) = 1`. Rewrite using `[← map_natCast (Formalism.MainNotions.StandardLatticesGL3.inc D), ← map_mul, inv_mul_cancel₀ hk0, map_one]`. Establish `e2 : finQ D (Y i j) = Formalism.MainNotions.StandardLatticesGL3.inc D ((c : D.host.E) * r⁻¹) * t`.
+
+Rewrite using `[hY, Matrix.smul_apply, smul_eq_mul, map_mul, finQ_inclR, hu_ij, et, map_mul, map_natCast]`. Rewrite using `[Nat.cast_mul c (m * N)]`. Conclude with `ennreal_volume_ratio_step_cancel _ _ _ _ _ hkk'`. Rewrite using `[e2]`. Conclude with `hcI t ht`.
+
+Establish `h1` using `hmU _ (hNΛ Y hYfin hYinf)`. Establish `hkY : m • N • Y = u`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show m • N • Y i j = u i j`. Rewrite using `[← mul_nsmul', nsmul_eq_mul, hY, Matrix.smul_apply, smul_eq_mul, ← mul_assoc]`.
+
+Establish `hkk : ((m * N : ℕ) : AE D) * incA D ((m * N : ℕ) : D.host.E)⁻¹ = 1`. Rewrite using `[← map_natCast (incA D), ← map_mul, mul_inv_cancel₀ hk0, map_one]`. Rewrite using `[hkk, one_mul]`. Establish `hmem : u ∈ U` using `hkY ▸ h1`. Conclude with `hU u hmem hinf`.
+-/
 theorem level_translate : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (x : Formalism.MainNotions.StandardLatticesGL3.GA D a) (y : Formalism.MainNotions.StandardLatticesGL3.GA D d) (g : GA D S) (h : GA D T), IsFinPt S g x → IsFinPt T h y →

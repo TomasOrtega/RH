@@ -5,12 +5,30 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_single, Matrix.charpoly_diagonal, Fin.prod_univ_succAbove _ i]`. Simplify using `[Pi.single_apply, Fin.succAbove_ne]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem charpoly_single {F : Type} [CommRing F] {m : ℕ} (i : Fin (m + 1)) :
     (single i i (1 : F)).charpoly = X ^ (m + 1) - X ^ m := by
   rw [← Matrix.diagonal_single, Matrix.charpoly_diagonal, Fin.prod_univ_succAbove _ i]
   simp [Pi.single_apply, Fin.succAbove_ne]
   ring
 
+/- English proof (translation)
+Introduce `B E F _ _ _ _ _ _ n D r hch hker hchi`. Use `⟨fun y hy => ⟨n, ?_⟩, fun e i he hre => ?_⟩` and prove the remaining obligations. Establish `h0` using `((d_chS D B).2.2 hch).2 y`. Establish `h1 : (X ^ n - D.chi y).map (algebraMap B F) = 0`. Rewrite using `[Polynomial.map_sub, hchi, hy, Matrix.charpoly_zero]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : y ^ n = aeval y (X ^ n - D.chi y)` using `by simp [h0]`. Rewrite using `[h2, aeval_eq_sum_range]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[← hker, RingHom.mem_ker, ← coeff_map, h1, coeff_zero]`.
+
+Take `⟨k, -, hk⟩` from `d_idem_rank D e he`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := i.pos; omega⟩`. Establish `hc` using `hchi e`. Rewrite `hc` using `[hre, charpoly_single]`. Establish `hl : ∀ j, algebraMap B F (D.lam j e) = (-1) ^ j * (X ^ (m + 1) - X ^ m : F[X]).coeff (m + 1 - j)`.
+
+Introduce `j`. Rewrite using `[← hc, coeff_map, Det.lam]`. Simplify using the standard rewrite rules. Establish `h3 : (D.D B[X] (1 + X ⊗ₜ e)).map (algebraMap B F) = 1 + X`. Rewrite using `[(d_chi D e).2.2.1, Polynomial.map_sum, Finset.sum_range_succ', Finset.sum_range_succ', Finset.sum_eq_zero]`.
+
+Simplify using `[hl, coeff_X_pow, add_comm]`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_range]`. Establish `a1 : ¬ (m - (j + 1) = m + 1)` using `by omega`. Establish `a2 : ¬ (m - (j + 1) = m)` using `by omega`.
+
+Simplify using `[hl, coeff_X_pow, a1, a2]`. Rewrite `h3`, the goal using `[hk]`. Establish `h4` using `congrArg natDegree h3`. Establish `h5 : natDegree (1 + X : F[X]) = 1` using `by rw [add_comm]; exact natDegree_X_add_C 1`. Establish `h6 : Monic (1 + X : F[X])` using `by rw [add_comm]; exact monic_X_add_C 1`.
+
+Rewrite `h4` using `[Polynomial.map_pow, Polynomial.map_add, Polynomial.map_one, map_X, h6.natDegree_pow, h5, mul_one]`. Rewrite using `[h4, pow_one]`.
+-/
 theorem UpperTheory.V.Pa.idem_nil :
     ∀ {B E F : Type} [CommRing B] [IsLocalRing B] [Ring E] [Algebra B E] [Field F] [Algebra B F] {n : ℕ} (D : Det n B E) (r : E →ₐ[B] Matrix (Fin n) (Fin n) F), D.IsCH → RingHom.ker (algebraMap B F) = maximalIdeal B → (∀ y, (D.chi y).map (algebraMap B F) = (r y).charpoly) → (∀ y, r y = 0 → ∃ M : ℕ, y ^ M ∈ maximalIdeal B • (⊤ : Submodule B E)) ∧ ∀ (e : E) (i : Fin n), IsIdempotentElem e → r e = single i i 1 → D.D B[X] (1 + X ⊗ₜ e) = 1 + X := by
   intro B E F _ _ _ _ _ _ n D r hch hker hchi

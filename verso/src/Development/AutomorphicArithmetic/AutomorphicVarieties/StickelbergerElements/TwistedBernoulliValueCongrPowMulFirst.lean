@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 
 open Finset UpperTheory.V.Bern UpperTheory.V.Stk
 
+/- English proof (translation)
+Introduce `M a e _ ha ho b`. Establish `hM0 : 0 < M` using `Nat.pos_of_ne_zero (NeZero.ne M)`. Establish `hM : (M : ℚ) ≠ 0` using `by exact_mod_cast hM0.ne'`. Establish `hD : (primorial (e + 1 + 1) : ℚ) ≠ 0` using `by exact_mod_cast (primorial_pos _).ne'`. Establish `hk : (e : ℚ) + 1 ≠ 0` using `by positivity`.
+
+Establish `h1` using `(stickelbergerCarry_spec_and_weightOne_coeff_of_odd M a ha b).1`. Take `⟨z1, hz1⟩` from `stickelbergerBernoulliCoeff_expansion_mod_denominator M e b.val hM0`. Take `⟨z2, hz2⟩` from `stickelbergerBernoulliCoeff_expansion_mod_denominator M e (yCl a b).val hM0`. Take `⟨⟨z3, hz3⟩, ⟨w, hw⟩⟩` from `exists_binomial_expansion_mod_sq (b.val : ℤ) (jv M a b) M e`. Rewrite `hz3`, `hw` using `[← h1, mul_pow]`.
+
+Take `⟨c, hc⟩` from `ho`. Establish `h2 : ((a : ℤ) - 1) / 2 = c` using `by omega`. Establish `h4 : (a : ℚ) = 2 * c + 1` using `by exact_mod_cast hc`. Establish `h6 : (c : ℚ) = ((a : ℚ) - 1) / 2` using `by rw [h4]; ring`. Establish `q3 : (a : ℚ) ^ (e + 1) * ((yCl a b).val : ℚ) ^ (e + 1) = (b.val : ℚ) ^ (e + 1) + ((e : ℚ) + 1) * (b.val : ℚ) ^ e * ((M : ℚ) * (jv M a b : ℚ)) + (M : ℚ) ^ 2 * z3`.
+
+Conclude with `hz3` after adjusting the coercions. Establish `qw : (a : ℚ) ^ e * ((yCl a b).val : ℚ) ^ e = (b.val : ℚ) ^ e + (M : ℚ) * w`. Conclude with `hw` after adjusting the coercions. Establish `hdk : (dk (e + 1) : ℚ) = 2 * ((e : ℚ) + 1) * (primorial (e + 1 + 1) : ℚ)`. Rewrite using `[dk]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨2 * z1 - 2 * (a : ℤ) ^ (e + 1) * z2 - 2 * (primorial (e + 1 + 1) : ℤ) * z3 + ((e : ℤ) + 1) * (primorial (e + 1 + 1) : ℤ) * a * w, ?_⟩` and prove the remaining obligations. Rewrite using `[Eva, Ev, Ev, hz1, hz2, Eone, h2, hdk]`. Use `push_cast`.
+
+Rewrite using `[h6]`. Establish `e1 : ∀ R : ℚ, (a : ℚ) ^ (e + 1) * (((yCl a b).val : ℚ) ^ (e + 1) / (((e : ℚ) + 1) * M) - ((yCl a b).val : ℚ) ^ e / 2 + R) = ((a : ℚ) ^ (e + 1) * ((yCl a b).val : ℚ) ^ (e + 1)) / (((e : ℚ) + 1) * M) - a * ((a : ℚ) ^ e * ((yCl a b).val : ℚ) ^ e) / 2 + (a : ℚ) ^ (e + 1) * R`. Introduce `R`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, q3, qw]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Stk.twistedBernoulliValue_congr_pow_mul_first :
     ∀ (M a e : ℕ) [NeZero M], a.Coprime M → Odd a → ∀ b : ZMod M, ∃ z : ℤ,
       Eva M (e + 1) a b = (((b.val : ℤ) ^ e * Eone M a b : ℤ) : ℚ) + (M : ℚ) / (dk (e + 1) : ℚ) * z := by

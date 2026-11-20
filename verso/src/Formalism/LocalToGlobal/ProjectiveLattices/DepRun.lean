@@ -13,6 +13,19 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 
+/- English proof (translation)
+Introduce `τ`. Take `⟨⟨w, emb, hw, hbasis⟩, -⟩` from `hS T io y C τ`. Establish `huv` using `C.gen.1.2.2.2.2.2.2`. Use `choose A hA using fun m : Fin (chD C.ch) => (hbasis (Pi.single m 1)).exists`. Establish `hAw : (Matrix.of A) * (Matrix.of w) = 1`.
+
+Use extensionality with `m j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[hA m j, Pi.single_apply]`. Distinguish the cases in `hjm : j = m`. Substitute `hjm` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hjm, Ne.symm hjm]`. Establish `hwA : (Matrix.of w) * (Matrix.of A) = 1` using `by first`. Consider the case `exact mul_eq_one_comm.mp hAw`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hAw`.
+
+Use `⟨fun i j => A j (emb i), fun i i' => ?_⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `e1 : ∀ j, C.ch.uvec ⟨τ, i'⟩ j * algebraMap T.V T.Fr (A j (emb i)) = algebraMap T.V T.Fr (w (emb i') j * A j (emb i))`. Introduce `j`. Rewrite using `[huv, map_mul, hw]`.
+
+Use `(Finset.sum_congr rfl (fun j _ => e1 j)).trans ?_` and prove the remaining obligations. Rewrite using `[← map_sum]`. Establish `h3` using `congrFun (congrFun hwA (emb i')) (emb i)`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply] at h3`. Rewrite using `[h3]`.
+
+Distinguish the cases in `hii : i' = i`. Substitute `hii` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => hii (emb.injective h')), if_neg hii, map_zero]`.
+-/
 theorem satDir_of (hS : ChartSaturated Xo c) {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : IntChart T io y) :
     SatDir T (letI := io.toAlgebra; C.ch.uvec) := by
   intro τ
@@ -45,6 +58,11 @@ theorem satDir_of (hS : ChartSaturated Xo c) {T : CDVR} {io : c.F →+* T.Fr} {y
   · subst hii; simp
   · rw [if_neg (fun h' => hii (emb.injective h')), if_neg hii, map_zero]
 
+/- English proof (translation)
+Unfold `nuW`. Use `max_le_max le_rfl ?_` and prove the remaining obligations. Unfold `nuSup`. Use `iSup_le fun T => iSup_le fun io => iSup_le fun e => iSup_le fun ho => iSup_le fun y => iSup_le fun hy => ?_` and prove the remaining obligations. Take `⟨C⟩` from `hE T io y hy`.
+
+Unfold `nuLoc`. Use `(iInf_le _ C).trans ?_` and prove the remaining obligations. Use `letI := io.toAlgebra`. Conclude with `(crude_inf C.ch.B C.ch.h C.ch.gauge H.w0 k C.ch.uvec (satDir_of hS C) a n ha hn ho).1`.
+-/
 theorem nuW_le_crude (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : HeightOneSpectrum (𝓞 c.F)) (k : ℕ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (ha : DomW Dw a) (hn : Fintype.card (Lt1 Dw) ≤ n) :
     nuW Xo c la k a n ≤ max 0 (crudeBd la (DF Dw a) : EReal) := by
@@ -60,6 +78,11 @@ theorem nuW_le_crude (hE : IntChartEx Xo c) (hS : ChartSaturated Xo c) (la : Hei
   exact (crude_inf C.ch.B C.ch.h C.ch.gauge H.w0 k C.ch.uvec (satDir_of hS C) a n ha hn ho).1
 
 omit [StarRing (𝓞 E)] in
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `τ _`.
+
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`. Use `_ = Module.finrank ℚ E * (Dw.p + Dw.q) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, smul_eq_mul]`.
+-/
 theorem card_Lt1_le_finrank_mul : Fintype.card (Lt1 Dw) ≤ Module.finrank ℚ E * (Dw.p + Dw.q) := by
   rw [Fintype.card_sigma]
   simp only [Fintype.card_fin]
@@ -75,6 +98,17 @@ end
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `j hj la`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`. Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hn : Fintype.card (Lt1 (T.Q.Dw j)) ≤ Dd.nW j`. Use `card_Lt1_le_finrank_mul.trans ?_` and prove the remaining obligations. Rewrite using `[hfr, hr]`. Conclude with `(hw j hj).2`.
+
+Use `ne_top_of_le_ne_top ?_ (nuW_le_crude (hE j hj) (hS j hj) la _ _ _ (fun τ i i' h => (hw j hj).1 τ h) hn)` and prove the remaining obligations. Break down `le_total (0 : EReal) (crudeBd la (DF (T.Q.Dw j) (Dd.aL j)) : EReal) with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `EReal.coe_ne_top _`. Rewrite using `[max_eq_left h]`.
+
+Conclude with `EReal.zero_ne_top`.
+-/
 theorem nuFinAt_of (T : Core D) (hp : T.Q.Pins) (Dd : DepData D.host.E) [StarRing (𝓞 D.host.E)]
     (hw : ∀ j, InR D j → (∀ τ, Antitone fun i => Dd.aL j (τ, i)) ∧ 2 * D.R.f * D.R.r ≤ Dd.nW j)
     (hE : ∀ j, InR D j → IntChartEx (T.Q.Xo j) T.Q.c) (hS : ∀ j, InR D j → ChartSaturated (T.Q.Xo j) T.Q.c) :
@@ -100,6 +134,9 @@ def depRun (T : Core D) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (wL wF ka :
   depDataOf T EX Tn vd (fun j => wtA (wL j)) (fun j => wtA (wF j)) (fun j => (wL j).n)
     (fun j => ∑ τ, ∑ i, (ka j).aP τ i) fun j => ∑ τ, ∑ i, (ka j).aM τ i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl, rfl, rfl⟩ tPos := tPos_depDataOf .. sm := rfl wts j hj := ⟨(dom_wtA (wL j)).1, hn j hj⟩ piSplit := piSplit_depDataOf .. piHalf := piHalf_depDataOf _ _ _ _ _ _ _ _ _ h`.
+-/
 theorem lawsPi_depRun [StarRing (𝓞 D.host.E)] {T : Core D} (h : LawsM T) (EX : ErrX D) (Tn : ℕ+) (vd : ℕ → ℝ) (wL wF ka : ∀ j, WeightFamilies.Wt D j)
     (hn : ∀ j, InR D j → 2 * D.R.f * D.R.r ≤ (wL j).n) : LawsPi T (depRun T EX Tn vd wL wF ka) where
   page := ⟨rfl, rfl, rfl, rfl, rfl, rfl⟩

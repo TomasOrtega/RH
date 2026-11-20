@@ -32,33 +32,114 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SignConeWeightT
 
 namespace PositivityTheory.Rg.BcB.D1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.multiplicativity_finite_places`.
+-/
 theorem mulF : MulF := GlobalTheory.T.multiplicativity_finite_places
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.determinant_monotonicity`.
+-/
 theorem detMono : DetMono := GlobalTheory.T.determinant_monotonicity
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.multiplicativity_infinite_places detMono`.
+-/
 theorem mulI : MulI := GlobalTheory.T.multiplicativity_infinite_places detMono
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.wedge_bound_finite_places mulF`.
+-/
 theorem wedgeF : WedgeF := GlobalTheory.T.wedge_bound_finite_places mulF
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.wedgeI_of_detMono_mulI_var detMono mulI`.
+-/
 theorem wedgeI : WedgeI := GlobalTheory.T.wedgeI_of_detMono_mulI_var detMono mulI
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.wedge_subspace_bound`.
+-/
 theorem wedgeSub : WedgeSub := GlobalTheory.T.wedge_subspace_bound
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.pairing_bound_finite_places mulF`.
+-/
 theorem pairF : PairF := GlobalTheory.T.pairing_bound_finite_places mulF
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.pairing_bound_infinite_places detMono`.
+-/
 theorem pairI : PairI := GlobalTheory.T.pairing_bound_infinite_places detMono
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.log_abs_basic_facts`.
+-/
 theorem logAbsBasic : LogAbsBasic := GlobalTheory.T.log_abs_basic_facts
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.size_finite_places`.
+-/
 theorem szFin : SzFin := GlobalTheory.T.size_finite_places
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_support_of_size mulF mulI szFin`.
+-/
 theorem finSupp : FinSupp := GlobalTheory.T.finite_support_of_size mulF mulI szFin
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.adelic_degree_formula mulF mulI logAbsBasic finSupp`.
+-/
 theorem degAdelic : DegAdelic := GlobalTheory.T.adelic_degree_formula mulF mulI logAbsBasic finSupp
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_basis_general wedgeF wedgeI mulF mulI logAbsBasic finSupp`.
+-/
 theorem degBasisG : DegBasisG := GlobalTheory.T.degree_basis_general wedgeF wedgeI mulF mulI logAbsBasic finSupp
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degBasis_of_degBasisG' degBasisG`.
+-/
 theorem degBasis : DegBasis := GlobalTheory.T.degBasis_of_degBasisG' degBasisG
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_submodule_bound wedgeF wedgeI wedgeSub finSupp degBasisG GlobalTheory.T.two_bases_comparison`.
+-/
 theorem degSubmod : DegSubmod := GlobalTheory.T.degree_submodule_bound wedgeF wedgeI wedgeSub finSupp degBasisG GlobalTheory.T.two_bases_comparison
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_rational_subspace degBasisG`.
+-/
 theorem degRat : DegRat := GlobalTheory.T.degree_rational_subspace degBasisG
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_under_translation mulF mulI szFin finSupp degBasisG`.
+-/
 theorem degMove : DegMove := GlobalTheory.T.degree_under_translation mulF mulI szFin finSupp degBasisG
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_bounded_of_basis wedgeF wedgeI mulF mulI szFin finSupp logAbsBasic degBasisG`.
+-/
 theorem degBdd : DegBdd := GlobalTheory.T.degree_bounded_of_basis wedgeF wedgeI mulF mulI szFin finSupp logAbsBasic degBasisG
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.conjugate_places_facts`.
+-/
 theorem conjPlaces : ConjPlaces := GlobalTheory.T.conjugate_places_facts
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.size_basic_of_conj_places szFin conjPlaces`.
+-/
 theorem sizeBasic : SizeBasic := GlobalTheory.T.size_basic_of_conj_places szFin conjPlaces
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.degree_pairing_identity wedgeF wedgeI mulF mulI pairF pairI szFin finSupp logAbsBasic conjPlaces degBasisG GlobalTheory.T.radical_subspace_facts`.
+-/
 theorem degPairing : DegPairing :=
   GlobalTheory.T.degree_pairing_identity wedgeF wedgeI mulF mulI pairF pairI szFin finSupp logAbsBasic conjPlaces degBasisG GlobalTheory.T.radical_subspace_facts
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mahler_bound_of_degree degBdd degRat h`.
+-/
 theorem mahler_of_c (h : MahlerC) : Mahler := GlobalTheory.T.mahler_bound_of_degree degBdd degRat h
+/- English proof (translation)
+The claim follows from `mahler_of_c (PositivityTheory.Rg.BcB.E1.mahlerC_of_deg degBasis degAdelic degBdd degRat)`.
+-/
 theorem mahler : Mahler := mahler_of_c (PositivityTheory.Rg.BcB.E1.mahlerC_of_deg degBasis degAdelic degBdd degRat)
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.only_stable_subspaces degSubmod degMove degBdd degPairing sizeBasic`.
+-/
 theorem onlyStable : OnlyStable := GlobalTheory.T.only_stable_subspaces degSubmod degMove degBdd degPairing sizeBasic
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.only_isotropic_subspaces onlyStable degPairing sizeBasic`.
+-/
 theorem onlyIsotropic : OnlyIsotropic := GlobalTheory.T.only_isotropic_subspaces onlyStable degPairing sizeBasic
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.elliptic_term_of_isotropic onlyIsotropic`.
+-/
 theorem ellTerm : EllTerm := GlobalTheory.T.elliptic_term_of_isotropic onlyIsotropic
+/- English proof (translation)
+Introduce `m` and use `⟨GlobalTheory.T.sign_cone_weight_indicator m, GlobalTheory.T.sign_cone_weight_support_bound m, (GlobalTheory.T.sign_cone_weight_translation m).1, (GlobalTheory.T.sign_cone_weight_translation m).2.1, (GlobalTheory.T.sign_cone_weight_translation m).2.2⟩`.
+-/
 theorem chainSum : ChainSum := fun m =>
   ⟨GlobalTheory.T.sign_cone_weight_indicator m, GlobalTheory.T.sign_cone_weight_support_bound m, (GlobalTheory.T.sign_cone_weight_translation m).1, (GlobalTheory.T.sign_cone_weight_translation m).2.1, (GlobalTheory.T.sign_cone_weight_translation m).2.2⟩
 

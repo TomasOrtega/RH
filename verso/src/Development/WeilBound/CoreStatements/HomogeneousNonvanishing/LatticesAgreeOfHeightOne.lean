@@ -8,6 +8,29 @@ open scoped CategoryTheory.Obj
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Take `⟨U, hU, b, hb, hbq⟩` from `hL p hp`. Take `⟨U', hU', b', hb', hbq'⟩` from `hL' p hp`. Take `⟨hfr, hno, hic⟩` from `GlobalTheory.T.regAt_fraction_noetherian_closed X Ω ξ hξ p`. Use `haveI := hfr`. Use `haveI := hno inferInstance`.
+
+Use `haveI := hic (hn p hp)`. Establish `key` using `GlobalTheory.CompanionTheory.HeightOneFrame.integral_of_integral_at_height_one (regAt ξ p) Ω E r b b' (hbq p hp hU).1 ?_ ?_`. Rewrite using `[(hbq' p hp hU').2, (hbq p hp hU).2, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨c, hc⟩` from `key i`.
+
+Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ (c k) (Submodule.subset_span ⟨k, rfl⟩)`. Introduce `P hP i`. Take `⟨q, hqp, hq⟩` from `GlobalTheory.T.exists_point_localization_prime X Ω ξ hξ p P.asIdeal P.isPrime`. Establish `hqT` using `hT p hp q hqp`.
+
+Establish `hle : regAt ξ p ≤ regAt ξ q` using `fun a ha => (hq a).2 ⟨1, (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top, by simpa using ha⟩`. Use `letI : Algebra (regAt ξ p) (regAt ξ q) := (Subring.inclusion hle).toAlgebra`. Use `haveI : IsLocalization.AtPrime (regAt ξ q) P.asIdeal := by`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`.
+
+Establish `hs0 : (s : Ω) ≠ 0` using `fun h => hs (by`. Establish `: s = 0` using `Subtype.ext h`. Rewrite using `[this]`. Conclude with `P.asIdeal.zero_mem)`. Establish `hi : (s : Ω)⁻¹ ∈ regAt ξ q` using `(hq _).2 ⟨s, hs, by rw [mul_inv_cancel₀ hs0]; exact one_mem _⟩`.
+
+Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ hs0))`. Introduce `z`. Take `⟨s, hs, hz⟩` from `(hq z).1 z.2`. Conclude with `⟨(⟨_, hz⟩, ⟨s, hs⟩), Subtype.ext (mul_comm _ _)⟩`. Introduce `x y hxy`.
+
+Establish `: x = y` using `Subtype.ext (congrArg Subtype.val hxy :)`. Conclude with `⟨1, by rw [this]⟩`. Establish `hdim : ringKrullDim (X.presheaf.stalk q.1) = 1`. Establish `e : X.presheaf.stalk q.1 ≃+* regAt ξ q` using `RingEquiv.ofBijective (genMap ξ q).rangeRestrict ⟨fun x y h => hξ.inj q (congrArg Subtype.val h :), (genMap ξ q).rangeRestrict_surjective⟩`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, IsLocalization.AtPrime.ringKrullDim_eq_height P.asIdeal, hP]`.
+
+Both sides reduce to the same expression. Establish `hmem : b' i ∈ L q`. Rewrite using `[h1 q hqT hdim, (hbq' q hqT (hqp.mem_open U'.2 hU')).2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `hmem` using `[(hbq q hqT (hqp.mem_open U.2 hU)).2, Submodule.mem_span_range_iff_exists_fun]`.
+
+Take `⟨c, hc⟩` from `hmem`. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finite P.asIdeal.primeCompl c`. Use `choose d hd using hs`. Use `⟨s.1, d, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h2 : algebraMap (regAt ξ p) Ω (d k) = algebraMap (regAt ξ p) Ω s.1 * (c k : Ω)`. Use `congrArg Subtype.val (hd k)` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`.
+
+Rewrite using `[h2, mul_smul]`. Both sides reduce to the same expression. Introduce `i`. Rewrite using `[hb, ← hb']`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem latagree_le (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X]
     (hξ : IsCptGen ξ) (T : Set (Cpt ξ)) (hT : ∀ p ∈ T, ∀ q : Cpt ξ, q.1 ⤳ p.1 → q ∈ T)
     (hn : ∀ p ∈ T, IsIntegrallyClosed (X.presheaf.stalk p.1)) (E : Type) [AddCommGroup E] [Module Ω E]
@@ -72,6 +95,9 @@ theorem latagree_le (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRing
     rw [hb, ← hb']
     exact Submodule.subset_span ⟨i, rfl⟩
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ hξ T hT hn E _ _ L L' r V hL hL' h1 p hp`. Conclude with `le_antisymm (latagree_le X Ω ξ hξ T hT hn E L' L r V hL' hL (fun p hp h => (h1 p hp h).symm) p hp) (latagree_le X Ω ξ hξ T hT hn E L L' r V hL hL' h1 p hp)`.
+-/
 theorem lattices_agree_of_height_one : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X], IsCptGen ξ → ∀ (T : Set (Cpt ξ)), (∀ p ∈ T, ∀ q : Cpt ξ, q.1 ⤳ p.1 → q ∈ T) → (∀ p ∈ T, IsIntegrallyClosed (X.presheaf.stalk p.1)) → ∀ (E : Type) [AddCommGroup E] [Module Ω E] (L L' : Lat ξ E) (r : ℕ) (V : Submodule Ω E), L.IsVBOn T r V → L'.IsVBOn T r V → (∀ p ∈ T, ringKrullDim (X.presheaf.stalk p.1) = 1 → L p = L' p) → ∀ p ∈ T, L p = L' p := by
   intro X Ω _ ξ _ hξ T hT hn E _ _ L L' r V hL hL' h1 p hp
   exact le_antisymm

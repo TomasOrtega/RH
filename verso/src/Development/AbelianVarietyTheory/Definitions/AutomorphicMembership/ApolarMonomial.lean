@@ -26,12 +26,18 @@ variable {S : Type} [CommRing S] {ρ V : Type}
 def apolar (P : MvPolynomial V S) (f : MvPowerSeries V S) : S :=
   ∑ m ∈ P.support, P.coeff m * ((m.prod fun _ n => (n.factorial : S)) * MvPowerSeries.coeff m f)
 
+/- English proof (translation)
+Rewrite using `[apolar, Finset.sum_subset (MvPolynomial.support_monomial_subset) fun x _ hx => by`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hx, zero_mul], Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 theorem apolar_monomial (m : V →₀ ℕ) (c : S) (f : MvPowerSeries V S) :
     apolar (MvPolynomial.monomial m c) f = c * ((m.prod fun _ n => (n.factorial : S)) * MvPowerSeries.coeff m f) := by
   classical
   rw [apolar, Finset.sum_subset (MvPolynomial.support_monomial_subset) fun x _ hx => by
     rw [MvPolynomial.notMem_support_iff.1 hx, zero_mul], Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Rewrite using `[apolar_monomial, MvPowerSeries.coeff_monomial_same, Finsupp.prod_single_index (by simp)]`. Evaluate the numerical expressions using `[Nat.factorial]`.
+-/
 example : apolar (MvPolynomial.monomial (Finsupp.single () 2) (1 : ℚ))
     (MvPowerSeries.monomial (Finsupp.single () 2) 1) = 2 := by
   rw [apolar_monomial, MvPowerSeries.coeff_monomial_same, Finsupp.prod_single_index (by simp)]

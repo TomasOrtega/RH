@@ -11,10 +11,16 @@ open Pointwise CategoryTheory
 
 variable {G : Type*} [Group G]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.comap_map_eq, QuotientGroup.ker_mk']`.
+-/
 theorem sup_eq_comap_map (H U : Subgroup G) [U.Normal] :
     H ⊔ U = (H.map (QuotientGroup.mk' U)).comap (QuotientGroup.mk' U) := by
   rw [Subgroup.comap_map_eq, QuotientGroup.ker_mk']
 
+/- English proof (translation)
+Rewrite using `[sup_eq_comap_map, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective U)]`.
+-/
 theorem index_sup_eq_index_map (H U : Subgroup G) [U.Normal] :
     (H ⊔ U).index = (H.map (QuotientGroup.mk' U)).index := by
   rw [sup_eq_comap_map, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective U)]
@@ -25,23 +31,38 @@ noncomputable def quotMap {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     G ⧸ (U : Subgroup G) →* G ⧸ (V : Subgroup G) :=
   QuotientGroup.map _ _ (MonoidHom.id G) (fun _ hx => h hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotMap_comp_mk' {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     (quotMap h).comp (QuotientGroup.mk' (U : Subgroup G)) = QuotientGroup.mk' (V : Subgroup G) :=
   rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective (V : Subgroup G) y`. Conclude with `⟨QuotientGroup.mk' (U : Subgroup G) x, rfl⟩`.
+-/
 theorem quotMap_surjective {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     Function.Surjective (quotMap h) := by
   intro y
   obtain ⟨x, rfl⟩ := QuotientGroup.mk'_surjective (V : Subgroup G) y
   exact ⟨QuotientGroup.mk' (U : Subgroup G) x, rfl⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl`.
+-/
 theorem quotMap_self {U : OpenNormalSubgroup G} (h : U ≤ U) : quotMap h = MonoidHom.id _ :=
   MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl`.
+-/
 theorem quotMap_comp {U V W : OpenNormalSubgroup G} (h₁ : U ≤ V) (h₂ : V ≤ W) :
     (quotMap h₂).comp (quotMap h₁) = quotMap (h₁.trans h₂) :=
   MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl
 
+/- English proof (translation)
+Rewrite using `[Subgroup.map_map, quotMap_comp_mk']`.
+-/
 theorem map_map_quotMap (H : Subgroup G) {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     (H.map (QuotientGroup.mk' (U : Subgroup G))).map (quotMap h) =
       H.map (QuotientGroup.mk' (V : Subgroup G)) := by
@@ -55,6 +76,9 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 omit [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Establish `h` using `not_dvd_superIndex_iff (⟨p, hp.out⟩ : Nat.Primes) H`. Simplify using `only [index_sup_eq_index_map] at h`. Conclude with `h`.
+-/
 theorem not_dvd_superIndex_iff_map (H : Subgroup G) :
     ¬ Supernatural.ofNat p ∣ superIndex H ↔
       ∀ U : OpenNormalSubgroup G, ¬ p ∣ (H.map (QuotientGroup.mk' (U : Subgroup G))).index := by
@@ -62,6 +86,9 @@ theorem not_dvd_superIndex_iff_map (H : Subgroup G) :
   simp only [index_sup_eq_index_map] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[IsProSylow, isProPGroup_subgroup_iff_isPGroup_map, not_dvd_superIndex_iff_map, ← forall_and]`. Conclude with `⟨fun h => h.2, fun h => ⟨hP, h⟩⟩`.
+-/
 theorem isProSylow_iff {P : Subgroup G} (hP : IsClosed (P : Set G)) :
     IsProSylow p P ↔ ∀ U : OpenNormalSubgroup G,
       IsPGroup p (P.map (QuotientGroup.mk' (U : Subgroup G))) ∧
@@ -74,6 +101,9 @@ noncomputable def IsProSylow.toSylow {P : Subgroup G} (hP : IsProSylow p P)
   IsPGroup.toSylow (isProPGroup_subgroup_iff_isPGroup_map.mp hP.2.1 U)
     ((not_dvd_superIndex_iff_map P).mp hP.2.2 U)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsProSylow.coe_toSylow {P : Subgroup G} (hP : IsProSylow p P)
     (U : OpenNormalSubgroup G) :
     (hP.toSylow U : Subgroup (G ⧸ (U : Subgroup G))) = P.map (QuotientGroup.mk' (U : Subgroup G)) :=
@@ -100,6 +130,29 @@ noncomputable def sylowSystem (p : ℕ) [Fact p.Prime] (H : Subgroup G) :
         (quotMap (leOfHom g))
     rw [Subgroup.map_map, quotMap_comp]
 
+/- English proof (translation)
+Rewrite `hH` using `[isProPGroup_subgroup_iff_isPGroup_map]`. Establish `hfin : ∀ U, Finite ((sylowSystem p H).obj U)` using `fun U => by`. Use `Sylow.finite_of_finiteIndex (default : Sylow p (G ⧸ (U : Subgroup G)))` as an intermediate fact. Conclude with `Subtype.finite`. Establish `hne : ∀ U, Nonempty ((sylowSystem p H).obj U)` using `fun U => by`.
+
+Take `⟨S, hS⟩` from `IsPGroup.exists_le_sylow (hH U)`. Conclude with `⟨⟨S, hS⟩⟩`. Take `⟨s, hs⟩` from `nonempty_sections_of_finite_cofiltered_system (sylowSystem p H)`. Set `T : OpenNormalSubgroup G → Subgroup G` to `fun U => ((s U).1 : Subgroup (G ⧸ (U : Subgroup G))).comap (QuotientGroup.mk' (U : Subgroup G))`. Establish `hc : ∀ {U V : OpenNormalSubgroup G} (h : U ≤ V), ((s V).1 : Subgroup (G ⧸ (V : Subgroup G))) = ((s U).1 : Subgroup (G ⧸ (U : Subgroup G))).map (quotMap h)`.
+
+Introduce `U V h`. Rewrite using `[← hs (homOfLE h)]`. Both sides reduce to the same expression. Establish `hHT : ∀ U, H ≤ T U` using `fun U => Subgroup.map_le_iff_le_comap.mp (s U).2`. Establish `hUT : ∀ U : OpenNormalSubgroup G, (U : Subgroup G) ≤ T U` using `fun U x hx => by show QuotientGroup.mk' (U : Subgroup G) x ∈ ((s U).1 : Subgroup _)`.
+
+Rewrite using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).mpr hx]`. Conclude with `one_mem _`. Establish `hTcl : ∀ U, IsClosed (T U : Set G)` using `fun U => Subgroup.isClosed_of_isOpen _ (Subgroup.isOpen_mono (hUT U) U.toOpenSubgroup.isOpen)`. Establish `hTmono : ∀ {U V : OpenNormalSubgroup G}, U ≤ V → T U ≤ T V` using `fun {U V} h x hx => by show QuotientGroup.mk' (V : Subgroup G) x ∈ ((s V).1 : Subgroup _)`. Rewrite using `[hc h]`.
+
+Conclude with `Subgroup.mem_map_of_mem (quotMap h) hx`. Establish `hTlift : ∀ {U V : OpenNormalSubgroup G}, U ≤ V → ∀ x ∈ T V, ∃ y ∈ T U, y⁻¹ * x ∈ (V : Subgroup G)` using `fun {U V} h x hx => by`. Establish `hx' : QuotientGroup.mk' (V : Subgroup G) x ∈ ((s V).1 : Subgroup _)` using `hx`. Rewrite `hx'` using `[hc h]`. Take `⟨z, hz, hzx⟩` from `Subgroup.mem_map.mp hx'`.
+
+Take `⟨y, rfl⟩` from `QuotientGroup.mk'_surjective (U : Subgroup G) z`. Conclude with `⟨y, hz, QuotientGroup.eq.mp hzx⟩`. Set `P : Subgroup G` to `⨅ U, T U`. Establish `hPcl : IsClosed (P : Set G)`. Rewrite using `[Subgroup.coe_iInf]`.
+
+Conclude with `isClosed_iInter hTcl`. Establish `hPmap : ∀ U : OpenNormalSubgroup G, P.map (QuotientGroup.mk' (U : Subgroup G)) = ((s U).1 : Subgroup _)`. Introduce `U`. Use `le_antisymm (Subgroup.map_le_iff_le_comap.mpr (iInf_le T U)) fun z hz => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective (U : Subgroup G) z`.
+
+Establish `hx : x ∈ T U` using `hz`. Set `t : OpenNormalSubgroup G → Set G` to `fun W => (T (W ⊓ U) : Set G) ∩ {y | x⁻¹ * y ∈ (U : Subgroup G)}`. Establish `htcl : ∀ W, IsClosed (t W)` using `fun W => (hTcl _).inter ((Subgroup.isClosed_of_isOpen _ U.toOpenSubgroup.isOpen).preimage (continuous_const_mul x⁻¹))`. Establish `htdir : Directed (· ⊇ ·) t` using `fun W₁ W₂ => ⟨W₁ ⊓ W₂, fun y hy => ⟨hTmono (inf_le_inf_right U inf_le_left) hy.1, hy.2⟩, fun y hy => ⟨hTmono (inf_le_inf_right U inf_le_right) hy.1, hy.2⟩⟩`. Establish `htne : ∀ W, (t W).Nonempty` using `fun W => by`.
+
+Take `⟨y, hy, hyx⟩` from `hTlift (inf_le_right : W ⊓ U ≤ U) x hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Use `(U : Subgroup G).inv_mem hyx` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t htdir htne (fun W => (htcl W).isCompact) htcl`.
+
+Rewrite `hy` using `[Set.mem_iInter]`. Establish `hyP : y ∈ P` using `Subgroup.mem_iInf.mpr fun W => hTmono inf_le_left (hy W).1`. Use `Subgroup.mem_map.mpr ⟨y, hyP, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.mk'_apply]`. Conclude with `(QuotientGroup.eq.mpr (hy U).2).symm`.
+
+Use `⟨P, (isProSylow_iff hPcl).mpr fun U => ?_, le_iInf fun U => hHT U⟩` and prove the remaining obligations. Rewrite using `[hPmap U]`. Conclude with `⟨(s U).1.isPGroup', (s U).1.not_dvd_index⟩`.
+-/
 theorem exists_isProSylow_le {H : Subgroup G} (hH : IsProPGroup p H) :
     ∃ P : Subgroup G, IsProSylow p P ∧ H ≤ P := by
   rw [isProPGroup_subgroup_iff_isPGroup_map] at hH
@@ -172,6 +225,9 @@ theorem exists_isProSylow_le {H : Subgroup G} (hH : IsProPGroup p H) :
   rw [hPmap U]
   exact ⟨(s U).1.isPGroup', (s U).1.not_dvd_index⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨P, hP, _⟩ := exists_isProSylow_le (isProPGroup_bot (G := G) p) ⟨P, hP⟩`.
+-/
 theorem exists_isProSylow : ∃ P : Subgroup G, IsProSylow p P :=
   let ⟨P, hP, _⟩ := exists_isProSylow_le (isProPGroup_bot (G := G) p)
   ⟨P, hP⟩

@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WeilIntegral
 
+/- English proof (translation)
+Establish `: IsIntegral (pullback π x)` using `GeometricallyIntegral.geometrically_isIntegral x _ _ (IsPullback.of_hasPullback π x)`. Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd π x)` as an intermediate fact. Establish `hgen : ∀ i, pullback.fst π x (genericPoint (pullback π x :)) ∈ U i` using `fun i => by`. Take `⟨q, hq, hx⟩` from `hU i`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := x) q (IsLocalRing.closedPoint K) hx`.
+
+Conclude with `((genericPoint_specializes z).map (pullback.fst π x).continuous).mem_open (U i).isOpen (hz ▸ hq)`. Take `⟨c, hcO, hc'⟩` from `nonempty_inter_closedPoints (Z := ⋂ i, ((pullback.fst π x ⁻¹ᵁ U i : (pullback π x).Opens) : Set (pullback π x :))) ⟨_, Set.mem_iInter.2 hgen⟩ (isOpen_iInter_of_finite fun i => (pullback.fst π x ⁻¹ᵁ U i).isOpen).isLocallyClosed`. Establish `hc : IsClosed {c}` using `hc'`. Use `⟨pointOfClosedPoint (pullback.snd π x) c hc ≫ pullback.fst π x, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+
+Use `show pullback.fst π x (pointOfClosedPoint (pullback.snd π x) c hc _) ∈ U i`. Conclude with `(congrArg (fun t => pullback.fst π x t ∈ U i) (pointOfClosedPoint_apply (pullback.snd π x) c hc _)).mpr (Set.mem_iInter.1 hcO i)`.
+-/
 theorem exists_point_in_all {K : Type} [Field K] [IsAlgClosed K] {X Y : Scheme.{0}} (π : X ⟶ Y)
     [LocallyOfFiniteType π] [GeometricallyIntegral π] (x : Sp K ⟶ Y) {J : Type} [Finite J]
     (U : J → X.Opens) (hU : ∀ i, ∃ q : X, q ∈ U i ∧ π q = x (IsLocalRing.closedPoint K)) :
@@ -41,25 +48,40 @@ section Translation
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem specO_self_hom : (specO O O).hom = 𝟙 (Sp O) := Spec.map_id _
 
 def toBase (G : Over (Sp O)) : G ⟶ specO O O :=
   Over.homMk G.hom ((congrArg (G.hom ≫ ·) specO_self_hom).trans (Category.comp_id _))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (((Category.comp_id _).symm.trans (congrArg (f.left ≫ ·) specO_self_hom.symm)).trans (Over.w f))`.
+-/
 theorem eq_toBase {G : Over (Sp O)} (f : G ⟶ specO O O) : f = toBase G :=
   Over.OverMorphism.ext (((Category.comp_id _).symm.trans
     (congrArg (f.left ≫ ·) specO_self_hom.symm)).trans (Over.w f))
 
 def transl {G : Over (Sp O)} [GrpObj G] (a : specO O O ⟶ G) : G ⟶ G := 𝟙 G * (toBase G ≫ a)
 
+/- English proof (translation)
+Rewrite using `[transl, MonObj.comp_mul, Category.comp_id, ← Category.assoc, eq_toBase (w ≫ toBase G)]`.
+-/
 theorem comp_transl {G T : Over (Sp O)} [GrpObj G] (a : specO O O ⟶ G) (w : T ⟶ G) :
     w ≫ transl a = w * (toBase T ≫ a) := by
   rw [transl, MonObj.comp_mul, Category.comp_id, ← Category.assoc, eq_toBase (w ≫ toBase G)]
 
+/- English proof (translation)
+Rewrite using `[comp_transl, ← eq_toBase (𝟙 _), Category.id_comp]`.
+-/
 theorem point_comp_transl {G : Over (Sp O)} [GrpObj G] (a z : specO O O ⟶ G) :
     z ≫ transl a = z * a := by
   rw [comp_transl, ← eq_toBase (𝟙 _), Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one, _root_.mul_one]`.
+-/
 theorem transl_inv_comp {G : Over (Sp O)} [GrpObj G] (a : specO O O ⟶ G) :
     transl a⁻¹ ≫ transl a = 𝟙 G := by
   rw [comp_transl, transl, _root_.mul_assoc, ← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one,
@@ -67,6 +89,15 @@ theorem transl_inv_comp {G : Over (Sp O)} [GrpObj G] (a : specO O O ⟶ G) :
 
 end Translation
 
+/- English proof (translation)
+Take `⟨-, hk, hlift⟩` from `valuationRing_henselian_and_lift_of_isAlgClosed O K`. Use `geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres G.hom` as an intermediate fact. Establish `hr : spMap (IsLocalRing.residue O) (IsLocalRing.closedPoint (IsLocalRing.ResidueField O)) = IsLocalRing.closedPoint O` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue O)`. Take `⟨g, hg, hgU⟩` from `exists_point_in_all G.hom (spMap (IsLocalRing.residue O)) (fun i => (transl (a i)).left ⁻¹ᵁ U) fun i => ⟨(transl (a i)⁻¹).left x, by show (transl (a i)).left ((transl (a i)⁻¹).left x) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, transl_inv_comp]`.
+
+Conclude with `hx, by`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w, hx', hr]⟩`. Take `⟨y, hy, hy'⟩` from `hlift _ G.hom inferInstance g hg`. Use `⟨Over.homMk y (hy.trans specO_self_hom.symm), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← point_comp_transl]`.
+
+Establish `h1 : (y ≫ (transl (a i)).left) (IsLocalRing.closedPoint O) ∈ U`. Establish `e : g (IsLocalRing.closedPoint (IsLocalRing.ResidueField O)) = y (IsLocalRing.closedPoint O)`. Rewrite using `[← hy', ← hr]`. Both sides reduce to the same expression. Use `hgU i` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Conclude with `eq_top_iff.2 fun q _ => ((IsLocalRing.specializes_closedPoint (R := O) q).map (y ≫ (transl (a i)).left).continuous).mem_open U.isOpen h1`.
+-/
 theorem exists_translate_inOpen (O K : Type) [CommRing O] [IsDomain O] [ValuationRing O] [Field K]
     [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] (G : Over (Sp O)) [GrpObj G] [Smooth G.hom]
     [GeometricallyConnected G.hom] (U : G.left.Opens) (x : G.left) (hx : x ∈ U)
@@ -96,6 +127,15 @@ theorem exists_translate_inOpen (O K : Type) [CommRing O] [IsDomain O] [Valuatio
     ((IsLocalRing.specializes_closedPoint (R := O) q).map
       (y ≫ (transl (a i)).left).continuous).mem_open U.isOpen h1
 
+/- English proof (translation)
+Introduce `p hp C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P U ⟨x, hx, hxp⟩ J _ a`. Establish `hv` using `P.integers`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`.
+
+Use `haveI := P.semi.smooth`. Use `haveI := P.semi.geomConnected`. Use `exists_translate_inOpen O C P.G U x hx ?_ J a` and prove the remaining obligations. Use `PrimeSpectrum.ext (le_antisymm (IsLocalRing.le_maximalIdeal (PrimeSpectrum.isPrime _).ne_top) fun b hb => ?_)` and prove the remaining obligations. Establish `h1 : v (algebraMap O C b) < 1` using `lt_of_le_of_ne (hv.map_le_one b) fun e => hb (hv.isUnit_of_one' e)`.
+
+Establish `h2 : 0 < v (algebraMap O C p)`. Rewrite using `[map_natCast]`. Conclude with `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff v).2 (Nat.cast_ne_zero.2 hp.out.ne_zero))`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one h2 h1`. Establish `h3 : (p : O) ∣ b ^ n` using `hv.le_iff_dvd.1 (by rw [map_pow, map_pow]; exact hn.le)`.
+
+Conclude with `(PrimeSpectrum.isPrime _).mem_of_pow_mem n (Ideal.mem_of_dvd _ h3 hxp)`.
+-/
 theorem translatesInto : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]

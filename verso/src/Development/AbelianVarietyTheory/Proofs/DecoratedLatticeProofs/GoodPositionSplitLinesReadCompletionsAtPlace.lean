@@ -12,6 +12,19 @@ namespace GlobalTheory.LocCongr
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨β, hβi, hβ, c, hc, x, hx, rfl⟩` from `hy`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+
+Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, a, ha, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero`. Establish `: (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (0 : Fin S.rank → AE D) i) = 0`.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz'`.
+
+Establish `: (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (z + z') i) = (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * z i) + (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * z' i)`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Rewrite using `[this]`. Conclude with `add_mem hz hz'`.
+
+Consider the case `neg z _ hz`. Establish `: (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (-z) i) = -(fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * z i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `neg_mem hz`.
+-/
 theorem mul_mem_latA {S : HSp D} {L : Lat S} {P : Pl D → Prop} {a : D.host.E} (ha : a ∈ D.host.AA)
     {z : Fin S.rank → AE D} (hz : z ∈ latV S L P) :
     (fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * z i) ∈ latA S L P := by
@@ -38,6 +51,11 @@ theorem mul_mem_latA {S : HSp D} {L : Lat S} {P : Pl D → Prop} {a : D.host.E} 
       funext i; simp
     rw [this]; exact neg_mem hz
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨β, hβi, hβ, a, ha, x, hx, rfl⟩`. Establish `hz : (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i)) ∈ latV S L P` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`. Establish `hm` using `mul_mem_latA (L := L') ha (h hz)`. Establish `key : (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i)) = fun i => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[SetLike.mem_coe, key]`. Conclude with `hm`.
+-/
 theorem latA_le_of_latV_le {S : HSp D} {L L' : Lat S} {P : Pl D → Prop} (h : latV S L P ≤ latV S L' P) :
     latA S L P ≤ latA S L' P := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -52,10 +70,16 @@ theorem latA_le_of_latV_le {S : HSp D} {L L' : Lat S} {P : Pl D → Prop} (h : l
   rw [SetLike.mem_coe, key]
   exact hm
 
+/- English proof (translation)
+The claim follows from `le_antisymm (latA_le_of_latV_le h.le) (latA_le_of_latV_le h.ge)`.
+-/
 theorem latA_congr {S : HSp D} {L L' : Lat S} {P : Pl D → Prop} (h : latV S L P = latV S L' P) :
     latA S L P = latA S L' P :=
   le_antisymm (latA_le_of_latV_le h.le) (latA_le_of_latV_le h.ge)
 
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hS hT, GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS' LT' hS' hT', eS, latA_congr eT]`.
+-/
 theorem latO_congr {S T : HSp D} {LS LS' : Lat S} {LT LT' : Lat T} (hS : IsSelfDualC S LS) (hS' : IsSelfDualC S LS')
     (hT : IsSelfDualC T LT) (hT' : IsSelfDualC T LT') {P : Pl D → Prop} (eS : latV S LS P = latV S LS' P)
     (eT : latV T LT P = latV T LT' P) :
@@ -64,6 +88,9 @@ theorem latO_congr {S T : HSp D} {LS LS' : Lat S} {LT LT' : Lat T} (hS : IsSelfD
   rw [GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hS hT, GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS' LT' hS' hT', eS,
     latA_congr eT]
 
+/- English proof (translation)
+Unfold `MonoAt at H ⊢`. Rewrite using `[← e, ← e₀]`. Conclude with `H`.
+-/
 theorem monoAt_congr {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L L' : Lat S} {L₀ L₀' : Lat S₀} {v : Pl D}
     (e : latV S L (· = v) = latV S L' (· = v)) (e₀ : latV S₀ L₀ (· = v) = latV S₀ L₀' (· = v)) (H : MonoAt d L L₀ v) :
     MonoAt d L' L₀' v := by
@@ -71,18 +98,27 @@ theorem monoAt_congr {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L L' : 
   rw [← e, ← e₀]
   exact H
 
+/- English proof (translation)
+Unfold `OrthAt at H ⊢`. Rewrite using `[← e]`. Conclude with `H`.
+-/
 theorem orthAt_congr {S A B : HSp D} {o : OrthDec S A B} {L L' : Lat S} {LA : Lat A} {LB : Lat B} {v : Pl D}
     (e : latV S L (· = v) = latV S L' (· = v)) (H : OrthAt o L LA LB v) : OrthAt o L' LA LB v := by
   unfold OrthAt at H ⊢
   rw [← e]
   exact H
 
+/- English proof (translation)
+Unfold `PrimAt at H ⊢`. Rewrite using `[← e]`. Conclude with `H`.
+-/
 theorem primAt_congr {ψ : AddChar (AF D.host.F) ℂ} {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L L' : Lat S} {v : Pl D}
     (e : latV S L (· = v) = latV S L' (· = v)) (H : PrimAt ψ d L v) : PrimAt ψ d L' v := by
   unfold PrimAt at H ⊢
   rw [← e]
   exact H
 
+/- English proof (translation)
+Unfold `ColsAt at H ⊢`. Rewrite using `[← e, ← latA_congr eW]`. Conclude with `H`.
+-/
 theorem colsAt_congr {V V₀ W : HSp D} {ρ : ℕ} {d : HypDec V V₀ ρ} {x : Mx D W.rank ρ} {LV LV' : Lat V} {LW LW' : Lat W}
     {v : Pl D} (e : latV V LV (· = v) = latV V LV' (· = v)) (eW : latV W LW (· = v) = latV W LW' (· = v))
     (H : ColsAt d x LV LW v) : ColsAt d x LV' LW' v := by
@@ -96,6 +132,9 @@ namespace GlobalTheory.LocCongr
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+The claim follows from `H.tame sdV := sV sdV₀ := sV₀ sdW := sW sdW₀ := H.sdW₀ monoV := monoAt_congr eV eV₀ H.monoV monoW := monoAt_congr eW rfl H.monoW prim := primAt_congr eV H.prim cols := colsAt_congr eV eW H.cols last := by rw [← latO_congr H.sdV₀ sV₀ H.sdW sW eV₀ eW] exact H.last`.
+-/
 theorem goodBF_congr {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} {LV LV' : Lat B.V} {LV₀ LV₀' : Lat B.V₀} {LW LW' : Lat J.W}
     {LW₀ : Lat J.W₀} {v : Pl D} (sV : IsSelfDualC B.V LV') (sV₀ : IsSelfDualC B.V₀ LV₀') (sW : IsSelfDualC J.W LW')
     (eV : latV B.V LV (· = v) = latV B.V LV' (· = v)) (eV₀ : latV B.V₀ LV₀ (· = v) = latV B.V₀ LV₀' (· = v))
@@ -114,6 +153,9 @@ theorem goodBF_congr {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} {LV LV' : La
     rw [← latO_congr H.sdV₀ sV₀ H.sdW sW eV₀ eW]
     exact H.last
 
+/- English proof (translation)
+The claim follows from `H.tame sdV := sV sdV₀ := H.sdV₀ sdW := sW sdW₀ := sW₀ monoV := monoAt_congr eV rfl H.monoV monoW := monoAt_congr eW eW₀ H.monoW prim := primAt_congr eV H.prim cols := colsAt_congr eV eW H.cols`.
+-/
 theorem adaptFB_congr {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} {LV LV' : Lat J.W} {LV₀ : Lat J.W₀}
     {LW LW' : Lat B.V} {LW₀ LW₀' : Lat B.V₀} {v : Pl D} (sV : IsSelfDualC J.W LV') (sW : IsSelfDualC B.V LW')
     (sW₀ : IsSelfDualC B.V₀ LW₀') (eV : latV J.W LV (· = v) = latV J.W LV' (· = v))
@@ -129,6 +171,13 @@ theorem adaptFB_congr {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} {LV L
   prim := primAt_congr eV H.prim
   cols := colsAt_congr eV eW H.cols
 
+/- English proof (translation)
+Introduce `D c v k _ _ _ _ ι o N M x hN hM`. Use `⟨fun hg => ⟨fun j ρ h => ?_, fun j σ h => ?_⟩, fun hs => ⟨fun j ρ h => ?_, fun j h => ?_⟩⟩` and prove the remaining obligations. Establish `h0` using `hN j (by omega)`. Establish `h1` using `hN (j + 1) (by omega)`. Conclude with `goodBF_congr h0.2.1 (hM j ρ h).2.1 h1.2.1 h0.2.2.symm (hM j ρ h).2.2.symm h1.2.2.symm (hg.bf j ρ h)`.
+
+Establish `h1` using `hN (j + 1) (by omega)`. Establish `h2` using `hN (j + 1 + 1) (by omega)`. Conclude with `adaptFB_congr h1.2.1 h2.2.1 (hM (j + 1 + 1) σ (idx_step h)).2.1 h1.2.2.symm h2.2.2.symm (hM (j + 1 + 1) σ (idx_step h)).2.2.symm (hg.fb j σ h)`. Take `⟨LL, hLL, hO⟩` from `hs.core j ρ h`. Conclude with `⟨LL, hLL, orthAt_congr (hM j ρ h).2.2.symm hO⟩`.
+
+Take `⟨LL, LZ, h1, h2, h3, h4, h5⟩` from `hs.top j h`. Conclude with `⟨LL, LZ, h1, h2, orthAt_congr (hM j 0 h).2.2.symm h3, h4, h5⟩`.
+-/
 theorem goodAt_splitAt_congr : ∀ (D : D7) (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (N : ∀ j, Lat (c.V j)) (M : ∀ j ρ h, Lat (c.bes j ρ h).V₀)
     (x : Pl D), (∀ j, j < D.R.m → IsSelfDualC (c.V j) (v.N j) ∧ IsSelfDualC (c.V j) (N j) ∧

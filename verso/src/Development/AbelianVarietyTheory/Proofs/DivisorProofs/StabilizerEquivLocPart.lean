@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.MaxWeightGL1EqOne
 
 namespace GlobalTheory.FinTrace
 
+/- English proof (translation)
+Introduce `G _ H K x`. Establish `hmem : ∀ h : H, h ∈ MulAction.stabilizer H (QuotientGroup.mk x : G ⧸ K) ↔ (h : G) ∈ GlobalTheory.LKLoc.locPart H K x`. Introduce `h`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use `show ((h : G) • (QuotientGroup.mk x : G ⧸ K)) = _ ↔ _`.
+
+Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq]`. Simplify using `only [GlobalTheory.LKLoc.locPart, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, SetLike.coe_mem, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Use `⟨_, K.inv_mem hk, ?_⟩` and prove the remaining obligations.
+
+Use `group`. Introduce and unpack `⟨k, hk, e⟩`. Rewrite using `[← e]`. Use `K.inv_mem hk using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Conclude with `⟨{ toFun := fun h => ⟨h.1, (hmem h.1).1 h.2⟩ invFun := fun g => ⟨⟨g.1, g.2.1⟩, (hmem _).2 g.2⟩ left_inv := fun h => rfl right_inv := fun g => rfl }⟩`.
+-/
 theorem stabilizer_equiv_locPart : ∀ (G : Type) [Group G] (H K : Subgroup G) (x : G),
     Nonempty (MulAction.stabilizer H (QuotientGroup.mk x : G ⧸ K) ≃ GlobalTheory.LKLoc.locPart H K x) := by
   intro G _ H K x
@@ -27,6 +36,17 @@ theorem stabilizer_equiv_locPart : ∀ (G : Type) [Group G] (H K : Subgroup G) (
            left_inv := fun h => rfl
            right_inv := fun g => rfl }⟩
 
+/- English proof (translation)
+Introduce `G _ Γ K f hR hs x hx`. Set `π : Γ → G ⧸ K` to `fun γ => QuotientGroup.mk (x⁻¹ * γ * x)`. Establish `hmaps : Set.MapsTo π (Function.support fun γ : Γ => f (x⁻¹ * γ * x)) (Function.support fun q : G ⧸ K => f q.out)`. Introduce `γ hγ`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (x⁻¹ * γ * x)`.
+
+Simplify using `only [Function.mem_support, π, hk, hR _ k.2] at hγ ⊢`. Conclude with `hγ`. Use `Set.Finite.of_finite_fibers π (hs.subset (Set.image_subset_iff.2 hmaps)) ?_` and prove the remaining obligations. Use `haveI := hx`. Introduce `q _`.
+
+Distinguish the cases in `hne : (π ⁻¹' {q}).Nonempty`. Take `⟨γ₀, hγ₀⟩` from `hne`. Establish `hsub : π ⁻¹' {q} ⊆ (fun l : GlobalTheory.LKLoc.locPart Γ K x => γ₀ * ⟨l.1, l.2.1⟩) '' Set.univ`. Introduce `γ hγ`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hγ hγ₀`.
+
+Establish `h` using `hγ₀.trans hγ.symm`. Rewrite `h` using `[QuotientGroup.eq]`. Use `⟨⟨(γ₀⁻¹ * γ : Γ), (γ₀⁻¹ * γ : Γ).2, ?_⟩, trivial, Subtype.ext (by simp)⟩` and prove the remaining obligations. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Subgroup.coe_mul, Subgroup.coe_inv]`.
+
+Use `group`. Conclude with `((Set.finite_univ.image _).subset hsub).subset Set.inter_subset_right`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, Set.inter_empty]`. Conclude with `Set.finite_empty`.
+-/
 theorem finite_support_conj : ∀ (G : Type) [Group G] (Γ K : Subgroup G) (f : G → ℂ), (∀ k ∈ K, ∀ g, f (g * k) = f g) →
     (Function.support fun q : G ⧸ K => f (Quotient.out q)).Finite → ∀ x : G, Finite (GlobalTheory.LKLoc.locPart Γ K x) →
     (Function.support fun γ : Γ => f (x⁻¹ * γ * x)).Finite := by

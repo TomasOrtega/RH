@@ -10,6 +10,31 @@ universe u
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+It suffices to establish `H : ∀ n : ℕ, ∀ (S : Type u) [CommRing S] [IsRegularLocalRing S], (maximalIdeal S).spanFinrank = n → ∃ rs : List S, IsRegular S rs ∧ ofList rs = maximalIdeal S ∧ (rs.length : WithBot ℕ∞) = ringKrullDim S from H _ R rfl`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `S _ _ hn`.
+
+Establish `hfg : (maximalIdeal S).FG` using `(maximalIdeal S).fg_of_isNoetherianRing`. Establish `hbot : maximalIdeal S = ⊥` using `(Submodule.spanFinrank_eq_zero_iff_eq_bot hfg).mp hn`. Use `⟨[], IsRegular.nil S S, by simp [hbot], ?_⟩` and prove the remaining obligations. Rewrite using `[← (isRegularLocalRing_iff S).mp inferInstance, hn]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `S _ _ hn`. Use `IsRegularLocalRing.isDomain (R := S)` as an intermediate fact. Establish `hfg : (maximalIdeal S).FG` using `(maximalIdeal S).fg_of_isNoetherianRing`. Establish `hjac : maximalIdeal S ≤ jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`.
+
+Establish `hsq : ¬ maximalIdeal S ≤ maximalIdeal S ^ 2`. Introduce `hle`. Establish `: maximalIdeal S = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg (by simpa [pow_two, smul_eq_mul] using hle) hjac`. Rewrite `hn` using `[this]`. Simplify using `at hn`.
+
+Take `⟨x, hx, hx2⟩` from `Set.not_subset.mp hsq`. Establish `hx0 : x ≠ 0` using `fun h ↦ hx2 (h ▸ zero_mem _)`. Establish `hne : span {x} ≠ ⊤` using `fun h ↦ (IsLocalRing.maximalIdeal.isMaximal S).ne_top (top_le_iff.mp (h ▸ (span_singleton_le_iff_mem _).mpr hx))`. Establish `: Nontrivial (S ⧸ span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsLocalRing (S ⧸ span {x})` using `.of_surjective' _ Ideal.Quotient.mk_surjective`.
+
+Take `⟨hreg, hdim⟩` from `isRegularLocalRing_quotient hx hx2`. Establish `hlt` using `spanFinrank_maximalIdeal_quotient_add_one_le hx hx2`. Establish `hB : (maximalIdeal (S ⧸ span {x})).spanFinrank = n`. Establish `h1` using `(isRegularLocalRing_iff S).mp inferInstance`. Establish `h2` using `(isRegularLocalRing_iff (S ⧸ span {x})).mp hreg`.
+
+Rewrite `hdim` using `[← h1, ← h2, hn]`. Establish `: ((maximalIdeal (S ⧸ span {x})).spanFinrank + 1 : ℕ) = n + 1` using `by exact_mod_cast hdim`. Use linear arithmetic over natural numbers and integers. Take `⟨rsB, hrsB, hofB, hlenB⟩` from `ih (S ⧸ span {x}) hB`. Set `lift : S ⧸ span {x} → S` to `Function.surjInv Ideal.Quotient.mk_surjective`.
+
+Establish `hlift : ∀ b, Ideal.Quotient.mk (span {x}) (lift b) = b` using `Function.surjInv_eq Ideal.Quotient.mk_surjective`. Set `rs'` to `rsB.map lift`. Establish `hmap : rs'.map (Ideal.Quotient.mk (span {x})) = rsB`. Simplify using `[rs', List.map_map, Function.comp_def, hlift]`. Use `⟨x :: rs', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[isRegular_cons_iff']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `fun a b h ↦ mul_left_cancel₀ hx0 h`. Rewrite using `[hmap]`. Establish `e0 : QuotSMulTop x S ≃ₗ[S] S ⧸ span {x}` using `Submodule.quotEquivOfEq _ _ (by`.
+
+Rewrite using `[← Submodule.ideal_span_singleton_smul, smul_eq_mul, Ideal.mul_top])`. Set `e : QuotSMulTop x S ≃ₗ[S ⧸ span {x}] S ⧸ span {x}` to `LinearEquiv.extendScalarsOfSurjective Ideal.Quotient.mk_surjective e0`. Conclude with `(e.isRegular_congr rsB).mpr hrsB`. Establish `h1 : (ofList rs').map (Ideal.Quotient.mk (span {x})) = (maximalIdeal S).map (Ideal.Quotient.mk (span {x}))`. Rewrite using `[Ideal.map_ofList, hmap, hofB, map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective]`.
+
+Establish `h2` using `congrArg (Ideal.comap (Ideal.Quotient.mk (span {x}))) h1`. Simplify using `only [Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker] at h2`. Rewrite using `[ofList_cons, sup_comm, h2, sup_eq_left.mpr ((span_singleton_le_iff_mem _).mpr hx)]`. Rewrite using `[List.length_cons, List.length_map, ← hdim, ← hlenB]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_isRegular_ofList_eq_maximalIdeal [IsRegularLocalRing R] :
     ∃ rs : List R, IsRegular R rs ∧ ofList rs = maximalIdeal R ∧
       (rs.length : WithBot ℕ∞) = ringKrullDim R := by
@@ -81,6 +106,17 @@ theorem exists_isRegular_ofList_eq_maximalIdeal [IsRegularLocalRing R] :
 
 open CategoryTheory Abelian
 
+/- English proof (translation)
+Use `revert hM`. Proceed by induction on `‹Module.Finite R M› using IsNoetherianRing.induction_on_isQuotientEquivQuotientPrime with`. Consider the case `subsingleton N`. Introduce `_`. Establish `: Limits.IsZero (ModuleCat.of R N)` using `ModuleCat.isZero_of_subsingleton _`.
+
+Use `this.hasProjectiveDimensionLT_zero` as an intermediate fact. Conclude with `hasProjectiveDimensionLT_of_ge _ 0 n (Nat.zero_le _)`. Consider the case `quotient N p e`. Introduce `hN`. Establish `hle : I ≤ p.1`.
+
+Introduce `a ha`. Establish `h` using `congrArg e (hN a ha (e.symm 1))`. Rewrite `h` using `[map_smul, LinearEquiv.apply_symm_apply, map_zero, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h`. Use `hI p.1 p.2 hle` as an intermediate fact.
+
+Conclude with `hasProjectiveDimensionLT_of_iso e.symm.toModuleIso n`. Consider the case `exact N₁ N₂ N₃ f g hf hg hfg h₁ h₃`. Introduce `hN`. Establish `k₁ : ∀ a ∈ I, ∀ m : N₁, a • m = 0` using `fun a ha m ↦ hf (by rw [map_smul, hN a ha, map_zero])`. Establish `k₃ : ∀ a ∈ I, ∀ m : N₃, a • m = 0` using `fun a ha m ↦ by`.
+
+Take `⟨m, rfl⟩` from `hg m`. Rewrite using `[← map_smul, hN a ha, map_zero]`. Establish `hS` using `ModuleCat.shortComplex_shortExact (ModuleCat.shortComplexOfCompEqZero f g (LinearMap.ext fun x ↦ hfg.apply_apply_eq_zero x)) hfg hf hg`. Conclude with `hS.hasProjectiveDimensionLT_X₂ n (h₁ k₁) (h₃ k₃)`.
+-/
 theorem hasProjectiveDimensionLT_of_forall_prime [IsNoetherianRing R] (n : ℕ) (I : Ideal R)
     (hI : ∀ q : Ideal R, q.IsPrime → I ≤ q →
       HasProjectiveDimensionLT (ModuleCat.of R (R ⧸ q)) n)
@@ -116,6 +152,11 @@ theorem hasProjectiveDimensionLT_of_forall_prime [IsNoetherianRing R] (n : ℕ) 
       hfg hf hg
     exact hS.hasProjectiveDimensionLT_X₂ n (h₁ k₁) (h₃ k₃)
 
+/- English proof (translation)
+Take `⟨rs, hreg, hof, hlen⟩` from `exists_isRegular_ofList_eq_maximalIdeal (R := R)`. Establish `hrs : rs.length = d` using `by rw [hd] at hlen; exact_mod_cast hlen`. Establish `h` using `ModuleCat.projectiveDimension_quotient_eq_length.{u} (R := R) rs hreg`. Establish `h' : HasProjectiveDimensionLE (ModuleCat.of R (Shrink.{u} (R ⧸ ofList rs))) d` using `(projectiveDimension_le_iff _ d).mp (by rw [h, hrs])`. Set `e : Shrink.{u} (R ⧸ ofList rs) ≃ₗ[R] R ⧸ maximalIdeal R` to `(Shrink.linearEquiv R _).trans (Submodule.quotEquivOfEq _ _ hof)`.
+
+Conclude with `hasProjectiveDimensionLT_of_iso e.toModuleIso (d + 1)`.
+-/
 theorem hasProjectiveDimensionLT_residueField [IsRegularLocalRing R] {d : ℕ}
     (hd : ringKrullDim R = d) :
     HasProjectiveDimensionLT (ModuleCat.of R (R ⧸ maximalIdeal R)) (d + 1) := by
@@ -130,6 +171,27 @@ theorem hasProjectiveDimensionLT_residueField [IsRegularLocalRing R] {d : ℕ}
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hprime : ∀ p : Ideal R, p.IsPrime → HasProjectiveDimensionLT (ModuleCat.of R (R ⧸ p)) (n + 1)`. Introduce `p`. Proceed by induction on `p using WellFoundedGT.induction with`. Consider the case `_ p ih`. Introduce `hp`.
+
+Distinguish the cases in `hpm : p = maximalIdeal R`. Substitute `hpm` using the available equality. Conclude with `hk`. Establish `hlt : p < maximalIdeal R` using `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hp.ne_top) hpm`. Take `⟨x, hxm, hxp⟩` from `Set.exists_of_ssubset hlt`.
+
+Set `N` to `R ⧸ p`. Establish `hx0 : Ideal.Quotient.mk p x ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Establish `reg : IsSMulRegular N x`. Introduce `a b h`.
+
+Simplify using `only [Algebra.smul_def] at h`. Conclude with `mul_left_cancel₀ hx0 h`. Establish `hS` using `IsSMulRegular.smulShortComplex_shortExact (M := ModuleCat.of R N) reg`. Establish `h3 : HasProjectiveDimensionLT (ModuleCat.of R (QuotSMulTop x N)) (n + 1)`. Use `hasProjectiveDimensionLT_of_forall_prime (n + 1) (p ⊔ span {x}) ?_ _ ?_` and prove the remaining obligations.
+
+Introduce `q hq hle`. Conclude with `ih q (lt_of_le_of_ne (le_sup_left.trans hle) (fun h ↦ hxp (h ▸ hle (le_sup_right (a := p) ((span_singleton_le_iff_mem _).mp le_rfl))))) hq`. Introduce `a ha m`. Establish `hann : p ⊔ span {x} ≤ Module.annihilator R (QuotSMulTop x N)`. Use `sup_le ?_ ((span_singleton_le_iff_mem _).mpr (QuotSMulTop.mem_annihilator N x))` and prove the remaining obligations.
+
+Introduce `b hb`. Rewrite using `[Module.mem_annihilator]`. Introduce `m`. Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective _ m`. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`.
+
+Rewrite using `[← map_smul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem.mpr (p.mul_mem_right m hb), map_zero]`. Conclude with `Module.mem_annihilator.mp (hann ha) m`. Apply `ModuleCat.hasProjectiveDimensionLT_of_forall_finite` to reduce the goal to its premises. Introduce `L _`. Establish `zero` using `HasProjectiveDimensionLT.subsingleton (ModuleCat.of R (QuotSMulTop x N)) (n + 1) (n + 2) (by omega) L`.
+
+Establish `exac` using `Ext.contravariant_sequence_exact₁' hS L (n + 1) (n + 2) (add_comm 1 (n + 1))`. Establish `epi` using `exac.epi_f ((@AddCommGrpCat.isZero_of_subsingleton _ zero).eq_zero_of_tgt _)`. Establish `: (ModuleCat.smulShortComplex (ModuleCat.of R N) x).f = x • 𝟙 (ModuleCat.of R N)` using `rfl`. Simplify using `only [this, AddCommGrpCat.epi_iff_surjective, AddCommGrpCat.hom_ofHom] at epi`. Use `by_contra! ntr`.
+
+Establish `: x ∈ (Module.annihilator R (Ext (ModuleCat.of R N) L (n + 1))).jacobson` using `(IsLocalRing.maximalIdeal_le_jacobson _) hxm`. Use `absurd Submodule.top_ne_pointwise_smul_of_mem_jacobson_annihilator this`. Rewrite using `[eq_comm, eq_top_iff]`. Introduce `y hy`. Break down `epi y with ⟨z, hz⟩` into its components or cases.
+
+Simplify using `only [ModuleCat.smulShortComplex, Ext.mk₀_smul, Ext.bilinearComp_apply_apply, Ext.smul_comp, Ext.mk₀_id_comp] at hz`. Simplify `Submodule.smul_mem_pointwise_smul _ _ ⊤ trivial` using `[← hz]`. Conclude with `hasProjectiveDimensionLT_of_forall_prime (n + 1) ⊥ (fun q hq _ ↦ hprime q hq) M (fun a ha m ↦ by rw [(Submodule.mem_bot R).mp ha, zero_smul])`.
+-/
 theorem hasProjectiveDimensionLT_of_residueField [IsLocalRing R] [IsNoetherianRing R] (n : ℕ)
     (hk : HasProjectiveDimensionLT (ModuleCat.of R (R ⧸ maximalIdeal R)) (n + 1))
     (M : Type u) [AddCommGroup M] [Module R M] [Module.Finite R M] :
@@ -189,6 +251,9 @@ theorem hasProjectiveDimensionLT_of_residueField [IsLocalRing R] [IsNoetherianRi
   exact hasProjectiveDimensionLT_of_forall_prime (n + 1) ⊥ (fun q hq _ ↦ hprime q hq) M
     (fun a ha m ↦ by rw [(Submodule.mem_bot R).mp ha, zero_smul])
 
+/- English proof (translation)
+The claim follows from `hasProjectiveDimensionLT_of_residueField d (hasProjectiveDimensionLT_residueField hd) M`.
+-/
 theorem hasProjectiveDimensionLT_of_isRegularLocalRing [IsRegularLocalRing R] {d : ℕ}
     (hd : ringKrullDim R = d) (M : Type u) [AddCommGroup M] [Module R M] [Module.Finite R M] :
     HasProjectiveDimensionLT (ModuleCat.of R M) (d + 1) :=

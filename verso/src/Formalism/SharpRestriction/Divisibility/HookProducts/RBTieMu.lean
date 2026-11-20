@@ -14,10 +14,18 @@ section Mu
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dualLat_iff {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (A : Submodule (𝓞 K) V) (f : Module.Dual K V) :
     f ∈ Formalism.HN.dualLat A ↔ ∀ x ∈ A, f x ∈ Set.range (algebraMap (𝓞 K) K) := Iff.rfl
 
+/- English proof (translation)
+Establish `key : ∀ {ι : Type} [Fintype ι] (u : ι → ℂ), ((∑ i, ‖u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u`. Introduce `ι _ u`. Use `push_cast`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Unfold `Formalism.HermitianLatticesTheory.cnorm`.
+
+Use `congr 1`. Establish `h : ((∑ i, ‖(W *ᵥ c) i‖ ^ 2 : ℝ) : ℂ) = ((∑ i, ‖c i‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[key, key, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hW, Matrix.one_mulVec]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem cnorm_isom {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (W : Matrix m n ℂ)
     (hW : Wᴴ * W = 1) (c : n → ℂ) : Formalism.HermitianLatticesTheory.cnorm (W *ᵥ c) = Formalism.HermitianLatticesTheory.cnorm c := by
   have key : ∀ {ι : Type} [Fintype ι] (u : ι → ℂ), ((∑ i, ‖u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u := by
@@ -31,6 +39,27 @@ theorem cnorm_isom {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [Decidab
       Matrix.one_mulVec]
   exact_mod_cast h
 
+/- English proof (translation)
+Use `set ψ : Module.Dual K (Fin n → K) →ₗ[K] Module.Dual K A.V := Module.Dual.transpose e.symm.toLinearMap with hψ`. Establish `hψx : ∀ f x, ψ f x = f (e.symm x)` using `fun f x => by simp [hψ, Module.Dual.transpose_apply]`. Establish `hnA : ∀ v f, Formalism.HermitianLatticesTheory.normAt A.b.dualBasis (Formalism.HN.dualFrame A.X) v (ψ f) = Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) v f`. Introduce `v f`. Establish `hv` using `vecAt_map (Pi.basisFun K (Fin n)).dualBasis A.b.dualBasis v ψ f`.
+
+Establish `hT : LinearMap.toMatrix (Pi.basisFun K (Fin n)).dualBasis A.b.dualBasis ψ = (LinearMap.toMatrix A.b (Pi.basisFun K (Fin n)) e.symm.toLinearMap)ᵀ`. Rewrite using `[hψ, LinearMap.toMatrix_transpose]`. Establish `hW : ((A.X v)ᵀ * (cQ A.b e v)ᵀ) = ((cU A.b A.X XE e v)ᴴ)ᵀ * (XE v)ᵀ`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, cQ_mul_XA A.b A.X XE e v hmet (hXA v) (hXE v)]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord]`.
+
+Rewrite using `[hv, hT, dualFrame_inv A.X v (hXA v), dualFrame_inv XE v (hXE v), Matrix.mulVec_mulVec]`. Establish `hQ : (LinearMap.toMatrix A.b (Pi.basisFun K (Fin n)) e.symm.toLinearMap)ᵀ.map v.embedding = (cQ A.b e v)ᵀ` using `rfl`. Rewrite using `[hQ, hW, ← Matrix.mulVec_mulVec, cnorm_isom]`. Rewrite using `[conjT_transpose_isom, cU_conj_mul A.b A.X XE e v hmet (hXE v), Matrix.transpose_one]`. Establish `hn : ∀ f, ‖((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) f‖ = ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) f‖`.
+
+Introduce `f`. Establish `h2 : ‖((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) f‖ ^ 2 = ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE) f‖ ^ 2`. Rewrite using `[AddMonoidHom.comp_apply, Formalism.HN.PlaceOperatorNorms.norm_sq_realize, Formalism.HN.PlaceOperatorNorms.norm_sq_realize]`. Simplify using `only [LinearMap.toAddMonoidHom_coe, hnA]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg _), h2, Real.sqrt_sq (norm_nonneg _)]`.
+
+Establish `hzl : Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)) (Formalism.HN.dualLat A.L) = Formalism.HN.zl ((Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)).comp ψ.toAddMonoidHom) (Formalism.HN.d …`. Use extensionality with `y`. Rewrite using `[Formalism.HN.satR_mem_zl, Formalism.HN.satR_mem_zl]`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, hg, rfl⟩`. Use `⟨Module.Dual.transpose e.toLinearMap g, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[mem_dualLat_iff]`. Introduce `x hx`. Simplify using `only [Module.Dual.transpose_apply, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+
+Conclude with `hg (e x) (by rw [hlat]; exact ⟨x, hx, rfl⟩)`. Use `congr 1`. Conclude with `LinearMap.ext fun x => by simp [hψx, Module.Dual.transpose_apply]`. Introduce and unpack `⟨f, hf, rfl⟩`. Use `⟨ψ f, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite `hf`, the goal using `[mem_dualLat_iff]`. Introduce `z hz`. Rewrite `hz` using `[hlat]`. Take `⟨x, hx, rfl⟩` from `hz`. Rewrite using `[hψx]`.
+
+Simplify using `using hf x hx`. Establish `hs : Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize A.b.dualBasis (Formalism.HN.dualFrame A.X)) (Formalism.HN.dualLat A.L) = Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)).dualBasis (Formalism.HN.dualFrame XE)) (Formalism.HN.d …`. Rewrite using `[← slope_eq_of_norm_eq _ _ hn (Formalism.HN.dualLat L)]`. Unfold `Formalism.HN.slope`. Rewrite using `[hzl]`.
+
+Unfold `Formalism.BasicNotions.HLat.muDual Formalism.BasicNotions.HLat.dualB Formalism.BasicNotions.HLat.dualX Formalism.BasicNotions.HLat.dualL Formalism.HN.muDef`. Rewrite using `[hs]`.
+-/
 theorem muDual_tie (A : Formalism.BasicNotions.HLat K) {n : ℕ} (L : Submodule (𝓞 K) (Fin n → K))
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (e : (Fin n → K) ≃ₗ[K] A.V)
     (hlat : A.L = L.map ((e : (Fin n → K) →ₗ[K] A.V).restrictScalars (𝓞 K)))

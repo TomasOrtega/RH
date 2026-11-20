@@ -16,12 +16,21 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 def OmV {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (v : S.V) : Prop :=
   v ∈ Submodule.span E (Set.range F'.fvec) ∧ ∀ a, S.hT (F.fvec a) v = if a = Fin.last r then 1 else 0
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_cs {T : E} (F : FlagG S r T) (i : Fin r) : F.fvec i.castSucc = F.e i := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Simplify using `[FlagG.fvec]`.
+-/
 theorem fvec_last {T : E} (F : FlagG S r T) : F.fvec (Fin.last r) = F.z := by
   simp [FlagG.fvec]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem hT_comb {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E) (a : Fin (r + 1)) :
     S.hT (F.fvec a) (∑ b, c b • F'.fvec b) = (Zhat F F' *ᵥ c) a := by
   rw [map_sum]
@@ -30,6 +39,9 @@ theorem hT_comb {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1
   rw [map_smul, smul_eq_mul, mul_comm]
   rfl
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hd`. Establish `hc : Zhat F F' *ᵥ c = 0` using `funext fun a => by rw [← hT_comb]; exact h a`. Rewrite using `[Matrix.eq_zero_of_mulVec_eq_zero hdet hc]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_orth {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet : (Zhat F F').det ≠ 0)
     {d : S.V} (hd : d ∈ Submodule.span E (Set.range F'.fvec)) (h : ∀ a, S.hT (F.fvec a) d = 0) : d = 0 := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun E).1 hd
@@ -37,6 +49,11 @@ theorem eq_zero_of_orth {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet :
   rw [Matrix.eq_zero_of_mulVec_eq_zero hdet hc]
   simp
 
+/- English proof (translation)
+Use `set c : Fin (r + 1) → E := (Zhat F F')⁻¹ *ᵥ Pi.single (Fin.last r) 1 with hc`. Use `⟨∑ b, c b • F'.fvec b, (Submodule.mem_span_range_iff_exists_fun E).2 ⟨c, rfl⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hT_comb, hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`. Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[ha]`.
+-/
 theorem exists_om {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet : (Zhat F F').det ≠ 0) :
     ∃ v, OmV F F' v := by
   set c : Fin (r + 1) → E := (Zhat F F')⁻¹ *ᵥ Pi.single (Fin.last r) 1 with hc
@@ -46,12 +63,20 @@ theorem exists_om {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet : (Zhat
   · subst ha; simp
   · simp [ha]
 
+/- English proof (translation)
+Use `eq_zero_of_orth F F' hdet (Submodule.sub_mem _ hv.1 hw.1) fun a => by` as an intermediate fact. Rewrite using `[map_sub, hv.2, hw.2, sub_self]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem om_unique {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet : (Zhat F F').det ≠ 0) {v w : S.V}
     (hv : OmV F F' v) (hw : OmV F F' w) : v = w := by
   have := eq_zero_of_orth F F' hdet (Submodule.sub_mem _ hv.1 hw.1) fun a => by
     rw [map_sub, hv.2, hw.2, sub_self]
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Use `set v := ∑ b, c b • F'.fvec b with hv`. Establish `hvs : v ∈ Submodule.span E (Set.range F'.fvec)` using `(Submodule.mem_span_range_iff_exists_fun E).2 ⟨c, rfl⟩`. Use `eq_zero_of_orth F F' hdet (Submodule.sub_mem _ hvs (Submodule.smul_mem _ (S.hT F.z v) hΩ.1)) fun a => by` as an intermediate fact. Rewrite using `[map_sub, map_smul, hΩ.2, smul_eq_mul]`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations.
+
+Rewrite using `[fvec_last]`. Simplify using the standard rewrite rules. Rewrite using `[fvec_cs, hc i]`. Simplify using `[Fin.castSucc_ne_last]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem comb_eq {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (hdet : (Zhat F F').det ≠ 0) {Ω : S.V}
     (hΩ : OmV F F' Ω) (c : Fin (r + 1) → E) (hc : ∀ i : Fin r, S.hT (F.e i) (∑ b, c b • F'.fvec b) = 0) :
     ∑ b, c b • F'.fvec b = S.hT F.z (∑ b, c b • F'.fvec b) • Ω := by
@@ -75,6 +100,15 @@ variable {D : Formalism.BasicNotions.D7}
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `c hc`. Establish `hZ' : Zhat F0 F'₂.fl = Zhat F0 F'.fl` using `hZ`. Establish `hdet₂ : (Zhat F0 F'₂.fl).det ≠ 0` using `hdet`. Establish `hdet' : (Zhat F0 F'.fl).det ≠ 0` using `by rw [← hZ']; exact hdet`. Establish `hc₂ : ∀ i, (VS D).hT (F0.e i) (∑ b, c b • F'₂.fl.fvec b) = 0` using `hc`.
+
+Establish `hc' : ∀ i, (VS D).hT (F0.e i) (∑ b, c b • F'.fl.fvec b) = 0`. Introduce `i`. Rewrite using `[← fvec_cs, hT_comb, ← hZ', ← hT_comb, fvec_cs]`. Conclude with `hc₂ i`. Establish `hμ : (VS D).hT F0.z (∑ b, c b • F'.fl.fvec b) = (VS D).hT F0.z (∑ b, c b • F'₂.fl.fvec b)`.
+
+Rewrite using `[← fvec_last, hT_comb, hT_comb, hZ']`. Establish `e₂` using `comb_eq F0 F'₂.fl hdet₂ h₂ c hc₂`. Establish `e'` using `comb_eq F0 F'.fl hdet' h' c hc'`. Establish `hs : ∑ b, c b • (frame F' b - frame F'₂ b) = ∑ b, c b • F'.fl.fvec b - ∑ b, c b • F'₂.fl.fvec b`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => smul_sub _ _ _`. Rewrite using `[hs, e', e₂, hμ, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ hX`.
+-/
 theorem omCls_of_om {T T' : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (F'₂ F' : LFlag (VS D) D.R.rS T')
     (hZ : ZhatL (lf D F0) F'₂ = ZhatL (lf D F0) F') (hdet : (ZhatL (lf D F0) F'₂).det ≠ 0) {Ω₂ Ω' : (VS D).V}
     (h₂ : OmV F0 F'₂.fl Ω₂) (h' : OmV F0 F'.fl Ω') (hX : Ω' - Ω₂ ∈ Xsp (lf D F0)) : OmCls F0 F'₂ F' := by
@@ -129,6 +163,13 @@ def OmRep : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hrows γ Z hC F'₂ φ φ' hS F' hP`. Take `⟨hdγ, hdZ⟩` from `h0 hrows γ Z hC F'₂ φ φ' hS F' hP`. Establish `hZ₂ : ZhatL (lf D F0) F'₂ = Z` using `hS.1`. Establish `hZ' : ZhatL (lf D F0) F' = Z` using `hP.1.2.2.2.2`. Establish `hd₂ : (ZhatL (lf D F0) F'₂).det ≠ 0` using `by rw [hZ₂]; exact hdZ`.
+
+Establish `hd' : (ZhatL (lf D F0) F').det ≠ 0` using `by rw [hZ']; exact hdZ`. Take `⟨Ωγ, hγ⟩` from `exists_om F0 (repF γ).fl hdγ`. Take `⟨Ω₂, h₂⟩` from `exists_om F0 F'₂.fl hd₂`. Take `⟨Ω', h'⟩` from `exists_om F0 F'.fl hd'`. Establish `e1` using `h1 hrows γ Z hC F'₂ φ φ' hS hdγ hdZ Ω₂ Ωγ h₂ hγ`.
+
+Establish `e2` using `h2 hrows γ Z hC hdγ hdZ F' hP Ω' Ωγ h' hγ`. Use `omCls_of_om F0 F'₂ F' (hZ₂.trans hZ'.symm) hd₂ h₂ h' ?_` and prove the remaining obligations. Establish `: Ω' - Ω₂ = (Ω' - Ωγ) - (Ω₂ - Ωγ)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ e2 e1`.
+-/
 theorem omPart_of (h0 : OmDet Zd u u' F0 what₂) (h1 : OmLoc Zd u u' F0 what₂) (h2 : OmRep u u' F0 what₂) :
     OmPart Zd u u' F0 what₂ := by
   intro hrows γ Z hC F'₂ φ φ' hS F' hP

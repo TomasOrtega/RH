@@ -7,6 +7,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GlobalThe
 
 namespace CoverDenseAlt
 
+/- English proof (translation)
+Establish `hy : (fun i => algebraMap L L' (x i)) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `(map_eq_zero_iff _ (algebraMap L L').injective).1 (congrFun h i)`.
+
+Establish `key : ∀ v : FinitePlace L', Real.log (⨆ i, v (c * algebraMap L L' (x i))) = Real.log (v c) + Real.log (⨆ i, v (algebraMap L L' (x i)))`. Introduce `v`. Establish `hvc : 0 < v c` using `FinitePlace.pos_iff.2 hc`. Establish `h1 : (⨆ i, v (c * algebraMap L L' (x i))) = v c * ⨆ i, v (algebraMap L L' (x i))`. Rewrite using `[Real.mul_iSup_of_nonneg hvc.le]`.
+
+Use `iSup_congr fun i => ?_` and prove the remaining obligations. Conclude with `map_mul v _ _`. Rewrite using `[h1, Real.log_mul hvc.ne' (GroundTheory.Heights₂.Heights.iSup_place_pos hy v).ne']`. Rewrite using `[finsum_congr key, finsum_add_distrib (SecLow.log_support_finite hc) (GroundTheory.Heights₂.Heights.support_log_iSup_place_finite hy), SecLow.product_formula c hc, GroundTheory.Heights₂.Heights.finsum_log_iSup_algebraMap hx]`.
+-/
 theorem finsum_block {L L' : Type} [Field L] [NumberField L] [Field L'] [NumberField L'] [Algebra L L']
     {J : Type} [Fintype J] (x : J → L) (hx : x ≠ 0) (c : L') (hc : c ≠ 0) :
     ∑ᶠ v : FinitePlace L', Real.log (⨆ i, v (c * algebraMap L L' (x i))) =
@@ -30,6 +37,33 @@ theorem finsum_block {L L' : Type} [Field L] [NumberField L] [Field L'] [NumberF
     (GroundTheory.Heights₂.Heights.support_log_iSup_place_finite hy), SecLow.product_formula c hc,
     GroundTheory.Heights₂.Heights.finsum_log_iSup_algebraMap hx]
 
+/- English proof (translation)
+Introduce `K _ ι _ A L _ _ L' _ _ e w c hw hc`. Use `letI : Algebra L L' := e.toAlgebra`. Use `haveI : IsScalarTower ℚ L L' := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Establish `hyk : ∀ k, (fun i => w ⟨k, i⟩) ≠ 0`. Introduce `k h`.
+
+Take `⟨i, hi⟩` from `hw k`. Conclude with `hi (congrFun h i)`. Establish `hyk' : ∀ k, (fun i => c k * algebraMap L L' (w ⟨k, i⟩)) ≠ 0`. Introduce `k h`. Take `⟨i, hi⟩` from `hw k`.
+
+Establish `h2` using `congrFun h i`. Simplify using `only [Pi.zero_apply, mul_eq_zero, hc k, false_or] at h2`. Conclude with `hi ((map_eq_zero_iff _ (algebraMap L L').injective).1 h2)`. Establish `fin' : (∑ᶠ v : FinitePlace L', ∑ k, (A.a k : ℝ) * Real.log (⨆ i, v (c k * e (w ⟨k, i⟩)))) = ∑ k, (A.a k : ℝ) * (-(∑ σ : L' →+* ℂ, Real.log ‖σ (c k)‖) + Module.finrank L L' * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩)))`. Rewrite using `[finsum_sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_finsum]`. Use `congr 1`. Conclude with `finsum_block _ (hyk k) _ (hc k)`. Introduce `k _`.
+
+Conclude with `(GroundTheory.Heights₂.Heights.support_log_iSup_place_finite (hyk' k)).subset (Function.support_mul_subset_right _ _)`. Establish `finL : (∑ᶠ v : FinitePlace L, ∑ k, (A.a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))) = ∑ k, (A.a k : ℝ) * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩))`. Rewrite using `[finsum_sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => (mul_finsum _ _).symm`. Introduce `k _`.
+
+Conclude with `(GroundTheory.Heights₂.Heights.support_log_iSup_place_finite (hyk k)).subset (Function.support_mul_subset_right _ _)`. Establish `arch' : ∀ σ : L' →+* ℂ, Real.log (A.h fun p => σ (c p.1 * e (w p))) = ∑ k, (A.a k : ℝ) * Real.log ‖σ (c k)‖ + Real.log (A.h fun p => (σ.comp (algebraMap L L')) (w p))`. Introduce `σ`. Establish `hσc : ∀ k, σ (c k) ≠ 0` using `fun k => (map_ne_zero σ).2 (hc k)`. Establish `hpos : 0 < A.h fun p => (σ.comp (algebraMap L L')) (w p)`.
+
+Use `A.pos _ fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw k`. Conclude with `⟨i, (map_ne_zero _).2 hi⟩`. Establish `hs` using `A.smul (fun k => σ (c k)) (fun p => (σ.comp (algebraMap L L')) (w p)) hσc`. Establish `hfun : (fun p : (Σ k, ι k) => σ (c p.1 * e (w p))) = fun p => σ (c p.1) * (σ.comp (algebraMap L L')) (w p)`.
+
+Use function extensionality and compare the values at `p`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hne : ∀ k ∈ Finset.univ, ‖σ (c k)‖ ^ A.a k ≠ 0` using `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hσc k))`. Rewrite using `[hfun, hs, Real.log_mul (Finset.prod_ne_zero_iff.2 hne) hpos.ne', Real.log_prod hne]`.
+
+Simplify using `only [Real.log_zpow]`. Establish `archSum : ∑ σ : L' →+* ℂ, Real.log (A.h fun p => σ (c p.1 * e (w p))) = ∑ k, (A.a k : ℝ) * ∑ σ : L' →+* ℂ, Real.log ‖σ (c k)‖ + Module.finrank L L' * ∑ τ : L →+* ℂ, Real.log (A.h fun p => τ (w p))`. Rewrite using `[Finset.sum_congr rfl fun σ _ => arch' σ, Finset.sum_add_distrib, Finset.sum_comm, GroundTheory.Heights₂.Heights.sum_embeddings_restrict (fun τ => Real.log (A.h fun p => τ (w p)))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Establish `hmul` using `Module.finrank_mul_finrank ℚ L L'`. Establish `hpos' : 0 < Module.finrank ℚ L'` using `Module.finrank_pos`. Establish `hposL : 0 < Module.finrank ℚ L` using `Module.finrank_pos`. Establish `hn : (Module.finrank L L' : ℝ) ≠ 0`.
+
+Use `Nat.cast_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `hmul` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hnL : (Module.finrank ℚ L : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hposL.ne'`. Establish `hsplit : (∑ k, (A.a k : ℝ) * (-(∑ σ : L' →+* ℂ, Real.log ‖σ (c k)‖) + Module.finrank L L' * ∑ᶠ v : FinitePlace L, Real.log (⨆ i, v (w ⟨k, i⟩)))) = -(∑ k, (A.a k : ℝ) * ∑ σ : L' →+* ℂ, Real.log ‖σ (c k)‖) + Module.finrank L L' * ∑ k, (A.a k : ℝ) * ∑ᶠ v : FinitePlace L, Real.log (⨆ …`.
+
+Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `show (Module.finrank ℚ L' : ℝ)⁻¹ * ((∑ᶠ v : FinitePlace L', ∑ k, (A.a k : ℝ) * Real.log (⨆ i, v (c k * e (w ⟨k, i⟩)))) + ∑ σ : L' →+* ℂ, Real.log (A.h fun p => σ (c p.1 * e (w p)))) = (Module.finrank ℚ L : ℝ)⁻¹ * ((∑ᶠ v : FinitePlace L, ∑ k, (A.a k : ℝ) * Real.log (⨆ i, v (w ⟨k, …`. Rewrite using `[fin', archSum, finL, hsplit, ← hmul]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lineHt_invariant_base_change_scaling : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (A : HermLine ι) (L : Type) [Field L] [NumberField L] (L' : Type) [Field L'] [NumberField L'] (e : L →+* L') (w : (Σ k, ι k) → L) (c : K → L'), (∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) → (∀ k, c k ≠ 0) → lineHt A L' (fun p => c p.1 * e (w p)) = lineHt A L w := by
   intro K _ ι _ A L _ _ L' _ _ e w c hw hc
   letI : Algebra L L' := e.toAlgebra

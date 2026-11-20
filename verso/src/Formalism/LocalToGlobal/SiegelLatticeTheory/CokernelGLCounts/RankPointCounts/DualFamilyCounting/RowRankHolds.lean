@@ -15,6 +15,41 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Introduce `D X b`. Use `set S := Submodule.span D.host.E (aaLbS X b : Set (VS D).V) with hSdef`. Establish `hSfin : finrank D.host.E S = D.R.k + 1`. Rewrite using `[hSdef, span_aaLbS, finrank_span_Lb]`. Establish `hSle : ∀ x ∈ aaLbS X b, x ∈ S` using `fun x hx => Submodule.subset_span hx`.
+
+Set `B : Basis (Fin (D.R.k + 1)) D.host.E S` to `Module.finBasisOfFinrankEq D.host.E S hSfin`. Set `eS : S ≃ₗ[D.host.E] (Fin (D.R.k + 1) → D.host.E)` to `B.equivFun`. Set `Φ : (Fin (D.R.k + 1) → D.host.E) →ₗ[𝓞 D.host.E] (VS D).V` to `(S.subtype.comp eS.symm.toLinearMap).restrictScalars (𝓞 D.host.E)`. Establish `hΦ : ∀ y, Φ y = ((eS.symm y : S) : (VS D).V)` using `fun y => rfl`. Establish `hΦinj : Function.Injective Φ`.
+
+Introduce `y y' h`. Rewrite `h` using `[hΦ, hΦ]`. Conclude with `eS.symm.injective (Subtype.ext h)`. Set `A : Submodule (𝓞 D.host.E) (Fin (D.R.k + 1) → D.host.E)` to `(aaLbS X b).comap Φ`. Establish `hmemA : ∀ y, y ∈ A ↔ Φ y ∈ aaLbS X b` using `fun y => Iff.rfl`.
+
+Establish `hmap : A.map Φ = aaLbS X b`. Use `le_antisymm (Submodule.map_comap_le _ _) fun x hx => ?_` and prove the remaining obligations. Use `⟨eS ⟨x, hSle x hx⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Φ (eS ⟨x, hSle x hx⟩) ∈ aaLbS X b`. Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `hx`. Use `show Φ (eS ⟨x, hSle x hx⟩) = x`. Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]`. Establish `hAfg : A.FG` using `Submodule.fg_of_fg_map_injective Φ hΦinj (by rw [hmap]; exact fg_aaLbS X b)`. Establish `hAspan : Submodule.span D.host.E (A : Set (Fin (D.R.k + 1) → D.host.E)) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `key : ∀ (v : (VS D).V) (hv : v ∈ S), eS ⟨v, hv⟩ ∈ Submodule.span D.host.E (A : Set _)`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `show Φ (eS ⟨x, _⟩) ∈ aaLbS X b`. Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]`. Conclude with `hx`.
+
+Consider the case `zero`. Establish `: eS ⟨0, S.zero_mem⟩ = 0`. Rewrite using `[show (⟨0, S.zero_mem⟩ : S) = 0 from rfl, map_zero]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y hx hy ihx ihy`. Establish `: eS ⟨x + y, S.add_mem hx hy⟩ = eS ⟨x, hx⟩ + eS ⟨y, hy⟩`. Rewrite using `[← map_add]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul c x hx ihx`. Establish `: eS ⟨c • x, S.smul_mem c hx⟩ = c • eS ⟨x, hx⟩`. Rewrite using `[← map_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ihx`. Use `key _ (eS.symm y).2` as an intermediate fact. Rewrite `this` using `[Subtype.coe_eta, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Set `Az : Submodule ℤ (Fin (D.R.k + 1) → D.host.E)` to `A.restrictScalars ℤ`.
+
+Establish `h1 : Module.Finite (𝓞 D.host.E) A` using `Module.Finite.iff_fg.2 hAfg`. Establish `h2 : Module.Finite ℤ A` using `Module.Finite.trans (𝓞 D.host.E) _`. Establish `h3 : Module.Finite ℤ Az` using `Module.Finite.equiv ((Submodule.restrictScalarsEquiv ℤ (𝓞 D.host.E) _ A).restrictScalars ℤ).symm`. Establish `hlat : Submodule.IsLattice ℚ Az`. Use `⟨Module.Finite.iff_fg.1 h3, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Submodule.span D.host.E (A : Set (Fin (D.R.k + 1) → D.host.E))` using `by rw [hAspan]; trivial`. Take `⟨n, hn, hnx⟩` from `Formalism.MainNotions.LatticeGluingRadicals.j_exists_nat_smul_mem A hx`. Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Establish `: x = (n : ℚ)⁻¹ • (n • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ hn', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hnx)`. Establish `hr : finrank ℤ Az = finrank ℚ (Fin (D.R.k + 1) → D.host.E)` using `Module.finrank_eq_of_rank_eq ((Submodule.IsLattice.rank' ℚ Az).trans (Module.finrank_eq_rank ℚ (Fin (D.R.k + 1) → D.host.E)).symm)`.
+
+Set `bZ : Basis (Fin (finrank ℚ (Fin (D.R.k + 1) → D.host.E))) ℤ Az` to `Module.finBasisOfFinrankEq ℤ Az hr`. Establish `hdim : finrank ℚ (Fin (D.R.k + 1) → D.host.E) = finrank ℚ D.host.E * (D.R.k + 1)`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_comm]`. Set `eqv : Az ≃ₗ[ℤ] ((aaLbS X b).restrictScalars ℤ)` to `{ toFun := fun y => ⟨Φ (y : Fin (D.R.k + 1) → D.host.E), (hmemA _).1 y.2⟩ invFun := fun x => ⟨eS ⟨x, hSle x x.2⟩, by show Φ (eS ⟨x, hSle x x.2⟩) ∈ aaLbS X b`. Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `x.2⟩`. Use the proof step `map_add' := fun y y' => Subtype.ext (map_add Φ (y : Fin (D.R.k + 1) → D.host.E) y')`. Use the proof step `map_smul' := fun c y => Subtype.ext (by show Φ (c • (y : Fin (D.R.k + 1) → D.host.E)) = c • Φ (y : Fin (D.R.k + 1) → D.host.E)`. Conclude with `map_zsmul Φ c _)`. Use `left_inv := fun y => Subtype.ext (by show eS ⟨Φ (y : Fin (D.R.k + 1) → D.host.E), _⟩ = (y : Fin (D.R.k + 1) → D.host.E)`.
+
+Establish `: (⟨Φ (y : Fin (D.R.k + 1) → D.host.E), hSle _ ((hmemA _).1 y.2)⟩ : S) = eS.symm y` using `Subtype.ext (hΦ _)`. Rewrite using `[this, LinearEquiv.apply_symm_apply])`. Use `right_inv := fun x => Subtype.ext (by show Φ (eS ⟨x, _⟩) = (x : (VS D).V)`. Rewrite using `[hΦ, LinearEquiv.symm_apply_apply]) }`. Conclude with `⟨(bZ.map eqv).reindex (finCongr hdim)⟩`.
+-/
 theorem rowRank_holds : RowRank := by
   intro D X b
   set S := Submodule.span D.host.E (aaLbS X b : Set (VS D).V) with hSdef

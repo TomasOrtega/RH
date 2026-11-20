@@ -24,6 +24,11 @@ def adicMk (I : Ideal A) (x : ∀ n : ℕ, A ⧸ I ^ n)
       · exact Subsingleton.elim _ _
       · simpa using h m n hle) Polynomial.X
 
+/- English proof (translation)
+Unfold `adicMk`. Rewrite using `[AdicCompletion.evalₐ_liftRingHom]`. Simplify using the standard rewrite rules. Introduce `m n hle`. Apply `Polynomial.ringHom_ext'` to reduce the goal to its premises.
+
+Conclude with `Subsingleton.elim _ _`. Simplify using `using h m n hle`.
+-/
 @[simp] theorem evalₐ_adicMk (I : Ideal A) (x : ∀ n : ℕ, A ⧸ I ^ n)
     (h : ∀ (m n : ℕ) (hle : m ≤ n), Ideal.Quotient.factorPow I hle (x n) = x m) (n : ℕ) :
     AdicCompletion.evalₐ I n (adicMk I x h) = x n := by
@@ -35,6 +40,9 @@ def adicMk (I : Ideal A) (x : ∀ n : ℕ, A ⧸ I ^ n)
     · exact Subsingleton.elim _ _
     · simpa using h m n hle
 
+/- English proof (translation)
+Proceed by induction on `x using AdicCompletion.induction_on with`. Consider the case `h x`. Simplify using `only [AdicCompletion.evalₐ_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Conclude with `AdicCompletion.Ideal.mk_eq_mk I hle x`.
+-/
 theorem factorPow_evalₐ (I : Ideal A) {m n : ℕ} (hle : m ≤ n) (x : AdicCompletion I A) :
     Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I m x := by
   induction x using AdicCompletion.induction_on with
@@ -42,6 +50,11 @@ theorem factorPow_evalₐ (I : Ideal A) {m n : ℕ} (hle : m ≤ n) (x : AdicCom
     simp only [AdicCompletion.evalₐ_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]
     exact AdicCompletion.Ideal.mk_eq_mk I hle x
 
+/- English proof (translation)
+Break down `n with _ | n` into its components or cases. Conclude with `Subsingleton.elim (h := Ideal.Quotient.subsingleton_iff.2 (by simp)) _ _`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I (n + 1) x)`. Establish `h1` using `factorPow_evalₐ I (show 1 ≤ n + 1 by omega) x`. Rewrite `hx` using `[← AdicCompletion.factorₐ_evalₐ_one, ← h1, ← ha]`.
+
+Simplify using `only [Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem] at hx`. Rewrite using `[← ha, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hx _`.
+-/
 theorem evalₐ_pow_eq_zero (I : Ideal A) {x : AdicCompletion I A}
     (hx : AdicCompletion.evalOneₐ I x = 0) (n : ℕ) : AdicCompletion.evalₐ I n x ^ n = 0 := by
   rcases n with _ | n
@@ -57,10 +70,16 @@ theorem evalₐ_pow_eq_zero (I : Ideal A) {x : AdicCompletion I A}
 def truncLog {B : Type*} [CommRing B] [Algebra ℚ B] (N : ℕ) (x : B) : B :=
   ∑ k ∈ Finset.range N, ((-1 : ℚ) ^ k / (k + 1)) • x ^ (k + 1)
 
+/- English proof (translation)
+Simplify using `[truncLog, map_rat_smul]`.
+-/
 theorem map_truncLog {B B' : Type*} [CommRing B] [Algebra ℚ B] [CommRing B'] [Algebra ℚ B']
     (f : B →+* B') (N : ℕ) (x : B) : f (truncLog N x) = truncLog N (f x) := by
   simp [truncLog, map_rat_smul]
 
+/- English proof (translation)
+Proceed by induction on `n, hle using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hle ih`. Rewrite using `[← ih, truncLog, Finset.sum_range_succ, pow_eq_zero_of_le (by omega) h, smul_zero, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem truncLog_eq_of_pow_eq_zero {B : Type*} [CommRing B] [Algebra ℚ B] {x : B} {m n : ℕ}
     (h : x ^ m = 0) (hle : m ≤ n) : truncLog n x = truncLog m x := by
   induction n, hle using Nat.le_induction with
@@ -75,6 +94,9 @@ def adicLog [Algebra ℚ A] (I : Ideal A) (u : AdicCompletion I A)
     rw [map_truncLog, factorPow_evalₐ]
     exact truncLog_eq_of_pow_eq_zero (evalₐ_pow_eq_zero I (by simp [hu]) m) hle)
 
+/- English proof (translation)
+The claim follows from `evalₐ_adicMk _ _ _ _`.
+-/
 theorem evalₐ_adicLog [Algebra ℚ A] (I : Ideal A) (u : AdicCompletion I A)
     (hu : AdicCompletion.evalOneₐ I u = 1) (n : ℕ) :
     AdicCompletion.evalₐ I n (adicLog I u hu) = truncLog n (AdicCompletion.evalₐ I n (u - 1)) :=
@@ -106,6 +128,9 @@ instance : IsScalarTower (Ainf p R) (AinfInv p R) (BdRPlus p R) :=
 instance : IsScalarTower ℚ_[p] (AinfInv p R) (BdRPlus p R) :=
   IsScalarTower.of_algebraMap_eq fun _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eq_bDeRhamPlus : BdRPlus p R = BDeRhamPlus R p := rfl
 
 def eval (n : ℕ) : BdRPlus p R →+* AinfInv p R ⧸ AinfInv.kerTheta p R ^ n :=
@@ -119,20 +144,35 @@ def fil (n : ℕ) : Ideal (BdRPlus p R) := RingHom.ker (theta p R) ^ n
 
 variable {p R}
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.ext_evalₐ h`.
+-/
 theorem ext_eval {x y : BdRPlus p R} (h : ∀ n, eval p R n x = eval p R n y) : x = y :=
   AdicCompletion.ext_evalₐ h
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.evalₐ_of _ n x`.
+-/
 @[simp] theorem eval_algebraMap (n : ℕ) (x : AinfInv p R) :
     eval p R n (algebraMap _ _ x) = Ideal.Quotient.mk _ x :=
   AdicCompletion.evalₐ_of _ n x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem theta_algebraMap (x : AinfInv p R) :
     theta p R (algebraMap _ _ x) = AinfInv.theta p R x := rfl
 
+/- English proof (translation)
+The claim follows from `map_eq_zero_iff _ (RingHom.kerLift_injective _)`.
+-/
 theorem theta_eq_zero_iff (x : BdRPlus p R) :
     theta p R x = 0 ↔ AdicCompletion.evalOneₐ (AinfInv.kerTheta p R) x = 0 :=
   map_eq_zero_iff _ (RingHom.kerLift_injective _)
 
+/- English proof (translation)
+The claim follows from `map_eq_one_iff _ (RingHom.kerLift_injective _)`.
+-/
 theorem theta_eq_one_iff (x : BdRPlus p R) :
     theta p R x = 1 ↔ AdicCompletion.evalOneₐ (AinfInv.kerTheta p R) x = 1 :=
   map_eq_one_iff _ (RingHom.kerLift_injective _)
@@ -140,6 +180,9 @@ theorem theta_eq_one_iff (x : BdRPlus p R) :
 def log (u : BdRPlus p R) (hu : theta p R u = 1) : BdRPlus p R :=
   adicLog (AinfInv.kerTheta p R) u ((theta_eq_one_iff u).1 hu)
 
+/- English proof (translation)
+The claim follows from `evalₐ_adicLog _ _ _ n`.
+-/
 theorem eval_log (u : BdRPlus p R) (hu : theta p R u = 1) (n : ℕ) :
     eval p R n (log u hu) = truncLog n (eval p R n (u - 1)) :=
   evalₐ_adicLog _ _ _ n
@@ -206,9 +249,15 @@ def eval (n : ℕ) : Acris p R →+* AcrisZero p R ⧸ span {(p : AcrisZero p R)
 
 variable {p R}
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.ext_evalₐ h`.
+-/
 theorem ext_eval {x y : Acris p R} (h : ∀ n, eval p R n x = eval p R n y) : x = y :=
   AdicCompletion.ext_evalₐ h
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.evalₐ_of _ n x`.
+-/
 @[simp] theorem eval_algebraMap (n : ℕ) (x : AcrisZero p R) :
     eval p R n (algebraMap _ _ x) = Ideal.Quotient.mk _ x :=
   AdicCompletion.evalₐ_of _ n x
@@ -217,6 +266,11 @@ def logPartial (N : ℕ) (u : Ainf p R) (hu : Ainf.theta p R u = 1) : AcrisZero 
   ∑ k ∈ Finset.range N,
     ((-1) ^ k * (k ! : AcrisZero p R)) * AcrisZero.gamma (k + 1) (u - 1) (by simp [hu])
 
+/- English proof (translation)
+Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ N hN ih`. Rewrite using `[logPartial, Finset.sum_range_succ, add_sub_right_comm]`. Use `add_mem ih (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ ?_))` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `Nat.dvd_factorial (pow_pos (Fact.out : p.Prime).pos n) (hM.trans hN)`. Rewrite using `[hc, Nat.cast_mul, Nat.cast_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (mem_span_singleton_self _) _)`.
+-/
 theorem logPartial_sub_mem (u : Ainf p R) (hu : Ainf.theta p R u = 1) {n M N : ℕ}
     (hM : p ^ n ≤ M) (hN : M ≤ N) :
     logPartial N u hu - logPartial M u hu ∈ span {(p : AcrisZero p R)} ^ n := by
@@ -235,6 +289,9 @@ def log (u : Ainf p R) (hu : Ainf.theta p R u = 1) : Acris p R :=
     exact Ideal.Quotient.eq.2 (logPartial_sub_mem u hu le_rfl
       (Nat.pow_le_pow_right (Fact.out : p.Prime).pos hle)))
 
+/- English proof (translation)
+The claim follows from `(evalₐ_adicMk _ _ _ n).trans (Ideal.Quotient.eq.2 (logPartial_sub_mem u hu le_rfl hN)).symm`.
+-/
 theorem eval_log (u : Ainf p R) (hu : Ainf.theta p R u = 1) {n N : ℕ} (hN : p ^ n ≤ N) :
     eval p R n (log u hu) = Ideal.Quotient.mk _ (logPartial N u hu) :=
   (evalₐ_adicMk _ _ _ n).trans (Ideal.Quotient.eq.2 (logPartial_sub_mem u hu le_rfl hN)).symm
@@ -264,6 +321,9 @@ instance : Algebra (Acris p R) (BcrisPlus p R) :=
 instance : IsLocalization.Away (p : Acris p R) (BcrisPlus p R) :=
   inferInstanceAs (IsLocalization.Away (p : Acris p R) (Localization.Away (p : Acris p R)))
 
+/- English proof (translation)
+Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := BcrisPlus p R) (p : Acris p R)`.
+-/
 theorem isUnit_p : IsUnit (p : BcrisPlus p R) := by
   simpa using IsLocalization.Away.algebraMap_isUnit (S := BcrisPlus p R) (p : Acris p R)
 
@@ -328,15 +388,24 @@ instance : IsScalarTower ℚ_[p] (Bcris p R) (Bst p R) :=
 def mk : MvPolynomial (PFlat p R) (Bcris p R) →ₐ[Bcris p R] Bst p R :=
   Ideal.Quotient.mkₐ (Bcris p R) (Bst.relations p R)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.mk_surjective`.
+-/
 theorem mk_surjective : Function.Surjective (mk p R) := Ideal.Quotient.mk_surjective
 
 variable {p R}
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem mk_eq_zero_iff (f : MvPolynomial (PFlat p R) (Bcris p R)) :
     mk p R f = 0 ↔ f ∈ Bst.relations p R := Ideal.Quotient.eq_zero_iff_mem
 
 def logFlat (ϖ : PFlat p R) : Bst p R := mk p R (MvPolynomial.X ϖ)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, logFlat, logFlat, ← (mk p R).commutes, ← map_add, ← map_sub, mk_eq_zero_iff]`. Conclude with `subset_span ⟨η, ϖ, rfl⟩`.
+-/
 theorem logFlat_twist (η : tateModule p R) (ϖ : PFlat p R) :
     logFlat (ϖ.twist η) = algebraMap _ _ (Bcris.logTeich η) + logFlat ϖ := by
   rw [← sub_eq_zero, logFlat, logFlat, ← (mk p R).commutes, ← map_add, ← map_sub, mk_eq_zero_iff]
@@ -351,16 +420,25 @@ def lift {B : Type*} [CommRing B] (f : Bcris p R →+* B) (l : PFlat p R → B)
     rintro _ ⟨η, ϖ, rfl⟩
     simp [RingHom.mem_ker, h])
 
+/- English proof (translation)
+The claim follows from `(Ideal.Quotient.lift_mk _ _ _).trans (MvPolynomial.eval₂Hom_C f l x)`.
+-/
 @[simp] theorem lift_algebraMap {B : Type*} [CommRing B] (f : Bcris p R →+* B) (l : PFlat p R → B)
     (h : ∀ η ϖ, l (PFlat.twist η ϖ) = f (Bcris.logTeich η) + l ϖ) (x : Bcris p R) :
     lift f l h (algebraMap _ _ x) = f x :=
   (Ideal.Quotient.lift_mk _ _ _).trans (MvPolynomial.eval₂Hom_C f l x)
 
+/- English proof (translation)
+The claim follows from `(Ideal.Quotient.lift_mk _ _ _).trans (MvPolynomial.eval₂Hom_X' f l ϖ)`.
+-/
 @[simp] theorem lift_logFlat {B : Type*} [CommRing B] (f : Bcris p R →+* B) (l : PFlat p R → B)
     (h : ∀ η ϖ, l (PFlat.twist η ϖ) = f (Bcris.logTeich η) + l ϖ) (ϖ : PFlat p R) :
     lift f l h (logFlat ϖ) = l ϖ :=
   (Ideal.Quotient.lift_mk _ _ _).trans (MvPolynomial.eval₂Hom_X' f l ϖ)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext h₁ h₂)`.
+-/
 theorem hom_ext {B : Type*} [CommRing B] {f g : Bst p R →+* B}
     (h₁ : ∀ x : Bcris p R, f (algebraMap _ _ x) = g (algebraMap _ _ x))
     (h₂ : ∀ ϖ, f (logFlat ϖ) = g (logFlat ϖ)) : f = g :=
@@ -372,6 +450,11 @@ def monodromyDerivation : Derivation (Bcris p R) (MvPolynomial (PFlat p R) (Bcri
     (MvPolynomial (PFlat p R) (Bcris p R)) :=
   MvPolynomial.mkDerivation (Bcris p R) fun _ => -1
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨η, ϖ, rfl⟩ := hf`. Simplify using `[monodromyDerivation]`. Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => rw [map_add]`.
+
+Conclude with `add_mem hf hg`. Consider the case `smul a f h hf`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hf) (Ideal.mul_mem_right _ _ h)`.
+-/
 theorem monodromyDerivation_mem {f : MvPolynomial (PFlat p R) (Bcris p R)} (hf : f ∈ Bst.relations p R) :
     monodromyDerivation p R f ∈ Bst.relations p R := by
   induction hf using Submodule.span_induction with
@@ -391,6 +474,9 @@ def monodromyLin : Bst p R →ₗ[Bcris p R] Bst p R :=
       (fun _ hf => monodromyDerivation_mem hf) ∘ₗ
     (Submodule.Quotient.restrictScalarsEquiv (Bcris p R) (Bst.relations p R)).symm.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monodromyLin_mk (f : MvPolynomial (PFlat p R) (Bcris p R)) :
     monodromyLin p R (mk p R f) = mk p R (monodromyDerivation p R f) := rfl
 
@@ -404,6 +490,9 @@ def monodromy : Derivation (Bcris p R) (Bst p R) (Bst p R) :=
     rw [← map_mul, monodromyLin_mk, monodromyLin_mk, monodromyLin_mk, Derivation.leibniz]
     simp)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `monodromyLin p R (mk p R _) = _`. Rewrite using `[monodromyLin_mk]`. Simplify using `[monodromyDerivation]`.
+-/
 @[simp] theorem monodromy_logFlat (ϖ : PFlat p R) : monodromy p R (logFlat ϖ) = -1 := by
   change monodromyLin p R (mk p R _) = _
   rw [monodromyLin_mk]

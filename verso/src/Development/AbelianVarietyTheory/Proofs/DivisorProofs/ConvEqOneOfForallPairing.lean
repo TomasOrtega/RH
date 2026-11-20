@@ -11,6 +11,13 @@ namespace GlobalTheory
 
 namespace TateFree
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `X π hπ x`. Conclude with `⟨fun k => Nat.rec x (fun k y => Function.surjInv (hπ k) y) k, fun k => Function.surjInv_eq (hπ k) _, rfl⟩`. Consider the case `succ n ih`.
+
+Introduce `X π hπ x`. Take `⟨s, hs, hx⟩` from `ih (fun k => X (k + 1)) (fun k => π (k + 1)) (fun k => hπ (k + 1)) x`. Use `⟨fun k => Nat.casesOn k (π 0 (s 0)) s, fun k => ?_, hx⟩` and prove the remaining obligations. Consider the cases of `k with`. Consider the case `zero => rfl`.
+
+Consider the case `succ k => exact hs k`.
+-/
 theorem exists_compat_of_surjective (n : ℕ) : ∀ (X : ℕ → Type) (π : ∀ k, X (k + 1) → X k),
     (∀ k, Function.Surjective (π k)) → ∀ x : X n,
       ∃ s : ∀ k, X k, (∀ k, π k (s (k + 1)) = s k) ∧ s n = x := by
@@ -32,6 +39,9 @@ section Points
 variable (O C A : Type) [CommRing O] [Field C] [Algebra O C] [IsIntegrallyClosedIn O C]
   [CommRing A]
 
+/- English proof (translation)
+Establish `hi : Function.Injective (Algebra.ofId O C)` using `IsIntegralClosure.algebraMap_injective O O C`. Use `⟨fun x y h => AlgHom.ext fun a => hi (DFunLike.congr_fun h a), fun y => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ a, y a ∈ (Algebra.ofId O C).range` using `fun a => IsIntegrallyClosedIn.isIntegral_iff.1 ((Algebra.IsIntegral.isIntegral a).map y)`. Set `e` to `AlgEquiv.ofInjective _ hi`. Conclude with `⟨(e.symm : (Algebra.ofId O C).range →ₐ[O] O).comp (y.codRestrict _ hm), AlgHom.ext fun a => congrArg Subtype.val (e.apply_symm_apply ⟨y a, hm a⟩)⟩`.
+-/
 theorem comp_ofId_bijective [Algebra O A] [Module.Finite O A] :
     Function.Bijective fun x : A →ₐ[O] O => (Algebra.ofId O C).comp x := by
   have hi : Function.Injective (Algebra.ofId O C) := IsIntegralClosure.algebraMap_injective O O C
@@ -44,6 +54,9 @@ theorem comp_ofId_bijective [Algebra O A] [Module.Finite O A] :
 
 variable [IsAlgClosed C] [CharZero C] [HopfAlgebra O A] [Module.Finite O A]
 
+/- English proof (translation)
+Use `etale_of_hopfAlgebra C (C ⊗[O] A)` as an intermediate fact. Rewrite using `[Nat.card_congr (Equiv.ofBijective _ (comp_ofId_bijective O C A)), Nat.card_congr (AlgHom.liftEquiv O C A C), natCard_algHom_eq_finrank_of_etale]`.
+-/
 theorem natCard_pts : Nat.card (A →ₐ[O] O) = finrank C (C ⊗[O] A) := by
   have := etale_of_hopfAlgebra C (C ⊗[O] A)
   rw [Nat.card_congr (Equiv.ofBijective _ (comp_ofId_bijective O C A)),
@@ -51,6 +64,11 @@ theorem natCard_pts : Nat.card (A →ₐ[O] O) = finrank C (C ⊗[O] A) := by
 
 include C in
 
+/- English proof (translation)
+Use `etale_of_hopfAlgebra C (C ⊗[O] A)` as an intermediate fact. Establish `hi : Function.Injective (Algebra.TensorProduct.includeRight : A →ₐ[O] C ⊗[O] A)` using `Algebra.TensorProduct.includeRight_injective (IsIntegralClosure.algebraMap_injective O O C)`. Use `hi ((Algebra.FormallyEtale.equivPiOfIsSepClosed C (C ⊗[O] A)).injective (funext fun q => ?_))` and prove the remaining obligations. Set `χ : C ⊗[O] A →ₐ[C] C` to `(Pi.evalAlgHom C (fun _ => C) q).comp (Algebra.FormallyEtale.equivPiOfIsSepClosed C (C ⊗[O] A) : _ →ₐ[C] _)`. Take `⟨φ, hφ⟩` from `(comp_ofId_bijective O C A).2 ((AlgHom.liftEquiv O C A C).symm χ)`.
+
+Conclude with `(DFunLike.congr_fun hφ a).symm.trans ((congrArg (Algebra.ofId O C) (h φ)).trans (DFunLike.congr_fun hφ b))`.
+-/
 theorem eq_of_forall_pts [Module.Flat O A] {a b : A} (h : ∀ x : A →ₐ[O] O, x a = x b) :
     a = b := by
   have := etale_of_hopfAlgebra C (C ⊗[O] A)
@@ -72,6 +90,9 @@ section Padic
 variable {p : ℕ} [Fact p.Prime] {M N : Type} [AddCommGroup M] [Module ℤ_[p] M] [AddCommGroup N]
   [Module ℤ_[p] N]
 
+/- English proof (translation)
+Rewrite using `[PadicInt.maximalIdeal_eq_span_p, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_pow_smul_top_iff (n : ℕ) (x : M) :
     x ∈ (IsLocalRing.maximalIdeal ℤ_[p] ^ n • ⊤ : Submodule ℤ_[p] M) ↔
       ∃ y, (p : ℤ_[p]) ^ n • y = x := by
@@ -79,6 +100,11 @@ theorem mem_pow_smul_top_iff (n : ℕ) (x : M) :
     Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
   simp
 
+/- English proof (translation)
+Use `isPrecomplete_of_finite (IsLocalRing.maximalIdeal ℤ_[p]) M` as an intermediate fact. Establish `: IsHausdorff (IsLocalRing.maximalIdeal ℤ_[p]) N` using `⟨fun y hy => hN y fun n => (mem_pow_smul_top_iff n y).1 (SModEq.zero.1 (hy n))⟩`. Use `surjective_of_mkQ_comp_surjective (I := IsLocalRing.maximalIdeal ℤ_[p]) fun y => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨x, z, hz⟩` from `h y`.
+
+Use `⟨x, ((Submodule.Quotient.eq _).2 ?_).symm⟩` and prove the remaining obligations. Use `(mem_pow_smul_top_iff 1 (y - f x)).2 ⟨z, by rw [pow_one, hz]⟩` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem surjective_of_mod (f : M →ₗ[ℤ_[p]] N) [Module.Finite ℤ_[p] M]
     (hN : ∀ y : N, (∀ n, ∃ z, (p : ℤ_[p]) ^ n • z = y) → y = 0)
     (h : ∀ y, ∃ x z, (p : ℤ_[p]) • z = y - f x) : Function.Surjective f := by
@@ -92,6 +118,17 @@ theorem surjective_of_mod (f : M →ₗ[ℤ_[p]] N) [Module.Finite ℤ_[p] M]
   have := (mem_pow_smul_top_iff 1 (y - f x)).2 ⟨z, by rw [pow_one, hz]⟩
   rwa [pow_one] at this
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℤ_[p] M`. Set `g : M →+ (Fin (finrank ℤ_[p] M) → ZMod p)` to `AddMonoidHom.pi fun i => (PadicInt.toZMod (p := p)).toAddMonoidHom.comp (b.coord i).toAddMonoidHom`. Establish `hg : Function.Surjective g` using `fun v => ⟨b.equivFun.symm fun i => ((v i).val : ℤ_[p]), funext fun i => by`. Express the relevant statement in the definitionally equal form `PadicInt.toZMod (b.equivFun (b.equivFun.symm _) i) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Use the proof step `simp⟩`. Establish `hker : f.ker = g.ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker, hk]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using `[g]`. Introduce `hx`. Establish `: ∀ i, ∃ c : ℤ_[p], c * p = b.repr x i` using `fun i => by`.
+
+Establish `h1 : b.repr x i ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := congrFun hx i`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Then use the resulting hypothesis. Use `choose c hc using this`. Use `⟨b.equivFun.symm c, b.equivFun.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`.
+
+Simplify using `[← hc, mul_comm]`. Rewrite using `[← Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hf).toEquiv, hker, Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective g hg).toEquiv]`. Simplify using `[Nat.card_pi]`.
+-/
 theorem natCard_eq_pow_finrank [Module.Finite ℤ_[p] M] [Module.Free ℤ_[p] M] {X : Type}
     [AddCommGroup X] (f : M →+ X) (hf : Function.Surjective f)
     (hk : ∀ x, f x = 0 ↔ ∃ y, (p : ℤ_[p]) • y = x) : Nat.card X = p ^ finrank ℤ_[p] M := by
@@ -124,6 +161,19 @@ theorem natCard_eq_pow_finrank [Module.Finite ℤ_[p] M] [Module.Free ℤ_[p] M]
     Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective g hg).toEquiv]
   simp [Nat.card_pi]
 
+/- English proof (translation)
+Take `⟨e⟩` from `(FiniteDimensional.nonempty_linearEquiv_iff_finrank_eq).2 hr.symm`. It suffices to establish `H : IsUnit (LinearMap.det (e.toLinearMap ∘ₗ f)) by`. Establish `h1` using `((LinearMap.isUnit_iff_isUnit_det _).2 H)`. Rewrite `h1` using `[Module.End.isUnit_iff]`. Conclude with `(Function.Bijective.of_comp_iff' e.bijective f).1 h1`.
+
+Set `b` to `Module.finBasis ℤ_[p] M`. Set `A` to `LinearMap.toMatrix b b (e.toLinearMap ∘ₗ f)`. Rewrite using `[← LinearMap.det_toMatrix b, ← IsLocalRing.notMem_maximalIdeal, ← PadicInt.ker_toZMod, RingHom.mem_ker, RingHom.map_det]`. Introduce `h0`. Take `⟨v, hv, hA⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`.
+
+Set `c : _ → ℤ_[p]` to `fun i => ((v i).val : ℤ_[p])`. Establish `hc : ∀ i, PadicInt.toZMod (c i) = v i` using `fun i => by simp [c]`. Establish `h1 : ∀ i, ∃ d : ℤ_[p], d * p = A.mulVec c i` using `fun i => by`. Establish `h1 : A.mulVec c i ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`. Rewrite using `[RingHom.mem_ker, RingHom.map_mulVec, show PadicInt.toZMod ∘ c = v from funext hc]`.
+
+Conclude with `congrFun hA i`. Rewrite `h1` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Then use the resulting hypothesis. Use `choose d hd using h1`. Take `⟨y, hy⟩` from `h (b.equivFun.symm c) ⟨e.symm (b.equivFun.symm d), e.injective <| b.equivFun.injective <| funext fun i => by`. Establish `h2` using `congrFun (LinearMap.toMatrix_mulVec_repr b b (e.toLinearMap ∘ₗ f) (b.equivFun.symm c)) i`.
+
+Rewrite `h2` using `[← b.equivFun_apply, b.equivFun.apply_symm_apply]`. Rewrite using `[map_smul, map_smul, e.apply_symm_apply, b.equivFun.apply_symm_apply, Pi.smul_apply, smul_eq_mul, mul_comm, hd]`. Conclude with `h2⟩`. Use `hv (funext fun i => ?_)` and prove the remaining obligations. Establish `h3` using `congrFun (congrArg b.equivFun hy) i`.
+
+Rewrite `h3` using `[map_smul, b.equivFun.apply_symm_apply]`. Rewrite using `[← hc, ← h3]`. Simplify using the standard rewrite rules.
+-/
 theorem bijective_of_mod [Module.Finite ℤ_[p] M] [Module.Free ℤ_[p] M] [Module.Finite ℤ_[p] N]
     [Module.Free ℤ_[p] N] (f : M →ₗ[ℤ_[p]] N) (hr : finrank ℤ_[p] M = finrank ℤ_[p] N)
     (h : ∀ x, (∃ z, (p : ℤ_[p]) • z = f x) → ∃ y, (p : ℤ_[p]) • y = x) :
@@ -175,21 +225,37 @@ section General
 
 variable {B : Type} [CommRing B] [Algebra O B]
 
+/- English proof (translation)
+Introduce `x y h` and use `ofConv_injective <| AlgHom.ext fun a => by obtain ⟨b, rfl⟩ := G.res_surjective n a exact DFunLike.congr_fun (congrArg ofConv h) b`.
+-/
 theorem ptsMap_res_injective (n : ℕ) : Function.Injective (pointsMap B (G.res n)) := fun x y h =>
   ofConv_injective <| AlgHom.ext fun a => by
     obtain ⟨b, rfl⟩ := G.res_surjective n a
     exact DFunLike.congr_fun (congrArg ofConv h) b
 
+/- English proof (translation)
+The claim follows from `ofConv_injective <| Eq.symm <| (comp_mulBy_pts x.ofConv p).symm.trans <| AlgHom.ext fun a => congrArg x.ofConv (G.mulP_res n a).symm`.
+-/
 theorem ptsMap_res_mulP (n : ℕ) (x : WithConv (G.A (n + 1) →ₐ[O] B)) :
     pointsMap B (G.res n) (pointsMap B (G.mulP n) x) = x ^ p :=
   ofConv_injective <| Eq.symm <| (comp_mulBy_pts x.ofConv p).symm.trans <|
     AlgHom.ext fun a => congrArg x.ofConv (G.mulP_res n a).symm
 
+/- English proof (translation)
+The claim follows from `ofConv_injective <| Eq.symm <| (comp_mulBy_pts x.ofConv p).symm.trans <| AlgHom.ext fun a => congrArg x.ofConv (G.res_mulP n a).symm`.
+-/
 theorem pointsMap_mulP_res_eq_pow (n : ℕ) (x : WithConv (G.A n →ₐ[O] B)) :
     pointsMap B (G.mulP n) (pointsMap B (G.res n) x) = x ^ p :=
   ofConv_injective <| Eq.symm <| (comp_mulBy_pts x.ofConv p).symm.trans <|
     AlgHom.ext fun a => congrArg x.ofConv (G.res_mulP n a).symm
 
+/- English proof (translation)
+Take `⟨f, hf, hk⟩` from `G.exists_res_le (m := 1) (n := n + 1) (by omega)`. Establish `key : ∀ x : WithConv (G.A (n + 1) →ₐ[O] O), x ∈ (pointsMap O (G.mulP n)).ker ↔ RingHom.ker f ≤ RingHom.ker x.ofConv` using `fun x => by`. Rewrite using `[hk, torsionIdeal_le_ker_iff, pow_one, toConv_ofConv, ← ptsMap_res_mulP, map_eq_one_iff _ (G.ptsMap_res_injective n), MonoidHom.mem_ker]`. Establish `hm : ∀ y : G.A 1 →ₐ[O] O, toConv (y.comp (f : G.A (n + 1) →ₐ[O] G.A 1)) ∈ (pointsMap O (G.mulP n)).ker` using `fun y => (key _).2 fun a ha => by`. Establish `ha' : f a = 0` using `ha`.
+
+Express the relevant statement in the definitionally equal form `y (f a) = 0`. Rewrite using `[ha', map_zero]`. Use `(Nat.card_congr (Equiv.ofBijective (fun y => ⟨_, hm y⟩) ⟨fun y z h => AlgHom.ext fun a => ?_, fun x => ?_⟩)).symm` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hf a`. Conclude with `DFunLike.congr_fun (congrArg ofConv (congrArg Subtype.val h)) b`.
+
+Establish `h1` using `AlgHom.liftOfSurjective_comp (f : G.A (n + 1) →ₐ[O] G.A 1) hf x.1.ofConv ((key x.1).1 x.2)`. Conclude with `⟨_, Subtype.ext (ofConv_injective h1)⟩`.
+-/
 theorem natCard_ker_ptsMap_mulP (n : ℕ) :
     Nat.card (pointsMap O (G.mulP n)).ker = Nat.card (G.A 1 →ₐ[O] O) := by
   obtain ⟨f, hf, hk⟩ := G.exists_res_le (m := 1) (n := n + 1) (by omega)
@@ -212,15 +278,28 @@ theorem natCard_ker_ptsMap_mulP (n : ℕ) :
 
 variable [Fact p.Prime] {G}
 
+/- English proof (translation)
+The claim follows from `pow_digit_natCast (G.pts_pow_self n _) p`.
+-/
 theorem TateOver.p_smul_conv (x : G.TateOver B) (n : ℕ) :
     ((p : ℤ_[p]) • x).conv n = x.conv n ^ p :=
   pow_digit_natCast (G.pts_pow_self n _) p
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_pow]`. Conclude with `pow_digit_natCast (G.pts_pow_self n _) _`.
+-/
 theorem TateOver.pow_smul_conv (x : G.TateOver B) (k n : ℕ) :
     ((p : ℤ_[p]) ^ k • x).conv n = x.conv n ^ p ^ k := by
   rw [← Nat.cast_pow]
   exact pow_digit_natCast (G.pts_pow_self n _) _
 
+/- English proof (translation)
+Establish `h1 : ∀ k, t.conv (k + 1) = 1 → t.conv 1 = 1` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact id`. Consider the case `succ k ih => exact fun h => ih (by rw [← t.compat_conv, h, map_one])`. Establish `h2 : ∀ k, t.conv (k + 1) ^ p ^ k = 1` using `fun k => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_one]`. Conclude with `h1 n ht`. Consider the case `succ k ih => rw [pow_succ', pow_mul, t.conv_succ_pow, ← map_pow, ih, map_one]`. Use `choose s hs using fun k => (G.exists_comp_res_iff k (t.pt (k + 1))).2 (h2 k)`.
+
+Establish `hs' : ∀ k, pointsMap B (G.res k) (toConv (s k)) = t.conv (k + 1)` using `fun k => congrArg toConv (hs k)`. Use `⟨⟨s, fun k => congrArg ofConv (G.ptsMap_res_injective k (a₁ := pointsMap B (G.mulP k) (toConv (s (k + 1)))) (a₂ := toConv (s k)) ?_)⟩, G.ptsMap_res_injective n (((hs' n).trans ht).trans (map_one _).symm), TateOver.ext_conv fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[ptsMap_res_mulP, ← pointsMap_mulP_res_eq_pow, hs', hs', t.compat_conv]`. Rewrite using `[TateOver.p_smul_conv, ← pointsMap_mulP_res_eq_pow, ← t.compat_conv, ← hs']`.
+-/
 theorem TateOver.exists_p_smul_eq (t : G.TateOver B) (n : ℕ) (ht : t.conv (n + 1) = 1) :
     ∃ s : G.TateOver B, s.conv n = 1 ∧ (p : ℤ_[p]) • s = t := by
   have h1 : ∀ k, t.conv (k + 1) = 1 → t.conv 1 = 1 := fun k => by
@@ -241,6 +320,11 @@ theorem TateOver.exists_p_smul_eq (t : G.TateOver B) (n : ℕ) (ht : t.conv (n +
   · rw [ptsMap_res_mulP, ← pointsMap_mulP_res_eq_pow, hs', hs', t.compat_conv]
   · rw [TateOver.p_smul_conv, ← pointsMap_mulP_res_eq_pow, ← t.compat_conv, ← hs']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Proceed by induction on `n generalizing t with`. Consider the case `zero => exact fun _ => ⟨t, by rw [pow_zero, one_smul]⟩`. Consider the case `succ n ih`. Introduce `ht`.
+
+Take `⟨s, hs, rfl⟩` from `t.exists_p_smul_eq n ht`. Take `⟨u, rfl⟩` from `ih s hs`. Conclude with `⟨u, by rw [pow_succ', mul_smul]⟩`. Introduce and unpack `⟨s, rfl⟩`. Rewrite using `[TateOver.pow_smul_conv, G.pts_pow_self]`.
+-/
 theorem TateOver.conv_eq_one_iff (t : G.TateOver B) (n : ℕ) :
     t.conv n = 1 ↔ ∃ s : G.TateOver B, (p : ℤ_[p]) ^ n • s = t := by
   constructor
@@ -254,10 +338,16 @@ theorem TateOver.conv_eq_one_iff (t : G.TateOver B) (n : ℕ) :
   · rintro ⟨s, rfl⟩
     rw [TateOver.pow_smul_conv, G.pts_pow_self]
 
+/- English proof (translation)
+The claim follows from `TateOver.ext_conv fun n => (t.conv_eq_one_iff n).2 (h n)`.
+-/
 theorem TateOver.eq_zero_of_forall_pow_smul (t : G.TateOver B)
     (h : ∀ n, ∃ s : G.TateOver B, (p : ℤ_[p]) ^ n • s = t) : t = 0 :=
   TateOver.ext_conv fun n => (t.conv_eq_one_iff n).2 (h n)
 
+/- English proof (translation)
+The claim follows from `TateOver.ext_conv fun n => G.ptsMap_res_injective n <| by rw [← t.conv_succ_pow, ← TateOver.p_smul_conv, h, TateOver.zero_conv, TateOver.zero_conv, map_one]`.
+-/
 theorem TateOver.eq_zero_of_p_smul (t : G.TateOver B) (h : (p : ℤ_[p]) • t = 0) : t = 0 :=
   TateOver.ext_conv fun n => G.ptsMap_res_injective n <| by
     rw [← t.conv_succ_pow, ← TateOver.p_smul_conv, h, TateOver.zero_conv, TateOver.zero_conv,
@@ -284,15 +374,30 @@ def tateLevel (n : ℕ) : G.Tate →+ Additive (WithConv (G.A n →ₐ[O] O)) wh
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tateLevel_apply (n : ℕ) (t : G.Tate) :
     tateLevel G n t = Additive.ofMul (t.conv n) := rfl
 
+/- English proof (translation)
+Rewrite using `[← TateOver.conv_eq_one_iff, ← muRoot_zero (p := p) (O := O) n]`. Conclude with `⟨fun h => congrArg toConv (mu_algHom_ext h), fun h => DFunLike.congr_fun (congrArg ofConv h) _⟩`.
+-/
 theorem muRoot_eq_one_iff (x : (mu p O).TateOver B) (n : ℕ) :
     muRoot x n = 1 ↔ ∃ y : (mu p O).TateOver B, (p : ℤ_[p]) ^ n • y = x := by
   rw [← TateOver.conv_eq_one_iff, ← muRoot_zero (p := p) (O := O) n]
   exact ⟨fun h => congrArg toConv (mu_algHom_ext h),
     fun h => DFunLike.congr_fun (congrArg ofConv h) _⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Function.Bijective (LinearMap.toSpanSingleton ℤ_[p] _ (muTate O ζ h0 h))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `PadicInt.ext_of_toZModPow.1 fun n => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (muRoot · n) ha`. Simplify using `only [LinearMap.toSpanSingleton_apply, muRoot_smul, muRoot_muTate, muRoot_zero] at h1`. Rewrite using `[← cast_digit, map_zero, ZMod.natCast_eq_zero_iff]`. Conclude with `((hζ n).pow_eq_one_iff_dvd _).1 h1`. Use `surjective_of_mod _ TateOver.eq_zero_of_forall_pow_smul fun y => ?_` and prove the remaining obligations.
+
+Take `⟨k, -, hk⟩` from `(hζ 1).eq_pow_of_pow_eq_one (muRoot_pow_self y 1)`. Establish `h1 : muRoot ((k : ℤ_[p]) • muTate O ζ h0 h) 1 = muRoot y 1`. Rewrite using `[muRoot_smul, pow_digit_natCast (muRoot_pow_self _ 1), muRoot_muTate, hk]`. Take `⟨z, hz⟩` from `(muRoot_eq_one_iff (y - (k : ℤ_[p]) • muTate O ζ h0 h) 1).1 <| by`. Establish `h2` using `muRoot_add (y - (k : ℤ_[p]) • muTate O ζ h0 h) ((k : ℤ_[p]) • muTate O ζ h0 h) 1`.
+
+Rewrite `h2` using `[sub_add_cancel, h1]`. Establish `h3 : muRoot y 1 ≠ 0` using `(IsUnit.of_pow_eq_one (muRoot_pow_self y 1) (NeZero.ne _)).ne_zero`. Conclude with `mul_right_cancel₀ h3 (h2.symm.trans (one_mul _).symm)`. Conclude with `⟨k, z, by rwa [pow_one] at hz⟩`.
+-/
 theorem smul_muTate_bijective [IsDomain B] (ζ : ℕ → B) (h0 : ζ 0 = 1)
     (h : ∀ n, ζ (n + 1) ^ p = ζ n) (hζ : ∀ n, IsPrimitiveRoot (ζ n) (p ^ n)) :
     Function.Bijective fun a : ℤ_[p] => a • muTate O ζ h0 h := by
@@ -325,6 +430,9 @@ variable (C : Type) [Field C] [Algebra O C] [IsIntegrallyClosedIn O C] [IsAlgClo
   [CharZero C]
 include C
 
+/- English proof (translation)
+Establish `h` using `congrFun (rankAtStalk_eq_finrank_of_free (R := C) (M := C ⊗[O] G.A n)) ⊥`. Rewrite `h` using `[rankAtStalk_baseChange, G.rank_eq]`. Rewrite using `[natCard_pts O C]`. Conclude with `h.symm`.
+-/
 theorem natCard_pts_eq (n : ℕ) : Nat.card (G.A n →ₐ[O] O) = p ^ (n * G.height) := by
   have h := congrFun (rankAtStalk_eq_finrank_of_free (R := C) (M := C ⊗[O] G.A n)) ⊥
   rw [rankAtStalk_baseChange, G.rank_eq] at h
@@ -333,10 +441,18 @@ theorem natCard_pts_eq (n : ℕ) : Nat.card (G.A n →ₐ[O] O) = p ^ (n * G.hei
 
 variable [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `(Nat.card_congr (WithConv.equiv _)).trans (G.natCard_pts_eq C n)`.
+-/
 theorem natCard_conv_pts_eq (n : ℕ) :
     Nat.card (WithConv (G.A n →ₐ[O] O)) = p ^ (n * G.height) :=
   (Nat.card_congr (WithConv.equiv _)).trans (G.natCard_pts_eq C n)
 
+/- English proof (translation)
+Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `: Finite (WithConv (G.A n →ₐ[O] O))` using `Nat.finite_of_card_ne_zero (by rw [G.natCard_conv_pts_eq C]; positivity)`. Establish `h` using `Subgroup.card_eq_card_quotient_mul_card_subgroup (pointsMap O (G.mulP n)).ker`. Rewrite `h` using `[Nat.card_congr (QuotientGroup.quotientKerEquivRange _).toEquiv, natCard_ker_ptsMap_mulP, G.natCard_pts_eq C, G.natCard_conv_pts_eq C, add_mul, pow_add]`. Rewrite using `[← MonoidHom.range_eq_top]`.
+
+Use `Subgroup.eq_top_of_card_eq _ ?_` and prove the remaining obligations. Rewrite using `[G.natCard_conv_pts_eq C]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (pow_pos hp _) h).symm`.
+-/
 theorem pointsMap_mulP_surjective (n : ℕ) : Function.Surjective (pointsMap O (G.mulP n)) := by
   have hp : 0 < p := (Fact.out : p.Prime).pos
   have : Finite (WithConv (G.A n →ₐ[O] O)) :=
@@ -349,15 +465,26 @@ theorem pointsMap_mulP_surjective (n : ℕ) : Function.Surjective (pointsMap O (
   rw [G.natCard_conv_pts_eq C]
   exact (Nat.eq_of_mul_eq_mul_right (pow_pos hp _) h).symm
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨s, hs, hx⟩ := exists_compat_of_surjective n (fun k => WithConv (G.A k →ₐ[O] O)) (fun k => pointsMap O (G.mulP k)) (G.pointsMap_mulP_surjective C) (toConv x) exact ⟨⟨fun k => (s k).ofConv, fun k => congrArg ofConv (hs k)⟩, congrArg ofConv hx⟩`.
+-/
 theorem pt_surjective (n : ℕ) : Function.Surjective fun t : G.Tate => t.pt n := fun x => by
   obtain ⟨s, hs, hx⟩ := exists_compat_of_surjective n (fun k => WithConv (G.A k →ₐ[O] O))
     (fun k => pointsMap O (G.mulP k)) (G.pointsMap_mulP_surjective C) (toConv x)
   exact ⟨⟨fun k => (s k).ofConv, fun k => congrArg ofConv (hs k)⟩, congrArg ofConv hx⟩
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨t, ht⟩ := G.pt_surjective C n x.toMul.ofConv exact ⟨t, congrArg (fun y => Additive.ofMul (toConv y)) ht⟩`.
+-/
 theorem tateLevel_surjective (n : ℕ) : Function.Surjective (tateLevel G n) := fun x => by
   obtain ⟨t, ht⟩ := G.pt_surjective C n x.toMul.ofConv
   exact ⟨t, congrArg (fun y => Additive.ofMul (toConv y)) ht⟩
 
+/- English proof (translation)
+Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `: Finite (G.A 1 →ₐ[O] O)` using `Nat.finite_of_card_ne_zero (by rw [G.natCard_pts_eq C]; positivity)`. Use `choose l hl using G.pt_surjective C 1`. Use `.of_surjective (Finsupp.linearCombination ℤ_[p] l) (surjective_of_mod _ TateOver.eq_zero_of_forall_pow_smul fun y => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `(TateOver.conv_eq_one_iff (y - l (y.pt 1)) 1).1 <| by`.
+
+Establish `h : tateLevel G 1 (y - l (y.pt 1)) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg (fun y => Additive.ofMul (toConv y)) (hl _).symm`. Conclude with `h`. Conclude with `⟨Finsupp.single (y.pt 1) 1, z, by simpa using hz⟩`.
+-/
 theorem finite_tate : Module.Finite ℤ_[p] G.Tate := by
   have hp : 0 < p := (Fact.out : p.Prime).pos
   have : Finite (G.A 1 →ₐ[O] O) :=
@@ -372,10 +499,16 @@ theorem finite_tate : Module.Finite ℤ_[p] G.Tate := by
     exact h
   exact ⟨Finsupp.single (y.pt 1) 1, z, by simpa using hz⟩
 
+/- English proof (translation)
+The claim follows from `have := G.finite_tate C inferInstance`.
+-/
 theorem free_tate : Module.Free ℤ_[p] G.Tate :=
   have := G.finite_tate C
   inferInstance
 
+/- English proof (translation)
+Use `G.finite_tate C` as an intermediate fact. Establish `h` using `natCard_eq_pow_finrank (p := p) (tateLevel G 1) (G.tateLevel_surjective C 1) fun t => by simpa using t.conv_eq_one_iff 1`. Rewrite `h` using `[Nat.card_congr Additive.toMul, G.natCard_conv_pts_eq C, one_mul]`. Conclude with `(Nat.pow_right_injective (Fact.out : p.Prime).two_le h).symm`.
+-/
 theorem finrank_tate : finrank ℤ_[p] G.Tate = G.height := by
   have := G.finite_tate C
   have h := natCard_eq_pow_finrank (p := p) (tateLevel G 1) (G.tateLevel_surjective C 1)
@@ -383,6 +516,9 @@ theorem finrank_tate : finrank ℤ_[p] G.Tate = G.height := by
   rw [Nat.card_congr Additive.toMul, G.natCard_conv_pts_eq C, one_mul] at h
   exact (Nat.pow_right_injective (Fact.out : p.Prime).two_le h).symm
 
+/- English proof (translation)
+Establish `h1 : charElem χ n = charElem (0 : G.dual.Tate) n` using `eq_of_forall_pts O C _ fun x => by`. Take `⟨t, rfl⟩` from `G.pt_surjective C n x`. Rewrite using `[charElem_zero, map_one, ← muRoot_pairing, h]`. Conclude with `ofConv_injective <| AlgHom.ext fun φ => (apply_charElem χ n φ).symm.trans <| (congrArg φ.ofConv h1).trans (apply_charElem 0 n φ)`.
+-/
 theorem conv_eq_one_of_forall_pairing (χ : G.dual.Tate) (n : ℕ)
     (h : ∀ t : G.Tate, muRoot (pairing G O t χ) n = 1) : χ.conv n = 1 := by
   have h1 : charElem χ n = charElem (0 : G.dual.Tate) n := eq_of_forall_pts O C _ fun x => by
@@ -391,6 +527,11 @@ theorem conv_eq_one_of_forall_pairing (χ : G.dual.Tate) (n : ℕ)
   exact ofConv_injective <| AlgHom.ext fun φ =>
     (apply_charElem χ n φ).symm.trans <| (congrArg φ.ofConv h1).trans (apply_charElem 0 n φ)
 
+/- English proof (translation)
+Establish `h1 : (toConv (t.pt n).toLinearMap : CartierDual O (G.A n)) = toConv ((0 : G.Tate).pt n).toLinearMap` using `eq_of_forall_pts O C (G.dual.A n) fun x => by`. Take `⟨χ, rfl⟩` from `G.dual.pt_surjective C n x`. Use `(apply_charElem χ n _).symm.trans (Eq.trans ?_ (apply_charElem χ n _))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.pt n (charElem χ n) = (0 : G.Tate).pt n (charElem χ n)`. Rewrite using `[← muRoot_pairing, ← muRoot_pairing, h, map_zero, LinearMap.zero_apply, muRoot_zero]`.
+
+Conclude with `ofConv_injective <| AlgHom.ext fun a => LinearMap.congr_fun (congrArg ofConv h1) a`.
+-/
 theorem conv_eq_one_of_forall_pairing' (t : G.Tate) (n : ℕ)
     (h : ∀ χ : G.dual.Tate, muRoot (pairing G O t χ) n = 1) : t.conv n = 1 := by
   have h1 : (toConv (t.pt n).toLinearMap : CartierDual O (G.A n)) =
@@ -401,6 +542,11 @@ theorem conv_eq_one_of_forall_pairing' (t : G.Tate) (n : ℕ)
     rw [← muRoot_pairing, ← muRoot_pairing, h, map_zero, LinearMap.zero_apply, muRoot_zero]
   exact ofConv_injective <| AlgHom.ext fun a => LinearMap.congr_fun (congrArg ofConv h1) a
 
+/- English proof (translation)
+Use `G.finite_tate C` as an intermediate fact. Use `G.dual.finite_tate C` as an intermediate fact. Use `(mu p O).finite_tate C` as an intermediate fact. Use `bijective_of_mod _ ?_ fun t ⟨z, hz⟩ => ?_` and prove the remaining obligations. Rewrite using `[finrank_linearMap, G.finrank_tate C, G.dual.finrank_tate C, (mu p O).finrank_tate C, mul_one]`.
+
+Establish `h` using `(t.conv_eq_one_iff 1).1 <| G.conv_eq_one_of_forall_pairing' C t 1 fun χ => (muRoot_eq_one_iff _ 1).2 ⟨z χ, by rw [pow_one, ← hz, LinearMap.smul_apply]⟩`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem pairing_bijective : Function.Bijective (pairing G O) := by
   have := G.finite_tate C
   have := G.dual.finite_tate C
@@ -412,6 +558,11 @@ theorem pairing_bijective : Function.Bijective (pairing G O) := by
       (muRoot_eq_one_iff _ 1).2 ⟨z χ, by rw [pow_one, ← hz, LinearMap.smul_apply]⟩
     rwa [pow_one] at h
 
+/- English proof (translation)
+Use `G.finite_tate C` as an intermediate fact. Use `G.dual.finite_tate C` as an intermediate fact. Use `(mu p O).finite_tate C` as an intermediate fact. Use `bijective_of_mod _ ?_ fun χ ⟨z, hz⟩ => ?_` and prove the remaining obligations. Rewrite using `[finrank_linearMap, G.finrank_tate C, G.dual.finrank_tate C, (mu p O).finrank_tate C, mul_one]`.
+
+Establish `h` using `(χ.conv_eq_one_iff 1).1 <| G.conv_eq_one_of_forall_pairing C χ 1 fun t => (muRoot_eq_one_iff _ 1).2 ⟨z t, by`. Rewrite using `[pow_one, ← LinearMap.flip_apply (pairing G O), ← hz, LinearMap.smul_apply]⟩`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem pairing_flip_bijective : Function.Bijective (pairing G O).flip := by
   have := G.finite_tate C
   have := G.dual.finite_tate C
@@ -426,6 +577,15 @@ theorem pairing_flip_bijective : Function.Bijective (pairing G O).flip := by
 
 variable (p O) in
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hi : Function.Injective (algebraMap O C)` using `IsIntegralClosure.algebraMap_injective O O C`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C p`. Take `⟨η, rfl⟩` from `IsIntegrallyClosedIn.isIntegral_iff.1 ((hξ.isIntegral hp.pos).tower_top (A := O))`. Establish `hη : IsPrimitiveRoot η p` using `hξ.of_map_of_injective hi`.
+
+Take `⟨t, ht⟩` from `(mu p O).pt_surjective C 1 (muPoint O η (by rw [pow_one]; exact hη.pow_eq_one))`. Establish `h1 : muRoot t 1 = η` using `(DFunLike.congr_fun ht _).trans (muPoint_muT _ _)`. Establish `h2 : ∀ n, muRoot t (n + 1) ^ p ^ n = η` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`.
+
+Consider the case `succ n ih => rw [pow_succ', pow_mul, muRoot_succ_pow, ih]`. Use `⟨muRoot t, by simpa using muRoot_pow_self t 0, muRoot_succ_pow t, fun n => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rw [show muRoot t 0 = 1 by simpa using muRoot_pow_self t 0, pow_zero]; exact .one`. Consider the case `succ n`.
+
+Use `(algebraMap O C).domain_nontrivial` as an intermediate fact. Rewrite using `[← orderOf_eq_prime_pow (by rw [h2]; exact hη.ne_one hp.one_lt) (muRoot_pow_self t (n + 1))]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+-/
 theorem exists_primitive_system : ∃ ζ : ℕ → O, ζ 0 = 1 ∧ (∀ n, ζ (n + 1) ^ p = ζ n) ∧
     ∀ n, IsPrimitiveRoot (ζ n) (p ^ n) := by
   have hp : p.Prime := Fact.out
@@ -453,6 +613,9 @@ end Closed
 
 end PDivGroup
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨G.natCard_pts_eq C, G.pt_surjective C, fun n t => t.conv_eq_one_iff n, ⟨G.finite_tate C, G.free_tate C, G.finrank_tate C⟩, PDivGroup.exists_primitive_system p O C, PDivGroup.smul_muTate_bijective, G.pairing_bijective C, G.pairing_flip_bijective C⟩`.
+-/
 theorem PDivGroup.tate_free_perfect (p : ℕ) [Fact p.Prime] (O C : Type) [CommRing O] [IsDomain O]
     [IsIntegrallyClosed O] [Field C] [Algebra O C] [IsFractionRing O C] [IsAlgClosed C]
     [CharZero C] (G : PDivGroup p O) :

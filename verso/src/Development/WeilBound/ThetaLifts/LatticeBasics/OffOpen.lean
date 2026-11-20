@@ -14,6 +14,11 @@ open Matrix PositivityTheory.ThKEnd
 
 namespace Off
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(toLin' A).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Take `⟨s, hs⟩` from `LinearMap.exists_extend g`. Use `⟨LinearMap.toMatrix' s, toLin'.injective (LinearMap.ext fun v => ?_)⟩` and prove the remaining obligations. Rewrite using `[toLin'_mul, toLin'_mul, toLin'_toMatrix']`. Use `LinearMap.congr_fun hs ((toLin' A).rangeRestrict v)` as an intermediate fact.
+
+Conclude with `(congrArg (toLin' A) this).trans (congrArg Subtype.val (LinearMap.congr_fun hg ((toLin' A).rangeRestrict v)))`.
+-/
 theorem exists_gi {k : Type} [Field k] {n : ℕ} (A : Matrix (Fin n) (Fin n) k) : ∃ S : Matrix (Fin n) (Fin n) k, A * S * A = A := by
   obtain ⟨g, hg⟩ := (toLin' A).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)
   obtain ⟨s, hs⟩ := LinearMap.exists_extend g
@@ -22,11 +27,17 @@ theorem exists_gi {k : Type} [Field k] {n : ℕ} (A : Matrix (Fin n) (Fin n) k) 
   have := LinearMap.congr_fun hs ((toLin' A).rangeRestrict v)
   exact (congrArg (toLin' A) this).trans (congrArg Subtype.val (LinearMap.congr_fun hg ((toLin' A).rangeRestrict v)))
 
+/- English proof (translation)
+Rewrite using `[← h, det_one_add_mul_comm, h', add_zero, Matrix.det_one]`.
+-/
 theorem det_one {R : Type} [CommRing R] {n : ℕ} {N Q : Matrix (Fin n) (Fin n) R} (h : Q * N = N) (h' : N * Q = 0) :
     (1 + N).det = 1 := by rw [← h, det_one_add_mul_comm, h', add_zero, Matrix.det_one]
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Introduce `z` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance obtain ⟨e, A, hA⟩ := h.sig w let q : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr e) have := congrArg det (show (Aᵀ.submatrix id q * (Complex.I • Y.J.map (B.emb w).1).submatrix q q) * (A.map star).submatrix q …`.
+-/
 theorem det_ne {B : Base F E} {r s : ℕ} (h : Y.IsSkew σ B r s) : Y.J.det ≠ 0 := fun z => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   obtain ⟨e, A, hA⟩ := h.sig w
@@ -38,24 +49,47 @@ theorem det_ne {B : Base F E} {r s : ℕ} (h : Y.IsSkew σ B r s) : Y.J.det ≠ 
     mul_zero, zero_mul, det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, det_neg, Matrix.det_one, mul_one] at this
   exact pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) this.symm
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := σ.toRingHom)`.
+-/
 theorem mm {a b e : Type} [Fintype b] (A : Matrix a b E) (B : Matrix b e E) : (A * B).map σ = A.map σ * B.map σ :=
   Matrix.map_mul (f := σ.toRingHom)
 
+/- English proof (translation)
+Rewrite using `[form, form, show (fun i => σ ((D *ᵥ w) i)) = D.map σ *ᵥ fun i => σ (w i) by ext i; simp [mulVec, dotProduct], mulVec_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem form_mul (J C D : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     form σ J (C *ᵥ v) (D *ᵥ w) = form σ (Cᵀ * J * D.map σ) v w := by
   rw [form, form, show (fun i => σ ((D *ᵥ w) i)) = D.map σ *ᵥ fun i => σ (w i) by ext i; simp [mulVec, dotProduct],
     mulVec_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `funext fun i => RingHom.map_mulVec (inclR (F := F) (AF F)) C v i`.
+-/
 theorem incV_mul (C : Matrix (Fin n) (Fin n) E) (v : Fin n → E) : incV F (C *ᵥ v) = incM F C *ᵥ incV F v :=
   funext fun i => RingHom.map_mulVec (inclR (F := F) (AF F)) C v i
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero _)`.
+-/
 theorem incM_zero : incM F (0 : Matrix (Fin n) (Fin n) E) = 0 := Matrix.map_zero _ (map_zero _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_sub _ (map_sub _) _ _`.
+-/
 theorem incM_sub (A B : Matrix (Fin n) (Fin n) E) : incM F (A - B) = incM F A - incM F B :=
   Matrix.map_sub _ (map_sub _) _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `fun h => (Submodule.span_le (p := LinearMap.range (incM F C).mulVecLin)).2 ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨v, rfl⟩, rfl⟩`. Conclude with `⟨_, (incV_mul C v).symm⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Rewrite using `[mulVec_eq_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[op_smul_eq_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨Pi.single i 1, mulVec_single_one C i⟩, rfl⟩)`.
+-/
 theorem mem_span {C : Matrix (Fin n) (Fin n) E} {w : Fin n → AE F E} :
     w ∈ Submodule.span (AE F E) (incV F '' (LinearMap.range C.mulVecLin : Set (Fin n → E))) ↔ ∃ x, incM F C *ᵥ x = w := by
   constructor
@@ -75,10 +109,18 @@ def Gen (C : Matrix (Fin n) (Fin n) E) (m : UA σ Y.J) : Prop :=
 
 variable {C : Matrix (Fin n) (Fin n) E} {m : UA σ Y.J}
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `congrFun (h.1 _ ⟨Pi.single j 1, mulVec_single_one C j⟩) i`.
+-/
 theorem Gen.fix (h : Gen C m) : mat m * incM F C = incM F C := by
   ext i j
   exact congrFun (h.1 _ ⟨Pi.single j 1, mulVec_single_one C j⟩) i
 
+/- English proof (translation)
+Use `choose x hx using fun j => mem_span.1 (h.2 (P *ᵥ Pi.single j 1) (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[mulVecLin_apply, form_mul, hP]`. Simplify using `[form]))`. Use `⟨(of x)ᵀ, ext fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `congrFun (hx j) i` as an intermediate fact. Rewrite `this` using `[mulVec_single_one]`. Conclude with `eq_add_of_sub_eq' this.symm`.
+-/
 theorem Gen.cols (h : Gen C m) {P : Matrix (Fin n) (Fin n) E} (hP : Pᵀ * Y.J * C.map σ = 0) :
     ∃ X, mat m * incM F P = incM F P + incM F C * X := by
   choose x hx using fun j => mem_span.1 (h.2 (P *ᵥ Pi.single j 1) (by
@@ -89,6 +131,17 @@ theorem Gen.cols (h : Gen C m) {P : Matrix (Fin n) (Fin n) E} (hP : Pᵀ * Y.J *
   rw [mulVec_single_one] at this
   exact eq_add_of_sub_eq' this.symm
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_gi (Y.J * C.map σ)ᵀ`. Take `⟨T, hT⟩` from `exists_gi C`. Use `set R := (Y.J * C.map σ)ᵀ with hR`. Establish `r : ∀ P : Matrix (Fin n) (Fin n) E, Pᵀ * Y.J * C.map σ = (R * P)ᵀ` using `fun P => by simp [hR, Matrix.mul_assoc]`. Establish `rC : R * C = 0` using `transpose_eq_zero.1 (r C ▸ hC)`.
+
+Take `⟨X, hX⟩` from `h.cols (P := 1 - S * R) (by rw [r, Matrix.mul_sub, ← Matrix.mul_assoc, hS]; simp)`. Establish `rm : incM F R * mat m = incM F R`. Establish `e : (mat m)ᵀ * incM F Y.J * (mat m).map (cA σ) = incM F Y.J` using `m.2`. Establish `: incM F R = (incM F Y.J * (incM F C).map (cA σ))ᵀ` using `by rw [incM_conj, ← incM_mul]; rfl`. Rewrite using `[this, ← transpose_transpose (mat m), ← transpose_mul]`.
+
+Use `nth_rw 1 [← h.fix]`. Rewrite using `[show (mat m * incM F C).map (cA σ) = (mat m).map (cA σ) * (incM F C).map (cA σ) from Matrix.map_mul (f := (cA σ).toRingHom), ← Matrix.mul_assoc, ← Matrix.mul_assoc, e]`. Establish `pm : incM F (1 - S * R) * (mat m - 1) = mat m - 1`. Rewrite using `[incM_sub, incM_one, incM_mul, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_sub (incM F R), rm]`. Simplify using the standard rewrite rules.
+
+Establish `pc : incM F (1 - S * R) * incM F C = incM F C`. Rewrite using `[← incM_mul, Matrix.sub_mul, Matrix.mul_assoc, rC]`. Simplify using the standard rewrite rules. Establish `e : (mat m - 1) * incM F (1 - S * R) = incM F C * X` using `by rw [Matrix.sub_mul, hX]; simp`. Rewrite using `[← add_sub_cancel 1 (mat m), ← pm, det_one_add_mul_comm, e]`.
+
+Use `det_one (Q := incM F (C * T)) (by rw [← Matrix.mul_assoc, ← incM_mul, hT]) ?_` and prove the remaining obligations. Rewrite using `[incM_mul, ← Matrix.mul_assoc, ← e, Matrix.mul_assoc _ _ (incM F C), pc, Matrix.sub_mul, h.fix]`. Simplify using the standard rewrite rules.
+-/
 theorem Gen.det (h : Gen C m) (hC : Cᵀ * Y.J * C.map σ = 0) : (mat m).det = 1 := by
   obtain ⟨S, hS⟩ := exists_gi (Y.J * C.map σ)ᵀ
   obtain ⟨T, hT⟩ := exists_gi C
@@ -112,6 +165,15 @@ theorem Gen.det (h : Gen C m) (hC : Cᵀ * Y.J * C.map σ = 0) : (mat m).det = 1
   refine det_one (Q := incM F (C * T)) (by rw [← Matrix.mul_assoc, ← incM_mul, hT]) ?_
   rw [incM_mul, ← Matrix.mul_assoc, ← e, Matrix.mul_assoc _ _ (incM F C), pc, Matrix.sub_mul, h.fix]; simp
 
+/- English proof (translation)
+Establish `e : ∀ z, mat (δ * m * δ⁻¹) *ᵥ incV F z = mat δ *ᵥ (mat m *ᵥ incV F (d' *ᵥ z))` using `fun z => by`. Rewrite using `[incV_mul, ← hd', mulVec_mulVec, mulVec_mulVec]`. Both sides reduce to the same expression. Establish `e' : ∀ z, mat δ *ᵥ incV F (d' *ᵥ z) = incV F z` using `fun z => by`. Rewrite using `[incV_mul, ← hd', mulVec_mulVec, show mat δ * mat δ⁻¹ = 1 from δ.1.mul_inv, one_mulVec]`.
+
+Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[e, h.1 _ ⟨T' *ᵥ v, by simp [hT']⟩, e']`. Establish `u : dᵀ * Y.J * d.map σ = Y.J` using `incM_inj (F := F) (by`. Rewrite using `[incM_mul, incM_mul, ← incM_conj, show incM F dᵀ = (incM F d)ᵀ from rfl, ← hd]`.
+
+Conclude with `δ.2)`. Establish `dd : d * d' = 1` using `incM_inj (F := F) (by rw [incM_mul, ← hd, ← hd', incM_one]; exact δ.1.mul_inv)`. Take `⟨x, hx⟩` from `mem_span.1 (h.2 (d' *ᵥ z) (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[← hz _ ⟨T *ᵥ v, rfl⟩, ← u, ← form_mul, mulVec_mulVec, dd, one_mulVec, u]`.
+
+Simplify using `[hT]))`. Use `mem_span.2 ⟨incM F T *ᵥ x, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← e' z, ← mulVec_sub, ← hx, hd, mulVec_mulVec, mulVec_mulVec, ← incM_mul, ← incM_mul, hT]`.
+-/
 theorem Gen.conj (h : Gen C m) {δ : UA σ Y.J} {d d' : Matrix (Fin n) (Fin n) E} (hd : mat δ = incM F d) (hd' : mat δ⁻¹ = incM F d')
     {T T' : Matrix (Fin n) (Fin n) E} (hT : d * C = C * T) (hT' : d' * C = C * T') : Gen C (δ * m * δ⁻¹) := by
   have e : ∀ z, mat (δ * m * δ⁻¹) *ᵥ incV F z = mat δ *ᵥ (mat m *ᵥ incV F (d' *ᵥ z)) := fun z => by
@@ -130,6 +192,13 @@ theorem Gen.conj (h : Gen C m) {δ : UA σ Y.J} {d d' : Matrix (Fin n) (Fin n) E
     refine mem_span.2 ⟨incM F T *ᵥ x, ?_⟩
     rw [e, ← e' z, ← mulVec_sub, ← hx, hd, mulVec_mulVec, mulVec_mulVec, ← incM_mul, ← incM_mul, hT]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hγ`. Establish `e : mat2 γ = incM F g.1` using `(congrArg Units.val hg).symm`. Establish `u : g.1ᵀ * dbl Y.J * g.1.map σ = dbl Y.J` using `incM_inj (F := F) (by`. Establish `: (mat2 γ)ᵀ * dbl (incM F Y.J) * (mat2 γ).map (cA σ) = dbl (incM F Y.J)` using `γ.2`. Rewrite `this` using `[e, incM_conj]`.
+
+Establish `d : incM F (dbl Y.J) = dbl (incM F Y.J)` using `by simp [incM, dbl, fromBlocks_map, Matrix.map_neg]`. Rewrite using `[incM_mul, incM_mul, d]`. Conclude with `this)`. Take `⟨A, B, hAB⟩ : ∃ A B, g.1 * dC n E = fromRows A B` from `⟨_, _, (fromRows_toRows _).symm⟩`. Use `⟨A, B, by rw [e, ← incM_diag, ← incM_mul, hAB]; exact fromRows_map _ _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `: (g.1 * dC n E)ᵀ * dbl Y.J * (g.1 * dC n E).map σ = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[hAB]`. Simplify `this` using `[dbl, transpose_fromRows, fromRows_map, fromCols_mul_fromBlocks, fromCols_mul_fromRows, ← sub_eq_add_neg, sub_eq_zero]`.
+-/
 theorem frame {γ : G2 σ Y} (hγ : γ ∈ rat2 σ Y) : ∃ A B : Matrix (Fin n) (Fin n) E,
     mat2 γ * dC n (AE F E) = fromRows (incM F A) (incM F B) ∧ Aᵀ * Y.J * A.map σ = Bᵀ * Y.J * B.map σ := by
   obtain ⟨g, hg⟩ := hγ
@@ -149,6 +218,9 @@ theorem frame {γ : G2 σ Y} (hγ : γ ∈ rat2 σ Y) : ∃ A B : Matrix (Fin n)
 
 variable {γ x : G2 σ Y} {A B : Matrix (Fin n) (Fin n) (AE F E)}
 
+/- English proof (translation)
+Establish `: mat2 γ * (fromRows A B * Z) = 0` using `by rw [fromRows_mul, a, b]; simp`. Rewrite `this` using `[← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, show mat2 γ * mat2 γ⁻¹ = 1 from γ.1.mul_inv, Matrix.one_mul, dC, diagCols, fromRows_mul]`. Conclude with `ext fun i j => by simpa using congrFun (congrFun this (.inl i)) j`.
+-/
 theorem inj (h : mat2 γ⁻¹ * dC n (AE F E) = fromRows A B) {Z : Matrix (Fin n) (Fin n) (AE F E)} (a : A * Z = 0) (b : B * Z = 0) :
     Z = 0 := by
   have : mat2 γ * (fromRows A B * Z) = 0 := by rw [fromRows_mul, a, b]; simp
@@ -156,6 +228,9 @@ theorem inj (h : mat2 γ⁻¹ * dC n (AE F E) = fromRows A B) {Z : Matrix (Fin n
     fromRows_mul] at this
   exact ext fun i j => by simpa using congrFun (congrFun this (.inl i)) j
 
+/- English proof (translation)
+Establish `l : ∀ {M N : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)}, mat2 γ * M = N ↔ M = mat2 γ⁻¹ * N` using `fun {M N} => ⟨fun h => by rw [← h, ← Matrix.mul_assoc, show mat2 γ⁻¹ * mat2 γ = 1 from γ.1.inv_mul, Matrix.one_mul], fun h => by rw [h, ← Matrix.mul_assoc, show mat2 γ * mat2 γ⁻¹ = 1 from γ.1.mul_inv, Matrix.one_mul]⟩`. Rewrite using `[isPar_iff, show mat2 (γ * x * γ⁻¹) = mat2 γ * mat2 x * mat2 γ⁻¹ from rfl, Matrix.mul_assoc, Matrix.mul_assoc, l, h, ← Matrix.mul_assoc, h, hx, fromBlocks_mul_fromRows, fromRows_mul, fromRows_ext_iff, show mat (1 : UA σ Y.J) = 1 from rfl]`. Simplify using `[eq_comm]`.
+-/
 theorem par_iff (h : mat2 γ⁻¹ * dC n (AE F E) = fromRows A B) (hx : IsEmb 1 m x) {t : GL (Fin n) (AE F E)} :
     IsPar (γ * x * γ⁻¹) t ↔ A * t.1 = A ∧ B * t.1 = mat m * B := by
   have l : ∀ {M N : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)}, mat2 γ * M = N ↔ M = mat2 γ⁻¹ * N := fun {M N} =>
@@ -168,6 +243,39 @@ theorem par_iff (h : mat2 γ⁻¹ * dC n (AE F E) = fromRows A B) (hx : IsEmb 1 
 end Off
 
 open Off in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B₀ n Y r s _ hY e he γ hγ hno`. Take `⟨A, B, hL, iso⟩` from `frame (inv_mem hγ)`. Take `⟨S, hS⟩` from `exists_gi A`. Use `set K := 1 - S * A with hK`. Establish `aK : A * K = 0` using `by rw [hK, Matrix.mul_sub, ← Matrix.mul_assoc, hS]; simp`.
+
+Establish `kK : ∀ Z : Matrix (Fin n) (Fin n) E, A * Z = 0 → K * Z = Z` using `fun Z h => by rw [hK, Matrix.sub_mul, Matrix.mul_assoc, h]; simp`. Establish `bC : Bᵀ * Y.J * (B * K).map σ = 0`. Rewrite using `[mm, ← Matrix.mul_assoc, ← iso, Matrix.mul_assoc, ← mm, aK, Matrix.map_zero _ (map_zero _), Matrix.mul_zero]`. Establish `cC : (B * K)ᵀ * Y.J * (B * K).map σ = 0`. Rewrite using `[transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Bᵀ, bC, Matrix.mul_zero]`.
+
+Establish `norm : ∀ δ : UA σ Y.J, ∀ d, mat δ = incM F d → δ ∈ ratU σ Y.J → γ * e (1, δ) * γ⁻¹ ∈ par2 σ Y → ∃ T, d * (B * K) = B * K * T` using `fun δ d hd hδ hp => by`. Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 hp`. Take `⟨T, hT⟩` from `par_rat ht (mul_mem (mul_mem hγ ((he _ _).rat (one_mem _) hδ)) (inv_mem hγ))`. Take `⟨a, b⟩` from `(par_iff hL (he _ _)).1 ht`. Rewrite `a` using `[hT, ← incM_mul]`.
+
+Rewrite `b` using `[hT, hd, ← incM_mul, ← incM_mul]`. Use `⟨T * K, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc B, kK _ (by rw [← Matrix.mul_assoc, incM_inj a, aK]), ← Matrix.mul_assoc, ← incM_inj b, Matrix.mul_assoc]`. Use `⟨LinearMap.range (B * K).mulVecLin, fun h0 => hno ?_, ?_, fun m hm => ?_, fun δ hδ hp m hm => ?_⟩` and prove the remaining obligations. Establish `c0 : B * K = 0` using `toLin'.injective (by rw [map_zero]; exact LinearMap.range_eq_bot.1 h0)`.
+
+Establish `k0 : K = 0` using `incM_inj (F := F) ((inj hL (by rw [← incM_mul, aK, incM_zero]) (by rw [← incM_mul, c0, incM_zero])).trans incM_zero.symm)`. Take `⟨a, rfl⟩ : IsUnit A` from `(isUnit_iff_isUnit_det _).2 (isUnit_det_of_left_inverse (sub_eq_zero.1 k0).symm)`. Take `⟨b, rfl⟩ : IsUnit B` from `(isUnit_iff_isUnit_det _).2 (Ne.isUnit fun h0 => by`. Use `congrArg det iso` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, det_mul, det_mul, det_transpose, det_transpose, h0, zero_mul, zero_mul, show (a.1.map σ).det = σ a.1.det from (RingHom.map_det σ.toRingHom _).symm]`.
+
+Establish `d : a.1.det ≠ 0` using `GeneralLinearGroup.det_ne_zero a`. Conclude with `mul_ne_zero (mul_ne_zero d (det_ne hY)) ((map_ne_zero σ).2 d) this)`. Establish `ud : (b * a⁻¹).1ᵀ * Y.J * (b * a⁻¹).1.map σ = Y.J`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, mm, transpose_mul, Matrix.mul_assoc]`.
+
+Use `_ = (a * a⁻¹).1ᵀ * Y.J * (a * a⁻¹).1.map σ := by`. Rewrite using `[← iso]`. Simplify using `only [Units.val_mul, mm, transpose_mul, Matrix.mul_assoc]`. Use `_ = Y.J := by simp`. Set `δ : UA σ Y.J` to `⟨GeneralLinearGroup.map (inclR (F := F) (AF F)) (b * a⁻¹), by show (incM F (b * a⁻¹).1)ᵀ * incM F Y.J * (incM F (b * a⁻¹).1).map (cA σ) = incM F Y.J`.
+
+Rewrite using `[incM_conj, show (incM F (b * a⁻¹).1)ᵀ = incM F (b * a⁻¹).1ᵀ from rfl, ← incM_mul, ← incM_mul, ud]⟩`. Use `⟨δ⁻¹, inv_mem ⟨_, rfl⟩, inv_mem_iff.1 (mem_parabolic_GL2_iff.2 ⟨GeneralLinearGroup.map (inclR (F := F) (AF F)) a, ?_⟩)⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Use `show mat2 (e (1, δ⁻¹)) * mat2 γ⁻¹ * dC n (AE F E) = dC n (AE F E) * incM F a.1`. Rewrite using `[Matrix.mul_assoc, hL, he, fromBlocks_mul_fromRows, dC, diagCols, fromRows_mul, show mat δ⁻¹ = incM F ((b * a⁻¹)⁻¹).1 from rfl, ← incM_mul, ← Units.val_mul, show mat (1 : UA σ Y.J) = 1 from rfl]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Rewrite using `[mulVecLin_apply, mulVecLin_apply, form_mul, cC]`. Simplify using `[form]`. Proceed by induction on `hm using Subgroup.closure_induction with`.
+
+Consider the case `mem m hm`. Take `⟨X, hX⟩` from `Gen.cols hm bC`. Establish `kk : incM F K * incM F K = incM F K` using `by rw [← incM_mul, kK _ aK]`. Establish `a0 : incM F A * incM F K = 0` using `by rw [← incM_mul, aK, incM_zero]`. Establish `d1 : (1 + incM F K * X).det = 1` using `det_one (Q := incM F K) (by rw [← Matrix.mul_assoc, kk]) (inj hL (by rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, a0]; simp) (by`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← incM_mul, ← sub_eq_of_eq_add' hX, Matrix.sub_mul, Matrix.mul_assoc, ← incM_mul, Gen.fix hm, sub_self]))`. Take `⟨t, ht⟩` from `(isUnit_iff_isUnit_det _).2 (d1 ▸ isUnit_one)`. Use `⟨t, (par_iff hL (he _ _)).2 ⟨?_, ?_⟩, Units.ext (ht ▸ d1 : t.1.det = 1), Units.ext (Gen.det hm cC)⟩` and prove the remaining obligations. Rewrite using `[ht, Matrix.mul_add, ← Matrix.mul_assoc, a0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[ht, Matrix.mul_add, ← Matrix.mul_assoc, ← incM_mul, hX, Matrix.mul_one]`. Consider the case `one => exact ⟨1, (par_iff hL (he _ _)).2 ⟨Matrix.mul_one _, (Matrix.mul_one _).trans (Matrix.one_mul _).symm⟩, map_one _, map_one _⟩`. Consider the case `mul m m' _ _ h h'`. Take `⟨t, a, b, c⟩` from `h`. Take `⟨t', a', b', c'⟩` from `h'`.
+
+Use `⟨t * t', ?_, by rw [map_mul, b, b', mul_one], by rw [Subgroup.coe_mul, map_mul, c, c', mul_one]⟩` and prove the remaining obligations. Use `a.mul a' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show ((1, m * m') : UA σ Y.J × UA σ Y.J) = (1, m) * (1, m') by simp, map_mul]; group`. Consider the case `inv m _ h`. Take `⟨t, a, b, c⟩` from `h`.
+
+Use `⟨t⁻¹, ?_, by rw [map_inv, b, inv_one], by rw [Subgroup.coe_inv, map_inv, c, inv_one]⟩` and prove the remaining obligations. Use `a.inv using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show ((1, m⁻¹) : UA σ Y.J × UA σ Y.J) = (1, m)⁻¹ by simp, map_inv]; group`. Take `⟨d, hd⟩` from `id hδ`. Establish `h1 : mat δ = incM F d.1` using `(congrArg Units.val hd).symm`.
+
+Establish `h2 : mat δ⁻¹ = incM F (d⁻¹).1` using `(congrArg Units.val ((map_inv _ d).trans (congrArg _ hd))).symm`. Take `⟨T, hT⟩` from `norm δ _ h1 hδ hp`. Take `⟨T', hT'⟩` from `norm δ⁻¹ _ h2 (inv_mem hδ) (by`. Use `inv_mem hp using 1` and compare the differences between its conclusion and the goal. Rewrite using `[show ((1, δ⁻¹) : UA σ Y.J × UA σ Y.J) = (1, δ)⁻¹ by simp, map_inv]; group)`.
+
+Conclude with `(Subgroup.closure_le ((unipU σ Y _).comap (MulAut.conj δ).toMonoidHom)).2 (fun m hm => Subgroup.subset_closure (Gen.conj hm h1 h2 hT hT')) hm`.
+-/
 theorem offOpen : OffOpen := by
   intro F E _ _ _ _ _ σ B₀ n Y r s _ hY e he γ hγ hno
   obtain ⟨A, B, hL, iso⟩ := frame (inv_mem hγ)

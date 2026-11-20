@@ -16,14 +16,23 @@ namespace GlobalTheory.WeilConj
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [dag, Complex.conj_conj, h.invol y]`.
+-/
 theorem dag_dag {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (h : AdjLaw ψ T S) (f : WO T S → ℂ) :
     dag S T (dag T S f) = f := by
   funext y
   simp only [dag, Complex.conj_conj, h.invol y]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[dag]`.
+-/
 theorem dag_add (S T : HSp D) (f f' : WO S T → ℂ) : dag S T (f + f') = dag S T f + dag S T f' := by
   funext y; simp [dag]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[dag]`.
+-/
 theorem dag_smul (S T : HSp D) (c : ℂ) (f : WO S T → ℂ) : dag S T (c • f) = starRingEnd ℂ c • dag S T f := by
   funext y; simp [dag]
 
@@ -46,15 +55,34 @@ def conjRep {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hST : AdjLaw ψ S T)
     have : ((p * q).2, (p * q).1) = (p.2, p.1) * (q.2, q.1) := rfl
     rw [this, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjRep_apply {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hST : AdjLaw ψ S T) (hTS : AdjLaw ψ T S)
     (ω : WRep S T) (h : GA D T) (g : GA D S) (f : WO T S → ℂ) :
     conjRep hST hTS ω (h, g) f = dag S T (ω (g, h) (dag T S f)) := rfl
 
+/- English proof (translation)
+Use `h.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+-/
 theorem adjO_zero {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (h : AdjLaw ψ S T) : adjO S T 0 = 0 := by
   have := h.add 0 0
   rw [add_zero] at this
   simpa using this
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D S.rank T.rank`. Take `⟨j1, j2, j3, j4, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank S.rank`. Use `haveI : BorelSpace (WO T S) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Set `eA : WO T S ≃+ WO S T` to `{ toFun := adjO S T invFun := adjO T S left_inv := fun x => hTS.invol x right_inv := fun y => hST.invol y map_add' := hST.add }`.
+
+Set `eH : WO T S ≃ₜ WO S T` to `⟨eA.toEquiv, hST.cont, hTS.cont⟩`. Set `eM : WO T S ≃ᵐ WO S T` to `eH.toMeasurableEquiv`. Establish `hHaar : (μ.map eM).IsAddHaarMeasure` using `AddEquiv.isAddHaarMeasure_map μ eA hST.cont hTS.cont`. Establish `hmp : MeasurePreserving eM μ (μ.map eM)` using `⟨eM.measurable, rfl⟩`. Establish `hmp' : MeasurePreserving eM.symm (μ.map eM) μ` using `MeasurePreserving.symm eM hmp`.
+
+Set `eG : ratL S T → ratL T S` to `fun g => ⟨adjO S T g, (hST.rat g).2 g.2⟩`. Establish `hbij : Function.Bijective eG`. Use `⟨fun g g' hg => ?_, fun g => ⟨⟨adjO T S g, (hTS.rat g).2 g.2⟩, Subtype.ext (hST.invol g)⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun x : ratL T S => adjO T S (x : WO S T)) hg`. Simplify using `only [eG, hTS.invol] at e`.
+
+Conclude with `Subtype.ext e`. Establish `hF : IsAddFundamentalDomain (ratL T S) (eM.symm ⁻¹' 𝓕) (μ.map eM)`. Use `h𝓕.preimage_of_equiv hmp'.quasiMeasurePreserving hbij fun g x => ?_` and prove the remaining obligations. Use `show adjO T S (adjO S T g + x) = (g : WO T S) + adjO T S x`. Rewrite using `[hTS.add, hTS.invol]`.
+
+Establish `hpre : eM ⁻¹' (eM.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `a`. Simplify using the standard rewrite rules. Use `⟨μ.map eM, eM.symm ⁻¹' 𝓕, hHaar, hF, fun G => ?_⟩` and prove the remaining obligations. Use `symm`.
+
+Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv, hpre]`. Both sides reduce to the same expression.
+-/
 theorem unit_transport {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hST : AdjLaw ψ S T) (hTS : AdjLaw ψ T S)
     (μ : Measure (WO T S)) (𝓕 : Set (WO T S)) (hμ : μ.IsAddHaarMeasure)
     (h𝓕 : IsAddFundamentalDomain (ratL S T) 𝓕 μ) :
@@ -92,20 +120,34 @@ theorem unit_transport {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hST : Adj
   rw [MeasurableEquiv.restrict_map, lintegral_map_equiv, hpre]
   rfl
 
+/- English proof (translation)
+Simplify using `only [dag]`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Complex.norm_conj]`.
+-/
 theorem enorm_dag (S T : HSp D) (f : WO S T → ℂ) (y : WO T S) : ‖dag S T f y‖ₑ = ‖f (adjO S T y)‖ₑ := by
   simp only [dag]
   rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Complex.norm_conj]
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, hε, h3⟩` from `he`. Use `⟨by rw [← map_mul, h1], by rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2], v, ε, hε, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, add_comm, h3]`.
+-/
 theorem isSplitIdem_cA {e : AE D} (he : IsSplitIdem D e) : IsSplitIdem D (cA D e) := by
   obtain ⟨h1, h2, v, ε, hε, h3⟩ := he
   refine ⟨by rw [← map_mul, h1], by rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, h2], v, ε, hε, ?_⟩
   rw [GlobalTheory.DualPairCheck.cA_cA, add_comm, h3]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, add_comm]`. Conclude with `h i j`.
+-/
 theorem suppAt_cA {e : AE D} {V : HSp D} {g : GA D V} (h : SuppAt e V g) : SuppAt (cA D e) V g := by
   intro i j
   rw [GlobalTheory.DualPairCheck.cA_cA, add_comm]
   exact h i j
 
+/- English proof (translation)
+Establish `hi : cA D e * cA D e = cA D e` using `by rw [← map_mul, he.1]`. Use `⟨GlobalTheory.SplitDetCharacter.cutDet (cA D e) hi V g, ?_, fun χ n hχ => ?_⟩` and prove the remaining obligations. Use `show _ = _`. Rewrite using `[GlobalTheory.SplitDetCharacter.cutDet_val]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `GlobalTheory.SplitDetCharacter.char_eq_of_mul_conj hχ _ _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitDetCharacter.cutDet_val, hx, map_add, map_mul, map_sub, map_one]`. Establish `hd` using `GlobalTheory.SplitDetCharacter.det_mul_conj V g`. Take the linear combination `(1 - cA D (Formalism.L2.Theta.mt V g).det + (Formalism.L2.Theta.mt V g).det * cA D (Formalism.L2.Theta.mt V g).det - (Formalism.L2.Theta.mt V g).det) * hi + cA D e * hd`.
+-/
 theorem exists_detAt_cA {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} {x : (AE D)ˣ}
     (hx : IsDetAt e V g x) : ∃ x' : (AE D)ˣ, IsDetAt (cA D e) V g x' ∧
       ∀ (χ : (AE D)ˣ →* Circle) (n : ℕ), ResEta D χ n → χ x' = χ x := by
@@ -119,6 +161,31 @@ theorem exists_detAt_cA {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D 
     linear_combination (1 - cA D (Formalism.L2.Theta.mt V g).det + (Formalism.L2.Theta.mt V g).det * cA D (Formalism.L2.Theta.mt V g).det
       - (Formalism.L2.Theta.mt V g).det) * hi + cA D e * hd
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT ω H`. Establish `hST : AdjLaw ψ S T` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ H.std S T`. Establish `hTS : AdjLaw ψ T S` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ H.std T S`. Use `⟨conjRep hST hTS ω, ?_, fun g h f => by rw [conjRep_apply, dag_dag hST]⟩` and prove the remaining obligations. Use `{ std := H.std hecS := H.hecT hecT := H.hecS resS := H.resT resT := H.resS om_pres := fun p f hf => hST.theta _ (H.om_pres _ _ (hTS.theta f hf)) om_heis := ?_ om_aut := ?_ om_cont := ?_ om_unit := ?_ om_split := ?_ }` and prove the remaining obligations.
+
+Introduce `h g w₀ f hf`. Rewrite using `[conjRep_apply, conjRep_apply]`. Establish `e1` using `hTS.Heisenberg₂ (adjO S T w₀) f`. Rewrite `e1` using `[hTS.invol]`. Rewrite using `[← e1, H.om_heis g h (adjO S T w₀) _ (hTS.theta f hf), ← hST.act, hST.Heisenberg₂]`.
+
+Introduce `γ hγ γ' hγ' f hf`. Rewrite using `[conjRep_apply]`. Simplify using `only [dag]`. Rewrite using `[adjO_zero hST, H.om_aut γ' hγ' γ hγ _ (hTS.theta f hf)]`. Simplify using `only [dag]`.
+
+Rewrite using `[adjO_zero hTS, Complex.conj_conj]`. Introduce `f hf w`. Conclude with `Complex.continuous_conj.comp ((H.om_cont _ (hTS.theta f hf) (adjO S T w)).comp continuous_swap)`. Introduce `μ 𝓕 hμ h𝓕 p f hf`. Take `⟨μ', 𝓕', hμ', h𝓕', hG⟩` from `unit_transport hST hTS μ 𝓕 hμ h𝓕`.
+
+Establish `e1 : ∀ w, ‖conjRep hST hTS ω p f w‖ₑ ^ 2 = (fun v => ‖ω (p.2, p.1) (dag T S f) v‖ₑ ^ 2) (adjO S T w)`. Introduce `w`. Use `show ‖dag S T (ω (p.2, p.1) (dag T S f)) w‖ₑ ^ 2 = _`. Rewrite using `[enorm_dag]`. Establish `e2 : ∀ w, ‖f w‖ₑ ^ 2 = (fun v => ‖dag T S f v‖ₑ ^ 2) (adjO S T w)`.
+
+Introduce `w`. Use `show _ = ‖dag T S f (adjO S T w)‖ₑ ^ 2`. Rewrite using `[enorm_dag, hTS.invol]`. Simplify using `only [e1, e2]`. Conclude with `(hG (fun v => ‖ω (p.2, p.1) (dag T S f) v‖ₑ ^ 2)).trans ((H.om_unit μ' 𝓕' hμ' h𝓕' _ _ (hTS.theta f hf)).trans (hG (fun v => ‖dag T S f v‖ₑ ^ 2)).symm)`.
+
+Introduce `e he h g hTh hSg y x hy hx`. Take `⟨x', hx', hxx⟩` from `exists_detAt_cA he hx`. Take `⟨y', hy', hyy⟩` from `exists_detAt_cA he hy`. Take `⟨r, hr, hℓ⟩` from `H.om_split (cA D e) (isSplitIdem_cA he) g h (suppAt_cA hSg) (suppAt_cA hTh) x' y' hx' hy'`. Use `⟨r, hr, fun ℓ hinv f hf => ?_⟩` and prove the remaining obligations.
+
+Set `ℓω : (WO S T → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun F => starRingEnd ℂ (ℓ (dag S T F)) map_add' := fun F F' => by simp only [dag_add, map_add] map_smul' := fun c F => by simp only [dag_smul, map_smul, smul_eq_mul, map_mul, Complex.conj_conj, RingHom.id_apply] }`. Establish `hinvω : ∀ u : WO S T, (∀ i j, cA D (cA D e) * u i j = u i j) → ∀ F, IsThetaFunO ψ S T F → ℓω (heisO ψ S T u F) = ℓω F`. Introduce `u hu F hF`. Use `show starRingEnd ℂ (ℓ (dag S T (heisO ψ S T u F))) = starRingEnd ℂ (ℓ (dag S T F))`. Establish `e1` using `hST.Heisenberg₂ (adjO T S u) F`.
+
+Rewrite `e1` using `[hST.invol]`. Establish `hh : IsHalf (cA D (cA D (cA D e))) (adjO T S u)` using `hTS.half _ u hu`. Rewrite `hh` using `[GlobalTheory.DualPairCheck.cA_cA]`. Rewrite using `[← e1, hinv _ hh _ (hST.theta F hF)]`. Establish `key` using `hℓ ℓω hinvω (dag T S f) (hTS.theta f hf)`.
+
+Establish `k1 : ℓω (ω (g, h) (dag T S f)) = starRingEnd ℂ (ℓ (conjRep hST hTS ω (h, g) f))` using `rfl`. Establish `k2 : ℓω (dag T S f) = starRingEnd ℂ (ℓ f)` using `by show starRingEnd ℂ (ℓ (dag S T (dag T S f))) = _`. Rewrite using `[dag_dag hTS]`. Rewrite `key` using `[k1, k2]`. Establish `hsf : (starRingEnd ℂ) ((splitFacO χS χT x' y' : Circle) : ℂ) = ((splitFacO χT χS y x : Circle) : ℂ)`.
+
+Rewrite using `[← Circle.coe_inv_eq_conj]`. Use `congr 1`. Unfold `splitFacO`. Rewrite using `[hxx χT _ H.resT, hyy χS _ H.resS, _root_.mul_inv_rev, inv_inv]`. Establish `key'` using `congrArg (starRingEnd ℂ) key`.
+
+Rewrite `key'` using `[Complex.conj_conj, map_mul, map_mul, Complex.conj_conj, Complex.conj_ofReal, hsf]`. Conclude with `key'`.
+-/
 theorem exists_conj_weilDatum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : WRep S T), IsWeilDatumO ψ S T χS χT ω → ∃ ω' : WRep T S, IsWeilDatumO ψ T S χT χS ω' ∧ ∀ (g : GA D S) (h : GA D T) (f : WO S T → ℂ), ω' (h, g) (dag S T f) = dag S T (ω (g, h) f) := by
   intro D ψ S T χS χT ω H
   have hST : AdjLaw ψ S T := GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ H.std S T

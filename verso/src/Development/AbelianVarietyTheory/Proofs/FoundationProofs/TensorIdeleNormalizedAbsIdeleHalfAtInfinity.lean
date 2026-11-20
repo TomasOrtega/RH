@@ -10,6 +10,9 @@ namespace GlobalTheory.Eis.Conv
 open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.Doubling GlobalTheory.AdelicU
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `haveI : Nontrivial (AF F) := (evInf F w).toRingHom.domain_nontrivial`. Express the relevant statement in the definitionally equal form `Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) (halfInf F).1) = _`. Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, h]`.
+-/
 theorem norm_halfE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h : Module.finrank F E = 2) :
     Algebra.norm (AF F) (halfE F E).1 = (halfInf F).1 ^ 2 := by
@@ -18,14 +21,25 @@ theorem norm_halfE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   change Algebra.norm (AF F) (algebraMap (AF F) (AF F ⊗[F] E) (halfInf F).1) = _
   rw [Algebra.norm_algebraMap, Module.finrank_baseChange, h]
 
+/- English proof (translation)
+The claim follows from `map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)`.
+-/
 theorem evFin_halfInf (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     evFin F v (halfInf F).1 = 1 :=
   map_one (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.AutFunCompare.evW w).commutes _`.
+-/
 theorem evInf_halfInf (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) :
     evInf F w (halfInf F).1 = algebraMap F _ 2⁻¹ :=
   (GlobalTheory.AutFunCompare.evW w).commutes _
 
+/- English proof (translation)
+Rewrite using `[evInf_halfInf]`. Establish `h2 : w (2⁻¹ : F) = 2⁻¹`. Rewrite using `[← InfinitePlace.norm_embedding_eq w, map_inv₀, norm_inv, map_ofNat]`. Simplify using the standard rewrite rules. Establish `e : ‖((2⁻¹ : F) : w.Completion)‖ = 2⁻¹` using `(InfinitePlace.Completion.norm_coe w _).trans h2`.
+
+Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[NNReal.coe_inv, NNReal.coe_ofNat]`. Conclude with `e`.
+-/
 theorem nnnorm_evInf_halfInf (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) :
     ‖evInf F w (halfInf F).1‖₊ = 2⁻¹ := by
   rw [evInf_halfInf]
@@ -37,6 +51,11 @@ theorem nnnorm_evInf_halfInf (F : Type) [Field F] [NumberField F] (w : InfiniteP
   rw [NNReal.coe_inv, NNReal.coe_ofNat]
   exact e
 
+/- English proof (translation)
+Use `haveI := h.1`. Establish `hn` using `norm_halfE F E h.2.2.1`. Establish `hfin : ∀ v, absEv F E v (unitFin F E v (halfE F E)) = 1` using `fun v => by`. Rewrite using `[absEv_unitFin, hn, map_pow, evFin_halfInf]`. Simplify using the standard rewrite rules.
+
+Establish `hinf : ∀ w, absEw F E w (unitInf F E w (halfE F E)) = 4⁻¹` using `fun w => by`. Rewrite using `[absEw_unitInf, hn, map_pow, nnnorm_pow, nnnorm_evInf_halfInf, InfinitePlace.mult, if_pos (IsTotallyReal.isReal w), pow_one, inv_pow]`. Evaluate the numerical expressions. Rewrite using `[absE_apply, finprod_eq_one_of_forall_eq_one hfin, mul_one, Finset.prod_congr rfl fun w _ => hinf w, Finset.prod_const, Finset.card_univ, inv_pow]`.
+-/
 theorem absE_halfE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (h : IsCMExt F E σ) : absE F E (halfE F E) = ((4 : ℝ≥0) ^ Fintype.card (InfinitePlace F))⁻¹ := by
   haveI := h.1

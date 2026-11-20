@@ -26,6 +26,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FormalAlgebraise
 
+/- English proof (translation)
+Establish `hle : RingHom.ker (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : I ^ (e + 1 + 1) ≤ I ^ (e + 1))) ≤ (I ^ (e + 1)).map (Ideal.Quotient.mk _)`. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite `hx` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Use `le_bot_iff.1 ((Ideal.pow_right_mono hle _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, ← pow_mul, le_bot_iff, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `Ideal.pow_le_pow_right (by omega)`.
+-/
 theorem ker_factor_sq {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) :
     RingHom.ker (Ideal.Quotient.factor
       (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : I ^ (e + 1 + 1) ≤ I ^ (e + 1))) ^ 2 = ⊥ := by
@@ -42,6 +47,23 @@ theorem ker_factor_sq {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) :
 
 open GlobalTheory.AbLaw in
 
+/- English proof (translation)
+Introduce `_ _ R _ _ _ _ I hI hc _ Y β N v hβ hY hN hA`. Establish `hfl : ∀ e, Flat (Y e).hom` using `fun e => by have := hY e; infer_instance`. Establish `hamp : ∀ e, RelAmple (Y e) (N e)`. Introduce `e`. Proceed by induction on `e with`.
+
+Consider the case `zero => exact hA`. Consider the case `succ e ih`. Use `hY (e + 1)` as an intermediate fact. Conclude with `GlobalTheory.T.relAmple_lift_squareZero_thickening _ _ _ (Ideal.Quotient.factor_surjective _) (ker_factor_sq I e) (Y (e + 1)) (Y e) (β e) (hβ e) inferInstance _ _ (hN _).1 (hN _).1 ⟨v e, (hN e).2⟩ ih`. Establish `hproj : ∀ e, IsProjBy (Y e).hom` using `fun e => by`.
+
+Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy _ (Y e) (N e) (hN e).1).1 (hamp e)`. Conclude with `⟨_, isLB_pw (hN e).1 _, n, s, hs⟩`. Establish `hle : I ^ (0 + 1) ≤ IsLocalRing.maximalIdeal R`. Rewrite using `[zero_add, pow_one]`. Conclude with `IsLocalRing.le_maximalIdeal hI`.
+
+Set `g₀ : R ⧸ I ^ (0 + 1) →+* IsLocalRing.ResidueField R` to `Ideal.Quotient.factor hle`. Establish `hg₀ : Function.Surjective g₀` using `Ideal.Quotient.factor_surjective hle`. Establish `hpb` using `IsPullback.of_hasPullback (Y 0).hom (Spec.map (CommRingCat.ofHom g₀))`. Take `⟨d, hd, h0, n, s₀, hs₀⟩` from `GlobalTheory.T.exists_very_ample_power _ (Y 0) (N 0) (hN 0).1 hA _ g₀ _ _ _ hpb`. Establish `hv : ∀ e, LBIso (AbLaw.pw (N e) d) ((AbLaw.pw (N (e + 1)) d).pull (β e))` using `fun e => by`.
+
+Rewrite using `[GlobalTheory.Algebraise.pw_pull]`. Conclude with `GlobalTheory.Algebraise.lbIso_pw ⟨v e, (hN e).2⟩ d`. Use `choose v' hv' using hv`. Establish `hN' : ∀ e, (AbLaw.pw (N e) d).IsLB ∧ (v' e).IsGen` using `fun e => ⟨isLB_pw (hN e).1 d, hv' e⟩`. Establish `hL` using `LB.isLB_pull (hN' 0).1 (pullback.fst (Y 0).hom (Spec.map (CommRingCat.ofHom g₀)))`.
+
+Use `choose s hs0 hs using fun j => GlobalTheory.T.exists_compatible_sections_thickenings_localRing R I hI Y β hβ hfl hproj (fun e => AbLaw.pw (N e) d) v' hN' _ g₀ hg₀ _ _ _ hpb _ _ hL (CubePf.idIsoL_isGen hL) h0 (s₀ j)`. Establish `hva : VeryAmpleBy (Y 0).hom (AbLaw.pw (N 0) d) (fun j => s j 0)`. Establish `: (fun j => s j 0) = s₀` using `funext hs0`. Rewrite using `[this]`. Conclude with `hs₀`.
+
+Take `⟨B, H, s', b, w, hH, hB, hb, hbβ, -, -⟩` from `GlobalTheory.T.exists_projective_algebraisation_formal_complete_local R I hI hc Y β hβ hfl (fun e => AbLaw.pw (N e) d) v' hN' n (fun e j => s j e) (fun e j => hs j e) hva`. Establish `hP : IsProjBy B.hom` using `⟨H, hH, n, s', hB⟩`. Establish `hS : Smooth B.hom` using `GlobalTheory.T.smooth_of_smooth_thickenings' R I hI B (isProper_of_isProjBy R B.left B.hom hP) Y b hb hY`. Establish `hF : Flat B.hom` using `inferInstance`. Take `⟨M, hM, hNM⟩` from `GlobalTheory.LBAlgLocal.exists_lineBundle_of_thickenings R I hI hc Y β hβ B b hP hF hb hbβ N v hN`.
+
+Use `haveI : Nontrivial (R ⧸ I ^ (0 + 1)) := g₀.domain_nontrivial`. Conclude with `⟨B, M, b, hP, hS, hM, GlobalTheory.T.relAmple_of_ample_on_closed_subscheme_localBase R B M hF hP hM _ _ Ideal.Quotient.mk_surjective (Y 0) (b 0) (hb 0) (N 0) (hN 0).1 (hNM 0) hA, hb, hbβ, hNM⟩`.
+-/
 theorem algebraisation : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → IsAdicComplete I R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) → (∀ e, Smooth (Y e).hom) → (∀ e, (N e).IsLB ∧ (v e).IsGen) → RelAmple (Y 0) (N 0) → ∃ (B : Over (Spec (CommRingCat.of R))) (M : LB B.left) (b : ∀ e, (Y e).left ⟶ B.left), GlobalTheory.AbLaw.IsProjBy B.hom ∧ Smooth B.hom ∧ M.IsLB ∧ RelAmple B M ∧ (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) ∧ (∀ e, β e ≫ b (e + 1) = b e) ∧ ∀ e, LBIso (N e) (M.pull (b e)) := by
   intro _ _ R _ _ _ _ I hI hc _ Y β N v hβ hY hN hA
   have hfl : ∀ e, Flat (Y e).hom := fun e => by have := hY e; infer_instance

@@ -8,6 +8,9 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Rh.len_eq`.
+-/
 theorem submodule_eq_of_hasLen_eq : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → ∀ (ι : Type) [Fintype ι] (L L' : Submodule R (ι → R)), L ≤ L' → ∀ x y : NNReal, x ≠ 0 → HasLen v R ((ι → R) ⧸ L) x → HasLen v R ((ι → R) ⧸ L') y → x ≤ y ∧ (x = y → L = L') :=
   @PositivityTheory.HtPt.Rh.len_eq
 

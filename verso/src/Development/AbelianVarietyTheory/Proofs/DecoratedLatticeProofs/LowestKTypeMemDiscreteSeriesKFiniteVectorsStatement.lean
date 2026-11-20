@@ -10,5 +10,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.LiftRows GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LowKFin.lowT_mem_kfin | exact GlobalTheory.LowKFin.lowT_mem_kfin | (intros; apply GlobalTheory.LowKFin.lowT_mem_kfin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lowestKType_mem_discreteSeriesKFiniteVectors : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (v : lowT M τ), ((v : M.sm τ) : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ := by
   first | exact @GlobalTheory.LowKFin.lowT_mem_kfin | exact GlobalTheory.LowKFin.lowT_mem_kfin | (intros; apply GlobalTheory.LowKFin.lowT_mem_kfin <;> assumption)

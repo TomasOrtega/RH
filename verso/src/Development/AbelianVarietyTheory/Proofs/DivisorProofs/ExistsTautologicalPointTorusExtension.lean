@@ -18,6 +18,19 @@ namespace GlobalTheory.TautGt
 
 open GlobalTheory.TChart.GensFrom in
 
+/- English proof (translation)
+Establish `hψ : (lift x y).left ≫ β₂ = (T'.hom ≫ spMap iw) ≫ (lift x₀ y₀).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show ((lift x y).left ≫ β₂) ≫ (fst BT BT).left = ((T'.hom ≫ spMap iw) ≫ (lift x₀ y₀).left) ≫ (fst BT BT).left`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, hx, Category.assoc, ← Over.comp_left, lift_fst, Category.assoc]`. Use `show ((lift x y).left ≫ β₂) ≫ (snd BT BT).left = ((T'.hom ≫ spMap iw) ≫ (lift x₀ y₀).left) ≫ (snd BT BT).left`.
+
+Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, hy, Category.assoc, ← Over.comp_left, lift_snd, Category.assoc]`. Take `⟨t₂, ht₂, hv₂⟩` from `exists_gen hMT (φ' := fun I : ULift.{0} (Finset (Fin 2)) => (lift x₀ y₀).left ≫ (psum BT (x2 BT) I.down).left) (ε' := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (by`. Introduce `U _ H`. Rewrite using `[lam_form x₀ y₀ U H, ← Finset.prod_inv_distrib]`. Simplify using `only [zpow_neg]) (LB.invGen MT _ _ τ₁) (DVR.invGen_isGen _ _ _ _ h₁)`.
+
+Set `t₃ : LB.Gen ((abelian₂ BT MT).pull (lift x₀ y₀).left)` to `GlobalTheory.UU.unflatGen t₂`. Establish `ht₃ : t₃.IsGen` using `GlobalTheory.UU.unflatGen_isGen ht₂`. Take `⟨a, ha, hva⟩` from `GlobalTheory.ArcPull.exists_down_om hw (LB.isLB_linComb hMT _ _) (LB.isLB_linComb hMQ _ _) (φ' := fun _ : PUnit => (lift x y).left) (φ := fun _ => (lift x₀ y₀).left) (ε := fun _ => 1) (T'.hom ≫ spMap iw) (fun _ => hψ) t₃ ht₃`. Take `⟨τ, hτ, hvτ⟩` from `exists_gen hMQ (φ := fun I : ULift.{0} (Finset (Fin 2)) => (lift x y).left ≫ (psum BQ (x2 BQ) I.down).left) (ε := fun I => -((-1 : ℤ) ^ (2 - I.down.card))) (φ' := lamPts x y) (ε' := negε) (by`. Introduce `U _ H`.
+
+Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[lam_form x y U H, inv_inv]) (LB.invGen MQ _ _ (GlobalTheory.UU.flatGen a))`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (GlobalTheory.UU.flatGen_isGen ha))`. Use `⟨τ, hτ, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e1` using `hvτ _ (𝟙 T'.left) z J' hJ'`.
+
+Establish `e5` using `val_flatGen (L := MQ) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BQ (x2 BQ) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (F := (lift x y).left) a (𝟙 T'.left) z hJ'`. Rewrite `e1` using `[val_inv, e5]`. Establish `e6 : val t₃ (𝟙 T'.left ≫ T'.hom ≫ spMap iw) z (fun ψ (k : ULift.{0} (Finset (Fin 2))) => J (ψ ≫ (psum BT (x2 BT) k.down).left)) = val t₂ (𝟙 T'.left ≫ T'.hom ≫ spMap iw) z J` using `val_unflatGen (L := MT) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BT (x2 BT) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) (F := (lift x₀ y₀).left) t₂ (𝟙 T'.left ≫ T'.hom ≫ spMap iw) z hJ`. Establish `e2` using `hva _ (𝟙 T'.left) z _ _ (good_linComb (L := MT) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BT (x2 BT) I.down).left) (ε := fun I => (-1 : ℤ) ^ (2 - I.down.card)) hJ) (good_linComb (L := MQ) (φ := fun I : ULift.{0} (Finset (Fin 2)) => (psum BQ (x2 BQ) I.down).left) (ε := fun …`. Rewrite `e2` using `[e6, hv₂ _ _ z J hJ, val_inv, Fintype.prod_unique, zpow_one, om_lam]`.
+
+Simplify using `only [Category.id_comp] at e1 e2`. Rewrite using `[e1, ← inv_inv (val τ₁ (T'.hom ≫ spMap iw) z J), e2, _root_.mul_inv, _root_.mul_inv_cancel_left]`. Both sides reduce to the same expression.
+-/
 theorem exists_gen_at {W V : Type} [CommRing W] [CommRing V] {BT : Over (Sp W)} [GrpObj BT] [IsCommMonObj BT]
     {BQ : Over (Sp V)} [GrpObj BQ] [IsCommMonObj BQ] {MT : LB BT.left} {MQ : LB BQ.left} (hMT : MT.IsLB) (hMQ : MQ.IsLB)
     (iw : W →+* V) {β : BQ.left ⟶ BT.left} {β₂ : (G2 BQ).left ⟶ (G2 BT).left} (hsq : IsSquare β β₂)
@@ -78,11 +91,17 @@ end GlobalTheory.TautGt
 noncomputable section
 namespace GlobalTheory.TautGt
 
+/- English proof (translation)
+The claim follows from `gm_scaleGen t c r z _ (hJ.mem φ r)`.
+-/
 theorem val_scaleGen {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (c : Γ(Y, ⊤)ˣ) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     val (scaleGen t c) r z J = gm r z ⊤ c * val t r z J :=
   gm_scaleGen t c r z _ (hJ.mem φ r)
 
+/- English proof (translation)
+Rewrite using `[eq_mul_inv_of_mul_eq h1, eq_mul_inv_of_mul_eq h2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mult_alg {G : Type} [CommGroup G] (u₁ u₂ L L₁ L₂ t t₁ t₂ cD cT : G) (h1 : L * cD = L₁ * L₂ * cT)
     (h2 : t * cT = t₁ * t₂) : u₁ * u₂ * (L * t) * cD = u₁ * (L₁ * t₁) * (u₂ * (L₂ * t₂)) := by
   rw [eq_mul_inv_of_mul_eq h1, eq_mul_inv_of_mul_eq h2]
@@ -97,6 +116,9 @@ def kU {V : Type} [CommRing V] [IsDomain V] {r : ℕ} {I : Type} [Fintype I] (s 
     (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ((map_ne_zero _).2
       ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs i))))
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [kU, Units.val_mk0, Units.val_mul, map_add, LinearMap.add_apply, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => zpow_add₀ ((map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs i))) _ _` and prove the remaining obligations.
+-/
 theorem kU_add {V : Type} [CommRing V] [IsDomain V] {r : ℕ} {I : Type} [Fintype I] (s : I → V) (hs : ∀ i, s i ≠ 0)
     (ε : I → LinearMap.BilinForm ℤ (Fin r → ℤ)) (F : Type) [Field F] [Algebra (FractionRing V) F]
     (x x' a : Fin r → ℤ) : kU s hs ε F (x + x') a = kU s hs ε F x a * kU s hs ε F x' a := by
@@ -105,6 +127,9 @@ theorem kU_add {V : Type} [CommRing V] [IsDomain V] {r : ℕ} {I : Type} [Fintyp
   refine Finset.prod_congr rfl fun i _ => zpow_add₀ ((map_ne_zero _).2
       ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs i))) _ _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[kU]`.
+-/
 theorem kU_zero {V : Type} [CommRing V] [IsDomain V] {r : ℕ} {I : Type} [Fintype I] (s : I → V) (hs : ∀ i, s i ≠ 0)
     (ε : I → LinearMap.BilinForm ℤ (Fin r → ℤ)) (F : Type) [Field F] [Algebra (FractionRing V) F]
     (a : Fin r → ℤ) : kU s hs ε F 0 a = 1 := by
@@ -115,6 +140,31 @@ end GlobalTheory.TautGt
 
 open GlobalTheory.TautGt in
 
+/- English proof (translation)
+Introduce `o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF hs F _ _ a`. Establish `hF'` using `hF`. Take `⟨hpb, hsq, hw, hc, -⟩` from `hF`. Establish `hι : (toUnit (TF (R` using `V) F)).left = (TF (R := V) F).hom := rfl`. Set `bL : (TF (R` to `V) F).left ⟶ D.P.A.left := hpb.1.lift ((TF (R := V) F).hom ≫ spMap ω ≫ (T.c₀ a).left) (TF (R := V) F).hom (by`.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w (T.c₀ a)]`. Use the proof step `rfl)`. Set `b : TF (R` to `V) F ⟶ D.P.A := Over.homMk bL (hpb.1.lift_snd _ _ _)`. Establish `hb : b.left ≫ β = (TF (R` using `V) F).hom ≫ spMap ω ≫ (T.c₀ a).left := hpb.1.lift_fst _ _ _`. Establish `hx : ∀ χ : D.X, (DegPre.cF D F χ).left ≫ β = (TF (R` using `V) F).hom ≫ spMap ω ≫ (T.c₀ ((n : ℤ) • e χ)).left := fun χ => by show ((toUnit (TF (R := V) F)).left ≫ (D.c χ).left) ≫ β = _`.
+
+Rewrite using `[Category.assoc, hc χ, hι]`. Establish `key` using `fun χ : D.X => exists_gen_at T.M.isLB D.P.isLB ω hsq w hw (DegPre.cF D F χ) b (T.c₀ ((n : ℤ) • e χ)) (T.c₀ a) (hx χ) hb (T.τ₀ _ _) (T.τ₀_gen _ _)`. Use `choose τ hτg hτv using key`. Establish `hval : ∀ χ z J J', Good T.M.L z J → Good D.P.L z J' → val (scaleGen (τ χ) (unitOn (kU s hs ε F (e χ) a))) (𝟙 _) z J' = gm (𝟙 (TF (R` using `V) F).left) z ⊤ (unitOn (kU s hs ε F (e χ) a)) * (lamVal w (lift (DegPre.cF D F χ) b).left z J J' * val (T.τ₀ ((n : ℤ) • e χ) a) ((TF (R := V) F).hom ≫ spMap ω) z J) := fun χ z J J' hJ hJ' => by`. Rewrite using `[val_scaleGen _ _ _ _ hJ', hτv χ z J J' hJ hJ']`.
+
+Establish `hτ0 : ∀ y J, Good T.M.L y J → val (T.τ₀ 0 a) ((TF (R` using `V) F).hom ≫ spMap ω) y J = 1 := fun y J hJ => by`. Establish `C : LB.Gen.Corr T.M.L _ _ _ _ (T.τ₀ 0 a) (LB.oneGen T.M.L)` using `corr_of_val T.M.isLB fun y J hJ => (show val (T.τ₀ 0 a) (𝟙 _) y J = 1 by`. Establish `h` using `T.τ₀_add 0 0 a y J hJ`. Establish `f : cubV T.cub y J (T.c₀ 0) (T.c₀ 0) (T.c₀ a) = 1`. Rewrite using `[TautBase.c₀_zero]`.
+
+Conclude with `(isCub_cubV T.cub hJ).face _ _`. Rewrite `h` using `[f, _root_.mul_one, add_zero]`. Conclude with `mul_eq_left.1 h.symm).trans (val_one _).symm`. Conclude with `(val_corr hJ C _).trans (val_one _)`. Establish `hc0 : D.c 0 = 1` using `mul_eq_left.1 ((D.c_add 0 0).symm.trans (by rw [add_zero]))`.
+
+Establish `hcF0 : DegPre.cF D F 0 = 1` using `by show toUnit _ ≫ D.c 0 = 1`. Rewrite using `[hc0, MonObj.comp_one]`. Establish `hcF : ∀ χ χ', DegPre.cF D F (χ + χ') = DegPre.cF D F χ * DegPre.cF D F χ'` using `fun χ χ' => by show toUnit _ ≫ D.c (χ + χ') = _`. Rewrite using `[D.c_add]`. Conclude with `MonObj.comp_mul _ _ _`.
+
+Establish `unitOn_mul : ∀ k k' : Fˣ, unitOn (k * k') = unitOn k * unitOn k'` using `fun k k' => map_mul _ _ _`. Use `⟨{ b := b s := fun χ => scaleGen (τ χ) (unitOn (kU s hs ε F (e χ) a)) isGen := fun χ => scaleGen_isGen D.P.isLB _ (hτg χ) _ s_zero := ?_ mult := ?_ }, hb, fun χ => ⟨kU s hs ε F (e χ) a, rfl, fun z J J' hJ hJ' => hval χ z J J' hJ hJ'⟩⟩` and prove the remaining obligations. Use `corr_of_val D.P.isLB fun y J' hJ' => ?_ choose J hJ using fun ψ : (TF (R := V) F).left ⟶ T.B.left => exists_chart T.M.isLB (ψ y)` and prove the remaining obligations. Use `(hval 0 y J J' hJ hJ').trans (Eq.trans ?_ (val_one _).symm)` and prove the remaining obligations. Rewrite using `[map_zero e, kU_zero, smul_zero, hτ0 y J hJ, hcF0, (GlobalTheory.T.mumford_bundle_iso_eq_one_along_axes T ε n V D ω s e β ββ w hB hF' (TF (R := V) F) b y J J' hJ hJ').1, show unitOn (1 : Fˣ) = 1 from map_one _, map_one, _root_.mul_one, _root_.mul_one]`.
+
+Introduce `χ χ'`. Use `corr_of_val D.P.isLB fun y J' hJ' => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (TF (R := V) F).left ⟶ T.B.left => exists_chart T.M.isLB (ψ y)`. Establish `hcub : val (DegPre.cubAt D F (DegPre.cF D F χ) (DegPre.cF D F χ') b) (𝟙 _) y J' = cubV D.cub y J' (DegPre.cF D F χ) (DegPre.cF D F χ') b`. Unfold `DegPre.cubAt`.
+
+Use `(val_pull hJ' _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Set `r` to `(TF (R := V) F).hom ≫ spMap ω`. Set `ρ` to `toUnit (Over.mk r)`.
+
+Establish `W1` using `(GlobalTheory.T.mumfordBundleIso_additive_cubicalStructure T ε n V D ω s e β ββ w hB hF' (TF (R := V) F) (DegPre.cF D F χ) (DegPre.cF D F χ') b (ρ ≫ T.c₀ ((n : ℤ) • e χ)) (ρ ≫ T.c₀ ((n : ℤ) • e χ')) (ρ ≫ T.c₀ a) ((hx χ).trans (Category.assoc _ _ _).symm) ((hx χ').trans (Category. …`. Establish `T1 : val (T.τ₀ ((n : ℤ) • e χ + (n : ℤ) • e χ') a) r y J * @id ((TF (R` using `V) F).left.presheaf.stalk y)ˣ (cubV T.cub y J (ρ ≫ T.c₀ ((n : ℤ) • e χ)) (ρ ≫ T.c₀ ((n : ℤ) • e χ')) (ρ ≫ T.c₀ a)) = val (T.τ₀ ((n : ℤ) • e χ) a) r y J * val (T.τ₀ ((n : ℤ) • e χ') a) r y J := by`. Establish `C : LB.Gen.Corr T.M.L _ _ _ _ (LB.mulGen T.M.L _ _ _ _ (T.τ₀ ((n : ℤ) • e χ + (n : ℤ) • e χ') a) (LB.pullGen T.M.L (thφ T.B (x3 T.B)) thε T.cub.t (lift (T.c₀ ((n : ℤ) • e χ)) (lift (T.c₀ ((n : ℤ) • e χ')) (T.c₀ a))).left)) (LB.mulGen T.M.L _ _ _ _ (T.τ₀ ((n : ℤ) • e χ) a) (T.τ₀ ( …` using `corr_of_val T.M.isLB fun y J hJ => by`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `(congrArg (_ * ·) ((val_pull hJ _ _ _).trans ?_)).trans (T.τ₀_add _ _ a y J hJ)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Establish `h1` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ C r).trans (val_mul hJ _ _ _))`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Conclude with `congrArg (_ * ·) (val_cub T.cub ρ hJ _ _ _).symm`.
+
+Use `(val_mul hJ' _ _ _).trans (Eq.trans ?_ (val_mul hJ' _ _ _).symm)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) (hval (χ + χ') y J J' hJ hJ') hcub).trans (Eq.trans ?_ (congrArg₂ (· * ·) (hval χ y J J' hJ hJ') (hval χ' y J J' hJ hJ')).symm)` and prove the remaining obligations. Rewrite using `[hcF, map_add e, kU_add, smul_add, unitOn_mul, map_mul]`. Conclude with `mult_alg _ _ _ _ _ _ _ _ _ _ W1 T1`.
+-/
 theorem GlobalTheory.TInj.exists_tautPt : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {I : Type} [Fintype I] (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (ω : W →+* V) (s : I → V) (e : D.X ≃+ (Fin T.r → ℤ)) (β : D.P.A.left ⟶ T.B.left) (ββ : (G2 D.P.A).left ⟶ (G2 T.B).left) (w : LB.Iso (abelian₂ D.P.A D.P.L) ((abelian₂ T.B T.M.L).pull ββ)), D.TauBimult → From T ω s ε n D e β ββ w → (∀ i, s i ≠ 0) → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (a : Fin T.r → ℤ), ∃ g : GtPtF D F, TautPt T ω s ε n D e β ββ w F a g := by
   intro o W _ _ _ T I _ ε n V _ _ D ω s e β ββ w hB hF hs F _ _ a
   have hF' := hF

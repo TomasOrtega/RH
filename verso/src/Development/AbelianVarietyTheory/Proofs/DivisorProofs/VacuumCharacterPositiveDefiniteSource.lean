@@ -15,6 +15,23 @@ namespace GlobalTheory.VacuumCharacter
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om hW hθ _ _ sT hS hT a b ha hb x₁ x₂ x₃ h1 h2 h3 f hf hv g hg h hh hc`. Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic D`. Establish `hdet : ∀ {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ}, IsCartanInv G s → G.det ≠ 0` using `fun {k G s} hG => by`. Use `hG.2.2.det_pos.ne'` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul]`.
+
+Conclude with `left_ne_zero_of_mul this`. Take `⟨x, hx, hxv⟩` from `exists_root hθ S (fun τ => hdet (hS τ)) g hg`. Take `⟨y, hy, hyv⟩` from `exists_root hθ T (fun τ => hdet (hT τ)) h hh`. Use `choose p hp hd using fun τ => detPlus_one (n := S.rank) (sT τ) (hT τ).1`. Rewrite using `[GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D ψ hW.std S T θ hθ χS χT om η ⟨e1, e4, e3, e2⟩ hW (fun _ => 1) sT hS hT g hg h hh (fun τ => by rw [one_mul, mul_one]) hc x y hx hy f hf hv]`.
+
+Use `congr 1`. Establish `hb' : ∀ τ, ((-x₃ τ - p τ : ℤ) : ℚ) = b τ - T.rank / 2` using `fun τ => by`. Use `h3 τ` as an intermediate fact. Rewrite `this` using `[hp]`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises.
+
+Use `push_cast`. Take the linear combination `-this`. Rewrite using `[Circle.coe_mul, Circle.coe_inv, hxv _ (fun τ => -x₃ τ - p τ) (fun τ => by rw [hb']; exact hasInfExp_twist (hb τ) (e2 τ) _), hyv _ x₂ (fun τ => by rw [h2]; exact hasInfExp_twist (ha τ) (e2 τ) _), ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨d1, d2⟩` from `hd τ (compAt θ τ (Formalism.L2.Theta.mt S g⁻¹)) (compAt θ τ (Formalism.L2.Theta.mt T h)) (hc τ)`.
+
+Establish `inv : ∀ (V : HSp D) (k : GA D V), (compAt θ τ (Formalism.L2.Theta.mt V k)).det * (compAt θ τ (Formalism.L2.Theta.mt V k⁻¹)).det = 1` using `fun V k => by`. Rewrite using `[det_compAt, det_compAt, ← map_mul, ← map_mul, ← Matrix.det_mul]`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.det_one, map_one, map_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one (inv S g)`.
+
+Establish `h0` using `left_ne_zero_of_mul_eq_one (inv T h)`. Rewrite `h0` using `[d2]`. Establish `h0'` using `left_ne_zero_of_mul h0`. Establish `e : x₁ τ = x₂ τ + S.rank`. Establish `: (x₁ τ : ℚ) = x₂ τ + S.rank` using `by rw [h1, h2]; ring`.
+
+Conclude with `this` after adjusting the coercions. Establish `alg : ∀ (A B G : ℂ) (u v : ℤ) (n k : ℕ), A ≠ 0 → G ≠ 0 → (G ^ (-v - k))⁻¹ * (A * B) ^ u * (A ^ n * G⁻¹ ^ k) = A ^ (u + n) * B ^ u * G ^ v`. Introduce `A B G u v n k hA hG`. Rewrite using `[mul_zpow, zpow_add₀ hA, zpow_sub₀ hG, _root_.zpow_neg, zpow_natCast, zpow_natCast, inv_pow]`. Use `zpow_ne_zero v hG` as an intermediate fact.
+
+Use `pow_ne_zero k hG` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[d1, d2, eq_inv_of_mul_eq_one_right (inv S g), e]`. Conclude with `alg _ _ _ _ _ _ _ h0' g0`.
+-/
 theorem vacuum_character : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → S.SigOK → T.SigOK → ∀ (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), (∀ τ, IsCartanInv (gramAt D S τ) 1) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ (a b : D.what₂.Tau → ℚ), (∀ τ, HasInfExp D χS τ (a τ)) → (∀ τ, HasInfExp D χT τ (b τ)) → ∀ (x₁ x₂ x₃ : D.what₂.Tau → ℤ), (∀ τ, (x₁ τ : ℚ) = a τ + (S.rank : ℚ) / 2) → (∀ τ, (x₂ τ : ℚ) = a τ - (S.rank : ℚ) / 2) → (∀ τ, (x₃ τ : ℂ) = -((sT τ).trace / 2 + (b τ : ℂ))) → ∀ f, IsThetaFunO ψ S T f → (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 (sT τ)) f) → ∀ g ∈ GinfC S, ∀ h ∈ GinfC T, (∀ τ, sT τ * compAt θ τ (Formalism.L2.Theta.mt T h) = compAt θ τ (Formalism.L2.Theta.mt T h) * sT τ) → om (g, h) f = (∏ τ, ((1 / 2 : ℂ) • (1 + sT τ) * compAt θ τ (Formalism.L2.Theta.mt T h) + (1 / 2 : ℂ) • (1 - sT τ)).det ^ x₁ τ * ((1 / 2 : ℂ) • (1 - sT τ) * compAt θ τ (Formalism.L2.Theta.mt T h) + (1 / 2 : ℂ) • (1 + sT τ)).det ^ x₂ τ * (compAt θ τ (Formalism.L2.Theta.mt S g)).det ^ x₃ τ) • f := by
   intro D ψ θ S T χS χT om hW hθ _ _ sT hS hT a b ha hb x₁ x₂ x₃ h1 h2 h3 f hf hv g hg h hh hc
   obtain ⟨η, e1, e2, e3, e4⟩ := GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic D

@@ -9,6 +9,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.FineStep
 
+/- English proof (translation)
+Use `GlobalTheory.SmGL.IsSubquotient.trans (σ := S.toRepresentation) ?_ ?_` and prove the remaining obligations. Use `GlobalTheory.SmGL.IsSubquotient.of_surjective ⟨(Submodule.comap S.toSubmodule.subtype R.toSubmodule).mkQ, fun g => ?_⟩ ?_` and prove the remaining obligations. Use extensionality with `v`. Both sides reduce to the same expression. Conclude with `Submodule.mkQ_surjective _`.
+
+Use `GlobalTheory.SmGL.IsSubquotient.of_injective ⟨S.toSubmodule.subtype, fun g => ?_⟩ ?_` and prove the remaining obligations. Use extensionality with `v`. Both sides reduce to the same expression. Conclude with `Subtype.val_injective`.
+-/
 theorem isSubquotient_subQuot_self {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {J : Representation ℂ G V} (S R : Subrepresentation J) : IsSubquotient (subQuot S R) J := by
   refine GlobalTheory.SmGL.IsSubquotient.trans (σ := S.toRepresentation) ?_ ?_
@@ -22,6 +27,23 @@ theorem isSubquotient_subQuot_self {G V : Type} [Group G] [AddCommGroup V] [Modu
       rfl
     · exact Subtype.val_injective
 
+/- English proof (translation)
+Introduce `G V W _ _ _ _ _ T J hT hfin hJ hall`. Establish `hstep : ∀ {P Q : Subrepresentation J}, Q ⋖ P → GlobalTheory.JHMult.Step T P Q` using `fun {P Q} h => GlobalTheory.JHMult.step_iff.mp (hall _ (subQuot P Q) (GlobalTheory.SmGL.isIrreducible_subQuot h) (isSubquotient_subQuot_self P Q))`. Establish `hwf : WellFounded ((· < ·) : Subrepresentation J → Subrepresentation J → Prop)` using `by haveI : IsArtinian (MonoidAlgebra ℂ G) J.asModule := (isFiniteLength_iff_isNoetherian_isArtinian.mp (show IsFiniteLength (MonoidAlgebra ℂ G) J.asModule from hfin)).2`. Conclude with `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := J)).toOrderEmbedding.ltEmbedding.wellFounded wellFounded_lt`. Establish `hne : (⊥ : Subrepresentation J) ≠ ⊤`.
+
+Introduce `h`. Use `haveI : Subsingleton V := ⟨fun a b => by`. Establish `ha : a ∈ (⊤ : Subrepresentation J).toSubmodule` using `Submodule.mem_top`. Establish `hb : b ∈ (⊤ : Subrepresentation J).toSubmodule` using `Submodule.mem_top`. Rewrite `ha`, `hb` using `[← h]`.
+
+Rewrite using `[(Submodule.mem_bot ℂ).mp ha, (Submodule.mem_bot ℂ).mp hb]⟩`. Establish `h0` using `GlobalTheory.SmGL.jhMult_of_subsingleton hT J`. Rewrite `h0` using `[hJ]`. Conclude with `one_ne_zero h0`. Establish `hirr : J.IsIrreducible` using `by show IsSimpleOrder (Subrepresentation J)`.
+
+Use `{ exists_pair_ne := ⟨⊥, ⊤, hne⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Assume the negation of the conclusion as `hS`. Take `⟨hS0, hS1⟩` from `not_or.mp hS`. Take `⟨A, ⟨hA0, hAS⟩, hAmin⟩` from `hwf.has_min {A | ⊥ < A ∧ A ≤ S} ⟨S, show ⊥ < S ∧ S ≤ S from ⟨bot_lt_iff_ne_bot.mpr hS0, le_rfl⟩⟩`. Take `⟨B, hB, hBmin⟩` from `hwf.has_min {B | S < B} ⟨⊤, show S < ⊤ from lt_top_iff_ne_top.mpr hS1⟩`.
+
+Establish `hcA : (⊥ : Subrepresentation J) ⋖ A` using `⟨hA0, by`. Introduce `c hc hcA`. Conclude with `hAmin c (show ⊥ < c ∧ c ≤ S from ⟨hc, hcA.le.trans hAS⟩) hcA⟩`. Establish `hSB : S < B` using `hB`. Establish `hcB : S ⋖ B` using `⟨hSB, by`.
+
+Introduce `c hc hcB`. Conclude with `hBmin c (show S < c from hc) hcB⟩`. Establish `hocc : GlobalTheory.SmGL.OccursTimes T J 2`. Use `GlobalTheory.JHMult.occurs_of_finset (σ := T) (ρ := J) (r := 2) Finset.univ ![A, B] ![⊥, S] (by simp [Fin.forall_fin_two, hSB.le]) (by simp [Fin.forall_fin_two, hAS]) (by simp [Fin.forall_fin_two, hstep hcA, hstep hcB])` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ((2 : ℕ) : ℕ∞) ≤ GlobalTheory.SmGL.jhMult T J`. Unfold `GlobalTheory.SmGL.jhMult`. Conclude with `le_iSup₂_of_le 2 hocc le_rfl`. Rewrite `h2` using `[hJ]`. Establish `h21 : ¬ ((2 : ℕ) : ℕ∞) ≤ ((1 : ℕ) : ℕ∞)`.
+
+Rewrite using `[ENat.natCast_le_natCast]`. Use linear arithmetic over natural numbers and integers. Conclude with `h21 (by simpa using h2)`. Conclude with `hall V J hirr (GlobalTheory.SmGL.IsSubquotient.refl J)`.
+-/
 theorem nonempty_equiv_of_jhMult_eq_one :
     ∀ {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
       (T : Representation ℂ G W) (J : Representation ℂ G V), T.IsIrreducible → HasFiniteLength J →

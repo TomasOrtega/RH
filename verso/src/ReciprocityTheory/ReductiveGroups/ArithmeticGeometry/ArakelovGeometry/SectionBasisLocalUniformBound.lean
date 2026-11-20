@@ -9,6 +9,9 @@ open scoped ContDiff
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ] {D : ℕ}
 
+/- English proof (translation)
+Break down `K.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`. Take `⟨y, hy, hmin⟩` from `hK.exists_isMinOn h hc`. Conclude with `⟨ν y, hpos y hy, fun z hz => hmin hz⟩`.
+-/
 theorem exists_pos_lower_bound_compact {E : Type*} [TopologicalSpace E] {K : Set E} (hK : IsCompact K)
     {ν : E → ℝ} (hc : ContinuousOn ν K) (hpos : ∀ y ∈ K, 0 < ν y) :
     ∃ νmin : ℝ, 0 < νmin ∧ ∀ y ∈ K, νmin ≤ ν y := by
@@ -17,11 +20,45 @@ theorem exists_pos_lower_bound_compact {E : Type*} [TopologicalSpace E] {K : Set
   · obtain ⟨y, hy, hmin⟩ := hK.exists_isMinOn h hc
     exact ⟨ν y, hpos y hy, fun z hz => hmin hz⟩
 
+/- English proof (translation)
+The claim follows from `hK.exists_bound_of_continuousOn ((hν.continuousOn_fderiv_of_isOpen hU le_rfl).mono hKU)`.
+-/
 theorem exists_fderiv_bound_compact {U K : Set (Fin D → ℂ)} (hU : IsOpen U) {ν : (Fin D → ℂ) → ℝ}
     (hν : ContDiffOn ℝ 1 ν U) (hK : IsCompact K) (hKU : K ⊆ U) :
     ∃ L : ℝ, ∀ y ∈ K, ‖fderiv ℝ ν y‖ ≤ L :=
   hK.exists_bound_of_continuousOn ((hν.continuousOn_fderiv_of_isOpen hU le_rfl).mono hKU)
 
+/- English proof (translation)
+Take `⟨ν, hν1, hνpos, hνint⟩` from `hg₀.vol.2.2 U γ hγ`. Establish `hνD : IsDensityFor μ U γ ν` using `⟨hν1, hνpos, hνint⟩`. Take `⟨δ, hδ, hδU⟩` from `hC.exists_cthickening_subset_open hγ.1 hCU`. Establish `hC'c : IsCompact (Metric.cthickening δ C)` using `hC.cthickening`. Take `⟨ψ₀, hψ₀def⟩ : ∃ ψ : (Fin D → ℂ) → ℝ, ψ = fun y => Real.log (m₀.ρ (γ y))` from `⟨_, rfl⟩`.
+
+Take `⟨ψ₁, hψ₁def⟩ : ∃ ψ : (Fin D → ℂ) → ℝ, ψ = fun y => Real.log (m₁.ρ (γ y))` from `⟨_, rfl⟩`. Establish `hψ₀ : ContDiffOn ℝ ∞ ψ₀ U` using `by rw [hψ₀def]; exact contDiffOn_log_metric_param m₀ hg₀.semipos.1 hγ`. Establish `hψ₁ : ContDiffOn ℝ ∞ ψ₁ U` using `by rw [hψ₁def]; exact contDiffOn_log_metric_param m₁ hg₁.semipos.1 hγ`. Take `⟨B₀₂, hB₀₂, hb₀₂⟩` from `exists_bound_iteratedFDeriv_compact hγ.1 hψ₀ hC'c hδU 2`. Take `⟨B₁₂, hB₁₂, hb₁₂⟩` from `exists_bound_iteratedFDeriv_compact hγ.1 hψ₁ hC'c hδU 2`.
+
+Take `⟨B₀₃, hB₀₃, hb₀₃⟩` from `exists_bound_iteratedFDeriv_compact hγ.1 hψ₀ hC'c hδU 3`. Take `⟨B₁₃, hB₁₃, hb₁₃⟩` from `exists_bound_iteratedFDeriv_compact hγ.1 hψ₁ hC'c hδU 3`. Take `⟨νmin, hνmin, hνminle⟩` from `exists_pos_lower_bound_compact hC'c (hν1.continuousOn.mono hδU) (fun y hy => hνpos y (hδU hy))`. Take `⟨Lν, hLν⟩` from `exists_fderiv_bound_compact hγ.1 hν1 hC'c hδU`. Take `⟨M, hM, hMor⟩` from `morse_general_uniform (D := D) δ (2 * (B₀₂ + B₁₂)) (2 * (B₀₃ + B₁₃)) Lν νmin hδ hνmin`.
+
+Use `⟨M, hM.le, ?_⟩` and prove the remaining obligations. Introduce `n r b hn hb t ht y₀ hy₀ c`. Establish `hballC' : Metric.ball y₀ δ ⊆ Metric.cthickening δ C` using `Metric.ball_subset_closedBall.trans (Metric.closedBall_subset_cthickening hy₀ δ)`. Establish `hball : Metric.ball y₀ δ ⊆ U` using `hballC'.trans hδU`. Establish `hmem : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) δ, y₀ + y ∈ Metric.ball y₀ δ` using `fun y hy => gaap_mem_ball_add.2 hy`.
+
+Establish `hne : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) δ, γ (y₀ + y) ≠ 0` using `fun y hy => (hγ.2.2.1 _ (hball (hmem y hy))).1`. Take `⟨φ, hφdef⟩ : ∃ φ : (Fin D → ℂ) → ℝ, φ = fun y => (2 * (1 - t)) * ψ₀ (y₀ + y) + (2 * t) * ψ₁ (y₀ + y)` from `⟨_, rfl⟩`. Establish `hexp : ∀ y ∈ Metric.ball (0 : Fin D → ℂ) δ, Real.exp (-((n : ℝ) * φ y)) = wgt (interp m₀ m₁ t) n (γ (y₀ + y))`. Introduce `y hy`. Rewrite using `[← exp_eq_interpolatedWeight m₀ m₁ t n _ (hne y hy)]`.
+
+Simplify using `only [hφdef, hψ₀def, hψ₁def]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hψ₀' : ContDiffOn ℝ ∞ (fun y => ψ₀ (y₀ + y)) (Metric.ball 0 δ)` using `hψ₀.comp (contDiffOn_const.add contDiffOn_id) (fun y hy => hball (hmem y hy))`. Establish `hψ₁' : ContDiffOn ℝ ∞ (fun y => ψ₁ (y₀ + y)) (Metric.ball 0 δ)` using `hψ₁.comp (contDiffOn_const.add contDiffOn_id) (fun y hy => hball (hmem y hy))`.
+
+Establish `hφ3 : ContDiffOn ℝ 3 φ (Metric.ball 0 δ)`. Rewrite using `[hφdef]`. Conclude with `((contDiffOn_const.mul hψ₀').add (contDiffOn_const.mul hψ₁')).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hbd : ∀ k : ℕ, ∀ B₀ B₁ : ℝ, 0 ≤ B₀ → 0 ≤ B₁ → (∀ y ∈ Metric.cthickening δ C, ‖iteratedFDeriv ℝ k ψ₀ y‖ ≤ B₀) → (∀ y ∈ Metric.cthickening δ C, ‖iteratedFDeriv ℝ k ψ₁ y‖ ≤ B₁) → ∀ y ∈ Metric.ball (0 : Fin D → ℂ) δ, ‖iteratedFDeriv ℝ k φ y‖ ≤ 2 * (B₀ + B₁)`. Introduce `k B₀ B₁ h0 h1 hb0 hb1 y hy`.
+
+Establish `hyC : y₀ + y ∈ Metric.cthickening δ C` using `hballC' (hmem y hy)`. Establish `hyU : y₀ + y ∈ U` using `hδU hyC`. Rewrite using `[hφdef]`. Conclude with `iteratedFDeriv_convexComb_le ψ₀ ψ₁ y₀ y k ht h0 h1 ((hψ₀.contDiffAt (hγ.1.mem_nhds hyU)).of_le (by exact_mod_cast le_top)) ((hψ₁.contDiffAt (hγ.1.mem_nhds hyU)).of_le (by exact_mod_cast le_top)) (hb0 _ hyC) (hb1 _ hyC)`. Establish `h0 : (0 : Fin D → ℂ) ∈ Metric.ball (0 : Fin D → ℂ) δ` using `Metric.mem_ball_self hδ`.
+
+Establish `hK2 : ‖fderiv ℝ (fderiv ℝ φ) 0‖ ≤ 2 * (B₀₂ + B₁₂)`. Rewrite using `[← norm_iteratedFDeriv_one, norm_iteratedFDeriv_fderiv]`. Conclude with `hbd 2 B₀₂ B₁₂ hB₀₂ hB₁₂ hb₀₂ hb₁₂ 0 h0`. Establish `hK3 : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) δ, ‖iteratedFDeriv ℝ 3 φ z‖ ≤ 2 * (B₀₃ + B₁₃)` using `hbd 3 B₀₃ B₁₃ hB₀₃ hB₁₃ hb₀₃ hb₁₃`. Establish `hνc : ContinuousOn (fun y => ν (y₀ + y)) (Metric.ball 0 δ)` using `hν1.continuousOn.comp (continuousOn_const.add continuousOn_id) (fun y hy => hball (hmem y hy))`.
+
+Establish `hν0 : νmin ≤ ν (y₀ + 0)`. Rewrite using `[add_zero]`. Conclude with `hνminle y₀ (Metric.self_subset_cthickening C hy₀)`. Establish `hνL : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) δ, ν (y₀ + 0) - Lν * ‖z‖ ≤ ν (y₀ + z)`. Introduce `z hz`.
+
+Establish `hd : ∀ y ∈ Metric.ball y₀ δ, DifferentiableAt ℝ ν y` using `fun y hy => (hν1.contDiffAt (hγ.1.mem_nhds (hball hy))).differentiableAt one_ne_zero`. Establish `hmv` using `(convex_ball y₀ δ).norm_image_sub_le_of_norm_fderiv_le hd (fun y hy => hLν y (hballC' hy)) (Metric.mem_ball_self hδ) (hmem z hz)`. Rewrite `hmv` using `[add_sub_cancel_left, Real.norm_eq_abs]`. Rewrite using `[add_zero]`. Establish `h2` using `neg_abs_le (ν (y₀ + z) - ν y₀)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hνnn : ∀ z ∈ Metric.ball (0 : Fin D → ℂ) δ, 0 ≤ ν (y₀ + z)` using `fun z hz => (hνpos _ (hball (hmem z hz))).le`. Establish `hf : DifferentiableOn ℂ (fun y => ∑ k, c k * secFun (b k) (γ (y₀ + y))) (Metric.ball 0 δ)` using `(differentiable_sectionCombination b c).comp_differentiableOn (hγ.2.1.differentiableOn.comp ((differentiable_const y₀).add differentiable_id).differentiableOn (fun y hy => hball (hmem y hy)))`. Establish `hν'` using `IsDensityFor.translate hγ hνD y₀ hball`. Establish `hgt` using `isGood_interp hg₀ hg₁ ht`.
+
+Establish `hgi` using `integrable_normSq_combination (fun k => secFun (b k)) (wgt (interp m₀ m₁ t) n) (fun i j => integrable_secFun hgt hb i j) c`. Establish `hgm : Measurable (fun z => ‖∑ k, c k * secFun (b k) z‖ ^ 2 * wgt (interp m₀ m₁ t) n z)` using `((continuous_norm.comp (differentiable_sectionCombination b c).continuous).measurable.pow_const 2).mul (measurable_interpolatedWeight m₀ m₁ hg₀.semipos.1 hg₁.semipos.1 t n)`. Establish `hc : ContinuousOn (fun y => ‖∑ k, c k * secFun (b k) (γ (y₀ + y))‖ ^ 2 * Real.exp (-((n : ℝ) * φ y)) * ν (y₀ + y)) (Metric.ball 0 δ)` using `((hf.continuousOn.norm.pow 2).mul (Real.continuous_exp.comp_continuousOn ((continuousOn_const.mul hφ3.continuousOn).neg))).mul hνc`. Take `⟨hI, hle⟩` from `setIntegral_parametrisation_le hν' hgm (isDegreeZero_weightedCombination (interp m₀ m₁ t) hb.1 c) (fun z => mul_nonneg (sq_nonneg _) (cone_metric_weight_nonneg _ _ _)) hgi hc (fun y hy => by rw [hexp y hy])`. Establish `hmo` using `hMor n hn φ (fun y => ν (y₀ + y)) (fun y => ∑ k, c k * secFun (b k) (γ (y₀ + y))) hφ3 hK2 hK3 hνc hν0 hνL hνnn hf hI`.
+
+Establish `hMn : 0 ≤ M * (n : ℝ) ^ D` using `mul_nonneg hM.le (pow_nonneg (Nat.cast_nonneg _) _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hexp 0 h0, add_zero]`. Use `_ ≤ _ := hmo`. Use `_ ≤ M * (n : ℝ) ^ D * ∫ z, ‖∑ k, c k * secFun (b k) z‖ ^ 2 * wgt (interp m₀ m₁ t) n z ∂μ := mul_le_mul_of_nonneg_left hle hMn`.
+
+Use `_ = _ := rfl`.
+-/
 theorem section_basis_local_uniform_bound {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg₀ : IsGood D x m₀ μ) (hg₁ : IsGood D x m₁ μ) {U C : Set (Fin D → ℂ)}
     {γ : (Fin D → ℂ) → Ix κ → ℂ} (hγ : IsParam (coordIdeal ℤ x) U γ) (hC : IsCompact C)

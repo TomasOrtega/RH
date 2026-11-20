@@ -7,6 +7,11 @@ noncomputable section
 
 namespace Formalism.FN
 
+/- English proof (translation)
+Introduce `n A`. Unfold `Gj`. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce `u hu i _`.
+
+Conclude with `hu i i.2`. Use `_ = 1 := by`. Rewrite using `[Real.volume_pi_Ico]`. Simplify using the standard rewrite rules.
+-/
 theorem partialBoxVolumeTopLeOne : GjTop := by
   intro n A
   unfold Gj
@@ -20,6 +25,13 @@ theorem partialBoxVolumeTopLeOne : GjTop := by
         rw [Real.volume_pi_Ico]
         simp
 
+/- English proof (translation)
+Unfold `Gj`. Establish `h1 : boxJ n 0 = Set.univ`. Use extensionality with `u`. Simplify using `[boxJ]`. Establish `h2 : latJ n 0 = {0}`.
+
+Use extensionality with `k`. Simplify using `only [latJ, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hk⟩`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hk i (Nat.zero_le _)`. Introduce and unpack `rfl`. Conclude with `⟨fun _ => ⟨0, by simp⟩, fun _ _ => rfl⟩`. Rewrite using `[h1, h2, Set.univ_inter]`. Simplify using the standard rewrite rules.
+-/
 theorem gjZero (n : ℕ) (A : Set (Fin n → ℝ)) : Gj n 0 A = volume A := by
   unfold Gj
   have h1 : boxJ n 0 = Set.univ := by
@@ -37,6 +49,35 @@ theorem gjZero (n : ℕ) (A : Set (Fin n → ℝ)) : Gj n 0 A = volume A := by
   rw [h1, h2, Set.univ_inter]
   simp
 
+/- English proof (translation)
+Introduce `n C lam hCo hCc hCs hCb hpos hmono hsep`. Establish `hsmulC : ∀ k : Fin n, IsOpen (lam k • C)` using `fun k => hCo.smul₀ (hpos k).ne'`. Establish `hlev : ∀ k : Fin n, Gj n k (lam k • C) ≤ Gj n (k + 1) (lam k • C)`. Introduce `k`. Apply `h3 n k (lam k • C) k.2 (hsmulC k)` to reduce the goal to its premises.
+
+Introduce `x hx y hy hxy i hi`. Conclude with `hsep k x hx y hy hxy i (Fin.le_def.mpr hi)`. Establish `hbase : ∀ hk : 0 < n, ENNReal.ofReal (∏ i, min (lam i) (lam ⟨0, hk⟩)) * volume C ≤ Gj n 0 (lam ⟨0, hk⟩ • C)`. Introduce `hk`. Rewrite using `[gjZero, Measure.addHaar_smul, Module.finrank_fin_fun, abs_of_pos (pow_pos (hpos _) n)]`.
+
+Establish `e : ∏ i, min (lam i) (lam ⟨0, hk⟩) = lam ⟨0, hk⟩ ^ n`. Rewrite using `[Finset.prod_congr rfl (fun i _ => min_eq_right (hmono (show (⟨0, hk⟩ : Fin n) ≤ i from Fin.le_def.mpr (Nat.zero_le (i : ℕ)))))]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Establish `hstep : ∀ k (hk0 : k < n) (hk : k + 1 < n), ∏ i, min (lam i) (lam ⟨k + 1, hk⟩) = (lam ⟨k + 1, hk⟩ / lam ⟨k, hk0⟩) ^ (n - (k + 1)) * ∏ i, min (lam i) (lam ⟨k, hk0⟩)`.
+
+Introduce `k hk0 hk`. Establish `hab : lam ⟨k, hk0⟩ ≤ lam ⟨k + 1, hk⟩` using `hmono (Fin.mk_le_mk.mpr (by omega))`. Establish `ha0 : 0 < lam ⟨k, hk0⟩` using `hpos _`. Establish `hfac : ∀ i : Fin n, min (lam i) (lam ⟨k + 1, hk⟩) = (if k < (i : ℕ) then lam ⟨k + 1, hk⟩ / lam ⟨k, hk0⟩ else 1) * min (lam i) (lam ⟨k, hk0⟩)`. Introduce `i`.
+
+Use `split_ifs with h`. Establish `h1 : lam ⟨k + 1, hk⟩ ≤ lam i` using `hmono (Fin.le_def.mpr (show k + 1 ≤ (i : ℕ) by omega))`. Rewrite using `[min_eq_right h1, min_eq_right (hab.trans h1), div_mul_cancel₀ _ ha0.ne']`. Establish `h1 : lam i ≤ lam ⟨k, hk0⟩` using `hmono (Fin.le_def.mpr (show (i : ℕ) ≤ k by omega))`. Rewrite using `[min_eq_left (h1.trans hab), min_eq_left h1, one_mul]`.
+
+Establish `hcard : (Finset.univ.filter fun i : Fin n => k < (i : ℕ)).card = n - (k + 1)`. Establish `e : (Finset.univ.filter fun i : Fin n => k < (i : ℕ)) = Finset.Ioi ⟨k, hk0⟩`. Use extensionality with `i`. Simplify using `[Fin.lt_def]`. Rewrite using `[e, Fin.card_Ioi]`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_congr rfl (fun i _ => hfac i), Finset.prod_mul_distrib, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one, hcard]`. Establish `claim : ∀ k (hk : k < n), ENNReal.ofReal (∏ i, min (lam i) (lam ⟨k, hk⟩)) * volume C ≤ Gj n k (lam ⟨k, hk⟩ • C)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact hbase`. Consider the case `succ k ih`. Introduce `hk`. Establish `hk0 : k < n` using `by omega`.
+
+Establish `hr : 0 ≤ (lam ⟨k + 1, hk⟩ / lam ⟨k, hk0⟩) ^ (n - (k + 1))`. Use `hpos ⟨k + 1, hk⟩` as an intermediate fact. Use `hpos ⟨k, hk0⟩` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[hstep k hk0 hk, ENNReal.ofReal_mul hr, mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(ih hk0).trans (hlev ⟨k, hk0⟩)`. Use `_ ≤ Gj n (k + 1) (lam ⟨k + 1, hk⟩ • C) := h4 n (k + 1) C (lam ⟨k, hk0⟩) (lam ⟨k + 1, hk⟩) hk.le hCo hCc hCs hCb (hpos _) (hmono (Fin.mk_le_mk.mpr (by omega)))`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+
+Establish `h0` using `partialBoxVolumeTopLeOne 0 C`. Rewrite `h0` using `[gjZero]`. Simplify using `only [Fin.prod_univ_zero, mul_one]`. Conclude with `ENNReal.toReal_le_of_le_ofReal zero_le_one (by simpa using h0)`. Establish `hn1 : n - 1 < n` using `by omega`.
+
+Establish `hlast` using `(claim (n - 1) hn1).trans (hlev ⟨n - 1, hn1⟩)`. Establish `htop` using `partialBoxVolumeTopLeOne n (lam ⟨n - 1, hn1⟩ • C)`. Establish `e : ((⟨n - 1, hn1⟩ : Fin n) : ℕ) + 1 = n` using `by show n - 1 + 1 = n`. Use linear arithmetic over natural numbers and integers. Rewrite `hlast` using `[e]`.
+
+Establish `hprod : ∏ i, min (lam i) (lam ⟨n - 1, hn1⟩) = ∏ i, lam i` using `Finset.prod_congr rfl fun i _ => min_eq_left (hmono (Fin.le_def.mpr (show (i : ℕ) ≤ n - 1 by omega)))`. Rewrite `hlast` using `[hprod]`. Establish `hP : 0 ≤ ∏ i, lam i` using `Finset.prod_nonneg fun i _ => (hpos i).le`. Establish `hfin : ENNReal.ofReal (∏ i, lam i) * volume C ≤ 1` using `hlast.trans htop`. Rewrite using `[mul_comm, ← ENNReal.toReal_ofReal hP, ← ENNReal.toReal_mul]`.
+
+Conclude with `ENNReal.toReal_le_of_le_ofReal zero_le_one (by simpa using hfin)`.
+-/
 theorem minkCore_of (h3 : GjLevel) (h4 : GjScale) : MinkCore := by
   intro n C lam hCo hCc hCs hCb hpos hmono hsep
   have hsmulC : ∀ k : Fin n, IsOpen (lam k • C) := fun k => hCo.smul₀ (hpos k).ne'

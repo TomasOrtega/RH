@@ -13,6 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.PinchLift
 
+/- English proof (translation)
+Introduce `Y L hL O₁ O₂ s₁ s₂ h₁ h₂`. Establish `hW : ∀ k, L.U k ⊓ (O₁ ⊓ O₂) ≤ O₁ ⊓ O₂` using `fun k => inf_le_right`. Establish `hc : O₁ ⊓ O₂ ≤ ⨆ k, L.U k ⊓ (O₁ ⊓ O₂)` using `fun y hy => by`. Take `⟨k, hk⟩` from `exists_chart hL y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hk, hy⟩`.
+
+Establish `i₁ : ∀ k, L.U k ⊓ (O₁ ⊓ O₂) ≤ L.U k ⊓ O₁` using `fun k => inf_le_inf_left _ inf_le_left`. Establish `i₂ : ∀ k, L.U k ⊓ (O₁ ⊓ O₂) ≤ L.U k ⊓ O₂` using `fun k => inf_le_inf_left _ inf_le_right`. Set `u : ∀ k, Γ(Y, L.U k ⊓ (O₁ ⊓ O₂))ˣ` to `fun k => res (i₁ k) (s₁ k) * (res (i₂ k) (s₂ k))⁻¹`. Establish `hu : ∀ (T : Scheme.{0}) (f : T ⟶ Y) (t : T) (k : L.ι), f t ∈ L.U k ⊓ (O₁ ⊓ O₂) → gm f t (L.U k ⊓ (O₁ ⊓ O₂)) (u k) = gm f t (L.U k ⊓ O₁) (s₁ k) * (gm f t (L.U k ⊓ O₂) (s₂ k))⁻¹`. Introduce `T f t k hy`.
+
+Simplify using `only [u, map_mul, map_inv, gm_res f t (i₁ k) hy, gm_res f t (i₂ k) hy]`. Take `⟨r, hr⟩` from `glue_unit (O₁ ⊓ O₂) (fun k => L.U k ⊓ (O₁ ⊓ O₂)) hW hc u (by`. Introduce `k l y hy`. Establish `hk : y ∈ L.U k ⊓ (O₁ ⊓ O₂)` using `hy.1`. Establish `hl : y ∈ L.U l ⊓ (O₁ ⊓ O₂)` using `hy.2`.
+
+Use `show gm (𝟙 Y) y (L.U k ⊓ (O₁ ⊓ O₂)) (u k) = gm (𝟙 Y) y (L.U l ⊓ (O₁ ⊓ O₂)) (u l)`. Rewrite using `[hu Y (𝟙 Y) y k hk, hu Y (𝟙 Y) y l hl, h₁ k l y hk.1 hl.1 hk.2.1, h₂ k l y hk.1 hl.1 hk.2.2, ← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div])`. Use `⟨r, fun T f t k hk ht₁ ht₂ => ?_⟩` and prove the remaining obligations. Establish `hy : f t ∈ L.U k ⊓ (O₁ ⊓ O₂)` using `⟨hk, ht₁, ht₂⟩`. Rewrite using `[← gm_res f t (hW k) hy r, hr k, hu T f t k hy]`.
+-/
 theorem exists_ratio_unit : ∀ (Y : Scheme.{0}) (L : LB Y), L.IsLB → ∀ (O₁ O₂ : Y.Opens) (s₁ : ∀ k, Γ(Y, L.U k ⊓ O₁)ˣ) (s₂ : ∀ k, Γ(Y, L.U k ⊓ O₂)ˣ), GlobalTheory.PinchLift.GenOn L O₁ s₁ → GlobalTheory.PinchLift.GenOn L O₂ s₂ → ∃ r : Γ(Y, O₁ ⊓ O₂)ˣ, ∀ (T : Scheme.{0}) (f : T ⟶ Y) (t : T) (k : L.ι), f t ∈ L.U k → f t ∈ O₁ → f t ∈ O₂ → gm f t (O₁ ⊓ O₂) r = gm f t (L.U k ⊓ O₁) (s₁ k) * (gm f t (L.U k ⊓ O₂) (s₂ k))⁻¹ := by
   intro Y L hL O₁ O₂ s₁ s₂ h₁ h₂
   have hW : ∀ k, L.U k ⊓ (O₁ ⊓ O₂) ≤ O₁ ⊓ O₂ := fun k => inf_le_right

@@ -4,6 +4,33 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hle : p ≤ maximalIdeal A` using `le_maximalIdeal hp.ne_top`. Choose the witnesses or unpack the hypotheses as in `⟨a, ham, hap⟩ : ∃ a ∈ maximalIdeal A, a ∉ p := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (le_antisymm hle h)`. Use `haveI := hA`. Use `haveI : Algebra.EssFiniteType F (ResidueField A) := Algebra.EssFiniteType.of_surjective (IsScalarTower.toAlgHom F A (ResidueField A)) (IsLocalRing.residue_surjective)`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F (ResidueField A)`. Use `haveI : Finite s := finite_of_isTranscendenceBasis hs`.
+
+Set `f : A ⧸ p →ₐ[F] ResidueField A` to `Ideal.Quotient.liftₐ p (IsScalarTower.toAlgHom F A (ResidueField A)) (fun x hx => by`. Simplify `hle hx)` using `[IsLocalRing.residue_eq_zero_iff]`. Establish `hfmk : ∀ x : A, f (Ideal.Quotient.mk p x) = IsLocalRing.residue A x` using `fun x => rfl`. Use `choose y hy using fun i : s => IsLocalRing.residue_surjective (R := A) i.1`. Set `z : s → A ⧸ p` to `fun i => Ideal.Quotient.mk p (y i)`.
+
+Establish `hfz : f ∘ z = ((↑) : s → ResidueField A)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, z, hfmk, hy]`. Establish `hz : AlgebraicIndependent F z`. Establish `h1` using `hs.1`.
+
+Rewrite `h1` using `[← hfz]`. Conclude with `h1.of_comp f`. Use `set b : A ⧸ p := Ideal.Quotient.mk p a with hbdef`. Establish `hb0 : b ≠ 0`. Rewrite using `[hbdef, Ne, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hap`. Establish `hbk : b ∈ RingHom.ker f.toRingHom`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `f (Ideal.Quotient.mk p a) = 0`. Rewrite using `[hfmk, IsLocalRing.residue_eq_zero_iff]`.
+
+Conclude with `ham`. Establish `hinj` using `algebraicIndependent_iff_injective_aeval.mp hs.1`. Establish `htrans : Transcendental (Algebra.adjoin F (Set.range z)) b`. Introduce `halg`. Apply `Ideal.comap_ne_bot_of_algebraic_mem hb0 hbk halg` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `c hc`. Rewrite `hc` using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `hc2 : (c : A ⧸ p) ∈ (MvPolynomial.aeval (R` using `F) z).range := by`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`.
+
+Conclude with `c.2`. Take `⟨g, hg⟩` from `hc2`. Establish `h0 : MvPolynomial.aeval ((↑) : s → ResidueField A) g = 0`. Rewrite using `[← hfz]`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval (fun i => f (z i)) g = 0`.
+
+Rewrite using `[← MvPolynomial.comp_aeval_apply]`. Express the relevant statement in the definitionally equal form `f ((MvPolynomial.aeval z).toRingHom g) = 0`. Rewrite using `[hg]`. Conclude with `hc`. Establish `hg0 : g = 0` using `hinj (by rw [h0, map_zero])`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hg, hg0, map_zero]`. Both sides reduce to the same expression. Establish `hopt : AlgebraicIndependent F (fun o : Option s => o.elim b z)` using `AlgebraicIndependent.option_iff.mpr ⟨hz, htrans⟩`.
+
+Establish `hopt'` using `hopt.map' (f := IsScalarTower.toAlgHom F (A ⧸ p) (FractionRing (A ⧸ p))) (IsFractionRing.injective (A ⧸ p) (FractionRing (A ⧸ p)))`. Establish `hc1` using `hopt'.cardinalMk_le_trdeg`. Rewrite `htr` using `[← hs.cardinalMk_eq_trdeg]`. Establish `hle2 : Cardinal.mk (Option s) ≤ Cardinal.mk s` using `hc1.trans htr`. Take `⟨e⟩` from `Cardinal.le_def _ _ |>.mp hle2`.
+
+Use `haveI := Fintype.ofFinite s`. Use `Fintype.card_le_of_embedding e` as an intermediate fact. Rewrite `this` using `[Fintype.card_option]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_maximalIdeal_of_trdeg_le (F A : Type) [Field F] [CommRing A] [IsDomain A]
     [IsLocalRing A] [Algebra F A] (hA : Algebra.EssFiniteType F A) (p : Ideal A)
     (hp : p.IsPrime)

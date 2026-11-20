@@ -12,10 +12,19 @@ namespace GlobalTheory.SphLine
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) : mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+-/
 theorem mat_inv_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
 
@@ -51,9 +60,15 @@ def locK (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : Subgroup (U
     rw [inv_inv]
     exact (hg.2 z hz).1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locK {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : UA σ W.J} :
     g ∈ locK σ W v ↔ g ∈ KAt σ W v := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hg` and use `hg.1`.
+-/
 theorem locK_le_locU (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F) : locK σ W v ≤ locU σ W v :=
   fun _ hg => hg.1
 

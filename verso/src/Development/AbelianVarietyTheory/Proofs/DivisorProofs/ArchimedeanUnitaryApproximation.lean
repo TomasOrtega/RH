@@ -18,20 +18,35 @@ namespace GlobalTheory.ArchGlueMat
 section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `c hc` and use `by rw [smul_add, hX c hc, hY c hc, add_zero]`.
+-/
 theorem at_add {a b : Type} {X Y : Matrix a b (AE F E)} (hX : At (evI F) X) (hY : At (evI F) Y) :
     At (evI F) (X + Y) := fun c hc => by rw [smul_add, hX c hc, hY c hc, add_zero]
 
+/- English proof (translation)
+Introduce `t ht` and use `by rw [← Matrix.smul_mul, hX t ht, Matrix.zero_mul]`.
+-/
 theorem at_mul_left {a b c : Type} [Fintype b] {X : Matrix a b (AE F E)} (hX : At (evI F) X)
     (Y : Matrix b c (AE F E)) : At (evI F) (X * Y) := fun t ht => by
   rw [← Matrix.smul_mul, hX t ht, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `t ht` and use `by rw [← Matrix.mul_smul, hY t ht, Matrix.mul_zero]`.
+-/
 theorem at_mul_right {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) {Y : Matrix b c (AE F E)}
     (hY : At (evI F) Y) : At (evI F) (X * Y) := fun t ht => by
   rw [← Matrix.mul_smul, hY t ht, Matrix.mul_zero]
 
+/- English proof (translation)
+Introduce `t ht` and use `by rw [← Matrix.transpose_smul, hX t ht, Matrix.transpose_zero]`.
+-/
 theorem at_transpose {a b : Type} {X : Matrix a b (AE F E)} (hX : At (evI F) X) : At (evI F) Xᵀ := fun t ht => by
   rw [← Matrix.transpose_smul, hX t ht, Matrix.transpose_zero]
 
+/- English proof (translation)
+Introduce `t ht` and use `by have h := hX t ht ext i j have := congrFun (congrFun h i) j simp only [Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply] at this ⊢ rw [← map_smul, this, map_zero]`.
+-/
 theorem at_map_cA (σ : E →ₐ[F] E) {a b : Type} {X : Matrix a b (AE F E)} (hX : At (evI F) X) :
     At (evI F) (X.map (cA σ)) := fun t ht => by
   have h := hX t ht
@@ -40,6 +55,11 @@ theorem at_map_cA (σ : E →ₐ[F] E) {a b : Type} {X : Matrix a b (AE F E)} (h
   simp only [Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply] at this ⊢
   rw [← map_smul, this, map_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hCM τ _ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Use `congrFun (congrFun (hA t ht) i) j` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply]`.
+
+Introduce `w`. Use `congrFun (congrFun (h0 w) i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply]`.
+-/
 theorem eq_zero_of_at {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {a b : Type}
     {D : Matrix a b (AE F E)} (hA : At (evI F) D) (h0 : ∀ w, D.map (piInf (τ w)) = 0) : D = 0 := by
   ext i j
@@ -53,6 +73,25 @@ theorem eq_zero_of_at {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (τ : ∀ w : 
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ τ n J k k' hCM hkk' hk`. Take `⟨u, hu, -⟩` from `GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => k w - 1)`. Take `⟨u', hu', -⟩` from `GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => k' w - 1)`. Use `set K : Matrix (Fin n) (Fin n) (AE F E) := 1 + u with hKdef`. Use `set K' : Matrix (Fin n) (Fin n) (AE F E) := 1 + u' with hK'def`.
+
+Establish `hKw : ∀ w, K.map (piInf (τ w)) = k w` using `fun w => by`. Rewrite using `[hKdef, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), hu.2 w]`. Normalize the expressions using the abelian group laws. Establish `hK'w : ∀ w, K'.map (piInf (τ w)) = k' w` using `fun w => by`. Rewrite using `[hK'def, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), hu'.2 w]`.
+
+Normalize the expressions using the abelian group laws. Establish `hmul : K * K' = 1`. Establish `e : K * K' - 1 = u + u' + u * u'` using `by rw [hKdef, hK'def]; noncomm_ring`. Establish `hz : K * K' - 1 = 0`. Use `eq_zero_of_at hCM τ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `at_add (at_add hu.1 hu'.1) (at_mul_left hu.1 _)`. Introduce `w`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, hKw, hK'w, hkk', Matrix.map_one _ (map_zero _) (map_one _), sub_self]`. Conclude with `sub_eq_zero.1 hz`.
+
+Establish `hmul' : K' * K = 1` using `mul_eq_one_comm.1 hmul`. Establish `hunit : Kᵀ * incM F J * K.map (cA σ) = incM F J`. Establish `e : Kᵀ * incM F J * K.map (cA σ) - incM F J = uᵀ * incM F J + incM F J * u.map (cA σ) + uᵀ * incM F J * u.map (cA σ)`. Rewrite using `[hKdef, Matrix.transpose_add, Matrix.transpose_one, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _)]`. Use `noncomm_ring`.
+
+Establish `hz : Kᵀ * incM F J * K.map (cA σ) - incM F J = 0`. Use `eq_zero_of_at hCM τ ?_ ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `at_add (at_add (at_mul_left (at_transpose hu.1) _) (at_mul_right _ (at_map_cA σ hu.1))) (at_mul_right _ (at_map_cA σ hu.1))`. Introduce `w`.
+
+Establish `hc : (K.map (cA σ)).map (piInf (τ w)) = (k w).map star`. Rewrite using `[← hKw w, Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `GlobalTheory.RealPlaceConj.piInf_cA_eq_star F E σ hCM w (τ w) z`.
+
+Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map, hKw, GlobalTheory.ThK.PlaneEv.incM_map_piInf_emb, hk w, sub_self]`. Conclude with `sub_eq_zero.1 hz`. Set `g : GL (Fin n) (AE F E)` to `⟨K, K', hmul, hmul'⟩`. Establish `hg : g ∈ UG (cA σ) (incM F J)` using `hunit`. Use `⟨⟨g, hg⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show At (evI F) (K - 1)`. Rewrite using `[hKdef, add_sub_cancel_left]`. Conclude with `hu.1`. Introduce `w`. Conclude with `hKw w`.
+-/
 theorem exists_unitary_glue : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (τ : ∀ w : InfinitePlace F, EmbOver E w) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k k' : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ), IsCMExt F E σ → (∀ w, k w * k' w = 1) → (∀ w, (k w)ᵀ * J.map (τ w).1 * (k w).map star = J.map (τ w).1) → ∃ K : UA σ J, At (evI F) (mat K - 1) ∧ ∀ w, (mat K).map (piInf (τ w)) = k w := by
   intro F E _ _ _ _ _ σ τ n J k k' hCM hkk' hk
   obtain ⟨u, hu, -⟩ := GlobalTheory.ArchMatCoords.existsUnique_at_map_piInf σ τ hCM (fun w => k w - 1)

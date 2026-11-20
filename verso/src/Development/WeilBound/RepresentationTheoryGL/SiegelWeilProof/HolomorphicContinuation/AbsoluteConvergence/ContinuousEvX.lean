@@ -15,8 +15,14 @@ variable {m n : ℕ}
 def ept (x : Fin m → Fin n → ℂ) : Fin m × Fin n × Bool → ℂ :=
   fun k => if k.2.2 then star (x k.1 k.2.1) else x k.1 k.2.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evX_eq (P : PX m n) (x : Fin m → Fin n → ℂ) : evX P x = MvPolynomial.eval (ept x) P := rfl
 
+/- English proof (translation)
+Establish `h : ‖x k.1 k.2.1‖ ≤ ‖x‖` using `(norm_le_pi_norm (x k.1) k.2.1).trans (norm_le_pi_norm x k.1)`. Unfold `ept`. Use `split_ifs`. Simplify using `using h`. Conclude with `h`.
+-/
 theorem norm_ept_le (x : Fin m → Fin n → ℂ) (k : Fin m × Fin n × Bool) : ‖ept x k‖ ≤ ‖x‖ := by
   have h : ‖x k.1 k.2.1‖ ≤ ‖x‖ := (norm_le_pi_norm (x k.1) k.2.1).trans (norm_le_pi_norm x k.1)
   unfold ept
@@ -24,6 +30,9 @@ theorem norm_ept_le (x : Fin m → Fin n → ℂ) (k : Fin m × Fin n × Bool) :
   · simpa using h
   · exact h
 
+/- English proof (translation)
+Use `continuous_pi fun k => ?_` and prove the remaining obligations. Unfold `ept`. Use `split_ifs`. Conclude with `continuous_star.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`. Conclude with `(continuous_apply k.2.1).comp (continuous_apply k.1)`.
+-/
 theorem continuous_ept : Continuous (ept : (Fin m → Fin n → ℂ) → _) := by
   refine continuous_pi fun k => ?_
   unfold ept
@@ -31,9 +40,21 @@ theorem continuous_ept : Continuous (ept : (Fin m → Fin n → ℂ) → _) := b
   · exact continuous_star.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))
   · exact (continuous_apply k.2.1).comp (continuous_apply k.1)
 
+/- English proof (translation)
+The claim follows from `(MvPolynomial.continuous_eval P).comp continuous_ept`.
+-/
 theorem continuous_evX (P : PX m n) : Continuous fun x : Fin m → Fin n → ℂ => evX P x :=
   (MvPolynomial.continuous_eval P).comp continuous_ept
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨‖a‖, 0, norm_nonneg _, fun x => by simp [evX_eq]⟩`. Consider the case `add p q hp hq`. Take `⟨C₁, k₁, h₁, hb₁⟩` from `hp`. Take `⟨C₂, k₂, h₂, hb₂⟩` from `hq`.
+
+Use `⟨C₁ + C₂, k₁ + k₂, add_nonneg h₁ h₂, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ 1 + ‖x‖` using `le_add_of_nonneg_right (norm_nonneg x)`. Establish `e1 : (1 + ‖x‖) ^ k₁ ≤ (1 + ‖x‖) ^ (k₁ + k₂)` using `pow_le_pow_right₀ h1 (Nat.le_add_right _ _)`. Establish `e2 : (1 + ‖x‖) ^ k₂ ≤ (1 + ‖x‖) ^ (k₁ + k₂)` using `pow_le_pow_right₀ h1 (Nat.le_add_left _ _)`. Rewrite using `[evX_eq, map_add]`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `mul_X p i hp`. Take `⟨C, k, h0, hb⟩` from `hp`. Use `⟨C, k + 1, h0, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[evX_eq, map_mul, eval_X, norm_mul, pow_succ, ← mul_assoc]`.
+
+Conclude with `mul_le_mul (hb x) ((norm_ept_le x i).trans (le_add_of_nonneg_left zero_le_one)) (norm_nonneg _) (mul_nonneg h0 (pow_nonneg (by positivity) _))`.
+-/
 theorem poly_bound (P : PX m n) : ∃ C : ℝ, ∃ k : ℕ, 0 ≤ C ∧ ∀ x, ‖evX P x‖ ≤ C * (1 + ‖x‖) ^ k := by
   induction P using MvPolynomial.induction_on with
   | C a => exact ⟨‖a‖, 0, norm_nonneg _, fun x => by simp [evX_eq]⟩
@@ -57,9 +78,25 @@ theorem poly_bound (P : PX m n) : ∃ C : ℝ, ∃ k : ℕ, 0 ≤ C ∧ ∀ x, �
     exact mul_le_mul (hb x) ((norm_ept_le x i).trans (le_add_of_nonneg_left zero_le_one)) (norm_nonneg _)
       (mul_nonneg h0 (pow_nonneg (by positivity) _))
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yhb3.main x`.
+-/
 theorem sq_norm_le_sum (x : Fin m → Fin n → ℂ) : ‖x‖ ^ 2 ≤ ∑ a, ∑ j, ‖x a j‖ ^ 2 :=
   _root_.UpperTheory.Reformulated.B.Yhb3.main x
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_ge ((k : ℝ) + r)`. Use `⟨2 ^ N * (1 + N.factorial / κ ^ N), by positivity, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ 1 + s` using `le_add_of_nonneg_right hs`. Establish `hpos : 0 < 1 + s` using `by linarith`. Establish `hE : 0 < Real.exp (-(κ * s ^ 2))` using `Real.exp_pos _`.
+
+Establish `hA : (1 + s) ^ N ≤ 2 ^ N * (1 + (s ^ 2) ^ N)`. Break down `le_total s 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `: 1 + s ≤ 2 * s ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hB : (s ^ 2) ^ N * Real.exp (-(κ * s ^ 2)) ≤ N.factorial / κ ^ N`. Use `Real.pow_div_factorial_le_exp (x := κ * s ^ 2) (by positivity) N` as an intermediate fact. Rewrite `this` using `[div_le_iff₀ (by positivity)]`. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `e : Real.exp (-(κ * s ^ 2)) * Real.exp (κ * s ^ 2) = 1` using `by rw [← Real.exp_add]; simp`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hC : (1 + s) ^ N * Real.exp (-(κ * s ^ 2)) ≤ 2 ^ N * (1 + N.factorial / κ ^ N)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Real.exp_le_one_iff.2 (by nlinarith [sq_nonneg s])`. Establish `hR : (1 + s) ^ k * (1 + s) ^ r ≤ (1 + s) ^ N`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hpos, ← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le h1 hN`. Establish `hr : (1 + s) ^ r * (1 + s) ^ (-r) = 1`. Rewrite using `[← Real.rpow_add hpos]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show ((1 + s) ^ k * (1 + s) ^ r * Real.exp (-(κ * s ^ 2))) * (1 + s) ^ (-r) = (1 + s) ^ k * Real.exp (-(κ * s ^ 2)) * ((1 + s) ^ r * (1 + s) ^ (-r)) by ring, hr, mul_one]`. Use `_ ≤ ((1 + s) ^ N * Real.exp (-(κ * s ^ 2))) * (1 + s) ^ (-r) := by gcongr`. Use `_ ≤ (2 ^ N * (1 + N.factorial / κ ^ N)) * (1 + s) ^ (-r) := by gcongr`.
+-/
 theorem decay (k : ℕ) (κ : ℝ) (hκ : 0 < κ) (r : ℝ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℝ, 0 ≤ s → (1 + s) ^ k * Real.exp (-(κ * s ^ 2)) ≤ C * (1 + s) ^ (-r) := by
   obtain ⟨N, hN⟩ := exists_nat_ge ((k : ℝ) + r)

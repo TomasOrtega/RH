@@ -5,6 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeCompletionEq
 open UpperTheory.Gal.Int.Geo
 open GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKGeo
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨v', hv', e₁⟩` from `s₂ v hv`. Take `⟨x, w, hw, e₂⟩` from `GlobalTheory.T.latticeCompletion_eq_latticeVector_add_nsmul p D M hM hc v' hv'`. Take `⟨u, hu, e₃⟩` from `e x ⟨v - L.actG h₂ w, sub_mem hv (i₂ w hw), by`. Establish `h : L.actG h₂ v' = L.actG h₂ (inAf D x) + M • L.actG h₂ w`.
+
+Rewrite using `[e₂, map_add, map_nsmul]`. Rewrite using `[smul_sub, ← e₁, h]`. Use the proof step `abel⟩`. Establish `e₄ : M • L.actG (h₁ * h₂⁻¹) v = M • (u + L.actG h₁ w)`. Establish `h : L.actG h₂⁻¹ (M • v) = v'`.
+
+Rewrite using `[← e₁, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← map_nsmul, map_mul, Module.End.mul_apply, h, e₂, map_add, map_nsmul, e₃, smul_add]`. Establish `e₅ : L.actG (h₁ * h₂⁻¹) v = u + L.actG h₁ w`. Rewrite `e₄` using `[← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ]`.
+
+Conclude with `smul_right_injective _ (Nat.cast_ne_zero.2 hM.ne' : (M : ℚ) ≠ 0) e₄`. Rewrite using `[e₅]`. Conclude with `add_mem hu (i₁ w hw)`.
+-/
 private theorem UpperTheory.grpLat_half {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) {M : ℕ}
     (hM : 0 < M) (hc : M.Coprime p) {h₁ h₂ : G.GAf} (i₁ : Integ L h₁) (i₂ : Integ L h₂)
     (s₂ : ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, L.actG h₂ v' = M • v)
@@ -30,6 +39,11 @@ private theorem UpperTheory.grpLat_half {p : ℕ} [Fact p.Prime] {D : Datum p} {
   rw [e₅]
   exact add_mem hu (i₁ w hw)
 
+/- English proof (translation)
+Introduce `p _ D G L M hM hc h₁ h₂ i₁ i₂ s₁ s₂ e`. Establish `a` using `UpperTheory.grpLat_half L hM hc i₁ i₂ s₂ (fun x => (e x).2)`. Establish `b` using `UpperTheory.grpLat_half L hM hc i₂ i₁ s₁ (fun x => (e x).1)`. Use `⟨fun v hv => ⟨L.actG (h₁ * h₂⁻¹) v - v, sub_mem (a v hv) hv, by simp⟩, fun v hv => ⟨L.actG (h₁ * h₂⁻¹)⁻¹ v - v, sub_mem ?_ hv, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[mul_inv_rev, inv_inv]`.
+
+Conclude with `b v hv`.
+-/
 theorem UpperTheory.congruenceSubgroup_isLattice_statement :
     GrpLat := by
   intro p _ D G L M hM hc h₁ h₂ i₁ i₂ s₁ s₂ e

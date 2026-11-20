@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisGeometry₂.HoweUnram
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.MemIntMat
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.smith_int_approx | exact GlobalTheory.Hk3.smith_int_approx | (intros; apply GlobalTheory.Hk3.smith_int_approx <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smith_normal_form_integral_matrix : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L),
     Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) →
     ∀ (n n' : ℕ) (x : Matrix (Fin n') (Fin n) L),

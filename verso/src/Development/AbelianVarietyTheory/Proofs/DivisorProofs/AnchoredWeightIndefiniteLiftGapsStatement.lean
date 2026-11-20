@@ -8,6 +8,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
   GlobalTheory.CompHS GlobalTheory.HSApp
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RecGaps.gaps | exact GlobalTheory.RecGaps.gaps | (intros; apply GlobalTheory.RecGaps.gaps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.anchoredWeight_indefiniteLift_gaps : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
     (p : PtAt ex Csz) (P : ParameterChoice' D L) (i : Fin D.R.m), (i : ℕ) + 1 < D.R.m →

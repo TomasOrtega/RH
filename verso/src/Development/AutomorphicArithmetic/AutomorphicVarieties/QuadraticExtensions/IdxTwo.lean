@@ -5,6 +5,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtension
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Set `c : U → U` to `fun u => ⟨σ⁻¹ * u.1 * σ, hc u.1 u.2⟩`. Establish `hcc : Continuous c` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `hcm : ∀ a b : U, c (a * b) = c a * c b`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show σ⁻¹ * (a.1 * b.1) * σ = σ⁻¹ * a.1 * σ * (σ⁻¹ * b.1 * σ)`. Use `group`. Establish `hmem : ∀ φ : CharOff U S 2, (fun u => φ.1 u + φ.1 (c u)) ∈ CharOff U S 2`. Introduce `φ`. Take `⟨hl, hadd, hz⟩` from `φ.2`.
+
+Use `⟨hl.add (hl.comp_continuous hcc), fun a b => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Simplify using `only [hcm, hadd]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hz u hu, hz (c u) (hS _ hu), add_zero]`. Set `f : CharOff U S 2 →+ CharOff U S 2` to `{ toFun := fun φ => ⟨_, hmem φ⟩ map_zero' := by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `a b`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Use `ring }`. Establish `hff : ∀ x, f (f x) = 0`.
+
+Introduce `φ`. Take `⟨-, hadd, -⟩` from `φ.2`. Establish `h1 : φ.1 1 = 0`. Use `hadd 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Take the linear combination `-this`. Establish `hcc' : ∀ u, φ.1 (c (c u)) = φ.1 u`. Introduce `u`. Establish `: c (c u) = (⟨σ * σ, h2⟩ : U)⁻¹ * u * ⟨σ * σ, h2⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show σ⁻¹ * (σ⁻¹ * u.1 * σ) * σ = (σ * σ)⁻¹ * u.1 * (σ * σ)`. Use `group`. Establish `hinv : φ.1 (⟨σ * σ, h2⟩ : U)⁻¹ + φ.1 ⟨σ * σ, h2⟩ = 0`. Rewrite using `[← hadd, inv_mul_cancel, h1]`. Rewrite using `[this, hadd, hadd]`.
+
+Take the linear combination `hinv`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Use `show φ.1 u + φ.1 (c u) + (φ.1 (c u) + φ.1 (c (c u))) = 0`. Rewrite using `[hcc']`.
+
+Generalize the expression as in `φ.1 u = a`. Generalize the expression as in `φ.1 (c u) = b`. Use `revert a b`. Evaluate the decidable proposition. Establish `hker : CardLe f.ker n`.
+
+Use `CardLe.of_injective h (fun φ => ⟨φ.1, fun u u' hu => ?_⟩) ?_` and prove the remaining obligations. Establish `h0 : f φ.1 = 0` using `φ.2`. Establish `h3 : φ.1.1 u + φ.1.1 (c u) = 0` using `congrArg (fun ψ : CharOff U S 2 => ψ.1 u) h0`. Establish `hu' : u' = c u` using `Subtype.ext hu`. Rewrite using `[hu']`.
+
+Use `revert h3`. Generalize the expression as in `φ.1.1 u = a`. Generalize the expression as in `φ.1.1 (c u) = b`. Use `revert a b`. Evaluate the decidable proposition.
+
+Introduce `a b hab`. Establish `hab'` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext hab'`. Conclude with `sqZero _ f n hff hker`.
+-/
 private theorem idxTwo_conj {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (U : Subgroup Γ) (S : Set Γ)
     (σ : Γ) (n : ℕ) (hc : ∀ u ∈ U, σ⁻¹ * u * σ ∈ U) (h2 : σ * σ ∈ U) (hS : ∀ s ∈ S, σ⁻¹ * s * σ ∈ S)
     (h : CardLe {φ : CharOff U S 2 // ∀ u u' : U, u'.1 = σ⁻¹ * u.1 * σ → φ.1 u' = φ.1 u} n) :
@@ -77,6 +104,15 @@ private theorem idxTwo_conj {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopo
       exact Subtype.ext hab'
   exact sqZero _ f n hff hker
 
+/- English proof (translation)
+Introduce `Γ _ _ _ U V S n hUV hopen hdvd hSV hSU hV`. Break down `(Nat.dvd_prime Nat.prime_two).1 hdvd with h1 | h2` into its components or cases. Establish `hVU : V ≤ U` using `Subgroup.relIndex_eq_one.1 h1`. Establish `: U = V` using `le_antisymm hUV hVU`. Substitute `this` using the available equality.
+
+Conclude with `hV.mono (Nat.le_self_pow two_ne_zero n)`. Establish `hnot : ¬ V ≤ U` using `fun hle => by`. Rewrite `h2` using `[Subgroup.relIndex_eq_one.2 hle]`. Conclude with `absurd h2 (by norm_num)`. Take `⟨σ, hσV, hσU⟩` from `SetLike.not_le_iff_exists.1 hnot`.
+
+Establish `hidx : (U.subgroupOf V).index = 2` using `h2`. Establish `hnorm` using `Subgroup.normal_of_index_eq_two hidx`. Use `idxTwo_conj U S σ n ?_ ?_ (fun s hs => hSV σ hσV s hs) (invTwo Γ U V S σ n hUV hσV hopen h2 hσU hSU hV)` and prove the remaining obligations. Introduce `u hu`. Use `hnorm.conj_mem ⟨u, hUV hu⟩ (Subgroup.mem_subgroupOf.2 hu) (⟨σ, hσV⟩⁻¹)` as an intermediate fact.
+
+Rewrite `this` using `[Subgroup.mem_subgroupOf]`. Simplify using `using this`. Use `Subgroup.mul_self_mem_of_index_two hidx ⟨σ, hσV⟩` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_subgroupOf]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Two.idxTwo :
     ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (U V : Subgroup Γ) (S : Set Γ) (n : ℕ), U ≤ V → IsOpen (U.subgroupOf V : Set V) → U.relIndex V ∣ 2 → (∀ v ∈ V, ∀ s ∈ S, v⁻¹ * s * v ∈ S) → (∀ s ∈ S, s ∈ V → s ∈ U) →
       CardLe (CharOff V S 2) n → CardLe (CharOff U S 2) (n ^ 2) := by

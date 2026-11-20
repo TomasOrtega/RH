@@ -10,6 +10,15 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 
 namespace GlobalTheory.CompanionTheory.ChartRed
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Use `haveI : Algebra.Etale R S := hf`. Use `set P := RingHom.ker g with hP`. Establish `het : Algebra.Etale (R ⧸ P) (S ⧸ P.map (algebraMap R S))` using `Algebra.Etale.of_equiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor S P).symm`. Establish `h0 : (algebraMap (R ⧸ P) (S ⧸ P.map (algebraMap R S))).Etale` using `RingHom.etale_algebraMap.2 het`.
+
+Set `e1 : (R ⧸ P) ≃+* R'` to `RingHom.quotientKerEquivOfSurjective hg`. Set `e2 : (S ⧸ P.map (algebraMap R S)) ≃+* S'` to `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hh)`. Establish `key : f' = (e2.toRingHom.comp (algebraMap (R ⧸ P) (S ⧸ P.map (algebraMap R S)))).comp e1.symm.toRingHom`. Use `RingHom.ext fun r' => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hg r'`.
+
+Establish `h1 : e1.symm (g r) = Ideal.Quotient.mk P r`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `h2 : f' (g r) = h (f r)` using `RingHom.congr_fun comm r`. Express the relevant statement in the definitionally equal form `_ = e2 (algebraMap _ _ (e1.symm (g r)))`.
+
+Rewrite using `[h1, h2]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective e1.symm.bijective) (RingHom.Etale.stableUnderComposition _ _ h0 (RingHom.Etale.of_bijective e2.bijective))`.
+-/
 theorem etale_of_quot {R S R' S' : Type} [CommRing R] [CommRing S] [CommRing R'] [CommRing S'] (f : R →+* S)
     (hf : f.Etale) (g : R →+* R') (hg : Function.Surjective g) (h : S →+* S') (hh : Function.Surjective h)
     (f' : R' →+* S') (comm : f'.comp g = h.comp f) (hk : RingHom.ker h = (RingHom.ker g).map f) : f'.Etale := by
@@ -37,14 +46,23 @@ theorem etale_of_quot {R S R' S' : Type} [CommRing R] [CommRing S] [CommRing R']
 
 variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l]
 
+/- English proof (translation)
+Unfold `Wc.red`. Rewrite using `[Ideal.Quotient.factor_ker, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem ker_red (n : ℕ) : RingHom.ker (Wc.red l k n) =
     Ideal.span {(Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ (n + 1)}) ((l : WittVector l k) ^ n))} := by
   unfold Wc.red
   rw [Ideal.Quotient.factor_ker, Ideal.map_span, Set.image_singleton]
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.factor_surjective _`.
+-/
 theorem red_surj (n : ℕ) : Function.Surjective (Wc.red l k n) :=
   Ideal.Quotient.factor_surjective _
 
+/- English proof (translation)
+Unfold `Wc.Im`. Rewrite using `[Ideal.map_map]`. Both sides reduce to the same expression.
+-/
 theorem map_Im (n : ℕ) : (Wc.Im l k (n + 1)).map (Wc.red l k n) = Wc.Im l k n := by
   unfold Wc.Im
   rw [Ideal.map_map]
@@ -52,6 +70,11 @@ theorem map_Im (n : ℕ) : (Wc.Im l k (n + 1)).map (Wc.red l k n) = Wc.Im l k n 
 
 variable {O : Type} [CommRing O] {F : B.Fn O} {ρ : O →+* k} {n : ℕ}
 
+/- English proof (translation)
+Use `etale_of_quot _ h (MvPolynomial.map (Wc.red l k n)) (MvPolynomial.map_surjective _ (red_surj n)) (Ideal.Quotient.mk (lI n T)) Ideal.Quotient.mk_surjective _ ?_ ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `[qi_red]`. Simplify using the standard rewrite rules. Rewrite using `[Ideal.mk_ker, MvPolynomial.ker_map, ker_red, Ideal.map_map, Ideal.map_span, Set.image_singleton]`.
+
+Simplify using `[lI]`.
+-/
 theorem etale_q (T : Thick (Wc.L l F ρ (n + 1))) {d : ℕ} (t : Fin d → T.B)
     (h : (MvPolynomial.eval₂Hom T.i t : MvPolynomial (Fin d) (Wc.Wm l k (n + 1)) →+* T.B).Etale) :
     (MvPolynomial.eval₂Hom (qi T) (fun i => Ideal.Quotient.mk (lI n T) (t i)) :
@@ -64,6 +87,9 @@ theorem etale_q (T : Thick (Wc.L l F ρ (n + 1))) {d : ℕ} (t : Fin d → T.B)
   · rw [Ideal.mk_ker, MvPolynomial.ker_map, ker_red, Ideal.map_map, Ideal.map_span, Set.image_singleton]
     simp [lI]
 
+/- English proof (translation)
+Establish `e : (Ideal.Quotient.mk (lI n T)).comp T.i = (qi T).comp (Wc.red l k n)` using `RingHom.ext fun r => (qi_red T r).symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem J_q (T : Thick (Wc.L l F ρ (n + 1))) (h : T.J = (Wc.Im l k (n + 1)).map T.i) :
     T.J.map (Ideal.Quotient.mk (lI n T)) = (Wc.Im l k n).map (qi T) := by
   have e : (Ideal.Quotient.mk (lI n T)).comp T.i = (qi T).comp (Wc.red l k n) :=
@@ -78,9 +104,17 @@ theorem J_q (T : Thick (Wc.L l F ρ (n + 1))) (h : T.J = (Wc.Im l k (n + 1)).map
 abbrev rr (n : ℕ) : Wc.Wm l k (n + 1) ⧸ Wc.Im l k (n + 1) →+* Wc.Wm l k n ⧸ Wc.Im l k n :=
   Ideal.quotientMap _ (Wc.red l k n) (Ideal.map_le_iff_le_comap.1 (Wc.dp_red l k n).1)
 
+/- English proof (translation)
+The claim follows from `Ideal.quotientMap_surjective (red_surj n)`.
+-/
 theorem rr_surj (n : ℕ) : Function.Surjective (rr (l := l) (k := k) n) :=
   Ideal.quotientMap_surjective (red_surj n)
 
+/- English proof (translation)
+Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Establish `h` using `T.w r`. Express the relevant statement in the definitionally equal form `qy T (rr n (Ideal.Quotient.mk _ r)) = qe T ((Wc.L l F ρ (n + 1)).str T.y (Ideal.Quotient.mk _ r))`. Rewrite using `[h]`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective r`.
+
+Both sides reduce to the same expression.
+-/
 theorem qy_rr (T : Thick (Wc.L l F ρ (n + 1))) : (qy T).comp (rr n) = (qe T).comp T.y.1.1 := by
   refine Ideal.Quotient.ringHom_ext (RingHom.ext fun r => ?_)
   have h := T.w r
@@ -89,6 +123,11 @@ theorem qy_rr (T : Thick (Wc.L l F ρ (n + 1))) : (qy T).comp (rr n) = (qe T).co
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective r
   rfl
 
+/- English proof (translation)
+Use `⟨?_, Ideal.quotientMap_surjective Ideal.Quotient.mk_surjective⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `h1 : Ideal.Quotient.mk (lI n T) x ∈ T.J.map (Ideal.Quotient.mk (lI n T))` using `Ideal.Quotient.eq_zero_iff_mem.1 ha`. Rewrite `h1` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 (lI_le hn T)]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h1`.
+-/
 theorem qe_bij (hn : n ≠ 0) (T : Thick (Wc.L l F ρ (n + 1))) : Function.Bijective (qe T) := by
   refine ⟨?_, Ideal.quotientMap_surjective Ideal.Quotient.mk_surjective⟩
   refine (injective_iff_map_eq_zero _).2 fun a ha => ?_
@@ -103,6 +142,9 @@ section Abs
 
 variable {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `Subtype.ext (Prod.ext h1 h2)`.
+-/
 theorem map_eq_iff {κ' : Type} [CommRing κ'] {κ : O →+* κ'} {A : CommRingCat.{0}} {C : Type} [CommRing C]
     (φ : C →+* A) (z : PtOver X q κ C) (y : PtOver X q κ A) :
     (ptFun X q κ).map (CommRingCat.ofHom φ) z = y ↔
@@ -113,6 +155,23 @@ theorem map_eq_iff {κ' : Type} [CommRing κ'] {κ : O →+* κ'} {A : CommRingC
   · rintro ⟨h1, h2⟩
     exact Subtype.ext (Prod.ext h1 h2)
 
+/- English proof (translation)
+Set `y' : PtOver X q κ₁ A` to `⟨(y.1.1.comp r, y.1.2), by`. Establish `h` using `y.2`. Rewrite using `[RingHom.comp_assoc, hκ]`. Conclude with `h⟩`. Take `⟨φ', h', hu⟩` from `hrep A y' hy`.
+
+Rewrite `h'` using `[map_eq_iff]`. Set `E` to `RingEquiv.ofBijective e he`. Establish `hE : ∀ x, E.symm (e x) = x` using `fun x => E.symm_apply_apply x`. Establish `hE' : ∀ x, e (E.symm x) = x` using `fun x => E.apply_symm_apply x`. Establish `hcomp : (φ'.comp E.symm.toRingHom).comp e = φ'` using `RingHom.ext fun x => by simp [hE]`.
+
+Establish `hsp : ∀ ψ : C₂ →+* A, Spec.map (CommRingCat.ofHom ψ) ≫ z₂.1.2 = Spec.map (CommRingCat.ofHom (ψ.comp e)) ≫ z₁.1.2` using `fun ψ => by`. Rewrite using `[h2, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨φ'.comp E.symm.toRingHom, ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use `(map_eq_iff _ _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hr x`. Establish `e1 : z₂.1.1 (r a) = e (z₁.1.1 a)` using `RingHom.congr_fun h1 a`. Establish `e2 : φ' (z₁.1.1 a) = y.1.1 (r a)` using `RingHom.congr_fun h'.1 a`. Express the relevant statement in the definitionally equal form `φ' (E.symm (z₂.1.1 (r a))) = _`.
+
+Rewrite using `[e1, hE, e2]`. Rewrite using `[hsp, hcomp]`. Conclude with `h'.2`. Take `⟨g1, g2⟩` from `(map_eq_iff _ _ _).1 hψ`. Establish `: ψ.comp e = φ'`.
+
+Use `hu _ ((map_eq_iff _ _ _).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `e1 : z₂.1.1 (r a) = e (z₁.1.1 a)` using `RingHom.congr_fun h1 a`. Establish `e2 : ψ (z₂.1.1 (r a)) = y.1.1 (r a)` using `RingHom.congr_fun g1 (r a)`. Express the relevant statement in the definitionally equal form `ψ (e (z₁.1.1 a)) = y.1.1 (r a)`.
+
+Rewrite using `[← e1, e2]`. Rewrite using `[← hsp]`. Conclude with `g2`. Rewrite using `[← this]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ψ x = ψ (e (E.symm x))`. Rewrite using `[hE']`.
+-/
 theorem rep_abs {K₁ K₂ C₁ C₂ : Type} [CommRing K₁] [CommRing K₂] [CommRing C₁] [CommRing C₂] {κ₁ : O →+* K₁}
     {κ₂ : O →+* K₂} (r : K₁ →+* K₂) (hr : Function.Surjective r) (hκ : r.comp κ₁ = κ₂) (e : C₁ →+* C₂)
     (he : Function.Bijective e) (z₁ : PtOver X q κ₁ C₁) (z₂ : PtOver X q κ₂ C₂) (h1 : z₂.1.1.comp r = e.comp z₁.1.1)
@@ -176,6 +235,9 @@ def cq {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of 
   rep := rep_abs (rr n) (rr_surj n) (Wc.red_res l ρ n) (qe (tD c')) (qe_bij hn (tD c')) (tD c').y
     (qT (F := B.schFn q) (ρ := ρ) hn (tD c')).y (qy_rr (tD c')) rfl c'.rep
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cq q ρ hn c', Iso.refl _, fun i => rfl, id⟩`.
+-/
 theorem chart_q {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) {n : ℕ}
     (hn : n ≠ 0) {W : X.Opens} {d : ℕ} (c' : Chart (Wc.pd l k (n + 1)) l q ((Wc.res l k (n + 1)).comp ρ) W d) :
     ∃ (c : Chart (Wc.pd l k n) l q ((Wc.res l k n).comp ρ) W d)

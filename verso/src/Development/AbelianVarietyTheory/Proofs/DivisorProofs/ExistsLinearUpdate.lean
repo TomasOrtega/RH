@@ -28,6 +28,11 @@ def atOp (v : Pl F) (π : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v)
       c • (fun y => Φ (x + fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x i)))) := rfl
     rw [e, map_smul, Pi.smul_apply, Pi.smul_apply, RingHom.id_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e : (fun y : κ → Fv F v => tens (evFin F v) χ r (x + fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x i)))) = r x • χ`. Use function extensionality and compare the values at `y`. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x i)))` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v _ u hu`. Simplify using `only [tens, hr x _ hz, Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show π _ _ = _`. Rewrite using `[e, map_smul]`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem atOp_tens (v : Pl F) (π : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)) (χ : (κ → Fv F v) → ℂ)
     (r : (κ → AF F) → ℂ) (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) :
     atOp v π (tens (evFin F v) χ r) = tens (evFin F v) (π χ) r := by
@@ -44,6 +49,9 @@ theorem atOp_tens (v : Pl F) (π : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ �
   simp only [tens, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hφ`. Establish `e` using `hrt (φ v)`. Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[← e, atOp_tens v π _ r hr, hrt]`.
+-/
 theorem atOp_pure (v : Pl F) (π : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → Fv F v) → ℂ)) (f : SInf F κ)
     (φ : ∀ w : Pl F, (κ → Fv F w) → ℂ)
     (hφ : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1) :
@@ -53,6 +61,9 @@ theorem atOp_pure (v : Pl F) (π : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ �
   rw [Function.update_eq_self] at e
   rw [← e, atOp_tens v π _ r hr, hrt]
 
+/- English proof (translation)
+Take `⟨r, -, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hφ`. Conclude with `⟨{ toFun := fun χ => tens (evFin F v) χ r map_add' := fun χ χ' => by funext x; simp [tens, add_mul] map_smul' := fun c χ => by funext x; simp [tens, mul_assoc] }, hrt⟩`.
+-/
 theorem exists_linear_update (v : Pl F) (f : SInf F κ) (φ : ∀ w : Pl F, (κ → Fv F w) → ℂ)
     (hφ : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1) :
     ∃ L : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ), ∀ χ, L χ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ v χ) := by
@@ -63,9 +74,21 @@ theorem exists_linear_update (v : Pl F) (f : SInf F κ) (φ : ∀ w : Pl F, (κ 
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 fun _ h => h.1`.
+-/
 theorem span_soLoc_le (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     Submodule.span ℂ (M.SoLoc ψ t) ≤ SB _ := Submodule.span_le.2 fun _ h => h.1
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_linear_update v f φ ((hev.and hstd).mono fun w hw => hw.1.trans hw.2)`. Establish `hle : Submodule.span ℂ (M.SoLoc ψ t) ≤ Q.comap L`. Use `Submodule.span_le.2 fun χ hχ => ?_` and prove the remaining obligations. Use `show L χ ∈ Q`. Rewrite using `[hL]`.
+
+Use `hQ _ (fun w => ?_) ?_ (by rwa [Function.update_self])` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hχ.1`.
+
+Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Use `filter_upwards [hev, Filter.eventually_cofinite_ne v] with w hw hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw`.
+
+Use `hle hv` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, hL, Function.update_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem pure_mem_of_span (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) {v : Pl F} (t : E →ₐ[F] Fv F v)
     (hstd : ∀ᶠ w in Filter.cofinite, M.vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     (f : SInf F (Fin n × Fin d)) (Q : Submodule ℂ (Fn F n d))
@@ -87,6 +110,11 @@ theorem pure_mem_of_span (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) {v : Pl F}
   have := hle hv
   rwa [Submodule.mem_comap, hL, Function.update_eq_self] at this
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Establish `hle : M.So ψ t ≤ LinearMap.eqLocus (atOp v π) LinearMap.id`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, -, hev, hv, rfl⟩`. Use `show atOp v π _ = _`.
+
+Rewrite using `[atOp_pure v π f φ ((hev.and hstd).mono fun w hw => hw.1.trans hw.2), hπ _ hv, Function.update_eq_self]`. Both sides reduce to the same expression. Conclude with `hle hΦ`.
+-/
 theorem atOp_of_mem_so (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) {v : Pl F} (t : E →ₐ[F] Fv F v)
     (hstd : ∀ᶠ w in Filter.cofinite, M.vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     (π : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)) (hπ : ∀ χ ∈ M.SoLoc ψ t, π χ = χ) :
@@ -100,6 +128,9 @@ theorem atOp_of_mem_so (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) {v : Pl F} (
     rfl
   exact hle hΦ
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_inf.2 ⟨Submodule.subset_span ⟨f, hf, φ, hSB, hev, rfl⟩, pure_mem_of_span M B.ψ B.τ₁ hstd f (M.So B.ψ B.τ₁) (fun φ h1 h2 h3 => by unfold Model.So; exact Submodule.subset_span ⟨f, φ, h1, h2, h3, rfl⟩) φ hSB hev hv⟩`.
+-/
 theorem pure_mem_polSo (B : Base F E) (M : Model σ Y W)
     (hstd : ∀ᶠ w in Filter.cofinite, M.vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1)
     (f : SInf F (Fin n × Fin d)) (hf : f ∈ M.Pol B.ψ B.emb)
@@ -109,6 +140,17 @@ theorem pure_mem_polSo (B : Base F E) (M : Model σ Y W)
   Submodule.mem_inf.2 ⟨Submodule.subset_span ⟨f, hf, φ, hSB, hev, rfl⟩, pure_mem_of_span M B.ψ B.τ₁ hstd f (M.So B.ψ B.τ₁)
     (fun φ h1 h2 h3 => by unfold Model.So; exact Submodule.subset_span ⟨f, φ, h1, h2, h3, rfl⟩) φ hSB hev hv⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `Φ ⟨hP, hS⟩ set S := Submodule.span ℂ (M.SoLoc B.ψ B.τ₁) with hSdef`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective S.subtype (Submodule.ker_subtype S)`. Establish `hπ : ∀ χ ∈ M.SoLoc B.ψ B.τ₁, (S.subtype.comp r) χ = χ` using `fun χ hχ => congrArg Subtype.val (LinearMap.congr_fun hr ⟨χ, Submodule.subset_span hχ⟩)`. Rewrite using `[← atOp_of_mem_so M B.ψ B.τ₁ hstd _ hπ Φ hS]`.
+
+Use `Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap (atOp B.v₁ (S.subtype.comp r)) _)).2 ?_ hP)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, φ, hSB, hev, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[atOp_pure B.v₁ _ f φ ((hev.and hstd).mono fun w hw => hw.1.trans hw.2)]`. Establish `hm : (S.subtype.comp r) (φ B.v₁) ∈ S` using `(r (φ B.v₁)).2`.
+
+Use `pure_mem_of_span M B.ψ B.τ₁ hstd f _ (fun φ h1 h2 h3 => Submodule.subset_span ?_) _ (fun w => ?_) ?_ (by rwa [Function.update_self])` and prove the remaining obligations. Conclude with `⟨f, hf, φ, h1, h2, h3, rfl⟩`. Distinguish the cases in `hw : w = B.v₁`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `span_soLoc_le M B.ψ B.τ₁ hm`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Use `filter_upwards [hev, Filter.eventually_cofinite_ne B.v₁] with w hw hne`. Rewrite using `[Function.update_of_ne hne]`.
+
+Conclude with `hw`. Introduce and unpack `_ ⟨f, hf, φ, hSB, hev, hv, rfl⟩`. Conclude with `pure_mem_polSo B M hstd f hf φ hSB hev (Submodule.subset_span hv)`.
+-/
 theorem polSo_eq_span (B : Base F E) (M : Model σ Y W)
     (hstd : ∀ᶠ w in Filter.cofinite, M.vac w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1) :
     PolData B M ⊓ M.So B.ψ B.τ₁ = Submodule.span ℂ {Φ | ∃ f ∈ M.Pol B.ψ B.emb, ∃ φ : ∀ w : Pl F, (Fin n × Fin d → Fv F w) → ℂ,

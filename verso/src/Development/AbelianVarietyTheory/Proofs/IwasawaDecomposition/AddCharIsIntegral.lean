@@ -17,6 +17,13 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `Formalism.UG.P.afsplit_inj` to reduce the goal to its premises. Introduce `w`.
+
+Rewrite using `[map_sub]`. Establish `h1` using `congrArg Units.val (H w)`. Rewrite `h1` using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplit_coe_bc_prV]`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`.
+
+Rewrite using `[this, sub_self]`.
+-/
 theorem adelic_ext {n : ℕ} (g h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (H : ∀ v : HeightOneSpectrum (𝓞 F), bc (prV (E := E) v) g = bc (prV (E := E) v) h) : g = h := by
   apply Units.ext
@@ -31,6 +38,15 @@ theorem adelic_ext {n : ℕ} (g h : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F
   simp only [Matrix.map_apply] at this
   rw [this, sub_self]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨g, hg, by simp, fun _ _ => rfl⟩`. Consider the case `insert v s hv ih`. Take `⟨k, hk, h1, h2⟩` from `ih`. Establish `hne : ∀ w, w ≠ v → bc (prV (E` using `E) w) (Formalism.UG.P.afsplitU v 1 k) = bc (prV (E := E) w) k := by`.
+
+Introduce `w hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV, Formalism.UG.P.afsplitU_coe, Formalism.UG.P.afsplitC_prV_ne v w hw]`. Both sides reduce to the same expression. Use `⟨Formalism.UG.P.afsplitU v 1 k, Formalism.UG.P.afsplitU_mem v σ J 1 k (one_mem _) hk, fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Conclude with `Formalism.UG.P.afsplit_right1 w 1 k`. Rewrite using `[hne w h]`. Conclude with `h1 w ((Finset.mem_insert.1 hw).resolve_left h)`.
+
+Rewrite `hw` using `[Finset.mem_insert, not_or]`. Rewrite using `[hne w hw.1]`. Conclude with `h2 w hw.2`.
+-/
 theorem exists_trivial_on {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (s : Finset (HeightOneSpectrum (𝓞 F)))
     (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hg : g ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
     ∃ k ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F), (∀ v ∈ s, bc (prV (E := E) v) k = 1) ∧
@@ -52,6 +68,9 @@ theorem exists_trivial_on {n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fi
     · rw [Finset.mem_insert, not_or] at hw
       rw [hne w hw.1]; exact h2 w hw.2
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_over (p : ℕ) (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | ((p : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 F)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -61,6 +80,11 @@ theorem finite_over (p : ℕ) (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 F) |
 
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
+/- English proof (translation)
+Take `⟨k, hk, h1, h2⟩` from `exists_trivial_on σ J (finite_over (F := F) p hp).toFinset g hg`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at h1 h2`. Use `⟨⟨k, (S.U_eq k).2 ⟨hk, fun v => ?_⟩⟩, h1, h2⟩` and prove the remaining obligations. Distinguish the cases in `hv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[h1 v hv]`.
+
+Conclude with `one_mem _`. Rewrite using `[h2 v hv]`. Conclude with `hw v hv`.
+-/
 theorem exists_away_mem (S : StepLevel F E σ J T f bad) (p : ℕ) (hp : p ≠ 0)
     (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hg : g ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (hw : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E := E) w) g ∈ S.Uloc w) :
@@ -73,11 +97,19 @@ theorem exists_away_mem (S : StepLevel F E σ J T f bad) (p : ℕ) (hp : p ≠ 0
   · rw [h1 v hv]; exact one_mem _
   · rw [h2 v hv]; exact hw v hv
 
+/- English proof (translation)
+Establish `h : ψ x ^ Nat.card A = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]`. Conclude with `IsIntegral.of_pow Nat.card_pos (by rw [h]; exact isIntegral_one)`.
+-/
 theorem addChar_isIntegral {A : Type} [AddCommGroup A] [Finite A] (ψ : AddChar A ℂ) (x : A) : IsIntegral ℤ (ψ x) := by
   have h : ψ x ^ Nat.card A = 1 := by
     rw [← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero', AddChar.map_zero_eq_one]
   exact IsIntegral.of_pow Nat.card_pos (by rw [h]; exact isIntegral_one)
 
+/- English proof (translation)
+Rewrite using `[X.chi_eq κ]`. Use `IsIntegral.prod _ fun i _ => ?_` and prove the remaining obligations. Use `finprod_induction (fun z : ℂ => IsIntegral ℤ z) isIntegral_one (fun _ _ hx hy => hx.mul hy) fun v => ?_` and prove the remaining obligations. Use `finprod_induction (fun z : ℂ => IsIntegral ℤ z) isIntegral_one (fun _ _ hx hy => hx.mul hy) fun h => ?_` and prove the remaining obligations. Use `haveI : Finite (kv F v) := Formalism.UG.P.glint_finite_residueField v`.
+
+Unfold `lamJ`. Rewrite using `[Finset.range_zero, Finset.prod_empty, mul_one, ← AddChar.map_neg_eq_inv]`. Conclude with `addChar_isIntegral _ _`.
+-/
 theorem chi_isIntegral {gp : Fin 2 → ℕ} {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp} {a t skip fc : ℕ} {zl : Bool}
     (X : GLev S G a t 0 skip fc zl) (κ : S.U) : IsIntegral ℤ ((S.chi κ : ℂˣ) : ℂ) := by
   rw [X.chi_eq κ]
@@ -91,6 +123,11 @@ theorem chi_isIntegral {gp : Fin 2 → ℕ} {S : StepLevel F E σ J T f bad} {G 
 
 end Adelic
 
+/- English proof (translation)
+Use `choose r hr o ho using h`. Establish `r1 : r 1 = 1` using `embLL.injective (by rw [hr]; simp)`. Establish `rm : ∀ a b, r (a * b) = r a * r b` using `fun a b => embLL.injective (by rw [map_mul, hr, hr, hr]; simp)`. Set `o' : U →* O` to `{ toFun := o map_one' := hinj (by rw [ho, r1, map_one, map_one]) map_mul' := fun a b => hinj (by rw [map_mul, ho, ho, ho, rm, map_mul]) }`. Use `⟨o'.toHomUnits⁻¹, fun κ => ⟨r κ, hr κ, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← ho κ, ← map_mul]`. Establish `: o κ = ((o'.toHomUnits κ : Oˣ) : O)` using `rfl`. Rewrite using `[this, MonoidHom.inv_apply, Units.inv_mul, map_one]`.
+-/
 theorem exists_inv_char {U LL O Kf : Type} [Group U] [Field LL] [CommRing O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (χ : U →* ℂˣ) (embLL : LL →+* ℂ) (e : LL →+* Kf)
     (h : ∀ κ, ∃ r : LL, embLL r = (χ κ : ℂ) ∧ e r ∈ Set.range (algebraMap O Kf)) :
@@ -114,6 +151,17 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {ι' : Type} [Fintype ι'] {hc : ι' → HCParam R} {C : ColumnChain R ι' hc} {A : ColumnsAtT R C}
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_inv_char hinj S.chi embLL e h`. Establish `hex : ∀ a : Formalism.L2.Herm.awayFrom₂ L p, ∃ κ : S.U, (∀ v : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ v.asIdeal → bc (prV (E` using `E) v) κ.1 = 1) ∧ ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E := E) w) κ.1 = bc (prV (E := E) w) (reGL hk _ a.1) := by`. Introduce `a`. Take `⟨h2, h3⟩` from `(mem_awayP_iff L p a.1).1 a.2`. Use `exists_away_mem S p hp _ (reGL_mem_UPts hk sp.cm.sig sp.gram0 J hJ _ _ h2) fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[bc_reGL, hU w]`. Conclude with `Subgroup.mem_map.2 ⟨_, h3 w hw, rfl⟩`. Use `choose κ h1 h2 using hex`. Establish `huniq : ∀ (a : Formalism.L2.Herm.awayFrom₂ L p) (k : S.U), (∀ v : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ v.asIdeal → bc (prV (E` using `E) v) k.1 = 1) → (∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E := E) w) k.1 = bc (prV (E := E) w) (reGL hk _ a.1)) → κ a = k := by`. Introduce `a k k1 k2`.
+
+Use `Subtype.ext (adelic_ext _ _ fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : ((p : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[h1 a v hv, k1 v hv]`. Rewrite using `[h2 a v hv, k2 v hv]`. Set `K : Formalism.L2.Herm.awayFrom₂ L p →* S.U` to `MonoidHom.mk' κ fun a b => by`.
+
+Use `huniq _ _ (fun v hv => ?_) (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, map_mul, h1 a v hv, h1 b v hv, mul_one]`. Rewrite using `[Subgroup.coe_mul, map_mul, h2 a v hv, h2 b v hv, Subgroup.coe_mul, map_mul, map_mul]`. Use `⟨c.comp K, fun a k k1 k2 => ?_⟩` and prove the remaining obligations. Take `rfl` from `huniq a k k1 k2`.
+
+Conclude with `hc (κ a)`.
+-/
 theorem exists_psiTied {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : StepLevel F E sp.cm.sig J T f bad) (L : ColLevel R F E sp gp C A clsLat) (p : ℕ) (hp : p ≠ 0) (hk : R.k = n)
     (hJ : ∀ x y, J x y = sp.gram0 (Fin.cast hk.symm x) (Fin.cast hk.symm y))
@@ -156,6 +204,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L0 T hJ hψ u w _`. Use `exists_psiTied ((T u).cls0).lev (L0 u) _ (D.what₂.places.resChar_prime w).ne_zero (rank_eq_first_level D.R) (Formalism.L2.G.Cmp.gramN_zero D) (hJ u).Uloc_eq Subtype.val_injective _ _ fun κ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `chiRatAll_rec T u (hψ u) κ`. Use `⟨r, hr, (embRec_int D w _ r).1 ((val_nonneg_iff D w r).2 ?_)⟩` and prove the remaining obligations. Establish `h1 : IsIntegral ℤ (D.what₂.embLL r)` using `hr ▸ chi_isIntegral ((T u).glev0) κ`.
+
+Establish `h2 : IsIntegral ℤ r` using `(isIntegral_algHom_iff D.what₂.embLL.toIntAlgHom D.what₂.embLL.injective).1 h1`. Conclude with `(D.plEq w).valuation_le_one (K := D.what₂.LL) (⟨r, h2⟩ : 𝓞 D.what₂.LL)`.
+-/
 theorem exists_psi : ∀ (D : D7) (L0 : LevelData D) (T : ∀ u : D.what₂.Word, Forms0 D u), (∀ u, Joint0 L0 u (T u)) → (∀ u, LevelZeroCharacterRational T u) →
     ∀ (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)),
     ∃ ψ : Formalism.L2.Herm.awayFrom₂ (L0 u) (D.what₂.places.resChar w) →*

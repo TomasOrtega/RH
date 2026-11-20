@@ -9,6 +9,17 @@ open Submodule
 
 variable {R W : Type} [CommRing R] [AddCommGroup W] [Module R W]
 
+/- English proof (translation)
+Establish `hgP : ∀ x : ↥(M ⊓ Fk), ψ (Submodule.inclusion inf_le_right x) ∈ P` using `fun x => hP (Submodule.mem_map_of_mem (show Submodule.inclusion inf_le_right x ∈ M.comap Fk.subtype from x.2.1))`. Set `g : ↥(M ⊓ Fk) →ₗ[R] ↥P` to `LinearMap.codRestrict P (ψ ∘ₗ Submodule.inclusion (inf_le_right : M ⊓ Fk ≤ Fk)) hgP`. Set `f : ↥(M ⊓ Fk) →ₗ[R] ↥P ⧸ Q.comap P.subtype` to `(Q.comap P.subtype).mkQ ∘ₗ g`. Establish `hker : LinearMap.ker f ≤ ((N ⊓ Fk) ⊔ (M ⊓ Fk1)).comap (M ⊓ Fk).subtype`. Introduce `x hx`.
+
+Establish `hxQ : ψ (Submodule.inclusion inf_le_right x) ∈ Q`. Establish `h1 : g x ∈ Q.comap P.subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Conclude with `h1`. Take `⟨y, hyN, hyx⟩` from `hQ hxQ`. Establish `hdiff : ψ (Submodule.inclusion inf_le_right x - y) = 0` using `by rw [map_sub, hyx, sub_self]`.
+
+Establish `hF1` using `hinj _ hdiff`. Establish `hxM : (x : W) ∈ M` using `x.2.1`. Establish `hyM : (y : W) ∈ M` using `hNM hyN`. Use `show (x : W) ∈ (N ⊓ Fk) ⊔ (M ⊓ Fk1)`. Establish `hsplit : (x : W) = (y : W) + ((x : W) - (y : W))` using `by abel`.
+
+Rewrite using `[hsplit]`. Use `Submodule.add_mem_sup ⟨hyN, y.2⟩ ⟨M.sub_mem hxM hyM, ?_⟩` and prove the remaining obligations. Simplify using `using hF1`. Unfold `ell`. Establish `hsurj : Function.Surjective (Submodule.factor hker)`.
+
+Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H x => exact ⟨Submodule.Quotient.mk x, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ell_stepF {V : Type} [AddCommGroup V] [Module R V]
     (M N Fk Fk1 : Submodule R W) (ψ : ↥Fk →ₗ[R] V) (P Q : Submodule R V) (hNM : N ≤ M)
     (hinj : ∀ x : ↥Fk, ψ x = 0 → (x : W) ∈ Fk1)
@@ -45,6 +56,21 @@ theorem ell_stepF {V : Type} [AddCommGroup V] [Module R V]
       Module.length_le_of_injective _
         (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ f le_rfl le_rfl))
 
+/- English proof (translation)
+Introduce `R W _ _ _ F a hanti h0 ha V _ _ φ hinj M N P Q hNM hP hQ`. Use `set X : ℕ → Submodule R W := fun k => N ⊔ (M ⊓ F k) with hX`. Establish `hXmono : ∀ k, X (k + 1) ≤ X k` using `fun k => sup_le_sup_left (inf_le_inf_left _ (hanti (Nat.le_succ k))) _`. Establish `hX0 : X 0 = M` using `by simp [hX, h0, sup_eq_right.2 hNM]`. Establish `hXa : X a = N` using `by simp [hX, ha]`.
+
+Establish `hXle0 : ∀ k, X k ≤ X 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact le_rfl`. Consider the case `succ k ih => exact (hXmono k).trans ih`.
+
+Establish `hstep : ∀ k < a, ell (X k) (X (k + 1)) ≤ Module.length R (↥(P k) ⧸ (Q k).comap (P k).subtype)`. Introduce `k hk`. Establish `hD : (N ⊓ F k) ⊔ (M ⊓ F (k + 1)) ≤ X (k + 1)` using `sup_le (inf_le_left.trans le_sup_left) le_sup_right`. Establish `heq : X (k + 1) ⊔ (M ⊓ F k) = X k`. Simplify using `only [hX]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (sup_le le_sup_left (le_sup_of_le_right (inf_le_inf_left _ (hanti (Nat.le_succ k))))) le_sup_right`. Conclude with `sup_le (le_sup_of_le_left le_sup_left) le_sup_right`. Establish `h1 : ell (X k) (X (k + 1)) ≤ ell (M ⊓ F k) ((N ⊓ F k) ⊔ (M ⊓ F (k + 1)))`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h1.trans (ell_stepF M N (F k) (F (k + 1)) (φ k) (P k) (Q k) hNM (hinj k) (hP k hk) (hQ k hk))`. Establish `hsum : ∀ j ≤ a, ell (X 0) (X j) ≤ ∑ k ∈ Finset.range j, Module.length R (↥(P k) ⧸ (Q k).comap (P k).subtype)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`.
+
+Simplify using `[ell, Submodule.comap_subtype_self]`. Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[ell_add (hXmono j) (hXle0 j), Finset.sum_range_succ, add_comm]`. Conclude with `add_le_add (ih (Nat.le_of_succ_le hj)) (hstep j hj)`.
+
+Establish `hfin` using `hsum a le_rfl`. Rewrite `hfin` using `[hX0, hXa]`. Conclude with `hfin`.
+-/
 theorem filtLenF_main : PI.FiltLenF := by
   intro R W _ _ _ F a hanti h0 ha V _ _ φ hinj M N P Q hNM hP hQ
   set X : ℕ → Submodule R W := fun k => N ⊔ (M ⊓ F k) with hX
@@ -85,6 +111,11 @@ theorem filtLenF_main : PI.FiltLenF := by
   rw [hX0, hXa] at hfin
   exact hfin
 
+/- English proof (translation)
+Introduce `hF R W _ _ _ F a hanti h0 ha V _ _ φ hinj M N P Q hNM hP hQ`. Use `hF R W F a hanti h0 ha V (fun k => (φ k).comp (F k).subtype) (fun k x hx => hinj k x x.2 hx) M N P Q hNM ?_ ?_` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[Submodule.map_comp, Submodule.map_comap_subtype, inf_comm]`. Conclude with `hP k hk`.
+
+Introduce `k hk`. Rewrite using `[Submodule.map_comp, Submodule.map_comap_subtype, inf_comm]`. Conclude with `hQ k hk`.
+-/
 theorem filtLen_of_F : PI.FiltLenF → PI.FiltLen := by
   intro hF R W _ _ _ F a hanti h0 ha V _ _ φ hinj M N P Q hNM hP hQ
   refine hF R W F a hanti h0 ha V (fun k => (φ k).comp (F k).subtype)

@@ -23,6 +23,33 @@ noncomputable section
 
 namespace GlobalTheory.ChainTw
 
+/- English proof (translation)
+Introduce `D _ c w hw k hk s s' hs hs' p hp`. Establish `hc : c.Is` using `hw.com`. Take `⟨hr₁, hL, hfl⟩` from `hs`. Take `⟨hr₂, -, hfl'⟩` from `hs'`. Take `⟨f₀, hvec⟩` from `hp.vec`.
+
+Establish `hψ : IsStdChar D c.ψ (-1)` using `hc.std`. Establish `hθ : IsInfFam c.θ` using `hc.inf`. Establish `hrk : s.V.rank ≤ s'.V.rank`. Establish `e1 : s.V.rank = D.R.rankY k` using `hfl.rank`. Establish `e2 : s'.V.rank = D.R.rankY (k + 1)` using `hfl'.rank`.
+
+Rewrite using `[e1, e2]`. Use `show D.R.r + k * D.R.t ≤ D.R.r + (k + 1) * D.R.t`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ _)) _`. Establish `hsd : IsSelfDualC s.V s.Λ` using `hfl.selfDual`. Establish `hsd' : IsSelfDualC s'.V s'.Λ` using `hfl'.selfDual`.
+
+Take `⟨hfθ, -, hfv⟩` from `GlobalTheory.Chain.StepVac.stepVec_vac hsd hsd' hrk hvec`. Establish `hPS : ∀ PP ∈ s.L.Pg ∪ w.Q, PP.under (𝓞 D.host.F) ∈ c.S`. Introduce `PP hPP`. Rewrite `hPP` using `[hL]`. Establish `hPP' : PP ∈ c.Pg` using `by rw [hw.union]; exact hPP`.
+
+Conclude with `Finset.mem_image_of_mem _ hPP'`. Use `⟨fun φ => ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FockSph.isFockVec_pureTensorO hψ hθ (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s.M τ) (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s'.M τ) (onb s.M) (onb s'.M) hfθ hfv φ`. Take `⟨hvac, e, he, hth⟩` from `hvec`. Conclude with `GlobalTheory.FockSph.isLatVac_pureTensorO_off hθ (onb s.M) (onb s'.M) hvac he hth c.S hPS hp.theta φ`.
+
+Introduce `v hv`. Take `⟨hf₀, e, he, hth⟩` from `hvec`. Take `⟨NS, hNS, hNSv⟩` from `hfl.base`. Take `⟨NT, hNT, hNTv⟩` from `hfl'.base`. Establish `hM : ((NS * NT : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal`.
+
+Take `⟨P, hP⟩` from `GlobalTheory.ChainOnto.VacOffS.exists_under (D := D) v`. Establish `hPv : P.under (𝓞 D.host.F) ∉ c.S` using `by rw [hP]; exact hv`. Establish `h1` using `hNSv P hPv`. Establish `h2` using `hNTv P hPv`. Introduce `h`.
+
+Rewrite `h` using `[← hP]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ P.asIdeal at h`. Rewrite `h` using `[map_natCast, Nat.cast_mul]`. Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `h1 h`.
+
+Conclude with `h2 h`. Establish `hle` using `GlobalTheory.ChainOnto.VacOffS.latO_at_le hNS.2.2.2.1 hNT.2.2.2.1 hM`. Establish `hoff : ∀ PP ∈ s.L.Pg ∪ w.Q, PP.under (𝓞 D.host.F) ≠ v`. Introduce `PP hPP h0`. Conclude with `hv (h0 ▸ hPS PP hPP)`.
+
+Establish `hfix : ∀ u ∈ latO s.V s'.V (GlobalTheory.AdelicU.frameLat s.V : Set (Fin s.V.rank → D.host.E)) (GlobalTheory.AdelicU.frameLat s'.V : Set (Fin s'.V.rank → D.host.E)) (fun u => u = v), heisO c.ψ s.V s'.V u f₀ = f₀ → heisO c.ψ s.V s'.V u (p.pt φ) = p.pt φ` using `fun u hu h0 => GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite c.ψ c.θ s.V s'.V hc.inf _ _ _ _ p.f hp.theta u (GlobalTheory.VacGood.infPart_latO (hle hu)) (GlobalTheory.Hk3.heisO_fix_thetaAt_off c.ψ _ _ _ _ _ _ _ _ hth u (fun i j => GlobalTheory.FinZeta.VacOff.idemSum_mul …`. Use `⟨hp.theta φ, fun u hu => ?_, fun e' he' u hu hh => ?_⟩` and prove the remaining obligations. Conclude with `hfix (2 • u) (AddSubgroup.nsmul_mem _ hu 2) (hf₀.2.lat.1 u (hle hu))`. Conclude with `hfix u hu (hf₀.2.lat.2 e' he' u (hle hu) hh)`. Introduce `v hv`.
+
+Establish `hμ : GlobalTheory.LFun.UnrAt (c.μ (k + 1)) v` using `hc.unr ⟨k, hk⟩ v hv`. Establish `hη : GlobalTheory.LFun.UnrAt c.η⁻¹ v` using `(GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 v).inv`. Establish `hμη : GlobalTheory.LFun.UnrAt (c.μ (k + 1) * c.η⁻¹) v` using `hμ.mul hη`. Unfold `Com.chS Lift.chrStep`. Apply the tactic sequence `split_ifs <;> assumption`.
+
+Introduce `v hv`. Establish `hμ : GlobalTheory.LFun.UnrAt (c.μ (k + 1)) v` using `hc.unr ⟨k, hk⟩ v hv`. Establish `hη : GlobalTheory.LFun.UnrAt c.η⁻¹ v` using `(GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 v).inv`. Establish `hμη : GlobalTheory.LFun.UnrAt (c.μ (k + 1) * c.η⁻¹) v` using `hμ.mul hη`. Unfold `Com.chT Lift.chrStep`.
+
+Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem fock_sph_tw : ∀ D : D7, ForStepQ D fun c _ k s s' p => (∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsFockVec c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (p.pt φ) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsSphOff c.ψ s.V s'.V s.Λ s'.Λ c.S (p.pt φ) ∧ ∀ v ∉ c.S, GlobalTheory.FinZeta.VacFin c.ψ s.V s'.V v (p.pt φ)) ∧ GlobalTheory.LFun.UnrOff (c.chS (k + 1)) (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) ∧ GlobalTheory.LFun.UnrOff (c.chT (k + 1)) (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) := by
   classical
   intro D _ c w hw k hk s s' hs hs' p hp

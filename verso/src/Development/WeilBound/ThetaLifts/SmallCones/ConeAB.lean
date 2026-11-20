@@ -15,6 +15,11 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨p, k, hc, h⟩` from `hS F E σ B n d X W M χX χW om r s r' s' hp φ hφ 0`. Use `⟨p, k, fun _ => 1, hc, measurable_const, ?_, fun f g y => ?_⟩` and prove the remaining obligations. Rewrite using `[setLIntegral_one]`. Conclude with `hV F E σ hp.base.cm n X.J (hE F E σ B hp.base n X r s (Or.inl hp.herm)).1 M.μ M.dom hp.good.haar hp.good.dom`.
+
+Rewrite using `[mul_one, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (by simpa using h f g y)`.
+-/
 theorem domSo (hS : SoSemi) (hV : FinVolU) (hE : EpsOf) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W}
     {χX χW om r s r' s'} (hp : IsPair B M χX χW om r s r' s') : Dom M om (soFin B M) := by
   intro φ hφ
@@ -25,11 +30,21 @@ theorem domSo (hS : SoSemi) (hV : FinVolU) (hE : EpsOf) {n d : ℕ} {X : Spc F E
   · rw [mul_one, ← ofReal_norm_eq_enorm]
     exact ENNReal.ofReal_le_ofReal (by simpa using h f g y)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply]`.
+-/
 theorem incM_vecMulVec {n d : ℕ} (x : Fin n → E) (y : Fin d → E) :
     incM F (Matrix.vecMulVec x y) = Matrix.vecMulVec (incV F x) (incV F y) := by
   ext i j
   simp [incM, incV, Matrix.vecMulVec_apply]
 
+/- English proof (translation)
+Establish `hc : ∀ a : E, cA σ (inclR (F` using `F) (AF F) a) = inclR (F := F) (AF F) (σ a) := fun a => by simp [cA, inclR]`. Simplify using `only [hTens, incM, Matrix.map_apply, Matrix.vecMulVec_apply, hc, ← map_mul, ← map_sum, form, dotProduct, Matrix.mulVec]`. Use `congr 1`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm, Finset.mul_sum _ _ (x i), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [map_mul]; ring`.
+-/
 theorem hTens_vec {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (x x' : Fin n → E) (y y' : Fin d → E) :
     hTens (cA σ) (incM F J) (incM F J') (incM F (Matrix.vecMulVec x y)) (incM F (Matrix.vecMulVec x' y')) =
       inclR (F := F) (AF F) (form σ J x x' * form σ J' y y') := by
@@ -45,12 +60,22 @@ theorem hTens_vec {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d
   rw [Finset.mul_sum, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [map_mul]; ring
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, cm_conj_conj hσ, Finset.mul_sum, h]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem form_swap (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : E} (h : ∀ i j, σ (J j i) = ε * J i j)
     (x y : Fin n → E) : σ (form σ J x y) = ε * form σ J y x := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, cm_conj_conj hσ, Finset.mul_sum, h]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' e he z hz K μK μ hI hμK hμ`. Take `⟨κ, hκ, h⟩` from `cone_core hUn hU hD hTB hG hE hA (r := r + 1) (s := s + 1) (r' := r' + 1) (s' := s' + 1) (r₀ := r) (s₀ := s) (r₀' := r') (s₀' := s') hH hH' he hI hμK hμ (shiftA H H') z _ (Or.inr rfl)`. Use `⟨κ, hκ, fun χX χW om om₀ hp hp₀ Φ hΦ hK => ?_⟩` and prove the remaining obligations. Establish `hν : Continuous (χW⁻¹ : Chr F E)` using `hp.hW.1.inv`. Establish `hyx : form σ X.J H.y H.x = 1`.
+
+Use `form_swap hp.base.cm (J := X.J) (ε := 1) (fun i j => by rw [one_mul, hp.herm.herm]) H.x H.y` as an intermediate fact. Rewrite `this` using `[hH.xy, map_one, one_mul]`. Conclude with `this.symm`. Establish `key` using `fun Ψ hΨ => hL F E σ B n d n₁ d₁ X W X₁ W₁ M M₀ hp.base hp.good hp₀.good _ _ _ e he (Matrix.vecMulVec H.x H'.y) (Matrix.vecMulVec H.y H'.x) (fun a => Or.inl ⟨a • incV F H.y, by rw [incM_vecMulVec, Matrix.smul_vecMulVec]⟩) (by rw [hTens_vec, hyx, hH'.xy, mul_one, map_one]; exact i …`. Simplify using `only [incM_vecMulVec, AlgHom.id_apply] at key`.
+
+Establish `h1` using `hH.rank`. Establish `h2` using `hH'.rank`. Conclude with `h χX χW om om₀ hp hp₀ χW⁻¹ (χX / χW) (schA F _) hν (lawsA hp ((hM F E σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' χX χW om om₀ hp hp₀).1 e he) hz.1 h2 fun m hm => ((hU F E σ B n n₁ X X₁ H j₀ j₁ _ _ hp.base (Or.inl hp.herm) hH).2.2.2.2.2.1 m hm).1) (fun _ h => h …`.
+-/
 theorem coneA_of (hUn : Unfold) (hU : UnipEx) (hD : StabDec) (hTB : ThetaBasic) (hG : GrpTop) (hE : EpsOf) (hA : EvAdm)
     (hM : MixAB) (hL : LineInt) (hW : DomWeil) : ConeA := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' e he z hz K μK μ hI hμK hμ
@@ -77,6 +102,13 @@ theorem coneA_of (hUn : Unfold) (hU : UnipEx) (hD : StabDec) (hTB : ThetaBasic) 
       (Or.inl (hW F E σ B _ _ X₁ W₁ M₀ χX χW om₀ r s r' s' hp₀ (Or.inl (by omega)))) h₁)
     (fun Ψ hΨ => (key Ψ hΨ).2) Φ hΦ hK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' e he z hz K μK μ hI hμK hμ`. Take `⟨κ, hκ, h⟩` from `cone_core hUn hU hD hTB hG hE hA (r := r + 1) (s := s + 1) (r' := r' + 1) (s' := s' + 1) (r₀ := r) (s₀ := s) (r₀' := r') (s₀' := s') hH hH' he hI hμK hμ (shiftB σ H H') z _ (Or.inl rfl)`. Use `⟨κ, hκ, fun χX χW om om₀ hp hp₀ Φ hΦ hK => ?_⟩` and prove the remaining obligations. Establish `hyx : form σ W.J H'.y H'.x = -1`. Use `form_swap hp.base.cm (J := W.J) (ε := -1) (fun i j => by rw [neg_one_mul, hp.skew.skew]) H'.x H'.y` as an intermediate fact.
+
+Rewrite `this` using `[hH'.xy, map_one, neg_one_mul]`. Rewrite using `[this, neg_neg]`. Establish `key` using `fun Ψ hΨ => hL F E σ B n d n₁ d₁ X W X₁ W₁ M M₀ hp.base hp.good hp₀.good _ _ _ e he (Matrix.vecMulVec H.y H'.x) (Matrix.vecMulVec H.x H'.y) (fun a => Or.inl ⟨a • incV F H'.y, by rw [incM_vecMulVec, Matrix.vecMulVec_smul]⟩) (by rw [hTens_vec, hyx, hH.xy, one_mul, map_neg, map_one] …`. Establish `hle` using `(hSF F E σ B n d X W M χX χW om _ _ _ _ hp).2.2.1`. Establish `hso` using `fun Ψ hΨ => (hSe F E σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ _ _ _ _ M M₀ hH hH' hp.base hp.herm hp.skew hp.good hp₀.good e he Ψ hΨ).2`.
+
+Simplify using `only [incM_vecMulVec] at key hso`. Conclude with `h χX χW om om₀ hp hp₀ χW (χX / χW) (M.So B.ψ B.τ₁) hp.hW.1 (lawsB hp he ((hM F E σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' χX χW om om₀ hp hp₀).2 e he) hz.1 hH.rank hH'.xx fun m hm => ((hU F E σ B n n₁ X X₁ H j₀ j₁ _ _ hp.base (Or.inl hp.herm) hH).2.2.2.2.2.1 …`.
+-/
 theorem coneB_of (hUn : Unfold) (hU : UnipEx) (hD : StabDec) (hTB : ThetaBasic) (hG : GrpTop) (hE : EpsOf) (hA : EvAdm)
     (hM : MixAB) (hL : LineInt) (hS : SoSemi) (hV : FinVolU) (hSF : SoFin) (hSt : SoStab) (hSe : SoEv) : ConeB := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' j₀ j₁ i₀ i₁ r s r' s' M M₀ hH hH' e he z hz K μK μ hI hμK hμ

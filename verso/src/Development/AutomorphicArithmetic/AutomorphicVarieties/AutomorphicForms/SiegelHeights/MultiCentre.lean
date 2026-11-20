@@ -9,6 +9,11 @@ namespace UpperTheory.V.Fb
 
 variable {A ι : Type} [Ring A] [Algebra ℂ A] {n : ℕ}
 
+/- English proof (translation)
+Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (h _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `S.algebraMap_mem _`.
+
+Conclude with `S.zero_mem`.
+-/
 private theorem qdet_mem (S : Subalgebra ℂ A) (X : Fin n → Fin n → A) (h : ∀ a b, X a b ∈ S) (u : ℂ) :
     qdet X u ∈ S := by
   refine S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)
@@ -18,6 +23,21 @@ private theorem qdet_mem (S : Subalgebra ℂ A) (X : Fin n → Fin n → A) (h :
   · exact S.algebraMap_mem _
   · exact S.zero_mem
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, z ∈ Algebra.adjoin ℂ ({x | ∃ i ∈ s, ∃ u, x = qdet (X i) u} ∪ {x | ∃ i ∉ s, ∃ a b, x = X i a b})`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact Algebra.adjoin_mono (by rintro _ ⟨i, a, b, rfl⟩; exact Or.inr ⟨i, by simp, a, b, rfl⟩) hz`. Consider the case `insert i s hi ih => set B := Algebra.adjoin ℂ ({x | ∃ j ∈ s, ∃ u, x = qdet (X j) u} ∪ {x | ∃ j ∉ insert i s, ∃ a b, x = X j a b}) with hB`.
+
+Establish `h1 : ∀ b ∈ B, ∀ c d, X i c d * b = b * X i c d` using `fun b hb c d => by`. Establish `: B ≤ Subalgebra.centralizer ℂ {X i c d}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨j, hj, u, rfl⟩ | ⟨j, hj, a, b, rfl⟩)`. Use `qdet_mem _ _ (fun a b => ?_) u` and prove the remaining obligations.
+
+Introduce and unpack `_ rfl`. Conclude with `hc i j (fun e => hi (e ▸ hj)) c d a b`. Introduce and unpack `_ rfl`. Conclude with `hc i j (fun e => hj (e ▸ Finset.mem_insert_self i s)) c d a b`. Conclude with `this hb _ rfl`.
+
+Establish `h2` using `UpperTheory.mem_adjoin_gelfand_sup_of_commute_glGenerators A n (X i) (hX i) B h1 z (Algebra.adjoin_le (by`. Introduce and unpack `_ (⟨j, hj, u, rfl⟩ | ⟨j, hj, a, b, rfl⟩)`. Conclude with `Algebra.mem_sup_right (Algebra.subset_adjoin (Or.inl ⟨j, hj, u, rfl⟩))`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+
+Conclude with `Algebra.mem_sup_left (Algebra.subset_adjoin ⟨(a, b), rfl⟩)`. Conclude with `Algebra.mem_sup_right (Algebra.subset_adjoin (Or.inr ⟨j, by simp [e, hj], a, b, rfl⟩))) ih) (hzc i)`. Use `(sup_le (Algebra.adjoin_le ?_) (Algebra.adjoin_mono ?_) : _ ≤ _) h2` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Algebra.adjoin_mono ?_ (UpperTheory.gelfandElement_mem_adjoin_capelliCoeffs A n (X i) (hX i) k)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `Or.inl ⟨i, Finset.mem_insert_self i s, u, rfl⟩`. Introduce and unpack `_ (⟨j, hj, u, rfl⟩ | h)`. Conclude with `Or.inl ⟨j, Finset.mem_insert_of_mem hj, u, rfl⟩`. Conclude with `Or.inr h`.
+
+Use `Algebra.adjoin_mono ?_ (key Finset.univ)` and prove the remaining obligations. Introduce and unpack `_ (⟨j, -, u, rfl⟩ | ⟨j, hj, -⟩)`. Conclude with `⟨j, u, rfl⟩`. Conclude with `absurd (Finset.mem_univ j) hj`.
+-/
 theorem multiCentre [Fintype ι] (X : ι → Fin n → Fin n → A) (hX : ∀ i, GlRel (X i))
     (hc : ∀ i j, i ≠ j → ∀ a b c d, Commute (X i a b) (X j c d)) {z : A}
     (hz : z ∈ Algebra.adjoin ℂ {x | ∃ i a b, x = X i a b}) (hzc : ∀ i a b, X i a b * z = z * X i a b) :
@@ -61,6 +81,9 @@ theorem multiCentre [Fintype ι] (X : ι → Fin n → Fin n → A) (hX : ∀ i,
   · exact ⟨j, u, rfl⟩
   · exact absurd (Finset.mem_univ j) hj
 
+/- English proof (translation)
+Establish `hT : ∀ v a b, f (Tm X v a b) = Tm (fun a b => f (X a b)) v a b` using `fun v a b => by`. Unfold `Tm`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]`.
+-/
 theorem map_qdet {B : Type} [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) (X : Fin n → Fin n → A) (u : ℂ) :
     f (qdet X u) = qdet (fun a b => f (X a b)) u := by
   have hT : ∀ v a b, f (Tm X v a b) = Tm (fun a b => f (X a b)) v a b := fun v a b => by
@@ -68,11 +91,25 @@ theorem map_qdet {B : Type} [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) (X : 
     split_ifs <;> simp
   simp only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]
 
+/- English proof (translation)
+Introduce `a b c d` and use `by have := congrArg f (h a b c d) simpa only [map_sub, map_mul, apply_ite f, map_zero] using this`.
+-/
 theorem glRel_map {R S F : Type} [Ring R] [Ring S] [FunLike F R S] [RingHomClass F R S] (f : F) {X : Fin n → Fin n → R}
     (h : GlRel X) : GlRel fun a b => f (X a b) := fun a b c d => by
   have := congrArg f (h a b c d)
   simpa only [map_sub, map_mul, apply_ite f, map_zero] using this
 
+/- English proof (translation)
+Set `P : (ℂ →ₗ[ℝ] ℝ) → ℂ ⊗[ℝ] B →ₗ[ℝ] B` to `fun f => (TensorProduct.lid ℝ B).toLinearMap ∘ₗ f.rTensor B`. Establish `hP : ∀ f c x, P f (c ⊗ₜ x) = f c • x` using `fun f c x => by simp [P]`. Establish `hl : ∀ f (x : B) (w : ℂ ⊗[ℝ] B), P f ((1 ⊗ₜ x) * w) = x * P f w` using `fun f x w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c y => rw [Algebra.TensorProduct.tmul_mul_tmul, hP, hP, one_mul, mul_smul_comm]`. Consider the case `add a b ha hb => rw [mul_add, map_add, map_add, ha, hb, mul_add]`. Establish `hr : ∀ f (x : B) (w : ℂ ⊗[ℝ] B), P f (w * (1 ⊗ₜ x)) = P f w * x` using `fun f x w => by`. Proceed by induction on `w with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c y => rw [Algebra.TensorProduct.tmul_mul_tmul, hP, hP, mul_one, smul_mul_assoc]`. Consider the case `add a b ha hb => rw [add_mul, map_add, map_add, ha, hb, add_mul]`. Establish `hc : ∀ f, P f w ∈ Subalgebra.center ℝ B` using `fun f => Subalgebra.mem_center_iff.2 fun x => by rw [← hl, hw, hr]`. Use `⟨_, hc Complex.reLm, _, hc Complex.imLm, ?_⟩` and prove the remaining obligations. Use `clear hc hw`.
+
+Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul c y`. Rewrite using `[hP, hP, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, ← TensorProduct.add_tmul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, TensorProduct.tmul_add, TensorProduct.tmul_add, add_add_add_comm, ← ha, ← hb]`.
+-/
 theorem exists_re_im {B : Type} [Ring B] [Algebra ℝ B] (w : ℂ ⊗[ℝ] B) (hw : ∀ x : B, (1 ⊗ₜ x) * w = w * (1 ⊗ₜ x)) :
     ∃ p ∈ Subalgebra.center ℝ B, ∃ q ∈ Subalgebra.center ℝ B, w = (1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q := by
   let P : (ℂ →ₗ[ℝ] ℝ) → ℂ ⊗[ℝ] B →ₗ[ℝ] B := fun f => (TensorProduct.lid ℝ B).toLinearMap ∘ₗ f.rTensor B
@@ -100,6 +137,17 @@ theorem exists_re_im {B : Type} [Ring B] [Algebra ℝ B] (w : ℂ ⊗[ℝ] B) (h
   | add a b ha hb =>
     rw [map_add, map_add, TensorProduct.tmul_add, TensorProduct.tmul_add, add_add_add_comm, ← ha, ← hb]
 
+/- English proof (translation)
+Set `j : B →ₐ[ℝ] ℂ ⊗[ℝ] B` to `Algebra.TensorProduct.includeRight`. Set `ψ : ℂ ⊗[ℝ] B →ₐ[ℂ] A` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ A) ρ fun c x => Algebra.commutes c (ρ x)`. Establish `hψ : ∀ c x, ψ (c ⊗ₜ x) = c • ρ x` using `fun c x => (Algebra.TensorProduct.lift_tmul _ _ _ c x).trans (Algebra.smul_def c (ρ x)).symm`. Use `set w := qdet (fun a b => j (X i a b)) u with hw`. Establish `h1 : ∀ x : B, j x * w = w * j x` using `fun x => by`.
+
+Establish `: Algebra.adjoin ℝ {x | ∃ i a b, x = X i a b} ≤ (Subalgebra.centralizer ℝ {w}).comap j`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, a, b, rfl⟩ _ rfl`. Distinguish the cases in `e : k = i`. Substitute `e` using the available equality.
+
+Conclude with `qDetCentral _ n _ (glRel_map j (hX k)) u a b`. Use `(qdet_mem (Subalgebra.centralizer ℂ {j (X k a b)}) _ (fun c d => ?_) u _ rfl).symm` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `(hc k i e a b c d).map j`. Conclude with `(this (htop ▸ Algebra.mem_top) w rfl).symm`.
+
+Take `⟨p, hp, q, hq, e⟩` from `exists_re_im w h1`. Establish `h2 : ψ w = qdet (fun a b => ρ (X i a b)) u`. Rewrite using `[hw, map_qdet]`. Use `congr 1`. Use function extensionality and compare the values at `a b`.
+
+Conclude with `(hψ 1 _).trans (one_smul _ _)`. Rewrite using `[← h2, e, map_add, hψ, hψ]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, hp, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, hq, rfl⟩))`.
+-/
 theorem qdet_mem_span_center [Algebra ℝ A] [IsScalarTower ℝ ℂ A] {B : Type} [Ring B] [Algebra ℝ B]
     (X : ι → Fin n → Fin n → B) (hX : ∀ i, GlRel (X i))
     (hc : ∀ i j, i ≠ j → ∀ a b c d, Commute (X i a b) (X j c d))

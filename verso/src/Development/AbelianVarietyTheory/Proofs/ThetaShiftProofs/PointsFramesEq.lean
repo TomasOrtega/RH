@@ -17,12 +17,18 @@ namespace GlobalTheory.ConstRational
 section Sums
 variable {O : Type} [CommRing O] [StarRing O] (A : AnArc O)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_formal_convergence O A`. Take `⟨h, -⟩` from `((hT T le_rfl j).1 α th hth).1 v`. Conclude with `Conv.halfRing_le_convLaurent T h`.
+-/
 theorem fsum_mem (j : ℕ) [NeZero j] (α : A.X) (th : (Fin A.gB → ℂ) → ℂ) (hth : th ∈ A.Theta j α) (v : A.V) :
     A.FSum j α th v ∈ Conv.convLaurent := by
   obtain ⟨T, hT⟩ := exists_formal_convergence O A
   obtain ⟨h, -⟩ := ((hT T le_rfl j).1 α th hth).1 v
   exact Conv.halfRing_le_convLaurent T h
 
+/- English proof (translation)
+Take `⟨cz, -, h⟩` from `GlobalTheory.T.theta_sum_shift_eq_single_mul_fSum O A k la hla`. Use `choose th' hth' _ h' using h`. Use `⟨fun i z => HahnSeries.single (A.be la.y i.1 / k) (cz z) * A.FSum k (i.1 + la.y) (th' i.1 i.2 i.2.2) z, fun i z => ⟨((h' i.1 i.2 i.2.2 z).1 _).2 rfl, ?_⟩⟩` and prove the remaining obligations. Conclude with `mul_mem (Conv.halfRing_le_convLaurent 0 (Conv.single_mem_halfRing 0 _ _)) (fsum_mem A k _ _ (hth' _ _ _) z)`.
+-/
 theorem exists_shift_mem (k : ℕ) [NeZero k] (la : A.La) (hla : ∀ α, (k : ℤ) ∣ A.be la.y α) :
     ∃ ψ : (Σ α : A.X, A.Theta k α) → A.V → ℂ⸨X⸩,
       ∀ i z, IsFShift A k i.1 i.2 la z (ψ i z) ∧ ψ i z ∈ Conv.convLaurent := by
@@ -35,6 +41,19 @@ theorem exists_shift_mem (k : ℕ) [NeZero k] (la : A.La) (hla : ∀ α, (k : �
 
 end Sums
 
+/- English proof (translation)
+Use `haveI : NeZero l.A := ⟨l.A_pos.ne'⟩`. Use `haveI : NeZero l.M := ⟨by have := l.three_le; omega⟩`. Set `φ : ∀ j, (Σ α : A.X, A.Theta j α) → A.V → F` to `fun j i v => if h : j = 0 then 0 else haveI : NeZero j := ⟨h⟩`. Use `f (A.FSum j i.1 i.2 v)`. Establish `hf : ∀ (j : ℕ) [NeZero j] i v, φ j i v = f (A.FSum j i.1 i.2 v)` using `fun j _ i v => dif_neg (NeZero.ne j)`.
+
+Establish `hg : ∀ (j : ℕ) [NeZero j] i v, φ j i v = g (A.FSum j i.1 i.2 v)` using `fun j _ i v => (hf j i v).trans (hfg _ (fsum_mem A j _ _ i.2.2 v))`. Take `⟨Θ₁, x₁, l₁⟩` from `GlobalTheory.T.exists_arcGenericFibrePoints_baseChange E H Xo.X A Xo.univ.t y Φ F f φ hA hf`. Take `⟨Θ₂, x₂, l₂⟩` from `GlobalTheory.T.exists_arcGenericFibrePoints_baseChange E H Xo.X A Xo.univ.t y Φ F g φ hA hg`. Establish `lev : ∀ (k : ℕ) [NeZero k] (ξ : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) (la : A.La), Φ.LevelPt k (toUnit _ ≫ ξ) la → ∃ ψ, Θ₁.Lev k (toUnit _ ≫ ξ) ψ ∧ Θ₂.Lev k (toUnit _ ≫ ξ) ψ`. Introduce `k _ ξ la h`.
+
+Take `⟨ψ, hψ⟩` from `exists_shift_mem A k la h.2.1.2`. Use `⟨fun i z => f (ψ i z), l₁ k ξ la ψ h fun i z => (hψ i z).1, ?_⟩` and prove the remaining obligations. Establish `e : (fun i z => f (ψ i z)) = fun i z => g (ψ i z)`. Use function extensionality and compare the values at `fun i => funext fun z => hfg _ (hψ i z).2`. Rewrite using `[e]`.
+
+Conclude with `l₂ k ξ la ψ h fun i z => (hψ i z).1`. Establish `hs : (spMap f ≫ y) ≫ Xo.s = (spMap g ≫ y) ≫ Xo.s`. Establish `e : f.comp ((algebraMap ℂ ℂ⸨X⸩).comp σ) = g.comp ((algebraMap ℂ ℂ⸨X⸩).comp σ)` using `RingHom.ext fun a => hfg _ (Conv.convLaurent.algebraMap_mem (σ a))`. Rewrite using `[Category.assoc, Category.assoc, hy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+
+Take `⟨e₁, e₂⟩` from `GlobalTheory.T.pointFamilies_eq_of_values_levels_universalFamily L₁ L₂ E H D l Xo F A.V _ _ φ _ _ Θ₁ Θ₂ hs (fun v => lev _ _ _ (levA v)) (fun v hv => lev _ _ _ (levM v hv)) v`. Use `⟨(x₁ v).1.symm.trans (e₁.trans (x₂ v).1), fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[← (x₁ v).2 j hj, ← (x₂ v).2 j hj]`. Use `e₂ j ?_` and prove the remaining obligations. Rewrite using `[(x₁ v).1]`.
+
+Conclude with `fun p _ => hj (Set.mem_univ (spMap f p))`.
+-/
 theorem points_frames_eq (L₁ : Out.Laws) (L₂ : Out.Laws2) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} [StarRing (𝓞 E)] {D : Datum H} {l : Level H} {Xo : Moduli D l} {A : AnArc (𝓞 E)}
     (σ : KA l →+* ℂ) {y : Sp ℂ⸨X⸩ ⟶ Xo.X} (Φ : GenPts A Xo.univ.t y) (laA laM : D.La → A.La) (hA : AnFin A)
@@ -77,6 +96,13 @@ theorem points_frames_eq (L₁ : Out.Laws) (L₂ : Out.Laws2) {E : Type} [Field 
   rw [(x₁ v).1]
   exact fun p _ => hj (Set.mem_univ (spMap f p))
 
+/- English proof (translation)
+Introduce `L₁ L₂ E _ _ _ H _ D l Xo A σ y Φ laA laM hA hy levA levM`. Use `haveI : CharZero ℂ⸨X⸩ := algebraRat.charZero _`. Use `haveI : CharZero Conv.convLaurent := algebraRat.charZero _`. Establish `key` using `fun s : AlgebraicClosure ℂ⸨X⸩ ≃ₐ[Conv.convLaurent] AlgebraicClosure ℂ⸨X⸩ => points_frames_eq L₁ L₂ σ Φ laA laM hA hy levA levM ((s : AlgebraicClosure ℂ⸨X⸩ →+* AlgebraicClosure ℂ⸨X⸩).comp (algebraMap ℂ⸨X⸩ _)) (algebraMap ℂ⸨X⸩ (AlgebraicClosure ℂ⸨X⸩)) (fun a ha => s.commutes (⟨a, h …`. Use `⟨fun v => ?_, fun v j hj => ?_⟩` and prove the remaining obligations.
+
+Use `(FixedPoint.existsUnique_factor (K₀ := Conv.convLaurent) (L := AlgebraicClosure ℂ⸨X⸩) (Φ.x v).left fun s => ?_).exists` and prove the remaining obligations. Establish `h` using `(key s v).1`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `h`. Take `⟨a, ha⟩` from `FixedPoint.mem_range_of_algebraMap_fixed (K₀ := Conv.convLaurent) (L := AlgebraicClosure ℂ⸨X⸩) (Φ.τ v j) fun s => (key s v).2 j hj`.
+
+Conclude with `ha ▸ a.2`.
+-/
 theorem rational : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (A : AnArc (𝓞 E)) (σ : KA l →+* ℂ) (y : Sp ℂ⸨X⸩ ⟶ Xo.X) (Φ : GenPts A Xo.univ.t y) (laA laM : D.La → A.La), AnFin A → y ≫ Xo.s = spMap ((algebraMap ℂ ℂ⸨X⸩).comp σ) → (∀ v, Φ.LevelPt l.A (toUnit _ ≫ Xo.univ.etaA v) (laA v)) → (∀ v ∈ idealPart D l, Φ.LevelPt l.M (toUnit _ ≫ Xo.univ.eta v) (laM v)) → Φ.Rational := by
   intro L₁ L₂ E _ _ _ H _ D l Xo A σ y Φ laA laM hA hy levA levM
   haveI : CharZero ℂ⸨X⸩ := algebraRat.charZero _

@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `_` to `(ρ.stalkMap z).hom.toAlgebra`. Establish `: Module.Flat (Y.presheaf.stalk (ρ z)) (Z.presheaf.stalk z)` using `Flat.stalkMap ρ z`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (ρ z)) (Z.presheaf.stalk z))` using `(by infer_instance : IsLocalHom (ρ.stalkMap z).hom)`. Establish `: Module.FaithfullyFlat (Y.presheaf.stalk (ρ z)) (Z.presheaf.stalk z)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (ρ z)) (Z.presheaf.stalk z)`.
+-/
 private theorem stalkMap_injective_of_flat' {Y Z : Scheme.{0}} (ρ : Z ⟶ Y) [Flat ρ] (z : Z) :
     Function.Injective (ρ.stalkMap z).hom := by
 
@@ -25,6 +28,13 @@ private theorem stalkMap_injective_of_flat' {Y Z : Scheme.{0}} (ρ : Z ⟶ Y) [F
     Module.FaithfullyFlat.of_flat_of_isLocalHom
   exact FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (ρ z)) (Z.presheaf.stalk z)
 
+/- English proof (translation)
+Establish `: Epi ρ` using `Flat.epi_of_flat_of_surjective ρ`. Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `ρ.surjective y`. Take `⟨J', hJ', hJJ'⟩` from `exists_good L hL z (fun ψ : Y ⟶ X => ρ ≫ ψ) J (fun a b hab => congrArg J ((cancel_epi ρ).1 hab)) (fun ψ => by simpa using hJ ψ)`. Establish `hpull : (fun ψ : Y ⟶ X => J' (ρ ≫ ψ)) = J` using `funext hJJ'`.
+
+Establish `e₁` using `(values_natural X Y Y Z L K φ ε (𝟙 Y) ρ z J' hJ').2.2.1 t`. Establish `e₂` using `(values_natural X Y Y Z L K' φ' ε' (𝟙 Y) ρ z J' hJ').2.2.1 t'`. Rewrite `e₁`, `e₂` using `[Category.comp_id, hpull]`. Apply `Units.ext` to reduce the goal to its premises. Apply `stalkMap_injective_of_flat' ρ z` to reduce the goal to its premises.
+
+Rewrite using `[← e₁, ← e₂, h z J' hJ']`.
+-/
 theorem corr_of_val_flat_surjective {X Y Z : Scheme.{0}} (ρ : Z ⟶ Y) [Flat ρ] [Surjective ρ] {L : LB X}
     (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)}
     {ε' : K' → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
@@ -44,6 +54,11 @@ theorem corr_of_val_flat_surjective {X Y Z : Scheme.{0}} (ρ : Z ⟶ Y) [Flat ρ
   apply stalkMap_injective_of_flat' ρ z
   rw [← e₁, ← e₂, h z J' hJ']
 
+/- English proof (translation)
+Introduce `K₀ F _ _ f X L hL K K' _ _ φ ε φ' ε' t t' h`. Establish `hff : (CommRingCat.ofHom f).hom.FaithfullyFlat`. Set `_` to `f.toAlgebra`. Use `show Module.FaithfullyFlat K₀ F`. Use `infer_instance`.
+
+Take `⟨h₁, h₂⟩` from `(flat_and_surjective_SpecMap_iff (CommRingCat.ofHom f)).2 hff`. Conclude with `corr_of_val_flat_surjective (Spec.map (CommRingCat.ofHom f)) hL h`.
+-/
 theorem corr_of_val_field_extension : ∀ (K₀ F : Type) [Field K₀] [Field F] (f : K₀ →+* F) (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (K K' : Type) [Fintype K] [Fintype K'] (φ : K → (Spec (CommRingCat.of K₀) ⟶ X)) (ε : K → ℤ) (φ' : K' → (Spec (CommRingCat.of K₀) ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')), (∀ z J, Good L z J → val t (Spec.map (CommRingCat.ofHom f)) z J = val t' (Spec.map (CommRingCat.ofHom f)) z J) → LB.Gen.Corr L φ ε φ' ε' t t' := by
   intro K₀ F _ _ f X L hL K K' _ _ φ ε φ' ε' t t' h
 

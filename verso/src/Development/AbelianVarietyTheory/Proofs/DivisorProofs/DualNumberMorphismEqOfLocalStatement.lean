@@ -7,5 +7,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArLieBase.hom_ext_dualNumber_away | exact GlobalTheory.ArLieBase.hom_ext_dualNumber_away | (intros; apply GlobalTheory.ArLieBase.hom_ext_dualNumber_away <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dual_number_morphism_eq_of_local : ∀ {L : Type} [CommRing L] {s : Set L}, Ideal.span s = ⊤ → ∀ {Y : Scheme.{0}} {w w' : Sp (DualNumber L) ⟶ Y}, (∀ a : s, spMap (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (a : L)))) ≫ w = spMap (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (a : L)))) ≫ w') → w = w' := by
   first | exact @GlobalTheory.ArLieBase.hom_ext_dualNumber_away | exact GlobalTheory.ArLieBase.hom_ext_dualNumber_away | (intros; apply GlobalTheory.ArLieBase.hom_ext_dualNumber_away <;> assumption)

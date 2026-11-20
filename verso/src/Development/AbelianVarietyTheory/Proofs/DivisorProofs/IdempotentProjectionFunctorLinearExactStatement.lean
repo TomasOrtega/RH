@@ -17,6 +17,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.ChainParts
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainParts.partF_exact | exact GlobalTheory.ChainParts.partF_exact | (intros; apply GlobalTheory.ChainParts.partF_exact <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idempotent_projection_functor_linear_exact : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {Λ : Type} [CommRing Λ] {n : ℕ} (c : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) (hidem : ∀ M : AM B Λ, IsAdd M → eA M c a ≫ eA M c a = eA M c a), (∀ (M : AM B Λ) (g : Γ(B.X, ⊤)), (partF c a).map (smulA M g) = smulHom ((partF c a).obj M) g) ∧
     (∀ S : ShortComplex (AM B Λ), S.ShortExact → IsAdd S.X₁ → IsAdd S.X₂ → IsAdd S.X₃ →
       (S.map (partF c a)).ShortExact) ∧

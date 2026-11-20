@@ -23,6 +23,25 @@ open GlobalTheory.CuspRep.InfType GlobalTheory.CuspRep.AlgExpo
 
 namespace GlobalTheory.CMRealAlg
 
+/- English proof (translation)
+Introduce `E _ _ _ χ h`. Use `choose k hk using h`. Establish `hkc : ∀ τ, k (ComplexEmbedding.conjugate τ) = k τ` using `fun τ => by`. Use `(hk _).symm.trans ((GlobalTheory.T.exponent_heckeChar_compNorm_conjEmbedding E χ τ).trans (hk τ))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Take `⟨n, hn⟩` from `GlobalTheory.T.cmField_prod_embeddings_regroup_maximalReal E k hkc`. Use `⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ φ : maximalRealSubfield E →+* ℂ, ((‖φ (x : maximalRealSubfield E)‖ : ℝ) : ℂ) = φ x ∧ 0 < ‖φ (x : maximalRealSubfield E)‖`. Introduce `φ`. Establish `hr : ComplexEmbedding.IsReal φ` using `InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _)`.
+
+Establish `h0` using `hx hr.embedding`. Rewrite using `[← hr.coe_embedding_apply, Complex.norm_real, Real.norm_eq_abs, abs_of_pos h0]`. Conclude with `⟨rfl, h0⟩`. Set `z : Cinf E` to `fun w => ((Real.log (w ((x : maximalRealSubfield E) : E)) / 2 : ℝ) : ℂ)`. Set `u : (Cinf E)ˣ` to `expU z`.
+
+Establish `hu : u * Units.map (starRingEnd (Cinf E)).toMonoidHom u = Units.map (diagInf E).toMonoidHom (Units.map (algebraMap (maximalRealSubfield E) E).toMonoidHom x)`. Apply `Units.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Establish `e1` using `hpos (w.embedding.comp (algebraMap _ E))`. Establish `e2 : ‖w.embedding ((x : maximalRealSubfield E) : E)‖ = w ((x : maximalRealSubfield E) : E)` using `InfinitePlace.norm_embedding_eq w _`.
+
+Express the relevant statement in the definitionally equal form `Complex.exp (z w) * starRingEnd ℂ (Complex.exp (z w)) = pInf E (algebraMap E (Ad E) ((x : maximalRealSubfield E) : E)) w`. Rewrite using `[pInf_algebraMap, ← Complex.exp_conj, Complex.conj_ofReal, ← Complex.exp_add, ← Complex.ofReal_add, ← Complex.ofReal_exp, show Real.log (w ((x : maximalRealSubfield E) : E)) / 2 + Real.log (w ((x : maximalRealSubfield E) : E)) / 2 = Real.log (w ((x : maximalRealSubfield E) : E)) …`. Conclude with `e1.1`. Establish `hN : ideleNorm E (infId E u) = infDiag x` using `GlobalTheory.T.ideleMapOfAlgebra_maximalRealSubfield_injective E (by rw [GlobalTheory.T.ideleMap_normToMaxReal_infiniteIdele, hu, ← infDiag_eq, GlobalTheory.T.ideleMap_infDiag_maxRealSubfield_cm])`. Establish `e1 : ((χ.inf x : ℂˣ) : ℂ) = ((chiInf (compNorm E χ) u : ℂˣ) : ℂ)`.
+
+Rewrite using `[HChar.inf, MonoidHom.comp_apply, ← hN]`. Both sides reduce to the same expression. Rewrite using `[e1, chiInf_eq_prod _ k hk]`. Set `g : (maximalRealSubfield E →+* ℂ) → ℂ` to `fun φ => Complex.exp ((Real.log ‖φ (x : maximalRealSubfield E)‖ / 2 : ℝ) : ℂ)`. Establish `hc : ∀ τ : E →+* ℂ, coord τ (u : Cinf E) = g (τ.comp (algebraMap _ E))`.
+
+Introduce `τ`. Rewrite using `[coord_expU]`. Use `congr 1`. Establish `e3 : z (InfinitePlace.mk τ) = ((Real.log ‖(τ.comp (algebraMap (maximalRealSubfield E) E)) (x : maximalRealSubfield E)‖ / 2 : ℝ) : ℂ)`. Simplify using `only [z, InfinitePlace.apply]`.
+
+Both sides reduce to the same expression. Unfold `coord`. Use `split_ifs`. Conclude with `e3`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (z (InfinitePlace.mk τ)) = _`.
+
+Rewrite using `[e3, Complex.conj_ofReal]`. Simplify using `only [hc]`. Rewrite using `[hn g]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_mul, zpow_two, ← Complex.exp_add, ← Complex.ofReal_add, ← Complex.ofReal_exp, show Real.log ‖φ (x : maximalRealSubfield E)‖ / 2 + Real.log ‖φ (x : maximalRealSubfield E)‖ / 2 = Real.log ‖φ (x : maximalRealSubfield E)‖ by ring, Real.exp_log (hpos φ).2, (hpos φ).1]`.
+-/
 theorem isAlgPos_of_compNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (χ : HChar (maximalRealSubfield E)),
     (∀ τ : E →+* ℂ, ∃ k : ℤ, expo (compNorm E χ) τ = k) → ∃ n : (maximalRealSubfield E →+* ℂ) → ℤ, IsAlgPos χ n := by
   intro E _ _ _ χ h

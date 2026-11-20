@@ -17,6 +17,9 @@ namespace GlobalTheory.CutSum
 
 open Filter Topology
 
+/- English proof (translation)
+The claim follows from `measurable_of_tendsto_metrizable' (atTop : Filter (Finset I)) (f := fun s x => ∑ i ∈ s, F i x) (fun s => Finset.measurable_sum s fun i _ => hF i) (tendsto_pi_nhds.2 fun x => (hs x).hasSum)`.
+-/
 theorem measurable_tsum_of_summable {X I : Type} [MeasurableSpace X] [Countable I]
     (F : I → X → ℂ) (hF : ∀ i, Measurable (F i)) (hs : ∀ x, Summable fun i => F i x) :
     Measurable fun x => ∑' i, F i x :=
@@ -24,12 +27,18 @@ theorem measurable_tsum_of_summable {X I : Type} [MeasurableSpace X] [Countable 
     (f := fun s x => ∑ i ∈ s, F i x) (fun s => Finset.measurable_sum s fun i _ => hF i)
     (tendsto_pi_nhds.2 fun x => (hs x).hasSum)
 
+/- English proof (translation)
+Use `Summable.of_norm ?_` and prove the remaining obligations. Simplify using `only [enorm_eq_nnnorm] at h`. Conclude with `NNReal.summable_coe.2 (ENNReal.tsum_coe_ne_top_iff_summable.1 h)`.
+-/
 theorem summable_of_tsum_enorm_ne_top {I : Type} (f : I → ℂ) (h : ∑' i, ‖f i‖ₑ ≠ ⊤) :
     Summable f := by
   refine Summable.of_norm ?_
   simp only [enorm_eq_nnnorm] at h
   exact NNReal.summable_coe.2 (ENNReal.tsum_coe_ne_top_iff_summable.1 h)
 
+/- English proof (translation)
+Use `⟨hφ.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ x in s, ‖φ x‖ₑ ∂μ < ⊤`. Conclude with `(lintegral_mono hb).trans_lt ((setLIntegral_const s _).trans_lt (ENNReal.mul_lt_top ENNReal.coe_lt_top hs.lt_top))`.
+-/
 theorem integrableOn_of_enorm_le {X : Type} [MeasurableSpace X] {μ : Measure X} {s : Set X}
     (hs : μ s ≠ ⊤) {φ : X → ℂ} (hφ : Measurable φ) (B : NNReal) (hb : ∀ x, ‖φ x‖ₑ ≤ B) :
     IntegrableOn φ s μ := by
@@ -42,6 +51,35 @@ end GlobalTheory.CutSum
 
 open GlobalTheory.CutSum in
 
+/- English proof (translation)
+Introduce `N _ _ _ _ _ _ _ _ ν _ Γ M hΓc hΓd hMn hMc hK 𝓝 h𝓝 h𝓝fin I C _ cl F hFm hB hΓ hcl heig`. Use `haveI := hΓd`. Use `haveI : LocallyCompactSpace M := hMc.locallyCompactSpace`. Use `haveI : SecondCountableTopology M := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : BorelSpace M := Subtype.borelSpace _`.
+
+Take `⟨B, hB⟩` from `hB`. Establish `hinj : Function.Injective fun γ : Γ.subgroupOf M => (⟨(γ : M), Subgroup.mem_subgroupOf.1 γ.2⟩ : Γ)` using `fun a b h => Subtype.ext (Subtype.ext (congrArg (fun x : Γ => (x : N)) h))`. Use `haveI : Countable (Γ.subgroupOf M) := hinj.countable`. Use `haveI : DiscreteTopology (Γ.subgroupOf M) := DiscreteTopology.of_continuous_injective ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _) hinj`. Set `μM : Measure M` to `Measure.haar`.
+
+Take `⟨D, -, -, hD⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (Γ.subgroupOf M)`. Establish `hDf : μM D ≠ ⊤`. Take `⟨K, hKc, hKcov⟩` from `hK`. Use `ne_top_of_le_ne_top hKc.measure_lt_top.ne (GlobalTheory.measure_le_of_isFundamentalDomain_of_ae_covers (hD μM) (D' := K) (Filter.Eventually.of_forall fun m => ?_))` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hKcov m`.
+
+Use `⟨⟨γ, hγ⟩⁻¹, ?_⟩` and prove the remaining obligations. Use `show ((⟨γ, hγ⟩⁻¹ : Γ.subgroupOf M) : M) * (γ * k) ∈ K`. Rewrite using `[Subgroup.coe_inv, Subgroup.coe_mk, inv_mul_cancel_left]`. Conclude with `hk`. Establish `hR : ∀ u : M, μM.map (· * u) = μM` using `GlobalTheory.haar_map_mul_right_eq_of_fundamentalDomain N Γ M hΓc hMc μM D inferInstance (hD μM) hDf`.
+
+Establish `hs : ∀ n, Summable fun i => F i n` using `fun n => summable_of_tsum_enorm_ne_top _ (ne_top_of_le_ne_top ENNReal.coe_ne_top (hB n))`. Set `g : I → Set.range cl` to `Set.rangeFactorization cl`. Use `haveI : Countable (Set.range cl) := (Set.countable_range cl).to_subtype`. Set `G : Set.range cl → N → ℂ` to `fun c n => ∑' i : {i // cl i = c.1}, F i n`. Establish `hfib : ∀ c n, ∑' b : ↑(g ⁻¹' {c}), F b n = G c n` using `fun c n => (Equiv.subtypeEquivRight (fun i => by`.
+
+Simplify using `[g, Set.rangeFactorization, Subtype.ext_iff])).tsum_eq`. Use the proof step `(fun j : {i // cl i = c.1} => F j.1 n)`. Establish `hsplit : ∀ n, ∑' i, F i n = ∑' c, G c n` using `fun n => (((hs n).hasSum.tsum_fiberwise g).tsum_eq).symm.trans (tsum_congr fun c => hfib c n)`. Establish `hGle : ∀ n, ∑' c, ‖G c n‖ₑ ≤ B` using `fun n => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hGm : ∀ c, Measurable (G c)` using `fun c => measurable_tsum_of_summable (fun i : {i // cl i = c.1} => F i) (fun i => hFm i) (fun n => (hs n).comp_injective Subtype.val_injective)`. Establish `hfm : Measurable fun n => ∑' i, F i n` using `measurable_tsum_of_summable F hFm hs`. Establish `hzero : ∀ c (h : N), ∫ m in D, G c ((m : N) * h) ∂μM = 0`. Introduce `c h`. Take `⟨u, huM, a, ha1, hu⟩` from `heig c.1`.
+
+Use `set φ : M → ℂ := fun m => G c ((m : N) * h) with hφ`. Establish `hφm : Measurable φ` using `(hGm c).comp (measurable_subtype_coe.mul_const h)`. Establish `hφint : IntegrableOn φ D μM` using `integrableOn_of_enorm_le hDf hφm B fun m => (ENNReal.le_tsum c).trans (hGle _)`. Establish `hinv : ∀ γ ∈ Γ.subgroupOf M, ∀ m : M, φ (γ * m) = φ m`. Introduce `γ hγ m`.
+
+Use `show G c (((γ * m : M) : N) * h) = G c ((m : N) * h)`. Rewrite using `[Subgroup.coe_mul, mul_assoc]`. Conclude with `hcl c.1 γ (Subgroup.mem_subgroupOf.1 hγ) γ.2 _`. Establish `hshift : ∀ m : M, φ (m * ⟨u, huM⟩) = a * φ m`. Introduce `m`.
+
+Use `show G c (((m * ⟨u, huM⟩ : M) : N) * h) = a * G c ((m : N) * h)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mk]`. Use `show ∑' i : {i // cl i = c.1}, F i ((m : N) * u * h) = a * ∑' i : {i // cl i = c.1}, F i ((m : N) * h)`. Rewrite using `[← tsum_mul_left]`. Conclude with `tsum_congr fun i => hu i i.2 m m.2 h`.
+
+Establish `key` using `(GlobalTheory.fundamentalDomain_setIntegral_mul_right (Γ.subgroupOf M) μM D (hD μM) ⟨u, huM⟩ (hR _) φ hinv hφint).2`. Simplify using `only [hshift, integral_const_mul] at key`. Establish `h2 : (a - 1) * ∫ m in D, φ m ∂μM = 0` using `by rw [sub_mul, one_mul, key, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 ha1)`. Establish `hmean : ∀ h : N, ∫ m in D, (∑' i, F i ((m : N) * h)) ∂μM = 0`.
+
+Introduce `h`. Establish `hm : ∀ c, Measurable fun m : M => G c ((m : N) * h)` using `fun c => (hGm c).comp (measurable_subtype_coe.mul_const h)`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[integral_tsum (fun c => (hm c).aestronglyMeasurable) ?_]`. Simplify using `[hzero]`.
+
+Rewrite using `[← lintegral_tsum (fun c => (hm c).enorm.aemeasurable)]`. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.coe_ne_top (r := B)) hDf) ?_` and prove the remaining obligations. Conclude with `(lintegral_mono fun m => hGle _).trans_eq (setLIntegral_const D _)`. Establish `hfin` using `GlobalTheory.UnfoldNormal.unfold_zero_mean N ν Γ M hΓc hMc (fun γ _ n hn => hMn.conj_mem n hn γ) μM D inferInstance (hD μM) hDf (fun _ => 1) (fun n => ∑' i, F i n) measurable_const hfm (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun γ hγ n => hΓ γ hγ n) hmean 𝓝 h𝓝 (integrableOn_of_eno …`. Simplify using `using enorm_tsum_le_tsum_enorm.trans (hB n))`.
+
+Simplify using `using hfin`.
+-/
 theorem GlobalTheory.CutSum.integral_tsum_eq_zero : ∀ (N : Type) [Group N] [TopologicalSpace N] [IsTopologicalGroup N] [LocallyCompactSpace N] [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N] (ν : Measure N) [ν.IsHaarMeasure] (Γ M : Subgroup N), Countable Γ → DiscreteTopology Γ → M.Normal → IsClosed (M : Set N) → (∃ K : Set M, IsCompact K ∧ ∀ m, ∃ γ ∈ Γ.subgroupOf M, ∃ k ∈ K, m = γ * k) → ∀ 𝓝 : Set N, IsFundamentalDomain Γ 𝓝 ν → ν 𝓝 ≠ ⊤ → ∀ (I C : Type) [Countable I] (κ : I → C) (F : I → N → ℂ), (∀ i, Measurable (F i)) → (∃ B : NNReal, ∀ n, ∑' i, ‖F i n‖ₑ ≤ B) → (∀ γ ∈ Γ, ∀ n, ∑' i, F i (γ * n) = ∑' i, F i n) → (∀ c, ∀ γ ∈ Γ, γ ∈ M → ∀ n, ∑' i : {i // κ i = c}, F i (γ * n) = ∑' i : {i // κ i = c}, F i n) → (∀ c, ∃ u ∈ M, ∃ a : ℂ, a ≠ 1 ∧ ∀ i, κ i = c → ∀ m ∈ M, ∀ n, F i (m * u * n) = a * F i (m * n)) → ∫ n in 𝓝, ∑' i, F i n ∂ν = 0 := by
   intro N _ _ _ _ _ _ _ _ ν _ Γ M hΓc hΓd hMn hMc hK 𝓝 h𝓝 h𝓝fin I C _ cl F hFm hB hΓ hcl heig
   classical

@@ -24,8 +24,14 @@ local instance factType (H : Host R) (k : Fin 2) : Fact (H.g k).Prime := ⟨H.g_
 
 def omLab (W : Omg H) (k : Fin 2) : (ZMod (H.g k))ˣ := charLab (labDat (H.g k)) (W.om k)
 
+/- English proof (translation)
+The claim follows from `orderOf_charLab _ (W.gen k)`.
+-/
 theorem orderOf_omLab (W : Omg H) (k : Fin 2) : orderOf (omLab W k) = H.g k - 1 := orderOf_charLab _ (W.gen k)
 
+/- English proof (translation)
+The claim follows from `isCharLab_charLab _ _`.
+-/
 theorem isCharLab_omLab (W : Omg H) (k : Fin 2) : IsCharLab (labDat (H.g k)) (W.om k) (omLab W k) :=
   isCharLab_charLab _ _
 
@@ -41,6 +47,9 @@ def plF (A : NAut N) (k : Fin 2) : N.PlG k ≃ placesOver H.F (H.g k) :=
   Equiv.ofBijective _ (below_bijective (H.g_prime k) (N.g_split k) (N.card_PlG k) (A.plGw k) (A.plGw_over k)
     (A.plGw_inj k) (A.plGw_nconj k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem plF_apply (A : NAut N) (k : Fin 2) (v : N.PlG k) :
     (plF A k v : HeightOneSpectrum (𝓞 H.F)) = (A.plGw k v).under (𝓞 H.F) := rfl
 
@@ -57,9 +66,15 @@ def grpEquiv (A : NAut N) (A' : NAut N') : G0g N ≃* G0g N' where
     rw [Equiv.apply_symm_apply]
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grpEquiv_apply (A : NAut N) (A' : NAut N') (g : G0g N) (k : Fin 2) (v : N'.PlG k) :
     grpEquiv A A' g ⟨k, v⟩ = g ⟨k, (plEquiv A A' k).symm v⟩ := rfl
 
+/- English proof (translation)
+Rewrite using `[grpEquiv_apply, Equiv.symm_apply_apply]`.
+-/
 theorem grpEquiv_apply' (A : NAut N) (A' : NAut N') (g : G0g N) (k : Fin 2) (v : N.PlG k) :
     grpEquiv A A' g ⟨k, plEquiv A A' k v⟩ = g ⟨k, v⟩ := by
   rw [grpEquiv_apply, Equiv.symm_apply_apply]
@@ -68,23 +83,40 @@ namespace TypesTrue
 
 variable {A : NAut N} {A' : NAut N'} {T : NTypes A} {T' : NTypes A'} {P : PiBar H} {W : Omg H}
 
+/- English proof (translation)
+The claim follows from `(existsUnique_div P (N.g_split k) (plF A k v)).unique ⟨h.pl k v, rfl⟩ ⟨above_div _ _ _, above_under _ _ _⟩`.
+-/
 theorem plGw_eq (h : TypesTrue T P W) (k : Fin 2) (v : N.PlG k) :
     A.plGw k v = above P (N.g_split k) (plF A k v) :=
   (existsUnique_div P (N.g_split k) (plF A k v)).unique ⟨h.pl k v, rfl⟩ ⟨above_div _ _ _, above_under _ _ _⟩
 
+/- English proof (translation)
+Rewrite using `[h'.plGw_eq, h.plGw_eq, plEquiv, Equiv.trans_apply, Equiv.apply_symm_apply]`.
+-/
 theorem plGw_plEquiv (h : TypesTrue T P W) (h' : TypesTrue T' P W) (k : Fin 2) (v : N.PlG k) :
     A'.plGw k (plEquiv A A' k v) = A.plGw k v := by
   rw [h'.plGw_eq, h.plGw_eq, plEquiv, Equiv.trans_apply, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[h.chi]`. Conclude with `isCharLab_pow _ _ _`.
+-/
 theorem isCharLab (h : TypesTrue T P W) (k : Fin 2) (v : N.PlG k) (j : Fin R.m) :
     IsCharLab (labDat (H.g k)) (W.om k ^ (2 * (j.1 + 1))) (N.chiT k v j) := by
   rw [h.chi]
   exact isCharLab_pow _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨omLab W k, orderOf_omLab W k, h.chi k v⟩`.
+-/
 theorem chiT_gen (h : TypesTrue T P W) (k : Fin 2) (v : N.PlG k) :
     ∃ w : (ZMod (H.g k))ˣ, orderOf w = H.g k - 1 ∧ ∀ j : Fin R.m, N.chiT k v j = w ^ (2 * (j.1 + 1)) :=
   ⟨omLab W k, orderOf_omLab W k, h.chi k v⟩
 
+/- English proof (translation)
+Introduce `k`. Establish `e1 : N.chiT k = fun v => N'.chiT k (e k v)`. Use function extensionality and compare the values at `v j`. Rewrite using `[h.chi, h'.chi]`. Establish `h1` using `TypesInhab.isGood_comp (e k) (hf k).1`.
+
+Establish `h2` using `TypesInhab.isGood_comp (e k) (hf k).2`. Rewrite using `[e1]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem goodTuple_comp (h : TypesTrue T P W) (h' : TypesTrue T' P W) (e : ∀ k, N.PlG k ≃ N'.PlG k)
     {f : ∀ k, N'.PlG k → (ZMod (H.g k))[X]} (hf : T'.goodTuple f) : T.goodTuple fun k v => f k (e k v) := by
   intro k
@@ -96,10 +128,20 @@ theorem goodTuple_comp (h : TypesTrue T P W) (h' : TypesTrue T' P W) (e : ∀ k,
   rw [e1]
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hf => by simpa using h'.goodTuple_comp h (fun k => (e k).symm) hf, h.goodTuple_comp h' e⟩`.
+-/
 theorem goodTuple_iff (h : TypesTrue T P W) (h' : TypesTrue T' P W) (e : ∀ k, N.PlG k ≃ N'.PlG k)
     (f : ∀ k, N'.PlG k → (ZMod (H.g k))[X]) : (T.goodTuple fun k v => f k (e k v)) ↔ T'.goodTuple f :=
   ⟨fun hf => by simpa using h'.goodTuple_comp h (fun k => (e k).symm) hf, h.goodTuple_comp h' e⟩
 
+/- English proof (translation)
+Set `e` to `plEquiv A A'`. Set `E : (∀ kv : (Σ k : Fin 2, N'.PlG k), (Fin R.r → ZMod (H.g kv.1))) ≃ (∀ kv : (Σ k : Fin 2, N.PlG k), (Fin R.r → ZMod (H.g kv.1)))` to `{ toFun := fun a kv => a ⟨kv.1, e kv.1 kv.2⟩ invFun := fun a kv => a ⟨kv.1, (e kv.1).symm kv.2⟩ left_inv := fun a => funext fun kv => by show a ⟨kv.1, e kv.1 ((e kv.1).symm kv.2)⟩ = a ⟨kv.1, kv.2⟩`. Rewrite using `[Equiv.apply_symm_apply]`. Use `right_inv := fun a => funext fun kv => by show a ⟨kv.1, (e kv.1).symm (e kv.1 kv.2)⟩ = a ⟨kv.1, kv.2⟩`. Rewrite using `[Equiv.symm_apply_apply] }`.
+
+Simplify using `only [NTypes.e0, MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[← finsum_comp_equiv E]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `if_congr (h.goodTuple_iff h' e fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)).symm ?_ rfl` and prove the remaining obligations. Use `symm`.
+
+Use `Fintype.prod_equiv (Equiv.sigmaCongrRight e) _ _ fun kv => ?_` and prove the remaining obligations. Rewrite using `[h.ser, h'.ser]`. Conclude with `congrArg _ (grpEquiv_apply' A A' g kv.1 kv.2).symm`.
+-/
 theorem typeIdempotent_coeff_across_layers (h : TypesTrue T P W) (h' : TypesTrue T' P W) (g : G0g N) :
     T'.e0.coeff (grpEquiv A A' g) = T.e0.coeff g := by
   classical
@@ -134,6 +176,9 @@ variable {R : Ranks} {H : Host R} {what₂ rows' : Rows.Data R} {N : NData R H w
 
 attribute [local instance] factType
 
+/- English proof (translation)
+Take `⟨eR, plg, iso, h1, h2, h3⟩` from `hr`. Conclude with `⟨eR.trans (grpEquiv A A'), (Equiv.sigmaCongrRight fun k => (plEquiv A A' k).symm).trans plg, fun kv => iso ⟨kv.1, (plEquiv A A' kv.1).symm kv.2⟩, fun g => (h1 g).trans (h.typeIdempotent_coeff_across_layers h' (eR g)).symm, fun kv => h2 ⟨kv.1, (plEquiv A A' kv.1).symm kv.2⟩, fun g …`.
+-/
 theorem TypesTrue.transport {T : NTypes A} {T' : NTypes A'} {P : PiBar H} {W : Omg H} (h : TypesTrue T P W)
     (h' : TypesTrue T' P W) {Γ Pg : Type} [Group Γ] {κ Y : Pg → Type} [∀ p, CommRing (κ p)] (c : Γ → ℂ)
     (Q : Fin 2 → Pg → Prop) (eG : Γ → ∀ p, Y p)
@@ -149,6 +194,9 @@ theorem TypesTrue.transport {T : NTypes A} {T' : NTypes A'} {P : PiBar H} {W : O
     fun kv => iso ⟨kv.1, (plEquiv A A' kv.1).symm kv.2⟩, fun g => (h1 g).trans (h.typeIdempotent_coeff_across_layers h' (eR g)).symm,
     fun kv => h2 ⟨kv.1, (plEquiv A A' kv.1).symm kv.2⟩, fun g kv => h3 g ⟨kv.1, (plEquiv A A' kv.1).symm kv.2⟩⟩
 
+/- English proof (translation)
+Establish `h2` using `(H.g_prime k).two_le`. Establish `h4 : H.g k % 4 = 1`. Rewrite using `[← Nat.mod_mod_of_dvd (H.g k) (show 4 ∣ H.QS * H.q * H.d from ((((pow_dvd_pow 2 (Nat.le_add_left 2 _)).trans H.tower_dvd).mul_right _).mul_right _)), hc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem five_le_type (H : Host R) {k : Fin 2} (hc : H.g k % (H.QS * H.q * H.d) = 1) : 5 ≤ H.g k := by
   have h2 := (H.g_prime k).two_le
   have h4 : H.g k % 4 = 1 := by
@@ -183,10 +231,16 @@ namespace GrpTrue
 variable {B : Base} {C C' : Cols B} {W : RowsRest B C} {W' : RowsRest B C'} {N : NStage B C W} {N' : NStage B C' W'}
   {f : Fr B.toPre}
 
+/- English proof (translation)
+The claim follows from `TypesTrue.typeIdempotent_coeff_across_layers h h' g`.
+-/
 theorem typeIdempotent_coeff_across_layers (h : GrpTrue N f) (h' : GrpTrue N' f) (g : G0g N.nd) :
     N'.ntypes.e0.coeff (grpEquiv N.naut N'.naut g) = N.ntypes.e0.coeff g :=
   TypesTrue.typeIdempotent_coeff_across_layers h h' g
 
+/- English proof (translation)
+Introduce `k` and use `⟨labDat (B.host.g k), (h.teich k).symm, h.ser k⟩`.
+-/
 theorem eSerTie (h : GrpTrue N f) (V : DivStage B C W) (S : SStage B C W) (G : GJStage B C) :
     ESerTie (assemble B C W V S N G) :=
   fun k => ⟨labDat (B.host.g k), (h.teich k).symm, h.ser k⟩
@@ -208,6 +262,21 @@ def trueLayer (B : Base) (C : Cols B) (W : RowsRest B C) (Om : Omg B.host)
     lab_monic := fun _ _ _ => GaloisStage.monic_unip _
     chiT := fun k _ j => omLab Om k ^ (2 * (j.1 + 1)) }
 
+/- English proof (translation)
+Take `⟨ldat, hsha⟩` from `hsha`. Take `⟨L⟩` from `locStage_inhabited`. Set `nd` to `trueLayer B C W f.W ldat hsha`. Establish `hE : IsEmpty nd.Loc` using `inferInstanceAs (IsEmpty Empty)`. Set `A : NAut nd` to `GaloisStage.nAut nd (fun k v => above f.P (nd.g_split k) v) (fun k v => div_over f.P (above_div _ _ v)) (fun k => above_injective f.P (nd.g_split k)) (fun k v v' => not_isConjPl f.P (nd.g_split k) (above_div _ _ v) (above_div _ _ v'))`.
+
+Establish `hl : ∀ k w (p : A.LP w), A.items₂ k w p = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`. Establish `hi : ∀ w (p : A.LP w) σ, A.inePol p σ = (X - 1) ^ A.lpDim p` using `fun _ _ _ => rfl`. Use `choose tg htg using fun (k : Fin 2) (v : nd.PlG k) => GlobalTheory.TameInertiaGen.exists_tameGenAt B.host.E nd.Om (A.plGw k v) (nd.plOm.1 (A.plGw k v)) (nd.plOm.2 _)`. Establish `he : ∀ k, IsSer B.R.r (B.host.g k) B.toPre.restRowsFiniteGroupCard (eSerC (labDat (B.host.g k)) B.R.r)` using `fun k => GlobalTheory.GLm.isSer_eSerC _ _ (five_le_type B.host (B.g_cond k)) hG _ _ B.toPre.restRowsFiniteGroupCard_pos ((dvd_pow_self _ (GaloisStage.f_pos B.R).ne').trans (Finset.dvd_prod_of_mem (fun k : Fin 2 => (Nat.card (GL (Fin B.R.r) (ZMod (B.host.g k)))) ^ B.R.f) (Finset.m …`. Take `⟨T₀, hT₀⟩ : ∃ T : NTypes A, T.eSer = fun k => eSerC (labDat (B.host.g k)) B.R.r` from `⟨TypesInhab.types0 hl hi B.g_cond B.BB_disj tg htg _ he, rfl⟩`.
+
+Establish `he₀ : ∀ k, IsSer B.R.r (B.host.g k) B.toPre.restRowsFiniteGroupCard (T₀.eSer k)` using `fun k => by rw [hT₀]; exact he k`. Take `⟨hc, hm⟩` from `TypesInhab.goodTupleIdempotent_central_and_action T₀ fun k p hp h0 => ((he₀ k).zero p).1 h0 hp`. Take `⟨t, ht, -, ht0⟩` from `hm (fun _ _ => (X - 1) ^ B.R.r) fun k _ => ⟨(GaloisStage.monic_unip _).1, (GaloisStage.monic_unip _).2, GaloisStage.unip_coeff_zero _ _⟩`. Take `⟨ω, h0⟩` from `TypesInhab.exists_char ⟨T₀.e0, hc⟩ ht (ht0 (TypesInhab.not_good_unip T₀))`. Set `T : NTypes A` to `retype T₀ hl hi (fun k => labDat (B.host.g k)) ω`.
+
+Establish `hTe : T.e0 = T₀.e0` using `rfl`. Establish `htie : T.IdempotentMatchesAction`. Use `⟨fun μ => ?_, fun μ j => ?_⟩` and prove the remaining obligations. Rewrite using `[hTe, NTypes.onAmb, dif_pos hc]`. Express the relevant statement in the definitionally equal form `W.eOp μ = algebraMap ℂ _ (ω _)`.
+
+Rewrite using `[h0, map_zero, hOp]`. Rewrite using `[hTe, NTypes.onMt, dif_pos hc]`. Express the relevant statement in the definitionally equal form `W.eMt μ j = algebraMap ℂ _ (ω _)`. Rewrite using `[h0, map_zero, hMt]`. Establish `hy : ∀ x, ∃ y : ↥B.LL0, B.embLL (y : B.LL) = T.e0.coeff x` using `fun x => by`.
+
+Take `⟨y, hy, hy'⟩` from `TypesInhab.goodTupleIdempotent_coeff_mem_subring T₀ _ (fun k p x => TypesInhab.adjoin_le B _ ((he₀ k).rat p x)) x`. Conclude with `⟨⟨y, hy⟩, hy'⟩`. Use `choose e hee using hy`. Set `tw` to `GaloisStage.nTw B.LL0 nd`. Establish `hT : IsEmpty tw.Tw` using `inferInstanceAs (IsEmpty Empty)`.
+
+Take `⟨Y, hY, ⟨th⟩⟩` from `exists_nexp_nth_of_isEmpty B C W nd tw hT e`. Conclude with `⟨{ toLocStage := L nd := nd ntw := tw naut := A nbc := GaloisStage.nBC A nexp := Y ntypes := T nStage_trivialCharacter_compat := htie nStage_trivialCharacter_coeff_eq := fun g => by rw [hY]; exact hee g nth := th nbr := fun i => hE.elim i nbr_ind := fun i => hE.elim i self_good : …`.
+-/
 theorem exists_nStage_grpTrue (hG : GlobalTheory.Published.GreenCuspidal) (B : Base) (C : Cols B) (W : RowsRest B C)
     (hsha : ShaOK B.toPre W.shaLen) (heta : ∀ j w, 1 ≤ j → j ≤ B.R.m → W.etaJ j w = 0) (hOp : ∀ μ, W.eOp μ = 0)
     (hMt : ∀ μ j, W.eMt μ j = 0) (f : Fr B.toPre) :

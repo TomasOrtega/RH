@@ -15,6 +15,35 @@ namespace UpperTheory.Lit.Cusp
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.SepPer.PerNe in
 
+/- English proof (translation)
+Introduce `hHC hCW hCRD hPE hDP`. Take `⟨C, hC, hPack⟩` from `hPE`. Introduce `ε CF hCF`. Take `⟨x₁, hx₁⟩` from `hPack ε CF hCF`. Take `⟨x₂, hx₂⟩` from `hDP C hC ε CF hCF`.
+
+Use `⟨max x₁ x₂, ?_⟩` and prove the remaining obligations. Introduce `D large₂ hε hx hSz T L μ0 hL G W M hM M₀ MP t ht ht0`. Take `⟨p, hp⟩` from `hx₁ D large₂ hε (le_trans (le_max_left _ _) hx) hSz T L μ0 hL G W M hM M₀ MP`. Take `⟨s, hs0, hs1, hsLip, hsN1, hsN2⟩` from `hx₂ D large₂ hε (le_trans (le_max_right _ _) hx) hSz T L μ0 hL G W M hM`. Take `⟨hsdY, hsdV, hlam, hz0, hJ, hrY, hrV, hmY⟩` from `GlobalTheory.T.thetaRowGrid_bottom_selfDual_lattices D (offQ_of_sizeRows hSz) T L μ0 hL _ G W M hM`.
+
+Establish `hθ : IsInfFam W.θ` using `W.θ_is`. Establish `hmod : G.modul ≠ ⊥` using `G.pl.modul_ne_bot _`. Establish `hRow` using `(hM.row 0 (Nat.zero_le _)).haar_fund`. Take `⟨v, hvμ, hv𝓕⟩ : ∃ v : GlobalTheory.Unf.Vol (Yc D 0), v.μ = M.ν (.grid 0 0) ∧ v.𝓕 = M.fd (.grid 0 0)` from `⟨⟨_, _, hRow.1, hRow.2⟩, rfl, rfl⟩`. Take `⟨b, x, hb, hbx⟩` from `GlobalTheory.T.exists_bound_multiplicity_value_exceeds_half hCRD D W.θ hθ (Yc D 0) (parB (Ptw D) 0) M₀ (levRow L : Set (GA D (Yc D 0))) v t ht ht0 p.w hp.1.ne`.
+
+Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hb x)`. Take `⟨hAutSm, hCusp, -⟩` from `GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hCRD D (Yc D 0) _ M₀ W.θ hθ _ 1 t ht (PiTensorProduct.tprod ℂ p.w)`. Establish `hLip` using `GlobalTheory.T.unipotentPeriod_value_lipschitz_realOneParameter hCRD D W.θ hθ (Yc D 0) (G.V (.core 0)) G.sp.dec0 _ _ M₀ MP p (loss D C large₂.sc.b) hp (levRow L : Set (GA D (Yc D 0))) 1 t ht b hb`. Establish `hInv : ∀ k ∈ Lev.levA (Yc D 0) (congLev D.sp.cm (Yc D 0).gram (L.ΛY 0) (Ideal.span {((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E)})), ∀ y, t (PiTensorProduct.tprod ℂ p.w) (y * k) = t (PiTensorProduct.tprod ℂ p.w) y`. Introduce `k hk y`.
+
+Rewrite using `[multT_apply_mul_lev ht _ k hk y, Pi.one_apply, one_mul]`. Establish `hLong : Long W.θ p.A (L.ΛY 0) x s`. Assume the negation of the conclusion as `hn`. Establish `hg1 : 1 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Establish `hm1 : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`.
+
+Establish `hr1 : 1 ≤ (Yc D 0).rank` using `by rw [hrY]; exact (odd_r D).pos`. Establish `hmin : ∀ τ, min (Finset.univ.filter fun a => p.A.ε τ a = true).card (Finset.univ.filter fun a => p.A.ε τ a = false).card ≤ D.R.m` using `fun τ => min_le_of_right_le (hmY p.A τ)`. Establish `h` using `GlobalTheory.T.norm_cuspForm_le_of_shortLine D W.θ hθ (Yc D 0) p.A (L.ΛY 0) hsdY (D.host.g 0 * D.host.g 1) D.R.m hg1 hm1 hr1 hmin (t (PiTensorProduct.tprod ℂ p.w)) hAutSm.toIsAutFun hCusp hInv (Real.exp (loss D C large₂.sc.b) * b) (by positivity) hLip x s hs0 hs1 hn`. Rewrite `h` using `[hrY]`. Establish `: ‖t (PiTensorProduct.tprod ℂ p.w) x‖ ≤ b / 2`.
+
+Use `h.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hsLip hb0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hsdV`, `hz0` using `[hlam]`.
+
+Establish `hJ' : ∀ k ∈ GfC (Yc D 0), Lev.finE (G.V (.core 0)) (stabilizerEmbedding G.sp.dec0 k) ∈ congLev D.sp.cm (G.V (.core 0)).gram (G.sp.dec0.lat (L.ΛY 0) fun _ => 1) G.modul → k ∈ (levRow L : Set (GA D (Yc D 0)))`. Rewrite using `[← hlam]`. Conclude with `hJ`. Take `⟨c, hc⟩` from `GlobalTheory.T.unipotentPeriod_adelic_clauses_of_real hCRD D W.θ hθ (Yc D 0) (G.V (.core 0)) G.sp.dec0 _ _ M₀ MP p (loss D C large₂.sc.b) hp (G.sp.dec0.lat (L.ΛY 0) fun _ => 1) G.modul hsdV hmod hz0 (levRow L : Set (GA D (Yc D 0))) hJ' t ht v.μ v.haar`. Establish `hN1 : 2 * Real.exp (loss D C large₂.sc.b + (6 * ((G.V (.core 0)).rank : ℝ) + 9) * Fintype.card D.what₂.Tau) ≤ s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm G.modul)`.
+
+Rewrite using `[hrV]`. Use `push_cast`. Conclude with `hsN1`. Establish `hne` using `GlobalTheory.T.poincareSeries_pairing_ne_zero_of_large_level D W.θ hθ (Yc D 0) (G.V (.core 0)) G.sp.dec0 _ _ M₀ MP p (loss D C large₂.sc.b) hp.1 (L.ΛY 0) G.modul hsdY hmod v (t (PiTensorProduct.tprod ℂ p.w)) c b s x (GlobalTheory.Core.Mi.BotPin.isContAut_multT ht _) hb hbx hs0.le …`. Establish `hKD : KDecay MP p.v₀` using `fun τ => ⟨(hp.1.dec τ).1, fun a ha => GlobalTheory.T.coefficientDecay_kFinite_second_vector hHC D _ _ MP τ (p.v₀ τ) _ (hp.1.dec τ).1 (hp.1.dec τ).2 a ha⟩`.
+
+Take `⟨y, hy, hyv⟩` from `exists_multT_eq_poin hHC hCW hCRD D W.θ hθ (G.V (.core 0)) _ MP (G.sp.dec0.lat (L.ΛY 0) fun _ => 1) G.modul hsdV hmod p.v₀ hKD (p.g₀⁻¹ * stabilizerEmbedding G.sp.dec0 x⁻¹) ⟨D.eTau.symm 1⟩`. Take `⟨v₀', hv₀'⟩ : ∃ v₀' : MP.Vec, ∀ τ, (v₀' τ : MP.H τ) = p.v₀ τ` from `⟨fun τ => ⟨p.v₀ τ, GlobalTheory.Core.Mi.kFin_le_sm hHC MP τ (hp.1.dec τ).1⟩, fun _ => rfl⟩`. Take `⟨a', ha'⟩ : ∃ a' : MP.Vec, ∀ τ, (a' τ : MP.H τ) = MP.rep τ (cmp W.θ τ p.g₀) (v₀' τ)` from `⟨fun τ => ⟨MP.rep τ (cmp W.θ τ p.g₀) (v₀' τ), GlobalTheory.UnifEvery.rep_mem_sm MP τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ _ p.g₀ τ) (v₀' τ).2⟩, fun _ => rfl⟩`. Establish `hv₀f : (fun τ => (v₀' τ : MP.H τ)) = p.v₀` using `funext hv₀'`. Establish `hU` using `(mem_multT W.θ MP _ 1 y).1 hy`.
+
+Establish `key` using `GlobalTheory.RealEquiv.mult_realElt D (G.V (.core 0)) _ W.θ MP _ 1 _ hU (fun τ => cmp W.θ τ p.g₀) (fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ _ p.g₀ τ) v₀' a' ha'`. Rewrite `key` using `[← GlobalTheory.RealTransSm.eq_realElt hθ hp.1.real]`. Establish `hyg : ∀ g, y (PiTensorProduct.tprod ℂ a') g = poin W.θ MP (congLev D.sp.cm (G.V (.core 0)).gram (G.sp.dec0.lat (L.ΛY 0) fun _ => 1) G.modul) (p.v W.θ) (stabilizerEmbedding G.sp.dec0 x⁻¹) (p.v W.θ) g`. Introduce `g`. Rewrite using `[apply_tprod_eq, key]`.
+
+Use `show PiTensorProduct.lift.symm y v₀' (g * p.g₀) = _`. Rewrite using `[← apply_tprod_eq, hyv v₀' (fun τ => (hv₀' τ).symm ▸ (hp.1.dec τ).1), hv₀f]`. Conclude with `GlobalTheory.T.coefficientPoincareSeries_move_real_point D W.θ hθ (G.V (.core 0)) _ MP _ p.v₀ p.g₀ hp.1.real _ g`. Establish `hmem : y ∈ CoreForms G W.θ 0 MP` using `by show y ∈ MultT W.θ MP (Lev.levA (G.V (.core 0)) (G.levCong (.core 0)) : Set (GA D (G.V (.core 0)))) 1`. Unfold `GridData.levCong`.
+
+Rewrite using `[hlam]`. Conclude with `hy`. Establish `hper : per0 G M (y (PiTensorProduct.tprod ℂ a')) (t (PiTensorProduct.tprod ℂ p.w)) ≠ 0`. Unfold `per0`. Repeatedly rewrite using `[hyg]`.
+
+Rewrite `hne` using `[hvμ, hv𝓕]`. Conclude with `hne`. Conclude with `⟨y, hmem, _, _, hper⟩`.
+-/
 theorem exists_cusp_form_theta_period_ne_zero : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     GlobalTheory.Published.CuspRapidDecay → PackEx → DepthPays →
     Ev fun {D} _ {L} {sc} {G} W M => ∀ (M₀ : DSModel (Yc D 0) (parB (Ptw D) 0))

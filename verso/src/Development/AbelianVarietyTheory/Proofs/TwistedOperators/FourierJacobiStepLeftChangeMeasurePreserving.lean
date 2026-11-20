@@ -11,6 +11,15 @@ noncomputable section
 namespace GlobalTheory.StepLeft
 open Classical
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Take `⟨⟨r, s⟩, ha⟩` from `a`. Establish `h1 : (stepLin n' g).mulVec e ⟨(r, s), ha⟩ = ∑ t, g r t * (if h : (Free (c / 2 + 1) (t, s) ∨ Kept (t, s)) then e ⟨(t, s), h⟩ else 0)`. Establish `h2 : (stepLin n' g).mulVec e ⟨(r, s), ha⟩ = ∑ b : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)), (if s = b.2 then g r b.1 else 0) * (if h : (Free (c / 2 + 1) b ∨ Kept b) then e ⟨b, h⟩ else 0)`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun b => Free (c / 2 + 1) b ∨ Kept b)]`.
+
+Rewrite using `[Finset.sum_eq_zero (s := Finset.univ) (f := fun b : {b // ¬ (Free (c / 2 + 1) b ∨ Kept b)} => _) (fun b _ => by rw [dif_neg b.2, mul_zero]), add_zero]`. Simplify using `only [Matrix.mulVec, dotProduct, stepLin, of_apply]`. Use `Finset.sum_congr rfl fun b _ => by rw [dif_pos b.2]` and prove the remaining obligations. Rewrite using `[h2, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `s' _ hs`. Simplify using `[Ne.symm hs]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Pi.add_apply]`. Rewrite using `[h1]`. Simplify using `only [stepPt, Matrix.mul_apply, Matrix.add_apply, of_apply, mul_add, Finset.sum_add_distrib, Pi.zero_apply, dite_eq_ite, ite_self, mul_zero, Finset.sum_const_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem affine {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (g : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) (x₀ : Matrix n n' k) (e : StepVar n c n' → k) :
     (fun a : StepVar n c n' => (g * stepPt x₀ e) a.1.1 a.1.2) =
@@ -39,6 +48,13 @@ theorem affine {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [F
     dite_eq_ite, ite_self, mul_zero, Finset.sum_const_zero, add_zero]
   ring
 
+/- English proof (translation)
+Apply `GlobalTheory.RootExSource.det_eq_one_of_unip (fun a : StepVar n c n' => GlobalTheory.DiagVol.ordL c a.1.1)` to reduce the goal to its premises. Introduce `a b hab`. Establish `hu' : u.val a.1.1 b.1.1 = (1 : Matrix _ _ k) a.1.1 b.1.1` using `GlobalTheory.DiagVol.symN_le_unipSub hu a.1.1 b.1.1 hab`. Simplify using `only [stepLin, of_apply]`. Distinguish the cases in `hab' : a = b`.
+
+Substitute `hab'` using the available equality. Simplify using `[hu']`. Rewrite using `[Matrix.one_apply_ne hab'] split_ifs with h`. Rewrite using `[hu', Matrix.one_apply_ne]`. Introduce `hr`.
+
+Conclude with `hab' (Subtype.ext (Prod.ext hr h))`. Both sides reduce to the same expression.
+-/
 theorem det_unip {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (u : GL (n ⊕ Fin c) k) (hu : u ∈ symN k n c) : (stepLin n' u.val).det = 1 := by
   apply GlobalTheory.RootExSource.det_eq_one_of_unip (fun a : StepVar n c n' => GlobalTheory.DiagVol.ordL c a.1.1)
@@ -54,11 +70,19 @@ theorem det_unip {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] 
       exact hab' (Subtype.ext (Prod.ext hr h))
     · rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases s with s | s <;> simp [Free, Kept]`.
+-/
 theorem var_inl_iff {n n' : Type} {c : ℕ} (r t : n) (s : n' ⊕ Fin (c + 1)) :
     (Free (c / 2 + 1) ((Sum.inl r : n ⊕ Fin c), s) ∨ Kept ((Sum.inl r : n ⊕ Fin c), s)) ↔
       (Free (c / 2 + 1) ((Sum.inl t : n ⊕ Fin c), s) ∨ Kept ((Sum.inl t : n ⊕ Fin c), s)) := by
   rcases s with s | s <;> simp [Free, Kept]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(fromBlocks κ.val 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r t = 0`. Apply the tactic sequence `rcases r with r | r <;> rcases t with t | t`. Conclude with `absurd ((var_inl_iff r t s).1 hr) ht`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Simplify using `only [fromBlocks_apply₂₂]`. Rewrite using `[Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `ht hr`.
+-/
 theorem embX_apply_eq_zero {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] {c : ℕ} (κ : GL n k)
     (r t : n ⊕ Fin c) (s : n' ⊕ Fin (c + 1)) (hr : Free (c / 2 + 1) (r, s) ∨ Kept (r, s))
     (ht : ¬ (Free (c / 2 + 1) (t, s) ∨ Kept (t, s))) : (embX c κ).val r t = 0 := by
@@ -72,6 +96,17 @@ theorem embX_apply_eq_zero {k : Type} [Field k] {n n' : Type} [Fintype n] [Decid
     rintro rfl
     exact ht hr
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨⟨r, s⟩, ha⟩` from `a`. Take `⟨⟨r', s'⟩, hb⟩` from `b`. Use `set E := (embX c κ).val`. Use `set F : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) → k := fun d => (if s = d.2 then E r d.1 else 0) * (if d.2 = s' then g d.1 r' else 0) with hF`.
+
+Establish `hF0 : ∀ d : {d : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // ¬ (Free (c / 2 + 1) d ∨ Kept d)}, F d.1 = 0`. Introduce and unpack `⟨⟨t, s''⟩, hd⟩`. Distinguish the cases in `h1 : s = s''`. Substitute `h1` using the available equality. Establish `hz : E r t = 0` using `embX_apply_eq_zero κ r t s ha hd`.
+
+Simplify using `[hF, hz]`. Simplify using `[hF, h1]`. Establish `hR : (stepLin n' E * stepLin n' g) ⟨(r, s), ha⟩ ⟨(r', s'), hb⟩ = ∑ d, F d`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun d => Free (c / 2 + 1) d ∨ Kept d), Finset.sum_eq_zero (s := Finset.univ) (fun d _ => hF0 d), add_zero]`. Simplify using `only [Matrix.mul_apply, stepLin, of_apply, hF]`.
+
+Rewrite using `[hR, Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_eq_single s]`. Simplify using `only [stepLin, of_apply, hF, Matrix.mul_apply] split_ifs with h`. Simplify using the standard rewrite rules. Simplify using `[h]`. Introduce `s'' _ hs`.
+
+Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Simplify using `[hF, Ne.symm hs]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_embX {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
     (κ : GL n k) (g : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) :
     stepLin n' ((embX c κ).val * g) = stepLin n' (embX c κ).val * stepLin n' g := by
@@ -102,6 +137,11 @@ theorem mul_embX {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] 
     simp [hF, Ne.symm hs]
   · simp
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Establish `hU : IsUnit M.det` using `isUnit_iff_ne_zero.2 fun h => by rw [h, map_zero] at hM; exact zero_ne_one hM`. Establish `h1` using `GlobalTheory.WeilM.smul_map_mulVec_pi ν M hU.unit hU.unit_spec`. Establish `h2 : distribHaarChar k hU.unit = 1`. Use `nabs_of_valuation_eq_one (k := k) (x := hU.unit) (by rw [hU.unit_spec]; exact hM)` as an intermediate fact.
+
+Conclude with `NNReal.coe_eq_one.1 this`. Rewrite `h1` using `[h2, ENNReal.coe_one, one_smul]`. Establish `hm : Measurable M.mulVec` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Conclude with `(measurePreserving_add_right (Measure.pi fun _ : ι => ν) b).comp ⟨hm, h1⟩`.
+-/
 theorem mp_affine {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι k) (hM : valuation k M.det = 1) (b : ι → k) :
@@ -121,6 +161,17 @@ end GlobalTheory.StepLeft
 namespace GlobalTheory.StepLeft
 open Classical
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c ν _ v hv κ hκ x₀`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `set g := ((v * embX c κ)⁻¹).val with hgdef`. Use `set M := stepLin n' g with hMdef`. Use `set b : StepVar n c n' → k := fun a => (g * stepPt x₀ (0 : StepVar n c n' → k) : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) a.1.1 a.1.2 with hb`.
+
+Establish `hg : g = (embX c κ⁻¹).val * (v⁻¹).val`. Rewrite using `[hgdef, _root_.mul_inv_rev, map_inv, Units.val_mul]`. Establish `hκ' : valuation k (gdet κ⁻¹ : k) = 1`. Rewrite using `[gdet, map_inv, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(congrArg (·⁻¹) hκ).trans inv_one`.
+
+Establish `hdet : valuation k M.det = 1`. Rewrite using `[hMdef, hg, mul_embX, det_mul, map_mul, det_unip _ (inv_mem hv), map_one, mul_one]`. Conclude with `GlobalTheory.T.valuation_det_stageVariables_embedGL_eq_one (n' := n') (c := c) κ⁻¹ hκ'`. Establish `hM0 : IsUnit M.det` using `isUnit_iff_ne_zero.2 fun h => by rw [h, map_zero] at hdet; exact zero_ne_one hdet`. Establish `hcont : ∀ (A : Matrix (StepVar n c n') (StepVar n c n') k) (w : StepVar n c n' → k), Continuous fun e : StepVar n c n' → k => A.mulVec e + w` using `fun A w => (continuous_const.matrix_mulVec continuous_id).add continuous_const`.
+
+Set `φ : (StepVar n c n' → k) ≃ᵐ (StepVar n c n' → k)` to `{ toFun := fun e => M.mulVec e + b invFun := fun e => M⁻¹.mulVec e + M⁻¹.mulVec (-b) left_inv := fun e => by`. Simplify using `only [mulVec_add, mulVec_mulVec, nonsing_inv_mul _ hM0, one_mulVec, mulVec_neg, add_neg_cancel_right]`. Use `right_inv := fun e => by`. Simplify using `only [mulVec_add, mulVec_mulVec, mul_nonsing_inv _ hM0, one_mulVec, mulVec_neg, neg_add_cancel_right]`. Use `measurable_toFun := (hcont M b).measurable`.
+
+Use `measurable_invFun := (hcont M⁻¹ _).measurable }`. Use `⟨φ, mp_affine ν M hdet b, fun e => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g * stepPt x₀ e = stepPt ((κ⁻¹).val * x₀) (M.mulVec e + b)`. Rewrite using `[hMdef, hb, ← affine]`. Conclude with `GlobalTheory.T.periodStep_inv_mul_point_shape v hv κ x₀ e`.
+-/
 theorem left_change : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ} (ν : Measure k) [ν.IsAddHaarMeasure],
     ∀ v ∈ symN k n c, ∀ κ : GL n k, valuation k (gdet κ : k) = 1 → ∀ x₀ : Matrix n n' k,
       ∃ φ : (StepVar n c n' → k) ≃ᵐ (StepVar n c n' → k), MeasurePreserving φ (stepVol ν n c n') (stepVol ν n c n') ∧

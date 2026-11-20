@@ -29,6 +29,9 @@ def fibTorusExtension {k : Type} [Field k] (φ : Fib k) : TorusExtension φ.G wh
   i_hom := φ.i_hom
   isKernel := φ.isKernel
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t k _ x φ m h r hr`. Take `⟨e, he, -⟩` from `grpPullback_iso h.1 (isGrpPullback_pullback t.G x)`. Conclude with `hr (torusExtOfIso e (fibTorusExtension φ))`.
+-/
 theorem finrank_eq_of_torRk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G), FibAt t x φ m → ∀ r : ℕ, TorRk t x r → Module.finrank ℤ φ.X = r := by
   intro E _ _ _ H X t k _ x φ m h r hr
   obtain ⟨e, he, -⟩ := grpPullback_iso h.1 (isGrpPullback_pullback t.G x)

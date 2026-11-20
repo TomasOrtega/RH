@@ -12,6 +12,11 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 
 namespace GlobalTheory.CompanionTheory.Ar.Crv.LmuDeg
 
+/- English proof (translation)
+Establish `hi : Function.Injective (dotProductBilin K K : (Fin d → K) →ₗ[K] (Fin d → K) →ₗ[K] K)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use function extensionality and compare the values at `r`. Use `LinearMap.congr_fun hx (Pi.single r 1)` as an intermediate fact.
+
+Simplify `this` using `[dotProductBilin_apply_apply]`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Simplify using `[Subspace.dual_finrank_eq])).1 hi`.
+-/
 theorem dot_bijective (K : Type) [Field K] (d : ℕ) :
     Function.Bijective
       (dotProductBilin K K : (Fin d → K) →ₗ[K] (Fin d → K) →ₗ[K] K) := by
@@ -34,6 +39,9 @@ noncomputable def endAct {K : Type} [Field K] {O : Type} [CommRing O] {d : ℕ}
   map_zero' := by simp
   map_add' a b := by simp
 
+/- English proof (translation)
+Introduce `i x hx`. Take `⟨y, hy, rfl⟩` from `(D.hodge.2.2.2.2 i x).1 hx`. Establish `h2 : (D.ρH a y).1 ∈ D.lie i` using `(D.hodge.2.2.2.2 i _).2 ⟨_, D.ρH_hom a i y hy, rfl⟩`. Rewrite `h2` using `[D.ρH_fst]`. Simplify `h2` using `[endAct]`.
+-/
 theorem isHom_lie {K : Type} [Field K] {C : ACurve K} {p : ℕ} {O : Type} [CommRing O] [StarRing O]
     {d : ℕ} (D : ConjData C p O d) (a : O) : IsHom C D.lie D.lie (endAct D.ρ a) := by
   intro i x hx
@@ -43,6 +51,21 @@ theorem isHom_lie {K : Type} [Field K] {C : ACurve K} {p : ℕ} {O : Type} [Comm
   rw [D.ρH_fst] at h2
   simpa [endAct] using h2
 
+/- English proof (translation)
+Introduce `K _ C p _ _ O k S T _ _ _ _ _ _ χ d D ι κ j q μ W L hp hs hc hbij hconj hj hq hW0 hL0 hWj hLq hgap`. Take `⟨hbot, W₀, hW₀⟩` from `GlobalTheory.T.sub_degree_bot_and_max_exists K C (Fin d → K) D.lie D.lie_bun`. Take `⟨he0, hC2⟩` from `GlobalTheory.T.lie_sub_degree_bound_by_dual K C p O d D hp`. Establish `hsplit : deg C D.lie = ∑ s, subDeg C D.lie (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ s a)))` using `GlobalTheory.T.degree_sum_eigen_sub_degrees K C (Fin d → K) D.lie O k S χ hs hc (endAct D.ρ) D.lie_bun (isHom_lie D)`. Establish `hdual : deg C (dotDual C D.lie) = - deg C D.lie` using `(GlobalTheory.CompanionTheory.Ar.Crv.DegDual.deg_dual K C (Fin d → K) (Fin d → K) D.lie (dotProductBilin K K) D.lie_bun (dot_bijective K d)).2.1`.
+
+Establish `hC1 : ∀ τ, subDeg C D.lie (W τ j) = subDeg C D.lie (L τ q)`. Introduce `τ`. Rewrite using `[hWj, hLq]`. Conclude with `GlobalTheory.T.conjugate_eigen_sub_degree_eq K C p O k S χ d D hs hc (ι τ) (κ τ) (hconj τ)`. Establish `hsum : deg C D.lie = 2 * ∑ τ, subDeg C D.lie (W τ j)`.
+
+Rewrite using `[hsplit, ← (Equiv.ofBijective _ hbij).sum_comp, Fintype.sum_sum_type, two_mul]`. Simplify using `only [Equiv.ofBijective_apply, Sum.elim_inl, Sum.elim_inr]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hWj]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hC1, hLq]`.
+
+Use `GlobalTheory.CompanionTheory.Ar.Crv.Chain.lmuNum_nonneg T p j q μ _ _ (subDeg C D.lie W₀ : ℝ) (deg C (dotDual C D.lie) : ℝ) hp hj hq hgap ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ`. Simplify using `[hW0, hbot]`. Introduce `τ`. Simplify using `[hL0, hbot]`.
+
+Introduce `τ i _`. Conclude with `hW₀ _` after adjusting the coercions. Introduce `τ i _`. Conclude with `hW₀ _` after adjusting the coercions. Introduce `τ`.
+
+Conclude with `hC1 τ` after adjusting the coercions. Rewrite using `[hdual, hsum]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hC2 W₀` after adjusting the coercions.
+
+Conclude with `he0` after adjusting the coercions.
+-/
 theorem lmuNum_nonneg_of_conjData : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (O k S T : Type) [CommRing O] [StarRing O] [Field k] [Algebra k K] [Fintype S] [Fintype T] (χ : S → (O →+* k)) (d : ℕ) (D : ConjData C p O d) (ι κ : T → S) (j q : ℕ) (μ : T → ℕ → ℝ) (W L : T → ℕ → Submodule K (Fin d → K)), 2 < p → IsSplit χ → (∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) → Function.Bijective (Sum.elim ι κ) → (∀ τ a, χ (κ τ) a = χ (ι τ) (star a)) → 1 ≤ j → 1 ≤ q → (∀ τ, W τ 0 = ⊥) → (∀ τ, L τ 0 = ⊥) → (∀ τ, W τ j = (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ (ι τ) a)))) → (∀ τ, L τ q = (eig (fun a => Matrix.toLin' (D.ρ a)) (fun a => algebraMap k K (χ (κ τ) a)))) → GapCond p j q μ → 0 ≤ lmuNum j q μ (fun τ i => (subDeg C D.lie (W τ i) : ℝ)) (fun τ i => (subDeg C D.lie (L τ i) : ℝ)) := by
   intro K _ C p _ _ O k S T _ _ _ _ _ _ χ d D ι κ j q μ W L hp hs hc hbij hconj hj hq hW0 hL0 hWj hLq hgap
   classical

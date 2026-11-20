@@ -18,6 +18,11 @@ namespace GlobalTheory.ArLieBase
 
 section Split
 
+/- English proof (translation)
+Establish `h3` using `congrArg (fun M => M.mulVec cf) S3`. Simplify using `only [Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, hE, Matrix.mulVec_smul] at h3`. Establish `h4 : V.mulVec (Hi.mulVec cf) = Nk • cf`. Use `congrArg (dk • ·) h3` as an intermediate fact. Simplify using `only [smul_smul, hd, one_smul] at this`.
+
+Rewrite using `[this, show dk * (Nk * D) = Nk by rw [mul_left_comm, hd, mul_one]]`. Rewrite using `[Matrix.mulVec_smul, h4, smul_smul, hn, one_smul]`.
+-/
 theorem split_eig {K : Type} [CommRing K] {g r : ℕ} {D Nk dk nk : K} (hd : dk * D = 1) (hn : nk * Nk = 1)
     {P : Matrix (Fin g) (Fin g) K} {V : Matrix (Fin g) (Fin r) K} {Hi : Matrix (Fin r) (Fin g) K}
     (S3 : V * Hi * P = Nk • P) {cf : Fin g → K} (hE : P.mulVec cf = D • cf) :
@@ -30,11 +35,19 @@ theorem split_eig {K : Type} [CommRing K] {g r : ℕ} {D Nk dk nk : K} (hd : dk 
     rw [this, show dk * (Nk * D) = Nk by rw [mul_left_comm, hd, mul_one]]
   rw [Matrix.mulVec_smul, h4, smul_smul, hn, one_smul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, S2, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, hn, one_smul]`.
+-/
 theorem split_inj {K : Type} [CommRing K] {g r : ℕ} {Nk nk : K} (hn : nk * Nk = 1)
     {V : Matrix (Fin g) (Fin r) K} {Hi : Matrix (Fin r) (Fin g) K} (S2 : Hi * V = Nk • 1) (a : Fin r → K) :
     nk • Hi.mulVec (V.mulVec a) = a := by
   rw [Matrix.mulVec_mulVec, S2, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul, hn, one_smul]
 
+/- English proof (translation)
+Establish `key : ∀ f' : Fin g → K, Matrix.vecMul f' P ⬝ᵥ cf = D * (f' ⬝ᵥ cf)` using `fun f' => by`. Rewrite using `[← Matrix.dotProduct_mulVec, hE, dotProduct_smul, smul_eq_mul]`. Establish `h1 : D * (f ⬝ᵥ cf) = D * ∑ i, α i * (fs i ⬝ᵥ cf)`. Rewrite using `[← key, h, sum_dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_dotProduct, key, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (dk * ·) h1`. Simplify `h2` using `only [← mul_assoc, hd, one_mul]`.
+-/
 theorem split_form {K : Type} [CommRing K] {g r : ℕ} {D dk : K} (hd : dk * D = 1) {P : Matrix (Fin g) (Fin g) K}
     {cf : Fin g → K} (hE : P.mulVec cf = D • cf) (f : Fin g → K) (fs : Fin r → Fin g → K) (α : Fin r → K)
     (h : Matrix.vecMul f P = ∑ i, α i • Matrix.vecMul (fs i) P) :
@@ -54,6 +67,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]
   {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
+/- English proof (translation)
+Establish `he₁` using `GlobalTheory.HTPres.isTanBasis_map Z.t he ψ₁`. Establish `hvt : ∀ i, IsTanAtG Z.t (spMap ψ₁ ≫ x) (v i)` using `fun i => GlobalTheory.ShFam.Pad.Guard.comb_tan he₁.1 (hv i)`. Use `⟨fun i => (hP.2 K ψ₁ φ hφ _ _ (hv i)).2 ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun S1 k) i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Take `⟨cf, hcf, huq⟩` from `he.2 K ψ₁ w hw.1`. Establish `hE` using `(hP.2 K ψ₁ φ hφ cf w hcf).1 hw`. Use `⟨cf, hcf, hE, fun a => ⟨fun ha => ?_, fun ha => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `Formalism.L2.Pj.tanLinG _ he₁.1 v V a w hv ha`.
+
+Rewrite using `[← huq _ h1, split_inj hn S2]`. Take `⟨w', -, hw'⟩` from `GlobalTheory.ShFam.Pad.Guard.exists_comb hvt a`. Establish `h1` using `Formalism.L2.Pj.tanLinG _ he₁.1 v V a w' hv hw'`. Rewrite `h1` using `[ha, split_eig hd hn S3 hE]`. Rewrite using `[GlobalTheory.ShFam.Pad.Guard.comb_unique he₁.1 hcf h1]` and apply the resulting hypothesis.
+-/
 theorem split_basis {R : Type} [CommRing R] (x : Sp R ⟶ Z.X) (τ : E →+* ℂ) {g r : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)} (he : GlobalTheory.LineNorm.IsTanBasis Z.t x e) {D : ℕ}
     {P : Matrix (Fin g) (Fin g) R} (hP : IsEigProj Z x τ e D P) {K : Type} [CommRing K] (ψ₁ : R →+* K)
@@ -85,6 +105,37 @@ theorem split_basis {R : Type} [CommRing R] (x : Sp R ⟶ Z.X) (τ : E →+* ℂ
 
 end Split
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z R R' _ _ ψ x τ kind sc g M r D N e h P U I hD hN he hP hL hS`. Establish `hunit : ∀ {K : Type} [CommRing K] (_ : c.F →+* K) (n : ℕ), n ≠ 0 → ∃ k : K, k * (n : K) = 1`. Introduce `K _ φ n hn`. Establish `hu : IsUnit ((n : ℕ) : K)`. Simplify using `using ((Nat.cast_ne_zero.2 hn : ((n : ℕ) : c.F) ≠ 0).isUnit).map φ`.
+
+Take `⟨k, hk⟩` from `hu.exists_left_inv`. Conclude with `⟨k, hk⟩`. Establish `hv0 : ∀ k, IsTanAtG Z.t (spMap ψ ≫ x) (spMap (dualMap ψ) ≫ e k)` using `fun k => GlobalTheory.FactorDepth.isTanAtG_map Z.t ψ (he.1 k)`. Use `choose u hu using fun i => GlobalTheory.ShFam.Pad.Guard.exists_comb hv0 (fun k => U k i)`. Establish `hbc : ∀ {K : Type} [CommRing K] (ψ₂ : R' →+* K), spMap ψ₂ ≫ spMap ψ ≫ x = spMap (ψ₂.comp ψ) ≫ x ∧ (∀ i, IsCombAtG Z.t (spMap (ψ₂.comp ψ) ≫ x) (fun k => spMap (dualMap (ψ₂.comp ψ)) ≫ e k) (fun k => (U.map ψ₂) k i) (spMap (dualMap ψ₂) ≫ u i)) ∧ P.map (ψ₂.comp ψ) * U.map ψ₂ = (D : K …`.
+
+Introduce `K _ ψ₂`. Establish `hx1 : spMap ψ₂ ≫ spMap ψ ≫ x = spMap (ψ₂.comp ψ) ≫ x`. Rewrite using `[← Category.assoc, GlobalTheory.ShFam.Pad.Guard.sp_comp]`. Establish `hPm : P.map (ψ₂.comp ψ) = (P.map ψ).map ψ₂` using `by ext; simp`. Establish `hHm : (Matrix.of fun i k => ψ₂ (ψ (h (I i) k))) = (Matrix.of fun i k => ψ (h (I i) k)).map ψ₂` using `by ext; simp`.
+
+Use `⟨hx1, fun i => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LatDRFree.comb_map Z.t ψ₂ (hu i).2` as an intermediate fact. Simplify using `only [GlobalTheory.HTPres.bc_bc] at this`. Rewrite `this` using `[hx1]`. Conclude with `this`.
+
+Rewrite using `[hPm, ← Matrix.map_mul, hS.1]`. Use `ext`. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [hHm, ← Matrix.map_mul, hS.2.1]; ext i j; simp [Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[hHm, hPm, ← Matrix.map_mul, ← Matrix.map_mul, hS.2.2.1]`.
+
+Use `ext`. Simplify using the standard rewrite rules. Use `⟨N, u, hN, fun K _ ψ₂ φ hφ => ?_, fun p _ ψ₃ φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨hx1, hc, S1, S2, S3⟩` from `hbc ψ₂`. Establish `hφ' : spMap (ψ₂.comp ψ) ≫ x ≫ Z.s = spMap (φ.comp β)`.
+
+Rewrite using `[← Category.assoc, ← hx1]`. Simplify `hφ` using `only [Category.assoc]`. Take `⟨dk, hd⟩` from `hunit φ D hD`. Take `⟨nk, hn⟩` from `hunit φ N hN`. Rewrite using `[hx1]`.
+
+Take `⟨h1, h2⟩` from `split_basis Z x τ he hP (ψ₂.comp ψ) φ hφ' hd hn S1 S2 S3 hc`. Use `⟨h1, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨cf, -, -, hA⟩` from `h2 w hw`. Conclude with `⟨_, (hA _).2 rfl, fun a ha => (hA a).1 ha⟩`. Take `⟨hx1, hc, S1, S2, S3⟩` from `hbc ((intO ℂ_[p]).subtype.comp ψ₃)`.
+
+Establish `hφ' : spMap (((intO ℂ_[p]).subtype.comp ψ₃).comp ψ) ≫ x ≫ Z.s = spMap (φ.comp β)`. Rewrite using `[← Category.assoc, ← hx1]`. Simplify `hφ` using `only [Category.assoc]`. Take `⟨dk, hd⟩` from `hunit φ D hD`. Take `⟨nk, hn⟩` from `hunit φ N hN`.
+
+Take `⟨δ, hδ, hlat⟩` from `hL.2 p (ψ₃.comp ψ)`. Use `⟨δ, hδ, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[hx1]`. Take `⟨-, h2⟩` from `split_basis Z x τ he hP _ φ hφ' hd hn S1 S2 S3 hc`. Take `⟨cf, hcf, hE, hA⟩` from `h2 w hw`.
+
+Use `Iff.trans ?_ (hlat cf w hcf).symm` and prove the remaining obligations. Establish `hNa : ∀ i, (N : ℂ_[p]) * (nk • Matrix.mulVec (Matrix.of fun i k => ((intO ℂ_[p]).subtype.comp ψ₃) (ψ (h (I i) k))) cf) i = (fun k => ((intO ℂ_[p]).subtype.comp ψ₃) (ψ (h (I i) k))) ⬝ᵥ cf`. Introduce `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← mul_assoc, mul_comm (N : ℂ_[p]) nk, hn, one_mul]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hca⟩ j`. Rewrite `ha` using `[(hA a).1 hca]`. Take `⟨α, hα⟩` from `hS.2.2.2 j`. Establish `hα' : Matrix.vecMul (fun k => ((intO ℂ_[p]).subtype.comp ψ₃) (ψ (h j k))) (P.map (((intO ℂ_[p]).subtype.comp ψ₃).comp ψ)) = ∑ i, ((intO ℂ_[p]).subtype.comp ψ₃) (α i) • Matrix.vecMul (fun k => ((intO ℂ_[p]).subtype.comp ψ₃) (ψ (h (I i) k))) (P.map (((intO ℂ_[p]).subtype.comp ψ₃).c …`.
+
+Use function extensionality and compare the values at `k`. Use `congrArg (fun v => ((intO ℂ_[p]).subtype.comp ψ₃) (v k)) hα` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, RingHom.map_vecMul] at this`. Simplify `this` using `[Finset.sum_apply, Matrix.map_map, Function.comp_def]`. Use `show (fun k => ((intO ℂ_[p]).subtype.comp ψ₃) (ψ (h j k))) ⬝ᵥ cf ∈ intO ℂ_[p]`.
+
+Rewrite using `[split_form hd hE _ _ _ hα']`. Use `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (ψ₃ (α i)).2 ?_` and prove the remaining obligations. Use `show ‖_‖ ≤ 1`. Rewrite using `[← hNa]`. Conclude with `ha i`.
+
+Introduce `hj`. Use `⟨_, fun i => ?_, (hA _).2 rfl⟩` and prove the remaining obligations. Rewrite using `[hNa]`. Conclude with `hj (I i)`.
+-/
 theorem ringBasis_of_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (R R' : Type) [CommRing R] [CommRing R'] (ψ : R →+* R') (x : Sp R ⟶ Z.X) (τ : E →+* ℂ) (kind : ℕ → Bool) (sc : ℕ → ℝ) (g M r D N : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)) (h : Fin M → Fin g → R) (P : Matrix (Fin g) (Fin g) R) (U : Matrix (Fin g) (Fin r) R') (I : Fin r → Fin M), D ≠ 0 → N ≠ 0 → GlobalTheory.LineNorm.IsTanBasis Z.t x e → IsEigProj Z x τ e D P → LatPres Z.t x kind sc e h → IsSplitting D (P.map ψ) (fun j i => ψ (h j i)) N U I → RingBasis Z (spMap ψ ≫ x) τ r kind sc := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z R R' _ _ ψ x τ kind sc g M r D N e h P U I hD hN he hP hL hS
   have hunit : ∀ {K : Type} [CommRing K] (_ : c.F →+* K) (n : ℕ), n ≠ 0 → ∃ k : K, k * (n : K) = 1 := by

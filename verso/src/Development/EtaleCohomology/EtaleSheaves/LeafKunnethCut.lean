@@ -33,6 +33,9 @@ def LeafKunGlobal : Prop := LateralTheory.E.E8.Base → ∀ (q : ℕ) [NeZero q]
   (∀ (A : Type) [CommRing A], SH A → ∀ s : Spec (CommRingCat.of A) ⟶ Spec (CommRingCat.of k), KunAt q s r S deg j b) →
   ∀ {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) [QuasiCompact p] [QuasiSeparated p], KunAt q p r S deg j b
 
+/- English proof (translation)
+Introduce `hB q _ k _ _ hq X Y p r _ _ _ _ S _ deg j b hb`. Conclude with `hG hB q k hq r S deg j b hb (hL hB q k hq r S deg j b hb) p`.
+-/
 theorem goal_of (hL : LeafKunLocal) (hG : LeafKunGlobal) : LateralTheory.E.E8.EtaleKunneth := by
   intro hB q _ k _ _ hq X Y p r _ _ _ _ S _ deg j b hb
   exact hG hB q k hq r S deg j b hb (hL hB q k hq r S deg j b hb) p

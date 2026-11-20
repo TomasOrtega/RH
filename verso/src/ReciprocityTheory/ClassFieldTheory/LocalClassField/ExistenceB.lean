@@ -11,6 +11,19 @@ open scoped commutatorElement
 
 variable {p : ℕ} [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
+/- English proof (translation)
+Set `U : Subgroup (GK p K)` to `{ carrier := {g | ∀ χ : charGrp (GK p K), n • χ = 0 → χ.1 (Additive.ofMul g) = 0} one_mem' := fun χ _ => map_zero χ.1 mul_mem' := fun {a b} ha hb χ h => by show χ.1 (Additive.ofMul a + Additive.ofMul b) = 0`. Rewrite using `[map_add, ha χ h, hb χ h, add_zero]`. Use the proof step `inv_mem' := fun {a} ha χ h => by show χ.1 (- Additive.ofMul a) = 0`. Rewrite using `[map_neg, ha χ h, neg_zero] }`. Establish `hU : IsOpen (U : Set (GK p K))`.
+
+Establish `h1 : (U : Set (GK p K)) = ⋂ χ : {χ : charGrp (GK p K) // n • χ = 0}, {g : GK p K | χ.1.1 (Additive.ofMul g) = 0}`. Use extensionality with `g`. Rewrite using `[Set.mem_iInter]`. Conclude with `⟨fun h χ => h χ.1 χ.2, fun h χ hχ => h ⟨χ, hχ⟩⟩`. Rewrite using `[h1]`.
+
+Conclude with `isOpen_iInter_of_finite fun χ => IsLocallyConstant.isOpen_fiber χ.1.2 0`. Take `⟨L, hKL, hLfin, hLU⟩` from `exists_subG_eq_of_isOpen hK U hU`. Use `⟨L, ⟨hKL, hLfin, ?_⟩, fun χ => ⟨fun hχ => ?_, fun hχ g hg => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hLU, commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _ χ _`.
+
+Use `show χ.1 (Additive.ofMul a + Additive.ofMul b + - Additive.ofMul a + - Additive.ofMul b) = 0`. Rewrite using `[map_add, map_add, map_add, map_neg, map_neg]`. Normalize the expressions using the abelian group laws. Use `Subtype.ext (AddMonoidHom.ext fun x => ?_) show n • χ.1 x = 0` and prove the remaining obligations. Rewrite using `[← map_nsmul]`.
+
+Use `hχ (Additive.toMul x ^ n) ?_` and prove the remaining obligations. Rewrite using `[hLU]`. Introduce `ψ hψ`. Use `show ψ.1 (n • x) = 0`. Rewrite using `[map_nsmul]`.
+
+Conclude with `congrArg (fun f : charGrp (GK p K) => f.1 x) hψ`. Rewrite `hg` using `[hLU]`. Conclude with `hg χ hχ`.
+-/
 theorem exists_maximal_exponent_abelian_extension (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hfin : Finite {χ : charGrp (GK p K) // n • χ = 0}) :
     ∃ L : IntermediateField ℚ_[p] (PadicAlgCl p), IsAbLK p K L ∧ ∀ χ : charGrp (GK p K), TrivOn p K L χ ↔ n • χ = 0 := by
   let U : Subgroup (GK p K) :=
@@ -49,6 +62,11 @@ theorem exists_maximal_exponent_abelian_extension (hK : FiniteDimensional ℚ_[p
   · rw [hLU] at hg
     exact hg χ hχ
 
+/- English proof (translation)
+Establish `hn : (subG p K₀ K).Normal` using `subG_normal_of_stable hK₀`. Take `⟨e, he, hc, hc'⟩` from `exists_equiv_subG h₀`. Use `⟨(e.symm.toMonoidHom.comp (MulAut.conjNormal σ : MulAut (subG p K₀ K)).toMonoidHom).comp e.toMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Use `hc'.comp (Continuous.comp ?_ hc)` and prove the remaining obligations. Use `Continuous.subtype_mk (f := fun h : subG p K₀ K => σ * (h : GK p K₀) * σ⁻¹) ?_ _` and prove the remaining obligations.
+
+Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Introduce `g show resGK h₀ (e.symm (MulAut.conjNormal σ (e g))) = _`. Rewrite using `[← he (e.symm _), e.apply_symm_apply, MulAut.conjNormal_apply, he]`.
+-/
 theorem exists_conj {K₀ : IntermediateField ℚ_[p] (PadicAlgCl p)} (h₀ : K₀ ≤ K) (hK₀ : ∀ (σ : GK p K₀), ∀ x ∈ K, σ x ∈ K)
     (σ : GK p K₀) :
     ∃ c : GK p K →* GK p K, Continuous c ∧ ∀ g, resGK h₀ (c g) = σ * resGK h₀ g * σ⁻¹ := by
@@ -62,6 +80,15 @@ theorem exists_conj {K₀ : IntermediateField ℚ_[p] (PadicAlgCl p)} (h₀ : K�
     show resGK h₀ (e.symm (MulAut.conjNormal σ (e g))) = _
     rw [← he (e.symm _), e.apply_symm_apply, MulAut.conjNormal_apply, he]
 
+/- English proof (translation)
+Rewrite using `[mem_iff_fixed hL.le]`. Introduce `g hg`. Take `⟨c, hc, hcg⟩` from `exists_conj h₀ hK₀ σ⁻¹`. It suffices to establish `hmem : c g ∈ subG p K L by`. Establish `h1 : resGK h₀ (c g) x = x` using `hmem x hx`.
+
+Rewrite `h1` using `[hcg, inv_inv]`. Establish `h3 : σ ((σ⁻¹ * resGK h₀ g * σ) x) = g (σ x)` using `by show σ (σ⁻¹ (g (σ x))) = g (σ x)`. Conclude with `σ.apply_symm_apply _`. Rewrite `h3` using `[h1]`. Conclude with `h3.symm`.
+
+Assume the negation of the conclusion as `hcon`. Take `⟨χ, hχ, hne⟩` from `exists_char_ne_zero hL (c g) hcon`. Set `χ' : charGrp (GK p K)` to `⟨χ.1.comp (MonoidHom.toAdditive c), (show IsLocallyConstant fun g : GK p K => χ.1 (Additive.ofMul g) from χ.2).comp_continuous hc⟩`. Establish `hχ' : n • χ' = 0`. Use `Subtype.ext (AddMonoidHom.ext fun y => ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun f : charGrp (GK p K) => f.1 (MonoidHom.toAdditive c y)) ((hL' χ).1 hχ)`. Conclude with `hne ((hL' χ').2 hχ' g hg)`.
+-/
 theorem maximal_exponent_extension_stable {K₀ : IntermediateField ℚ_[p] (PadicAlgCl p)} (h₀ : K₀ ≤ K) (hK₀ : ∀ (σ : GK p K₀), ∀ x ∈ K, σ x ∈ K) {n : ℕ}
     (hL : IsAbLK p K L) (hL' : ∀ χ : charGrp (GK p K), TrivOn p K L χ ↔ n • χ = 0) (σ : GK p K₀) (x : PadicAlgCl p)
     (hx : x ∈ L) : σ x ∈ L := by
@@ -85,6 +112,11 @@ theorem maximal_exponent_extension_stable {K₀ : IntermediateField ℚ_[p] (Pad
     exact congrArg (fun f : charGrp (GK p K) => f.1 (MonoidHom.toAdditive c y)) ((hL' χ).1 hχ)
   exact hne ((hL' χ').2 hχ' g hg)
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `algebraMap x => exact (g.restrictScalars ℚ_[p]).commutes x`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`.
+
+Consider the case `inv x _ hx => rw [map_inv₀, hx]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, hx, hy]`.
+-/
 theorem mem_subG_adjoin (S : Set (PadicAlgCl p)) (g : GK p K) (h : ∀ x ∈ S, g x = x) :
     g ∈ subG p K (IntermediateField.adjoin ℚ_[p] S) := by
   intro x hx
@@ -95,6 +127,15 @@ theorem mem_subG_adjoin (S : Set (PadicAlgCl p)) (g : GK p K) (h : ∀ x ∈ S, 
   | inv x _ hx => rw [map_inv₀, hx]
   | mul x y _ _ hx hy => rw [map_mul, hx, hy]
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `hfinS : {ζ : PadicAlgCl p | ζ ^ n = 1}.Finite`. Establish `h1 : {ζ : PadicAlgCl p | ζ ^ n = 1} = ↑(Polynomial.nthRootsFinset n (1 : PadicAlgCl p))`. Use extensionality with `ζ`. Simplify using `[Polynomial.mem_nthRootsFinset hn]`.
+
+Rewrite using `[h1]`. Conclude with `Finset.finite_toSet _`. Use `⟨le_sup_left, ?_, ?_⟩` and prove the remaining obligations. Use `hK` as an intermediate fact. Use `hfinS.to_subtype` as an intermediate fact.
+
+Establish `: FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] {ζ : PadicAlgCl p | ζ ^ n = 1})` using `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Conclude with `IntermediateField.finiteDimensional_sup _ _`. Rewrite using `[subG_sup, commutator_def, Subgroup.commutator_le]`. Introduce `σ _ τ _`. Use `mem_subG_adjoin _ _ fun ζ hζ => ?_` and prove the remaining obligations.
+
+Establish `hζ' : ζ ^ n = 1` using `hζ`. Rewrite using `[cycN_spec ⁅σ, τ⁆ ζ hζ', map_commutatorElement, commutatorElement_eq_one_iff_mul_comm.2 (mul_comm _ _), Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ', pow_one]`.
+-/
 theorem isAbelian_cyclotomic_extension (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) :
     IsAbLK p K (K ⊔ IntermediateField.adjoin ℚ_[p] {ζ : PadicAlgCl p | ζ ^ n = 1}) := by
   have : NeZero n := ⟨hn.ne'⟩
@@ -117,6 +158,15 @@ theorem isAbelian_cyclotomic_extension (hK : FiniteDimensional ℚ_[p] K) {n : �
     rw [cycN_spec ⁅σ, τ⁆ ζ hζ', map_commutatorElement, commutatorElement_eq_one_iff_mul_comm.2 (mul_comm _ _),
       Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ', pow_one]
 
+/- English proof (translation)
+Establish `h2 : derivedSeries (GK p K) 2 ≤ subG p K L`. Establish `h1 : derivedSeries (GK p K) 1 ≤ subG p K M` using `hM.comm`. Rewrite using `[derivedSeries_succ]`. Use `(Subgroup.commutator_mono h1 h1).trans ?_` and prove the remaining obligations. Rewrite using `[Subgroup.commutator_le]`.
+
+Introduce `g₁ hg₁ g₂ hg₂`. Rewrite `hg₁`, `hg₂` using `[← range_resGK hM.le]`. Take `⟨a, rfl⟩` from `hg₁`. Take `⟨b, rfl⟩` from `hg₂`. Establish `h3 : ⁅a, b⁆ ∈ subG p M L` using `hL.comm (Subgroup.commutator_mem_commutator (Subgroup.mem_top a) (Subgroup.mem_top b))`.
+
+Rewrite using `[← map_commutatorElement]`. Introduce `x hx`. Conclude with `h3 x hx`. Use `⟨⟨2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_derivedSeries_eq (QuotientGroup.mk'_surjective (subG p K L)), eq_bot_iff, Subgroup.map_le_iff_le_comap]`.
+
+Introduce `g hg`. Use `show QuotientGroup.mk' _ g ∈ (⊥ : Subgroup _)`. Rewrite using `[Subgroup.mem_bot]`. Conclude with `(QuotientGroup.eq_one_iff g).2 (h2 hg)`.
+-/
 theorem isSolvable_of_abelian_tower {M : IntermediateField ℚ_[p] (PadicAlgCl p)} (hM : IsAbLK p K M) (hL : IsAbLK p M L) [(subG p K L).Normal] :
     Group.IsSolvable (GalLK p K L) := by
   have h2 : derivedSeries (GK p K) 2 ≤ subG p K L := by

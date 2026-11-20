@@ -14,6 +14,9 @@ open IsDedekindDomain NumberField
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `_` and use `LApproxId.approxId_of LApproxId.oneD`.
+-/
 theorem approxId : IdemEx → ApproxId := fun _ => LApproxId.approxId_of LApproxId.oneD
 
 end PositivityTheory.Rg.Rsw.L

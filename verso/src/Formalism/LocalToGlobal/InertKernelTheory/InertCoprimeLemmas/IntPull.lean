@@ -10,6 +10,11 @@ variable (D : D7) {N N' : ℕ}
 
 def cz (z : VC D N N') (k : D.what₂.Tau × Fin N' × Fin N) : ℂ := z k.1 k.2.1 k.2.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, coordV, cz, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single (τ, i, j)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `hb (Prod.ext h1.symm (Prod.ext h2.symm h3.symm))`. Simplify using the standard rewrite rules.
+-/
 theorem sum_coordV (z : VC D N N') : ∑ k, cz D z k • coordV D k = z := by
   funext τ i j
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, coordV, cz, mul_ite, mul_one, mul_zero]
@@ -21,6 +26,11 @@ theorem sum_coordV (z : VC D N N') : ∑ k, cz D z k • coordV D k = z := by
     exact hb (Prod.ext h1.symm (Prod.ext h2.symm h3.symm))
   · simp
 
+/- English proof (translation)
+Establish `h : (fun _ : Fin n => z) = fun _ => ∑ k, cz D z k • coordV D k`. Use function extensionality and compare the values at `_`. Conclude with `(sum_coordV D z).symm`. Rewrite using `[h, (iteratedFDeriv ℂ n G 0).map_sum (fun (_ : Fin n) k => cz D z k • coordV D k)]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]`.
+-/
 theorem iter_expand (G : VC D N N' → ℂ) (n : ℕ) (z : VC D N N') :
     iteratedFDeriv ℂ n G 0 (fun _ => z) =
       ∑ κ : Fin n → D.what₂.Tau × Fin N' × Fin N,
@@ -31,6 +41,13 @@ theorem iter_expand (G : VC D N N' → ℂ) (n : ℕ) (z : VC D N N') :
   refine Finset.sum_congr rfl fun κ _ => ?_
   rw [ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h1 : ∀ (f : Fin m → β) (b : β), Fintype.card {j // f j = b} = Multiset.count b (Multiset.map f Finset.univ.val)`. Introduce `f b`. Rewrite using `[Multiset.count_map, Fintype.card_subtype, Finset.card_def, Finset.filter_val]`. Use `congr 1`. Apply `Multiset.filter_congr` to reduce the goal to its premises.
+
+Introduce `x _`. Conclude with `eq_comm`. Establish `hc : ∀ b, Fintype.card {j // g' j = b} = Fintype.card {j // g j = b}`. Introduce `b`. Rewrite using `[h1, h1, h]`.
+
+Set `e : ∀ b, {j // g' j = b} ≃ {j // g j = b}` to `fun b => Fintype.equivOfCardEq (hc b)`. Use `⟨(Equiv.sigmaFiberEquiv g').symm.trans ((Equiv.sigmaCongrRight e).trans (Equiv.sigmaFiberEquiv g)), fun j => ?_⟩` and prove the remaining obligations. Conclude with `(e (g' j) ⟨j, rfl⟩).2`.
+-/
 theorem exists_perm_of_map_eq {β : Type*} {m : ℕ} (g g' : Fin m → β)
     (h : Multiset.map g Finset.univ.val = Multiset.map g' Finset.univ.val) :
     ∃ σ : Equiv.Perm (Fin m), ∀ j, g (σ j) = g' j := by
@@ -49,6 +66,17 @@ theorem exists_perm_of_map_eq {β : Type*} {m : ℕ} (g g' : Fin m → β)
     (Equiv.sigmaFiberEquiv g)), fun j => ?_⟩
   exact (e (g' j) ⟨j, rfl⟩).2
 
+/- English proof (translation)
+Establish `hm : m = Multiset.card (Finsupp.toMultiset α)`. Rewrite using `[← h, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin]`. Substitute `hm` using the available equality. Establish `hL : Multiset.map (fun i : Fin (Multiset.card (Finsupp.toMultiset α)) => (Finsupp.toMultiset α).toList.get ⟨i, by simpa using i.2⟩) Finset.univ.val = Finsupp.toMultiset α`. Rewrite using `[Fin.univ_val_map]`.
+
+Use `conv_rhs => rw [← Multiset.coe_toList (Finsupp.toMultiset α)]`. Use `congr 1`. Apply `List.ext_get (by simp)` to reduce the goal to its premises. Introduce `i h1 h2`. Simplify using the standard rewrite rules.
+
+Take `⟨σ, hσ⟩` from `exists_perm_of_map_eq _ g (hL.trans h.symm)`. Establish `h0 : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Unfold `taylor`.
+
+Rewrite using `[mul_div_cancel₀ _ h0]`. Establish `e1 : (fun j => coordV D (g j)) = (fun i : Fin (Multiset.card (Finsupp.toMultiset α)) => coordV D ((Finsupp.toMultiset α).toList.get ⟨i, by simpa using i.2⟩)) ∘ σ`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hσ j]`.
+
+Rewrite using `[e1, hG.analyticOn.iteratedFDeriv_comp_perm]`.
+-/
 theorem iter_eq_taylor (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) {m : ℕ}
     (g : Fin m → D.what₂.Tau × Fin N' × Fin N) (α : Mono D N N')
     (h : Multiset.map g Finset.univ.val = Finsupp.toMultiset α) :
@@ -78,6 +106,11 @@ theorem iter_eq_taylor (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.uni
 
 def ak {m : ℕ} (κ : Fin m → D.what₂.Tau × Fin N' × Fin N) : Mono D N N' := ∑ j, Finsupp.single (κ j) 1
 
+/- English proof (translation)
+Unfold `ak`. Rewrite using `[map_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[Finset.sum_eq_multiset_sum]`. Use `conv_rhs => rw [← Multiset.sum_map_singleton (Multiset.map κ Finset.univ.val), Multiset.map_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem toMultiset_ak {m : ℕ} (κ : Fin m → D.what₂.Tau × Fin N' × Fin N) :
     Finsupp.toMultiset (ak D κ) = Multiset.map κ Finset.univ.val := by
   unfold ak
@@ -87,6 +120,9 @@ theorem toMultiset_ak {m : ℕ} (κ : Fin m → D.what₂.Tau × Fin N' × Fin N
   conv_rhs => rw [← Multiset.sum_map_singleton (Multiset.map κ Finset.univ.val), Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Unfold `ak`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_X_eq {m : ℕ} (κ : Fin m → D.what₂.Tau × Fin N' × Fin N) :
     (∏ j, X (κ j) : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ) = monomial (ak D κ) 1 := by
   unfold ak
@@ -97,12 +133,26 @@ def RP (G : VC D N N' → ℂ) (n : ℕ) : MvPolynomial (D.what₂.Tau × Fin N'
   ∑ κ : Fin n → D.what₂.Tau × Fin N' × Fin N,
     C (iteratedFDeriv ℂ n G 0 (fun j => coordV D (κ j))) * ∏ j, X (κ j)
 
+/- English proof (translation)
+Rewrite using `[iter_expand, RP, map_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Simplify using `[map_prod, mul_comm]`.
+-/
 theorem eval_RP (G : VC D N N' → ℂ) (n : ℕ) (z : VC D N N') :
     eval (cz D z) (RP D G n) = iteratedFDeriv ℂ n G 0 (fun _ => z) := by
   rw [iter_expand, RP, map_sum]
   refine Finset.sum_congr rfl fun κ _ => ?_
   simp [map_prod, mul_comm]
 
+/- English proof (translation)
+Establish `h2 : coeff β (RP D G n) = ∑ κ : Fin n → D.what₂.Tau × Fin N' × Fin N, (if ak D κ = β then (1 : ℂ) else 0) * ((β.prod fun _ n => (n.factorial : ℂ)) * taylor D G β)`. Rewrite using `[RP, coeff_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[prod_X_eq, coeff_C_mul, coeff_monomial]`. Use `split_ifs with h`.
+
+Rewrite using `[iter_eq_taylor D G hG κ β (by rw [← h, toMultiset_ak]), mul_one, one_mul]`. Rewrite using `[mul_zero, zero_mul]`. Establish `h3 : (∑ κ : Fin n → D.what₂.Tau × Fin N' × Fin N, (if ak D κ = β then (1 : ℂ) else 0)) = coeff β ((∑ k, X k : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ) ^ n)`. Rewrite using `[← Fin.prod_const n (∑ k, X k : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ), Finset.prod_univ_sum, Fintype.piFinset_univ, coeff_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[prod_X_eq, coeff_monomial]`. Rewrite using `[h2, ← Finset.sum_mul, h3, coeff_sum_X_pow_of_fintype]`. Use `split_ifs with h`. Rewrite using `[← mul_assoc]`. Use `congr 1`.
+
+Substitute `h` using the available equality. Use `Nat.multinomial_spec β.support β` as an intermediate fact. Rewrite using `[Finsupp.multinomial_eq]`. Unfold `Finsupp.prod Finsupp.sum`. Rewrite using `[mul_comm]`.
+
+Use `show (∏ a ∈ β.support, ((β a).factorial : ℂ)) * ((Nat.multinomial β.support β : ℕ) : ℂ) = (((∑ a ∈ β.support, β a).factorial : ℕ) : ℂ)`. Conclude with `this` after adjusting the coercions. Simplify using the standard rewrite rules.
+-/
 theorem coeff_RP (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) (n : ℕ) (β : Mono D N N') :
     coeff β (RP D G n) =
       if (β.sum fun _ m => m) = n then (n.factorial : ℂ) * taylor D G β else 0 := by
@@ -134,6 +184,11 @@ theorem coeff_RP (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) (n 
     exact_mod_cast this
   · simp
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[coeff_RP D G hG, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Establish `hiff : ((β.sum fun _ m => m) = n) ↔ β ∈ Finset.finsuppAntidiag Finset.univ n`.
+
+Rewrite using `[Finset.mem_finsuppAntidiag, Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Simplify using the standard rewrite rules. Distinguish the cases in `h : (β.sum fun _ m => m) = n`. Rewrite using `[if_pos h, if_pos (hiff.1 h)]`. Rewrite using `[if_neg h, if_neg (mt hiff.2 h)]`.
+-/
 theorem RP_eq (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) (n : ℕ) :
     RP D G n = ∑ β ∈ Finset.finsuppAntidiag Finset.univ n, monomial β ((n.factorial : ℂ) * taylor D G β) := by
   ext β
@@ -147,6 +202,9 @@ theorem RP_eq (G : VC D N N' → ℂ) (hG : AnalyticOnNhd ℂ G Set.univ) (n : �
   · rw [if_pos h, if_pos (hiff.1 h)]
   · rw [if_neg h, if_neg (mt hiff.2 h)]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp, aeval_X, eval_X]`.
+-/
 theorem eval_aeval' {ι : Type*} (x : ι → ℂ) (ℓ : ι → MvPolynomial ι ℂ) (P : MvPolynomial ι ℂ) :
     eval x (aeval ℓ P) = eval (fun s => eval x (ℓ s)) P := by
   induction P using MvPolynomial.induction_on with
@@ -154,6 +212,13 @@ theorem eval_aeval' {ι : Type*} (x : ι → ℂ) (ℓ : ι → MvPolynomial ι 
   | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp, aeval_X, eval_X]
 
+/- English proof (translation)
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `hx : x = cz D (fun τ i j => x (τ, i, j))` using `rfl`. Use `set z : VC D N N' := fun τ i j => x (τ, i, j)`. Rewrite using `[hx, eval_RP, eval_aeval', A.iteratedFDeriv_comp_right (hH.contDiff (n := ⊤)) 0 le_top, ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero]`.
+
+Establish `hz : (fun s => eval (cz D z) (∑ k, cz D (A (coordV D k)) s • X k : MvPolynomial _ ℂ)) = cz D (A z)`. Use function extensionality and compare the values at `s`. Use `conv_rhs => rw [← sum_coordV D z]`. Simplify using `only [map_sum, map_smul, smul_eval, eval_X, cz, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz, eval_RP]`.
+-/
 theorem RP_comp (H : VC D N N' → ℂ) (hH : AnalyticOnNhd ℂ H Set.univ)
     (A : VC D N N' →L[ℂ] VC D N N') (n : ℕ) :
     RP D (H ∘ A) n = aeval (fun s => ∑ k, cz D (A (coordV D k)) s • X k) (RP D H n) := by
@@ -174,6 +239,11 @@ theorem RP_comp (H : VC D N N' → ℂ) (hH : AnalyticOnNhd ℂ H Set.univ)
     ring
   rw [hz, eval_RP]
 
+/- English proof (translation)
+Establish `hHA : AnalyticOnNhd ℂ (H ∘ A) Set.univ` using `hH.comp (A.analyticOnNhd _) (Set.mapsTo_univ _ _)`. Establish `h1` using `congrArg (coeff α) (RP_comp D H hH A (α.sum fun _ m => m))`. Rewrite `h1` using `[coeff_RP D (H ∘ A) hHA, if_pos rfl, RP_eq D H hH, map_sum, coeff_sum]`. Simplify using `only [aeval_monomial, algebraMap_eq, coeff_C_mul] at h1`. Establish `h0 : ((α.sum fun _ m => m).factorial : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`.
+
+Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem taylor_comp (H : VC D N N' → ℂ) (hH : AnalyticOnNhd ℂ H Set.univ)
     (A : VC D N N' →L[ℂ] VC D N N') (α : Mono D N N') :
     taylor D (H ∘ A) α = ∑ β ∈ Finset.finsuppAntidiag Finset.univ (α.sum fun _ m => m),
@@ -199,12 +269,20 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Cl
 
 variable (D : D7) {N N' : ℕ}
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (show algebraMap Qbar ℂ q ∈ Qbar from q.2)]`. Both sides reduce to the same expression.
+-/
 theorem lamC_alg {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (q : Qbar) :
     lamC lam (algebraMap Qbar ℂ q) = lam q := by
   unfold lamC
   rw [dif_pos (show algebraMap Qbar ℂ q ∈ Qbar from q.2)]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ s, (∑ k, c s k • MvPolynomial.X k : MvPolynomial σ R).IsHomogeneous 1`. Introduce `s`. Apply `MvPolynomial.IsHomogeneous.sum` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`.
+
+Conclude with `(MvPolynomial.isHomogeneous_X R k).C_mul _`. Use `MvPolynomial.IsHomogeneous.prod d.support (fun s => (∑ k, c s k • MvPolynomial.X k : MvPolynomial σ R) ^ d s) (fun s => 1 * d s) (fun s _ => (h1 s).pow (d s))` as an intermediate fact. Rewrite using `[Finsupp.degree_apply]`. Simplify `this` using `[Finsupp.prod]`.
+-/
 theorem isHom_prodQ {σ : Type*} [Fintype σ] {R : Type*} [CommSemiring R] (c : σ → σ → R) (d : σ →₀ ℕ) :
     (d.prod fun s e => (∑ k, c s k • MvPolynomial.X k : MvPolynomial σ R) ^ e).IsHomogeneous d.degree := by
   have h1 : ∀ s, (∑ k, c s k • MvPolynomial.X k : MvPolynomial σ R).IsHomogeneous 1 := by
@@ -219,12 +297,18 @@ theorem isHom_prodQ {σ : Type*} [Fintype σ] {R : Type*} [CommSemiring R] (c : 
   rw [Finsupp.degree_apply]
   simpa [Finsupp.prod] using this
 
+/- English proof (translation)
+Rewrite using `[Finset.mem_finsuppAntidiag]`. Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_S_iff (d : Mono D N N') (n : ℕ) :
     d ∈ Finset.finsuppAntidiag Finset.univ n ↔ d.degree = n := by
   rw [Finset.mem_finsuppAntidiag]
   rw [Finsupp.degree_eq_sum]
   simp
 
+/- English proof (translation)
+Use `map_prod (MvPolynomial.coeToMvPowerSeries.ringHom (σ := σ) (R := R)) (fun s => Q s ^ d s) d.support` as an intermediate fact. Simplify using `only [MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coe_pow] at this`. Simplify using `only [Finsupp.prod]`. Conclude with `this.symm`.
+-/
 theorem coe_prodQ {σ : Type*} {R : Type*} [CommSemiring R] (Q : σ → MvPolynomial σ R) (d : σ →₀ ℕ) :
     (d.prod fun s e => ((Q s : MvPolynomial σ R) : MvPowerSeries σ R) ^ e) =
       ((d.prod fun s e => Q s ^ e : MvPolynomial σ R) : MvPowerSeries σ R) := by
@@ -234,6 +318,25 @@ theorem coe_prodQ {σ : Type*} {R : Type*} [CommSemiring R] (Q : σ → MvPolyno
   simp only [Finsupp.prod]
   exact this.symm
 
+/- English proof (translation)
+Set `a' : (D.what₂.Tau × Fin N' × Fin N) → (D.what₂.Tau × Fin N' × Fin N) → Qbar` to `fun s k => ⟨cz D (A (coordV D k)) s, hA s k⟩`. Set `t' : Mono D N N' → Qbar` to `fun β => ⟨taylor D H β, hq β⟩`. Set `Q' : Mono D N N' → MvPolynomial (D.what₂.Tau × Fin N' × Fin N) Qbar` to `fun β => β.prod fun s e => (∑ k, a' s k • MvPolynomial.X k) ^ e`. Establish `hmapC : ∀ β, MvPolynomial.map (algebraMap Qbar ℂ) (Q' β) = β.prod fun s e => (∑ k, cz D (A (coordV D k)) s • MvPolynomial.X k) ^ e`. Introduce `β`.
+
+Simplify using `only [Q', Finsupp.prod, map_prod, map_pow, map_sum, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_X]`. Both sides reduce to the same expression. Establish `hmapP : ∀ β, MvPolynomial.map lam (Q' β) = β.prod fun s e => (∑ k, lamC lam (cz D (A (coordV D k)) s) • MvPolynomial.X k) ^ e`. Introduce `β`. Simplify using `only [Q', Finsupp.prod, map_prod, map_pow, map_sum, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_X]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← lamC_alg lam (a' s k)]`. Both sides reduce to the same expression.
+
+Establish `hB : MvPowerSeries.HasSubst (fun s => ((∑ k, lamC lam (cz D (A (coordV D k)) s) • MvPolynomial.X k : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe]`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, MvPolynomial.coeff_zero_X, smul_zero, Finset.sum_const_zero])`. Use extensionality with `α`. Rewrite using `[MvPowerSeries.coeff_subst hB]`.
+
+Use `show lamC lam (taylor D (H ∘ A) α) = _`. Rewrite using `[taylor_comp D H hH A α]`. Establish `e1 : (∑ β ∈ Finset.finsuppAntidiag Finset.univ (α.sum fun _ m => m), taylor D H β * MvPolynomial.coeff α (β.prod fun s e => (∑ k, cz D (A (coordV D k)) s • MvPolynomial.X k) ^ e)) = algebraMap Qbar ℂ (∑ β ∈ Finset.finsuppAntidiag Finset.univ (α.sum fun _ m => m), t' β * MvPolynom …`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← MvPolynomial.coeff_map, hmapC β]`. Both sides reduce to the same expression. Rewrite using `[e1, lamC_alg, map_sum]`. Establish `hsupp : Function.support (fun d : Mono D N N' => MvPowerSeries.coeff d (pSer D lam H) • MvPowerSeries.coeff α (d.prod fun s e => ((∑ k, lamC lam (cz D (A (coordV D k)) s) • MvPolynomial.X k : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : MvPowerSeries (D.what₂.Tau × Fin N' …`. Introduce `d hd`.
+
+Assume the negation of the conclusion as `hdS`. Apply `hd` to reduce the goal to its premises. Use `show _ • _ = 0`. Rewrite using `[coe_prodQ, MvPolynomial.coeff_coe, (isHom_prodQ _ d).coeff_eq_zero, smul_zero]`. Introduce `h`.
+
+Apply `hdS` to reduce the goal to its premises. Rewrite using `[Finset.mem_coe, mem_S_iff]`. Conclude with `h.symm`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, coe_prodQ, MvPolynomial.coeff_coe, ← hmapP β, MvPolynomial.coeff_map, smul_eq_mul]`. Use `congr 1`. Rewrite using `[← lamC_alg lam (t' β)]`. Both sides reduce to the same expression.
+-/
 theorem pSer_comp (H : VC D N N' → ℂ) (hH : AnalyticOnNhd ℂ H Set.univ)
     (hq : ∀ β, taylor D H β ∈ Qbar)
     (A : VC D N N' →L[ℂ] VC D N N') (hA : ∀ s k, cz D (A (coordV D k)) s ∈ Qbar)
@@ -318,18 +421,32 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable (D : D7)
 
+/- English proof (translation)
+Use `D.host.isCMField_hostE` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ (NumberField.IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`.
+-/
 theorem emb_star (φ : D.host.E →+* ℂ) (x : D.host.E) : φ (star x) = starRingEnd ℂ (φ x) := by
   have := D.host.isCMField_hostE
   change φ (NumberField.IsCMField.complexConj D.host.E x) = _
   rw [NumberField.IsCMField.complexEmbedding_complexConj]
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[emb_star, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem conj_eq_star (x : D.host.E) : D.host.conj x = star x := by
   apply D.host.φ₀.injective
   rw [emb_star, Formalism.HC.HostAx.conjE_apply]
 
+/- English proof (translation)
+The claim follows from `(IsIntegral.of_finite ℚ x).map φ.toRatAlgHom`.
+-/
 theorem emb_mem (φ : D.host.E →+* ℂ) (x : D.host.E) : φ x ∈ Qbar :=
   (IsIntegral.of_finite ℚ x).map φ.toRatAlgHom
 
+/- English proof (translation)
+Establish `key : ∀ X Y : Matrix (Fin m) (Fin n) R, ∑ i, ∑ j, X i j * star (Y i j) = Matrix.trace (X * Y.conjTranspose)`. Introduce `X Y`. Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[key, key, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc g g.conjTranspose, hg, Matrix.one_mul, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, hg', Matrix.mul_one]`.
+-/
 theorem sum_mul_star_conj {R : Type*} [CommRing R] [StarRing R] {n m : ℕ}
     (g : Matrix (Fin n) (Fin n) R) (g' : Matrix (Fin m) (Fin m) R) (hg : g * g.conjTranspose = 1)
     (hg' : g' * g'.conjTranspose = 1) (x y : Matrix (Fin m) (Fin n) R) :
@@ -344,18 +461,29 @@ theorem sum_mul_star_conj {R : Type*} [CommRing R] [StarRing R] {n m : ℕ}
   rw [← Matrix.mul_assoc g g.conjTranspose, hg, Matrix.one_mul, Matrix.trace_mul_comm, Matrix.mul_assoc,
     Matrix.mul_assoc, hg', Matrix.mul_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.star_apply, Matrix.map_apply]`. Rewrite using `[emb_star, starRingEnd_apply]`.
+-/
 theorem map_star (φ : D.host.E →+* ℂ) {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) :
     star (γ.map φ) = (star γ).map φ := by
   ext i j
   simp only [Matrix.star_apply, Matrix.map_apply]
   rw [emb_star, starRingEnd_apply]
 
+/- English proof (translation)
+Rewrite using `[map_star, ← Matrix.map_mul, hγ, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+-/
 theorem map_mul_star (φ : D.host.E →+* ℂ) {n : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E)
     (hγ : γ * star γ = 1) : γ.map φ * star (γ.map φ) = 1 := by
   rw [map_star, ← Matrix.map_mul, hγ, Matrix.map_one _ (map_zero φ) (map_one φ)]
 
 variable {D}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Establish `h1 : ∀ x : VC D N N', tPull D (tor0 D cc δ) γ γ' x τ i j = ∑ d, (∑ c, star ((tor0 D cc δ).emb τ (γ' c i)) * x τ c d) * (tor0 D cc δ).emb τ (γ d j)`. Introduce `x`. Simplify using `only [tPull, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[Pi.add_apply, Pi.add_apply, Pi.add_apply, h1, h1, h1]`.
+
+Simplify using `only [Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem tPull_add (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (z w : VC D N N') :
     tPull D (tor0 D cc δ) γ γ' (z + w) = tPull D (tor0 D cc δ) γ γ' z + tPull D (tor0 D cc δ) γ γ' w := by
@@ -367,6 +495,11 @@ theorem tPull_add (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Mat
   rw [Pi.add_apply, Pi.add_apply, Pi.add_apply, h1, h1, h1]
   simp only [Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Establish `h1 : ∀ x : VC D N N', tPull D (tor0 D cc δ) γ γ' x τ i j = ∑ d, (∑ c, star ((tor0 D cc δ).emb τ (γ' c i)) * x τ c d) * (tor0 D cc δ).emb τ (γ d j)`. Introduce `x`. Simplify using `only [tPull, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, h1, h1]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tPull_smul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (c : ℂ) (z : VC D N N') :
     tPull D (tor0 D cc δ) γ γ' (c • z) = c • tPull D (tor0 D cc δ) γ γ' z := by
@@ -387,10 +520,18 @@ def tPullL (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fi
       map_add' := tPull_add cc δ γ γ'
       map_smul' := tPull_smul cc δ γ γ' }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tPullL_apply (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (z : VC D N N') :
     tPullL cc δ γ γ' z = tPull D (tor0 D cc δ) γ γ' z := rfl
 
+/- English proof (translation)
+Rewrite using `[tPullL_apply]`. Use `show ((Matrix.conjTranspose (γ'.map (embT D s.1)) * Matrix.of (coordV D k s.1) * γ.map (embT D s.1) : Matrix _ _ ℂ)) s.2.1 s.2.2 ∈ Qbar`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.of_apply]`. Use `IntermediateField.sum_mem _ fun d _ => IntermediateField.mul_mem _ ?_ (emb_mem D _ _)` and prove the remaining obligations. Use `IntermediateField.sum_mem _ fun c _ => IntermediateField.mul_mem _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← starRingEnd_apply, ← emb_star]`. Conclude with `emb_mem D _ _`. Unfold `coordV split_ifs`. Conclude with `IntermediateField.one_mem _`. Conclude with `IntermediateField.zero_mem _`.
+-/
 theorem tPull_entry_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (s k : D.what₂.Tau × Fin N' × Fin N) :
     cz D (tPullL cc δ γ γ' (coordV D k)) s ∈ Qbar := by
@@ -407,6 +548,11 @@ theorem tPull_entry_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ
     · exact IntermediateField.one_mem _
     · exact IntermediateField.zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (Matrix.conjTranspose (γ'.map (embT D τ)) * Matrix.of (fun i j => embT D τ (B i j)) * γ.map (embT D τ) : Matrix _ _ ℂ) = Matrix.of (fun i j => embT D τ ((star γ' * B * γ) i j))`. Rewrite using `[← Matrix.star_eq_conjTranspose, map_star]`. Establish `h1 : Matrix.of (fun i j => embT D τ (B i j)) = B.map (embT D τ)` using `rfl`. Establish `h2 : Matrix.of (fun i j => embT D τ ((star γ' * B * γ) i j)) = (star γ' * B * γ).map (embT D τ)` using `rfl`.
+
+Rewrite using `[h1, h2, Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem tPull_embV (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (B : Matrix (Fin N') (Fin N) D.host.E) :
     tPull D (tor0 D cc δ) γ γ' (embV D (tor0 D cc δ) B) = embV D (tor0 D cc δ) (star γ' * B * γ) := by
@@ -418,6 +564,11 @@ theorem tPull_embV (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Ma
   have h2 : Matrix.of (fun i j => embT D τ ((star γ' * B * γ) i j)) = (star γ' * B * γ).map (embT D τ) := rfl
   rw [h1, h2, Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.TaylorLogMetric.Hf`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `sum_mul_star_conj (γ.map (embT D τ)) (γ'.map (embT D τ)) (by rw [← Matrix.star_eq_conjTranspose]; exact map_mul_star D _ γ hγ) (by rw [← Matrix.star_eq_conjTranspose]; exact map_mul_star D _ γ' hγ') (Matrix.of (z τ)) (Matrix.of (w τ))` as an intermediate fact. Simplify using `only [starRingEnd_apply, tPull]`.
+
+Simplify using `only [Matrix.of_apply] at this`. Conclude with `this`.
+-/
 theorem Hf_tPull (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (hγ : γ * star γ = 1) (hγ' : γ' * star γ' = 1) (z w : VC D N N') :
     Formalism.MainNotions.TaylorLogMetric.Hf D (tor0 D cc δ) (tPull D (tor0 D cc δ) γ γ' z) (tPull D (tor0 D cc δ) γ γ' w) =
@@ -432,6 +583,9 @@ theorem Hf_tPull (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matr
   simp only [Matrix.of_apply] at this
   exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[Function.comp_apply, tPullL_apply]`. Use `show G (tPull D (tor0 D cc δ) γ γ' (z + t)) * _ = G (tPull D (tor0 D cc δ) γ γ' z + tPull D (tor0 D cc δ) γ γ' t) * _`. Rewrite using `[tPull_add, Hf_tPull cc δ γ γ' hγ hγ', Hf_tPull cc δ γ γ' hγ hγ']`.
+-/
 theorem U_pull (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (hγ : γ * star γ = 1) (hγ' : γ' * star γ' = 1) (t : VC D N N')
     (G : VC D N N' → ℂ) :
@@ -454,6 +608,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e : (∑ i ∈ s, x i * y i) = algebraMap Qbar ℂ (∑ i ∈ s, (⟨x i, hx i⟩ : Qbar) * ⟨y i, hy i⟩)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, lamC_alg, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← lamC_alg lam ⟨x i, hx i⟩, ← lamC_alg lam ⟨y i, hy i⟩]`. Both sides reduce to the same expression.
+-/
 theorem lamC_sum_mul {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {ι : Type*} (s : Finset ι) (x y : ι → ℂ)
     (hx : ∀ i, x i ∈ Qbar) (hy : ∀ i, y i ∈ Qbar) :
     lamC lam (∑ i ∈ s, x i * y i) = ∑ i ∈ s, lamC lam (x i) * lamC lam (y i) := by
@@ -467,6 +626,9 @@ theorem lamC_sum_mul {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) {ι : T
   rw [map_mul, ← lamC_alg lam ⟨x i, hx i⟩, ← lamC_alg lam ⟨y i, hy i⟩]
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_coordV D z]`. Simplify using `only [map_sum, map_smul, cz, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cz_apply {N N' : ℕ} (A : VC D N N' →L[ℂ] VC D N N') (z : VC D N N') (s : D.what₂.Tau × Fin N' × Fin N) :
     cz D (A z) s = ∑ k, cz D (A (coordV D k)) s * cz D z k := by
   conv_lhs => rw [← sum_coordV D z]
@@ -480,6 +642,9 @@ def PQ {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) 
   map_add' B C := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c B := by rw [Matrix.mul_smul, Matrix.smul_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PQ_apply {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) (Fin N) D.host.E)
     (B : Matrix (Fin N') (Fin N) D.host.E) : PQ P Q B = P * B * Q := rfl
 
@@ -489,9 +654,17 @@ def PQK {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N)
   map_add' B C := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c B := by rw [Matrix.mul_smul, Matrix.smul_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PQK_apply {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) (Fin N) D.host.E)
     (B : Matrix (Fin N') (Fin N) D.host.E) : PQK P Q B = P * B * Q := rfl
 
+/- English proof (translation)
+Introduce `B hB`. Establish `hle : Submodule.map ((PQ P Q).restrictScalars (𝓞 D.host.E)) (homL D L1 L1') ≤ homL D L2 L2'`. Unfold `homL`. Rewrite using `[Submodule.map_span_le]`. Introduce `A hA`.
+
+Conclude with `Submodule.subset_span (h A hA)`. Conclude with `hle (Submodule.mem_map_of_mem hB)`.
+-/
 theorem homL_map {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) (Fin N) D.host.E)
     (L1 L2 : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L1' L2' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
     (h : ∀ A : Matrix (Fin N') (Fin N) D.host.E, (∀ x ∈ L1, A.mulVec x ∈ L1') → ∀ x ∈ L2, (P * A * Q).mulVec x ∈ L2') :
@@ -504,6 +677,11 @@ theorem homL_map {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matri
     exact Submodule.subset_span (h A hA)
   exact hle (Submodule.mem_map_of_mem hB)
 
+/- English proof (translation)
+Introduce `B hB`. Establish `hle : Submodule.map ((PQ P Q).restrictScalars (𝓞 D.host.E)) (YYl D L1 L1') ≤ YYl D L2 L2'`. Unfold `YYl`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨a, ha, A, hA, rfl⟩`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨a, ha, P * A * Q, homL_map P Q L1 L2 L1' L2' h A hA, ?_⟩` and prove the remaining obligations. Use `show P * (a • A) * Q = a • (P * A * Q)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `hle (Submodule.mem_map_of_mem hB)`.
+-/
 theorem YY_map {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix (Fin N) (Fin N) D.host.E)
     (L1 L2 : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L1' L2' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
     (h : ∀ A : Matrix (Fin N') (Fin N) D.host.E, (∀ x ∈ L1, A.mulVec x ∈ L1') → ∀ x ∈ L2, (P * A * Q).mulVec x ∈ L2') :
@@ -519,11 +697,17 @@ theorem YY_map {N N' : ℕ} (P : Matrix (Fin N') (Fin N') D.host.E) (Q : Matrix 
     rw [Matrix.mul_smul, Matrix.smul_mul]
   exact hle (Submodule.mem_map_of_mem hB)
 
+/- English proof (translation)
+Unfold `SDLat.smulLat`. Simplify using `[Submodule.mem_map, Matrix.toLin'_apply]`.
+-/
 theorem mem_smulLat {N : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (x : Fin N → D.host.E) : x ∈ SDLat.smulLat γ M ↔ ∃ y ∈ M, γ.mulVec y = x := by
   unfold SDLat.smulLat
   simp [Submodule.mem_map, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨m', hm', he⟩` from `(mem_smulLat γ' M' _).1 (hA (γ.mulVec y) ((mem_smulLat γ M _).2 ⟨y, hy, rfl⟩))`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← he, Matrix.mulVec_mulVec, h4, Matrix.one_mulVec]`. Conclude with `hm'`.
+-/
 theorem gens_pull {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E)
     (h4 : star γ' * γ' = 1) (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (A : Matrix (Fin N') (Fin N) D.host.E)
@@ -534,6 +718,9 @@ theorem gens_pull {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Mat
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← he, Matrix.mulVec_mulVec, h4, Matrix.one_mulVec]
   exact hm'
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(mem_smulLat γ M x).1 hx`. Establish `e : (star γ).mulVec (γ.mulVec y) = y` using `by rw [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]`. Conclude with `(mem_smulLat γ' M' _).2 ⟨A.mulVec y, hA y hy, rfl⟩`.
+-/
 theorem gens_push {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E)
     (h2 : star γ * γ = 1) (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (M' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (A : Matrix (Fin N') (Fin N) D.host.E)
@@ -545,6 +732,19 @@ theorem gens_push {N N' : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Mat
   rw [← Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]
   exact (mem_smulLat γ' M' _).2 ⟨A.mulVec y, hA y hy, rfl⟩
 
+/- English proof (translation)
+Establish `hΦ` using `YY_map (star γ') γ (SDLat.smulLat γ M) M (SDLat.smulLat γ' M') M' (gens_pull γ γ' h4 M M')`. Establish `hΨ` using `YY_map γ' (star γ) M (SDLat.smulLat γ M) M' (SDLat.smulLat γ' M') (gens_push γ γ' h2 M M')`. Establish `hinv : ∀ B : Matrix (Fin N') (Fin N) D.host.E, γ' * (star γ' * B * γ) * star γ = B`. Introduce `B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h3, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+
+Establish `hinv' : ∀ B : Matrix (Fin N') (Fin N) D.host.E, star γ' * (γ' * B * star γ) * γ = B`. Introduce `B`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h4, Matrix.one_mul, Matrix.mul_assoc, h2, Matrix.mul_one]`. Take `⟨hli, hsp, hgen⟩` from `hb`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective (PQK (star γ') γ)`. Introduce `B B' h`. Use `congrArg (fun X => γ' * X * star γ) h` as an intermediate fact. Simplify using `only [PQK_apply, hinv] at this`. Conclude with `this`.
+
+Use `hli.map' (PQK (star γ') γ) (LinearMap.ker_eq_bot.2 hinj)` as an intermediate fact. Simplify `this` using `only [Function.comp_def, PQK_apply]`. Introduce `i`. Take `⟨s, hs, hm⟩` from `hsp i`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Use `hΦ _ hm` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, Matrix.smul_mul]`. Then use the resulting hypothesis. Introduce `y hy`. Take `⟨s, hs, c, hc⟩` from `hgen _ (hΨ y hy)`. Use `⟨s, hs, c, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (PQ (star γ') γ) hc` as an intermediate fact. Rewrite `this` using `[map_smul, map_sum, PQ_apply, hinv']`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, PQ_apply]`.
+-/
 theorem locBasis_pull {N N' r : ℕ} (p : ℕ) (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (h1 : γ * star γ = 1) (h2 : star γ * γ = 1)
     (h3 : γ' * star γ' = 1) (h4 : star γ' * γ' = 1) (M : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
@@ -582,6 +782,11 @@ theorem locBasis_pull {N N' r : ℕ} (p : ℕ) (γ : Matrix (Fin N) (Fin N) D.ho
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [map_smul, PQ_apply]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[← hb i j]`. Unfold `hYY`. Use `congr 1`. Simplify using `only [conj_eq_star]`.
+
+Use `sum_mul_star_conj γ γ' (by rw [← Matrix.star_eq_conjTranspose]; exact h1) (by rw [← Matrix.star_eq_conjTranspose]; exact h3) (b i) (b j)` as an intermediate fact. Rewrite using `[Matrix.star_eq_conjTranspose]`. Conclude with `this`.
+-/
 theorem ortho_pull {N N' r : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
     (γ' : Matrix (Fin N') (Fin N') D.host.E) (h1 : γ * star γ = 1) (h3 : γ' * star γ' = 1)
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : Orthonormal D b) :
@@ -596,6 +801,17 @@ theorem ortho_pull {N N' r : ℕ} (γ : Matrix (Fin N) (Fin N) D.host.E)
   rw [Matrix.star_eq_conjTranspose]
   exact this
 
+/- English proof (translation)
+Establish `hB : MvPowerSeries.HasSubst (fun s => ((∑ k, c s k • MvPolynomial.X k : MvPolynomial (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun s => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe]`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, MvPolynomial.coeff_zero_X, smul_zero, Finset.sum_const_zero])`. Establish `hL : ∀ i : Fin r, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel lam Λ) wq)) = 0`. Introduce `i`.
+
+Apply `PowerSeries.constantCoeff_subst_eq_zero` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `[flog]`. Establish `hφ : ∀ bb : Fin r → Matrix (Fin N') (Fin N) D.host.E, MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, algebraMap ℂ_[p] (MvPowerSeries (Fin r) ℂ_[p]) (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * lamC lam (embT D k.1 (bb i k.2.1 k.2.2))) * PowerSeries.subst (MvPowerSeries.X i …`. Introduce `bb`.
+
+Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `k`. Simplify using `only [map_sum, map_mul, hL, mul_zero, Finset.sum_const_zero]`. Simplify using `only [atLog]`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hB (hφ b)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[MvPowerSeries.subst_coe, map_sum]`. Simplify using `only [map_smul, MvPolynomial.aeval_X, ← hc s]`. Simplify using `only [Finset.smul_sum, Finset.mul_sum, map_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem atLog_subst {N N' r : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p])
     (b b' : Fin r → Matrix (Fin N') (Fin N) D.host.E)
@@ -649,6 +865,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D cc δ p _ lam N N' γ γ' M M' t G hAlg hInt`. Unfold `IntS at hInt ⊢`. Introduce `C wq r b hC hwq hb hon`. Establish `h1 : (γ : Matrix (Fin N) (Fin N) D.host.E) * star (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff.1 γ.2`. Establish `h2 : star (γ : Matrix (Fin N) (Fin N) D.host.E) * (γ : Matrix (Fin N) (Fin N) D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff'.1 γ.2`.
+
+Establish `h3 : (γ' : Matrix (Fin N') (Fin N') D.host.E) * star (γ' : Matrix (Fin N') (Fin N') D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff.1 γ'.2`. Establish `h4 : star (γ' : Matrix (Fin N') (Fin N') D.host.E) * (γ' : Matrix (Fin N') (Fin N') D.host.E) = 1` using `Matrix.mem_unitaryGroup_iff'.1 γ'.2`. Establish `hc : ∀ (s : D.what₂.Tau × Fin N' × Fin N) (i : Fin r), ∑ k, lamC lam (cz D (tPullL cc δ (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E) (coordV D k)) s) * lamC lam (embT D k.1 (b i k.2.1 k.2.2)) = lamC lam (embT D s.1 ((star (γ' : Matrix (Fin N') (F …`. Introduce `s i`. Rewrite using `[← lamC_sum_mul lam Finset.univ _ _ (fun k => tPull_entry_mem cc δ _ _ s k) (fun k => emb_mem D _ _)]`.
+
+Use `congr 1`. Use `cz_apply (tPullL cc δ (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E)) (embV D (tor0 D cc δ) (b i)) s` as an intermediate fact. Rewrite `this` using `[tPullL_apply, tPull_embV]`. Conclude with `this.symm`. Rewrite using `[U_pull cc δ _ _ h1 h3 t G, pSer_comp D _ hAlg.1 hAlg.2 (tPullL cc δ (γ : Matrix (Fin N) (Fin N) D.host.E) (γ' : Matrix (Fin N') (Fin N') D.host.E)) (fun s k => tPull_entry_mem cc δ _ _ s k) lam, atLog_subst lam _ C wq b (fun i => star (γ' : Matrix (Fin N') (Fin N') D.host.E) * b …`.
+
+Conclude with `hInt C wq r _ hC hwq (locBasis_pull p _ _ h1 h2 h3 h4 M M' b hb) (ortho_pull _ _ h1 h3 b hon)`.
+-/
 theorem pullback_fact : PullFact := by
   intro D cc δ p _ lam N N' γ γ' M M' t G hAlg hInt
   unfold IntS at hInt ⊢

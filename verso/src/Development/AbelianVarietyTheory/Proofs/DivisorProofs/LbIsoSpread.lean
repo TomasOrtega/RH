@@ -10,6 +10,17 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.SiegBundleSpread
 
+/- English proof (translation)
+Introduce `g n B _ ζ S _ R₀ s₀ d₀ Y sY u h₀ ψ sE e j hψ j₂ φ₂ hj hj₂ hej hφ₂ heφ`. Take `⟨ψ₂, hψ₂⟩` from `GlobalTheory.SiegDesc.exists_isSquare hψ.w`. Establish `hcomp : j₂ ≫ ψ₂ = φ₂` using `GlobalTheory.SiegDesc.isSquare_comp rfl hj₂ hψ₂ hφ₂`. Establish `hpb : IsPullback j₂ (G2 e.A).hom (G2 d₀.A).hom (spMap R₀.subtype)` using `GlobalTheory.SiegDesc.isPullback_of_isSquare hj hj₂`. Use `haveI : IsProper d₀.A.hom := d₀.ab.proper`.
+
+Use `haveI : IsProper (G2 d₀.A).hom := by`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst d₀.A.hom d₀.A.hom ≫ d₀.A.hom)`. Use `infer_instance`. Establish `hN : (u.P.pull ψ₂).IsLB` using `pull_isLB u.isLB ψ₂`. Establish `H : LBIso (d₀.P.pull j₂) ((u.P.pull ψ₂).pull j₂)`.
+
+Establish `a : LBIso (d₀.P.pull j₂) (u.P.pull φ₂)` using `LBIso.trans (pull_isLB d₀.isLB _) e.isLB (pull_isLB u.isLB _) (LBIso.symm hej) heφ`. Establish `b : LBIso (u.P.pull φ₂) ((u.P.pull ψ₂).pull j₂)`. Rewrite using `[← hcomp]`. Conclude with `LBIso.symm (GlobalTheory.SiegelPullComp.iso_pull_pull u.isLB ψ₂ j₂)`. Conclude with `LBIso.trans (pull_isLB d₀.isLB _) (pull_isLB u.isLB _) (pull_isLB hN _) a b`.
+
+Take `⟨F, hF⟩` from `GlobalTheory.lbIso_descends_to_subring_containing_finset S R₀ (G2 e.A).left (G2 d₀.A).left (G2 e.A).hom (G2 d₀.A).hom j₂ d₀.P (u.P.pull ψ₂) hpb d₀.isLB hN H`. Use `⟨F, fun R₁ hle hFR s₁ d₁ φ₁ φ₁₂ χ₂ hφ₁ hφ₁₂ hd₁ hχ₂ => ?_⟩` and prove the remaining obligations. Establish `hcomp₁ : φ₁₂ ≫ ψ₂ = χ₂` using `GlobalTheory.SiegDesc.isSquare_comp rfl hφ₁₂ hψ₂ hχ₂`. Establish `H₁` using `hF R₁ hle hFR (G2 d₁.A).left (G2 d₁.A).hom φ₁₂ (GlobalTheory.SiegDesc.isPullback_of_isSquare hφ₁ hφ₁₂)`. Establish `c : LBIso ((u.P.pull ψ₂).pull φ₁₂) (u.P.pull χ₂)`.
+
+Rewrite using `[← hcomp₁]`. Conclude with `GlobalTheory.SiegelPullComp.iso_pull_pull u.isLB ψ₂ φ₁₂`. Conclude with `LBIso.trans d₁.isLB (pull_isLB hN _) (pull_isLB u.isLB _) (LBIso.trans d₁.isLB (pull_isLB d₀.isLB _) (pull_isLB hN _) hd₁ H₁) c`.
+-/
 theorem lbIso_spread : ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Type) [CommRing S] (R₀ : Subring S) (s₀ : Sp R₀ ⟶ Sp B) (d₀ : SiegPre g n ζ s₀) (Y : Scheme.{0}) (sY : Y ⟶ Sp B) (u : SiegPre g n ζ sY) (h₀ : Sp R₀ ⟶ Y) (ψ : d₀.A.left ⟶ u.A.left) (sE : Sp S ⟶ Sp B) (e : SiegPre g n ζ sE) (j : e.A.left ⟶ d₀.A.left), IsPullback ψ d₀.A.hom u.A.hom h₀ → ∀ (j₂ : (G2 e.A).left ⟶ (G2 d₀.A).left) (φ₂ : (G2 e.A).left ⟶ (G2 u.A).left), IsPullback j e.A.hom d₀.A.hom (spMap R₀.subtype) → IsSquare j j₂ → LBIso e.P (d₀.P.pull j₂) → IsSquare (j ≫ ψ) φ₂ → LBIso e.P (u.P.pull φ₂) → ∃ F : Finset S, ∀ (R₁ : Subring S) (hle : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (s₁ : Sp R₁ ⟶ Sp B) (d₁ : SiegPre g n ζ s₁) (φ₁ : d₁.A.left ⟶ d₀.A.left) (φ₁₂ : (G2 d₁.A).left ⟶ (G2 d₀.A).left) (χ₂ : (G2 d₁.A).left ⟶ (G2 u.A).left), IsPullback φ₁ d₁.A.hom d₀.A.hom (spMap (Subring.inclusion hle)) → IsSquare φ₁ φ₁₂ → LBIso d₁.P (d₀.P.pull φ₁₂) → IsSquare (φ₁ ≫ ψ) χ₂ → LBIso d₁.P (u.P.pull χ₂) := by
   intro g n B _ ζ S _ R₀ s₀ d₀ Y sY u h₀ ψ sE e j hψ j₂ φ₂ hj hj₂ hej hφ₂ heφ
   obtain ⟨ψ₂, hψ₂⟩ := GlobalTheory.SiegDesc.exists_isSquare hψ.w

@@ -5,6 +5,17 @@ open scoped Matrix
 
 namespace GlobalTheory.OddInvolution
 
+/- English proof (translation)
+Establish `key : ∀ i d : ℕ, 0 < d → x ^ (i + d) = x ^ i → ∃ m : ℕ, 0 < m ∧ IsIdempotentElem (x ^ m)`. Introduce `i d hd h`. Establish `h1 : ∀ t k : ℕ, x ^ (i + k + t * d) = x ^ (i + k)`. Introduce `t k`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `succ t ih`. Establish `: i + k + (t + 1) * d = (i + d) + (k + t * d)` using `by ring`. Rewrite using `[this, pow_add, h, ← pow_add, ← add_assoc, ih]`. Establish `hle : i ≤ (i + 1) * d` using `by nlinarith`.
+
+Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Use `⟨(i + 1) * d, by positivity, ?_⟩` and prove the remaining obligations. Unfold `IsIdempotentElem`. Rewrite using `[← pow_add]`. Use `h1 (i + 1) k` as an intermediate fact.
+
+Rewrite `this` using `[← hk]`. Conclude with `this`. Take `⟨i, j, hij, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => x ^ n)`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Conclude with `key i (j - i) (by omega) (by rw [Nat.add_sub_cancel' hlt.le]; exact h.symm)`.
+
+Conclude with `key j (i - j) (by omega) (by rw [Nat.add_sub_cancel' hlt.le]; exact h)`.
+-/
 theorem exists_pos_pow_idem {M : Type} [Monoid M] [Finite M] (x : M) :
     ∃ m : ℕ, 0 < m ∧ IsIdempotentElem (x ^ m) := by
   have key : ∀ i d : ℕ, 0 < d → x ^ (i + d) = x ^ i → ∃ m : ℕ, 0 < m ∧ IsIdempotentElem (x ^ m) := by
@@ -29,18 +40,41 @@ theorem exists_pos_pow_idem {M : Type} [Monoid M] [Finite M] (x : M) :
   · exact key i (j - i) (by omega) (by rw [Nat.add_sub_cancel' hlt.le]; exact h.symm)
   · exact key j (i - j) (by omega) (by rw [Nat.add_sub_cancel' hlt.le]; exact h)
 
+/- English proof (translation)
+Use `⟨fun h => by rw [h, zero_pow hm.ne'], fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : u ^ m * u ^ m = u ^ m * 1` using `by rw [mul_one]; exact he`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ h) h2`.
+-/
 theorem pow_idem_field {F : Type} [Field F] {u : F} {m : ℕ} (hm : 0 < m)
     (he : IsIdempotentElem (u ^ m)) : (u = 0 → u ^ m = 0) ∧ (u ≠ 0 → u ^ m = 1) := by
   refine ⟨fun h => by rw [h, zero_pow hm.ne'], fun h => ?_⟩
   have h2 : u ^ m * u ^ m = u ^ m * 1 := by rw [mul_one]; exact he
   exact mul_left_cancel₀ (pow_ne_zero _ h) h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hs`. Take `⟨m, hm, hsm⟩` from `exists_max_ideal_of_mem_nonunits (show s ∈ nonunits R from hs)`. Conclude with `h m hm (Ideal.Quotient.eq_zero_iff_mem.mpr hsm)`.
+-/
 theorem isUnit_of_forall_maximal {R : Type} [CommRing R] {s : R}
     (h : ∀ m : Ideal R, m.IsMaximal → Ideal.Quotient.mk m s ≠ 0) : IsUnit s := by
   by_contra hs
   obtain ⟨m, hm, hsm⟩ := exists_max_ideal_of_mem_nonunits (show s ∈ nonunits R from hs)
   exact h m hm (Ideal.Quotient.eq_zero_iff_mem.mpr hsm)
 
+/- English proof (translation)
+Take `⟨n1, hn1, he1⟩` from `exists_pos_pow_idem (b * c)`. Take `⟨n2, hn2, he2⟩` from `exists_pos_pow_idem ((b + c) ^ 2 + 4 * a ^ 2)`. Use `set e1 := (b * c) ^ n1 with he1d`. Use `set e2 := ((b + c) ^ 2 + 4 * a ^ 2) ^ n2 with he2d`. Use `⟨(1 - e1) * e2 * (b + c) + (1 - e1) * (1 - e2) * (b - c), e1 * b + (1 - e1) * e2 * (-2 * a) + (1 - e1) * (1 - e2) * (2 * a), e1 * (-c) + (1 - e1) * e2 * (-2 * a) + (1 - e1) * (1 - e2) * (-2 * a), ?_, by ring⟩` and prove the remaining obligations.
+
+Apply `isUnit_of_forall_maximal` to reduce the goal to its premises. Introduce `m hm`. Use `letI := Ideal.Quotient.field m`. Establish `h2' : Ideal.Quotient.mk m (2 : R) ≠ 0` using `(h2.map (Ideal.Quotient.mk m)).ne_zero`. Establish `hh` using `congrArg (Ideal.Quotient.mk m) h`.
+
+Establish `q1 : Ideal.Quotient.mk m e1 = (Ideal.Quotient.mk m (b * c)) ^ n1` using `by rw [he1d, map_pow]`. Establish `q2 : Ideal.Quotient.mk m e2 = (Ideal.Quotient.mk m ((b + c) ^ 2 + 4 * a ^ 2)) ^ n2`. Rewrite using `[he2d, map_pow]`. Establish `k1` using `pow_idem_field hn1 (q1 ▸ he1.map (Ideal.Quotient.mk m))`. Establish `k2` using `pow_idem_field hn2 (q2 ▸ he2.map (Ideal.Quotient.mk m))`.
+
+Rewrite `k1` using `[← q1]`. Rewrite `k2` using `[← q2]`. Simplify using `only [map_add, map_mul, map_sub, map_one, map_neg, map_pow, map_ofNat] at hh k1 k2 h2' ⊢`. Generalize the expression as in `Ideal.Quotient.mk m e1 = E1 at k1 k2 ⊢`. Generalize the expression as in `Ideal.Quotient.mk m e2 = E2 at k1 k2 ⊢`.
+
+Generalize the expression as in `Ideal.Quotient.mk m a = A at hh k1 k2 ⊢`. Generalize the expression as in `Ideal.Quotient.mk m b = B at hh k1 k2 ⊢`. Generalize the expression as in `Ideal.Quotient.mk m c = C at hh k1 k2 ⊢`. Establish `h8 : (2 : R ⧸ m) * 2 * 2 ≠ 0` using `by simp [h2']`. Distinguish the cases in `hBC : B * C = 0`.
+
+Rewrite using `[k1.1 hBC]`. Distinguish the cases in `hU : (B + C) ^ 2 + 4 * A ^ 2 = 0`. Rewrite using `[k2.1 hU]`. Introduce `hz`. Apply `h8` to reduce the goal to its premises.
+
+Take the linear combination `-hz + hU - 8 * hh + 4 * hBC`. Rewrite using `[k2.2 hU]`. Introduce `hz`. Apply `hU` to reduce the goal to its premises. Take the linear combination `hz`.
+
+Rewrite using `[k1.2 hBC]`. Introduce `hz`. Apply `hBC` to reduce the goal to its premises. Take the linear combination `-hz`.
+-/
 theorem exists_anticommuting {R : Type} [CommRing R] [Finite R] (h2 : IsUnit (2 : R))
     (a b c : R) (h : a * a + b * c = 1) :
     ∃ p q r : R, IsUnit (p * p + q * r) ∧ 2 * a * p + b * r + c * q = 0 := by
@@ -86,6 +120,13 @@ theorem exists_anticommuting {R : Type} [CommRing R] [Finite R] (h2 : IsUnit (2 
     apply hBC
     linear_combination -hz
 
+/- English proof (translation)
+Rewrite `hdet` using `[Matrix.det_fin_two]`. Rewrite `htr` using `[Matrix.trace_fin_two]`. Establish `hd : X 1 1 = -X 0 0` using `by linear_combination htr`. Establish `h : X 0 0 * X 0 0 + X 0 1 * X 1 0 = 1`. Rewrite `hdet` using `[hd]`.
+
+Take the linear combination `-hdet`. Take `⟨p, q, r, hs, hanti⟩` from `exists_anticommuting h2 (X 0 0) (X 0 1) (X 1 0) h`. Use `⟨!![p, q; r, -p], p * p + q * r, hs, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`.
+
+Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, hd, Matrix.vecMul, dotProduct] <;>`. Apply the tactic sequence `first | linear_combination hanti | ring`.
+-/
 theorem exists_swap {R : Type} [CommRing R] [Finite R] (X : Matrix (Fin 2) (Fin 2) R)
     (h2 : IsUnit (2 : R)) (hdet : X.det = -1) (htr : X.trace = 0) :
     ∃ (Y : Matrix (Fin 2) (Fin 2) R) (s : R), IsUnit s ∧ Y * Y = s • (1 : Matrix (Fin 2) (Fin 2) R) ∧
@@ -104,6 +145,25 @@ theorem exists_swap {R : Type} [CommRing R] [Finite R] (X : Matrix (Fin 2) (Fin 
       simp [Matrix.mul_apply, Fin.sum_univ_two, hd, Matrix.vecMul, dotProduct] <;>
       first | linear_combination hanti | ring
 
+/- English proof (translation)
+Take `⟨Y, s, hs, hYY, hXY⟩` from `exists_swap X h2 hdet htr`. Establish `hXXv : ∀ v : Fin 2 → R, X *ᵥ (X *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hXX, Matrix.one_mulVec]`. Establish `hYYv : ∀ v : Fin 2 → R, Y *ᵥ (Y *ᵥ v) = s • v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hYY]`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.one_apply]`. Establish `hXYv : ∀ v : Fin 2 → R, X *ᵥ (Y *ᵥ v) = -(Y *ᵥ (X *ᵥ v))` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hXY, Matrix.neg_mulVec, Matrix.mulVec_mulVec]`. Establish `hsu : ((hs.unit⁻¹ : Rˣ) : R) * s = 1` using `by simp`.
+
+Set `e : {v : Fin 2 → R // X *ᵥ v = v} ≃ {v : Fin 2 → R // X *ᵥ v = -v}` to `{ toFun := fun v => ⟨Y *ᵥ v.1, by rw [hXYv, v.2]⟩ invFun := fun w => ⟨((hs.unit⁻¹ : Rˣ) : R) • (Y *ᵥ w.1), by`. Rewrite using `[Matrix.mulVec_smul, hXYv, w.2, Matrix.mulVec_neg, neg_neg]⟩`. Use `left_inv := fun v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hYYv, smul_smul, hsu, one_smul]`.
+
+Use `right_inv := fun w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.mulVec_smul, hYYv, smul_smul, hsu, one_smul] }`. Establish `ht : ((h2.unit⁻¹ : Rˣ) : R) * 2 = 1` using `by simp`. Use `set t : R := ((h2.unit⁻¹ : Rˣ) : R)`.
+
+Set `f : (Fin 2 → R) ≃ {v : Fin 2 → R // X *ᵥ v = v} × {v : Fin 2 → R // X *ᵥ v = -v}` to `{ toFun := fun v => (⟨t • (v + X *ᵥ v), by`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_add, hXXv, add_comm]⟩,`. Use the proof step `⟨t • (v - X *ᵥ v), by`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_sub, hXXv, ← smul_neg, neg_sub]⟩)`. Use `invFun := fun pq => pq.1.1 + pq.2.1`.
+
+Use `left_inv := fun v => by`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Take the linear combination `(v i) * ht`. Use `right_inv := fun pq => by`.
+
+Take `⟨⟨p, hp⟩, ⟨q, hq⟩⟩` from `pq`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec_add, hp, hq, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `(p i) * ht`. Simplify using `only [Matrix.mulVec_add, hp, hq, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, Pi.sub_apply, smul_eq_mul]`.
+
+Take the linear combination `(q i) * ht }`. Establish `h1 : Nat.card (Fin 2 → R) = Nat.card {v : Fin 2 → R // X *ᵥ v = v} * Nat.card {v : Fin 2 → R // X *ᵥ v = -v}`. Rewrite using `[Nat.card_congr f, Nat.card_prod]`. Establish `h3 : Nat.card (Fin 2 → R) = Nat.card R * Nat.card R`. Rewrite using `[Nat.card_fun]`.
+
+Simplify using `[sq]`. Establish `hsq : Nat.card {v : Fin 2 → R // X *ᵥ v = v} * Nat.card {v : Fin 2 → R // X *ᵥ v = v} = Nat.card R * Nat.card R`. Rewrite using `[← h3, h1, Nat.card_congr e]`. Conclude with `Nat.mul_self_inj.mp hsq`.
+-/
 theorem card_fixed_eq (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [Finite R]
     (X : Matrix (Fin 2) (Fin 2) R) (h2 : IsUnit (2 : R)) (hXX : X * X = 1) (hdet : X.det = -1)
     (htr : X.trace = 0) : Nat.card {v : Fin 2 → R // X *ᵥ v = v} = Nat.card R := by
@@ -158,6 +218,9 @@ theorem card_fixed_eq (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [Finite R
     rw [← h3, h1, Nat.card_congr e]
   exact Nat.mul_self_inj.mp hsq
 
+/- English proof (translation)
+Introduce `h2 hXX hdet htr` and use `card_fixed_eq l R X h2 hXX hdet htr`.
+-/
 theorem card_fixed (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [Finite R]
     (X : Matrix (Fin 2) (Fin 2) R) : IsUnit (2 : R) → X * X = 1 → X.det = -1 → X.trace = 0 →
       Nat.card {v : Fin 2 → R // X *ᵥ v = v} = Nat.card R :=

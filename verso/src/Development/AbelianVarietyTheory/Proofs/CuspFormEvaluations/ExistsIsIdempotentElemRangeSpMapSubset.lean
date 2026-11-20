@@ -16,6 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `isUnit_one`. Introduce `h`. Conclude with `h.mul_left_cancel (by rw [hu.eq, _root_.mul_one])`.
+-/
 private theorem eq_one_iff_isUnit_of_isIdempotentElem {R : Type} [CommRing R] {u : R} (hu : IsIdempotentElem u) :
     u = 1 ↔ IsUnit u := by
   constructor
@@ -24,6 +27,11 @@ private theorem eq_one_iff_isUnit_of_isIdempotentElem {R : Type} [CommRing R] {u
   · intro h
     exact h.mul_left_cancel (by rw [hu.eq, _root_.mul_one])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hq h)`. Introduce `h`. Assume the negation of the conclusion as `hx`.
+
+Take `⟨I, hI, hxI⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.mpr hx)`. Conclude with `h ⟨I, hI.isPrime⟩ hxI`.
+-/
 private theorem isUnit_iff_forall_primeSpectrum_notMem {R : Type} [CommRing R] (x : R) :
     IsUnit x ↔ ∀ q : PrimeSpectrum R, x ∉ q.asIdeal := by
   constructor
@@ -34,6 +42,13 @@ private theorem isUnit_iff_forall_primeSpectrum_notMem {R : Type} [CommRing R] (
     obtain ⟨I, hI, hxI⟩ := exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.mpr hx)
     exact h ⟨I, hI.isPrime⟩ hxI
 
+/- English proof (translation)
+Set `s : TopologicalSpace.Clopens (PrimeSpectrum B)` to `⟨U, hU⟩`. Establish `he : IsIdempotentElem (PrimeSpectrum.isIdempotentElemEquivClopens.symm s).1` using `(PrimeSpectrum.isIdempotentElemEquivClopens.symm s).2`. Establish `hmem : ∀ p : PrimeSpectrum B, p ∈ U ↔ (PrimeSpectrum.isIdempotentElemEquivClopens.symm s).1 ∉ p.asIdeal`. Introduce `p`. Establish `h` using `congrArg (fun o : TopologicalSpace.Opens (PrimeSpectrum B) => p ∈ o) (PrimeSpectrum.basicOpen_isIdempotentElemEquivClopens_symm s)`.
+
+Simplify using `only [eq_iff_iff] at h`. Rewrite `h` using `[PrimeSpectrum.mem_basicOpen]`. Conclude with `h.symm`. Use `⟨_, he, fun T _ χ => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_one_iff_isUnit_of_isIdempotentElem (he.map χ), isUnit_iff_forall_primeSpectrum_notMem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨q, rfl⟩`. Conclude with `(hmem _).2 (h q)`. Introduce `h q`. Conclude with `(hmem _).1 (h ⟨q, rfl⟩)`.
+-/
 theorem exists_isIdempotentElem_range_spMap_subset {B : Type} [CommRing B] {U : Set (Sp B)} (hU : IsClopen U) :
     ∃ e : B, IsIdempotentElem e ∧ ∀ (T : Type) [CommRing T] (χ : B →+* T), χ e = 1 ↔ Set.range (spMap χ) ⊆ U := by
   let s : TopologicalSpace.Clopens (PrimeSpectrum B) := ⟨U, hU⟩
@@ -56,6 +71,17 @@ theorem exists_isIdempotentElem_range_spMap_subset {B : Type} [CommRing B] {U : 
   · intro h q
     exact (hmem _).1 (h ⟨q, rfl⟩)
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H Dw l Xo B _ x0 k hk a b ha hb`. Take `⟨-, -, hunit, hab, -⟩` from `moduli_univ_polAV E H Dw l Xo`. Take `⟨Z, et, hZf, hZe, hadd, hpow, huniv⟩` from `exists_finiteEtale_latticeTorsionHom Xo.X Xo.univ.t.G k ℤ hab (hunit k hk)`. Establish `R : LevCover.RepTors Xo.univ.t.G k ℤ Z et` using `⟨hZf, hZe, hadd, hpow, huniv⟩`. Establish `hz : ∀ c : ptO Xo x0 ⟶ Xo.univ.t.G, c ^ k = 1 → ∀ m : ℤ, (c ^ m) ^ k = 1`.
+
+Introduce `c hc m`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hc, one_zpow]`. Take `⟨U, hUc, hU⟩` from `R.clopenCond (T := ptO Xo x0) (fun m => a ^ m) (fun m => b ^ m) (fun m c => zpow_add a m c) (hz a ha) (fun m c => zpow_add b m c) (hz b hb)`. Set `V : Set (Sp B)` to `(U : Set (ptO Xo x0).left)`. Take `⟨e, he, hE⟩` from `exists_isIdempotentElem_range_spMap_subset (B := B) (U := V) ⟨hUc, U.isOpen⟩`.
+
+Use `⟨e, he, fun T _ χ => ?_⟩` and prove the remaining obligations. Rewrite using `[hE T χ]`. Set `h : Over.mk (spMap χ ≫ x0) ⟶ ptO Xo x0` to `Over.homMk (spMap χ) rfl`. Establish `hh : Set.range (spMap χ) ⊆ V ↔ Set.range h.left ⊆ U` using `Iff.rfl`. Rewrite using `[hh, ← hU _ h]`.
+
+Simplify using `only [GrpObj.comp_zpow]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `h1 : h ≫ a = h ≫ b` using `by simpa using hm 1`. Simplify `congrArg CommaMorphism.left h1` using `[h]`.
+
+Introduce `hl m`. Establish `h1 : h ≫ a = h ≫ b` using `Over.OverMorphism.ext (by simpa [h] using hl)`. Rewrite using `[h1]`.
+-/
 theorem exists_isIdempotentElem_torsion_eq :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (B : Type) [CommRing B] (x0 : Sp B ⟶ Xo.X) (k : ℕ), 0 < k → ∀ (a b : ptO Xo x0 ⟶ Xo.univ.t.G), a ^ k = 1 → b ^ k = 1 → ∃ e : B, IsIdempotentElem e ∧ ∀ (T : Type) [CommRing T] (χ : B →+* T), χ e = 1 ↔ spMap χ ≫ a.left = spMap χ ≫ b.left := by
   intro _ E _ _ _ H Dw l Xo B _ x0 k hk a b ha hb

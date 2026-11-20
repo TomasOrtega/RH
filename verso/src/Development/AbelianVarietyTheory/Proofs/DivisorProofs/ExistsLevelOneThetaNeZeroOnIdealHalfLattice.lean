@@ -14,6 +14,9 @@ namespace GlobalTheory.Dict.ThetaHalf
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `h : (M : E)⁻¹ • u = (M : ℚ)⁻¹ • u`. Use function extensionality and compare the values at `j`. Simplify using `[Rat.smul_def]`. Rewrite using `[h, TensLat.EF_eq_bilin, TensLat.EF_eq_bilin, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem EF_inv_smul (X : Data E r) (M : ℕ) (u v : Fin r → E) :
     EF X ((M : E)⁻¹ • u) v = (M : ℚ)⁻¹ * EF X u v := by
   have h : (M : E)⁻¹ • u = (M : ℚ)⁻¹ • u := by
@@ -21,6 +24,31 @@ theorem EF_inv_smul (X : Data E r) (M : ℕ) (u v : Fin r → E) :
     simp [Rat.smul_def]
   rw [h, TensLat.EF_eq_bilin, TensLat.EF_eq_bilin, map_smul, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hME : (M : E) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Establish `hcc : ∀ a : E, cc (cc a) = a` using `fun a => IsCMField.complexConj_apply_apply E a`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Use `Submodule.smul_induction_on hx (fun a ha u hu => ?_) fun x₁ x₂ h₁ h₂ => ?_` and prove the remaining obligations.
+
+Use `Submodule.smul_induction_on hy (fun b hb v hv => ?_) fun y₁ y₂ h₁ h₂ => ?_` and prove the remaining obligations. Set `b' : 𝓞 E` to `⟨cc (b : E), Base.isIntegral_cc b.isIntegral_coe⟩`. Establish `hb' : b' ∈ conjI 𝔪` using `Ideal.subset_span ⟨b, hb, rfl⟩`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (h𝔪 ▸ Ideal.mul_mem_mul ha hb')`. Establish `ht' : (t : E) * M = a * cc (b : E)`.
+
+Establish `h5` using `congrArg (algebraMap (𝓞 E) E) ht`. Rewrite `h5` using `[map_mul, map_mul, map_natCast]`. Conclude with `h5`. Take `⟨k, hk⟩` from `(hL.2 _).1 (L.smul_mem t hu) v hv`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hk, ← EF_inv_smul]`. Express the relevant statement in the definitionally equal form `EF X ((M : E)⁻¹ • (a : E) • u) ((b : E) • v) = EF X ((t : E) • u) v`. Rewrite using `[← hcc (b : E), ← TensLat.EF_smul, smul_smul, smul_smul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-ht'`. Take `⟨k₁, h₁⟩` from `h₁`. Take `⟨k₂, h₂⟩` from `h₂`. Use `⟨k₁ + k₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_add, ← h₁, ← h₂]`.
+
+Simplify using `only [TensLat.EF_eq_bilin, map_add, mul_add]`. Take `⟨k₁, h₁⟩` from `h₁`. Take `⟨k₂, h₂⟩` from `h₂`. Use `⟨k₁ + k₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_add, ← h₁, ← h₂]`.
+
+Simplify using `only [TensLat.EF_eq_bilin, map_add, mul_add, LinearMap.add_apply]`. Introduce `h`. Establish `h1 : ∀ b ∈ conjI 𝔪, b • (M : E)⁻¹ • x ∈ L`. Introduce `b hb`. Proceed by induction on `hb using Submodule.span_induction with`.
+
+Consider the case `mem b hb`. Take `⟨a, ha, hb⟩` from `hb`. Use `(hL.2 _).2 fun u hu => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `h _ (Submodule.smul_mem_smul ha hu)`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `EF X ((b : E) • (M : E)⁻¹ • x) u = k`. Rewrite using `[hb, TensLat.EF_smul, hcc, EF_inv_smul]`. Conclude with `hk`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_smul]`.
+
+Conclude with `L.add_mem ha hb`. Consider the case `smul t a _ ha => rw [smul_eq_mul, mul_smul]`. Conclude with `L.smul_mem t ha`. Establish `h2 : ∀ c ∈ 𝔪 * conjI 𝔪, c • (M : E)⁻¹ • x ∈ 𝔪 • L`. Introduce `c hc`.
+
+Use `Submodule.mul_induction_on hc (fun a ha b hb => ?_) fun c₁ c₂ h₁ h₂ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem_smul ha (h1 b hb)`. Rewrite using `[add_smul]`. Conclude with `add_mem h₁ h₂`.
+
+Establish `h3` using `h2 M (h𝔪 ▸ Ideal.mem_span_singleton_self _)`. Establish `h4 : (M : 𝓞 E) • (M : E)⁻¹ • x = x`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hME, one_smul]`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+-/
 theorem mem_smul_iff (X : Data E r) {L : Lt E r} (hL : SelfD X L) {𝔪 : Ideal (𝓞 E)} {M : ℕ}
     (hM : M ≠ 0) (h𝔪 : 𝔪 * conjI 𝔪 = Ideal.span {(M : 𝓞 E)}) (x : Fin r → E) :
     x ∈ 𝔪 • L ↔ ∀ y ∈ 𝔪 • L, ∃ k : ℤ, (M : ℚ)⁻¹ * EF X x y = k := by
@@ -81,6 +109,13 @@ theorem mem_smul_iff (X : Data E r) {L : Lt E r} (hL : SelfD X L) {𝔪 : Ideal 
         one_smul]
     rwa [h4] at h3
 
+/- English proof (translation)
+Establish `hME : (M : E) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Establish `hMm : (M : 𝓞 E) ∈ 𝔪`. Use `Ideal.mul_le_left (J := conjI 𝔪) ?_` and prove the remaining obligations. Rewrite using `[h𝔪]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite using `[eq_top_iff, ← TensLat.span_of_selfD X hL, Submodule.span_le]`. Introduce `u hu`. Establish `h1 : (M : E)⁻¹ • (M : 𝓞 E) • u = u`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hME, one_smul]`. Establish `h2 : (M : 𝓞 E) • u ∈ 𝔪 • L` using `Submodule.smul_mem_smul hMm hu`.
+
+Establish `h3` using `Submodule.smul_mem _ (M : E)⁻¹ (Submodule.subset_span (R := E) h2)`. Rewrite `h3` using `[h1]`. Conclude with `h3`.
+-/
 theorem span_smul (X : Data E r) {L : Lt E r} (hL : SelfD X L) {𝔪 : Ideal (𝓞 E)} {M : ℕ}
     (hM : M ≠ 0) (h𝔪 : 𝔪 * conjI 𝔪 = Ideal.span {(M : 𝓞 E)}) :
     Submodule.span E ((𝔪 • L : Lt E r) : Set (Fin r → E)) = ⊤ := by
@@ -99,6 +134,15 @@ theorem span_smul (X : Data E r) {L : Lt E r} (hL : SelfD X L) {𝔪 : Ideal (�
   rw [h1] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hM0 : M ≠ 0` using `by omega`. Establish `hMC : (M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hM0`. Establish `hMR : (0 : ℝ) < (M : ℝ)⁻¹` using `by positivity`. Establish `hsc : ∀ z u : Fin g → ℂ, z ⬝ᵥ ((M : ℝ)⁻¹ • Hm).mulVec u = (M : ℝ)⁻¹ • (z ⬝ᵥ Hm.mulVec u)` using `fun z u => by rw [smul_mulVec, dotProduct_smul]`. Use `GlobalTheory.T.thetaFunction_ne_zero_at_divisionPoint_selfDual V g ((M : ℚ)⁻¹ • B) p hp L hfg hL hsp ((M : ℝ)⁻¹ • Hm) ?_ (fun z hz => ?_) (fun u v => ?_) c hc M hM f hd h0 fun v hv z => ?_` and prove the remaining obligations.
+
+Use extensionality with `i j`. Rewrite using `[conjTranspose_apply, Matrix.smul_apply, Matrix.smul_apply, star_smul, hH.apply, star_trivial]`. Rewrite using `[hsc, smul_re, smul_eq_mul]`. Conclude with `mul_pos hMR (hpos z hz)`. Rewrite using `[hsc, smul_im, LinearMap.smul_apply, LinearMap.smul_apply, hB]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hf v hv z, hsc, hsc]`. Use `congr 3`. Simplify using `only [real_smul]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_ne_zero_of_scaled {V : Type} [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V]
     {g : ℕ} (B : LinearMap.BilinForm ℚ V) (p : V →ₗ[ℤ] (Fin g → ℂ)) (hp : Function.Injective p)
     (L : Submodule ℤ V) (hfg : L.FG) {M : ℕ} (hM : 2 ≤ M)
@@ -129,6 +173,25 @@ theorem exists_ne_zero_of_scaled {V : Type} [AddCommGroup V] [Module ℚ V] [Fin
     push_cast
     field_simp
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx hs w L hL x hx' 𝔪 M hM h𝔪 θ hθ h0`. Establish `hM0 : M ≠ 0` using `by omega`. Take `⟨hconj, hpos, him, -, hsm, hinj, hspan, -⟩` from `GlobalTheory.Dict.hx_laws E r X g bas idx 0 hs Even.zero x hx'`. Use `set Hm := (hMat X bas idx x)ᵀ * imInv X bas idx x * (hMat X bas idx x).map star with hHm`. Establish `hform : ∀ z u, hx X bas idx x z u = z ⬝ᵥ Hm.mulVec (star u)` using `fun z u => SiegelNormalForm.form_pull _ _ z u`.
+
+Establish `hH : Hm.IsHermitian`. Use extensionality with `i j`. Use `hconj (Pi.single j 1) (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[hform, hform, SiegelNormalForm.form_single, SiegelNormalForm.form_single]`. Conclude with `this.symm`.
+
+Use `clear_value Hm`. Set `p : (Fin r → E) →ₗ[ℤ] (Fin g → ℂ)` to `(AddMonoidHom.mk' (pv X idx x) fun u v => by`. Unfold `pv`. Rewrite using `[per_add]`. Use the proof step `rfl).toIntLinearMap`.
+
+Establish `hp : ∀ v, p v = pv X idx x v` using `fun _ => rfl`. Establish `hne : ∀ v, eps1 X w v ≠ 0` using `fun v => Complex.exp_ne_zero _`. Establish `key : ∀ v ∈ L, ∀ z, θ (z + p v) = ((eps1 X w v)⁻¹ * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (p v))) + Real.pi / 2 * (p v ⬝ᵥ Hm.mulVec (star (p v))))) * θ z`. Introduce `v hv z`. Establish `h1` using `congrFun (hθ.2 v hv) z`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, fock, hform, add_dotProduct, smul_dotProduct] at h1`. Rewrite using `[← h1, ← hp, _root_.mul_mul_mul_comm, inv_mul_cancel₀ (hne v), _root_.one_mul, ← _root_.mul_assoc, ← Complex.exp_add]`. Use `(_root_.one_mul _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `Complex.exp_zero.symm.trans (congrArg _ ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, hu, hu0⟩` from `exists_ne_zero_of_scaled (traceFormBilin (X.κ0 / 2) X.Gm) p hinj ((𝔪 • L).restrictScalars ℤ) (Submodule.FG.of_le hL.1 (Submodule.smul_le_right (I := 𝔪))).restrictScalars hM (fun u => by simp only [← TensLat.EF_eq_bilin]; exact mem_smul_iff X hL hM0 h𝔪 u) (hspan _ (span_smul X hL …`. Establish `: eps1 X w v = cexp ((Real.pi * (EF X v (w • v) : ℚ) : ℝ) * I)`. Unfold `eps1`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_inv, this, Complex.norm_exp_ofReal_mul_I, inv_one])`. Use the proof step `hθ.1 h0 (fun v hv => key v (Submodule.smul_le_right (I := 𝔪) hv))`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `e : pv X idx x ((M : E)⁻¹ • u) = (M : ℂ)⁻¹ • p u`. Rewrite using `[hsm]`. Use function extensionality and compare the values at `j`. Rewrite using `[map_inv₀, map_natCast, hp, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[e]` and apply the resulting hypothesis.
+-/
 theorem exists_ne_zero_on_half : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsSympl X bas → ∀ (w : E) (L : Lt E r), SelfD X L → ∀ x ∈ X.dom, ∀ (𝔪 : Ideal (𝓞 E)) (M : ℕ), 2 ≤ M → 𝔪 * conjI 𝔪 = Ideal.span {(M : 𝓞 E)} → ∀ ϑ : (Fin g → ℂ) → ℂ, IsTheta1 X bas idx w x L ϑ → ϑ ≠ 0 → ∃ u ∈ 𝔪 • L, ϑ (pv X idx x ((M : E)⁻¹ • u)) ≠ 0 := by
   intro E _ _ _ r X g bas idx hs w L hL x hx' 𝔪 M hM h𝔪 θ hθ h0
   have hM0 : M ≠ 0 := by omega

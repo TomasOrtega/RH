@@ -11,6 +11,11 @@ noncomputable section
 namespace Formalism.L2.N.RankZeroOfLevelThree
 open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain Module
 open Formalism.L2.N.ExtNRows3 Formalism.L2.N.ExtNRows Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows
+/- English proof (translation)
+Use `⟨max x0 (Fm.x1 + 1), fun x hxx i j hj => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `lt_of_lt_of_le (lt_add_one _) (le_trans (le_max_right _ _) hxx)`. Establish `h0 : x0 ≤ x` using `le_trans (le_max_left _ _) hxx`. Take `⟨t, htup, hsurj⟩` from `ht x hx1 h0 i`. Establish `hj'` using `Finset.mem_Icc.1 hj`.
+
+Take `⟨k, rfl⟩ : ∃ k : Fin (Fm.D x i).R.m, j = (k : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Establish `key` using `(_root_.Formalism.L2.N.ExtNRows3.thetaT_injective_and_finrank_Zj_eq_D0_of_surjective (T x hx1 h0 i) (P x hx1 h0 i) (hp x hx1 h0 i) (hL x hx1 h0 i) (h x hx1 h0 i) (hR x hx1 h0 i) k t (hsurj k)).2`. Rewrite `key` using `[htup]`. Conclude with `key`.
+-/
 theorem rank_zero_of_row_conditions_alt {eps : ℝ} (Fm : FamP eps) (x0 : ℝ)
     (T : ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.TiedDataSKAlt (Fm.ex x hx i))
     (P : ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, RowSideFamily (Fm.ex x hx i))

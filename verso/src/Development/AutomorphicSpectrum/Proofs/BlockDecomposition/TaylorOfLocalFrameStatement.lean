@@ -8,6 +8,9 @@ set_option autoImplicit false
 open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistableComparison CrystallineSemistableComparison.Pb GlobalTheory.CompanionTheory.ConeLocal
 open GlobalTheory.CatH (face toLast)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeLocal.taylor_loc | exact GlobalTheory.CompanionTheory.ConeLocal.taylor_loc | (intros; apply GlobalTheory.CompanionTheory.ConeLocal.taylor_loc <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.taylor_of_local_frame : ∀ {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {W : X.Opens} {d : ℕ} (c : Coord q W d) (s : ℕ) (E : Frame (sP (KS q s {W})) d)
     (ε : Γ(X, W) ≃+* (sP (KS q s {W})).A.obj E.D), IsLoc q s c.t E ε →
     letI := (strV q W).toAlgebra

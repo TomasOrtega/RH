@@ -12,6 +12,11 @@ namespace GlobalTheory.ColumnFamilyMetric
 
 open GlobalTheory.PeriodClassSum GlobalTheory.TestLat.Compare
 
+/- English proof (translation)
+Use extensionality with `i k`. Establish `e : gramKd X.emb (1 : Matrix (Fin (R.N j)) (Fin (R.N j)) X.E) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[gramKd, Matrix.map_one _ (map_zero _) (map_one _), inv_one, Matrix.transpose_one]`. Use `show pairK (W.lamTrue u j) (gramKd X.emb 1) (bVV _ _ i) (bVV _ _ k) = _`.
+
+Rewrite using `[e]`. Conclude with `pairK_one_basis (W.lamTrue u j) i k`.
+-/
 theorem chF_gramV (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg)
     (I : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (u : Pr.Word) (j : ℕ) (b : (chF W sel mu I u j).β) :
@@ -24,6 +29,11 @@ theorem chF_gramV (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R)
   rw [e]
   exact pairK_one_basis (W.lamTrue u j) i k
 
+/- English proof (translation)
+Introduce `X Pr R W sel Sg mu I u j h v φ`. Use `(Complex.nonneg_iff.1 ?_).1` and prove the remaining obligations. Unfold `famIpAt`. Use `Finset.sum_nonneg fun b _ => ?_` and prove the remaining obligations. Establish `hG : ((((chF W sel mu I u j).mem b).gramV).map v.embedding).PosSemidef`.
+
+Rewrite using `[chF_gramV]`. Conclude with `(gramB_posDef (W.lamTrue u j) v.embedding).posSemidef`. Use `letI := (h b).fintypeCl`. Conclude with `(ipAt_eq _ (h b) v _ _).symm ▸ wForm_nonneg _ hG _`.
+-/
 theorem famIpAt_nonneg : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (I : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (u : Pr.Word) (j : ℕ) (h : (chF W sel mu I u j).Ok) (v : InfinitePlace X.K) (φ : (chF W sel mu I u j).Forms), 0 ≤ (famIpAt (chF W sel mu I u j) h v φ φ).re := by
   intro X Pr R W sel Sg mu I u j h v φ
   refine (Complex.nonneg_iff.1 ?_).1

@@ -13,11 +13,31 @@ noncomputable section
 
 namespace GlobalTheory.Pinch
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem germ_app_congr {Y X : Scheme.{0}} {f g : Y ⟶ X} (e : f = g) (W : X.Opens) (y : Y) (hf : f y ∈ W)
     (hg : g y ∈ W) (s : Γ(X, W)) :
     Y.presheaf.germ (f ⁻¹ᵁ W) y hf ((f.app W).hom s) = Y.presheaf.germ (g ⁻¹ᵁ W) y hg ((g.app W).hom s) := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' h hp hi hc W hW u' v huv`. Establish `hw : ∀ z : Z', p (i' z) = i (p' z)` using `fun z => by`. Use `congrArg (fun f : Z' ⟶ X => f z) h.w` as an intermediate fact. Simplify using `using this`. Establish `claim : ∀ (s' : Γ(X', p ⁻¹ᵁ W)) (t : Γ(Z, i ⁻¹ᵁ W)), (∀ z : Z', ∀ hz : p (i' z) ∈ W, Z'.presheaf.germ (i' ⁻¹ᵁ (p ⁻¹ᵁ W)) z hz ((i'.app (p ⁻¹ᵁ W)).hom s') = Z'.presheaf.germ (p' ⁻¹ᵁ (i ⁻¹ᵁ W)) z (show i (p' z) ∈ W from hw z ▸ hz) ((p'.app (i ⁻¹ᵁ W)).hom t)) → ∃ s : Γ(X, W), (p.app …`.
+
+Introduce `s' t hst`. Take `⟨s₀, rfl⟩` from `Scheme.Hom.app_surjective i W hW t`. Establish `hd : (i'.app (p ⁻¹ᵁ W)).hom (s' - (p.app W).hom s₀) = 0`. Apply `TopCat.Presheaf.section_ext Z'.sheaf` to reduce the goal to its premises. Introduce `z hz`.
+
+Use `show (Z'.presheaf.germ (i' ⁻¹ᵁ p ⁻¹ᵁ W) z hz).hom ((i'.app (p ⁻¹ᵁ W)).hom (s' - (p.app W).hom s₀)) = (Z'.presheaf.germ (i' ⁻¹ᵁ p ⁻¹ᵁ W) z hz).hom 0`. Rewrite using `[map_sub, map_sub, map_zero, sub_eq_zero, hst z hz]`. Establish `e1` using `germ_app_congr h.w W z hz (show i (p' z) ∈ W from hw z ▸ hz) s₀`. Conclude with `e1.symm`. Establish `hmem` using `GlobalTheory.T.closedImmersion_baseChange_ker_mem_map_affine X X' Z Z' p i i' p' h hp hi W hW _ hd`.
+
+Establish `key : ∃ y, (i.app W).hom y = 0 ∧ (p.app W).hom y = s' - (p.app W).hom s₀`. Use `Submodule.span_induction (p := fun x _ => ∃ y, (i.app W).hom y = 0 ∧ (p.app W).hom y = x) ?_ ?_ ?_ ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Conclude with `⟨0, map_zero _, map_zero _⟩`.
+
+Introduce and unpack `_ _ _ _ ⟨y₁, h₁, e₁⟩ ⟨y₂, h₂, e₂⟩`. Conclude with `⟨y₁ + y₂, by rw [map_add, h₁, h₂, add_zero], by rw [map_add, e₁, e₂]⟩`. Introduce and unpack `r _ _ ⟨y, hy, rfl⟩`. Take `⟨y', hy', e'⟩` from `(hc W hW).2 y hy r`. Conclude with `⟨y', hy', by rw [smul_eq_mul, mul_comm]; exact e'⟩`.
+
+Take `⟨y, -, hy⟩` from `key`. Conclude with `⟨s₀ + y, by rw [map_add, hy, add_sub_cancel]⟩`. Establish `germs : ∀ (a : Γ(X', p ⁻¹ᵁ W)ˣ) (b : Γ(Z, i ⁻¹ᵁ W)ˣ), (∀ z : Z', p (i' z) ∈ W → gm i' z (p ⁻¹ᵁ W) a = gm p' z (i ⁻¹ᵁ W) b) → ∃ s : Γ(X, W), (p.app W).hom s = a.val`. Introduce `a b hab`. Use `claim a.val b.val fun z hz => ?_` and prove the remaining obligations.
+
+Use `congrArg Units.val (hab z hz)` as an intermediate fact. Rewrite `this` using `[gm_val i' z _ hz, gm_val p' z _ (show i (p' z) ∈ W from hw z ▸ hz)]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `germs u' v huv`. Take `⟨y, hy⟩` from `germs u'⁻¹ v⁻¹ fun z hz => by rw [map_inv, map_inv, huv z hz]`. Establish `hxy : x * y = 1` using `(hc W hW).1 (by show (p.app W).hom (x * y) = (p.app W).hom 1`.
+
+Rewrite using `[map_mul, map_one, hx, hy, Units.mul_inv])`. Conclude with `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, Units.ext hx⟩`.
+-/
 theorem affine_descent_units : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z),
     IsPullback i' p' p i → IsAffineHom p → IsClosedImmersion i → GlobalTheory.Pinch.Cond p i →
     ∀ W : X.Opens, IsAffineOpen W → ∀ (u' : Γ(X', p ⁻¹ᵁ W)ˣ) (v : Γ(Z, i ⁻¹ᵁ W)ˣ),
@@ -70,6 +90,13 @@ theorem affine_descent_units : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : 
     rw [map_mul, map_one, hx, hy, Units.mul_inv])
   exact ⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, Units.ext hx⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx W.2`. Establish `hle : V ≤ W` using `hVW`.
+
+Establish `e : res hle a = res hle b`. Apply `Units.ext` to reduce the goal to its premises. Apply `hp V hV` to reduce the goal to its premises. Use `congrArg Units.val (show pullU p V (res hle a) = pullU p V (res hle b) by` as an intermediate fact. Rewrite using `[pullU_res₂, pullU_res₂, hab])`.
+
+Conclude with `this`. Rewrite using `[← gm_res (𝟙 X) x hle hxV a, ← gm_res (𝟙 X) x hle hxV b, e]`.
+-/
 theorem pullU_injective {X X' : Scheme.{0}} (p : X' ⟶ X)
     (hp : ∀ W : X.Opens, IsAffineOpen W → Function.Injective (p.app W)) (W : X.Opens) :
     Function.Injective (pullU p W) := by
@@ -86,6 +113,23 @@ theorem pullU_injective {X X' : Scheme.{0}} (p : X' ⟶ X)
     exact this
   rw [← gm_res (𝟙 X) x hle hxV a, ← gm_res (𝟙 X) x hle hxV b, e]
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' h hp hi hc W`. Establish `hinj : ∀ V : X.Opens, Function.Injective (pullU p V)` using `pullU_injective p (fun V hV => (hc V hV).1)`. Use `⟨hinj W, fun u' v huv => ?_⟩` and prove the remaining obligations. Establish `hw : ∀ z : Z', p (i' z) = i (p' z)` using `fun z => by`. Use `congrArg (fun f : Z' ⟶ X => f z) h.w` as an intermediate fact.
+
+Simplify using `using this`. Set `J : Type` to `{V : X.Opens // IsAffineOpen V ∧ V ≤ W}`. Establish `hsub : ∀ j : J, p ⁻¹ᵁ j.1 ≤ p ⁻¹ᵁ W` using `fun j x hx => j.2.2 hx`. Establish `hsubZ : ∀ j : J, i ⁻¹ᵁ j.1 ≤ i ⁻¹ᵁ W` using `fun j x hx => j.2.2 hx`. Establish `loc : ∀ j : J, ∃ a : Γ(X, j.1)ˣ, pullU p j.1 a = res (hsub j) u'`.
+
+Introduce `j`. Use `affine_descent_units X X' Z Z' p i i' p' h hp hi hc j.1 j.2.1 _ (res (hsubZ j) v) ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[gm_res i' z (hsub j) hz, gm_res p' z (hsubZ j) (show i (p' z) ∈ j.1 from hw z ▸ hz)]`. Conclude with `huv z (j.2.2 hz)`.
+
+Use `choose a ha using loc`. Establish `hD : ∀ j : J, ∀ y : X', ∀ hy : p y ∈ j.1, gm p y j.1 (a j) = gm (𝟙 X') y (p ⁻¹ᵁ W) u'`. Introduce `j y hy`. Rewrite using `[← gm_id_pull p y j.1 hy, ha j, gm_res (𝟙 X') y (hsub j) hy]`. Take `⟨s, hs⟩` from `glue_unit W (fun j : J => j.1) (fun j => j.2.2) (by`.
+
+Introduce `x hx`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx W.2`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨V, hV, hVW⟩, hxV⟩) a (by`. Introduce `j k x hx`. Establish `hle1 : j.1 ⊓ k.1 ≤ j.1` using `inf_le_left`.
+
+Establish `hle2 : j.1 ⊓ k.1 ≤ k.1` using `inf_le_right`. Establish `e : res hle1 (a j) = res hle2 (a k)`. Apply `hinj` to reduce the goal to its premises. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`.
+
+Rewrite using `[gm_id_pull p y _ hy, gm_id_pull p y _ hy, gm_res p y hle1 hy, gm_res p y hle2 hy, hD j y (hle1 hy), hD k y (hle2 hy)]`. Rewrite using `[← gm_res (𝟙 X) x hle1 hx, ← gm_res (𝟙 X) x hle2 hx, e])`. Use `⟨s, unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show p y ∈ W from hy) W.2`. Set `j : J` to `⟨V, hV, hVW⟩`.
+
+Rewrite using `[gm_id_pull p y W hy, ← gm_res p y j.2.2 hxV, hs j]`. Conclude with `hD j y hxV`.
+-/
 theorem unitsPatch : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z),
     IsPullback i' p' p i → IsAffineHom p → IsClosedImmersion i → GlobalTheory.Pinch.Cond p i →
     GlobalTheory.Pinch.UnitsPatch p i i' p' := by

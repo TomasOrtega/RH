@@ -27,6 +27,9 @@ section Rec
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO))
   (N : ℕ) {wL : WeightFamilies.Wt D j} (w : Fin N → B.Cusp j wL)
 
+/- English proof (translation)
+Take `⟨F, rfl⟩` from `hx`. Take `⟨G, rfl⟩` from `hy`. Take `⟨H, hH⟩` from `X.inc_mul wL _ G F`. Rewrite using `[← wadd_addL, mul_comm, hH]`. Conclude with `⟨H, rfl⟩`.
+-/
 theorem range_mul_step {m : ℕ} {x y : X.Forms} (hx : x ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m)))
     (hy : y ∈ LinearMap.range (X.inc wL)) : x * y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (m + 1))) := by
   obtain ⟨F, rfl⟩ := hx
@@ -35,6 +38,9 @@ theorem range_mul_step {m : ℕ} {x y : X.Forms} (hx : x ∈ LinearMap.range (X.
   rw [← wadd_addL, mul_comm, hH]
   exact ⟨H, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => simpa using hy`. Consider the case `succ e ih`. Rewrite using `[pow_succ, ← mul_assoc, ← add_assoc]`. Conclude with `range_mul_step X ih hx`.
+-/
 theorem range_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m)))
     (hx : x ∈ LinearMap.range (X.inc wL)) (e : ℕ) :
     y * x ^ e ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (m + e))) := by
@@ -44,6 +50,11 @@ theorem range_pow {m : ℕ} {y x : X.Forms} (hy : y ∈ LinearMap.range (X.inc (
     rw [pow_succ, ← mul_assoc, ← add_assoc]
     exact range_mul_step X ih hx
 
+/- English proof (translation)
+Use `Finset.induction_on s (by rwa [Finset.prod_empty, Finset.sum_empty, mul_one, add_zero]) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Establish `e1 : y * (X.inc wL (w a) ^ d a * ∏ i ∈ s, X.inc wL (w i) ^ d i) = (y * ∏ i ∈ s, X.inc wL (w i) ^ d i) * X.inc wL (w a) ^ d a` using `by ring`. Establish `e2 : m + (d a + ∑ i ∈ s, d i) = m + ∑ i ∈ s, d i + d a` using `by ring`.
+
+Rewrite using `[e1, e2]`. Conclude with `range_pow X ih ⟨w a, rfl⟩ (d a)`.
+-/
 theorem range_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms}
     (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m))) (s : Finset (Fin N)) :
     y * ∏ i ∈ s, X.inc wL (w i) ^ d i ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (m + ∑ i ∈ s, d i))) := by
@@ -57,6 +68,11 @@ theorem range_prod (d : Fin N →₀ ℕ) {m : ℕ} {y : X.Forms}
   rw [e1, e2]
   exact range_pow X ih ⟨w a, rfl⟩ (d a)
 
+/- English proof (translation)
+Rewrite using `[Pw.as_sum, map_sum, Finset.mul_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial, mul_left_comm, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ d.support, d i = k`.
+
+Use `hPw (MvPolynomial.mem_support_iff.mp hd)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `h` using `range_prod X N w d hy d.support`. Rewrite `h` using `[hdeg]`. Conclude with `h`.
+-/
 theorem range_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHomogeneous k) {m : ℕ} {y : X.Forms}
     (hy : y ∈ LinearMap.range (X.inc (addL (wt0 D j) wL m))) :
     y * MvPolynomial.aeval (fun i => X.inc wL (w i)) Pw ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (m + k))) := by
@@ -72,6 +88,15 @@ theorem range_aeval {k : ℕ} (Pw : MvPolynomial (Fin N) B.KO) (hPw : Pw.IsHomog
   rw [hdeg] at h
   exact h
 
+/- English proof (translation)
+Take `⟨k0, hk0⟩` from `hk`. Take `⟨k, g, Pw, hPw, hne, he⟩` from `hB a`. Establish `h1 : X.inc wL (w k0) ∈ LinearMap.range (X.inc (addL (wt0 D j) wL 1))`. Rewrite using `[add_zero_weight_one_eq]`. Conclude with `⟨_, rfl⟩`.
+
+Take `⟨p, hp⟩` from `range_aeval X N w Pw hPw h1`. Establish `hG : X.inc wL (w k0) * X.inc (wsmul k wL) g ∈ LinearMap.range (X.inc (addL (wt0 D j) wL (1 + k)))`. Take `⟨H, hH⟩` from `X.inc_mul wL _ (w k0) g`. Rewrite using `[add_comm, ← wadd_addL, addL, zero_weight_add, hH]`. Conclude with `⟨H, rfl⟩`.
+
+Take `⟨q, hq⟩` from `hG`. Establish `hPv : gF (MvPolynomial.aeval (fun i => X.inc wL (w i)) Pw) = MvPolynomial.aeval (fun i => gF (X.inc wL (w i))) Pw` using `MvPolynomial.comp_aeval_apply (fun i => X.inc wL (w i)) gF Pw`. Use `⟨1 + k, p, q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, map_mul, hPv]`. Conclude with `mul_ne_zero hk0 hne`.
+
+Rewrite using `[hp, hq, map_mul, map_mul, hPv, ← he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ratio {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
     (hB : CurveLoc.BirAt X N w gF) (hk : ∃ k, gF (X.inc wL (w k)) ≠ 0) (a : Ω) :
     ∃ (m : ℕ) (p q : B.Cusp j (addL (wt0 D j) wL m)), gF (X.inc _ p) ≠ 0 ∧ a * gF (X.inc _ p) = gF (X.inc _ q) := by
@@ -97,10 +122,16 @@ theorem exists_ratio {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →�
 def evK {F : Type} [Field F] (ev : Rp X la N →+* F) : Kp X la N →+* F :=
   ev.comp (algebraMap (Kp X la N) (Rp X la N))
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem ev_smul {F : Type} [Field F] (ev : Rp X la N →+* F) (c : Kp X la N) (g : Rp X la N) :
     ev (c • g) = evK X la N ev c * ev g := by
   rw [Algebra.smul_def, map_mul]; rfl
 
+/- English proof (translation)
+Use `show IsLocalization.Away.lift (sec X la w 0) hu (algebraMap (Kp X la N) (Lw X la w) c) = _`. Rewrite using `[IsScalarTower.algebraMap_apply (Kp X la N) (Rp X la N) (Lw X la w), liftEv_alg]`. Both sides reduce to the same expression.
+-/
 theorem lift_algKp {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev (sec X la w 0))) (c : Kp X la N) :
     IsLocalization.Away.lift (sec X la w 0) hu
       ((algebraMap (Kp X la N) ↥(Frac0 X la w) c : ↥(Frac0 X la w)) : Lw X la w) = evK X la N ev c := by
@@ -112,6 +143,23 @@ section Fam
 
 variable {ι : Type} (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)] (gF : ∀ Z, X.Forms →ₐ[B.KO] Ω Z)
 
+/- English proof (translation)
+Use `Fintype.ofFinite ι` as an intermediate fact. Use `letI : Algebra (Kp X la N) F := (evK X la N ev).toAlgebra`. Set `ψ : ↥(Frac0 X la w) →ₐ[Kp X la N] F` to `{ (IsLocalization.Away.lift (sec X la w 0) hu).comp (Frac0 X la w).val.toRingHom with commutes' := fun c => lift_algKp X la N w ev hu c }`. Establish `hψ : ∀ (x : ↥(Frac0 X la w)) (k : ℕ) (g : Rp X la N), (x : Lw X la w) = frac X la w k g → ψ x = ev g * (ev (sec X la w 0))⁻¹ ^ k` using `fun x k g hx => by show IsLocalization.Away.lift (sec X la w 0) hu (x : Lw X la w) = _`. Rewrite using `[hx, liftEv_frac]`.
+
+Establish `hQ : (RingHom.ker ψ).IsPrime` using `RingHom.ker_isPrime _`. Establish `hJ : Jid X la w ≤ RingHom.ker ψ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hψ _ 1 _ (coe_sfr X la w i.succ), honS, zero_mul]`.
+
+Establish `hinf : (Finset.univ : Finset ι).inf (fun Z => RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)) ≤ RingHom.ker ψ`. Introduce `f hf`. Establish `hf' : ∀ Z, phiZ X la N (Ω Z) (gF Z) w f = 0` using `fun Z => RingHom.mem_ker.1 (Finset.inf_le (f := fun Z => RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)) (Finset.mem_univ Z) hf)`. Rewrite using `[CurveInj.fraction_zero_injective X la N Ω gF w hinj f hf']`. Conclude with `Ideal.zero_mem _`.
+
+Take `⟨Z, -, hZ⟩` from `(Ideal.IsPrime.inf_le' hQ).1 hinf`. Take `⟨χ, hχ⟩` from `pos_factor (phiZ X la N (Ω Z) (gF Z) w) ψ (fun f hf => RingHom.mem_ker.1 (hZ (RingHom.mem_ker.2 hf))) (fun r => by`. Take `⟨a, p, hp, hr⟩` from `CurveLoc.loc_of_bir X la N w (gF Z) (hB Z) (hC Z) r`. Conclude with `⟨a, p, fun h0 => hp _ hQ hJ hZ (RingHom.mem_ker.2 h0), hr⟩)`. Establish `hs` using `pos_sec_ne X la N w (gF Z) χ`.
+
+Establish `hs0` using `hu.ne_zero`. Use `⟨Z, χ.toRingHom.comp (CurveLoc.psiZ X la N w (gF Z)), ev (sec X la w 0) * (χ (algebraMap (RZ X la N (Ω Z)) (RZs X la N (Ω Z) (gF Z) w) (rzMap X la N (Ω Z) (gF Z) (sec X la w 0))))⁻¹, mul_ne_zero hs0 (inv_ne_zero hs), fun u G h0 => ?_, fun a => (congrArg χ (pos_psiZ_alg X la N w ( …` and prove the remaining obligations. Use `choose g hg using hsplit Z`. Establish `hmem : frac X la w 1 (CurveLoc.secOf X la N g) ∈ Frac0 X la w` using `Algebra.subset_adjoin (frac_mem_Hfr X la w (by rw [add_zero_weight_one_eq]; exact CurveLoc.secOf_mem X la N g))`. Establish `h1 : (⟨_, hmem⟩ : ↥(Frac0 X la w)) - 1 ∈ RingHom.ker (phiZ X la N (Ω Z) (gF Z) w)`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_one, CurveLoc.phiZ_of_eq X la N w (gF Z) _ 1 _ rfl, CurveLoc.rzMap_secOf X la N (gF Z) g w (fun k => (hg k).1), CurveLoc.secOf_self, pow_one, CurveLoc.weight_zero_section_mul_inv, sub_self]`. Establish `h2` using `hZ h1`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, map_one, hψ _ 1 _ rfl, pow_one, sub_eq_zero]`. Establish `he : ev (CurveLoc.secOf X la N g) ≠ 0` using `left_ne_zero_of_mul_eq_one h2`. Establish `hHe : emb X la N (X.inc u G) * CurveLoc.secOf X la N g = 0` using `CurveInj.vw_inj X la N Ω gF (wadd u wL) (hinj _) (mul_mem_Vw X la N (emb_mem_Vw X la N u G) (CurveLoc.secOf_mem X la N g)) fun Z' => by`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hZ' : Z' = Z`. Substitute `hZ'` using the available equality. Rewrite using `[rzMap_emb, h0, TensorProduct.tmul_zero, TensorProduct.tmul_zero, zero_mul]`. Rewrite using `[CurveLoc.rzMap_secOf_zero X la N (gF Z') g (fun k => (hg k).2 Z' hZ'), mul_zero]`.
+
+Establish `h3` using `congrArg ev hHe`. Rewrite `h3` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.1 h3).resolve_right he`. Establish `h1` using `((hχ _).trans (hψ _ k _ rfl)).symm.trans (phi_fraction_base_value X la N w (gF Z) χ k G hG) show _ = χ (CurveLoc.psiZ X la N w (gF Z) (gF Z G)) * _`. Rewrite using `[mul_pow, mul_left_comm, ← h1, mul_left_comm, ← mul_pow, mul_inv_cancel₀ hs0, one_pow, mul_one]`.
+-/
 theorem exists_point [Finite ι]
     (hinj : ∀ (u : WeightFamilies.Wt D j) (G : B.Cusp j u), (∀ Z, gF Z (X.inc u G) = 0) → G = 0)
     (hsplit : ∀ (Z : ι) (k : Fin N), ∃ g : B.Cusp j wL, gF Z (X.inc wL g) = gF Z (X.inc wL (w k)) ∧
@@ -190,6 +238,9 @@ section One
 
 variable {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : X.Forms →ₐ[B.KO] Ω)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.Gaps.EtaleWeightGaps.sec`. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ev_smul, hc 1 _ (by rw [add_zero_weight_one_eq]; exact emb_mem_Vw X la N wL (w k)), pow_one, mul_assoc]`.
+-/
 theorem ev_sec {F : Type} [Field F] (ev : Rp X la N →+* F) (τ : Ω →+* F) (σ : F)
     (hc : ∀ (k : ℕ) (G : X.Forms), emb X la N G ∈ Vw X la N (addL (wt0 D j) wL k) →
       ev (emb X la N G) = τ (gF G) * σ ^ k) (i : Fin (WeightFamilies.dimY D j + 1)) :
@@ -200,6 +251,9 @@ theorem ev_sec {F : Type} [Field F] (ev : Rp X la N →+* F) (τ : Ω →+* F) (
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [ev_smul, hc 1 _ (by rw [add_zero_weight_one_eq]; exact emb_mem_Vw X la N wL (w k)), pow_one, mul_assoc]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hu.ne_zero` to reduce the goal to its premises. Rewrite using `[ev_sec X la N w gF ev τ σ hc]`. Simplify using `[h]`.
+-/
 theorem exists_ne {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev (sec X la w 0))) (τ : Ω →+* F) (σ : F)
     (hc : ∀ (k : ℕ) (G : X.Forms), emb X la N G ∈ Vw X la N (addL (wt0 D j) wL k) →
       ev (emb X la N G) = τ (gF G) * σ ^ k) : ∃ k, gF (X.inc wL (w k)) ≠ 0 := by
@@ -209,6 +263,13 @@ theorem exists_ne {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev
   rw [ev_sec X la N w gF ev τ σ hc]
   simp [h]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : gF (X.inc u G') = 0`. Rewrite using `[ha u G' h0, h0, map_zero, zero_mul, mul_zero]`. Take `⟨m, p, q, hp, hpq⟩` from `exists_ratio X N w gF hB (exists_ne X la N w gF ev hu τ σ hc) (gF (X.inc u G) / gF (X.inc u G'))`. Take `⟨H1, hH1⟩` from `X.inc_mul u _ G p`. Take `⟨H2, hH2⟩` from `X.inc_mul u _ G' q`.
+
+Establish `h1` using `ha _ (H1 - H2) (by`. Rewrite using `[map_sub, map_sub, ← hH1, ← hH2, map_mul, map_mul, ← hpq]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Rewrite `h1` using `[map_sub, map_sub, map_sub, ← hH1, ← hH2, map_mul, map_mul, map_mul, map_mul, hc m _ (emb_mem_Vw X la N _ p), hc m _ (emb_mem_Vw X la N _ q), ← hpq, map_mul, map_div₀, sub_eq_zero]`.
+
+Establish `h2 : τ (gF (X.inc u G')) ≠ 0` using `(map_ne_zero τ).2 h0`. Establish `h3 : τ (gF (X.inc _ p)) * σ ^ m ≠ 0` using `mul_ne_zero ((map_ne_zero τ).2 hp) (pow_ne_zero _ hσ)`. Apply `mul_right_cancel₀ h3` to reduce the goal to its premises. Rewrite using `[mul_assoc (τ (gF (X.inc u G'))), h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem cross {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev (sec X la w 0))) (τ : Ω →+* F) (σ : F)
     (hσ : σ ≠ 0) (hB : CurveLoc.BirAt X N w gF)
     (ha : ∀ (u : WeightFamilies.Wt D j) (G : B.Cusp j u), gF (X.inc u G) = 0 → ev (emb X la N (X.inc u G)) = 0)
@@ -233,6 +294,19 @@ theorem cross {F : Type} [Field F] (ev : Rp X la N →+* F) (hu : IsUnit (ev (se
   rw [mul_assoc (τ (gF (X.inc u G'))), h1]
   field_simp
 
+/- English proof (translation)
+Establish `key : ∀ k, ∀ g ∈ Vw X la N (addL (wt0 D j) wL k), (ev g * σ⁻¹ ^ k, ev' g * σ'⁻¹ ^ k) ∈ A`. Introduce `k g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨G, rfl⟩` from `hx`.
+
+Simplify using `only`. Rewrite using `[hc k _ (emb_mem_Vw X la N _ G), hc' k _ (emb_mem_Vw X la N _ G), mul_assoc, mul_assoc, ← mul_pow, ← mul_pow, mul_inv_cancel₀ hσ, mul_inv_cancel₀ hσ', one_pow, one_pow, mul_one, mul_one]`. Conclude with `h1 _`. Consider the case `zero`. Rewrite using `[map_zero, map_zero, zero_mul, zero_mul]`.
+
+Conclude with `A.zero_mem`. Consider the case `add x y _ _ hx hy`. Use `A.add_mem hx hy` as an intermediate fact. Rewrite `this` using `[Prod.mk_add_mk, ← add_mul, ← add_mul, ← map_add, ← map_add]`. Then use the resulting hypothesis. Consider the case `smul c x _ hx`.
+
+Use `A.mul_mem (h2 c) hx` as an intermediate fact. Rewrite `this` using `[Prod.mk_mul_mk, ← mul_assoc, ← mul_assoc, ← ev_smul, ← ev_smul]`. Then use the resulting hypothesis. Take `⟨k, g, hg, hx⟩` from `(mem_Hfr X la w).1 ((mem_Frac0 X la w).1 x.2)`. Establish `hs` using `key 1 _ (by rw [add_zero_weight_one_eq]; exact sec_mem_Vw X la w 0)`. Establish `hs0` using `hu.ne_zero`.
+
+Establish `hs0'` using `hu'.ne_zero`. Establish `hi` using `h3 _ _ hs (mul_ne_zero hs0 (pow_ne_zero _ (inv_ne_zero hσ))) (mul_ne_zero hs0' (pow_ne_zero _ (inv_ne_zero hσ')))`. Use `A.mul_mem (key k g hg) (A.pow_mem hi k)` as an intermediate fact. Rewrite using `[hx, liftEv_frac, liftEv_frac]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `ext`. Simplify using `only [Prod.fst_mul, Prod.pow_fst, pow_one, mul_inv, inv_inv, mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Prod.snd_mul, Prod.pow_snd, pow_one, mul_inv, inv_inv, mul_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem pair_mem {F F' : Type} [Field F] [Field F'] (ev : Rp X la N →+* F) (hu : IsUnit (ev (sec X la w 0)))
     (τ : Ω →+* F) (σ : F) (hσ : σ ≠ 0)
     (hc : ∀ (k : ℕ) (G : X.Forms), emb X la N G ∈ Vw X la N (addL (wt0 D j) wL k) →
@@ -289,14 +363,26 @@ variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} 
 def valT (T : CDVR) : AddValuation T.Fr (WithTop ℤ) :=
   ValPl.addv T.Fr (IsDiscreteValuationRing.maximalIdeal T.V)
 
+/- English proof (translation)
+The claim follows from `ValPl.addv_apply _ hx`.
+-/
 theorem valT_apply (T : CDVR) {x : T.Fr} (hx : x ≠ 0) : valT T x = (vV T.V x : ℤ) :=
   ValPl.addv_apply _ hx
 
+/- English proof (translation)
+The claim follows from `ValPl.addv_nonneg _ s`.
+-/
 theorem valT_nonneg (T : CDVR) (s : T.V) : 0 ≤ valT T (algebraMap T.V T.Fr s) := ValPl.addv_nonneg _ s
 
+/- English proof (translation)
+The claim follows from `ValPl.addv_pos_iff _ s`.
+-/
 theorem valT_pos_iff (T : CDVR) (s : T.V) : 0 < valT T (algebraMap T.V T.Fr s) ↔ ¬ IsUnit s :=
   ValPl.addv_pos_iff _ s
 
+/- English proof (translation)
+Establish `h0 : algebraMap T.V T.Fr s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 hs.ne_zero`. Rewrite using `[valT, ValPl.addv_apply _ h0, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_singleton _ hs.ne_zero hs.maximalIdeal_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem valT_irreducible (T : CDVR) {s : T.V} (hs : Irreducible s) : valT T (algebraMap T.V T.Fr s) = 1 := by
   have h0 : algebraMap T.V T.Fr s ≠ 0 :=
     (map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 hs.ne_zero
@@ -304,6 +390,11 @@ theorem valT_irreducible (T : CDVR) {s : T.V} (hs : Irreducible s) : valT T (alg
     HeightOneSpectrum.intValuation_singleton _ hs.ne_zero hs.maximalIdeal_eq]
   simp
 
+/- English proof (translation)
+Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0, zero_mul, nval_zero, nval_of_ne hb]`. Conclude with `EReal.coe_lt_top _`. Rewrite `ha` using `[valT_apply T h0]`. Establish `ha' : (0 : ℤ) < vV T.V a` using `by exact_mod_cast ha`.
+
+Rewrite using `[nval_of_ne hb, nval_of_ne (mul_ne_zero h0 hb), vV_mul h0 hb, EReal.coe_lt_coe_iff]`. Establish `: (0 : ℝ) < vV T.V a` using `by exact_mod_cast ha'`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nval_lt_of_pos (T : CDVR) {a b : T.Fr} (hb : b ≠ 0) (ha : 0 < valT T a) :
     nval T.V 1 b < nval T.V 1 (a * b) := by
   by_cases h0 : a = 0
@@ -318,12 +409,18 @@ theorem nval_lt_of_pos (T : CDVR) {a b : T.Fr} (hb : b ≠ 0) (ha : 0 < valT T a
 
 variable {ζ : PtsG G la} {y : E.Pt' la} (h : FromW ζ y)
 
+/- English proof (translation)
+Rewrite using `[← lift_algKp (xplus X E hM) la G.N G.w h.ev h.s0, h.evW _ (algebraMap _ _ o) ((toOsK (xplus X E hM) la G.w).commutes _), ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem evK_op (o : Op (xplus X E hM) la G.N) :
     evK (xplus X E hM) la G.N h.ev (algebraMap _ (Kp (xplus X E hM) la G.N) o) =
       algebraMap h.T.V h.T.Fr (h.ι (algebraMap _ (Loc ζ) o)) := by
   rw [← lift_algKp (xplus X E hM) la G.N G.w h.ev h.s0,
     h.evW _ (algebraMap _ _ o) ((toOsK (xplus X E hM) la G.w).commutes _), ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `h.loc` as an intermediate fact. Rewrite using `[h.evW x a hx, valT_pos_iff, isUnit_map_iff, IsLocalization.AtPrime.isUnit_to_map_iff (Loc ζ) ζ.asIdeal]`. Conclude with `not_not`.
+-/
 theorem pos_iff_mem (x : ↥(Frac0 (xplus X E hM) la G.w))
     (a : ↥(As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)))
     (hx : toOsK (xplus X E hM) la G.w x = (a : OsK (xplus X E hM) la G.w)) :
@@ -333,6 +430,11 @@ theorem pos_iff_mem (x : ↥(Frac0 (xplus X E hM) la G.w))
   rw [h.evW x a hx, valT_pos_iff, isUnit_map_iff, IsLocalization.AtPrime.isUnit_to_map_iff (Loc ζ) ζ.asIdeal]
   exact not_not
 
+/- English proof (translation)
+Take `⟨ϖ, -, hϖ⟩` from `h.unr`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj ζ.asIdeal.primeCompl ϖ`. Take `⟨x, hx⟩` from `toOsK_surjective (xplus X E hM) la G.w a`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[h.evW x a hx]`.
+
+Use `valT_irreducible _ ?_` and prove the remaining obligations. Establish `hu : IsUnit (h.ι (algebraMap _ (Loc ζ) (s : ↥(As (Op (xplus X E hM) la G.N) (OsK (xplus X E hM) la G.w)))))` using `(IsLocalization.map_units (Loc ζ) s).map _`. Simplify using `only at hs`. Rewrite using `[← hs, map_mul]`. Conclude with `(irreducible_mul_isUnit hu).2 hϖ`.
+-/
 theorem exists_val_one : ∃ x : ↥(Frac0 (xplus X E hM) la G.w),
     valT h.T (IsLocalization.Away.lift (sec (xplus X E hM) la G.w 0) h.s0 (x : Lw (xplus X E hM) la G.w)) = 1 := by
   obtain ⟨ϖ, -, hϖ⟩ := h.unr
@@ -347,6 +449,11 @@ theorem exists_val_one : ∃ x : ↥(Frac0 (xplus X E hM) la G.w),
   rw [← hs, map_mul]
   exact (irreducible_mul_isUnit hu).2 hϖ
 
+/- English proof (translation)
+Use `h.loc` as an intermediate fact. Use `⟨fun Q => ?_, fun Q => ?_, hb, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, evK_op]`. Conclude with `valT_nonneg _ _`. Rewrite using `[RingHom.comp_apply, evK_op, valT_pos_iff, isUnit_map_iff, isUnit_map_iff, IsLocalization.AtPrime.isUnit_to_map_iff (Op (xplus X E hM) la G.N) (gI (xplus X E hM) la G.N), ← MvPolynomial.mem_map_C_iff]`.
+
+Conclude with `not_not`. Establish `e` using `ev_sec (xplus X E hM) la G.N G.w gF h.ev τ σ hc i.succ`. Rewrite `e` using `[h.onS i]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_right hσ`.
+-/
 theorem overGauss {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Forms →ₐ[B.KO] Ω)
     (τ : Ω →+* h.T.Fr) (σ : h.T.Fr) (hσ : σ ≠ 0)
     (hb : ∀ a : B.KO, τ (algebraMap B.KO Ω a) = evK (xplus X E hM) la G.N h.ev
@@ -370,6 +477,9 @@ theorem overGauss {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).
     rw [h.onS i] at e
     exact (mul_eq_zero.1 e.symm).resolve_right hσ
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, ← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply (Xr.Ol la) (Pol Xr la N) (Op Xr la N), ← IsScalarTower.algebraMap_apply (Xr.Ol la) (Op Xr la N) (Kp Xr la N)]`. Conclude with `(IsScalarTower.algebraMap_apply (Xr.Ol la) (Xr.Kl la) (Kp Xr la N) o).symm`.
+-/
 theorem kl_eq (Xr : PJ D B P j) (N : ℕ) (o : Xr.Ol la) :
     algebraMap (Xr.Kl la) (Kp Xr la N) o = ((algebraMap (Op Xr la N) (Kp Xr la N)).comp
       (algebraMap (Pol Xr la N) (Op Xr la N))) (MvPolynomial.C o) := by
@@ -378,6 +488,13 @@ theorem kl_eq (Xr : PJ D B P j) (N : ℕ) (o : Xr.Ol la) :
     ← IsScalarTower.algebraMap_apply (Xr.Ol la) (Op Xr la N) (Kp Xr la N)]
   exact (IsScalarTower.algebraMap_apply (Xr.Ol la) (Xr.Kl la) (Kp Xr la N) o).symm
 
+/- English proof (translation)
+Take `⟨o, o', ho', rfl⟩` from `IsFractionRing.div_surjective (A := Op Xr la N) c`. Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (gI Xr la N).primeCompl o`. Take `⟨⟨a', s'⟩, hs'⟩` from `IsLocalization.surj (gI Xr la N).primeCompl o'`. Establish `h0 : algebraMap (Op Xr la N) (Kp Xr la N) o' ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors ho'`. Establish `h1` using `((IsLocalization.map_units (Op Xr la N) s).map (algebraMap (Op Xr la N) (Kp Xr la N))).ne_zero`.
+
+Establish `h2` using `((IsLocalization.map_units (Op Xr la N) s').map (algebraMap (Op Xr la N) (Kp Xr la N))).ne_zero`. Simplify using `only at hs hs'`. Use `⟨a * s', s * a', ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_mul, ← hs']`. Conclude with `mul_ne_zero h1 (mul_ne_zero h0 h2)`.
+
+Simplify using `only [RingHom.comp_apply, map_mul, ← hs', ← hs]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem kp_frac (Xr : PJ D B P j) (N : ℕ) (c : Kp Xr la N) : ∃ a b,
     ((algebraMap (Op Xr la N) (Kp Xr la N)).comp (algebraMap (Pol Xr la N) (Op Xr la N))) b ≠ 0 ∧
     ((algebraMap (Op Xr la N) (Kp Xr la N)).comp (algebraMap (Pol Xr la N) (Op Xr la N))) b * c =
@@ -395,6 +512,9 @@ theorem kp_frac (Xr : PJ D B P j) (N : ℕ) (c : Kp Xr la N) : ∃ a b,
   · simp only [RingHom.comp_apply, map_mul, ← hs', ← hs]
     field_simp
 
+/- English proof (translation)
+Take `⟨A, hA, h1, h2, h3⟩` from `exists_att (kl_eq (xplus X E hM) G.N) (kp_frac (xplus X E hM) G.N) htr (exists_ne (xplus X E hM) la G.N G.w gF h.ev h.s0 τ σ hc) (overGauss h gF τ σ hσ hb hc) (overGauss h' gF τ' σ' hσ' hb' hc') heq`. Conclude with `hA _ (pair_mem (xplus X E hM) la G.N G.w gF h.ev h.s0 τ σ hσ hc h'.ev h'.s0 τ' σ' hσ' hc' A h1 h2 h3 x)`.
+-/
 theorem att_lift {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Forms →ₐ[B.KO] Ω)
     (htr : Algebra.trdeg B.KO Ω = WeightFamilies.dimY D j)
     (τ : Ω →+* h.T.Fr) (σ : h.T.Fr) (hσ : σ ≠ 0)
@@ -420,6 +540,9 @@ theorem att_lift {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).F
     (overGauss h' gF τ' σ' hσ' hb' hc') heq
   exact hA _ (pair_mem (xplus X E hM) la G.N G.w gF h.ev h.s0 τ σ hσ hc h'.ev h'.s0 τ' σ' hσ' hc' A h1 h2 h3 x)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_val_one h`. Take `⟨a, ha, -⟩` from `att_lift h gF htr τ σ hσ hb hc h τ σ hσ hb hc (fun _ => rfl) x`. Conclude with `⟨a, ha.symm.trans hx⟩`.
+-/
 theorem val_one {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Forms →ₐ[B.KO] Ω)
     (htr : Algebra.trdeg B.KO Ω = WeightFamilies.dimY D j)
     (τ : Ω →+* h.T.Fr) (σ : h.T.Fr) (hσ : σ ≠ 0)
@@ -432,6 +555,19 @@ theorem val_one {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Fo
   obtain ⟨a, ha, -⟩ := att_lift h gF htr τ σ hσ hb hc h τ σ hσ hb hc (fun _ => rfl) x
   exact ⟨a, ha.symm.trans hx⟩
 
+/- English proof (translation)
+Establish `hv : (valT h.T).comap τ ≠ (valT h'.T).comap τ'`. Introduce `hv`. Establish `heq : ∀ a, valT h.T (τ a) = valT h'.T (τ' a)` using `fun a => DFunLike.congr_fun hv a`. Use `hne (MaximalSpectrum.ext (Ideal.ext fun a => ?_))` and prove the remaining obligations. Take `⟨x, hx⟩` from `toOsK_surjective (xplus X E hM) la G.w a`.
+
+Take `⟨b, hb1, hb2⟩` from `att_lift h gF htr τ σ hσ hb hc h' τ' σ' hσ' hb' hc' heq x`. Rewrite using `[← pos_iff_mem h x a hx, ← pos_iff_mem h' x a hx, hb1, hb2, heq]`. Take `⟨a, ha, ha'⟩` from `exists_sep _ _ (val_one h gF htr τ σ hσ hb hc) (val_one h' gF htr τ' σ' hσ' hb' hc') hv`. Take `⟨m, p, q, hp, hpq⟩` from `exists_ratio (xplus X E hM) G.N G.w gF hB (exists_ne (xplus X E hM) la G.N G.w gF h.ev h.s0 τ σ hc) a`. Establish `hpq' : a * gF (X.inc _ p) = gF (X.inc _ q)` using `hpq`.
+
+Establish `e1 : h.ev (emb (xplus X E hM) la G.N (X.inc _ p)) = _` using `hc m _ (emb_mem_Vw (xplus X E hM) la G.N _ p)`. Establish `e2 : h.ev (emb (xplus X E hM) la G.N (X.inc _ q)) = _` using `hc m _ (emb_mem_Vw (xplus X E hM) la G.N _ q)`. Establish `e3 : h'.ev (emb (xplus X E hM) la G.N (X.inc _ p)) = _` using `hc' m _ (emb_mem_Vw (xplus X E hM) la G.N _ p)`. Establish `e4 : h'.ev (emb (xplus X E hM) la G.N (X.inc _ q)) = _` using `hc' m _ (emb_mem_Vw (xplus X E hM) la G.N _ q)`. Establish `n1 : h.ev (emb (xplus X E hM) la G.N (X.inc _ p)) ≠ 0`.
+
+Rewrite using `[e1]`. Conclude with `mul_ne_zero ((map_ne_zero τ).2 hp) (pow_ne_zero _ hσ)`. Establish `n2 : h'.ev (emb (xplus X E hM) la G.N (X.inc _ p)) ≠ 0`. Rewrite using `[e3]`. Conclude with `mul_ne_zero ((map_ne_zero τ').2 hp) (pow_ne_zero _ hσ')`.
+
+Use `⟨_, q, p, n1, n2, ?_, ?_⟩` and prove the remaining obligations. Establish `e : h.ev (emb (xplus X E hM) la G.N (X.inc _ q)) = τ a * h.ev (emb (xplus X E hM) la G.N (X.inc _ p))`. Rewrite using `[e1, e2, ← hpq', map_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `nval_lt_of_pos h.T n1 ha`.
+
+Establish `e : h'.ev (emb (xplus X E hM) la G.N (X.inc _ q)) - h'.ev (emb (xplus X E hM) la G.N (X.inc _ p)) = τ' (a - 1) * h'.ev (emb (xplus X E hM) la G.N (X.inc _ p))`. Rewrite using `[e3, e4, ← hpq', map_mul, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `nval_lt_of_pos h'.T n2 ha'`.
+-/
 theorem sep {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Forms →ₐ[B.KO] Ω)
     (htr : Algebra.trdeg B.KO Ω = WeightFamilies.dimY D j) (hB : CurveLoc.BirAt (xplus X E hM) G.N G.w gF)
     (τ : Ω →+* h.T.Fr) (σ : h.T.Fr) (hσ : σ ≠ 0)
@@ -487,6 +623,13 @@ theorem sep {Ω : Type} [Field Ω] [Algebra B.KO Ω] (gF : (xplus X E hM).Forms 
 
 omit h in
 
+/- English proof (translation)
+Use `choose Zc τ σ hσ ha hb hc using fun ζ => exists_point (xplus X E hM) la G.N G.w Ω gF (fun u F hF => hinj u F fun Z => (hval Z u F).symm.trans (hF Z)) hsplit hB hC (hw ζ).ev (hw ζ).s0 (hw ζ).onS`. Use `⟨Zc, τ, fun ζ => ?_, fun ζ u F hF => ha ζ u F ((hval _ u F).trans hF), fun ζ u F F' => ?_, fun ζ ζ' hne hZ => ?_⟩` and prove the remaining obligations. Take `⟨a, h1⟩` from `val_one (hw ζ) (gF _) (htr _) (τ ζ) (σ ζ) (hσ ζ) (hb ζ) (hc ζ)`. Establish `h0 : τ ζ a ≠ 0` using `wa_ne_zero_of_coe _ (m := 1) h1`. Rewrite `h1` using `[valT_apply _ h0]`.
+
+Conclude with `⟨a, by exact_mod_cast h1⟩`. Rewrite using `[← hval, ← hval]`. Conclude with `cross (xplus X E hM) la G.N G.w (gF _) (hw ζ).ev (hw ζ).s0 (τ ζ) (σ ζ) (hσ ζ) (hB _) (ha ζ) (hc ζ) u F F'`. Establish `hb'` using `hb ζ'`. Establish `hc'` using `hc ζ'`.
+
+Generalize the expression as in `τ ζ' = τ' at hb' hc'`. Generalize the expression as in `Zc ζ' = Z' at hZ τ' hb' hc'`. Substitute `hZ` using the available equality. Conclude with `sep (hw ζ) (gF _) (htr _) (hB _) (τ ζ) (σ ζ) (hσ ζ) (hb ζ) (hc ζ) (hw ζ') τ' (σ ζ') (hσ ζ') hb' hc' hne`.
+-/
 theorem valSep_fam {ι : Type} [Finite ι] (Ω : ι → Type) [∀ Z, Field (Ω Z)] [∀ Z, Algebra B.KO (Ω Z)]
     (gF : ∀ Z, (xplus X E hM).Forms →ₐ[B.KO] Ω Z) (val : ∀ Z (u : WeightFamilies.Wt D j), B.Cusp j u → Ω Z)
     (hval : ∀ Z u F, gF Z ((xplus X E hM).inc u F) = val Z u F)
@@ -533,6 +676,9 @@ theorem valSep_fam {ι : Type} [Finite ι] (Ω : ι → Type) [∀ Z, Field (Ω 
 
 end Pt
 
+/- English proof (translation)
+Introduce `D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB y hw`. Use `CompFin.finite_comp (T.Q.Xo j) T.Q.c` as an intermediate fact. Conclude with `valSep_fam (X := recPJ h j hj) (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (G := G) (la := la) (fun Z : Comp (T.Q.Xo j) T.Q.c => Om Z) (fun Z => formsEvR j hG hT Z) (fun Z u F => evC hG Z ((F : (recB h.toLawsCore).Cusp j u) : T.R j)) (fun Z u F => formsEvR_inc h j hj hG h …`.
+-/
 theorem valSep_of_curveHyp : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF) (la : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO)), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → ValSepSt h j hj hG G la := by
   intro D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB y hw
   have := CompFin.finite_comp (T.Q.Xo j) T.Q.c

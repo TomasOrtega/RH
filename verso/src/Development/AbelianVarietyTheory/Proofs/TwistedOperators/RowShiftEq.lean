@@ -16,6 +16,9 @@ def colPt (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m)) :
     GA D (G.pS (.top t (lastIx D))) × GA D (G.pT (.top t (lastIx D))) :=
   G.toPair (.top t (lastIx D)) 1 (topLast ((S.N.u (.top D.R.m))⁻¹ * g * S.N.u (.top D.R.m))).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colShift_eq (S : GridChoice W U) (t : T) (g : FinPt G (.top D.R.m)) :
     colShift S t g = W.om _ (colPt S t g) := rfl
 
@@ -23,6 +26,9 @@ def rowPt (S : GridChoice W U) (k : FinPt G (.grid D.R.m D.R.m)) :
     GA D (G.pS (.chi (lastIx D) D.R.m : Pair T)) × GA D (G.pT (.chi (lastIx D) D.R.m : Pair T)) :=
   G.toPair (.chi (lastIx D) D.R.m) 1 (gridLast ((S.N.u (.grid D.R.m D.R.m))⁻¹ * k * S.N.u (.grid D.R.m D.R.m))).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowShift_eq (S : GridChoice W U) (k : FinPt G (.grid D.R.m D.R.m)) :
     rowShift S k = W.om (.chi (lastIx D) D.R.m) (rowPt S k) := rfl
 

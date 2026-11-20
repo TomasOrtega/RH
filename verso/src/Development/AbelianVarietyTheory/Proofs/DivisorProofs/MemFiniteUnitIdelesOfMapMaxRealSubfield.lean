@@ -13,6 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.UnitDown
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Take `⟨P, hPm, hP⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+
+Rewrite using `[hP.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))`. Use `⟨⟨P, hPm.isPrime, hne⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+
+Conclude with `hP.over.symm`.
+-/
 theorem exists_above {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v := by
   haveI := v.isMaximal
@@ -27,6 +34,13 @@ theorem exists_above {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [HeightOneSpectrum.under_asIdeal]
   exact hP.over.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ b hb v`. Take `⟨w, rfl⟩` from `exists_above (E := E) v`. Establish `h` using `hb w`. Establish `e : ((GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E b : AdeleRing (𝓞 E) E).2 w) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap (maximalRealSubfield E) E w ((b : AdeleRing (𝓞 (maximal …` using `rfl`. Rewrite `h` using `[e, GlobalTheory.UpIdeleMod.valued_finiteCompletionMap]`.
+
+Establish `he : (w.under (𝓞 (maximalRealSubfield E))).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under _).ne_bot`. Use `set x := Valued.v ((b : AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E)).2 (w.under _))`. Use `set n := (w.under (𝓞 (maximalRealSubfield E))).asIdeal.ramificationIdx' w.asIdeal`. Establish `h' : x ^ n = 1` using `h`. Break down `lt_trichotomy x 1 with hx | hx | hx` into its components or cases.
+
+Conclude with `absurd h' (pow_lt_one₀ zero_le' hx he).ne`. Conclude with `hx`. Conclude with `absurd h' (one_lt_pow₀ hx he).ne'`.
+-/
 theorem unit_down : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (b : Neutral.B1.Ideles (maximalRealSubfield E)),
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap (maximalRealSubfield E) E b ∈ GlobalTheory.Mem.Chr.unitIdl E → b ∈ GlobalTheory.Mem.Chr.unitIdl (maximalRealSubfield E) := by
   intro E _ _ _ b hb v

@@ -17,5 +17,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ConjTwist GlobalTheory.GalTw ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff | exact GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff | (intros; apply GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adjointFrame_integral_iff_parts_conj_half : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (Pg Q : Finset (Pl D.host.E)) (eg eQ : AE D), IsIdemSum eg Pg → IsIdemSum eQ Q → Disjoint Pg Q → IsIdemSum (eg + eQ) (Pg ∪ Q) → ∀ x : WO S T, IsHalf (cA D (eg + eQ)) x → (IsIntM (frMapAdj S T βS βT x) ↔ IsIntM (frMapAdj S T βS βT (cA D eg • x)) ∧ IsIntM (frMapAdj S T βS βT (cA D eQ • x))) := by
   first | exact @GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff | exact GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff | (intros; apply GlobalTheory.ConjHalfSplitInt.frMapAdj_int_iff <;> assumption)

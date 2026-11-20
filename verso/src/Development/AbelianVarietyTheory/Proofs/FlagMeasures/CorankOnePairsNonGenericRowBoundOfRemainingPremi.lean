@@ -11,6 +11,11 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.HermitianTupleNondeg
 import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LocalNongenericBoundRecordFamily
 open Formalism.L2.SG.NGCut Formalism.L2.SG.NGAnalytic GlobalTheory.NGRow
 
+/- English proof (translation)
+Take `⟨hS0, hNml, hPts, hN1, hX0⟩` from `GlobalTheory.RowNGClosed.closedSteps`. Establish `hFam : Formalism.L2.SG.NGLocModel.StepFamC` using `GlobalTheory.T.familyStep_of_four_globalLeaves hG5 hW hG4 hEx`. Establish `hconds : ∀ D : Formalism.BasicNotions.D7, Formalism.MainNotions.NonGenericAndKTwoTheorems.Conclusion1 D 39` using `fun D => ((GlobalTheory.local_nongeneric_bound_record_family 39 le_rfl).2.1 D).1`. Establish `hLoc : StepLocGenPinnedC` using `stepLocGenPinnedC_of_loc (Formalism.L2.SG.NGLocModel.stepLocPinnedC_of_fam hconds hFam)`. Establish `hVan : StepVanishPinned` using `stepVanishPinned_of_term (Formalism.L2.SG.NGVanish.stepTermVanish_of_form hForm)`.
+
+Establish `hAna : StepAnalyticP` using `GlobalTheory.T.rowAnalyticFacts_of_four_steps hPin hVan hLoc hThmB`. Establish `hMassData : StepAnalyticConstantsP` using `GlobalTheory.T.existsRowLevelWithAnalyticFacts_of_steps (tieOfCtx_of hX0) hCB hAna`. Conclude with `GlobalTheory.T.nonGenericCorankOnePairsBound_of_splitFiniteRealRow (GlobalTheory.T.rowSplitFiniteArchimedeanParts_of_steps hMassData sizes_of_hypotheses (stepClass_of_equiv hS0) hNml hPts (stepHeight_of_normOne hN1))`.
+-/
 theorem GlobalTheory.rowNGP_of_leaves (hCB : StepChoiceConstantsC) (hPin : StepPinExists) (hForm : Formalism.L2.SG.NGVanish.FormNGC)
     (hThmB : StepThmBPinnedP) (hG5 : Formalism.L2.SG.FamDefs.OrbitFamilyIdentityNonGeneric) (hW : Formalism.L2.SG.FamDefs.WeightsNG)
     (hG4 : Formalism.L2.SG.FamDefs.ProductStructureNonGeneric) (hEx : Formalism.L2.SG.FamDefs.ExistNG) : RowNGP := by

@@ -15,6 +15,25 @@ open Formalism.MainNotions.S (AutInst)
 
 namespace GlobalTheory.AdelicVol
 
+/- English proof (translation)
+Take `⟨-, -, T, hT, -, -⟩` from `GlobalTheory.AdelicModels.exists_adelic_equiv I`. Take `⟨Γ, hΓ, -, -, hdom⟩` from `GlobalTheory.RatDiscrete.rational_points I`. Establish `hF : IsFundamentalDomain Γ fund (I.muA μf)` using `hdom μf fund hfund`. Use `haveI : BorelSpace (HA (AF I.F) I.cm.sig I.J) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA _ _`. Use `haveI : IsTopologicalGroup (HA (AF I.F) I.cm.sig I.J) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+
+Use `haveI : SecondCountableTopology I.Gf := (GlobalTheory.CongTop.adelic_topology I).2.2.1`. Use `haveI : BorelSpace I.GA := inferInstance`. Use `haveI hG1 : ∀ v, (Formalism.REAL.muG (I.ε v)).IsHaarMeasure := fun v => inferInstance`. Use `haveI hG2 : ∀ v, SigmaFinite (Formalism.REAL.muG (I.ε v)) := fun v => inferInstance`. Use `haveI hP : (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure := inferInstance`.
+
+Use `haveI hPs : SigmaFinite (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) := inferInstance`. Use `haveI : (I.muA μf).IsHaarMeasure := by unfold AutInst.muA; infer_instance`. Establish `hTm : Measurable T` using `T.continuous.measurable`. Establish `hTsm : Measurable T.symm` using `T.symm.continuous.measurable`. Set `μ : Measure (HA (AF I.F) I.cm.sig I.J)` to `Measure.map T.symm (I.muA μf)`.
+
+Use `haveI hμ : μ.IsHaarMeasure := T.symm.toMulEquiv.isHaarMeasure_map (I.muA μf) T.symm.continuous T.continuous`. Set `e : Γ → HFinIn (AF I.F) I.cm.sig I.J` to `fun g => ⟨T.symm g, (hT (T.symm g)).2 (by`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply, ← hΓ]`. Conclude with `g.2)⟩`. Establish `he : Function.Bijective e`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `T.symm.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`.
+
+Introduce `h`. Establish `hm : T h.1 ∈ I.GFset` using `(hT h.1).1 h.2`. Rewrite `hm` using `[← hΓ]`. Use `⟨⟨T h.1, hm⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `T.symm_apply_apply _`.
+
+Establish `hsc : ∀ g : Γ, Function.Semiconj T (fun x : HA (AF I.F) I.cm.sig I.J => e g • x) (fun y : I.GA => (g : I.GA) * y)`. Introduce `g x`. Use `show T ((T.symm (g : I.GA)) * x) = (g : I.GA) * T x`. Rewrite using `[map_mul, ContinuousMulEquiv.apply_symm_apply]`. Establish `hmp : MeasurePreserving T μ (I.muA μf)`.
+
+Use `⟨hTm, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map hTm hTsm]`. Establish `: (T ∘ T.symm) = id` using `funext fun y => T.apply_symm_apply y`. Rewrite using `[this, Measure.map_id]`. Use `⟨μ, T ⁻¹' fund, hμ, hF.preimage_of_equiv hmp.quasiMeasurePreserving he hsc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Measure.map_apply hTsm (hTm hfund.1), ← Set.preimage_comp]`. Establish `: (T ∘ T.symm) = id` using `funext fun y => T.apply_symm_apply y`. Rewrite using `[this, Set.preimage_id]`.
+-/
 theorem exists_fundamentalDomain_measure_eq (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf]
     (fund : Set I.GA) (hfund : I.IsFundDom (I.muA μf) fund) :
     ∃ (μ : Measure (HA (AF I.F) I.cm.sig I.J)) (S : Set (HA (AF I.F) I.cm.sig I.J)), μ.IsHaarMeasure ∧
@@ -65,6 +84,11 @@ theorem exists_fundamentalDomain_measure_eq (I : AutInst) (μf : Measure I.Gf) [
   have : (T ∘ T.symm) = id := funext fun y => T.apply_symm_apply y
   rw [this, Set.preimage_id]
 
+/- English proof (translation)
+Introduce `I μf _ _ fund hfund`. Take `⟨hcm, hJ, -⟩` from `GlobalTheory.AdelicModels.exists_adelic_equiv I`. Take `⟨μ, S, hμ, hS, hμS⟩` from `exists_fundamentalDomain_measure_eq I μf fund hfund`. Establish `hfin : μ S < ⊤` using `GlobalTheory.Mem.VolFin.finVol I.F I.E I.cm.sig hcm I.n I.J hJ μ hμ S hS`. Establish `hne : μ S ≠ 0` using `((GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary I.F I.E I.cm.sig I.n I.J μ hμ).2 S S hS hS).2`.
+
+Rewrite using `[← hμS]`. Use `⟨hfin, hne, ?_⟩` and prove the remaining obligations. Use `show 0 < ((I.muA μf) fund).toReal`. Rewrite using `[← hμS]`. Conclude with `ENNReal.toReal_pos hne hfin.ne`.
+-/
 theorem vol_finite_pos : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA),
     I.IsFundDom (I.muA μf) fund → I.muA μf fund < ⊤ ∧ I.muA μf fund ≠ 0 ∧ 0 < I.vol μf fund := by
   intro I μf _ _ fund hfund

@@ -23,40 +23,61 @@ def chernRepEv1 {I : Type} {U : I → A.left.Opens} (β : C1 (OSmall U))
     {T T' : Thick (dp0 K) (A.hom ≫ 𝟙 (Sp K))} (φ : T ⟶ T') (h : ∃ i, ⊤ ≤ T.x ⁻¹ᵁ U i) : T'.B :=
   β ⟨T, h⟩ ⟨T', h.imp fun _ ↦ φ.le_preimage⟩ ⟨φ⟩
 
+/- English proof (translation)
+Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem snd_signed_sum_add {B : Type} [CommRing B] (a b c d a' b' c' d' : DualNumber B) :
     TrivSqZeroExt.snd (a + a' - (b + b') - (c + c' - (d + d'))) =
       TrivSqZeroExt.snd (a - b - (c - d)) + TrivSqZeroExt.snd (a' - b' - (c' - d')) := by
   simp only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub]
   abel
 
+/- English proof (translation)
+Simplify using `only [prism, ev2, Pi.add_apply]`. Conclude with `snd_signed_sum_add _ _ _ _ _ _ _ _`.
+-/
 theorem prism_add' {I : Type} {U : I → A.left.Opens} (z z' : C2 (OSmall U)) {v : epsR K ⟶ A}
     (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q) (h : ∃ i, P.In (U i)) :
     prism (z + z') hv φ h = prism z hv φ h + prism z' hv φ h := by
   simp only [prism, ev2, Pi.add_apply]
   exact snd_signed_sum_add _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem snd_signed_sum_zero (B : Type) [CommRing B] :
     TrivSqZeroExt.snd ((0 : DualNumber B) - 0 - (0 - 0)) = 0 := by
   simp
 
+/- English proof (translation)
+Simplify using `only [prism, ev2, Pi.zero_apply]`. Conclude with `snd_signed_sum_zero _`.
+-/
 theorem prism_zero' {I : Type} {U : I → A.left.Opens} {v : epsR K ⟶ A}
     (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q) (h : ∃ i, P.In (U i)) :
     prism (0 : C2 (OSmall U)) hv φ h = 0 := by
   simp only [prism, ev2, Pi.zero_apply]
   exact snd_signed_sum_zero _
 
+/- English proof (translation)
+Simplify using `only [TrivSqZeroExt.snd_sub]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem snd_signed_sum_sub {B : Type} [CommRing B] (a b c d a' b' c' d' : DualNumber B) :
     TrivSqZeroExt.snd (a - a' - (b - b') - (c - c' - (d - d'))) =
       TrivSqZeroExt.snd (a - b - (c - d)) - TrivSqZeroExt.snd (a' - b' - (c' - d')) := by
   simp only [TrivSqZeroExt.snd_sub]
   abel
 
+/- English proof (translation)
+Simplify using `only [prism, ev2, Pi.sub_apply]`. Conclude with `snd_signed_sum_sub _ _ _ _ _ _ _ _`.
+-/
 theorem prism_sub' {I : Type} {U : I → A.left.Opens} (z z' : C2 (OSmall U)) {v : epsR K ⟶ A}
     (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q) (h : ∃ i, P.In (U i)) :
     prism (z - z') hv φ h = prism z hv φ h - prism z' hv φ h := by
   simp only [prism, ev2, Pi.sub_apply]
   exact snd_signed_sum_sub _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `prism_zero' hv φ h`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, prism_add', ih]`.
+-/
 theorem prism_sum' {I J : Type} {U : I → A.left.Opens} (t : Finset J) (z : J → C2 (OSmall U))
     {v : epsR K ⟶ A} (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q) (h : ∃ i, P.In (U i)) :
     prism (∑ k ∈ t, z k) hv φ h = ∑ k ∈ t, prism (z k) hv φ h := by
@@ -67,6 +88,11 @@ theorem prism_sum' {I J : Type} {U : I → A.left.Opens} (t : Finset J) (z : J �
   · intro a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, prism_add', ih]
 
+/- English proof (translation)
+Apply `Thick.hom_ext` to reduce the goal to its premises. Introduce `b`. Rewrite using `[Thick.comp_φ, Thick.comp_φ]`. Use `show TrivSqZeroExt.inl (φ.ρ b) = dualAlg φ.ρ (TrivSqZeroExt.inl b)`. Use `ext`.
+
+Rewrite using `[fst_dualAlg]`. Both sides reduce to the same expression. Rewrite using `[snd_dualAlg]`. Simplify using the standard rewrite rules.
+-/
 theorem triv_sec {P Q : GPt A} (φ : P.Hom Q) : φ.triv ≫ Q.sec = P.sec ≫ φ.dual := by
   apply Thick.hom_ext
   intro b
@@ -76,6 +102,9 @@ theorem triv_sec {P Q : GPt A} (φ : P.Hom Q) : φ.triv ≫ Q.sec = P.sec ≫ φ
   · rw [fst_dualAlg]; rfl
   · rw [snd_dualAlg]; simp
 
+/- English proof (translation)
+Apply `Thick.hom_ext` to reduce the goal to its premises. Introduce `b`. Rewrite using `[Thick.comp_φ, Thick.comp_φ]`. Both sides reduce to the same expression.
+-/
 theorem triv_tan {P Q : GPt A} (φ : P.Hom Q) {v : epsR K ⟶ A} (hv : IsTangent v) :
     (φ.tr v).triv ≫ Q.tan hv = P.tan hv ≫ φ.dual := by
   apply Thick.hom_ext
@@ -90,6 +119,13 @@ def cochainTangentDiffCoeff (β : C1 (OSmall U)) {v : epsR K ⟶ A} (hv : IsTang
     TrivSqZeroExt.snd (R := P.B) (chernRepEv1 β P.sec h - chernRepEv1 β (P.tan hv) (h.imp fun _ e ↦ e.tr hv))
   else 0
 
+/- English proof (translation)
+Establish `snd_d1_lemma {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C] (ρ : B →ₐ[R] C) (a : C) (y x2 x5 x6 y' x4 : DualNumber C) (x3 x7 : DualNumber B) : TrivSqZeroExt.snd ((TrivSqZeroExt.inl a - y + x2 - (dualAlg ρ x3 - y + x4)) - (x5 - y' + x6 - (dualAlg …`. Simplify using `only [TrivSqZeroExt.snd_sub, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, snd_dualAlg, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : ∃ i, Q.In (U i)` using `h.imp fun _ e ↦ e.map φ`. Establish `h3 : ∃ i, (P.tr v).In (U i)` using `h.imp fun _ e ↦ e.tr hv`.
+
+Establish `k1 : ev2 (d1 _ β) φ.triv Q.sec h = Q.sec.φ (chernRepEv1 β φ.triv h) - chernRepEv1 β (φ.triv ≫ Q.sec) h + chernRepEv1 β Q.sec hQ` using `rfl`. Establish `k2 : ev2 (d1 _ β) P.sec φ.dual h = φ.dual.φ (chernRepEv1 β P.sec h) - chernRepEv1 β (P.sec ≫ φ.dual) h + chernRepEv1 β φ.dual h` using `rfl`. Establish `k3 : ev2 (d1 _ β) (φ.tr v).triv (Q.tan hv) h3 = (Q.tan hv).φ (chernRepEv1 β (φ.tr v).triv h3) - chernRepEv1 β ((φ.tr v).triv ≫ Q.tan hv) h3 + chernRepEv1 β (Q.tan hv) (hQ.imp fun _ e ↦ e.tr hv)` using `rfl`. Establish `k4 : ev2 (d1 _ β) (P.tan hv) φ.dual h3 = φ.dual.φ (chernRepEv1 β (P.tan hv) h3) - chernRepEv1 β (P.tan hv ≫ φ.dual) h3 + chernRepEv1 β φ.dual h` using `rfl`. Establish `hs : ∀ x : Q.B, Q.sec.φ x = (TrivSqZeroExt.inl x : DualNumber Q.B)` using `fun _ ↦ rfl`.
+
+Establish `ht : ∀ x : DualNumber Q.B, (Q.tan hv).φ x = x` using `fun _ ↦ rfl`. Establish `hd : ∀ x : DualNumber P.B, φ.dual.φ x = dualAlg φ.ρ x` using `fun _ ↦ rfl`. Rewrite using `[prism, k1, k2, k3, k4, triv_sec φ, triv_tan φ hv]`. Simplify using `only [hs, ht, hd, cochainTangentDiffCoeff, dif_pos h, dif_pos hQ]`. Conclude with `snd_d1_lemma φ.ρ _ _ _ _ _ _ _ _ _`.
+-/
 theorem prismContractionTwoCochain_coboundary (β : C1 (OSmall U)) {v : epsR K ⟶ A} (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q)
     (h : ∃ i, P.In (U i)) :
     prism (d1 _ β) hv φ h = -TrivSqZeroExt.snd (R := Q.B) (chernRepEv1 β (φ.tr v).triv (h.imp fun _ e ↦ e.tr hv)) +
@@ -118,11 +154,17 @@ theorem prismContractionTwoCochain_coboundary (β : C1 (OSmall U)) {v : epsR K �
   simp only [hs, ht, hd, cochainTangentDiffCoeff, dif_pos h, dif_pos hQ]
   exact snd_d1_lemma φ.ρ _ _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ev2_pullback_cupZ (c : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (ω : Form (A.hom ≫ 𝟙 (Sp K)))
     {T T' T'' : Thick (dp0 K) (A.hom ≫ 𝟙 (Sp K))} (a : T ⟶ T') (b : T' ⟶ T'') (hT : ∃ i, ⊤ ≤ T.x ⁻¹ᵁ U i) :
     ev2 ((CoefMap.restrict (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (IsSmall (dp0 K) (A.hom ≫ 𝟙 (Sp K)) U).ι).pullbackTwoCocycle
       (cupZ _ c ω.1)).1 a b hT = b.φ (ev c a) * ev ω.1 b := rfl
 
+/- English proof (translation)
+Establish `key : TrivSqZeroExt.inl a * σQ - dualAlg ρ sP * w - (b * θQ - dualAlg ρ τP * w) = TrivSqZeroExt.inl a * (σQ - θQ) - (sQ - τQ) * θQ + dualAlg ρ ((sP - τP) * θP)`. Rewrite using `[map_mul, map_sub]`. Take the linear combination `θQ * e1 - θQ * e2 + (dualAlg ρ sP - dualAlg ρ τP) * e3`. Rewrite using `[key, e4, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_sub, TrivSqZeroExt.inl_mul_inr, TrivSqZeroExt.snd_inr, smul_eq_mul, snd_dualAlg, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem snd_cup_difference_eq {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B]
     [Algebra R C] (ρ : B →ₐ[R] C) (a t : C) (sQ τQ σQ θQ e w b : DualNumber C) (sP τP θP : DualNumber B)
     (e1 : TrivSqZeroExt.inl a + sQ = dualAlg ρ sP + e) (e2 : b + τQ = dualAlg ρ τP + e)
@@ -137,6 +179,9 @@ private theorem snd_cup_difference_eq {R B C : Type} [CommRing R] [CommRing B] [
     TrivSqZeroExt.snd_inr, smul_eq_mul, snd_dualAlg, map_neg]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← ev_comp, ← ev_comp, triv_sec]`. Rewrite using `[← ev_comp, ← ev_comp, triv_tan]`.
+-/
 private theorem ev_sec_and_tan_hom_relation (f : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) {P Q : GPt A} (φ : P.Hom Q) {v : epsR K ⟶ A}
     (hv : IsTangent v) :
     (Q.sec.φ (ev f φ.triv) + ev f Q.sec = φ.dual.φ (ev f P.sec) + ev f φ.dual) ∧
@@ -149,6 +194,13 @@ def cupContractionCorrectionTerm (c : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (�
     (hv : IsTangent v) : PtFn (A.hom ≫ 𝟙 (Sp K)) :=
   fun P ↦ -TrivSqZeroExt.snd (R := P.B) ((ev c P.sec - ev c (P.tan hv)) * ev ω.1 (P.tan hv))
 
+/- English proof (translation)
+Establish `h3 : ∃ i, (P.tr v).In (U i)` using `h.imp fun _ e ↦ e.tr hv`. Establish `hs : ∀ x : Q.B, Q.sec.φ x = (TrivSqZeroExt.inl x : DualNumber Q.B)` using `fun _ ↦ rfl`. Establish `ht : ∀ x : DualNumber Q.B, (Q.tan hv).φ x = x` using `fun _ ↦ rfl`. Establish `hd : ∀ x : DualNumber P.B, φ.dual.φ x = dualAlg φ.ρ x` using `fun _ ↦ rfl`. Establish `h0 : ev ω.1 (φ.tr v).triv = 0` using `ω.2 (φ.tr v).triv rfl rfl`.
+
+Take `⟨e1, e2⟩` from `ev_sec_and_tan_hom_relation c φ hv`. Establish `e3` using `(ev_sec_and_tan_hom_relation ω.1 φ hv).2`. Establish `hQ4` using `ev_sec_sub_ev_tan K A hA v hv ω Q`. Rewrite `e1` using `[hs, hd]`. Rewrite `e2` using `[ht, hd]`.
+
+Rewrite `e3` using `[ht, hd, h0, zero_add]`. Rewrite using `[prism]`. Simplify using `only [ev2_pullback_cupZ c ω φ.triv Q.sec h, ev2_pullback_cupZ c ω P.sec φ.dual h, ev2_pullback_cupZ c ω (φ.tr v).triv (Q.tan hv) h3, ev2_pullback_cupZ c ω (P.tan hv) φ.dual h3, hs, ht, hd]`. Conclude with `snd_cup_difference_eq φ.ρ (ev c φ.triv) (algebraMap K Q.B (tanVal v ω)) (ev c Q.sec) (ev c (Q.tan hv)) (ev ω.1 Q.sec) (ev ω.1 (Q.tan hv)) (ev c φ.dual) (ev ω.1 φ.dual) (ev c (φ.tr v).triv) (ev c P.sec) (ev c (P.tan hv)) (ev ω.1 (P.tan hv)) e1 e2 e3 hQ4`.
+-/
 theorem prism_cup' (hA : IsAbelianScheme A) (c : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))))
     (ω : Form (A.hom ≫ 𝟙 (Sp K))) {v : epsR K ⟶ A} (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q)
     (h : ∃ i, P.In (U i)) :
@@ -173,6 +225,9 @@ theorem prism_cup' (hA : IsAbelianScheme A) (c : Z1 (O (dp0 K) (A.hom ≫ 𝟙 (
     (ev ω.1 Q.sec) (ev ω.1 (Q.tan hv)) (ev c φ.dual) (ev ω.1 φ.dual) (ev c (φ.tr v).triv) (ev c P.sec)
     (ev c (P.tan hv)) (ev ω.1 (P.tan hv)) e1 e2 e3 hQ4
 
+/- English proof (translation)
+Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Both sides reduce to the same expression. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem ev_sum_smul' {J : Type} (t : Finset J) (r : J → K) (c : J → Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))))
     {T T' : Thick (dp0 K) (A.hom ≫ 𝟙 (Sp K))} (φ : T ⟶ T') :
     ev (∑ k ∈ t, r k • c k) φ = ∑ k ∈ t, r k • ev (c k) φ := by
@@ -183,12 +238,24 @@ theorem ev_sum_smul' {J : Type} (t : Finset J) (r : J → K) (c : J → Z1 (O (d
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
     rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.coe_sum]`. Conclude with `prism_sum' t (fun k ↦ (z k).1) hv φ h`.
+-/
 theorem prism_sumZ' {I J : Type} {U : I → A.left.Opens} (t : Finset J) (z : J → Z2 (OSmall U))
     {v : epsR K ⟶ A} (hv : IsTangent v) {P Q : GPt A} (φ : P.Hom Q) (h : ∃ i, P.In (U i)) :
     prism (∑ k ∈ t, z k).1 hv φ h = ∑ k ∈ t, prism (z k).1 hv φ h := by
   rw [Submodule.coe_sum]
   exact prism_sum' t (fun k ↦ (z k).1) hv φ h
 
+/- English proof (translation)
+Establish `hQ : ∃ i, Q.In (L.U i)` using `hP.imp fun _ e ↦ e.map φ`. Establish `hT : ∃ i, T.In (L.U i)` using `hQ.imp fun _ e ↦ e.map ψ`. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hβ ⟨P.triv, hP⟩) ⟨Q.triv, hQ⟩) ⟨T.triv, hT⟩) ⟨φ.triv⟩) ⟨ψ.triv⟩`. Establish `hz0 : ((CoefMap.restrict (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (IsSmall (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L.U).ι).pullbackTwoCocycle (∑ k, cupZ _ (c k) (ω k).1)).1 ⟨P.triv, hP⟩ ⟨Q.triv, hQ⟩ ⟨T.triv, hT⟩ ⟨φ.triv⟩ ⟨ψ.triv⟩ = 0`. Rewrite using `[CoefMap.pullCocycleTwo_apply]`.
+
+Use `show Subtype.val (∑ k, cupZ (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (c k) (ω k).1) P.triv Q.triv T.triv φ.triv ψ.triv = 0`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Finset.sum_apply]`. Use `Finset.sum_eq_zero fun k _ ↦ ?_` and prove the remaining obligations. Establish `hw : (ω k).1.1 Q.triv T.triv ψ.triv = 0` using `(ω k).2 ψ.triv rfl rfl`.
+
+Rewrite using `[cupZ_apply, hw, mul_zero]`. Establish `hl0 : ℓ.1 ⟨P.triv, hP⟩ ⟨Q.triv, hQ⟩ ⟨T.triv, hT⟩ ⟨φ.triv⟩ ⟨ψ.triv⟩ = 0` using `Ideal.mem_bot.mp (hℓ ⟨P.triv, hP⟩ ⟨Q.triv, hQ⟩ ⟨T.triv, hT⟩ ⟨φ.triv⟩ ⟨ψ.triv⟩)`. Simplify using `only [Pi.sub_apply, hz0, hl0, sub_zero] at e`. Rewrite `e` using `[d1_apply]`. Establish `e' : ψ.ρ (chernRepEv1 β φ.triv hP) - chernRepEv1 β (φ.triv ≫ ψ.triv) hP + chernRepEv1 β ψ.triv hQ = 0` using `e`.
+
+Establish `hcomp : (φ.comp ψ).triv = φ.triv ≫ ψ.triv` using `Thick.hom_ext fun _ ↦ rfl`. Rewrite `e'` using `[sub_add_eq_add_sub, sub_eq_zero]`. Rewrite using `[hcomp]`. Conclude with `e'.symm`.
+-/
 private theorem triv_coc_lemma_7 {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.left}
     {I : Type} [Fintype I] (c : I → Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (ω : I → Form (A.hom ≫ 𝟙 (Sp K)))
     (β : C1 (OSmall L.U)) (ℓ : Z2 ((IsSmall (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L.U).ι ⋙ O (dp0 K) (A.hom ≫ 𝟙 (Sp K))))
@@ -224,6 +291,11 @@ private theorem triv_coc_lemma_7 {K : Type} [Field K] {A : Over (Sp K)} [GrpObj 
   rw [hcomp]
   exact e'.symm
 
+/- English proof (translation)
+Establish `hsum : (∑ k, cup _ (H1.mk _ (c k)) (Form.cl _ (ω k))) = H2.mk (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))) (∑ k, cupZ _ (c k) (ω k).1)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← cup_mk]`. Both sides reduce to the same expression.
+
+Rewrite `hz` using `[hsum, CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`. Take `⟨β, hβ⟩` from `hz`. Conclude with `⟨β, hβ, by simp only [hβ, sub_sub_cancel]⟩`.
+-/
 private theorem chern_cob_lemma_10 {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {L : LB A.left}
     {I : Type} [Fintype I] (c : I → Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (ω : I → Form (A.hom ≫ 𝟙 (Sp K)))
     (ℓ : Z2 ((IsSmall (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L.U).ι ⋙ O (dp0 K) (A.hom ≫ 𝟙 (Sp K))))
@@ -242,6 +314,11 @@ private theorem chern_cob_lemma_10 {K : Type} [Field K] {A : Over (Sp K)} [GrpOb
   obtain ⟨β, hβ⟩ := hz
   exact ⟨β, hβ, by simp only [hβ, sub_sub_cancel]⟩
 
+/- English proof (translation)
+Rewrite `hN` using `[hℓ1, prism_sub', map_sum, prism_sumZ', prismContractionTwoCochain_coboundary β hv φ hex]`. Simplify using `only [prism_cup' hA] at hN`. Rewrite using `[ev_sum_smul']`. Simplify using `only [map_sub, map_add, map_sum]`. Establish `hsm : ∀ k, tanVal v (ω k) • ev (c k) φ.triv = ev (c k) φ.triv * algebraMap K Q.B (tanVal v (ω k))` using `fun k ↦ by`.
+
+Rewrite using `[Algebra.smul_def, mul_comm]`. Simplify using `only [hsm]`. Rewrite `hN` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Take the linear combination `hN - h3`.
+-/
 private theorem prism_eq_of_pullback_cup_sub_d1 {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} {I : Type} [Fintype I] (c : I → Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K))))
     (ω : I → Form (A.hom ≫ 𝟙 (Sp K))) (β : C1 (OSmall L.U)) (ℓ : C2 (OSmall L.U))
@@ -266,6 +343,17 @@ private theorem prism_eq_of_pullback_cup_sub_d1 {K : Type} [Field K] {A : Over (
 
 end ChernRep
 
+/- English proof (translation)
+Introduce `K _ A _ hA L hL I _ c ω hch v hv J V τ hV`. Establish `hcov : ⨆ i, L.U i = ⊤` using `hL.1`. Take `⟨i0, hi0, u, ℓ, hu, hℓ, hz⟩` from `hch`. Take `⟨N, hN, hNd⟩` from `GlobalTheory.T.logChernCocycle_contraction_invariantField_trivialised K A L hL i0 hi0 u ℓ.1 hu hℓ v hv`. Take `⟨β, hβ, hℓ1⟩` from `chern_cob_lemma_10 c ω ℓ hz`.
+
+Take `⟨G3, hG3⟩` from `GlobalTheory.CocInv.exists_coboundary_snd_tr K A hA L.ι L.U hcov (fun P Q φ ↦ if hP : ∃ i, P.In (L.U i) then chernRepEv1 β φ.triv hP else 0) (by`. Introduce `P Q T φ ψ hP`. Establish `hQ : ∃ i, Q.In (L.U i)` using `hP.imp fun _ e ↦ e.map φ`. Simplify using `only [dif_pos hP, dif_pos hQ]`. Conclude with `triv_coc_lemma_7 c ω β ℓ (fun T T' T'' φ ψ ↦ (hℓ T T' T'' φ ψ).1) hβ P Q T φ ψ hP) v hv`.
+
+Use `⟨fun j P ↦ N (τ j) P - ∑ k, cupContractionCorrectionTerm (c k) (ω k) hv P - G3 P + cochainTangentDiffCoeff β hv P, ?_, ?_⟩` and prove the remaining obligations. Introduce `j P Q φ hP`. Establish `hP' : P.In (L.U (τ j))` using `hP.mono (hV j)`. Establish `h3` using `hG3 (τ j) (V j) (hV j) P Q φ hP`. Simplify using `only [dif_pos (show ∃ i, (P.tr v).In (L.U i) from ⟨τ j, hP'.tr hv⟩)] at h3`.
+
+Conclude with `prism_eq_of_pullback_cup_sub_d1 hA c ω β ℓ.1 hℓ1 hv (N (τ j)) G3 φ ⟨τ j, hP'⟩ (hN (τ j) P Q φ hP') h3`. Introduce `j j' P hj hj'`. Use `hNd (τ j) (τ j') P (hj.mono (hV j)) (hj'.mono (hV j'))` as an intermediate fact. Use `show N (τ j) P - _ - G3 P + _ - (N (τ j') P - _ - G3 P + _) = dlog L v (τ j) (τ j') P`. Rewrite using `[← this]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem isRep_chern_tanVal : ∀ (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → ∀ (I : Type) [Fintype I] (c : I → Z1 (O (dp0 K) (A.hom ≫ 𝟙 (Sp K)))) (ω : I → Form (A.hom ≫ 𝟙 (Sp K))), IsChern (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L (∑ k, cup _ (H1.mk _ (c k)) (Form.cl _ (ω k))) → ∀ v : epsR K ⟶ A, IsTangent v → ∀ (J : Type) (V : J → A.left.affineOpens) (τ : J → L.ι), (∀ j, (V j).1 ≤ L.U (τ j)) → IsRep (fun j => (V j).1) (∑ k, tanVal v (ω k) • c k) (fun j j' => dlog L v (τ j) (τ j')) := by
   intro K _ A _ hA L hL I _ c ω hch v hv J V τ hV
   classical

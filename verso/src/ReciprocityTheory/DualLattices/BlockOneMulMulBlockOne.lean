@@ -14,6 +14,11 @@ def Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : Matrix (Fin (N + 1
   Matrix.of fun k l =>
     if l = j0 then (if k = j0 then 1 else 0) else ((if k = l then 1 else 0) - (if k = j0 then s l else 0))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_column (Vm j0 s) j0, Finset.sum_eq_single j0]`. Establish `hsub : (Vm j0 s).submatrix j0.succAbove j0.succAbove = 1`. Use extensionality with `k l`. Simplify using `only [Matrix.submatrix_apply, Vm, Matrix.of_apply, Fin.succAbove_ne, if_false, sub_zero, Matrix.one_apply, (Fin.succAbove_right_injective).eq_iff]`. Rewrite using `[hsub, Matrix.det_one]`.
+
+Simplify using `[Vm, ← two_mul, pow_mul]`. Introduce `k _ hk`. Simplify using `[Vm, hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem det_Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : (Vm j0 s).det = 1 := by
   rw [Matrix.det_succ_column (Vm j0 s) j0, Finset.sum_eq_single j0]
   · have hsub : (Vm j0 s).submatrix j0.succAbove j0.succAbove = 1 := by
@@ -26,6 +31,9 @@ theorem det_Vm {N : ℕ} (j0 : Fin (N + 1)) (s : Fin (N + 1) → R) : (Vm j0 s).
     simp [Vm, hk]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Vm, Matrix.of_apply]`. Distinguish the cases in `hl : l = j0`. Simplify using `[hl]`. Simplify using `only [hl, if_false, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_Vm {m N : ℕ} (X : Matrix (Fin m) (Fin (N + 1)) R) (j0 : Fin (N + 1))
     (s : Fin (N + 1) → R) (i : Fin m) (l : Fin (N + 1)) :
     (X * Vm j0 s) i l = if l = j0 then X i j0 else X i l - s l * X i j0 := by
@@ -37,6 +45,9 @@ theorem mul_Vm {m N : ℕ} (X : Matrix (Fin m) (Fin (N + 1)) R) (j0 : Fin (N + 1
       Finset.sum_ite_eq', Finset.mem_univ, if_true]
     ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Vm, Matrix.of_apply]`. Distinguish the cases in `hk : k = j0`. Simplify using `[hk]`. Simplify using `only [hk, if_false, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul]`. Simplify using `[Finset.sum_ite_eq']`.
+-/
 theorem VmT_mul {N n : ℕ} (j0 : Fin (N + 1)) (u : Fin (N + 1) → R) (Y : Matrix (Fin (N + 1)) (Fin n) R)
     (k : Fin (N + 1)) (l : Fin n) :
     ((Vm j0 u)ᵀ * Y) k l = if k = j0 then Y j0 l else Y k l - u k * Y j0 l := by
@@ -50,29 +61,57 @@ theorem VmT_mul {N n : ℕ} (j0 : Fin (N + 1)) (u : Fin (N + 1) → R) (Y : Matr
 def piv {N : ℕ} (i0 : Fin (N + 1)) : Equiv.Perm (Fin (N + 1)) :=
   (finSuccEquiv N).trans (finSuccEquiv' i0).symm
 
+/- English proof (translation)
+Simplify using `[piv, finSuccEquiv_zero]`.
+-/
 theorem piv_zero {N : ℕ} (i0 : Fin (N + 1)) : piv i0 0 = i0 := by
   simp [piv, finSuccEquiv_zero]
 
+/- English proof (translation)
+Simplify using `[piv, finSuccEquiv_succ]`.
+-/
 theorem piv_succ {N : ℕ} (i0 : Fin (N + 1)) (l : Fin N) : piv i0 l.succ = i0.succAbove l := by
   simp [piv, finSuccEquiv_succ]
 
 def bd1 {N M : ℕ} (P : Matrix (Fin N) (Fin M) R) : Matrix (Fin (N + 1)) (Fin (M + 1)) R :=
   Matrix.of fun i j => Fin.cases (Fin.cases 1 (fun _ => 0) j) (fun l => Fin.cases 0 (fun k => P l k) j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockOne_zero_zero_alt {N M : ℕ} (P : Matrix (Fin N) (Fin M) R) : bd1 P 0 0 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockOne_zero_succ_alt {N M : ℕ} (P : Matrix (Fin N) (Fin M) R) (k : Fin M) :
     bd1 P 0 k.succ = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockOne_succ_zero_alt {N M : ℕ} (P : Matrix (Fin N) (Fin M) R) (l : Fin N) :
     bd1 P l.succ 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockOne_succ_succ_alt {N M : ℕ} (P : Matrix (Fin N) (Fin M) R) (l : Fin N) (k : Fin M) :
     bd1 P l.succ k.succ = P l k := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Simplify using `only [blockOne_zero_zero_alt, blockOne_zero_succ_alt, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_one, Fin.val_zero, pow_zero, one_mul]`. Apply the tactic sequence `all_goals congr 1`.
+-/
 theorem det_blockOne_alt {N : ℕ} (P : Matrix (Fin N) (Fin N) R) : (bd1 P).det = P.det := by
   rw [Matrix.det_succ_row_zero, Fin.sum_univ_succ]
   simp only [blockOne_zero_zero_alt, blockOne_zero_succ_alt, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, mul_one,
     Fin.val_zero, pow_zero, one_mul]
   all_goals congr 1
 
+/- English proof (translation)
+Establish `hPC0 : ∀ j : Fin (n + 1), (bd1 P * Cm) 0 j = Cm 0 j`. Introduce `j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `hPCs : ∀ (l : Fin d) (j : Fin (n + 1)), (bd1 P * Cm) l.succ j = ∑ m, P l m * Cm m.succ j`. Introduce `l j`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Use `⟨?_, fun k => ?_, fun l => ?_, fun l k => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, hPC0, h0]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, hPC0, h0]`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+
+Simplify using `[hPCs, h1]`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Simplify using `only [hPCs, blockOne_zero_succ_alt, mul_zero, zero_add, blockOne_succ_succ_alt, Matrix.mul_apply, Matrix.of_apply]`.
+-/
 theorem blockOne_mul_mul_blockOne {d n : ℕ} (P : Matrix (Fin d) (Fin d) R) (Cm : Matrix (Fin (d + 1)) (Fin (n + 1)) R)
     (Q : Matrix (Fin n) (Fin n) R) (h0 : ∀ k : Fin n, Cm 0 k.succ = 0)
     (h1 : ∀ l : Fin d, Cm l.succ 0 = 0) :
@@ -92,6 +131,9 @@ theorem blockOne_mul_mul_blockOne {d n : ℕ} (P : Matrix (Fin d) (Fin d) R) (Cm
   · rw [Matrix.mul_apply, Fin.sum_univ_succ]
     simp only [hPCs, blockOne_zero_succ_alt, mul_zero, zero_add, blockOne_succ_succ_alt, Matrix.mul_apply, Matrix.of_apply]
 
+/- English proof (translation)
+Establish `h` using `Matrix.det_permutation (R := R) σ`. Simplify using `only [Equiv.Perm.permMatrix] at h`. Rewrite using `[h]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;> simp [hs]`.
+-/
 theorem isUnit_det_perm {N : ℕ} (σ : Equiv.Perm (Fin N)) :
     IsUnit (σ.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) R).det := by
   have h := Matrix.det_permutation (R := R) σ
@@ -103,6 +145,9 @@ end general
 
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+The claim follows from `| 0, n, A => ⟨1, 1, Fin.elim0, by simp, by simp, fun j => j.elim0⟩ | d + 1, 0, A => ⟨1, 1, 0, by simp, by simp, fun j k => k.elim0⟩ | d + 1, n + 1, A => by classical set g : Fin (n + 1) → Fin (d + 1) → R := fun j i => A i j with hg obtain ⟨i0, a, u, s, hu, hau, hs, hz, hnz⟩ := ex …`.
+-/
 theorem smith_mat (hv : v.Integers R) : ∀ (d n : ℕ) (A : Matrix (Fin d) (Fin n) R),
     ∃ (P : Matrix (Fin d) (Fin d) R) (Q : Matrix (Fin n) (Fin n) R) (a : Fin d → R),
       IsUnit P.det ∧ IsUnit Q.det ∧ ∀ j k, (P * A * Q) j k = if (k : ℕ) = (j : ℕ) then a j else 0

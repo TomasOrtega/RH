@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Cont
 
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Introduce `G _ I A M _ _ _ π A' M' _ _ _ π' f a ha v hv`. Establish `hfin : Finite (↥I.N ⧸ (I.Nconj a).subgroupOf I.N)` using `Subgroup.index_ne_zero_iff_finite.mp (I.fin_N a ha)`. Establish `_` using `Fintype.ofFinite (↥I.N ⧸ (I.Nconj a).subgroupOf I.N)`. Unfold `Iwa.uOp`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun q _ => hv _ (Quotient.out q).2`.
+-/
 theorem UpperTheory.V.Hi.uOpNat :
     ∀ (G : Type) [Group G] (I : Iwa G) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (π : Representation A G M) (A' M' : Type) [CommRing A'] [AddCommGroup M'] [Module A' M'] (π' : Representation A' G M') (f : M →+ M') (a : G), a ∈ I.P → ∀ v, (∀ u ∈ I.N, f (π (u * a) v) = π' (u * a) (f v)) → f (I.uOp π a v) = I.uOp π' a (f v) := by
   intro G _ I A M _ _ _ π A' M' _ _ _ π' f a ha v hv

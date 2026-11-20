@@ -20,12 +20,20 @@ section loc
 variable {k r : ℕ} {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
   [NormedSpace ℂ E']
 
+/- English proof (translation)
+Rewrite using `[BetaSesquilinearity.Dx_eq]`. Conclude with `((BetaSesquilinearity.CkOn_diff hx h₁ hgU hg).add (BetaSesquilinearity.CkOn_diff hx h₂ hgU hg)).deriv`.
+-/
 theorem dx_add_loc {UU : Set (B.Mat k r)} {x : Bool × B.Mat k r} (hx : B.inLie k r x.2) {f₁ f₂ : B.Mat k r → E}
     (h₁ : B.CkOn 1 UU f₁) (h₂ : B.CkOn 1 UU f₂) {g : B.Mat k r} (hgU : g ∈ UU) (hg : g ∈ B.GV k r) :
     BetaSesquilinearity.Dx x (fun g => f₁ g + f₂ g) g = BetaSesquilinearity.Dx x f₁ g + BetaSesquilinearity.Dx x f₂ g := by
   rw [BetaSesquilinearity.Dx_eq]
   exact ((BetaSesquilinearity.CkOn_diff hx h₁ hgU hg).add (BetaSesquilinearity.CkOn_diff hx h₂ hgU hg)).deriv
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => intro g _ _`. Both sides reduce to the same expression. Consider the case `cons x w ih`. Establish `hw' : ∀ y ∈ w, B.inLie k r y.2` using `fun y hy => hw y (by simp [hy])`.
+
+Establish `hx : B.inLie k r x.2` using `hw x (by simp)`. Introduce `g hg hgO`. Use `show BetaSesquilinearity.Dx x (BetaSesquilinearity.Dw w _) g = BetaSesquilinearity.Dx x (BetaSesquilinearity.Dw w f₁) g + BetaSesquilinearity.Dx x (BetaSesquilinearity.Dw w f₂) g`. Rewrite using `[BetaSesquilinearity.Dx_congr_loc hx hO (f₂ := fun h => BetaSesquilinearity.Dw w f₁ h + BetaSesquilinearity.Dw w f₂ h) (ih hw') g hg hgO]`. Conclude with `dx_add_loc hx (BetaSesquilinearity.CkOn_Dw hw' (BetaSesquilinearity.sCkOn_mono le_top h₁)) (BetaSesquilinearity.CkOn_Dw hw' (BetaSesquilinearity.sCkOn_mono le_top h₂)) (hOU g hg hgO) hg`.
+-/
 theorem dw_add_loc {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hOU : ∀ g ∈ B.GV k r, g ∈ O → g ∈ UU)
     {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, B.inLie k r x.2) {f₁ f₂ : B.Mat k r → E}
     (h₁ : B.CkOn ⊤ UU f₁) (h₂ : B.CkOn ⊤ UU f₂) :
@@ -41,6 +49,9 @@ theorem dw_add_loc {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hOU : ∀ g ∈ B.G
     exact dx_add_loc hx (BetaSesquilinearity.CkOn_Dw hw' (BetaSesquilinearity.sCkOn_mono le_top h₁)) (BetaSesquilinearity.CkOn_Dw hw' (BetaSesquilinearity.sCkOn_mono le_top h₂))
       (hOU g hg hgO) hg
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _, _, _ => rfl | x :: w, hw, f, hf, g, hg, hgO => by have hw' : ∀ y ∈ w, B.inLie k r y.2 := fun y hy => hw y (by simp [hy]) have hx : B.inLie k r x.2 := hw x (by simp) show BetaSesquilinearity.Dx x (BetaSesquilinearity.Dw w (fun h => L (f h))) g = L (BetaSesquiline …`.
+-/
 theorem dw_clm_loc {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hOU : ∀ g ∈ B.GV k r, g ∈ O → g ∈ UU)
     (L : E →L[ℂ] E') : ∀ (w : List (Bool × B.Mat k r)), (∀ x ∈ w, B.inLie k r x.2) →
     ∀ {f : B.Mat k r → E}, B.CkOn ⊤ UU f →
@@ -58,10 +69,30 @@ theorem dw_clm_loc {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hOU : ∀ g ∈ B.G
     rw [BetaSesquilinearity.Dx_eq]
     exact h2.deriv
 
+/- English proof (translation)
+The claim follows from `BetaSesquilinearity.CkOn_Dx (m := ⊤) hx (by rw [top_add]; exact hf)`.
+-/
 theorem ckOn_top_dx {UU : Set (B.Mat k r)} {x : Bool × B.Mat k r} (hx : B.inLie k r x.2) {f : B.Mat k r → E}
     (hf : B.CkOn ⊤ UU f) : B.CkOn ⊤ UU (BetaSesquilinearity.Dx x f) :=
   BetaSesquilinearity.CkOn_Dx (m := ⊤) hx (by rw [top_add]; exact hf)
 
+/- English proof (translation)
+Proceed by induction on `w using List.reverseRecOn with`. Consider the case `nil`. Introduce `a Φ _ _ _ hM`. Use `hM [] [] (List.Sublist.refl _) (List.Sublist.refl _) rfl` as an intermediate fact. Simplify using `only [BetaSesquilinearity.Dw, List.foldr_nil, List.length_nil, pow_zero, one_mul] at this ⊢`.
+
+Conclude with `((a g).le_opNorm _).trans this`. Consider the case `append_singleton w x ih`. Introduce `a Φ hw ha hΦ hM`. Establish `hw' : ∀ y ∈ w, B.inLie k r y.2` using `fun y hy => hw y (by simp [hy])`. Establish `hx : B.inLie k r x.2` using `hw x (by simp)`.
+
+Establish `hDa : B.CkOn ⊤ UU (BetaSesquilinearity.Dx x a)` using `ckOn_top_dx hx ha`. Establish `hDΦ : B.CkOn ⊤ UU (BetaSesquilinearity.Dx x Φ)` using `ckOn_top_dx hx hΦ`. Establish `hleib : ∀ h ∈ B.GV k r, h ∈ O → BetaSesquilinearity.Dx x (BetaSesquilinearity.ap a Φ) h = BetaSesquilinearity.ap (BetaSesquilinearity.Dx x a) Φ h + BetaSesquilinearity.ap a (BetaSesquilinearity.Dx x Φ) h`. Introduce `h hh hhO`. Establish `h1` using `BetaSesquilinearity.CkOn_diff hx (BetaSesquilinearity.sCkOn_mono le_top ha) (hOU h hh hhO) hh`.
+
+Establish `h2` using `BetaSesquilinearity.CkOn_diff hx (BetaSesquilinearity.sCkOn_mono le_top hΦ) (hOU h hh hhO) hh`. Establish `h3` using `(ContinuousLinearMap.restrictScalarsL ℂ E E' ℝ ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h4` using `h3.clm_apply h2`. Rewrite using `[BetaSesquilinearity.Dx_eq]`. Establish `h5` using `h4.deriv`.
+
+Simplify using `only [Function.comp, BetaSesquilinearity.crv_zero] at h5`. Conclude with `h5`. Establish `e1 : BetaSesquilinearity.Dw (w ++ [x]) (BetaSesquilinearity.ap a Φ) g = BetaSesquilinearity.Dw w (BetaSesquilinearity.ap (BetaSesquilinearity.Dx x a) Φ) g + BetaSesquilinearity.Dw w (BetaSesquilinearity.ap a (BetaSesquilinearity.Dx x Φ)) g`. Rewrite using `[BetaSesquilinearity.Dw_append]`. Use `show BetaSesquilinearity.Dw w (BetaSesquilinearity.Dx x (BetaSesquilinearity.ap a Φ)) g = _`.
+
+Rewrite using `[BetaSesquilinearity.Dw_congr_loc hw' hO (f₂ := fun h => BetaSesquilinearity.ap (BetaSesquilinearity.Dx x a) Φ h + BetaSesquilinearity.ap a (BetaSesquilinearity.Dx x Φ) h) hleib g hg hgO]`. Conclude with `dw_add_loc hO hOU hw' (CutBP.ckOn_apply hDa hΦ) (CutBP.ckOn_apply ha hDΦ) g hg hgO`. Establish `b1` using `ih (BetaSesquilinearity.Dx x a) Φ hw' hDa hΦ (by`. Introduce `w₁ w₂ h₁ h₂ hl`. Use `hM (w₁ ++ [x]) w₂ (List.Sublist.append h₁ (List.Sublist.refl _)) (h₂.trans (List.sublist_append_left _ _)) (by simp; omega)` as an intermediate fact.
+
+Rewrite using `[BetaSesquilinearity.Dw_append] at this)` and apply the resulting hypothesis. Establish `b2` using `ih a (BetaSesquilinearity.Dx x Φ) hw' ha hDΦ (by`. Introduce `w₁ w₂ h₁ h₂ hl`. Use `hM w₁ (w₂ ++ [x]) (h₁.trans (List.sublist_append_left _ _)) (List.Sublist.append h₂ (List.Sublist.refl _)) (by simp; omega)` as an intermediate fact. Rewrite using `[BetaSesquilinearity.Dw_append] at this)` and apply the resulting hypothesis.
+
+Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem leib_loc {O UU : Set (B.Mat k r)} (hO : IsOpen O) (hOU : ∀ g ∈ B.GV k r, g ∈ O → g ∈ UU)
     (g : B.Mat k r) (hg : g ∈ B.GV k r) (hgO : g ∈ O) (M : ℝ) (w : List (Bool × B.Mat k r)) :
     ∀ (a : B.Mat k r → (E →L[ℂ] E')) (Φ : B.Mat k r → E), (∀ x ∈ w, B.inLie k r x.2) →
@@ -120,15 +151,24 @@ section ops
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+The claim follows from `isOpen_lt continuous_const (DifferentialOperatorClasses.gf_cont k r D.z D.z')`.
+-/
 theorem gpos_open (D : B.RealPlaceData k r Wp Wq) : IsOpen {g : B.Mat k r | 0 < Gf k r D.z D.z' g} :=
   isOpen_lt continuous_const (DifferentialOperatorClasses.gf_cont k r D.z D.z')
 
+/- English proof (translation)
+Unfold `B.opOrder dcomp`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem dcomp_opOrder (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) :
     B.opOrder (dcomp T0 Θ) = B.opOrder Θ := by
   unfold B.opOrder dcomp
   rw [List.map_map]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `B.opAdj dcomp`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem opAdj_dcomp (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) :
     B.opAdj (dcomp T0 Θ) F = B.opAdj Θ (fun x => T0.coefAdj x (F x)) := by
   funext g
@@ -136,6 +176,23 @@ theorem opAdj_dcomp (T0 : B.DTerm k r Wp Wq) (Θ : B.DiffOp k r Wp Wq) (F : B.Ma
   rw [List.map_map]
   rfl
 
+/- English proof (translation)
+Use `set O : Set (B.Mat k r) := {g : B.Mat k r | 0 < Gf k r D.z D.z' g} with hOdef`. Establish `hO : IsOpen O` using `gpos_open D`. Establish `hOU : ∀ g ∈ B.GV k r, g ∈ O → g ∈ B.GPos D` using `fun g hg hgO => ⟨hg, hgO⟩`. Establish `hgO : g ∈ O` using `lt_of_lt_of_le hε hgε`. Establish `hp : 0 < B.gN g` using `BetaSesquilinearity.gN_pos hg`.
+
+Establish `hlie` using `BetaSesquilinearity.lie_LR (BetaSesquilinearity.unit_lie hu) (BetaSesquilinearity.unit_lie hv)`. Establish `ha' : B.CkOn ⊤ (B.GPos D) (fun x => CutBP.lcomp (Wp` using `Wp) (Wq := Wq) (a x)) := CutBP.ckOn_clm CutBP.lcomp ha`. Establish `hap : (fun x => (a x).comp (b x)) = BetaSesquilinearity.ap (fun x => CutBP.lcomp (Wp` using `Wp) (Wq := Wq) (a x)) b := rfl`. Rewrite using `[hap, BetaSesquilinearity.dLR_eq]`. Establish `hM : ∀ w₁ w₂ : List (Bool × B.Mat k r), w₁.Sublist (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v) → w₂.Sublist (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v) → w₁.length + w₂.length = (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v).length → ‖BetaSesquilinea …` using `Wp) (Wq := Wq) (a x)) g‖ * ‖BetaSesquilinearity.Dw w₂ b g‖ ≤ (‖CutBP.lcomp (Wp := Wp) (Wq := Wq)‖ * (max Ca 0 * B.gN g ^ da)) * (max Cb 0 * B.gN g ^ db) := by`.
+
+Introduce `w₁ w₂ h₁ h₂ _`. Take `⟨u₁, v₁, hu₁, hv₁, rfl⟩` from `BetaSesquilinearity.sub_LR h₁`. Take `⟨u₂, v₂, hu₂, hv₂, rfl⟩` from `BetaSesquilinearity.sub_LR h₂`. Establish `hl1 : u₁.length + v₁.length ≤ m`. Use `hu₁.length_le` as an intermediate fact.
+
+Use `hv₁.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hl2 : u₂.length + v₂.length ≤ m`. Use `hu₂.length_le` as an intermediate fact. Use `hv₂.length_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `ea : BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₁ ++ BetaSesquilinearity.wR v₁) (fun x => CutBP.lcomp (Wp` using `Wp) (Wq := Wq) (a x)) g = CutBP.lcomp (BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₁ ++ BetaSesquilinearity.wR v₁) a g) := dw_clm_loc hO hOU CutBP.lcomp _ (BetaSesquilinearity.lie_LR (fun X hX => (hu X (hu₁.subset hX)).1) (fun X hX => (hv X (hv₁.subset hX)).1)) ha g hg hgO`. Establish `b1 : ‖BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₁ ++ BetaSesquilinearity.wR v₁) (fun x => CutBP.lcomp (Wp` using `Wp) (Wq := Wq) (a x)) g‖ ≤ ‖CutBP.lcomp (Wp := Wp) (Wq := Wq)‖ * (max Ca 0 * B.gN g ^ da) := by`. Rewrite using `[ea]`. Use `(ContinuousLinearMap.le_opNorm _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations.
+
+Rewrite using `[← BetaSesquilinearity.dLR_eq]`. Conclude with `(hCa u₁ v₁ (fun X hX => hu X (hu₁.subset hX)) (fun X hX => hv X (hv₁.subset hX)) hl1 g hg hgε).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hp.le _))`. Establish `b2 : ‖BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₂ ++ BetaSesquilinearity.wR v₂) b g‖ ≤ max Cb 0 * B.gN g ^ db`. Rewrite using `[← BetaSesquilinearity.dLR_eq]`. Conclude with `(hCb u₂ v₂ (fun X hX => hu X (hu₂.subset hX)) (fun X hX => hv X (hv₂.subset hX)) hl2 g hg hgε).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hp.le _))`.
+
+Conclude with `mul_le_mul b1 b2 (norm_nonneg _) (by positivity)`. Establish `hbd` using `leib_loc hO hOU g hg hgO _ (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v) _ b hlie ha' hb hM`. Establish `hlen : (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v).length ≤ m` using `by rw [BetaSesquilinearity.len_LR]; exact hl`. Establish `h2 : (2 : ℝ) ^ (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v).length ≤ 2 ^ m` using `pow_le_pow_right₀ (by norm_num) hlen`. Rewrite using `[Real.rpow_add hp]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comp_bound_loc (D : B.RealPlaceData k r Wp Wq) {a b : B.Mat k r → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp))}
     (ha : B.CkOn ⊤ (B.GPos D) a) (hb : B.CkOn ⊤ (B.GPos D) b) (m : ℕ) {ε : ℝ} (hε : 0 < ε) (Ca Cb da db : ℝ)
     (hCa : ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.unitLie k r X) → (∀ X ∈ v, B.unitLie k r X) →
@@ -193,6 +250,35 @@ theorem comp_bound_loc (D : B.RealPlaceData k r Wp Wq) {a b : B.Mat k r → ((Wq
         mul_le_mul_of_nonneg_right h2 (by positivity)
     _ = 2 ^ m * ‖CutBP.lcomp (Wp := Wp) (Wq := Wq)‖ * max Ca 0 * max Cb 0 * (B.gN g ^ da * B.gN g ^ db) := by ring
 
+/- English proof (translation)
+Use `show NiceAll D (BetaSesquilinearity.ap a F)`. Take `⟨ε, hε, hck, hcc, hsupp⟩` from `hF`. Use `set O : Set (B.Mat k r) := {g : B.Mat k r | Gf k r D.z D.z' g < ε} with hOdef`. Establish `hO : IsOpen O` using `isOpen_lt (DifferentialOperatorClasses.gf_cont k r D.z D.z') continuous_const`. Establish `hcov : ∀ g ∈ B.GV k r, g ∈ O ∨ g ∈ B.GPos D`.
+
+Introduce `g hg`. Distinguish the cases in `h : Gf k r D.z D.z' g < ε`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨hg, lt_of_lt_of_le hε (not_lt.1 h)⟩`. Establish `hz : ∀ g ∈ B.GV k r, g ∈ O → F g = 0`.
+
+Introduce `g hg hgO`. Assume the negation of the conclusion as `hne`. Conclude with `absurd (hsupp g hg hne) (not_le.2 hgO)`. Establish `hP : BetaSesquilinearity.Pr O (B.GPos D) ⊤ a F` using `⟨ha, hck, hz⟩`. Use `⟨ε, hε, hP.ck hO hcov, fun A' m' => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, d, hCd⟩` from `hab ε hε m'`. Take `⟨cF, hcF⟩` from `hcc (A' + d) m'`. Use `⟨2 ^ m' * (max C 0 * max cF 0), BetaSesquilinearity.sCkOn_mono le_top (hP.ck hO hcov), fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `hlie` using `BetaSesquilinearity.lie_LR (BetaSesquilinearity.unit_lie hu) (BetaSesquilinearity.unit_lie hv)`. Establish `hp : 0 < B.gN g` using `BetaSesquilinearity.gN_pos hg`.
+
+Establish `hK : 0 ≤ max C 0 * max cF 0` using `mul_nonneg (le_max_right _ _) (le_max_right _ _)`. Rewrite using `[BetaSesquilinearity.dLR_eq]`. Distinguish the cases in `hgO : g ∈ O`. Rewrite using `[BetaSesquilinearity.Dw_vanish hO hlie (hP.mono (m := 0) le_top).apz g hg hgO]`. Simplify using `only [norm_zero, mul_zero]`.
+
+Check the signs of the components of the expression. Establish `hgε : ε ≤ Gf k r D.z D.z' g` using `not_lt.1 hgO`. Establish `hb` using `BetaSesquilinearity.leib_bound hO hcov g hg (max C 0 * max cF 0 * B.gN g ^ (-A')) (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v) a F hlie (hP.mono le_top) (by`. Introduce `w₁ w₂ hs₁ hs₂ hl₁₂`. Take `⟨u₁, v₁, hu₁, hv₁, rfl⟩` from `BetaSesquilinearity.sub_LR hs₁`.
+
+Take `⟨u₂, v₂, hu₂, hv₂, rfl⟩` from `BetaSesquilinearity.sub_LR hs₂`. Establish `hl1 : u₁.length + v₁.length ≤ m'`. Use `hu₁.length_le` as an intermediate fact. Use `hv₁.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hl2 : u₂.length + v₂.length ≤ m'`. Use `hu₂.length_le` as an intermediate fact. Use `hv₂.length_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `b1 : ‖BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₁ ++ BetaSesquilinearity.wR v₁) a g‖ ≤ max C 0 * B.gN g ^ d`.
+
+Rewrite using `[← BetaSesquilinearity.dLR_eq]`. Conclude with `(hCd u₁ v₁ (fun X hX => hu X (hu₁.subset hX)) (fun X hX => hv X (hv₁.subset hX)) hl1 g hg hgε).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg hp.le _))`. Establish `b2 : ‖BetaSesquilinearity.Dw (BetaSesquilinearity.wL u₂ ++ BetaSesquilinearity.wR v₂) F g‖ ≤ max cF 0 * B.gN g ^ (-(A' + d))`. Rewrite using `[← BetaSesquilinearity.dLR_eq]`. Establish `h1` using `hcF.2 u₂ v₂ (fun X hX => hu X (hu₂.subset hX)) (fun X hX => hv X (hv₂.subset hX)) hl2 g hg`.
+
+Establish `e : B.gN g ^ (-(A' + d)) * B.gN g ^ (A' + d) = 1`. Rewrite using `[← Real.rpow_add hp]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, e, one_mul]`.
+
+Use `_ ≤ B.gN g ^ (-(A' + d)) * max cF 0 := mul_le_mul_of_nonneg_left (h1.trans (le_max_left _ _)) (Real.rpow_nonneg hp.le _)`. Use `_ = max cF 0 * B.gN g ^ (-(A' + d)) := mul_comm _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hp]`. Use `congr 2`.
+
+Use the proof step `ring)`. Establish `hlen : (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v).length ≤ m'` using `by rw [BetaSesquilinearity.len_LR]; exact hl`. Establish `e3 : (2 : ℝ) ^ (BetaSesquilinearity.wL u ++ BetaSesquilinearity.wR v).length ≤ 2 ^ m'` using `pow_le_pow_right₀ (by norm_num) hlen`. Establish `e4 : B.gN g ^ A' * B.gN g ^ (-A') = 1` using `by rw [← Real.rpow_add hp]; simp`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `g hg hne`. Apply `hsupp g hg` to reduce the goal to its premises. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `show a g (F g) = 0`.
+
+Rewrite using `[h0, map_zero]`.
+-/
 theorem niceAll_ap (D : B.RealPlaceData k r Wp Wq) {a : B.Mat k r → ((Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp))}
     (ha : B.CkOn ⊤ (B.GPos D) a)
     (hab : ∀ ε : ℝ, 0 < ε → ∀ m : ℕ, ∃ C d : ℝ, ∀ u v : List (B.Mat k r), (∀ X ∈ u, B.unitLie k r X) →
@@ -276,6 +362,23 @@ end ops
 end Comp0
 
 open Comp0 in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ k r D T0 Θ hT0 hΘ`. Take `⟨_, hc0, hca0, heq0, hb0⟩` from `hT0`. Take `⟨hS, hC, hP, hN⟩` from `hΘ`. Establish `hord : B.opOrder (dcomp T0 Θ) = B.opOrder Θ` using `dcomp_opOrder T0 Θ`. Establish `hfun : ∀ F : B.Mat k r → (Wq →L[ℂ] Wp), B.opApply (dcomp T0 Θ) F = fun g => T0.coef g (B.opApply Θ F g)` using `fun F => funext (opApply_dcomp T0 Θ F)`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T' hT'`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hT'`. Take `⟨h1, h2⟩` from `hS T hT`. Conclude with `⟨CutBP.ckOn_apply (CutBP.ckOn_clm CutBP.lcomp hc0) h1, CutBP.ckOn_apply (CutBP.ckOn_clm CutBP.lcomp h2) hca0⟩`.
+
+Introduce `p hp f hf g hg`. Establish `hf' : B.CkOn (B.opOrder Θ : ℕ∞) (B.GV k r) f` using `by rwa [hord] at hf`. Rewrite using `[hfun, hfun]`. Use `show T0.coef g (B.opApply Θ (B.rho D p f) g) = B.rho D p (fun g => T0.coef g (B.opApply Θ f g)) g`. Rewrite using `[hC p hp f hf' g hg]`.
+
+Conclude with `heq0 p hp g hg _`. Introduce `ε hε`. Take `⟨dΘ, hdΘ, hPΘ⟩` from `hP ε hε`. Take `⟨C0, d0, hd0, hb⟩` from `hb0 ε hε (B.opOrder Θ + 5)`. Use `⟨d0 + dΘ, add_nonneg hd0 hdΘ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hord]`. Introduce `T' hT'`. Take `⟨T, hT, rfl⟩` from `List.mem_map.1 hT'`. Take `⟨CT, hCT⟩` from `hPΘ T hT`. Take `⟨hsT, hsaT⟩` from `hS T hT`.
+
+Use `⟨2 ^ (B.opOrder Θ + 5) * ‖CutBP.lcomp (Wp := Wp) (Wq := Wq)‖ * max C0 0 * max CT 0, fun u v hu hv hl g hg hgε => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `comp_bound_loc D hc0 hsT _ hε C0 CT d0 dΘ (fun u v hu hv hl g hg hgε => (hb u v hu hv hl g hg hgε).1) (fun u v hu hv hl g hg hgε => (hCT u v hu hv hl g hg hgε).1) u v hu hv hl g hg hgε`. Establish `h` using `comp_bound_loc D hsaT hca0 _ hε CT C0 dΘ d0 (fun u v hu hv hl g hg hgε => (hCT u v hu hv hl g hg hgε).2) (fun u v hu hv hl g hg hgε => (hb u v hu hv hl g hg hgε).2) u v hu hv hl g hg hgε`. Combine the equalities or inequalities in the displayed calculation. Introduce `F hF`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `niceAll_ap D hc0 (fun ε hε m => by`. Take `⟨C, d, _, h⟩` from `hb0 ε hε m`. Conclude with `⟨C, d, fun u v hu hv hl g hg hgε => (h u v hu hv hl g hg hgε).1⟩) (hN F hF).1`.
+
+Rewrite using `[opAdj_dcomp]`. Conclude with `(hN _ (niceAll_ap D hca0 (fun ε hε m => by`. Take `⟨C, d, _, h⟩` from `hb0 ε hε m`. Conclude with `⟨C, d, fun u v hu hv hl g hg hgε => (h u v hu hv hl g hg hgε).2⟩) hF)).2`.
+-/
 theorem spectral_composition_zero : RDSComp0 := by
   intro Wp Wq _ _ _ _ _ _ k r D T0 Θ hT0 hΘ
   obtain ⟨_, hc0, hca0, heq0, hb0⟩ := hT0

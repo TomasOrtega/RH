@@ -12,94 +12,184 @@ namespace FamP
 variable {eps : ℝ} (Fm : FamP eps)
 
 def CkLow : ℝ := Fm.PK.getD 0 0
+/- English proof (translation)
+Unfold `CkLow`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CkLow (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CkLow = Fm.CkLow := by
   unfold CkLow; rw [← Fm.params_K x hx i]; rfl
 def Ck6 : ℝ := Fm.PK.getD 1 0
+/- English proof (translation)
+Unfold `Ck6`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_sixth_constant (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Ck6 = Fm.Ck6 := by
   unfold Ck6; rw [← Fm.params_K x hx i]; rfl
 def CfL : ℝ := Fm.PK.getD 2 0
+/- English proof (translation)
+Unfold `CfL`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CfL (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CfL = Fm.CfL := by
   unfold CfL; rw [← Fm.params_K x hx i]; rfl
 def cLL : ℝ := Fm.PK.getD 3 0
+/- English proof (translation)
+Unfold `cLL`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_cLL (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).cLL = Fm.cLL := by
   unfold cLL; rw [← Fm.params_K x hx i]; rfl
 def CnW : ℝ := Fm.PK.getD 4 0
+/- English proof (translation)
+Unfold `CnW`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CnW (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CnW = Fm.CnW := by
   unfold CnW; rw [← Fm.params_K x hx i]; rfl
 def Crho : ℝ := Fm.PK.getD 5 0
+/- English proof (translation)
+Unfold `Crho`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_Crho (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Crho = Fm.Crho := by
   unfold Crho; rw [← Fm.params_K x hx i]; rfl
 def CDelG : ℝ := Fm.PK.getD 6 0
+/- English proof (translation)
+Unfold `CDelG`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CDelG (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CDelG = Fm.CDelG := by
   unfold CDelG; rw [← Fm.params_K x hx i]; rfl
 def CLw : ℝ := Fm.PK.getD 7 0
+/- English proof (translation)
+Unfold `CLw`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CLw (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CLw = Fm.CLw := by
   unfold CLw; rw [← Fm.params_K x hx i]; rfl
 def Cj0 : ℝ := Fm.PK.getD 8 0
+/- English proof (translation)
+Unfold `Cj0`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_lift_constant (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Cj0 = Fm.Cj0 := by
   unfold Cj0; rw [← Fm.params_K x hx i]; rfl
 def Cw : ℝ := Fm.PK.getD 9 0
+/- English proof (translation)
+Unfold `Cw`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_Cw (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Cw = Fm.Cw := by
   unfold Cw; rw [← Fm.params_K x hx i]; rfl
 def cw : ℝ := Fm.PK.getD 10 0
+/- English proof (translation)
+Unfold `cw`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_cw (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).cw = Fm.cw := by
   unfold cw; rw [← Fm.params_K x hx i]; rfl
 def CDel : ℝ := Fm.PK.getD 11 0
+/- English proof (translation)
+Unfold `CDel`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CDel (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CDel = Fm.CDel := by
   unfold CDel; rw [← Fm.params_K x hx i]; rfl
 def CCount : ℝ := Fm.PK.getD 12 0
+/- English proof (translation)
+Unfold `CCount`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CCount (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CCount = Fm.CCount := by
   unfold CCount; rw [← Fm.params_K x hx i]; rfl
 def Ch0r : ℝ := Fm.PK.getD 13 0
+/- English proof (translation)
+Unfold `Ch0r`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_height_rank_constant (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Ch0r = Fm.Ch0r := by
   unfold Ch0r; rw [← Fm.params_K x hx i]; rfl
 def Ch0k : ℝ := Fm.PK.getD 14 0
+/- English proof (translation)
+Unfold `Ch0k`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_height_k_constant (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Ch0k = Fm.Ch0k := by
   unfold Ch0k; rw [← Fm.params_K x hx i]; rfl
 def Ch0N : ℝ := Fm.PK.getD 15 0
+/- English proof (translation)
+Unfold `Ch0N`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_Ch0N (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Ch0N = Fm.Ch0N := by
   unfold Ch0N; rw [← Fm.params_K x hx i]; rfl
 def Cgap : ℝ := Fm.PK.getD 16 0
+/- English proof (translation)
+Unfold `Cgap`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_Cgap (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Cgap = Fm.Cgap := by
   unfold Cgap; rw [← Fm.params_K x hx i]; rfl
 def CetaF : ℝ := Fm.PK.getD 17 0
+/- English proof (translation)
+Unfold `CetaF`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CetaF (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CetaF = Fm.CetaF := by
   unfold CetaF; rw [← Fm.params_K x hx i]; rfl
 def CY : ℝ := Fm.PK.getD 18 0
+/- English proof (translation)
+Unfold `CY`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CY (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CY = Fm.CY := by
   unfold CY; rw [← Fm.params_K x hx i]; rfl
 def CYL : ℝ := Fm.PK.getD 19 0
+/- English proof (translation)
+Unfold `CYL`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CYL (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CYL = Fm.CYL := by
   unfold CYL; rw [← Fm.params_K x hx i]; rfl
 def Cpde : ℝ := Fm.PK.getD 20 0
+/- English proof (translation)
+Unfold `Cpde`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_Cpde (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).Cpde = Fm.Cpde := by
   unfold Cpde; rw [← Fm.params_K x hx i]; rfl
 def CccK : ℝ := Fm.PK.getD 21 0
+/- English proof (translation)
+Unfold `CccK`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CccK (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CccK = Fm.CccK := by
   unfold CccK; rw [← Fm.params_K x hx i]; rfl
 
 def CF : ℝ := Fm.PK.getD 22 0
+/- English proof (translation)
+Unfold `CF`. Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem params_CF (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.params x hx i).CF = Fm.CF := by
   unfold CF; rw [← Fm.params_K x hx i]; rfl
 def CP : ℝ := Fm.PT.getD 0 0
+/- English proof (translation)
+Unfold `CP`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_CP (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).CP = Fm.CP := by
   unfold CP; rw [← Fm.parT_K x hx i]; rfl
 def eP : ℝ := Fm.PT.getD 1 0
+/- English proof (translation)
+Unfold `eP`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_eP (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).eP = Fm.eP := by
   unfold eP; rw [← Fm.parT_K x hx i]; rfl
 def Cp : ℝ := Fm.PT.getD 2 0
+/- English proof (translation)
+Unfold `Cp`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_Cp (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).Cp = Fm.Cp := by
   unfold Cp; rw [← Fm.parT_K x hx i]; rfl
 def Cb : ℝ := Fm.PT.getD 3 0
+/- English proof (translation)
+Unfold `Cb`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_Cb (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).Cb = Fm.Cb := by
   unfold Cb; rw [← Fm.parT_K x hx i]; rfl
 def cTO : ℝ := Fm.PT.getD 4 0
+/- English proof (translation)
+Unfold `cTO`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_cTO (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).cTO = Fm.cTO := by
   unfold cTO; rw [← Fm.parT_K x hx i]; rfl
 def ChT : ℝ := Fm.PT.getD 5 0
+/- English proof (translation)
+Unfold `ChT`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_ChT (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).ChT = Fm.ChT := by
   unfold ChT; rw [← Fm.parT_K x hx i]; rfl
 def CbN : ℝ := Fm.PT.getD 6 0
+/- English proof (translation)
+Unfold `CbN`. Rewrite using `[← Fm.parT_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem parT_CbN (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) : (Fm.parT x hx i).CbN = Fm.CbN := by
   unfold CbN; rw [← Fm.parT_K x hx i]; rfl
 
@@ -116,9 +206,21 @@ def cLast : List ℝ := [Fm.CkLow, Fm.Ck6, Fm.CfL, Fm.cLL⁻¹, Fm.Crho, Fm.Crho
   Fm.GK.rho, Fm.GK.kII, Fm.GK.tII, Fm.GK.DII, Fm.GK.szII, Fm.GK.kII', Fm.GK.DI, Fm.GK.kappaThresholdOne,
   Fm.GK.kappaThresholdTwo, Fm.GK.kI, Fm.GK.CN, Fm.GK.CN, Fm.GK.CN, Fm.GK.CN]
 
+/- English proof (translation)
+The claim follows from `@cPre.eq_1`.
+-/
 example := @cPre.eq_1
+/- English proof (translation)
+The claim follows from `@cOut.eq_1`.
+-/
 example := @cOut.eq_1
+/- English proof (translation)
+The claim follows from `@cMid.eq_1`.
+-/
 example := @cMid.eq_1
+/- English proof (translation)
+The claim follows from `@cLast.eq_1`.
+-/
 example := @cLast.eq_1
 
 end FamP
@@ -139,11 +241,17 @@ def FamP.Large {eps : ℝ} (Fm : FamP eps) (K : TransportedAlt) (CH : ℝ) : Pro
   (∀ c ∈ Fm.cPre, K.pre ≤ c) ∧ True ∧ (∀ c ∈ Fm.cMid CH, K.mid Fm.cOut ≤ c) ∧
     ∀ c ∈ Fm.cLast, K.last (Fm.cOut ++ Fm.cMid CH) ≤ c
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c hc => hK.1.trans (h.1 c hc), trivial, fun c hc => (hK.2.2.1 _).trans (h.2.2.1 c hc), fun c hc => (hK.2.2.2 _).trans (h.2.2.2 c hc)⟩`.
+-/
 theorem FamP.Large.mono {eps : ℝ} {Fm : FamP eps} {K K' : TransportedAlt} {CH : ℝ} (h : Fm.Large K' CH) (hK : K.le K') :
     Fm.Large K CH :=
   ⟨fun c hc => hK.1.trans (h.1 c hc), trivial, fun c hc => (hK.2.2.1 _).trans (h.2.2.1 c hc),
     fun c hc => (hK.2.2.2 _).trans (h.2.2.2 c hc)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.mono ⟨le_max_left _ _, fun _ => le_max_left _ _, fun _ => le_max_left _ _, fun _ => le_max_left _ _⟩, h.mono ⟨le_max_right _ _, fun _ => le_max_right _ _, fun _ => le_max_right _ _, fun _ => le_max_right _ _⟩⟩`. Introduce and unpack `⟨h, h'⟩`. Conclude with `⟨fun c hc => max_le (h.1 c hc) (h'.1 c hc), trivial, fun c hc => max_le (h.2.2.1 c hc) (h'.2.2.1 c hc), fun c hc => max_le (h.2.2.2 c hc) (h'.2.2.2 c hc)⟩`.
+-/
 theorem FamP.large_sup {eps : ℝ} (Fm : FamP eps) (K K' : TransportedAlt) (CH : ℝ) :
     Fm.Large (K.sup K') CH ↔ Fm.Large K CH ∧ Fm.Large K' CH := by
   constructor
@@ -160,6 +268,11 @@ def Closed (𝒞 : FamClass) (P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop) : 
   ∃ ε1 : ℝ, 0 < ε1 ∧ ∀ eps : ℝ, 0 < eps → eps ≤ ε1 → ∃ K : TransportedAlt, ∀ (Fm : FamP eps) (CH : ℝ),
     𝒞 Fm → Fm.Large K CH → P Fm CH
 
+/- English proof (translation)
+Take `⟨a, ha, hP⟩` from `hP`. Take `⟨b, hb, hQ⟩` from `hQ`. Use `⟨min a b, lt_min ha hb, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he (hle.trans (min_le_left _ _))`. Take `⟨K', hK'⟩` from `hQ e he (hle.trans (min_le_right _ _))`.
+
+Conclude with `⟨K.sup K', fun Fm CH hc h => ⟨hK Fm CH hc ((Fm.large_sup K K' CH).1 h).1, hK' Fm CH hc ((Fm.large_sup K K' CH).1 h).2⟩⟩`.
+-/
 theorem Closed.and {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (hP : Closed 𝒞 P) (hQ : Closed 𝒞 Q) :
     Closed 𝒞 (fun Fm CH => P Fm CH ∧ Q Fm CH) := by
   obtain ⟨a, ha, hP⟩ := hP
@@ -170,6 +283,9 @@ theorem Closed.and {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ �
   exact ⟨K.sup K', fun Fm CH hc h =>
     ⟨hK Fm CH hc ((Fm.large_sup K K' CH).1 h).1, hK' Fm CH hc ((Fm.large_sup K K' CH).1 h).2⟩⟩
 
+/- English proof (translation)
+Take `⟨a, ha, hP⟩` from `hP`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he hle`. Conclude with `⟨K, fun Fm CH hc hL => h Fm CH he (hK Fm CH hc hL)⟩`.
+-/
 theorem Closed.imp {𝒞 : FamClass} {P Q : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (hP : Closed 𝒞 P)
     (h : ∀ {eps : ℝ} (Fm : FamP eps) (CH : ℝ), 0 < eps → P Fm CH → Q Fm CH) : Closed 𝒞 Q := by
   obtain ⟨a, ha, hP⟩ := hP

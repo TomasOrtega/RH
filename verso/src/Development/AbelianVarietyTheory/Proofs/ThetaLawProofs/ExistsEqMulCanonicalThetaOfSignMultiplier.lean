@@ -14,6 +14,17 @@ open scoped Real
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `split : ∀ r : Fin g → ℤ, ofRealVec (fun i => (r i : ℝ) / 2) = ofIntVec (fun i => r i / 2) + ofRealVec (fun i => ((r i % 2 : ℤ) : ℝ) / 2)`. Introduce `r`. Use function extensionality and compare the values at `i`. Simplify using `only [ofRealVec, ofIntVec, Pi.add_apply]`. Establish `hr : r i = 2 * (r i / 2) + r i % 2` using `by omega`.
+
+Use `conv_lhs => rw [hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `intdot : ∀ r s : Fin g → ℤ, ofIntVec r ⬝ᵥ ofIntVec s = ((r ⬝ᵥ s : ℤ) : ℂ)`. Introduce `r s`.
+
+Simplify using `[ofIntVec, dotProduct]`. Establish `shift : ∀ (k : ℤ) (y : ℂ), eC (k + y) = eC y`. Introduce `k y`. Unfold `eC`. Rewrite using `[mul_add, Complex.exp_add]`.
+
+Establish `hk : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * k) = 1`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * k = k * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I k`. Rewrite using `[hk, one_mul]`. Establish `hsub : ∀ (u v : ℤ) (A B : ℂ), eC ((u : ℂ) + A - ((v : ℂ) + B)) = eC (A - B)`.
+
+Introduce `u v A B`. Rewrite using `[show (u : ℂ) + A - ((v : ℂ) + B) = ((u - v : ℤ) : ℂ) + (A - B) by push_cast; ring]`. Conclude with `shift _ _`. Rewrite using `[split p, split q, add_dotProduct, add_dotProduct, intdot, intdot]`. Conclude with `hsub _ _ _ _`.
+-/
 theorem eC_half_char_emod_two (p q n n' : Fin g → ℤ) :
     eC (ofRealVec (fun i => (p i : ℝ) / 2) ⬝ᵥ ofIntVec n' -
       ofRealVec (fun i => (q i : ℝ) / 2) ⬝ᵥ ofIntVec n) =
@@ -46,6 +57,29 @@ theorem eC_half_char_emod_two (p q n n' : Fin g → ℤ) :
   rw [split p, split q, add_dotProduct, add_dotProduct, intdot, intdot]
   exact hsub _ _ _ _
 
+/- English proof (translation)
+Use `set M := imInv τ with hMdef`. Use `set nC : Fin g → ℂ := fun i => (n i : ℂ) with hnC`. Use `set mC : Fin g → ℂ := fun i => (m i : ℂ) with hmC`. Establish `hMsymm : Mᵀ = M` using `isSymm_imInv hs`. Establish `hswap : ∀ u v : Fin g → ℂ, u ⬝ᵥ M *ᵥ v = v ⬝ᵥ M *ᵥ u`.
+
+Introduce `u v`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hMsymm, dotProduct_comm]`. Establish `hY : M *ᵥ (((τ.map Complex.im).map fun x : ℝ => (x : ℂ)) *ᵥ nC) = nC`. Rewrite using `[mulVec_mulVec, imInv_mul hp, one_mulVec]`. Establish `hstar : star l = l - (2 * I) • (((τ.map Complex.im).map fun x : ℝ => (x : ℂ)) *ᵥ nC)`.
+
+Substitute `hl` using the available equality. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.map_apply, star_add, star_sum, Finset.mul_sum]`. Rewrite using `[add_sub_assoc, ← Finset.sum_sub_distrib]`. Use `congr 1`.
+
+Simplify using `[hmC]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hnC]`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`. Establish `hMstar : M *ᵥ star l = M *ᵥ l - (2 * I) • nC`.
+
+Rewrite using `[hstar, mulVec_sub, mulVec_smul, hY]`. Establish `hH1 : hermForm M z l = z ⬝ᵥ M *ᵥ l - 2 * I * (z ⬝ᵥ nC)`. Unfold `hermForm`. Rewrite using `[hMstar, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Establish `hH2 : hermForm M l l = l ⬝ᵥ M *ᵥ l - 2 * I * (l ⬝ᵥ nC)`.
+
+Unfold `hermForm`. Rewrite using `[hMstar, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Establish `hquad : (z + l) ⬝ᵥ M *ᵥ (z + l) = z ⬝ᵥ M *ᵥ z + 2 * (z ⬝ᵥ M *ᵥ l) + l ⬝ᵥ M *ᵥ l`. Rewrite using `[mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, hswap l z]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hln : l ⬝ᵥ nC = ((m ⬝ᵥ n : ℤ) : ℂ) + ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n)`. Rewrite using `[hl, add_dotProduct]`. Use `congr 1`. Simplify using `[hmC, hnC, dotProduct]`. Rewrite using `[dotProduct_comm]`.
+
+Both sides reduce to the same expression. Establish `hzn : z ⬝ᵥ nC = ofIntVec n ⬝ᵥ z`. Rewrite using `[dotProduct_comm]`. Both sides reduce to the same expression. Establish `E : -(π / 2 * ((z + l) ⬝ᵥ M *ᵥ (z + l))) + (π * hermForm M z l + π / 2 * hermForm M l l) = -(π * I * ((m ⬝ᵥ n : ℤ) : ℂ)) + 2 * π * I * (-((1 : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) + -(π / 2 * (z ⬝ᵥ M *ᵥ z))`.
+
+Rewrite using `[hquad, hH1, hH2, hln, hzn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = c * f z * cexp (-(π * I * ((m ⬝ᵥ n : ℤ) : ℂ)) + 2 * π * I * (-((1 : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) + -(π / 2 * (z ⬝ᵥ M *ᵥ z))) := by rw [E]`. Use `_ = _ := by`. Unfold `eC`.
+
+Rewrite using `[Complex.exp_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem classical_law_of_canonical {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.IsSymm)
     (hp : (τ.map Complex.im).PosDef) {c : ℂ} {f : (Fin g → ℂ) → ℂ} (m n : Fin g → ℤ)
     (z : Fin g → ℂ) {l : Fin g → ℂ} (hl : l = (fun i => (m i : ℂ)) + τ *ᵥ (fun i => (n i : ℂ)))
@@ -122,6 +156,31 @@ end SlopeTestRemainingChoices
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj MeasureTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Introduce `g τ α f hs hp hα2 hf hf0 hlaw`. Set `M : Matrix (Fin g) (Fin g) ℂ` to `CanTh.imInv τ`. Set `F : (Fin g → ℂ) → ℂ` to `fun z => Complex.exp (-(Real.pi / 2 * (z ⬝ᵥ M.mulVec z))) * f z`. Set `χ : (Fin g → ℤ) → (Fin g → ℤ) → ℂ` to `fun n n' => α n' n * Complex.exp (-(Real.pi * Complex.I * ((n' ⬝ᵥ n : ℤ) : ℂ)))`. Establish `hlawF : ∀ (n n' : Fin g → ℤ) (z : Fin g → ℂ), F (z + τ.mulVec (ReciprocityTheory.PTheta.ofIntVec n) + ReciprocityTheory.PTheta.ofIntVec n') = χ n n' * ReciprocityTheory.PTheta.eC (-((1 : ℕ) : ℂ) * (ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ.mulVec (ReciprocityTheory.PTheta.ofIntVe …`.
+
+Introduce `n n' z`. Establish `hw : z + τ.mulVec (ReciprocityTheory.PTheta.ofIntVec n) + ReciprocityTheory.PTheta.ofIntVec n' = z + ((fun i => (n' i : ℂ)) + τ.mulVec (fun i => (n i : ℂ)))`. Rewrite using `[add_assoc, add_comm (τ.mulVec _)]`. Both sides reduce to the same expression. Establish `key` using `classical_law_of_canonical hs hp n' n z rfl (hlaw n' n _ z rfl)`.
+
+Simplify using `only [F, χ]`. Rewrite using `[hw, key]`. Establish `hF0 : F ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `z`. Establish `hz` using `congrFun h0 z`. Simplify using `only [F, Pi.zero_apply] at hz`. Conclude with `(mul_eq_zero.mp hz).resolve_left (Complex.exp_ne_zero _)`. Establish `hquad : Differentiable ℂ (fun z : Fin g → ℂ => z ⬝ᵥ M.mulVec z)`.
+
+Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hFd : Differentiable ℂ F` using `((hquad.const_mul _).neg.cexp).mul hf`. Establish `hone : ∀ x : ℂ, x ^ 2 = 1 → x = 1 ∨ x = -1`. Introduce `x hx`.
+
+Establish `h' : (x - 1) * (x + 1) = 0` using `by linear_combination hx`. Break down `mul_eq_zero.mp h' with h1 | h1` into its components or cases. Use `left`. Take the linear combination `h1`. Use `right`.
+
+Take the linear combination `h1`. Establish `hsign : ∀ n n', χ n n' = 1 ∨ χ n n' = -1`. Introduce `n n'`. Apply `hone` to reduce the goal to its premises. Simplify using `only [χ]`.
+
+Rewrite using `[mul_pow, hα2, _root_.one_mul, sq, ← Complex.exp_add]`. Rewrite using `[show -(Real.pi * Complex.I * ((n' ⬝ᵥ n : ℤ) : ℂ)) + -(Real.pi * Complex.I * ((n' ⬝ᵥ n : ℤ) : ℂ)) = ((-(n' ⬝ᵥ n) : ℤ) : ℂ) * (2 * Real.pi * Complex.I) by push_cast; ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I _`. Establish `hchar` using `multiplier_add_of_ne_zero (N := 1) hs hF0 hlawF`. Take `⟨p, q, hpq⟩` from `exists_half_char_of_sign hchar hsign`.
+
+Establish `hmem : F ∈ thetaLevelChar (fun i => ((p i % 2 : ℤ) : ℝ) / 2) (fun i => ((q i % 2 : ℤ) : ℝ) / 2) 1 τ`. Rewrite using `[mem_thetaLevelChar]`. Use `⟨hFd, fun n n' z => ?_⟩` and prove the remaining obligations. Rewrite using `[hlawF, hpq, eC_half_char_emod_two p q n n', Nat.cast_one, _root_.one_mul]`. Rewrite `hmem` using `[thetaLevelChar_one ⟨hs, hp⟩, Submodule.mem_span_singleton]`.
+
+Take `⟨c, hc⟩` from `hmem`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hF0` to reduce the goal to its premises. Rewrite using `[← hc, zero_smul]`.
+
+Establish `hhalf : ∀ r : ℤ, ((r % 2 : ℤ) : ℝ) / 2 = 0 ∨ ((r % 2 : ℤ) : ℝ) / 2 = 1 / 2`. Introduce `r`. Apply the tactic sequence `rcases Int.emod_two_eq_zero_or_one r with h | h <;> simp [h]`. Use `⟨fun i => ((p i % 2 : ℤ) : ℝ) / 2, fun i => ((q i % 2 : ℤ) : ℝ) / 2, c, fun i => hhalf (p i), fun i => hhalf (q i), hc0, fun z => ?_⟩` and prove the remaining obligations. Use `show f z = c * (Complex.exp (Real.pi / 2 * (z ⬝ᵥ M.mulVec z)) * _)`.
+
+Rewrite using `[CanTh.thetaChar_eq_theta]`. Establish `hz` using `congrFun hc z`. Simplify using `only [Pi.smul_apply, smul_eq_mul, F] at hz`. Rewrite using `[mul_left_comm, hz, ← _root_.mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, _root_.one_mul]`.
+-/
 theorem exists_eq_mul_canonical_theta_of_sign_multiplier :
     ∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (α : (Fin g → ℤ) → (Fin g → ℤ) → ℂ) (f : (Fin g → ℂ) → ℂ),
     τ.IsSymm → (τ.map Complex.im).PosDef → (∀ m n, α m n ^ 2 = 1) → Differentiable ℂ f → f ≠ 0 →

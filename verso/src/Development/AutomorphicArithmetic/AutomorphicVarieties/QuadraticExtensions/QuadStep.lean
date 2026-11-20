@@ -8,6 +8,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtension
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ A p N n hp hpN h`. Establish `hsup` using `(abBasic Ω).1 A (AbF.quad p)`. Establish `hq` using `(abBasic Ω).2.1 (AbF.quad p)`. Establish `key : cycU 2 (abU Ω (A.sup (AbF.quad p))) = abU Ω (AbF.quad p) ⊓ cycU 2 (abU Ω A)`. Use extensionality with `g`.
+
+Simplify using `only [cycU, hsup, Subgroup.mem_inf]`. The claim follows by propositional logic. Rewrite using `[key]`. Establish `hidx : (abU Ω (AbF.quad p)).index ∣ 2`. Rewrite using `[hq.1]`.
+
+Conclude with `degBasic.2.2.1 p hp`. Establish `hnorm : (abU Ω (AbF.quad p)).Normal`. Break down `(Nat.dvd_prime Nat.prime_two).1 hidx with h1 | h2` into its components or cases. Rewrite `h1` using `[Subgroup.index_eq_one]`. Rewrite using `[h1]`.
+
+Use `infer_instance`. Conclude with `Subgroup.normal_of_index_eq_two h2`. Use `idxTwo (G ℚ Ω) _ (cycU 2 (abU Ω A)) (ineOff ℚ Ω N) n inf_le_right ?_ ?_ ?_ ?_ h` and prove the remaining obligations. Rewrite using `[Subgroup.inf_subgroupOf_right, Subgroup.coe_subgroupOf]`. Conclude with `hq.2.2.1.preimage continuous_subtype_val`.
+
+Rewrite using `[Subgroup.inf_relIndex_right]`. Conclude with `(Subgroup.relIndex_dvd_index_of_normal _ _).trans hidx`. Introduce `v _ s hs`. Conclude with `(ineConj ℚ Ω v).2.2 N s hs`. Introduce `s hs hsV`.
+
+Use `Subgroup.mem_inf.2 ⟨?_, hsV⟩` and prove the remaining obligations. Take `⟨B, hB, hsB⟩` from `hs`. Use `haveI : NeZero (AbF.quad p).m := ⟨by simp [AbF.quad]⟩`. Establish `hv : ¬ B.valuation ((AbF.quad p).m : Ω) < 1`. Introduce `hlt`.
+
+Apply `hB` to reduce the goal to its premises. Take `⟨k, rfl⟩` from `hpN`. Establish `hm : (AbF.quad p).m = p` using `max_eq_left hp.one_lt.le`. Rewrite `hlt` using `[hm]`. Rewrite using `[Nat.cast_mul, map_mul]`.
+
+Establish `hk : B.valuation (k : Ω) ≤ 1` using `(B.valuation_le_one_iff _).2 (natCast_mem B k)`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hk) hlt`. Conclude with `hq.2.2.2 (ineChar Ω (AbF.quad p).m B hv hsB)`.
+-/
 theorem UpperTheory.V.Two.quadStep :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : AbF) (p N n : ℕ), p.Prime → p ∣ N → CardLe (CharOff (cycU 2 (abU Ω A)) (ineOff ℚ Ω N) 2) n → CardLe (CharOff (cycU 2 (abU Ω (A.sup (AbF.quad p)))) (ineOff ℚ Ω N) 2) (n ^ 2) := by
   intro Ω _ _ _ A p N n hp hpN h

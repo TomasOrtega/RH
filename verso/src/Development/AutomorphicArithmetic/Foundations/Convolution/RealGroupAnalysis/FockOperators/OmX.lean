@@ -6,6 +6,19 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W O g w i φ`. Establish `hcc : cc ≠ 0`. Simplify using `[cc, Real.pi_ne_zero]`. Establish `hδ : cw w (rt D.δ) ≠ 0` using `(coordMk F E D).2.2.1 w`. Establish `key : ∀ i : Fin 4, ∃ (j : Fin 4) (c : ℂ), c ≠ 0 ∧ O.p D.δ w j = c • O.x w i`.
+
+Introduce `i`. Use `fin_cases i`. Conclude with `⟨1, -cc, neg_ne_zero.2 hcc, rfl⟩`. Conclude with `⟨0, -cc, neg_ne_zero.2 hcc, rfl⟩`. Conclude with `⟨2, 2 * cc, mul_ne_zero two_ne_zero hcc, rfl⟩`.
+
+Conclude with `⟨3, -2 * cw w (rt D.δ) * cc, mul_ne_zero (mul_ne_zero (neg_ne_zero.2 two_ne_zero) hδ) hcc, rfl⟩`. Take `⟨j, c, hc, hp⟩` from `key i`. Establish `h` using `(Heisenberg₂ F E D W O g⁻¹ w j).2`. Establish `h1 : W.Om g * W.Om g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `h3 : W.Om g⁻¹ * W.Om g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`.
+
+Generalize the expression as in `cw w (g⁻¹ 1 0) = α at h`. Generalize the expression as in `cw w (g⁻¹ 1 1) = β at h`. Establish `h2 : W.Om g * O.p D.δ w j = (α • O.d w j + β • O.p D.δ w j) * W.Om g`. Combine the equalities or inequalities in the displayed calculation. Establish `hx : O.x w i = c⁻¹ • O.p D.δ w j` using `by rw [hp, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Establish `h4 : W.Om g (O.p D.δ w j φ) = α • O.d w j (W.Om g φ) + (β * c) • O.x w i (W.Om g φ)`. Use `LinearMap.congr_fun h2 φ` as an intermediate fact. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply] at this`. Rewrite using `[this, hp, LinearMap.smul_apply, smul_smul]`. Establish `h5 : W.Om g (O.x w i φ) = (c⁻¹ * α) • O.d w j (W.Om g φ) + (c⁻¹ * (β * c)) • O.x w i (W.Om g φ)`.
+
+Rewrite using `[hx, LinearMap.smul_apply, map_smul, h4, ← hx, smul_add, smul_smul, smul_smul]`. Rewrite using `[h5]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨w, j, Or.inr rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨w, i, Or.inl rfl⟩))`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.omX :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) (g : G1 F) w i φ, W.Om g (O.x w i φ) ∈ Submodule.span ℂ {χ : S4 F | ∃ w' j, χ = O.x w' j (W.Om g φ) ∨ χ = O.d w' j (W.Om g φ)} := by
   intro F E _ _ _ _ _ _ _ D W O g w i φ

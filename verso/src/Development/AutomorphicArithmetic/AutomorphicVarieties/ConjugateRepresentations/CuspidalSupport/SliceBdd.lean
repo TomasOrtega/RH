@@ -14,6 +14,11 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheo
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨ψ, hψ, g, hg, hf⟩` from `hf`. Introduce `γ m`.
+
+Rewrite using `[hf, hf, h ψ hψ g hg]`. Consider the case `zero => exact isLeftInvariant_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+-/
 private theorem left_slSp {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn.AdelicGL K n))
     (S : Submodule ℂ (archSmooth K n))
     (h : ∀ ψ ∈ S, ∀ g ∈ Γ, ∀ γ m, ψ.1 (g * emb e (AdelicGLn.diagonal K a γ * m)) = ψ.1 (g * emb e m)) :
@@ -28,6 +33,13 @@ private theorem left_slSp {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn
   | add x y _ _ hx hy => exact hx.add hy
   | smul c x _ hx => exact hx.smul c
 
+/- English proof (translation)
+Take `⟨ι, _, ⟨D⟩⟩` from `UpperTheory.exists_idempotent_decomposition_mixedSpace K`. Take `⟨hN, hG, hL, hK', hM⟩` from `UpperTheory.constantTermSpace_automorphic_properties K r s S hS hK`. Establish `hT` using `UpperTheory.constantTermSpace_types_of_bdd K _ r S hS`. Establish `hA` using `UpperTheory.algebraic_module_of_vanishing_block K r s _ hN (UpperTheory.constantTermSpace_centre_of_bdd K _ r S hS) ι D`. Use `⟨⟨left_slSp _ _ _ ?_, (UpperTheory.slSp_preserves_growth_and_level K _ _ _ _ _).1 hG, (UpperTheory.slSp_preserves_growth_and_level K _ _ _ _ _).2 hL, UpperTheory.finiteDimensional_slSp_reduction K _ _ _ _ _ hT, UpperTheory.siegelLevi_block_aeval_stable K _ _ _ _ _ (Van K r s) ι D …` and prove the remaining obligations.
+
+Introduce and unpack `ψ hψ _ ⟨m₂, rfl⟩ γ m`. Rewrite using `[← hM ψ hψ γ 1 (emb (e2 r s) m₂ * emb (e1 r s) m), map_mul, ← mul_assoc, ← emb_comm, blk, map_one, mul_one, ← (UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous K _ _ _).2.1, mul_assoc]`. Introduce and unpack `ψ hψ _ ⟨m₂, rfl⟩ m`. Rewrite using `[← emb_comm]`. Conclude with `hψ m m₂`.
+
+Introduce and unpack `ψ hψ _ ⟨m₁, rfl⟩ γ m`. Rewrite using `[← hM ψ hψ 1 γ (emb (e1 r s) m₁ * emb (e2 r s) m), map_mul, ← mul_assoc, emb_comm, blk, map_one, one_mul, ← (UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous K _ _ _).2.1, mul_assoc]`. Introduce and unpack `ψ hψ _ ⟨m₁, rfl⟩ m`. Conclude with `hψ m₁ m`.
+-/
 private theorem bdd_slices {r s : ℕ} {S : Submodule ℂ (archSmooth K (r + s))} (hS : Bdd S) (hK : Sat S) :
     Bdd (slSp (e1 r s) (Set.range (emb (e2 r s))) (ctSp r S)) ∧
       Bdd (slSp (e2 r s) (Set.range (emb (e1 r s))) (ctSp r S)) := by
@@ -53,6 +65,9 @@ private theorem bdd_slices {r s : ℕ} {S : Submodule ℂ (archSmooth K (r + s))
   · rintro ψ hψ _ ⟨m₁, rfl⟩ m
     exact hψ m₁ m
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `UpperTheory.exists_restriction_blockEmbedding_intertwines_lie K a n e g`. Conclude with `⟨f ψ, Submodule.subset_span ⟨ψ, hψ, g, hg, hf ψ⟩, hf ψ⟩`.
+-/
 private theorem exists_slice {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (AdelicGLn.AdelicGL K n))
     (S : Submodule ℂ (archSmooth K n)) {ψ : archSmooth K n} (hψ : ψ ∈ S) {g : AdelicGLn.AdelicGL K n} (hg : g ∈ Γ) :
     ∃ f ∈ slSp e Γ S, ∀ m, f.1 m = ψ.1 (g * emb e m) := by
@@ -61,6 +76,13 @@ private theorem exists_slice {a n : ℕ} (e : Fin a ↪ Fin n) (Γ : Set (Adelic
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hB E _ _ _ r s φ hφ`. Take `⟨S, hle, hS, hK⟩` from `UpperTheory.exists_automorphic_saturation_submodule E (r + s) _ (hB E (r + s) φ hφ)`. Establish `hmem : UpperTheory.V.Cm.smEq E (r + s) φ ∈ S` using `hle (Submodule.mem_map_of_mem (Submodule.mem_span_singleton_self φ))`. Take `⟨hs, -⟩` from `UpperTheory.constantTerm_archSmooth E (r + s) r (UpperTheory.V.Cm.smEq E (r + s) φ) (UpperTheory.isAutomorphicForm_of_bdd_submodule E _ S hS _ hmem)`. Establish `hψ : (⟨_, hs⟩ : GroundTheory.Automorphic.AutomorphicForm.archSmooth E (r + s)) ∈ UpperTheory.V.Af.Fin.ctSp r S` using `Submodule.subset_span ⟨_, hmem, rfl⟩`.
+
+Take `⟨h₁, h₂⟩` from `bdd_slices hS hK`. Use `⟨Submodule.comap (UpperTheory.V.Cm.smEq E r).toLinearMap _, Submodule.comap (UpperTheory.V.Cm.smEq E s).toLinearMap _, h₁.mono (Submodule.map_comap_le _ _), h₂.mono (Submodule.map_comap_le _ _), fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf'⟩` from `exists_slice (e1 r s) (Set.range (emb (e2 r s))) _ hψ ⟨y, rfl⟩`. Use `⟨(UpperTheory.V.Cm.smEq E r).symm f, by simpa using hf, funext fun x => (hf' x).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.V.Af.Fin.emb_comm]`.
+
+Both sides reduce to the same expression. Take `⟨f, hf, hf'⟩` from `exists_slice (e2 r s) (Set.range (emb (e1 r s))) _ hψ ⟨x, rfl⟩`. Conclude with `⟨(UpperTheory.V.Cm.smEq E s).symm f, by simpa using hf, funext fun y => hf' y⟩`.
+-/
 theorem UpperTheory.V.Cj.S.sliceBdd :
     UpperTheory.V.Cj.S.SingleBdd → UpperTheory.V.Cj.S.SliceBdd := by
   intro hB E _ _ _ r s φ hφ

@@ -52,6 +52,9 @@ def RepresentativesSplit : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 E))),
     SplitNonConj ST → HasStdReps E n ST SG
 
+/- English proof (translation)
+Introduce `P hP Q hQ h`. Apply `conj_piT_notMem hPr u ⟨Q, hQ⟩` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cO X.E (Pr.piT u) ∈ Q.asIdeal`. Rewrite using `[h, mem_conjP, cO_cO]`. Conclude with `decoFin_mem_of_mem_divs hP`.
+-/
 theorem splitNonConj_vT {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word) : SplitNonConj (Pr.vT u) := by
   intro P hP Q hQ h
   apply conj_piT_notMem hPr u ⟨Q, hQ⟩
@@ -59,6 +62,9 @@ theorem splitNonConj_vT {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) (u : Pr.Word)
   rw [h, mem_conjP, cO_cO]
   exact decoFin_mem_of_mem_divs hP
 
+/- English proof (translation)
+Introduce `X _ _ hPr u n SG d` and use `h X.E n _ SG (splitNonConj_vT hPr u) d`.
+-/
 theorem representatives_of_split (h : RepresentativesSplit) : Representatives :=
   fun X _ _ hPr u n SG d => h X.E n _ SG (splitNonConj_vT hPr u) d
 

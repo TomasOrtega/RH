@@ -8,6 +8,9 @@ section
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[← finprod_mul_distrib]`. Conclude with `finprod_congr fun v => zpow_add _ _ _`. Conclude with `hf.subset fun v hv h => hv (by simp [h])`. Conclude with `hg.subset fun v hv h => hv (by simp [h])`.
+-/
 private theorem prod_add (f g : HeightOneSpectrum (𝓞 K) → ℤ) (hf : {v | f v ≠ 0}.Finite)
     (hg : {v | g v ≠ 0}.Finite) :
     ∏ᶠ v, primeCl v ^ (f v + g v) = (∏ᶠ v, primeCl v ^ f v) * ∏ᶠ v, primeCl v ^ g v := by
@@ -16,6 +19,9 @@ private theorem prod_add (f g : HeightOneSpectrum (𝓞 K) → ℤ) (hf : {v | f
   · exact hf.subset fun v hv h => hv (by simp [h])
   · exact hg.subset fun v hv h => hv (by simp [h])
 
+/- English proof (translation)
+The claim follows from `(hf.union hg).subset fun v hv => by by_contra h simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at h exact hv (by rw [h.1, h.2, add_zero])`.
+-/
 private theorem fin_add {f g : HeightOneSpectrum (𝓞 K) → ℤ} (hf : {v | f v ≠ 0}.Finite)
     (hg : {v | g v ≠ 0}.Finite) : {v | f v + g v ≠ 0}.Finite :=
   (hf.union hg).subset fun v hv => by
@@ -23,6 +29,15 @@ private theorem fin_add {f g : HeightOneSpectrum (𝓞 K) → ℤ} (hf : {v | f 
     simp only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at h
     exact hv (by rw [h.1, h.2, add_zero])
 
+/- English proof (translation)
+Proceed by induction on `hc using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Use `⟨fun v => if v = w then 1 else 0, (Set.finite_singleton w).subset fun v hv => ?_, fun v hv => if_neg fun (h : v = w) => hv (h ▸ hw), ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv (if_neg h)`. Rewrite using `[finprod_eq_single _ w fun v hv => by simp [hv]]`. Simplify using the standard rewrite rules. Consider the case `one => exact ⟨fun _ => 0, by simp, by simp, by simp⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨f, hf, hf', rfl⟩` from `hx`. Take `⟨g, hg, hg', rfl⟩` from `hy`. Conclude with `⟨fun v => f v + g v, fin_add hf hg, fun v hv => by simp [hf' v hv, hg' v hv], (prod_add f g hf hg).symm⟩`. Consider the case `inv x _ hx`. Take `⟨f, hf, hf', rfl⟩` from `hx`.
+
+Use `⟨fun v => -f v, by simpa using hf, fun v hv => by simp [hf' v hv], ?_⟩` and prove the remaining obligations. Rewrite using `[← finprod_inv_distrib]`. Conclude with `finprod_congr fun v => (zpow_neg _ _).symm`.
+-/
 private theorem mem_clSub {S : Set (HeightOneSpectrum (𝓞 K))} {c : ClassGroup (𝓞 K)} (hc : c ∈ clSub S) :
     ∃ g : HeightOneSpectrum (𝓞 K) → ℤ, {v | g v ≠ 0}.Finite ∧ (∀ v ∉ S, g v = 0) ∧
       c = ∏ᶠ v, primeCl v ^ g v := by
@@ -48,6 +63,15 @@ private theorem mem_clSub {S : Set (HeightOneSpectrum (𝓞 K))} {c : ClassGroup
     rw [← finprod_inv_distrib]
     exact finprod_congr fun v => (zpow_neg _ _).symm
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `clProd K`. Use `set I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K := ∏ᶠ v : HeightOneSpectrum (𝓞 K), (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ f v with hI`. Establish `hI0 : I ≠ 0`. Rewrite using `[hI]`. Use `finprod_induction (fun J => J ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun v => ?_` and prove the remaining obligations.
+
+Conclude with `zpow_ne_zero _ (FractionalIdeal.coeIdeal_ne_zero.2 v.ne_bot)`. Establish `hc : ∀ v, FractionalIdeal.count K v I = f v` using `fun v => FractionalIdeal.count_finprod K v f (by simpa [Filter.eventually_cofinite] using hf)`. Establish `h3 : ClassGroup.mk K (Units.mk0 I hI0) = 1`. Rewrite using `[h1, ← h]`. Conclude with `finprod_congr fun v => by rw [Units.val_mk0, hc]`.
+
+Take `⟨b, hb⟩` from `(FractionalIdeal.isPrincipal_iff _).1 (ClassGroup.mk_eq_one_iff.1 h3)`. Rewrite `hb` using `[Units.val_mk0]`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hI0 (by rw [hb, FractionalIdeal.spanSingleton_zero])`.
+
+Conclude with `⟨Units.mk0 b hb0, fun v => by rw [← h2, Units.val_mk0, ← hb, hc]⟩`.
+-/
 private theorem exists_ordv (f : HeightOneSpectrum (𝓞 K) → ℤ) (hf : {v | f v ≠ 0}.Finite)
     (h : ∏ᶠ v, primeCl v ^ f v = 1) : ∃ b : Kˣ, ∀ v, ordv v b = f v := by
   obtain ⟨h1, h2, -, -⟩ := clProd K
@@ -69,6 +93,9 @@ private theorem exists_ordv (f : HeightOneSpectrum (𝓞 K) → ℤ) (hf : {v | 
     exact hI0 (by rw [hb, FractionalIdeal.spanSingleton_zero])
   exact ⟨Units.mk0 b hb0, fun v => by rw [← h2, Units.val_mk0, ← hb, hc]⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ v ∉ S, v.valuation K (u : K) = 1) ↔ _`. Use `forall₂_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← HeightOneSpectrum.valuationOfNeZero_eq, ← WithZero.coe_one, WithZero.coe_inj, ordv, neg_eq_zero, toAdd_eq_zero]`.
+-/
 private theorem mem_unit {S : Set (HeightOneSpectrum (𝓞 K))} {u : Kˣ} :
     u ∈ S.unit K ↔ ∀ v ∉ S, ordv v u = 0 := by
   change (∀ v ∉ S, v.valuation K (u : K) = 1) ↔ _
@@ -76,11 +103,23 @@ private theorem mem_unit {S : Set (HeightOneSpectrum (𝓞 K))} {u : Kˣ} :
   rw [← HeightOneSpectrum.valuationOfNeZero_eq, ← WithZero.coe_one, WithZero.coe_inj, ordv, neg_eq_zero,
     toAdd_eq_zero]
 
+/- English proof (translation)
+Simplify using `[ordv]`.
+-/
 private theorem ordv_pow (v : HeightOneSpectrum (𝓞 K)) (b : Kˣ) (n : ℕ) : ordv v (b ^ n) = n * ordv v b := by
   simp [ordv]
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ S n hn a ha`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨g, hg, hg', hc⟩` from `mem_clSub (inv_mem h)`. Establish `hf : {v | ordv v a / n ≠ 0}.Finite` using `((clProd K).2.2.1 a).subset fun v hv h => hv (by simp [h])`.
+
+Take `⟨b, hb⟩` from `exists_ordv (fun v => ordv v a / n + g v) (fin_add hf hg) (by`. Rewrite using `[prod_add _ _ hf hg, ← hc]`. Conclude with `mul_inv_cancel _)`. Use `Subgroup.mem_sup.2 ⟨a * (b ^ n)⁻¹, mem_unit.2 fun v hv => ?_, b ^ n, ⟨b, rfl⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[ordv_mul, ordv_inv, ordv_pow, hb, hg' v hv, add_zero, Int.mul_ediv_cancel' (ha v hv), add_neg_cancel]`.
+
+Introduce `h`. Take `⟨u, hu, _, ⟨b, rfl⟩, rfl⟩` from `Subgroup.mem_sup.1 h`. Rewrite using `[powMonoidHom_apply, (radClMul K S n hn).2.2]`. Use `finprod_induction (fun c => c ∈ clSub S) (one_mem _) (fun _ _ => mul_mem) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`.
+
+Establish `h0 : primeCl v ∈ clSub S` using `Subgroup.subset_closure ⟨v, hv, rfl⟩`. Conclude with `zpow_mem h0 _`. Rewrite using `[mem_unit.1 hu v hv]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Kum.radClKer :
     ∀ (K : Type) [Field K] [NumberField K] (S : Set (HeightOneSpectrum (𝓞 K))) (n : ℕ), n ≠ 0 → ∀ a ∈ SelK S n, (radCl n a ∈ clSub S ↔ a ∈ S.unit K ⊔ powK K n) := by
   intro K _ _ S n hn a ha

@@ -10,6 +10,13 @@ namespace GlobalTheory
 
 open GlobalTheory.TopForm in
 
+/- English proof (translation)
+Introduce `k _ Y p D _ K i F _ z hz`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Set `Sm : Submodule Γ(Y, K.bundle.U i) (FormsOn p D (K.bundle.U i))` to `Submodule.comap (K.coeff i le_rfl) (RingHom.ker (evalPt z _ hz))`. Establish `hsub : Set.range (dForm (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (K.bundle.U i)) (D` using `D)) ⊆ (Sm : Set _) := by`.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `(RingHom.mem_ker).2 (hcon g)`. Establish `hle : (⊤ : Submodule Γ(Y, K.bundle.U i) (FormsOn p D (K.bundle.U i))) ≤ Sm`. Rewrite using `[← span_dForm (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (K.bundle.U i)) D]`. Conclude with `Submodule.span_le.2 hsub`.
+
+Establish `hmem : resForm (le_rfl : K.bundle.U i ≤ K.bundle.U i) (K.om i) ∈ Sm` using `hle Submodule.mem_top`. Establish `h1 : evalPt z _ hz (K.coeff i le_rfl (resForm le_rfl (K.om i))) = 0` using `(RingHom.mem_ker).1 hmem`. Rewrite `h1` using `[K.coeff_om, map_one]`. Conclude with `one_ne_zero h1`.
+-/
 theorem CanonLB.exists_jacobian_evalPt_ne_zero : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} [SmoothOfRelativeDimension D p] (K : GlobalTheory.CanonLB p D) (i : K.bundle.ι) {F : Type} [Field F] (z : Sp F ⟶ Y) (hz : ⊤ ≤ z ⁻¹ᵁ K.bundle.U i), ∃ g : Fin D → Γ(Y, K.bundle.U i), evalPt z _ hz (K.jacobian i le_rfl g) ≠ 0 := by
   intro k _ Y p D _ K i F _ z hz
   by_contra hcon

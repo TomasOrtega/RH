@@ -95,14 +95,23 @@ def shP (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) 
   (InnerProductSpace.toDual ℂ (X.Vpi u)).symm
     (LinearMap.toContinuousLinearMap ((LinearMap.proj ((1 : Hinf X u), h)).comp T))
 
+/- English proof (translation)
+Simplify using `only [shP, LinearMap.comp_add, map_add]`.
+-/
 theorem rieszVector_add (T T' : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) :
     shP X u (T + T') h = shP X u T h + shP X u T' h := by
   simp only [shP, LinearMap.comp_add, map_add]
 
+/- English proof (translation)
+Simplify using `only [shP, LinearMap.comp_smul, map_smul, map_smulₛₗ]`.
+-/
 theorem rieszVector_smul (c : ℂ) (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) :
     shP X u (c • T) h = (starRingEnd ℂ c) • shP X u T h := by
   simp only [shP, LinearMap.comp_smul, map_smul, map_smulₛₗ]
 
+/- English proof (translation)
+Simplify using `[shP, InnerProductSpace.toDual_symm_apply]`.
+-/
 theorem inner_shP (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (h : Hfin X u) (ξ : X.Vpi u) :
     ⟪shP X u T h, ξ⟫_ℂ = T ξ (1, h) := by
   simp [shP, InnerProductSpace.toDual_symm_apply]
@@ -171,6 +180,9 @@ def colDict (hI : ColDictInto X Tr hK) (hB : ColDictBij X Tr hK) : Cu X u hK ≃
       obtain ⟨T, hT⟩ := hB.2 φ.1 φ.2
       exact ⟨T, Subtype.ext hT⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colDict_apply (hI : ColDictInto X Tr hK) (hB : ColDictBij X Tr hK) (T : Cu X u hK) :
     (colDict X Tr hK hI hB T : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) = colDictL X Tr hK T := rfl
 
@@ -219,6 +231,9 @@ section Checks
 
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u}
 
+/- English proof (translation)
+Introduce `ξ η hJ`. Use `ext_inner_left ℂ fun ζ => ?_` and prove the remaining obligations. Rewrite using `[← Tr.J_isom c ξ ζ, ← Tr.J_isom c η ζ, hJ]`.
+-/
 theorem Transport.J_injective (Tr : Transport X u F) (c : (D.mem u).C.cls 0) : Function.Injective Tr.J := by
   intro ξ η hJ
   refine ext_inner_left ℂ fun ζ => ?_

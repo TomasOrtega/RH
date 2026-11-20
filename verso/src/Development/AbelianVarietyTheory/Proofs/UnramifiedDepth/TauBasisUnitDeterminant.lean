@@ -6,6 +6,15 @@ open IsLocalRing ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 
 namespace GlobalTheory.tau_basis_unit_determinant
 
+/- English proof (translation)
+Introduce `p _ OE _ _ _ O _ _ _ w t ht hsep`. Set `b : Module.Basis (Fin w.n) ℤ_[p] (LinearMap.range (LinearMap.mulLeft ℤ_[p] w.e))` to `Module.finBasisOfFinrankEq _ _ rfl`. Use `⟨b, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Establish `hxM` using `(mem_maximalIdeal _).2 hx`.
+
+Set `T : Fin w.n → (TensorProduct ℤ ℤ_[p] OE →ₐ[ℤ_[p]] O ⧸ maximalIdeal O)` to `fun j => (Ideal.Quotient.mkₐ ℤ_[p] (maximalIdeal O)).comp (tauExt (t j))`. Use `GlobalTheory.UnitDeterminantBasis.det_ne_zero b T ?_ ?_ ?_` and prove the remaining obligations. Introduce `j j' h`. Use `hsep _ _ fun a => ?_` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun h (1 ⊗ₜ a)`.
+
+Rewrite using `[← Ideal.Quotient.eq]`. Simplify `h1` using `[T, tauExt]`. Introduce `j`. Establish `h1 : tauExt (t j) w.e = 1` using `ht j`. Simplify using `only [T, AlgHom.comp_apply, h1, map_one]`.
+
+Establish `h1` using `Ideal.Quotient.eq_zero_iff_mem.2 hxM`. Rewrite `h1` using `[RingHom.map_det]`. Conclude with `h1`.
+-/
 theorem exists_basis_isUnit_det : ∀ (p : ℕ) [Fact p.Prime] (OE : Type) [CommRing OE]
     [Module.Free ℤ OE] [Module.Finite ℤ OE] (O : Type) [CommRing O] [IsLocalRing O]
     [Algebra ℤ_[p] O] (w : PlaceU p OE) (t : Fin w.n → (OE →+* O)),

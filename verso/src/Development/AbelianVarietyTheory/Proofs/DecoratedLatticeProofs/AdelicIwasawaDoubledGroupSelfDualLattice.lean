@@ -16,6 +16,11 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.Core.Rk.IP
 
+/- English proof (translation)
+Introduce `D A L a hL ha`. Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Use `HasIwasawa.adelic (fun v => ?_) (fun w => GlobalTheory.T.iwasawa_doubled_hermitian_space_real_place D A a ha w)` and prove the remaining obligations. Distinguish the cases in `hv : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v`. Conclude with `GlobalTheory.T.hasIwasawaDecomposition_doubled_split_place D A L hL v hv`.
+
+Conclude with `GlobalTheory.T.iwasawa_doubled_hermitian_space_nonsplit_place D A L hL v hv`.
+-/
 theorem hasIwasawa_KAd_selfDual : ∀ (D : D7) (A : HSp D) (L : Lat A) (a : GL (Fin A.rank) (AE D)), IsSelfDualC A L → IsMaj A a → HasIwasawa D.sp.cm.sig (dblSp A).gram (KAd D.sp.cm.sig (dblSp A).gram L a) := by
   intro D A L a hL ha
   haveI : Submodule.IsLattice D.host.E L := hL.1
@@ -24,6 +29,9 @@ theorem hasIwasawa_KAd_selfDual : ∀ (D : D7) (A : HSp D) (L : Lat A) (a : GL (
   · exact GlobalTheory.T.hasIwasawaDecomposition_doubled_split_place D A L hL v hv
   · exact GlobalTheory.T.iwasawa_doubled_hermitian_space_nonsplit_place D A L hL v hv
 
+/- English proof (translation)
+The claim follows from `hasIwasawa_KAd_selfDual D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) ha`.
+-/
 theorem hasIwasawa_Khat (D : D7) (A : HSp D) (a : GL (Fin A.rank) (AE D)) (ha : IsMaj A a) :
     HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a) :=
   hasIwasawa_KAd_selfDual D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) ha

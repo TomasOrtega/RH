@@ -3,6 +3,25 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ValuationApp
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Take `⟨t, ht, hte⟩` from `isOpen_induced_iff.1 ho`. Establish `h1t : (1 : G F Ω) ∈ t`. Establish `h1 : (1 : Ine (F` using `F) A) ∈ (Subtype.val ⁻¹' t : Set (Ine (F := F) A)) := by`. Rewrite using `[hte]`. Conclude with `ψ.ker.one_mem`.
+
+Conclude with `h1`. Take `⟨L, hfin, hL⟩` from `(krullTopology_mem_nhds_one_iff F Ω t).1 (ht.mem_nhds h1t)`. Establish `hfix : ∃ n, 0 < n ∧ ∀ x ∈ L, (σ.1 ^ n) x = x`. Set `f : ℕ → (L →ₐ[F] Ω)` to `fun i => ((σ.1 ^ i : G F Ω) : Ω →ₐ[F] Ω).comp L.val`. Take `⟨i, j, hij, he⟩` from `Finite.exists_ne_map_eq_of_infinite f`.
+
+Use `wlog hlt : i < j generalizing i j`. Conclude with `this j i hij.symm he.symm (lt_of_le_of_ne (not_lt.1 hlt) hij.symm)`. Use `⟨j - i, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `congrArg (fun φ => φ ⟨x, hx⟩) he`.
+
+Simplify using `only [f, AlgHom.comp_apply, IntermediateField.val_mk, AlgHom.coe_coe] at hx'`. Establish `hx'' : (σ.1 ^ i) x = (σ.1 ^ j) x` using `hx'`. Establish `hj : σ.1 ^ j = σ.1 ^ i * σ.1 ^ (j - i)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `hx''` using `[hj, AlgEquiv.mul_apply]`.
+
+Conclude with `((σ.1 ^ i).injective hx'').symm`. Take `⟨n, hn0, hn⟩` from `hfix`. Take `⟨a, m, hm, hnm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn0.ne' l hl.ne_one`. Establish `hτw` using `GlobalTheory.WildInertiaChar.wild_pow A σ.1 hσ m`. Establish `hk : ¬ A.valuation ((l ^ a : ℕ) : Ω) < 1`.
+
+Rewrite using `[Nat.cast_pow, map_pow]`. Conclude with `not_lt.2 (one_le_pow₀ (not_lt.1 hvl))`. Establish `hτ : σ.1 ^ m ∈ L.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Apply `GlobalTheory.WildInertiaChar.fixed_of_pow_fixed A (σ.1 ^ m) hτw (l ^ a) hk x` to reduce the goal to its premises. Rewrite using `[← pow_mul, mul_comm, ← hnm]`. Conclude with `hn x hx`. Establish `hker : σ ^ m ∈ ψ.ker`. Establish `h2 : (σ ^ m) ∈ (Subtype.val ⁻¹' t : Set (Ine (F` using `F) A)) := hL hτ`.
+
+Rewrite `h2` using `[hte]`. Conclude with `h2`. Rewrite `hker` using `[MonoidHom.mem_ker, map_pow]`. Establish `hcop : Nat.Coprime l m` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hm`. Establish `hg` using `pow_gcd_eq_one.2 ⟨hψ σ, hker⟩`.
+
+Rewrite `hg` using `[hcop.gcd_eq_one, pow_one]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.V.Ws.Rt.wild_mem_ker
     {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} (hl : l.Prime)
     {A : ValuationSubring Ω} (hvl : ¬ A.valuation (l : Ω) < 1) {N : Type} [Group N]
@@ -50,6 +69,33 @@ private theorem UpperTheory.V.Ws.Rt.wild_mem_ker
   have hg := pow_gcd_eq_one.2 ⟨hψ σ, hker⟩
   rwa [hcop.gcd_eq_one, pow_one] at hg
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ A hvl M _ φ hφ hφl θ hθo hθ1 σ hσ`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨γ, hγ⟩` from `GlobalTheory.TameInertiaGen.exists_tameGenAt_of_valuationSubring (E := F) A`. Set `φ'` to `φ.toHomUnits`. Establish `hφ'o : IsOpen (SetLike.coe φ'.ker)`.
+
+Establish `hf` using `hφ.isOpen_fiber 1`. Use `hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[φ', MonoidHom.mem_ker, Units.ext_iff]`. Establish `hφ'l : ∀ τ, φ' τ ^ l = 1`.
+
+Introduce `τ`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[φ', hφl]`. Establish `hθl : ∀ τ, θ τ ^ l = 1`. Introduce `τ`.
+
+Rewrite using `[← ofAdd_toAdd (θ τ), ← ofAdd_nsmul]`. Simplify using the standard rewrite rules. Establish `wφ : ∀ τ : Ine (F` using `F) A, (∀ y : Ω, y ≠ 0 → A.valuation (τ.1 y / y - 1) < 1) → φ' τ = 1 := fun τ hτ => UpperTheory.V.Ws.Rt.wild_mem_ker hl hvl φ' hφ'o hφ'l τ hτ`. Establish `wθ : ∀ τ : Ine (F` using `F) A, (∀ y : Ω, y ≠ 0 → A.valuation (τ.1 y / y - 1) < 1) → θ τ = 1 := fun τ hτ => UpperTheory.V.Ws.Rt.wild_mem_ker hl hvl θ hθo hθl τ hτ`. Establish `hθγ : θ ⟨γ, hγ.1⟩ ≠ 1`.
+
+Introduce `h`. Apply `hθ1` to reduce the goal to its premises. Use extensionality with `τ`. Establish `hm` using `GlobalTheory.TameCharUnique.mem_of_tameGen hγ θ.ker (θ.ker.isClosed_of_isOpen hθo) h (fun τ hτ => wθ τ hτ) τ`. Simplify `hm` using `[MonoidHom.mem_ker]`.
+
+Set `Φ` to `φ'.prod θ`. Set `S` to `(Subgroup.zpowers (Φ ⟨γ, hγ.1⟩)).comap Φ`. Establish `hle : φ'.ker ⊓ θ.ker ≤ S`. Introduce `τ hτ`. Establish `h1 : Φ τ = 1`.
+
+Rewrite `hτ` using `[Subgroup.mem_inf, MonoidHom.mem_ker, MonoidHom.mem_ker]`. Simplify using `[Φ, hτ.1, hτ.2]`. Use `show Φ τ ∈ Subgroup.zpowers (Φ ⟨γ, hγ.1⟩)`. Rewrite using `[h1]`. Conclude with `Subgroup.one_mem _`.
+
+Establish `hSo : IsOpen (SetLike.coe S)`. Apply `Subgroup.isOpen_mono hle` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hφ'o.inter hθo`. Establish `hσS` using `GlobalTheory.TameCharUnique.mem_of_tameGen hγ S (S.isClosed_of_isOpen hSo) (Subgroup.mem_zpowers _) (fun τ hτ => by`.
+
+Establish `h1 : Φ τ = 1` using `by simp [Φ, wφ τ hτ, wθ τ hτ]`. Use `show Φ τ ∈ Subgroup.zpowers (Φ ⟨γ, hγ.1⟩)`. Rewrite using `[h1]`. Conclude with `Subgroup.one_mem _) σ`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 hσS`.
+
+Establish `hk1 : φ' ⟨γ, hγ.1⟩ ^ k = φ' σ`. Use `congrArg Prod.fst hk` as an intermediate fact. Simplify `this` using `[Φ]`. Establish `hk2 : θ ⟨γ, hγ.1⟩ ^ k = θ σ`. Use `congrArg Prod.snd hk` as an intermediate fact.
+
+Simplify `this` using `[Φ]`. Rewrite `hk2` using `[hσ]`. Establish `hord : orderOf (θ ⟨γ, hγ.1⟩) = l` using `orderOf_eq_prime (hθl _) hθγ`. Establish `hdvd : (l : ℤ) ∣ k`. Rewrite using `[← hord]`.
+
+Conclude with `orderOf_dvd_iff_zpow_eq_one.2 hk2`. Take `⟨j, rfl⟩` from `hdvd`. Establish `hu : φ' σ = 1`. Rewrite using `[← hk1, zpow_mul, zpow_natCast, hφ'l, one_zpow]`. Establish `hv` using `congrArg Units.val hu`.
+
+Simplify `hv` using `[φ']`.
+-/
 theorem UpperTheory.V.Ws.Rt.tameExp :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ¬ A.valuation (l : Ω) < 1 →
       ∀ (M : Type) [Monoid M] (φ : Ine (F := F) A →* M), IsLocallyConstant φ → (∀ σ, φ σ ^ l = 1) →

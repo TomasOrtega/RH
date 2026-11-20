@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwartzMajorant.exists_summable_majorant | exact GlobalTheory.SchwartzMajorant.exists_summable_majorant | (intros; apply GlobalTheory.SchwartzMajorant.exists_summable_majorant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_summableMajorant_adelicSchwartz_locallyUniform : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] {P : Type} [TopologicalSpace P]
     (Ψ : P → (κ → AdeleRing (𝓞 F) F) → ℂ) (p0 : P) (m : ℕ) (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (f : P → Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ),

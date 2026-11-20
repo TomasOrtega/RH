@@ -14,11 +14,25 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+The claim follows from `gs_res f z hle h a`.
+-/
 theorem germPullback_restrict_eq {X Z : Scheme.{0}} (f : Z ⟶ X) (z : Z) {U V : X.Opens} (hle : V ≤ U) (h : f z ∈ V)
     (a : Γ(X, U)) : gs f z V (resG X hle a) = gs f z U a := gs_res f z hle h a
 
 open GlobalTheory.ProjSpace in
 
+/- English proof (translation)
+Introduce `R _ _ D Y k b₀ b τ₀ τ h₀ h W h₁ h₂`. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[gs_appLE Y.q.left (nonzeroLocus b₀) W h₁ (𝟙 _) y hy, Category.id_comp, germPullback_restrict_eq (𝟙 Y.H.left) y h₂ hy]`. Use `choose J hJ using fun ψ : Y.H.left ⟶ D.P.A.left => ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart D.P.isLB (ψ y)`.
+
+Establish `hG : Good D.P.L y J` using `hJ`. Establish `e` using `h Y.H (𝟙 _) y J hG`. Establish `e₀` using `h₀ Y.H (𝟙 _) y J hG`. Rewrite `e`, `e₀` using `[Category.id_comp]`. Establish `hqy : Y.q.left y ∈ nonzeroLocus b₀ ⊓ LB.wchart D.P.L (D.famφB 0) (fun κ => J (Y.q.left ≫ D.famφB 0 κ))` using `⟨h₁ hy, hG.mem (D.famφB 0) Y.q.left⟩`.
+
+Establish `sb` using `congrArg (gs Y.q.left y _) (secRatio_on b₀ b (fun κ => J (Y.q.left ≫ D.famφB 0 κ)) (W := nonzeroLocus b₀ ⊓ LB.wchart D.P.L (D.famφB 0) (fun κ => J (Y.q.left ≫ D.famφB 0 κ))) inf_le_left inf_le_right)`. Rewrite `sb` using `[gs_mul _ y _ hqy]`. Use `erw [germPullback_restrict_eq _ y _ hqy, germPullback_restrict_eq _ y _ hqy, germPullback_restrict_eq _ y _ hqy] at sb`. Establish `hyτ : (𝟙 Y.H.left) y ∈ nonzeroLocus τ₀ ⊓ LB.wchart D.P.L (fun _ : Fin 1 => Y.q.left) (fun _ : Fin 1 => J (𝟙 Y.H.left ≫ Y.q.left))` using `⟨h₂ hy, hG.mem (fun _ : Fin 1 => Y.q.left) (𝟙 Y.H.left)⟩`. Establish `sτ` using `congrArg (gs (𝟙 Y.H.left) y _) (secRatio_on τ₀ τ (fun _ : Fin 1 => J (𝟙 Y.H.left ≫ Y.q.left)) (W := nonzeroLocus τ₀ ⊓ LB.wchart D.P.L (fun _ : Fin 1 => Y.q.left) (fun _ : Fin 1 => J (𝟙 Y.H.left ≫ Y.q.left))) inf_le_left inf_le_right)`.
+
+Rewrite `sτ` using `[gs_mul _ y _ hyτ]`. Use `erw [germPullback_restrict_eq _ y _ hyτ, germPullback_restrict_eq _ y _ hyτ, germPullback_restrict_eq _ y _ hyτ] at sτ`. Establish `hu : IsUnit (sval τ₀ (𝟙 Y.H.left) y J)` using `(GlobalTheory.AmpleSpan.mem_nonzeroLocus_iff_gs τ₀ (𝟙 Y.H.left) y hyτ.2).1 hyτ.1`. Express the relevant statement in the definitionally equal form `sval τ (𝟙 Y.H.left) y J = _ * sval τ₀ (𝟙 Y.H.left) y J at sτ`. Express the relevant statement in the definitionally equal form `sval b Y.q.left y J = _ * sval b₀ Y.q.left y J at sb`.
+
+Express the relevant statement in the definitionally equal form `sval τ (𝟙 Y.H.left) y J = _ at e`. Express the relevant statement in the definitionally equal form `sval τ₀ (𝟙 Y.H.left) y J = _ at e₀`. Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← sτ, e, sb, e₀]`. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+-/
 theorem secRatio_isTermOf_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (Y : Ext D) (k : ℕ) (b₀ b : D.SecB k 0) (τ₀ τ : SecK D.P.L Y.q.left k), IsTermOf Y b₀ τ₀ → IsTermOf Y b τ → ∀ (W : Y.H.left.Opens) (h₁ : W ≤ Y.q.left ⁻¹ᵁ nonzeroLocus b₀) (h₂ : W ≤ nonzeroLocus τ₀), (Y.q.left.appLE (nonzeroLocus b₀) W h₁).hom (GlobalTheory.ProjSpace.secRatio b₀ b) = resG Y.H.left h₂ (GlobalTheory.ProjSpace.secRatio τ₀ τ) := by
   intro R _ _ D Y k b₀ b τ₀ τ h₀ h W h₁ h₂
   apply fn_ext

@@ -28,6 +28,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RowEx
 
+/- English proof (translation)
+Take `⟨CF0, hC⟩` from `hC`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hC ε CF hCF`. Use `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS => ?_⟩` and prove the remaining obligations. Establish `hQ` using `hx D large₂ he hx0 Γ Pl0 T A Ks R F hS`.
+
+Introduce `G W hW S₀`. Take `⟨rm, c, hrm, hc⟩` from `hQ G W hW S₀.B`. Establish `hL` using `hS.core.lev`. Take `⟨M, hM⟩` from `exists_vol G hL A.μ0`. Take `⟨n, e, -, -, -, -⟩` from `TestLatModel.exists_testLat (G := G) (node_isV G hL (X := .grid 0 0) ⟨Nat.zero_le _, Nat.zero_le _⟩).sd.1.fg default`.
+
+Take `⟨Pm, -, -⟩` from `hS.size.1`. Establish `hCh : ∀ k, GlobalTheory.Chain.ChainPar D k` using `GlobalTheory.Corev.ChainParOfGap.chainPar_of_nodeGap D (GlobalTheory.Core.Rk.GapOfNodes.harishChandraNodesFarApart_of_cubic_node_gap D (by simpa using Pm.nodeGap_ge_cubic_rank))`. Take `⟨cv, hcv⟩` from `GlobalTheory.RowTest.WVec.exists_w_ne hP.discreteSeriesCover hP.harishChandraModules hCh R hL hS.core.chain hS.core.models.inf`. Take `⟨S'⟩` from `sumChoice_nonempty W S₀ hS.core.fam.tie (GlobalTheory.ForcedWeights.lamRForced D)`. Conclude with `⟨M, fun _ => 0, 0, cv, rm, { S' with toGridChoice := S₀ }, default, n, e, c, rfl, ⟨guard_of_qGuard hS.guard, hW, hM.isRow, hrm, hcv, hc⟩⟩`.
+-/
 theorem baseEx_of (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : ConstEx) : BaseEx := by
   obtain ⟨CF0, hC⟩ := hC
   refine ⟨CF0, fun ε CF hCF => ?_⟩

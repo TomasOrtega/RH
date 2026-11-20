@@ -12,6 +12,23 @@ namespace GlobalTheory.CovTop.RingStep
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hH` using `GlobalTheory.CovTop.Sizes.hostN 4`. Use `Closed.imp ((hG.and hD).and hH) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, h1⟩, ⟨C2, -, h2⟩⟩, ⟨A, -, h3⟩⟩` from `h`. Use `⟨0, le_rfl, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx⟩` from `(h1.and h2).and h3`.
+
+Use `⟨x0, fun x hx' hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨⟨g1, g2⟩, g3⟩` from `hx x hx' hle ι p hp`. Establish `gram` using `g1 i`. Establish `deep` using `g2 i hi Y hY`. Establish `host` using `g3 i`.
+
+Establish `hB` using `GlobalTheory.T.cuspFormLattice_slope_sq_goodCover_le_core _ p.T ((i : ℕ) + 1) Y _ _ (wtA (p.κ i)) (p.κ i).n (typeK p.fw p.F.lv2 i) p.fw.laws ⟨Nat.succ_pos _, i.2⟩ hY.1 (dom_wtA _) (fun f hf => hf.1) gram.2.2.2 deep.1`. Establish `hrd` using `(log_rd_le_fieldSz Y.d.c₂.F).trans hY.1.size`. Take `⟨⟨-, hL10, hLx, -⟩, -, -, -, -, -, -, -, -, hpp, ⟨hA1, hPPx, -⟩, hroom, -⟩` from `host`. Establish `hb : 391 * zBase (Fm.L x ι) ^ 2 ≤ (Fm.L x ι).sc.b`. Establish `hm1` using `(Fm.D x ι).R.two_le_m`.
+
+Establish `hm2` using `(Fm.D x ι).R.m_add_three_le_k`. Establish `hf : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast (by have := (Fm.D x ι).R.toFrame.ord_pos; show 1 ≤ 2 * (Fm.D x ι).R.toFrame.ord; omega : 1 ≤ (Fm.D x ι).R.f)`. Establish `hr : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ (Fm.D x ι).R.r)`. Establish `hZ : 1 ≤ zBase (Fm.L x ι)`. Unfold `zBase`.
+
+Establish `: (1 : ℝ) ≤ (Fm.D x ι).R.f * (Fm.D x ι).R.r` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX : (Fm.L x ι).sc.x ≤ (Fm.L x ι).sc.x ^ A`. Combine the equalities or inequalities in the displayed calculation. Establish `hX4 : ((Fm.L x ι).sc.x ^ A) ^ (4 : ℝ) = ((Fm.L x ι).sc.x ^ A) ^ (4 : ℕ)`.
+
+Conclude with `Real.rpow_natCast ((Fm.L x ι).sc.x ^ A) 4` after adjusting the coercions. Establish `hZ2 : zBase (Fm.L x ι) ^ 2 ≤ zBase (Fm.L x ι) ^ 12` using `pow_le_pow_right₀ hZ (by norm_num)`. Establish `h1 : zBase (Fm.L x ι) ^ 2 ≤ (Fm.L x ι).sc.x ^ A` using `hZ2.trans (hpp.trans hPPx)`. Generalize the expression as in `(Fm.L x ι).sc.x ^ A = X at *`. Establish `hX10 : (10 : ℝ) ≤ X` using `(hL10.trans hLx).trans hX`.
+
+Establish `h3 : (100 : ℝ) ≤ X * X` using `by nlinarith`. Establish `h4 : (1000 : ℝ) ≤ X * X * X` using `by nlinarith`. Establish `h2 : 391 * X ≤ X ^ 4` using `by nlinarith`. Rewrite `hroom` using `[hX4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `show slope_sq _ (latDeep p i Y) - 2 * (Fm.L x ι).sc.b ≤ muCore p i`. Establish `h2r : 2 * (Real.log |(discr Y.d.c₂.F : ℝ)| / Module.finrank ℚ Y.d.c₂.F) ≤ 2 * (Fm.L x ι).sc.b` using `by linarith`. Conclude with `le_trans (sub_le_sub_left h2r _) hB`.
+-/
 theorem ring_of (_hP : Hypotheses2) (hG : Gram) (hD : DeepGood) : Ring := by
   have hH := GlobalTheory.CovTop.Sizes.hostN 4
   refine Closed.imp ((hG.and hD).and hH) fun Fm CH _ h => ?_

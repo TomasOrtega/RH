@@ -3,6 +3,13 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.Inter
 
+/- English proof (translation)
+Introduce and unpack `⟨s, hs⟩`. Establish `hs0 : φ s ≠ 0` using `fun h0 => hs (by rw [(map_eq_zero_iff φ hφ).1 h0]; exact m.zero_mem)`. Use `IsUnit.of_mul_eq_one ⟨(φ s)⁻¹, (h _).2 ⟨1, s, hs, by rw [map_one, inv_mul_cancel₀ hs0]⟩⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_mul, hL, Subring.coe_one]`.
+
+Conclude with `mul_inv_cancel₀ hs0`. Use `surj z := by`. Take `⟨x, s, hs, hxs⟩` from `(h z).1 z.2`. Conclude with `⟨⟨x, ⟨s, hs⟩⟩, Subtype.ext (by simp only [Subring.coe_mul, hL]; exact hxs)⟩`. Use `exists_of_eq {x y} hxy := ⟨1, by`.
+
+Establish `h1` using `congrArg Subtype.val hxy`. Rewrite `h1` using `[hL, hL]`. Rewrite using `[hφ h1]⟩`.
+-/
 theorem isLocalization_of_mem_iff {O F : Type*} [CommRing O] [Field F] (φ : O →+* F) (hφ : Function.Injective φ)
     (L : Subring F) [Algebra O L] (hL : ∀ x : O, ((algebraMap O L x : L) : F) = φ x) (m : Ideal O) [m.IsPrime]
     (h : ∀ y : F, y ∈ L ↔ ∃ x s : O, s ∉ m ∧ y * φ s = φ x) :
@@ -22,6 +29,13 @@ theorem isLocalization_of_mem_iff {O F : Type*} [CommRing O] [Field F] (φ : O �
     rw [hL, hL] at h1
     rw [hφ h1]⟩
 
+/- English proof (translation)
+Establish `hM : Algebra.algebraMapSubmonoid (R ⧸ I) (p.comap (Ideal.Quotient.mk I)).primeCompl = p.primeCompl`. Use extensionality with `x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r', hr', he⟩`.
+
+Rewrite using `[← he]`. Conclude with `hr'`. Introduce `hx`. Conclude with `⟨r, hx, rfl⟩`. Establish `: IsLocalization p.primeCompl (S ⧸ I.map (algebraMap R S))` using `hM ▸ inferInstance`.
+
+Conclude with `Nat.card_congr (IsLocalization.algEquiv p.primeCompl _ (Localization.AtPrime p)).toEquiv`.
+-/
 theorem card_quot_map_eq_card_localization {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (I : Ideal R)
     (p : Ideal (R ⧸ I)) [p.IsPrime] [IsLocalization.AtPrime S (p.comap (Ideal.Quotient.mk I))] :
     Nat.card (S ⧸ I.map (algebraMap R S)) = Nat.card (Localization.AtPrime p) := by
@@ -37,6 +51,9 @@ theorem card_quot_map_eq_card_localization {R S : Type*} [CommRing R] [CommRing 
   have : IsLocalization p.primeCompl (S ⧸ I.map (algebraMap R S)) := hM ▸ inferInstance
   exact Nat.card_congr (IsLocalization.algEquiv p.primeCompl _ (Localization.AtPrime p)).toEquiv
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Set `_` to `ψ.toAlgebra`. Rewrite using `[← card_quot_map_eq_card_localization (S := L) (Ideal.span {b}) p, Ideal.map_span, Set.image_singleton, RingHom.algebraMap_toAlgebra]`.
+-/
 theorem card_quot_span_eq_card_localization {O L : Type*} [CommRing O] [CommRing L] (ψ : O →+* L) (b : O)
     (m : Ideal O) [m.IsPrime] (p : Ideal (O ⧸ Ideal.span {b})) [p.IsPrime]
     (hm : m = p.comap (Ideal.Quotient.mk _)) (h : @IsLocalization O _ m.primeCompl L _ ψ.toAlgebra) :
@@ -46,6 +63,9 @@ theorem card_quot_span_eq_card_localization {O L : Type*} [CommRing O] [CommRing
   rw [← card_quot_map_eq_card_localization (S := L) (Ideal.span {b}) p, Ideal.map_span, Set.image_singleton,
     RingHom.algebraMap_toAlgebra]
 
+/- English proof (translation)
+Establish `hA : Nat.card A = ∏ p : PrimeSpectrum A, Nat.card (Localization.AtPrime p.asIdeal)`. Rewrite using `[Nat.card_congr (PrimeSpectrum.toPiLocalizationEquiv A).toEquiv, Nat.card_pi]`. Establish `h0 : Nat.card A ≠ 0` using `Nat.card_ne_zero.2 ⟨⟨0⟩, inferInstance⟩`. Rewrite `h0` using `[hA, Finset.prod_ne_zero_iff]`. Rewrite using `[hA, Nat.cast_prod, Real.log_prod fun p _ => by exact_mod_cast h0 p (Finset.mem_univ _)]`.
+-/
 theorem log_card_eq_sum_log_card_localization (A : Type*) [CommRing A] [Finite A] [Fintype (PrimeSpectrum A)] :
     Real.log (Nat.card A) = ∑ p : PrimeSpectrum A, Real.log (Nat.card (Localization.AtPrime p.asIdeal)) := by
   have hA : Nat.card A = ∏ p : PrimeSpectrum A, Nat.card (Localization.AtPrime p.asIdeal) := by
@@ -54,6 +74,11 @@ theorem log_card_eq_sum_log_card_localization (A : Type*) [CommRing A] [Finite A
   rw [hA, Finset.prod_ne_zero_iff] at h0
   rw [hA, Nat.cast_prod, Real.log_prod fun p _ => by exact_mod_cast h0 p (Finset.mem_univ _)]
 
+/- English proof (translation)
+Establish `hS : s ∩ Function.support f = Set.range g ∩ Function.support f`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨hf a h1 h2, h2⟩`.
+
+Introduce and unpack `⟨⟨x, rfl⟩, h2⟩`. Conclude with `⟨hs x, h2⟩`. Rewrite using `[← finsum_mem_inter_support, hS, finsum_mem_inter_support, finsum_mem_range hg, finsum_eq_sum_of_fintype]`.
+-/
 theorem finsum_mem_eq_sum_of_injective {α β : Type*} [Fintype β] (s : Set α) (f : α → ℝ) (g : β → α)
     (hg : Function.Injective g) (hs : ∀ x, g x ∈ s) (hf : ∀ a ∈ s, f a ≠ 0 → a ∈ Set.range g) :
     ∑ᶠ a ∈ s, f a = ∑ x, f (g x) := by

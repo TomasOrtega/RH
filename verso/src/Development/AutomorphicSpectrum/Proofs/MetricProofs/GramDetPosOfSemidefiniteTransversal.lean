@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit.GramSemidef
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `h1 : ∀ w : Fin g → ℂ, star (x ⬝ᵥ w) = star w ⬝ᵥ star x`. Introduce `w`. Simplify using `[dotProduct, mul_comm]`. Rewrite using `[h1, star_mulVec, star_star, hH.eq, dotProduct_mulVec]`.
+-/
 theorem star_form_eq {g : ℕ} {Hb : Matrix (Fin g) (Fin g) ℂ} (hH : Hb.IsHermitian)
     (x y : Fin g → ℂ) :
     star (x ⬝ᵥ Hb *ᵥ star y) = y ⬝ᵥ Hb *ᵥ star x := by
@@ -21,6 +24,11 @@ theorem star_form_eq {g : ℕ} {Hb : Matrix (Fin g) (Fin g) ℂ} (hH : Hb.IsHerm
     simp [dotProduct, mul_comm]
   rw [h1, star_mulVec, star_star, hH.eq, dotProduct_mulVec]
 
+/- English proof (translation)
+Rewrite using `[star_sum, mulVec_sum, sum_dotProduct]`. Simplify using `only [dotProduct_sum, star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Simplify using `only [dotProduct, mulVec, of_apply, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_form_eq {g k : ℕ} (Hb : Matrix (Fin g) (Fin g) ℂ) (q : Fin k → Fin g → ℂ)
     (l : Fin k → ℂ) :
     star l ⬝ᵥ (Matrix.of fun c c' => q c' ⬝ᵥ Hb *ᵥ star (q c)) *ᵥ l =
@@ -35,6 +43,13 @@ theorem gram_form_eq {g k : ℕ} (Hb : Matrix (Fin g) (Fin g) ℂ) (q : Fin k �
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Use `PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Use extensionality with `c c'`. Simplify using `only [conjTranspose_apply, of_apply]`. Conclude with `star_form_eq hH (q c) (q c')`. Introduce `l hl`.
+
+Rewrite using `[gram_form_eq]`. Use `set v : Fin g → ℂ := ∑ c, l c • q c with hv`. Establish `hre : 0 < (v ⬝ᵥ Hb *ᵥ star v).re`. Use `lt_of_le_of_ne (hpos v).1 fun h0 => hl (hind l ?_)` and prove the remaining obligations. Conclude with `(hpos v).2 h0.symm`.
+
+Establish `him : (v ⬝ᵥ Hb *ᵥ star v).im = 0` using `Complex.conj_eq_iff_im.mp (star_form_eq hH v v)`. Conclude with `Complex.lt_def.mpr ⟨by simpa using hre, by simpa using him.symm⟩`.
+-/
 theorem gram_posDef {g k : ℕ} {Hb : Matrix (Fin g) (Fin g) ℂ}
     {U : Submodule ℂ (Fin g → ℂ)} {q : Fin k → Fin g → ℂ} (hH : Hb.IsHermitian)
     (hpos : ∀ v : Fin g → ℂ,
@@ -55,6 +70,9 @@ theorem gram_posDef {g k : ℕ} {Hb : Matrix (Fin g) (Fin g) ℂ}
       Complex.conj_eq_iff_im.mp (star_form_eq hH v v)
     exact Complex.lt_def.mpr ⟨by simpa using hre, by simpa using him.symm⟩
 
+/- English proof (translation)
+The claim follows from `(Complex.lt_def.mp (gram_posDef hH hpos hind).det_pos).1`.
+-/
 theorem gram_det_re_pos (g : ℕ) (Hb : Matrix (Fin g) (Fin g) ℂ)
     (U : Submodule ℂ (Fin g → ℂ)) (k : ℕ) (q : Fin k → Fin g → ℂ) (hH : Hb.IsHermitian)
     (hpos : ∀ v : Fin g → ℂ,

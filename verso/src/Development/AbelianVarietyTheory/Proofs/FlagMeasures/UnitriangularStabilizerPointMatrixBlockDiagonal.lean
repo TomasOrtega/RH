@@ -10,6 +10,23 @@ namespace GlobalTheory.PointStab
 
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Proceed by induction on `bs with`. Consider the case `nil => exact ⟨id, fun _ => 1, fun a ha => by simp at ha⟩`. Consider the case `cons x bs ih`. Take `⟨t0, m⟩` from `x`. Establish `ht0 : t0 ≠ 0` using `hbs _ (List.mem_cons_self ..)`.
+
+Take `⟨σ, t, h⟩` from `ih (fun b hb => hbs b (List.mem_cons_of_mem _ hb))`. Simplify using `only [List.map_cons, List.sum_cons]`. Generalize the expression as in `(bs.map Prod.snd).sum = N at h ⊢`. Use `⟨fun a => if a < m then m - 1 - a else σ (a - m) + m, fun a => if a < m then t0 else t (a - m), fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.RealObj.blkOf, ptEntry]`.
+
+Distinguish the cases in `h1 : a < m`. Establish `h2 : m - 1 - a < m` using `by omega`. Simplify using `only [h1, h2, if_true]`. Use `⟨by omega, by omega, trivial, ht0, fun b hb => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h3 : b < m`.
+
+Simplify using `only [h3, if_true, and_self]`. Use `⟨fun _ => le_refl _, fun _ => by omega, ?_⟩` and prove the remaining obligations. Establish `: a + b + 1 = m ↔ b = m - 1 - a` using `by omega`. Simplify using `[this]`. Establish `h4 : ¬ m ≤ a` using `by omega`.
+
+Establish `h5 : ¬ b = m - 1 - a` using `by omega`. Simplify using `[h3, h4, h5]`. Take `⟨e1, e2, e3, e0, e4⟩` from `h (a - m) (by omega)`. Establish `h2 : ¬ σ (a - m) + m < m` using `by omega`. Establish `h4 : m ≤ a` using `by omega`.
+
+Simplify using `only [h1, h2, if_false, Nat.add_sub_cancel, e2, e3]`. Use `⟨by omega, by omega, trivial, e0, fun b hb => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h3 : b < m`. Establish `h5 : ¬ m ≤ b` using `by omega`. Establish `h6 : ¬ b = σ (a - m) + m` using `by omega`.
+
+Establish `h7 : ¬ a ≤ b` using `by omega`. Simplify using `[h3, h5, h6, h7]`. Take `⟨f1, f2, f3⟩` from `e4 (b - m) (by omega)`. Establish `h5 : m ≤ b` using `by omega`. Establish `h6 : b = σ (a - m) + m ↔ b - m = σ (a - m)` using `by omega`.
+
+Simplify using `only [h3, h5, h4, if_false, h6, f3, and_self, and_false, and_true]`. Use `⟨fun hab => ?_, fun hab => ?_, by simp⟩` and prove the remaining obligations. Use `f1 (by omega); omega` as an intermediate fact. Use `f2 (by omega); omega` as an intermediate fact.
+-/
 theorem ptEntry_monomial {K : Type} [Field K] (bs : List (K × ℕ)) (hbs : ∀ b ∈ bs, b.1 ≠ 0) :
     ∃ (σ : ℕ → ℕ) (t : ℕ → K), ∀ a, a < (bs.map Prod.snd).sum →
       σ a < (bs.map Prod.snd).sum ∧ σ (σ a) = a ∧
@@ -59,6 +76,15 @@ theorem ptEntry_monomial {K : Type} [Field K] (bs : List (K × ℕ)) (hbs : ∀ 
         · have := f1 (by omega); omega
         · have := f2 (by omega); omega
 
+/- English proof (translation)
+Establish `h1 : ∀ i a, (X * Z) i (σ a) = X i a * c a`. Introduce `i a`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Simplify using `[hZ]`. Introduce `k _ hk`.
+
+Establish `: ¬ σ a = σ k` using `fun h => hk (by rw [← hσ k, ← h, hσ])`. Simplify using `[hZ, this]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ i j, (Z * Y) i j = c i * Y (σ i) j`. Introduce `i j`.
+
+Simplify using `[Matrix.mul_apply, hZ]`. Prove the components needed by the constructor for the conclusion. Introduce `h i a`. Rewrite using `[← h1, h, h2]`. Introduce `h`.
+
+Use extensionality with `i j`. Rewrite using `[← hσ j, h1, h2, h]`.
+-/
 theorem mul_mono {E : Type} [CommRing E] {n : ℕ} (σ : Fin n → Fin n) (hσ : ∀ a, σ (σ a) = a) (c : Fin n → E)
     (Z : Matrix (Fin n) (Fin n) E) (hZ : ∀ a b, Z a b = if b = σ a then c a else 0)
     (X Y : Matrix (Fin n) (Fin n) E) :
@@ -84,6 +110,47 @@ namespace GlobalTheory.PointStab
 
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Introduce `K _ sig hsig r w Z hZ`. Take `⟨σ, t, h⟩` from `ptEntry_monomial w.1 (fun b hb => (w.2.1 b hb).1)`. Rewrite `h` using `[w.2.2]`. Set `σ' : Fin (r + 1) → Fin (r + 1)` to `fun a => ⟨σ a, (h a a.2).1⟩`. Set `β : Fin (r + 1) → ℕ` to `fun a => Formalism.L2.SG.RealObj.blkOf w.1 a.1`.
+
+Set `c : Fin (r + 1) → K` to `fun a => (-1) ^ (r - σ a) * t a`. Establish `hc : ∀ a, c a ≠ 0` using `fun a => mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (h a a.2).2.2.2.1`. Establish `hσ : ∀ a, σ' (σ' a) = a` using `fun a => Fin.ext (h a a.2).2.1`. Establish `hβσ : ∀ a, β (σ' a) = β a` using `fun a => (h a a.2).2.2.1`. Establish `hlt : ∀ a b, β a < β b → a < b` using `fun a b hab => by`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `absurd (((h b b.2).2.2.2.2 a a.2).1 (not_lt.1 h')) (not_le.2 hab)`. Establish `hrev : ∀ a b, β a = β b → a < b → σ' b < σ' a` using `fun a b hab hl => by`. Establish `h1` using `((h a a.2).2.2.2.2 b b.2).2.1 hab`. Establish `h2 : (a : ℕ) < b` using `hl`.
+
+Use `show σ b < σ a`. Use linear arithmetic over natural numbers and integers. Establish `hZ' : ∀ a b, Z a b = if b = σ' a then c a else 0`. Introduce `a b`. Establish `e0` using `congrFun (congrFun hZ a) b`.
+
+Simplify using `only [ZhatOM, ptMat] at e0`. Apply the tactic sequence `have e : Z a b = (-1) ^ (r - b.val) * ptEntry w.1 a b := by`. Rewrite using `[← e0, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules. Rewrite using `[e, ((h a a.2).2.2.2.2 b b.2).2.2]`.
+
+Distinguish the cases in `hb : b = σ' a`. Substitute `hb` using the available equality. Simplify using `[σ', c]`. Establish `h3 : ¬ (b : ℕ) = σ a` using `fun h' => hb (Fin.ext h')`. Simplify using `[hb, h3]`.
+
+Establish `hmm` using `mul_mono σ' hσ c Z hZ'`. Establish `hLapp : ∀ s : Matrix (Fin (r + 1)) (Fin (r + 1)) K, ∀ i a, (s.map sig).transpose i a = sig (s a i)` using `fun s i a => rfl`. Use `⟨fun s s' hs hs' hE a b hab => ?_, fun s' hs' hbd => ?_⟩` and prove the remaining obligations. Generalize the expression as in `hLdef : (s.map sig).transpose = L at hE`. Establish `hLapp' : ∀ i a, L i a = sig (s a i)` using `fun i a => by rw [← hLdef]; rfl`.
+
+Establish `hLT : L.BlockTriangular OrderDual.toDual` using `fun i j hij => by`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.1 hij`. Rewrite using `[hLapp', (hs j i).1 hij', map_zero]`. Establish `hdet : L.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular L hLT]`.
+
+Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hLapp', (hs i i).2 rfl, map_one]`. Establish `hu : IsUnit L.det` using `by rw [hdet]; exact isUnit_one`. Use `letI : Invertible L := Matrix.invertibleOfIsUnitDet L hu`. Establish `hBT` using `Matrix.blockTriangular_inv_of_blockTriangular hLT`.
+
+Establish `e : L⁻¹ * Z = Z * s'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc L, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`. Rewrite `e` using `[hmm]`. Break down `lt_or_gt_of_ne hab with h1 | h1` into its components or cases.
+
+Establish `h2 : σ' a < σ' b` using `hlt _ _ (by rw [hβσ, hβσ]; exact h1)`. Establish `h3` using `e (σ' a) (σ' b)`. Rewrite `h3` using `[hσ, hσ, hBT (OrderDual.toDual_lt_toDual.2 h2), zero_mul, eq_comm]`. Conclude with `(mul_eq_zero.1 h3).resolve_left (hc _)`. Conclude with `(hs' a b).1 (hlt _ _ h1)`.
+
+Establish `hs'T : s'.BlockTriangular id` using `fun i j hij => (hs' i j).1 hij`. Establish `hdet : s'.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hs'T]`. Conclude with `Finset.prod_eq_one fun i _ => (hs' i i).2 rfl`. Establish `hu : IsUnit s'.det` using `by rw [hdet]; exact isUnit_one`.
+
+Use `letI : Invertible s' := Matrix.invertibleOfIsUnitDet s' hu`. Establish `hUup` using `Matrix.blockTriangular_inv_of_blockTriangular hs'T`. Establish `hs'β : s'.BlockTriangular (OrderDual.toDual ∘ β)` using `fun i j hij => hbd i j (ne_of_lt (OrderDual.toDual_lt_toDual.1 hij))`. Establish `hUβ` using `Matrix.blockTriangular_inv_of_blockTriangular hs'β`. Establish `hsU : s' * s'⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`.
+
+Establish `hUs : s'⁻¹ * s' = 1` using `Matrix.nonsing_inv_mul _ hu`. Generalize the expression as in `s'⁻¹ = U at hUup hUβ hsU hUs`. Establish `hUdiag : ∀ i, U i i = 1`. Introduce `i`. Establish `h1 : (s' * U) i i = 1` using `by rw [hsU]; simp`.
+
+Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i, (hs' i i).2 rfl, one_mul]`. Conclude with `h1`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[(hs' i k).1 h, zero_mul]`.
+
+Rewrite using `[hUup (show id i < id k from h), mul_zero]`. Simplify using the standard rewrite rules. Set `s : Matrix (Fin (r + 1)) (Fin (r + 1)) K` to `fun a i => sig (c i * U (σ' i) (σ' a) / c a)`. Establish `hs : IsUpUni s`. Introduce `a i`.
+
+Use `⟨fun hia => ?_, fun hai => ?_⟩` and prove the remaining obligations. Establish `h0 : U (σ' i) (σ' a) = 0`. Break down `lt_trichotomy (β i) (β a) with h1 | h1 | h1` into its components or cases. Conclude with `hUβ (OrderDual.toDual_lt_toDual.2 (by rw [hβσ, hβσ]; exact h1))`. Conclude with `hUup (show id (σ' a) < id (σ' i) from hrev _ _ h1 hia)`.
+
+Conclude with `absurd (hlt _ _ h1) (not_lt.2 hia.le)`. Simplify using `[s, h0]`. Substitute `hai` using the available equality. Simplify using `[s, hUdiag, hc a]`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (s.map sig).transpose * Z = Z * U`. Rewrite using `[hmm]`. Introduce `i a`. Rewrite using `[hLapp]`. Simplify using `only [s, hsig]`.
+
+Conclude with `div_mul_cancel₀ _ (hc a)`. Rewrite using `[e, Matrix.mul_assoc, hUs, Matrix.mul_one]`.
+-/
 theorem stab_blockDiag : ∀ {K : Type} [Field K] (sig : K →+* K), (∀ x, sig (sig x) = x) → ∀ (r : ℕ) (w : Formalism.MainNotions.S.Point K (r + 1)) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K), Formalism.MainNotions.S.ZhatOM Z = Formalism.MainNotions.S.ptMat w → (∀ s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) K, Formalism.MainNotions.S.IsUpUni s → Formalism.MainNotions.S.IsUpUni s' → (s.map sig).transpose * Z * s' = Z → ∀ a b : Fin (r + 1), Formalism.L2.SG.RealObj.blkOf w.1 a.1 ≠ Formalism.L2.SG.RealObj.blkOf w.1 b.1 → s' a b = 0) ∧ ∀ s' : Matrix (Fin (r + 1)) (Fin (r + 1)) K, Formalism.MainNotions.S.IsUpUni s' → (∀ a b : Fin (r + 1), Formalism.L2.SG.RealObj.blkOf w.1 a.1 ≠ Formalism.L2.SG.RealObj.blkOf w.1 b.1 → s' a b = 0) → ∃ s : Matrix (Fin (r + 1)) (Fin (r + 1)) K, Formalism.MainNotions.S.IsUpUni s ∧ (s.map sig).transpose * Z * s' = Z := by
   intro K _ sig hsig r w Z hZ
   obtain ⟨σ, t, h⟩ := ptEntry_monomial w.1 (fun b hb => (w.2.1 b hb).1)

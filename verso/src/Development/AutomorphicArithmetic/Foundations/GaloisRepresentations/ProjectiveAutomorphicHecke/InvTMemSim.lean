@@ -11,12 +11,25 @@ open scoped Classical
 
 namespace UpperTheory.Gal.CertificateRingHomMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invT_val {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : (invT n R g).val = (g⁻¹).valᵀ := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[invT_val, ← map_inv, invT_val, inv_inv, transpose_transpose]`.
+-/
 @[simp] theorem invT_invT' {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : invT n R (invT n R g) = g := by
   apply Units.ext
   rw [invT_val, ← map_inv, invT_val, inv_inv, transpose_transpose]
 
+/- English proof (translation)
+Establish `h1` using `mem_Sim.1 h`. Establish `h2 : p.1.valᵀ * p.1.val.map σ = i p.2 • (1 : Matrix (Fin n) (Fin n) A)`. Use `congrArg transpose h1` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_transpose, transpose_smul, transpose_one]`. Then use the resulting hypothesis. Establish `h3 : i (p.2⁻¹ : Bˣ) * i p.2 = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`.
+
+Establish `h4 : (p.1⁻¹).valᵀ * p.1.valᵀ = 1` using `by rw [← transpose_mul, Units.mul_inv, transpose_one]`. Establish `h5 : (p.1⁻¹).val.map σ * p.1.val.map σ = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `h6 : p.1.val.map σ = i p.2 • (p.1⁻¹).valᵀ`. Rewrite using `[← Matrix.one_mul (p.1.val.map σ), ← h4, Matrix.mul_assoc, h2, Matrix.mul_smul, Matrix.mul_one]`.
+
+Use `mem_Sim.2 ?_` and prove the remaining obligations. Use `show (((p.1⁻¹).valᵀ).map σ)ᵀ * (p.1⁻¹).valᵀ = i (p.2⁻¹ : Bˣ) • 1`. Rewrite using `[transpose_map, transpose_transpose, ← h5, h6, Matrix.mul_smul, smul_smul, h3, one_smul]`.
+-/
 theorem invT_mem_Sim {A B : Type} [CommRing A] [CommRing B] {σ : A →+* A} {i : B →+* A} {n : ℕ} {p : GL (Fin n) A × Bˣ}
     (h : p ∈ Sim σ i n) : (invT n A p.1, p.2⁻¹) ∈ Sim σ i n := by
   have h1 := mem_Sim.1 h
@@ -42,26 +55,50 @@ def th0 : Gam0 E n →* Gam0 E n :=
   (((invT n E).prodMap invMonoidHom).comp (Gam0 E n).subtype).codRestrict _ fun g =>
     ⟨invT_mem_Sim g.2.1, (Units.posSubgroup ℚ).inv_mem g.2.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem sim_th (g : GUf E n) : sim (th g) = (sim g)⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mat_th (g : GUf E n) : mat (th g) = invT n _ (mat g) := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitPts.invT_map _ _`.
+-/
 @[simp] theorem comp_th (w : Plc E) (g : GUf E n) : comp w (th g) = invT n _ (comp w g) := GlobalTheory.SplitPts.invT_map _ _
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (invT_invT' _) (inv_inv _))`.
+-/
 @[simp] theorem th_th (g : GUf E n) : th (th g) = g := Subtype.ext (Prod.ext (invT_invT' _) (inv_inv _))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (GlobalTheory.SplitPts.invT_map _ _).symm (map_inv (Units.map (algebraMap ℚ AfQ).toMonoidHom) _).symm)`.
+-/
 theorem th_rat (γ : Gam0 E n) : th (rat γ) = rat (th0 γ) :=
   Subtype.ext (Prod.ext (GlobalTheory.SplitPts.invT_map _ _).symm (map_inv (Units.map (algebraMap ℚ AfQ).toMonoidHom) _).symm)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (Units.ext (GlobalTheory.SplitPts.matAf_ext fun w => congrArg Units.val (h2 w))) h1)`.
+-/
 theorem guf_ext {g g' : GUf E n} (h1 : sim g = sim g') (h2 : ∀ w, comp w g = comp w g') : g = g' :=
   Subtype.ext (Prod.ext (Units.ext (GlobalTheory.SplitPts.matAf_ext fun w => congrArg Units.val (h2 w))) h1)
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `h`. Conclude with `⟨invT n _ z, GlobalTheory.SplitPts.invT_map _ z⟩`.
+-/
 theorem invT_mem_KGL {w : Plc E} {y : GLw n w} (h : y ∈ KGL w n) : invT n _ y ∈ KGL w n := by
   obtain ⟨z, rfl⟩ := h
   exact ⟨invT n _ z, GlobalTheory.SplitPts.invT_map _ z⟩
 
 def levT (Kw : ∀ w : Plc E, Subgroup (GLw n w)) : ∀ w : Plc E, Subgroup (GLw n w) := fun w => (Kw w).comap (invT n _)
 
+/- English proof (translation)
+Simplify using `only [mem_lev, sim_th, comp_th, inv_mem_iff, levT, Subgroup.mem_comap]`. Use `and_congr_right fun _ => and_congr_right fun _ => forall₃_congr fun w _ _ => ⟨fun h => ?_, invT_mem_KGL⟩` and prove the remaining obligations. Simplify using `using invT_mem_KGL h`.
+-/
 theorem th_mem_lev {S : Finset (Plc E)} {Kw : ∀ w : Plc E, Subgroup (GLw n w)} {k : GUf E n} :
     th k ∈ lev S Kw ↔ k ∈ lev S (levT Kw) := by
   simp only [mem_lev, sim_th, comp_th, inv_mem_iff, levT, Subgroup.mem_comap]
@@ -113,6 +150,19 @@ def ThLoc : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
   (∀ (w : Plc E) (hw : IsSplitAt w) (y : GLw n w), th (loc hw y) = loc hw (invT n _ y)) ∧
     (0 < n → ∀ (x : E) (w : Plc E) (z : GUf E n), IsCen x w z → th z = z⁻¹)
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn d x hd hx π W hW c Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Take `⟨S, Kw, Φ, κ, hS, hJ, hχ, -, -, hsph, hΦ, hκ⟩` from `h0 E n hn d x hd hx π W hW (jOf W c) Up hUp w₀ hw₀ hu J χ hJo hJc hT`. Establish `hS' : Shape Up w₀ S (levT Kw)`. Use `⟨hS.mem, fun w hw => (hS.opn w hw).preimage (GlobalTheory.SplitPts.continuous_invT _), fun w hw => ?_, fun w hw hne y hy => ?_, hS.up⟩` and prove the remaining obligations. Use `(hS.cpt w hw).image (GlobalTheory.SplitPts.continuous_invT (n := n) _) using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `y`. Conclude with `⟨fun h => ⟨_, h, invT_invT' y⟩, fun ⟨z, hz, e⟩ => e ▸ (show invT n _ (invT n _ z) ∈ Kw w by rwa [invT_invT'])⟩`. Simplify using `using invT_mem_KGL (hS.le w hw hne hy)`. Use `⟨S, levT Kw, fun g => Φ (th g), κ, hS', by rw [levT, hJ], hχ, h3 E n S _ hS'.opn, h4 E n Up w₀ hw₀ S _ hS', hsph, fun h => hΦ.ne (funext fun g => by simpa using congrFun h (th g)), fun γ g => ?_, fun k hk h g => ?_, fun w hw a b B hB => ?_, hκ.alg, hκ.unr, fun w a b z hz g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, th_rat, hΦ.left, h1]`.
+
+Establish `h' : comp w₀ (th k) ∈ J` using `by rwa [comp_th]`. Rewrite using `[map_mul, hΦ.right _ (th_mem_lev.2 hk) h']`. Use `congr 3`. Take `⟨s1, s2, s3, s4⟩` from `hΦ.sat w hw a b B hB`. Set `L : (GUf E n → Module.Dual ℂ W.Sp) ≃ₗ[ℂ] (GUf E n → Module.Dual ℂ W.Sp)` to `LinearEquiv.funCongrLeft ℂ _ ⟨th, th, th_th, th_th⟩`.
+
+Establish `hL : ∀ y Ψ, L (((rightReg ℂ (GUf E n) (Module.Dual ℂ W.Sp)).comp (loc hw)) y Ψ) = (((rightReg ℂ (GUf E n) (Module.Dual ℂ W.Sp)).comp (loc hw)).comp (invT n _)) y (L Ψ)` using `fun y Ψ => funext fun g => by show Ψ (th g * loc hw y) = Ψ (th (g * loc hw (invT n _ y)))`. Rewrite using `[map_mul, (h2 E n).1, invT_invT']`. Use `⟨fun h => s1 (L.map_eq_zero_iff.1 h), GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, s3, fun p hp i hi => ?_⟩` and prove the remaining obligations. Conclude with `(hL k Φ).symm.trans (congrArg L (GlobalTheory.LGrp.mem_fixed.1 s2 k hk))`. Establish `e` using `congrArg L (s4 p hp i hi)`.
+
+Rewrite `e` using `[map_smul]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Unfold `heckeVec`. Rewrite using `[show L (∑ᶠ c, _) = _ from L.toAddEquiv.map_finsum _]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+
+Conclude with `((congrArg _ (hL _ Φ)).symm.trans (L.map_smul _ _).symm)`. Rewrite using `[map_mul, map_inv, (h2 E n).2 hn x w z hz, inv_inv, hκ.cen w a b z hz]`.
+-/
 theorem seedG_of (h0 : SeedGU) (h1 : XiTh) (h2 : ThLoc) (h3 : LevOpen) (h4 : LevCompact) : SeedG := by
   intro E _ _ _ n hn d x hd hx π W hW c Up hUp w₀ hw₀ hu J χ hJo hJc hT
   obtain ⟨S, Kw, Φ, κ, hS, hJ, hχ, -, -, hsph, hΦ, hκ⟩ := h0 E n hn d x hd hx π W hW (jOf W c) Up hUp w₀ hw₀ hu J χ hJo hJc hT

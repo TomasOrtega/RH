@@ -15,6 +15,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.One.M
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
+/- English proof (translation)
+Take `⟨m, c, e⟩` from `Unram.exists_diag hu`. Establish `H'` using `H`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (H'); obtain ⟨_, _, _, H'⟩ := hOpn) | obtain ⟨_, _, _, -, H'⟩ := H'`. Take `rfl : a = m` from `by simpa [e] using (H'.dim (cls σ)).symm`. Take `⟨τ, hτ⟩` from `exists_hasSatake (k := w.adicCompletion E) fun i => (c i)⁻¹`.
+
+Establish `e2` using `_root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake H hτ`. Simplify using `only [inv_inv] at e2`. Establish `g : UpperTheory.Zero.LLC.Good (cls σ)` using `(GlobalTheory.SphSupport.toral_and_good_of_isSpherical UpperTheory.Zero.LLC.Pr.bz _ _ ((H'.sph _).2 hu)).2`. Take `⟨φ⟩` from `(IrrGL.of_eq_of (π := τ.ρ) (σ := σ.ρ) (hs := τ.smooth) (hi := τ.irr) (hs' := σ.smooth) (hi' := σ.irr)).1 (_root_.UpperTheory.One.M.LawsM.inj H' (cls τ) (cls σ) g (e2.trans e.symm))`. Conclude with `⟨_, σ.irr, fixed_ne_bot_of_equiv φ hτ.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hτ.2.2⟩`.
+-/
 theorem exists_hasSatake_of_unr_alt (H : _root_.UpperTheory.Zero.LLC.IsRecT h rc) {σ : IrrRep (GL (Fin a) (w.adicCompletion E))}
     (hu : (rc (cls σ)).unr) : ∃ α, HasSatake σ.ρ α := by
   obtain ⟨m, c, e⟩ := Unram.exists_diag hu

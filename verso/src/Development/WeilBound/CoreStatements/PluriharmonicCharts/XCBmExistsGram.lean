@@ -13,6 +13,17 @@ open AlgebraicGeometry CategoryTheory NumberField Matrix ReciprocityTheory.Chart
 open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 tie F hF τ w z hw hi hg`. Establish `hq : M.GoodAt F (ptIdeal 𝔐.ξ M.x ⟨centre z, 𝔐.all _⟩)`. Rewrite using `[ptIdeal_centre hw (𝔐.all _)]`. Conclude with `hg`. Establish `hfr` using `PositivityTheory.Xgp.isFrameAt_comap_gbS E H D Xo l c Y S K ι Φ y M 𝔐 tie F hF τ _ hq`.
+
+Establish `hpol` using `GlobalTheory.T.interior_point_polarised E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z hi`. Take `⟨Γ, h1, h2⟩` from `GlobalTheory.T.pair_sum_frame_at_point E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 (.inl τ) (.inr τ) (D.p + D.q) (gbS tie F τ) z (𝔐.all _) hpol hfr`. Establish `tp` using `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X M.Ω 𝔐.ξ _ _ M.x 𝔐.tie ℂ`. Establish `hgb : (fun k => ((gbS tie F τ k : ↥(𝔐.Vgen (.inl τ) ⊔ 𝔐.Vgen (.inr τ))) : 𝔐.Li)) = gb tie F τ` using `rfl`. Rewrite `h1` using `[hgb]`.
+
+Establish `hfn : HodgeMetric.gramFn 𝔐 (gb tie F τ) w = Γ`. Establish `hex : ∃ (Γ : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) ℂ) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z w ∧ 𝔐.Interior z ∧ 𝔐.M.GramAt 𝔐.t.PP.L z (gb tie F τ) Γ` using `⟨Γ, z, hw, hi, h1⟩`. Unfold `HodgeMetric.gramFn`. Rewrite using `[dif_pos hex]`. Take `⟨z₀, hw₀, -, hΓ₀⟩` from `hex.choose_spec`.
+
+Establish `hz : z₀ = z` using `(tp.1 w hw.1 (tp.2.2 z w (𝔐.all _) hw).1).unique ⟨𝔐.all _, hw₀⟩ ⟨𝔐.all _, hw⟩`. Rewrite `hΓ₀` using `[hz]`. Conclude with `GlobalTheory.T.gram_matrix_change_frame E H D l (Xo l) c Y S M.Ω _ _ M.x 𝔐 z _ _ _ _ hpol hΓ₀ h1`. Rewrite using `[hfn]`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hex, -⟩` from `omBundle_dualFrame 𝔐 τ _ (tie.frameO _ F hF hq τ)`. Establish `hex' : ∃ v : Fin D.q → 𝔐.Vgen (.inr τ), ∀ a b, tie.omFrame F τ a (v b) = if a = b then 1 else 0` using `hex`. Unfold `dualFam`. Rewrite using `[dif_pos hex']`. Conclude with `hex'.choose_spec`.
+-/
 theorem PositivityTheory.Xgp.t_c_bm_exists_gram : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (l : Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (M : FlagModel y (CMType H) (D.p + D.q) D.p) (𝔐 : HodgeCpt Y S M.x) (tie : FlagTie M 𝔐), ∀ (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk), M.IsFrame F → ∀ (τ : CMType H) (w : (Σ k, baseIdx ι M.blk k) → ℂ) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X), CoordsAt 𝔐.ξ M.x z w → 𝔐.Interior z → M.GoodAt F (mCoordIdeal w) → 𝔐.M.GramAt 𝔐.t.PP.L z (gb tie F τ) (HodgeMetric.gramFn 𝔐 (gb tie F τ) w) ∧ (HodgeMetric.gramFn 𝔐 (gb tie F τ) w).PosDef ∧ ∀ a b, tie.omFrame F τ a (dualFam tie F τ b) = if a = b then 1 else 0 := by
   intro E _ _ _ H D Xo l c Y S K _ ι _ Φ _ y M 𝔐 tie F hF τ w z hw hi hg
   have hq : M.GoodAt F (ptIdeal 𝔐.ξ M.x ⟨centre z, 𝔐.all _⟩) := by

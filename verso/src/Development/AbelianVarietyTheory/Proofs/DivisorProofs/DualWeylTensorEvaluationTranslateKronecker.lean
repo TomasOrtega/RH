@@ -7,6 +7,13 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.DefPt
 
+/- English proof (translation)
+Establish `h1 : (rho la K gᵀ (basis la K j) : Pol n K) = ∑ i, rhoMat la g i j • (basis la K i : Pol n K)`. Establish `h` using `(basis la K).sum_repr (rho la K gᵀ (basis la K j))`. Use `conv_lhs => rw [← h]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, rhoMat, LinearMap.toMatrix_apply]`. Establish `hmap : ∀ i, map φ (basis la K i : Pol n K) = map (Int.castRingHom S) (intVec la i)`.
+
+Introduce `i`. Rewrite using `[coe_basis, map_map, RingHom.ext_int (φ.comp (Int.castRingHom K)) (Int.castRingHom S)]`. Rewrite `h1` using `[coe_rho, Matrix.transpose_transpose]`. Rewrite using `[← hmap j, ← evalAt_rowAct, ← GlobalTheory.NabStab.map_rowAct, coe_basis, ← coe_basis, h1]`. Simplify using `only [map_sum, map_smul, smul_eq_C_mul, map_mul, map_C]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hmap i]`. Simplify using `[GlobalTheory.DualWeyl.evalAt]`.
+-/
 theorem evalAt_mul_intVec {n : ℕ} (la : Fin n → ℕ) {K S : Type} [Field K] [CharZero K] [CommRing S] (φ : K →+* S)
     (g : Matrix (Fin n) (Fin n) K) (y : Matrix (Fin n) (Fin n) S) (j : Idx la) :
     GlobalTheory.DualWeyl.evalAt (g.map φ * y) (map (Int.castRingHom S) (intVec la j)) =
@@ -25,6 +32,11 @@ theorem evalAt_mul_intVec {n : ℕ} (la : Fin n → ℕ) {K S : Type} [Field K] 
   rw [hmap i]
   simp [GlobalTheory.DualWeyl.evalAt]
 
+/- English proof (translation)
+Introduce `T _ _ N la K S _ _ _ φ x g y`. Unfold `tval`. Simplify using `only [evalAt_mul_intVec, Finset.prod_univ_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, kron, Matrix.of_apply, map_sum, map_mul, map_prod, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tval_translate : ∀ (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ) (la : ∀ t, Fin (N t) → ℕ) (K S : Type) [Field K] [CharZero K] [CommRing S] (φ : K →+* S) (x : TIdx la → K) (g : ∀ t, Matrix (Fin (N t)) (Fin (N t)) K) (y : ∀ t, Matrix (Fin (N t)) (Fin (N t)) S), tval la (fun I => φ (x I)) (fun t => (g t).map φ * y t) = tval la (fun I => φ (((kron fun t => rhoMat (la t) (g t)) *ᵥ x) I)) y := by
   intro T _ _ N la K S _ _ _ φ x g y
   unfold tval

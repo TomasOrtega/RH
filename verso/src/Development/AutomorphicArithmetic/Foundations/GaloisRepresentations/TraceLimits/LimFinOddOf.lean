@@ -13,6 +13,69 @@ namespace UpperTheory.Gal.Lim
 
 open GlobalTheory.Cong.OffTLimit GlobalTheory.CongL.UnitLim in
 
+/- English proof (translation)
+Introduce `Rk Ty Gen Wt hSd hC E Ω _ _ _ _ _ _ l _ ι a ha hRk d hF T hT U hU w₀ v' hw₀ hsp₀ hv' hspv hvap`. Establish `hS : SphOps` using `GlobalTheory.Cong.SphOpsProof.sphOps`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨Kw, hlev, -, hKGL, hcong⟩` from `hC E l ι a ha hRk T hT U hU w₀ v' hw₀ hsp₀ hv' hspv hvap`. Establish `hlsplit : ∀ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → IsSplitAt w` using `fun w hw => Classical.byContradiction fun h => (hF.2.2.2 w h).1 hw`.
+
+Establish `hfin` using `finite_not_sph a U hU.1`. Use `set S : Finset (HeightOneSpectrum (𝓞 E)) := hfin.toFinset with hSdef`. Establish `hsph : ∀ w, IsSplitAt w → ApartAll S w → ∃ B, SatU U w B`. Introduce `w hs hA`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hA w (hfin.mem_toFinset.2 ⟨hs, h⟩) rfl`. Establish `hSap : ∀ w, IsSplitAt w → (∃ B, SatU U w B) → ApartAll S w`. Introduce `w hs hB u hu hwu`. Conclude with `(hfin.mem_toFinset.1 hu).2 (GlobalTheory.CongL.SatConj.exists_satU_of_under_eq E a U hU.1 w u hs hwu.symm hB)`. Use `set W0 : Set (HeightOneSpectrum (𝓞 E)) := {w | IsSplitAt w ∧ ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ ∃ B, SatU U w B} with hW0def`.
+
+Establish `hW0 : ∀ w ∈ W0, IsSplitAt w ∧ ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ Kw w = GlobalTheory.LFun.KGL w a` using `fun w hw => ⟨hw.1, hw.2.1, hKGL w hw.1 (apart_of_not_mem hw₀ hw.2.1) (apart_of_not_mem hv' hw.2.1) hw.2.2⟩`. Take `⟨J, O, x, fr, n, hx, hpl, hcov, hrat, hidx, hconv⟩` from `GlobalTheory.FrobOpsIdx.frobOpsIdx hS E Ω l ι a Kw W0 hW0`. Establish `hcomp : ∀ U' : Submodule ℂ (UA E a → ℂ), IsAutRepU U' → ∀ w, IsSplitAt w → ∃ σ : SmIrr (GL (Fin a) (w.adicCompletion E)), IsCompAlong U' (locU a w) ((cLoc w).comp (locU a w).subtype) σ.ρ` using `fun U' hU' w hw => (GlobalTheory.SplitComp.exists_comp_and_unique E a U' hU' w hw).1`. Take `⟨θ, hθ⟩ : ∃ θ : J → Qbar l, IsSysU O U θ` from `by choose σ hσ using fun j => hcomp U hU.1 (O.pl j) (O.split j)`. Use `⟨fun j => ι.symm (O.z j (σ j)), fun j σ' h' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e⟩` from `(GlobalTheory.SplitComp.exists_comp_and_unique E a U hU.1 (O.pl j) (O.split j)).2 _ _ (hσ j) h'`. Use `show ι.symm (O.z j (σ j)) = ι.symm (O.z j σ')`. Rewrite using `[z_eq_of_equiv O j e (hlev _ (O.split j) (apart_of_not_mem hw₀ (O.away j)) (apart_of_not_mem hv' (O.away j)) _ (hσ j))]`. Establish `hsphSeed : ∀ U' : Submodule ℂ (UA E a → ℂ), IsAutRepU U' → HasLevelOff w₀ v' Kw U' → (∃ B, SatU U' v' B) → SphOffU w₀ S U'`. Introduce `U' hU' hl' hb w hs hap hA`.
+
+Distinguish the cases in `hv : Apart w v'`. Use `swap`. Conclude with `GlobalTheory.CongL.SatConj.exists_satU_of_under_eq E a U' hU' v' w hspv (not_not.1 hv) hb`. Take `⟨σ, hσ⟩` from `hcomp U' hU' w hs`. Establish `hfix` using `hl' w hs hap hv σ hσ`.
+
+Rewrite `hfix` using `[hKGL w hs hap hv (hsph w hs hA)]`. Take `⟨B, hB⟩` from `(hS E w a).1 σ hfix`. Conclude with `⟨B, σ, hσ, hB⟩`. Use `choose Z₀ hZ₀ hQ using fun Y => hSd E Ω l ι a ha hRk d hF T hT w₀ v' hw₀ hsp₀ hv' hspv hvap U S Y`. Use `choose! rr hrr using hQ`.
+
+Set `Zs : Finset (HeightOneSpectrum (𝓞 E)) → Finset (HeightOneSpectrum (𝓞 E))` to `fun Y => Z₀ Y ∪ Y.filter (fun w => IsSplitAt w ∧ ((l : ℕ) : 𝓞 E) ∉ w.asIdeal ∧ ∃ B, SatU U w B)`. Establish `hZs : ∀ Y, ∀ z ∈ Zs Y, IsSplitAt z ∧ Apart z w₀ ∧ Apart z v' ∧ ∃ B, SatU U z B`. Introduce `Y z hz`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Take `⟨hus, hzl, hap, hA⟩` from `hZ₀ Y z h`.
+
+Conclude with `⟨hus.1, hap, apart_of_not_mem hv' hzl, hsph z hus.1 hA⟩`. Take `⟨-, hs, hzl, hB⟩` from `Finset.mem_filter.1 h`. Conclude with `⟨hs, apart_of_not_mem hw₀ hzl, apart_of_not_mem hv' hzl, hB⟩`. Set `Ws : Finset (HeightOneSpectrum (𝓞 E)) → Finset (HeightOneSpectrum (𝓞 E))` to `fun Y => Y.filter (fun w => ((l : ℕ) : 𝓞 E) ∈ w.asIdeal ∧ Apart w w₀ ∧ Apart w v' ∧ ∃ B, SatU U w B)`. Use `choose cc hcc0 hcc using fun Y => hcong (Zs Y) (Ws Y) (hZs Y) fun w hw => ⟨hlsplit w (Finset.mem_filter.1 hw).2.1, (Finset.mem_filter.1 hw).2⟩`.
+
+Set `Good : Finset (HeightOneSpectrum (𝓞 E)) → Submodule ℂ (UA E a → ℂ) → (J → Qbar l) → Prop` to `fun Y U' θ' => AutOffT T U' ∧ HasLevelOff w₀ v' Kw U' ∧ ((∃ B, SatU U' v' B) ∧ SameWtOff ι w₀ v' U U' ∧ ∀ w ∈ Ws Y, GenAtU Gen U' w) ∧ Wt E l a ι w₀ v' U U' ∧ Ty E l a w₀ U' ∧ (∀ z ∈ Zs Y, GenAtU Gen U' z) ∧ IsSysU O U' θ'`. Set `I : Type` to `{p : Finset (HeightOneSpectrum (𝓞 E)) × Submodule ℂ (UA E a → ℂ) × (J → Qbar l) // Good p.1 p.2.1 p.2.2}`. Set `ρ : I → (Formalism.ConjugateSelfDual.G E Ω →* GL (Fin a) (Qbar l))` to `fun i => rr i.1.1 i.1.2.1`. Set `η : I → J → Qbar l` to `fun i => i.1.2.2`. Set `D : I → Set J` to `fun i => {j | η i j = trc (ρ i) (x j)}`.
+
+Establish `hQi` using `fun i : I => hrr i.1.1 i.1.2.1 i.2.1 i.2.2.2.2.2.1 i.2.2.2.2.1 (hsphSeed _ i.2.1.1 i.2.2.1 i.2.2.2.1.1) i.2.2.2.1.1 (fun z hz => i.2.2.2.2.2.2.1 z (Finset.mem_union_left _ hz))`. Establish `hpaJ : ∀ Y, PolyApprox (Sum.elim θ fun p : ↥(Ws Y) × ℤ => ι.symm (cc Y p.1 p.2 * PowSatU U p.1 p.2)) ((fun i : I => Sum.elim (η i) fun p : ↥(Ws Y) × ℤ => ι.symm (cc Y p.1 p.2 * PowSatU i.1.2.1 p.1 p.2)) '' {i : I | i.1.1 = Y})`. Introduce `Y`. Use `((hcc Y J O θ hθ).1).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨U', θ', h1, h2, hb, h3, h4, h5, h6, hW, h7, rfl⟩`.
+
+Conclude with `⟨⟨(Y, U', θ'), h1, h2, ⟨hb, h3, hW⟩, h4, h5, h6, h7⟩, rfl, rfl⟩`. Establish `hpaY : ∀ Y, PolyApprox θ (η '' {i : I | i.1.1 = Y})` using `fun Y => approx_left (hpaJ Y)`. Take `⟨L, hL⟩` from `(hcc ∅ J O θ hθ).2 hrat`. Establish `hdense : ∀ s : Finset I, Dense (x '' ⋂ i ∈ s, D i)`. Introduce `s`.
+
+Use `choose V X hVo hVd hVX using fun i : I => (hQi i).2.2.1`. Establish `hVa : ∀ t : Finset I, IsOpen (⋂ i ∈ t, V i) ∧ Dense (⋂ i ∈ t, V i)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert b t hb ih`. Rewrite using `[Finset.set_biInter_insert]`. Conclude with `⟨(hVo b).inter ih.1, (hVd b).inter_of_isOpen_left ih.2 (hVo b)⟩`. Establish `hD` using `(dense_frob_usable_off E Ω l hl d hF.1 (S ∪ s.biUnion X)).inter_of_isOpen_right (hVa s).2 (hVa s).1`. Use `Dense.mono ?_ ((inv_surjective.denseRange).dense_image continuous_inv hD)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨g, ⟨⟨w, hwX, hus, hwl, hA, A, hAw, hg⟩, hgV⟩, rfl⟩`. Establish `hwS : ApartAll S w` using `fun u hu => hA u (Finset.mem_union_left _ hu)`. Establish `hsw : ∃ B, SatU U w B` using `hsph w hus.1 hwS`. Take `⟨j, hj1, hj2, hj3⟩` from `hcov w ⟨hus.1, hwl, hsw⟩ A hAw g hg`. Use `⟨j, ?_, by rw [hx j, hj2, hj3, pow_one]⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iInter]`. Introduce `i hi`. Substitute `hj1` using the available equality. Establish `hap` using `apart_of_not_mem hw₀ hwl`. Take `⟨B', σ', hσ', hB'⟩` from `hsphSeed _ i.2.1.1 i.2.2.1 i.2.2.2.1.1 (O.pl j) hus.1 hap hwS`.
+
+Establish `hchar` using `((hVX i (O.pl j) (fun h => hwX (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, hi, h⟩))) hus hwl hwS B' ⟨σ', hσ', hB'⟩ A hAw).2 g hg (Set.mem_iInter₂.1 hgV i hi))`. Use `show i.1.2.2 j = trc (ρ i) (x j)`. Rewrite using `[i.2.2.2.2.2.2.2 j σ' hσ']`. Conclude with `hidx j σ' (i.2.2.1 (O.pl j) hus.1 hap (apart_of_not_mem hv' hwl) σ' hσ') B' hB' (ρ i) (by rw [hj2]; exact hchar)`. Take `⟨t, htL, ht3, ht⟩` from `exists_trace_limit l (Formalism.ConjugateSelfDual.G E Ω) a J I x θ L.1 L.2 hL ρ η D (fun i => (hQi i).1) (fun i j hj => hj) hdense ((hpaY ∅).mono (Set.image_subset_range _ _))`.
+
+Establish `hpt : PolyApprox t ((fun ρ' g => trc ρ' (id g)) '' Set.range ρ)`. Use `(ht Set.univ (by rw [Set.image_univ]; exact (hpaY ∅).mono (Set.image_subset_range _ _))).1` as an intermediate fact. Rewrite `this` using `[Set.image_univ]`. Rewrite using `[← Set.range_comp]`. Conclude with `this`.
+
+Take `⟨r, hrc, hrss, hrt, -⟩` from `GlobalTheory.Cong.exists_limit_rep l (Formalism.ConjugateSelfDual.G E Ω) a (Formalism.ConjugateSelfDual.G E Ω) id denseRange_id t L.1 L.2 htL (Set.range ρ) (by rintro _ ⟨i, rfl⟩; exact (hQi i).1) hpt`. Establish `htr : trc r = t` using `funext hrt`. Establish `hlin : ∀ A : Set I, PolyApprox θ (η '' A) → LinApprox r (ρ '' A)`. Introduce `A hA`. Use `GlobalTheory.Cong.linApprox_of_polyApprox_trc (Qbar l) (Formalism.ConjugateSelfDual.G E Ω) a r (ρ '' A) ?_` and prove the remaining obligations.
+
+Rewrite using `[htr, Set.image_image]`. Conclude with `(ht A hA).1`. Use `⟨r, hrc, hrss, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hwU hwl B hB`. Establish `hws` using `hwU.1`.
+
+Establish `hsw : ∃ B, SatU U w B` using `⟨B, hB⟩`. Establish `hwS` using `hSap w hws hsw`. Establish `hap` using `apart_of_not_mem hw₀ hwl`. Establish `hwZ : ∀ i : I, i.1.1 = {w} → w ∈ Zs i.1.1` using `fun i hi => by`. Rewrite using `[hi]`.
+
+Conclude with `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨Finset.mem_singleton_self w, hws, hwl, hsw⟩)`. Establish `hseedFE : ∀ i : I, i.1.1 = {w} → ∀ B', SatU i.1.2.1 w B' → UpperTheory.V.Af.FrobEig ι (ρ i) w (UpperTheory.V.Af.algSat a (normV w) B')`. Introduce `i hi B' hB'`. Establish `hwY : w ∈ i.1.1` using `by rw [hi]; exact Finset.mem_singleton_self w`. Conclude with `(hQi i).2.2.2.1 w hwY hwU hwl hwS B' hB' (i.2.2.2.2.2.2.1 w (hwZ i hi) B' hB')`.
+
+Establish `hlin0` using `hlin {i : I | i.1.1 = {w}} (hpaY {w})`. Introduce `A hA`. Use `⟨fun s hs => GlobalTheory.Cong.ker_of_linApprox l (Formalism.ConjugateSelfDual.G E Ω) a r _ hrss hlin0 s ?_, fun s hs => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Take `⟨B', hB'⟩` from `hsphSeed _ i.2.1.1 i.2.2.1 i.2.2.2.1.1 w hws hap hwS`.
+
+Conclude with `(hseedFE i hi B' hB' A hA).1 s hs`. Take `⟨σ, hσ, hBσ⟩` from `hB`. Use `hconv w ⟨hws, hwl, hsw⟩ σ (hlev w hws hap (apart_of_not_mem hv' hwl) σ hσ) B hBσ r ?_ A hA s hs` and prove the remaining obligations. Introduce `j hj`. Substitute `hj` using the available equality.
+
+Rewrite using `[htr, (ht {i : I | i.1.1 = {O.pl j}} (hpaY {O.pl j})).2 j ?_]`. Conclude with `hθ j σ hσ`. Introduce `i hi`. Take `⟨B', σ', hσ', hB'⟩` from `hsphSeed _ i.2.1.1 i.2.2.1 i.2.2.2.1.1 (O.pl j) hws hap hwS`. Take `⟨A', hA', hfr⟩` from `(hpl j).2`.
+
+Establish `hFE` using `(hseedFE i hi B' ⟨σ', hσ', hB'⟩ A' hA').2 (fr j) hfr`. Use `show i.1.2.2 j = trc (ρ i) (x j)`. Rewrite using `[i.2.2.2.2.2.2.2 j σ' hσ']`. Conclude with `hidx j σ' (i.2.2.1 (O.pl j) hws hap (apart_of_not_mem hv' hwl) σ' hσ') B' hB' (ρ i) hFE`. Introduce `w hwl hap hapv hsw`.
+
+Use `GlobalTheory.CongL.crysDRU_of_linApprox GlobalTheory.LimitTop.closedAtL E Ω l ι a ha U hU.1 (GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU E a ha U hU.1) r w hwl hrc hrss _ (hlin _ (hpaY {w})) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `⟨(hQi i).1, i.1.2.1, sameWtAt_of_off ι i.2.2.2.1.2.1 (fun τ hτ u hu => overPl_unique ι τ hτ hu) hap hapv, (hQi i).2.2.2.2.1 w (by rw [show i.1.1 = {w} from hi]; exact Finset.mem_singleton_self w) hwl hap hapv (hSap w (hlsplit w hwl) hsw)⟩`. Introduce `w hwl hap hapv B hB P AI hTi A hA O' _ _ _ Bw hBw σ`. Establish `hws` using `hlsplit w hwl`.
+
+Establish `hwS` using `hSap w hws ⟨B, hB⟩`. Establish `hwW : w ∈ Ws {w}` using `Finset.mem_filter.2 ⟨Finset.mem_singleton_self w, hwl, hap, hapv, B, hB⟩`. Establish `hwY : ∀ i : I, i.1.1 = {w} → w ∈ i.1.1` using `fun i hi => by rw [hi]; exact Finset.mem_singleton_self w`. Use `choose lam hlam using GlobalTheory.DefU.exists_hasWeightAt_of_isAutRepU E a ha U hU.1`. Use `⟨ρ '' {i : I | i.1.1 = {w}}, fun τ => LimAtLU.jumpsOf (lam (ι.toRingHom.comp τ)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `h` using `(hQi i).2.2.2.2.1 w (hwY i hi) hwl hap hapv hwS P AI hTi A hA O' Bw hBw`. Establish `hWW` using `sameWtAt_of_off ι i.2.2.2.1.2.1 (fun τ hτ u hu => overPl_unique ι τ hτ hu) hap hapv`. Conclude with `⟨(hQi i).1, h.1, fun τ LL' τ' hi' => h.2.2 τ LL' τ' hi' _ _ ((hWW _ (LimAtLU.overPl_of_induced ι hA hBw hi') _).1 (hlam _)) (LimAtLU.jumpsOf_map _)⟩`. Establish `hu : ∀ (n : ℤ) (z : ℂ), ι.symm z = (ι.symm (cc {w} w n))⁻¹ * ι.symm (cc {w} w n * z)` using `fun n z => by`.
+
+Rewrite using `[map_mul, ← mul_assoc, inv_mul_cancel₀ ((map_ne_zero ι.symm).2 (hcc0 {w} w n)), one_mul]`. Use `joint (hpaJ {w}) (fun F c ε hP g => by rw [htr]; exact ht3 F c ε hP g) _ _ (fun n => (⟨w, hwW⟩, -(deg σ) * n)) (fun n => (ι.symm (cc {w} w (-(deg σ) * n)))⁻¹) (fun n => ?_) (fun i hi n => ?_)` and prove the remaining obligations. Rewrite using `[phiSum_satWD, ← powSatU_eq hU.1 hws hB]`. Conclude with `hu _ _`. Take `⟨B', hB'⟩` from `hsphSeed _ i.2.1.1 i.2.2.1 i.2.2.2.1.1 w hws hap hwS`.
+
+Establish `hg : Gen a (normV w) B'` using `i.2.2.2.1.2.2 w (by rw [show i.1.1 = {w} from hi]; exact hwW) B' hB'`. Establish `e` using `(hQi i).2.2.2.2.2 w (hwY i hi) hwl hap hapv hwS B' hB' hg P AI hTi A hA O' Bw hBw σ n`. Rewrite `e` using `[phiSum_satWD, ← powSatU_eq i.2.1.1 hws hB']`. Conclude with `(congrArg ι.symm e).trans (hu _ _)`.
+-/
 theorem limWU4_of : ∀ (Rk : ℕ → Prop) (Ty : UnitaryAutomorphicTypeClass) (Gen : ℕ → ℕ → Multiset ℂˣ → Prop) (Wt : SeedWtU),
     SeedWU4 Rk Ty Gen Wt → CongUW4 Rk Ty Gen Wt → LimWU4 Rk := by
   intro Rk Ty Gen Wt hSd hC E Ω _ _ _ _ _ _ l _ ι a ha hRk d hF T hT U hU w₀ v' hw₀ hsp₀ hv' hspv hvap
@@ -194,6 +257,9 @@ theorem limWU4_of : ∀ (Rk : ℕ → Prop) (Ty : UnitaryAutomorphicTypeClass) (
         rw [phiSum_satWD, ← powSatU_eq i.2.1.1 hws hB'] at e
         exact (congrArg ι.symm e).trans (hu _ _)
 
+/- English proof (translation)
+The claim follows from `limWU4_of _ _ _ _ h h'`.
+-/
 theorem limFinOdd_of (h : SeedFinOdd) (h' : CongFinOdd) : LimFinOdd := limWU4_of _ _ _ _ h h'
 
 end UpperTheory.Gal.Lim

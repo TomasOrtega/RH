@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.TrivLoc
 
+/- English proof (translation)
+Establish `hX : IsPullback (fst A X).left (snd A X).left A.hom X.hom`. Simplify `IsPullback.of_hasPullback A.hom X.hom` using `only [Over.fst_left, Over.snd_left]`. Establish `hY : IsPullback (fst A Y).left (snd A Y).left A.hom Y.hom`. Simplify `IsPullback.of_hasPullback A.hom Y.hom` using `only [Over.fst_left, Over.snd_left]`. Establish `e₁ : (lift (fst A X) (snd A X ≫ q)).left ≫ (fst A Y).left = (fst A X).left`.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Establish `e₂ : (lift (fst A X) (snd A X ≫ q)).left ≫ (snd A Y).left = (snd A X).left ≫ q.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `hout : IsPullback ((lift (fst A X) (snd A X ≫ q)).left ≫ (fst A Y).left) (snd A X).left A.hom (q.left ≫ Y.hom)`. Rewrite using `[e₁, Over.w q]`.
+
+Conclude with `hX`. Conclude with `IsPullback.of_right hout e₂ hY`.
+-/
 theorem isPullback_lift_snd {S : Scheme.{0}} (A X Y : Over S) (q : X ⟶ Y) :
     IsPullback (lift (fst A X) (snd A X ≫ q)).left (snd A X).left (snd A Y).left q.left := by
   have hX : IsPullback (fst A X).left (snd A X).left A.hom X.hom := by
@@ -28,6 +35,11 @@ theorem isPullback_lift_snd {S : Scheme.{0}} (A X Y : Over S) (q : X ⟶ Y) :
     exact hX
   exact IsPullback.of_right hout e₂ hY
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `GlobalTheory.Biadditive.triv_pull_comp h e.inv` as an intermediate fact. Rewrite `this` using `[Iso.inv_hom_id_assoc]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `GlobalTheory.Biadditive.triv_pull_comp h e.hom`.
+-/
 theorem triv_pull_iso {P Q X : Scheme.{0}} {L : LB X} (e : P ≅ Q) (a : Q ⟶ X) :
     Triv (L.pull (e.hom ≫ a)) ↔ Triv (L.pull a) := by
   constructor
@@ -37,6 +49,13 @@ theorem triv_pull_iso {P Q X : Scheme.{0}} {L : LB X} (e : P ≅ Q) (a : Q ⟶ X
   · intro h
     exact GlobalTheory.Biadditive.triv_pull_comp h e.hom
 
+/- English proof (translation)
+Set `T' : Over S` to `Over.mk ((t ≫ v.left) ≫ Y.hom)`. Set `u : T' ⟶ T₀` to `Over.homMk t (by simp [T'])`. Set `w : T' ⟶ Y` to `Over.homMk (t ≫ v.left) rfl`. Establish `huv : u ≫ v = w` using `by ext; simp [u, w]`. Establish `hp : IsPullback (lift (fst A T') (snd A T' ≫ u)).left (snd A T').left (snd A T₀).left t` using `isPullback_lift_snd A T' T₀ u`.
+
+Set `e : X' ≅ (A ⊗ T').left` to `h.isoIsPullback _ _ hp`. Establish `he : e.hom ≫ (lift (fst A T') (snd A T' ≫ u)).left = π` using `h.isoIsPullback_hom_fst _ _ hp`. Establish `hc : (lift (fst A T') (snd A T' ≫ u)).left ≫ (lift (fst A T₀) (snd A T₀ ≫ v)).left = (lift (fst A T') (snd A T' ≫ w)).left`. Rewrite using `[← Over.comp_left, ← huv]`. Use `congr 1`.
+
+Apply the tactic sequence `ext <;> simp`. Establish `h1 : Triv ((ev N (fst A T₀) (snd A T₀ ≫ v)).pull π) ↔ Triv (N.pull (π ≫ (lift (fst A T₀) (snd A T₀ ≫ v)).left))` using `GlobalTheory.AbLaw.CubeGen.triv_pull_iff N (fun _ : PUnit => (lift (fst A T₀) (snd A T₀ ≫ v)).left) (fun _ => 1) π`. Rewrite using `[h1, ← he, Category.assoc, hc, triv_pull_iso]`. Both sides reduce to the same expression.
+-/
 theorem triv_pull_iff_locus {S : Scheme.{0}} {A Y T₀ : Over S} (N : LB (A ⊗ Y).left) (v : T₀ ⟶ Y)
     {W X' : Scheme.{0}} (t : W ⟶ T₀.left) (π : X' ⟶ (A ⊗ T₀).left) (f' : X' ⟶ W)
     (h : IsPullback π f' (snd A T₀).left t) :
@@ -60,6 +79,9 @@ theorem triv_pull_iff_locus {S : Scheme.{0}} {A Y T₀ : Over S} (N : LB (A ⊗ 
   rw [h1, ← he, Category.assoc, hc, triv_pull_iso]
   rfl
 
+/- English proof (translation)
+Use `⟨GlobalTheory.ProperFinite.nonempty_perf_of_isProper (R := R) f hM, GlobalTheory.ProperFinite.nonempty_perf_of_isProper (R := R) f (isLB_pw hM _), GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ inferInstance inferInstance, ?_⟩` and prove the remaining obligations. Establish `: Surjective (s ≫ f)` using `by rw [hs]; infer_instance`. Conclude with `Surjective.of_comp s f`.
+-/
 theorem family_props {R : Type} [CommRing R] [IsNoetherianRing R] {W : Scheme.{0}} (f : W ⟶ Spec (CommRingCat.of R))
     [Smooth f] [IsProper f] [GeometricallyConnected f] (s : Spec (CommRingCat.of R) ⟶ W) (hs : s ≫ f = 𝟙 _)
     {M : LB W} (hM : M.IsLB) :
@@ -70,6 +92,15 @@ theorem family_props {R : Type} [CommRing R] [IsNoetherianRing R] {W : Scheme.{0
   have : Surjective (s ≫ f) := by rw [hs]; infer_instance
   exact Surjective.of_comp s f
 
+/- English proof (translation)
+Introduce `S A Y _ hA N hN R _ _ j`. Establish `hB : IsAbelianScheme ((Over.pullback (j ≫ Y.hom)).obj A)` using `GlobalTheory.AbLaw.CubeGen.isAb_baseChange hA (j ≫ Y.hom)`. Set `T₀ : Over S` to `Over.mk (j ≫ Y.hom)`. Set `v : T₀ ⟶ Y` to `Over.homMk j rfl`. Set `f : (A ⊗ T₀).left ⟶ Spec (CommRingCat.of R)` to `(snd A T₀).left`.
+
+Set `M : LB (A ⊗ T₀).left` to `ev N (fst A T₀) (snd A T₀ ≫ v)`. Establish `hM : M.IsLB` using `pull_isLB hN _`. Establish `sm : Smooth f` using `hB.smooth`. Establish `pr : IsProper f` using `hB.proper`. Establish `gc : GeometricallyConnected f` using `hB.geomConnected`.
+
+Set `s : Spec (CommRingCat.of R) ⟶ (A ⊗ T₀).left` to `(η[(Over.pullback (j ≫ Y.hom)).obj A]).left`. Establish `hs : s ≫ f = 𝟙 _` using `Over.w (η[(Over.pullback (j ≫ Y.hom)).obj A])`. Take `⟨p₁, p₂, p₃, p₄⟩` from `family_props f s hs hM`. Use `⟨(A ⊗ T₀).left, f, M, hM, p₁, p₂, pr, p₃, p₄, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ g₀ X₀ π₀ f₀ h`.
+
+Conclude with `GlobalTheory.AbLaw.CubeOpen.bijective_appTop GlobalTheory.globalFns_holds _ hB h`. Introduce `R' _ g X' π f' h`. Conclude with `triv_pull_iff_locus N v _ π f' h`.
+-/
 theorem exists_chart_family : ∀ (S : Scheme.{0}) (A Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ N : LB (A ⊗ Y).left, N.IsLB →
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (j : Spec (CommRingCat.of R) ⟶ Y.left),
     ∃ (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB ∧ Nonempty (Perf f M) ∧

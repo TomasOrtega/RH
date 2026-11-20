@@ -4,6 +4,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JpUnif
 open Matrix GlobalTheory.CompanionTheory.Jp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Jp.CntHalf.card_lowerRightBlock_eq_fibre_formula | exact GlobalTheory.CompanionTheory.Jp.CntHalf.card_lowerRightBlock_eq_fibre_formula | (intros; apply GlobalTheory.CompanionTheory.Jp.CntHalf.card_lowerRightBlock_eq_fibre_formula <;> as …`.
+-/
 theorem _root_.GlobalTheory.T.card_fixed_lower_right_block : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (D : Matrix (Fin n) (Fin n) k),
     Nat.card {g : GL (Ix n) k // dBlk g = D} =
       Nat.card {g : GL (Ix n) k // lowerLeftBlock g = 0 ∧ dBlk g = 1} *

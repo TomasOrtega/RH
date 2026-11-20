@@ -5,6 +5,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.Unfold
 
+/- English proof (translation)
+Establish `h` using `congrArg ENNReal.toReal (GlobalTheory.Ker.tsum_indicator_coset Γ K a hfin x)`. Rewrite using `[ENNReal.tsum_toReal_eq (fun γ => by`. Distinguish the cases in `hγ : γ • x ∈ (fun y => a⁻¹ * y) ⁻¹' (K : Set G)`. Rewrite using `[Set.indicator_of_mem hγ]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem hγ]`. Use the proof step `simp)] at h`. Establish `h2` using `congrArg (fun r : ℝ => (r : ℂ)) h`. Simplify using `only [Complex.ofReal_tsum] at h2`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use `congr 1`. Use function extensionality and compare the values at `γ`. Distinguish the cases in `hγ : γ • x ∈ (fun y => a⁻¹ * y) ⁻¹' (K : Set G)`. Rewrite using `[Set.indicator_of_mem hγ, Set.indicator_of_mem hγ]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem hγ, Set.indicator_of_notMem hγ]`. Simplify using the standard rewrite rules. Distinguish the cases in `hx : x ∈ {x : G | ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * a * k}`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]`. Simplify using the standard rewrite rules.
+-/
 theorem tsum_indicator_coset_complex {G : Type} [Group G] (Γ K : Subgroup G) (a : G)
     (hfin : {γ : G | γ ∈ Γ ∧ a⁻¹ * γ * a ∈ K}.Finite) (x : G) :
     ∑' γ : Γ, ((fun y => a⁻¹ * y) ⁻¹' (K : Set G)).indicator (1 : G → ℂ) (γ • x)
@@ -29,6 +40,35 @@ theorem tsum_indicator_coset_complex {G : Type} [Group G] (Γ K : Subgroup G) (a
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
   [BorelSpace G]
 
+/- English proof (translation)
+Use `set A := (fun y => a⁻¹ * y) ⁻¹' (K : Set G) with hAdef`. Use `set C := {x : G | ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * a * k} with hCdef`. Use `set n := {γ : G | γ ∈ Γ ∧ a⁻¹ * γ * a ∈ K}.ncard with hndef`. Establish `hA : MeasurableSet A` using `(hK.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hC : MeasurableSet C` using `(GlobalTheory.Ker.isOpen_doubleCoset_of_isOpen Γ K hK a).measurableSet`.
+
+Establish `hn : n ≠ 0` using `((Set.ncard_pos hfin).2 ⟨1, Γ.one_mem, by simpa using K.one_mem⟩).ne'`. Establish `hcount : ∀ x, ∑' γ : Γ, A.indicator (1 : G → ENNReal) (γ • x) = (n : ENNReal) * C.indicator 1 x` using `GlobalTheory.Ker.tsum_indicator_coset Γ K a hfin`. Establish `hcountC : ∀ x, ∑' γ : Γ, A.indicator (1 : G → ℂ) (γ • x) = (n : ℂ) * C.indicator 1 x` using `tsum_indicator_coset_complex Γ K a hfin`. Establish `hφ : Integrable (A.indicator f) ν` using `hf.integrable_indicator hA`. Establish `hpt : ∀ (γ : Γ) x, A.indicator f (γ • x) = A.indicator (1 : G → ℂ) (γ • x) * f x`.
+
+Introduce `γ x`. Establish `: f (γ • x) = f x` using `hfl γ γ.2 x`. Distinguish the cases in `hx : γ • x ∈ A`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, Pi.one_apply, one_mul, this]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul]`.
+
+Establish `hptE : ∀ (γ : Γ) x, ‖A.indicator f (γ • x)‖ₑ = A.indicator (1 : G → ENNReal) (γ • x) * ‖f x‖ₑ`. Introduce `γ x`. Establish `: f (γ • x) = f x` using `hfl γ γ.2 x`. Distinguish the cases in `hx : γ • x ∈ A`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, Pi.one_apply, one_mul, this]`.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul, enorm_zero]`. Establish `hmeasγ : ∀ γ : Γ, AEStronglyMeasurable (fun x => A.indicator f (γ • x)) (ν.restrict 𝓖)`. Introduce `γ`. Conclude with `(hφ.aestronglyMeasurable.comp_quasiMeasurePreserving (measurePreserving_smul γ ν).quasiMeasurePreserving).restrict`. Establish `hlin : ∑' γ : Γ, ∫⁻ x in 𝓖, ‖A.indicator f (γ • x)‖ₑ ∂ν = ∫⁻ x, ‖A.indicator f x‖ₑ ∂ν` using `(h𝓖.lintegral_eq_tsum'' (fun x => ‖A.indicator f x‖ₑ)).symm`.
+
+Establish `hlin2 : ∑' γ : Γ, ∫⁻ x in 𝓖, ‖A.indicator f (γ • x)‖ₑ ∂ν = (n : ENNReal) * ∫⁻ x in C, ‖f x‖ₑ ∂(ν.restrict 𝓖)`. Rewrite using `[← lintegral_tsum (fun γ => (hmeasγ γ).enorm)]`. Repeatedly rewrite using `[hptE, ENNReal.tsum_mul_right, hcount]`. Rewrite using `[← lintegral_indicator hC, ← lintegral_const_mul' _ _ (ENNReal.natCast_ne_top n)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ C`. Simplify using `[Set.indicator_of_mem hx, hndef]`. Simplify using `[Set.indicator_of_notMem hx]`. Establish `hCU : C = ⋃ γ : Γ, (fun x => (γ : G) * x) ⁻¹' A`. Use extensionality with `x`.
+
+Simplify using `only [hCdef, hAdef, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, k, hk, rfl⟩`. Use `⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, ?_⟩` and prove the remaining obligations. Establish `: a⁻¹ * (γ⁻¹ * (γ * a * k)) = k` using `by group`.
+
+Simplify `hk` using `[this]`. Introduce and unpack `⟨γ, hγ⟩`. Conclude with `⟨(γ : G)⁻¹, Γ.inv_mem γ.2, _, hγ, by group⟩`. Establish `hintγ : ∀ γ : Γ, IntegrableOn f ((fun x => (γ : G) * x) ⁻¹' A) ν`. Introduce `γ`.
+
+Use `((measurePreserving_mul_left ν (γ : G)).integrableOn_comp_preimage (measurableEmbedding_mulLeft (γ : G)) (f := f) (s := A)).2 hf` as an intermediate fact. Establish `hfeq : f ∘ (fun x => (γ : G) * x) = f` using `funext fun x => hfl γ γ.2 x`. Rewrite `this` using `[hfeq]`. Then use the resulting hypothesis. Establish `hmeasC : AEStronglyMeasurable f ((ν.restrict 𝓖).restrict C)`. Establish `: AEStronglyMeasurable f (ν.restrict C)`.
+
+Rewrite using `[hCU, aestronglyMeasurable_iUnion_iff]`. Conclude with `fun γ => (hintγ γ).aestronglyMeasurable`. Conclude with `this.mono_measure (Measure.restrict_mono subset_rfl Measure.restrict_le_self)`. Establish `hfinC : ∫⁻ x in C, ‖f x‖ₑ ∂(ν.restrict 𝓖) ≠ ⊤`. Introduce `htop`.
+
+Establish `h1` using `hlin2.symm.trans hlin`. Rewrite `h1` using `[htop, ENNReal.mul_top (by exact_mod_cast hn)]`. Conclude with `hφ.hasFiniteIntegral.ne h1.symm`. Establish `hintC : IntegrableOn f C (ν.restrict 𝓖)` using `⟨hmeasC, hfinC.lt_top⟩`. Use `⟨hintC, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← integral_indicator hA, h𝓖.integral_eq_tsum'' _ hφ, ← integral_tsum hmeasγ (by rw [hlin]; exact hφ.hasFiniteIntegral.ne)]`. Repeatedly rewrite using `[hpt, tsum_mul_right, hcountC]`. Rewrite using `[← integral_indicator hC, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ C`.
+
+Simplify using `[Set.indicator_of_mem hx, hndef]`. Simplify using `[Set.indicator_of_notMem hx]`.
+-/
 theorem unfold_coset (ν : Measure G) [ν.IsMulLeftInvariant] (Γ K : Subgroup G)
     [Countable Γ] (𝓖 : Set G) (h𝓖 : IsFundamentalDomain Γ 𝓖 ν) (hK : IsOpen (K : Set G)) (a : G)
     (hfin : {γ : G | γ ∈ Γ ∧ a⁻¹ * γ * a ∈ K}.Finite) (f : G → ℂ)
@@ -118,6 +158,23 @@ end GlobalTheory.Unfold
 
 namespace GlobalTheory.Unfold
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ ν _ Γ Ω _ 𝓖 h𝓖 hΩ ι _ h huniq hfin f hfl hf`. Use `set C : ι → Set G := fun i => {x : G | ∃ γ ∈ Γ, ∃ k ∈ Ω, x = γ * h i * k} with hCdef`. Establish `hC : ∀ i, MeasurableSet (C i)` using `fun i => (GlobalTheory.Ker.isOpen_doubleCoset_of_isOpen Γ Ω hΩ (h i)).measurableSet`. Establish `hpos : ∀ i, {γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ Ω}.ncard ≠ 0` using `fun i => ((Set.ncard_pos (hfin i)).2 ⟨1, Γ.one_mem, by simpa using Ω.one_mem⟩).ne'`. Establish `hpre : ∀ i, (fun y => h i * y) ⁻¹' ((fun y => (h i)⁻¹ * y) ⁻¹' (Ω : Set G)) = Ω`.
+
+Introduce `i`. Use extensionality with `k`. Simplify using the standard rewrite rules. Establish `hA : ∀ i, IntegrableOn f ((fun y => (h i)⁻¹ * y) ⁻¹' (Ω : Set G)) ν`. Introduce `i`.
+
+Use `((measurePreserving_mul_left ν (h i)).integrableOn_comp_preimage (measurableEmbedding_mulLeft (h i))).1 ?_` and prove the remaining obligations. Rewrite using `[hpre]`. Conclude with `hf i`. Establish `hAint : ∀ i, ∫ x in (fun y => (h i)⁻¹ * y) ⁻¹' (Ω : Set G), f x ∂ν = ∫ k in (Ω : Set G), f (h i * k) ∂ν`. Introduce `i`.
+
+Use `(measurePreserving_mul_left ν (h i)).setIntegral_preimage_emb (measurableEmbedding_mulLeft (h i)) f ((fun y => (h i)⁻¹ * y) ⁻¹' (Ω : Set G))` as an intermediate fact. Rewrite `this` using `[hpre]`. Conclude with `this.symm`. Establish `hU` using `fun i => unfold_coset ν Γ Ω 𝓖 h𝓖 hΩ (h i) (hfin i) f hfl (hA i)`. Establish `hF : f = fun x => ∑ i, (C i).indicator f x`.
+
+Use function extensionality and compare the values at `x`. Take `⟨i, hi, hu⟩` from `huniq x`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Set.indicator_of_mem (show x ∈ C i from hi)]`. Introduce `j _ hj`.
+
+Conclude with `Set.indicator_of_notMem (s := C j) (fun hx => hj (hu j hx)) f`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `hint : ∀ i, Integrable ((C i).indicator f) (ν.restrict 𝓖)` using `fun i => (integrable_indicator_iff (hC i)).2 (hU i).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IntegrableOn, hF]`. Conclude with `integrable_finset_sum _ fun i _ => hint i`. Establish `h1 : ∫ x in 𝓖, f x ∂ν = ∫ x in 𝓖, ∑ i, (C i).indicator f x ∂ν` using `by conv_lhs => rw [hF]`. Rewrite using `[h1, integral_finset_sum _ fun i _ => hint i]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_indicator (hC i), ← hAint i, ← (hU i).2]`. Establish `: (({γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ Ω}.ncard : ℕ) : ℂ) ≠ 0`. Conclude with `hpos i` after adjusting the coercions. Rewrite using `[← mul_assoc, inv_mul_cancel₀ this, one_mul]`.
+-/
 theorem integral_fundamentalDomain_eq_sum_unfold : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsMulLeftInvariant] (Γ Ω : Subgroup G) [Countable Γ] (𝓖 : Set G), IsFundamentalDomain Γ 𝓖 ν → IsOpen (Ω : Set G) → ∀ (ι : Type) [Fintype ι] (h : ι → G), (∀ x : G, ∃! i, ∃ γ ∈ Γ, ∃ k ∈ Ω, x = γ * h i * k) → (∀ i, {γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ Ω}.Finite) → ∀ f : G → ℂ, (∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) → (∀ i, IntegrableOn (fun k => f (h i * k)) Ω ν) → IntegrableOn f 𝓖 ν ∧ ∫ x in 𝓖, f x ∂ν = ∑ i, (({γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ Ω}.ncard : ℕ) : ℂ)⁻¹ * ∫ k in (Ω : Set G), f (h i * k) ∂ν := by
   intro G _ _ _ _ _ ν _ Γ Ω _ 𝓖 h𝓖 hΩ ι _ h huniq hfin f hfl hf
   set C : ι → Set G := fun i => {x : G | ∃ γ ∈ Γ, ∃ k ∈ Ω, x = γ * h i * k} with hCdef

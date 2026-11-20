@@ -8,6 +8,15 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `T S f G _ G' _ β hpb Z' Z ζ hζ`. Establish `hw : ∀ u : Z ⟶ G, (ζ ≫ u.left) ≫ G.hom = Z'.hom ≫ f` using `fun u => by`. Rewrite using `[Category.assoc, Over.w u, hζ]`. Use `⟨fun u => ⟨Over.homMk (hpb.1.lift (ζ ≫ u.left) Z'.hom (hw u)) (hpb.1.lift_snd _ _ _), hpb.1.lift_fst _ _ _⟩, ?_⟩` and prove the remaining obligations. Introduce `u v u' v' hu hv`.
+
+Set `ζ' : Over.mk (Z'.hom ≫ f) ⟶ Z` to `Over.homMk ζ hζ`. Set `φ : (Z' ⟶ G') → (Over.mk (Z'.hom ≫ f) ⟶ G)` to `fun w => Over.homMk (w.left ≫ β) (by`. Express the relevant statement in the definitionally equal form `(w.left ≫ β) ≫ G.hom = Z'.hom ≫ f`. Rewrite using `[Category.assoc, hpb.1.w, ← Category.assoc, Over.w w])`. Establish `hφ : ∀ a b, φ (a * b) = φ a * φ b` using `fun a b => Over.OverMorphism.ext (hpb.2 Z' a b (φ a) (φ b) rfl rfl).symm`.
+
+Set `ψ` to `MonoidHom.mk' φ hφ`. Establish `hu' : ψ u' = ζ' ≫ u` using `Over.OverMorphism.ext hu`. Establish `hv' : ψ v' = ζ' ≫ v` using `Over.OverMorphism.ext hv`. Prove the components needed by the constructor for the conclusion. Establish `h : ψ (u' * v') = ζ' ≫ (u * v)` using `by rw [map_mul, hu', hv', MonObj.comp_mul]`.
+
+Conclude with `congrArg CommaMorphism.left h`. Establish `h : ψ (u'⁻¹) = ζ' ≫ (u⁻¹)` using `by rw [map_inv, hu', GrpObj.comp_inv]`. Conclude with `congrArg CommaMorphism.left h`.
+-/
 theorem grpPullback_points_lift_mul_inv : ∀ (T S : Scheme.{0}) (f : S ⟶ T) (G : Over T) [GrpObj G] (G' : Over S) [GrpObj G'] (β : G'.left ⟶ G.left), IsGrpPullback G' G f β → ∀ (Z' : Over S) (Z : Over T) (ζ : Z'.left ⟶ Z.left), ζ ≫ Z.hom = Z'.hom ≫ f → (∀ u : Z ⟶ G, ∃ u' : Z' ⟶ G', u'.left ≫ β = ζ ≫ u.left) ∧ ∀ (u v : Z ⟶ G) (u' v' : Z' ⟶ G'), u'.left ≫ β = ζ ≫ u.left → v'.left ≫ β = ζ ≫ v.left → (u' * v').left ≫ β = ζ ≫ (u * v).left ∧ (u'⁻¹).left ≫ β = ζ ≫ (u⁻¹).left := by
   intro T S f G _ G' _ β hpb Z' Z ζ hζ
   have hw : ∀ u : Z ⟶ G, (ζ ≫ u.left) ≫ G.hom = Z'.hom ≫ f := fun u => by

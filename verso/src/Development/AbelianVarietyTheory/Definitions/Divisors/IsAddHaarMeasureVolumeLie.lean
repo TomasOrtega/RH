@@ -19,6 +19,9 @@ def sphW (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (l : Fin n → ℕ) : ℂ :=
     (q : ℂ) ^ (-(∑ i : Fin n, (((n : ℂ) - 1 - 2 * (i : ℕ)) * (l i : ℂ))) / 2) * schurAt l α
   else 0
 
+/- English proof (translation)
+Rewrite using `[schur, Matrix.det_of_upperTriangular]`. Simplify using the standard rewrite rules. Introduce `i j h`. Establish `h' : (j : ℕ) < i` using `h`. Rewrite using `[Matrix.of_apply, if_pos (by push_cast; omega)]`.
+-/
 theorem schur_zero (n : ℕ) : schur n (fun _ => 0) = 1 := by
   rw [schur, Matrix.det_of_upperTriangular]
   · simp
@@ -26,6 +29,9 @@ theorem schur_zero (n : ℕ) : schur n (fun _ => 0) = 1 := by
     have h' : (j : ℕ) < i := h
     rw [Matrix.of_apply, if_pos (by push_cast; omega)]
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem sphW_of_not_antitone (q : ℕ) {n : ℕ} (α : Fin n → ℂ) {l : Fin n → ℕ} (h : ¬ Antitone l) : sphW q α l = 0 :=
   if_neg h
 
@@ -49,6 +55,11 @@ def smoothSpan (π : CuspSub E a) : Submodule ℂ (GA E a → ℂ) :=
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hs : tsupport (fun x => f x * h x) ⊆ tsupport f` using `tsupport_mul_subset_left`. Use `⟨contDiff_iff_contDiffAt.2 fun x => ?_, hf.2.1.mul_right, hs.trans hf.2.2⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `hf.1.contDiffAt.mul (hh.contDiffAt (isOpen_invSet.mem_nhds (hf.2.2 hx)))`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_ filter_upwards [notMem_tsupport_iff_eventuallyEq.1 hx] with y hy` and prove the remaining obligations.
+
+Simplify using `[hy]`.
+-/
 theorem IsTestInf.mul {f h : Lie E a → ℂ} (hf : IsTestInf f) (hh : ContDiffOn ℝ ∞ h (invSet E a)) :
     IsTestInf fun x => f x * h x := by
   have hs : tsupport (fun x => f x * h x) ⊆ tsupport f := tsupport_mul_subset_left
@@ -61,6 +72,9 @@ theorem IsTestInf.mul {f h : Lie E a → ℂ} (hf : IsTestInf f) (hh : ContDiffO
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Take `⟨f, h1, h2, h3, h4, h5⟩` from `exists_contDiff_tsupport_subset (n := ⊤) (s := invSet E a ∩ U) (x := y) (Filter.inter_mem (isOpen_invSet.mem_nhds hy) hU)`. Use `⟨f, ⟨Complex.ofRealCLM.contDiff.comp h3, h2.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp), ?_⟩, h1.trans Set.inter_subset_right, fun x => h4 ⟨x, rfl⟩, h5⟩` and prove the remaining obligations. Conclude with `(tsupport_comp_subset (g := fun r : ℝ => (r : ℂ)) (by simp) f).trans (h1.trans Set.inter_subset_left)`.
+-/
 theorem exists_isTestInf {y : Lie E a} (hy : y ∈ invSet E a) {U : Set (Lie E a)} (hU : U ∈ nhds y) :
     ∃ ρ : Lie E a → ℝ, IsTestInf (fun x => (ρ x : ℂ)) ∧ tsupport ρ ⊆ U ∧ (∀ x, ρ x ∈ Set.Icc (0 : ℝ) 1) ∧ ρ y = 1 := by
   obtain ⟨f, h1, h2, h3, h4, h5⟩ := exists_contDiff_tsupport_subset (n := ⊤) (s := invSet E a ∩ U) (x := y)
@@ -69,10 +83,16 @@ theorem exists_isTestInf {y : Lie E a} (hy : y ∈ invSet E a) {U : Set (Lie E a
     h1.trans Set.inter_subset_right, fun x => h4 ⟨x, rfl⟩, h5⟩
   exact (tsupport_comp_subset (g := fun r : ℝ => (r : ℂ)) (by simp) f).trans (h1.trans Set.inter_subset_left)
 
+/- English proof (translation)
+The claim follows from `(hf.mul (hφ g)).1.continuous.integrable_of_hasCompactSupport (hf.mul (hφ g)).2.1`.
+-/
 theorem IsTestInf.integrable {f : Lie E a → ℂ} (hf : IsTestInf f) {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (g : GA E a) :
     Integrable fun x => f x * chart φ g x :=
   (hf.mul (hφ g)).1.continuous.integrable_of_hasCompactSupport (hf.mul (hφ g)).2.1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, smoothInf, smoothInf, smul_eq_mul, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h, mul_left_comm]`.
+-/
 theorem smoothInf_smul (f : Lie E a → ℂ) (c : ℂ) (φ : GA E a → ℂ) : smoothInf f (c • φ) = c • smoothInf f φ := by
   funext g
   rw [Pi.smul_apply, smoothInf, smoothInf, smul_eq_mul, ← integral_const_mul]
@@ -80,18 +100,34 @@ theorem smoothInf_smul (f : Lie E a → ℂ) (c : ℂ) (φ : GA E a → ℂ) : s
   funext x
   by_cases h : IsUnit (Matrix.of x) <;> simp [chart, h, mul_left_comm]
 
+/- English proof (translation)
+Simplify using `only [smoothInf, chart, mul_assoc]`.
+-/
 theorem smoothInf_left (f : Lie E a → ℂ) (φ : GA E a → ℂ) (γ g : GA E a) :
     smoothInf f (fun x => φ (γ * x)) g = smoothInf f φ (γ * g) := by
   simp only [smoothInf, chart, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [smoothInf, chart_rt_fin]`.
+-/
 theorem smoothInf_rt_fin (f : Lie E a → ℂ) (φ : GA E a → ℂ) (k : GL (Fin a) (Af E)) (g : GA E a) :
     smoothInf f (fun x => φ (x * finGL E a k)) g = smoothInf f φ (g * finGL E a k) := by
   simp only [smoothInf, chart_rt_fin]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, φ, hf, hφ, rfl⟩`.
+-/
 theorem smoothInf_mem_smoothSpan (π : CuspSub E a) {f : Lie E a → ℂ} (hf : IsTestInf f) {φ : Sm E a} (hφ : φ ∈ π.V) :
     smoothInf f φ.1 ∈ smoothSpan π :=
   Submodule.subset_span ⟨f, φ, hf, hφ, rfl⟩
 
+/- English proof (translation)
+Take `⟨ρ, h1, -, h2, h3⟩` from `exists_isTestInf (E := E) (a := a) (y := oneL E a) isUnit_one Filter.univ_mem`. Establish `hc : ContDiffOn ℝ ∞ (fun x => starRingEnd ℂ (chart φ g x)) (invSet E a)` using `Complex.conjCLE.contDiff.comp_contDiffOn (hφ g)`. Establish `hf` using `h1.mul hc`. Use `⟨_, hf, ?_⟩` and prove the remaining obligations. Establish `hF` using `hf.mul (hφ g)`.
+
+Establish `e : (fun x => (ρ x : ℂ) * starRingEnd ℂ (chart φ g x) * chart φ g x) = fun x => ((ρ x * Complex.normSq (chart φ g x) : ℝ) : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_mul]`. Rewrite using `[smoothInf, e, integral_complex_ofReal, Complex.ofReal_ne_zero]`. Rewrite `hF` using `[e]`.
+
+Establish `hcont : Continuous fun x => ρ x * Complex.normSq (chart φ g x)` using `Complex.continuous_re.comp hF.1.continuous`. Establish `hsupp : HasCompactSupport fun x => ρ x * Complex.normSq (chart φ g x)` using `hF.2.1.comp_left (g := Complex.re) rfl`. Establish `h4 : chart φ g (oneL E a) = φ g` using `(chart_val φ g 1).trans (by simp)`. Use `(hcont.integral_pos_of_hasCompactSupport_nonneg_nonzero hsupp (fun x => mul_nonneg (h2 x).1 (Complex.normSq_nonneg _)) (x := oneL E a) ?_).ne'` and prove the remaining obligations. Simplify `hg` using `[h3, h4]`.
+-/
 theorem exists_smoothInf_ne_zero {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) {g : GA E a} (hg : φ g ≠ 0) :
     ∃ f : Lie E a → ℂ, IsTestInf f ∧ smoothInf f φ g ≠ 0 := by
   obtain ⟨ρ, h1, -, h2, h3⟩ := exists_isTestInf (E := E) (a := a) (y := oneL E a) isUnit_one Filter.univ_mem
@@ -114,6 +150,11 @@ theorem exists_smoothInf_ne_zero {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) {g 
     (fun x => mul_nonneg (h2 x).1 (Complex.normSq_nonneg _)) (x := oneL E a) ?_).ne'
   simpa [h3, h4] using hg
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h0 (Subtype.ext (funext h))`.
+
+Take `⟨f, hf, h⟩` from `exists_smoothInf_ne_zero φ.2 hg`. Introduce `hb`. Use `smoothInf_mem_smoothSpan π hf hφ` as an intermediate fact. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `h (congrFun this g)`.
+-/
 theorem smoothSpan_ne_bot (π : CuspSub E a) : smoothSpan π ≠ ⊥ := by
   obtain ⟨φ, hφ, h0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot
   obtain ⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0 := by
@@ -126,11 +167,22 @@ theorem smoothSpan_ne_bot (π : CuspSub E a) : smoothSpan π ≠ ⊥ := by
   rw [hb, Submodule.mem_bot] at this
   exact h (congrFun this g)
 
+/- English proof (translation)
+The claim follows from `schur_zero 1`.
+-/
 example : schur 1 (fun _ => 0) = 1 := schur_zero 1
 
+/- English proof (translation)
+Simplify using `[schur, Matrix.det_fin_two, MvPolynomial.hsymm_one]`.
+-/
 example : schur 2 ![1, 0] = MvPolynomial.X 0 + MvPolynomial.X 1 := by
   simp [schur, Matrix.det_fin_two, MvPolynomial.hsymm_one]
 
+/- English proof (translation)
+Establish `h : Antitone (![1, 0] : Fin 2 → ℕ)` using `by decide`. Establish `e : schur 2 ![1, 0] = MvPolynomial.X 0 + MvPolynomial.X 1`. Simplify using `[schur, Matrix.det_fin_two, MvPolynomial.hsymm_one]`. Rewrite using `[sphW, if_pos h, schurAt, e]`. Use `congr 1`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
+-/
 example (q : ℕ) (α : Fin 2 → ℂ) : sphW q α ![1, 0] = (q : ℂ) ^ (-1 / 2 : ℂ) * (α 0 + α 1) := by
   have h : Antitone (![1, 0] : Fin 2 → ℕ) := by decide
   have e : schur 2 ![1, 0] = MvPolynomial.X 0 + MvPolynomial.X 1 := by
@@ -142,6 +194,9 @@ example (q : ℕ) (α : Fin 2 → ℂ) : sphW q α ![1, 0] = (q : ℂ) ^ (-1 / 2
     norm_num
   · simp
 
+/- English proof (translation)
+Take `⟨ρ, h1, -, -, h3⟩` from `exists_isTestInf (E := E) (a := a) (y := oneL E a) isUnit_one Filter.univ_mem`. Conclude with `⟨_, h1, by simp [h3]⟩`.
+-/
 example : ∃ f : Lie E a → ℂ, IsTestInf f ∧ f (oneL E a) = 1 := by
   obtain ⟨ρ, h1, -, -, h3⟩ := exists_isTestInf (E := E) (a := a) (y := oneL E a) isUnit_one Filter.univ_mem
   exact ⟨_, h1, by simp [h3]⟩

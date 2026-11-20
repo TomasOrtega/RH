@@ -3,6 +3,39 @@ open MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ ν _ ι hι Γ _ 𝓕 h𝓕 f φ hf hφ hφinv hT`. Use `haveI : MeasurableConstSMul (Γ.comap ι) H := ⟨fun g => measurable_const_mul (g : H)⟩`. Use `haveI : SMulInvariantMeasure (Γ.comap ι) H ν := ⟨fun g s _ => measure_preimage_mul ν (g : H) s⟩`. Use `haveI : Countable (Γ.comap ι) := by`. Use `Function.Injective.countable (f := fun δ : Γ.comap ι => (⟨ι δ, δ.2⟩ : Γ)) ?_` and prove the remaining obligations.
+
+Introduce `a b hab`. Conclude with `Subtype.ext (hι (congrArg Subtype.val hab))`. Set `e : (Γ ⧸ ι.range.subgroupOf Γ) × Γ.comap ι → Γ` to `fun p => (p.1.out : Γ) * ⟨ι p.2, p.2.2⟩`. Establish `hmemK : ∀ δ : Γ.comap ι, (⟨ι δ, δ.2⟩ : Γ) ∈ ι.range.subgroupOf Γ` using `fun δ => by`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Conclude with `⟨δ, rfl⟩`. Establish `he_inj : Function.Injective e`. Introduce and unpack `⟨q, δ⟩ ⟨q', δ'⟩ h`. Establish `hq : ∀ q δ, (QuotientGroup.mk (e (q, δ)) : Γ ⧸ ι.range.subgroupOf Γ) = q`. Introduce `q δ`.
+
+Use `show (QuotientGroup.mk ((q.out : Γ) * ⟨ι δ, δ.2⟩) : Γ ⧸ ι.range.subgroupOf Γ) = q`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ (hmemK δ)]`. Conclude with `QuotientGroup.out_eq' q`. Establish `hqq : q = q'` using `by rw [← hq q δ, ← hq q' δ', h]`. Substitute `hqq` using the available equality.
+
+Establish `h2` using `mul_left_cancel h`. Establish `h3 : ι δ = ι δ'` using `congrArg Subtype.val h2`. Rewrite using `[Prod.mk.injEq]`. Conclude with `⟨rfl, Subtype.ext (hι h3)⟩`. Establish `he_surj : Function.Surjective e`.
+
+Introduce `γ`. Use `set q : Γ ⧸ ι.range.subgroupOf Γ := QuotientGroup.mk γ with hqdef`. Establish `hm : (q.out : Γ)⁻¹ * γ ∈ ι.range.subgroupOf Γ`. Apply `QuotientGroup.eq.1` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq']`.
+
+Rewrite `hm` using `[Subgroup.mem_subgroupOf]`. Take `⟨y, hy⟩` from `hm`. Establish `hyΓ : ι y ∈ Γ` using `by rw [hy]; exact ((q.out : Γ)⁻¹ * γ).2`. Use `⟨(q, ⟨y, hyΓ⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ((q.out : Γ) : G) * ι y = γ`. Rewrite using `[hy]`. Simplify using the standard rewrite rules. Set `eq` to `Equiv.ofBijective e ⟨he_inj, he_surj⟩`. Set `F : Γ → H → ℂ` to `fun γ h => f ((γ : G) * ι h) * φ h`.
+
+Set `g : Γ ⧸ ι.range.subgroupOf Γ → H → ℂ` to `fun q h => f (((q.out : Γ) : G) * ι h) * φ h`. Establish `hkey : ∀ q (δ : Γ.comap ι) h, F (e (q, δ)) h = g q (δ • h)`. Introduce `q δ h`. Use `show f ((((q.out : Γ) : G) * ι δ) * ι h) * φ h = f (((q.out : Γ) : G) * ι ((δ : H) * h)) * φ ((δ : H) * h)`. Rewrite using `[map_mul, mul_assoc, hφinv δ δ.2 h]`.
+
+Establish `hFm : ∀ γ, Measurable (F γ)` using `fun γ => (hf γ).mul hφ`. Establish `hgm : ∀ q, Measurable (g q)` using `fun q => (hf _).mul hφ`. Establish `hA : ∀ q, ∫⁻ h, ‖g q h‖ₑ ∂ν = ∑' δ : Γ.comap ι, ∫⁻ h in 𝓕, ‖F (e (q, δ)) h‖ₑ ∂ν`. Introduce `q`. Rewrite using `[h𝓕.lintegral_eq_tsum'' (fun h => ‖g q h‖ₑ)]`.
+
+Repeatedly rewrite using `[hkey]`. Establish `hsumF : ∑' γ : Γ, ∫⁻ h in 𝓕, ‖F γ h‖ₑ ∂ν = ∑' q, ∫⁻ h, ‖g q h‖ₑ ∂ν`. Rewrite using `[← eq.tsum_eq]`. Combine the equalities or inequalities in the displayed calculation. Establish `hT' : ∑' γ : Γ, ∫⁻ h in 𝓕, ‖F γ h‖ₑ ∂ν ≠ ⊤` using `by rw [hsumF]; exact hT`.
+
+Establish `hfun : (fun h => (∑' γ : Γ, f (γ * ι h)) * φ h) = fun h => ∑' γ : Γ, F γ h`. Use function extensionality and compare the values at `fun h => tsum_mul_right.symm`. Establish `hint : IntegrableOn (fun h => ∑' γ : Γ, F γ h) 𝓕 ν`. Use `⟨(AEMeasurable.tsum fun γ => (hFm γ).aemeasurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ h in 𝓕, ‖∑' γ : Γ, F γ h‖ₑ ∂ν < ⊤`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsumm : Summable fun γ : Γ => ∫ h in 𝓕, F γ h ∂ν`. Use `Summable.of_norm ?_` and prove the remaining obligations. Establish `h1 : ∑' γ : Γ, ‖∫ h in 𝓕, F γ h ∂ν‖ₑ ≠ ⊤` using `ne_top_of_le_ne_top hT' (ENNReal.tsum_le_tsum fun γ => enorm_integral_le_lintegral_enorm _)`. Simplify using `only [enorm_eq_nnnorm] at h1`.
+
+Conclude with `NNReal.summable_coe.2 (ENNReal.tsum_coe_ne_top_iff_summable.1 h1)`. Establish `hI : ∫ h in 𝓕, (∑' γ : Γ, F γ h) ∂ν = ∑' γ : Γ, ∫ h in 𝓕, F γ h ∂ν` using `integral_tsum (fun γ => (hFm γ).aestronglyMeasurable) hT'`. Establish `hgint : ∀ q, Integrable (g q) ν` using `fun q => ⟨(hgm q).aestronglyMeasurable, lt_of_le_of_lt (ENNReal.le_tsum (f := fun q => ∫⁻ h, ‖g q h‖ₑ ∂ν) q) (lt_top_iff_ne_top.2 hT)⟩`. Establish `hs : Summable (fun p : (Γ ⧸ ι.range.subgroupOf Γ) × Γ.comap ι => ∫ h in 𝓕, F (eq p) h ∂ν)` using `(eq.summable_iff).2 hsumm`. Establish `hinner : ∀ q, HasSum (fun δ : Γ.comap ι => ∫ h in 𝓕, F (e (q, δ)) h ∂ν) (∫ h, g q h ∂ν)`.
+
+Introduce `q`. Establish `h1` using `(hs.prod_factor q).hasSum`. Rewrite using `[h𝓕.integral_eq_tsum'' (g q) (hgint q)]`. Repeatedly rewrite using `[← hkey]`. Conclude with `h1`.
+
+Establish `htot : HasSum (fun p : (Γ ⧸ ι.range.subgroupOf Γ) × Γ.comap ι => ∫ h in 𝓕, F (eq p) h ∂ν) (∫ h in 𝓕, (∑' γ : Γ, F γ h) ∂ν)`. Rewrite using `[hI]`. Conclude with `(eq.hasSum_iff).2 hsumm.hasSum`. Rewrite using `[hfun]`. Conclude with `⟨hint, htot.prod_fiberwise hinner⟩`.
+-/
 theorem unfold_tsum_along_subgroup : ∀ (G H : Type) [Group G] [Group H] [MeasurableSpace H] [MeasurableMul H] (ν : Measure H) [ν.IsMulLeftInvariant] (ι : H →* G), Function.Injective ι → ∀ (Γ : Subgroup G) [Countable Γ] (𝓕 : Set H), IsFundamentalDomain (Γ.comap ι) 𝓕 ν → ∀ (f : G → ℂ) (φ : H → ℂ), (∀ γ : G, Measurable fun h => f (γ * ι h)) → Measurable φ → (∀ γ ∈ Γ.comap ι, ∀ h, φ (γ * h) = φ h) → (∑' q : Γ ⧸ ι.range.subgroupOf Γ, ∫⁻ h, ‖f ((q.out : Γ) * ι h) * φ h‖ₑ ∂ν) ≠ ⊤ → IntegrableOn (fun h => (∑' γ : Γ, f (γ * ι h)) * φ h) 𝓕 ν ∧ HasSum (fun q : Γ ⧸ ι.range.subgroupOf Γ => ∫ h, f ((q.out : Γ) * ι h) * φ h ∂ν) (∫ h in 𝓕, (∑' γ : Γ, f (γ * ι h)) * φ h ∂ν) := by
   intro G H _ _ _ _ ν _ ι hι Γ _ 𝓕 h𝓕 f φ hf hφ hφinv hT
   haveI : MeasurableConstSMul (Γ.comap ι) H := ⟨fun g => measurable_const_mul (g : H)⟩

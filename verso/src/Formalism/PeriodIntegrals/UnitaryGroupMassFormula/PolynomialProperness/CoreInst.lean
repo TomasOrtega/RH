@@ -6,6 +6,21 @@ noncomputable section
 
 namespace PI.PolynomialProperness
 
+/- English proof (translation)
+Introduce `k r z z' γ hstd hpos`. Take `⟨_, ⟨Q, _, hQG⟩, hpd, _⟩` from `h1 k r z z' γ hstd hpos`. Take `⟨hH1, hH2⟩` from `hI k r`. Establish `hG : gramOf (Hpk k r) (gramVec k r z z' γ) = gramM k r z z' γ`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `hunit : IsUnit (gramOf (Hpk k r) (gramVec k r z z' γ)).det`. Rewrite using `[hG]`. Use `set M0 : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hM0`. Establish `hsq : M0 * M0 = 1`.
+
+Rewrite using `[hM0, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.fromBlocks_one]`. Establish `hM0u : IsUnit M0.det` using `IsUnit.of_mul_eq_one (b := M0.det) (by rw [← Matrix.det_mul, hsq, Matrix.det_one])`. Rewrite `hM0u` using `[← hQG, Matrix.det_mul, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left hM0u)`.
+
+Establish `hcond : ∀ x, (∀ i, herm (Hpk k r) x (gramVec k r z z' γ i) = 0) → 0 ≤ (herm (Hpk k r) x x).re`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Simplify using `[herm]`.
+
+Establish `hxU : x ∈ Uperp k r z z' γ`. Rewrite using `[Uperp, LinearMap.mem_ker, Matrix.mulVecLin_apply, ← Matrix.mulVec_mulVec]`. Use extensionality with `i`. Establish `h2` using `hx i`. Simplify using `only [herm] at h2`.
+
+Simplify `h2` using `[Matrix.mulVec, dotProduct]`. Conclude with `(hpd x hxU hx0).le`. Take `⟨C0, hC0⟩` from `hC _ (Hpk k r) _ (gramVec k r z z' γ) hH1 hH2 hunit hcond`. Take `⟨_, _, _, hgn⟩` from `hN k r`. Use `⟨C0 * ∑ j : Fin (2 * r + k + 1), nsq (bvec j : Fin (2 * r + k + 1) → ℂ), fun s hs K hK hsm => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hgn s]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem coreInst_of (hC : IsoCore) (hI : HpkInvol) (hN : GNFacts) (h1 : Formalism.FourierDecayAlt.C2.GramIndependentSignature) :
     CoreInst := by
   intro k r z z' γ hstd hpos

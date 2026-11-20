@@ -12,6 +12,9 @@ namespace GlobalTheory.ThetaMove.Transport
 
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
+/- English proof (translation)
+Simplify using `only [opU, hH, map_add]`.
+-/
 theorem opU_comp (e : V ≃ₗ[ℂ] V') {H : Sesq V} {H' : Sesq V'} (hH : ∀ x y, H' (e x) (e y) = H x y)
     (F : V' → ℂ) (x z : V) : opU H x (fun w => F (e w)) z = opU H' (e x) F (e z) := by
   simp only [opU, hH, map_add]
@@ -30,6 +33,9 @@ def quotEquiv (e : V ≃ₗ[ℂ] V') {Λ₁ Λ₂ : AddSubgroup V} {Λ₁' Λ₂
     obtain ⟨x, rfl⟩ := (subEquiv e h₂).surjective y
     exact (AddSubgroup.mem_map_iff_mem (f := (subEquiv e h₂ : Λ₂ →+ Λ₂')) (subEquiv e h₂).injective).trans (h₁ _))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ThetaInter.alpha_opU_add hH hd hs ha hs₂, ← GlobalTheory.ThetaInter.opU_mul]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Conclude with `hF s hs₁ w`.
+-/
 theorem term_add {H : Sesq V} {α : V → ℂ} (hH : IsHerm H) {A₁ A₂ : AddSubgroup V} (hd : IsSelfDual H A₂)
     (hs : IsSemiChar H A₂ α) {F : V → ℂ} (hF : F ∈ fixedBy H α A₁) {a s : V} (ha : a ∈ A₂) (hs₂ : s ∈ A₂)
     (hs₁ : s ∈ A₁) (z : V) : α (a + s) * opU H (a + s) F z = α a * opU H a F z := by
@@ -38,6 +44,21 @@ theorem term_add {H : Sesq V} {α : V → ℂ} (hH : IsHerm H) {A₁ A₂ : AddS
   funext w
   exact hF s hs₁ w
 
+/- English proof (translation)
+Introduce `V V' _ _ _ _ e H H' α α' Λ₁ Λ₂ Λ₁' Λ₂' θ' hH h₁ h₂ hα hh hd hs`. Establish `hE : ∀ x y, altE H x y = altE H' (e x) (e y)` using `fun x y => by simp only [altE, hH]`. Use `⟨⟨?_, ⟨fun x hx => ?_, fun x hx y hy => ?_⟩, fun F hF x hx z => ?_⟩, fun hθ _ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[h₂ x]`.
+
+Use `conv_rhs => rw [← hd]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨y, rfl⟩` from `e.surjective y`. Rewrite using `[← hE]`.
+
+Conclude with `h y ((h₂ y).2 hy)`. Introduce `h y hy`. Rewrite using `[hE]`. Conclude with `h _ ((h₂ y).1 hy)`. Rewrite using `[hα x hx]`.
+
+Conclude with `hs.1 _ ((h₂ x).1 hx)`. Rewrite using `[hα _ (Λ₂.add_mem hx hy), hα x hx, hα y hy, map_add, hE]`. Conclude with `hs.2 _ ((h₂ x).1 hx) _ ((h₂ y).1 hy)`. Rewrite using `[opU_comp e hH, hα x hx]`. Conclude with `hF _ ((h₂ x).1 hx) _`.
+
+Use function extensionality and compare the values at `z`. Establish `hc : relIdx Λ₁ Λ₂ = relIdx Λ₁' Λ₂'` using `Nat.card_congr (quotEquiv e h₁ h₂).toEquiv`. Rewrite using `[inter, inter, hc, ← finsum_comp_equiv (quotEquiv e h₁ h₂).toEquiv]`. Use `congr 1`. Use `finsum_congr fun c => ?_` and prove the remaining obligations.
+
+Rewrite using `[opU_comp e hH, hα _ (Quotient.out c).2]`. Establish `hm : -(subEquiv e h₂ (Quotient.out c)) + Quotient.out ((quotEquiv e h₁ h₂).toEquiv c) ∈ Λ₁'.addSubgroupOf Λ₂'`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`. Use `conv_rhs => rw [← QuotientAddGroup.out_eq' c]`. Both sides reduce to the same expression.
+
+Use `term_add hh hd hs hθ (subEquiv e h₂ (Quotient.out c)).2 (-(subEquiv e h₂ (Quotient.out c)) + Quotient.out ((quotEquiv e h₁ h₂).toEquiv c)).2 (AddSubgroup.mem_addSubgroupOf.1 hm) (e z)` as an intermediate fact. Rewrite `this` using `[← AddSubgroup.coe_add, add_neg_cancel_left]`. Conclude with `this.symm`.
+-/
 theorem inter_transport : ∀ (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (e : V ≃ₗ[ℂ] V') (H : Sesq V) (H' : Sesq V') (α : V → ℂ) (α' : V' → ℂ) (Λ₁ Λ₂ : AddSubgroup V) (Λ₁' Λ₂' : AddSubgroup V') (θ' : V' → ℂ), (∀ x y, H' (e x) (e y) = H x y) → (∀ x, x ∈ Λ₁ ↔ e x ∈ Λ₁') → (∀ x, x ∈ Λ₂ ↔ e x ∈ Λ₂') → (∀ x ∈ Λ₂, α x = α' (e x)) → IsHerm H' → IsSelfDual H' Λ₂' → IsSemiChar H' Λ₂' α' → (IsSelfDual H Λ₂ ∧ IsSemiChar H Λ₂ α ∧ ∀ F' ∈ fixedBy H' α' Λ₂', (fun z => F' (e z)) ∈ fixedBy H α Λ₂) ∧ (θ' ∈ fixedBy H' α' Λ₁' → relIdx Λ₁' Λ₂' ≠ 0 → inter H α Λ₁ Λ₂ (fun z => θ' (e z)) = fun z => inter H' α' Λ₁' Λ₂' θ' (e z)) := by
   intro V V' _ _ _ _ e H H' α α' Λ₁ Λ₂ Λ₁' Λ₂' θ' hH h₁ h₂ hα hh hd hs
   have hE : ∀ x y, altE H x y = altE H' (e x) (e y) := fun x y => by simp only [altE, hH]

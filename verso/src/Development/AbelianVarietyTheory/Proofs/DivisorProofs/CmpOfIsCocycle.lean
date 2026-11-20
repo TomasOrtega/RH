@@ -32,8 +32,14 @@ def resEquiv (hW : ⨆ i, W i = ⊤) : HO1 s ≃ₗ[R] CatCoh.H1 (incl W ⋙ OAf
 
 def idx {W : J → Z.Opens} (V : Bas W) : J := V.2.choose
 
+/- English proof (translation)
+The claim follows from `V.2.choose_spec`.
+-/
 theorem le_idx {W : J → Z.Opens} (V : Bas W) : V.1.1 ≤ W (idx V) := V.2.choose_spec
 
+/- English proof (translation)
+The claim follows from `leOfHom a.unop`.
+-/
 theorem le_of_hom {W : J → Z.Opens} {V V' : (Bas W)ᵒᵖ} (a : V ⟶ V') : V'.unop.1.1 ≤ V.unop.1.1 :=
   leOfHom a.unop
 
@@ -48,16 +54,27 @@ def fc (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')) : CatCoh.C1 (incl W ⋙ OAff s) :
   fun V V' a ↦ resG Z (le_inf ((le_of_hom a).trans (le_idx V.unop)) (le_idx V'.unop))
     (c (idx V.unop) (idx V'.unop))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fc_apply (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')) {V V' : (Bas W)ᵒᵖ} (a : V ⟶ V') :
     fc s W c V V' a =
       resG Z (le_inf ((le_of_hom a).trans (le_idx V.unop)) (le_idx V'.unop))
         (c (idx V.unop) (idx V'.unop)) := rfl
 
+/- English proof (translation)
+Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG' {U V V' : Z.Opens} (h : V ≤ U) (h' : V' ≤ V) (x : Γ(Z, U)) :
     resG Z h' (resG Z h x) = resG Z (h'.trans h) x := by
   simp only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `V V' V'' a b`. Establish `hV'' : V''.unop.1.1 ≤ W (idx V.unop) ⊓ W (idx V'.unop) ⊓ W (idx V''.unop)` using `le_inf (le_inf ((le_of_hom b).trans ((le_of_hom a).trans (le_idx V.unop))) ((le_of_hom b).trans (le_idx V'.unop))) (le_idx V''.unop)`. Establish `e` using `congrArg (resG Z hV'') (hc (idx V.unop) (idx V'.unop) (idx V''.unop))`. Simplify using `only [map_add, resG_resG'] at e`. Establish `key : resG Z (le_inf ((le_of_hom (a ≫ b)).trans (le_idx V.unop)) (le_idx V''.unop)) (c (idx V.unop) (idx V''.unop)) = resG Z (le_of_hom b) (resG Z (le_inf ((le_of_hom a).trans (le_idx V.unop)) (le_idx V'.unop)) (c (idx V.unop) (idx V'.unop))) + resG Z (le_inf ((le_of_hom b).trans …`.
+
+Rewrite using `[resG_resG']`. Conclude with `e.symm`. Conclude with `key`.
+-/
 theorem fc_mem {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')} (hc : IsCocycle W c) : fc s W c ∈ Z1 (incl W ⋙ OAff s) := by
   intro V V' V'' a b
   have hV'' : V''.unop.1.1 ≤ W (idx V.unop) ⊓ W (idx V'.unop) ⊓ W (idx V''.unop) :=
@@ -80,12 +97,18 @@ def cmp (hW : ⨆ i, W i = ⊤) (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')) : HO1 s 
   exact if h : fc s W c ∈ Z1 (incl W ⋙ OAff s) then
     (resEquiv s W hW).symm (H1.mk _ ⟨fc s W c, h⟩) else 0
 
+/- English proof (translation)
+Unfold `cmp`. Rewrite using `[dif_pos (fc_mem s W hc)]`.
+-/
 theorem cmp_of_isCocycle (hW : ⨆ i, W i = ⊤) {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')}
     (hc : IsCocycle W c) :
     cmp s W hW c = (resEquiv s W hW).symm (H1.mk _ ⟨fc s W c, fc_mem s W hc⟩) := by
   unfold cmp
   rw [dif_pos (fc_mem s W hc)]
 
+/- English proof (translation)
+Rewrite using `[cmp_of_isCocycle s W hW hc]`. Conclude with `(resEquiv s W hW).apply_symm_apply _`.
+-/
 theorem restrict_cmp (hW : ⨆ i, W i = ⊤) {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')}
     (hc : IsCocycle W c) :
     (CoefMap.restrict (OAff s) (incl W)).pull1 (cmp s W hW c) =

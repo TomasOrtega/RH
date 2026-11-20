@@ -19,6 +19,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S}
 
+/- English proof (translation)
+Establish `l₁` using `chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _)`. Set `j : Fin 2 → L.ι` to `fun i => J (r ≫ ![(snd T A).left, (translPt A θ.pt).left] i)`. Establish `hz : r z ∈ LB.wchart L ![(snd T A).left, (translPt A θ.pt).left] j` using `hJ.mem _ r`. Establish `e : (translT A θ.pt).left ≫ (snd T A).left = (translPt A θ.pt).left`. Rewrite using `[← Over.comp_left, translT, lift_snd]`.
+
+Rewrite using `[sval_of s _ z J (fun _ => j 1) (fun _ => by rw [Category.assoc, e]; rfl)]`. Conclude with `(gs_res r z (chart_le_zero A L _ j) hz _).symm.trans ((congrArg (gs r z _) (H j)).trans ((gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hz _) ((gs_res r z (l₁ j) hz _).trans (gs_pull r (translT A θ.pt).left z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => …`.
+-/
 theorem sval_act {n : ℤ} {θ : ThetaGrp A L n T} {s s' : LB.Sec (LPow A L n T)} (H : IsActOf A L n θ s s')
     {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) (J) (hJ : Good L z J) :
     sval s' r z J = (tval θ r z J).val * sval s (r ≫ (translT A θ.pt).left) z J := by
@@ -33,18 +38,27 @@ theorem sval_act {n : ℤ} {θ : ThetaGrp A L n T} {s s' : LB.Sec (LPow A L n T)
       ((gs_res r z (l₁ j) hz _).trans (gs_pull r (translT A θ.pt).left z
         (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 1)) (l₁ j hz) _)))))
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, translT, lift_snd]`. Use `show ((fst T A ≫ c) * snd T A) ≫ a = _`. Rewrite using `[MonObj.mul_comp, Category.assoc, hc, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem translT_snd_comp (a : A ⟶ A) [IsMonHom a] {c : T ⟶ A} (hc : c ≫ a = 1) :
     translT A c ≫ snd T A ≫ a = snd T A ≫ a := by
   rw [← Category.assoc, translT, lift_snd]
   show ((fst T A ≫ c) * snd T A) ≫ a = _
   rw [MonObj.mul_comp, Category.assoc, hc, MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Rewrite using `[Category.assoc, whiskerLeft_snd, translT_snd_comp a hc]`.
+-/
 theorem translT_whisker (a : A ⟶ A) [IsMonHom a] {c : T ⟶ A} (hc : c ≫ a = 1) :
     translT A c ≫ T ◁ a = T ◁ a := by
   apply CartesianMonoidalCategory.hom_ext
   · simp [translT]
   · rw [Category.assoc, whiskerLeft_snd, translT_snd_comp a hc]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, H1.transl_snd]`. Conclude with `H1.transl_comm x y`.
+-/
 theorem translT_comm [IsCommMonObj A] (x y : T ⟶ A) : translT A x ≫ translT A y = translT A y ≫ translT A x := by
   apply CartesianMonoidalCategory.hom_ext
   · simp [translT]
@@ -52,6 +66,13 @@ theorem translT_comm [IsCommMonObj A] (x y : T ⟶ A) : translT A x ≫ translT 
     simp only [Over.comp_left, Category.assoc, H1.transl_snd]
     exact H1.transl_comm x y
 
+/- English proof (translation)
+Establish `e₀ : (translT A c).left ≫ (snd T A).left = (translPt A c).left`. Rewrite using `[← Over.comp_left, translT, lift_snd]`. Establish `e₁ : (translT A c).left ≫ (snd T A ≫ a).left = (snd T A ≫ a).left`. Rewrite using `[← Over.comp_left, translT_snd_comp a hc]`. Take `⟨u, hu, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (translPt A c).left]) (ε' := ![m, -m]) (fun U _ f => by`.
+
+Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, e₀, e₁, zpow_neg, inv_inv, Pi.neg_apply]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`.
+
+Use the proof step `(LB.mulGen L _ _ _ _ mu (LB.invGen L _ _ (LB.pullGen L _ _ mu (translT A c).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hmu (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hmu _)))`. Use `⟨⟨c, u, hu⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans ?_⟩` and prove the remaining obligations. Rewrite using `[val_mul hJ, val_inv, val_pull hJ]`.
+-/
 theorem exists_kernel_lift (hL : L.IsLB) (a : A ⟶ A) [IsMonHom a] {m k : ℤ}
     (mu : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, (snd T A ≫ a).left] ![m, -k])) (hmu : mu.IsGen)
     {c : T ⟶ A} (hc : c ≫ a = 1) :
@@ -74,6 +95,15 @@ theorem exists_kernel_lift (hL : L.IsLB) (a : A ⟶ A) [IsMonHom a] {m k : ℤ}
   refine ⟨⟨c, u, hu⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans ?_⟩
   rw [val_mul hJ, val_inv, val_pull hJ]
 
+/- English proof (translation)
+Take `⟨V, hV, -, H⟩` from `H default`. Take `rfl : V = ⊤` from `top_le_iff.1 fun x _ => by rw [Subsingleton.elim x default]; exact hV`. Set `h` to `overResι (T := T) ⊤`. Establish `: IsIso h.left` using `inferInstanceAs (IsIso (Scheme.topIso T.left).hom)`. Establish `: IsIso ((Over.forget S).map h)` using `this`.
+
+Establish `: IsIso h` using `isIso_of_reflects_iso h (Over.forget S)`. Take `⟨θx', hx, vx⟩` from `exists_pull hL h θx`. Take `⟨θy', hy, vy⟩` from `exists_pull hL h θy`. Establish `H'` using `(commIsOf_iff hL _ _ _).1 (H θx' θy' hx hy)`. Rewrite using `[commIsOf_iff hL]`.
+
+Introduce `Z r z J hJ`. Take `⟨r', rfl⟩ : ∃ r' : Z ⟶ (overRes (T` from `T) ⊤ ⊗ A).left, r = r' ≫ (h ▷ A).left := ⟨r ≫ (inv (h ▷ A)).left, by rw [Category.assoc, ← Over.comp_left, IsIso.inv_hom_id, Over.id_left, Category.comp_id]⟩`. Establish `t : ∀ x : T ⟶ A, (r' ≫ (translT A (h ≫ x)).left) ≫ (h ▷ A).left = (r' ≫ (h ▷ A).left) ≫ (translT A x).left` using `fun x => by`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, whisker_translT]`. Establish `g : gm (r' ≫ (fst (overRes (T` using `T) ⊤) A).left) z ⊤ (Units.map h.left.appTop.hom.toMonoidHom e) = gm ((r' ≫ (h ▷ A).left) ≫ (fst T A).left) z ⊤ e := by`.
+
+Use `(gm_pull (r' ≫ (fst (overRes (T := T) ⊤) A).left) h.left z ⊤ trivial e).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`. Use `H' Z r' z J hJ` as an intermediate fact. Rewrite `this` using `[vx _ _ z J hJ, vx _ _ z J hJ, vy _ _ z J hJ, vy _ _ z J hJ, hx, hy, t, t]`. Conclude with `this.trans (congrArg _ g)`.
+-/
 theorem commIsOf_of_weilIs (hL : L.IsLB) [Unique T.left] {n : ℤ} (θx θy : ThetaGrp A L n T)
     {e : Γ(T.left, ⊤)ˣ} (H : WeilIs A L n θx.pt θy.pt e) : CommIsOf A L n θx θy e := by
   obtain ⟨V, hV, -, H⟩ := H default
@@ -107,6 +137,19 @@ namespace GlobalTheory
 
 open KernelEigen CommPairing in
 
+/- English proof (translation)
+Introduce `S A _ _ L hL K _ p a ha N k mu hmu s t' t ht' θ hθ c e hc hW Z r z J hJ`. Use `haveI : Unique (Over.mk p).left := inferInstanceAs (Unique (PrimeSpectrum K))`. Take `⟨θc, rfl, hv⟩` from `exists_kernel_lift hL a mu hmu hc`. Establish `hC` using `(commIsOf_iff hL _ _ _).1 (commIsOf_of_weilIs hL θc θ hW) Z r z J hJ`. Establish `hs` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.secRel_iff hL _ _ t' _ _ s (Over.mk p ◁ a).left _ _ mu`.
+
+Establish `ht` using `hs.1 (hs.2 fun y J hJ => by rw [ht' y J hJ, Category.id_comp, _root_.mul_comm])`. Establish `e₁ : (r ≫ (translT A θc.pt).left) ≫ (translT A θ.pt).left = (r ≫ (translT A θ.pt).left) ≫ (translT A θc.pt).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, translT_comm]`. Establish `e₂ : ((r ≫ (translT A θ.pt).left) ≫ (translT A θc.pt).left) ≫ (Over.mk p ◁ a).left = (r ≫ (translT A θ.pt).left) ≫ (Over.mk p ◁ a).left`. Rewrite using `[Category.assoc, ← Over.comp_left, translT_whisker a hc]`.
+
+Rewrite using `[sval_act hθ _ z J hJ, sval_act hθ _ z J hJ, e₁, ht _ _ z J hJ, ht _ _ z J hJ, e₂, ReciprocityTheory.ChartRestriction.G.Geo.Tor.gs_unit _ z ⊤ trivial]`. Rewrite `hC` using `[hv _ _ z J hJ, hv _ _ z J hJ]`. Generalize the expression as in `tval θ (r ≫ (translT A θc.pt).left) z J = x₁ at hC ⊢`. Generalize the expression as in `tval θ r z J = x₂ at hC ⊢`. Generalize the expression as in `val mu ((r ≫ (translT A θ.pt).left) ≫ (translT A θc.pt).left) z J = x₃ at hC ⊢`.
+
+Generalize the expression as in `val mu (r ≫ (translT A θ.pt).left) z J = x₄ at hC ⊢`. Generalize the expression as in `val mu (r ≫ (translT A θc.pt).left) z J = x₅ at hC ⊢`. Generalize the expression as in `val mu r z J = x₆ at hC ⊢`. Generalize the expression as in `ReciprocityTheory.ChartRestriction.G.Geo.Tor.gm (r ≫ (fst (Over.mk p) A).left) z ⊤ e = x₇ at hC ⊢`. Establish `key : x₁ * x₃ * x₆ = x₇ * x₂ * x₄ * x₅`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a₀` using `congrArg Additive.ofMul hC`. Simplify using `only [ofMul_mul, ofMul_inv] at a₀ ⊢`. Take the linear combination `(norm := abel) a₀`. Establish `key'` using `congrArg Units.val key`.
+
+Simplify using `only [Units.val_mul] at key'`. Take the linear combination `(sval s ((r ≫ (translT A θ.pt).left) ≫ (Over.mk p ◁ a).left) z J) * key'`.
+-/
 theorem translate_pullback_eigensection : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left), L.IsLB → ∀ (K : Type) [Field K] (p : Spec (CommRingCat.of K) ⟶ S) (a : A ⟶ A), IsMonHom a → ∀ (N k : ℕ) (mu : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd (Over.mk p) A).left, (snd (Over.mk p) A ≫ a).left] ![((k * N : ℕ) : ℤ), -(k : ℤ)])), mu.IsGen → ∀ (s : LB.Sec (LPow A L (k : ℤ) (Over.mk p))) (t' t : LB.Sec (LPow A L ((k * N : ℕ) : ℤ) (Over.mk p))), (∀ (z : (Over.mk p ⊗ A).left) (J), Good L z J → sval t' (𝟙 _) z J = (val mu (𝟙 _) z J).val * sval s (Over.mk p ◁ a).left z J) → ∀ θ : ThetaGrp A L ((k * N : ℕ) : ℤ) (Over.mk p), IsActOf A L ((k * N : ℕ) : ℤ) θ t' t → ∀ (c : Over.mk p ⟶ A) (e : Γ((Over.mk p).left, ⊤)ˣ), c ≫ a = 1 → WeilIs A L ((k * N : ℕ) : ℤ) c θ.pt e → ∀ (Z : Scheme.{0}) (r : Z ⟶ (Over.mk p ⊗ A).left) (z : Z) (J), Good L z J → sval t (r ≫ (translT A c).left) z J * (val mu r z J).val = gs (r ≫ (fst (Over.mk p) A).left) z ⊤ e.val * (sval t r z J * (val mu (r ≫ (translT A c).left) z J).val) := by
   intro S A _ _ L hL K _ p a ha N k mu hmu s t' t ht' θ hθ c e hc hW Z r z J hJ
   haveI : Unique (Over.mk p).left := inferInstanceAs (Unique (PrimeSpectrum K))

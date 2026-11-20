@@ -210,9 +210,15 @@ abbrev thickObj (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (e : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] : GrpObj (thickObj R I e G) :=
   inferInstance
 
+/- English proof (translation)
+Simplify using `only [thick, thickTrans, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]`.
+-/
 lemma thickTrans_comp (e : ℕ) : thickTrans R I e ≫ thick R I (e + 1) = thick R I e := by
   simp only [thick, thickTrans, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.Quotient.factor_comp_mk]
 

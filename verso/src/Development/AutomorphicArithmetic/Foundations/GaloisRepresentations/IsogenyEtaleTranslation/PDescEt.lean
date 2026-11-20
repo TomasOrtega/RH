@@ -8,6 +8,9 @@ open AlgebraicGeometry CategoryTheory
 
 namespace UpperTheory.Gal.FixZ
 
+/- English proof (translation)
+Introduce `A B C c f hc hs hf hcf`. Conclude with `GlobalTheory.etale_of_comp_of_etale_of_surjective c f`.
+-/
 theorem descEt_of : DescEt := by
   intro A B C c f hc hs hf hcf
   exact GlobalTheory.etale_of_comp_of_etale_of_surjective c f

@@ -147,6 +147,11 @@ end CMObj
 
 def SplitsE (E K : Type) [Field E] [NumberField E] [Field K] : Prop := Nat.card (E →+* K) = Module.finrank ℚ E
 
+/- English proof (translation)
+Establish `hw : ∀ i, (spMap (epsScaleR (c i)) ≫ (F.v i).left) ≫ F.tK.G.hom = (epsR K).hom` using `fun i => by`. Rewrite using `[Category.assoc, Over.w (F.v i)]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `⟨_, _, ⟨fun i => Over.homMk _ (hw i), fun _ => rfl, rfl⟩, rfl⟩`.
+-/
 theorem GenFib.exists_isVec {t : SAB H (Sp (𝓞 K))} (F : GenFib t) (c : Fin F.g → K) : ∃ x, F.IsVec c x := by
   have hw : ∀ i, (spMap (epsScaleR (c i)) ≫ (F.v i).left) ≫ F.tK.G.hom = (epsR K).hom := fun i => by
     rw [Category.assoc, Over.w (F.v i)]
@@ -156,16 +161,25 @@ theorem GenFib.exists_isVec {t : SAB H (Sp (𝓞 K))} (F : GenFib t) (c : Fin F.
     ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
   exact ⟨_, _, ⟨fun i => Over.homMk _ (hw i), fun _ => rfl, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `c x hx`. Simplify using `using hx`.
+-/
 example {t : SAB H (Sp (𝓞 K))} (F : GenFib t) : F.IsDiff F (𝟙 t.G) LinearMap.id := by
   intro c x hx
   simpa using hx
 
+/- English proof (translation)
+Introduce `c x hx`. Simplify using `using h' _ _ (h c x hx)`.
+-/
 example {t t' t'' : SAB H (Sp (𝓞 K))} (F : GenFib t) (F' : GenFib t') (F'' : GenFib t'') (f : t.G ⟶ t'.G)
     (f' : t'.G ⟶ t''.G) (D D') (h : F.IsDiff F' f D) (h' : F'.IsDiff F'' f' D') :
     F.IsDiff F'' (f ≫ f') (D' ∘ₗ D) := by
   intro c x hx
   simpa using h' _ _ (h c x hx)
 
+/- English proof (translation)
+Use `⟨⟨inferInstance, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce `k _ T x y _ _ c`. Rewrite using `[t.act.one]`.
+-/
 example {S : Scheme.{0}} (t : SAB H S) : IsLinHom (𝟙 t.G) ∧ PolId (𝟙 t.G) 1 := by
   refine ⟨⟨inferInstance, by simp⟩, ?_⟩
   intro k _ T x y _ _ c

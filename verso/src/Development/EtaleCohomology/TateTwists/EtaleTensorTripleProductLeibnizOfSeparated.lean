@@ -10,23 +10,48 @@ def SecSep : Prop :=
   ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) (a b : Sec F U),
     (Loc U fun _ g => Sec.res g a = Sec.res g b) → a = b
 
+/- English proof (translation)
+Simplify using `only [Sec.res, Sec.map]`. Conclude with `congrArg (fun f => (ModuleCat.Hom.hom f) x) (φ.hom.naturality g.op).symm`.
+-/
 lemma res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
   simp only [Sec.res, Sec.map]
   exact congrArg (fun f => (ModuleCat.Hom.hom f) x) (φ.hom.naturality g.op).symm
 
+/- English proof (translation)
+The claim follows from `map_add _ x y`.
+-/
 lemma res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x + y) = Sec.res g x + Sec.res g y := map_add _ x y
 
+/- English proof (translation)
+Simplify using `only [Units.smul_def]`. Conclude with `map_zsmul _ _ x`.
+-/
 lemma res_usmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (u : ℤˣ) (x : Sec F U) :
     Sec.res g (u • x) = u • Sec.res g x := by
   simp only [Units.smul_def]; exact map_zsmul _ _ x
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (hP V g hg)⟩`.
+-/
 lemma loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Q V g) : Loc U Q := by
   obtain ⟨S, hS, hP⟩ := hP
   exact ⟨S, hS, fun V g hg => h V g (hP V g hg)⟩
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, smul_add, Sec.map] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `of p z`. Take `⟨⟨s1, t1⟩, hp⟩` from `p`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, smul_add, Sec.map] at hx hy ⊢`. Rewrite using `[hx, hy]`. Normalize the expressions using the abelian group laws. Consider the case `tmul a1 b1`.
+
+Establish `hl : τ.lift V s (DirectSum.of _ ⟨(s1, t1), hp⟩ (a1 ⊗ₜ b1)) = τ.mul V s1 t1 s hp a1 b1`. Unfold `Pair.lift`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R), DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Simplify using `only at hp`. Rewrite using `[hl, τ.leibniz V s1 t1 s hp a1 b1]`.
+
+Rewrite using `[heq V s1 t1 t s (t1 + t) w hp h (by omega) (by omega)]`. Rewrite using `[ν'.leibniz V s1 (t1 + t) w (by omega), μ'.leibniz V t1 t (t1 + t) rfl]`. Simplify using `only [map_add, LinearMap.add_apply, Units.smul_def, map_zsmul, LinearMap.smul_apply]`. Rewrite using `[heq V (s1 + 1) t1 t (s + 1) (t1 + t) (w + 1) (by omega) (by omega) (by omega) (by omega), heq V s1 (t1 + 1) t (s + 1) (t1 + t + 1) (w + 1) (by omega) (by omega) (by omega) (by omega), heq V s1 t1 (t + 1) s (t1 + t + 1) (w + 1) hp (by omega) (by omega) (by omega)]`. Establish `hs : ((s.negOnePow : ℤˣ) : ℤ) = (s1.negOnePow : ℤ) * (t1.negOnePow : ℤ)`.
+
+Rewrite using `[← Units.val_mul, ← Int.negOnePow_add, hp]`. Rewrite using `[hs, mul_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 lemma leib_lift {R : Type} [CommRing R] {I J K T M L : Cx R} (τ : Pair I J T) (μ' : Pair J K M) (ν' : Pair I M L)
     (m : ∀ (U : Scheme.{0}) (s t w : ℤ), s + t = w → Sec (T.X s) U →ₗ[ULift.{1} R] Sec (K.X t) U →ₗ[ULift.{1} R] Sec (L.X w) U)
     (heq : ∀ (U : Scheme.{0}) (s t u st tu w : ℤ) (h1 : s + t = st) (h2 : st + u = w) (h3 : t + u = tu) (h4 : s + tu = w) a b c,
@@ -67,6 +92,9 @@ lemma leib_lift {R : Type} [CommRing R] {I J K T M L : Cx R} (τ : Pair I J T) (
 end LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated
 
 open LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated in
+/- English proof (translation)
+Introduce `R _ I J K T τ hτ M L μ' ν' m hnat heq U s t w h a b`. Apply `hsep R (L.X (w + 1)) U` to reduce the goal to its premises. Use `loc_mono (hτ.1 U s a) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Rewrite using `[res_map, hnat, res_add, res_usmul, hnat, hnat, res_map, res_map, ← hx, leib_lift τ μ' ν' m heq]`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tensor_triple_product_leibniz_of_separated (hsep : LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated.SecSep) :
     LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibniz := by
   intro R _ I J K T τ hτ M L μ' ν' m hnat heq U s t w h a b

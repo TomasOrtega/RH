@@ -11,5 +11,8 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_kHighest_real_of_finiteDimensional | exact GlobalTheory.exists_kHighest_real_of_finiteDimensional | (intros; apply GlobalTheory.exists_kHighest_real_of_finiteDimensional <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_highest_vector_real_weight_unitary_compact : ∀ (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E : Fin n → Fin n → Module.End ℂ V), KRel ε E → KUnit ε E → ∀ N : Submodule ℂ V, FiniteDimensional ℂ N → KStab ε E N → N ≠ ⊥ → ∃ (μ : Fin n → ℝ) (w : V), w ∈ N ∧ w ≠ 0 ∧ KHighest ε E μ w := by
   first | exact @GlobalTheory.exists_kHighest_real_of_finiteDimensional | exact GlobalTheory.exists_kHighest_real_of_finiteDimensional | (intros; apply GlobalTheory.exists_kHighest_real_of_finiteDimensional <;> assumption)

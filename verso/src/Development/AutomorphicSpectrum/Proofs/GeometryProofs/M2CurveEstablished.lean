@@ -15,6 +15,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Conj.CurveDegreeNonneg
 open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Conj
 
+/- English proof (translation)
+Establish `hb` using `(GlobalTheory.CompanionTheory.Ar.Crv.SubQuot.isBun_sub_quot K C (Fin d → K) L' (U.map (e : V →ₗ[K] (Fin d → K))) hL').1`. Use `(GlobalTheory.CompanionTheory.Ar.Crv.DegEquiv.deg_equiv K C _ _ (sub C L' (U.map (e : V →ₗ[K] (Fin d → K)))) (sub C L U) (e.submoduleMap U).symm hb ?_).2.symm` and prove the remaining obligations. Introduce `i x`. Establish `hx : e ((e.submoduleMap U).symm x : V) = x`. Use `(e.submoduleMap U).apply_symm_apply x` as an intermediate fact.
+
+Conclude with `congrArg Subtype.val this`. Simplify using `only [sub, AddSubgroup.mem_comap, LinearMap.toAddMonoidHom_coe, Submodule.subtype_apply]`. Rewrite using `[h i, hx]`.
+-/
 theorem subDeg_map {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {d : ℕ} (L : C.I → AddSubgroup V) (L' : C.I → AddSubgroup (Fin d → K))
     (e : V ≃ₗ[K] (Fin d → K)) (hL' : IsBun C L') (h : ∀ i v, v ∈ L i ↔ e v ∈ L' i)
@@ -30,16 +35,29 @@ theorem subDeg_map {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup 
   simp only [sub, AddSubgroup.mem_comap, LinearMap.toAddMonoidHom_coe, Submodule.subtype_apply]
   rw [h i, hx]
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSp {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O]
     (r : O →+* Module.End K V) (σ : O →+* K) (v : V) :
     v ∈ eigSp r σ ↔ ∀ a, r a v = σ a • v := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig {K V O : Type} [Field K] [AddCommGroup V] [Module K V]
     (ρ : O → V →ₗ[K] V) (χ : O → K) (v : V) :
     v ∈ eig ρ χ ↔ ∀ a, ρ a v = χ a • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨v, rfl⟩` from `e.surjective y`. Establish `h1 : e v ∈ (eigSp r σ).map (e : V →ₗ[K] (Fin d → K)) ↔ v ∈ eigSp r σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, huv⟩`.
+
+Establish `: u = v` using `e.injective huv`. Conclude with `this ▸ hu`. Conclude with `fun hv => ⟨v, hv, rfl⟩`. Rewrite using `[h1, mem_eigSp, mem_eig]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.toLin'_apply, ← h, ← map_smul]`. Conclude with `e.injective.eq_iff.symm`.
+-/
 theorem map_eigSp {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O] {d : ℕ}
     (r : O →+* Module.End K V) (ρ : O →+* Matrix (Fin d) (Fin d) K) (σ : O →+* K)
     (e : V ≃ₗ[K] (Fin d → K)) (h : ∀ a v, e (r a v) = (ρ a).mulVec (e v)) :
@@ -57,6 +75,13 @@ theorem map_eigSp {K V O : Type} [Field K] [AddCommGroup V] [Module K V] [CommRi
   rw [Matrix.toLin'_apply, ← h, ← map_smul]
   exact e.injective.eq_iff.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t hpow k K _ _ _ p _ _ hp C z Y hne hk hfib V _ _ _ M r hact T _ χ hsplit hχ j q w W L hj hq hW0 hL0 hWj hLq hgap`. Use `letI := H.starRing`. Take `⟨d, D, e, hlie, her⟩` from `GlobalTheory.T.curve_lie_eigen_degree E H (fun _ => rfl) X0 t hpow K p C z Y hne hfib V M r hact`. Set `f : V →ₗ[K] (Fin d → K)` to `e`. Establish `key` using `GlobalTheory.T.eigen_flag_slope_bound K C p (𝓞 E) k (T ⊕ T) T χ d D Sum.inl Sum.inr j q w (fun τ i => (W τ i).map f) (fun τ i => (L τ i).map f) hp hsplit hk (by`.
+
+Apply the tactic sequence `have : (Sum.elim Sum.inl Sum.inr : T ⊕ T → T ⊕ T) = id := by ext (x | x) <;> rfl`. Rewrite using `[this]`. Conclude with `Function.bijective_id)`. Use the proof step `(fun τ a => hχ τ a) hj hq`. Use the proof step `(fun τ => by simp [hW0 τ]) (fun τ => by simp [hL0 τ])`.
+
+Use the proof step `(fun τ => by rw [hWj τ]; exact map_eigSp r D.ρ _ e her)`. Use the proof step `(fun τ => by rw [hLq τ]; exact map_eigSp r D.ρ _ e her) hgap`. Simplify `key` using `only [subDeg_map C (Y.lieLat M) D.lie e D.lie_bun hlie, f]`.
+-/
 theorem m2Curve_holds : CurveSemiAbelianConjecture := by
   intro E _ _ _ H X0 t hpow k K _ _ _ p _ _ hp C z Y hne hk hfib V _ _ _ M r hact T _ χ hsplit hχ
     j q w W L hj hq hW0 hL0 hWj hLq hgap

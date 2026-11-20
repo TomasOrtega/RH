@@ -18,6 +18,9 @@ def LocReg (ht : G → ℝ≥0) (Ei : ℂ → G → ℂ) : Prop :=
 def ContFrom (ht : G → ℝ≥0) (σ₀ : ℝ) (e : ℂ → G → ℂ) : Prop :=
   ∃ Ei : ℂ → G → ℂ, (∀ s : ℂ, σ₀ < s.re → ∀ g, Ei s g = e s g) ∧ LocReg ht Ei
 
+/- English proof (translation)
+The claim follows from `let ⟨Ei, h1, h2⟩ := h ⟨Ei, fun s hs => h1 s (hσ.trans_lt hs), h2⟩`.
+-/
 theorem ContFrom.mono {ht : G → ℝ≥0} {σ₀ σ₁ : ℝ} {e : ℂ → G → ℂ} (h : ContFrom ht σ₀ e) (hσ : σ₀ ≤ σ₁) : ContFrom ht σ₁ e :=
   let ⟨Ei, h1, h2⟩ := h
   ⟨Ei, fun s hs => h1 s (hσ.trans_lt hs), h2⟩

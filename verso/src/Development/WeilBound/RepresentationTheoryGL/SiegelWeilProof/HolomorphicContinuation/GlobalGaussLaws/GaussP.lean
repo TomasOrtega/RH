@@ -14,6 +14,15 @@ namespace PositivityTheory.Rg.Sw.Glob.GaussH
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨hA, hDd, hb⟩` from `siegelP_data q hq`. Establish `hAh : IsUnit ((mR q).toBlocks₁₁ᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact hA.star`. Use `set q1 := mkGR (nU ((mR q).toBlocks₁₂ * (mR q).toBlocks₁₁ᴴ)) (by rw [det_nU]; exact one_ne_zero) (inG_nU hb)`. Use `set q2 := mkGR (mM (mR q).toBlocks₁₁) (det_mM hA) (inG_mM hA)`. Establish `hq12 : q = q1 * q2`.
+
+Apply `GR_ext` to reduce the goal to its premises. Rewrite using `[mR_mul, mR_mkGR, mR_mkGR]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks (mR q), hq, hDd]`. Unfold `nU mM`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+
+Simplify using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hAh]`. Establish `h2` using `hLev q2 (mR q).toBlocks₁₁ hA (mR_mkGR _ _ _) _ hG`. Establish `hs2 : IsSch (levF e (mR q).toBlocks₁₁ (gZf ε (tLoc l τ) (cLoc l τ) Z))` using `by rw [← h2]; exact hL.1 q2 _ hG`. Establish `h1` using `hN D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL q1 _ hb (mR_mkGR _ _ _) _ hs2`. Establish `hm` using `hMul D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL q1 q2 _ hG`.
+
+Rewrite using `[hq12, hm, h2, h1, ← hq12]`. Use function extensionality and compare the values at `u`. Simplify using `only [levF, gZf_mul]`. Rewrite using `[siegelP_actZ q hq Z, siegelP_jF q hq, cnt_add, ← chN_mul_gZf ε (abs_tLoc l τ) _ _ hb u]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pLaw (hN : LawN) (hMul : LocMul) {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
     {θ : InfFam D} {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}
     {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ν : Measure (GA D V)}

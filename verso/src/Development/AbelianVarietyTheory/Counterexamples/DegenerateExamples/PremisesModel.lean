@@ -6,6 +6,9 @@ open Finset Matrix
 namespace GlobalTheory.IwahoriNewtonTest
 
 open Finset Matrix in
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_add, (IsLocalRing.residue_eq_zero_iff _).mpr (Ideal.mul_mem_right c _ hϖ), add_zero, IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `hu`.
+-/
 private theorem isUnit_add_mul_of_mem_maximalIdeal {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {u : O} (hu : IsUnit u) (c : O) :
     IsUnit (u + ϖ * c) := by
@@ -15,6 +18,15 @@ private theorem isUnit_add_mul_of_mem_maximalIdeal {O : Type*} [CommRing O] [IsL
   exact hu
 
 open Finset Matrix in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i`. Rewrite using `[mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `hs : ϖ ∣ ∑ l ∈ univ.erase i, A i l * B l i`. Use `Finset.dvd_sum fun l hl => ?_` and prove the remaining obligations.
+
+Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with h | h` into its components or cases. Conclude with `Dvd.dvd.mul_right (hA' i l h) _`. Conclude with `Dvd.dvd.mul_left (hB' l i h) _`. Take `⟨c, hc⟩` from `hs`. Rewrite using `[hc]`.
+
+Conclude with `isUnit_add_mul_of_mem_maximalIdeal hϖ ((hA i).mul (hB i)) c`. Introduce `i j hij`. Rewrite using `[mul_apply]`. Use `Finset.dvd_sum fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases.
+
+Conclude with `Dvd.dvd.mul_right (hA' i l h) _`. Conclude with `Dvd.dvd.mul_left (hB' l j (lt_of_lt_of_le hij h)) _`.
+-/
 private theorem isUnit_diag_dvd_lower_mul {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {r : ℕ} (A B : Matrix (Fin r) (Fin r) O)
     (hA : ∀ i, IsUnit (A i i)) (hB : ∀ i, IsUnit (B i i))
@@ -39,6 +51,11 @@ private theorem isUnit_diag_dvd_lower_mul {O : Type*} [CommRing O] [IsLocalRing 
     · exact Dvd.dvd.mul_left (hB' l j (lt_of_lt_of_le hij h)) _
 
 open Finset Matrix in
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `htri : (N.map (IsLocalRing.residue O)).BlockTriangular id`. Introduce `i j hij`. Take `⟨c, hc⟩` from `hl i j hij`. Simplify using `only [map_apply, hc]`.
+
+Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr (Ideal.mul_mem_right _ _ hϖ)`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.det_of_upperTriangular htri]`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => ?_` and prove the remaining obligations. Simplify `hd i` using `[IsLocalRing.residue_ne_zero_iff_isUnit]`.
+-/
 private theorem isUnit_det_of_isUnit_diag_of_dvd_lower {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {ι : Type*} [Fintype ι] [DecidableEq ι] [LinearOrder ι]
     (N : Matrix ι ι O) (hd : ∀ i, IsUnit (N i i)) (hl : ∀ i j, j < i → ϖ ∣ N i j) :
@@ -54,6 +71,11 @@ private theorem isUnit_det_of_isUnit_diag_of_dvd_lower {O : Type*} [CommRing O] 
   simpa [IsLocalRing.residue_ne_zero_iff_isUnit] using hd i
 
 open Finset Matrix in
+/- English proof (translation)
+Establish `: (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).map Fin.valEmbedding = Finset.Ico (r - k) r`. Use extensionality with `x`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply, mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Conclude with `⟨hj, j.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`. Rewrite using `[← card_map, this, Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem card_filter_sub_le_eq (r k : ℕ) (hk : k ≤ r) :
     (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).card = k := by
   have : (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).map Fin.valEmbedding = Finset.Ico (r - k) r := by
@@ -65,6 +87,17 @@ private theorem card_filter_sub_le_eq (r k : ℕ) (hk : k ≤ r) :
   rw [← card_map, this, Nat.card_Ico]; omega
 
 open Finset Matrix in
+/- English proof (translation)
+Use `set T := univ.filter fun j : Fin r => r - k ≤ (j : ℕ)`. Establish `hcard : (s \ T).card = (T \ s).card`. Establish `h1` using `card_sdiff_add_card_inter s T`. Establish `h2` using `card_sdiff_add_card_inter T s`. Rewrite `h2` using `[inter_comm]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hne' : (s \ T).Nonempty`. Rewrite using `[nonempty_iff_ne_empty, Ne, sdiff_eq_empty_iff_subset]`. Introduce `hsub`. Conclude with `hne (eq_of_subset_of_card_le hsub hs.ge)`.
+
+Take `⟨x, hx, hmin⟩` from `(s \ T).exists_min_image a hne'`. Establish `hlt : ∀ y ∈ T \ s, a y < a x`. Introduce `y hy`. Establish `hxT : ¬ (r - k ≤ (x : ℕ))` using `by simpa [T] using (mem_sdiff.mp hx).2`. Establish `hyT : r - k ≤ (y : ℕ)` using `by simpa [T] using (mem_sdiff.mp hy).1`.
+
+Conclude with `ha (show x < y from Fin.lt_def.mpr (by omega))`. Establish `hT : ∑ j ∈ T \ s, a j < ∑ j ∈ s \ T, a j`. Establish `hn : (T \ s).Nonempty` using `by rw [← card_pos, ← hcard]; exact card_pos.mpr hne'`. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `sum_sdiff (f := a) (inter_subset_left : s ∩ T ⊆ s)`.
+
+Establish `e2` using `sum_sdiff (f := a) (inter_subset_right : s ∩ T ⊆ T)`. Rewrite `e1` using `[sdiff_inter_self_left]`. Rewrite `e2` using `[sdiff_inter_self_right]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sum_filter_lt_sum_of_strictAnti {r : ℕ} {a : Fin r → ℕ} (ha : StrictAnti a) (k : ℕ)
     (s : Finset (Fin r)) (hs : s.card = (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).card)
     (hne : s ≠ univ.filter fun j : Fin r => r - k ≤ (j : ℕ)) :
@@ -97,6 +130,21 @@ private theorem sum_filter_lt_sum_of_strictAnti {r : ℕ} {a : Fin r → ℕ} (h
 
 open Finset Matrix in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.PacketSums.IwahoriNewton`. Introduce `O _ _ ϖ hϖ r a ha i₁ i₂ h1 h2 h1' h2' k hk`. Establish `hc : ((i₁ * diagonal fun i => ϖ ^ a i) * i₂).charpoly = ((i₂ * i₁) * diagonal fun i => ϖ ^ a i).charpoly`. Rewrite using `[charpoly_mul_comm, ← mul_assoc]`. Take `⟨hU, hU'⟩` from `isUnit_diag_dvd_lower_mul hϖ i₂ i₁ h2 h1 h2' h1'`.
+
+Use `set U := i₂ * i₁`. Establish `key` using `charpoly_coeff_eq_sum_minors (U * diagonal fun i => ϖ ^ a i) k (by simpa using hk)`. Rewrite `key` using `[Fintype.card_fin]`. Rewrite using `[hc, key]`. Establish `hminor : ∀ s : Finset (Fin r), ((U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val).det = ϖ ^ (∑ j ∈ s, a j) * (U.submatrix (Subtype.val : s → Fin r) Subtype.val).det`.
+
+Introduce `s`. Establish `: (U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val = U.submatrix Subtype.val Subtype.val * diagonal (fun j : s => ϖ ^ a j)`. Use extensionality with `i j`. Simplify using `[mul_diagonal]`. Rewrite using `[this, det_mul, det_diagonal, mul_comm, Finset.prod_pow_eq_pow_sum, Finset.sum_coe_sort s]`.
+
+Establish `hunit : ∀ s : Finset (Fin r), IsUnit (U.submatrix (Subtype.val : s → Fin r) Subtype.val).det` using `fun s => isUnit_det_of_isUnit_diag_of_dvd_lower hϖ _ (fun i => hU i) (fun i j h => hU' i j h)`. Use `set T := univ.filter fun j : Fin r => r - k ≤ (j : ℕ)`. Establish `hT : T ∈ powersetCard k (univ : Finset (Fin r))` using `mem_powersetCard.mpr ⟨subset_univ _, card_filter_sub_le_eq r k hk⟩`. Rewrite using `[← add_sum_erase _ _ hT]`. Establish `hrest : ϖ ^ (∑ j ∈ T, a j + 1) ∣ ∑ s ∈ (powersetCard k univ).erase T, ((U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val).det`.
+
+Use `dvd_sum fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hminor]`. Establish `hsT` using `ne_of_mem_erase hs`. Establish `hcs : s.card = T.card`. Rewrite using `[(mem_powersetCard.mp (mem_of_mem_erase hs)).2, card_filter_sub_le_eq r k hk]`.
+
+Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ (sum_filter_lt_sum_of_strictAnti ha k s hcs hsT)) _`. Take `⟨c, hc'⟩` from `hrest`. Rewrite using `[hc', hminor, pow_succ, mul_assoc, ← mul_add]`. Use `⟨((isUnit_neg_one (α := O)).pow k |>.mul (isUnit_add_mul_of_mem_maximalIdeal hϖ (hunit T) c)).unit, ?_⟩` and prove the remaining obligations. Simplify using `only [IsUnit.unit_spec]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange : _root_.Formalism.PacketSums.IwahoriNewton := by
   unfold _root_.Formalism.PacketSums.IwahoriNewton
   intro O _ _ ϖ hϖ r a ha i₁ i₂ h1 h2 h1' h2' k hk
@@ -137,6 +185,9 @@ theorem _root_.GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange : _r
   simp only [IsUnit.unit_spec]
   ring
 
+/- English proof (translation)
+Use `⟨?_, two_ne_zero, by decide, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 theorem premises_model :
     (2 : ℤ_[2]) ∈ IsLocalRing.maximalIdeal ℤ_[2] ∧ (2 : ℤ_[2]) ≠ 0 ∧
     StrictAnti (![1, 0] : Fin 2 → ℕ) ∧

@@ -12,11 +12,17 @@ def toPi (i : N.Loc) :
   (TensorProduct.comm (N.O i) _ _).trans
     (TensorProduct.piScalarRight (N.O i) (N.O i) (FractionRing (N.O i)) (Fin R.r))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[toPi, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Algebra.smul_def]`.
+-/
 theorem toPi_tmul (i : N.Loc) (v : Fin R.r → N.O i) (k : FractionRing (N.O i)) :
     toPi N i (v ⊗ₜ k) = fun j => algebraMap (N.O i) (Kf N i) (v j) * k := by
   funext j
   simp [toPi, TensorProduct.piScalarRight_apply, TensorProduct.piScalarRightHom_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem Wp_apply (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G H.E N.Om)
     (v : Fin R.r → N.O i) :
     Glob.Wp N i ρ g v = ((((N.chi i 1 g)⁻¹ : (N.O i)ˣ) : N.O i) •
@@ -24,6 +30,13 @@ theorem Wp_apply (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G 
   rw [Matrix.smul_mulVec]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Matrix.mulVec_add]`. Consider the case `tmul v k`. Establish `h1 : Glob.WpK N i ρ g (v ⊗ₜ k) = (Glob.Wp N i ρ g v) ⊗ₜ k`.
+
+Simplify using `[Glob.WpK, coefRep, Representation.tprod_apply]`. Rewrite using `[h1, toPi_tmul, toPi_tmul, Wp_apply]`. Establish `h2 : (fun j => algebraMap (N.O i) (Kf N i) (v j) * k) = k • (algebraMap (N.O i) (Kf N i) ∘ v)`. Use function extensionality and compare the values at `j`. Simplify using `[mul_comm]`.
+
+Rewrite using `[h2, Matrix.mulVec_smul]`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.matW, ← RingHom.map_mulVec]`.
+-/
 theorem toPi_WpK (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G H.E N.Om)
     (t : TensorProduct (N.O i) (Fin R.r → N.O i) (FractionRing (N.O i))) :
     toPi N i (Glob.WpK N i ρ g t) = (GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.matW N i ρ g).mulVec (toPi N i t) := by
@@ -41,6 +54,11 @@ theorem toPi_WpK (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g : G 
     funext j
     rw [Pi.smul_apply, smul_eq_mul, mul_comm, GlobalTheory.IndefiniteRowSideFullHecke.NoLocalInvariantsRankParts.matW, ← RingHom.map_mulVec]
 
+/- English proof (translation)
+Introduce `R H what₂ N i ρ Dg h`. Rewrite using `[eq_bot_iff]`. Introduce `t ht`. Rewrite using `[Submodule.mem_bot]`. Establish `ht' : ∀ g ∈ Dg, Glob.WpK N i ρ g t = t` using `fun g hg => (Representation.mem_invariants _ t).1 ht ⟨g, hg⟩`.
+
+Establish `h0 : toPi N i t = 0` using `h _ fun g hg => by rw [← toPi_WpK, ht' g hg]`. Conclude with `(toPi N i).map_eq_zero_iff.1 h0`.
+-/
 theorem H0_weight_part_eq_bot :
     ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (i : N.Loc)
       (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (Dg : Subgroup (G H.E N.Om)),

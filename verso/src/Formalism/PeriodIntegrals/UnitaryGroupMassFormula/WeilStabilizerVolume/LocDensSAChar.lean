@@ -21,6 +21,15 @@ def AddIntF : Prop :=
     (∀ c : F, c ≠ 0 → ¬ ∀ a ∈ Λ, ∃ r : 𝓞 F, a = c * r) →
     ∀ g : F →+ ℂ, (∀ a ∈ Λ, ∃ n : ℤ, g a = n) → ∀ a, g a = 0
 
+/- English proof (translation)
+Introduce `F _ _ Λ h0 hb χ hχ hΛ x`. Take `⟨ℓ, hℓc, hℓ⟩` from `hL F χ hχ`. Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Set `g : F →+ ℂ` to `{ toFun := fun a => ℓ (algebraMap F (InfiniteAdeleRing F) a) / (2 * Real.pi * Complex.I) map_zero' := by simp map_add' := fun a b => by simp [add_div] }`.
+
+Establish `hg : ∀ a ∈ Λ, ∃ n : ℤ, g a = n` using `fun a ha => by`. Use `hΛ a ha` as an intermediate fact. Rewrite `this` using `[hℓ, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `this`. Conclude with `⟨n, by simp only [g, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hn]; field_simp⟩`.
+
+Establish `hg0` using `hA F Λ h0 hb g hg`. Establish `hz : ∀ a : F, ℓ (algebraMap F (InfiniteAdeleRing F) a) = 0` using `fun a => by`. Use `hg0 a` as an intermediate fact. Simplify using `only [g, AddMonoidHom.coe_mk, ZeroHom.coe_mk, div_eq_zero_iff, h2, or_false] at this`. Conclude with `this`.
+
+Establish `: ℓ x = 0` using `(InfiniteAdeleRing.denseRange_algebraMap F).induction_on x (isClosed_eq hℓc continuous_const) hz`. Rewrite using `[hℓ, this, Complex.exp_zero]`.
+-/
 theorem chInf_of (hL : ChLift) (hA : AddIntF) : ChInf := by
   intro F _ _ Λ h0 hb χ hχ hΛ x
   obtain ⟨ℓ, hℓc, hℓ⟩ := hL F χ hχ

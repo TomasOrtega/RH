@@ -20,6 +20,13 @@ def CntIsoInv : Prop :=
     (T' : D.host.E) (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (Z : MatZ D),
     cntE T' (Formalism.L2.SG.Saturated.mapFlag β hβ F0) (Formalism.HermitianLatticesTheory.gmap β Λ) Z = cntE T' F0 Λ Z
 
+/- English proof (translation)
+Introduce `D δ M hA L u u' hT F0 what₂ hR Z Λ hΛ`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`. Take `⟨β, hβ, he, hz⟩` from `Formalism.L2.SG.Pf.WittFlags.flag_witt hT0 rfl F0 (Formalism.MainNotions.S.Inh.tie_flag0 D u)`. Establish `hR'` using `Formalism.L2.SG.Pf.WittFlags.RowRepsIso_holds D β hβ F0 what₂ hR`. Establish `hF1e : (Formalism.L2.SG.Saturated.mapFlag β hβ F0).e = D.sp.hypE`.
+
+Use function extensionality and compare the values at `a`. Use `show β (F0.e a) = _`. Rewrite using `[he a]`. Both sides reduce to the same expression. Establish `hF1z : (Formalism.L2.SG.Saturated.mapFlag β hβ F0).z = D.zmOf u` using `by show β F0.z = _`.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression. Establish `hRO : RowsOf u (Formalism.L2.SG.Saturated.mapFlag β hβ F0) (what₂.image (Formalism.HermitianLatticesTheory.gmap β))` using `⟨hF1e, hF1z, hR', ⟨_, Finset.mem_image_of_mem _ hΛ⟩⟩`. Establish `h` using `PI.UnitaryGroupMassFormula.CntFormula.orbitFinite_of PI.UnitaryGroupMassFormula.CntFormula.unipotent_integral_isGroup PI.UnitaryGroupMassFormula.CntFormula.orbit_representatives D δ M hA L u u' hT _ _ hRO Z (Formalism.HermitianLatticesTheory.gmap β Λ) (Finset.mem_image_of_mem _ h …`. Rewrite `h` using `[hI D β hβ (Tn u') F0 Λ Z]`. Then use the resulting hypothesis.
+-/
 theorem orbitFiniteR_of (hI : CntIsoInv) : OrbitFiniteR := by
   intro D δ M hA L u u' hT F0 what₂ hR Z Λ hΛ
   have hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0 := Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero

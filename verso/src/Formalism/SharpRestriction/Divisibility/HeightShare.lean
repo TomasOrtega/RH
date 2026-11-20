@@ -21,6 +21,9 @@ def nsq (A : HLat F) (v : InfinitePlace F) (c : A.ι → ℂ) : ℝ :=
 
 def nrm (A : HLat F) (v : InfinitePlace F) (x : A.V) : ℝ := Formalism.HermitianLatticesTheory.normAt A.b A.X v x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nrm_eq (A : HLat F) (v : InfinitePlace F) (x : A.V) :
     nrm A v x = Real.sqrt (nsq A v (coordC A v x)) := rfl
 
@@ -398,6 +401,9 @@ def adm9 : Prop := GloballyGeneratedNef X.geo
 
 def admitted : Prop := AdmG X.geo
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.1`.
+-/
 theorem hilbert_samuel_of_hypotheses (h : admitted D X) : adm7 D X := h.2.2.2.2.1
 
 def Stmt (C : ℝ) : Prop := ShareGeneral X.geo C

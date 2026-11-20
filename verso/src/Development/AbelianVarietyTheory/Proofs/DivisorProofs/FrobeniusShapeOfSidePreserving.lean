@@ -9,6 +9,9 @@ namespace GlobalTheory.Shin
 
 open Polynomial SemidirectProduct in
 open scoped Classical in
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `isConj_iff.mp h`. Use `hf a c⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `this.symm`.
+-/
 private lemma isCl_apply_eq_of_isConj {G : Type} [Group G] {f : G → ℂ}
     (hf : _root_.GlobalTheory.Shin.IsCl f) {a b : G} (h : IsConj a b) : f a = f b := by
   obtain ⟨c, rfl⟩ := isConj_iff.mp h
@@ -19,6 +22,17 @@ private lemma isCl_apply_eq_of_isConj {G : Type} [Group G] {f : G → ℂ}
 open Polynomial SemidirectProduct in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hs n f hf`. Establish `hconj` using `(_root_.GlobalTheory.Shin.NrmBasic.main F F' s hs n).2.2.1`. Use `⟨fun δ γ hδ => ?_, fun δ y => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Shin.IsNorm at hδ`. Unfold `_root_.GlobalTheory.Shin.shLift`.
+
+Establish `hex : ∃ γ, _root_.GlobalTheory.Shin.IsNorm s δ γ` using `⟨γ, hδ⟩`. Rewrite using `[dif_pos hex]`. Establish `hspec : IsConj (_root_.GlobalTheory.Shin.incl F F' n hex.choose) (_root_.GlobalTheory.Shin.nrm s δ)` using `hex.choose_spec`. Conclude with `isCl_apply_eq_of_isConj hf (_root_.GlobalTheory.Shin.isConj_of_isConj_incl F F' n _ _ (hspec.trans hδ.symm))`. Establish `hN : IsConj (_root_.GlobalTheory.Shin.nrm s δ) (_root_.GlobalTheory.Shin.nrm s (y⁻¹ * δ * _root_.GlobalTheory.Shin.galAct F F' n s y))`.
+
+Rewrite using `[hconj δ y, isConj_iff]`. Conclude with `⟨y⁻¹, by rw [inv_inv]⟩`. Unfold `_root_.GlobalTheory.Shin.shLift`. Distinguish the cases in `hex : ∃ γ, _root_.GlobalTheory.Shin.IsNorm s δ γ`. Establish `hspec : IsConj (_root_.GlobalTheory.Shin.incl F F' n hex.choose) (_root_.GlobalTheory.Shin.nrm s δ)` using `hex.choose_spec`.
+
+Establish `hex' : ∃ γ, _root_.GlobalTheory.Shin.IsNorm s (y⁻¹ * δ * _root_.GlobalTheory.Shin.galAct F F' n s y) γ` using `⟨hex.choose, hspec.trans hN⟩`. Establish `hspec' : IsConj (_root_.GlobalTheory.Shin.incl F F' n hex'.choose) (_root_.GlobalTheory.Shin.nrm s (y⁻¹ * δ * _root_.GlobalTheory.Shin.galAct F F' n s y))` using `hex'.choose_spec`. Rewrite using `[dif_pos hex, dif_pos hex']`. Conclude with `isCl_apply_eq_of_isConj hf (_root_.GlobalTheory.Shin.isConj_of_isConj_incl F F' n _ _ (hspec'.trans (hspec.trans hN).symm))`. Establish `hex' : ¬ ∃ γ, _root_.GlobalTheory.Shin.IsNorm s (y⁻¹ * δ * _root_.GlobalTheory.Shin.galAct F F' n s y) γ` using `fun ⟨γ, hγ⟩ => hex ⟨γ, (show IsConj (_root_.GlobalTheory.Shin.incl F F' n γ) _ from hγ).trans hN.symm⟩`.
+
+Rewrite using `[dif_neg hex, dif_neg hex']`.
+-/
 theorem _root_.GlobalTheory.Shin.shLift_isNorm_and_twisted_inv : ∀ (F F' : Type) [Field F] [Field F']
     [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'), (∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s) →
     ∀ (n : ℕ) (f : GL (Fin n) F → ℂ), _root_.GlobalTheory.Shin.IsCl f →

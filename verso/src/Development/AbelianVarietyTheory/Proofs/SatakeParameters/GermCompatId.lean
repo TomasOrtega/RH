@@ -20,6 +20,9 @@ def GermCompat {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (c : Y ⟶ Z) (�
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry KaehlerDifferential in
 
+/- English proof (translation)
+Introduce `V hV hV' g`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.W1.Lef.germCompat_id (Z : Scheme.{0}) [IsIntegral Z] :
     _root_.GlobalTheory.W1.Lef.GermCompat (𝟙 Z) (fun y => y) := by
   intro V hV hV' g
@@ -31,6 +34,9 @@ abbrev omCx {K : Type} [Field K] [Algebra ℂ K] {ι : Type} [LinearOrder ι] (B
 def mapL (K L : Type) [Field K] [Field L] [Algebra ℂ K] [Algebra ℂ L] [Algebra K L] [IsScalarTower ℂ K L] :
     DR ℂ K →ₗ[ℂ] DR ℂ L := (mapDR ℂ K L).toLinearMap.restrictScalars ℂ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapL_apply (K L : Type) [Field K] [Field L] [Algebra ℂ K] [Algebra ℂ L] [Algebra K L] [IsScalarTower ℂ K L]
     (ω : DR ℂ K) : mapL K L ω = mapDR ℂ K L ω := rfl
 
@@ -74,6 +80,9 @@ def NatTrace (e : CmpFam) : Prop :=
 def locTerm {d : ℕ} (A : Matrix (Fin d) (Fin d) ℂ) (a : ℕ) : ℂ :=
   (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • A.map Polynomial.C)).coeff a / (1 - A).det
 
+/- English proof (translation)
+Simplify using `[locTerm]`.
+-/
 example (A : Matrix (Fin 0) (Fin 0) ℂ) : locTerm A 0 = 1 := by simp [locTerm]
 
 end GlobalTheory.W1.Lef

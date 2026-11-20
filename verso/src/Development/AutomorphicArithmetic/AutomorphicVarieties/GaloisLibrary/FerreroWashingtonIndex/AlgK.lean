@@ -5,6 +5,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 
 open UpperTheory.V.FW
 
+/- English proof (translation)
+Introduce `l _ a m b K k G Q _ _ _ _ _ _ p π γ J θ hml hγ hp hord hpJ hπ hπγ htw`. Establish `hl : l.Prime` using `Fact.out`. Set `I : Ideal (MonoidAlgebra k G)` to `Ideal.span {θ, 1 + MonoidAlgebra.of k G J}`. Set `r : MonoidAlgebra k G →ₐ[k] (MonoidAlgebra k G ⧸ I)` to `Ideal.Quotient.mkₐ k I`. Establish `hr : ∀ x, r x = 0 ↔ x ∈ I` using `fun x => by`.
+
+Rewrite using `[Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`. Set `qh : G →* G` to `{ toFun := fun g => (g * (p g)⁻¹) ^ (l ^ a) map_one' := by simp map_mul' := by`. Introduce `x y`. Rewrite using `[map_mul, mul_inv, mul_mul_mul_comm, mul_pow] }`.
+
+Set `D : Subgroup G` to `qh.range`. Set `qD : G →* D` to `qh.rangeRestrict`. Establish `hcard : (Nat.card D : k) ≠ 0`. Introduce `h`. Rewrite `h` using `[CharP.cast_eq_zero_iff k l]`.
+
+Take `⟨d, hd⟩` from `exists_prime_orderOf_dvd_card' l h`. Take `⟨g, hg⟩` from `d.2`. Establish `h1 : (d : G) ^ m = 1`. Rewrite using `[← hg]`. Use `show ((g * (p g)⁻¹) ^ (l ^ a)) ^ m = 1`.
+
+Rewrite using `[← pow_mul]`. Conclude with `hord g`. Establish `h2 : orderOf d ∣ m`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Conclude with `Subtype.ext (by simpa using h1)`.
+
+Rewrite `h2` using `[hd]`. Establish `h3 : l ∣ Nat.gcd m l` using `Nat.dvd_gcd h2 dvd_rfl`. Rewrite `h3` using `[hml]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.mp h3)`. Set `ρ : D →* (MonoidAlgebra k G ⧸ I)` to `((r : MonoidAlgebra k G →+* (MonoidAlgebra k G ⧸ I)) : MonoidAlgebra k G →* (MonoidAlgebra k G ⧸ I)).comp ((MonoidAlgebra.of k G).comp D.subtype)`.
+
+Establish `hρ : ∀ g, ρ (qD g) = r (MonoidAlgebra.of k G ((g * (p g)⁻¹) ^ (l ^ a)))` using `fun g => rfl`. Establish `hθ : r θ = 0` using `(hr θ).mpr (Ideal.subset_span (Set.mem_insert _ _))`. Establish `hJ : r (MonoidAlgebra.of k G J) = -1`. Establish `h0 : r (1 + MonoidAlgebra.of k G J) = 0` using `(hr _).mpr (Ideal.subset_span (Set.mem_insert_of_mem _ rfl))`. Rewrite `h0` using `[map_add, map_one]`.
+
+Conclude with `eq_neg_of_add_eq_zero_right h0`. Establish `hla : l ^ a ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Rewrite using `[← hr]`. Apply `sepChar k D _ ρ _ hcard` to reduce the goal to its premises. Introduce `ψ e he`.
+
+Distinguish the cases in `he0 : e = 0`. Rewrite using `[he0, mul_zero]`. Set `F : k ≃+* k` to `(iterateFrobeniusEquiv k l a).symm`. Set `χ : G →* kˣ` to `(Units.map (F : k →* k)).comp (ψ.comp qD)`. Establish `hχ : ∀ g, (χ g : k) ^ (l ^ a) = ψ (qD g)`.
+
+Introduce `g`. Use `show (F (ψ (qD g) : k)) ^ (l ^ a) = _`. Rewrite using `[← iterateFrobeniusEquiv_def]`. Conclude with `RingEquiv.apply_symm_apply _ _`. Establish `hT : r (tw χ p θ) ^ (l ^ a) * e = 0`.
+
+Use `frobEig l a k G _ r p χ e θ (by` as an intermediate fact. Introduce `g`. Rewrite using `[hχ g, ← hρ g]`. Conclude with `he (qD g))`. Rewrite using `[← this, hθ, zero_pow hla, zero_mul]`.
+
+Establish `hχJ : χ J = -1`. Establish `h1` using `he (qD J)`. Rewrite `h1` using `[hρ J, hpJ, inv_one, mul_one, map_pow, map_pow, hJ]`. Establish `h2 : ((-1 : k) ^ (l ^ a)) • e = (ψ (qD J) : k) • e`. Rewrite using `[← h1, Algebra.smul_def, map_pow, map_neg, map_one]`.
+
+Establish `h3` using `smul_left_injective k he0 h2`. Rewrite `h3` using `[← hχ J]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_neg, Units.val_one]`. Apply `(iterateFrobeniusEquiv k l a).injective` to reduce the goal to its premises.
+
+Rewrite using `[iterateFrobeniusEquiv_def, iterateFrobeniusEquiv_def]`. Conclude with `h3.symm`. Take `⟨c, hc⟩` from `phiDvd l b K k G Q p π γ χ θ hγ hp hπ hπγ (htw χ hχJ)`. Rewrite using `[pow_mul, hc, mul_pow, map_mul, map_pow, map_pow, mul_right_comm, hT, zero_mul]`.
+-/
 theorem UpperTheory.V.FW.algK :
     ∀ (l : ℕ) [Fact l.Prime] (a m b K : ℕ) (k G Q : Type) [Field k] [CharP k l] [IsAlgClosed k] [CommGroup G] [Finite G] [CommGroup Q] (p : G →* G) (π : G →* Q) (γ J : G) (θ : MonoidAlgebra k G), m.Coprime l → γ ^ l ^ b = 1 → (∀ g, p g ∈ Subgroup.zpowers γ) → (∀ g, (g * (p g)⁻¹) ^ (l ^ a * m) = 1) → p J = 1 → (∀ g, π (p g) = π g) → π γ ^ l ^ K = 1 → (∀ χ : G →* kˣ, χ J = -1 → tw χ π θ ≠ 0) → (MonoidAlgebra.of k G γ - 1) ^ (l ^ K * l ^ a) ∈ Ideal.span {θ, 1 + MonoidAlgebra.of k G J} := by
   intro l _ a m b K k G Q _ _ _ _ _ _ p π γ J θ hml hγ hp hord hpJ hπ hπγ htw

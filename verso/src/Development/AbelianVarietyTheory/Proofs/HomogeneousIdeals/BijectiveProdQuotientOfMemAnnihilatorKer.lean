@@ -19,9 +19,15 @@ variable {R C M M' : Type*} [CommSemiring R] [AddCommMonoid C] [Module R C]
 def dualContraction (ρ : M →ₗ[R] M ⊗[R] C) : CartierDual R C →ₗ[R] Module.End R M :=
   (tensorToHom R M C ∘ₗ ρ).flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualContraction_apply (ρ : M →ₗ[R] M ⊗[R] C) (w : CartierDual R C) (m : M) :
     dualContraction ρ w m = tensorToHom R M C (ρ m) w := rfl
 
+/- English proof (translation)
+The claim follows from `tensorToHom_apply _ _`.
+-/
 theorem dualContraction_eq_rid (ρ : M →ₗ[R] M ⊗[R] C) (w : CartierDual R C) (m : M) :
     dualContraction ρ w m = TensorProduct.rid R M (w.ofConv.lTensor M (ρ m)) :=
   tensorToHom_apply _ _
@@ -36,19 +42,31 @@ def dualContractionEquiv [Module.Finite R C] [Module.Projective R C] :
   right_inv θ := LinearMap.ext fun w => LinearMap.ext fun m =>
     congr($((tensorEquivHom R M C).apply_symm_apply (θ.flip m)) w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualContractionEquiv_apply [Module.Finite R C] [Module.Projective R C]
     (ρ : M →ₗ[R] M ⊗[R] C) : dualContractionEquiv R C M ρ = dualContraction ρ := rfl
 
+/- English proof (translation)
+Rewrite using `[dualContraction_apply, mem_coactionWeightSpace.1 hm, tensorToHom_tmul]`.
+-/
 theorem dualContraction_of_mem_coactionWeightSpace {ρ : M →ₗ[R] M ⊗[R] C} {g : C} {m : M}
     (hm : m ∈ coactionWeightSpace ρ g) (w : CartierDual R C) :
     dualContraction ρ w m = w g • m := by
   rw [dualContraction_apply, mem_coactionWeightSpace.1 hm, tensorToHom_tmul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dualContraction_of_mem_coactionWeightSpace, fun h => eq_of_forall_tensorToHom h⟩`.
+-/
 theorem mem_coactionWeightSpace_iff_dualContraction [Module.Finite R C] [Module.Projective R C]
     {ρ : M →ₗ[R] M ⊗[R] C} {g : C} {m : M} :
     m ∈ coactionWeightSpace ρ g ↔ ∀ w : CartierDual R C, dualContraction ρ w m = w g • m :=
   ⟨dualContraction_of_mem_coactionWeightSpace, fun h => eq_of_forall_tensorToHom h⟩
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul n m => simp`.
+-/
 private theorem tensorToHom_rTensor (f : M →ₗ[R] M') (x : M ⊗[R] C) (w : CartierDual R C) :
     tensorToHom R M' C (f.rTensor C x) w = f (tensorToHom R M C x w) := by
   induction x with
@@ -56,11 +74,17 @@ private theorem tensorToHom_rTensor (f : M →ₗ[R] M') (x : M ⊗[R] C) (w : C
   | add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]
   | tmul n m => simp
 
+/- English proof (translation)
+Rewrite using `[dualContraction_apply, hf, tensorToHom_rTensor, dualContraction_apply]`.
+-/
 theorem dualContraction_map {ρ : M →ₗ[R] M ⊗[R] C} {ρ' : M' →ₗ[R] M' ⊗[R] C} {f : M →ₗ[R] M'}
     (hf : ∀ m, ρ' (f m) = f.rTensor C (ρ m)) (w : CartierDual R C) (m : M) :
     dualContraction ρ' w (f m) = f (dualContraction ρ w m) := by
   rw [dualContraction_apply, hf, tensorToHom_rTensor, dualContraction_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dualContraction_map, fun h m => eq_of_forall_tensorToHom fun w => by rw [tensorToHom_rTensor]; exact h w m⟩`.
+-/
 theorem comm_iff_dualContraction_map [Module.Finite R C] [Module.Projective R C]
     {ρ : M →ₗ[R] M ⊗[R] C} {ρ' : M' →ₗ[R] M' ⊗[R] C} {f : M →ₗ[R] M'} :
     (∀ m, ρ' (f m) = f.rTensor C (ρ m)) ↔
@@ -70,6 +94,11 @@ theorem comm_iff_dualContraction_map [Module.Finite R C] [Module.Projective R C]
 
 variable [Coalgebra R C]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul m c`. Rewrite using `[LinearMap.rTensor_tmul, tensorToHom_tmul, map_smul, dualContraction_apply]`.
+
+Generalize the expression as in `ρ m = s`. Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, add_tmul, smul_add, hx, hy]`. Consider the case `tmul m' c' => simp [smul_smul, mul_comm]`.
+-/
 private theorem tensorToHom_assoc_rTensor (ρ : M →ₗ[R] M ⊗[R] C) (φ ψ : CartierDual R C)
     (x : M ⊗[R] C) :
     tensorToHom R M (C ⊗[R] C) (TensorProduct.assoc R M C C (ρ.rTensor C x))
@@ -85,6 +114,9 @@ private theorem tensorToHom_assoc_rTensor (ρ : M →ₗ[R] M ⊗[R] C) (φ ψ :
     | add x y hx hy => simp only [map_add, LinearMap.add_apply, add_tmul, smul_add, hx, hy]
     | tmul m' c' => simp [smul_smul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul m c => rw [LinearMap.lTensor_tmul, tensorToHom_tmul, tensorToHom_tmul, mul_apply]`.
+-/
 private theorem tensorToHom_lTensor_comul (φ ψ : CartierDual R C) (x : M ⊗[R] C) :
     tensorToHom R M (C ⊗[R] C) ((comul : C →ₗ[R] C ⊗[R] C).lTensor M x)
       (toConv (pair R C C (φ ⊗ₜ ψ))) = tensorToHom R M C x (φ * ψ) := by
@@ -93,10 +125,16 @@ private theorem tensorToHom_lTensor_comul (φ ψ : CartierDual R C) (x : M ⊗[R
   | add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]
   | tmul m c => rw [LinearMap.lTensor_tmul, tensorToHom_tmul, tensorToHom_tmul, mul_apply]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun m => (dualContraction_eq_rid ρ 1 m).trans (h.rid_counit m)`.
+-/
 theorem IsCoaction.dualContraction_one {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     dualContraction ρ 1 = 1 :=
   LinearMap.ext fun m => (dualContraction_eq_rid ρ 1 m).trans (h.rid_counit m)
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun m => by rw [Module.End.mul_apply, dualContraction_apply, dualContraction_apply ρ ψ, ← tensorToHom_lTensor_comul, ← h.coassoc, tensorToHom_assoc_rTensor]`.
+-/
 theorem IsCoaction.dualContraction_mul {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ)
     (φ ψ : CartierDual R C) :
     dualContraction ρ (φ * ψ) = dualContraction ρ φ * dualContraction ρ ψ :=
@@ -104,6 +142,11 @@ theorem IsCoaction.dualContraction_mul {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoac
     rw [Module.End.mul_apply, dualContraction_apply, dualContraction_apply ρ ψ,
       ← tensorToHom_lTensor_comul, ← h.coassoc, tensorToHom_assoc_rTensor]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨h.dualContraction_one, h.dualContraction_mul⟩, fun ⟨h1, h2⟩ => ⟨fun m => eq_of_forall_tensorToHom_pair fun φ ψ => ?_, fun m => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[tensorToHom_lTensor_comul, tensorToHom_assoc_rTensor]`. Conclude with `congr($(h2 φ ψ) m).symm`. Use `(TensorProduct.rid R M).injective ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.rid_tmul, one_smul]`.
+
+Conclude with `(dualContraction_eq_rid ρ 1 m).symm.trans congr($h1 m)`.
+-/
 theorem isCoaction_iff_dualContraction [Module.Finite R C] [Module.Projective R C]
     {ρ : M →ₗ[R] M ⊗[R] C} :
     IsCoaction ρ ↔ dualContraction ρ 1 = 1 ∧
@@ -120,6 +163,9 @@ def IsCoaction.dualAction {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     CartierDual R C →ₐ[R] Module.End R M :=
   AlgHom.ofLinearMap (dualContraction ρ) h.dualContraction_one h.dualContraction_mul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem IsCoaction.dualAction_apply {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ)
     (w : CartierDual R C) : h.dualAction w = dualContraction ρ w := rfl
 
@@ -127,9 +173,15 @@ abbrev IsCoaction.dualModule {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     Module (CartierDual R C) M :=
   Module.compHom M h.dualAction.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem IsCoaction.dualModule_smul {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ)
     (w : CartierDual R C) (m : M) : letI := h.dualModule; w • m = dualContraction ρ w m := rfl
 
+/- English proof (translation)
+The claim follows from `letI := h.dualModule ⟨fun r w m => congr($((dualContraction ρ).map_smul r w) m)⟩`.
+-/
 theorem IsCoaction.dualModule_isScalarTower {ρ : M →ₗ[R] M ⊗[R] C} (h : IsCoaction ρ) :
     letI := h.dualModule; IsScalarTower R (CartierDual R C) M :=
   letI := h.dualModule
@@ -147,10 +199,16 @@ def coactionEquivDualAction [Module.Finite R C] [Module.Projective R C] :
   right_inv θ := AlgHom.toLinearMap_injective
     ((dualContractionEquiv R C M).apply_symm_apply θ.toLinearMap)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coactionEquivDualAction_apply [Module.Finite R C] [Module.Projective R C]
     (ρ : {ρ : M →ₗ[R] M ⊗[R] C // IsCoaction ρ}) :
     coactionEquivDualAction R C M ρ = ρ.2.dualAction := rfl
 
+/- English proof (translation)
+Set `θ : CartierDual R C →ₐ[R] Module.End R M` to `Algebra.lsmul R R M`. Use `⟨((coactionEquivDualAction R C M).symm θ).1, ⟨((coactionEquivDualAction R C M).symm θ).2, fun w m => congr($((coactionEquivDualAction R C M).apply_symm_apply θ) w m)⟩, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `: coactionEquivDualAction R C M ⟨ρ, hρ.1⟩ = θ` using `AlgHom.ext fun w => LinearMap.ext fun m => hρ.2 w m`. Rewrite using `[← this, Equiv.symm_apply_apply]`.
+-/
 theorem existsUnique_isCoaction_of_module [Module.Finite R C] [Module.Projective R C]
     [Module (CartierDual R C) M] [IsScalarTower R (CartierDual R C) M] :
     ∃! ρ : M →ₗ[R] M ⊗[R] C, IsCoaction ρ ∧
@@ -174,16 +232,25 @@ section Noncommutative
 variable {D : Type*} [Ring D] [Algebra R D] {M : Type*} [AddCommGroup M] [Module R M] [Module D M]
   [IsScalarTower R D M]
 
+/- English proof (translation)
+Use `⟨fun h w => ?_, fun h w hw => by rw [h, RingHom.mem_ker.1 hw, zero_smul]⟩` and prove the remaining obligations. Use `h (w - algebraMap R D (ε w)) (by simp [RingHom.mem_ker])` as an intermediate fact. Rewrite `this` using `[sub_smul, algebraMap_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem forall_ker_smul_eq_zero_iff (ε : D →ₐ[R] R) (m : M) :
     (∀ w ∈ RingHom.ker ε, w • m = 0) ↔ ∀ w : D, w • m = ε w • m := by
   refine ⟨fun h w => ?_, fun h w hw => by rw [h, RingHom.mem_ker.1 hw, zero_smul]⟩
   have := h (w - algebraMap R D (ε w)) (by simp [RingHom.mem_ker])
   rwa [sub_smul, algebraMap_smul, sub_eq_zero] at this
 
+/- English proof (translation)
+The claim follows from `forall_ker_smul_eq_zero_iff ε Λ`.
+-/
 theorem forall_ker_mul_eq_zero_iff (ε : D →ₐ[R] R) (Λ : D) :
     (∀ w ∈ RingHom.ker ε, w * Λ = 0) ↔ ∀ w : D, w * Λ = ε w • Λ :=
   forall_ker_smul_eq_zero_iff ε Λ
 
+/- English proof (translation)
+Rewrite using `[← mul_smul, (forall_ker_mul_eq_zero_iff ε Λ).1 hΛ, smul_assoc]`.
+-/
 theorem smul_smul_eq_of_forall_ker_mul_eq_zero {ε : D →ₐ[R] R} {Λ : D}
     (hΛ : ∀ w ∈ RingHom.ker ε, w * Λ = 0) (m : M) (w : D) : w • Λ • m = ε w • Λ • m := by
   rw [← mul_smul, (forall_ker_mul_eq_zero_iff ε Λ).1 hΛ, smul_assoc]
@@ -192,24 +259,39 @@ end Noncommutative
 
 variable {D D' : Type*} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D']
 
+/- English proof (translation)
+Simplify using `only [Submodule.mem_annihilator, smul_eq_mul, mul_comm Λ]`.
+-/
 theorem mem_annihilator_iff_forall_mul {I : Ideal D} {Λ : D} :
     Λ ∈ I.annihilator ↔ ∀ w ∈ I, w * Λ = 0 := by
   simp only [Submodule.mem_annihilator, smul_eq_mul, mul_comm Λ]
 
+/- English proof (translation)
+The claim follows from `mem_annihilator_iff_forall_mul.trans (forall_ker_mul_eq_zero_iff ε Λ)`.
+-/
 theorem mem_annihilator_ker_iff {ε : D →ₐ[R] R} {Λ : D} :
     Λ ∈ (RingHom.ker ε).annihilator ↔ ∀ w : D, w * Λ = ε w • Λ :=
   mem_annihilator_iff_forall_mul.trans (forall_ker_mul_eq_zero_iff ε Λ)
 
+/- English proof (translation)
+The claim follows from `smul_smul_eq_of_forall_ker_mul_eq_zero (mem_annihilator_iff_forall_mul.1 hΛ) m w`.
+-/
 theorem smul_smul_eq_of_mem_annihilator_ker {M : Type*} [AddCommGroup M] [Module R M] [Module D M]
     [IsScalarTower R D M] {ε : D →ₐ[R] R} {Λ : D} (hΛ : Λ ∈ (RingHom.ker ε).annihilator) (m : M)
     (w : D) : w • Λ • m = ε w • Λ • m :=
   smul_smul_eq_of_forall_ker_mul_eq_zero (mem_annihilator_iff_forall_mul.1 hΛ) m w
 
+/- English proof (translation)
+Rewrite using `[← mem_annihilator_ker_iff.1 hT, ← mem_annihilator_ker_iff.1 hΛ, mul_comm]`.
+-/
 theorem smul_eq_smul_of_mem_annihilator_ker {ε : D →ₐ[R] R} {Λ T : D}
     (hΛ : Λ ∈ (RingHom.ker ε).annihilator) (hT : T ∈ (RingHom.ker ε).annihilator) :
     ε Λ • T = ε T • Λ := by
   rw [← mem_annihilator_ker_iff.1 hT, ← mem_annihilator_ker_iff.1 hΛ, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [mem_annihilator_ker_iff]`. Rewrite using `[e.surjective.forall]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, he, ← map_smul, e.injective.eq_iff]`.
+-/
 theorem map_mem_annihilator_ker_iff {ε : D →ₐ[R] R} {ε' : D' →ₐ[R] R} (e : D ≃ₐ[R] D')
     (he : ∀ d, ε' (e d) = ε d) {Λ : D} :
     e Λ ∈ (RingHom.ker ε').annihilator ↔ Λ ∈ (RingHom.ker ε).annihilator := by
@@ -218,11 +300,19 @@ theorem map_mem_annihilator_ker_iff {ε : D →ₐ[R] R} {ε' : D' →ₐ[R] R} 
   refine forall_congr' fun w => ?_
   rw [← map_mul, he, ← map_smul, e.injective.eq_iff]
 
+/- English proof (translation)
+Simplify using `[mem_annihilator_ker_iff]`.
+-/
 theorem prod_mk_zero_mem_annihilator_ker_iff {ε : D →ₐ[R] R} {Λ : D} :
     ((Λ, 0) : D × D') ∈ (RingHom.ker (ε.comp (AlgHom.fst R D D'))).annihilator ↔
       Λ ∈ (RingHom.ker ε).annihilator := by
   simp [mem_annihilator_ker_iff]
 
+/- English proof (translation)
+Simplify using `only [mem_annihilator_ker_iff]`. Use `⟨fun h w => by simpa using congrFun (h (Pi.single i w)) i, fun h w => funext fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using h (w j)`.
+
+Simplify using `[hj]`.
+-/
 theorem pi_single_mem_annihilator_ker_iff {ι : Type*} [DecidableEq ι] {A : ι → Type*}
     [∀ i, CommRing (A i)] [∀ i, Algebra R (A i)] {i : ι} {ε : A i →ₐ[R] R} {Λ : A i} :
     Pi.single i Λ ∈ (RingHom.ker (ε.comp (Pi.evalAlgHom R A i))).annihilator ↔
@@ -233,6 +323,11 @@ theorem pi_single_mem_annihilator_ker_iff {ι : Type*} [DecidableEq ι] {A : ι 
   · subst hj; simpa using h (w j)
   · simp [hj]
 
+/- English proof (translation)
+Use `⟨mem_annihilator_ker_iff.2 fun w => ?_, by simp [hy]⟩` and prove the remaining obligations. Establish `hw : w ∈ Submodule.span R (Set.range y)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+
+Rewrite using `[hy, one_smul, Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun g' => by simp`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_mul, ha, hb, map_add, add_smul]`. Consider the case `smul r a _ ha => rw [smul_mul_assoc, ha, map_smul, smul_assoc]`.
+-/
 theorem sum_mem_annihilator_ker {G : Type*} [Group G] [Fintype G] {ε : D →ₐ[R] R} (y : G →* D)
     (hy : ∀ g, ε (y g) = 1) (hspan : Submodule.span R (Set.range y) = ⊤) :
     ∑ g, y g ∈ (RingHom.ker ε).annihilator ∧ ε (∑ g, y g) = Fintype.card G := by
@@ -254,13 +349,22 @@ section Invariants
 variable {R H M : Type*} [CommRing R] [Semiring H] [Bialgebra R H] [Module.Finite R H]
   [Module.Projective R H] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem counitAlgHom_cartierDual_apply (w : CartierDual R H) :
     counitAlgHom R (CartierDual R H) w = w 1 := rfl
 
+/- English proof (translation)
+The claim follows from `mem_coactionWeightSpace_iff_dualContraction`.
+-/
 theorem invariant_iff_dualContraction {ρ : M →ₗ[R] M ⊗[R] H} {m : M} :
     ρ m = m ⊗ₜ 1 ↔ ∀ w : CartierDual R H, dualContraction ρ w m = w 1 • m :=
   mem_coactionWeightSpace_iff_dualContraction
 
+/- English proof (translation)
+The claim follows from `letI := h.dualModule haveI := h.dualModule_isScalarTower invariant_iff_dualContraction.trans (forall_ker_smul_eq_zero_iff (counitAlgHom R (CartierDual R H)) m).symm`.
+-/
 theorem IsCoaction.invariant_iff_forall_ker {ρ : M →ₗ[R] M ⊗[R] H} (h : IsCoaction ρ) {m : M} :
     ρ m = m ⊗ₜ 1 ↔
       ∀ w ∈ RingHom.ker (counitAlgHom R (CartierDual R H)), dualContraction ρ w m = 0 :=
@@ -269,18 +373,27 @@ theorem IsCoaction.invariant_iff_forall_ker {ρ : M →ₗ[R] M ⊗[R] H} (h : I
   invariant_iff_dualContraction.trans
     (forall_ker_smul_eq_zero_iff (counitAlgHom R (CartierDual R H)) m).symm
 
+/- English proof (translation)
+The claim follows from `h.invariant_iff_forall_ker.2 fun w hw => by rw [← Module.End.mul_apply, ← h.dualContraction_mul, hΛ w hw, map_zero, LinearMap.zero_apply]`.
+-/
 theorem IsCoaction.invariant_dualContraction {ρ : M →ₗ[R] M ⊗[R] H} (h : IsCoaction ρ)
     {Λ : CartierDual R H} (hΛ : ∀ w ∈ RingHom.ker (counitAlgHom R (CartierDual R H)), w * Λ = 0)
     (m : M) : ρ (dualContraction ρ Λ m) = dualContraction ρ Λ m ⊗ₜ 1 :=
   h.invariant_iff_forall_ker.2 fun w hw => by
     rw [← Module.End.mul_apply, ← h.dualContraction_mul, hΛ w hw, map_zero, LinearMap.zero_apply]
 
+/- English proof (translation)
+The claim follows from `h.invariant_dualContraction (mem_annihilator_iff_forall_mul.1 hΛ) m`.
+-/
 theorem IsCoaction.invariant_dualContraction_of_mem_annihilator [IsCocomm R H]
     {ρ : M →ₗ[R] M ⊗[R] H} (h : IsCoaction ρ) {Λ : CartierDual R H}
     (hΛ : Λ ∈ (RingHom.ker (counitAlgHom R (CartierDual R H))).annihilator) (m : M) :
     ρ (dualContraction ρ Λ m) = dualContraction ρ Λ m ⊗ₜ 1 :=
   h.invariant_dualContraction (mem_annihilator_iff_forall_mul.1 hΛ) m
 
+/- English proof (translation)
+The claim follows from `invariant_iff_dualContraction.1 hm Λ`.
+-/
 theorem dualContraction_of_invariant {ρ : M →ₗ[R] M ⊗[R] H} {m : M} (hm : ρ m = m ⊗ₜ 1)
     (Λ : CartierDual R H) : dualContraction ρ Λ m = Λ 1 • m :=
   invariant_iff_dualContraction.1 hm Λ
@@ -291,15 +404,24 @@ section Unramified
 
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
 
+/- English proof (translation)
+Rewrite using `[IsIdempotentElem, mem_annihilator_ker_iff.1 he, he1, one_smul]`.
+-/
 theorem isIdempotentElem_of_mem_annihilator_ker {ε : A →ₐ[R] R} {e : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1) : IsIdempotentElem e := by
   rw [IsIdempotentElem, mem_annihilator_ker_iff.1 he, he1, one_smul]
 
+/- English proof (translation)
+Rewrite using `[← smul_eq_smul_of_mem_annihilator_ker he hΛ, he1, one_smul]`.
+-/
 theorem eq_smul_of_mem_annihilator_ker {ε : A →ₐ[R] R} {e Λ : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1)
     (hΛ : Λ ∈ (RingHom.ker ε).annihilator) : Λ = ε Λ • e := by
   rw [← smul_eq_smul_of_mem_annihilator_ker he hΛ, he1, one_smul]
 
+/- English proof (translation)
+Use `le_antisymm (fun w hw => Ideal.mem_span_singleton'.2 ⟨w, ?_⟩) ?_` and prove the remaining obligations. Rewrite using `[mul_sub, mul_one, mem_annihilator_iff_forall_mul.1 he w hw, sub_zero]`. Simplify using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, he1]`.
+-/
 theorem ker_eq_span_one_sub {ε : A →ₐ[R] R} {e : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1) :
     RingHom.ker ε = Ideal.span {1 - e} := by
@@ -307,6 +429,9 @@ theorem ker_eq_span_one_sub {ε : A →ₐ[R] R} {e : A}
   · rw [mul_sub, mul_one, mem_annihilator_iff_forall_mul.1 he w hw, sub_zero]
   · simp [Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, he1]
 
+/- English proof (translation)
+Use `le_antisymm (fun Λ hΛ => Ideal.mem_span_singleton'.2 ⟨algebraMap R A (ε Λ), ?_⟩) ((Ideal.span_singleton_le_iff_mem _).2 he)` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, ← eq_smul_of_mem_annihilator_ker he he1 hΛ]`.
+-/
 theorem annihilator_ker_eq_span {ε : A →ₐ[R] R} {e : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1) :
     (RingHom.ker ε).annihilator = Ideal.span {e} := by
@@ -314,6 +439,9 @@ theorem annihilator_ker_eq_span {ε : A →ₐ[R] R} {e : A}
     ((Ideal.span_singleton_le_iff_mem _).2 he)
   rw [← Algebra.smul_def, ← eq_smul_of_mem_annihilator_ker he he1 hΛ]
 
+/- English proof (translation)
+Use `le_antisymm (fun Λ hΛ => Submodule.mem_span_singleton.2 ⟨ε Λ, ?_⟩) ((Submodule.span_singleton_le_iff_mem _ _).2 he)` and prove the remaining obligations. Conclude with `(eq_smul_of_mem_annihilator_ker he he1 hΛ).symm`.
+-/
 theorem annihilator_ker_restrictScalars_eq_span {ε : A →ₐ[R] R} {e : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1) :
     (RingHom.ker ε).annihilator.restrictScalars R = R ∙ e := by
@@ -321,6 +449,13 @@ theorem annihilator_ker_restrictScalars_eq_span {ε : A →ₐ[R] R} {e : A}
     ((Submodule.span_singleton_le_iff_mem _ _).2 he)
   exact (eq_smul_of_mem_annihilator_ker he he1 hΛ).symm
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero _).2 fun a ha => ?_, fun ⟨r, q⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : ε a = 0` using `congrArg Prod.fst ha`. Establish `h2 : a ∈ Ideal.span {e}` using `Ideal.Quotient.eq_zero_iff_mem.1 (congrArg Prod.snd ha)`. Rewrite `h2` using `[← annihilator_ker_eq_span he he1]`. Rewrite using `[eq_smul_of_mem_annihilator_ker he he1 h2, h1, zero_smul]`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `h0 : Ideal.Quotient.mkₐ R (Ideal.span {e}) e = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self e)`. Use `⟨a + (r - ε a) • e, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Simplify using `[he1]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mkₐ R (Ideal.span {e}) (a + (r - ε a) • e) = _`.
+
+Rewrite using `[map_add, map_smul, h0, smul_zero, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem bijective_prod_quotient_of_mem_annihilator_ker {ε : A →ₐ[R] R} {e : A}
     (he : e ∈ (RingHom.ker ε).annihilator) (he1 : ε e = 1) :
     Function.Bijective (ε.prod (Ideal.Quotient.mkₐ R (Ideal.span {e}))) := by
@@ -337,6 +472,13 @@ theorem bijective_prod_quotient_of_mem_annihilator_ker {ε : A →ₐ[R] R} {e :
     · change Ideal.Quotient.mkₐ R (Ideal.span {e}) (a + (r - ε a) • e) = _
       rw [map_add, map_smul, h0, smul_zero, add_zero]; rfl
 
+/- English proof (translation)
+Set `π : A ⊗[R] A →ₐ[R] A` to `Algebra.TensorProduct.lift ((Algebra.ofId R A).comp ε) (AlgHom.id R A) fun _ _ => Commute.all _ _`. Establish `hπ (t : A ⊗[R] A) : ε (π t) = ε (Algebra.TensorProduct.lmul' R t)`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `tmul a b => simp [π, Algebra.ofId_apply]`. Establish `he : π (Algebra.FormallyUnramified.elem R A) ∈ (RingHom.ker ε).annihilator` using `mem_annihilator_ker_iff.2 fun w => by`. Use `congrArg π (Algebra.FormallyUnramified.one_tmul_mul_elem (R := R) w)` as an intermediate fact. Simplify `this` using `[π, Algebra.ofId_apply, Algebra.smul_def]`. Establish `he1 : ε (π (Algebra.FormallyUnramified.elem R A)) = 1`.
+
+Rewrite using `[hπ, Algebra.FormallyUnramified.lmul_elem, map_one]`. Use `⟨_, ⟨he, he1⟩, fun e' he' => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_smul_of_mem_annihilator_ker he he1 he'.1, he'.2, one_smul]`.
+-/
 theorem existsUnique_mem_annihilator_ker [Algebra.FormallyUnramified R A]
     [Algebra.EssFiniteType R A] (ε : A →ₐ[R] R) :
     ∃! e, e ∈ (RingHom.ker ε).annihilator ∧ ε e = 1 := by
@@ -356,6 +498,9 @@ theorem existsUnique_mem_annihilator_ker [Algebra.FormallyUnramified R A]
   refine ⟨_, ⟨he, he1⟩, fun e' he' => ?_⟩
   rw [eq_smul_of_mem_annihilator_ker he he1 he'.1, he'.2, one_smul]
 
+/- English proof (translation)
+Take `⟨e, ⟨he, he1⟩, -⟩` from `existsUnique_mem_annihilator_ker ε`. Rewrite using `[annihilator_ker_restrictScalars_eq_span he he1]`. Conclude with `finrank_span_singleton fun h => by simp [h] at he1`.
+-/
 theorem finrank_annihilator_ker {K A : Type*} [Field K] [CommRing A] [Algebra K A]
     [Algebra.FormallyUnramified K A] [Algebra.EssFiniteType K A] (ε : A →ₐ[K] K) :
     Module.finrank K ((RingHom.ker ε).annihilator.restrictScalars K) = 1 := by
@@ -373,21 +518,35 @@ variable {R D : Type*} (K : Type*) [CommRing R] [CommRing D] [Algebra R D] [Comm
 def augmentationBaseChange (ε : D →ₐ[R] R) : K ⊗[R] D →ₐ[K] K :=
   Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp ε) fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem augmentationBaseChange_tmul (ε : D →ₐ[R] R) (k : K) (d : D) :
     augmentationBaseChange K ε (k ⊗ₜ d) = k * algebraMap R K (ε d) := rfl
 
 variable {K}
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun d => by simpa using h d)`.
+-/
 theorem eq_augmentationBaseChange {ε : D →ₐ[R] R} {ε' : K ⊗[R] D →ₐ[K] K}
     (h : ∀ d, ε' (1 ⊗ₜ d) = algebraMap R K (ε d)) : ε' = augmentationBaseChange K ε :=
   Algebra.TensorProduct.ext (Subsingleton.elim _ _) (AlgHom.ext fun d => by simpa using h d)
 
+/- English proof (translation)
+The claim follows from `eq_augmentationBaseChange fun d => by simp [Algebra.smul_def]`.
+-/
 theorem counitAlgHom_baseChange (H : Type*) [CommRing H] [Bialgebra R H] :
     counitAlgHom K (K ⊗[R] H) = augmentationBaseChange K (counitAlgHom R H) :=
   eq_augmentationBaseChange fun d => by simp [Algebra.smul_def]
 
 variable (K) in
 
+/- English proof (translation)
+Use `mem_annihilator_ker_iff.2 fun w => ?_` and prove the remaining obligations. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_mul, ha, hb, map_add, add_smul]`. Consider the case `tmul k d`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mem_annihilator_ker_iff.1 hΛ, augmentationBaseChange_tmul, smul_tmul', ← smul_tmul]`. Simplify using `[Algebra.smul_def, mul_comm]`.
+-/
 theorem one_tmul_mem_annihilator_ker {ε : D →ₐ[R] R} {Λ : D}
     (hΛ : Λ ∈ (RingHom.ker ε).annihilator) :
     (1 : K) ⊗ₜ[R] Λ ∈ (RingHom.ker (augmentationBaseChange K ε)).annihilator := by
@@ -400,6 +559,9 @@ theorem one_tmul_mem_annihilator_ker {ε : D →ₐ[R] R} {Λ : D}
       augmentationBaseChange_tmul, smul_tmul', ← smul_tmul]
     simp [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Use `⟨fun h => mem_annihilator_iff_forall_mul.2 fun w hw => hD ?_, one_tmul_mem_annihilator_ker K⟩` and prove the remaining obligations. Use `mem_annihilator_iff_forall_mul.1 h (1 ⊗ₜ w) (by simp [RingHom.mem_ker, RingHom.mem_ker.1 hw])` as an intermediate fact. Simplify using `using this`.
+-/
 theorem one_tmul_mem_annihilator_ker_iff (hD : Function.Injective fun d : D => (1 : K) ⊗ₜ[R] d)
     {ε : D →ₐ[R] R} {Λ : D} :
     (1 : K) ⊗ₜ[R] Λ ∈ (RingHom.ker (augmentationBaseChange K ε)).annihilator ↔
@@ -410,11 +572,17 @@ theorem one_tmul_mem_annihilator_ker_iff (hD : Function.Injective fun d : D => (
     (by simp [RingHom.mem_ker, RingHom.mem_ker.1 hw])
   simpa using this
 
+/- English proof (translation)
+Simplify using `using smul_eq_smul_of_mem_annihilator_ker (one_tmul_mem_annihilator_ker K hΛ) hT`.
+-/
 theorem smul_eq_smul_one_tmul {ε : D →ₐ[R] R} {Λ : D} (hΛ : Λ ∈ (RingHom.ker ε).annihilator)
     {T : K ⊗[R] D} (hT : T ∈ (RingHom.ker (augmentationBaseChange K ε)).annihilator) :
     algebraMap R K (ε Λ) • T = augmentationBaseChange K ε T • (1 : K) ⊗ₜ[R] Λ := by
   simpa using smul_eq_smul_of_mem_annihilator_ker (one_tmul_mem_annihilator_ker K hΛ) hT
 
+/- English proof (translation)
+Rewrite using `[div_eq_inv_mul, mul_smul, ← smul_eq_smul_one_tmul hΛ hT, inv_smul_smul₀ h0]`.
+-/
 theorem eq_div_smul_one_tmul {K : Type*} [Field K] [Algebra R K] {ε : D →ₐ[R] R} {Λ : D}
     (hΛ : Λ ∈ (RingHom.ker ε).annihilator) (h0 : algebraMap R K (ε Λ) ≠ 0)
     {T : K ⊗[R] D} (hT : T ∈ (RingHom.ker (augmentationBaseChange K ε)).annihilator) :
@@ -423,6 +591,9 @@ theorem eq_div_smul_one_tmul {K : Type*} [Field K] [Algebra R K] {ε : D →ₐ[
 
 open nonZeroDivisors in
 
+/- English proof (translation)
+The claim follows from `(IsLocalizedModule.injective_iff_isRegular R⁰ (TensorProduct.mk R K M 1)).2 fun c => IsSMulRegular.of_ne_zero (nonZeroDivisors.ne_zero c.2)`.
+-/
 theorem one_tmul_injective_of_isTorsionFree (K : Type*) [Field K] [IsDomain R] [Algebra R K]
     [IsFractionRing R K] (M : Type*) [AddCommGroup M] [Module R M] [Module.IsTorsionFree R M] :
     Function.Injective fun m : M => (1 : K) ⊗ₜ[R] m :=
@@ -440,6 +611,9 @@ variable {R D : Type*} [CommRing R] [CommRing D] [Algebra R D]
 
 include K in
 
+/- English proof (translation)
+Take `⟨e, ⟨he, he1⟩, -⟩` from `existsUnique_mem_annihilator_ker (augmentationBaseChange K ε)`. Use `one_tmul_injective_of_isTorsionFree (R := R) K D ?_` and prove the remaining obligations. Simplify `eq_smul_of_mem_annihilator_ker he he1 (one_tmul_mem_annihilator_ker K hΛ)` using `[h0]`.
+-/
 theorem eq_zero_of_mem_annihilator_ker {ε : D →ₐ[R] R} {Λ : D}
     (hΛ : Λ ∈ (RingHom.ker ε).annihilator) (h0 : ε Λ = 0) : Λ = 0 := by
   obtain ⟨e, ⟨he, he1⟩, -⟩ := existsUnique_mem_annihilator_ker (augmentationBaseChange K ε)
@@ -449,6 +623,13 @@ theorem eq_zero_of_mem_annihilator_ker {ε : D →ₐ[R] R} {Λ : D}
 open nonZeroDivisors in
 include K in
 
+/- English proof (translation)
+Take `⟨e, ⟨he, he1⟩, -⟩` from `existsUnique_mem_annihilator_ker (augmentationBaseChange K ε)`. Take `⟨⟨Λ, s⟩, hs⟩` from `IsLocalizedModule.surj R⁰ (TensorProduct.mk R K D 1) e`. Establish `hs' : algebraMap R K s • e = (1 : K) ⊗ₜ[R] Λ`. Rewrite using `[algebraMap_smul]`. Conclude with `hs`.
+
+Use `⟨Λ, (one_tmul_mem_annihilator_ker_iff (one_tmul_injective_of_isTorsionFree K D)).1 ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs']`. Conclude with `Submodule.smul_of_tower_mem _ _ he`. Use `congrArg (augmentationBaseChange K ε) hs'` as an intermediate fact. Rewrite `this` using `[map_smul, he1]`.
+
+Simplify using `[h, nonZeroDivisors.ne_zero s.2] at this`.
+-/
 theorem exists_mem_annihilator_ker_ne_zero (ε : D →ₐ[R] R) :
     ∃ Λ ∈ (RingHom.ker ε).annihilator, ε Λ ≠ 0 := by
   obtain ⟨e, ⟨he, he1⟩, -⟩ := existsUnique_mem_annihilator_ker (augmentationBaseChange K ε)
@@ -472,6 +653,11 @@ open CartierDual
 variable {R K H M M' : Type*} [CommRing R] [CommRing K] [Algebra R K] [AddCommGroup M] [Module R M]
   [AddCommGroup M'] [Module R M'] [Module K M'] [IsScalarTower R K M']
 
+/- English proof (translation)
+Rewrite using `[dualContraction_apply, dualContraction_apply, (LinearEquiv.eq_symm_apply _).2 (hj m)]`. Generalize the expression as in `ρ m = x`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`.
+
+Consider the case `tmul n h => simp`.
+-/
 theorem dualContraction_baseChange [AddCommMonoid H] [Module R H] {ρ : M →ₗ[R] M ⊗[R] H}
     {ρ' : M' →ₗ[K] M' ⊗[K] (K ⊗[R] H)} {j : M →ₗ[R] M'}
     (hj : ∀ m, AlgebraTensorModule.cancelBaseChange R K K M' H (ρ' (j m)) = j.rTensor H (ρ m))
@@ -486,6 +672,11 @@ theorem dualContraction_baseChange [AddCommMonoid H] [Module R H] {ρ : M →ₗ
 
 variable [Semiring H] [Bialgebra R H] [Module.Finite R H] [Module.Projective R H] [IsCocomm R H]
 
+/- English proof (translation)
+Use `mem_annihilator_ker_iff.2 fun w => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(baseChangeLinear_bijective K (R := R) (M := H)).2 w`. Rewrite using `[counitAlgHom_cartierDual_apply, ← baseChangeLinear_mul, ← map_smul]`. Use `congr 1`. Proceed by induction on `x with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_mul, ha, hb, map_add, ofConv_add, LinearMap.add_apply, add_smul]`. Consider the case `tmul k d`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mem_annihilator_ker_iff.1 hΛ, counitAlgHom_cartierDual_apply, Algebra.TensorProduct.one_def, baseChangeLinear_tmul_tmul, smul_tmul', ← smul_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem baseChange_one_tmul_mem_annihilator_ker {Λ : CartierDual R H}
     (hΛ : Λ ∈ (RingHom.ker (counitAlgHom R (CartierDual R H))).annihilator) :
     baseChangeLinear R K H (1 ⊗ₜ Λ) ∈
@@ -503,6 +694,11 @@ theorem baseChange_one_tmul_mem_annihilator_ker {Λ : CartierDual R H}
       smul_tmul', ← smul_tmul]
     simp
 
+/- English proof (translation)
+Establish `h1 : baseChangeLinear R K H (1 ⊗ₜ Λ) 1 = algebraMap R K (Λ 1)`. Rewrite using `[Algebra.TensorProduct.one_def, baseChangeLinear_tmul_tmul]`. Simplify using `[Algebra.smul_def]`. Establish `h : algebraMap R K (Λ 1) • T = T 1 • baseChangeLinear R K H (1 ⊗ₜ Λ)` using `h1 ▸ smul_eq_smul_of_mem_annihilator_ker (R := K) (D := CartierDual K (K ⊗[R] H)) (ε := counitAlgHom K (CartierDual K (K ⊗[R] H))) (baseChange_one_tmul_mem_annihilator_ker (K := K) hΛ) hT`. Establish `h2` using `congrArg (fun w => dualContraction ρ' w (j m)) h`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, dualContraction_baseChange hj] at h2`. Rewrite `h2` using `[algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem smul_dualContraction_baseChange {ρ : M →ₗ[R] M ⊗[R] H}
     {ρ' : M' →ₗ[K] M' ⊗[K] (K ⊗[R] H)} {j : M →ₗ[R] M'}
     (hj : ∀ m, AlgebraTensorModule.cancelBaseChange R K K M' H (ρ' (j m)) = j.rTensor H (ρ m))
@@ -529,6 +725,9 @@ open Matrix
 
 variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 
+/- English proof (translation)
+Establish `h0 : a *ᵥ x = 0` using `funext h`. Establish `h1 : a.adjugate *ᵥ (a *ᵥ x) = a.det • x`. Rewrite using `[mulVec_mulVec, adjugate_mul, smul_mulVec, one_mulVec]`. Rewrite `h1` using `[h0, mulVec_zero]`. Conclude with `(congrFun h1 j).symm`.
+-/
 theorem det_mul_eq_zero_of_sum_mul_eq_zero {D : Type*} [CommRing D] {a : Matrix σ σ D} {x : σ → D}
     (h : ∀ i, ∑ j, a i j * x j = 0) (j : σ) : a.det * x j = 0 := by
   have h0 : a *ᵥ x = 0 := funext h
@@ -537,6 +736,9 @@ theorem det_mul_eq_zero_of_sum_mul_eq_zero {D : Type*} [CommRing D] {a : Matrix 
   rw [h0, mulVec_zero] at h1
   exact (congrFun h1 j).symm
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_annihilator_span _ _).2 fun ⟨_, j, hj⟩ => hj ▸ det_mul_eq_zero_of_sum_mul_eq_zero h j`.
+-/
 theorem det_mem_annihilator_span {D : Type*} [CommRing D] {a : Matrix σ σ D} {x : σ → D}
     (h : ∀ i, ∑ j, a i j * x j = 0) : a.det ∈ (Ideal.span (Set.range x)).annihilator :=
   (Submodule.mem_annihilator_span _ _).2 fun ⟨_, j, hj⟩ =>
@@ -548,6 +750,11 @@ variable {R : Type*} [CommRing R]
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Establish `h (i) : ∃ c : σ → MvPowerSeries σ R, f i = ∑ j, c j * X j`. Establish `: f i ∈ Ideal.span (Set.range (X : σ → MvPowerSeries σ R))` using `germIdeal_eq_span (σ := σ) (R := R) ▸ hf i`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 this`. Conclude with `⟨c, hc.symm⟩`. Use `choose a ha using h`.
+
+Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_matrix_eq_sum_mul_X {τ : Type*} {f : τ → MvPowerSeries σ R}
     (hf : ∀ i, constantCoeff (f i) = 0) :
     ∃ a : Matrix τ σ (MvPowerSeries σ R), ∀ i, f i = ∑ j, a i j * X j := by
@@ -561,6 +768,11 @@ theorem exists_matrix_eq_sum_mul_X {τ : Type*} {f : τ → MvPowerSeries σ R}
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.sum_eq_single j]`. Use `coeff_add_mul_monomial (0 : σ →₀ ℕ) (Finsupp.single j 1) (c j) 1` as an intermediate fact. Rewrite `this` using `[zero_add, mul_one, ← X_def, coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis. Introduce `l _ hl`. Conclude with `X_dvd_iff.1 (dvd_mul_left (X l) (c l)) _ (Finsupp.single_eq_of_ne hl)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coeff_single_sum_mul_X (c : σ → MvPowerSeries σ R) (j : σ) :
     coeff (Finsupp.single j 1) (∑ l, c l * X l) = constantCoeff (c j) := by
   classical
@@ -575,6 +787,11 @@ variable {D : Type*} [CommRing D] [Algebra R D]
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Use `le_antisymm (fun d hd => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hπ d`. Take `⟨a, ha⟩` from `exists_matrix_eq_sum_mul_X (f := fun _ : Unit => g) fun _ => (hε g).symm.trans hd`. Rewrite using `[ha (), map_sum]`. Conclude with `Ideal.sum_mem _ fun j _ => by`.
+
+Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, hε]`.
+-/
 theorem ker_eq_span_range_X {π : MvPowerSeries σ R →ₐ[R] D} (hπ : Function.Surjective π)
     {ε : D →ₐ[R] R} (hε : ∀ g, ε (π g) = constantCoeff g) :
     RingHom.ker ε = Ideal.span (Set.range fun j => π (X j)) := by
@@ -587,17 +804,26 @@ theorem ker_eq_span_range_X {π : MvPowerSeries σ R →ₐ[R] D} (hπ : Functio
   · rintro _ ⟨j, rfl⟩
     simp [RingHom.mem_ker, hε]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det]`. Conclude with `det_mul_eq_zero_of_sum_mul_eq_zero (x := fun j => π (X j)) (fun i => by simpa using ha i) j`.
+-/
 theorem map_det_mul_map_X {π : MvPowerSeries σ R →ₐ[R] D} {a : Matrix σ σ (MvPowerSeries σ R)}
     (ha : ∀ i, π (∑ j, a i j * X j) = 0) (j : σ) : π a.det * π (X j) = 0 := by
   rw [AlgHom.map_det]
   exact det_mul_eq_zero_of_sum_mul_eq_zero (x := fun j => π (X j)) (fun i => by simpa using ha i) j
 
+/- English proof (translation)
+Rewrite using `[ker_eq_span_range_X hπ hε, AlgHom.map_det]`. Conclude with `det_mem_annihilator_span fun i => by simpa using ha i`.
+-/
 theorem map_det_mem_annihilator_ker {π : MvPowerSeries σ R →ₐ[R] D} (hπ : Function.Surjective π)
     {ε : D →ₐ[R] R} (hε : ∀ g, ε (π g) = constantCoeff g) {a : Matrix σ σ (MvPowerSeries σ R)}
     (ha : ∀ i, π (∑ j, a i j * X j) = 0) : π a.det ∈ (RingHom.ker ε).annihilator := by
   rw [ker_eq_span_range_X hπ hε, AlgHom.map_det]
   exact det_mem_annihilator_span fun i => by simpa using ha i
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [hf, coeff_single_sum_mul_X, Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+-/
 theorem constantCoeff_det {a : Matrix σ σ (MvPowerSeries σ R)} {f : σ → MvPowerSeries σ R}
     (hf : ∀ i, f i = ∑ j, a i j * X j) :
     constantCoeff a.det = (Matrix.of fun i j => coeff (Finsupp.single j 1) (f i)).det := by
@@ -616,17 +842,26 @@ def quotientConstantCoeff {τ : Type*} (f : τ → MvPowerSeries σ R)
       Ideal.span (Set.range f) ≤ germIdeal σ R) hg
 
 omit [Fintype σ] [DecidableEq σ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem quotientConstantCoeff_mk {τ : Type*} (f : τ → MvPowerSeries σ R)
     (hf : ∀ i, constantCoeff (f i) = 0) (g : MvPowerSeries σ R) :
     quotientConstantCoeff f hf (Ideal.Quotient.mk _ g) = constantCoeff g := rfl
 
 omit [DecidableEq σ] in
 
+/- English proof (translation)
+Simplify using `[hf]`.
+-/
 theorem constantCoeff_eq_zero_of_eq_sum_mul_X {τ : Type*} {a : Matrix τ σ (MvPowerSeries σ R)}
     {f : τ → MvPowerSeries σ R} (hf : ∀ i, f i = ∑ j, a i j * X j) (i : τ) :
     constantCoeff (f i) = 0 := by
   simp [hf]
 
+/- English proof (translation)
+Establish `ha (i) : Ideal.Quotient.mkₐ R (Ideal.span (Set.range f)) (∑ j, a i j * X j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨i, hf i⟩)`. Conclude with `⟨map_det_mul_map_X ha, map_det_mem_annihilator_ker (Ideal.Quotient.mkₐ_surjective R _) (fun _ => rfl) ha, RingHom.map_det (constantCoeff : MvPowerSeries σ R →+* R) a, constantCoeff_det hf⟩`.
+-/
 theorem cramer_quotient {a : Matrix σ σ (MvPowerSeries σ R)} {f : σ → MvPowerSeries σ R}
     (hf : ∀ i, f i = ∑ j, a i j * X j) :
     let ε := quotientConstantCoeff f (constantCoeff_eq_zero_of_eq_sum_mul_X hf)
@@ -644,6 +879,9 @@ end Cramer
 
 universe u v w
 
+/- English proof (translation)
+Use `⟨fun H _ _ _ _ M _ _ => ⟨⟨coactionEquivDualAction R H M, fun ρ w m => dualContraction_eq_rid ρ.1 w m⟩, fun ρ h m => ⟨fun w => dualContraction_eq_rid ρ w m, invariant_iff_dualContraction, fun Λ hΛ => h.invariant_dualContraction hΛ m⟩⟩, fun D _ _ ε => ⟨fun _ => mem_annihilator_ker_ …` and prove the remaining obligations. Take `⟨e, ⟨he, he1⟩, -⟩` from `existsUnique_mem_annihilator_ker (augmentationBaseChange K ε)`. Use `⟨e, isIdempotentElem_of_mem_annihilator_ker he he1, he1, bijective_prod_quotient_of_mem_annihilator_ker he he1, ker_eq_span_one_sub he he1, annihilator_ker_restrictScalars_eq_span he he1, finrank_annihilator_ker _, fun Λ hΛ => ?_⟩` and prove the remaining obligations. Simplify using `using eq_smul_of_mem_annihilator_ker he he1 (one_tmul_mem_annihilator_ker K hΛ)`.
+-/
 theorem comodule_dual_invariants_integrals (R : Type u) [CommRing R] :
     (∀ (H : Type v) [Semiring H] [Bialgebra R H] [Module.Finite R H] [Module.Projective R H]
       (M : Type w) [AddCommGroup M] [Module R M],
@@ -690,6 +928,9 @@ theorem comodule_dual_invariants_integrals (R : Type u) [CommRing R] :
 
 section Examples
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := h ((CartierDual.addMonoidAlgebraEquiv ℤ (ZMod 2)).symm (Pi.single 0 1)) rw [dualContraction_apply, AddMonoidAlgebra.one_def] at h1 simp [eq_comm] at h1`.
+-/
 example : ¬ ∀ w : CartierDual ℤ (AddMonoidAlgebra ℤ (ZMod 2)),
     dualContraction (comul (R := ℤ)) w (AddMonoidAlgebra.single (1 : ZMod 2) (1 : ℤ)) =
       w 1 • AddMonoidAlgebra.single (1 : ZMod 2) (1 : ℤ) := fun h => by
@@ -699,6 +940,9 @@ example : ¬ ∀ w : CartierDual ℤ (AddMonoidAlgebra ℤ (ZMod 2)),
 
 open MvPowerSeries in
 
+/- English proof (translation)
+Establish `h` using `cramer_quotient (a := Matrix.of fun _ _ : Unit => (2 + X () : MvPowerSeries Unit ℤ)) (f := fun _ : Unit => (2 + X ()) * X ()) (by simp)`. Use `⟨_, by simpa using h.2.1, ?_⟩` and prove the remaining obligations. Simplify using `[map_ofNat]`.
+-/
 example : ∃ ε : (MvPowerSeries Unit ℤ ⧸
       Ideal.span (Set.range fun _ : Unit => (2 + X ()) * (X () : MvPowerSeries Unit ℤ))) →ₐ[ℤ] ℤ,
     Ideal.Quotient.mk _ (2 + X ()) ∈ (RingHom.ker ε).annihilator ∧

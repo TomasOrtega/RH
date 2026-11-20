@@ -26,10 +26,16 @@ def omPairM (D : Datum H) (T : LocPair ι R (CMType H × Fin (D.p + D.q))) :
   | .inl τ => omPair D T (.inl τ)
   | .inr τ => omPair D T (.inr τ)
 
+/- English proof (translation)
+Take `⟨x, x', f, g⟩` from `Q`. Simplify using `[dualRev, Fin.rev_rev]`.
+-/
 theorem dualRev_dualRev {r : ℕ} (Q : LocPair ι R (Fin r)) : dualRev (dualRev Q) = Q := by
   obtain ⟨x, x', f, g⟩ := Q
   simp [dualRev, Fin.rev_rev]
 
+/- English proof (translation)
+Take `⟨x, x', f, g⟩` from `T`. Simplify using `[LocPair.map, MvPolynomial.map_map]`.
+-/
 theorem map_map {R' R'' : Type} [CommRing R'] [CommRing R''] {σ : Type} (T : LocPair ι R σ) (ψ : R →+* R')
     (ψ' : R' →+* R'') : (T.map ψ).map ψ' = T.map (ψ'.comp ψ) := by
   obtain ⟨x, x', f, g⟩ := T

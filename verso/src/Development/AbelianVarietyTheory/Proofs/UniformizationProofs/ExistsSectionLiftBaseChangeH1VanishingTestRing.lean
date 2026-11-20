@@ -16,6 +16,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SecLift
 open GlobalTheory.CompleteBaseExpansion
 
+/- English proof (translation)
+Introduce `A A' S _ _ _ g' g hlift X X' XS f f' fS β σ hs hp pb' pbS W L K _ φ φ' ε hL hφ hH s'`. Take `rfl : (fun k => β ≫ φ k) = φ'` from `funext hφ`. Establish `hN` using `DVR.linComb_isLB L hL φ ε`. Take `⟨P⟩` from `GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj A X f hs hp _ hN`. Establish `pb₀ : IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id A)))`.
+
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨E₀, H₀⟩` from `P.sec A (RingHom.id A) X (𝟙 _) f pb₀`. Take `⟨E, H⟩` from `P.sec A' g' X' β f' pb'`. Take `⟨t', ht'⟩` from `exists_in (φ := φ) β s'`.
+
+Take `⟨v, hv, hv'⟩` from `hlift P.a P.b P.c P.D₀ P.D₁ P.comp (P.exact S g XS σ fS pbS hH) _ (E.symm t').2`. Establish `hv₀ : (P.D₀.map (RingHom.id A)).mulVec v = 0` using `hv`. Establish `hs'` using `(GlobalTheory.SecAlg.sval_eq_iff (P := P) hN H₀ H g' (RingHom.comp_id _) β (Category.comp_id _) pb'.w (E₀ ⟨v, hv₀⟩) t').2 (fun k => by rw [E₀.symm_apply_apply]; exact hv' k)`. Take `⟨s₁, hs₁⟩` from `exists_out (𝟙 _) (E₀ ⟨v, hv₀⟩)`. Take `⟨s, hs⟩` from `exists_sec hL (φ' := φ) (ε' := ε) (fun U _ h => by simp only [Category.id_comp]) s₁`.
+
+Use `⟨s, fun z J hJ => (hs _ _ z J hJ).trans ((hs₁ _ _ z _ (hJ.mem _ _)).trans ?_)⟩` and prove the remaining obligations. Establish `hG : Good (LB.LinComb L φ ε) z (fun ψ i => J (ψ ≫ φ i))` using `fun ψ => hJ.mem _ ψ`. Use `Eq.trans ?_ ((hs' z _ hG).trans ((ht' _ _ z _ (hG.mem (fun _ : PUnit => β) _)).trans ?_))` and prove the remaining obligations. Conclude with `(sval_of (E₀ ⟨v, hv₀⟩) _ z _ _ (fun _ => funext fun i => congrArg J (Category.assoc _ _ _))).symm`. Conclude with `(sval_of s' _ z J _ (fun i => congrArg J (Category.assoc _ _ _).symm)).symm`.
+-/
 theorem exists_lift : ∀ (A A' S : Type) [CommRing A] [CommRing A'] [CommRing S] (g' : A →+* A') (g : A →+* S), (∀ (a b c : ℕ) (D₀ : Matrix (Fin b) (Fin a) A) (D₁ : Matrix (Fin c) (Fin b) A), D₁ * D₀ = 0 → (∀ w : Fin b → S, (D₁.map g).mulVec w = 0 → ∃ v, (D₀.map g).mulVec v = w) → ∀ v' : Fin a → A', (D₀.map g').mulVec v' = 0 → ∃ v, D₀.mulVec v = 0 ∧ ∀ k, g' (v k) = v' k) → ∀ (X X' XS : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of A)) (f' : X' ⟶ Spec (CommRingCat.of A')) (fS : XS ⟶ Spec (CommRingCat.of S)) (β : X' ⟶ X) (σ : XS ⟶ X), Smooth f → IsProjBy f → IsPullback β f' f (Spec.map (CommRingCat.ofHom g')) → IsPullback σ fS f (Spec.map (CommRingCat.ofHom g)) → ∀ (W : Scheme.{0}) (L : LB W) (K : Type) [Fintype K] (φ : K → (X ⟶ W)) (φ' : K → (X' ⟶ W)) (ε : K → ℤ), L.IsLB → (∀ k, β ≫ φ k = φ' k) → FirstCohomologyVanishes ((LB.LinComb L φ ε).pull σ) → ∀ s' : LB.Sec (LB.LinComb L φ' ε), ∃ s : LB.Sec (LB.LinComb L φ ε), ∀ z J, Good L z J → sval s β z J = sval s' (𝟙 _) z J := by
   intro A A' S _ _ _ g' g hlift X X' XS f f' fS β σ hs hp pb' pbS W L K _ φ φ' ε hL hφ hH s'
   obtain rfl : (fun k => β ≫ φ k) = φ' := funext hφ

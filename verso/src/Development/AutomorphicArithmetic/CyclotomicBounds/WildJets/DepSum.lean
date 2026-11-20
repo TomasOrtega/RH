@@ -13,6 +13,11 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨x, y, hxy⟩` from `Nat.isCoprime_iff_coprime.2 hab`. Establish `h1 : (x : R) * a + (y : R) * b = 1`. Use `congrArg (Int.cast : ℤ → R) hxy` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← h1]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)`.
+-/
 private theorem false_of_coprime_natCast_mem_heightOne {R : Type*} [CommRing R] [IsDomain R] (v : HeightOneSpectrum R)
     (a b : ℕ) (hab : Nat.Coprime a b) (ha : (a : R) ∈ v.asIdeal) (hb : (b : R) ∈ v.asIdeal) : False := by
   obtain ⟨x, y, hxy⟩ := Nat.isCoprime_iff_coprime.2 hab
@@ -24,6 +29,11 @@ private theorem false_of_coprime_natCast_mem_heightOne {R : Type*} [CommRing R] 
   rw [Ideal.eq_top_iff_one, ← h1]
   exact add_mem (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)
 
+/- English proof (translation)
+Establish `hN : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Apply `Nat.le_of_dvd (Nat.pos_of_ne_zero hN)` to reduce the goal to its premises. Assume the negation of the conclusion as `hd`.
+
+Conclude with `false_of_coprime_natCast_mem_heightOne v l _ ((Nat.Prime.coprime_iff_not_dvd hl).2 hd) h (Ideal.absNorm_mem _)`.
+-/
 private theorem prime_le_absNorm_of_mem_heightOne (K : Type) [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (l : ℕ)
     (hl : l.Prime) (h : (l : 𝓞 K) ∈ v.asIdeal) : l ≤ Ideal.absNorm v.asIdeal := by
   have hN : Ideal.absNorm v.asIdeal ≠ 0 := by
@@ -33,11 +43,45 @@ private theorem prime_le_absNorm_of_mem_heightOne (K : Type) [Field K] [NumberFi
   by_contra hd
   exact false_of_coprime_natCast_mem_heightOne v l _ ((Nat.Prime.coprime_iff_not_dvd hl).2 hd) h (Ideal.absNorm_mem _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `false_of_coprime_natCast_mem_heightOne v l m ((Nat.coprime_primes hl hm).2 hne) h1 h2`.
+-/
 private theorem prime_eq_of_natCast_mem_heightOne {R : Type*} [CommRing R] [IsDomain R] (v : HeightOneSpectrum R)
     (l m : ℕ) (hl : l.Prime) (hm : m.Prime) (h1 : (l : R) ∈ v.asIdeal) (h2 : (m : R) ∈ v.asIdeal) : l = m := by
   by_contra hne
   exact false_of_coprime_natCast_mem_heightOne v l m ((Nat.coprime_primes hl hm).2 hne) h1 h2
 
+/- English proof (translation)
+Introduce `D T L sc G`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ v ∈ G.pl.S0, Ideal.absNorm v.asIdeal ≤ N := by`. Use `⟨∑ v ∈ G.pl.S0, Ideal.absNorm v.asIdeal, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun v : Pl ↥D.host.F => Ideal.absNorm v.asIdeal) (fun _ _ => Nat.zero_le _) hv`. Take `⟨S, hS⟩ : ∃ S : Finset ℕ, ∀ l, l ∈ S ↔ l.Prime ∧ l ≤ N` from `⟨(Finset.range (N + 1)).filter Nat.Prime, fun l => by`.
+
+Rewrite using `[Finset.mem_filter, Finset.mem_range, Nat.lt_succ_iff, and_comm]⟩`. Establish `key : ∀ v ∈ G.pl.S0, ∀ l : ℕ, l.Prime → ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal → l ≤ Ideal.absNorm v.asIdeal`. Introduce `v hv l hl h`. Apply `prime_le_absNorm_of_mem_heightOne _ v l hl` to reduce the goal to its premises. Use `G.pl.w_over v hv` as an intermediate fact.
+
+Rewrite using `[← this]`. Simplify `h` using `[IsDedekindDomain.HeightOneSpectrum.under]`. Establish `hdep : ∀ l : ℕ, depL G l ≤ ∑ v ∈ G.pl.S0.filter (fun v => ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal), G.pl.depth sc v`. Introduce `l`. Unfold `GlobalTheory.SumSize.depL`.
+
+Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `PP hPP`. Take `⟨hPP1, hmem⟩` from `Finset.mem_filter.1 hPP`. Unfold `GlobalTheory.ChiGrid.Places.W0 at hPP1`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hPP1`.
+
+Rewrite using `[(GlobalTheory.FunObj.depthAt_w G hv).2]`. Conclude with `Finset.single_le_sum (f := fun v => G.pl.depth sc v) (fun _ _ => Nat.zero_le _) (Finset.mem_filter.2 ⟨hv, hmem⟩)`. Establish `hinner : ∀ v ∈ G.pl.S0, ∑ l ∈ S.filter (fun l : ℕ => ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal), Real.log (l : ℝ) ≤ Real.log (Ideal.absNorm v.asIdeal : ℝ)`. Introduce `v hv`. Break down `(S.filter (fun l : ℕ => ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal)).eq_empty_or_nonempty with he | ⟨l0, hl0⟩` into its components or cases.
+
+Rewrite using `[he, Finset.sum_empty]`. Conclude with `Real.log_natCast_nonneg _`. Take `⟨hl0S, hl0P⟩` from `Finset.mem_filter.1 hl0`. Establish `hp0 : l0.Prime` using `((hS l0).1 hl0S).1`. Establish `hsub : S.filter (fun l : ℕ => ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal) ⊆ {l0}`.
+
+Introduce `m hm`. Rewrite using `[Finset.mem_singleton]`. Take `⟨hmS, hmP⟩` from `Finset.mem_filter.1 hm`. Conclude with `prime_eq_of_natCast_mem_heightOne _ m l0 ((hS m).1 hmS).1 hp0 hmP hl0P`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Real.log_le_log (by exact_mod_cast hp0.pos)` to reduce the goal to its premises. Conclude with `key v hv l0 hp0 hl0P` after adjusting the coercions. Use `⟨S, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.NormSum.Exponents`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `l hl`. Conclude with `((hS l).1 hl).1`. Apply the tactic sequence `intro l dsimp only split_ifs <;> positivity`. Introduce `l hl dsimp only split_ifs with hp`. Establish `h0 : depL G l = 0`.
+
+Apply `Nat.eq_zero_of_le_zero` to reduce the goal to its premises. Use `(hdep l).trans (le_of_eq (Finset.sum_eq_zero ?_))` and prove the remaining obligations. Introduce `v hv'`. Take `⟨hv, hmem⟩` from `Finset.mem_filter.1 hv'`. Conclude with `absurd ((hS l).2 ⟨hp, (key v hv l hp hmem).trans (hN v hv)⟩) hl`.
+
+Rewrite using `[h0, Nat.cast_zero]`. Both sides reduce to the same expression. Simplify using `only`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `l hl`. Establish `hp : l.Prime` using `((hS l).1 hl).1`. Rewrite using `[if_pos hp, ← Finset.sum_filter, ← Finset.sum_mul]`. Apply `mul_le_mul_of_nonneg_right _ (Real.log_natCast_nonneg l)` to reduce the goal to its premises. Conclude with `hdep l` after adjusting the coercions.
+
+Use `_ = ∑ v ∈ G.pl.S0, (G.pl.depth sc v : ℝ) * ∑ l ∈ S.filter (fun l : ℕ => ((l : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal), Real.log (l : ℝ) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_filter]`. Use `_ ≤ ∑ v ∈ G.pl.S0, (G.pl.depth sc v : ℝ) * Real.log (Ideal.absNorm v.asIdeal : ℝ) := by`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v hv`. Conclude with `mul_le_mul_of_nonneg_left (hinner v hv) (by positivity)`. Use `_ = sig G := by`. Unfold `GlobalTheory.SumSize.sig`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.WildA.depSum :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc}, ∃ S : Finset ℕ, GlobalTheory.NormSum.Exponents S (fun l => if l.Prime then (depL G l : ℝ) else 0) (sig G) := by
   classical

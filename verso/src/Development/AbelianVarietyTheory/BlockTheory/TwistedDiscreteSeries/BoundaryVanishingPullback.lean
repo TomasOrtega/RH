@@ -39,21 +39,33 @@ def move (γ : GL (Fin a) k × GL (Fin b) k) (x : Matrix (Fin b) (Fin a) k) :
     Matrix (Fin b) (Fin a) k :=
   (γ.2⁻¹ : GL (Fin b) k).val * x * γ.1.val
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+-/
 theorem continuous_move (γ : GL (Fin a) k × GL (Fin b) k) : Continuous (move γ) :=
   (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `[move]`.
+-/
 theorem move_one (x : Matrix (Fin b) (Fin a) k) : move 1 x = x := by simp [move]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `[move, Matrix.mul_assoc]`.
+-/
 theorem move_mul (γ δ : GL (Fin a) k × GL (Fin b) k) (x : Matrix (Fin b) (Fin a) k) :
     move (γ * δ) x = move δ (move γ x) := by
   simp [move, Matrix.mul_assoc]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Unfold `move`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ (Matrix.isUnits_det_units γ.1), Matrix.rank_mul_eq_right_of_isUnit_det _ _ (Matrix.isUnits_det_units γ.2⁻¹)]`.
+-/
 theorem rank_move (γ : GL (Fin a) k × GL (Fin b) k) (x : Matrix (Fin b) (Fin a) k) :
     (move γ x).rank = x.rank := by
   unfold move
@@ -134,6 +146,11 @@ def LiftVariant : Prop :=
     ∀ χ : Fin u → kˣ →* ℂˣ, (∀ i, IsSmoothChar (χ i)) → (∀ i, IsUnitaryChar (χ i)) →
       LiftConclusion t μ (charProd d hd π₀ χ)
 
+/- English proof (translation)
+Establish `hs : Subsingleton (Stratum k a b 0)` using `⟨fun x y => Subtype.ext (by`. Establish `key : ∀ z : Stratum k a b 0, z.1 = 0` using `fun z => by`. Establish `h0 : LinearMap.range z.1.mulVecLin = ⊥` using `Submodule.finrank_eq_zero.1 z.2`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Conclude with `LinearMap.range_eq_bot.1 h0`. Rewrite using `[key x, key y])⟩`. Use `⟨⟨fun _ => 1, IsLocallyConstant.const 1, HasCompactSupport.of_compactSpace _⟩, fun h => ?_⟩` and prove the remaining obligations. Simplify using `using congrFun (congrArg Subtype.val h) ⟨0, Matrix.rank_zero⟩`.
+-/
 example (a b : ℕ) : ∃ φ : SB (Stratum k a b 0), φ ≠ 0 := by
   have hs : Subsingleton (Stratum k a b 0) := ⟨fun x y => Subtype.ext (by
     have key : ∀ z : Stratum k a b 0, z.1 = 0 := fun z => by
@@ -145,6 +162,9 @@ example (a b : ℕ) : ∃ φ : SB (Stratum k a b 0), φ ≠ 0 := by
   refine ⟨⟨fun _ => 1, IsLocallyConstant.const 1, HasCompactSupport.of_compactSpace _⟩, fun h => ?_⟩
   simpa using congrFun (congrArg Subtype.val h) ⟨0, Matrix.rank_zero⟩
 
+/- English proof (translation)
+Introduce `h`. Use `inSupport_detRep (N := 1) (μ * absPow k (-1)) 0` as an intermediate fact. Apply `h 0` to reduce the goal to its premises. Simplify using `using this`.
+-/
 example (μ : kˣ →* ℂˣ) : ¬ AvoidsExponents 1 μ (detRep (Fin 1) (μ * absPow k (-1))) := by
   intro h
   have := inSupport_detRep (N := 1) (μ * absPow k (-1)) 0

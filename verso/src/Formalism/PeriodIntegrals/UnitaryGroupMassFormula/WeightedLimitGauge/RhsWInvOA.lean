@@ -27,6 +27,9 @@ def GhatF (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (μW : Measure (Mt k 
     (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞) (ζ : ℂ) : ℝ≥0∞ :=
   Gf μW F (embWb k r (secP k r z z' μsec ζ) *ᵥ z')
 
+/- English proof (translation)
+Use `⟨inWb_emb _ hd.z'_mem, herm_both _ _ (MB.emb_mem_UWb (hd.sec.2 ζ hζ).1).1 z' z', ?_⟩` and prove the remaining obligations. Rewrite using `[herm_emb _ hd.z_mem hd.z'_mem]`. Conclude with `(hd.sec.2 ζ hζ).2`.
+-/
 theorem section_vector_properties (hd : WbData k r z z' μW μW' a a' μsec) {ζ : ℂ} (hζ : Tz k r z * Tz k r z' < Complex.normSq ζ) :
     inWb k r (embWb k r (μsec ζ) *ᵥ z') ∧
       herm (Hpk k r) (embWb k r (μsec ζ) *ᵥ z') (embWb k r (μsec ζ) *ᵥ z') = herm (Hpk k r) z' z' ∧
@@ -35,6 +38,9 @@ theorem section_vector_properties (hd : WbData k r z z' μW μW' a a' μsec) {ζ
   rw [herm_emb _ hd.z_mem hd.z'_mem]
   exact (hd.sec.2 ζ hζ).2
 
+/- English proof (translation)
+Use `hd.haarW.1` as an intermediate fact. Establish `hc : Continuous (fun m : Fin (k + 1) → Fin (k + 1) → ℂ => embWb k r (Matrix.of m) *ᵥ z')` using `(cont_emb.comp continuous_id).matrix_mulVec continuous_const`. Conclude with `(meas_Gf hF).comp (hc.measurable.comp (meas_secP hd.sec))`.
+-/
 theorem meas_Ghat (hd : WbData k r z z' μW μW' a a' μsec) {F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞}
     (hF : Measurable F) : Measurable (GhatF k r z z' μW μsec F) := by
   have := hd.haarW.1
@@ -42,6 +48,31 @@ theorem meas_Ghat (hd : WbData k r z z' μW μW' a a' μsec) {F : (Fin (2 * r + 
     (cont_emb.comp continuous_id).matrix_mulVec continuous_const
   exact (meas_Gf hF).comp (hc.measurable.comp (meas_secP hd.sec))
 
+/- English proof (translation)
+Introduce `k r z z' μW μW' a a' μsec hd s hs F hF`. Use `hd.haarW.1` as an intermediate fact. Use `hd.haarW'.1` as an intermediate fact. Take `⟨Q, hσQ, hQi, hQc, c, hc0, hcT, hpol⟩` from `hQ k r z z' hd.k_pos hd.z_mem hd.z'_mem hd.T_pos hd.T'_pos`. Establish `hfinW : μW Set.univ ≠ ⊤` using `by rw [hd.massW]; exact ENNReal.ofReal_ne_top`.
+
+Establish `hnull : Q {v | Complex.normSq (herm (Hpk k r) v z) ≤ Tz k r z * Tz k r z'} = 0`. Establish `hS : MeasurableSet {ζ : ℂ | Complex.normSq ζ ≤ Tz k r z * Tz k r z'}` using `measurableSet_le Complex.continuous_normSq.measurable measurable_const`. Establish `h1` using `hpol ({ζ : ℂ | Complex.normSq ζ ≤ Tz k r z * Tz k r z'}.indicator 1) (measurable_one.indicator hS)`. Establish `e : (fun v => ({ζ : ℂ | Complex.normSq ζ ≤ Tz k r z * Tz k r z'}.indicator (1 : ℂ → ℝ≥0∞)) (herm (Hpk k r) v z)) = ({v | Complex.normSq (herm (Hpk k r) v z) ≤ Tz k r z * Tz k r z'}).indicator 1`. Use function extensionality and compare the values at `fun v => rfl`.
+
+Establish `hmS : MeasurableSet {v | Complex.normSq (herm (Hpk k r) v z) ≤ Tz k r z * Tz k r z'}` using `(cont_herm z).measurable hS`. Rewrite `h1` using `[e, lintegral_indicator_one hmS]`. Rewrite using `[h1]`. Establish `h2 : (fun ζ => ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ) * {ζ : ℂ | Complex.normSq ζ ≤ Tz k r z * Tz k r z'}.indicator (1 : ℂ → ℝ≥0∞) ζ) =ᵐ[volume] 0` using `by filter_upwards [circle_ae (Tz k r z * Tz k r z')] with ζ hζ show ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ) * {ζ : ℂ | Complex.normSq ζ ≤ Tz k r z * Tz k r z'}.indicator (1 : ℂ → ℝ≥0∞) ζ = 0`. Distinguish the cases in `h : Complex.normSq ζ ≤ Tz k r z * Tz k r z'`.
+
+Establish `hlt : Complex.normSq ζ < Tz k r z * Tz k r z'` using `lt_of_le_of_ne h hζ`. Establish `h0 : zWeight k (Tz k r z) (Tz k r z') ζ = 0`. Unfold `zWeight`. Rewrite using `[if_neg (not_le.2 hlt)]`. Rewrite using `[h0, ENNReal.ofReal_zero, zero_mul]`.
+
+Simplify using `only [Set.indicator, Set.mem_ofPred_eq, h, if_false, mul_zero]`. Rewrite using `[lintegral_congr_ae h2, Pi.zero_def, lintegral_zero, mul_zero]`. Establish `key : ∀ F' : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞, Measurable F' → c * rhsW k r z z' μW μW' μsec (fun x => F' (orbV k r z' x)) = ENNReal.ofReal a' * (ENNReal.ofReal a * ∫⁻ v, F' v ∂Q)`. Introduce `F' hF'`. Establish `sA : ∫⁻ ζ, ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ) * Gf μW F' (embWb k r (μsec ζ) *ᵥ z') = ∫⁻ ζ, ENNReal.ofReal (zWeight k (Tz k r z) (Tz k r z') ζ) * GhatF k r z z' μW μsec F' ζ`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [circle_ae (Tz k r z * Tz k r z')] with ζ hζ`. Distinguish the cases in `h : Tz k r z * Tz k r z' < Complex.normSq ζ`. Unfold `GhatF`. Rewrite using `[secP_eq h]`.
+
+Establish `h0 : zWeight k (Tz k r z) (Tz k r z') ζ = 0`. Unfold `zWeight`. Rewrite using `[if_neg (not_le.2 (lt_of_le_of_ne (not_lt.1 h) hζ))]`. Rewrite using `[h0, ENNReal.ofReal_zero, zero_mul, zero_mul]`. Establish `sB : ∫⁻ v, GhatF k r z z' μW μsec F' (herm (Hpk k r) v z) ∂Q = ∫⁻ v, Gf μW F' v ∂Q`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Establish `hg1 : ∀ᵐ v ∂Q, inWb k r v ∧ herm (Hpk k r) v v = herm (Hpk k r) z' z'`. Rewrite using `[ae_iff]`. Conclude with `hQc`. Establish `hg2 : ∀ᵐ v ∂Q, Tz k r z * Tz k r z' < Complex.normSq (herm (Hpk k r) v z)`.
+
+Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun v (hv : ¬ (Tz k r z * Tz k r z' < _)) => not_lt.1 hv) hnull`. Use `filter_upwards [hg1, hg2] with v hv1 hv2`. Take `⟨p1, p2, p3⟩` from `section_vector_properties hd hv2`. Unfold `GhatF`.
+
+Rewrite using `[secP_eq hv2]`. Conclude with `Gf_fib hU hT hd.haarW hfinW hd.z_mem hd.T_pos hF' p1 hv1.1 (p2.trans hv1.2.symm) p3`. Rewrite using `[rhs_orb hd F', sA, ← hd.massW, ← avg_Q Q hQi hd.haarW hF', ← sB, hpol _ (meas_Ghat hd hF')]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmv : Measurable (fun v : Fin (2 * r + k + 1) → ℂ => s *ᵥ v)` using `(continuous_const.matrix_mulVec continuous_id).measurable`.
+
+Establish `k1` using `key (fun v => F (s *ᵥ v)) (hF.comp hmv)`. Establish `k2` using `key F hF`. Establish `eQ : ∫⁻ v, F (s *ᵥ v) ∂Q = ∫⁻ v, F v ∂Q`. Rewrite using `[← lintegral_map hF hmv, hQi s hs]`. Rewrite `k1` using `[eQ, ← k2]`.
+
+Conclude with `(ENNReal.mul_right_inj hc0 hcT).1 k1`.
+-/
 theorem orbInv_of (hQ : HypQ) (hU : UnimodK) (hT : FibTrans) : OrbInv := by
   intro k r z z' μW μW' a a' μsec hd s hs F hF
   have := hd.haarW.1
@@ -111,6 +142,9 @@ theorem orbInv_of (hQ : HypQ) (hU : UnimodK) (hT : FibTrans) : OrbInv := by
   rw [eQ, ← k2] at k1
   exact (ENNReal.mul_right_inj hc0 hcT).1 k1
 
+/- English proof (translation)
+The claim follows from `rhsWInv_of_orb (orbInv_of hQ hU hT)`.
+-/
 theorem rhsWInv_of_hyp (hQ : HypQ) (hU : UnimodK) (hT : FibTrans) : RhsWInv :=
   rhsWInv_of_orb (orbInv_of hQ hU hT)
 

@@ -15,6 +15,23 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 open UpperTheory.V.Cu in
+/- English proof (translation)
+Introduce `hne hTau hAQ hRho hTw hPair hRes hCont hEnt hOver hWts hIrr hAut hH hP Ω _ _ _ l _ c D T₀ hc hok h4 ι 𝔞`. Establish `hg : D.Good` using `hc.1`. Take `⟨K', _, hq⟩` from `h4.quad`. Establish `hfix : ∀ (T : Tower D) (g : G T.F Ω), resQ T.F g ∈ T.F.fixingSubgroup` using `fun T g x => g.commutes x`. Establish `hg0 : resQ T₀.F T₀.g0 ∉ K'.fixingSubgroup`.
+
+Introduce `hm`. Establish `h1` using `hq.on _ hm`. Apply `hok.dist 0 1 (by decide)` to reduce the goal to its premises. Establish `h2 : residue c.O (((chi D T₀.pr 0 (resQ T₀.F T₀.g0) * (chi D T₀.pr 1 (resQ T₀.F T₀.g0))⁻¹) ^ (1 : ℤ) * (chi D T₀.pr 0 (resQ T₀.F T₀.g0) * (chi D T₀.pr 2 (resQ T₀.F T₀.g0))⁻¹) ^ (0 : ℤ) : c.Oˣ) : c.O) = 1` using `h1`. Rewrite `h2` using `[zpow_one, zpow_zero, mul_one]`.
+
+Establish `h3` using `congrArg (· * residue c.O (chi D T₀.pr 1 (resQ T₀.F T₀.g0) : c.O)) h2`. Simplify using `only [← map_mul, ← Units.val_mul, inv_mul_cancel_right, one_mul] at h3`. Conclude with `h3`. Take `⟨m, c₀, κ, hκ⟩` from `hTau hH Ω l ι K' hg.l_odd hq.deg hq.imag hq.disc hq.split ⟨D.cc, hg.isCC⟩ _ hg0`. Take `⟨w, θ, k, ρ, c₁, h, ρ₁, x, hw, hsp, hθl, hθm, hB, hk, hE, ⟨hI, hrw⟩, h₀, hM⟩` from `hRho hP Ω l c D T₀ hc hok h4 ι (2 * (m * 9) + 3) c₀`.
+
+Take `⟨j, j1, j9, hj⟩` from `hAQ Ω l ι K' hq.deg hq.imag ρ hE.cont hE.aut hI hrw _ m c₁ κ hg0 (hκ c₁ h₀ 1 le_rfl)`. Take `⟨τ, s, hτ⟩` from `hκ c₁ h₀ j j1`. Take `⟨δ, hδ⟩` from `hTw Ω l c D T₀ hc k (by omega) hk`. Establish `hbig : 2 * (m * j) + 3 ≤ k` using `le_trans (by have := Nat.mul_le_mul_left m j9; omega) hB`. Take `⟨hunr, hdies⟩` from `UpperTheory.theta_unramified_of_kills_roots_of_unity Ω l w hw θ hθl hθm`.
+
+Set `d : Dat Ω l` to `⟨ι, c, D, T₀, hc, hok, K', hq, k, m * j, hbig, hk, δ, hδ, θ, ρ, hE, hI, c₁, h, ρ₁, x, hM, τ, s, κ ^ j, hτ, (hj ρ₁ τ s hM.iso hτ).1, w, hw, hsp, hunr⟩`. Establish `hf : ∀ y ∈ maximalIdeal c₁.O, 𝔞.red c₁ y = 0` using `fun y hy => (residue_eq_zero_iff _).2 (map_nonunit (𝔞.a c₁) y hy)`. Establish `hred : 𝔞.red c = (𝔞.red c₁).comp (inc h)` using `RingHom.ext fun y => congrArg (residue 𝔞.V) (𝔞.compat c c₁ h y).symm`. Establish `hle : T₀.Le T₀` using `⟨rfl, rfl, le_rfl, ⟨0, fun g hg => by simpa using hg⟩, ⟨0, by simp⟩⟩`. Take `⟨r1, r2, -, r3⟩` from `hRes Ω l d T₀ hle {w} 𝔞.k (𝔞.red c₁) hf`.
+
+Use `⟨w, (d.Q T₀).map (𝔞.red c₁), hw, hsp, ⟨?_, ?_, (hCont Ω l d T₀).2 _ _ hf⟩, r2, fun T hT tok hd => ⟨c₁, h, d.Q T, ⟨?_, (hCont Ω l d T).1, ?_, ?_⟩, hOver Ω l d T hT _ _ hf, (hRes Ω l d T hT ∅ 𝔞.k (𝔞.red c₁) hf).2.2.1, hEnt Ω l d T hT tok _ _ hf⟩⟩` and prove the remaining obligations. Rewrite using `[hred]`. Conclude with `hPair Ω l d T₀ hle hok {w} 𝔞.k (𝔞.red c₁) (fun g _ => r3 g) fun A hA g hg => hunr A (fun p hp => hA p (Finset.mem_insert_of_mem hp)) hg`. Rewrite using `[hred]`. Conclude with `r1`.
+
+Use `hPair Ω l d T hT tok ∅ c₁.O (RingHom.id _) (fun g hg => hM.det g (hdies T.F hd hg)) fun A _ g _ => hdies T.F hd (hfix T g)` as an intermediate fact. Establish `e : (d.Q T).map (RingHom.id c₁.O) = d.Q T`. Apply the tactic sequence `ext <;> rfl`. Rewrite `this` using `[e, RingHom.id_comp]`. Then use the resulting hypothesis. Conclude with `(hRes Ω l d T hT ∅ _ (residue c₁.O) fun y hy => (residue_eq_zero_iff _).2 hy).1`.
+
+Conclude with `_root_.UpperTheory.V.Cu.tower_is_initial_of_ok hne hWts hIrr hAut Ω l d T hT tok (hj ρ₁ τ s hM.iso hτ).2`.
+-/
 theorem UpperTheory.V.Cu.fourth_initial_of_rank_four_data : AlNe → _root_.UpperTheory.V.Cu.TauExAlt → RankFourAutomorphyOfTensor → RhoExP → TwEx4 → PairOf4 → ResOf4 → ContOf4 → EntOf4 → OverOf4 → WtsOf4 → IrrOf4 →
     AutOf4 → _root_.UpperTheory.V.Af.Hypotheses' → PropEGP → _root_.UpperTheory.V.Cu.SeedIVAlt := by
   intro hne hTau hAQ hRho hTw hPair hRes hCont hEnt hOver hWts hIrr hAut hH hP Ω _ _ _ l _ c D T₀ hc hok h4 ι 𝔞

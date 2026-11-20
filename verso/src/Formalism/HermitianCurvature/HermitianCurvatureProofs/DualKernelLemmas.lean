@@ -13,14 +13,23 @@ section Rep
 variable {A S V : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
   [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
 
+/- English proof (translation)
+Simplify using `[pair, Finset.mul_sum]`.
+-/
 theorem pair_smul_left (ρ : Rep A V) (c : ℂ) (X X' : Ix S → V) :
     pair ρ (c • X) X' = c * pair ρ X X' := by
   simp [pair, Finset.mul_sum]
 
 end Rep
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal Y`.
+-/
 theorem star_ofReal (Y : ℝ) : star (Y : ℂ) = Y := Complex.conj_ofReal Y
 
+/- English proof (translation)
+Apply the tactic sequence `have h : u * (c * v) / c = u * v := by field_simp <;> ring`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Simplify using `[Complex.mul_im, hu, hv]`. Simplify `hb` using `[Complex.mul_re, hu, hv]`.
+-/
 theorem real_bound (u v c b : ℂ) (hc : c ≠ 0) (hu : u.im = 0) (hv : v.im = 0)
     (hb : ‖b‖ ^ 2 ≤ u.re * v.re) :
     (u * (c * v) / c).im = 0 ∧ ‖b‖ ^ 2 ≤ (u * (c * v) / c).re := by
@@ -30,6 +39,9 @@ theorem real_bound (u v c b : ℂ) (hc : c ≠ 0) (hu : u.im = 0) (hv : v.im = 0
   · simp [Complex.mul_im, hu, hv]
   · simpa [Complex.mul_re, hu, hv] using hb
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD X₁ X₂`. Take `⟨hM, hFR, hFT, hY, hY1, hq⟩` from `hD`. Establish `hd` using `Formalism.FourierDecayAlt.P.duality_plus ℂ A S Ω RR TT q a (Y : ℂ) hM hFR hFT hY hY1 (star_ofReal Y) hq`. Simplify using `only [frm]`. Rewrite using `[pair_act', ← act_mul, hd.2.2.2.1]`.
+-/
 theorem d1a : DualityPairingFormula := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD X₁ X₂
   obtain ⟨hM, hFR, hFT, hY, hY1, hq⟩ := hD
@@ -38,6 +50,9 @@ theorem d1a : DualityPairingFormula := by
   simp only [frm]
   rw [pair_act', ← act_mul, hd.2.2.2.1]
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD X₂ X₂'`. Take `⟨hM, hFR, hFT, hY, hY1, hq⟩` from `hD`. Establish `hd` using `Formalism.FourierDecayAlt.P.duality_plus ℂ A S Ω RR TT q a (Y : ℂ) hM hFR hFT hY hY1 (star_ofReal Y) hq`. Simplify using `only [frm]`. Rewrite using `[pair_act', ← act_mul, ← act_mul, hd.2.2.2.2.1, act_csmul, pair_smul_left]`.
+-/
 theorem d1b : DualityIsometry := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD X₂ X₂'
   obtain ⟨hM, hFR, hFT, hY, hY1, hq⟩ := hD
@@ -46,6 +61,11 @@ theorem d1b : DualityIsometry := by
   simp only [frm]
   rw [pair_act', ← act_mul, ← act_mul, hd.2.2.2.2.1, act_csmul, pair_smul_left]
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD hP X₁ X₂`. Establish `ha` using `d1a A S V ρ Ω RR TT q a Y hD X₁ X₂`. Establish `hb` using `d1b A S V ρ Ω RR TT q a Y hD X₂ X₂`. Establish `hq : q Y ≠ 0` using `hD.2.2.2.2.2`. Establish `hm : frm ρ (RR * ins a (TT (↑Y + 1))ᵀ) X₂ X₂ = q Y * frm ρ (RR * ins a (TT ↑Y)) (act (PsiP TT q a ↑Y) X₂) (act (PsiP TT q a ↑Y) X₂)`.
+
+Rewrite using `[hb]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hm, ha]`. Use `real_bound _ _ _ _ hq (hP X₁).2 (hP _).2 ?_` and prove the remaining obligations. Conclude with `csPos A S V ρ _ X₁ _ hP`.
+-/
 theorem d1c : DualityCauchySchwarz := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ Ω RR TT q a Y hD hP X₁ X₂
   have ha := d1a A S V ρ Ω RR TT q a Y hD X₁ X₂
@@ -58,10 +78,21 @@ theorem d1c : DualityCauchySchwarz := by
   refine real_bound _ _ _ _ hq (hP X₁).2 (hP _).2 ?_
   exact csPos A S V ρ _ X₁ _ hP
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d1a, d1b, d1c⟩`.
+-/
 theorem duality_of_letters : LetterDuality := ⟨d1a, d1b, d1c⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `duality_of_letters`.
+-/
 theorem letter_duality_of_clauses : LetterDualityOfParts := fun _ _ _ _ => duality_of_letters
 
+/- English proof (translation)
+Introduce `L hL`. Proceed by induction on `L with`. Consider the case `nil => simpa using hq`. Consider the case `cons l L ih`. Establish `hl` using `hL l (by simp)`.
+
+Rewrite using `[List.cons_append]`. Simplify using `only [qw]`. Rewrite using `[if_pos hl.1]`. Conclude with `mul_ne_zero (ih fun l' hl' => hL l' (by simp [hl'])) (div_ne_zero hl.2.2 hl.2.1)`.
+-/
 theorem qw_append_ne {S : Type} (q : ℂ → ℂ) (w : List (Letter ℂ S)) (Y : ℂ) (hq : qw q w Y ≠ 0) :
     ∀ L : List (Letter ℂ S), (∀ l ∈ L, l.plus = true ∧ Y - l.pt ≠ 0 ∧ Y - l.pt + 1 ≠ 0) →
       qw q (L ++ w) Y ≠ 0 := by
@@ -75,6 +106,9 @@ theorem qw_append_ne {S : Type} (q : ℂ → ℂ) (w : List (Letter ℂ S)) (Y :
     rw [if_pos hl.1]
     exact mul_ne_zero (ih fun l' hl' => hL l' (by simp [hl'])) (div_ne_zero hl.2.2 hl.2.1)
 
+/- English proof (translation)
+Unfold `Good at *`. Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, fun l' hl' => h2 l' (List.mem_cons_of_mem _ hl'), (List.pairwise_cons.1 h3).2⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.nodup_cons] at h1`. Conclude with `h1.2`.
+-/
 theorem good_tail {S : Type} {l : Letter ℂ S} {w : List (Letter ℂ S)} (h : Good (l :: w)) : Good w := by
   unfold Good at *
   obtain ⟨h1, h2, h3⟩ := h
@@ -82,6 +116,19 @@ theorem good_tail {S : Type} {l : Letter ℂ S} {w : List (Letter ℂ S)} (h : G
   simp only [List.map_cons, List.nodup_cons] at h1
   exact h1.2
 
+/- English proof (translation)
+Introduce `S _ _ q w L hD`. Proceed by induction on `L with`. Consider the case `nil => trivial`. Consider the case `cons l L ih`. Take `⟨hP, hG, hGd, hPw, hq⟩` from `hD`.
+
+Establish `hl : l.plus = true` using `hP l (by simp)`. Establish `hG' : Good (L ++ w)` using `good_tail hG`. Establish `hGd' : Good (L.map dl ++ w)` using `good_tail (by simpa using hGd)`. Establish `hpw` using `List.pairwise_cons.mp hPw`. Use `⟨?_, ?_, ih ⟨fun l' h => hP l' (by simp [h]), hG', hGd', hpw.2, fun l' h => hq l' (by simp [h])⟩⟩` and prove the remaining obligations.
+
+Introduce `l' hl'`. Establish `hdl : dl l = ⟨false, l.intersection_update_fsHerm_neg_one, l.pt + 1⟩` using `by simp [dl, hl]`. Rewrite using `[hdl]`. Break down `List.mem_append.mp hl' with h | h` into its components or cases. Establish `hpl : l'.plus = true` using `hP l' (by simp [h])`.
+
+Use `(hpw.1 l' h).1` as an intermediate fact. Simplify using `only [RegL, hpl, if_true]`. Introduce `h0`. Apply `this` to reduce the goal to its premises. Take the linear combination `h0`.
+
+Establish `hgd : Good (dl l :: (L.map dl ++ w))` using `by simpa using hGd`. Use `(List.pairwise_cons.mp hgd.2.2).1 l' (by simp [h])` as an intermediate fact. Rewrite `this` using `[hdl]`. Conclude with `this`. Simplify using `only [ypt, hl, if_true]`.
+
+Use `qw_append_ne q w l.pt (hq l (by simp)) L fun l' hl' => ⟨hP l' (by simp [hl']), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hpw.1 l' hl').1`. Introduce `h0; exact (hpw.1 l' hl').2.2 (by linear_combination h0)`.
+-/
 theorem dkDualOK : DKDualOK := by
   intro S _ _ q w L hD
   induction L with
@@ -112,12 +159,22 @@ theorem dkDualOK : DKDualOK := by
       · exact (hpw.1 l' hl').1
       · intro h0; exact (hpw.1 l' hl').2.2 (by linear_combination h0)
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L hS hD X₁ X₂`. Establish `hdl` using `Formalism.FourierDecayAlt.P.duality_list_holds ℂ A S QQ q w L hS hD.2.1 hD.2.2.1 (dkDualOK S q w L hD)`. Simplify using `only [frm]`. Rewrite using `[pair_act', ← act_mul, hdl.2.2.1]`.
+-/
 theorem dkStep1 : DKStep1 := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L hS hD X₁ X₂
   have hdl := Formalism.FourierDecayAlt.P.duality_list_holds ℂ A S QQ q w L hS hD.2.1 hD.2.2.1 (dkDualOK S q w L hD)
   simp only [frm]
   rw [pair_act', ← act_mul, hdl.2.2.1]
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L hS hD hP X₁ X₂`. Establish `hok` using `dkDualOK S q w L hD`. Establish `hdl` using `Formalism.FourierDecayAlt.P.duality_list_holds ℂ A S QQ q w L hS hD.2.1 hD.2.2.1 hok`. Establish `hkap` using `Formalism.FourierDecayAlt.P.kappa_formula_holds ℂ S q w L hD.2.1 hD.2.2.1 hok`. Establish `h4` using `Formalism.FourierDecayAlt.P.GramProductIdentities.dkStep4 S q w L hD.1`.
+
+Establish `hk0 : kap q w L ≠ 0` using `hdl.2.1`. Establish `hprod : (L.map fun l => qw q w l.pt).prod = kap q w L` using `by rw [hkap, h4]`. Establish `h1` using `dkStep1 A S V ρ QQ q w L hS hD X₁ X₂`. Establish `hm : frm ρ (RRw QQ (L.map dl ++ w)) X₂ X₂ = kap q w L * frm ρ (RRw QQ (L ++ w)) (act (Ps QQ q w L) X₂) (act (Ps QQ q w L) X₂)`. Simplify using `only [frm]`.
+
+Rewrite using `[pair_act', ← act_mul, ← act_mul, hdl.2.2.2.1, act_csmul, pair_smul_left]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hprod, hm, h1]`. Use `real_bound _ _ _ _ hk0 (hP X₁).2 (hP _).2 ?_` and prove the remaining obligations. Conclude with `csPos A S V ρ _ X₁ _ hP`.
+-/
 theorem lemmaDK : LemmaDK := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q w L hS hD hP X₁ X₂
   have hok := dkDualOK S q w L hD
@@ -136,8 +193,14 @@ theorem lemmaDK : LemmaDK := by
   refine real_bound _ _ _ _ hk0 (hP X₁).2 (hP _).2 ?_
   exact csPos A S V ρ _ X₁ _ hP
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _` and use `lemmaDK`.
+-/
 theorem lemmaDKOfParts : LemmaDKOfParts := fun _ _ _ _ _ _ => lemmaDK
 
+/- English proof (translation)
+Unfold `normW`. Apply `List.prod_pos` to reduce the goal to its premises. Introduce `x hx`. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h l hl`.
+-/
 theorem normW_pos {S : Type} (nn : ℝ → ℝ) (w : List (Letter ℂ S)) (h : ∀ l ∈ w, 0 < nn l.pt.re) :
     0 < normW nn w := by
   unfold normW
@@ -146,6 +209,9 @@ theorem normW_pos {S : Type} (nn : ℝ → ℝ) (w : List (Letter ℂ S)) (h : �
   obtain ⟨l, hl, rfl⟩ := List.mem_map.1 hx
   exact h l hl
 
+/- English proof (translation)
+Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ f fi s nn w x hW hWQ hnd hP hnn`. Establish `hV` using `(Formalism.FourierDecayAlt.P.plane_wave_word_identity ℂ A S QQ f fi s w hW hWQ hnd).2.2.1`. Establish `hb` using `p1aBound A S V ρ (RRw QQ w) (Vw f s w) x hP hV`. Unfold `N0`. Conclude with `div_le_div_of_nonneg_right hb (normW_pos nn w hnn).le`.
+-/
 theorem p1a : PlaneWaveNormBound := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ f fi s nn w x hW hWQ hnd hP hnn
   have hV := (Formalism.FourierDecayAlt.P.plane_wave_word_identity ℂ A S QQ f fi s w hW hWQ hnd).2.2.1
@@ -153,18 +219,54 @@ theorem p1a : PlaneWaveNormBound := by
   unfold N0
   exact div_le_div_of_nonneg_right hb (normW_pos nn w hnn).le
 
+/- English proof (translation)
+Introduce `_ _` and use `p1a`.
+-/
 theorem p1aOfParts : PlaneWaveNormBoundOfParts := fun _ _ => p1a
 
 end Formalism.FourierDecayAlt.P.DualKernelLemmas
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.d1a`.
+-/
 theorem Formalism.FourierDecayAlt.P.duality_pairing_formula : Formalism.FourierDecayAlt.FormPairingAction.DualityPairingFormula := Formalism.FourierDecayAlt.P.DualKernelLemmas.d1a
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.d1b`.
+-/
 theorem Formalism.FourierDecayAlt.P.duality_isometry : Formalism.FourierDecayAlt.FormPairingAction.DualityIsometry := Formalism.FourierDecayAlt.P.DualKernelLemmas.d1b
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.d1c`.
+-/
 theorem Formalism.FourierDecayAlt.P.duality_cauchy_schwarz : Formalism.FourierDecayAlt.FormPairingAction.DualityCauchySchwarz := Formalism.FourierDecayAlt.P.DualKernelLemmas.d1c
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.duality_of_letters`.
+-/
 theorem Formalism.FourierDecayAlt.P.letter_duality : Formalism.FourierDecayAlt.FormPairingAction.LetterDuality := Formalism.FourierDecayAlt.P.DualKernelLemmas.duality_of_letters
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.letter_duality_of_clauses`.
+-/
 theorem Formalism.FourierDecayAlt.P.letter_duality_of_components : Formalism.FourierDecayAlt.FormPairingAction.LetterDualityOfParts := Formalism.FourierDecayAlt.P.DualKernelLemmas.letter_duality_of_clauses
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.dkDualOK`.
+-/
 theorem Formalism.FourierDecayAlt.P.dual_kernel_duality : Formalism.FourierDecayAlt.FormPairingAction.DKDualOK := Formalism.FourierDecayAlt.P.DualKernelLemmas.dkDualOK
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.dkStep1`.
+-/
 theorem Formalism.FourierDecayAlt.P.first_reduction_estimate : Formalism.FourierDecayAlt.FormPairingAction.DKStep1 := Formalism.FourierDecayAlt.P.DualKernelLemmas.dkStep1
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.lemmaDK`.
+-/
 theorem Formalism.FourierDecayAlt.P.formPairingAction_dual_kernel : Formalism.FourierDecayAlt.FormPairingAction.LemmaDK := Formalism.FourierDecayAlt.P.DualKernelLemmas.lemmaDK
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.lemmaDKOfParts`.
+-/
 theorem Formalism.FourierDecayAlt.P.dual_kernel_lemma_of_parts : Formalism.FourierDecayAlt.FormPairingAction.LemmaDKOfParts := Formalism.FourierDecayAlt.P.DualKernelLemmas.lemmaDKOfParts
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.p1a`.
+-/
 theorem Formalism.FourierDecayAlt.P.plane_wave_norm_bound' : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveNormBound := Formalism.FourierDecayAlt.P.DualKernelLemmas.p1a
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.DualKernelLemmas.p1aOfParts`.
+-/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_bound_of_parts : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveNormBoundOfParts := Formalism.FourierDecayAlt.P.DualKernelLemmas.p1aOfParts

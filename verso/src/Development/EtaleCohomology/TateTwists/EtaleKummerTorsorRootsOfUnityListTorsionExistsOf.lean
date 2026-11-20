@@ -6,17 +6,38 @@ import Development.EtaleCohomology.TateTwists.EtaleInjectiveResolutionDegreeZero
 import Development.EtaleCohomology.TateTwists.EtaleTwistExtendsThroughMonoToResolutionZero
 
 namespace LateralTheory.Fin.EtaleKummerTriangleExists
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.mu_root_list_product_one_sum_etale_locally_zero` to reduce the goal to its premises.
+-/
 theorem etale_kummer_torsor_roots_of_unity_list_torsion_exists_of_components : LateralTheory.EtaleFoundations.MuRootListProductOneSumEtaleLocallyZero := by
   apply LateralTheory.EtaleFoundations.mu_root_list_product_one_sum_etale_locally_zero
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.exists_etale_mono_mu_twist_quotient_of_root_lists_locally_zero <;> first | exact etale_kummer_torsor_roots_of_unity_list_torsion_exists_of_components`.
+-/
 theorem etale_kummer_torsor_roots_of_unity_torsion_exists_of_components : LateralTheory.EtaleFoundations.ExistsEtaleMonoMuTwistKillingRootRelations := by
   apply LateralTheory.EtaleFoundations.exists_etale_mono_mu_twist_quotient_of_root_lists_locally_zero <;> first | exact etale_kummer_torsor_roots_of_unity_list_torsion_exists_of_components
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.mu_twist_quotient_embeds_in_unit_torsor_presheaf` to reduce the goal to its premises.
+-/
 theorem etale_kummer_torsor_torsion_preimage_exists_of_components : LateralTheory.EtaleFoundations.MuTwistQuotientEmbedsInUnitTorsorPresheaf := by
   apply LateralTheory.EtaleFoundations.mu_twist_quotient_embeds_in_unit_torsor_presheaf
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.exists_etale_mono_mu_twist_into_torsor_sheaf_of_presheaf <;> first | exact etale_kummer_torsor_roots_of_unity_torsion_exists_of_components | exact etale_kummer_torsor_torsion_preimage_exists_of_components`.
+-/
 theorem etale_kummer_torsor_torsion_exists_of_components : LateralTheory.EtaleFoundations.EtaleKummerSectionsIntoTwistEmbeddingExist := by
   apply LateralTheory.EtaleFoundations.exists_etale_mono_mu_twist_into_torsor_sheaf_of_presheaf <;> first | exact etale_kummer_torsor_roots_of_unity_torsion_exists_of_components | exact etale_kummer_torsor_torsion_preimage_exists_of_components
+/- English proof (translation)
+Apply `LateralTheory.EtaleFoundations.etale_twist_extends_through_mono_to_resolution_holds` to reduce the goal to its premises.
+-/
 theorem etale_kummer_torsor_extension_exists_of_components : LateralTheory.EtaleFoundations.EtaleTwistExtendsThroughMonoToResolutionZero := by
   apply LateralTheory.EtaleFoundations.etale_twist_extends_through_mono_to_resolution_holds
+/- English proof (translation)
+Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_kummer_torsor_class_exists_of_tors_and_ext <;> first | exact etale_kummer_torsor_torsion_exists_of_components | exact etale_kummer_torsor_extension_exists_of_components`.
+-/
 theorem etale_kummer_torsor_exists_of_components : LateralTheory.EtaleFoundations.EtaleKummerTriangleExists := by
   apply LateralTheory.EtaleFoundations.etale_kummer_torsor_class_exists_of_tors_and_ext <;> first | exact etale_kummer_torsor_torsion_exists_of_components | exact etale_kummer_torsor_extension_exists_of_components
+/- English proof (translation)
+The claim follows from `etale_kummer_torsor_exists_of_components`.
+-/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleKummerTriangleExists := etale_kummer_torsor_exists_of_components
 end LateralTheory.Fin.EtaleKummerTriangleExists

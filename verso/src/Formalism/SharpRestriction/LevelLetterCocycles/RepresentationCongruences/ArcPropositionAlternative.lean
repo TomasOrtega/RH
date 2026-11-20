@@ -25,12 +25,27 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem sg_nonneg_of {x sg : ℝ} (h0 : 0 ≤ x) (h : x ≤ 3 * sg) : 0 ≤ sg := by linarith
 
+/- English proof (translation)
+Apply the tactic sequence `unfold bandI; split_ifs <;> norm_num`.
+-/
 private theorem bandI_nonneg (l b w S η : ℕ) (size : ZMod n → ℕ) (Cb : ℝ) :
     0 ≤ bandI l b w S η size Cb := by
   unfold bandI; split_ifs <;> norm_num
 
+/- English proof (translation)
+Take `⟨hOK, -, -, -, hσ⟩` from `arcBasic W F hB`. Establish `hSg : 0 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size` using `sg_nonneg_of (Nat.cast_nonneg _) hσ`. Establish `hbd : 0 ≤ η * bandI PD.p b w S η size Cb` using `mul_nonneg (Nat.cast_nonneg _) (bandI_nonneg _ _ _ _ _ _ _)`. Consider the cases of `hup : up c with`. Consider the case `true`.
+
+Distinguish the cases in `h1b : PD.p * (size (c - 1) + S + η) + η < size c`. Take `⟨e, he, hl⟩` from `arc_length_one_or_two_case_b W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb hlen hdiff hOK hσ hup h1b`. Conclude with `⟨e, by linarith, hl⟩`. Take `⟨e, he, hl⟩` from `arc_length_one_or_two_case_c W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb hlen hdiff hOK hσ hup h1b`. Conclude with `⟨e, by linarith, hl⟩`.
+
+Consider the case `false`. Distinguish the cases in `h2a : Formalism.MainNotions.LiftingTheory.AI W F (c - 1) + η + 1 ≤ size (c - 1)`. Take `⟨e, he, hl⟩` from `exists_liftsAt_arcOf_of_up_eq_false W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb hlen hdiff hOK hσ hup h2a`. Conclude with `⟨e, by linarith, hl⟩`. Take `⟨e, he, hl⟩` from `arc_length_two_case_down W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb hlen hdiff hOK hσ hup (by omega)`.
+
+Conclude with `⟨e, by linarith, hl⟩`.
+-/
 theorem arc_length_one_two_theorem [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)
@@ -68,6 +83,11 @@ theorem arc_length_one_two_theorem [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDom
     · obtain ⟨e, he, hl⟩ := arc_length_two_case_down W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb hlen hdiff hOK hσ hup (by omega)
       exact ⟨e, by linarith, hl⟩
 
+/- English proof (translation)
+Take `⟨hOK, -, -, -, hσ⟩` from `arcBasic W F hB`. Establish `hSg : 0 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size` using `sg_nonneg_of (Nat.cast_nonneg _) hσ`. Establish `hbd : 0 ≤ η * bandI PD.p b w S η size Cb` using `mul_nonneg (Nat.cast_nonneg _) (bandI_nonneg _ _ _ _ _ _ _)`. Distinguish the cases in `hth : size (c - 2) < Formalism.MainNotions.LiftingTheory.AI W F (c - 2) + η + 2 * (arcOf b w S η up size).σ PD.p + 2`. Conclude with `exists_exponent_le_and_liftsAt_arc W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb halt hsm hlen hU hOK hσ hth`.
+
+Take `⟨e, he, hl⟩` from `exists_liftsAt_le_of_len_three_of_up W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb halt hsm hlen hU hOK hσ (by omega)`. Conclude with `⟨e, by linarith, hl⟩`.
+-/
 theorem exists_liftsAt_of_arc_len_three_of_up [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)
@@ -97,6 +117,11 @@ theorem exists_liftsAt_of_arc_len_three_of_up [NeZero n] [Fintype (K →ₐ[Qp] 
   · obtain ⟨e, he, hl⟩ := exists_liftsAt_le_of_len_three_of_up W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb halt hsm hlen hU hOK hσ (by omega)
     exact ⟨e, by linarith, hl⟩
 
+/- English proof (translation)
+Take `⟨hOK, -, -, -, hσ⟩` from `arcBasic W F hB`. Establish `hSg : 0 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size` using `sg_nonneg_of (Nat.cast_nonneg _) hσ`. Establish `hbd : 0 ≤ η * bandI PD.p b w S η size Cb` using `mul_nonneg (Nat.cast_nonneg _) (bandI_nonneg _ _ _ _ _ _ _)`. Distinguish the cases in `hy : size (c - 1) < PD.p * (size (c - 2) + S + η)`. Conclude with `arc_length_three_case_d W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ hy`.
+
+Take `⟨e, he, hl⟩` from `arc_length_three_case_c W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ (by omega)`. Conclude with `⟨e, by linarith, hl⟩`.
+-/
 theorem arc_length_three_theorem [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)
@@ -130,6 +155,25 @@ theorem arc_length_three_theorem [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomai
   · obtain ⟨e, he, hl⟩ := arc_length_three_case_c W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm hlen hD hOK hσ (by omega)
     exact ⟨e, by linarith, hl⟩
 
+/- English proof (translation)
+Take `⟨hOK, -, hlen3, -, hσ⟩` from `arcBasic W F hB`. Establish `hSg : 0 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size` using `sg_nonneg_of (Nat.cast_nonneg _) hσ`. Establish `hbd : 0 ≤ η * bandI PD.p b w S η size Cb` using `mul_nonneg (Nat.cast_nonneg _) (bandI_nonneg _ _ _ _ _ _ _)`. Establish `hSg1 : 1 ≤ Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size`. Unfold `Formalism.MainNotions.N.Ln17.Sg`.
+
+Establish `h1 : (0 : ℝ) ≤ (TruncatedSeriesCountingBounds.hB b w S η size : ℝ) / (PD.p : ℝ) ^ 2` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ ((w : ℝ) + S + η) / PD.p` using `by positivity`. Establish `h3 : (0 : ℝ) ≤ Real.logb PD.p (2 * (TruncatedSeriesCountingBounds.hB b w S η size : ℝ))`. Break down `Nat.eq_zero_or_pos (TruncatedSeriesCountingBounds.hB b w S η size) with h0 | hpos` into its components or cases. Simplify using `[h0]`.
+
+Apply `Real.logb_nonneg` to reduce the goal to its premises. Establish `: (2 : ℝ) ≤ PD.p`. Establish `h11 : 11 ≤ PD.p` using `hB.1`. Conclude with `(by omega : 2 ≤ PD.p)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: (1 : ℝ) ≤ (TruncatedSeriesCountingBounds.hB b w S η size : ℝ)` using `by exact_mod_cast hpos`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl1 : 1 ≤ (arcOf b w S η up size).len c` using `(hOK.2.2.1 c hc).1`. Establish `hl3 : (arcOf b w S η up size).len c ≤ 3` using `hlen3 halt c hc`.
+
+Break down `(show (arcOf b w S η up size).len c = 1 ∨ (arcOf b w S η up size).len c = 2 ∨ (arcOf b w S η up size).len c = 3 by omega) with h | h | h` into its components or cases. Take `⟨e, he, hl⟩` from `arc_single_type_bound W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf (by`. Introduce `s hs`. Establish `: s = 0` using `by omega`. Substitute `this` using the available equality.
+
+Use the proof step `simp)`. Conclude with `⟨e, by linarith, hl⟩`. Establish `hdiff : up (c - 1) ≠ up c`. Use `(halt (c - 1)).1` as an intermediate fact. Simplify using `only [sub_add_cancel] at this`.
+
+Conclude with `fun h => this h.symm`. Take `⟨e, he, hl⟩` from `arc_length_one_two_theorem W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb h hdiff`. Conclude with `⟨e, by linarith, hl⟩`. Establish `hsm : 40 * Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size ≤ (b : ℝ) / 4`. Break down `hscope with h' | h'` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h'`. Consider the cases of `hU : up (c - 2) with`. Consider the case `false`. Take `⟨e, he, hl⟩` from `arc_length_three_theorem W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf Pt hP3 hP4 hPtEx hC4 hP5 Cb hCb halt hsm h hU`.
+
+Conclude with `⟨e, by linarith, hl⟩`. Consider the case `true`. Take `⟨e, he, hl⟩` from `exists_liftsAt_of_arc_len_three_of_up W hcase F hB CR hWR hW₁ hW₂ hH hTr hRelay hArc hArcL hNN hSat hSatP hKill hR2 hO hOv hinj hP2 hP9 hpi0 hSec hGL hHF hFL rr hrr hkill c hc bb sol hbb k₀ hk₀ f hf hP5 Cb hCb halt hsm h hU`. Conclude with `⟨e, by linarith, hl⟩`.
+-/
 theorem arc_proposition_alternative [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

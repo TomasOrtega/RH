@@ -25,6 +25,11 @@ open scoped ContDiff
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Set `ρ : MRing ι →+* ℂ` to `(eval z).comp (map (Int.castRingHom ℂ))`. Establish `hprime : (RingHom.ker ρ).IsPrime` using `RingHom.ker_isPrime ρ`. Establish `hle : P ≤ RingHom.ker ρ` using `fun q hq => hz.2 q hq`. Establish `hrel : IsRelevant (RingHom.ker ρ)` using `fun k => by`. Take `⟨i, hi⟩` from `hz.1 k`.
+
+Use `⟨i, fun hm => hi ?_⟩` and prove the remaining obligations. Simplify `(RingHom.mem_ker.1 hm)` using `[ρ]`. Take `⟨u, v, hu, hv, huv⟩` from `h.2.2 _ hprime hle hrel`. Conclude with `⟨u, v, huv, fun h0 => hu (RingHom.mem_ker.2 h0), fun h0 => hv (RingHom.mem_ker.2 h0)⟩`.
+-/
 theorem exists_pair_ne {P : Ideal (MRing ι)} {f g : MRing ι} (h : UnitRatio P f g) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts P) : ∃ u v : MRing ι, u * f - v * g ∈ P ∧ evC z u ≠ 0 ∧ evC z v ≠ 0 := by
   let ρ : MRing ι →+* ℂ := (eval z).comp (map (Int.castRingHom ℂ))
@@ -37,6 +42,11 @@ theorem exists_pair_ne {P : Ideal (MRing ι)} {f g : MRing ι} (h : UnitRatio P 
   obtain ⟨u, v, hu, hv, huv⟩ := h.2.2 _ hprime hle hrel
   exact ⟨u, v, huv, fun h0 => hu (RingHom.mem_ker.2 h0), fun h0 => hv (RingHom.mem_ker.2 h0)⟩
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `ho`. Establish `h` using `Re.line_eq a t h0 h1 x`. Rewrite `h` using `[e, (Re.line a t).smul c z hc, (Re.ref a).smul c z hc, Re.line_deg]`. Establish `hp : (∏ k, ‖c k‖ ^ (Re.ref a).a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite `h` using `[Real.log_mul hp ((Re.line a t).pos z hz).ne', Real.log_mul hp ((Re.ref a).pos z hz).ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_line_of_orbit {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P) (a : σ) (t : ℝ)
     (h0 : 0 < t) (h1 : t ≤ S.t₀) (x : Re.R.X) (z : (Σ k, ι k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (ho : SameOrbit (Re.R.lift x x) z) :
@@ -49,6 +59,13 @@ theorem log_line_of_orbit {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRi
   rw [Real.log_mul hp ((Re.line a t).pos z hz).ne', Real.log_mul hp ((Re.ref a).pos z hz).ne'] at h
   linarith
 
+/- English proof (translation)
+Introduce `x _`. Take `⟨V, hV, hxV, G, hG, hVG⟩` from `Re.ref_pot c x (Set.mem_univ x)`. Use `⟨V ∩ Re.R.U x, hV.inter (Re.R.isOpen_U x), ⟨hxV, Re.R.mem_U x⟩, G, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Conclude with `(hG j).mono fun y hy => ⟨hy.1, hy.2.1⟩`.
+
+Introduce and unpack `y ⟨hyV, hyU⟩`. Establish `hm` using `Re.R.mem x y hyU`. Establish `ho : SameOrbit (Re.R.lift y y) (Re.R.lift x y)` using `Re.R.compat y x y ⟨Re.R.mem_U y, hyU⟩`. Establish `e1` using `log_line_of_orbit Re c t h0 h1 y _ hm.1 ho`. Establish `e2 : Real.log ((Re.ref c).h (Re.R.lift x y)) - (S.th c).φ (Re.π x) (Re.π y) = (G y).re` using `hVG y hyV`.
+
+Use `show Real.log ((Re.line c t).h (Re.R.lift x y)) - ((S.th c).φ (Re.π x) (Re.π y) + S.phT c t (Re.π y)) = (G y).re`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem samePot_line {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRing ι)} (Re : Realis S P) (c : σ) (t : ℝ)
     (h0 : 0 < t) (h1 : t ≤ S.t₀) :
     SamePot Re.R.A Set.univ (potOf Re.R (Re.line c t)) ((S.potT c t).pullback Re.π Re.holo.1) := by
@@ -66,6 +83,11 @@ theorem samePot_line {D : ℕ} {σ : Type} {S : AnSys D σ} {P : Ideal (MRing ι
       ((S.th c).φ (Re.π x) (Re.π y) + S.phT c t (Re.π y)) = (G y).re
     linarith
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U x)` using `(A.chart j).isOpen_inter_preimage_symm (Q.isOpen_U x)`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Q.U x` using `⟨(A.chart j).map_source hj, by show (A.chart j).symm (A.chart j x) ∈ Q.U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `Q.mem_U x⟩`.
+
+Conclude with `((h.1 x j).contDiffAt (hopen.mem_nhds hmem)).of_le (by`. Establish `h2 : ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 le_top`. Conclude with `h2)`.
+-/
 theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {Q : LocPot X}
     (h : IsPotential A Q) (x : X) : IsTwiceDifferentiableAt A Q x := by
   intro j hj
@@ -80,6 +102,11 @@ theorem isC2At_of_isPotential {e : ℕ} {X : Type} [TopologicalSpace X] (A : Fin
     have h2 : ((2 : ℕ∞) : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := WithTop.coe_le_coe.2 le_top
     exact h2)
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `A.cover x`. Establish `hmem : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ` using `⟨(A.chart j).map_source hj, Set.mem_univ _⟩`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ)`. Simplify using `using (A.chart j).open_target`.
+
+Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `(h j).continuousOn.continuousAt (hopen.mem_nhds hmem)`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) x` using `ContinuousAt.comp h1 ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem continuous_of_smooth {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {f : X → ℝ}
     (h : A.Smooth f) : Continuous f := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -96,6 +123,19 @@ theorem continuous_of_smooth {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinH
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Establish `hl₁` using `Re.line_smooth a₁ t h0 h1`. Establish `hl₂` using `Re.line_smooth a₂ t h0 h1`. Establish `hIso : IsLineIso P (Re.line a₁ t).a (Re.line a₂ t).a f g`. Rewrite using `[Re.line_deg, Re.line_deg]`. Conclude with `hiso`.
+
+Take `⟨w, hw, -, -⟩` from `GlobalTheory.T.line_isomorphism_defect_function K ι P Re.J D Re.R (Re.line a₁ t) (Re.line a₂ t) f g Re.arith.2.1 hIso hl₁ hl₂`. Establish `h` using `GlobalTheory.T.intersection_family_defect_formula hR hB hG hA K ι (II K ι) hI P Re.J D Re.R (fun j => Re.line (u j) t) (Re.line a₁ t) (Re.line a₂ t) f g w Re.arith (fun j => Re.line_smooth _ t h0 h1) hl₁ hl₂ hIso hw`. Rewrite using `[h]`. Establish `hval : ∀ x, w (Re.R.lift x x) = -(S.phT a₁ t (Re.π x) - S.phT a₂ t (Re.π x) - d (Re.π x))`. Introduce `x`.
+
+Establish `hz` using `Re.R.mem x x (Re.R.mem_U x)`. Take `⟨p, q, hpq, hp, hq⟩` from `exists_pair_ne hiso.2 hz`. Establish `e0` using `hw _ hz p q hpq hp`. Establish `e1` using `hlog x p q hpq hp`. Establish `r₁` using `Re.line_eq a₁ t h0 h1 x`.
+
+Establish `r₂` using `Re.line_eq a₂ t h0 h1 x`. Establish `hc : 0 < ‖evC (Re.R.lift x x) q‖ / ‖evC (Re.R.lift x x) p‖` using `div_pos (norm_pos_iff.2 hq) (norm_pos_iff.2 hp)`. Establish `l₁` using `(Re.line a₁ t).pos _ hz.1`. Establish `l₂` using `(Re.line a₂ t).pos _ hz.1`. Establish `f₁` using `(Re.ref a₁).pos _ hz.1`.
+
+Establish `f₂` using `(Re.ref a₂).pos _ hz.1`. Rewrite `e0` using `[Real.log_div (mul_pos hc l₂).ne' l₁.ne', Real.log_mul hc.ne' l₂.ne']`. Rewrite `e1` using `[Real.log_div (mul_pos hc f₂).ne' f₁.ne', Real.log_mul hc.ne' f₂.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpot : ∀ j, IsPotential S.A (S.potT (u j) t)` using `fun j => isPotentialAdd S.A _ _ (S.sing (u j)).1 (isPotential_ofFun S.A _ ((S.reg (u j)).2.2 t h0 h1).1)`.
+
+Establish `hcont : Continuous fun x => -(S.phT a₁ t x - S.phT a₂ t x - d x)` using `(((continuous_of_smooth S.A ((S.reg a₁).2.2 t h0 h1).1).sub (continuous_of_smooth S.A ((S.reg a₂).2.2 t h0 h1).1)).sub (continuous_of_smooth S.A hd)).neg`. Establish `hcongr` using `(GlobalTheory.CompanionTheory.Ar.PB.mInt_congr_samePot D Re.R.X Re.R.A Set.univ (fun j => potOf Re.R (Re.line (u j) t)) (fun j => (S.potT (u j) t).pullback Re.π Re.holo.1) (fun x => w (Re.R.lift x x)) ((fun x => -(S.phT a₁ t x - S.phT a₂ t x - d x)) ∘ Re.π) (by simp [IsNull]) (fu …`. Rewrite using `[hcongr, degreeFormula S.A Re.R.A Re.π Re.holo Re.deg Re.br Re.degree (fun j => S.potT (u j) t) hpot _ hcont, mInt_neg_integrand]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_eq (hR : RatRStatement) (hB : ResBridgeStatement) (hG : GoodProjExistsStatement) (hA : AvoidStatement)
     (II : IntersectionSystem) (hI : IsIntersectionFamily (II K ι)) {P : Ideal (MRing ι)} {D : ℕ} {τ : Type}
     {S : AnSys D τ} (Re : Realis S P) (a₁ a₂ : τ) (f g : MRing ι) (d : S.X → ℝ)
@@ -149,6 +189,21 @@ theorem step_eq (hR : RatRStatement) (hB : ResBridgeStatement) (hG : GoodProjExi
     mInt_neg_integrand]
   ring
 
+/- English proof (translation)
+Introduce `hIn hA II hII K _ ι _ P D σ S Re f g d hiso hd hph hlog w`. Establish `hI : IsIntersectionFamily (II K ι)` using `hII.1 K ι`. Establish `ht : 0 < S.t₀` using `(S.reg (Sum.inl (w 0))).1`. Establish `hdeg : (Re.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Re.deg_pos.ne'`. Establish `hstep : ∀ i : Fin (D + 1), Tendsto (fun t => Re.num II t (fun j => if j < i then Sum.inr (w j) else Sum.inl (w j)) - Re.num II t (fun j => if j ≤ i then Sum.inr (w j) else Sum.inl (w j))) (𝓝[>] 0) (𝓝 0)`.
+
+Introduce `i`. Set `c : Fin (D + 1) → σ ⊕ σ` to `fun j => if j < i then Sum.inr (w j) else Sum.inl (w j)`. Set `c' : Fin (D + 1) → σ ⊕ σ` to `fun j => if j ≤ i then Sum.inr (w j) else Sum.inl (w j)`. Set `u : Fin D → σ ⊕ σ` to `fun j => c (i.succAbove j)`. Establish `hT` using `GlobalTheory.T.monge_ampere_difference_tendsto_zero hIn.convergenceSigned D σ S d hd hph (w i) u`.
+
+Use `hT.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht] with t ht'`. Establish `h0` using `ht'.1`. Establish `h1` using `ht'.2`. Establish `hci : c i = Sum.inl (w i)` using `by simp [c]`.
+
+Establish `hci' : c' i = Sum.inr (w i)` using `by simp [c']`. Establish `hcc : ∀ j : Fin D, c' (i.succAbove j) = u j`. Introduce `j`. Establish `hne : i.succAbove j ≠ i` using `Fin.succAbove_ne i j`. Establish `hiff : i.succAbove j ≤ i ↔ i.succAbove j < i` using `⟨fun h => lt_of_le_of_ne h hne, le_of_lt⟩`.
+
+Simplify using `only [c', u, c, hiff]`. Establish `s₁` using `GlobalTheory.T.intersection_family_symmetric K ι (II K ι) hI P D (fun j => Re.line (c j) t) i Re.arith (fun j => Re.line_smooth _ t h0 h1)`. Establish `s₂` using `GlobalTheory.T.intersection_family_symmetric K ι (II K ι) hI P D (fun j => Re.line (c' j) t) i Re.arith (fun j => Re.line_smooth _ t h0 h1)`. Simplify using `only [hci, hci', hcc] at s₁ s₂`. Establish `hs` using `step_eq hIn.ratR (GlobalTheory.T.resolution_statement_holds) GlobalTheory.CompanionTheory.Ar.Link.goodProjExistsStatement_holds hA II hI Re (Sum.inl (w i)) (Sum.inr (w i)) (f (w i)) (g (w i)) (d (w i)) (hiso (w i)) (hd (w i)) (hlog (w i)) u t h0 h1`.
+
+Use `show mInt S.A _ _ = Re.num II t c - Re.num II t c'`. Simplify using `only [Realis.num]`. Rewrite using `[s₁, s₂, ← sub_div, hs, mul_div_cancel_left₀ _ hdeg]`. Establish `hsum` using `tendsto_finset_sum Finset.univ fun i (_ : i ∈ Finset.univ) => hstep i`. Simplify using `only [Finset.sum_const_zero] at hsum`.
+
+Use `hsum.congr fun t => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.T.telescoping_coordinate_difference (σ ⊕ σ) (D + 1) (Re.num II t) _ _).symm`.
+-/
 theorem cmp_one : Inputs → AvoidStatement → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (D : ℕ) (σ : Type) (S : AnSys D (σ ⊕ σ)) (Re : Realis S P) (f g : σ → MRing ι) (d : σ → S.X → ℝ), (∀ a, IsLineIso P (Re.ref (Sum.inl a)).a (Re.ref (Sum.inr a)).a (f a) (g a)) → (∀ a, S.A.Smooth (d a)) → (∀ a, ∀ y ∈ S.open', S.ph (Sum.inl a) y = S.ph (Sum.inr a) y + d a y) → (∀ a x, ∀ u v : MRing ι, u * f a - v * g a ∈ P → evC (Re.R.lift x x) u ≠ 0 → d a (Re.π x) = Real.log (‖evC (Re.R.lift x x) v‖ / ‖evC (Re.R.lift x x) u‖ * (Re.ref (Sum.inr a)).h (Re.R.lift x x) / (Re.ref (Sum.inl a)).h (Re.R.lift x x))) → ∀ w : Fin (D + 1) → σ, Tendsto (fun t => Re.num II t (fun j => Sum.inl (w j)) - Re.num II t (fun j => Sum.inr (w j))) (𝓝[>] 0) (𝓝 0) := by
   intro hIn hA II hII K _ ι _ P D σ S Re f g d hiso hd hph hlog w
   have hI : IsIntersectionFamily (II K ι) := hII.1 K ι

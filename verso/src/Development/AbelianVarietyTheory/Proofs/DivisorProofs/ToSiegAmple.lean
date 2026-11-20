@@ -24,10 +24,16 @@ def Obj.toSieg {b : Base D R} {N : ℕ} {t : S ⟶ Sp R} (o : Obj b N t) {h M : 
   lev_tors := hl.2.1
   geom := hl.2.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Obj.toSieg_A {b : Base D R} {N : ℕ} {t : S ⟶ Sp R} (o : Obj b N t) {h M : ℕ} {B : Type} [CommRing B]
     {ζ : B} {t₁ : S ⟶ Sp B} {lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ o.A)} (hl : IsSympLev o.P h M ζ t₁ lev) :
     (o.toSieg hl).A = o.A := rfl
 
+/- English proof (translation)
+The claim follows from `o.ample`.
+-/
 theorem Obj.toSieg_ample {b : Base D R} {N : ℕ} {t : S ⟶ Sp R} (o : Obj b N t) {h M : ℕ} {B : Type} [CommRing B]
     {ζ : B} {t₁ : S ⟶ Sp B} {lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ o.A)} (hl : IsSympLev o.P h M ζ t₁ lev) :
     Out.RelAmple (o.toSieg hl).A (o.toSieg hl).diag := o.ample

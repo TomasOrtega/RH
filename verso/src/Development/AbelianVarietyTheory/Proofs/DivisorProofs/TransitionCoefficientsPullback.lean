@@ -8,6 +8,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChainPts.PullHT
 
+/- English proof (translation)
+Establish `hb : ∀ k, pullbackSections g F hT (he.basis hW k) = (isFrame_pullS g hU he).basis hTU k` using `fun k => by`. Rewrite using `[GlobalTheory.VB.IsFrame.basis_apply, GlobalTheory.VB.IsFrame.basis_apply]`. Conclude with `(pullbackSections_res g F hT hW _).trans (res_pullbackSections g F _ _ _).symm`. Use `conv_lhs => rw [← (he.basis hW).sum_repr t]`. Simplify using `only [map_sum, pullbackSections_smul, hb]`.
+
+Rewrite using `[← map_sum, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_pulled_frame {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.IsQuasicoherent] {r : ℕ}
     {V W : X.Opens} {U T : X'.Opens} (hU : U ≤ g ⁻¹ᵁ V) (hT : T ≤ g ⁻¹ᵁ W) (hW : W ≤ V) (hTU : T ≤ U)
     {e : Fin r → Γ(F, V)} (he : GlobalTheory.VB.IsFrame e) (t : Γ(F, W)) (l : Fin r) :
@@ -20,6 +25,9 @@ theorem repr_pulled_frame {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.
   simp only [map_sum, pullbackSections_smul, hb]
   rw [← map_sum, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Consider the cases of `d`. Use `Eq.trans ?_ (repr_pulled_frame g hU (inf_le_inf hU hU') inf_le_left inf_le_left he _ l)` and prove the remaining obligations. Conclude with `congrArg (fun t => ((isFrame_pullS g hU he).basis inf_le_left).repr t l) ((res_pullbackSections g F _ _ _).trans (pullbackSections_res g F _ inf_le_right _).symm)`. Use `Eq.trans ?_ (repr_pulled_frame g hU' (inf_le_inf hU hU') inf_le_right inf_le_right hs _ i)` and prove the remaining obligations. Conclude with `congrArg (fun t => ((isFrame_pullS g hU' hs).basis inf_le_right).repr t i) ((res_pullbackSections g F _ _ _).trans (pullbackSections_res g F _ inf_le_left _).symm)`.
+-/
 theorem coef_pulled_frames {X X' : Scheme.{0}} (g : X' ⟶ X) {F : X.Modules} [F.IsQuasicoherent] {r : ℕ} (d : Bool)
     {V V' : X.Opens} {U U' : X'.Opens} (hU : U ≤ g ⁻¹ᵁ V) (hU' : U' ≤ g ⁻¹ᵁ V') {e : Fin r → Γ(F, V)}
     {s : Fin r → Γ(F, V')} (he : GlobalTheory.VB.IsFrame e) (hs : GlobalTheory.VB.IsFrame s) (l i : Fin r) :

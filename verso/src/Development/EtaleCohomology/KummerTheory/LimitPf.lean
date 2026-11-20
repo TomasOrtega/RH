@@ -30,6 +30,15 @@ def LimAssemble : Prop := A9 → ∀ (l : ℕ) [Fact l.Prime] {X Y S : Scheme.{0
       κ (DirectSum.lof ℚ_[l] ℤ (fun a : ℤ => HQ l (sch.obj X) a i ⊗[ℚ_[l]] HQ l (sch.obj Y) (n - a) 0) a
         (((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] x) ⊗ₜ[ℚ_[l]] ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] y))) = (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] e a x y
 
+/- English proof (translation)
+Introduce `hA9 hA11 l _ X Y S pX pY n i M N r c hnM hN hB hfin hiso`. Use `choose e he using fun a : ℤ => h1 hA11 l pX pY a n i`. Take `⟨Φ, hΦ, hΦN⟩` from `h2 hA11 l pX pY n i M N r c hfin hiso`. Establish `key : ∀ y, Φ y = ∑ a : Fin (M + 1), ∑ s : Fin (r a), e ((a : ℕ) : ℤ) (c a s) (y a s)`. Introduce `y`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `lev l (Φ y) k = _`. Rewrite using `[hΦ y k, Submodule.coe_sum, Finset.sum_apply]`. Unfold `lh`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `(he _ _ _ k).symm`. Take `⟨κ, hκ⟩` from `h3 hA9 l pX pY n i M N r c hnM hN hB e Φ key hΦN`.
+
+Conclude with `⟨κ, fun a x y => ⟨e a x y, fun k => he a x y k, hκ a x y⟩⟩`.
+-/
 theorem Limit_of (h1 : LimExtHl) (h2 : LimLH) (h3 : LimAssemble) : Limit := by
   intro hA9 hA11 l _ X Y S pX pY n i M N r c hnM hN hB hfin hiso
   choose e he using fun a : ℤ => h1 hA11 l pX pY a n i

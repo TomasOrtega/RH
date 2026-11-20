@@ -26,6 +26,11 @@ def idMap (τ : K ≃+* K') : (Ideal (𝓞 K))⁰ →* (Ideal (𝓞 K'))⁰ wher
   map_one' := Subtype.ext (by simp [Ideal.map_top])
   map_mul' I J := Subtype.ext (Ideal.map_mul _ _ _)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[ClassGroup.mk0_eq_mk0_iff]`. Take `⟨x, y, hx, hy, h⟩` from `h`. Use `⟨RingOfIntegers.mapRingEquiv τ x, RingOfIntegers.mapRingEquiv τ y, by simpa using hx, by simpa using hy, ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.map (RingOfIntegers.mapRingEquiv τ)) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_mul, Ideal.map_mul, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton]`.
+
+Conclude with `this`.
+-/
 theorem mk0_idMap_congr (τ : K ≃+* K') {I J : (Ideal (𝓞 K))⁰} (h : ClassGroup.mk0 I = ClassGroup.mk0 J) :
     ClassGroup.mk0 (idMap τ I) = ClassGroup.mk0 (idMap τ J) := by
   rw [ClassGroup.mk0_eq_mk0_iff] at h ⊢
@@ -38,6 +43,9 @@ theorem mk0_idMap_congr (τ : K ≃+* K') {I J : (Ideal (𝓞 K))⁰} (h : Class
 private def clFun (τ : K ≃+* K') (c : ClassGroup (𝓞 K)) : ClassGroup (𝓞 K') :=
   ClassGroup.mk0 (idMap τ (ClassGroup.mk0_surjective c).choose)
 
+/- English proof (translation)
+The claim follows from `mk0_idMap_congr τ (ClassGroup.mk0_surjective _).choose_spec`.
+-/
 private theorem class_fun_mk0 (τ : K ≃+* K') (I : (Ideal (𝓞 K))⁰) :
     clFun τ (ClassGroup.mk0 I) = ClassGroup.mk0 (idMap τ I) :=
   mk0_idMap_congr τ (ClassGroup.mk0_surjective _).choose_spec
@@ -48,6 +56,9 @@ def clMap (τ : K ≃+* K') : ClassGroup (𝓞 K) →* ClassGroup (𝓞 K') :=
     obtain ⟨J, rfl⟩ := ClassGroup.mk0_surjective b
     rw [← map_mul, class_fun_mk0, class_fun_mk0, class_fun_mk0, map_mul, map_mul]
 
+/- English proof (translation)
+The claim follows from `class_fun_mk0 τ I`.
+-/
 theorem class_map_mk0 (τ : K ≃+* K') (I : (Ideal (𝓞 K))⁰) : clMap τ (ClassGroup.mk0 I) = ClassGroup.mk0 (idMap τ I) :=
   class_fun_mk0 τ I
 
@@ -62,11 +73,20 @@ def ClDual (N : ℕ) (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] : S
 
 def ordv (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) : ℤ := -Multiplicative.toAdd (v.valuationOfNeZero a)
 
+/- English proof (translation)
+Simplify using `[ordv, add_comm]`.
+-/
 theorem ordv_mul (v : HeightOneSpectrum (𝓞 K)) (a b : Kˣ) : ordv v (a * b) = ordv v a + ordv v b := by
   simp [ordv, add_comm]
 
+/- English proof (translation)
+Simplify using `[ordv]`.
+-/
 theorem ordv_one (v : HeightOneSpectrum (𝓞 K)) : ordv v (1 : Kˣ) = 0 := by simp [ordv]
 
+/- English proof (translation)
+Simplify using `[ordv]`.
+-/
 theorem ordv_inv (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) : ordv v a⁻¹ = -ordv v a := by simp [ordv]
 
 def SelK (S : Set (HeightOneSpectrum (𝓞 K))) (n : ℕ) : Subgroup Kˣ where
@@ -216,6 +236,9 @@ def resInf (D : LData F Ω l) (e : ℤ) : H1 (qzTw D e) →ₗ[ℤ_[l]] (Uinf F 
     have h : D.chi (toGS Ω _ u.1) = 1 := (DFunLike.congr_fun D.hchi u.1).trans u.2.2
     rw [qzTw_apply, h, one_zpow, Units.val_one, one_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resInf_mk (D : LData F Ω l) (e : ℤ) (z : Z1 (qzTw D e)) (u : Uinf F Ω l) :
     resInf D e (Submodule.Quotient.mk z) u = z.1 (toGS Ω _ u.1) := rfl
 

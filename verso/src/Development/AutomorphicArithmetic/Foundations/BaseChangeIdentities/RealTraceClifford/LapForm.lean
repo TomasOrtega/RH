@@ -15,24 +15,45 @@ open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(cfBasic n).2.2.1 f g h`.
+-/
 private theorem cf_ext' {f g : FR n} (h : ∀ x, cf f x = cf g x) : f = g := (cfBasic n).2.2.1 f g h
 
+/- English proof (translation)
+The claim follows from `((cfBasic n).2.2.2.1 f g 0 x).1`.
+-/
 private theorem cf_add' (f g : FR n) (x : Wt n) : cf (f + g) x = cf f x + cf g x :=
   ((cfBasic n).2.2.2.1 f g 0 x).1
 
+/- English proof (translation)
+The claim follows from `((cfBasic n).2.2.2.1 f f c x).2`.
+-/
 private theorem cf_smul' (c : ℂ) (f : FR n) (x : Wt n) : cf (c • f) x = c * cf f x :=
   ((cfBasic n).2.2.2.1 f f c x).2
 
+/- English proof (translation)
+The claim follows from `(cfBasic n).2.2.2.2.1 f x y`.
+-/
 private theorem cf_ex_mul (f : FR n) (x y : Wt n) : cf (ex y * f) x = cf f (x - y) :=
   (cfBasic n).2.2.2.2.1 f x y
 
+/- English proof (translation)
+Simplify using `using cf_smul' 0 (0 : FR n) x`.
+-/
 private theorem cf_zero' (x : Wt n) : cf (0 : FR n) x = 0 := by
   simpa using cf_smul' 0 (0 : FR n) x
 
+/- English proof (translation)
+Establish `h : f - g = f + (-1 : ℂ) • g` using `by rw [neg_one_smul, sub_eq_add_neg]`. Rewrite using `[h, cf_add', cf_smul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cf_sub' (f g : FR n) (x : Wt n) : cf (f - g) x = cf f x - cf g x := by
   have h : f - g = f + (-1 : ℂ) • g := by rw [neg_one_smul, sub_eq_add_neg]
   rw [h, cf_add', cf_smul']; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [cf_zero']`. Consider the case `insert i s hi ih => rw [sum_insert hi, sum_insert hi, cf_add', ih]`.
+-/
 private theorem cf_sum' {ι : Type*} (s : Finset ι) (g : ι → FR n) (x : Wt n) :
     cf (∑ i ∈ s, g i) x = ∑ i ∈ s, cf (g i) x := by
   classical
@@ -46,6 +67,9 @@ private def partialDerivMonomialLaplace (a : Fin n) (f : FR n) : FR n :=
       simp only [Finsupp.mem_support_iff]
       exact right_ne_zero_of_mul hx))
 
+/- English proof (translation)
+Simplify using `[cf, partialDerivMonomialLaplace]`.
+-/
 private theorem coeff_laplacian_diagonal (a : Fin n) (f : FR n) (x : Wt n) :
     cf (partialDerivMonomialLaplace a f) x = (x a : ℂ) * cf f x := by
   simp [cf, partialDerivMonomialLaplace]
@@ -58,9 +82,17 @@ private def lapD (a : Fin n) : FR n →ₗ[ℂ] FR n where
     simp only [RingHom.id_apply]
     rw [cf_smul', coeff_laplacian_diagonal, coeff_laplacian_diagonal, cf_smul']; ring
 
+/- English proof (translation)
+The claim follows from `coeff_laplacian_diagonal a f x`.
+-/
 private theorem cf_lapD (a : Fin n) (f : FR n) (x : Wt n) :
     cf (lapD a f) x = (x a : ℂ) * cf f x := coeff_laplacian_diagonal a f x
 
+/- English proof (translation)
+Use `cf_ext' fun x => ?_` and prove the remaining obligations. Rewrite using `[cf_lapD]`. Distinguish the cases in `h : m = x`. Substitute `h` using the available equality. Simplify using `[cf]`.
+
+Simplify using `[cf, Finsupp.single_apply, h]`.
+-/
 private theorem lapD_single (a : Fin n) (m : Wt n) (r : ℂ) :
     lapD a (AddMonoidAlgebra.single m r) = AddMonoidAlgebra.single m ((m a : ℂ) * r) := by
   refine cf_ext' fun x => ?_
@@ -69,18 +101,32 @@ private theorem lapD_single (a : Fin n) (m : Wt n) (r : ℂ) :
   · subst h; simp [cf]
   · simp [cf, Finsupp.single_apply, h]
 
+/- English proof (translation)
+Simplify using `[ex, lapD_single]`.
+-/
 private theorem lapD_ex (a : Fin n) (m : Wt n) : lapD a (ex m) = (m a : ℂ) • ex m := by
   simp [ex, lapD_single]
 
+/- English proof (translation)
+Establish `h` using `lapD_ex a (0 : Wt n)`. Rewrite `h` using `[(cfBasic n).2.1]`. Simplify using `using h`.
+-/
 private theorem lapD_one (a : Fin n) : lapD a (1 : FR n) = 0 := by
   have h := lapD_ex a (0 : Wt n)
   rw [(cfBasic n).2.1] at h
   simpa using h
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gs1.lapD_mul a f g`.
+-/
 private theorem lapD_mul (a : Fin n) (f g : FR n) :
     lapD a (f * g) = lapD a f * g + f * lapD a g :=
   _root_.UpperTheory.Reformulated.B.Gs1.lapD_mul a f g
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [lapD_one]`. Consider the case `insert i s hi ih`. Rewrite using `[prod_insert hi, lapD_mul, ih, sum_insert hi, erase_insert hi, mul_sum]`. Use `congr 1`.
+
+Use `sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hik : i ≠ k` using `fun h => hi (h ▸ hk)`. Rewrite using `[erase_insert_of_ne hik, prod_insert (by simp [hi])]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem lapD_prod {ι : Type*} [DecidableEq ι] (a : Fin n) (s : Finset ι) (g : ι → FR n) :
     lapD a (∏ i ∈ s, g i) = ∑ i ∈ s, lapD a (g i) * ∏ j ∈ s.erase i, g j := by
   induction s using Finset.induction_on with
@@ -95,6 +141,9 @@ private theorem lapD_prod {ι : Type*} [DecidableEq ι] (a : Fin n) (s : Finset 
 
 private def lapL (f : FR n) : FR n := ∑ a, lapD a (lapD a f)
 
+/- English proof (translation)
+Rewrite using `[lapL, cf_sum']`. Simplify using `only [cf_lapD, nsq]`. Use `push_cast`. Rewrite using `[sum_mul]`. Conclude with `sum_congr rfl fun a _ => by ring`.
+-/
 private theorem cf_lapL (f : FR n) (x : Wt n) : cf (lapL f) x = (nsq x : ℂ) * cf f x := by
   rw [lapL, cf_sum']
   simp only [cf_lapD, nsq]
@@ -108,13 +157,24 @@ private def lapP (p : Fin n × Fin n) : FR n := 1 - lapE p
 
 private def lapQ (p : Fin n × Fin n) : FR n := ex (rhoV n) * ∏ j ∈ (posP n).erase p, lapP j
 
+/- English proof (translation)
+Simplify `denom n 1` using `[lapP, lapE]`.
+-/
 private theorem alt_rho : alt (rhoV n) = ex (rhoV n) * ∏ p ∈ posP n, lapP p := by
   simpa [lapP, lapE] using denom n 1
 
+/- English proof (translation)
+Rewrite using `[alt_rho, lapQ, ← mul_prod_erase (posP n) lapP hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem alt_q {p : Fin n × Fin n} (hp : p ∈ posP n) : alt (rhoV n) = lapP p * lapQ p := by
   rw [alt_rho, lapQ, ← mul_prod_erase (posP n) lapP hp]
   ring
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, h1, h2⟩` from `chRF n`. Establish `h` using `congrFun (h1.symm.trans (h2 (posP n))) a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at h`. Establish `h' : rhoV n a = ∑ p ∈ posP n, rt p.1 p.2 a / 2`. Rewrite using `[← sum_div, ← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h']`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem rho_sum (a : Fin n) :
     (rhoV n a : ℂ) = ∑ p ∈ posP n, ((rt p.1 p.2 a : ℝ) : ℂ) / 2 := by
   obtain ⟨-, -, -, -, -, -, -, h1, h2⟩ := chRF n
@@ -126,10 +186,22 @@ private theorem rho_sum (a : Fin n) :
   push_cast
   rfl
 
+/- English proof (translation)
+Simplify using `[lapP, lapE, map_sub, lapD_one, lapD_ex]`.
+-/
 private theorem lapD_P (a : Fin n) (p : Fin n × Fin n) :
     lapD a (lapP p) = ((rt p.1 p.2 a : ℝ) : ℂ) • lapE p := by
   simp [lapP, lapE, map_sub, lapD_one, lapD_ex]
 
+/- English proof (translation)
+Establish `h1 : lapD a (ex (rhoV n) * ∏ p ∈ posP n, lapP p) = (rhoV n a : ℂ) • (ex (rhoV n) * ∏ p ∈ posP n, lapP p) + ∑ p ∈ posP n, ((rt p.1 p.2 a : ℝ) : ℂ) • (lapE p * lapQ p)`. Rewrite using `[lapD_mul, lapD_ex, lapD_prod, mul_sum, smul_mul_assoc]`. Use `congr 1`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[lapD_P, lapQ]`.
+
+Simplify using `only [smul_mul_assoc, mul_smul_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[← alt_rho]`. Rewrite using `[h1, rho_sum, sum_smul, ← sum_add_distrib]`.
+
+Use `sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[alt_q hp, lapP]`. Establish `e1 : (1 - lapE p) * lapQ p = lapQ p - lapE p * lapQ p` using `by ring`. Establish `e2 : (1 + lapE p) * lapQ p = lapQ p + lapE p * lapQ p` using `by ring`. Rewrite using `[e1, e2]`.
+
+Use `module`.
+-/
 private theorem lapD_alt (a : Fin n) :
     lapD a (alt (rhoV n)) =
       ∑ p ∈ posP n, (((rt p.1 p.2 a : ℝ) : ℂ) / 2) • ((1 + lapE p) * lapQ p) := by
@@ -152,6 +224,9 @@ private theorem lapD_alt (a : Fin n) :
   rw [e1, e2]
   module
 
+/- English proof (translation)
+The claim follows from `cf_ext' fun x => by rw [cf_lapL, cf_smul'] by_cases h : cf (alt (rhoV n)) x = 0 · simp [h] · obtain ⟨w, rfl⟩ := (cfBasic n).2.2.2.2.2.2.2.2.2.2.1 (rhoV n) x h have e : nsq (rhoV n ∘ w) = nsq (rhoV n) := by simp only [nsq, Function.comp] exact Equiv.sum_comp w fun a => rhoV n a ^ …`.
+-/
 private theorem lapL_alt : lapL (alt (rhoV n)) = (nsq (rhoV n) : ℂ) • alt (rhoV n) :=
   cf_ext' fun x => by
     rw [cf_lapL, cf_smul']
@@ -163,6 +238,9 @@ private theorem lapL_alt : lapL (alt (rhoV n)) = (nsq (rhoV n) : ℂ) • alt (r
         exact Equiv.sum_comp w fun a => rhoV n a ^ 2
       rw [e]
 
+/- English proof (translation)
+Simplify using `only [lapL]`. Rewrite using `[sum_mul, mul_sum, ← sum_add_distrib, ← sum_add_distrib]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [lapD_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem lapL_mul (f g : FR n) :
     lapL (f * g) = lapL f * g + ∑ a, 2 * (lapD a f * lapD a g) + f * lapL g := by
   simp only [lapL]
@@ -171,6 +249,11 @@ private theorem lapL_mul (f g : FR n) :
   simp only [lapD_mul, map_add]
   ring
 
+/- English proof (translation)
+Establish `h : ∀ a, ((rt i j a : ℝ) : ℂ) • g a = (if a = i then g a else 0) - (if a = j then g a else 0)`. Introduce `a`. Simplify using `only [rt, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[sum_congr rfl fun a _ => h a, sum_sub_distrib]`.
+
+Simplify using `only [sum_ite_eq', mem_univ, if_true]`.
+-/
 private theorem rt_sum (g : Fin n → FR n) (i j : Fin n) :
     ∑ a, ((rt i j a : ℝ) : ℂ) • g a = g i - g j := by
   have h : ∀ a, ((rt i j a : ℝ) : ℂ) • g a =
@@ -181,6 +264,11 @@ private theorem rt_sum (g : Fin n → FR n) (i j : Fin n) :
   rw [sum_congr rfl fun a _ => h a, sum_sub_distrib]
   simp only [sum_ite_eq', mem_univ, if_true]
 
+/- English proof (translation)
+Establish `h : ∀ a, 2 * (lapD a (alt (rhoV n)) * lapD a c) = ∑ p ∈ posP n, ((rt p.1 p.2 a : ℝ) : ℂ) • ((1 + lapE p) * lapQ p * lapD a c)`. Introduce `a`. Rewrite using `[lapD_alt, sum_mul, mul_sum]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, two_mul, ← add_smul, add_halves]`.
+
+Repeatedly rewrite using `[h]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← rt_sum (fun a => lapD a c) p.1 p.2, mul_sum]`. Conclude with `sum_congr rfl fun a _ => (mul_smul_comm _ _ _).symm`.
+-/
 private theorem lap_cross (c : FR n) :
     ∑ a, 2 * (lapD a (alt (rhoV n)) * lapD a c) =
       ∑ p ∈ posP n, (1 + lapE p) * lapQ p * (lapD p.1 c - lapD p.2 c) := by
@@ -196,6 +284,9 @@ private theorem lap_cross (c : FR n) :
   rw [← rt_sum (fun a => lapD a c) p.1 p.2, mul_sum]
   exact sum_congr rfl fun a _ => (mul_smul_comm _ _ _).symm
 
+/- English proof (translation)
+The claim follows from `cf_ext' fun μ => by have e : lapP p * u = u - ex (-rt p.1 p.2) * u := by rw [lapP, lapE, sub_mul, one_mul] rw [e, cf_sub', cf_sub', cf_lapD, cf_lapD, cf_ex_mul, sub_neg_eq_add, h] push_cast ring`.
+-/
 private theorem laplacian_difference_eq_mul (c u : FR n) (p : Fin n × Fin n)
     (h : ∀ μ, cf u μ - cf u (μ + rt p.1 p.2) = ((μ p.1 - μ p.2 : ℝ) : ℂ) * cf c μ) :
     lapD p.1 c - lapD p.2 c = lapP p * u :=
@@ -206,6 +297,9 @@ private theorem laplacian_difference_eq_mul (c u : FR n) (p : Fin n × Fin n)
     push_cast
     ring
 
+/- English proof (translation)
+The claim follows from `cf_ext' fun μ => by rw [cf_smul', cf_add', cf_lapL, cf_sum', h] congr 1 refine sum_congr rfl fun p _ => ?_ have e : (1 + lapE p) * t p = t p + ex (-rt p.1 p.2) * t p := by rw [lapE, add_mul, one_mul] rw [e, cf_add', cf_ex_mul, sub_neg_eq_add]`.
+-/
 private theorem laplacian_sum_decomposition (c : FR n) (t : Fin n × Fin n → FR n) (s : ℂ)
     (h : ∀ μ, s * cf c μ = (nsq μ : ℂ) * cf c μ +
       ∑ p ∈ posP n, (cf (t p) μ + cf (t p) (μ + rt p.1 p.2))) :
@@ -218,6 +312,13 @@ private theorem laplacian_sum_decomposition (c : FR n) (t : Fin n × Fin n → F
       rw [lapE, add_mul, one_mul]
     rw [e, cf_add', cf_ex_mul, sub_neg_eq_add]
 
+/- English proof (translation)
+Introduce `n c t s h1 h2 x hx`. Establish `hq : lapL (alt (rhoV n) * c) = ((nsq (rhoV n) : ℂ) + s) • (alt (rhoV n) * c)`. Establish `e1 : ∑ p ∈ posP n, (1 + lapE p) * lapQ p * (lapD p.1 c - lapD p.2 c) = alt (rhoV n) * ∑ p ∈ posP n, (1 + lapE p) * t p`. Rewrite using `[mul_sum]`. Use `sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[laplacian_difference_eq_mul c (t p) p (h1 p hp), alt_q hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[lapL_mul, lapL_alt, lap_cross, e1, add_smul, smul_mul_assoc, ← mul_smul_comm s, laplacian_sum_decomposition c t s h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `congrArg (fun f => cf f x) hq`.
+
+Simplify using `only [cf_lapL, cf_smul'] at h`. Rewrite using `[add_comm s]`. Conclude with `mul_right_cancel₀ hx h`.
+-/
 theorem UpperTheory.RealTr.lapForm :
     ∀ (n : ℕ) (c : FR n) (t : Fin n × Fin n → FR n) (s : ℂ),
       (∀ p ∈ posP n, ∀ μ, cf (t p) μ - cf (t p) (μ + rt p.1 p.2) = ((μ p.1 - μ p.2 : ℝ) : ℂ) * cf c μ) →

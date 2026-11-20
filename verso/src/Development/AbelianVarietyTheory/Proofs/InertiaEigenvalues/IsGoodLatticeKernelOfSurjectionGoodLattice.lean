@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.KerGood
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on generalizing y with`. Consider the case `C c => simp [Module.algebraMap_end_apply]`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial n c h`. Simplify using `only [pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply] at h ⊢`.
+
+Rewrite using `[h (A y), hA]`.
+-/
 theorem map_aeval {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (F : M →ₗ[R] N) (A : Module.End R M) (A' : Module.End R N) (hA : ∀ y, F (A y) = A' (F y))
     (p : Polynomial R) (y : M) : F (Polynomial.aeval A p y) = Polynomial.aeval A' p (F y) := by
@@ -23,6 +28,17 @@ theorem map_aeval {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [Add
     simp only [pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply] at h ⊢
     rw [h (A y), hA]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hS` using `(GlobalTheory.RegularRing.fontaineFormalism hF l Pl AI hs).2.2.2.1 (ϖ.field a) LL`. Conclude with `hS _ (resF T₁ (ϖ.field a)).ρ _ (resF T₀ (ϖ.field a)).ρ f (fun g x => he _ x) hf hT.crys`. Introduce `γ hγ w hw x hx`. Take `⟨r, hr⟩` from `f.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hf)`.
+
+Establish `hrf : ∀ v, r (f v) = v` using `fun v => LinearMap.congr_fun hr v`. Establish `hRF : ∀ y, GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB (Qp` using `ℚ_[l]) (B := Pl.R.B) r (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB (Qp := ℚ_[l]) (B := Pl.R.B) f y) = y := by`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b => simp [GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB, hrf]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hFi : Function.Injective (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB (Qp` using `ℚ_[l]) (B := Pl.R.B) f) := Function.LeftInverse.injective hRF`. Establish `hFx` using `GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB_mem (Pl.PD (ϖ.field a)) (ρ := (resF T₀ (ϖ.field a)).ρ) (ρ' := (resF T₁ (ϖ.field a)).ρ) (f := f) (fun g x => he _ x) x hx`. Establish `h1` using `hT.type γ hγ w hw _ hFx`.
+
+Establish `hc : ∀ y, GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB (Qp` using `ℚ_[l]) (B := Pl.R.B) f (actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T₀.ρ γ y) = actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T₁.ρ γ (GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB (Qp := ℚ_[l]) (B := Pl.R.B) f …`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.tensorB, actVB, he]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Apply `hFi` to reduce the goal to its premises. Conclude with `(map_aeval _ _ _ hc _ x).trans (h1.trans (map_zero _).symm)`. Introduce `τ b hb`. Conclude with `hT.jumps τ b (GlobalTheory.HTW.isJumpV_of_injective _ _ T₁.ρ f hf he τ b hb)`.
+-/
 theorem isGood_of_injective (hF : GlobalTheory.Published.FontaineBcris) {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a]
     {ϖ : PiSys l e} {LL : FinExt l} {Pl : LocPrime l} {AI : LocAinf l Pl} (hs : IsStd Pl AI)
     {Sig : Finset (ZMod e)} {U : Finset ℤ} {T₀ T₁ : QLat LL} (f : T₀.V →ₗ[↥LL.1] T₁.V)
@@ -59,6 +75,13 @@ theorem isGood_of_injective (hF : GlobalTheory.Published.FontaineBcris) {l : ℕ
   · intro τ b hb
     exact hT.jumps τ b (GlobalTheory.HTW.isJumpV_of_injective _ _ T₁.ρ f hf he τ b hb)
 
+/- English proof (translation)
+Introduce `hF l _ a e _ _ ϖ LL _ _ Pl AI hs Sig U T₁ T₂ g hg hT`. Take `⟨⟨_, hD, hFr⟩, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l LL`. Establish `hden : Formalism.MainNotions.LiftingTheory.lker_Den ↥LL.1 ↥(OL LL)`. Introduce `c`. Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.surj (nonZeroDivisors ↥(OL LL)) c`.
+
+Use `⟨s, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2, x, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `hxs`. Establish `hinj : Function.Injective (Formalism.MainNotions.LiftingTheory.lker_ι g hg hden).f` using `fun x y h => Subtype.ext h`. Use `⟨Formalism.MainNotions.LiftingTheory.lker_T₀ g hg hden, Formalism.MainNotions.LiftingTheory.lker_ι g hg hden, ?_, isGood_of_injective hF hs _ hinj (Formalism.MainNotions.LiftingTheory.lker_ι g hg hden).equiv hT⟩` and prove the remaining obligations.
+
+Conclude with `⟨hinj, Formalism.MainNotions.LiftingTheory.lker_surj g hg, hg, fun x => ⟨fun h => ⟨⟨x, h⟩, rfl⟩, by rintro ⟨y, rfl⟩; exact y.2⟩, fun y hy => hy⟩`.
+-/
 theorem main : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → ∀ (Sig : Finset (ZMod e)) (U : Finset ℤ) (T₁ T₂ : QLat LL) (g : LatHom T₁.L T₂.L), g.Onto → IsGood a ϖ Pl T₁ Sig U → ∃ (T₀ : QLat LL) (f : LatHom T₀.L T₁.L), IsSESLat (Qp := ℚ_[l]) f g ∧ IsGood a ϖ Pl T₀ Sig U := by
   intro hF l _ a e _ _ ϖ LL _ _ Pl AI hs Sig U T₁ T₂ g hg hT
   obtain ⟨⟨_, hD, hFr⟩, -⟩ := GlobalTheory.LocalIntegers.goodO_integers l LL

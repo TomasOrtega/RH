@@ -13,19 +13,33 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `contDiff_apply_apply ℝ ℂ i j`.
+-/
 theorem contDiff_entry (i j : Fin n) : ContDiff ℝ ∞ fun y : Matrix (Fin n) (Fin n) ℂ => y i j :=
   contDiff_apply_apply ℝ ℂ i j
 
+/- English proof (translation)
+Unfold `hs`. Apply the tactic sequence `exact ContDiff.sum fun i _ => ContDiff.sum fun j _ => (contDiff_entry i j).norm_sq ℝ`.
+-/
 theorem contDiff_hs : ContDiff ℝ ∞ (hs : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold hs
   exact ContDiff.sum fun i _ => ContDiff.sum fun j _ => (contDiff_entry i j).norm_sq ℝ
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `exact ContDiff.sum fun k _ => ((contDiff_entry i k).comp contDiff_fst).mul ((contDiff_entry k j).comp contDiff_snd)`.
+-/
 theorem contDiff_mul :
     ContDiff ℝ ∞ fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => p.1 * p.2 := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
   simp only [Matrix.mul_apply]
   exact ContDiff.sum fun k _ => ((contDiff_entry i k).comp contDiff_fst).mul ((contDiff_entry k j).comp contDiff_snd)
 
+/- English proof (translation)
+Simplify using `only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem hs_eq_trace (y : Matrix (Fin n) (Fin n) ℂ) : (hs y : ℂ) = (y * yᴴ).trace := by
   simp only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply]
   push_cast
@@ -34,6 +48,11 @@ theorem hs_eq_trace (y : Matrix (Fin n) (Fin n) ℂ) : (hs y : ℂ) = (y * yᴴ)
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h1 : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hk`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[hs_eq_trace, hs_eq_trace]`. Establish `: kᴴ * y * k * (kᴴ * y * k)ᴴ = kᴴ * (y * yᴴ * k)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc k kᴴ, h1, Matrix.one_mul]`. Rewrite using `[this, Matrix.trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+-/
 theorem hs_conj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (y : Matrix (Fin n) (Fin n) ℂ) : hs (kᴴ * y * k) = hs y := by
   have h1 : k * kᴴ = 1 := Matrix.mem_unitaryGroup_iff.1 hk
@@ -44,6 +63,9 @@ theorem hs_conj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup
     rw [← Matrix.mul_assoc k kᴴ, h1, Matrix.one_mul]
   rw [this, Matrix.trace_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.norm_le_iff hr]`. Introduce `i j`. Establish `h1 : ‖y i j‖ ^ 2 ≤ ∑ j, ‖y i j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖y i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ j, ‖y i j‖ ^ 2 ≤ hs y` using `Finset.single_le_sum (f := fun i => ∑ j, ‖y i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) hr two_ne_zero).1 (h1.trans (h2.trans h))`.
+-/
 theorem norm_le_of_hs {y : Matrix (Fin n) (Fin n) ℂ} {r : ℝ} (hr : 0 ≤ r) (h : hs y ≤ r ^ 2) : ‖y‖ ≤ r := by
   rw [Matrix.norm_le_iff hr]
   intro i j
@@ -53,6 +75,13 @@ theorem norm_le_of_hs {y : Matrix (Fin n) (Fin n) ℂ} {r : ℝ} (hr : 0 ≤ r) 
     Finset.single_le_sum (f := fun i => ∑ j, ‖y i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) hr two_ne_zero).1 (h1.trans (h2.trans h))
 
+/- English proof (translation)
+Take `⟨r, hr, hrW⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hW`. Use `⟨fun y => expNegInvGlue (r ^ 2 - hs (y - 1)), Metric.closedBall 1 r, ?_, fun y => expNegInvGlue.nonneg _, ?_, isCompact_closedBall _ _, hrW, fun y hy => ?_, fun k hk y => ?_⟩` and prove the remaining obligations. Conclude with `expNegInvGlue.contDiff.comp (contDiff_const.sub (contDiff_hs.comp (contDiff_id.sub contDiff_const)))`. Use `(expNegInvGlue.pos_of_pos ?_).ne'` and prove the remaining obligations. Simplify using `only [sub_self, hs, Matrix.zero_apply, norm_zero]`.
+
+Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero, sub_zero]`. Check the signs of the components of the expression. Rewrite using `[mem_closedBall_iff_norm]`. Use `norm_le_of_hs hr.le ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hy (expNegInvGlue.zero_of_nonpos (by linarith))`. Establish `h1 : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk`. Establish `: kᴴ * y * k - 1 = kᴴ * (y - 1) * k`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`. Simplify using `only [this, hs_conj hk]`.
+-/
 theorem exists_bump {W : Set (Matrix (Fin n) (Fin n) ℂ)} (hW : W ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ)) :
     ∃ (f : Matrix (Fin n) (Fin n) ℂ → ℝ) (S : Set (Matrix (Fin n) (Fin n) ℂ)), ContDiff ℝ ∞ f ∧ 0 ≤ f ∧ f 1 ≠ 0 ∧
       IsCompact S ∧ S ⊆ W ∧ (∀ y, f y ≠ 0 → y ∈ S) ∧
@@ -74,6 +103,11 @@ theorem exists_bump {W : Set (Matrix (Fin n) (Fin n) ℂ)} (hW : W ∈ 𝓝 (1 :
       rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]
     simp only [this, hs_conj hk]
 
+/- English proof (translation)
+Use `(hA.prod hS).image_of_continuousOn fun p hp => ?_` and prove the remaining obligations. Establish `h1 : ContinuousAt (Inv.inv : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) p.2`. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (hd _ hp.2)`.
+
+Conclude with `(continuousAt_fst.mul (h1.comp continuousAt_snd)).continuousWithinAt`.
+-/
 theorem isCompact_mul_inv {A S : Set (Matrix (Fin n) (Fin n) ℂ)} (hA : IsCompact A) (hS : IsCompact S)
     (hd : ∀ B ∈ S, B.det ≠ 0) :
     IsCompact ((fun p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ => p.1 * p.2⁻¹) '' (A ×ˢ S)) := by

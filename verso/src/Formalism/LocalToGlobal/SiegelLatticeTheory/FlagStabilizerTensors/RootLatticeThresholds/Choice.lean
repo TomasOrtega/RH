@@ -21,6 +21,9 @@ namespace Formalism.L2.SG.Pf.Choice
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => by fun_prop`.
+-/
 theorem measurable_mulF :
     Measurable fun p : Mt k r × Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Mt k r) := by
   apply Continuous.measurable
@@ -28,12 +31,18 @@ theorem measurable_mulF :
   simp only [Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finset_sum _ fun l _ => by fun_prop
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.S.haarLie, one_smul]`.
+-/
 theorem haarLie_eq_smul (S : Set (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (κ : ℝ≥0∞) :
     Formalism.MainNotions.S.haarLie S κ = κ • Formalism.MainNotions.S.haarLie S 1 := by
   simp only [Formalism.MainNotions.S.haarLie, one_smul]
 
 def aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (m : Mt k r) : Mt k r := A * Matrix.of m * B
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [aff, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => (continuous_finset_sum _ fun m _ => continuous_const.mul ((continuous_apply l).comp (continuous_apply m))).mul continuous_const`.
+-/
 theorem measurable_aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (aff (k := k) (r := r) A B) := by
   apply Continuous.measurable
@@ -42,6 +51,9 @@ theorem measurable_aff (A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
   exact continuous_finset_sum _ fun l _ => (continuous_finset_sum _ fun m _ =>
     continuous_const.mul ((continuous_apply l).comp (continuous_apply m))).mul continuous_const
 
+/- English proof (translation)
+Establish `hH : hᴴ * Hpk k r * h = Hpk k r`. Take `⟨hU, -, -⟩` from `hh`. Conclude with `hU`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uw_inv_eq {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h⁻¹ = Hpk k r * hᴴ * Hpk k r := by
   have hH : hᴴ * Hpk k r * h = Hpk k r := by
@@ -51,6 +63,13 @@ theorem uw_inv_eq {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k 
   calc Hpk k r * hᴴ * Hpk k r * h = Hpk k r * (hᴴ * Hpk k r * h) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hH, Formalism.QuantumDeterminants.GBasic.Hpk_sq]
 
+/- English proof (translation)
+Establish `hH : hᴴ * Hpk k r * h = Hpk k r`. Take `⟨hU, -, -⟩` from `hh`. Conclude with `hU`. Establish `hi : h⁻¹ * h = 1`. Rewrite using `[uw_inv_eq hh]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hi' : h * h⁻¹ = 1` using `Matrix.mul_nonsing_inv h (Matrix.isUnit_det_of_left_inverse hi)`. Take `⟨hU, hfix, hz⟩` from `hh`. Establish `fix : ∀ v, h *ᵥ v = v → h⁻¹ *ᵥ v = v`. Introduce `v hv`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `Formalism.QuantumDeterminants.UWset`. Use `⟨?_, fun a => ⟨fix _ (hfix a).1, fix _ (hfix a).2⟩, fix _ hz⟩` and prove the remaining obligations. Use `show (h⁻¹)ᴴ * Hpk k r * h⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uw_inv_mem {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h⁻¹ ∈ UWset k r z := by
   have hH : hᴴ * Hpk k r * h = Hpk k r := by
@@ -73,6 +92,9 @@ theorem uw_inv_mem {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k
     _ = (h * h⁻¹)ᴴ * Hpk k r * (h * h⁻¹) := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Hpk k r := by rw [hi']; simp
 
+/- English proof (translation)
+Establish `hH : hᴴ * Hpk k r * h = Hpk k r`. Take `⟨hU, -, -⟩` from `hh`. Conclude with `hU`. Rewrite using `[uw_inv_eq hh]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uw_inv_mul {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h⁻¹ * h = 1 := by
   have hH : hᴴ * Hpk k r * h = Hpk k r := by
@@ -82,14 +104,23 @@ theorem uw_inv_mul {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k
   calc Hpk k r * hᴴ * Hpk k r * h = Hpk k r * (hᴴ * Hpk k r * h) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hH, Formalism.QuantumDeterminants.GBasic.Hpk_sq]
 
+/- English proof (translation)
+Conclude with `Matrix.mul_nonsing_inv h (Matrix.isUnit_det_of_left_inverse (uw_inv_mul hh))`.
+-/
 theorem uw_mul_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : h * h⁻¹ = 1 := by
   exact Matrix.mul_nonsing_inv h (Matrix.isUnit_det_of_left_inverse (uw_inv_mul hh))
 
+/- English proof (translation)
+Conclude with `Matrix.inv_eq_left_inv (uw_mul_inv hh)`.
+-/
 theorem uw_inv_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hh : h ∈ UWset k r z) : (h⁻¹)⁻¹ = h := by
   exact Matrix.inv_eq_left_inv (uw_mul_inv hh)
 
+/- English proof (translation)
+Rewrite using `[haarLie_eq_smul, Measure.map_smul, Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z (Formalism.MainNotions.S.haarLie (Nset k r) 1) hz hT (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ (Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_to …`.
+-/
 theorem conj_haarLie {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (κ : ℝ≥0∞)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
     (Formalism.MainNotions.S.haarLie (Nset k r) κ).map (conjM h) = Formalism.MainNotions.S.haarLie (Nset k r) κ := by
@@ -97,6 +128,43 @@ theorem conj_haarLie {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0
     Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z (Formalism.MainNotions.S.haarLie (Nset k r) 1) hz hT
       (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ (Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_top)) h hh]
 
+/- English proof (translation)
+Establish `hNfc : ∀ K : Set (Mt k r), IsCompact K → μN K < ⊤` using `hNB.finite_compact`. Establish `: IsFiniteMeasureOnCompacts μN` using `⟨hNB.finite_compact⟩`. Establish `hN : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN` using `⟨inferInstance, hNB.ne_zero, hNB.conc, hNB.left⟩`. Establish `conj_haarLie : ∀ {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}, h ∈ UWset k r z → μN.map (conjM h) = μN` using `fun {h} hh => Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z μN hz hT hNB h hh`. Take `⟨hWsf, hWne, hWcon, hWinv⟩` from `hW`.
+
+Take `⟨hNsf, hNne, hNcon, hNinv⟩` from `hN`. Establish `: IsFiniteMeasure μW` using `⟨by rw [hW1]; exact ENNReal.one_lt_top⟩`. Establish `hmul` using `measurable_mulF (k := k) (r := r)`. Establish `hSG` using `quotient_measure_unitary_group k r z hz hT`. Establish `hUWc : IsCompact {x : Mt k r | Matrix.of x ∈ UWset k r z}` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_weyl_compact k r z hz hT`.
+
+Establish `hUWm : MeasurableSet {x : Mt k r | Matrix.of x ∈ UWset k r z}` using `hUWc.isClosed.measurableSet`. Establish `hUWn : μW {x : Mt k r | Matrix.of x ∈ UWset k r z}ᶜ = 0` using `by rw [Set.compl_ofPred]; exact hWcon`. Establish `hfc : IsFiniteMeasureOnCompacts (Formalism.MainNotions.S.muS μW μN)`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Set `iv : Mt k r × Mt k r → Mt k r` to `fun p => (Hpk k r * (Matrix.of p.1)ᴴ * Hpk k r * Matrix.of p.2 : Mt k r)`.
+
+Establish `hivc : Continuous iv`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [iv, Matrix.mul_apply, Matrix.of_apply, Matrix.conjTranspose_apply]`. Use `fun_prop`. Establish `hK'c : IsCompact (iv '' ({x : Mt k r | Matrix.of x ∈ UWset k r z} ×ˢ K))` using `(hUWc.prod hK).image hivc`.
+
+Establish `hsub : (fun p : Mt k r × Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Mt k r)) ⁻¹' K ⊆ (Set.univ ×ˢ (iv '' ({x : Mt k r | Matrix.of x ∈ UWset k r z} ×ˢ K))) ∪ ({x : Mt k r | Matrix.of x ∈ UWset k r z}ᶜ ×ˢ Set.univ)`. Introduce `p hp`. Distinguish the cases in `h1 : Matrix.of p.1 ∈ UWset k r z`. Use `Or.inl ⟨trivial, ⟨(p.1, fun i j => (Matrix.of p.1 * Matrix.of p.2) i j), ⟨h1, hp⟩, ?_⟩⟩ show (Hpk k r * (Matrix.of p.1)ᴴ * Hpk k r * (Matrix.of p.1 * Matrix.of p.2) : Mt k r) = p.2` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, (Formalism.MainNotions.S.Inh.unitary_stabilizer_inv_mem z _ h1).2, Matrix.one_mul]`.
+
+Both sides reduce to the same expression. Conclude with `Or.inr ⟨h1, trivial⟩`. Rewrite using `[Formalism.MainNotions.S.muS, Measure.map_apply hmul hK.isClosed.measurableSet]`. Use `lt_of_le_of_lt (measure_mono hsub) (lt_of_le_of_lt (measure_union_le _ _) ?_)` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, Measure.prod_prod, hUWn, zero_mul, add_zero]`.
+
+Conclude with `ENNReal.mul_lt_top (measure_lt_top μW _) (hNfc _ hK'c)`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h2` using `congrArg (fun μ : Measure (Mt k r) => μ Set.univ) h0`. Simplify using `only [Formalism.MainNotions.S.muS, Measure.map_apply hmul MeasurableSet.univ, Set.preimage_univ, Measure.coe_zero, Pi.zero_apply] at h2`.
+
+Rewrite `h2` using `[← Set.univ_prod_univ, Measure.prod_prod, hW1, one_mul]`. Conclude with `hNne (Measure.measure_univ_eq_zero.mp h2)`. Establish `hScl : IsClosed {x : Mt k r | Matrix.of x ∈ Sset k r z}` using `hSG.2.1.1`. Establish `hSc : MeasurableSet {x : Mt k r | Matrix.of x ∉ Sset k r z}`. Rewrite using `[← Set.compl_ofPred]`.
+
+Conclude with `hScl.isOpen_compl.measurableSet`. Rewrite using `[Formalism.MainNotions.S.muS, Measure.map_apply hmul hSc]`. Use `measure_mono_null (t := ({x : Mt k r | Matrix.of x ∈ UWset k r z}ᶜ ×ˢ Set.univ) ∪ (Set.univ ×ˢ {x : Mt k r | Matrix.of x ∉ Nset k r})) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hc`.
+
+Simplify using `only [Set.mem_union, Set.mem_prod, Set.mem_compl_iff, Set.mem_ofPred_eq, Set.mem_univ, and_true, true_and, not_or, not_not] at hc`. Conclude with `hp ⟨_, hc.1, _, hc.2, rfl⟩`. Use `measure_union_null ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, hUWn, zero_mul]`. Rewrite using `[Measure.prod_prod, hNcon, mul_zero]`.
+
+Introduce `s hs`. Take `⟨h0, hh0, n0, hn0, rfl⟩` from `hs`. Establish `hlm : ∀ a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Measurable (lmulM (k` using `k) (r := r) a) := fun a => Formalism.L2.SG.Pf.WFL.measurable_lmulM a`. Establish `hcm : ∀ a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Measurable (conjM (k` using `k) (r := r) a) := fun a => measurable_aff a a⁻¹`. Use extensionality with `A hA`.
+
+Establish `hA1 : MeasurableSet (lmulM (h0 * n0) ⁻¹' A)` using `hlm _ hA`. Rewrite using `[Measure.map_apply (hlm _) hA, Formalism.MainNotions.S.muS, Measure.map_apply hmul hA1, Measure.map_apply hmul hA, Measure.prod_apply (hmul hA1), Measure.prod_apply (hmul hA)]`. Use `set F : Mt k r × Mt k r → Mt k r := fun p => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Mt k r) with hF`. Use `set Ψ : Mt k r → ℝ≥0∞ := fun h => μN (Prod.mk h ⁻¹' (F ⁻¹' A)) with hΨ`. Establish `hΨm : Measurable Ψ` using `measurable_measure_prodMk_left (hmul hA)`.
+
+Establish `hstep : ∀ h : Mt k r, Matrix.of h ∈ UWset k r z → μN (Prod.mk h ⁻¹' (F ⁻¹' (lmulM (h0 * n0) ⁻¹' A))) = Ψ (lmulM h0 h)`. Introduce `h hh`. Use `set H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of h with hH`. Establish `hB1 : MeasurableSet (aff (h0 * n0) H ⁻¹' A)` using `measurable_aff _ _ hA`. Establish `hB2 : MeasurableSet (aff h0 H ⁻¹' A)` using `measurable_aff _ _ hA`.
+
+Establish `hB3 : MeasurableSet (Prod.mk (lmulM h0 h) ⁻¹' (F ⁻¹' A))` using `measurable_prodMk_left (hmul hA)`. Establish `e1 : Prod.mk h ⁻¹' (F ⁻¹' (lmulM (h0 * n0) ⁻¹' A)) = conjM H ⁻¹' (aff (h0 * n0) H ⁻¹' A)`. Use extensionality with `n`. Simplify using `only [Set.mem_preimage]`. Establish `: lmulM (h0 * n0) (F (h, n)) = aff (h0 * n0) H (conjM H n)` using `by show (h0 * n0) * (H * Matrix.of n) = (h0 * n0) * (H * Matrix.of n * H⁻¹) * H`.
+
+Rewrite using `[Matrix.mul_assoc (h0 * n0) (H * Matrix.of n * H⁻¹) H, Matrix.mul_assoc (H * Matrix.of n) H⁻¹ H, uw_inv_mul hh, Matrix.mul_one]`. Rewrite using `[this]`. Establish `e2 : aff (h0 * n0) H ⁻¹' A = lmulM n0 ⁻¹' (aff h0 H ⁻¹' A)`. Use extensionality with `m`. Simplify using `only [Set.mem_preimage]`.
+
+Establish `: aff (h0 * n0) H m = aff h0 H (lmulM n0 m)` using `by show h0 * n0 * Matrix.of m * H = h0 * (n0 * Matrix.of m) * H`. Rewrite using `[Matrix.mul_assoc h0 n0]`. Rewrite using `[this]`. Establish `e3 : aff h0 H ⁻¹' A = conjM H⁻¹ ⁻¹' (Prod.mk (lmulM h0 h) ⁻¹' (F ⁻¹' A))`. Use extensionality with `m`.
+
+Simplify using `only [Set.mem_preimage]`. Establish `: aff h0 H m = F (lmulM h0 h, conjM H⁻¹ m)` using `by show h0 * Matrix.of m * H = h0 * H * (H⁻¹ * Matrix.of m * H⁻¹⁻¹)`. Rewrite using `[uw_inv_inv hh, ← Matrix.mul_assoc (h0 * H) (H⁻¹ * Matrix.of m) H, ← Matrix.mul_assoc (h0 * H) H⁻¹, Matrix.mul_assoc h0 H H⁻¹, uw_mul_inv hh, Matrix.mul_one]`. Rewrite using `[this]`. Rewrite using `[e1, ← Measure.map_apply (hcm H) hB1, conj_haarLie hh, e2, ← Measure.map_apply (hlm n0) hB2, hNinv n0 hn0, e3, ← Measure.map_apply (hcm H⁻¹) hB3, conj_haarLie (uw_inv_mem hh)]`.
+
+Establish `hae : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hWcon`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isHaarOn_muS_gen {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {μW : Measure (Mt k r)} (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hW1 : μW Set.univ = 1)
     {μN : Measure (Mt k r)} (hNB : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN) :
@@ -211,6 +279,9 @@ theorem isHaarOn_muS_gen {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT
       _ = ∫⁻ h, Ψ h ∂(μW.map (lmulM h0)) := (lintegral_map hΨm (hlm h0)).symm
       _ = ∫⁻ h, Ψ h ∂μW := by rw [hWinv h0 hh0]
 
+/- English proof (translation)
+The claim follows from `isHaarOn_muS_gen hz hT hW hW1 (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 k r _ (Formalism.MainNotions.BridgeCSB.haarLieN k r κ hκ0 hκt))`.
+-/
 theorem isHaarOn_muS {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {μW : Measure (Mt k r)} (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hW1 : μW Set.univ = 1)
     {κ : ℝ≥0∞} (hκ0 : κ ≠ 0) (hκt : κ ≠ ⊤) :
@@ -222,12 +293,27 @@ section Frame
 
 open Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+Simplify using `only [hJ, star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hJ_smul_left' {n : ℕ} (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
   simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_smul_right' {n : ℕ} (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hc : ∀ a : Fin r, lam ^ (r - (a : ℕ)) ≠ 0` using `fun a => pow_ne_zero _ hlam`. Establish `hF : Formalism.L2.SG.Pf.WFL.IsFrameJ ε (fun a => lam ^ (r - (a : ℕ)) • e a) (fun a => (star (lam ^ (r - (a : ℕ))))⁻¹ • f a) wf z0` using `{ ee := fun a b => by simp only [hJ_smul_left', hJ_smul_right', hee, mul_zero] ff := fun a b => by simp only [hJ_smul_left', hJ_smul_right', hff, mul_zero] ef := fun a b => by`. Simplify using `only [hJ_smul_left', hJ_smul_right', hef]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Establish `hs : star (lam ^ (r - (a : ℕ))) ≠ 0` using `by rw [Ne, star_eq_zero]; exact hc a`. Simplify using `only [mul_one]`. Conclude with `inv_mul_cancel₀ hs`. Simplify using the standard rewrite rules.
+
+Use `ez := fun a => by simp only [hJ_smul_left', hez, mul_zero]`. Use `fz := fun a => by simp only [hJ_smul_left', hfz, mul_zero]`. Use `zz := hzz`. Use `ww := hww`. Use `ew := fun c a => by simp only [hJ_smul_left', hew, mul_zero]`.
+
+Use `fw := fun c a => by simp only [hJ_smul_left', hfw, mul_zero]`. Use `zw := hzw }`. Use `⟨Formalism.L2.SG.Pf.WFL.Qm _ _ wf z0, Formalism.L2.SG.Pf.WFL.Qi ε _ _ wf z0, Formalism.L2.SG.Pf.WFL.Qi_mul_Qm hF, Formalism.L2.SG.Pf.WFL.Qm_mul_Qi hF, Formalism.L2.SG.Pf.WFL.gramQ hF, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[show (Pi.single (eI k r a) 1 : Fin (2 * r + k + 1) → ℂ) = bvec (eI k r a) from rfl, Formalism.L2.SG.Pf.WFL.Qm_mulVec_bvec, Formalism.L2.SG.Pf.WFL.colQ_eI]`. Rewrite using `[show (Pi.single (esI k r a) 1 : Fin (2 * r + k + 1) → ℂ) = bvec (esI k r a) from rfl, Formalism.L2.SG.Pf.WFL.Qm_mulVec_bvec, Formalism.L2.SG.Pf.WFL.colQ_esI]`.
+-/
 theorem transp_exists {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (lam : ℂ) (hlam : lam ≠ 0)
     (e f : Fin r → Fin n → ℂ) (wf : Fin k → Fin n → ℂ) (z0 : Fin n → ℂ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -267,6 +353,9 @@ theorem transp_exists {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (
   · rw [show (Pi.single (esI k r a) 1 : Fin (2 * r + k + 1) → ℂ) = bvec (esI k r a) from rfl,
       Formalism.L2.SG.Pf.WFL.Qm_mulVec_bvec, Formalism.L2.SG.Pf.WFL.colQ_esI]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.one_mul]`. Use `_ = Hpk k r * Qᴴ * Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc, h2, Matrix.mul_one]`.
+-/
 theorem qi_eq {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
     Qi = Hpk k r * Qᴴ * Formalism.REAL.Jm ε := by
@@ -274,6 +363,9 @@ theorem qi_eq {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {Q : Matr
         rw [hg, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.one_mul]
     _ = Hpk k r * Qᴴ * Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hP : Formalism.L2.SG.Pf.WFL.CayPair ε Q Qi` using `⟨hg, qi_eq rfl ε h2 hg⟩`. Conclude with `Formalism.L2.SG.Pf.WFL.isHaarOn_G hP`.
+-/
 theorem haar_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
     Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r))
@@ -282,6 +374,17 @@ theorem haar_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Ma
   have hP : Formalism.L2.SG.Pf.WFL.CayPair ε Q Qi := ⟨hg, qi_eq rfl ε h2 hg⟩
   exact Formalism.L2.SG.Pf.WFL.isHaarOn_G hP
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hQi` using `qi_eq rfl ε h2 hg`. Establish `hcoord : ∀ i, (Qi *ᵥ z) i = Formalism.QuantumDeterminants.GBasic.sgn k r i * hJ ε (Q *ᵥ Pi.single (Formalism.QuantumDeterminants.GBasic.sig k r i) 1) z`. Introduce `i`. Rewrite using `[hQi, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Formalism.L2.SG.Pf.WFL.Hpk_mulVec]`.
+
+Use `congr 1`. Simplify using `only [hJ, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Pi.star_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoord]`. Break down `hi with hi | hi` into its components or cases.
+
+Establish `e1 : i = eI k r ⟨i.val, hi⟩` using `Fin.ext rfl`. Rewrite using `[e1, Formalism.L2.SG.Pf.WFL.sig_eI_eq, (hzc _).2, mul_zero]`. Establish `e1 : i = esI k r ⟨2 * r + k - i.val, by omega⟩` using `Fin.ext (by simp only [esI]; omega)`. Rewrite using `[e1, Formalism.L2.SG.Pf.WFL.sig_esI_eq, (hzc _).1, mul_zero]`. Establish `hQiHQi : Qiᴴ * Hpk k r * Qi = Formalism.REAL.Jm ε`.
+
+Rewrite using `[← hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `: herm (Hpk k r) (Qi *ᵥ z) (Qi *ᵥ z) = hJ ε z z`.
+
+Unfold `herm hJ`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hQiHQi]`. Rewrite using `[Tz, this]`.
+-/
 theorem z_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r)
     (z : Fin n → ℂ) (hzc : ∀ a : Fin r, hJ ε (Q *ᵥ Pi.single (eI k r a) 1) z = 0 ∧
@@ -321,6 +424,21 @@ open Formalism.MainNotions.S
 
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Establish `hσ : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, σ g x = V (ρ g (U x))` using `fun g hg x => by rw [hρ g hg, hVU, hVU]`. Establish `hsurj : Function.Surjective (U : H →ₗ[ℂ] H)` using `fun y => ⟨V y, hUV y⟩`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hfd infer_instance` as an intermediate fact.
+
+Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Use `⟨σ g x, hst g hg x hx, ?_⟩` and prove the remaining obligations. Use `show U (σ g x) = ρ g (U x)`. Rewrite using `[hρ g hg, hVU]`. Introduce `S' hS' hst'`.
+
+Establish `h1 : S'.comap (U : H →ₗ[ℂ] H) ≤ S` using `fun x hx => by`. Take `⟨y, hy, hyx⟩` from `hS' hx`. Establish `hyx' : U y = U x` using `hyx`. Establish `: y = x` using `by rw [← hVU y, hyx', hVU]`. Conclude with `this ▸ hy`.
+
+Establish `h2 : IsKStableOn ε σ (S'.comap (U : H →ₗ[ℂ] H))` using `fun g hg x hx => by show U (σ g x) ∈ S'`. Rewrite using `[hσ g hg, hUV]`. Conclude with `hst' g hg _ hx`. Establish `hS'eq : S' = (S'.comap (U : H →ₗ[ℂ] H)).map (U : H →ₗ[ℂ] H)` using `(Submodule.map_comap_eq_of_surjective hsurj S').symm`. Break down `hirr _ h1 h2 with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[hS'eq, h, Submodule.map_bot]`. Use `right`. Rewrite using `[hS'eq, h]`. Use `⟨U v, ⟨v, hvS, rfl⟩, fun h0 => hv0 ?_, fun θ hθ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hVU v, h0, map_zero]`. Rewrite using `[hρ _ hθ, hVU, hvw θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨y, hy, rfl⟩ hx0 hxw`. Use `hdom μ y hy (fun h0 => hx0 ?_) (fun θ hθ => ?_)` and prove the remaining obligations. Use `show U y = 0`.
+
+Rewrite using `[h0, map_zero]`. Establish `h'` using `hxw θ hθ`. Simplify using `only [ContinuousLinearMap.coe_coe] at h'`. Rewrite using `[hσ _ hθ, h', map_smul, hVU]`.
+-/
 theorem ktype_map {ε : Fin n → Bool} {σ ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (U V : H →L[ℂ] H)
     (hVU : ∀ x, V (U x) = x) (hUV : ∀ x, U (V x) = x)
     (hρ : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, ρ g x = U (σ g (V x))) {Λ : Fin n → ℝ} {S : Submodule ℂ H}
@@ -363,6 +481,11 @@ theorem ktype_map {ε : Fin n → Bool} {σ ρ : Matrix (Fin n) (Fin n) ℂ → 
       simp only [ContinuousLinearMap.coe_coe] at h'
       rw [hσ _ hθ, h', map_smul, hVU]
 
+/- English proof (translation)
+Establish `hle : lowKSub ε lam σ ≤ (lowKSub ε lam ρ).comap (U : H →ₗ[ℂ] H)`. Unfold `lowKSub`. Use `sSup_le fun S hS => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Conclude with `le_sSup (ktype_map U V hVU hUV hρ hS)`.
+
+Conclude with `hle hw`.
+-/
 theorem lowKSub_map {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (U V : H →L[ℂ] H) (hVU : ∀ x, V (U x) = x) (hUV : ∀ x, U (V x) = x)
     (hρ : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, ρ g x = U (σ g (V x))) {w : H} (hw : w ∈ lowKSub ε lam σ) :
@@ -374,6 +497,9 @@ theorem lowKSub_map {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ ρ : Matrix 
     exact le_sSup (ktype_map U V hVU hUV hρ hS)
   exact hle hw
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ at ha hb ⊢`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha, hb]`.
+-/
 theorem inUJ_mul {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : Formalism.REAL.inUJ ε a) (hb : Formalism.REAL.inUJ ε b) :
     Formalism.REAL.inUJ ε (a * b) := by
   unfold Formalism.REAL.inUJ at ha hb ⊢
@@ -381,6 +507,11 @@ theorem inUJ_mul {ε : Fin n → Bool} {a b : Matrix (Fin n) (Fin n) ℂ} (ha : 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [ha, hb]
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hg`. Establish `h1 : gᴴ * g = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp hu`. Unfold `Formalism.REAL.inUJ`.
+
+Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem kset_sub {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : Formalism.REAL.inUJ ε g := by
   obtain ⟨hu, hc⟩ := hg
   have h1 : gᴴ * g = 1 := by
@@ -395,6 +526,9 @@ section Y
 
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+Rewrite using `[← hg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h2]; simp`.
+-/
 theorem qiHqi {n : ℕ} (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) :
     Qiᴴ * Hpk k r * Qi = Formalism.REAL.Jm ε := by
@@ -403,6 +537,27 @@ theorem qiHqi {n : ℕ} (ε : Fin n → Bool) {Q : Matrix (Fin n) (Fin (2 * r + 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [h2]; simp
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hε' : ε' = ε` using `funext fun i => by rw [hε]; rfl`. Establish `hlam' : lam' = lam` using `funext fun i => by rw [hlam]; rfl`. Rewrite `hP`, the goal using `[hε']`. Rewrite using `[hlam']`.
+
+Take `⟨⟨hPu, hPg⟩, -⟩` from `hP`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPd`. Establish `hJ' : (P⁻¹)ᴴ * Hpk k r * P⁻¹ = Formalism.REAL.Jm ε`. Rewrite using `[← hPg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hPP, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hQiH` using `qiHqi ε h2 hg`. Establish `hh : Formalism.REAL.inUJ ε (Q * P⁻¹)`.
+
+Unfold `Formalism.REAL.inUJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hg, hJ']`. Establish `hh' : Formalism.REAL.inUJ ε (P * Qi)`.
+
+Unfold `Formalism.REAL.inUJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hPg, hQiH]`. Establish `hhh' : Q * P⁻¹ * (P * Qi) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P⁻¹, Matrix.nonsing_inv_mul P hPd, Matrix.one_mul, h2]`. Establish `hh'h : P * Qi * (Q * P⁻¹) = 1`. Establish `h1 : Qi * Q = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ ℂ (by simp)).mp h2`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Qi, h1, Matrix.one_mul, hPP]`. Take `⟨⟨hone, hmul⟩, -, -⟩` from `hrep`.
+
+Use `⟨P⁻¹ * Q, ?_, ?_⟩` and prove the remaining obligations. Use `show (P⁻¹ * Q)ᴴ * Hpk k r * (P⁻¹ * Q) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hJ', hg]`.
+
+Establish `hy : Q * (P⁻¹ * Q) * Qi = Q * P⁻¹`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[hy]`. Use `lowKSub_map (σ (Q * P⁻¹)) (σ (P * Qi)) (fun x => ?_) (fun x => ?_) (fun g hg x => ?_) hw` and prove the remaining obligations. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hh' _ hh, hh'h, hone]`.
+
+Both sides reduce to the same expression. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hh _ hh', hhh', hone]`. Both sides reduce to the same expression. Establish `hgU : Formalism.REAL.inUJ ε g` using `kset_sub hg`. Establish `e1 : Q * (P⁻¹ * g * P) * Qi = Q * P⁻¹ * g * (P * Qi)` using `by simp only [Matrix.mul_assoc]`.
+
+Use `show σ (Q * (P⁻¹ * g * P) * Qi) x = σ (Q * P⁻¹) (σ g (σ (P * Qi) x))`. Rewrite using `[e1, hmul _ (inUJ_mul hh hgU) _ hh', hmul _ hh _ hgU]`. Both sides reduce to the same expression.
+-/
 theorem y_exists {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' : Fin (2 * r + k + 1) → Bool)
     (hε : ∀ i, ε' i = ε (Fin.cast hn.symm i)) (lam : Fin n → ℝ) (lam' : Fin (2 * r + k + 1) → ℝ)
     (hlam : ∀ i, lam' i = lam (Fin.cast hn.symm i)) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -467,6 +622,9 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[X.n_eq]`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem n_eq' : X.B.I.n = 2 * D.R.rS + D.R.k + 1 := by
   rw [X.n_eq]
   obtain ⟨j, hj⟩ := D.R.m_even
@@ -474,6 +632,11 @@ theorem n_eq' : X.B.I.n = 2 * D.R.rS + D.R.k + 1 := by
   simp only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]
   omega
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < |((NumberField.discr D.host.E : ℤ) : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero D.host.E))`. Establish `h : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos hd _`. Unfold `Formalism.BasicNotions.Host.v`.
+
+Conclude with `half_pos h`.
+-/
 theorem host_v_pos (D : D7) : 0 < D.host.v := by
   have hd : (0 : ℝ) < |((NumberField.discr D.host.E : ℤ) : ℝ)| :=
     abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero D.host.E))
@@ -483,6 +646,11 @@ theorem host_v_pos (D : D7) : 0 < D.host.v := by
   unfold Formalism.BasicNotions.Host.v
   exact half_pos h
 
+/- English proof (translation)
+Establish `hv` using `host_v_pos D`. Establish `hka : 0 < D.host.ka`. Unfold `Formalism.BasicNotions.Host.ka`. Conclude with `div_pos Real.pi_pos hv`. Unfold `Formalism.L2.SG.LocWSOf.frS`.
+
+Conclude with `Complex.ofReal_ne_zero.mpr (div_pos hka (by positivity)).ne'`.
+-/
 theorem frS_ne (D : D7) : frS D ≠ 0 := by
   have hv := host_v_pos D
   have hka : 0 < D.host.ka := by
@@ -491,23 +659,48 @@ theorem frS_ne (D : D7) : frS D ≠ 0 := by
   unfold Formalism.L2.SG.LocWSOf.frS
   exact Complex.ofReal_ne_zero.mpr (div_pos hka (by positivity)).ne'
 
+/- English proof (translation)
+Establish `hv` using `host_v_pos D`. Unfold `Formalism.MainNotions.S.kapN`. Conclude with `(ENNReal.ofReal_pos.mpr (mul_pos (Real.rpow_pos_of_pos (by linarith) _) hθ)).ne'`.
+-/
 theorem kapN_ne_zero (D : D7) {θ : ℝ} (hθ : 0 < θ) : kapN D θ ≠ 0 := by
   have hv := host_v_pos D
   unfold Formalism.MainNotions.S.kapN
   exact (ENNReal.ofReal_pos.mpr (mul_pos (Real.rpow_pos_of_pos (by linarith) _) hθ)).ne'
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.kapN`. Conclude with `ENNReal.ofReal_ne_top`.
+-/
 theorem kapN_ne_top (D : D7) (θ : ℝ) : kapN D θ ≠ ⊤ := by
   unfold Formalism.MainNotions.S.kapN
   exact ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+Unfold `Tr`. Conclude with `(D.mem u).A.T_prime.pos` after adjusting the coercions.
+-/
 theorem Tr_pos (D : D7) (u : D.what₂.Word) : 0 < Tr D u := by
   unfold Tr
   exact_mod_cast (D.mem u).A.T_prime.pos
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q`.
+-/
 theorem hJ_frame (v : InfinitePlace X.B.I.F) (p q : (VS D).V) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.crd p)) (rv X.B.I v (X.crd q)) = embS D (X.pl v) ((VS D).hT p q) :=
   Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q
 
+/- English proof (translation)
+Use `set v := vOf X τ`. Use `set T := Tr D u0 with hTdef`. Establish `hT` using `Tr_pos D u0`. Use `set c : ℂ := (((Real.sqrt T)⁻¹ : ℝ) : ℂ) with hc`. Establish `hzz0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u0))) (rv X.B.I v (X.crd (X.zu u0))) = -(T : ℂ)`.
+
+Rewrite using `[hJ_frame, X.zu_norm, map_neg, map_natCast]`. Simplify using `[hTdef, Tr]`. Establish `hcc : star c * (c * -(T : ℂ)) = -1`. Establish `h1 : ((Real.sqrt T)⁻¹) ^ 2 * T = 1`. Rewrite using `[inv_pow, Real.sq_sqrt hT.le, inv_mul_cancel₀ hT.ne']`.
+
+Establish `h2 : star c = c` using `Complex.conj_ofReal _`. Rewrite using `[h2, hc]`. Establish `h3 : ((((Real.sqrt T)⁻¹) ^ 2 * T : ℝ) : ℂ) = 1` using `by rw [h1]; simp`. Move the coercions through the operations in `at h3 ⊢`. Take the linear combination `(-1 : ℂ) * h3`.
+
+Take `⟨Q, Qi, h1, h2, hg, hcol⟩` from `transp_exists (n_eq' X) (X.B.I.ε v) (frS D) (frS_ne D) (fun a => rv X.B.I v (X.crd (X.eX a))) (fun a => rv X.B.I v (X.crd (X.fY a))) (X.wfr u0 v) (c • rv X.B.I v (X.crd (X.zu u0))) (fun a b => by rw [hJ_frame, X.ee, map_zero]) (fun a b => by rw [hJ_frame, X.ff, map_zero]) (fun a …`. Rewrite using `[hJ_frame, X.ef]`. Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `(fun a => by rw [hJ_smul_right', hJ_frame, (X.zu_orth u0 a).1, map_zero, mul_zero])`. Use the proof step `(fun a => by rw [hJ_smul_right', hJ_frame, (X.zu_orth u0 a).2, map_zero, mul_zero])`.
+
+Use the proof step `(by rw [hJ_smul_left', hJ_smul_right', hzz0, hcc])`. Use the proof step `(X.wfr_on u0 v)`. Use the proof step `(fun c' a => ((X.wfr_perp u0 v a).1 c').1)`. Use the proof step `(fun c' a => ((X.wfr_perp u0 v a).1 c').2)`. Use the proof step `(fun a => by`.
+
+Establish `h0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u0))) (X.wfr u0 v a) = 0` using `(X.wfr_perp u0 v a).2`. Rewrite using `[hJ_smul_left', h0, mul_zero])`. Use `⟨Q, Qi, h1, h2, hg, fun a b hab => ?_⟩` and prove the remaining obligations. Take `rfl : a = b` from `Fin.ext hab`. Conclude with `hcol a`.
+-/
 theorem transpC_exists (u0 : D.what₂.Word) (τ : D.what₂.Tau) :
     ∃ (Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ)
       (Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ),
@@ -548,6 +741,11 @@ theorem transpC_exists (u0 : D.what₂.Word) (τ : D.what₂.Tau) :
   obtain rfl : a = b := Fin.ext hab
   exact hcol a
 
+/- English proof (translation)
+Take `⟨h1, h2, hg, hcol⟩` from `hQ`. Take `⟨hz, hT⟩` from `z_tr (n_eq' X) (X.B.I.ε v) h2 hg (rv X.B.I v (X.zR u)) (fun a => by`. Take `⟨he, hf⟩` from `hcol a a rfl`. Rewrite using `[he, hf, hJ_smul_left', hJ_smul_left', show X.eR a = X.crd (X.eX a) from rfl, show X.fR a = X.crd (X.fY a) from rfl, show X.zR u = X.crd (X.zu u) from rfl, hJ_frame, hJ_frame, (X.zu_orth u a).1, (X.zu_orth u a).2, map_zero]`. Use the proof step `simp)`.
+
+Use `⟨hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hT, show X.zR u = X.crd (X.zu u) from rfl, hJ_frame, X.zu_norm, map_neg, map_natCast]`. Simplify using `[Tr]`.
+-/
 theorem zTr_of {v : InfinitePlace X.B.I.F} {lam : ℂ} {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (hQ : IsTranspC X v lam D.R.k D.R.rS Q Qi)
     (u : D.what₂.Word) :
@@ -571,6 +769,17 @@ namespace Formalism.L2.SG.Pf
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Introduce `hθ`. Use `choose Q Qi hQ using transpC_exists X (Classical.arbitrary D.what₂.Word)`. Establish `hy : ∀ τ, ∃ y, y ∈ UH (Hpk D.R.k D.R.rS) ∧ ∃ P, IsCayleyU D.R.k D.R.rS (epsSH D.R) P ∧ sigB X (Q τ) (Qi τ) τ y (X.B.w (vOf X τ)) ∈ lowKSub (epsSH D.R) (lamD D τ) (fun g => sigB X (Q τ) (Qi τ) τ (P⁻¹ * g * P))`. Introduce `τ`. Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`.
+
+Take `⟨h1, h2, hg, -⟩` from `hQ τ`. Take `⟨y, hyU, hyl⟩` from `y_exists (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R) (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl)) (X.B.lam (vOf X τ)) (lamD D τ) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`. Use the proof step `(X.B.σ (vOf X τ)) (X.ds (vOf X τ)).2.2.1 (X.low (vOf X τ)).2 (Q τ) (Qi τ) h2 hg P hP`.
+
+Conclude with `⟨y, hyU, P, hP, hyl⟩`. Use `choose y hyU hyl using hy`. Establish `hZ : ∀ u τ, inWb D.R.k D.R.rS (zB X (Qi τ) u τ) ∧ 0 < Tz D.R.k D.R.rS (zB X (Qi τ) u τ)` using `fun u τ => by`. Take `⟨hz, hT⟩` from `zTr_of X (hQ τ) u`. Conclude with `⟨hz, hT ▸ Tr_pos D u⟩`.
+
+Establish `hW : ∀ u τ, ∃ μ : MeasureTheory.Measure (Mt D.R.k D.R.rS), Formalism.MainNotions.S.IsHaarOn (UWset D.R.k D.R.rS (zB X (Qi τ) u τ)) μ ∧ μ Set.univ = 1` using `fun u τ => Formalism.MainNotions.S.Inh.haar_probability_compact_subgroup _ (Formalism.MainNotions.S.Inh.one_mem_unitary_stabilizer_set _) (Formalism.MainNotions.S.Inh.unitary_stabilizer_mul_mem _) (fun a => Hpk D.R.k D.R.rS * aᴴ * Hpk D.R.k D.R.rS) ((continuous_const.matrix_mul c …`. Use `choose muW hWh hW1 using hW`. Establish `hN : ∀ u τ, ∃ ν, Formalism.MainNotions.S.IsQuotMeas (muGB X (Q τ) (Qi τ) τ) (Formalism.MainNotions.S.muS (muW u τ) (muNB D θ)) ν`. Introduce `u τ`. Take `⟨h1, h2, hg, -⟩` from `hQ τ`.
+
+Conclude with `Formalism.L2.SG.Pf.QuotMeasExists.quotMeasExists _ _ _ (hZ u τ).1 (hZ u τ).2 _ _ (haar_tr (n_eq' X) _ _ _ h2 hg) (isHaarOn_muS (hZ u τ).1 (hZ u τ).2 (hWh u τ) (hW1 u τ) (kapN_ne_zero D hθ) (kapN_ne_top D θ))`. Use `choose nuS hnuS using hN`. Conclude with `⟨Choice.mk Q Qi hQ y hyU hyl muW hWh hW1 nuS hnuS⟩`.
+-/
 theorem choiceExists {D : D7} (X : HidaSetting D) [Nonempty D.what₂.Word] (θ : ℝ) : ChoiceExists X θ := by
   intro hθ
   classical
@@ -623,13 +832,24 @@ variable {k r : ℕ}
 def tE (μ : ℂ) (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
   if i.val < r then μ ^ (r - i.val) else if r + k < i.val then (star (μ ^ (r - (2 * r + k - i.val))))⁻¹ else 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torS_eq (μ : ℂ) : torS μ k r = Matrix.diagonal (tE μ k r) := rfl
 
+/- English proof (translation)
+Simplify using `only [tE]`. Rewrite using `[if_pos (show (eI k r a).val < r from a.isLt)]`. Both sides reduce to the same expression.
+-/
 theorem tE_eI (μ : ℂ) (a : Fin r) : tE μ k r (eI k r a) = μ ^ (r - (a : ℕ)) := by
   simp only [tE]
   rw [if_pos (show (eI k r a).val < r from a.isLt)]
   rfl
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `h1 : ¬ (esI k r a).val < r` using `by show ¬ (2 * r + k - a.val) < r; omega`. Establish `h2 : r + k < (esI k r a).val` using `by show r + k < 2 * r + k - a.val; omega`. Establish `h3 : 2 * r + k - (esI k r a).val = a.val` using `by show 2 * r + k - (2 * r + k - a.val) = a.val; omega`. Simplify using `only [tE]`.
+
+Rewrite using `[if_neg h1, if_pos h2, h3]`.
+-/
 theorem tE_esI (μ : ℂ) (a : Fin r) : tE μ k r (esI k r a) = (star (μ ^ (r - (a : ℕ))))⁻¹ := by
   have ha := a.isLt
   have h1 : ¬ (esI k r a).val < r := by show ¬ (2 * r + k - a.val) < r; omega
@@ -638,6 +858,9 @@ theorem tE_esI (μ : ℂ) (a : Fin r) : tE μ k r (esI k r a) = (star (μ ^ (r -
   simp only [tE]
   rw [if_neg h1, if_pos h2, h3]
 
+/- English proof (translation)
+Unfold `tE`. Use `split_ifs`. Rewrite using `[inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hμ)]`. Rewrite using `[inv_pow, star_inv₀, inv_inv, mul_inv_cancel₀ (star_ne_zero.mpr (pow_ne_zero _ hμ))]`. Rewrite using `[one_mul]`.
+-/
 theorem tE_inv_mul (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : tE μ⁻¹ k r i * tE μ k r i = 1 := by
   unfold tE
   split_ifs
@@ -645,10 +868,22 @@ theorem tE_inv_mul (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : tE μ
   · rw [inv_pow, star_inv₀, inv_inv, mul_inv_cancel₀ (star_ne_zero.mpr (pow_ne_zero _ hμ))]
   · rw [one_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `tE_inv_mul μ hμ i`.
+-/
 theorem tE_mul_inv (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : tE μ k r i * tE μ⁻¹ k r i = 1 := by
   rw [mul_comm]
   exact tE_inv_mul μ hμ i
 
+/- English proof (translation)
+Establish `hs` using `Formalism.QuantumDeterminants.GBasic.sig_val k r i`. Establish `hi` using `i.isLt`. Unfold `tE`. Distinguish the cases in `h1 : i.val < r`. Establish `h2 : ¬ (sig k r i).val < r` using `by rw [hs, if_pos (Or.inl h1)]; omega`.
+
+Establish `h3 : r + k < (sig k r i).val` using `by rw [hs, if_pos (Or.inl h1)]; omega`. Establish `h4 : 2 * r + k - (sig k r i).val = i.val` using `by rw [hs, if_pos (Or.inl h1)]; omega`. Rewrite using `[if_pos h1, if_neg h2, if_pos h3, h4]`. Conclude with `mul_inv_cancel₀ (star_ne_zero.mpr (pow_ne_zero _ hμ))`. Distinguish the cases in `h5 : r + k < i.val`.
+
+Establish `h2 : (sig k r i).val < r` using `by rw [hs, if_pos (Or.inr h5)]; omega`. Establish `h4 : (sig k r i).val = 2 * r + k - i.val` using `by rw [hs, if_pos (Or.inr h5)]`. Rewrite using `[if_neg h1, if_pos h5, if_pos h2, h4, star_inv₀, star_star]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hμ)`. Establish `h6 : sig k r i = i` using `Formalism.QuantumDeterminants.GBasic.sig_mid k r i (by omega) (by omega)`.
+
+Rewrite using `[h6, if_neg h1, if_neg h5]`. Simplify using the standard rewrite rules.
+-/
 theorem tE_sig (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : star (tE μ k r i) * tE μ k r (sig k r i) = 1 := by
   have hs := Formalism.QuantumDeterminants.GBasic.sig_val k r i
   have hi := i.isLt
@@ -668,18 +903,29 @@ theorem tE_sig (μ : ℂ) (hμ : μ ≠ 0) (i : Fin (2 * r + k + 1)) : star (tE 
       rw [h6, if_neg h1, if_neg h5]
       simp
 
+/- English proof (translation)
+Rewrite using `[torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `tE_inv_mul μ hμ i`.
+-/
 theorem torS_inv_mul (μ : ℂ) (hμ : μ ≠ 0) : torS μ⁻¹ k r * torS μ k r = 1 := by
   rw [torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext i
   exact tE_inv_mul μ hμ i
 
+/- English proof (translation)
+Rewrite using `[torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `tE_mul_inv μ hμ i`.
+-/
 theorem torS_mul_inv (μ : ℂ) (hμ : μ ≠ 0) : torS μ k r * torS μ⁻¹ k r = 1 := by
   rw [torS_eq, torS_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext i
   exact tE_mul_inv μ hμ i
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[torS_eq, Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Formalism.QuantumDeterminants.GBasic.Hpk_eq]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Formalism.QuantumDeterminants.GBasic.sgn k r i := by rw [tE_sig μ hμ i, one_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem torS_gram (μ : ℂ) (hμ : μ ≠ 0) : (torS μ k r)ᴴ * Hpk k r * torS μ k r = Hpk k r := by
   ext i j
   rw [torS_eq, Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]
@@ -692,6 +938,11 @@ theorem torS_gram (μ : ℂ) (hμ : μ ≠ 0) : (torS μ k r)ᴴ * Hpk k r * tor
       _ = Formalism.QuantumDeterminants.GBasic.sgn k r i := by rw [tE_sig μ hμ i, one_mul]
   · simp
 
+/- English proof (translation)
+Rewrite using `[torS_eq]`. Use extensionality with `j`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem torS_single (μ : ℂ) (i : Fin (2 * r + k + 1)) :
     torS μ k r *ᵥ Pi.single i 1 = tE μ k r i • (Pi.single i 1 : Fin (2 * r + k + 1) → ℂ) := by
   rw [torS_eq]
@@ -709,6 +960,9 @@ namespace Formalism.L2.SG.Pf
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.LocWSOf.cfS`. Establish `hg : ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero)`. Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)`. Conclude with `div_ne_zero (neg_ne_zero.mpr (mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.mpr hg))) hpi`.
+-/
 theorem cfS_ne (D : D7) : cfS D ≠ 0 := by
   unfold Formalism.L2.SG.LocWSOf.cfS
   have hg : ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≠ 0 :=
@@ -716,10 +970,20 @@ theorem cfS_ne (D : D7) : cfS D ≠ 0 := by
   have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)
   exact div_ne_zero (neg_ne_zero.mpr (mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.mpr hg))) hpi
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.LocWSOf.muT`. Conclude with `div_ne_zero (cfS_ne D) (frS_ne D)`.
+-/
 theorem muT_ne (D : D7) : muT D ≠ 0 := by
   unfold Formalism.L2.SG.LocWSOf.muT
   exact div_ne_zero (cfS_ne D) (frS_ne D)
 
+/- English proof (translation)
+Introduce `v Q Qi hQ`. Take `⟨h1, h2, hg, hcol⟩` from `hQ`. Establish `hμ : muT D ≠ 0` using `muT_ne D`. Establish `hμf : muT D * frS D = cfS D` using `div_mul_cancel₀ _ (frS_ne D)`. Use `⟨?_, ?_, ?_, fun a b hab => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Qi, h1, Matrix.one_mul, torS_inv_mul _ hμ]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (torS (muT D) D.R.k D.R.rS), torS_mul_inv _ hμ, Matrix.one_mul, h2]`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Hpk D.R.k D.R.rS := by rw [hg, torS_gram _ hμ]`. Take `⟨he, hf⟩` from `hcol a b hab`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Matrix.mulVec_mulVec, torS_single, Matrix.mulVec_smul, he, tE_eI, smul_smul, ← mul_pow, hμf]`. Rewrite using `[← Matrix.mulVec_mulVec, torS_single, Matrix.mulVec_smul, hf, tE_esI, smul_smul, ← mul_inv, ← star_mul', ← mul_pow, hμf]`.
+-/
 theorem torTie {D : D7} (X : HidaSetting D) : TorTie X := by
   intro v Q Qi hQ
   obtain ⟨h1, h2, hg, hcol⟩ := hQ
@@ -739,9 +1003,15 @@ theorem torTie {D : D7} (X : HidaSetting D) : TorTie X := by
     · rw [← Matrix.mulVec_mulVec, torS_single, Matrix.mulVec_smul, hf, tE_esI, smul_smul, ← mul_inv, ← star_mul',
         ← mul_pow, hμf]
 
+/- English proof (translation)
+The claim follows from `zTr_of X (C.isT τ) u`.
+-/
 theorem zTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : ZTr C u τ :=
   zTr_of X (C.isT τ) u
 
+/- English proof (translation)
+The claim follows from `haar_tr (n_eq' X) _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1`.
+-/
 theorem haarTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau) : HaarTr C τ :=
   haar_tr (n_eq' X) _ _ _ (C.isT τ).2.1 (C.isT τ).2.2.1
 
@@ -755,6 +1025,13 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.WFL
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `⟨fun a b => ?_, fun a b => ?_, fun a b => ?_, fun a => ?_, fun a => ?_, hzz, hww, fun c a => ?_, fun c a => ?_, hzw⟩` and prove the remaining obligations. Simplify using `only [hJ_smul_left', hJ_smul_right', hee, mul_zero]`. Simplify using `only [hJ_smul_left', hJ_smul_right', hff, mul_zero]`. Simplify using `only [hJ_smul_left', hJ_smul_right', hef] split_ifs with h`. Substitute `h` using the available equality.
+
+Establish `hs : star (lam ^ (r - (a : ℕ))) ≠ 0` using `star_ne_zero.mpr (pow_ne_zero _ hlam)`. Use `first`. Consider the case `(rw [mul_one]; exact mul_inv_cancel₀ hs)`. Consider the case `(rw [mul_one]; exact inv_mul_cancel₀ hs)`. Consider the case `field_simp`.
+
+Rewrite using `[mul_zero, mul_zero]`. Simplify using `only [hJ_smul_left', hez, mul_zero]`. Simplify using `only [hJ_smul_left', hfz, mul_zero]`. Simplify using `only [hJ_smul_left', hew, mul_zero]`. Simplify using `only [hJ_smul_left', hfw, mul_zero]`.
+-/
 theorem isFrameJ_scaled {ε : Fin (2 * r + k + 1) → Bool} (lam : ℂ) (hlam : lam ≠ 0)
     {e f : Fin r → Fin (2 * r + k + 1) → ℂ} {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -781,6 +1058,17 @@ theorem isFrameJ_scaled {ε : Fin (2 * r + k + 1) → Bool} (lam : ℂ) (hlam : 
   · simp only [hJ_smul_left', hew, mul_zero]
   · simp only [hJ_smul_left', hfw, mul_zero]
 
+/- English proof (translation)
+Use `set F := Qm e f wf (z0v T z) with hFdef`. Use `set G := Formalism.L2.SG.Pf.WFL.Qi ε e f wf (z0v T z) with hGdef`. Establish `hFG : F * G = 1` using `Qm_mul_Qi hF`. Establish `hgi : Qi * F * (G * Q) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc F G Q, hFG, Matrix.one_mul, h1]`.
+
+Establish `hginv : (Qi * F)⁻¹ = G * Q` using `Matrix.inv_eq_right_inv hgi`. Use `⟨Qi * F, ⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (Qi * F)ᴴ * Hpk k r * (Qi * F) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by rw [qiHqi ε h2 hg, gramQ hF]`. Rewrite using `[← Matrix.mulVec_mulVec, Qm_mulVec_bvec, colQ_eI, ← hcolE, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, Qm_mulVec_bvec, colQ_esI, ← hcolF, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[hTz, show (((Real.sqrt T : ℝ) : ℂ) • bvec (wI k r (Fin.last k))) = zBv k r T from rfl, ← Matrix.mulVec_mulVec, Qm_zB hT z]`. Establish `hfun : (fun h => πl (Formalism.L2.SG.RealObj.matQ ε wf (Q * (Qi * F * Formalism.MainNotions.S.blockW k r h * (Qi * F)⁻¹) * Qi))) = fun h => piB ε e f wf (z0v T z) πl (Formalism.MainNotions.S.blockW k r h)`.
+
+Use function extensionality and compare the values at `h`. Establish `hM : Q * (Qi * F * Formalism.MainNotions.S.blockW k r h * (Qi * F)⁻¹) * Qi = F * Formalism.MainNotions.S.blockW k r h * G`. Rewrite using `[hginv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hM]`.
+
+Both sides reduce to the same expression. Rewrite using `[hfun]`. Repeatedly rewrite using `[piB_blockW hF]`. Conclude with `hπ`.
+-/
 theorem hcTypeW_tr {ε : Fin (2 * r + k + 1) → Bool} {Q Qi : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h1 : Qi * Q = 1) (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r)
     {e f : Fin r → Fin (2 * r + k + 1) → ℂ} {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {T : ℝ} (hT : 0 < T)
@@ -826,6 +1114,9 @@ open Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.WFL
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `hcTypeW_tr h1 h2 hg hT (isFrameJ_scaled lam hlam hee hff hef hez hfz hzz hww hew hfw hzw) hcolE hcolF hTz hπ`.
+-/
 theorem colsType_loc {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (h1 : Qi * Q = 1) (h2 : Q * Qi = 1)
     (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) (lam : ℂ) (hlam : lam ≠ 0)
@@ -851,6 +1142,19 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Use `set T := Tr D u with hTdef`. Establish `hT` using `Tr_pos D u`. Use `set c : ℂ := (((Real.sqrt T)⁻¹ : ℝ) : ℂ) with hc`. Establish `hzz0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u))) (rv X.B.I v (X.crd (X.zu u))) = -(T : ℂ)`. Rewrite using `[hJ_frame, X.zu_norm, map_neg, map_natCast]`.
+
+Simplify using `[hTdef, Tr]`. Establish `hcc : star c * (c * -(T : ℂ)) = -1`. Establish `h1 : ((Real.sqrt T)⁻¹) ^ 2 * T = 1`. Rewrite using `[inv_pow, Real.sq_sqrt hT.le, inv_mul_cancel₀ hT.ne']`. Establish `h2 : star c = c` using `Complex.conj_ofReal _`.
+
+Rewrite using `[h2, hc]`. Establish `h3 : ((((Real.sqrt T)⁻¹) ^ 2 * T : ℝ) : ℂ) = 1` using `by rw [h1]; simp`. Move the coercions through the operations in `at h3 ⊢`. Take the linear combination `(-1 : ℂ) * h3`. Take `⟨h1, h2, hg, hcol⟩` from `hQ`.
+
+Conclude with `colsType_loc (n_eq' X) (X.B.I.ε v) Q Qi h1 h2 hg lam hlam (fun a => rv X.B.I v (X.crd (X.eX a))) (fun a => rv X.B.I v (X.crd (X.fY a))) (X.wfr u v) (rv X.B.I v (X.crd (X.zu u))) hT (fun a b => by rw [hJ_frame, X.ee, map_zero]) (fun a b => by rw [hJ_frame, X.ff, map_zero]) (fun a …`. Rewrite using `[hJ_frame, X.ef]`. Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `(fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', hJ_frame, (X.zu_orth u a).1, map_zero, mul_zero])`. Use the proof step `(fun a => by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_right', hJ_frame, (X.zu_orth u a).2, map_zero, mul_zero])`.
+
+Use the proof step `(by rw [Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_left', hJ_smul_right', hzz0, ← hc, hcc])`. Use the proof step `(X.wfr_on u v)`. Use the proof step `(fun c' a => ((X.wfr_perp u v a).1 c').1)`. Use the proof step `(fun c' a => ((X.wfr_perp u v a).1 c').2)`. Use the proof step `(fun a => by`.
+
+Establish `h0 : hJ (X.B.I.ε v) (rv X.B.I v (X.crd (X.zu u))) (X.wfr u v a) = 0` using `(X.wfr_perp u v a).2`. Rewrite using `[Formalism.L2.SG.Pf.WFL.z0v, hJ_smul_left', h0, mul_zero])`. Use the proof step `(fun a => (hcol a a rfl).1) (fun a => (hcol a a rfl).2)`. Use the proof step `(zTr_of X ⟨h1, h2, hg, hcol⟩ u).2 (X.piLoc_type u v)`.
+-/
 theorem colsTypeTr_of {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
     {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (hQ : IsTranspC X v lam D.R.k D.R.rS Q Qi)
@@ -900,6 +1204,9 @@ namespace Formalism.L2.SG.Pf
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Establish `h` using `colsTypeTr_of X (frS_ne D) (C.isT τ) u`. Rewrite `h` using `[show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `h`.
+-/
 theorem colsTypeTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     ColsTypeTr C u τ := by
   have h := colsTypeTr_of X (frS_ne D) (C.isT τ) u
@@ -914,12 +1221,20 @@ section Psi
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Simplify using `only [Formalism.L2.SG.HidaSetting.hJ, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+-/
 theorem hJ_QQ {n N : ℕ} (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin N) ℂ) (H : Matrix (Fin N) (Fin N) ℂ)
     (hg : Qᴴ * Formalism.REAL.Jm ε * Q = H) (y x : Fin N → ℂ) : hJ ε (Q *ᵥ y) (Q *ᵥ x) = star y ⬝ᵥ (H *ᵥ x) := by
   subst hg
   simp only [Formalism.L2.SG.HidaSetting.hJ, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec,
     Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h : star (Pi.single i (1 : ℂ)) = (Pi.single i 1 : Fin N → ℂ)`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hj]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem star_single_dot {N : ℕ} (i : Fin N) (w : Fin N → ℂ) : star (Pi.single i (1 : ℂ)) ⬝ᵥ w = w i := by
   have h : star (Pi.single i (1 : ℂ)) = (Pi.single i 1 : Fin N → ℂ) := by
     ext j
@@ -931,6 +1246,21 @@ theorem star_single_dot {N : ℕ} (i : Fin N) (w : Fin N → ℂ) : star (Pi.sin
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Take `⟨h1, h2, hg, hcol⟩` from `hQ`. Establish `hp : ∀ b : Fin D.R.rS, lam ^ (D.R.rS - (b : ℕ)) ≠ 0` using `fun b => pow_ne_zero _ hlam`. Establish `hsp : ∀ b : Fin D.R.rS, star (lam ^ (D.R.rS - (b : ℕ))) ≠ 0` using `fun b => by`. Rewrite using `[Ne, star_eq_zero]`. Conclude with `hp b`.
+
+Establish `hf : rv X.B.I v (X.fR a) = star (lam ^ (D.R.rS - (a : ℕ))) • (Q *ᵥ Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) 1)`. Rewrite using `[(hcol a a rfl).2, smul_smul, mul_inv_cancel₀ (hsp a), one_smul]`. Establish `hHe : ∀ x : Fin (2 * D.R.rS + D.R.k + 1) → ℂ, star (Pi.single (Formalism.QuantumDeterminants.esI D.R.k D.R.rS a) (1 : ℂ)) ⬝ᵥ (Hpk D.R.k D.R.rS *ᵥ x) = x (eI D.R.k D.R.rS a)`. Introduce `x`. Rewrite using `[star_single_dot, Formalism.L2.SG.Pf.WFL.Hpk_mulVec, Formalism.L2.SG.Pf.WFL.sgn_esI, Formalism.L2.SG.Pf.WFL.sig_esI_eq, one_mul]`.
+
+Unfold `rootCoord nxt`. Simplify using `only`. Rewrite using `[hf, hJ_smul_left', star_star]`. Distinguish the cases in `h : a.val + 1 < D.R.rS`. Rewrite using `[dif_pos h, dif_pos h] set b : Fin D.R.rS := ⟨a.val + 1, h⟩`.
+
+Establish `he : rv X.B.I v (X.eR b) = (lam ^ (D.R.rS - (b : ℕ)))⁻¹ • (Q *ᵥ Pi.single (eI D.R.k D.R.rS b) 1)`. Rewrite using `[(hcol b b rfl).1, smul_smul, inv_mul_cancel₀ (hp b), one_smul]`. Establish `hQiQ : ∀ y, Qi *ᵥ (Q *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[he, Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hQiQ, hJ_smul_right', hJ_QQ _ Q _ hg, hHe]`. Establish `hm : (m *ᵥ Pi.single (eI D.R.k D.R.rS b) 1) (eI D.R.k D.R.rS a) = m (eI D.R.k D.R.rS a) (eI D.R.k D.R.rS b)`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hm]`. Establish `hexp : D.R.rS - (a : ℕ) = (D.R.rS - (b : ℕ)) + 1` using `by simp only [b]; omega`. Rewrite using `[hexp, pow_succ]`. Clear denominators, using `[hp b]` for the nonvanishing conditions.
+
+Rewrite using `[dif_neg h, dif_neg h]`. Establish `hz : rv X.B.I v (X.zR u) = Q *ᵥ (Qi *ᵥ rv X.B.I v (X.zR u))`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Establish `hQiQ : ∀ y, Qi *ᵥ (Q *ᵥ y) = y` using `fun y => by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Use `conv_lhs => rw [hz]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hQiQ, hJ_QQ _ Q _ hg, hHe]`. Establish `hexp : D.R.rS - (a : ℕ) = 1` using `by have := a.isLt; omega`. Rewrite using `[hexp, pow_one]`.
+-/
 theorem rootCoord_tr {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
     {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (hQ : IsTranspC X v lam D.R.k D.R.rS Q Qi)
@@ -976,6 +1306,9 @@ theorem rootCoord_tr {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
     have hexp : D.R.rS - (a : ℕ) = 1 := by have := a.isLt; omega
     rw [hexp, pow_one]
 
+/- English proof (translation)
+Rewrite using `[Formalism.QuantumDeterminants.ell, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => rootCoord_tr X hlam hQ u m a`.
+-/
 theorem rootSum_tr {v : InfinitePlace X.B.I.F} {lam : ℂ} (hlam : lam ≠ 0)
     {Q : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ}
     {Qi : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ} (hQ : IsTranspC X v lam D.R.k D.R.rS Q Qi)
@@ -993,6 +1326,15 @@ namespace Formalism.L2.SG.Pf
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Introduce `m _`. Unfold `psiR psiS Formalism.QuantumDeterminants.psi`. Use `set L := Formalism.QuantumDeterminants.ell D.R.k D.R.rS (zB X (C.Qi τ) u τ) m with hL`. Establish `hsum : (frS D * L + star (frS D * L)) = ((2 * (D.host.ka / (2 * Real.pi)) * L.re : ℝ) : ℂ)`. Unfold `frS`.
+
+Rewrite using `[star_mul', Complex.star_def, Complex.conj_ofReal, ← mul_add, Complex.add_conj]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : ∑ a, (rootCoord (X.B.I.ε (vOf X τ)) (fun a => rv X.B.I (vOf X τ) (X.eR a)) (fun a => rv X.B.I (vOf X τ) (X.fR a)) (rv X.B.I (vOf X τ) (X.zR u)) (C.Q τ * m * C.Qi τ) a + star (rootCoord (X.B.I.ε (vOf X τ)) (fun a => rv X.B.I (vOf X τ) (X.eR a)) (fun a => rv X.B.I (vOf X τ …`. Rewrite using `[Finset.sum_add_distrib, ← star_sum, rootSum_tr X (frS_ne D) (C.isT τ) u m]`.
+
+Both sides reduce to the same expression. Rewrite using `[hsplit, hsum, X.g_eq]`. Use `congr 1`. Establish `hg0 : ((D.host.g 0 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (D.host.g_prime 0).pos.ne'`. Establish `hg1 : ((D.host.g 1 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (D.host.g_prime 1).pos.ne'`.
+
+Establish `hre : (((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) * L).re = 2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) * L.re` using `Complex.re_ofReal_mul _ _`. Rewrite using `[hre]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem psiTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : PsiTr C u τ := by
   intro m _
   unfold psiR psiS Formalism.QuantumDeterminants.psi
@@ -1034,6 +1376,11 @@ def isoOf {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ
     {h : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) : H →ₗᵢ[ℂ] H :=
   ⟨(σ h : H →ₗ[ℂ] H), fun v => hrep.2.1 h hh v⟩
 
+/- English proof (translation)
+Establish `hmul : σ (h * h') = (σ h).comp (σ h')` using `hrep.1.2 h hh h' hh'`. Establish `h1 : σ 1 = 1` using `hrep.1.1`. Establish `key : σ h (σ h' w) = w`. Use `congrArg (fun T : H →L[ℂ] H => T w) hmul` as an intermediate fact. Simplify using `only [hhh', h1, ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at this`.
+
+Conclude with `this.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inner_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hrep : IsURepOn (UJset ε) σ)
     {h h' : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) (hh' : Formalism.REAL.inUJ ε h') (hhh' : h * h' = 1)
     (w x : H) : ⟪w, σ h x⟫_ℂ = ⟪σ h' w, x⟫_ℂ := by
@@ -1046,6 +1393,25 @@ theorem inner_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H
   calc ⟪w, σ h x⟫_ℂ = ⟪σ h (σ h' w), σ h x⟫_ℂ := by rw [key]
     _ = ⟪σ h' w, x⟫_ℂ := (isoOf hrep hh).inner_map_map (σ h' w) x
 
+/- English proof (translation)
+Take `⟨hc, hnt, hrep, hirr, hsq, ⟨S0, hS0⟩, hmin⟩` from `hds`. Establish `hcon : ∀ {g}, Formalism.REAL.inUJ ε g → Formalism.REAL.inUJ ε (h * g * h')` using `fun hg => inUJ_mul (inUJ_mul hh hg) hh'`. Establish `hsplit : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, σ (h * g * h') x = σ h (σ g (σ h' x))` using `fun g hg x => by`. Rewrite using `[hrep.1.2 _ (inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]`. Both sides reduce to the same expression.
+
+Establish `hVU : ∀ x, σ h' (σ h x) = x` using `fun x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.1.2 _ hh' _ hh, hh'h, hrep.1.1]`. Both sides reduce to the same expression. Establish `hUV : ∀ x, σ h (σ h' x) = x` using `fun x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hrep.1.2 _ hh _ hh', hhh', hrep.1.1]`.
+
+Both sides reduce to the same expression. Establish `hback : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, σ g x = σ h' (σ (h * g * h') (σ h x))` using `fun g hg x => by`. Rewrite using `[hsplit g hg, hVU, hVU]`. Use `⟨hc, hnt, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show σ (h * 1 * h') = 1`.
+
+Rewrite using `[Matrix.mul_one, hhh', hrep.1.1]`. Introduce `a ha b hb show σ (h * (a * b) * h') = (σ (h * a * h')).comp (σ (h * b * h'))`. Rewrite using `[← hrep.1.2 _ (hcon ha) _ (hcon hb)]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `g hg v`. Conclude with `hrep.2.1 _ (hcon hg) v`. Introduce `v`. Establish `hmaps : Set.MapsTo (fun g : Matrix (Fin n) (Fin n) ℂ => h * g * h') (UJset ε) (UJset ε)` using `fun g hg => hcon hg`. Conclude with `(hrep.2.2 v).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn hmaps`.
+
+Introduce `S hS hst`. Use `hirr S hS fun g hg v hv => ?_` and prove the remaining obligations. Establish `hg' : Formalism.REAL.inUJ ε (h' * g * h)` using `inUJ_mul (inUJ_mul hh' hg) hh`. Establish `: σ g v = σ (h * (h' * g * h) * h') v`. Use `congr 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `hst _ hg' v hv`. Introduce `v w`. Establish `heq : coefOn (ε` using `ε) (fun g => σ (h * g * h')) v w = coefOn (ε := ε) σ (σ h' v) (σ h' w) := by`.
+
+Use function extensionality and compare the values at `γ`. Use `show ⟪w, σ (h * umat γ * h') v⟫_ℂ = ⟪σ h' w, σ (umat γ) (σ h' v)⟫_ℂ`. Rewrite using `[hsplit _ γ.2, inner_conj ⟨hrep.1, hrep.2.1, hrep.2.2⟩ hh hh' hhh']`. Rewrite using `[heq]`. Conclude with `hsq _ _`.
+
+Conclude with `⟨_, ktype_map (σ h) (σ h') hVU hUV (fun g hg x => hsplit g (kset_sub hg) x) hS0⟩`. Introduce `μ S hS`. Conclude with `hmin μ _ (ktype_map (σ h') (σ h) hUV hVU (fun g hg x => hback g (kset_sub hg) x) hS)`.
+-/
 theorem isDS_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hds : IsDS ε lam σ) {h h' : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) (hh' : Formalism.REAL.inUJ ε h')
     (hhh' : h * h' = 1) (hh'h : h' * h = 1) : IsDS ε lam (fun g => σ (h * g * h')) := by
@@ -1094,6 +1460,15 @@ theorem isDS_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin 
   · intro μ S hS
     exact hmin μ _ (ktype_map (σ h') (σ h) hUV hVU (fun g hg x => hback g (kset_sub hg) x) hS)
 
+/- English proof (translation)
+Take `⟨hd0, hdi⟩` from `hd`. Establish `hsplit : ∀ g, Formalism.REAL.inUJ ε g → ∀ x, σ (h * g * h') x = σ h (σ g (σ h' x))` using `fun g hg x => by`. Rewrite using `[hrep.1.2 _ (inUJ_mul hh hg) _ hh', hrep.1.2 _ hh _ hg]`. Both sides reduce to the same expression. Establish `heq : ∀ v w, coefOn (ε` using `ε) (fun g => σ (h * g * h')) v w = coefOn (ε := ε) σ (σ h' v) (σ h' w) := by`.
+
+Introduce `v w`. Use function extensionality and compare the values at `γ`. Use `show ⟪w, σ (h * umat γ * h') v⟫_ℂ = ⟪σ h' w, σ (umat γ) (σ h' v)⟫_ℂ`. Rewrite using `[hsplit _ γ.2, inner_conj hrep hh hh' hhh']`. Use `⟨hd0, fun v w v' w' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[heq, heq]`. Take `⟨hi, hint⟩` from `hdi (σ h' v) (σ h' w) (σ h' v') (σ h' w')`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Rewrite using `[hint]`. Establish `h1` using `(isoOf hrep hh').inner_map_map v' v`.
+
+Establish `h2` using `(isoOf hrep hh').inner_map_map w w'`. Simplify using `only [isoOf, LinearIsometry.coe_mk, ContinuousLinearMap.coe_coe] at h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem isFdeg_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hrep : IsURepOn (UJset ε) σ)
     {h h' : Matrix (Fin n) (Fin n) ℂ} (hh : Formalism.REAL.inUJ ε h) (hh' : Formalism.REAL.inUJ ε h')
     (hhh' : h * h' = 1) {μ : MeasureTheory.Measure (Formalism.REAL.UJ ε)} {d : ℝ} (hd : IsFdeg μ σ d) :
@@ -1124,6 +1499,17 @@ open Formalism.MainNotions.S
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨hPu, hPg⟩, -⟩` from `hP`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPd`. Establish `hiP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPd`. Establish `hQd : IsUnit Q.det` using `Matrix.isUnit_det_of_right_inverse h2`.
+
+Establish `h1 : Qi * Q = 1`. Rewrite using `[← Matrix.inv_eq_right_inv h2]`. Conclude with `Matrix.nonsing_inv_mul Q hQd`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.REAL.inUJ`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Rewrite using `[hg, ← hPg]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.REAL.Jm ε := by rw [hPi]; simp`. Unfold `Formalism.REAL.inUJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hPg]; exact qiHqi ε h2 hg`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cay_facts {ε : Fin (2 * r + k + 1) → Bool} {Q Qi P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h2 : Q * Qi = 1) (hg : Qᴴ * Formalism.REAL.Jm ε * Q = Hpk k r) (hP : IsCayleyU k r ε P) :
     Formalism.REAL.inUJ ε (Q * P⁻¹) ∧ Formalism.REAL.inUJ ε (P * Qi) ∧ Q * P⁻¹ * (P * Qi) = 1 ∧ P * Qi * (Q * P⁻¹) = 1 := by
@@ -1151,6 +1537,11 @@ theorem cay_facts {ε : Fin (2 * r + k + 1) → Bool} {Q Qi P : Matrix (Fin (2 *
   · calc P * Qi * (Q * P⁻¹) = P * (Qi * Q) * P⁻¹ := by simp only [Matrix.mul_assoc]
       _ = 1 := by rw [h1, Matrix.mul_one, hPi]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hεe : ε' = ε` using `funext fun i => by rw [hε]; rfl`. Establish `hle : lam' = lam` using `funext fun i => by rw [hlam]; rfl`. Substitute `hεe` using the available equality. Substitute `hle` using the available equality.
+
+Take `⟨c1, c2, c3, c4⟩` from `cay_facts h2 hg hP`. Use `isDS_conj hds c1 c2 c3 c4` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc]`.
+-/
 theorem dsHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' : Fin (2 * r + k + 1) → Bool)
     (hε : ∀ i, ε' i = ε (Fin.cast hn.symm i)) (lam : Fin n → ℝ) (lam' : Fin (2 * r + k + 1) → ℝ)
     (hlam : ∀ i, lam' i = lam (Fin.cast hn.symm i)) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -1168,6 +1559,11 @@ theorem dsHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' :
   have := isDS_conj hds c1 c2 c3 c4
   simpa only [Matrix.mul_assoc] using this
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hεe : ε' = ε` using `funext fun i => by rw [hε]; rfl`. Substitute `hεe` using the available equality. Take `⟨c1, c2, c3, -⟩` from `cay_facts h2 hg hP`. Use `isFdeg_conj hrep c1 c2 c3 hd` as an intermediate fact.
+
+Simplify `this` using `only [Matrix.mul_assoc]`.
+-/
 theorem fdegHpk_tr {n : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (ε' : Fin (2 * r + k + 1) → Bool)
     (hε : ∀ i, ε' i = ε (Fin.cast hn.symm i)) {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hrep : IsURepOn (UJset ε) σ) {d : ℝ}
@@ -1191,6 +1587,11 @@ namespace Formalism.L2.SG.Pf
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocWSOf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Conclude with `dsHpk_tr (n_eq' X) (X.B.I.ε (vOf X τ)) (epsSH D.R) (fun i => by rw [X.eps_eq]; exact congrArg (epsS D.R) (Fin.ext rfl)) (X.B.lam (vOf X τ)) (lamD D τ) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`.
+
+Use the proof step `(X.B.σ (vOf X τ)) (X.ds (vOf X τ)) (C.Q τ) (C.Qi τ) (C.isT τ).2.1 (C.isT τ).2.2.1 P hP`.
+-/
 theorem dsTr {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau) :
     IsDSHpk D.R.k D.R.rS (epsSH D.R) (lamD D τ) (sigB X (C.Q τ) (C.Qi τ) τ) := by
   obtain ⟨P, hP⟩ := Formalism.MainNotions.S.Inh.obj_cayleyU_rows D

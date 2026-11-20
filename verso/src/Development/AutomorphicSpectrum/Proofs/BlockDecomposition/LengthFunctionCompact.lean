@@ -12,6 +12,29 @@ open PositivityTheory.RgTw (Mat G)
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `n R`. Use `haveI : ProperSpace (Mat n) := FiniteDimensional.proper ℂ _`. Set `f : G n → ℝ` to `fun y => 1 + ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2)`. Establish `hinv : ∀ y : G n, (y.val)⁻¹ = (y⁻¹).val` using `fun y => (Matrix.coe_units_inv y).symm`. Establish `hc1 : Continuous fun y : G n => y.val` using `Units.continuous_val`.
+
+Establish `hc2 : Continuous fun y : G n => (y⁻¹).val` using `Units.continuous_val.comp continuous_inv`. Establish `hfc : Continuous f`. Use `continuous_const.add (continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_)` and prove the remaining obligations. Conclude with `((hc1.matrix_elem a b).norm.pow 2).add ((hc2.matrix_elem a b).norm.pow 2)`. Establish `hsum : ∀ y : G n, 0 ≤ ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2)` using `fun y => Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`.
+
+Establish `hfpos : ∀ y, 0 < f y` using `fun y => by`. Use `hsum y` as an intermediate fact. Use `show 0 < 1 + _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS : {y : G n | lg y.val ≤ R} = f ⁻¹' Set.Iic (Real.exp R)`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_Iic, lg, hinv]`. Conclude with `Real.log_le_iff_le_exp (hfpos y)`. Rewrite using `[hS]`. Establish `hclosed : IsClosed (f ⁻¹' Set.Iic (Real.exp R))` using `isClosed_Iic.preimage hfc`.
+
+Use `set r : ℝ := Real.exp R with hr`. Establish `hr0 : 0 ≤ r + 1` using `by positivity`. Establish `hterm : ∀ y : G n, f y ≤ r → ∀ a b, ‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2 ≤ r`. Introduce `y hy a b`. Establish `h1 : ‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2 ≤ ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2)` using `Finset.single_le_sum (f := fun b => ‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ b)`.
+
+Establish `h2 : ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2) ≤ ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2)` using `Finset.single_le_sum (f := fun a => ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2)) (fun a _ => Finset.sum_nonneg fun b _ => by positivity) (Finset.mem_univ a)`. Establish `h3 : 1 + ∑ a, ∑ b, (‖y.val a b‖ ^ 2 + ‖(y⁻¹).val a b‖ ^ 2) ≤ r` using `hy`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : ∀ t : ℝ, 0 ≤ t → t ^ 2 ≤ r → t ≤ r + 1`. Introduce `t ht h`.
+
+Use polynomial arithmetic with `[sq_nonneg (t - 1)]`. Establish `hb1 : ∀ y : G n, f y ≤ r → ‖y.val‖ ≤ r + 1`. Introduce `y hy`. Use `(Matrix.norm_le_iff hr0).2 fun a b => hle _ (norm_nonneg _) ?_` and prove the remaining obligations. Use `hterm y hy a b` as an intermediate fact.
+
+Establish `h2 : 0 ≤ ‖(y⁻¹).val a b‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb2 : ∀ y : G n, f y ≤ r → ‖(y⁻¹).val‖ ≤ r + 1`. Introduce `y hy`. Use `(Matrix.norm_le_iff hr0).2 fun a b => hle _ (norm_nonneg _) ?_` and prove the remaining obligations.
+
+Use `hterm y hy a b` as an intermediate fact. Establish `h2 : 0 ≤ ‖y.val a b‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hball : IsCompact (Metric.closedBall (0 : Mat n) (r + 1))` using `isCompact_closedBall _ _`. Establish `hK : IsCompact ((fun p : Mat n × Mat n => (p.1, MulOpposite.op p.2)) '' (Metric.closedBall (0 : Mat n) (r + 1) ×ˢ Metric.closedBall (0 : Mat n) (r + 1)))` using `(hball.prod hball).image (continuous_fst.prodMk (MulOpposite.continuous_op.comp continuous_snd))`.
+
+Establish `hpre` using `(Units.isClosedEmbedding_embedProduct (α := Mat n)).isCompact_preimage hK`. Use `hpre.of_isClosed_subset hclosed ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨(y.val, (y⁻¹).val), ⟨?_, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `using hb1 y hy`.
+
+Simplify using `using hb2 y hy`.
+-/
 theorem lgCpt : PositivityTheory.RgBcC.VC.LgCpt := by
   intro n R
   haveI : ProperSpace (Mat n) := FiniteDimensional.proper ℂ _

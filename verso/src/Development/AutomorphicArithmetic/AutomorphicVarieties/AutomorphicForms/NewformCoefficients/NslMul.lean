@@ -6,6 +6,11 @@ namespace UpperTheory.V.Af.Nf
 
 end UpperTheory.V.Af.Nf
 
+/- English proof (translation)
+Introduce `h`. Establish `him` using `congrArg Complex.im h`. Establish `hre` using `congrArg Complex.re h`. Simplify using `at him hre`. Break down `him with h1 | h1` into its components or cases.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[Matrix.det_fin_two]`. Simplify using `[h1] at hre`. Simplify using `[h1, hre]`. Conclude with `absurd h1 w.im_pos.ne'`.
+-/
 private theorem lower_row_mul_add_ne_zero_of_det_ne_zero (x : Matrix (Fin 2) (Fin 2) ℝ) (hx : x.det ≠ 0) (w : ℍ) :
     (x 1 0 : ℂ) * (w : ℂ) + (x 1 1 : ℂ) ≠ 0 := by
   intro h
@@ -19,6 +24,11 @@ private theorem lower_row_mul_add_ne_zero_of_det_ne_zero (x : Matrix (Fin 2) (Fi
     simp [h1, hre]
   · exact absurd h1 w.im_pos.ne'
 
+/- English proof (translation)
+Establish `hj` using `lower_row_mul_add_ne_zero_of_det_ne_zero y hy.ne' z`. Rewrite using `[Complex.div_im]`. Establish `hn : 0 < Complex.normSq ((y 1 0 : ℂ) * z + y 1 1)` using `Complex.normSq_pos.mpr hj`. Rewrite using `[← sub_div]`. Apply `div_pos _ hn` to reduce the goal to its premises.
+
+Establish `hd` using `hy`. Rewrite `hd` using `[Matrix.det_fin_two]`. Simplify using the standard rewrite rules. Use polynomial arithmetic with `[z.im_pos]`.
+-/
 private theorem im_mobius_pos_of_det_pos (y : Matrix (Fin 2) (Fin 2) ℝ) (hy : 0 < y.det) (z : ℍ) :
     0 < (((y 0 0 : ℂ) * z + y 0 1) / ((y 1 0 : ℂ) * z + y 1 1)).im := by
   have hj := lower_row_mul_add_ne_zero_of_det_ne_zero y hy.ne' z
@@ -32,6 +42,31 @@ private theorem im_mobius_pos_of_det_pos (y : Matrix (Fin 2) (Fin 2) ℝ) (hy : 
   nlinarith [z.im_pos]
 
 open UpperTheory.V.Af.Nf in
+/- English proof (translation)
+Introduce `k f`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hx hy`. Use function extensionality and compare the values at `z`. Establish `hjy` using `lower_row_mul_add_ne_zero_of_det_ne_zero y hy.ne' z`.
+
+Establish `hm` using `im_mobius_pos_of_det_pos y hy z`. Use `set m := ((y 0 0 : ℂ) * z + y 0 1) / ((y 1 0 : ℂ) * z + y 1 1) with hmdef`. Simplify using `only [nsl]`. Rewrite using `[sign_pos hy, Matrix.det_mul, sign_mul, sign_pos hy, mul_one, abs_mul, Real.mul_rpow (abs_nonneg _) (abs_nonneg _)]`. Simplify using `only [SignType.coe_one, Int.cast_one, Complex.ofReal_one, one_mul]`.
+
+Rewrite using `[← hmdef, UpperHalfPlane.ofComplex_apply_of_im_pos hm]`. Simplify using `only [UpperHalfPlane.coe_mk, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hJ : ((↑(x 1 0 * y 0 0 + x 1 1 * y 1 0) : ℂ) * z + ↑(x 1 0 * y 0 1 + x 1 1 * y 1 1)) = ((x 1 0 : ℂ) * m + x 1 1) * ((y 1 0 : ℂ) * z + y 1 1)`. Rewrite using `[hmdef, add_mul, mul_assoc, div_mul_cancel₀ _ hjy]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hN : ((↑(x 0 0 * y 0 0 + x 0 1 * y 1 0) : ℂ) * z + ↑(x 0 0 * y 0 1 + x 0 1 * y 1 1)) = ((x 0 0 : ℂ) * m + x 0 1) * ((y 1 0 : ℂ) * z + y 1 1)`. Rewrite using `[hmdef, add_mul, mul_assoc, div_mul_cancel₀ _ hjy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hJ, hN, mul_div_mul_right _ _ hjy, mul_zpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [nsl, eps, Matrix.det_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Establish `h1 : -(x 0 0 * x 1 1) + x 0 1 * x 1 0 = -(x 0 0 * x 1 1 - x 0 1 * x 1 0)` using `by ring`. Rewrite using `[h1, abs_neg, Left.sign_neg]`. Use `congr 3`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `t x ht`. Use function extensionality and compare the values at `z`. Simplify using `only [nsl, Matrix.det_fin_two, Matrix.smul_apply, smul_eq_mul]`.
+
+Establish `h1 : t * x 0 0 * (t * x 1 1) - t * x 0 1 * (t * x 1 0) = t ^ 2 * (x 0 0 * x 1 1 - x 0 1 * x 1 0)` using `by ring`. Rewrite using `[h1]`. Use `set d := x 0 0 * x 1 1 - x 0 1 * x 1 0`. Establish `h2 : SignType.sign (t ^ 2 * d) = SignType.sign d`. Rewrite using `[sign_mul, sign_pos (by positivity), one_mul]`.
+
+Establish `h3 : |t ^ 2 * d| ^ ((k : ℝ) / 2) = t ^ k * |d| ^ ((k : ℝ) / 2)`. Rewrite using `[abs_mul, Real.mul_rpow (by positivity) (abs_nonneg _), abs_of_pos (by positivity : (0:ℝ) < t ^ 2)]`. Use `congr 1`. Rewrite using `[show (t ^ 2 : ℝ) = t ^ (2:ℝ) by norm_cast, ← Real.rpow_mul ht.le, show (2:ℝ) * (k / 2) = k by ring, Real.rpow_natCast]`. Establish `hj : ((↑(t * x 1 0) : ℂ) * ↑z + ↑(t * x 1 1)) = (t : ℂ) * ((x 1 0 : ℂ) * z + x 1 1)`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ((↑(t * x 0 0) : ℂ) * ↑z + ↑(t * x 0 1)) = (t : ℂ) * ((x 0 0 : ℂ) * z + x 0 1)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ht' : (t : ℂ) ≠ 0` using `by exact_mod_cast ht.ne'`. Rewrite using `[h2, h3, hj, hn, mul_div_mul_left _ _ ht']`. Use `congr 1`. Use `push_cast`. Rewrite using `[mul_zpow, zpow_neg, zpow_neg, zpow_natCast]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `c x`. Use function extensionality and compare the values at `z`. Simplify using `only [nsl, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Af.Nf.nslMul :
     UpperTheory.V.Af.Nf.NslMul := by
   intro k f

@@ -5,6 +5,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterIdempotents.Ce
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterIdempotents.Scalar
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CharacterIdempotents.CoeffMulCharIdem
 
+/- English proof (translation)
+The claim follows from `PI.CharIdemW.charIdem_of PI.CharIdemW.central PI.CharIdemW.scalar (PI.CharIdemW.mulEq_of PI.CharIdemW.scalar)`.
+-/
 theorem orthogonalCentral : PI.CharIdem.CharIdem :=
   PI.CharIdemW.charIdem_of PI.CharIdemW.central PI.CharIdemW.scalar
     (PI.CharIdemW.mulEq_of PI.CharIdemW.scalar)

@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.IntTerm
 
+/- English proof (translation)
+Rewrite using `[genericPoint_eq_bot_of_affine]`. Establish `ha : (a : PrimeSpectrum F).asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ (a : PrimeSpectrum F).isPrime`. Establish `hinj : Function.Injective ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))` using `(algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R (FractionRing R))`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap _ (Ideal.comap _ (a : PrimeSpectrum F).asIdeal) = ⊥`.
+
+Rewrite using `[ha, Ideal.comap_comap]`. Conclude with `Ideal.comap_bot_of_injective _ hinj`.
+-/
 theorem tf_apply_eq_genericPoint {R : Type} [CommRing R] [IsDomain R] (F : Type) [Field F]
     [Algebra (FractionRing R) F] (a : Sp F) : (TF (R := R) F).hom a = genericPoint (Sp R) := by
   rw [genericPoint_eq_bot_of_affine]
@@ -28,6 +33,25 @@ theorem tf_apply_eq_genericPoint {R : Type} [CommRing R] [IsDomain R] (F : Type)
   rw [ha, Ideal.comap_comap]
   exact Ideal.comap_bot_of_injective _ hinj
 
+/- English proof (translation)
+Use `set Kb := AlgebraicClosure (FractionRing R)`. Use `set q := p.left (IsLocalRing.closedPoint K) with hqdef`. Take `⟨q', hq'q, hq'⟩` from `Flat.generalizingMap T.hom (genericPoint_specializes (T.hom q))`. Set `j : Sp Kb ⟶ Sp R` to `(TF (R := R) Kb).hom`. Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := T.hom) (g := j) q' (IsLocalRing.closedPoint Kb) (by rw [hq']; exact (tf_apply_eq_genericPoint (R := R) Kb _).symm)`.
+
+Establish `: LocallyOfFiniteType (pullback.snd T.hom j)` using `inferInstance`. Establish `: IsIntegralHom (pullback.snd T.hom j)` using `inferInstance`. Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd T.hom j)` as an intermediate fact. Take `⟨c, hcz, hcc⟩` from `nonempty_inter_closedPoints (X := (pullback T.hom j : Scheme)) (Z := closure {z}) ⟨z, subset_closure rfl⟩ isClosed_closure.isLocallyClosed`. Establish `hzc : z = c` using `GlobalTheory.eq_of_specializes_of_isIntegralHom (pullback.snd T.hom j) (specializes_iff_mem_closure.2 hcz) (Subsingleton.elim _ _)`.
+
+Substitute `hzc` using the available equality. Set `s : Sp Kb ⟶ pullback T.hom j` to `pointOfClosedPoint (pullback.snd T.hom j) z hcc`. Establish `hs : s ≫ pullback.snd T.hom j = 𝟙 _` using `pointOfClosedPoint_comp (pullback.snd T.hom j) z hcc`. Establish `hsz : ∀ a, s a = z` using `fun a => pointOfClosedPoint_apply (pullback.snd T.hom j) z hcc a`. Set `t : TF (R` to `R) Kb ⟶ T := Over.homMk (s ≫ pullback.fst T.hom j) (by show (s ≫ pullback.fst T.hom j) ≫ T.hom = j`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp])`. Take `⟨c0, hc0⟩` from `H t`. Establish `hσ : IsClosedImmersion (σ c0).left`. Establish `h1 : (σ c0).left ≫ T.hom = 𝟙 _` using `Over.w (σ c0)`. Establish `: IsClosedImmersion ((σ c0).left ≫ T.hom)` using `by rw [h1]; infer_instance`.
+
+Conclude with `IsClosedImmersion.of_comp (σ c0).left T.hom`. Establish `hq'mem : q' ∈ Set.range (σ c0).left`. Set `pt : Sp Kb` to `IsLocalRing.closedPoint Kb`. Use `⟨(toUnit (TF (R := R) Kb)).left pt, ?_⟩` and prove the remaining obligations. Establish `e1 : t.left pt = q'` using `by show pullback.fst T.hom j (s pt) = q'`.
+
+Rewrite using `[hsz, hz1]`. Rewrite using `[← e1, hc0]`. Both sides reduce to the same expression. Establish `hqmem : q ∈ Set.range (σ c0).left` using `hq'q.mem_closed (σ c0).left.isClosedEmbedding.isClosed_range hq'mem`. Establish `: IsReduced (Sp K)` using `inferInstance`.
+
+Take `⟨l, hl⟩` from `GlobalTheory.AbelianSubgroupFinite.exists_lift_of_range_subset (T := Sp K) p.left (σ c0).left (by`. Introduce and unpack `_ ⟨(a : Sp K), rfl⟩`. Rewrite using `[Subsingleton.elim a (IsLocalRing.closedPoint K)]`. Conclude with `hqmem)`. Establish `hlx : l = x`.
+
+Establish `h1 : (σ c0).left ≫ T.hom = 𝟙 _` using `Over.w (σ c0)`. Establish `h2 : p.left ≫ T.hom = x` using `Over.w p`. Rewrite using `[← h2, ← hl, Category.assoc, h1, Category.comp_id]`. Use `⟨c0, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← hl, hlx]`.
+
+Use `congr 1`.
+-/
 theorem exists_eq_section_of_finite_flat {R : Type} [CommRing R] [IsDomain R] (T : Over (Sp R))
     [IsFinite T.hom] [Flat T.hom] {C : Type} (σ : C → (𝟙_ (Over (Sp R)) ⟶ T))
     (H : ∀ t : TF (R := R) (AlgebraicClosure (FractionRing R)) ⟶ T, ∃ c, t = toUnit _ ≫ σ c)
@@ -84,6 +108,13 @@ end GlobalTheory.Poinc.IntTerm
 
 namespace GlobalTheory.Poinc.IntTerm
 
+/- English proof (translation)
+Introduce `V _ _ _ P N hN C b hb H K _ _ x p hp`. Take `⟨h1, h2, -⟩` from `GlobalTheory.abelianSchemeLaws_all.1.mulN (Sp V) P N hN`. Rewrite `h1`, `h2` using `[Out.mulA, ← GrpTangent.mulN_eq_pow]`. Use `haveI : IsFinite (torsion P.A N).hom := MorphismProperty.of_isPullback (P := @IsFinite) (GrpTangent.isPullback_torsion P.A N) h1`. Use `haveI : Flat (torsion P.A N).hom := MorphismProperty.of_isPullback (P := @Flat) (GrpTangent.isPullback_torsion P.A N) h2`.
+
+Use `haveI : Mono (torsion.ι P.A N) := inferInstanceAs (Mono (pullback.fst _ _))`. Take `⟨hι, hu⟩` from `GlobalTheory.LamF.torsion_universal P.A N`. Use `choose σ hσ using fun c => hu _ (b c) (hb c)`. Take `⟨t, ht⟩` from `hu _ p hp`. Take `⟨c, hc⟩` from `exists_eq_section_of_finite_flat (torsion P.A N) σ (fun t' => by`.
+
+Take `⟨c, hc⟩` from `H (t' ≫ torsion.ι P.A N) (by rw [← comp_pow, hι, comp_one])`. Conclude with `⟨c, by rw [← cancel_mono (torsion.ι P.A N), hc, Category.assoc, hσ]⟩) K x t`. Conclude with `⟨c, by rw [← ht, hc, Category.assoc, hσ]⟩`.
+-/
 theorem exhausts_of_generic : ∀ (V : Type) [CommRing V] [IsDomain V] [IsNoetherianRing V]
     (P : PolAV (Sp V)) (N : ℕ), 1 ≤ N → ∀ (C : Type) (b : C → (𝟙_ (Over (Sp V)) ⟶ P.A)),
     (∀ c, b c ^ N = 1) →

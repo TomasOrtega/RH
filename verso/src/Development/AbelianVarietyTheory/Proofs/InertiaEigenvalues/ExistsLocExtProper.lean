@@ -12,6 +12,11 @@ namespace GlobalTheory.DelEps
 variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
 variable {K : Type} [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] {v : HeightOneSpectrum (𝓞 K)}
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `WD.mk_eq_mk.1 (Classical.choose_spec (Classical.choose_spec (WD.mk a).exists_rep))`. Unfold `trW`. Rewrite using `[← LinearMap.trace_conj' _ e]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `[LinearEquiv.conj_apply, he]`.
+-/
 theorem trW_mk {h : IsPlaceOver A v} {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : WDRep h V) (σ : Weil h) :
     trW (WD.mk a) σ = LinearMap.trace ℂ V (a.ρ σ) := by
   obtain ⟨e, he, -⟩ := WD.mk_eq_mk.1 (Classical.choose_spec (Classical.choose_spec (WD.mk a).exists_rep))
@@ -23,6 +28,13 @@ theorem trW_mk {h : IsPlaceOver A v} {V : Type} [AddCommGroup V] [Module ℂ V] 
 
 def LocExt.self (h : IsPlaceOver A v) : LocExt h := ⟨K, v, h, isLocalExt_self h⟩
 
+/- English proof (translation)
+Take `⟨m, n, a, b, j, rfl, rfl, hn, hj, hs⟩` from `H`. Establish `hj' : ∀ σ u, j (a.ρ σ u) = b.ρ σ (j u)` using `fun σ => hj σ σ fun _ => rfl`. Establish `hsurj : Function.Surjective j`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨τ, u⟩, rfl⟩`.
+
+Conclude with `⟨_, hj' τ u⟩`. Establish `hmn : n = m` using `by simpa using hn`. Substitute `hmn` using the available equality. Establish `hb : Function.Bijective j` using `⟨LinearMap.injective_iff_surjective.2 hsurj, hsurj⟩`. Rewrite using `[trW_mk, trW_mk, ← LinearMap.trace_conj' (a.ρ σ) (LinearEquiv.ofBijective j hb)]`.
+
+Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(LinearEquiv.ofBijective j hb).surjective x`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `(hj' σ u).symm`.
+-/
 theorem trW_of_induces_self {h : IsPlaceOver A v} {x y : WD h} (H : Induces x y) (σ : Weil h) : trW y σ = trW x σ := by
   obtain ⟨m, n, a, b, j, rfl, rfl, hn, hj, hs⟩ := H
   have hj' : ∀ σ u, j (a.ρ σ u) = b.ρ σ (j u) := fun σ => hj σ σ fun _ => rfl
@@ -40,6 +52,9 @@ theorem trW_of_induces_self {h : IsPlaceOver A v} {x y : WD h} (H : Induces x y)
   rw [LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]
   exact (hj' σ u).symm
 
+/- English proof (translation)
+Establish `hy : ∃ y : WD h, Induces (WD.lpOfChar (LocExt.self h).h' ξ hξ) y` using `⟨_, induces_self _⟩`. Establish `e : indOf (LocExt.self h) ξ hξ = hy.choose` using `dif_pos hy`. Conclude with `(congrArg (trW · σ) e).trans (trW_of_induces_self (h := h) hy.choose_spec σ)`.
+-/
 theorem trW_indOf_self {h : IsPlaceOver A v} (ξ : Weil h →* ℂˣ) (hξ : GlobalTheory.WeilDeligne.IsSmooth ξ) (σ : Weil h) :
     trW (indOf (LocExt.self h) ξ hξ) σ = trW (WD.lpOfChar h ξ hξ) σ := by
   have hy : ∃ y : WD h, Induces (WD.lpOfChar (LocExt.self h).h' ξ hξ) y := ⟨_, induces_self _⟩

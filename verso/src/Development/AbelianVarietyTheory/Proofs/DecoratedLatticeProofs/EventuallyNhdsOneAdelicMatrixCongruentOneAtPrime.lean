@@ -17,6 +17,13 @@ open Filter Topology
 
 namespace GlobalTheory.TwU.NearOne
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n N P`. Use `letI : TopologicalSpace (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := Formalism.L2.Col.rlt_top (F := F) (E := E)`. Use `haveI : IsTopologicalRing (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Use `show ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, ∀ a b, _`. Use `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => ?_` and prove the remaining obligations.
+
+Establish `hop : IsOpen ((fun y : E ⊗[F] FiniteAdeleRing (𝓞 F) F => Formalism.L2.Col.iA F E (((Formalism.L2.Col.qOf P : ℕ) : E) ^ N)⁻¹ * y) ⁻¹' (Formalism.L2.Herm.intAf F E : Set (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))` using `Formalism.L2.Col.rlt_isOpen_intAf.preimage (continuous_const.mul continuous_id)`. Establish `h0 : (0 : E ⊗[F] FiniteAdeleRing (𝓞 F) F) ∈ (fun y : E ⊗[F] FiniteAdeleRing (𝓞 F) F => Formalism.L2.Col.iA F E (((Formalism.L2.Col.qOf P : ℕ) : E) ^ N)⁻¹ * y) ⁻¹' (Formalism.L2.Herm.intAf F E : Set (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Simplify using `only [Set.mem_preimage, mul_zero]`. Conclude with `zero_mem _`. Establish `hcont : Continuous fun u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) => (u : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b` using `(Units.continuous_val.matrix_elem a b).sub continuous_const`.
+
+Establish `ht` using `hcont.tendsto' 1 0 (by simp)`. Use `filter_upwards [ht (hop.mem_nhds h0)] with u hu`. Use `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Simplify `hu` using `[Matrix.sub_apply]`.
+-/
 theorem congAt_eventually_nhds_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n N : ℕ) (P : HeightOneSpectrum (𝓞 E)), letI := tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F); ∀ᶠ u : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) in nhds 1, GlobalTheory.TwU.CongAt P N u := by
   intro F E _ _ _ _ _ n N P
   letI : TopologicalSpace (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := Formalism.L2.Col.rlt_top (F := F) (E := E)

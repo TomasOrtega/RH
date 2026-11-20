@@ -9,6 +9,15 @@ open Classical
 namespace GlobalTheory.ZH
 namespace MinorTest
 
+/- English proof (translation)
+Establish `hb : 0 < b` using `ha.trans_lt hab`. Establish `hr : a / b < 1` using `(div_lt_one hb).2 hab`. Establish `hr0 : 0 ≤ a / b` using `div_nonneg ha hb.le`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz1, hz2⟩ : ∃ z : C, a / b < ‖z‖ ∧ ‖z‖ < 1 := by`. Take `⟨y, hy0, hy1⟩` from `NormedField.exists_norm_lt_one C`.
+
+Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr).eventually_lt_const hy0`. Take `⟨n, hn, hn1⟩` from `(h.and (Filter.eventually_gt_atTop 0)).exists`. Take `⟨x, rfl⟩` from `IsAlgClosed.exists_pow_nat_eq y hn1`. Rewrite `hn`, `hy1` using `[norm_pow]`. Conclude with `⟨x, lt_of_pow_lt_pow_left₀ n (norm_nonneg x) hn, (pow_lt_one_iff_of_nonneg (norm_nonneg x) hn1.ne').1 hy1⟩`.
+
+Establish `hz0 : 0 < ‖z‖` using `hr0.trans_lt hz1`. Establish `hy : 1 < ‖z‖⁻¹` using `(one_lt_inv₀ hz0).2 hz2`. Take `⟨n, h1, h2⟩` from `exists_mem_Ioc_zpow hb hy`. Use `⟨z⁻¹ ^ n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_zpow, norm_inv]`.
+
+Rewrite `h2` using `[zpow_add_one₀ (inv_pos.2 hz0).ne', ← div_eq_mul_inv, le_div_iff₀ hz0]`. Rewrite `hz1` using `[div_lt_iff₀ hb, mul_comm]`. Conclude with `hz1.trans_le h2`. Rewrite using `[norm_zpow, norm_inv]` and apply the resulting hypothesis.
+-/
 theorem exists_norm_between {C : Type*} [NontriviallyNormedField C] [IsAlgClosed C] {a b : ℝ}
     (ha : 0 ≤ a) (hab : a < b) : ∃ x : C, a < ‖x‖ ∧ ‖x‖ < b := by
   have hb : 0 < b := ha.trans_lt hab
@@ -32,6 +41,11 @@ theorem exists_norm_between {C : Type*} [NontriviallyNormedField C] [IsAlgClosed
     exact hz1.trans_le h2
   · rwa [norm_zpow, norm_inv]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun σ _ => ?_` and prove the remaining obligations. Establish `hs : ‖(((Equiv.Perm.sign σ : ℤˣ) : ℤ) : C)‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[norm_mul, hs, _root_.one_mul, norm_prod, ← Finset.card_univ, ← Finset.prod_const]`.
+
+Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => h _ _`.
+-/
 theorem norm_det_le_pow {C J : Type*} [NormedField C] [IsUltrametricDist C] [Fintype J] [DecidableEq J]
     (A : Matrix J J C) {ρ : ℝ} (hρ : 0 ≤ ρ) (h : ∀ i j, ‖A i j‖ ≤ ρ) :
     ‖A.det‖ ≤ ρ ^ Fintype.card J := by
@@ -42,6 +56,11 @@ theorem norm_det_le_pow {C J : Type*} [NormedField C] [IsUltrametricDist C] [Fin
   rw [norm_mul, hs, _root_.one_mul, norm_prod, ← Finset.card_univ, ← Finset.prod_const]
   exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => h _ _
 
+/- English proof (translation)
+Establish `e : Matrix.det (Matrix.of fun i => ∑ m, c i m • g m) = ∑ k : J → I, (∏ i, c i (k i)) • Matrix.det (Matrix.of fun i j => g (k i) j)`. Use `(Matrix.detRowAlternating (n := J) (R := C)).toMultilinearMap.map_sum (fun i m => c i m • g m)` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Conclude with `(Matrix.detRowAlternating (n := J) (R := C)).toMultilinearMap.map_smul_univ (fun i => c i (k i)) (fun i => g (k i))`. Rewrite using `[e]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hν fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_det_le_of_comb {C J I : Type*} [NormedField C] [IsUltrametricDist C] [Fintype J]
     [DecidableEq J] [Fintype I] (g : I → J → C) (c : J → I → C) (hc : ∀ i m, ‖c i m‖ ≤ 1) {ν : ℝ}
     (hν : 0 ≤ ν) (h : ∀ k : J → I, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ ≤ ν) :
@@ -60,6 +79,13 @@ theorem norm_det_le_of_comb {C J I : Type*} [NormedField C] [IsUltrametricDist C
         (norm_nonneg _) zero_le_one
     _ = ν := _root_.one_mul _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Establish `hfin : {v | ¬ (0 : ℝ) < q v}.Finite` using `Filter.eventually_cofinite.1 (h.eventually_gt_atTop 0)`. Establish `hinj : Function.Injective fun n : ℕ => ((n : ℤ) + 1) • x`. Introduce `a b hab`.
+
+Use `smul_left_injective ℤ hx0 hab` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Set.infinite_of_injective_forall_mem hinj (fun n => ?_) hfin` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt, QuadraticMap.map_smul, zsmul_eq_mul]`. Use `mul_nonpos_of_nonneg_of_nonpos ?_ hx` and prove the remaining obligations.
+
+Check the signs of the components of the expression.
+-/
 theorem pos_of_tendsto {X : Type} [AddCommGroup X] [Module.Free ℤ X] (q : QuadraticMap ℤ X ℝ)
     (h : Filter.Tendsto q Filter.cofinite Filter.atTop) {x : X} (hx0 : x ≠ 0) : 0 < q x := by
   by_contra hx
@@ -74,6 +100,11 @@ theorem pos_of_tendsto {X : Type} [AddCommGroup X] [Module.Free ℤ X] (q : Quad
   refine mul_nonpos_of_nonneg_of_nonpos ?_ hx
   positivity
 
+/- English proof (translation)
+Set `ψ : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod n] ZMod n` to `φ.toZModLinearMap n`. Use `⟨Sum.elim (fun i => φ (Pi.single (.inr i) 1)) (fun i => -φ (Pi.single (.inl i) 1)), fun b => ?_⟩` and prove the remaining obligations. Establish `hb : φ b = ∑ s, b s * φ (Pi.single s 1)`. Express the relevant statement in the definitionally equal form `ψ b = ∑ s, b s * ψ (Pi.single s 1)`. Use `conv_lhs => rw [pi_eq_sum_univ' b]`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[hb, Fintype.sum_sum_type, ← Finset.sum_add_distrib, eStd]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eStd_eq (g n : ℕ) (φ : (Fin g ⊕ Fin g → ZMod n) →+ ZMod n) :
     ∃ a, ∀ b, eStd g n a b = φ b := by
   let ψ : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod n] ZMod n := φ.toZModLinearMap n
@@ -90,6 +121,15 @@ theorem exists_eStd_eq (g n : ℕ) (φ : (Fin g ⊕ Fin g → ZMod n) →+ ZMod 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {p : ℕ} [Fact p.Prime]
   {y₀ : S.R →+* PadicAlgCl p}
 
+/- English proof (translation)
+Establish `h2 : 2 ≤ S.r * S.N` using `le_trans S.N_ge (Nat.le_mul_of_pos_left _ S.r_pos)`. Use `haveI : Fact (1 < S.r * S.N) := ⟨h2⟩`. Set `b` to `Module.Free.chooseBasis ℤ τ.X`. Use `haveI : IsEmpty (Module.Free.ChooseBasisIndex ℤ τ.X) := by`. Use `⟨fun i => ?_⟩` and prove the remaining obligations.
+
+Set `f : τ.X →+ ZMod (S.r * S.N)` to `(Int.castAddHom _).comp (b.coord i).toAddMonoidHom`. Set `f' : τ.X ⧸ (nsmulAddMonoidHom (S.r * S.N) : τ.X →+ τ.X).range →+ ZMod (S.r * S.N)` to `QuotientAddGroup.lift _ f (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply, map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul])`. Take `⟨a, ha⟩` from `exists_eStd_eq _ _ (f'.comp τ.yy)`.
+
+Establish `hm : a ∈ S.perp τ.yy.ker` using `fun u hu => by`. Rewrite using `[ha, AddMonoidHom.comp_apply, (AddMonoidHom.mem_ker).1 hu, map_zero]`. Rewrite `hm` using `[h, AddSubgroup.mem_bot]`. Take `⟨u, hu⟩` from `τ.yy_onto (QuotientAddGroup.mk (b i))`. Use `ha u` as an intermediate fact.
+
+Rewrite `this` using `[hm, AddMonoidHom.comp_apply, hu]`. Simplify using `[eStd, f', f] at this`. Conclude with `b.repr.injective (Subsingleton.elim _ _)`.
+-/
 theorem subsingleton_of_perp_eq_bot (τ : S.Test p y₀) (h : S.perp τ.yy.ker = ⊥) (x : τ.X) : x = 0 := by
   have h2 : 2 ≤ S.r * S.N := le_trans S.N_ge (Nat.le_mul_of_pos_left _ S.r_pos)
   haveI : Fact (1 < S.r * S.N) := ⟨h2⟩
@@ -112,6 +152,13 @@ theorem subsingleton_of_perp_eq_bot (τ : S.Test p y₀) (h : S.perp τ.yy.ker =
     simp [eStd, f', f] at this
   exact b.repr.injective (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Take `⟨-, d, ⟨e⟩⟩` from `hT`. Use `haveI : Fact (1 < S.N) := ⟨S.N_ge⟩`. Use `haveI : IsEmpty (Fin d) := by`. Use `⟨fun i => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun (h ((ZMod.castHom (dvd_mul_left S.N S.r) (ZMod S.N)).toAddMonoidHom.comp ((Pi.evalAddMonoidHom (fun _ : Fin d => ZMod (S.r * S.N)) i).comp e.toAddMonoidHom))) (e.symm (fun _ => 1))` as an intermediate fact.
+
+Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, AddEquiv.apply_symm_apply, Pi.evalAddMonoidHom_apply, RingHom.toAddMonoidHom_eq_coe, map_one, AddMonoidHom.zero_apply] at this`. Conclude with `one_ne_zero this`. Rewrite using `[eq_bot_iff]`. Introduce `t ht`. Establish `: (⟨t, ht⟩ : T) = 0` using `e.injective (Subsingleton.elim _ _)`.
+
+Conclude with `congrArg Subtype.val this`.
+-/
 theorem eq_bot_of_char {T : AddSubgroup S.Gam} (hT : S.IsoFree T) (h : ∀ c : T →+ ZMod S.N, c = 0) :
     T = ⊥ := by
   obtain ⟨-, d, ⟨e⟩⟩ := hT
@@ -133,6 +180,45 @@ theorem eq_bot_of_char {T : AddSubgroup S.Gam} (hT : S.IsoFree T) (h : ∀ c : T
 end MinorTest
 open MinorTest in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S p _ y₀ τ hint _ n ρ₀ g hρ hg`. Take `⟨B, l, α, -, hdet, -, hl, hall, -, hE⟩` from `exists_adapted_basis_testLattice o Ω S p y₀ τ hint`. Establish `hN : (0 : ℝ) < S.N` using `by exact_mod_cast lt_of_lt_of_le two_pos S.N_ge`. Establish `hq : ∀ x, 0 ≤ τ.q x` using `fun x => by`. Distinguish the cases in `hx : x = 0`.
+
+Simplify using `[hx]`. Conclude with `(pos_of_tendsto τ.q τ.pos hx).le`. Establish `hl1 : ∀ i, 1 ≤ ‖l i‖` using `fun i => by`. Rewrite using `[hl]`. Conclude with `Real.one_le_exp (div_nonneg (hq _) hN.le)`.
+
+Use `set M : Matrix S.J S.J (PadicAlgCl p) := Matrix.of fun i j => l i * B i j with hM`. Establish `hMdet : ‖M.det‖ = ∏ i, ‖l i‖`. Rewrite using `[hM, Matrix.det_mul_column, norm_mul, hdet, _root_.mul_one, norm_prod]`. Establish `hM1 : 1 ≤ ‖M.det‖`. Rewrite using `[hMdet]`.
+
+Conclude with `Finset.prod_induction _ (1 ≤ ·) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun i _ => hl1 i`. Establish `key : ∀ k : S.J → Fin n, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ * ‖M.det‖ ≤ ρ₀ ^ Fintype.card S.J` using `fun k => by`. Rewrite using `[← Matrix.det_transpose M, ← norm_mul, ← Matrix.det_mul]`. Use `norm_det_le_pow _ hρ.le fun i j => ?_` and prove the remaining obligations. Conclude with `(hg (g (k i))).1 (Submodule.subset_span ⟨_, rfl⟩) (fun t => l j * B j t) (hE ▸ Submodule.subset_span ⟨j, rfl⟩)`.
+
+Establish `h1 : ∀ k : S.J → Fin n, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ ≤ ρ₀ ^ Fintype.card S.J` using `fun k => (le_mul_of_one_le_right (norm_nonneg _) hM1).trans (key k)`. Establish `hρd : 0 < ρ₀ ^ Fintype.card S.J` using `pow_pos hρ _`. Use `⟨h1, ⟨?_, fun hbot => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Establish `h2` using `key k`.
+
+Rewrite `h2` using `[hk, mul_le_iff_le_one_right hρd, hMdet]`. Use `eq_bot_of_char τ.isoFree fun c => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hall c`. Establish `h3 : ‖l i‖ ≤ 1`. Use `le_trans ?_ h2` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Use `le_mul_of_one_le_right (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `Finset.prod_induction _ (1 ≤ ·) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun i _ => hl1 i`. Establish `h4 : α i = 0`. Assume the negation of the conclusion as `hne`.
+
+Use `Real.one_lt_exp_iff.2 (div_pos (pos_of_tendsto τ.q τ.pos hne) hN)` as an intermediate fact. Rewrite `h3` using `[hl]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h4, map_zero]`. Establish `hMe : ‖M.det‖ = 1`.
+
+Rewrite using `[hMdet]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hl, subsingleton_of_perp_eq_bot τ hbot (α i)]`. Simplify using the standard rewrite rules. Establish `hMu : IsUnit M.det`.
+
+Rewrite using `[isUnit_iff_ne_zero, ← norm_ne_zero_iff, hMe]`. Conclude with `one_ne_zero`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Choose the witnesses or unpack the hypotheses as in `⟨ν, hν0, hν1, hν2⟩ : ∃ ν : ℝ, 0 ≤ ν ∧ ν < ρ₀ ^ Fintype.card S.J ∧ ∀ k : S.J → Fin n, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ ≤ ν := by`.
+
+Break down `isEmpty_or_nonempty (S.J → Fin n) with he | he` into its components or cases. Conclude with `⟨0, le_rfl, hρd, fun k => he.elim k⟩`. Take `⟨k₀, hk₀⟩` from `Finite.exists_max fun k : S.J → Fin n => ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖`. Conclude with `⟨_, norm_nonneg _, lt_of_le_of_ne (h1 k₀) (hne k₀), hk₀⟩`. Take `⟨x, hx1, hx2⟩` from `exists_norm_between (C := PadicAlgCl p) hν0 hν1`.
+
+Take `⟨z, rfl⟩` from `IsAlgClosed.exists_pow_nat_eq x (Fintype.card_pos (α := S.J))`. Establish `hz : ‖z‖ ≤ ρ₀`. Rewrite `hx2` using `[norm_pow]`. Conclude with `(lt_of_pow_lt_pow_left₀ _ hρ.le hx2).le`. Use `set W : Matrix S.J S.J (PadicAlgCl p) := z • (M.transpose)⁻¹ with hW`.
+
+Establish `hWM : W * M.transpose = z • (1 : Matrix S.J S.J (PadicAlgCl p))`. Rewrite using `[hW, Matrix.smul_mul, Matrix.nonsing_inv_mul _ (by rwa [Matrix.det_transpose])]`. Establish `hWdet : ‖W.det‖ = ‖z ^ Fintype.card S.J‖`. Use `congrArg (fun A => ‖Matrix.det A‖) hWM` as an intermediate fact. Simplify `this` using `only [Matrix.det_mul, Matrix.det_transpose, norm_mul, hMe, _root_.mul_one, Matrix.det_smul, Matrix.det_one]`.
+
+Establish `hmem : ∀ i, W i ∈ Submodule.span (OO p) (Set.range g)` using `fun i => by`. Rewrite using `[hg, hE]`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Take `⟨j, rfl⟩` from `hv`. Establish `: W i ⬝ᵥ (fun t => l j * B j t) = (W * M.transpose) i j` using `rfl`. Rewrite using `[this, hWM, Matrix.smul_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using hz`.
+
+Simplify using `using hρ.le`. Consider the case `zero => simpa using hρ.le`. Consider the case `add u v _ _ hu hv`. Rewrite using `[dotProduct_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu hv)`.
+
+Consider the case `smul a v _ hv`. Establish `: a • v = (a : PadicAlgCl p) • v` using `rfl`. Rewrite using `[this, dotProduct_smul, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ((mem_OO_iff _).1 a.2)).trans hv`. Use `choose c hc using fun i => (Submodule.mem_span_range_iff_exists_fun _).1 (hmem i)`.
+
+Establish `h5` using `norm_det_le_of_comb g (fun i m => (c i m : PadicAlgCl p)) (fun i m => (mem_OO_iff _).1 (c i m).2) hν0 hν2`. Establish `h6 : (Matrix.of fun i => ∑ m, (c i m : PadicAlgCl p) • g m) = W`. Use extensionality with `i j`. Conclude with `congrFun (hc i) j`. Rewrite `h5` using `[h6, hWdet]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem minors_dual_testLattice : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ c : S.perp τ.yy.ker →+ ZMod S.N, ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ τ.wt α = c) ∧ ∀ (T : AddSubgroup S.Gam), S.IsoFree T → T ≤ S.perp τ.yy.ker → ∀ (w : S.Gam → τ.X), (∀ x, τ.yy x = QuotientAddGroup.mk (w x)) → ∀ (I : Set S.Gam), AddSubgroup.closure I = S.perp T → ∀ α : τ.X, (∀ (t : S.Gam) (h₂ : t ∈ S.perp τ.yy.ker), t ∈ T → τ.wt α ⟨t, h₂⟩ = 0) ↔ α ∈ AddSubgroup.closure (w '' I ∪ Set.range fun v₀ : τ.X => S.N • v₀)) → ∀ (n : ℕ) (ρ₀ : ℝ) (g : Fin n → S.J → PadicAlgCl p), 0 < ρ₀ → (∀ w : S.J → PadicAlgCl p, w ∈ Submodule.span (OO p) (Set.range g) ↔ ∀ v ∈ τ.E, ‖w ⬝ᵥ v‖ ≤ ρ₀) → (∀ k : S.J → Fin n, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ ≤ ρ₀ ^ Fintype.card S.J) ∧ ((∃ k : S.J → Fin n, ‖Matrix.det (Matrix.of fun i j => g (k i) j)‖ = ρ₀ ^ Fintype.card S.J) ↔ S.perp τ.yy.ker = ⊥) := by
   intro o Ω _ _ _ _ S p _ y₀ τ hint _ n ρ₀ g hρ hg
   obtain ⟨B, l, α, -, hdet, -, hl, hall, -, hE⟩ := exists_adapted_basis_testLattice o Ω S p y₀ τ hint

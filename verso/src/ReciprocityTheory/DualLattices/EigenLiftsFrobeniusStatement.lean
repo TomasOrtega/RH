@@ -61,6 +61,9 @@ def EigenLiftsFrobeniusStatement : Prop :=
       ∏ j, (algebraMap R C (D.ε j) * D.u j y) ^ (α j).val) →
     ∀ i, X i ^ p ≤ X (U.φ i) * v (algebraMap R C (p : R)) ^ U.r (U.φ i)
 
+/- English proof (translation)
+Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp hS H U X hX hprod i`. Take `⟨D⟩` from `hL p g C v R O σ cp hp hS H U X hX`. Conclude with `hF p g C v R O σ cp hp hS H U X D (hB p g C v R O σ cp hS H U X hprod D) i`.
+-/
 theorem core_of (hL : EigenLiftsStatement) (hB : EigenLiftsBasisStatement) (hF : EigenLiftsFrobeniusStatement) :
     EigenLengthFrobeniusStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp hS H U X hX hprod i

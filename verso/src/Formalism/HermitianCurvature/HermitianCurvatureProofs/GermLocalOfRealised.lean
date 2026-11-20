@@ -54,6 +54,11 @@ def GermCont (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : Prop :=
   ∀ ε, 0 < ε → ∀ b s, 1 ≤ b → 2 ≤ s → b + s ≤ S.G.r + 2 → ∀ a, D.AdmAt S v a → ∀ h h' : C.LPt,
     D.ptSize h = b - 1 → D.ptSize h' = b - 1 → ContinuousOn (gDens S v ε b s a h h') {0}ᶜ
 
+/- English proof (translation)
+Establish `h : ∀ c, ⟪f c, f c⟫_ℂ = ((‖f c‖ ^ 2 : ℝ) : ℂ)` using `fun c => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression. Repeatedly rewrite using `[h]`.
+
+Conclude with `integral_ofReal`.
+-/
 theorem integral_inner_self_eq {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (f : ℂ → H) :
     ∫ c, ⟪f c, f c⟫_ℂ = ((∫ c, ‖f c‖ ^ 2 : ℝ) : ℂ) := by
   have h : ∀ c, ⟪f c, f c⟫_ℂ = ((‖f c‖ ^ 2 : ℝ) : ℂ) := fun c => by
@@ -63,6 +68,11 @@ theorem integral_inner_self_eq {H : Type} [NormedAddCommGroup H] [InnerProductSp
   simp_rw [h]
   exact integral_ofReal
 
+/- English proof (translation)
+Use `⟨by omega, R.hβ, R.hε', R.memU, fun h hh x hx => ?_, R.meas, R.loc, R.germ⟩` and prove the remaining obligations. Establish `hg` using `R.gram h hh h hh x x hx hx`. Establish `hb` using `hB h hh x⁻¹ (inv_ne_zero hx)`. Unfold `gK at hg`. Simplify using `only at hg`.
+
+Rewrite `hb` using `[hg]`. Unfold `gramL Uc at hb`. Simplify using `only at hb`. Rewrite `hb` using `[integral_inner_self_eq, integral_norm_cvec_sq s (R.ut h) x hx, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => sq_nonneg _)]`. Conclude with `hb`.
+-/
 theorem GermReal.germD {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {ε : ℝ} {b s : ℕ} {a : List C.Letter}
     {Y : Finset C.LPt} (R : GermReal S v ε b s a Y) (hs : 2 ≤ s) (B : ℝ)
     (hB : ∀ h ∈ Y, ∀ t : ℂ, t ≠ 0 → ‖KB.gN S v ε (b + s - 2) a (h ++ [(s - 1, t)]) (h ++ [(s - 1, t)])‖ ≤ B) :
@@ -79,6 +89,13 @@ theorem GermReal.germD {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {ε : ℝ} {b s
     Real.norm_of_nonneg (integral_nonneg fun _ => sq_nonneg _)] at hb
   exact hb
 
+/- English proof (translation)
+Establish `hdl : ((KB.dlB S b s : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr R.hdl`. Establish `h0 : ∀ᵐ z : ℂ ∂volume, z ≠ 0`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules. Unfold `KB.hatB Nhat`.
+
+Establish `hae : (fun c => KB.gN S v ε (b + s - 1) a (h ++ [(s, c)]) (h' ++ [(s, c)]) * KB.psiL S σ c) =ᵐ[volume] fun c => ((KB.dlB S b s : ℝ) : ℂ) * (G.psi R.β (σ * c) • ⟪bz s (R.bt h) c, bz s (R.bt h') c⟫_ℂ)` using `by filter_upwards [h0] with c hc`. Establish `hd` using `R.dens h hh h' hh' c hc`. Unfold `gDens at hd`. Rewrite using `[hd, ← R.hpsi σ c, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[integral_congr_ae hae, integral_const_mul, ← mul_assoc, inv_mul_cancel₀ hdl, one_mul]`.
+-/
 theorem GermReal.nhat_eq {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {ε : ℝ} {b s : ℕ} {a : List C.Letter}
     {Y : Finset C.LPt} (R : GermReal S v ε b s a Y) {h h' : C.LPt} (hh : h ∈ Y) (hh' : h' ∈ Y) (σ : ℂ) :
     Nhat s R.β R.bt σ h h' = KB.hatB S v ε b s a σ h h' := by
@@ -96,9 +113,17 @@ theorem GermReal.nhat_eq {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {ε : ℝ} {b
     ring
   rw [integral_congr_ae hae, integral_const_mul, ← mul_assoc, inv_mul_cancel₀ hdl, one_mul]
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem ae_ne_zero : ∀ᵐ z : ℂ, z ≠ 0 := by
   rw [ae_iff]; simp
 
+/- English proof (translation)
+Introduce `ε hε b s hb hs hbs a ha Y hY hB`. Take `⟨B, hB⟩` from `hB`. Take `⟨R⟩` from `hR ε hε b s hb hs hbs a ha Y hY`. Establish `G` using `R.germD hs B hB`. Take `⟨hint, rest⟩` from `G.germLoc_tail (fun p q => KB.gN S v ε (b + s - 2) a (p.1 ++ [(s - 1, p.2⁻¹)]) (q.1 ++ [(s - 1, q.2⁻¹)])) (fun h hh h' hh' x x' hx hx' => R.gram h hh h' hh' x x' hx hx') (KB.hatB S v ε b s a) (fun σ h hh h' hh' => R.nhat_eq hh hh' σ)`.
+
+Use `⟨fun h hh h' hh' => ⟨hC ε hε b s hb hs hbs a ha h h' (hY h hh) (hY h' hh'), ?_⟩, rest⟩` and prove the remaining obligations. Establish `hae : (fun z => ((KB.dlB S b s : ℝ) : ℂ) * ⟪bz s (R.bt h) z, bz s (R.bt h') z⟫_ℂ) =ᵐ[volume] fun z => KB.gN S v ε (b + s - 1) a (h ++ [(s, z)]) (h' ++ [(s, z)])` using `by filter_upwards [ae_ne_zero] with z hz`. Conclude with `(R.dens h hh h' hh' z hz).symm`. Conclude with `((hint h hh h' hh').const_mul _).congr hae`.
+-/
 theorem germLoc_of_realised {S : C.HidaSetting E Wp Wq} {v : Fin S.f} (hR : GermRealised S v) (hC : GermCont S v) :
     KB.GermLoc S v := by
   intro ε hε b s hb hs hbs a ha Y hY hB
@@ -128,6 +153,9 @@ end
 
 end Formalism.FourierDecayAlt.P.GermRealisation
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S v hR hC`. Conclude with `Formalism.FourierDecayAlt.P.GermRealisation.germLoc_of_realised hR hC`.
+-/
 theorem Formalism.FourierDecayAlt.P.germ_local_of_realised : Formalism.FourierDecayAlt.P.GermRealisation.GermLocOfRealised := by
   intro E _ _ _ Wp Wq _ _ _ _ S v hR hC
   exact Formalism.FourierDecayAlt.P.GermRealisation.germLoc_of_realised hR hC

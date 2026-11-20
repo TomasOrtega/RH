@@ -27,6 +27,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CMPowerIsogeny
 
+/- English proof (translation)
+Establish `hc : condQ 𝔣 Q ≠ ⊥` using `mul_ne_zero h𝔣.1 (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `hN : Ideal.absNorm (condQ 𝔣 Q) ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Take `⟨k, m, hlm, hkm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN l hl.one_lt.ne'`. Use `⟨m, hlm, ?_⟩` and prove the remaining obligations.
+
+Use `set x : OF E := ((l ^ a0 𝔣 l * m : ℕ) : OF E) with hx`. Set `J : Ideal (OF E)` to `Submodule.comap (LinearMap.mulRight (OF E) x) (condQ 𝔣 Q)`. Establish `hJ : ∀ r, r ∈ J ↔ r * x ∈ condQ 𝔣 Q` using `fun r => Iff.rfl`. Assume the negation of the conclusion as `hne`. Establish `hJt : J ≠ ⊤` using `fun h => hne (by simpa using (hJ 1).1 (h ▸ Submodule.mem_top))`.
+
+Take `⟨P, hP, hJP⟩` from `Ideal.exists_le_maximal J hJt`. Establish `hlk : ((l : OF E)) ^ k ∈ J`. Rewrite using `[hJ, hx]`. Establish `h1` using `Ideal.absNorm_mem (condQ 𝔣 Q)`. Rewrite `h1` using `[hkm]`.
+
+Establish `h2` using `Ideal.mul_mem_left _ ((l : OF E) ^ a0 𝔣 l) h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlP : (l : OF E) ∈ P` using `hP.isPrime.mem_of_pow_mem k (hJP hlk)`.
+
+Establish `hP0 : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hl.ne_zero (by exact_mod_cast (Ideal.mem_bot.1 hlP))`. Set `v : HeightOneSpectrum (OF E)` to `⟨P, hP.isPrime, hP0⟩`. Take `⟨J', hJ', hnd⟩` from `(FiniteMultiplicity.of_prime_left v.prime h𝔣.1).exists_eq_pow_mul_and_not_dvd`.
+
+Establish `hle : expIn 𝔣 v ≤ a0 𝔣 l`. Use `le_csSup ⟨2, ?_⟩ ⟨v, hlP, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, -, rfl⟩`. Distinguish the cases in `hw : w.asIdeal ∣ 𝔣`. Conclude with `(h𝔣.2.2 w hw).2.1`.
+
+Rewrite using `[expIn, multiplicity_eq_zero.2 hw]`. Use linear arithmetic over natural numbers and integers. Establish `hnd' : ¬ (J' * ∏ q ∈ Q, q.asIdeal) ≤ P`. Introduce `h`. Break down `hP.isPrime.mul_le.1 h with h | h` into its components or cases.
+
+Conclude with `hnd (Ideal.dvd_iff_le.2 h)`. Take `⟨q, hq, hqP⟩` from `(Ideal.IsPrime.prod_le hP.isPrime).1 h`. Conclude with `hQ q hq (by rw [q.isMaximal.eq_of_le hP.ne_top hqP]; exact hlP)`. Use `hnd' fun r hr => hJP ?_` and prove the remaining obligations. Rewrite using `[hJ, hx, condQ]`.
+
+Establish `h1 : (l : OF E) ^ a0 𝔣 l ∈ v.asIdeal ^ multiplicity v.asIdeal 𝔣` using `Ideal.pow_le_pow_right hle (Ideal.pow_mem_pow hlP _)`. Establish `h2` using `Ideal.mul_mem_right (m : OF E) _ (Ideal.mul_mem_mul h1 hr)`. Rewrite `h2` using `[← _root_.mul_assoc, ← hJ']`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mem_condQ {E : Type} [Field E] [NumberField E] {𝔣 : Ideal (OF E)} (h𝔣 : IsBaseCond 𝔣) {l : ℕ} (hl : l.Prime)
     (Q : Finset (HeightOneSpectrum (OF E))) (hQ : ∀ q ∈ Q, (l : OF E) ∉ q.asIdeal) :
     condQ 𝔣 Q ≠ ⊥ ∧ ∃ m : ℕ, ¬ l ∣ m ∧ ((l ^ a0 𝔣 l * m : ℕ) : OF E) ∈ condQ 𝔣 Q := by
@@ -75,6 +96,11 @@ theorem exists_mem_condQ {E : Type} [Field E] [NumberField E] {𝔣 : Ideal (OF 
   convert h2 using 1
   push_cast; ring
 
+/- English proof (translation)
+Use `⟨inv_mem (natCast_mem _ _), ?_⟩` and prove the remaining obligations. Establish `e : (⟨((l ^ a * m : ℕ) : ℂ)⁻¹, inv_mem (natCast_mem _ _)⟩ : algebraicClosure ℚ ℂ) = ((l ^ a * m : ℕ) : algebraicClosure ℚ ℂ)⁻¹` using `Subtype.ext (by simp)`. Establish `hn : ∀ n : ℕ, ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[l])‖` using `fun n => by`. Rewrite using `[← norm_algebraMap' ℂ_[l] (n : ℚ_[l]), map_natCast]`. Establish `h1 : ‖(m : ℚ_[l])‖ = 1` using `Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm)`.
+
+Rewrite using `[e, map_inv₀, map_natCast, norm_inv, hn, Nat.cast_mul, norm_mul, h1, Nat.cast_pow, norm_pow, Padic.norm_p]`. Simplify using the standard rewrite rules.
+-/
 theorem sz_inv_pow_mul (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (a m : ℕ) (hm : ¬ l ∣ m) :
     Sz l lam a (((l ^ a * m : ℕ) : ℂ)⁻¹) := by
   refine ⟨inv_mem (natCast_mem _ _), ?_⟩
@@ -87,6 +113,13 @@ theorem sz_inv_pow_mul (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ 
   rw [e, map_inv₀, map_natCast, norm_inv, hn, Nat.cast_mul, norm_mul, h1, Nat.cast_pow, norm_pow, Padic.norm_p]
   simp
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `Field.exists_primitive_element ℚ E`. Take `⟨m, hm, hint⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic α)).exists_integral_multiple`. Use `⟨⟨m • α, hint⟩, fun σ τ h => ?_⟩` and prove the remaining obligations. Establish `h1 : σ α = τ α`. Establish `h2 : σ (m • α) = τ (m • α)` using `h`.
+
+Rewrite `h2` using `[map_zsmul, map_zsmul]`. Conclude with `smul_right_injective ℂ hm h2`. Establish `h3 : σ.toRatAlgHom = τ.toRatAlgHom`. Use `(Field.primitive_element_iff_algHom_eq_of_eval' ℚ ℂ (fun x => IsAlgClosed.splits _) α).1 hα` as an intermediate fact. Conclude with `this h1`.
+
+Conclude with `RingHom.ext fun x => DFunLike.congr_fun h3 x`.
+-/
 theorem exists_separating (E : Type) [Field E] [NumberField E] :
     ∃ θ : 𝓞 E, ∀ σ τ : E →+* ℂ, σ θ = τ θ → σ = τ := by
   obtain ⟨α, hα⟩ := Field.exists_primitive_element ℚ E
@@ -101,6 +134,13 @@ theorem exists_separating (E : Type) [Field E] [NumberField E] :
     exact this h1
   exact RingHom.ext fun x => DFunLike.congr_fun h3 x
 
+/- English proof (translation)
+Use `hB.proper` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Take `⟨Z, _, i, _, hi, hZ, hk⟩` from `GlobalTheory.IsogenyModel.exists_kernel ψ`. Establish `hm : Mono i` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono i.left))`.
+
+Use `isCommMonObj_of_mono i` as an intermediate fact. Take `⟨N, hN, hZN⟩` from `FiniteFlatKilled.main ℂ Z hZ inferInstance`. Use `⟨N, hN, fun T x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : i ^ N = 1`. Rewrite using `[← Category.id_comp i, ← MonObj.pow_comp, hZN, MonObj.one_comp]`.
+
+Rewrite using `[← hk.lift_fst x (toUnit _) hx, ← MonObj.comp_pow, h1, MonObj.comp_one]`.
+-/
 theorem exists_kill (A B : CategoryTheory.Over (Sp ℂ)) [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B)
     (ψ : A ⟶ B) [IsMonHom ψ] [IsFinite ψ.left] :
     ∃ n : ℕ, 1 ≤ n ∧ ∀ (T : CategoryTheory.Over (Sp ℂ)) (x : T ⟶ A), x ≫ ψ = 1 → x ^ n = 1 := by
@@ -116,6 +156,29 @@ theorem exists_kill (A B : CategoryTheory.Over (Sp ℂ)) [GrpObj A] [GrpObj B] (
     rw [← Category.id_comp i, ← MonObj.pow_comp, hZN, MonObj.one_comp]
   rw [← hk.lift_fst x (toUnit _) hx, ← MonObj.comp_pow, h1, MonObj.comp_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ I _ d φ hφ 𝔣 Λ h𝔣 hΛ l _ Q _ hQ y hy lam 𝔠 X U A' _ L' u hA' hg hu j₀`. Establish `hl : l.Prime` using `Fact.out`. Take `⟨-, -, -, -, -, -, hCM, ω, -, hω⟩` from `hφ`. Take `⟨hc, m, hm, hmc⟩` from `exists_mem_condQ h𝔣 hl Q hQ`. Take `⟨m', hm', -, hm'L⟩` from `GlobalTheory.CMVal.LatLoc.lattice_near_orderC E _ hc l hl y hy`.
+
+Establish `hmm : ¬ l ∣ m * m'` using `fun h => (hl.dvd_mul.1 h).elim hm ((Nat.Prime.coprime_iff_not_dvd hl).1 hm'.symm)`. Use `set n : ℕ := l ^ a0 𝔣 l * (m * m') with hn`. Establish `hn0 : 0 < n` using `Nat.mul_pos (pow_pos hl.pos _) (Nat.pos_of_ne_zero fun h => hmm (h ▸ dvd_zero l))`. Establish `hnL : ∀ b : 𝓞 E, (n : E) * (b : E) ∈ lattice (condQ 𝔣 Q) y` using `fun b => by`. Establish `h1` using `hm'L (((l ^ a0 𝔣 l * m : ℕ) : E) * (b : E)) (mem_orderC.2 ⟨0, _, Ideal.mul_mem_right b _ (Ideal.mem_map_of_mem (algebraMap (OF E) (𝓞 E)) hmc), by rw [map_zero, zero_add, map_mul, map_natCast, map_natCast]⟩)`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨θ, hθ⟩` from `exists_separating E`.
+
+Establish `hinj : Function.Injective fun k => φ (U.e k) (θ : E)` using `fun k k' h => by`. Establish `h1` using `hθ _ _ h`. Conclude with `U.e.injective ((hCM (φ (U.e k))).unique (Or.inl rfl) (Or.inl h1))`. Set `z : Fin (Module.finrank ℚ (FR E))` to `⟨0, j₀.pos⟩`. Set `s` to `Equiv.swap j₀ z`.
+
+Set `V : Matrix (Fin (Module.finrank ℚ (FR E))) (Fin (Module.finrank ℚ (FR E))) ℂ` to `(n : ℂ) • (Matrix.vandermonde fun k => φ (U.e k) (θ : E)).submatrix id s`. Establish `hV : V.det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_permute']`. Use `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hn0.ne')) (mul_ne_zero ?_ ?_)` and prove the remaining obligations. Conclude with `Units.ne_zero _` after adjusting the coercions.
+
+Conclude with `Matrix.det_vandermonde_ne_zero_iff.2 hinj`. Establish `hVe : ∀ x k, Matrix.toLin' V x k = ∑ j, (n : ℂ) * φ (U.e k) (θ : E) ^ (s j : ℕ) * x j` using `fun x k => rfl`. Establish `hsurj : Function.Surjective (Matrix.toLin' V)` using `fun w => ⟨V⁻¹.mulVec w, by rw [Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ hV), Matrix.one_mulVec]⟩`. Establish `hlift : ∀ x ∈ Λ.lattice, ∃ b : 𝓞 E, ∀ i, φ i (b : E) = x` using `fun x hx => by`. Take `⟨hint, a, b, hab⟩` from `(hΛ x).1 hx`.
+
+Establish `h1 : ∀ i, φ i ((a : E) + (b : E) * ω) = x` using `fun i => by`. Rewrite using `[map_add, map_mul, map_ratCast, map_ratCast, hω, hab]`. Use `⟨⟨(a : E) + (b : E) * ω, ?_⟩, h1⟩` and prove the remaining obligations. Rewrite `hint` using `[← h1 (U.e j₀)]`. Conclude with `(isIntegral_algHom_iff (φ (U.e j₀)).toIntAlgHom (φ (U.e j₀)).injective).1 hint`.
+
+Establish `hM : ∀ x ∈ u.Λ, Matrix.toLin' V x ∈ U.u.Λ` using `fun x hx => by choose b hb using fun j => hlift (x j) ((hu x).1 hx j)`. Use `(U.lat _).2 ⟨_, hnL (∑ j, θ ^ (s j : ℕ) * b j), funext fun k => ?_⟩` and prove the remaining obligations. Establish `e : ((∑ j, θ ^ (s j : ℕ) * b j : 𝓞 E) : E) = ∑ j, (θ : E) ^ (s j : ℕ) * (b j : E)`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_sum, map_mul, map_pow]`. Rewrite using `[hVe, e, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord, Pi.zero_apply, zero_mul, add_zero, map_mul, map_natCast, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hb, _root_.mul_assoc]`. Take `⟨α, hα, hαe⟩` from `GlobalTheory.HolUnifHom.exists_isMonHom_of_map_lattice A' X.A _ hA' X.ab hg X.dim L' _ u U.u (Matrix.toLin' V) hM`. Use `haveI : Surjective α.left := GlobalTheory.ComplexAbVarSurj.surjective_of_surjective_points A' X.A α hA' X.ab fun p => by`. Take `⟨w, rfl⟩` from `U.u.ex_onto p`.
+
+Take `⟨w', rfl⟩` from `hsurj w`. Conclude with `⟨u.ex w', (hαe w').symm⟩`. Take `⟨hfin, hflat⟩` from `GlobalTheory.SurjHomFlat.finite_flat A' X.A _ hA' X.ab hg X.dim α`. Take `⟨N, hN, hkill⟩` from `exists_kill A' X.A hA' X.ab α`. Use `⟨α, Matrix.toLin' V, n, N, hα, hfin, hflat, inferInstance, hN, hkill, hαe, funext fun k => ?_, hn0, sz_inv_pow_mul l lam _ _ hmm⟩` and prove the remaining obligations.
+
+Rewrite using `[hVe, Finset.sum_eq_single j₀ (fun j _ hj => by rw [Pi.single_eq_of_ne hj, mul_zero]) (by simp), Pi.single_eq_same, show s j₀ = z from Equiv.swap_apply_left _ _]`. Simplify using `[z]`.
+-/
 theorem exists_isogeny : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
     (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)) (Λ : PeriodPair), IsBaseCond 𝔣 →
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice d Λ →

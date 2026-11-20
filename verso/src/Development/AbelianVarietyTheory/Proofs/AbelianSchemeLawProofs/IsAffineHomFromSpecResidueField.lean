@@ -12,6 +12,11 @@ namespace GlobalTheory.MulFinite
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor TopologicalSpace Polynomial
 
+/- English proof (translation)
+Use `letI := hk.toField`. Take `⟨p, hp, h0⟩` from `ha`. Take `⟨q, hq, hnd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp.ne_zero 0`. Rewrite `hq`, `hnd` using `[map_zero, sub_zero]`. Rewrite `hnd` using `[X_dvd_iff]`.
+
+Use `⟨p.rootMultiplicity 0, φ (q.coeff 0), q.divX.eval₂ φ a, (Ne.isUnit hnd).map φ, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hq, ← X_mul_divX_add q, eval₂_mul, eval₂_pow, eval₂_X, eval₂_add, eval₂_mul, eval₂_X, eval₂_C]`. Rewrite using `[add_comm]`. Conclude with `h0`.
+-/
 theorem exists_pow_mul_eq_zero {k R : Type} [CommRing k] [CommRing R] (hk : IsField k) (φ : k →+* R)
     (a : R) (ha : φ.IsIntegralElem a) :
     ∃ (m : ℕ) (c b : R), IsUnit c ∧ a ^ m * (c + a * b) = 0 := by
@@ -26,6 +31,17 @@ theorem exists_pow_mul_eq_zero {k R : Type} [CommRing k] [CommRing R] (hk : IsFi
   rw [add_comm]
   exact h0
 
+/- English proof (translation)
+Establish `hk : IsField Γ(Spec (.of K), ⊤)` using `(Scheme.ΓSpecIso (.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)`. Take `⟨m, c, b, hc, e⟩` from `exists_pow_mul_eq_zero hk _ a (isIntegral_appTop_of_universallyClosed f a)`. Establish `: (Z.basicOpen a : Set Z) = (Z.basicOpen (c + a * b) : Set Z)ᶜ`. Use extensionality with `z`. Simplify using `only [Set.mem_compl_iff, SetLike.mem_coe]`.
+
+Rewrite using `[Scheme.mem_basicOpen Z a z trivial, Scheme.mem_basicOpen Z (c + a * b) z trivial]`. Set `G : Γ(Z, ⊤) →+* Z.presheaf.stalk z` to `(Z.presheaf.germ ⊤ z trivial).hom`. Express the relevant statement in the definitionally equal form `IsUnit (G a) ↔ ¬ IsUnit (G (c + a * b))`. Establish `e' : G a ^ m * G (c + a * b) = 0` using `by rw [← map_pow, ← map_mul, e, map_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h1 h2`. Conclude with `((h1.pow m).mul h2).ne_zero e'`. Introduce `h2`. Establish `hc' : IsUnit (G (c + a * b) + (- (G a * G b)))`. Use `hc.map G` as an intermediate fact.
+
+Simplify using `using this`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hc' with h | h` into its components or cases. Conclude with `absurd h h2`. Conclude with `isUnit_of_mul_isUnit_left ((IsUnit.neg_iff _).1 h)`. Rewrite using `[this]`.
+
+Conclude with `(Z.basicOpen _).isOpen.isClosed_compl`.
+-/
 theorem isClosed_basicOpen {Z : Scheme.{0}} {K : Type} [Field K] (f : Z ⟶ Spec (.of K))
     [UniversallyClosed f] (a : Γ(Z, ⊤)) : IsClosed (Z.basicOpen a : Set Z) := by
   have hk : IsField Γ(Spec (.of K), ⊤) :=
@@ -51,6 +67,11 @@ theorem isClosed_basicOpen {Z : Scheme.{0}} {K : Type} [Field K] (f : Z ⟶ Spec
   rw [this]
   exact (Z.basicOpen _).isOpen.isClosed_compl
 
+/- English proof (translation)
+Establish `: IsZariskiLocalAtSource @LocallyQuasiFinite.{0}` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @LocallyQuasiFinite.{0}) _ hc fun i => ?_` and prove the remaining obligations. Establish `: IsClosedImmersion (Z.basicOpen (a i)).ι` using `.of_isPreimmersion _ (by simpa using isClosed_basicOpen f (a i))`. Establish `: IsAffine (Z.basicOpen (a i)).toScheme` using `ha i`. Establish `: IsFinite ((Z.basicOpen (a i)).ι ≫ f)` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`.
+
+Use `infer_instance`.
+-/
 theorem locallyQuasiFinite_of_cover {Z : Scheme.{0}} {K : Type} [Field K] (f : Z ⟶ Spec (.of K))
     [IsProper f] {I : Type} (a : I → Γ(Z, ⊤)) (hc : ⨆ i, Z.basicOpen (a i) = ⊤)
     (ha : ∀ i, IsAffineOpen (Z.basicOpen (a i))) : LocallyQuasiFinite f := by
@@ -64,6 +85,13 @@ theorem locallyQuasiFinite_of_cover {Z : Scheme.{0}} {K : Type} [Field K] (f : Z
     IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩
   infer_instance
 
+/- English proof (translation)
+Use `⟨fun U _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : y ∈ U`. Establish `: Y.fromSpecResidueField y ⁻¹ᵁ U = ⊤`. Use extensionality with `x`. Simplify using `using h`.
+
+Rewrite using `[this]`. Conclude with `isAffineOpen_top _`. Establish `: Y.fromSpecResidueField y ⁻¹ᵁ U = ⊥`. Use extensionality with `x`. Simplify using `using h`.
+
+Rewrite using `[this]`. Conclude with `isAffineOpen_bot _`.
+-/
 theorem isAffineHom_fromSpecResidueField (Y : Scheme.{0}) (y : Y) :
     IsAffineHom (Y.fromSpecResidueField y) := by
   refine ⟨fun U _ => ?_⟩
@@ -75,18 +103,30 @@ theorem isAffineHom_fromSpecResidueField (Y : Scheme.{0}) (y : Y) :
       ext x; simpa using h
     rw [this]; exact isAffineOpen_bot _
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U h, ← Scheme.mem_basicOpen Z _ z h, ← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+-/
 theorem isUnit_gs {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : Γ(Y, U)) :
     IsUnit (gs r z U a) ↔ r z ∈ Y.basicOpen a := by
   rw [gs_eq r z U h, ← Scheme.mem_basicOpen Z _ z h, ← Scheme.preimage_basicOpen]
   rfl
 
+/- English proof (translation)
+The claim follows from `(gs_res (𝟙 Z) z hle h _).trans ((gs_pull (𝟙 Z) r z U (hle h) a).trans (by rw [Category.id_comp]))`.
+-/
 theorem gs_appLE {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (V : Z.Opens) (hle : V ≤ r ⁻¹ᵁ U)
     (h : z ∈ V) (a : Γ(Y, U)) : gs (𝟙 Z) z V ((r.appLE U V hle).hom a) = gs r z U a :=
   (gs_res (𝟙 Z) z hle h _).trans ((gs_pull (𝟙 Z) r z U (hle h) a).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Simplify using `only [gs_eq r z U h, map_pow]`.
+-/
 theorem gs_pow {Z Y : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : r z ∈ U) (a : Γ(Y, U)) (n : ℕ) :
     gs r z U (a ^ n) = gs r z U a ^ n := by simp only [gs_eq r z U h, map_pow]
 
+/- English proof (translation)
+Establish `h : ((g ^ N) ^ e * ((g ^ e * t)⁻¹) ^ N) = (t⁻¹) ^ N`. Rewrite using `[mul_inv, mul_pow, ← _root_.mul_assoc, inv_pow, ← pow_mul, ← pow_mul, _root_.mul_comm e N, mul_inv_cancel, _root_.one_mul]`. Establish `h' : (g ^ N).val ^ e * ((g ^ e * t)⁻¹).val ^ N = (t⁻¹).val ^ N` using `congrArg Units.val h`. Rewrite using `[mul_pow, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_aux {R : Type} [CommRing R] (g t : Rˣ) (x : R) (e N : ℕ) :
     ((g ^ N).val * x) ^ e * ((g ^ e * t)⁻¹).val ^ N = x ^ e * (t⁻¹).val ^ N := by
   have h : ((g ^ N) ^ e * ((g ^ e * t)⁻¹) ^ N) = (t⁻¹) ^ N := by
@@ -95,6 +135,23 @@ theorem pow_aux {R : Type} [CommRing R] (g t : Rˣ) (x : R) (e N : ℕ) :
   have h' : (g ^ N).val ^ e * ((g ^ e * t)⁻¹).val ^ N = (t⁻¹).val ^ N := congrArg Units.val h
   rw [mul_pow, ← h']; ring
 
+/- English proof (translation)
+Set `V : L.ι → Z.Opens` to `fun j => (r ≫ w) ⁻¹ᵁ L.U j`. Establish `l₁ : ∀ j, V j ≤ r ⁻¹ᵁ LB.wchart L (K` using `Fin N) (fun _ => w) (fun _ => j) := fun j z hz => Set.mem_iInter.2 fun _ => hz`. Establish `l₂ : ∀ j, V j ≤ (r ≫ w) ⁻¹ᵁ LB.wchart L (K` using `Fin 2) ![𝟙 X, m] ![j, j₀] := fun j z hz => Set.mem_iInter.2 fun k => by fin_cases k`. Conclude with `hz`. Conclude with `h₀ z`.
+
+Take `⟨u, hu⟩ : ∃ u : ∀ j, Γ(Z, V j), ∀ j z, z ∈ V j → gs (𝟙 Z) z (V j) (u j) = gs r z (LB.wchart L (K` from `Fin N) (fun _ => w) (fun _ => j)) (s.f (fun _ => j)) ^ e * ((gm (r ≫ w) z (LB.wchart L (K := Fin 2) ![𝟙 X, m] ![j, j₀]) (α.s ![j, j₀]))⁻¹).val ^ N := by`. Use `⟨fun j => (r.appLE _ _ (l₁ j)).hom (s.f (fun _ => j)) ^ e * ((r ≫ w).appLE _ _ (l₂ j)).hom ((α.s ![j, j₀])⁻¹).val ^ N, fun j z hz => ?_⟩` and prove the remaining obligations. Use `(gs_mul (𝟙 Z) z (V j) hz _ _).trans (congrArg₂ (· * ·) ((gs_pow (𝟙 Z) z (V j) hz _ _).trans ?_) ((gs_pow (𝟙 Z) z (V j) hz _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg (· ^ e) (gs_appLE r z _ _ _ hz _)`. Use `congrArg (· ^ N) ((gs_appLE (r ≫ w) z _ _ _ hz _).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(gs_unit (r ≫ w) z _ (l₂ j hz) _).trans (congrArg Units.val (map_inv _ _))`. Establish `hcov : (⊤ : Z.Opens) ≤ iSup V` using `fun z _ => by`. Take `⟨j, hj⟩` from `exists_chart hL ((r ≫ w) z)`. Conclude with `Opens.mem_iSup.2 ⟨j, hj⟩`. Take `⟨a, ha, -⟩` from `Z.sheaf.existsUnique_gluing' V ⊤ (fun j => homOfLE le_top) hcov u (fun j j' => fn_ext (V := V j ⊓ V j') fun z hz => by`.
+
+Use `(gs_res (𝟙 Z) z inf_le_left hz _).trans (Eq.trans ?_ (gs_res (𝟙 Z) z inf_le_right hz _).symm)` and prove the remaining obligations. Rewrite using `[hu j z hz.1, hu j' z hz.2, sec_trans s r z (l₁ j hz.1) (l₁ j' hz.2), gen_trans hα (r ≫ w) z (l₂ j hz.1) (l₂ j' hz.2)]`. Establish `h1 : gm ((r ≫ w) ≫ m) z (L.U j₀ ⊓ L.U j₀) (L.g j₀ j₀) = 1` using `gm_self hL _ z (h₀ z)`. Establish `t₁ : trF (L` using `L) (K := Fin N) (fun _ => w) (fun _ => 1) r z (fun _ => j) (fun _ => j') = gm (r ≫ w) z (L.U j ⊓ L.U j') (L.g j j') ^ N := by simp [trF]`. Establish `t₂ : trF (L` using `L) (K := Fin 2) ![𝟙 X, m] ![(e : ℤ), -1] (r ≫ w) z ![j, j₀] ![j', j₀] = gm (r ≫ w) z (L.U j ⊓ L.U j') (L.g j j') ^ e := by`.
+
+Rewrite using `[trF, Fin.prod_univ_two]`. Express the relevant statement in the definitionally equal form `gm ((r ≫ w) ≫ 𝟙 X) z (L.U j ⊓ L.U j') (L.g j j') ^ (e : ℤ) * gm ((r ≫ w) ≫ m) z (L.U j₀ ⊓ L.U j₀) (L.g j₀ j₀) ^ (-1 : ℤ) = _`. Rewrite using `[h1, Category.comp_id]`. Simplify using the standard rewrite rules. Rewrite using `[t₁, t₂]`.
+
+Conclude with `pow_aux _ _ _ _ _)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Take `⟨j, hj⟩` from `exists_chart hL ((r ≫ w) z)`. Establish `k₁ : gs (𝟙 Z) z ⊤ a = gs (𝟙 Z) z (V j) (u j)` using `(gs_res (𝟙 Z) z le_top hj a).symm.trans (congrArg (gs (𝟙 Z) z (V j)) (ha j))`.
+
+Establish `k₂ : z ∈ Z.basicOpen (show Γ(Z, ⊤) from a) ↔ IsUnit (gs r z (LB.wchart L (K` using `Fin N) (fun _ => w) (fun _ => j)) (s.f (fun _ => j))) := by`. Use `(isUnit_gs (𝟙 Z) z ⊤ trivial a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[k₁, hu j z hj, ← Units.val_pow_eq_pow_val, Units.isUnit_mul_units, isUnit_pow_iff he]`. Use `k₂.trans ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `Opens.mem_iSup.2 ⟨fun _ => j, (isUnit_gs r z _ (l₁ j hj) _).1 h⟩`.
+
+Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (show r z ∈ nonzeroLocus s from h)`. Establish `hk' : r z ∈ LB.wchart L (K` using `Fin N) (fun _ => w) k := W.basicOpen_le _ hk`. Rewrite using `[sec_trans s r z (l₁ j hj) hk']`. Conclude with `(Units.isUnit _).mul ((isUnit_gs r z _ hk' _).2 hk)`.
+-/
 theorem exists_fn {X W Z : Scheme.{0}} (L : LB X) (hL : L.IsLB) (w : W ⟶ X) (N : ℕ)
     (s : LB.Sec (LB.LinComb L (K := Fin N) (fun _ => w) (fun _ => 1))) (m : X ⟶ X) (e : ℕ) (he : e ≠ 0)
     (α : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, m] ![(e : ℤ), -1])) (hα : α.IsGen)
@@ -153,6 +210,21 @@ theorem exists_fn {X W Z : Scheme.{0}} (L : LB X) (hL : L.IsLB) (w : W ⟶ X) (N
     rw [sec_trans s r z (l₁ j hj) hk']
     exact (Units.isUnit _).mul ((isUnit_gs r z _ hk' _).2 hk)
 
+/- English proof (translation)
+Establish `hm : m.left ≫ A.hom = A.hom` using `Over.w m`. Establish `: IsProper (m.left ≫ A.hom)` using `by rw [hm]; infer_instance`. Establish `: IsProper m.left` using `.of_comp _ A.hom`. It suffices to establish `LocallyQuasiFinite m.left from .of_isProper_of_locallyQuasiFinite _`. Use `.of_fiberToSpecResidueField _ fun y => ?_` and prove the remaining obligations.
+
+Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (A.hom y)) isOpen_univ`. Take `⟨N, -, M, s, hcov, hs⟩` from `hA U hU`. Establish `hy : ∀ z, m.left (m.left.fiberι y z) = y` using `fun z => (m.left.range_fiberι y).le ⟨z, rfl⟩`. Set `r : m.left.fiber y ⟶ (A.hom ⁻¹ᵁ U).toScheme` to `IsOpenImmersion.lift (A.hom ⁻¹ᵁ U).ι (m.left.fiberι y) (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `A.hom (m.left.fiberι y z) ∈ U`. Rewrite using `[← hm, Scheme.Hom.comp_apply, hy]`. Conclude with `hyU)`. Establish `hr : r ≫ (A.hom ⁻¹ᵁ U).ι = m.left.fiberι y` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Use `isAffineHom_fromSpecResidueField A.left y` as an intermediate fact. Establish `: IsAffineHom (r ≫ (A.hom ⁻¹ᵁ U).ι)`. Rewrite using `[hr]`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom.{0}) (IsPullback.of_hasPullback m.left (A.left.fromSpecResidueField y)).flip this`. Establish `: IsAffineHom r` using `.of_comp r (A.hom ⁻¹ᵁ U).ι`.
+
+Take `⟨j₀, hj₀⟩` from `exists_chart hL y`. Establish `key` using `fun i => exists_fn L hL (A.hom ⁻¹ᵁ U).ι N (s i) m.left e he α hα r j₀ (fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply r, hr, hy]`. Conclude with `hj₀)`. Use `choose a ha using key`.
+
+Establish `: IsProper (m.left.fiberToSpecResidueField y)` using `inferInstanceAs (IsProper (pullback.snd m.left (A.left.fromSpecResidueField y)))`. Use `locallyQuasiFinite_of_cover (K := A.left.residueField y) (m.left.fiberToSpecResidueField y) a ?_ fun i => ?_` and prove the remaining obligations. Simplify using `only [ha]`. Rewrite using `[← Scheme.Hom.preimage_iSup]`. Conclude with `(congrArg (fun V => r ⁻¹ᵁ V) hcov).trans rfl`.
+
+Rewrite using `[ha]`. Conclude with `(hs i).1.preimage r`.
+-/
 theorem isFinite_of_relAmple {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsProper A.hom] (L : LB A.left)
     (hL : L.IsLB) (hA : RelAmple A L) (m : A ⟶ A) (e : ℕ) (he : e ≠ 0)
     (α : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 A.left, m.left] ![(e : ℤ), -1])) (hα : α.IsGen) :
@@ -193,6 +265,11 @@ theorem isFinite_of_relAmple {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsProper 
   · rw [ha]
     exact (hs i).1.preimage r
 
+/- English proof (translation)
+Introduce `h _ _ S P n hn`. Establish `H` using `h S P n`. Rewrite `H` using `[← Nat.cast_pow]`. Take `⟨α, hα⟩` from `H`. Use `P.isAb.proper` as an intermediate fact.
+
+Conclude with `isFinite_of_relAmple P.A P.L P.isLB P.ample _ (n ^ 2) (by positivity) α hα`.
+-/
 theorem isFinite_mulA :
     (∀ (S : Scheme.{0}) (P : PolAV S) (n : ℕ), ∃ α : LB.Gen (LB.LinComb P.L (K := Fin 2) ![𝟙 P.A.left, (mulA P.A n).left] ![(n : ℤ) ^ 2, -1]), α.IsGen) → PolBaseChangeSt → (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) → ∀ (S : Scheme.{0}) (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left := by
   intro h _ _ S P n hn

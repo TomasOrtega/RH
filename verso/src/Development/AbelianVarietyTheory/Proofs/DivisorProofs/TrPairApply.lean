@@ -17,6 +17,9 @@ def trPair (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     (fun x y y' => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add])
     (fun c x y => by simp only [Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trPair_apply {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (x y : κ → mixedEmbedding.mixedSpace F) :
     trPair F κ x y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * y i) := rfl

@@ -13,6 +13,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Use `haveI := Flat.epi_of_flat_of_surjective e.left`. Use `ext1`. Rewrite using `[← cancel_epi e.left]`. Simplify using `using congrArg CommaMorphism.left h`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.cancel_of_flat_surjective {X Y Z : Over S} (e : X ⟶ Y) [Flat e.left]
     [Surjective e.left] {f g : Y ⟶ Z} (h : e ≫ f = e ≫ g) : f = g := by
   haveI := Flat.epi_of_flat_of_surjective e.left
@@ -24,6 +27,11 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Use `⟨Over.mk (pullback.snd m.left y.left ≫ T.hom), Over.homMk (pullback.snd m.left y.left) rfl, Over.homMk (pullback.fst m.left y.left) ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show pullback.fst m.left y.left ≫ A'.hom = pullback.snd m.left y.left ≫ T.hom`. Rewrite using `[← Over.w m, ← Category.assoc, pullback.condition, Category.assoc, Over.w y]`. Use `show Flat (pullback.snd m.left y.left) infer_instance`. Use `show Surjective (pullback.snd m.left y.left) infer_instance`.
+
+Use `ext1`. Simplify using `[pullback.condition]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.exists_lift_point {A A' T : Over S} (m : A' ⟶ A) [Flat m.left]
     [Surjective m.left] (y : T ⟶ A) :
     ∃ (T' : Over S) (e : T' ⟶ T) (x : T' ⟶ A'), Flat e.left ∧ Surjective e.left ∧
@@ -43,6 +51,13 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hone : (1 : 𝟙_ (Over S) ⟶ G) ≫ e = 1`. Establish `h` using `mul (𝟙_ (Over S)) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Simplify using `using h`. Establish `hG : (η : 𝟙_ (Over S) ⟶ G) = 1`.
+
+Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `hH : (η : 𝟙_ (Over S) ⟶ H) = 1`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `h` using `mul (G ⊗ G) (fst G G) (snd G G)`. Rewrite `h` using `[Hom.mul_def, lift_fst_snd, Category.id_comp, Hom.mul_def]`.
+
+Apply the tactic sequence `have ht : lift (fst G G ≫ e) (snd G G ≫ e) = e ⊗ₘ e := by ext <;> simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hG, hH, hone]`. Rewrite using `[h, ht]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.isMonHom_of_mul_points {G H : Over S} [GrpObj G] [GrpObj H] (e : G ⟶ H)
     (mul : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ e = (x ≫ e) * (y ≫ e)) : IsMonHom e := by
   have hone : (1 : 𝟙_ (Over S) ⟶ G) ≫ e = 1 := by
@@ -63,6 +78,9 @@ theorem _root_.GlobalTheory.DivisibleHom.isMonHom_of_mul_points {G H : Over S} [
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA`. Rewrite using `[comp_pow, Category.comp_id]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.comp_mulA {A T : Over S} [GrpObj A] (x : T ⟶ A) (n : ℕ) :
     x ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A n = x ^ n := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA
@@ -71,6 +89,9 @@ theorem _root_.GlobalTheory.DivisibleHom.comp_mulA {A T : Over S} [GrpObj A] (x 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA`. Rewrite using `[pow_comp, Category.id_comp]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.mulA_comp {A B : Over S} [GrpObj A] [GrpObj B] (u : A ⟶ B) [IsMonHom u]
     (n : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A n ≫ u = u ^ n := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA
@@ -80,6 +101,15 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `key : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ A.left), g₁ ≫ (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left = g₂ ≫ (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left → g₁ ≫ u.left = g₂ ≫ u.left`. Introduce `Z g₁ g₂ hg`. Establish `hw : g₂ ≫ A.hom = g₁ ≫ A.hom`. Rewrite using `[← Over.w (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M), ← Category.assoc, ← hg, Category.assoc]`. Set `x₁ : Over.mk (g₁ ≫ A.hom) ⟶ A` to `Over.homMk g₁ rfl`.
+
+Set `x₂ : Over.mk (g₁ ≫ A.hom) ⟶ A` to `Over.homMk g₂ hw`. Establish `hx : x₁ ^ M = x₂ ^ M`. Rewrite using `[← _root_.GlobalTheory.DivisibleHom.comp_mulA, ← _root_.GlobalTheory.DivisibleHom.comp_mulA]`. Use `ext1`. Simplify `hg` using `[x₁, x₂]`.
+
+Establish `h1 : (x₁ * x₂⁻¹) ^ M = 1` using `by rw [mul_pow, inv_pow, hx, mul_inv_cancel]`. Establish `h3 : IsMonHom.monoidHom u _ (x₁ * x₂⁻¹) = 1` using `hu _ _ h1`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Simplify `congrArg CommaMorphism.left h3` using `[x₁, x₂]`. Use `⟨Over.homMk (EffectiveEpi.desc _ _ key) ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_epi (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left, ← Category.assoc, EffectiveEpi.fac, Over.w u, Over.w (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M)]`. Use `ext1`. Simplify using `[EffectiveEpi.fac]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.exists_factor {A B : Over S} [GrpObj A] [IsCommMonObj A]
     [GrpObj B] (M : ℕ)
     [QuasiCompact (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left] [Flat (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left] [Surjective (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left]
@@ -110,6 +140,19 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hmm : ∀ (T : Over S) (a b : T ⟶ A), (a * b) ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M = (a ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M) * (b ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M)`. Introduce `T a b`. Simplify using `only [_root_.GlobalTheory.DivisibleHom.comp_mulA, mul_pow]`. Apply `_root_.GlobalTheory.DivisibleHom.isMonHom_of_mul_points` to reduce the goal to its premises. Introduce `T x y`.
+
+Take `⟨T₁, e₁, x', he₁, hs₁, hx'⟩` from `_root_.GlobalTheory.DivisibleHom.exists_lift_point (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M) x`. Use `haveI := he₁`. Use `haveI := hs₁`. Take `⟨T₂, e₂, y', he₂, hs₂, hy'⟩` from `_root_.GlobalTheory.DivisibleHom.exists_lift_point (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M) (e₁ ≫ y)`. Use `haveI := he₂`.
+
+Use `haveI := hs₂`. Use `haveI : Flat (e₂ ≫ e₁).left := by rw [Over.comp_left]; infer_instance`. Use `haveI : Surjective (e₂ ≫ e₁).left := by rw [Over.comp_left]; infer_instance`. Establish `hxe : (e₂ ≫ e₁) ≫ x = (e₂ ≫ x') ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M`. Rewrite using `[Category.assoc, ← hx', Category.assoc]`.
+
+Establish `hye : (e₂ ≫ e₁) ≫ y = y' ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M`. Rewrite using `[Category.assoc, ← hy']`. Apply `_root_.GlobalTheory.DivisibleHom.cancel_of_flat_surjective (e₂ ≫ e₁)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc (e₂ ≫ e₁), comp_mul]`.
+
+Use `_ = (((e₂ ≫ x') * y') ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M) ≫ φ := by rw [hxe, hye, hmm]`. Use `_ = ((e₂ ≫ x') ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M ≫ φ) * (y' ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M ≫ φ) := by`. Rewrite using `[Category.assoc, mul_comp]`. Use `_ = (e₂ ≫ e₁) ≫ ((x ≫ φ) * (y ≫ φ)) := by`. Rewrite using `[comp_mul, ← Category.assoc (e₂ ≫ e₁) x, ← Category.assoc (e₂ ≫ e₁) y, hxe, hye]`.
+
+Simplify using `only [Category.assoc]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.isMonHom_of_factor {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B]
     (M : ℕ) [Flat (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left] [Surjective (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M).left]
     (φ : A ⟶ B) [IsMonHom (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA A M ≫ φ)] : IsMonHom φ := by
@@ -146,6 +189,13 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Introduce `H S _ P B _ _ M hM u hu hkill`. Take `⟨hfin, hflat, hsurj, -⟩` from `H S P M hM`. Use `haveI := hfin`. Use `haveI := hflat`. Use `haveI := hsurj`.
+
+Use `haveI := hu`. Take `⟨φ, hφ⟩` from `_root_.GlobalTheory.DivisibleHom.exists_factor M u hkill`. Use `haveI : IsMonHom (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA P.A M ≫ φ) := by rw [hφ]; infer_instance`. Use `haveI := _root_.GlobalTheory.DivisibleHom.isMonHom_of_factor M φ`. Use `⟨⟨φ, inferInstance, ?_⟩, fun h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hφ, _root_.GlobalTheory.DivisibleHom.mulA_comp]`. Apply `_root_.GlobalTheory.DivisibleHom.cancel_of_flat_surjective (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA P.A M)` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.DivisibleHom.mulA_comp, h, comp_one]`.
+-/
 theorem _root_.GlobalTheory.DivisibleHom.exists_eq_pow_of_torsion_comp_eq_one :
     (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : _root_.ReciprocityTheory.ChartRestriction.G.Out.PolAV S) (n : ℕ), 1 ≤ n →
       IsFinite (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA P.A n).left ∧ Flat (_root_.ReciprocityTheory.ChartRestriction.G.Out.mulA P.A n).left ∧

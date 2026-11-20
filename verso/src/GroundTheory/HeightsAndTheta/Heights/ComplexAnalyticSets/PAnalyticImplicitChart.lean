@@ -11,6 +11,17 @@ noncomputable section
 
 namespace AnalyticImplicitChart
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.dualMap_injective_iff, ← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `hfx : ∀ x : ι → ℂ, f x = ∑ j, x j * f (Pi.single j 1)`. Introduce `x`. Use `conv_lhs => rw [← Finset.univ_sum_single x]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul]`. Use `congr 1`. Use extensionality with `i`.
+
+Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Establish `h0 : ∑ j, f (Pi.single j 1) • φ j = 0`.
+
+Use extensionality with `z`. Use `LinearMap.congr_fun hf z` as an intermediate fact. Simplify using `only [LinearMap.dualMap_apply, LinearMap.zero_apply] at this`. Rewrite `this` using `[hfx]`. Simplify `this` using `[mul_comm]`.
+
+Establish `hc` using `Fintype.linearIndependent_iff.1 hφ _ h0`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hfx x]`. Simplify using `[hc]`.
+-/
 theorem pi_surjective_of_linearIndependent {E ι : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [Fintype ι] {φ : ι → E →L[ℂ] ℂ} (hφ : LinearIndependent ℂ φ) :
     Function.Surjective (LinearMap.pi fun j => (φ j : E →ₗ[ℂ] ℂ)) := by
@@ -39,6 +50,41 @@ theorem pi_surjective_of_linearIndependent {E ι : Type*} [NormedAddCommGroup E]
   rw [hfx x]
   simp [hc]
 
+/- English proof (translation)
+Introduce `σ ι _ _ h a W hh h0 hli hW`. Use `set φ : ι → (σ → ℂ) →L[ℂ] ℂ := fun j => fderiv ℂ (h j) a with hφ`. Use `set L : (σ → ℂ) →ₗ[ℂ] (ι → ℂ) := LinearMap.pi fun j => (φ j : (σ → ℂ) →ₗ[ℂ] ℂ) with hL`. Establish `hLs : Function.Surjective L` using `pi_surjective_of_linearIndependent hli`. Use `set K := LinearMap.ker L with hK`.
+
+Take `⟨q, hq⟩` from `K.exists_isCompl`. Use `set d := Module.finrank ℂ K with hd'`. Establish `hd : d + Fintype.card ι = Fintype.card σ`. Use `L.finrank_range_add_finrank_ker` as an intermediate fact. Establish `hKk : Module.finrank ℂ K = Module.finrank ℂ (LinearMap.ker L)` using `rfl`.
+
+Rewrite `this` using `[LinearMap.range_eq_top.2 hLs, finrank_top, Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers. Use `set eK : K ≃ₗ[ℂ] (Fin d → ℂ) := LinearEquiv.ofFinrankEq K (Fin d → ℂ) (by simp [d]) with heK`. Use `set A : (σ → ℂ) →L[ℂ] (Fin d → ℂ) := LinearMap.toContinuousLinearMap (eK.toLinearMap ∘ₗ K.projectionOnto q hq) with hA`. Use `set P : (σ → ℂ) →L[ℂ] (Fin d → ℂ) × (ι → ℂ) := A.prod (ContinuousLinearMap.pi φ) with hP`.
+
+Establish `hPinj : Function.Injective P`. Introduce `z w hzw`. Rewrite using `[← sub_eq_zero]`. Establish `h1 : A (z - w) = 0` using `by rw [map_sub, sub_eq_zero]; exact congrArg Prod.fst hzw`. Establish `h2 : z - w ∈ K`.
+
+Rewrite using `[hK, LinearMap.mem_ker]`. Use function extensionality and compare the values at `j`. Use `congrFun (congrArg Prod.snd hzw) j` as an intermediate fact. Simplify using `only [hP, ContinuousLinearMap.prod_apply, ContinuousLinearMap.pi_apply] at this`. Simplify using `[hL, map_sub, this]`.
+
+Establish `h3 : K.projectionOnto q hq (z - w) = 0` using `eK.injective (by simpa [hA] using h1)`. Rewrite `h3` using `[Submodule.projectionOnto_apply_of_mem_left hq h2]`. Simplify using `using congrArg Subtype.val h3`. Establish `hPbij : Function.Bijective (P : (σ → ℂ) →ₗ[ℂ] (Fin d → ℂ) × (ι → ℂ))` using `⟨hPinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [Module.finrank_prod, hd])).1 hPinj⟩`. Use `set Pe : (σ → ℂ) ≃L[ℂ] (Fin d → ℂ) × (ι → ℂ) := (LinearEquiv.ofBijective _ hPbij).toContinuousLinearEquiv with hPe`.
+
+Establish `hPeP : (Pe : (σ → ℂ) →L[ℂ] (Fin d → ℂ) × (ι → ℂ)) = P` using `by ext1 x; rfl`. Use `set F : (σ → ℂ) → (Fin d → ℂ) × (ι → ℂ) := fun z => (A z, fun j => h j z) with hF`. Establish `hFan : ∀ z, (∀ j, AnalyticAt ℂ (h j) z) → AnalyticAt ℂ F z` using `fun z hz => (A.analyticAt z).prod (analyticAt_pi_iff.2 hz)`. Establish `hFd : HasFDerivAt F (Pe : (σ → ℂ) →L[ℂ] _) a`. Rewrite using `[hPeP]`.
+
+Conclude with `A.hasFDerivAt.prodMk (hasFDerivAt_pi.2 fun j => (hh j).differentiableAt.hasFDerivAt)`. Establish `hst : HasStrictFDerivAt F (Pe : (σ → ℂ) →L[ℂ] _) a`. Use `(hFan a hh).hasStrictFDerivAt` as an intermediate fact. Rewrite `this` using `[hFd.fderiv]`. Then use the resulting hypothesis. Use `set Φ := hst.toOpenPartialHomeomorph F with hΦ`.
+
+Establish `hev : ∀ᶠ t in 𝓝 a, (∀ j, AnalyticAt ℂ (h j) t) ∧ t ∈ W ∧ fderiv ℂ F t ∈ Set.range ((↑) : ((σ → ℂ) ≃L[ℂ] (Fin d → ℂ) × (ι → ℂ)) → _)`. Use `(Filter.eventually_all.2 fun j => (hh j).eventually_analyticAt).and ((show ∀ᶠ t in 𝓝 a, t ∈ W from hW).and ?_)` and prove the remaining obligations. Conclude with `(hFan a hh).fderiv.continuousAt.preimage_mem_nhds (ContinuousLinearEquiv.isOpen.mem_nhds ⟨Pe, hFd.fderiv.symm⟩)`. Take `⟨V₀, hV₀, hV₀o, haV₀⟩` from `eventually_nhds_iff.1 hev`. Use `set Ψ := Φ.restrOpen V₀ hV₀o with hΨ`.
+
+Establish `hΨs : Ψ.source = Φ.source ∩ V₀` using `OpenPartialHomeomorph.restrOpen_source _ _ _`. Establish `hΨF : ∀ z, Ψ z = F z` using `fun z => rfl`. Establish `haΨ : a ∈ Ψ.source` using `hΨs ▸ ⟨hst.mem_toOpenPartialHomeomorph_source, haV₀⟩`. Establish `hsrc : ∀ t ∈ Ψ.source, (∀ j, AnalyticAt ℂ (h j) t) ∧ t ∈ W ∧ fderiv ℂ F t ∈ Set.range ((↑) : ((σ → ℂ) ≃L[ℂ] (Fin d → ℂ) × (ι → ℂ)) → _)` using `fun t ht => hV₀ t (hΨs ▸ ht).2`. Use `set O : Set (Fin d → ℂ) := (fun y => (y, (0 : ι → ℂ))) ⁻¹' Ψ.target with hO`.
+
+Use `⟨d, A, O, Ψ.source, fun y => Ψ.symm (y, 0), hd, Ψ.open_target.preimage (continuous_id.prodMk continuous_const), Ψ.open_source, haΨ, fun t ht => (hsrc t ht).2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hp : (y, (0 : ι → ℂ)) ∈ Ψ.target` using `hy`. Take `⟨han, -, e', he'⟩` from `hsrc _ (Ψ.map_target hp)`. Establish `hFe : HasFDerivAt Ψ (e' : (σ → ℂ) →L[ℂ] _) (Ψ.symm (y, 0))`.
+
+Rewrite using `[he']`. Conclude with `(hFan _ han).differentiableAt.hasFDerivAt`. Establish `hc : ContDiffAt ℂ ω Ψ.symm (y, 0)` using `Ψ.contDiffAt_symm hp hFe (hFan _ han).contDiffAt`. Establish `hi : AnalyticAt ℂ (fun y : Fin d → ℂ => (y, (0 : ι → ℂ))) y` using `analyticAt_id.prod analyticAt_const`. Conclude with `AnalyticAt.comp (g := Ψ.symm) (f := fun y : Fin d → ℂ => (y, (0 : ι → ℂ))) (x := y) hc.analyticAt hi`.
+
+Introduce `y hy`. Conclude with `congrArg Prod.fst (Ψ.right_inv (show (y, (0 : ι → ℂ)) ∈ Ψ.target from hy))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzV, hz0⟩`.
+
+Establish `hFz : F z = (A z, 0)`. Simplify using `only [hF, Prod.mk.injEq, true_and]`. Use function extensionality and compare the values at `j`. Conclude with `hz0 j`. Use `⟨A z, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (A z, (0 : ι → ℂ)) ∈ Ψ.target`. Rewrite using `[← hFz, ← hΨF]`. Conclude with `Ψ.map_source hzV`. Use `show Ψ.symm (A z, 0) = z`. Rewrite using `[← hFz, ← hΨF]`.
+
+Conclude with `Ψ.left_inv hzV`. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hp : (y, (0 : ι → ℂ)) ∈ Ψ.target` using `hy`. Use `⟨Ψ.map_target hp, fun j => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg Prod.snd (Ψ.right_inv hp)) j` as an intermediate fact.
+
+Simplify `this` using `[hΨF, hF]`.
+-/
 theorem proof : AnalyticImplicitChart.Statement := by
   intro σ ι _ _ h a W hh h0 hli hW
   classical

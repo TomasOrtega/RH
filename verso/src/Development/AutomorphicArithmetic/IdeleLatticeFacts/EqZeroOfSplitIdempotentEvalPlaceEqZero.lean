@@ -10,6 +10,21 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil GlobalTheory.Fin
 open PositivityTheory.ThKW PositivityTheory.ThKW.AutEtaA
 open UpperTheory.TP.W
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ e he P hP a hea haP`. Take `⟨hee, hec, v, ε, hε, hsum⟩` from `he`. Take `⟨α, rfl, -, -⟩` from `hε`. Establish `h1 : e * algebraMap (AF F) (AEF F E) (pairA F 0 α) = e`. Rewrite using `[← hsum, mul_add, hee, hec, add_zero]`.
+
+Establish `h2 : a = algebraMap (AF F) (AEF F E) (pairA F 0 α) * a`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ∀ Q, ev F E Q a = 0`. Introduce `Q`. Distinguish the cases in `hQ : Q = P`.
+
+Substitute `hQ` using the available equality. Conclude with `haP`. Rewrite using `[← hea, map_mul, hP Q hQ, zero_mul]`. Establish `h4 : finPartF F E a = 0`. Apply `(finAdEquiv F E).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `Q`. Conclude with `h3 Q`. Set `g : Af F →ₗ[F] AF F` to `(LinearMap.inr F (Ainf F) (Af F) : Af F →ₗ[F] AF F) ∘ₗ LinearMap.mulLeft F α`.
+
+Establish `h5 : ∀ b : AEF F E, algebraMap (AF F) (AEF F E) (pairA F 0 α) * b = TensorProduct.map g LinearMap.id (finPartF F E b)`. Introduce `b`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`.
+
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `show _ = TensorProduct.map g LinearMap.id ((sndA F x) ⊗ₜ[F] y)`. Rewrite using `[TensorProduct.map_tmul]`. Use `congr 1`. Conclude with `Prod.ext (zero_mul x.1) rfl`.
+
+Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add]`. Rewrite using `[h2, h5, h4, map_zero]`.
+-/
 theorem UpperTheory.eq_zero_of_splitIdempotent_eval_place_eq_zero :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
         IsCMExt F E σ → ∀ e, IsSplitIdemF σ e → ∀ P : HeightOneSpectrum (𝓞 E), (∀ Q, Q ≠ P → ev F E Q e = 0) →

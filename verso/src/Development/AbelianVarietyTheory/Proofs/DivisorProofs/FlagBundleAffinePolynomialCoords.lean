@@ -27,6 +27,25 @@ noncomputable section
 
 namespace GlobalTheory.CellScheme
 
+/- English proof (translation)
+Introduce `B Y π ι _ r E fl hfl hE U hU eU heU`. Take `⟨W, hW, n, hSp, hMax⟩` from `GlobalTheory.T.exists_pullback_frame_spanning_flag B Y π ι r E fl hE U eU heU`. Set `A` to `CommRingCat.of (MvPolynomial (Σ a, Low (r a)) Γ(B, U))`. Set `g : Spec A ⟶ B` to `Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial (Σ a, Low (r a)) Γ(B, U))) ≫ hU.fromSpec`. Establish `hgU : (⊤ : (Spec A).Opens) ≤ g ⁻¹ᵁ U`.
+
+Simplify using `[g, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Set `n' : (Σ a, Low (r a)) → Γ(Spec A, ⊤)` to `fun s => (Scheme.ΓSpecIso A).inv.hom (MvPolynomial.X s)`. Establish `hfr : ∀ a, IsFrame (pullCol g (eU a) hgU (uniR fun s => n' ⟨a, s⟩))` using `fun a => GlobalTheory.T.pullback_unipotent_frame_isFrame _ _ g (E a) (r a) (hE a) U (eU a) (heU a) ⊤ hgU _`. Use `choose fl' hfl' using fun a => GlobalTheory.T.exists_flag_spanned_frame (Spec A) _ (r a) _ (hfr a)`. Take `⟨ψ, ⟨w, hC⟩, -⟩` from `hfl (Spec A) g fl'`.
+
+Establish `hψ : (⊤ : (Spec A).Opens) ≤ ψ ⁻¹ᵁ W`. Introduce `t _`. Take `⟨V, hV, n₀, ht, hV'⟩` from `GlobalTheory.T.flag_bundle_carries_base_change B Y π ι r E fl hE U eU heU (Spec A) ψ g w fl' hC ⊤ hgU n' hfl' t trivial`. Take `⟨hVW, -⟩` from `hMax V hV n₀ hV'`. Conclude with `hVW ht`.
+
+Establish `hn : ∀ s, (ψ.appLE W ⊤ hψ).hom (n s) = (Scheme.ΓSpecIso A).inv.hom (MvPolynomial.X s)`. Introduce and unpack `⟨a, s⟩`. Establish `h1` using `GlobalTheory.T.carried_flag_triangular_frame B Y (Spec A) π ι r E fl ψ g w fl' hC U a (eU a) W hW (uniR fun s => n ⟨a, s⟩) ⊤ hψ hgU (hSp a)`. Rewrite `h1` using `[map_uniR]`. Conclude with `congrFun (GlobalTheory.T.pullback_unipotent_frame_unique (Spec A) B g (E a) (r a) (hE a) U (eU a) (heU a) (fl' a) ⊤ hgU _ _ h1 (hfl' a)) s`.
+
+Set `φ : W.toScheme ⟶ Spec A` to `W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n))`. Take `⟨hφg, hφn⟩` from `GlobalTheory.T.exists_polynomial_chart_of_flag_bundle B Y π U hU W hW _ n`. Establish `hφg' : φ ≫ g = W.ι ≫ π` using `by simpa only [φ, g, Category.assoc] using hφg`. Establish `hWU : (⊤ : W.toScheme.Opens) ≤ (W.ι ≫ π) ⁻¹ᵁ U`. Introduce `x _`.
+
+Conclude with `hW x.2`. Establish `h₁ : (⊤ : W.toScheme.Opens) ≤ φ ⁻¹ᵁ ⊤` using `le_top.trans (by simp)`. Establish `h₂ : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W` using `fun x _ => x.2`. Establish `hφC : Carries g E r fl' φ (W.ι ≫ π) hφg' (carried π E r fl W.ι (W.ι ≫ π) rfl)`. Introduce `a i`.
+
+Establish `k₁` using `GlobalTheory.T.carried_flag_triangular_frame _ _ _ g ι r E fl' φ (W.ι ≫ π) hφg' _ (carries_carried g E r fl' φ (W.ι ≫ π) hφg') U a (eU a) ⊤ hgU (uniR fun s => n' ⟨a, s⟩) ⊤ h₁ hWU (hfl' a)`. Establish `k₂` using `GlobalTheory.T.carried_flag_triangular_frame _ _ _ π ι r E fl W.ι (W.ι ≫ π) rfl _ (carries_carried π E r fl W.ι (W.ι ≫ π) rfl) U a (eU a) W hW (uniR fun s => n ⟨a, s⟩) ⊤ h₂ hWU (hSp a)`. Rewrite `k₁`, `k₂` using `[map_uniR]`. Establish `e : (fun s => (φ.appLE ⊤ ⊤ h₁).hom (n' ⟨a, s⟩)) = fun s => (W.ι.appLE W ⊤ h₂).hom (n ⟨a, s⟩)`. Use function extensionality and compare the values at `fun s => hφn h₁ h₂ _`.
+
+Rewrite `k₁` using `[e]`. Take `⟨e, he⟩` from `GlobalTheory.T.flags_same_frame_iso _ _ _ _ _ _ k₁ k₂ i`. Conclude with `⟨e, by simpa [carried, Vert.Flag.ofIso, Vert.Flag.pull] using he⟩`. Establish `huniq : W.ι = φ ≫ ψ` using `(hfl W.toScheme (W.ι ≫ π) (carried π E r fl W.ι (W.ι ≫ π) rfl)).unique ⟨rfl, carries_carried π E r fl W.ι (W.ι ≫ π) rfl⟩ ⟨by rw [Category.assoc, w, hφg'], carries_comp π E r fl ψ g w fl' φ (W.ι ≫ π) hφg' _ _ hC hφC⟩`. Take `⟨hAff, hBij⟩` from `GlobalTheory.T.polynomial_point_factors_through_chart B Y π U hU W hW _ n ψ w hψ hn (by simpa only [φ, Category.assoc] using huniq.symm)`.
+
+Conclude with `⟨W, hW, hAff, n, hBij, hSp⟩`.
+-/
 theorem cell_affine : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → B.Modules) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → (∀ a, IsVB (E a) (r a)) → ∀ (U : B.Opens), IsAffineOpen U → ∀ (eU : ∀ a, Fin (r a) → Γ(E a, U)), (∀ a, IsFrame (eU a)) → ∃ (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U), IsAffineOpen W ∧ ∃ n : (Σ a, Low (r a)) → Γ(Y, W), Function.Bijective (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) ∧ ∀ a, GlobalTheory.FlagCell.Spans (fl a) W (GlobalTheory.FlagCell.pullCol π (eU a) hW (GlobalTheory.FlagCell.uniR fun s => n ⟨a, s⟩)) := by
   intro B Y π ι _ r E fl hfl hE U hU eU heU
   obtain ⟨W, hW, n, hSp, hMax⟩ := GlobalTheory.T.exists_pullback_frame_spanning_flag B Y π ι r E fl hE U eU heU

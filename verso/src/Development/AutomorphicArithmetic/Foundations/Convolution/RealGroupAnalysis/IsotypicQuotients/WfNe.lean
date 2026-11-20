@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Pp
 
+/- English proof (translation)
+Introduce `F _ _ _ π`. Take `⟨f, hf, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Take `⟨ω, -, hω⟩` from `UpperTheory.ConvolutionTheory.R2.cen F π`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, Wf f.1 x ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Take `⟨φ, rfl⟩` from `Fb.mem_range_ofCusp.2 (π.cusp f hf)`. Conclude with `h0 (Subtype.ext (eq_zero_of_Wf φ.2 (cuspZero F π _ hf).1 hn))`. Take `⟨g, s, k, y, hg, rfl⟩` from `infDec F x`. Use `⟨TR.act (.cpt k) (TR.act (.fin y) f), π.stable _ _ (π.stable _ _ hf), g, hg, fun h => hx ?_⟩` and prove the remaining obligations.
+
+Unfold `Wf at h ⊢`. Rewrite using `[← mul_zero ((ω s : ℂˣ) : ℂ), ← h, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Establish `e : ∀ z : GL (Fin 2) (A F), gl (nU b) * (Matrix.GeneralLinearGroup.scalar (Fin 2) s * z) = Matrix.GeneralLinearGroup.scalar (Fin 2) s * (gl (nU b) * z)` using `fun z => by`. Rewrite using `[← mul_assoc, ← mul_assoc]`.
+
+Use `congr 1`. Conclude with `Units.ext ((Matrix.scalar_commute (s : A F) (fun _ => mul_comm _ _) _).eq.symm)`. Simplify using `only`. Rewrite using `[e, hω f hf, mul_assoc, ← mul_assoc (gl (nU b)), ← mul_assoc (gl (nU b))]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Pp.wfNe :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], UpperTheory.ConvolutionTheory.R2.Pp.WfNe F := by
   intro F _ _ _ π

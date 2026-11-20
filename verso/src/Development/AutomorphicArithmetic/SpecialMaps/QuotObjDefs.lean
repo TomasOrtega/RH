@@ -17,10 +17,16 @@ structure Link (b : Base D R) (b₁ : Base D R₁) {T : Scheme.{0}} (s : T ⟶ S
   rho : gam s b.ρ = gam s₁ b₁.ρ
   t : ∀ i c, gam s (b.t i c) = gam s₁ (b₁.t i c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gam_comp {T T' : Scheme.{0}} (x : T' ⟶ T) (s : T ⟶ Sp R) (a : R) :
     gam (x ≫ s) a = x.appTop.hom (gam s a) := by
   rfl
 
+/- English proof (translation)
+Establish `e` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)`. Conclude with `(congrArg (fun g => g.hom a) e).symm`.
+-/
 theorem gam_spMap {R' : Type} [CommRing R'] (β : R →+* R') (a : R) :
     gam (spMap β) a = (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom (β a) := by
   have e := Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)
@@ -28,13 +34,24 @@ theorem gam_spMap {R' : Type} [CommRing R'] (β : R →+* R') (a : R) :
 
 variable {b : Base D R} {b₁ : Base D R₁}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨L.rho.symm, fun i c => (L.t i c).symm⟩`.
+-/
 theorem Link.symm {T : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) : Link b₁ b s₁ s :=
   ⟨L.rho.symm, fun i c => (L.t i c).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [gam_comp, gam_comp, L.rho], fun i c => by rw [gam_comp, gam_comp, L.t]⟩`.
+-/
 theorem Link.pull {T T' : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) (x : T' ⟶ T) :
     Link b b₁ (x ≫ s) (x ≫ s₁) :=
   ⟨by rw [gam_comp, gam_comp, L.rho], fun i c => by rw [gam_comp, gam_comp, L.t]⟩
 
+/- English proof (translation)
+Establish `inj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom` using `(Scheme.ΓSpecIso (CommRingCat.of R')).symm.commRingCatIsoToRingEquiv.injective`. Establish `L'` using `L.pull x`. Rewrite `L'` using `[h, h₁]`. Use `⟨inj ?_, fun i c => inj ?_⟩` and prove the remaining obligations. Rewrite using `[← gam_spMap, ← gam_spMap]`.
+
+Conclude with `L'.rho`. Rewrite using `[← gam_spMap, ← gam_spMap]`. Conclude with `L'.t i c`.
+-/
 theorem Link.eval {T : Scheme.{0}} {s : T ⟶ Sp R} {s₁ : T ⟶ Sp R₁} (L : Link b b₁ s s₁) {R' : Type} [CommRing R']
     (β : R →+* R') (β₁ : R₁ →+* R') (x : Sp R' ⟶ T) (h : x ≫ s = spMap β) (h₁ : x ≫ s₁ = spMap β₁) :
     β b.ρ = β₁ b₁.ρ ∧ ∀ i c, β (b.t i c) = β₁ (b₁.t i c) := by

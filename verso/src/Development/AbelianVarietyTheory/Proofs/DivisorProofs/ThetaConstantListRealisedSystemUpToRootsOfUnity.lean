@@ -14,6 +14,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.RealTh
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Establish `hk0 : 0 < k` using `Nat.pos_of_ne_zero (by rintro rfl; exact hk Nat.cast_zero)`. Establish `hk2 : ((k ^ 2 : ℕ) : K) ≠ 0` using `by rw [Nat.cast_pow]; exact pow_ne_zero _ hk`. Establish `c₁` using `TorsionFieldExt.card_torsion hL P x hk`. Establish `c₂` using `TorsionFieldExt.card_torsion hL P x hk2`.
+
+Set `H₁` to `(powMonoidHom k : (Over.mk x ⟶ P.A) →* (Over.mk x ⟶ P.A)).ker`. Set `H₂` to `(powMonoidHom (k ^ 2) : (Over.mk x ⟶ P.A) →* (Over.mk x ⟶ P.A)).ker`. Establish `e₁ : Nat.card H₁ = k ^ (2 * P.g)` using `(Nat.card_congr (Equiv.subtypeEquivRight fun y => by simp [H₁, MonoidHom.mem_ker])).trans c₁`. Establish `e₂ : Nat.card H₂ = (k ^ 2) ^ (2 * P.g)` using `(Nat.card_congr (Equiv.subtypeEquivRight fun y => by simp [H₂, MonoidHom.mem_ker])).trans c₂`. Establish `: Finite H₂` using `Nat.finite_of_card_ne_zero (by rw [e₂]; positivity)`.
+
+Establish `: Finite H₁` using `Nat.finite_of_card_ne_zero (by rw [e₁]; positivity)`. Set `ψ : H₂ →* (Over.mk x ⟶ P.A)` to `(powMonoidHom k).comp H₂.subtype`. Establish `hker : Nat.card ψ.ker = k ^ (2 * P.g)`. Rewrite using `[← e₁]`. Use `Nat.card_congr (Equiv.ofBijective (fun y => ⟨y.1.1, ?_⟩) ⟨fun a b h => ?_, fun a => ?_⟩)` and prove the remaining obligations.
+
+Conclude with `MonoidHom.mem_ker.2 (MonoidHom.mem_ker.1 y.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun q : H₁ => (q : Over.mk x ⟶ P.A)) h`. Use `⟨⟨⟨a.1, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Use `a.2` as an intermediate fact. Simplify using `only [H₁, MonoidHom.mem_ker, powMonoidHom_apply] at this`. Simplify using `[H₂, MonoidHom.mem_ker, sq, pow_mul, this]`. Conclude with `MonoidHom.mem_ker.2 (MonoidHom.mem_ker.1 a.2)`. Establish `hmul` using `Subgroup.card_eq_card_quotient_mul_card_subgroup ψ.ker`.
+
+Rewrite `hmul` using `[Nat.card_congr (QuotientGroup.quotientKerEquivRange ψ).toEquiv, hker, e₂, ← pow_mul, mul_comm 2, pow_mul, sq, mul_comm]`. Establish `hrange : Nat.card ψ.range = Nat.card H₁`. Rewrite using `[e₁]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (by positivity) hmul).symm`. Establish `hle : ψ.range ≤ H₁`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Use `y.2` as an intermediate fact. Simplify using `only [H₂, MonoidHom.mem_ker, powMonoidHom_apply] at this`. Simplify using `[ψ, H₁, MonoidHom.mem_ker, ← pow_mul, ← sq, this]`. Establish `heq` using `Subgroup.eq_of_le_of_card_ge hle hrange.ge`.
+
+Establish `hzm : z ∈ ψ.range` using `heq ▸ (show z ∈ H₁ by simpa [H₁, MonoidHom.mem_ker] using hz)`. Take `⟨y, hy⟩` from `hzm`. Conclude with `⟨y.1, hy⟩`.
+-/
 theorem exists_pow_eq (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {K : Type} [Field K] [IsAlgClosed K] (x : Sp K ⟶ S)
     {k : ℕ} (hk : (k : K) ≠ 0) (z : Over.mk x ⟶ P.A) (hz : z ^ k = 1) : ∃ y : Over.mk x ⟶ P.A, y ^ k = z := by
   have := P.isAb.comm
@@ -60,6 +77,21 @@ end GlobalTheory.UMin.RealTh
 
 open GlobalTheory.UMin.RealTh in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ K _ i N pt c H`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hkK : ((S.r * S.N : ℕ) : K) ≠ 0`. Use `S.unit.map (i.comp (algebraMap o S.R))` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+
+Conclude with `this.ne_zero`. Set `β : Over.mk (spMap i ≫ 𝟙 (Sp S.R)) ⟶ baseOver (Sp S.R)` to `Over.homMk (spMap i) (by simp)`. Set `j : K →+* AlgebraicClosure K` to `algebraMap _ _`. Set `u : Over.mk (spMap j ≫ spMap i ≫ 𝟙 (Sp S.R)) ⟶ Over.mk (spMap i ≫ 𝟙 (Sp S.R))` to `Over.homMk (spMap j) rfl`. Establish `hkK' : ((S.r * S.N : ℕ) : AlgebraicClosure K) ≠ 0`.
+
+Rewrite using `[← map_natCast j]`. Conclude with `(map_ne_zero j).2 hkK`. Establish `down : ∀ y : Over.mk (spMap i ≫ 𝟙 (Sp S.R)) ⟶ ρ.P.A, y ^ (S.r * S.N) = 1 → ∃ b, y = β ≫ ρ.pt b`. Introduce `y hy`. Take `⟨b, hb, -⟩` from `ρ.pt_bij (AlgebraicClosure K) (spMap j ≫ spMap i ≫ 𝟙 _) (u ≫ y) (by rw [← MonObj.comp_pow, hy, MonObj.comp_one])`.
+
+Use `⟨b, TorsionFieldExt.comp_injective u _ ?_⟩` and prove the remaining obligations. Use `hb.symm.trans (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Simplify using `[u, β]`. Prove the components needed by the constructor for the conclusion. Introduce `x`.
+
+Establish `h` using `H.2.1 x`. Take `⟨b, hb⟩` from `down (pt x ^ (S.r * S.N)) (by rw [← pow_mul, ← sq]; exact h.1)`. Conclude with `⟨b, GlobalTheory.T.thetaConstant_kth_root_labelled_point_up_to_root o Ω S ρ K i b (pt x) (c x) hb h⟩`. Introduce `b`. Establish `tb : ρ.pt b ^ (S.r * S.N) = 1` using `(ρ.fr_tors b).1`.
+
+Take `⟨y, hy⟩` from `exists_pow_eq hL ρ.P (spMap j ≫ spMap i ≫ 𝟙 _) hkK' (u ≫ β ≫ ρ.pt b) (by rw [← MonObj.comp_pow, ← MonObj.comp_pow, tb, MonObj.comp_one, MonObj.comp_one])`. Take `⟨a, ha⟩` from `H.2.2 (AlgebraicClosure K) j y (by rw [sq, pow_mul, hy, ← MonObj.comp_pow, ← MonObj.comp_pow, tb, MonObj.comp_one, MonObj.comp_one])`. Establish `e1 : u ≫ pt a = y` using `Over.OverMorphism.ext ha.symm`. Establish `e2 : pt a ^ (S.r * S.N) = β ≫ ρ.pt b` using `TorsionFieldExt.comp_injective u _ (by show u ≫ _ = u ≫ _`. Rewrite using `[MonObj.comp_pow, e1, hy])`.
+
+Conclude with `⟨a, GlobalTheory.T.thetaConstant_kth_root_labelled_point_up_to_root o Ω S ρ K i b (pt a) (c a) e2 (H.2.1 a)⟩`.
+-/
 theorem GlobalTheory.UMin.thList_real : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (K : Type) [Field K] (i : S.R →+* K) (N : ℕ) (pt : Fin N → (Over.mk (spMap i ≫ 𝟙 (Sp S.R)) ⟶ ρ.P.A)) (c : Fin N → K), ThList ρ.P.A ρ.P.L ρ.rig (S.r * S.N) (spMap i ≫ 𝟙 (Sp S.R)) (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) pt c → (∀ x, ∃ b, c x ^ ((S.r * S.N) ^ 2) = i ⟨S.th b, S.th_mem b⟩ ^ ((S.r * S.N) ^ 2)) ∧ ∀ b, ∃ x, c x ^ ((S.r * S.N) ^ 2) = i ⟨S.th b, S.th_mem b⟩ ^ ((S.r * S.N) ^ 2) := by
   intro o Ω _ _ _ _ S ρ K _ i N pt c H
   have hL : Laws := GlobalTheory.firstFiveLaws.1

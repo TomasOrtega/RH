@@ -5,6 +5,11 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
 import Formalism.LocalRingCardinality.DataArith
 import Formalism.LocalRingCardinality.DataForms
 
+/- English proof (translation)
+Introduce `D u i x`. Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat i).L : Set ((D.fm u).lat i).V)`. Rewrite using `[((D.fm u).lat_good i).2.2]`. Conclude with `Submodule.mem_top`. Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (NumberField.RingOfIntegers D.what₂.LL)) D.what₂.LL _ _ hx`.
+
+Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨t.1, nonZeroDivisors.ne_zero t.2, ht⟩`.
+-/
 theorem UpperTheory.Reformulated.B.DivisibilityWeightConstant.exists_int_smul_mem :
     ∀ {D : Formalism.BasicNotions.D7} {u : D.what₂.Word} (i : ℕ) (x : Formalism.MainNotions.product_first_zeroth_parts.Vl D u i),
     ∃ (r : NumberField.RingOfIntegers D.what₂.LL),

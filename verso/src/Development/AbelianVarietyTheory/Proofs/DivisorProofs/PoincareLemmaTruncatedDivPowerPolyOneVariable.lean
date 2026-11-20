@@ -17,6 +17,11 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm.Poincare
 
+/- English proof (translation)
+Establish `hle : rel R δ' ≤ RingHom.ker (ExteriorAlgebra.algebraMapInv (R` using `G) (M := Ω[G⁄R])).toRingHom := by`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, a, _, rfl⟩`. Simplify using `[ExteriorAlgebra.algebraMapInv]`. Use `hle hg` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.mem_ker]`. Simplify `this` using `[ExteriorAlgebra.algebraMap_leftInverse _ g]`.
+-/
 theorem eq_zero_of_algebraMap_mem_rel {R G : Type} [CommRing R] [CommRing G] [Algebra R G] {J' : Ideal G}
     (δ' : DividedPowers J') (g : G) (hg : algebraMap G (DR R G) g ∈ rel R δ') : g = 0 := by
   have hle : rel R δ' ≤ RingHom.ker (ExteriorAlgebra.algebraMapInv (R := G) (M := Ω[G⁄R])).toRingHom := by
@@ -27,6 +32,9 @@ theorem eq_zero_of_algebraMap_mem_rel {R G : Type} [CommRing R] [CommRing G] [Al
   rw [RingHom.mem_ker] at this
   simpa [ExteriorAlgebra.algebraMap_leftInverse _ g] using this
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp [e]`. Consider the case `hd b => simp [e]`. Consider the case `hm x y hx hy => simp only [map_mul, hx, hy]`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mDR_mDR {R R' R'' B B' B'' : Type} [CommRing R] [CommRing B] [Algebra R B]
     [CommRing R'] [CommRing B'] [Algebra R' B'] [CommRing R''] [CommRing B''] [Algebra R'' B'']
     {σ : R →+* R'} {α : B →+* B'} {τ : R' →+* R''} {β : B' →+* B''} {ρ : R →+* R''} {γ : B →+* B''}
@@ -42,6 +50,59 @@ end GlobalTheory.PDForm.Poincare
 
 open GlobalTheory.PDForm.Poincare in
 
+/- English proof (translation)
+Introduce `R B _ _ _ J δ Q _ _ η G _ _ J' δ' q n hstd hlev hq hqd hqs hJ' hker α h hd hα`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hεs, hεd, hεb, hεe⟩ : ∃ ε : Q.P →+* B, SemiHom (RingHom.id R) ε ∧ IsDPMorphism η δ ε ∧ (∀ b, ε (algebraMap B Q.P b) = b) ∧ ∀ k, ε (Q.e (k + 1)) = 0 := by`. Take `⟨ε0, hε0⟩` from `(GlobalTheory.PDA.PDPoly.exists_lift_and_aug B Q).2`. Establish `hb : ∀ b, ε0 (algebraMap B Q.P b) = b` using `fun b ↦ ε0.commutes b`. Use `⟨ε0, fun r p ↦ ?_, ?_, hb, fun k ↦ (hε0 _).1 (Q.e_succ_mem_aug k)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ε0 (r • p) = r • ε0 p`. Rewrite using `[← algebraMap_smul B r p, map_smul, algebraMap_smul]`. Use `GlobalTheory.PDA.PDPoly.isDPMorphism_of_isStd B J δ Q η hstd B J δ ε0 0 J.zero_mem ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_map_iff_of_surjective _ (fun b ↦ ⟨b, hb b⟩)]`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Simplify `hy` using `[hb]`. Introduce `k a _`. Simplify using `[hb]`. Introduce `k`.
+
+Consider the cases of `k with`. Consider the case `zero => change ε0 (Q.e 0) = _`. Rewrite using `[Q.e_zero, map_one, δ.dpow_zero J.zero_mem]`. Consider the case `succ k => change ε0 (Q.e (k + 1)) = _`. Rewrite using `[(hε0 _).1 (Q.e_succ_mem_aug k), δ.dpow_eval_zero (Nat.succ_ne_zero k)]`.
+
+Establish `hi : SemiHom (RingHom.id R) (algebraMap B Q.P)` using `fun r b ↦ map_smul (IsScalarTower.toAlgHom R B Q.P) r b`. Establish `hkε : ∀ p, q p = 0 → ε p = 0`. Introduce `p hp`. Establish `h1 : ε p ∈ fil δ (n + 1)` using `(GlobalTheory.PDA.fil_properties Q.P (Q.ext J) η).2.2.2.2.2.2 B J δ ε hεd (n + 1) (Ideal.mem_map_of_mem _ ((hker p).1 hp))`. Rewrite `h1` using `[hlev]`.
+
+Conclude with `(Ideal.mem_bot).1 h1`. Take `⟨eb, hebq⟩ : ∃ eb : G →+* B, ∀ p, eb (q p) = ε p` from `⟨q.liftOfRightInverse (Function.surjInv hqs) (Function.rightInverse_surjInv hqs) ⟨ε, fun p hp ↦ hkε p hp⟩, fun p ↦ RingHom.liftOfRightInverse_comp_apply _ _ _ _ p⟩`. Establish `hebα : ∀ b, eb (α b) = b` using `fun b ↦ by rw [hα, hebq, hεb]`. Establish `heb : SemiHom (RingHom.id R) eb`. Introduce `r g`.
+
+Take `⟨p, rfl⟩` from `hqs g`. Use `hq r p` as an intermediate fact. Simplify using `only [RingHom.id_apply] at this ⊢`. Rewrite using `[← this, hebq, hebq]`. Simplify using `using hεs r p`.
+
+Establish `hdeb : IsDPMorphism δ' δ eb`. Establish `hc : eb.comp q = ε` using `RingHom.ext hebq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ', Ideal.map_map, hc]`. Conclude with `hεd.1`.
+
+Introduce `k a ha`. Rewrite `ha` using `[hJ', Ideal.mem_map_iff_of_surjective _ hqs]`. Take `⟨a, ha, rfl⟩` from `ha`. Rewrite using `[hebq, hqd.2 a ha, hebq, hεd.2 a ha]`. Establish `hid : SemiHom (RingHom.id R) (RingHom.id B)` using `fun _ _ ↦ rfl`.
+
+Establish `hdid : IsDPMorphism δ δ (RingHom.id B)` using `(DPMorphism.id δ).isDPMorphism`. Establish `ret1 : ∀ x, km1 heb hdeb (km1 h hd x) = x` using `fun x ↦ (divPowerCompatOneFormMap_comp h hd heb hdeb hid hdid hebα x).trans (divPowerCompatOneFormMap_id hid hdid (fun _ ↦ rfl) x)`. Establish `ret : ∀ j x, km heb hdeb j (km h hd j x) = x` using `fun j x ↦ (km_km h hd heb hdeb hid hdid hebα j x).trans (km_id hid hdid (fun _ ↦ rfl) j x)`. Take `⟨v, hv0, hv1, hv2⟩` from `GlobalTheory.PDA.PDPoly.exists_der R B J δ Q η hstd`. Establish `he : ∀ k, Q.e k ∈ fil η k` using `fun k ↦ by`.
+
+Rewrite using `[← hstd.var k]`. Conclude with `(GlobalTheory.PDA.fil_properties Q.P (Q.ext J) η).2.2.2.2.1 k _ (Q.e_one_mem_ext J)`. Establish `hht` using `GlobalTheory.T.derivationHomotopyOperator_filtration_properties R Q.P (Q.ext J) η v Q.e (n + 1) hv2 he`. Establish `kq` using `GlobalTheory.T.quotient_dividedPowerFiltration_compatibleForms R Q.P (Q.ext J) η G J' δ' q hq n hqd hqs hJ' hker`. Establish `kdr` using `GlobalTheory.T.deRhamAlgebra_quotientRing_surjective_and_kernel R Q.P G q hq hqs`.
+
+Establish `key : ∀ X : DR R Q.P, hq.mDR (dDR R Q.P X) ∈ rel R δ' → hq.mDR X - h.mDR (hεs.mDR X) - dDR R G (hq.mDR (hot v Q.e (n + 1) X)) ∈ rel R δ'`. Introduce `X hX`. Establish `hT` using `hht.2.2.2.2 n _ (kq.1 _ hX)`. Establish `hH` using `GlobalTheory.T.dividedPowerPolyAlgebra_homotopy_identity R B J δ Q η v hi hstd hv0 hv1 hv2 ε hεs hεd hεb hεe (n + 1) X`. Establish `h3` using `add_mem hH hT`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Use `kq.2 _ h3` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, mDR_mDR hi hq h (fun b ↦ (hα b).symm), hq.mDR_dDR]`. Then use the resulting hypothesis. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ hx`.
+
+Establish `hx' : α x = 0` using `hx`. Rewrite using `[← hebα x, hx', map_zero]`. Introduce `y hy`. Take `⟨p, rfl⟩` from `hqs y`. Establish `hy' : hq.mDR (dDR R Q.P (algebraMap Q.P (DR R Q.P) p)) ∈ rel R δ'`.
+
+Rewrite using `[dDR_algebraMap, hq.mDR_ι, hq.m1_D]`. Conclude with `(Submodule.Quotient.mk_eq_zero (N1 R δ')).1 (by rw [← divPowerCompatFunctionDifferential_apply]; exact hy)`. Establish `hk` using `key _ hy'`. Rewrite `hk` using `[(hht.2.1 p), map_zero, map_zero, sub_zero, hq.mDR_algebraMap, hεs.mDR_algebraMap, h.mDR_algebraMap, ← map_sub]`. Establish `hp : q p = α (ε p)` using `sub_eq_zero.1 (eq_zero_of_algebraMap_mem_rel δ' _ hk)`.
+
+Use `⟨ε p, ?_, hp.symm⟩` and prove the remaining obligations. Establish `h0 : km1 h hd (kd0 R δ (ε p)) = 0` using `by rw [divPowerCompatOneFormMap_functionDifferential, ← hp]; exact hy`. Rewrite using `[← ret1 (kd0 R δ (ε p)), h0, map_zero]`. Introduce `x y _ hxy`. Use `⟨eb y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← divPowerCompatOneFormMap_functionDifferential heb hdeb, ← hxy, ret1]`. Introduce `y hy`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨ω, rfl⟩` from `kdr.1 y`. Establish `hy' : hq.mDR (dDR R Q.P (ι1 ω)) ∈ rel R δ'`.
+
+Rewrite using `[hq.mDR_dDR, hq.mDR_ι]`. Conclude with `(Submodule.Quotient.mk_eq_zero (N R δ' 2)).1 (by rw [← divPowerCompatOneFormDerivative_mk]; exact hy)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, algebraMap Q.P (DR R Q.P) c = hot v Q.e (n + 1) (ι1 ω) := by`. Use `hht.2.2.1 0 _ (ι_mem ω)` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range _ ^ 0 at this`.
+
+Rewrite `this` using `[pow_zero, Submodule.mem_one]`. Then use the resulting hypothesis. Establish `hk` using `key _ hy'`. Rewrite `hk` using `[← hc, hq.mDR_algebraMap, dDR_algebraMap, hq.mDR_ι, hεs.mDR_ι, h.mDR_ι, ← map_sub, ← map_sub]`. Use `set x : K1 R δ := Submodule.Quotient.mk (hεs.m1 ω) with hxdef`. Establish `heq : (Submodule.Quotient.mk (hq.m1 ω) : K1 R δ') = km1 h hd x + kd0 R δ' (q c)`.
+
+Rewrite using `[divPowerCompatOneFormMap_mk, divPowerCompatFunctionDifferential_apply, ← Submodule.Quotient.mk_add, ← sub_eq_zero, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero, ← sub_sub]`. Conclude with `hk`. Use `⟨x, q c, ?_, heq⟩` and prove the remaining obligations. Establish `h0 : km h hd 2 (kd1 R δ x) = 0`. Rewrite using `[divPowerCompatFormMap_oneFormDerivative, show km1 h hd x = Submodule.Quotient.mk (hq.m1 ω) - kd0 R δ' (q c) by rw [heq]; abel, map_sub, divPowerCompatOneFormDerivative_comp_differential, sub_zero]`.
+
+Conclude with `hy`. Rewrite using `[← ret 2 (kd1 R δ x), h0, map_zero]`. Introduce `x y _ hxy`. Use `⟨km1 heb hdeb y, ?_⟩` and prove the remaining obligations. Rewrite using `[← divPowerCompatFormMap_oneFormDerivative heb hdeb, ← hxy, ret]`.
+
+Introduce `y hy`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨ω, rfl⟩` from `kdr.2.1 2 y`. Establish `hy' : hq.mDR (dDR R Q.P (ω : DR R Q.P)) ∈ rel R δ'`. Rewrite using `[hq.mDR_dDR]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero (N R δ' 3)).1 (by rw [← divPowerCompatTwoFormDerivative_mk]; exact hy)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ι1 c = hot v Q.e (n + 1) (ω : DR R Q.P) := by`. Use `hht.2.2.1 1 _ ω.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range _ ^ 1 at this`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+
+Establish `hk` using `key _ hy'`. Rewrite `hk` using `[← hc, hq.mDR_ι]`. Use `set x : K R δ 2 := Submodule.Quotient.mk (hεs.mOm 2 ω) with hxdef`. Establish `heq : (Submodule.Quotient.mk (hq.mOm 2 ω) : K R δ' 2) = km h hd 2 x + kd1 R δ' (Submodule.Quotient.mk (hq.m1 c))`. Rewrite using `[km_mk, divPowerCompatOneFormDerivative_mk, ← Submodule.Quotient.mk_add, ← sub_eq_zero, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero, ← sub_sub]`.
+
+Conclude with `hk`. Use `⟨x, Submodule.Quotient.mk (hq.m1 c), ?_, heq⟩` and prove the remaining obligations. Establish `h0 : km h hd 3 (kd2 R δ x) = 0`. Rewrite using `[divPowerCompatFormMap_twoFormDerivative, show km h hd 2 x = Submodule.Quotient.mk (hq.mOm 2 ω) - kd1 R δ' (Submodule.Quotient.mk (hq.m1 c)) by`. Rewrite using `[heq]`.
+
+Use the proof step `abel, map_sub, divPowerCompatTwoFormDerivative_comp_oneForm, sub_zero]`. Conclude with `hy`. Rewrite using `[← ret 3 (kd2 R δ x), h0, map_zero]`.
+-/
 theorem GlobalTheory.PDForm.rq_truncPoly : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J) (Q : PDPoly B) [Algebra R Q.P] [IsScalarTower R B Q.P] (η : DividedPowers (Q.ext J)) (G : Type) [CommRing G] [Algebra R G] (J' : Ideal G) (δ' : DividedPowers J') (q : Q.P →+* G) (n : ℕ), Q.IsStd δ η → IsLev δ (n + 1) → SemiHom (RingHom.id R) q → IsDPMorphism η δ' q → Function.Surjective q → J' = (Q.ext J).map q → (∀ b, q b = 0 ↔ b ∈ fil η (n + 1)) → ∀ (α : B →+* G) (h : SemiHom (RingHom.id R) α) (hd : IsDPMorphism δ δ' α), (∀ b, α b = q (algebraMap B Q.P b)) → RQ h hd := by
   intro R B _ _ _ J δ Q _ _ η G _ _ J' δ' q n hstd hlev hq hqd hqs hJ' hker α h hd hα
 

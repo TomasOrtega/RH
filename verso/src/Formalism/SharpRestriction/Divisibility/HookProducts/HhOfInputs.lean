@@ -8,6 +8,9 @@ namespace Formalism.MainNotions.DIV.HookProducts.HookProductBasics
 
 open Formalism.BasicNotions Formalism.MainNotions
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.DIV.Proofs.height_bound_of_component_bounds Fm CH Eb Formalism.MainNotions.DIV.HookProducts.Row4C.EcHH CF0 hL (Formalism.L2.GlobalTheoryTheory.Places.slope_lemma_division_form Fm crystallineComparison h10 (Formalism.L2.GlobalTheoryTheory.Places.settingF_of F …`.
+-/
 theorem hh_of_inputs {eps : ℝ} (Fm : FamP eps) (CH crystallineComparison : ℝ) (Eb CF0 : List ℝ → ℝ)
     (hL : Fm.Large (Formalism.MainNotions.DIV.Proofs.thrHH Eb Formalism.MainNotions.DIV.HookProducts.Row4C.EcHH CF0) CH)
     (h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison) (hTu : TuSize Fm) (hNF : NuFullF Fm) (hrk : J.MuRank Fm)

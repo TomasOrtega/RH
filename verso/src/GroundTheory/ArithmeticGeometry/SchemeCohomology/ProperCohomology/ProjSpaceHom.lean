@@ -14,6 +14,11 @@ namespace ProjHom
 variable {σ : Type*} {A : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
   (𝒜 : ℕ → σ) [GradedRing 𝒜] {X : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[corr, ConcreteCategory.comp_apply, Scheme.Hom.comp_appTop, ConcreteCategory.comp_apply]`. Establish `hB` using `congr($(Proj.basicOpenToSpec_app_top 𝒜 r) ((Scheme.ΓSpecIso _).inv y))`. Simplify using `only [ConcreteCategory.comp_apply, Iso.inv_hom_id_apply] at hB`. Establish `hR` using `congr($(Scheme.Hom.resLE_app_top g h) ((Proj.basicOpen 𝒜 r).topIso.inv (Proj.awayToSection 𝒜 r y)))`. Simplify using `only [ConcreteCategory.comp_apply, Iso.inv_hom_id_apply] at hR`.
+
+Use `erw [hB]`. Conclude with `hR`.
+-/
 lemma corr_apply (g : X ⟶ Proj 𝒜) (r : A) (V : X.Opens) (h : V ≤ g ⁻¹ᵁ Proj.basicOpen 𝒜 r)
     (y : Away 𝒜 r) :
     corr 𝒜 g r V h y = V.topIso.inv (g.appLE _ V h (Proj.awayToSection 𝒜 r y)) := by
@@ -28,12 +33,20 @@ lemma corr_apply (g : X ⟶ Proj 𝒜) (r : A) (V : X.Opens) (h : V ≤ g ⁻¹�
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.ι_appTop, Scheme.Opens.topIso_inv, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Reduce the equality to equality of the corresponding arguments.
+-/
 lemma ι_appTop_eq (V : X.Opens) (z : Γ(X, ⊤)) :
     V.ι.appTop z = V.topIso.inv (X.presheaf.map (homOfLE le_top).op z) := by
   rw [Scheme.Opens.ι_appTop, Scheme.Opens.topIso_inv, ← CommRingCat.comp_apply,
     ← Functor.map_comp]
   congr
 
+/- English proof (translation)
+Use `set U := Proj.basicOpen 𝒜 f`. Establish `h1 : (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)) = U.ι ''ᵁ (U.ι ⁻¹ᵁ (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)))`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.mpr ((Proj 𝒜).basicOpen_le _)]`. Establish `h2 : U.ι ⁻¹ᵁ (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)) = U.ι ⁻¹ᵁ Proj.basicOpen 𝒜 g`. Rewrite using `[← Scheme.Opens.toSpecΓ_preimage_basicOpen, ← SpecMap_preimage_basicOpen]`.
+
+Express the relevant statement in the definitionally equal form `Proj.basicOpenToSpec 𝒜 f ⁻¹ᵁ (PrimeSpectrum.basicOpen (Away.isLocalizationElem hf hg) : (Spec (.of (Away 𝒜 f))).Opens) = _`. Rewrite using `[← Proj.awayι_preimage_basicOpen 𝒜 hf hd hg he, ← Proj.basicOpenIsoSpec_inv_ι 𝒜 f hf hd, ← Scheme.Hom.comp_preimage, ← Proj.basicOpenIsoSpec_hom 𝒜 f hf hd, Iso.hom_inv_id_assoc]`. Rewrite using `[h1, h2, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+-/
 lemma basicOpen_awayToSection_isLocalizationElem {f g : A} {d e : ℕ} (hf : f ∈ 𝒜 d) (hd : 0 < d)
     (hg : g ∈ 𝒜 e) (he : 0 < e) :
     (Proj 𝒜).basicOpen (Proj.awayToSection 𝒜 f (Away.isLocalizationElem hf hg)) =
@@ -67,6 +80,9 @@ def chartHom (i : Fin (n + 1)) :
     MvPolynomial (Fin (n + 1)) A →+* Γ(projectiveSpace A n, Proj.basicOpen (grading A n) (X i)) :=
   (Proj.awayToSection (grading A n) (X i)).hom.comp ((polyToChart A i).comp (dehom A i))
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Establish `h1` using `congr($(scaleMap_eq A i) a)`. Simplify using `only [RingHom.comp_apply, HomogeneousLocalization.algebraMap_apply] at h1`. Rewrite using `[h1, Away.val_mk, Localization.mk_eq_mk', IsLocalization.eq_mk'_iff_mul_eq]`. Conclude with `scaleMap_homog A i ha`.
+-/
 lemma polyToChart_dehom_of_mem (i : Fin (n + 1)) {m : ℕ} {a : MvPolynomial (Fin (n + 1)) A}
     (ha : a ∈ grading A n m) :
     polyToChart A i (dehom A i a) =
@@ -77,12 +93,18 @@ lemma polyToChart_dehom_of_mem (i : Fin (n + 1)) {m : ℕ} {a : MvPolynomial (Fi
   rw [h1, Away.val_mk, Localization.mk_eq_mk', IsLocalization.eq_mk'_iff_mul_eq]
   exact scaleMap_homog A i ha
 
+/- English proof (translation)
+Rewrite using `[chartHom, RingHom.comp_apply, RingHom.comp_apply, polyToChart_dehom_of_mem i ha]`.
+-/
 lemma chartHom_of_mem (i : Fin (n + 1)) {m : ℕ} {a : MvPolynomial (Fin (n + 1)) A}
     (ha : a ∈ grading A n m) :
     chartHom i a = Proj.awayToSection (grading A n) (X i)
       (Away.mk (grading A n) (X_mem i) m a (by rwa [smul_eq_mul, mul_one])) := by
   rw [chartHom, RingHom.comp_apply, RingHom.comp_apply, polyToChart_dehom_of_mem i ha]
 
+/- English proof (translation)
+Rewrite using `[chartHom_of_mem i (X_mem j)]`. Use `congr 1`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `[Away.val_mk]`.
+-/
 lemma chartHom_X (i j : Fin (n + 1)) :
     chartHom i (X j : MvPolynomial (Fin (n + 1)) A) = Proj.awayToSection (grading A n) (X i)
       (Away.isLocalizationElem (X_mem i) (X_mem j)) := by
@@ -91,25 +113,46 @@ lemma chartHom_X (i j : Fin (n + 1)) :
   apply HomogeneousLocalization.val_injective
   simp [Away.val_mk]
 
+/- English proof (translation)
+Rewrite using `[chartHom, RingHom.comp_apply, RingHom.comp_apply, dehom_X_self, map_one, map_one]`.
+-/
 lemma chartHom_X_self (i : Fin (n + 1)) : chartHom i (X i : MvPolynomial (Fin (n + 1)) A) = 1 := by
   rw [chartHom, RingHom.comp_apply, RingHom.comp_apply, dehom_X_self, map_one, map_one]
 
+/- English proof (translation)
+Rewrite using `[chartHom_X]`. Conclude with `ProjHom.basicOpen_awayToSection_isLocalizationElem _ (X_mem i) one_pos (X_mem j) one_pos`.
+-/
 lemma basicOpen_chartHom_X (i j : Fin (n + 1)) :
     (projectiveSpace A n).basicOpen (chartHom i (X j : MvPolynomial (Fin (n + 1)) A)) =
       Proj.basicOpen (grading A n) (X i) ⊓ Proj.basicOpen (grading A n) (X j) := by
   rw [chartHom_X]
   exact ProjHom.basicOpen_awayToSection_isLocalizationElem _ (X_mem i) one_pos (X_mem j) one_pos
 
+/- English proof (translation)
+The claim follows from `Proj.basicOpen_mono _ _ _ ⟨_, rfl⟩`.
+-/
 lemma basicOpen_mul_le_left (j k : Fin (n + 1)) :
     Proj.basicOpen (grading A n) (X k * X j : MvPolynomial (Fin (n + 1)) A) ≤
       Proj.basicOpen (grading A n) (X k) :=
   Proj.basicOpen_mono _ _ _ ⟨_, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Proj.basicOpen_mono _ _ _ ⟨_, mul_comm _ _⟩`.
+-/
 lemma basicOpen_mul_le_right (j k : Fin (n + 1)) :
     Proj.basicOpen (grading A n) (X k * X j : MvPolynomial (Fin (n + 1)) A) ≤
       Proj.basicOpen (grading A n) (X j) :=
   Proj.basicOpen_mono _ _ _ ⟨_, mul_comm _ _⟩
 
+/- English proof (translation)
+Establish `ha' : a ∈ grading A n t` using `by rwa [smul_eq_mul, mul_one] at ha`. Rewrite using `[chartHom_of_mem k (X_mem j), chartHom_of_mem k ha']`. Establish `e1 : Proj.awayToSection (grading A n) (X k * X j) (awayMap (grading A n) (X_mem k) (show X k * X j = X j * X k from mul_comm _ _) (Away.mk (grading A n) (X_mem j) t a ha)) = (projectiveSpace A n).presheaf.map (homOfLE (basicOpen_mul_le_right j k)).op (Proj.awayToSection (grading …`. Use `congr($(Proj.awayMap_awayToSection (grading A n) (X_mem k) (show X k * X j = X j * X k from mul_comm _ _)) (Away.mk (grading A n) (X_mem j) t a ha))` as an intermediate fact. Rewrite `this` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`.
+
+Conclude with `this`. Establish `e2 : ∀ y, Proj.awayToSection (grading A n) (X k * X j) (awayMap (grading A n) (X_mem j) (show X k * X j = X k * X j from rfl) y) = (projectiveSpace A n).presheaf.map (homOfLE (basicOpen_mul_le_left j k)).op (Proj.awayToSection (grading A n) (X k) y)` using `fun y => by`. Use `congr($(Proj.awayMap_awayToSection (grading A n) (X_mem j) (show X k * X j = X k * X j from rfl)) y)` as an intermediate fact. Rewrite `this` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Conclude with `this`.
+
+Rewrite using `[← e1, ← e2, ← e2, ← map_pow, ← map_mul]`. Use `congr 1`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_mul, HomogeneousLocalization.val_pow, awayMap_mk, Away.val_mk, Localization.mk_pow, Localization.mk_mul]`. Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`.
+
+Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma chart_identity (j k : Fin (n + 1)) {t : ℕ} {a : MvPolynomial (Fin (n + 1)) A}
     (ha : a ∈ grading A n (t • 1)) :
     (projectiveSpace A n).presheaf.map (homOfLE (basicOpen_mul_le_right j k)).op
@@ -146,25 +189,44 @@ lemma chart_identity (j k : Fin (n + 1)) {t : ℕ} {a : MvPolynomial (Fin (n + 1
   simp only [Submonoid.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, one_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[← map_pow, ← map_mul, h]`.
+-/
 lemma map_mul_pow_eq {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {u v w : R} (t : ℕ)
     (h : u * v ^ t = w) : φ u * φ v ^ t = φ w := by
   rw [← map_pow, ← map_mul, h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `X k ∈ HomogeneousIdeal.irrelevant (grading A n)`. Rewrite using `[HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply, DirectSum.decompose_of_mem_ne _ (X_mem k) one_ne_zero]`.
+-/
 lemma X_mem_irrelevant (k : Fin (n + 1)) :
     (X k : MvPolynomial (Fin (n + 1)) A) ∈ (HomogeneousIdeal.irrelevant (grading A n)).toIdeal := by
   change X k ∈ HomogeneousIdeal.irrelevant (grading A n)
   rw [HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply,
     DirectSum.decompose_of_mem_ne _ (X_mem k) one_ne_zero]
 
+/- English proof (translation)
+The claim follows from `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem f (X_mem_irrelevant k)) hk`.
+-/
 lemma map_irrelevant_eq_top {S : Type*} [CommRing S] (f : MvPolynomial (Fin (n + 1)) A →+* S)
     (k : Fin (n + 1)) (hk : IsUnit (f (X k))) :
     (HomogeneousIdeal.irrelevant (grading A n)).toIdeal.map f = ⊤ :=
   Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem f (X_mem_irrelevant k)) hk
 
+/- English proof (translation)
+The claim follows from `iSup_stdOpen`.
+-/
 lemma iSup_basicOpen_X : ⨆ j : Fin (n + 1), Proj.basicOpen (grading A n)
     (X j : MvPolynomial (Fin (n + 1)) A) = ⊤ :=
   iSup_stdOpen
 
+/- English proof (translation)
+Use `set f := (q.appLE _ ⊤ hq.ge).hom.comp (chartHom k)`. Establish `hpre : ∀ j, q ⁻¹ᵁ Proj.basicOpen (grading A n) (X j) = O.basicOpen (f (X j))` using `fun j => by`. Rewrite using `[RingHom.comp_apply, Scheme.basicOpen_appLE, basicOpen_chartHom_X, Scheme.Hom.preimage_inf, hq, top_inf_eq, top_inf_eq]`. Use `ProjHom.eq_fromOfGlobalSections f _ (fun j => X j) (fun _ => 1) (fun _ => one_pos) (fun j => X_mem j) iSup_basicOpen_X q hpre fun j t a ha => ?_` and prove the remaining obligations. Establish `hW : O.basicOpen (f (X j)) ≤ q ⁻¹ᵁ Proj.basicOpen (grading A n) (X k * X j)`.
+
+Rewrite using `[Proj.basicOpen_mul, Scheme.Hom.preimage_inf, hq, top_inf_eq, hpre]`. Establish `hk : ∀ z, O.presheaf.map (homOfLE le_top).op (f z) = q.appLE _ (O.basicOpen (f (X j))) (hW.trans (q.preimage_mono (basicOpen_mul_le_left j k))) (chartHom k z)` using `fun z => by`. Express the relevant statement in the definitionally equal form `O.presheaf.map _ (q.appLE _ ⊤ hq.ge (chartHom k z)) = _`. Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map]`. Establish `hk' : ∀ z, q.appLE _ (O.basicOpen (f (X j))) (hW.trans (q.preimage_mono (basicOpen_mul_le_left j k))) z = q.appLE _ (O.basicOpen (f (X j))) hW ((projectiveSpace A n).presheaf.map (homOfLE (basicOpen_mul_le_left j k)).op z)` using `fun z => by`.
+
+Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.map_appLE]`. Establish `hj' : ∀ (h : O.basicOpen (f (X j)) ≤ q ⁻¹ᵁ Proj.basicOpen (grading A n) (X j)) z, q.appLE _ (O.basicOpen (f (X j))) h z = q.appLE _ (O.basicOpen (f (X j))) hW ((projectiveSpace A n).presheaf.map (homOfLE (basicOpen_mul_le_right j k)).op z)` using `fun h z => by`. Rewrite using `[← ConcreteCategory.comp_apply, Scheme.Hom.map_appLE]`. Rewrite using `[ProjHom.corr_apply, ProjHom.ι_appTop_eq, ProjHom.ι_appTop_eq, hk, hk, hk', hk', hj']`. Conclude with `map_mul_pow_eq _ t (map_mul_pow_eq _ t (chart_identity j k ha))`.
+-/
 theorem eq_fromOfGlobalSections_of_preimage_eq_top {O : Scheme.{u}} (q : O ⟶ projectiveSpace A n)
     (k : Fin (n + 1)) (hq : q ⁻¹ᵁ Proj.basicOpen (grading A n) (X k) = ⊤) :
     q = Proj.fromOfGlobalSections (grading A n) ((q.appLE _ ⊤ hq.ge).hom.comp (chartHom k))

@@ -24,11 +24,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GlueProj
 
+/- English proof (translation)
+Use `letI := b.toAlgebra`. Conclude with `PrimeSpectrum.localization_away_comap_range R a`.
+-/
 theorem range_spMap_away {O R : Type} [CommRing O] [CommRing R] (a : O) (b : O →+* R)
     (h : @IsLocalization.Away O _ a R _ b.toAlgebra) : Set.range (spMap b) = {x : Sp O | a ∉ x.asIdeal} := by
   letI := b.toAlgebra
   exact PrimeSpectrum.localization_away_comap_range R a
 
+/- English proof (translation)
+Introduce `O _ R _ a b A X F s ψ h hp`. Establish `hb` using `ModelJoin.isOpenImmersion_away a b h`. Use `⟨MorphismProperty.of_isPullback (P := @IsOpenImmersion) hp.flip hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← range_spMap_away a b h, ← Scheme.Pullback.range_fst, ← hp.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, (hp.isoPullback.hom.surjective).range_eq, Set.image_univ]`.
+-/
 theorem openImm_range : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] (a : O) (b : O →+* R) {A X : Scheme.{0}}
     (F : A ⟶ Sp O) (s : X ⟶ Sp R) (ψ : X ⟶ A), @IsLocalization.Away O _ a R _ b.toAlgebra →
     IsPullback ψ s F (spMap b) → IsOpenImmersion ψ ∧ Set.range ψ = F ⁻¹' {x : Sp O | a ∉ x.asIdeal} := by
@@ -38,6 +44,17 @@ theorem openImm_range : ∀ {O : Type} [CommRing O] {R : Type} [CommRing R] (a :
   rw [← range_spMap_away a b h, ← Scheme.Pullback.range_fst, ← hp.isoPullback_hom_fst, Scheme.Hom.comp_base,
     TopCat.coe_comp, Set.range_comp, (hp.isoPullback.hom.surjective).range_eq, Set.image_univ]
 
+/- English proof (translation)
+Introduce `O _ I R _ a b A F X s ψ h hspan hp hs`. Use `haveI := fun i => ModelJoin.isOpenImmersion_away (a i) (b i) (h i)`. Set `U : I → (Sp O).Opens` to `fun i => (spMap (b i)).opensRange`. Establish `hU : iSup U = ⊤`. Use `top_le_iff.mp fun x _ => TopologicalSpace.Opens.mem_iSup.mpr ?_` and prove the remaining obligations.
+
+Establish `: ∃ i, a i ∉ x.asIdeal`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `x.isPrime.ne_top (top_le_iff.mp ?_)` and prove the remaining obligations. Rewrite using `[← hspan, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hc i`. Take `⟨i, hi⟩` from `this`. Use `⟨i, ?_⟩` and prove the remaining obligations. Use `show x ∈ Set.range (spMap (b i))`.
+
+Rewrite using `[range_spMap_away (a i) (b i) (h i)]`. Conclude with `hi`. Establish `hq : ∀ i, IsPullback (ψ i) (s i ≫ (spMap (b i)).isoOpensRange.hom) F (U i).ι` using `fun i => by`. Use `IsPullback.of_iso (hp i) (Iso.refl _) (Iso.refl _) (spMap (b i)).isoOpensRange (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals simp [U]`.
+
+Conclude with `CoverGlue.of_isPullback_cover @IsProper hU hq fun i => inferInstance`.
+-/
 theorem isProper_of_cover : ∀ {O : Type} [CommRing O] {I : Type} {R : I → Type} [∀ i, CommRing (R i)] (a : I → O)
     (b : ∀ i, O →+* R i) {A : Scheme.{0}} (F : A ⟶ Sp O) {X : I → Scheme.{0}} (s : ∀ i, X i ⟶ Sp (R i))
     (ψ : ∀ i, X i ⟶ A), (∀ i, @IsLocalization.Away O _ (a i) (R i) _ (b i).toAlgebra) → Ideal.span (Set.range a) = ⊤ →
@@ -70,12 +87,34 @@ namespace GlobalTheory.GlueProj
 
 open GlobalTheory.GlueLie GlobalTheory.ShFam GlobalTheory.LocM
 
+/- English proof (translation)
+Rewrite using `[CechPic.cls_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hB), CechPic.cls_lbPow (CechPic.isLB_dual hL), CechPic.cls_dual hL, CechPic.cls_dual hB]`.
+-/
 theorem cls_polShape {X : Scheme.{0}} {L B : LB X} (m : ℕ) (hL : L.IsLB) (hB : B.IsLB)
     (h : (CechPic.tens (lbPow (CechPic.dual L) m) (CechPic.dual B)).IsLB) :
     CechPic.cls _ h = m • -CechPic.cls L hL + -CechPic.cls B hB := by
   rw [CechPic.cls_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hB),
     CechPic.cls_lbPow (CechPic.isLB_dual hL), CechPic.cls_dual hL, CechPic.cls_dual hB]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c I _ R _ a b ω C BD φ m A F t ψ B p q hC hψ hpq hμ hP hBD`. Take `⟨-, hloc, hspan⟩` from `hC`. Establish `hoi` using `fun i => openImm_range (a i) (b i) F (C i).s (ψ i) (hloc i).2.2 (hψ i)`. Use `haveI : ∀ i, IsOpenImmersion (ψ i) := fun i => (hoi i).1`. Establish `hprop : ∀ i, IsProper (C i).s` using `fun i => GlobalTheory.ThetaDescent.isProper_of_isProjOver (C i).proj`.
+
+Use `haveI : IsProper F := isProper_of_cover a b F (fun i => (C i).s) ψ (fun i => (hloc i).2.2) hspan hψ hprop`. Use `haveI : A.IsSeparated := ⟨by rw [← terminal.comp_from F]; infer_instance⟩`. Establish `hcov : ∀ x : A, ∃ i, x ∈ Set.range (ψ i)` using `fun x => by`. Establish `: ∃ i, a i ∉ (F x).asIdeal`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Apply `(F x).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Ideal.span_le.2 (Set.range_subset_iff.2 hne)`. Take `⟨i, hi⟩` from `this`.
+
+Conclude with `⟨i, by rw [(hoi i).2]; exact hi⟩`. Set `sm` to `fun i => (hμ i).some`. Establish `hLie : ∀ i, (detLie (C i)).IsLB` using `fun i => isLB_detLie_of_polOf (hP i).2.isLB`. Set `Λ` to `gLie C ψ (fun i => (sm i).cart)`. Establish `hΛ : Λ.IsLB` using `isLB_gLie C ψ _ hLie hcov`.
+
+Take `⟨BD', hBD'⟩` from `CartierGlue.exists_glue ψ BD (fun i => inferInstance) hcov (fun i k => by`. Establish `e1 : ((hpq i k).isoPullback.inv ≫ p i k) = pullback.fst (ψ i) (ψ k)` using `(hpq i k).isoPullback_inv_fst`. Establish `e2 : ((hpq i k).isoPullback.inv ≫ q i k) = pullback.snd (ψ i) (ψ k)` using `(hpq i k).isoPullback_inv_snd`. Rewrite using `[← e1, ← e2, Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp, hBD])`. Set `P` to `CechPic.tens (lbPow (CechPic.dual Λ) m) (CechPic.dual BD'.lb)`.
+
+Establish `hPL : P.IsLB` using `CechPic.isLB_tens (isLB_lbPow (CechPic.isLB_dual hΛ) m) (CechPic.isLB_dual BD'.isLB_lb)`. Establish `hiso : ∀ i, LBIso (P.pull (ψ i)) (polOf (C i) m (BD i))` using `fun i => by`. Establish `hk : BD'.KeepsRegular (ψ i)` using `BD'.keepsRegular_of_flat (ψ i)`. Establish `e₁ : CechPic.pull (ψ i) (CechPic.cls _ hΛ) = CechPic.cls _ (hLie i)`. Rewrite using `[← CechPic.cls_pull hΛ (ψ i) (pull_isLB hΛ _)]`.
+
+Conclude with `(CechPic.cls_eq_iff _ _).2 (lbIso_gLie_pull C ψ _ i)`. Establish `e₂ : CechPic.pull (ψ i) (CechPic.cls _ BD'.isLB_lb) = CechPic.cls _ (BD i).isLB_lb`. Rewrite using `[← CechPic.cls_pull BD'.isLB_lb (ψ i) (pull_isLB BD'.isLB_lb _)]`. Conclude with `((CechPic.cls_eq_iff (BD'.pull (ψ i) hk).isLB_lb (pull_isLB BD'.isLB_lb _)).2 (BD'.lbIso_pull (ψ i) hk)).symm.trans ((CechPic.cls_eq_iff _ _).2 (EffCartierData.lbIso_of_idealSheaf_eq _ _ ((BD'.idealSheaf_pull (ψ i) hk).trans (hBD' i))))`. Use `(CechPic.cls_eq_iff (pull_isLB hPL _) (hP i).2.isLB).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[CechPic.cls_pull hPL (ψ i), cls_polShape m hΛ BD'.isLB_lb hPL, map_add, map_nsmul, map_neg, map_neg, e₁, e₂]`. Conclude with `(cls_polShape m (hLie i) (BD i).isLB_lb (hP i).2.isLB).symm`. Establish `hamp : IsAmpleLB P`. Establish `hX : CompactSpace A` using `⟨by simpa using QuasiCompact.isCompact_preimage (f := F) Set.univ isOpen_univ isCompact_univ⟩`. Establish `hXs : QuasiSeparatedSpace A` using `inferInstance`.
+
+Conclude with `AmpleOverBase.isAmpleLB_of_basicOpen_cover F ψ a P hX hXs hspan (fun i => inferInstance) (fun i => (hoi i).2) (fun i => (hP i).2.of_lbIso (pull_isLB hPL _) (hiso i))`. Conclude with `hamp.isProjOver F`.
+-/
 theorem isProjOver_of_glue : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
     {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)] {a : I → 𝓞 c.F} {b : ∀ i, 𝓞 c.F →+* R i}
     {ω : ∀ i, R i →+* c.F} (C : ∀ i, Model Xo c (ω i)) (BD : ∀ i, EffCartierData (C i).X) (φ : InvFun (𝓞 E)) (m : ℕ)

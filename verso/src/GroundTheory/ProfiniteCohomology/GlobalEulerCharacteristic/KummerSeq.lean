@@ -17,6 +17,9 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   (N : Subgroup G) {T O : Rep.{u} (ULift.{u} ℤ) G} [IsDiscreteRep T] [IsDiscreteRep O]
   {n : ℕ} {f : T ⟶ O} {w : f ≫ (n • 𝟙 O) = 0} (hS : (ShortComplex.mk f (n • 𝟙 O) w).ShortExact)
 
+/- English proof (translation)
+Rewrite using `[Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Conclude with `cohomologyMap_nsmul_id_apply _ n i x`.
+-/
 theorem cohomologyMap_res_nsmul_apply (O : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep O] (n i : ℕ)
     (x : cohomology (Rep.res N.subtype O) i) :
     (cohomologyMap ((Rep.resFunctor N.subtype).map (n • 𝟙 O)) i).hom x = n • x := by
@@ -26,12 +29,18 @@ theorem cohomologyMap_res_nsmul_apply (O : Rep.{u} (ULift.{u} ℤ) G) [IsDiscret
 set_option linter.unusedSectionVars false in
 include hS in
 
+/- English proof (translation)
+Rewrite using `[← cohomologyMap_res_nsmul_apply N O n i]`. Conclude with `cohomologyMap_g_cohomologyMap_f_apply (S := (ShortComplex.mk f (n • 𝟙 O) w).map (Rep.resFunctor N.subtype)) i x`.
+-/
 theorem nsmul_cohomologyMap_res_f_apply (i : ℕ) (x : cohomology (Rep.res N.subtype T) i) :
     n • (cohomologyMap ((Rep.resFunctor N.subtype).map f) i).hom x = 0 := by
   rw [← cohomologyMap_res_nsmul_apply N O n i]
   exact cohomologyMap_g_cohomologyMap_f_apply
     (S := (ShortComplex.mk f (n • 𝟙 O) w).map (Rep.resFunctor N.subtype)) i x
 
+/- English proof (translation)
+Rewrite using `[← cohomologyMap_res_nsmul_apply N O n i]`. Conclude with `congrArg (fun φ => φ.hom y) (comp_δ (shortExact_map_res N hS) i (i + 1) rfl)`.
+-/
 theorem δ_res_nsmul_apply (i : ℕ) (y : cohomology (Rep.res N.subtype O) i) :
     (δ (shortExact_map_res N hS) i (i + 1) rfl).hom (n • y) = 0 := by
   rw [← cohomologyMap_res_nsmul_apply N O n i]
@@ -40,6 +49,9 @@ theorem δ_res_nsmul_apply (i : ℕ) (y : cohomology (Rep.res N.subtype O) i) :
 def kummerResδ (i : ℕ) : cohomology (Rep.res N.subtype O) i →+ cohomology (Rep.res N.subtype T) (i + 1) :=
   (δ (shortExact_map_res N hS) i (i + 1) rfl).hom.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kummerResδ_apply (i : ℕ) (y : cohomology (Rep.res N.subtype O) i) :
     kummerResδ N hS i y = (δ (shortExact_map_res N hS) i (i + 1) rfl).hom y :=
   rfl
@@ -52,12 +64,18 @@ def kummerTorsHom (i : ℕ) :
   map_add' _ _ := Subtype.ext (map_add _ _ _)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_kummerTorsHom_apply (i : ℕ) (x : cohomology (Rep.res N.subtype T) i) :
     ((kummerTorsHom N hS i x : TorsN _ n) : cohomology (Rep.res N.subtype O) i) =
       (cohomologyMap ((Rep.resFunctor N.subtype).map f) i).hom x :=
   rfl
 
 include hS in
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, LinearMap.lsmul_apply, natCast_zsmul, AddMonoidHom.coe_toIntLinearMap]`. Conclude with `δ_res_nsmul_apply N hS i y`.
+-/
 theorem range_lsmul_le_ker_δ (i : ℕ) :
     LinearMap.range (LinearMap.lsmul ℤ (cohomology (Rep.res N.subtype O) i) (n : ℤ)) ≤
       LinearMap.ker (kummerResδ N hS i).toIntLinearMap := by
@@ -72,6 +90,11 @@ def kummerModNHom (i : ℕ) :
     (range_lsmul_le_ker_δ N hS i)).toAddMonoidHom
 
 include hS in
+/- English proof (translation)
+Use `le_antisymm (range_lsmul_le_ker_δ N hS i) fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[LinearMap.mem_ker, AddMonoidHom.coe_toIntLinearMap, kummerResδ_apply]`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ (shortExact_map_res N hS) i (i + 1) rfl) y hy`. Set `z' : cohomology (Rep.res N.subtype O) i` to `z`. Establish `hz' : (cohomologyMap ((Rep.resFunctor N.subtype).map (n • 𝟙 O)) i).hom z' = y` using `hz`.
+
+Use `⟨z', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(n : ℤ) • z' = y`. Rewrite using `[natCast_zsmul, ← cohomologyMap_res_nsmul_apply N O n i]`. Conclude with `hz'`.
+-/
 theorem range_lsmul_eq_ker_δ (i : ℕ) :
     LinearMap.range (LinearMap.lsmul ℤ (cohomology (Rep.res N.subtype O) i) (n : ℤ)) =
       LinearMap.ker (kummerResδ N hS i).toIntLinearMap := by
@@ -86,6 +109,9 @@ theorem range_lsmul_eq_ker_δ (i : ℕ) :
   rw [natCast_zsmul, ← cohomologyMap_res_nsmul_apply N O n i]
   exact hz'
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Function.Injective ((LinearMap.range (LinearMap.lsmul ℤ (cohomology (Rep.res N.subtype O) i) (n : ℤ))).liftQ (kummerResδ N hS i).toIntLinearMap (range_lsmul_le_ker_δ N hS i))`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_liftQ_eq_bot']`. Conclude with `range_lsmul_eq_ker_δ N hS i`.
+-/
 theorem kummerModNHom_injective (i : ℕ) : Function.Injective (kummerModNHom N hS i) := by
   change Function.Injective ((LinearMap.range (LinearMap.lsmul ℤ
     (cohomology (Rep.res N.subtype O) i) (n : ℤ))).liftQ
@@ -94,6 +120,11 @@ theorem kummerModNHom_injective (i : ℕ) : Function.Injective (kummerModNHom N 
   rw [← LinearMap.ker_eq_bot, Submodule.ker_liftQ_eq_bot']
   exact range_lsmul_eq_ker_δ N hS i
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Establish `hy' : (cohomologyMap ((Rep.resFunctor N.subtype).map (n • 𝟙 O)) i).hom y = 0`. Rewrite using `[cohomologyMap_res_nsmul_apply]`. Conclude with `(mem_ker_lsmul_iff n y).1 hy`. Take `⟨x, hx⟩` from `exists_cohomologyMap_f_eq (shortExact_map_res N hS) i y hy'`.
+
+Conclude with `⟨x, Subtype.ext hx⟩`.
+-/
 theorem kummerTorsHom_surjective (i : ℕ) : Function.Surjective (kummerTorsHom N hS i) := by
   rintro ⟨y, hy⟩
   have hy' : (cohomologyMap ((Rep.resFunctor N.subtype).map (n • 𝟙 O)) i).hom y = 0 := by
@@ -102,6 +133,11 @@ theorem kummerTorsHom_surjective (i : ℕ) : Function.Surjective (kummerTorsHom 
   obtain ⟨x, hx⟩ := exists_cohomologyMap_f_eq (shortExact_map_res N hS) i y hy'
   exact ⟨x, Subtype.ext hx⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (cohomologyMap ((Rep.resFunctor N.subtype).map f) (i + 1)).hom x = 0` using `congrArg Subtype.val hx`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ (shortExact_map_res N hS) i (i + 1) rfl) x hx'`. Conclude with `⟨Submodule.Quotient.mk y, hy⟩`.
+
+Introduce and unpack `⟨y, rfl⟩`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H y`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun φ => φ.hom y) (δ_comp (shortExact_map_res N hS) i (i + 1) rfl)`.
+-/
 theorem kummerTorsHom_eq_zero_iff (i : ℕ) (x : cohomology (Rep.res N.subtype T) (i + 1)) :
     kummerTorsHom N hS (i + 1) x = 0 ↔ ∃ y, kummerModNHom N hS i y = x := by
   constructor
@@ -119,6 +155,11 @@ theorem kummerTorsHom_eq_zero_iff (i : ℕ) (x : cohomology (Rep.res N.subtype T
 
 include hS in
 
+/- English proof (translation)
+Establish `hf : Function.Injective f.hom` using `(Rep.mono_iff_injective f).1 hS.mono_f`. Introduce `x y hxy`. Establish `e` using `fun z => congrArg (fun φ => φ.hom z) (cohomologyMap_zero_comp_H0Iso_hom ((Rep.resFunctor N.subtype).map f))`. Establish `h1` using `(e x).symm.trans ((congrArg (H0Iso (Rep.res N.subtype O)).hom.hom hxy).trans (e y))`. Establish `h2 : (H0Iso (Rep.res N.subtype T)).hom.hom x = (H0Iso (Rep.res N.subtype T)).hom.hom y` using `Subtype.ext (hf (congrArg Subtype.val h1))`.
+
+Rewrite using `[← H0Iso_inv_hom_apply _ x, h2, H0Iso_inv_hom_apply]`.
+-/
 theorem cohomologyMap_res_f_injective_zero :
     Function.Injective (cohomologyMap ((Rep.resFunctor N.subtype).map f) 0).hom := by
   have hf : Function.Injective f.hom := (Rep.mono_iff_injective f).1 hS.mono_f
@@ -130,18 +171,27 @@ theorem cohomologyMap_res_f_injective_zero :
     Subtype.ext (hf (congrArg Subtype.val h1))
   rw [← H0Iso_inv_hom_apply _ x, h2, H0Iso_inv_hom_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ hxy => cohomologyMap_res_f_injective_zero N hS (congrArg Subtype.val hxy), kummerTorsHom_surjective N hS 0⟩`.
+-/
 theorem kummerTorsHom_bijective_zero : Function.Bijective (kummerTorsHom N hS 0) :=
   ⟨fun _ _ hxy => cohomologyMap_res_f_injective_zero N hS (congrArg Subtype.val hxy),
     kummerTorsHom_surjective N hS 0⟩
 
 variable [N.Normal]
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun φ => φ.hom x) (cohomologyConj_naturality T N f i g)).symm`.
+-/
 theorem kummerTorsHom_cohomologyConj (i : ℕ) (g : G) (x : cohomology (Rep.res N.subtype T) i) :
     ((kummerTorsHom N hS i ((cohomologyConj T N i g).hom x) : TorsN _ n) :
         cohomology (Rep.res N.subtype O) i) =
       (cohomologyConj O N i g).hom (kummerTorsHom N hS i x) :=
   (congrArg (fun φ => φ.hom x) (cohomologyConj_naturality T N f i g)).symm
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun φ => φ.hom y) (δ_comp_cohomologyConj N hS i (i + 1) rfl g)).symm`.
+-/
 theorem kummerModNHom_cohomologyConj (i : ℕ) (g : G) (y : cohomology (Rep.res N.subtype O) i) :
     kummerModNHom N hS i (Submodule.Quotient.mk ((cohomologyConj O N i g).hom y)) =
       (cohomologyConj T N (i + 1) g).hom (kummerModNHom N hS i (Submodule.Quotient.mk y)) :=
@@ -157,6 +207,9 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 include hker in
 
+/- English proof (translation)
+Use `cohomologyConj_eq_of_mk_eq A N i (QuotientGroup.eq.2 (hker ?_))` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hgh, inv_mul_cancel]`.
+-/
 theorem cohomologyConj_eq_of_map_eq (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A] (i : ℕ)
     {g h : G} (hgh : π g = π h) : cohomologyConj A N i g = cohomologyConj A N i h := by
   refine cohomologyConj_eq_of_mk_eq A N i (QuotientGroup.eq.2 (hker ?_))
@@ -180,6 +233,9 @@ theorem cohomologyConj_eq_of_map_eq (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteR
   smul_zero _ := map_zero _
   smul_add _ _ _ := map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom x) (cohomologyConj_eq_of_map_eq N π hker A i (Function.surjInv_eq hπ (π g)))`.
+-/
 theorem conjActionOf_smul (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A] (i : ℕ) (g : G)
     (x : cohomology (Rep.res N.subtype A) i) :
     (letI := conjActionOf N π hπ hker A i; π g • x) = (cohomologyConj A N i g).hom x :=
@@ -191,6 +247,21 @@ variable {T O : Rep.{u} (ULift.{u} ℤ) G} [IsDiscreteRep T] [IsDiscreteRep O]
 
 include hS in
 
+/- English proof (translation)
+Set `` to `conjActionOf N π hπ hker O i`. Set `` to `conjActionOf N π hπ hker O (i + 1)`. Establish `he' : ∀ (g : G) (y : cohomology (Rep.res N.subtype T) (i + 1)), e.symm ((cohomologyConj T N (i + 1) g).hom y) = ρX (π g) (e.symm y)` using `fun g y => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+
+Set `φ : ModN (cohomology (Rep.res N.subtype O) i) l →ₗ[ZMod l] X` to `((e.symm.toAddMonoidHom).comp (kummerModNHom N hS i)).toZModLinearMap l`. Set `ψ : X →ₗ[ZMod l] TorsN (cohomology (Rep.res N.subtype O) (i + 1)) l` to `((kummerTorsHom N hS (i + 1)).comp e.toAddMonoidHom).toZModLinearMap l`. Use `d.additive _ ρX _ φ ψ ⟨fun γ y => ?_⟩ ⟨fun γ x => ?_⟩ ?_ ?_ ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hπ γ`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `H y`. Express the relevant statement in the definitionally equal form `e.symm (kummerModNHom N hS i (Submodule.Quotient.mk (π g • y))) = ρX (π g) (e.symm (kummerModNHom N hS i (Submodule.Quotient.mk y)))`. Rewrite using `[conjActionOf_smul, kummerModNHom_cohomologyConj, he']`. Take `⟨g, rfl⟩` from `hπ γ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `((kummerTorsHom N hS (i + 1) (e (ρX (π g) x)) : TorsN _ l) : cohomology (Rep.res N.subtype O) (i + 1)) = π g • ((kummerTorsHom N hS (i + 1) (e x) : TorsN _ l) : cohomology (Rep.res N.subtype O) (i + 1))`. Rewrite using `[he, kummerTorsHom_cohomologyConj, conjActionOf_smul]`. Conclude with `e.symm.injective.comp (kummerModNHom_injective N hS i)`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Take `⟨y, hy⟩` from `(kummerTorsHom_eq_zero_iff N hS i (e x)).1 hx`. Use `⟨y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm (kummerModNHom N hS i y) = x`. Rewrite using `[hy, AddEquiv.symm_apply_apply]`.
+
+Introduce and unpack `⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `kummerTorsHom N hS (i + 1) (e (e.symm (kummerModNHom N hS i y))) = 0`. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `(kummerTorsHom_eq_zero_iff N hS i _).2 ⟨y, rfl⟩`. Introduce `z`.
+
+Take `⟨x, hx⟩` from `kummerTorsHom_surjective N hS (i + 1) z`. Conclude with `⟨e.symm x, by`. Express the relevant statement in the definitionally equal form `kummerTorsHom N hS (i + 1) (e (e.symm x)) = z`. Rewrite using `[AddEquiv.apply_symm_apply, hx]⟩`.
+-/
 theorem toFun_eq_modN_add_torsN (d : AdditiveFunction.{u} l Γ) (i : ℕ)
     [Finite (ModN (cohomology (Rep.res N.subtype O) i) l)]
     [Finite (TorsN (cohomology (Rep.res N.subtype O) (i + 1)) l)]
@@ -247,6 +318,11 @@ theorem toFun_eq_modN_add_torsN (d : AdditiveFunction.{u} l Γ) (i : ℕ)
 
 include hS in
 
+/- English proof (translation)
+Set `` to `conjActionOf N π hπ hker O 0`. Set `E : X ≃+ TorsN (cohomology (Rep.res N.subtype O) 0) l` to `e.trans (AddEquiv.ofBijective (kummerTorsHom N hS 0) (kummerTorsHom_bijective_zero N hS))`. Use `d.toFun_congr _ _ { (E.toAddMonoidHom.toZModLinearMap l) with invFun := E.symm, left_inv := E.left_inv, right_inv := E.right_inv } fun γ x => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hπ γ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `((kummerTorsHom N hS 0 (e (ρX (π g) x)) : TorsN _ l) : cohomology (Rep.res N.subtype O) 0) = π g • ((kummerTorsHom N hS 0 (e x) : TorsN _ l) : cohomology (Rep.res N.subtype O) 0)`. Rewrite using `[he, kummerTorsHom_cohomologyConj, conjActionOf_smul]`.
+-/
 theorem toFun_eq_torsN_zero (d : AdditiveFunction.{u} l Γ)
     [Finite (TorsN (cohomology (Rep.res N.subtype O) 0) l)]
     {X : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X] (ρX : Representation (ZMod l) Γ X)

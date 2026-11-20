@@ -40,6 +40,11 @@ def prependCenter {X : Scheme.{u}} (d : BlowupSequenceData X) (Z : X.IdealSheafD
   | 0 => Z
   | (n + 1) => d.center n
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero`. Establish `h` using `hZ.iso_hom_comp d.isoZero`. Rewrite `h` using `[Category.comp_id]`. Conclude with `h`.
+
+Consider the case `succ n`. Conclude with `d.isBlowup n (by omega)`.
+-/
 theorem isBlowupAlongIdealSheaf_prependMap {X : Scheme.{u}} (Z : X.IdealSheafData)
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length + 1) :
     Blowup.IsBlowupAlongIdealSheaf (d.prependMap i) (d.prependCenter Z i) := by
@@ -64,20 +69,44 @@ section
 
 variable {X : Scheme.{u}} (Z : X.IdealSheafData) (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (d : BlowupSequenceData X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_length : (prepend Z hZ d).length = d.length + 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_schemeAt_zero : (prepend Z hZ d).obj 0 = X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_schemeAt_succ (n : ℕ) : (prepend Z hZ d).obj (n + 1) = d.obj n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_blowupMorphism_zero : (prepend Z hZ d).map 0 = d.isoZero.hom := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_blowupMorphism_succ (n : ℕ) : (prepend Z hZ d).map (n + 1) = d.map n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_isoObjZero : (prepend Z hZ d).isoZero = Iso.refl X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_center_zero : (prepend Z hZ d).center 0 = Z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem prepend_center_succ (n : ℕ) : (prepend Z hZ d).center (n + 1) = d.center n := rfl
 
 end
@@ -103,6 +132,9 @@ noncomputable def containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (j 
         (T.boundary.get ⟨j, hj⟩).subschemeι)
   else ⊤
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
       connectedComponent x ⊆
@@ -115,6 +147,9 @@ theorem containedComponentsIdeal_eq_ker (T : MarkedIdealWithBoundary.{u}) (j : �
                   ⇑(T.boundary.get ⟨j, hj⟩).subschemeι ⁻¹' orderAtLeastLocus T.ideal T.mult}, h⟩ ≫
           (T.boundary.get ⟨j, hj⟩).subschemeι) := dif_pos h
 
+/- English proof (translation)
+Conclude with `dif_neg h`.
+-/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
     (h : ¬ IsOpen {x : ↥(T.boundary.get ⟨j, hj⟩).subscheme |
       connectedComponent x ⊆
@@ -150,6 +185,9 @@ noncomputable def liftSeqFromDivisor (hres : FunctorialResolution.Blowup.StrictT
     else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
+/- English proof (translation)
+Establish `h1 : (restrictToBoundaryDivisor T j hj I₀ E₀).krullDimSucc < T.krullDimSucc ∧ AlgebraicGeometry.IsNoetherian T.scheme` using `⟨hdim, inferInstance⟩`. Conclude with `(dif_pos h1).trans ((dif_pos hpr).trans (dif_pos hmk))`.
+-/
 theorem liftSeqFromDivisor_eq_toMarkedSequence (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) (hj : j < T.boundary.length)
@@ -192,6 +230,9 @@ noncomputable def divisorReductionSeq (hres : FunctorialResolution.Blowup.Strict
         else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
   else emptyMarkedSequenceOfBlowups T.structMap T.ideal T.mult T.boundary
 
+/- English proof (translation)
+Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_pos hcs]`.
+-/
 theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ)
@@ -200,6 +241,9 @@ theorem divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty (hres : Funct
   unfold divisorReductionSeq
   rw [dif_pos hj, if_pos hcs]
 
+/- English proof (translation)
+Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_neg hcs, if_pos hZ]`.
+-/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ)
@@ -211,6 +255,9 @@ theorem divisorReductionSeq_eq_liftSeqFromDivisor_of_eq_top (hres : FunctorialRe
   unfold divisorReductionSeq
   rw [dif_pos hj, if_neg hcs, if_pos hZ]
 
+/- English proof (translation)
+Unfold `divisorReductionSeq`. Rewrite using `[dif_pos hj, if_neg hcs, if_neg hZ, dif_pos hb]`.
+-/
 theorem divisorReductionSeq_eq_liftSeqFromDivisor_prepend (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ)
@@ -232,6 +279,9 @@ noncomputable def divisorReductionSeqFromLowerDim (hres : FunctorialResolution.B
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) : T.SequenceOfBlowups :=
   divisorReductionSeq hres hno T alg j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divisorReductionSeqFromLowerDim_eq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     (alg : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → S.SequenceOfBlowups) (j : ℕ) :

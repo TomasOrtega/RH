@@ -15,6 +15,13 @@ section Jv
 
 variable (T : CDVR) (e : ℕ)
 
+/- English proof (translation)
+Distinguish the cases in `hr : algebraMap T.V T.Fr r = 0`. Rewrite using `[hr, nval_zero]`. Conclude with `le_top`. Rewrite using `[nval_of_ne hr]`. Establish `hv0 : 0 ≤ vV T.V (algebraMap T.V T.Fr r)`.
+
+Unfold `Formalism.L2.Pj.vV Formalism.L2.Pj.valV`. Establish `hle` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one (K := T.Fr) (IsDiscreteValuationRing.maximalIdeal T.V) r`. Establish `hne : (IsDedekindDomain.HeightOneSpectrum.valuation T.Fr (IsDiscreteValuationRing.maximalIdeal T.V)) (algebraMap T.V T.Fr r) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hr`. Establish `hlog` using `(WithZero.log_le_log hne one_ne_zero).mpr hle`. Rewrite `hlog` using `[WithZero.log_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : (0 : ℝ) ≤ (vV T.V (algebraMap T.V T.Fr r) : ℝ)` using `by exact_mod_cast hv0`. Conclude with `EReal.coe_nonneg.mpr (div_nonneg hv (Nat.cast_nonneg e))`.
+-/
 theorem nval_alg_nonneg (r : T.V) : (0 : EReal) ≤ nval T.V e (algebraMap T.V T.Fr r) := by
   by_cases hr : algebraMap T.V T.Fr r = 0
   · rw [hr, nval_zero]
@@ -44,6 +51,11 @@ def Jv (c : ℝ) : Submodule T.V T.Fr where
     rw [Algebra.smul_def, nval_mul]
     exact hx.trans (le_add_of_nonneg_left (nval_alg_nonneg T e r))
 
+/- English proof (translation)
+Use `show ((-c : ℝ) : EReal) ≤ nval T.V e 1`. Establish `h1` using `Formalism.L2.Pj.vV_mul (V := T.V) (K' := T.Fr) (x := 1) (y := 1) one_ne_zero one_ne_zero`. Rewrite `h1` using `[mul_one]`. Establish `h0 : vV T.V (1 : T.Fr) = 0` using `by omega`. Rewrite using `[nval_of_ne one_ne_zero, h0]`.
+
+Simplify using `only [Int.cast_zero, zero_div]`. Conclude with `neg_nonpos.mpr hc` after adjusting the coercions.
+-/
 theorem one_mem_Jv {c : ℝ} (hc : 0 ≤ c) : (1 : T.Fr) ∈ Jv T e c := by
   show ((-c : ℝ) : EReal) ≤ nval T.V e 1
   have h1 := Formalism.L2.Pj.vV_mul (V := T.V) (K' := T.Fr) (x := 1) (y := 1) one_ne_zero one_ne_zero
@@ -53,6 +65,17 @@ theorem one_mem_Jv {c : ℝ} (hc : 0 ≤ c) : (1 : T.Fr) ∈ Jv T e c := by
   simp only [Int.cast_zero, zero_div]
   exact_mod_cast neg_nonpos.mpr hc
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx` using `[pow_zero]`.
+
+Take `⟨r, rfl⟩` from `Submodule.mem_one.mp hx`. Simplify using `only [Nat.cast_zero, zero_mul, neg_zero, EReal.coe_zero]`. Conclude with `nval_alg_nonneg T e r`. Consider the case `succ m ih`. Introduce `x hx`.
+
+Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx (fun a ha b hb => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[nval_mul]`. Establish `h1` using `ih a ha`. Establish `h2 : ((-c : ℝ) : EReal) ≤ nval T.V e b` using `hb`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← EReal.coe_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ _ := add_le_add h1 h2`. Conclude with `le_trans (le_min hy hz) (nval_add e y z)`.
+-/
 theorem mem_Jv_pow {c : ℝ} (_hc : 0 ≤ c) : ∀ (m : ℕ) (x : T.Fr), x ∈ Jv T e c ^ m →
     (((-((m : ℝ) * c)) : ℝ) : EReal) ≤ nval T.V e x := by
   intro m
@@ -81,6 +104,15 @@ theorem mem_Jv_pow {c : ℝ} (_hc : 0 ≤ c) : ∀ (m : ℕ) (x : T.Fr), x ∈ J
 
 end Jv
 
+/- English proof (translation)
+Unfold `pairMin`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum (fun q _ => ?_)` and prove the remaining obligations. Establish `h1` using `min_le_left (∑ l ∈ Finset.univ.filter (fun l => c l = q ∧ s l = true), x l) (∑ l ∈ Finset.univ.filter (fun l => c l = q ∧ s l = false), x l)`.
+
+Establish `h2` using `min_le_right (∑ l ∈ Finset.univ.filter (fun l => c l = q ∧ s l = true), x l) (∑ l ∈ Finset.univ.filter (fun l => c l = q ∧ s l = false), x l)`. Use linear arithmetic over natural numbers and integers. Use `_ = ∑ l, x l := by`. Simplify using `only [Finset.sum_filter, ← Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (c l)]`. Apply the tactic sequence `cases s l <;> simp`. Introduce `b _ hb`. Establish `hb' : c l ≠ b` using `fun h => hb h.symm`.
+
+Simplify using `[hb']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem two_pairMin_le {ι π : Type} [Fintype ι] [Fintype π] [DecidableEq π] (c : ι → π) (s : ι → Bool)
     (x : ι →₀ ℕ) : 2 * pairMin c s x ≤ ∑ l, x l := by
   unfold pairMin
@@ -107,6 +139,11 @@ theorem two_pairMin_le {ι π : Type} [Fintype ι] [Fintype π] [DecidableEq π]
         · intro h
           exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h2 : 2 * ∑ b, pairMin (fun ℓ : (Σ τ : T, Fin (rr τ)) => c ℓ.1) (fun ℓ => s ℓ.1) (colL rr n mo b) ≤ ∑ σ, ∑ i : Fin (rr σ), a σ i`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+
+Use `_ = ∑ σ, ∑ i : Fin (rr σ), a σ i := by`. Rewrite using `[Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl (fun σ _ => Finset.sum_congr rfl (fun i _ => hrow σ i))`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_pairMin_le {T : Type} [Fintype T] (rr : T → ℕ) (n : ℕ) {π : Type} [Fintype π] [DecidableEq π]
     (c : T → π) (s : T → Bool) (a : T → ℕ → ℕ) (mo : Formalism.L2.Pj.Letter T rr n →₀ ℕ)
     (hrow : ∀ (σ : T) (i : Fin (rr σ)), ∑ b : Fin n, mo ⟨σ, i, b⟩ = a σ i) :

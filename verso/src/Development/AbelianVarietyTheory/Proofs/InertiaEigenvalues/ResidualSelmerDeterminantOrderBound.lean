@@ -22,6 +22,9 @@ open GlobalTheory.TwistDet
 
 namespace GlobalTheory.ResOrder
 
+/- English proof (translation)
+Use `⟨Submodule.liftQ _ ((LinearMap.proj g).comp (Z1 ρ).subtype) fun z hz => ?_, fun z => rfl⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ _).1 hz`. Use `hm g` as an intermediate fact. Rewrite `this` using `[hg, sub_self]`. Conclude with `this`.
+-/
 theorem exists_ev {Γ K W : Type} [Group Γ] [TopologicalSpace Γ] [Field K] [AddCommGroup W] [Module K W] [TopologicalSpace W]
     [IsTopologicalAddGroup W] [ContinuousConstSMul K W] (ρ : Representation K Γ W) (g : Γ) (hg : ∀ m, ρ g m = m) :
     ∃ ev : H1 ρ →ₗ[K] W, ∀ z : Z1 ρ, ev (Submodule.Quotient.mk z) = z.1 g := by
@@ -31,6 +34,11 @@ theorem exists_ev {Γ K W : Type} [Group Γ] [TopologicalSpace Γ] [Field K] [Ad
   rw [hg, sub_self] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp.1, hp.2, hq.1, hq.2]`. Consider the case `monomial n a`. Break down `n with _ | _ | n` into its components or cases. Simplify using `[Polynomial.coeff_monomial, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Simplify using `[Polynomial.coeff_monomial, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `: (DualNumber.eps : DualNumber K) ^ (n + 1 + 1) = 0`. Rewrite using `[pow_succ, pow_succ, mul_assoc, DualNumber.eps_mul_eps, mul_zero]`. Simplify using `[Polynomial.coeff_monomial, this]`.
+-/
 theorem aeval_eps {K : Type} [Field K] (p : Polynomial K) :
     (Polynomial.aeval (DualNumber.eps : DualNumber K) p).fst = p.coeff 0 ∧
       (Polynomial.aeval (DualNumber.eps : DualNumber K) p).snd = p.coeff 1 := by
@@ -47,6 +55,9 @@ theorem aeval_eps {K : Type} [Field K] (p : Polynomial K) :
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (bkP : BKPh X)
   (i : X.Tw) (s : X.Sig i)
 
+/- English proof (translation)
+Set `f : GE N →* Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)` to `{ toFun := fun g => ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) • (((Tgl i s g)⁻¹ : GL _ _) : Matrix _ _ (X.O0 i)).transpose map_one' := by simp map_mul' := fun g h => by`. Simplify using `only [map_mul, mul_inv_rev, Units.val_mul, Matrix.transpose_mul, smul_mul_smul_comm] }`. Use `⟨f.toHomUnits, fun g => ?_⟩` and prove the remaining obligations. Use `show f g = _`. Simplify using `only [f, MonoidHom.coe_mk, OneHom.coe_mk, Tdual, ← Tgl_coe, Matrix.coe_units_inv]`.
+-/
 theorem exists_isDual : ∃ ρ, IsDual i s ρ := by
   let f : GE N →* Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i) :=
     { toFun := fun g => ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) • (((Tgl i s g)⁻¹ : GL _ _) : Matrix _ _ (X.O0 i)).transpose
@@ -57,6 +68,9 @@ theorem exists_isDual : ∃ ρ, IsDual i s ρ := by
   show f g = _
   simp only [f, MonoidHom.coe_mk, OneHom.coe_mk, Tdual, ← Tgl_coe, Matrix.coe_units_inv]
 
+/- English proof (translation)
+Introduce `h`. Use `h.map (algebraMap (X.O0 i) (X.O i))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `X.O_l i this`.
+-/
 theorem l_mem : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) := by
   intro h
   have := h.map (algebraMap (X.O0 i) (X.O i))
@@ -64,6 +78,13 @@ theorem l_mem : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) :
   exact X.O_l i this
 
 variable {i s} in
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h` using `congrFun (congrFun hg.1 a) b`. Establish `h2 : Tmat i s g a b - (1 : Matrix _ _ (X.O0 i)) a b ∈ IsLocalRing.maximalIdeal (X.O0 i)`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub]`. Rewrite `h` using `[Matrix.map_apply]`.
+
+Rewrite using `[h]`. Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`. Establish `h3` using `hB _ h2`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, h3]`.
+
+Apply the tactic sequence `by_cases e : a = b <;> simp [Matrix.one_apply, e]`.
+-/
 theorem map_eq_one {B : Type} [CommRing B] [Algebra (X.O0 i) B]
     (hB : ∀ x ∈ IsLocalRing.maximalIdeal (X.O0 i), algebraMap (X.O0 i) B x = 0) {g : GE N} (hg : ResTriv i s g) :
     (Tmat i s g).map (algebraMap (X.O0 i) B) = 1 := by
@@ -80,6 +101,9 @@ theorem map_eq_one {B : Type} [CommRing B] [Algebra (X.O0 i) B]
   by_cases e : a = b <;> simp [Matrix.one_apply, e]
 
 variable {i s} in
+/- English proof (translation)
+Use `map_eq_one hK hg` as an intermediate fact. Rewrite `this` using `[← Tgl_coe]`. Use `show (((1 : GE N →* Kˣ) g : Kˣ) : K) • matAct _ m = m`. Rewrite using `[this, matAct_one]`. Simplify using the standard rewrite rules.
+-/
 theorem red_triv {K : Type} [Field K] [Algebra (X.O0 i) K] (hK : IsRes i K) {g : GE N} (hg : ResTriv i s g)
     (m : Fin D.R.r → K) : red i K (Tgl i s) g m = m := by
   have := map_eq_one hK hg
@@ -88,6 +112,13 @@ theorem red_triv {K : Type} [Field K] [Algebra (X.O0 i) K] (hK : IsRes i K) {g :
   rw [this, matAct_one]
   simp
 
+/- English proof (translation)
+Apply the tactic sequence `let f : Del X i M ι →* DualNumber K := { toFun := fun δ => TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (∑ q, b q * cst (Multiplicative.toAdd δ q)) map_one' := by ext <;> simp map_mul' := fun g h => by`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[mul_add, Finset.sum_add_distrib, add_comm] }`. Use `⟨MonoidAlgebra.lift (X.O0 i) _ _ f, fun δ => by simp [f], fun F => ?_⟩` and prove the remaining obligations.
+
+Establish `: (MonoidAlgebra.lift (X.O0 i) _ _ f).comp (toLam X i M ι) = ((Polynomial.aeval (R` using `K) (DualNumber.eps : DualNumber K)).restrictScalars (X.O0 i)).comp (MvPolynomial.aeval (fun q => Polynomial.C (b q) * Polynomial.X)) := by`. Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Use `ext`. Simplify using `[toLam, f]`. Simplify using `[toLam, f, Pi.single_apply, apply_ite cst, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Conclude with `DFunLike.congr_fun this F`.
+-/
 theorem exists_dualHom (M : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K] [Algebra (X.O0 i) K]
     (cst : ZMod (X.l i ^ M) →+* K) (b : ι → K) :
     ∃ th : abelian₂ X i M ι →ₐ[X.O0 i] DualNumber K,
@@ -115,6 +146,73 @@ theorem exists_dualHom (M : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K] [
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hAux, ⟨z, L, -, -, hSt⟩, hPa⟩` from `id hP`. Take `⟨hcont, hcj⟩` from `GlobalTheory.T.continuous_and_residualTriv_complexConj D N X`. Establish `hcj` using `hcj i s hG.2.2.1`. Establish `hφ' : ∀ a, φ' a = cConj X (φ a)` using `fun a => AlgEquiv.ext (hPa a).2.2`. Set `k` to `IsLocalRing.ResidueField (X.O0 i)`.
+
+Use `letI : TopologicalSpace k := ⊥`. Use `haveI : DiscreteTopology k := ⟨rfl⟩`. Establish `hk : IsRes i k` using `fun x hx => (IsLocalRing.residue_eq_zero_iff x).2 hx`. Establish `hsurj : Function.Surjective (algebraMap (X.O0 i) k)` using `IsLocalRing.residue_surjective`. Establish `hchar : ∀ (K : Type) [Field K] [Algebra (X.O0 i) K], IsRes i K → ((X.l i : ℕ) : K) = 0` using `fun K _ _ h => by`.
+
+Use `h _ (l_mem i)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI : CharP k (X.l i) := (CharP.charP_iff_prime_eq_zero Fact.out).2 (hchar k hk)`. Establish `hloc` using `fun a : Fin R => GlobalTheory.T.tame_local_relation_dualNumber_cocycle hT D.host.E N.Om (X.l i) M (N.plOm.1 (P (.inr a))) (P (.inr a)) (N.plOm.2 _) (fun h => (hAux.1 (.inr a) _ (over_refl _)).2.2.2.1 (X.twistExcludedPlaces_contains_residueChar i h)) hM (hAux.1 (.inr a) _ (over_re …`. Use `choose γ hγI hγd hγ using hloc`.
+
+Establish `hφD : ∀ a, φ a ∈ DecV N (P (.inr a))` using `fun a => (hPa a).2.1.1`. Establish `hγD : ∀ a, γ a ∈ DecV N (P (.inr a))` using `fun a => Ine_le_Dec _ (hγI a)`. Take `⟨ρ, hρ⟩` from `exists_isDual i s`. Take `⟨c, hc⟩` from `hR k hk ρ hρ M R P d φ φ' Q hM hP hQ γ (fun a => cConj X (γ a)) fun a => ⟨hγI a, hγd a, cConj_apply X _⟩`. Take `⟨c0, hc0⟩` from `hcor k hk hsurj ρ hρ`.
+
+Set `aug : abelian₂ X i M (Fin R ⊕ Fin R) →ₐ[X.O0 i] k` to `MonoidAlgebra.lift (X.O0 i) _ _ 1`. Establish `haug : ∀ δ, aug (MonoidAlgebra.of (X.O0 i) _ δ) = 1` using `fun δ => by simp [aug]`. Take `⟨E, hEi, hEs, hEz⟩` from `GlobalTheory.T.matrixComputesTwistedSelmer_residual_transfer D N X bkP i s M _ d Q a _ hC k (hchar k hk) hsurj aug haug`. Establish `hev : ∀ g, ResTriv i s g → ∃ ev : H1 (red i k (Tgl i s)) →ₗ[k] (Fin D.R.r → k), ∀ z : Z1 (red i k (Tgl i s)), ev (cl z) = z.1 g` using `fun g hg => exists_ev _ g (red_triv hk hg)`. Use `choose ev hev using hev`.
+
+Establish `tγ : ∀ a, ResTriv i s (γ a)` using `fun a => (hPa a).1 _ (hγD a)`. Establish `tφ : ∀ a, ResTriv i s (φ a)` using `fun a => (hPa a).1 _ (hφD a)`. Set `sl : Fin R → k` to `fun a => c0 a / c a`. Set `t : H1 (red i k (Tgl i s)) →ₗ[k] (Fin R → (Fin D.R.r → k) × (Fin D.R.r → k))` to `LinearMap.pi fun a => (ev _ (tγ a)).prod (ev _ (hcj _ (tγ a)))`. Set `u : H1 (red i k (Tgl i s)) →ₗ[k] (Fin R → (Fin D.R.r → k) × (Fin D.R.r → k))` to `LinearMap.pi fun a => sl a • (ev _ (tφ a)).prod (ev _ (hcj _ (tφ a)))`.
+
+Establish `ht : ∀ z a, t (cl z) a = (z.1 (γ a), z.1 (cConj X (γ a)))` using `fun z a => Prod.ext (hev _ _ z) (hev _ _ z)`. Establish `hu : ∀ z a, u (cl z) a = (sl a • z.1 (φ a), sl a • z.1 (cConj X (φ a)))` using `fun z a => Prod.ext (congrArg (sl a • ·) (hev _ _ z)) (congrArg (sl a • ·) (hev _ _ z))`. Establish `hdeg : ∀ x0 x1 : Fin (e + 1) → LinearMap.ker ((Φ.map (toLam X i M (Fin R ⊕ Fin R))).map aug).mulVecLin, (∀ j, (t.comp E) (x0 j) = 0 ∧ (t.comp E) (x1 j) = (u.comp E) (x0 j)) → ¬ LinearIndependent k x0`. Introduce `x0 x1 hx hli`. Use `choose z0 hz0 using fun j => Submodule.Quotient.mk_surjective _ (E (x0 j))`.
+
+Use `choose z1 hz1 using fun j => Submodule.Quotient.mk_surjective _ (E (x1 j))`. Simplify using `only [LinearMap.comp_apply, ← hz0, ← hz1] at hx`. Use `hc0 z0 (fun j => ?_) (fun j y hy => ?_) ?_` and prove the remaining obligations. Use `GlobalTheory.T.relaxedResidualSelmer_mem_unrelaxed D N X bkP i s hF k hk M R P d φ φ' Q hM hP hQ (z0 j) (by rw [cl, hz0]; exact hEs _) fun a σ hσ => ?_` and prove the remaining obligations. Establish `h0` using `congrFun (hx j).1 a`.
+
+Rewrite `h0` using `[ht]`. Establish `hlc : IsLocallyConstant (z0 j).1` using `(IsLocallyConstant.iff_continuous _).2 (z0 j).2.1`. Use `⟨(hγ a k _ (z0 j).1 hlc fun g hg h _ => ?_).1 (congrArg Prod.fst h0) σ hσ, (hγ a k _ (fun g => (z0 j).1 (cConj X g)) (hlc.comp_continuous hcont) fun g hg h _ => ?_).1 (congrArg Prod.snd h0) σ hσ⟩` and prove the remaining obligations. Rewrite using `[(z0 j).2.2, red_triv hk ((hPa a).1 g hg)]`. Rewrite using `[map_mul, (z0 j).2.2, red_triv hk (hcj _ ((hPa a).1 g hg))]`.
+
+Rewrite using `[← hc (z1 j) y (by rw [cl, hz1]; exact hEs _) hy]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (hx j).2 a`. Rewrite `h1` using `[ht, hu]`. Establish `e0 : c0 a = c a * sl a` using `(mul_div_cancel₀ _ (c a).ne_zero).symm`.
+
+Establish `h2 : (z1 j).1 (γ a) = sl a • (z0 j).1 (φ a)` using `congrArg Prod.fst h1`. Establish `h3 : (z1 j).1 (cConj X (γ a)) = sl a • (z0 j).1 (cConj X (φ a))` using `congrArg Prod.snd h1`. Rewrite using `[form, form, h2, h3, hφ', smul_dotProduct, smul_dotProduct, smul_eq_mul, smul_eq_mul, e0]`. Expand and normalize the polynomial expressions, which then agree. Use `hli.map' E (LinearMap.ker_eq_bot.2 hEi)` as an intermediate fact.
+
+Establish `e1 : (fun j => cl (z0 j)) = E ∘ x0` using `funext hz0`. Rewrite using `[e1]` and apply the resulting hypothesis. Take `⟨K, _, _, σ, hK⟩` from `GlobalTheory.T.laurent_degeneration_first_order_kernel k`. Use `letI : Algebra (X.O0 i) K := ((algebraMap k K).comp (algebraMap (X.O0 i) k)).toAlgebra`. Use `haveI : IsScalarTower (X.O0 i) k K := IsScalarTower.of_algebraMap_eq' rfl`.
+
+Establish `hKr : IsRes i K` using `fun x hx => by`. Rewrite using `[IsScalarTower.algebraMap_apply (X.O0 i) k K, hk x hx, map_zero]`. Use `haveI : CharP K (X.l i) := (CharP.charP_iff_prime_eq_zero Fact.out).2 (hchar K hKr)`. Set `cst : ZMod (X.l i ^ M) →+* K` to `ZMod.castHom (dvd_pow_self _ (by omega)) K`. Set `β : Fin R → K` to `fun a => σ * algebraMap k K (sl a)`.
+
+Set `b : Fin R ⊕ Fin R → K` to `Sum.elim (fun a => 1 - ∑ j, β j * cst (Multiplicative.toAdd (d (.inr j) (φ a)))) β`. Take `⟨th, hth, hthF⟩` from `exists_dualHom i M (Fin R ⊕ Fin R) K cst b`. Establish `hfst : ∀ y, (th y).fst = algebraMap k K (aug y)`. Establish `: (((TrivSqZeroExt.fstHom K K K).restrictScalars (X.O0 i)).comp th) = (IsScalarTower.toAlgHom (X.O0 i) k K).comp aug`. Use `MonoidAlgebra.algHom_ext (fun δ => ?_) (Subsingleton.elim _ _)` and prove the remaining obligations.
+
+Establish `h1` using `hth δ`. Establish `h2` using `haug δ`. Simplify using `only [MonoidAlgebra.of_apply] at h1 h2`. Simplify using `[h1, h2]`. Conclude with `fun y => DFunLike.congr_fun this y`.
+
+Establish `h0 : ((Φ.map (MvPolynomial.aeval fun q => Polynomial.C (b q) * Polynomial.X)).map fun p : Polynomial K => p.coeff 0) = ((Φ.map (toLam X i M (Fin R ⊕ Fin R))).map aug).map (algebraMap k K)`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← hfst, hthF, (aeval_eps _).1]`. Use `⟨K, inferInstance, inferInstance, b, _, hKr, rfl, fun x0 x1 hx => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `swap`. Rewrite using `[h0]`. Use `(GlobalTheory.T.finrank_ker_map_le_of_first_order_kernel_ext k K a e _ _ (t.comp E) (u.comp E) hdeg).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Module.finrank_pi_fintype, Module.finrank_prod, Module.finrank_self, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `hK a e _ _ (t.comp E) (u.comp E) he hdeg x0 fun j π => ?_` and prove the remaining obligations. Establish `hB : ∀ x ∈ IsLocalRing.maximalIdeal (X.O0 i), algebraMap (X.O0 i) (DualNumber K) x = 0` using `fun x hx => by`. Rewrite using `[IsScalarTower.algebraMap_apply (X.O0 i) K (DualNumber K), hKr x hx, map_zero]`. Take `⟨w, hwc, hw, hwf⟩` from `hEz (DualNumber K) th (by simpa using hB _ (l_mem i)) (fun c => TrivSqZeroExt.inl (x0 j c) + TrivSqZeroExt.inr (x1 j c)) (by`. Use function extensionality and compare the values at `p`.
+
+Establish `a0` using `congrFun (hx j).1 p`. Establish `a1` using `congrFun (hx j).2 p`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.add_apply, Pi.zero_apply] at a0 a1 ⊢`. Use `ext`. Simplify using `only [TrivSqZeroExt.fst_sum, TrivSqZeroExt.fst_mul, hthF, (aeval_eps _).1]`.
+
+Simplify using `using a0`. Simplify using `only [TrivSqZeroExt.snd_sum, DualNumber.snd_mul, hthF, (aeval_eps _).1, (aeval_eps _).2]`. Simplify `a1)` using `[Finset.sum_add_distrib, add_comm]`. Set `lam : GE N → K` to `fun g => -∑ q, b q * cst (Multiplicative.toAdd (d q g))`. Establish `hlam : ∀ g, th ((delInv i M d g : (abelian₂ X i M (Fin R ⊕ Fin R))ˣ) : abelian₂ X i M (Fin R ⊕ Fin R)) = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (lam g)` using `fun g => by`.
+
+Establish `: ((delInv i M d g : (abelian₂ X i M (Fin R ⊕ Fin R))ˣ) : abelian₂ X i M (Fin R ⊕ Fin R)) = MonoidAlgebra.of (X.O0 i) _ (delAll X i M d g)⁻¹` using `rfl`. Rewrite using `[this, hth]`. Simplify using `[lam, delAll]`. Establish `hlamm : ∀ g h, lam (g * h) = lam g + lam h` using `fun g h => by`. Simplify using `only [lam, map_mul, toAdd_mul, map_add, mul_add, Finset.sum_add_distrib, neg_add]`.
+
+Establish `hlamc : IsLocallyConstant lam`. Establish `h1 : ∀ q, IsLocallyConstant (d q)` using `fun q => by`. Use `letI : TopologicalSpace (Multiplicative (ZMod (X.l i ^ M))) := ⊥`. Use `haveI : DiscreteTopology (Multiplicative (ZMod (X.l i ^ M))) := ⟨rfl⟩`. Rewrite using `[IsLocallyConstant.iff_continuous]`.
+
+Use `continuous_of_continuousAt_one (d q) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, nhds_discrete (Multiplicative (ZMod (X.l i ^ M))), Filter.tendsto_pure]`. Conclude with `(hAux.2.2 q).1.mem_nhds (d q).ker.one_mem`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`.
+
+Use `Filter.eventually_all.2 fun q => (h1 q).eventually_eq g` as an intermediate fact. Use `filter_upwards [this] with g' hg'`. Simplify using `only [lam, hg']`. Establish `hlamcj : ∀ g, lam (cConj X g) = -lam g` using `fun g => by`. Establish `: ∀ q, d q (cConj X g) = (d q g)⁻¹` using `fun q => antiHom_cConj X (hAux.2.2 q).2.1 g`.
+
+Simplify using `only [lam, this, toAdd_inv, map_neg, mul_neg, Finset.sum_neg_distrib]`. Establish `hlamφ : ∀ a, lam (φ a) = -1` using `fun a => by`. Establish `: ∀ b', d (.inl b') (φ a) = Multiplicative.ofAdd (if a = b' then 1 else 0)` using `fun b' => hSt.2 a b' _ (hPa a).2.1`. Simplify using `[lam, b, this, apply_ite cst]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlamγ : ∀ a, lam (γ a) = -β a` using `fun a => by`. Establish `: ∀ q, q ≠ .inr a → d q (γ a) = 1` using `fun q hq => (hAux.2.2 q).2.2.2.1 _ (fun h => hq (hAux.2.1 _ _ h)) _ (N.plOm.2 _) _ (hγI a)`. Simplify using `only [lam]`. Rewrite using `[Finset.sum_eq_single (.inr a) (fun q _ hq => by simp [this q hq]) (by simp), hγd]`. Simplify using `[b]`.
+
+Establish `key : ∀ (a) (ψ : GE N →* GE N), Continuous ψ → (∀ g ∈ DecV N (P (.inr a)), ResTriv i s (ψ g)) → lam (ψ (γ a)) • (fun c => (w (ψ (φ a)) c).fst) = lam (ψ (φ a)) • fun c => (w (ψ (γ a)) c).fst` using `fun a ψ hψ hψt => by`. Establish `hw' : ∀ g ∈ DecV N (P (.inr a)), ∀ h c, w (ψ (g * h)) c = w (ψ g) c + (TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (lam (ψ g))) * w (ψ h) c` using `fun g hg h c => by`. Rewrite using `[map_mul, hw, map_eq_one hB (hψt g hg), hlam, Matrix.one_mulVec]`. Both sides reduce to the same expression. Use `(hγ a K (Fin D.R.r → K) (fun g c => (w (ψ g) c).fst) ((hwc.comp_continuous hψ).comp fun v c => (v c).fst) fun g hg h _ => ?_).2 (fun g => lam (ψ g)) (fun g c => (w (ψ g) c).snd) (hlamc.comp_continuous hψ) ((hwc.comp_continuous hψ).comp fun v c => (v c).snd) (fun g _ h _ => by sim …` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `c beta_reduce`. Rewrite using `[hw' g hg]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `c beta_reduce`. Rewrite using `[hw' g hg]`.
+
+Simplify using `[add_assoc]`. Establish `hf : ∀ π : K →ₗ[k] k, ∃ (x' : LinearMap.ker ((Φ.map (toLam X i M (Fin R ⊕ Fin R))).map aug).mulVecLin) (z' : Z1 (red i k (Tgl i s))), (∀ c, x'.1 c = π (x0 j c)) ∧ (∀ g c, z'.1 g c = π (w g c).fst) ∧ E x' = cl z'` using `fun π => by`. Take `⟨x', z', h1, h2, h3⟩` from `hwf (π.toAddMonoidHom.comp (TrivSqZeroExt.fstHom K K K).toAddMonoidHom) fun y b => by show π (th y * b).fst = aug y * π b.fst`. Rewrite using `[TrivSqZeroExt.fst_mul, hfst, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Use `⟨x', z', fun c => (h1 c).trans ?_, h2, h3⟩` and prove the remaining obligations.
+
+Use `show π (TrivSqZeroExt.fst _) = _`. Simplify using the standard rewrite rules. Take `⟨x, zx, hx1, hx2, hx3⟩` from `hf π`. Take `⟨x', zx', hx1', hx2', hx3'⟩` from `hf (π.comp (LinearMap.mulLeft k σ))`. Use `⟨x, x', hx1, hx1', funext fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hx3, hx3', ht, hu]`. Establish `fin : ∀ g h : GE N, (∀ c, (w g c).fst = β a * (w h c).fst) → zx.1 g = sl a • zx'.1 h` using `fun g h hh => by`. Use function extensionality and compare the values at `c`. Rewrite using `[hx2, Pi.smul_apply, hx2', hh, ← map_smul, Algebra.smul_def]`. Simplify using `only [β, LinearMap.comp_apply, LinearMap.mulLeft_apply]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `Prod.ext (fin _ _ fun c => ?_) (fin _ _ fun c => ?_)` and prove the remaining obligations. Use `congrFun (key a (MonoidHom.id _) continuous_id (hPa a).1) c` as an intermediate fact. Simplify using `only [MonoidHom.id_apply, hlamφ, hlamγ, Pi.smul_apply, smul_eq_mul] at this`.
+
+Take the linear combination `this`. Use `congrFun (key a (cConj X) hcont fun g hg => hcj _ ((hPa a).1 g hg)) c` as an intermediate fact. Simplify using `only [hlamcj, hlamφ, hlamγ, Pi.smul_apply, smul_eq_mul] at this`. Take the linear combination `-this`.
+-/
 theorem core (hT : TameQuotient) (hG : GalHyp bkP i s) (hF : FirstHalf i s) (hR : Recip bkP i s)
     {M R : ℕ} {P : Fin R ⊕ Fin R → PlE D.host} {d : Fin R ⊕ Fin R → (GE N →* Multiplicative (ZMod (X.l i ^ M)))}
     {φ φ' : Fin R → GE N} {Q : Finset (PlE D.host)} (hM : 1 ≤ M) (hP : Position i s M P d φ φ') (hQ : IsQ P Q)
@@ -321,6 +419,17 @@ theorem core (hT : TameQuotient) (hG : GalHyp bkP i s) (hF : FirstHalf i s) (hR 
     simp only [hlamcj, hlamφ, hlamγ, Pi.smul_apply, smul_eq_mul] at this
     linear_combination -this
 
+/- English proof (translation)
+Introduce `hT D N X bkP i s hG hF hR _ M R P d φ φ' Q hM hP hQ a Φ hC`. Establish `hM1 : 1 ≤ M`. Break down `M with _ | M` into its components or cases. Simplify using `at hM`. Use linear arithmetic over natural numbers and integers.
+
+Use `choose Θ hΘ using fun p q => toLam_surjective X i M (Fin R ⊕ Fin R) (Φ p q)`. Choose the witnesses or unpack the hypotheses as in `rfl : Φ = (Matrix.of Θ).map (toLam X i M (Fin R ⊕ Fin R)) := by`. Conclude with `Matrix.ext fun p q => (hΘ p q).symm`. Use `⟨fun hcor F hFd => ?_, fun hcor => ?_⟩` and prove the remaining obligations. Take `⟨K, _, _, b, Ψ, hK, rfl, h1, h2⟩` from `core bkP i s hT.1 hG hF hR hM1 hP hQ _ hC zero_le_one hcor`.
+
+Establish `h3` using `GlobalTheory.T.not_X_pow_succ_dvd_det_of_first_order_kernel K a (4 * D.R.r * R) _ h1 (h2.trans (by nlinarith))`. Rewrite `h3`, `hFd` using `[← AlgHom.mapMatrix_apply, ← AlgHom.map_det]`. Take `⟨m, hm, hu⟩` from `GlobalTheory.T.exists_unit_coeff_of_not_X_pow_dvd_line D N X i M _ K hK b _ (by omega) F _ hFd h3`. Conclude with `⟨m, by omega, hu⟩`. Distinguish the cases in `ha : a = 0`.
+
+Conclude with `Or.inl ha`. Take `⟨K, _, _, b, Ψ, hK, rfl, h1, h2⟩` from `core bkP i s hT.1 hG hF hR hM1 hP hQ _ hC le_rfl hcor`. Take `⟨p, q, h3⟩` from `GlobalTheory.T.exists_not_X_pow_dvd_adjugate_of_first_order_kernel K a (2 * D.R.r * R) _ h1 h2 ha`. Use `Or.inr ⟨p, q, fun F hFd => ?_⟩` and prove the remaining obligations. Rewrite `h3`, `hFd` using `[← AlgHom.mapMatrix_apply, ← AlgHom.map_adjugate, AlgHom.mapMatrix_apply, Matrix.map_apply]`.
+
+Establish `e : 2 * (2 * D.R.r * R) = 4 * D.R.r * R` using `by ring`. Rewrite `h3` using `[e]`. Take `⟨m, hm, hu⟩` from `GlobalTheory.T.exists_unit_coeff_of_not_X_pow_dvd_line D N X i M _ K hK b _ (by omega) F _ hFd h3`. Conclude with `⟨m, by omega, hu⟩`.
+-/
 theorem resBound : TameLocal → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N)
     (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → FirstHalf i s → Recip bkP i s → EqDim bkP i s →
     ResBound bkP i s := by

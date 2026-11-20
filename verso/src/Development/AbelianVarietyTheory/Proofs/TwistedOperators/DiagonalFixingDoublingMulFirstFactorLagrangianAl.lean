@@ -18,15 +18,30 @@ namespace GlobalTheory.SplitDblIdent
 attribute [-instance] CStarMatrix.instHMulOfFintypeOfMulOfAddCommMonoid
 
 open Matrix in
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> rfl`.
+-/
 theorem fromRows_add_fromRows {R : Type} [Add R] {m₁ m₂ n : Type} (A B : Matrix m₁ n R) (C D : Matrix m₂ n R) :
     fromRows A C + fromRows B D = fromRows (A + B) (C + D) := by
   ext (i | i) j <;> rfl
 
 open Matrix in
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) j <;> rfl`.
+-/
 theorem smul_fromRows {R S : Type} [SMul S R] {m₁ m₂ n : Type} (s : S) (A : Matrix m₁ n R) (C : Matrix m₂ n R) :
     s • fromRows A C = fromRows (s • A) (s • C) := by
   ext (i | i) j <;> rfl
 
+/- English proof (translation)
+Establish `hYX : Y * X = -X - Y`. Establish `e : Y * X + X + Y = 0`. Use `h2` as an intermediate fact. Rewrite `this` using `[add_mul, mul_add, mul_add, mul_one, one_mul, one_mul]`. Rewrite `this` using `[← sub_eq_zero]`.
+
+Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `hY : (c * c) • Y = Y`.
+
+Establish `e : Y = -((Y + 1) * X)`. Rewrite using `[add_mul, one_mul, hYX]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hc]`. Establish `hXX : (c * c) • (X * X) = X * X` using `by rw [← Matrix.smul_mul, hc]`.
+
+Simplify using `only [Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, Matrix.sub_mul, Matrix.add_mul, smul_sub, smul_add, smul_smul, Matrix.mul_sub]`. Take the linear combination `(norm := module) (-(h ^ 4 * (1 + c) ^ 2)) • hYX - h ^ 4 • hXX + h ^ 4 • hc + h ^ 4 • hY + hh • ((h ^ 3 * (1 + c) + h ^ 2) • X + (h ^ 3 * (1 + c)) • Y)`.
+-/
 theorem nT_eq {R : Type} [CommRing R] {d : ℕ} (h c : R) (hh : h * 2 = 1) (X Y : Matrix (Fin d) (Fin d) R)
     (h2 : (Y + 1) * (X + 1) = 1) (hc : (c * c) • X = X) :
     ((h * h * h) • ((1 - c) • X - (1 + c) • Y)) * (1 + (h * (1 + c)) • X) = (h * h) • X := by
@@ -45,6 +60,11 @@ theorem nT_eq {R : Type} [CommRing R] {d : ℕ} (h c : R) (hh : h * 2 = 1) (X Y 
   linear_combination (norm := module) (-(h ^ 4 * (1 + c) ^ 2)) • hYX - h ^ 4 • hXX + h ^ 4 • hc + h ^ 4 • hY +
     hh • ((h ^ 3 * (1 + c) + h ^ 2) • X + (h ^ 3 * (1 + c)) • Y)
 
+/- English proof (translation)
+Simplify using `only [Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.transpose_neg, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.fromBlocks_mul_fromRows, Matrix.fromCols_mul_fromRows, Matrix.fromRows_mul, Matrix.mul_one, Matrix.zero_mul, add_zero, zero_add, …`. Rewrite using `[Matrix.fromRows_inj.eq_iff]`. Substitute `hT` using the available equality. Prove the components needed by the constructor for the conclusion. Take the linear combination `(norm := module) hh • (-(h + 1) • (K - 1))`.
+
+Take the linear combination `(norm := module) hh • (h • (K - 1))`.
+-/
 theorem blocks {R : Type} [CommRing R] {d : ℕ} (h c : R) (hh : h * 2 = 1) (K N T : Matrix (Fin d) (Fin d) R)
     (hT : T = 1 + (h * (1 + c)) • (K - 1)) (hNT : N * T = (h * h) • (K - 1)) :
     (1 + (h * c) • (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (1 : Matrix (Fin d) (Fin d) R) * (Matrix.fromRows (1 : Matrix (Fin d) (Fin d) R) (-1 : Matrix (Fin d) (Fin d) R))ᵀ)) *
@@ -65,11 +85,17 @@ end GlobalTheory.SplitDblIdent
 
 namespace GlobalTheory.SplitDblGen
 
+/- English proof (translation)
+Rewrite using `[half, show (2 : AE F E) = algebraMap (AF F) (AE F E) 2 from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self, map_one]`.
+-/
 theorem half_mul_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     (half : AE F E) * 2 = 1 := by
   rw [half, show (2 : AE F E) = algebraMap (AF F) (AE F E) 2 from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self,
     map_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d c K K' _ h2 hc`. Establish `hNT` using `GlobalTheory.SplitDblIdent.nT_eq half c half_mul_two (K - 1) (K' - 1) (by simpa using h2) hc`. Conclude with `GlobalTheory.SplitDblIdent.blocks half c half_mul_two K (splitDoublingNBlock c K K') (tMat c K) rfl hNT`.
+-/
 theorem diagonalFixingDoubling_mul_firstFactor_lagrangian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (c : AE F E) (K K' : Matrix (Fin d) (Fin d) (AE F E)),
     K * K' = 1 → K' * K = 1 → (c * c) • (K - 1) = K - 1 →
     GlobalTheory.SplitDblGen.diagonalFixingDoublingMatrix c d * Matrix.fromBlocks K 0 0 1 * diagCols (E := AE F E) (Fin d) =

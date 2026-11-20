@@ -21,11 +21,17 @@ def eP (H : Finset ι) (n : ℕ) : Fin (Fintype.card (Pr H n)) ≃ Pr H n := (Fi
 section
 variable (nu : ι → Fin n → ℕ) (H : Finset ι)
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Finset.card_filter]`. Conclude with `Equiv.sum_comp e (fun b => if f b then 1 else 0)`.
+-/
 theorem card_filter_comp {α β : Type} [Fintype α] [Fintype β] (e : α ≃ β) (f : β → Prop) [DecidablePred f] :
     (Finset.univ.filter fun a => f (e a)).card = (Finset.univ.filter f).card := by
   rw [Finset.card_filter, Finset.card_filter]
   exact Equiv.sum_comp e (fun b => if f b then 1 else 0)
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.card_filter, Fintype.sum_sum_type]`.
+-/
 theorem card_filter_sum {α β : Type} [Fintype α] [Fintype β] (f : α ⊕ β → Prop) [DecidablePred f] :
     (Finset.univ.filter f).card =
       (Finset.univ.filter fun a => f (.inl a)).card + (Finset.univ.filter fun b => f (.inr b)).card := by
@@ -58,6 +64,9 @@ def bF : Pos nu H → Fin n
   | .inr (.inl k) => rI H k
   | .inr (.inr k) => Fin.rev (cI H k)
 
+/- English proof (translation)
+Take `⟨τ, i, c⟩` from `x`. Take `⟨τ', i', c'⟩` from `y`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2` using the available equality. Rewrite using `[Fin.ext h3]`.
+-/
 theorem bx_ext {x y : Bx nu} (h1 : x.1 = y.1) (h2 : x.2.1 = y.2.1) (h3 : (x.2.2 : ℕ) = y.2.2) : x = y := by
   obtain ⟨τ, i, c⟩ := x
   obtain ⟨τ', i', c'⟩ := y
@@ -65,6 +74,9 @@ theorem bx_ext {x y : Bx nu} (h1 : x.1 = y.1) (h2 : x.2.1 = y.2.1) (h3 : (x.2.2 
   subst h1 h2
   rw [Fin.ext h3]
 
+/- English proof (translation)
+Take `⟨⟨τ, hτ⟩, i, c⟩` from `x`. Take `⟨⟨τ', hτ'⟩, i', c'⟩` from `y`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2` using the available equality. Rewrite using `[Fin.ext h3]`.
+-/
 theorem pr_ext {x y : Pr H n} (h1 : (x.1 : ι) = y.1) (h2 : x.2.1 = y.2.1) (h3 : (x.2.2 : ℕ) = y.2.2) : x = y := by
   obtain ⟨⟨τ, hτ⟩, i, c⟩ := x
   obtain ⟨⟨τ', hτ'⟩, i', c'⟩ := y
@@ -72,11 +84,17 @@ theorem pr_ext {x y : Pr H n} (h1 : (x.1 : ι) = y.1) (h2 : x.2.1 = y.2.1) (h3 :
   subst h1 h2
   rw [Fin.ext h3]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with p | k | k <;> rcases p' with p' | k' | k' <;> simp [colF, lab3, colQ, Nat.pair_eq_pair] at h ⊢`. Apply the tactic sequence `all_goals first | exact h.1 | rw [h.1] | exact (Fintype.equivFin ι).injective (Fin.ext h.1)`.
+-/
 theorem colF_lab (bar : ι → ι) (p p' : Pos nu H) (h : colF nu H p = colF nu H p') :
     lab3 bar (labQ nu) (tl H) p = lab3 bar (labQ nu) (tl H) p' := by
   rcases p with p | k | k <;> rcases p' with p' | k' | k' <;> simp [colF, lab3, colQ, Nat.pair_eq_pair] at h ⊢
   all_goals first | exact h.1 | rw [h.1] | exact (Fintype.equivFin ι).injective (Fin.ext h.1)
 
+/- English proof (translation)
+Use `⟨fun p q h hb => ?_, fun p i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [colQ, Nat.pair_eq_pair] at h`. Conclude with `(eB nu).injective (bx_ext nu ((Fintype.equivFin ι).injective (Fin.ext h.1)) hb h.2)`. Take `⟨q, hq⟩` from `(eB nu).surjective ⟨(eB nu p).1, i, ⟨(eB nu p).2.2, lt_of_lt_of_le (eB nu p).2.2.isLt (hm _ hi.le)⟩⟩`. Apply the tactic sequence `refine ⟨q, ?_, ?_⟩ <;> simp only [colQ, bQ] <;> rw [hq]`.
+-/
 theorem isTabQ (hm : ∀ τ, Monotone (nu τ)) : IsTab (colQ nu) (bQ nu) := by
   refine ⟨fun p q h hb => ?_, fun p i hi => ?_⟩
   · simp only [colQ, Nat.pair_eq_pair] at h
@@ -85,6 +103,19 @@ theorem isTabQ (hm : ∀ τ, Monotone (nu τ)) : IsTab (colQ nu) (bQ nu) := by
       ⟨(eB nu p).1, i, ⟨(eB nu p).2.2, lt_of_lt_of_le (eB nu p).2.2.isLt (hm _ hi.le)⟩⟩
     refine ⟨q, ?_, ?_⟩ <;> simp only [colQ, bQ] <;> rw [hq]
 
+/- English proof (translation)
+Establish `hQ` using `isTabQ nu hm`. Use `⟨fun p q h hb => ?_, fun p i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases p with p | k | k <;> rcases q with q | k' | k' <;> simp [colF, bF] at h hb ⊢`. Conclude with `hQ.1 p q h hb`. Conclude with `(eP H n).injective (pr_ext H h.1 hb (congrArg Fin.val h.2))`.
+
+Conclude with `(eP H n).injective (pr_ext H h.1 h.2 (congrArg Fin.val hb))`. Break down `p with p | k | k` into its components or cases. Take `⟨q, hq1, hq2⟩` from `hQ.2 p i hi`. Conclude with `⟨.inl q, by simp [colF, hq1], hq2⟩`. Establish `h0 : ((eP H n k).2.2 : ℕ) < i`.
+
+Use `(eP H n k).2.2.isLt` as an intermediate fact. Establish `h' : ((eP H n k).2.1 : ℕ) < i` using `hi`. Use linear arithmetic over natural numbers and integers. Take `⟨q, hq⟩` from `(eP H n).surjective ⟨(eP H n k).1, i, ⟨(eP H n k).2.2, h0⟩⟩`. Establish `hq1 : tl H q = tl H k` using `by show (eP H n q).1.1 = _; rw [hq]; rfl`.
+
+Establish `hq2 : rI H q = i` using `by show (eP H n q).2.1 = _; rw [hq]`. Establish `hq3 : cI H q = cI H k` using `Fin.ext (by show ((eP H n q).2.2 : ℕ) = _; rw [hq]; rfl)`. Conclude with `⟨.inr (.inl q), by simp [colF, hq1, hq3], by simp [bF, hq2]⟩`. Establish `h0 : ((Fin.rev i : Fin n) : ℕ) < (eP H n k).2.1`. Use `(eP H n k).2.2.isLt` as an intermediate fact.
+
+Establish `h' : ((Fin.rev (cI H k) : Fin n) : ℕ) < i` using `hi`. Use `i.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev, cI] at h' ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨q, hq⟩` from `(eP H n).surjective ⟨(eP H n k).1, (eP H n k).2.1, ⟨(Fin.rev i : Fin n), h0⟩⟩`.
+
+Establish `hq1 : tl H q = tl H k` using `by show (eP H n q).1.1 = _; rw [hq]; rfl`. Establish `hq2 : rI H q = rI H k` using `by show (eP H n q).2.1 = _; rw [hq]; rfl`. Establish `hq3 : cI H q = Fin.rev i` using `Fin.ext (by show ((eP H n q).2.2 : ℕ) = _; rw [hq])`. Conclude with `⟨.inr (.inr q), by simp [colF, hq1, hq2], by simp [bF, hq3]⟩`.
+-/
 theorem isTabF (hm : ∀ τ, Monotone (nu τ)) : IsTab (colF nu H) (bF nu H) := by
   have hQ := isTabQ nu hm
   refine ⟨fun p q h hb => ?_, fun p i hi => ?_⟩
@@ -116,6 +147,9 @@ theorem isTabF (hm : ∀ τ, Monotone (nu τ)) : IsTab (colF nu H) (bF nu H) := 
       have hq3 : cI H q = Fin.rev i := Fin.ext (by show ((eP H n q).2.2 : ℕ) = _; rw [hq])
       exact ⟨.inr (.inr q), by simp [colF, hq1, hq2], by simp [bF, hq3]⟩
 
+/- English proof (translation)
+Use `(card_filter_comp (eB nu) (fun x => x.1 = τ ∧ x.2.1 = i)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter, Fintype.sum_sigma]`. Simplify using `[Fintype.sum_sigma, ite_and]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem cntQ (τ : ι) (i : Fin n) : (Finset.univ.filter fun p => labQ nu p = τ ∧ bQ nu p = i).card = nu τ i := by
   refine (card_filter_comp (eB nu) (fun x => x.1 = τ ∧ x.2.1 = i)).trans ?_
   rw [Finset.card_filter, Fintype.sum_sigma]
@@ -123,15 +157,26 @@ theorem cntQ (τ : ι) (i : Fin n) : (Finset.univ.filter fun p => labQ nu p = τ
   rw [Finset.sum_eq_single i (fun b _ hb => by simp [hb]) (by simp)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun c => if c = m then 1 else 0) j]`. Simplify using `[Finset.sum_ite_eq']`.
+-/
 theorem sumFin (j m : ℕ) : ∑ c : Fin j, (if (c : ℕ) = m then 1 else 0 : ℕ) = if m < j then 1 else 0 := by
   rw [Fin.sum_univ_eq_sum_range (fun c => if c = m then 1 else 0) j]
   simp [Finset.sum_ite_eq']
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Finset.sum_range_succ, ih]; split_ifs <;> omega`.
+-/
 theorem sumRange (n m : ℕ) : ∑ j ∈ Finset.range n, (if m < j then 1 else 0 : ℕ) = n - (m + 1) := by
   induction n with
   | zero => simp
   | succ k ih => rw [Finset.sum_range_succ, ih]; split_ifs <;> omega
 
+/- English proof (translation)
+Use `(card_filter_comp (eP H n) (fun x => (x.1 : ι) = τ ∧ x.2.1 = i)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter, Fintype.sum_sigma]`. Simplify using `only [Fintype.sum_sigma]`. Rewrite using `[Finset.sum_congr rfl (g := fun x : H => if (x : ι) = τ then (i : ℕ) else 0) (fun x _ => ?_)]`. Rewrite using `[Finset.sum_coe_sort H (fun x => if x = τ then (i : ℕ) else 0), Finset.sum_ite_eq']`.
+
+Distinguish the cases in `h : (x : ι) = τ`. Simplify using `[h]`. Simplify using `[h]`.
+-/
 theorem cnt1 (τ : ι) (i : Fin n) :
     (Finset.univ.filter fun k => tl H k = τ ∧ rI H k = i).card = if τ ∈ H then (i : ℕ) else 0 := by
   refine (card_filter_comp (eP H n) (fun x => (x.1 : ι) = τ ∧ x.2.1 = i)).trans ?_
@@ -143,6 +188,15 @@ theorem cnt1 (τ : ι) (i : Fin n) :
     · simp [h]
     · simp [h]
 
+/- English proof (translation)
+Establish `hc : ∀ k, (bar (tl H k) = τ ∧ Fin.rev (cI H k) = i) ↔ ((eP H n k).1 : ι) = bar τ ∧ ((eP H n k).2.2 : ℕ) = (Fin.rev i : ℕ)`. Introduce `k`. Establish `e1 : bar (tl H k) = τ ↔ tl H k = bar τ` using `⟨fun h => by rw [← h, hinv], fun h => by rw [h, hinv]⟩`. Establish `e2 : Fin.rev (cI H k) = i ↔ cI H k = Fin.rev i` using `⟨fun h => by rw [← h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Rewrite using `[e1, e2, Fin.ext_iff]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.filter_congr (fun k _ => hc k)]`. Use `(card_filter_comp (eP H n) (fun x => (x.1 : ι) = bar τ ∧ (x.2.2 : ℕ) = (Fin.rev i : ℕ))).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter, Fintype.sum_sigma]`. Simplify using `only [Fintype.sum_sigma, ite_and]`.
+
+Establish `hj : ∑ j : Fin n, (if (Fin.rev i : ℕ) < j then 1 else 0 : ℕ) = i`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => if (Fin.rev i : ℕ) < j then 1 else 0) n, sumRange]`. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl (g := fun x : H => if (x : ι) = bar τ then (i : ℕ) else 0) (fun x _ => ?_)]`.
+
+Rewrite using `[Finset.sum_coe_sort H (fun x => if x = bar τ then (i : ℕ) else 0), Finset.sum_ite_eq']`. Distinguish the cases in `h : (x : ι) = bar τ`. Simplify using `only [h, if_true]`. Simplify using `only [sumFin, hj]`. Simplify using `[h]`.
+-/
 theorem cnt2 (bar : ι → ι) (hinv : ∀ τ, bar (bar τ) = τ) (τ : ι) (i : Fin n) :
     (Finset.univ.filter fun k => bar (tl H k) = τ ∧ Fin.rev (cI H k) = i).card = if bar τ ∈ H then (i : ℕ) else 0 := by
   have hc : ∀ k, (bar (tl H k) = τ ∧ Fin.rev (cI H k) = i) ↔
@@ -168,6 +222,11 @@ theorem cnt2 (bar : ι → ι) (hinv : ∀ τ, bar (bar τ) = τ) (τ : ι) (i :
       simp only [sumFin, hj]
     · simp [h]
 
+/- English proof (translation)
+Use `(card_filter_sum _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· + ·) (cntQ nu τ i) ((card_filter_sum _).trans (congrArg₂ (· + ·) (cnt1 H τ i) (cnt2 H bar hinv τ i)))).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : τ ∈ H`. Use `(hH τ).1 h` as an intermediate fact. Simplify using `[h, this]`.
+
+Establish `: bar τ ∈ H`. Assume the negation of the conclusion as `h'`. Conclude with `h ((hH τ).2 h')`. Simplify using `[h, this]`.
+-/
 theorem cntF (bar : ι → ι) (hinv : ∀ τ, bar (bar τ) = τ) (hH : ∀ τ, τ ∈ H ↔ bar τ ∉ H) (τ : ι) (i : Fin n) :
     (Finset.univ.filter fun p => lab3 bar (labQ nu) (tl H) p = τ ∧ bF nu H p = i).card = nu τ i + i := by
   refine (card_filter_sum _).trans ?_
@@ -183,6 +242,13 @@ theorem cntF (bar : ι → ι) (hinv : ∀ τ, bar (bar τ) = τ) (hH : ∀ τ, 
 
 end
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_nbij' (fun σ => σ₀ * σ) (fun σ => σ₀⁻¹ * σ) (fun σ hσ => (h σ).2 hσ) (fun σ hσ => (h _).1 (by simpa using hσ)) (fun σ _ => by simp) (fun σ _ => by simp) (fun σ _ => ?_)` and prove the remaining obligations. Establish `e : ((Equiv.Perm.sign σ₀ : ℤ) : ℂ) * ((Equiv.Perm.sign σ₀ : ℤ) : ℂ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[mul_smul_comm, ← pm_mul, smul_smul]`. Use `congr 1`. Rewrite using `[Equiv.Perm.sign_mul]`. Use `push_cast`.
+
+Take the linear combination `-(((Equiv.Perm.sign σ : ℤ) : ℂ)) * e`.
+-/
 theorem pm_mul_alt {P : Type} [Fintype P] [DecidableEq P] {M : Type} [AddCommGroup M] [Module ℂ M]
     (G : Finset (Equiv.Perm P)) (σ₀ : Equiv.Perm P) (h : ∀ σ, σ₀ * σ ∈ G ↔ σ ∈ G) :
     (pm σ₀ * alt G : Module.End ℂ (TV n M P)) = ((Equiv.Perm.sign σ₀ : ℤ) : ℂ) • alt G := by
@@ -198,12 +264,34 @@ theorem pm_mul_alt {P : Type} [Fintype P] [DecidableEq P] {M : Type} [AddCommGro
   push_cast
   linear_combination -(((Equiv.Perm.sign σ : ℤ) : ℂ)) * e
 
+/- English proof (translation)
+Unfold `alt`. Conclude with `Commute.sum_left _ _ _ fun σ hσ => (h σ hσ).smul_left _`.
+-/
 theorem alt_comm {P : Type} [Fintype P] [DecidableEq P] {M : Type} [AddCommGroup M] [Module ℂ M]
     (G : Finset (Equiv.Perm P)) (x : Module.End ℂ (TV n M P)) (h : ∀ σ ∈ G, Commute (pm σ) x) :
     Commute (alt G) x := by
   unfold alt
   exact Commute.sum_left _ _ _ fun σ hσ => (h σ hσ).smul_left _
 
+/- English proof (translation)
+Use `set s : ℤ := ∑ τ, ∑ k, |l τ k| with hs`. Establish `hsl : ∀ τ k, 0 ≤ s - l τ k`. Introduce `τ k`. Establish `h1 : |l τ k| ≤ ∑ k', |l τ k'|` using `Finset.single_le_sum (f := fun k' => |l τ k'|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)`. Establish `h2 : ∑ k', |l τ k'| ≤ s` using `Finset.single_le_sum (f := fun τ' => ∑ k', |l τ' k'|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ τ)`.
+
+Establish `h3` using `le_abs_self (l τ k)`. Combine the linear equalities and inequalities to obtain the conclusion. Set `w : ι → Equiv.Perm (Fin n)` to `fun τ => Tuple.sort (fun k => -l τ k)`. Establish `hsm : ∀ τ, StrictMono (fun i => s - l τ (w τ i))`. Introduce `τ`.
+
+Establish `h1 : Monotone ((fun k => -l τ k) ∘ w τ)` using `Tuple.monotone_sort _`. Apply `Monotone.strictMono_of_injective` to reduce the goal to its premises. Introduce `a b hab`. Use `h1 hab` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Simplify using `only at hab`. Conclude with `(w τ).injective (hl τ (by linarith))`. Establish `gap : ∀ τ (d : ℕ) (i j : Fin n), (j : ℕ) = i + d → s - l τ (w τ i) + d ≤ s - l τ (w τ j)`.
+
+Introduce `τ d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i j h`. Take `rfl : j = i` from `Fin.ext (by omega)`.
+
+Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `i j h`. Establish `hj : (i : ℕ) + d < n` using `by have := j.isLt; omega`. Establish `h1` using `ih i ⟨i + d, hj⟩ rfl`.
+
+Establish `h2` using `hsm τ (show (⟨i + d, hj⟩ : Fin n) < j from by show (i : ℕ) + d < j; omega)`. Simplify using `only at h2`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨s, w, fun τ i => (s - l τ (w τ i) - i).toNat, fun τ i => ?_, fun τ a b hab => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `gap τ i ⟨0, i.pos⟩ i (by simp)`. Establish `h2` using `hsl τ (w τ ⟨0, i.pos⟩)`. Simplify using `only`. Rewrite using `[Int.toNat_of_nonneg (by linarith)]`. Simplify using `only`.
+
+Establish `hab' : (a : ℕ) ≤ b` using `hab`. Establish `h1` using `gap τ ((b : ℕ) - a) a b (by omega)`. Establish `e : (((b : ℕ) - (a : ℕ) : ℕ) : ℤ) = ((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)` using `by omega`. Apply `Int.toNat_le_toNat` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sort_data (l : ι → Fin n → ℤ) (hl : ∀ τ, Function.Injective (l τ)) :
     ∃ (s : ℤ) (w : ι → Equiv.Perm (Fin n)) (nu : ι → Fin n → ℕ),
       (∀ τ i, (nu τ i : ℤ) = s - l τ (w τ i) - i) ∧ ∀ τ, Monotone (nu τ) := by
@@ -256,6 +344,9 @@ theorem sort_data (l : ι → Fin n → ℤ) (hl : ∀ τ, Function.Injective (l
     apply Int.toNat_le_toNat
     linarith
 
+/- English proof (translation)
+Use `⟨Finset.univ.filter fun τ => Fintype.equivFin ι τ < Fintype.equivFin ι (bar τ), fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hinv, not_lt]`. Establish `: Fintype.equivFin ι τ ≠ Fintype.equivFin ι (bar τ)` using `fun h => hne τ ((Fintype.equivFin ι).injective h).symm`. Conclude with `⟨fun h => h.le, fun h => lt_of_le_of_ne h this⟩`.
+-/
 theorem half (bar : ι → ι) (hinv : ∀ τ, bar (bar τ) = τ) (hne : ∀ τ, bar τ ≠ τ) :
     ∃ H : Finset ι, ∀ τ, τ ∈ H ↔ bar τ ∉ H := by
   refine ⟨Finset.univ.filter fun τ => Fintype.equivFin ι τ < Fintype.equivFin ι (bar τ), fun τ => ?_⟩

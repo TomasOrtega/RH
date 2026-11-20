@@ -21,6 +21,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t j h1 hj x g hx hg`. Take `⟨e, he, hsupp, hloc⟩` from `hx`. Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `e0 : infPart D e = 0` using `(GlobalTheory.FunObj.Comparison₂.cpt_idemSum he).1`.
+
+Establish `e0' : infPart D (cA D e) = 0` using `GlobalTheory.PlaceDatum.infPart_cA e0`. Use `⟨GlobalTheory.LevelCut.mem_GfC_of _ x fun i k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsupp i k, map_mul, map_add, e0, e0', add_zero, zero_mul]`. Establish `hl : ∀ (w : Pl D.host.E) (X : ℕ × ℕ), 1 ≤ X.1 → 1 ≤ X.2 → givenLevel ch.G t w X = GlobalTheory.SplitWeil.KO (Kw w) _`. Introduce and unpack `w ⟨_ | a, _ | b⟩ h h'`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `at h`. Simplify using `at h'`. Both sides reduce to the same expression. Establish `hβ : IsFrame (ch.S.B.β D.R.m j) (ch.G.Λ (.grid D.R.m j))` using `ch.S.B.isFrame_β hS.core.lev le_rfl hj`.
+
+Establish `hsd : IsSelfDualC _ (ch.G.Λ (.grid D.R.m j))` using `(ch.G.isV (X := .grid D.R.m j) ⟨le_rfl, hj⟩ fun k h => by`. Use `(Node.grid.inj h).1` as an intermediate fact. Use the proof step `omega).sd`. Use `set c : Lev.EAf D := toEAf D (e + cA D e) with hc`. Establish `hX : (Lev.finE (ch.G.V (.grid D.R.m j)) x).val = c • (Lev.finE (ch.G.V (.grid D.R.m j)) x).val + (1 - c) • (1 : Matrix _ _ (Lev.EAf D))`.
+
+Establish `hM : (Lev.finE (ch.G.V (.grid D.R.m j)) x).val = (mt _ x).map (toEAf D)` using `rfl`. Rewrite using `[hM]`. Use extensionality with `i k`. Establish `h0` using `congrArg (toEAf D) (hsupp i k)`. Rewrite `h0` using `[map_mul, Matrix.sub_apply, map_sub]`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one] at h0 ⊢`. Rewrite `h0` using `[← hc]`.
+
+Take the linear combination `-h0`. Simplify using `only [Matrix.one_apply_ne hik, map_zero, sub_zero, mul_zero, add_zero] at h0 ⊢`. Conclude with `h0.symm`. Establish `key` using `GlobalTheory.FunObj.LevRowSucc.prodLev_inf_UA (V := ch.G.V (.grid D.R.m j)) (Λ := ch.G.Λ (.grid D.R.m j)) (β := ch.S.B.β D.R.m j) hβ hsd (locPl ch.G t) (n' := fun w => (locGrid ch.G t w.1).rank (D.R.m, j)) (fun w => rank_vertex ch.G t w.1 (X := (D.R.m, j)) ⟨le_rfl, hj⟩) (fun w => …`. Establish `hmax : Lev.finE (ch.G.V (.grid D.R.m j)) x ∈ ch.G.levMax (.grid D.R.m j)`.
+
+Rewrite using `[GridData.levMax, ← key]`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => ?_, Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun hw' => ?_⟩, GlobalTheory.LevSplit.finE_mem_UA _ x⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, hloc w]`. Use `hg w` as an intermediate fact. Rewrite `this` using `[hl w.1 (D.R.m, j) hm h1]`.
+
+Conclude with `this`. Rewrite using `[Subgroup.mem_comap, (GlobalTheory.OffPartLattice.inBasis_mix (ch.S.B.β D.R.m j) _ _ c hX w').1 (GlobalTheory.OffPartLattice.cpt_pair_zero (ch.G.V (.grid D.R.m j)) he w' hw')]`. Conclude with `one_mem _`. Conclude with `hmax`.
+-/
 theorem mem_latGrp_of_hasLoc : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t, ∀ j, 1 ≤ j → ∀ (hj : j ≤ D.R.m)
     (x : GA D (ch.G.V (.grid D.R.m j)))
     (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),

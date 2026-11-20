@@ -17,6 +17,17 @@ section General
 variable {o Ω₁ Ω₂ : Type} [CommRing o] [Field Ω₁] [Algebra o Ω₁] [Field Ω₂] [Algebra o Ω₂]
   {M₁ : RatModel o Ω₁} {N : RatModel o Ω₂} {φ : Ω₁ →ₐ[o] Ω₂} {q : N.Z ⟶ M₁.Z} [IsFinite q]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨f, rfl⟩` from `(RatModel.mem_ringOn_iff_exists hne).1 hx`. Use `RatModel.mem_ringOn.2 fun z hz => ?_` and prove the remaining obligations. Establish `hzU : q z ∈ U₀` using `hz`. Use `haveI := RatModel.isIntegrallyClosed_O hn z`.
+
+Use `letI : Algebra Γ(M₁.Z, U₀) Γ(N.Z, q ⁻¹ᵁ U₀) := (q.app U₀).hom.toAlgebra`. Establish `hi : IsIntegral Γ(M₁.Z, U₀) f` using `(IsFinite.finite_app q U₀ hU₀).to_isIntegral f`. Establish `hmem : ∀ a : Γ(M₁.Z, U₀), φ.toRingHom (M₁.res U₀ ⟨_, hzU⟩ a) ∈ N.O z` using `fun a => by`. Establish `e : φ.toRingHom (M₁.res U₀ ⟨_, hzU⟩ a) = φ (valF M₁.pt U₀ a)` using `congrArg φ (M₁.res_apply _ _ a)`. Rewrite using `[e]`.
+
+Conclude with `hf.map_mem_O (z := z) (RatModel.valF_mem_O hzU a)`. Set `χ : Γ(M₁.Z, U₀) →+* N.O z` to `RingHom.codRestrict (φ.toRingHom.comp (M₁.res U₀ ⟨_, hzU⟩)) (N.O z) hmem`. Set `ψ : Γ(N.Z, q ⁻¹ᵁ U₀) →+* Ω₂` to `τ.toRingHom.comp (N.res (q ⁻¹ᵁ U₀) hne)`. Establish `hc : (algebraMap (N.O z) Ω₂).comp χ = ψ.comp (algebraMap Γ(M₁.Z, U₀) Γ(N.Z, q ⁻¹ᵁ U₀))`. Use extensionality with `a`.
+
+Establish `e` using `hf.valF_app ⟨_, hzU⟩ a`. Express the relevant statement in the definitionally equal form `φ (M₁.res U₀ ⟨_, hzU⟩ a) = τ (N.res (q ⁻¹ᵁ U₀) hne ((q.app U₀).hom a))`. Combine the equalities or inequalities in the displayed calculation. Take `⟨w, hw⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hi.map_of_comp_eq χ ψ hc)`. Establish `e2 : ψ f = τ (valF N.pt (q ⁻¹ᵁ U₀) f)` using `congrArg τ (N.res_apply _ _ f)`.
+
+Establish `e3 : τ (valF N.pt (q ⁻¹ᵁ U₀) f) = (w : Ω₂)` using `e2.symm.trans hw.symm`. Rewrite using `[e3]`. Conclude with `w.2`.
+-/
 theorem map_ringOn (hf : M₁.IsHom N φ q) (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.Z) (τ : Ω₂ →ₐ[o] Ω₂) (hτ : ∀ a, τ (φ a) = φ a)
     {U₀ : M₁.Z.Opens} (hU₀ : IsAffineOpen U₀) (hne : ((q ⁻¹ᵁ U₀ : N.Z.Opens) : Set N.Z).Nonempty) :
     ∀ x ∈ N.ringOn ((q ⁻¹ᵁ U₀ : N.Z.Opens) : Set N.Z), τ x ∈ N.ringOn ((q ⁻¹ᵁ U₀ : N.Z.Opens) : Set N.Z) := by
@@ -48,6 +59,9 @@ theorem map_ringOn (hf : M₁.IsHom N φ q) (hn : ReciprocityTheory.ChartRestric
   rw [e3]
   exact w.2
 
+/- English proof (translation)
+Use `RatModel.exists_isHom_of_local fun z => ?_` and prove the remaining obligations. Take `⟨U₀, hU₀, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : M₁.Z.Opens)) (x := q z) trivial`. Conclude with `⟨q ⁻¹ᵁ U₀, q ⁻¹ᵁ U₀, hz, hU₀.preimage q, ⟨z, hz⟩, map_ringOn hf hn τ hτ hU₀ ⟨z, hz⟩⟩`.
+-/
 theorem exists_isHom (hf : M₁.IsHom N φ q) (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.Z) (τ : Ω₂ →ₐ[o] Ω₂)
     (hτ : ∀ a, τ (φ a) = φ a) : ∃ s : N.Z ⟶ N.Z, N.IsHom N τ s := by
   refine RatModel.exists_isHom_of_local fun z => ?_
@@ -79,6 +93,9 @@ def overBase (M₁ : RatModel o₁ Ω₁) (M₂ : RatModel o₂ Ω₂) (q : M₂
 def incl (hA : algebraMap o₁ Ω₂ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁)) : Ω₁ →ₐ[o₁] Ω₂ :=
   { algebraMap Ω₁ Ω₂ with commutes' := fun r => by rw [hA]; rfl }
 
+/- English proof (translation)
+Rewrite using `[hA]`. Conclude with `σ.commutes (algebraMap o₁ Ω₁ r)`.
+-/
 theorem autO_comm (hA : algebraMap o₁ Ω₂ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁)) (σ : Ω₂ ≃ₐ[Ω₁] Ω₂)
     (r : o₁) : σ (algebraMap o₁ Ω₂ r) = algebraMap o₁ Ω₂ r := by
   rw [hA]
@@ -88,11 +105,33 @@ def autO (hA : algebraMap o₁ Ω₂ = (algebraMap Ω₁ Ω₂).comp (algebraMap
     Ω₂ →ₐ[o₁] Ω₂ :=
   { (σ : Ω₂ →+* Ω₂) with commutes' := fun r => autO_comm hA σ r }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem autO_apply (hA : algebraMap o₁ Ω₂ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁)) (σ : Ω₂ ≃ₐ[Ω₁] Ω₂)
     (x : Ω₂) : autO hA σ x = σ x := rfl
 
 end Over
 
+/- English proof (translation)
+Introduce `o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ M₁ M₂ q hn hfin hq σ`. Use `haveI := hfin`. Use `letI : Algebra o₁ Ω₂ := ((algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁)).toAlgebra`. Establish `hA : algebraMap o₁ Ω₂ = (algebraMap Ω₁ Ω₂).comp (algebraMap o₁ Ω₁)` using `rfl`. Set `N` to `overBase M₁ M₂ q hq hA`.
+
+Use `haveI hfN : IsFinite (show N.Z ⟶ M₁.Z from q) := hfin`. Establish `hqN : M₁.IsHom N (incl hA) q` using `hq`. Establish `hnN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N.Z` using `hn`. Take `⟨s, hs⟩` from `exists_isHom hqN hnN (autO hA σ) fun a => σ.commutes a`. Take `⟨t, ht⟩` from `exists_isHom hqN hnN (autO hA σ.symm) fun a => σ.symm.commutes a`.
+
+Establish `hst : s ≫ t = 𝟙 N.Z`. Establish `h1` using `ht.comp hs`. Establish `e : (autO hA σ).comp (autO hA σ.symm) = AlgHom.id o₁ Ω₂`. Use extensionality with `x`. Conclude with `σ.apply_symm_apply x`.
+
+Rewrite `h1` using `[e]`. Conclude with `h1.unique (RatModel.isHom_id N)`. Establish `hsq : s ≫ q = q`. Establish `h1` using `hqN.comp hs`. Establish `e : (autO hA σ).comp (incl hA) = incl hA`.
+
+Use extensionality with `a`. Conclude with `σ.commutes a`. Rewrite `h1` using `[e]`. Conclude with `h1.unique hqN`. Use `⟨s, hs, hsq, fun K _ y b => ?_⟩` and prove the remaining obligations.
+
+Set `w : Sp K` to `IsLocalRing.closedPoint K`. Establish `hts : ∀ z, t (s z) = z` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, hst]`. Both sides reduce to the same expression. Distinguish the cases in `hb : b ∈ N.O (s (y w))`.
+
+Conclude with `hs.val_comp y w hb`. Establish `hb' : σ b ∉ N.O (y w)`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Establish `h2` using `ht.map_mem_O (z := s (y w)) (x := σ b) (by`.
+
+Establish `e : N.O (t (s (y w))) = N.O (y w)` using `congrArg N.O (hts (y w))`. Rewrite using `[e]`. Conclude with `h)`. Simplify `h2` using `[autO_apply]`. Establish `e1 : M₂.val (y ≫ s) b = 0` using `RatModel.val_of_notMem (M := N) (y := y ≫ s) w hb`.
+
+Establish `e2 : M₂.val y (σ b) = 0` using `RatModel.val_of_notMem (M := N) (y := y) w hb'`. Rewrite using `[e1, e2]`.
+-/
 theorem autAct : ∀ (o₁ Ω₁ o₂ Ω₂ : Type) [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] [Algebra Ω₁ Ω₂] (M₁ : RatModel o₁ Ω₁) (M₂ : RatModel o₂ Ω₂) (q : M₂.Z ⟶ M₁.Z), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M₂.Z → IsFinite q → M₂.pt ≫ q = spMap (algebraMap Ω₁ Ω₂) ≫ M₁.pt → ∀ σ : Ω₂ ≃ₐ[Ω₁] Ω₂, ∃ s : M₂.Z ⟶ M₂.Z, M₂.pt ≫ s = spMap (σ : Ω₂ →+* Ω₂) ≫ M₂.pt ∧ s ≫ q = q ∧ ∀ (K : Type) [Field K] (y : Sp K ⟶ M₂.Z) (b : Ω₂), M₂.val (y ≫ s) b = M₂.val y (σ b) := by
   intro o₁ Ω₁ o₂ Ω₂ _ _ _ _ _ _ _ M₁ M₂ q hn hfin hq σ
   haveI := hfin

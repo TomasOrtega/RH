@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.SeeConjRead
 
+/- English proof (translation)
+Introduce `D T Lc β ψ0 κ`. Establish `hH : ∀ g : G0 Lc.Pg D.R.r, g ∈ (PsharpSym Lc.Pg D.R.r D.R.rS D.R.k ψ0).H ↔ ∀ PP : ↥Lc.Pg, g PP ∈ unipSym (kP PP.1) D.R.r D.R.rS D.R.k`. Introduce `g`. Use `show g ∈ Subgroup.pi Set.univ _ ↔ _`. Rewrite using `[Subgroup.mem_pi]`.
+
+Simplify using the standard rewrite rules. Use `⟨?_, fun hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SeeConjReord.mem_levelSubgroup_principalDatum_iff, hH]`. Simplify using `only [GlobalTheory.SeeConjReord.r0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨h0, h1, h2⟩, h3⟩`. Conclude with `⟨h0, h1, h2, fun PP hPP => h3 ⟨PP, hPP⟩⟩`. Introduce and unpack `⟨h0, h1, h2, h3⟩`. Conclude with `⟨⟨h0, h1, h2⟩, fun PP => h3 PP.1 PP.2⟩`. Establish `hm` using `((GlobalTheory.SeeConjReord.mem_levelSubgroup_principalDatum_iff Lc _ β κ).1 hκ).2`.
+
+Rewrite using `[GlobalTheory.SeeConjReord.principalRowLevelCharacter_trivial, extendOne_of_mem _ hm]`. Use `erw [MonoidHom.finset_prod_apply, Units.coe_prod]`. Rewrite using `[← Finset.prod_coe_sort Lc.Pg]`. Both sides reduce to the same expression.
+-/
 theorem mem_levS_dat0_PsharpSym_iff : ∀ {D : D7} {T : Type} (Lc : LevCh D T) (β : GL (Fin (Yc D 0).rank) (EAf D)) (ψ0 : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (κ : GA D (Yc D 0)), (κ ∈ levS (Yc D 0) β (Lc.dat0 (PsharpSym Lc.Pg D.R.r D.R.rS D.R.k ψ0)) ↔ κ ∈ GfC (Yc D 0) ∧ finE (Yc D 0) κ ∈ UA D.sp.cm (Yc D 0).gram ∧ finE (Yc D 0) κ ∈ St β ∧ ∀ PP ∈ Lc.Pg, upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP (finE (Yc D 0) κ)) ∈ unipSym (kP PP) D.R.r D.R.rS D.R.k) ∧ (κ ∈ levS (Yc D 0) β (Lc.dat0 (PsharpSym Lc.Pg D.R.r D.R.rS D.R.k ψ0)) → levChi (Yc D 0) β (Lc.dat0 (PsharpSym Lc.Pg D.R.r D.R.rS D.R.k ψ0)) κ = ∏ PP ∈ Lc.Pg, ψ0 PP (edgeSum (symEdge D.R.rS D.R.k) (upperLeftBlock (r_le_Y (D := D) 0) (redFn β PP (finE (Yc D 0) κ))))) := by
   intro D T Lc β ψ0 κ
   have hH : ∀ g : G0 Lc.Pg D.R.r, g ∈ (PsharpSym Lc.Pg D.R.r D.R.rS D.R.k ψ0).H ↔

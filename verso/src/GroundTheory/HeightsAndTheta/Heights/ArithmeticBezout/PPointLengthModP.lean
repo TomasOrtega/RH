@@ -17,6 +17,23 @@ def PointLengthModP.varEquiv (n : ℕ) : Fin n ≃ (Σ _ : Unit, PBlk n ()) wher
   left_inv _ := rfl
   right_inv := fun ⟨(), _⟩ => rfl
 
+/- English proof (translation)
+Introduce `n p W F _ hp _ hpW hsurj hpF i`. Set `e : MvPolynomial (Fin n) ℤ ≃+* MRing (PBlk n)` to `(renameEquiv ℤ (PointLengthModP.varEquiv n)).toRingEquiv`. Use `set W' := IndefiniteRowSideFullHecke.ArithBezout.finIdeal W with hW'`. Establish `hWe : W'.map e = W`. Express the relevant statement in the definitionally equal form `(W.comap e).map e = W`.
+
+Conclude with `Ideal.map_comap_of_surjective _ e.surjective W`. Use `set I : Ideal (MvPolynomial (Fin n) ℤ) := W' ⊔ Ideal.span {X i - 1} with hI`. Establish `hJ : W ⊔ Ideal.span {(X ⟨(), i⟩ : MRing (PBlk n)) - 1} = I.map e`. Rewrite using `[hI, Ideal.map_sup, hWe, Ideal.map_span, Set.image_singleton]`. Use `congr 3`.
+
+Simplify using `[e, PointLengthModP.varEquiv]`. Set `E1` to `Ideal.quotientEquiv I _ e hJ`. Set `φ : MvPolynomial (Fin n) ℤ →+* MvPolynomial (Fin n) F` to `MvPolynomial.map (Int.castRingHom F)`. Establish `hφ : Function.Surjective φ` using `MvPolynomial.map_surjective _ hsurj`. Establish `: CharP F p` using `(CharP.charP_iff_prime_eq_zero hp).2 (by exact_mod_cast hpF)`.
+
+Establish `hker : RingHom.ker φ ≤ I`. Rewrite using `[MvPolynomial.ker_map]`. Apply `Ideal.map_le_of_le_comap` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[RingHom.mem_ker, eq_intCast, CharP.intCast_eq_zero_iff F p]`.
+
+Take `⟨c, rfl⟩` from `hz`. Simplify using `only [Ideal.mem_comap, map_mul]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Use `show rename _ (C (p : ℤ)) ∈ W`.
+
+Simplify `hpW` using `[rename_C]`. Use `set J' := W'.map φ ⊔ Ideal.span {(X i : MvPolynomial (Fin n) F) - 1} with hJ'def`. Establish `hJ' : J' = I.map φ`. Rewrite using `[hJ'def, hI, Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Simplify using `[φ]`.
+
+Set `f : MvPolynomial (Fin n) ℤ →+* MvPolynomial (Fin n) F ⧸ J'` to `(Ideal.Quotient.mk J').comp φ`. Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective.comp hφ`. Establish `hkerf : RingHom.ker f = I`. Rewrite using `[← RingHom.comap_ker, Ideal.mk_ker, hJ', Ideal.comap_map_of_surjective _ hφ]`. Conclude with `sup_eq_left.2 hker`.
+
+Set `E2 : (MvPolynomial (Fin n) ℤ ⧸ I) ≃+* (MvPolynomial (Fin n) F ⧸ J')` to `(Ideal.quotEquivOfEq hkerf.symm).trans (RingHom.quotientKerEquivOfSurjective hf)`. Establish `hZ : Function.Surjective (algebraMap ℤ F)` using `by rw [algebraMap_int_eq]; exact hsurj`. Rewrite using `[(E1.symm.trans E2).toIntAlgEquiv.toLinearEquiv.length_eq, Module.length_eq_of_surjective hZ, Module.length_eq_rank, Cardinal.toNat_toENat]`. Both sides reduce to the same expression.
+-/
 theorem PointLengthModP.proof : PointLengthModP.Statement := by
   intro n p W F _ hp _ hpW hsurj hpF i
   classical

@@ -22,6 +22,13 @@ noncomputable section
 
 namespace GlobalTheory.BigCell
 
+/- English proof (translation)
+Establish `hy0 : y ∈ ptsIn q σ c₀.U` using `c₀.source_subset hy`. Take `⟨f, hfV, hf⟩` from `c₀.affine.exists_basicOpen_le (V := V) ⟨_, mem_ptsIn.1 hV⟩ (mem_ptsIn.1 hy0)`. Establish `hle : B.basicOpen f ≤ c₀.U` using `B.basicOpen_le f`. Establish `hE : (MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a))).Etale`. Establish `e : MvPolynomial.eval₂Hom (algX q (B.basicOpen f)) (fun a => resG B hle (c₀.x a)) = (resG B hle).comp (MvPolynomial.eval₂Hom (algX q c₀.U) c₀.x)`.
+
+Rewrite using `[MvPolynomial.comp_eval₂Hom, GlobalTheory.TopForm.resG_comp_algX]`. Rewrite using `[e]`. Establish `hR : (resG B hle).Etale`. Use `letI : Algebra Γ(B, c₀.U) Γ(B, B.basicOpen f) := (resG B hle).toAlgebra`. Use `haveI : IsLocalization.Away f Γ(B, B.basicOpen f) := c₀.affine.isLocalization_basicOpen f`.
+
+Conclude with `RingHom.etale_algebraMap.2 (Algebra.Etale.of_isLocalizationAway f)`. Conclude with `RingHom.Etale.stableUnderComposition _ _ c₀.etale hR`. Take `⟨c, hc, hU, -⟩` from `AlgChart.exists_of_etale (c₀.affine.basicOpen f) _ hE (mem_ptsIn.2 hf)`. Conclude with `⟨c, hc, hU ▸ hfV⟩`.
+-/
 theorem exists_chart_le_dim (k : Type) [CommRing k] (B : Scheme.{0}) (q : B ⟶ Sp k) (σ : k →+* ℂ) {n : ℕ}
     (c₀ : AlgChart q σ n) (y : CxPts q σ) (hy : y ∈ c₀.e.source) (V : B.Opens) (hV : y ∈ ptsIn q σ V) :
     ∃ c : AlgChart q σ n, y ∈ c.e.source ∧ c.U ≤ V := by
@@ -45,6 +52,19 @@ theorem exists_chart_le_dim (k : Type) [CommRing k] (B : Scheme.{0}) (q : B ⟶ 
 
 open MvPolynomial in
 
+/- English proof (translation)
+Set `ι : MvPolynomial (Fin D) k →+* MvPolynomial N (MvPolynomial (Fin n) k)` to `eval₂Hom (C.comp C) (fun j => Sum.elim (fun b => C (X b)) X (ε j))`. Set `κ : MvPolynomial N (MvPolynomial (Fin n) k) →+* MvPolynomial (Fin D) k` to `eval₂Hom (eval₂Hom C (fun b => X (ε.symm (.inl b)))) (fun i => X (ε.symm (.inr i)))`. Establish `h1 : κ.comp ι = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using `[ι, κ]`. Introduce `j`. Take `⟨o, rfl⟩` from `ε.symm.surjective j`. Apply the tactic sequence `cases o <;> simp [ι, κ]`. Establish `h2 : ι.comp κ = RingHom.id _`.
+
+Apply `MvPolynomial.ringHom_ext'` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι, κ]`. Introduce `j`.
+
+Simplify using `[ι, κ]`. Introduce `j`. Simplify using `[ι, κ]`. Establish `hι : Function.Bijective ι` using `Function.bijective_iff_has_inverse.2 ⟨κ, fun x => DFunLike.congr_fun h1 x, fun x => DFunLike.congr_fun h2 x⟩`. Establish `key : MvPolynomial.eval₂Hom (f.comp α) (fun j => Sum.elim (fun b => f (t b)) m (ε j)) = (MvPolynomial.eval₂Hom f m).comp ((MvPolynomial.map (MvPolynomial.eval₂Hom α t)).comp ι)`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[ι]`. Introduce `j`. Take `⟨o, rfl⟩` from `ε.symm.surjective j`.
+
+Apply the tactic sequence `cases o <;> simp [ι]`. Rewrite using `[key]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective hι) (GlobalTheory.etale_mvPolynomial_map_of_etale _ hg)) (RingHom.Etale.of_bijective hΦ)`.
+-/
 theorem etale_eval₂Hom_sum_of_bijective {k A R N : Type} [CommRing k] [CommRing A] [CommRing R] (α : k →+* A)
     {n : ℕ} (t : Fin n → A) (f : A →+* R) (m : N → R) {D : ℕ} (ε : Fin D ≃ Fin n ⊕ N)
     (hg : (MvPolynomial.eval₂Hom α t).Etale) (hΦ : Function.Bijective (MvPolynomial.eval₂Hom f m)) :
@@ -93,6 +113,9 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
 
 omit [CommRing k] in
 
+/- English proof (translation)
+The claim follows from `(baseL ε).differentiable`.
+-/
 theorem differentiable_base : Differentiable ℂ (base ε) := (baseL ε).differentiable
 
 variable (c : AlgChart q σ n) {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ c.U) (hWa : IsAffineOpen W)
@@ -106,25 +129,47 @@ def cellInv (v : V D) : CxPts p σ :=
 
 variable {ε c hW hWa m hΦ}
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem cellInv_eq {v : V D} (h : base ε v ∈ c.e.target) : cellInv π w ε c hW hWa m hΦ y₀ v =
     cellPt π w hW hWa m hΦ (c.source_subset (c.e.map_target h)) (fun s => v (ε.symm (.inr s))) := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[cellInv_eq _ _ _ h]`. Conclude with `cellPt_mem ..`.
+-/
 theorem cellInv_mem {v : V D} (h : base ε v ∈ c.e.target) : cellInv π w ε c hW hWa m hΦ y₀ v ∈ ptsIn p σ W := by
   rw [cellInv_eq _ _ _ h]; exact cellPt_mem ..
 
+/- English proof (translation)
+Rewrite using `[cellInv_eq _ _ _ h]`. Conclude with `map_cellPt _ _ _ _ _ _ c.affine _ _`.
+-/
 theorem map_cellInv {v : V D} (h : base ε v ∈ c.e.target) :
     PtsOver.map π w (spMap σ) (cellInv π w ε c hW hWa m hΦ y₀ v) = c.e.symm (base ε v) := by
   rw [cellInv_eq _ _ _ h]; exact map_cellPt _ _ _ _ _ _ c.affine _ _
 
+/- English proof (translation)
+Rewrite using `[cellInv_eq _ _ _ h]`. Conclude with `ev_n_cellPt ..`.
+-/
 theorem ev_m_cellInv {v : V D} (h : base ε v ∈ c.e.target) (s : Σ a, Low (r a)) :
     ev p σ W (m s) (cellInv π w ε c hW hWa m hΦ y₀ v) = v (ε.symm (.inr s)) := by
   rw [cellInv_eq _ _ _ h]; exact ev_n_cellPt ..
 
+/- English proof (translation)
+Rewrite using `[ev_appLE π w hW (cellInv_mem π w y₀ h), map_cellInv π w y₀ h]`.
+-/
 theorem ev_appLE_cellInv {v : V D} (h : base ε v ∈ c.e.target) (g : Γ(B, c.U)) :
     ev p σ W ((π.appLE c.U W hW).hom g) (cellInv π w ε c hW hWa m hΦ y₀ v) =
       ev q σ c.U g (c.e.symm (base ε v)) := by
   rw [ev_appLE π w hW (cellInv_mem π w y₀ h), map_cellInv π w y₀ h]
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `hΦ.2 g`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hd : DifferentiableOn ℂ (fun v => ev q σ c.U a (c.e.symm (base ε v))) {v | base ε v ∈ c.e.target}` using `(c.holo c.U a).comp (differentiable_base ε).differentiableOn fun v hv => ⟨hv, c.source_subset (c.e.map_target hv)⟩`. Use `hd.congr fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [MvPolynomial.eval₂Hom_C]`. Conclude with `ev_appLE_cellInv π w y₀ hv a`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, ev_add]`. Conclude with `hP.add hQ`.
+
+Consider the case `mul_X P s hP`. Establish `hd : DifferentiableOn ℂ (fun v : V D => v (ε.symm (.inr s))) {v | base ε v ∈ c.e.target}` using `by fun_prop`. Simplify using `only [map_mul, ev_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `hP.mul (hd.congr fun v hv => ev_m_cellInv π w y₀ hv s)`.
+-/
 theorem holo_cellInv (g : Γ(Y, W)) :
     DifferentiableOn ℂ (fun v => ev p σ W g (cellInv π w ε c hW hWa m hΦ y₀ v)) {v | base ε v ∈ c.e.target} := by
   obtain ⟨P, rfl⟩ := hΦ.2 g
@@ -221,6 +266,9 @@ def cellChart : AlgChart p σ D where
 
 end Chart
 
+/- English proof (translation)
+Take `⟨b₀, hb₀⟩` from `hne`. Use `⟨cellChart π w ε c hW hWa m hΦ (cellPt π w hW hWa m hΦ (c.source_subset hb₀) 0), ⟨rfl, rfl, fun y _ => ?_⟩, inter_subset_right, fun y _ a s => ?_⟩` and prove the remaining obligations. Conclude with `base_pt ε (c.e (PtsOver.map π w (spMap σ) y)) fun a s => ev p σ W (m ⟨a, s⟩) y`. Conclude with `congrFun (congrFun (fib_pt ε (c.e (PtsOver.map π w (spMap σ) y)) fun a s => ev p σ W (m ⟨a, s⟩) y) a) s`.
+-/
 theorem cell_chart (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B)
     (w : π ≫ q = p) (ι : Type) (r : ι → ℕ) (n D : ℕ) (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) (σ : k →+* ℂ)
     (c : AlgChart q σ n) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ c.U) (hWa : IsAffineOpen W)
@@ -238,6 +286,13 @@ end GlobalTheory.BigCell
 
 namespace GlobalTheory.BigCell
 
+/- English proof (translation)
+Introduce `i`. Take `⟨s, t, h₁, h₂, h₃⟩` from `H.exists_adaptedChart i`. Use `⟨⟨W, s, t, h₁, h₂⟩, fun y hy => ⟨hs hy, ?_⟩⟩` and prove the remaining obligations. Establish `hM : uni (fib ε (c'.e y) a) = Matrix.of fun j l => ev p σ W (uniR m j l) y`. Use extensionality with `j l`.
+
+Rewrite using `[← uniR_eq_uni, of_apply, uniR_apply, uniR_apply, ev_eq (hs hy)]`. Use `split_ifs`. Rewrite using `[hm y hy, ev_eq (hs hy)]`. Conclude with `(map_one _).symm`. Conclude with `(map_zero _).symm`.
+
+Use extensionality with `j l`. Rewrite using `[submatrix_apply, hM, ← form_pullCol π w (h.met σ) cE hW (uniR m) (hs hy), ← h₃, ← h₃]`. Conclude with `Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ (hs hy)`.
+-/
 theorem isCellFrame_of_spans (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k)
     (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) (r : ι → ℕ) (n D : ℕ) (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a)))
     (σ : k →+* ℂ) (a : ι) (E : B.Modules) (h : VMetric q E (r a))
@@ -263,6 +318,15 @@ end GlobalTheory.BigCell
 
 open GlobalTheory.MixDens GlobalTheory.CovTest
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w ι _ r n D ε σ E h fl hfl c₀ y hy`. Establish `hx : ∀ a, ∃ (U : B.Opens) (f : Fin (r a) → Γ(E a, U)), y.1 (IsLocalRing.closedPoint ℂ) ∈ U ∧ IsFrame f` using `fun a => (h a).isVB _`. Use `choose U f hxU hf using hx`. Set `V : B.Opens` to `Finset.univ.inf U`. Establish `hV (a : ι) : V ≤ U a` using `Finset.inf_le (Finset.mem_univ a)`.
+
+Establish `hyV : y ∈ ptsIn q σ V`. Rewrite using `[mem_ptsIn]`. Use `show _ ∈ ((Finset.univ.inf U : B.Opens) : Set B)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using hxU`.
+
+Take `⟨c, hyc, hcV⟩` from `GlobalTheory.BigCell.exists_chart_le_dim k B q σ c₀ y hy V hyV`. Set `cE : ∀ a, Chart (E a) (r a)` to `fun a => ⟨c.U, fun l => GlobalTheory.Twist.resM (E a) (hcV.trans (hV a)) (f a l), (hf a).res (hcV.trans (hV a))⟩`. Take `⟨W, hW, hWa, m, hb, hs⟩` from `GlobalTheory.T.flag_bundle_affine_polynomial_coords B Y π ι r E fl hfl (fun a => (h a).isVB) c.U c.affine (fun a => (cE a).e) fun a => (cE a).isFrame`. Take `⟨c', hcell, hsrc, hfib⟩` from `GlobalTheory.BigCell.cell_chart k B Y q p π w ι r n D ε σ c W hW hWa m hb ⟨y, hyc⟩`. Use `⟨c, cE, c', hyc, fun a => c.source_subset, hcell, fun a => ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.BigCell.isCellFrame_of_spans k B Y q p π w ι r n D ε σ a (E a) (h a) (fl a) (cE a) c' W hW (fun s => m ⟨a, s⟩) (hs a) hsrc fun y hy s => hfib y hy a s`.
+-/
 theorem GlobalTheory.BigCell.exists_cell_charts : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (n D : ℕ) (ε : Fin D ≃ Fin n ⊕ (Σ a, Low (r a))) (σ : k →+* ℂ) (E : ι → B.Modules) (h : ∀ a, VMetric q (E a) (r a)) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (c₀ : AlgChart q σ n), ∀ y ∈ c₀.e.source, ∃ (c : AlgChart q σ n) (cE : ∀ a, Chart (E a) (r a)) (c' : AlgChart p σ D), y ∈ c.e.source ∧ (∀ a, c.e.source ⊆ ptsIn q σ (cE a).U) ∧ BigCell.IsCell ε π w c c' ∧ ∀ a, BigCell.IsCellFrame ε π w c' a (h a) (fl a) (cE a) := by
   intro k _ B Y q p π w ι _ r n D ε σ E h fl hfl c₀ y hy
   have hx : ∀ a, ∃ (U : B.Opens) (f : Fin (r a) → Γ(E a, U)), y.1 (IsLocalRing.closedPoint ℂ) ∈ U ∧ IsFrame f :=

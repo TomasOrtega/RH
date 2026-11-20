@@ -13,6 +13,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff.LevSurj
 
+/- English proof (translation)
+Take `⟨q, hqm, hq, hq0⟩` from `Ideal.exists_ideal_le_liesOver_of_le (R := R) (p := ⊥) (q := m.under R) m bot_le`. Establish `hinj : Function.Injective (algebraMap R (A ⧸ q))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Establish `h1 : algebraMap R A s ∈ q` using `Ideal.Quotient.eq_zero_iff_mem.1 hs`.
+
+Establish `h2 : s ∈ q.under R` using `h1`. Rewrite `h2` using `[← hq0.over]`. Conclude with `h2`. Use `haveI : FaithfulSMul R (A ⧸ q) := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Take `⟨g, -⟩` from `exists_algHom_comp_eq (A := R) (K := K) (IsAlgClosed.lift (R := R) (S := A ⧸ q) (M := K))`.
+
+Establish `hg : RingHom.ker g = ⊥` using `Ideal.eq_bot_of_comap_eq_bot (R := R) (by`. Rewrite using `[eq_bot_iff]`. Introduce `s hs`. Establish `: g (algebraMap R _ s) = 0` using `hs`. Rewrite `this` using `[g.commutes]`.
+
+Conclude with `this)`. Use `⟨g.comp (Ideal.Quotient.mkₐ R q), fun b hb => hqm ?_⟩` and prove the remaining obligations. Establish `h3 : Ideal.Quotient.mk q b ∈ RingHom.ker g` using `hb`. Rewrite `h3` using `[hg]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h3`.
+-/
 theorem exists_section {R : Type} (K : Type) {A : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K]
     [Algebra R K] [IsFractionRing R K] [CommRing A] [Algebra R A] [Module.Finite R A] [Module.Flat R A]
     (m : Ideal A) [m.IsPrime] : ∃ σ : A →ₐ[R] R, RingHom.ker σ ≤ m := by
@@ -39,6 +48,11 @@ theorem exists_section {R : Type} (K : Type) {A : Type} [CommRing R] [IsDomain R
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `AlgHom.comp_convMul_distrib f (toConv (HopfAlgebra.antipodeAlgHom R A)) (toConv (AlgHom.id R A))`. Rewrite `h` using `[AlgHom.antipode_id_cancel]`. Apply `WithConv.ofConv_injective` to reduce the goal to its premises. Use `h.symm.trans ?_` and prove the remaining obligations. Use extensionality with `a`.
+
+Simplify using `[AlgHom.convOne_def]`.
+-/
 theorem conv_inv {A B : Type} [CommRing A] [HopfAlgebra R A] [CommRing B] [Algebra R B] (f : A →ₐ[R] B) :
     toConv (f.comp (HopfAlgebra.antipodeAlgHom R A)) * toConv f = 1 := by
   have h := AlgHom.comp_convMul_distrib f (toConv (HopfAlgebra.antipodeAlgHom R A)) (toConv (AlgHom.id R A))
@@ -48,6 +62,9 @@ theorem conv_inv {A B : Type} [CommRing A] [HopfAlgebra R A] [CommRing B] [Algeb
   ext a
   simp [AlgHom.convOne_def]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x`. Conclude with `h ⟨x, rfl⟩`. Introduce and unpack `h _ ⟨x, rfl⟩`. Conclude with `h x`.
+-/
 theorem range_subset_iff {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (V : (Sp A).Opens) :
     Set.range (spMap φ) ⊆ V ↔ ∀ x : PrimeSpectrum B, PrimeSpectrum.comap φ x ∈ V := by
   constructor
@@ -56,6 +73,9 @@ theorem range_subset_iff {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
   · rintro h _ ⟨x, rfl⟩
     exact h x
 
+/- English proof (translation)
+Rewrite using `[range_subset_iff]`. Introduce `x`. Conclude with `((IsLocalRing.specializes_closedPoint x).map (PrimeSpectrum.continuous_comap φ)).mem_open V.2 h`.
+-/
 theorem range_subset_of_local {A B : Type} [CommRing A] [CommRing B] [IsLocalRing B] (φ : A →+* B) (V : (Sp A).Opens)
     (h : PrimeSpectrum.comap φ (IsLocalRing.closedPoint B) ∈ V) : Set.range (spMap φ) ⊆ V := by
   rw [range_subset_iff]
@@ -64,6 +84,11 @@ theorem range_subset_of_local {A B : Type} [CommRing A] [CommRing B] [IsLocalRin
 
 variable {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ} {A : Type} [CommRing A] [HopfAlgebra R A]
 
+/- English proof (translation)
+Establish `h` using `θ.mul B 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h2` using `conv_inv (θ.pt B 1)`. Establish `h3 : toConv (θ.pt B 1) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `congrArg ofConv h3`.
+-/
 theorem pt_one (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] :
     θ.pt B 1 = (Algebra.ofId R B).comp (counitAlgHom R A) := by
   have h := θ.mul B 1 1
@@ -75,11 +100,19 @@ theorem pt_one (θ : TorsPt G N A) (B : Type) [CommRing B] [Algebra R B] :
       _ = 1 := by rw [_root_.mul_assoc, ← h, h2]
   exact congrArg ofConv h3
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `hθ.opn`. Conclude with `Set.injOn_univ.1 (hV B).injOn`.
+-/
 theorem pt_inj {K : Type} [Field K] [Algebra R K] {θ : TorsPt G N A} (hθ : IsLevel K θ) (B : Type) [CommRing B]
     [Algebra R B] : Function.Injective (θ.pt B) := by
   obtain ⟨V, hV⟩ := hθ.opn
   exact Set.injOn_univ.1 (hV B).injOn
 
+/- English proof (translation)
+Introduce `x y h`. Apply `pt_inj hθ` to reduce the goal to its premises. Establish `h1` using `congrArg (θ.pt C) h`. Rewrite `h1` using `[θ.nat, θ.nat]`. Use extensionality with `a`.
+
+Conclude with `hjj (congr($h1 a))`.
+-/
 theorem torsMap_inj {K : Type} [Field K] [Algebra R K] {θ : TorsPt G N A} (hθ : IsLevel K θ) {B C : Type} [CommRing B]
     [Algebra R B] [CommRing C] [Algebra R C] (jj : B →ₐ[R] C) (hjj : Function.Injective jj) :
     Function.Injective (torsMap (G := G) (N := N) jj) := by
@@ -90,6 +123,35 @@ theorem torsMap_inj {K : Type} [Field K] [Algebra R K] {θ : TorsPt G N A} (hθ 
   ext a
   exact hjj (congr($h1 a))
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `hθ.opn`. Take `⟨V', hV'⟩` from `hθ'.opn`. Establish `hδV : Set.range (spMap (δ : A →+* B)) ⊆ V`. Rewrite using `[range_subset_iff]`. Introduce `x`.
+
+Set `P : PrimeSpectrum A` to `PrimeSpectrum.comap (δ : A →+* B) x`. Take `⟨s, hs⟩` from `exists_section (R := R) K P.asIdeal`. Set `q : Ideal R` to `P.asIdeal.comap (algebraMap R A)`. Set `L` to `Localization.AtPrime q`. Establish `hsP : ∀ a, s a ∈ q ↔ a ∈ P.asIdeal` using `fun a => by`.
+
+Establish `h1 : a - algebraMap R A (s a) ∈ P.asIdeal` using `hs (by simp [RingHom.mem_ker])`. Prove the components needed by the constructor for the conclusion. Introduce `h2`. Simplify using `using P.asIdeal.add_mem h1 h2`. Introduce `h2 show algebraMap R A (s a) ∈ P.asIdeal`.
+
+Simplify using `using P.asIdeal.sub_mem h2 h1`. Establish `hL : ∀ r : R, algebraMap R L r ∈ IsLocalRing.maximalIdeal L ↔ r ∈ q` using `fun r => IsLocalization.AtPrime.to_map_mem_maximal_iff L q r`. Establish `hq : q.primeCompl ≤ nonZeroDivisors R` using `Ideal.primeCompl_le_nonZeroDivisors q`. Establish `hu : ∀ y : q.primeCompl, IsUnit (Algebra.ofId R K y)` using `fun y => IsLocalization.map_units K (⟨y.1, hq y.2⟩ : nonZeroDivisors R)`. Set `jj : L →ₐ[R] K` to `IsLocalization.liftAlgHom (M := q.primeCompl) hu`.
+
+Establish `hjj : Function.Injective jj`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl y`. Establish `h1 : jj (IsLocalization.mk' L a b * algebraMap R L b) = 0`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_eq_zero_of_left hy _`. Rewrite `h1` using `[IsLocalization.mk'_spec, jj.commutes]`. Establish `h2 : a = 0` using `(IsFractionRing.injective R K) (h1.trans (map_zero _).symm)`. Simplify using `[h2]`.
+
+Set `sL : A →ₐ[R] L` to `(Algebra.ofId R L).comp s`. Establish `h1 : Set.range (spMap ((sL.comp g : A' →ₐ[R] L) : A' →+* L)) ⊆ V'`. Apply `range_subset_of_local` to reduce the goal to its premises. Establish `h2` using `(range_subset_iff _ _).1 ((hV' B).mapsTo (Set.mem_univ 1)) x`. Rewrite `h2` using `[pt_one, ← hδ]`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Conclude with `(hL _).trans (hsP _)`. Take `⟨z', -, hz'⟩` from `(hV' L).surjOn h1`. Take `⟨t, ht⟩` from `hθ.gen.2 (jj.comp sL)`.
+
+Establish `h3 : torsMap jj z' = torsIncl h t`. Apply `pt_inj hθ'` to reduce the goal to its premises. Rewrite using `[θ'.nat, hz', hg, ht]`. Both sides reduce to the same expression. Establish `h4 : z'.1 ^ N = 1`.
+
+Establish `h5 : (⟨z'.1 ^ N, (z' ^ N).2⟩ : Tors G N' L) = 1`. Apply `torsMap_inj hθ' jj hjj` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h6 : spOver jj ≫ z'.1 = t.1` using `congrArg Subtype.val h3`. Express the relevant statement in the definitionally equal form `spOver jj ≫ z'.1 ^ N = spOver jj ≫ 1`.
+
+Rewrite using `[MonObj.comp_pow, h6, t.2, MonObj.comp_one]`. Conclude with `congrArg Subtype.val h5`. Set `z : Tors G N L` to `⟨z'.1, h4⟩`. Establish `h7 : torsMap jj z = t` using `Subtype.ext (show spOver jj ≫ z'.1 = t.1 from congrArg Subtype.val h3)`. Establish `h8 : θ.pt L z = sL`.
+
+Rewrite `ht` using `[← h7, θ.nat]`. Use extensionality with `a`. Conclude with `hjj (congr($ht a))`. Establish `h9` using `(range_subset_iff _ _).1 ((hV L).mapsTo (Set.mem_univ z)) (IsLocalRing.closedPoint L)`. Rewrite `h9` using `[h8]`.
+
+Use `h9 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Conclude with `((hL _).trans (hsP _)).symm`. Take `⟨w, -, hw⟩` from `(hV B).surjOn hδV`. Establish `h1 : torsIncl h w = 1`.
+
+Apply `pt_inj hθ'` to reduce the goal to its premises. Rewrite using `[hg, hw, hδ, pt_one]`. Establish `h2 : w = 1` using `Subtype.ext (show w.1 = 1 from congrArg Subtype.val h1)`. Rewrite using `[← hw, h2, pt_one]`.
+-/
 theorem ker_trivial {K : Type} [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [Algebra R K] [IsFractionRing R K]
     [Module.Finite R A] [Module.Flat R A] {N' : ℕ} (h : N ∣ N') {A' : Type} [CommRing A'] [HopfAlgebra R A']
     {θ : TorsPt G N A} {θ' : TorsPt G N' A'} (hθ : IsLevel K θ) (hθ' : IsLevel K θ') (g : A' →ₐ[R] A)
@@ -169,6 +231,21 @@ theorem ker_trivial {K : Type} [IsDomain R] [IsIntegrallyClosed R] [Field K] [Is
   have h2 : w = 1 := Subtype.ext (show w.1 = 1 from congrArg Subtype.val h1)
   rw [← hw, h2, pt_one]
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ _ N N' h _ A _ _ _ _ _ A' _ _ _ _ _ θ θ' hθ hθ' g hg`. Establish `hc : ∀ (T : Type) [CommRing T] [Algebra R T] (g₁ g₂ : A →ₐ[R] T), g₁.comp (g : A' →ₐ[R] A) = g₂.comp (g : A' →ₐ[R] A) → g₁ = g₂`. Introduce `T _ _ φ ψ e`. Set `φi` to `toConv (φ.comp (HopfAlgebra.antipodeAlgHom R A))`. Establish `h1 : φi * toConv φ = 1` using `conv_inv φ`.
+
+Establish `h2 : (φi * toConv ψ).ofConv = (Algebra.ofId R T).comp (counitAlgHom R A)`. Apply `ker_trivial h hθ hθ' _ hg` to reduce the goal to its premises. Rewrite using `[AlgHom.convMul_comp_bialgHom_distrib]`. Simplify using `only [ofConv_toConv]`. Rewrite using `[← e]`.
+
+Use `AlgHom.convMul_comp_bialgHom_distrib φi (toConv φ) g` as an intermediate fact. Simplify using `only [ofConv_toConv] at this`. Rewrite using `[← this, h1]`. Use extensionality with `a`. Simplify using `[AlgHom.convOne_def]`.
+
+Establish `h3 : φi * toConv ψ = 1` using `WithConv.ofConv_injective h2`. Apply `WithConv.toConv_injective` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Set `f : A' →ₐ[R] A` to `g`. Establish `hf : f.Finite` using `AlgHom.Finite.of_comp_finite (f := Algebra.ofId R A') (by`.
+
+Rewrite using `[Algebra.comp_ofId]`. Conclude with `RingHom.finite_algebraMap.2 inferInstance)`. Use `algebraize [f.toRingHom]`. Establish `: Module.Finite A' A` using `hf`. Use `(Algebra.isEpi_iff_surjective_algebraMap_of_finite (R := A') (A := A)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.isEpi_iff_forall_one_tmul_eq]`. Introduce `b`. Use `hc (A ⊗[A'] A) ((Algebra.TensorProduct.includeRight : A →ₐ[A'] A ⊗[A'] A).restrictScalars R) ((Algebra.TensorProduct.includeLeft : A →ₐ[A'] A ⊗[A'] A).restrictScalars R) (by` as an intermediate fact. Use extensionality with `a`. Conclude with `((Algebra.TensorProduct.includeRight : A →ₐ[A'] A ⊗[A'] A).commutes a).trans ((Algebra.TensorProduct.includeLeft : A →ₐ[A'] A ⊗[A'] A).commutes a).symm)`.
+
+Conclude with `congr($this b)`.
+-/
 theorem level_surjective : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N N' : ℕ) (h : N ∣ N'), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (A' : Type) [CommRing A'] [HopfAlgebra R A'] [IsCocomm R A'] [Module.Finite R A'] [Module.Projective R A'] (θ : TorsPt G N A) (θ' : TorsPt G N' A'), IsLevel K θ → IsLevel K θ' → ∀ g : A' →ₐc[R] A, (∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B), θ'.pt B (torsIncl h z) = (θ.pt B z).comp (g : A' →ₐ[R] A)) → Function.Surjective g := by
   intro R K _ _ _ _ _ _ _ _ G _ _ _ N N' h _ A _ _ _ _ _ A' _ _ _ _ _ θ θ' hθ hθ' g hg
   have hc : ∀ (T : Type) [CommRing T] [Algebra R T] (g₁ g₂ : A →ₐ[R] T),

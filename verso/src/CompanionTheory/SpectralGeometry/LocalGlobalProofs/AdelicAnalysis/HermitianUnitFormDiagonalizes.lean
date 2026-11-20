@@ -15,32 +15,56 @@ def bd (a : A) (M : Matrix (Fin m) (Fin m) A) : Matrix (Fin (m + 1)) (Fin (m + 1
   fun i j => Fin.cases (Fin.cases a (fun _ => 0) j)
     (fun i' => Fin.cases 0 (fun j' => M i' j') j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma bd_zero_zero (a : A) (M : Matrix (Fin m) (Fin m) A) : bd a M 0 0 = a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma bd_zero_succ (a : A) (M : Matrix (Fin m) (Fin m) A) (j : Fin m) :
     bd a M 0 j.succ = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma bd_succ_zero (a : A) (M : Matrix (Fin m) (Fin m) A) (i : Fin m) :
     bd a M i.succ 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma bd_succ_succ (a : A) (M : Matrix (Fin m) (Fin m) A) (i j : Fin m) :
     bd a M i.succ j.succ = M i j := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 lemma bd_mul (a b : A) (M N : Matrix (Fin m) (Fin m) A) :
     bd a M * bd b N = bd (a * b) (M * N) := by
   ext i j
   refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ]`. Establish `: (bd a M).submatrix Fin.succ Fin.succ = M`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify using `[this]`.
+-/
 lemma det_bd (a : A) (M : Matrix (Fin m) (Fin m) A) : (bd a M).det = a * M.det := by
   rw [Matrix.det_succ_row_zero, Fin.sum_univ_succ]
   have : (bd a M).submatrix Fin.succ Fin.succ = M := by
     ext i j; simp
   simp [this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>`. Simplify using `[cT]`.
+-/
 lemma cT_bd (σ : A →+* A) (a : A) (M : Matrix (Fin m) (Fin m) A) :
     cT σ (bd a M) = bd (σ a) (cT σ M) := by
   ext i j
   refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>
     simp [cT]
 
+/- English proof (translation)
+Establish `h0 : ∀ j' : Fin m, (0 : Fin (m + 1)) ≠ j'.succ` using `fun j' => (Fin.succ_ne_zero j').symm`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>`. Simplify using `[Matrix.diagonal_apply, h0]`.
+-/
 lemma bd_diagonal (a : A) (d : Fin m → A) :
     bd a (Matrix.diagonal d) = Matrix.diagonal (Fin.cons a d : Fin (m + 1) → A) := by
   have h0 : ∀ j' : Fin m, (0 : Fin (m + 1)) ≠ j'.succ := fun j' => (Fin.succ_ne_zero j').symm
@@ -52,12 +76,27 @@ def uni (r : Fin m → A) : Matrix (Fin (m + 1)) (Fin (m + 1)) A :=
   fun i j => Fin.cases (Fin.cases 1 r j)
     (fun i' => Fin.cases 0 (fun j' => (1 : Matrix (Fin m) (Fin m) A) i' j') j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma uni_zero_zero (r : Fin m → A) : uni r 0 0 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma uni_zero_succ (r : Fin m → A) (j : Fin m) : uni r 0 j.succ = r j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma uni_succ_zero (r : Fin m → A) (i : Fin m) : uni r i.succ 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma uni_succ_succ (r : Fin m → A) (i j : Fin m) :
     uni r i.succ j.succ = (1 : Matrix (Fin m) (Fin m) A) i j := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `: (uni r).submatrix Fin.succ Fin.succ = 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify using `[this]`.
+-/
 lemma det_uni (r : Fin m → A) : (uni r).det = 1 := by
   rw [Matrix.det_succ_column_zero, Fin.sum_univ_succ]
   have : (uni r).submatrix Fin.succ Fin.succ = 1 := by
@@ -67,6 +106,9 @@ lemma det_uni (r : Fin m → A) : (uni r).det = 1 := by
 def schur (K : Matrix (Fin (m + 1)) (Fin (m + 1)) A) (b : A) : Matrix (Fin m) (Fin m) A :=
   fun i j => K i.succ j.succ - K i.succ 0 * b * K 0 j.succ
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ]`. Introduce `j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply, add_comm]`.
+-/
 lemma mul_uni (K : Matrix (Fin (m + 1)) (Fin (m + 1)) A) (r : Fin m → A) (i : Fin (m + 1)) :
     (K * uni r) i 0 = K i 0 ∧ ∀ j : Fin m, (K * uni r) i j.succ = K i j.succ + K i 0 * r j := by
   constructor
@@ -74,6 +116,9 @@ lemma mul_uni (K : Matrix (Fin (m + 1)) (Fin (m + 1)) A) (r : Fin m → A) (i : 
   · intro j
     simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply, add_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[cT, Matrix.mul_apply, Fin.sum_univ_succ]`. Introduce `i`. Simplify using `[cT, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply, add_comm, apply_ite σ]`.
+-/
 lemma cT_uni_mul (σ : A →+* A) (P : Matrix (Fin (m + 1)) (Fin (m + 1)) A) (r : Fin m → A)
     (j : Fin (m + 1)) :
     (cT σ (uni r) * P) 0 j = P 0 j ∧
@@ -84,6 +129,17 @@ lemma cT_uni_mul (σ : A →+* A) (P : Matrix (Fin (m + 1)) (Fin (m + 1)) A) (r 
     simp [cT, Matrix.mul_apply, Fin.sum_univ_succ, Matrix.one_apply, add_comm,
       apply_ite σ]
 
+/- English proof (translation)
+Use `set r : Fin m → A := fun j => -(b * K 0 j.succ) with hr`. Establish `hσr : ∀ i, σ (r i) = -(b * K i.succ 0)`. Introduce `i`. Simplify using `[hr, hσb, hK]`. Establish `hzero : ∀ j : Fin m, K 0 j.succ + K 0 0 * r j = 0`.
+
+Introduce `j`. Establish `: K 0 0 * r j = -((b * K 0 0) * K 0 j.succ)` using `by simp only [hr]; ring`. Rewrite using `[this, hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.mul_assoc]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`. Rewrite using `[(cT_uni_mul σ _ r 0).1, (mul_uni K r 0).1]`. Simplify using the standard rewrite rules. Rewrite using `[(cT_uni_mul σ _ r _).1, (mul_uni K r 0).2, hzero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[(cT_uni_mul σ _ r 0).2, (mul_uni K r _).1, (mul_uni K r 0).1, hσr]`. Simplify using `only [bd_succ_zero]`. Establish `: b * K i'.succ 0 * K 0 0 = (b * K 0 0) * K i'.succ 0` using `by ring`. Rewrite using `[neg_mul, this, hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(cT_uni_mul σ _ r _).2, (mul_uni K r _).2, (mul_uni K r 0).2, hzero, hσr]`. Simplify using `only [bd_succ_succ, schur, hr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma schur_step (σ : A →+* A) (K : Matrix (Fin (m + 1)) (Fin (m + 1)) A)
     (hK : ∀ i j, σ (K j i) = K i j) (b : A) (hb : b * K 0 0 = 1) (hσb : σ b = b) :
     cT σ (uni fun j => -(b * K 0 j.succ)) * K * (uni fun j => -(b * K 0 j.succ)) =
@@ -107,13 +163,22 @@ lemma schur_step (σ : A →+* A) (K : Matrix (Fin (m + 1)) (Fin (m + 1)) A)
   · rw [(cT_uni_mul σ _ r _).2, (mul_uni K r _).2, (mul_uni K r 0).2, hzero, hσr]
     simp only [bd_succ_succ, schur, hr]; ring
 
+/- English proof (translation)
+Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 lemma det_cT (σ : A →+* A) (g : Matrix (Fin m) (Fin m) A) : (cT σ g).det = σ g.det := by
   rw [cT, Matrix.det_transpose, RingHom.map_det]; rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 lemma cT_cT (σ : A →+* A) (hσ : ∀ y, σ (σ y) = y) {p q : Type}
     (M : Matrix p q A) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
+/- English proof (translation)
+Establish `hJ' : cT σ J = J` using `by ext i j; exact hJ i j`. Establish `: cT σ (cT σ g * J * g) = cT σ g * J * g`. Rewrite using `[cT_mul, cT_mul, cT_cT σ hσ, hJ', Matrix.mul_assoc]`. Introduce `i j`. Conclude with `congrFun (congrFun this i) j`.
+-/
 lemma cT_congr_herm (σ : A →+* A) {n : ℕ} (hσ : ∀ y, σ (σ y) = y)
     (J g : Matrix (Fin n) (Fin n) A) (hJ : ∀ i j, σ (J j i) = J i j) :
     ∀ i j, σ ((cT σ g * J * g) j i) = (cT σ g * J * g) i j := by
@@ -123,6 +188,9 @@ lemma cT_congr_herm (σ : A →+* A) {n : ℕ} (hσ : ∀ y, σ (σ y) = y)
   intro i j
   exact congrFun (congrFun this i) j
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, hg, hform, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 lemma corner (σ : A →+* A) {n : ℕ} (J g : Matrix (Fin (n + 1)) (Fin (n + 1)) A)
     (x : Fin (n + 1) → A) (hg : ∀ i, g i 0 = x i) :
     (cT σ g * J * g) 0 0 = hform σ J x x := by
@@ -130,6 +198,9 @@ lemma corner (σ : A →+* A) {n : ℕ} (J g : Matrix (Fin (n + 1)) (Fin (n + 1)
     Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `⟨fun j => b * ∑ i, σ (x i) * J i j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, hform, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show (b * ∑ i : Fin n, σ (x i) * J i j) * x j = b * ∑ i : Fin n, σ (x i) * J i j * x j`. Rewrite using `[mul_assoc, Finset.sum_mul]`.
+-/
 lemma unimodular (σ : A →+* A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) (x : Fin n → A) (b : A)
     (hb : b * hform σ J x x = 1) : ∃ c : Fin n → A, ∑ i, c i * x i = 1 := by
   refine ⟨fun j => b * ∑ i, σ (x i) * J i j, ?_⟩
@@ -138,6 +209,27 @@ lemma unimodular (σ : A →+* A) {n : ℕ} (J : Matrix (Fin n) (Fin n) A) (x : 
   show (b * ∑ i : Fin n, σ (x i) * J i j) * x j = b * ∑ i : Fin n, σ (x i) * J i j * x j
   rw [mul_assoc, Finset.sum_mul]
 
+/- English proof (translation)
+Introduce `A _ _ σ hσ H m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `J _ _`. Conclude with `⟨1, Fin.elim0, by simp, fun i => i.elim0, by ext i; exact i.elim0⟩`.
+
+Consider the case `succ m ih`. Introduce `J hJ hdet`. Take `⟨x, hx⟩` from `H m J hJ hdet`. Take `⟨b, hb⟩` from `hx.exists_left_inv`. Take `⟨g₀, hg₀, hcol⟩` from `GlobalTheory.CompanionTheory.SW.SemilocalColumn.exists_invertible_first_column A m x (unimodular σ J x b hb)`.
+
+Use `set K := cT σ g₀ * J * g₀ with hKdef`. Establish `hK : ∀ i j, σ (K j i) = K i j` using `cT_congr_herm σ hσ J g₀ hJ`. Establish `hcorner : K 0 0 = hform σ J x x` using `corner σ J g₀ x hcol`. Establish `hbK : b * K 0 0 = 1` using `by rw [hcorner]; exact hb`. Establish `hβ : IsUnit (K 0 0)` using `by rw [hcorner]; exact hx`.
+
+Establish `hσβ : σ (K 0 0) = K 0 0` using `hK 0 0`. Establish `hσb : σ b = b`. Establish `h1 : σ b * K 0 0 = 1`. Use `congrArg σ hbK` as an intermediate fact. Rewrite `this` using `[map_mul, hσβ, map_one]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set r : Fin m → A := fun j => -(b * K 0 j.succ) with hr`. Establish `hstep` using `schur_step σ K hK b hbK hσb`. Establish `hKdet : IsUnit K.det`. Rewrite using `[hKdef, Matrix.det_mul, Matrix.det_mul, det_cT]`.
+
+Conclude with `((hg₀.map σ).mul hdet).mul hg₀`. Establish `hJ₁det : IsUnit (schur K b).det`. Establish `h2 : (K 0 0) * (schur K b).det = K.det`. Rewrite using `[← det_bd, ← hstep, Matrix.det_mul, Matrix.det_mul, det_cT, det_uni]`. Simplify using the standard rewrite rules.
+
+Rewrite `hKdet` using `[← h2]`. Conclude with `isUnit_of_mul_isUnit_right hKdet`. Establish `hJ₁ : ∀ i j, σ (schur K b j i) = schur K b i j`. Introduce `i j`. Simplify using `only [schur, map_sub, map_mul, hσb, hK]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨g₁, d₁, hg₁, hd₁, hdiag⟩` from `ih (schur K b) hJ₁ hJ₁det`. Use `⟨g₀ * uni r * bd 1 g₁, Fin.cons (K 0 0) d₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_mul, det_uni, det_bd]`. Simplify using `using hg₀.mul hg₁`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i' => ?_) i` and prove the remaining obligations. Simplify using `using ⟨hβ, hσβ⟩`. Simplify using `using hd₁ i'`. Establish `e : cT σ (g₀ * uni r * bd 1 g₁) * J * (g₀ * uni r * bd 1 g₁) = cT σ (bd 1 g₁) * (cT σ (uni r) * K * uni r) * bd 1 g₁`.
+
+Rewrite using `[hKdef, cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hstep, cT_bd, bd_mul, bd_mul, hdiag, map_one, one_mul, mul_one, bd_diagonal]`.
+-/
 theorem diagonalise : ∀ (A : Type) [CommRing A] [Finite (MaximalSpectrum A)] (σ : A →+* A), (∀ y, σ (σ y) = y) → (∀ (m : ℕ) (J : Matrix (Fin (m + 1)) (Fin (m + 1)) A), (∀ i j, σ (J j i) = J i j) → IsUnit J.det → ∃ x, IsUnit (HeckeCharacterZeroLocus.SiegelWeilU.hform σ J x x)) → ∀ (m : ℕ) (J : Matrix (Fin m) (Fin m) A), (∀ i j, σ (J j i) = J i j) → IsUnit J.det → ∃ (g : Matrix (Fin m) (Fin m) A) (d : Fin m → A), IsUnit g.det ∧ (∀ i, IsUnit (d i) ∧ σ (d i) = d i) ∧ HeckeCharacterZeroLocus.SiegelWeilU.cT σ g * J * g = Matrix.diagonal d := by
   intro A _ _ σ hσ H m
   induction m with

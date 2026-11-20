@@ -19,6 +19,11 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.TypeRec GlobalTheory.GLq GlobalTheory.GLp GlobalTheory.SerSys
 attribute [local instance] GlobalTheory.TypeRec.factG
 namespace DiscreteGroups.sglob.DzType.Rt
+/- English proof (translation)
+Introduce `hPr hG hZ hDZ hL D P L hLT hκ hCen`. Take `⟨I⟩` from `GlobalTheory.TypeIdent.nonempty_ident D`. Take `⟨rc, hrc, hcl⟩` from `_root_.UpperTheory.One.M.exists_isRc_isClassMapD_alt hL D P.T I`. Use `_root_.DiscreteGroups.sglob.DzType.Rt.serLoc_of_tame_param_le D L rc hG hLT (GlobalTheory.T.inertiaInvariantUnderUnramifiedTwist_of_weilDeligne D P.T) (_root_.GlobalTheory.T.locComp_of_isRc_of_classMap_of_cenLoc hPr hL D P I rc hrc hcl hCen) (_root_.GlobalTheory.T.tame_gen_suppor …` and prove the remaining obligations. Introduce `k v`.
+
+Take `⟨κ, hκ'⟩` from `hκ k v`. Conclude with `_root_.DiscreteGroups.sglob.DzType.Rt.tame_param_le_of_tame_coupled hDZ hL D P.T I rc hrc L k v κ hκ'`.
+-/
 theorem depthZeroType_series_local_explicit_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → Green → GlobalTheory.Published.ZelevinskyPolynomialRing →
     _root_.DiscreteGroups.sglob.DzType.DepthZeroInertiaBigAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D)
     (L : ∀ k, LabelDatum (D.host.g k)), LabTie D L →
@@ -35,6 +40,9 @@ theorem depthZeroType_series_local_explicit_alt : _root_.GlobalTheory.NRows.Thet
   obtain ⟨κ, hκ'⟩ := hκ k v
   exact _root_.DiscreteGroups.sglob.DzType.Rt.tame_param_le_of_tame_coupled hDZ hL D P.T I rc hrc L k v κ hκ'
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `_root_.DiscreteGroups.sglob.DzType.Rt.depthZeroType_series_local_explicit_alt`.
+-/
 theorem serLoc_of_tame_coupled_and_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → Green → GlobalTheory.Published.ZelevinskyPolynomialRing → _root_.DiscreteGroups.sglob.DzType.DepthZeroInertiaBigAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (L : ∀ k, LabelDatum (D.host.g k)), LabTie D L → (∀ k v, ∃ κ : IsLocalRing.ResidueField (D.nd.plOm.1 (D.naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar (D.host.g k), TameCoupled (D.nd.plOm.1 (D.naut.plGw k v)) κ (D.ntypes.tg k v) (L k).gen) → GlobalTheory.HeightCounting.Up.CenLoc D P.M → GlobalTheory.TypeLeaf.SerLoc D :=
   _root_.DiscreteGroups.sglob.DzType.Rt.depthZeroType_series_local_explicit_alt
 end DiscreteGroups.sglob.DzType.Rt

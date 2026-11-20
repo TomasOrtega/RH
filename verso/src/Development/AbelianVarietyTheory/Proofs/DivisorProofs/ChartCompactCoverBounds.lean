@@ -23,12 +23,58 @@ namespace GlobalTheory.CoverCharts
 
 open Metric
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, one_pos, fun i => (IsEmpty.false i).elim⟩`. Take `⟨i₀, hi₀⟩` from `Finite.exists_min f`. Conclude with `⟨f i₀, hf i₀, hi₀⟩`.
+-/
 theorem exists_pos_le {ι : Type} [Fintype ι] (f : ι → ℝ) (hf : ∀ i, 0 < f i) : ∃ δ > 0, ∀ i, δ ≤ f i := by
   rcases isEmpty_or_nonempty ι with hι | hι
   · exact ⟨1, one_pos, fun i => (IsEmpty.false i).elim⟩
   · obtain ⟨i₀, hi₀⟩ := Finite.exists_min f
     exact ⟨f i₀, hf i₀, hi₀⟩
 
+/- English proof (translation)
+Use `set R := Real.exp 1 - Real.log ((∏ i, nn i y) ^ 2) with hR`. Establish `hP : 0 < ∏ i, nn i y` using `Finset.prod_pos fun i _ => hpos i`. Establish `hP1 : ∏ i, nn i y ≤ 1` using `Finset.prod_le_one (fun i _ => (hn i y).1) fun i _ => (hn i y).2`. Establish `hP2 : (∏ i, nn i y) ^ 2 ≤ 1` using `pow_le_one₀ hP.le hP1`. Establish `hlogP : Real.log ((∏ i, nn i y) ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) hP2`.
+
+Establish `hRpos : 0 ≤ R` using `by have := Real.exp_pos 1; linarith`. Establish `hexpR : Real.exp (-(R / 2)) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`. Establish `hε : 0 < ε` using `by linarith`. Establish `hwy : dist w (e y) < κ * Real.exp (-(R / 2))` using `hw`. Establish `hyy₀ : dist (e y) (e y₀) ≤ ε / 4` using `hyK`.
+
+Establish `hw0 : w ∈ ball (e y₀) ε`. Establish `: κ * Real.exp (-(R / 2)) ≤ κ` using `mul_le_of_le_one_right hκ0.le hexpR`. Use `show dist w (e y₀) < ε`. Combine the linear relations using `[dist_triangle w (e y) (e y₀)]`. Establish `hy0 : e y ∈ ball (e y₀) ε` using `by show dist (e y) (e y₀) < ε; linarith`.
+
+Take `⟨-, hly⟩` from `hloc (e y) hy0`. Take `⟨-, hlw⟩` from `hloc w hw0`. Rewrite `hly` using `[e.left_inv hy]`. Establish `hPsq : (∏ i, nn i y) ^ 2 = Real.exp (Real.exp 1 - R)`. Rewrite using `[hR, sub_sub_cancel, Real.exp_log (by positivity)]`.
+
+Use `set c₁ := Real.exp ((Real.exp 1 - A) / 2) with hc₁`. Establish `hc₁pos : 0 < c₁` using `Real.exp_pos _`. Establish `hAκ : A * κ ≤ c₁ / 2`. Establish `h1 : (A + 1) * κ ≤ c₁ / 2`. Rewrite `hκc` using `[le_div_iff₀ (by positivity : (0:ℝ) < 2 * (A + 1))]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `key : ∀ i, nn i y ^ 2 * Real.exp (-(2 * A)) / 4 ≤ nn i (e.symm w) ^ 2`. Introduce `i`. Take `⟨ey, hFy, hLy⟩` from `hly i`.
+
+Take `⟨ew, hFw, -⟩` from `hlw i`. Use `set G := ‖g i (e y)‖ with hG`. Establish `hFy'` using `abs_le.1 hFy`. Establish `hFw'` using `abs_le.1 hFw`. Establish `hG2 : G ^ 2 = nn i y ^ 2 * Real.exp (F i (e y))`.
+
+Rewrite using `[ey, mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`. Establish `hprod : (∏ k, nn k y) ^ 2 ≤ nn i y ^ 2`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), mul_pow]`. Establish `: (∏ k ∈ Finset.univ.erase i, nn k y) ^ 2 ≤ 1` using `pow_le_one₀ (Finset.prod_nonneg fun k _ => (hn k y).1) (Finset.prod_le_one (fun k _ => (hn k y).1) fun k _ => (hn k y).2)`. Conclude with `mul_le_of_le_one_right (sq_nonneg _) this`.
+
+Establish `hGlow2 : Real.exp (Real.exp 1 - R - A) ≤ G ^ 2`. Rewrite using `[hG2, sub_eq_add_neg (Real.exp 1 - R), Real.exp_add]`. Establish `h1 : Real.exp (Real.exp 1 - R) ≤ nn i y ^ 2` using `hPsq ▸ hprod`. Establish `h2 : Real.exp (-A) ≤ Real.exp (F i (e y))` using `Real.exp_le_exp.2 (by linarith)`. Conclude with `mul_le_mul h1 h2 (Real.exp_pos _).le (sq_nonneg _)`.
+
+Establish `hE : c₁ * Real.exp (-(R / 2)) ≤ G`. Establish `hE2 : (c₁ * Real.exp (-(R / 2))) ^ 2 = Real.exp (Real.exp 1 - R - A)`. Rewrite using `[hc₁, mul_pow, ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hGlow2` using `[← hE2]`. Conclude with `(pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).1 hGlow2`. Establish `hgw : G / 2 ≤ ‖g i w‖`. Establish `h1` using `hLy w hw0`.
+
+Establish `h2 : ‖g i (e y) - g i w‖ = ‖g i w - g i (e y)‖` using `norm_sub_rev _ _`. Establish `h3 : ‖g i w - g i (e y)‖ ≤ A * ‖w - e y‖`. Use `(hloc w hw0).2 i` as an intermediate fact. Conclude with `this.2.2 (e y) hy0`. Establish `h4 : ‖w - e y‖ < κ * Real.exp (-(R / 2))` using `by rwa [← dist_eq_norm]`.
+
+Establish `h5 : A * ‖w - e y‖ ≤ A * (κ * Real.exp (-(R / 2)))` using `mul_le_mul_of_nonneg_left h4.le hA`. Establish `h6 : A * (κ * Real.exp (-(R / 2))) ≤ c₁ / 2 * Real.exp (-(R / 2))`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hAκ (Real.exp_pos _).le`. Establish `h7 : G ≤ ‖g i w‖ + ‖g i w - g i (e y)‖`.
+
+Use `norm_sub_norm_le (g i (e y)) (g i w)` as an intermediate fact. Rewrite `this` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG0 : 0 ≤ G` using `norm_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show -(2 * A) = -A + -A by ring, Real.exp_add]; ring`. Use `_ ≤ (G ^ 2) / 4 * Real.exp (-A) := by gcongr`. Rewrite using `[hG2]`. Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by linarith)) (sq_nonneg _)`.
+
+Use `_ = (G / 2) ^ 2 * Real.exp (-A) := by ring`. Use `_ ≤ ‖g i w‖ ^ 2 * Real.exp (-F i w) := by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = nn i (e.symm w) ^ 2 := ew.symm`. Establish `hposw : ∀ i, 0 < nn i (e.symm w)`.
+
+Introduce `i`. Establish `h1 : 0 < nn i y ^ 2 * Real.exp (-(2 * A)) / 4` using `by have := hpos i; positivity`. Establish `h2` using `lt_of_lt_of_le h1 (key i)`. Conclude with `lt_of_le_of_ne (hn i _).1 (fun h => by rw [← h] at h2; simp at h2)`. Use `⟨hw0, hposw, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum : ∀ z : X, (∀ i, 0 < nn i z) → Real.log ((∏ i, nn i z) ^ 2) = ∑ i, Real.log (nn i z ^ 2)`. Introduce `z hz`. Rewrite using `[← Finset.prod_pow, Real.log_prod]`. Introduce `i _`. Conclude with `pow_ne_zero _ (hz i).ne'`.
+
+Rewrite using `[hsum _ hposw, hR, hsum _ hpos]`. Establish `hterm : ∀ i, Real.log (nn i y ^ 2) - (2 * A + Real.log 4) ≤ Real.log (nn i (e.symm w) ^ 2)`. Introduce `i`. Establish `h1 : 0 < nn i y ^ 2 * Real.exp (-(2 * A)) / 4` using `by have := hpos i; positivity`. Establish `h2` using `Real.log_le_log h1 (key i)`.
+
+Establish `h3 : nn i y ^ 2 * Real.exp (-(2 * A)) ≠ 0` using `by have := hpos i; positivity`. Rewrite `h2` using `[Real.log_div h3 (by norm_num : (4:ℝ) ≠ 0)]`. Rewrite `h2` using `[Real.log_mul (by have := hpos i; positivity) (Real.exp_pos _).ne', Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Finset.sum_le_sum fun i (_ : i ∈ Finset.univ) => hterm i` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem core_est {d m : ℕ} {X : Type} [TopologicalSpace X] (e : OpenPartialHomeomorph X (ReciprocityTheory.L2DbarEstimates.V d))
     (nn : Fin m → X → ℝ) (hn : ∀ i y, 0 ≤ nn i y ∧ nn i y ≤ 1)
     (y₀ : X) (ε A : ℝ) (hA : 0 ≤ A) (g : Fin m → ReciprocityTheory.L2DbarEstimates.V d → ℂ) (F : Fin m → ReciprocityTheory.L2DbarEstimates.V d → ℝ)
@@ -153,6 +199,31 @@ namespace GlobalTheory.CoverCharts
 
 open Metric in
 
+/- English proof (translation)
+Introduce `D O x P hC c σ`. Set `nn : Fin x.m → CxPts (O.var c).str σ → ℝ` to `fun i y => x.nrm (embOf O.κ.e σ) i ((O.Φ.C c).down y)`. Establish `hn : ∀ i y, 0 ≤ nn i y ∧ nn i y ≤ 1` using `fun i y => (x.nrm_div (embOf O.κ.e σ) i).1 _`. Establish `hdiv` using `fun i => GlobalTheory.DivPullback.isDivNorm_flag D _ _ _ _ _ O.s O.Φ c σ _ _ (GlobalTheory.T.flag_component_projection_smooth D _ _ _ _ _ O.s O.Φ c) (x.nrm_div (embOf O.κ.e σ) i)`. Establish `hK` using `P.om_kaehler c σ`.
+
+Establish `hoff : ∀ y, y ∈ offBd O.Φ c σ ↔ ∀ i, 0 < nn i y`. Introduce `y`. Use `⟨fun h i => x.nrm_pos (y := (O.Φ.C c).down y) h i, fun h hl => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `(x.liesIn_genBd_iff ((O.Φ.C c).down y)).1 hl`. Conclude with `(((x.nrm_div (embOf O.κ.e σ) i).pos_iff _).1 (h i)) hi`.
+
+Establish `hr : ∀ y, O.met.r c σ y = Real.exp 1 - Real.log ((∏ i, nn i y) ^ 2)`. Introduce `y`. Rewrite using `[hC.r_eq]`. Both sides reduce to the same expression. Establish `loc : ∀ y₀ : CxPts (O.var c).str σ, ∃ (ch : AlgChart (O.var c).str σ (O.var c).dim) (ε A : ℝ) (g : Fin x.m → ReciprocityTheory.L2DbarEstimates.V (O.var c).dim → ℂ) (F : Fin x.m → ReciprocityTheory.L2DbarEstimates.V (O.var c).dim → ℝ), y₀ ∈ ch.e.source ∧ 0 < ε ∧ 0 ≤ A ∧ (∀ w ∈ bal …`.
+
+Introduce `y₀`. Take `⟨ch, hch⟩` from `AlgChart.exists_mem_source (D := (O.var c).dim) (σ := σ) y₀`. Take `⟨ε₀, hε₀, B₀, hB₀⟩` from `GlobalTheory.T.kaehler_form_locally_bounded hK ch hch`. Establish `h2` using `fun i => GlobalTheory.T.local_norm_gaussian_weight_form (hdiv i) ch hch`. Use `choose ε hε g F A hA hloc using h2`.
+
+Take `⟨δ, hδ, hδle⟩` from `exists_pos_le ε hε`. Establish `hAt : ∀ i, A i ≤ max B₀ 0 + ∑ i, A i` using `fun i => (Finset.single_le_sum (fun i _ => hA i) (Finset.mem_univ i)).trans (le_add_of_nonneg_left (le_max_right _ _))`. Use `⟨ch, min ε₀ δ, max B₀ 0 + ∑ i, A i, g, F, hch, lt_min hε₀ hδ, add_nonneg (le_max_right _ _) (Finset.sum_nonneg fun i _ => hA i), ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw ξ`. Use `((hB₀ w (ball_subset_ball (min_le_left _ _) hw)).2 ξ).trans (mul_le_mul_of_nonneg_right ?_ (sq_nonneg _))` and prove the remaining obligations.
+
+Conclude with `(le_max_left _ _).trans (le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => hA i))`. Introduce `w hw`. Use `⟨(hB₀ w (ball_subset_ball (min_le_left _ _) hw)).1, fun i => ?_⟩` and prove the remaining obligations. Establish `hsub : ball (ch.e y₀) (min ε₀ δ) ⊆ ball (ch.e y₀) (ε i)` using `ball_subset_ball ((min_le_right _ _).trans (hδle i))`. Take `⟨-, e1, e2, e3⟩` from `hloc i w (hsub hw)`.
+
+Conclude with `⟨e1, e2.trans (hAt i), fun w' hw' => (e3 w' (hsub hw')).trans (mul_le_mul_of_nonneg_right (hAt i) (norm_nonneg _))⟩`. Use `choose CH EPS AA GG FF hsrc hEPS hAA hKB hLOC using loc`. Take `⟨t, ht⟩` from `CompactSpace.elim_nhds_subcover (fun y₀ => (CH y₀).e.source ∩ (CH y₀).e ⁻¹' ball ((CH y₀).e y₀) (EPS y₀ / 4)) fun y₀ => Filter.inter_mem ((CH y₀).e.open_source.mem_nhds (hsrc y₀)) (((CH y₀).e.continuousAt (hsrc y₀)).preimage_mem_nhds (ball_mem_nhds _ (by linarith [hEPS y₀])))`. Set `pt : Fin t.card → CxPts (O.var c).str σ` to `fun j => (t.equivFin.symm j : CxPts (O.var c).str σ)`. Establish `hlog4 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`.
+
+Establish `hterm : ∀ j, 0 ≤ (x.m : ℝ) * (2 * AA (pt j) + Real.log 4)` using `fun j => mul_nonneg (Nat.cast_nonneg _) (by linarith [hAA (pt j)])`. Take `⟨κ, hκ, hκle⟩` from `exists_pos_le (fun j => min (EPS (pt j) / 4) (Real.exp ((Real.exp 1 - AA (pt j)) / 2) / (2 * (AA (pt j) + 1)))) fun j => lt_min (by linarith [hEPS (pt j)]) (div_pos (Real.exp_pos _) (by linarith [hAA (pt j)]))`. Establish `hBj : ∀ j, AA (pt j) + x.m * (2 * AA (pt j) + Real.log 4) ≤ ∑ j, (AA (pt j) + x.m * (2 * AA (pt j) + Real.log 4))` using `fun j => Finset.single_le_sum (f := fun j => AA (pt j) + x.m * (2 * AA (pt j) + Real.log 4)) (fun j _ => add_nonneg (hAA _) (hterm j)) (Finset.mem_univ j)`. Use `⟨t.card, fun j => CH (pt j), fun j => closedBall ((CH (pt j)).e (pt j)) (EPS (pt j) / 4), κ, ∑ j, (AA (pt j) + x.m * (2 * AA (pt j) + Real.log 4)), hκ, Finset.sum_nonneg fun j _ => add_nonneg (hAA _) (hterm j), fun j => ⟨isCompact_closedBall _ _, fun w hw => (hLOC (pt j) w (close …` and prove the remaining obligations. Establish `hy : y ∈ ⋃ y₀ ∈ t, (CH y₀).e.source ∩ (CH y₀).e ⁻¹' ball ((CH y₀).e y₀) (EPS y₀ / 4)`.
+
+Rewrite using `[ht]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y₀, hy₀t, hyU⟩` from `Set.mem_iUnion₂.1 hy`. Use `⟨t.equivFin ⟨y₀, hy₀t⟩, ?_⟩` and prove the remaining obligations. Establish `hp : pt (t.equivFin ⟨y₀, hy₀t⟩) = y₀` using `by simp [pt]`.
+
+Simplify using `only [hp]`. Conclude with `⟨hyU.1, ball_subset_closedBall hyU.2⟩`. Introduce `j y hy hyK hoffy w hw`. Rewrite `hw` using `[hr y]`. Take `⟨hw0, hposw, hrw⟩` from `core_est (CH (pt j)).e nn hn (pt j) (EPS (pt j)) (AA (pt j)) (hAA _) (GG (pt j)) (FF (pt j)) (hLOC (pt j)) κ hκ ((hκle j).trans (min_le_left _ _)) ((hκle j).trans (min_le_right _ _)) y hy hyK ((hoff y).1 hoffy) w hw`.
+
+Use `⟨(hLOC _ w hw0).1, (hoff _).2 hposw, ?_, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hr]`. Use `hrw.trans ?_` and prove the remaining obligations. Combine the linear relations using `[hBj j, hAA (pt j)]`. Use `(hKB (pt j) w hw0 ξ).trans (mul_le_mul_of_nonneg_right ?_ (sq_nonneg _))` and prove the remaining obligations.
+
+Combine the linear relations using `[hBj j, hterm j]`.
+-/
 theorem exists_charts_margin : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P →
     ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ), ∃ (n : ℕ) (ch : Fin n → AlgChart (O.var c).str σ (O.var c).dim)
       (K : Fin n → Set (V (O.var c).dim)) (κ B : ℝ), 0 < κ ∧ 0 ≤ B ∧

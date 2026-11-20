@@ -15,6 +15,9 @@ namespace GlobalTheory.TotalFrame
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hi` using `EigenSplit.isInternal_eigenSub h ρ`. Simplify using `only [← hs] at hi`. Conclude with `⟨hi.collectedBasis fun σ => Module.Basis.span (li σ), fun σ a => by`. Rewrite using `[DirectSum.IsInternal.collectedBasis_coe]`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply (li σ) a)⟩`.
+-/
 theorem exists_basis_sigma {O S M J : Type} [CommRing O] [CommRing S] [AddCommGroup M] [Module S M] [Fintype J]
     {χ : J → O →+* S} (h : EigenSplit.IsSplitting χ) (ρ : O →+* Module.End S M) {m : J → ℕ}
     (u : ∀ σ, Fin (m σ) → M) (li : ∀ σ, LinearIndependent S (u σ))
@@ -32,6 +35,9 @@ section Tangent
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} {t : SAB H X}
   {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ X} {m : ℕ}
 
+/- English proof (translation)
+Use `⟨Module.Basis.mk (v := fun i => tanOf (hv i)) (Fintype.linearIndependent_iffₛ.2 fun c c' h => congrFun ((hb _ (isTan_tv (∑ i, c i • tanOf (hv i)))).unique ((isComb_iff (fun i => tanOf (hv i)) c _).2 rfl) ((isComb_iff (fun i => tanOf (hv i)) c' _).2 h))) fun w _ => ?_, fun i => Mo …` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `hb _ (isTan_tv w)`. Rewrite using `[(isComb_iff (fun i => tanOf (hv i)) a w).1 ha]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_basis {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ i, IsTanAtG t x (v i))
     (hb : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x v cf w) :
     ∃ b : Module.Basis (Fin m) S (TanM x t.G), ∀ i, b i = tanOf (hv i) := by
@@ -42,6 +48,11 @@ theorem exists_basis {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ 
   rw [(isComb_iff (fun i => tanOf (hv i)) a w).1 ha]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin J`. Establish `hb : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x (fun i => (tv (b.reindex e i)).left) cf w` using `fun w hw => ⟨(b.reindex e).repr (tanOf hw), (isComb_iff _ _ (tanOf hw)).2 ((b.reindex e).sum_repr _).symm, fun a ha => by`. Rewrite using `[(isComb_iff _ _ (tanOf hw)).1 ha, Module.Basis.repr_sum_self]⟩`. Take `⟨b', hb'⟩` from `exists_basis (fun i => isTan_map φ hx (isTan_tv (b.reindex e i))) (basis_map φ hx (fun i => isTan_tv _) hb)`. Use `⟨b'.reindex e.symm, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.reindex_apply, hb', left_tanOf, Module.Basis.reindex_apply, Equiv.symm_symm, Equiv.symm_apply_apply]`.
+-/
 theorem exists_basis_map {J : Type} [Fintype J] (b : Module.Basis J S (TanM x t.G)) (φ : S →+* T) {x' : Sp T ⟶ X}
     (hx : spMap φ ≫ x = x') :
     ∃ b' : Module.Basis J T (TanM x' t.G), ∀ i, (tv (b' i)).left = spMap (dualMap φ) ≫ (tv (b i)).left := by
@@ -54,6 +65,9 @@ theorem exists_basis_map {J : Type} [Fintype J] (b : Module.Basis J S (TanM x t.
   refine ⟨b'.reindex e.symm, fun i => ?_⟩
   rw [Module.Basis.reindex_apply, hb', left_tanOf, Module.Basis.reindex_apply, Equiv.symm_symm, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap]`. Use `congr 2`. Apply the tactic sequence `refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem dualMap_epsMul (φ : S →+* T) (a : S) {Y : Scheme.{0}} (v : Sp (DualNumber S) ⟶ Y) :
     spMap (dualMap φ) ≫ spMap (epsMul a) ≫ v = spMap (epsMul (φ a)) ≫ spMap (dualMap φ) ≫ v := by
   rw [← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap]
@@ -68,6 +82,23 @@ def FramesSeparate : Prop :=
   ∀ r s : S, (∀ (k : Type) [Field k] (φ : S →+* k) (f : c.F →+* k), IsFrame t f (spMap φ ≫ x) (w.bc φ) →
     (∀ σ a, f (embK c σ a) = φ (χ σ a)) → φ r = φ s) → r = s
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) fun u hu => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `EigenSplit.mem_eigenSub.2 fun a => ?_` and prove the remaining obligations. Take `⟨g, hc, -⟩` from `hb _ (isTan_tv (actR t.act a (tanOf (ht i))))`. Take `⟨g', hc', -⟩` from `hb _ (isTan_tv (χ σ a • tanOf (ht i)))`.
+
+Establish `hcc : g = g'` using `funext fun l => hw _ _ fun k _ φ f hf hfj => by`. Establish `h1` using `comb_map φ rfl hc`. Establish `h2` using `comb_map φ rfl hc'`. Establish `h3 : spMap (dualMap φ) ≫ (tv (actR t.act a (tanOf (ht i)))).left = spMap (dualMap φ) ≫ (tv (χ σ a • tanOf (ht i))).left`. Use `(Category.assoc _ _ _).symm.trans (((hf.1 σ i).2 a).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hfj]`. Conclude with `(dualMap_epsMul φ _ _).symm`. Rewrite `h1` using `[h3]`. Conclude with `congrFun ((basis_map φ rfl hv hb _ (isTan_map φ rfl (isTan_tv _))).unique h1 h2) l`. Substitute `hcc` using the available equality.
+
+Conclude with `((isComb_iff (fun i => tanOf (hv i)) g _).1 hc).trans ((isComb_iff (fun i => tanOf (hv i)) g _).1 hc').symm`. Take `⟨g, hc, -⟩` from `hb _ (isTan_tv u)`. Rewrite using `[(isComb_iff (fun i => tanOf (hv i)) g _).1 hc]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : ∃ i, e i = l`.
+
+Take `⟨i, rfl⟩` from `hl`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, tan_ext (he i).symm⟩)`. Establish `h0 : g l = 0` using `hw _ _ fun k _ φ f hf hfj => by`. Establish `hvk` using `fun i => isTan_map φ rfl (hv i)`. Establish `huk` using `isTan_map φ rfl (isTan_tv u)`.
+
+Take `⟨d, hd, -⟩` from `hf.2 σ _ huk fun a => by`. Rewrite using `[hfj, ← dualMap_epsMul, Category.assoc]`. Conclude with `congrArg (fun q => spMap (dualMap φ) ≫ (tv q).left) (EigenSplit.mem_eigenSub.1 hu a)`. Establish `h1` using `(comb_iff hvk _ huk).1 (comb_map φ rfl hc)`. Establish `h2` using `(comb_iff (fun i => (hf.1 σ i).1) _ huk).1 hd`.
+
+Establish `h3 : ∑ i, d i • tanOf (hf.1 σ i).1 = ∑ l, Function.extend e d 0 l • tanOf (hvk l)` using `Fintype.sum_of_injective e e.injective _ _ (fun l hl => by rw [Function.extend_apply' _ _ _ hl, Pi.zero_apply, zero_smul]) (fun i => by`. Rewrite using `[e.injective.extend_apply]`. Conclude with `congrArg (d i • ·) (tan_ext (congrArg (spMap (dualMap φ) ≫ ·) (he i).symm)))`. Rewrite using `[map_zero, Fintype.linearIndependent_iffₛ.1 (linInd_of_basis hvk (basis_map φ rfl hv hb)) _ _ (h1.symm.trans (h2.trans h3)) l, Function.extend_apply' _ _ _ hl, Pi.zero_apply]`. Rewrite using `[h0, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem span_eq_eigenSub (hw : FramesSeparate x c w χ) (σ : E →+* ℂ) (ht : ∀ i, IsTanAtG t x (w σ i))
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (e : Fin (Dw.mult σ) ↪ Fin m) (he : ∀ i, v (e i) = w σ i)
     (hv : ∀ i, IsTanAtG t x (v i)) (hb : ∀ u, IsTanAtG t x u → ∃! cf, IsCombAtG t x v cf u) :
@@ -115,6 +146,11 @@ theorem span_eq_eigenSub (hw : FramesSeparate x c w χ) (σ : E →+* ℂ) (ht :
     rw [h0, zero_smul]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `choose n v e he hv hb using h`. Establish `ht : ∀ σ i, IsTanAtG t x (w σ i)` using `fun σ i => he σ i ▸ hv σ (e σ i)`. Establish `li : ∀ σ, LinearIndependent S fun i => tanOf (ht σ i)` using `fun σ => by`. Take `⟨b, hb'⟩` from `exists_basis (hv σ) (hb σ)`. Use `b.linearIndependent.comp (e σ) (e σ).injective using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun i => Eq.trans (tan_ext (w := tanOf (hv σ (e σ i))) (he σ i).symm) (hb' (e σ i)).symm`. Take `⟨b, hb'⟩` from `exists_basis_sigma hχ _ (fun σ i => tanOf (ht σ i)) li fun σ => span_eq_eigenSub hw σ (ht σ) (e σ) (he σ) (hv σ) (hb σ)`. Take `⟨b', hb''⟩` from `exists_basis_map b φ hx`. Conclude with `⟨b', fun σ a => by rw [hb'', hb']; rfl⟩`.
+-/
 theorem exists_basis_total (hw : FramesSeparate x c w χ) (hχ : EigenSplit.IsSplitting χ)
     (h : ∀ σ, ∃ (n : ℕ) (v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)) (e : Fin (Dw.mult σ) ↪ Fin n),
       (∀ i, v (e i) = w σ i) ∧ (∀ i, IsTanAtG t x (v i)) ∧ ∀ u, IsTanAtG t x u → ∃! cf, IsCombAtG t x v cf u)
@@ -142,6 +178,11 @@ def embV {l : Level H} (c : Coeff l) (W : ValuationSubring ℂ) (σ : E →+* �
   (embK c σ).codRestrict (c.V W) fun a =>
     GlobalTheory.CoeffRings.mem_of_isIntegral _ (map_isIntegral_int (embK c σ) (RingOfIntegers.isIntegral a))
 
+/- English proof (translation)
+Use `EigenSplit.isSplitting_of_isDomain (fun σ τ h => ?_) (NumberField.Embeddings.card E ℂ) j ?_` and prove the remaining obligations. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => congrArg (fun f : 𝓞 E →+* c.V W => (((f a : c.V W) : c.F) : ℂ)) h)`. Establish `hu` using `(((GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).2.2.2 p W hp hW).2.1 _ (hp.coprime_iff_not_dvd.2 hd).symm).map j`. Rewrite `hu` using `[map_natCast]`. Apply the tactic sequence `rcases Int.natAbs_eq (discr E) with h | h <;> rw [h]`.
+
+Rewrite using `[Int.cast_natCast]` and apply the resulting hypothesis. Rewrite using `[Int.cast_neg, Int.cast_natCast]`. Conclude with `hu.neg`.
+-/
 theorem isSplitting_embV {l : Level H} (c : Coeff l) (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
     (hd : ¬ p ∣ (discr E).natAbs) {S : Type} [CommRing S] (j : c.V W →+* S) :
     EigenSplit.IsSplitting fun σ : E →+* ℂ => j.comp (embV c W σ) := by
@@ -160,6 +201,9 @@ variable {Z : Mdl Y i₀} {U : Z.X.Opens} {hU : IsAffineOpen U} {w : Vecs Dw (Y 
 
 variable (hU) in
 
+/- English proof (translation)
+The claim follows from `fn_ext Z fun k _ x hx ho => by rw [valR_eq x U hx, valR_eq x U hx] exact h k (valMap x U hx).hom (by rw [show spMap (valMap x U hx).hom ≫ hU.fromSpec = x from specMap_valMap_fromSpec hU x hx] exact ho)`.
+-/
 theorem fn_ext_affine {f g : Γ(Z.X, U)} (h : ∀ (k : Type) [Field k] (φ : Γ(Z.X, U) →+* k),
     Set.range (spMap φ ≫ hU.fromSpec) ⊆ Z.opn → φ f = φ g) : f = g :=
   fn_ext Z fun k _ x hx ho => by
@@ -168,6 +212,11 @@ theorem fn_ext_affine {f g : Γ(Z.X, U)} (h : ∀ (k : Type) [Field k] (φ : Γ(
       rw [show spMap (valMap x U hx).hom ≫ hU.fromSpec = x from specMap_valMap_fromSpec hU x hx]
       exact ho)
 
+/- English proof (translation)
+Take `⟨a, ψ, hx, hf, -⟩` from `hw.2 k φ ho`. Rewrite `hf` using `[Category.assoc]`. Use `⟨_, hf, fun σ r => ?_⟩` and prove the remaining obligations. Establish `e : spMap (ψ.comp ((Z.alg a).comp (Z.i.c.V W).subtype)) = spMap (φ.comp j)`. Rewrite using `[← spMap_comp_spMap _ ψ, ← spMap_comp_spMap _ φ, hj, ← Z.alg_s a, ← Category.assoc, hx, Category.assoc]`.
+
+Conclude with `congrArg (fun q => q.hom (embV Z.i.c W σ r)) (Spec.map_injective e)`.
+-/
 theorem frame_at (hw : IntFrame Z hU w) {j : Z.i.c.V W →+* Γ(Z.X, U)} (hj : spMap j = hU.fromSpec ≫ Z.s)
     {k : Type} [Field k] (φ : Γ(Z.X, U) →+* k) (ho : Set.range (spMap φ ≫ hU.fromSpec) ⊆ Z.opn) :
     ∃ f : Z.i.c.F →+* k, IsFrame (Y Z.i).t f (spMap φ ≫ hU.fromSpec ≫ Z.π) (w.bc φ) ∧
@@ -181,6 +230,11 @@ theorem frame_at (hw : IntFrame Z hU w) {j : Z.i.c.V W →+* Γ(Z.X, U)} (hj : s
 
 end Model
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W hp hW hd Y i₀ Z U hU w hw R _ φ x hx`. Set `j : Z.i.c.V W →+* Γ(Z.X, U)` to `(Spec.preimage (hU.fromSpec ≫ Z.s)).hom`. Establish `hj : spMap j = hU.fromSpec ≫ Z.s` using `Spec.map_preimage _`. Use `exists_basis_total (c := Z.i.c) (fun r s h => fn_ext_affine hU fun k _ ψ ho => ?_) (isSplitting_embV Z.i.c hp hW hd j) hw.1 φ (hx ▸ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Take `⟨f, hf, hfj⟩` from `frame_at hw hj ψ ho`.
+
+Conclude with `h k ψ f hf hfj`.
+-/
 theorem exists_basis_of_intFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ)
     (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ¬ p ∣ (discr E).natAbs →

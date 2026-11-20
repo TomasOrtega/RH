@@ -20,13 +20,24 @@ def quotSum (Φ : G → M) : M :=
 
 variable {H}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotSum_def (Φ : G → M) : quotSum H Φ = ∑ᶠ q : G ⧸ H, Φ q.out := rfl
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hΦ g h h.2]`.
+-/
 theorem apply_out_mk {X : Type*} {Φ : G → X} (hΦ : ∀ g, ∀ h ∈ H, Φ (g * h) = Φ g) (g : G) :
     Φ (QuotientGroup.mk g : G ⧸ H).out = Φ g := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul H g
   rw [hh, hΦ g h h.2]
 
+/- English proof (translation)
+Unfold `quotSum`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `hq : (MulAction.toPerm x q : G ⧸ H) = QuotientGroup.mk (x * q.out)`. Rewrite using `[MulAction.toPerm_apply]`.
+
+Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Simplify using `only [hq, apply_out_mk hΦ]`. Use `_ = ∑ᶠ q : G ⧸ H, Φ q.out := finsum_comp_equiv (MulAction.toPerm x) (f := fun q' : G ⧸ H => Φ q'.out)`.
+-/
 theorem quotSum_mul_left {Φ : G → M} (hΦ : ∀ g, ∀ h ∈ H, Φ (g * h) = Φ g) (x : G) :
     quotSum H (fun g => Φ (x * g)) = quotSum H Φ := by
   unfold quotSum
@@ -40,12 +51,20 @@ theorem quotSum_mul_left {Φ : G → M} (hΦ : ∀ g, ∀ h ∈ H, Φ (g * h) = 
         simp only [hq, apply_out_mk hΦ]
     _ = ∑ᶠ q : G ⧸ H, Φ q.out := finsum_comp_equiv (MulAction.toPerm x) (f := fun q' : G ⧸ H => Φ q'.out)
 
+/- English proof (translation)
+Unfold `quotSum`. Conclude with `finsum_congr fun q => h _`.
+-/
 theorem quotSum_congr {Φ Ψ : G → M} (h : ∀ g, Φ g = Ψ g) : quotSum H Φ = quotSum H Ψ := by
   unfold quotSum
   exact finsum_congr fun q => h _
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `: DiscreteTopology (G ⧸ H)` using `QuotientGroup.discreteTopology hH`. Use `((hC.image QuotientGroup.continuous_mk).finite_of_discrete).subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨z, hz, c, hc, hzc⟩` from `hsupp hq`. Use `replace hzc : z * c = q.out := hzc`.
+
+Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q, ← hzc, QuotientGroup.eq]`. Establish `hzc' : z * c = c * z` using `(Subgroup.mem_center_iff.1 hz c).symm`. Rewrite using `[hzc', ← mul_assoc, inv_mul_cancel, one_mul]`. Conclude with `hZH hz`.
+-/
 theorem finite_support_quotSum (hH : IsOpen (H : Set G)) (hZH : Subgroup.center G ≤ H)
     {Φ : G → M} {C : Set G} (hC : IsCompact C)
     (hsupp : support Φ ⊆ (Subgroup.center G : Set G) * C) :
@@ -70,11 +89,19 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 omit [ValuativeRel F] [IsNonarchimedeanLocalField F] in
 
+/- English proof (translation)
+Take `⟨C, hC, hsupp⟩` from `hφ`. Conclude with `⟨C, hC, h.trans hsupp⟩`.
+-/
 theorem IsCompactModCenter.mono {φ ψ : GL (Fin n) F → ℂ} (hφ : IsCompactModCenter φ)
     (h : support ψ ⊆ support φ) : IsCompactModCenter ψ := by
   obtain ⟨C, hC, hsupp⟩ := hφ
   exact ⟨C, hC, h.trans hsupp⟩
 
+/- English proof (translation)
+Take `⟨C, hC, hsupp⟩` from `hφ`. Use `⟨C⁻¹, hC.inv, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, c, hc, hzc⟩` from `hsupp (show g⁻¹ ∈ support φ from hg)`. Use `replace hzc : z * c = g⁻¹ := hzc`. Use `⟨z⁻¹, inv_mem hz, c⁻¹, by simpa using hc, ?_⟩` and prove the remaining obligations.
+
+Establish `hzc' : z * c = c * z` using `(Subgroup.mem_center_iff.1 hz c).symm`. Use `show z⁻¹ * c⁻¹ = g`. Rewrite using `[← mul_inv_rev, ← hzc', hzc, inv_inv]`.
+-/
 theorem IsCompactModCenter.comp_inv {φ : GL (Fin n) F → ℂ} (hφ : IsCompactModCenter φ) :
     IsCompactModCenter fun g => φ g⁻¹ := by
   obtain ⟨C, hC, hsupp⟩ := hφ

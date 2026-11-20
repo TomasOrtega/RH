@@ -20,10 +20,16 @@ namespace GlobalTheory.Unf.FB.UnipAct
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `d.levi_mem_NFlag hu`.
+-/
 theorem levi_mem_flag {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     d.levi u ∈ flagN d :=
   d.levi_mem_NFlag hu
 
+/- English proof (translation)
+Establish `h : ∀ a, psiFlag ψ d (d.levi a) = psiUni ψ a` using `fun a => by`. Use `psiFlag_levi_mul ψ d a (one_mem (stabX d))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Rewrite using `[← h, ← h, ← h, map_mul, psiFlag_mul d ψ (levi_mem_flag d hu) (levi_mem_flag d hv)]`.
+-/
 theorem psiUni_mul_of_mem (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ)
     {u v : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) (hv : v ∈ UX D ρ) : psiUni ψ (u * v) = psiUni ψ u * psiUni ψ v := by
   have h : ∀ a, psiFlag ψ d (d.levi a) = psiUni ψ a := fun a => by
@@ -31,6 +37,17 @@ theorem psiUni_mul_of_mem (ψ : AddChar (AF D.host.F) ℂ) {S S₀ : HSp D} {ρ 
     rwa [mul_one] at this
   rw [← h, ← h, ← h, map_mul, psiFlag_mul d ψ (levi_mem_flag d hu) (levi_mem_flag d hv)]
 
+/- English proof (translation)
+Introduce `D hD ψ σ J B s Ψ hΨ n hn`. Take `⟨γ, hγ, hnγ⟩` from `((GlobalTheory.T.mem_besGrp_iff_mt_mul_x0_eq_x0_mul D σ B).1 n).1 (Subgroup.mem_sup_left hn)`. Establish `hψ : psiBes ψ B.d 1 (vecB B.o B.ζ) n = psiUni ψ γ` using `(GlobalTheory.T.flagUnipotentRadical_surjects_unitriangular_characters_agree D σ B).2 ψ n hn 1 ⟨γ, hγ⟩ (by rw [map_one, mul_one]; exact hnγ)`. Establish `h1 : mt B.V n⁻¹ ⬝ (x0 B ⬝ γ.1) = x0 B`. Rewrite using `[← hnγ, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`.
+
+Establish `hev : ∀ M : Mx D B.V.rank (σ + 1), evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n) Ψ) M 0 = evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (mt B.V n⁻¹ ⬝ M) 0`. Introduce `M`. Use `GlobalTheory.T.doubleMixedModel_valueAtZero_equivariant D hD ψ σ J B s Ψ hΨ 1 n hn 1 M` as an intermediate fact. Simplify using `only [map_one, mul_one] at this`. Rewrite using `[this, ← Prod.one_eq_mk, map_one, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`.
+
+Establish `: BorelSpace (UX D (σ + 1))` using `⟨rfl⟩`. Use `s.vU.unit.1` as an intermediate fact. Use function extensionality and compare the values at `w`. Simplify using `only [flatFB, flatLast, flatAt, flatFun, Pi.smul_apply, smul_eq_mul, hev]`. Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self _ (⟨γ, hγ⟩ : UX D (σ + 1))]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `hm : mt B.V n⁻¹ ⬝ (x0 B ⬝ ((⟨γ, hγ⟩ * u : UX D (σ + 1)) : GL (Fin (σ + 1)) (AE D)).1) = x0 B ⬝ u.1.1`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (x0 B), h1]`. Express the relevant statement in the definitionally equal form `star (psiUni ψ ((⟨γ, hγ⟩ * u : UX D (σ + 1)) : GL (Fin (σ + 1)) (AE D))) * evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (mt B.V n⁻¹ ⬝ (x0 B ⬝ ((⟨γ, hγ⟩ * u : UX D (σ + 1)) : GL (Fin (σ + 1)) (AE D)).1)) 0 w = _`. Rewrite using `[hm, Subgroup.coe_mul, psiUni_mul_of_mem ψ J.d hγ u.2, star_mul', hψ, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem flatFB_flagN : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1)) (B : BesLev D σ) (s : StepFB ψ J B), ∀ (Ψ : WO J.W B.V → ℂ), IsThetaFunO ψ J.W B.V Ψ → ∀ n ∈ flagN B.d, flatFB s (s.om (1, n) Ψ) = star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) • flatFB s Ψ := by
   intro D hD ψ σ J B s Ψ hΨ n hn
   obtain ⟨γ, hγ, hnγ⟩ := ((GlobalTheory.T.mem_besGrp_iff_mt_mul_x0_eq_x0_mul D σ B).1 n).1 (Subgroup.mem_sup_left hn)

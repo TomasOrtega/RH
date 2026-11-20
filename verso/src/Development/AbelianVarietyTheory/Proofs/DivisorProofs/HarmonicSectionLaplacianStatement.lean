@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck | exact GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.harmonic_weitzenboeck <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.harmonic_section_laplacian : ∀ {g : ℕ} (G K : Matrix (Fin g) (Fin g) ℂ) (hKG : Kᵀ * G = 2)
     (ψ : (Fin g → ℂ) → ℂ) (hψ : ContDiff ℝ 2 ψ)
     (hdd : ∀ z a c, d10 (fun z' => d01 ψ z' (ev c)) z (ev a) = -(π : ℂ) * K a c)

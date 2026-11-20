@@ -7,6 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ A _ hA F n hn`. Establish `key : ∀ x : H R (sp A) F n, x = 0`. Introduce `x`. Take `⟨Y, f, hf, hs, hx⟩` from `hA5 R (Spec (CommRingCat.of A)) F n hn x`. Take `⟨s, hsf⟩` from `hsect A hA Y f hf hs`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[CategoryTheory.Functor.map_comp, pull_comp]`. Use `_ = 0 := by rw [hx, map_zero]`. Conclude with `⟨fun x y => by rw [key x, key y]⟩`.
+-/
 theorem heightFunctionalStatement_of_pairingProperties (hA5 : A5)
     (hsect : ∀ (A : Type) [CommRing A], SH A → ∀ (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of A)),
       Etale f → Surjective f → ∃ s : Spec (CommRingCat.of A) ⟶ Y, s ≫ f = 𝟙 _) : B2 := by
@@ -22,6 +27,9 @@ theorem heightFunctionalStatement_of_pairingProperties (hA5 : A5)
       _ = 0 := by rw [hx, map_zero]
   exact ⟨fun x y => by rw [key x, key y]⟩
 
+/- English proof (translation)
+The claim follows from `heightFunctionalStatement_of_pairingProperties GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover GlobalTheory.T.exists_section_of_etale_surjective_of_SH`.
+-/
 theorem b2 : B2 := heightFunctionalStatement_of_pairingProperties GlobalTheory.T.positiveDegreeClasses_die_on_etaleCover GlobalTheory.T.exists_section_of_etale_surjective_of_SH
 
 end GlobalTheory.EtC

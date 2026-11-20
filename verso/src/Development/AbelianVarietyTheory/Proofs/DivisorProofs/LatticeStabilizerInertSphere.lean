@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.LatStabTensor
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMulVec_mulVec {R : Type} [CommRing R] {n d : ℕ} (u : Fin n → R) (A : Matrix (Fin d) (Fin d) R)
     (z : Fin d → R) : Matrix.vecMulVec u (A *ᵥ z) = Matrix.vecMulVec u z * Aᵀ := by
   ext i j
@@ -18,6 +21,15 @@ theorem vecMulVec_mulVec {R : Type} [CommRing R] {n d : ℕ} (u : Fin n → R) (
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r s hX m x y hxy hsum v k hk z hz`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. It suffices to derive a contradiction.
+
+Establish `: ∀ i, form σ X.J (x i) (y i) = 0` using `fun i => by simp [form, dotProduct]`. Simplify using `[this] at hsum`. Conclude with `h0`. Establish `hinv : mat k * mat k⁻¹ = 1` using `k.1.val_inv`. Establish `hT : (mat k⁻¹)ᵀ * (mat k)ᵀ = 1`.
+
+Rewrite using `[← Matrix.transpose_mul, hinv, Matrix.transpose_one]`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.LatExtract.main F E n d X W v _ hn hX.lat fun x' hx' => ?_` and prove the remaining obligations. Rewrite using `[vecMulVec_mulVec]`. Conclude with `(hk _).2 (GlobalTheory.InertSph.vecMulVec_mem_latAtV X W v hx' hz)`.
+
+Use `GlobalTheory.LatExtract.main F E n d X W v _ hn hX.lat fun x' hx' => ?_` and prove the remaining obligations. Rewrite using `[vecMulVec_mulVec]`. Use `(hk _).1 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hT, Matrix.mul_one]`. Conclude with `GlobalTheory.InertSph.vecMulVec_mem_latAtV X W v hx' hz`.
+-/
 theorem latAt_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s : ℕ), X.IsHerm σ B r s →
     ∀ (m : ℕ) (x y : Fin m → Fin n → E), (∀ i, x i ∈ X.L ∧ y i ∈ X.L) → ∑ i, form σ X.J (x i) (y i) = 1 →

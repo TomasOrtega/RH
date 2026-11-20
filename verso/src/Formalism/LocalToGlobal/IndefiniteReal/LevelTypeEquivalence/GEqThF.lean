@@ -23,6 +23,9 @@ section CoefV
 
 variable {D : D7} {V : HSp D} (c : CoefA V)
 
+/- English proof (translation)
+Establish `e : c.ext (Bridge.g0Act ch q F) h = c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q))` using `rfl`. Establish `e2 : c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q)) = (((ch q)⁻¹ : ℂˣ) : ℂ) • c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `LinearMap.map_smul _ _ _`. Establish `e6 : c.ext F (h * κ) = c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `hκq ▸ coefExt_mul c hc F h κ hκ`. Conclude with `e.trans (e2.trans (congrArg _ e6.symm))`.
+-/
 theorem ext_g0Act (hc : c.Is) {Q : Subgroup (Bridge.Gf V)} (ch : Q →* ℂˣ) (q : Q) (κ : GA D V) (hκ : κ ∈ GfC V)
     (hκq : (finHom V).rangeRestrict κ = q) (F : Bridge.Gf V → c.W) (h : GA D V) :
     c.ext (Bridge.g0Act ch q F) h = (((ch q)⁻¹ : ℂˣ) : ℂ) • c.ext F (h * κ) := by
@@ -38,6 +41,9 @@ end CoefV
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Use `show Formalism.UG.bc (swapAE D) (finHom (Vc D i) κ0) ∈ lev D.sp.cm (Vc D i).gram (R.βV i) (flagL (R.datVt i t))`. Rewrite using `[← finE_eq]`. Conclude with `⟨hκ0.2.1, Subgroup.mem_top _⟩`.
+-/
 theorem mem_Q_of_liftV (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
     (hκ0 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ0) :
     (finHom (Vc D i)).rangeRestrict κ0 ∈ (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q := by
@@ -45,6 +51,9 @@ theorem mem_Q_of_liftV (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
   rw [← finE_eq]
   exact ⟨hκ0.2.1, Subgroup.mem_top _⟩
 
+/- English proof (translation)
+Apply `R.eG.injective` to reduce the goal to its premises. Rewrite using `[hred i t ⟨_, mem_Q_of_liftV R i t g hκ0⟩]`. Conclude with `hκ0.2.2`.
+-/
 theorem red_of_liftV (hred : R.grp_red_L) (i : Fin D.R.m) (t : T) (g : G) {κ0 : GA D (Vc D i)}
     (hκ0 : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG g) κ0) :
     (R.B.L i t).act_tie.red (⟨_, mem_Q_of_liftV R i t g hκ0⟩ : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q) = g := by
@@ -52,6 +61,9 @@ theorem red_of_liftV (hred : R.grp_red_L) (i : Fin D.R.m) (t : T) (g : G) {κ0 :
   rw [hred i t ⟨_, mem_Q_of_liftV R i t g hκ0⟩]
   exact hκ0.2.2
 
+/- English proof (translation)
+Establish `hext` using `(R.B.L i t).act_tie.act_eq g q0 hred0 x`. Conclude with `(hM.jV i t _).trans (hext.trans (congrArg (Bridge.g0Act (levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch q0) (hM.jV i t x).symm))`.
+-/
 theorem jV_act (hM : R.IsModels) (i : Fin D.R.m) (t : T) (g : G) (x : A.fam.amb.FL i t)
     (q0 : (levEnv (Vc D i) (R.βV i) (R.datVt i t)).Q) (hred0 : (R.B.L i t).act_tie.red q0 = g) :
     (R.HV i t).e (R.jV i t (A.fam.amb.opL i t (Sum.inr g) x)) =
@@ -60,6 +72,9 @@ theorem jV_act (hM : R.IsModels) (i : Fin D.R.m) (t : T) (g : G) (x : A.fam.amb.
   exact (hM.jV i t _).trans (hext.trans
     (congrArg (Bridge.g0Act (levEnv (Vc D i) (R.βV i) (R.datVt i t)).ch q0) (hM.jV i t x).symm))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extV_apply (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (h : GA D (Vc D i)) :
     R.extV i t y h = (R.cV i).ext ((R.HV i t).e y) h := rfl
 

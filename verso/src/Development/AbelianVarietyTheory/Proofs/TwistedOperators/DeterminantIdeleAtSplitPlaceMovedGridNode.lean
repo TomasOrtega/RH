@@ -14,6 +14,11 @@ open GlobalTheory.RowVacScalar
 namespace GlobalTheory.RowDetLocal
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Rewrite using `[Algebra.TensorProduct.comm_tmul, GlobalTheory.StdFrames.toAd_spec, mul_comm]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add, map_add]`.
+-/
 theorem toFinAd_eq (z : TensorProduct D.host.F (Af D.host.F) D.host.E) :
     GlobalTheory.LFun.toFinAd D.host.F D.host.E z = GlobalTheory.StdFrames.toAd D (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E z) := by
   induction z using TensorProduct.induction_on with
@@ -23,12 +28,18 @@ theorem toFinAd_eq (z : TensorProduct D.host.F (Af D.host.F) D.host.E) :
     rfl
   | add x y hx hy => rw [map_add, hx, hy, map_add, map_add]
 
+/- English proof (translation)
+Use `show (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.E w) (GlobalTheory.LFun.toFinAd D.host.F D.host.E (finPart D a)) = _`. Rewrite using `[toFinAd_eq]`. Both sides reduce to the same expression.
+-/
 theorem compAt_eq_cpt (w : Pl D.host.E) (a : AE D) :
     GlobalTheory.LFun.compAt D.host.F w (finPart D a) = GlobalTheory.StdFrames.cpt w (toEAf D a) := by
   show (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.E w) (GlobalTheory.LFun.toFinAd D.host.F D.host.E (finPart D a)) = _
   rw [toFinAd_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[GlobalTheory.FunObj.inBasis, MonoidHom.comp_apply, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, GlobalTheory.TopLevelInv.det_val_reGL, GlobalTheory.TopLevelInv.val_loc, ← RingHom.mapMatrix_apply, ← RingHom.map_det, GlobalTheory.Top …`.
+-/
 theorem gdet_inBasis_val (V : HSp D) {n' : ℕ} (h : n' = V.rank) (β : GL (Fin V.rank) (Lev.EAf D)) (w : Pl D.host.E) (k : GfC V) :
     ((gdet (inBasis h β w (finG V k)) : (Kw w)ˣ) : Kw w) =
       GlobalTheory.StdFrames.cpt w (toEAf D (Formalism.L2.Theta.mt V (k : GA D V)).det) := by
@@ -37,6 +48,13 @@ theorem gdet_inBasis_val (V : HSp D) {n' : ℕ} (h : n' = V.rank) (β : GL (Fin 
     MulEquiv.coe_toMonoidHom, MulAut.conj_apply, GlobalTheory.TopLevelInv.det_val_reGL, GlobalTheory.TopLevelInv.val_loc, ← RingHom.mapMatrix_apply, ← RingHom.map_det,
     GlobalTheory.TopLevelInv.det_val_conj_inv, GlobalTheory.TopLevelInv.val_finG, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
 
+/- English proof (translation)
+Establish `he : Formalism.L2.NTheta.IsIdemAt (idemAt w) w` using `Classical.epsilon_spec hs`. Establish `hee : idemAt w * idemAt w = idemAt w` using `he.1.1`. Establish `hP : Formalism.IndefR.Mult.IsPrimeIdem w (idemAt w) (idemAt w + cA D (idemAt w))` using `Or.inl ⟨he, rfl⟩`. Establish `hx` using `detIdl_val hee V g`. Take `⟨y, hy, hxy⟩` from `GlobalTheory.WeilAtPlace.exists_eq_locIdele (GlobalTheory.WeilAtPlace.isPrimeIdem_infPart hP) (GlobalTheory.LFun.finPart_of_isPrimeIdem hP) (detIdl (idemAt w) V g) (by`.
+
+Rewrite using `[hx]`. Take the linear combination `((Formalism.L2.Theta.mt V g).det - 1) * hee)`. Establish `hyz : y = z`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hy, hx, GlobalTheory.WeilAtPlace.compAt_cut (GlobalTheory.LFun.finPart_of_isPrimeIdem hP), compAt_eq_cpt]`.
+
+Conclude with `hz.symm`. Rewrite using `[hxy, hyz]`.
+-/
 theorem detIdl_eq_locIdele (V : HSp D) (g : GA D V) (w : Pl D.host.E) (hs : ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e w)
     (z : (Kw w)ˣ) (hz : (z : Kw w) = GlobalTheory.StdFrames.cpt w (toEAf D (Formalism.L2.Theta.mt V g).det)) :
     detIdl (idemAt w) V g = GlobalTheory.LFun.locIdele D.host.F w z := by
@@ -54,6 +72,9 @@ theorem detIdl_eq_locIdele (V : HSp D) (g : GA D V) (w : Pl D.host.E) (hs : ∃ 
     exact hz.symm
   rw [hxy, hyz]
 
+/- English proof (translation)
+The claim follows from `detIdl_eq_locIdele V _ w hs _ (by rw [gdet_inBasis_val, GlobalTheory.TopLevelInv.det_mt_conj])`.
+-/
 theorem detIdl_conj_eq_locIdele (V : HSp D) {n' : ℕ} (h : n' = V.rank) (β : GL (Fin V.rank) (Lev.EAf D)) (k u : GfC V)
     (w : Pl D.host.E) (hs : ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e w) :
     detIdl (idemAt w) V ((u⁻¹ * k * u : GfC V) : GA D V) =
@@ -61,6 +82,9 @@ theorem detIdl_conj_eq_locIdele (V : HSp D) {n' : ℕ} (h : n' = V.rank) (β : G
   detIdl_eq_locIdele V _ w hs _ (by rw [gdet_inBasis_val, GlobalTheory.TopLevelInv.det_mt_conj])
 end GlobalTheory.RowDetLocal
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t j hj k w hs`. Conclude with `GlobalTheory.RowDetLocal.detIdl_conj_eq_locIdele _ _ _ k (S.N.u (.grid (j + 1) D.R.m)) w hs`.
+-/
 theorem GlobalTheory.RowDetLocal.detIdl_moved_eq_locIdele : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (t : T) (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)) (w : Pl D.host.E),
     (∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e w) →

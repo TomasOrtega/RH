@@ -17,17 +17,31 @@ noncomputable def lineDerivList : List E → (E → V) → E → V
 
 variable {𝕜}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lineDerivList_nil (F : E → V) : lineDerivList 𝕜 [] F = F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineDerivList_cons (v : E) (l : List E) (F : E → V) :
     lineDerivList 𝕜 (v :: l) F = fun z => lineDeriv 𝕜 (lineDerivList 𝕜 l F) z v := rfl
 
+/- English proof (translation)
+Proceed by induction on `l₁ with`. Consider the case `nil => rfl`. Consider the case `cons v l ih => simp only [List.cons_append, lineDerivList_cons, ih]`.
+-/
 theorem lineDerivList_append (l₁ l₂ : List E) (F : E → V) :
     lineDerivList 𝕜 (l₁ ++ l₂) F = lineDerivList 𝕜 l₁ (lineDerivList 𝕜 l₂ F) := by
   induction l₁ with
   | nil => rfl
   | cons v l ih => simp only [List.cons_append, lineDerivList_cons, ih]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `z`. Simplify using `only [lineDerivList_cons, ih, lineDeriv]`.
+
+Conclude with `deriv_fun_const_smul_field c _`.
+-/
 theorem lineDerivList_const_smul (l : List E) (c : 𝕜) (F : E → V) :
     lineDerivList 𝕜 l (fun z => c • F z) = fun z => c • lineDerivList 𝕜 l F z := by
   induction l with
@@ -37,10 +51,16 @@ theorem lineDerivList_const_smul (l : List E) (c : 𝕜) (F : E → V) :
     simp only [lineDerivList_cons, ih, lineDeriv]
     exact deriv_fun_const_smul_field c _
 
+/- English proof (translation)
+Simplify using `using lineDerivList_const_smul l (0 : 𝕜) (fun _ => (0 : V))`.
+-/
 @[simp] theorem lineDerivList_zero (l : List E) :
     lineDerivList 𝕜 l (fun _ => (0 : V)) = fun _ => 0 := by
   simpa using lineDerivList_const_smul l (0 : 𝕜) (fun _ => (0 : V))
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `z`. Simplify using `only [lineDerivList_cons, ih, lineDeriv, List.map_cons, map_add, map_smul]`.
+-/
 theorem lineDerivList_comp_linearMap {E' : Type*} [AddCommGroup E'] [Module 𝕜 E']
     (L : E' →ₗ[𝕜] E) (l : List E') (F : E → V) :
     lineDerivList 𝕜 l (fun z => F (L z)) = fun z => lineDerivList 𝕜 (l.map L) F (L z) := by
@@ -50,6 +70,9 @@ theorem lineDerivList_comp_linearMap {E' : Type*} [AddCommGroup E'] [Module 𝕜
     funext z
     simp only [lineDerivList_cons, ih, lineDeriv, List.map_cons, map_add, map_smul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `z`. Simplify using `only [lineDerivList_cons, ih, lineDeriv, add_right_comm]`.
+-/
 theorem lineDerivList_comp_add_const (c : E) (l : List E) (F : E → V) :
     lineDerivList 𝕜 l (fun z => F (z + c)) = fun z => lineDerivList 𝕜 l F (z + c) := by
   induction l with
@@ -58,6 +81,11 @@ theorem lineDerivList_comp_add_const (c : E) (l : List E) (F : E → V) :
     funext z
     simp only [lineDerivList_cons, ih, lineDeriv, add_right_comm]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons v l ih`. Use function extensionality and compare the values at `z`. Simplify using `only [List.map_cons, lineDerivList_cons, ih, lineDeriv_smul, List.prod_cons, mul_smul]`.
+
+Use `congr 1`. Simplify using `only [lineDeriv]`. Conclude with `deriv_fun_const_smul_field _ _`.
+-/
 theorem lineDerivList_map_smul {κ : Type*} (c : κ → 𝕜) (e : κ → E) (l : List κ) (F : E → V) :
     lineDerivList 𝕜 (l.map fun k => c k • e k) F
       = fun z => (l.map c).prod • lineDerivList 𝕜 (l.map e) F z := by
@@ -70,6 +98,11 @@ theorem lineDerivList_map_smul {κ : Type*} (c : κ → 𝕜) (e : κ → E) (l 
     simp only [lineDeriv]
     exact deriv_fun_const_smul_field _ _
 
+/- English proof (translation)
+Proceed by induction on `n generalizing t with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, lineDerivList_cons, iteratedDeriv_succ]`. Simplify using `only [lineDeriv, add_assoc, ← add_smul, ih]`.
+
+Rewrite using `[deriv_comp_const_add (f := iteratedDeriv n (fun s : 𝕜 => F (z + s • v))), add_zero]`.
+-/
 theorem lineDerivList_replicate (n : ℕ) (v : E) (F : E → V) (z : E) (t : 𝕜) :
     lineDerivList 𝕜 (List.replicate n v) F (z + t • v)
       = iteratedDeriv n (fun s : 𝕜 => F (z + s • v)) t := by
@@ -88,6 +121,9 @@ variable {𝕜 : Type*} [NontriviallyNormedField 𝕜]
   {E : Type*} [NormedAddCommGroup E] [NormedSpace 𝕜 E]
   {V : Type*} [NormedAddCommGroup V] [NormedSpace 𝕜 V]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons v l ih => filter_upwards [ih.eventuallyEq_nhds] with z hz`. Conclude with `hz.lineDeriv_eq`.
+-/
 theorem lineDerivList_congr {F G : E → V} {a : E} (h : F =ᶠ[𝓝 a] G) (l : List E) :
     lineDerivList 𝕜 l F =ᶠ[𝓝 a] lineDerivList 𝕜 l G := by
   induction l with
@@ -98,6 +134,9 @@ theorem lineDerivList_congr {F G : E → V} {a : E} (h : F =ᶠ[𝓝 a] G) (l : 
 
 variable [CompleteSpace V]
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt 𝕜 (fun z => fderiv 𝕜 F z v) a` using `((ContinuousLinearMap.apply 𝕜 V v).analyticAt _).comp h.fderiv`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [h.eventually_analyticAt] with z hz`. Conclude with `hz.differentiableAt.lineDeriv_eq_fderiv.symm`.
+-/
 theorem analyticAt_lineDeriv {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (v : E) :
     AnalyticAt 𝕜 (fun z => lineDeriv 𝕜 F z v) a := by
   have h1 : AnalyticAt 𝕜 (fun z => fderiv 𝕜 F z v) a :=
@@ -106,12 +145,20 @@ theorem analyticAt_lineDeriv {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (v 
   filter_upwards [h.eventually_analyticAt] with z hz
   exact hz.differentiableAt.lineDeriv_eq_fderiv.symm
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons v l ih => exact analyticAt_lineDeriv ih v`.
+-/
 theorem analyticAt_lineDerivList {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (l : List E) :
     AnalyticAt 𝕜 (lineDerivList 𝕜 l F) a := by
   induction l with
   | nil => exact h
   | cons v l ih => exact analyticAt_lineDeriv ih v
 
+/- English proof (translation)
+Proceed by induction on `n generalizing a with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hev : lineDerivList 𝕜 (List.ofFn fun i => m i.succ) F =ᶠ[𝓝 a] fun z => iteratedFDeriv 𝕜 n F z (Fin.tail m)` using `by filter_upwards [h.eventually_analyticAt] with z hz`. Conclude with `ih hz _`.
+
+Establish `hd : DifferentiableAt 𝕜 (iteratedFDeriv 𝕜 n F) a` using `(h.contDiffAt (n := ω)).differentiableAt_iteratedFDeriv (by simp)`. Rewrite using `[List.ofFn_succ, lineDerivList_cons, iteratedFDeriv_succ_apply_left]`. Simplify using `only`. Rewrite using `[(analyticAt_lineDerivList h _).differentiableAt.lineDeriv_eq_fderiv, hev.fderiv_eq, fderiv_continuousMultilinear_apply_const_apply hd]`.
+-/
 theorem lineDerivList_ofFn {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) {n : ℕ} (m : Fin n → E) :
     lineDerivList 𝕜 (List.ofFn m) F a = iteratedFDeriv 𝕜 n F a m := by
   induction n generalizing a with
@@ -128,10 +175,18 @@ theorem lineDerivList_ofFn {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) {n : 
     rw [(analyticAt_lineDerivList h _).differentiableAt.lineDeriv_eq_fderiv, hev.fderiv_eq,
       fderiv_continuousMultilinear_apply_const_apply hd]
 
+/- English proof (translation)
+Rewrite using `[← lineDerivList_ofFn h, List.ofFn_get]`.
+-/
 theorem lineDerivList_eq_iteratedFDeriv {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (l : List E) :
     lineDerivList 𝕜 l F a = iteratedFDeriv 𝕜 l.length F a l.get := by
   rw [← lineDerivList_ofFn h, List.ofFn_get]
 
+/- English proof (translation)
+Establish `h1` using `lineDerivList_ofFn h ![v, w]`. Establish `h2` using `lineDerivList_ofFn h ![w, v]`. Establish `h3` using `(h.contDiffAt (n := ω)).iteratedFDeriv_comp_perm ![v, w] (Equiv.swap 0 1)`. Establish `h4 : ![v, w] ∘ (Equiv.swap (0 : Fin 2) 1) = ![w, v]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+
+Rewrite `h3` using `[h4]`. Simplify using `only [List.ofFn_succ, List.ofFn_zero, Matrix.cons_val_zero, Matrix.cons_val_succ] at h1 h2`. Rewrite using `[h1, h2, h3]`.
+-/
 theorem lineDerivList_swap {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (v w : E) :
     lineDerivList 𝕜 [v, w] F a = lineDerivList 𝕜 [w, v] F a := by
   have h1 := lineDerivList_ofFn h ![v, w]
@@ -143,6 +198,11 @@ theorem lineDerivList_swap {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) (v w 
   simp only [List.ofFn_succ, List.ofFn_zero, Matrix.cons_val_zero, Matrix.cons_val_succ] at h1 h2
   rw [h1, h2, h3]
 
+/- English proof (translation)
+Proceed by induction on `hl generalizing a with`. Consider the case `nil => rfl`. Consider the case `cons v _ ih`. Use `Filter.EventuallyEq.lineDeriv_eq ?_` and prove the remaining obligations. Use `filter_upwards [h.eventually_analyticAt] with z hz`.
+
+Conclude with `ih hz`. Consider the case `swap v w l => exact lineDerivList_swap (analyticAt_lineDerivList h l) w v`. Consider the case `trans _ _ ih₁ ih₂ => exact (ih₁ h).trans (ih₂ h)`.
+-/
 theorem lineDerivList_perm {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) {l₁ l₂ : List E}
     (hl : l₁.Perm l₂) : lineDerivList 𝕜 l₁ F a = lineDerivList 𝕜 l₂ F a := by
   induction hl generalizing a with
@@ -154,6 +214,9 @@ theorem lineDerivList_perm {F : E → V} {a : E} (h : AnalyticAt 𝕜 F a) {l₁
   | swap v w l => exact lineDerivList_swap (analyticAt_lineDerivList h l) w v
   | trans _ _ ih₁ ih₂ => exact (ih₁ h).trans (ih₂ h)
 
+/- English proof (translation)
+Establish `hFG : AnalyticAt 𝕜 (fun z => F z + G z) a` using `hF.add hG`. Rewrite using `[lineDerivList_eq_iteratedFDeriv hFG, lineDerivList_eq_iteratedFDeriv hF, lineDerivList_eq_iteratedFDeriv hG, fun_iteratedFDeriv_add_apply (hF.contDiffAt) (hG.contDiffAt)]`. Both sides reduce to the same expression.
+-/
 theorem lineDerivList_add {F G : E → V} {a : E} (hF : AnalyticAt 𝕜 F a) (hG : AnalyticAt 𝕜 G a)
     (l : List E) :
     lineDerivList 𝕜 l (fun z => F z + G z) a
@@ -164,6 +227,11 @@ theorem lineDerivList_add {F G : E → V} {a : E} (hF : AnalyticAt 𝕜 F a) (hG
     fun_iteratedFDeriv_add_apply (hF.contDiffAt) (hG.contDiffAt)]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Establish `hs : ∀ k ∈ s, AnalyticAt 𝕜 (F k) a` using `fun k hk => hF k (Finset.mem_insert_of_mem hk)`. Simplify using `only [Finset.sum_insert hj]`.
+
+Rewrite using `[lineDerivList_add (hF j (Finset.mem_insert_self _ _)) (Finset.analyticAt_fun_sum _ hs), ih hs]`.
+-/
 theorem lineDerivList_sum {κ : Type*} (s : Finset κ) {F : κ → E → V} {a : E}
     (hF : ∀ k ∈ s, AnalyticAt 𝕜 (F k) a) (l : List E) :
     lineDerivList 𝕜 l (fun z => ∑ k ∈ s, F k z) a = ∑ k ∈ s, lineDerivList 𝕜 l (F k) a := by

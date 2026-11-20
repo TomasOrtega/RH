@@ -19,6 +19,9 @@ def coefB {h : ℕ} (ϖ : F) (lam π : Fin h → F) (L U m : ℕ) : Matrix (Fin 
   Matrix.of fun r j => if m ≤ L + U then
     (term p ϖ lam π r j ((m : ℤ) - L) / (lam r * π r ^ p ^ (r : ℕ))) ^ p ^ (h - (r : ℕ)) else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowT_eq_rowS {h : ℕ} (ϖ : F) (lam : Fin h → F) (K : ℕ) (x : Fin h → F) (r : Fin h) :
     rowT p ϖ lam K x r = rowS p ϖ lam K K x r := rfl
 

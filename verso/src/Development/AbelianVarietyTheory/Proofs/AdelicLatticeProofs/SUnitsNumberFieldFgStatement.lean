@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLe
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.QNorm.sUnits_fg | exact GlobalTheory.QNorm.sUnits_fg | (intros; apply GlobalTheory.QNorm.sUnits_fg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sUnitsNumberField_fg : ∀ (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))), Group.FG (sUnits F S) := by
   first | exact @GlobalTheory.QNorm.sUnits_fg | exact GlobalTheory.QNorm.sUnits_fg | (intros; apply GlobalTheory.QNorm.sUnits_fg <;> assumption)

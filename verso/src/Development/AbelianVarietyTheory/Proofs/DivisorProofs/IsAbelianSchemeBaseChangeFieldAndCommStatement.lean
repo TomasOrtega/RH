@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm | exact GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm | (intros; apply GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isAbelianScheme_and_comm_baseChange_field : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → IsAbelianScheme ((Over.pullback (spMap (algebraMap K L))).obj A) ∧ IsCommMonObj ((Over.pullback (spMap (algebraMap K L))).obj A) := by
   first | exact @GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm | exact GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm | (intros; apply GlobalTheory.Published.AbVarRed.isAbelianScheme_baseChange_field_and_comm <;> assumption)

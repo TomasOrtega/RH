@@ -13,6 +13,9 @@ namespace GlobalTheory.FlagModulus
 
 variable {D : D7} {S S₀ : HSp D} {ρ : ℕ}
 
+/- English proof (translation)
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (d.emb0 h) (d.levi u), d.wittHyperbolic_anisotropic_commute_levi h u, mul_assoc, ← mul_assoc (d.emb0 h) (d.nB b), d.wittHyperbolic_anisotropic_conj_nB b h, mul_assoc, ← mul_assoc (d.emb0 h) (d.nC c), d.wittHyperbolic_anisotropic_commute_nC c h, mul_assoc, mul_inv_can …`.
+-/
 theorem wittHyperbolic_conj_smallerGroup_coords (d : HypDec S S₀ ρ) (h : GA D S₀) (u : GL (Fin ρ) (AE D)) (b : Mx D ρ S₀.rank)
     (c : skewA D ρ) : d.emb0 h * (d.levi u * (d.nB b * d.nC c)) * (d.emb0 h)⁻¹ =
       d.levi u * (d.nB (b ⬝ mt S₀ h⁻¹) * d.nC c) := by
@@ -21,6 +24,15 @@ theorem wittHyperbolic_conj_smallerGroup_coords (d : HypDec S S₀ ρ) (h : GA D
     d.wittHyperbolic_anisotropic_conj_nB b h, mul_assoc, ← mul_assoc (d.emb0 h) (d.nC c), d.wittHyperbolic_anisotropic_commute_nC c h, mul_assoc, mul_inv_cancel,
     mul_one]
 
+/- English proof (translation)
+Introduce `D S S₀ ρ d ν hν h`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ S₀.rank) := ⟨rfl⟩`. Take `⟨hlc, hsc, -, -⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag S (isIsoSub_e d)`. Take `⟨μ, lB, lC, hμ, hB, hC, sμ, sB, sC, hΦ, ν₀, hν₀, hmap⟩` from `GlobalTheory.HaarCoords.haar_coords D S S₀ ρ d`.
+
+Establish `hk : ν = Measure.haarScalarFactor ν ν₀ • ν₀` using `Measure.isMulLeftInvariant_eq_smul ν ν₀`. Establish `hconj : Measurable (fun g : GA D S => d.emb0 h * g * (d.emb0 h)⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hval : Measurable (Subtype.val : flagN d → GA D S)` using `measurable_subtype_coe`. Establish `hf : Measurable (fun b : Mx D ρ S₀.rank => b ⬝ mt S₀ h⁻¹)` using `(continuous_id.matrix_mul continuous_const).measurable`. Establish `hT : Measurable (Prod.map (id : UX D ρ → UX D ρ) (Prod.map (fun b : Mx D ρ S₀.rank => b ⬝ mt S₀ h⁻¹) (id : skewA D ρ → skewA D ρ)))` using `measurable_id.prodMap (hf.prodMap measurable_id)`.
+
+Establish `key : ν₀.map (fun n : flagN d => d.emb0 h * n.1 * (d.emb0 h)⁻¹) = ν₀.map Subtype.val`. Establish `e1 : (fun n : flagN d => d.emb0 h * n.1 * (d.emb0 h)⁻¹) = (fun g : GA D S => d.emb0 h * g * (d.emb0 h)⁻¹) ∘ Subtype.val` using `rfl`. Rewrite using `[e1, ← Measure.map_map hconj hval, hmap, Measure.map_map hconj hΦ]`. Establish `e2 : (fun g : GA D S => d.emb0 h * g * (d.emb0 h)⁻¹) ∘ (fun p : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) => d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) = (fun p : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) => d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) ∘ Prod.map (id : UX D ρ → UX D ρ) (Prod …`. Use function extensionality and compare the values at `fun p => wittHyperbolic_conj_smallerGroup_coords d h p.1.1 p.2.1 p.2.2`.
+
+Rewrite using `[e2, ← Measure.map_map hΦ hT]`. Use `congr 1`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id (hf.prodMap measurable_id), ← Measure.map_prod_map _ _ hf measurable_id, Measure.map_id, Measure.map_id, GlobalTheory.AdelicModulus.RowMat.map_mul_mt_eq D S₀ ρ lB hB h⁻¹]`. Rewrite using `[hk, Measure.map_smul, Measure.map_smul, key]`.
+-/
 theorem map_conj_smallerUnitary_flagUnipotent_haar : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (ν : Measure (flagN d)),
     ν.IsHaarMeasure → ∀ h : GA D S₀,
       ν.map (fun n : flagN d => d.emb0 h * n.1 * (d.emb0 h)⁻¹) = ν.map Subtype.val := by

@@ -17,6 +17,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Establish `hab : 1 ≤ a * b` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hcd : 1 ≤ c * d` using `hab.trans h`. Establish `hc : c ≠ 0` using `by rintro rfl; simp at hcd`. Establish `hd : d ≠ 0` using `by rintro rfl; simp at hcd`. Establish `he : e ≠ 0` using `by omega`.
+
+Establish `h1 : Real.log ((a : ℝ) * b) ≤ Real.log ((e : ℝ) * d)`. Apply `Real.log_le_log` to reduce the goal to its premises. Establish `: (1 : ℝ) ≤ (a : ℝ) * b` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: a * b ≤ e * d` using `h.trans (Nat.mul_le_mul_right d hce)`.
+
+Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[Real.log_mul (by exact_mod_cast (by omega : a ≠ 0)) (by exact_mod_cast (by omega : b ≠ 0)), Real.log_mul (by exact_mod_cast he) (by exact_mod_cast hd)]`. Then use the resulting hypothesis.
+-/
 theorem log_add_le_of_mul_le (a b c d e : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (h : a * b ≤ c * d) (hce : c ≤ e) :
     Real.log a + Real.log b ≤ Real.log e + Real.log d := by
   have hab : 1 ≤ a * b := Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
@@ -33,6 +40,23 @@ theorem log_add_le_of_mul_le (a b c d e : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (h 
   rwa [Real.log_mul (by exact_mod_cast (by omega : a ≠ 0)) (by exact_mod_cast (by omega : b ≠ 0)),
     Real.log_mul (by exact_mod_cast he) (by exact_mod_cast hd)] at h1
 
+/- English proof (translation)
+Introduce `hHS hAC k _ X _ p D hD P b s t hG ε hε`. Establish `hfin : ∀ (a c : ℤ) (R : ℝ), (P.Bl a c R).Finite` using `fun a c R => GlobalTheory.T.hermLineBundlePair_balls_finite hHS k X p D hD P b s t hG a c R hAC`. Establish `hball : ∀ a c : ℤ, IsBallFam (P.H a c) (P.Bl a c)` using `GlobalTheory.T.isSeminormBallFamily_sectionBalls k X p P`. Establish `hpos : ∀ (a c : ℤ) (R : ℝ), 0 ≤ R → 1 ≤ (P.Bl a c R).ncard` using `fun a c R hR => Nat.one_le_iff_ne_zero.mpr ((Set.ncard_pos (hfin a c R)).mpr ⟨0, (hball a c).zero_mem R hR⟩).ne'`. Take `⟨C0, hC0⟩` from `GlobalTheory.T.smallSectionCount_le_pow_goodPair hHS hAC k X p D hD P b s t hG`.
+
+Take `⟨δ, hδ, hrad⟩` from `GlobalTheory.T.exists_log_ncard_seminormBall_exp_small_le X.functionField (fun N => P.H (N : ℤ) 0) (fun N => P.Bl (N : ℤ) 0) (D + 1) (Nat.succ_pos D) (fun N => hball N 0) (fun N R => hfin N 0 R) C0 hC0 (ε / 3) (by positivity)`. Take `⟨C, hC, hdiv⟩` from `GlobalTheory.T.mem_smallSectionBall_of_mul_pow_section k X p D hD P s hG.s_mem.1 hG.s_ne (δ / 2) (by positivity)`. Establish `hdA` using `GlobalTheory.T.smallSectionCount_nearPowers_le hHS hAC k X p D hD P b s t hG (ε / 3) (by positivity)`. Establish `hn : ∀ᶠ n : ℕ in atTop, (2 * C + 2) / δ ≤ (n : ℝ) ∧ 1 ≤ n` using `(tendsto_natCast_atTop_atTop.eventually_ge_atTop _).and (eventually_ge_atTop 1)`. Use `filter_upwards [hdA, hn] with n hdAn hnn`.
+
+Take `⟨hnC, hn1⟩` from `hnn`. Establish `htend : Tendsto (fun m : ℕ => n * m) atTop atTop` using `tendsto_atTop_mono (fun m => Nat.le_mul_of_pos_left m hn1) tendsto_id`. Use `filter_upwards [hdAn, htend.eventually hrad, eventually_ge_atTop 1] with m hdm hradm hm1`. Establish `hnδ : 2 * C + 2 ≤ (n : ℝ) * δ` using `(div_le_iff₀ hδ).mp hnC`. Establish `hm1' : (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`.
+
+Establish `hrad_le : 2 * Real.exp (δ / 2 * ((n * m : ℕ) : ℝ) + C * m) ≤ Real.exp (δ * ((n * m : ℕ) : ℝ))`. Establish `h2 : (2 : ℝ) ≤ Real.exp 1` using `by have := Real.add_one_le_exp 1; linarith`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hnδ (by linarith : (0 : ℝ) ≤ m)]`. Establish `hSsub : {f | f ∈ P.H (n * m : ℕ) 0 ∧ f * s ^ m ∈ P.Bl (n * m : ℕ) m 2} ⊆ P.Bl (n * m : ℕ) 0 (Real.exp (δ * ((n * m : ℕ) : ℝ)))`. Introduce and unpack `f ⟨hf1, hf2⟩`. Establish `hf` using `hdiv (n * m) m f hf1 hf2`. Conclude with `⟨hf.1, fun σ y => (hf.2 σ y).trans hrad_le⟩`.
+
+Establish `hEfin` using `hfin (n * m : ℕ) 0 (Real.exp (δ * ((n * m : ℕ) : ℝ)))`. Establish `hSfin` using `hEfin.subset hSsub`. Establish `hlev` using `GlobalTheory.T.arith_small_sections_encard_mul_le_finite_level k X p D hD P b s t hG (n * m) m (hfin _ _ _)`. Rewrite `hlev` using `[← (hfin _ _ _).cast_ncard_eq, ← (hfin _ _ _).cast_ncard_eq, ← hSfin.cast_ncard_eq, ← (hfin _ _ _).cast_ncard_eq]`. Normalize the coercions in `at hlev`.
+
+Establish `hkey` using `log_add_le_of_mul_le _ _ _ _ _ (hpos _ _ _ zero_le_one) (hpos _ _ _ zero_le_one) hlev (Set.ncard_le_ncard hSsub hEfin)`. Establish `hX : (0 : ℝ) ≤ ((n : ℝ) * m) ^ (D + 1)` using `by positivity`. Establish `hX3` using `mul_nonneg (by positivity : (0 : ℝ) ≤ ε / 3) hX`. Simplify using `only [Pair.lc] at hdm ⊢`. Move the coercions through the operations in `at hradm hkey hdm ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lc_add_A_le : GlobalTheory.Published.ArithHilbertSamuel → GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (b : ℕ) (s t : X.functionField),
     P.Good D b s t → ∀ ε : ℝ, 0 < ε → ∀ᶠ n : ℕ in atTop, ∀ᶠ m : ℕ in atTop,

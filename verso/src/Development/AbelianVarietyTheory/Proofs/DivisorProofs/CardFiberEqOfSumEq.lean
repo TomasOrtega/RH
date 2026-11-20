@@ -4,6 +4,15 @@ open Polynomial
 
 namespace GlobalTheory.CharDeg
 
+/- English proof (translation)
+Establish `hli` using `linearIndependent_monoidHom M ℂ`. Use `set s : Finset (M →* ℂ) := Finset.univ.image f ∪ Finset.univ.image g ∪ {ψ} with hs`. Establish `key : ∀ u : Fin n → (M →* ℂ), (∀ j, u j ∈ s) → ∑ φ ∈ s, ((Finset.univ.filter fun j => u j = φ).card : ℂ) • (φ : M → ℂ) = ∑ j, (u j : M → ℂ)`. Introduce `u hu`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Finset.univ) (t := s) (g := u) (fun j _ => hu j) (fun j => (u j : M → ℂ))]`.
+
+Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Establish `hc : ∑ j ∈ Finset.univ.filter (fun j => u j = φ), (u j : M → ℂ) = ∑ j ∈ Finset.univ.filter (fun j => u j = φ), (φ : M → ℂ)` using `Finset.sum_congr rfl fun j hj => by rw [(Finset.mem_filter.mp hj).2]`. Rewrite using `[hc, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `hzero : ∑ φ ∈ s, (((Finset.univ.filter fun j => f j = φ).card : ℂ) - ((Finset.univ.filter fun j => g j = φ).card : ℂ)) • (φ : M → ℂ) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`.
+
+Rewrite using `[key f (fun j => by simp [hs]), key g (fun j => by simp [hs]), sub_eq_zero]`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, h x]`. Establish `hψ` using `linearIndependent_iff'.mp hli s _ hzero ψ (by simp [hs])`. Rewrite `hψ` using `[sub_eq_zero, Nat.cast_inj]`.
+
+Simplify `hψ` using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+-/
 theorem card_fiber_eq_of_sum_eq {M : Type} [Monoid M] {n : ℕ} (f g : Fin n → (M →* ℂ))
     (h : ∀ x, ∑ j, f j x = ∑ j, g j x) (ψ : M →* ℂ) :
     Nat.card {j // f j = ψ} = Nat.card {j // g j = ψ} := by
@@ -44,6 +53,9 @@ noncomputable def res {Λ : Type} [CommGroup Λ] (d : Λ →* Multiplicative ℤ
     posMonoid d →* ℂ :=
   (Units.coeHom ℂ).comp (χ.comp (posMonoid d).subtype)
 
+/- English proof (translation)
+Use `congrArg Polynomial.nextCoeff h` as an intermediate fact. Rewrite `this` using `[Polynomial.prod_X_sub_C_nextCoeff, Polynomial.prod_X_sub_C_nextCoeff]`. Conclude with `neg_inj.mp this`.
+-/
 theorem sum_eq_of_prod_eq {n : ℕ} (a b : Fin n → ℂ)
     (h : ∏ j, (X - C (a j)) = ∏ j, (X - C (b j))) : ∑ j, a j = ∑ j, b j := by
   have := congrArg Polynomial.nextCoeff h

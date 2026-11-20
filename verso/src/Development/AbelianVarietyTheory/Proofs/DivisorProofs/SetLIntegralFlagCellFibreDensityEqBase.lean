@@ -11,6 +11,15 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Establish `hS : MeasurableSet (O ×ˢ (Set.univ : Set (Cell m → ℂ)))` using `hO.measurableSet.prod MeasurableSet.univ`. Establish `hGτ : ∀ τ, ContinuousOn (fun x : V d × (Cell m → ℂ) => G x.1 τ) (O ×ˢ Set.univ)`. Introduce `τ`. Establish `h : ContinuousOn (fun v => G v τ) O` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => hG τ i j`. Conclude with `h.comp continuous_fst.continuousOn fun x hx => hx.1`.
+
+Unfold `fibDens`. Apply `Finset.aemeasurable_fun_prod` to reduce the goal to its premises. Introduce `τ _`. Use `AEMeasurable.mul (AEMeasurable.mul aemeasurable_const ?_) ?_` and prove the remaining obligations. Establish `h` using `((continuous_id.matrix_det).comp_continuousOn (hGτ τ))`.
+
+Conclude with `((Complex.continuous_re.comp_continuousOn h).aemeasurable hS).pow_const _`. Unfold `GlobalTheory.FlagFibre.dens`. Apply `Finset.aemeasurable_fun_prod` to reduce the goal to its premises. Introduce `i _`. Use `AEMeasurable.pow_const (AEMeasurable.norm ?_) _` and prove the remaining obligations.
+
+Establish `hc : Continuous fun p : Matrix (Fin (m τ)) (Fin (m τ)) ℂ × (Low (m τ) → ℂ) => ReciprocityTheory.ChartRestriction.G.FD.lminor ((GlobalTheory.FlagFibre.uni p.2)ᴴ * p.1ᵀ * GlobalTheory.FlagFibre.uni p.2) i.castSucc`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.lminor`. Conclude with `((((GlobalTheory.FlagFibre.continuous_uni.comp continuous_snd).matrix_conjTranspose.matrix_mul continuous_fst.matrix_transpose).matrix_mul (GlobalTheory.FlagFibre.continuous_uni.comp continuous_snd)).matrix_submatrix _ _).matrix_det`. Establish `h2 : ContinuousOn (fun x : V d × (Cell m → ℂ) => (G x.1 τ, fun s => x.2 ⟨τ, s⟩)) (O ×ˢ Set.univ)` using `(hGτ τ).prodMk (by fun_prop : Continuous fun x : V d × (Cell m → ℂ) => fun s => x.2 ⟨τ, s⟩).continuousOn`. Conclude with `(hc.comp_continuousOn h2).aemeasurable hS`.
+-/
 theorem aemeasurable_fibDens {ι : Type} [Fintype ι] {m : ι → ℕ} {d : ℕ} (G : V d → Mat m ℂ) (O : Set (V d))
     (hO : IsOpen O) (hG : ∀ τ i j, ContinuousOn (fun v => G v τ i j) O) :
     AEMeasurable (fun x : V d × (Cell m → ℂ) => fibDens (G x.1) x.2)
@@ -45,6 +54,19 @@ end GlobalTheory.FlagCell2
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Introduce `ι _ m n d ε G δ O K hO hK hKO hδ hG hpos`. Establish `hmp` using `(GlobalTheory.FlagCell2.measurePreserving_pt_split n d (Cell m) ε).1`. Establish `hb : Measurable (bsL ε)` using `(bsL ε).continuous.measurable`. Establish `hm` using `hmp.restrict_preimage (hb hK)`. Establish `hs : (fun x : V d × (Cell m → ℂ) => pt ε x.1 x.2) ⁻¹' (bsL ε ⁻¹' K) = K ×ˢ Set.univ`.
+
+Use extensionality with `x`. Simplify using `[bsL_pt]`. Rewrite `hm` using `[hs, Measure.volume_eq_prod, ← Measure.prod_restrict, Measure.restrict_univ]`. Use `set F : V d × (Cell m → ℂ) → ℝ≥0∞ := fun x => ENNReal.ofReal (δ x.1 * fibDens (G x.1) x.2) with hF`. Establish `hS : MeasurableSet (O ×ˢ (Set.univ : Set (Cell m → ℂ)))` using `hO.measurableSet.prod MeasurableSet.univ`.
+
+Establish `hFO : AEMeasurable F (volume.restrict (O ×ˢ (Set.univ : Set (Cell m → ℂ))))`. Use `ENNReal.measurable_ofReal.comp_aemeasurable (AEMeasurable.mul ?_ (aemeasurable_fibDens G O hO hG))` and prove the remaining obligations. Conclude with `(hδ.comp continuous_fst.continuousOn fun x hx => hx.1).aemeasurable hS`. Establish `hFK : AEMeasurable F ((volume.restrict K).prod volume)`. Rewrite using `[← Measure.restrict_univ (μ := (volume : Measure (Cell m → ℂ))), Measure.prod_restrict, ← Measure.volume_eq_prod]`.
+
+Conclude with `hFO.mono_measure (Measure.restrict_mono (Set.prod_mono hKO subset_rfl) le_rfl)`. Establish `e1 : (fun w => ENNReal.ofReal (δ (bsL ε w) * fibDens (G (bsL ε w)) (fb ε w))) ∘ (fun x : V d × (Cell m → ℂ) => pt ε x.1 x.2) = F`. Use function extensionality and compare the values at `x`. Simplify using `[hF, bsL_pt, fb_pt]`. Establish `hH : AEMeasurable (fun w => ENNReal.ofReal (δ (bsL ε w) * fibDens (G (bsL ε w)) (fb ε w))) (Measure.map (fun x : V d × (Cell m → ℂ) => pt ε x.1 x.2) ((volume.restrict K).prod volume))`.
+
+Rewrite using `[(GlobalTheory.FlagCell2.measurePreserving_pt_split n d (Cell m) ε).2.aemeasurable_map_iff, e1]`. Conclude with `hFK`. Rewrite using `[← hm.map_eq, lintegral_map' hH hm.measurable.aemeasurable]`. Use `(lintegral_congr fun a => congrFun e1 a).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod _ hFK]`.
+
+Use `setLIntegral_congr_fun hK fun v hv => ?_` and prove the remaining obligations. Take `⟨h0, h1⟩` from `GlobalTheory.FlagCell2.fibDens_mass ι m (G v) (hpos v (hKO hv))`. Simplify using `only [hF]`. Repeatedly rewrite using `[ENNReal.ofReal_mul' (h0 _)]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, h1, mul_one]`.
+-/
 theorem setLIntegral_fibDens : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (δ : V d → ℝ) (O K : Set (V d)), IsOpen O → MeasurableSet K → K ⊆ O → ContinuousOn δ O → (∀ τ i j, ContinuousOn (fun v => G v τ i j) O) → (∀ v ∈ O, ∀ τ, (G v τ).PosDef) → ∫⁻ w in bsL ε ⁻¹' K, ENNReal.ofReal (δ (bsL ε w) * fibDens (G (bsL ε w)) (fb ε w)) = ∫⁻ v in K, ENNReal.ofReal (δ v) := by
   intro ι _ m n d ε G δ O K hO hK hKO hδ hG hpos
   have hmp := (GlobalTheory.FlagCell2.measurePreserving_pt_split n d (Cell m) ε).1

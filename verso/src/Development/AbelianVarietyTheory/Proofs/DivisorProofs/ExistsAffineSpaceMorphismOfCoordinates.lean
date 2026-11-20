@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.HomFixPoint
 
+/- English proof (translation)
+Set `φ : MvPolynomial (Fin n) Rg →+* Γ(T, ⊤)` to `MvPolynomial.eval₂Hom (t.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of Rg)).inv.hom) x`. Establish `key : ∀ p, (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin n) Rg))).inv p) = φ p`. Introduce `p`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (Scheme.ΓSpecIso _).inv, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply, Scheme.toSpecΓ_appTop]`. Simplify using the standard rewrite rules.
+
+Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩` and prove the remaining obligations. Apply `ext_of_isAffine` to reduce the goal to its premises. Use `(Iso.cancel_iso_inv_left (Scheme.ΓSpecIso (CommRingCat.of Rg)) _ _).1 ?_` and prove the remaining obligations. Use extensionality with `r`. Establish `n2 : (affπ Rg n).appTop ((Scheme.ΓSpecIso (CommRingCat.of Rg)).inv r) = (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin n) Rg))).inv (MvPolynomial.C r)`.
+
+Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, n2, key]`. Simplify using `[φ]`. Introduce `i`.
+
+Unfold `coord`. Rewrite using `[key]`. Simplify using `[φ]`.
+-/
 theorem exists_affine_hom (Rg : Type) [CommRing Rg] (T : Scheme.{0}) (n : ℕ) (t : T ⟶ Sp Rg)
     (x : Fin n → Γ(T, ⊤)) :
     ∃ g : T ⟶ Sp (MvPolynomial (Fin n) Rg), g ≫ affπ Rg n = t ∧ ∀ i, coord g i = x i := by

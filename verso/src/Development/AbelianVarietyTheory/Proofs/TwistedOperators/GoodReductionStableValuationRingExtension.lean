@@ -16,6 +16,17 @@ open GlobalTheory.HkIntegral
 
 namespace GlobalTheory.GoodBaseChange
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T T' io io' y y' i r _ hv hx hy`. Take `⟨G, t, m1, m2, hp⟩` from `hy`. Take `⟨φ, hφ⟩` from `GlobalTheory.IntFrBaseChange.exists_restrict T T' i r hv`. Choose the witnesses or unpack the hypotheses as in `⟨G', mG⟩ : ∃ G' : SAB H (Sp T'.V), Nonempty (SABMap G' G (spMap φ)) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap φ) G`.
+
+Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t', mt⟩ : ∃ t' : SAB H (Sp T'.Fr), Nonempty (SABMap t' t (spMap i)) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap i) t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨mG⟩` from `mG`.
+
+Take `⟨mt⟩` from `mt`. Take `⟨n1, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m1 mt`. Take `⟨n2, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m2 mt`. Establish `hsq : spMap i ≫ spMap (algebraMap T.V T.Fr) = spMap (algebraMap T'.V T'.Fr) ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => (hφ a).symm))`. Rewrite `n2` using `[hsq]`. Take `⟨n3, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mG n2`. Establish `n4 : SABMap t' Xo.univ.t (xOf y')`. Rewrite using `[hx]`.
+
+Conclude with `n1`. Conclude with `⟨G', t', n4, n3, MorphismProperty.of_isPullback (P := @IsProper) mG.cart.1 hp⟩`.
+-/
 theorem good_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T T' : CDVR) (io : c.F →+* T.Fr) (io' : c.F →+* T'.Fr) (y : IntFr Xo c T io) (y' : IntFr Xo c T' io') (i : T.Fr →+* T'.Fr) (r : ℕ), 0 < r → (∀ a : T.Fr, vV T'.V (i a) = (r : ℤ) * vV T.V a) → xOf y' = spMap i ≫ xOf y → GlobalTheory.GoodPts.Good y → GlobalTheory.GoodPts.Good y' := by
   intro E _ _ _ H Dw l Xo c T T' io io' y y' i r _ hv hx hy
   obtain ⟨G, t, m1, m2, hp⟩ := hy

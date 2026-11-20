@@ -7,6 +7,9 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Establish `hR : IsUnit (d : R)`. Establish `hq : IsUnit (algebraMap ℚ R (d : ℚ))` using `(isUnit_iff_ne_zero.mpr (by exact_mod_cast hd.ne')).map _`. Simplify using `using hq`. Establish `h` using `hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom`. Simplify using `using h`.
+-/
 private theorem isUnit_nat_of_rat {R : Type} [CommRing R] [Algebra ℚ R] {S : Scheme.{0}} (s : S ⟶ Sp R) {d : ℕ}
     (hd : 0 < d) : IsUnit (d : Γ(S, ⊤)) := by
   have hR : IsUnit (d : R) := by
@@ -16,6 +19,9 @@ private theorem isUnit_nat_of_rat {R : Type} [CommRing R] [Algebra ℚ R] {S : S
   have h := hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom
   simpa using h
 
+/- English proof (translation)
+Introduce `R _ _ S s A A' _ _ _ _ hA hA' ψ ψ' d hd hψ hψ' h1 h2`. Conclude with `GlobalTheory.UPel.HT.ES.isFinite_etale_surjective_of_isQuasiInv S A A' d ψ ψ' hA hA' (isUnit_nat_of_rat s hd) ⟨hψ, hψ', h1, h2⟩`.
+-/
 theorem UpperTheory.Gal.G3.pIsogFEt :
     IsogFEt := by
   intro R _ _ S s A A' _ _ _ _ hA hA' ψ ψ' d hd hψ hψ' h1 h2

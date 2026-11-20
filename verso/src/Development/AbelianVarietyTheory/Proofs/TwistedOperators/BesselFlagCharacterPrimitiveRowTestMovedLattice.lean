@@ -20,6 +20,9 @@ namespace GlobalTheory.RowShape
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [colMul, HypDec.jX, rat, Matrix.map_apply, besDecAt, diagDec, rowBes, besDec, HermitianOrthogonalExtensionData.iso, Matrix.mul_diagonal, Matrix.submatrix_apply, lam, id, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colMul_besDecAt (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (hjm : j < D.R.m) (i : Fin σ)
     (t : AE D) : colMul (besDecAt G j σ hj).jX i t = fun k => (incA D (D.host.xi0 ^ (i : ℕ)) * t) *
       incA D ((G.rowDec j hjm).a k (Fin.castLE (by omega) i)) := by
@@ -28,14 +31,37 @@ theorem colMul_besDecAt (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = 
     Matrix.mul_diagonal, Matrix.submatrix_apply, lam, id, map_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[rowId, tiltSc, if_neg hj, FractionalIdeal.spanSingleton_one, one_mul]`.
+-/
 theorem rowId_even {j : ℕ} (hj : ¬ Odd j) (p : Fin (D.R.m - 1 - j)) :
     rowId D j p = stairId D.host.AA D.host.AAbar (D.R.m - 1 - j) p := by
   rw [rowId, tiltSc, if_neg hj, FractionalIdeal.spanSingleton_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (pow_ne_zero _ (GlobalTheory.CuspCharLattice.host_AA_ne_zero _)) (inv_ne_zero (pow_ne_zero _ (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D)))`.
+-/
 theorem stairId_ne_zero (c : ℕ) (p : Fin c) : stairId D.host.AA D.host.AAbar c p ≠ 0 :=
   mul_ne_zero (pow_ne_zero _ (GlobalTheory.CuspCharLattice.host_AA_ne_zero _))
     (inv_ne_zero (pow_ne_zero _ (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D)))
 
+/- English proof (translation)
+Establish `hjm : j < D.R.m` using `by omega`. Establish `hodd : ¬ Odd j`. Take `⟨a, ha⟩` from `D.R.m_even`. Introduce and unpack `⟨b, hb⟩`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨-, f2, f3, -, f5, -, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hξ : D.host.xi0 ≠ 0` using `GlobalTheory.LocFrame.cmHost_imaginaryGenerator_ne_zero`. Use `set I : Fin σ → FI D := fun i => FractionalIdeal.spanSingleton _ (D.host.xi0 ^ (i : ℕ))⁻¹ * stairId D.host.AA D.host.AAbar (D.R.m - 1 - j) (Fin.castLE (by omega) i) with hIdef`. Establish `hI0 : ∀ i, I i ≠ 0` using `fun i => mul_ne_zero ((FractionalIdeal.spanSingleton_ne_zero_iff).2 (inv_ne_zero (pow_ne_zero _ hξ))) (stairId_ne_zero _ _)`. Establish `sub : ∀ (𝔞 : FI D) a, a ∈ idV 𝔞 v → a ∈ idAt D (· = v)` using `fun 𝔞 a ha => by`.
+
+Use `(f3 𝔞 1 one_ne_zero a).1 (by rwa [FractionalIdeal.spanSingleton_one, one_mul])` as an intermediate fact. Conclude with `this.2`. Establish `line : ∀ i (t : AE D), t ∈ idAt D (· = v) → (colMul (besDecAt G j σ hj).jX i t ∈ latV _ (rowN G j) (· = v) ↔ t ∈ idV (I i) v)`. Introduce `i t ht`. Rewrite using `[colMul_besDecAt G j σ hj hjm, rowN, dif_pos hjm, (GlobalTheory.AscFin.UnitaryEmbeddingLine.embedding_line_mem_lattice_iff (G.rowDec j hjm) (neg_ne_zero.2 one_ne_zero) _ _ _ v _).1, rowId_even hodd, hIdef, f3 _ _ (inv_ne_zero (pow_ne_zero _ hξ)), inv_inv]`.
+
+Conclude with `⟨fun h => ⟨h, ht⟩, fun h => h.1⟩`. Introduce `i i' hii s hs`. Establish `key : (∀ a : AE D, colMul (besDecAt G j σ hj).jX i' a ∈ latV _ (rowN G j) (· = v) → colMul (besDecAt G j σ hj).jX i (s * a) ∈ latV _ (rowN G j) (· = v)) ↔ ∀ a ∈ idV (I i') v, s * a ∈ idV (I i) v`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`.
+
+Establish `haA` using `sub _ a ha`. Conclude with `(line i (s * a) (Ideal.mul_mem_left _ _ haA)).1 (h a ((line i' a haA).2 ha))`. Introduce `h a hc`. Establish `haA` using `GlobalTheory.SeeSaw.PrimSplit.idAt_of_colMul _ hc`. Conclude with `(line i (s * a) (Ideal.mul_mem_left _ _ haA)).2 (h a ((line i' a haA).1 hc))`.
+
+Establish `hratio : I i * (I i')⁻¹ = dI D`. Establish `hst` using `stairId_succ (𝔞 := D.host.AA) (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D) (Fin.castLE (by omega) i : Fin (D.R.m - 1 - j)) (Fin.castLE (by omega) i') (by simp only [Fin.val_castLE]; exact hii)`. Establish `e : I i = dI D * I i'`. Simplify using `only [hIdef, dI, hst, hii]`. Establish `e2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (D.host.xi0 ^ (i : ℕ))⁻¹ = FractionalIdeal.spanSingleton _ D.host.xi0 * FractionalIdeal.spanSingleton _ (D.host.xi0 ^ ((i : ℕ) + 1))⁻¹`.
+
+Rewrite using `[FractionalIdeal.spanSingleton_mul_spanSingleton]`. Use `congr 1`. Rewrite using `[pow_succ, mul_inv, mul_comm (D.host.xi0 ^ (i : ℕ))⁻¹, ← mul_assoc, mul_inv_cancel₀ hξ, one_mul]`. Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, mul_inv_cancel_right₀ (hI0 i')]`. Rewrite using `[key, f2 _ _ (hI0 i') (hI0 i) s hs, hratio]`. Conclude with `f5 s hs`.
+-/
 theorem primAt_rowN {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (G : GridData L sc) (j σ : ℕ)
     (hj : j + 2 * σ + 2 = D.R.m) (v : Pl D) : PrimAt ψ (besDecAt G j σ hj) (rowN G j) v := by
   have hjm : j < D.R.m := by omega
@@ -91,6 +117,9 @@ end GlobalTheory.RowShape
 
 namespace GlobalTheory.RowShape
 
+/- English proof (translation)
+The claim follows from `big_mono (fun ch h j σ hj v => primAt_rowN h ch.G j σ hj v) GlobalTheory.BigTop.Fun.OneSqTie.big_std`.
+-/
 theorem big_primAt_rowN : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ j σ (hj : j + 2 * σ + 2 = D.R.m) v,
     GlobalTheory.FinPl.PrimAt ch.W.ψ (besDecAt ch.G j σ hj) (GlobalTheory.RowShape.rowN ch.G j) v :=
   big_mono (fun ch h j σ hj v => primAt_rowN h ch.G j σ hj v) GlobalTheory.BigTop.Fun.OneSqTie.big_std

@@ -14,6 +14,23 @@ variable {Γ : Type} [Group Γ]
 open Polynomial Matrix in
 variable {Γ : Type} [Group Γ] in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.MainNotions.N.IsSSRep at hρ ⊢`. Introduce `W hW`. Unfold `_root_.Formalism.MainNotions.N.IsInv at hW`. Establish `hinj : ∀ v : Fin b → k, P *ᵥ v = 0 → v = 0` using `fun v hv => by`. Establish `h` using `congrArg (fun w => E *ᵥ w) hv`.
+
+Simplify `h` using `[Matrix.mulVec_mulVec, hEP]`. Take `⟨U, hU, hc⟩` from `hρ (W.map (Matrix.mulVecLin P)) (by`. Unfold `_root_.Formalism.MainNotions.N.IsInv`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Use `⟨((ρ₁ g : GL (Fin b) k) : Matrix (Fin b) (Fin b) k) *ᵥ w, hW g w hw, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hint g])`. Unfold `_root_.Formalism.MainNotions.N.IsInv at hU`. Use `⟨U.comap (Matrix.mulVecLin P), ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.MainNotions.N.IsInv`. Introduce `g v hv`.
+
+Simplify using `only [Submodule.mem_comap, Matrix.mulVecLin_apply] at hv ⊢`. Rewrite using `[Matrix.mulVec_mulVec, ← hint g, ← Matrix.mulVec_mulVec]`. Conclude with `hU g _ hv`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `v hvW hvU`. Apply `hinj` to reduce the goal to its premises. Establish `h1 : Matrix.mulVecLin P v ∈ W.map (Matrix.mulVecLin P)` using `Submodule.mem_map_of_mem hvW`. Conclude with `(Submodule.disjoint_def.mp hc.disjoint) _ h1 hvU`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+
+Introduce `v _`. Establish `hv : Matrix.mulVecLin P v ∈ W.map (Matrix.mulVecLin P) ⊔ U`. Rewrite using `[hc.codisjoint.eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy, u, hu, hyu⟩` from `Submodule.mem_sup.mp hv`.
+
+Take `⟨w, hw, rfl⟩` from `hy`. Establish `hsplit : v = w + (v - w)` using `by abel`. Rewrite using `[hsplit]`. Use `Submodule.add_mem_sup hw ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_sub, ← hyu]`.
+
+Simplify using `using hu`.
+-/
 theorem _root_.GlobalTheory.LatticeComplement.isSSRep_of_intertwine {k : Type} [Field k] {a b : ℕ} (ρ : Γ →* GL (Fin a) k)
     (ρ₁ : Γ →* GL (Fin b) k) (E : Matrix (Fin b) (Fin a) k) (P : Matrix (Fin a) (Fin b) k)
     (hEP : E * P = 1)
@@ -58,6 +75,19 @@ theorem _root_.GlobalTheory.LatticeComplement.isSSRep_of_intertwine {k : Type} [
 
 open Polynomial Matrix in
 variable {Γ : Type} [Group Γ] in
+/- English proof (translation)
+Take `⟨d, hd⟩` from `(IsPrincipalIdealRing.principal (Ideal.span (Set.range x))).principal`. Establish `hmem : ∀ i, x i ∈ Ideal.span {d}` using `fun i => by`. Rewrite using `[← Ideal.submodule_span_eq, ← hd]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `choose y hy using fun i => Ideal.mem_span_singleton'.mp (hmem i)`.
+
+Establish `hdI : d ∈ Ideal.span (Set.range x)`. Rewrite using `[hd]`. Conclude with `Submodule.mem_span_singleton_self d`. Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hdI`. Establish `hd0 : d ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[← hy i, mul_zero]`. Both sides reduce to the same expression.
+
+Establish `hsum : ∑ i, c i * y i = 1`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[mul_one, Finset.mul_sum]`. Use `conv_rhs => rw [← hc]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hy i]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨d, hd0, y, funext fun i => by simp [← hy i, mul_comm], ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Establish `hmax : ∑ i, c i * y i ∈ IsLocalRing.maximalIdeal O` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr (hno i)))`. Rewrite `hmax` using `[hsum]`. Conclude with `(mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp hmax)) isUnit_one`.
+-/
 private theorem exists_smul_primitive_vector_of_dvr {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {m : ℕ} (x : Fin m → O) (hx : x ≠ 0) :
     ∃ d : O, d ≠ 0 ∧ ∃ y : Fin m → O, x = d • y ∧ ∃ i, IsUnit (y i) := by
@@ -92,6 +122,19 @@ private theorem exists_smul_primitive_vector_of_dvr {O : Type} [CommRing O] [IsD
 
 open Polynomial Matrix in
 variable {Γ : Type} [Group Γ] in
+/- English proof (translation)
+Unfold `_root_.Formalism.MainNotions.N.IsSSRep at hρ ⊢`. Introduce `W hW`. Unfold `_root_.Formalism.MainNotions.N.IsInv at hW`. Take `⟨U, hU, hc⟩` from `hρ (W.comap (Matrix.mulVecLin Q)) (by`. Unfold `_root_.Formalism.MainNotions.N.IsInv`.
+
+Introduce `g v hv`. Simplify using `only [Submodule.mem_comap, Matrix.mulVecLin_apply] at hv ⊢`. Rewrite using `[Matrix.mulVec_mulVec, hint g, ← Matrix.mulVec_mulVec]`. Conclude with `hW g _ hv)`. Unfold `_root_.Formalism.MainNotions.N.IsInv at hU`.
+
+Use `⟨U.map (Matrix.mulVecLin Q), ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.MainNotions.N.IsInv`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Use `⟨((ρ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) *ᵥ u, hU g u hu, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hint g]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ hxW ⟨u, hu, rfl⟩`. Establish `hu0 : u = 0` using `(Submodule.disjoint_def.mp hc.disjoint) u hxW hu`. Simplify using `[hu0]`.
+
+Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Establish `hx : S *ᵥ x ∈ W.comap (Matrix.mulVecLin Q) ⊔ U`. Rewrite using `[hc.codisjoint.eq_top]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨p, hp, u, hu, hpu⟩` from `Submodule.mem_sup.mp hx`. Establish `hxeq : x = Q *ᵥ p + Q *ᵥ u`. Rewrite using `[← Matrix.mulVec_add, hpu, Matrix.mulVec_mulVec, hQS, Matrix.one_mulVec]`. Rewrite using `[hxeq]`. Conclude with `Submodule.add_mem_sup hp (Submodule.mem_map_of_mem hu)`.
+-/
 private theorem isSSRep_of_intertwining_quotient {k : Type} [Field k] {a b : ℕ} (ρ : Γ →* GL (Fin a) k)
     (ρ₁ : Γ →* GL (Fin b) k) (Q : Matrix (Fin b) (Fin a) k) (S : Matrix (Fin a) (Fin b) k)
     (hQS : Q * S = 1)
@@ -130,6 +173,41 @@ private theorem isSSRep_of_intertwining_quotient {k : Type} [Field k] {a b : ℕ
 
 open Polynomial Matrix in
 variable {Γ : Type} [Group Γ] in
+/- English proof (translation)
+Take `⟨u, hu'⟩` from `hu`. Set `T : Matrix (Fin (n + 1)) (Fin (n + 1)) O` to `Matrix.of fun i k => Fin.cases (v i) (fun j => if i = i₀.succAbove j then (1 : O) else 0) k`. Set `T' : Matrix (Fin (n + 1)) (Fin (n + 1)) O` to `Matrix.of fun k x => Fin.cases (if x = i₀ then ((u⁻¹ : Oˣ) : O) else 0) (fun j => (if x = i₀.succAbove j then (1 : O) else 0) - if x = i₀ then v (i₀.succAbove j) * ((u⁻¹ : Oˣ) : O) else 0) k`. Establish `hT : T' * T = 1`. Use extensionality with `k l`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) k <;> refine Fin.cases ?_ (fun m => ?_) l <;>`. Simplify using `[T, T', Matrix.mul_apply, sub_mul, Finset.sum_sub_distrib, ← hu', Matrix.one_apply, Fin.succAbove_ne, Fin.succ_ne_zero, eq_comm]`. Establish `hT2 : T * T' = 1` using `mul_eq_one_comm.mp hT`. Set `B : Γ → Matrix (Fin (n + 1)) (Fin (n + 1)) O` to `fun g => T' * ((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O) * T`. Establish `hB0 : ∀ g i, B g i 0 = ((χ g : Oˣ) : O) * (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) O) i 0`.
+
+Introduce `g i`. Establish `hcol : ∀ x, (((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O) * T) x 0 = ((χ g : Oˣ) : O) * T x 0`. Introduce `x`. Establish `h` using `congrFun (hv g) x`. Simplify `h` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, T]`.
+
+Simplify using `only [B, Matrix.mul_assoc]`. Rewrite using `[← hT, Matrix.mul_apply, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hcol]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hBmul : ∀ g h, B (g * h) = B g * B h`. Introduce `g h`. Establish `e : B g * B h = T' * ((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O) * (T * T') * (((ρ h : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O) * T)`. Simplify using `only [B, Matrix.mul_assoc]`. Rewrite using `[e, hT2, Matrix.mul_one]`.
+
+Simplify using `only [B, map_mul, Units.val_mul, Matrix.mul_assoc]`. Establish `hB1 : B 1 = 1` using `by simp [B, hT]`. Establish `hBT : ∀ g, T' * ((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O) = B g * T'`. Introduce `g`. Simplify using `only [B, Matrix.mul_assoc, hT2, Matrix.mul_one]`.
+
+Set `σ : Γ →* Matrix (Fin n) (Fin n) O` to `{ toFun := fun g => (B g).submatrix Fin.succ Fin.succ map_one' := by`. Use extensionality with `i j`. Simplify using `[hB1, Matrix.one_apply]`. Use the proof step `map_mul' := by`. Introduce `g h`.
+
+Use extensionality with `i k`. Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[hBmul, Matrix.mul_apply, Fin.sum_univ_succ, hB0]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Fin.succ_ne_zero] }`. Establish `hσ : ∀ g, σ g = (B g).submatrix Fin.succ Fin.succ` using `fun g => rfl`.
+
+Establish `hmap : ∀ {m : ℕ} (τ : Γ →* GL (Fin m) O) (g : Γ), ((_root_.Formalism.MainNotions.N.mapRep φ τ g : GL (Fin m) K) : Matrix (Fin m) (Fin m) K) = ((τ g : GL (Fin m) O) : Matrix (Fin m) (Fin m) O).map φ`. Introduce `m τ g`. Unfold `_root_.Formalism.MainNotions.N.mapRep`. Simplify using the standard rewrite rules. Use `⟨σ.toHomUnits, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.coe_toHomUnits, hσ]`. Conclude with `(((continuous_const.matrix_mul hc).matrix_mul continuous_const)).matrix_submatrix _ _`. Use `isSSRep_of_intertwining_quotient (_root_.Formalism.MainNotions.N.mapRep φ ρ) (_root_.Formalism.MainNotions.N.mapRep φ σ.toHomUnits) ((T'.submatrix Fin.succ id).map φ) ((T.submatrix id Fin.succ).map φ) ?_ ?_ hss` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, hT]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply]`. Introduce `g`. Rewrite using `[hmap, hmap, MonoidHom.coe_toHomUnits, hσ, ← Matrix.map_mul, ← Matrix.map_mul]`. Use `congr 1`. Use extensionality with `i x`.
+
+Establish `h2 : (B g * T') i.succ x = ∑ j : Fin n, B g i.succ j.succ * T' j.succ x`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_succ, hB0]`. Simplify using `[Matrix.one_apply, Fin.succ_ne_zero]`. Establish `h` using `congrFun (congrFun (hBT g) (Fin.succ i)) x`. Rewrite `h` using `[h2]`.
+
+Simplify `h` using `[Matrix.mul_apply]`. Introduce `g`. Set `M : (Matrix (Fin (n + 1)) (Fin (n + 1)) O)ˣ` to `⟨T', T, hT, hT2⟩`. Establish `hconj : (B g).charpoly = ((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O).charpoly`. Establish `h` using `Matrix.charpoly_units_conj M ((ρ g : GL (Fin (n + 1)) O) : Matrix (Fin (n + 1)) (Fin (n + 1)) O)`.
+
+Rewrite `h` using `[← Matrix.coe_units_inv]`. Conclude with `h`. Rewrite using `[← hconj, MonoidHom.coe_toHomUnits, hσ, Matrix.charpoly, Matrix.charpoly, Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `hsub : (B g).charmatrix.submatrix (Fin.succAbove 0) Fin.succ = ((B g).submatrix Fin.succ Fin.succ).charmatrix`. Use extensionality with `i j`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.charmatrix_apply_eq]`. Rewrite using `[Matrix.submatrix_apply, Fin.succAbove_zero, Matrix.charmatrix_apply_ne _ _ _ (by simpa using hij), Matrix.charmatrix_apply_ne _ _ _ hij]`. Both sides reduce to the same expression.
+
+Establish `hrest : ∀ i : Fin n, (B g).charmatrix i.succ 0 = 0`. Introduce `i`. Rewrite using `[Matrix.charmatrix_apply_ne _ _ _ (Fin.succ_ne_zero i), hB0]`. Simplify using `[Matrix.one_apply, Fin.succ_ne_zero]`. Simplify using `only [hrest, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, hsub]`.
+
+Rewrite using `[Matrix.charmatrix_apply_eq, hB0]`. Simplify using `only [Matrix.one_apply_eq, mul_one, Fin.val_zero, pow_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_quotient_of_eigenvector_lemma_2 {O K : Type} [CommRing O] [TopologicalSpace O]
     [IsTopologicalRing O] [Field K] [TopologicalSpace Γ] (φ : O →+* K) {n : ℕ}
     (ρ : Γ →* GL (Fin (n + 1)) O) (χ : Γ →* Oˣ) (v : Fin (n + 1) → O) (i₀ : Fin (n + 1))
@@ -248,6 +326,37 @@ private theorem exists_quotient_of_eigenvector_lemma_2 {O K : Type} [CommRing O]
 open Polynomial Matrix in
 variable {Γ : Type} [Group Γ] in
 
+/- English proof (translation)
+Introduce `Γ O K _ _ _ _ _ _ _ _ _ _ _ _ _ r t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ρ χ hc hss _`. Conclude with `⟨ρ, hc, hss, fun g => by simp⟩`.
+
+Consider the case `succ t ih`. Introduce `ρ χ hc hss hL`. Take `⟨L, _, f, ρ₀, hρ₀⟩` from `hL`. Set `τ : Γ →* Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) L` to `{ toFun := fun g => Matrix.fromBlocks ((ρ₀ g : GL (Fin r) L) : Matrix (Fin r) (Fin r) L) 0 0 (Matrix.diagonal fun c => f (algebraMap O K ((χ c.castSucc g : Oˣ) : O))) map_one' := by simp map_mul' := by`. Introduce `g h`.
+
+Simplify using `[Matrix.fromBlocks_multiply, Matrix.diagonal_mul_diagonal] }`. Set `χK : Γ →* Kˣ` to `(Units.map (algebraMap O K : O →* K)).comp (χ (Fin.last t))`. Establish `hmapK : ∀ g, ((_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ g : GL (Fin (r + (t + 1))) K) : Matrix (Fin (r + (t + 1))) (Fin (r + (t + 1))) K) = ((ρ g : GL (Fin (r + (t + 1))) O) : Matrix (Fin (r + (t + 1))) (Fin (r + (t + 1))) O).map (algebraMap O K)`. Introduce `g`. Unfold `_root_.Formalism.MainNotions.N.mapRep`.
+
+Simplify using the standard rewrite rules. Establish `htr : ∀ g, f (LinearMap.trace K (Fin (r + (t + 1)) → K) (_root_.GlobalTheory.TraceConj.colRep (_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ) g)) = (τ g).trace + f ((χK g : Kˣ) : K)`. Introduce `g`. Establish `hF` using `hρ₀ g`. Rewrite `hF` using `[← Matrix.charpoly_map]`.
+
+Establish `h1` using `congrArg Polynomial.nextCoeff hF`. Rewrite `h1` using `[(Matrix.charpoly_monic _).nextCoeff_mul (monic_prod_of_monic _ _ fun c _ => monic_X_sub_C _), Monic.nextCoeff_prod _ _ (fun c _ => monic_X_sub_C _)]`. Simplify using `only [nextCoeff_X_sub_C] at h1`. Rewrite `h1` using `[Fin.sum_univ_castSucc]`. Establish `e1 : f (LinearMap.trace K (Fin (r + (t + 1)) → K) (_root_.GlobalTheory.TraceConj.colRep (_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ) g)) = (((ρ g : GL (Fin (r + (t + 1))) O) : Matrix (Fin (r + (t + 1))) (Fin (r + (t + 1))) O).map (f.comp (algebraMap O K))).trace`.
+
+Rewrite using `[_root_.GlobalTheory.TraceConj.colRep_apply, LinearMap.trace_eq_matrix_trace K (Pi.basisFun K _), LinearMap.toMatrix_eq_toMatrix', LinearMap.toMatrix'_toLin', hmapK, AddMonoidHom.map_trace f, Matrix.map_map]`. Both sides reduce to the same expression. Establish `e2 : (τ g).trace = ((ρ₀ g : GL (Fin r) L) : Matrix (Fin r) (Fin r) L).trace + ∑ c : Fin t, f (algebraMap O K ((χ c.castSucc g : Oˣ) : O))`. Simplify using `[τ, Matrix.trace, Fintype.sum_sum_type]`. Rewrite using `[e1, e2, Matrix.trace_eq_neg_charpoly_nextCoeff, Matrix.trace_eq_neg_charpoly_nextCoeff ((ρ₀ g : GL (Fin r) L) : Matrix (Fin r) (Fin r) L), h1]`.
+
+Simplify using `only [χK, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.comp_apply, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : CharZero L := (RingHom.charZero_iff f.injective).mp inferInstance`. Take `⟨v, hv0, hv⟩` from `_root_.GlobalTheory.exists_eigenvector_of_trace_eq_add_character K L Γ (Fin (r + (t + 1)) → K) (Fin r ⊕ Fin t) f (_root_.GlobalTheory.TraceConj.colRep (_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ)) τ χK (_root_.GlobalTheory.TraceConj.colRep_semisimple _ hss) htr`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) Finset.univ v`.
+
+Use `choose x hx using fun i => hb i (Finset.mem_univ i)`. Establish `hbK : algebraMap O K (b : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hxv : ∀ i, algebraMap O K (x i) = algebraMap O K (b : O) * v i`. Introduce `i`. Rewrite using `[hx i, Algebra.smul_def]`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h` using `hxv i`.
+
+Simplify using `only [Pi.zero_apply, map_zero] at h`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left hbK`. Establish `hxe : ∀ g, ((ρ g : GL (Fin (r + (t + 1))) O) : Matrix (Fin (r + (t + 1))) (Fin (r + (t + 1))) O) *ᵥ x = ((χ (Fin.last t) g : Oˣ) : O) • x`. Introduce `g`. Use function extensionality and compare the values at `i`.
+
+Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Establish `hvg` using `congrFun (hv g) i`. Rewrite `hvg` using `[_root_.GlobalTheory.TraceConj.colRep_apply, Matrix.toLin'_apply, hmapK]`. Establish `hfx : (algebraMap O K) ∘ x = (algebraMap O K (b : O)) • v`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[hxv j, smul_eq_mul]`. Rewrite using `[RingHom.map_mulVec, hfx, Matrix.mulVec_smul, Pi.smul_apply, hvg]`. Simplify using `[χK, hxv i, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd0, y, rfl, i₀, hi₀⟩` from `exists_smul_primitive_vector_of_dvr x hx0`.
+
+Establish `hy : ∀ g, ((ρ g : GL (Fin (r + (t + 1))) O) : Matrix (Fin (r + (t + 1))) (Fin (r + (t + 1))) O) *ᵥ y = ((χ (Fin.last t) g : Oˣ) : O) • y`. Introduce `g`. Apply `smul_right_injective (Fin (r + (t + 1)) → O) hd0` to reduce the goal to its premises. Establish `h` using `hxe g`. Rewrite `h` using `[Matrix.mulVec_smul, smul_comm]`.
+
+Conclude with `h`. Take `⟨ρ₁, hc₁, hss₁, hch₁⟩` from `exists_quotient_of_eigenvector_lemma_2 (n := r + t) (algebraMap O K) ρ (χ (Fin.last t)) y i₀ hi₀ hy hc hss`. Take `⟨ρ', hc', hss', hch'⟩` from `ih ρ₁ (fun c => χ c.castSucc) hc₁ hss₁ ⟨L, inferInstance, f, ρ₀, by`. Introduce `g`. Establish `h` using `hρ₀ g`.
+
+Rewrite `h` using `[hch₁ g, Polynomial.map_mul, Fin.prod_univ_castSucc, ← mul_assoc]`. Apply `mul_right_cancel₀ (X_sub_C_ne_zero (f (algebraMap O K ((χ (Fin.last t) g : Oˣ) : O))))` to reduce the goal to its premises. Simplify `h⟩` using `[Polynomial.map_sub]`. Use `⟨ρ', hc', hss', fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hch₁ g, hch' g, Fin.prod_univ_castSucc, mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.LatticeComplement.exists_lattice_complement : ∀ (Γ O K : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [IsTopologicalRing O] [Field K] [CharZero K] [Algebra O K] [IsFractionRing O K] (r t : ℕ) (ρ : Γ →* GL (Fin (r + t)) O) (χ : Fin t → Γ →* Oˣ), Continuous (fun g => ((ρ g : GL (Fin (r + t)) O) : Matrix (Fin (r + t)) (Fin (r + t)) O)) → _root_.Formalism.MainNotions.N.IsSSRep (_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ) → (∃ (L : Type) (_ : Field L) (f : K →+* L) (ρ₀ : Γ →* GL (Fin r) L), ∀ g, (((ρ g : GL (Fin (r + t)) O) : Matrix (Fin (r + t)) (Fin (r + t)) O).charpoly).map (f.comp (algebraMap O K)) = ((ρ₀ g : GL (Fin r) L) : Matrix (Fin r) (Fin r) L).charpoly * ∏ c, (X - C (f (algebraMap O K ((χ c g : Oˣ) : O))))) → ∃ ρ' : Γ →* GL (Fin r) O, Continuous (fun g => ((ρ' g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O)) ∧ _root_.Formalism.MainNotions.N.IsSSRep (_root_.Formalism.MainNotions.N.mapRep (algebraMap O K) ρ') ∧ ∀ g, ((ρ g : GL (Fin (r + t)) O) : Matrix (Fin (r + t)) (Fin (r + t)) O).charpoly = ((ρ' g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).charpoly * ∏ c, (X - C ((χ c g : Oˣ) : O)) := by
   intro Γ O K _ _ _ _ _ _ _ _ _ _ _ _ _ r t
   induction t with

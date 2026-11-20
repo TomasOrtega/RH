@@ -16,6 +16,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.Spc
 
+/- English proof (translation)
+Take `⟨γ, -, hγ⟩` from `(Valued.hasBasis_nhds_zero (w.adicCompletion E) _).mem_iff.1 hU`. Establish `hball` using `(Valued.hasBasis_nhds_zero (w.adicCompletion E) _).mem_of_mem (i := γ) trivial`. Establish `hN0 : Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`.
+
+Establish `hlt : Valued.v ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) < 1`. Establish `hm : ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E) ∈ w.asIdeal` using `Ideal.absNorm_mem _`. Establish `h1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := E) w _).2 hm`. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) (((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E) : E)) = w.valuation E (((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E) : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Establish `h3 : algebraMap E (w.adicCompletion E) (((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 E) : E) = ((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E)` using `by simp`.
+
+Rewrite `h2` using `[h3]`. Rewrite using `[h2]`. Conclude with `h1`. Take `⟨m, hm⟩` from `((Valued.tendsto_zero_pow_of_v_lt_one hlt).eventually hball).exists`. Use `⟨Ideal.absNorm w.asIdeal ^ m, Nat.pos_of_ne_zero (pow_ne_zero _ hN0), fun x hx => hγ ?_⟩` and prove the remaining obligations.
+
+Establish `hx' : Valued.v x ≤ Valued.v (((Ideal.absNorm w.asIdeal : ℕ) : w.adicCompletion E) ^ m)`. Simplify using `using hx`. Conclude with `lt_of_le_of_lt ((Valuation.restrict_le_iff _).2 hx') hm`.
+-/
 private theorem small_of_nhds {E : Type} [Field E] [NumberField E] (w : Plc E) {U : Set (w.adicCompletion E)}
     (hU : U ∈ 𝓝 (0 : w.adicCompletion E)) :
     ∃ M : ℕ, 0 < M ∧ ∀ x : w.adicCompletion E, Valued.v x ≤ Valued.v (M : w.adicCompletion E) → x ∈ U := by
@@ -43,6 +52,27 @@ private theorem small_of_nhds {E : Type} [Field E] [NumberField E] (w : Plc E) {
 
 end UpperTheory.Gal.Spc
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S F w L hL`. Establish `hI` using `pKNIff (pLatCoord pRepLaws)`. Establish `key : ∀ M : ℕ, 0 < M → ∀ k ∈ S.L.KN M, Cong1 M w.1 (F.a w.1 * L.pr k * (F.a w.1)⁻¹)`. Introduce `M hM k hk`. Take `⟨g, rfl⟩` from `F.surj k`.
+
+Establish `h1 : S.L.CongOne M (F.tr.j g)` using `by rw [← F.j_tr]; exact hk.1`. Establish `h2` using `((hI E A n p S F.tr g).2 M hM).1 h1 w.1 w.2.2`. Establish `h3 : UpperTheory.Gal.CertificateRingHomMap.comp w.1 g = GeneralLinearGroup.map (pLoc E w.1) (mat g)` using `rfl`. Rewrite using `[hL.1 g, F.a_tr, h3]`. Simplify `h2` using `[map_mul, map_inv]`.
+
+Establish `hopen : ∀ M : ℕ, 0 < M → (S.L.KN M : Set S.G.GAf) ∈ 𝓝 (1 : S.G.GAf)`. Introduce `M hM`. Take `⟨K, hK⟩` from `GlobalTheory.LKGeo.KNLevel.exists_level_eq_KN p S.D S.G S.L M hM`. Establish `ho : IsOpen (S.L.KN M : Set S.G.GAf)` using `hK ▸ K.K.isOpen`. Conclude with `ho.mem_nhds (one_mem _)`.
+
+Establish `hent : ∀ i j, Filter.Tendsto (fun k => ((F.a w.1 * L.pr k * (F.a w.1)⁻¹).val - 1) i j) (𝓝 (1 : S.G.GAf)) (𝓝 0)`. Introduce `i j U hU`. Take `⟨M, hM, hsm⟩` from `small_of_nhds w.1 hU`. Conclude with `Filter.mem_map.2 (Filter.mem_of_superset (hopen M hM) fun k hk => hsm _ (key M hM k hk i j))`. Establish `hmat : Filter.Tendsto (fun k => (F.a w.1 * L.pr k * (F.a w.1)⁻¹).val) (𝓝 (1 : S.G.GAf)) (𝓝 (1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)))`.
+
+Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Use `(hent i j).add_const ((1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)) i j)` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply]`. Establish `hval : ContinuousAt (fun k => (L.pr k).val) (1 : S.G.GAf)`. Establish `h` using `((tendsto_const_nhds (x := ((F.a w.1)⁻¹).val)).mul hmat).mul (tendsto_const_nhds (x := (F.a w.1).val))`.
+
+Establish `h1 : ((F.a w.1)⁻¹).val * 1 * (F.a w.1).val = (1 : Matrix (Fin n) (Fin n) (w.1.adicCompletion E))`. Rewrite using `[mul_one]`. Conclude with `(F.a w.1).inv_mul`. Rewrite `h` using `[h1]`. Establish `h2 : ∀ k, ((F.a w.1)⁻¹).val * (F.a w.1 * L.pr k * (F.a w.1)⁻¹).val * (F.a w.1).val = (L.pr k).val`.
+
+Introduce `k`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Simplify using `only [h2] at h`.
+
+Simplify `h` using `[ContinuousAt]`. Establish `hinv : ContinuousAt (fun k => (((L.pr k)⁻¹ : GL (Fin n) (w.1.adicCompletion E))).val) (1 : S.G.GAf)`. Establish `h : ContinuousAt (fun k : S.G.GAf => k⁻¹) 1` using `continuous_inv.continuousAt`. Establish `h' : ContinuousAt (fun k => (L.pr k).val) ((1 : S.G.GAf)⁻¹)` using `by simpa using hval`. Establish `h2 : (fun k => (((L.pr k)⁻¹ : GL (Fin n) (w.1.adicCompletion E))).val) = (fun k => (L.pr k).val) ∘ (fun k : S.G.GAf => k⁻¹)`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, map_inv]`. Rewrite using `[h2]`. Conclude with `ContinuousAt.comp h' h`. Use `continuous_of_continuousAt_one L.pr ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.isEmbedding_embedProduct.isInducing.continuousAt_iff]`. Conclude with `hval.prodMk (MulOpposite.continuous_op.continuousAt.comp hinv)`.
+-/
 theorem UpperTheory.Gal.Spc.facCont :
     UpperTheory.Gal.Spc.FacCont := by
   intro E _ _ _ A n p _ S F w L hL

@@ -35,6 +35,35 @@ end GlobalTheory.HaarSectionProd
 
 namespace GlobalTheory.HaarSectionProd
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace S0 := hS0cl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology S0 := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace S0 := inferInstance`. Use `haveI : SigmaFinite μ0 := inferInstance`. Use `set e := prodHomeo hS0S t0 ht0c ht0S ν hνc hνt hsec with he`.
+
+Establish `he_m : Measurable e` using `e.continuous.measurable`. Use `set μS : Measure S := (μ0.prod μU).map e with hμS`. Establish `hright : ∀ c ∈ S0, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ s0, f ((s0 : G) * c) ∂μ0 = ∫⁻ s0, f (s0 : G) ∂μ0`. Introduce `c hc f hf`. Establish `h1` using `hconj c⁻¹ (S.inv_mem (hS0S hc)) (fun y => f (c * y)) (hf.comp (measurable_const_mul c))`.
+
+Simplify using `only [inv_inv, mul_assoc, mul_inv_cancel_left] at h1`. Rewrite using `[h1]`. Conclude with `lintegral_mul_left_eq_self (fun h : S0 => f (h : G)) ⟨c, hc⟩`. Establish `hkey : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ s, f s ∂(μS.map Subtype.val) = ∫⁻ x, ∫⁻ s0, f ((s0 : G) * t0 x) ∂μ0 ∂μU`. Introduce `f hf`.
+
+Establish `hfv : Measurable (fun k : S => f (k : G))` using `hf.comp measurable_subtype_coe`. Rewrite using `[lintegral_map hf measurable_subtype_coe, hμS, lintegral_map hfv he_m, lintegral_prod_symm (fun p => f (e p : G)) (hfv.comp he_m).aemeasurable]`. Both sides reduce to the same expression. Establish `hleft : ∀ g ∈ S, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, ∫⁻ s0, f (g * ((s0 : G) * t0 x)) ∂μ0 ∂μU = ∫⁻ x, ∫⁻ s0, f ((s0 : G) * t0 x) ∂μ0 ∂μU`. Introduce `g hg f hf`.
+
+Take `⟨φ, hφm, hφ, hφS⟩` from `hshift g hg`. Establish `hGm : Measurable (fun y => ∫⁻ s0, f ((s0 : G) * t0 y) ∂μ0)`. Establish `: Measurable (fun p : S0 × U => f ((p.1 : G) * t0 p.2))` using `hf.comp ((continuous_subtype_val.comp continuous_fst).mul (ht0c.comp continuous_snd)).measurable`. Conclude with `this.lintegral_prod_left'`. Establish `hin : ∀ x, ∫⁻ s0, f (g * ((s0 : G) * t0 x)) ∂μ0 = ∫⁻ s0, f ((s0 : G) * t0 (φ x)) ∂μ0`.
+
+Introduce `x`. Use `set c := g * t0 x * (t0 (φ x))⁻¹ with hcdef`. Establish `hc : c ∈ S0` using `hφS x`. Establish `e1 : ∀ s0 : G, g * (s0 * t0 x) = g * s0 * g⁻¹ * (c * t0 (φ x))`. Introduce `s0`.
+
+Rewrite using `[hcdef]`. Use `group`. Repeatedly rewrite using `[e1]`. Establish `h2` using `hconj g hg (fun y => f (y * (c * t0 (φ x)))) (hf.comp (measurable_mul_const _))`. Rewrite using `[h2]`.
+
+Establish `h3` using `hright c hc (fun y => f (y * t0 (φ x))) (hf.comp (measurable_mul_const _))`. Simplify `h3` using `only [mul_assoc]`. Repeatedly rewrite using `[hin]`. Rewrite using `[← lintegral_map hGm hφm, hφ]`. Establish `hinv : μS.IsMulLeftInvariant`.
+
+Use `⟨fun k0 => ?_⟩` and prove the remaining obligations. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_mul k0) hA]`. Take `⟨B, hB, rfl⟩` from `hA`. Establish `hB' : MeasurableSet ((fun y : G => (k0 : G) * y) ⁻¹' B)` using `measurable_const_mul _ hB`.
+
+Establish `e1 : μS ((fun k => k0 * k) ⁻¹' (Subtype.val ⁻¹' B)) = (μS.map Subtype.val) ((fun y : G => (k0 : G) * y) ⁻¹' B)`. Rewrite using `[Measure.map_apply measurable_subtype_coe hB']`. Both sides reduce to the same expression. Establish `e2 : μS (Subtype.val ⁻¹' B) = (μS.map Subtype.val) B`. Rewrite using `[Measure.map_apply measurable_subtype_coe hB]`.
+
+Rewrite using `[e1, e2, ← lintegral_indicator_one hB', ← lintegral_indicator_one hB, hkey _ (measurable_one.indicator hB'), hkey _ (measurable_one.indicator hB)]`. Establish `hz : ∀ z, ((fun y : G => (k0 : G) * y) ⁻¹' B).indicator (1 : G → ℝ≥0∞) z = B.indicator 1 ((k0 : G) * z)` using `fun z => by`. Apply the tactic sequence `by_cases hz : (k0 : G) * z ∈ B <;> simp [Set.indicator, hz]`. Repeatedly rewrite using `[hz]`. Conclude with `hleft k0 k0.2 _ (measurable_one.indicator hB)`.
+
+Establish `hfin : IsFiniteMeasureOnCompacts μS` using `Measure.IsFiniteMeasureOnCompacts.map _ e`. Establish `hopen : μS.IsOpenPosMeasure` using `e.continuous.isOpenPosMeasure_map e.surjective`. Establish `hHaar : μS.IsHaarMeasure` using `by haveI := hfin; haveI := hinv; haveI := hopen`. Conclude with `⟨⟩`. Use `⟨μS, hHaar, ?_⟩` and prove the remaining obligations.
+
+Introduce `h hh t ht`. Rewrite using `[hkey h hh]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h4` using `hright _ (ht x) (fun y => h (y * t0 x)) (hh.comp (measurable_mul_const _))`.
+
+Simplify using `only [mul_assoc, inv_mul_cancel, mul_one] at h4`. Conclude with `h4.symm`.
+-/
 theorem haar_exists {G U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G] [T2Space G] [LocallyCompactSpace G]
     [TopologicalSpace U] [MeasurableSpace U] [BorelSpace U] [SecondCountableTopology U]
@@ -141,11 +170,21 @@ def umat {K : Type} [Zero K] [One K] (x : {p : Fin (r + 1) × Fin (r + 1) // p.1
 def UTri {K : Type} [Zero K] [One K] (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) : Prop :=
   (∀ i, A i i = 1) ∧ ∀ i j, j < i → A i j = 0
 
+/- English proof (translation)
+Use `⟨fun i => by simp [umat], fun i j h => ?_⟩` and prove the remaining obligations. Simplify using `[umat, h.ne', not_lt.mpr h.le]`.
+-/
 theorem umat_utri {K : Type} [Zero K] [One K] (x : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → K) :
     UTri (umat x) := by
   refine ⟨fun i => by simp [umat], fun i j h => ?_⟩
   simp [umat, h.ne', not_lt.mpr h.le]
 
+/- English proof (translation)
+Use `⟨fun i => ?_, fun i j hji => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `[hA.1, hB.1]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases.
+
+Simplify using `[hA.2 _ _ h]`. Simplify using `[hB.2 _ _ h]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : c < i`. Simplify using `[hA.2 _ _ h]`. Simplify using `[hB.2 _ _ (lt_of_lt_of_le hji (not_lt.mp h))]`.
+-/
 theorem utri_mul {K : Type} [CommRing K] {A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hA : UTri A) (hB : UTri B) : UTri (A * B) := by
   refine ⟨fun i => ?_, fun i j hji => ?_⟩
@@ -162,6 +201,11 @@ theorem utri_mul {K : Type} [CommRing K] {A B : Matrix (Fin (r + 1)) (Fin (r + 1
     · simp [hA.2 _ _ h]
     · simp [hB.2 _ _ (lt_of_lt_of_le hji (not_lt.mp h))]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [umat, Matrix.of_apply]`. Use `split_ifs with h1 h2`. Substitute `h1` using the available equality. Conclude with `(hA.1 a).symm`.
+
+Both sides reduce to the same expression. Conclude with `(hA.2 a b (lt_of_le_of_ne (not_lt.mp h2) (fun e => h1 e.symm))).symm`.
+-/
 theorem umat_of_utri {K : Type} [Zero K] [One K] {A : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hA : UTri A) : umat (fun p : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} => A p.1.1 p.1.2) = A := by
   ext a b
@@ -178,6 +222,11 @@ def Coef (g : HA R σ J) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) (R ⊗[F] E)) :
 
 variable {P}
 
+/- English proof (translation)
+Establish `hg' : ∀ a, lin R σ J g (ratV (F` using `F) R (F0 P a)) = ∑ c, A c a • ratV (F := F) R (F0 P c) := hg`. Introduce `b`. Rewrite using `[lin_mul, hk b, map_sum]`. Simplify using `only [map_smul, hg', Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]`.
+-/
 theorem coef_mul {g k : HA R σ J} {A B : Matrix (Fin (r + 1)) (Fin (r + 1)) (R ⊗[F] E)}
     (hg : Coef P g A) (hk : Coef P k B) : Coef P (g * k) (A * B) := by
   have hg' : ∀ a, lin R σ J g (ratV (F := F) R (F0 P a)) = ∑ c, A c a • ratV (F := F) R (F0 P c) := hg
@@ -187,11 +236,17 @@ theorem coef_mul {g k : HA R σ J} {A B : Matrix (Fin (r + 1)) (Fin (r + 1)) (R 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]
 
+/- English proof (translation)
+Introduce `b`. Rewrite using `[(mem_stabT R σ J (F0 P) g).1 hg b]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem coef_one_of_mem {g : HA R σ J} (hg : g ∈ S0 R σ J P) : Coef P g 1 := by
   intro b
   rw [(mem_stabT R σ J (F0 P) g).1 hg b]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `g hg`. Use `show UniC R σ J (F0 P) g`. Introduce `b`. Rewrite using `[(mem_stabT R σ J (F0 P) g).1 hg b, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem frameFixerSubgroup_le_frameStabilizerSubgroup : S0 R σ J P ≤ Ssub R σ J P := by
   intro g hg
   show UniC R σ J (F0 P) g
@@ -199,6 +254,13 @@ theorem frameFixerSubgroup_le_frameStabilizerSubgroup : S0 R σ J P ≤ Ssub R �
   rw [(mem_stabT R σ J (F0 P) g).1 hg b, sub_self]
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use `show UniC R σ J (F0 P) g`. Introduce `b`. Rewrite using `[hg b]`. Establish `hb : ratV (F` using `F) R (F0 P b) = ∑ a, (if a = b then ratV (F := F) R (F0 P a) else 0) := by`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hb, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `only [umat, Matrix.of_apply, h.ne, if_false, dif_pos h, sub_zero]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, h, rfl⟩)`.
+
+Substitute `h` using the available equality. Simplify using `[umat]`. Simplify using `[umat, h.ne', not_lt.mpr h.le]`.
+-/
 theorem mem_Ssub_of_coef {g : HA R σ J} {x : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → R ⊗[F] E}
     (hg : Coef P g (umat x)) : g ∈ Ssub R σ J P := by
   show UniC R σ J (F0 P) g
@@ -214,6 +276,13 @@ theorem mem_Ssub_of_coef {g : HA R σ J} {x : {p : Fin (r + 1) × Fin (r + 1) //
   · subst h; simp [umat]
   · simp [umat, h.ne', not_lt.mpr h.le]
 
+/- English proof (translation)
+Use `show g * k⁻¹ ∈ stabT R σ J (F0 P)`. Rewrite using `[mem_stabT]`. Establish `hgw : ∀ w ∈ spanR (F` using `F) R (F0 P) Set.univ, lin R σ J g w = lin R σ J k w := by`. Introduce `w hw`. Unfold `spanR at hw`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, _, rfl⟩ := hy`. Conclude with `h a`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`.
+
+Consider the case `smul c x _ hx => rw [map_smul, map_smul, hx]`. Introduce `b`. Take `⟨w, hw, hwk⟩` from `uni_le_map (Y := F0 P) (g := k) hk Set.univ (fun _ _ _ _ => Set.mem_univ _) (Submodule.subset_span ⟨b, Set.mem_univ _, rfl⟩)`. Establish `hwk' : lin R σ J k w = ratV (F` using `F) R (F0 P b) := hwk`. Rewrite using `[lin_mul, ← hwk', lin_inv_lin, hgw w hw]`.
+-/
 theorem mul_inv_mem_frameFixer_of_agree_on_frame {g k : HA R σ J} (hk : k ∈ Ssub R σ J P)
     (h : ∀ b, lin R σ J g (ratV (F := F) R (F0 P b)) = lin R σ J k (ratV (F := F) R (F0 P b))) :
     g * k⁻¹ ∈ S0 R σ J P := by
@@ -233,6 +302,9 @@ theorem mul_inv_mem_frameFixer_of_agree_on_frame {g k : HA R σ J} (hk : k ∈ S
   have hwk' : lin R σ J k w = ratV (F := F) R (F0 P b) := hwk
   rw [lin_mul, ← hwk', lin_inv_lin, hgw w hw]
 
+/- English proof (translation)
+The claim follows from `mul_inv_mem_frameFixer_of_agree_on_frame hkS fun b => by rw [hg b, hk b]`.
+-/
 theorem coef_agree {g k : HA R σ J} {A : Matrix (Fin (r + 1)) (Fin (r + 1)) (R ⊗[F] E)}
     (hg : Coef P g A) (hk : Coef P k A) (hkS : k ∈ Ssub R σ J P) : g * k⁻¹ ∈ S0 R σ J P :=
   mul_inv_mem_frameFixer_of_agree_on_frame hkS fun b => by rw [hg b, hk b]
@@ -243,6 +315,9 @@ end GlobalTheory.HaarSectionProd
 
 namespace GlobalTheory.HaarSectionProd
 
+/- English proof (translation)
+Simplify using `only [umat, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_const`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem umat_entry_continuous {K : Type} [TopologicalSpace K] [Zero K] [One K] {r : ℕ} (a b : Fin (r + 1)) :
     Continuous fun x : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → K => umat x a b := by
   simp only [umat, Matrix.of_apply]
@@ -251,6 +326,23 @@ theorem umat_entry_continuous {K : Type} [TopologicalSpace K] [Zero K] [One K] {
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ v r P T hP μ0 hμ0 hconj μU hμU`. Take `⟨i1, i2, i3, i4, i5, i6, i7, i8, -⟩` from `GlobalTheory.LocalUnitaryTop.top_facts F E σ hCM n J hJ v`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+
+Use `haveI := i4`. Use `haveI := i5`. Use `haveI := i6`. Use `haveI := i7`. Use `haveI := i8`.
+
+Use `haveI : BorelSpace (HA (Fv F v) σ J) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨t0, ht0c, ht0⟩` from `GlobalTheory.T.exists_continuous_unitriangular_section F E σ hCM n J hJ v r P T hP`. Take `⟨ν, hνc, hν⟩` from `GlobalTheory.UnitriangularCoeff.exists_coeff F E σ hCM n J hJ v r P T hP`. Establish `ht0coef : ∀ x, Coef P (t0 x) (umat x)` using `ht0`.
+
+Establish `hνcoef : ∀ s : Ssub (Fv F v) σ J P, Coef P (s : HA (Fv F v) σ J) (umat (ν s))` using `fun s => (hν s (ν s)).1 rfl`. Establish `ht0S : ∀ x, t0 x ∈ Ssub (Fv F v) σ J P` using `fun x => mem_Ssub_of_coef (ht0coef x)`. Establish `hS0cl : IsClosed (S0 (Fv F v) σ J P : Set (HA (Fv F v) σ J))` using `PI.VolSemiDirect.W.isClosed_stabT (Fv F v) σ J (F0 P)`. Establish `hνt : ∀ s : Ssub (Fv F v) σ J P, ∀ s0 ∈ S0 (Fv F v) σ J P, ∀ x, (s : HA (Fv F v) σ J) = s0 * t0 x → ν s = x`. Introduce `s s0 hs0 x hs`.
+
+Establish `hc : Coef P (s : HA (Fv F v) σ J) (umat x)`. Rewrite using `[hs]`. Use `coef_mul (coef_one_of_mem hs0) (ht0coef x)` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul]`. Then use the resulting hypothesis. Conclude with `((hν s x).2 hc).symm`.
+
+Establish `hsec : ∀ s : Ssub (Fv F v) σ J P, (s : HA (Fv F v) σ J) * (t0 (ν s))⁻¹ ∈ S0 (Fv F v) σ J P` using `fun s => coef_agree (hνcoef s) (ht0coef (ν s)) (ht0S _)`. Establish `hshift : ∀ s ∈ Ssub (Fv F v) σ J P, ∃ φ : ({p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E) → ({p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E), Measurable φ ∧ μU.map φ = μU ∧ ∀ x, s * t0 x * (t0 (φ x))⁻¹ ∈ S0 (Fv F v) σ J P`. Introduce `s hs`. Use `set u := umat (ν ⟨s, hs⟩) with hu`. Establish `hφc : Continuous (fun (x : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E) (p : {p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2}) => (u * umat x) p.1.1 p.1.2)`.
+
+Use `continuous_pi fun p => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `continuous_finset_sum _ fun c _ => continuous_const.mul (umat_entry_continuous c p.1.2)`. Use `⟨_, hφc.measurable, GlobalTheory.UnitriHaar.map_unitri_mul F E v r μU hμU u (umat_utri _).1 (umat_utri _).2, ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Establish `h1 : Coef P (s * t0 x) (u * umat x)` using `coef_mul (hνcoef ⟨s, hs⟩) (ht0coef x)`. Rewrite `h1` using `[← umat_of_utri (utri_mul (umat_utri (ν ⟨s, hs⟩)) (umat_utri x))]`. Conclude with `coef_agree h1 (ht0coef _) (ht0S _)`. Take `⟨μS, hH, hF⟩` from `haar_exists hS0cl frameFixerSubgroup_le_frameStabilizerSubgroup t0 ht0c ht0S ν hνc hνt hsec μ0 hconj μU hshift`. Conclude with `⟨μS, hH, fun h hh t ht => hF h hh t fun x => coef_agree (ht x) (ht0coef x) (ht0S x)⟩`.
+-/
 theorem haar_S_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ μ0 : Measure (S0 (Fv F v) σ J P), μ0.IsHaarMeasure → (∀ s ∈ Ssub (Fv F v) σ J P, ∀ f : HA (Fv F v) σ J → ℝ≥0∞, Measurable f → ∫⁻ h, f (s * (h : HA (Fv F v) σ J) * s⁻¹) ∂μ0 = ∫⁻ h, f (h : HA (Fv F v) σ J) ∂μ0) → ∀ μU : Measure ({p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E), μU.IsAddHaarMeasure → ∃ μS : Measure (Ssub (Fv F v) σ J P), μS.IsHaarMeasure ∧ ∀ h : HA (Fv F v) σ J → ℝ≥0∞, Measurable h → ∀ t : ({p : Fin (r + 1) × Fin (r + 1) // p.1 < p.2} → Fv F v ⊗[F] E) → HA (Fv F v) σ J, (∀ x b, lin (Fv F v) σ J (t x) (ratV (F := F) (Fv F v) (F0 P b)) = ∑ a : Fin (r + 1), (if a = b then 1 else if h : a < b then x ⟨(a, b), h⟩ else 0 : Fv F v ⊗[F] E) • ratV (F := F) (Fv F v) (F0 P a)) → ∫⁻ s, h s ∂(amb μS) = ∫⁻ x, ∫⁻ s0, h ((s0 : HA (Fv F v) σ J) * t x) ∂μ0 ∂μU := by
   intro F E _ _ _ _ _ σ hCM n J hJ v r P T hP μ0 hμ0 hconj μU hμU
   obtain ⟨i1, i2, i3, i4, i5, i6, i7, i8, -⟩ := GlobalTheory.LocalUnitaryTop.top_facts F E σ hCM n J hJ v

@@ -16,6 +16,21 @@ open GlobalTheory.DownLift
 
 namespace GlobalTheory.DownLift
 
+/- English proof (translation)
+Use `haveI : Fintype (Γ i0) := Fintype.ofFinite _`. Establish `hinj : Function.Injective (fun z : Γ i0 => eR.symm (Pi.mulSingle i0 z))` using `eR.symm.injective.comp (Pi.mulSingle_injective i0)`. Rewrite using `[← Fintype.sum_of_injective (fun z : Γ i0 => eR.symm (Pi.mulSingle i0 z)) hinj (fun z => (M.coeff z * (E i0).coeff (z⁻¹ * eR x i0)) * ∏ i ∈ Finset.univ.erase i0, (E i).coeff (eR x i))]`. Rewrite using `[← Finset.sum_mul]`. Establish `h` using `MonoidAlgebra.coeff_mul_apply_left M (E i0) (eR x i0)`.
+
+Rewrite `h` using `[hM, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules. Introduce `y hy`. Rewrite using `[if_neg, zero_mul]`.
+
+Introduce `h`. Apply `hy` to reduce the goal to its premises. Use `⟨eR y i0, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[MulEquiv.symm_apply_eq]`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hi, h i hi]`.
+
+Introduce `z`. Rewrite using `[if_pos, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i0), mul_assoc]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.ne_of_mem_erase hi`. Simplify using `[Pi.mulSingle_eq_of_ne hi']`. Introduce `i hi`.
+
+Simplify using `[Pi.mulSingle_eq_of_ne hi]`.
+-/
 theorem conv_single_prod_eq_zero {ι : Type} [Fintype ι] {Γ : ι → Type} [∀ i, Group (Γ i)]
     [∀ i, Finite (Γ i)] (G : Type) [Group G] [Fintype G] (eR : G ≃* (∀ i, Γ i)) (i0 : ι)
     (M : MonoidAlgebra ℂ (Γ i0)) (E : ∀ i, MonoidAlgebra ℂ (Γ i)) (hM : M * E i0 = 0) (x : G) :
@@ -55,6 +70,9 @@ theorem conv_single_prod_eq_zero {ι : Type} [Fintype ι] {Γ : ι → Type} [�
     · intro i hi
       simp [Pi.mulSingle_eq_of_ne hi]
 
+/- English proof (translation)
+Introduce `k` and use `⟨D.host.g_prime k⟩ ∀ M : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv0.1))), (∀ a : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), (Fin D.R.r → ZMod (D.host.g kv.1))), D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) → M * D.ntypes.eSer kv0.1 (Formalism.Cycl …`.
+-/
 theorem conv_single_goodProj_eq_zero : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (eR : G ≃* G0g D.nd) (kv0 : Σ k : Fin 2, D.nd.PlG k),
     haveI : ∀ k, Fact (D.host.g k).Prime := fun k => ⟨D.host.g_prime k⟩
     ∀ M : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv0.1))),

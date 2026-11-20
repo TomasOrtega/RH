@@ -18,6 +18,9 @@ def comp (π : BanachRep G E) (f : G' →* G) (hf : Continuous f) : BanachRep G'
   toHom := π.toHom.comp f
   continuous_orbit' v := (π.continuous_orbit v).comp hf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_apply (π : BanachRep G E) (f : G' →* G) (hf : Continuous f) (g : G') :
     π.comp f hf g = π (f g) := rfl
 
@@ -34,8 +37,14 @@ variable (K n) in
 def archP : archGroup K n →* Reduction.normOneGL K n :=
   (archProj K n).comp (archGroup K n).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem archimedeanProjection_apply (a : archGroup K n) : archP K n a = archProj K n (a : ArchUnits K n) := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_archProj.comp continuous_subtype_val`.
+-/
 theorem continuous_archP : Continuous (archP K n) :=
   continuous_archProj.comp continuous_subtype_val
 

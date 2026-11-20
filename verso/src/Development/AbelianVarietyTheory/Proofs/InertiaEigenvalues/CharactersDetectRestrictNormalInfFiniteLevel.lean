@@ -8,6 +8,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `l _ L _ _ _ _ _ _ _ _ _ _ r N N' I ι x a hx hN hN'`. Introduce `σ₀ hσ₀ hσ₀B`. Set `lift : (L ≃ₐ[ℚ_[l]] L) → GQ l` to `fun s => if h : ∃ σ ∈ N, AlgEquiv.restrictNormalHom L σ = s then h.choose else 1`. Establish `hlift : ∀ s ∈ N.map (AlgEquiv.restrictNormalHom L), lift s ∈ N ∧ AlgEquiv.restrictNormalHom L (lift s) = s`. Introduce `s hs`.
+
+Establish `h : ∃ σ ∈ N, AlgEquiv.restrictNormalHom L σ = s` using `Subgroup.mem_map.mp hs`. Simplify using `only [lift, dif_pos h]`. Conclude with `h.choose_spec`. Take `⟨hτN, hτ⟩` from `hlift σ₀ hσ₀.1`. Establish `hτN' : lift σ₀ ∉ N'`.
+
+Introduce `h`. Conclude with `hσ₀B ⟨Subgroup.mem_map.mpr ⟨lift σ₀, h, hτ⟩, hσ₀.2⟩`. Establish `hex : ∃ i, ¬ (l : ℤ) ^ r ∣ a i (lift σ₀)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hτN' (hN' _ hτN hc)`. Take `⟨i, hi⟩` from `hex`. Take `⟨x', hx'⟩` from `hx i`. Establish `hl0 : (l : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hlL : (l : L) ^ r ≠ 0`.
+
+Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap ℚ_[l] L)]`. Conclude with `(map_ne_zero _).mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hnorm_l : ‖(l : Om l)‖ = (l : ℝ)⁻¹`. Establish `h : (l : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `by simp`.
+
+Rewrite using `[h, PadicAlgCl.norm_extends, Padic.norm_p]`. Use `⟨x', fun s => a i (lift s), ?_, hi⟩` and prove the remaining obligations. Introduce `s hs`. Take `⟨hσN, hσ⟩` from `hlift s hs.1`. Establish `key : algebraMap L (Om l) (s x') = lift s (x i)`.
+
+Rewrite using `[← hx']`. Use `conv_lhs => rw [← hσ]`. Conclude with `AlgEquiv.restrictNormal_commutes (lift s) L x'`. Use `⟨(s x' - x' - (a i (lift s) : L)) / (l : L) ^ r, ?_, ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.localFieldInteger_iff_algebraicClosureNorm l L _).1).mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[map_div₀, map_sub, map_sub, map_intCast, map_pow, map_natCast, key, hx', norm_div, norm_pow, hnorm_l]`. Rewrite using `[div_le_one (by positivity)]`. Conclude with `hN i _ hσN`. Rewrite using `[mul_div_cancel₀ _ hlL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem detects_restrictNormal_inf : ∀ (l : ℕ) [Fact l.Prime] (L : Type) [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [Algebra ℚ_[l] L] [ValuativeExtension ℚ_[l] L] [FiniteDimensional ℚ_[l] L]
     [IsGalois ℚ_[l] L] [Algebra L (Om l)] [IsScalarTower ℚ_[l] L (Om l)] (r : ℕ) (N N' : Subgroup (GQ l))

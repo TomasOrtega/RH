@@ -7,6 +7,11 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c`. Simplify using `only [map_C, rowGen, aeval_C, Polynomial.algebraMap_apply, algebraMap_eq, Polynomial.map_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, Polynomial.map_add]`. Consider the case `mul_X p v hp`.
+
+Simplify using `only [map_mul, map_X, hp, Polynomial.map_mul]`. Use `congr 1`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp [Polynomial.map_add, Polynomial.map_mul, map_X]`.
+-/
 theorem lclosedeq_rowGen_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) R) :
     rowGen S a b (map φ f) = Polynomial.map (map φ) (rowGen R a b f) := by
@@ -20,11 +25,17 @@ theorem lclosedeq_rowGen_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →
     simp only [rowGen, aeval_X]
     split_ifs <;> simp [Polynomial.map_add, Polynomial.map_mul, map_X]
 
+/- English proof (translation)
+Simplify using `only [rowDiv, lclosedeq_rowGen_map, Polynomial.coeff_map]`.
+-/
 theorem lclosedeq_rowDiv_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) R) :
     rowDiv S a b k (map φ f) = map φ (rowDiv R a b k f) := by
   simp only [rowDiv, lclosedeq_rowGen_map, Polynomial.coeff_map]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Simplify using `only [applyWord, List.foldr_cons] at ih ⊢`. Rewrite using `[ih, lclosedeq_rowDiv_map]`.
+-/
 theorem lclosedeq_applyWord_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (w : List (Fin r × Fin r × ℕ)) (f : MvPolynomial (Fin r × Fin n) R) :
     applyWord S w (map φ f) = map φ (applyWord R w f) := by
@@ -34,6 +45,9 @@ theorem lclosedeq_applyWord_map {R S : Type*} [CommRing R] [CommRing S] (φ : R 
     simp only [applyWord, List.foldr_cons] at ih ⊢
     rw [ih, lclosedeq_rowDiv_map]
 
+/- English proof (translation)
+Unfold `lpMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply, map_X]`.
+-/
 theorem lclosedeq_lpMinor_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
     map φ (lpMinor R (r := r) (n := n) s hr hn) = lpMinor S s hr hn := by
@@ -43,6 +57,9 @@ theorem lclosedeq_lpMinor_map {R S : Type*} [CommRing R] [CommRing S] (φ : R �
   ext p q
   simp [RingHom.mapMatrix_apply, map_X]
 
+/- English proof (translation)
+Simplify using `only [hw, map_prod, map_pow, lclosedeq_lpMinor_map]`.
+-/
 theorem lclosedeq_hw_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {r n : ℕ}
     (hn : n ≤ r) (ν : Fin n → ℕ) :
     map φ (hw R hn ν) = hw S hn ν := by

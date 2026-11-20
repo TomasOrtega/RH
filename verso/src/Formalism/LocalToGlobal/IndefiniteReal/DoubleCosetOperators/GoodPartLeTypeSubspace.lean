@@ -78,6 +78,9 @@ instance modFmO (i : C.Tw) (j : ℕ) (b : Bool) : Module (C.O i) (Fm C i j b) :=
 instance towFm (i : C.Tw) (j : ℕ) (b : Bool) : IsScalarTower (C.O i) (FractionRing (C.O i)) (Fm C i j b) :=
   IsScalarTower.of_algebraMap_smul fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `(inferInstance : Module.Finite (KB C i b) (KB C i b ⊗[C.Ks] FmK C j))`.
+-/
 theorem finiteDimensional_Fm (i : C.Tw) (j : ℕ) (b : Bool) [FiniteDimensional C.Ks (FmK C j)] :
     FiniteDimensional (FractionRing (C.O i)) (Fm C i j b) :=
   (inferInstance : Module.Finite (KB C i b) (KB C i b ⊗[C.Ks] FmK C j))
@@ -139,11 +142,19 @@ def Bgood (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (U : Subgroup C.G)
     (psiU : U →* (FractionRing (C.O i))ˣ) (eC : C.G → C.L0) : Submodule (C.O i) (Fm C i j b) :=
   Bsup C i j b ⊓ ((Fm0 C i j b hst U psiU) ⊓ (V0 C i j b hst U psiU eC)).restrictScalars (C.O i)
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem actG_mul_apply (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (g h : C.G) (x : Fm C i j b) :
     actG C i j b hst (g * h) x = actG C i j b hst g (actG C i j b hst h x) := by
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+Unfold `eEnd`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul]`. Rewrite using `[← (MulAut.conj u).toEquiv.sum_comp]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, hcl]`. Rewrite using `[← actG_mul_apply, ← actG_mul_apply]`. Use `congr 2`. Use `group`.
+-/
 theorem eEnd_actG (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (eC : C.G → C.L0)
     (hcl : ∀ u g, eC (u * g * u⁻¹) = eC g) (u : C.G) (x : Fm C i j b) :
     eEnd C i j b hst eC (actG C i j b hst u x) = actG C i j b hst u (eEnd C i j b hst eC x) := by
@@ -157,6 +168,13 @@ theorem eEnd_actG (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (eC : C.G 
   congr 2
   group
 
+/- English proof (translation)
+Introduce and unpack `y ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Fm0, Submodule.mem_iInf]`. Rewrite using `[Fm0, Submodule.mem_iInf]`. Introduce `u`. Establish `h` using `hx u`.
+
+Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`. Express the relevant statement in the definitionally equal form `actG C i j b hst u (eEnd C i j b hst eC x) = _`. Rewrite using `[← eEnd_actG C i j b hst eC hcl]`. Express the relevant statement in the definitionally equal form `eEnd C i j b hst eC ((actG C i j b hst u : Fm C i j b →ₗ[FractionRing (C.O i)] Fm C i j b) x) = _`.
+
+Rewrite using `[h, map_smul]`.
+-/
 theorem goodPart_le_typeSubspace (i : C.Tw) (j : ℕ) (b : Bool) (hst : RhoStab C j) (U : Subgroup C.G)
     (psiU : U →* (FractionRing (C.O i))ˣ) (eC : C.G → C.L0) (hcl : ∀ u g, eC (u * g * u⁻¹) = eC g) :
     V0 C i j b hst U psiU eC ≤ Fm0 C i j b hst U psiU := by
@@ -193,6 +211,9 @@ def inWL (j : ℕ) : C.L0 ⊗[C.Ks] FmK C j →ₗ[C.Ks] C.WL j :=
 def IsThOf (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : C.W j σ0) (x : C.L0 ⊗[C.Ks] FmK C j) : Prop :=
   (C.A j).j σ0 (inWL C j x) = thC
 
+/- English proof (translation)
+The claim follows from `hinj (hx.trans hy.symm)`.
+-/
 theorem IsThOf.unique {j : ℕ} {σ0 : C.L0 →+* ℂ} {thC : C.W j σ0} {x y : C.L0 ⊗[C.Ks] FmK C j}
     (hinj : Function.Injective fun z : C.L0 ⊗[C.Ks] FmK C j => (C.A j).j σ0 (inWL C j z))
     (hx : IsThOf C j σ0 thC x) (hy : IsThOf C j σ0 thC y) : x = y :=
@@ -205,6 +226,9 @@ def thK {Dat : Type} (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : Dat → C.W j σ0) 
     C.L0 ⊗[C.Ks] FmK C j :=
   (h d).choose
 
+/- English proof (translation)
+The claim follows from `(h d).choose_spec`.
+-/
 theorem thK_spec {Dat : Type} (j : ℕ) (σ0 : C.L0 →+* ℂ) (thC : Dat → C.W j σ0) (h : ThExists C j σ0 thC)
     (d : Dat) : IsThOf C j σ0 (thC d) (thK C j σ0 thC h d) :=
   (h d).choose_spec

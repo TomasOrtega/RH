@@ -17,6 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Use `set σ : D.host.E →+* ℂ := (X.B.I.φ v).comp X.ιE.symm.toRingHom`. Use `set Y := RealObj.ZhatO (ptC X v w)`. Establish `hY : ptC X v w = Matrix.diagonal (fun _ => 1) * Y * Matrix.diagonal (Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS)`. Rewrite using `[← Formalism.L2.SG.Pf.CarrierTop.zhatO_eq_mul, Formalism.L2.SG.Pf.CarrierTop.zhatO_invol]`. Establish `hM : Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1) = Matrix.diagonal (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) * Y * Matrix.diagonal (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ D.R.rS b)`.
+
+Rewrite using `[Bridge.ptMatN_lptOf σ κ D.R.rS hκ w]`. Use `show Matrix.diagonal _ * ptC X v w * Matrix.diagonal _ = _`. Rewrite using `[hY]`. Use extensionality with `a b`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdet1 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) (D.R.rS + 1)` using `(Bridge.dl_top' _).symm`. Establish `hdet2 : (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) D.R.rS).det = RealObj.Dl (Formalism.FourierDecayAlt.D.ptMatN (Bridge.lptOf σ κ D.R.rS 0 w.1) (D.R.rS + 1)) D.R.rS`. Unfold `RealObj.Dl`. Rewrite using `[dif_pos (Nat.le_succ _)]`.
+
+Both sides reduce to the same expression. Establish `hGd` using `Bridge.G_diag D.R.rS Y (fun a : Fin (D.R.rS + 1) => Bridge.Af κ D.R.rS a * 1) (fun b : Fin (D.R.rS + 1) => Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS b * Bridge.Bf κ D.R.rS b) TT (by simp [Bridge.Af, Bridge.Bf, Formalism.L2.SG.Pf.CarrierTop.sgnV])`. Use `⟨(‖∏ i : Fin D.R.rS, Bridge.Af κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * 1‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.sgnV D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i) * Bridge.Bf κ D.R.rS (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2, sq_nonneg _, ?_⟩` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.D.ptG`. Rewrite using `[hdet1, hdet2, Complex.normSq_eq_norm_sq, Complex.normSq_eq_norm_sq, hM, hGd]`.
+-/
 theorem exists_nonneg_ptG_lptOf_eq_mul (v : InfinitePlace X.B.I.F) (κ : ℂ) (hκ : star κ = -κ) (TT : ℝ)
     (w : Point D.host.E (D.R.rS + 1)) :
     ∃ c : ℝ, 0 ≤ c ∧ Formalism.FourierDecayAlt.D.ptG TT D.R.rS (Bridge.lptOf ((X.B.I.φ v).comp X.ιE.symm.toRingHom) κ D.R.rS 0 w.1) =
@@ -52,6 +61,39 @@ theorem exists_nonneg_ptG_lptOf_eq_mul (v : InfinitePlace X.B.I.F) (κ : ℂ) (h
 
 variable {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Introduce `p w hp hng`. Take `⟨v, hv0⟩ : ∃ v, ‖RealObj.Dl (RealObj.ZhatO (ptC X v w)) (D.R.rS + 1)‖ ^ 2 - Tw (D` from `D) u * Tw (D := D) u' * ‖RealObj.Dl (RealObj.ZhatO (ptC X v w)) D.R.rS‖ ^ 2 ≤ 0 := by`. Distinguish the cases in `hrep : ∃ γ, IsPtRep X u u' w γ`. Establish `h1 : ¬ ∀ v, 0 < GX X u u' D.host.rdE (gamW X u u' w) v` using `fun h => hng ⟨hrep, h⟩ push_neg at h1`. Take `⟨v, hv1⟩` from `h1`.
+
+Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `hrepw : IsPtRep X u u' w (gamW X u u' w)`. Unfold `gamW`. Rewrite using `[dif_pos hrep]`. Conclude with `hrep.choose_spec`.
+
+Establish `hZ1 : ZX X u u' 1 (gamW X u u' w) v = RealObj.ZhatO (ptC X v w)`. Rewrite using `[← hrepw v, Formalism.L2.SG.Pf.CarrierTop.zhatO_invol]`. Express the relevant statement in the definitionally equal form `Gv (Tw (D := D) u) (Tw (D := D) u') (ZX X u u' D.host.rdE (gamW X u u' w) v) ≤ 0 at hv1`. Unfold `Gv at hv1`. Establish `hcl : Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.last D.R.rS) = 1`.
+
+Simplify using `[Formalism.L2.SG.Pf.CarrierTop.cS]`. Establish `hGd` using `Bridge.G_diag D.R.rS (ZX X u u' 1 (gamW X u u' w) v) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE) (Tw (D := D) u * Tw (D := D) u') (by rw [hcl]; simp)`. Rewrite `hv1` using `[Formalism.L2.SG.Pf.CarrierTop.zx_sc, hGd, hZ1]`. Assume the negation of the conclusion as `hpos`. Use `push_neg at hpos`.
+
+Establish `hrd` using `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D`. Establish `hne : (∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => by`. Simplify using `[Formalism.L2.SG.Pf.CarrierTop.cS, hrd.ne']`. Establish `hc : 0 < (‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖ * ‖∏ i : Fin D.R.rS, Formalism.L2.SG.Pf.CarrierTop.cS D.R.rS D.host.rdE (Fin.castLE (Nat.le_succ D.R.rS) i)‖) ^ 2` using `pow_pos (mul_pos (norm_pos_iff.mpr hne) (norm_pos_iff.mpr hne)) 2`. Use `mul_pos hc hpos` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hall push_neg at hall`. Take `⟨γ, hγ, -⟩` from `hPRE w (fun v => by have := hall v; unfold Gv; exact this)`. Conclude with `hrep ⟨γ, hγ⟩`. Use `⟨(tauE X e).symm v, Or.inr ?_⟩` and prove the remaining obligations.
+
+Use `set j := (tauE X e).symm v with hj`. Use `set σ : D.host.E →+* ℂ := (X.B.I.φ v).comp X.ιE.symm.toRingHom with hσ`. Use `set gg : ℕ := D.host.g 0 * D.host.g 1 with hggdef`. Use `set κ : ℂ := -Complex.I * (((gg : ℝ) / (2 * Real.pi) : ℝ) : ℂ) with hκ`. Establish `hκstar : star κ = -κ`.
+
+Rewrite using `[hκ, star_mul', star_neg, Complex.star_def, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpt` using `hp`. Unfold `ptOfL Formalism.L2.SG.DataInst.ptOfList at hpt`. Use `split_ifs at hpt with hPtL`.
+
+Establish `hw1 : w.1 = (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.swap`. Rewrite using `[← Option.some_inj.mp hpt]`. Both sides reduce to the same expression. Establish `hfst : (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst = p.map Prod.fst` using `Formalism.L2.SG.DataInst.sign_list_fst D.R.rS 1 p`. Establish `hblk : ∀ b ∈ p, 1 ≤ b.1`.
+
+Introduce `b hb`. Establish `: b.1 ∈ (Formalism.L2.SG.DataInst.signPt D.R.rS p).map Prod.fst`. Rewrite using `[hfst]`. Conclude with `List.mem_map_of_mem hb`. Take `⟨b', hb', hbb⟩` from `List.mem_map.mp this`.
+
+Rewrite using `[← hbb]`. Conclude with `(hPtL.2 b' hb').1`. Establish `hsum : 0 + (p.map Prod.fst).sum ≤ D.R.rS + 1` using `by rw [← hfst, hPtL.1]; omega`. Establish `hlt` using `Bridge.lptOf_toStd σ D.R.rS (gg : ℝ) p 0 hblk hsum`. Establish `hemb : (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).σ j = σ` using `by show embE X e j = σ`.
+
+Unfold `embE`. Rewrite using `[hj, Equiv.apply_symm_apply]`. Establish `hstd : Formalism.FourierDecayAlt.D.toStd D.R.rS (gg : ℝ) 1 (Formalism.FourierDecayAlt.C.loc ((sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).σ j) p) = Bridge.lptOf σ κ D.R.rS 0 w.1`. Rewrite using `[hemb, hw1]`. Conclude with `hlt.symm`.
+
+Take `⟨cc, hcc, hG⟩` from `exists_nonneg_ptG_lptOf_eq_mul X v κ hκstar (((D.mem u).A.T : ℝ) * ((D.mem u').A.T : ℝ)) w`. Unfold `Formalism.FourierDecayAlt.JC.vecPlace Formalism.FourierDecayAlt.D.vecV`. Rewrite using `[dif_neg]`. Simplify using `[Formalism.FourierDecayAlt.B.hsVec]`. Conclude with `Or.inr rfl`.
+
+Introduce and unpack `⟨-, hpos⟩`. Establish `hT` using `(carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀).hT j`. Establish `hT1 : Formalism.QuantumDeterminants.Tz (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.k (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.r ((carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀).T j) …` using `hT.1`. Establish `hT2 : Formalism.QuantumDeterminants.Tz (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.k (sOf (carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀)).G.r ((carrierInT X C u u' e he hv CA de de' l grid grid1 fc c ν' m₀ Θ TP A₀).T j) …` using `hT.2`. Establish `hpos' : 0 < Formalism.FourierDecayAlt.D.ptG (((D.mem u).A.T : ℝ) * ((D.mem u').A.T : ℝ)) D.R.rS (Bridge.lptOf σ κ D.R.rS 0 w.1)`.
+
+Use `hpos using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | exact (congrArg₂ (· * ·) hT1 hT2).symm | exact hstd.symm`. Rewrite `hpos'` using `[hG]`. Establish `hpos` using `hpos'`. Unfold `Tw at hv0`.
+
+Use `mul_nonpos_of_nonneg_of_nonpos hcc hv0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rZero_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

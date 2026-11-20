@@ -9,6 +9,13 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.ZetaDenom
 
+/- English proof (translation)
+Introduce `F _ _ C Z`. Use `and_congr_right fun _ => forall₂_congr fun s _ => ?_` and prove the remaining obligations. Set `g : IdealsIn C → {I : Ideal (𝓞 F) // CoprimeTo F ⊤ I}` to `fun I => ⟨I.1.1, nonZeroDivisors.coe_ne_zero I.1, sup_top_eq _⟩`. Establish `hg : Function.Injective g` using `fun I J h => Subtype.ext (Subtype.ext (congrArg (fun x : {I : Ideal (𝓞 F) // CoprimeTo F ⊤ I} => x.1) h))`. Rewrite using `[← hg.hasSum_iff (f := fun I : {I : Ideal (𝓞 F) // CoprimeTo F ⊤ I} => (wideInd C I.1 : ℂ) * ((Ideal.absNorm I.1 : ℕ) : ℂ) ^ (-s)) fun I hI => by`.
+
+Establish `: cls I.1 ≠ C` using `fun h => hI ⟨⟨⟨I.1, mem_nonZeroDivisors_of_ne_zero I.2.1⟩, by rw [← h, cls_of_ne_bot I.2.1]⟩, rfl⟩`. Simplify using `[wideInd, this]]`. Use `iff_of_eq (congrArg (HasSum · (Z s)) (funext fun I => ?_))` and prove the remaining obligations. Establish `h1 : cls (I.1 : Ideal (𝓞 F)) = C`. Rewrite using `[cls_of_ne_bot (nonZeroDivisors.coe_ne_zero I.1)]`.
+
+Conclude with `I.2`. Simplify using `[g, wideInd, h1]`.
+-/
 theorem isRayL_top_wideInd_iff : ∀ {F : Type} [Field F] [NumberField F] (C : ClassGroup (𝓞 F)) (Z : ℂ → ℂ),
     IsRayL (⊤ : Ideal (𝓞 F)) (wideInd C) Z ↔ IsClassZeta C Z := by
   intro F _ _ C Z

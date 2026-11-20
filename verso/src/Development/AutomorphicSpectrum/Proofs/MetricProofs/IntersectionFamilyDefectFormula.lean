@@ -18,12 +18,18 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 def blockNorm (k : K) (z : (Σ k, ι k) → ℂ) : ℝ := Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)
 
+/- English proof (translation)
+Unfold `blockNorm`. Simplify using `only [norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem blockNorm_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (k : K) :
     blockNorm k (fun p => c p.1 * z p) = ‖c k‖ * blockNorm k z := by
   unfold blockNorm
   simp only [norm_mul, mul_pow, ← Finset.mul_sum]
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz`. Conclude with `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨i, Finset.mem_univ _, by positivity⟩`.
+-/
 theorem sum_sq_pos {z : (Σ k, ι k) → ℂ} {k : K} (hz : ∃ i, z ⟨k, i⟩ ≠ 0) :
     0 < ∑ i, ‖z ⟨k, i⟩‖ ^ 2 := by
   obtain ⟨i, hi⟩ := hz
@@ -32,6 +38,9 @@ theorem sum_sq_pos {z : (Σ k, ι k) → ℂ} {k : K} (hz : ∃ i, z ⟨k, i⟩ 
 def blockSet (ι : K → Type) [∀ k, Fintype (ι k)] : Set ((Σ k, ι k) → ℂ) :=
   {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}
 
+/- English proof (translation)
+Simplify using `only [blockSet, mem_setOf_eq, ne_eq, mul_eq_zero, not_or]`. Conclude with `forall_congr' fun k => exists_congr fun i => ⟨fun h => h.2, fun h => ⟨hc k, h⟩⟩`.
+-/
 theorem smul_mem_blockSet {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z : (Σ k, ι k) → ℂ} :
     (fun p => c p.1 * z p) ∈ blockSet ι ↔ z ∈ blockSet ι := by
   simp only [blockSet, mem_setOf_eq, ne_eq, mul_eq_zero, not_or]
@@ -52,11 +61,19 @@ def fsOfDeg (γ : K → ℕ) : HermLine ι where
     · rw [indicator_of_notMem (fun h => hz ((smul_mem_blockSet hc).mp h)), indicator_of_notMem hz,
         mul_zero]
 
+/- English proof (translation)
+The claim follows from `show (blockSet ι).indicator (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) z = 0 from indicator_of_notMem hz _`.
+-/
 theorem fsOfDeg_h_of_notMem (γ : K → ℕ) {z : (Σ k, ι k) → ℂ} (hz : z ∉ blockSet ι) :
     (fsOfDeg γ : HermLine ι).h z = 0 :=
   show (blockSet ι).indicator (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) z = 0 from
     indicator_of_notMem hz _
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Use `contDiffOn_prod fun k _ => ContDiffOn.pow ?_ _` and prove the remaining obligations. Use `ContDiffOn.sqrt ?_ fun z hz => (sum_sq_pos (hz k)).ne'` and prove the remaining obligations. Use `ContDiff.contDiffOn ?_` and prove the remaining obligations. Use `ContDiff.sum fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ _)`. Conclude with `h1.congr fun z hz => show (blockSet ι).indicator (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) z = _ from indicator_of_mem (show z ∈ blockSet ι from hz) _`.
+-/
 theorem isSmoothHerm_fsOfDeg (γ : K → ℕ) : IsSmoothHerm (fsOfDeg γ : HermLine ι) := by
   have h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k)
       {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
@@ -69,6 +86,9 @@ theorem isSmoothHerm_fsOfDeg (γ : K → ℕ) : IsSmoothHerm (fsOfDeg γ : HermL
     show (blockSet ι).indicator (fun z : (Σ k, ι k) → ℂ => ∏ k, blockNorm k z ^ γ k) z = _ from
       indicator_of_mem (show z ∈ blockSet ι from hz) _
 
+/- English proof (translation)
+Consider the cases of `A`. Consider the cases of `B`. Simplify the hypotheses and the goal together.
+-/
 theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
   cases B
@@ -76,6 +96,11 @@ theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A =
 
 def twist (M A B : HermLine ι) : HermLine ι := (M.tensor A).tensor B.inv
 
+/- English proof (translation)
+Use `hermLine_ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[twist, HermLine.tensor, HermLine.inv]`. Use function extensionality and compare the values at `z show M.h z * A.h z * (B.h z)⁻¹ * B.h z = M.h z * A.h z`. Distinguish the cases in `hz : z ∈ blockSet ι`.
+
+Use `(B.pos z hz).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using `[hM z hz]`.
+-/
 theorem twist_tensor {M : HermLine ι} (hM : ∀ z, z ∉ blockSet ι → M.h z = 0) (A B : HermLine ι) :
     (twist M A B).tensor B = M.tensor A := by
   refine hermLine_ext ?_ ?_
@@ -88,10 +113,20 @@ theorem twist_tensor {M : HermLine ι} (hM : ∀ z, z ∉ blockSet ι → M.h z 
       field_simp
     · simp [hM z hz]
 
+/- English proof (translation)
+The claim follows from `isSmoothHerm_tensor (isSmoothHerm_tensor hM hA) (isSmoothHerm_inv hB)`.
+-/
 theorem isSmoothHerm_twist {M A B : HermLine ι} (hM : IsSmoothHerm M) (hA : IsSmoothHerm A)
     (hB : IsSmoothHerm B) : IsSmoothHerm (twist M A B) :=
   isSmoothHerm_tensor (isSmoothHerm_tensor hM hA) (isSmoothHerm_inv hB)
 
+/- English proof (translation)
+Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => integral_congr_ae ?_` and prove the remaining obligations. Use `(ae_restrict_iff' (A.chart j).open_target.measurableSet).mpr ?_` and prove the remaining obligations.
+
+Use `ae_iff.mpr (measure_mono_null (fun y hy => ?_) (h j))` and prove the remaining obligations. Simplify using `only [mem_setOf_eq, Classical.not_imp] at hy`. Use `⟨hy.1, fun he => hy.2 ?_⟩` and prove the remaining obligations. Establish `he' : g ((A.chart j).symm y) = g' ((A.chart j).symm y)` using `he`. Rewrite using `[he']`.
+
+Both sides reduce to the same expression.
+-/
 theorem mInt_congr_null {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) {g g' : X → ℝ}
     (h : ∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' {x | g x ≠ g' x}) = 0) :
@@ -112,6 +147,11 @@ section Zeros
 
 variable {P J : Ideal (MRing ι)} {e : ℕ}
 
+/- English proof (translation)
+Take `⟨c, hc, hzc⟩` from `R.compat y x y ⟨R.mem_U y, hy⟩`. Establish `h` using `eval_bsmul_of_isMultiHomog hs c (R.lift x y)`. Establish `hp : ∏ k, c k ^ a k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `h' : evC (R.lift y y) s = (∏ k, c k ^ a k) * evC (R.lift x y) s`. Rewrite using `[hzc]`.
+
+Conclude with `h`. Rewrite using `[h']`. Simplify using `[hp]`.
+-/
 theorem evC_zero_iff (R : AnLogRes P J e) {s : MRing ι} {a : K → ℕ} (hs : IsMultiHomog s a)
     {x y : R.X} (hy : y ∈ R.U x) :
     evC (R.lift y y) s = 0 ↔ evC (R.lift x y) s = 0 := by
@@ -124,6 +164,9 @@ theorem evC_zero_iff (R : AnLogRes P J e) {s : MRing ι} {a : K → ℕ} (hs : I
   rw [h']
   simp [hp]
 
+/- English proof (translation)
+Use `⟨hz, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Establish `h0' : eval z (map (Int.castRingHom ℂ) s) = 0` using `h0`. Simplify using `[h0']`.
+-/
 theorem mem_mcPts_span {s : MRing ι} {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (h0 : evC z s = 0) : z ∈ mcPts (Ideal.span {s}) := by
   refine ⟨hz, fun f hf => ?_⟩
@@ -131,6 +174,23 @@ theorem mem_mcPts_span {s : MRing ι} {z : (Σ k, ι k) → ℂ} (hz : ∀ k, �
   have h0' : eval z (map (Int.castRingHom ℂ) s) = 0 := h0
   simp [h0']
 
+/- English proof (translation)
+Establish `hJh : IsMultiHomogIdeal (Ideal.span {s})` using `⟨{s}, fun f hf => ⟨a, by rw [mem_singleton_iff.mp hf]; exact hs⟩, rfl⟩`. Establish `hJP : ¬ Ideal.span {s} ≤ P` using `fun h => hsP ((Ideal.span_singleton_le_iff_mem _).mp h)`. Establish `hN` using `projB_null Ψ hP hΨ hJh hJP`. Choose the witnesses or unpack the hypotheses as in `⟨u1, hu1O, hu1⟩ : ∃ u ∈ O, (R.A.chart j).symm u ∉ brBad R Ψ := by`. Assume the negation of the conclusion as `hall`.
+
+Use `push Not at hall`. Take `⟨u, hu⟩` from `hne`. Establish `hpos` using `IsOpen.measure_pos volume hO ⟨u, hu⟩`. Establish `hsub : O ⊆ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' brBad R Ψ` using `fun v hv => ⟨hOt hv, hall v hv⟩`. Conclude with `hpos.ne' (measure_mono_null hsub (brBad_null R Ψ hP hΨ j))`.
+
+Establish `hu1t` using `hOt hu1O`. Use `set x1 := (R.A.chart j).symm u1 with hx1`. Establish `hchart : R.A.chart j x1 = u1` using `(R.A.chart j).right_inv hu1t`. Take `⟨hQa, hQd⟩` from `brGood R Ψ x1 hu1 j ((R.A.chart j).map_target hu1t)`. Rewrite `hQa`, `hQd` using `[hchart]`.
+
+Use `set Q := brQ R Ψ ∘ (R.A.chart j).symm with hQ`. Establish `hsurj : LinearMap.range (fderiv ℂ Q u1 : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = ⊤`. Establish `hu : IsUnit (fderiv ℂ Q u1 : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))` using `(LinearMap.isUnit_iff_isUnit_det _).mpr (Ne.isUnit hQd)`. Conclude with `LinearMap.range_eq_top.mpr ((Module.End.isUnit_iff _).mp hu).2`. Establish `hmap : map Q (𝓝 u1) = 𝓝 (Q u1)` using `hQa.hasStrictFDerivAt.map_nhds_eq_of_surj hsurj`.
+
+Establish `hV : (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x1 ∈ 𝓝 u1` using `((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x1)).mem_nhds ⟨hu1t, R.mem_U x1⟩`. Establish `hG : ContinuousAt (fun u => Ψ (segre (R.lift x1 ((R.A.chart j).symm u))) 0) u1` using `(analyticAt_pi_iff.mp (analyticAt_segre_lift R Ψ x1 j ⟨hu1t, R.mem_U x1⟩) 0).continuousAt`. Establish `hG0 : Ψ (segre (R.lift x1 x1)) 0 ≠ 0` using `projection_zero_ne_of_notMem_bridgeBadSet R Ψ hu1`. Establish `hev : ∀ᶠ u in 𝓝 u1, Q u ∈ {y : Fin e → ℂ | ∃ z ∈ mcPts P, z ∈ mcPts (Ideal.span {s}) ∧ Ψ (segre z) = Fin.cons 1 y}` using `by filter_upwards [hV, hG.eventually_ne hG0, hO.mem_nhds hu1O] with u huV hune huO set x := (R.A.chart j).symm u with hx`. Establish `hx0 : Ψ (segre (R.lift x x)) 0 ≠ 0`.
+
+Take `⟨μ, hμ, hμeq⟩` from `psi_lift_eq R huV.2 Ψ`. Rewrite using `[hμeq, Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero hμ hune`. Take `⟨z, hz, hzw, hzΨ⟩` from `brW_mem_fibre R Ψ hP.1 hP.2.1.2.1 hx0`. Use `⟨z, hz, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hmem` using `R.mem x x (R.mem_U x)`. Establish `hl : R.lift x x ∈ mcPts (Ideal.span {s})` using `mem_mcPts_span hmem.1 (h0 u huO)`. Use `mem_mcPts_of_sameOrbit hJh (sameOrbit_of_segre hmem.1 (Ψ (segre (R.lift x x)) 0)⁻¹ (inv_ne_zero hx0) hzw) hl` and prove the remaining obligations. Rewrite using `[hzw]`. Conclude with `hzΨ`.
+
+Establish `hmem : {y : Fin e → ℂ | ∃ z ∈ mcPts P, z ∈ mcPts (Ideal.span {s}) ∧ Ψ (segre z) = Fin.cons 1 y} ∈ 𝓝 (Q u1)`. Rewrite using `[← hmap]`. Conclude with `hev`. Conclude with `(Measure.measure_pos_of_mem_nhds volume hmem).ne' hN`.
+-/
 theorem not_flat_form (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) {s : MRing ι} {a : K → ℕ}
     (hs : IsMultiHomog s a) (hsP : s ∉ P) (j : Fin R.A.n) {O : Set (Fin e → ℂ)}
@@ -188,6 +248,13 @@ theorem not_flat_form (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) �
     exact hev
   exact (Measure.measure_pos_of_mem_nhds volume hmem).ne' hN
 
+/- English proof (translation)
+Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, -⟩`. Use `set x0 := (R.A.chart j).symm u0 with hx0`. Use `set V := (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x0 with hVdef`. Establish `hV : IsOpen V` using `(R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U x0)`.
+
+Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 ⟨hu0, R.mem_U x0⟩`. Use `set F : (Fin e → ℂ) → ℂ := fun u => evC (R.lift x0 ((R.A.chart j).symm u)) s with hF`. Establish `hFa : AnalyticOnNhd ℂ F V` using `fun u hu => analyticAt_eval_poly _ fun p => analyticAt_pi_iff.mp (analyticAt_lift_chart R x0 j hu) p`. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, F, hFa.mono hball, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`.
+
+Conclude with `not_flat_form R Ψ hP hΨ hs hsP j Metric.isOpen_ball (fun u hu => (hball hu).1) ⟨u0, Metric.mem_ball_self hr⟩ fun u hu => (evC_zero_iff R hs (hball hu).2).mpr (hall u hu)`. Introduce and unpack `w ⟨⟨-, hw0⟩, hwB⟩`. Conclude with `(evC_zero_iff R hs (hball hwB).2).mp hw0`.
+-/
 theorem zeros_null (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) {s : MRing ι} {a : K → ℕ}
     (hs : IsMultiHomog s a) (hsP : s ∉ P) (j : Fin R.A.n) :
@@ -216,6 +283,9 @@ section Main
 
 variable {P J : Ideal (MRing ι)} {e : ℕ}
 
+/- English proof (translation)
+Establish `hex` using `hG K ι P e hP`. Unfold `arInt ptsIntegral`. Rewrite using `[dif_pos hex]`. Conclude with `hB K ι P J e R _ L A s hP hex.choose_spec hL hA hs`.
+-/
 theorem arInt_eq_mInt (hB : ResBridgeStatement) (hG : GoodProjExistsStatement) (R : AnLogRes P J e)
     {L : Fin e → HermLine ι} {A : HermLine ι} {s : MRing ι} (hP : IsArithVar P (e + 1))
     (hL : ∀ j, IsSmoothHerm (L j)) (hA : IsSmoothHerm A) (hs : IsSectionOn P A s) :
@@ -225,6 +295,11 @@ theorem arInt_eq_mInt (hB : ResBridgeStatement) (hG : GoodProjExistsStatement) (
   rw [dif_pos hex]
   exact hB K ι P J e R _ L A s hP hex.choose_spec hL hA hs
 
+/- English proof (translation)
+Establish `hM` using `M.pos z hz`. Establish `hA` using `A.pos z hz`. Establish `hB` using `B.pos z hz`. Establish `hf' : 0 < ‖evC z f‖` using `norm_pos_iff.mpr hf`. Establish `hg' : 0 < ‖evC z g‖` using `norm_pos_iff.mpr hg`.
+
+Establish `e1 : logNorm (twist M A B) f z = Real.log (‖evC z f‖ / (M.h z * A.h z * (B.h z)⁻¹))` using `rfl`. Establish `e2 : logNorm M g z = Real.log (‖evC z g‖ / M.h z)` using `rfl`. Rewrite using `[e1, e2, ← Real.log_div (by positivity) (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem logNorm_sub_eq {M A B : HermLine ι} {f g : MRing ι} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ blockSet ι) (hf : evC z f ≠ 0) (hg : evC z g ≠ 0) :
     logNorm (twist M A B) f z - logNorm M g z =
@@ -242,6 +317,27 @@ theorem logNorm_sub_eq {M A B : HermLine ι} {f g : MRing ι} {z : (Σ k, ι k) 
 
 end Main
 
+/- English proof (translation)
+Introduce `_ hBr hG _ K _ ι _ I hI P J e R L A B f g w hP hL hA hB hIso hw`. Take `⟨⟨α, γ, hfα, hgγ, hdeg⟩, hU⟩` from `hIso`. Establish `hfP : f ∉ P` using `hU.1`. Establish `hgP : g ∉ P` using `hU.2.1`. Use `set M' : HermLine ι := fsOfDeg γ with hM'def`.
+
+Use `set M : HermLine ι := twist M' A B with hMdef`. Establish `hM' : IsSmoothHerm M'` using `isSmoothHerm_fsOfDeg γ`. Establish `hM : IsSmoothHerm M` using `isSmoothHerm_twist hM' hA hB`. Establish `hMa : ∀ k, M.a k = α k`. Introduce `k`.
+
+Establish `h` using `hdeg k`. Establish `e1 : M.a k = (γ k : ℤ) + A.a k + -B.a k` using `rfl`. Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM'a : ∀ k, M'.a k = γ k` using `fun _ => rfl`.
+
+Establish `a1` using `hI.2.1 P e L M B hP hL hM hB`. Establish `a2` using `hI.2.1 P e L M' A hP hL hM' hA`. Establish `ht : M.tensor B = M'.tensor A` using `twist_tensor (fun z hz => fsOfDeg_h_of_notMem γ hz) A B`. Rewrite `a1` using `[ht]`. Establish `r1` using `hI.2.2 P e L M f α hP hL hM hMa hfα hfP`.
+
+Establish `r2` using `hI.2.2 P e L M' g γ hP hL hM' hM'a hgγ hgP`. Rewrite `r1`, `r2` using `[recR_eq]`. Establish `hc` using `GlobalTheory.T.unit_ratio_same_divisor_multiplicities K ι P f g hU`. Establish `hcyc : cycR I P L f = cycR I P L g`. Unfold `cycR`.
+
+Use `finsum_mem_congr hc.1 fun W hW => ?_` and prove the remaining obligations. Rewrite using `[hc.2 W (hc.1 ▸ hW)]`. Establish `hsf : IsSectionOn P M f` using `⟨α, hMa, hfα, hfP⟩`. Establish `hsg : IsSectionOn P M' g` using `⟨γ, hM'a, hgγ, hgP⟩`. Rewrite `r1` using `[arInt_eq_mInt hBr hG R hP hL hM hsf]`.
+
+Rewrite `r2` using `[arInt_eq_mInt hBr hG R hP hL hM' hsg]`. Establish `hpot : ∀ i, IsPotential R.A (potOf R (L i))` using `fun i => potOf_isPotential R (L i) (hL i)`. Establish `hlin` using `mIntLinear R.A (fun j => potOf R (L j)) hpot (-1) (fun x => logNorm M' g (R.lift x x)) (fun x => logNorm M f (R.lift x x)) (brIntegrable R L M' g hP hL hM' hsg) (brIntegrable R L M f hP hL hM hsf)`. Take `⟨Ψ, hΨ⟩` from `hG K ι P e hP`. Establish `hw' : mInt R.A (fun j => potOf R (L j)) (fun x => w (R.lift x x)) = mInt R.A (fun j => potOf R (L j)) (fun x => -1 * logNorm M' g (R.lift x x) + logNorm M f (R.lift x x))`.
+
+Use `mInt_congr_null _ _ fun j => ?_` and prove the remaining obligations. Use `measure_mono_null ?_ (measure_union_null (zeros_null R Ψ hP hΨ hfα hfP j) (zeros_null R Ψ hP hΨ hgγ hgP j))` and prove the remaining obligations. Introduce and unpack `y ⟨hyt, hy⟩`. Assume the negation of the conclusion as `hcon`. Establish `hnf : evC (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y)) f ≠ 0` using `fun h => hcon (Or.inl ⟨hyt, h⟩)`.
+
+Establish `hng : evC (R.lift ((R.A.chart j).symm y) ((R.A.chart j).symm y)) g ≠ 0` using `fun h => hcon (Or.inr ⟨hyt, h⟩)`. Establish `hmem` using `R.mem ((R.A.chart j).symm y) _ (R.mem_U ((R.A.chart j).symm y))`. Apply `hy` to reduce the goal to its premises. Establish `hd` using `hw _ hmem g f (by rw [mul_comm, sub_self]; exact P.zero_mem) hng`. Use `logNorm_sub_eq (M := M') (A := A) (B := B) (show _ ∈ blockSet ι from hmem.1) hnf hng` as an intermediate fact.
+
+Use `show w _ = -1 * logNorm M' g _ + logNorm M f _`. Rewrite using `[hd, ← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hw', hlin]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inter_sub_eq_neg_mInt : RatRStatement → ResBridgeStatement → GoodProjExistsStatement →
     AvoidStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ), IsIntersectionFamily I →

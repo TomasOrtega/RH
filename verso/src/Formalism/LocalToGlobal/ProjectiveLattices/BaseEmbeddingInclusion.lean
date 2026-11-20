@@ -37,6 +37,11 @@ def extJ (σ : L →+* ℂ) (jK : M →ₛₗ[σ.comp (algebraMap K L)] W) : L �
 
 def incl : M →ₗ[K] L ⊗[K] M := TensorProduct.mk K L M 1
 
+/- English proof (translation)
+Establish `h1 : Function.Injective ((Algebra.linearMap K L).rTensor M)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (algebraMap K L).injective`. Establish `h2 : (incl (K` using `K) (L := L) (M := M)) = ((Algebra.linearMap K L).rTensor M).comp (TensorProduct.lid K M).symm.toLinearMap := by`. Use extensionality with `m`. Simplify using `[incl]`. Rewrite using `[h2]`.
+
+Conclude with `h1.comp (TensorProduct.lid K M).symm.injective`.
+-/
 theorem incl_injective : Function.Injective (incl (K := K) (L := L) (M := M)) := by
   have h1 : Function.Injective ((Algebra.linearMap K L).rTensor M) :=
     Module.Flat.rTensor_preserves_injective_linearMap _ (algebraMap K L).injective

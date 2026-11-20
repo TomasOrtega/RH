@@ -26,14 +26,23 @@ variable {e N : ℕ}
 def PlurRe (z0 : Fin e → ℂ) (f : (Fin e → ℂ) → ℝ) : Prop :=
   ∃ H : (Fin e → ℂ) → ℂ, AnalyticAt ℂ H z0 ∧ f =ᶠ[𝓝 z0] fun w => (H w).re
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 0, analyticAt_const, by simp⟩`.
+-/
 theorem PlurRe.zero (z0 : Fin e → ℂ) : PlurRe z0 fun _ => 0 :=
   ⟨fun _ => 0, analyticAt_const, by simp⟩
 
+/- English proof (translation)
+Take `⟨H, hH, hev⟩` from `h`. Conclude with `⟨H, hH, hf.trans hev⟩`.
+-/
 theorem PlurRe.congr {z0 : Fin e → ℂ} {f f' : (Fin e → ℂ) → ℝ} (h : PlurRe z0 f)
     (hf : f' =ᶠ[𝓝 z0] f) : PlurRe z0 f' := by
   obtain ⟨H, hH, hev⟩ := h
   exact ⟨H, hH, hf.trans hev⟩
 
+/- English proof (translation)
+Take `⟨H, hH, hev⟩` from `h`. Take `⟨H', hH', hev'⟩` from `h'`. Use `⟨fun w => H w + H' w, hH.fun_add hH', ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, hev'] with w h1 h2`. Simplify using `[h1, h2]`.
+-/
 theorem PlurRe.add {z0 : Fin e → ℂ} {f f' : (Fin e → ℂ) → ℝ} (h : PlurRe z0 f)
     (h' : PlurRe z0 f') : PlurRe z0 fun w => f w + f' w := by
   obtain ⟨H, hH, hev⟩ := h
@@ -42,6 +51,9 @@ theorem PlurRe.add {z0 : Fin e → ℂ} {f f' : (Fin e → ℂ) → ℝ} (h : Pl
   filter_upwards [hev, hev'] with w h1 h2
   simp [h1, h2]
 
+/- English proof (translation)
+Take `⟨H, hH, hev⟩` from `h`. Take `⟨H', hH', hev'⟩` from `h'`. Use `⟨fun w => H w - H' w, hH.fun_sub hH', ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, hev'] with w h1 h2`. Simplify using `[h1, h2]`.
+-/
 theorem PlurRe.sub {z0 : Fin e → ℂ} {f f' : (Fin e → ℂ) → ℝ} (h : PlurRe z0 f)
     (h' : PlurRe z0 f') : PlurRe z0 fun w => f w - f' w := by
   obtain ⟨H, hH, hev⟩ := h
@@ -50,6 +62,9 @@ theorem PlurRe.sub {z0 : Fin e → ℂ} {f f' : (Fin e → ℂ) → ℝ} (h : Pl
   filter_upwards [hev, hev'] with w h1 h2
   simp [h1, h2]
 
+/- English proof (translation)
+Use `choose H hH hev using h`. Use `⟨fun w => ∑ a, H a w, Finset.analyticAt_fun_sum _ fun a _ => hH a, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_all.2 hev] with w hw`. Simplify using `[hw]`.
+-/
 theorem PlurRe.sum {z0 : Fin e → ℂ} {ι : Type} [Fintype ι] {f : ι → (Fin e → ℂ) → ℝ}
     (h : ∀ a, PlurRe z0 (f a)) : PlurRe z0 fun w => ∑ a, f a w := by
   choose H hH hev using h
@@ -57,6 +72,11 @@ theorem PlurRe.sum {z0 : Fin e → ℂ} {ι : Type} [Fintype ι] {f : ι → (Fi
   filter_upwards [eventually_all.2 hev] with w hw
   simp [hw]
 
+/- English proof (translation)
+Establish `hq : AnalyticAt ℂ (fun w => B w / B z0) z0` using `hB.fun_div analyticAt_const h0`. Establish `hs : (fun w => B w / B z0) z0 ∈ Complex.slitPlane`. Simplify using `[h0]`. Use `⟨fun w => Complex.log (B w / B z0) + Complex.log (B z0), (hq.clog hs).fun_add analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hB.continuousAt.eventually_ne h0] with w hw`.
+
+Simplify using `only [Complex.add_re, Complex.log_re, norm_div]`. Rewrite using `[Real.log_div (norm_ne_zero_iff.2 hw) (norm_ne_zero_iff.2 h0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem plurRe_log_norm {z0 : Fin e → ℂ} {B : (Fin e → ℂ) → ℂ} (hB : AnalyticAt ℂ B z0)
     (h0 : B z0 ≠ 0) : PlurRe z0 fun w => Real.log ‖B w‖ := by
   have hq : AnalyticAt ℂ (fun w => B w / B z0) z0 := hB.fun_div analyticAt_const h0
@@ -72,6 +92,9 @@ theorem plurRe_log_norm {z0 : Fin e → ℂ} {B : (Fin e → ℂ) → ℂ} (hB :
 def diagLog (b : Matrix (Fin N) (Fin N) ℂ) (k : ℕ) : ℝ :=
   ∑ a : Fin N, if (a : ℕ) < k then Real.log ‖b a a‖ else 0
 
+/- English proof (translation)
+Use `PlurRe.sum fun a => ?_` and prove the remaining obligations. Distinguish the cases in `h : (a : ℕ) < k`. Simplify `plurRe_log_norm (hb a) (h0 a)` using `[h]`. Simplify `PlurRe.zero z0` using `[h]`.
+-/
 theorem plurRe_diagLog {z0 : Fin e → ℂ} {b : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hb : ∀ a, AnalyticAt ℂ (fun w => b w a a) z0) (h0 : ∀ a, b z0 a a ≠ 0) (k : ℕ) :
     PlurRe z0 fun w => diagLog (b w) k := by
@@ -84,6 +107,9 @@ def stepCorr (N j : ℕ) (i : Fin N) (b : Matrix (Fin N) (Fin N) ℂ) : ℝ :=
   if (i : ℕ) + 1 ≤ j then diagLog b (N - j + ((i : ℕ) + 1)) - diagLog b (N - j)
   else diagLog b N - diagLog b (N - j) + diagLog b ((i : ℕ) + 1 - j)
 
+/- English proof (translation)
+Establish `h` using `plurRe_diagLog hb h0`. Distinguish the cases in `hi : (i : ℕ) + 1 ≤ j`. Simplify `(h _).sub (h _)` using `[stepCorr, hi]`. Simplify `((h _).sub (h _)).add (h _)` using `[stepCorr, hi]`.
+-/
 theorem plurRe_stepCorr {z0 : Fin e → ℂ} {b : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ}
     (hb : ∀ a, AnalyticAt ℂ (fun w => b w a a) z0) (h0 : ∀ a, b z0 a a ≠ 0) (j : ℕ) (i : Fin N) :
     PlurRe z0 fun w => stepCorr N j i (b w) := by
@@ -92,6 +118,9 @@ theorem plurRe_stepCorr {z0 : Fin e → ℂ} {b : (Fin e → ℂ) → Matrix (Fi
   · simpa [stepCorr, hi] using (h _).sub (h _)
   · simpa [stepCorr, hi] using ((h _).sub (h _)).add (h _)
 
+/- English proof (translation)
+Establish `h k` using `(GlobalTheory.T.gram_log_unitary_triangular_invariance N (sigForm N j) k g u 1).1 hu`. Unfold `stepPot`. Simplify using `only [h]`.
+-/
 theorem stepPot_unitary_mul {j : ℕ} {u : Matrix (Fin N) (Fin N) ℂ}
     (hu : gramOf (sigForm N j) u = diagonal fun i => ((sigForm N j i : ℝ) : ℂ))
     (i : Fin N) (g : Matrix (Fin N) (Fin N) ℂ) : stepPot N j i (u * g) = stepPot N j i g := by
@@ -99,6 +128,9 @@ theorem stepPot_unitary_mul {j : ℕ} {u : Matrix (Fin N) (Fin N) ℂ}
   unfold stepPot
   simp only [h]
 
+/- English proof (translation)
+Establish `h k` using `(GlobalTheory.T.gram_log_unitary_triangular_invariance N (sigForm N j) k c 1 b).2 hb hu ((GlobalTheory.T.isOpen_flag_domain_nondegenerate_minors N j hj).2 c hc k)`. Unfold `stepPot stepCorr diagLog`. Apply the tactic sequence `split_ifs <;> simp only [h] <;> ring`.
+-/
 theorem stepPot_mul_triangular {j : ℕ} (hj : j ≤ N) {c b : Matrix (Fin N) (Fin N) ℂ}
     (hc : InFlagDomain N j c) (hb : b.BlockTriangular id) (hu : IsUnit b.det) (i : Fin N) :
     stepPot N j i (c * b) = stepPot N j i c + stepCorr N j i b := by
@@ -106,6 +138,11 @@ theorem stepPot_mul_triangular {j : ℕ} (hj : j ≤ N) {c b : Matrix (Fin N) (F
   unfold stepPot stepCorr diagLog
   split_ifs <;> simp only [h] <;> ring
 
+/- English proof (translation)
+Use `⟨by simp, ?_⟩` and prove the remaining obligations. Establish `h : -gramHead (sigForm N j) (N - j) (1 : Matrix (Fin N) (Fin N) ℂ) = 1`. Use extensionality with `⟨a, ha⟩ ⟨b, hb⟩`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[gramHead, gramOf, sigForm, ha]`. Establish `: (⟨a, ha⟩ : {a : Fin N // (a : ℕ) < N - j}) ≠ ⟨b, hb⟩` using `fun h => hab (congrArg Subtype.val h)`. Simplify using `[gramHead, gramOf, Matrix.one_apply, hab, this]`. Rewrite using `[h]`. Conclude with `Matrix.PosDef.one`.
+-/
 theorem inFlagDomain_base {j : ℕ} : InFlagDomain N j 1 := by
   refine ⟨by simp, ?_⟩
   have h : -gramHead (sigForm N j) (N - j) (1 : Matrix (Fin N) (Fin N) ℂ) = 1 := by
@@ -118,6 +155,11 @@ theorem inFlagDomain_base {j : ℕ} : InFlagDomain N j 1 := by
   rw [h]
   exact Matrix.PosDef.one
 
+/- English proof (translation)
+Unfold `cellMat`. Use `continuous_finset_sum _ fun k _ => (continuous_const_smul _).comp (Continuous.pow ?_ k)` and prove the remaining obligations. Use `continuous_finset_sum _ fun p _ => ?_` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single_apply]`.
+
+Use `split_ifs`. Conclude with `continuous_apply p`. Conclude with `continuous_const`.
+-/
 theorem continuous_cellMat (N : ℕ) : Continuous (cellMat N) := by
   unfold cellMat
   refine continuous_finset_sum _ fun k _ => (continuous_const_smul _).comp (Continuous.pow ?_ k)
@@ -128,6 +170,23 @@ theorem continuous_cellMat (N : ℕ) : Continuous (cellMat N) := by
   · exact continuous_apply p
   · exact continuous_const
 
+/- English proof (translation)
+Take `⟨u, b₀, hu, hb₀, hdet, hub⟩` from `GlobalTheory.T.flag_domain_unitary_triangular N j hj (gc z0) hdom.self_of_nhds`. Establish `hgu : IsUnit (gc z0).det` using `hdom.self_of_nhds.1`. Establish `huu : IsUnit u.det`. Establish `: u.det * (gc z0).det = b₀.det` using `by rw [← Matrix.det_mul, hub]`. Rewrite `hdet` using `[← this]`.
+
+Conclude with `isUnit_of_mul_isUnit_left hdet`. Establish `han' : ∀ a b, AnalyticAt ℂ (fun w => (u * gc w) a b) z0`. Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.analyticAt_fun_sum _ fun c _ => analyticAt_const.fun_mul (han c b)`.
+
+Take `⟨z, b, hz, hb, hz0, hev, hiff⟩` from `GlobalTheory.T.local_bruhat_cell_analytic_coordinates e N (fun w => u * gc w) z0 han' (by simpa only [hub] using hb₀) (by simpa only [hub] using hdet)`. Use `⟨z, hz, hz0, fun i => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `hcell : ∀ᶠ w in 𝓝 z0, InFlagDomain N j (cellMat N (z w))`. Establish `hc : ContinuousAt (fun w => cellMat N (z w)) z0` using `(continuous_cellMat N).continuousAt.comp hz.continuousAt`. Establish `hm : {g : Matrix (Fin N) (Fin N) ℂ | InFlagDomain N j g} ∈ 𝓝 (cellMat N (z z0))`.
+
+Rewrite using `[hz0, cellMat_zero N]`. Conclude with `(GlobalTheory.T.isOpen_flag_domain_nondegenerate_minors N j hj).1.mem_nhds inFlagDomain_base`. Conclude with `hc hm`. Take `⟨ht, hdb, -⟩` from `hev.self_of_nhds`. Establish `hd0 : ∀ a, b z0 a a ≠ 0`.
+
+Introduce `a h`. Rewrite `hdb` using `[Matrix.det_of_upperTriangular ht]`. Conclude with `hdb.ne_zero (Finset.prod_eq_zero (Finset.mem_univ a) h)`. Use `(plurRe_stepCorr (fun a => hb a a) hd0 j i).congr ?_` and prove the remaining obligations. Use `filter_upwards [hev, hcell] with w ⟨h1, h2, h3⟩ hw`.
+
+Rewrite using `[← stepPot_unitary_mul hu i (gc w), h3, stepPot_mul_triangular hj hw h1 h2 i]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : (Matrix.of fun a b => fderiv ℂ (fun w => (u * gc w) a b) z0 v) = u * Matrix.of fun a b => fderiv ℂ (fun w => gc w a b) z0 v`. Use extensionality with `a b`. Establish `h1 : HasFDerivAt (fun w => ∑ c, u a c * gc w c b) (∑ c, u a c • fderiv ℂ (fun w => gc w c b) z0) z0` using `HasFDerivAt.fun_sum fun c _ => ((han c b).differentiableAt.hasFDerivAt).const_mul (u a c)`.
+
+Simplify using `only [Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[h1.fderiv]`. Simplify using the standard rewrite rules. Rewrite using `[hiff v, hD, Matrix.mul_inv_rev]`. Establish `: (gc z0)⁻¹ * u⁻¹ * (u * Matrix.of fun a b => fderiv ℂ (fun w => gc w a b) z0 v) = (gc z0)⁻¹ * Matrix.of fun a b => fderiv ℂ (fun w => gc w a b) z0 v`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc u⁻¹, Matrix.nonsing_inv_mul _ huu, Matrix.one_mul]`. Rewrite using `[this]`.
+-/
 theorem exists_cell_coords {j : ℕ} (hj : j ≤ N) (gc : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ)
     (z0 : Fin e → ℂ) (han : ∀ a b, AnalyticAt ℂ (fun w => gc w a b) z0)
     (hdom : ∀ᶠ w in 𝓝 z0, InFlagDomain N j (gc w)) :
@@ -181,6 +240,13 @@ theorem exists_cell_coords {j : ℕ} (hj : j ≤ N) (gc : (Fin e → ℂ) → Ma
 
 def rel (N j : ℕ) (a : Fin N) : ℕ := if (a : ℕ) < N - j then j + a else a - (N - j)
 
+/- English proof (translation)
+Take `⟨H, hH, hev⟩` from `hf`. Set `φ : (Pairs N → ℂ) → ℝ` to `fun y => stepPot N j i (cellMat N y)`. Establish `hφ : ContDiffAt ℝ 2 φ 0` using `(GlobalTheory.T.flag_potential_levi_form_cell N j hj i 0).1`. Establish `hφ' : ContDiffAt ℝ 2 φ (z z0)` using `by rwa [hz0]`. Establish `hzR : ContDiffAt ℝ 2 z z0` using `(hz.restrictScalars (𝕜 := ℝ)).contDiffAt`.
+
+Establish `hc : ContDiffAt ℝ 2 (φ ∘ z) z0` using `hφ'.comp z0 hzR`. Establish `hHR : ContDiffAt ℝ 2 (fun w => (H w).re) z0` using `Complex.reCLM.contDiff.contDiffAt.comp z0 ((hH.restrictScalars (𝕜 := ℝ)).contDiffAt)`. Establish `hfe : f =ᶠ[𝓝 z0] fun w => (φ ∘ z) w + 1 * (H w).re` using `by filter_upwards [hev] with w hw`. Simplify using `only [Function.comp_apply, φ, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨(hc.add (contDiffAt_const.mul hHR)).congr_of_eventuallyEq hfe, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[levi_congr hfe v, levi_add_smul 1 hc hHR v, levi_comp v hz hφ', levi_re_analytic hH v, hz0, (GlobalTheory.T.flag_potential_levi_form_cell N j hj i (fderiv ℂ z z0 v)).2]`. Simplify using `[rel]`.
+-/
 theorem levi_of_cell {j : ℕ} (hj : j ≤ N) (i : Fin N) {z0 : Fin e → ℂ} {f : (Fin e → ℂ) → ℝ}
     {z : (Fin e → ℂ) → Pairs N → ℂ} (hz : AnalyticAt ℂ z z0) (hz0 : z z0 = 0)
     (hf : PlurRe z0 fun w => f w - stepPot N j i (cellMat N (z w))) :
@@ -204,6 +270,9 @@ theorem levi_of_cell {j : ℕ} (hj : j ≤ N) (i : Fin N) {z0 : Fin e → ℂ} {
     (GlobalTheory.T.flag_potential_levi_form_cell N j hj i (fderiv ℂ z z0 v)).2]
   simp [rel]
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Unfold `rel`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem rel_lt {j : ℕ} (hj : j ≤ N) (a : Fin N) : rel N j a < N := by
   have := a.2
   unfold rel
@@ -211,6 +280,11 @@ theorem rel_lt {j : ℕ} (hj : j ≤ N) (a : Fin N) : rel N j a < N := by
 
 def relF {j : ℕ} (hj : j ≤ N) (a : Fin N) : Fin N := ⟨rel N j a, rel_lt hj a⟩
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h' : rel N j a = rel N j b` using `congrArg Fin.val h`. Establish `ha` using `a.2`. Establish `hb` using `b.2`. Unfold `rel at h'`.
+
+Use `ext`. Apply the tactic sequence `split_ifs at h' <;> omega`.
+-/
 theorem relF_injective {j : ℕ} (hj : j ≤ N) : Function.Injective (relF (N := N) hj) := by
   intro a b h
   have h' : rel N j a = rel N j b := congrArg Fin.val h
@@ -223,6 +297,19 @@ theorem relF_injective {j : ℕ} (hj : j ≤ N) : Function.Injective (relF (N :=
 def pairMap (σ : Fin N → Fin N) (hσ : Function.Injective σ) (p : Pairs N) : Pairs N :=
   ⟨(min (σ p.1.1) (σ p.1.2), max (σ p.1.1) (σ p.1.2)), min_lt_max.2 (hσ.ne p.2.ne)⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨p₁, p₂⟩, hp⟩ ⟨⟨q₁, q₂⟩, hq⟩ h`. Establish `h1 : min (σ p₁) (σ p₂) = min (σ q₁) (σ q₂)` using `congrArg (fun t : Pairs N => t.1.1) h`. Establish `h2 : max (σ p₁) (σ p₂) = max (σ q₁) (σ q₂)` using `congrArg (fun t : Pairs N => t.1.2) h`. Establish `hp' : p₁ < p₂` using `hp`. Establish `hq' : q₁ < q₂` using `hq`.
+
+Apply the tactic sequence `rcases le_total (σ p₁) (σ p₂) with a | a <;> rcases le_total (σ q₁) (σ q₂) with c | c`. Rewrite `h1` using `[min_eq_left a, min_eq_left c]`. Rewrite `h2` using `[max_eq_right a, max_eq_right c]`. Take `rfl` from `hσ h1`. Take `rfl` from `hσ h2`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[min_eq_left a, min_eq_right c]`. Rewrite `h2` using `[max_eq_right a, max_eq_left c]`. Take `rfl` from `hσ h1`. Take `rfl` from `hσ h2`.
+
+Conclude with `absurd hp' (not_lt.2 hq'.le)`. Rewrite `h1` using `[min_eq_right a, min_eq_left c]`. Rewrite `h2` using `[max_eq_left a, max_eq_right c]`. Take `rfl` from `hσ h1`. Take `rfl` from `hσ h2`.
+
+Conclude with `absurd hp' (not_lt.2 hq'.le)`. Rewrite `h1` using `[min_eq_right a, min_eq_right c]`. Rewrite `h2` using `[max_eq_left a, max_eq_left c]`. Take `rfl` from `hσ h1`. Take `rfl` from `hσ h2`.
+
+Both sides reduce to the same expression.
+-/
 theorem pairMap_injective (σ : Fin N → Fin N) (hσ : Function.Injective σ) :
     Function.Injective (pairMap σ hσ) := by
   rintro ⟨⟨p₁, p₂⟩, hp⟩ ⟨⟨q₁, q₂⟩, hq⟩ h
@@ -256,12 +343,18 @@ def pairEquiv {j : ℕ} (hj : j ≤ N) : Pairs N ≃ Pairs N :=
   Equiv.ofBijective (pairMap (relF hj) (relF_injective hj))
     (pairMap_injective _ _).bijective_of_finite
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `min (relF hj p.1.1) (relF hj p.1.2) ≤ i ↔ _`. Rewrite using `[min_le_iff, min_le_iff]`. Both sides reduce to the same expression.
+-/
 theorem pairEquiv_fst_le {j : ℕ} (hj : j ≤ N) (p : Pairs N) (i : Fin N) :
     (pairEquiv hj p).1.1 ≤ i ↔ min (rel N j p.1.1) (rel N j p.1.2) ≤ (i : ℕ) := by
   change min (relF hj p.1.1) (relF hj p.1.2) ≤ i ↔ _
   rw [min_le_iff, min_le_iff]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `i < max (relF hj p.1.1) (relF hj p.1.2) ↔ _`. Rewrite using `[lt_max_iff, lt_max_iff]`. Both sides reduce to the same expression.
+-/
 theorem pairEquiv_lt_snd {j : ℕ} (hj : j ≤ N) (p : Pairs N) (i : Fin N) :
     i < (pairEquiv hj p).1.2 ↔ (i : ℕ) < max (rel N j p.1.1) (rel N j p.1.2) := by
   change i < max (relF hj p.1.1) (relF hj p.1.2) ↔ _
@@ -272,6 +365,21 @@ end PerDiag
 
 open PerDiag in
 
+/- English proof (translation)
+Introduce `e X _ A Ψ _ _ N j hj pot x V g hP k hx`. Take `⟨hV, hxV, hhol, hdom, hpot⟩` from `hP`. Establish `hsx : (A.chart k).symm (A.chart k x) = x` using `(A.chart k).left_inv hx`. Establish `hmem : A.chart k x ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' V` using `⟨(A.chart k).map_source hx, by simpa [hsx] using hxV⟩`. Establish `hnhds : (A.chart k).target ∩ (A.chart k).symm ⁻¹' V ∈ 𝓝 (A.chart k x)` using `((A.chart k).isOpen_inter_preimage_symm hV).mem_nhds hmem`.
+
+Establish `hcell` using `fun τ => exists_cell_coords hj (fun w => g τ ((A.chart k).symm w)) (A.chart k x) (fun a b => hhol τ a b k _ hmem) (by filter_upwards [hnhds] with w hw using hdom τ _ hw.2)`. Use `choose z hz hz0 hstep hiff using hcell`. Establish `key` using `fun p : Ψ × Fin N => levi_of_cell (f := (pot p).φ x ∘ (A.chart k).symm) hj p.2 (hz p.1) (hz0 p.1) (by`. Take `⟨G, hG, hφ⟩` from `hpot p`. Establish `h1 : PlurRe (A.chart k x) fun w => (pot p).φ x ((A.chart k).symm w) - stepPot N j p.2 (g p.1 ((A.chart k).symm w))`.
+
+Use `⟨G ∘ (A.chart k).symm, hG k _ hmem, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hnhds] with w hw`. Rewrite using `[hφ _ hw.2]`. Simplify using the standard rewrite rules. Use `(h1.add (hstep p.1 p.2)).congr (Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Use the proof step `simp)`. Set `ρ` to `pairEquiv (N := N) hj`. Set `Lm : (Fin e → ℂ) →ₗ[ℂ] (Ψ × Pairs N → ℂ)` to `{ toFun := fun v q => fderiv ℂ (z q.1) (A.chart k x) v (ρ.symm q.2) map_add' := fun v w => by ext q; simp map_smul' := fun c v => by ext q; simp }`. Use `⟨Lm, fun p => (key p).1, fun p v => ?_, fun hI => ?_⟩` and prove the remaining obligations. Rewrite using `[(key p).2 v]`.
+
+Use `Eq.trans ?_ (Equiv.sum_comp ρ _)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `e3 : Lm v (p.1, ρ q) = fderiv ℂ (z p.1) (A.chart k x) v q` using `by simp [Lm]`. Simplify using `only [e3, pairEquiv_fst_le, ρ, pairEquiv_lt_snd]`. Use `(injective_iff_map_eq_zero Lm).2 fun v hv => ?_` and prove the remaining obligations.
+
+Use `hI k hx v fun τ => ?_` and prove the remaining obligations. Establish `h0 : fderiv ℂ (z τ) (A.chart k x) v = 0`. Use function extensionality and compare the values at `q`. Use `congrFun hv (τ, ρ q)` as an intermediate fact. Simplify `this` using `[Lm]`.
+
+Use `(hiff τ v).1 h0` as an intermediate fact. Rewrite `this` using `[hsx]`. Then use the resulting hypothesis.
+-/
 theorem levi_diagonal_of_isPeriodChart :
     ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ), j ≤ N → ∀ (pot : Ψ × Fin N → LocPot X) (x : X) (V : Set X) (g : Ψ → X → Matrix (Fin N) (Fin N) ℂ), IsPeriodChart A j pot x V g → ∀ k, x ∈ (A.chart k).source → ∃ Lm : (Fin e → ℂ) →ₗ[ℂ] (Ψ × Pairs N → ℂ), (∀ p, ContDiffAt ℝ 2 ((pot p).φ x ∘ (A.chart k).symm) (A.chart k x)) ∧ (∀ (p : Ψ × Fin N) v, levi ((pot p).φ x ∘ (A.chart k).symm) (A.chart k x) v = ∑ q : Pairs N, if q.1.1 ≤ p.2 ∧ p.2 < q.1.2 then (1 / 2 : ℝ) * ‖Lm v (p.1, q)‖ ^ 2 else 0) ∧ (IsFlagImmersionAt A g x → Function.Injective Lm) := by
   intro e X _ A Ψ _ _ N j hj pot x V g hP k hx

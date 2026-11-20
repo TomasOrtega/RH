@@ -15,6 +15,9 @@ open Formalism.UG (cT bc)
 
 namespace GlobalTheory.SphEis.SphericalEisensteinCover
 
+/- English proof (translation)
+Establish `e : {ω : Matrix (Fin a) (Fin b) A | ∀ i k, ω i k ∈ Ω} = (Set.univ.pi fun _ => Set.univ.pi fun _ => Ω : Set (Matrix (Fin a) (Fin b) A))` using `Set.ext fun ω => ⟨fun h i _ k _ => h i k, fun h i k => h i trivial k trivial⟩`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hΩ`.
+-/
 theorem isCompact_entries {A : Type} [TopologicalSpace A] (a b : ℕ) {Ω : Set A} (hΩ : IsCompact Ω) :
     IsCompact {ω : Matrix (Fin a) (Fin b) A | ∀ i k, ω i k ∈ Ω} := by
   have e : {ω : Matrix (Fin a) (Fin b) A | ∀ i k, ω i k ∈ Ω} =
@@ -25,28 +28,49 @@ theorem isCompact_entries {A : Type} [TopologicalSpace A] (a b : ℕ) {Ω : Set 
 
 variable {k A : Type} [Field k] [CharZero k] [CommRing A] [Algebra k A] (s : A →+* A)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cT]`.
+-/
 theorem cT_add {a b : ℕ} (M N : Matrix (Fin a) (Fin b) A) : cT s (M + N) = cT s M + cT s N := by
   ext; simp [cT]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cT]`.
+-/
 theorem cT_neg {a b : ℕ} (M : Matrix (Fin a) (Fin b) A) : cT s (-M) = -cT s M := by
   ext; simp [cT]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cT]`.
+-/
 theorem cT_sub {a b : ℕ} (M N : Matrix (Fin a) (Fin b) A) : cT s (M - N) = cT s M - cT s N := by
   ext; simp [cT]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cT, hk]`.
+-/
 theorem cT_smul (hk : ∀ (c : k) x, s (c • x) = c • s x) {a b : ℕ} (c : k) (M : Matrix (Fin a) (Fin b) A) :
     cT s (c • M) = c • cT s M := by
   ext; simp [cT, hk]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[cT, hs]`.
+-/
 theorem cT_cT (hs : ∀ x, s (s x) = x) {a b : ℕ} (M : Matrix (Fin a) (Fin b) A) : cT s (cT s M) = M := by
   ext; simp [cT, hs]
 
 variable {j m : ℕ} (K : Matrix (Fin m) (Fin m) A)
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_cT s hs, hK, Matrix.mul_assoc]`.
+-/
 theorem cT_pair (hs : ∀ x, s (s x) = x) (hK : cT s K = K) (u v : Matrix (Fin j) (Fin m) A) :
     cT s (u * (K * cT s v)) = v * (K * cT s u) := by
   rw [Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_cT s hs, hK, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hcc : cT s c = -c - (X + (y + p)) * (K * cT s (X + (y + p)))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cT_add, cT_sub, cT_smul s hk, cT_pair s K hs hK, hcc]`. Simplify using `only [cT_add, cT_pair s K hs hK, Matrix.mul_add, Matrix.add_mul, smul_add, neg_add, sub_eq_add_neg]`. Use `module`.
+-/
 theorem skew_rest (hs : ∀ x, s (s x) = x) (hk : ∀ (c : k) x, s (c • x) = c • s x) (hK : cT s K = K)
     (X y p : Matrix (Fin j) (Fin m) A) (c : Matrix (Fin j) (Fin j) A)
     (hc : c + cT s c + (X + (y + p)) * (K * cT s (X + (y + p))) = 0) :
@@ -61,12 +85,18 @@ theorem skew_rest (hs : ∀ x, s (s x) = x) (hk : ∀ (c : k) x, s (c • x) = c
   simp only [cT_add, cT_pair s K hs hK, Matrix.mul_add, Matrix.add_mul, smul_add, neg_add, sub_eq_add_neg]
   module
 
+/- English proof (translation)
+Rewrite using `[cT_sub, cT_smul s hk, cT_pair s K hs hK, hz]`. Use `module`.
+-/
 theorem rel_half (hs : ∀ x, s (s x) = x) (hk : ∀ (c : k) x, s (c • x) = c • s x) (hK : cT s K = K)
     (b : Matrix (Fin j) (Fin m) A) (z : Matrix (Fin j) (Fin j) A) (hz : cT s z = -z) :
     (z - (2⁻¹ : k) • (b * (K * cT s b))) + cT s (z - (2⁻¹ : k) • (b * (K * cT s b))) + b * (K * cT s b) = 0 := by
   rw [cT_sub, cT_smul s hk, cT_pair s K hs hK, hz]
   module
 
+/- English proof (translation)
+Establish `h` using `sub_eq_zero.2 hR`. Rewrite using `[← sub_eq_zero]`. Rewrite using `[← h, Matrix.neg_mul]`. Use `module`.
+-/
 theorem final_eq (X y p : Matrix (Fin j) (Fin m) A) (c r z ws : Matrix (Fin j) (Fin j) A)
     (hR : c + X * (K * cT s (X + (y + p))) - (2⁻¹ : k) • (X * (K * cT s X)) + (2⁻¹ : k) • (y * (K * cT s y)) +
       (2⁻¹ : k) • (p * (K * cT s p)) + y * (K * cT s p) = r + (z + ws)) :
@@ -83,6 +113,53 @@ namespace GlobalTheory.SphEis
 
 open GlobalTheory.SphEis.SphericalEisensteinCover in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hFr lv hlv`. Establish `hcm` using `hFr.cm`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hs : ∀ x, sigR (AF F) σ (sigR (AF F) σ x) = x` using `fun a => by`.
+
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (sigma_sigma hcm x)`. Establish `hk : ∀ (c : F) x, sigR (AF F) σ (c • x) = c • sigR (AF F) σ x` using `fun c x => map_smul (Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ) c x`.
+
+Establish `hsc : Continuous (sigR (AF F) σ)`. Establish `e : (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = LinearMap.baseChange (AF F) σ.toLinearMap`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Rewrite using `[e]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`. Establish `hJ₀ : cT (σ : E →+* E) J₀ = J₀` using `Matrix.ext fun i k => hFr.herm₀.1 i k`.
+
+Establish `hJ₀i : cT (σ : E →+* E) J₀⁻¹ = J₀⁻¹`. Establish `hu : IsUnit J₀.det` using `IsUnit.mk0 _ hFr.herm₀.2`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hK : cT (sigR (AF F) σ) (adMat F J₀⁻¹) = adMat F J₀⁻¹` using `congrArg (adMat F) hJ₀i`.
+
+Use `set K : Matrix (Fin m) (Fin m) (AF F ⊗[F] E) := adMat F J₀⁻¹ with hKdef`. Establish `hplus : ∀ b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E), plus σ J₀ b = K * cT (sigR (AF F) σ) b` using `fun b => rfl`. Take `⟨Ω₁, B₁, hΩ₁, hrect⟩` from `GlobalTheory.T.cover_rectangularAdelicMatrices_shrunkCompact F E σ hcm j m`. Take `⟨Ω₂, B₂, hΩ₂, hskew⟩` from `GlobalTheory.T.cover_skewHermitianAdelicMatrices_shrunkCompact F E σ hcm j`. Use `set S₁ : Set (Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) := {ω | ∀ i k, ω i k ∈ Ω₁} with hS₁`.
+
+Use `set S₂ : Set (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := {ω | ∀ i k, ω i k ∈ Ω₂} with hS₂`. Establish `hS₁c : IsCompact S₁` using `isCompact_entries j m hΩ₁`. Establish `hS₂c : IsCompact S₂` using `isCompact_entries j j hΩ₂`. Establish `hcont : ∀ i k, Continuous fun q : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × Matrix (Fin j) (Fin j) (AF F ⊗[F] E) => (q.2 - (2⁻¹ : F) • (q.1 * (K * cT (sigR (AF F) σ) q.1))) i k` using `fun i k => by`. Establish `h1 : Continuous fun q : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × Matrix (Fin j) (Fin j) (AF F ⊗[F] E) => q.1 * (K * cT (sigR (AF F) σ) q.1)` using `continuous_fst.matrix_mul (continuous_const.matrix_mul (continuous_fst.matrix_map hsc).matrix_transpose)`.
+
+Establish `hsm : Continuous fun x : AF F ⊗[F] E => (2⁻¹ : F) • x`. Simplify using `only [Algebra.smul_def]`. Conclude with `continuous_const.mul continuous_id`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply]`. Conclude with `((continuous_apply_apply i k).comp continuous_snd).sub (hsm.comp (h1.matrix_elem i k))`.
+
+Use `set Ω₃ : Set (AF F ⊗[F] E) := Ω₁ ∪ ⋃ (i : Fin j) (k : Fin j), (fun q : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × Matrix (Fin j) (Fin j) (AF F ⊗[F] E) => (q.2 - (2⁻¹ : F) • (q.1 * (K * cT (sigR (AF F) σ) q.1))) i k) '' (S₁ ×ˢ S₂) with hΩ₃`. Establish `hΩ₃c : IsCompact Ω₃` using `hΩ₁.union (isCompact_iUnion fun i => isCompact_iUnion fun k => (hS₁c.prod hS₂c).image (hcont i k))`. Take `⟨V, hV, hVmem⟩` from `GlobalTheory.T.exists_isCompact_of_unipotentCoordinates_mem F E σ n J j m C D Z J₀ hFr Ω₃ hΩ₃c`. Use `⟨V, B₁ * B₂, hV, fun μ => ?_⟩` and prove the remaining obligations. Take `⟨Y₁, hY₁, hcov₁⟩` from `hrect μ`.
+
+Take `⟨Y₂, hY₂, hY₂sk, hcov₂⟩` from `hskew μ`. Establish `crd2` using `GlobalTheory.T.exists_unipotentRadical_point_with_coords F E σ n J j m C D Z J₀ hFr`. Establish `hrel : ∀ (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (z : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), cT (sigR (AF F) σ) z = -z → (z - (2⁻¹ : F) • (b * plus σ J₀ b)) + cT (sigR (AF F) σ) (z - (2⁻¹ : F) • (b * plus σ J₀ b)) + b * plus σ J₀ b = 0` using `fun b z hz => rel_half (sigR (AF F) σ) K hs hk hK b z hz`. Set `f : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × Matrix (Fin j) (Fin j) (AF F ⊗[F] E) → GAd σ J` to `fun q => if hq : cT (sigR (AF F) σ) q.2 = -q.2 then Classical.choose (crd2 q.1 _ (hrel q.1 q.2 hq)) else 1`. Establish `hf : ∀ b z, cT (sigR (AF F) σ) z = -z → f (b, z) ∈ unipRad σ J C ∧ Crd σ J C D Z J₀ (f (b, z)) b (z - (2⁻¹ : F) • (b * plus σ J₀ b))`.
+
+Introduce `b z hz`. Simplify using `only [f, dif_pos hz]`. Conclude with `Classical.choose_spec (crd2 b _ (hrel b z hz))`. Use `⟨(Y₁ ×ˢ Y₂).image f, ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `(Nat.cast_le.mpr Finset.card_image_le).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.card_product, Nat.cast_mul]`. Use `(mul_le_mul hY₁ hY₂ (Nat.cast_nonneg _) ((Nat.cast_nonneg _).trans hY₁)).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [add_mul, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `y hy`.
+
+Take `⟨⟨b, z⟩, hq, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(hf b z (hY₂sk z (Finset.mem_product.1 hq).2)).1`. Take `⟨b, c, hbc, hcond⟩` from `GlobalTheory.T.exists_unipotentFrameCoords_of_mem_isotropicUnipotentRadical F E σ n J j m C D Z J₀ hFr u hu`. Take `⟨x₀, y, hy, ω, hω, hb⟩` from `hcov₁ b`. Use `set t := tor F E fun i => (μ i : ℤ) with ht`.
+
+Establish `hcond' : c + cT (sigR (AF F) σ) c + (adMat F x₀ + (y + t.1 * ω)) * (K * cT (sigR (AF F) σ) (adMat F x₀ + (y + t.1 * ω))) = 0`. Rewrite using `[← hb]`. Conclude with `hcond`. Establish `hRsk` using `skew_rest (sigR (AF F) σ) K hs hk hK (adMat F x₀) y (t.1 * ω) c hcond'`. Take `⟨x₁, hx₁, z, hz, ωs, hωs, hωsΩ, hR⟩` from `hcov₂ _ hRsk`.
+
+Set `c₀ : Matrix (Fin j) (Fin j) E` to `-((2⁻¹ : F) • (x₀ * (J₀⁻¹ * cT (σ : E →+* E) x₀))) - x₁`. Establish `hneg : adMat F (-x₀) = -adMat F x₀` using `by ext; simp`. Establish `hc₀ : adMat F c₀ = -((2⁻¹ : F) • (adMat F x₀ * (K * cT (sigR (AF F) σ) (adMat F x₀)))) - adMat F x₁`. Establish `e1 : adMat F (x₀ * (J₀⁻¹ * cT (σ : E →+* E) x₀)) = adMat F x₀ * (K * cT (sigR (AF F) σ) (adMat F x₀))`. Simplify using `only [adMat, Matrix.map_mul]`.
+
+Both sides reduce to the same expression. Establish `e2 : adMat F ((2⁻¹ : F) • (x₀ * (J₀⁻¹ * cT (σ : E →+* E) x₀))) = (2⁻¹ : F) • adMat F (x₀ * (J₀⁻¹ * cT (σ : E →+* E) x₀))` using `Matrix.map_smul _ _ (fun a => map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E) (2⁻¹ : F) a) _`. Establish `e3 : ∀ P Q : Matrix (Fin j) (Fin j) E, adMat F (P - Q) = adMat F P - adMat F Q` using `fun P Q => by ext; simp`. Establish `e4 : ∀ P : Matrix (Fin j) (Fin j) E, adMat F (-P) = -adMat F P` using `fun P => by ext; simp`. Simplify using `only [c₀]`.
+
+Rewrite using `[e3, e4, e2, e1]`. Establish `hx₁' : cT (sigR (AF F) σ) (adMat F x₁) = -adMat F x₁` using `by show adMat F (cT (σ : E →+* E) x₁) = _`. Rewrite using `[hx₁]`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `hγrel : adMat F c₀ + cT (sigR (AF F) σ) (adMat F c₀) + adMat F (-x₀) * plus σ J₀ (adMat F (-x₀)) = 0`. Rewrite using `[hc₀, hneg, hplus]`. Simplify using `only [cT_sub, cT_neg, cT_smul _ hk, cT_pair _ K hs hK, hx₁', Matrix.neg_mul, Matrix.mul_neg, neg_neg]`. Use `module`. Take `⟨γ, hγU, hγC⟩` from `crd2 (adMat F (-x₀)) (adMat F c₀) hγrel`.
+
+Establish `hγrat` using `GlobalTheory.T.mem_rationalPoints_of_unipotentCoords_rational F E σ n J j m C D Z J₀ hFr γ (-x₀) c₀ hγC`. Take `⟨w, hwU, hwC⟩` from `crd2 ω (ωs - (2⁻¹ : F) • (ω * plus σ J₀ ω)) (hrel ω ωs hωs)`. Establish `hwV : w ∈ V` using `hVmem w ω _ hwC (fun i k => Or.inl (hω i k)) (fun i k => Or.inr (Set.mem_iUnion₂.2 ⟨i, k, ⟨(ω, ωs), ⟨hω, hωsΩ⟩, rfl⟩⟩))`. Establish `hy'mem : f (y, z) ∈ (Y₁ ×ˢ Y₂).image f` using `Finset.mem_image_of_mem f (Finset.mem_product.2 ⟨hy, hz⟩)`. Take `⟨hy'U, hy'C⟩` from `hf y z (hY₂sk z hz)`.
+
+Establish `law` using `GlobalTheory.T.unipotentRadical_coordinates_groupLaw F E σ n J j m C D Z J₀ hFr lv hlv`. Establish `h1` using `(law γ u (adMat F (-x₀)) (adMat F c₀) b c hγC).1 hbc`. Establish `hcj` using `(law w w ω _ 0 0 hwC).2.2 t`. Establish `h2` using `(law (f (y, z)) _ y _ _ _ hy'C).1 hcj`. Establish `eb : adMat F (-x₀) + b = y + t.1 * ω` using `by rw [hb, hneg]; abel`.
+
+Establish `ec : adMat F c₀ + c - adMat F (-x₀) * plus σ J₀ b = (z - (2⁻¹ : F) • (y * plus σ J₀ y)) + t.1 * (ωs - (2⁻¹ : F) • (ω * plus σ J₀ ω)) * cT (sigR (AF F) σ) t.1 - y * plus σ J₀ (t.1 * ω)`. Establish `hconj : t.1 * (ωs - (2⁻¹ : F) • (ω * plus σ J₀ ω)) * cT (sigR (AF F) σ) t.1 = t.1 * ωs * cT (sigR (AF F) σ) t.1 - (2⁻¹ : F) • ((t.1 * ω) * plus σ J₀ (t.1 * ω))`. Simplify using `only [hplus, Formalism.UG.cT_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[hconj, hc₀, hneg, hb]`. Simplify using `only [hplus]`.
+
+Conclude with `final_eq (sigR (AF F) σ) K (adMat F x₀) y (t.1 * ω) c (adMat F x₁) z (t.1 * ωs * cT (sigR (AF F) σ) t.1) hR`. Rewrite `h1` using `[eb, ec]`. Establish `heq` using `(law (γ * u) _ _ _ 0 0 h1).2.1 h2`. Use `⟨γ, hγrat, hγU, f (y, z), hy'mem, w, hwV, hwU, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem cover_unipRad : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ lv : GL (Fin j) (AF F ⊗[F] E) →* GAd σ J, IsLv σ J C D Z lv → ∃ (V : Set (GAd σ J)) (B : ℝ), IsCompact V ∧ ∀ μ : Fin j → ℕ, ∃ Y : Finset (GAd σ J), (Y.card : ℝ) ≤ B * ∏ i, bse F ^ ((m + j) * μ i) ∧ (∀ y ∈ Y, y ∈ unipRad σ J C) ∧ ∀ u ∈ unipRad σ J C, ∃ γ ∈ ratPts σ J, γ ∈ unipRad σ J C ∧ ∃ y ∈ Y, ∃ w ∈ V, w ∈ unipRad σ J C ∧ γ * u = y * lv (tor F E fun i => (μ i : ℤ)) * w * (lv (tor F E fun i => (μ i : ℤ)))⁻¹ := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hFr lv hlv
   classical

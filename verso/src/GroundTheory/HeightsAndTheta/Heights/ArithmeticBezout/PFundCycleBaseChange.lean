@@ -9,6 +9,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Set `` to `Localization.AtPrime.algebraOfLiesOver W W'`. Establish `: IsLocalHom (algebraMap (Localization.AtPrime W) (Localization.AtPrime W'))` using `Localization.isLocalHom_localRingHom _ _ _ _`. Establish `htow : (algebraMap (Localization.AtPrime W) (Localization.AtPrime W')).comp (algebraMap A (Localization.AtPrime W)) = (algebraMap B (Localization.AtPrime W')).comp (algebraMap A B)`. Use extensionality with `x`. Conclude with `Localization.localRingHom_to_map _ _ _ Ideal.LiesOver.over x`.
+
+Establish `hmap : ∀ I : Ideal A, (I.map (algebraMap A (Localization.AtPrime W))).map (algebraMap (Localization.AtPrime W) (Localization.AtPrime W')) = (I.map (algebraMap A B)).map (algebraMap B (Localization.AtPrime W'))`. Introduce `I`. Rewrite using `[Ideal.map_map, Ideal.map_map, htow]`. Establish `key` using `IsLocalRing.length_baseChange (Localization.AtPrime W) (Localization.AtPrime W') (Localization.AtPrime W ⧸ J.map (algebraMap A (Localization.AtPrime W)))`. Rewrite `key` using `[← (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (Localization.AtPrime W') (J.map (algebraMap A (Localization.AtPrime W)))).toLinearEquiv.length_eq, hmap, ← IsLocalization.AtPrime.map_eq_maximalIdeal W (Localization.AtPrime W), hmap, hfib]`.
+
+Establish `: IsSimpleModule (Localization.AtPrime W') (Localization.AtPrime W' ⧸ IsLocalRing.maximalIdeal (Localization.AtPrime W'))` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _))`. Rewrite `key` using `[Module.length_eq_one (R := Localization.AtPrime W') (M := Localization.AtPrime W' ⧸ IsLocalRing.maximalIdeal (Localization.AtPrime W')), mul_one]`. Unfold `localMult`. Rewrite using `[dif_pos ‹W'.IsPrime›, dif_pos ‹W.IsPrime›, key]`.
+-/
 theorem localMult_map_of_flat {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [Module.Flat A B] (J W : Ideal A) [W.IsPrime] (W' : Ideal B) [W'.IsPrime] [W'.LiesOver W]
     (hfib : (W.map (algebraMap A B)).map (algebraMap B (Localization.AtPrime W')) =
@@ -46,6 +53,11 @@ variable {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B)
   (hc : ∀ I : Ideal A, I.IsPrime → ∀ P ∈ (I.map f).minimalPrimes, P.comap f = I)
 include hc
 
+/- English proof (translation)
+Establish `hPp : P.IsPrime` using `hP.1.1`. Take `⟨W₀, hW₀, hW₀le⟩` from `Ideal.exists_minimalPrimes_le (Ideal.map_le_iff_le_comap.mp hP.1.2)`. Establish `hW₀p : W₀.IsPrime` using `hW₀.1.1`. Take `⟨P₀, hP₀, hP₀le⟩` from `Ideal.exists_minimalPrimes_le (Ideal.map_le_iff_le_comap.mpr hW₀le)`. Establish `hP₀p : P₀.IsPrime` using `hP₀.1.1`.
+
+Establish `hEq : P₀ = P` using `le_antisymm hP₀le (hP.2 ⟨hP₀p, (Ideal.map_mono hW₀.1.2).trans hP₀.1.2⟩ hP₀le)`. Substitute `hEq` using the available equality. Rewrite using `[hc W₀ hW₀p P₀ hP₀]`. Conclude with `⟨hW₀, hP₀⟩`.
+-/
 theorem comap_mem_minimalPrimes {J : Ideal A} {P : Ideal B} (hP : P ∈ (J.map f).minimalPrimes) :
     P.comap f ∈ J.minimalPrimes ∧ P ∈ ((P.comap f).map f).minimalPrimes := by
   have hPp : P.IsPrime := hP.1.1
@@ -61,6 +73,13 @@ theorem comap_mem_minimalPrimes {J : Ideal A} {P : Ideal B} (hP : P ∈ (J.map f
   rw [hc W₀ hW₀p P₀ hP₀]
   exact ⟨hW₀, hP₀⟩
 
+/- English proof (translation)
+Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `hPp : P.IsPrime` using `hP.1.1`. Use `⟨⟨hPp, (Ideal.map_mono hW.1.2).trans hP.1.2⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Establish `hQp : Q.IsPrime` using `hQ.1`. Take `⟨Q₀, hQ₀, hQ₀le⟩` from `Ideal.exists_minimalPrimes_le hQ.2`.
+
+Take `⟨h1, -⟩` from `comap_mem_minimalPrimes f hc hQ₀`. Establish `hle : Q₀.comap f ≤ W`. Rewrite using `[← hc W hWp P hP]`. Conclude with `Ideal.comap_mono (hQ₀le.trans hQP)`. Establish `hWQ : W ≤ Q₀.comap f` using `hW.2 h1.1 hle`.
+
+Establish `hQ₀p : Q₀.IsPrime` using `hQ₀.1.1`. Conclude with `(hP.2 ⟨hQ₀p, Ideal.map_le_iff_le_comap.mpr hWQ⟩ (hQ₀le.trans hQP)).trans hQ₀le`.
+-/
 theorem mem_minimalPrimes_map {J W : Ideal A} (hW : W ∈ J.minimalPrimes) {P : Ideal B}
     (hP : P ∈ (W.map f).minimalPrimes) : P ∈ (J.map f).minimalPrimes := by
   have hWp : W.IsPrime := hW.1.1
@@ -78,11 +97,17 @@ theorem mem_minimalPrimes_map {J W : Ideal A} (hW : W ∈ J.minimalPrimes) {P : 
 
 end MinimalPrimes
 
+/- English proof (translation)
+Simplify using `[IsRelevant, Ideal.mem_comap, MvPolynomial.map_X]`.
+-/
 theorem isRelevant_comap_map_iff {K L : Type*} [CommRing K] [CommRing L] (σ : K →+* L) {n : ℕ}
     (P : Ideal (MvPolynomial (Fin n) L)) :
     IsRelevant (P.comap (MvPolynomial.map σ)) ↔ IsRelevant P := by
   simp [IsRelevant, Ideal.mem_comap, MvPolynomial.map_X]
 
+/- English proof (translation)
+Unfold `fundCycle`. Rewrite using `[Finsupp.onFinset_apply]`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem fundCycle_apply {R : Type*} [CommRing R] [IsNoetherianRing R] {n : ℕ}
     (J W : Ideal (MvPolynomial (Fin n) R)) [Decidable (W ∈ relComps J)] :
     fundCycle J W = if W ∈ relComps J then localMult J W else 0 := by
@@ -90,6 +115,21 @@ theorem fundCycle_apply {R : Type*} [CommRing R] [IsNoetherianRing R] {n : ℕ}
   rw [Finsupp.onFinset_apply]
   congr
 
+/- English proof (translation)
+Introduce `K L _ _ _ σ n J`. Establish `hc : ∀ I : Ideal (MvPolynomial (Fin n) K), I.IsPrime → ∀ P ∈ (I.map (MvPolynomial.map σ)).minimalPrimes, P.comap (MvPolynomial.map σ) = I` using `fun I hI P hP => h K L σ (Fin n) I hI P hP`. Establish `hrad` using `RadicalBaseChange.proof`. Set `` to `σ.toAlgebra`. Set `` to `MvPolynomial.algebraMvPolynomial (σ := Fin n) (R := K) (S := L)`.
+
+Establish `: Module.Flat (MvPolynomial (Fin n) K) (MvPolynomial (Fin n) L)` using `Module.Flat.isBaseChange (R := K) (S := MvPolynomial (Fin n) K) (M := L) (N := MvPolynomial (Fin n) L) (h := Algebra.IsPushout.out (R := K) (S := MvPolynomial (Fin n) K) (R' := L) (S' := MvPolynomial (Fin n) L))`. Establish `hsupp : ∀ W ∈ (fundCycle J).support, W ∈ relComps J`. Introduce `W hW`. Assume the negation of the conclusion as `hn`. Conclude with `Finsupp.mem_support_iff.mp hW (by rw [fundCycle_apply, if_neg hn])`.
+
+Establish `hone : ∀ W : Ideal (MvPolynomial (Fin n) K), W.IsPrime → ∀ P, P ∈ relComps (W.map (MvPolynomial.map σ)) → localMult (W.map (MvPolynomial.map σ)) P = 1` using `fun W hW P hP => localMult_eq_one_of_isRadical (hrad K L σ (Fin n) W hW.isRadical) hP.1`. Use extensionality with `P`. Rewrite using `[Finsupp.finsetSum_apply, fundCycle_apply]`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul]`. Use `split_ifs with hP`.
+
+Take `⟨hWmin, hPW⟩` from `comap_mem_minimalPrimes _ hc hP.1`. Establish `hWrel : P.comap (MvPolynomial.map σ) ∈ relComps J` using `⟨hWmin, (isRelevant_comap_map_iff σ P).mpr hP.2⟩`. Establish `hWp : (P.comap (MvPolynomial.map σ)).IsPrime` using `hWmin.1.1`. Establish `hPp : P.IsPrime` using `hP.1.1.1`. Establish `: P.LiesOver (P.comap (MvPolynomial.map σ))` using `⟨rfl⟩`.
+
+Establish `hmult : localMult (J.map (MvPolynomial.map σ)) P = localMult J (P.comap (MvPolynomial.map σ))` using `localMult_map_of_flat J _ P (map_eq_maximalIdeal_of_isRadical (hrad K L σ (Fin n) _ hWp.isRadical) hPW)`. Rewrite using `[hmult, Finset.sum_eq_single (P.comap (MvPolynomial.map σ))]`. Rewrite using `[fundCycle_apply J, if_pos hWrel, fundCycle_apply (Ideal.map (MvPolynomial.map σ) (P.comap (MvPolynomial.map σ))) P, if_pos ⟨hPW, hP.2⟩, hone _ hWp P ⟨hPW, hP.2⟩, mul_one]`. Introduce `W₀ hW₀ hne`. Rewrite using `[fundCycle_apply (Ideal.map (MvPolynomial.map σ) W₀) P, if_neg, mul_zero]`.
+
+Introduce `hPW₀`. Conclude with `hne (hc W₀ (hsupp W₀ hW₀).1.1.1 P hPW₀.1).symm`. Introduce `hW`. Rewrite using `[Finsupp.notMem_support_iff.mp hW, zero_mul]`. Use `(Finset.sum_eq_zero fun W hW => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[fundCycle_apply (Ideal.map (MvPolynomial.map σ) W) P, if_neg, mul_zero]`. Introduce `hPW`. Conclude with `hP ⟨mem_minimalPrimes_map _ hc (hsupp W hW).1 hPW.1, hPW.2⟩`.
+-/
 theorem FundCycleBaseChange.proof (h : MinimalPrimeComap.Statement) : FundCycleBaseChange.Statement := by
   classical
   intro K L _ _ _ σ n J

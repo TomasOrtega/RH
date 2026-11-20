@@ -14,6 +14,9 @@ def phiO : 𝓞 ↥D.LL0 →+* 𝓞 D.what₂.LL := RingOfIntegers.mapRingHom (a
 
 def psiO : 𝓞 D.what₂.LL →+* 𝓞 ↥D.LL0 := RingOfIntegers.mapRingHom (toLL0 D hLL0)
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext rfl`.
+-/
 theorem phi_psi (x : 𝓞 D.what₂.LL) : phiO D (psiO D hLL0 x) = x := RingOfIntegers.ext rfl
 
 def plLL0 (P : HeightOneSpectrum (𝓞 D.what₂.LL)) : HeightOneSpectrum (𝓞 ↥D.LL0) where
@@ -28,6 +31,9 @@ def plLL0 (P : HeightOneSpectrum (𝓞 D.what₂.LL)) : HeightOneSpectrum (𝓞 
     apply hx0
     rw [← phi_psi D hLL0 x, h1, map_zero]
 
+/- English proof (translation)
+The claim follows from `hc _ (D.what₂.places.resChar_prime w) (plLL0 D hLL0 (D.plEq w)) (by show phiO D _ ∈ (D.plEq w).asIdeal rw [map_natCast] exact resChar_mem D w)`.
+-/
 theorem cover_at (hc : NTw.TwCover D.ntw) (w : D.what₂.places.Pl) : ∃ i, D.ntw.l i = D.what₂.places.resChar w ∧
     ∀ x : 𝓞 ↥D.LL0, x ∈ (plLL0 D hLL0 (D.plEq w)).asIdeal ↔
       ∃ y ∈ maximalIdeal (D.ntw.O0 i),
@@ -40,9 +46,15 @@ theorem cover_at (hc : NTw.TwCover D.ntw) (w : D.what₂.places.Pl) : ∃ i, D.n
 def gOk (i : D.ntw.Tw) (k : ℕ) : D.ntw.O0 i →+* D.ntw.Ok i k :=
   (algebraMap (D.ntw.O i) (D.ntw.Ok i k)).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))
 
+/- English proof (translation)
+The claim follows from `(D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)`.
+-/
 theorem gOk_inj (i : D.ntw.Tw) (k : ℕ) : Function.Injective (gOk D i k) :=
   (D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective _ _).comp (gOk_inj D i k)`.
+-/
 theorem gOkF_inj (i : D.ntw.Tw) (k : ℕ) : Function.Injective
     ((algebraMap (D.ntw.Ok i k) (FractionRing (D.ntw.Ok i k))).comp (gOk D i k)) :=
   (IsFractionRing.injective _ _).comp (gOk_inj D i k)
@@ -50,10 +62,18 @@ theorem gOkF_inj (i : D.ntw.Tw) (k : ℕ) : Function.Injective
 def iotaOk (i : D.ntw.Tw) (k : ℕ) : FractionRing (D.ntw.O0 i) →+* FractionRing (D.ntw.Ok i k) :=
   IsFractionRing.lift (gOkF_inj D i k)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (gOkF_inj D i k) y`.
+-/
 theorem iotaOk_alg (i : D.ntw.Tw) (k : ℕ) (y : D.ntw.O0 i) :
     iotaOk D i k (algebraMap _ _ y) = algebraMap (D.ntw.Ok i k) (FractionRing (D.ntw.Ok i k)) (gOk D i k y) :=
   IsFractionRing.lift_algebraMap (gOkF_inj D i k) y
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : D.ntw.emb0 i ((D.ntw.l i : ℕ) : ↥D.LL0) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))), h, map_zero]`. Establish `h2` using `(map_eq_zero (D.ntw.emb0 i)).1 h1`. Establish `h3 : (D.ntw.l i : ℕ) = 0` using `by exact_mod_cast h2`.
+
+Conclude with `(Fact.out : (D.ntw.l i).Prime).ne_zero h3`.
+-/
 theorem l_ne_zero (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ≠ 0 := by
   intro h
   have h1 : D.ntw.emb0 i ((D.ntw.l i : ℕ) : ↥D.LL0) = 0 := by
@@ -62,6 +82,11 @@ theorem l_ne_zero (i : D.ntw.Tw) : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ≠ 0 := by
   have h3 : (D.ntw.l i : ℕ) = 0 := by exact_mod_cast h2
   exact (Fact.out : (D.ntw.l i).Prime).ne_zero h3
 
+/- English proof (translation)
+Establish `h1` using `map_mem_maximalIdeal (algebraMap (D.ntw.O0 i) (D.ntw.O i)) (D.ntw.l i) (l_ne_zero D i) (D.ntw.O_l i) y hy`. Use `D.ntw.Ok_fin i k` as an intermediate fact. Establish `hint : (algebraMap (D.ntw.O i) (D.ntw.Ok i k)).IsIntegral` using `algebraMap_isIntegral_iff.mpr inferInstance`. Establish `hloc` using `hint.isLocalHom (D.ntw.Ok_inj i k)`. Rewrite `h1`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `fun h => h1 (hloc.map_nonunit _ h)`.
+-/
 theorem gOk_local (i : D.ntw.Tw) (k : ℕ) (y : D.ntw.O0 i) (hy : y ∈ maximalIdeal (D.ntw.O0 i)) :
     gOk D i k y ∈ maximalIdeal (D.ntw.Ok i k) := by
   have h1 := map_mem_maximalIdeal (algebraMap (D.ntw.O0 i) (D.ntw.O i)) (D.ntw.l i) (l_ne_zero D i) (D.ntw.O_l i) y hy
@@ -75,6 +100,17 @@ theorem gOk_local (i : D.ntw.Tw) (k : ℕ) (y : D.ntw.O0 i) (hy : y ∈ maximalI
 def embAt (i : D.ntw.Tw) : D.what₂.LL →+* FractionRing (D.ntw.Ok i 1) :=
   (iotaOk D i 1).comp ((D.ntw.emb0 i).comp (toLL0 D hLL0))
 
+/- English proof (translation)
+Rewrite using `[val_nonneg_iff]`. Use `val_le_one_iff (D.plEq w) (IsFractionRing.injective _ _) (embAt D hLL0 i) ?_ ?_ x` and prove the remaining obligations. Introduce `a ha`. Establish `h1 : psiO D hLL0 a ∈ (plLL0 D hLL0 (D.plEq w)).asIdeal` using `by show phiO D (psiO D hLL0 a) ∈ (D.plEq w).asIdeal`. Rewrite using `[phi_psi]`.
+
+Conclude with `ha`. Take `⟨y, hy, hy'⟩` from `(hi _).1 h1`. Use `⟨gOk D i 1 y, gOk_local D i 1 y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← iotaOk_alg, hy']`. Both sides reduce to the same expression.
+
+Introduce `a ha`. Establish `h1 : psiO D hLL0 a ∉ (plLL0 D hLL0 (D.plEq w)).asIdeal` using `by show ¬ phiO D (psiO D hLL0 a) ∈ (D.plEq w).asIdeal`. Rewrite using `[phi_psi]`. Conclude with `ha`. Establish `hint : IsIntegral (D.ntw.O0 i) (D.ntw.emb0 i ((psiO D hLL0 a : 𝓞 ↥D.LL0) : ↥D.LL0))` using `IsIntegral.map_of_comp_eq (Int.castRingHom (D.ntw.O0 i)) (D.ntw.emb0 i) (RingHom.ext_int _ _) (RingOfIntegers.isIntegral_coe (psiO D hLL0 a))`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hu : IsUnit y`. Assume the negation of the conclusion as `hn`. Conclude with `h1 ((hi _).2 ⟨y, (mem_maximalIdeal y).2 hn, hy⟩)`. Use `⟨(hu.map (gOk D i 1)).unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec, ← iotaOk_alg, hy]`. Both sides reduce to the same expression.
+-/
 theorem embAt_w (w : D.what₂.places.Pl) (i : D.ntw.Tw)
     (hi : ∀ x : 𝓞 ↥D.LL0, x ∈ (plLL0 D hLL0 (D.plEq w)).asIdeal ↔
       ∃ y ∈ maximalIdeal (D.ntw.O0 i),
@@ -109,15 +145,24 @@ theorem embAt_w (w : D.what₂.places.Pl) (i : D.ntw.Tw)
 def embAtB (i : D.ntw.Tw) : D.what₂.LL →+* FractionRing (D.ntw.Ok i 1) :=
   (iotaOk D i 1).comp ((D.ntw.emb0b i).comp (toLL0 D hLL0))
 
+/- English proof (translation)
+The claim follows from `congrArg (iotaOk D i 1) (D.ntw.restX_coefficientEmbedding_conj i (toLL0 D hLL0 x) (toLL0 D hLL0 (star x)) rfl)`.
+-/
 theorem embAtB_eq (i : D.ntw.Tw) (x : D.what₂.LL) : embAtB D hLL0 i x = embAt D hLL0 i (star x) :=
   congrArg (iotaOk D i 1) (D.ntw.restX_coefficientEmbedding_conj i (toLL0 D hLL0 x) (toLL0 D hLL0 (star x)) rfl)
 
 def repW (w : D.what₂.places.Pl) : D.what₂.places.Pl :=
   @Classical.epsilon _ ⟨w⟩ (fun v => v = w ∨ v = D.what₂.places.conj w)
 
+/- English proof (translation)
+The claim follows from `@Classical.epsilon_spec _ (fun v => v = w ∨ v = D.what₂.places.conj w) ⟨w, Or.inl rfl⟩`.
+-/
 theorem repW_spec (w : D.what₂.places.Pl) : repW D w = w ∨ repW D w = D.what₂.places.conj w :=
   @Classical.epsilon_spec _ (fun v => v = w ∨ v = D.what₂.places.conj w) ⟨w, Or.inl rfl⟩
 
+/- English proof (translation)
+Unfold `repW`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[D.what₂.places.conj_conj]`. Conclude with `propext or_comm`.
+-/
 theorem repW_conj (w : D.what₂.places.Pl) : repW D (D.what₂.places.conj w) = repW D w := by
   unfold repW
   congr 1
@@ -125,6 +170,17 @@ theorem repW_conj (w : D.what₂.places.Pl) : repW D (D.what₂.places.conj w) =
   rw [D.what₂.places.conj_conj]
   exact propext or_comm
 
+/- English proof (translation)
+Establish `hp` using `D.what₂.places.resChar_prime w`. Establish `hq` using `D.what₂.places.resChar_prime (D.what₂.places.conj w)`. Establish `h1 : (0 : WithTop ℤ) < D.what₂.places.val (D.what₂.places.conj w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[D.conj_val, star_natCast, D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions.
+
+Establish `h2 : (0 : WithTop ℤ) < D.what₂.places.val (D.what₂.places.conj w) ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL)`. Rewrite using `[D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos _` after adjusting the coercions. Assume the negation of the conclusion as `hne`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 hne)`.
+
+Establish `h3 : (1 : D.what₂.LL) = (a : D.what₂.LL) * ((D.what₂.places.resChar (D.what₂.places.conj w) : ℕ) : D.what₂.LL) + (b : D.what₂.LL) * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Use `congrArg (fun z : ℤ => (z : D.what₂.LL)) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `hint : ∀ z : ℤ, (0 : WithTop ℤ) ≤ D.what₂.places.val (D.what₂.places.conj w) (z : D.what₂.LL)` using `fun z => by`.
+
+Rewrite using `[val_nonneg_iff]`. Use `(D.plEq (D.what₂.places.conj w)).valuation_le_one (K := D.what₂.LL) (z : 𝓞 D.what₂.LL)` as an intermediate fact. Simplify using `using this`. Establish `h4 : (0 : WithTop ℤ) < D.what₂.places.val (D.what₂.places.conj w) (1 : D.what₂.LL)`. Rewrite using `[h3]`.
+
+Use `lt_of_lt_of_le ?_ (AddValuation.map_add _ _ _)` and prove the remaining obligations. Rewrite using `[lt_min_iff, AddValuation.map_mul, AddValuation.map_mul]`. Conclude with `⟨lt_of_lt_of_le h2 (le_add_of_nonneg_left (hint a)), lt_of_lt_of_le h1 (le_add_of_nonneg_left (hint b))⟩`. Rewrite `h4` using `[AddValuation.map_one]`. Conclude with `lt_irrefl _ h4`.
+-/
 theorem resChar_conj' (w : D.what₂.places.Pl) :
     D.what₂.places.resChar (D.what₂.places.conj w) = D.what₂.places.resChar w := by
   have hp := D.what₂.places.resChar_prime w

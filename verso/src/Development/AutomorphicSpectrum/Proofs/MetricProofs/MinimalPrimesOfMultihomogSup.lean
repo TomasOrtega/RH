@@ -11,6 +11,9 @@ open MvPolynomial ReciprocityTheory.AnForm.R
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Introduce `K _ ι _ P D hP hD Q hQ`. Establish `toGeo : ∀ I : Ideal (MvPolynomial (Σ k, ι k) ℂ), IsMultiHomogIdeal I → ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (R` using `ℂ) (ι := ι) I := fun I h => h`. Establish `hQ' : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (R` using `ℂ) (ι := ι) Q := ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_isHomogeneous fun k => ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isHomogeneous_of_mem_minimalPrimes _ ((ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isHomogeneous_of_isMultiHomogIdeal (toG …`. Conclude with `hQ'`.
+-/
 theorem isMultiHomogIdeal_of_mem_minimalPrimes_sup :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
       (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)),

@@ -17,6 +17,9 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Use `(h.map (Over.pullback f)).of_iso (Iso.refl _) (Iso.refl _) (Functor.Monoidal.εIso (Over.pullback f)).symm (Iso.refl _) (by simp) (toUnit_unique _ _) (by simp) ?_` and prove the remaining obligations. Simplify using `[Functor.obj.η_def]`.
+-/
 theorem isPullback_kernel_baseChange {S S' : Scheme.{0}} (f : S' ⟶ S) {T G B : Over S} [GrpObj B]
     {i : T ⟶ G} {q : G ⟶ B} (h : IsPullback i (toUnit _) q (η[B])) :
     IsPullback ((Over.pullback f).map i) (toUnit _) ((Over.pullback f).map q) (η[(Over.pullback f).obj B]) := by
@@ -24,6 +27,9 @@ theorem isPullback_kernel_baseChange {S S' : Scheme.{0}} (f : S' ⟶ S) {T G B :
     (Functor.Monoidal.εIso (Over.pullback f)).symm (Iso.refl _) (by simp) (toUnit_unique _ _) (by simp) ?_
   simp [Functor.obj.η_def]
 
+/- English proof (translation)
+Establish `h₁ : IsPullback (pullback.fst G.hom f) (((Over.pullback f).map q).left ≫ pullback.snd B.hom f) (q.left ≫ B.hom) f`. Establish `: ((Over.pullback f).map q).left ≫ pullback.snd B.hom f = pullback.snd G.hom f` using `Over.w ((Over.pullback f).map q)`. Rewrite using `[this, Over.w]`. Conclude with `IsPullback.of_hasPullback _ _`. Conclude with `h₁.of_bot (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback _ _)`.
+-/
 theorem isPullback_pullback_map_left {S S' : Scheme.{0}} (f : S' ⟶ S) {G B : Over S} (q : G ⟶ B) :
     IsPullback (pullback.fst G.hom f) ((Over.pullback f).map q).left q.left (pullback.fst B.hom f) := by
   have h₁ : IsPullback (pullback.fst G.hom f) (((Over.pullback f).map q).left ≫ pullback.snd B.hom f)
@@ -34,6 +40,17 @@ theorem isPullback_pullback_map_left {S S' : Scheme.{0}} (f : S' ⟶ S) {G B : O
     exact IsPullback.of_hasPullback _ _
   exact h₁.of_bot (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback _ _)
 
+/- English proof (translation)
+Introduce `S S' f X _ G _ G' _ F hF Q Q' hT`. Take `⟨e, he, heF⟩` from `grpPullback_iso hF (isGrpPullback_pullback G f)`. Use `Q.q_hom` as an intermediate fact. Use `Q.q_flat` as an intermediate fact. Use `Q.q_surj` as an intermediate fact.
+
+Use `Q.q_affine` as an intermediate fact. Use `Q'.q_affine` as an intermediate fact. Establish `sq` using `isPullback_pullback_map_left f Q.q`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S').map e.hom))`. Establish `hi : Q'.i ≫ e.hom = (SplitTorus.bcIso f X).hom ≫ (Over.pullback f).map Q.i`.
+
+Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `a` using `(isPullback_pullback_map_left f Q.i).w`. Establish `b` using `SplitTorus.bcIso_hom_fst f X`. Conclude with `((Category.assoc _ _ _).trans ((congrArg (Q'.i.left ≫ ·) heF).trans (torusCompat_iff.1 hT).symm)).trans ((congrArg (· ≫ Q.i.left) b.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) a).trans (Category.assoc _ _ _).symm)))`. Establish `hk : IsPullback Q'.i (toUnit _) (e.hom ≫ (Over.pullback f).map Q.q) (η[(Over.pullback f).obj Q.B])`.
+
+Use `(isPullback_kernel_baseChange f Q.isKernel).of_iso (SplitTorus.bcIso f X).symm e.symm (Iso.refl _) (Iso.refl _) ?_ (toUnit_unique _ _) (by simp) (by simp)` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.symm_hom, Iso.comp_inv_eq, Category.assoc, hi, Iso.inv_hom_id_assoc]`. Establish `h₁ : Flat ((Over.pullback f).map Q.q).left` using `MorphismProperty.of_isPullback (P := @Flat) sq inferInstance`. Establish `h₂ : Surjective ((Over.pullback f).map Q.q).left` using `MorphismProperty.of_isPullback (P := @Surjective) sq inferInstance`. Establish `h₃ : QuasiCompact ((Over.pullback f).map Q.q).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) sq inferInstance`.
+
+Take `⟨β, hβ, hq⟩` from `flatQuotient_iso_of_same_kernel S' G' ((Over.pullback f).obj Q.B) Q'.B _ _ (e.hom ≫ (Over.pullback f).map Q.q) Q'.i Q'.q Q'.i inferInstance Q'.i_hom (by rw [Over.comp_left]; infer_instance) (by rw [Over.comp_left]; infer_instance) (by rw [Over.comp_left]; infer_instance) hk Q'.q_ …`. Use `⟨β.hom.left ≫ pullback.fst Q.B.hom f, ?_, ((isGrpPullback_of_iso β).comp (isGrpPullback_pullback Q.B f)).congr (Category.id_comp f) rfl⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, hq, Over.comp_left, Category.assoc, ← heF, Category.assoc]`. Conclude with `congrArg (_ ≫ ·) sq.w.symm`.
+-/
 theorem TQ.exists_isGrpPullback : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (X : Type) [AddCommGroup X] (G : Over S)
     [GrpObj G] (G' : Over S') [GrpObj G'] (F : G'.left ⟶ G.left), IsGrpPullback G' G f F →
     ∀ (Q : TQ G X) (Q' : TQ G' X), TorusCompat f F Q'.i Q.i →

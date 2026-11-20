@@ -20,21 +20,36 @@ namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Cell
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (unipOne_add 2 X Y).symm`. Consider the case `exact unipOne_add 2 X Y`.
+-/
 private theorem nn_add (X Y : UPos (2 + 2) 2 → 𝔸[K]) : nn X * nn Y = nn (X + Y) := by
   first
     | exact (unipOne_add 2 X Y).symm
     | exact unipOne_add 2 X Y
 
+/- English proof (translation)
+The claim follows from `continuous_unipOne 2`.
+-/
 private theorem nn_continuous : Continuous (nn (K := K)) := continuous_unipOne 2
 
+/- English proof (translation)
+Use `(hpSpec (K := K)).1 0 a b t g` as an intermediate fact. Rewrite `this` using `[show nn (K := K) 0 = 1 from unipOne_zero 2, one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem hh_lv (a b : G1 K 2) (t : ℝ) (g : G1 K (2 + 2)) : HH (lv a b t * g) = t + HH g := by
   have := (hpSpec (K := K)).1 0 a b t g
   rwa [show nn (K := K) 0 = 1 from unipOne_zero 2, one_mul] at this
 
+/- English proof (translation)
+Use `(hpSpec (K := K)).1 X 1 1 0 g` as an intermediate fact. Rewrite `this` using `[(blkLaws (K := K)).2.2.1, mul_one, zero_add]`. Then use the resulting hypothesis.
+-/
 private theorem hh_nn (X : UPos (2 + 2) 2 → 𝔸[K]) (g : G1 K (2 + 2)) : HH (nn X * g) = HH g := by
   have := (hpSpec (K := K)).1 X 1 1 0 g
   rwa [(blkLaws (K := K)).2.2.1, mul_one, zero_add] at this
 
+/- English proof (translation)
+Take `⟨e, he, hm⟩` from `adMeas a b t`. Use `⟨e, hm, fun X => ?_⟩` and prove the remaining obligations. Establish `hw` using `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.1 a b t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem form (Y : UPos (2 + 2) 2 → 𝔸[K]) (a b : G1 K 2) (t : ℝ) (k : G1 K (2 + 2)) :
     ∃ e : (UPos (2 + 2) 2 → 𝔸[K]) ≃ₜ+ (UPos (2 + 2) 2 → 𝔸[K]),
       (unipMeasure K (2 + 2) 2).map e = ENNReal.ofReal (Real.exp (4 * t)) • unipMeasure K (2 + 2) 2 ∧
@@ -47,6 +62,11 @@ private theorem form (Y : UPos (2 + 2) 2 → 𝔸[K]) (a b : G1 K 2) (t : ℝ) (
     _ = (w0 K * lv a b t) * nn (e (X + Y)) * k := by group
     _ = lv b a (-t) * (w0 K * nn (e (X + Y)) * k) := by rw [hw]; group
 
+/- English proof (translation)
+Take `⟨Y, a, b, t, k, hk, rfl⟩` from `iwa x`. Take `⟨e, -, he⟩` from `form Y a b t k`. Take `⟨C, hC, hs⟩` from `(longCell (K := K)).2 (R - t)`. Use `⟨(fun Z => e.symm Z - Y) '' C, hC.image (by fun_prop), fun X hX => ?_⟩` and prove the remaining obligations. Rewrite `hX` using `[he, hh_lv]`.
+
+Conclude with `⟨e (X + Y), hs _ k hk (by linarith), by simp⟩`.
+-/
 private theorem supp (x : G1 K (2 + 2)) (R : ℝ) :
     ∃ C : Set (UPos (2 + 2) 2 → 𝔸[K]), IsCompact C ∧ ∀ X, -R ≤ HH (w0 K * nn X * x) → X ∈ C := by
   obtain ⟨Y, a, b, t, k, hk, rfl⟩ := iwa x
@@ -56,6 +76,19 @@ private theorem supp (x : G1 K (2 + 2)) (R : ℝ) :
   rw [he, hh_lv] at hX
   exact ⟨e (X + Y), hs _ k hk (by linarith), by simp⟩
 
+/- English proof (translation)
+Take `⟨C, hC, hs⟩` from `(longCell (K := K)).2 (R - s)`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 1)`. Use `⟨B * (ENNReal.ofReal (Real.exp (4 * s)) * unipMeasure K (2 + 2) 2 C).toReal, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨Y, a, b, t, k, hk, rfl⟩` from `iwa x`. Establish `ht : t = s`.
+
+Use `(hpSpec (K := K)).1 Y a b t k` as an intermediate fact. Rewrite `this` using `[hx, ((hpSpec (K := K)).2.1 k hk).1, add_zero]`. Conclude with `this.symm`. Substitute `ht` using the available equality. Take `⟨e, hm, he⟩` from `form Y a b t k`.
+
+Use `set A : Set (UPos (2 + 2) 2 → 𝔸[K]) := (fun X => e (X + Y)) ⁻¹' C with hA`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`. Establish `hAm : unipMeasure K (2 + 2) 2 A = ENNReal.ofReal (Real.exp (4 * t)) * unipMeasure K (2 + 2) 2 C`. Establish `h1 : A = (fun X => X + Y) ⁻¹' (e ⁻¹' C)` using `rfl`. Establish `hem : Measurable (e : (UPos (2 + 2) 2 → 𝔸[K]) → (UPos (2 + 2) 2 → 𝔸[K]))` using `(map_continuous e).measurable`.
+
+Rewrite using `[h1, measure_preimage_add_right, ← Measure.map_apply hem hCm, hm]`. Simplify using the standard rewrite rules. Establish `hz : ∀ X, X ∉ A → G (w0 K * nn X * (nn Y * lv a b t * k)) = 0` using `fun X hX => by`. Assume the negation of the conclusion as `h`. Use `hX (hs _ k hk ?_)` and prove the remaining obligations.
+
+Use `abs_le.1 (hR _ h)` as an intermediate fact. Rewrite `this` using `[he, hh_lv]`. Combine the linear relations using `[this.1]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hz]`. Establish `hfin : unipMeasure K (2 + 2) 2 A < ⊤`.
+
+Rewrite using `[hAm]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top`. Use `norm_setIntegral_le_of_norm_le_const (μ := unipMeasure K (2 + 2) 2) (f := fun X => G (w0 K * nn X * (nn Y * lv a b t * k))) hfin (fun X _ => hB _)` as an intermediate fact. Rewrite `this` using `[Measure.real, hAm]`. Then use the resulting hypothesis.
+-/
 private theorem bd (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hB : ∀ g, ‖G g‖ ≤ B) (hR : ∀ g, G g ≠ 0 → |HH g| ≤ R) (s : ℝ) :
     ∃ M : ℝ, ∀ x : G1 K (2 + 2), HH x = s → ‖∫ X, G (w0 K * nn X * x) ∂unipMeasure K (2 + 2) 2‖ ≤ M := by
   obtain ⟨C, hC, hs⟩ := (longCell (K := K)).2 (R - s)
@@ -89,10 +122,26 @@ private theorem bd (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hB : ∀ g, ‖G g‖
   rwa [Measure.real, hAm] at this
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Use `haveI := secondCountableTopology_normOneGL (K := K) (n := n)`. Use `infer_instance`.
+-/
 private theorem fco {n : ℕ} : FirstCountableTopology (G1 K n) := by
   haveI := secondCountableTopology_normOneGL (K := K) (n := n)
   infer_instance
 
+/- English proof (translation)
+Use `haveI : FirstCountableTopology (G1 K (2 + 2)) := fco`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Take `⟨V, hV, hV1⟩` from `exists_compact_mem_nhds (1 : G1 K (2 + 2))`. Take `⟨R₀, hR₀⟩` from `(hpSpec (K := K)).2.2.2.2 V hV`.
+
+Take `⟨C, hC, hs⟩` from `supp x₀ (R + R₀)`. Establish `hc : ∀ x : G1 K (2 + 2), Continuous fun X : UPos (2 + 2) 2 → 𝔸[K] => G (w0 K * nn X * x)` using `fun x => hG.comp ((continuous_const.mul nn_continuous).mul continuous_const)`. Use `continuousAt_of_dominated (bound := C.indicator fun _ => B) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun x => (hc x).aestronglyMeasurable`. Establish `ht : Tendsto (fun x : G1 K (2 + 2) => x₀⁻¹ * x) (𝓝 x₀) (𝓝 1)`.
+
+Establish `: Continuous (fun x : G1 K (2 + 2) => x₀⁻¹ * x)` using `continuous_const.mul continuous_id`. Establish `h` using `this.tendsto x₀`. Rewrite `h` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Use `filter_upwards [ht hV1] with x hx`. Use `Eventually.of_forall fun X => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hX : X ∈ C`. Rewrite using `[Set.indicator_of_mem hX]`. Conclude with `hB _`. Rewrite using `[Set.indicator_of_notMem hX]`. Assume the negation of the conclusion as `hne`.
+
+Establish `h0 : G (w0 K * nn X * x) ≠ 0` using `fun h => hne (by rw [h, norm_zero])`. Use `hX (hs X ?_)` and prove the remaining obligations. Establish `h1` using `abs_le.1 (hR _ h0)`. Establish `h2` using `abs_le.1 (hR₀ (w0 K * nn X * x₀) _ hx)`. Rewrite `h2` using `[show w0 K * nn X * x₀ * (x₀⁻¹ * x) = w0 K * nn X * x by group]`.
+
+Combine the linear relations using `[h1.1, h2.2]`. Conclude with `(integrable_indicator_iff hC.isClosed.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)`. Use `Eventually.of_forall fun X => ?_` and prove the remaining obligations. Conclude with `(hG.comp (continuous_const.mul continuous_id)).continuousAt`.
+-/
 private theorem cont (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hG : Continuous G) (hB : ∀ g, ‖G g‖ ≤ B) (hR : ∀ g, G g ≠ 0 → |HH g| ≤ R) :
     Continuous fun x : G1 K (2 + 2) => ∫ X, G (w0 K * nn X * x) ∂unipMeasure K (2 + 2) 2 := by
   haveI : FirstCountableTopology (G1 K (2 + 2)) := fco
@@ -126,6 +175,9 @@ private theorem cont (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hG : Continuous G) 
   · refine Eventually.of_forall fun X => ?_
     exact (hG.comp (continuous_const.mul continuous_id)).continuousAt
 
+/- English proof (translation)
+Establish `h : ∀ X, w0 K * nn X * (nn Y * x) = w0 K * nn (X + Y) * x` using `fun X => by`. Rewrite using `[← nn_add]`. Use `group`. Repeatedly rewrite using `[h]`. Conclude with `integral_add_right_eq_self (fun X => G (w0 K * nn X * x)) Y`.
+-/
 private theorem shift (G : G1 K (2 + 2) → ℂ) (Y : UPos (2 + 2) 2 → 𝔸[K]) (x : G1 K (2 + 2)) :
     ∫ X, G (w0 K * nn X * (nn Y * x)) ∂unipMeasure K (2 + 2) 2 = ∫ X, G (w0 K * nn X * x) ∂unipMeasure K (2 + 2) 2 := by
   have h : ∀ X, w0 K * nn X * (nn Y * x) = w0 K * nn (X + Y) * x := fun X => by
@@ -134,6 +186,13 @@ private theorem shift (G : G1 K (2 + 2) → ℂ) (Y : UPos (2 + 2) 2 → 𝔸[K]
   simp_rw [h]
   exact integral_add_right_eq_self (fun X => G (w0 K * nn X * x)) Y
 
+/- English proof (translation)
+Take `⟨e, he, hm⟩` from `adMeas m₁ m₂ 0`. Establish `hw` using `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.1 m₁ m₂ 0`. Rewrite `hw` using `[neg_zero]`. Establish `hm' : (unipMeasure K (2 + 2) 2).map e = unipMeasure K (2 + 2) 2`. Rewrite using `[hm]`.
+
+Simplify using the standard rewrite rules. Establish `h : ∀ X, w0 K * nn X * (lv m₁ m₂ 0 * x) = lv m₂ m₁ 0 * (w0 K * nn (e X) * x)` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[h]`. Use `conv_rhs => rw [← hm']`.
+
+Conclude with `(e.toHomeomorph.measurableEmbedding.integral_map (fun X => G (lv m₂ m₁ 0 * (w0 K * nn X * x)))).symm`.
+-/
 private theorem swap (G : G1 K (2 + 2) → ℂ) (m₁ m₂ : G1 K 2) (x : G1 K (2 + 2)) :
     ∫ X, G (w0 K * nn X * (lv m₁ m₂ 0 * x)) ∂unipMeasure K (2 + 2) 2 =
       ∫ X, G (lv m₂ m₁ 0 * (w0 K * nn X * x)) ∂unipMeasure K (2 + 2) 2 := by
@@ -151,12 +210,36 @@ private theorem swap (G : G1 K (2 + 2) → ℂ) (m₁ m₂ : G1 K 2) (x : G1 K (
   conv_rhs => rw [← hm']
   exact (e.toHomeomorph.measurableEmbedding.integral_map (fun X => G (lv m₂ m₁ 0 * (w0 K * nn X * x)))).symm
 
+/- English proof (translation)
+Take `⟨O, -, hOU⟩` from `D.isOpen`. Use `filter_upwards [D.supp] with k hk`. Conclude with `((hOU k).1 hk).2`.
+-/
 private theorem aeKG (D : TypeDat K (2 + 2)) : ∀ᵐ k ∂D.ν, k ∈ KG K (2 + 2) := by
   obtain ⟨O, -, hOU⟩ := D.isOpen
   filter_upwards [D.supp] with k hk
   exact ((hOU k).1 hk).2
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Use `haveI := D.prob`. Take `⟨h1, h2, h3, hHc, h5⟩` from `hpSpec (K := K)`. Take `⟨C, hC, hs⟩` from `supp x R`. Take `⟨G, hG⟩ : ∃ G : G1 K (2 + 2) → ℂ, G = fun g => w (HH g) * f g` from `⟨_, rfl⟩`. Establish `hGc : Continuous G`.
+
+Rewrite using `[hG]`. Conclude with `(hwc.comp hHc).mul hfc`. Establish `hKG` using `aeKG D`. Choose the witnesses or unpack the hypotheses as in `⟨Be, hBe⟩ : ∃ Be : ℝ, ∀ k ∈ KG K (2 + 2), ‖D.e k‖ ≤ Be := by`. Take `⟨Be, hBe⟩` from `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1.exists_bound_of_continuousOn D.cont.continuousOn`.
+
+Conclude with `⟨Be, hBe⟩`. Establish `hz : ∀ k ∈ KG K (2 + 2), ∀ X, X ∉ C → G (w0 K * nn X * x * k) = 0` using `fun k hk X hX => by`. Assume the negation of the conclusion as `h`. Use `hX (hs X ?_)` and prove the remaining obligations. Use `abs_le.1 (hR _ (by simpa only [hG] using h))` as an intermediate fact.
+
+Rewrite `this` using `[(h2 k hk).2]`. Combine the linear relations using `[this.1]`. Establish `hz0 : ∀ X, X ∉ C → G (w0 K * nn X * x) = 0` using `fun X hX => by`. Use `hz 1 (one_mem _) X hX` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+
+Take `⟨lam, hlam⟩ : ∃ lam, lam = (unipMeasure K (2 + 2) 2).restrict C` from `⟨_, rfl⟩`. Use `haveI : IsFiniteMeasure lam := by`. Rewrite using `[hlam]`. Conclude with `⟨by simpa using hC.measure_lt_top⟩`. Establish `e1 : ∫ k, D.e k * ∫ X, w (HH (w0 K * nn X * (x * k))) * f (w0 K * nn X * (x * k)) ∂unipMeasure K (2 + 2) 2 ∂D.ν = ∫ k, ∫ X, D.e k * G (w0 K * nn X * x * k) ∂lam ∂D.ν`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hKG] with k hk`. Rewrite using `[integral_const_mul, hlam, setIntegral_eq_integral_of_forall_compl_eq_zero (hz k hk), hG]`. Simplify using `only [mul_assoc]`. Establish `hcont : Continuous fun p : G1 K (2 + 2) × (UPos (2 + 2) 2 → 𝔸[K]) => D.e p.1 * G (w0 K * nn p.2 * x * p.1)` using `(D.cont.comp continuous_fst).mul (hGc.comp (((continuous_const.mul (nn_continuous.comp continuous_snd)).mul continuous_const).mul continuous_fst))`.
+
+Establish `hint : Integrable (Function.uncurry fun (k : G1 K (2 + 2)) (X : UPos (2 + 2) 2 → 𝔸[K]) => D.e k * G (w0 K * nn X * x * k)) (D.ν.prod lam)`. Use `Integrable.mono' (integrable_const (Be * B)) hcont.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae hKG] with p hp`. Establish `hBG : ‖G (w0 K * nn p.2 * x * p.1)‖ ≤ B`. Rewrite using `[hG]`.
+
+Conclude with `hB _`. Rewrite using `[Function.uncurry_apply_pair, norm_mul]`. Conclude with `mul_le_mul (hBe _ hp) hBG (norm_nonneg _) ((norm_nonneg _).trans (hBe _ hp))`. Rewrite using `[e1, integral_integral_swap hint]`. Establish `e3 : ∀ X, ∫ k, D.e k * G (w0 K * nn X * x * k) ∂D.ν = G (w0 K * nn X * x)` using `fun X => by`.
+
+Establish `: ∫ k, D.e k * G (w0 K * nn X * x * k) ∂D.ν = ∫ k, w (HH (w0 K * nn X * x)) * (D.e k * f (w0 K * nn X * x * k)) ∂D.ν`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hKG] with k hk`. Rewrite using `[hG]`. Simplify using `only [(h2 k hk).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, integral_const_mul, hfix, hG]`. Repeatedly rewrite using `[e3]`. Rewrite using `[hlam, setIntegral_eq_integral_of_forall_compl_eq_zero hz0, hG]`.
+-/
 private theorem fixL (D : TypeDat K (2 + 2)) (w : ℝ → ℂ) (f : G1 K (2 + 2) → ℂ) (hwc : Continuous w) (hfc : Continuous f)
     (hfix : D.Fix f) (B R : ℝ) (hB : ∀ g, ‖w (HH g) * f g‖ ≤ B) (hR : ∀ g, w (HH g) * f g ≠ 0 → |HH g| ≤ R)
     (x : G1 K (2 + 2)) :
@@ -217,6 +300,13 @@ private theorem fixL (D : TypeDat K (2 + 2)) (w : ℝ → ℂ) (f : G1 K (2 + 2)
   simp_rw [e3]
   rw [hlam, setIntegral_eq_integral_of_forall_compl_eq_zero hz0, hG]
 
+/- English proof (translation)
+Take `⟨C, hC, hs⟩` from `supp x R`. Use `haveI : IsFiniteMeasure ((unipMeasure K (2 + 2) 2).restrict C) := ⟨by simpa using hC.measure_lt_top⟩`. Establish `hz : ∀ m, ∀ X, X ∉ C → G (L m * (w0 K * nn X * x)) = 0` using `fun m X hX => by`. Assume the negation of the conclusion as `h`. Use `hX (hs X ?_)` and prove the remaining obligations.
+
+Use `abs_le.1 (hR _ h)` as an intermediate fact. Rewrite `this` using `[hLH]`. Combine the linear relations using `[this.1]`. Use `UpperTheory.reps_integral_mem_closed_submodule μ₂ τ hτ (UPos (2 + 2) 2 → 𝔸[K]) ((unipMeasure K (2 + 2) 2).restrict C) (fun X m => G (L m * (w0 K * nn X * x))) (hG.comp ((hL.comp continuous_snd).mul ((continuous_const.mul (nn_continuous.comp continuous_fst)).mul continuous_const)) …` as an intermediate fact. Take `⟨δ, hδ, h⟩` from `hLγ γ hγ m`.
+
+Rewrite using `[h, mul_assoc, hrat δ hδ])`. Use the proof step `(fun X => hrep _)`. Simplify `this` using `only [setIntegral_eq_integral_of_forall_compl_eq_zero (hz _)]`.
+-/
 private theorem slice (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ : Submodule ℂ (L2 μ₂)) (hτ : IsClosed (τ : Set (L2 μ₂)))
     (G : G1 K (2 + 2) → ℂ) (B R : ℝ) (hG : Continuous G) (hB : ∀ g, ‖G g‖ ≤ B) (hR : ∀ g, G g ≠ 0 → |HH g| ≤ R)
     (hrat : ∀ γ ∈ PK K, ∀ g, G (γ * g) = G g) (L : G1 K 2 → G1 K (2 + 2)) (hL : Continuous L)
@@ -242,12 +332,18 @@ private theorem slice (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ : Sub
     (fun X => hrep _)
   simpa only [setIntegral_eq_integral_of_forall_compl_eq_zero (hz _)] using this
 
+/- English proof (translation)
+Establish `h : Continuous fun m : G1 K 2 => ((a, m, 0) : G1 K 2 × G1 K 2 × ℝ)` using `continuous_const.prodMk (continuous_id.prodMk continuous_const)`. Establish `h2` using `(blkLaws (K := K)).2.2.2.1.comp' h`. Conclude with `h2.congr fun m => rfl`.
+-/
 private theorem lvc₂ (a : G1 K 2) : Continuous fun m : G1 K 2 => lv a m 0 := by
   have h : Continuous fun m : G1 K 2 => ((a, m, 0) : G1 K 2 × G1 K 2 × ℝ) :=
     continuous_const.prodMk (continuous_id.prodMk continuous_const)
   have h2 := (blkLaws (K := K)).2.2.2.1.comp' h
   exact h2.congr fun m => rfl
 
+/- English proof (translation)
+Establish `h : Continuous fun m : G1 K 2 => ((m, a, 0) : G1 K 2 × G1 K 2 × ℝ)` using `continuous_id.prodMk continuous_const`. Establish `h2` using `(blkLaws (K := K)).2.2.2.1.comp' h`. Simplify `h2` using `only [Function.comp_def]`.
+-/
 private theorem lvc₁ (a : G1 K 2) : Continuous fun m : G1 K 2 => lv m a 0 := by
   have h : Continuous fun m : G1 K 2 => ((m, a, 0) : G1 K 2 × G1 K 2 × ℝ) :=
     continuous_id.prodMk continuous_const
@@ -258,6 +354,47 @@ end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Cell
 
 set_option maxHeartbeats 1000000 in
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.Cell in
+/- English proof (translation)
+Introduce `K _ _ _ μ₂ _ τ₁ τ₂ D h₁ h₂ f β s hs hD hβ hc`. Establish `hS` using `secFun μ₂ τ₁ τ₂ D h₁ h₂ f hs hD`. Take `⟨hP, ⟨R, hR⟩, -⟩` from `bfFun f β hS hβ hc`. Take `⟨B, hB⟩` from `hP.bdd`. Establish `hsl : Slices τ₁ τ₂ f` using `((secCrit μ₂ τ₁ τ₂ D h₁ h₂ f hD).1 hs).2.2.2.2`.
+
+Take `⟨-, hmul, -, hlc, -⟩` from `blkLaws (K := K)`. Take `⟨-, h2, -, hHc, -⟩` from `hpSpec (K := K)`. Take `⟨w, hw⟩ : ∃ w : ℝ → ℂ, w = fun t => β t * Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * t : ℝ) : ℂ)` from `⟨_, rfl⟩`. Establish `hbf : ∀ g, bf β f g = w (HH g) * f g` using `fun g => by rw [hw]; rfl`. Establish `hb2 : bf β f = fun g => w (HH g) * f g` using `funext hbf`.
+
+Establish `hwc : Continuous w`. Rewrite using `[hw]`. Conclude with `hβ.mul (Complex.continuous_exp.comp (Complex.continuous_ofReal.comp (continuous_const.mul continuous_id)))`. Take `⟨T, hT⟩ : ∃ T : G1 K (2 + 2) → G1 K (2 + 2), T = fun g => lv 1 1 (s - HH g) * g` from `⟨_, rfl⟩`. Establish `hTc : Continuous T`.
+
+Rewrite using `[hT]`. Conclude with `(hlc.comp (continuous_const.prodMk (continuous_const.prodMk (continuous_const.sub hHc)))).mul continuous_id`. Establish `hTH : ∀ g, HH (T g) = s` using `fun g => by`. Rewrite using `[hT]`. Use `beta_reduce`.
+
+Rewrite using `[hh_lv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTk : ∀ g, ∀ k ∈ KG K (2 + 2), T (g * k) = T g * k` using `fun g k hk => by`. Rewrite using `[hT]`. Use `beta_reduce`.
+
+Rewrite using `[(h2 k hk).2 g, mul_assoc]`. Take `⟨Φ, hΦ⟩ : ∃ Φ : G1 K (2 + 2) → ℂ, Φ = fun x => ∫ X, bf β f (w0 K * nn X * x) ∂unipMeasure K (2 + 2) 2` from `⟨_, rfl⟩`. Establish `hF : (fun g => ∫ X, bf β f (w0 K * nn X * (lv 1 1 (s - HH g) * g)) ∂unipMeasure K (2 + 2) 2) = fun g => Φ (T g)`. Rewrite using `[hΦ, hT]`. Rewrite using `[hF]`.
+
+Establish `hfix : D.Fix fun g => Φ (T g)` using `fun g => by`. Establish `h` using `fixL D w f hwc hS.cont hD B R (fun g => by rw [← hbf]; exact hB g) (fun g hg => hR g (by rwa [hbf])) (T g)`. Use `show ∫ k, D.e k * Φ (T (g * k)) ∂D.ν = Φ (T g)`. Simplify using `only [hΦ, hb2]`. Rewrite using `[← h]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [aeKG D] with k hk`. Rewrite using `[hTk g k hk]`. Establish `hP₁ : ∀ γ ∈ Gam K 2, lv γ 1 0 ∈ PK K` using `fun γ hγ => (pkLaws (K := K)).2.1 _ |>.2 ⟨0, ⟨γ, hγ⟩, 1, by`. Rewrite using `[show nn (0 : unipLattice K (2 + 2) 2).1 = 1 from unipOne_zero 2, one_mul]`.
+
+Use the proof step `rfl⟩`. Establish `hP₂ : ∀ γ ∈ Gam K 2, lv 1 γ 0 ∈ PK K` using `fun γ hγ => (pkLaws (K := K)).2.1 _ |>.2 ⟨0, 1, ⟨γ, hγ⟩, by`. Rewrite using `[show nn (0 : unipLattice K (2 + 2) 2).1 = 1 from unipOne_zero 2, one_mul]`. Use the proof step `rfl⟩`. Use `⟨(secCrit μ₂ τ₂ τ₁ D h₂ h₁ _ hfix).2 ⟨?_, ?_, ?_, ?_, ?_⟩, hfix⟩` and prove the remaining obligations.
+
+Establish `hΦc : Continuous Φ`. Rewrite using `[hΦ]`. Conclude with `cont (bf β f) B R hP.cont hB hR`. Conclude with `hΦc.comp hTc`. Take `⟨M, hM⟩` from `bd (bf β f) B R hB hR s`.
+
+Use `⟨M, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `hM _ (hTH g)`. Introduce `Y g show Φ (T (nn Y * g)) = Φ (T g)`. Take `⟨e, he, -⟩` from `adMeas (1 : G1 K 2) 1 (s - HH g)`.
+
+Establish `h : T (nn Y * g) = nn (e.symm Y) * T g`. Rewrite using `[hT]`. Use `beta_reduce`. Rewrite using `[hh_nn, ← mul_assoc, ← mul_assoc, he, e.apply_symm_apply]`. Rewrite using `[h, hΦ]`.
+
+Conclude with `shift _ _ _`. Introduce `t g show Φ (T (lv 1 1 t * g)) = Φ (T g)`. Establish `h : T (lv 1 1 t * g) = T g`. Rewrite using `[hT]`. Use `beta_reduce`.
+
+Rewrite using `[hh_lv, ← mul_assoc, hmul, mul_one, show s - (t + HH g) + t = s - HH g by ring]`. Rewrite using `[h]`. Introduce `g`. Establish `key : ∀ m₁ m₂ : G1 K 2, Φ (T (lv m₁ m₂ 0 * g)) = ∫ X, bf β f (lv m₂ m₁ 0 * (w0 K * nn X * T g)) ∂unipMeasure K (2 + 2) 2` using `fun m₁ m₂ => by`. Establish `h : T (lv m₁ m₂ 0 * g) = lv m₁ m₂ 0 * T g`.
+
+Rewrite using `[hT]`. Use `beta_reduce`. Rewrite using `[hh_lv, zero_add, ← mul_assoc, ← mul_assoc, hmul, hmul, one_mul, one_mul, mul_one, mul_one, add_zero, zero_add]`. Rewrite using `[h, hΦ]`. Conclude with `swap _ _ _ _`.
+
+Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Use `slice μ₂ τ₂ h₂.closed (bf β f) B R hP.cont hB hR hP.rat (fun m => lv m₂ m 0) (lvc₂ m₂) (fun γ hγ m => ⟨lv 1 γ 0, hP₂ γ hγ, by beta_reduce` as an intermediate fact. Rewrite using `[hmul, one_mul, add_zero]⟩)`. Use the proof step `(fun m y => (hh_lv m₂ m 0 y).trans (zero_add _))`. Use the proof step `(fun y => by`.
+
+Take `⟨v, hv, hr⟩` from `(hsl y).2 m₂`. Use `⟨w (HH y) • v, τ₂.smul_mem _ hv, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) μ₂).ae (Lp.coeFn_smul (w (HH y)) v), hr] with m e1 e2`. Rewrite using `[e1, Pi.smul_apply, e2, hbf, hh_lv, zero_add, smul_eq_mul])`. Use the proof step `(T g)`.
+
+Simplify `this` using `only [key]`. Use `slice μ₂ τ₁ h₁.closed (bf β f) B R hP.cont hB hR hP.rat (fun m => lv m m₁ 0) (lvc₁ m₁) (fun γ hγ m => ⟨lv γ 1 0, hP₁ γ hγ, by beta_reduce` as an intermediate fact. Rewrite using `[hmul, one_mul, add_zero]⟩)`. Use the proof step `(fun m y => (hh_lv m m₁ 0 y).trans (zero_add _))`. Use the proof step `(fun y => by`.
+
+Take `⟨v, hv, hr⟩` from `(hsl y).1 m₁`. Use `⟨w (HH y) • v, τ₁.smul_mem _ hv, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K 2) μ₂).ae (Lp.coeFn_smul (w (HH y)) v), hr] with m e1 e2`. Rewrite using `[e1, Pi.smul_apply, e2, hbf, hh_lv, zero_add, smul_eq_mul])`. Use the proof step `(T g)`.
+
+Simplify `this` using `only [key]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.intertw :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ →
       ∀ (f : G1 K (2 + 2) → ℂ) (β : ℝ → ℂ) (s : ℝ), IsSec τ₁ τ₂ f → D.Fix f → Continuous β → HasCompactSupport β →

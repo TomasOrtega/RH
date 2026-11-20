@@ -23,6 +23,9 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
 
 omit [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(QuotientGroup.mk (fixedEquiv K (FiniteSubfield.ideleClassNorm hKL.out c)) : tateZero IdeleClassLimit (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) L.openSubgroup) = 1`. Rewrite using `[QuotientGroup.eq_one_iff, ← norm_fixedEquiv hKL.out c]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem normClass_ideleClassNorm (c : IdeleClassGroup L.1) :
     normClass K L (FiniteSubfield.ideleClassNorm hKL.out c) = 1 := by
   change (QuotientGroup.mk (fixedEquiv K (FiniteSubfield.ideleClassNorm hKL.out c)) :
@@ -30,10 +33,16 @@ theorem normClass_ideleClassNorm (c : IdeleClassGroup L.1) :
   rw [QuotientGroup.eq_one_iff, ← norm_fixedEquiv hKL.out c]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[abstractSymbol_apply, normClass_ideleClassNorm, map_one, map_one]`.
+-/
 theorem abstractSymbol_ideleClassNorm_eq_one (c : IdeleClassGroup L.1) :
     abstractSymbol K L (FiniteSubfield.ideleClassNorm hKL.out c) = 1 := by
   rw [abstractSymbol_apply, normClass_ideleClassNorm, map_one, map_one]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `QuotientGroup.mk_surjective (abstractSymbol K L c)`. Take `⟨g, rfl⟩` from `restrictHom_surjective (F := K) (E := L) σ`. Conclude with `⟨g, hσ.symm⟩`.
+-/
 theorem exists_abstractSymbol_eq (c : IdeleClassGroup K.1) :
     ∃ g : K.1.fixingSubgroup, abstractSymbol K L c = Abelianization.of (restrictHom g) := by
   obtain ⟨σ, hσ⟩ := QuotientGroup.mk_surjective (abstractSymbol K L c)
@@ -51,6 +60,9 @@ variable {K L K' L' : FiniteSubfield} [hKL : Fact (K ≤ L)]
 omit [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
   [(L'.1.fixingSubgroup.subgroupOf K'.1.fixingSubgroup).Normal] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `normTateZero (openSubgroup_le hK) (openSubgroup_le hL) (openSubgroup_le hKL'.out) (openSubgroup_le hKL.out) (QuotientGroup.mk (fixedEquiv K' c)) = QuotientGroup.mk (fixedEquiv K (FiniteSubfield.ideleClassNorm hK c))`. Rewrite using `[normTateZero_mk]`. Conclude with `congrArg _ (norm_fixedEquiv hK c)`.
+-/
 theorem normTateZero_normClass (hK : K ≤ K') (hL : L ≤ L') (c : IdeleClassGroup K'.1) :
     normTateZero (openSubgroup_le hK) (openSubgroup_le hL) (openSubgroup_le hKL'.out)
         (openSubgroup_le hKL.out) (normClass K' L' c) =
@@ -61,6 +73,11 @@ theorem normTateZero_normClass (hK : K ≤ K') (hL : L ≤ L') (c : IdeleClassGr
   rw [normTateZero_mk]
   exact congrArg _ (norm_fixedEquiv hK c)
 
+/- English proof (translation)
+Use `set D := classFieldTheory.toClassFieldData`. Establish `e : (reciprocityEquiv K' L').symm (normClass K' L' c) = Abelianization.of (QuotientGroup.mk (s` using `(L'.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)).subgroupOf K'.openSubgroup) g) := by`. Apply `(quotientGaloisEquiv K' L').abelianizationCongr.injective` to reduce the goal to its premises. Rewrite using `[abelianizationCongr_of, quotientGaloisEquiv_mk]`. Conclude with `hg`.
+
+Rewrite using `[abstractSymbol_apply, ← normTateZero_normClass hK hL c]`. Establish `h2` using `D.reciprocityAbEquiv_symm_normTateZero classFieldTheory.classFieldAxiom (openSubgroup_le hKL.out) (openSubgroup_le hKL'.out) (openSubgroup_le hK) (openSubgroup_le hL) (normClass K' L' c)`. Rewrite using `[h2, e, Abelianization.map_of, Abelianization.map_of, galRestrict_mk]`. Both sides reduce to the same expression.
+-/
 theorem abstractSymbol_ideleClassNorm (hK : K ≤ K') (hL : L ≤ L') (c : IdeleClassGroup K'.1)
     (g : K'.1.fixingSubgroup) (hg : abstractSymbol K' L' c = Abelianization.of (restrictHom g)) :
     abstractSymbol K L (FiniteSubfield.ideleClassNorm hK c) =
@@ -84,6 +101,11 @@ instance isScalarTower_of_fact {F E M : FiniteSubfield} [Fact (F ≤ E)] [Fact (
     IsScalarTower F.1 E.1 M.1 :=
   IsScalarTower.of_algebraMap_eq fun _ ↦ rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_abstractSymbol_eq K' L' c`. Rewrite using `[abstractSymbol_ideleClassNorm hK.out (Fact.out : L ≤ L') c g hg, hg, Abelianization.map_of]`. Use `congr 1`. Use `AlgEquiv.ext fun x ↦ Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun z : L'.1 ↦ (z : ℚ̄)) (AlgEquiv.restrictNormal_commutes ((restrictHom g : L'.1 ≃ₐ[K'.1] L'.1).restrictScalars K.1) L.1 x)`.
+
+Conclude with `h.symm`.
+-/
 theorem abstractSymbol_ideleClassNorm_eq_map [hK : Fact (K ≤ K')] [Fact (L ≤ L')] [Fact (K ≤ L')]
     (c : IdeleClassGroup K'.1) :
     abstractSymbol K L (FiniteSubfield.ideleClassNorm hK.out c) =

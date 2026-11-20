@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.BlockTheory.AdelicCMFields.UnitaryHeckeC
 
 open UpperTheory.ConvolutionTheory.R
 
+/- English proof (translation)
+Introduce `hC hCount hN K M _ _ _ _ _ _ _ _ hp n π ι _ m P hn hm hι hW`. Take `⟨η, hη⟩` from `hC K M hp`. Establish `h1` using `hCount K M hp η hη n π π ι m P hn hm hW hW`. Take `⟨a, b, hab⟩` from `Fintype.exists_pair_of_one_lt_card (show 1 < Fintype.card ι from hι)`. Establish `h2 : 1 < ((Finset.range (Module.finrank K M)).filter fun j => π = π.twist (η ^ j)).card`.
+
+Rewrite using `[h1, Finset.one_lt_card]`. Use `⟨(a, a), by simp, (b, b), by simp, fun h => hab (congrArg Prod.fst h)⟩` and prove the remaining obligations. Take `⟨j, hj, hj0⟩` from `Finset.exists_mem_ne h2 0`. Rewrite `hj` using `[Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨η ^ j, (hN K M hp η hη).2 j (Nat.pos_of_ne_zero hj0) hj.1, hj.2.symm⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R.twoParts :
     ClassChar → Count → NormCharPow → TwoParts := by
   classical

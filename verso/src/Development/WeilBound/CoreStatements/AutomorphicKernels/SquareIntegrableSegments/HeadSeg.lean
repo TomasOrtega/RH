@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ExistsSegmentRe
 
 namespace PositivityTheory.PfEss
 
+/- English proof (translation)
+The claim follows from `essSquareIntegrableSegments_main2 (PositivityTheory.Exh.langlandsExhaustionGL_of_seg hZ) PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top (fun k _ _ _ _ _ => PositivityTheory.Exh.lOrderFree_of (PositivityTheory.Exh.lUnlinkedIrr_of_seg hZ) k) (fun _ _ _ _ _ _ Δ => Globa …`.
+-/
 theorem essSquareIntegrableSegments_of_seg (hZ : GlobalTheory.Published.SegmentRepresentation) : GlobalTheory.Published.EssSquareIntegrableSegments :=
   essSquareIntegrableSegments_main2 (PositivityTheory.Exh.langlandsExhaustionGL_of_seg hZ) PositivityTheory.Tls2.BZGL.standardFunctorsFiniteLength_top
     (fun k _ _ _ _ _ => PositivityTheory.Exh.lOrderFree_of (PositivityTheory.Exh.lUnlinkedIrr_of_seg hZ) k)

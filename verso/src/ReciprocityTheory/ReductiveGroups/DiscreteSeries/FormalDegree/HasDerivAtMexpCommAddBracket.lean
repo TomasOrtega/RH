@@ -15,6 +15,25 @@ section Banach
 
 variable {R : Type*} [NormedRing R] [NormedAlgebra ℝ R] [CompleteSpace R]
 
+/- English proof (translation)
+Use `letI : NormedAlgebra ℚ R := NormedAlgebra.restrictScalars ℚ ℝ R`. Establish `hdiff : DifferentiableAt ℝ NormedSpace.exp A` using `(NormedSpace.exp_analytic (𝕂 := ℝ) A).differentiableAt`. Establish `hchain : ∀ B : R, HasDerivAt (fun s : ℝ => NormedSpace.exp (A + s • B)) (fderiv ℝ NormedSpace.exp A B) 0`. Introduce `B`. Establish `hl : HasDerivAt (fun s : ℝ => A + s • B) B 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const B).const_add A`. Conclude with `hdiff.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)`. Establish `hV : fderiv ℝ NormedSpace.exp A V = NormedSpace.exp A * V`. Establish `h2 : HasDerivAt (fun s : ℝ => NormedSpace.exp (A + s • V)) (NormedSpace.exp A * V) 0`. Establish `h3 : (fun s : ℝ => NormedSpace.exp (A + s • V)) = fun s => NormedSpace.exp A * NormedSpace.exp (s • V)`.
+
+Use function extensionality and compare the values at `s`. Conclude with `NormedSpace.exp_add_of_commute (h.smul_right s)`. Rewrite using `[h3]`. Establish `h4` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) V (0 : ℝ)).const_mul (NormedSpace.exp A)`. Simplify using `using h4`.
+
+Conclude with `(hchain V).unique h2`. Establish `hinv : ∀ s : ℝ, NormedSpace.exp (s • X) * NormedSpace.exp (s • (-X)) = 1 ∧ NormedSpace.exp (s • (-X)) * NormedSpace.exp (s • X) = 1`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Rewrite using `[smul_neg, ← NormedSpace.exp_add_of_commute ((Commute.refl (s • X)).neg_right), add_neg_cancel, NormedSpace.exp_zero]`.
+
+Rewrite using `[smul_neg, ← NormedSpace.exp_add_of_commute ((Commute.refl (s • X)).neg_left), neg_add_cancel, NormedSpace.exp_zero]`. Establish `hFG : (fun s : ℝ => NormedSpace.exp (NormedSpace.exp (s • X) * A * NormedSpace.exp (s • (-X)))) = fun s => NormedSpace.exp (s • X) * NormedSpace.exp A * NormedSpace.exp (s • (-X))`. Use function extensionality and compare the values at `s`. Conclude with `NormedSpace.exp_units_conj ⟨NormedSpace.exp (s • X), NormedSpace.exp (s • (-X)), (hinv s).1, (hinv s).2⟩ A`. Establish `hd1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`.
+
+Establish `hd2` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at hd1 hd2`. Establish `hc : HasDerivAt (fun s : ℝ => NormedSpace.exp (s • X) * A * NormedSpace.exp (s • (-X))) (X * A - A * X) 0`. Use `(hd1.mul_const A).mul hd2` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `[sub_eq_add_neg]`. Establish `hF : HasDerivAt (fun s : ℝ => NormedSpace.exp (s • X) * NormedSpace.exp A * NormedSpace.exp (s • (-X))) (X * NormedSpace.exp A - NormedSpace.exp A * X) 0`. Use `(hd1.mul_const (NormedSpace.exp A)).mul hd2` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations. Simplify using `[sub_eq_add_neg]`.
+
+Establish `hG : HasDerivAt (fun s : ℝ => NormedSpace.exp (NormedSpace.exp (s • X) * A * NormedSpace.exp (s • (-X)))) (fderiv ℝ NormedSpace.exp A (X * A - A * X)) 0` using `hdiff.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hc (by simp)`. Rewrite `hG` using `[hFG]`. Establish `hB : fderiv ℝ NormedSpace.exp A (X * A - A * X) = X * NormedSpace.exp A - NormedSpace.exp A * X` using `hG.unique hF`. Establish `key` using `hchain (V + (X * A - A * X))`. Rewrite `key` using `[map_add, hV, hB]`.
+
+Conclude with `key`.
+-/
 theorem hasDerivAt_exp_comm_add_bracket (A V X : R) (h : Commute A V) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp (A + s • (V + (X * A - A * X))))
       (NormedSpace.exp A * V + (X * NormedSpace.exp A - NormedSpace.exp A * X)) 0 := by
@@ -79,6 +98,9 @@ section Operator
 
 open scoped Matrix.Norms.Operator in
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Conclude with `hasDerivAt_exp_comm_add_bracket A V X h`.
+-/
 theorem hasDerivAt_mexp_comm_add_bracket (A V X : Matrix (Fin n) (Fin n) ℂ) (h : Commute A V) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp (A + s • (V + (X * A - A * X))))
       (NormedSpace.exp A * V + (X * NormedSpace.exp A - NormedSpace.exp A * X)) 0 := by
@@ -95,6 +117,43 @@ def shcAd {ε : Fin n → Bool} (y : PCoord ε → ℂ) (W : Matrix (Fin n) (Fin
         ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)) i j) *
     (((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ))ᴴ
 
+/- English proof (translation)
+Use `set D : Matrix (Fin n) (Fin n) ℂ := diagonal (fun i => (x i : ℂ)) with hD`. Use `set W' := U' * W * U with hW'`. Use `set A : Matrix (Fin n) (Fin n) ℂ := diagonal (fun i => (2 * x i : ℂ)) with hA`. Use `set V : Matrix (Fin n) (Fin n) ℂ := Matrix.of (fun i j => if x i = x j then W' i j else 0) with hV`. Use `set Xm : Matrix (Fin n) (Fin n) ℂ := Matrix.of (fun i j => if x i = x j then 0 else W' i j / (2 * (x j : ℂ) - 2 * x i)) with hXm`.
+
+Establish `hcomm : Commute A V` using `by show A * V = V * A`. Use extensionality with `i j`. Simplify using `only [hA, hV, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.of_apply]`. Distinguish the cases in `h : x i = x j`. Simplify using `only [h, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, if_false, mul_zero, zero_mul]`. Establish `hsplit : V + (Xm * A - A * Xm) = W'`. Use extensionality with `i j`. Simplify using `only [hA, hV, hXm, Matrix.add_apply, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.of_apply]`.
+
+Use `split_ifs with h`. Simplify using the standard rewrite rules. Establish `h' : (2 * (x j : ℂ) - 2 * x i) ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises.
+
+Establish `: ((x i : ℝ) : ℂ) = x j` using `by linear_combination -h0 / 2`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `hder` using `hasDerivAt_mexp_comm_add_bracket A V Xm hcomm`. Rewrite `hder` using `[hsplit]`.
+
+Establish `hexpA : NormedSpace.exp A = diagonal (fun i => Complex.exp (2 * x i))`. Rewrite using `[hA, Matrix.exp_diagonal]`. Rewrite using `[Pi.exp_def]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(congrFun Complex.exp_eq_exp_ℂ _).symm`. Establish `hexpD : NormedSpace.exp D = diagonal (fun i => Complex.exp (x i))`. Rewrite using `[hD, Matrix.exp_diagonal]`. Rewrite using `[Pi.exp_def]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(congrFun Complex.exp_eq_exp_ℂ _).symm`. Establish `hval : NormedSpace.exp A * V + (Xm * NormedSpace.exp A - NormedSpace.exp A * Xm) = NormedSpace.exp D * Matrix.of (fun i j => ((shc (x i - x j) : ℝ) : ℂ) * W' i j) * NormedSpace.exp D`. Rewrite using `[hexpA, hexpD]`. Use extensionality with `i j`.
+
+Simplify using `only [hV, hXm, Matrix.add_apply, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.of_apply]`. Distinguish the cases in `h : x i = x j`. Simplify using `only [h, if_true, sub_self, shc, if_true, Complex.ofReal_one, mul_zero, zero_mul, sub_zero, add_zero, one_mul]`. Rewrite using `[show (2 * (x j : ℂ)) = x j + x j by ring, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h, if_false, mul_zero, zero_add]`. Establish `hne : x i - x j ≠ 0` using `sub_ne_zero.mpr h`. Establish `hreal : (Real.exp (2 * x j) - Real.exp (2 * x i)) / (2 * x j - 2 * x i) = Real.exp (x i) * Real.exp (x j) * (Real.sinh (x i - x j) / (x i - x j))`. Establish `h3 : (2 * x j - 2 * x i) ≠ 0`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ei` using `Real.exp_pos (x i)`. Establish `ej` using `Real.exp_pos (x j)`. Rewrite using `[Real.sinh_eq, Real.exp_neg, Real.exp_sub, two_mul, two_mul, Real.exp_add, Real.exp_add]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `shc`. Rewrite using `[if_neg hne]`. Establish `hC` using `congrArg (fun r : ℝ => (r : ℂ)) hreal`.
+
+Move the coercions through the operations in `at hC`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hC]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hder` using `[hval]`. Establish `hunit : IsUnit U` using `⟨⟨U, U', h1, h2⟩, rfl⟩`. Establish `hconjExp : ∀ M : Matrix (Fin n) (Fin n) ℂ, NormedSpace.exp (U * M * U') = U * NormedSpace.exp M * U'` using `fun M => Matrix.exp_units_conj ⟨U, U', h1, h2⟩ M`. Establish `hfun : (fun s : ℝ => NormedSpace.exp ((2 : ℂ) • (U * D * U') + (s : ℂ) • W)) = fun s : ℝ => U * NormedSpace.exp (A + s • W') * U'`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[← hconjExp]`. Use `congr 1`. Establish `hA2 : A = (2 : ℂ) • D`. Rewrite using `[hA, hD]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.diagonal_apply, hij]`. Rewrite using `[hA2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, ← Complex.coe_smul, Matrix.mul_smul, Matrix.smul_mul, hW']`. Use `congr 1`. Rewrite using `[show U * (U' * W * U) * U' = (U * U') * W * (U * U') by simp only [Matrix.mul_assoc], h1, Matrix.one_mul, Matrix.mul_one]`. Establish `hD2 : U * D * U' = U * diagonal (fun i => (x i : ℂ)) * U'` using `rfl`.
+
+Rewrite using `[← hD2, hfun]`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun M => U * M * U' map_add' := fun a b => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c a => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul] }`. Establish `hL` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hder`.
+
+Establish `hL' : HasDerivAt (fun s : ℝ => U * NormedSpace.exp (A + s • W') * U') (U * (NormedSpace.exp D * Matrix.of (fun i j => ((shc (x i - x j) : ℝ) : ℂ) * W' i j) * NormedSpace.exp D) * U') 0` using `hL`. Use `hL'.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hconjExp D]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc U' U, h2, Matrix.one_mul, ← Matrix.mul_assoc U' U, h2, Matrix.one_mul]`.
+-/
 private theorem hasDerivAt_exp_conj_diag (U U' : Matrix (Fin n) (Fin n) ℂ) (h1 : U * U' = 1) (h2 : U' * U = 1)
     (x : Fin n → ℝ) (W : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp
@@ -215,6 +274,9 @@ private theorem hasDerivAt_exp_conj_diag (U U' : Matrix (Fin n) (Fin n) ℂ) (h1
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc U' U, h2, Matrix.one_mul, ← Matrix.mul_assoc U' U, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h` using `(pmat_isHermitian y).spectral_theorem`. Use `conv_lhs => rw [h]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Function.comp_def, Matrix.star_eq_conjTranspose, pev]`.
+-/
 private theorem pmat_spectral {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     pmat y = ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
       diagonal (fun i => (pev y i : ℂ)) *
@@ -225,6 +287,11 @@ private theorem pmat_spectral {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
   | rfl
   | simp [Function.comp_def, Matrix.star_eq_conjTranspose, pev]
 
+/- English proof (translation)
+Use `set U : Matrix (Fin n) (Fin n) ℂ := ((pmat_isHermitian y).eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Establish `hU1 : U * Uᴴ = 1`. Establish `h0` using `Matrix.mem_unitaryGroup_iff.mp (pmat_isHermitian y).eigenvectorUnitary.2`. Rewrite `h0` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `hU2 : Uᴴ * U = 1`.
+
+Establish `h0` using `Matrix.mem_unitaryGroup_iff'.mp (pmat_isHermitian y).eigenvectorUnitary.2`. Rewrite `h0` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis. Establish `key` using `hasDerivAt_exp_conj_diag U Uᴴ hU1 hU2 (pev y) W`. Rewrite `key` using `[← pmat_spectral y]`. Conclude with `key`.
+-/
 theorem hasDerivAt_exp_two {ε : Fin n → Bool} (y : PCoord ε → ℂ) (W : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun s : ℝ => NormedSpace.exp ((2 : ℂ) • pmat y + (s : ℂ) • W))
       (NormedSpace.exp (pmat y) * shcAd y W * NormedSpace.exp (pmat y)) 0 := by

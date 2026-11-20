@@ -27,6 +27,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw.Untw
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PrimeBelow.exists_below`. Consider the case `exact _root_.GlobalTheory.PrimeBelow.exists_below`. Consider the case `(apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PrimeBelow.exists_below <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PrimeBelow.exists_below <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PrimeBelow.exists_below ..)`.
+-/
 theorem exists_below_of_range (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set.range D'.what₂.embLL) (v' : D'.what₂.places.Pl) :
     ∃ v : D.what₂.places.Pl, Below D D' v v' := by
   first
@@ -37,6 +42,9 @@ theorem exists_below_of_range (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set
   | (intros; apply @_root_.GlobalTheory.PrimeBelow.exists_below <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PrimeBelow.exists_below ..)
 
+/- English proof (translation)
+Use `GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D' v' (D.what₂.places.resChar_prime v) ((hB _ _ ?_).1 (GlobalTheory.LvT.Inh.resChar_mem_plEq D v))` and prove the remaining obligations. Simplify using `only [map_natCast]`.
+-/
 theorem resChar_of_below {D D' : D7} {v : D.what₂.places.Pl} {v' : D'.what₂.places.Pl} (hB : Below D D' v v') :
     D'.what₂.places.resChar v' = D.what₂.places.resChar v := by
   refine GlobalTheory.LvT.Inh.resChar_eq_of_mem_plEq D' v' (D.what₂.places.resChar_prime v) ((hB _ _ ?_).1 (GlobalTheory.LvT.Inh.resChar_mem_plEq D v))
@@ -46,6 +54,11 @@ end GlobalTheory.Mem.R3.Rw.Untw
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Use `EvG.imp h fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `choose S S₂ hS₂ hS using H`. Use `⟨fun _ _ _ => ∅, fun P f F F₀ => S P f F F₀ ∪ NonzeroPlacesOverPrimes.forcedContentSupportPrimes K P, fun _ _ _ _ _ => ∅, fun P f F F₀ _ => S₂ P f F F₀, by simp, fun P f F F₀ _ => hS₂ P f F F₀, ?_⟩` and prove the remaining obligations. Introduce `B f T _ hHas hP _ _ _ _ w _`. Use `⟨fun p hp => hP (Finset.mem_union_right _ hp), fun px hs => (hS _ _ _ _ px hs).mono ?_ ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Conclude with `hP (Finset.mem_union_left _ hp)`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `z hz`. Conclude with `hHas.2 z hz`.
+-/
 theorem stepW_seed (h : SeedBd) : StepW Pinned fun K B f T _ =>
     (↑(NonzeroPlacesOverPrimes.forcedContentSupportPrimes K B.toPre) : Set ℕ) ⊆ ↑T.pl ∧ ∀ px : PreX B.toPre,
       SeedW K B.toPre f B.KsC B.fixedCoefficientFieldInComplex px Set.univ ⊤ → SeedW K B.toPre f B.KsC B.fixedCoefficientFieldInComplex px ↑T.pl B.LLC := by
@@ -61,6 +74,19 @@ theorem stepW_seed (h : SeedBd) : StepW Pinned fun K B f T _ =>
     intro z hz
     exact hHas.2 z hz
 
+/- English proof (translation)
+Introduce `hG hDS hHL hDE`. Establish `hP : StepW Pinned Pinned` using `StepW.of_all fun _ _ _ _ _ _ _ h => h`. Establish `hHLw : StepW Pinned fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → HoldsL z.R z.F` using `hHL`. Use `(((((hP.and hDS).and hHLw).and hDE).and GlobalTheory.T.exists_GJStage_GIs2_pinned).and (stepW_seed Resize.seeds_uniform)).trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨pin⟩, hDS'⟩, hHL'⟩, hDE'⟩, G, hG2⟩, hf0, hsd⟩` from `H`.
+
+Introduce `hT`. Take `⟨Z, rfl, hGT, hGA, hKap⟩` from `exists_lt_grpTrue hG w hO pin.hX G`. Establish `hVol` using `(hG2 Z.W Z.V Z.S Z.N).1`. Take `⟨z₁, hF₁⟩` from `hDS' Z pin.hX hGT hGA hVol`. Establish `hL₁` using `hHL' Z pin.hX _ z₁ hGT hGA hF₁.1 hF₁.2.1`.
+
+Establish `hs : SeedW K B.toPre f B.KsC B.fixedCoefficientFieldInComplex w.px Set.univ ⊤` using `⟨B, f, T, w, Z, pin.hX, _, z₁, rfl, HEq.rfl, rfl, rfl, HEq.rfl, ⟨pin⟩, hGT, hGA, hF₁, hL₁, fun _ _ => trivial, le_top⟩`. Take `⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, hB₀, hf₀, hKs, hL0, hpx, hpin₀, hGT₀, hGA₀, hFine₀, hHL₀, hW₀, hLL⟩` from `hsd w.px hs`. Establish `hE : Enl B₀ B` using `enl_of_fields hB₀ hKs hL0 hLL`. Take `⟨z', hFine', hExt⟩` from `hDE' B₀ f₀ T₀ w₀ hE hf₀.symm hpin₀ hpx.symm Z₀ hX₀ Wt₀ z₀ hGT₀ hGA₀ hFine₀ hHL₀ Z pin.hX hGT hGA hVol`. Use `⟨Z, pin.hX, z', hG2, hGT, hGA, hKap, hFine'.1, hFine'.2.1, hFine'.2.2.1, hFine'.2.2.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v' hv'`. Break down `(Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v').1 hv' with h | h` into its components or cases. Take `⟨v, hB⟩` from `Untw.exists_below_of_range (w₀.D Z₀) (w.D Z) hE.2.2.2 v'`. Establish `hv : v ∈ z₀.W1 (fun _ _ => 0)` using `(hExt.W1 v v' hB).2 ((Dat.mem_auxiliaryPlaces_iff_three_parts z' _ v').2 (Or.inl h))`. Establish `hr : B.places.resChar v' = B₀.places.resChar v` using `Untw.resChar_of_below hB`.
+
+Establish `hm : B₀.places.resChar v ∈ (T.pl : Set ℕ)` using `hW₀ v hv`. Rewrite using `[hr]`. Conclude with `hm`. Conclude with `hf0 (NonzeroPlacesOverPrimes.resChar_mem_f0Primes K B f T w Z v' h)`. Introduce `v _`.
+
+Establish `e` using `congrArg (fun T' : TwDat B => T'.psi v) hT`. Conclude with `e.trans rfl`.
+-/
 theorem datGood_of_untw : GlobalTheory.Published.GreenCuspidal → DatExS → LowerUnitaryCaseCondition → DatExt →
     StepW Pinned fun K B f T w => T = TwDat.untw B T.pl → DatGood K B f T w := by
   intro hG hDS hHL hDE

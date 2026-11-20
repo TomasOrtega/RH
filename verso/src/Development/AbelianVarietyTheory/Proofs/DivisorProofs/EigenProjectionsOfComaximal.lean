@@ -3,6 +3,33 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R F _ _ a t ht`. Establish `hf : ∀ i j : Fin a, ∃ f : F →₀ R, i ≠ j → (f.sum fun c r => r * (t i c - t j c)) = 1`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Conclude with `⟨0, fun h => (h hij).elim⟩`.
+
+Establish `h1 : (1 : R) ∈ Ideal.span (Set.range fun x => t i x - t j x)`. Rewrite using `[ht i j hij]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨f, hf⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 h1`. Conclude with `⟨f, fun _ => by simpa [smul_eq_mul] using hf⟩`.
+
+Use `choose f hf using hf`. Set `χ : Fin a → (R ⊗[ℤ] F →ₐ[ℤ] R)` to `fun l => Algebra.TensorProduct.productMap (AlgHom.id ℤ R) (t l).toIntAlgHom`. Establish `hχ : ∀ l r c, χ l (r ⊗ₜ c) = r * t l c`. Introduce `l r c`. Simplify using `[χ, Algebra.TensorProduct.productMap_apply_tmul]`.
+
+Use `⟨fun i => ∏ j, if j = i then 1 else (f i j).sum fun c r => (r ⊗ₜ (1:F)) * ((1:R) ⊗ₜ c - t j c ⊗ₜ (1:F)), ?_⟩` and prove the remaining obligations. Introduce `M _ Θ i l m hm`. Establish `key : ∀ z, Θ z m = Θ (χ l z ⊗ₜ (1:F)) m`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r c`. Establish `e1 : (r ⊗ₜ c : R ⊗[ℤ] F) = (r ⊗ₜ (1:F)) * ((1:R) ⊗ₜ c)`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Establish `e2 : ((r * t l c) ⊗ₜ (1:F) : R ⊗[ℤ] F) = (r ⊗ₜ (1:F)) * (t l c ⊗ₜ (1:F))`.
+
+Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[hχ, e1, e2, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `Θ (r ⊗ₜ 1) (Θ (1 ⊗ₜ c) m) = Θ (r ⊗ₜ 1) (Θ (t l c ⊗ₜ 1) m)`. Rewrite using `[hm c]`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, TensorProduct.add_tmul, map_add]`. Express the relevant statement in the definitionally equal form `Θ x m + Θ y m = Θ (χ l x ⊗ₜ 1) m + Θ (χ l y ⊗ₜ 1) m`. Rewrite using `[hx, hy]`. Rewrite using `[key, map_prod]`. Use `split_ifs with hil`.
+
+Substitute `hil` using the available equality. Rewrite using `[Finset.prod_eq_one]`. Rewrite using `[← Algebra.TensorProduct.one_def, map_one]`. Both sides reduce to the same expression. Introduce `j _`.
+
+Use `split_ifs with hji`. Conclude with `map_one _`. Unfold `Finsupp.sum`. Rewrite using `[map_sum]`. Use `hf i j (Ne.symm hji)` as an intermediate fact.
+
+Unfold `Finsupp.sum at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[map_mul, map_sub, hχ, hχ, hχ]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ l)]`. Rewrite using `[TensorProduct.zero_tmul, map_zero]`. Both sides reduce to the same expression. Rewrite using `[if_neg (Ne.symm hil)]`.
+
+Unfold `Finsupp.sum`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Rewrite using `[map_mul, map_sub, hχ, hχ, hχ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eigenProjections_of_comaximal :
     ∀ (R F : Type) [CommRing R] [CommRing F] (a : ℕ) (t : Fin a → (F →+* R)),
       (∀ i j, i ≠ j → Ideal.span (Set.range fun x => t i x - t j x) = ⊤) →

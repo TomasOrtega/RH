@@ -54,7 +54,13 @@ def IsAnisoAt {m : ℕ} (JV : Matrix (Fin m) (Fin m) E) (v : HeightOneSpectrum (
     x ⬝ᵥ (JV.map (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E)) *ᵥ
       (fun i => Algebra.TensorProduct.map (AlgHom.id F (Fv F v)) σ (x i)) = 0 → x = 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {N : ℕ} (J₂ : Matrix (Fin N) (Fin N) E) (g h : UA σ J₂) : mat (g * h) = mat g * mat h := by rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {N : ℕ} (J₂ : Matrix (Fin N) (Fin N) E) : mat (1 : UA σ J₂) = 1 := by rfl
 
 end GlobalTheory.SWOpIndef

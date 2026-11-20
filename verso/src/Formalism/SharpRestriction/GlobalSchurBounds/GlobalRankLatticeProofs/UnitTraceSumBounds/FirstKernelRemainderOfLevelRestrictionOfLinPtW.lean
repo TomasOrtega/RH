@@ -5,6 +5,13 @@ namespace Formalism.MainNotions.Ext.CutA
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.GL3Theta Formalism.MainNotions.GL3r7 Formalism.MainNotions.Ext
 
+/- English proof (translation)
+Introduce `hph ha he hSD hPD p _ cc δ g hA h5 hI hW κ ι ι' _ _ _ b b' b'' hb hb' hb'' hd ho1 ho2`. Establish `hOk : g.Ok` using `hA.2.2.2.2`. Establish `hP : CoefWf g.ph` using `hph p cc δ g hA h5 hI hW`. Establish `hF` using `(ha p cc δ g hA).2 hW`. Establish `hmem : ∀ (e : (ι ⊕ ι) ⊕ ι') (k : κ), Sum.elim (Sum.elim b b') b'' e k ∈ OKp D g.lam`.
+
+Introduce and unpack `((e | e) | e) k`. Conclude with `hb e k`. Conclude with `hb' e k`. Conclude with `hb'' e k`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `coefWf_sum _ _ fun k _ => coefWf_phAt g hP (HL p g hOk hF _ _ (fun e => he p cc δ g hA h5 hI hW _ (hmem e k)) _ _ fun e => ptW_X e)`. Conclude with `HK p g (OKp D g.lam) hOk (fun κ ι ι' _ _ _ a a' h1 h2 => (hSD p cc δ g hA h5 hI hW κ ι ι' a a' h1 h2).2.1) (fun κ ι _ _ c c' h1 h2 h3 => (hPD p cc δ g hA h5 hI hW κ ι c c' h1 h2 h3).2) κ ι ι' b b' b'' hb hb' hb'' hd ho1 ho2`.
+-/
 theorem firstKernelRemainder_of_levelRestriction_of_linPtW (HK : LevelRestrictionOfGroupLaw) (HL : LinPtW) (D : D7) : StatementFirstKernelRemainder D := by
   intro hph ha he hSD hPD p _ cc δ g hA h5 hI hW κ ι ι' _ _ _ b b' b'' hb hb' hb'' hd ho1 ho2
   have hOk : g.Ok := hA.2.2.2.2

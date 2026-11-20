@@ -7,6 +7,21 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 
 namespace GlobalTheory.CompanionTheory.HeckeAvg
 
+/- English proof (translation)
+Introduce `G _ _ _ J _ hJc V _ _ π hπ g U hU r x hr hxJ hx v`. Take `⟨E, _hE1, hE2, _hE3, hE4, hE5⟩` from `GlobalTheory.T.compact_fixed_vector_projection G J hJc V π hπ`. Establish `hcomp : ∀ (a b : G) (w : V), π a (π b w) = π (a * b) w`. Introduce `a b w`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Establish `hv : ∀ k ∈ J, π k (v : V) = v`. Introduce `k hk`. Establish `h0 : ∀ hh : J, π hh (v : V) = ((1 : J →* ℂˣ) hh : ℂ) • (v : V)` using `v.2`. Simplify using `using h0 ⟨k, hk⟩`.
+
+Establish `hH : J ⊓ J.map (MulAut.conj g).toMonoidHom ≤ J` using `inf_le_left`. Establish `hu : ∀ h ∈ J ⊓ J.map (MulAut.conj g).toMonoidHom, π h (π g (v : V)) = π g (v : V)`. Introduce `h hh`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.mp (Subgroup.mem_inf.mp hh).2`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
+
+Rewrite using `[hcomp, show g * k * g⁻¹ * g = g * k by group, ← hcomp, hv k hk]`. Establish `hEu : E (π g (v : V)) = (r : ℂ)⁻¹ • ∑ i, π (x i) (π g (v : V))` using `hE5 (π g (v : V)) _ hH hu r x hr hxJ hx`. Establish `hUv : ((U v : fixed π J) : V) = E (π g (v : V))`. Establish `h1 : E ((U v : fixed π J) : V) = ((U v : fixed π J) : V)` using `hE2 _ (U v).2`. Establish `key : ∀ l : Module.Dual ℂ V, l (E ((U v : fixed π J) : V) - E (π g (v : V))) = 0`.
+
+Introduce `l`. Establish `hf : ∀ y ∈ J, (l ∘ₗ E) ∘ₗ π y = l ∘ₗ E`. Introduce `y hy`. Rewrite using `[LinearMap.comp_assoc, hE4 y hy]`. Establish `h2` using `hU v (l ∘ₗ E) hf`.
+
+Simplify using `only [LinearMap.comp_apply] at h2`. Rewrite using `[map_sub, h2, sub_self]`. Establish `h3` using `(Module.forall_dual_apply_eq_zero_iff ℂ _).mp key`. Rewrite using `[← h1]`. Conclude with `sub_eq_zero.mp h3`.
+
+Rewrite using `[hUv, hEu]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `hcomp _ _ _`.
+-/
 theorem heckeG_eq_average : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G), IsOpen (J : Set G) → IsCompact (J : Set G) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∀ (g : G) (U : Module.End ℂ (fixed π J)), PositivityTheory.Lbc.IsHeckeOpG π J g U → ∀ (r : ℕ) (x : Fin r → G), 0 < r → (∀ i, x i ∈ J) → (∀ y ∈ J, ∃! i, (x i)⁻¹ * y ∈ J ⊓ J.map (MulAut.conj g).toMonoidHom) → ∀ v : fixed π J, ((U v : fixed π J) : V) = ((r : ℂ)⁻¹) • ∑ i, π (x i * g) (v : V) := by
   intro G _ _ _ J _ hJc V _ _ π hπ g U hU r x hr hxJ hx v
   obtain ⟨E, _hE1, hE2, _hE3, hE4, hE5⟩ := GlobalTheory.T.compact_fixed_vector_projection G J hJc V π hπ

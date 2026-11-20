@@ -18,15 +18,26 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+The claim follows from `IsLocallyConstant.desc _ _ (h 1) ((Ideal.Quotient.mk_bijective_iff_eq_bot _).2 (pow_one _)).1`.
+-/
 private theorem lc_bot {S k : Type} [TopologicalSpace S] [CommRing k] {x : S → k} (h : AdicCont ⊥ x) : IsLocallyConstant x :=
   IsLocallyConstant.desc _ _ (h 1) ((Ideal.Quotient.mk_bijective_iff_eq_bot _).2 (pow_one _)).1
 
+/- English proof (translation)
+Take `⟨-, -, h1, -⟩` from `dvrFacts l c.O`. Use `haveI := h1`. Use `haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Conclude with `ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance`.
+-/
 private theorem fin_res {l : ℕ} [Fact l.Prime] (c : Coef l) : Finite (ResidueField c.O) := by
   obtain ⟨-, -, h1, -⟩ := dvrFacts l c.O
   haveI := h1
   haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv
   exact ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance
 
+/- English proof (translation)
+Establish `hi : (inc h).IsIntegral`. Use `RingHom.IsIntegral.tower_top (algebraMap ℤ_[l] c.O) (inc h) ?_` and prove the remaining obligations. Establish `e : (inc h).comp (algebraMap ℤ_[l] c.O) = algebraMap ℤ_[l] c'.O` using `(Subalgebra.inclusion h).comp_algebraMap`. Rewrite using `[e]`. Conclude with `fun x => Algebra.IsIntegral.isIntegral x`.
+
+Use `haveI := hi.isLocalHom (Subalgebra.inclusion_injective h)`. Introduce `x hx`. Conclude with `(residue_eq_zero_iff _).2 (map_nonunit (inc h) x hx)`.
+-/
 private theorem inc_loc {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'.O) :
     ∀ x ∈ maximalIdeal c.O, ((residue c'.O).comp (inc h)) x = 0 := by
   have hi : (inc h).IsIntegral := by
@@ -38,6 +49,19 @@ private theorem inc_loc {l : ℕ} [Fact l.Prime] {c c' : Coef l} (h : c.O ≤ c'
   intro x hx
   exact (residue_eq_zero_iff _).2 (map_nonunit (inc h) x hx)
 
+/- English proof (translation)
+Establish `h2 : (2 : ResidueField Λ) ≠ 0` using `hstd.ok.two.ne_zero`. Take `⟨hstd', hs', R', _, _, _, P', hP'⟩` from `X1.defEx Φ l a hstd s hs`. Establish `hQ' : Φ.noMu.Quo π` using `⟨hQ.cont, hQ.onto, hQ.ker⟩`. Take `⟨rb, hrb, hrc⟩` from `(X1.descend Φ π hQ (⊥ : Ideal (ResidueField Λ))).1 s.r hs.pair.kill hs.cont`. Establish `hrb' : ∀ g, rb (π g) = s.r g` using `fun g => DFunLike.congr_fun hrb g`.
+
+Establish `hb0 : ∀ g, ∃ x, IsGSp x (s.r g)` using `fun g => ⟨_, hs.pair.mult g⟩`. Establish `hb : ∀ g, ∃ x, IsGSp x (rb g)` using `fun g => by`. Take `⟨g, rfl⟩` from `hQ.onto g`. Rewrite using `[hrb']`. Conclude with `hb0 g`.
+
+Establish `had : ∀ g X, adSp rb hb (π g) X = adSp s.r hb0 g X` using `fun g X => Subtype.ext (by`. Rewrite using `[adSp_val, adSp_val, ← map_inv, hrb', hrb'])`. Take `⟨a1, a2⟩` from `X1.adFacts rb hb`. Take `⟨-, d2⟩` from `X1.spDims (ResidueField Λ) h2`. Take `⟨e1, e2⟩` from `ec (adSp rb hb) (fun v => bor (s.n v)) (a1 fun i j => lc_bot (hrc i j)).1 (fun v g hg X hX => a2 (s.n v) (π g) (hs.pair.low v).1 (by rw [hrb']; exact hs.pair.flag v g hg) (by rw [← map_inv, hrb']; exact hs.pair.flag v g⁻¹ (inv_mem hg)) X hX) (fun f hf => X1.dualZero Φ _ hstd.ok s …`.
+
+Establish `h1` using `hs.pair.mult g`. Rewrite `h1` using `[(tC g hg).2, Units.val_neg, Units.val_one, map_neg, map_one]`. Rewrite using `[hrb']`. Conclude with `h1))`. Take `⟨m, p1, p2⟩` from `X1.absPres Φ.noMu l a hstd' (fun _ => rfl) (fun g hg => by`.
+
+Establish `h1 : Φ.noMu.ν g = 1` using `tN g hg`. Rewrite using `[h1, Units.val_one, map_one]) π hQ' s hs' R' P' hP' rb hb hrb e1`. Take `⟨g, e, g1, g2⟩` from `X1.muQuot Φ l a hstd s hs ζ hζ (fun v => by rw [tM v (ζ v) (hζ v).1, Units.val_one, map_one]) R P hP R' P' hP'`. Use `⟨_, _, X1.presQuot Λ R' R _ _ _ g e p1 g1 g2, ?_⟩` and prove the remaining obligations. Establish `hc : Nat.card (Φ.ι × Fin 2) = 2 * Nat.card Φ.ι`.
+
+Rewrite using `[Nat.card_prod, Nat.card_eq_fintype_card (α := Fin 2), Fintype.card_fin, mul_comm]`. Rewrite using `[hc]`. Establish `p3 : Module.finrank (ResidueField Λ) (UpperTheory.V.Fr.H1C (Φ.loc π) (adSp rb hb) fun v => bor (s.n v)) + 2 ≤ m + Module.finrank (ResidueField Λ) (UpperTheory.V.Fr.coneH0 (adSp rb hb) fun v : Φ.ι => bor (s.n v))` using `p2`. Use `show Module.finrank (ResidueField Λ) (UpperTheory.V.Fr.coneH2 (Φ.loc π) (adSp rb hb) fun v => bor (s.n v)) + _ + 2 + 2 * d ≤ _`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem count {O Γ Γb : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     [TotallyDisconnectedSpace Γ] [Group Γb] [TopologicalSpace Γb] [IsTopologicalGroup Γb] [T2Space Γb]
     (Φ : Fr O Γ) (l : ℕ) [Fact l.Prime] {Λ : Type} [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ]
@@ -94,6 +118,13 @@ private theorem count {O Γ Γb : Type} [CommRing O] [Group Γ] [TopologicalSpac
   show Module.finrank (ResidueField Λ) (UpperTheory.V.Fr.coneH2 (Φ.loc π) (adSp rb hb) fun v => bor (s.n v)) + _ + 2 + 2 * d ≤ _
   omega
 
+/- English proof (translation)
+Introduce `hp Ω _ _ _ l _ c D T hF hD c' h s hs R _ _ _ P hP`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : IsGalois T.F Ω := inferInstance`. Use `haveI := fin_res c'`. Establish `hstd` using `(UpperTheory.V.Ws.std hp D T hF ∅ c' h).1 (Finset.notMem_empty 0)`.
+
+Use `haveI := hstd.char`. Take `⟨tN, tM, tC, tW⟩` from `X1.thFacts D T hF hD`. Take `⟨S, K, Γ, _, _, _, _, _, _, π, ι, hG, hS, hpl, hQ⟩` from `X1.linkT D T hF`. Establish `hpr : UpperTheory.V.GC.Hypotheses₂` using `⟨⟨hp.loc.lf, hp.loc.lt, hp.loc.le, hp.gf, hp.ge, hp.pt⟩, hp.uo, hp.gw⟩`. Use `choose ζ hζ using fun v : T.ι => X1.muLoc hp T.F Ω l (T.pl v) (T.ovl v)`.
+
+Establish `ec` using `fun ρ b => X1.ecG hpr T.F Ω l T.realF S K Γ π hG hS T.ι ι T.pl hpl (ResidueField c'.O) (sp4 (ResidueField c'.O)) ρ b 6 4`. Establish `tW'` using `tW (ResidueField c'.O) ((residue c'.O).comp (inc h)) (inc_loc h)`. Establish `key` using `count (T.fr ∅) l (inc h) hstd π hQ s hs R P hP tN tM ζ hζ IsCC tC (fun g => (UpperTheory.V.GC.cycF T.F Ω l (ResidueField c'.O) g : ResidueField c'.O)) tW' T.d`. Take `⟨m, n, ⟨π', f, q1, q2⟩, q3⟩` from `key ec`. Conclude with `⟨m, n, π', f, q1, q2, q3⟩`.
+-/
 theorem UpperTheory.V.Ws.x1 :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (s : PD T.ι (G T.F Ω) (ResidueField c'.O)), (T.fr ∅).IsRes ((residue c'.O).comp (inc h)) s →
       ∀ (R : Type) [CommRing R] [Algebra c'.O R] [IsCO c'.O R] (P : PD T.ι (G T.F Ω) R), (T.fr ∅).IsDef (inc h) s P →

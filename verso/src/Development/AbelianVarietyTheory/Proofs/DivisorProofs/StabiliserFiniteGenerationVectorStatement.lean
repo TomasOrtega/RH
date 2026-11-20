@@ -13,5 +13,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.subset_or_subset_of_locIdent | exact GlobalTheory.IrrAn.subset_or_subset_of_locIdent | (intros; apply GlobalTheory.IrrAn.subset_or_subset_of_locIdent <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.preconnected_in_union_analytic : ∀ (d : ℕ) (Y : Type) [TopologicalSpace Y] (A : FinHolAtlas d Y) (S Z₁ Z₂ : Set Y), IsPreconnected S → S.Nonempty → GlobalTheory.IrrAn.LocIdent A S → A.IsAnalyticSubset Z₁ → A.IsAnalyticSubset Z₂ → S ⊆ Z₁ ∪ Z₂ → S ⊆ Z₁ ∨ S ⊆ Z₂ := by
   first | exact @GlobalTheory.IrrAn.subset_or_subset_of_locIdent | exact GlobalTheory.IrrAn.subset_or_subset_of_locIdent | (intros; apply GlobalTheory.IrrAn.subset_or_subset_of_locIdent <;> assumption)

@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.FNatProof
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Use `gb_ext N ?_ ?_` and prove the remaining obligations. Establish `e1 : GlobalTheory.Et.geomMap (PadicAlgCl l) M.q (Model.genMap u hu) (Model.genMap_q u hu) ≫ pullback.fst _ _ ≫ pullback.fst _ _ = (pullback.fst _ _ ≫ pullback.fst _ _) ≫ u`. Rewrite using `[GlobalTheory.Et.geomMap, pullback.lift_fst_assoc, Category.assoc, Model.genMap, pullback.lift_fst, Category.assoc]`. Rewrite using `[Category.assoc, e1, geomPt_fst, ← Category.assoc, geomPt_fst, Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[Category.assoc, GlobalTheory.Et.geomMap, pullback.lift_snd, geomPt_snd, geomPt_snd]`.
+-/
 theorem geomPt_geomMap {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (A : PAlg l) (y : M.P.obj A) :
     geomPt M A y ≫ GlobalTheory.Et.geomMap (PadicAlgCl l) M.q (Model.genMap u hu) (Model.genMap_q u hu) =
       geomPt N A ((pxMap (okToOC l K) u hu).app A y) := by
@@ -32,15 +37,24 @@ def lcM (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) :
     Mor (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).L (modF (AcrEl M.P n)) (Int.castRingHom (Acris l)) :=
   lcMor hN H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eM_eq (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) (j : ℕ)
     (x : Ht (l ^ n) (sch.obj (gb M)) j i) :
     eM hN H r M n i j x = (lcM hN H r M n).pull j ((pts H r M (𝟭 _) n).et i j x) := rfl
 
+/- English proof (translation)
+Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ h`. Conclude with `⟨z, hz, rfl⟩`.
+-/
 theorem cls_surj {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (h : CH.H F n) :
     ∃ (z : Cn F n) (hz : d F n z = 0), (cx F).cls z hz = h := by
   obtain ⟨⟨z, hz⟩, rfl⟩ := Submodule.Quotient.mk_surjective _ h
   exact ⟨z, hz, rfl⟩
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `cls_surj F₁ j x`. Express the relevant statement in the definitionally equal form `(cx F₄).cls (b.pullC j (a.pullC j z)) _ = (cx F₄).cls (e.pullC j (c.pullC j z)) _`. Simplify using `only [h]`.
+-/
 theorem pull_square {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] [CommRing R₄]
     {C₁ C₂ C₃ C₄ : Type 1} [Category.{0} C₁] [Category.{0} C₂] [Category.{0} C₃] [Category.{0} C₄]
     {F₁ : C₁ ⥤ ModuleCat.{0} R₁} {F₂ : C₂ ⥤ ModuleCat.{0} R₂} {F₃ : C₃ ⥤ ModuleCat.{0} R₃} {F₄ : C₄ ⥤ ModuleCat.{0} R₄}
@@ -52,6 +66,9 @@ theorem pull_square {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂]
   change (cx F₄).cls (b.pullC j (a.pullC j z)) _ = (cx F₄).cls (e.pullC j (c.pullC j z)) _
   simp only [h]
 
+/- English proof (translation)
+The claim follows from `pull_square (lcPull H r u hu n) (lcM hN H r M n) (lcM hN H r N n) (pullMor (pxMap (okToOC l K) u hu) n) j (fun z => funext fun s => rfl) h`.
+-/
 theorem square (hN : LcNat) (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n j : ℕ)
     (h : CH.H (probe H r (𝟭 (El N.P) ⋙ CategoryOfElements.π _) n).L j) :
     (lcM hN H r M n).pull j ((lcPull H r u hu n).pull j h) =
@@ -59,6 +76,9 @@ theorem square (hN : LcNat) (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X
   pull_square (lcPull H r u hu n) (lcM hN H r M n) (lcM hN H r N n) (pullMor (pxMap (okToOC l K) u hu) n) j
     (fun z => funext fun s => rfl) h
 
+/- English proof (translation)
+Use extensionality with `v`. Both sides reduce to the same expression.
+-/
 theorem lcRes_id (q : ℕ) {U : Scheme.{0}} (f : LocallyConstant U (ZMod q)) : lcRes q (𝟙 U) f = f := by
   ext v
   rfl
@@ -68,22 +88,34 @@ def gId (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u �
       (probe H r (𝟭 (El N.P) ⋙ CategoryOfElements.π _) n).U ((lcPull H r u hu n).G.obj c) :=
   𝟙 (Spec (CommRingCat.of c.1.obj.Ug))
 
+/- English proof (translation)
+The claim follows from `(Category.id_comp _).trans (Category.comp_id _).symm`.
+-/
 theorem gId_nat (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n : ℕ)
     {c c' : El M.P} (φ : c ⟶ c') :
     gId H r u hu n c' ≫ ((probe H r (𝟭 (El N.P) ⋙ CategoryOfElements.π _) n).S.map ((lcPull H r u hu n).G.map φ)).unop =
       ((probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).S.map φ).unop ≫ gId H r u hu n c :=
   (Category.id_comp _).trans (Category.comp_id _).symm
 
+/- English proof (translation)
+The claim follows from `(lcRes_id _ f).symm`.
+-/
 theorem gId_lc (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n : ℕ) (c : El M.P)
     (f : LocallyConstant ((probe H r (𝟭 (El N.P) ⋙ CategoryOfElements.π _) n).U ((lcPull H r u hu n).G.obj c)) (ZMod (l ^ n))) :
     (lcPull H r u hu n).τ c f = lcRes (l ^ n) (gId H r u hu n c) f :=
   (lcRes_id _ f).symm
 
+/- English proof (translation)
+The claim follows from `(geomPt_geomMap u hu c.1.obj c.2).trans (Category.id_comp _).symm`.
+-/
 theorem gId_pts (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) (n : ℕ) (c : El M.P) :
     (pts H r M (𝟭 _) n).y c ≫ GlobalTheory.Et.geomMap (PadicAlgCl l) M.q (Model.genMap u hu) (Model.genMap_q u hu) =
       gId H r u hu n c ≫ (pts H r N (𝟭 _) n).y ((lcPull H r u hu n).G.obj c) :=
   (geomPt_geomMap u hu c.1.obj c.2).trans (Category.id_comp _).symm
 
+/- English proof (translation)
+The claim follows from `hE hG (l ^ n) (El N.P) (El M.P) (probe H r (𝟭 (El N.P) ⋙ CategoryOfElements.π _) n) (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n) (gb N) (gb M) (pts H r N (𝟭 _) n) (pts H r M (𝟭 _) n) (GlobalTheory.Et.geomMap (PadicAlgCl l) M.q (Model.genMap u hu) (Model.genMap_q u hu)) (lc …`.
+-/
 theorem key (hE : CrystallineSemistableComparison.E.EtNat) (hG : InGen) (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X)
     (hu : u ≫ N.p = M.p) (n : ℕ) [NeZero (l ^ n)] (j : ℕ) (x : Ht (l ^ n) (sch.obj (gb N)) j 0) :
     (lcPull H r u hu n).pull j ((pts H r N (𝟭 _) n).et 0 j x) =
@@ -94,6 +126,9 @@ theorem key (hE : CrystallineSemistableComparison.E.EtNat) (hG : InGen) (H : RIn
     (GlobalTheory.Et.geomMap (PadicAlgCl l) M.q (Model.genMap u hu) (Model.genMap_q u hu)) (lcPull H r u hu n)
     (gId H r u hu n) (gId_nat H r u hu n) (gId_lc H r u hu n) (gId_pts H r u hu n) 0 (Or.inl rfl) j x
 
+/- English proof (translation)
+The claim follows from `(congrArg ((lcM hN H r M n).pull j) (key hE hG H r u hu n j x).symm).trans (square hN H r u hu n j _)`.
+-/
 theorem nat_step (hE : CrystallineSemistableComparison.E.EtNat) (hG : InGen) (hN : LcNat) (H : RIn l) (r : Roots l) {M N : Model l K} (u : M.X ⟶ N.X)
     (hu : u ≫ N.p = M.p) (n : ℕ) [NeZero (l ^ n)] (j : ℕ) (x : Ht (l ^ n) (sch.obj (gb N)) j 0) :
     eM hN H r M n 0 j
@@ -101,6 +136,9 @@ theorem nat_step (hE : CrystallineSemistableComparison.E.EtNat) (hG : InGen) (hN
       Model.pullMH u hu n j (eM hN H r N n 0 j x) :=
   (congrArg ((lcM hN H r M n).pull j) (key hE hG H r u hu n j x).symm).trans (square hN H r u hu n j _)
 
+/- English proof (translation)
+Introduce `hE E hN l _ H r K M N u hu n j x`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `nat_step hE E.gen hN H r u hu n j x`.
+-/
 theorem fNat : CrystallineSemistableComparison.E.EtNat → CrystallineSemistableComparison.E.FNat := by
   intro hE E hN l _ H r K M N u hu n j x
   haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩

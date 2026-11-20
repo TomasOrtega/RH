@@ -25,11 +25,22 @@ open scoped Classical in
 def IsArchUnit (w : (κ → AF F) × (κ → AF F)) : Prop :=
   IsArch w ∧ ∀ i, ‖evI F (w.1 i)‖ ≤ 1 ∧ ‖evI F (w.2 i)‖ ≤ 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wordH_nil (ψ : AddChar (AF F) ℂ) (Φ : (κ → AF F) → ℂ) : wordH ψ [] Φ = Φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wordH_cons (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (l : List ((κ → AF F) × (κ → AF F)))
     (Φ : (κ → AF F) → ℂ) : wordH ψ (w :: l) Φ = dH ψ w (wordH ψ l Φ) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dH, schr, Pi.smul_apply, smul_eq_mul]`. Establish `: (fun t : ℝ => ψ (x ⬝ᵥ (realAd F t • w).2 + ⅟(2 : AF F) * ((realAd F t • w).1 ⬝ᵥ (realAd F t • w).2)) * (a * Φ (x + (realAd F t • w).1))) = fun t => a * (ψ (x ⬝ᵥ (realAd F t • w).2 + ⅟(2 : AF F) * ((realAd F t • w).1 ⬝ᵥ (realAd F t • w).2)) * Φ (x + (realAd F t • w).1))`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, deriv_const_mul_field']`.
+-/
 theorem dH_smul (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (a : ℂ) (Φ : (κ → AF F) → ℂ) :
     dH ψ w (a • Φ) = a • dH ψ w Φ := by
   funext x
@@ -40,6 +51,11 @@ theorem dH_smul (ψ : AddChar (AF F) ℂ) (w : (κ → AF F) × (κ → AF F)) (
     funext t; ring
   rw [this, deriv_const_mul_field']
 
+/- English proof (translation)
+Unfold `realAd`. Simplify using `only [LinearMap.inl_apply, map_mul]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show _ * _ = _`. Rewrite using `[← map_mul]`.
+
+Conclude with `mul_zero _`.
+-/
 theorem realAd_mul (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := by
   unfold realAd
   simp only [LinearMap.inl_apply, map_mul]
@@ -48,6 +64,11 @@ theorem realAd_mul (a b : ℝ) : realAd F a * realAd F b = realAd F (a * b) := b
     rw [← map_mul]
   · exact mul_zero _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dH, Pi.smul_apply, smul_eq_mul]`. Establish `e : (fun t : ℝ => schr ψ (realAd F t • realAd F c • w) Φ x) = fun t => (fun s : ℝ => schr ψ (realAd F s • w) Φ x) (c * t)`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_smul, realAd_mul, mul_comm t c]`.
+
+Rewrite using `[e]`. Establish `h` using `deriv_comp_mul_left (f := fun s : ℝ => schr ψ (realAd F s • w) Φ x) (c := c) (x := 0)`. Rewrite `h` using `[mul_zero, Complex.real_smul]`. Conclude with `h`.
+-/
 theorem dH_realAd_smul (ψ : AddChar (AF F) ℂ) (c : ℝ) (w : (κ → AF F) × (κ → AF F)) (Φ : (κ → AF F) → ℂ) :
     dH ψ (realAd F c • w) Φ = (c : ℂ) • dH ψ w Φ := by
   funext x
@@ -60,6 +81,13 @@ theorem dH_realAd_smul (ψ : AddChar (AF F) ℂ) (c : ℝ) (w : (κ → AF F) ×
   rw [mul_zero, Complex.real_smul] at h
   exact h
 
+/- English proof (translation)
+Introduce `i`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `show u * (a * w.1 i) = 0`. Rewrite using `[mul_left_comm]`. Use `(hw i).1 u hu` as an intermediate fact.
+
+Simplify using `only [smul_eq_mul] at this`. Rewrite using `[this, mul_zero]`. Use `show u * (a * w.2 i) = 0`. Rewrite using `[mul_left_comm]`. Use `(hw i).2 u hu` as an intermediate fact.
+
+Simplify using `only [smul_eq_mul] at this`. Rewrite using `[this, mul_zero]`.
+-/
 theorem isArch_smul {w : (κ → AF F) × (κ → AF F)} (hw : IsArch w) (a : AF F) : IsArch (a • w) := by
   intro i
   refine ⟨fun u hu => ?_, fun u hu => ?_⟩

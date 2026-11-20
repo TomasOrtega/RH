@@ -40,6 +40,11 @@ def ZetaNormExists : Prop :=
   ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq), ∃ μ : Measure (Mt k r), KB.ZetaNorm Bs μ
 
+/- English proof (translation)
+Establish `hd : Integrable (fun t : ℂ => (1 + ‖t‖) ^ (-(4 : ℝ))) volume`. Use `integrable_one_add_norm ?_` and prove the remaining obligations. Rewrite using `[Complex.finrank_real_complex]`. Evaluate the numerical expressions. Use `Integrable.mono' (hd.const_mul C) hφ.aestronglyMeasurable (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Establish `e : (1 + ‖t‖) ^ (-4 : ℤ) = (1 + ‖t‖) ^ (-(4 : ℝ))`. Rewrite using `[← Real.rpow_intCast]`. Evaluate the numerical expressions. Rewrite using `[← e]`. Conclude with `hC t`.
+-/
 theorem integrable_of_decay4 {φ : ℂ → ℂ} (hφ : Continuous φ) {C : ℝ}
     (hC : ∀ t, ‖φ t‖ ≤ C * (1 + ‖t‖) ^ (-4 : ℤ)) : Integrable φ := by
   have hd : Integrable (fun t : ℂ => (1 + ‖t‖) ^ (-(4 : ℝ))) volume := by
@@ -50,6 +55,13 @@ theorem integrable_of_decay4 {φ : ℂ → ℂ} (hφ : Continuous φ) {C : ℝ}
     rw [← Real.rpow_intCast]; norm_num
   rw [← e]; exact hC t
 
+/- English proof (translation)
+Use `choose R hR using fun a => (h a).2.1`. Use `choose εf hεf0 hεf using fun a => (h a).2.2`. Set `Sε : Finset ℝ` to `insert 1 (Finset.univ.image εf)`. Establish `hne : Sε.Nonempty` using `⟨1, Finset.mem_insert_self _ _⟩`. Use `⟨Sε.min' hne, ?_, fun a => ⟨(h a).1, fun A m => ?_, fun g hg hg0 => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.lt_min'_iff]`. Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `one_pos`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Conclude with `hεf0 a`. Use `Formalism.FourierDecayAlt.P.JFxG.cptInCC_G (h a).1 (Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k ρ (R a)) (fun g hg hgC => ?_) A m` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hgC (hR a g hg h0)`. Conclude with `le_trans (Finset.min'_le _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ a)))) (hεf a g hg hg0)`.
+-/
 theorem nice_common {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] {S : Type} [Fintype S] (Bs : B.RealPlaceData k ρ Wp Wq)
     {x : S → B.Mat k ρ → (Wq →L[ℂ] Wp)} (h : ∀ a, KB.CptCoef Bs (x a)) :

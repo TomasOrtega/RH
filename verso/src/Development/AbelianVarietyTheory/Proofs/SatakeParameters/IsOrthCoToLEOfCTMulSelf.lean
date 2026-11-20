@@ -15,6 +15,13 @@ namespace GlobalTheory.TwV
 
 open Matrix
 
+/- English proof (translation)
+Introduce `x y`. Substitute `h` using the available equality. Simplify using `only [toLE_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, j]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isOrthCo_toLE_of_cT_mul_self {E : Type} [Field E] [NumberField E] {N : ℕ} (σ : E →+* E)
     (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) (h : cT σ co.1 * co.1 = J) :
     IsOrthCo σ J (toLE co) := by

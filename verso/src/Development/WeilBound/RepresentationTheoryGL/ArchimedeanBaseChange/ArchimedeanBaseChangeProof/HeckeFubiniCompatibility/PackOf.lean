@@ -43,6 +43,21 @@ def Pack : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b :
       (∀ τ, HasInfCharGL (Submodule.span ℂ (slices₁ f)) τ (mOf χa τ)) ∧
       ∀ τ, HasInfCharGL (Submodule.span ℂ (slices₂ f)) τ (mOf χb τ)
 
+/- English proof (translation)
+Introduce `E _ _ _ a b Ma Mb`. Take `⟨W₁, W₂, f₁, f₂, hW⟩` from `h2 E a b Ma Mb`. Use `⟨W₁, W₂, f₁, f₂, ?_⟩` and prove the remaining obligations. Introduce `D _ _ _ _ _ _ μa _ μb _ ν _ κ _ ka kb va vb T ψ g ka' kb' K₁ K₂ M f c ca cb hC hka hkb hψ hg k0a k0b k1a k1b o₁ o₂ hlev hf hf0 hL hW2 hc he hea heb`. Establish `hR : Repr D ka kb ψ f` using `⟨hf, c, hc, he⟩`.
+
+Establish `hty` using `hW D μa μb κ ka kb va vb T ψ K₁ K₂ f hka hkb hψ hlev hR`. Take `⟨s₁, s₂⟩` from `h3 E a b μa μb Ma Mb κ D ka kb va vb T ψ (K₁.prod K₂) f hka hkb hψ (o₁.prod o₂) (fun x y u hu h => hlev x y u.1 hu.1 u.2 hu.2 h) hR`. Take `⟨C, N, hG⟩` from `h4 E a b D _ _ M f c (h1 E a b μa μb Ma Mb κ ka kb va vb T ψ hka hkb hψ).1 hf hL hW2 hc he`. Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hf0`. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.1 hi₀`.
+
+Establish `ga` using `fun v s m => (h5 E a b D μa μb ν Ma Mb κ ka kb va vb T ψ f c (ca v s m) v g s m hC hka hkb hψ hg ⟨s₁, s₂⟩ hf hc he).1 _ (k0a v) (k1a s m v) (hea v s m)`. Establish `gb` using `fun v s m => (h5 E a b D μa μb ν Ma Mb κ ka kb va vb T ψ f c (cb v s m) v g s m hC hka hkb hψ hg ⟨s₁, s₂⟩ hf hc he).2 _ (k0b v) (k1b s m v) (heb v s m)`. Establish `ea : ∀ v, ∃ χ : Inf a, ∀ s m, GlobalTheory.Dec.gelfVal (χ s) m = ca v s m / c` using `fun v => by`. Take `⟨φ, hφ⟩` from `s₁ i₀ x₀.2`. Use `h6 E a {φ} v (fun s m => ca v s m / c) ⟨φ, rfl, fun e => hx₀ ?_⟩ ?_` and prove the remaining obligations.
+
+Use `congrFun hφ x₀.1` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`. Introduce and unpack `_ rfl y s m x hx`. Rewrite using `[hφ]`.
+
+Conclude with `ga v s m i₀ y x₀.2 x hx`. Establish `eb : ∀ v, ∃ χ : Inf b, ∀ s m, GlobalTheory.Dec.gelfVal (χ s) m = cb v s m / c` using `fun v => by`. Take `⟨φ, hφ⟩` from `s₂ i₀ x₀.1`. Use `h6 E b {φ} v (fun s m => cb v s m / c) ⟨φ, rfl, fun e => hx₀ ?_⟩ ?_` and prove the remaining obligations. Use `congrFun hφ x₀.2` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this.symm`. Introduce and unpack `_ rfl y s m x hx`. Rewrite using `[hφ]`. Conclude with `gb v s m i₀ y x₀.1 x hx`.
+
+Use `choose χa hχa using ea`. Use `choose χb hχb using eb`. Establish `hE : EigAll χa χb f` using `⟨fun i v y m₂ s m x hx => by rw [hχa]; exact ga v s m i y m₂ x hx, fun i v y m₁ s m x hx => by rw [hχb]; exact gb v s m i y m₁ x hx⟩`. Take `⟨a₁, a₂, a₃, a₄⟩` from `h7 E a b _ f K₁ K₂ W₁ W₂ χa χb C N o₁ o₂ f₁ f₂ hL hty hG hE`. Conclude with `⟨χa, χb, hχa, hχb, hE, hty, s₁, s₂, a₁, a₂, a₃, a₄⟩`.
+-/
 theorem pack_of (h1 : TensTest) (h2 : TypeOf) (h3 : SmoothOf) (h4 : GrowthOf) (h5 : GelOf) (h6 : InfEx) (h7 : AutOf) :
     Pack := by
   intro E _ _ _ a b Ma Mb

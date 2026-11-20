@@ -17,6 +17,27 @@ namespace GlobalTheory.ChainOnto.StepVecLawBoth
 set_option maxHeartbeats 1000000 in
 open Classical in
 
+/- English proof (translation)
+Introduce `κ hκ`. Take `⟨hr, ξ1, hL⟩` from `hs.lev`. Take `⟨hr', ξ2, hL'⟩` from `hs'.lev`. Rewrite `hv` using `[hL]`. Rewrite `hκ`, the goal using `[hL']`.
+
+Establish `ea : s.V.rank = D.R.r + k * D.R.t` using `hs.rank`. Establish `eb : s'.V.rank = D.R.r + (k + 1) * D.R.t` using `hs'.rank`. Take `⟨hf, e, he, hΘ⟩` from `hv`. Establish `he' : IsIdemSum e c.Pg` using `by rw [← Finset.union_empty c.Pg]; exact he`. Take `⟨hres, uS, uT⟩` from `GlobalTheory.T.thetaLiftChain_splittingCharacters_residue_unramified D c hc k hk`.
+
+Establish `hlev : Lev.finE s'.V κ ∈ lev D.sp.cm s'.V.gram s'.β (Lev.datY s'.V.rank D.R.r D.R.t (k + 1) hr' c.Pg ∅ c.P c.chi ξ2 Lev.Frm.B)` using `hκ.2`. Establish `sg : Lev.finE s.V 1 ∈ St s.β` using `by rw [map_one]; exact Subgroup.one_mem _`. Establish `sh : Lev.finE s'.V κ ∈ St s'.β` using `parLev_St hlev.1`. Establish `h1` using `GlobalTheory.StepVecLaw.om_vac hW hs.sigOK hs'.sigOK (GlobalTheory.Chain.VacVec.cart_isCartanInv s.M) (GlobalTheory.Chain.VacVec.cart_isCartanInv s'.M) hs.selfDual hs'.selfDual hs.frame hs'.frame hf he' (fun PP hP => (hres PP hP).1) (fun PP hP => (hres PP hP).2) uS uT (Subgroup.o …`. Use `set H : ∀ PP : Pl D.host.E, GL (Fin s'.V.rank) (kP PP) := fun PP => redFn s'.β PP (Lev.finE s'.V κ) with hH`.
+
+Establish `hPeq : (Lev.datY s'.V.rank D.R.r D.R.t (k + 1) hr' c.Pg ∅ c.P c.chi ξ2 Lev.Frm.B).P = c.P` using `by simp [Lev.datY]`. Establish `hcg : (Lev.datY s'.V.rank D.R.r D.R.t (k + 1) hr' c.Pg ∅ c.P c.chi ξ2 Lev.Frm.B).cg = c.chi` using `by simp [Lev.datY]`. Establish `hP : (fun PP : ↥c.Pg => upperLeftBlock hr' (H PP.1)) ∈ c.P.H`. Use `hlev.2` as an intermediate fact. Rewrite `this` using `[hPeq]`.
+
+Conclude with `this`. Establish `hBT : ∀ PP ∈ c.Pg, H PP ∈ blockTri (blkOf D.R.r D.R.t)` using `fun PP hPP => parLev_g hlev.1 hPP`. Establish `h1' : ω (1, κ) f₀ = ((∏ PP ∈ c.Pg, (c.chi (k + 1) PP (GeneralLinearGroup.det (H PP)))⁻¹ : ℂˣ) : ℂ) • f₀`. Rewrite using `[h1]`. Use `congr 2`.
+
+Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [map_one, redFn_one, MonoidHom.inv_apply, inv_one, one_mul, hH]`. Establish `hoT` using `GlobalTheory.T.levelPlacesDatum_inv_left_mul_target_level D s.V.rank s'.V.rank D.R.r D.R.t k hr hr' ea eb c.Pg c.P c.chi ξ1 H hBT hP`. Establish `h2` using `GlobalTheory.T.weilRep_theta_datum_half_eq_smul D c.ψ s.V s'.V _ _ ω hW e _ f₀ _ f (GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D c.ψ hW.std s.V s'.V s.Λ s'.Λ hs.selfDual hs'.selfDual e (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.infPar …`. Take `⟨i1, i2⟩` from `GlobalTheory.T.frameMatrix_movedHom_integral_reductions D s.V s'.V s.β s'.β 1 κ sg sh x`.
+
+Establish `i0 : IsHalf e (actO s.V s'.V 1⁻¹ κ⁻¹ x) ↔ IsHalf e x` using `⟨fun H' => GlobalTheory.AdelicLatMove.actO_actO_inv s.V s'.V 1 κ x ▸ GlobalTheory.SplitHecke.isHalf_actO 1 κ H', fun H' => GlobalTheory.SplitHecke.isHalf_actO _ _ H'⟩`. Distinguish the cases in `hx : IsHalf e x ∧ IsIntM (frMapO s.V s'.V s.β s'.β x)`. Use `beta_reduce`. Rewrite using `[if_pos hx, if_pos ⟨i0.2 hx.1, i1.2 hx.2⟩, funext (i2 hx.2), StepLevLaw.omegaQ_empty, StepLevLaw.omegaQ_empty, mul_one, mul_one]`. Simplify using `only [map_one, redFn_one, Units.val_one, Matrix.mul_one]`.
+
+Conclude with `hoT (fun PP => redM PP (frMapO s.V s'.V s.β s'.β x))`. Use `beta_reduce`. Rewrite using `[if_neg hx, if_neg fun H' => hx ⟨i0.1 H'.1, i1.1 H'.2⟩, mul_zero])`. Rewrite using `[h2]`. Use `congr 1`.
+
+Establish `hchi : (Lev.datY s'.V.rank D.R.r D.R.t (k + 1) hr' c.Pg ∅ c.P c.chi ξ2 Lev.Frm.B).P.chi ⟨_, hlev.2⟩ = c.P.chi ⟨_, hP⟩` using `rfl`. Unfold `Lev.levChi levFn`. Rewrite using `[extendOne_of_mem _ hlev.2, hchi]`. Simplify using `only [Lev.datY, ↓reduceIte, Finset.prod_empty, mul_one]`. Rewrite using `[Finset.prod_inv_distrib, ← Units.val_mul, ← Units.val_inv_eq_inv_val]`.
+
+Use `congr 1`. Rewrite using `[mul_comm _ (∏ PP ∈ c.Pg, c.chi (k + 1) PP (GeneralLinearGroup.det (H PP))), inv_mul_cancel_left]`.
+-/
 theorem stepLevLawT (D : D7) (c : Com D) (hc : c.Is) (k : ℕ) (hk : k < D.R.m) (s s' : PiLocalization₂ D) (hs : s.Is c k)
     (hs' : s'.Is c (k + 1)) (ω : GA D s.V × GA D s'.V →* Module.End ℂ (WO s.V s'.V → ℂ))
     (hW : IsWeilDatumO c.ψ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) ω) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -84,6 +105,9 @@ theorem stepLevLawT (D : D7) (c : Com D) (hc : c.Is) (k : ℕ) (hk : k < D.R.m) 
   congr 1
   rw [mul_comm _ (∏ PP ∈ c.Pg, c.chi (k + 1) PP (GeneralLinearGroup.det (H PP))), inv_mul_cancel_left]
 
+/- English proof (translation)
+Introduce `D _ c hc k hk s s' hs hs' p hp`. Take `⟨ξ, f₀, hv⟩` from `hp.vec`. Use `⟨fun κ hκ => (StepLevLaw.stepLevLaw D c hc ⟨k, hk⟩ s s' hs hs' p.ω hp.weil ξ f₀ p.f hv κ hκ).2, ?_⟩` and prove the remaining obligations. Conclude with `stepLevLawT D c hc k hk s s' hs hs' p.ω hp.weil ξ f₀ p.f hv`.
+-/
 theorem vecLaw : ∀ D : D7, ForStep D fun _ _ s s' p => VecLaw p.ω (Lev.levG s.V s.β s.L) (Lev.levChi s.V s.β s.L)
     (Lev.levG s'.V s'.β s'.L) (fun κ => (Lev.levChi s'.V s'.β s'.L κ)⁻¹) p.f := by
   intro D _ c hc k hk s s' hs hs' p hp

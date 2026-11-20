@@ -14,13 +14,22 @@ open GlobalTheory.Doubling (absE)
 
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ d R w g` and use `KSplitW.decompW d R w g`.
+-/
 theorem decompW : DecompW := fun _ _ _ _ _ _ _ _ d R w g => KSplitW.decompW d R w g
 
+/- English proof (translation)
+The claim follows from `gIdil_of hT hAux hLE (thetaPt_of hT) (fun _ _ P => KFock.isSw_fP P) matCount (splitDom_of hT hAw decompW) (thetaBdd_of hS) hLF hBD holMean derCont stripOK`.
+-/
 theorem gIdil (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hAw : AwayAct) (hS : GlobalTheory.Published.SiegelSetUnitary)
     (hLF : LocFamG) (hBD : BigDense) : GIdil :=
   gIdil_of hT hAux hLE (thetaPt_of hT) (fun _ _ P => KFock.isSw_fP P) matCount (splitDom_of hT hAw decompW)
     (thetaBdd_of hS) hLF hBD holMean derCont stripOK
 
+/- English proof (translation)
+The claim follows from `gIdil hT hAux hLE hAw GlobalTheory.T.siegel_set_unitary hLF bigDense`.
+-/
 theorem gIdil' (hT : TAll) (hAux : AuxiliaryPrimeFunction) (hLE : LocOpEx) (hAw : AwayAct) (hLF : LocFamG) : GIdil :=
   gIdil hT hAux hLE hAw GlobalTheory.T.siegel_set_unitary hLF bigDense
 

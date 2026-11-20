@@ -7,6 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
+/- English proof (translation)
+Rewrite using `[← WithBot.coe_le_coe, Module.coe_length, Module.coe_length, ← Order.krullDim_orderDual]`. Use `Order.krullDim_le_of_strictMono (fun p : (Submodule ℤ_[l] N)ᵒᵈ => LinearMap.ker (LinearMap.lcomp ℤ_[l] (QZ l) (OrderDual.ofDual p).subtype)) ?_` and prove the remaining obligations. Introduce `a b hab`. Express the relevant statement in the definitionally equal form `OrderDual.ofDual b < OrderDual.ofDual a at hab`. Take `⟨hle, m, hmp, hmq⟩` from `SetLike.lt_iff_le_and_exists.mp hab`.
+
+Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Introduce `φ hφ`. Rewrite `hφ`, the goal using `[LinearMap.mem_ker]`. Use extensionality with `⟨x, hx⟩`. Establish `h` using `LinearMap.congr_fun hφ ⟨x, hle hx⟩`.
+
+Simplify using `using h`. Introduce `heq`. Establish `hm0 : (OrderDual.ofDual b).mkQ m ≠ 0`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Take `⟨ψ, hψ⟩` from `qzSep l _ _ hm0`.
+
+Establish `hmem : ψ ∘ₗ (OrderDual.ofDual b).mkQ ∈ LinearMap.ker (LinearMap.lcomp ℤ_[l] (QZ l) (OrderDual.ofDual b).subtype)`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `⟨x, hx⟩`. Simplify using `[(Submodule.Quotient.mk_eq_zero _).mpr hx]`. Establish `hmem'` using `hmem`.
+
+Simplify using `only at heq`. Rewrite `hmem'` using `[← heq, LinearMap.mem_ker]`. Conclude with `hψ (by simpa using LinearMap.congr_fun hmem' ⟨m, hmp⟩)`.
+-/
 private theorem le_dual (l : ℕ) [Fact l.Prime] (N : Type) [AddCommGroup N] [Module ℤ_[l] N] :
     Module.length ℤ_[l] N ≤ Module.length ℤ_[l] (N →ₗ[ℤ_[l]] QZ l) := by
   rw [← WithBot.coe_le_coe, Module.coe_length, Module.coe_length, ← Order.krullDim_orderDual]
@@ -36,6 +47,11 @@ private theorem le_dual (l : ℕ) [Fact l.Prime] (N : Type) [AddCommGroup N] [Mo
     rw [← heq, LinearMap.mem_ker] at hmem'
     exact hψ (by simpa using LinearMap.congr_fun hmem' ⟨m, hmp⟩)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.exact_iff]`. Establish `h` using `(dualKer l N (N ⧸ p) p.mkQ).1`. Establish `hq` using `Submodule.ker_mkQ p`. Generalize the expression as in `LinearMap.ker p.mkQ = q at h hq`. Substitute `hq` using the available equality.
+
+Conclude with `h.symm`.
+-/
 private theorem exact_dual (l : ℕ) [Fact l.Prime] {N : Type} [AddCommGroup N] [Module ℤ_[l] N]
     (p : Submodule ℤ_[l] N) :
     Function.Exact (LinearMap.lcomp ℤ_[l] (QZ l) p.mkQ) (LinearMap.lcomp ℤ_[l] (QZ l) p.subtype) := by
@@ -46,6 +62,29 @@ private theorem exact_dual (l : ℕ) [Fact l.Prime] {N : Type} [AddCommGroup N] 
   subst hq
   exact h.symm
 
+/- English proof (translation)
+Use `haveI : Nontrivial N := IsSimpleModule.nontrivial ℤ_[l] N`. Establish `hnu : (l : ℤ_[l]) ∈ nonunits ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal _).mp (by rw [PadicInt.maximalIdeal_eq_span_p]; exact Ideal.mem_span_singleton_self _)`. Establish `hspan : ∀ s : N, s ≠ 0 → ∀ x : N, ∃ c : ℤ_[l], c • s = x`. Introduce `s hs x`. Establish `htop : Submodule.span ℤ_[l] {s} = ⊤` using `(IsSimpleOrder.eq_bot_or_eq_top _).resolve_left (by simpa [Submodule.span_singleton_eq_bot] using hs)`.
+
+Conclude with `Submodule.mem_span_singleton.mp (htop ▸ Submodule.mem_top)`. Establish `hkill : ∀ s : N, (l : ℤ_[l]) • s = 0`. Introduce `s`. Assume the negation of the conclusion as `h`. Take `⟨c, hc⟩` from `hspan _ h s`.
+
+Establish `hu : IsUnit (1 - c * (l : ℤ_[l]))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ (mul_mem_nonunits_right hnu)`. Establish `h0 : (1 - c * (l : ℤ_[l])) • s = 0`. Rewrite using `[sub_smul, one_smul, mul_smul, hc, sub_self]`. Establish `hs0 : s = 0` using `(hu.smul_eq_zero).mp h0`. Conclude with `h (by rw [hs0, smul_zero])`.
+
+Take `⟨s, hs⟩` from `exists_ne (0 : N)`. Take `⟨φ0, hφ0⟩` from `qzSep l N s hs`. Take `⟨ι, hιinj, hιrange, hιsmul⟩` from `zmodToQZ l 1`. Use `haveI : Fact (Nat.Prime (l ^ 1)) := ⟨by rw [pow_one]; exact hl.out⟩`. Establish `hrange : ∀ φ : N →ₗ[ℤ_[l]] QZ l, ∃ a, ι a = φ s`.
+
+Introduce `φ`. Use `(hιrange (φ s)).mpr ?_` and prove the remaining obligations. Rewrite using `[pow_one, ← LinearMap.map_smul_of_tower, hkill, map_zero]`. Establish `key : ∀ φ ψ : N →ₗ[ℤ_[l]] QZ l, φ ≠ 0 → ∃ z : ℤ_[l], ψ = z • φ`. Introduce `φ ψ hφ`.
+
+Establish `hφs : φ s ≠ 0`. Introduce `h`. Apply `hφ` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨c, rfl⟩` from `hspan s hs x`.
+
+Simplify using `[h]`. Take `⟨a, ha⟩` from `hrange φ`. Take `⟨b, hb⟩` from `hrange ψ`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hφs (by rw [← ha, map_zero])`. Take `⟨k, hk⟩` from `ZMod.natCast_zmod_surjective (b * a⁻¹)`. Establish `hb' : b = PadicInt.toZModPow 1 (k : ℤ_[l]) * a`. Rewrite using `[map_natCast, hk, inv_mul_cancel_right₀ ha0]`. Use `⟨(k : ℤ_[l]), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Take `⟨c, rfl⟩` from `hspan s hs x`. Rewrite using `[map_smul, LinearMap.smul_apply, map_smul, ← hb, ← ha, hb', hιsmul, smul_comm]`. Use `haveI : Nontrivial (N →ₗ[ℤ_[l]] QZ l) := ⟨⟨φ0, 0, fun h => hφ0 (by rw [h]; rfl)⟩⟩`. Use `{ eq_bot_or_eq_top := fun P => ?_ }` and prove the remaining obligations.
+
+Distinguish the cases in `h : P = ⊥`. Conclude with `Or.inl h`. Use `right`. Take `⟨φ, hφP, hφ0'⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Rewrite using `[eq_top_iff]`.
+
+Introduce `ψ _`. Take `⟨z, rfl⟩` from `key φ ψ hφ0'`. Conclude with `P.smul_mem z hφP`.
+-/
 private theorem simple_dual (l : ℕ) [hl : Fact l.Prime]
     (N : Type) [AddCommGroup N] [Module ℤ_[l] N] [hN : IsSimpleModule ℤ_[l] N] :
     IsSimpleModule ℤ_[l] (N →ₗ[ℤ_[l]] QZ l) := by
@@ -108,6 +147,15 @@ private theorem simple_dual (l : ℕ) [hl : Fact l.Prime]
     obtain ⟨z, rfl⟩ := key φ ψ hφ0'
     exact P.smul_mem z hφP
 
+/- English proof (translation)
+Introduce `l _ M _ _`. Distinguish the cases in `hM : IsFiniteLength ℤ_[l] M`. Proceed by induction on `hM with`. Consider the case `@of_subsingleton M' _ _ _ => haveI : Subsingleton (M' →ₗ[ℤ_[l]] QZ l) := ⟨fun f g => LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero]⟩`. Simplify using `[Module.length_eq_zero]`.
+
+Consider the case `@of_simple_quotient M' _ _ N _ _ ih`. Establish `hS` using `simple_dual l (M' ⧸ N)`. Establish `e1` using `Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N)`. Establish `e2` using `Module.length_eq_add_of_exact (LinearMap.lcomp ℤ_[l] (QZ l) N.mkQ) (LinearMap.lcomp ℤ_[l] (QZ l) N.subtype) (fun f g h => by`. Use extensionality with `x`.
+
+Conclude with `LinearMap.congr_fun h x)`. Use the proof step `((dualKer l M' M' (LinearMap.id)).2 N) (exact_dual l N)`. Rewrite using `[e1, e2, ih, Module.length_eq_one (R := ℤ_[l]) (M := M' ⧸ N), Module.length_eq_one (R := ℤ_[l]) (M := (M' ⧸ N) →ₗ[ℤ_[l]] QZ l), add_comm]`. Establish `h1 : Module.length ℤ_[l] M = ⊤`. Rewrite using `[← not_ne_iff, Module.length_ne_top_iff]`.
+
+Conclude with `hM`. Establish `h2` using `le_dual l M`. Rewrite `h2` using `[h1, top_le_iff]`. Rewrite using `[h1, h2]`.
+-/
 theorem UpperTheory.V.Tower.lenDual :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M], Module.length ℤ_[l] (M →ₗ[ℤ_[l]] QZ l) = Module.length ℤ_[l] M := by
   intro l _ M _ _

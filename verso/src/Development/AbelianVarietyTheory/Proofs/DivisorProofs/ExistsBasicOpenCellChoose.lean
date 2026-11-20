@@ -11,6 +11,15 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LogPole
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z U W k hWU hWk hW`. Take `⟨⟨w₁, hw₁⟩⟩` from `hW`. Take `⟨w, hwW, hw0⟩` from `(dense_U₀ TF.X Z).inter_open_nonempty (W : Set (Y₀ TF.X Z)) W.isOpen ⟨w₁, hw₁⟩`. Establish `hcomp : toBase TF Z w = TF.X.π w.1` using `Scheme.Hom.comp_apply _ _ _`. Establish `hU : toBase TF Z w ∈ U.1` using `hWU hwW`.
+
+Establish `hI : toBase TF Z w ∈ LogKS.interior TF.Y`. Rewrite using `[hcomp]`. Conclude with `hw0`. Establish `hB : toBase TF Z w ∈ barComp TF.Y Z`. Rewrite using `[hcomp]`.
+
+Conclude with `w.2`. Establish `hM : toBase TF Z w ∈ (TF.X.F.M k).U`. Rewrite using `[hcomp]`. Conclude with `TF.X.F.le k (hWk hwW)`. Take `⟨a, ha, hxa⟩` from `U.2.exists_basicOpen_le (V := LogKS.interior TF.Y ⊓ barComp TF.Y Z ⊓ (TF.X.F.M k).U) ⟨toBase TF Z w, ⟨⟨hI, hB⟩, hM⟩⟩ hU`.
+
+Conclude with `⟨a, ha, w, hwW, hw0, hxa⟩`.
+-/
 theorem GlobalTheory.LogPole.exists_basicOpen_cell_choose : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) (W : (Y₀ TF.X Z).Opens) (k : TF.X.F.J), W ≤ toBase TF Z ⁻¹ᵁ U.1 → W ≤ inc₀ TF.X Z ⁻¹ᵁ TF.X.F.U k → Nonempty W → ∃ a : Γ(TF.Y.X, U.1), TF.Y.X.basicOpen a ≤ LogKS.interior TF.Y ⊓ barComp TF.Y Z ⊓ (TF.X.F.M k).U ∧ ∃ w : Y₀ TF.X Z, w ∈ W ∧ w ∈ U₀ TF.X Z ∧ toBase TF Z w ∈ TF.Y.X.basicOpen a := by
   intro E _ _ _ H Dw l Xo c TF Z U W k hWU hWk hW
   obtain ⟨⟨w₁, hw₁⟩⟩ := hW

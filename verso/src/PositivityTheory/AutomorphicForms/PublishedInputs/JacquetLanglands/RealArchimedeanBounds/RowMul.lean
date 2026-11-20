@@ -11,6 +11,11 @@ namespace UpperTheory.Esk.PrimitiveVectorLemmas
 variable {F : Type} [Field F] [NumberField F]
 
 omit [NumberField F] in
+/- English proof (translation)
+Distinguish the cases in `h0 : s 0 = 0`. Establish `h1 : s 1 ≠ 0`. Apply the tactic sequence `intro h1; apply hs; funext i; fin_cases i <;> simp [h0, h1]`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![1, 0; s 0, s 1] (by simp [Matrix.det_fin_two, h1]), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro j; fin_cases j <;> rfl`.
+
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; s 0, s 1] (by simp [Matrix.det_fin_two, h0]), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro j; fin_cases j <;> rfl`.
+-/
 theorem exists_row (s : Fin 2 → F) (hs : s ≠ 0) : ∃ γ : GL (Fin 2) F, ∀ j, γ.val 1 j = s j := by
   by_cases h0 : s 0 = 0
   · have h1 : s 1 ≠ 0 := by
@@ -20,10 +25,16 @@ theorem exists_row (s : Fin 2 → F) (hs : s ≠ 0) : ∃ γ : GL (Fin 2) F, ∀
   · refine ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; s 0, s 1] (by simp [Matrix.det_fin_two, h0]), ?_⟩
     intro j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Simplify using `[rowF, jF, Matrix.mul_apply, Matrix.vecMul, dotProduct, hγ]`.
+-/
 theorem row_mul (s : Fin 2 → F) (γ : GL (Fin 2) F) (hγ : ∀ j, γ.val 1 j = s j) (x : GF F) (i : Fin 2) :
     rowF s x i = (jF F γ * x).val 1 i := by
   simp [rowF, jF, Matrix.mul_apply, Matrix.vecMul, dotProduct, hγ]
 
+/- English proof (translation)
+Simplify using `[zc, aff, Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`.
+-/
 theorem row_zak (d a : (Af F)ˣ) (u : Af F) (k : GF F) (i : Fin 2) :
     (zc F d * aff a u * k).val 1 i = (d : Af F) * k.val 1 i := by
   simp [zc, aff, Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply,
@@ -31,6 +42,15 @@ theorem row_zak (d a : (Af F)ˣ) (u : Af F) (k : GF F) (i : Fin 2) :
 
 end UpperTheory.Esk.PrimitiveVectorLemmas
 
+/- English proof (translation)
+Introduce `hM hI F _ _ s x`. Use `⟨fun hs => ?_, fun t k hk hrow => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `UpperTheory.Esk.PrimitiveVectorLemmas.exists_row s hs`. Take `⟨d, a, u, k, hk, he⟩` from `hI F (UpperTheory.Esk.jF F γ * x)`. Use `⟨d, k, hk, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[UpperTheory.Esk.PrimitiveVectorLemmas.row_mul s γ hγ x i, he, UpperTheory.Esk.PrimitiveVectorLemmas.row_zak]`. Take `⟨-, -, -, -, h5, -⟩` from `hM F`. Establish `key : ∀ w : Pl F, max ‖pLoc F w (k.val 1 0)‖ ‖pLoc F w (k.val 1 1)‖ = 1`. Introduce `w`. Establish `h` using `(h5 k hk w).2`.
+
+Use `le_antisymm (max_le (Valued.toNormedField.norm_le_one_iff.2 ((le_max_left _ _).trans h.le)) (Valued.toNormedField.norm_le_one_iff.2 ((le_max_right _ _).trans h.le))) ?_` and prove the remaining obligations. Apply the tactic sequence `rcases max_choice (Valued.v (pLoc F w (k.val 1 0))) (Valued.v (pLoc F w (k.val 1 1))) with hh | hh <;> rw [hh] at h`. Conclude with `le_max_of_le_left (Valued.toNormedField.one_le_norm_iff.2 h.ge)`. Conclude with `le_max_of_le_right (Valued.toNormedField.one_le_norm_iff.2 h.ge)`. Establish `hw : ∀ w : Pl F, max ‖pLoc F w (UpperTheory.Esk.rowF s x 0)‖ ‖pLoc F w (UpperTheory.Esk.rowF s x 1)‖ = ‖pLoc F w (t : Af F)‖`.
+
+Introduce `w`. Rewrite using `[hrow 0, hrow 1, map_mul, map_mul, norm_mul, norm_mul, ← mul_max_of_nonneg _ _ (norm_nonneg _), key w, mul_one]`. Use `show ∏ᶠ w : Pl F, max ‖pLoc F w (UpperTheory.Esk.rowF s x 0)‖ ‖pLoc F w (UpperTheory.Esk.rowF s x 1)‖ = ∏ᶠ w : Pl F, ‖pLoc F w (t : Af F)‖`. Conclude with `finprod_congr hw`.
+-/
 theorem UpperTheory.Esk.aRow : UpperTheory.Esk.AMem → UpperTheory.Esk.AIw → UpperTheory.Esk.ARow := by
   intro hM hI F _ _ s x
   refine ⟨fun hs => ?_, fun t k hk hrow => ?_⟩

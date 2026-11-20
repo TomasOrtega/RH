@@ -18,6 +18,9 @@ def algEntry (V : HSp D) (τ : D.what₂.Tau) (m j : Fin V.rank) : AlgInf V →�
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (AlgInf V) := FiniteDimensional.complete ℝ (AlgInf V)`. Use `haveI : FiniteDimensional ℝ (LieN V) := FiniteDimensional.of_injective (jInf V) (isLieData R).inj`. Establish `h1 : ContDiff ℝ ∞ (NormedSpace.exp : AlgInf V → AlgInf V)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Apply the tactic sequence `exact (LinearMap.toContinuousLinearMap (algEntry V τ m j)).contDiff.comp (h1.comp (LinearMap.toContinuousLinearMap (jInf V)).contDiff)`.
+-/
 theorem contDiff_expEntry (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : HSp D}
     (R : RealPoints θ V) (τ : D.what₂.Tau) (m j : Fin V.rank) :
     ContDiff ℝ ∞ fun X : LieN V => algEntry V τ m j (NormedSpace.exp (jInf V X)) := by
@@ -28,6 +31,11 @@ theorem contDiff_expEntry (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D
   exact (LinearMap.toContinuousLinearMap (algEntry V τ m j)).contDiff.comp
     (h1.comp (LinearMap.toContinuousLinearMap (jInf V)).contDiff)
 
+/- English proof (translation)
+Establish `h2` using `(isExpFam_expInf R X).2 p.1`. Express the relevant statement in the definitionally equal form `infMat D.sp.cm.sig V.gram (θ p.1) (g * expInf θ V X) p.2.1 p.2.2 = _`. Rewrite using `[R.2.2.2.1, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `infMat D.sp.cm.sig V.gram (θ p.1) (expInf θ V X) m p.2.2 = (NormedSpace.exp (jInf V X) : AlgInf V) p.1 m p.2.2`. Rewrite using `[exp_algInf, h2]`. Both sides reduce to the same expression.
+-/
 theorem realEntries_mul_exp (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : HSp D}
     (R : RealPoints θ V) (g : GA D V) (X : LieN V) (p : D.what₂.Tau × Fin V.rank × Fin V.rank) :
     realEntries θ V (g * expMap (jInf V) (secInf θ V) X) p =
@@ -41,6 +49,11 @@ theorem realEntries_mul_exp (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F]
   rw [exp_algInf, h2]
   rfl
 
+/- English proof (translation)
+Introduce `D θ V R P g`. Establish `hc : ∀ p : D.what₂.Tau × Fin V.rank × Fin V.rank, ContDiff ℝ ∞ fun X : LieN V => realEntries θ V (g * expMap (jInf V) (secInf θ V) X) p`. Introduce `p`. Simplify using `only [realEntries_mul_exp θ R]`. Apply the tactic sequence `exact ContDiff.sum fun m _ => contDiff_const.mul (contDiff_expEntry θ R p.1 m p.2.2)`.
+
+Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun X : LieN V => MvPolynomial.eval (realEntries θ V (g * expMap (jInf V) (secInf θ V) X)) P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa only [map_add] using hp.add hq`. Consider the case `mul_X p n hp => simpa only [map_mul, MvPolynomial.eval_X] using hp.mul (hc n)`.
+-/
 theorem polyFun_mem_smF : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D),
     RealPoints θ V → ∀ P : PolyE V, polyFun θ V P ∈ SmF θ V := by
   intro D θ V R P g

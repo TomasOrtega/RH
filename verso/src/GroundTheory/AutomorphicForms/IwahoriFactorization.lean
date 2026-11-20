@@ -19,16 +19,25 @@ def elimKey (i : Fin n) : α ×ₗ Fin n := toLex (β i, i)
 variable {β}
 
 omit [LinearOrder α] in
+/- English proof (translation)
+Introduce `i j h` and use `by have := congrArg (fun p => (ofLex p).2) h simpa [elimKey] using this`.
+-/
 theorem elimKey_injective : Function.Injective (elimKey β) := fun i j h => by
   have := congrArg (fun p => (ofLex p).2) h
   simpa [elimKey] using this
 
+/- English proof (translation)
+Rewrite `h` using `[elimKey, elimKey, Prod.Lex.toLex_lt_toLex]`. Break down `h with h | ⟨h, -⟩` into its components or cases. Conclude with `h.le`. Conclude with `h.le`.
+-/
 theorem le_of_elimKey_lt {i j : Fin n} (h : elimKey β i < elimKey β j) : β i ≤ β j := by
   rw [elimKey, elimKey, Prod.Lex.toLex_lt_toLex] at h
   rcases h with h | ⟨h, -⟩
   · exact h.le
   · exact h.le
 
+/- English proof (translation)
+Rewrite `h` using `[elimKey, elimKey, Prod.Lex.toLex_lt_toLex]`. Break down `h with h | ⟨-, h⟩` into its components or cases. Conclude with `lt_of_not_ge fun hji => (hβ hji).not_gt h`. Conclude with `h`.
+-/
 theorem lt_of_elimKey_lt {i j : Fin n} (h : elimKey β i < elimKey β j) (hβ : Monotone β) :
     i < j := by
   rw [elimKey, elimKey, Prod.Lex.toLex_lt_toLex] at h
@@ -36,6 +45,9 @@ theorem lt_of_elimKey_lt {i j : Fin n} (h : elimKey β i < elimKey β j) (hβ : 
   · exact lt_of_not_ge fun hji => (hβ hji).not_gt h
   · exact h
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne h fun e => hij (elimKey_injective e)`.
+-/
 theorem elimKey_lt_of_le {i j : Fin n} (h : elimKey β i ≤ elimKey β j) (hij : i ≠ j) :
     elimKey β i < elimKey β j :=
   lt_of_le_of_ne h fun e => hij (elimKey_injective e)
@@ -47,9 +59,17 @@ def elimCol (h : Matrix (Fin n) (Fin n) F) (a : Fin n) : Matrix (Fin n) (Fin n) 
 
 variable {β}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem elimCol_apply (h : Matrix (Fin n) (Fin n) F) (a i k : Fin n) :
     elimCol β h a i k = if k = a ∧ elimKey β a < elimKey β i then h i a / h a a else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `i l`. Rewrite using `[mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality.
+
+Rewrite using `[elimCol_apply h k k l, if_neg (fun h => lt_irrefl _ h.2), mul_zero]`. Rewrite using `[elimCol_apply, if_neg (fun h => hk h.1), zero_mul]`.
+-/
 theorem elimCol_mul_elimCol (h : Matrix (Fin n) (Fin n) F) (a : Fin n) :
     elimCol β h a * elimCol β h a = 0 := by
   ext i l
@@ -60,6 +80,13 @@ theorem elimCol_mul_elimCol (h : Matrix (Fin n) (Fin n) F) (a : Fin n) :
     rw [elimCol_apply h k k l, if_neg (fun h => lt_irrefl _ h.2), mul_zero]
   · rw [elimCol_apply, if_neg (fun h => hk h.1), zero_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Simplify using `only [elimCol_apply]`. Use `split_ifs with hi`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[if_pos ⟨rfl, hi⟩]`.
+
+Introduce `k _ hk`. Rewrite using `[if_neg (fun h => hk h.1), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg (fun h => hi h.2), zero_mul]`.
+-/
 theorem elimCol_mul_apply (h : Matrix (Fin n) (Fin n) F) (a i l : Fin n) :
     (elimCol β h a * h) i l = if elimKey β a < elimKey β i then h i a / h a a * h a l else 0 := by
   rw [mul_apply]
@@ -88,15 +115,26 @@ def elimGL (h : Matrix (Fin n) (Fin n) F) (a : Fin n) : GL (Fin n) F where
 
 variable {β}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem elimGL_apply (h : Matrix (Fin n) (Fin n) F) (a i k : Fin n) :
     (elimGL β h a : GL (Fin n) F) i k = (1 : Matrix (Fin n) (Fin n) F) i k - elimCol β h a i k :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem elimGL_inv_apply (h : Matrix (Fin n) (Fin n) F) (a i k : Fin n) :
     ((elimGL β h a)⁻¹ : GL (Fin n) F) i k =
       (1 : Matrix (Fin n) (Fin n) F) i k + elimCol β h a i k :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_blockUpper]`. Introduce `i k hik`. Establish `hik' : β i < β k` using `hik`. Use `show (1 : Matrix (Fin n) (Fin n) F) i k - elimCol β h a i k = 0`. Rewrite using `[one_apply_ne (fun e => hik'.ne (by rw [e])), elimCol_apply, if_neg, sub_zero]`.
+
+Introduce and unpack `⟨rfl, hk⟩`. Conclude with `(le_of_elimKey_lt hk).not_gt hik'`.
+-/
 theorem elimGL_mem_blockUpper_dual (h : Matrix (Fin n) (Fin n) F) (a : Fin n) :
     elimGL β h a ∈ blockUpper F n (OrderDual.toDual ∘ β) := by
   rw [mem_blockUpper]
@@ -107,6 +145,21 @@ theorem elimGL_mem_blockUpper_dual (h : Matrix (Fin n) (Fin n) F) (a : Fin n) :
   rintro ⟨rfl, hk⟩
   exact (le_of_elimKey_lt hk).not_gt hik'
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset (Fin n), ∃ q ∈ K ⊓ blockUpper F n (OrderDual.toDual ∘ β), ∀ j ∈ s, ∀ i, elimKey β j < elimKey β i → (q * g : GL (Fin n) F) i j = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on_max_value (elimKey β) with`. Consider the case `empty => exact ⟨1, one_mem _, fun j hj => absurd hj (Finset.notMem_empty j)⟩`. Consider the case `insert a s ha hmax ih`.
+
+Take `⟨q, hq, hz⟩` from `ih`. Use `set h : GL (Fin n) F := q * g with hh`. Establish `hK : h ∈ K` using `K.mul_mem (Subgroup.mem_inf.1 hq).1 hg`. Use `⟨elimGL β (h : Matrix (Fin n) (Fin n) F) a * q, Subgroup.mem_inf.2 ⟨K.mul_mem (helim h hK a) (Subgroup.mem_inf.1 hq).1, Subgroup.mul_mem _ (elimGL_mem_blockUpper_dual _ a) (Subgroup.mem_inf.1 hq).2⟩, ?_⟩` and prove the remaining obligations. Introduce `j hj i hji`.
+
+Apply the tactic sequence `have hentry : ((elimGL β (h : Matrix (Fin n) (Fin n) F) a * q * g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = (h : Matrix (Fin n) (Fin n) F) i j - (elimCol β (h : Matrix (Fin n) (Fin n) F) a * (h : Matrix (Fin n) (Fin n) F)) i j := by`. Rewrite using `[mul_assoc, Units.val_mul, ← hh]`. Use `show ((1 - elimCol β (h : Matrix (Fin n) (Fin n) F) a) * (h : Matrix (Fin n) (Fin n) F)) i j = _`. Rewrite using `[sub_mul, one_mul, Matrix.sub_apply]`. Use `show ((elimGL β (h : Matrix (Fin n) (Fin n) F) a * q * g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0`.
+
+Rewrite using `[hentry, elimCol_mul_apply]`. Break down `Finset.mem_insert.1 hj with rfl | hjs` into its components or cases. Rewrite using `[if_pos hji, div_mul_cancel₀ _ (hdiag h hK j), sub_self]`. Establish `hja : elimKey β j < elimKey β a` using `elimKey_lt_of_le (hmax j hjs) (fun e => ha (e ▸ hjs))`. Establish `h1 : (h : GL (Fin n) F) i j = 0` using `hz j hjs i hji`.
+
+Establish `h2 : (h : GL (Fin n) F) a j = 0` using `hz j hjs a hja`. Express the relevant statement in the definitionally equal form `(h : Matrix (Fin n) (Fin n) F) i j - _ = 0 at *`. Use `split_ifs`. Rewrite using `[show (h : Matrix (Fin n) (Fin n) F) a j = 0 from h2, mul_zero, sub_zero]`. Conclude with `h1`.
+
+Rewrite using `[sub_zero]`. Conclude with `h1`. Take `⟨q, hq, hz⟩` from `key Finset.univ`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_blockUpper]`.
+
+Introduce `i j hji`. Use `hz j (Finset.mem_univ j) i ?_` and prove the remaining obligations. Rewrite using `[elimKey, elimKey, Prod.Lex.toLex_lt_toLex]`. Conclude with `Or.inl hji`.
+-/
 theorem exists_mul_mem_blockUpper (K : Subgroup (GL (Fin n) F))
     (hdiag : ∀ h ∈ K, ∀ a, (h : GL (Fin n) F) a a ≠ 0)
     (helim : ∀ h ∈ K, ∀ a, elimGL β ((h : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a ∈ K)
@@ -157,11 +210,25 @@ theorem exists_mul_mem_blockUpper (K : Subgroup (GL (Fin n) F))
   rw [elimKey, elimKey, Prod.Lex.toLex_lt_toLex]
   exact Or.inl hji
 
+/- English proof (translation)
+Rewrite using `[mem_levi, mem_levi]`. Simplify using `only [Function.comp_apply, ne_eq, EmbeddingLike.apply_eq_iff_eq]`.
+-/
 theorem mem_levi_dual {g : GL (Fin n) F} :
     g ∈ levi F n (OrderDual.toDual ∘ β) ↔ g ∈ levi F n β := by
   rw [mem_levi, mem_levi]
   simp only [Function.comp_apply, ne_eq, EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨q, hq, hqk⟩` from `exists_mul_mem_blockUpper K hdiag helim hk`. Take `⟨hqK, hqP⟩` from `Subgroup.mem_inf.1 hq`. Use `set p := q⁻¹ with hp`. Establish `hpK : p ∈ K` using `K.inv_mem hqK`.
+
+Establish `hpP : p ∈ blockUpper F n (OrderDual.toDual ∘ β)` using `Subgroup.inv_mem _ hqP`. Use `set h := q * k with hh`. Establish `hhK : h ∈ K` using `K.mul_mem hqK hk`. Use `set m₁ := leviProj F n (OrderDual.toDual ∘ β) ⟨p, hpP⟩ with hm₁`. Use `set m₂ := leviProj F n β ⟨h, hqk⟩ with hm₂`.
+
+Establish `hm₁K : (m₁ : GL (Fin n) F) ∈ K` using `hlevi' p hpP hpK`. Establish `hm₂K : (m₂ : GL (Fin n) F) ∈ K` using `hlevi h hqk hhK`. Establish `hu₁` using `leviProj_inv_mul_mem (F := F) (β := OrderDual.toDual ∘ β) ⟨p, hpP⟩`. Establish `hu₂` using `leviProj_inv_mul_mem (F := F) (β := β) ⟨h, hqk⟩`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at hu₁ hu₂`.
+
+Express the relevant statement in the definitionally equal form `(m₁ : GL (Fin n) F)⁻¹ * p ∈ oppositeUnipotentRadical F n β at hu₁`. Express the relevant statement in the definitionally equal form `(m₂ : GL (Fin n) F)⁻¹ * h ∈ unipotentRadical F n β at hu₂`. Use `⟨p * (m₁ : GL (Fin n) F)⁻¹, Subgroup.mem_inf.2 ⟨K.mul_mem hpK (K.inv_mem hm₁K), ?_⟩, (m₁ : GL (Fin n) F) * m₂, Subgroup.mem_inf.2 ⟨K.mul_mem hm₁K hm₂K, (levi F n β).mul_mem (mem_levi_dual.1 m₁.2) m₂.2⟩, (m₂ : GL (Fin n) F)⁻¹ * h, Subgroup.mem_inf.2 ⟨K.mul_mem (K.inv_mem hm₂K) hhK …` and prove the remaining obligations. Use `conj_mem_unipotentRadical (levi_le_blockUpper m₁.2) hu₁` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Rewrite using `[hh, hp] group`.
+-/
 theorem iwahoriFactorization_of_elim (K : Subgroup (GL (Fin n) F))
     (hdiag : ∀ h ∈ K, ∀ a, (h : GL (Fin n) F) a a ≠ 0)
     (helim : ∀ h ∈ K, ∀ a, elimGL β ((h : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a ∈ K)
@@ -208,6 +275,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 local notation "ϖ" => ((GLnLocal.uniformizer F : 𝒪[F]) : F)
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Rewrite using `[h, one_apply_eq, map_one]`. Rewrite using `[one_apply_ne h, map_zero]`. Conclude with `zero_le`.
+-/
 theorem valuation_one_apply_le (i j : Fin n) :
     valuation F ((1 : Matrix (Fin n) (Fin n) F) i j) ≤ 1 := by
   by_cases h : i = j
@@ -215,6 +285,11 @@ theorem valuation_one_apply_le (i j : Fin n) :
   · rw [one_apply_ne h, map_zero]
     exact zero_le
 
+/- English proof (translation)
+Establish `hle : valuation F ϖ ^ m ≤ 1` using `pow_le_one' (valuation_uniformizer_lt_one F).le m`. Establish `hint : ∀ (x : F) (i j : Fin n), valuation F (x - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ m → x ∈ 𝒪[F]`. Introduce `x i j hx`. Use `(Valuation.mem_integer_iff _ _).mpr ?_` and prove the remaining obligations. Establish `: x = (x - (1 : Matrix (Fin n) (Fin n) F) i j) + (1 : Matrix (Fin n) (Fin n) F) i j`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Valuation.map_add_le _ (hx.trans hle) (valuation_one_apply_le i j)`. Rewrite using `[mem_congruenceSubgroup_iff F n, mem_integralGL_iff F n]`. Conclude with `⟨⟨fun i j => hint _ i j (h1 i j), fun i j => hint _ i j (h2 i j)⟩, h1⟩`.
+-/
 theorem mem_congruenceSubgroup_of_le {m : ℕ} {g : GL (Fin n) F}
     (h1 : ∀ i j, valuation F (g i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ m)
     (h2 : ∀ i j, valuation F ((g⁻¹ : GL (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤
@@ -232,17 +307,28 @@ theorem mem_congruenceSubgroup_of_le {m : ℕ} {g : GL (Fin n) F}
   rw [mem_congruenceSubgroup_iff F n, mem_integralGL_iff F n]
   exact ⟨⟨fun i j => hint _ i j (h1 i j), fun i j => hint _ i j (h2 i j)⟩, h1⟩
 
+/- English proof (translation)
+Introduce `e` and use `by have := ((mem_iwahori_iff F n).1 hh).2.2 a rw [e, map_zero] at this exact zero_ne_one this`.
+-/
 theorem diag_ne_zero_of_mem_iwahori {h : GL (Fin n) F} (hh : h ∈ iwahori F n) (a : Fin n) :
     h a a ≠ 0 := fun e => by
   have := ((mem_iwahori_iff F n).1 hh).2.2 a
   rw [e, map_zero] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+The claim follows from `diag_ne_zero_of_mem_iwahori (congruenceSubgroup_one_le_iwahori F n (congruenceSubgroup_antitone F n hm hh)) a`.
+-/
 theorem diag_ne_zero_of_mem_congruenceSubgroup {m : ℕ} (hm : 1 ≤ m) {h : GL (Fin n) F}
     (hh : h ∈ congruenceSubgroup F n m) (a : Fin n) : h a a ≠ 0 :=
   diag_ne_zero_of_mem_iwahori
     (congruenceSubgroup_one_le_iwahori F n (congruenceSubgroup_antitone F n hm hh)) a
 
+/- English proof (translation)
+Rewrite using `[elimCol_apply]`. Use `split_ifs with hik`. Establish `hia : i ≠ a` using `fun hh' => lt_irrefl _ (hh' ▸ hik.2)`. Establish `h1` using `((mem_congruenceSubgroup_iff F n).1 hh).2 i a`. Rewrite `h1` using `[one_apply_ne hia, sub_zero]`.
+
+Establish `hdiag` using `((mem_iwahori_iff F n).1 (congruenceSubgroup_one_le_iwahori F n (congruenceSubgroup_antitone F n hm hh))).2.2 a`. Rewrite using `[map_div₀, hdiag, div_one]`. Conclude with `h1`. Rewrite using `[map_zero]`. Conclude with `zero_le`.
+-/
 theorem valuation_elimCol_le {m : ℕ} (hm : 1 ≤ m) {h : GL (Fin n) F}
     (hh : h ∈ congruenceSubgroup F n m) (a i k : Fin n) :
     valuation F (elimCol β (h : Matrix (Fin n) (Fin n) F) a i k) ≤ valuation F ϖ ^ m := by
@@ -258,6 +344,9 @@ theorem valuation_elimCol_le {m : ℕ} (hm : 1 ≤ m) {h : GL (Fin n) F}
   · rw [map_zero]
     exact zero_le
 
+/- English proof (translation)
+The claim follows from `mem_congruenceSubgroup_of_le (fun i k => by rw [elimGL_apply, sub_sub_cancel_left, Valuation.map_neg] exact valuation_elimCol_le hm hh a i k) (fun i k => by rw [elimGL_inv_apply, add_sub_cancel_left] exact valuation_elimCol_le hm hh a i k)`.
+-/
 theorem elimGL_mem_congruenceSubgroup {m : ℕ} (hm : 1 ≤ m) {h : GL (Fin n) F}
     (hh : h ∈ congruenceSubgroup F n m) (a : Fin n) :
     elimGL β (h : Matrix (Fin n) (Fin n) F) a ∈ congruenceSubgroup F n m :=
@@ -269,6 +358,13 @@ theorem elimGL_mem_congruenceSubgroup {m : ℕ} (hm : 1 ≤ m) {h : GL (Fin n) F
       rw [elimGL_inv_apply, add_sub_cancel_left]
       exact valuation_elimCol_le hm hh a i k)
 
+/- English proof (translation)
+Establish `key : ∀ q : blockUpper F n β, (q : GL (Fin n) F) ∈ congruenceSubgroup F n m → ∀ i j, valuation F (((leviProj F n β q : levi F n β) : GL (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ m`. Introduce `q hq i j`. Rewrite using `[leviProj_apply]`. Use `split_ifs with hij`. Conclude with `((mem_congruenceSubgroup_iff F n).1 hq).2 i j`.
+
+Rewrite using `[one_apply_ne (fun hh => hij (by rw [hh])), sub_zero, map_zero]`. Conclude with `zero_le`. Use `mem_congruenceSubgroup_of_le (key ⟨p, hp⟩ hpK) ?_` and prove the remaining obligations. Establish `: ((leviProj F n β ⟨p, hp⟩ : levi F n β) : GL (Fin n) F)⁻¹ = ((leviProj F n β (⟨p, hp⟩ : blockUpper F n β)⁻¹ : levi F n β) : GL (Fin n) F)`. Rewrite using `[map_inv, Subgroup.coe_inv]`.
+
+Rewrite using `[this]`. Conclude with `key _ ((congruenceSubgroup F n m).inv_mem hpK)`.
+-/
 theorem leviProj_mem_congruenceSubgroup {m : ℕ} {p : GL (Fin n) F}
     (hp : p ∈ blockUpper F n β) (hpK : p ∈ congruenceSubgroup F n m) :
     ((leviProj F n β ⟨p, hp⟩ : levi F n β) : GL (Fin n) F) ∈ congruenceSubgroup F n m := by
@@ -288,6 +384,13 @@ theorem leviProj_mem_congruenceSubgroup {m : ℕ} {p : GL (Fin n) F}
   rw [this]
   exact key _ ((congruenceSubgroup F n m).inv_mem hpK)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `(mem_iwahori_iff F n).1 hpI`. Rewrite using `[mem_iwahori_iff F n]`. Use `⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[leviProj_apply] split_ifs`. Conclude with `h1 i j`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_le`. Rewrite using `[leviProj_apply] split_ifs`. Conclude with `h2 i j hij`. Rewrite using `[map_zero]`.
+
+Conclude with `zero_lt_one`. Rewrite using `[leviProj_apply, if_pos rfl]`. Conclude with `h3 i`.
+-/
 theorem leviProj_mem_iwahori {p : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
     (hpI : p ∈ iwahori F n) :
     ((leviProj F n β ⟨p, hp⟩ : levi F n β) : GL (Fin n) F) ∈ iwahori F n := by
@@ -307,6 +410,11 @@ theorem leviProj_mem_iwahori {p : GL (Fin n) F} (hp : p ∈ blockUpper F n β)
   · rw [leviProj_apply, if_pos rfl]
     exact h3 i
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `(mem_iwahori_iff F n).1 hh`. Rewrite using `[elimCol_apply]`. Use `split_ifs with hik`. Rewrite using `[map_div₀, h3 a, div_one]`. Conclude with `h2 i a (lt_of_elimKey_lt hik.2 hβ)`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_lt_one`.
+-/
 theorem valuation_elimCol_lt_one (hβ : Monotone β) {h : GL (Fin n) F} (hh : h ∈ iwahori F n)
     (a i k : Fin n) : valuation F (elimCol β (h : Matrix (Fin n) (Fin n) F) a i k) < 1 := by
   obtain ⟨-, h2, h3⟩ := (mem_iwahori_iff F n).1 hh
@@ -317,6 +425,13 @@ theorem valuation_elimCol_lt_one (hβ : Monotone β) {h : GL (Fin n) F} (hh : h 
   · rw [map_zero]
     exact zero_lt_one
 
+/- English proof (translation)
+Establish `hD` using `valuation_elimCol_lt_one hβ hh a`. Rewrite using `[mem_iwahori_iff F n]`. Use `⟨fun i k => ?_, fun i k hki => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[elimGL_apply]`. Conclude with `Valuation.map_sub_le _ (valuation_one_apply_le i k) (hD i k).le`.
+
+Rewrite using `[elimGL_apply, one_apply_ne hki.ne', zero_sub, Valuation.map_neg]`. Conclude with `hD i k`. Rewrite using `[elimGL_apply, one_apply_eq]`. Use `(Valuation.map_eq_of_sub_lt _ ?_).trans (map_one _)` and prove the remaining obligations. Rewrite using `[sub_sub_cancel_left, Valuation.map_neg, map_one]`.
+
+Conclude with `hD i i`.
+-/
 theorem elimGL_mem_iwahori (hβ : Monotone β) {h : GL (Fin n) F} (hh : h ∈ iwahori F n)
     (a : Fin n) : elimGL β (h : Matrix (Fin n) (Fin n) F) a ∈ iwahori F n := by
   have hD := valuation_elimCol_lt_one hβ hh a
@@ -333,6 +448,9 @@ theorem elimGL_mem_iwahori (hβ : Monotone β) {h : GL (Fin n) F} (hh : h ∈ iw
 
 variable (β) in
 
+/- English proof (translation)
+The claim follows from `iwahoriFactorization_of_elim _ (fun _ hh a => diag_ne_zero_of_mem_congruenceSubgroup hm hh a) (fun _ hh a => elimGL_mem_congruenceSubgroup hm hh a) (fun _ hp hpK => leviProj_mem_congruenceSubgroup hp hpK) (fun _ hp hpK => leviProj_mem_congruenceSubgroup hp hpK)`.
+-/
 theorem congruenceSubgroup_iwahoriFactorization {m : ℕ} (hm : 1 ≤ m) :
     ∀ k ∈ congruenceSubgroup F n m,
       ∃ z ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β,
@@ -343,6 +461,9 @@ theorem congruenceSubgroup_iwahoriFactorization {m : ℕ} (hm : 1 ≤ m) :
     (fun _ hp hpK => leviProj_mem_congruenceSubgroup hp hpK)
     (fun _ hp hpK => leviProj_mem_congruenceSubgroup hp hpK)
 
+/- English proof (translation)
+The claim follows from `iwahoriFactorization_of_elim _ (fun _ hh a => diag_ne_zero_of_mem_iwahori hh a) (fun _ hh a => elimGL_mem_iwahori hβ hh a) (fun _ hp hpI => leviProj_mem_iwahori hp hpI) (fun _ hp hpI => leviProj_mem_iwahori hp hpI)`.
+-/
 theorem iwahori_iwahoriFactorization (hβ : Monotone β) :
     ∀ k ∈ iwahori F n, ∃ z ∈ iwahori F n ⊓ oppositeUnipotentRadical F n β,
       ∃ y ∈ iwahori F n ⊓ levi F n β, ∃ x ∈ iwahori F n ⊓ unipotentRadical F n β,
@@ -354,6 +475,9 @@ theorem iwahori_iwahoriFactorization (hβ : Monotone β) :
 
 end Local
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨z, hz, y, hy, x, hx, e⟩` from `h k⁻¹ (K.inv_mem hk)`. Use `⟨x⁻¹, Subgroup.inv_mem _ hx, y⁻¹, Subgroup.inv_mem _ hy, z⁻¹, Subgroup.inv_mem _ hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv k, e]`. Use `group`.
+-/
 theorem iwahoriFactorization_symm {G : Type*} [Group G] {K Nbar M N : Subgroup G}
     (h : ∀ k ∈ K, ∃ z ∈ K ⊓ Nbar, ∃ y ∈ K ⊓ M, ∃ x ∈ K ⊓ N, k = z * y * x) :
     ∀ k ∈ K, ∃ x ∈ K ⊓ N, ∃ y ∈ K ⊓ M, ∃ z ∈ K ⊓ Nbar, k = x * y * z := by
@@ -368,6 +492,9 @@ section LocalSymm
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ} {α : Type*} [LinearOrder α] (β : Fin n → α)
 
+/- English proof (translation)
+The claim follows from `iwahoriFactorization_symm (congruenceSubgroup_iwahoriFactorization β hm)`.
+-/
 theorem congruenceSubgroup_iwahoriFactorization' {m : ℕ} (hm : 1 ≤ m) :
     ∀ k ∈ congruenceSubgroup F n m, ∃ x ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β,
       ∃ y ∈ congruenceSubgroup F n m ⊓ levi F n β,
@@ -376,6 +503,9 @@ theorem congruenceSubgroup_iwahoriFactorization' {m : ℕ} (hm : 1 ≤ m) :
 
 variable {β} in
 
+/- English proof (translation)
+The claim follows from `iwahoriFactorization_symm (iwahori_iwahoriFactorization hβ)`.
+-/
 theorem iwahori_iwahoriFactorization' (hβ : Monotone β) :
     ∀ k ∈ iwahori F n, ∃ x ∈ iwahori F n ⊓ unipotentRadical F n β,
       ∃ y ∈ iwahori F n ⊓ levi F n β, ∃ z ∈ iwahori F n ⊓ oppositeUnipotentRadical F n β,
@@ -391,6 +521,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 local notation "ϖ" => ((GLnLocal.uniformizer F : 𝒪[F]) : F)
 
+/- English proof (translation)
+Take `⟨d, rfl⟩ : ∃ d : ℕ, z = e + d` from `⟨(z - e).toNat, by omega⟩`. Rewrite using `[zpow_add₀ uniformizer_ne_zero, zpow_natCast, zpow_natCast, map_mul, map_mul, map_pow, map_pow, mul_right_comm]`. Conclude with `mul_le_of_le_one_right' (pow_le_one' (valuation_uniformizer_lt_one F).le d)`.
+-/
 theorem valuation_zpow_mul_le_pow_mul {x : F} {e : ℕ} {z : ℤ} (hz : (e : ℤ) ≤ z) :
     valuation F (ϖ ^ z * x) ≤ valuation F ϖ ^ e * valuation F x := by
   obtain ⟨d, rfl⟩ : ∃ d : ℕ, z = e + d := ⟨(z - e).toNat, by omega⟩
@@ -398,6 +531,13 @@ theorem valuation_zpow_mul_le_pow_mul {x : F} {e : ℕ} {z : ℤ} (hz : (e : ℤ
     map_pow, mul_right_comm]
   exact mul_le_of_le_one_right' (pow_le_one' (valuation_uniformizer_lt_one F).le d)
 
+/- English proof (translation)
+Take `⟨hP, h1⟩` from `mem_unipotentRadical.1 hu`. Rewrite using `[rankTorus_conj_apply]`. Break down `lt_trichotomy (β i) (β j) with h | h | h` into its components or cases. Establish `hij : i ≠ j` using `fun hh => h.ne (by rw [hh])`. Rewrite using `[one_apply_ne hij, sub_zero, sub_zero]`.
+
+Use `valuation_zpow_mul_le_pow_mul ?_` and prove the remaining obligations. Use `blockRank_lt h` as an intermediate fact. Establish `: e * blockRank β i + e ≤ e * blockRank β j` using `by nlinarith`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]`. Conclude with `zero_le`. Rewrite using `[hP h, mul_zero, one_apply_ne (fun hh => h.ne' (by rw [hh])), sub_zero, map_zero]`. Conclude with `zero_le`.
+-/
 theorem valuation_rankTorus_conj_sub_le {e : ℕ} {u : GL (Fin n) F}
     (hu : u ∈ unipotentRadical F n β) (i j : Fin n) :
     valuation F ((rankTorus F n β e * u * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j -
@@ -418,6 +558,13 @@ theorem valuation_rankTorus_conj_sub_le {e : ℕ} {u : GL (Fin n) F}
   · rw [hP h, mul_zero, one_apply_ne (fun hh => h.ne' (by rw [hh])), sub_zero, map_zero]
     exact zero_le
 
+/- English proof (translation)
+Take `⟨hlow, h1⟩` from `mem_oppositeUnipotentRadical.1 hz`. Rewrite using `[rankTorus_inv_conj_apply]`. Break down `lt_trichotomy (β i) (β j) with h | h | h` into its components or cases. Rewrite using `[hlow i j h, mul_zero, one_apply_ne (fun hh => h.ne (by rw [hh])), sub_zero, map_zero]`. Conclude with `zero_le`.
+
+Rewrite using `[h1 i j h, blockRank_eq h, sub_self, zpow_zero, one_mul, sub_self, map_zero]`. Conclude with `zero_le`. Establish `hij : i ≠ j` using `fun hh => h.ne' (by rw [hh])`. Rewrite using `[one_apply_ne hij, sub_zero, sub_zero]`. Use `valuation_zpow_mul_le_pow_mul ?_` and prove the remaining obligations.
+
+Use `blockRank_lt h` as an intermediate fact. Establish `: e * blockRank β j + e ≤ e * blockRank β i` using `by nlinarith`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_rankTorus_inv_conj_sub_le {e : ℕ} {z : GL (Fin n) F}
     (hz : z ∈ oppositeUnipotentRadical F n β) (i j : Fin n) :
     valuation F (((rankTorus F n β e)⁻¹ * z * rankTorus F n β e : GL (Fin n) F) i j -
@@ -438,6 +585,13 @@ theorem valuation_rankTorus_inv_conj_sub_le {e : ℕ} {z : GL (Fin n) F}
     push_cast
     omega
 
+/- English proof (translation)
+Establish `hb : ∀ w ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β, ∀ i j, valuation F ((rankTorus F n β e * w * (rankTorus F n β e)⁻¹ : GL (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ (m + e)`. Introduce `w hw i j`. Take `⟨hwK, hwN⟩` from `Subgroup.mem_inf.1 hw`. Use `(valuation_rankTorus_conj_sub_le hwN i j).trans ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm (valuation F ϖ ^ m)]`.
+
+Use `gcongr`. Conclude with `((mem_congruenceSubgroup_iff F n).1 hwK).2 i j`. Use `Subgroup.mem_inf.2 ⟨mem_congruenceSubgroup_of_le (hb u hu) ?_, conj_mem_unipotentRadical (rankTorus_mem_blockUpper e) (Subgroup.mem_inf.1 hu).2⟩` and prove the remaining obligations. Establish `: (rankTorus F n β e * u * (rankTorus F n β e)⁻¹)⁻¹ = rankTorus F n β e * u⁻¹ * (rankTorus F n β e)⁻¹` using `by group`. Rewrite using `[this]`.
+
+Conclude with `hb _ (Subgroup.inv_mem _ hu)`.
+-/
 theorem rankTorus_conj_mem_congruenceSubgroup {e m : ℕ} {u : GL (Fin n) F}
     (hu : u ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β) :
     rankTorus F n β e * u * (rankTorus F n β e)⁻¹ ∈
@@ -458,6 +612,13 @@ theorem rankTorus_conj_mem_congruenceSubgroup {e m : ℕ} {u : GL (Fin n) F}
   rw [this]
   exact hb _ (Subgroup.inv_mem _ hu)
 
+/- English proof (translation)
+Establish `hb : ∀ w ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β, ∀ i j, valuation F (((rankTorus F n β e)⁻¹ * w * rankTorus F n β e : GL (Fin n) F) i j - (1 : Matrix (Fin n) (Fin n) F) i j) ≤ valuation F ϖ ^ (m + e)`. Introduce `w hw i j`. Take `⟨hwK, hwN⟩` from `Subgroup.mem_inf.1 hw`. Use `(valuation_rankTorus_inv_conj_sub_le hwN i j).trans ?_` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm (valuation F ϖ ^ m)]`.
+
+Use `gcongr`. Conclude with `((mem_congruenceSubgroup_iff F n).1 hwK).2 i j`. Establish `htP : (rankTorus F n β e)⁻¹ ∈ blockUpper F n (OrderDual.toDual ∘ β)` using `Subgroup.inv_mem _ (Subgroup.mem_inf.1 (rankTorus_mem_levi (F := F) (β := β) e)).2`. Establish `hN` using `conj_mem_unipotentRadical htP (Subgroup.mem_inf.1 hz).2`. Rewrite `hN` using `[inv_inv]`.
+
+Use `Subgroup.mem_inf.2 ⟨mem_congruenceSubgroup_of_le (hb z hz) ?_, hN⟩` and prove the remaining obligations. Establish `: ((rankTorus F n β e)⁻¹ * z * rankTorus F n β e)⁻¹ = (rankTorus F n β e)⁻¹ * z⁻¹ * rankTorus F n β e` using `by group`. Rewrite using `[this]`. Conclude with `hb _ (Subgroup.inv_mem _ hz)`.
+-/
 theorem rankTorus_inv_conj_mem_congruenceSubgroup {e m : ℕ} {z : GL (Fin n) F}
     (hz : z ∈ congruenceSubgroup F n m ⊓ oppositeUnipotentRadical F n β) :
     (rankTorus F n β e)⁻¹ * z * rankTorus F n β e ∈
@@ -483,6 +644,13 @@ theorem rankTorus_inv_conj_mem_congruenceSubgroup {e m : ℕ} {z : GL (Fin n) F}
 
 variable (β) in
 
+/- English proof (translation)
+Establish `hmono : congruenceSubgroup F n (m + 1) ≤ congruenceSubgroup F n m` using `congruenceSubgroup_antitone F n (by omega)`. Use `⟨rankTorus F n β 1, rankTorus_mem_levi 1, fun y hy => rankTorus_commute 1 hy, fun u hu => ?_, fun z hz => ?_, fun U hU => ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_inf.1 (rankTorus_conj_mem_congruenceSubgroup (e := 1) hu)` as an intermediate fact. Conclude with `Subgroup.mem_inf.2 ⟨hmono this.1, this.2⟩`. Use `Subgroup.mem_inf.1 (rankTorus_inv_conj_mem_congruenceSubgroup (e := 1) hz)` as an intermediate fact.
+
+Conclude with `Subgroup.mem_inf.2 ⟨hmono this.1, this.2⟩`. Take `⟨t, -, ht⟩` from `(hasBasis_nhds_one F n).mem_iff.1 hU`. Establish `hle : congruenceSubgroup F n (m + t) ≤ congruenceSubgroup F n t` using `congruenceSubgroup_antitone F n (by omega)`. Use `⟨t, fun u hu => ht ?_, fun z hz => ht ?_⟩` and prove the remaining obligations. Rewrite using `[rankTorus_pow, one_mul]`.
+
+Conclude with `hle (Subgroup.mem_inf.1 (rankTorus_conj_mem_congruenceSubgroup hu)).1`. Rewrite using `[rankTorus_pow, one_mul]`. Conclude with `hle (Subgroup.mem_inf.1 (rankTorus_inv_conj_mem_congruenceSubgroup hz)).1`.
+-/
 theorem exists_central_contracting (m : ℕ) :
     ∃ a ∈ levi F n β, (∀ y ∈ levi F n β, a * y = y * a) ∧
       (∀ u ∈ congruenceSubgroup F n m ⊓ unipotentRadical F n β,
@@ -518,6 +686,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {α : Type*} [LinearOrder α] (β : Fin n → α)
   {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
+/- English proof (translation)
+The claim follows from `jacquetFixedMap_surjective hπ (isCompact_congruenceSubgroup F n m) (isOpen_congruenceSubgroup F n m) (congruenceSubgroup_iwahoriFactorization β hm)`.
+-/
 theorem jacquetFixedMap_surjective_congruenceSubgroup (hπ : IsAdmissible π) {m : ℕ} (hm : 1 ≤ m) :
     Function.Surjective (jacquetFixedMap F n β π (congruenceSubgroup F n m)) :=
   jacquetFixedMap_surjective hπ (isCompact_congruenceSubgroup F n m)
@@ -525,6 +696,9 @@ theorem jacquetFixedMap_surjective_congruenceSubgroup (hπ : IsAdmissible π) {m
 
 variable {β} in
 
+/- English proof (translation)
+The claim follows from `jacquetFixedMap_surjective hπ (isCompact_iwahori F n) (isOpen_iwahori F n) (iwahori_iwahoriFactorization hβ)`.
+-/
 theorem jacquetFixedMap_surjective_iwahori (hπ : IsAdmissible π) (hβ : Monotone β) :
     Function.Surjective (jacquetFixedMap F n β π (iwahori F n)) :=
   jacquetFixedMap_surjective hπ (isCompact_iwahori F n) (isOpen_iwahori F n)

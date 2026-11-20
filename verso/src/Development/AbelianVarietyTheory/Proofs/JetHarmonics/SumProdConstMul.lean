@@ -20,6 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DepthBound
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl fun b hb => h b hb _, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_prod_const_mul {k Λ : Type} [CommRing k] [Fintype Λ] {n : ℕ} (S : Finset (Fin n))
     (P : MvPolynomial (Λ × Fin n) k) (mu mu' : Fin n → (Λ →₀ ℕ) → k) (c : Fin n → k)
     (h : ∀ b ∈ S, ∀ mo, mu b mo = c b * mu' b mo) :

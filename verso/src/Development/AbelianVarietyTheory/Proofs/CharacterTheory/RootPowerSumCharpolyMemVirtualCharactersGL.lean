@@ -11,6 +11,15 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 open Polynomial in
+/- English proof (translation)
+Establish `hpq : IsPGroup p (E ⧸ Subgroup.center E)`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H y`. Take `⟨j, hj⟩` from `hE y`.
+
+Conclude with `⟨j, by rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]; exact hj⟩`. Take `⟨c, hc⟩` from `hpq.exists_card_eq`. Establish `hS : Subgroup.center E ⊔ (P : Subgroup E) = ⊤`. Apply `Subgroup.index_eq_one.1` to reduce the goal to its premises. Establish `h1 : (Subgroup.center E ⊔ (P : Subgroup E)).index ∣ p ^ c`.
+
+Rewrite using `[← hc]`. Conclude with `Subgroup.index_dvd_of_le le_sup_left`. Establish `h2 : (Subgroup.center E ⊔ (P : Subgroup E)).index ∣ (P : Subgroup E).index` using `Subgroup.index_dvd_of_le le_sup_right`. Establish `hcop : Nat.Coprime (p ^ c) (P : Subgroup E).index` using `Nat.Coprime.pow_left c ((Nat.Prime.coprime_iff_not_dvd hp.out).2 P.not_dvd_index)`. Conclude with `Nat.dvd_one.1 (hcop ▸ Nat.dvd_gcd h1 h2)`.
+
+Rewrite using `[← Subgroup.normalizer_eq_top_iff, eq_top_iff, ← hS]`. Conclude with `sup_le (Subgroup.center_le_normalizer _) Subgroup.le_normalizer`.
+-/
 private theorem sylow_normal_of_prime_pow_mem_center (E : Type) [Group E] [Finite E] (p : ℕ) [hp : Fact p.Prime] (P : Sylow p E)
     (hE : ∀ (y : E), ∃ j, y ^ p ^ j ∈ Subgroup.center E) : (P : Subgroup E).Normal := by
   have hpq : IsPGroup p (E ⧸ Subgroup.center E) := by
@@ -34,6 +43,19 @@ private theorem sylow_normal_of_prime_pow_mem_center (E : Type) [Group E] [Finit
   exact sup_le (Subgroup.center_le_normalizer _) Subgroup.le_normalizer
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨H, hPH⟩` from `Subgroup.exists_right_complement'_of_coprime P.card_coprime_index`. Establish `hHP` using `hPH.symm`. Use `⟨H, hHP.QuotientMulEquiv.toMonoidHom.comp (QuotientGroup.mk' (P : Subgroup E)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hPH.card_mul`. Establish `h2` using `(P : Subgroup E).card_mul_index`.
+
+Establish `h3 : Nat.card H = (P : Subgroup E).index`. Establish `hpos : 0 < Nat.card (P : Subgroup E)` using `Nat.card_pos`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos (h1.trans h2.symm)`. Rewrite using `[h3]`. Conclude with `P.not_dvd_index`.
+
+Introduce `g set h : H := hHP.QuotientMulEquiv (g : E ⧸ (P : Subgroup E)) with hh`. Establish `hq : (g : E ⧸ (P : Subgroup E)) = QuotientGroup.mk ((h : H) : E)` using `by conv_lhs => rw [← hHP.QuotientMulEquiv.symm_apply_apply (g : E ⧸ (P : Subgroup E))]`. Both sides reduce to the same expression. Establish `hs : ((h : E))⁻¹ * g ∈ (P : Subgroup E)`. Use `QuotientGroup.eq.1 hq.symm` as an intermediate fact.
+
+Conclude with `this`. Take `⟨m, hm⟩` from `P.2 ⟨_, hs⟩`. Use `⟨((h : E))⁻¹ * g, m, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h]`. Apply `hcomm _ _ hs` to reduce the goal to its premises.
+
+Introduce `hp`. Establish `hd : orderOf (h : E) ∣ Nat.card H`. Rewrite using `[Subgroup.orderOf_coe]`. Conclude with `orderOf_dvd_natCard h`. Establish `h1` using `hPH.card_mul`.
+
+Establish `h2` using `(P : Subgroup E).card_mul_index`. Establish `h3 : Nat.card H = (P : Subgroup E).index` using `Nat.eq_of_mul_eq_mul_left Nat.card_pos (h1.trans h2.symm)`. Conclude with `P.not_dvd_index (h3 ▸ hp.trans hd)`. Use `congrArg Subtype.val hm` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem exists_p_regular_split_of_normal_sylow_commute (E : Type) [Group E] [Finite E] (p : ℕ) [Fact p.Prime] (P : Sylow p E) [(P : Subgroup E).Normal]
     (hcomm : ∀ x y : E, x ∈ (P : Subgroup E) → ¬ p ∣ orderOf y → Commute y x) :
     ∃ H : Subgroup E, ∃ π : E →* H, ¬ p ∣ Nat.card H ∧
@@ -73,6 +95,19 @@ private theorem exists_p_regular_split_of_normal_sylow_commute (E : Type) [Group
       simpa using this
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨l, hl, hy⟩` from `hE`. Take `⟨P⟩` from `(inferInstance : Nonempty (Sylow p E))`. Establish `hcen : ∀ y : E, Nat.Coprime l (orderOf y) → y ∈ Subgroup.center E`. Introduce `y hco`. Take `⟨j, hj⟩` from `hy y`.
+
+Take `⟨m, hm⟩` from `exists_pow_eq_self_of_coprime (Nat.Coprime.pow_left j hco)`. Rewrite using `[← hm]`. Conclude with `Subgroup.pow_mem _ hj m`. Distinguish the cases in `hlp : l = p`. Substitute `hlp haveI := sylow_normal_of_prime_pow_mem_center E l P hy` using the available equality.
+
+Apply `exists_p_regular_split_of_normal_sylow_commute E l P` to reduce the goal to its premises. Introduce `x y _ hyo`. Use `hcen y ((Nat.Prime.coprime_iff_not_dvd hl).2 hyo)` as an intermediate fact. Conclude with `(Subgroup.mem_center_iff.1 this x).symm`. Establish `hPc : ∀ x ∈ (P : Subgroup E), x ∈ Subgroup.center E`.
+
+Introduce `x hx`. Take `⟨a, ha⟩` from `P.2 ⟨x, hx⟩`. Establish `ha' : x ^ p ^ a = 1` using `by simpa using congrArg Subtype.val ha`. Apply `hcen` to reduce the goal to its premises. Conclude with `Nat.Coprime.coprime_dvd_right (orderOf_dvd_of_pow_eq_one ha') (Nat.Coprime.pow_right a ((Nat.coprime_primes hl hp.out).2 hlp))`.
+
+Use `haveI : (P : Subgroup E).Normal := ⟨fun n hn g => by`. Rewrite using `[Subgroup.mem_center_iff.1 (hPc n hn) g, mul_inv_cancel_right]`. Conclude with `hn⟩`. Apply `exists_p_regular_split_of_normal_sylow_commute E p P` to reduce the goal to its premises. Introduce `x y hx _`.
+
+Conclude with `Subgroup.mem_center_iff.1 (hPc x hx) y`.
+-/
 private theorem exists_p_regular_split_of_pow_mem_center (E : Type) [Group E] [Finite E] (p : ℕ) [hp : Fact p.Prime]
     (hE : ∃ l, Nat.Prime l ∧ ∀ (y : E), ∃ j, y ^ l ^ j ∈ Subgroup.center E) :
     ∃ H : Subgroup E, ∃ π : E →* H, ¬ p ∣ Nat.card H ∧
@@ -106,6 +141,17 @@ private theorem exists_p_regular_split_of_pow_mem_center (E : Type) [Group E] [F
     exact Subgroup.mem_center_iff.1 (hPc x hx) y
 
 open Polynomial in
+/- English proof (translation)
+Establish `hmul` using `(_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear G).1`. Establish `he : ∀ j, (fun g => (ρ g : Matrix (Fin n) (Fin n) ℂ).charpoly.roots.esymm j) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G` using `fun j => _root_.GlobalTheory.BI.isChar_mem_virt_complex (_root_.GlobalTheory.BI.isChar_esymm_roots_charpoly G n j ρ)`. Establish `hconst : ∀ c : ℤ, (fun _ : G => (c : ℂ)) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G`. Introduce `c`. Establish `h1 : (fun _ : G => (1 : ℂ)) ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G` using `_root_.GlobalTheory.BI.isChar_mem_virt_complex (_root_.GlobalTheory.BI.isChar_one ℂ ℂ G)`.
+
+Use `zsmul_mem h1 c` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Proceed by induction on `r using Nat.strong_induction_on with`.
+
+Consider the case `_ r ih`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `hconst n using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[_root_.GlobalTheory.CharpolyPow.card_roots_charpoly]`.
+
+Establish `rootSum_charpoly_mem_virt_of_pow_mem_center : (fun g => (Multiset.map (fun x => x ^ r) ((ρ g : Matrix (Fin n) (Fin n) ℂ).charpoly.roots)).sum) = (fun _ => (((-1) ^ (r + 1) * r : ℤ) : ℂ)) * (fun g => (ρ g : Matrix (Fin n) (Fin n) ℂ).charpoly.roots.esymm r) - ∑ i ∈ Finset.Ioo 0 r, …`. Use function extensionality and compare the values at `g`. Rewrite using `[_root_.GlobalTheory.multiset_newton_psum _ r hr]`. Simplify using `[Finset.sum_apply]`. Rewrite using `[rootSum_charpoly_mem_virt_of_pow_mem_center]`.
+
+Use `sub_mem (hmul _ (hconst _) _ (he r)) (sum_mem fun i hi => ?_)` and prove the remaining obligations. Establish `hi'` using `Finset.mem_Ioo.1 hi`. Conclude with `hmul _ (hmul _ (hconst _) _ (he i)) _ (ih (r - i) (by omega))`.
+-/
 private theorem powerSum_roots_charpoly_complex_mem_virt (G : Type) [Group G] [Finite G] (n : ℕ) (ρ : G →* GL (Fin n) ℂ) (r : ℕ) :
     (fun g => (Multiset.map (fun x => x ^ r) ((ρ g : Matrix (Fin n) (Fin n) ℂ).charpoly.roots)).sum)
       ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G := by
@@ -140,6 +186,11 @@ private theorem powerSum_roots_charpoly_complex_mem_virt (G : Type) [Group G] [F
       exact hmul _ (hmul _ (hconst _) _ (he i)) _ (ih (r - i) (by omega))
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨m, ρC, hC⟩` from `(_root_.GlobalTheory.BI.matrixChar_iff_isChar H _).2 (_root_.GlobalTheory.CuspGL.isChar_brauerLift k θ hθ H hab hc n ρ)`. Use `powerSum_roots_charpoly_complex_mem_virt H m ρC r using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Establish `h1 : Multiset.map (fun α => θ α ^ r) ((ρ g : Matrix (Fin n) (Fin n) k).charpoly.roots) = Multiset.map θ ((ρ (g ^ r) : Matrix (Fin n) (Fin n) k).charpoly.roots)`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, _root_.GlobalTheory.CharpolyPow.roots_charpoly_pow, Multiset.map_map]`.
+
+Simplify using `[Function.comp_def, map_pow]`. Establish `h2` using `hC (g ^ r)`. Rewrite using `[h1, h2, map_pow, Units.val_pow_eq_pow_val, Matrix.trace_eq_sum_roots_charpoly, _root_.GlobalTheory.CharpolyPow.roots_charpoly_pow]`.
+-/
 private theorem powerSum_roots_charpoly_mem_virt_of_abByP (k : Type) [Field k] [IsAlgClosed k] (θ : k →* ℂ)
     (hθ : ∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (H : Type) [Group H] [Finite H]
     (hab : _root_.GlobalTheory.BI.AbByP H) (hc : (Nat.card H : k) ≠ 0) (n : ℕ) (ρ : H →* GL (Fin n) k) (r : ℕ) :
@@ -158,6 +209,15 @@ private theorem powerSum_roots_charpoly_mem_virt_of_abByP (k : Type) [Field k] [
     _root_.GlobalTheory.CharpolyPow.roots_charpoly_pow]
 
 open Polynomial in
+/- English proof (translation)
+Establish `hH` using `powerSum_roots_charpoly_mem_virt_of_abByP k θ hθ H (_root_.GlobalTheory.BI.AbByP.subgroup E H hab) hc n (ρ.comp H.subtype) r`. Use `(_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear H).2.1 _ hH E π` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Take `⟨s, m, hg, hcs, hs⟩` from `hdec g`.
+
+Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype]`. Use `congr 2`. Use `conv_lhs => rw [hg]`. Rewrite using `[map_mul, Units.val_mul]`. Establish `hinj : Function.Injective (fun x : k => x ^ p ^ m)` using `iterateFrobenius_inj k p m`.
+
+Apply `Multiset.map_injective hinj` to reduce the goal to its premises. Rewrite using `[← _root_.GlobalTheory.CharpolyPow.roots_charpoly_pow, ← _root_.GlobalTheory.CharpolyPow.roots_charpoly_pow]`. Establish `hc' : Commute (ρ (π g : E) : Matrix (Fin n) (Fin n) k) (ρ s : Matrix (Fin n) (Fin n) k)`. Use `(hcs.map ρ).units_val` as an intermediate fact. Conclude with `this`.
+
+Rewrite using `[hc'.mul_pow, ← Units.val_pow_eq_pow_val (ρ s), ← map_pow, hs, map_one, Units.val_one, mul_one]`.
+-/
 private theorem powerSum_roots_charpoly_mem_virt_of_split (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (θ : k →* ℂ)
     (hθ : ∀ x y : k, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (E : Type) [Group E] [Finite E]
     (hab : _root_.GlobalTheory.BI.AbByP E) (H : Subgroup E) (π : E →* H) (hc : (Nat.card H : k) ≠ 0)
@@ -184,6 +244,13 @@ private theorem powerSum_roots_charpoly_mem_virt_of_split (k : Type) [Field k] [
   rw [hc'.mul_pow, ← Units.val_pow_eq_pow_val (ρ s), ← map_pow, hs, map_one, Units.val_one, mul_one]
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨p, hchar⟩` from `CharP.exists F`. Use `haveI := hchar`. Use `haveI : Fact p.Prime := ⟨CharP.char_is_prime F p⟩`. Use `haveI : CharP (AlgebraicClosure F) p := charP_of_injective_algebraMap (algebraMap F (AlgebraicClosure F)).injective p`. Establish `hab : _root_.GlobalTheory.BI.AbByP E`.
+
+Take `⟨l, hl, hy⟩` from `hE`. Conclude with `⟨l, hl, Subgroup.center E, inferInstance, fun a ha b _ => (Subgroup.mem_center_iff.1 ha b).symm, hy⟩`. Take `⟨H, π, hnd, hdec⟩` from `exists_p_regular_split_of_pow_mem_center E p hE`. Set `ρ : E →* GL (Fin n) (AlgebraicClosure F)` to `(Units.map (algebraMap F (AlgebraicClosure F)).mapMatrix.toMonoidHom).comp E.subtype`. Establish `hc : (Nat.card H : AlgebraicClosure F) ≠ 0` using `(CharP.cast_eq_zero_iff _ p _).not.2 hnd`.
+
+Use `powerSum_roots_charpoly_mem_virt_of_split (AlgebraicClosure F) p θ hθ E hab H π hc hdec n ρ k using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Unfold `_root_.GlobalTheory.CuspGL.rootSum`. Use `congr 3`. Simplify using `[ρ, Matrix.charpoly_map]`.
+-/
 private theorem rootSum_charpoly_mem_virt_of_pow_mem_center (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (n k : ℕ)
     (E : Subgroup (GL (Fin n) F)) (hE : ∃ l, Nat.Prime l ∧ ∀ (y : E), ∃ j, y ^ l ^ j ∈ Subgroup.center E) :
@@ -210,6 +277,15 @@ private theorem rootSum_charpoly_mem_virt_of_pow_mem_center (F : Type) [Field F]
 
 open Polynomial in
 
+/- English proof (translation)
+Use `set χ : GL (Fin n) F → ℂ := fun x => _root_.GlobalTheory.CuspGL.rootSum θ k (Matrix.charpoly (x : Matrix (Fin n) (Fin n) F)) with hχ`. Take `⟨hmul, -, -, hind, -⟩` from `_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear (GL (Fin n) F)`. Establish `hcl : ∀ (g x : GL (Fin n) F), χ (x⁻¹ * g * x) = χ g`. Introduce `g x`. Use `show _root_.GlobalTheory.CuspGL.rootSum θ k _ = _root_.GlobalTheory.CuspGL.rootSum θ k _`.
+
+Use `congr 1`. Simplify `Matrix.charpoly_units_conj' x (g : Matrix (Fin n) (Fin n) F)` using `[Units.val_mul]`. Establish `h1` using `_root_.GlobalTheory.BI.one_mem_closure_ind_centralByPrime (GL (Fin n) F)`. Establish `H` using `AddSubgroup.closure_induction (p := fun φ _ => φ * χ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin n) F)) (fun φ hφ => by`. Take `⟨E, ψ, hE, hψ, rfl⟩` from `hφ`.
+
+Rewrite using `[_root_.GlobalTheory.BI.ind_mul_classFun_eq_ind_mul_restrict _ E ψ χ hcl]`. Conclude with `hind E _ ((_root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear E).1 _ hψ _ (rootSum_charpoly_mem_virt_of_pow_mem_center F θ hθ n k E hE)))`. Use the proof step `(by simpa using (_root_.GlobalTheory.BI.Virt ℂ ℂ (GL (Fin n) F)).zero_mem)`. Use the proof step `(fun a b _ _ ha hb => by rw [add_mul]; exact add_mem ha hb)`. Use the proof step `(fun a _ ha => by rw [neg_mul]; exact neg_mem ha) h1`.
+
+Simplify using `using H`.
+-/
 theorem _root_.GlobalTheory.CuspGL.rootSum_charpoly_mem_virt (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (n k : ℕ) :
     (fun x : GL (Fin n) F => _root_.GlobalTheory.CuspGL.rootSum θ k (Matrix.charpoly (x : Matrix (Fin n) (Fin n) F)))

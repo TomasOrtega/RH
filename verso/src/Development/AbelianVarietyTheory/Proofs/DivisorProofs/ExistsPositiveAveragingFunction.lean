@@ -4,6 +4,17 @@ open scoped NNReal ENNReal Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ P K μP hP hK hμ hPK`. Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hCc : IsCompact (V * (K : Set G))` using `hVc.mul hK`. Establish `hCm : MeasurableSet (V * (K : Set G))` using `hCc.isClosed.measurableSet`. Use `⟨(V * (K : Set G)).indicator 1, measurable_one.indicator hCm, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hf : Topology.IsClosedEmbedding (fun q : P => (q : G) * g)` using `(Homeomorph.mulRight g).isClosedEmbedding.comp hP.isClosedEmbedding_subtypeVal`. Establish `hSc : IsCompact ((fun q : P => (q : G) * g) ⁻¹' (V * (K : Set G)))` using `hf.isCompact_preimage hCc`. Establish `hSm : MeasurableSet ((fun q : P => (q : G) * g) ⁻¹' (V * (K : Set G)))` using `hCm.preimage hf.continuous.measurable`. Establish `heq : (∫⁻ q : P, (V * (K : Set G)).indicator 1 ((q : G) * g) ∂μP) = μP ((fun q : P => (q : G) * g) ⁻¹' (V * (K : Set G)))`. Rewrite using `[← lintegral_indicator_one hSm]`.
+
+Both sides reduce to the same expression. Rewrite using `[heq]`. Use `⟨?_, hSc.measure_lt_top.ne⟩` and prove the remaining obligations. Take `⟨p, hp, k, hk, rfl⟩` from `hPK g`. Establish `hUo : IsOpen ((fun q : P => (q : G) * p) ⁻¹' interior V)` using `isOpen_interior.preimage (by fun_prop)`.
+
+Establish `hUne : ((fun q : P => (q : G) * p) ⁻¹' interior V).Nonempty` using `⟨⟨p⁻¹, P.inv_mem hp⟩, by simpa using mem_interior_iff_mem_nhds.mpr hV1⟩`. Establish `hUS : (fun q : P => (q : G) * p) ⁻¹' interior V ⊆ (fun q : P => (q : G) * (p * k)) ⁻¹' (V * (K : Set G))`. Introduce `q hq`. Use `show (q : G) * (p * k) ∈ V * (K : Set G)`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `Set.mul_mem_mul (interior_subset hq) hk`. Conclude with `((hUo.measure_pos μP hUne).trans_le (measure_mono hUS)).ne'`.
+-/
 theorem bruhat_weight_exists : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (P K : Subgroup G) (μP : Measure P),
     IsClosed (P : Set G) → IsCompact (K : Set G) → μP.IsHaarMeasure → (∀ g : G, ∃ p ∈ P, ∃ k ∈ K, g = p * k) →

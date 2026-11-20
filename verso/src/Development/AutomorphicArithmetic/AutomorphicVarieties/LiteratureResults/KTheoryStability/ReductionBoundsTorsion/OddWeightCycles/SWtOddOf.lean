@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 open BlockInvariants BlockEvaluationBounds in
+/- English proof (translation)
+Introduce `_ hE _ hS` and use `swtOdd hE hS (fft_of cplx sw1 sw2) aGood wPad weylTwoBlockMatrix wInv wCyc tStab tBlk pStab blockSum_preserves_cone wOneOdd wRot`.
+-/
 theorem sWtOdd_of : SChain → SEv → SPsi → SStokes → SWtOdd := fun _ hE _ hS =>
   swtOdd hE hS (fft_of cplx sw1 sw2) aGood wPad weylTwoBlockMatrix wInv wCyc tStab tBlk pStab blockSum_preserves_cone wOneOdd wRot
 

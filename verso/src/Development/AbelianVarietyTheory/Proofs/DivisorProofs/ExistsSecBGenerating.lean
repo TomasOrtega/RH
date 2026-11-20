@@ -11,6 +11,13 @@ open GlobalTheory.CechPic
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ D α`. Establish `hL` using `D.P.isLB`. Use `D.P.isAb.proper` as an intermediate fact. Establish `hA : IsAmpleLB D.P.L` using `(relAmple_iff_isAmpleLB_of_isAffine D.P.A hL).1 D.P.ample`. Establish `hN : ∀ k, (LB.LinComb D.P.L (D.famφB α) (DegPre.famε k)).IsLB` using `fun k => LB.isLB_linComb hL _ _`.
+
+Take `⟨k₀, hk⟩` from `eventually_atTop.1 (hA.eventually_isGenerated_tens_lbPow (hN 0))`. Use `⟨k₀, fun k h => ?_⟩` and prove the remaining obligations. Establish `hP` using `isLB_lbPow hL k`. Establish `hT` using `isLB_tens (hN 0) hP`. Use `(hk k h).of_lbIso (hN k) ((cls_eq_iff (hN k) hT).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[cls_tens (hN 0) hP hT, cls_lbPow hL, cls_linComb hL, cls_linComb hL]`. Simplify using `only [Fin.sum_univ_four, DegPre.famφB, DegPre.famε, Matrix.cons_val, pull_id]`. Use `module`.
+-/
 theorem exists_secB_generating : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (D : DegPre R) (α : D.X),
     ∃ k₀ : ℕ, ∀ k ≥ k₀, ∃ (n : ℕ) (b : Fin n → D.SecB k α), ⨆ j, nonzeroLocus (b j) = ⊤ := by
   intro R _ _ _ D α

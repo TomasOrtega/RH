@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.RigPull
 
+/- English proof (translation)
+Use `(CechPic.cls_eq_zero_iff (pull_isLB (pull_isLB hL F) a')).1 ?_` and prove the remaining obligations. Establish `h0 : CechPic.cls _ (pull_isLB hL a) = 0` using `(CechPic.cls_eq_zero_iff (pull_isLB hL a)).2 h`. Rewrite using `[CechPic.cls_pull (pull_isLB hL F) a', CechPic.cls_pull hL F, ← CechPic.pull_comp, e, CechPic.pull_comp, ← CechPic.cls_pull hL a (pull_isLB hL a), h0, map_zero]`.
+-/
 theorem hasGen_pull_of_comm {X₀ X Y Y₀ : Scheme.{0}} {L : LB X₀} (hL : L.IsLB) (F : X ⟶ X₀) {a : Y₀ ⟶ X₀}
     {a' : Y ⟶ X} {ψ : Y ⟶ Y₀} (e : a' ≫ F = ψ ≫ a) (h : HasGen (L.pull a)) : HasGen ((L.pull F).pull a') := by
   refine (CechPic.cls_eq_zero_iff (pull_isLB (pull_isLB hL F) a')).1 ?_
@@ -30,6 +33,9 @@ namespace GlobalTheory
 
 open RigPull SiegelDescent
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 S S' X b A' _ _ φ hp φ₂ sq c`. Establish `hφ : φ ≫ X.A.hom = A'.hom ≫ b` using `hp.1.w`. Establish `one` using `one_comp hp A' X.A φ hφ`. Establish `idφ : (𝟙 A' : A' ⟶ A').left ≫ φ = φ ≫ (𝟙 X.A : X.A ⟶ X.A).left` using `by simp`. Conclude with `⟨hasGen_pull_of_comm (X.isLB c) φ₂ (lift_square sq one idφ) (X.rig₁ c), hasGen_pull_of_comm (X.isLB c) φ₂ (lift_square sq idφ one) (X.rig₂ c)⟩`.
+-/
 theorem hasGen_pull_rig_of_isGrpPullback : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) (A' : Over S') [GrpObj A'] [IsCommMonObj A']
     (φ : A'.left ⟶ X.A.left), IsGrpPullback A' X.A b φ → ∀ (φ₂ : (G2 A').left ⟶ (G2 X.A).left), IsSquare φ φ₂ →
     ∀ c : 𝔠.elt, HasGen (((X.P c).pull φ₂).pull (lift (1 : A' ⟶ A') (𝟙 A')).left) ∧

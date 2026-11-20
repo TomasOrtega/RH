@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.F
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published GlobalTheory.Pst UpperTheory.V UpperTheory.V.W UpperTheory.V.Hi
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hf`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Establish `hc` using `fun i => (UpperTheory.V.Loc.charDR hN h hw ι a ha (ω i) (hh i) (ψ i) (hψ i)).1 O Bw hj`. Take `⟨-, F₂⟩` from `UpperTheory.V.Loc.PstExact.flag T ι Bw h hj r (fun i => GlobalTheory.TripleGal.rk1 (ψ i)) M (fun g => (hM g).1) (fun g i => ((hM g).2 i).trans (by simp [GlobalTheory.TripleGal.rk1]))`. Use `(Lev.ssCalc L Ω A w h).1 n _ (fun j => (ω j).comp a) fun s => ?_` and prove the remaining obligations.
+
+Rewrite using `[(F₂ (hN.aut.berger.isPstAt T Bw r (Units.continuous_val.comp hr) d)).2 s]`. Conclude with `Finset.prod_congr rfl fun i _ => (hc i).2.2 s`.
+-/
 theorem UpperTheory.V.Lev.flagAb (hN : GlobalTheory.Mem.LiteralAutomorphy.LitN) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {n : ℕ} {w : HeightOneSpectrum (𝓞 L)}
     (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion L)ˣ)

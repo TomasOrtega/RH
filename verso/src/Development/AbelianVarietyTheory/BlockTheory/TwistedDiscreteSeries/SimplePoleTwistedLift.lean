@@ -60,6 +60,9 @@ section Rep
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.PRep GlobalTheory.AdelicU
 
+/- English proof (translation)
+Take `⟨-, -, ⟨Z, hZ⟩, h4⟩` from `h F E S r t c _ (val μ) (val χ) ⟨hS, ht, fun w hw => ⟨(hc w hw).1, (hc w hw).2, norm_val μ w, norm_val χ w, hπ w hw⟩⟩`. Conclude with `⟨_, (h4 Z hZ).1, (h4 Z hZ).2.2.1, (h4 Z hZ).2.2.2⟩`.
+-/
 theorem SimplePole.rep (h : SimplePole) (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (L : Submodule (𝓞 E) (Fin n → E)) {Vl : HeightOneSpectrum (𝓞 F) → Type} [∀ v, AddCommGroup (Vl v)]
     [∀ v, Module ℂ (Vl v)] (π : ∀ v, Representation ℂ (GLoc σ J v) (Vl v))
@@ -77,13 +80,24 @@ theorem SimplePole.rep (h : SimplePole) (σ : E →ₐ[F] E) {n : ℕ} (J : Matr
 
 end Rep
 
+/- English proof (translation)
+Rewrite using `[liftFam, twist_add, twist_twist, twist_segFam, inv_mul_cancel_left, inv_mul_cancel]`.
+-/
 theorem twist_liftFam (c : Fam E) (m x : HeightOneSpectrum (𝓞 E) → ℂˣ) (t : ℕ) :
     twist (liftFam c m x t) x⁻¹ = twist c m⁻¹ + segFam 1 t := by
   rw [liftFam, twist_add, twist_twist, twist_segFam, inv_mul_cancel_left, inv_mul_cancel]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.finite_empty, by norm_num, fun w _ => by simp⟩`.
+-/
 example : Hyp (F := F) (E := E) ∅ 1 7 (fun _ => {1}) (liftFam (fun _ => {1}) 1 1 7) 1 1 :=
   ⟨Set.finite_empty, by norm_num, fun w _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨(MeromorphicAt.id 0).inv, ?_, 1, one_ne_zero, ?_⟩` and prove the remaining obligations. Establish `h : meromorphicOrderAt (id⁻¹ : ℂ → ℂ) 0 = -meromorphicOrderAt (id : ℂ → ℂ) 0` using `meromorphicOrderAt_inv`. Rewrite `h` using `[meromorphicOrderAt_id]`. Conclude with `h`. Use `tendsto_const_nhds.congr' ?_ filter_upwards [self_mem_nhdsWithin] with s hs` and prove the remaining obligations.
+
+Rewrite using `[sub_zero, mul_inv_cancel₀ hs]`.
+-/
 example : HasSimplePole (fun s => s⁻¹) 0 := by
   refine ⟨(MeromorphicAt.id 0).inv, ?_, 1, one_ne_zero, ?_⟩
   · have h : meromorphicOrderAt (id⁻¹ : ℂ → ℂ) 0 = -meromorphicOrderAt (id : ℂ → ℂ) 0 := meromorphicOrderAt_inv

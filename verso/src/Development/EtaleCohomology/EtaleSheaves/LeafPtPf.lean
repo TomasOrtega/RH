@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.E.E4
 
+/- English proof (translation)
+Establish `hmax` using `(Order.krullDim_nonpos_iff_forall_isMax).1 hd`. Set `S : TopologicalSpace.IrreducibleCloseds X` to `⟨closure {x}, isIrreducible_singleton.closure, isClosed_closure⟩`. Set `T : TopologicalSpace.IrreducibleCloseds X` to `⟨Set.univ, IrreducibleSpace.isIrreducible_univ X, isClosed_univ⟩`. Establish `hST : S ≤ T` using `fun _ _ => Set.mem_univ _`. Establish `hTS : T ≤ S` using `hmax S hST`.
+
+Establish `h1 : genericPoint X ⤳ x` using `genericPoint_specializes x`. Establish `h2 : x ⤳ genericPoint X`. Rewrite using `[specializes_iff_mem_closure]`. Conclude with `hTS (Set.mem_univ (genericPoint X))`. Conclude with `(h2.antisymm h1).eq`.
+-/
 theorem eq_generic_of_dim {X : Scheme.{0}} [IsIntegral X] (hd : topologicalKrullDim X ≤ 0) (x : X) :
     x = genericPoint X := by
   have hmax := (Order.krullDim_nonpos_iff_forall_isMax).1 hd
@@ -20,9 +25,21 @@ theorem eq_generic_of_dim {X : Scheme.{0}} [IsIntegral X] (hd : topologicalKrull
     exact hTS (Set.mem_univ (genericPoint X))
   exact (h2.antisymm h1).eq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y => (eq_generic_of_dim hd x).trans (eq_generic_of_dim hd y).symm⟩`.
+-/
 theorem subsingleton_of_dim {X : Scheme.{0}} [IsIntegral X] (hd : topologicalKrullDim X ≤ 0) : Subsingleton X :=
   ⟨fun x y => (eq_generic_of_dim hd x).trans (eq_generic_of_dim hd y).symm⟩
 
+/- English proof (translation)
+Use `haveI := subsingleton_of_dim hd`. Use `haveI : IsAffine X := inferInstance`. Set `F : CommRingCat.of k ⟶ Γ(X, ⊤)` to `(Scheme.ΓSpecIso _).inv ≫ p.appTop`. Establish `hfin : p.appTop.hom.Finite` using `finite_appTop_of_universallyClosed k p`. Establish `hFfin : F.hom.Finite`.
+
+Simplify using `only [F, CommRingCat.hom_comp]`. Conclude with `RingHom.Finite.comp hfin (RingHom.Finite.of_surjective _ (Scheme.ΓSpecIso _).commRingCatIsoToRingEquiv.symm.surjective)`. Use `letI : Algebra k Γ(X, ⊤) := F.hom.toAlgebra`. Use `haveI : Algebra.IsIntegral k Γ(X, ⊤) := ⟨fun a => hFfin.to_isIntegral a⟩`. Establish `hb : Function.Bijective F.hom` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := Γ(X, ⊤))`.
+
+Use `haveI : IsIso F := (ConcreteCategory.isIso_iff_bijective F).2 hb`. Use `haveI : IsIso p.appTop := by`. Establish `: p.appTop = (Scheme.ΓSpecIso _).hom ≫ F` using `by simp [F]`. Rewrite using `[this]`. Use `infer_instance`.
+
+Establish `e : p = X.isoSpec.hom ≫ Spec.map p.appTop ≫ (Sp k).isoSpec.inv`. Rewrite using `[← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem leafPtIso (k : Type) [Field k] [IsAlgClosed k] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp k) [IsProper p]
     (hd : topologicalKrullDim X ≤ 0) : IsIso p := by
   haveI := subsingleton_of_dim hd
@@ -43,6 +60,9 @@ theorem leafPtIso (k : Type) [Field k] [IsAlgClosed k] {X : Scheme.{0}} [IsInteg
     rw [← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]
   rw [e]; infer_instance
 
+/- English proof (translation)
+Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hb : Function.Bijective (IsLocalRing.residue k)`. Conclude with `⟨(IsLocalRing.residue k).injective, IsLocalRing.residue_surjective⟩`. Use `haveI : IsAlgClosed (IsLocalRing.ResidueField k) := IsAlgClosed.of_ringEquiv k _ (RingEquiv.ofBijective _ hb)`. Use `infer_instance`.
+-/
 theorem sh_of_isAlgClosed (k : Type) [Field k] [IsAlgClosed k] : SH k := by
   refine ⟨inferInstance, ?_⟩
   have hb : Function.Bijective (IsLocalRing.residue k) := by
@@ -50,6 +70,11 @@ theorem sh_of_isAlgClosed (k : Type) [Field k] [IsAlgClosed k] : SH k := by
   haveI : IsAlgClosed (IsLocalRing.ResidueField k) := IsAlgClosed.of_ringEquiv k _ (RingEquiv.ofBijective _ hb)
   infer_instance
 
+/- English proof (translation)
+Break down `lt_trichotomy n 0 with hn | rfl | hn` into its components or cases. Use `haveI := (hH.2.2.2.2.2.2.2.1 (ZMod q) (tw q i)).1 (sch.obj (Sp k)) n hn`. Conclude with `Finite.of_subsingleton`. Conclude with `(h0 hH q k hq i).1`. Use `haveI := hH.2.2.2.2.2.2.2.2.2.2.2.1 (ZMod q) k (sh_of_isAlgClosed k) (tw q i) n hn`.
+
+Conclude with `Finite.of_subsingleton`.
+-/
 theorem finite_sp (hH : Hyps) (h0 : H0TwistOverClosedField) (q : ℕ) [NeZero q] (k : Type) [Field k] [IsAlgClosed k] (hq : IsUnit (q : k))
     (n i : ℤ) : Finite (Ht q (sch.obj (Sp k)) n i) := by
   rcases lt_trichotomy n 0 with hn | rfl | hn
@@ -59,6 +84,11 @@ theorem finite_sp (hH : Hyps) (h0 : H0TwistOverClosedField) (q : ℕ) [NeZero q]
   · haveI := hH.2.2.2.2.2.2.2.2.2.2.2.1 (ZMod q) k (sh_of_isAlgClosed k) (tw q i) n hn
     exact Finite.of_subsingleton
 
+/- English proof (translation)
+Introduce `hH q _ k _ _ hq X _ p _ hd n i`. Use `leafPtIso k p hd` as an intermediate fact. Use `haveI := finite_sp hH h0 q k hq n i`. Use `Finite.of_injective (pull (ZMod q) (sch.map (inv p)) (tw q i) n) ?_` and prove the remaining obligations. Introduce `x y hxy`.
+
+Establish `key : ∀ z : Ht q (sch.obj X) n i, pull (ZMod q) (sch.map p) (tw q i) n (pull (ZMod q) (sch.map (inv p)) (tw q i) n z) = z`. Introduce `z`. Rewrite using `[← pull_comp, ← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[← key x, ← key y, hxy]`.
+-/
 theorem LeafPt_of (h0 : H0TwistOverClosedField) : LeafPt := by
   intro hH q _ k _ _ hq X _ p _ hd n i
   have := leafPtIso k p hd

@@ -6,6 +6,35 @@ namespace GroundTheory.Heights₂.Heights.FieldNumbers
 
 universe u v
 
+/- English proof (translation)
+Introduce `S _ P W _ x R _ _ hR`. Set `f : S →+* R` to `(algebraMap (S ⧸ P) R).comp (Ideal.Quotient.mk P)`. Establish `hu : ∀ t : W.primeCompl, IsUnit (f t)` using `fun t => IsLocalization.map_units R (⟨Ideal.Quotient.mk P t, Submonoid.mem_map_of_mem _ t.2⟩ : W.primeCompl.map (Ideal.Quotient.mk P))`. Set `g : Localization.AtPrime W →+* R` to `IsLocalization.lift (M := W.primeCompl) hu`. Establish `hg : ∀ s, g (algebraMap S (Localization.AtPrime W) s) = f s` using `IsLocalization.lift_eq hu`.
+
+Establish `gsurj : Function.Surjective g`. Introduce `r`. Take `⟨⟨a, m⟩, rfl⟩` from `IsLocalization.mk'_surjective (W.primeCompl.map (Ideal.Quotient.mk P)) r`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨t, ht, hmt⟩` from `Submonoid.mem_map.mp m.2`.
+
+Use `⟨IsLocalization.mk' (Localization.AtPrime W) s ⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.lift_mk'_spec, mul_comm]`. Use `show algebraMap (S ⧸ P) R (Ideal.Quotient.mk P s) = _ * algebraMap (S ⧸ P) R (Ideal.Quotient.mk P t)`. Rewrite using `[hmt, IsLocalization.mk'_spec]`. Set `_ : Algebra (Localization.AtPrime W) R` to `g.toAlgebra`.
+
+Set `_ : Algebra S R` to `f.toAlgebra`. Establish `_ : IsScalarTower S (Localization.AtPrime W) R` using `IsScalarTower.of_algebraMap_eq fun s => (hg s).symm`. Use `set J := Ideal.span {algebraMap (S ⧸ P) R (Ideal.Quotient.mk P x)}`. Rewrite using `[← Module.length_eq_of_surjective (S := Localization.AtPrime W) (R := R) (M := R ⧸ J) gsurj]`. Establish `hI : P ⊔ Ideal.span {x} ≤ LinearMap.ker (Algebra.linearMap S (R ⧸ J))`.
+
+Use `sup_le (fun p hp => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Use `show Ideal.Quotient.mk J (algebraMap (S ⧸ P) R (Ideal.Quotient.mk P p)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hp, map_zero, map_zero]`. Introduce and unpack `_ rfl`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+
+Set `φ : (S ⧸ (P ⊔ Ideal.span {x})) →ₗ[S] R ⧸ J` to `(P ⊔ Ideal.span {x}).liftQ _ hI`. Establish `_ : IsLocalizedModule W.primeCompl φ`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Take `⟨u, hu'⟩` from `hu t`.
+
+Rewrite using `[Module.End.isUnit_iff]`. Establish `key : ∀ q : R ⧸ J, algebraMap S (Module.End S (R ⧸ J)) t q = (u : R) • q` using `fun q => by`. Rewrite using `[Module.algebraMap_end_apply, hu', ← algebraMap_smul R (t : S) q]`. Both sides reduce to the same expression. Use `⟨fun a b hab => ?_, fun q => ⟨(↑u⁻¹ : R) • q, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite `hab` using `[key, key]`. Simplify `congrArg ((↑u⁻¹ : R) • ·) hab` using `[smul_smul]`. Rewrite using `[key, smul_smul, Units.mul_inv, one_smul]`. Introduce `q`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`.
+
+Take `⟨z, rfl⟩` from `gsurj r`. Take `⟨⟨s, t⟩, rfl⟩` from `IsLocalization.mk'_surjective W.primeCompl z`. Use `⟨⟨Ideal.Quotient.mk _ s, t⟩, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk J (f t * g (IsLocalization.mk' _ s t)) = Ideal.Quotient.mk J (f s)`. Rewrite using `[← hg, ← hg, ← map_mul, IsLocalization.mk'_spec']`.
+
+Introduce `a1 a2 h`. Take `⟨a1, rfl⟩` from `Ideal.Quotient.mk_surjective a1`. Take `⟨a2, rfl⟩` from `Ideal.Quotient.mk_surjective a2`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (f a1) = Ideal.Quotient.mk J (f a2) at h`. Rewrite `h` using `[Ideal.Quotient.eq, ← map_sub, Ideal.mem_span_singleton']`.
+
+Take `⟨r, hr⟩` from `h`. Take `⟨z, rfl⟩` from `gsurj r`. Take `⟨⟨b, t⟩, rfl⟩` from `IsLocalization.mk'_surjective W.primeCompl z`. Establish `e : f t * g (IsLocalization.mk' _ b t) = f b`. Rewrite using `[← hg, ← hg, ← map_mul, IsLocalization.mk'_spec']`.
+
+Establish `h2 : f (t * (a1 - a2) - b * x) = 0`. Rewrite using `[map_sub, map_mul, map_mul, ← hr, ← mul_assoc, e]`. Conclude with `sub_self _`. Take `⟨⟨m, hm⟩, hm0⟩` from `(IsLocalization.map_eq_zero_iff (W.primeCompl.map (Ideal.Quotient.mk P)) R (Ideal.Quotient.mk P _)).1 h2`. Take `⟨u, hu, rfl⟩` from `Submonoid.mem_map.1 hm`.
+
+Rewrite `hm0` using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Use `⟨⟨u, hu⟩ * t, ?_⟩` and prove the remaining obligations. Use `show Ideal.Quotient.mk _ ((u * t) * a1) = Ideal.Quotient.mk _ ((u * t) * a2)`. Rewrite using `[Ideal.Quotient.eq, show u * t * a1 - u * t * a2 = u * (t * (a1 - a2) - b * x) + u * b * x by ring]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hm0) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self x)))`.
+
+Conclude with `((IsLocalizedModule.iso W.primeCompl φ).extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)).length_eq`.
+-/
 theorem LocalizedQuotientLength.proof : LocalizedQuotientLength.Statement.{u, v} := by
   intro S _ P W _ x R _ _ hR
   let f : S →+* R := (algebraMap (S ⧸ P) R).comp (Ideal.Quotient.mk P)

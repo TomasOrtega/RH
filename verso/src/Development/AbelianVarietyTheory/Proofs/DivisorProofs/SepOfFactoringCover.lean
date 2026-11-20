@@ -8,6 +8,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential ReciprocityTheory.Char
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ C _ C' _ F G H hcov T x hx`. Take `⟨n, b, hb, h⟩` from `hcov T`. Use `Desc.sep_std H hb x fun S u ⟨i, hi⟩ ↦ ?_` and prove the remaining obligations. Take `⟨t, v, w, rfl⟩` from `h i S u hi`. Rewrite using `[mp_comp, hx t v, map_zero]`.
+-/
 theorem sep_of_factoring_cover : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), Desc.HasLoc F → (∀ T : C, ∃ (n : ℕ) (b : Fin n → F.obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : C) (u : T ⟶ S), IsUnit (mp F u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u) → (∀ (T : C) (x : F.obj T), (∀ t (u : T ⟶ G.obj t), mp F u x = 0) → x = 0) := by
   intro R _ C _ C' _ F G H hcov T x hx
   obtain ⟨n, b, hb, h⟩ := hcov T

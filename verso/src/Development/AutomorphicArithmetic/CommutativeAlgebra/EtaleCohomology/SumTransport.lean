@@ -9,10 +9,16 @@ namespace UpperTheory.Ru.crystallineComparison
 
 variable {C : Type 1} [Category.{0} C]
 
+/- English proof (translation)
+The claim follows from `c.2 φ y`.
+-/
 private lemma sec_nat {P : C ⥤ Type} {K : Coef C} (c : Sec P K) {A B : C} (φ : A ⟶ B)
     (y : P.obj A) : (K.map φ).hom (c.1 A y) = c.1 B (P.map φ y) :=
   c.2 φ y
 
+/- English proof (translation)
+Rewrite using `[map_sum, Multiset.map_map]`. Express the relevant statement in the definitionally equal form `_ = ∑ i, c.1 B ((g i).app B (Q.map φ w))`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sec_nat c φ, FunctorToTypes.naturality]`.
+-/
 private lemma sum_transport {Q : C ⥤ Type} {K : Coef C} (c : Sec Q K) {I : Type} [Fintype I]
     (g : I → (Q ⟶ Q)) {A B : C} (φ : A ⟶ B) (w : Q.obj A) :
     (K.map φ).hom (∑ i, c.1 A ((g i).app A w)) =
@@ -22,6 +28,9 @@ private lemma sum_transport {Q : C ⥤ Type} {K : Coef C} (c : Sec Q K) {I : Typ
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [sec_nat c φ, FunctorToTypes.naturality]
 
+/- English proof (translation)
+Take `⟨S, hS, hm⟩` from `h.2.2 A w w' hw`. Apply `(hK A S hS).1` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `(K.map (S.f s)).hom _ = (K.map (S.f s)).hom _`. Rewrite using `[sum_transport, sum_transport, hm s]`.
+-/
 private lemma avg_indep (Pa : Parts C) {K : Coef C} (hK : Pa.Add K) {Q P : C ⥤ Type} {p : Q ⟶ P}
     {I : Type} [Fintype I] {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g) (c : Sec Q K) {A : C}
     {w w' : Q.obj A} (hw : p.app A w = p.app A w') :
@@ -36,6 +45,9 @@ private def lift (Pa : Parts C) {Q P : C ⥤ Type} {p : Q ⟶ P} {I : Type} [Fin
     {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g) (A : C) (y : P.obj A) : Q.obj A :=
   Classical.choose ((show ∀ A, Function.Surjective (p.app A) from h.2.1) A y)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec ((show ∀ A, Function.Surjective (p.app A) from h.2.1) A y)`.
+-/
 private lemma lift_spec (Pa : Parts C) {Q P : C ⥤ Type} {p : Q ⟶ P} {I : Type} [Fintype I]
     {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g) (A : C) (y : P.obj A) :
     p.app A (lift Pa h A y) = y :=
@@ -53,11 +65,19 @@ private def avg (Pa : Parts C) {K : Coef C} (hK : Pa.Add K) {Q P : C ⥤ Type} {
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [sec_nat c φ, FunctorToTypes.naturality]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma avg_apply (Pa : Parts C) {K : Coef C} (hK : Pa.Add K) {Q P : C ⥤ Type} {p : Q ⟶ P}
     {I : Type} [Fintype I] {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g) (c : Sec Q K) (A : C)
     (y : P.obj A) :
     (avg Pa hK h c).1 A y = ∑ i, c.1 A ((g i).app A (lift Pa h A y)) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `A y`. Establish `hg : ∀ (i : I) (w : Q.obj A), p.app A ((g i).app A w) = p.app A w` using `fun i w => by`. Establish `hgi : g i ≫ p = p` using `(show ∀ i, g i ≫ p = p from h.1) i`. Establish `: (g i ≫ p).app A w = p.app A w` using `by rw [hgi]`.
+
+Conclude with `this`. Rewrite using `[avg_apply]`. Simplify using `only [hc, hg, lift_spec]`. Simplify using the standard rewrite rules.
+-/
 private lemma avg_pull (Pa : Parts C) {K : Coef C} (hK : Pa.Add K) {Q P : C ⥤ Type} {p : Q ⟶ P}
     {I : Type} [Fintype I] {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g) (s : Sec P K) (c : Sec Q K)
     (hc : ∀ (A : C) (q : Q.obj A), c.1 A q = s.1 A (p.app A q)) :
@@ -72,6 +92,9 @@ private lemma avg_pull (Pa : Parts C) {K : Coef C} (hK : Pa.Add K) {Q P : C ⥤ 
   simp only [hc, hg, lift_spec]
   simp
 
+/- English proof (translation)
+Rewrite using `[avg_apply, avg_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hc _ _`.
+-/
 private lemma avg_map (Pa : Parts C) {K L : Coef C} (hK : Pa.Add K) (hL : Pa.Add L)
     {Q P : C ⥤ Type} {p : Q ⟶ P} {I : Type} [Fintype I] {g : I → (Q ⟶ Q)} (h : Pa.LocTrans p g)
     (α : K ⟶ L) (c : Sec Q K) (c' : Sec Q L)
@@ -80,6 +103,11 @@ private lemma avg_map (Pa : Parts C) {K L : Coef C} (hK : Pa.Add K) (hL : Pa.Add
   rw [avg_apply, avg_apply, map_sum]
   exact Finset.sum_congr rfl fun i _ => hc _ _
 
+/- English proof (translation)
+Use `⟨(T.zero P K).symm (avg Pa hK h (T.zero Q K k)), ?_⟩` and prove the remaining obligations. Apply `(T.zero P L).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `A y`. Establish `e1 : avg Pa hL h (T.zero Q L (T.pull p L 0 x')) = Fintype.card I • T.zero P L x'` using `avg_pull Pa hL h _ _ fun A q => T.zero_pull p L x' A q`.
+
+Establish `e2` using `avg_map Pa hK hL h π (T.zero Q K k) (T.zero Q L (T.map Q π 0 k)) (fun A q => T.zero_map Q π k A q) A y`. Rewrite using `[T.zero_map, map_nsmul, ← e1, ← hk, e2, AddEquiv.apply_symm_apply]`.
+-/
 private lemma zero_case (Pa : Parts C) (T : Theory C) {K L : Coef C} (hK : Pa.Add K)
     (hL : Pa.Add L) {Q P : C ⥤ Type} {p : Q ⟶ P} {I : Type} [Fintype I] {g : I → (Q ⟶ Q)}
     (h : Pa.LocTrans p g) (π : K ⟶ L) (x' : T.H P L 0) (k : T.H Q K 0)
@@ -95,6 +123,11 @@ private lemma zero_case (Pa : Parts C) (T : Theory C) {K L : Coef C} (hK : Pa.Ad
     (fun A q => T.zero_map Q π k A q) A y
   rw [T.zero_map, map_nsmul, ← e1, ← hk, e2, AddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `h0 : T.map P S.f (j + 1) x = 0` using `(T.inj P S.X₂ hK j).elim _ _`. Take `⟨x', rfl⟩` from `(T.ex₁ P S hS j x).1 h0`. Establish `hpull : T.δ Q S hS j (T.pull p S.X₃ j x') = 0`. Rewrite using `[← T.pull_δ]`. Conclude with `hx`.
+
+Take `⟨k, hk⟩` from `(T.ex₃ Q S hS j _).1 hpull`. Take `⟨k', hk'⟩` from `hr x' k hk`. Rewrite using `[← map_nsmul, ← hk']`. Conclude with `(T.ex₃ P S hS j _).2 ⟨k', rfl⟩`.
+-/
 private lemma step (Pa : Parts C) (T : Theory C) {Q P : C ⥤ Type} (p : Q ⟶ P) (n : ℕ)
     (S : ShortComplex (Coef C)) (hS : S.ShortExact) (hK : Injective S.X₂) (j : ℕ)
     (hr : ∀ (x' : T.H P S.X₃ j) (k : T.H Q S.X₂ j), T.map Q S.g j k = T.pull p S.X₃ j x' →
@@ -113,6 +146,19 @@ private lemma step (Pa : Parts C) (T : Theory C) {Q P : C ⥤ Type} (p : Q ⟶ P
 end UpperTheory.Ru.crystallineComparison
 
 open CategoryTheory CategoryTheory.Limits UpperTheory.Ru.crystallineComparison in
+/- English proof (translation)
+Introduce `C _ Pa T F hF Q P p I _ g h j`. Proceed by induction on `j generalizing F with`. Consider the case `zero`. Introduce `x hx`. Establish `hx0 : x = 0`.
+
+Apply `(T.zero P F).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `A y`. Take `⟨w, rfl⟩` from `h.2.1 A y`.
+
+Rewrite using `[← T.zero_pull p F x A w, hx, map_zero]`. Both sides reduce to the same expression. Rewrite using `[hx0, smul_zero]`. Consider the case `succ j ih`. Introduce `x hx`.
+
+Take `⟨K, ι, hm, hi, hK⟩` from `emb C Pa F hF`. Establish `hS : (ShortComplex.mk ι (cokernel.π ι) (cokernel.condition ι)).ShortExact` using `{ exact := ShortComplex.exact_cokernel ι, mono_f := hm, epi_g := inferInstance }`. Establish `hL : Pa.Add (cokernel ι)` using `quotAdd C Pa _ hS hF hK`. Use `step Pa T p _ _ hS hi j ?_ x hx` and prove the remaining obligations. Introduce `x' k hk`.
+
+Consider the cases of `j with`. Consider the case `zero`. Conclude with `zero_case Pa T hK hL h _ x' k hk`. Consider the case `succ j`. Establish `hk0 : k = 0` using `(T.inj Q K hi j).elim _ _`.
+
+Rewrite `hk` using `[hk0, map_zero]`. Conclude with `⟨0, by rw [map_zero, ih _ hL x' hk.symm]⟩`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.locAvg :
     UpperTheory.Ru.crystallineComparison.LocAvg := by
   intro C _ Pa T F hF Q P p I _ g h j

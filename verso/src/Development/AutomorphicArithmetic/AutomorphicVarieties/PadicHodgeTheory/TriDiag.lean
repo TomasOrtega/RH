@@ -15,11 +15,17 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
   [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B]
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+Unfold `ReciprocityTheory.Gal.ContAction`. Conclude with `(h.comp continuous_fst).mul continuous_snd`.
+-/
 private theorem cont_ch (κ : G →* Bˣ) (h : Continuous fun g => (κ g : B)) : ContAction (chRep κ) := by
   unfold ReciprocityTheory.Gal.ContAction
   exact (h.comp continuous_fst).mul continuous_snd
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+Unfold `ReciprocityTheory.Gal.ContAction`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun p : G × (Fin 3 → B) => ∑ b, (r p.1 : Matrix (Fin 3) (Fin 3) B) a b * p.2 b`. Conclude with `continuous_finset_sum _ fun b _ => ((h a b).comp continuous_fst).mul ((continuous_apply b).comp continuous_snd)`.
+-/
 private theorem cont_col (r : G →* GL (Fin 3) B) (h : ∀ a b, Continuous fun g => (r g : Matrix (Fin 3) (Fin 3) B) a b) :
     ContAction (colRep r) := by
   unfold ReciprocityTheory.Gal.ContAction
@@ -27,6 +33,9 @@ private theorem cont_col (r : G →* GL (Fin 3) B) (h : ∀ a b, Continuous fun 
   change Continuous fun p : G × (Fin 3 → B) => ∑ b, (r p.1 : Matrix (Fin 3) (Fin 3) B) a b * p.2 b
   exact continuous_finset_sum _ fun b _ => ((h a b).comp continuous_fst).mul ((continuous_apply b).comp continuous_snd)
 
+/- English proof (translation)
+Use `(isCrys_isDR_internalHom φ hφ (chRep α) (chRep β) (chRep γ) (cont_ch α hα) (cont_ch β hβ) (cont_ch γ hγ) (LinearMap.mul ℚ_[l] B) (fun g w x => ?_) (fun w w' hw => ?_)).1 ha hb` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((γ g : B) * w) * ((α g : B) * x) = (β g : B) * (w * x)`. Rewrite using `[← h g, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using congrArg (fun f : B →ₗ[ℚ_[l]] B => f 1) hw`.
+-/
 private theorem cr_div (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (α β γ : G →* Bˣ)
     (hα : Continuous fun g => (α g : B)) (hβ : Continuous fun g => (β g : B)) (hγ : Continuous fun g => (γ g : B))
     (h : ∀ g, γ g * α g = β g) (ha : IsCr φ (chRep α)) (hb : IsCr φ (chRep β)) : IsCr φ (chRep γ) := by
@@ -37,6 +46,23 @@ private theorem cr_div (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (α β γ :
     ring
   · simpa using congrArg (fun f : B →ₗ[ℚ_[l]] B => f 1) hw
 
+/- English proof (translation)
+Establish `hκ : ∀ a, Continuous fun g => (κ a g : B)` using `fun a => by`. Simplify `hc a a` using `only [fun g => (ht g).2 a]`. Establish `hap : ∀ g x a, colRep r g x a = ∑ b, (r g : Matrix (Fin 3) (Fin 3) B) a b * x b` using `fun g x a => rfl`. Establish `h10` using `fun g => (ht g).1 1 0 (by decide)`. Establish `h20` using `fun g => (ht g).1 2 0 (by decide)`.
+
+Establish `h21` using `fun g => (ht g).1 2 1 (by decide)`. Establish `hch : ∀ (χ : G →* Bˣ) g x, chRep χ g x = (χ g : B) * x` using `fun _ _ _ => rfl`. Establish `c0 : IsCr φ (chRep (κ 0))`. Use `((isCrys_isDR_sub_quot φ hφ (chRep (κ 0)) (colRep r) (cont_ch _ (hκ 0)) (cont_col r hc) (LinearMap.single ℚ_[l] (fun _ : Fin 3 => B) 0) fun g x => ?_).1 (fun x y h => by simpa using congrFun h 0)).1 hr` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hap, hch, Fin.sum_univ_three]`. Apply the tactic sequence `fin_cases a <;> simp [h10, h20, (ht g).2]`. Establish `c2 : IsCr φ (chRep (κ 2))`. Use `((isCrys_isDR_sub_quot φ hφ (colRep r) (chRep (κ 2)) (cont_col r hc) (cont_ch _ (hκ 2)) (LinearMap.proj 2) fun g x => ?_).2 (fun y => ⟨fun _ => y, rfl⟩)).1 hr` and prove the remaining obligations. Rewrite using `[LinearMap.proj_apply, LinearMap.proj_apply, hap, hch, Fin.sum_univ_three, h20, h21, (ht g).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h12 : Continuous fun g => ((κ 1 * κ 2) g : B)` using `(hκ 1).mul (hκ 2)`. Establish `c12 : IsCr φ (chRep (κ 1 * κ 2))`. Use `(admissible_of_bilinear_openSubgroup_galois φ hφ (colRep r) (colRep r) (chRep (κ 1 * κ 2)) (cont_col r hc) (cont_col r hc) (cont_ch _ h12) (LinearMap.mk₂ ℚ_[l] (fun x y : Fin 3 → B => x 1 * y 2 - x 2 * y 1) ?_ ?_ ?_ ?_) (fun g x y => ?_) ?_).1 hr hr` and prove the remaining obligations. Introduce `x x' y`.
+
+Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c x y`. Simplify using `only [Pi.smul_apply, smul_mul_assoc, smul_sub]`. Introduce `x y y'`.
+
+Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c x y`. Simplify using `only [Pi.smul_apply, mul_smul_comm, smul_sub]`. Simplify using `only [LinearMap.mk₂_apply, hap, hch, Fin.sum_univ_three, h10, h20, h21, (ht g).2, MonoidHom.mul_apply, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `eq_top_iff.2 fun y _ => Submodule.subset_span ⟨(Pi.single 1 y, Pi.single 2 1), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `fin_cases a`. Conclude with `c0`.
+
+Conclude with `cr_div φ hφ (κ 2) (κ 1 * κ 2) (κ 1) (hκ 2) h12 (hκ 1) (fun g => rfl) c2 c12`. Conclude with `c2`.
+-/
 private theorem cr_diag (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (r : G →* GL (Fin 3) B) (κ : Fin 3 → G →* Bˣ)
     (ht : UpperTri r κ) (hc : ∀ a b, Continuous fun g => (r g : Matrix (Fin 3) (Fin 3) B) a b)
     (hr : IsCr φ (colRep r)) (a : Fin 3) : IsCr φ (chRep (κ a)) := by
@@ -78,6 +104,15 @@ private theorem cr_diag (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (r : G →
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `h3 : Dcr φ' (resCoef ℚ_[l] ρ') = Dcr φ (resCoef ℚ_[l] ρ)`. Unfold `Dcr`. Use `he.iInf_congr _ fun g => ?_` and prove the remaining obligations. Unfold `actC`. Rewrite using `[h1]`.
+
+Express the relevant statement in the definitionally equal form `_ = LinearMap.ker (TensorProduct.AlgebraTensorModule.map ((ρ' g).restrictScalars ℚ_[l]) _ - _)`. Rewrite using `[h2]`. Both sides reduce to the same expression. Establish `h4 : φ'.range = φ.range`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨e g, (h1 g).symm⟩`. Introduce and unpack `⟨g, rfl⟩`. Take `⟨g, rfl⟩` from `he g`.
+
+Conclude with `⟨g, h1 g⟩`. Unfold `IsCr at h ⊢`. Rewrite using `[h3, h4, h]`.
+-/
 private theorem cr_transport {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G] [Group G'] [CommRing A]
     [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V]
     (φ : G →* GQ l) (ρ : Representation A G V) (φ' : G' →* GQ l) (ρ' : Representation A G' V)
@@ -102,6 +137,39 @@ private theorem cr_transport {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G
   unfold IsCr at h ⊢
   rw [h3, h4, h]
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ u hu s hs a`. Use `letI : TopologicalSpace B := moduleTopology ℚ_[l] B`. Use `haveI : IsModuleTopology ℚ_[l] B := ⟨rfl⟩`. Use `haveI : IsTopologicalRing B := IsModuleTopology.isTopologicalRing ℚ_[l] B`. Establish `hG : IsOpen (D.η.ker : Set (GQ l))`.
+
+Establish `: D.η.ker = GK D.Kv` using `Subgroup.ext fun g => D.η_ker g`. Rewrite using `[this]`. Use `D.Kv.2` as an intermediate fact. Conclude with `IntermediateField.fixingSubgroup_isOpen D.Kv.1`. Establish `hφ : IsOpenEmbedding D.η.ker.subtype` using `hG.isOpenEmbedding_subtypeVal`.
+
+Set `H : Subgroup ↥D.η.ker` to `D.HL.subgroupOf D.η.ker`. Establish `hH : IsOpen (H : Set ↥D.η.ker)` using `(hG.inter D.τ_open).preimage continuous_subtype_val`. Establish `hφH : IsOpenEmbedding (D.η.ker.subtype.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Set `r : ↥D.η.ker →* GL (Fin 3) B` to `glPart D.η u hu.mult`. Establish `hr : ∀ g a b, (r g : Matrix (Fin 3) (Fin 3) B) a b = (u g).mat a b` using `fun _ _ _ => rfl`.
+
+Establish `hlow : ∀ g (a b : Fin 3), b < a → (r g : Matrix (Fin 3) (Fin 3) B) a b = 0` using `fun g a b h => hu.tri g a b (by`. Establish `: (b : ℕ) < a` using `h`. Simplify using `only [wt, wt1]`. Use the proof step `omega)`. Set `k : Fin 3 → ↥D.η.ker →* B` to `fun a => { toFun := fun g => (r g : Matrix (Fin 3) (Fin 3) B) a a map_one' := by simp map_mul' := fun g h => by`.
+
+Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply]`. Use `Finset.sum_eq_single a (fun b _ hb => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hb with h' | h'` into its components or cases. Rewrite using `[hlow g a b h', zero_mul]`. Rewrite using `[hlow h b a h', mul_zero] }`.
+
+Set `κ : Fin 3 → ↥D.η.ker →* Bˣ` to `fun a => (k a).toHomUnits`. Establish `hκ : ∀ a g, (κ a g : B) = (u g).mat a a` using `fun _ _ => rfl`. Establish `hc : ∀ a b, Continuous fun g => (r g : Matrix (Fin 3) (Fin 3) B) a b` using `fun a b => Continuous.comp (hu.cont a b) continuous_subtype_val`. Establish `hcκ : Continuous fun g => (κ a g : B)` using `hc a a`. Set `σ : B →ₐ[ℚ_[l]] B` to `(IsScalarTower.toAlgHom ℚ_[l] E B).comp (π.restrictScalars ℚ_[l])`.
+
+Establish `hσ : Continuous σ` using `IsModuleTopology.continuous_of_linearMap σ.toLinearMap`. Set `ψ : ↥D.η.ker →* Bˣ` to `(Units.map (σ : B →* B)).comp (κ a)`. Establish `hψ0 : ∀ g, (ψ g : B) = algebraMap E B (π (κ a g))` using `fun _ => rfl`. Establish `hψ : ∀ g, ψ g = Units.map (algebraMap O B : O →* B) (D.Ψ g ^ wt1 a)` using `fun g => by`. Establish `h1 : (GG.map (π : B →+* E) (u g)).mat a a = (D.rz E g).mat a a`.
+
+Rewrite using `[← hu.red]`. Both sides reduce to the same expression. Establish `h2 : (D.rz E g).mat a a = algebraMap O E ((D.Ψ g ^ wt1 a : Oˣ) : O)`. Express the relevant statement in the definitionally equal form `algebraMap O E ((tor O (D.Ψ g) : Matrix (Fin 3) (Fin 3) O) a a) = _`. Rewrite using `[tor_val, Matrix.diagonal_apply_eq]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hψ0, hκ]`. Express the relevant statement in the definitionally equal form `algebraMap E B ((GG.map (π : B →+* E) (u g)).mat a a) = algebraMap O B _`. Rewrite using `[h1, h2, ← IsScalarTower.algebraMap_apply]`. Establish `hcψ : Continuous fun g => (ψ g : B)` using `hσ.comp hcκ`.
+
+Establish `hcq : Continuous fun g => ((κ a * ψ⁻¹) g : B)`. Establish `: (fun g => ((κ a * ψ⁻¹) g : B)) = fun g => (κ a g : B) * (ψ g⁻¹ : B)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `hcκ.mul (hcψ.comp continuous_inv)`. Take `⟨ρ, hρ, hcr⟩` from `hu.cr`. Establish `c1 : IsCr (D.η.ker.subtype.comp H.subtype) (colRep (r.comp H.subtype))`. Use `cr_transport _ _ _ _ (fun g => (⟨g.1.1, g.2⟩ : ↥D.HL)) (fun g => ⟨⟨⟨g.1, g.2.1⟩, g.2⟩, rfl⟩) (fun _ => rfl) (fun g => ?_) hcr` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.toLin' _ = Matrix.toLin' _`.
+
+Rewrite using `[hρ]`. Both sides reduce to the same expression. Establish `c2 : IsCr (D.η.ker.subtype.comp H.subtype) (chRep ((κ a).comp H.subtype))` using `cr_diag _ hφH (r.comp H.subtype) (fun a => (κ a).comp H.subtype) (fun g => ⟨hlow g, fun _ => rfl⟩) (fun a b => (hc a b).comp continuous_subtype_val) c1 a`. Establish `c3 : IsCr (D.η.ker.subtype.comp H.subtype) (chRep (ψ.comp H.subtype))`. Use `crUnr _ hφH _ (cont_ch _ (hcψ.comp continuous_subtype_val)) (D.e * wt1 a) fun g hg x => ?_` and prove the remaining obligations.
+
+Establish `hτ : D.τ g = 1` using `g.2.2`. Establish `h1 : Units.map (algebraMap O B : O →* B) (cycA l l O g) = cycA l l B g`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(IsScalarTower.algebraMap_apply ℤ_[l] O B _).symm`. Establish `h2 : ψ g = cycA l l B g ^ ((D.e : ℤ) * wt1 a)`.
+
+Rewrite using `[hψ, D.Ψ_I g.1.1 hg, hτ, mul_one, map_zpow, map_pow, h1, zpow_mul, zpow_natCast]`. Express the relevant statement in the definitionally equal form `(ψ g : B) • x = _`. Rewrite using `[h2]`. Both sides reduce to the same expression. Establish `c4 : IsCr (D.η.ker.subtype.comp H.subtype) (chRep ((κ a * ψ⁻¹).comp H.subtype))` using `cr_div _ hφH _ _ _ (hcψ.comp continuous_subtype_val) (hcκ.comp continuous_subtype_val) (hcq.comp continuous_subtype_val) (fun g => by simp) c3 c2`.
+
+Establish `key` using `crUnipChar D.η.ker.subtype hφ (κ a * ψ⁻¹) hcq (fun g => hπ _ (by`. Establish `h1 : ((κ a * ψ⁻¹) g : B) - 1 = ((κ a g : B) - ψ g) * (((ψ g)⁻¹ : Bˣ) : B)`. Simplify using `[sub_mul]`. Rewrite using `[h1, map_mul, map_sub, hψ0, AlgHom.commutes]`. Use the proof step `simp)) H hH c4 ⟨s, D.η_unr s hs⟩ hs`.
+
+Establish `h5 : κ a ⟨s, D.η_unr s hs⟩ = ψ ⟨s, D.η_unr s hs⟩`. Simplify `key` using `[mul_inv_eq_one]`. Use `(hκ a ⟨s, D.η_unr s hs⟩).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h5, hψ]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Loc.triDiag :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (u : GQ l →* GG 3 B), D.InDtri (π : B →+* E) u → ∀ s ∈ Iq l, ∀ a, (u s).mat a a = algebraMap O B (UpperTheory.V.UnitaryThreeInertia.psi D.Ψ a s) := by
   intro l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ u hu s hs a

@@ -9,6 +9,9 @@ open AlgebraicGeometry CategoryTheory NumberField Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun
 
+/- English proof (translation)
+Rewrite using `[det_of_lowerTriangular (genU Ω r s) fun a b h => ?_]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `[genU]`. Establish `h' : a < b` using `h`. Simplify using `[genU, not_lt.2 h'.le, h'.ne]`.
+-/
 theorem det_genU (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) : (genU Ω r s).det = 1 := by
   rw [det_of_lowerTriangular (genU Ω r s) fun a b h => ?_]
   · refine Finset.prod_eq_one fun a _ => ?_
@@ -18,6 +21,11 @@ theorem det_genU (Ω : Type) [Field Ω] {S : Type} (r : S → ℕ) (s : S) : (ge
 
 variable (Ψ : Type) (p q : ℕ) (Ω : Type) [Field Ω] (τ : Ψ)
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `ea : (blockEquiv p q).symm (wEmb p q a) = .inr a`. Rewrite using `[← blockEquiv_inr, Equiv.symm_apply_apply]`. Establish `eb : (blockEquiv p q).symm (wEmb p q b) = .inr b`. Rewrite using `[← blockEquiv_inr, Equiv.symm_apply_apply]`.
+
+Express the relevant statement in the definitionally equal form `Matrix.fromBlocks (genU Ω (rk Ψ p q) (.inr τ)) 0 0 (genU Ω (rk Ψ p q) (.inl τ)) ((blockEquiv p q).symm (wEmb p q a)) ((blockEquiv p q).symm (wEmb p q b)) = _`. Rewrite using `[ea, eb]`. Both sides reduce to the same expression.
+-/
 theorem wBlock_gMat : wBlock (gMat p q Ω τ) = genU Ω (rk Ψ p q) (.inl τ) := by
   ext a b
   have ea : (blockEquiv p q).symm (wEmb p q a) = .inr a := by
@@ -29,6 +37,11 @@ theorem wBlock_gMat : wBlock (gMat p q Ω τ) = genU Ω (rk Ψ p q) (.inl τ) :=
   rw [ea, eb]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `ea : (blockEquiv p q).symm (omEmb p q a) = .inl a`. Rewrite using `[← blockEquiv_inl, Equiv.symm_apply_apply]`. Establish `eb : (blockEquiv p q).symm (omEmb p q b) = .inl b`. Rewrite using `[← blockEquiv_inl, Equiv.symm_apply_apply]`.
+
+Express the relevant statement in the definitionally equal form `Matrix.fromBlocks (genU Ω (rk Ψ p q) (.inr τ)) 0 0 (genU Ω (rk Ψ p q) (.inl τ)) ((blockEquiv p q).symm (omEmb p q a)) ((blockEquiv p q).symm (omEmb p q b)) = _`. Rewrite using `[ea, eb]`. Both sides reduce to the same expression.
+-/
 theorem omBlock_gMat : omBlock (gMat p q Ω τ) = genU Ω (rk Ψ p q) (.inr τ) := by
   ext a b
   have ea : (blockEquiv p q).symm (omEmb p q a) = .inl a := by
@@ -40,6 +53,11 @@ theorem omBlock_gMat : omBlock (gMat p q Ω τ) = genU Ω (rk Ψ p q) (.inr τ) 
   rw [ea, eb]
   rfl
 
+/- English proof (translation)
+Establish `hw : minorIJ (gMat p q Ω τ) (wIdx (p + q) p) (wIdx (p + q) p) = 1`. Rewrite using `[minorIJ_wIdx, wBlock_gMat]`. Conclude with `det_genU Ω (rk Ψ p q) (.inl τ)`. Establish `ho : minorIJ (gMat p q Ω τ) (omIdx (p + q) p) (omIdx (p + q) p) = 1`. Rewrite using `[minorIJ_omIdx, omBlock_gMat]`.
+
+Conclude with `det_genU Ω (rk Ψ p q) (.inr τ)`. Simplify using `only [detFac, hw, ho, ite_self, mul_one]`.
+-/
 theorem detFac_gMat (Ψ : Type) (p q : ℕ) (Ω : Type) [Field Ω] (τ : Ψ) (i : Fin (p + q)) :
     detFac p i (gMat p q Ω τ) = 1 := by
   have hw : minorIJ (gMat p q Ω τ) (wIdx (p + q) p) (wIdx (p + q) p) = 1 := by

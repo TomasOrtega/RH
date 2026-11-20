@@ -22,10 +22,24 @@ section Places
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_congr X.pl]`. Conclude with `Formalism.MainNotions.BridgeLemma.szf_card_Tau D`.
+-/
 private theorem card_infinitePlace_eq_f : Fintype.card (InfinitePlace X.B.I.F) = D.R.f := by
   rw [Fintype.card_congr X.pl]
   exact Formalism.MainNotions.BridgeLemma.szf_card_Tau D
 
+/- English proof (translation)
+Use `Formalism.MainNotions.LocalModelPeriodLattices.cmE D` as an intermediate fact. Establish `hc : ∀ w : InfinitePlace D.host.E, w.IsComplex` using `fun w => NumberField.IsTotallyComplex.isComplex w`. Establish `key : ∀ (v : InfinitePlace X.B.I.F) (a : X.B.I.F), Formalism.L2.SG.Pf.VolPinAsm.phiV X v (X.ιE (algebraMap X.B.I.F X.B.I.E a)) = v.embedding a`. Introduce `v a`. Simplify using `[Formalism.L2.SG.Pf.VolPinAsm.phiV, X.B.I.φ_over]`.
+
+Set `e : InfinitePlace X.B.I.F → {w : InfinitePlace D.host.E // w.IsComplex}` to `fun v => ⟨InfinitePlace.mk (Formalism.L2.SG.Pf.VolPinAsm.phiV X v), hc _⟩`. Establish `hinj : Function.Injective e`. Introduce `v v' h`. Establish `h1 : InfinitePlace.mk (Formalism.L2.SG.Pf.VolPinAsm.phiV X v) = InfinitePlace.mk (Formalism.L2.SG.Pf.VolPinAsm.phiV X v')` using `congrArg Subtype.val h`. Rewrite `h1` using `[InfinitePlace.mk_eq_iff]`.
+
+Break down `h1 with h1 | h1` into its components or cases. Establish `h2 : v.embedding = v'.embedding` using `RingHom.ext fun a => by rw [← key v a, ← key v' a, h1]`. Rewrite using `[← InfinitePlace.mk_embedding v, ← InfinitePlace.mk_embedding v', h2]`. Establish `h2 : v'.embedding = ComplexEmbedding.conjugate v.embedding` using `RingHom.ext fun a => by`. Rewrite using `[← key v' a, ← h1, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, key v a]`.
+
+Rewrite using `[← InfinitePlace.mk_embedding v, ← InfinitePlace.mk_embedding v', h2, InfinitePlace.mk_conjugate_eq]`. Establish `hcard : Fintype.card (InfinitePlace X.B.I.F) = Fintype.card {w : InfinitePlace D.host.E // w.IsComplex}`. Rewrite using `[Fintype.card_congr (Equiv.subtypeUnivEquiv hc), card_infinitePlace_eq_f, (Formalism.FourierDecayAlt.P.degreeFacts_statement D.host.E).2.1, Formalism.MainNotions.LocalModelPeriodLattices.deg_eq]`. Use `⟨Equiv.ofBijective e ((Fintype.bijective_iff_injective_and_card e).mpr ⟨hinj, hcard⟩), fun v => ?_⟩` and prove the remaining obligations. Break down `InfinitePlace.embedding_mk_eq (Formalism.L2.SG.Pf.VolPinAsm.phiV X v) with h | h` into its components or cases.
+
+Conclude with `Or.inl h.symm`. Use `right show _ = ComplexEmbedding.conjugate (InfinitePlace.mk (Formalism.L2.SG.Pf.VolPinAsm.phiV X v)).embedding`. Rewrite using `[h]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem exists_sigma :
     ∃ σι : InfinitePlace X.B.I.F ≃ {w : InfinitePlace D.host.E // w.IsComplex},
       ∀ v, Formalism.L2.SG.Pf.VolPinAsm.phiV X v = (σι v).1.embedding ∨
@@ -62,6 +76,15 @@ theorem exists_sigma :
     ext x
     simp
 
+/- English proof (translation)
+Rewrite using `[card_infinitePlace_eq_f]`. Establish `hrd : 0 < D.host.rdE` using `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D`. Establish `hsq : √|(discr D.host.E : ℝ)| = D.host.rdE ^ D.R.f`. Rewrite using `[← Formalism.MainNotions.BridgeLemma.szf_rd_pow D]`. Conclude with `Real.sqrt_sq (by positivity)`.
+
+Establish `hg : (X.B.g : ℝ) ≠ 0`. Rewrite using `[X.g_eq]`. Use `push_cast`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.mpr (D.host.g_prime 0).ne_zero) (Nat.cast_ne_zero.mpr (D.host.g_prime 1).ne_zero)`. Establish `hk : D.host.ka / (X.B.g : ℝ) / Real.pi = 2 * (D.host.rdE * X.B.g)⁻¹`.
+
+Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`. Clear the denominators using the available nonvanishing facts. Establish `e1 : D.host.rdE ^ D.R.f * (D.host.rdE ^ D.R.f)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ hrd.ne')`. Establish `e2 : (2 : ℝ) ^ D.R.f * ((2 : ℝ) ^ D.R.f)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ two_ne_zero)`. Rewrite using `[hsq, hk]`.
+
+Simplify using `only [mul_pow, inv_pow, mul_inv, div_eq_mul_inv]`. Take the linear combination `(kN * D.host.rdE ^ (2 * D.R.f * h) * ((X.B.g : ℝ) ^ D.R.f)⁻¹) * ((D.host.rdE ^ D.R.f * (D.host.rdE ^ D.R.f)⁻¹) * e2 + e1)`.
+-/
 theorem factor_eq (kN : ℝ) (h : ℕ) :
     (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (InfinitePlace X.B.I.F) * kN *
         2⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) * √|(discr D.host.E : ℝ)| *
@@ -91,23 +114,44 @@ section Self
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[ddPow, zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]`. Both sides reduce to the same expression.
+-/
 theorem ddPow_eq (h : ℕ) : ddPow D h =
     (((Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI D ^ h : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E))⁻¹ := by
   rw [ddPow, zpow_neg, zpow_natCast, FractionalIdeal.coeIdeal_pow]
   rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[ddPow_eq]`. Conclude with `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_mem_inv h hx`.
+-/
 theorem star_mem_ddPow (h : ℕ) {x : D.host.E} (hx : x ∈ ddPow D h) : star x ∈ ddPow D h := by
   rw [ddPow_eq] at hx ⊢
   exact Formalism.L2.SG.NGCut.LeadingMinorIntegrality.star_mem_inv h hx
 
+/- English proof (translation)
+Rewrite using `[qdPow, qq, FractionalIdeal.coeIdeal_span_singleton, mul_comm, map_natCast]`.
+-/
 theorem qdPow_eq (h : ℕ) : qdPow D h =
     ddPow D h * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((gS D : ℕ) : D.host.E) := by
   rw [qdPow, qq, FractionalIdeal.coeIdeal_span_singleton, mul_comm, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[ddPow_eq]`. Conclude with `inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.mpr (Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI_ne_bot h))`.
+-/
 private theorem ddPow_ne_zero (h : ℕ) : ddPow D h ≠ 0 := by
   rw [ddPow_eq]
   exact inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.mpr (Formalism.L2.SG.NGCut.LeadingMinorIntegrality.dI_ne_bot h))
 
+/- English proof (translation)
+Use `Formalism.MainNotions.LocalModelPeriodLattices.cmE D` as an intermediate fact. Establish `hAc : Formalism.FourierDecayAlt.S6.ConjStable D.host.E (ddPow D h)` using `fun x hx => star_mem_ddPow h hx`. Establish `hU` using `(Formalism.FourierDecayAlt.P.unramRelative D.host.E (Formalism.MainNotions.LocalModelPeriodLattices.unramE D)).2 (Formalism.MainNotions.S.Lat.gS D)`. Establish `key : ∀ s' : ℕ, (∀ z : D.host.E, z + s * D.conjF z = z - (-1) ^ s' * D.conjF z) → (Formalism.L2.SG.Pf.StabIntLat.sLat D h s hs).relIndex ((ddPow D h : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) = Formalism.MainNotions.S.Lat.gS D ^ D.R.f`. Introduce `s' hz`.
+
+Establish `h1` using `(Formalism.FourierDecayAlt.P.twistedLatticeIndex D.host.E (ddPow D h) (Formalism.MainNotions.S.Lat.gS D) s' (ddPow_ne_zero h) hAc (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D) hU).1`. Rewrite `h1` using `[Formalism.MainNotions.LocalModelPeriodLattices.deg_eq]`. Establish `e1 : Formalism.L2.SG.Pf.StabIntLat.sLat D h s hs = (Formalism.FourierDecayAlt.S6.twLat D.host.E (ddPow D h) (ddPow D h * FractionalIdeal.spanSingleton _ ((Formalism.MainNotions.S.Lat.gS D : ℕ) : D.host.E)) s').toAddSubgroup`. Use extensionality with `z`. Rewrite using `[Submodule.mem_toAddSubgroup, Formalism.FourierDecayAlt.P.S6x1.mem_twLat, ← qdPow_eq, ← Formalism.MainNotions.LocalModelPeriodLattices.conjF_eq_complexConj, ← hz]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `h1`. Break down `hs1 with rfl | rfl` into its components or cases. Conclude with `key 1 (fun z => by ring)`.
+
+Conclude with `key 0 (fun z => by ring)`.
+-/
 theorem sLat_relIndex (h : ℕ) (s : D.host.E) (hs : D.conjF s = s) (hs1 : s = 1 ∨ s = -1) :
     (Formalism.L2.SG.Pf.StabIntLat.sLat D h s hs).relIndex
       ((ddPow D h : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) = gS D ^ D.R.f := by
@@ -138,6 +182,9 @@ section Norms
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[ddPow_eq, map_inv₀, FractionalIdeal.coeIdeal_absNorm, map_pow]`. Use `push_cast`. Rewrite using `[Formalism.L2.SG.NGCut.LeadingMinorIntegrality.absNorm_dI]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem absNorm_ddPow (h : ℕ) :
     ((FractionalIdeal.absNorm (ddPow D h) : ℚ) : ℝ) = (D.host.rdE ^ (2 * D.R.f * h))⁻¹ := by
   rw [ddPow_eq, map_inv₀, FractionalIdeal.coeIdeal_absNorm, map_pow]
@@ -145,6 +192,9 @@ theorem absNorm_ddPow (h : ℕ) :
   rw [Formalism.L2.SG.NGCut.LeadingMinorIntegrality.absNorm_dI]
   ring
 
+/- English proof (translation)
+Rewrite using `[qq, FractionalIdeal.coeIdeal_absNorm, Ideal.absNorm_span_singleton]`. Establish `e : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : 𝓞 D.host.E) = algebraMap ℤ (𝓞 D.host.E) ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℤ)` using `by simp`. Rewrite using `[e, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Formalism.MainNotions.BridgeLemma.szf_finrankE]`. Simplify using `[Int.natAbs_pow]`.
+-/
 theorem absNorm_qq : ((FractionalIdeal.absNorm ((qq D : Ideal (𝓞 D.host.E)) :
     FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : ℚ) : ℝ) = ((gS D : ℕ) : ℝ) ^ (2 * D.R.f) := by
   rw [qq, FractionalIdeal.coeIdeal_absNorm, Ideal.absNorm_span_singleton]
@@ -154,6 +204,11 @@ theorem absNorm_qq : ((FractionalIdeal.absNorm ((qq D : Ideal (𝓞 D.host.E)) :
 
 variable (w : Point D.host.E (D.R.rS + 1))
 
+/- English proof (translation)
+Establish `hg : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'`. Unfold `Iq`. Use `split_ifs`. Conclude with `ddPow_ne_zero _`. Rewrite using `[qdPow_eq]`.
+
+Conclude with `mul_ne_zero (ddPow_ne_zero _) (by rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]; exact hg)`.
+-/
 theorem Iq_ne (q : Formalism.L2.SG.RealObj.FreeE w) : Iq w q ≠ 0 := by
   have hg : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : D.host.E) ≠ 0 := Nat.cast_ne_zero.mpr (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'
   unfold Iq
@@ -162,6 +217,9 @@ theorem Iq_ne (q : Formalism.L2.SG.RealObj.FreeE w) : Iq w q ≠ 0 := by
   · rw [qdPow_eq]
     exact mul_ne_zero (ddPow_ne_zero _) (by rw [Ne, FractionalIdeal.spanSingleton_eq_zero_iff]; exact hg)
 
+/- English proof (translation)
+Unfold `Iq`. Use `split_ifs with h1`. Rewrite using `[absNorm_ddPow, one_mul]`. Rewrite using `[qdPow, map_mul, Rat.cast_mul, absNorm_qq, absNorm_ddPow]`.
+-/
 theorem absNorm_Iq (q : Formalism.L2.SG.RealObj.FreeE w) :
     ((FractionalIdeal.absNorm (Iq w q) : ℚ) : ℝ) =
       (if selfP w q ∨ ¬ upperM w q then 1 else ((gS D : ℕ) : ℝ) ^ (2 * D.R.f)) *
@@ -171,6 +229,11 @@ theorem absNorm_Iq (q : Formalism.L2.SG.RealObj.FreeE w) :
   · rw [absNorm_ddPow, one_mul]
   · rw [qdPow, map_mul, Rat.cast_mul, absNorm_qq, absNorm_ddPow]
 
+/- English proof (translation)
+Distinguish the cases in `hs : selfP w q`. Establish `hI : Iq w q = ddPow D (hgt w q)` using `by simp [Iq, hs]`. Rewrite using `[hI, Λq, if_pos hs]`. Introduce `z hz`. Conclude with `hz.1`.
+
+Rewrite using `[Λq, if_neg hs]`.
+-/
 theorem Λq_le (q : Formalism.L2.SG.RealObj.FreeE w) :
     Λq w q ≤ ((Iq w q : Submodule (𝓞 D.host.E) D.host.E)).toAddSubgroup := by
   by_cases hs : selfP w q
@@ -180,6 +243,11 @@ theorem Λq_le (q : Formalism.L2.SG.RealObj.FreeE w) :
     exact hz.1
   · rw [Λq, if_neg hs]
 
+/- English proof (translation)
+Distinguish the cases in `hs : selfP w q`. Establish `hI : Iq w q = ddPow D (hgt w q)` using `by simp [Iq, hs]`. Establish `hpm : sgq w q = 1 ∨ sgq w q = -1`. Unfold `sgq`. Rewrite using `[← pow_add]`.
+
+Conclude with `neg_one_pow_eq_or _ _`. Rewrite using `[if_pos hs, hI, Λq, if_pos hs]`. Conclude with `sLat_relIndex (hgt w q) (sgq w q) (sgq_conj w q) hpm`. Rewrite using `[if_neg hs, Λq, if_neg hs]`. Conclude with `AddSubgroup.relIndex_self _`.
+-/
 theorem relIndex_Λq (q : Formalism.L2.SG.RealObj.FreeE w) :
     (Λq w q).relIndex ((Iq w q : Submodule (𝓞 D.host.E) D.host.E)).toAddSubgroup =
       if selfP w q then gS D ^ D.R.f else 1 := by
@@ -200,6 +268,9 @@ section Const
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (w : Point D.host.E (D.R.rS + 1))
 
+/- English proof (translation)
+Rewrite using `[X.g_eq]`. Simplify using `[Formalism.MainNotions.S.Lat.gS]`.
+-/
 theorem g_eq_gS : (X.B.g : ℝ) = ((gS D : ℕ) : ℝ) := by
   rw [X.g_eq]
   simp [Formalism.MainNotions.S.Lat.gS]
@@ -207,6 +278,11 @@ theorem g_eq_gS : (X.B.g : ℝ) = ((gS D : ℕ) : ℝ) := by
 def cfac (q : Formalism.L2.SG.RealObj.FreeE w) : ℝ :=
   if selfP w q then 1 else if upperM w q then ((gS D : ℕ) : ℝ) ^ D.R.f else (((gS D : ℕ) : ℝ) ^ D.R.f)⁻¹
 
+/- English proof (translation)
+Establish `key` using `factor_eq X ((((Λq w q).relIndex ((Iq w q : Submodule (𝓞 D.host.E) D.host.E)).toAddSubgroup : ℕ) : ℝ) * ((FractionalIdeal.absNorm (Iq w q) : ℚ) : ℝ)) (hgt w q)`. Rewrite using `[show ∀ a b c d e f' : ℝ, a * b * c * d * e * f' = a * (b * c) * d * e * f' from fun _ _ _ _ _ _ => by ring, key, relIndex_Λq, absNorm_Iq, g_eq_gS]`. Establish `hrd : D.host.rdE ≠ 0` using `(Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D).ne'`. Establish `hg : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'`. Unfold `cfac`.
+
+Apply the tactic sequence `split_ifs <;> first | (exfalso; tauto) | (push_cast <;> field_simp <;> ring)`.
+-/
 theorem factor_q (q : Formalism.L2.SG.RealObj.FreeE w) :
     (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (InfinitePlace X.B.I.F) *
         (((Λq w q).relIndex ((Iq w q : Submodule (𝓞 D.host.E) D.host.E)).toAddSubgroup : ℕ) : ℝ) *
@@ -222,6 +298,21 @@ theorem factor_q (q : Formalism.L2.SG.RealObj.FreeE w) :
   unfold cfac
   split_ifs <;> first | (exfalso; tauto) | (push_cast <;> field_simp <;> ring)
 
+/- English proof (translation)
+Establish `hgS : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ D.R.f ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne')`. Distinguish the cases in `hs : selfP w q`. Establish `hq : qbar w q = q` using `hs`. Rewrite using `[hq]`. Simplify using `[cfac, hs]`.
+
+Establish `hs' : ¬ selfP w (qbar w q)`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `h' : qbar w (qbar w q) = qbar w q` using `h`. Rewrite `h'` using `[qbar_qbar]`.
+
+Conclude with `h'.symm`. Establish `hne : (qbar w q).1.1 ≠ q.1.1`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Establish `h2 : (qbar w (qbar w q)).1.2 = q.1.2` using `by rw [qbar_qbar]`.
+
+Express the relevant statement in the definitionally equal form `Formalism.L2.SG.PtCell.pinv w (qbar w q).1.1 = q.1.2 at h2`. Rewrite `h2` using `[h]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext h h2`. Establish `hu : upperM w q ↔ ¬ upperM w (qbar w q)` using `by show (qbar w q).1.1 < q.1.1 ↔ ¬ (qbar w (qbar w q)).1.1 < (qbar w q).1.1`.
+
+Rewrite using `[qbar_qbar]`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Conclude with `lt_asymm h h'`. Introduce `h`.
+
+Conclude with `lt_of_le_of_ne (not_lt.mp h) hne`. Distinguish the cases in `hq : upperM w q`. Establish `h3` using `hu.mp hq`. Simplify using `only [cfac, hs, hs', hq, h3, if_false, if_true]`. Conclude with `mul_inv_cancel₀ hgS`.
+
+Establish `h3 : upperM w (qbar w q)` using `not_not.mp (fun h => hq (hu.mpr h))`. Simplify using `only [cfac, hs, hs', hq, h3, if_false, if_true]`. Conclude with `inv_mul_cancel₀ hgS`.
+-/
 private theorem cfac_mul_cfac_qbar_eq_one (q : Formalism.L2.SG.RealObj.FreeE w) : cfac w q * cfac w (qbar w q) = 1 := by
   have hgS : ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) ^ D.R.f ≠ 0 :=
     pow_ne_zero _ (Nat.cast_ne_zero.mpr (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne')
@@ -259,6 +350,9 @@ private theorem cfac_mul_cfac_qbar_eq_one (q : Formalism.L2.SG.RealObj.FreeE w) 
       simp only [cfac, hs, hs', hq, h3, if_false, if_true]
       exact inv_mul_cancel₀ hgS
 
+/- English proof (translation)
+Conclude with `Finset.prod_ninvolution (qbar w) (cfac_mul_cfac_qbar_eq_one w) (fun q hq h => hq (by`. Establish `hs : selfP w q` using `h`. Simplify using `[cfac, hs])) (fun q => Finset.mem_univ _) (qbar_qbar w)`.
+-/
 theorem prod_cfac : ∏ q, cfac w q = 1 := by
   exact Finset.prod_ninvolution (qbar w) (cfac_mul_cfac_qbar_eq_one w) (fun q hq h => hq (by
     have hs : selfP w q := h
@@ -271,6 +365,9 @@ section Main
 def recov {ι Q K : Type} [Field K] (φ : ι → (K →+* ℂ)) (x : ι → Q → ℂ) (q : Q) : K :=
   if h : ∃ a : K, ∀ v, x v q = φ v a then h.choose else 0
 
+/- English proof (translation)
+Unfold `recov`. Establish `hex : ∃ a : K, ∀ v, x v q = φ v a` using `⟨a, ha⟩`. Rewrite using `[dif_pos hex]`. Conclude with `(φ v0).injective ((hex.choose_spec v0).symm.trans (ha v0))`.
+-/
 theorem recov_eq {ι Q K : Type} [Field K] (φ : ι → (K →+* ℂ)) (v0 : ι) (x : ι → Q → ℂ) (q : Q) (a : K)
     (ha : ∀ v, x v q = φ v a) : recov φ x q = a := by
   unfold recov
@@ -278,17 +375,48 @@ theorem recov_eq {ι Q K : Type} [Field K] (φ : ι → (K →+* ℂ)) (v0 : ι)
   rw [dif_pos hex]
   exact (φ v0).injective ((hex.choose_spec v0).symm.trans (ha v0))
 
+/- English proof (translation)
+Unfold `recov`. Simplify using `only [h]`.
+-/
 theorem recov_congr {ι Q K : Type} [Field K] (φ : ι → (K →+* ℂ)) (x x' : ι → Q → ℂ) (q : Q)
     (h : ∀ v, x v q = x' v q) : recov φ x q = recov φ x' q := by
   unfold recov
   simp only [h]
 
+/- English proof (translation)
+Use `show Odd (D.host.g 0 * D.host.g 1)`. Establish `h0` using `hg3 0`. Establish `h1` using `hg3 1`. Conclude with `((D.host.g_prime 0).odd_of_ne_two (by omega)).mul ((D.host.g_prime 1).odd_of_ne_two (by omega))`.
+-/
 theorem gS_odd {D : D7} (hg3 : ∀ i, 3 ≤ D.host.g i) : Odd (gS D) := by
   show Odd (D.host.g 0 * D.host.g 1)
   have h0 := hg3 0
   have h1 := hg3 1
   exact ((D.host.g_prime 0).odd_of_ne_two (by omega)).mul ((D.host.g_prime 1).odd_of_ne_two (by omega))
 
+/- English proof (translation)
+Introduce `D X Y u u' hg3 _hP t _ht _hG w _hw`. Establish `hodd : Odd (Formalism.MainNotions.S.Lat.gS D)` using `gS_odd hg3`. Take `⟨σι, hσι⟩` from `exists_sigma X`. Take `⟨v0⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Use `⟨hpr w, fun p => Units.mk0 (Iq w p) (Iq_ne w p), Λq w, fun p => (Λq w p).relIndex ((Iq w p : Submodule (𝓞 D.host.E) D.host.E)).toAddSubgroup, fun p y v => Formalism.L2.SG.Pf.VolPinAsm.phiV X v (τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y)), σι, fun p q h => hpr_lt w h, …` and prove the remaining obligations.
+
+Introduce `p show (Λq w p).relIndex _ ≠ 0`. Rewrite using `[relIndex_Λq]`. Use `split_ifs`. Conclude with `pow_ne_zero _ (Formalism.MainNotions.LocalModelPeriodLattices.gS_pos D).ne'`. Conclude with `one_ne_zero`.
+
+Introduce `p x x' h show (fun v => Formalism.L2.SG.Pf.VolPinAsm.phiV X v (τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) x))) = fun v => Formalism.L2.SG.Pf.VolPinAsm.phiV X v (τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) x'))`. Rewrite using `[τA_lowdep w p (fun q hq => recov_congr _ x x' q (h q hq))]`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ, rfl⟩ p`.
+
+Take `⟨hlo, b, hb, hW⟩ : ((β : Formalism.L2.SG.PairVal.GLR D)) ∈ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w)` from `β.2`. Establish `hmem` using `(mem_stabInt_iff_twist w Y.δ Y.M Y.agree hodd u u' (β : Formalism.L2.SG.PairVal.GLR D) hlo hb hW).mp hβ p`. Establish `hrec : recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (fun v p => Formalism.L2.SG.Pf.VolPinAsm.phiV X v (((ptMat w)⁻¹ * (((β : Formalism.L2.SG.PairVal.GLR D)) : Formalism.L2.SG.PairVal.MatR D) * ptMat w) p.1.1 p.1.2)) = coordX w ((ptMat w)⁻¹ * (((β : Formalism.L2.SG.PairVal.GLR D)) …`. Use function extensionality and compare the values at `q`. Conclude with `recov_eq _ v0 _ q _ (fun v => rfl)`.
+
+Use `AddSubgroup.mem_map.mpr ⟨_, hmem, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `show 1 * _ = _ - Formalism.L2.SG.Pf.VolPinAsm.phiV X v (τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) _))`. Rewrite using `[hrec, one_mul, map_sub]`. Both sides reduce to the same expression.
+
+Introduce `hy`. Establish `hz : ∀ p, ∃ a : D.host.E, (∀ v, y v p = Formalism.L2.SG.Pf.VolPinAsm.phiV X v a) ∧ a - τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y) ∈ Λq w p`. Introduce `p`. Take `⟨l, hl, he⟩` from `AddSubgroup.mem_map.mp (hy p)`. Use `⟨τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y) + l, fun v => ?_, by simpa using hl⟩` and prove the remaining obligations.
+
+Establish `hv` using `congrFun he v`. Express the relevant statement in the definitionally equal form `1 * Formalism.L2.SG.Pf.VolPinAsm.phiV X v l = y v p - Formalism.L2.SG.Pf.VolPinAsm.phiV X v (τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y)) at hv`. Rewrite using `[map_add]`. Take the linear combination `-hv`. Establish `hzv : ∀ p v, y v p = Formalism.L2.SG.Pf.VolPinAsm.phiV X v (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y p)`.
+
+Introduce `p v`. Take `⟨a, ha, -⟩` from `hz p`. Rewrite using `[recov_eq _ v0 y p a ha]`. Conclude with `ha v`. Establish `hzL : ∀ p, recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y p - τA w p (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y) ∈ Λq w p`.
+
+Introduce `p`. Take `⟨a, ha, hl⟩` from `hz p`. Rewrite using `[recov_eq _ v0 y p a ha]`. Conclude with `hl`. Take `⟨β, hlo, hup, hW, hX⟩` from `exists_of_coord w (recov (Formalism.L2.SG.Pf.VolPinAsm.phiV X) y)`.
+
+Use `⟨⟨β, show β ∈ Formalism.L2.SG.Pf.StabilizerIndexVolumes.StSet (ptMat w) from ⟨hlo, _, hup, hW⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show β ∈ _`. Rewrite using `[mem_stabInt_iff_twist w Y.δ Y.M Y.agree hodd u u' β hlo hup hW, hX, coordX_Xmat]`. Conclude with `hzL`. Use function extensionality and compare the values at `v p show y v p = Formalism.L2.SG.Pf.VolPinAsm.phiV X v (((ptMat w)⁻¹ * ((β : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) * ptMat w) p.1.1 p.1.2)`.
+
+Rewrite using `[hX, hzv p v]`. Use `congr 1`. Conclude with `(congrFun (coordX_Xmat w _) p).symm`. Use `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D` as an intermediate fact. Unfold `Formalism.BasicNotions.Host.ka Formalism.BasicNotions.Host.v`.
+
+Conclude with `div_nonneg (div_nonneg (div_nonneg Real.pi_pos.le (by linarith)) (Nat.cast_nonneg _)) Real.pi_pos.le`. Conclude with `(Finset.prod_congr rfl fun p _ => factor_q X w p).trans (prod_cfac w)`.
+-/
 theorem stabilizer_lattice_twisted_prod : Formalism.L2.SG.NGCut.StabilizerCovolume.StabilizerLatticeTwistedProduct := by
   intro D X Y u u' hg3 _hP t _ht _hG w _hw
   classical

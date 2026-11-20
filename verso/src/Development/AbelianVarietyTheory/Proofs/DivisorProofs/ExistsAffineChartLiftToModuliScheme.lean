@@ -13,6 +13,21 @@ open GlobalTheory.Points
 
 namespace GlobalTheory.Poinc.ChartAt
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ w hw`. Use `haveI := X₁.imm`. Use `set V : X₁.M.Z.Opens := X₁.π ⁻¹ᵁ i.opensRange with hVdef`. Establish `hwV : w ∈ V` using `by show X₁.π w ∈ (i.opensRange : Set Z)`. Simplify `hw` using `[Scheme.Hom.coe_opensRange]`.
+
+Take `⟨U, hU, hwU, hUV⟩` from `exists_isAffineOpen_mem_and_subset (X := X₁.M.Z) (U := V) hwV`. Establish `hne : ((U : X₁.M.Z.Opens) : Set X₁.M.Z).Nonempty` using `⟨w, hwU⟩`. Establish `hUi : ∀ w' ∈ U, X₁.π w' ∈ Set.range i`. Introduce `w' hw'`. Use `hUV hw'` as an intermediate fact.
+
+Simplify `this` using `[hVdef, Scheme.Hom.coe_opensRange]`. Set `φ : Γ(X₁.M.Z, U) ⟶ CommRingCat.of (X₁.M.ringOn U)` to `CommRingCat.ofHom (X₁.M.sectionsEquiv U hne).toRingHom`. Set `f : Sp (X₁.M.ringOn U) ⟶ X₁.M.Z` to `Spec.map φ ≫ hU.fromSpec`. Establish `hrange : Set.range (f ≫ X₁.π) ⊆ Set.range i`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Apply `hUi` to reduce the goal to its premises. Establish `: hU.fromSpec (Spec.map φ y) ∈ Set.range hU.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Conclude with `this`. Use `⟨U, IsOpenImmersion.lift i (f ≫ X₁.π) hrange, hU, hwU, hUi, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono i, Category.assoc, IsOpenImmersion.lift_fac, Category.assoc, Category.assoc, ← X₁.comp]`. Establish `hpt : ⊤ ≤ X₁.M.pt ⁻¹ᵁ U` using `X₁.M.top_le_preimage_pt hne`. Establish `hφ : φ ≫ CommRingCat.ofHom (X₁.M.ringOn U).val.toRingHom = valMap X₁.M.pt U hpt`. Use extensionality with `a`. Use `show ((X₁.M.sectionsEquiv U hne a : X₁.M.ringOn U) : X₁.Ω₁) = _`.
+
+Rewrite using `[RatModel.coe_sectionsEquiv, ← valR_eq, valF_eq_valR]`. Establish `hf : spMap (X₁.M.ringOn U).val.toRingHom ≫ f = X₁.M.pt`. Simplify using `only [f, ← Category.assoc]`. Rewrite using `[spMap, ← Spec.map_comp, hφ, specMap_valMap_fromSpec]`. Rewrite using `[← hf]`.
+
+Simplify using `only [f, Category.assoc]`.
+-/
 theorem exists_affine_chart_lift : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (w : X₁.M.Z), X₁.π w ∈ Set.range i → ∃ (U : X₁.M.Z.Opens) (u : Sp (X₁.M.ringOn U) ⟶ F.X), IsAffineOpen U ∧ w ∈ U ∧ (∀ w' ∈ U, X₁.π w' ∈ Set.range i) ∧ spMap (X₁.M.ringOn U).val.toRingHom ≫ u = spMap X₁.S.R.val.toRingHom ≫ X₁.u := by
   intro g n F W Z i X₁ w hw
   haveI := X₁.imm

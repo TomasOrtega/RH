@@ -27,28 +27,45 @@ namespace GlobalTheory.Dieu.AbVarDieu
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [pow_zero, MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+-/
 theorem pow_comp_hom {S : Scheme.{0}} {Z G H : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ]
     (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
   induction n with
   | zero => simp [pow_zero, MonObj.one_comp]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(GlobalTheory.T.dieudonne_integrality_and_faithful p T k G H (t.map t' f.hom)).1 n h`. Conclude with `(GlobalTheory.T.eq_pow_smul_of_pDivGroup_torsionTower_map p k A B G H t t' f).1 n g hg`.
+-/
 theorem exists_eq_ppow_smul (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p]
     {A B : AbVar k} {G H : PDivGroup p k} (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B)
     (n : ℕ) (h : ∀ m, ∃ m', T.map (t.map t' f.hom) m = p ^ n • m') : ∃ f' : A ⟶ B, f = p ^ n • f' := by
   obtain ⟨g, hg⟩ := (GlobalTheory.T.dieudonne_integrality_and_faithful p T k G H (t.map t' f.hom)).1 n h
   exact (GlobalTheory.T.eq_pow_smul_of_pDivGroup_torsionTower_map p k A B G H t t' f).1 n g hg
 
+/- English proof (translation)
+Establish `: IsMonHom (𝟙 A.X ^ N)` using `inferInstanceAs (IsMonHom ((N • 𝟙 A : A ⟶ A).hom))`. Conclude with `t.map_pow_id N`.
+-/
 theorem map_nsmul_id {k : Type} [Field k] {A : AbVar k} {G : PDivGroup p k} (t : G.TorsionTower A.X) (N : ℕ) :
     t.map t ((N • 𝟙 A : A ⟶ A).hom) = (N : ℤ_[p]) • 𝟙 G := by
   have : IsMonHom (𝟙 A.X ^ N) := inferInstanceAs (IsMonHom ((N • 𝟙 A : A ⟶ A).hom))
   exact t.map_pow_id N
 
+/- English proof (translation)
+Use `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H K trivial trivial trivial).2.1 f g` as an intermediate fact. Conclude with `LinearMap.congr_fun this y`.
+-/
 theorem tmap_comp (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H K : PDivGroup p k}
     (f : G ⟶ H) (g : H ⟶ K) (y : T.M K) : T.map (f ≫ g) y = T.map f (T.map g y) := by
   have := (GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H K trivial trivial trivial).2.1 f g
   exact LinearMap.congr_fun this y
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k H H H trivial trivial trivial`. Establish `h5` using `h.2.2.2.2.1 a (𝟙 H) y`. Establish `h1` using `h.1`. Express the relevant statement in the definitionally equal form `T.base.map trivial trivial _ y = _`. Rewrite using `[h5, h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tmap_ppow_smul_id (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p] {H : PDivGroup p k}
     (a : ℕ) (y : T.M H) : T.map ((p : ℤ_[p]) ^ a • 𝟙 H) y = p ^ a • y := by
   have h := GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k H H H trivial trivial trivial
@@ -58,6 +75,15 @@ theorem tmap_ppow_smul_id (T : Theory p) {k : Type} [Field k] [CharP k p] [Perfe
   rw [h5, h1]
   rfl
 
+/- English proof (translation)
+Take `⟨N, f', hN, -, e1, e2⟩` from `GlobalTheory.AV.AbVar.exists_quasiInverse_isogeny k A B f hf`. Take `⟨a, m, hpm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' p (Fact.out : p.Prime).ne_one`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; exact hpm (dvd_zero p))`. Establish `hmk : (m : k) ≠ 0` using `by rwa [Ne, CharP.cast_eq_zero_iff k p]`. Establish `hcop : Nat.Coprime m (deg f)`.
+
+Rewrite using `[hdeg]`. Conclude with `Nat.Coprime.pow_right _ ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hpm).symm`. Take `⟨f₁, hf₁⟩` from `exists_nsmul_eq_of_kills_torsion k B A f' m hmk (fun y hy => by`. Apply `GlobalTheory.AV.KerInv.eq_one_of_coprime f hf m hm0 hcop (y ≫ f'.hom)` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← comp_hom, e2, nsmul_hom, id_hom, comp_id_pow_eq, pow_mul', hy, one_pow]`.
+
+Rewrite using `[← pow_comp_hom, hy, MonObj.one_comp])`. Establish `hmz : ((m : ℤ)) ≠ 0` using `by exact_mod_cast hm0.ne'`. Use `⟨a, f₁, ?_, ?_⟩` and prove the remaining obligations. Use `sub_eq_zero.1 (hom_torsionFree k A A (m : ℤ) _ hmz ?_)` and prove the remaining obligations. Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, ← Preadditive.comp_nsmul, ← hf₁, e1, smul_smul, mul_comm]`.
+
+Conclude with `sub_self _`. Use `sub_eq_zero.1 (hom_torsionFree k B B (m : ℤ) _ hmz ?_)` and prove the remaining obligations. Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, ← Preadditive.nsmul_comp, ← hf₁, e2, smul_smul, mul_comm]`. Conclude with `sub_self _`.
+-/
 theorem exists_ppow_quasiInverse {k : Type} [Field k] [CharP k p] {A B : AbVar k} (f : A ⟶ B)
     (hf : IsIsogeny f) (e : ℕ) (hdeg : deg f = p ^ e) :
     ∃ (a : ℕ) (f₁ : B ⟶ A), f ≫ f₁ = p ^ a • 𝟙 A ∧ f₁ ≫ f = p ^ a • 𝟙 B := by
@@ -81,6 +107,13 @@ theorem exists_ppow_quasiInverse {k : Type} [Field k] [CharP k p] {A B : AbVar k
     rw [smul_sub, natCast_zsmul, natCast_zsmul, ← Preadditive.nsmul_comp, ← hf₁, e2, smul_smul, mul_comm]
     exact sub_self _
 
+/- English proof (translation)
+Take `⟨a, f₁, h1, h2⟩` from `exists_ppow_quasiInverse f hf e hdeg`. Establish `hdiv : ∀ x, ∃ x', T.map (t'.map t'' (f₁ ≫ g).hom) x = p ^ a • x'`. Introduce `x`. Take `⟨y, hy⟩` from `hr (LinearMap.mem_range_self _ x)`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Establish `c1 : t'.map t'' (f₁ ≫ g).hom = t'.map t f₁.hom ≫ t.map t'' g.hom` using `(t'.map_congr t'' (comp_hom f₁ g)).trans (t'.map_comp t t'' _ _)`. Establish `c2 : t'.map t f₁.hom ≫ t.map t' f.hom = (p : ℤ_[p]) ^ a • 𝟙 H`. Rewrite using `[← t'.map_comp t t', ← Nat.cast_pow, ← map_nsmul_id t']`. Conclude with `t'.map_congr t' ((comp_hom f₁ f).symm.trans (congrArg Hom.hom h2))`. Rewrite using `[c1, tmap_comp, ← hy, ← tmap_comp, c2, tmap_ppow_smul_id]`.
+
+Take `⟨u, hu⟩` from `exists_eq_ppow_smul T t' t'' (f₁ ≫ g) a hdiv`. Use `⟨u, sub_eq_zero.1 (hom_torsionFree k A C ((p ^ a : ℕ) : ℤ) _ (by exact_mod_cast (pow_pos (Fact.out : p.Prime).pos a).ne') ?_)⟩` and prove the remaining obligations. Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, ← Preadditive.comp_nsmul, ← hu, ← Category.assoc, h1, Preadditive.nsmul_comp, Category.id_comp]`. Conclude with `sub_self _`.
+-/
 theorem exists_factor_of_range_le (T : Theory p) {k : Type} [Field k] [CharP k p] [PerfectRing k p]
     {A B C : AbVar k} {G H K : PDivGroup p k} (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X)
     (t'' : K.TorsionTower C.X) (f : A ⟶ B) (g : A ⟶ C) (e : ℕ) (hf : IsIsogeny f) (hdeg : deg f = p ^ e)
@@ -103,6 +136,9 @@ theorem exists_factor_of_range_le (T : Theory p) {k : Type} [Field k] [CharP k p
     Preadditive.nsmul_comp, Category.id_comp]
   exact sub_self _
 
+/- English proof (translation)
+Introduce `p _ T k _ _ _ A B G H t t' f`. Use `⟨fun n h => exists_eq_ppow_smul T t t' f n h, fun hf => ?_, fun C K t'' g e hf hdeg hr => exists_factor_of_range_le T t t' t'' f g e hf hdeg hr⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.T.isogeny_induces_pDivisibleGroupIsogeny_pPartDegree p k A B G H t t' f hf`. Conclude with `⟨h1, GlobalTheory.T.dieudonneColength_eq_log_degree p T k G H _ _ h1 h2⟩`.
+-/
 theorem abVar_dieudonne_integral_length_factor : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (A B : AbVar k) (G H : PDivGroup p k) (t : G.TorsionTower A.X) (t' : H.TorsionTower B.X) (f : A ⟶ B), (∀ n : ℕ, (∀ m, ∃ m', T.map (t.map t' f.hom) m = p ^ n • m') → ∃ f' : A ⟶ B, f = p ^ n • f') ∧ (IsIsogeny f → IsIsog (t.map t' f.hom) ∧ Module.length (WittVector p k) (T.M G ⧸ LinearMap.range (T.map (t.map t' f.hom))) = padicValNat p (deg f)) ∧ ∀ (C : AbVar k) (K : PDivGroup p k) (t'' : K.TorsionTower C.X) (g : A ⟶ C) (e : ℕ), IsIsogeny f → deg f = p ^ e → LinearMap.range (T.map (t.map t'' g.hom)) ≤ LinearMap.range (T.map (t.map t' f.hom)) → ∃ u : B ⟶ C, f ≫ u = g := by
   intro p _ T k _ _ _ A B G H t t' f
   refine ⟨fun n h => exists_eq_ppow_smul T t t' f n h, fun hf => ?_,

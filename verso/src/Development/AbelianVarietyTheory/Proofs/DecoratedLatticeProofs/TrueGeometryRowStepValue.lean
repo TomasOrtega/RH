@@ -39,6 +39,11 @@ set_option synthInstance.maxHeartbeats 200000
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Simplify using `only [Formalism.UG.prV, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.comm_tmul]`.
+
+Both sides reduce to the same expression. Consider the case `add a b ha hb`. Simplify using `only [map_add]`. Conclude with `congrArg₂ (· + ·) ha hb`.
+-/
 theorem prV_comm (v : GlobalTheory.FinPl.Pl D) (z : Af ↥D.host.F ⊗[↥D.host.F] D.host.E) :
     Formalism.UG.prV (E := D.host.E) v ((Algebra.TensorProduct.comm (↥D.host.F) (Af ↥D.host.F) D.host.E) z) =
       (Algebra.TensorProduct.comm _ _ _) (GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v z) := by
@@ -53,6 +58,11 @@ theorem prV_comm (v : GlobalTheory.FinPl.Pl D) (z : Af ↥D.host.F ⊗[↥D.host
     simp only [map_add]
     exact congrArg₂ (· + ·) ha hb
 
+/- English proof (translation)
+Unfold `GlobalTheory.FinPl.compAt at h`. Unfold `toEAf`. Simplify using `only [RingHom.comp_apply] at h ⊢`. Generalize the expression as in `finPart D y = z at h ⊢`. Generalize the expression as in `finPart D y' = z' at h ⊢`.
+
+Use `(prV_comm v z).trans (Eq.trans ?_ (prV_comm v z').symm)` and prove the remaining obligations. Rewrite using `[h]`.
+-/
 theorem prV_toEAf_congr (v : GlobalTheory.FinPl.Pl D) {y y' : AE D} (h : GlobalTheory.FinPl.compAt D v y = GlobalTheory.FinPl.compAt D v y') :
     Formalism.UG.prV (E := D.host.E) v (toEAf D y) = Formalism.UG.prV (E := D.host.E) v (toEAf D y') := by
   unfold GlobalTheory.FinPl.compAt at h
@@ -63,6 +73,11 @@ theorem prV_toEAf_congr (v : GlobalTheory.FinPl.Pl D) {y y' : AE D} (h : GlobalT
   refine (prV_comm v z).trans (Eq.trans ?_ (prV_comm v z').symm)
   rw [h]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Formalism.UG.prV (E := D.host.E) v (x.1 i j) = Formalism.UG.prV (E := D.host.E) v (y.1 i j)`. Rewrite using `[hx, hy]`. Simplify using `only [GlobalTheory.AdForm.finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Conclude with `prV_toEAf_congr v (e _ _)`.
+-/
 theorem bc_congr (V : HSp D) {n : ℕ} (hn : V.rank = n) (v : GlobalTheory.FinPl.Pl D) {g h : GA D V} {x y : GL (Fin n) (EF D)}
     (hx : x.1 = finM V hn g) (hy : y.1 = finM V hn h)
     (e : ∀ i j, GlobalTheory.FinPl.compAt D v (Formalism.L2.Theta.mt V g i j) = GlobalTheory.FinPl.compAt D v (Formalism.L2.Theta.mt V h i j)) :
@@ -74,6 +89,11 @@ theorem bc_congr (V : HSp D) {n : ℕ} (hn : V.rank = n) (v : GlobalTheory.FinPl
   simp only [GlobalTheory.AdForm.finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]
   exact prV_toEAf_congr v (e _ _)
 
+/- English proof (translation)
+Establish `h1 : (1 : GL (Fin n) (EF D)).1 = finM V hn 1`. Substitute `hn` using the available equality. Rewrite using `[GlobalTheory.AdForm.CongAtIdem.finM_rfl, GlobalTheory.SplitCut.mt_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression. Rewrite using `[bc_congr V hn v hx h1 fun i j => ?_, map_one]`.
+
+Use `((mem_grpAt_iff_parts V P g).1 hg i j).2 v hv` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Rewrite using `[this, GlobalTheory.SplitCut.mt_one]`.
+-/
 theorem bc_eq_one (V : HSp D) {n : ℕ} (hn : V.rank = n) {P : GlobalTheory.FinPl.Pl D → Prop} {v : GlobalTheory.FinPl.Pl D} (hv : ¬ P v) {g : GA D V}
     (hg : g ∈ grpAt V P) {x : GL (Fin n) (EF D)} (hx : x.1 = finM V hn g) :
     Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) v) x = 1 := by
@@ -88,19 +108,31 @@ theorem bc_eq_one (V : HSp D) {n : ℕ} (hn : V.rank = n) {P : GlobalTheory.FinP
 
 abbrev cutAt (V : HSp D) (v : GlobalTheory.FinPl.Pl D) : GA D V →* GA D V := cutG V _ (idemQ_mul_self {v})
 
+/- English proof (translation)
+The claim follows from `cutG_mem_Q V {v} g`.
+-/
 theorem cutAt_mem (V : HSp D) (v : GlobalTheory.FinPl.Pl D) (g : GA D V) : cutAt V v g ∈ grpAt V (· ∈ ({v} : Finset (GlobalTheory.FinPl.Pl D))) :=
   cutG_mem_Q V {v} g
 
+/- English proof (translation)
+Rewrite using `[mt_cutG, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, RingHom.map_add, RingHom.map_mul, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, (parts_idemQ {v}).2 v, if_pos (Finset.mem_singleton_self v), sub_self, zero_mul, one_mul, add_zero]`.
+-/
 theorem compAt_cutAt (V : HSp D) (v : GlobalTheory.FinPl.Pl D) (g : GA D V) (i j) :
     GlobalTheory.FinPl.compAt D v (Formalism.L2.Theta.mt V (cutAt V v g) i j) = GlobalTheory.FinPl.compAt D v (Formalism.L2.Theta.mt V g i j) := by
   rw [mt_cutG, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, RingHom.map_add, RingHom.map_mul,
     RingHom.map_mul, RingHom.map_sub, RingHom.map_one, (parts_idemQ {v}).2 v, if_pos (Finset.mem_singleton_self v), sub_self,
     zero_mul, one_mul, add_zero]
 
+/- English proof (translation)
+Introduce `g hg` and use `(mem_grpAt_iff_parts V Q g).2 fun i j => ⟨((mem_grpAt_iff_parts V P g).1 hg i j).1, fun w hw => ((mem_grpAt_iff_parts V P g).1 hg i j).2 w fun h' => hw (h w h')⟩`.
+-/
 theorem grpAt_mono (V : HSp D) {P Q : GlobalTheory.FinPl.Pl D → Prop} (h : ∀ v, P v → Q v) : grpAt V P ≤ grpAt V Q := fun g hg =>
   (mem_grpAt_iff_parts V Q g).2 fun i j =>
     ⟨((mem_grpAt_iff_parts V P g).1 hg i j).1, fun w hw => ((mem_grpAt_iff_parts V P g).1 hg i j).2 w fun h' => hw (h w h')⟩
 
+/- English proof (translation)
+Establish `h` using `cutG_left V {v} (one_mem _) (grpAt_mono V (Q := (· ∉ ({v} : Finset (GlobalTheory.FinPl.Pl D)))) (fun w hw hm => hv (Finset.mem_singleton.1 hm ▸ hw)) hg)`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem cutAt_eq_one (V : HSp D) {P : GlobalTheory.FinPl.Pl D → Prop} {v : GlobalTheory.FinPl.Pl D} (hv : ¬ P v) {g : GA D V} (hg : g ∈ grpAt V P) :
     cutAt V v g = 1 := by
   have h := cutG_left V {v} (one_mem _) (grpAt_mono V (Q := (· ∉ ({v} : Finset (GlobalTheory.FinPl.Pl D))))
@@ -116,6 +148,15 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `ex` using `GlobalTheory.AdForm.RdVal.finM_mem ((I.rec7 l Z).sp.X j) (rankN (I.rec7 l Z) j hj) (gramN (I.rec7 l Z) j hj) rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨hC, κ, hκ⟩` from `(hA.U j hj β g).1 hg`. Use `⟨hC, fun v => (hA.U j hj β _).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (cutAt_mem _ v g), ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `ex (cutAt _ v g)`. Use `⟨⟨x.1, ((A.K j hj β).lev.U_eq _).2 ⟨x.2, fun w => ?_⟩⟩, hx⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[bc_congr _ _ w hx hκ (compAt_cutAt _ w g)]`.
+
+Conclude with `(((A.K j hj β).lev.U_eq _).1 κ.2).2 w`. Rewrite using `[bc_eq_one _ _ (P := (· ∈ ({v} : Finset _))) (fun h => hw (Finset.mem_singleton.1 h)) (cutAt_mem _ v g) hx]`. Conclude with `one_mem _`. Introduce and unpack `⟨hC, h⟩`. Use `(hA.U j hj β _).2 ⟨hC, ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `ex g`. Use `⟨⟨x.1, ((A.K j hj β).lev.U_eq _).2 ⟨x.2, fun w => ?_⟩⟩, hx⟩` and prove the remaining obligations. Take `⟨-, κ, hκ⟩` from `(hA.U j hj β _).1 (h w)`. Rewrite using `[← bc_congr _ _ w hκ hx (compAt_cutAt _ w g)]`. Conclude with `(((A.K j hj β).lev.U_eq _).1 κ.2).2 w`.
+-/
 theorem mem_U_iff (hA : A.Is) (j : ℕ) (hj : j ≤ B.R.m) (β : Ch j) (g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) :
     g ∈ A.U j β ↔ g ∈ GfC _ ∧ ∀ v, cutAt _ v g ∈ A.U j β := by
   have ex := GlobalTheory.AdForm.RdVal.finM_mem ((I.rec7 l Z).sp.X j) (rankN (I.rec7 l Z) j hj) (gramN (I.rec7 l Z) j hj) rfl
@@ -141,6 +182,11 @@ theorem mem_U_iff (hA : A.Is) (j : ℕ) (hj : j ≤ B.R.m) (β : Ch j) (g : GA (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨hC, κ, hκ⟩` from `(hA.U j hj β g).1 hg`. Use `(hA'.U j hj β' g).2 ⟨hC, ⟨κ.1, ((A'.K j hj β').lev.U_eq _).2 ⟨(((A.K j hj β).lev.U_eq _).1 κ.2).1, fun w => ?_⟩⟩, hκ⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `hle ((((A.K j hj β).lev.U_eq _).1 κ.2).2 w)`.
+
+Rewrite using `[bc_eq_one _ _ (P := (· ∈ ({v} : Finset _))) (fun h => hw (Finset.mem_singleton.1 h)) hv hκ]`. Conclude with `one_mem _`.
+-/
 theorem mem_of_uloc_le {a' : I.ι} {Ch' : ℕ → Type} {A' : TwDat I l Z u a' Ch'} (hA : A.Is) (hA' : A'.Is) (j : ℕ) (hj : j ≤ B.R.m) (β : Ch j)
     (β' : Ch' j) (v : GlobalTheory.FinPl.Pl (I.rec7 l Z)) (hle : (A.K j hj β).lev.Uloc v ≤ (A'.K j hj β').lev.Uloc v)
     {g : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)} (hv : g ∈ GlobalTheory.FinPl.grpAt _ (· ∈ ({v} : Finset _))) (hg : g ∈ A.U j β) :
@@ -160,6 +206,15 @@ end
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj t J hJ α t' J' hJ' α' v hv hv'`. Establish `hjm : j ≤ B.R.m` using `by omega`. Distinguish the cases in `hTv : ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal`. Conclude with `GlobalTheory.T.true_geometry_coset_value W hW u a ha haT j hj t J hJ α t' J' hJ' α' v hTv`. Distinguish the cases in `hb : v ∈ J'.A.bad j`.
+
+Break down `hJ'.is.bad_le j hjm v hb with hg | hq` into its components or cases. Conclude with `GlobalTheory.T.true_geometry_coset_relation W hW u a ha haT j hj t J hJ α t' J' hJ' α' v hg hTv hv hv'`. It suffices to derive a contradiction. Take `⟨P, hP, hPv⟩` from `hq`. Take `⟨i, hi⟩` from `hJ'.surj P ((hW.tq.Q t' P).2 hP)`.
+
+Conclude with `hv' ⟨i, (((GlobalTheory.Fam.QJPlaces.places_under W hW u a ha haT t' J' hJ').2 i).trans (congrArg _ hi)).trans hPv⟩`. Rewrite using `[(J'.A.K j hjm (J'.ι j α')).lev.Uloc_hyp v hb hTv]`. Use `((J.A.K j hjm (J.ι j α)).lev.Uloc_lev v).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `z`.
+
+Conclude with `((hJ.is.reads j hjm).lb _ z).trans ((hJ'.is.reads j hjm).lb _ z).symm`.
+-/
 theorem GlobalTheory.PenLevOff.uloc_le : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ¬ GlobalTheory.PenBridge.plF J v → ¬ GlobalTheory.PenBridge.plF J' v → (J.A.K j (show j ≤ B.R.m by omega) (J.ι j α)).lev.Uloc v ≤ (J'.A.K j (show j ≤ B.R.m by omega) (J'.ι j α')).lev.Uloc v := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj t J hJ α t' J' hJ' α' v hv hv'
   have hjm : j ≤ B.R.m := by omega
@@ -180,6 +235,13 @@ theorem GlobalTheory.PenLevOff.uloc_le : ∀ {B : GlobalTheory.Mem.Base} {X : Pr
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj t J hJ α t' J' hJ' α' Q hQ hQ' x hx`. Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hxG : x ∈ GfC _` using `((hJ.is.U j hjm _ x).1 hx).1`. Establish `h1` using `GlobalTheory.FinPl.SetCut.cutG_mem_Q _ Q x`. Establish `h2` using `GlobalTheory.FinPl.SetCut.cutG_mem_Qc _ Q hxG`.
+
+Establish `e` using `GlobalTheory.FinPl.SetCut.cutG_mul_cutG _ Q x`. Generalize the expression as in `GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.idemQ_mul_self Q) x = g₁ at h1 e`. Generalize the expression as in `GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.one_sub_idemQ_mul_self Q) x = g₂ at h2 e ⊢`. Use `(GlobalTheory.PenLevOff.mem_U_iff hJ'.is j hjm _ g₂).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ h2, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ Q`.
+
+Rewrite using `[GlobalTheory.PenLevOff.cutAt_eq_one _ (P := (· ∉ Q)) (not_not.2 hv) h2]`. Conclude with `one_mem _`. Establish `h4` using `((GlobalTheory.PenLevOff.mem_U_iff hJ.is j hjm _ x).1 hx).2 v`. Rewrite `h4` using `[← e, map_mul, GlobalTheory.PenLevOff.cutAt_eq_one _ (P := (· ∈ Q)) hv h1, one_mul]`. Conclude with `GlobalTheory.PenLevOff.mem_of_uloc_le hJ.is hJ'.is j hjm _ _ v (GlobalTheory.PenLevOff.uloc_le W hW u a ha haT j hj t J hJ α t' J' hJ' α' v (fun h => hv (hQ v h)) (fun h => hv (hQ' v h))) (GlobalTheory.PenLevOff.cutAt_mem _ v _) h4`.
+-/
 theorem GlobalTheory.PenLevOff.cut_mem_U : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j) (Q : Finset (GlobalTheory.FinPl.Pl (I.rec7 l Z))), (∀ p, GlobalTheory.PenBridge.plF J p → p ∈ Q) → (∀ p, GlobalTheory.PenBridge.plF J' p → p ∈ Q) → ∀ x ∈ J.A.U j (J.ι j α), GlobalTheory.FinPl.SetCut.cutG _ _ (GlobalTheory.FinPl.SetCut.one_sub_idemQ_mul_self Q) x ∈ J'.A.U j (J'.ι j α') := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT j hj t J hJ α t' J' hJ' α' Q hQ hQ' x hx
   have hjm : j ≤ B.R.m := by omega

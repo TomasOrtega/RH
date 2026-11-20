@@ -15,6 +15,15 @@ open GlobalTheory.AbLaw GlobalTheory.AbDual GlobalTheory.CechPic
 
 namespace GlobalTheory.BirigidLift
 
+/- English proof (translation)
+Introduce `HG HD R R₀ _ _ I κ hκ π hπ hI g A₀ _ A _ i h hA hg l hl L hL aL P₀ hP₀ hsym P hP h₁ h₂ e`. Take `⟨l₁, l₂⟩` from `hl`. Establish `hs : (P.pull (lift (snd A A) (fst A A)).left).IsLB` using `pull_isLB hP _`. Establish `h₁' : Triv (ev (swap P) (1 : A ⟶ A) (𝟙 A))`. Rewrite using `[triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]`.
+
+Conclude with `h₂`. Establish `h₂' : Triv (ev (swap P) (𝟙 A) (1 : A ⟶ A))`. Rewrite using `[triv_ev_iff hs, evc_swap hP hs, ← triv_ev_iff hP]`. Conclude with `h₁`. Establish `sq : l ≫ (lift (snd A A) (fst A A)).left = (lift (snd A₀ A₀) (fst A₀ A₀)).left ≫ l`.
+
+Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, l₂, l₁, lift_left_fst_assoc]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, l₁, l₂, lift_left_snd_assoc]`. Establish `hl0` using `pull_isLB hP l`. Establish `e' : LBIso ((swap P).pull l) P₀`.
+
+Use `(cls_eq_iff (pull_isLB hs l) hP₀).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hs l, cls_pull hP, ← pull_comp, sq, pull_comp, ← cls_pull hP l hl0, (cls_eq_iff hl0 hP₀).2 e, ← cls_pull hP₀ _ (pull_isLB hP₀ _)]`. Conclude with `((cls_eq_iff hP₀ (pull_isLB hP₀ _)).2 hsym).symm`. Conclude with `lift_unique HG HD.1 hκ hπ hI hA hg hA hg h h l₁ l₂ hL aL hL aL hP₀ hP h₁ h₂ e hs h₁' h₂' e'`.
+-/
 theorem symm_of_lift : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (κ : DividedPowers I), IsNilDP κ →
     ∀ (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I →

@@ -30,6 +30,11 @@ variable {D : D7}
 
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Establish `h : toAd D (toEAf D z) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D z)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => exact (toAd_spec D x a.2).trans ((mul_comm _ _).trans (GlobalTheory.LFun.toFinAd_tmul a.2 x).symm)`. Consider the case `add a b ha hb => simp only [RingHom.map_add, RingEquiv.map_add, ha, hb]`.
+
+Conclude with `congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) h`.
+-/
 theorem cpt_toEAf (Q : Pl D.host.E) (z : Formalism.L2.Theta.AE D) :
     cpt Q (toEAf D z) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D z) Q := by
   have h : toAd D (toEAf D z) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (finPart D z) := by
@@ -39,14 +44,23 @@ theorem cpt_toEAf (Q : Pl D.host.E) (z : Formalism.L2.Theta.AE D) :
     | add a b ha hb => simp only [RingHom.map_add, RingEquiv.map_add, ha, hb]
   exact congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) h
 
+/- English proof (translation)
+Rewrite using `[cpt_toEAf]`. Conclude with `congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) (GlobalTheory.LFun.finTens_locIdele w y)`.
+-/
 theorem cpt_locIdele (Q w : Pl D.host.E) (y : (w.adicCompletion D.host.E)ˣ) :
     cpt Q (toEAf D (GlobalTheory.LFun.locIdele D.host.F w y : (Formalism.L2.Theta.AE D)ˣ)) = Neutral.B1.finiteSingle D.host.E w y Q := by
   rw [cpt_toEAf]
   exact congrArg (fun s : FiniteAdeleRing (𝓞 D.host.E) D.host.E => s Q) (GlobalTheory.LFun.finTens_locIdele w y)
 
+/- English proof (translation)
+The claim follows from `map_prod f p s`.
+-/
 theorem hom_prod {R R' ι : Type} [CommRing R] [CommRing R'] (f : R →+* R') (p : ι → R) (s : Finset ι) :
     f (∏ i ∈ s, p i) = ∏ i ∈ s, f (p i) := map_prod f p s
 
+/- English proof (translation)
+Take `⟨⟨es, hes, hs⟩, -⟩` from `he`. Rewrite using `[hs, StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.hom_sum, StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.hom_sum]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single Q (fun w hw hne => (cpt_of_isIdemAt (hes w hw)).2 Q hne.symm) (fun h' => absurd h h'), (cpt_of_isIdemAt (hes Q h)).1]`. Conclude with `Finset.sum_eq_zero fun w hw => (cpt_of_isIdemAt (hes w hw)).2 Q fun h' => h (h' ▸ hw)`.
+-/
 theorem cpt_idem {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (Q : Pl D.host.E) :
     cpt Q (toEAf D e) = if Q ∈ P then 1 else 0 := by
   obtain ⟨⟨es, hes, hs⟩, -⟩ := he
@@ -56,6 +70,23 @@ theorem cpt_idem {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : 
       (cpt_of_isIdemAt (hes Q h)).1]
   · exact Finset.sum_eq_zero fun w hw => (cpt_of_isIdemAt (hes w hw)).2 Q fun h' => h (h' ▸ hw)
 
+/- English proof (translation)
+Take `⟨s, hs, rfl⟩` from `ht`. Establish `hv : ∀ w ∈ P, Valued.v (cpt (D` using `D) w s.1) ≤ WithZero.exp (-(c w : ℤ)) := fun w hw => GlobalTheory.FunObj.Comparison₂.v_le_of_mem_idS (Ideal.le_of_dvd (Finset.dvd_prod_of_mem (fun w => w.asIdeal ^ c w) hw)) hs`. Establish `h0 : ∀ w, w ∉ P → cpt (D` using `D) w s.1 = 0 := fun w hw => by`. Rewrite using `[← het, RingHom.map_mul, cpt_idem he, if_neg hw, zero_mul]`. Establish `h1 : ∀ w, Valued.v (1 + cpt (D` using `D) w s.1) = 1 := fun w => by`.
+
+Distinguish the cases in `hw : w ∈ P`. Use `Valuation.map_one_add_of_lt _ ((hv w hw).trans_lt ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `hc w hw` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h0 w hw, add_zero, map_one]`. Set `u : ∀ w : Pl D.host.E, (w.adicCompletion D.host.E)ˣ` to `fun w => Units.mk0 (1 + cpt (D := D) w s.1) (by`. Rewrite using `[← Valuation.ne_zero_iff (Valued.v : Valuation (w.adicCompletion D.host.E) _), h1]`. Conclude with `one_ne_zero)`. Use `⟨∏ w ∈ P, GlobalTheory.LFun.locIdele D.host.F w (u w), ?_, cpt_ext fun Q => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_prod, hom_prod]`. Conclude with `Finset.prod_eq_one fun w _ => GlobalTheory.LFun.infTens_locIdele w (u w)`. Rewrite using `[Units.coe_prod, hom_prod, hom_prod, Finset.prod_congr rfl fun w _ => cpt_locIdele Q w (u w), RingHom.map_add, RingHom.map_one]`. Distinguish the cases in `hQ : Q ∈ P`. Rewrite using `[Finset.prod_eq_single Q (fun w _ hne => GlobalTheory.LFun.finSingle_ne hne.symm _) (fun h' => absurd hQ h'), GlobalTheory.LFun.finSingle_self]`.
+
+Both sides reduce to the same expression. Rewrite using `[h0 Q hQ, add_zero]`. Conclude with `Finset.prod_eq_one fun w hw => GlobalTheory.LFun.finSingle_ne (fun h' : Q = w => hQ (h' ▸ hw)) _`. Rewrite using `[← Finset.prod_inv_distrib, Units.coe_prod, hom_prod]`. Use `Subring.prod_mem _ fun w _ => (mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_inv, cpt_locIdele]`. Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[GlobalTheory.LFun.finSingle_self, HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(congrArg (·⁻¹) (h1 Q)).le.trans inv_one.le`.
+
+Rewrite using `[GlobalTheory.LFun.finSingle_ne hQ]`. Conclude with `one_mem _`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun w hw => ?_` and prove the remaining obligations. Establish `h2` using `hl w hw (u w) (h1 w) (by`.
+
+Express the relevant statement in the definitionally equal form `Valued.v (1 + cpt (D := D) w s.1 - 1) ≤ _`. Rewrite using `[add_sub_cancel_left]`. Conclude with `hv w hw)`. Rewrite `h2` using `[← GlobalTheory.LFun.locChar_eq_of_chrEq hν]`. Conclude with `Circle.ext (congrArg Units.val h2)`.
+-/
 theorem exists_one_add {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {c : Pl D.host.E → ℕ}
     (hc : ∀ w ∈ P, 1 ≤ c w) {ν : (Formalism.L2.Theta.AE D)ˣ →* Circle} {νH : Formalism.L2.Host.HChar D.host.E} (hν : ChrEq ν νH)
     (hl : ∀ w ∈ P, νH.LevelLe w (c w)) {t : Lev.EAf D} (ht : GlobalTheory.FrameIdeal.InId (F := D.host.F) (modul P c) t)
@@ -106,6 +137,11 @@ theorem exists_one_add {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} 
     rw [← GlobalTheory.LFun.locChar_eq_of_chrEq hν] at h2
     exact Circle.ext (congrArg Units.val h2)
 
+/- English proof (translation)
+Use `(mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, cpt_idem he]`. Use `split_ifs with h`. Rewrite using `[one_mul, show cpt (D := D) Q (eToEAf D x) = _ from GlobalTheory.FunObj.Comparison₂.cpt_tmul Q x, HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `((GlobalTheory.LFun.valued_alg Q x).trans (hx Q h)).le`.
+
+Rewrite using `[zero_mul]`. Conclude with `zero_mem _`.
+-/
 theorem idem_mul_mem {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {x : D.host.E}
     (hx : ∀ w ∈ P, w.valuation D.host.E x = 1) : toEAf D e * eToEAf D x ∈ OO := by
   refine (mem_OA_iff _).2 fun Q => ?_
@@ -117,6 +153,11 @@ theorem idem_mul_mem {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (h
   · rw [zero_mul]
     exact zero_mem _
 
+/- English proof (translation)
+Establish `hd : w.valuation D.host.E (D.host.d : D.host.E) = 1`. Use `(w.valuation_eq_one_iff_notMem (K := D.host.E) (r := (D.host.d : 𝓞 D.host.E))).2 hw` as an intermediate fact. Simplify using `using this`. Establish `hs : w.valuation D.host.E D.host.sqrtMinusD = 1`. Use `congrArg (w.valuation D.host.E) D.host.sqrtMinusD_sq` as an intermediate fact.
+
+Rewrite `this` using `[map_pow, Valuation.map_neg, hd]`. Conclude with `(pow_eq_one_iff_left two_ne_zero).1 this`. Unfold `Formalism.BasicNotions.Host.xi0`. Rewrite using `[hcc, Ideal.absNorm_top, Nat.cast_one, one_mul, map_div₀, Valuation.map_neg, map_one, hs, div_one]`.
+-/
 theorem valuation_xi_zero_eq_one (hcc : D.host.ccK = ⊤) {w : Pl D.host.E} (hw : ((D.host.d : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) :
     w.valuation D.host.E D.host.xi0 = 1 := by
   have hd : w.valuation D.host.E (D.host.d : D.host.E) = 1 := by
@@ -129,6 +170,11 @@ theorem valuation_xi_zero_eq_one (hcc : D.host.ccK = ⊤) {w : Pl D.host.E} (hw 
   unfold Formalism.BasicNotions.Host.xi0
   rw [hcc, Ideal.absNorm_top, Nat.cast_one, one_mul, map_div₀, Valuation.map_neg, map_one, hs, div_one]
 
+/- English proof (translation)
+Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_map, Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Establish `e : ((GlobalTheory.FrameIdeal.cO D).comp (MulSemiringAction.toRingHom _ _ D.host.conj)) b = b`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `star (D.host.conj (b : D.host.E)) = b`.
+
+Rewrite using `[← Formalism.MainNotions.GlobalTheoryTheory.jnt_sig_eq_conj D]`. Conclude with `star_star _`. Rewrite using `[Ideal.mem_comap, e]`. Conclude with `hb`.
+-/
 theorem map_conj_le (I : Ideal (𝓞 D.host.E)) : (D.host.conj • I).map (GlobalTheory.FrameIdeal.cO D) ≤ I := by
   rw [Ideal.pointwise_smul_def, Ideal.map_map, Ideal.map_le_iff_le_comap]
   intro b hb
@@ -140,6 +186,13 @@ theorem map_conj_le (I : Ideal (𝓞 D.host.E)) : (D.host.conj • I).map (Globa
   rw [Ideal.mem_comap, e]
   exact hb
 
+/- English proof (translation)
+Use `choose s hs e using h`. Set `N' : Matrix (Fin k) (Fin k) A` to `fun i j => ⟨N i j, hN i j⟩`. Set `M' : Matrix (Fin k) (Fin k) A` to `fun i j => N' i j + s i j`. Establish `e1 : N = A.subtype.mapMatrix N'` using `rfl`. Establish `e2 : M = A.subtype.mapMatrix M'`.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `M i j = N i j + s i j`. Rewrite using `[e, add_sub_cancel]`. Establish `e3 : (Ideal.Quotient.mk J).mapMatrix M' = (Ideal.Quotient.mk J).mapMatrix N'`. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (N' i j + s i j) = Ideal.Quotient.mk J (N' i j)`. Rewrite using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 (hs i j), add_zero]`. Use `⟨M'.det - N'.det, Ideal.Quotient.eq.1 (by rw [RingHom.map_det, RingHom.map_det, e3]), ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, ← RingHom.map_det, ← RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_sub_mem {R : Type} [CommRing R] (A : Subring R) (J : Ideal A) {k : ℕ} {M N : Matrix (Fin k) (Fin k) R}
     (hN : ∀ i j, N i j ∈ A) (h : ∀ i j, ∃ s ∈ J, (s : R) = M i j - N i j) : ∃ s ∈ J, (s : R) = M.det - N.det := by
   choose s hs e using h
@@ -158,6 +211,9 @@ theorem det_sub_mem {R : Type} [CommRing R] (A : Subring R) (J : Ideal A) {k : �
   rw [e1, e2, ← RingHom.map_det, ← RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.StdSndTheta.dualCoord_apply]`. Unfold `frMapAdj`. Rewrite using `[hS, hT, inv_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one, Units.val_one, Matrix.mul_one, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_left_comm _ _ _`.
+-/
 theorem dualCoord_eq {S T : HSp D} (hS : S.gram = 1) (hT : T.gram = 1) (β : GL (Fin S.rank) (Lev.EAf D)) (y : WO S T) (i j) :
     dualCoord S T β 1 y i j = ∑ l, (β⁻¹).1 i l * (eToEAf D D.host.xi0 * toEAf D (cA D (y j l))) := by
   rw [GlobalTheory.CompanionTheory.StdSndTheta.dualCoord_apply]
@@ -166,6 +222,11 @@ theorem dualCoord_eq {S T : HSp D} (hS : S.gram = 1) (hT : T.gram = 1) (β : GL 
     Matrix.mul_one, Units.val_one, Matrix.mul_one, Matrix.mul_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l _ => mul_left_comm _ _ _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] star (star x) = _`. Rewrite using `[star_star]`.
+
+Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`.
+-/
 theorem cA_cA (z : Formalism.L2.Theta.AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
@@ -174,10 +235,18 @@ theorem cA_cA (z : Formalism.L2.Theta.AE D) : cA D (cA D z) = z := by
     rw [star_star]
   | add a b ha hb => simp only [RingHom.map_add, ha, hb]
 
+/- English proof (translation)
+Take `⟨s, hs, rfl⟩` from `h`. Conclude with `⟨s.2, hs⟩`.
+-/
 theorem inId_of {I : Ideal (𝓞 D.host.E)} {z : Lev.EAf D} (h : GlobalTheory.FrameIdeal.InId (F := D.host.F) I z) : InId I z := by
   obtain ⟨s, hs, rfl⟩ := h
   exact ⟨s.2, hs⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Establish `h3` using `GlobalTheory.FrameIdeal.inId_sigR (map_conj_le I) ⟨_, h2, rfl⟩`. Establish `h4 : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (toEAf D (y j l - unitPt S T (cA D e) o j l)) = toEAf D (cA D (y j l)) - if j.1 = o + l.1 then toEAf D e else 0`. Use `(GlobalTheory.AdelicLatMove.toEAf_cA _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, RingHom.map_sub]`.
+
+Unfold `unitPt`. Use `split_ifs`. Rewrite using `[cA_cA]`. Rewrite using `[RingHom.map_zero, RingHom.map_zero]`. Conclude with `h4 ▸ h3`.
+-/
 theorem adj_sub_mem {S T : HSp D} {e : Formalism.L2.Theta.AE D} {I : Ideal (𝓞 D.host.E)} {o : ℕ} {y : WO S T} {j : Fin T.rank}
     {l : Fin S.rank} (h : InId (D.host.conj • I) (toEAf D (y j l - unitPt S T (cA D e) o j l))) :
     GlobalTheory.FrameIdeal.InId (F := D.host.F) I (toEAf D (cA D (y j l)) - if j.1 = o + l.1 then toEAf D e else 0) := by
@@ -193,21 +262,33 @@ theorem adj_sub_mem {S T : HSp D} {e : Formalism.L2.Theta.AE D} {I : Ideal (𝓞
     · rw [RingHom.map_zero, RingHom.map_zero]
   exact h4 ▸ h3
 
+/- English proof (translation)
+Establish `h1 : ε * ξ' * (ε * ξ) = ε` using `by linear_combination ξ * ξ' * hε + ε * hξ`. Rewrite using `[GlobalTheory.BotFinLevel.ring_mul hε, ← Matrix.det_mul, Matrix.smul_mul, Matrix.mul_smul, Units.inv_mul, smul_smul, mul_comm (ε * ξ), h1, Matrix.det_smul, Matrix.det_one, mul_one, ← pow_succ', IsIdempotentElem.pow_succ_eq _ hε, sub_add_cancel]`.
+-/
 theorem ring_unit {R : Type} [CommRing R] {ε ξ ξ' : R} (hε : ε * ε = ε) (hξ : ξ * ξ' = 1) {k : ℕ} (β : GL (Fin k) R) :
     (1 - ε + ε * ((ε * ξ) • (β⁻¹).1).det) * (1 - ε + ε * ((ε * ξ') • β.1).det) = 1 := by
   have h1 : ε * ξ' * (ε * ξ) = ε := by linear_combination ξ * ξ' * hε + ε * hξ
   rw [GlobalTheory.BotFinLevel.ring_mul hε, ← Matrix.det_mul, Matrix.smul_mul, Matrix.mul_smul, Units.inv_mul, smul_smul, mul_comm (ε * ξ),
     h1, Matrix.det_smul, Matrix.det_one, mul_one, ← pow_succ', IsIdempotentElem.pow_succ_eq _ hε, sub_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun l _ => by linear_combination (-(B l * ξ)) * hu l`.
+-/
 theorem ring_sub {R ι : Type} [CommRing R] [Fintype ι] {ε ξ : R} (B u δ : ι → R) (hu : ∀ l, ε * u l = u l) :
     ∑ l, B l * (ξ * u l) - ∑ l, B l * (ε * ξ * δ l) = ∑ l, B l * (ε * ξ) * (u l - δ l) := by
   rw [← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun l _ => by linear_combination (-(B l * ξ)) * hu l
 
+/- English proof (translation)
+Take the linear combination `ε * (d' - d) * hv`.
+-/
 theorem ring_fin {R : Type} [CommRing R] {ε d d' v : R} (hv : (1 - ε + ε * d) * v = 1) :
     (1 - ε + ε * d) * (1 + ε * v * (d' - d)) = 1 - ε + ε * d' := by
   linear_combination ε * (d' - d) * hv
 
+/- English proof (translation)
+Establish `h : ∃ x, IsUnitDet e N x` using `⟨x, hx⟩`. Unfold `unitChar`. Rewrite using `[dif_pos h, GlobalTheory.BotFinLevel.isUnitDet_unique h.choose_spec hx]`.
+-/
 theorem unitChar_eq (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formalism.L2.Theta.AE D} {k : ℕ}
     {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} {x : (Formalism.L2.Theta.AE D)ˣ} (hx : IsUnitDet e N x) :
     unitChar ν e N = (((ν x)⁻¹ : Circle) : ℂ) := by
@@ -215,6 +296,13 @@ theorem unitChar_eq (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formalis
   unfold unitChar
   rw [dif_pos h, GlobalTheory.BotFinLevel.isUnitDet_unique h.choose_spec hx]
 
+/- English proof (translation)
+Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hd : GlobalTheory.FrameIdeal.InId (F` using `D.host.F) (modul P c) (M.det - N.det) := det_sub_mem _ _ hN h`. Take `⟨z, z1, z2, z3, z4⟩` from `exists_one_add he hc hν hl (GlobalTheory.FrameIdeal.inId_mul (mul_mem hE hx.2.2) hd) (by rw [← mul_assoc, ← mul_assoc, hee])`. Establish `hv : (1 - toEAf D e + toEAf D e * N.det) * toEAf D ((x⁻¹ : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) = 1`.
+
+Rewrite using `[← hx.2.1, ← RingHom.map_mul, Units.mul_inv, RingHom.map_one]`. Establish `hM : IsUnitDet e M (x * z)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, RingHom.map_mul, hx.1, z1, one_mul]`. Rewrite using `[Units.val_mul, RingHom.map_mul, hx.2.1, z2]`.
+
+Conclude with `ring_fin hv`. Rewrite using `[mul_inv, Units.val_mul, RingHom.map_mul]`. Conclude with `mul_mem hx.2.2 z3`. Rewrite using `[unitChar_eq ν hM, map_mul, z4, mul_one]`.
+-/
 theorem unitChar_congr {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {c : Pl D.host.E → ℕ}
     (hc : ∀ w ∈ P, 1 ≤ c w) {ν : (Formalism.L2.Theta.AE D)ˣ →* Circle} {νH : Formalism.L2.Host.HChar D.host.E} (hν : ChrEq ν νH)
     (hl : ∀ w ∈ P, νH.LevelLe w (c w)) {k : ℕ} {M N : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hN : IsIntM N)
@@ -236,6 +324,31 @@ theorem unitChar_congr {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} 
       exact mul_mem hx.2.2 z3
   rw [unitChar_eq ν hM, map_mul, z4, mul_one]
 
+/- English proof (translation)
+Introduce `D S T hS hT hcc β hβ e P c ⟨he, hP⟩ o ho hc ν νH hν hexp`. Establish `hl : ∀ w ∈ P, νH.LevelLe w (c w)` using `fun w hw => (hexp w hw _).2 le_rfl`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← RingHom.map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hξ : ∀ w ∈ P, w.valuation D.host.E D.host.xi0 = 1` using `fun w hw => valuation_xi_zero_eq_one hcc fun h => hP w hw (by`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_left _ _ h)`. Establish `ha` using `idem_mul_mem he hξ`. Establish `ha'` using `idem_mul_mem (x := D.host.xi0⁻¹) he fun w hw => by rw [map_inv₀, hξ w hw, inv_one]`. Establish `hξξ : eToEAf D D.host.xi0 * eToEAf D D.host.xi0⁻¹ = 1`.
+
+Rewrite using `[← RingHom.map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), RingHom.map_one]`. Establish `hB` using `(GlobalTheory.BotClassDict.mem_range_intGL β).1 (GlobalTheory.BotClassDict.frame_mem_range hβ)`. Establish `hN : IsIntM ((toEAf D e * eToEAf D D.host.xi0) • (β⁻¹).1)` using `fun i j => mul_mem ha (hB i j).2`. Establish `hN' : IsIntM ((toEAf D e * eToEAf D D.host.xi0⁻¹) • β.1)` using `fun i j => mul_mem ha' (hB i j).1`. Take `⟨x, x1, x2, x3⟩` from `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.exists_unit (ring_unit hee hξξ β)`.
+
+Establish `x4 : toEAf D ((x⁻¹ : (Formalism.L2.Theta.AE D)ˣ) : Formalism.L2.Theta.AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[x3]`. Conclude with `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (GlobalTheory.BotFinLevel.det_mem hN'))`. Establish `hx : IsUnitDet e ((toEAf D e * eToEAf D D.host.xi0) • (β⁻¹).1) x` using `⟨x1, x2, x4⟩`. Use `⟨(((ν x)⁻¹ : Circle) : ℂ), ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, -, -, m, hm, hord⟩` from `GlobalTheory.CharFin.char_finUnit_finite_order D ν hν.1.1`. Establish `hpow` using `hord x ⟨x1, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (by`. Rewrite using `[x2]`. Conclude with `add_mem (sub_mem (one_mem _) hE) (mul_mem hE (GlobalTheory.BotFinLevel.det_mem hN))),`. Use the proof step `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf x4⟩`.
+
+Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e1 : (((ν x)⁻¹ : Circle) : ℂ) ^ m = Circle.coeHom (((ν x) ^ m)⁻¹)`. Rewrite using `[← inv_pow, map_pow]`. Both sides reduce to the same expression. Rewrite using `[e1, hpow, inv_one, map_one]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨hh, hy⟩ : IsHalf (cA D e) y ∧ ∀ i j, InId (D.host.conj • modul P c) (toEAf D (y i j - unitPt S T (cA D e) o i j)) := by`. Assume the negation of the conclusion as `h`. Conclude with `hy (if_neg h)`. Establish `hu : ∀ j l, toEAf D e * toEAf D (cA D (y j l)) = toEAf D (cA D (y j l))` using `fun j l => by`. Rewrite using `[← RingHom.map_mul]`.
+
+Use `conv_rhs => rw [← hh j l, RingHom.map_mul, cA_cA]`. Establish `key : ∀ i j, GlobalTheory.FrameIdeal.InId (F` using `D.host.F) (modul P c) (dualCoord S T β 1 y i j - ∑ l, (β⁻¹).1 i l * (toEAf D e * eToEAf D D.host.xi0 * if j.1 = o + l.1 then toEAf D e else 0)) := fun i j => by`. Rewrite using `[dualCoord_eq hS hT, ring_sub _ _ _ (hu j)]`. Conclude with `GlobalTheory.FrameIdeal.inId_sum _ fun l => GlobalTheory.FrameIdeal.inId_mul (mul_mem (hB i l).2 ha) (adj_sub_mem (hy j l))`. Unfold `stdSnd`.
+
+Use `(if_pos ⟨hh, fun i j => ?_, fun i j hj => ?_⟩).trans ?_` and prove the remaining obligations. Use `unitChar_congr he hc hν hl hN (fun i j => ?_) hx` and prove the remaining obligations. Establish `hj : o + j.1 < T.rank` using `by have := j.2; omega`. Establish `h1` using `key i ⟨o + j.1, hj⟩`. Rewrite using `[Finset.sum_eq_single j (fun l _ hne => by`.
+
+Rewrite using `[if_neg fun h => hne (Fin.ext (Nat.add_left_cancel h).symm), mul_zero, mul_zero])`. Use the proof step `(fun h => absurd (Finset.mem_univ _) h), if_pos rfl, mul_right_comm, hee, mul_comm] at h1`. Unfold `rightBlock`. Rewrite using `[dif_pos hj]`. Conclude with `h1`.
+
+Establish `h1` using `GlobalTheory.FrameIdeal.inId_int (key i j)`. Use `(sub_add_cancel (dualCoord S T β 1 y i j) _) ▸ add_mem h1 (Subring.sum_mem _ fun l _ => mul_mem (hB i l).2 (mul_mem ha ?_))` and prove the remaining obligations. Use `split_ifs`. Conclude with `hE`. Conclude with `zero_mem _`.
+
+Establish `h1` using `key i j`. Rewrite `h1` using `[Finset.sum_eq_zero fun l _ => by rw [if_neg (by omega), mul_zero, mul_zero], sub_zero]`. Conclude with `inId_of h1`.
+-/
 theorem stdSnd_coset_value : ∀ {D : D7} (S T : HSp D), S.gram = 1 → T.gram = 1 → D.host.ccK = ⊤ →
     ∀ (βS : GL (Fin S.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (Formalism.L2.Col.stdLat D.host.E S.rank) →
     ∀ (e : Formalism.L2.Theta.AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (c : Formalism.L2.DIV.Pl D.host.E → ℕ), GoodIdem e P →

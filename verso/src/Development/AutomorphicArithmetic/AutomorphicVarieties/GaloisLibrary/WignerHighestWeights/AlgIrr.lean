@@ -5,6 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualInfinitesima
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.AlgRepEndIrreducible
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `eLRel E a _ Ξ.dmat (GlobalTheory.AlgInfChar.dmat_bracket Ξ)`. Set `f` to `(Matrix.toLinAlgEquiv' : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ ≃ₐ[ℂ] Module.End ℂ (Fin Ξ.d → ℂ)).toAlgHom`. Establish `hf : ∀ τ i j, eEnd Ξ τ i j = f (eL Ξ.dmat τ i j)` using `fun _ _ _ => rfl`.
+
+Use `⟨fun τ i j k l => ?_, fun s t hst i j k l => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg f (h1 τ i j k l)`. Simplify `h` using `only [hf, map_sub, map_mul, apply_ite f, map_zero]`. Rewrite using `[hf, hf, ← map_mul, ← map_mul, h2 s t hst]`. Set `S : Subalgebra ℂ (Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ × Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ)` to `{ carrier := {p | ∀ w ∈ W, p.1 *ᵥ w ∈ W} mul_mem' := fun {p q} hp hq w hw => by`.
+
+Rewrite using `[Prod.fst_mul, ← Matrix.mulVec_mulVec]`. Conclude with `hp _ (hq w hw)`. Use the proof step `add_mem' := fun {p q} hp hq w hw => by`. Rewrite using `[Prod.fst_add, Matrix.add_mulVec]`. Conclude with `W.add_mem (hp w hw) (hq w hw)`.
+
+Use the proof step `algebraMap_mem' := fun c w hw => by`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Prod.smul_fst, Prod.fst_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Conclude with `W.smul_mem c hw }`. Conclude with `Ξ.irred W fun y v hv => (pairAlg E a Ξ Ξ S fun τ i j w hw => hW τ i j w hw).2 y v hv`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.algIrr :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ : AlgRep E a), IsMultiGl (eEnd Ξ) ∧ ∀ W, Stab (eEnd Ξ) W → W = ⊥ ∨ W = ⊤ := by
   intro E _ _ _ a Ξ

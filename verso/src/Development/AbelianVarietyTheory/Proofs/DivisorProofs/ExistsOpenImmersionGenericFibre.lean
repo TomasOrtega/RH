@@ -20,6 +20,19 @@ noncomputable section
 
 namespace GlobalTheory.SecCompact
 
+/- English proof (translation)
+Use `haveI := isProper_str o m`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian sX`. Use `haveI := IsPreimmersion.of_isLocalization (R := o) (S := F) (nonZeroDivisors o)`. Use `haveI : Algebra.FiniteType ℤ (CommRingCat.of o) := ‹Algebra.FiniteType ℤ o›`. Use `⟨GlobalTheory.NormBlowupInt.isFinite_fromNormalization_int_of_isReduced (o := CommRingCat.of o) f (PSpace.str o m) fun x _ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ((f ≫ PSpace.str o m).stalkMap x).hom.EssFiniteType`. Rewrite using `[hf, Scheme.Hom.stalkMap_comp]`. Conclude with `.comp (RingHom.FiniteType.of_surjective _ (Scheme.Hom.stalkMap_surjective _ _)).essFiniteType (LocallyOfFiniteType.stalkMap sX x)`. Rewrite `h1` using `[Scheme.Hom.stalkMap_comp]`. Establish `h2 : (f.stalkMap x).hom.EssFiniteType` using `.of_comp _ h1`.
+
+Conclude with `h2.residueFieldMap`. Establish `hb` using `IsPullback.of_hasPullback (PSpace.str o m) (spMap (algebraMap o F))`. Set `f' : X ⟶ pullback (PSpace.str o m) (spMap (algebraMap o F))` to `pullback.lift f sX hf`. Establish `e₁ : f' ≫ pullback.fst _ _ = f` using `pullback.lift_fst _ _ _`. Establish `e₂ : f' ≫ pullback.snd _ _ = sX` using `pullback.lift_snd _ _ _`.
+
+Use `haveI : LocallyOfFiniteType (f' ≫ pullback.snd _ _) := by rw [e₂]; infer_instance`. Use `haveI : LocallyOfFiniteType f' := locallyOfFiniteType_of_comp f' (pullback.snd _ _)`. Use `haveI : QuasiCompact (f' ≫ pullback.snd _ _) := by rw [e₂]; infer_instance`. Use `haveI : QuasiCompact f' := QuasiCompact.of_comp f' (pullback.snd _ _)`. Use `haveI : IsSeparated (f' ≫ pullback.snd _ _) := by rw [e₂]; infer_instance`.
+
+Use `haveI : IsSeparated f' := IsSeparated.of_comp f' (pullback.snd _ _)`. Use `haveI : LocallyQuasiFinite f' := by`. Use `GlobalTheory.GeomFibre.locallyQuasiFinite_of_finite_geometric_fibres X _ f' inferInstance fun K _ _ x => ?_` and prove the remaining obligations. Use `(hfib K x).subset fun y (hy : y ≫ f' = x ≫ f') => ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e₂, ← Category.assoc, hy, Category.assoc]`.
+
+Rewrite using `[← e₁, ← Category.assoc, hy, Category.assoc]`. Take `⟨hoi, -, hdom⟩` from `GlobalTheory.isOpenImmersion_lift_toNormalization_of_isLocalization (nonZeroDivisors o) hb f' f e₁.symm`. Use `⟨pullback.lift f.toNormalization f' (by simp [e₁]) ≫ (pullbackRightPullbackFstIso (PSpace.str o m) (spMap (algebraMap o F)) f.fromNormalization).hom, inferInstance, (Scheme.Hom.denseRange _), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullbackRightPullbackFstIso_hom_snd, pullback.lift_snd_assoc, e₂]`. Rewrite using `[Category.assoc, pullbackRightPullbackFstIso_hom_fst, pullback.lift_fst]`.
+-/
 theorem exists_openImmersion_genericFibre (F : Type) [Field F] (o : Type) [CommRing o] [Algebra o F]
     [IsFractionRing o F] [Algebra.FiniteType ℤ o] (m : ℕ) (X : Scheme.{0}) (sX : X ⟶ Sp F) [IsReduced X]
     [IsSeparated sX] [LocallyOfFiniteType sX] [QuasiCompact sX] (f : X ⟶ PSpace o m) [QuasiCompact f]

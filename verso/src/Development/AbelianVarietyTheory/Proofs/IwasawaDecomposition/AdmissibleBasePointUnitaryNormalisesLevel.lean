@@ -19,6 +19,11 @@ namespace GlobalTheory.Mem.Col2.ChEx
 section Small
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `e` using `congrFun (congrFun hMN l) j`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply_ne (Ne.symm hj), ← Finset.add_sum_erase _ _ (Finset.mem_univ l)]`. Establish `e2 : M l l * N l j = -∑ i ∈ Finset.univ.erase l, M l i * N i j` using `eq_neg_of_add_eq_zero_left e`. Establish `h3 : Valued.v (∑ i ∈ Finset.univ.erase l, M l i * N i j) < 1` using `Valuation.map_sum_lt _ one_ne_zero fun i hi => by`. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hN i j)) (hM i (Finset.ne_of_mem_erase hi))`. Establish `h4` using `congrArg Valued.v e2`. Rewrite `h4` using `[Valuation.map_neg, map_mul, hl, one_mul]`. Rewrite using `[h4]`. Conclude with `h3`.
+-/
 theorem row_small_of_mul_eq_one {P : HeightOneSpectrum (𝓞 E)} {n : ℕ} (l : Fin n) (M N : Matrix (Fin n) (Fin n) (P.adicCompletion E))
     (hMN : M * N = 1) (hN : ∀ i j, Valued.v (N i j) ≤ 1) (hM : ∀ j, j ≠ l → Valued.v (M l j) < 1)
     (hl : Valued.v (M l l) = 1) (j : Fin n) (hj : j ≠ l) : Valued.v (N l j) < 1 := by
@@ -34,6 +39,11 @@ theorem row_small_of_mul_eq_one {P : HeightOneSpectrum (𝓞 E)} {n : ℕ} (l : 
   rw [h4]
   exact h3
 
+/- English proof (translation)
+Take `⟨r, rfl, hr⟩` from `h`. Establish `hr0 : r ∉ P.asIdeal` using `fun h0 => hc (Ideal.Quotient.eq_zero_iff_mem.2 h0)`. Establish `ha : Valued.v (algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) = 1`. Rewrite using `[valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hr0`.
+
+Establish `e : z = algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r) + (z - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r))` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ (by rw [ha]; exact hr), ha]`.
+-/
 theorem val_eq_one_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E} {c : 𝓞 E ⧸ P.asIdeal} (h : HasRes P z c)
     (hc : c ≠ 0) : Valued.v z = 1 := by
   obtain ⟨r, rfl, hr⟩ := h
@@ -45,6 +55,9 @@ theorem val_eq_one_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {z : P.adicComplet
       (z - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E r)) := by ring
   rw [e, Valuation.map_add_eq_of_lt_left _ (by rw [ha]; exact hr), ha]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul a b => simp [prV, sigR]`.
+-/
 theorem prV_sigR_eq (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     prV (E := E) v (sigR σ (FiniteAdeleRing (𝓞 F) F) x) = sigR σ (v.adicCompletion F) (prV (E := E) v x) := by
   induction x using TensorProduct.induction_on with
@@ -54,6 +67,11 @@ theorem prV_sigR_eq (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E
 
 variable [StarRing E]
 
+/- English proof (translation)
+Establish `hg' : cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) (k : Matrix (Fin n) (Fin n) _) * (1 : Matrix (Fin n) (Fin n) E).map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) * (k : Matrix (Fin n) (Fin n) _) = (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) := hk`. Express the relevant statement in the definitionally equal form `cT (sigR hc.sig (v.adicCompletion F)) ((k : Matrix (Fin n) (Fin n) _).map (prV (E := E) v)) * (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) (v.adicCompletion F)) * ((k : Matrix (Fin n) (Fin n) _).map (prV (E := E) v)) = (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) (v.a …`. Establish `h1 : cT (sigR hc.sig (v.adicCompletion F)) ((k : Matrix (Fin n) (Fin n) _).map (prV (E` using `E) v)) = (cT (sigR hc.sig (FiniteAdeleRing (𝓞 F) F)) (k : Matrix (Fin n) (Fin n) _)).map (prV (E := E) v) := by`. Use extensionality with `i j`. Simplify using `[cT, prV_sigR_eq]`.
+
+Establish `hJ : ((1 : Matrix (Fin n) (Fin n) E).map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))).map (prV (E := E) v) = (1 : Matrix (Fin n) (Fin n) E).map (inclE (F := F) (v.adicCompletion F)) := by`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h1, ← hJ, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem bc_prV_mem_UPts (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) {k : GL (Fin n) (AfE F E)}
     (hk : k ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (FiniteAdeleRing (𝓞 F) F)) :
     bc (prV (E := E) v) k ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) := by
@@ -75,6 +93,19 @@ theorem bc_prV_mem_UPts (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} (v : 
 
 end Small
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n _ ST v k hU h1 h2 h3`. Establish `key : ∀ g : GL (Fin n) (E ⊗[F] v.adicCompletion F), g ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) → g ∈ stabGL (Formalism.L2.Herm.locL v (baseLb E n ST)) → g ∈ stabGL (baseDualV hc n ST v) → g ∈ stabGL (latS (F` using `F) (v.adicCompletion F) (intV E v) (baseKer E n ST)) → ∀ x ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n ST v) (fLoc hc n ST v), g * x * g⁻¹ ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n S …`. Introduce `g gU gL gD gK x hx`. Establish `hgl : g ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST)` using `Subgroup.mem_inf.2 ⟨gU, gL⟩`. Take `⟨hxl, hxD, hxf⟩` from `Subgroup.mem_inf.1 hx`.
+
+Use `Subgroup.mem_inf.2 ⟨mul_mem (mul_mem hgl hxl) (inv_mem hgl), ⟨mul_mem (mul_mem gD hxD) (inv_mem gD), fun y => ?_⟩⟩` and prove the remaining obligations. Establish `hz : ((g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) _) *ᵥ (y : Fin n → E ⊗[F] v.adicCompletion F) ∈ baseDualV hc n ST v` using `((inv_mem gD : g⁻¹ ∈ stabGL (baseDualV hc n ST v)) _).1 y.2`. Establish `h4` using `hxf ⟨_, hz⟩`. Simplify using `only [fLoc, Submodule.mkQ_apply] at h4 ⊢`. Rewrite `h4`, the goal using `[Submodule.Quotient.eq, Submodule.mem_comap]`.
+
+Simplify using `only [Submodule.coe_subtype, Submodule.coe_sub] at h4 ⊢`. Establish `e : ((g * x * g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) _) *ᵥ (y : Fin n → E ⊗[F] v.adicCompletion F) - (y : Fin n → E ⊗[F] v.adicCompletion F) = (g : Matrix (Fin n) (Fin n) _) *ᵥ ((x : Matrix (Fin n) (Fin n) _) *ᵥ (((g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCo …`. Establish `e1 : (g : Matrix (Fin n) (Fin n) _) *ᵥ (((g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) _) *ᵥ (y : Fin n → E ⊗[F] v.adicCompletion F)) = (y : Fin n → E ⊗[F] v.adicCompletion F)`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `e2 : ((g * x * g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) _) *ᵥ (y : Fin n → E ⊗[F] v.adicCompletion F) = (g : Matrix (Fin n) (Fin n) _) *ᵥ ((x : Matrix (Fin n) (Fin n) _) *ᵥ (((g⁻¹ : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) _) …`.
+
+Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[Matrix.mulVec_sub, e2, e1]`. Rewrite using `[e]`. Conclude with `(gK _).1 h4`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `key k hU h1 h2 h3 x hx`. Introduce `x hx`. Use `⟨k⁻¹ * x * k, ?_, ?_⟩` and prove the remaining obligations. Use `key k⁻¹ (inv_mem hU) (inv_mem h1) (inv_mem h2) (inv_mem h3) x hx` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Use `show k * (k⁻¹ * x * k) * k⁻¹ = x group`.
+-/
 theorem map_conj_levStab : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (ST : Finset (Pl E)) (v : HeightOneSpectrum (𝓞 F)) (k : GL (Fin n) (E ⊗[F] v.adicCompletion F)), k ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) → k ∈ stabGL (Formalism.L2.Herm.locL v (baseLb E n ST)) → k ∈ stabGL (baseDualV hc n ST v) → k ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v) (baseKer E n ST)) → (levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n ST v) (fLoc hc n ST v)).map (MulAut.conj k).toMonoidHom = levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n ST v) (fLoc hc n ST v) := by
   intro F E _ _ _ _ _ _ hc n _ ST v k hU h1 h2 h3
   have key : ∀ g : GL (Fin n) (E ⊗[F] v.adicCompletion F), g ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (v.adicCompletion F) →
@@ -118,6 +149,29 @@ theorem map_conj_levStab : ∀ {F E : Type} [Field F] [NumberField F] [Field E] 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc n _ ST π hB k c ⟨p₀, hk, hk0⟩ hrow`. Establish `hl : (lastIdx n).1 + 1 = n` using `Nat.sub_add_cancel (Nat.pos_of_ne_zero (NeZero.ne n))`. Establish `hU : k ∈ UAd hc n` using `hk.uni`. Establish `hkc` using `hk.lat`. Rewrite `hkc` using `[hk0]`.
+
+Establish `hsingle : ∀ j, (Pi.single j 1 : Fin n → AfE F E) ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) := fun j => by`. Use `(mem_latS_std _).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Establish `hInv : ∀ i j, ((k⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ Formalism.L2.Herm.intAf F E` using `fun i j => by`. Use `(mem_latS_std _).1 ((hkc _).1 (hsingle j)) i` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`. Establish `hK : ∀ i j, ((k : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ Formalism.L2.Herm.intAf F E` using `fun i j => by`. Establish `h1 : ((k⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ ((k : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) := by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Conclude with `hsingle j`. Use `(mem_latS_std _).1 ((hkc _).2 h1) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`. Establish `hvI : ∀ (P : HeightOneSpectrum (𝓞 E)) (y : AfE F E), y ∈ Formalism.L2.Herm.intAf F E → Valued.v (adAt F P y) ≤ 1` using `fun P y hy => (mem_rInt_iff F E y).1 hy P`.
+
+Establish `hsm : ∀ P ∈ ST, ∀ j, j ≠ lastIdx n → Valued.v (adAt F P ((k : Matrix (Fin n) (Fin n) (AfE F E)) (lastIdx n) j)) < 1`. Introduce `P hP j hj`. Establish `hr` using `fun j' => hrow ⟨P, hP⟩ (lastIdx n) j' hl`. Use `row_small_of_mul_eq_one (lastIdx n) (((k⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P)) ((k : Matrix (Fin n) (Fin n) (AfE F E)).map (adAt F P)) ?_ (fun i j => hvI P _ (hK i j)) (fun j' hj' => ?_) ?_ j hj` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use `hr j'` as an intermediate fact. Rewrite `this` using `[if_neg hj']`. Conclude with `DilPt.hasRes_lt_one this`. Establish `h5` using `hr (lastIdx n)`. Rewrite `h5` using `[if_pos rfl]`.
+
+Use `P.isPrime` as an intermediate fact. Conclude with `val_eq_one_of_hasRes h5 (Units.ne_zero _)`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), bc (prV (E` using `E) v) k ∈ stabGL (Formalism.L2.Herm.locL v (baseLb E n ST)) ∧ bc (prV (E := E) v) k ∈ stabGL (baseDualV hc n ST v) ∧ bc (prV (E := E) v) k ∈ stabGL (latS (F := F) (v.adicCompletion F) (intV E v) (baseKer E n ST)) := by`. Introduce `v`. Use `GlobalTheory.T.unitary_lastRowDivisible_stabilizes_lattices hc n hB v _ (bc_prV_mem_UPts hc v hU) ⟨fun i j => Formalism.UG.P.afsplit_prV_int v _ (hK i j), fun j hj => GlobalTheory.T.placeProjection_eq_basePi_mul_integral hB v _ (hK _ j) (fun P hP => hsm P hP j hj)⟩ ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Use `⟨fun i j => Formalism.UG.P.afsplit_prV_int v _ (hInv i j), fun j hj => GlobalTheory.T.placeProjection_eq_basePi_mul_integral hB v _ (hInv _ j) (fun P hP => ?_)⟩` and prove the remaining obligations. Use `hrow ⟨P, hP⟩ (lastIdx n) j hl` as an intermediate fact. Rewrite `this` using `[if_neg hj]`. Conclude with `DilPt.hasRes_lt_one this`.
+
+Use `⟨hU, fun v => ⟨bc_prV_mem_UPts hc v hU, (hloc v).1⟩, fun x => ?_, fun v _ => map_conj_levStab hc n ST v _ (bc_prV_mem_UPts hc v hU) (hloc v).1 (hloc v).2.1 (hloc v).2.2⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatLocGlob.mem_latS_adele_iff _ (baseLb_fin n ST), GlobalTheory.LatLocGlob.mem_latS_adele_iff _ (baseLb_fin n ST)]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Establish `e : (fun i => prV (E` using `E) v ((k.1 *ᵥ x) i)) = ((bc (prV (E := E) v) k : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ fun i => prV (E := E) v (x i) := by`. Use function extensionality and compare the values at `i`.
+
+Conclude with `RingHom.map_mulVec _ _ _ i`. Rewrite using `[e]`. Conclude with `((hloc v).1 _).symm`.
+-/
 theorem basePt_facts : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] {ST : Finset (Pl E)} {π : 𝓞 E}, BasePi ST π → ∀ (k : GL (Fin n) (AfE F E)) (c : DiaG E ST), (∃ p₀ : DecoF E n ∅ ∅ ∅, IsPtOf hc k p₀ ∧ p₀.deco.1.N = stdLat E n) → (∀ (P : ST) (r j : Fin n), r.1 + 1 = n → HasRes P.1 (adAt F P.1 ((k⁻¹ : GL (Fin n) (AfE F E)).1 r j)) (if j = r then (c P : 𝓞 E ⧸ P.1.asIdeal) else 0)) → k ∈ UAd hc n ∧ (∀ v, bc (prV (E := E) v) k ∈ levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST)) ∧ (∀ x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F, k.1 *ᵥ x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (baseLb E n ST) ↔ x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (baseLb E n ST)) ∧ ∀ v, v ∈ plUnder F ST → (levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n ST v) (fLoc hc n ST v)).map (MulAut.conj (bc (prV (E := E) v) k)).toMonoidHom = levelVL hc.sig (1 : Matrix (Fin n) (Fin n) E) v (baseLb E n ST) ⊓ stabFun (baseDualV hc n ST v) (fLoc hc n ST v) := by
   intro F E _ _ _ _ _ _ hc n _ ST π hB k c ⟨p₀, hk, hk0⟩ hrow
   classical

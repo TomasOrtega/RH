@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SepRows
 
+/- English proof (translation)
+Establish `hperm : ∀ τ, ∃ σ : Equiv.Perm (Fin V.rank), ∃ (lam : Fin V.rank → ℝ) (ε : Fin V.rank → Bool), IsEnum (S τ) lam ε ∧ ((O τ).submatrix id σ)ᴴ * gramAt D V τ * (O τ).submatrix id σ = Formalism.REAL.Jm ε ∧ C τ * (O τ).submatrix id σ = (O τ).submatrix id σ * Formalism.REAL.Jm ε` using `fun τ => GlobalTheory.GridJoin.exists_perm_onb hV τ (hS τ) (hc τ) (hm τ) (h τ)`. Use `choose σ lam ε hEn hGr hCa using hperm`. Take `⟨M, hMc, -⟩` from `GlobalTheory.dsModel_of_onb_cart D hDS V S (fun τ => (O τ).submatrix id (σ τ)) C (fun τ => ⟨lam τ, ε τ, hEn τ, hP τ (lam τ) (ε τ) (hEn τ), hGr τ⟩) (fun τ => ⟨ε τ, hGr τ, hCa τ⟩)`. Conclude with `⟨M, hMc⟩`.
+-/
 theorem exists_dsModel_cart {D : D7} (hDS : GlobalTheory.Published.DiscreteSeriesUpqExists) {V : HSp D} (hV : V.SigOK)
     (S : D.what₂.Tau → SPar) (O C : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hS : ∀ τ, SignedHC.IsRegular (S τ)) (hc : ∀ τ, (S τ).card = V.rank)
@@ -33,6 +36,17 @@ theorem exists_dsModel_cart {D : D7} (hDS : GlobalTheory.Published.DiscreteSerie
     (fun τ => ⟨lam τ, ε τ, hEn τ, hP τ (lam τ) (ε τ) (hEn τ), hGr τ⟩) (fun τ => ⟨ε τ, hGr τ, hCa τ⟩)
   exact ⟨M, hMc⟩
 
+/- English proof (translation)
+Break down `GlobalTheory.SignedHC.GridData.mem_parPi.1 hx with ⟨l, -, hl⟩ | ⟨hc, -⟩ | ⟨l, -, -, hl, -⟩` into its components or cases. Simplify using `only [Prod.mk.injEq] at hl`. Use `⟨G.v 2 + ((G.m : ℤ) + 1 - l) * G.ga, ?_⟩` and prove the remaining obligations. Rewrite using `[hl.1, GlobalTheory.SignedHC.GridData.a]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only at hc`. Take `⟨j, -, -, hj⟩` from `GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 hc`. Use `⟨G.v j - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hj, GlobalTheory.SignedHC.GridData.vHalf]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only at hl`. Take `⟨w, hw⟩` from `hs`. Take `⟨z, hz⟩` from `GlobalTheory.SignedHC.inCoset_block _ _ x hl`.
+
+Use `⟨G.cen l + w + z, ?_⟩` and prove the remaining obligations. Establish `hlen : ((G.s - 1 : ℕ) : ℚ) = 2 * w`. Rewrite using `[hw, Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hz, hlen]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_int_eq_half_add_of_mem_parPi (G : GlobalTheory.SignedHC.GridData) (hs : Odd G.s) (i : ℕ) (x : ℚ) (b : Bool)
     (hx : (x, b) ∈ G.parPi i) : ∃ z : ℤ, x = 1 / 2 + z := by
   rcases GlobalTheory.SignedHC.GridData.mem_parPi.1 hx with ⟨l, -, hl⟩ | ⟨hc, -⟩ | ⟨l, -, -, hl, -⟩
@@ -57,6 +71,13 @@ private theorem exists_int_eq_half_add_of_mem_parPi (G : GlobalTheory.SignedHC.G
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨hanti, q, hq, hS⟩` from `hE`. Use `⟨hanti, fun a => ?_⟩` and prove the remaining obligations. Establish `hmem : (q a, ε a) ∈ (num D C τ).parPi i`. Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`.
+
+Take `⟨z, hz⟩` from `exists_int_eq_half_add_of_mem_parPi (num D C τ) (odd_sLen D) i (q a) (ε a) hmem`. Take `⟨k, hk⟩` from `even_rankP D i`. Use `⟨z - k + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hq a, hz, hn, hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHCParam_parPi (D : D7) (C : ℝ) (i : ℕ) (τ : D.what₂.Tau) {n : ℕ} (lam : Fin n → ℝ) (ε : Fin n → Bool)
     (hn : n = rankP D i) (hE : IsEnum ((num D C τ).parPi i) lam ε) : Formalism.QuantumDeterminants.IsHCParam lam := by
   obtain ⟨hanti, q, hq, hS⟩ := hE
@@ -70,6 +91,13 @@ theorem isHCParam_parPi (D : D7) (C : ℝ) (i : ℕ) (τ : D.what₂.Tau) {n : �
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D _ T L μ0 _ sc G W M _ i hi`. Establish `hin : (Node.core i).InRange D.R.m` using `hi`. Take `⟨hrank, hsig, hsg, -⟩` from `G.isV hin (fun j h => by cases h)`. Establish `hg : 0 < (gap D sc.cGap)` using `lt_of_le_of_lt (Nat.zero_le _) (sLen_lt_gap D sc.cGap)`. Establish `hs1 : 1 ≤ sLen D` using `by unfold sLen; omega`.
+
+Use `exists_dsModel_cart hDS hsig (Node.par D sc.cGap (.core i)) (W.onb (.core i)) (W.cart (.core i)) (fun τ => ?_) (fun τ => ?_) (fun τ => ?_) (fun τ lam ε hE => ?_) (W.onb_is (.core i) hin)` and prove the remaining obligations. Conclude with `GlobalTheory.PiCounts.isRegular_parPi (num_nearMid D sc.cGap τ) hs1 (sLen_lt_gap D sc.cGap) hi`. Conclude with `(GlobalTheory.PiCounts.card_parPi (num_nearMid D sc.cGap τ) hs1 (sLen_lt_gap D sc.cGap) hi).trans ((num_ranks D sc.cGap τ i 0).2.1.trans hrank.symm)`. Use `show nMinus ((num D sc.cGap τ).parPi i) = _`. Rewrite using `[GlobalTheory.PiCounts.nMinus_parPi hg i, hsg (tauE D τ)]`.
+
+Both sides reduce to the same expression. Conclude with `isHCParam_parPi D sc.cGap i τ lam ε hrank hE`.
+-/
 theorem coreModels_of_upq (hDS : GlobalTheory.Published.DiscreteSeriesUpqExists) : CoreModels := by
   intro D _ T L μ0 _ sc G W M _ i hi
   have hin : (Node.core i).InRange D.R.m := hi
@@ -86,6 +114,9 @@ theorem coreModels_of_upq (hDS : GlobalTheory.Published.DiscreteSeriesUpqExists)
     rfl
   · exact isHCParam_parPi D sc.cGap i τ lam ε hrank hE
 
+/- English proof (translation)
+Introduce `hPr`. Conclude with `coreModels_of_upq hPr.discreteSeriesUpqExists`.
+-/
 theorem coreModels : GlobalTheory.FunPr.Hypotheses₂ → CoreModels := by
   intro hPr
   exact coreModels_of_upq hPr.discreteSeriesUpqExists

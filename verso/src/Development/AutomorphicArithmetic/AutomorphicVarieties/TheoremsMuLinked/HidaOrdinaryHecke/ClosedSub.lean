@@ -2,6 +2,29 @@ import Mathlib
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `O T _ _ _ _ _ _ I _ S t ht`. Set `q : T →ₐ[O] T ⧸ I` to `Ideal.Quotient.mkₐ O I`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mkₐ_surjective O I`. Use `haveI : IsNoetherian O (T ⧸ I) := inferInstance`. Use `haveI : IsNoetherianRing (T ⧸ I) := isNoetherian_of_tower O inferInstance`.
+
+Use `haveI : Algebra.IsIntegral O (T ⧸ I) := inferInstance`. Use `set K : Ideal (T ⧸ I) := (maximalIdeal T).map q with hK`. Use `set J : Ideal (T ⧸ I) := (maximalIdeal O).map (algebraMap O (T ⧸ I)) with hJ`. Establish `hKJ : K ≤ J.radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+
+Use `le_sInf fun P hP => ?_` and prove the remaining obligations. Take `⟨hJP, hPp⟩` from `hP`. Establish `hc : (P.comap (algebraMap O (T ⧸ I))).IsMaximal`. Establish `h1 : maximalIdeal O ≤ P.comap (algebraMap O (T ⧸ I))` using `Ideal.map_le_iff_le_comap.mp hJP`. Establish `h2 : (P.comap (algebraMap O (T ⧸ I))).IsPrime` using `Ideal.comap_isPrime _ _`.
+
+Rewrite using `[← (maximalIdeal.isMaximal O).eq_of_le h2.ne_top h1]`. Conclude with `maximalIdeal.isMaximal O`. Use `haveI := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hc`. Establish `h3 : (P.comap q).IsMaximal` using `Ideal.comap_isMaximal_of_surjective q hq`. Establish `h4 : P.comap q = maximalIdeal T` using `IsLocalRing.eq_maximalIdeal h3`.
+
+Rewrite using `[hK, Ideal.map_le_iff_le_comap, h4]`. Take `⟨n, hn⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hKJ (IsNoetherian.noetherian K)`. Set `Sb : Submodule O (T ⧸ I)` to `(Subalgebra.toSubmodule S).map q.toLinearMap`. Establish `hmem : ∀ k : ℕ, Sb.mkQ (q t) ∈ ((maximalIdeal O) ^ k • ⊤ : Submodule O ((T ⧸ I) ⧸ Sb))`. Introduce `k`.
+
+Take `⟨s, hs, hts⟩` from `ht (n * k)`. Establish `h1 : q (t - s) ∈ K ^ (n * k)`. Rewrite using `[hK, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hts`. Establish `h2 : q (t - s) ∈ J ^ k`.
+
+Rewrite `h1` using `[pow_mul]`. Use `first`. Consider the case `exact Ideal.pow_right_mono hn k h1`. Consider the case `exact pow_le_pow_left' hn k h1`. Establish `h3 : q (t - s) ∈ ((maximalIdeal O) ^ k • ⊤ : Submodule O (T ⧸ I))`.
+
+Rewrite using `[Ideal.smul_top_eq_map, Ideal.map_pow]`. Conclude with `h2`. Establish `h4 : Sb.mkQ (q t) = Sb.mkQ (q (t - s))`. Rewrite using `[map_sub, map_sub, eq_comm, sub_eq_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero Sb).mpr ⟨s, hs, rfl⟩`.
+
+Establish `h5` using `Submodule.mem_map_of_mem (f := Sb.mkQ) h3`. Rewrite `h5` using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Rewrite using `[h4]`. Conclude with `h5`. Establish `hbot` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (R := O) (M := (T ⧸ I) ⧸ Sb) (maximalIdeal O) (maximalIdeal.isMaximal O).ne_top`.
+
+Establish `h0 : Sb.mkQ (q t) = 0`. Establish `hi : Sb.mkQ (q t) ∈ (⨅ i : ℕ, (maximalIdeal O) ^ i • ⊤ : Submodule O ((T ⧸ I) ⧸ Sb))` using `Submodule.mem_iInf _ |>.mpr hmem`. Rewrite `hi` using `[hbot]`. Conclude with `hi`. Rewrite `h0` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨s, hs, hsq⟩` from `h0`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.mp hsq.symm`.
+-/
 theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.closedSub :
     ∀ {O T : Type} [CommRing O] [IsNoetherianRing O] [IsLocalRing O] [CommRing T] [IsLocalRing T] [Algebra O T] (I : Ideal T) [Module.Finite O (T ⧸ I)] (S : Subalgebra O T) (t : T), (∀ N : ℕ, ∃ s ∈ S, t - s ∈ maximalIdeal T ^ N) → ∃ s ∈ S, t - s ∈ I := by
   intro O T _ _ _ _ _ _ I _ S t ht

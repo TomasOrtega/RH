@@ -14,6 +14,15 @@ namespace GlobalTheory.AffineCover
 
 variable {Y : Scheme.{0}} {M : LB Y}
 
+/- English proof (translation)
+Establish `loc : ∀ k, ∃ a : Γ(Y, Y.basicOpen (t.f k)), ∀ y ∈ Y.basicOpen (t.f k), gs (𝟙 Y) y _ (s.f k) = gs (𝟙 Y) y _ a * gs (𝟙 Y) y _ (t.f k)` using `fun k => by`. Take `⟨b, hb⟩` from `(show IsUnit (resG Y (Y.basicOpen_le (t.f k)) (t.f k)) from Y.toRingedSpace.isUnit_res_basicOpen (t.f k)).exists_left_inv`. Use `⟨resG Y (Y.basicOpen_le _) (s.f k) * b, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : gs (𝟙 Y) y (Y.basicOpen (t.f k)) (b * resG Y (Y.basicOpen_le _) (t.f k)) = gs (𝟙 Y) y (Y.basicOpen (t.f k)) 1` using `congrArg _ hb`. Rewrite `e` using `[gs_mul _ y _ hy, gs_res _ y _ hy, gs_eq _ y _ hy 1, map_one, map_one]`.
+
+Rewrite using `[gs_mul _ y _ hy, gs_res _ y _ hy, _root_.mul_assoc, e, _root_.mul_one]`. Use `choose a ha using loc`. Take `⟨r, hr, -⟩` from `Y.sheaf.existsUnique_gluing' (fun k => Y.basicOpen (t.f k)) (nonzeroLocus t) (fun k => homOfLE (basicOpen_le_nonzeroLocus t k)) le_rfl a (fun k l => fn_ext fun y hy => by`. Establish `hk : y ∈ M.U k` using `Y.basicOpen_le _ hy.1`. Establish `hl : y ∈ M.U l` using `Y.basicOpen_le _ hy.2`.
+
+Use `(gs_res (𝟙 Y) y inf_le_left hy (a k)).trans (Eq.trans ?_ (gs_res (𝟙 Y) y inf_le_right hy (a l)).symm)` and prove the remaining obligations. Establish `u : IsUnit (gs (𝟙 Y) y _ (t.f k))` using `(LBGerm.isUnit_gs_iff (𝟙 Y) y _ hk _).2 hy.1`. Use `u.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← ha k y hy.1, gs_compat s (𝟙 Y) y hk hl, gs_compat t (𝟙 Y) y hk hl, ha l y hy.2, mul_left_comm])`. Use `⟨r, fun y k hy hk => ?_⟩` and prove the remaining obligations.
+
+Establish `hy'` using `(mem_nonzeroLocus_iff_basicOpen t hk).1 hy`. Rewrite using `[ha k y hy', ← hr k]`. Conclude with `congrArg (· * _) (gs_res (𝟙 Y) y (basicOpen_le_nonzeroLocus t k) hy' r)`.
+-/
 theorem exists_quotient (s t : M.Sec) :
     ∃ r : Γ(Y, nonzeroLocus t), ∀ (y : Y) (k : M.ι), y ∈ nonzeroLocus t → y ∈ M.U k →
       gs (𝟙 Y) y _ (s.f k) = gs (𝟙 Y) y _ r * gs (𝟙 Y) y _ (t.f k) := by
@@ -41,18 +50,35 @@ theorem exists_quotient (s t : M.Sec) :
   rw [ha k y hy', ← hr k]
   exact congrArg (· * _) (gs_res (𝟙 Y) y (basicOpen_le_nonzeroLocus t k) hy' r)
 
+/- English proof (translation)
+Rewrite using `[gs_eq _ y U hy, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← gs_eq _ y U hy, gs_mul _ y U hy, gs_res _ y _ hy]`.
+-/
 theorem gs_sum_mul {I : Type} [Fintype I] (c : I → Γ(Y, ⊤)) {U : Y.Opens} (b : I → Γ(Y, U)) (y : Y)
     (hy : y ∈ U) :
     gs (𝟙 Y) y U (∑ i, resG Y le_top (c i) * b i) = ∑ i, gs (𝟙 Y) y ⊤ (c i) * gs (𝟙 Y) y U (b i) := by
   rw [gs_eq _ y U hy, map_sum, map_sum]
   exact Finset.sum_congr rfl fun i _ => by rw [← gs_eq _ y U hy, gs_mul _ y U hy, gs_res _ y _ hy]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun k => ∑ i, resG Y le_top (c i) * (s i).f k, fun j j' => by rw [map_sum, map_sum, Finset.mul_sum] exact Finset.sum_congr rfl fun i _ => (DVR.SecOps.secScale (c i) (s i)).compat j j'⟩, fun _ => rfl⟩`.
+-/
 theorem exists_sec_sum {I : Type} [Fintype I] (c : I → Γ(Y, ⊤)) (s : I → M.Sec) :
     ∃ t : M.Sec, ∀ k, t.f k = ∑ i, resG Y le_top (c i) * (s i).f k :=
   ⟨⟨fun k => ∑ i, resG Y le_top (c i) * (s i).f k, fun j j' => by
     rw [map_sum, map_sum, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => (DVR.SecOps.secScale (c i) (s i)).compat j j'⟩, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `choose r hr using fun i => exists_quotient (s i) t`. Use `isAffineOpen_of_isAffineOpen_basicOpen _ (Set.range r) ?_ ?_` and prove the remaining obligations. Establish `e : ∑ i, resG Y le_top (c i) * r i = 1` using `fn_ext fun y hy => by`. Take `⟨k, hk⟩` from `exists_chart hM y`. Establish `u` using `(mem_nonzeroLocus_iff_isUnit t hk).1 hy`.
+
+Use `u.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[gs_sum_mul _ _ y hy, gs_eq _ y _ hy 1, map_one, map_one, _root_.one_mul, Finset.sum_mul]`. Simplify using `only [_root_.mul_assoc, ← hr _ y k hy hk]`. Rewrite using `[ht k, gs_sum_mul _ _ y hk]`. Rewrite using `[Ideal.eq_top_iff_one, ← e]`.
+
+Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e : Y.basicOpen (r i) = nonzeroLocus t ⊓ nonzeroLocus (s i)`. Use extensionality with `y`. Take `⟨k, hk⟩` from `exists_chart hM y`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ nonzeroLocus t` using `Y.basicOpen_le _ h`. Use `⟨hy, (mem_nonzeroLocus_iff_isUnit _ hk).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hr i y k hy hk]`. Conclude with `((LBGerm.isUnit_gs_iff (𝟙 Y) y _ hy _).2 h).mul ((mem_nonzeroLocus_iff_isUnit t hk).1 hy)`.
+
+Establish `u` using `(mem_nonzeroLocus_iff_isUnit _ hk).1 h.2`. Rewrite `u` using `[hr i y k h.1 hk]`. Conclude with `(LBGerm.isUnit_gs_iff (𝟙 Y) y _ h.1 _).1 (isUnit_of_mul_isUnit_left u)`. Rewrite using `[e]`. Conclude with `isAffineOpen_nonzeroLocus_inf hM t (hs i)`.
+-/
 theorem isAffineOpen_nonzeroLocus_sum (hM : M.IsLB) {I : Type} [Fintype I] (c : I → Γ(Y, ⊤)) (s : I → M.Sec)
     (hs : ∀ i, IsAffineOpen (nonzeroLocus (s i))) (t : M.Sec)
     (ht : ∀ k, t.f k = ∑ i, resG Y le_top (c i) * (s i).f k) : IsAffineOpen (nonzeroLocus t) := by
@@ -82,6 +108,13 @@ theorem isAffineOpen_nonzeroLocus_sum (hM : M.IsLB) {I : Type} [Fintype I] (c : 
     rw [e]
     exact isAffineOpen_nonzeroLocus_inf hM t (hs i)
 
+/- English proof (translation)
+Set `p : J → Submodule K (I → K)` to `fun j => { carrier := {c | ∑ i, ψ j (c i) * a j i ∈ IsLocalRing.maximalIdeal (R j)} add_mem' := fun {c d} hc hd => by`. Use `(IsLocalRing.maximalIdeal (R j)).add_mem hc hd` as an intermediate fact. Simplify `this` using `[add_mul, Finset.sum_add_distrib]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun e c hc => by`.
+
+Use `(IsLocalRing.maximalIdeal (R j)).mul_mem_left (ψ j e) hc` as an intermediate fact. Simplify `this }` using `[Finset.mul_sum, _root_.mul_assoc]`. Take `⟨c, hc⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top p fun j hj => by`. Take `⟨i, hi⟩` from `h j`. Establish `: ∑ l, ψ j ((Pi.single i 1 : I → K) l) * a j l ∈ IsLocalRing.maximalIdeal (R j)` using `(hj.ge Submodule.mem_top : (Pi.single i 1 : I → K) ∈ p j)`.
+
+Rewrite `this` using `[Finset.sum_eq_single i (fun l _ hl => by simp [Pi.single_eq_of_ne hl]) (by simp)]`. Simplify using `only [Pi.single_eq_same, map_one, _root_.one_mul] at this`. Conclude with `this hi`. Conclude with `⟨c, fun j => not_not.1 (hc j)⟩`.
+-/
 theorem exists_isUnit_sum {K : Type} [Field K] [Infinite K] {I J : Type} [Fintype I] [Finite J]
     (R : J → Type) [∀ j, CommRing (R j)] [∀ j, IsLocalRing (R j)] (ψ : ∀ j, K →+* R j) (a : ∀ j, I → R j)
     (h : ∀ j, ∃ i, IsUnit (a j i)) : ∃ c : I → K, ∀ j, IsUnit (∑ i, ψ j (c i) * a j i) := by
@@ -104,6 +137,11 @@ theorem exists_isUnit_sum {K : Type} [Field K] [Infinite K] {I J : Type} [Fintyp
     exact this hi
   exact ⟨c, fun j => not_not.1 (hc j)⟩
 
+/- English proof (translation)
+Use `hF.to_subtype` as an intermediate fact. Use `choose k hk using fun y : F => exists_chart hM y.1`. Take `⟨c, h⟩` from `exists_isUnit_sum (K := K) (fun y : F => Y.presheaf.stalk y.1) (fun y => ((Y.presheaf.germ ⊤ y.1 trivial).hom).comp φ) (fun y i => gs (𝟙 Y) y.1 _ ((s i).f (k y))) fun y => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hc.ge (show y.1 ∈ (⊤ : Y.Opens) from trivial))`. Conclude with `⟨i, (mem_nonzeroLocus_iff_isUnit _ (hk y)).1 hi⟩`.
+
+Take `⟨t, ht⟩` from `exists_sec_sum (fun i => φ (c i)) s`. Use `⟨_, isAffineOpen_nonzeroLocus_sum hM _ s hs t ht, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_nonzeroLocus_iff_isUnit t (hk ⟨y, hy⟩), ht, gs_sum_mul _ _ y (hk ⟨y, hy⟩)]`. Use `h ⟨y, hy⟩ using 3 with i` and compare the differences between its conclusion and the goal. Conclude with `gs_eq (𝟙 Y) y ⊤ trivial _`.
+-/
 theorem exists_isAffineOpen_of_finite {K : Type} [Field K] [Infinite K] (φ : K →+* Γ(Y, ⊤)) (hM : M.IsLB)
     {I : Type} [Fintype I] (s : I → M.Sec) (hc : ⨆ i, nonzeroLocus (s i) = ⊤)
     (hs : ∀ i, IsAffineOpen (nonzeroLocus (s i))) (F : Set Y) (hF : F.Finite) :
@@ -121,6 +159,15 @@ theorem exists_isAffineOpen_of_finite {K : Type} [Field K] [Infinite K] (φ : K 
   convert h ⟨y, hy⟩ using 3 with i
   exact gs_eq (𝟙 Y) y ⊤ trivial _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨Fin.elim0, fun i => i.elim0, fun x _ => by simp⟩`. Consider the case `succ n ih`. Take `⟨D, hD, hn⟩` from `ih`. Take `⟨S, hS, hc, hi, e⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible (⨆ i, D i).isOpen.isClosed_compl`.
+
+Use `hS.to_subtype` as an intermediate fact. Use `choose ξ hξ using fun C : S => QuasiSober.sober (hi C.1 C.2) (hc C.1 C.2)`. Take `⟨D', hD', hF⟩` from `h (Set.range ξ) (Set.finite_range _)`. Use `⟨Fin.cons D' D, Fin.cases hD' hD, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h₁ : x ∉ D'` using `fun h' => hx (Opens.mem_iSup.2 ⟨0, h'⟩)`.
+
+Establish `h₂ : x ∈ ⋃₀ S`. Rewrite using `[← e]`. Introduce `h'`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 h'`. Conclude with `hx (Opens.mem_iSup.2 ⟨i.succ, hi⟩)`.
+
+Take `⟨C, hC, hxC⟩` from `h₂`. Establish `h₃ : ξ ⟨C, hC⟩ ∉ ⨆ i, D i` using `(e.ge (⟨C, hC, (hξ ⟨C, hC⟩).mem⟩ : ξ ⟨C, hC⟩ ∈ ⋃₀ S) :)`. Establish `hlt : x < ξ ⟨C, hC⟩` using `⟨(hξ ⟨C, hC⟩).specializes hxC, fun h' => h₁ (Specializes.mem_open h' D'.isOpen (hF _ ⟨_, rfl⟩))⟩`. Conclude with `(add_le_add_left (hn _ h₃) 1).trans (Order.coheight_add_one_le hlt)` after adjusting the coercions.
+-/
 theorem exists_affine_le_coheight {X : Scheme.{0}} [NoetherianSpace X]
     (h : ∀ F : Set X, F.Finite → ∃ D : X.Opens, IsAffineOpen D ∧ ∀ y ∈ F, y ∈ D) (n : ℕ) :
     ∃ D : Fin n → X.Opens, (∀ i, IsAffineOpen (D i)) ∧
@@ -148,12 +195,24 @@ theorem exists_affine_le_coheight {X : Scheme.{0}} [NoetherianSpace X]
       ⟨(hξ ⟨C, hC⟩).specializes hxC, fun h' => h₁ (Specializes.mem_open h' D'.isOpen (hF _ ⟨_, rfl⟩))⟩
     exact_mod_cast (add_le_add_left (hn _ h₃) 1).trans (Order.coheight_add_one_le hlt)
 
+/- English proof (translation)
+The claim follows from `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) fun P Q h => lt_of_le_of_ne (Ideal.comap_mono h.le) fun e => h.ne (PrimeSpectrum.ext (Algebra.QuasiFinite.eq_of_le_of_under_eq (R := R) _ _ h.le (congrArg PrimeSpectrum.asIdeal e)))`.
+-/
 theorem ringKrullDim_le_of_quasiFinite (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.QuasiFinite R S] : ringKrullDim S ≤ ringKrullDim R :=
   Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) fun P Q h =>
     lt_of_le_of_ne (Ideal.comap_mono h.le) fun e => h.ne (PrimeSpectrum.ext
       (Algebra.QuasiFinite.eq_of_le_of_under_eq (R := R) _ _ h.le (congrArg PrimeSpectrum.asIdeal e)))
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, hx, e, h⟩` from `hf.exists_isStandardSmoothOfRelativeDimension x`. Establish `: Subsingleton (Spec (CommRingCat.of K))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `rfl : U = ⊤` from `top_le_iff.1 fun p _ => by`. Rewrite using `[Subsingleton.elim p (f x)]`. Conclude with `e hx`.
+
+Take `⟨φ, -, hφ⟩` from `h.exists_etale_mvPolynomial`. Set `_` to `φ.toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin g) Γ(Spec (CommRingCat.of K), ⊤)) Γ(X, V)` using `hφ`. Establish `h₁` using `ringKrullDim_le_of_quasiFinite (MvPolynomial (Fin g) Γ(Spec (CommRingCat.of K), ⊤)) Γ(X, V)`. Rewrite `h₁` using `[ringKrullDim_eq_of_ringEquiv (MvPolynomial.mapEquiv (Fin g) (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`.
+
+Establish `h₂` using `(Ideal.height_le_ringKrullDim_of_isPrime (I := (hV.primeIdealOf ⟨x, hx⟩).asIdeal)).trans h₁`. Rewrite `h₂` using `[idealHeight_eq_coheight Γ(X, V) (hV.primeIdealOf ⟨x, hx⟩), ← coheight_eq_of_isOpenImmersion (x := hV.primeIdealOf ⟨x, hx⟩) hV.fromSpec]`. Establish `h₃ : hV.fromSpec.base (hV.primeIdealOf ⟨x, hx⟩) = x` using `hV.fromSpec_primeIdealOf ⟨x, hx⟩`. Rewrite `h₂` using `[h₃]`. Simplify using `only [zero_add, Nat.card_eq_fintype_card, Fintype.card_fin] at h₂`.
+
+Conclude with `h₂` after adjusting the coercions.
+-/
 theorem coheight_le_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of K)) {g : ℕ}
     (hf : SmoothOfRelativeDimension g f) (x : X) : Order.coheight x ≤ g := by
   obtain ⟨U, hU, V, hV, hx, e, h⟩ := hf.exists_isStandardSmoothOfRelativeDimension x
@@ -176,6 +235,13 @@ theorem coheight_le_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (f : X ⟶ S
   simp only [zero_add, Nat.card_eq_fintype_card, Fintype.card_fin] at h₂
   exact_mod_cast h₂
 
+/- English proof (translation)
+Use `P.isAb.proper` as an intermediate fact. Establish `: IsLocallyNoetherian P.A.left` using `LocallyOfFiniteType.isLocallyNoetherian P.A.hom`. Establish `: CompactSpace P.A.left` using `QuasiCompact.compactSpace_of_compactSpace P.A.hom`. Establish `: IsNoetherian P.A.left` using `⟨⟩`. Take `⟨N, -, m, s, hc, hs⟩` from `P.ample ⊤ (isAffineOpen_top _)`.
+
+Take `⟨D, hD, h⟩` from `exists_affine_le_coheight (X := P.A.left) (fun F hF => by`. Take `⟨D, hD, h⟩` from `exists_isAffineOpen_of_finite (((P.A.hom ⁻¹ᵁ ⊤).ι ≫ P.A.hom).appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom) (DVR.linComb_isLB P.L P.isLB _ _) s hc (fun i => (hs i).1) ((P.A.hom ⁻¹ᵁ ⊤).ι ⁻¹' F) (hF.preimage (P.A.hom ⁻¹ᵁ ⊤).ι.isOpenEmbedding.injective.injOn)`. Conclude with `⟨_, hD.image_of_isOpenImmersion (P.A.hom ⁻¹ᵁ ⊤).ι, fun y hy => ⟨⟨y, trivial⟩, h ⟨y, trivial⟩ hy, rfl⟩⟩) (P.g + 1)`. Use `⟨D, hD, top_le_iff.1 fun x _ => not_not.1 fun hx => ?_⟩` and prove the remaining obligations. Use `(h x hx).trans (coheight_le_of_smooth P.A.hom P.smoothDim x)` as an intermediate fact.
+
+Conclude with `Nat.not_succ_le_self _ (by exact_mod_cast this)`.
+-/
 theorem exists_cover_of_infinite (K : Type) [Field K] [Infinite K] (P : PolAV (Spec (CommRingCat.of K))) :
     ∃ D : Fin (P.g + 1) → P.A.left.Opens, (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
   have := P.isAb.proper
@@ -194,6 +260,9 @@ theorem exists_cover_of_infinite (K : Type) [Field K] [Infinite K] (P : PolAV (S
   have := (h x hx).trans (coheight_le_of_smooth P.A.hom P.smoothDim x)
   exact Nat.not_succ_le_self _ (by exact_mod_cast this)
 
+/- English proof (translation)
+Introduce `_ _ K _ _ P` and use `exists_cover_of_infinite K P`.
+-/
 theorem exists_cover :
     (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) → (∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ (B : Type) [CommRing B] [Nontrivial B] [Algebra K B] (j : Spec (CommRingCat.of B) ⟶ X), IsOpenImmersion j → j ≫ f = Spec.map (CommRingCat.ofHom (algebraMap K B)) → Algebra.trdeg K B = g) → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), ∃ D : Fin (P.g + 1) → P.A.left.Opens, (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ :=
   fun _ _ K _ _ P => exists_cover_of_infinite K P

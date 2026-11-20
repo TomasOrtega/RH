@@ -16,6 +16,9 @@ def varE (p : ℕ) (x : D.ML × Fin D.r) : D.EA :=
       (Sum.elim (fun t => Finsupp.single (Sum.inr t, x.2) (D.P p t))
         (fun t => Finsupp.single (Sum.inr t, x.2) 1))) x.1
 
+/- English proof (translation)
+Take `⟨i, a⟩` from `x`. Unfold `ph`. Rewrite using `[aeval_X]`. Apply the tactic sequence `rcases i with b | t | t | t <;> simp [varE, X, monomial_pow]`.
+-/
 theorem ph_X (p : ℕ) (x : D.ML × Fin D.r) :
     D.ph p (X x : MvPolynomial (D.ML × Fin D.r) K) = monomial (D.varE p x) 1 := by
   obtain ⟨i, a⟩ := x
@@ -23,14 +26,27 @@ theorem ph_X (p : ℕ) (x : D.ML × Fin D.r) :
   rw [aeval_X]
   rcases i with b | t | t | t <;> simp [varE, X, monomial_pow]
 
+/- English proof (translation)
+Simplify using `[phE, collapseExponent, tpE]`.
+-/
 theorem phE_apply_inl (p : ℕ) (ζ : D.EM) (b : D.Lb) (a : Fin D.r) :
     D.phE p ζ (Sum.inl b, a) = ζ (D.mb b, a) := by
   simp [phE, collapseExponent, tpE]
 
+/- English proof (translation)
+Simplify using `[phE, collapseExponent, tpE]`.
+-/
 theorem phE_apply_inr (p : ℕ) (ζ : D.EM) (t : D.Tau) (a : Fin D.r) :
     D.phE p ζ (Sum.inr t, a) = ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a) + ζ (D.mtp t, a) := by
   simp [phE, collapseExponent, tpE]
 
+/- English proof (translation)
+Use extensionality with `⟨i, a⟩`. Rewrite using `[Finsupp.sum_fintype _ _ (by intro x; simp), Finsupp.finsetSum_apply]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Break down `i with b | t` into its components or cases. Rewrite using `[phE_apply_inl]`.
+
+Simplify using `[varE, Finsupp.single_apply, mb, ite_and]`. Rewrite using `[phE_apply_inr]`. Simplify using `only [varE, Sum.elim_inl, Sum.elim_inr, Finsupp.smul_apply, Finsupp.single_apply, Prod.mk.injEq, Sum.inr.injEq, reduceCtorEq, false_and, if_false, Finset.sum_const_zero, zero_add, ite_and, smul_eq_mul, mul_ite, mul_one, mul_zero, mlab, mw, mtp]`. Establish `key : ∀ f : D.Tau → Fin D.r → ℕ, (∑ x, ∑ y, if x = t then (if y = a then f x y else 0) else 0) = f t a`. Introduce `f`.
+
+Rewrite using `[Finset.sum_eq_single t (by intro x _ hx; simp [hx]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite using `[key, key, key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phE_eq_sum (p : ℕ) (ζ : D.EM) : D.phE p ζ = ζ.sum fun x k => k • D.varE p x := by
   classical
   ext ⟨i, a⟩
@@ -51,6 +67,9 @@ theorem phE_eq_sum (p : ℕ) (ζ : D.EM) : D.phE p ζ = ζ.sum fun x k => k • 
     rw [key, key, key]
     ring
 
+/- English proof (translation)
+Rewrite using `[monomial_eq, map_mul, Finsupp.prod, map_prod, phE_eq_sum]`. Simplify using `only [map_pow, ph_X, monomial_pow, one_pow]`. Rewrite using `[show D.ph p (C c) = C c from (D.ph p).commutes c]`. Rewrite using `[Finsupp.sum, ← monomial_sum_one, C_mul_monomial, mul_one]`.
+-/
 theorem ph_monomial (p : ℕ) (ζ : D.EM) (c : K) :
     D.ph p (monomial ζ c) = monomial (D.phE p ζ) c := by
   classical
@@ -59,6 +78,11 @@ theorem ph_monomial (p : ℕ) (ζ : D.EM) (c : K) :
   rw [show D.ph p (C c) = C c from (D.ph p).commutes c]
   rw [Finsupp.sum, ← monomial_sum_one, C_mul_monomial, mul_one]
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `h`. Break down `i with b | t` into its components or cases. Simplify using `only [ldeg, phE_apply_inl, dO, Sum.elim_inl]`. Conclude with `h3 b`. Simplify using `only [ldeg, phE_apply_inr, dO, Sum.elim_inr, Finset.sum_add_distrib, ← Finset.mul_sum]`.
+
+Conclude with `h4 t`.
+-/
 theorem ldeg_phE (p : ℕ) (ζ : D.EM) (h : D.GoodE p ζ) (i : D.OL) : ldeg (D.phE p ζ) i = D.dO i := by
   obtain ⟨-, -, h3, h4, -⟩ := h
   rcases i with b | t
@@ -67,6 +91,9 @@ theorem ldeg_phE (p : ℕ) (ζ : D.EM) (h : D.GoodE p ζ) (i : D.OL) : ldeg (D.p
   · simp only [ldeg, phE_apply_inr, dO, Sum.elim_inr, Finset.sum_add_distrib, ← Finset.mul_sum]
     exact h4 t
 
+/- English proof (translation)
+Introduce `ζ hζ`. Break down `Finset.mem_union.mp (support_add hζ) with h | h` into its components or cases. Conclude with `hZ ζ h`. Conclude with `hW ζ h`.
+-/
 theorem Good.add {p : ℕ} {Z W : MvPolynomial (D.ML × Fin D.r) K} (hZ : D.Good p Z) (hW : D.Good p W) :
     D.Good p (Z + W) := by
   classical
@@ -75,12 +102,21 @@ theorem Good.add {p : ℕ} {Z W : MvPolynomial (D.ML × Fin D.r) K} (hZ : D.Good
   · exact hZ ζ h
   · exact hW ζ h
 
+/- English proof (translation)
+Introduce `ζ hζ` and use `hZ ζ (support_smul hζ)`.
+-/
 theorem Good.smul {p : ℕ} {Z : MvPolynomial (D.ML × Fin D.r) K} (hZ : D.Good p Z) (a : K) :
     D.Good p (a • Z) := fun ζ hζ => hZ ζ (support_smul hζ)
 
+/- English proof (translation)
+Introduce `ζ hζ`. Simplify using `at hζ`.
+-/
 theorem Good.zero (p : ℕ) : D.Good p (0 : MvPolynomial (D.ML × Fin D.r) K) := by
   intro ζ hζ; simp at hζ
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Good.zero D p`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `Good.add D (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem Good.sum {p : ℕ} {ι : Type} (s : Finset ι) (f : ι → MvPolynomial (D.ML × Fin D.r) K)
     (h : ∀ i ∈ s, D.Good p (f i)) : D.Good p (∑ i ∈ s, f i) := by
   classical
@@ -90,6 +126,9 @@ theorem Good.sum {p : ℕ} {ι : Type} (s : Finset ι) (f : ι → MvPolynomial 
     rw [Finset.sum_insert ha]
     exact Good.add D (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `ζ' hζ'`. Use `support_monomial_subset hζ'` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`. Conclude with `h`.
+-/
 theorem Good.monomial {p : ℕ} {ζ : D.EM} (h : D.GoodE p ζ) (c : K) : D.Good p (monomial ζ c) := by
   classical
   intro ζ' hζ'

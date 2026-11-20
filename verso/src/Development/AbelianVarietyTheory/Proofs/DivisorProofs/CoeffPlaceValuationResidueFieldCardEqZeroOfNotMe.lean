@@ -22,6 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.UnfoldLoss.ResCardAway
 
+/- English proof (translation)
+Use `haveI : P.asIdeal.IsMaximal := P.isMaximal`. Use `letI : Field (𝓞 K ⧸ P.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Use `letI : Fintype (𝓞 K ⧸ P.asIdeal) := Fintype.ofFinite _`. Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 K ⧸ P.asIdeal) (ringChar (𝓞 K ⧸ P.asIdeal))`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Conclude with `hn`.
+-/
 theorem absNorm_eq_plc_pow {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) :
     ∃ n : ℕ, Ideal.absNorm P.asIdeal = ringChar (𝓞 K ⧸ P.asIdeal) ^ n := by
   classical
@@ -34,6 +39,11 @@ theorem absNorm_eq_plc_pow {K : Type} [Field K] [NumberField K] (P : HeightOneSp
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]
   exact hn
 
+/- English proof (translation)
+Introduce `D P w h`. Take `⟨n, hn⟩` from `absNorm_eq_plc_pow P`. Establish `hq : resCard (Kw P) = Formalism.EigenvalueLevelCeiling.plc P ^ n` using `(ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.ResCardPlace.resCard_Kw P).trans hn`. Establish `hnot : ((resCard (Kw P) : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal`. Rewrite using `[hq, Nat.cast_pow]`.
+
+Conclude with `fun hm => h (w.isPrime.mem_of_pow_mem n hm)`. Use `letI : StarRing D.what₂.LL := starRingOfComm`. Use `Formalism.DivisionValues.ValuationZeroReduction.vw_eq_zero_of_not_mem w _ hnot` as an intermediate fact. Simplify using `using this`.
+-/
 theorem vw_resCard_eq_zero : ∀ {D : D7} (P : Pl D.host.E) (w : PlL D),
     ((Formalism.EigenvalueLevelCeiling.plc P : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal →
     vw w ((resCard (Kw P) : ℕ) : D.what₂.LL) = 0 := by

@@ -22,9 +22,17 @@ def coneSESSplitting {R : Type} [CommRing R] {C J : Cx R} (u : C ⟶ J) (t : ℤ
     rw [add_comm]
     exact mappingCone.id_X u t (t + 1) rfl
 
+/- English proof (translation)
+The claim follows from `(coneSESSplitting u t).shortExact`.
+-/
 theorem coneSES_shortExact {R : Type} [CommRing R] {C J : Cx R} (u : C ⟶ J) (t : ℤ) : (coneSES u t).ShortExact :=
   (coneSESSplitting u t).shortExact
 
+/- English proof (translation)
+Use `haveI : ∀ n, Injective ((sgl I).X n) := by`. Introduce `n`. Distinguish the cases in `h : n = 0`. Substitute `h` using the available equality. Conclude with `Injective.of_iso (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 I).symm inferInstance`.
+
+Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 I n h).injective`. Conclude with `CochainComplex.isKInjective_of_injective _ 0`.
+-/
 theorem sgl_isKInjective {R : Type} [CommRing R] (I : Shv R) [Injective I] : (sgl I).IsKInjective := by
   haveI : ∀ n, Injective ((sgl I).X n) := by
     intro n
@@ -34,6 +42,13 @@ theorem sgl_isKInjective {R : Type} [CommRing R] (I : Shv R) [Injective I] : (sg
     · exact (HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 I n h).injective
   exact CochainComplex.isKInjective_of_injective _ 0
 
+/- English proof (translation)
+Establish `hc : ∀ a b : Cochain (sgl G) (sgl I) i, a = b`. Introduce `a b`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p = 0`. Establish `hq : q ≠ 0` using `by omega`.
+
+Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 I q hq).eq_of_tgt _ _`. Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 G p hp).eq_of_src _ _`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨a, rfl⟩` from `x.mk_surjective`.
+
+Take `⟨b, rfl⟩` from `y.mk_surjective`. Conclude with `congrArg CohomologyClass.mk (Cocycle.ext (hc _ _))`.
+-/
 theorem sgl_cohomologyClass_subsingleton {R : Type} [CommRing R] (G I : Shv R) (i : ℤ) (hi : i ≠ 0) :
     Subsingleton (CohomologyClass (sgl G) (sgl I) i) := by
   have hc : ∀ a b : Cochain (sgl G) (sgl I) i, a = b := by
@@ -49,6 +64,15 @@ theorem sgl_cohomologyClass_subsingleton {R : Type} [CommRing R] (G I : Shv R) (
   obtain ⟨b, rfl⟩ := y.mk_surjective
   exact congrArg CohomologyClass.mk (Cocycle.ext (hc _ _))
 
+/- English proof (translation)
+Take `⟨hK, -, -, hq, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R I`. Use `haveI := hK`. Use `haveI := hq`. Use `haveI := sgl_isKInjective I`. Take `⟨e, he⟩` from `(CochainComplex.IsKInjective.quasiIso_iff (resAug I)).1 hq`.
+
+Establish `h63` using `GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R`. Establish `hsurj : Function.Surjective (cpush (sgl G) (resAug I) i)`. Introduce `y`. Use `⟨cpush (sgl G) e.inv i y, ?_⟩` and prove the remaining obligations. Rewrite using `[← h63.2.2.1 (sgl G) e.inv (resAug I) i y, ← he, (h63.2.2.2.2 _ _ ⟨e.homotopyInvHomId⟩ (sgl G) i).2, (h63.1 (sgl G) _ i y).2]`.
+
+Use `haveI := sgl_cohomologyClass_subsingleton G I i hi`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨x', rfl⟩` from `hsurj x`. Take `⟨y', rfl⟩` from `hsurj y`.
+
+Rewrite using `[Subsingleton.elim x' y']`.
+-/
 theorem ext_injective_subsingleton {R : Type} [CommRing R] (G I : Shv R) [Injective I] (i : ℤ) (hi : i ≠ 0) :
     Subsingleton (CohomologyClass (sgl G) (res R I) i) := by
   obtain ⟨hK, -, -, hq, -⟩ := GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R I
@@ -69,6 +93,13 @@ theorem ext_injective_subsingleton {R : Type} [CommRing R] (G I : Shv R) [Inject
   obtain ⟨y', rfl⟩ := hsurj y
   rw [Subsingleton.elim x' y']
 
+/- English proof (translation)
+Introduce `R _ G C J u hJ hC t i hi`. Take `⟨z, hz⟩` from `GlobalTheory.T.etaleCohomology_coefficient_longExactSequence R (coneSES u t) (coneSES_shortExact u t)`. Establish `hex` using `(hz (sgl G) i).1`. Use `haveI := hJ t`. Use `haveI hsJ : Subsingleton (CohomologyClass (sgl G) (res R (J.X t)) i) := ext_injective_subsingleton G (J.X t) i hi.ne'`.
+
+Use `haveI hsC : Subsingleton (CohomologyClass (sgl G) (res R (C.X (t + 1))) i) := hC (t + 1) i hi`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Take `⟨w, hw⟩` from `(hex x).1 (Subsingleton.elim (α := CohomologyClass (sgl G) (res R (C.X (t + 1))) i) _ _)`. Take `⟨w', hw'⟩` from `(hex y).1 (Subsingleton.elim (α := CohomologyClass (sgl G) (res R (C.X (t + 1))) i) _ _)`.
+
+Rewrite using `[← hw, ← hw', @Subsingleton.elim _ hsJ w w']`.
+-/
 theorem cone_terms_ext_subsingleton : ∀ (R : Type) [CommRing R] (G : Shv R) {C J : Cx R} (u : C ⟶ J),
     (∀ t, Injective (J.X t)) → (∀ t i : ℤ, 0 < i → Subsingleton (CohomologyClass (sgl G) (res R (C.X t)) i)) →
     ∀ t i : ℤ, 0 < i → Subsingleton (CohomologyClass (sgl G) (res R ((mappingCone u).X t)) i) := by

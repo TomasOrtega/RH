@@ -24,6 +24,11 @@ open GlobalTheory.Asc
 
 namespace GlobalTheory.BesMean
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Use `continuousAt_of_dominated (bound := fun _ => b p₀ + 1) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Conclude with `.of_forall fun p => (hT.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable`. Use `filter_upwards [hb.continuousAt.eventually (gt_mem_nhds (lt_add_one (b p₀)))] with p hp`. Conclude with `.of_forall fun x => (hle p x).trans hp.le`.
+
+Conclude with `.of_forall fun x => (hT.comp (continuous_id.prodMk continuous_const)).continuousAt`.
+-/
 theorem continuous_integral_of_le {P X : Type} [TopologicalSpace P] [FirstCountableTopology P] [TopologicalSpace X]
     [MeasurableSpace X] [OpensMeasurableSpace X] (μ : Measure X) [IsFiniteMeasure μ] {T : P → X → ℂ}
     (hT : Continuous fun q : P × X => T q.1 q.2) {b : P → ℝ} (hb : Continuous b) (hle : ∀ p x, ‖T p x‖ ≤ b p) :
@@ -37,6 +42,11 @@ theorem continuous_integral_of_le {P X : Type} [TopologicalSpace P] [FirstCounta
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hy : yZero S ρ z ∈ ratMx D S.rank ρ`. Use `neg_mem ⟨vecMulVec z fun i : Fin ρ => if i.1 + 1 = ρ then 1 else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `incA D (z i * if j.1 + 1 = ρ then 1 else 0) = incA D (z i) * ell D ρ j`. Rewrite using `[map_mul, ell]`.
+
+Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `ratMx_mul (rat_mem _) (ratMx_mul ((mem_GQ_iff T _).1 (inv_mem hn)) (ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))))`.
+-/
 theorem ptT_rat {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (z : Fin S.rank → D.host.E) {n : GA D T}
     (hn : n ∈ GQ T) : ptT d S (yZero S ρ z) n ∈ ratMx D T₀.rank S.rank := by
   have hy : yZero S ρ z ∈ ratMx D S.rank ρ := by
@@ -50,6 +60,9 @@ theorem ptT_rat {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (
   exact ratMx_mul (rat_mem _) (ratMx_mul ((mem_GQ_iff T _).1 (inv_mem hn))
     (ratMx_mul (rat_mem _) (ratMx_smul _ (ratMx_mul (ratMx_adj hy) (rat_mem _)))))
 
+/- English proof (translation)
+Rewrite using `[heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+-/
 theorem heisO_zero_pt (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) : heisO ψ S T w f 0 = f w := by
   rw [heisO, symplOH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
 
@@ -57,6 +70,9 @@ variable {ρ : ℕ} {B : BesL D ρ} {J : JacL D ρ} (s : StBF ψ B J) {Φ : WO B
 
 def ker (Φ : WO B.V J.W → ℂ) (h₀ : GA D B.A) (g : GA D J.W) : ℂ := flBF s (s.om (embA B.d B.o h₀, g) Φ) 0
 
+/- English proof (translation)
+Establish `e : s.om (embA B.d B.o h₀, n * J.d.emb0 h' * h) Φ = s.om (embA B.d B.o h₀, n * J.d.emb0 h') (s.om (1, h) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[ker, e, GlobalTheory.AscFlatEqui.flBF_equivariant D ψ ρ B J s _ (s.weil.om_pres _ _ hΦ) h₀ n hn h']`. Both sides reduce to the same expression.
+-/
 theorem ker_val (hΦ : IsThetaFunO ψ B.V J.W Φ) (h₀ : GA D B.A) {n : GA D J.W} (hn : n ∈ flagN J.d)
     (h' : GA D J.W₀) (h : GA D J.W) :
     ker s Φ h₀ (n * J.d.emb0 h' * h) =
@@ -66,6 +82,9 @@ theorem ker_val (hΦ : IsThetaFunO ψ B.V J.W Φ) (h₀ : GA D B.A) {n : GA D J.
   rw [ker, e, GlobalTheory.AscFlatEqui.flBF_equivariant D ψ ρ B J s _ (s.weil.om_pres _ _ hΦ) h₀ n hn h']
   rfl
 
+/- English proof (translation)
+Take `⟨hb, -, hx, -⟩` from `GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d`. Establish `h` using `(GlobalTheory.Unf.Flat.flatLaw D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e hb.1 (yZero B.V₀ ρ (vecB B.o B.ζ)) Φ hΦ).2`. Rewrite `h` using `[← hx]`. Conclude with `h`.
+-/
 theorem theta_flBF (hΦ : IsThetaFunO ψ B.V J.W Φ) : IsThetaFunO ψ B.V₀ J.W₀ (flBF s Φ) := by
   obtain ⟨hb, -, hx, -⟩ := GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d
   have h := (GlobalTheory.Unf.Flat.flatLaw D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e hb.1
@@ -73,6 +92,11 @@ theorem theta_flBF (hΦ : IsThetaFunO ψ B.V J.W Φ) : IsThetaFunO ψ B.V₀ J.W
   rw [← hx] at h
   exact h
 
+/- English proof (translation)
+Establish `hΨ` using `s.weil.om_pres (embA B.d B.o h₀, g) _ hΦ`. Establish `hΞ` using `theta_flBF s hΨ`. Establish `e : s.om (embA B.d B.o (γ * h₀), g) Φ = s.om (embA B.d B.o γ, 1 * J.d.emb0 1) (s.om (embA B.d B.o h₀, g) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, map_one, one_mul, one_mul, map_mul (embA B.d B.o)]`. Establish `e1 : ((1, 1) : GA D B.V₀ × GA D J.W₀) = 1` using `rfl`.
+
+Establish `hp : ‖star (psiFlag ψ J.d 1)‖ = 1` using `by rw [norm_star]; exact s.weil.std.1.2.1 _`. Rewrite using `[ker, e, GlobalTheory.AscFlatEqui.flBF_equivariant D ψ ρ B J s _ hΨ γ 1 (one_mem _) 1, opA, jacT_one, e1, map_one, Module.End.one_apply, id, Pi.smul_apply, smul_eq_mul, norm_mul, hp, one_mul, s.weil₀.om_aut _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) _ hΞ]`. Both sides reduce to the same expression.
+-/
 theorem ker_left (hΦ : IsThetaFunO ψ B.V J.W Φ) {γ : GA D B.A} (hγ : γ ∈ GQ B.A) (h₀ : GA D B.A) (g : GA D J.W) :
     ‖ker s Φ (γ * h₀) g‖ = ‖ker s Φ h₀ g‖ := by
   have hΨ := s.weil.om_pres (embA B.d B.o h₀, g) _ hΦ
@@ -87,6 +111,15 @@ theorem ker_left (hΦ : IsThetaFunO ψ B.V J.W Φ) {γ : GA D B.A} (hγ : γ ∈
     s.weil₀.om_aut _ (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) _ hΞ]
   rfl
 
+/- English proof (translation)
+Establish `hΨ` using `s.weil.om_pres (embA B.d B.o h₀, g) _ hΦ`. Establish `hΞ` using `theta_flBF s hΨ`. Establish `e : s.om (embA B.d B.o h₀, n * J.d.emb0 h' * g) Φ = s.om (embA B.d B.o 1, n * J.d.emb0 h') (s.om (embA B.d B.o h₀, g) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, map_one, one_mul]`. Establish `e2 : ((B.o.emb (1, 1), 1) : GA D B.V₀ × GA D J.W₀) = 1`.
+
+Rewrite using `[show ((1, 1) : GA D B.A × GA D B.L) = 1 from rfl, map_one]`. Both sides reduce to the same expression. Take `⟨δ, hδ⟩` from `ptT_rat J.d B.V₀ (vecB B.o B.ζ) hnq`. Establish `hψ` using `s.weil.std.1.2.1`. Establish `hp : ‖star (psiFlag ψ J.d n)‖ = 1` using `by rw [norm_star]; exact hψ _`.
+
+Establish `h2` using `(s.weil₀.om_pres (1, h') _ hΞ).quasi δ 0`. Rewrite `h2` using `[add_zero, s.weil₀.om_aut 1 (one_mem _) h' hhq _ hΞ]`. Rewrite using `[ker, e, GlobalTheory.AscFlatEqui.flBF_equivariant D ψ ρ B J s _ hΨ 1 n hn h', e2, map_one, Module.End.one_apply, Pi.smul_apply, smul_eq_mul, norm_mul, hp, one_mul, opA, jacT, Pi.smul_apply, heisO_zero_pt, ← hδ, smul_eq_mul, norm_mul, hψ, one_mul]`. Use `(congrArg norm h2).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψ, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ker_right (hΦ : IsThetaFunO ψ B.V J.W Φ) (h₀ : GA D B.A) {n : GA D J.W} (hn : n ∈ flagN J.d) (hnq : n ∈ GQ J.W)
     {h' : GA D J.W₀} (hhq : h' ∈ GQ J.W₀) (g : GA D J.W) :
     ‖ker s Φ h₀ (n * J.d.emb0 h' * g)‖ = ‖ker s Φ h₀ g‖ := by
@@ -109,6 +142,11 @@ theorem ker_right (hΦ : IsThetaFunO ψ B.V J.W Φ) (h₀ : GA D B.A) {n : GA D 
   rw [norm_mul, hψ, one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨hb, -, hx, -⟩` from `GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d`. Establish `hemb : Continuous (embA B.d B.o)` using `B.d.continuous_embed.comp (B.o.continuous_emb.comp (continuous_id.prodMk continuous_const))`. Establish `h2` using `GlobalTheory.FlatCont.flatAt_om_continuous D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil s.vU J.d.e hb.1 Φ hΦ`. Rewrite `h2` using `[← hx]`. Establish `h3 : Continuous fun p : GA D J.W × GA D B.A => (((embA B.d B.o p.2, p.1), yZero B.V₀ ρ (vecB B.o B.ζ), 0) : (GA D B.V × GA D J.W) × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `((hemb.comp continuous_snd).prodMk continuous_fst).prodMk continuous_const`.
+
+Establish `h4` using `h2.comp h3`. Simplify using `only [Function.comp_def] at h4`. Simplify using `only [ker, flBF, flatS]`. Conclude with `h4`.
+-/
 theorem continuous_ker (hΦ : IsThetaFunO ψ B.V J.W Φ) :
     Continuous fun p : GA D J.W × GA D B.A => ker s Φ p.2 p.1 := by
   obtain ⟨hb, -, hx, -⟩ := GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d
@@ -125,6 +163,15 @@ theorem continuous_ker (hΦ : IsThetaFunO ψ B.V J.W Φ) :
   simp only [ker, flBF, flatS]
   exact h4
 
+/- English proof (translation)
+Take `⟨hb, -, hx, -⟩` from `GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d`. Take `⟨C₁, A₁, hC₁⟩` from `GlobalTheory.FlatSup.flat_sup_growth D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s J.d.e hb.1 Φ hΦ`. Take `⟨C₄, hC₄⟩` from `GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le D B.V B.V₀ ρ B.d`. Take `⟨C₅, a₅, hC₅⟩` from `GlobalTheory.EmbHeight.height_emb_le D B.V₀ B.A B.L B.o`. Rewrite `hC₁` using `[← hx]`.
+
+Use `⟨|C₁| * (|C₄| * (|C₅| * 2 ^ a₅)) ^ A₁, a₅ * A₁, A₁, by positivity, fun h₀ g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, e1⟩` from `exists_height_le_two_mul_quotHeight B.A h₀`. Rewrite using `[← ker_left s hΦ hγ]`. Establish `p1` using `height_pos B.A (γ * h₀)`. Establish `p2` using `height_pos J.W g`.
+
+Establish `p3` using `height_pos B.V (embA B.d B.o (γ * h₀))`. Establish `p4` using `height_pos B.V₀ (B.o.emb (γ * h₀, 1))`. Establish `q0` using `quotHeight_pos B.A h₀`. Establish `f1 : height B.V (embA B.d B.o (γ * h₀)) ≤ |C₄| * (|C₅| * (2 * quotHeight B.A h₀) ^ a₅)`. Use `(hC₄ _).trans (mul_le_mul (le_abs_self _) ((hC₅ _).trans ?_) p4.le (abs_nonneg _))` and prove the remaining obligations.
+
+Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ p1.le e1 _) (pow_pos p1 _).le (abs_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ker_le (hΦ : IsThetaFunO ψ B.V J.W Φ) : ∃ (C : ℝ) (a b : ℕ), 0 ≤ C ∧ ∀ h₀ g,
     ‖ker s Φ h₀ g‖ ≤ C * quotHeight B.A h₀ ^ a * height J.W g ^ b := by
   obtain ⟨hb, -, hx, -⟩ := GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d
@@ -149,6 +196,17 @@ theorem ker_le (hΦ : IsThetaFunO ψ B.V J.W Φ) : ∃ (C : ℝ) (a b : ℕ), 0 
           (pow_pos (mul_pos p3 p2) _).le (abs_nonneg _)
     _ = _ := by simp only [mul_pow, pow_mul]; ring
 
+/- English proof (translation)
+Take `⟨C, a, b, hC0, hC⟩` from `ker_le s hΦ`. Take `⟨C₃, hC₃⟩` from `GlobalTheory.EmbHeight.unitaryAdelicHeight_wittEmbedding_le D J.W J.W₀ ρ J.d`. Take `⟨KN, hKN, cN⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D J.W ρ J.d.e (isIsoSub_e J.d)).1`. Take `⟨M, hM⟩` from `exists_height_le_of_isCompact J.W (hKN.image continuous_subtype_val)`. Use `⟨C * (|M| * (|C₃| * 2)) ^ b, a, b, by positivity, fun h₀ n hn h' h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ, e1⟩` from `exists_height_le_two_mul_quotHeight J.W₀ h'`. Take `⟨δ, hδ, m, hm, e⟩` from `cN ⟨J.d.emb0 γ * n * (J.d.emb0 γ)⁻¹, GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D J.W J.W₀ ρ J.d n hn γ⟩`. Establish `e' : J.d.emb0 γ * n * (J.d.emb0 γ)⁻¹ = δ.1 * m.1` using `congrArg Subtype.val e`. Establish `e2 : 1 * J.d.emb0 γ * (n * J.d.emb0 h' * h) = δ.1 * J.d.emb0 1 * (m.1 * J.d.emb0 (γ * h') * h)`. Rewrite using `[map_mul, map_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ker_right s hΦ h₀ (one_mem _) (one_mem _) hγ, e2, ker_right s hΦ h₀ δ.2 hδ (one_mem _)]`. Establish `p1` using `height_pos J.W₀ (γ * h')`. Establish `p2` using `height_pos J.W h`. Establish `p3` using `height_pos J.W (J.d.emb0 (γ * h'))`.
+
+Establish `q0` using `quotHeight_pos B.A h₀`. Establish `q1` using `quotHeight_pos J.W₀ h'`. Establish `f1 : height J.W (m.1 * J.d.emb0 (γ * h') * h) ≤ |M| * (|C₃| * (2 * quotHeight J.W₀ h')) * height J.W h`. Use `(height_mul_le _ _ _).trans (mul_le_mul_of_nonneg_right ((height_mul_le _ _ _).trans ?_) p2.le)` and prove the remaining obligations. Conclude with `mul_le_mul ((hM _ ⟨m, hm, rfl⟩).trans (le_abs_self _)) ((hC₃ _).trans (mul_le_mul (le_abs_self _) e1 p1.le (abs_nonneg _))) p3.le (abs_nonneg _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ker_le_quot (hΦ : IsThetaFunO ψ B.V J.W Φ) : ∃ (C : ℝ) (a b : ℕ), 0 ≤ C ∧ ∀ h₀, ∀ n ∈ flagN J.d, ∀ h' h,
     ‖ker s Φ h₀ (n * J.d.emb0 h' * h)‖ ≤ C * quotHeight B.A h₀ ^ a * (quotHeight J.W₀ h' * height J.W h) ^ b := by
   obtain ⟨C, a, b, hC0, hC⟩ := ker_le s hΦ
@@ -181,6 +239,9 @@ theorem ker_le_quot (hΦ : IsThetaFunO ψ B.V J.W Φ) : ∃ (C : ℝ) (a b : ℕ
 
 def inner (φ : GA D B.A → ℂ) (Φ : WO B.V J.W → ℂ) (g : GA D J.W) : ℂ := ∫ h₀ in B.vA.𝓕, φ h₀ * ker s Φ h₀ g ∂B.vA.μ
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_mul_le_of_decay {z w : ℂ} {q C c y : ℝ} (hC : 0 ≤ C) (hy : 0 ≤ y) (hz : ‖z‖ * q ≤ c) (hw : ‖w‖ ≤ C * q * y) :
     ‖z * w‖ ≤ c * C * y := by
   calc ‖z * w‖ = ‖z‖ * ‖w‖ := norm_mul _ _
@@ -191,6 +252,13 @@ theorem norm_mul_le_of_decay {z w : ℂ} {q C c y : ℝ} (hC : 0 ≤ C) (hy : 0 
 
 variable {φ : GA D B.A → ℂ} {G : GA D J.W → ℂ}
 
+/- English proof (translation)
+Use `haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Use `haveI : ∀ V : HSp D, BorelSpace (GA D V) := fun V => ⟨rfl⟩`. Establish `hfin : B.vA.μ B.vA.𝓕 < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol B.A _ _ B.vA.haar B.vA.fund`. Use `haveI : IsFiniteMeasure (B.vA.μ.restrict B.vA.𝓕) := isFiniteMeasure_restrict.2 hfin.ne`. Prove the components needed by the constructor for the conclusion.
+
+Take `⟨C, a, b, hC0, hC⟩` from `ker_le s hΦ`. Take `⟨c, hc⟩` from `hφ.decay a`. Conclude with `continuous_integral_of_le (B.vA.μ.restrict B.vA.𝓕) (T := fun g h₀ => φ h₀ * ker s Φ h₀ g) ((hφ.continuous.comp continuous_snd).mul (continuous_ker s hΦ)) (b := fun g => c * C * height J.W g ^ b) (continuous_const.mul ((continuous_height J.W).pow b)) fun g h₀ => norm_mul_le_of_dec …`. Take `⟨C, a, b, hC0, hC⟩` from `ker_le_quot s hΦ`. Take `⟨c, hc⟩` from `hφ.decay a`.
+
+Use `⟨|c| * C * (B.vA.μ B.vA.𝓕).toReal, b, by positivity, fun n hn h' h => ?_⟩` and prove the remaining obligations. Use `norm_setIntegral_le_of_norm_le_const hfin fun h₀ _ => norm_mul_le_of_decay hC0 (pow_pos (mul_pos (quotHeight_pos _ h') (height_pos _ h)) b).le ((hc h₀).trans (le_abs_self c)) (hC h₀ n hn h' h)` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Measure.real]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_law (hφ : RapidDec B.A φ) (hΦ : IsThetaFunO ψ B.V J.W Φ) : Continuous (inner s φ Φ) ∧
     ∃ (C : ℝ) (b : ℕ), 0 ≤ C ∧ ∀ n ∈ flagN J.d, ∀ h' h,
       ‖inner s φ Φ (n * J.d.emb0 h' * h)‖ ≤ C * (quotHeight J.W₀ h' * height J.W h) ^ b := by
@@ -215,12 +283,30 @@ theorem inner_law (hφ : RapidDec B.A φ) (hΦ : IsThetaFunO ψ B.V J.W Φ) : Co
     simp only [Measure.real]
     ring
 
+/- English proof (translation)
+Rewrite using `[fjAllFun, rTrans, mul_assoc (G _), ← integral_const_mul (star _), inner]`. Simplify using `only [ker_val s hΦ _ n.2, mul_left_comm (φ _)]`.
+-/
 theorem fjAllFun_eq (hΦ : IsThetaFunO ψ B.V J.W Φ) (h : GA D J.W) (h' : GA D J.W₀) (n : flagN J.d) :
     fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flBF s (s.om (1, h) Φ)) h' n =
       G (n.1 * J.d.emb0 h' * h) * inner s φ Φ (n.1 * J.d.emb0 h' * h) := by
   rw [fjAllFun, rTrans, mul_assoc (G _), ← integral_const_mul (star _), inner]
   simp only [ker_val s hΦ _ n.2, mul_left_comm (φ _)]
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s φ G Φ hφ hG hΦ`. Use `haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1`. Use `haveI : ∀ V : HSp D, BorelSpace (GA D V) := fun V => ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (J.v0.μ.restrict J.v0.𝓕) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol J.W₀ _ _ J.v0.haar J.v0.fund).ne`. Use `haveI : IsFiniteMeasure (J.vN.ν.restrict J.vN.𝓝) := isFiniteMeasure_restrict.2 (by rw [J.vN.unit.2.2]; exact ENNReal.one_ne_top)`.
+
+Take `⟨hIc, C, b, hC0, hI⟩` from `inner_law s hφ hΦ`. Take `⟨C₁, a₁, h1⟩` from `GlobalTheory.T.unitaryQuotientHeight_comparable_wittDecomposition D J.W J.W₀ ρ J.d`. Take `⟨C₃, h3⟩` from `(GlobalTheory.RTransDecay.rapidDec_rTrans D J.W G hG).2 (a₁ * b)`. Take `⟨F, hF⟩ : ∃ F : GA D J.W → GA D J.W₀ × flagN J.d → ℂ, F = fun h p => G (p.2.1 * J.d.emb0 p.1 * h) * inner s φ Φ (p.2.1 * J.d.emb0 p.1 * h)` from `⟨_, rfl⟩`. Establish `hFe : ∀ h, Function.uncurry (fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flBF s (s.om (1, h) Φ))) = F h` using `fun h => by subst hF; exact funext fun p => fjAllFun_eq s hΦ h p.1 p.2`.
+
+Establish `hbound : ∀ h p, ‖F h p‖ ≤ C₃ * height J.W h ^ (a₁ * b) * (C * |C₁| ^ b) * height J.W h ^ b`. Substitute `hF` using the available equality. Introduce and unpack `h ⟨h', n⟩`. Establish `ht` using `height_pos J.W h`. Establish `qg` using `quotHeight_pos J.W (n.1 * J.d.emb0 h')`.
+
+Use `norm_mul_le_of_decay (by positivity) (pow_pos ht b).le (h3 (n.1 * J.d.emb0 h') h) ((hI n.1 n.2 h' h).trans ?_)` and prove the remaining obligations. Establish `hq : quotHeight J.W₀ h' ≤ |C₁| * quotHeight J.W (n.1 * J.d.emb0 h') ^ a₁` using `(h1 n.1 n.2 h').1.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_pos qg _).le)`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont : Continuous fun q : GA D J.W × (GA D J.W₀ × flagN J.d) => F q.1 q.2`. Substitute `hF` using the available equality.
+
+Establish `hg : Continuous fun q : GA D J.W × (GA D J.W₀ × flagN J.d) => (q.2.2 : GA D J.W) * J.d.emb0 q.2.1 * q.1` using `((continuous_subtype_val.comp (continuous_snd.comp continuous_snd)).mul (J.d.continuous_embed.comp (continuous_fst.comp continuous_snd))).mul continuous_fst`. Conclude with `(hG.continuous.comp hg).mul (hIc.comp hg)`. Establish `hint : ∀ h, AbsConv J.v0.μ J.v0.𝓕 J.vN.ν J.vN.𝓝 (fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flBF s (s.om (1, h) Φ)))`. Introduce `h`. Rewrite using `[AbsConv, hFe]`.
+
+Conclude with `Integrable.of_bound (hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable _ (.of_forall (hbound h))`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `heq : ∀ h, J.perAll ψ B s.om₀ φ (rTrans h G) (flBF s (s.om (1, h) Φ)) = ∫ p, F h p ∂((J.v0.μ.restrict J.v0.𝓕).prod (J.vN.ν.restrict J.vN.𝓝))` using `fun h => by`. Rewrite using `[← hFe, integral_prod _ (hint h)]`. Both sides reduce to the same expression.
+
+Use `(continuous_congr heq).2 ?_` and prove the remaining obligations. Conclude with `continuous_integral_of_le _ hcont (((continuous_const.mul ((continuous_height J.W).pow _)).mul continuous_const).mul ((continuous_height J.W).pow b)) hbound`.
+-/
 theorem perAll_flBF_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesL D ρ) (J : JacL D ρ) (s : StBF ψ B J), ∀ (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W → ℂ), RapidDec B.A φ → RapidDec J.W G → IsThetaFunO ψ B.V J.W Φ → (∀ h, AbsConv J.v0.μ J.v0.𝓕 J.vN.ν J.vN.𝓝 (fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flBF s (s.om (1, h) Φ)))) ∧ Continuous fun h => J.perAll ψ B s.om₀ φ (rTrans h G) (flBF s (s.om (1, h) Φ)) := by
   intro D ψ ρ B J s φ G Φ hφ hG hΦ
   haveI : ∀ V : HSp D, SecondCountableTopology (GA D V) := fun V => (GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V).2.1

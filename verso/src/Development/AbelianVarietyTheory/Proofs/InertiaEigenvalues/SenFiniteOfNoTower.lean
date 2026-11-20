@@ -9,6 +9,11 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `l _ n _ _ K ρ hc M hM`. Take `⟨N, hN, hanti, hopen, hpow, hroot, hker⟩` from `GlobalTheory.T.exists_congruenceFiltration_galoisRep l n K ρ hc`. Establish `hdet` using `GlobalTheory.T.exists_detecting_characters_congr_filtration l n K ρ M hM N hN`. Take `⟨k, hk⟩` from `hNT l K N hanti hopen hpow hroot hdet`. Use `GlobalTheory.T.finite_image_of_trivial_on_inf_isOpen l K (GL n ℚ_[l]) ρ (IK K) (N k) (hopen k) ?_` and prove the remaining obligations.
+
+Introduce `g hgI hgN`. Conclude with `hker g (fun j => hk j ⟨hgI, hgN⟩)`.
+-/
 theorem senFinite_of_noTower (hNT : NoTower) : SenFinite := by
   intro l _ n _ _ K ρ hc M hM
   obtain ⟨N, hN, hanti, hopen, hpow, hroot, hker⟩ := GlobalTheory.T.exists_congruenceFiltration_galoisRep l n K ρ hc

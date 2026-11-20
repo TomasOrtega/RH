@@ -13,6 +13,13 @@ namespace GlobalTheory.OCrCont
 
 open Filter Topology
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact Filter.Eventually.of_forall fun h => ⟨0, by simp⟩`. Consider the case `tmul o a => filter_upwards [GlobalTheory.AcrisGal.galC_sub_dvd_mem_nhds l a m] with h hh`. Take `⟨c, hc⟩` from `hh`. Use `⟨o ⊗ₜ c, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : galOCr O h (o ⊗ₜ[ℤ_[l]] a) = o ⊗ₜ galC h a` using `rfl`. Rewrite using `[e1, ← TensorProduct.tmul_sub, hc, TensorProduct.smul_tmul', smul_eq_mul]`. Establish `e2 : ((l : Per.Acris l) ^ m * c) = ((l : ℤ_[l]) ^ m) • c`. Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[e2, ← TensorProduct.smul_tmul, Algebra.smul_def, map_pow, map_natCast]`.
+
+Consider the case `add x y hx hy => filter_upwards [hx, hy] with h ⟨u, hu⟩ ⟨v, hv⟩`. Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add, ← hu, ← hv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem galOCr_sub_smul_eventually {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O]
     (r : OCr l O) (m : ℕ) :
     ∀ᶠ h in nhds (1 : GQ l), ∃ w : OCr l O, galOCr O h r - r = ((l : O) ^ m) • w := by
@@ -32,6 +39,15 @@ theorem galOCr_sub_smul_eventually {l : ℕ} [Fact l.Prime] {O : Type} [CommRing
     refine ⟨u + v, ?_⟩
     rw [map_add, smul_add, ← hu, ← hv]; abel
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ G _ _ s hs T hT β m`. Establish `hts : Tendsto s (nhds 1) (nhds 1)`. Simplify `hs.tendsto (1 : G)` using `[map_one]`. Proceed by induction on `β using TensorProduct.induction_on with`. Consider the case `zero => exact Filter.Eventually.of_forall fun g => ⟨0, by simp⟩`.
+
+Consider the case `tmul r t => filter_upwards [hts.eventually (galOCr_sub_smul_eventually r m), hT t.1 t.2 m] with g ⟨w, hw⟩ ⟨t', ht', htt⟩`. Use `⟨w ⊗ₜ T.actT g t + r ⊗ₜ ⟨t', ht'⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : TWact (galOCr O (s g)) T g (r ⊗ₜ[O] t) = galOCr O (s g) r ⊗ₜ T.actT g t` using `rfl`. Establish `e2 : T.actT g t - t = ((l : O) ^ m) • (⟨t', ht'⟩ : ↥T.L.T)` using `Subtype.ext (by`. Rewrite using `[Submodule.coe_sub, Submodule.coe_smul]`.
+
+Conclude with `htt)`. Establish `e3 : galOCr O (s g) r ⊗ₜ[O] T.actT g t - r ⊗ₜ[O] t = (galOCr O (s g) r - r) ⊗ₜ[O] T.actT g t + r ⊗ₜ[O] (T.actT g t - t)`. Rewrite using `[TensorProduct.sub_tmul, TensorProduct.tmul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, e3, hw, e2, smul_add, TensorProduct.smul_tmul', TensorProduct.tmul_smul]`.
+
+Consider the case `add x y hx hy => filter_upwards [hx, hy] with g ⟨u, hu⟩ ⟨v, hv⟩`. Use `⟨u + v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add, ← hu, ← hv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem twact_sub_smul_eventually : ∀ {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K]
     [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K] {G : Type} [Group G] [TopologicalSpace G]
     (s : G →* GQ l), Continuous s → ∀ (T : LocLat G ℚ_[l] K O),

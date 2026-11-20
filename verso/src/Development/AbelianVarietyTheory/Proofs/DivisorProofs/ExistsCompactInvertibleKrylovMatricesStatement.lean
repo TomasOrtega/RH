@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units | exact GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units | (intros; apply GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_compact_invertible_krylovMatrices : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (r : ℕ) (Ω : Set (GLw r w)), IsCompact Ω → (∀ y ∈ Ω, ∃ e, IsUnit (GlobalTheory.LeviDesc.Krylov.krylov y.val e).det) → ∃ C : Set (GLw r w), IsCompact C ∧ ∀ y ∈ Ω, ∃ e, ∃ c ∈ C, c.val = GlobalTheory.LeviDesc.Krylov.krylov y.val e := by
   first | exact @GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units | exact GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units | (intros; apply GlobalTheory.LeviDesc.Krylov.exists_isCompact_krylov_units <;> assumption)

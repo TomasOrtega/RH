@@ -18,6 +18,19 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Z Y BY π e J EX n k b ψ φ DX hpol hblow hb hEX hY`. Take `⟨-, hj, hs, he, -, -, -, hamp⟩` from `hblow`. Take `⟨T₀, hT₀⟩` from `hamp _ hpol.2`. Establish `hreg` using `GlobalTheory.T.keepsRegular_compatible_map E H D l Xo c X Z π DX hj`. Establish `hsab` using `GlobalTheory.T.nonempty_sabMap_of_compatible E H D l Xo c X Z π hj hs`.
+
+Establish `hDZ` using `GlobalTheory.T.phi_divisor_pullback E H D l Xo c _ _ _ _ X Z π ψ DX hreg hj hsab hpol.1`. Establish `hΩX` using `GlobalTheory.T.detOm_isLB_of_ample E H D l Xo c _ _ X k DX hpol.2`. Take `⟨hΩZ, hiso⟩` from `GlobalTheory.T.detOm_pullback_iso E H D l Xo c X Z π hsab hΩX`. Take `⟨hsm, hsnc, htor⟩` from `hY`. Establish `hcomb : ∀ T : ℕ, comb T ψ b φ = comb 1 (comb T ψ 0 ψ) 1 (comb 0 φ b φ)`.
+
+Introduce `T`. Establish `key : ∀ f g : InvFun (𝓞 E), f.toFun = g.toFun → f = g`. Introduce `f g h`. Consider the cases of `f`. Consider the cases of `g`.
+
+Simplify using `only [InvFun.mk.injEq]`. Conclude with `h`. Use `key _ _ (funext fun m => funext fun B => ?_)` and prove the remaining obligations. Simplify using `only [comb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨b, 1, T₀, hb, one_pos, fun T hT => ⟨((DX.pull π hreg).nsmul T).add EX, ?_⟩⟩, GlobalTheory.T.smooth_generic_of_iso E H D l Xo c Y Z e he hsm, GlobalTheory.T.snc_boundary_of_iso E H D l Xo c Y Z e he hsnc, GlobalTheory.T.toric_charts_of_iso E H D l Xo c Y Z e he htor⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomb T]`.
+
+Conclude with `GlobalTheory.T.phi_divisor_add E H D l Xo c _ _ Z _ _ _ _ (GlobalTheory.T.phi_divisor_nsmul E H D l Xo c _ _ Z ψ _ T hDZ) hEX`. Take `⟨hL, hI⟩` from `GlobalTheory.T.blowup_twisted_bundle_iso π (GlobalTheory.FlagMod.detOm X) (GlobalTheory.FlagMod.detOm Z) DX EX hreg k T hΩX hΩZ hiso`. Conclude with `(hT₀ T hT).of_lbIso hL hI`.
+-/
 theorem blowPolSt : BlowPolSt := by
   intro E _ _ _ H D l Xo c X Z Y BY π e J EX n k b ψ φ DX hpol hblow hb hEX hY
   obtain ⟨-, hj, hs, he, -, -, -, hamp⟩ := hblow

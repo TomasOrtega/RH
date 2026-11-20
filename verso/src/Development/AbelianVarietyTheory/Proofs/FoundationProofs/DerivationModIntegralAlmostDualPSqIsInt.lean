@@ -6,6 +6,23 @@ open GlobalTheory.K5 GlobalTheory.KumDlog
 
 namespace GlobalTheory.KumDlog
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ B C ι _ u v tr hd D hD x hx hT`. Take `⟨hBC, hCi, hu, hv, htr, -, -, hsu, hsv, huv⟩` from `hd`. Establish `s1 : ∀ k, IsInt p ((p : Ω) * D (x * v k) - ∑ l, tr (u l * (x * v k)) * D (v l))`. Introduce `k`. Establish `hy : x * v k ∈ C` using `mul_mem hx (hv k)`.
+
+Establish `a1` using `hD.alg_mul hCi (p : O0 p) hy`. Simplify using `only [map_natCast] at a1`. Rewrite `a1` using `[← hsv _ hy]`. Establish `a2` using `hD.sum Finset.univ (fun l => v l * tr (u l * (x * v k))) (fun l _ => mul_mem (hv l) (hBC (htr _ (mul_mem (hu l) hy))))`. Establish `a3 : IsInt p (∑ l, D (v l * tr (u l * (x * v k))) - ∑ l, tr (u l * (x * v k)) * D (v l))`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `int_sum _ _ fun l _ => ?_` and prove the remaining obligations. Establish `ht : tr (u l * (x * v k)) ∈ C` using `hBC (htr _ (mul_mem (hu l) hy))`. Conclude with `int_congr (int_add (hD.2.1 _ (hv l) _ ht) (int_mul (hCi _ (hv l)) (hT k l))) (by ring)`. Conclude with `int_congr (int_add (int_add (int_neg a1) a2) a3) (by ring)`.
+
+Establish `e2 : ∀ l, ∑ k, u k * (tr (u l * (x * v k)) * D (v l)) = (p : Ω) * (x * (u l * D (v l)))`. Introduce `l`. Establish `h` using `hsu (x * u l) (mul_mem hx (hu l))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show u l * (x * v k) = v k * (x * u l) by ring]; ring`. Use `_ = _ := by rw [h]; ring`. Establish `e : ∑ k, u k * ∑ l, tr (u l * (x * v k)) * D (v l) = (p : Ω) * (x * ∑ l, u l * D (v l))`. Combine the equalities or inequalities in the displayed calculation.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Use `_ = ∑ l, (p : Ω) * (x * (u l * D (v l))) := Finset.sum_congr rfl fun l _ => e2 l`. Use `_ = _ := by rw [Finset.mul_sum, Finset.mul_sum]`. Establish `s2 : IsInt p ((p : Ω) * ∑ k, u k * D (x * v k) - (p : Ω) * (x * ∑ l, u l * D (v l)))`.
+
+Establish `a : IsInt p (∑ k, u k * ((p : Ω) * D (x * v k) - ∑ l, tr (u l * (x * v k)) * D (v l)))` using `int_sum _ _ fun k _ => int_mul (hCi _ (hu k)) (s1 k)`. Use `int_congr a ?_` and prove the remaining obligations. Rewrite using `[← e, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `s3 : IsInt p (∑ k, u k * D (x * v k) - x * ∑ k, u k * D (v k) - (p : Ω) * D x)`.
+
+Establish `a : IsInt p (∑ k, u k * (D (x * v k) - x * D (v k) - v k * D x))` using `int_sum _ _ fun k _ => int_mul (hCi _ (hu k)) (hD.2.1 x hx (v k) (hv k))`. Use `int_congr a ?_` and prove the remaining obligations. Rewrite using `[← huv, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Conclude with `int_congr (int_sub s2 (int_mul (int_nat p) s3)) (by ring)`.
+-/
 theorem der_dual_p_sq_int : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     ∀ (B C : Subalgebra (O0 p) Ω) (ι : Type) [Fintype ι] (u v : ι → Ω) (tr : Ω → Ω),
     DualData B C u v tr →

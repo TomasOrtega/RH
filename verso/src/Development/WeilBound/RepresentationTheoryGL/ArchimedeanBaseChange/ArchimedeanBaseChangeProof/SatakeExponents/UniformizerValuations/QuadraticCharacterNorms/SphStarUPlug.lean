@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalAlgebraHol
 
 namespace PositivityTheory.Rg.BcB.F.Fok
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Rg.BcB.F.EigA.sphStar GlobalTheory.T.local_algebra_holds`.
+-/
 theorem sphStarU : PositivityTheory.Rg.BcB.F.Eig.SphStarU := PositivityTheory.Rg.BcB.F.EigA.sphStar GlobalTheory.T.local_algebra_holds
 
 end PositivityTheory.Rg.BcB.F.Fok

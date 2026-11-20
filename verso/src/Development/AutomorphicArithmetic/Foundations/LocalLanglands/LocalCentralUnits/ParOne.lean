@@ -22,10 +22,20 @@ namespace UpperTheory.Zero.LLC
 
 section Fin
 
+/- English proof (translation)
+Rewrite using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]`.
+-/
 private theorem charpoly_one {R : Type} [CommRing R] (M : Matrix (Fin 1) (Fin 1) R) :
     M.charpoly = X - C (M 0 0) := by
   rw [Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply_eq]
 
+/- English proof (translation)
+Take `⟨b, hb, hall⟩` from `finrank_eq_one_iff'.1 hV`. Take `⟨c, hc⟩` from `hall (f b)`. Establish `hf : f = c • LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `hall x`.
+
+Simplify using `[hc.symm, smul_smul, mul_comm]`. Establish `ht : LinearMap.trace ℂ V f = c`. Rewrite using `[hf, map_smul, LinearMap.trace_id, hV]`. Simplify using the standard rewrite rules. Rewrite using `[ht, hf]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem smul_of_finrank_one {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (hV : Module.finrank ℂ V = 1) (f : V →ₗ[ℂ] V) (v : V) : f v = LinearMap.trace ℂ V f • v := by
   obtain ⟨b, hb, hall⟩ := finrank_eq_one_iff'.1 hV
@@ -44,6 +54,9 @@ section Key
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `(Submodule.ne_bot_iff _).2 ⟨e.toIntertwiningMap v, GlobalTheory.Parabolic.mem_fixed.2 fun u hu => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[← e.toIntertwiningMap.isIntertwining, hv u hu]`. Establish `h2 : e.toLinearEquiv v = 0` using `h1`. Conclude with `h0 (e.toLinearEquiv.injective (h2.trans (map_zero _).symm))`.
+-/
 private theorem fixed_ne_bot_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) {H : Subgroup G} {v : V}
     (hv : ∀ u ∈ H, ρ u v = v) (h0 : v ≠ 0) : fixed σ H ≠ ⊥ := by
@@ -52,6 +65,9 @@ private theorem fixed_ne_bot_of_equiv {G V W : Type} [Group G] [AddCommGroup V] 
   · have h2 : e.toLinearEquiv v = 0 := h1
     exact h0 (e.toLinearEquiv.injective (h2.trans (map_zero _).symm))
 
+/- English proof (translation)
+The claim follows from `fixed_ne_bot_of_equiv (equivRep (IrrRep.det (k := k) (Fin 1) 1 isSmoothChar_one)) (v := (1 : ℂ)) (fun u _ => by show (((1 : kˣ →* ℂˣ) (GeneralLinearGroup.det u) : ℂˣ) : ℂ) • (1 : ℂ) = 1 simp) (one_ne_zero (α := ℂ))`.
+-/
 private theorem dz_one : DZ (IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one) :=
   fixed_ne_bot_of_equiv (equivRep (IrrRep.det (k := k) (Fin 1) 1 isSmoothChar_one)) (v := (1 : ℂ))
     (fun u _ => by
@@ -60,6 +76,9 @@ private theorem dz_one : DZ (IrrGL.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one)
 
 variable {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K]
 
+/- English proof (translation)
+Establish `h1` using `hN 1 (by rw [charpoly_one]; exact irreducible_X_sub_C _) 1 (by rw [charpoly_one]; simp)`. Rewrite `h1` using `[FDRep.char_one]`. Simplify using `at h1`. Conclude with `h1` after adjusting the coercions.
+-/
 private theorem character_one {θ : Kˣ →* ℂˣ} {τ : FDRep ℂ (Gn g 1)} (hN : Names g 1 θ τ) :
     Module.finrank ℂ τ = 1 := by
   have h1 := hN 1 (by rw [charpoly_one]; exact irreducible_X_sub_C _) 1 (by rw [charpoly_one]; simp)
@@ -67,6 +86,21 @@ private theorem character_one {θ : Kˣ →* ℂˣ} {τ : FDRep ℂ (Gn g 1)} (h
   simp at h1
   exact_mod_cast h1
 
+/- English proof (translation)
+Take `⟨φ, hφ0, hφ⟩` from `hinf`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, φ v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hφ0 (LinearMap.ext hc)`.
+
+Use `set c : GL (Fin 1) ℤ_[g] := GeneralLinearGroup.scalar (Fin 1) u with hc`. Establish `hy0 : ((red g 1 c : Gn g 1) : Mt g 1) 0 0 = PadicInt.toZMod (u : ℤ_[g])`. Simplify using `[red, hc, GeneralLinearGroup.scalar]`. Establish `hd : GeneralLinearGroup.det (GeneralLinearGroup.map i.toRingHom (inc g 1 c)) = x`. Use `ext`.
+
+Rewrite using `[hx]`. Simplify using `[inc, hc, GeneralLinearGroup.scalar]`. Establish `hσ : ∀ (t : GL (Fin 1) k) (y : σ.V), σ.ρ t y = (χ (GeneralLinearGroup.det t) : ℂ) • y`. Introduce `t y`. Apply `e.toLinearEquiv.injective` to reduce the goal to its premises.
+
+Establish `h1 : e.toIntertwiningMap (σ.ρ t y) = (IrrRep.det (Fin 1) χ hχ).ρ t (e.toIntertwiningMap y)`. Rewrite using `[← e.toIntertwiningMap.isIntertwining]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+
+Establish `hτ : τ.character (red g 1 c) = ((θ z : ℂˣ) : ℂ)`. Use `hN (red g 1 c) (by rw [charpoly_one]; exact irreducible_X_sub_C _) z (by rw [charpoly_one, hy0]; simp [hz])` as an intermediate fact. Simplify using `using this`. Establish `h2` using `hφ c v`. Rewrite `h2` using `[smul_of_finrank_one (character_one hN) (τ.ρ (red g 1 c)) v, map_smul]`.
+
+Establish `h3 : LinearMap.trace ℂ τ (τ.ρ (red g 1 c)) = ((θ z : ℂˣ) : ℂ)` using `hτ`. Rewrite `h2` using `[h3]`. Establish `h4 : (σ.ρ.comp (GeneralLinearGroup.map i.toRingHom)) (inc g 1 c) (φ v) = ((χ x : ℂˣ) : ℂ) • φ v`. Rewrite using `[MonoidHom.comp_apply, hσ, hd]`. Rewrite `h2` using `[h4]`.
+
+Conclude with `(Units.ext (smul_left_injective ℂ hv h2)).symm`.
+-/
 private theorem val_of_inflates {i : ℚ_[g] ≃+* k} {θ : Kˣ →* ℂˣ} {τ : FDRep ℂ (Gn g 1)} (hN : Names g 1 θ τ)
     {σ : IrrRep (GL (Fin 1) k)} {χ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} (e : σ.ρ.Equiv (IrrRep.det (Fin 1) χ hχ).ρ)
     (hinf : GlobalTheory.SerSys.TameGen.Inflates (σ.ρ.comp (GeneralLinearGroup.map i.toRingHom)) τ)
@@ -110,6 +144,11 @@ end Key
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `⟨1, WDRep.ofChars h (ι := Fin 1) (fun _ => ξ) (fun _ => hξ), rfl, ?_⟩` and prove the remaining obligations. Establish `h1 : (WDRep.ofChars h (ι` using `Fin 1) (fun _ => ξ) (fun _ => hξ)).ρ = GlobalTheory.FiniteGL.lineRep ((Units.coeHom ℂ).comp ξ) := by`. Use `MonoidHom.ext fun σ => LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.FiniteGL.lineRep_apply, diagEnd_apply]`. Rewrite using `[h1]`.
+
+Conclude with `GlobalTheory.FiniteGL.lineRep_isIrreducible _`.
+-/
 private theorem irr_lpOfChar (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) : IsIrrWD (WD.lpOfChar h ξ hξ) := by
   refine ⟨1, WDRep.ofChars h (ι := Fin 1) (fun _ => ξ) (fun _ => hξ), rfl, ?_⟩
   have h1 : (WDRep.ofChars h (ι := Fin 1) (fun _ => ξ) (fun _ => hξ)).ρ =
@@ -119,9 +158,17 @@ private theorem irr_lpOfChar (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) : IsIr
   rw [h1]
   exact GlobalTheory.FiniteGL.lineRep_isIrreducible _
 
+/- English proof (translation)
+Simplify using `[WD.lpOfChar]`.
+-/
 private theorem dim_lpOfChar (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) : (WD.lpOfChar h ξ hξ).lpDim = 1 := by
   simp [WD.lpOfChar]
 
+/- English proof (translation)
+Rewrite using `[WD.lpOfChar, WD.lpDual_mk, WD.lpOfChar]`. Use `WD.sound ⟨(Pi.basisFun ℂ (Fin 1)).dualBasis.equivFun, fun σ f => ?_, fun f => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Module.Basis.dualBasis_equivFun, diagEnd_apply, e]`. Establish `h1 : (diagEnd fun _ : Fin 1 => ((ξ σ : ℂ))⁻¹) (Pi.single i 1) = ((ξ σ : ℂ))⁻¹ • (Pi.single i 1 : Fin 1 → ℂ)`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[diagEnd_apply]`. Rewrite using `[h1, map_smul, smul_eq_mul]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 private theorem dual_lpOfChar {ξ ξ' : Weil h →* ℂˣ} (hξ : IsSmooth ξ) (hξ' : IsSmooth ξ') (e : ∀ σ, ξ' σ = (ξ σ)⁻¹) :
     (WD.lpOfChar h ξ hξ).lpDual = WD.lpOfChar h ξ' hξ' := by
   rw [WD.lpOfChar, WD.lpDual_mk, WD.lpOfChar]
@@ -135,6 +182,13 @@ private theorem dual_lpOfChar {ξ ξ' : Weil h →* ℂˣ} (hξ : IsSmooth ξ) (
   · funext i
     simp
 
+/- English proof (translation)
+Introduce `g _ i hi n hn D R hR θ hθ τ hτ hN σ hcl hinf`. Take `rfl : n = 1` from `congrArg Sigma.fst hcl`. Take `⟨e⟩ : Nonempty (σ.ρ.Equiv (IrrRep.det (Fin 1) χ hχ).ρ)` from `IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) (w.adicCompletion E))) hcl)`. Use `⟨(WD.monodromyZero_ofWeilDeligneRepClass_iff _).2 rfl, fun t => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `resBase E Ω A w h a ha g i hi 1 one_pos D R hR t`.
+
+Establish `hz : algebraMap (ZMod g) D.K (PadicInt.toZMod (u : ℤ_[g])) = (R t : D.Kˣ)`. Rewrite using `[hu']`. Simplify using the standard rewrite rules. Establish `key` using `val_of_inflates hN e hinf u (R t) hz (a (ineIncl h t)) hu`. Rewrite using `[WD.inePol_of_mem_Ine _ t.2, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+
+Simplify using `[key]`.
+-/
 private theorem typeAt_ofChar {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     TypeAt (IrrGL.ofChar χ hχ) (WD.lpOfChar h (χ.comp a) (ha.smooth hχ)) := by
@@ -153,6 +207,15 @@ private theorem typeAt_ofChar {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsL
 end UpperTheory.Zero.LLC
 
 open UpperTheory.Zero.LLC in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha χ hχ`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hdz : DZ (IrrGL.ofChar χ hχ) ↔ TameChar χ`. Establish `h1` using `twTame _ (IrrGL.ofChar 1 isSmoothChar_one) χ hχ one_pos dz_one`. Rewrite `h1` using `[IrrGL.tw_ofChar, IrrGL.ofChar_inj.2 (one_mul χ)]`. Then use the resulting hypothesis.
+
+Establish `heig : ∀ σ, ((WD.lpOfChar h (χ.comp a) (ha.smooth hχ)).eig σ).prod = (χ (a σ) : ℂ)` using `fun σ => by`. Rewrite using `[eig_lpOfChar]`. Simplify using the standard rewrite rules. Establish `hcc` using `GlobalTheory.LocLanglands.ExtTwist.hasCentralChar_ofChar χ hχ`. Use `⟨irr_lpOfChar _ _, dim_lpOfChar _ _, hcc, heig, hdz, fun ht => ⟨irr_lpOfChar _ _, dim_lpOfChar _ _, ?_, ?_, typeAt_ofChar ha χ hχ⟩, fun χ' hχ' h'' => ⟨IrrGL.tw_ofChar _ _ _ _, ?_⟩, fun h'' => ⟨?_, ?_⟩, fun χ' hχ' e => IrrGL.ofChar_inj.1 e⟩` and prove the remaining obligations.
+
+Conclude with `(PositivityTheory.LocalParametersCuspidal.DZC.tame_lpOfChar_iff _ _).2 ((tameArt E Ω A w h a ha χ hχ).1 ht)`. Introduce `ω hω σ`. Take `⟨ω₀, -, -, hu⟩` from `(clBasic _ (IrrGL.ofChar χ hχ)).1`. Rewrite using `[heig, hu ω hω, hu χ hcc]`. Conclude with `PositivityTheory.LocalParametersCuspidal.DepthZeroGlueing.lpOfChar_lpTwist _ _ _ fun σ => rfl`.
+
+Conclude with `GlobalTheory.LocLanglands.CuspModel.dualCl_ofChar _ _ _ _ rfl`. Conclude with `dual_lpOfChar _ _ fun σ => rfl`.
+-/
 theorem UpperTheory.Zero.LLC.parOne :
     UpperTheory.Zero.LLC.ParOne := by
   intro E Ω _ _ _ _ _ A w h a ha χ hχ

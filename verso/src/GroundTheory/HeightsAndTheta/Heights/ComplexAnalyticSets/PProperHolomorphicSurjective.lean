@@ -14,6 +14,11 @@ open scoped ENNReal NNReal
 
 namespace ProperHolomorphicSurjective
 
+/- English proof (translation)
+Use `analyticOnNhd_pi_iff.2 fun j => ?_` and prove the remaining obligations. Establish `hj : DifferentiableOn ℂ (fun t => f t j) U` using `differentiableOn_pi.1 hf j`. Use `analyticOnNhd_of_continuousOn_of_separately hU hj.continuousOn fun w hw i => ?_` and prove the remaining obligations. Establish `hw : DifferentiableAt ℂ (fun t => f t j) (Function.update w i (w i))`. Rewrite using `[Function.update_eq_self]`.
+
+Conclude with `(hj w hw).differentiableAt (hU.mem_nhds hw)`. Conclude with `hw.comp (w i) (hasFDerivAt_update w (w i)).differentiableAt`.
+-/
 theorem analyticOnNhd_of_differentiableOn {k m : ℕ} {U : Set (Fin k → ℂ)} {f : (Fin k → ℂ) → Fin m → ℂ}
     (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) : AnalyticOnNhd ℂ f U := by
   refine analyticOnNhd_pi_iff.2 fun j => ?_
@@ -27,6 +32,9 @@ theorem analyticOnNhd_of_differentiableOn {k m : ℕ} {U : Set (Fin k → ℂ)} 
 noncomputable def jac {k : ℕ} (g : (Fin k → ℂ) → Fin k → ℂ) (v : Fin k → ℂ) : ℂ :=
   LinearMap.det (fderiv ℂ g v : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ)
 
+/- English proof (translation)
+Rewrite using `[jac, ← isUnit_iff_ne_zero, ← LinearMap.isUnit_iff_isUnit_det, Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`. Introduce `h`. Conclude with `⟨h, LinearMap.injective_iff_surjective.1 h⟩`.
+-/
 theorem jac_ne_zero_iff {k : ℕ} (g : (Fin k → ℂ) → Fin k → ℂ) (v : Fin k → ℂ) :
     jac g v ≠ 0 ↔ Function.Injective (fderiv ℂ g v) := by
   rw [jac, ← isUnit_iff_ne_zero, ← LinearMap.isUnit_iff_isUnit_det, Module.End.isUnit_iff]
@@ -35,6 +43,11 @@ theorem jac_ne_zero_iff {k : ℕ} (g : (Fin k → ℂ) → Fin k → ℂ) (v : F
   · intro h
     exact ⟨h, LinearMap.injective_iff_surjective.1 h⟩
 
+/- English proof (translation)
+Establish `hfd : DifferentiableOn ℂ (fderiv ℂ g) Ω` using `(analyticOnNhd_of_differentiableOn hΩ hg).fderiv.differentiableOn`. Apply the tactic sequence `have hentry : ∀ i j : Fin k, DifferentiableOn ℂ (fun v => fderiv ℂ g v (Pi.single j 1) i) Ω := fun i j => differentiableOn_pi.1 (hfd.clm_apply (differentiableOn_const _)) i`. Establish `hjac : jac g = fun v => ∑ σ : Equiv.Perm (Fin k), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, fderiv ℂ g v (Pi.single i 1) (σ i)`. Use function extensionality and compare the values at `v`. Rewrite using `[jac, ← LinearMap.det_toMatrix', Matrix.det_apply']`.
+
+Simplify using `[LinearMap.toMatrix'_apply]`. Rewrite using `[hjac]`. Use `DifferentiableOn.fun_sum fun σ _ => (differentiableOn_const _).mul ?_` and prove the remaining obligations. Introduce `x hx`. Apply the tactic sequence `exact (HasFDerivWithinAt.finsetProd (u := Finset.univ) (g := fun i v => fderiv ℂ g v (Pi.single i 1) (σ i)) fun i _ => ((hentry (σ i) i) x hx).hasFDerivWithinAt).differentiableWithinAt`.
+-/
 theorem differentiableOn_jac {k : ℕ} {Ω : Set (Fin k → ℂ)} {g : (Fin k → ℂ) → Fin k → ℂ} (hΩ : IsOpen Ω)
     (hg : DifferentiableOn ℂ g Ω) : DifferentiableOn ℂ (jac g) Ω := by
   have hfd : DifferentiableOn ℂ (fderiv ℂ g) Ω :=
@@ -54,6 +67,41 @@ theorem differentiableOn_jac {k : ℕ} {Ω : Set (Fin k → ℂ)} {g : (Fin k �
     (g := fun i v => fderiv ℂ g v (Pi.single i 1) (σ i))
     fun i _ => ((hentry (σ i) i) x hx).hasFDerivWithinAt).differentiableWithinAt
 
+/- English proof (translation)
+Introduce `k Ω D g hΩ hΩne hD hDc hg hmaps hprop`. Use `Set.Subset.antisymm (Set.image_subset_iff.2 hmaps) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Introduce `y _`. Take `⟨v, hv⟩` from `hΩne`.
+
+Conclude with `⟨v, hv, Subsingleton.elim _ _⟩`. Establish `han` using `analyticOnNhd_of_differentiableOn hΩ hg`. Establish `hfr : Module.finrank ℝ (Fin k → ℂ) = 2 * k`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Establish `hopen : ∀ v ∈ Ω, jac g v ≠ 0 → g '' Ω ∈ 𝓝 (g v)`.
+
+Introduce `v hv hdet`. Establish `he : ((LinearMap.equivOfDetNeZero (fderiv ℂ g v : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) hdet).toContinuousLinearEquiv : (Fin k → ℂ) →L[ℂ] Fin k → ℂ) = fderiv ℂ g v` using `by ext1 u`. Both sides reduce to the same expression. Establish `hs : HasStrictFDerivAt g ((LinearMap.equivOfDetNeZero (fderiv ℂ g v : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) hdet).toContinuousLinearEquiv : (Fin k → ℂ) →L[ℂ] Fin k → ℂ) v`. Rewrite using `[he]`.
+
+Conclude with `(han v hv).hasStrictFDerivAt`. Rewrite using `[← hs.map_nhds_eq_of_equiv]`. Conclude with `Filter.image_mem_map (hΩ.mem_nhds hv)`. Establish `hreg : ∀ W ⊆ Ω, IsOpen W → W.Nonempty → ∃ w ∈ W, jac g w ≠ 0`. Introduce `W hW hWo hWne`.
+
+Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Take `⟨y, hy⟩` from `hInf k k W g hWo hWne (hg.mono hW) fun v hv hinj => (jac_ne_zero_iff g v).2 hinj (hcon v hv)`. Take `⟨t, htW, hty⟩` from `hy.nonempty`. Establish `hyD : y ∈ D` using `hty ▸ hmaps (hW htW)`.
+
+Establish `hcpt : IsCompact {v | v ∈ Ω ∧ g v = y}` using `hprop {y} (Set.singleton_subset_iff.2 hyD) isCompact_singleton`. Conclude with `hy ((hFin k k Ω g y hΩ hg hcpt).subset fun t ht => ⟨hW ht.1, ht.2⟩)`. Use `set C : Set (Fin k → ℂ) := g '' {v | v ∈ Ω ∧ jac g v = 0} with hC`. Establish `hdimC : dimH C ≤ 2 * ((k - 1 : ℕ) : ℝ≥0∞)`. Use `le_trans ?_ (hDim k Ω (jac g) hΩ (differentiableOn_jac hΩ hg) hreg)` and prove the remaining obligations.
+
+Use `dimH_image_le_of_locally_lipschitzOn fun x hx => ?_` and prove the remaining obligations. Take `⟨K, t, ht, hL⟩` from `((han x hx.1).contDiffAt (n := 1)).exists_lipschitzOnWith`. Conclude with `⟨K, t, nhdsWithin_le_nhds ht, hL⟩`. Establish `hnull : μH[(Module.finrank ℝ (Fin k → ℂ) : ℝ) - 1] C = 0`. Establish `hlt : dimH C < (((2 * k - 1 : ℕ) : ℝ≥0) : ℝ≥0∞)`.
+
+Rewrite using `[ENNReal.coe_natCast]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0` using `hausdorffMeasure_of_dimH_lt hlt`. Establish `hexp : ((((2 * k - 1 : ℕ) : ℝ≥0)) : ℝ) = (Module.finrank ℝ (Fin k → ℂ) : ℝ) - 1`. Rewrite using `[hfr, NNReal.coe_natCast, Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[hexp]`. Then use the resulting hypothesis. Establish `hR : IsPreconnected (D \ C)` using `hConn (Fin k → ℂ) D C hD hDc hnull`. Establish `hclosed : ∀ y ∈ D, y ∈ closure (g '' Ω) → y ∈ g '' Ω`.
+
+Introduce `y hyD hycl`. Take `⟨r, hr, hrD⟩` from `Metric.isOpen_iff.1 hD y hyD`. Establish `hLD : closedBall y (r / 2) ⊆ D` using `(closedBall_subset_ball (by linarith)).trans hrD`. Establish `hK` using `hprop (closedBall y (r / 2)) hLD (isCompact_closedBall y (r / 2))`. Establish `hgK : IsCompact (g '' (Ω ∩ g ⁻¹' closedBall y (r / 2)))` using `hK.image_of_continuousOn (hg.continuousOn.mono Set.inter_subset_left)`.
+
+Use `Set.image_mono Set.inter_subset_left (hgK.isClosed.closure_subset ?_)` and prove the remaining obligations. Rewrite `hycl`, the goal using `[mem_closure_iff_nhds]`. Introduce `U hU`. Take `⟨z, ⟨hzU, hzB⟩, v, hv, rfl⟩` from `hycl (U ∩ ball y (r / 2)) (Filter.inter_mem hU (ball_mem_nhds y (by linarith)))`. Conclude with `⟨g v, hzU, v, ⟨hv, ball_subset_closedBall hzB⟩, rfl⟩`.
+
+Establish `hne : ((D \ C) ∩ interior (g '' Ω)).Nonempty`. Take `⟨w, hwΩ, hw⟩` from `hreg Ω subset_rfl hΩ hΩne`. Establish `hN : g '' Ω ∈ 𝓝 (g w)` using `hopen w hwΩ hw`. Assume the negation of the conclusion as `hcon`. Establish `hsubC : interior (g '' Ω) ⊆ C`.
+
+Introduce `z hz`. Assume the negation of the conclusion as `hzC`. Conclude with `hcon ⟨z, ⟨Set.image_subset_iff.2 hmaps (interior_subset hz), hzC⟩, hz⟩`. Establish `h1 : dimH (interior (g '' Ω)) = Module.finrank ℝ (Fin k → ℂ)` using `Real.dimH_of_nonempty_interior (by rw [interior_interior]; exact ⟨g w, mem_interior_iff_mem_nhds.2 hN⟩)`. Establish `h2` using `(dimH_mono hsubC).trans hdimC`.
+
+Rewrite `h2` using `[h1, hfr, show (2 : ℝ≥0∞) * ((k - 1 : ℕ) : ℝ≥0∞) = ((2 * (k - 1) : ℕ) : ℝ≥0∞) by push_cast; ring]`. Establish `h3 : 2 * k ≤ 2 * (k - 1)` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Establish `hRsub : D \ C ⊆ interior (g '' Ω) ∪ (closure (g '' Ω))ᶜ`. Introduce and unpack `y ⟨hyD, hyC⟩`.
+
+Distinguish the cases in `hyE : y ∈ g '' Ω`. Use `left`. Take `⟨v, hv, rfl⟩` from `hyE`. Establish `hjv : jac g v ≠ 0` using `fun h0 => hyC ⟨v, ⟨hv, h0⟩, rfl⟩`. Conclude with `mem_interior_iff_mem_nhds.2 (hopen v hv hjv)`.
+
+Use `right`. Conclude with `fun hcl => hyE (hclosed y hyD hcl)`. Establish `hdisj : Disjoint (interior (g '' Ω)) (closure (g '' Ω))ᶜ` using `Set.disjoint_compl_right_iff_subset.2 (interior_subset.trans subset_closure)`. Establish `hRE` using `hR.subset_left_of_subset_union isOpen_interior isClosed_closure.isOpen_compl hdisj hRsub hne`. Introduce `y hyD`.
+
+Distinguish the cases in `hyC : y ∈ C`. Conclude with `Set.image_mono (fun v hv => hv.1) hyC`. Conclude with `interior_subset (hRE ⟨hyD, hyC⟩)`.
+-/
 theorem proof (hFin : CompactHolomorphicFibreFinite.Statement) (hInf : RankDeficientFibreInfinite.Statement)
     (hDim : HolomorphicZeroSetDimH.Statement) (hConn : HausdorffNullComplementConnected.Statement) :
     ProperHolomorphicSurjective.Statement := by

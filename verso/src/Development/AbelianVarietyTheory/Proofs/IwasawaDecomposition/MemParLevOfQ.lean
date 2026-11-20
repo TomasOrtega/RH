@@ -14,6 +14,9 @@ namespace GlobalTheory.Mem.R3.LiftBrg.ActQ
 variable (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.ι)
   (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U))
 
+/- English proof (translation)
+The claim follows from `q.2.1`.
+-/
 theorem mem_parLev_of_Q (i : Fin X.toD7.R.m) (t : TupU I U) (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
     Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _) ∈
       Formalism.L2.DIV.parLev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (L.datVt i t) := q.2.1
@@ -21,8 +24,14 @@ theorem mem_parLev_of_Q (i : Fin X.toD7.R.m) (t : TupU I U) (q : (levEnv (Vc X.t
 def rV (i : Fin X.toD7.R.m) (t : TupU I U) (x : GL (Fin (Vc X.toD7 i).rank) (Formalism.IndefR.Lev.EAf X.toD7)) : G0 L.Pg X.toD7.R.r :=
   rTup (L.βV i) (L.datVt i t) x
 
+/- English proof (translation)
+The claim follows from `rTup_one`.
+-/
 theorem rV_one (i : Fin X.toD7.R.m) (t : TupU I U) : rV X I U L i t 1 = 1 := rTup_one
 
+/- English proof (translation)
+The claim follows from `rTup_mul hx hy`.
+-/
 theorem rV_mul (i : Fin X.toD7.R.m) (t : TupU I U) {x y : GL (Fin (Vc X.toD7 i).rank) (Formalism.IndefR.Lev.EAf X.toD7)}
     (hx : x ∈ Formalism.L2.DIV.parLev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (L.datVt i t))
     (hy : y ∈ Formalism.L2.DIV.parLev X.toD7.sp.cm (Vc X.toD7 i).gram (L.βV i) (L.datVt i t)) :
@@ -39,11 +48,17 @@ def redQ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU
     simp only [Subgroup.coe_mul, map_mul]
     rw [rV_mul X I U L i t (mem_parLev_of_Q X I U L i t a) (mem_parLev_of_Q X I U L i t b), map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redQ_apply (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU I U)
     (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
     redQ X I U L eG i t q = eG.symm (rV X I U L i t
       (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf (Vc X.toD7 i)) : GL (Fin (Vc X.toD7 i).rank) _))) := rfl
 
+/- English proof (translation)
+Rewrite using `[redQ_apply]`. Conclude with `eG.apply_symm_apply _`.
+-/
 theorem eG_redQ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU I U)
     (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
     eG (redQ X I U L eG i t q) = rV X I U L i t
@@ -51,6 +66,11 @@ theorem eG_redQ (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t
   rw [redQ_apply]
   exact eG.apply_symm_apply _
 
+/- English proof (translation)
+Rewrite using `[redQ_apply, MulEquiv.map_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨mem_parLev_of_Q X I U L i t q, Subgroup.mem_bot.2 h⟩`. Introduce `h`.
+
+Conclude with `Subgroup.mem_bot.1 h.2`.
+-/
 theorem redQ_eq_one_iff (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (i : Fin X.toD7.R.m) (t : TupU I U)
     (q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q) :
     redQ X I U L eG i t q = 1 ↔ (q : Bridge.Gf (Vc X.toD7 i)) ∈ (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J := by

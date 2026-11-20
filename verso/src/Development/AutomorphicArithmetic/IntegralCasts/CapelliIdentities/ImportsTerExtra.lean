@@ -1,6 +1,11 @@
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.FiniteCovolume.StatementsLineIndex
 
+/- English proof (translation)
+Introduce `E W _ _ _ _ La x hL _ _`. Establish `hfg : (La ⊓ (Submodule.span E {x}).toAddSubgroup).FG` using `(Submodule.fg_iff_addSubgroup_fg (AddSubgroup.toIntSubmodule _)).1 (((Submodule.fg_iff_addSubgroup_fg (AddSubgroup.toIntSubmodule La)).2 hL.fg).of_le (AddSubgroup.toIntSubmodule.monotone inf_le_left))`. Use `(AddGroup.fg_iff_addSubgroup_fg _).2 hfg` as an intermediate fact. Use `@AddSubgroup.index_ne_zero_of_finite _ _ _ (AddCommGroup.finite_of_fg_isAddTorsion _ ?_)` and prove the remaining obligations. Introduce and unpack `⟨y, hy', hy⟩`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Take `⟨n, hn, hc⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)).exists_integral_multiple`. Use `isOfFinAddOrder_iff_zsmul_eq_zero.2 ⟨n, hn, (QuotientAddGroup.eq_zero_iff (n • _)).2 ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨n • c, hc⟩, smul_assoc n c x⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Gub1.proof.{u_1, u_2} :
     ∀ (E : Type u_1) (W : Type u_2) [inst : Field E] [inst_1 : NumberField E] [inst_2 : AddCommGroup W]
       [inst_3 : _root_.Module E W], GroundTheory.Heights₂.Heights.FiniteCovolume.LineIndexNeZero.Statement E W := by

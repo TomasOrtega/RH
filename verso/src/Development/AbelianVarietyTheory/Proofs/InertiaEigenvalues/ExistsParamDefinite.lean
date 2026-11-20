@@ -27,6 +27,11 @@ namespace GlobalTheory.DownLift.Params
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hpos : ∀ τ, (gramAt D V τ).PosDef` using `fun τ => by`. Use `hs (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.DefiniteQuotient.exists_compact V hpos`.
+
+Take `⟨b, hb⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨hc, hl, b, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, c, hcC, rfl⟩` from `hcov g`. Rewrite using `[hl γ hγ]`. Conclude with `hb c hcC`.
+-/
 theorem mem_bddAut_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) {f : GA D V → ℂ} (hc : Continuous f)
     (hl : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) : f ∈ GlobalTheory.FinZeta.bddAut V := by
   have hpos : ∀ τ, (gramAt D V τ).PosDef := fun τ => by
@@ -40,6 +45,9 @@ theorem mem_bddAut_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) {f : G
   rw [hl γ hγ]
   exact hb c hcC
 
+/- English proof (translation)
+Establish `h3` using `hf 1 h ⟨k, hk⟩`. Rewrite `h3` using `[map_one, map_one, one_mul]`. Conclude with `h3`.
+-/
 theorem level_abs {Γ Gf W : Type} [Group Γ] [Group Gf] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* Gf}
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup Gf} {χ : J →* ℂˣ} {f : Gf → W} (hf : f ∈ Bridge.AdForms ι ρ J χ)
     {k : Gf} (hk : k ∈ J) (h : Gf) : f (h * k) = ((χ ⟨k, hk⟩ : ℂˣ) : ℂ) • f h := by
@@ -47,6 +55,9 @@ theorem level_abs {Γ Gf W : Type} [Group Γ] [Group Gf] [NormedAddCommGroup W] 
   rw [map_one, map_one, one_mul] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hJ : (finHom V).rangeRestrict k ∈ (levEnv V β L).J` using `hk.2`. Conclude with `(GlobalTheory.DefLiftHecke.ext_mul c hc f hk.1 h).trans ((congrArg (c.ρ h⁻¹) (level_abs hf hJ _)).trans (map_smul _ _ _))`.
+-/
 theorem ext_level {V : HSp D} (c : CoefA V) (hc : c.Is) {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {f : Bridge.Gf V → c.W}
     (hf : f ∈ Bridge.AdForms (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L).J (levEnv V β L).χ)
@@ -55,6 +66,11 @@ theorem ext_level {V : HSp D} (c : CoefA V) (hc : c.Is) {β : GL (Fin V.rank) (L
   have hJ : (finHom V).rangeRestrict k ∈ (levEnv V β L).J := hk.2
   exact (GlobalTheory.DefLiftHecke.ext_mul c hc f hk.1 h).trans ((congrArg (c.ρ h⁻¹) (level_abs hf hJ _)).trans (map_smul _ _ _))
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `Function.ne_iff.1 h0`. Take `⟨g, rfl⟩` from `(finHom V).rangeRestrict_surjective u`. Establish `h1 : c.ext f g ≠ 0` using `fun e => hu (by`. Establish `e' : c.ρ g⁻¹ (f ((finHom V).rangeRestrict g)) = 0` using `e`. Use `congrArg (c.ρ g) e'` as an intermediate fact.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero] at this)` and apply the resulting hypothesis. Use `⟨innerₛₗ ℂ (c.ext f g), Function.ne_iff.2 ⟨g, fun e => h1 ?_⟩⟩` and prove the remaining obligations. Conclude with `inner_self_eq_zero.1 e`.
+-/
 theorem exists_coord_ne {V : HSp D} (c : CoefA V) {f : Bridge.Gf V → c.W} (h0 : f ≠ 0) :
     ∃ ℓ : c.W →ₗ[ℂ] ℂ, (fun h => ℓ (c.ext f h)) ≠ 0 := by
   obtain ⟨u, hu⟩ := Function.ne_iff.1 h0
@@ -68,6 +84,19 @@ theorem exists_coord_ne {V : HSp D} (c : CoefA V) {f : Bridge.Gf V → c.W} (h0 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨n, hB⟩` from `hβ`. Rewrite `hB` using `[one_pow]`. Take `⟨ℓ, hℓ⟩` from `exists_coord_ne c h0`. Establish `hsph` using `(GlobalTheory.FinZeta.LevelOff.level_offS D V β Λ (flag1L L) S hB hS).1`. Establish `hbd : (fun h => ℓ (c.ext f h)) ∈ GlobalTheory.FinZeta.bddAut V` using `mem_bddAut_of_posDef hs hp (ℓ.continuous_of_finiteDimensional.comp (GlobalTheory.ThetaIntegrand.ext_continuous c hc β L hf)) fun γ hγ g => congrArg ℓ (GlobalTheory.ThetaIntegrand.ext_invariant c hf γ hγ g)`.
+
+Establish `hlev : ∀ k ∈ (levG V β (flag1L L) : Set (GA D V)), ∀ g, (fun h => ℓ (c.ext f h)) (g * k) = levChi V β (flag1L L) k * (fun h => ℓ (c.ext f h)) g` using `fun k hk g => (congrArg ℓ (ext_level c hc hf hk g)).trans (map_smul _ _ _)`. Establish `heig : ∀ w d R, Hecke₂ V (levG V β (flag1L L) : Set (GA D V)) (levChi V β (flag1L L)) S w d R → heckeLin V R (fun h => ℓ (c.ext f h)) = s w d • fun h => ℓ (c.ext f h)` using `fun w d R hR => by`. Establish `hw : w.under (𝓞 D.host.F) ∉ S`. Take `⟨_, _, _, _, h, -⟩` from `hR`. Conclude with `(GlobalTheory.GoodPrimes.offS_iff S w).1 h`.
+
+Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `GlobalTheory.DefLiftHecke.one_pow_notMem w 0`. Take `⟨hk, hop, -⟩` from `GlobalTheory.LevOp.level_operators V β Λ 1 (flag1L L) hB w h1 fun PP hPP => ⟨fun e => hw (e ▸ hS PP hPP), fun e => hw (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e ▸ hS PP hPP)⟩`. Establish `hR' : SphOp V w d R` using `((hop S d R).1 hR).2`. Establish `h2` using `((GlobalTheory.SphLabelOps.label_operators V w).1 d R hR').2 _ (GlobalTheory.PRep.rightReg ℂ (GA D V) ℂ) (fun h => ℓ (c.ext f h)) fun k hkk => funext fun g => by`. Use `hlev k (hk k hkk).1 g` as an intermediate fact.
+
+Rewrite `this` using `[(hk k hkk).2, one_mul]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `g`. Establish `h3` using `congrFun h2 g`. Establish `h4` using `GlobalTheory.DefLiftHecke.ext_hkF c hc w (Finsupp.single d 1) f g`. Rewrite `h4` using `[he w d hw ⟨R, hR'⟩, map_smul, Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+
+Rewrite `h3` using `[opOf, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul, Finset.sum_apply, LinearMap.sum_apply, Finset.sum_apply]`. Establish `h5` using `congrArg ℓ h4`. Rewrite `h5` using `[map_sum, Pi.smul_apply, map_smul]`. Conclude with `h3.trans h5.symm`. Take `⟨B, hB', -⟩` from `GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D V _ _ S hsph _ hbd hℓ hlev s heig`.
+
+Conclude with `⟨B, (GlobalTheory.LFun.isParamFunV_iff_isSysParamD_of_level hsph hℓ hlev heig B).1 hB'⟩`.
+-/
 theorem exists_param_definite {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) (c : CoefA V) (hc : c.Is)
     {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1)
     {L : LevDat D.host.E ℂ V.rank} {S : Finset (HeightOneSpectrum (𝓞 D.host.F))}
@@ -111,6 +140,13 @@ theorem exists_param_definite {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) (c : 
   obtain ⟨B, hB', -⟩ := GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D V _ _ S hsph _ hbd hℓ hlev s heig
   exact ⟨B, (GlobalTheory.LFun.isParamFunV_iff_isSysParamD_of_level hsph hℓ hlev heig B).1 hB'⟩
 
+/- English proof (translation)
+Take `⟨n, hB⟩` from `hβ`. Rewrite `hB` using `[one_pow]`. Establish `hsph` using `(GlobalTheory.FinZeta.LevelOff.level_offS D V β Λ L S hB hS).1`. Take `⟨U, hU, hU0⟩` from `(Submodule.ne_bot_iff _).1 h`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, U v ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hU0 (MultilinearMap.ext h)`. Take `⟨h1, h2⟩` from `(mem_partFull θ M _ _ S s U).1 hU`. Establish `h3` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 h1`.
+
+Take `⟨B, hB', hb⟩` from `GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D V _ _ S hsph (U v) ⟨(h3.aut v).cont, (h3.aut v).left, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (h3.aut v) (h3.cusp v)⟩ hv (h3.lev v) s fun P d R hR => h2 P d R hR v`. Conclude with `⟨B, (GlobalTheory.LFun.isParamFunV_iff_of_mem_partFull hsph hU hv B).1 hB', fun w hw => (hb w hw).2⟩`.
+-/
 theorem exists_param_part (hP : GlobalTheory.Published.CuspRapidDecay) {V : HSp D} {Sp : D.what₂.Tau → SPar} {θ : InfFam D}
     (hθ : IsInfFam θ) {M : DSModel V Sp}
     {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1)
@@ -137,11 +173,19 @@ theorem exists_param_part (hP : GlobalTheory.Published.CuspRapidDecay) {V : HSp 
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
+/- English proof (translation)
+Conclude with `Finset.mem_image.2 ⟨PP, Finset.mem_union.2 h, rfl⟩`.
+-/
 theorem under_mem_badPl (t : T) {PP : Pl D.host.E} (h : PP ∈ R.Pg ∨ PP ∈ R.Q t) :
     PP.under (𝓞 D.host.F) ∈ GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t := by
   classical
   exact Finset.mem_image.2 ⟨PP, Finset.mem_union.2 h, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hm`. Take `⟨PP, hPP, e⟩` from `Finset.mem_image.1 hm`. Take `⟨h1, h2⟩` from `h PP (Finset.mem_union.1 hPP)`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e.symm with h3 | h3` into its components or cases.
+
+Conclude with `h1 h3.symm`. Conclude with `h2 (GlobalTheory.GoodPrimes.isConjPl_iff.2 h3)`. Introduce `hw PP hPP`. Conclude with `⟨fun e => hw (e ▸ under_mem_badPl R t hPP), fun e => hw (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e ▸ under_mem_badPl R t hPP)⟩`.
+-/
 theorem good_iff (t : T) (P : Pl D.host.E) : Good R t P ↔ P.under (𝓞 D.host.F) ∉ GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t := by
   classical
   constructor
@@ -155,6 +199,9 @@ theorem good_iff (t : T) (P : Pl D.host.E) : Good R t P ↔ P.under (𝓞 D.host
     exact ⟨fun e => hw (e ▸ under_mem_badPl R t hPP),
       fun e => hw (GlobalTheory.LevelPlaces.under_eq_of_isConjPl e ▸ under_mem_badPl R t hPP)⟩
 
+/- English proof (translation)
+The claim follows from `exists_param_definite (D.sp.V_sig _) (hC.models.vpos i) (R.cV i) (hC.models.cV i) (hC.lev.βV i) (L := R.datVt i t) (fun _ hPP => under_mem_badPl R t hPP) ((hC.models.HV i t).2.1.le (LinearMap.mem_range_self _ y)) (fun e => h0 ((hC.models.HV i t).1 (e.trans (map_zero _).symm))) s …`.
+-/
 theorem paramsV {F : Face D A} (hC : Core R F) (i : Fin D.R.m) (t : T) (h) (hh : IsOpsV R i t h) (s y)
     (hy : IsEigV R i t h s y) (h0 : y ≠ 0) :
     ∃ B, GlobalTheory.LFun.IsSysParamD D (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) (Vc D i).rank s B :=
@@ -164,6 +211,9 @@ theorem paramsV {F : Face D A} (hC : Core R F) (i : Fin D.R.m) (t : T) (h) (hh :
       (hh P ((good_iff R t P).2 hP) _ y).symm.trans
         ((congrArg (R.HV i t).e (hy P d ((good_iff R t P).2 hP) hd)).trans (map_smul _ _ _))
 
+/- English proof (translation)
+Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Take `⟨B, h1, h2⟩` from `exists_param_part hP hC.models.inf (hC.lev.βW i) (L := R.datWp i R.triv) (fun PP hPP => under_mem_badPl R t (hPP.imp_right fun h => absurd h (Finset.notMem_empty _))) hc`. Rewrite `h1`, `h2` using `[rW]`. Conclude with `⟨B, h1, fun w hw => h2 w ((good_iff R t w).1 hw)⟩`.
+-/
 theorem paramsW (hP : GlobalTheory.Published.CuspRapidDecay) {F : Face D A} (hC : Core R F) (i : Fin D.R.m) (t : T) (c : Sys D)
     (hc : partW R i t c ≠ ⊥) : ∃ B', GlobalTheory.LFun.IsSysParamD D (GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t) D.R.r c B' ∧
     ∀ w, Good R t w → ∀ a ∈ B' w, ‖(a : ℂ)‖ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ (((D.R.r : ℝ) - 1) / 2) := by
@@ -173,6 +223,9 @@ theorem paramsW (hP : GlobalTheory.Published.CuspRapidDecay) {F : Face D A} (hC 
   rw [rW] at h1 h2
   exact ⟨B, h1, fun w hw => h2 w ((good_iff R t w).1 hw)⟩
 
+/- English proof (translation)
+Introduce `hP _ _ _ _ _ _ _ _ _ _ _ R _ hG _ i t` and use `⟨paramsV R hG.core i t, paramsW R hP hG.core i t⟩`.
+-/
 theorem paramsEx : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, ParamsEx R i t :=

@@ -15,6 +15,13 @@ private noncomputable def packK {D : D7} {O : Obj D} {R : Formalism.L2.RecT O.ex
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hL p K q c b hw`. Take `⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Substitute `hx` using the available equality. Establish `main : ∀ t PP, PP ∈ (pk (packK (Bl.rpkX y.y))).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup ((Bl.rpkX y.y).P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K)`.
+
+Introduce `t PP`. Take `⟨-, -, hl, -⟩` from `GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `h1` using `(hl _ (Inhab.packOf_tup y.y t).1).1`. Rewrite `h1` using `[(Inhab.packOf_tup y.y t).2]`. Conclude with `Iff.of_eq (congrArg (PP ∈ ·) (eq_of_heq h1))`.
+
+Use `show (fun k : Bl.RPk b.R b.S => ∀ t PP, PP ∈ (pk (packK k)).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup (k.P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K)) (Bl.rpkB b)`. Rewrite using `[y.eq]`. Conclude with `main`.
+-/
 theorem qplaces_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ t PP, PP ∈ (pk (packB b)).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup (b.P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K) := by
   intro hL p K q c b hw
   obtain ⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩ := hw

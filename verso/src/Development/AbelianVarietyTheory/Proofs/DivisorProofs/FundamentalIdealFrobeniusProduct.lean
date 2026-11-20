@@ -7,6 +7,15 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.AfPVecDen
 
+/- English proof (translation)
+Introduce `p _ V _ _ ι _ b Ω hΩ`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] V) := moduleTopology (AfP p) (AfP p ⊗[ℚ] V)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] V) := ⟨rfl⟩`. Set `b'` to `b.baseChange (AfP p)`. Establish `hcont : ∀ i, Continuous (b'.coord i)` using `fun i => IsModuleTopology.continuous_of_linearMap (b'.coord i)`.
+
+Establish `hcpt : ∀ i, IsCompact ((b'.coord i) '' Ω)` using `fun i => hΩ.image (hcont i)`. Use `choose m hm0 hm using fun i => GlobalTheory.T.compact_rational_bounded_denominators p _ (hcpt i)`. Use `⟨∏ i, m i, Finset.prod_pos (fun i _ => hm0 i), fun c hc i => ?_⟩` and prove the remaining obligations. Establish `hval : b'.coord i ((1 : AfP p) ⊗ₜ[ℚ] c) = algebraMap ℚ (AfP p) (b.repr c i)`. Simplify using `only [b', Module.Basis.coord_apply, Module.Basis.baseChange_repr_tmul, Algebra.smul_def, mul_one]`.
+
+Take `⟨k, e, hk⟩` from `hm i (b.repr c i) (hval ▸ ⟨_, hc, rfl⟩)`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Use `⟨k * r, e, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Use `push_cast`.
+
+Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (V : Type) [AddCommGroup V] [Module ℚ V] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℚ V) (Ω : Set (AfP p ⊗[ℚ] V)),
     @IsCompact _ (moduleTopology (AfP p) (AfP p ⊗[ℚ] V)) Ω →

@@ -13,12 +13,18 @@ namespace GlobalTheory.BSP
 
 variable {l : ℕ} {R : Type} [CommRing R]
 
+/- English proof (translation)
+Consider the cases of `u`. Consider the cases of `u'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `P`. Conclude with `h P`.
+-/
 theorem FHom.ext_u {M M' : FCrys l R} {u u' : FHom M M'} (h : ∀ P, u.u P = u'.u P) : u = u' := by
   cases u; cases u'
   congr
   funext P
   exact h P
 
+/- English proof (translation)
+Set `v : M.M P →ₛₗ[g.f] M'.M Q` to `(M'.tr g).comp (u.u P)`. Take `⟨w, -, hw⟩` from `M.tr_bc g (M'.M Q) v`. Establish `h1` using `hw (u.u Q) fun x => by simp [v, u.u_tr]`. Establish `h2` using `hw (u'.u Q) fun x => by simp [v, u'.u_tr, hP]`. Rewrite using `[h1, h2]`.
+-/
 theorem FHom.eq_of_tr {M M' : FCrys l R} (u u' : FHom M M') {P Q : Obj l R} (g : Hom P Q)
     (hP : u.u P = u'.u P) : u.u Q = u'.u Q := by
   let v : M.M P →ₛₗ[g.f] M'.M Q := (M'.tr g).comp (u.u P)
@@ -27,6 +33,11 @@ theorem FHom.eq_of_tr {M M' : FCrys l R} (u u' : FHom M M') {P Q : Obj l R} (g :
   have h2 := hw (u'.u Q) fun x => by simp [v, u'.u_tr, hP]
   rw [h1, h2]
 
+/- English proof (translation)
+Use `haveI := M'.fin B`. Use `haveI := M'.proj B`. Establish `hi : Function.Injective (M'.tr h)` using `semiBC_injective_of_injective _ _ h.f hinj _ _ (M'.tr h) (M'.tr_bc h)`. Use extensionality with `x`. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[← u.u_tr, ← u'.u_tr, hC]`.
+-/
 theorem FHom.eq_of_inj {M M' : FCrys l R} (u u' : FHom M M') {B C : Obj l R} (h : Hom B C)
     (hinj : Function.Injective h.f) (hC : u.u C = u'.u C) : u.u B = u'.u B := by
   haveI := M'.fin B
@@ -37,6 +48,11 @@ theorem FHom.eq_of_inj {M M' : FCrys l R} (u u' : FHom M M') {B C : Obj l R} (h 
   apply hi
   rw [← u.u_tr, ← u'.u_tr, hC]
 
+/- English proof (translation)
+Introduce `l _ K bk M M' u u' hbk`. Apply `FHom.ext_u` to reduce the goal to its premises. Introduce `B`. Take `⟨C, h, ⟨g⟩, hc⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`. Establish `hC` using `FHom.eq_of_tr u u' g hbk`.
+
+Conclude with `FHom.eq_of_inj u u' h (GlobalTheory.T.prism_cover_injective_and_descent l _ B C h hc).1 hC`.
+-/
 theorem fhom_ext_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (M M' : FCrys l ↥(OL K))
     (u u' : FHom M M'), u.u bk.prism = u'.u bk.prism → u = u' := by
   intro l _ K bk M M' u u' hbk

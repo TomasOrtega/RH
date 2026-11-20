@@ -21,5 +21,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols Si
 open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExchPf.exchLaw | exact GlobalTheory.ExchPf.exchLaw | (intros; apply GlobalTheory.ExchPf.exchLaw <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adjointExchange_laws_thetaHeisenberg : ∀ D : D7, ExchLaw D := by
   first | exact @GlobalTheory.ExchPf.exchLaw | exact GlobalTheory.ExchPf.exchLaw | (intros; apply GlobalTheory.ExchPf.exchLaw <;> assumption)

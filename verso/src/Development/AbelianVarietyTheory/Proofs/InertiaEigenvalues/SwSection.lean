@@ -30,6 +30,19 @@ open GlobalTheory.RawLift
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om hw`. Establish `hS` using `GlobalTheory.AdjLawPf.adjLaw D ψ hw.std V W`. Establish `hom'` using `GlobalTheory.ConjAdjWeil.isWeilDatumO_conjAdjoint D ψ V W χV χW om hw`. Establish `hr : ResEta D 1 (GlobalTheory.Doubling.dblSp W).rank`. Use `GlobalTheory.Eis.SimplePoleModel.resEta_one_two_mul D W.rank` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[GlobalTheory.Doubling.dblSp]`. Use linear arithmetic over natural numbers and integers. Take `⟨omh, homh⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ (GlobalTheory.Doubling.dblSp W) V 1 χV hw.std ⟨continuous_const, fun _ => rfl⟩ hw.hecS hr hw.resS`. Use `⟨omh, homh, fun f₁ f₂ h₁ h₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `TC` using `GlobalTheory.DoublingTheta.thetaClause D ψ W V χW χV (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) omh hom' homh`. Take `⟨hth, hrest⟩` from `TC (GlobalTheory.PairLift.dag V W f₂) (GlobalTheory.PairLift.dag V W f₁) (hS.theta _ h₂) (hS.theta _ h₁)`. Use `⟨hth, fun h => ?_⟩` and prove the remaining obligations. Establish `e` using `(hrest 1 1 h).2`. Establish `dd : ∀ f : WO V W → ℂ, GlobalTheory.PairLift.dag W V (GlobalTheory.PairLift.dag V W f) = f` using `fun f => by`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.PairLift.dag, hS.invol, Complex.conj_conj]`. Establish `d0 : GlobalTheory.PairLift.adjO V W 0 = 0`. Use `hS.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `(add_eq_left.1 this.symm)`. Establish `k : ∀ f : WO V W → ℂ, thetaKO (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjAdjoint om) 1 h (GlobalTheory.PairLift.dag V W f) = starRingEnd ℂ (thetaKO om h 1 f)` using `fun f => by`. Simplify using `only [thetaKO, GlobalTheory.ConjAdjWeil.conjAdjoint_apply, dd]`. Simplify using `only [GlobalTheory.PairLift.dag, d0]`. Establish `i1 : GlobalTheory.Doubling.io W (1, 1) = 1` using `map_one _`.
+
+Rewrite `e` using `[i1, k, k, Complex.conj_conj]`. Simplify using `only [map_one, inv_one, Circle.coe_one, mul_one] at e`. Rewrite using `[show dbl V W f₁ f₂ = GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta W V (GlobalTheory.PairLift.dag V W f₂) (GlobalTheory.PairLift.dag V W f₁) from rfl, e]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kernel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle)
     (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χV χW om →
     ∃ omh : GA D (GlobalTheory.Doubling.dblSp W) × GA D V →* Module.End ℂ (WO (GlobalTheory.Doubling.dblSp W) V → ℂ),
@@ -68,6 +81,13 @@ theorem kernel : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χ
   simp only [Complex.star_def]
   ring
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs f₁ f₂ h₁ h₂ χ omh hω ν 𝓖' hν`. Take `⟨omh', -, hK⟩` from `kernel D ψ V W χV χW om hs.weil`. Establish `hF` using `(hK f₁ f₂ h₁ h₂).1`. Take `⟨e, he⟩` from `GlobalTheory.T.siegelEisenstein_doubledTheta_terms_eq_lagrangianIntegrals D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs f₁ f₂ h₁ h₂ ν 𝓖' hν`. Use `⟨e, fun q => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, hC, hq⟩` from `he q`. Rewrite using `[← GlobalTheory.T.doubled_lagrangian_term_frame_independent D ψ V W μ 𝓕 hs.covol hs.weil.std f₁ f₂ h₁ h₂ (e q) C (fr (e q)) hC (hs.frame _), ← hq]`. Simplify using `only [GlobalTheory.Eis.term, mul_one, GlobalTheory.SiegelFormula.swSection, GlobalTheory.SiegelFormula.valZero]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Conclude with `GlobalTheory.T.rational_source_acts_on_orientedTheta_by_substitution D ψ _ V 1 χ omh hω _ hF _ (q.out : GQ (GlobalTheory.Doubling.dblSp W)).2 _`.
+-/
 theorem terms : ∀ (D : D7) ψ (V W : HSp D) χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr,
     SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ →
     ∀ (χ : (AE D)ˣ →* Circle) (omh : GA D (GlobalTheory.Doubling.dblSp W) × GA D V →* Module.End ℂ (WO (GlobalTheory.Doubling.dblSp W) V → ℂ)),
@@ -88,6 +108,19 @@ theorem terms : ∀ (D : D7) ψ (V W : HSp D) χV χW om νV 𝓗 νW 𝓖 μ �
   funext y
   exact GlobalTheory.T.rational_source_acts_on_orientedTheta_by_substitution D ψ _ V 1 χ omh hω _ hF _ (q.out : GQ (GlobalTheory.Doubling.dblSp W)).2 _
 
+/- English proof (translation)
+Introduce `ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs f₁ f₂ h₁ h₂`. Break down `Nat.eq_zero_or_pos W.rank with h0 | hr` into its components or cases. Conclude with `Model.swPair_rank_zero hs h0 f₁ f₂`. Take `⟨omh, hω, hK⟩` from `kernel D ψ V W χV χW om hs.weil`. Take `⟨hF, hθ⟩` from `hK f₁ f₂ h₁ h₂`.
+
+Use `haveI := hs.haarV`. Establish `hwitt : Formalism.MainNotions.SchurIrreducible.wittIdx V = 0`. Rewrite using `[GlobalTheory.RallisIP.wittIdx_eq_wittIndex]`. Conclude with `GlobalTheory.Cusp.wittIndex_eq_zero_iff_isAniso.2 (GlobalTheory.Per.isAniso_of_posDef hs.sigOK hs.pos)`. Take `⟨ν, 𝓖', hν⟩` from `GlobalTheory.Size.exists_isCovolOne W V`.
+
+Establish `P` using `(hW D W V νV hs.haarV hr (Or.inl hwitt)).2 ψ χV omh hω (dbl V W f₁ f₂) hF`. Take `⟨-, hconv⟩` from `P.2 hs.big ν 𝓖' hν`. Take `⟨hc, hsum⟩` from `hconv 1`. Take `⟨e, he⟩` from `terms D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs f₁ f₂ h₁ h₂ χV omh hω ν 𝓖' hν`. Establish `H1` using `hc.hasSum`.
+
+Rewrite `H1` using `[hsum]`. Establish `H2 : HasSum (fun Y : Lag W => lagTerm μ 𝓕 (fr Y) f₁ f₂) (⨍ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun h => thetaKO omh 1 h (dbl V W f₁ f₂)) q ∂GlobalTheory.AutomorphicL2Unitary.autMeasure V νV)`. Use `e.hasSum_iff.1 ?_` and prove the remaining obligations. Use `H1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`.
+
+Simplify using `[he]`. Establish `A : (⨍ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun h => thetaKO omh 1 h (dbl V W f₁ f₂)) q ∂GlobalTheory.AutomorphicL2Unitary.autMeasure V νV) = ⨍ h in 𝓗, thetaKO omh 1 h (dbl V W f₁ f₂) ∂νV` using `GlobalTheory.ThetaMean.thetaMean_eq hω hF hs.fdV 1`. Establish `vol` using `GlobalTheory.Mem.QuotVol.quot_volume_ne_zero_ne_top D V νV 𝓗 ⟨hs.haarV, hs.fdV⟩`. Establish `hv : ((νV 𝓗).toReal : ℂ) ≠ 0`. Conclude with `(ENNReal.toReal_ne_zero.2 vol)` after adjusting the coercions.
+
+Establish `key : ∫ h in 𝓗, thetaKO om h 1 f₁ * star (thetaKO om h 1 f₂) ∂νV = ((νV 𝓗).toReal : ℂ) * (⨍ q, GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun h => thetaKO omh 1 h (dbl V W f₁ f₂)) q ∂GlobalTheory.AutomorphicL2Unitary.autMeasure V νV)`. Rewrite using `[A, setAverage_eq, Complex.real_smul, Measure.real, Complex.ofReal_inv, ← mul_assoc, mul_inv_cancel₀ hv, one_mul]`. Repeatedly rewrite using `[hθ]`. Rewrite using `[key]`. Conclude with `H2.mul_left _`.
+-/
 theorem swPair (hW : GlobalTheory.Published.WeilSiegelFormulaUnitary) (D : D7) : SWPair D := by
   intro ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hs f₁ f₂ h₁ h₂
   rcases Nat.eq_zero_or_pos W.rank with h0 | hr

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.range_comp' (fun x : M => (x : E))]`. Establish `h` using `Submodule.span_image (s := Set.range (Module.finBasis k M)) M.subtype`. Simplify using `only [Submodule.coe_subtype] at h`. Rewrite using `[h, (Module.finBasis k M).span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 private theorem span_image_finBasis_eq {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     (M : Submodule k E) [DecidableEq E] :
     Submodule.span k ((Finset.univ.image (fun i => ((Module.finBasis k M i : M) : E)) : Finset E) : Set E) = M := by
@@ -11,6 +14,17 @@ private theorem span_image_finBasis_eq {k E : Type} [Field k] [Ring E] [Algebra 
   simp only [Submodule.coe_subtype] at h
   rw [h, (Module.finBasis k M).span_eq, Submodule.map_top, Submodule.range_subtype]
 
+/- English proof (translation)
+Use `set s : Finset E := Finset.univ.image (fun i => ((Module.finBasis k M i : M) : E)) with hs`. Use `set t : Finset E := Finset.univ.image (fun i => ((Module.finBasis k N i : N) : E)) with ht`. Establish `hM` using `span_image_finBasis_eq M`. Establish `hN` using `span_image_finBasis_eq N`. Rewrite `hM` using `[← hs]`.
+
+Rewrite `hN` using `[← ht]`. Establish `hMN : M * N = Submodule.span k ((Finset.image₂ (· * ·) s t : Finset E) : Set E)`. Rewrite using `[Finset.coe_image₂]`. Use `conv_lhs => rw [← hM, ← hN]`. Rewrite using `[Submodule.span_mul_span]`.
+
+Both sides reduce to the same expression. Establish `hsc : s.card ≤ Module.finrank k M`. Rewrite using `[hs]`. Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `htc : t.card ≤ Module.finrank k N`. Rewrite using `[ht]`. Use `(Finset.card_image_le).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hMN]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fr_mul {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     (M N : Submodule k E) :
     Module.finrank k ↥(M * N) ≤ Module.finrank k M * Module.finrank k N := by
@@ -40,6 +54,11 @@ private theorem fr_mul {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Fin
     _ ≤ s.card * t.card := Finset.card_image₂_le _ _ _
     _ ≤ _ := Nat.mul_le_mul hsc htc
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Submodule.one_eq_span]`. Establish `h` using `finrank_span_finset_le_card (R := k) ({1} : Finset E)`. Simplify using `only [Finset.coe_singleton, Finset.card_singleton] at h`.
+
+Conclude with `h`. Consider the case `succ p ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(fr_mul _ _).trans (Nat.mul_le_mul_right _ ih)`.
+-/
 private theorem fr_pow {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     (M : Submodule k E) (p : ℕ) :
     Module.finrank k ↥(M ^ p) ≤ Module.finrank k M ^ p := by
@@ -54,6 +73,9 @@ private theorem fr_pow {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Fin
     rw [pow_succ, pow_succ]
     exact (fr_mul _ _).trans (Nat.mul_le_mul_right _ ih)
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero => exact le_rfl`. Consider the case `succ p ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `mul_le_mul' ih hV`.
+-/
 private theorem submodule_pow_le_pow_of_le {k E : Type} [Field k] [Ring E] [Algebra k E]
     (V J : Submodule k E) (hV : V ≤ J) (p : ℕ) : V ^ p ≤ J ^ p := by
   induction p with
@@ -62,6 +84,13 @@ private theorem submodule_pow_le_pow_of_le {k E : Type} [Field k] [Ring E] [Alge
     rw [pow_succ, pow_succ]
     exact mul_le_mul' ih hV
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `le_sup_left`. Consider the case `succ p ih`.
+
+Establish `h1 : V ^ p * J ≤ V ^ (p + 1) ⊔ J ^ (p + 1 + 1)`. Combine the equalities or inequalities in the displayed calculation. Use `sup_le_sup (le_of_eq (pow_succ V p).symm) ?_` and prove the remaining obligations. Rewrite using `[pow_succ, pow_succ, mul_assoc]`. Conclude with `mul_le_mul' (submodule_pow_le_pow_of_le V J hV p) le_rfl`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `sup_le h1 ?_` and prove the remaining obligations. Rewrite using `[← pow_succ]`. Conclude with `le_sup_right`.
+-/
 private theorem natCast_pow_le_pow_of_exponent_le {k E : Type} [Field k] [Ring E] [Algebra k E]
     (J V : Submodule k E) (hV : V ≤ J) (hJ : J ≤ V ⊔ J * J) (p : ℕ) :
     J ^ p ≤ V ^ p ⊔ J ^ (p + 1) := by
@@ -85,6 +114,9 @@ private theorem natCast_pow_le_pow_of_exponent_le {k E : Type} [Field k] [Ring E
         rw [← pow_succ]
         exact le_sup_right
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem finrank_pow_le_pow_add_finrank_pow_succ {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     (J V : Submodule k E) (hV : V ≤ J) (hJ : J ≤ V ⊔ J * J) (d : ℕ) (hd : Module.finrank k V ≤ d)
     (p : ℕ) :
@@ -96,6 +128,11 @@ private theorem finrank_pow_le_pow_add_finrank_pow_succ {k E : Type} [Field k] [
     _ ≤ d ^ p + Module.finrank k ↥(J ^ (p + 1)) :=
         Nat.add_le_add_right ((fr_pow V p).trans (Nat.pow_le_pow_left hd p)) _
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `h : J ^ (0 + 1) = J` using `by rw [zero_add, pow_one]`. Rewrite using `[h]`. Simplify using `only [zero_add, Finset.range_one, Finset.sum_singleton, pow_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `h` using `finrank_pow_le_pow_add_finrank_pow_succ J V hV hJ d hd (m + 1)`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem fr_nil {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     (J V : Submodule k E) (hV : V ≤ J) (hJ : J ≤ V ⊔ J * J) (d : ℕ) (hd : Module.finrank k V ≤ d)
     (m : ℕ) :
@@ -111,6 +148,11 @@ private theorem fr_nil {k E : Type} [Field k] [Ring E] [Algebra k E] [Module.Fin
     have h := finrank_pow_le_pow_add_finrank_pow_succ J V hV hJ d hd (m + 1)
     omega
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (ρ.ker : Set G), h.preimage (continuous_mul_left x⁻¹), ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `y hy`.
+
+Simplify using `only [Set.mem_preimage, SetLike.mem_coe, MonoidHom.mem_ker, map_mul] at hy`. Establish `h2` using `congrArg (fun z => ρ x * z) hy`. Simplify using `only [mul_one] at h2`. Rewrite `h2` using `[← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Conclude with `h2`.
+-/
 private theorem lc_of_ker {G E : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Monoid E]
     (ρ : G →* E) (h : IsOpen (ρ.ker : Set G)) : IsLocallyConstant ρ := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -124,6 +166,9 @@ private theorem lc_of_ker {G E : Type} [Group G] [TopologicalSpace G] [IsTopolog
     rw [← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul] at h2
     exact h2
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hc i x`. Establish `h1` using `congrArg (fun y => π y i) ha`. Simplify using `only [map_mul, map_smul, hπe, Pi.mul_apply, Pi.smul_apply, Pi.single_eq_same, one_mul, mul_one, smul_eq_mul] at h1`. Rewrite using `[ha, h1]`.
+-/
 private theorem idempotent_corner_eq_proj_smul {n : ℕ} {k E : Type} [Field k] [Ring E] [Algebra k E]
     (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)) (hπe : ∀ i, π (e i) = Pi.single i 1)
     (hc : ∀ i x, ∃ a : k, e i * x * e i = a • e i) (i : Fin n) (x : E) :
@@ -134,6 +179,9 @@ private theorem idempotent_corner_eq_proj_smul {n : ℕ} {k E : Type} [Field k] 
     mul_one, smul_eq_mul] at h1
   rw [ha, h1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `only [map_mul, hπe, Pi.mul_apply, Pi.zero_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+-/
 private theorem proj_offdiag_corner_eq_zero {n : ℕ} {k E : Type} [Field k] [Ring E] [Algebra k E]
     (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)) (hπe : ∀ i, π (e i) = Pi.single i 1)
     (i j : Fin n) (hij : i ≠ j) (x : E) : π (e i * x * e j) = 0 := by
@@ -141,6 +189,9 @@ private theorem proj_offdiag_corner_eq_zero {n : ℕ} {k E : Type} [Field k] [Ri
   simp only [map_mul, hπe, Pi.mul_apply, Pi.zero_apply, Pi.single_apply]
   split_ifs with h1 h2 <;> simp_all
 
+/- English proof (translation)
+Establish `h1` using `hce.complete`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+-/
 private theorem eq_sum_idempotent_corners {n : ℕ} {E : Type} [Ring E] (e : Fin n → E)
     (hce : CompleteOrthogonalIdempotents e) (x : E) :
     x = ∑ i, ∑ j, e i * x * e j := by
@@ -151,6 +202,17 @@ private theorem eq_sum_idempotent_corners {n : ℕ} {E : Type} [Ring E] (e : Fin
       refine Finset.sum_congr rfl (fun i _ => ?_)
       rw [Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hid : ∀ l, e l * e l = e l` using `fun l => (hce.1.idem l).eq`. Establish `hexp : e i * ρ (g * h) * e j = ∑ l, (e i * ρ g * e l) * (e l * ρ h * e j)`. Establish `h1 : e i * ρ (g * h) * e j = e i * ρ g * (∑ l, e l) * ρ h * e j`. Rewrite using `[hce.complete, mul_one, map_mul]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[h1, Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hexp, map_sum, Fintype.sum_eq_add i j hij]`. Rewrite using `[idempotent_corner_eq_proj_smul e π hπe hc i (ρ g), idempotent_corner_eq_proj_smul e π hπe hc j (ρ h), hπρ, hπρ]`.
+
+Rewrite using `[smul_mul_assoc, mul_smul_comm, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Establish `t1 : e i * (e i * ρ h * e j) = e i * ρ h * e j`. Simplify using `only [← mul_assoc, hid]`. Establish `t2 : e i * ρ g * e j * e j = e i * ρ g * e j`. Rewrite using `[mul_assoc _ (e j) (e j), hid]`.
+
+Rewrite using `[t1, t2, mul_comm (χ j h : k)]`. Introduce `l hl`. Apply `hf` to reduce the goal to its premises. Apply `Submodule.mul_mem_mul` to reduce the goal to its premises. Rewrite using `[LinearMap.mem_ker, AlgHom.toLinearMap_apply]`.
+
+Conclude with `proj_offdiag_corner_eq_zero e π hπe i l (Ne.symm hl.1) _`. Rewrite using `[LinearMap.mem_ker, AlgHom.toLinearMap_apply]`. Conclude with `proj_offdiag_corner_eq_zero e π hπe l j hl.2 _`.
+-/
 private theorem dual_offdiag_corner_cocycle {n : ℕ} {k E G : Type} [Field k] [Ring E] [Algebra k E] [Group G]
     (χ : Fin n → G →* kˣ) (ρ : G →* E) (e : Fin n → E) (π : E →ₐ[k] (Fin n → k))
     (hπρ : ∀ g i, π (ρ g) i = χ i g) (hce : CompleteOrthogonalIdempotents e)
@@ -184,6 +246,15 @@ private theorem dual_offdiag_corner_cocycle {n : ℕ} {k E G : Type} [Field k] [
     · rw [LinearMap.mem_ker, AlgHom.toLinearMap_apply]
       exact proj_offdiag_corner_eq_zero e π hπe l j hl.2 _
 
+/- English proof (translation)
+Rewrite using `[eq_sum_idempotent_corners e hce x, map_sum]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[idempotent_corner_eq_proj_smul e π hπe hc i x, hx]`. Simplify using the standard rewrite rules. Establish `hle : Submodule.span k (Set.range ρ) ≤ LinearMap.ker (f ∘ₗ (LinearMap.mulLeft k (e i)) ∘ₗ (LinearMap.mulRight k (e j)))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker]`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply]`. Rewrite using `[← mul_assoc]`. Conclude with `hf i j hij g`.
+
+Establish `hx'` using `hle (by rw [hspan]; exact Submodule.mem_top (x := x))`. Rewrite `hx'` using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply] at hx'`. Rewrite using `[mul_assoc]`. Conclude with `hx'`.
+-/
 private theorem dual_vanishes_on_ker_of_offdiag_vanishing {n : ℕ} {k E G : Type} [Field k] [Ring E] [Algebra k E] [Group G]
     (ρ : G →* E) (e : Fin n → E) (π : E →ₐ[k] (Fin n → k))
     (hspan : Submodule.span k (Set.range ρ) = ⊤) (hce : CompleteOrthogonalIdempotents e)
@@ -212,6 +283,23 @@ private theorem dual_vanishes_on_ker_of_offdiag_vanishing {n : ℕ} {k E G : Typ
     rw [mul_assoc]
     exact hx'
 
+/- English proof (translation)
+Use `set J := LinearMap.ker π.toLinearMap with hJdef`. Use `set A := (J * J).dualAnnihilator with hA`. Use `haveI hfin : ∀ p : {p : Fin n × Fin n // p.1 ≠ p.2}, Module.Finite k ↥(Z1 (χ p.1.1) (χ p.1.2)) := fun p => (hM.fin _ _ p.2).1`. Establish `hlc` using `lc_of_ker ρ hker`. Set `Φ : ∀ p : {p : Fin n × Fin n // p.1 ≠ p.2}, Module.Dual k E →ₗ[k] (G → k)` to `fun p => LinearMap.pi (fun g => Module.Dual.eval k E (e p.1.1 * ρ g * e p.1.2))`.
+
+Establish `hmem : ∀ p : {p : Fin n × Fin n // p.1 ≠ p.2}, ∀ f : A, (Φ p ∘ₗ A.subtype) f ∈ Z1 (χ p.1.1) (χ p.1.2)`. Introduce `p f`. Establish `hf : ∀ y ∈ J * J, (f : Module.Dual k E) y = 0` using `(Submodule.mem_dualAnnihilator _).1 f.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hlc.comp (fun v => (f : Module.Dual k E) (e p.1.1 * v * e p.1.2))`.
+
+Introduce `g g'`. Conclude with `dual_offdiag_corner_cocycle χ ρ e π hπρ hce hπe hc (f : Module.Dual k E) hf p.1.1 p.1.2 p.2 g g'`. Set `Ψ : A →ₗ[k] (∀ p : {p : Fin n × Fin n // p.1 ≠ p.2}, ↥(Z1 (χ p.1.1) (χ p.1.2)))` to `LinearMap.pi (fun p => LinearMap.codRestrict _ (Φ p ∘ₗ A.subtype) (hmem p))`. Establish `hkerin : ∀ f : ↥(LinearMap.ker Ψ), ((f : A) : Module.Dual k E) ∈ J.dualAnnihilator`. Introduce `f`.
+
+Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `x hx`. Establish `h0 : Ψ (f : A) = 0` using `f.2`. Use `dual_vanishes_on_ker_of_offdiag_vanishing ρ e π hspan hce hπe hc _ ?_ x hx` and prove the remaining obligations. Introduce `i j hij g`.
+
+Establish `h1` using `congrArg (fun F => ((F ⟨(i, j), hij⟩ : ↥(Z1 (χ i) (χ j))) : G → k) g) h0`. Conclude with `h1`. Set `ι : ↥(LinearMap.ker Ψ) →ₗ[k] ↥(J.dualAnnihilator)` to `LinearMap.codRestrict _ (A.subtype ∘ₗ (LinearMap.ker Ψ).subtype) hkerin`. Establish `hι : Function.Injective ι`. Introduce `a b hab`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg Subtype.val hab`. Conclude with `h2`. Establish `e1` using `LinearMap.finrank_range_add_finrank_ker Ψ`.
+
+Establish `e2` using `LinearMap.finrank_le_finrank_of_injective hι`. Establish `e3` using `Subspace.finrank_add_finrank_dualAnnihilator_eq (J * J)`. Establish `e4` using `Subspace.finrank_add_finrank_dualAnnihilator_eq J`. Establish `e5 : Module.finrank k ↥(LinearMap.range Ψ) ≤ n * n * h`. Use `(Submodule.finrank_le _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.finrank_pi_fintype]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `e3` using `[← hA]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem finrank_ker_le_finrank_ker_sq_add {n h : ℕ} {k E G : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E]
     [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (χ : Fin n → G →* kˣ) (ρ : G →* E) (e : Fin n → E) (π : E →ₐ[k] (Fin n → k))
@@ -270,6 +358,31 @@ private theorem finrank_ker_le_finrank_ker_sq_add {n h : ℕ} {k E G : Type} [Fi
   rw [← hA] at e3
   omega
 
+/- English proof (translation)
+Introduce `n h k E G _ _ _ _ _ _ _ χ ρ e π hM hker hspan hπρ hce hπe hc`. Take `⟨hA, hB⟩` from `f_nil e π hce hπe hc`. Consider the cases of `n with`. Consider the case `zero`. Establish `h01 : (1 : E) = 0`.
+
+Use `hce.complete` as an intermediate fact. Simplify using `using this.symm`. Use `haveI : Subsingleton E := subsingleton_of_zero_eq_one h01.symm`. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Conclude with `Nat.zero_le _`.
+
+Consider the case `succ m => set J := LinearMap.ker π.toLinearMap with hJdef`. Establish `hmemJ : ∀ x, x ∈ J ↔ π x = 0`. Introduce `x`. Rewrite using `[hJdef, LinearMap.mem_ker, AlgHom.toLinearMap_apply]`. Establish `hnil : J ^ (m + 1) = ⊥`.
+
+Rewrite using `[Submodule.pow_eq_span_pow_set, Submodule.span_eq_bot]`. Introduce `a ha`. Take `⟨f, hf⟩` from `Set.mem_pow.1 ha`. Rewrite using `[← hf]`. Conclude with `hB (fun s => (f s : E)) (fun s => (hmemJ _).1 (f s).2)`.
+
+Establish `hJJ : J * J ≤ J`. Rewrite using `[Submodule.mul_le]`. Introduce `a ha b _`. Rewrite `ha`, the goal using `[hmemJ]`. Rewrite using `[map_mul, ha, zero_mul]`.
+
+Establish `hdim` using `finrank_ker_le_finrank_ker_sq_add χ ρ e π hM hker hspan hπρ hce hπe hc`. Rewrite `hdim` using `[← hJdef]`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl ((J * J).comap J.subtype)`. Use `set V := q.map J.subtype with hVdef`. Establish `hV : V ≤ J` using `Submodule.map_subtype_le J q`.
+
+Establish `hJV : J ≤ V ⊔ J * J`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : J) ∈ (J * J).comap J.subtype ⊔ q`. Rewrite using `[hq.sup_eq_top]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hx'`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(b : E), Submodule.mem_map_of_mem hb, (a : E), ha, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `only [Submodule.coe_add] at this`.
+
+Rewrite using `[add_comm]`. Conclude with `this`. Establish `hfq : Module.finrank k ↥V = Module.finrank k ↥q` using `Submodule.finrank_map_subtype_eq J q`. Establish `hfc` using `Submodule.finrank_add_eq_of_isCompl hq`. Establish `hfL : Module.finrank k ↥((J * J).comap J.subtype) = Module.finrank k ↥(J * J)`.
+
+Rewrite using `[← Submodule.finrank_map_subtype_eq J, Submodule.map_comap_subtype, inf_eq_right.2 hJJ]`. Establish `hVd : Module.finrank k ↥V ≤ (m + 1) ^ 2 * h`. Rewrite using `[sq]`. Use linear arithmetic over natural numbers and integers. Establish `hfn` using `fr_nil J V hV hJV ((m + 1) ^ 2 * h) hVd m`.
+
+Rewrite `hfn` using `[hnil, finrank_bot, add_zero]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker π.toLinearMap`. Establish `hr : Module.finrank k ↥(LinearMap.range π.toLinearMap) ≤ m + 1`. Use `(Submodule.finrank_le _).trans ?_` and prove the remaining obligations. Rewrite using `[Module.finrank_fin_fun]`.
+
+Rewrite `hrn` using `[← hJdef]`. Unfold `finBound`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.CA.f_cot :
     ∀ {n h : ℕ} {k E G : Type} [Field k] [Ring E] [Algebra k E] [Module.Finite k E] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (χ : Fin n → G →* kˣ) (ρ : G →* E) (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)), MultFree χ h → IsOpen (ρ.ker : Set G) → Submodule.span k (Set.range ρ) = ⊤ → (∀ g i, π (ρ g) i = χ i g) → CompleteOrthogonalIdempotents e → (∀ i, π (e i) = Pi.single i 1) → (∀ i x, ∃ a : k, e i * x * e i = a • e i) → Module.finrank k E ≤ finBound n h := by
   intro n h k E G _ _ _ _ _ _ _ χ ρ e π hM hker hspan hπρ hce hπe hc

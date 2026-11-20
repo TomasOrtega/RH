@@ -16,20 +16,40 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 abbrev plusR (l : ℕ) [Fact l.Prime] : Subring (Per.BdR l) := (algebraMap (Per.BdRp l) (Per.BdR l)).range
 
+/- English proof (translation)
+Take `⟨i, hi, -⟩` from `GlobalTheory.CrisIncl.exists_restrict l _ T.incl`. Conclude with `⟨_, (hi ((GlobalTheory.MemLoc.phiA l ^ j) a)).symm⟩`.
+-/
 theorem eD_uj_mem (T : LocTied l P AI) (j : ℕ) (a : Per.Acris l) : T.eD (uj T j a) ∈ plusR l := by
   obtain ⟨i, hi, -⟩ := GlobalTheory.CrisIncl.exists_restrict l _ T.incl
   exact ⟨_, (hi ((GlobalTheory.MemLoc.phiA l ^ j) a)).symm⟩
 
+/- English proof (translation)
+Take `⟨y, hy, -⟩` from `T.om x`. Conclude with `⟨y, hy.symm⟩`.
+-/
 theorem eD_om_mem (T : LocTied l P AI) (x : Om l) : T.eD (algebraMap (Om l) P.R.BdR x) ∈ plusR l := by
   obtain ⟨y, hy, -⟩ := T.om x
   exact ⟨y, hy.symm⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(GlobalTheory.RingBasics.isUnit_l l).exists_right_inv`. Use `⟨algebraMap (Per.BdRp l) (Per.BdR l) (algebraMap (Per.AinfP l) (Per.BdRp l) v), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg ((algebraMap (Per.BdRp l) (Per.BdR l)).comp (algebraMap (Per.AinfP l) (Per.BdRp l))) hv`. Rewrite `h` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis.
+-/
 theorem l_inv_mem (l : ℕ) [Fact l.Prime] : ∃ u ∈ plusR l, (l : Per.BdR l) * u = 1 := by
   obtain ⟨v, hv⟩ := (GlobalTheory.RingBasics.isUnit_l l).exists_right_inv
   refine ⟨algebraMap (Per.BdRp l) (Per.BdR l) (algebraMap (Per.AinfP l) (Per.BdRp l) v), ⟨_, rfl⟩, ?_⟩
   have h := congrArg ((algebraMap (Per.BdRp l) (Per.BdR l)).comp (algebraMap (Per.AinfP l) (Per.BdRp l))) hv
   rwa [map_mul, map_natCast, map_one] at h
 
+/- English proof (translation)
+Introduce `l _ P AI T K j s h b`. Set `f : BK K →+* Per.BdR l` to `T.eD.toRingHom.comp (conj T K j s h)`. Establish `hz : ∀ z : CK K, f (toB K z) ∈ plusR l` using `fun z => by`. Proceed by induction on `z using GlobalTheory.AcrisK.induction_on with`. Consider the case `mul a c`.
+
+Rewrite using `[map_mul, map_mul]`. Use `mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `eD_uj_mem T j a |> fun h' => by`. Simplify `h'` using `only [f, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, conj_inC]`. Rewrite using `[← inK_oK]`.
+
+Simplify `eD_om_mem T (s (oK K c))` using `only [f, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, conj_inK]`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Take `⟨D, z, hD⟩` from `exists_pow_mul b`. Take `⟨u, hu, hlu⟩` from `l_inv_mem l`.
+
+Establish `e : f b = u ^ D * f (toB K z)`. Rewrite using `[← hD, map_mul, map_pow, map_natCast, ← mul_assoc, ← mul_pow, mul_comm u, hlu, one_pow, one_mul]`. Establish `hm : f b ∈ plusR l` using `e ▸ mul_mem (pow_mem hu D) (hz z)`. Take `⟨y, hy⟩` from `hm`. Rewrite using `[T.fil]`.
+
+Express the relevant statement in the definitionally equal form `f b ∈ Per.FilD l 0`. Rewrite using `[← hy]`. Conclude with `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero y`.
+-/
 theorem conj_mem_Fil_zero : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K : FinExt l) (j : ℕ) (s : ↥K.1 →ₐ[ℚ_[l]] Om l) (h : Compat T K j s) (b : BK K),
     conj T K j s h b ∈ (P.PD K).Fil 0 := by

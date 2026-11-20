@@ -21,6 +21,11 @@ namespace GlobalTheory.FlatProdValue
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixT, heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixT_smul' {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D ρ S.rank)) (𝓕 : Set (Mx D ρ S.rank)) (c : ℂ) (f : WO S T → ℂ) (y : Mx D S.rank ρ) :
     d.mixT S ψ μ 𝓕 (c • f) y = c • d.mixT S ψ μ 𝓕 f y := by
@@ -29,6 +34,11 @@ theorem mixT_smul' {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (ψ : Ad
   rw [← integral_const_mul]
   congr 1; funext ξ; ring
 
+/- English proof (translation)
+Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc : Continuous fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hu : Continuous fun u : UX D ρ => upSum (u.1.1 : Mx D ρ ρ)`. Unfold `upSum`.
+
+Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hc)`. Conclude with `continuous_const`. Conclude with `hψ.comp (ht.comp hu)`.
+-/
 theorem continuous_psiUni' {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) (ρ : ℕ) :
     Continuous fun u : UX D ρ => psiUni ψ u.1 := by
   have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -42,6 +52,25 @@ theorem continuous_psiUni' {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ
     · exact continuous_const
   exact hψ.comp (ht.comp hu)
 
+/- English proof (translation)
+Introduce `D ψ hψ V V₀ W W₀ ρ σ dV dW s x y β₁ β₂ g g' Φ hg hβy hS hT hβc hβx hβ0 hpos hcs`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Use `haveI : (s.vU.ν).IsHaarMeasure := s.vU.unit.1`. Take `⟨w, hw⟩` from `Function.ne_iff.1 hg`.
+
+Use `set F : UX D ρ → ℂ := fun u => star (psiUni ψ u.1) * (β₁ (x ⬝ u.1.1) : ℂ) with hF`. Establish `hval : flatS dV dW s x y Φ w = (∫ u, F u ∂s.vU.ν) * (β₂ y * g w)`. Simplify using `only [flatS, flatAt, flatFun, evalAt, hS, mixT_smul', hT, Pi.smul_apply, smul_eq_mul, hF]`. Rewrite using `[← integral_mul_const]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Establish `hxc : Continuous fun u : UX D ρ => x ⬝ u.1.1` using `continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)`. Establish `hβc' : Continuous fun u : UX D ρ => β₁ (x ⬝ u.1.1)` using `hβc.comp hxc`. Establish `hFc : Continuous F` using `(continuous_star.comp (continuous_psiUni' hψ.1.1 ρ)).mul (Complex.continuous_ofReal.comp hβc')`.
+
+Establish `hFs : HasCompactSupport F`. Establish `: HasCompactSupport fun u : UX D ρ => (β₁ (x ⬝ u.1.1) : ℂ)` using `hcs.comp_left Complex.ofReal_zero`. Conclude with `this.mul_left`. Establish `hFi : Integrable F s.vU.ν` using `hFc.integrable_of_hasCompactSupport hFs`. Establish `hre : ∀ u, (F u).re = (star (psiUni ψ u.1)).re * β₁ (x ⬝ u.1.1)`.
+
+Introduce `u`. Simplify using `[hF, Complex.mul_re]`. Establish `hpos' : 0 < ∫ u, (F u).re ∂s.vU.ν`. Establish `hrc : Continuous fun u => (F u).re` using `Complex.continuous_re.comp hFc`. Establish `hrs : HasCompactSupport fun u => (F u).re` using `hFs.comp_left Complex.zero_re`.
+
+Use `hrc.integral_pos_of_hasCompactSupport_nonneg_nonzero hrs (x := 1) ?_ ?_` and prove the remaining obligations. Introduce `u`. Simplify using `only [Pi.zero_apply, hre]`. Distinguish the cases in `h0 : β₁ (x ⬝ u.1.1) = 0`. Rewrite using `[h0, mul_zero]`.
+
+Conclude with `mul_nonneg (hpos u h0).le (hβ0 _)`. Establish `h1 : x ⬝ ((1 : UX D ρ).1.1) = x` using `by simp`. Rewrite using `[hre, h1, hβx, mul_one]`. Use `hpos 1 (by rw [h1, hβx]; exact one_ne_zero)` as an intermediate fact. Conclude with `this.ne'`.
+
+Establish `hI : (∫ u, F u ∂s.vU.ν) ≠ 0`. Introduce `h0`. Establish `e : ∫ u, (F u).re ∂s.vU.ν = (∫ u, F u ∂s.vU.ν).re` using `integral_re hFi`. Rewrite `e` using `[h0, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `h0`. Use `congrFun h0 w` as an intermediate fact. Rewrite `this` using `[hval, Pi.zero_apply]`. Conclude with `mul_ne_zero hI (mul_ne_zero hβy hw) this`.
+-/
 theorem flatS_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (s : Step ψ V V₀ W W₀ ρ σ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ) (β₁ : Mx D W.rank ρ → ℝ) (β₂ : Mx D V₀.rank σ → ℂ) (g : WO V₀ W₀ → ℂ) (g' : WO V₀ W → ℂ) (Φ : WO V W → ℂ), g ≠ 0 → β₂ y ≠ 0 → (∀ x', dV.mixS W ψ s.vS.μ s.vS.𝓕 Φ x' = (β₁ x' : ℂ) • g') → (∀ y', dW.mixT V₀ ψ s.vT.μ s.vT.𝓕 g' y' = β₂ y' • g) → Continuous β₁ → β₁ x = 1 → (∀ z, 0 ≤ β₁ z) → (∀ u : UX D ρ, β₁ (x ⬝ u.1.1) ≠ 0 → 0 < (star (psiUni ψ u.1)).re) → HasCompactSupport (fun u : UX D ρ => β₁ (x ⬝ u.1.1)) → flatS dV dW s x y Φ ≠ 0 := by
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW s x y β₁ β₂ g g' Φ hg hβy hS hT hβc hβx hβ0 hpos hcs
   haveI : BorelSpace (UX D ρ) := ⟨rfl⟩

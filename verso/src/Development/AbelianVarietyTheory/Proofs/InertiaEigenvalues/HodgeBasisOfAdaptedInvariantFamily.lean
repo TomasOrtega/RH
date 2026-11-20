@@ -16,6 +16,33 @@ open GlobalTheory.HodgeAt
 
 namespace GlobalTheory.HodgeAt
 
+/- English proof (translation)
+Introduce `l _ P AI T C hFit ξ hξ K K' a ρ w k hw hspan hinv`. Use `set ι := algebraMap (Per.BdRp l) (Per.BdR l) with hι`. Take `⟨-, hinj, -, -⟩` from `BdRField.bdR_isField l`. Establish `hE : IsUnit (ι (aDp l ξ))`. Establish `hxiker : xi C.ε ∈ Ideal.span {ξ}`.
+
+Rewrite using `[hξ, C.ker_theta]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨c0, hc0⟩` from `Ideal.mem_span_singleton'.1 hxiker`. Establish `h1` using `GlobalTheory.MemLoc.TiedUnif.isUnit_xi (core_isEps l C)`. Rewrite `h1` using `[← hc0, map_mul, map_mul]`.
+
+Conclude with `isUnit_of_mul_isUnit_right h1`. Use `set q : ℕ := ∑ i, (k i).natAbs with hq`. Establish `hkq : ∀ i, 0 ≤ k i + q`. Introduce `i`. Establish `h1 : (k i).natAbs ≤ q` using `Finset.single_le_sum (f := fun i => (k i).natAbs) (by simp) (Finset.mem_univ i)`.
+
+Use linear arithmetic over natural numbers and integers. Use `set p : Fin a → ℕ := fun i => (k i + q).toNat with hp`. Establish `hkp : ∀ i, k i + q = (p i : ℤ)` using `fun i => (Int.toNat_of_nonneg (hkq i)).symm`. Establish `hV0 : ∀ i j, ∃ v : Per.BdRp l, ι (aDp l ξ) ^ q * T.eD (w j i) = ι (aDp l ξ ^ p j * v)` using `fun i j => exists_xi_pow_mul l P AI T C ξ hξ K (k j) q (p j) (hkp j) (w j i) (hw j i)`. Take `⟨V, hV⟩ : ∃ V : Matrix (Fin a) (Fin a) (Per.BdRp l), ∀ i j, ι (aDp l ξ) ^ q * T.eD (w j i) = ι (aDp l ξ ^ p j * V i j)` from `⟨fun i j => Classical.choose (hV0 i j), fun i j => Classical.choose_spec (hV0 i j)⟩`.
+
+Use `choose u hu hsum using hspan`. Establish `hz0 : ∀ j i, ∃ z : Per.BdRp l, ι (aDp l ξ) ^ p i * T.eD (u j i) = ι (aDp l ξ ^ q * z)` using `fun j i => exists_xi_pow_mul l P AI T C ξ hξ K (-k i) (p i) q (by have := hkp i; omega) (u j i) (hu j i)`. Use `choose z hz using hz0`. Establish `key : ∀ j j', ∑ i, z j i * V j' i = if j' = j then 1 else 0`. Introduce `j j'`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `hs` using `congrFun (hsum j) j'`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hs`. Establish `h1 : ι (aDp l ξ) ^ q * ι (∑ i, z j i * V j' i) = ι (aDp l ξ) ^ q * T.eD (∑ i, u j i * w i j')`. Rewrite using `[map_sum, map_sum, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `ha` using `hV j' i`. Establish `hb` using `hz j i`. Simplify using `only [map_mul, map_pow] at ha hb ⊢`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[(hE.pow q).mul_left_cancel h1, hs, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `set N : Matrix (Fin a) (Fin a) (Per.BdRp l) := Matrix.of fun i j => z j i with hN`. Establish `hVN : V * N = 1`. Use extensionality with `j' j`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.one_apply, ← key j j']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hN, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hNV : N * V = 1` using `mul_eq_one_comm.1 hVN`.
+
+Use `⟨⟨V, ⟨⟨V, N, hVN, hNV⟩, rfl⟩, p, q, Matrix.of fun i j => T.eD (w j i), fun i j => by simpa using hV i j, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use extensionality with `r c`. Establish `h` using `congrArg T.eD (congrFun (hinv g hg c) r)`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, T.actD, hFit.o] at h`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify `h` using `[Matrix.map_apply, Matrix.of_apply, GlobalTheory.MemLoc.Core.oD]`. Introduce `n`. Establish `hf : (Finset.univ.filter fun i => ((p i : ℕ) : ℤ) - (q : ℤ) = n) = Finset.univ.filter fun i => k i = n`. Use extensionality with `i`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `hkp i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show ((Finset.univ.filter fun i => ((p i : ℕ) : ℤ) - (q : ℤ) = n).card : ℤ) = _`. Rewrite using `[hf, Finset.card_filter]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem hodge_of_adapted : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (ξ : Ainf l), Ideal.span {ξ} = RingHom.ker (Per.θ l) → ∀ (K K' : FinExt l) (a : ℕ) (ρ : ↥(GK K) → Matrix (Fin a) (Fin a) (Om l)) (w : Fin a → Fin a → P.R.BdR) (k : Fin a → ℤ), (∀ i j, w i j ∈ (P.PD K).Fil (k i)) → (∀ j, ∃ u : Fin a → P.R.BdR, (∀ i, u i ∈ (P.PD K).Fil (-k i)) ∧ ∑ i, u i • w i = Pi.single j 1) → (∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → ∀ i, (ρ g).map (algebraMap (Om l) P.R.BdR) *ᵥ (fun j => P.actQdR (g : GQ l) (w i j)) = w i) → ∃ H : Hodge C ξ ρ K', ∀ n : ℤ, ((Finset.univ.filter fun i => (H.p i : ℤ) - H.q = n).card : ℤ) = ∑ i, if k i = n then 1 else 0 := by
   intro l _ P AI T C hFit ξ hξ K K' a ρ w k hw hspan hinv
   classical

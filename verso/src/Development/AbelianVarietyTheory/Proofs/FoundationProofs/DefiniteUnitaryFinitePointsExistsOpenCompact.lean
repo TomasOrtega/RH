@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.DefU.FinCompact
 
+/- English proof (translation)
+Introduce `E _ _ _ n`. Take `⟨U0, hU0o, hU0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E n`. Set `p : finU E n →* GL (Fin n) (Af E)` to `(GeneralLinearGroup.map (pFin E)).comp ((UA E n).subtype.comp (finU E n).subtype)`. Establish `hp : Continuous p` using `continuous_map_pFin.comp (continuous_subtype_val.comp continuous_subtype_val)`. Set `K : Subgroup (finU E n)` to `U0.comap p`.
+
+Establish `hKo : IsOpen (K : Set (finU E n))` using `hU0o.preimage hp`. Use `haveI := GlobalTheory.DefU.LocAdm.t2Space_adelicGL_cmField (E := E) (n := n)`. Establish `hfc : IsClosed ((finU E n : Subgroup (UA E n)) : Set (UA E n))` using `by haveI : T2Space (GL (Fin n) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hc` using `GlobalTheory.CuspRep.ContAut.continuous_map_pInf E n`. Conclude with `isClosed_eq (hc.comp continuous_subtype_val) continuous_const`.
+
+Establish `hι : Topology.IsClosedEmbedding (fun x : finU E n => ((x : UA E n) : GA E n))` using `GlobalTheory.DefU.LocAdm.isClosed_UA.isClosedEmbedding_subtypeVal.comp hfc.isClosedEmbedding_subtypeVal`. Use `⟨K, hKo, IsCompact.of_isClosed_subset (hι.isCompact_preimage (hU0c.image GlobalTheory.DefU.LocAdm.continuous_finGL)) (Subgroup.isClosed_of_isOpen K hKo) fun x hx => ⟨p x, hx, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E n) : GA E n) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+-/
 theorem exists_open_compact : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ),
     ∃ K : Subgroup (finU E n), IsOpen (K : Set (finU E n)) ∧ IsCompact (K : Set (finU E n)) := by
   intro E _ _ _ n

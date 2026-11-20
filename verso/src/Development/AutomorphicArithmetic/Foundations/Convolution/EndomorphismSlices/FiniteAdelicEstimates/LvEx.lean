@@ -15,6 +15,15 @@ set_option synthInstance.maxHeartbeats 200000
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Introduce `E _ _ _ a b Z φ h`. Establish `key : ∀ w : Pl E, ∃ (A : Subgroup (GLw a w)) (B : Subgroup (GLw b w)), IsOpen (A : Set (GLw a w)) ∧ IsOpen (B : Set (GLw b w)) ∧ A ≤ KGL w a ∧ B ≤ KGL w b ∧ (w ∉ Z → A = KGL w a ∧ B = KGL w b) ∧ (w ∈ Z → IsHecke (A.prod B) (φ w))`. Introduce `w`. Distinguish the cases in `hw : w ∈ Z`. Take `⟨K', ho, hle, hH⟩` from `h w hw`.
+
+Use `⟨K'.comap (MonoidHom.inl _ _), K'.comap (MonoidHom.inr _ _), ?_, ?_, ?_, ?_, fun h' => absurd hw h', fun _ => ⟨hH.1, ?_⟩⟩` and prove the remaining obligations. Conclude with `ho.preimage (continuous_id.prodMk continuous_const)`. Conclude with `ho.preimage (continuous_const.prodMk continuous_id)`. Introduce `x hx`. Conclude with `(hle hx).1`.
+
+Introduce `y hy`. Conclude with `(hle hy).2`. Introduce and unpack `⟨x, y⟩ ⟨hx, hy⟩ g`. Establish `hxy : ((x, y) : GLw a w × GLw b w) ∈ K'`. Use `K'.mul_mem hx hy` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `hH.2 _ hxy g`. Conclude with `⟨KGL w a, KGL w b, (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1, (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1, le_rfl, le_rfl, fun _ => ⟨rfl, rfl⟩, fun h' => absurd h' hw⟩`. Use `choose A B hA hB hA' hB' hoff hfix using key`. Conclude with `⟨⟨A, B, hA, hB, hA', hB', hoff⟩, hfix⟩`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.lvEx :
     UpperTheory.Zero.ConvolutionTheory.EB.LvEx := by
   intro E _ _ _ a b Z φ h

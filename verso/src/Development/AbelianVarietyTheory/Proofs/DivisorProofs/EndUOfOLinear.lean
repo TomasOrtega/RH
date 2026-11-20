@@ -17,6 +17,41 @@ section Pts
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 variable {O : Type} [Ring O] [StarRing O] [Module O D.X]
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `hr` using `oa.onB.rosati (star a)`. Establish `hbal` using `oa.tau_bal (star a)`. Rewrite `hr`, `hbal` using `[star_star]`.
+
+Take `⟨u, hu, u₀⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ hr`. Establish `cf : ∀ (T) (x : O) χ, cP D T (x • χ) = cP D T χ ≫ oa.onB.act x` using `fun T x χ => by`. Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression. Establish `ra` using `fun {y : (TF (R := R) F).left} {J} (hJ : Good D.P.L y J) => ros_add D.cub hG D.P.isAb _ _ u hu u₀ (T := TF (R := R) F) hJ`.
+
+Establish `vu : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ x w : TF (R := R) F ⟶ D.P.A, val (LB.pullGen D.P.L _ _ u (lift x w).left) (𝟙 _) y J = val₂ u y J x w := fun hJ x w => by`. Rewrite using `[val_pull hJ, Category.id_comp]`. Both sides reduce to the same expression. Establish `u₁ : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ w, val₂ u y J 1 w = 1 := fun {y J} hJ w => by`. Establish `C : IsCub (cubV D.cub y J)` using `isCub_cubV D.cub hJ`.
+
+Establish `e` using `(ra hJ 1 1 w).1`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Conclude with `mul_eq_left.1 e.symm`. Establish `u₂ : ∀ {y : (TF (R` using `R) F).left} {J}, Good D.P.L y J → ∀ w, val₂ u y J w 1 = 1 := fun {y J} hJ w => by`. Establish `C : IsCub (cubV D.cub y J)` using `isCub_cubV D.cub hJ`.
+
+Establish `e` using `(ra hJ 1 1 w).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Conclude with `mul_eq_left.1 e.symm`. Establish `ex : ∀ g : GtPtF D F, ∃ g' : GtPtF D F, g'.b = g.b ≫ oa.onB.act a ∧ ∀ χ y J, Good D.P.L y J → val (g'.s χ) (𝟙 _) y J = val (g.s (star a • χ)) (𝟙 _) y J * val₂ u y J (cP D _ χ) g.b`. Introduce `g`.
+
+Establish `vv : ∀ χ y J, Good D.P.L y J → val (LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (𝟙 _) y J = val (g.s (star a • χ)) (𝟙 _) y J * val₂ u y J (cP D _ χ) g.b` using `fun χ y J hJ => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (vu hJ _ _))`. Take `⟨g', hb, hv⟩` from `exists_gt (g.b ≫ oa.onB.act a) (fun χ => LB.mulGen D.P.L _ _ _ _ (g.s (star a • χ)) (LB.pullGen D.P.L _ _ u (lift (cP D _ χ) g.b).left)) (fun χ => mulGen_isGen _ _ _ _ _ _ _ (g.isGen _) (pullGen_isGen _ _ _ _ hu _)) (fun χ U _ h => by`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 6) (U := U) _ (prod_gt g.b (star a • χ) h) (prod_ros _ _ (cP D _ χ) g.b h)).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gt, cf]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel) (fun y J hJ => by`. Rewrite using `[vv 0 y J hJ, smul_zero, cPoint_zero, u₁ hJ, _root_.mul_one]`. Conclude with `(val_corr hJ g.s_zero _).trans (val_one _)) (fun χ χ' y J hJ => by`. Establish `e₁` using `(ra hJ (cP D _ χ) (cP D _ χ') g.b).1`.
+
+Establish `e₂` using `gt_mul (𝟙 (TF (R := R) F)) hJ g (star a • χ) (star a • χ')`. Rewrite `e₂` using `[Category.id_comp, cf, cf, Over.id_left]`. Rewrite using `[vv _ y J hJ, vv _ y J hJ, vv _ y J hJ, smul_add, cPoint_add, _root_.mul_assoc]`. Use `(congrArg _ e₁).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`.
+
+Conclude with `(congrArg (· * _) e₂).trans (mul_mul_mul_comm _ _ _ _))`. Conclude with `⟨g', hb, fun χ y J hJ => (hv χ y J hJ).trans (vv χ y J hJ)⟩`. Use `choose act hb hv using ex`. Establish `add : ∀ g g' g'' : GtPtF D F, g.IsAdd g' g'' → (act g).IsAdd (act g') (act g'')` using `fun g g' g'' h => by`. Take `⟨b₁, v₁⟩` from `(isAdd_iff _ _ _).1 h`.
+
+Use `(isAdd_iff _ _ _).2 ⟨by rw [hb, hb, hb, b₁, MonObj.mul_comp], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁` using `(ra hJ g.b g'.b (cP D _ χ)).2`. Establish `e₂` using `v₁ (star a • χ) y J hJ`. Rewrite `e₂` using `[cf]`. Rewrite `e₁` using `[← b₁]`.
+
+Rewrite using `[hv _ _ y J hJ, hv _ _ y J hJ, hv _ _ y J hJ, hb, hb, _root_.mul_assoc]`. Use `(congrArg _ e₁).trans ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc]`. Conclude with `(congrArg (· * _) e₂).trans (mul_mul_mul_comm _ _ _ _)`. Take `⟨h, ⟨gs, g₀, gst, gl⟩, hι⟩` from `p.eq`.
+
+Take `⟨ιb, ιv⟩` from `(isIota_iff _ _).1 hι`. Set `q : QkPt D F k` to `⟨a • p.y, act p.g, act h, ⟨fun i => act (gs i), by`. Take `⟨z₁, z₂⟩` from `(isZero_iff _).1 g₀`. Conclude with `(isZero_iff _).2 ⟨by rw [hb, z₁, MonObj.one_comp], fun χ y J hJ => by`. Rewrite using `[hv _ _ y J hJ, z₂ _ y J hJ, z₁, u₂ hJ, _root_.mul_one]⟩,`.
+
+Use `fun i => add _ _ _ (gst i), congrArg act gl⟩, (isIota_iff _ _).2 ⟨by rw [hb, ιb, cf], fun χ y J hJ => by`. Set `κ : TF (R` to `R) F ⟶ TK R := Over.homMk (𝟙 _ ≫ jFK (R := R) F) (by`. Rewrite using `[Category.id_comp]`. Use the proof step `rfl)`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hbal u hu u₀ χ p.y) κ.left)`.
+
+Establish `e' : val (LB.pullGen D.P.L _ _ u (D.pt2 χ p.y)) κ.left y J = val₂ u y J (cP D _ χ) (cP D _ p.y)`. Rewrite using `[val_pull hJ, val₂, ← comp_cP D κ, ← comp_cP D κ p.y, ← comp_lift]`. Both sides reduce to the same expression. Rewrite using `[hv _ _ y J hJ, ιv _ y J hJ, ιb, ← e']`. Conclude with `(congrArg₂ (· * ·) (tau_symm (𝟙 (TF (R := R) F)) hJ _ _) rfl).trans (e.trans (tau_symm (𝟙 (TF (R := R) F)) hJ _ _))⟩⟩`.
+
+Use `⟨q, rfl, hb _, fun u' hu' u₀' χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) rfl ?_) (hv p.g χ y J hJ).symm)` and prove the remaining obligations. Rewrite using `[val_pull hJ, Category.id_comp]`. Establish `z2 : zero2 D.P.A ≫ (snd D.P.A D.P.A).left ≫ D.P.A.hom = 𝟙 _`. Rewrite using `[Over.w]`.
+
+Conclude with `Over.w (lift η[D.P.A] η[D.P.A])`. Conclude with `gen_unique D.P.isLB _ (zero2 D.P.A) z2 (surj_comp (surj_snd hG D.P.isAb _) (hG _ _ D.P.isAb).2) hu' hu (fun y I hI => by`. Establish `a₁` using `val_corr hI u₀' (𝟙 _)`. Establish `a₂` using `val_corr hI u₀ (𝟙 _)`. Rewrite `a₁`, `a₂` using `[val_pull hI, Category.id_comp]`.
+
+Conclude with `a₁.trans a₂.symm) _ _ y J hJ`.
+-/
 theorem exists_gtPtAct (hG : GlobalFnsSt) (oa : D.OAct O) {k : ℕ} (a : O) (p : QkPt D F k) :
     ∃ q : QkPt D F k, q.y = a • p.y ∧ GtPtAct oa a p.g q.g := by
   have := oa.onB.hom a
@@ -112,6 +147,19 @@ end Pts
 section End
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Establish `cf : ∀ (T) (x : O) χ, cP D T (x • χ) = cP D T χ ≫ oa.onB.act x` using `fun T x χ => by`. Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression.
+
+Take `⟨v, hv, vv⟩` from `exists_gen D.P.isLB (φ' := Sum.elim (D.Oφ (𝟙 _) (star a • χ)) (D.Oφ (oa.onB.act a) χ)) (ε' := Sum.elim Oε Oinvε) (fun U _ h => by`. Use `(prod_ros _ _ (cP D _ χ) (𝟙 D.P.A) h).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_Oφ D (𝟙 _) (star a • χ) h) (prod_Oφ_inv D (oa.onB.act a) χ h)).trans ?_` and prove the remaining obligations. Rewrite using `[cf, Category.id_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.pullGen D.P.L _ _ u (lift (cP D D.P.A χ) (𝟙 D.P.A)).left) (pullGen_isGen _ _ _ _ hu _)`. Establish `key : ∀ (T : Over (Spec (CommRingCat.of R))) (x : T ⟶ D.P.A) (Z : Scheme.{0}) (r : Z ⟶ T.left) (z : Z) (J), Good D.P.L z J → val v (r ≫ x.left) z J = val u (r ≫ (lift (cP D T χ) x).left) z J` using `fun T x Z r z J hJ => by`. Rewrite using `[vv Z _ z J hJ, val_pull hJ, Category.assoc, ← Over.comp_left, comp_lift, comp_cP, Category.comp_id]`.
+
+Use `⟨v, ⟨hv, corr_of_val D.P.isLB fun y J hJ => ?_⟩, key⟩` and prove the remaining obligations. Establish `C : IsCub (cubV D.cub (T` using `𝟙_ (Over (Spec (CommRingCat.of R)))) y J) := isCub_cubV D.cub hJ`. Establish `e` using `(ros_add D.cub hG D.P.isAb _ _ u hu u₀ (T := 𝟙_ (Over (Spec (CommRingCat.of R)))) hJ 1 1 (cP D _ χ)).2`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face₃, C.face₃, _root_.mul_one, _root_.one_mul]`. Establish `e' : val₂ u (T` using `𝟙_ (Over (Spec (CommRingCat.of R)))) y J (cP D _ χ) 1 = 1 := mul_eq_left.1 e.symm`.
+
+Establish `k` using `key (𝟙_ (Over (Spec (CommRingCat.of R)))) 1 _ (𝟙 _) y J hJ`. Establish `o : (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A).left = eSec D.P.A`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Rewrite `k` using `[o]`.
+
+Use `(val_pull hJ _ _ _).trans (k.trans (Eq.trans ?_ (val_one _).symm))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `e'`.
+-/
 theorem exists_u (hG : GlobalFnsSt) (D : DegPre R) {O : Type} [Ring O] [StarRing O] [Module O D.X] (oa : D.OAct O)
     (a : O) (u : LB.Gen (LB.LinComb D.P.L (rosatiφ D.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε)) (hu : u.IsGen)
     (u₀ : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u (zero2 D.P.A)) (LB.oneGen D.P.L)) (χ : D.X) :
@@ -149,6 +197,15 @@ theorem exists_u (hG : GlobalFnsSt) (D : DegPre R) {O : Type} [Ring O] [StarRing
   rw [Category.id_comp]
   exact e'
 
+/- English proof (translation)
+Introduce `hL R _ _ _ I _ D A G _ _ _ U O _ _ _ ιD ιA ιG hO a`. Establish `hG` using `hL.1.globalFns`. Use `ιD.onB.hom a` as an intermediate fact. Use `ιD.onB.hom (star a)` as an intermediate fact. Establish `hr` using `ιD.onB.rosati (star a)`.
+
+Rewrite `hr` using `[star_star]`. Take `⟨u, hu, u₀⟩` from `exists_ros hG D.toPre.P.isAb D.toPre.P.isLB _ _ hr`. Use `choose v hv vv using exists_u hG D.toPre ιD a u hu u₀`. Use `⟨{ aG := ιG.act a, aA := ιA.act a, aB := ιD.onB.act a, homG := ιG.hom a, homA := ιA.hom a, homB := ιD.onB.hom a, h := DistribSMul.toAddMonoidHom D.toPre.X (star a), ext := hO.ext a, q_lin := fun e => hO.q_lin e a, i_lin := fun e => hO.i_lin e a, u := v, u_norm := hv, t_lin := fun …` and prove the remaining obligations. Establish `e₁` using `val_corr hJ (hL.2.2.2.1.tLin R I O D A G U.toUnifPre ιD ιA ιG hO e a u hu u₀ χ) x`.
+
+Use `((val_pull hJ _ _ _).symm.trans e₁.symm).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ?_))` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans (vv χ _ (U.gt e).pG Z x z J hJ).symm`. Establish `k : ∀ χ z J, Good D.toPre.P.L z J → val (v χ) g.b.left z J = val u (𝟙 _ ≫ (lift (cP D.toPre _ χ) g.b).left) z J` using `fun χ z J hJ => (congrArg (fun q => val (v χ) q z J) (Category.id_comp g.b.left).symm).trans (vv χ _ g.b _ (𝟙 _) z J hJ)`. Use `and_congr Iff.rfl ⟨fun H u' hu' u₀' χ => corr_of_val D.toPre.P.isLB fun z J hJ => ?_, fun H χ z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) rfl ?_) (H χ z J hJ).symm)` and prove the remaining obligations.
+
+Conclude with `(val_pull hJ _ _ _).trans ((ros_unique hG D.toPre hu hu' u₀ u₀' _ _ z J hJ).trans (k χ z J hJ).symm)`. Use `(val_corr hJ (H u hu u₀ χ) (𝟙 _)).symm.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl ?_))` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).trans (k χ z J hJ).symm`.
+-/
 theorem endU_of_oLinear : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → ∀ a : O, ∃ E : EndU U.toUnifPre, E.aG = ιG.act a ∧ E.aA = ιA.act a ∧ E.aB = ιD.onB.act a ∧ (∀ χ, E.h χ = star a • χ) ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (g g' : GtPtF D.toPre F), E.Act g g' ↔ GtPtAct ιD a g g' := by
   intro hL R _ _ _ I _ D A G _ _ _ U O _ _ _ ιD ιA ιG hO a
   have hG := hL.1.globalFns

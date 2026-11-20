@@ -15,8 +15,14 @@ def Enl0 (B B' : Base) : Prop :=
   B'.toPre = B.toPre ∧ B'.embLL '' (B'.Ks : Set B'.LL) = B.embLL '' (B.Ks : Set B.LL) ∧
     B.embLL '' (B.LL0 : Set B.LL) ⊆ B'.embLL '' (B'.LL0 : Set B'.LL) ∧ Set.range B.embLL ⊆ Set.range B'.embLL
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1.ge, h.2.2.2⟩`.
+-/
 theorem isBaseEnlargementFixedCoefField_of_coeffEnlargement {B B' : Base} (h : Enl B B') : Enl0 B B' := ⟨h.1, h.2.1, h.2.2.1.ge, h.2.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, subset_rfl, subset_rfl⟩`.
+-/
 theorem enlarges_refl (B : Base) : Enl0 B B := ⟨rfl, rfl, subset_rfl, subset_rfl⟩
 
 def DatExt0 : Prop := StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
@@ -25,6 +31,9 @@ def DatExt0 : Prop := StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B
     ∀ (Z' : w'.Lt) (hX' : B'.fields.Ok), GrpTrue Z'.N f' → GrpAt (w'.st Z') w'.I → VolTieG (w'.D Z') →
       ∃ z' : Dat (w'.st Z') w'.I hX' T' {v | B'.places.resChar v ∈ T'.pl}, Fine z' ∧ Ext z z'
 
+/- English proof (translation)
+The claim follows from `StepW.trans h (StepW.of_all fun _ _ _ _ _ _ _ H B f T w e => H B f T w (isBaseEnlargementFixedCoefField_of_coeffEnlargement e))`.
+-/
 theorem datExt_of_datExt0 (h : DatExt0) : DatExt :=
   StepW.trans h (StepW.of_all fun _ _ _ _ _ _ _ H B f T w e => H B f T w (isBaseEnlargementFixedCoefField_of_coeffEnlargement e))
 

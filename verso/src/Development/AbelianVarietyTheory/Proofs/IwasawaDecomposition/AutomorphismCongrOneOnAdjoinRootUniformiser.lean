@@ -12,6 +12,13 @@ open Polynomial
 
 namespace GlobalTheory.RootOfUniformiserDVR
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨j, hj, hmax⟩` from `s.exists_max_image (fun i => O.valuation (f i)) ⟨i, hi⟩`. Distinguish the cases in `h0 : f j = 0`. Use `(hmax i hi).trans ?_` and prove the remaining obligations. Simplify using `[h0]`.
+
+Use `(hmax i hi).trans ?_` and prove the remaining obligations. Rewrite `hs` using `[← Finset.add_sum_erase s f hj]`. Rewrite `hs` using `[Valuation.map_add_eq_of_lt_left]`. Then use the resulting hypothesis. Use `Valuation.map_sum_lt _ (by simpa using h0) fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_erase]`.
+
+Conclude with `lt_of_le_of_ne (hmax k hk.2) fun he => hk.1 (hf j hj k hk.2 h0 he.symm).symm`.
+-/
 theorem val_term_le_one' {F : Type} [Field F] {O : ValuationSubring F} {β : Type} (s : Finset β) (f : β → F)
     (hf : ∀ i ∈ s, ∀ j ∈ s, f i ≠ 0 → O.valuation (f i) = O.valuation (f j) → i = j)
     (hs : O.valuation (∑ i ∈ s, f i) ≤ 1) : ∀ i ∈ s, O.valuation (f i) ≤ 1 := by
@@ -28,6 +35,51 @@ theorem val_term_le_one' {F : Type} [Field F] {O : ValuationSubring F} {β : Typ
   rw [Finset.mem_erase] at hk
   exact lt_of_le_of_ne (hmax k hk.2) fun he => hk.1 (hf j hj k hk.2 h0 he.symm).symm
 
+/- English proof (translation)
+Introduce `W _ _ _ F _ _ _ _ O hO hm ϖ hϖ l hl0 x hx g b hb hb1`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Use `set ϖK : FractionRing W := algebraMap W (FractionRing W) ϖ with hϖK`. Establish `hx' : x ^ l = algebraMap (FractionRing W) F ϖK`. Rewrite using `[hx, hϖK, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `hunit : ∀ u : Wˣ, O.valuation (algebraMap W F (u : W)) = 1`. Introduce `u`. Establish `a1` using `(O.valuation_le_one_iff _).2 (hO u)`. Establish `a2` using `(O.valuation_le_one_iff _).2 (hO ((u⁻¹ : Wˣ) : W))`. Establish `e : O.valuation (algebraMap W F (u : W)) * O.valuation (algebraMap W F ((u⁻¹ : Wˣ) : W)) = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `mul_lt_one_of_lt_of_le hc a2` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `lt_irrefl _ this`. Establish `hϖlt : O.valuation (algebraMap W F ϖ) < 1`. Use `hm ϖ ((IsLocalRing.mem_maximalIdeal _).2 hϖ.not_isUnit)` as an intermediate fact. Conclude with `this`.
+
+Establish `hWv : ∀ w : W, w ≠ 0 → ∃ n : ℕ, O.valuation (algebraMap W F w) = O.valuation (algebraMap W F ϖ) ^ n`. Introduce `w hw`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hw hϖ`. Conclude with `⟨n, by rw [map_mul, map_mul, hunit, _root_.one_mul, map_pow, map_pow]⟩`. Establish `hvpos : ∀ w : W, w ≠ 0 → O.valuation (algebraMap W F w) ≠ 0`.
+
+Introduce `w hw`. Rewrite using `[Valuation.ne_zero_iff]`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Establish `: algebraMap W (FractionRing W) w = 0`.
+
+Rewrite `h0` using `[IsScalarTower.algebraMap_apply W (FractionRing W) F]`. Conclude with `(map_eq_zero _).mp h0`. Conclude with `(IsFractionRing.injective W (FractionRing W)) (by rw [this, map_zero])`. Establish `hK : ∀ a : FractionRing W, a ≠ 0 → ∃ m : ℤ, O.valuation (algebraMap (FractionRing W) F a) = O.valuation (algebraMap (FractionRing W) F ϖK) ^ m`. Introduce `a ha`.
+
+Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := W) a`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hp0 : p ≠ 0` using `by rintro rfl; simp at ha`. Take `⟨n, hn⟩` from `hWv p hp0`. Take `⟨k, hk⟩` from `hWv q hq0`.
+
+Use `⟨(n : ℤ) - k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_div₀, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, hϖK, ← IsScalarTower.algebraMap_apply, hn, hk, zpow_sub₀ (hvpos ϖ hϖ0), zpow_natCast, zpow_natCast]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow hl0, eq_comm]`.
+
+Conclude with `hvpos ϖ hϖ0 (by rw [hx, map_zero])`. Use `set t := O.valuation x with ht`. Establish `htl : O.valuation (algebraMap (FractionRing W) F ϖK) = t ^ l` using `by rw [← hx', map_pow]`. Establish `ht0 : 0 < t` using `zero_lt_iff.mpr (by simpa [ht] using hx0)`. Establish `ht1 : t < 1`.
+
+Use `hϖlt` as an intermediate fact. Rewrite `this` using `[IsScalarTower.algebraMap_apply W (FractionRing W) F, ← hϖK, htl]`. Conclude with `(pow_lt_one_iff hl0).mp this`. Establish `hinj : Function.Injective fun n : ℤ => t ^ n` using `zpow_right_injective₀ ht0 ht1.ne`. Establish `hval : ∀ (a : FractionRing W) (i : ℕ), algebraMap (FractionRing W) F a * x ^ i ≠ 0 → ∃ m : ℤ, O.valuation (algebraMap (FractionRing W) F a * x ^ i) = t ^ ((i : ℤ) + l * m)`.
+
+Introduce `a i ha`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Take `⟨m, hm⟩` from `hK a ha0`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hm, htl, map_pow, zpow_add₀ ht0.ne', zpow_mul, zpow_natCast, zpow_natCast, mul_comm]`.
+
+Establish `hmod : ∀ (i j : ℕ) (m n : ℤ), i < l → j < l → t ^ ((i : ℤ) + l * m) = t ^ ((j : ℤ) + l * n) → i = j`. Introduce `i j m n hi hj he`. Use `congrArg (· % (l : ℤ)) (hinj he)` as an intermediate fact. Simplify using `only [Int.add_mul_emod_self_left] at this`. Rewrite `this` using `[Int.emod_eq_of_lt (by omega) (by omega), Int.emod_eq_of_lt (by omega) (by omega)]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hq : (X ^ l - C ϖK).Monic` using `monic_X_pow_sub_C _ hl0`. Establish `hint : IsIntegral (FractionRing W) x` using `⟨X ^ l - C ϖK, hq, by simp [hx']⟩`. Establish `hb' : b ∈ Algebra.adjoin (FractionRing W) {x}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`.
+
+Conclude with `hb`. Rewrite `hb'` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p₀, rfl⟩` from `hb'`. Use `set p := p₀ %ₘ (X ^ l - C ϖK)`. Establish `hp : aeval x p = aeval x p₀` using `aeval_modByMonic_eq_self_of_root (by simp [hx'])`.
+
+Establish `hdeg : p.natDegree < l`. Use `natDegree_modByMonic_lt p₀ hq (by` as an intermediate fact. Introduce `h1`. Use `congrArg natDegree h1` as an intermediate fact. Rewrite `this` using `[natDegree_X_pow_sub_C, natDegree_one]`.
+
+Conclude with `hl0 this)`. Rewrite `this` using `[natDegree_X_pow_sub_C]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `O.valuation (aeval x p₀) ≤ 1 at hb1`. Express the relevant statement in the definitionally equal form `O.valuation (g (aeval x p₀) - aeval x p₀) < 1`. Rewrite `hb1`, the goal using `[← hp, aeval_eq_sum_range' hdeg]`.
+
+Simplify using `only [Algebra.smul_def] at hb1 ⊢`. Establish `hle` using `val_term_le_one' _ _ (fun i hi j hj h0 he => by`. Take `⟨m, hm⟩` from `hval _ i h0`. Take `⟨n, hn⟩` from `hval (p.coeff j) j (by`. Introduce `h00`.
+
+Rewrite `he` using `[h00, map_zero]`. Conclude with `h0 (by simpa using he))`. Conclude with `hmod i j m n (Finset.mem_range.mp hi) (Finset.mem_range.mp hj) (by rw [← hm, ← hn, he])) hb1`. Establish `hgx : O.valuation (g x) = t`. Use `pow_left_injective hl0 ?_` and prove the remaining obligations.
+
+Use `show _ ^ l = t ^ l`. Rewrite using `[← map_pow, ← map_pow, hx', g.commutes, htl]`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Use `Valuation.map_sum_lt _ one_ne_zero fun i hi => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos i with rfl | hi0` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `hlt : O.valuation (algebraMap (FractionRing W) F (p.coeff i) * x ^ i) < 1`. Use `lt_of_le_of_ne (hle i hi) fun he => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hval (p.coeff i) i (by intro h0; simp [h0] at he)`. Use `hmod i 0 m 0 (Finset.mem_range.mp hi) (by omega) (by rw [← hm, he]; simp)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `Valuation.map_sub_lt _ ?_ hlt` and prove the remaining obligations. Rewrite using `[map_mul g, g.commutes, map_pow g, map_mul, map_pow, hgx]`. Rewrite `hlt` using `[map_mul, map_pow]`. Then use the resulting hypothesis.
+-/
 theorem cong_on_adjoin : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (F : Type) [Field F]
     [Algebra (FractionRing W) F] [Algebra W F] [IsScalarTower W (FractionRing W) F]
     (O : ValuationSubring F),

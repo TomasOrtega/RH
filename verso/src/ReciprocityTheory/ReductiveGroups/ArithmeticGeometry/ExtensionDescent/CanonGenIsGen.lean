@@ -14,6 +14,9 @@ namespace Canon
 
 variable {X Y : Scheme.{0}} (L : LB X)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom (u : Γ(Y, U))) = (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom u`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma res_res' {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (u : Γ(Y, U)ˣ) :
     res h2 (res h1 u) = res (h2.trans h1) u := by
   apply Units.ext
@@ -22,6 +25,9 @@ lemma res_res' {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (u : Γ(Y, U)ˣ) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e` using `CategoryTheory.ConcreteCategory.congr_hom (f.naturality (homOfLE h).op) (u : Γ(X, U))`. Rewrite `e` using `[CategoryTheory.comp_apply, CategoryTheory.comp_apply]`. Conclude with `e`.
+-/
 lemma pullU_res (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) (h' : f ⁻¹ᵁ W ≤ f ⁻¹ᵁ U)
     (u : Γ(X, U)ˣ) : pullU f W (res h u) = res h' (pullU f U u) := by
   apply Units.ext
@@ -30,6 +36,9 @@ lemma pullU_res (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) (h' : f ⁻¹ᵁ W �
   rw [CategoryTheory.comp_apply, CategoryTheory.comp_apply] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[pullU_res f h (f.preimage_mono h), res_res']`.
+-/
 lemma res_pullU_eq (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) {Z : Y.Opens}
     (hZ : Z ≤ f ⁻¹ᵁ U) (hZ' : Z ≤ f ⁻¹ᵁ W) (x : Γ(X, U)ˣ) :
     res hZ (pullU f U x) = res hZ' (pullU f W (res h x)) := by
@@ -40,25 +49,40 @@ def gW {W : Y.Opens} (ψ : Y ⟶ X) (a b : L.ι) (h : W ≤ ψ ⁻¹ᵁ (L.U a �
 
 variable {L}
 
+/- English proof (translation)
+The claim follows from `le_inf ha hb`.
+-/
 lemma lePI {W : Y.Opens} {ψ : Y ⟶ X} {A B : X.Opens} (ha : W ≤ ψ ⁻¹ᵁ A) (hb : W ≤ ψ ⁻¹ᵁ B) :
     W ≤ ψ ⁻¹ᵁ (A ⊓ B) :=
   le_inf ha hb
 
+/- English proof (translation)
+Substitute `hψ ha hb` using the available equality. Both sides reduce to the same expression.
+-/
 lemma gW_congr {W : Y.Opens} {ψ ψ' : Y ⟶ X} {a a' b b' : L.ι} (hψ : ψ = ψ') (ha : a = a')
     (hb : b = b') (h : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b)) (h' : W ≤ ψ' ⁻¹ᵁ (L.U a' ⊓ L.U b')) :
     gW L ψ a b h = gW L ψ' a' b' h' := by
   subst hψ ha hb; rfl
 
+/- English proof (translation)
+The claim follows from `res_res' _ _ _`.
+-/
 lemma gW_res {V W : Y.Opens} (ψ : Y ⟶ X) (a b : L.ι) (h : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b))
     (hVW : V ≤ W) : res hVW (gW L ψ a b h) = gW L ψ a b (hVW.trans h) :=
   res_res' _ _ _
 
+/- English proof (translation)
+Unfold `gW`. Rewrite using `[res_pullU_eq ψ (le_inf le_rfl le_rfl : L.U a ≤ L.U a ⊓ L.U a) h (h.trans (ψ.preimage_mono inf_le_left)), hL.g_self, map_one, map_one]`.
+-/
 lemma gW_self (hL : L.IsLB) {W : Y.Opens} (ψ : Y ⟶ X) (a : L.ι)
     (h : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U a)) : gW L ψ a a h = 1 := by
   unfold gW
   rw [res_pullU_eq ψ (le_inf le_rfl le_rfl : L.U a ≤ L.U a ⊓ L.U a) h
     (h.trans (ψ.preimage_mono inf_le_left)), hL.g_self, map_one, map_one]
 
+/- English proof (translation)
+Unfold `gW`. Rewrite using `[res_pullU_eq ψ (inf_le_left : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U a ⊓ L.U b) h1 hT, res_pullU_eq ψ (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U a ⊓ L.U b ⊓ L.U c ≤ L.U b ⊓ L.U c) h2 hT, res_pullU_eq ψ (le_inf (inf_le_left.trans inf_le_left) inf_le_right : L.U a ⊓ L.U b ⊓ …`.
+-/
 lemma gW_mul (hL : L.IsLB) {W : Y.Opens} (ψ : Y ⟶ X) (a b c : L.ι)
     (hT : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b ⊓ L.U c)) (h1 : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U b))
     (h2 : W ≤ ψ ⁻¹ᵁ (L.U b ⊓ L.U c)) (h3 : W ≤ ψ ⁻¹ᵁ (L.U a ⊓ L.U c)) :
@@ -70,10 +94,16 @@ lemma gW_mul (hL : L.IsLB) {W : Y.Opens} (ψ : Y ⟶ X) (a b c : L.ι)
     res_pullU_eq ψ (le_inf (inf_le_left.trans inf_le_left) inf_le_right :
       L.U a ⊓ L.U b ⊓ L.U c ≤ L.U a ⊓ L.U c) h3 hT, ← map_mul, ← map_mul, hL.cocycle]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `LB.wchart_le L φ j c`.
+-/
 lemma wchart_le_of {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → L.ι) {ψ : Y ⟶ X} {c : K}
     (hc : φ c = ψ) : LB.wchart L φ j ≤ ψ ⁻¹ᵁ L.U (j c) := by
   subst hc; exact LB.wchart_le L φ j c
 
+/- English proof (translation)
+Use `(map_prod (res hW) _ Finset.univ).trans (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Use `(map_zpow (res hW) _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `res_res' _ _ _`.
+-/
 lemma res_g {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : (LB.LinComb L φ ε).ι)
     {W : Y.Opens} (hW : W ≤ (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j') :
     res hW ((LB.LinComb L φ ε).g j j') = ∏ k, gW L (φ k) (j k) (j' k)
@@ -84,6 +114,15 @@ lemma res_g {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j'
   congr 1
   exact res_res' _ _ _
 
+/- English proof (translation)
+Establish `zs : ∀ {K : Type} (a : M) (s : Finset K) (e : K → ℤ), a ^ (∑ k ∈ s, e k) = ∏ k ∈ s, a ^ e k`. Introduce `K a s e`. Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons x s hx ih => rw [Finset.prod_cons, Finset.sum_cons, zpow_add, ih]`.
+
+Establish `key : ∀ {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (T : Finset (Y ⟶ X)), (∀ k, φ k ∈ T) → ∏ k, F (φ k) ^ ε k = ∏ ψ ∈ T, F ψ ^ (∑ k, if φ k = ψ then ε k else 0)`. Introduce `K _ φ ε T hT`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (g := φ) (t := T) (fun k _ => hT k)]`. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, zs]`.
+
+Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hk).2]`. Rewrite using `[key φ ε (Finset.univ.image φ ∪ Finset.univ.image φ') (fun k => by simp), key φ' ε' (Finset.univ.image φ ∪ Finset.univ.image φ') (fun k => by simp)]`. Use `Finset.prod_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `hs ψ`.
+-/
 lemma prod_sameSum {M : Type*} [CommGroup M] {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (hs : LB.SameSum φ ε φ' ε') (F : (Y ⟶ X) → M) :
@@ -110,12 +149,18 @@ lemma prod_sameSum {M : Type*} [CommGroup M] {K K' : Type} [Fintype K] [Fintype 
   congr 1
   exact hs ψ
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op).hom (u : Γ(Y, U)) = u`. Rewrite using `[show homOfLE h = 𝟙 U from rfl, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 lemma res_refl {U : Y.Opens} (h : U ≤ U) (u : Γ(Y, U)ˣ) : res h u = u := by
   apply Units.ext
   change (Y.presheaf.map (homOfLE h).op).hom (u : Γ(Y, U)) = u
   rw [show homOfLE h = 𝟙 U from rfl, op_id, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `gW_mul hL ψ a b c (lePI (lePI ha hb) hc) _ _ _`.
+-/
 lemma gW_mul' (hL : L.IsLB) {W : Y.Opens} (ψ : Y ⟶ X) (a b c : L.ι) (ha : W ≤ ψ ⁻¹ᵁ L.U a)
     (hb : W ≤ ψ ⁻¹ᵁ L.U b) (hc : W ≤ ψ ⁻¹ᵁ L.U c) :
     gW L ψ a b (lePI ha hb) * gW L ψ b c (lePI hb hc) = gW L ψ a c (lePI ha hc) :=
@@ -123,6 +168,9 @@ lemma gW_mul' (hL : L.IsLB) {W : Y.Opens} (ψ : Y ⟶ X) (a b c : L.ι) (ha : W 
 
 variable {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+The claim follows from `LB.wchart_le L φ j k`.
+-/
 lemma lcle (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j : (LB.LinComb L φ ε).ι) (k : K) :
     (LB.LinComb L φ ε).U j ≤ φ k ⁻¹ᵁ L.U (j k) :=
   LB.wchart_le L φ j k
@@ -130,6 +178,9 @@ lemma lcle (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j : (LB.LinComb L φ ε).ι)
 def R (φ' : K' → (Y ⟶ X)) (j' : K' → L.ι) (ψ : Y ⟶ X) (h : ∃ k', φ' k' = ψ) : L.ι :=
   j' h.choose
 
+/- English proof (translation)
+The claim follows from `wchart_le_of φ' j' h.choose_spec`.
+-/
 lemma lcle_R (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (j' : (LB.LinComb L φ' ε').ι) (ψ : Y ⟶ X)
     (h : ∃ k', φ' k' = ψ) : (LB.LinComb L φ' ε').U j' ≤ ψ ⁻¹ᵁ L.U (R φ' j' ψ h) :=
   wchart_le_of φ' j' h.choose_spec
@@ -138,6 +189,9 @@ def jhat (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (hsub 
     (j' : K' → L.ι) : (LB.LinComb L φ ε).ι :=
   fun k => R φ' j' (φ k) (hsub k)
 
+/- English proof (translation)
+Introduce `y hy`. Conclude with `Set.mem_iInter.2 fun k => lcle_R φ' ε' j' (φ k) (hsub k) hy`.
+-/
 lemma wchart_le_jhat (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (hsub : ∀ k, ∃ k', φ' k' = φ k) (j' : (LB.LinComb L φ' ε').ι) :
     (LB.LinComb L φ' ε').U j' ≤ (LB.LinComb L φ ε).U (jhat φ ε φ' hsub j') := by
@@ -149,6 +203,9 @@ def corrU (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (j' : (LB.LinComb L φ' ε
   ∏ k', gW L (φ' k') (j' k') (R φ' j' (φ' k') ⟨k', rfl⟩)
     (lePI (lcle φ' ε' j' k') (lcle_R φ' ε' j' _ _)) ^ ε' k'
 
+/- English proof (translation)
+Use `(map_prod (res hW) _ Finset.univ).trans (Finset.prod_congr rfl fun k' _ => ?_)` and prove the remaining obligations. Use `(map_zpow (res hW) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[gW_res]`.
+-/
 lemma res_corrU (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (j' : (LB.LinComb L φ' ε').ι) {W : Y.Opens}
     (hW : W ≤ (LB.LinComb L φ' ε').U j') :
     res hW (corrU φ' ε' j') = ∏ k', gW L (φ' k') (j' k') (R φ' j' (φ' k') ⟨k', rfl⟩)
@@ -166,6 +223,11 @@ def canonGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (�
 
 variable {L}
 
+/- English proof (translation)
+Introduce `j j' _ hj' hjj'`. Establish `hj : jhat φ ε φ' hsub j' = j`. Use function extensionality and compare the values at `fun k => (hjj' k _ (hsub k).choose_spec.symm).symm`. Establish `hc : corrU (L` using `L) φ' ε' j' = 1 := by`. Use `Finset.prod_eq_one fun k' _ => ?_` and prove the remaining obligations.
+
+Establish `hR : R φ' j' (φ' k') ⟨k', rfl⟩ = j' k'` using `hj' _ _ (⟨k', rfl⟩ : ∃ c, φ' c = φ' k').choose_spec`. Use `(congrArg (· ^ ε' k') ((gW_congr rfl rfl hR _ (lePI (lcle φ' ε' j' k') (lcle φ' ε' j' k'))).trans (gW_self hL _ _ _))).trans ?_` and prove the remaining obligations. Conclude with `one_zpow _`. Substitute `hj` using the available equality. Conclude with `(res_res' _ _ _).symm.trans (congrArg (res _) ((mul_one _).symm.trans (congrArg (fun c => res (wchart_le_jhat φ ε φ' ε' hsub j') (t.s (jhat φ ε φ' hsub j')) * c) hc.symm)))`.
+-/
 theorem canonGen_corr (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
     (ε' : K' → ℤ) (hsub : ∀ k, ∃ k', φ' k' = φ k) (t : LB.Gen (LB.LinComb L φ ε)) :
     LB.Gen.Corr L φ ε φ' ε' t (canonGen L φ ε φ' ε' hsub t) := by
@@ -184,6 +246,15 @@ theorem canonGen_corr (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ'
     (congrArg (fun c => res (wchart_le_jhat φ ε φ' ε' hsub j') (t.s (jhat φ ε φ' hsub j')) * c)
       hc.symm)))
 
+/- English proof (translation)
+Establish `eg : (LB.LinComb L φ' ε').g j1 j2 = ∏ k', gW L (φ' k') (j1 k') (j2 k') (lePI (inf_le_left.trans (lcle φ' ε' j1 k')) (inf_le_right.trans (lcle φ' ε' j2 k'))) ^ ε' k'` using `(res_refl le_rfl _).symm.trans (res_g φ' ε' j1 j2 le_rfl)`. Set `F : (Y ⟶ X) → Γ(Y, (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2)ˣ` to `fun ψ => if h : ∃ k', φ' k' = ψ then gW L ψ (R φ' j1 ψ h) (R φ' j2 ψ h) (lePI (inf_le_left.trans (lcle_R φ' ε' j1 ψ h)) (inf_le_right.trans (lcle_R φ' ε' j2 ψ h))) else 1`. Establish `hP : (∏ k, gW L (φ k) (jhat φ ε φ' hsub j1 k) (jhat φ ε φ' hsub j2 k) (lePI (hW.trans (inf_le_left.trans (LB.wchart_le L φ _ k))) (hW.trans (inf_le_right.trans (LB.wchart_le L φ _ k)))) ^ ε k) = ∏ k', F (φ' k') ^ ε' k'`. Rewrite using `[← prod_sameSum φ ε φ' ε' hs F]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [F, dif_pos (hsub k)]`. Both sides reduce to the same expression. Establish `key : ∀ k', F (φ' k') * gW L (φ' k') (j1 k') (R φ' j1 (φ' k') ⟨k', rfl⟩) (lePI (inf_le_left.trans (lcle φ' ε' j1 k')) (inf_le_left.trans (lcle_R φ' ε' j1 _ _))) = gW L (φ' k') (j1 k') (j2 k') (lePI (inf_le_left.trans (lcle φ' ε' j1 k')) (inf_le_right.trans (lcle φ' ε' j2 k'))) * …`. Introduce `k'`. Simplify using `only [F, dif_pos (⟨k', rfl⟩ : ∃ c, φ' c = φ' k')]`.
+
+Establish `h1 : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ φ' k' ⁻¹ᵁ L.U (j1 k')` using `inf_le_left.trans (lcle φ' ε' j1 k')`. Establish `h2 : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ φ' k' ⁻¹ᵁ L.U (j2 k')` using `inf_le_right.trans (lcle φ' ε' j2 k')`. Establish `r1 : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ φ' k' ⁻¹ᵁ L.U (R φ' j1 (φ' k') ⟨k', rfl⟩)` using `inf_le_left.trans (lcle_R φ' ε' j1 _ _)`. Establish `r2 : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ φ' k' ⁻¹ᵁ L.U (R φ' j2 (φ' k') ⟨k', rfl⟩)` using `inf_le_right.trans (lcle_R φ' ε' j2 _ _)`. Rewrite using `[gW_mul' hL _ _ _ _ h1 h2 r2, mul_comm, gW_mul' hL _ _ _ _ h1 r1 r2]`.
+
+Establish `hprod : (∏ k', F (φ' k') ^ ε' k') * (∏ k', gW L (φ' k') (j1 k') (R φ' j1 (φ' k') ⟨k', rfl⟩) (lePI (inf_le_left.trans (lcle φ' ε' j1 k')) (inf_le_left.trans (lcle_R φ' ε' j1 _ _))) ^ ε' k') = (∏ k', gW L (φ' k') (j1 k') (j2 k') (lePI (inf_le_left.trans (lcle φ' ε' j1 k')) (inf_le_ …`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← mul_zpow, key]`. Conclude with `(congrArg₂ (· * ·) ((res_g φ ε _ _ hW).trans hP) (res_corrU φ' ε' j1 _)).trans (hprod.trans (congrArg₂ (· * ·) eg (res_corrU φ' ε' j2 _)).symm)`.
+-/
 theorem canon_key (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
     (ε' : K' → ℤ) (hs : LB.SameSum φ ε φ' ε') (hsub : ∀ k, ∃ k', φ' k' = φ k)
     (j1 j2 : (LB.LinComb L φ' ε').ι)
@@ -245,6 +316,11 @@ theorem canon_key (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K
   exact (congrArg₂ (· * ·) ((res_g φ ε _ _ hW).trans hP) (res_corrU φ' ε' j1 _)).trans
     (hprod.trans (congrArg₂ (· * ·) eg (res_corrU φ' ε' j2 _)).symm)
 
+/- English proof (translation)
+Introduce `j1 j2`. Establish `hW : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ (LB.LinComb L φ ε).U (jhat φ ε φ' hsub j1) ⊓ (LB.LinComb L φ ε).U (jhat φ ε φ' hsub j2)` using `inf_le_inf (wchart_le_jhat φ ε φ' ε' hsub j1) (wchart_le_jhat φ ε φ' ε' hsub j2)`. Establish `ht' : res (hW.trans inf_le_left) (t.s (jhat φ ε φ' hsub j1)) = res hW ((LB.LinComb L φ ε).g (jhat φ ε φ' hsub j1) (jhat φ ε φ' hsub j2)) * res (hW.trans inf_le_right) (t.s (jhat φ ε φ' hsub j2))`. Establish `e` using `congrArg (res hW) (ht (jhat φ ε φ' hsub j1) (jhat φ ε φ' hsub j2))`. Conclude with `(res_res' _ _ _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (res_res' _ _ _))))`.
+
+Establish `e1 : res (inf_le_left : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ (LB.LinComb L φ' ε').U j1) ((canonGen L φ ε φ' ε' hsub t).s j1) = res (hW.trans inf_le_left) (t.s (jhat φ ε φ' hsub j1)) * res inf_le_left (corrU φ' ε' j1)` using `(map_mul _ _ _).trans (congrArg₂ (· * ·) (res_res' _ _ _) rfl)`. Establish `e2 : res (inf_le_right : (LB.LinComb L φ' ε').U j1 ⊓ (LB.LinComb L φ' ε').U j2 ≤ (LB.LinComb L φ' ε').U j2) ((canonGen L φ ε φ' ε' hsub t).s j2) = res (hW.trans inf_le_right) (t.s (jhat φ ε φ' hsub j2)) * res inf_le_right (corrU φ' ε' j2)` using `(map_mul _ _ _).trans (congrArg₂ (· * ·) (res_res' _ _ _) rfl)`. Rewrite using `[e1, e2, ht', mul_right_comm, canon_key hL φ ε φ' ε' hs hsub j1 j2 hW, mul_right_comm, mul_assoc]`.
+-/
 theorem canonGen_isGen (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
     (ε' : K' → ℤ) (hs : LB.SameSum φ ε φ' ε') (hsub : ∀ k, ∃ k', φ' k' = φ k)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : (canonGen L φ ε φ' ε' hsub t).IsGen := by
@@ -274,6 +350,9 @@ theorem canonGen_isGen (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ
 abbrev rO {U V : Y.Opens} (h : V ≤ U) : Γ(Y, U) →+* Γ(Y, V) :=
   (Y.presheaf.map (homOfLE h).op).hom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom x) = (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom x`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma rO_rO {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Y, U)) :
     rO h2 (rO h1 x) = rO (h2.trans h1) x := by
   change (Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom x) =
@@ -324,6 +403,13 @@ def canonSec (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' →
     rw [e']
     linear_combination (rO (hW.trans inf_le_right) (sc.f (jhat φ ε φ' hsub j2))) * key
 
+/- English proof (translation)
+Establish `hj : jhat φ ε φ' hsub j' = j`. Use function extensionality and compare the values at `fun k => (hjj' k _ (hsub k).choose_spec.symm).symm`. Establish `hc : corrU (L` using `L) φ' ε' j' = 1 := by`. Use `Finset.prod_eq_one fun k' _ => ?_` and prove the remaining obligations. Establish `hR : R φ' j' (φ' k') ⟨k', rfl⟩ = j' k'` using `hj' _ _ (⟨k', rfl⟩ : ∃ c, φ' c = φ' k').choose_spec`.
+
+Use `(congrArg (· ^ ε' k') ((gW_congr rfl rfl hR _ (lePI (lcle φ' ε' j' k') (lcle φ' ε' j' k'))).trans (gW_self hL _ _ _))).trans ?_` and prove the remaining obligations. Conclude with `one_zpow _`. Substitute `hj` using the available equality. Use `(rO_rO (wchart_le_jhat φ ε φ' ε' hsub j') inf_le_right _).symm.trans (congrArg (rO _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * Units.val (corrU φ' ε' j')`.
+
+Rewrite using `[hc, Units.val_one, mul_one]`.
+-/
 theorem canonSec_coh (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X))
     (ε' : K' → ℤ) (hs : LB.SameSum φ ε φ' ε') (hsub : ∀ k, ∃ k', φ' k' = φ k)
     (sc : LB.Sec (LB.LinComb L φ ε)) (j : (LB.LinComb L φ ε).ι) (j' : (LB.LinComb L φ' ε').ι)

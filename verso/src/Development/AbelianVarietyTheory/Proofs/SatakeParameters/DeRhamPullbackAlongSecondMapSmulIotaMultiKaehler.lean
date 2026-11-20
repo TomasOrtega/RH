@@ -15,6 +15,9 @@ section Gen
 variable {k : Type} [Field k] {ι : Type} [LinearOrder ι] {E E' : Type} [AddCommGroup E] [Module k E]
   [AddCommGroup E'] [Module k E']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, map_sum, map_zsmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply φ (w i), h i, LinearMap.comp_apply]`.
+-/
 theorem wd_comp (φ : E →ₗ[k] E') (w : ι → Module.End k E) (w' : ι → Module.End k E')
     (h : ∀ i, φ ∘ₗ w i = w' i ∘ₗ φ) (c : Finset ι → E) :
     (fun t => φ (wd w c t)) = wd w' (fun t => φ (c t)) := by
@@ -24,6 +27,9 @@ theorem wd_comp (φ : E →ₗ[k] E') (w : ι → Module.End k E) (w' : ι → M
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← LinearMap.comp_apply φ (w i), h i, LinearMap.comp_apply]
 
+/- English proof (translation)
+Establish `h1` using `wd_comp φ w w' h c`. Use function extensionality and compare the values at `t`. Establish `h2` using `congrFun h1 t`. Simplify using `only [tD, LinearMap.add_apply, Pi.add_apply, map_add, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, map_zsmul] at h2 ⊢`. Rewrite using `[h2, ← LinearMap.comp_apply φ κ, hκ, LinearMap.comp_apply]`.
+-/
 theorem tD_comp (φ : E →ₗ[k] E') (w : ι → Module.End k E) (w' : ι → Module.End k E')
     (κ : Module.End k E) (κ' : Module.End k E')
     (h : ∀ i, φ ∘ₗ w i = w' i ∘ₗ φ) (hκ : φ ∘ₗ κ = κ' ∘ₗ φ) (c : Finset ι → E) :
@@ -35,6 +41,9 @@ theorem tD_comp (φ : E →ₗ[k] E') (w : ι → Module.End k E) (w' : ι → M
     LinearMap.comp_apply, LinearMap.proj_apply, map_zsmul] at h2 ⊢
   rw [h2, ← LinearMap.comp_apply φ κ, hκ, LinearMap.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Module.End.one_eq_id]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, ih, LinearMap.comp_assoc, h, LinearMap.comp_assoc]`.
+-/
 theorem comp_pow (φ : E →ₗ[k] E') (u : Module.End k E) (u' : Module.End k E') (h : φ ∘ₗ u = u' ∘ₗ φ) (n : ℕ) :
     φ ∘ₗ (u ^ n) = (u' ^ n) ∘ₗ φ := by
   induction n with
@@ -43,6 +52,11 @@ theorem comp_pow (φ : E →ₗ[k] E') (u : Module.End k E) (u' : Module.End k E
     rw [pow_succ, pow_succ, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, ih,
       LinearMap.comp_assoc, h, LinearMap.comp_assoc]
 
+/- English proof (translation)
+Simplify using `only [kFam, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.proj_apply] at hf ⊢`. Take `⟨⟨h1, h2⟩, h3⟩` from `hf`. Use `⟨⟨fun T hT => by rw [h1 T hT, map_zero], ?_⟩, fun T => ?_⟩` and prove the remaining obligations. Rewrite using `[← wd_comp φ Y Y' hY f, h2]`. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules. Take `⟨m, hm, e⟩` from `h3 T`. Use `⟨φ m, hM ⟨m, hm, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← LinearMap.comp_apply (u' ^ _ * v'), Module.End.mul_eq_comp, Module.End.mul_eq_comp, LinearMap.comp_assoc, ← hv, ← LinearMap.comp_assoc, ← comp_pow φ u u' hu, LinearMap.comp_assoc]`. Both sides reduce to the same expression.
+-/
 theorem kFam_map {σ : Type} [LinearOrder σ] (φ : E →ₗ[k] E') (Y : σ → Module.End k E) (Y' : σ → Module.End k E')
     (u v : Module.End k E) (u' v' : Module.End k E') (M : Submodule k E) (M' : Submodule k E') (q : ℤ)
     (hY : ∀ i, φ ∘ₗ Y i = Y' i ∘ₗ φ) (hu : φ ∘ₗ u = u' ∘ₗ φ) (hv : φ ∘ₗ v = v' ∘ₗ φ) (hM : M.map φ ≤ M')
@@ -68,6 +82,9 @@ section J2
 
 variable {K K' : Type} [Field K] [Field K'] [Algebra ℂ K] [Algebra ℂ K']
 
+/- English proof (translation)
+Rewrite using `[map_smul, algebraMap_smul]`. Use `congr 1`. Simplify using `[ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn, mapDR, map1, Function.comp_def, KaehlerDifferential.map_D]`.
+-/
 theorem mapDR_smul_ιMulti {L : Type} [Field L] [Algebra ℂ L] [Algebra K L] [IsScalarTower ℂ K L] (b : K) (q : ℕ) (v : Fin q → K) :
     mapDR ℂ K L (b • ExteriorAlgebra.ιMulti K q fun j => D ℂ K (v j)) =
       algebraMap K L b • ExteriorAlgebra.ιMulti L q fun j => D ℂ L (algebraMap K L (v j)) := by
@@ -76,10 +93,16 @@ theorem mapDR_smul_ιMulti {L : Type} [Field L] [Algebra ℂ L] [Algebra K L] [I
   simp [ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn, mapDR, map1, Function.comp_def,
     KaehlerDifferential.map_D]
 
+/- English proof (translation)
+Rewrite using `[map_smul, algebraMap_smul]`.
+-/
 theorem mapDR_smul' {L : Type} [Field L] [Algebra ℂ L] [Algebra K L] [IsScalarTower ℂ K L] (b : K) (w : DR ℂ K) :
     mapDR ℂ K L (b • w) = algebraMap K L b • mapDR ℂ K L w := by
   rw [map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Use `letI : Algebra K K' := j2.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm`. Conclude with `mapDR_smul_ιMulti (L := K') b q v`.
+-/
 theorem deRhamPullbackAlongSecondMap_smul_iotaMulti_kaehlerD (j2 : K →ₐ[ℂ] K') (b : K) (q : ℕ) (v : Fin q → K) :
     pr2L j2 (b • ExteriorAlgebra.ιMulti K q fun j => D ℂ K (v j)) =
       j2 b • ExteriorAlgebra.ιMulti K' q fun j => D ℂ K' (j2 (v j)) := by
@@ -87,6 +110,9 @@ theorem deRhamPullbackAlongSecondMap_smul_iotaMulti_kaehlerD (j2 : K →ₐ[ℂ]
   haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm
   exact mapDR_smul_ιMulti (L := K') b q v
 
+/- English proof (translation)
+Use `letI : Algebra K K' := j2.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm`. Conclude with `mapDR_smul' (L := K') b w`.
+-/
 theorem pullback_kahler_smul (j2 : K →ₐ[ℂ] K') (b : K) (w : DR ℂ K) : pr2L j2 (b • w) = j2 b • pr2L j2 w := by
   letI : Algebra K K' := j2.toRingHom.toAlgebra
   haveI : IsScalarTower ℂ K K' := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm
@@ -104,13 +130,24 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K']
   {d : ℕ} (x : Fin (d + 1) → F)
 
+/- English proof (translation)
+Simplify using `[gY]`.
+-/
 theorem gY_tmul (j2 : K →ₐ[ℂ] K') (w w' : DR ℂ K) : gY j2 (w ⊗ₜ w') = mapDR ℂ K K' w * pr2L j2 w' := by
   simp [gY]
 
+/- English proof (translation)
+Rewrite using `[gY_tmul, gY_tmul, mapDR_smul', pullback_kahler_smul, smul_mul_smul_comm]`.
+-/
 theorem gY_smul_tmul (j2 : K →ₐ[ℂ] K') (a b : K) (w w' : DR ℂ K) :
     gY j2 ((a • w) ⊗ₜ (b • w')) = (algebraMap K K' a * j2 b) • gY j2 (w ⊗ₜ w') := by
   rw [gY_tmul, gY_tmul, mapDR_smul', pullback_kahler_smul, smul_mul_smul_comm]
 
+/- English proof (translation)
+Unfold `gz`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => ext`. Simplify using the standard rewrite rules. Consider the case `tmul a b`.
+
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `w w'`. Simplify using `only [LinearMap.comp_apply, actZ, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, Module.endTensorEndAlgHom_apply, TensorProduct.AlgebraTensorModule.map_tmul, Algebra.lsmul_coe, Algebra.TensorProduct.productMap_apply_tmul, IsScalarTower.coe_toAlgHom', gY_smul_tmul]`. Consider the case `add y y' hy hy'`. Rewrite using `[map_add, map_add, map_add, LinearMap.comp_add, hy, hy', LinearMap.add_comp]`.
+-/
 theorem gY_actZ (j2 : K →ₐ[ℂ] K') (y : K ⊗[ℂ] K) :
     gY j2 ∘ₗ actZ K y = (Algebra.lsmul ℂ ℂ (DR ℂ K')) (gz j2 y) ∘ₗ gY j2 := by
   unfold gz
@@ -125,6 +162,9 @@ theorem gY_actZ (j2 : K →ₐ[ℂ] K') (y : K ⊗[ℂ] K) :
   | add y y' hy hy' =>
     rw [map_add, map_add, map_add, LinearMap.comp_add, hy, hy', LinearMap.add_comp]
 
+/- English proof (translation)
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `w w'`. Use `gY_smul_tmul j2 (algebraMap F K (x l)) 1 w w'` as an intermediate fact. Rewrite `this` using `[one_smul, map_one, mul_one, ← IsScalarTower.algebraMap_apply]`. Simplify `this` using `[XZ, XY]`.
+-/
 theorem gY_XZ (j2 : K →ₐ[ℂ] K') (l : Fin (d + 1)) : gY j2 ∘ₗ XZ F K x l = XY x l ∘ₗ gY j2 := by
   apply TensorProduct.ext'
   intro w w'
@@ -132,6 +172,9 @@ theorem gY_XZ (j2 : K →ₐ[ℂ] K') (l : Fin (d + 1)) : gY j2 ∘ₗ XZ F K x 
   rw [one_smul, map_one, mul_one, ← IsScalarTower.algebraMap_apply] at this
   simpa [XZ, XY] using this
 
+/- English proof (translation)
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `w w'`. Use `gY_smul_tmul j2 1 (algebraMap F K (x l)) w w'` as an intermediate fact. Rewrite `this` using `[one_smul, map_one, one_mul]`. Simplify `this` using `[YZ, YY]`.
+-/
 theorem gY_YZ (j2 : K →ₐ[ℂ] K') (l : Fin (d + 1)) : gY j2 ∘ₗ YZ F K x l = YY x j2 l ∘ₗ gY j2 := by
   apply TensorProduct.ext'
   intro w w'
@@ -145,6 +188,9 @@ end GlobalTheory.WH.PullCoc
 
 namespace GlobalTheory.WH.PullCoc
 
+/- English proof (translation)
+Establish `h : (fun i => ExteriorAlgebra.ι R (Fin.append u u' i)) = Fin.append (fun i => ExteriorAlgebra.ι R (u i)) (fun i => ExteriorAlgebra.ι R (u' i))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp`. Simplify using `only [ExteriorAlgebra.ιMulti_apply]`. Rewrite using `[h, List.ofFn_fin_append, List.prod_append]`.
+-/
 theorem ιMulti_append {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (p q : ℕ) (u : Fin p → M) (u' : Fin q → M) :
     ExteriorAlgebra.ιMulti R (p + q) (Fin.append u u') = ExteriorAlgebra.ιMulti R p u * ExteriorAlgebra.ιMulti R q u' := by
   have h : (fun i => ExteriorAlgebra.ι R (Fin.append u u' i)) =
@@ -160,6 +206,9 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K']
   {d : ℕ} (x : Fin (d + 1) → F)
 
+/- English proof (translation)
+Use `(le_sup_left : rB ℂ K' x I ≤ RY x j2 I J) ?_` and prove the remaining obligations. Use `haveI : IsScalarTower (rA ℂ x I) K K' := IsScalarTower.of_algebraMap_eq fun r => IsScalarTower.algebraMap_apply F K K' (r : F)`. Simplify using `only [rB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff] at hb ⊢`. Conclude with `hb.algebraMap`.
+-/
 theorem mem_RY_left (j2 : K →ₐ[ℂ] K') (I J : Finset (Fin (d + 1))) (b : K) (hb : b ∈ rB ℂ K x I) :
     algebraMap K K' b ∈ RY x j2 I J := by
   refine (le_sup_left : rB ℂ K' x I ≤ RY x j2 I J) ?_
@@ -168,6 +217,9 @@ theorem mem_RY_left (j2 : K →ₐ[ℂ] K') (I J : Finset (Fin (d + 1))) (b : K)
   simp only [rB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff] at hb ⊢
   exact hb.algebraMap
 
+/- English proof (translation)
+Use `(le_sup_right : R2 x j2 J ≤ RY x j2 I J) ?_` and prove the remaining obligations. Simplify using `only [R2, Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Conclude with `isIntegral_algebraMap (x := (⟨j2 b, Subalgebra.mem_map.2 ⟨b, hb, rfl⟩⟩ : (rB ℂ K x J).map j2))`.
+-/
 theorem mem_RY_right (j2 : K →ₐ[ℂ] K') (I J : Finset (Fin (d + 1))) (b : K) (hb : b ∈ rB ℂ K x J) :
     j2 b ∈ RY x j2 I J := by
   refine (le_sup_right : R2 x j2 J ≤ RY x j2 I J) ?_
@@ -186,6 +238,19 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K']
   {d : ℕ} (x : Fin (d + 1) → F)
 
+/- English proof (translation)
+Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b', hb', v', hv', rfl⟩` from `hy`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨b, hb, v, hv, rfl⟩` from `hy`. Rewrite using `[gY_tmul, mapDR_smul_ιMulti, deRhamPullbackAlongSecondMap_smul_iotaMulti_kaehlerD, smul_mul_smul_comm, ← ιMulti_append]`. Use `Submodule.subset_span ⟨_, mul_mem (mem_RY_left x j2 I J b hb) (mem_RY_right x j2 I J b' hb'), Fin.append (fun j => algebraMap K K' (v j)) (fun j => j2 (v' j)), ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations.
+
+Simplify using `using mem_RY_left x j2 I J _ (hv i)`. Simplify using `using mem_RY_right x j2 I J _ (hv' i)`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) j <;> simp`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [TensorProduct.add_tmul, map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [← TensorProduct.smul_tmul', map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [TensorProduct.tmul_add, map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy => rw [TensorProduct.tmul_smul, map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem gY_omB (j2 : K →ₐ[ℂ] K') (I J : Finset (Fin (d + 1))) (p q : ℕ) (m : DR ℂ K)
     (hm : m ∈ omB ℂ K (rB ℂ K x I) p) (n : DR ℂ K) (hn : n ∈ omB ℂ K (rB ℂ K x J) q) :
     gY j2 (m ⊗ₜ n) ∈ omB ℂ K' (RY x j2 I J) (p + q) := by
@@ -213,6 +278,13 @@ theorem gY_omB (j2 : K →ₐ[ℂ] K') (I J : Finset (Fin (d + 1))) (p q : ℕ) 
   | add y z _ _ hy hz => rw [TensorProduct.tmul_add, map_add]; exact add_mem hy hz
   | smul c y _ hy => rw [TensorProduct.tmul_smul, map_smul]; exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, v, hv, rfl⟩` from `hy`. Take `⟨bs, -⟩` from `hK.exists_basis`. Use `haveI := Module.Finite.of_basis bs`.
+
+Establish `: ExteriorAlgebra.ιMulti K a (fun j => D ℂ K (v j)) = 0`. Use `AlternatingMap.map_linearDependent _ _ fun hli => ?_` and prove the remaining obligations. Establish `h` using `hli.fintype_card_le_finrank`. Rewrite `h` using `[Module.finrank_eq_card_basis bs]`. Simplify using `at h`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this, smul_zero]`. Consider the case `zero => rfl`. Consider the case `add y z _ _ hy hz => rw [hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [hy, smul_zero]`.
+-/
 theorem omB_eq_zero (hK : IsFinCover ℂ K x) (B : Subalgebra ℂ K) (a : ℕ) (ha : d < a) (n : DR ℂ K)
     (hn : n ∈ omB ℂ K B a) : n = 0 := by
   induction hn using Submodule.span_induction with
@@ -231,6 +303,11 @@ theorem omB_eq_zero (hK : IsFinCover ℂ K x) (B : Subalgebra ℂ K) (a : ℕ) (
   | add y z _ _ hy hz => rw [hy, hz, add_zero]
   | smul c y _ hy => rw [hy, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Unfold `MZ`. Rewrite using `[Submodule.map₂_le]`. Introduce `m hm n hn`. Simplify using `only [Submodule.mem_comap, TensorProduct.mk_apply, MY]`.
+
+Distinguish the cases in `ha : a ≤ d`. Establish `h` using `gY_omB x j2 I J _ _ m hm n hn`. Rewrite `h` using `[Nat.sub_add_cancel ha]`. Then use the resulting hypothesis. Rewrite using `[omB_eq_zero x hK _ a (by omega) n hn, TensorProduct.tmul_zero, map_zero]`. Conclude with `zero_mem _`.
+-/
 theorem gY_MZ (hK : IsFinCover ℂ K x) (j2 : K →ₐ[ℂ] K') (a : ℕ) (I J : Finset (Fin (d + 1))) :
     (MZ F K x a I J).map (gY j2) ≤ MY x j2 I J := by
   rw [Submodule.map_le_iff_le_comap]
@@ -256,6 +333,13 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K']
   {d : ℕ} (x : Fin (d + 1) → F)
 
+/- English proof (translation)
+Unfold `TZ at hf`. Unfold `TY`. Distinguish the cases in `h : (lft (lft s)).Nonempty ∧ (rgt (lft s)).Nonempty ∧ 0 < q`. Rewrite `hf`, the goal using `[if_pos h]`. Simplify using `only [Submodule.mem_iInf] at hf ⊢`.
+
+Introduce `i hi j hj`. Conclude with `kFam_map (gY j2) _ _ _ _ _ _ _ _ q (fun l => gY_YZ x j2 l) (gY_XZ x j2 i) (by rw [pow_zero, pow_zero, one_mul, one_mul]; exact gY_YZ x j2 j) (gY_MZ x hK j2 a _ _) f (hf i hi j hj)`. Rewrite `hf`, the goal using `[if_neg h]`. Rewrite `hf`, the goal using `[Submodule.mem_bot]`. Substitute `hf` using the available equality.
+
+Use function extensionality and compare the values at `U`. Simplify using the standard rewrite rules.
+-/
 theorem TZ_TY (hK : IsFinCover ℂ K x) (j2 : K →ₐ[ℂ] K') {κ : Type} [LinearOrder κ] (p1 p2 : κ → Fin (d + 1)) (a : ℕ)
     (q : ℤ) (s : Finset ((Fin (d + 1) ⊕ₗ Fin (d + 1)) ⊕ₗ κ)) (f : Finset (Fin (d + 1)) → DR ℂ K ⊗[ℂ] DR ℂ K)
     (hf : f ∈ TZ F K x p1 p2 a q s) : (fun U => gY j2 (f U)) ∈ TY x p1 p2 j2 q s := by
@@ -273,6 +357,11 @@ theorem TZ_TY (hK : IsFinCover ℂ K x) (j2 : K →ₐ[ℂ] K') {κ : Type} [Lin
     funext U
     simp
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `toLex.surjective t`. Break down `t with l | l` into its components or cases. Simplify using `only [wZ, wY, ofLex_toLex]`. Rewrite using `[Module.End.one_eq_id, Module.End.one_eq_id, LinearMap.comp_id, LinearMap.id_comp]`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `c`. Use function extensionality and compare the values at `U`. Simplify `LinearMap.congr_fun (gY_actZ j2 (z l)) (c U)` using `[wZ, wY, pw]`.
+-/
 theorem wZ_wY (j2 : K →ₐ[ℂ] K') {κ : Type} (z : κ → K ⊗[ℂ] K) (t : (Fin (d + 1) ⊕ₗ Fin (d + 1)) ⊕ₗ κ) :
     LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) ∘ₗ wZ K (d := d) z t =
       wY (d := d) j2 z t ∘ₗ LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) := by
@@ -285,6 +374,9 @@ theorem wZ_wY (j2 : K →ₐ[ℂ] K') {κ : Type} (z : κ → K ⊗[ℂ] K) (t :
     funext U
     simpa [wZ, wY, pw] using LinearMap.congr_fun (gY_actZ j2 (z l)) (c U)
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `c`. Conclude with `wd_comp (gY j2) _ _ (gY_XZ x j2) c`.
+-/
 theorem wd_XZ_XY (j2 : K →ₐ[ℂ] K') :
     LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) ∘ₗ wd (XZ F K x) =
       wd (XY x) ∘ₗ LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) := by
@@ -298,6 +390,11 @@ end GlobalTheory.WH.PullCoc
 
 open GlobalTheory.WH.PullCoc in
 
+/- English proof (translation)
+Introduce `d a F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ x j2 hK _ κ _ _ p1 p2 z _ n c hc`. Establish `hpull : pullY j2 c = fun s => LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) (c s)` using `rfl`. Simplify using `only [Cx.Z, totZ, totY, tcx, Submodule.mem_inf, LinearMap.mem_ker, Submodule.mem_pi, Set.mem_univ, true_implies] at hc ⊢`. Use `⟨fun s => TZ_TY x hK j2 p1 p2 a _ s (c s) (hc.1 s), ?_⟩` and prove the remaining obligations. Rewrite using `[hpull, ← tD_comp _ _ _ _ _ (wZ_wY j2 z) (wd_XZ_XY x j2) c, hc.2]`.
+
+Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.WH.pullY_mem_Z : ∀ (d a : ℕ) (F K K' : Type) [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra ℂ K] [Algebra ℂ K'] [Algebra F K] [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K'] [IsScalarTower ℂ F K'] (x : Fin (d + 1) → F) (j2 : K →ₐ[ℂ] K'), IsFinCover ℂ K x → IsFinCover ℂ K' x → ∀ {κ : Type} [LinearOrder κ] [Fintype κ] (p1 p2 : κ → Fin (d + 1)) (z : κ → K ⊗[ℂ] K), IsGen F K x p1 p2 z → ∀ (n : ℤ), ∀ c ∈ (totZ F K x p1 p2 a z).Z n, pullY j2 c ∈ (totY x p1 p2 j2 z).Z n := by
   intro d a F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ x j2 hK _ κ _ _ p1 p2 z _ n c hc
   have hpull : pullY j2 c = fun s => LinearMap.compLeft (gY j2) (Finset (Fin (d + 1))) (c s) := rfl

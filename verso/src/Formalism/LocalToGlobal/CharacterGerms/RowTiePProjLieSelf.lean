@@ -11,6 +11,9 @@ namespace ProjLieSelf
 
 open PartialDerivEval RowTiePE0 RowTiePProj RowTiePLSmall RowTiePLie RowTiePSplit RowTiePKey
 
+/- English proof (translation)
+Set `K : KeyData C V O dd d` to `{ ρ := linHom Y ρ_int := fun x i j => Y.intAct x i _ P := linM e em := p.em em_int := p.em_int em_frob := p.em_frob ε := ε ε_idem := hε ε_one := hε1 ε_ann := hεx P_lim := fun N i j => he N i _ }`. Conclude with `keyLA_of hE RowTiePKeyRes.keyRes_holds keyDelta_holds C V Y.algClosed Y.cpl O dd d K x`.
+-/
 theorem keySelf (hE : KeyEigSt) {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O]
     {dd : ℕ} (Y : FBChart C V O dd) {d : ℕ} [NeZero d] {I0 : Type} [Fintype I0] (p : SelfData Y d I0) (ε : O)
     (hε : ∃ y, ε * ε - ε = (V.l : O) * y) (hε1 : ∀ a, V.MM (p.em a ε - 1))
@@ -36,6 +39,15 @@ end ProjLieSelf
 
 open PartialDerivEval RowTiePE0 RowTiePProj RowTiePLSmall RowTiePLie RowTiePSplit RowTiePKey in
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I0 _ p ε hε hε1 hεx e he v`. Take `⟨e0, hidem, hcomm⟩` from `proj_core Y ε hε e he`. Establish `hinj : Function.Injective (fun c : ZMod d => p.em c)`. Introduce `c c' h`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨x, hx⟩` from `p.em_sep c c' hne`. Establish `h2 : p.em c = p.em c'` using `h`. Rewrite `hx` using `[h2, sub_self, AddValuation.map_zero]`. Simplify using `at hx`. Establish `hPP : linM e * linM e = linM e` using `by rw [← lin_comp1 e0, hidem]`.
+
+Establish `hPM : ∀ x, linM e * linHom Y x = linHom Y x * linM e` using `fun x => by show linM e * linM (Y.B.A.act x) = linM (Y.B.A.act x) * linM e`. Rewrite using `[← lin_comp1 (Y.B.A.const x), ← lin_comp1 e0, hcomm x]`. Take `⟨w, hw, hwe⟩` from `split_holds C O dd (ZMod d) (linHom Y) (linM e) (fun c => p.em c) hPP hPM hinj (fun x => ProjLieSelf.keySelf hE Y p ε hε hε1 hεx e he x) v`. Establish `hb : ∀ c, ∃ b : I0 → C, (∀ c', p.ty0 c' ≠ c → b c' = 0) ∧ w c = ∑ c', b c' • p.e c'` using `fun c => p.e_full c (w c) fun x => by rw [linAct_eq]; exact hwe c x`. Use `choose b _ hbw using hb`.
+
+Use `⟨fun c' => ∑ c, b c c', ?_⟩` and prove the remaining obligations. Rewrite using `[linAct_eq, hw]`. Repeatedly rewrite using `[hbw, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem projLieSelf_of (hE : KeyEigSt) : ProjLieSelfSt := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p ε hε hε1 hεx e he v
   obtain ⟨e0, hidem, hcomm⟩ := proj_core Y ε hε e he
@@ -60,6 +72,9 @@ theorem projLieSelf_of (hE : KeyEigSt) : ProjLieSelfSt := by
   simp_rw [hbw, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+The claim follows from `allStartSelf_of (projLieSelf_of hE)`.
+-/
 theorem allStartSelf_of_eig (hE : RowTiePKey.KeyEigSt) : AllStartSelfSt := allStartSelf_of (projLieSelf_of hE)
 
 end Formalism.L2.FormalSeriesBounds

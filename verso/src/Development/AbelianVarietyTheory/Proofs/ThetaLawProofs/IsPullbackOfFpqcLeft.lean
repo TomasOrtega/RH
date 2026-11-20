@@ -11,6 +11,17 @@ namespace GlobalTheory
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `c : G'.left ⟶ pullback G.hom a` to `pullback.lift ψ G'.hom w`. Establish `hc₁ : c ≫ pullback.fst G.hom a = ψ` using `pullback.lift_fst _ _ _`. Establish `hc₂ : c ≫ pullback.snd G.hom a = G'.hom` using `pullback.lift_snd _ _ _`. Establish `hlow : IsPullback (φ ≫ c) G''.hom (pullback.snd G.hom a) π` using `(IsPullback.paste_horiz_iff (IsPullback.of_hasPullback G.hom a) (by rw [Category.assoc, hc₂, h₁.1.w])).1 (by rw [Category.assoc, hc₁]; exact h₂.1)`.
+
+Establish `hcov : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (φ ≫ c)` using `⟨⟨MorphismProperty.of_isPullback (P := @Surjective) hlow.flip hs, MorphismProperty.of_isPullback (P := @Flat) hlow.flip hf⟩, MorphismProperty.of_isPullback (P := @QuasiCompact) hlow.flip hq⟩`. Establish `hsq : IsPullback (𝟙 G''.left) φ (φ ≫ c) c` using `((IsPullback.paste_vert_iff (h₁₁ := φ) (v₁₁ := 𝟙 _) (v₁₂ := c) hlow (by simp)).1 (by rw [Category.id_comp, hc₂]; exact h₁.1)).flip`. Establish `hc : IsIso c` using `MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.isomorphisms _) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) hsq hcov (inferInstanceAs (IsIso (𝟙 G''.left)))`. Conclude with `IsPullback.of_iso (IsPullback.of_hasPullback G.hom a) (asIso c).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp [IsIso.eq_inv_comp, hc₁]) (by simp [IsIso.eq_inv_comp, hc₂]) (by simp) (by simp)`. Introduce `T x y x₀ y₀ hx hy haveI := hf haveI := hs`.
+
+Set `p : pullback T.hom π ⟶ T.left` to `pullback.fst T.hom π`. Use `haveI : Epi p := Flat.epi_of_flat_of_surjective _`. Set `T'' : Over S''` to `Over.mk (pullback.snd T.hom π)`. Set `q : Over.mk (T''.hom ≫ π) ⟶ T` to `Over.homMk p (by simp [p, T'', pullback.condition])`. Set `q₀ : Over.mk (T''.hom ≫ π ≫ a) ⟶ Over.mk (T.hom ≫ a)` to `Over.homMk p (by simp [p, T'', pullback.condition_assoc])`.
+
+Set `x'' : T'' ⟶ G''` to `Over.homMk (h₁.1.lift (p ≫ x.left) T''.hom (by simp [p, T'', pullback.condition])) (by simp [T''])`. Set `y'' : T'' ⟶ G''` to `Over.homMk (h₁.1.lift (p ≫ y.left) T''.hom (by simp [p, T'', pullback.condition])) (by simp [T''])`. Establish `hx'' : x''.left ≫ φ = p ≫ x.left` using `by simp [x'']`. Establish `hy'' : y''.left ≫ φ = p ≫ y.left` using `by simp [y'']`. Establish `k₁` using `h₁.2 T'' x'' y'' (q ≫ x) (q ≫ y) (by simp [q, hx'']) (by simp [q, hy''])`.
+
+Establish `k₂` using `h₂.2 T'' x'' y'' (q₀ ≫ x₀) (q₀ ≫ y₀) (by simp only [Over.comp_left, Over.homMk_left, q₀]; rw [hx, reassoc_of% hx'']) (by simp only [Over.comp_left, Over.homMk_left, q₀]; rw [hy, reassoc_of% hy''])`. Rewrite using `[← cancel_epi p]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.isGrpPullback_of_fpqc (S S' S'' : Scheme.{0}) (a : S' ⟶ S) (π : S'' ⟶ S') (G : Over S) [GrpObj G]
     (G' : Over S') [GrpObj G'] (G'' : Over S'') [GrpObj G''] (φ : G''.left ⟶ G'.left) (ψ : G'.left ⟶ G.left)
     (hf : Flat π) (hs : Surjective π) (hq : QuasiCompact π) (h₁ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G'' G' π φ)

@@ -32,9 +32,15 @@ def projectionToBase (d : BlowupSequenceData X) : ∀ i : ℕ, d.obj i ⟶ X
   | (i + 1) => d.map i ≫ projectionToBase d i
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem projectionToBase_zero (d : BlowupSequenceData X) : projectionToBase d 0 = d.isoZero.hom := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projectionToBase_succ (d : BlowupSequenceData X) (i : ℕ) :
     projectionToBase d (i + 1) = d.map i ≫ projectionToBase d i := rfl
 
@@ -45,6 +51,9 @@ private def homAdd (d : BlowupSequenceData X) (i : ℕ) : ∀ k : ℕ, d.obj (i 
 private def homOfLE (d : BlowupSequenceData X) {i j : ℕ} (h : i ≤ j) : d.obj j ⟶ d.obj i :=
   eqToHom (congrArg d.obj (Nat.add_sub_cancel' h).symm) ≫ homAdd d i (j - i)
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Establish `h1 : homAdd d i 0 = 𝟙 (d.obj i)` using `rfl`. Establish `h2 : eqToHom h = 𝟙 (d.obj i)` using `rfl`. Rewrite using `[h1, h2]`. Conclude with `Category.id_comp (𝟙 (d.obj i))`.
+-/
 private theorem eqToHom_comp_iteratedBlowupMorphism_of_eq_zero (d : BlowupSequenceData X) (i k : ℕ)
     (h : d.obj i = d.obj (i + k)) (hk : k = 0) :
     eqToHom h ≫ homAdd d i k = 𝟙 (d.obj i) := by
@@ -54,29 +63,47 @@ private theorem eqToHom_comp_iteratedBlowupMorphism_of_eq_zero (d : BlowupSequen
   rw [h1, h2]
   exact Category.id_comp (𝟙 (d.obj i))
 
+/- English proof (translation)
+The claim follows from `eqToHom_comp_iteratedBlowupMorphism_of_eq_zero d i (i - i) (congrArg d.obj (Nat.add_sub_cancel' (le_refl i)).symm) (Nat.sub_self i)`.
+-/
 private theorem towerMorphism_refl (d : BlowupSequenceData X) (i : ℕ) :
     homOfLE d (le_refl i) = 𝟙 (d.obj i) :=
   eqToHom_comp_iteratedBlowupMorphism_of_eq_zero d i (i - i)
     (congrArg d.obj (Nat.add_sub_cancel' (le_refl i)).symm) (Nat.sub_self i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem iteratedBlowupMorphism_zero (d : BlowupSequenceData X) (i : ℕ) :
     homAdd d i 0 = 𝟙 (d.obj i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem iteratedBlowupMorphism_succ (d : BlowupSequenceData X) (i k : ℕ) :
     homAdd d i (k + 1) = d.map (i + k) ≫ homAdd d i k := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem blowupMorphism_comp_eqToHom (d : BlowupSequenceData X) {n m : ℕ} (h : n = m) :
     d.map n ≫ eqToHom (congrArg d.obj h) =
       eqToHom (show d.obj (n + 1) = d.obj (m + 1) by rw [h]) ≫ d.map m := by
   subst h
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem iteratedBlowupMorphism_congr_length (d : BlowupSequenceData X) (i : ℕ) {k k' : ℕ} (h : k = k') :
     homAdd d i k =
       eqToHom (show d.obj (i + k) = d.obj (i + k') by rw [h]) ≫ homAdd d i k' := by
   subst h
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem iteratedBlowupMorphism_congr_start (d : BlowupSequenceData X) {i i' : ℕ} (h : i = i') (k : ℕ) :
     homAdd d i k =
       eqToHom (show d.obj (i + k) = d.obj (i' + k) by rw [h]) ≫ homAdd d i' k ≫
@@ -84,6 +111,11 @@ private theorem iteratedBlowupMorphism_congr_start (d : BlowupSequenceData X) {i
   subst h
   simp
 
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `zero => show homAdd d (i + a) 0 ≫ homAdd d i a = eqToHom (rfl : d.obj (i + a) = d.obj (i + a)) ≫ homAdd d i a`. Rewrite using `[iteratedBlowupMorphism_zero, eqToHom_refl, Category.id_comp]`. Conclude with `Category.id_comp _`. Consider the case `succ b ih`.
+
+Rewrite using `[iteratedBlowupMorphism_succ, Category.assoc, ih, ← Category.assoc, blowupMorphism_comp_eqToHom d (Nat.add_assoc i a b), Category.assoc]`. Both sides reduce to the same expression.
+-/
 private theorem iteratedBlowupMorphism_comp_iteratedBlowupMorphism (d : BlowupSequenceData X) (i a b : ℕ) :
     homAdd d (i + a) b ≫ homAdd d i a =
       eqToHom (congrArg d.obj (Nat.add_assoc i a b)) ≫ homAdd d i (a + b) := by
@@ -98,6 +130,9 @@ private theorem iteratedBlowupMorphism_comp_iteratedBlowupMorphism (d : BlowupSe
         blowupMorphism_comp_eqToHom d (Nat.add_assoc i a b), Category.assoc]
       rfl
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Unfold `homOfLE`. Rewrite using `[iteratedBlowupMorphism_congr_length d i (show i + k - i = k by omega)]`. Simplify using the standard rewrite rules.
+-/
 private theorem towerMorphism_eq_iteratedBlowupMorphism (d : BlowupSequenceData X) {i j : ℕ} (h : i ≤ j) (k : ℕ)
     (hk : j = i + k) :
     homOfLE d h = eqToHom (congrArg d.obj hk) ≫ homAdd d i k := by
@@ -106,6 +141,9 @@ private theorem towerMorphism_eq_iteratedBlowupMorphism (d : BlowupSequenceData 
   rw [iteratedBlowupMorphism_congr_length d i (show i + k - i = k by omega)]
   simp
 
+/- English proof (translation)
+Rewrite using `[towerMorphism_eq_iteratedBlowupMorphism d hjl (l - j) (by omega), towerMorphism_eq_iteratedBlowupMorphism d hij (j - i) (by omega), towerMorphism_eq_iteratedBlowupMorphism d (hij.trans hjl) ((j - i) + (l - j)) (by omega), iteratedBlowupMorphism_congr_start d (show j = i + (j - i …`. Simplify using `only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]`. Rewrite using `[iteratedBlowupMorphism_comp_iteratedBlowupMorphism d i (j - i) (l - j)]`. Simplify using the standard rewrite rules.
+-/
 private theorem towerMorphism_comp (d : BlowupSequenceData X) {i j l : ℕ} (hij : i ≤ j) (hjl : j ≤ l) :
     homOfLE d hjl ≫ homOfLE d hij = homOfLE d (hij.trans hjl) := by
   rw [towerMorphism_eq_iteratedBlowupMorphism d hjl (l - j) (by omega), towerMorphism_eq_iteratedBlowupMorphism d hij (j - i) (by omega),
@@ -122,19 +160,33 @@ def tower (d : BlowupSequenceData X) : ℕᵒᵖ ⥤ Scheme.{u} where
   map_comp f g := (towerMorphism_comp d (leOfHom g.unop) (leOfHom f.unop)).symm
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tower_obj (d : BlowupSequenceData X) (i : ℕ) : d.tower.obj (op i) = d.obj i := rfl
 
+/- English proof (translation)
+Use `show d.map (i + 0) ≫ homAdd d i 0 = d.map i`. Conclude with `Category.comp_id _`.
+-/
 private theorem iteratedBlowupMorphism_one (d : BlowupSequenceData X) (i : ℕ) :
     homAdd d i 1 = d.map i := by
   show d.map (i + 0) ≫ homAdd d i 0 = d.map i
   exact Category.comp_id _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_comp_iteratedBlowupMorphism (d : BlowupSequenceData X) (i : ℕ) {k k' : ℕ} (h : k = k')
     (hobj : d.obj (i + k) = d.obj (i + k')) :
     eqToHom hobj ≫ homAdd d i k' = homAdd d i k := by
   subst h
   simp
 
+/- English proof (translation)
+Establish `h1 : i + 1 - i = 1` using `by omega`. Establish `h2` using `eqToHom_comp_iteratedBlowupMorphism d i h1 (show d.obj (i + (i + 1 - i)) = d.obj (i + 1) by rw [h1])`. Unfold `homOfLE`. Rewrite using `[← h2, ← Category.assoc, eqToHom_trans, eqToHom_refl, Category.id_comp]`. Conclude with `iteratedBlowupMorphism_one d i`.
+
+Use the proof step `@[simp]`.
+-/
 private theorem towerMorphism_succ (d : BlowupSequenceData X) (i : ℕ) (h : i ≤ i + 1) :
     homOfLE d h = d.map i := by
   have h1 : i + 1 - i = 1 := by omega
@@ -145,10 +197,16 @@ private theorem towerMorphism_succ (d : BlowupSequenceData X) (i : ℕ) (h : i �
   exact iteratedBlowupMorphism_one d i
 
 @[simp]
+/- English proof (translation)
+The claim follows from `towerMorphism_succ d i (Nat.le_succ i)`.
+-/
 theorem tower_map_succ (d : BlowupSequenceData X) (i : ℕ) :
     d.tower.map (CategoryTheory.homOfLE (Nat.le_succ i)).op = d.map i :=
   towerMorphism_succ d i (Nat.le_succ i)
 
+/- English proof (translation)
+Establish `h` using `d.isBlowup i hi`. Rewrite using `[tower_map_succ]`. Conclude with `h`.
+-/
 theorem isBlowupAlongIdealSheaf_tower_map (d : BlowupSequenceData X) (i : ℕ) (hi : i < d.length) :
     Blowup.IsBlowupAlongIdealSheaf (d.tower.map (CategoryTheory.homOfLE (Nat.le_succ i)).op) (d.center i) := by
   have h := d.isBlowup i hi
@@ -163,24 +221,49 @@ def toSequenceOfBlowups (d : BlowupSequenceData X) : SequenceOfBlowups X where
   isBlowup := fun i hi => isBlowupAlongIdealSheaf_tower_map d i hi
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toSequenceOfBlowups_length (d : BlowupSequenceData X) : d.toSequenceOfBlowups.length = d.length := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toSequenceOfBlowups_tower (d : BlowupSequenceData X) : d.toSequenceOfBlowups.tower = d.tower := rfl
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toSequenceOfBlowups_schemeAt (d : BlowupSequenceData X) (i : ℕ) : d.toSequenceOfBlowups.schemeAt i = d.obj i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toSequenceOfBlowups_center (d : BlowupSequenceData X) (i : ℕ) : d.toSequenceOfBlowups.center i = d.center i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toSequenceOfBlowups_isoObjZero (d : BlowupSequenceData X) : d.toSequenceOfBlowups.isoZero = d.isoZero := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `tower_map_succ d i @[simp]`.
+-/
 theorem toSequenceOfBlowups_blowupMorphism (d : BlowupSequenceData X) (i : ℕ) : d.toSequenceOfBlowups.transitionMapSucc i = d.map i :=
   tower_map_succ d i
 
 @[simp]
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Establish `h0 : d.toSequenceOfBlowups.transitionMap (Nat.zero_le 0) = 𝟙 (d.toSequenceOfBlowups.schemeAt 0)` using `d.toSequenceOfBlowups.tower.map_id (op 0)`. Establish `h1 : d.toSequenceOfBlowups.projectionToBase 0 = d.toSequenceOfBlowups.transitionMap (Nat.zero_le 0) ≫ d.toSequenceOfBlowups.isoZero.hom` using `SequenceOfBlowups.projectionToBase_def d.toSequenceOfBlowups 0`. Establish `h2 : d.toSequenceOfBlowups.projectionToBase 0 = d.toSequenceOfBlowups.isoZero.hom`.
+
+Rewrite using `[h1, h0, Category.id_comp]`. Conclude with `h2`. Consider the case `succ j ih`. Establish `h2 : d.toSequenceOfBlowups.transitionMap (Nat.le_succ j) = d.map j` using `(SequenceOfBlowups.transitionMap_def d.toSequenceOfBlowups (Nat.le_succ j)).trans (tower_map_succ d j)`. Establish `h3 : d.toSequenceOfBlowups.transitionMap (Nat.le_succ j) ≫ d.toSequenceOfBlowups.projectionToBase j = d.toSequenceOfBlowups.projectionToBase (j + 1)` using `SequenceOfBlowups.transitionMap_comp_projectionToBase d.toSequenceOfBlowups (Nat.le_succ j)`.
+
+Establish `h5 : d.toSequenceOfBlowups.transitionMap (Nat.le_succ j) ≫ d.toSequenceOfBlowups.projectionToBase j = d.map j ≫ projectionToBase d j`. Rewrite using `[h2, ih]`. Conclude with `rfl`. Conclude with `h3.symm.trans h5`.
+-/
 theorem toSequenceOfBlowups_projectionToBase (d : BlowupSequenceData X) (i : ℕ) : d.toSequenceOfBlowups.projectionToBase i = projectionToBase d i := by
   induction i with
   | zero =>
@@ -212,20 +295,40 @@ def ofSequenceOfBlowups (s : SequenceOfBlowups X) : BlowupSequenceData X where
   isBlowup := fun i hi => s.isBlowupAlongIdealSheaf_blowupMorphism i hi
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofSequenceOfBlowups_length (s : SequenceOfBlowups X) : (ofSequenceOfBlowups s).length = s.length := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofSequenceOfBlowups_schemeAt (s : SequenceOfBlowups X) (i : ℕ) : (ofSequenceOfBlowups s).obj i = s.schemeAt i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofSequenceOfBlowups_blowupMorphism (s : SequenceOfBlowups X) (i : ℕ) : (ofSequenceOfBlowups s).map i = s.transitionMapSucc i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofSequenceOfBlowups_center (s : SequenceOfBlowups X) (i : ℕ) : (ofSequenceOfBlowups s).center i = s.center i := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSequenceOfBlowups_isoObjZero (s : SequenceOfBlowups X) : (ofSequenceOfBlowups s).isoZero = s.isoZero := rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Establish `h1 : s.tower.map (CategoryTheory.homOfLE (le_refl (0 : ℕ))).op = 𝟙 (s.tower.obj (Opposite.op 0))` using `s.tower.map_id (Opposite.op 0)`. Establish `h2 : s.projectionToBase 0 = s.isoZero.hom`. Rewrite using `[SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.transitionMap_def, h1, Category.id_comp]`.
+
+Conclude with `h2.symm`. Consider the case `succ i ih => show (ofSequenceOfBlowups s).map i ≫ projectionToBase (ofSequenceOfBlowups s) i = s.projectionToBase (i + 1)`. Rewrite using `[ih]`. Use `show s.transitionMapSucc i ≫ s.projectionToBase i = s.projectionToBase (i + 1)`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]`.
+-/
 theorem ofSequenceOfBlowups_projectionToBase (s : SequenceOfBlowups X) (i : ℕ) : projectionToBase (ofSequenceOfBlowups s) i = s.projectionToBase i := by
   induction i with
   | zero =>
@@ -251,18 +354,33 @@ def emptyBlowupSequenceData (X : Scheme.{u}) : BlowupSequenceData X where
   isBlowup := fun i hi => absurd hi (Nat.not_lt_zero i)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyBlowupSequenceData_length (X : Scheme.{u}) : (emptyBlowupSequenceData X).length = 0 := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyBlowupSequenceData_schemeAt (X : Scheme.{u}) (i : ℕ) : (emptyBlowupSequenceData X).obj i = X := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyBlowupSequenceData_blowupMorphism (X : Scheme.{u}) (i : ℕ) : (emptyBlowupSequenceData X).map i = 𝟙 X := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyBlowupSequenceData_center (X : Scheme.{u}) (i : ℕ) : (emptyBlowupSequenceData X).center i = ⊤ := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emptyBlowupSequenceData_isoObjZero (X : Scheme.{u}) :
     (emptyBlowupSequenceData X).isoZero = Iso.refl X := rfl
 
@@ -295,6 +413,11 @@ namespace MarkedBlowupSequenceData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Rewrite using `[BlowupSequenceData.projectionToBase_zero]`. Conclude with `d.proj_zero`. Consider the case `succ i ih`.
+
+Rewrite using `[d.proj_succ i, BlowupSequenceData.projectionToBase_succ, ih]`.
+-/
 theorem projectionToBase_eq (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.proj i = BlowupSequenceData.projectionToBase d.toBlowupSequenceData i := by
   induction i with
@@ -304,16 +427,25 @@ theorem projectionToBase_eq (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
   | succ i ih =>
       rw [d.proj_succ i, BlowupSequenceData.projectionToBase_succ, ih]
 
+/- English proof (translation)
+The claim follows from `(d.projectionToBase_eq i).trans (BlowupSequenceData.toSequenceOfBlowups_projectionToBase d.toBlowupSequenceData i).symm`.
+-/
 theorem projectionToBase_eq_toSequenceOfBlowups (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.proj i = d.toBlowupSequenceData.toSequenceOfBlowups.projectionToBase i :=
   (d.projectionToBase_eq i).trans (BlowupSequenceData.toSequenceOfBlowups_projectionToBase d.toBlowupSequenceData i).symm
 
+/- English proof (translation)
+The claim follows from `d.center_order i hi`.
+-/
 private theorem center_support_subset_orderAtLeastLocus (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     ((d.toBlowupSequenceData.center i).support : Set ↥(d.toBlowupSequenceData.obj i)) ⊆
       orderAtLeastLocus (d.ideal i) m :=
   d.center_order i hi
 
+/- English proof (translation)
+Establish `h` using `d.center_smooth i hi`. Rewrite `h` using `[projectionToBase_eq_toSequenceOfBlowups d i]`. Conclude with `h`.
+-/
 private theorem smooth_center_comp_projection (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     AlgebraicGeometry.Smooth
@@ -322,6 +454,9 @@ private theorem smooth_center_comp_projection (d : MarkedBlowupSequenceData p I 
   rw [projectionToBase_eq_toSequenceOfBlowups d i] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `d.center_snc i hi`. Rewrite `h` using `[d.projectionToBase_eq_toSequenceOfBlowups i]`. Conclude with `h`.
+-/
 private theorem hasStrictNormalCrossingsWith_center_boundary (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     HasStrictNormalCrossingsWith (d.toBlowupSequenceData.toSequenceOfBlowups.projectionToBase i ≫ p) (d.toBlowupSequenceData.center i)
@@ -330,6 +465,9 @@ private theorem hasStrictNormalCrossingsWith_center_boundary (d : MarkedBlowupSe
   rw [d.projectionToBase_eq_toSequenceOfBlowups i] at h
   exact h
 
+/- English proof (translation)
+Establish `key` using `d.ideal_succ i hi`. Establish `h : d.toBlowupSequenceData.toSequenceOfBlowups.transitionMapSucc i = d.toBlowupSequenceData.map i` using `BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i`. Rewrite using `[h]`. Conclude with `key`.
+-/
 private theorem exceptionalIdeal_pow_mul_ideal_succ_eq_comap (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     Blowup.exceptionalIdeal (d.toBlowupSequenceData.toSequenceOfBlowups.transitionMapSucc i)
@@ -343,6 +481,9 @@ private theorem exceptionalIdeal_pow_mul_ideal_succ_eq_comap (d : MarkedBlowupSe
   rw [h]
   exact key
 
+/- English proof (translation)
+Establish `key` using `d.boundary_succ i hi`. Establish `h : d.toBlowupSequenceData.toSequenceOfBlowups.transitionMapSucc i = d.toBlowupSequenceData.map i` using `BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i`. Rewrite using `[h]`. Conclude with `key`.
+-/
 private theorem boundary_succ_eq_map_strictTransform_append (d : MarkedBlowupSequenceData p I m E) (i : ℕ)
     (hi : i < d.toBlowupSequenceData.length) :
     d.boundary (i + 1) =
@@ -368,46 +509,79 @@ def toMarkedSequenceOfBlowups (d : MarkedBlowupSequenceData p I m E) : MarkedSeq
   boundary_succ := fun i hi => boundary_succ_eq_map_strictTransform_append d i hi
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toMarkedSequence_toSequenceOfBlowups (d : MarkedBlowupSequenceData p I m E) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups = d.toBlowupSequenceData.toSequenceOfBlowups := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMarkedSequence_length (d : MarkedBlowupSequenceData p I m E) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups.length = d.toBlowupSequenceData.length := rfl
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toMarkedSequence_schemeAt (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups.schemeAt i = d.toBlowupSequenceData.obj i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toMarkedSequence_ideal (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.ideal i = d.ideal i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toMarkedSequence_boundary (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.boundary i = d.boundary i := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMarkedSequence_center (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups.center i = d.toBlowupSequenceData.center i := rfl
 
+/- English proof (translation)
+The claim follows from `BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i`.
+-/
 theorem toMarkedSequence_blowupMorphism (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups.transitionMapSucc i = d.toBlowupSequenceData.map i :=
   BlowupSequenceData.toSequenceOfBlowups_blowupMorphism d.toBlowupSequenceData i
 
+/- English proof (translation)
+The claim follows from `(BlowupSequenceData.toSequenceOfBlowups_projectionToBase d.toBlowupSequenceData i).trans (d.projectionToBase_eq i).symm @[simp]`.
+-/
 theorem toMarkedSequence_projectionToBase (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.toSequenceOfBlowups.projectionToBase i = d.proj i :=
   (BlowupSequenceData.toSequenceOfBlowups_projectionToBase d.toBlowupSequenceData i).trans (d.projectionToBase_eq i).symm
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq, toMarkedSequence_projectionToBase]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem toMarkedSequence_projectionToSpec (d : MarkedBlowupSequenceData p I m E) (i : ℕ) :
     d.toMarkedSequenceOfBlowups.projectionToSpec i = d.proj i ≫ p := by
   rw [MarkedSequenceOfBlowups.projectionToSpec_eq, toMarkedSequence_projectionToBase]
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMarkedSequence_lastIdeal (d : MarkedBlowupSequenceData p I m E) :
     d.toMarkedSequenceOfBlowups.lastIdeal = d.ideal d.toBlowupSequenceData.length := rfl
 
+/- English proof (translation)
+Establish `h1 : s.toSequenceOfBlowups.tower.map (homOfLE (le_refl (0 : ℕ))).op = 𝟙 (s.toSequenceOfBlowups.tower.obj (Opposite.op 0))` using `s.toSequenceOfBlowups.tower.map_id (Opposite.op 0)`. Use `show s.toSequenceOfBlowups.projectionToBase 0 = s.toSequenceOfBlowups.isoZero.hom`. Rewrite using `[SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.transitionMap_def, h1, Category.id_comp]`.
+-/
 private theorem toSequenceOfBlowups_projectionToBase_zero (s : MarkedSequenceOfBlowups p I m E) :
     s.toSequenceOfBlowups.projectionToBase 0 = (BlowupSequenceData.ofSequenceOfBlowups s.toSequenceOfBlowups).isoZero.hom := by
   have h1 : s.toSequenceOfBlowups.tower.map (homOfLE (le_refl (0 : ℕ))).op
@@ -416,6 +590,9 @@ private theorem toSequenceOfBlowups_projectionToBase_zero (s : MarkedSequenceOfB
   show s.toSequenceOfBlowups.projectionToBase 0 = s.toSequenceOfBlowups.isoZero.hom
   rw [SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.transitionMap_def, h1, Category.id_comp]
 
+/- English proof (translation)
+Use `show s.toSequenceOfBlowups.projectionToBase (i + 1) = s.toSequenceOfBlowups.transitionMapSucc i ≫ s.toSequenceOfBlowups.projectionToBase i`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap, SequenceOfBlowups.transitionMap_comp_projectionToBase]`.
+-/
 private theorem toSequenceOfBlowups_projectionToBase_succ (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     s.toSequenceOfBlowups.projectionToBase (i + 1) =
       (BlowupSequenceData.ofSequenceOfBlowups s.toSequenceOfBlowups).map i ≫ s.toSequenceOfBlowups.projectionToBase i := by
@@ -439,30 +616,51 @@ def ofMarkedSequence (s : MarkedSequenceOfBlowups p I m E) : MarkedBlowupSequenc
   boundary_succ := fun i hi => s.boundary_succ i hi
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem blowupSequenceData_ofMarkedSequence (s : MarkedSequenceOfBlowups p I m E) :
     (ofMarkedSequence s).toBlowupSequenceData = BlowupSequenceData.ofSequenceOfBlowups s.toSequenceOfBlowups := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofMarkedSequence_length (s : MarkedSequenceOfBlowups p I m E) :
     (ofMarkedSequence s).toBlowupSequenceData.length = s.toSequenceOfBlowups.length := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofMarkedSequence_projectionToBase (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (ofMarkedSequence s).proj i = s.toSequenceOfBlowups.projectionToBase i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofMarkedSequence_blowupMorphism (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (ofMarkedSequence s).toBlowupSequenceData.map i = s.toSequenceOfBlowups.transitionMapSucc i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofMarkedSequence_ideal (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (ofMarkedSequence s).ideal i = s.ideal i := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ofMarkedSequence_boundary_apply (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (ofMarkedSequence s).boundary i = s.boundary i := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofMarkedSequence_center (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) :
     (ofMarkedSequence s).toBlowupSequenceData.center i = s.toSequenceOfBlowups.center i := rfl
 
@@ -486,48 +684,72 @@ def emptyMarkedBlowupSequenceData {k : Type u} [Field k] {X : Scheme.{u}}
   boundary_succ := fun i hi => absurd hi (Nat.not_lt_zero i)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_toBlowupSequenceData_eq {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :
     (emptyMarkedBlowupSequenceData p I m E).toBlowupSequenceData = emptyBlowupSequenceData X := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_length {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :
     (emptyMarkedBlowupSequenceData p I m E).toBlowupSequenceData.length = 0 := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_schemeAt {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (i : ℕ) :
     (emptyMarkedBlowupSequenceData p I m E).toBlowupSequenceData.obj i = X := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_center {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (i : ℕ) :
     (emptyMarkedBlowupSequenceData p I m E).toBlowupSequenceData.center i = ⊤ := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (i : ℕ) :
     (emptyMarkedBlowupSequenceData p I m E).proj i = 𝟙 X := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_ideal {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (i : ℕ) :
     (emptyMarkedBlowupSequenceData p I m E).ideal i = I := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem emptyMarkedBlowupSequenceData_boundary {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) (i : ℕ) :
     (emptyMarkedBlowupSequenceData p I m E).boundary i = E := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emptyMarkedBlowupSequenceData_toMarkedSequence_length {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData) :

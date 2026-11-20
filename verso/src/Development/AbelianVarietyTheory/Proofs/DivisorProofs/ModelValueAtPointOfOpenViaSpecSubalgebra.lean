@@ -12,6 +12,17 @@ open Classical
 noncomputable section
 namespace GlobalTheory.Poinc.TestAtPt
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M U₀ Rs u₀ hne hpt K _ q f hf a`. Use `set s : Γ(U₀.toScheme, ⊤) := (u₀.appLE ⊤ ⊤ (fun _ _ => trivial)).hom ((Scheme.ΓSpecIso (CommRingCat.of Rs)).inv.hom a) with hs`. Use `set t : Γ(M.Z, U₀.ι ''ᵁ ⊤) := (U₀.ι.appIso ⊤).inv.hom s with ht`. Establish `key : ∀ {C : Type} [Field C] (y : Sp C ⟶ U₀.toScheme), valF (y ≫ U₀.ι) (U₀.ι ''ᵁ ⊤) t = valR (y ≫ u₀) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Rs)).inv.hom a)`. Introduce `C _ y`.
+
+Rewrite using `[GlobalTheory.Points.valF_eq_valR, ← GlobalTheory.Points.valR_appLE y U₀.ι (U₀.ι.preimage_image_eq ⊤).ge (GlobalTheory.Points.le_preimage_top y), ← Scheme.Hom.appIso_hom', ht, ← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, hs]`. Conclude with `GlobalTheory.Points.valR_appLE y u₀ _ (GlobalTheory.Points.le_preimage_top y) _`. Establish `hW : ∀ {C : Type} [Field C] (y : Sp C ⟶ U₀.toScheme), Set.range (y ≫ U₀.ι) ⊆ ((U₀.ι ''ᵁ ⊤ : M.Z.Opens) : Set M.Z)`. Introduce `C _ y`. Rewrite using `[Scheme.Opens.ι_image_top, ← Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨y w, rfl⟩`. Establish `hrange : Set.range M.pt ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `M.top_le_preimage_pt hne (x := w) trivial`. Establish `hx : IsOpenImmersion.lift U₀.ι M.pt hrange ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h1` using `hpt _ hx`. Establish `e1 : valF M.pt (U₀.ι ''ᵁ ⊤) t = (a : Ω)`. Rewrite using `[← hx, key, h1, GlobalTheory.Points.valR_specMap]`.
+
+Both sides reduce to the same expression. Rewrite using `[RatModel.val_eq (hW q) e1, key, ← hf, GlobalTheory.Points.valR_specMap]`. Both sides reduce to the same expression.
+-/
 theorem val_eq_of_spMap : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U₀ : M.Z.Opens) (Rs : Subalgebra o Ω) (u₀ : U₀.toScheme ⟶ Sp Rs), (U₀ : Set M.Z).Nonempty → (∀ x : Sp Ω ⟶ U₀.toScheme, x ≫ U₀.ι = M.pt → x ≫ u₀ = spMap Rs.val.toRingHom) → ∀ (K : Type) [Field K] (q : Sp K ⟶ U₀.toScheme) (f : Rs →+* K), spMap f = q ≫ u₀ → ∀ a : Rs, M.val (q ≫ U₀.ι) (a : Ω) = f a := by
   intro o Ω _ _ _ M U₀ Rs u₀ hne hpt K _ q f hf a
   set s : Γ(U₀.toScheme, ⊤) :=

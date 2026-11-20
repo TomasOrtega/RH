@@ -27,8 +27,16 @@ def πEdag (T : TeichLift p L Γ) : T.Edag :=
   ⟨algebraMap Γ T.B T.π, T.Econ_le_Edag ⟨1 / 2, by norm_num, by norm_num⟩
     (T.algebraMap_π_mem_Econ _)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem edagToTilde_πEdag : T.edagToTilde (πEdag T) = T.πTilde := rfl
 
+/- English proof (translation)
+Establish `h1 : algebraMap Γ T.B T.π ^ m = ((T.piB ^ (m : ℤ) : T.Bˣ) : T.B) * algebraMap Γ T.B 1`. Rewrite using `[map_one, mul_one, zpow_natCast, Units.val_pow_eq_pow_val, piB_val]`. Establish `h1' : T.ordB (algebraMap Γ T.B T.π ^ m) = m`. Rewrite using `[h1]; exact T.ordB_piB_zpow_mul _ (by rw [map_one]; exact one_ne_zero)`. Establish `hne : algebraMap Γ T.B T.π ^ m ≠ 0`.
+
+Use `T.nontrivial_B` as an intermediate fact. Conclude with `((IsLocalization.Away.algebraMap_isUnit T.π).pow m).ne_zero`. Rewrite using `[T.ordB_mul hne hc, h1']`.
+-/
 theorem ordB_algebraMap_π_pow_mul (m : ℕ) {c : T.B} (hc : c ≠ 0) :
     T.ordB (algebraMap Γ T.B T.π ^ m * c) = m + T.ordB c := by
   have h1 : algebraMap Γ T.B T.π ^ m = ((T.piB ^ (m : ℤ) : T.Bˣ) : T.B) * algebraMap Γ T.B 1 := by

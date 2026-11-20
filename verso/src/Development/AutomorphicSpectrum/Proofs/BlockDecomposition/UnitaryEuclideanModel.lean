@@ -31,6 +31,11 @@ def dualCoord (E : KMod n) :
     have ho := (stdOrthonormalBasis ℂ E.V).orthonormal
     simp [orthonormal_iff_ite.mp ho]
 
+/- English proof (translation)
+Use `set r := (InnerProductSpace.toDual ℂ E.V).symm ξ with hr`. Establish `h1 : ‖r‖ = ‖ξ‖` using `(InnerProductSpace.toDual ℂ E.V).symm.norm_map ξ`. Establish `h2 : ‖(stdOrthonormalBasis ℂ E.V).repr r‖ = ‖r‖` using `(stdOrthonormalBasis ℂ E.V).repr.norm_map r`. Rewrite using `[← h1, ← h2, EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : (dualCoord E ξ) i = ξ (stdOrthonormalBasis ℂ E.V i)` using `rfl`. Rewrite using `[h3, OrthonormalBasis.repr_apply_apply, ← InnerProductSpace.toDual_symm_apply (𝕜 := ℂ), ← hr, norm_inner_symm]`.
+-/
 theorem norm_dualCoord (E : KMod n) (ξ : E.V →L[ℂ] ℂ) : ‖dualCoord E ξ‖ = ‖ξ‖ := by
   set r := (InnerProductSpace.toDual ℂ E.V).symm ξ with hr
   have h1 : ‖r‖ = ‖ξ‖ := (InnerProductSpace.toDual ℂ E.V).symm.norm_map ξ
@@ -57,16 +62,37 @@ def dualAct (E : KMod n) : (E.V →L[ℂ] E.V) →ₗ[ℂ]
     ext v : 1
     simp
 
+/- English proof (translation)
+Simplify using `[dualAct]`.
+-/
 theorem dualAct_apply (E : KMod n) (T : E.V →L[ℂ] E.V) (v) :
     dualAct E T v = dualCoord E ((dualCoord E).symm v ∘L T) := by
   simp [dualAct]
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (p := (· ∈ Matrix.unitaryGroup (Fin n) ℂ)) ?_ _` and prove the remaining obligations. Simplify using `using (continuous_subtype_val.star : Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => star k.1)`.
+-/
 theorem continuous_unitary_inv :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => k⁻¹ := by
   refine Continuous.subtype_mk (p := (· ∈ Matrix.unitaryGroup (Fin n) ℂ)) ?_ _
   simpa using (continuous_subtype_val.star :
     Continuous fun k : Matrix.unitaryGroup (Fin n) ℂ => star k.1)
 
+/- English proof (translation)
+Establish `hact : ∀ k ξ, dualAct E (E.ρ k⁻¹) (dualCoord E ξ) = dualCoord E (ξ ∘L E.ρ k⁻¹)`. Introduce `k ξ`. Rewrite using `[dualAct_apply, LinearEquiv.symm_apply_apply]`. Set `ρ' : Matrix.unitaryGroup (Fin n) ℂ →* (EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)) →L[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)))` to `{ toFun := fun k => dualAct E (E.ρ k⁻¹) map_one' := by ext1 v`. Rewrite using `[dualAct_apply, inv_one, map_one]`.
+
+Express the relevant statement in the definitionally equal form `dualCoord E ((dualCoord E).symm v ∘L ContinuousLinearMap.id ℂ E.V) = v`. Rewrite using `[ContinuousLinearMap.comp_id, LinearEquiv.apply_symm_apply]`. Use the proof step `map_mul' := by`. Introduce `k l`. Use `ext1 v`.
+
+Take `⟨ξ, rfl⟩` from `(dualCoord E).surjective v`. Rewrite using `[ContinuousLinearMap.mul_apply, hact l, hact k, hact (k * l), _root_.mul_inv_rev, map_mul]`. Use `rfl }`. Use `⟨dualCoord E, ρ', ?_, ?_, fun k ξ => (hact k ξ).symm⟩` and prove the remaining obligations. Establish `h1 : Continuous (dualAct E)` using `LinearMap.continuous_of_finiteDimensional _`.
+
+Conclude with `h1.comp (E.cont.comp continuous_unitary_inv)`. Introduce `k v`. Take `⟨ξ, rfl⟩` from `(dualCoord E).surjective v`. Establish `hle : ∀ (l : Matrix.unitaryGroup (Fin n) ℂ) (η : E.V →L[ℂ] ℂ), ‖η ∘L E.ρ l‖ ≤ ‖η‖`. Introduce `l η`.
+
+Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Simplify `η.le_opNorm (E.ρ l x)` using `[E.iso]`. Establish `hback : (ξ ∘L E.ρ k⁻¹) ∘L E.ρ k = ξ`. Use extensionality with `x`. Establish `: E.ρ k⁻¹ (E.ρ k x) = x`.
+
+Establish `h` using `congrArg (fun T : E.V →L[ℂ] E.V => T x) (E.ρ.map_mul k⁻¹ k)`. Simplify using `using h.symm`. Simplify using `[this]`. Establish `h2 : ‖ξ ∘L E.ρ k⁻¹‖ = ‖ξ‖`. Use `le_antisymm (hle _ _) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `‖dualAct E (E.ρ k⁻¹) (dualCoord E ξ)‖ = _`. Rewrite using `[hact, norm_dualCoord, norm_dualCoord, h2]`.
+-/
 theorem dualRep_exists {n : ℕ} (E : KMod n) :
     ∃ (e : (E.V →L[ℂ] ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin (Module.finrank ℂ E.V)))
       (ρ' : Matrix.unitaryGroup (Fin n) ℂ →*

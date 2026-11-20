@@ -20,10 +20,16 @@ structure CMData0 {L : Type} [Field L] [NumberField L] (F : Type) [Field F] [Num
   ne : c ≠ 1
   bij : Function.Bijective fun i => InfinitePlace.mk (φ i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.real, h.cplx, h.rank, h.ne, h.bij⟩`.
+-/
 theorem CMData0.of_cmData {L : Type} [Field L] [NumberField L] {F : Type} [Field F] [NumberField F] [Algebra F L]
     {c : L ≃ₐ[F] L} {I : Type} {φ : I → L →+* ℂ} (h : CMData F c φ) : CMData0 F c φ :=
   ⟨h.real, h.cplx, h.rank, h.ne, h.bij⟩
 
+/- English proof (translation)
+The claim follows from `CMData0.of_cmData cmData_negTwo`.
+-/
 theorem cmData0_negTwo : CMData0 ℚ negTwoConj (fun w : InfinitePlace NegTwoField => w.embedding) :=
   CMData0.of_cmData cmData_negTwo
 
@@ -45,6 +51,9 @@ def WtOK (a : H.Psi → ℤ) : Prop := ∀ ζ : H.E, IsRoot ζ → ∏ τ, embPs
 
 def WtOKQ (a : H.Psi → ℚ) : Prop := ∃ z : H.Psi → ℤ, (∀ τ, a τ = z τ) ∧ WtOK H z
 
+/- English proof (translation)
+Introduce `_ _` and use `by simp`.
+-/
 theorem wtOK_zero : WtOK H 0 := fun _ _ => by simp
 
 structure IsClsF (ξ : HChar H.E) : Prop where

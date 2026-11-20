@@ -23,6 +23,9 @@ section Places
 variable {K : Type} [Field K] [NumberField K] (Pl : Rows.Places K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 K))
   (hval : ∀ w (x : K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ))
 
+/- English proof (translation)
+Establish `hx' : w.valuation K (x : K) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hx)`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K)]`. Unfold `Formalism.BasicNotions.vAdd`. Rewrite using `[neg_pos, ← WithZero.log_one, WithZero.log_lt_log hx' one_ne_zero]`.
+-/
 theorem vl_mem_iff_vAdd (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x ≠ 0) : x ∈ w.asIdeal ↔ 0 < vAdd w (x : K) := by
   have hx' : w.valuation K (x : K) ≠ 0 := (map_ne_zero _).2 (by exact_mod_cast hx)
   rw [← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K)]
@@ -31,6 +34,17 @@ theorem vl_mem_iff_vAdd (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (hx : x �
 
 include hval
 
+/- English proof (translation)
+Rewrite using `[mem_localized_one_iff, mem_range_ow_iff]`. Use `show (0 : WithTop ℤ) ≤ Pl.val w r ↔ _`. Distinguish the cases in `hr : r = 0`. Substitute `hr` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[hval w r hr]`. Establish `h0 : (pw w).valuation K r ≠ 0` using `(map_ne_zero _).2 hr`. Establish `e : ((0 : WithTop ℤ) ≤ ((vAdd (pw w) r : ℤ) : WithTop ℤ)) ↔ 0 ≤ vAdd (pw w) r`. Conclude with `Iff.rfl` after adjusting the coercions. Rewrite using `[e]`.
+
+Unfold `Formalism.BasicNotions.vAdd`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : WithZero.log ((pw w).valuation K r) ≤ 0` using `by omega`. Rewrite `h1` using `[WithZero.log_le_iff_le_exp h0]`.
+
+Simplify using `using h1`. Introduce `h`. Establish `h1 : WithZero.log ((pw w).valuation K r) ≤ 0`. Rewrite using `[WithZero.log_le_iff_le_exp h0]`. Simplify using `using h`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem vl_mem_intW_iff (w : Pl.Pl) (r : K) :
     r ∈ intW Pl w ↔ r ∈ localization₂ (pw w).asIdeal (1 : Submodule (𝓞 K) K) := by
   rw [mem_localized_one_iff, mem_range_ow_iff]
@@ -55,6 +69,11 @@ theorem vl_mem_intW_iff (w : Pl.Pl) (r : K) :
         simpa using h
       omega
 
+/- English proof (translation)
+Establish `hl0 : ((Pl.resChar w : ℕ) : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.2 (Pl.resChar_prime w).ne_zero`. Rewrite using `[vl_mem_iff_vAdd (pw w) _ hl0]`. Establish `h1` using `Pl.val_resChar w`. Establish `hl1 : ((Pl.resChar w : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (Pl.resChar_prime w).ne_zero`. Rewrite `h1` using `[hval w _ hl1]`.
+
+Establish `h2 : vAdd (pw w) ((Pl.resChar w : ℕ) : K) = ((Pl.ramIdx w : ℕ) : ℤ)` using `by exact_mod_cast h1`. Establish `h3 : ((((Pl.resChar w : ℕ) : 𝓞 K) : 𝓞 K) : K) = ((Pl.resChar w : ℕ) : K)` using `by simp`. Rewrite using `[h3, h2]`. Conclude with `Pl.ramIdx_pos w` after adjusting the coercions.
+-/
 theorem vl_resChar_mem (w : Pl.Pl) : ((Pl.resChar w : ℕ) : 𝓞 K) ∈ (pw w).asIdeal := by
   have hl0 : ((Pl.resChar w : ℕ) : 𝓞 K) ≠ 0 := Nat.cast_ne_zero.2 (Pl.resChar_prime w).ne_zero
   rw [vl_mem_iff_vAdd (pw w) _ hl0]
@@ -66,6 +85,11 @@ theorem vl_resChar_mem (w : Pl.Pl) : ((Pl.resChar w : ℕ) : 𝓞 K) ∈ (pw w).
   rw [h3, h2]
   exact_mod_cast Pl.ramIdx_pos w
 
+/- English proof (translation)
+Introduce `h`. Establish `hcop : Nat.Coprime (Pl.resChar w) s` using `((Pl.resChar_prime w).coprime_iff_not_dvd).2 hs`. Take `⟨a, b, e⟩` from `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (𝓞 K))`. Apply `lc_one_notMem (pw w)` to reduce the goal to its premises. Rewrite using `[← e]`.
+
+Use `Ideal.add_mem _ (Ideal.mul_mem_left _ _ ?_) (Ideal.mul_mem_left _ _ ?_)` and prove the remaining obligations. Simplify using `using vl_resChar_mem Pl pw hval w`. Simplify using `using h`.
+-/
 theorem vl_natCast_notMem (w : Pl.Pl) {s : ℕ} (hs : ¬ Pl.resChar w ∣ s) : (s : 𝓞 K) ∉ (pw w).asIdeal := by
   intro h
   have hcop : Nat.Coprime (Pl.resChar w) s := ((Pl.resChar_prime w).coprime_iff_not_dvd).2 hs
@@ -76,9 +100,17 @@ theorem vl_natCast_notMem (w : Pl.Pl) {s : ℕ} (hs : ¬ Pl.resChar w ∣ s) : (
   · simpa using vl_resChar_mem Pl pw hval w
   · simpa using h
 
+/- English proof (translation)
+The claim follows from `(vl_mem_intW_iff Pl pw hval w _).2 (lc_le_locP _ _ (Submodule.mem_one.2 ⟨a, rfl⟩))`.
+-/
 theorem vl_algebraMap_mem_intW (w : Pl.Pl) (a : 𝓞 K) : algebraMap (𝓞 K) K a ∈ intW Pl w :=
   (vl_mem_intW_iff Pl pw hval w _).2 (lc_le_locP _ _ (Submodule.mem_one.2 ⟨a, rfl⟩))
 
+/- English proof (translation)
+Rewrite using `[vl_mem_intW_iff Pl pw hval]`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `h0 : algebraMap (𝓞 K) K t ≠ 0`. Introduce `h`. Conclude with `lc_ne_zero_of_notMem (pw w) ht (by exact_mod_cast (FaithfulSMul.algebraMap_injective (𝓞 K) K) (h.trans (map_zero _).symm))`.
+
+Rewrite using `[Algebra.smul_def, mul_inv_cancel₀ h0]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`.
+-/
 theorem vl_inv_mem_intW (w : Pl.Pl) {t : 𝓞 K} (ht : t ∉ (pw w).asIdeal) : (algebraMap (𝓞 K) K t)⁻¹ ∈ intW Pl w := by
   rw [vl_mem_intW_iff Pl pw hval]
   refine ⟨t, ht, ?_⟩
@@ -96,6 +128,11 @@ variable {K : Type} [Field K] [NumberField K] (Pl : Rows.Places K) (pw : Pl.Pl �
   (hval : ∀ w (x : K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ))
   {ι : Type} [Fintype ι] {n : ℕ} (s : K →+* ℂ)
 
+/- English proof (translation)
+Take `⟨wd, rfl⟩` from `hf`. Use `⟨Formalism.GradedWeylDivisibility.applyWord ℤ wd (Formalism.GradedWeylDivisibility.hw ℤ le_rfl lam'.natW), ?_, ?_⟩` and prove the remaining obligations. Unfold `delSq Formalism.GradedWeylDivisibility.weyl`. Conclude with `Submodule.subset_span ⟨wd, rfl⟩`. Use `show _ = Formalism.GradedWeylDivisibility.applyWord K wd (Formalism.GradedWeylDivisibility.hw K le_rfl lam.natW)`.
+
+Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map, h]`.
+-/
 theorem vl_word_mem (lam lam' : DomWeight n) (h : lam.natW = lam'.natW) {f : MvPolynomial (Fin n × Fin n) K}
     (hf : f ∈ nbWord K lam.natW) : ∃ fZ ∈ delSq ℤ n lam', MvPolynomial.map (Int.castRingHom K) fZ = f := by
   obtain ⟨wd, rfl⟩ := hf
@@ -105,6 +142,11 @@ theorem vl_word_mem (lam lam' : DomWeight n) (h : lam.natW = lam'.natW) {f : MvP
   · show _ = Formalism.GradedWeylDivisibility.applyWord K wd (Formalism.GradedWeylDivisibility.hw K le_rfl lam.natW)
     rw [← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map, h]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Use `congr 1`. Use `show MvPolynomial.map s (∏ τ, Formalism.GradedWeylDivisibility.blockEmb K τ _) = _`. Rewrite using `[map_ten]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ`. Establish `h : s.comp (Int.castRingHom K) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Rewrite using `[MvPolynomial.map_map, h]`.
+-/
 theorem vl_map_smul_ten (r : K) (f : ι → MvPolynomial (Fin n × Fin n) ℤ) :
     MvPolynomial.map s (r • Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ)) =
       s r • Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) := by
@@ -119,6 +161,21 @@ theorem vl_map_smul_ten (r : K) (f : ι → MvPolynomial (Fin n × Fin n) ℤ) :
 
 include hval
 
+/- English proof (translation)
+Take `⟨t, ht, htG⟩` from `hG`. Rewrite `htG` using `[nb_delStd_eq]`. Establish `key : ∀ H ∈ Submodule.span (𝓞 K) (nbGen fun τ => nbWord K (lam τ).natW), ∀ r ∈ intW Pl w, MvPolynomial.map s (r • H) ∈ vlIntSpan s Pl w lam'`. Introduce `H hH`. Proceed by induction on `hH using Submodule.span_induction with`.
+
+Consider the case `mem H hH`. Introduce `r hr`. Take `⟨f, hf, rfl⟩` from `hH`. Use `choose fZ hfZ hfe using fun τ => vl_word_mem (lam τ) (lam' τ) (hn τ) (hf τ)`. Use `AddSubgroup.subset_closure ⟨r, fZ, hr, hfZ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← vl_map_smul_ten]`. Use `congr 3`. Use function extensionality and compare the values at `τ`. Conclude with `(hfe τ).symm`. Consider the case `zero`.
+
+Introduce `r _`. Rewrite using `[smul_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `r hr`.
+
+Rewrite using `[smul_add, map_add]`. Conclude with `add_mem (hx r hr) (hy r hr)`. Consider the case `smul a x _ hx`. Introduce `r hr`. Establish `e : r • a • x = (r * algebraMap (𝓞 K) K a) • x` using `by rw [mul_smul, nb_osmul]`.
+
+Use `show MvPolynomial.map s (r • a • x) ∈ vlIntSpan s Pl w lam'`. Rewrite using `[e]`. Conclude with `hx _ (mul_mem hr (vl_algebraMap_mem_intW Pl pw hval w a))`. Establish `h0 : algebraMap (𝓞 K) K t ≠ 0`. Introduce `h`.
+
+Conclude with `lc_ne_zero_of_notMem (pw w) ht (by exact_mod_cast (FaithfulSMul.algebraMap_injective (𝓞 K) K) (h.trans (map_zero _).symm))`. Establish `e : G = (algebraMap (𝓞 K) K t)⁻¹ • (t • G)` using `by rw [nb_osmul, smul_smul, inv_mul_cancel₀ h0, one_smul]`. Rewrite using `[e]`. Conclude with `key _ htG _ (vl_inv_mem_intW Pl pw hval w ht)`.
+-/
 theorem vl_map_mem_intSpan (w : Pl.Pl) (lam lam' : ι → DomWeight n) (hn : ∀ τ, (lam τ).natW = (lam' τ).natW)
     {G : Pol K ι n} (hG : G ∈ localization₂ (pw w).asIdeal (delStd K lam)) : MvPolynomial.map s G ∈ vlIntSpan s Pl w lam' := by
   obtain ⟨t, ht, htG⟩ := hG
@@ -157,6 +214,19 @@ theorem vl_map_mem_intSpan (w : Pl.Pl) (lam lam' : ι → DomWeight n) (hn : ∀
   rw [e]
   exact key _ htG _ (vl_inv_mem_intW Pl pw hval w ht)
 
+/- English proof (translation)
+Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem P hP`. Take `⟨r, f, hr, hf, rfl⟩` from `hP`. Use `⟨r • Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ), ?_, vl_map_smul_ten s r f⟩` and prove the remaining obligations. Establish `hT : (Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ)) ∈ delStd K lam`.
+
+Rewrite using `[nb_delStd_eq, ← nb_tensorLat_span]`. Use `Submodule.subset_span ⟨_, fun τ => ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : MvPolynomial.map (Int.castRingHom K) (f τ) ∈ (delSq ℤ n (lam' τ)).map (MvPolynomial.mapAlgHom (σ` using `Fin n × Fin n) (Algebra.ofId ℤ K)).toLinearMap := ⟨f τ, hf τ, rfl⟩`. Rewrite `h1` using `[nb_map_delSq ℤ, ← hn τ]`. Conclude with `Submodule.span_le_restrictScalars ℤ (𝓞 K) _ h1`.
+
+Take `⟨t, ht, hta⟩` from `(vl_mem_intW_iff Pl pw hval w r).1 hr`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 hta`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `e : t • r • (Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ)) = a • (Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ))`. Establish `h2 : algebraMap (𝓞 K) K t * r = algebraMap (𝓞 K) K a` using `by rw [ha, Algebra.smul_def]`.
+
+Rewrite using `[nb_osmul t, smul_smul, h2, ← nb_osmul]`. Use `show t • r • (Formalism.L2.DIV.ten fun τ => MvPolynomial.map (Int.castRingHom K) (f τ)) ∈ delStd K lam`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hT`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨G, hG, rfl⟩` from `hx`. Take `⟨G', hG', rfl⟩` from `hy`. Conclude with `⟨G + G', add_mem hG hG', map_add _ _ _⟩`. Consider the case `neg x _ hx`.
+
+Take `⟨G, hG, rfl⟩` from `hx`. Conclude with `⟨-G, neg_mem hG, map_neg _ _⟩`.
+-/
 theorem vl_exists_of_mem_intSpan (w : Pl.Pl) (lam lam' : ι → DomWeight n) (hn : ∀ τ, (lam τ).natW = (lam' τ).natW)
     {P : MvPolynomial (ι × Fin n × Fin n) ℂ} (hP : P ∈ vlIntSpan s Pl w lam') :
     ∃ G ∈ localization₂ (pw w).asIdeal (delStd K lam), MvPolynomial.map s G = P := by
@@ -200,6 +270,9 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] (Pl : 
   (hval : ∀ w (x : K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ))
   {ι : Type} {n : ℕ} (emb : ι → E →+* K)
 
+/- English proof (translation)
+Rewrite using `[← map_inv, bc_coe, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem vl_bc_inv_mulVec (φ : E →+* K) (B : GL (Fin n) E) (x : Fin n → E) (a : Fin n) :
     ((((bc φ B)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ fun b => φ (x b)) a =
       φ ((((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x) a) := by
@@ -208,6 +281,23 @@ theorem vl_bc_inv_mulVec (φ : E →+* K) (B : GL (Fin n) E) (x : Fin n → E) (
 
 include hval
 
+/- English proof (translation)
+Establish `h1 : ¬ Pl.resChar w ∣ 1` using `fun h => (Pl.resChar_prime w).one_lt.ne' (Nat.dvd_one.1 h)`. Unfold `IsBasisAt`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← localized_localized (pw w) (colLat _)]`. Use `localization_mono _ ?_` and prove the remaining obligations.
+
+Unfold `tauLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨s', hs', hint⟩` from `(hB x).1 ⟨1, h1, by simpa using hx⟩`. Use `⟨(s' : 𝓞 K), vl_natCast_notMem Pl pw hval w hs', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lc_mem_colLat]`. Introduce `a`. Establish `e : ((s' : 𝓞 K) • fun b => emb τ (x b)) = fun b => emb τ (((s' : E) • x) b)`. Use function extensionality and compare the values at `b`. Simplify using `[Algebra.smul_def]`.
+
+Rewrite using `[e, vl_bc_inv_mulVec, Matrix.mulVec_smul]`. Take `⟨r, hr⟩` from `hint a`. Conclude with `du_map_mem_one (emb τ) (Submodule.mem_one.2 ⟨r, by rw [hr]; rfl⟩)`. Rewrite using `[← localized_localized (pw w) (tauLat emb τ M)]`. Use `localization_mono _ ?_` and prove the remaining obligations.
+
+Unfold `colLat`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨s', hs', hmem⟩` from `(hB (fun a => (B : Matrix (Fin n) (Fin n) E) a j)).2 ⟨1, h1, fun a => by`. Establish `e : (((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ fun a => (B : Matrix (Fin n) (Fin n) E) a j) a = (1 : Matrix (Fin n) (Fin n) E) a j`.
+
+Establish `h2 : ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * (B : Matrix (Fin n) (Fin n) E) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp⟩⟩`. Use `⟨(s' : 𝓞 K), vl_natCast_notMem Pl pw hval w hs', ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨_, hmem, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `b`. Simplify using `[Algebra.smul_def, bc_coe]`.
+-/
 theorem vl_isBasisAt_tauLat (τ : ι) (w : Pl.Pl) (M : Submodule (𝓞 E) (Fin n → E)) (B : GL (Fin n) E)
     (hB : IsLocBasis (Pl.resChar w) (M : Set (Fin n → E)) B) : IsBasisAt (pw w) (tauLat emb τ M) (bc (emb τ) B) := by
   have h1 : ¬ Pl.resChar w ∣ 1 := fun h => (Pl.resChar_prime w).one_lt.ne' (Nat.dvd_one.1 h)
@@ -260,6 +350,11 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] (Pl : 
 
 def vlBd (B : GL (Fin n) E) : ι → GL (Fin n) K := fun τ => inside₂ K n (bc (emb τ) B)
 
+/- English proof (translation)
+Establish `h` using `evFr_coord (gramC J (embAt s emb)) s lam (vlBd emb B) F.1`. Establish `e : (fun τ => (((vlBd emb B τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).map s)ᵀ) = atInf (embAt s emb) ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)`. Use function extensionality and compare the values at `τ`. Use `show ((((bc (emb τ) B)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ.map s)ᵀ = ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map (s.comp (emb τ))`. Rewrite using `[← map_inv, bc_coe]`.
+
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem vl_coord (J : Matrix (Fin n) (Fin n) E) (lam : ι → DomWeight n) (B : GL (Fin n) E) (F : VV K lam) :
     evV emb J lam s F = fnOf _ (shiftOf lam) (atInf (embAt s emb) ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E))
       (MvPolynomial.map s (actP lam (vlBd emb B)⁻¹ F.1)) := by
@@ -277,6 +372,15 @@ theorem vl_coord (J : Matrix (Fin n) (Fin n) E) (lam : ι → DomWeight n) (B : 
 
 include hval
 
+/- English proof (translation)
+Establish `hbas : ∀ (w : Pl.Pl) (B : GL (Fin n) E), IsLocBasis (Pl.resChar w) (M : Set (Fin n → E)) B → ∀ τ, IsBasisAt (pw w) (dualFr (tauLat emb τ M)) (vlBd emb B τ)` using `fun w B hB τ => pb_isBasisAt_dualFr (pw w) _ (tauLatticeLattice_holds E K ι n emb τ M hM).fg _ (vl_isBasisAt_tauLat Pl pw hval emb τ w M B hB)`. Use `show F.1 ∈ transLat lam (delStd K lam) (fun τ => dualFr (tauLat emb τ M)) ↔ _`. Rewrite using `[nb_mem_transLat]`. Prove the components needed by the constructor for the conclusion. Introduce `h w B hB`.
+
+Conclude with `⟨_, vl_map_mem_intSpan Pl pw hval s w lam lam' hn (h (pw w) _ (hbas w B hB)), vl_coord emb s J lam B F⟩`. Introduce `h w' Bd hBd`. Take `⟨w, rfl⟩` from `hpw w'`. Establish `: Fact (Pl.resChar w).Prime` using `⟨Pl.resChar_prime w⟩`. Take `⟨B, hB⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.exists_isLocBasis (Pl.resChar w) E M hM.fg hM.span_eq_top`.
+
+Take `⟨P, hP, hPe⟩` from `h w B hB`. Take `⟨G, hG, rfl⟩` from `vl_exists_of_mem_intSpan Pl pw hval s w lam lam' hn hP`. Rewrite `hPe` using `[vl_coord emb s J lam B F]`. Establish `hinj` using `fnOf_injective (gramC J (embAt s emb)) (shiftOf lam) (atInf (embAt s emb) ((B⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) (fun τ => Matrix.isUnits_det_units (Matrix.GeneralLinearGroup.map (embAt s emb τ) B⁻¹)) ⟨fun _ => 1, fun _ => by simp⟩ hPe`. Establish `hG' : actP lam (vlBd emb B)⁻¹ F.1 = G` using `MvPolynomial.map_injective s s.injective hinj`.
+
+Rewrite using `[deltaIndependence_holds K ι n lam (pw w) _ Bd (vlBd emb B) hBd (hbas w B hB) F.1, hG']`. Conclude with `hG`.
+-/
 theorem vl_mem_delAtr_iff (hpw : Function.Surjective pw) (J : Matrix (Fin n) (Fin n) E) (lam lam' : ι → DomWeight n)
     (hn : ∀ τ, (lam τ).natW = (lam' τ).natW) (M : Submodule (𝓞 E) (Fin n → E)) (hM : Submodule.IsLattice E M) (F : VV K lam) :
     F ∈ delAtr emb lam M ↔ ∀ (w : Pl.Pl) (B : GL (Fin n) E), IsLocBasis (Pl.resChar w) (M : Set (Fin n → E)) B →

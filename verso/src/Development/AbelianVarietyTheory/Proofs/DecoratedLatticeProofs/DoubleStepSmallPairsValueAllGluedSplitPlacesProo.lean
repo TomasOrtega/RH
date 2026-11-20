@@ -19,6 +19,11 @@ namespace GlobalTheory.FinPl.VertexAllProof
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨hS, hT, hvac, -, ⟨Tm, hTm⟩, -⟩` from `h`. Establish `hE` using `GlobalTheory.T.homLatticeIndicator_on_split_half_eq_half_indicator D k p m m' S T α β LS LT hS hT hU ΛS ΛT hLS hLT`. Use `⟨hS, hT, hvac, GlobalTheory.T.indicator_hom_selfDual_components_schwartzBruhat D k p m m' S T α β LS LT hS hT ΛS ΛT hLS hLT, ⟨Tm, hTm⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Establish `hv` using `hT'.vac`. Rewrite `hv` using `[one_smul]`.
+
+Express the relevant statement in the definitionally equal form `g = T' (extFun α β (latInd ΛS ΛT))`. Rewrite using `[hE, hv]`.
+-/
 theorem over_self {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {LT : Lat T} {p : SplitPt D k}
     {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m'] {α : Frame p S m'} {β : Frame p T m}
     {g f : WO S T → ℂ} {Φ : Matrix m m' k → ℂ} (h : Over ψ α β LS LT g Φ f) (hU : p.UnitAA)
@@ -32,11 +37,17 @@ theorem over_self {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {LS : Lat S} {L
   change g = T' (extFun α β (latInd ΛS ΛT))
   rw [hE, hv]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem overAll_nil {ι : Type} {p : ι → SplitPt D k} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {n n' : Type}
     [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {α : ∀ i, Frame (p i) S n'} {β : ∀ i, Frame (p i) T n}
     {LS : Lat S} {LT : Lat T} {Ψ : ι → Matrix n n' k → ℂ} {f f' : WO S T → ℂ} :
     OverAll ψ α β LS LT Ψ [] f f' ↔ f' = f := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem overAll_cons {ι : Type} {p : ι → SplitPt D k} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {n n' : Type}
     [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {α : ∀ i, Frame (p i) S n'} {β : ∀ i, Frame (p i) T n}
     {LS : Lat S} {LT : Lat T} {Ψ : ι → Matrix n n' k → ℂ} {i : ι} {l : List ι} {f f' : WO S T → ℂ} :
@@ -47,6 +58,19 @@ end GlobalTheory.FinPl.VertexAllProof
 
 open GlobalTheory.FinPl.VertexAllProof in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p I P hPl q ψ χ hχ hc`. Establish `hvg` using `fun i => GlobalTheory.T.gluedPlace_doubleStep_exact_signed_constant D k (p i) q ψ (χ i) (hχ i) (hc i)`. Use `⟨fun i => (hvg i).choose, fun i => (hvg i).choose_spec.1, ?_⟩` and prove the remaining obligations. Introduce `n n' n'' _ _ _ _ _ _`. Establish `hrc` using `fun i => (hvg i).choose_spec.2 n n' n''`.
+
+Use `choose r e hr hre using hrc`. Use `⟨r, e, hr, ?_⟩` and prove the remaining obligations. Introduce `σ B J B' s₁ s₂ l vL hunr a b a' M₀ M₁ M₂ _ _ _ hgl Ξ₁ Ξ₂ _ _`. Establish `hP : ∀ i, P (p i).v` using `fun i => (hPl.mem _).2 ⟨i, rfl⟩`. Establish `hmaps : ∀ (ls : List ι) (φ : GA D B.A → ℂ), a.Ram φ → a.Ram (a.sAll q (fun i => resChar (χ i) (hχ i) q) (fun i => (hvg i).choose) ls φ)` using `fun ls φ hφ => (GlobalTheory.T.epsilonFourierProduct_bijective_gluedPlaces D k ι p q χ hχ (fun i => (hvg i).choose) n' B.A B.V₀ a hPl.inj ls).1.mapsTo hφ`.
+
+Establish `hV : ∀ ls : List ι, ∀ Ξ₁' Ξ₂', OverAll ψ a.α₀ b.β M₀ M₁ (fun i => tensCol (phiOne (a.P i) (b.Q i)) (vecInd (b.Q i).lat)) ls Ξ₁ Ξ₁' → OverAll ψ b.β a'.α₀ M₁ M₂ (fun i => tensRow (phiOne (b.Q i) (a'.P i)) (dualInd (b.Q i).lat)) ls Ξ₂ Ξ₂' → ∀ φ, a.Ram φ → hand0 s₁ s₂ l vL φ Ξ₁ Ξ₂ = …`. Introduce `ls`. Proceed by induction on `ls with`. Consider the case `nil`. Introduce `Ξ₁' Ξ₂' h1 h2 φ _`.
+
+Rewrite using `[overAll_nil.1 h1, overAll_nil.1 h2, List.map_nil, List.prod_nil, one_smul]`. Both sides reduce to the same expression. Consider the case `cons i ls ih`. Introduce `Ξ₁' Ξ₂' h1 h2 φ hφ`. Take `⟨g₁, hg₁, hΞ₁'⟩` from `overAll_cons.1 h1`.
+
+Take `⟨g₂, hg₂, hΞ₂'⟩` from `overAll_cons.1 h2`. Establish `ho₁` using `over_self hΞ₁' (hgl i).1.unit _ _ (hgl i).1.lat (hgl i).2.2`. Establish `ho₂` using `over_self hΞ₂' (hgl i).1.unit _ _ (hgl i).2.2 (hgl i).2.1.lat`. Take `⟨F, hF, hFP⟩` from `(hmaps ls φ hφ).2 i`. Establish `hv` using `hre i (a.P i) (b.Q i) (a'.P i) σ B J B' s₁ s₂ l vL (hunr _ (hP i)).1 (hunr _ (hP i)).2 (a.α i) (a.α₀ i) (b.β i) (a'.α i) (a'.α₀ i) (hgl i).1.sum (hgl i).2.1.sum M₀ M₁ M₁ M₂ g₁ g₁ Ξ₁' g₂ g₂ Ξ₂' ho₁ hΞ₁' ho₂ hΞ₂' F hF`.
+
+Establish `hsop` using `((GlobalTheory.T.ramifiedOperator_bijective_finite_translation_combination D k (p i) n' q (χ i) (hχ i) _ rfl ((hvg i).choose) B.A (a.α i) (a.P i)).2.1 F hF).2`. Rewrite using `[ih g₁ g₂ hg₁ hg₂ φ hφ, ← hFP, hv, ← hsop, hFP, smul_smul, List.map_cons, List.prod_cons, mul_comm]`. Both sides reduce to the same expression. Introduce `Ξ₁' Ξ₂' h1 h2 φ hφ`. Conclude with `hV I Ξ₁' Ξ₂' h1 h2 φ hφ`.
+-/
 theorem GlobalTheory.FinPl.vertexAll : ∀ D : D7, GlobalTheory.FinPl.VertexAll D := by
   intro D k _ _ _ _ ι p I P hPl q ψ χ hχ hc
   have hvg := fun i => GlobalTheory.T.gluedPlace_doubleStep_exact_signed_constant D k (p i) q ψ (χ i) (hχ i) (hc i)

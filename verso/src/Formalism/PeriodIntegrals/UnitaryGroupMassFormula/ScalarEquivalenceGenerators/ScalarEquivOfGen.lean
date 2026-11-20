@@ -11,6 +11,11 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions.S Formalism
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1` using `(VS D).rank_eq`. Establish `h2 : (VS D).rank = D.R.rankY 0` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hm2` using `D.R.two_le_m`. Rewrite using `[h1, h2]`.
+
+Simplify using `only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS, zero_mul, add_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_VS (D : D7) : finrank D.host.E (VS D).V = D.R.k + 2 * D.R.rS + 1 := by
   have h1 := (VS D).rank_eq
   have h2 : (VS D).rank = D.R.rankY 0 := D.sp.Y_rank 0 (Nat.zero_le _)
@@ -20,10 +25,18 @@ theorem finrank_VS (D : D7) : finrank D.host.E (VS D).V = D.R.k + 2 * D.R.rS + 1
   simp only [Formalism.BasicNotions.Ranks.rankY, Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS, zero_mul, add_zero]
   omega
 
+/- English proof (translation)
+Rewrite using `[Ne, Nat.cast_eq_zero]`. Conclude with `(D.mem u).A.T_prime.ne_zero`.
+-/
 theorem tu_ne_zero (D : D7) (u : D.what₂.Word) : ((Tu D u : ℕ) : D.host.E) ≠ 0 := by
   rw [Ne, Nat.cast_eq_zero]
   exact (D.mem u).A.T_prime.ne_zero
 
+/- English proof (translation)
+Introduce `F0 Λ hΛ`. Take `⟨_, hfix, _⟩` from `hΛ`. Take `⟨hlat, _, hlift, _⟩` from `hfix`. Establish `key` using `h D.host.E (VS D) D.R.rS D.R.k (gS D) (finrank_VS D) Λ hlat ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) (tu_ne_zero D u) (tu_ne_zero D u') (lf D F0) hlift`. Use `⟨fun x => ?_, fun {x y} hxy => ?_, fun {x y z} h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Conclude with `key.refl ⟨x.1.1, x.1.2.1, x.2⟩`. Conclude with `key.symm (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) hxy`. Conclude with `key.trans (x := ⟨x.1.1, x.1.2.1, x.2⟩) (y := ⟨y.1.1, y.1.2.1, y.2⟩) (z := ⟨z.1.1, z.1.2.1, z.2⟩) h1 h2`.
+-/
 theorem scalarEquiv_of_gen (h : ScalarEquivG) (D : D7) (u u' : D.what₂.Word) : ScalarEquiv D u u' := by
   intro F0 Λ hΛ
   obtain ⟨_, hfix, _⟩ := hΛ

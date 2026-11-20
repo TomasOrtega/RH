@@ -13,6 +13,15 @@ open scoped Classical
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Set `c : (∀ v : S, M v) → ∀ v : T, M v` to `fun x v => if hv : (v : ι) ∈ S then x ⟨v, hv⟩ else z v`. Establish `key : ∀ [DecidableEq S] x (i : S) w, c (Function.update x i w) = Function.update (c x) ⟨i, h i.2⟩ w` using `fun x i w => by`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hvi : v = ⟨i, h i.2⟩`. Substitute `hvi` using the available equality.
+
+Simplify using `[c]`. Rewrite using `[Function.update_of_ne hvi]`. Distinguish the cases in `hv : (v : ι) ∈ S`. Simplify using `only [c, dif_pos hv]`. Conclude with `Function.update_of_ne (fun e => hvi (Subtype.ext (by rw [← e]))) _ _`.
+
+Simplify using `only [c, dif_neg hv]`. Use `⟨PiTensorProduct.lift { toFun := fun x => PiTensorProduct.tprod ℂ (c x) map_update_add' := fun x i y y' => by simp only [key]; exact (PiTensorProduct.tprod ℂ).map_update_add _ _ _ _ map_update_smul' := fun x i a y => by simp only [key]; exact (PiTensorProduct.tprod ℂ).map_update_ …` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod]`. Use `congrArg (PiTensorProduct.tprod ℂ) (funext fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : (v : ι) ∈ S`.
+
+Simplify using `only [c, dif_pos hv]`. Simplify using `only [c, dif_neg hv, hu v hv]`.
+-/
 theorem exists_ext {ι : Type} (M : ι → Type) [∀ v, AddCommGroup (M v)] [∀ v, Module ℂ (M v)] {S T : Finset ι} (h : S ⊆ T)
     (z : ∀ v, M v) : ∃ e : (PiTensorProduct ℂ fun v : S => M v) →ₗ[ℂ] PiTensorProduct ℂ fun v : T => M v,
       ∀ u : ∀ v, M v, (∀ v ∉ S, u v = z v) → e (PiTensorProduct.tprod ℂ fun v : S => u v) = PiTensorProduct.tprod ℂ fun v : T => u v := by
@@ -52,6 +61,11 @@ def On (T : Finset (Pl F)) (Φ : Fn F a (a + a')) (Φ' : Fn F a' (a + a')) : Pro
     ∑ i, R.p (f i) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Rf.p v (φ i v)) =
       ∑ j, R.p' (f' j) ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Rf.p' v (φ' j v))
 
+/- English proof (translation)
+Take `⟨m, m', f, φ, f', φ', h1, h2, e1, e2, e3⟩` from `H`. Take `⟨e, he⟩` from `exists_ext Rf.Pi h fun v => Rf.p v (G.M.vac v)`. Use `⟨m, m', f, φ, f', φ', fun i => ⟨(h1 i).1, (h1 i).2.1, fun v hv => (h1 i).2.2 v fun k => hv (h k)⟩, fun i => ⟨(h2 i).1, (h2 i).2.1, fun v hv => (h2 i).2.2 v fun k => hv (h k)⟩, e1, e2, ?_⟩` and prove the remaining obligations. Use `congrArg (e.lTensor R.Pi) e3` as an intermediate fact. Simplify using `only [map_sum, LinearMap.lTensor_tmul] at this`.
+
+Use `(Finset.sum_congr rfl fun i _ => ?_).trans (this.trans (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[he (fun v => Rf.p v (φ i v)) fun v hv => by rw [(h1 i).2.2 v hv]]`. Rewrite using `[he (fun v => Rf.p' v (φ' i v)) fun v hv => by rw [(h2 i).2.2 v hv, (hm.fin.sph v fun k => hv (h0 k)).1]]`.
+-/
 theorem On.mono (hm : IsMatched B G X om om' R Rf) {S T : Finset (Pl F)} (h0 : X.T ⊆ S) (h : S ⊆ T) {Φ Φ'}
     (H : On B G R Rf S Φ Φ') : On B G R Rf T Φ Φ' := by
   obtain ⟨m, m', f, φ, f', φ', h1, h2, e1, e2, e3⟩ := H
@@ -64,9 +78,21 @@ theorem On.mono (hm : IsMatched B G X om om' R Rf) {S T : Finset (Pl F)} (h0 : X
   · rw [he (fun v => Rf.p v (φ i v)) fun v hv => by rw [(h1 i).2.2 v hv]]
   · rw [he (fun v => Rf.p' v (φ' i v)) fun v hv => by rw [(h2 i).2.2 v hv, (hm.fin.sph v fun k => hv (h0 k)).1]]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, le_rfl, 0, 0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, by simp, by simp, by simp⟩`.
+-/
 theorem pm_zero : PolMatch B G X R Rf 0 0 :=
   ⟨_, le_rfl, 0, 0, Fin.elim0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨T₁, hT₁, H₁⟩` from `h1`. Take `⟨T₂, hT₂, H₂⟩` from `h2`. Take `⟨m, m', f, φ, f', φ', hf, hf', rfl, rfl, e1⟩` from `On.mono hm hT₁ (Finset.subset_union_left (s₂ := T₂)) H₁`. Take `⟨k, k', g, ψ, g', ψ', hg, hg', rfl, rfl, e2⟩` from `On.mono hm hT₂ (Finset.subset_union_right (s₁ := T₁)) H₂`. Use `⟨T₁ ∪ T₂, hT₁.trans Finset.subset_union_left, m + k, m' + k', Fin.append (c • f) g, Fin.append φ ψ, Fin.append (c • f') g', Fin.append φ' ψ', fun i => ?_, fun i => ?_, funext fun x => ?_, funext fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.smul_apply]`. Conclude with `⟨Submodule.smul_mem _ _ (hf i).1, (hf i).2⟩`. Simplify using `only [Fin.append_right]`. Conclude with `hg i`.
+
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.smul_apply]`. Conclude with `⟨Submodule.smul_mem _ _ (hf' i).1, (hf' i).2⟩`. Simplify using `only [Fin.append_right]`. Conclude with `hg' i`.
+
+Simplify using `[Fin.sum_univ_add, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Finset.mul_sum, mul_assoc]`. Simplify using `[Fin.sum_univ_add, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Finset.mul_sum, mul_assoc]`. Rewrite using `[Fin.sum_univ_add, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.smul_apply, map_smul, ← TensorProduct.smul_tmul']`. Rewrite using `[← Finset.smul_sum, ← Finset.smul_sum, e1, e2]`.
+-/
 theorem pm_add (hm : IsMatched B G X om om' R Rf) {Φ Φ' Ψ Ψ'} (c : ℂ) (h1 : PolMatch B G X R Rf Φ Φ')
     (h2 : PolMatch B G X R Rf Ψ Ψ') : PolMatch B G X R Rf (c • Φ + Ψ) (c • Φ' + Ψ') := by
   obtain ⟨T₁, hT₁, H₁⟩ := h1
@@ -91,6 +117,11 @@ theorem pm_add (hm : IsMatched B G X om om' R Rf) {Φ Φ' Ψ Ψ'} (c : ℂ) (h1 
     simp only [Fin.append_left, Fin.append_right, Pi.smul_apply, map_smul, ← TensorProduct.smul_tmul']
     rw [← Finset.smul_sum, ← Finset.smul_sum, e1, e2]
 
+/- English proof (translation)
+Take `⟨-, ι, b, -, r1⟩` from `hS F E σ B n d Y W M _ _ o _ _ _ _ p v t`. Take `⟨j, -, j2⟩` from `exists_inv' b`. Set `h₀` to `Matrix.GeneralLinearGroup.map (piW t) h.1`. Establish `k` using `fun φ hφ => acts_of_reads (r1 h hh h₀ rfl) j2 (φ := φ) hφ`. Use `⟨j ∘ₗ GlobalTheory.SplitFlip.repB (chrW χ' t) (chrW χ t) (1, h₀) ∘ₗ ι, k, fun f φ p1 p2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨T, t1, -, t3⟩` from `intersection_update_fsHerm_neg_one v f p1 ((p2.and p.good.std).mono fun _ h => h.1.trans h.2)`. Use `t3 _ _ (p1 v) _ (k _ (p1 v)).2` as an intermediate fact. Rewrite `this` using `[t1, t1, Function.update_eq_self]`. Then use the resulting hypothesis.
+-/
 theorem loc_op (hS : SplitModel) {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {o : Rep σ Y W} {χ χ' : Chr F E} {r s r' s' : ℕ}
     (p : IsPair B M χ χ' o r s r' s') {v : Pl F} (t : E →ₐ[F] Fv F v) {h : UA σ W.J} (hh : h ∈ UAt σ W (evFin F v)) :
     ∃ O : Module.End ℂ ((Fin n × Fin d → Fv F v) → ℂ), (∀ φ ∈ SB _, O φ ∈ SB _ ∧ Acts (evFin F v) (o (1, h)) φ (O φ)) ∧
@@ -105,6 +136,21 @@ theorem loc_op (hS : SplitModel) {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y
   have := t3 _ _ (p1 v) _ (k _ (p1 v)).2
   rwa [t1, t1, Function.update_eq_self] at this
 
+/- English proof (translation)
+Take `⟨T, hT, H⟩` from `H`. Take `⟨m, m', f, φ, f', φ', h1, h2, rfl, rfl, e⟩` from `On.mono hm hT (Finset.subset_insert v T) H`. Take `⟨O, o1, o2⟩` from `loc_op hS (pairV hm.triple) t hh`. Take `⟨O', o1', o2'⟩` from `loc_op hS (pairV' hm.triple) t hh`. Take `⟨s, hs⟩` from `((Rf.p v).domRestrict (SB _)).exists_rightInverse_of_surjective ((LinearMap.range_domRestrict _ _).trans (hm.fin.onto v))`.
+
+Set `A : Module.End ℂ (Rf.Pi v)` to `Rf.p v ∘ₗ O ∘ₗ (SB _).subtype ∘ₗ s`. Establish `q : ∀ x ∈ SB _, ∀ x' ∈ SB _, Rf.p v x = Rf.p' v x' → Rf.p v (O x) = Rf.p' v (O' x')` using `fun x hx x' hx' => hm.fin.equiv v h hh x hx x' hx' _ (o1 x hx).1 _ (o1' x' hx').1 (o1 x hx).2 (o1' x' hx').2`. Establish `A' : ∀ x' ∈ SB _, A (Rf.p' v x') = Rf.p' v (O' x')` using `fun x' hx' => q _ (s _).2 x' hx' (LinearMap.congr_fun hs _)`. Establish `A1 : ∀ x ∈ SB _, A (Rf.p v x) = Rf.p v (O x)` using `fun x hx => by`. Take `⟨x', hx', k⟩ : Rf.p v x ∈ (SB _).map (Rf.p' v)` from `hm.fin.onto' v ▸ Submodule.mem_top`.
+
+Rewrite using `[q x hx x' hx' k.symm, ← k, A' x' hx']`. Establish `up : ∀ {P : ∀ u : Pl F, Type} (Q : ∀ u, P u → Prop) (x : ∀ u, P u) (y : P v), Q v y → (∀ u ≠ v, Q u (x u)) → ∀ u, Q u (Function.update x v y u)` using `fun Q x y a b u => by`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis.
+
+Rewrite using `[Function.update_of_ne hu]`. Conclude with `b u hu`. Establish `ne : ∀ u ∉ insert v T, u ≠ v` using `fun u hu k => hu (k ▸ Finset.mem_insert_self _ _)`. Use `⟨_, hT.trans (Finset.subset_insert v T), m, m', f, fun i => Function.update (φ i) v (O (φ i v)), f', fun i => Function.update (φ' i) v (O' (φ' i v)), fun i => ⟨(h1 i).1, up (fun u x => x ∈ SB _) _ _ (o1 _ ((h1 i).2.1 v)).1 fun u _ => (h1 i).2.1 u, fun u hu => (Function.update_of_ …` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => o2 _ _ (h1 i).2.1 ((insert v T).eventually_cofinite_notMem.mono (h1 i).2.2)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => o2' _ _ (h2 i).2.1 ((insert v T).eventually_cofinite_notMem.mono (h2 i).2.2)`. Set `D : ∀ u, Module.End ℂ (Rf.Pi u)` to `Function.update (fun _ => LinearMap.id) v A`. Use `congrArg ((PiTensorProduct.map fun u : (insert v T : Finset _) => D u).lTensor R.Pi) e` as an intermediate fact.
+
+Simplify using `only [map_sum, LinearMap.lTensor_tmul, PiTensorProduct.map_tprod] at this`. Apply the tactic sequence `refine (Finset.sum_congr rfl fun i _ => ?_).trans (this.trans (Finset.sum_congr rfl fun i _ => ?_)) <;> congr 2 <;> funext ⟨u, _⟩ <;>`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Simplify using `only [D, Function.update_self, A1 _ ((h1 i).2.1 _)]`.
+
+Simplify using `only [D, Function.update_of_ne hu, LinearMap.id_apply]`. Substitute `hu` using the available equality. Simplify using `only [D, Function.update_self, A' _ ((h2 i).2.1 _)]`. Simplify using `only [D, Function.update_of_ne hu, LinearMap.id_apply]`.
+-/
 theorem pm_fin (hS : SplitModel) (hm : IsMatched B G X om om' R Rf) {v : Pl F} (t : E →ₐ[F] Fv F v) {h : UA σ G.W.J}
     (hh : h ∈ UAt σ G.W (evFin F v)) {Φ Φ'} (H : PolMatch B G X R Rf Φ Φ') :
     PolMatch B G X R Rf (om (1, h) Φ) (om' (1, h) Φ') := by

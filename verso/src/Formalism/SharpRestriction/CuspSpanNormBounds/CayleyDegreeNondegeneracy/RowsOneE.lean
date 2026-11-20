@@ -9,6 +9,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `hP0 : 0 < b ^ pe` using `Real.rpow_pos_of_pos hb0 _`. Establish `hQ` using `rows_num_Q (f := f) (r := r) (pe := pe) (E1 := 2 * cr) (cr := cr) hb hδ0 hδ`. Establish `e1 : ((b ^ pe) ^ (2 * cr)) ^ 2 = ((b ^ pe) ^ cr) ^ 2 * ((b ^ pe) ^ cr) ^ 2`. Rewrite using `[show 2 * cr = cr + cr by ring, Real.rpow_add hP0]; ring`.
+
+Rewrite `hQ` using `[e1]`. Establish `hQ2` using `hQ.trans (Real.rpow_le_rpow_of_exponent_le (by linarith : (1 : ℝ) ≤ b) hexp)`. Establish `hs : Real.sqrt (2 * C0 * Γ ^ 2 * (Yc ^ f) ^ k) = Real.sqrt (2 * C0) * Γ * Real.sqrt ((Yc ^ f) ^ k)`. Rewrite using `[Real.sqrt_mul (by positivity), Real.sqrt_mul (by positivity), Real.sqrt_sq hΓ]`. Establish `hW : Real.sqrt ((Yc ^ f) ^ k) ≤ Real.sqrt (Yt ^ (k * f))`.
+
+Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[← pow_mul, mul_comm f k]`. Conclude with `pow_le_pow_left₀ hY0 hY _`. Use `set K : ℝ := 2 * Real.sqrt (2 * C0) with hK`. Establish `hK1 : 1 ≤ K`.
+
+Establish `: (1 : ℝ) ≤ Real.sqrt (2 * C0)`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt (by linarith)`. Rewrite using `[hK]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKc : K * c ^ f ≤ C ^ f`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right (le_self_pow₀ hK1 (by omega)) (by positivity)` to reduce the goal to its premises. Use `_ = (K * c) ^ f := (mul_pow K c f).symm`. Use `_ ≤ C ^ f := pow_le_pow_left₀ (by positivity) h2 _`. Rewrite using `[hs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C ^ f * b ^ eH * Γ * EC * Real.sqrt (Yt ^ (k * f)) * rD := by`. Establish `hEC : 0 ≤ EC` using `le_trans (by positivity) hΓE`.
+
+Establish `hC : 0 ≤ C` using `le_trans (by positivity) h2`. Use `gcongr`.
+-/
 theorem corank_one_numeric_ineq {f r k : ℕ} {b pe cr c C δ C0 Γ Ex Yc Yt rD EC eH : ℝ} (hb : 2 ≤ b) (hf : 1 ≤ f) (hc : 0 ≤ c)
     (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1) (hC0 : 1 ≤ C0) (hΓ : 0 ≤ Γ) (hEx : 0 ≤ Ex) (hrD : 0 ≤ rD) (hY0 : 0 ≤ Yc) (hY : Yc ≤ Yt)
     (h2 : 2 * Real.sqrt (2 * C0) * c ≤ C) (hΓE : Γ * Ex ≤ EC)
@@ -50,6 +65,21 @@ theorem corank_one_numeric_ineq {f r k : ℕ} {b pe cr c C δ C0 Γ Ex Yc Yt rD 
         have hC : 0 ≤ C := le_trans (by positivity) h2
         gcongr
 
+/- English proof (translation)
+Establish `hm2 : 2 ≤ m` using `by linarith`. Establish `hr1 : r + 1 = m / 2` using `by linarith`. Use `set p : ℝ := c ^ 2 + 2 * mx with hp`. Establish `hp0 : 0 ≤ p` using `by positivity`. Establish `e1 : c ^ 2 * m ^ 3 * f + 4 * (mx * m ^ 2 * f * (r + 1)) = m ^ 3 * f * p` using `by rw [hr1, hp]; ring`.
+
+Establish `hrm : r ^ 2 ≤ m ^ 2 / 4`. Establish `: r ≤ m / 2` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `b1 : 2 * (2 * (c * r ^ 2)) + 2 * (c * r ^ 2) + 6 * (r + 1) ^ 2 ≤ 2 * (c + 1) * m ^ 2`. Rewrite using `[hr1]`.
+
+Establish `: c * r ^ 2 ≤ c * (m ^ 2 / 4)` using `mul_le_mul_of_nonneg_left hrm hc`. Establish `hm0 : 0 ≤ m ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `m25 : m ^ 2 ≤ m ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `m5 : 1 ≤ m ^ 5` using `one_le_pow₀ (by linarith)`.
+
+Establish `fm5 : 1 ≤ f * m ^ 5` using `by nlinarith`. Establish `hfm : 0 ≤ m ^ 3 * f * p` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`. Establish `: 12 * f * (r + 1) ^ 2 = 3 * f * m ^ 2` using `by rw [hr1]; ring`.
+
+Rewrite using `[this]`. Use `mul_le_mul_of_nonneg_left b1 hfm` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ f * m ^ 5 + 3 * (f * m ^ 5) + (2 * p * (c + 1)) * (f * m ^ 5) := by`. Establish `: f * m ^ 2 ≤ f * m ^ 5` using `mul_le_mul_of_nonneg_left m25 (by linarith)`.
+
+Establish `e : m ^ 3 * f * p * (2 * (c + 1) * m ^ 2) = (2 * p * (c + 1)) * (f * m ^ 5)` using `by ring`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (4 + 2 * p * (c + 1)) * (f * m ^ 5) := by ring`. Use `_ ≤ C ^ 2 * (f * m ^ 5) := mul_le_mul_of_nonneg_right hC (by positivity)`.
+
+Use `_ = C * m ^ 2 * f * (C * m ^ 3) := by ring`.
+-/
 theorem corank_one_exponent_ineq {m f r c mx C : ℝ} (hm : m = 2 * r + 2) (hr : 0 ≤ r) (hf : 1 ≤ f) (hc : 0 ≤ c) (hmx : 0 ≤ mx)
     (hC : 4 + 2 * (c ^ 2 + 2 * mx) * (c + 1) ≤ C ^ 2) :
     1 + 12 * f * (r + 1) ^ 2 + (c ^ 2 * m ^ 3 * f + 4 * (mx * m ^ 2 * f * (r + 1))) *
@@ -93,6 +123,11 @@ variable {D : D7} {large₂ : SizeData₂ D} {X : TermTie D} {u u' : D.what₂.W
 
 variable {C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm C : ℝ} {q : ℕ}
 
+/- English proof (translation)
+Establish `hg : 0 < gg D` using `by linarith [two_le_gg_of_count_hypotheses hH.1]`. Establish `hTT : Tr D u' / Tr D u ≤ A` using `hH.2.2.1`. Establish `e : (gS D : ℝ) * gg D ^ (-(D.R.m : ℝ)) = (gg D)⁻¹ ^ (2 * D.R.rS + 1)`. Rewrite using `[← rows_gg_eq, Real.rpow_neg hg.le, Real.rpow_natCast, d_m_eq D, inv_pow, pow_succ (gg D) (2 * D.R.rS + 1)]`. Clear the denominators using the available nonvanishing facts.
+
+Unfold `wordPairWeightRatio`. Rewrite using `[mul_assoc (4 * Real.sqrt (Tr D u' / Tr D u)), e]`. Establish `h3 : 4 * Real.sqrt (Tr D u' / Tr D u) ≤ C` using `le_trans (by gcongr) h1`. Use `gcongr`.
+-/
 theorem weightRatio_le (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A) (h1 : 4 * Real.sqrt A ≤ C) :
     wordPairWeightRatio D u u' ≤ C * (gg D)⁻¹ ^ (2 * D.R.rS + 1) * ((D.R.k : ℝ) ^ D.R.rS)⁻¹ := by
   have hg : 0 < gg D := by linarith [two_le_gg_of_count_hypotheses hH.1]
@@ -105,6 +140,17 @@ theorem weightRatio_le (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A) 
   have h3 : 4 * Real.sqrt (Tr D u' / Tr D u) ≤ C := le_trans (by gcongr) h1
   gcongr
 
+/- English proof (translation)
+Establish `hb2` using `d_two_le_b D large₂`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hg : 0 ≤ gg D` using `by linarith [two_le_gg_of_count_hypotheses hH.1]`. Establish `hΓ : 0 < GamS D large₂` using `by unfold GamS; exact Real.exp_pos _`. Establish `hL : 0 ≤ large₂.sc.L` using `by linarith [d_one_le_L D large₂]`.
+
+Establish `hm : (D.R.m : ℝ) = ((2 * D.R.rS + 2 : ℕ) : ℝ)` using `by rw [d_m_eq D]`. Establish `hm1 : (1 : ℝ) ≤ D.R.m` using `by rw [rows_m_cast]; have : (0 : ℝ) ≤ D.R.rS := by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΓE : GamS D large₂ * logHeightExp D large₂ C2 ≤ Real.exp (C * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 6 * D.R.f * Real.log large₂.sc.b)`. Unfold `GamS logHeightExp`.
+
+Rewrite using `[← Real.exp_add, d_log_b, ← hm]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hfL : 0 ≤ (D.R.f : ℝ) * large₂.sc.L` using `by positivity`. Establish `h56 : (D.R.m : ℝ) ^ 5 ≤ (D.R.m : ℝ) ^ 6` using `pow_le_pow_right₀ hm1 (by norm_num)`. Establish `hG` using `large₂.CGam_pos`.
+
+Establish `a1 : large₂.CGam * (D.R.m : ℝ) ^ 5 + C2 * (D.R.m : ℝ) ^ 6 ≤ C * (D.R.m : ℝ) ^ 6`. Establish `: large₂.CGam * (D.R.m : ℝ) ^ 5 ≤ large₂.CGam * (D.R.m : ℝ) ^ 6` using `mul_le_mul_of_nonneg_left h56 hG.le`. Establish `h6 : 0 ≤ (D.R.m : ℝ) ^ 6` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key` using `corank_one_numeric_ineq (f := D.R.f) (r := D.R.rS) (k := D.R.k) (pe := pairCountExponentShift D c Ch) (cr := c * (D.R.rS : ℝ) ^ 2) (rD := rDD D u') hb2 (rows_f_pos D) hc hδ0 hδ hH.1.2.2 hΓ.le (by unfold logHeightExp; exact (Real.exp_pos _).le) (rows_rDD_nonneg D u') (weightRatio_ …`. Rewrite `key` using `[Real.rpow_mul hb0.le]`. Unfold `corankOneBound labelPairConstant smallTermBound rows_Phi rows_P oneB LatticeSumBounds.bigH`. Conclude with `key`.
+-/
 theorem corankOneBound_le (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A) (hc : 0 ≤ c) (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1)
     (h1 : 4 * Real.sqrt A ≤ C) (h2 : 2 * Real.sqrt (2 * C0) * c ≤ C) (h3 : large₂.CGam + C2 ≤ C)
     (hexp : 1 + 12 * (D.R.f : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2 + pairCountExponentShift D c Ch *
@@ -142,6 +188,9 @@ theorem corankOneBound_le (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 
   unfold corankOneBound labelPairConstant smallTermBound rows_Phi rows_P oneB LatticeSumBounds.bigH
   exact key
 
+/- English proof (translation)
+The claim follows from `rows_RowBound_mono Y (corank_one_bound_of_fibres Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm hCa hCak hq1) (corankOneBound_le h.hH h.hc h.hδ (by linarith) h1 h2 h3 hexp) h.hdim.le`.
+-/
 theorem corank_one_bound_general (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
     (hF : rowsSingleFibre X Y) (hF' : wordPairTermSingleFibre X Y) (h7 : VanishingOnXAndXPlus.adm7 D large₂ C' Cl Cg cb Cu cT CT C0)
@@ -155,6 +204,9 @@ theorem corank_one_bound_general (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cp
   rows_RowBound_mono Y (corank_one_bound_of_fibres Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm hCa hCak hq1)
     (corankOneBound_le h.hH h.hc h.hδ (by linarith) h1 h2 h3 hexp) h.hdim.le
 
+/- English proof (translation)
+Use `corank_one_bound_general Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm hCa hCak hq1 h1 h2 h3 ?_` and prove the remaining obligations. Establish `hm : (D.R.m : ℝ) = ((2 * D.R.rS + 2 : ℕ) : ℝ)` using `by rw [d_m_eq D]`. Rewrite using `[← hm]`. Unfold `pairCountExponentShift`. Conclude with `corank_one_exponent_ineq (rows_m_cast D) (by positivity) (by exact_mod_cast rows_f_pos D) h.hc (le_max_right _ _) hC`.
+-/
 theorem corank_one_bound_of_fibres_alt (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
     (hF : rowsSingleFibre X Y) (hF' : wordPairTermSingleFibre X Y) (h7 : VanishingOnXAndXPlus.adm7 D large₂ C' Cl Cg cb Cu cT CT C0)
@@ -169,6 +221,9 @@ theorem corank_one_bound_of_fibres_alt (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 
   unfold pairCountExponentShift
   exact corank_one_exponent_ineq (rows_m_cast D) (by positivity) (by exact_mod_cast rows_f_pos D) h.hc (le_max_right _ _) hC
 
+/- English proof (translation)
+The claim follows from `corank_one_bound_of_fibres_alt Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm (by linarith) (by rw [max_eq_left hCa1]; exact hCak1) hq1 h1 h2 h3 hC`.
+-/
 theorem corank_one_bound_of_fibres_ge_one (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
     (hF : rowsSingleFibre X Y) (hF' : wordPairTermSingleFibre X Y) (h7 : VanishingOnXAndXPlus.adm7 D large₂ C' Cl Cg cb Cu cT CT C0)
@@ -179,6 +234,9 @@ theorem corank_one_bound_of_fibres_ge_one (h : rows_Hyps Y C' Cl Cg cb Cu cT CT 
     (hC : 4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1) ≤ C ^ 2) : RowsOne X Y C :=
   corank_one_bound_of_fibres_alt Y h hSW hC4 hF hF' h7 hδ2 hδm0 hδm (by linarith) (by rw [max_eq_left hCa1]; exact hCak1) hq1 h1 h2 h3 hC
 
+/- English proof (translation)
+The claim follows from `corank_one_bound_of_fibres_alt Y h hSW hC4 (rows_OneFibre_of Y hTI (rows_BetaUnique_of Y hBL)) (rows_OneFibre'_of' Y hTI (rows_BetaUnique_of Y hBL)) h7 hδ2 hδm0 hδm hCa hCak hq1 h1 h2 h3 hC`.
+-/
 theorem corank_one_bound_of_injective_terms (h : rows_Hyps Y C' Cl Cg cb Cu cT CT C0 A c Cpr Ca C2 Ch δ δm q)
     (hSW : UnitaryVolumeMass.stSW D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hC4 : UnitaryVolumeMass.PartnerCountBound D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c)
     (hTI : wordPairTermInjective X Y) (hBL : wordPairBetaLattice D u u') (h7 : VanishingOnXAndXPlus.adm7 D large₂ C' Cl Cg cb Cu cT CT C0)

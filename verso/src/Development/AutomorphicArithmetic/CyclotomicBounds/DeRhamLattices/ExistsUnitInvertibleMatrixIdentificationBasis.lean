@@ -7,6 +7,21 @@ open scoped Formalism.Per
 set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Set `bA` to `Algebra.TensorProduct.basis R b`. Set `bD` to `Algebra.TensorProduct.basis R' b`. Establish `hz : ∀ i, z i = ∑ k, bA.repr (z i) k ⊗ₜ[O] b k`. Introduce `i`. Use `conv_lhs => rw [← bA.sum_repr (z i)]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[bA, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Use `⟨Matrix.of fun i k => bD.repr (jD (Pi.single i 1)) k, Matrix.of fun k i => jD.symm (bD k) i, fun i k => bA.repr (z i) k, ?_, hz, ?_⟩` and prove the remaining obligations. Use extensionality with `k k'`. Establish `h1 : jD.symm (bD k) = ∑ i, jD.symm (bD k) i • (Pi.single i 1 : ι → R')`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h2 : bD k = ∑ i, jD.symm (bD k) i • jD (Pi.single i 1)` using `by conv_lhs => rw [← jD.apply_symm_apply (bD k), h1, map_sum]`. Simplify using `only [map_smul]`. Establish `h3` using `congrArg (fun x => bD.repr x k') h2`.
+
+Simplify using `only [map_sum, map_smul, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply] at h3`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Conclude with `h3.symm`. Introduce `i k`. Establish `e1 : (fun j => f ((Pi.single i u : ι → R) j)) = f u • (Pi.single i 1 : ι → R')`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+
+Establish `e2 : TensorProduct.map f.toLinearMap LinearMap.id (z i) = ∑ k, f (bA.repr (z i) k) • bD k` using `by conv_lhs => rw [hz i, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[bD, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Establish `h3` using `h i`. Rewrite `h3` using `[e1, e2, map_smul]`.
+
+Establish `h4` using `congrArg (fun x => bD.repr x k) h3`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_sum_self] at h4`. Conclude with `h4.symm`.
+-/
 private theorem UpperTheory.KN.basis_change_matrices_algebra_map {O R R' M ι : Type} [CommRing O] [CommRing R] [CommRing R']
     [Algebra O R] [Algebra O R'] [AddCommGroup M] [Module O M] [Fintype ι] [DecidableEq ι]
     (f : R →ₐ[O] R') (b : Module.Basis ι O M) (jD : (ι → R') ≃ₗ[R'] R' ⊗[O] M) (u : R)
@@ -53,6 +68,11 @@ private theorem UpperTheory.KN.basis_change_matrices_algebra_map {O R R' M ι : 
     simp only [map_smul, Finsupp.smul_apply, smul_eq_mul, Module.Basis.repr_sum_self] at h4
     exact h4.symm
 
+/- English proof (translation)
+Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P T I b`. Take `⟨jD, hjD⟩` from `GlobalTheory.DeRhamIdent.main l a e ↥(OL LL) ↥LL.1 (thetaW a LL) ϖ ι P T I`. Take `⟨u, hu, hz⟩` from `UpperTheory.KN.exists_unit_identification_single_integral l a e ϖ LL ι P T I`. Use `choose z hz using hz`. Take `⟨m, m', r, h1, h2, h3⟩` from `UpperTheory.KN.basis_change_matrices_algebra_map (toOD l ↥(OL LL)) b jD u z (fun i => hjD _ _ (hz i))`.
+
+Use `⟨m, m', u, r, hu, h1, fun i => (hz i).trans ?_, h3⟩` and prove the remaining obligations. Conclude with `congrArg (TWincl (inclO l ↥(OL LL)) T) (h2 i)`.
+-/
 theorem _root_.UpperTheory.KN.exists_unit_invertible_matrix_identification_basis :
     ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (b : Module.Basis ι ↥(OL LL) ↥T.L.T), ∃ (m m' : Matrix ι ι (OD l ↥(OL LL))) (u : OA l ↥(OL LL)) (r : ι → ι → OA l ↥(OL LL)), IsUnit (toOD l ↥(OL LL) u) ∧ m' * m = 1 ∧ (∀ i, I.j (inclV l ↥(OL LL) ι (Pi.single i u)) = TWincl (inclO l ↥(OL LL)) T (∑ k, r i k ⊗ₜ[↥(OL LL)] b k)) ∧ ∀ i k, toOD l ↥(OL LL) (r i k) = toOD l ↥(OL LL) u * m i k := by
   intro l _ a e _ _ ϖ LL _ _ ι _ _ P T I b

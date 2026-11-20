@@ -33,6 +33,11 @@ namespace GlobalTheory.VacUniq
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `key : (x ⬝ᵥ w.2 + ⅟(2 : K) * (w.1 ⬝ᵥ w.2)) + ((x + w.1) ⬝ᵥ w'.2 + ⅟(2 : K) * (w'.1 ⬝ᵥ w'.2)) = ⅟(2 : K) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2) + (x ⬝ᵥ (w + w').2 + ⅟(2 : K) * ((w + w').1 ⬝ᵥ (w + w').2))`. Establish `h2 : ⅟(2 : K) * 2 = 1` using `invOf_mul_self 2`. Simplify using `only [Prod.fst_add, Prod.snd_add, dotProduct_add, add_dotProduct]`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h2`.
+
+Use `show ψ _ * (ψ _ * φ (x + w.1 + w'.1)) = ψ _ * (ψ _ * φ (x + (w + w').1))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, key, Prod.fst_add, add_assoc]`.
+-/
 theorem schr_schr {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → K) × (κ → K)) (φ : (κ → K) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : K) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -46,6 +51,13 @@ theorem schr_schr {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K �
   show ψ _ * (ψ _ * φ (x + w.1 + w'.1)) = ψ _ * (ψ _ * φ (x + (w + w').1))
   rw [← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, key, Prod.fst_add, add_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Use `set z : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x₀ i)) with hz`. Establish `hza : At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.LatVac.at_liftV v _`. Establish `hrx : r (x₀ + z) = r x₀` using `hr.1 x₀ z hza`. Establish `hy : (fun i => evFin F v ((x₀ + z) i)) = y`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hz, Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel]`. Establish `e` using `congrFun ((h1 r hr).symm.trans (h2 r hr)) (x₀ + z)`. Simplify using `only [tens] at e`. Rewrite `e` using `[hrx, hy]`.
+
+Conclude with `mul_right_cancel₀ hx₀ e`.
+-/
 theorem acts_unique {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {κ : Type} [Fintype κ] {φ : (κ → Fv F v) → ℂ}
     {r : (κ → AF F) → ℂ} (hr : Rest (evFin F v) φ r) {x₀ : κ → AF F} (hx₀ : r x₀ ≠ 0)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ) (φ₁ φ₂ : (κ → Fv F v) → ℂ)
@@ -62,6 +74,9 @@ theorem acts_unique {F : Type} [Field F] [NumberField F] (v : GlobalTheory.Indef
   rw [hrx, hy] at e
   exact mul_right_cancel₀ hx₀ e
 
+/- English proof (translation)
+Establish `hcχ : c * χ = 1`. Assume the negation of the conclusion as `hne'`. Establish `h4 : (c * χ - 1) • φ = 0` using `by rw [sub_smul, ← h1, one_smul, sub_self]`. Conclude with `hne ((smul_eq_zero.mp h4).resolve_left (sub_ne_zero.mpr hne'))`. Rewrite using `[h2, smul_smul, mul_comm, hcχ, one_smul]`.
+-/
 theorem phase {V : Type} [AddCommGroup V] [Module ℂ V] {φ ψ S : V} {c χ : ℂ} (hne : φ ≠ 0)
     (h1 : φ = (c * χ) • φ) (h2 : ψ = c • S) : S = χ • ψ := by
   have hcχ : c * χ = 1 := by
@@ -70,6 +85,29 @@ theorem phase {V : Type} [AddCommGroup V] [Module ℂ V] {φ ψ S : V} {c χ : �
     exact hne ((smul_eq_zero.mp h4).resolve_left (sub_ne_zero.mpr hne'))
   rw [h2, smul_smul, mul_comm, hcχ, one_smul]
 
+/- English proof (translation)
+Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ θ hθ ι hι φ₀ h0 hne hfix huniq g hg hSa hBd`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁)` using `GlobalTheory.VacAny.continuous_psiV hTr.base.std.1 Bs.v₁`. Establish `hSB : ∀ γ, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv D.host.F Bs.v₁), schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) φ ∈ GlobalTheory.WeilM.SB _` using `fun γ φ hφ => GlobalTheory.SchrSBFin.schr_mem_SB _ _ hψc _ _ hφ`. Establish `hat : ∀ γ ∈ latAtV {Γ.V' with L` using `L₁} {Γ.W with L := L₂} Bs.v₁, At (evFin D.host.F Bs.v₁) γ := (GlobalTheory.LatVac.latAtV_at_stable _ _ _).1`. Establish `hacts : ∀ γ, At (evFin D.host.F Bs.v₁) γ → ∀ φ, Acts (evFin D.host.F Bs.v₁) (Γ.M'.co.rho Bs.ψ γ) φ (schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) φ)` using `fun γ hγ φ => GlobalTheory.VacBridge.rho_acts_locCo Γ.M'.co Bs.ψ Bs.v₁ γ hγ φ`.
+
+Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.T.exists_nonzero_complementary_adelicSchwartz_function Bs.v₁ φ₀ h0`. Take `⟨χ, hχ⟩ : ∃ χ : Matrix (Fin a') (Fin (a + a')) (AE D.host.F D.host.E) → ℂ, ∀ γ, χ γ = Bs.ψ (⅟(2 : AF D.host.F) * symp (cA D.sp.cm.sig) (inclR (F` from `D.host.F) (AF D.host.F) (θ : D.host.E)) (incM D.host.F Γ.V'.J) (incM D.host.F Γ.W.J) γ γ) := ⟨_, fun _ => rfl⟩`. Establish `hφ₀ : ∀ γ ∈ latAtV {Γ.V' with L` using `L₁} {Γ.W with L := L₂} Bs.v₁, schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) φ₀ = χ γ • φ₀ := by`. Introduce `γ hγ`. Rewrite using `[hχ]`.
+
+Conclude with `acts_unique Bs.v₁ hr hx₀ _ _ _ (hacts γ (hat γ hγ) φ₀) (hfix γ hγ)`. Establish `hχ1 : ∀ u, At (evFin D.host.F Bs.v₁) u → (u.map (piW Bs.τ₁) = 0 ∨ u.map (piW (Bs.τ₁.comp D.sp.cm.sig)) = 0) → χ u = 1`. Introduce `u hu h`. Rewrite using `[hχ, GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hu h, mul_zero, AddChar.map_zero_eq_one]`. Take `⟨ψ₀, hψ₀, hιψ₀⟩` from `hι.bij.surjOn hg`.
+
+Establish `hA : ∀ γ ∈ latAtV {Γ.V' with L` using `L₁} {Γ.W with L := L₂} Bs.v₁, γ.map (piW Bs.τ₁) = 0 → schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) ψ₀ = ψ₀ := by`. Introduce `γ hγ h`. Use `hι.bij.injOn (hSB γ ψ₀ hψ₀) hψ₀ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Establish `ht : ι (schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) ψ₀) Y = ι ψ₀ (Y + GlobalTheory.VacShape.coBar Bs Γ γ)` using `hι.trans γ (hat γ hγ) h ψ₀ hψ₀ _ (hSB γ ψ₀ hψ₀) (hacts γ (hat γ hγ) ψ₀) Y`.
+
+Establish `hs : GlobalTheory.VacShape.coBar Bs Γ γ ∈ GlobalTheory.VacShape.Sa Bs Γ L₁ L₂` using `⟨γ, hγ, h, rfl⟩`. Rewrite using `[ht, hιψ₀]`. Conclude with `hSa _ hs Y`. Establish `hB : ∀ γ ∈ latAtV {Γ.V' with L` using `L₁} {Γ.W with L := L₂} Bs.v₁, γ.map (piW (Bs.τ₁.comp D.sp.cm.sig)) = 0 → schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) ψ₀ = ψ₀ := by`. Introduce `γ hγ h`.
+
+Use `hι.bij.injOn (hSB γ ψ₀ hψ₀) hψ₀ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Take `⟨x, hx, hx0, rfl⟩` from `GlobalTheory.T.exists_splitSupported_oppositeLagrangian_coordinate Bs Γ X om om' hTr Y`. Establish `hm : ι (schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) ψ₀) (GlobalTheory.VacShape.coBar Bs Γ x) = Bs.ψ (symp (cA D.sp.cm.sig) (-1) (incM D.host.F Γ.V'.J) (incM D.host.F Γ.W.J) x γ) * ι ψ₀ (GlobalTheory.VacShape.coBar Bs Γ x)` using `hι.mult γ (hat γ hγ) h ψ₀ hψ₀ _ (hSB γ ψ₀ hψ₀) (hacts γ (hat γ hγ) ψ₀) x hx hx0`. Rewrite using `[hm, hιψ₀]`.
+
+Distinguish the cases in `hY : GlobalTheory.VacShape.coBar Bs Γ x ∈ GlobalTheory.VacShape.Bd Bs Γ L₁ L₂`. Rewrite using `[hY x hx hx0 rfl γ hγ h, one_mul]`. Rewrite using `[hBd _ hY, mul_zero]`. Establish `hfixψ : ∀ γ ∈ latAtV {Γ.V' with L` using `L₁} {Γ.W with L := L₂} Bs.v₁, Acts (evFin D.host.F Bs.v₁) (Γ.M'.co.rho Bs.ψ γ) ψ₀ (Bs.ψ (⅟(2 : AF D.host.F) * symp (cA D.sp.cm.sig) (inclR (F := D.host.F) (AF D.host.F) (θ : D.host.E)) (incM D.host.F Γ.V'.J) (incM D.host.F Γ.W.J) γ γ) • ψ₀) := by`. Introduce `γ hγ`.
+
+Rewrite using `[← hχ]`. Take `⟨γA, hγA, γB, hγB, rfl, hA0, hB0⟩` from `GlobalTheory.T.tensorLatticeSplitPlace_eq_add_componentParts Bs Γ X om om' hTr L₁ L₂ γ hγ`. Establish `e0 : GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ (γA + γB) = GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γA + GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γB` using `map_add _ _ _`. Establish `hc` using `schr_schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γA) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γB)`. Establish `hφA : schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γA) φ₀ = φ₀`.
+
+Rewrite using `[hφ₀ γA hγA, hχ1 γA (hat γA hγA) (Or.inl hA0), one_smul]`. Establish `hφB : schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γB) φ₀ = φ₀`. Rewrite using `[hφ₀ γB hγB, hχ1 γB (hat γB hγB) (Or.inr hB0), one_smul]`. Establish `h1` using `hc φ₀`. Rewrite `h1` using `[hφB, hφA, ← e0, hφ₀ _ hγ, smul_smul]`.
+
+Establish `h2` using `hc ψ₀`. Rewrite `h2` using `[hB γB hγB hB0, hA γA hγA hA0, ← e0]`. Establish `key` using `phase hne h1 h2`. Use `hacts _ (hat _ hγ) ψ₀` as an intermediate fact. Rewrite `this` using `[key]`. Then use the resulting hypothesis.
+
+Take `⟨c, hc⟩` from `huniq ψ₀ hψ₀ hfixψ`. Conclude with `⟨c, by rw [← hιψ₀, hc, map_smul]⟩`.
+-/
 theorem sa_bd_uniq : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)
     (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V' Γ.W) (hTr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om') (L₁ : Submodule (𝓞 D.host.E) (Fin a' → D.host.E)) (L₂ : Submodule (𝓞 D.host.E) (Fin (a + a') → D.host.E))

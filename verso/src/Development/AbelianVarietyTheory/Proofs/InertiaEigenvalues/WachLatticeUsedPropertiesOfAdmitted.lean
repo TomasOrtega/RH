@@ -24,6 +24,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Take `⟨⟨r, b, hbN, huniq, -⟩, -⟩` from `h`. Take `⟨a0, -, ha0⟩` from `huniq 0 (W.N T).zero_mem`. Establish `hli : LinearIndependent (LetA O n) b`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`.
+
+Conclude with `congrFun ((ha0 g hg.symm).trans (ha0 0 (by simp)).symm) j`. Establish `hsp : W.N T = Submodule.span (LetA O n) (Set.range b)`. Use `le_antisymm (fun x hx => ?_) (Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact (hbN j).1))` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `huniq x hx`. Rewrite using `[ha]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hr : r = Module.finrank O ↥T.L.T`. Set `bN` to `(Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hsp.symm)`. Establish `hbc` using `W.N_base T hT`. Set `bD` to `(Algebra.TensorProduct.basis W.EE bN).map hbc.equiv`.
+
+Use `haveI : Nontrivial W.EE := W.EE_inj.nontrivial`. Rewrite using `[← (W.DD_free T).2, Module.finrank_eq_card_basis bD, Fintype.card_fin]`. Substitute `hr` using the available equality. Conclude with `⟨b, hbN, hli, hsp⟩`.
+-/
 theorem invBasis_of_basisModule [Nontrivial O] (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {π' : LetA O n}
     (h : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π') :
     ∃ b : Fin (Module.finrank O ↥T.L.T) → W.DD T, (∀ j, b j ∈ W.NΔ T) ∧ LinearIndependent (LetA O n) b ∧
@@ -50,6 +59,9 @@ theorem invBasis_of_basisModule [Nontrivial O] (T : LocLat G Qp LL O) (hT : IsCr
 
 end Generic
 
+/- English proof (translation)
+Introduce `D HW F h9 l _ K LL hA T hT`. Establish `hbij : Function.Bijective (algebraMap ↥(K0 K) ↥K.1)` using `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x.1, x.2, hA.1 x.2⟩, rfl⟩⟩`. Establish `hfr : Module.finrank ↥(K0 K) ↥K.1 = 1` using `(LinearEquiv.ofBijective (Algebra.linearMap ↥(K0 K) ↥K.1) hbij).finrank_eq.symm.trans (Module.finrank_self _)`. Conclude with `invBasis_of_basisModule _ T hT ((h9 l K 1 LL hA.2.2 T hT ((HW l).W_s K 1 LL hA.2.2) (by rw [(D.loc l).PD_p]; exact hA.2.1)).2.2 hfr).2`.
+-/
 theorem invBasis_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F →
     ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL), GlobalTheory.WachUse.InvBasis ((HW l).W K 1 LL hA.2.2) := by
   intro D HW F h9 l _ K LL hA T hT
@@ -60,6 +72,11 @@ theorem invBasis_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D
   exact invBasis_of_basisModule _ T hT ((h9 l K 1 LL hA.2.2 T hT ((HW l).W_s K 1 LL hA.2.2)
     (by rw [(D.loc l).PD_p]; exact hA.2.1)).2.2 hfr).2
 
+/- English proof (translation)
+Introduce `D HW F h5 l _ K LL hA T U M hh hU hb i`. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l (D.loc l) (D.locA l) (D.locT l) K LL T.V T.ρ).1`. Establish `hJ` using `GlobalTheory.WachUse.HeightsProof.jumpsOverLetters_of_crysWith _ T U M hh hU hb`. Establish `hp` using `h5 l K 1 LL hA.2.2 T M hh hU.1 (fun τ j hτ => hJ j τ (fun c => by simpa using congrArg (fun f => f c) hτ))`. Use `⟨fun x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.WachUse.HeightsProof.φD_letE]`. Conclude with `hp.1 i _ ⟨x, hx, rfl⟩`. Conclude with `Submodule.span_mono (Set.image_mono (GlobalTheory.WachUse.HeightsProof.Nl_le _ T (i - 1))) (hp.2.1 i _ ⟨y, hy, rfl⟩)`.
+-/
 theorem heights_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.DeltaInvariantLattices.P5 D HW F →
     ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL), GlobalTheory.WachUse.Heights ((HW l).W K 1 LL hA.2.2) := by
   intro D HW F h5 l _ K LL hA T U M hh hU hb i
@@ -73,6 +90,9 @@ theorem heights_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.
   · exact Submodule.span_mono (Set.image_mono (GlobalTheory.WachUse.HeightsProof.Nl_le _ T (i - 1)))
       (hp.2.1 i _ ⟨y, hy, rfl⟩)
 
+/- English proof (translation)
+Introduce `T' T f hT hb x hx`. Establish `hT' : IsCrys ((D.loc l).PD K) T'.ρ` using `GlobalTheory.HTW.Rec.isCrys_of_equiv ((D.loc l).PD K) (LinearEquiv.ofBijective f.f hb) f.equiv hT`. Conclude with `((GlobalTheory.NL.Isog.isog_loc (HW l) K 1 LL hA.2.2 T' T f hT' hT hb).2.2 x).1 hx`.
+-/
 theorem saturated_caseA (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL) :
     GlobalTheory.WachUse.Saturated ((HW l).W K 1 LL hA.2.2) := by
   intro T' T f hT hb x hx
@@ -80,6 +100,9 @@ theorem saturated_caseA (D : D7) (HW : HWOf D.loc) (l : ℕ) [Fact l.Prime] (K L
     GlobalTheory.HTW.Rec.isCrys_of_equiv ((D.loc l).PD K) (LinearEquiv.ofBijective f.f hb) f.equiv hT
   exact ((GlobalTheory.NL.Isog.isog_loc (HW l) K 1 LL hA.2.2 T' T f hT' hT hb).2.2 x).1 hx
 
+/- English proof (translation)
+Introduce `D HW F Cm h l _ K LL hA`. Establish `hI` using `invBasis_of_admitted D HW F h.2.2.2.2.2.2.2.2.1 l K LL hA`. Establish `hS` using `GlobalTheory.SenOperator.senOp_of_record D HW F Cm l K LL hA`. Conclude with `⟨hI, heights_of_admitted D HW F h.2.2.2.2.1 l K LL hA, GlobalTheory.WachRankOne.rankOne_of_senOp (D.locA l) (HW l) (F l) (Cm l) K LL hA hI hS, saturated_caseA D HW l K LL hA, GlobalTheory.WachUse.additive_of_caseA (D.locA l) (HW l) (F l) (Cm l) K LL hA, hS⟩`.
+-/
 theorem qN_of_admitted : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),
     tableLineDegreeTwo.admitted D HW F Cm → ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : CaseA K LL),
       GlobalTheory.WachUse.QN ((HW l).W K 1 LL hA.2.2) := by

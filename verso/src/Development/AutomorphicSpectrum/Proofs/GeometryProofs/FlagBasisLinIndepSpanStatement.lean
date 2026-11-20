@@ -9,6 +9,9 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.FlagBasis.flag_b_basis | exact GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.FlagBasis.flag_b_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.FlagBasis.flag_b_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_basis_lin_indep_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ)
     (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y)

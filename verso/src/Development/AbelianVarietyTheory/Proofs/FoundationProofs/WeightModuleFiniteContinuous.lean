@@ -13,6 +13,17 @@ open MvPolynomial
 
 namespace GlobalTheory.WtCont
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `ψ`. Establish `e : ∀ g : GL (Fin n) ℂ, Formalism.UG.dwAct ℂ n n g (C a) = C a` using `fun g => by`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes]`.
+
+Repeatedly rewrite using `[e]`. Conclude with `continuous_const`. Consider the case `add p q hp hq => intro ψ`. Simplify using `only [map_add]`. Conclude with `(hp ψ).add (hq ψ)`.
+
+Consider the case `mul_X p v hp`. Introduce `ψ`. Establish `e : ∀ g : GL (Fin n) ℂ, ψ (Formalism.UG.dwAct ℂ n n g (p * X v)) = ∑ b : Fin n, (((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) v.1 b) * (ψ.comp (LinearMap.mulRight ℂ (X (b, v.2)))) (Formalism.UG.dwAct ℂ n n g p)`. Introduce `g`. Simplify using `only [map_mul, Formalism.UG.dwAct, Formalism.GradedWeylDivisibility.rowAct, aeval_X, Finset.mul_sum, map_sum, LinearMap.comp_apply, LinearMap.mulRight_apply]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, mul_smul_comm, map_smul, smul_eq_mul]`. Repeatedly rewrite using `[e]`. Use `continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Use `Continuous.mul ?_ (hp _)` and prove the remaining obligations.
+
+Conclude with `((Units.continuous_coe_inv).matrix_elem v.1 b)`.
+-/
 theorem continuous_functional_dwAct (n : ℕ) (f : MvPolynomial (Fin n × Fin n) ℂ) :
     ∀ ψ : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] ℂ,
       Continuous fun g : GL (Fin n) ℂ => ψ (Formalism.UG.dwAct ℂ n n g f) := by
@@ -39,6 +50,9 @@ theorem continuous_functional_dwAct (n : ℕ) (f : MvPolynomial (Fin n × Fin n)
     refine Continuous.mul ?_ (hp _)
     exact ((Units.continuous_coe_inv).matrix_elem v.1 b)
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend φ`. Establish `e : ∀ g : GL (Fin n) ℂ, φ (Formalism.UG.dualWeylRep ℂ n n ν g x) = ψ (Formalism.UG.dwAct ℂ n n g x)` using `fun g => by`. Rewrite using `[← hψ, LinearMap.comp_apply, Submodule.subtype_apply, Formalism.UG.dualWeylRep_apply]`. Repeatedly rewrite using `[e]`. Conclude with `continuous_functional_dwAct n _ ψ`.
+-/
 theorem continuous_dual_dualWeylRep (n : ℕ) (ν : Fin n → ℕ) (x : Formalism.GradedWeylDivisibility.dualWeyl ℂ n n ν)
     (φ : Module.Dual ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n ν)) :
     Continuous fun g : GL (Fin n) ℂ => φ (Formalism.UG.dualWeylRep ℂ n n ν g x) := by
@@ -48,6 +62,11 @@ theorem continuous_dual_dualWeylRep (n : ℕ) (ν : Fin n → ℕ) (x : Formalis
   simp_rw [e]
   exact continuous_functional_dwAct n _ ψ
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [Function.comp_def, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.continuous_val.matrix_det`. Establish `e : ∀ g : GL (Fin n) ℂ, ((Matrix.GeneralLinearGroup.det g)⁻¹ : ℂˣ) = Matrix.GeneralLinearGroup.det g⁻¹` using `fun g => (map_inv _ g).symm`.
+
+Simplify using `only [Function.comp_def, e, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.continuous_coe_inv.matrix_det`.
+-/
 theorem continuous_det_units (n : ℕ) : Continuous (Matrix.GeneralLinearGroup.det : GL (Fin n) ℂ → ℂˣ) := by
   rw [Units.continuous_iff]
   constructor
@@ -58,12 +77,28 @@ theorem continuous_det_units (n : ℕ) : Continuous (Matrix.GeneralLinearGroup.d
     simp only [Function.comp_def, e, Matrix.GeneralLinearGroup.val_det_apply]
     exact Units.continuous_coe_inv.matrix_det
 
+/- English proof (translation)
+Simplify using `[grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, PiTensorProduct.mapMonoidHom, PiTensorProduct.map_tprod]`.
+-/
 theorem grp_tprod' (n : ℕ) {ι : Type} [DecidableEq ι] (mu : ι → ℕ → ℕ) (h : ι → GL (Fin n) ℂ)
     (x : ∀ τ, Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu τ))) :
     grp ℂ n mu h (PiTensorProduct.tprod ℂ x) =
       PiTensorProduct.tprod ℂ (fun τ => Formalism.UG.dualWeylRep ℂ n n _ (h τ) (x τ)) := by
   simp [grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, PiTensorProduct.mapMonoidHom, PiTensorProduct.map_tprod]
 
+/- English proof (translation)
+Introduce `n ι _ _ mu sh`. Use `haveI hfin : ∀ τ, FiniteDimensional ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu τ))) := fun τ => GlobalTheory.NablaFin.dualWeyl_finite ℂ n _`. Use `⟨hfin, GlobalTheory.NablaFin.nablaT_finite ℂ n ι mu, ?_⟩` and prove the remaining obligations. Establish `hd : Continuous fun g : ι → GL (Fin n) ℂ => ((∏ τ, Matrix.GeneralLinearGroup.det (g τ) ^ (-sh τ) : ℂˣ) : ℂ)`. Use `Units.continuous_val.comp (continuous_finset_prod _ fun τ _ => ?_)` and prove the remaining obligations.
+
+Conclude with `((continuous_det_units n).comp (continuous_apply τ)).zpow _`. Introduce `u ℓ`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`. Set `b` to `fun τ => Module.finBasis ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu τ)))`.
+
+Set `M` to `ℓ.compMultilinearMap (PiTensorProduct.tprod ℂ)`. Establish `e : ∀ g : ι → GL (Fin n) ℂ, ℓ (wtOp ℂ n mu sh g (c • PiTensorProduct.tprod ℂ x)) = c * (((∏ τ, Matrix.GeneralLinearGroup.det (g τ) ^ (-sh τ) : ℂˣ) : ℂ) * ∑ p : ∀ τ, Fin (Module.finrank ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu …`. Introduce `g`. Rewrite using `[map_smul, map_smul, smul_eq_mul, wtOp_apply, map_smul, smul_eq_mul, grp_tprod']`. Use `congr 2`.
+
+Establish `h1 : (fun τ => Formalism.UG.dualWeylRep ℂ n n _ (g τ) (x τ)) = fun τ => ∑ i, (b τ).repr (Formalism.UG.dualWeylRep ℂ n n _ (g τ) (x τ)) i • b τ i`. Use function extensionality and compare the values at `fun τ => ((b τ).sum_repr _).symm`. Express the relevant statement in the definitionally equal form `M _ = _`. Rewrite using `[h1, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Repeatedly rewrite using `[e]`. Use `continuous_const.mul (hd.mul (continuous_finset_sum _ fun p _ => ?_))` and prove the remaining obligations. Use `Continuous.mul (continuous_finset_prod _ fun τ _ => ?_) continuous_const` and prove the remaining obligations. Conclude with `(continuous_dual_dualWeylRep n _ (x τ) ((b τ).coord (p τ))).comp (continuous_apply τ)`.
+
+Consider the case `add a a' ha ha'`. Simplify using `only [map_add]`. Conclude with `ha.add ha'`.
+-/
 theorem finite_continuous_wtOp : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (sh : ι → ℤ), (∀ τ, FiniteDimensional ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu τ)))) ∧ FiniteDimensional ℂ (NablaT ℂ n mu) ∧ ∀ (u : NablaT ℂ n mu) (ℓ : Module.Dual ℂ (NablaT ℂ n mu)), Continuous fun g : ι → GL (Fin n) ℂ => ℓ (wtOp ℂ n mu sh g u) := by
   intro n ι _ _ mu sh
   haveI hfin : ∀ τ, FiniteDimensional ℂ (Formalism.GradedWeylDivisibility.dualWeyl ℂ n n (Formalism.CohomologicalDescent.LD.res n (mu τ))) :=

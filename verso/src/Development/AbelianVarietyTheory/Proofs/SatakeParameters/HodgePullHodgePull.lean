@@ -8,6 +8,9 @@ namespace GlobalTheory.HodgeCoh
 variable {k : Type} [CommRing k] {X X' X'' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k}
   {s'' : X'' ⟶ Sp k} {f : X' ⟶ X} {g : X'' ⟶ X'}
 
+/- English proof (translation)
+Use `SemiHom.mOm_mOm (semiHom_appSec hf U) (semiHom_appSec hg (f ⁻¹ᵁ U)) (semiHom_appSec hgf U) (fun b ↦ ?_) x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f.app U ≫ g.app (f ⁻¹ᵁ U)).hom b = ((g ≫ f).app U).hom b`. Rewrite using `[Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+-/
 theorem formPull_formPull (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (U : X.Opens) (j : ℕ) (x : OmU s U j) :
     formPull hg (f ⁻¹ᵁ U) j (formPull hf U j x) = formPull hgf U j x := by
@@ -17,6 +20,11 @@ theorem formPull_formPull (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g �
   rw [Scheme.Hom.comp_app]
   rfl
 
+/- English proof (translation)
+Apply `((PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv _ _).injective` to reduce the goal to its premises. Establish `e₁` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) M φ`. Establish `e₂` using `(PresheafOfModules.sheafificationAdjunction (𝟙 X.ringCatSheaf.obj)).homEquiv_unit (formsPre s j) M ψ`. Use `e₁.trans (Eq.trans ?_ e₂.symm)` and prove the remaining obligations. Use extensionality with `U x`.
+
+Conclude with `h U.unop x`.
+-/
 theorem omega_hom_ext {j : ℕ} {M : X.Modules} (φ ψ : Omega s j ⟶ M)
     (h : ∀ (U : X.Opens) (x : OmU s U j), φ.val.app (op U) ((toOmega s j).app (op U) x) =
       ψ.val.app (op U) ((toOmega s j).app (op U) x)) : φ = ψ := by
@@ -29,6 +37,9 @@ theorem omega_hom_ext {j : ℕ} {M : X.Modules} (φ ψ : Omega s j ⟶ M)
   ext U x
   exact h U.unop x
 
+/- English proof (translation)
+Use `omega_hom_ext _ _ fun U x ↦ ?_` and prove the remaining obligations. Rewrite using `[omegaPull_toOmega]`. Express the relevant statement in the definitionally equal form `_ = (omegaPull hg j).val.app (op (f ⁻¹ᵁ U)) ((omegaPull hf j).val.app (op U) ((toOmega s j).app (op U) x))`. Rewrite using `[omegaPull_toOmega, omegaPull_toOmega, formPull_formPull hf hg hgf]`. Both sides reduce to the same expression.
+-/
 theorem omegaPull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (j : ℕ) :
     omegaPull hgf j = omegaPull hf j ≫ (Scheme.Modules.pushforward f).map (omegaPull hg j) := by
@@ -38,6 +49,13 @@ theorem omegaPull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f
   rw [omegaPull_toOmega, omegaPull_toOmega, formPull_formPull hf hg hgf]
   rfl
 
+/- English proof (translation)
+Use `letI := algΓ s`. Use `letI := algΓ s'`. Use `letI := algΓ s''`. Apply `(cohOn.toH' (Omega s'' j) ⊤ q).injective` to reduce the goal to its premises. Establish `e₁` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hg) (omegaPull hg j) (le_refl (g ⁻¹ᵁ ⊤)) (hodgePull hf j q x)`.
+
+Establish `e₂` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hf) (omegaPull hf j) (le_refl (f ⁻¹ᵁ ⊤)) x`. Establish `e₃` using `cohOn.toH'_pull (σ := RingHom.id k) (appTop_algebraMap hgf) (omegaPull hgf j) (le_refl ((g ≫ f) ⁻¹ᵁ ⊤)) x`. Use `e₁.trans (Eq.trans ?_ e₃.symm)` and prove the remaining obligations. Use `(congrArg (SheafPull.pull.{0, 0} g.base (toAbSheafPush (omegaPull hg j)) q _) e₂).trans ?_` and prove the remaining obligations. Use `(SheafPull.pull_pull.{0, 0, 0} f.base g.base _ _ q _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[omegaPull_comp hf hg hgf]`. Both sides reduce to the same expression.
+-/
 theorem hodgePull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f) ≫ s = s'')
     (j q : ℕ) (x : hodgeH s j q) :
     hodgePull hg j q (hodgePull hf j q x) = hodgePull hgf j q x := by
@@ -55,6 +73,9 @@ theorem hodgePull_comp (hf : f ≫ s = s') (hg : g ≫ s' = s'') (hgf : (g ≫ f
   rw [omegaPull_comp hf hg hgf]
   rfl
 
+/- English proof (translation)
+The claim follows from `hodgePull_comp rfl rfl (Category.assoc g f s) j q x`.
+-/
 theorem hodgePull_hodgePull {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶ X)
     (g : X'' ⟶ X') (j q : ℕ) (x : hodgeH s j q) :
     hodgePull (s' := g ≫ f ≫ s) rfl j q (hodgePull (s' := f ≫ s) rfl j q x) =
@@ -63,5 +84,8 @@ theorem hodgePull_hodgePull {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶
 
 end GlobalTheory.HodgeCoh
 
+/- English proof (translation)
+The claim follows from `fun s f g j q x ↦ hodgePull_hodgePull s f g j q x`.
+-/
 example : ∀ {k : Type} [CommRing k] {X X' X'' : Scheme.{0}} (s : X ⟶ Sp k) (f : X' ⟶ X) (g : X'' ⟶ X') (j q : ℕ) (x : hodgeH s j q), hodgePull (s' := g ≫ f ≫ s) rfl j q (hodgePull (s' := f ≫ s) rfl j q x) = hodgePull (f := g ≫ f) (s' := g ≫ f ≫ s) (Category.assoc g f s) j q x :=
   fun s f g j q x ↦ hodgePull_hodgePull s f g j q x

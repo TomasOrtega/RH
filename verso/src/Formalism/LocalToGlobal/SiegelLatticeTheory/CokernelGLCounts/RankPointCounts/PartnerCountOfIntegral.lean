@@ -6,6 +6,19 @@ namespace Formalism.L2.SG.Pf.PCount
 
 open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermLoc
 
+/- English proof (translation)
+Introduce `p c`. Use `haveI : CharZero (D.s.atP p).Fp := (D.s.atP p).char0`. Use `haveI : Module.Free (D.s.atP p).Fp (D.s.atP p).Ep := (D.s.atP p).free`. Use `haveI : FiniteDimensional (D.s.atP p).Fp (D.s.atP p).Ep := Module.finite_of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)`. Assume the negation of the conclusion as `hcon`.
+
+Simplify using `only [not_exists] at hcon`. Set `f : Module.End (D.s.atP p).Fp (D.s.atP p).Ep` to `LinearMap.mulLeft (D.s.atP p).Fp c`. Establish `hev : ∀ n : Fin 3, ∃ y : (D.s.atP p).Ep, f.HasEigenvector (-(((n : ℕ) : (D.s.atP p).Fp))) y`. Introduce `n`. Establish `hnu` using `hcon n`.
+
+Establish `hni : ¬ Function.Injective (LinearMap.mulLeft (D.s.atP p).Fp (c + (((n : ℕ)) : (D.s.atP p).Ep)))`. Introduce `hinj`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.1 hinj) 1`. Conclude with `hnu (isUnit_iff_exists_inv.2 ⟨y, hy⟩)`. Rewrite `hni` using `[← LinearMap.ker_eq_bot, ← ne_eq, Submodule.ne_bot_iff]`.
+
+Take `⟨y, hyk, hy0⟩` from `hni`. Use `⟨y, ?_, hy0⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `h1 : (c + (((n : ℕ)) : (D.s.atP p).Ep)) * y = 0` using `hyk`. Rewrite `h1` using `[add_mul]`.
+
+Use `show c * y = _`. Rewrite using `[eq_neg_of_add_eq_zero_left h1, neg_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Use `choose y hy using hev`. Establish `hinj : Function.Injective (fun n : Fin 3 => -(((n : ℕ) : (D.s.atP p).Fp)))` using `fun a b h => by`. Establish `h' : ((a : ℕ) : (D.s.atP p).Fp) = ((b : ℕ) : (D.s.atP p).Fp)` using `neg_inj.1 h`.
+
+Conclude with `Fin.ext (Nat.cast_injective h')`. Establish `hli` using `Module.End.eigenvectors_linearIndependent' f _ hinj y hy`. Establish `hc` using `hli.fintype_card_le_finrank`. Rewrite `hc` using `[Fintype.card_fin, (D.s.atP p).rank]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem shUnit_holds (D : Formalism.BasicNotions.D7) : ShUnit D := by
   intro p c
   haveI : CharZero (D.s.atP p).Fp := (D.s.atP p).char0
@@ -40,6 +53,9 @@ theorem shUnit_holds (D : Formalism.BasicNotions.D7) : ShUnit D := by
   rw [Fintype.card_fin, (D.s.atP p).rank] at hc
   omega
 
+/- English proof (translation)
+The claim follows from `partnerCount_of_shUnit Zd hT2 hI (shUnit_holds D) hB`.
+-/
 theorem partnerCount_of_integral {D : Formalism.BasicNotions.D7} (Zd : LocDat D) (hT2 : Formalism.MainNotions.ThinScalesBound.T2 D) (hI : IntGenP Zd)
     (hB : BridgeBA) : PartnerIsomorphismCount Zd :=
   partnerCount_of_shUnit Zd hT2 hI (shUnit_holds D) hB

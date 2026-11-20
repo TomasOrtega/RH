@@ -8,6 +8,13 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 
 namespace GlobalTheory.Mem.Top.Bl
 
+/- English proof (translation)
+Introduce `D D' hsub v v₁ v₂ h12 hb x x' hxx'`. Rewrite using `[hb x x' hxx']`. Take `⟨y, hy, hye⟩` from `hsub (x : D.what₂.LL)`. Establish `hyx : y = (x' : D'.what₂.LL)` using `D'.what₂.embLL.injective (hye.trans hxx')`. Establish `hint : IsIntegral ℤ (⟨(x' : D'.what₂.LL), hyx ▸ hy⟩ : ↥D'.LL0)` using `(isIntegral_algebraMap_iff (algebraMap ↥D'.LL0 D'.what₂.LL).injective).1 (RingOfIntegers.isIntegral_coe x')`.
+
+Set `z : 𝓞 ↥D'.LL0` to `⟨⟨(x' : D'.what₂.LL), hyx ▸ hy⟩, hint⟩`. Establish `hz : algebraMap (𝓞 ↥D'.LL0) (𝓞 D'.what₂.LL) z = x'`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[← hz, ← GlobalTheory.TwistChoice.val_pos_iff_mem, ← GlobalTheory.TwistChoice.val_pos_iff_mem]`.
+
+Conclude with `h12 z`.
+-/
 theorem below_of_overOne : ∀ (D D' : D7), (∀ x : D.what₂.LL, ∃ y ∈ D'.LL0, D'.what₂.embLL y = D.what₂.embLL x) → ∀ (v : D.what₂.places.Pl) (v₁ v₂ : D'.what₂.places.Pl), GlobalTheory.TwistChoice.OverOne D' v₁ v₂ → Below D D' v v₁ → Below D D' v v₂ := by
   intro D D' hsub v v₁ v₂ h12 hb x x' hxx'
   rw [hb x x' hxx']

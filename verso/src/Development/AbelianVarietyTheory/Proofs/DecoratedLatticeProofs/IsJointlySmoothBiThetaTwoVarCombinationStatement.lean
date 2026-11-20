@@ -9,5 +9,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.SeeSaw
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrCombAny.biTheta_biComb | exact GlobalTheory.FrCombAny.biTheta_biComb | (intros; apply GlobalTheory.FrCombAny.biTheta_biComb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isJointlySmoothBiTheta_twoVarCombination : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A S A' : HSp D) (C : WO A S → WO S A' → ℂ), IsBiTheta ψ A S A' C → ∀ (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ), IsBiTheta ψ A S A' (biComb ψ A S A' c c' C) := by
   first | exact @GlobalTheory.FrCombAny.biTheta_biComb | exact GlobalTheory.FrCombAny.biTheta_biComb | (intros; apply GlobalTheory.FrCombAny.biTheta_biComb <;> assumption)

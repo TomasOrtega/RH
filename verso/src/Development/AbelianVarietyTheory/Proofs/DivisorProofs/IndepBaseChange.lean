@@ -10,6 +10,13 @@ namespace GlobalTheory.Adelic.IndepBaseChange
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `letI : Algebra k A := f.hom.toAlgebra`. Establish `w` using `(CommRingCat.isPushout_tensorProduct k A E).w`. Set `d` to `po.desc _ _ w`. Set `m : A ⊗[k] E →ₗ[k] A` to `(TensorProduct.rid k A).toLinearMap ∘ₗ l.lTensor A`. Use `⟨m.toAddMonoidHom.comp d.hom.toAddMonoidHom, fun e a => ?_⟩` and prove the remaining obligations.
+
+Establish `h₁ : d.hom (p.hom a) = a ⊗ₜ[k] (1 : E)` using `congrArg (fun g => g.hom a) (po.inl_desc _ _ w)`. Establish `h₂ : d.hom (q.hom e) = (1 : A) ⊗ₜ[k] e` using `congrArg (fun g => g.hom e) (po.inr_desc _ _ w)`. Express the relevant statement in the definitionally equal form `m (d.hom (q.hom e * p.hom a)) = _`. Rewrite using `[map_mul, h₁, h₂, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Simplify using `only [m, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_contract {k E : Type} [Field k] [Field E] [Algebra k E] {A B : CommRingCat.{0}}
     {f : CommRingCat.of k ⟶ A} {p : A ⟶ B} {q : CommRingCat.of E ⟶ B}
     (po : IsPushout f (CommRingCat.ofHom (algebraMap k E)) p q) (l : E →ₗ[k] k) :
@@ -26,6 +33,9 @@ theorem exists_contract {k E : Type} [Field k] [Field E] [Algebra k E] {A B : Co
   simp only [m, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul]
   rfl
 
+/- English proof (translation)
+Set `e : S.L.Sec →+ Γ(S.Y, W)` to `{ toFun := fun s => resG S.Y h (s.f i), map_zero' := map_zero _, map_add' := fun _ _ => map_add _ _ _ }`. Use `(map_sum e _ _).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Use `(map_mul (resG S.Y h) _ _).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(LB.resG_resG _ _ _).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem comb_f {k : Type} [Field k] (S : LinSys k) (u : Fin S.N → k) (i : S.L.ι) {W : S.Y.Opens}
     (h : W ≤ S.L.U i) : resG S.Y h ((S.comb u).f i) =
       ∑ j, ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ S.str.appLE ⊤ W le_top).hom (u j) *
@@ -37,6 +47,19 @@ theorem comb_f {k : Type} [Field k] (S : LinSys k) (u : Fin S.N → k) (i : S.L.
   refine (LB.resG_resG _ _ _).trans ?_
   rfl
 
+/- English proof (translation)
+Introduce `u hu`. Establish `key : ∀ l : E →ₗ[k] k, (fun j => l (u j)) = (0 : Fin S.N → k)` using `fun l => by`. Use `hS _ (LB.f_injective (funext fun i => ?_))` and prove the remaining obligations. Use `S.Y.sheaf.eq_of_locally_eq' (fun W : {W : S.Y.affineOpens // W.1 ≤ S.L.U i} => W.1.1) _ (fun W => homOfLE W.2) (fun y hy => ?_) _ _ fun W => ?_` and prove the remaining obligations. Take `⟨V, hV, hx, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := S.L.U i) (x := y) hy`.
+
+Conclude with `Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, hle⟩, hx⟩`. Take `⟨⟨W, hW⟩, hle⟩` from `W`. Establish `H` using `S.isPullback_baseChange E`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := ⊤) (UX := W) le_top le_top (UY := S.bcFst E ⁻¹ᵁ W) (by simp)).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hW)`. Establish `po' : IsPushout ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ S.str.appLE ⊤ W le_top) (CommRingCat.ofHom (algebraMap k E)) ((S.bcFst E).appLE W (S.bcFst E ⁻¹ᵁ W) le_rfl) ((Scheme.ΓSpecIso (CommRingCat.of E)).inv ≫ (S.baseChange E).str.appLE ⊤ (S.bcFst E ⁻¹ᵁ W) le_top)`.
+
+Use `po.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Scheme.ΓSpecIso _) (Iso.refl _) (by simp) ?_ (by simp) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Take `⟨Λ, hΛ⟩` from `exists_contract po' l`. Establish `hle' : S.bcFst E ⁻¹ᵁ W ≤ (S.baseChange E).L.U fun _ => i` using `fun y hy => Set.mem_iInter.2 fun _ => hle hy`.
+
+Establish `e` using `comb_f (S.baseChange E) u (fun _ => i) hle'`. Rewrite `e` using `[hu]`. Establish `e' : ∀ j, resG (S.baseChange E).Y hle' (((S.baseChange E).b j).f fun _ => i) = ((S.bcFst E).appLE W (S.bcFst E ⁻¹ᵁ W) le_rfl).hom (resG S.Y hle ((S.b j).f i))` using `fun j => by`. Establish `a` using `(S.bcFst E).appLE_map (U := S.L.U i) (V := (S.baseChange E).L.U fun _ => i) (fun y hy => Set.mem_iInter.1 hy PUnit.unit) (homOfLE hle').op`. Establish `b` using `(S.bcFst E).map_appLE (U := W) (V := S.bcFst E ⁻¹ᵁ W) le_rfl (homOfLE hle).op`.
+
+Conclude with `congrArg (fun g => g.hom ((S.b j).f i)) (a.trans b.symm)`. Establish `e₂` using `congrArg Λ e`. Simplify using `only [e', map_sum, hΛ] at e₂`. Use `(comb_f S _ i hle).trans (e₂.symm.trans ?_)` and prove the remaining obligations. Conclude with `((congrArg Λ (map_zero _)).trans (map_zero Λ)).trans (map_zero _).symm`.
+
+Use function extensionality and compare the values at `j`. Conclude with `(Module.forall_dual_apply_eq_zero_iff k (u j)).1 fun l => congrFun (key l) j`.
+-/
 theorem indep_baseChange (k E : Type) [Field k] [Field E] [Algebra k E] (S : LinSys k) (hS : S.Indep) :
     (S.baseChange E).Indep := by
   intro u hu

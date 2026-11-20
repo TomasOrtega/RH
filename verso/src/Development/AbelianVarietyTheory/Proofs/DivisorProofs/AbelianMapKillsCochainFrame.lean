@@ -17,29 +17,47 @@ namespace GlobalTheory.CochAbKer
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Apply the tactic sequence `ext x <;> simp [epsScaleR]`.
+-/
 theorem epsScaleR_zero (k : Type) [CommRing k] :
     epsScaleR (0 : k) = (algebraMap k (DualNumber k)).comp (TrivSqZeroExt.fstHom k k k).toRingHom := by
   ext x <;> simp [epsScaleR]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem fst_comp_algebraMap (k : Type) [CommRing k] :
     (TrivSqZeroExt.fstHom k k k).toRingHom.comp (algebraMap k (DualNumber k)) = RingHom.id k := by
   ext x; simp
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `first | done | simpa using Over.w (toUnit (epsR k))`.
+-/
 theorem one_left {k : Type} [CommRing k] {G : Over (Sp k)} [GrpObj G] :
     (1 : epsR k ⟶ G).left = spMap (algebraMap k (DualNumber k)) ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left]
   congr 1
   first | done | simpa using Over.w (toUnit (epsR k))
 
+/- English proof (translation)
+Unfold `IsTangent`. Rewrite using `[one_left, ← Category.assoc, ← spMap_comp', fst_comp_algebraMap]`. Simplify using `[spMap]`.
+-/
 theorem isTangent_one {k : Type} [CommRing k] {G : Over (Sp k)} [GrpObj G] : IsTangent (1 : epsR k ⟶ G) := by
   unfold IsTangent
   rw [one_left, ← Category.assoc, ← spMap_comp', fst_comp_algebraMap]
   simp [spMap]
 
+/- English proof (translation)
+Use `⟨fun _ => 1, fun i => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[one_left, Pi.zero_apply, epsScaleR_zero, spMap_comp' (TrivSqZeroExt.fstHom k k k).toRingHom (algebraMap k (DualNumber k)), Category.assoc]`. Use `hv i` as an intermediate fact. Unfold `IsTangent at this`. Rewrite using `[this]`.
+-/
 theorem isLieComb_zero_one {k : Type} [CommRing k] {G : Over (Sp k)} [GrpObj G] {n : ℕ}
     {v : Fin n → (epsR k ⟶ G)} (hv : ∀ i, IsTangent (v i)) : IsLieComb (0 : Fin n → k) v 1 := by
   refine ⟨fun _ => 1, fun i => ?_, by simp⟩
@@ -48,6 +66,17 @@ theorem isLieComb_zero_one {k : Type} [CommRing k] {G : Over (Sp k)} [GrpObj G] 
   unfold IsTangent at this
   rw [this]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t k _ x φ m hF n v hv q hq r ε hε i`. Take `⟨u, hu, -, he⟩` from `hε`. Take `⟨e, -, he2⟩` from `he i`. Take `⟨w', hw', hc⟩` from `hq (ε i)`. Take `⟨ψ, hψ, hψF⟩` from `grpPullback_iso (isGrpPullback_pullback t.G x) hF.1`.
+
+Use `haveI := hu`. Use `haveI := hψ`. Use `haveI : IsProper φ.P.A.hom := φ.P.isAb.proper`. Establish `htriv : u ≫ ψ.hom ≫ φ.q = toUnit _ ≫ η[φ.P.A]` using `splitTorus_hom_proper_trivial_local k (Fin r → ℤ) φ.P.A _ inferInstance`. Establish `hw : w' = e.1 ≫ u ≫ ψ.hom`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hF.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hw', he2, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hψF]`. Rewrite using `[Over.w, Over.w]`. Establish `h1 : w' ≫ φ.q = 1`.
+
+Rewrite using `[hw, Category.assoc, Category.assoc, htriv, ← Category.assoc]`. Rewrite using `[Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Rewrite `hc` using `[h1]`.
+
+Establish `h0` using `isLieComb_zero_one (v := v) hv.1`. Conclude with `(hv.2 1 isTangent_one).unique hc h0`.
+-/
 theorem cochFrame_abMap_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G), FibAt t x φ m → ∀ (n : ℕ) (v : Fin n → (epsR k ⟶ φ.P.A)), IsLieBasis v → ∀ q : TanM x t.G →ₗ[k] (Fin n → k), IsAbMap φ m v q → ∀ (r : ℕ) (ε : Fin r → TanM x t.G), IsCochFrame t x ε → ∀ i, q (ε i) = 0 := by
   intro E _ _ _ H X t k _ x φ m hF n v hv q hq r ε hε i
   obtain ⟨u, hu, -, he⟩ := hε

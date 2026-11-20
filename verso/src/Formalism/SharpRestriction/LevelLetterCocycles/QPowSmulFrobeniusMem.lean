@@ -21,6 +21,9 @@ variable {R M : Type} [Field R] [AddCommGroup M] [Module R M]
 def lemGAx_F (B K : ℤ) (c : M) (k : ℤ) : Submodule R M :=
   if k < -B then ⊥ else if k < K then Submodule.span R {c} else ⊤
 
+/- English proof (translation)
+Introduce `a a' h`. Unfold `lemGAx_F`. Apply the tactic sequence `split_ifs <;> first | exact bot_le | exact le_top | exact le_rfl | (exfalso; omega)`.
+-/
 theorem lemGAx_F_mono (B K : ℤ) (c : M) : Monotone (lemGAx_F (R := R) B K c) := by
   intro a a' h
   unfold lemGAx_F
@@ -38,6 +41,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨x, ⟨hxN, hxD⟩, rfl⟩` from `hg`. Simplify using `using hgen x hxN hxD`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem lemGAx_pull1N (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod n) (k : ℕ)
     (hgen : ∀ x, x ∈ W.N T → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x →
       Formalism.MainNotions.LiftingTheory.qp W ^ k • W.φD T x ∈ W.N T) :
@@ -51,6 +59,9 @@ theorem lemGAx_pull1N (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (c : ZMod
   | add x y _ _ hx hy => rw [smul_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Introduce `x hxN hxD`. Establish `hxl : x ∈ W.Nl T (c + 1 - 1)`. Rewrite using `[add_sub_cancel_right]`. Conclude with `⟨x, hxN, by rw [LinearMap.smul_apply, LinearMap.id_apply, hxD.1]⟩`. Conclude with `(Formalism.MainNotions.LiftingTheory.lifta_Qq W hR hs T _ _).1 (h5.1 (c + 1) x hxl)`.
+-/
 theorem q_pow_smul_frobenius_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring W)
     (hs : W.s = 1) {M h : ZMod n → ℕ} (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (c : ZMod n) :
     ∀ x, x ∈ W.N T → Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x →
@@ -61,12 +72,72 @@ theorem q_pow_smul_frobenius_mem (W : LocWach PD LL O v n) (T : LocLat G Qp LL O
     exact ⟨x, hxN, by rw [LinearMap.smul_apply, LinearMap.id_apply, hxD.1]⟩
   exact (Formalism.MainNotions.LiftingTheory.lifta_Qq W hR hs T _ _).1 (h5.1 (c + 1) x hxl)
 
+/- English proof (translation)
+Use `parity_succ hn d (i - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lemGAx_parity {n : ℕ} [NeZero n] (hn : Even n) (d : ℕ) (i : ZMod n) (hi : (i.val + d) % 2 = 1) :
     ((i - 1).val + d) % 2 = 0 := by
   have := parity_succ hn d (i - 1)
   rw [sub_add_cancel] at this
   omega
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hS i hi y hy hyD hFil la hla`. Take `⟨htr, hlaD, hlaP, -⟩` from `hla`. Establish `hA : Formalism.MainNotions.LiftingTheory.CaseA W` using `hS.1`. Establish `hl : 11 ≤ PD.p` using `hS.2.1`. Establish `hn : Even n` using `hS.2.2.1`.
+
+Establish `hT : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hπ : W.π₀ ∈ W.AΔ` using `hR.πΔ`. Establish `hq : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ` using `W.AΔ.add_mem hπ (W.AΔ.natCast_mem _)`. Establish `hp1 : Formalism.MainNotions.LiftingTheory.pk W 1 ∈ W.AΔ` using `Formalism.MainNotions.UnusedSlot80.Relay2.pk_mem_AΔ W hπ 1`. Establish `hJ2` using `hJ d T₁ T₂ F b S η m hS`.
+
+Establish `hp5` using `h5 T₂ (MiW d b S η) (hiW d b S η) hT hJ2`. Establish `hpar1` using `lemGAx_parity hn d i hi`. Establish `hMi : MiW d b S η i = η` using `by unfold MiW; rw [if_neg (by omega)]`. Establish `hM2 : MiW d b S η (i - 1 + 1) = η` using `by rw [sub_add_cancel]; exact hMi`. Establish `hbH : b i ≤ hpar n b S`.
+
+Unfold `hpar`. Conclude with `le_trans (Finset.le_sup (Finset.mem_univ i)) (Nat.le_add_right _ _)`. Use `set H := hpar n b S + η with hH`. Use `set σ := lemG_sig PD.p H with hσ`. Use `set h₂ := b (i - 1) + S with hh₂`.
+
+Establish `hg2 : ∀ x, x ∈ W.N T₂ → Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ (i - 1) x → Formalism.MainNotions.LiftingTheory.qp W ^ η • W.φD T₂ x ∈ W.N T₂`. Introduce `x hxN hxD`. Use `q_pow_smul_frobenius_mem W T₂ hR hA.2.1 hp5 (i - 1) x hxN hxD` as an intermediate fact. Rewrite `this` using `[hM2]`. Then use the resulting hypothesis. Establish `hm0 : Formalism.MainNotions.LiftingTheory.qp W ^ η • (Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂ • la) ∈ W.N T₂` using `lemGAx_pull1N W T₂ (i - 1) η hg2 _ hlaP`.
+
+Take `⟨Uq, hUq⟩` from `hR.qU`. Use `set x : W.DD T₂ := ((Uq⁻¹ : W.EEˣ) : W.EE) ^ b i • (Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂ • la) with hxdef`. Establish `hxe : Formalism.MainNotions.LiftingTheory.qp W ^ b i • x = Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂ • la`. Rewrite using `[hxdef, ← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ b i), smul_smul, map_pow, ← hUq, ← mul_pow, Units.mul_inv, one_pow, one_smul]`. Establish `hqU : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ b i))`.
+
+Rewrite using `[map_pow]`. Conclude with `hR.qU.pow _`. Establish `hxD : Formalism.MainNotions.CrystallineLiftingInputs.DL W T₂ i x`. Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Apply `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hqU` to reduce the goal to its premises.
+
+Rewrite using `[smul_comm, hxe, smul_comm, hlaD.1]`. Apply `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hqU` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hmx : Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η) • x ∈ W.N T₂`. Rewrite using `[pow_add, mul_comm, mul_smul, hxe]`.
+
+Conclude with `hm0`. Take `⟨ζ, hζ⟩` from `hS.2.2.2.2.1`. Take `⟨⟨u, hu, hlq⟩, -, -⟩` from `hER hA i ζ hζ`. Establish `hu0 : PowerSeries.constantCoeff u ≠ 0` using `(PowerSeries.isUnit_iff_constantCoeff.1 hu).ne_zero`. Establish `hlevq : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η)) = PowerSeries.X ^ (b i + η) * u ^ (b i + η)`.
+
+Rewrite using `[map_pow, hlq, mul_pow, mul_comm]`. Establish `hlev0 : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η)) ≠ 0`. Rewrite using `[hlevq]`. Conclude with `mul_ne_zero (pow_ne_zero _ PowerSeries.X_ne_zero) (pow_ne_zero _ hu.ne_zero)`. Take `⟨dx, hdx, -⟩` from `(hEU hA T₂ hT i ζ hζ).1 x _ hmx hlev0`.
+
+Take `⟨m₀, hm₀⟩` from `hdx.1`. Establish `hLB : LB m₀ dx` using `hm₀`. Establish `hrel : W.levN T₂ i ζ ⟨_, hmx⟩ = fun k => smulS (u ^ (b i + η)) dx (k - ((b i + η : ℕ) : ℤ))`. Establish `h1` using `Formalism.MainNotions.N.Pv.LocalLengthBound.isExp_smulA W T₂ i ζ hdx (Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η))`. Establish `h2` using `Formalism.MainNotions.N.Pv.LocalLengthBound.isExp_self W T₂ i ζ hmx`.
+
+Rewrite using `[Formalism.MainNotions.N.Pv.LocalLengthBound.isExp_unique W T₂ i ζ h2 h1, hlevq, smulS_mul hLB, smulS_X_pow (LB_smulS hLB _)]`. Establish `hsh : ∀ k : ℤ, smulS (u ^ (b i + η)) dx k = W.levN T₂ i ζ ⟨_, hmx⟩ (k + ((b i + η : ℕ) : ℤ))`. Introduce `k`. Rewrite using `[hrel]`. Simplify using the standard rewrite rules.
+
+Establish `hyΔ : Formalism.MainNotions.LiftingTheory.InNΔi W T₂ (i - 2) y` using `Formalism.MainNotions.UnusedSlot80.Relay2.InNΔi_of W T₂ (i - 2) ⟨hy, hyD.2⟩ hyD.1`. Establish `hyI : Formalism.MainNotions.CrystallineLiftingInputs.InI W T₂ (i - 2) y`. Use `⟨hyD, ⟨0, 0, by simpa using hy⟩, ?_⟩` and prove the remaining obligations. Take `⟨x', hx', he⟩` from `Formalism.MainNotions.LiftingTheory.coreH_graded_of W h9 hA T₂ hT (i - 2) 0 y hyΔ`. Use `⟨x', hx'.1.1, hx'.1.2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using he`. Establish `hTC : Formalism.MainNotions.CrystallineLiftingInputs.TCase PD.p 2 1 (2 * H) σ` using `Or.inr ⟨rfl, rfl, rfl⟩`. Establish `hk : (Formalism.MainNotions.LiftingTheory.qp W ^ η * Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂) • la ∈ W.N T₂`. Rewrite using `[mul_smul]`. Conclude with `hm0`.
+
+Establish `hmm : (⟨Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η) • x, hmx⟩ : ↥(W.N T₂)) = ⟨_, hk⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Formalism.MainNotions.LiftingTheory.qp W ^ (b i + η) • x = (Formalism.MainNotions.LiftingTheory.qp W ^ η * Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂) • la`. Rewrite using `[pow_add, mul_comm (Formalism.MainNotions.LiftingTheory.qp W ^ b i), mul_smul, hxe, mul_smul]`. Take `⟨hneg, hcoef⟩` from `hTH hA hl 2 1 (2 * H) σ hTC T₂ hT (i - 2) y la hy hyI htr ζ (η + 2 * H) η (Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂) hk (Or.inl ⟨hζ, rfl⟩)`.
+
+Establish `e2 : i - 2 + ((2 : ℕ) : ZMod n) = i` using `by push_cast; ring`. Rewrite `hneg`, `hcoef` using `[e2]`. Use `set c0 : TensorProduct Qp T₂.V BdR := (PD.p : LL) ^ σ • ιV PD (LL := LL) (V := T₂.V) ((φVB PD (LL := LL) (V := T₂.V))^[2] (W.cmp T₂ ⟨y, hy⟩)) with hc0`. Establish `hlevk : W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ η * Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂) = PowerSeries.X ^ η * (u ^ η * W.lev i ζ (Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂))`. Rewrite using `[map_mul, map_pow (W.lev i ζ) (Formalism.MainNotions.LiftingTheory.qp W) η, hlq, mul_pow, mul_comm (u ^ η), mul_assoc]`.
+
+Establish `hc00 : ∀ r : ℕ, r < η → PowerSeries.coeff r (W.lev i ζ (Formalism.MainNotions.LiftingTheory.qp W ^ η * Formalism.MainNotions.LiftingTheory.pk W 1 ^ h₂)) = 0`. Introduce `r hr`. Rewrite using `[hlevk, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Establish `hg : ∀ k : ℤ, smulS (u ^ (b i + η)) dx k ∈ lemGAx_F (R` using `LL) (b i : ℤ) (((2 * H : ℕ) : ℤ) - (b i : ℤ)) c0 k := by`. Introduce `k`.
+
+Rewrite using `[hsh, hmm]`. Unfold `lemGAx_F`. Distinguish the cases in `hk0 : k + ((b i + η : ℕ) : ℤ) < 0`. Apply the tactic sequence `rw [hneg _ hk0] split_ifs <;> exact Submodule.zero_mem _`. Take `⟨r, hr⟩ : ∃ r : ℕ, k + ((b i + η : ℕ) : ℤ) = r` from `⟨(k + ((b i + η : ℕ) : ℤ)).toNat, by omega⟩`.
+
+Rewrite using `[hr]`. Move the coercions through the operations in `at hr`. Use `split_ifs with h1 h2`. Rewrite using `[hcoef r (by omega), hc00 r (by omega), zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Rewrite using `[hcoef r (by push_cast at h2; omega)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Discharge the goal by the elementary cases of `trivial`. Establish `hF` using `Formalism.MainNotions.UnusedSlot80.LevR.laurent_div (lemGAx_F (R := LL) (b i : ℤ) (((2 * H : ℕ) : ℤ) - (b i : ℤ)) c0) (lemGAx_F_mono _ _ _) hm₀ (u ^ (b i + η)) (by rw [map_pow]; exact pow_ne_zero _ hu0) hg`. Establish `hcy : W.cmp T₂ ⟨y, hy⟩ ∈ DcrisL PD T₂.ρ (W.emb (i - 2))`.
+
+Establish `h` using `W.cmp_letter T₂ (i - 2) ⟨y, hy⟩`. Establish `e : ((letE (i - 2) : LetA O n) • (⟨y, hy⟩ : ↥(W.N T₂))) = ⟨y, hy⟩` using `Subtype.ext hyD.1`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hφy : (φVB PD (LL` using `LL) (V := T₂.V))^[2] (W.cmp T₂ ⟨y, hy⟩) ∈ DcrisL PD T₂.ρ (W.emb i) := by`. Establish `h` using `Formalism.MainNotions.UnusedSlot80.UnivC.φVB_pow_letter W T₂ (i - 2) 2 hcy`.
+
+Rewrite `h` using `[e2, Module.End.pow_apply]`. Then use the resulting hypothesis. Establish `hc0mem : ∀ k : ℤ, -(b i : ℤ) ≤ k → c0 ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ i ⊓ FilV PD (LL` using `LL) (V := T₂.V) (-k) := by`. Introduce `k hk`. Use `Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ ⟨_, hφy, rfl⟩, Submodule.smul_mem _ _ ?_⟩` and prove the remaining obligations. Establish `hF0 : ιV PD (LL` using `LL) (V := T₂.V) ((φVB PD (LL := LL) (V := T₂.V))^[2] (W.cmp T₂ ⟨y, hy⟩)) ∈ FilV PD (LL := LL) (V := T₂.V) (b i : ℤ) := (Submodule.mem_inf.1 hFil).2`.
+
+Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.filV_anti (PD := PD) (show -k ≤ (b i : ℤ) by omega) hF0`. Use `set τ := Formalism.MainNotions.N.Pv.LocalLengthBound.tauOf W hA.1 i with hτ`. Establish `hover : Formalism.MainNotions.DeltaInvariantLattices.OverLetter W τ i`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `c`.
+
+Rewrite using `[AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Conclude with `Formalism.MainNotions.N.Pv.LocalLengthBound.tauOf_over W hA.1 i c`. Establish `hjump : ∀ a, IsJumpV PD T₂.ρ τ a → -(η : ℤ) ≤ a`. Introduce `a ha`. Use `(hJ2 τ i hover a ha).1` as an intermediate fact.
+
+Rewrite `this` using `[hMi]`. Then use the resulting hypothesis. Establish `hDi : Formalism.MainNotions.DeltaInvariantLattices.ιDi W T₂ i ≤ FilV PD (LL` using `LL) (V := T₂.V) (-(η : ℤ)) := by`. Introduce `z hz`. Establish `h1` using `Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le W T₂ i τ (Formalism.MainNotions.N.Pv.LocalLengthBound.tauOf_over W hA.1 i) hA.1.2 hz`. Rewrite `h1` using `[← Formalism.MainNotions.UnusedSlot80.UnivF.fildR_eq_top_of (PD := PD) (ρ := T₂.ρ) τ (-(η : ℤ)) hjump]`.
+
+Conclude with `(Submodule.mem_inf.1 h1).2`. Establish `hxN : x ∈ W.N T₂`. Use `((hEC hA T₂ hT i ζ hζ x dx hxD hdx).1 ⟨b i + η, hmx⟩).2 fun k => ?_` and prove the remaining obligations. Establish `hk` using `hF k`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.LevR.filLev_zero W T₂ i (-k)]`.
+
+Unfold `lemGAx_F at hk`. Use `split_ifs at hk with h1 h2`. Rewrite using `[(Submodule.mem_bot LL).1 hk]`. Conclude with `Submodule.zero_mem _`. Conclude with `(Submodule.span_le.2 (Set.singleton_subset_iff.2 (hc0mem k (by omega)))) hk`.
+
+Use `Submodule.mem_inf.2 ⟨(hEU hA T₂ hT i ζ hζ).2.1 x dx hxD hdx k, ?_⟩` and prove the remaining obligations. Use `Formalism.MainNotions.UnusedSlot80.LevR.filV_anti (PD := PD) (show -k ≤ -(η : ℤ) by push_cast at h2; omega) (hDi ((hEU hA T₂ hT i ζ hζ).2.1 x dx hxD hdx k))` and prove the remaining obligations. Conclude with `⟨x, hxN, hxD, hxe⟩`.
+-/
 theorem lemGA_x_of [NeZero n] (W : LocWach PD LL O v n)
     (hER : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing W) (hEU : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRules W)
     (hEC : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpCrit W) (hTH : Formalism.MainNotions.CrystallineLiftingInputs.THor W)

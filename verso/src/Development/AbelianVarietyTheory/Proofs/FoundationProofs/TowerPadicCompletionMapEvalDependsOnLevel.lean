@@ -8,6 +8,11 @@ namespace GlobalTheory.KZ.LevelRed
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Establish `key : ∀ z : ℤ, ((z : ZMod M0).cast : ZMod M) = z` using `ZMod.cast_intCast h`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← key, h1, ZMod.cast_one h]`. Rewrite using `[← key, h2, ZMod.cast_zero]`. Rewrite using `[← key, h3, ZMod.cast_zero]`. Rewrite using `[← key, h4, ZMod.cast_one h]`.
+-/
 theorem _root_.GlobalTheory.KZ.LevelRed.gamma_le_of_dvd {M M0 : ℕ} (h : M ∣ M0) :
     CongruenceSubgroup.Gamma M0 ≤ CongruenceSubgroup.Gamma M := by
   intro γ hγ
@@ -31,6 +36,13 @@ namespace GlobalTheory.KZ
 
 open scoped MatrixGroups TensorProduct in
 open Matrix in
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, fun φ ψ _ => by simp⟩`. Consider the case `tmul c u`. Take `⟨M, hM, hfix⟩` from `X.level ((Additive.toMul u : X.Kˣ) : X.K)`. Use `⟨M, hM, fun φ ψ h => ?_⟩` and prove the remaining obligations.
+
+Establish `hu : Units.map φ.toMonoidHom (Additive.toMul u) = Units.map ψ.toMonoidHom (Additive.toMul u)` using `Units.ext (by simpa using h _ hfix)`. Simplify using `only [LinearMap.baseChange_tmul]`. Use `congr 1`. Consider the case `add x y hx hy`. Take `⟨M1, hM1, h1⟩` from `hx`.
+
+Take `⟨M2, hM2, h2⟩` from `hy`. Use `⟨M1 * M2, Nat.mul_pos hM1 hM2, fun φ ψ h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, h1 φ ψ fun f hf => h f fun γ hγ => hf γ (_root_.GlobalTheory.KZ.LevelRed.gamma_le_of_dvd (dvd_mul_right M1 M2) hγ), h2 φ ψ fun f hf => h f fun γ hγ => hf γ (_root_.GlobalTheory.KZ.LevelRed.gamma_le_of_dvd (dvd_mul_left M2 M1) hγ)]`.
+-/
 private lemma exists_level_bc_eq_of_agree_on_level {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
     (X : _root_.GlobalTheory.KZ.Tower Ω ε) (l : ℕ) [Fact l.Prime] (m : X.Kl l) :
     ∃ M0 : ℕ, 0 < M0 ∧ ∀ φ ψ : X.K ≃+* X.K,
@@ -58,6 +70,11 @@ private lemma exists_level_bc_eq_of_agree_on_level {Ω : Type} [Field Ω] [Algeb
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X l _ a n`. Take `⟨m, hm⟩` from `Submodule.Quotient.mk_surjective _ (a.1 n)`. Take `⟨M0, hM0, hlev⟩` from `exists_level_bc_eq_of_agree_on_level X l m`. Use `⟨M0, hM0, fun φ ψ h => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.KZ.Tower.kmap`.
+
+Simplify using `only [LinearMap.coe_restrictScalars, AdicCompletion.map_val_apply, AdicCompletion.eval_apply]`. Rewrite using `[← hm]`. Simplify using `only [LinearMap.reduceModIdeal_apply]`. Conclude with `congrArg _ (hlev φ ψ h)`.
+-/
 theorem _root_.GlobalTheory.KZ.Tower.eval_kmap_levelRed : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (l : ℕ) [Fact l.Prime] (a : X.Khat l) (n : ℕ), ∃ M0 : ℕ, 0 < M0 ∧ ∀ φ ψ : X.K ≃+* X.K, (∀ f : X.K, (∀ γ ∈ CongruenceSubgroup.Gamma M0, X.sl (_root_.GlobalTheory.KZ.ofSL γ) f = f) → φ f = ψ f) → AdicCompletion.eval (_root_.GlobalTheory.KZ.idl l) (X.Kl l) n (X.kmap l φ a) = AdicCompletion.eval (_root_.GlobalTheory.KZ.idl l) (X.Kl l) n (X.kmap l ψ a) := by
   intro Ω _ _ ε X l _ a n
   obtain ⟨m, hm⟩ := Submodule.Quotient.mk_surjective _ (a.1 n)

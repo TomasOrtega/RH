@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.LeafSurj0Pf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut
 
+/- English proof (translation)
+Use `choose Z f hx hP using h`. Use `⟨Sieve.ofArrows Z f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.ofArrows_mem_smallEtaleTopology_iff]`. Conclude with `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ⟨x, hx x⟩`. Introduce and unpack `U' a ⟨Y, b, g, ⟨j⟩, rfl⟩`.
+
+Conclude with `hP j U' b`.
+-/
 theorem cov_of_points {B : Scheme.{0}} (U : B.Etale) (P : ∀ U' : B.Etale, (U' ⟶ U) → Prop)
     (h : ∀ x : U.left, ∃ (U' : B.Etale) (a : U' ⟶ U), x ∈ Set.range a.left ∧
       ∀ (U'' : B.Etale) (b : U'' ⟶ U'), P U'' (b ≫ a)) : Cov U P := by
@@ -31,6 +36,11 @@ def LeafSurj0V : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k],
     ∀ (U'' : B.Etale) (b : U'' ⟶ U'), ∃ c : Hrel (ZMod q) (sch.map (prB ι U'')) (tw q i) 0,
       bY q i (g2 ≫ g1 ≫ p) ι U'' 0 c = rY q i (g2 ≫ g1 ≫ p) ι (b ≫ a) 0 y
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hVW p g1 g2 h0 h1 h2 hS U y`. Use `cov_of_points U _ fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : U.hom x ∈ V`. Conclude with `hV hy q k hq i b ι V hVW p g1 g2 h0 h1 h2 hS U y x hx`. Establish `hxW : U.hom x ∈ Set.range ι`.
+
+Establish `: U.hom x ∉ (V : Set B)` using `hx`. Rewrite `this` using `[hVW]`. Simplify using `using this`. Take `⟨U', a, hxa, hz⟩` from `hW hy q k hq i b ι V hVW p g1 g2 h0 h1 h2 hS U y x hxW`. Conclude with `⟨U', a, hxa, fun U'' b' => ⟨0, by rw [map_zero, hz U'' b']⟩⟩`.
+-/
 theorem LeafSurj0_of (hW : LeafSurj0W) (hV : LeafSurj0V) : LateralTheory.E.LeafDegCut.LeafSurj0 := by
   intro hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hVW p g1 g2 h0 h1 h2 hS U y
   refine cov_of_points U _ fun x => ?_

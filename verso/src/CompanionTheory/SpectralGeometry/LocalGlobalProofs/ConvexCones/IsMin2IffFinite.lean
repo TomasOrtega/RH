@@ -10,6 +10,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan
 
+/- English proof (translation)
+Introduce `X _ m u y hu`. Take `⟨F, hF⟩` from `GlobalTheory.dickson_finite_below_every (ι := X) m fun x i => (u i (y + (x + x)) (y + (x + x))).toNat`. Use `⟨F, ?_⟩` and prove the remaining obligations. Introduce and unpack `B ⟨t, ht, rfl⟩`. Use `⟨fun h x _ => h x, fun h x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x', hx', hle⟩` from `hF x`. Use `(h x' hx').trans ?_` and prove the remaining obligations. Establish `hval : ∀ a : X, (∑ i, t i • toReal (u i)) a a = ∑ i, t i * (u i a a : ℝ)` using `fun a => by`. Simplify using `[LinearMap.sum_apply]`. Simplify using `only [hval]`.
+
+Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (ht i)` and prove the remaining obligations. Establish `h1` using `hle i`. Establish `h2` using `hu i (y + (x' + x'))`. Establish `h3` using `hu i (y + (x + x))`. Simplify using `only at h1`.
+
+Conclude with `(by omega : u i (y + (x' + x')) (y + (x' + x')) ≤ u i (y + (x + x)) (y + (x + x)))` after adjusting the coercions.
+-/
 theorem isMin2_iff_finite : ∀ (X : Type) [AddCommGroup X] (m : ℕ) (u : Fin m → LinearMap.BilinForm ℤ X) (y : X),
     (∀ i x, 0 ≤ u i x x) → ∃ F : Finset X, ∀ B ∈ rcone u,
       (IsMin2 B y ↔ ∀ x ∈ F, B y y ≤ B (y + (x + x)) (y + (x + x))) := by

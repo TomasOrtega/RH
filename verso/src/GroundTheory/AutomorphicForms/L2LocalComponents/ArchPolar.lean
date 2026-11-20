@@ -15,6 +15,19 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 open Reduction in
 
+/- English proof (translation)
+Use `show infEmb K n x ∈ Reduction.maxCompact (K := K) (n := n)`. Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Introduce `y`. Distinguish the cases in `hw : w.IsReal`. Use `set ψ := InfinitePlace.Completion.extensionEmbeddingOfIsReal hw`.
+
+Establish `hψ : ∀ z, ‖ψ z‖ = ‖z‖` using `fun z => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) z`. Establish `hU` using `hr ⟨w, hw⟩`. Rewrite using `[← euclidNorm_map ψ hψ, ← euclidNorm_map ψ hψ y]`. Establish `e : (fun i => ψ ((y ᵥ* (infAt w (infEmb K n x) : Matrix (Fin n) (Fin n) w.Completion)) i)) = (fun i => ψ (y i)) ᵥ* realCompM ⟨w, hw⟩ ((x : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Use extensionality with `j`.
+
+Simplify using `only [vecMul, dotProduct, map_sum, map_mul, realCompM_apply, Matrix.map_apply, realComp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[infAt_infEmb_apply, extensionEmbeddingOfIsReal_symm]`. Rewrite using `[e, euclidNorm_vecMul_unitary hU]`. Establish `hcw` using `InfinitePlace.not_isReal_iff_isComplex.1 hw set ψ := InfinitePlace.Completion.extensionEmbedding w`.
+
+Establish `hψ : ∀ z, ‖ψ z‖ = ‖z‖` using `fun z => (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) z`. Establish `hU` using `hc ⟨w, hcw⟩`. Rewrite using `[← euclidNorm_map ψ hψ, ← euclidNorm_map ψ hψ y]`. Establish `e : (fun i => ψ ((y ᵥ* (infAt w (infEmb K n x) : Matrix (Fin n) (Fin n) w.Completion)) i)) = (fun i => ψ (y i)) ᵥ* complexCompM ⟨w, hcw⟩ ((x : (ArchMatrix K n)ˣ) : ArchMatrix K n)`. Use extensionality with `j`.
+
+Simplify using `only [vecMul, dotProduct, map_sum, map_mul, complexCompM_apply, Matrix.map_apply, complexComp_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[infAt_infEmb_apply, extensionEmbedding_symm _ hcw]`. Rewrite using `[e, euclidNorm_vecMul_unitary hU]`. Establish `: finAt v (infEmb K n x) = 1` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (infEmb K n x)).2) v = 1`.
+
+Rewrite using `[prodEquiv_infEmb, map_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `one_mem _`.
+-/
 theorem mem_archCompact_of_unitary (x : archGroup K n)
     (hr : ∀ v : {w : InfinitePlace K // IsReal w},
       realCompM v ((x : (ArchMatrix K n)ˣ) : ArchMatrix K n) ∈ unitaryGroup (Fin n) ℝ)
@@ -68,12 +81,18 @@ def archMatOfComps (Yr : {w : InfinitePlace K // IsReal w} → Matrix (Fin n) (F
   show Matrix (Fin n) (Fin n) (mixedSpace K) from
     Matrix.of fun i j => ((fun v => Yr v i j), (fun v => Yc v i j))
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 @[simp] theorem realCompM_archMatOfComps (Yr : {w : InfinitePlace K // IsReal w} → Matrix (Fin n) (Fin n) ℝ)
     (Yc : {w : InfinitePlace K // IsComplex w} → Matrix (Fin n) (Fin n) ℂ)
     (v : {w : InfinitePlace K // IsReal w}) : realCompM v (archMatOfComps Yr Yc) = Yr v := by
   ext i j
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 @[simp] theorem complexCompM_archMatOfComps
     (Yr : {w : InfinitePlace K // IsReal w} → Matrix (Fin n) (Fin n) ℝ)
     (Yc : {w : InfinitePlace K // IsComplex w} → Matrix (Fin n) (Fin n) ℂ)
@@ -81,6 +100,23 @@ def archMatOfComps (Yr : {w : InfinitePlace K // IsReal w} → Matrix (Fin n) (F
   ext i j
   rfl
 
+/- English proof (translation)
+Use `set A : (ArchMatrix K n)ˣ := (a : (ArchMatrix K n)ˣ)`. Use `set gr : ∀ v : {w : InfinitePlace K // IsReal w}, GL (Fin n) ℝ := fun v => Units.map (realCompM (n := n) v).toMonoidHom A`. Use `set gc : ∀ v : {w : InfinitePlace K // IsComplex w}, GL (Fin n) ℂ := fun v => Units.map (complexCompM (n := n) v).toMonoidHom A`. Use `set kr := fun v => polarExpHomeomorphReal.symm (gr v)`. Use `set kc := fun v => polarExpHomeomorphComplex.symm (gc v)`.
+
+Establish `hr : ∀ v, ((gr v : GL (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ) = ((kr v).1 : Matrix (Fin n) (Fin n) ℝ) * NormedSpace.exp (kr v).2.1` using `fun v => by`. Rewrite using `[← coe_polarExpHomeomorphReal_apply, Homeomorph.apply_symm_apply]`. Establish `hc : ∀ v, ((gc v : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = ((kc v).1 : Matrix (Fin n) (Fin n) ℂ) * NormedSpace.exp (kc v).2.1` using `fun v => by`. Rewrite using `[← coe_polarExpHomeomorphComplex_apply, Homeomorph.apply_symm_apply]`. Use `set Y : archLie K n := ⟨archMatOfComps (fun v => (kr v).2.1) (fun v => (kc v).2.1), Submodule.mem_top⟩`.
+
+Use `set E := (isExpLieAlgebra K n).expG Y`. Establish `hE : ((E : (ArchMatrix K n)ˣ) : ArchMatrix K n) = NormedSpace.exp (Y : ArchMatrix K n)` using `IsExpLieAlgebra.coe_expG _ Y`. Use `⟨a * E⁻¹, ?_, Y, (inv_mul_cancel_right a E).symm⟩` and prove the remaining obligations. Apply `mem_archCompact_of_unitary` to reduce the goal to its premises. Introduce `v`.
+
+Establish `e1 : realCompM v (((a * E⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) = ((gr v : GL (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ) * ((Units.map (realCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ))⁻¹ : GL (Fin n) ℝ) := by`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, map_mul]`. Both sides reduce to the same expression. Establish `e2 : ((Units.map (realCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ) : GL (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ) = NormedSpace.exp (kr v).2.1 := by show realCompM v ((E : (ArchMatrix K n)ˣ) : ArchMatrix K n) = _`. Rewrite using `[hE, realCompM_exp]`.
+
+Conclude with `congrArg _ (realCompM_archMatOfComps _ _ v)`. Rewrite using `[e1, hr]`. Establish `e3 : ((kr v).1 : Matrix (Fin n) (Fin n) ℝ) * NormedSpace.exp (kr v).2.1 * (((Units.map (realCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ))⁻¹ : GL (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ) = (kr v).1 := by`. Rewrite using `[← e2, Units.mul_inv_cancel_right]`. Rewrite using `[e3]`.
+
+Conclude with `(kr v).1.2`. Introduce `v`. Establish `e1 : complexCompM v (((a * E⁻¹ : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) = ((gc v : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) * ((Units.map (complexCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ))⁻¹ : GL (Fin n) ℂ) := by`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, map_mul]`. Both sides reduce to the same expression.
+
+Establish `e2 : ((Units.map (complexCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ) : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = NormedSpace.exp (kc v).2.1 := by show complexCompM v ((E : (ArchMatrix K n)ˣ) : ArchMatrix K n) = _`. Rewrite using `[hE, complexCompM_exp]`. Conclude with `congrArg _ (complexCompM_archMatOfComps _ _ v)`. Rewrite using `[e1, hc]`. Establish `e3 : ((kc v).1 : Matrix (Fin n) (Fin n) ℂ) * NormedSpace.exp (kc v).2.1 * (((Units.map (complexCompM (n` using `n) v).toMonoidHom (E : (ArchMatrix K n)ˣ))⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = (kc v).1 := by`.
+
+Rewrite using `[← e2, Units.mul_inv_cancel_right]`. Rewrite using `[e3]`. Conclude with `(kc v).1.2`.
+-/
 theorem exists_mem_archCompact_mul_expG (a : archGroup K n) :
     ∃ k ∈ archCompact K n, ∃ Y : archLie K n, a = k * (isExpLieAlgebra K n).expG Y := by
   set A : (ArchMatrix K n)ˣ := (a : (ArchMatrix K n)ˣ)

@@ -14,6 +14,11 @@ open GlobalTheory.SymConst
 
 def GaussSign (D : D7) : Prop := ∀ (M : Type) [AddCommGroup M] [Module (𝓞 D.host.E) M] [Finite M] (φ : M → ℂ) (β : M → M → ℂ), (∀ x, φ x ≠ 0) → (∀ x y, φ (x + y) = φ x * φ y * β x y) → (∀ x x' y, β (x + x') y = β x y * β x' y) → (∀ (a : 𝓞 D.host.E) x y, β (a • x) y = β x (GlobalTheory.InertSign.sgO D a • y)) → (∀ x, (∀ y, β x y = 1) → x = 0) → (∀ x, ∃ χ : 𝓞 D.host.E → ℂ, (∀ a b, χ (a + b) = χ a * χ b) ∧ ∀ a, φ (a • x) = χ (a * GlobalTheory.InertSign.sgO D a)) → ∃ r : ℝ, 0 < r ∧ ∑ᶠ x, φ x = sgn D (Nat.card M) * (r : ℂ)
 
+/- English proof (translation)
+Use `haveI : Finite K := Finite.of_surjective p hp`. Use `letI := Fintype.ofFinite G`. Use `letI := Fintype.ofFinite K`. Use `⟨(Finset.univ.filter fun g => p g = 0).card, Finset.card_pos.2 ⟨0, by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum, ← Finset.sum_fiberwise (s := Finset.univ) (g := fun g => p g)]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f k) (fun g hg => by rw [(Finset.mem_filter.1 hg).2]), Finset.sum_const, nsmul_eq_mul, AddMonoidHom.card_fiber_eq_of_mem_range p (hp k) (hp 0)]`.
+-/
 theorem finsum_comp_surj {G K : Type} [AddCommGroup G] [AddCommGroup K] [Finite G] (p : G →+ K)
     (hp : Function.Surjective p) (f : K → ℂ) :
     ∃ n : ℕ, 0 < n ∧ ∑ᶠ g, f (p g) = n * ∑ᶠ k, f k := by
@@ -27,6 +32,25 @@ theorem finsum_comp_surj {G K : Type} [AddCommGroup G] [AddCommGroup K] [Finite 
   rw [Finset.sum_congr rfl (g := fun _ => f k) (fun g hg => by rw [(Finset.mem_filter.1 hg).2]),
     Finset.sum_const, nsmul_eq_mul, AddMonoidHom.card_fiber_eq_of_mem_range p (hp k) (hp 0)]
 
+/- English proof (translation)
+Establish `hcongr : ∀ x y : M, R.mkQ x = R.mkQ y → φ x = φ y` using `fun x y h => by`. Use `hper y (x - y) ((Submodule.Quotient.eq R).1 h)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨o, ho⟩` from `(R.mkQ_surjective).hasRightInverse`. Establish `e1 : ∀ x, φ (o (R.mkQ x)) = φ x` using `fun x => hcongr _ _ (ho _)`.
+
+Establish `e2 : ∀ x y, β (o (R.mkQ x)) (o (R.mkQ y)) = β x y` using `fun x y => by`. Establish `h1` using `hadd (o (R.mkQ x)) (o (R.mkQ y))`. Rewrite `h1` using `[e1, e1, hcongr _ (x + y) (by rw [map_add, map_add, ho, ho]), hadd]`. Conclude with `(mul_left_cancel₀ (mul_ne_zero (h0 x) (h0 y)) h1).symm`. Set `p : M ⧸ N →+ M ⧸ R` to `QuotientAddGroup.lift N R.mkQ.toAddMonoidHom fun x hx => (Submodule.Quotient.mk_eq_zero R).2 (hNR hx)`.
+
+Establish `hp0 : ∀ x : M, p (x : M ⧸ N) = R.mkQ x` using `fun x => rfl`. Establish `hp : Function.Surjective p` using `fun k => ⟨(o k : M ⧸ N), (hp0 _).trans (ho k)⟩`. Use `haveI : Finite (M ⧸ R) := Finite.of_surjective p hp`. Take `⟨r, hr, hs⟩` from `hG (M ⧸ R) (fun k => φ (o k)) (fun k l => β (o k) (o l)) (fun _ => h0 _) (fun k l => by`. Take `⟨x, rfl⟩` from `R.mkQ_surjective k`.
+
+Take `⟨y, rfl⟩` from `R.mkQ_surjective l`. Rewrite using `[← map_add, e1, e1, e1, e2, hadd])`. Use the proof step `(fun k k' l => by`. Take `⟨x, rfl⟩` from `R.mkQ_surjective k`. Take `⟨x', rfl⟩` from `R.mkQ_surjective k'`.
+
+Take `⟨y, rfl⟩` from `R.mkQ_surjective l`. Rewrite using `[← map_add, e2, e2, e2, hβ])`. Use the proof step `(fun a k l => by`. Take `⟨x, rfl⟩` from `R.mkQ_surjective k`. Take `⟨y, rfl⟩` from `R.mkQ_surjective l`.
+
+Rewrite using `[← map_smul, ← map_smul, e2, e2, hσ])`. Use the proof step `(fun k hk => by`. Take `⟨x, rfl⟩` from `R.mkQ_surjective k`. Conclude with `(Submodule.Quotient.mk_eq_zero R).2 (hrad x fun y => by rw [← e2]; exact hk _))`. Use the proof step `(fun k => by`.
+
+Take `⟨x, rfl⟩` from `R.mkQ_surjective k`. Take `⟨χ, h1, h2⟩` from `hχ x`. Conclude with `⟨χ, h1, fun a => by rw [← map_smul, e1, h2]⟩)`. Take `⟨n, hn, hsum⟩` from `finsum_comp_surj p hp fun k => φ (o k)`. Use `⟨n * r, by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `e3 : ∀ q : M ⧸ N, φ q.out = φ (o (p q))` using `fun q => by conv_rhs => rw [← QuotientAddGroup.out_eq' q, hp0, e1]`. Simplify using `only [e3]`. Rewrite using `[hsum, hs]`. Establish `: Nat.card (M ⧸ R) = R.toAddSubgroup.index` using `rfl`. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_quot (D : D7) (hG : GaussSign D) (M : Type) [AddCommGroup M] [Module (𝓞 D.host.E) M] (R : Submodule (𝓞 D.host.E) M)
     (N : AddSubgroup M) [Finite (M ⧸ N)] (hNR : N ≤ R.toAddSubgroup) (φ : M → ℂ) (β : M → M → ℂ)
     (h0 : ∀ x, φ x ≠ 0) (hadd : ∀ x y, φ (x + y) = φ x * φ y * β x y)
@@ -82,6 +106,57 @@ theorem gauss_quot (D : D7) (hG : GaussSign D) (M : Type) [AddCommGroup M] [Modu
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hcomm : ∀ b x, C (T b x) = T b (C x)`. Introduce `b x`. Take `⟨z, rfl⟩` from `hsurj x`. Rewrite using `[hC, map_sub, hTc, hC, map_smul, map_add, hTc]`. Establish `hskew : ∀ x y, H (C x) y = -H x (C y)`.
+
+Introduce `x y`. Take `⟨z, rfl⟩` from `hsurj x`. Take `⟨w, rfl⟩` from `hsurj y`. Rewrite using `[hC, hC]`. Simplify using `[ha, Complex.conj_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `him : ∀ x y, (H y x).im = -(H x y).im` using `fun x y => by rw [hH x y]; simp`. Establish `hre : ∀ x y, (H y x).re = (H x y).re` using `fun x y => by rw [hH x y]; simp`. Establish `him0 : ∀ x, (H x x).im = 0` using `fun x => by have := him x x; linarith`. Establish `hCim : ∀ x y, (H (C x) y).im = (H (C y) x).im` using `fun x y => by`.
+
+Rewrite using `[hskew x y, him x (C y)]`. Simplify using the standard rewrite rules. Establish `hCre : ∀ x, (H (C x) x).re = 0` using `fun x => by`. Establish `h1` using `congrArg Complex.re (hskew x x)`. Rewrite `h1` using `[Complex.neg_re, hre (C x) x]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : ∀ w : A, w ∈ (subLa m A).addSubgroupOf A ↔ ∃ v ∈ A, m • v = (w : V)` using `fun w => by`. Simplify using `[AddSubgroup.mem_addSubgroupOf, subLa]`. Use `haveI : AddGroup.FG A := (AddGroup.fg_iff_addSubgroup_fg A).2 hFG`. Use `haveI : Finite (A ⧸ (subLa m A).addSubgroupOf A) := by`.
+
+Use `AddCommGroup.finite_of_fg_torsion _ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨m, hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, hmem]`.
+
+Conclude with `⟨x, x.2, rfl⟩`. Set `ψ : V → ℝ` to `fun x => s * (H x x).re - (H (C x) x).im`. Establish `hφ : ∀ x : A, (-1 : ℂ) ^ (round (s * (H (x : V) (x : V)).re)) * Complex.exp (-(Real.pi : ℂ) * H (C (x : V)) (x : V)) = ex (ψ x)`. Introduce `x`. Take `⟨n, hn⟩` from `hq x x.2`.
+
+Simplify using `only [ψ]`. Rewrite using `[hn, round_intCast, sub_eq_add_neg, ex_add, ex_int, ex]`. Use `congr 2`. Rewrite using `[← Complex.re_add_im (H (C x) x), hCre]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hφ]`. Use `letI : Module (𝓞 D.host.E) A := { smul := fun b x => ⟨T b x, hTA b x x.2⟩ one_smul := fun x => Subtype.ext (hT1 x) mul_smul := fun b c x => Subtype.ext (hTm b c x) smul_zero := fun b => Subtype.ext (map_zero (T b)) smul_add := fun b x y => Subtype.ext (map_add (T b) (x : V) (y : …`. Establish `hsm : ∀ (b : 𝓞 D.host.E) (x : A), ((b • x : A) : V) = T b x` using `fun _ _ => rfl`. Establish `hR0 : ∀ w : A, w ∈ (A.map (LinearMap.id - a : V →ₗ[ℂ] V).toAddMonoidHom).addSubgroupOf A ↔ ∃ y ∈ A, y - a y = (w : V)` using `fun w => by`.
+
+Simplify using `[AddSubgroup.mem_addSubgroupOf]`. Set `R : Submodule (𝓞 D.host.E) A` to `{ (A.map (LinearMap.id - a : V →ₗ[ℂ] V).toAddMonoidHom).addSubgroupOf A with smul_mem' := fun b w hw => by`. Take `⟨y, hy, hyw⟩` from `(hR0 w).1 hw`. Conclude with `(hR0 _).2 ⟨T b y, hTA b y hy, by rw [hsm, ← hyw, map_sub, hTc]⟩ }`. Establish `e6 : ∀ x w, (H (C (x + w)) (x + w)).im = (H (C x) x).im + (H (C w) w).im + 2 * (H (C x) w).im` using `fun x w => by`.
+
+Use `hCim x w` as an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use `gauss_quot D hG A R _ ?_ (fun x : A => ex (ψ x)) (fun x y : A => ex (-(H x y).im - 2 * (H (C x) y).im)) (fun x => Complex.exp_ne_zero _) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `w hw`.
+
+Take `⟨v, hv, hvw⟩` from `(hmem w).1 hw`. Take `⟨y, hy, -, hyv⟩` from `hm v hv`. Conclude with `(hR0 w).2 ⟨y, hy, hyv.symm.trans hvw⟩`. Introduce `x y`. Take `⟨k, hk⟩` from `hsemi x x.2 y y.2`.
+
+Rewrite using `[← ex_add, ← ex_add]`. Use `ex_congr k ?_` and prove the remaining obligations. Simplify using `only [ψ, AddSubgroup.coe_add]`. Rewrite using `[hk, e6]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `x x' y`. Rewrite using `[← ex_add]`. Use `congr 1`. Simplify using `only [AddSubgroup.coe_add, map_add, LinearMap.add_apply, Complex.add_im]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `b x y`. Simplify using `only [hsm, hcomm, hTH]`. Introduce `x hx`. Take `⟨z, hz⟩` from `hsurj x`. Use `(hR0 x).2 ⟨z, hsd z fun y hy => ?_, hz.symm⟩` and prove the remaining obligations.
+
+Establish `h1` using `hx ⟨y, hy⟩`. Establish `h2 : ex 0 = 1` using `by simp [ex]`. Take `⟨k, hk⟩` from `ex_eq (h1.trans h2.symm)`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[hz, hC]`.
+
+Simplify using `at hk`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x w hw`. Take `⟨y, hy, hw'⟩` from `(hR0 w).1 hw`.
+
+Use `replace hw' := hw'.symm`. Establish `hay : a y ∈ A`. Use `sub_mem hy w.2` as an intermediate fact. Rewrite `this` using `[hw', sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨k1, h1⟩` from `hsemi x x.2 w w.2`.
+
+Take `⟨k2, h2⟩` from `hsemi w w.2 _ hay`. Take `⟨k3, h3⟩` from `hint x x.2 y hy`. Establish `e1 : (w : V) + a y = y` using `by rw [hw']; abel`. Rewrite `h2` using `[e1, ha]`. Establish `e2 : (H (C w) x).im = -((H x y).im + (H x (a y)).im) / 2`.
+
+Rewrite using `[hw', hC, him y x, him (a y) x]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (H (C w) w).im = -(H y (a y)).im`. Use `him y (a y)` as an intermediate fact.
+
+Rewrite using `[hw', hC]`. Simplify using `[ha, him0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e4 : (H w (a y)).im = (H y (a y)).im` using `by rw [hw']; simp [him0]`. Establish `e5 : (H x w).im = (H x y).im - (H x (a y)).im` using `by rw [hw']; simp`.
+
+Establish `e7` using `e6 x w`. Establish `e8` using `hCim x w`. Take `⟨k4, h4⟩` from `hint x x.2 _ hay`. Take `⟨k5, h5⟩` from `hint y hy _ hay`. Use `ex_congr (k1 - k2 + k4 + k5) ?_` and prove the remaining obligations.
+
+Simplify using `only [ψ, AddSubgroup.coe_add]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x`. Use `⟨fun c => ex (s * (H x (T c x)).re - (H (C x) (T c x)).im), fun b c => ?_, fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ex_add]`. Use `congr 1`. Simplify using `only [hTa, map_add, Complex.add_im, Complex.add_re]`. Put the polynomial expressions in normal form. Simplify using `only [ψ, hsm, hcomm, hTH]`.
+
+Rewrite using `[mul_comm b, hTm]`.
+-/
 theorem gauss_sign (D : D7) (hG : GaussSign D) {V : Type} [AddCommGroup V] [Module ℂ V] (H : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (hH : ∀ x y, H y x = (starRingEnd ℂ) (H x y)) (s : ℝ) (A : AddSubgroup V) (hFG : A.FG)
     (hint : ∀ x ∈ A, ∀ y ∈ A, ∃ n : ℤ, (H x y).im = n)
@@ -228,11 +303,29 @@ theorem gauss_sign (D : D7) (hG : GaussSign D) {V : Type} [AddCommGroup V] [Modu
     · simp only [ψ, hsm, hcomm, hTH]
       rw [mul_comm b, hTm]
 
+/- English proof (translation)
+Simplify using `only [Hf, scal_apply, GlobalTheory.InertSign.embT_conj, map_mul, Complex.conj_conj]`. Simplify using `only [mul_assoc, mul_left_comm]`.
+-/
 theorem hf_scal {D : D7} {N N' : ℕ} (T : Tor D) (b : D.host.E) (x y : VC D N N') :
     Hf D T (scal D N N' b x) y = Hf D T x (scal D N N' (D.host.conj b) y) := by
   simp only [Hf, scal_apply, GlobalTheory.InertSign.embT_conj, map_mul, Complex.conj_conj]
   simp only [mul_assoc, mul_left_comm]
 
+/- English proof (translation)
+Introduce `D hG cc δ hc N N' A A₁ hA hA₁ u hu huA hdt ⟨m, hm0, hm⟩ hsA hsu th hth`. Distinguish the cases in `h0 : th = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `z`. Simplify using `[Iop, U]`.
+
+Take `⟨-, -, hint, hsd, hFG, -, hq⟩` from `ThetaLine.theta_line D (InducedType.induced_type D).1 cc δ hc N N' A hA`. Use `set a : VC D N N' →ₗ[ℂ] VC D N N' := (u.symm : VC D N N' →ₗ[ℂ] VC D N N') with ha`. Set `e` to `LinearMap.equivOfDetNeZero _ hdt`. Establish `he : ∀ x, e x = x - u.symm x` using `fun x => rfl`. Set `C : VC D N N' →ₗ[ℂ] VC D N N'` to `((1 / 2 : ℂ) • (LinearMap.id + a)) ∘ₗ (e.symm : VC D N N' →ₗ[ℂ] VC D N N')`.
+
+Establish `hC : ∀ x, C (x - u.symm x) = (1 / 2 : ℂ) • (x + u.symm x)` using `fun x => by`. Rewrite using `[← he]`. Simplify using `[C, ha]`. Establish `hcom : ∀ (b : D.host.E) x, scal D N N' b (a x) = a (scal D N N' b x)`. Introduce `b x`.
+
+Apply `u.injective` to reduce the goal to its premises. Rewrite using `[hsu]`. Simplify using `[ha]`. Take `⟨c, r, hc1, hr, hcr, hfin⟩` from `GlobalTheory.UnitaryTheta.Constant.pull_eq_gauss_smul_intertwiner D cc δ hc N N' A A₁ hA hA₁ u hu huA hdt C hC m hm0 hm th hth h0`. Take `⟨ρ, hρ, hsum⟩` from `gauss_sign D hG (hfL (tor0 D cc δ)) (hfL_swap _) (Real.sqrt D.host.d / 2) A hFG hint hsd hq (semi _ A hq th hth h0) a C (fun x y => by rw [hfL_apply, ← hu]; simp [ha, hfL_apply]) hC (fun x => ⟨e.symm x, (e.apply_symm_apply x).symm.trans (he _)⟩) m hm0 hm (fun b => scal D N N' (b …`.
+
+Use `set ε := sgn D ((A.map (LinearMap.id - a).toAddMonoidHom).relIndex A) with hε`. Establish `hε1 : ‖ε‖ = 1` using `by simp [hε, sgn]`. Establish `hcr' : c = r * (LinearMap.det (LinearMap.id - a))⁻¹ * (ε * ρ)` using `by rw [hcr, ← hsum]; rfl`. Rewrite using `[hfin]`. Use `congr 1`.
+
+Establish `hn : r * ρ = ‖LinearMap.det (LinearMap.id - a)‖`. Rewrite `hc1` using `[hcr']`. Simplify using `only [norm_mul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr, abs_of_pos hρ, hε1, one_mul] at hc1`. Use `norm_ne_zero_iff.2 hdt` as an intermediate fact. Clear denominators, using `at hc1` for the nonvanishing conditions.
+
+Conclude with `hc1`. Rewrite using `[hcr', ← hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_of_gaussSign : ∀ (D : D7) (_ : GaussSign D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (A A₁ : AddSubgroup (VC D N N')), KLat D (tor0 D cc δ) A → KLat D (tor0 D cc δ) A₁ → ∀ (u : VC D N N' ≃ₗ[ℂ] VC D N N'), (∀ z w, Hf D (tor0 D cc δ) (u z) (u w) = Hf D (tor0 D cc δ) z w) → (∀ x, x ∈ A ↔ u x ∈ A₁) → LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')) ≠ 0 → (∃ m : ℕ, 0 < m ∧ ∀ x ∈ A, ∃ y ∈ A, u.symm y ∈ A ∧ m • x = y - u.symm y) → (∀ (b : 𝓞 D.host.E), ∀ x ∈ A, scal D N N' (b : D.host.E) x ∈ A) → (∀ (b : D.host.E) x, u (scal D N N' b x) = scal D N N' b (u x)) → ∀ th ∈ ThSp D (tor0 D cc δ) A, (fun z => th (u.symm z)) = (sgn D ((A.map (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')).toAddMonoidHom).relIndex A) * ((‖LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N'))‖ : ℂ) / LinearMap.det (LinearMap.id - (u.symm : VC D N N' →ₗ[ℂ] VC D N N')))) • Iop D (tor0 D cc δ) A A₁ th := by
   intro D hG cc δ hc N N' A A₁ hA hA₁ u hu huA hdt ⟨m, hm0, hm⟩ hsA hsu th hth
   by_cases h0 : th = 0

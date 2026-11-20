@@ -15,10 +15,19 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
   (ρ0 : Set.Ioo (0 : ℝ) 1)
 
+/- English proof (translation)
+The claim follows from `ρ.2.1`.
+-/
 theorem rad_pos (ρ : Set.Ioc (0 : ℝ) ρ0) : 0 < (ρ : ℝ) := ρ.2.1
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_lt ρ.2.2 ρ0.2.2`.
+-/
 theorem rad_lt_one (ρ : Set.Ioc (0 : ℝ) ρ0) : (ρ : ℝ) < 1 := lt_of_le_of_lt ρ.2.2 ρ0.2.2
 
+/- English proof (translation)
+The claim follows from `convergesAt_of_le (T.coeffB_neg_exists _) b.2 ρ.2.1 ρ.2.2`.
+-/
 theorem convergesAt_rad (b : T.Econ ρ0) (ρ : Set.Ioc (0 : ℝ) ρ0) :
     ConvergesAt (T.coeffB b) ρ :=
   convergesAt_of_le (T.coeffB_neg_exists _) b.2 ρ.2.1 ρ.2.2
@@ -37,6 +46,9 @@ def gaussSeminorm (ρ : Set.Ioc (0 : ℝ) ρ0) : RingSeminorm (T.Econ ρ0) where
   mul_le' b c := le_of_eq (T.convergesAt_coeffB_mul (rad_pos ρ0 ρ) (rad_lt_one ρ0 ρ)
     (T.convergesAt_rad ρ0 b ρ) (T.convergesAt_rad ρ0 c ρ)).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gaussSeminorm_apply (ρ : Set.Ioc (0 : ℝ) ρ0) (b : T.Econ ρ0) :
     T.gaussSeminorm ρ0 ρ b = gaussNorm (T.coeffB b) ρ := rfl
 
@@ -62,6 +74,9 @@ instance instIsTopologicalRingEcon : IsTopologicalRing (T.Econ ρ0) := by
 
 abbrev RobbaExt := UniformSpace.Completion (T.Econ ρ0)
 
+/- English proof (translation)
+Use `uniformContinuous_iInf_dom (i := ρ) ?_` and prove the remaining obligations. Conclude with `@uniformContinuous_norm _ (T.gaussSeminorm ρ0 ρ).toAddGroupSeminorm.toSeminormedAddCommGroup.toSeminormedAddGroup`.
+-/
 theorem uniformContinuous_gaussNorm (ρ : Set.Ioc (0 : ℝ) ρ0) :
     UniformContinuous (fun b : T.Econ ρ0 => gaussNorm (T.coeffB b) ρ) := by
   refine uniformContinuous_iInf_dom (i := ρ) ?_
@@ -72,17 +87,29 @@ def extNorm (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) : ℝ :=
 
 variable {ρ0}
 
+/- English proof (translation)
+The claim follows from `Completion.extension_coe (T.uniformContinuous_gaussNorm ρ0 ρ) b`.
+-/
 theorem extNorm_coe (ρ : Set.Ioc (0 : ℝ) ρ0) (b : T.Econ ρ0) :
     T.extNorm ρ0 ρ b = gaussNorm (T.coeffB b) ρ :=
   Completion.extension_coe (T.uniformContinuous_gaussNorm ρ0 ρ) b
 
+/- English proof (translation)
+The claim follows from `Completion.continuous_extension`.
+-/
 theorem continuous_extNorm (ρ : Set.Ioc (0 : ℝ) ρ0) : Continuous (T.extNorm ρ0 ρ) :=
   Completion.continuous_extension
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_le continuous_const (T.continuous_extNorm ρ)) fun b => by rw [extNorm_coe]; exact gaussNorm_nonneg (rad_pos ρ0 ρ)`.
+-/
 theorem extNorm_nonneg (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) : 0 ≤ T.extNorm ρ0 ρ x :=
   Completion.induction_on x (isClosed_le continuous_const (T.continuous_extNorm ρ))
     fun b => by rw [extNorm_coe]; exact gaussNorm_nonneg (rad_pos ρ0 ρ)
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on₂ x y (isClosed_eq ((T.continuous_extNorm ρ).comp continuous_mul) (((T.continuous_extNorm ρ).comp continuous_fst).mul ((T.continuous_extNorm ρ).comp continuous_snd))) fun a b => by rw [← Completion.coe_mul, extNorm_coe, extNorm_coe, extNorm_coe] exact (T.co …`.
+-/
 theorem extNorm_mul (ρ : Set.Ioc (0 : ℝ) ρ0) (x y : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ (x * y) = T.extNorm ρ0 ρ x * T.extNorm ρ0 ρ y :=
   Completion.induction_on₂ x y
@@ -93,6 +120,9 @@ theorem extNorm_mul (ρ : Set.Ioc (0 : ℝ) ρ0) (x y : T.RobbaExt ρ0) :
       exact (T.convergesAt_coeffB_mul (rad_pos ρ0 ρ) (rad_lt_one ρ0 ρ) (T.convergesAt_rad ρ0 a ρ)
         (T.convergesAt_rad ρ0 b ρ)).2
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on₂ x y (isClosed_le ((T.continuous_extNorm ρ).comp continuous_add) (((T.continuous_extNorm ρ).comp continuous_fst).max ((T.continuous_extNorm ρ).comp continuous_snd))) fun a b => by rw [← Completion.coe_add, extNorm_coe, extNorm_coe, extNorm_coe] exact (T.co …`.
+-/
 theorem extNorm_add_le (ρ : Set.Ioc (0 : ℝ) ρ0) (x y : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ (x + y) ≤ max (T.extNorm ρ0 ρ x) (T.extNorm ρ0 ρ y) :=
   Completion.induction_on₂ x y
@@ -103,6 +133,9 @@ theorem extNorm_add_le (ρ : Set.Ioc (0 : ℝ) ρ0) (x y : T.RobbaExt ρ0) :
       exact (T.convergesAt_coeffB_add (rad_pos ρ0 ρ) (rad_lt_one ρ0 ρ) (T.convergesAt_rad ρ0 a ρ)
         (T.convergesAt_rad ρ0 b ρ)).2
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_eq ((T.continuous_extNorm ρ).comp continuous_neg) (T.continuous_extNorm ρ)) fun a => by rw [← Completion.coe_neg, extNorm_coe, extNorm_coe] exact (T.convergesAt_coeffB_neg (rad_pos ρ0 ρ) (rad_lt_one ρ0 ρ) (T.convergesAt_rad ρ0 a ρ)).2`.
+-/
 theorem extNorm_neg (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ (-x) = T.extNorm ρ0 ρ x :=
   Completion.induction_on x
@@ -111,10 +144,18 @@ theorem extNorm_neg (ρ : Set.Ioc (0 : ℝ) ρ0) (x : T.RobbaExt ρ0) :
       rw [← Completion.coe_neg, extNorm_coe, extNorm_coe]
       exact (T.convergesAt_coeffB_neg (rad_pos ρ0 ρ) (rad_lt_one ρ0 ρ) (T.convergesAt_rad ρ0 a ρ)).2
 
+/- English proof (translation)
+Rewrite using `[← neg_sub, extNorm_neg]`.
+-/
 theorem extNorm_sub_comm (ρ : Set.Ioc (0 : ℝ) ρ0) (x y : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ (x - y) = T.extNorm ρ0 ρ (y - x) := by
   rw [← neg_sub, extNorm_neg]
 
+/- English proof (translation)
+Rewrite using `[← Completion.coe_one, extNorm_coe]`. Use `show gaussNorm (T.coeffB 1) ρ = 1`. Rewrite using `[← map_one (algebraMap Γ T.B), coeffB_algebraMap, zcoeff_one]`. Use `le_antisymm (gaussNorm_single_zero_one_le (rad_pos ρ0 ρ)) ?_` and prove the remaining obligations. Use `(convergesAt_pi_single (L := L) 0 1 ρ).le_gaussNorm 0` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem extNorm_one (ρ : Set.Ioc (0 : ℝ) ρ0) : T.extNorm ρ0 ρ 1 = 1 := by
   rw [← Completion.coe_one, extNorm_coe]
   show gaussNorm (T.coeffB 1) ρ = 1
@@ -123,10 +164,16 @@ theorem extNorm_one (ρ : Set.Ioc (0 : ℝ) ρ0) : T.extNorm ρ0 ρ 1 = 1 := by
   have := (convergesAt_pi_single (L := L) 0 1 ρ).le_gaussNorm 0
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← Completion.coe_zero, extNorm_coe]`. Conclude with `map_zero (T.gaussSeminorm ρ0 ρ)`.
+-/
 theorem extNorm_zero (ρ : Set.Ioc (0 : ℝ) ρ0) : T.extNorm ρ0 ρ 0 = 0 := by
   rw [← Completion.coe_zero, extNorm_coe]
   exact map_zero (T.gaussSeminorm ρ0 ρ)
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_le (T.continuous_extNorm ρ) (((T.continuous_extNorm ρ₁).rpow_const fun _ => Or.inr (by linarith)).mul ((T.continuous_extNorm ρ₂).rpow_const fun _ => Or.inr ht0))) fun b => by rw [extNorm_coe, extNorm_coe, extNorm_coe, hρ] exact gaussNorm_interp …`.
+-/
 theorem extNorm_interp_le (ρ₁ ρ₂ ρ : Set.Ioc (0 : ℝ) ρ0) {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t ≤ 1)
     (hρ : (ρ : ℝ) = (ρ₁ : ℝ) ^ (1 - t) * (ρ₂ : ℝ) ^ t) (x : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ x ≤ T.extNorm ρ0 ρ₁ x ^ (1 - t) * T.extNorm ρ0 ρ₂ x ^ t :=
@@ -139,6 +186,9 @@ theorem extNorm_interp_le (ρ₁ ρ₂ ρ : Set.Ioc (0 : ℝ) ρ0) {t : ℝ} (ht
       exact gaussNorm_interp_le (rad_pos ρ0 ρ₁) (rad_pos ρ0 ρ₂) (T.convergesAt_rad ρ0 b ρ₁)
         (T.convergesAt_rad ρ0 b ρ₂) ht0 ht1
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_le (T.continuous_extNorm ρ) ((T.continuous_extNorm ρ₁).max (T.continuous_extNorm ρ₂))) fun b => by rw [extNorm_coe, extNorm_coe, extNorm_coe] exact gaussNorm_le_max (rad_pos ρ0 ρ₁) h1 h2 (T.convergesAt_rad ρ0 b ρ₁) (T.convergesAt_rad ρ0 b ρ₂)`.
+-/
 theorem extNorm_le_max (ρ₁ ρ₂ ρ : Set.Ioc (0 : ℝ) ρ0) (h1 : (ρ₁ : ℝ) ≤ ρ) (h2 : (ρ : ℝ) ≤ ρ₂)
     (x : T.RobbaExt ρ0) :
     T.extNorm ρ0 ρ x ≤ max (T.extNorm ρ0 ρ₁ x) (T.extNorm ρ0 ρ₂ x) :=
@@ -149,6 +199,13 @@ theorem extNorm_le_max (ρ₁ ρ₂ ρ : Set.Ioc (0 : ℝ) ρ0) (h1 : (ρ₁ : �
       exact gaussNorm_le_max (rad_pos ρ0 ρ₁) h1 h2 (T.convergesAt_rad ρ0 b ρ₁)
         (T.convergesAt_rad ρ0 b ρ₂)
 
+/- English proof (translation)
+Establish `hr : 0 < r` using `ha.trans har`. Establish `hb : 0 < b` using `hr.trans hrb`. Establish `h1 : Real.log a < Real.log r` using `Real.log_lt_log ha har`. Establish `h2 : Real.log r < Real.log b` using `Real.log_lt_log hr hrb`. Use `⟨(Real.log r - Real.log a) / (Real.log b - Real.log a), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `div_pos (by linarith) (by linarith)`. Rewrite using `[div_lt_one (by linarith)]; linarith`. Rewrite using `[Real.rpow_def_of_pos ha, Real.rpow_def_of_pos hb, ← Real.exp_add]`. Establish `hne : Real.log b - Real.log a ≠ 0` using `by linarith`. Establish `: Real.log a * (1 - (Real.log r - Real.log a) / (Real.log b - Real.log a)) + Real.log b * ((Real.log r - Real.log a) / (Real.log b - Real.log a)) = Real.log r`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.exp_log hr]`.
+-/
 theorem exists_interp_exponent {a r b : ℝ} (ha : 0 < a) (har : a < r) (hrb : r < b) :
     ∃ t : ℝ, 0 < t ∧ t < 1 ∧ r = a ^ (1 - t) * b ^ t := by
   have hr : 0 < r := ha.trans har
@@ -168,6 +225,13 @@ theorem exists_interp_exponent {a r b : ℝ} (ha : 0 < a) (har : a < r) (hrb : r
 
 def topRad (ρ0 : Set.Ioo (0 : ℝ) 1) : Set.Ioc (0 : ℝ) ρ0 := ⟨ρ0, ρ0.2.1, le_rfl⟩
 
+/- English proof (translation)
+Establish `hc : ConvergesAt (T.coeffB b) ρ0` using `b.2`. Take `⟨B, hB⟩` from `(hc.finite_le hδ).bddAbove`. Use `⟨B.toNat, fun ρ => gaussNorm_le fun n => ?_⟩` and prove the remaining obligations. Establish `hρ` using `rad_pos ρ0 ρ`. Establish `hq : 1 ≤ (ρ0 : ℝ) / ρ` using `by rw [le_div_iff₀ hρ, one_mul]; exact ρ.2.2`.
+
+Distinguish the cases in `hn : n ≤ B`. Use `le_max_of_le_left ?_` and prove the remaining obligations. Establish `e : ‖T.coeffB b n‖ * (ρ0 : ℝ) ^ n = (‖T.coeffB b n‖ * (ρ : ℝ) ^ n) * ((ρ0 : ℝ) / ρ) ^ n`. Rewrite using `[div_zpow, mul_assoc, mul_div_assoc', mul_div_cancel_left₀ _ (zpow_pos hρ n).ne']`. Rewrite using `[e]`.
+
+Use `mul_le_mul ((T.convergesAt_rad ρ0 b ρ).le_gaussNorm n) ?_ (zpow_pos (by positivity) n).le (gaussNorm_nonneg hρ)` and prove the remaining obligations. Rewrite using `[← zpow_natCast]`. Conclude with `zpow_le_zpow_right₀ hq (by omega)`. Use `le_max_of_le_right (le_of_lt (not_le.1 fun h => hn (hB h)))` and prove the remaining obligations.
+-/
 theorem gaussNorm_top_le (b : T.Econ ρ0) {δ : ℝ} (hδ : 0 < δ) :
     ∃ M : ℕ, ∀ ρ : Set.Ioc (0 : ℝ) ρ0,
       gaussNorm (T.coeffB b) ρ0 ≤ max (gaussNorm (T.coeffB b) ρ * ((ρ0 : ℝ) / ρ) ^ M) δ := by
@@ -187,6 +251,19 @@ theorem gaussNorm_top_le (b : T.Econ ρ0) {δ : ℝ} (hδ : 0 < δ) :
     exact zpow_le_zpow_right₀ hq (by omega)
   · refine le_max_of_le_right (le_of_lt (not_le.1 fun h => hn (hB h)))
 
+/- English proof (translation)
+Use `le_antisymm (le_of_forall_pos_le_add fun ε hε => ?_) (T.extNorm_nonneg _ x)` and prove the remaining obligations. Rewrite using `[zero_add]`. Use `set ρh : Set.Ioc (0 : ℝ) ρ0 := ⟨ρ0 / 2, by have := ρ0.2.1; positivity, by linarith [ρ0.2.1]⟩`. Establish `hU : {y : T.RobbaExt ρ0 | T.extNorm ρ0 ρh (x - y) < ε / 2 ∧ T.extNorm ρ0 (topRad ρ0) (x - y) < ε / 2} ∈ 𝓝 x`. Use `IsOpen.mem_nhds ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(isOpen_lt ((T.continuous_extNorm ρh).comp (continuous_const.sub continuous_id)) continuous_const).inter (isOpen_lt ((T.continuous_extNorm _).comp (continuous_const.sub continuous_id)) continuous_const)`. Simplify using `only [Set.mem_setOf_eq, sub_self, extNorm_zero]; exact ⟨by linarith, by linarith⟩`. Take `⟨b, hb1, hb2⟩` from `Completion.denseRange_coe.mem_nhds hU`. Take `⟨M, hM⟩` from `T.gaussNorm_top_le b (δ := ε / 2) (by linarith)`. Establish `hcont : ContinuousAt (fun r : ℝ => ((ρ0 : ℝ) / r) ^ M) (ρ0 : ℝ)` using `(continuousAt_const.div continuousAt_id (ρ0.2.1).ne').pow M`.
+
+Establish `hev1 : ∀ᶠ r in 𝓝 (ρ0 : ℝ), ((ρ0 : ℝ) / r) ^ M < 2` using `hcont.eventually (gt_mem_nhds (show ((ρ0 : ℝ) / ρ0) ^ M < 2 by`. Rewrite using `[div_self (ρ0.2.1).ne', one_pow]`. Use the proof step `norm_num))`. Establish `hev2 : ∀ᶠ r in 𝓝[<] (ρ0 : ℝ), ((ρ0 : ℝ) / r) ^ M < 2 ∧ r ∈ Set.Ioo ((ρ0 : ℝ) / 2) ρ0` using `(hev1.filter_mono nhdsWithin_le_nhds).and (Ioo_mem_nhdsLT (by linarith [ρ0.2.1]))`. Take `⟨r, hr1, hr2⟩` from `hev2.exists`.
+
+Use `set ρ : Set.Ioc (0 : ℝ) ρ0 := ⟨r, by linarith [hr2.1, ρ0.2.1], hr2.2.le⟩ with hρdef`. Establish `hρlt : (ρ : ℝ) < ρ0` using `hr2.2`. Establish `hρh : (ρh : ℝ) ≤ ρ` using `hr2.1.le`. Establish `hxb : T.extNorm ρ0 ρ (x - b) < ε / 2` using `(T.extNorm_le_max ρh (topRad ρ0) ρ hρh ρ.2.2 (x - b)).trans_lt (max_lt hb1 hb2)`. Establish `hbρ : gaussNorm (T.coeffB b) ρ < ε / 2`.
+
+Rewrite using `[← extNorm_coe]`. Use `T.extNorm_add_le ρ (-(x - b)) x` as an intermediate fact. Rewrite `this` using `[h ρ hρlt, extNorm_neg, show -(x - ↑b) + x = ↑b by ring]`. Conclude with `this.trans_lt (max_lt hxb (by linarith))`. Establish `hbtop : gaussNorm (T.coeffB b) ρ0 ≤ ε`.
+
+Use `(hM ρ).trans (max_le ?_ (by linarith))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `T.extNorm_add_le (topRad ρ0) (x - b) b` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, extNorm_coe]`. Conclude with `this.trans (max_le (by linarith) (by exact hbtop))`.
+-/
 theorem extNorm_top_eq_zero {x : T.RobbaExt ρ0}
     (h : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, (ρ : ℝ) < ρ0 → T.extNorm ρ0 ρ x = 0) :
     T.extNorm ρ0 (topRad ρ0) x = 0 := by
@@ -232,6 +309,9 @@ theorem extNorm_top_eq_zero {x : T.RobbaExt ρ0}
   rw [sub_add_cancel, extNorm_coe] at this
   exact this.trans (max_le (by linarith) (by exact hbtop))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `T.gaussSeminorm ρ0 ρ (-a + b) = _`. Rewrite using `[neg_add_eq_sub, ← neg_sub, map_neg_eq_map, gaussSeminorm_apply, ← Completion.coe_sub, extNorm_coe]`.
+-/
 theorem dist_uniformAt (ρ : Set.Ioc (0 : ℝ) ρ0) (a b : T.Econ ρ0) :
     @dist _ (T.gaussSeminorm ρ0 ρ).toSeminormedRing.toPseudoMetricSpace.toDist a b =
       T.extNorm ρ0 ρ ((a : T.RobbaExt ρ0) - b) := by
@@ -239,6 +319,21 @@ theorem dist_uniformAt (ρ : Set.Ioc (0 : ℝ) ρ0) (a b : T.Econ ρ0) :
   rw [neg_add_eq_sub, ← neg_sub, map_neg_eq_map, gaussSeminorm_apply, ← Completion.coe_sub,
     extNorm_coe]
 
+/- English proof (translation)
+Use `Inseparable.eq (inseparable_iff_ker_uniformity.2 (Filter.mem_ker.2 fun V hV => ?_))` and prove the remaining obligations. Take `⟨W, ⟨hWu, hWc⟩, hWV⟩` from `(uniformity_hasBasis_closed.mem_iff).1 hV`. Use `hWV ?_` and prove the remaining obligations. Establish `hU` using `Filter.mem_map.1 ((Completion.uniformContinuous_coe (α := T.Econ ρ0)) hWu)`. Establish `hiInf : uniformity (T.Econ ρ0) = ⨅ ρ, @uniformity _ (T.uniformAt ρ0 ρ)` using `iInf_uniformity`.
+
+Rewrite `hU` using `[hiInf]`. Take `⟨I, hIfin, V', hV', hUeq⟩` from `Filter.mem_iInf.1 hU`. Establish `hε : ∀ i : I, ∃ ε > 0, ∀ {a b : T.Econ ρ0}, @dist _ (T.gaussSeminorm ρ0 i).toSeminormedRing.toPseudoMetricSpace.toDist a b < ε → (a, b) ∈ V' i` using `fun i => (@Metric.mem_uniformity_dist _ (T.gaussSeminorm ρ0 i).toSeminormedRing.toPseudoMetricSpace (V' i)).1 (hV' i)`. Use `choose ε hεpos hεV using hε`. Use `haveI : Finite I := hIfin.to_subtype`.
+
+Establish `hS : IsClosed {y : T.RobbaExt ρ0 | (y, 0) ∈ W}` using `hWc.preimage (continuous_id.prodMk continuous_const)`. It suffices to establish `hx : x ∈ closure {y : T.RobbaExt ρ0 | (y, 0) ∈ W} by`. Rewrite `hx` using `[hS.closure_eq]`. Conclude with `hx`. Rewrite using `[mem_closure_iff_nhds]`.
+
+Introduce `t ht`. Establish `hO : t ∩ ⋂ i : I, {y : T.RobbaExt ρ0 | T.extNorm ρ0 i (y - x) < ε i} ∈ 𝓝 x`. Use `Filter.inter_mem ht (Filter.iInter_mem.2 fun i => IsOpen.mem_nhds ?_ ?_)` and prove the remaining obligations. Conclude with `isOpen_lt ((T.continuous_extNorm _).comp (continuous_id.sub continuous_const)) continuous_const`. Simplify using `only [Set.mem_setOf_eq, sub_self, extNorm_zero]`.
+
+Conclude with `hεpos i`. Take `⟨b, hb⟩` from `Completion.denseRange_coe.mem_nhds hO`. Use `⟨b, hb.1, ?_⟩` and prove the remaining obligations. Establish `hmem : (b, (0 : T.Econ ρ0)) ∈ (fun q : T.Econ ρ0 × T.Econ ρ0 => ((q.1 : T.RobbaExt ρ0), (q.2 : T.RobbaExt ρ0))) ⁻¹' W`. Rewrite using `[hUeq, Set.mem_iInter]`.
+
+Introduce `i`. Use `hεV i ?_` and prove the remaining obligations. Rewrite using `[dist_uniformAt, Completion.coe_zero, sub_zero]`. Establish `h1` using `Set.mem_iInter.1 hb.2 i`. Simplify using `only [Set.mem_setOf_eq] at h1`.
+
+Use `T.extNorm_add_le i ((b : T.RobbaExt ρ0) - x) x` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h i]`. Conclude with `this.trans_lt (max_lt h1 (hεpos i))`. Rewrite `hmem` using `[Set.mem_preimage, Completion.coe_zero]`. Conclude with `hmem`.
+-/
 theorem eq_zero_of_forall_extNorm_eq_zero {x : T.RobbaExt ρ0}
     (h : ∀ ρ, T.extNorm ρ0 ρ x = 0) : x = 0 := by
   refine Inseparable.eq (inseparable_iff_ker_uniformity.2 (Filter.mem_ker.2 fun V hV => ?_))
@@ -282,6 +377,13 @@ theorem eq_zero_of_forall_extNorm_eq_zero {x : T.RobbaExt ρ0}
   rw [Set.mem_preimage, Completion.coe_zero] at hmem
   exact hmem
 
+/- English proof (translation)
+Use `le_antisymm ?_ (T.extNorm_nonneg ρ x)` and prove the remaining obligations. Break down `lt_trichotomy (ρ : ℝ) ρ₂ with hlt | heq | hgt` into its components or cases. Use `set ρ₁ : Set.Ioc (0 : ℝ) ρ0 := ⟨(ρ : ℝ) / 2, by have := rad_pos ρ0 ρ; positivity, by have := ρ.2.2; have := rad_pos ρ0 ρ; linarith⟩`. Take `⟨t, ht0, ht1, hρt⟩` from `exists_interp_exponent (a := (ρ₁ : ℝ)) (r := ρ) (b := ρ₂) (by have := rad_pos ρ0 ρ; show (0 : ℝ) < (ρ : ℝ) / 2; positivity) (by show (ρ : ℝ) / 2 < ρ; have := rad_pos ρ0 ρ; linarith) hlt`. Use `T.extNorm_interp_le ρ₁ ρ₂ ρ ht0.le ht1.le hρt x` as an intermediate fact.
+
+Rewrite `this` using `[h, Real.zero_rpow ht0.ne', mul_zero]`. Then use the resulting hypothesis. Establish `: ρ = ρ₂` using `Subtype.ext heq`. Rewrite using `[this, h]`. Take `⟨t, ht0, ht1, hρt⟩` from `exists_interp_exponent (a := (ρ₂ : ℝ)) (r := ρ) (b := ρ0) (rad_pos ρ0 ρ₂) hgt hρ`. Use `T.extNorm_interp_le ρ₂ (topRad ρ0) ρ ht0.le ht1.le hρt x` as an intermediate fact.
+
+Rewrite `this` using `[h, Real.zero_rpow (by linarith), zero_mul]`. Then use the resulting hypothesis.
+-/
 theorem extNorm_eq_zero_of_eq_zero {x : T.RobbaExt ρ0} {ρ₂ : Set.Ioc (0 : ℝ) ρ0}
     (h : T.extNorm ρ0 ρ₂ x = 0) (ρ : Set.Ioc (0 : ℝ) ρ0) (hρ : (ρ : ℝ) < ρ0) :
     T.extNorm ρ0 ρ x = 0 := by
@@ -301,6 +403,11 @@ theorem extNorm_eq_zero_of_eq_zero {x : T.RobbaExt ρ0} {ρ₂ : Set.Ioc (0 : �
     have := T.extNorm_interp_le ρ₂ (topRad ρ0) ρ ht0.le ht1.le hρt x
     rwa [h, Real.zero_rpow (by linarith), zero_mul] at this
 
+/- English proof (translation)
+Use `lt_of_le_of_ne (T.extNorm_nonneg ρ x) fun h => hx ?_` and prove the remaining obligations. Establish `hbelow : ∀ ρ' : Set.Ioc (0 : ℝ) ρ0, (ρ' : ℝ) < ρ0 → T.extNorm ρ0 ρ' x = 0` using `fun ρ' hρ' => T.extNorm_eq_zero_of_eq_zero h.symm ρ' hρ'`. Establish `htop` using `T.extNorm_top_eq_zero hbelow`. Use `T.eq_zero_of_forall_extNorm_eq_zero fun ρ' => ?_` and prove the remaining obligations. Break down `ρ'.2.2.lt_or_eq with hlt | heq` into its components or cases.
+
+Conclude with `hbelow ρ' hlt`. Establish `: ρ' = topRad ρ0` using `Subtype.ext heq`. Rewrite using `[this, htop]`.
+-/
 theorem extNorm_pos {x : T.RobbaExt ρ0} (hx : x ≠ 0) (ρ : Set.Ioc (0 : ℝ) ρ0) :
     0 < T.extNorm ρ0 ρ x := by
   refine lt_of_le_of_ne (T.extNorm_nonneg ρ x) fun h => hx ?_
@@ -313,6 +420,9 @@ theorem extNorm_pos {x : T.RobbaExt ρ0} (hx : x ≠ 0) (ρ : Set.Ioc (0 : ℝ) 
   · have : ρ' = topRad ρ0 := Subtype.ext heq
     rw [this, htop]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by_contra fun hx => (T.extNorm_pos hx ρ).ne' h, fun h => by rw [h, extNorm_zero]⟩`.
+-/
 theorem extNorm_eq_zero_iff {x : T.RobbaExt ρ0} (ρ : Set.Ioc (0 : ℝ) ρ0) :
     T.extNorm ρ0 ρ x = 0 ↔ x = 0 :=
   ⟨fun h => by_contra fun hx => (T.extNorm_pos hx ρ).ne' h, fun h => by rw [h, extNorm_zero]⟩
@@ -328,6 +438,9 @@ instance instIsDomainRobbaExt : IsDomain (T.RobbaExt ρ0) := by
     exact this⟩
   exact NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `T.gaussSeminorm ρ0 ρ (-a + b) = _`. Rewrite using `[neg_add_eq_sub, ← neg_sub, map_neg_eq_map, gaussSeminorm_apply]`. Both sides reduce to the same expression.
+-/
 theorem dist_uniformAt' (ρ : Set.Ioc (0 : ℝ) ρ0) (a b : T.Econ ρ0) :
     @dist _ (T.gaussSeminorm ρ0 ρ).toSeminormedRing.toPseudoMetricSpace.toDist a b =
       gaussNorm (T.coeffB ((a : T.B) - b)) ρ := by
@@ -339,8 +452,16 @@ variable {ρ1 : Set.Ioo (0 : ℝ) 1}
 
 def incl (h : (ρ1 : ℝ) ≤ ρ0) : T.Econ ρ0 →+* T.Econ ρ1 := Subring.inclusion (T.Econ_anti h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_incl (h : (ρ1 : ℝ) ≤ ρ0) (b : T.Econ ρ0) : ((T.incl h b : T.Econ ρ1) : T.B) = b := rfl
 
+/- English proof (translation)
+Use `uniformContinuous_iInf_rng.2 fun ρ => ?_` and prove the remaining obligations. Use `uniformContinuous_iInf_dom (i := (⟨ρ, ρ.2.1, ρ.2.2.trans h⟩ : Set.Ioc (0 : ℝ) ρ0)) ?_` and prove the remaining obligations. Use `(@Metric.uniformContinuous_iff _ _ (T.gaussSeminorm ρ0 ⟨ρ, ρ.2.1, ρ.2.2.trans h⟩).toSeminormedRing.toPseudoMetricSpace (T.gaussSeminorm ρ1 ρ).toSeminormedRing.toPseudoMetricSpace _).2 fun ε hε => ⟨ε, hε, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite `hab`, the goal using `[dist_uniformAt']`.
+
+Conclude with `hab`.
+-/
 theorem uniformContinuous_incl (h : (ρ1 : ℝ) ≤ ρ0) : UniformContinuous (T.incl h) := by
   refine uniformContinuous_iInf_rng.2 fun ρ => ?_
   refine uniformContinuous_iInf_dom (i := (⟨ρ, ρ.2.1, ρ.2.2.trans h⟩ : Set.Ioc (0 : ℝ) ρ0)) ?_
@@ -354,19 +475,31 @@ theorem uniformContinuous_incl (h : (ρ1 : ℝ) ≤ ρ0) : UniformContinuous (T.
 def res (h : (ρ1 : ℝ) ≤ ρ0) : T.RobbaExt ρ0 →+* T.RobbaExt ρ1 :=
   Completion.mapRingHom (T.incl h) (T.uniformContinuous_incl h).continuous
 
+/- English proof (translation)
+The claim follows from `Completion.mapRingHom_coe _ b`.
+-/
 theorem res_coe (h : (ρ1 : ℝ) ≤ ρ0) (b : T.Econ ρ0) :
     T.res h (b : T.RobbaExt ρ0) = ((T.incl h b : T.Econ ρ1) : T.RobbaExt ρ1) :=
   Completion.mapRingHom_coe _ b
 
+/- English proof (translation)
+The claim follows from `Completion.continuous_map`.
+-/
 theorem continuous_res (h : (ρ1 : ℝ) ≤ ρ0) : Continuous (T.res h) :=
   Completion.continuous_map
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_eq ((T.continuous_extNorm ρ).comp (T.continuous_res h)) (T.continuous_extNorm _)) fun b => by rw [res_coe, extNorm_coe, extNorm_coe, coe_incl]`.
+-/
 theorem extNorm_res (h : (ρ1 : ℝ) ≤ ρ0) (ρ : Set.Ioc (0 : ℝ) ρ1) (x : T.RobbaExt ρ0) :
     T.extNorm ρ1 ρ (T.res h x) = T.extNorm ρ0 ⟨ρ, ρ.2.1, ρ.2.2.trans h⟩ x :=
   Completion.induction_on x
     (isClosed_eq ((T.continuous_extNorm ρ).comp (T.continuous_res h)) (T.continuous_extNorm _))
     fun b => by rw [res_coe, extNorm_coe, extNorm_coe, coe_incl]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `T.extNorm_res h (topRad ρ1) x` as an intermediate fact. Rewrite `this` using `[hx, extNorm_zero, eq_comm, T.extNorm_eq_zero_iff]`. Conclude with `this`.
+-/
 theorem res_injective (h : (ρ1 : ℝ) ≤ ρ0) : Function.Injective (T.res h) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
@@ -374,16 +507,29 @@ theorem res_injective (h : (ρ1 : ℝ) ≤ ρ0) : Function.Injective (T.res h) :
   rw [hx, extNorm_zero, eq_comm, T.extNorm_eq_zero_iff] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_eq (T.continuous_res _) continuous_id) fun b => by rw [res_coe]; rfl`.
+-/
 theorem res_self (x : T.RobbaExt ρ0) : T.res (le_refl (ρ0 : ℝ)) x = x :=
   Completion.induction_on x (isClosed_eq (T.continuous_res _) continuous_id)
     fun b => by rw [res_coe]; rfl
 
+/- English proof (translation)
+The claim follows from `Completion.induction_on x (isClosed_eq ((T.continuous_res _).comp (T.continuous_res _)) (T.continuous_res _)) fun b => by rw [res_coe, res_coe, res_coe]; rfl`.
+-/
 theorem res_res {ρ2 : Set.Ioo (0 : ℝ) 1} (h12 : (ρ1 : ℝ) ≤ ρ0) (h23 : (ρ2 : ℝ) ≤ ρ1)
     (x : T.RobbaExt ρ0) : T.res h23 (T.res h12 x) = T.res (h23.trans h12) x :=
   Completion.induction_on x
     (isClosed_eq ((T.continuous_res _).comp (T.continuous_res _)) (T.continuous_res _))
     fun b => by rw [res_coe, res_coe, res_coe]; rfl
 
+/- English proof (translation)
+Establish `h1 : T.extNorm ρ0 (topRad ρ0) (b : T.RobbaExt ρ0) = 0` using `by rw [hb, extNorm_zero]`. Rewrite `h1` using `[extNorm_coe]`. Express the relevant statement in the definitionally equal form `gaussNorm (T.coeffB b) (ρ0 : ℝ) = 0 at h1`. Assume the negation of the conclusion as `hb0`. Establish `hb0' : (b : T.B) ≠ 0` using `fun h => hb0 (Subtype.ext h)`.
+
+Take `⟨n, x, hx⟩` from `IsLocalization.Away.surj T.π (b : T.B)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl; exact hb0' (T.eq_zero_of_mul_pow (by rw [hx, map_zero]))`. Establish `hc` using `b.2`. Rewrite `hc` using `[mem_Econ, T.coeffB_eq hx]`.
+
+Rewrite `h1` using `[T.coeffB_eq hx, gaussNorm_shift ρ0.2.1]`. Establish `hx0' : T.zcoeff x ≠ 0` using `fun h => hx0 ((T.zcoeff_eq_zero_iff x).1 h)`. Use `gaussNorm_pos ρ0.2.1 ((convergesAt_shift_iff ρ0.2.1 _).1 hc) hx0'` as an intermediate fact. Establish `hz` using `zpow_pos ρ0.2.1 (-(n : ℤ))`. Use polynomial arithmetic with `[mul_pos this hz]`.
+-/
 theorem coe_eq_zero_Econ {b : T.Econ ρ0} (hb : (b : T.RobbaExt ρ0) = 0) : b = 0 := by
   have h1 : T.extNorm ρ0 (topRad ρ0) (b : T.RobbaExt ρ0) = 0 := by rw [hb, extNorm_zero]
   rw [extNorm_coe] at h1
@@ -402,6 +548,9 @@ theorem coe_eq_zero_Econ {b : T.Econ ρ0} (hb : (b : T.RobbaExt ρ0) = 0) : b = 
   have hz := zpow_pos ρ0.2.1 (-(n : ℤ))
   nlinarith [mul_pos this hz]
 
+/- English proof (translation)
+Introduce `a b hab` and use `sub_eq_zero.1 (T.coe_eq_zero_Econ (by rw [Completion.coe_sub, hab, sub_self]))`.
+-/
 theorem coe_injective_Econ : Function.Injective ((↑) : T.Econ ρ0 → T.RobbaExt ρ0) := fun a b hab =>
   sub_eq_zero.1 (T.coe_eq_zero_Econ (by rw [Completion.coe_sub, hab, sub_self]))
 

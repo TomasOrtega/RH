@@ -11,6 +11,9 @@ namespace PI.OmLocU
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.LocVol NumberField IsDedekindDomain MeasureTheory Topology Filter
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `⟨PI.VolStabSW.unifV v, ?_⟩` and prove the remaining obligations. Unfold `IsUnif`. Rewrite using `[PI.VolStabSW.unifV_val]`. Both sides reduce to the same expression.
+-/
 theorem unifEx_holds {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     UnifEx v := by
   refine ⟨PI.VolStabSW.unifV v, ?_⟩
@@ -18,6 +21,13 @@ theorem unifEx_holds {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum
   rw [PI.VolStabSW.unifV_val]
   rfl
 
+/- English proof (translation)
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `h1 : Valued.v ϖ < 1`. Rewrite using `[hv]`. Evaluate the decidable proposition. Use `⟨fun h => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hlt : ‖ϖ‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 h1`. Conclude with `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hlt`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Conclude with `h1.le`.
+-/
 theorem unif_spec {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ϖ : Fv F v)
     (hϖ : IsUnif v ϖ) : ϖ ≠ 0 ∧ Tendsto (fun k : ℕ => ϖ ^ k) atTop (𝓝 0) ∧
       ϖ ∈ v.adicCompletionIntegers F := by
@@ -39,15 +49,24 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Unfold `OEv at *`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem oEv_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := by
   unfold OEv at *
   exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+Unfold `OEv`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem oEv_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := by
   unfold OEv
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Unfold `OEv at *`. Conclude with `Submodule.neg_mem _ hx`.
+-/
 theorem oEv_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v := by
   unfold OEv at *
   exact Submodule.neg_mem _ hx

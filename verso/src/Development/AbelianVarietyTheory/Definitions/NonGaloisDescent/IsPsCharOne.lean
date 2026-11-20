@@ -13,6 +13,9 @@ structure IsPsChar (d : ℕ) (T : M → A) : Prop where
   comm : ∀ x y, T (x * y) = T (y * x)
   alt_eq_zero : ∀ x : Fin (d + 1) → M, alt T (d + 1) x = 0
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp [alt] | n + 1, x => by simp [alt, map_alt f T n]`.
+-/
 theorem map_alt {B : Type*} [CommRing B] (f : A →+* B) (T : M → A) :
     ∀ (n : ℕ) (x : Fin n → M), f (alt T n x) = alt (fun g => f (T g)) n x
   | 0, _ => by simp [alt]

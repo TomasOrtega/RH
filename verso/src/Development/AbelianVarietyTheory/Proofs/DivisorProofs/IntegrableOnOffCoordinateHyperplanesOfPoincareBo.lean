@@ -9,6 +9,11 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `hO : MeasurableSet (offHyp S U)` using `(isOpen_offHyp_of_isOpen S U hU).measurableSet`. Establish `hv : IntegrableOn (fun v => C * ∏ a, (poinWt S v a)⁻¹ ^ 2) K` using `(GlobalTheory.T.poincare_volume_integrableOn_compact_punctured_polydisc S K hK fun v hv => hs v (hKU hv)).const_mul C`. Establish `hi : Integrable (K.indicator fun v => C * ∏ a, (poinWt S v a)⁻¹ ^ 2)` using `(integrable_indicator_iff hK.measurableSet).2 hv`. Use `Integrable.mono' hi.integrableOn (hg.aestronglyMeasurable hO) ?_` and prove the remaining obligations. Use `(ae_restrict_iff' hO).2 (Eventually.of_forall fun v hvO => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hvK : v ∈ K`. Rewrite using `[Set.indicator_of_mem hvK]`. Conclude with `hb v hvO hvK`. Rewrite using `[Set.indicator_of_notMem hvK, h0 v hvO hvK, norm_zero]`.
+-/
 theorem integrableOn_offHyp_of_norm_le_poin {n : ℕ} (S : Finset (Fin n)) (U K : Set (V n)) (g : V n → ℂ) (C : ℝ)
     (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U) (hs : ∀ v ∈ U, ∀ a ∈ S, ‖v a‖ ≤ 1 / 2)
     (hg : ContinuousOn g (offHyp S U)) (h0 : ∀ v ∈ offHyp S U, v ∉ K → g v = 0)

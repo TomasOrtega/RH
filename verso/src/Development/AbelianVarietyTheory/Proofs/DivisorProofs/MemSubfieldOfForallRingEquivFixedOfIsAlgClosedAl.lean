@@ -9,6 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ k₀ hk₀ x hfix`. Assume the negation of the conclusion as `hx`. Establish `htr : Transcendental k₀ x`. Introduce `halg`. Establish `hint : IsIntegral k₀ x` using `halg.isIntegral`.
+
+Establish `hdeg : (minpoly k₀ x).degree = 1` using `IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible hint)`. Take `⟨r, hr⟩` from `minpoly.mem_range_of_degree_eq_one k₀ x hdeg`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hr]`. Conclude with `r.2`.
+
+Take `⟨σ, hσk, hσx⟩` from `GlobalTheory.FixedRoots.exists_ringEquiv_add_one k₀ x htr`. Establish `h` using `hfix σ hσk`. Rewrite `h` using `[hσx]`. Simplify using `at h`.
+-/
 theorem mem_subfield_of_forall_ringEquiv_fixed_of_isAlgClosed :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (k₀ : Subfield K), IsAlgClosed k₀ → ∀ x : K,
       (∀ σ : K ≃+* K, (∀ a ∈ k₀, σ a = a) → σ x = x) → x ∈ k₀ := by

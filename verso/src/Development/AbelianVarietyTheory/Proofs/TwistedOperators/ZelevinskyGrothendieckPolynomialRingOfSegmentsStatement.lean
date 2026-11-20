@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Se
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.GrothendieckRingPolynomial
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ZelevinskyGrothendieckPolynomialRingOfSegments
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHMult
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.zelevinskyPolynomialRing_of_parts | exact GlobalTheory.zelevinskyPolynomialRing_of_parts | (intros; apply GlobalTheory.zelevinskyPolynomialRing_of_parts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.zelevinskyGrothendieckPolynomialRing_of_segments : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SegmentRepresentation → GlobalTheory.Published.GrothendieckRingPolynomial → GlobalTheory.Published.ZelevinskyPolynomialRing := by
   first | exact @GlobalTheory.zelevinskyPolynomialRing_of_parts | exact GlobalTheory.zelevinskyPolynomialRing_of_parts | (intros; apply GlobalTheory.zelevinskyPolynomialRing_of_parts <;> assumption)

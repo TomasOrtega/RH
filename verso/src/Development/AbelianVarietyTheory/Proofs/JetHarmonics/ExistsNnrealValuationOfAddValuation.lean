@@ -9,15 +9,29 @@ noncomputable def expNegTop : WithTop ℚ → ℝ≥0
   | ⊤ => 0
   | (q : ℚ) => ⟨Real.exp (-(q : ℝ)), (Real.exp_pos _).le⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem expNegTop_top : expNegTop ⊤ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expNegTop_coe (q : ℚ) : ((expNegTop (q : WithTop ℚ) : ℝ≥0) : ℝ) = Real.exp (-(q : ℝ)) := rfl
 
+/- English proof (translation)
+Apply `NNReal.coe_injective` to reduce the goal to its premises. Establish `h` using `expNegTop_coe 0`. Simplify using `using h`.
+-/
 theorem expNegTop_zero : expNegTop 0 = 1 := by
   apply NNReal.coe_injective
   have h := expNegTop_coe 0
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp`.
+
+Consider the case `coe b`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[← WithTop.coe_add, NNReal.coe_mul, expNegTop_coe, expNegTop_coe, expNegTop_coe, ← Real.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem expNegTop_add (a b : WithTop ℚ) : expNegTop (a + b) = expNegTop a * expNegTop b := by
   induction a using WithTop.recTopCoe with
   | top => simp
@@ -31,6 +45,11 @@ theorem expNegTop_add (a b : WithTop ℚ) : expNegTop (a + b) = expNegTop a * ex
       push_cast
       ring_nf
 
+/- English proof (translation)
+Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top`.
+
+Rewrite using `[← NNReal.coe_le_coe, expNegTop_coe]`. Simplify using `only [expNegTop_top, NNReal.coe_zero, top_le_iff, WithTop.coe_ne_top, iff_false, not_le]`. Conclude with `Real.exp_pos _`. Consider the case `coe b`. Rewrite using `[← NNReal.coe_le_coe, expNegTop_coe, expNegTop_coe, Real.exp_le_exp, neg_le_neg_iff, Rat.cast_le, WithTop.coe_le_coe]`.
+-/
 theorem expNegTop_le_iff (a b : WithTop ℚ) : expNegTop a ≤ expNegTop b ↔ b ≤ a := by
   induction a using WithTop.recTopCoe with
   | top => simp
@@ -55,13 +74,24 @@ noncomputable def expNegValuation {F : Type} [Field F] (v : AddValuation F (With
     · exact le_max_of_le_left ((expNegTop_le_iff _ _).mpr h)
     · exact le_max_of_le_right ((expNegTop_le_iff _ _).mpr h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expNegValuation_apply {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (x : F) :
     expNegValuation v x = expNegTop (v x) := rfl
 
+/- English proof (translation)
+Rewrite using `[expNegValuation_apply, ← expNegTop_zero, expNegTop_le_iff]`.
+-/
 theorem expNegValuation_le_one_iff {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (x : F) :
     expNegValuation v x ≤ 1 ↔ 0 ≤ v x := by
   rw [expNegValuation_apply, ← expNegTop_zero, expNegTop_le_iff]
 
+/- English proof (translation)
+Introduce `F _ v`. Use `⟨expNegValuation v, fun x y => expNegTop_le_iff _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.val_injective`. Introduce `x`. Conclude with `(expNegValuation_le_one_iff v _).mpr x.2`.
+
+Introduce `r hr`. Conclude with `⟨⟨r, (expNegValuation_le_one_iff v r).mp hr⟩, rfl⟩`.
+-/
 theorem exists_nnreal_valuation_of_addValuation :
     ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)), ∃ v' : Valuation F NNReal,
       (∀ x y, v' x ≤ v' y ↔ v y ≤ v x) ∧ v'.Integers (ReciprocityTheory.ChartRestriction.G.DVR.TWO.Ov v) := by

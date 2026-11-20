@@ -5,6 +5,11 @@ namespace GlobalTheory.SmoothAdic
 
 open TensorProduct IsLocalRing
 
+/- English proof (translation)
+Introduce `R _ _ _ I hI C _ _ _ h q _ hq`. Use `GlobalTheory.SmoothLimit.isSmoothAt_of_smooth_quotient_pow (V := R) (A := C) (fun e => ?_) q hq` and prove the remaining obligations. Establish `hle : I ^ (e + 1) ≤ maximalIdeal R ^ (e + 1)` using `Ideal.pow_right_mono (le_maximalIdeal hI) (e + 1)`. Set `_ : Algebra (R ⧸ I ^ (e + 1)) (R ⧸ maximalIdeal R ^ (e + 1))` to `(Ideal.Quotient.factor hle).toAlgebra`. Establish `: IsScalarTower R (R ⧸ I ^ (e + 1)) (R ⧸ maximalIdeal R ^ (e + 1))` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `h e` as an intermediate fact. Conclude with `Algebra.Smooth.of_equiv (Algebra.TensorProduct.cancelBaseChange R (R ⧸ I ^ (e + 1)) (R ⧸ maximalIdeal R ^ (e + 1)) (R ⧸ maximalIdeal R ^ (e + 1)) C)`.
+-/
 theorem isSmoothAt_of_smooth_quotient_pow : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → ∀ (C : Type) [CommRing C] [Algebra R C] [Algebra.FiniteType R C], (∀ e : ℕ, Algebra.Smooth (R ⧸ I ^ (e + 1)) (TensorProduct R (R ⧸ I ^ (e + 1)) C)) → ∀ (q : Ideal C) [q.IsPrime], q.comap (algebraMap R C) = IsLocalRing.maximalIdeal R → Algebra.IsSmoothAt R q := by
   intro R _ _ _ I hI C _ _ _ h q _ hq
   refine GlobalTheory.SmoothLimit.isSmoothAt_of_smooth_quotient_pow (V := R) (A := C) (fun e => ?_) q hq

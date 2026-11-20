@@ -16,10 +16,20 @@ open ReciprocityTheory.ChartRestriction.G.Chart (JetR zR jetAug dualLift dualLif
 
 variable {R : Type} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `AlgHom.congr_fun (fstD_comp_dualLift t) y`.
+-/
 theorem fst_dualLift (t : Fin n → R) (y : JetR R (Fin n) 1) :
     (dualLift t y).fst = jetAug R (Fin n) 1 y :=
   AlgHom.congr_fun (fstD_comp_dualLift t) y
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h : ∀ s : Fin n → R, (dualLift s (Ideal.Quotient.mk _ (MvPolynomial.C a))).snd = 0` using `fun s => by`. Use `(dualLift s).commutes a` as an intermediate fact.
+
+Conclude with `(congrArg TrivSqZeroExt.snd this).trans rfl`. Simplify using `only [h, mul_zero, Finset.sum_const_zero]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, TrivSqZeroExt.snd_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p j hp`.
+
+Establish `h : ∀ s : Fin n → R, (dualLift s (Ideal.Quotient.mk _ (p * MvPolynomial.X j))).snd = jetAug R (Fin n) 1 (Ideal.Quotient.mk _ p) * s j` using `fun s => by`. Rewrite using `[map_mul, map_mul, dualLift_zR, DualNumber.snd_mul, fst_dualLift]`. Simplify using the standard rewrite rules. Simplify using `only [h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem snd_dualLift_sum {k : ℕ} (c : Fin k → R) (t : Fin k → Fin n → R) (y : JetR R (Fin n) 1) :
     (dualLift (∑ i, c i • t i) y).snd = ∑ i, c i * (dualLift (t i) y).snd := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective y
@@ -41,6 +51,13 @@ theorem snd_dualLift_sum {k : ℕ} (c : Fin k → R) (t : Fin k → Fin n → R)
     simp only [h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Introduce `p`. Establish `hs : Function.Surjective (jetAug R (Fin n) 1 : JetR R (Fin n) 1 →+* R)` using `fun a => ⟨algebraMap R _ a, (jetAug R (Fin n) 1).commutes a⟩`. Establish `hp : (p : PrimeSpectrum (JetR R (Fin n) 1)) ∈ Set.range (PrimeSpectrum.comap (jetAug R (Fin n) 1 : JetR R (Fin n) 1 →+* R))`. Rewrite using `[range_comap_of_surjective _ _ hs]`. Introduce `a ha`.
+
+Apply `(PrimeSpectrum.isPrime p).mem_of_pow_mem (1 + 1)` to reduce the goal to its premises. Establish `: a ^ (1 + 1) ∈ (RingHom.ker (jetAug R (Fin n) 1)) ^ (1 + 1)` using `Ideal.pow_mem_pow ha _`. Rewrite `this` using `[ker_jetAug_pow, Ideal.mem_bot]`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`.
+
+Take `⟨q, rfl⟩` from `hp`. Use `⟨PrimeSpectrum.comap (TrivSqZeroExt.fstHom R R R).toRingHom q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(dualLift t y).fst ∈ q.asIdeal ↔ jetAug R (Fin n) 1 y ∈ q.asIdeal`. Rewrite using `[fst_dualLift]`.
+-/
 theorem spMap_dualLift_surjective (t : Fin n → R) :
     Function.Surjective (spMap (dualLift t : JetR R (Fin n) 1 →+* DualNumber R)) := by
   intro p
@@ -61,6 +78,9 @@ theorem spMap_dualLift_surjective (t : Fin n → R) :
   change (dualLift t y).fst ∈ q.asIdeal ↔ jetAug R (Fin n) 1 y ∈ q.asIdeal
   rw [fst_dualLift]
 
+/- English proof (translation)
+Introduce `p _`. Take `⟨q, rfl⟩` from `spMap_dualLift_surjective t p`. Conclude with `h (Set.mem_univ q)`.
+-/
 theorem top_le_preimage_of_dualLift {X : Scheme.{0}} (x : Sp (JetR R (Fin n) 1) ⟶ X) (U : X.Opens)
     (t : Fin n → R)
     (h : ⊤ ≤ (spMap (dualLift t : JetR R (Fin n) 1 →+* DualNumber R) ≫ x) ⁻¹ᵁ U) : ⊤ ≤ x ⁻¹ᵁ U := by
@@ -69,6 +89,9 @@ theorem top_le_preimage_of_dualLift {X : Scheme.{0}} (x : Sp (JetR R (Fin n) 1) 
   exact h (Set.mem_univ q)
 
 open GlobalTheory.TangentOrigin in
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨fun p _ => hx (Set.mem_univ _), evalPt_spMap_comp _ x U hx _ f⟩`.
+-/
 theorem evalPt_of_eq {X : Scheme.{0}} (x : Sp (JetR R (Fin n) 1) ⟶ X) (U : X.Opens)
     (hx : ⊤ ≤ x ⁻¹ᵁ U) (t : Fin n → R) (v : Sp (DualNumber R) ⟶ X)
     (e : v = spMap (dualLift t : JetR R (Fin n) 1 →+* DualNumber R) ≫ x) (f : Γ(X, U)) :
@@ -80,6 +103,15 @@ end DiffLin
 
 open GlobalTheory.TangentOrigin DiffLin in
 
+/- English proof (translation)
+Introduce `A _ hA L g n u v W c w hv hd hc U h f`. Establish `: Smooth A.hom` using `hA.smooth`. Take `⟨m, x, hx⟩` from `Chart.univChartLoc A`. Establish `htan : ∀ i, Chart.IsTan (v i)` using `fun i => (Chart.isTan_iff _).mpr (hv i)`. Take `⟨hw, e⟩` from `Chart.prodPts_tan hx c v htan`.
+
+Establish `ew : w.left = spMap (Chart.dualLift (∑ i, c i • Chart.tcoord hx (v i) (htan i)) : Chart.JetR ℂ (Fin m) 1 →+* DualNumber ℂ) ≫ (x 1).left`. Rewrite using `[← e, (Chart.isLieComb_iff c v w).1 hc]`. Conclude with `congrArg CommaMorphism.left (Chart.tcoord_spec hx _ hw)`. Establish `ev : ∀ i, (v i).left = spMap (Chart.dualLift (Chart.tcoord hx (v i) (htan i)) : Chart.JetR ℂ (Fin m) 1 →+* DualNumber ℂ) ≫ (x 1).left` using `fun i => congrArg CommaMorphism.left (Chart.tcoord_spec hx _ (htan i))`. Establish `hU : ⊤ ≤ (x 1).left ⁻¹ᵁ U` using `top_le_preimage_of_dualLift _ U _ (ew ▸ h)`.
+
+Take `⟨h', e'⟩` from `evalPt_of_eq (x 1).left U hU _ w.left ew f`. Express the relevant statement in the definitionally equal form `(evalPt (R := DualNumber ℂ) w.left U h' f).snd = _`. Rewrite using `[e', snd_dualLift_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨hi, ei⟩` from `evalPt_of_eq (x 1).left U hU _ (v i).left (ev i) f`.
+
+Rewrite using `[← ei, map_smul, smul_eq_mul]`. Conclude with `congrArg (c i * ·) (hd i U hi f)`.
+-/
 theorem isDiff_sum_smul_of_isLieComb :
     ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (g n : ℕ) (u : HolUnif A L g)
     (v : Fin n → (epsR ℂ ⟶ A)) (W : Fin n → Fin g → ℂ) (c : Fin n → ℂ) (w : epsR ℂ ⟶ A),

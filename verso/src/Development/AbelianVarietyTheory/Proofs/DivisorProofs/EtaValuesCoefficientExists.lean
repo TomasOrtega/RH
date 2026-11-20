@@ -24,6 +24,9 @@ def along {K X Z : Type} [Field K] [AddCommGroup X] [Module K X] [AddCommGroup Z
   map_add' := f.map_add
   map_smul' a x := by rw [← h]; exact f.map_smulₛₗ a x
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hact (P.decG h)`. Take `⟨y, hy⟩` from `hχ (P.decK h)`. Use `⟨y • T (e (f (P.decC h))), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hT, hy, ← he]`. Both sides reduce to the same expression.
+-/
 theorem ext_val {G Γ W K M : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [Field K] [NumberField K] [StarRing K] [AddCommGroup M] [Module K M] {ι : Γ →* G} {S : CSD K} {σ₀ : K →+* ℂ}
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} (P : Bridge.ClassPres ι S σ₀ ρ J χ)
@@ -36,6 +39,9 @@ theorem ext_val {G Γ W K M : Type} [Group G] [Group Γ] [NormedAddCommGroup W] 
   rw [map_smulₛₗ, hT, hy, ← he]
   rfl
 
+/- English proof (translation)
+Establish `h` using `P.coef_pair (e.symm v) (e.symm w)`. Rewrite `h` using `[he, he, ← hp]`. Simplify `h` using `only [LinearEquiv.apply_symm_apply]`.
+-/
 theorem pair_val {G Γ W K M : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [Field K] [NumberField K] [StarRing K] [AddCommGroup M] [Module K M] {ι : Γ →* G} {S : CSD K} {σ₀ : K →+* ℂ}
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} (P : Bridge.ClassPres ι S σ₀ ρ J χ)
@@ -50,13 +56,24 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
 
 include R in
+/- English proof (translation)
+The claim follows from `(sgAt_mk _ R.hv0).symm`.
+-/
 theorem realisation_embedding_eq_baseEmbedding : D.what₂.embLL = sg0 D A := (sgAt_mk _ R.hv0).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hL.eta.1, GlobalTheory.EtaConjExist.unram_of_chrEq hL.eta R.C.isEta.unr, fun P e he x hx => (hV P e he x hx).imp fun y hy => ⟨hy, (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) y).symm.trans hy⟩⟩`.
+-/
 theorem isEtaConj_base (hL : R.toLevCh.Is A.μ0) (hV : EtaVals R) : IsEtaConj (sg0 D A) R.eta R.eta :=
   ⟨hL.eta.1, GlobalTheory.EtaConjExist.unram_of_chrEq hL.eta R.C.isEta.unr, fun P e he x hx =>
     (hV P e he x hx).imp fun y hy => ⟨hy, (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) y).symm.trans hy⟩⟩
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `h1` using `hT.coefL i A.μ0`. Take `⟨e, -, he, hp, -⟩` from `h1`. Establish `hχ` using `GlobalTheory.ConjForms.levChar_mem R hC.lev hC.grp.chiW i`. Establish `hact : ∀ γ : GQ (Vc D i), ∃ T : VsV D i D.what₂.LL → VsV D i D.what₂.LL, ∀ v, c0L i (T v) = (R.cV i).coef.ρ γ (c0L i v)` using `fun γ => (GlobalTheory.ConjForms.exists_ratMat (Vc D i) γ).elim fun γE hγ => ⟨rhoVr (labLL D) (lamV D i) γE, (hT.mapL i).1 γ γE hγ⟩`. Use `⟨hC.models.cV i, (hT.mapL i).1, (hT.mapL i).2.1, (hT.mapL i).2.2, fun a b => ?_, ⟨_, fun k => (hχ k).imp fun y hy => ⟨hy, (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) y).symm.trans hy⟩, hC.models.HV i A.μ0⟩, fun x h => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(pair_val (R.B.L i A.μ0).pres (c0L i) e he (fun v w => pairVr (labLL D) (lamV D i) (gramV D i) v w) hp _ _).trans (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) _)`. Conclude with `(ext_val (R.B.L i A.μ0).pres (c0L i) e he hact hχ _ h).imp fun v hv => ⟨(congrFun (hC.models.jV i A.μ0 x) h).trans hv, (congrFun (hC.models.jV i A.μ0 x) h).trans hv⟩`.
+-/
 theorem isConjForms_base {F : Face D A} (hC : R.Char F) {gramR c0R c0L} (hT : Comparison₂ R gramR c0R c0L) :
     IsConjForms R i (sg0 D A) (c0L i) (R.cV i) (along (realisation_embedding_eq_baseEmbedding R) (c0L i)) (R.HV i A.μ0)
       (along (realisation_embedding_eq_baseEmbedding R) (R.jV i A.μ0)) := by
@@ -75,21 +92,33 @@ theorem isConjForms_base {F : Face D A} (hC : R.Char F) {gramR c0R c0L} (hT : Co
   · exact (ext_val (R.B.L i A.μ0).pres (c0L i) e he hact hχ _ h).imp fun v hv =>
       ⟨(congrFun (hC.models.jV i A.μ0 x) h).trans hv, (congrFun (hC.models.jV i A.μ0 x) h).trans hv⟩
 
+/- English proof (translation)
+The claim follows from `Finset.eq_empty_iff_forall_notMem.2 fun PP hPP => (hL.Q_ram A.μ0 PP).2 (Or.inl hPP) (by rw [hL.xi_base]; exact fun _ _ => rfl)`.
+-/
 theorem places_base (hL : R.toLevCh.Is A.μ0) : R.Q A.μ0 = ∅ :=
   Finset.eq_empty_iff_forall_notMem.2 fun PP hPP =>
     (hL.Q_ram A.μ0 PP).2 (Or.inl hPP) (by rw [hL.xi_base]; exact fun _ _ => rfl)
 
+/- English proof (translation)
+Establish `hxi : R.xi A.μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi A.μ0))`. Conclude with `(congrArg (R.mu0 j * ·) hxi).trans (mul_one _)`.
+-/
 theorem mu_base (hL : R.toLevCh.Is A.μ0) (j : ℕ) : R.toLevCh.mu A.μ0 j = R.mu0 j := by
   have hxi : R.xi A.μ0 = 1 :=
     MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi A.μ0))
   exact (congrArg (R.mu0 j * ·) hxi).trans (mul_one _)
 
+/- English proof (translation)
+Unfold `omegaQ`. Rewrite using `[dif_pos (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem omegaQ_empty {a b : ℕ} (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (k : ℤ)
     (y : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) : omegaQ ∅ r ξ k y = 1 := by
   unfold omegaQ
   rw [dif_pos (by simp)]
   simp
 
+/- English proof (translation)
+Substitute `hQ` using the available equality. Unfold `IsThPVecOf at h ⊢`. Simplify using `only [omegaQ_empty] at h ⊢`. Conclude with `h`.
+-/
 theorem isThPVecOf_empty {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {sS sT ΛS ΛT βS βT}
     {Pg Q : Finset (Pl D.host.E)} (hQ : Q = ∅) {ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ} (ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     {f₀ f : WO S T → ℂ} (h : IsThPVecOf ψ θ S T sS sT ΛS ΛT βS βT Pg Q ξ f₀ f) :
@@ -100,6 +129,11 @@ theorem isThPVecOf_empty {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T :
   exact h
 
 include R in
+/- English proof (translation)
+Establish `hl : lab (sg0 D A) = id`. Rewrite using `[← realisation_embedding_eq_baseEmbedding R]`. Conclude with `funext GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.lab_base`. Unfold `deltaConj`. Rewrite using `[hl]`.
+
+Both sides reduce to the same expression.
+-/
 theorem deltaConj_base : deltaConj i (sg0 D A) = RealDat.Delta i := by
   have hl : lab (sg0 D A) = id := by
     rw [← realisation_embedding_eq_baseEmbedding R]; exact funext GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.lab_base
@@ -108,6 +142,11 @@ theorem deltaConj_base : deltaConj i (sg0 D A) = RealDat.Delta i := by
   rfl
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `h1` using `hC.thP.thF i A.μ0`. Take `⟨thP, h2, h3⟩` from `h1`. Establish `hω : IsWeilDatumO R.ψ (Vc D i) (Wc D i) (R.toLevCh.mu A.μ0 ((i : ℕ) + 1)) (R.toLevCh.mu A.μ0 ((i : ℕ) + 1) * R.eta⁻¹) (R.ωP i A.μ0)` using `hC.thP.ωP i A.μ0`. Rewrite `hω` using `[mu_base R hC.lev]`. Establish `hio` using `hC.thP.ioP i A.μ0`.
+
+Rewrite `hio` using `[← deltaConj_base R i]`. Use `⟨R.ωP i A.μ0, R.vacP i, R.vP i A.μ0, onb (R.MW i (sg0 D A)), R.ioP i, thP, hω, isThPVecOf_empty (places_base R hC.lev) _ (hC.thP.vP i A.μ0), fun τ => GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.isONBasis_onb _ τ _ (hC.models.order i τ), hC.thP.pt_theta i A.μ0, hio, …` and prove the remaining obligations. Conclude with `(congrArg (fun w : MMap (R.MW i (sg0 D A)) => w fun ρ => v ρ) (hC.thP.thG i A.μ0 x)).trans (congrArg (R.eWf i (sg0 D A)) (h3 x v))`.
+-/
 theorem isConjLift_base {F : Face D A} (hC : R.Char F) :
     IsConjLift R i (sg0 D A) (R.mu0 ((i : ℕ) + 1)) R.eta (R.cV i) (R.HV i A.μ0) (R.thG i A.μ0) := by
   have h1 := hC.thP.thF i A.μ0
@@ -123,6 +162,9 @@ theorem isConjLift_base {F : Face D A} (hC : R.Char F) :
   exact (congrArg (fun w : MMap (R.MW i (sg0 D A)) => w fun ρ => v ρ) (hC.thP.thG i A.μ0 x)).trans
     (congrArg (R.eWf i (sg0 D A)) (h3 x v))
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κw v₀ hC fw i gramR c0R c0L hT hV`. Establish `hg` using `(overK_iff_good T R F κw v₀ hC fw i (sg0 D A)).1 fun x _ => (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) _).symm`. Establish `h1` using `fw.chiR i (sg0 D A) hg`. Establish `h2` using `h1.2.2.2.2 (congrArg (·.comp (algebraMap T.Q.c.F D.what₂.LL)) (realisation_embedding_eq_baseEmbedding R).symm)`. Conclude with `⟨along (realisation_embedding_eq_baseEmbedding R) (c0L i), along (realisation_embedding_eq_baseEmbedding R) (R.jV i A.μ0), ⟨Eq.subst (motive := ChiAt R i (sg0 D A)) h2 h1, isEtaConj_base R hC.lev hV, isConjForms_base R i hC hT, isConjLift_base R i hC⟩, fun _ => rfl⟩`.
+-/
 theorem isConjDatum_base : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κw : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → ∀ (fw : FWTie T R κw v₀) (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → EtaVals R → ∃ (c₁ : VsV D i D.what₂.LL →ₛₗ[sg0 D A] (R.cV i).W) (j : A.fam.amb.FL i A.μ0 →ₛₗ[sg0 D A] (R.HV i A.μ0).H), IsConjDatum R i (sg0 D A) (c0L i) (R.mu0 ((i : ℕ) + 1)) R.eta (R.cV i) c₁ (R.HV i A.μ0) j (R.thG i A.μ0) ∧ ∀ x, j x = R.jV i A.μ0 x := by
   intro D G _ _ Pl0 T0 A T _ R F κw v₀ hC fw i gramR c0R c0L hT hV
   have hg := (overK_iff_good T R F κw v₀ hC fw i (sg0 D A)).1 fun x _ => (RingHom.congr_fun (realisation_embedding_eq_baseEmbedding R) _).symm

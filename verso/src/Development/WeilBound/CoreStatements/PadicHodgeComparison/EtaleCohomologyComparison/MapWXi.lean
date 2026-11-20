@@ -79,6 +79,9 @@ variable {A} {B : PAlg l}
 
 def mapW (f : A ⟶ B) : A.W →+* B.W := WittVector.map (Hom.f f)
 
+/- English proof (translation)
+Establish `h : (mapW f).comp A.sW = B.sW`. Use extensionality with `x i`. Simplify using `only [mapW, sW, RingHom.comp_apply, WittVector.map_coeff]`. Conclude with `RingHom.congr_fun (Hom.comm f) _`. Conclude with `RingHom.congr_fun h _`.
+-/
 theorem mapW_xi (f : A ⟶ B) : mapW f A.xi = B.xi := by
   have h : (mapW f).comp A.sW = B.sW := by
     ext x i

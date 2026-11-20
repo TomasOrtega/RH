@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatJet
 
+/- English proof (translation)
+Introduce `H F _ _ 𝔠 R R' B B' _ _ _ _ K K' κ κ' hκ hκ' π π' hπ hπ' hK hK' τ σ X₀ Z i hi X₁ Z' i' hi' q hq p hpq M d`. Use `letI := τ.toAlgebra`. Establish `hbc` using `(H.2.2.1 B Z.A _ Z.ab Z.dim B' Z'.A q hq.grp).1`. Take `⟨e', he'⟩` from `hbc.exists (crysToDR κ hi.grp d)`. Take `⟨d', hd'⟩` from `(GlobalTheory.Published.AbelianDeRham.Rigid.crysToDR_bijective H.2.2.2.1 Z'.ab Z'.dim hκ' hπ' hK' hi'.grp).2 e'`.
+
+Use `⟨d', fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨c₁, rfl⟩` from `(H.2.2.2.1 B Z.A _ Z.ab Z.dim K κ hκ R π hπ hK X₀.A i hi.grp).2 c`. Establish `k` using `(liftMor κ hi.grp).comp M`. Rewrite using `[GrpMor.pull_pull (liftMor κ hi.grp) M k (fun _ ↦ rfl) rfl c₁, ← GrpMor.pull_pull (GlobalTheory.Published.AbelianDeRham.bcMor hq.grp) (liftMor κ' hi'.grp) k (fun _ ↦ rfl) hpq c₁, ← crysToDR_apply κ' hi'.grp, hd', he']`. Both sides reduce to the same expression.
+-/
 theorem crys_exists_corr : GlobalTheory.Published.AbelianDeRham → ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     {R R' B B' : Type} [CommRing R] [CommRing R'] [CommRing B] [CommRing B'] {K : Ideal B} {K' : Ideal B'}
     (κ : DividedPowers K) (κ' : DividedPowers K'), IsNilDP κ → IsNilDP κ' →

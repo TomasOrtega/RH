@@ -25,6 +25,9 @@ instance {K : Type} [Field K] (ta : K ≃+* K) (S : Type) [CommRing S] [Algebra 
 
 def Tw.val {K : Type} [Field K] {ta : K ≃+* K} {S : Type} (s : Tw ta S) : S := s
 
+/- English proof (translation)
+Unfold `sOf`. Use `congr 1`. Use extensionality with `a`. Conclude with `congrArg (algebraMap c.F S) (h.base a)`.
+-/
 theorem sOf_tw {ta : c.F ≃+* c.F} (h : Fixes c ta) (S : Type) [CommRing S] [Algebra c.F S] :
     sOf c (Tw ta S) = sOf c S := by
   unfold sOf
@@ -32,6 +35,9 @@ theorem sOf_tw {ta : c.F ≃+* c.F} (h : Fixes c ta) (S : Type) [CommRing S] [Al
   ext a
   exact congrArg (algebraMap c.F S) (h.base a)
 
+/- English proof (translation)
+Establish `e : ∀ a : 𝓞 E, algebraMap c.F (Tw ta S) (embK c τ a) = algebraMap c.F S (embK c τ a)` using `fun a => congrArg (algebraMap c.F S) (h.emb τ a)`. Unfold `IsEigAt`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[e a]`. Both sides reduce to the same expression.
+-/
 theorem isEigAt_tw {ta : c.F ≃+* c.F} (h : Fixes c ta) {S : Type} [CommRing S] [Algebra c.F S] (τ : E →+* ℂ)
     (v : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
     IsEigAt (Xo := Xo) c (S := Tw ta S) τ v ↔ IsEigAt (Xo := Xo) c (S := S) τ v := by
@@ -59,15 +65,27 @@ def galRul {ta : c.F ≃+* c.F} (h : Fixes c ta) (f : Rul Xo c) : Rul Xo c :=
 def covAut {n : ℕ} (d : DeltaDat Xo c n) (ta : c.F ≃+* c.F) : d.c₂.F ≃+* d.c₂.F :=
   (d.eF.symm.toRingEquiv.trans ta).trans d.eF.toRingEquiv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => rfl⟩`.
+-/
 theorem fixes_refl : Fixes c (RingEquiv.refl c.F) := ⟨fun _ _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Tw.val_algebraMap {K : Type} [Field K] (ta : K ≃+* K) (S : Type) [CommRing S] [Algebra K S] (a : K) :
     (algebraMap K (Tw ta S) a).val = algebraMap K S (ta a) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ a => h _ (c.conj τ a), fun a => h _ (c.le a.2)⟩`.
+-/
 theorem fixes_of_le {c c' : Coeff l} (ta : c'.F ≃+* c'.F)
     (h : ∀ x : c'.F, (x : ℂ) ∈ c.F → ta x = x) : Fixes c' ta :=
   ⟨fun τ a => h _ (c.conj τ a), fun a => h _ (c.le a.2)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Use `show (evR Xo c (a • f) (twPt h y)).val = ta a • (evR Xo c f (twPt h y)).val`. Unfold `evR`. Rewrite using `[evalAt_smul, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem galRul_smul {ta : c.F ≃+* c.F} (h : Fixes c ta) (a : c.F) (f : Rul Xo c) :
     galRul h (a • f) = ta a • galRul h f := by
   funext p y
@@ -76,11 +94,21 @@ theorem galRul_smul {ta : c.F ≃+* c.F} (h : Fixes c ta) (a : c.F) (f : Rul Xo 
   rw [evalAt_smul, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Use `show d.eF (ta (d.eF.symm (d.eF a))) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+-/
 theorem covAut_apply_eF {n : ℕ} (d : DeltaDat Xo c n) (ta : c.F ≃+* c.F) (a : c.F) :
     covAut d ta (d.eF a) = d.eF (ta a) := by
   show d.eF (ta (d.eF.symm (d.eF a))) = _
   rw [AlgEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Establish `key : ∀ (x : d.c₂.F), ta (d.eF.symm x) = d.eF.symm x → covAut d ta x = x` using `fun x hx => by show d.eF (ta (d.eF.symm x)) = x`. Rewrite using `[hx, AlgEquiv.apply_symm_apply]`. Use `⟨fun τ a => key _ (h.emb τ a), fun a => key _ ?_⟩` and prove the remaining obligations. Establish `hle : KA d.l₂ ≤ KA l`. Unfold `KA`.
+
+Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Conclude with `IntermediateField.subset_adjoin _ _ (by simp)`. Establish `: zeta d.l₂.A = 1` using `by rw [hA]; simp [zeta]`. Rewrite using `[this]`.
+
+Conclude with `one_mem _`. Conclude with `h.base ⟨a, hle a.2⟩`.
+-/
 theorem fixes_covAut {n : ℕ} (d : DeltaDat Xo c n) (hA : d.l₂.A = 1) {ta : c.F ≃+* c.F} (h : Fixes c ta) :
     Fixes d.c₂ (covAut d ta) := by
   have key : ∀ (x : d.c₂.F), ta (d.eF.symm x) = d.eF.symm x → covAut d ta x = x := fun x hx => by
@@ -96,9 +124,15 @@ theorem fixes_covAut {n : ℕ} (d : DeltaDat Xo c n) (hA : d.l₂.A = 1) {ta : c
       rw [this]; exact one_mem _
   exact h.base ⟨a, hle a.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {ta : c.F ≃+* c.F} (h : Fixes c ta) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     (twPt h y).x = y.x := rfl
 
+/- English proof (translation)
+Rewrite using `[Tw.val_algebraMap]`. Simplify using the standard rewrite rules.
+-/
 example : (algebraMap ℂ (Tw Complex.conjAe.toRingEquiv ℂ) Complex.I).val = -Complex.I := by
   rw [Tw.val_algebraMap]
   simp

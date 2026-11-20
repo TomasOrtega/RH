@@ -11,10 +11,20 @@ namespace GlobalTheory.EtaValueBound
 
 open private euler_factor_log_bound partial_sums_log_euler_factor_le from Formalism.GL3MeanSquares.HookFormulaTorsion.SumWeightsOverPrimeLeHalfDegree
 
+/- English proof (translation)
+Use `(summable_nat_add_iff 1).2 (Real.summable_one_div_nat_pow.2 (by omega : 1 < M))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem summable_zeta (M : ℕ) (hM : 2 ≤ M) : Summable (fun m : ℕ => 1 / ((m : ℝ) + 1) ^ M) := by
   have := (summable_nat_add_iff 1).2 (Real.summable_one_div_nat_pow.2 (by omega : 1 < M))
   simpa using this
 
+/- English proof (translation)
+Establish `h2 : ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ 2 = Real.pi ^ 2 / 6`. Establish `h` using `hasSum_zeta_two`. Establish `h'` using `(hasSum_nat_add_iff' 1).2 h`. Simplify using `using h'.tsum_eq`. Establish `h3 : ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ M ≤ ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ 2`.
+
+Use `(summable_zeta M hM).tsum_le_tsum (fun m => ?_) (summable_zeta 2 le_rfl)` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (m : ℝ) + 1` using `by have := (Nat.cast_nonneg m : (0 : ℝ) ≤ m); linarith`. Conclude with `one_div_le_one_div_of_le (by positivity) (pow_le_pow_right₀ h1 hM)`. Establish `h4` using `Real.pi_lt_d2`. Establish `h5` using `Real.pi_pos`.
+
+Rewrite `h3` using `[h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem zeta_le_two (M : ℕ) (hM : 2 ≤ M) : ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ M ≤ 2 := by
   have h2 : ∑' m : ℕ, 1 / ((m : ℝ) + 1) ^ 2 = Real.pi ^ 2 / 6 := by
     have h := hasSum_zeta_two
@@ -29,6 +39,9 @@ theorem zeta_le_two (M : ℕ) (hM : 2 ≤ M) : ∑' m : ℕ, 1 / ((m : ℝ) + 1)
   rw [h2] at h3
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|Real.log (Formalism.HermitianLatticesTheory.lValEta K M)| ≤ (Formalism.HermitianLatticesTheory.fDeg K : ℝ) * Real.log 2 := by have hpos : ∀ P : {P : Ideal (𝓞 K) // P.IsMaximal}, 0 < Formalism.HermitianLatticesTheory.eulerFac K M P.1 := fun P => (euler_factor_log_bound K hK M (by …`.
+-/
 theorem multipliable_pos_abs_log_le (K : Type) [Field K] [NumberField K] [StarRing K]
     (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 2 ≤ M) :
     Multipliable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Formalism.HermitianLatticesTheory.eulerFac K M P.1) ∧
@@ -58,6 +71,11 @@ theorem multipliable_pos_abs_log_le (K : Type) [Field K] [NumberField K] [StarRi
       _ ≤ _ := habs.tsum_le_of_sum_le hpart
       _ ≤ _ := mul_le_mul_of_nonneg_left (Real.log_le_log hz (zeta_le_two M hM)) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Introduce `K _ _ _ hK i hi`. Take `⟨-, h0, h1⟩` from `multipliable_pos_abs_log_le K hK i hi`. Rewrite `h1` using `[abs_le]`. Establish `h2 : (0 : ℝ) < 2 ^ Formalism.HermitianLatticesTheory.fDeg K` using `by positivity`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[← Real.log_le_log_iff (inv_pos.2 h2) h0, Real.log_inv, Real.log_pow]`. Conclude with `h1.1`. Rewrite using `[← Real.log_le_log_iff h0 h2, Real.log_pow]`. Conclude with `h1.2`.
+-/
 theorem lValEta_bounds : ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ i : ℕ, 2 ≤ i → ((2 : ℝ) ^ (Formalism.HermitianLatticesTheory.fDeg K))⁻¹ ≤ Formalism.HermitianLatticesTheory.lValEta K i ∧ Formalism.HermitianLatticesTheory.lValEta K i ≤ 2 ^ (Formalism.HermitianLatticesTheory.fDeg K) := by
   intro K _ _ _ hK i hi
   obtain ⟨-, h0, h1⟩ := multipliable_pos_abs_log_le K hK i hi

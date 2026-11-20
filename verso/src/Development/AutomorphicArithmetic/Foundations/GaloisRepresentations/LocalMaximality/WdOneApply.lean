@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ResidueFunctionalVa
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite `hm` using `[Submodule.map₂_eq_span_image2]`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Simplify using `[resP, hA a ha]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [map_smul, hx, smul_zero]`.
+-/
 private lemma resP_eq_zero {F V : Type} [Field F] [Algebra ℂ F] [AddCommGroup V] [Module ℂ V]
     (ρ : F →ₗ[ℂ] ℂ) (A : Submodule ℂ F) (B : Submodule ℂ V) (hA : ∀ f ∈ A, ρ f = 0)
     {m : F ⊗[ℂ] V} (hm : m ∈ Submodule.map₂ (TensorProduct.mk ℂ F V) A B) :
@@ -18,6 +23,11 @@ private lemma resP_eq_zero {F V : Type} [Field F] [Algebra ℂ F] [AddCommGroup 
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul r x _ hx => rw [map_smul, hx, smul_zero]
 
+/- English proof (translation)
+Rewrite `hm` using `[Submodule.map₂_eq_span_image2]`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `hx`. Simplify `B.smul_mem (ρ a) hb` using `[resP]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `B.add_mem hx hy`. Consider the case `smul r x _ hx => rw [map_smul]`. Conclude with `B.smul_mem r hx`.
+-/
 private lemma residueCharacteristic_mem {F V : Type} [Field F] [Algebra ℂ F] [AddCommGroup V] [Module ℂ V]
     (ρ : F →ₗ[ℂ] ℂ) (A : Submodule ℂ F) (B : Submodule ℂ V)
     {m : F ⊗[ℂ] V} (hm : m ∈ Submodule.map₂ (TensorProduct.mk ℂ F V) A B) :
@@ -31,10 +41,30 @@ private lemma residueCharacteristic_mem {F V : Type} [Field F] [Algebra ℂ F] [
   | add x y _ _ hx hy => rw [map_add]; exact B.add_mem hx hy
   | smul r x _ hx => rw [map_smul]; exact B.smul_mem r hx
 
+/- English proof (translation)
+Simplify using `[wd, LinearMap.sum_apply]`.
+-/
 private lemma wd_one_apply {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E] (c : Finset ι → E) (t : Finset ι) :
     wd (fun _ : ι => (1 : Module.End ℂ E)) c t = ∑ i ∈ t, GlobalTheory.cubeSign t i • c (t.erase i) := by
   simp [wd, LinearMap.sum_apply]
 
+/- English proof (translation)
+Introduce `hW _ F K _ _ _ _ _ _ d x hx τ _ ρ hρ a p t ht`. Simplify using `only [UpperTheory.Gal.productCup_of_system.Sys.mix, GlobalTheory.WH.acx, GlobalTheory.PD.Cx.B, Submodule.mem_map, Submodule.mem_pi] at ht`. Take `⟨c, hc, rfl⟩` from `ht`. Establish `hU` using `fun I J : Finset (Fin (d + 1)) => hW (Fin (d + 1)) (Fin (d + 1)) (F ⊗[ℂ] DR ℂ K) (fun _ => 1) c I J`. Establish `hcu : ∀ I J : Finset (Fin (d + 1)), c (uni I J) ≠ 0 → I.Nonempty ∧ J.Nonempty ∧ I.card + J.card = d + p + 1 ∧ c (uni I J) ∈ (sysP K x a).M I J`.
+
+Introduce `I J h0`. Establish `h` using `hc (uni I J) (Set.mem_univ _)`. Take `⟨_, hl, hr, hcard, _⟩` from `hU I J`. Use `split_ifs at h with h1`. Simplify using `only [GlobalTheory.WH.mixF, hl, hr] at h split_ifs at h with h2`.
+
+Use `⟨h2.1, h2.2, ?_, h⟩` and prove the remaining obligations. Rewrite `h1` using `[hcard]`. Use linear arithmetic over natural numbers and integers. Conclude with `absurd ((Submodule.mem_bot ℂ).mp h) h0`. Conclude with `absurd ((Submodule.mem_bot ℂ).mp h) h0`.
+
+Establish `hz : ∀ (i : Fin (d + 1)) (J : Finset (Fin (d + 1))), resP (DR ℂ K) ρ (c (uni (Finset.univ.erase i) J)) = 0`. Introduce `i J`. Distinguish the cases in `h0 : c (uni (Finset.univ.erase i) J) = 0`. Rewrite using `[h0, map_zero]`. Take `⟨hI, _, _, hm⟩` from `hcu _ _ h0`.
+
+Conclude with `resP_eq_zero ρ _ _ (fun f hf => GlobalTheory.T.residue_functional_vanishes_on_omega_forms ℂ F d (xv x) hx.pd ρ hρ i _ hI (by simp) f hf) hm`. Use `⟨fun L => ((-1 : ℤ) ^ (d + 1)) • resP (DR ℂ K) ρ (c (uni Finset.univ L)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Lef.omCx, GlobalTheory.PD.cech, GlobalTheory.PD.cechC, Submodule.mem_pi]`. Introduce `L _`. Distinguish the cases in `h0 : c (uni Finset.univ L) = 0`.
+
+Simplify using `[h0]`. Take `⟨_, hL, hcard, hm⟩` from `hcu _ _ h0`. Rewrite `hcard` using `[Finset.card_univ, Fintype.card_fin]`. Simplify using `only`. Rewrite using `[if_pos (show L.Nonempty ∧ (L.card : ℤ) = ↑p - 1 + 1 from ⟨hL, by omega⟩)]`.
+
+Conclude with `Submodule.smul_of_tower_mem _ _ (residueCharacteristic_mem ρ _ _ hm)`. Use function extensionality and compare the values at `J`. Simplify using `only [Lef.omCx, GlobalTheory.PD.cech, GlobalTheory.PD.deltaL, LinearMap.coe_mk, AddHom.coe_mk, GlobalTheory.DI.delta]`. Rewrite using `[(hU Finset.univ J).1]`. Simplify using `only [wd_one_apply, map_add, map_zsmul, map_sum, hz, smul_zero, Finset.sum_const_zero, zero_add, Finset.card_univ, Fintype.card_fin, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.pInt_of :
     WdUni → GoodZ → PInt := by
   intro hW _ F K _ _ _ _ _ _ d x hx τ _ ρ hρ a p t ht

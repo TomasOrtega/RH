@@ -5,6 +5,21 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential ReciprocityTheory.Char
 
 namespace GlobalTheory.CechDR
 
+/- English proof (translation)
+Introduce `R' _ X X' φ s' t₁ t₂ S h₁ h₂`. Establish `hS₁ : S.unop.1 ≤ t₁.unop.1.1.1` using `leOfHom h₁.unop`. Establish `hS₂ : S.unop.1 ≤ t₂.unop.1.1.1` using `leOfHom h₂.unop`. Set `B : Set Γ(X', S.unop.1)` to `{g | ∃ W : X.affineOpens, W.1 ≤ t₁.unop.1.2.1 ∧ W.1 ≤ t₂.unop.1.2.1 ∧ X'.basicOpen g ≤ φ ⁻¹ᵁ W.1}`. Establish `hB : Ideal.span B = ⊤`.
+
+Use `(S.unop.2.self_le_iSup_basicOpen_iff).1 fun x hx ↦ ?_` and prove the remaining obligations. Establish `hx₁ : φ.base x ∈ t₁.unop.1.2.1` using `t₁.unop.2 (hS₁ hx)`. Establish `hx₂ : φ.base x ∈ t₂.unop.1.2.1` using `t₂.unop.2 (hS₂ hx)`. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (x := φ.base x) (U := t₁.unop.1.2.1 ⊓ t₂.unop.1.2.1) ⟨hx₁, hx₂⟩`. Take `⟨f, hf, hxf⟩` from `S.unop.2.exists_basicOpen_le (V := S.unop.1 ⊓ φ ⁻¹ᵁ W) ⟨x, hx, hxW⟩ hx`.
+
+Establish `hfB : f ∈ B` using `⟨⟨W, hW⟩, fun y hy ↦ (hWV hy).1, fun y hy ↦ (hWV hy).2, hf.trans inf_le_right⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hfB⟩, hxf⟩`. Take `⟨s0, hs0, hspan⟩` from `(Ideal.span_eq_top_iff_finite B).1 hB`. Use `⟨s0.card, fun i ↦ (s0.equivFin.symm i).1, ?_, fun i S' u hu ↦ ?_⟩` and prove the remaining obligations. Establish `hsp : Ideal.span (Set.range fun i ↦ ((s0.equivFin.symm i).1 : Γ(X', S.unop.1))) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Ideal.span_mono fun x hx ↦ ⟨s0.equivFin ⟨x, hx⟩, by simp⟩`. Conclude with `hsp`. Establish `hbB : (s0.equivFin.symm i).1 ∈ B` using `hs0 (s0.equivFin.symm i).2`. Take `⟨W, hW₁, hW₂, hW⟩` from `hbB`.
+
+Use `set g : Γ(X', S.unop.1) := (s0.equivFin.symm i).1 with hg`. Express the relevant statement in the definitionally equal form `IsUnit (X'.presheaf.map (homOfLE (show S'.unop.1 ≤ S.unop.1 from leOfHom u.unop)).op g) at hu`. Establish `hS' : S'.unop.1 ≤ X'.basicOpen g`. Use `Scheme.basicOpen_of_isUnit X' hu` as an intermediate fact. Rewrite `this` using `[Scheme.basicOpen_res]`.
+
+Rewrite using `[← this]`. Conclude with `inf_le_right`. Set `t₃ : Pair φ` to `⟨(⟨X'.basicOpen g, S.unop.2.basicOpen g⟩, W), hW⟩`. Use `⟨Opposite.op t₃, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩, ⟨(homOfLE ?_).op⟩⟩` and prove the remaining obligations. Conclude with `⟨(X'.basicOpen_le g).trans hS₁, hW₁⟩`.
+
+Conclude with `⟨(X'.basicOpen_le g).trans hS₂, hW₂⟩`. Conclude with `hS'`.
+-/
 theorem exists_pair_below_two : ∀ {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X) (s' : X' ⟶ Sp R'), (∀ (t₁ t₂ : (Pair φ)ᵒᵖ) (S : AffOp X'), ((pairFst φ).obj t₁ ⟶ S) → ((pairFst φ).obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (OAff s').obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (OAff s') u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty ((pairFst φ).obj t₃ ⟶ S')) := by
   intro R' _ X X' φ s' t₁ t₂ S h₁ h₂
   have hS₁ : S.unop.1 ≤ t₁.unop.1.1.1 := leOfHom h₁.unop

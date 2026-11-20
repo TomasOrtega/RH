@@ -18,6 +18,31 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `F _ _ V _ p _ hp X s Xw _ yb _`. Take `⟨φ, hφ⟩ : ∃ φ : V →+* 𝓞_ℂ_[p], yb ≫ s = Spec.map (CommRingCat.ofHom φ)` from `⟨(Spec.preimage (yb ≫ s)).hom, (Spec.map_preimage (yb ≫ s)).symm⟩`. Establish `hpV0 : ((p : V) : F) ≠ 0` using `by push_cast; exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hpV : (p : V) ∈ IsLocalRing.maximalIdeal V`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Establish `h1` using `(V.valuation_eq_one_iff (p : V)).1 hu`. Establish `h2` using `(V.mem_nonunits_iff).1 hp`. Establish `: ((p : V) : F) = (p : F)` using `by push_cast; rfl`. Rewrite `h1` using `[this]`.
+
+Conclude with `(ne_of_lt h2) h1`. Establish `hpV0' : (p : V) ≠ 0` using `fun h => hpV0 (by rw [h]; rfl)`. Establish `hφp : φ (p : V) = (p : 𝓞_ℂ_[p])` using `map_natCast φ p`. Establish `hpO : ¬ IsUnit (p : 𝓞_ℂ_[p])` using `Formalism.BasicNotions.Loc.OC_l_not_unit p`. Establish `hpO0 : (p : 𝓞_ℂ_[p]) ≠ 0`.
+
+Introduce `h`. Establish `: ((p : 𝓞_ℂ_[p]) : ℂ_[p]) = 0` using `by rw [h]; rfl`. Move the coercions through the operations in `at this`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast this)`. Establish `hmax : ∀ P : Ideal V, P.IsPrime → P ≠ ⊥ → P = IsLocalRing.maximalIdeal V` using `fun P hP hne => IsLocalRing.eq_maximalIdeal (hP.isMaximal hne)`.
+
+Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨a, ha, ha0⟩` from `hne`.
+
+Establish `hker : RingHom.ker φ ≠ ⊥` using `fun h => ha0 (by`. Establish `: a ∈ RingHom.ker φ` using `ha`. Rewrite `this` using `[h]`. Conclude with `this)`. Use `hmax _ (RingHom.ker_isPrime φ) hker` as an intermediate fact.
+
+Establish `hp' : (p : V) ∈ RingHom.ker φ` using `this ▸ hpV`. Conclude with `hpO0 (hφp ▸ hp')`. Establish `hloc : IsLocalHom φ`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`.
+
+Establish `hP` using `hmax (Ideal.comap φ (IsLocalRing.maximalIdeal 𝓞_ℂ_[p])) (Ideal.comap_isPrime _ _) (by`. Introduce `h`. Establish `: (p : V) ∈ Ideal.comap φ (IsLocalRing.maximalIdeal 𝓞_ℂ_[p])`. Rewrite using `[Ideal.mem_comap, hφp, IsLocalRing.mem_maximalIdeal]`. Conclude with `hpO`.
+
+Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hpV0' this)`. Establish `: a ∈ Ideal.comap φ (IsLocalRing.maximalIdeal 𝓞_ℂ_[p])`. Rewrite using `[hP, IsLocalRing.mem_maximalIdeal]`. Conclude with `hna`.
+
+Rewrite `this` using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal]`. Conclude with `this ha`. Use `⟨φ, hinj, hloc, hφ, ?_⟩` and prove the remaining obligations. Establish `hg : Function.Injective ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ)` using `(FaithfulSMul.algebraMap_injective _ _).comp hinj`. Take `⟨ψ, hψ⟩ : ∃ ψ : FractionRing V →+* ℂ_[p], ψ.comp (algebraMap V (FractionRing V)) = (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp φ` from `⟨IsFractionRing.lift (K := FractionRing V) hg, RingHom.ext fun x => IsFractionRing.lift_algebraMap (K := FractionRing V) hg x⟩`.
+
+Establish `w : (Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ yb) ≫ s = Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))`. Rewrite using `[Category.assoc, hφ, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hψ]`. Set `y : Spec (.of ℂ_[p]) ⟶ GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericFibre s` to `pullback.lift _ _ w`. Use `⟨y, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericι`.
+
+Conclude with `pullback.lift_fst _ _ w`.
+-/
 theorem isTest_base_generic : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ (X : Scheme.{0}) (s : X ⟶ Sp V) (Xw : X.Opens), Xw ≤ X.basicOpen (p : Γ(X, ⊤)) → ∀ yb : Sp 𝓞_ℂ_[p] ⟶ X, IsTest p Xw yb → ∃ φ : V →+* 𝓞_ℂ_[p], Function.Injective φ ∧ IsLocalHom φ ∧ yb ≫ s = Spec.map (CommRingCat.ofHom φ) ∧ ∃ y : Spec (.of ℂ_[p]) ⟶ GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericFibre s, y ≫ GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits.genericι s = Spec.map (CommRingCat.ofHom (algebraMap 𝓞_ℂ_[p] ℂ_[p])) ≫ yb := by
   intro F _ _ V _ p _ hp X s Xw _ yb _
 

@@ -5,6 +5,15 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Establish `hfin` using `IsArtinianRing.setOf_isMaximal_finite A`. Set `s : Finset (Subspace K A)` to `hfin.toFinset.image fun 𝔪 => (𝔪.restrictScalars K).comap Θ`. Establish `hs : ⊤ ∉ s`. Introduce `ht`. Take `⟨𝔪, hm, he⟩` from `Finset.mem_image.1 ht`.
+
+Take `⟨c, hc⟩` from `h 𝔪 (by simpa using hm)`. Establish `: c ∈ (𝔪.restrictScalars K).comap Θ` using `by rw [he]; trivial`. Conclude with `hc this`. Establish `hne` using `Subspace.biUnion_ne_univ_of_top_notMem hs`. Take `⟨c, hc⟩` from `(Set.ne_univ_iff_exists_notMem _).1 hne`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Take `⟨𝔪, hm, hle⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hu)`. Apply `hc` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`.
+
+Conclude with `⟨_, Finset.mem_image.2 ⟨𝔪, by simpa using hm, rfl⟩, hle⟩`.
+-/
 theorem exists_isUnit_of_forall_maximal {K A : Type} [Field K] [Infinite K] [CommRing A]
     [Algebra K A] [IsArtinianRing A] (Θ : A →ₗ[K] A)
     (h : ∀ 𝔪 : Ideal A, 𝔪.IsMaximal → ∃ c, Θ c ∉ 𝔪) : ∃ c, IsUnit (Θ c) := by
@@ -27,6 +36,33 @@ theorem exists_isUnit_of_forall_maximal {K A : Type} [Field K] [Infinite K] [Com
   simp only [Set.mem_iUnion]
   exact ⟨_, Finset.mem_image.2 ⟨𝔪, by simpa using hm, rfl⟩, hle⟩
 
+/- English proof (translation)
+Introduce `F E K _ _ _ _ _ _ _ τ m hm x hx`. Use `set T := Algebra.TensorProduct.map (AlgHom.id K K) (τ : E →ₐ[F] E) with hT`. Establish `hm0 : 0 < m` using `hm ▸ orderOf_pos τ`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Use `haveI : IsArtinianRing (K ⊗[F] E) := IsArtinianRing.of_finite K _`.
+
+Establish `hpow : ∀ (i : ℕ) (y : K ⊗[F] E), T^[i] y = (T ^ i) y` using `fun i y => by`. Rewrite using `[AlgHom.coe_pow]`. Establish `htm : ∀ (i : ℕ) (k : K) (c : E), (T ^ i) (k ⊗ₜ c) = k ⊗ₜ ((τ ^ i) c)`. Introduce `i k c`. Proceed by induction on `i with`.
+
+Consider the case `zero => simp`. Consider the case `succ i ih => rw [pow_succ', pow_succ', AlgHom.mul_apply, ih, AlgEquiv.mul_apply]`. Simplify using `[hT]`. Establish `hTm : ∀ y, (T ^ m) y = y`. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k c => rw [htm, ← hm, pow_orderOf_eq_one]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => rw [map_add, ha, hb]`.
+
+Simplify using `only [hpow] at hx`. Set `a : ℕ → K ⊗[F] E` to `fun i => ∏ j ∈ Finset.range i, (T ^ j) x`. Establish `ha : ∀ i, x * T (a i) = a (i + 1)`. Introduce `i`. Simplify using `only [a, map_prod, Finset.prod_range_succ', pow_zero, AlgHom.one_apply, pow_succ', AlgHom.mul_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ha0 : a 0 = 1` using `by simp [a]`. Establish `ham : a m = 1` using `hx`. Set `Θ : K ⊗[F] E →ₗ[K] K ⊗[F] E` to `∑ i ∈ Finset.range m, (LinearMap.mulLeft K (a i)).comp (T ^ i).toLinearMap`. Establish `hΘ : ∀ c, Θ c = ∑ i ∈ Finset.range m, a i * (T ^ i) c`.
+
+Introduce `c`. Simplify using `[Θ, LinearMap.sum_apply]`. Establish `hfix : ∀ c, x * T (Θ c) = Θ c`. Introduce `c`. Establish `h1 : x * T (Θ c) = ∑ i ∈ Finset.range m, a (i + 1) * (T ^ (i + 1)) c`.
+
+Rewrite using `[hΘ, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← mul_assoc, ha, pow_succ', AlgHom.mul_apply]`. Establish `h2` using `Finset.sum_range_succ' (fun i => a i * (T ^ i) c) m`. Rewrite `h2` using `[Finset.sum_range_succ, ham, ha0, hTm, pow_zero, AlgHom.one_apply]`.
+
+Rewrite using `[h1, hΘ]`. Conclude with `(add_right_cancel h2).symm`. Take `⟨c, hc⟩` from `exists_isUnit_of_forall_maximal Θ (fun 𝔪 h𝔪 => by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Use `letI : Field ((K ⊗[F] E) ⧸ 𝔪) := Ideal.Quotient.field 𝔪`. Set `ι : E →+* (K ⊗[F] E) ⧸ 𝔪` to `(Ideal.Quotient.mk 𝔪).comp Algebra.TensorProduct.includeRight.toRingHom`. Set `φ : Fin m → (E →* (K ⊗[F] E) ⧸ 𝔪)` to `fun i => ι.toMonoidHom.comp ((τ ^ (i : ℕ) : E ≃ₐ[F] E) : E →* E)`. Establish `hφ : Function.Injective φ`. Introduce `i j hij`.
+
+Establish `: τ ^ (i : ℕ) = τ ^ (j : ℕ)`. Use extensionality with `c`. Conclude with `ι.injective (DFunLike.congr_fun hij c)`. Conclude with `Fin.ext (pow_injOn_Iio_orderOf (by simp [hm]) (by simp [hm]) this)`. Establish `hli` using `(linearIndependent_monoidHom E ((K ⊗[F] E) ⧸ 𝔪)).comp φ hφ`.
+
+Use `Fintype.linearIndependent_iff.1 hli (fun i => Ideal.Quotient.mk 𝔪 (a i)) (by` as an intermediate fact. Use extensionality with `c`. Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.2 (hcon (1 ⊗ₜ c))`. Rewrite `h` using `[hΘ, map_sum, Finset.sum_range]`. Simplify using `only [htm, map_mul] at h`.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `h) ⟨0, hm0⟩`. Simplify using `only [ha0, map_one] at this`. Conclude with `one_ne_zero this)`. Conclude with `⟨hc.unit, hfix c⟩`.
+-/
 theorem hilbert90_baseChange : ∀ (F E K : Type) [Field F] [CharZero F] [Field E] [Algebra F E] [FiniteDimensional F E] [Field K] [Algebra F K] (τ : E ≃ₐ[F] E) (m : ℕ), orderOf τ = m → ∀ x : K ⊗[F] E, ∏ i ∈ Finset.range m, (Algebra.TensorProduct.map (AlgHom.id K K) (τ : E →ₐ[F] E))^[i] x = 1 → ∃ z : (K ⊗[F] E)ˣ, x * Algebra.TensorProduct.map (AlgHom.id K K) (τ : E →ₐ[F] E) z = z := by
   intro F E K _ _ _ _ _ _ _ τ m hm x hx
   classical

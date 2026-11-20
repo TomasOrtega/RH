@@ -17,9 +17,17 @@ def Good (Φ : (B.Mat k r → E) → (B.Mat k r → E)) : Prop :=
   (∀ f₁ f₂ : B.Mat k r → E, SS k r f₁ → SS k r f₂ → ∀ g ∈ B.GV k r, Φ (f₁ + f₂) g = Φ f₁ g + Φ f₂ g) ∧
   (∀ (c : ℝ) (f : B.Mat k r → E), SS k r f → ∀ g ∈ B.GV k r, Φ (c • f) g = c • Φ f g)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ h g hg => h g hg, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ => rfl⟩`.
+-/
 theorem good_id : Good (k := k) (r := r) (E := E) id :=
   ⟨fun _ _ h g hg => h g hg, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ => rfl⟩
 
+/- English proof (translation)
+Use `⟨fun f₁ f₂ h g hg => hΦ.1 _ _ (fun y hy => D_congr h hy hX) g hg, fun f₁ f₂ h₁ h₂ g hg => ?_, fun c f hf g hg => ?_⟩` and prove the remaining obligations. Use `show Φ (D b X (f₁ + f₂)) g = Φ (D b X f₁) g + Φ (D b X f₂) g`. Rewrite using `[hΦ.1 _ (D b X f₁ + D b X f₂) (fun y hy => D_add h₁ h₂ hy hX) g hg]`. Conclude with `hΦ.2.1 _ _ (ss_D h₁ hX) (ss_D h₂ hX) g hg`. Use `show Φ (D b X (c • f)) g = c • Φ (D b X f) g`.
+
+Rewrite using `[hΦ.1 _ (c • D b X f) (fun y hy => D_smul c hf hy hX) g hg]`. Conclude with `hΦ.2.2 c _ (ss_D hf hX) g hg`.
+-/
 theorem good_comp {Φ : (B.Mat k r → E) → (B.Mat k r → E)} (hΦ : Good Φ) {b : Bool} {X : B.Mat k r}
     (hX : B.inLie k r X) : Good (fun f => Φ (D b X f)) := by
   refine ⟨fun f₁ f₂ h g hg => hΦ.1 _ _ (fun y hy => D_congr h hy hX) g hg, fun f₁ f₂ h₁ h₂ g hg => ?_,
@@ -31,6 +39,13 @@ theorem good_comp {Φ : (B.Mat k r → E) → (B.Mat k r → E)} (hΦ : Good Φ)
     rw [hΦ.1 _ (c • D b X f) (fun y hy => D_smul c hf hy hX) g hg]
     exact hΦ.2.2 c _ (ss_D hf hX) g hg
 
+/- English proof (translation)
+Establish `h0 : Φ 0 g = 0`. Use `hΦ.2.2 0 0 ss_zero g hg` as an intermediate fact. Simplify `this` using `only [zero_smul]`. Establish `key : ∀ s : Finset (Fin N), SS k r (∑ i ∈ s, c i • h i) ∧ Φ (∑ i ∈ s, c i • h i) g = ∑ i ∈ s, c i • Φ (h i) g`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `⟨ss_zero, h0⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+
+Use `⟨ss_add (ss_smul _ (hh a)) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ.2.1 _ _ (ss_smul _ (hh a)) ih.1 g hg, hΦ.2.2 _ _ (hh a) g hg, ih.2]`. Conclude with `(key univ).2`.
+-/
 theorem good_sum {Φ : (B.Mat k r → E) → (B.Mat k r → E)} (hΦ : Good Φ) {N : ℕ} (c : Fin N → ℝ)
     (h : Fin N → B.Mat k r → E) (hh : ∀ i, SS k r (h i)) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     Φ (∑ i, c i • h i) g = ∑ i, c i • Φ (h i) g := by
@@ -52,6 +67,9 @@ def ev : List Bool → List (B.Mat k r) → (B.Mat k r → E) → (B.Mat k r →
   | b :: ks, X :: xs, f => D b X (ev ks xs f)
   | _, _, f => f
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, hf => by simpa [ev] using hf | _ :: _, [], _, _, hf => by simpa [ev] using hf | b :: ks, X :: xs, f, hxs, hf => by show SS k r (D b X (ev ks xs f)) exact ss_D (ss_ev ks xs (fun Y hY => hxs Y (List.mem_cons_of_mem _ hY)) hf) (hxs X List.mem_cons_self)`.
+-/
 theorem ss_ev : ∀ (ks : List Bool) (xs : List (B.Mat k r)) {f : B.Mat k r → E},
     (∀ X ∈ xs, B.inLie k r X) → SS k r f → SS k r (ev ks xs f)
   | [], _, _, _, hf => by simpa [ev] using hf
@@ -60,6 +78,9 @@ theorem ss_ev : ∀ (ks : List Bool) (xs : List (B.Mat k r)) {f : B.Mat k r → 
     show SS k r (D b X (ev ks xs f))
     exact ss_D (ss_ev ks xs (fun Y hY => hxs Y (List.mem_cons_of_mem _ hY)) hf) (hxs X List.mem_cons_self)
 
+/- English proof (translation)
+Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih => show Formalism.REAL.RdV X (B.Rw v F) = D false X (ev (List.replicate v.length false) v F)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem rw_eq_ev (v : List (B.Mat k r)) (F : B.Mat k r → E) :
     B.Rw v F = ev (List.replicate v.length false) v F := by
   induction v with
@@ -68,6 +89,9 @@ theorem rw_eq_ev (v : List (B.Mat k r)) (F : B.Mat k r → E) :
     show Formalism.REAL.RdV X (B.Rw v F) = D false X (ev (List.replicate v.length false) v F)
     rw [ih]; rfl
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `nil => exact rw_eq_ev v F`. Consider the case `cons X u ih => show B.LdV X (B.dLR u v F) = D true X (ev (List.replicate u.length true ++ List.replicate v.length false) (u ++ v) F)`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem dLR_eq_ev (u v : List (B.Mat k r)) (F : B.Mat k r → E) :
     B.dLR u v F = ev (List.replicate u.length true ++ List.replicate v.length false) (u ++ v) F := by
   induction u with
@@ -80,6 +104,9 @@ def bsum {N : ℕ} (e : Fin N → B.Mat k r) : List Bool → (List (B.Mat k r) �
   | [], Ψ => Ψ []
   | _ :: ks, Ψ => ∑ i, bsum e ks (fun β => Ψ (e i :: β))
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | _ :: ks, Ψ => by simp only [bsum] rw [Finset.mul_sum] exact Finset.sum_congr rfl fun i _ => bsum_mul e a ks _`.
+-/
 theorem bsum_mul {N : ℕ} (e : Fin N → B.Mat k r) (a : ℝ) :
     ∀ (ks : List Bool) (Ψ : List (B.Mat k r) → ℝ), bsum e ks (fun β => a * Ψ β) = a * bsum e ks Ψ
   | [], _ => rfl
@@ -88,6 +115,9 @@ theorem bsum_mul {N : ℕ} (e : Fin N → B.Mat k r) (a : ℝ) :
     rw [Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => bsum_mul e a ks _
 
+/- English proof (translation)
+The claim follows from `| [], _, _, h => h [] rfl (by simp) | _ :: ks, Ψ₁, Ψ₂, h => by simp only [bsum] refine Finset.sum_le_sum fun i _ => bsum_mono e ks _ _ fun β hβ hβe => h (e i :: β) (by simp [hβ]) ?_ intro x hx rcases List.mem_cons.1 hx with hx | hx · exact ⟨i, hx⟩ · exact hβe x hx`.
+-/
 theorem bsum_mono {N : ℕ} (e : Fin N → B.Mat k r) :
     ∀ (ks : List Bool) (Ψ₁ Ψ₂ : List (B.Mat k r) → ℝ),
       (∀ β : List (B.Mat k r), β.length = ks.length → (∀ x ∈ β, ∃ i, x = e i) → Ψ₁ β ≤ Ψ₂ β) →
@@ -101,6 +131,9 @@ theorem bsum_mono {N : ℕ} (e : Fin N → B.Mat k r) :
     · exact ⟨i, hx⟩
     · exact hβe x hx
 
+/- English proof (translation)
+The claim follows from `| [], _, h => h [] | _ :: ks, Ψ, h => by simp only [bsum] exact Finset.sum_nonneg fun i _ => bsum_nonneg e ks _ fun β => h _`.
+-/
 theorem bsum_nonneg {N : ℕ} (e : Fin N → B.Mat k r) :
     ∀ (ks : List Bool) (Ψ : List (B.Mat k r) → ℝ), (∀ β, 0 ≤ Ψ β) → 0 ≤ bsum e ks Ψ
   | [], _, h => h []
@@ -108,6 +141,23 @@ theorem bsum_nonneg {N : ℕ} (e : Fin N → B.Mat k r) :
     simp only [bsum]
     exact Finset.sum_nonneg fun i _ => bsum_nonneg e ks _ fun β => h _
 
+/- English proof (translation)
+Introduce `ks`. Proceed by induction on `ks with`. Consider the case `nil`. Introduce `xs hlen _ Φ _ f _ g _`. Establish `: xs = []` using `List.eq_nil_of_length_eq_zero (by simpa using hlen)`.
+
+Substitute `this` using the available equality. Simplify using `[ev, bsum]`. Consider the case `cons b ks ih`. Introduce `xs hlen hxs Φ hΦ f hf g hg`. Consider the cases of `xs with`.
+
+Consider the case `nil => simp at hlen`. Consider the case `cons X xs`. Establish `hlen' : xs.length = ks.length` using `by simpa using hlen`. Establish `hX` using `hxs X List.mem_cons_self`. Establish `hxs' : ∀ Y ∈ xs, B.inLie k r Y ∧ ∀ i, |c i Y| ≤ K` using `fun Y hY => hxs Y (List.mem_cons_of_mem _ hY)`.
+
+Establish `hh : SS k r (ev ks xs f)` using `ss_ev ks xs (fun Y hY => (hxs' Y hY).1) hf`. Establish `hexp : ∀ g' ∈ B.GV k r, D b X (ev ks xs f) g' = (∑ i, c i X • D b (e i) (ev ks xs f)) g'`. Introduce `g' hg'`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply]`.
+
+Conclude with `D_letter hh hg' he hX.1 (hc X hX.1)`. Establish `step1 : Φ (ev (b :: ks) (X :: xs) f) g = ∑ i, c i X • Φ (D b (e i) (ev ks xs f)) g` using `by show Φ (D b X (ev ks xs f)) g = _`. Rewrite using `[hΦ.1 _ _ hexp g hg]`. Conclude with `good_sum hΦ _ _ (fun i => ss_D hh (he i)) hg`. Rewrite using `[step1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul (hX.2 i) (ih xs hlen' hxs' (fun f' => Φ (D b (e i) f')) (good_comp hΦ (he i)) f hf g hg) (norm_nonneg _) hK`.
+
+Use `_ = K ^ (X :: xs).length * bsum e (b :: ks) (fun β => ‖Φ (ev (b :: ks) β f) g‖) := by`. Rewrite using `[List.length_cons]`. Simplify using `only [bsum, ev]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expand {N : ℕ} (e : Fin N → B.Mat k r) (c : Fin N → B.Mat k r → ℝ) {K : ℝ} (hK : 0 ≤ K)
     (he : ∀ i, B.inLie k r (e i)) (hc : ∀ X, B.inLie k r X → X = ∑ i, c i X • e i) :
     ∀ (ks : List Bool) (xs : List (B.Mat k r)), xs.length = ks.length →
@@ -176,6 +226,21 @@ def lieSub (k r : ℕ) : Submodule ℝ (B.Mat k r) where
     rw [Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX',
       smul_zero]
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℝ (B.Mat k r)` using `inferInstanceAs (FiniteDimensional ℝ (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Set `bs` to `Module.finBasis ℝ (lieSub k r)`. Set `N` to `Module.finrank ℝ (lieSub k r)`. Set `s : Fin N → ℝ` to `fun i => max 1 ‖((bs i : lieSub k r) : B.Mat k r)‖`. Establish `hs1 : ∀ i, 1 ≤ s i` using `fun i => le_max_left _ _`.
+
+Establish `hs0 : ∀ i, 0 < s i` using `fun i => lt_of_lt_of_le one_pos (hs1 i)`. Establish `hb : ∀ i : Fin N, ∃ C, 0 < C ∧ ∀ x : lieSub k r, ‖bs.coord i x‖ ≤ C * ‖x‖` using `fun i => (LinearMap.toContinuousLinearMap (bs.coord i)).bound`. Use `choose C hC0 hC using hb`. Set `K : ℝ` to `∑ i, C i * s i`. Use `⟨N, fun i => (s i)⁻¹ • ((bs i : lieSub k r) : B.Mat k r), fun i X => if h : B.inLie k r X then bs.repr ⟨X, h⟩ i * s i else 0, K, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hC0 i).le (hs0 i).le`. Introduce `i`. Use `⟨(lieSub k r).smul_mem (s i)⁻¹ (bs i).2, fun p q => ?_⟩` and prove the remaining obligations. Use `show ‖((s i)⁻¹ • ((bs i : lieSub k r) : B.Mat k r)) p q‖ ≤ 1`. Rewrite using `[Matrix.smul_apply, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 (hs0 i)), inv_mul_le_iff₀ (hs0 i), mul_one]`.
+
+Conclude with `le_trans (Matrix.norm_entry_le_entrywise_sup_norm _) (le_max_right _ _)`. Introduce `X hX`. Establish `h1` using `congrArg Subtype.val (bs.sum_repr ⟨X, hX⟩)`. Rewrite `h1` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h1`.
+
+Use `conv_lhs => rw [← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show _ = (if h : B.inLie k r X then bs.repr ⟨X, h⟩ i * s i else 0) • ((s i)⁻¹ • ((bs i : lieSub k r) : B.Mat k r))`. Rewrite using `[dif_pos hX, smul_smul, mul_assoc, mul_inv_cancel₀ (hs0 i).ne', mul_one]`. Introduce `X hX i show |(if h : B.inLie k r X then bs.repr ⟨X, h⟩ i * s i else 0)| ≤ K`.
+
+Rewrite using `[dif_pos hX.1, abs_mul, abs_of_pos (hs0 i)]`. Establish `hXn : ‖(⟨X, hX.1⟩ : lieSub k r)‖ ≤ 1` using `by show ‖X‖ ≤ 1`. Conclude with `(Matrix.norm_le_iff zero_le_one).2 hX.2`. Establish `hrep : |bs.repr ⟨X, hX.1⟩ i| ≤ C i`. Rewrite using `[← Module.Basis.coord_apply, ← Real.norm_eq_abs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem basis_exists (k r : ℕ) : ∃ (N : ℕ) (e : Fin N → B.Mat k r) (c : Fin N → B.Mat k r → ℝ) (K : ℝ),
     0 ≤ K ∧ (∀ i, B.unitLie k r (e i)) ∧ (∀ X, B.inLie k r X → X = ∑ i, c i X • e i) ∧
     (∀ X, B.unitLie k r X → ∀ i, |c i X| ≤ K) := by
@@ -228,6 +293,9 @@ open Classical in
 def cst {A : ℝ} {F : B.Mat k r → E} (hF : C2.CCsc k r A F) (u v : List (B.Mat k r)) : ℝ :=
   if h : (∀ X ∈ u, B.unitLie k r X) ∧ (∀ X ∈ v, B.unitLie k r X) then Classical.choose (hF.2 u v h.1 h.2) else 0
 
+/- English proof (translation)
+Unfold `cst`. Rewrite using `[dif_pos ⟨hu, hv⟩]`. Conclude with `Classical.choose_spec (hF.2 u v hu hv) g hg`.
+-/
 theorem cst_spec {A : ℝ} {F : B.Mat k r → E} (hF : C2.CCsc k r A F) (u v : List (B.Mat k r))
     (hu : ∀ X ∈ u, B.unitLie k r X) (hv : ∀ X ∈ v, B.unitLie k r X) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     B.gN g ^ (A - C2.B0 r * ((u.length : ℝ) + v.length)) * ‖B.dLR u v F g‖ ≤ cst hF u v := by
@@ -240,6 +308,25 @@ def termT {N : ℕ} (e : Fin N → B.Mat k r) (K : ℝ) {A : ℝ} {F : B.Mat k r
   K ^ (a + b) * bsum e (List.replicate a true ++ List.replicate b false)
     (fun β => max (cst hF (β.take a) (β.drop a)) 0)
 
+/- English proof (translation)
+Introduce `k r E _ _ A F hF m`. Take `⟨N, e, c, K, hK, he, hc, hcK⟩` from `basis_exists k r`. Establish `hF0 : SS k r F` using `hF.1`. Establish `hT : ∀ a b, 0 ≤ termT e K hF a b` using `fun a b => mul_nonneg (pow_nonneg hK _) (bsum_nonneg e _ _ fun β => le_max_right _ _)`. Unfold `B.InCC B.CCle`.
+
+Use `⟨∑ a ∈ Finset.range (m + 1), ∑ b ∈ Finset.range (m + 1), termT e K hF a b, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hg₀U, hf', hfe⟩` from `hF0 g₀ hg₀`. Conclude with `⟨U, f', hU, hg₀U, hf'.of_le (by exact_mod_cast le_top), hfe⟩`. Introduce `u v hu hv hlen g hg`.
+
+Establish `h1` using `one_le_gN hg`. Establish `hxs : ∀ X ∈ u ++ v, B.inLie k r X ∧ ∀ i, |c i X| ≤ K`. Introduce `X hX`. Break down `List.mem_append.1 hX with h | h` into its components or cases. Conclude with `⟨(hu X h).1, hcK X (hu X h)⟩`.
+
+Conclude with `⟨(hv X h).1, hcK X (hv X h)⟩`. Establish `hexp` using `expand e c hK (fun i => (he i).1) hc (List.replicate u.length true ++ List.replicate v.length false) (u ++ v) (by simp) hxs id good_id F hF0 g hg`. Simplify using `only [id] at hexp`. Rewrite `hexp` using `[← dLR_eq_ev, List.length_append]`. Establish `hw : B.gN g ^ (A - C2.B0 r * (m : ℝ)) ≤ B.gN g ^ (A - C2.B0 r * ((u.length : ℝ) + v.length))`.
+
+Apply `Real.rpow_le_rpow_of_exponent_le h1` to reduce the goal to its premises. Establish `hB : 0 ≤ C2.B0 r` using `by unfold C2.B0; positivity`. Establish `: ((u.length : ℝ) + v.length) ≤ m` using `by exact_mod_cast hlen`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgN0 : 0 ≤ B.gN g ^ (A - C2.B0 r * ((u.length : ℝ) + v.length))` using `Real.rpow_nonneg (le_trans zero_le_one h1) _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bsum_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ termT e K hF u.length v.length := by`. Apply `mul_le_mul_of_nonneg_left _ (pow_nonneg hK _)` to reduce the goal to its premises.
+
+Apply `bsum_mono` to reduce the goal to its premises. Introduce `β hβlen hβe`. Establish `hl : β.length = u.length + v.length` using `by simpa using hβlen`. Establish `hsplit : ev (List.replicate u.length true ++ List.replicate v.length false) β F = B.dLR (β.take u.length) (β.drop u.length) F`. Rewrite using `[dLR_eq_ev, List.take_append_drop, List.length_take, List.length_drop, min_eq_left (by omega), show β.length - u.length = v.length by omega]`.
+
+Rewrite using `[hsplit]`. Establish `hunit : ∀ X ∈ β, B.unitLie k r X` using `fun X hX => by`. Take `⟨i, rfl⟩` from `hβe X hX`. Conclude with `he i`. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations.
+
+Use `cst_spec hF (β.take u.length) (β.drop u.length) (fun X hX => hunit X (List.mem_of_mem_take hX)) (fun X hX => hunit X (List.mem_of_mem_drop hX)) hg` as an intermediate fact. Rewrite `this` using `[List.length_take, List.length_drop, min_eq_left (by omega), show β.length - u.length = v.length by omega]`. Then use the resulting hypothesis. Use `_ ≤ ∑ a ∈ Finset.range (m + 1), ∑ b ∈ Finset.range (m + 1), termT e K hF a b := by`. Use `le_trans ?_ (Finset.single_le_sum (f := fun a => ∑ b ∈ Finset.range (m + 1), termT e K hF a b) (fun a _ => Finset.sum_nonneg fun b _ => hT a b) (Finset.mem_range.2 (show u.length < m + 1 by omega)))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun b => termT e K hF u.length b) (fun b _ => hT _ b) (Finset.mem_range.2 (show v.length < m + 1 by omega))`.
+-/
 theorem smooth_class_in_finite_order : C2.SmoothClassInFiniteOrder := by
   intro k r E _ _ A F hF m
   obtain ⟨N, e, c, K, hK, he, hc, hcK⟩ := basis_exists k r

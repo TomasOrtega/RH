@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def cutM (a : AF F) (M : Matrix (Fin n) (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E) := 1 + a • (M - 1)
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [cutM, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, smul_add, smul_sub, smul_smul, ha]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cutM_mul {a : AF F} (ha : a * a = a) (M N : Matrix (Fin n) (Fin n) (AE F E)) :
     cutM a M * cutM a N = cutM a (M * N) := by
   simp only [cutM, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, smul_add,
@@ -24,12 +27,22 @@ theorem cutM_mul {a : AF F} (ha : a * a = a) (M N : Matrix (Fin n) (Fin n) (AE F
   abel
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [cutM, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, add_smul, mul_comm b a, h, zero_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cutM_add {a b : AF F} (h : a * b = 0) (M : Matrix (Fin n) (Fin n) (AE F E)) :
     cutM a M * cutM b M = cutM (a + b) M := by
   simp only [cutM, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, add_smul,
     mul_comm b a, h, zero_smul]
   abel
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `cc : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `hu : IsUnit (incM F J).det`. Rewrite using `[incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `hJ.isUnit.map _`. Establish `h1 : IsInducing fun g : UA σ J => Units.embedProduct _ g.1` using `Units.isInducing_embedProduct.comp IsInducing.subtypeVal`. Use `IsInducing.of_comp (g := fun M => (M, MulOpposite.op (incM F J * M.map (cA σ) * (incM F J)⁻¹)ᵀ)) (Units.continuous_val.comp continuous_subtype_val) (continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul (continuous_id.matrix_map cc)).matrix_mul contin …` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Use `Prod.ext rfl (congrArg MulOpposite.op (Units.inv_eq_of_mul_eq_one_left ?_).symm)` and prove the remaining obligations. Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Express the relevant statement in the definitionally equal form `_ * mat g = 1`. Rewrite using `[← Matrix.transpose_transpose (mat g), ← Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hg, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one]`.
+-/
 theorem isInducing_mat (hJ : J.det ≠ 0) : IsInducing (mat : UA σ J → _) := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _
   have : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
@@ -49,6 +62,17 @@ theorem isInducing_mat (hJ : J.det ≠ 0) : IsInducing (mat : UA σ J → _) := 
   rw [← Matrix.transpose_transpose (mat g), ← Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc,
     ← Matrix.mul_assoc, hg, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one]
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `i : E →+* AE F E` to `inclR (F := F) (AF F)`. Establish `hR' : R.map i * R.map i = R.map i` using `by rw [← Matrix.map_mul, hR]`. Establish `hb : (R.map i).map (cA σ) = (R.map σ).map i` using `rfl`.
+
+Establish `hR2 : (R.map σ).map i * (R.map σ).map i = (R.map σ).map i`. Rewrite using `[← Matrix.map_mul]`. Conclude with `congrArg (·.map i) ((Matrix.map_mul (f := (σ : E →+* E))).symm.trans (congrArg (·.map σ) hR))`. Establish `ha' : (R.map i)ᵀ * J.map i = J.map i * (R.map σ).map i`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ha]`.
+
+Establish `cS : Continuous (sec _ hR')` using `continuous_const.add ((continuous_id.sub continuous_const).smul continuous_const)`. Use `⟨((Units.map (sec _ hR')).comp (normOne (cA σ)).subtype).codRestrict _ fun z => ?_, ((Continuous.units_map _ cS).comp continuous_subtype_val).subtype_mk _, fun z => rfl, fun z ⟨k, k0, hk⟩ => ⟨Units.map (sec _ hR) (Units.mk0 k k0), Units.ext (Matrix.ext fun a b => ?_)⟩⟩` and prove the remaining obligations. Establish `hz : (z.1 : AE F E) * cA σ (z.1 : AE F E) = 1` using `mem_normOne.1 z.2`. Express the relevant statement in the definitionally equal form `(1 + ((z.1 : AE F E) - 1) • R.map i)ᵀ * J.map i * (1 + ((z.1 : AE F E) - 1) • R.map i).map (cA σ) = J.map i`. Establish `e : (1 + ((z.1 : AE F E) - 1) • R.map i).map (cA σ) = 1 + (cA σ (z.1 : AE F E) - 1) • (R.map σ).map i`.
+
+Rewrite using `[← hb]`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply, apply_ite (cA σ)]`. Rewrite using `[e, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_smul, add_mul, one_mul, smul_mul_assoc, ha', add_mul, mul_add, mul_add, mul_one, mul_one, mul_smul_comm, mul_smul_comm, smul_mul_assoc, mul_assoc, hR2, smul_smul, add_assoc, ← add_smul, ← add_smul, show cA σ (z.1 : …`. Express the relevant statement in the definitionally equal form `i ((1 : Matrix _ _ E) a b + (k - 1) * R a b) = (1 : Matrix _ _ (AE F E)) a b + (((z.1 : (AE F E)ˣ) : AE F E) - 1) * i (R a b)`.
+
+Rewrite using `[hk, map_add, map_mul, map_sub, map_one, Matrix.one_apply, Matrix.one_apply, apply_ite i, map_one, map_zero]`.
+-/
 theorem exists_line {R : Matrix (Fin n) (Fin n) E} (hR : R * R = R) (ha : Rᵀ * J = J * R.map σ) :
     ∃ S : normOne (cA σ) →* UA σ J, Continuous S ∧
       (∀ z, mat (S z) = 1 + (((z.1 : (AE F E)ˣ) : AE F E) - 1) • incM F R) ∧
@@ -85,6 +109,31 @@ def HasLines (L : Subgroup (UA σ J)) : Prop :=
   ∀ R : Matrix (Fin n) (Fin n) E, R * R = R → Rᵀ * J = J * R.map σ → ∀ z : normOne (cA σ),
     ∃ u ∈ L, mat u = 1 + (((z.1 : (AE F E)ˣ) : AE F E) - 1) • incM F R
 
+/- English proof (translation)
+Establish `hσ` using `GlobalTheory.UnitaryHeckeBaseChange.sig_sig hc`. Take `⟨_, e⟩` from `(GlobalTheory.UnitaryHeckeBaseChange.isCMExt_iff σ).1 hc`. Use `set c := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E`. Establish `hcσ : ∀ x, c x = σ x` using `fun x => by rw [e]; rfl`. Establish `hh : ∀ a b, σ (J a b) = J b a` using `fun a b => hJ.1 a b`.
+
+Establish `hne : c ≠ 1` using `fun h => by`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `hc.2.1` as an intermediate fact. Use `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 ?_)` and prove the remaining obligations. Use extensionality with `x`.
+
+Establish `h1` using `hc.2.2.2 w.embedding x`. Rewrite `h1` using `[← hcσ, h]`. Conclude with `h1.symm`. Establish `hform : ∀ x y, GlobalTheory.UnRep.hermE c J x y = x ⬝ᵥ J *ᵥ fun b => σ (y b)` using `fun x y => by`. Simplify using `only [GlobalTheory.UnRep.hermE, dotProduct, Matrix.mulVec, Finset.mul_sum, hcσ, mul_assoc]`.
+
+Take `⟨l, hl, rfl⟩` from `GlobalTheory.T.unitaryMatrix_eq_prod_quasiReflections F E c n J ⟨fun x => by rw [hcσ, hcσ]; exact hσ x, hne, fun a b => by rw [hcσ, hh], by simpa using hJ.2⟩ γ fun x y => by`. Establish `e1 : (fun b => σ ((γ *ᵥ y) b)) = γ.map σ *ᵥ fun b => σ (y b)`. Use function extensionality and compare the values at `fun b => RingHom.map_mulVec (σ : E →+* E) γ y b`. Rewrite using `[hform, hform, e1, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_mulVec, ← Matrix.dotProduct_mulVec, ← Matrix.mul_assoc, hγ]`. Use `clear hγ`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, one_mem _, by simp [cutM, incM, mat]⟩`. Consider the case `cons p l ih`. Take `⟨u, hu, eu⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨h0, h1⟩` from `hl p List.mem_cons_self`.
+
+Use `set h := GlobalTheory.UnRep.hermE c J p.1 p.1 with hh0`. Set `w : Fin n → E` to `J *ᵥ fun b => c (p.1 b)`. Establish `hw : w ⬝ᵥ p.1 = h` using `by rw [hh0, hform, dotProduct_comm]; simp only [w, hcσ]`. Establish `hw' : ∀ b, σ (w b) = (p.1 ᵥ* J) b` using `fun b => by`. Simplify using `only [w, Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul, hcσ, hh, show ∀ x, σ (σ x) = x from hσ, mul_comm]`.
+
+Establish `hσh : σ h = h`. Rewrite using `[← hw, dotProduct, map_sum]`. Simplify using `only [map_mul, hw']`. Rewrite using `[show ∑ x, (p.1 ᵥ* J) x * σ (p.1 x) = (p.1 ᵥ* J) ⬝ᵥ fun b => σ (p.1 b) from rfl, ← Matrix.dotProduct_mulVec, ← hform, ← hh0, ← hw, dotProduct]`. Set `i : E →+* AE F E` to `inclR (F := F) (AF F)`.
+
+Establish `hz : ∀ x y : E, x * y = 1 → (1 + a • (i x - 1)) * (1 + a • (i y - 1)) = 1` using `fun x y e => by`. Establish `: i x * i y = 1` using `by rw [← map_mul, e, map_one]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, smul_add, smul_sub, smul_smul, ha, this]`. Normalize the expressions using the abelian group laws. Establish `h1' : p.2 * σ p.2 = 1` using `hcσ p.2 ▸ h1`.
+
+Take `⟨v, hv, ev⟩` from `hL (h⁻¹ • Matrix.vecMulVec p.1 w) (by`. Rewrite using `[smul_mul_smul_comm, Matrix.vecMulVec_mul_vecMulVec, hw, Matrix.vecMulVec_smul, smul_smul, inv_mul_cancel_right₀ h0])`. Use the proof step `(by`. Use extensionality with `s t`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, Matrix.map_apply, smul_eq_mul, map_mul, map_inv₀, hσh, hw']`.
+
+Simplify using `only [w, Matrix.mulVec, Matrix.vecMul, dotProduct, hcσ, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Use the proof step `⟨⟨_, _, hz _ _ h1', hz _ _ ((mul_comm _ _).trans h1')⟩, mem_normOne.2 (by`. Express the relevant statement in the definitionally equal form `(1 + a • (i p.2 - 1)) * cA σ (1 + a • (i p.2 - 1)) = 1`.
+
+Rewrite using `[map_add, map_one, map_smul, map_sub, map_one]`. Conclude with `hz _ _ h1')⟩`. Use `⟨v * u, mul_mem hv hu, ?_⟩` and prove the remaining obligations. Establish `hm : ∀ A B : Matrix (Fin n) (Fin n) E, incM F (A * B) = incM F A * incM F B` using `fun A B => Matrix.map_mul`. Rewrite using `[List.map_cons, List.prod_cons, hm, ← cutM_mul ha, show mat (v * u) = mat v * mat u from rfl, eu, ev]`.
+
+Use `congr 1`. Use extensionality with `s t`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ (AE F E)) s t + (1 + a • (i p.2 - 1) - 1) * i (h⁻¹ * (p.1 s * w t)) = (1 : Matrix _ _ (AE F E)) s t + a • (i ((1 : Matrix _ _ E) s t + (p.2 - 1) / h * (p.1 s * w t)) - (1 : Matrix _ _ (AE F E)) s t)`. Rewrite using `[add_sub_cancel_left, map_add, Matrix.one_apply, Matrix.one_apply, apply_ite i, map_one, map_zero, add_sub_cancel_left, smul_mul_assoc, div_eq_mul_inv, mul_assoc, map_mul i (p.2 - 1), map_sub, map_one]`.
+-/
 theorem cut_rat (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (UA σ J)} (hL : HasLines L) {a : AF F}
     (ha : a * a = a) {γ : Matrix (Fin n) (Fin n) E} (hγ : γᵀ * J * γ.map σ = J) : ∃ u ∈ L, mat u = cutM a (incM F γ) := by
   have hσ := GlobalTheory.UnitaryHeckeBaseChange.sig_sig hc
@@ -155,6 +204,39 @@ theorem cut_rat (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (UA 
     rw [add_sub_cancel_left, map_add, Matrix.one_apply, Matrix.one_apply, apply_ite i, map_one, map_zero, add_sub_cancel_left,
       smul_mul_assoc, div_eq_mul_inv, mul_assoc, map_mul i (p.2 - 1), map_sub, map_one]
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hσ` using `GlobalTheory.UnitaryHeckeBaseChange.sig_sig hc`. Use `letI : Algebra F k := (π.comp (algebraMap F (AF F))).toAlgebra`. Establish `jπ : ∀ a, j (π a) = a * j 1` using `fun a => by rw [mj, mul_one]`.
+
+Establish `j1 : ∀ y, j y * j 1 = j y` using `fun y => by rw [mj, πj, mul_one]`. Set `jl : k →ₗ[F] AF F` to `{ toFun := j map_add' := fun x y => by rw [← j1 x, ← j1 y, ← add_mul, ← jπ, map_add, πj, πj] map_smul' := fun q x => by rw [RingHom.id_apply, Algebra.smul_def, Algebra.smul_def, mj]; rfl }`. Set `πa : AF F →ₐ[F] k` to `⟨π, fun _ => rfl⟩`. Set `p : AE F E →+* k ⊗[F] E` to `(Algebra.TensorProduct.map πa (AlgHom.id F E)).toRingHom`. Set `q : k ⊗[F] E →ₗ[F] AE F E` to `TensorProduct.map jl LinearMap.id`.
+
+Establish `qp : ∀ z, q (p z) = j 1 • z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact (congrArg (· ⊗ₜ[F] x) ((jπ a).trans (mul_comm _ _)))`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+
+Use `letI : TopologicalSpace (k ⊗[F] E) := moduleTopology k _`. Establish `: IsModuleTopology k (k ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (k ⊗[F] E)` using `IsModuleTopology.isTopologicalRing k _`. Establish `: IsArtinianRing (k ⊗[F] E)` using `IsArtinianRing.of_finite k _`. Set `b` to `Module.finBasis F E`.
+
+Set `b'` to `Algebra.TensorProduct.basis k b`. Establish `hb : ∀ (y : k) i, y • b' i = y ⊗ₜ[F] b i` using `fun y i => by`. Simplify using `only [b', Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `cq : Continuous q`. Establish `: ⇑q = fun x => ∑ i, j (b'.repr x i) • ((1 : AF F) ⊗ₜ[F] b i)` using `funext fun x => by conv_lhs => rw [← b'.sum_repr x, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `continuous_finsetSum _ fun i _ => (cj.comp (IsModuleTopology.continuous_of_linearMap (b'.coord i))).smul (continuous_const (y := ((1 : AF F) ⊗ₜ[F] b i : AE F E)))`.
+
+Set `s : k ⊗[F] E →ₐ[k] k ⊗[F] E` to `Algebra.TensorProduct.map (AlgHom.id k k) σ`. Establish `sp : ∀ z, s (p z) = p (cA σ z)` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `i : E →+* AE F E` to `inclR (F := F) (AF F)`. Establish `hι : ∀ x, (p.comp i) x = (1 : k) ⊗ₜ[F] x` using `fun x => congrArg (· ⊗ₜ[F] x) (map_one π)`. Establish `hD : DenseRange (p.comp i)`. Establish `h1 : DenseRange (b'.equivFun.symm ∘ Pi.map fun (_ : Fin (Module.finrank F E)) (q : F) => π (algebraMap F (AF F) q))` using `b'.equivFun.symm.surjective.denseRange.comp (DenseRange.piMap fun _ => hd) (IsModuleTopology.continuous_of_linearMap b'.equivFun.symm.toLinearMap)`.
+
+Use `h1.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Use `⟨∑ i, t i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, Function.comp_apply, Module.Basis.equivFun_symm_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hb, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Establish `hne : ∃ z, (σ : E →+* E) z ≠ z`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `hc.2.1` as an intermediate fact. Use `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (InfinitePlace.isReal_iff.2 ?_)` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `hc.2.2.2 w.embedding x`.
+
+Rewrite `h1` using `[show σ x = x from h x]`. Conclude with `h1.symm`. Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `key` using `dense_unitary (p.comp i) hD (σ : E →+* E) (s : k ⊗[F] E →+* k ⊗[F] E) (fun x => sp (i x)) hσ hne (fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (hσ x)`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy])`. Use the proof step `(IsModuleTopology.continuous_of_linearMap s.toLinearMap) (units_fd k _) J`. Use the proof step `(Matrix.ext fun a b => hJ.1 b a) (by simpa using hJ.2) ((mat g).map p) (by`.
+
+Use `congrArg (·.map p) hg` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 1`. Conclude with `Matrix.ext fun a b => sp _)`.
+
+Set `Φ : Matrix (Fin n) (Fin n) (k ⊗[F] E) → Matrix (Fin n) (Fin n) (AE F E)` to `fun M => 1 + (M - 1).map q`. Establish `cΦ : Continuous Φ` using `continuous_const.add ((continuous_id.sub continuous_const).matrix_map cq)`. Establish `hΦ : ∀ M : Matrix (Fin n) (Fin n) (AE F E), Φ (M.map p) = cutM (j 1) M` using `fun M => by`. Use extensionality with `a b`. Simplify using `only [Φ, cutM, Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.sub_apply, ← qp, map_sub p, Matrix.one_apply, apply_ite p, map_one, map_zero]`.
+
+Rewrite using `[← hΦ]`. Use `map_mem_closure cΦ key ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Take `⟨u, hu, e⟩` from `cut_rat hc hJ hL (j1 1) hγ`. Conclude with `⟨u, hu, e.trans (hΦ _).symm⟩`.
+-/
 theorem cut_place (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (UA σ J)} (hL : HasLines L)
     (hcl : IsClosed (L : Set (UA σ J))) {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalDivisionRing k] [T1Space k]
     (π : AF F →+* k) (j : k → AF F) (cj : Continuous j) (πj : ∀ y, π (j y) = y) (mj : ∀ a y, a * j y = j (π a * y))
@@ -252,6 +334,21 @@ theorem cut_place (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (U
   exact ⟨u, hu, e.trans (hΦ _).symm⟩
 
 open Formalism.IndefR.Fin.Refl in
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `C` to `((L.toSubmonoid.map ((Units.coeHom _).comp (UG (cA σ) (incM F J)).subtype))).topologicalClosure`. Establish `hC : ∀ M, M ∈ C ↔ M ∈ closure (mat '' (L : Set (UA σ J)))` using `fun M => Iff.rfl`. Establish `hsum : ∀ {ι : Type} (f : ι → AF F), (∀ i, cutM (f i) (mat g) ∈ C) → (∀ i j, i ≠ j → f i * f j = 0) → ∀ S : Finset ι, cutM (∑ i ∈ S, f i) (mat g) ∈ C` using `fun f hf ho S => by`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa [cutM] using C.one_mem`. Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi, ← cutM_add (by`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun j hj => ho _ _ fun e => hi (e ▸ hj))]`. Conclude with `C.mul_mem (hf i) ih`. Establish `j0F : ∀ v, jF v (0 : v.adicCompletion F) = 0` using `fun v => by simpa using (mul_jF v 0 1).symm`. Establish `j0I : ∀ w : InfinitePlace F, jI w 0 = 0` using `fun w => by simpa using (mul_jI w 0 1).symm`. Establish `h1 : ∀ S, cutM (etaS S) (mat g) ∈ C` using `fun S => by`.
+
+Rewrite using `[etaS, ← cutM_add (by`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_eq_zero fun w _ => Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_jF, show piF v (jI w 1) = 0 from rfl, zero_mul, j0F])]`. Use `C.mul_mem (hsum _ (fun w => cut_place hc hJ hL hcl (piI w) (jI w) (continuous_jI w) (jI_self w) (mul_jI w) (dense_I w) g) (fun w w' h => ?_) _) (hsum _ (fun v => cut_place hc hJ hL hcl (piF v) (jF v) (continuous_jF v) (jF_self v) (mul_jF v) (dense_F v) g) (fun v v' h => ?_) _)` and prove the remaining obligations.
+
+Rewrite using `[mul_jI, show piI w' (jI w 1) = 0 from jI_ne 1 h.symm, zero_mul, j0I]`. Rewrite using `[mul_jF, show piF v' (jF v 1) = 0 from jF_ne 1 h.symm, zero_mul, j0F]`. Establish `h2 : ∀ z : AE F E, Tendsto (fun S => etaS S • z) atTop (𝓝 z)` using `fun z => by`. Set `b` to `Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Use `tendsto_finsetSum Finset.univ fun i _ => (tendsto_etaS (b.repr z i)).smul_const (b i)` as an intermediate fact.
+
+Simplify `this` using `only [mul_smul, ← Finset.smul_sum, b.sum_repr]`. Establish `h3 : Tendsto (fun S => cutM (etaS S) (mat g)) atTop (𝓝 (mat g))`. Establish `: Tendsto (fun S => etaS S • (mat g - 1)) atTop (𝓝 (mat g - 1))` using `tendsto_pi_nhds.2 fun a => tendsto_pi_nhds.2 fun b => h2 _`. Simplify `this.const_add 1` using `[cutM]`. Establish `h4 : mat g ∈ closure (mat '' (L : Set (UA σ J)))` using `isClosed_closure.mem_of_tendsto h3 (.of_forall h1)`.
+
+Rewrite `h4` using `[← Set.mem_preimage, ← (isInducing_mat (by simpa using hJ.2)).closure_eq_preimage_closure_image, hcl.closure_eq]`. Then use the resulting hypothesis.
+-/
 theorem eq_top_of_lines (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgroup (UA σ J)} (hL : HasLines L)
     (hcl : IsClosed (L : Set (UA σ J))) (g : UA σ J) : g ∈ L := by
   classical
@@ -290,6 +387,9 @@ theorem eq_top_of_lines (hc : IsCMExt F E σ) (hJ : IsHermND σ Jᵀ) {L : Subgr
   have h4 : mat g ∈ closure (mat '' (L : Set (UA σ J))) := isClosed_closure.mem_of_tendsto h3 (.of_forall h1)
   rwa [← Set.mem_preimage, ← (isInducing_mat (by simpa using hJ.2)).closure_eq_preimage_closure_image, hcl.closure_eq] at h4
 
+/- English proof (translation)
+Use `eq_top_of_lines hc hJ (fun R h1 h2 z => ?_) hL g` and prove the remaining obligations. Take `⟨S, cS, s1, s2⟩` from `exists_line (F := F) h1 h2`. Use `⟨S z, normOne_mem hH hc T (L.comap S) (hL.preimage cS) (fun z h => hr (s2 z h)) (fun v a b z hz => hv v a b _ fun t ht => ?_) z, s1 z⟩` and prove the remaining obligations. Rewrite using `[s1, add_sub_cancel_left, ← smul_assoc, hz t ht, zero_smul]`.
+-/
 theorem mem_of_good (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (hc : IsCMExt F E σ) [IsGalois ℚ E] {X : Spc F E n}
     (hJ : IsHermND σ X.Jᵀ) (T : Finset (Pl F)) (L : Subgroup (UA σ X.J)) (hL : IsClosed (L : Set (UA σ X.J)))
     (hr : ratU σ X.J ≤ L) (hv : ∀ v ∉ T, SplitsFully E v → ∀ u ∈ UAt σ X (evFin F v), u ∈ L) (g : UA σ X.J) : g ∈ L := by
@@ -299,6 +399,11 @@ theorem mem_of_good (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (h
     (fun v a b z hz => hv v a b _ fun t ht => ?_) z, s1 z⟩
   rw [s1, add_sub_cancel_left, ← smul_assoc, hz t ht, zero_smul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X r s hB hX hn T f hf hr hv g`. Use `hB.galois` as an intermediate fact. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `L : Subgroup (UA σ X.J)` to `{ carrier := ⋂ g, {x | f (x * g) = f g} one_mem' := Set.mem_iInter.2 fun g => congrArg f (one_mul g) mul_mem' := fun {a b} ha hb => Set.mem_iInter.2 fun g => (congrArg f (mul_assoc a b g)).trans ((Set.mem_iInter.1 ha _).trans (Set.mem_iInter.1 hb _)) inv_mem' := fun {a} ha => Set …`.
+
+Use `mem_of_good hH hB.cm (hermND_transpose hX) T L (isClosed_iInter fun g => isClosed_eq (hf.comp (continuous_mul_const g)) continuous_const) (fun γ h => Set.mem_iInter.2 (hr γ h)) (fun v a b u hu => Set.mem_iInter.2 fun g => (congrArg f (by group)).trans (hv v a b _ (conj_mem_UAt hu …` as an intermediate fact. Conclude with `(congrArg f (mul_one g)).symm.trans (Set.mem_iInter.1 this 1)`.
+-/
 theorem constOfGood (hH : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) : ConstOfGood := by
   intro F E _ _ _ _ _ σ B n X r s hB hX hn T f hf hr hv g
   have := hB.galois

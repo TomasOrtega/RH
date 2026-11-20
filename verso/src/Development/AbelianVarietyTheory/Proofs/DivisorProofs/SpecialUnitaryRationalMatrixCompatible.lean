@@ -16,12 +16,24 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.PrincInLevel.swap_mem_hatL Λ z, fun h => ?_⟩` and prove the remaining obligations. Simplify `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ h` using `only [AlgEquiv.symm_apply_apply]`.
+-/
 theorem mem_hat_iff_swap {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) (z : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E) :
     z ∈ GlobalTheory.AdLat.hat F (Λ : Set (Fin n → E)) ↔
       (fun i => Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E (z i)) ∈ Formalism.L2.Herm.hatL (F := F) Λ := by
   refine ⟨GlobalTheory.PrincInLevel.swap_mem_hatL Λ z, fun h => ?_⟩
   simpa only [AlgEquiv.symm_apply_apply] using GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : Λ.comap (LinearMap.funLeft (𝓞 E) E (Fin.cast (rfl : n = n))) = Λ`. Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, Fin.cast_refl]`. Conclude with `Iff.rfl`.
+
+Simplify using `only [Fin.cast_refl, submatrix_id_id] at hs hA`. Substitute `hs hA` using the available equality. Rewrite using `[e]`. Introduce `y hy`. Use `⟨K *ᵥ y, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy`, the goal using `[mem_hat_iff_swap]`. Establish `h1` using `(GlobalTheory.SeeMatchOnto.mem_hatL_iff_of_St hF hkS _).1 hy`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[hk]`.
+
+Conclude with `RingHom.map_mulVec (Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).toRingHom K y i`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hSK]`.
+-/
 theorem core {n r : ℕ} (h : n = r) (Λ : Submodule (𝓞 E) (Fin n → E))
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hF : Formalism.L2.DIV.IsFrame β Λ)
     (S K G : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)) (hSK : S * K = G * S)
@@ -59,10 +71,18 @@ namespace GlobalTheory.MassLink.StabLink
 
 open IsDedekindDomain Matrix Formalism.L2.Theta Formalism.BasicNotions.TH
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+-/
 theorem inclAF_injective (D : D7) :
     Function.Injective (GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (E := D.host.E) (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
+/- English proof (translation)
+Establish `h1 : matHom V g ∈ GlobalTheoryTheory.GenusMassVolumes.HFin (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig V.gram` using `hg`. Take `⟨x, hx, e⟩` from `Subgroup.mem_map.1 h1`. Establish `e2 : Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) x = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ` using `e.trans hm`. Establish `: x = γ`. Use `Units.ext (Matrix.ext fun a b => inclAF_injective D ?_)` and prove the remaining obligations.
+
+Use `congrArg (fun M : GL (Fin V.rank) (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F ⊗[D.host.F] D.host.E) => M.1 a b) e2` as an intermediate fact. Simplify `this` using `[Formalism.UG.bc]`. Conclude with `this ▸ hx`.
+-/
 theorem mem_UJ_of_GQ (D : D7) (V : HSp D) (g : GA D V) (γ : GL (Fin V.rank) D.host.E) (hg : g ∈ GQ V)
     (hm : matHom V g = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ) :
     γ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram := by
@@ -77,6 +97,9 @@ theorem mem_UJ_of_GQ (D : D7) (V : HSp D) (g : GA D V) (γ : GL (Fin V.rank) D.h
     simpa [Formalism.UG.bc] using this
   exact this ▸ hx
 
+/- English proof (translation)
+Establish `: (finHom V g).val = ((matHom V g).val).map (Algebra.TensorProduct.map (GlobalTheoryTheory.GenusMassVolumes.sndA D.host.F) (AlgHom.id D.host.F D.host.E))` using `rfl`. Rewrite using `[this, hm]`. Use extensionality with `a b`. Simplify using `[Formalism.UG.bc, GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem finHom_val_of_mat (D : D7) (V : HSp D) (g : GA D V) (γ : GL (Fin V.rank) D.host.E)
     (hm : matHom V g = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ) :
     (finHom V g).val = (γ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map
@@ -87,6 +110,9 @@ theorem finHom_val_of_mat (D : D7) (V : HSp D) (g : GA D V) (γ : GL (Fin V.rank
   ext a b
   simp [Formalism.UG.bc, GlobalTheoryTheory.GenusMassVolumes.inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : D7) (x : D.host.E) : letI : IsCMField D.host.E := D.host.isCMField_hostE;
     D.sp.cm.sig x = IsCMField.complexConj D.host.E x := rfl
 
@@ -100,6 +126,9 @@ section Herm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, dotProduct, mulVec, transpose_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [AlgEquiv.toRingEquiv_eq_coe, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_transpose {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     ReciprocityTheory.ChartRestriction.G.FD.herm Jᵀ x y =
       (fun b => (IsCMField.complexConj E : E →+* E) (y b)) ⬝ᵥ (J *ᵥ x) := by
@@ -109,6 +138,11 @@ theorem herm_transpose {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n →
   simp only [AlgEquiv.toRingEquiv_eq_coe, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_ringEquiv]
   ring
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [Fin.cast_refl, submatrix_id_id]`. Rewrite using `[herm_transpose, herm_transpose]`. Establish `key : (fun b => (IsCMField.complexConj E : E →+* E) ((γ *ᵥ y) b)) = γ.map (IsCMField.complexConj E : E →+* E) *ᵥ (fun b => (IsCMField.complexConj E : E →+* E) (y b))`. Use function extensionality and compare the values at `b`.
+
+Simplify using `only [mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Rewrite using `[key, dotProduct_comm, dotProduct_mulVec, ← mulVec_transpose, dotProduct_comm, mulVec_mulVec, mulVec_mulVec]`. Establish `hγ' : (γ.map (IsCMField.complexConj E : E →+* E))ᵀ * J * γ = J` using `hγ`. Rewrite using `[hγ']`.
+-/
 theorem herm_unitary {n r : ℕ} (h : n = r) (J γ : Matrix (Fin n) (Fin n) E)
     (hγ : Formalism.UG.cT (IsCMField.complexConj E : E →+* E) γ * J * γ = J) (x y : Fin r → E) :
     ReciprocityTheory.ChartRestriction.G.FD.herm (J.submatrix (Fin.cast h.symm) (Fin.cast h.symm))ᵀ
@@ -133,6 +167,13 @@ namespace GlobalTheory.MassLink.StabLink
 
 open IsDedekindDomain Matrix Formalism.L2.Theta Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hCl.βW i`. Use `set h := GlobalTheory.MassLink.lift D i s with hh`. Establish `hSK : (finHom (Wc D i) h).val * (finHom (Wc D i) (h⁻¹ * g * h)).val = (finHom (Wc D i) g).val * (finHom (Wc D i) h).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`.
+
+Use `group`. Establish `hA : (finHom (Wc D i) g).val = (GlobalTheory.UCls.ratM (maximalRealSubfield D.host.E) (γr : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E)).submatrix (Fin.cast (rank_Wc i)) (Fin.cast (rank_Wc i))`. Rewrite using `[finHom_val_of_mat D (Wc D i) g γ hm, ← hγr]`. Use extensionality with `a b`. Simplify using `[GlobalTheory.UCls.ratM]`.
+
+Conclude with `core (F := D.host.F) (rank_Wc i) (Cl.ΛW i) (Cl.βW i) hc.1 _ _ _ hSK (Formalism.IndefR.Lev.finE (Wc D i) (h⁻¹ * g * h)) rfl (Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hk)) s _ hlift hA`.
+-/
 theorem fwd (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu) (hCl : Cl.Is t0) (i : Fin D.R.m)
     (s : Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E))
     (hlift : ((finHom (Wc D i) (GlobalTheory.MassLink.lift D i s)).val :
@@ -170,6 +211,17 @@ namespace GlobalTheory.MassLink.StabLink
 
 open IsDedekindDomain Matrix Formalism.L2.Theta Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Introduce `D Tu Cl t0 hCl i s hlift g γ γr hg hm hγr hdet hk`. Use `⟨hdet, fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hU` using `mem_UJ_of_GQ D (Wc D i) g γ hg hm`. Use `herm_unitary (rank_Wc i) (Wc D i).gram (γ : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E) hU x y` as an intermediate fact. Rewrite `this` using `[hγr]`.
+
+Conclude with `this`. Establish `hm' : matHom (Wc D i) g⁻¹ = Formalism.UG.bc (GlobalTheoryTheory.GenusMassVolumes.inclR (GlobalTheoryTheory.GenusMassVolumes.AF D.host.F)) γ⁻¹`. Rewrite using `[map_inv, hm, map_inv]`. Establish `hγr' : ((γ⁻¹ : GL (Fin (Wc D i).rank) D.host.E) : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) D.host.E).submatrix (Fin.cast (rank_Wc i).symm) (Fin.cast (rank_Wc i).symm) = ((γr⁻¹ : GL (Fin D.R.r) D.host.E) : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E)`. Rewrite using `[Matrix.coe_units_inv, Matrix.coe_units_inv, ← hγr]`.
+
+Conclude with `(Matrix.inv_submatrix_equiv _ (finCongr (rank_Wc i).symm) (finCongr (rank_Wc i).symm)).symm`. Establish `hk' : Formalism.IndefR.Lev.finE (Wc D i) ((GlobalTheory.MassLink.lift D i s)⁻¹ * g⁻¹ * GlobalTheory.MassLink.lift D i s) ∈ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ)`. Establish `e : (GlobalTheory.MassLink.lift D i s)⁻¹ * g⁻¹ * GlobalTheory.MassLink.lift D i s = ((GlobalTheory.MassLink.lift D i s)⁻¹ * g * GlobalTheory.MassLink.lift D i s)⁻¹` using `by group`. Rewrite using `[e, map_inv]`. Conclude with `inv_mem hk`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Take `⟨y', hy', e⟩` from `fwd D Tu Cl t0 hCl i s hlift g⁻¹ γ⁻¹ γr⁻¹ hm' hγr' hk' y hy`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hxy, mulVec_mulVec, ← GlobalTheory.SUVol.ratM_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, GlobalTheory.SUVol.ratM_one, one_mulVec]`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨y', hy', e⟩` from `fwd D Tu Cl t0 hCl i s hlift g γ γr hm hγr hk y hy`. Conclude with `⟨y', hy', e.symm⟩`.
+-/
 theorem ratStab_of_lift : ∀ (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu), Cl.Is t0 → ∀ (i : Fin D.R.m),
     letI : IsCMField D.host.E := D.host.isCMField_hostE;
     ∀ (s : Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)),
@@ -220,6 +272,9 @@ namespace GlobalTheory.MassLink.StabLink
 
 open IsDedekindDomain Matrix Formalism.L2.Theta Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Introduce `D Tu Cl t0 hCl i s hs`. Conclude with `ratStab_of_lift D Tu Cl t0 hCl i s (GlobalTheory.T.special_unitary_lift_in_theta_group D i s hs).2`.
+-/
 theorem ratStab_mem : ∀ (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu), Cl.Is t0 → ∀ (i : Fin D.R.m),
     letI : IsCMField D.host.E := D.host.isCMField_hostE;
     ∀ (s : Matrix (Fin D.R.r) (Fin D.R.r) (GlobalTheory.AdLat.RA (maximalRealSubfield D.host.E) D.host.E)),

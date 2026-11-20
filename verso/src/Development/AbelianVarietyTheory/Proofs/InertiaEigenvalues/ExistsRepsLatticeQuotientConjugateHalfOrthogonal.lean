@@ -22,11 +22,61 @@ open GlobalTheory.PlaceModel
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp only [zero_smul, symplO_zero_left, symplO_zero_right]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, symplO_add_left, symplO_add_right, ih]`.
+-/
 theorem symplO_nsmul_swap (k : ℕ) (x y : WO S T) : symplO S T (k • x) y = symplO S T x (k • y) := by
   induction k with
   | zero => simp only [zero_smul, symplO_zero_left, symplO_zero_right]
   | succ n ih => rw [succ_nsmul, succ_nsmul, symplO_add_left, symplO_add_right, ih]
 
+/- English proof (translation)
+Introduce `D ψ S T hψ ΛS ΛT hS hT a ha hinf k hk`. Establish `hdual : ∀ u : WO S T, u.map (infPart D) = 0 → (u ∈ latH S T ΛS ΛT ↔ ∀ u' ∈ latH S T ΛS ΛT, ψ (symplO S T u u') = 1)` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hfin : ∀ m : ℕ, 0 < m → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ latH S T ΛS ΛT, ∃ r ∈ R, ∃ u ∈ latH S T ΛS ΛT, t = r + m • u` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `hsm : ∀ {b : AE D}, b * b = b → ∀ u ∈ latH S T ΛS ΛT, b • u ∈ latH S T ΛS ΛT ⊓ half S T b` using `fun {b} hb u hu => ⟨GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ b (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, hb])) u hu, (mem_half S T).2 (by rw [smul_smul, hb])⟩`. Generalize the expression as in `latH S T ΛS ΛT = Λ at *`.
+
+Establish `hc : cA D a * cA D a = cA D a` using `by rw [← RingHom.map_mul, ha]`. Generalize the expression as in `hcdef : cA D a = c at *`. Establish `tf : Function.Injective fun t : WO S T => k • t` using `fun x y hxy => by`. Rewrite using `[← inv_smul_nsmul S T hk x, ← inv_smul_nsmul S T hk y]`. Conclude with `congrArg _ hxy`.
+
+Set `M : AddSubgroup (WO S T)` to `half S T c ⊓ Λ.comap (nsmulAddMonoidHom k)`. Set `N : AddSubgroup (WO S T)` to `(Λ ⊓ half S T c).map (nsmulAddMonoidHom k)`. Establish `hM : ∀ y, y ∈ M ↔ IsHalf c y ∧ k • y ∈ Λ` using `fun y => by`. Rewrite using `[isHalf_iff]`. Both sides reduce to the same expression.
+
+Establish `hN : ∀ n, n ∈ N ↔ ∃ u ∈ Λ, IsHalf c u ∧ n = k • u` using `fun n => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨u, hu.1, (isHalf_iff S T).2 hu.2, rfl⟩`. Introduce and unpack `⟨u, hu, hu', rfl⟩`.
+
+Conclude with `⟨u, ⟨hu, (isHalf_iff S T).1 hu'⟩, rfl⟩`. Set `N' : AddSubgroup M` to `N.addSubgroupOf M`. Establish `hq : ∀ y₁ y₂ : M, ((y₁ : M ⧸ N') = y₂ ↔ (y₂ : WO S T) - y₁ ∈ N)` using `fun y₁ y₂ => by`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+
+Rewrite using `[neg_add_eq_sub]`. Take `⟨R2, hR2, hR2'⟩` from `hfin (k * k) (Nat.mul_pos hk hk)`. Establish `hP : ((fun t : WO S T => k • t) ⁻¹' ((fun r => c • r) '' R2)).Finite` using `(hR2.image _).preimage tf.injOn`. Establish `hcover : ∀ y : M, ∃ z : M, (z : WO S T) ∈ (fun t : WO S T => k • t) ⁻¹' ((fun r => c • r) '' R2) ∧ (z : M ⧸ N') = y`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨hyc, hyk⟩` from `(hM y).1 hy`. Take `⟨r, hr, u, hu, hru⟩` from `hR2' _ hyk`. Establish `hcu` using `hsm hc u hu`. Establish `hky : c • (k • y) = k • y`. Rewrite using `[smul_comm]`.
+
+Conclude with `congrArg (k • ·) ((mem_half S T).1 ((isHalf_iff S T).1 hyc))`. Establish `hz : k • (y - k • (c • u)) = c • r`. Rewrite using `[smul_sub, ← hky, hru, smul_add, mul_smul, smul_comm c k (k • u), smul_comm c k u]`. Normalize the expressions using the abelian group laws. Establish `hzM : y - k • (c • u) ∈ M`.
+
+Use `(hM _).2 ⟨(isHalf_iff S T).2 ?_, ?_⟩` and prove the remaining obligations. Conclude with `sub_mem ((isHalf_iff S T).1 hyc) (nsmul_mem hcu.2 k)`. Rewrite using `[smul_sub]`. Conclude with `sub_mem hyk (nsmul_mem (nsmul_mem hcu.1 k) k)`. Use `⟨⟨_, hzM⟩, ⟨r, hr, hz.symm⟩, (hq _ _).2 ?_⟩` and prove the remaining obligations.
+
+Use `show y - (y - k • (c • u)) ∈ N`. Rewrite using `[sub_sub_cancel]`. Conclude with `⟨c • u, hcu, rfl⟩`. Use `haveI hfinQ : Finite (M ⧸ N') := by`. Set `P' : Set M` to `{z | (z : WO S T) ∈ (fun t : WO S T => k • t) ⁻¹' ((fun r => c • r) '' R2)}`.
+
+Establish `hP' : P'.Finite` using `hP.preimage Subtype.val_injective.injOn`. Use `haveI := hP'.to_subtype`. Use `Finite.of_surjective (fun z : P' => ((z : M) : M ⧸ N')) fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H y`.
+
+Take `⟨z, hz, hzy⟩` from `hcover y`. Conclude with `⟨⟨z, hz⟩, hzy⟩`. Use `letI := Fintype.ofFinite (M ⧸ N')`. Set `rep : M ⧸ N' → WO S T` to `fun q => ((Quotient.out q : M) : WO S T)`. Establish `hrepM : ∀ q, rep q ∈ M` using `fun q => (Quotient.out q : M).2`.
+
+Establish `hrep : ∀ q, ((⟨rep q, hrepM q⟩ : M) : M ⧸ N') = q` using `fun q => QuotientAddGroup.out_eq' q`. Establish `hrepinj : Function.Injective rep` using `fun q₁ q₂ h => by`. Rewrite using `[← hrep q₁, ← hrep q₂]`. Simplify using `only [h]`. Use `⟨Finset.univ.image rep, ⟨rep 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(hM _).1 (hrepM q)`. Introduce `y' hy'c hy'k`. Establish `hy'M : y' ∈ M` using `(hM y').2 ⟨hy'c, hy'k⟩`.
+
+Use `⟨rep (⟨y', hy'M⟩ : M), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (hN _).1 ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hq _ _).1 (hrep _)`. Introduce and unpack `y ⟨hyY, hyN⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hyY`. Use `(hq ⟨rep q, hrepM q⟩ ⟨y', hy'M⟩).2 ((hN _).2 hyN)` as an intermediate fact.
+
+Rewrite `this` using `[hrep]`. Rewrite using `[this]`. Introduce `x hx hkx`. Establish `hxfin : ∀ {u : WO S T}, IsHalf a u → u.map (infPart D) = 0` using `fun hu => GlobalTheory.PlaceVec.half_infPart hinf ((isHalf_iff S T).1 hu)`. Establish `hkxh : IsHalf a (k • x)` using `(isHalf_iff S T).2 (nsmul_mem ((isHalf_iff S T).1 hx) k)`.
+
+Use `⟨?_, fun hnot => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, hua, rfl⟩ y hy`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[symplO_nsmul_swap]`. Conclude with `(hdual u (hxfin hua)).1 hu _ ((hM _).1 (hrepM q)).2`.
+
+Establish `hconst : ∀ y₁ y₂ : M, (y₁ : M ⧸ N') = y₂ → ψ (symplO S T x (y₂ : WO S T)) = ψ (symplO S T x (y₁ : WO S T))` using `fun y₁ y₂ h => by`. Take `⟨u, hu, -, hu'⟩` from `(hN _).1 ((hq _ _).1 h)`. Establish `e : (y₂ : WO S T) = y₁ + k • u` using `by rw [← hu']; abel`. Rewrite using `[e, symplO_add_right, AddChar.map_add_eq_mul, ← symplO_nsmul_swap, (hdual _ (hxfin hkxh)).1 hkx u hu, mul_one]`. Take `⟨x', hx'h, hx'⟩` from `half_div S T a k hk x ((isHalf_iff S T).1 hx)`.
+
+Establish `hx'Λ : x' ∉ Λ` using `fun h => hnot ⟨x', h, (isHalf_iff S T).2 hx'h, hx'.symm⟩`. Establish `hx'fin` using `hxfin ((isHalf_iff S T).2 hx'h)`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl, hψl⟩ : ∃ l ∈ Λ, ψ (symplO S T x' l) ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hx'Λ ((hdual x' hx'fin).2 hcon)`. Establish `hl'` using `hsm hc l hl`. Take `⟨y₀, hy₀h, hy₀⟩` from `half_div S T c k hk _ hl'.2`. Establish `hy₀M : y₀ ∈ M` using `(hM _).2 ⟨(isHalf_iff S T).2 hy₀h, hy₀ ▸ hl'.1⟩`. Establish `hψ0 : ψ (symplO S T x y₀) ≠ 1`.
+
+Rewrite using `[← hx', symplO_nsmul_swap, hy₀, ← hcdef, ← symplO_smul, (mem_half S T).1 hx'h]`. Conclude with `hψl`. Establish `hsum : ∑ y ∈ Finset.univ.image rep, ψ (symplO S T x y) = ∑ q : M ⧸ N', ψ (symplO S T x (rep q))` using `Finset.sum_image fun q₁ _ q₂ _ h => hrepinj h`. Rewrite using `[hsum]`. Establish `hshift : ∑ q : M ⧸ N', ψ (symplO S T x (rep q)) = (∑ q : M ⧸ N', ψ (symplO S T x (rep q))) * ψ (symplO S T x y₀)`.
+
+Rewrite using `[Finset.sum_mul]`. Use `(Fintype.sum_equiv (Equiv.addRight ((⟨y₀, hy₀M⟩ : M) : M ⧸ N')) _ _ fun q => ?_).symm` and prove the remaining obligations. Rewrite using `[← AddChar.map_add_eq_mul, ← symplO_add_right]`. Use `hconst (⟨rep q, hrepM q⟩ + ⟨y₀, hy₀M⟩) ⟨rep (q + ((⟨y₀, hy₀M⟩ : M) : M ⧸ N')), hrepM _⟩ (by rw [hrep, QuotientAddGroup.mk_add, hrep])` as an intermediate fact. Simplify using `using this.symm`.
+
+Establish `h0 : (∑ q : M ⧸ N', ψ (symplO S T x (rep q))) * (ψ (symplO S T x y₀) - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← hshift, sub_self]`. Conclude with `(mul_eq_zero.1 h0).resolve_right (sub_ne_zero.2 hψ0)`.
+-/
 theorem reps_orth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ a : AE D, a * a = a → infPart D a = 0 → ∀ k : ℕ, 0 < k → ∃ Y : Finset (WO S T), Y.Nonempty ∧ (∀ y ∈ Y, IsHalf (cA D a) y ∧ k • y ∈ latH S T ΛS ΛT) ∧ (∀ y', IsHalf (cA D a) y' → k • y' ∈ latH S T ΛS ΛT → ∃! y, y ∈ Y ∧ ∃ u ∈ latH S T ΛS ΛT, IsHalf (cA D a) u ∧ y' - y = k • u) ∧ ∀ x, IsHalf a x → k • x ∈ latH S T ΛS ΛT → ((∃ u ∈ latH S T ΛS ΛT, IsHalf a u ∧ x = k • u) → ∀ y ∈ Y, ψ (symplO S T x y) = 1) ∧ ((¬ ∃ u ∈ latH S T ΛS ΛT, IsHalf a u ∧ x = k • u) → ∑ y ∈ Y, ψ (symplO S T x y) = 0) := by
   intro D ψ S T hψ ΛS ΛT hS hT a ha hinf k hk
   classical

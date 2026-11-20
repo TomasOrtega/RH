@@ -6,6 +6,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.UseLoc
 
+/- English proof (translation)
+Establish `h0 : K0 K = K.1` using `inf_eq_left.mpr hK`. Establish `hK1 : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hfin : ({x : Om l | x ^ (l ^ 1) = 1}).Finite`. Apply `((Polynomial.nthRoots (l ^ 1) (1 : Om l)).toFinset.finite_toSet).subset` to reduce the goal to its premises.
+
+Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at hx`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_nthRoots (pow_pos hl 1)).2 hx`. Use `haveI : Finite ({x : Om l | x ^ (l ^ 1) = 1}) := hfin.to_subtype`.
+
+Establish `hA : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1})`. Apply `IntermediateField.finiteDimensional_adjoin` to reduce the goal to its premises. Introduce `x hx`. Use `⟨Polynomial.X ^ (l ^ 1) - 1, Polynomial.monic_X_pow_sub_C 1 (pow_pos hl 1).ne', ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hx`.
+
+Simplify using `only [pow_one] at hx`. Simplify using `[hx]`. Unfold `Ks`. Rewrite using `[h0]`. Use `infer_instance`.
+-/
 theorem finiteDimensional_Ks_one {l : ℕ} [Fact l.Prime] (K : FinExt l) (hK : K.1 ≤ MaximalUnramifiedExtension l) :
     FiniteDimensional ℚ_[l] ↥(Ks K 1) := by
   have h0 : K0 K = K.1 := inf_eq_left.mpr hK
@@ -30,6 +39,15 @@ theorem finiteDimensional_Ks_one {l : ℕ} [Fact l.Prime] (K : FinExt l) (hK : K
   rw [h0]
   infer_instance
 
+/- English proof (translation)
+Introduce `D i w hw hs hq hd`. Establish `h2 : D.nd.l i ≠ 2` using `UpperTheory.Small.ne_two D.host hs`. Establish `hur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i)` using `GlobalTheory.HubLoc.kw_le_Kur_all D i hs hq hd w hw`. Use `haveI := finiteDimensional_Ks_one (D.nbr i w hw).Kw hur`. Use `haveI : FiniteDimensional ℚ_[D.nd.l i] ↥(D.nbr i w hw).LL.1 := (D.nbr i w hw).LL.2`.
+
+Set `N : IntermediateField ℚ_[D.nd.l i] (Om (D.nd.l i))` to `IntermediateField.normalClosure ℚ_[D.nd.l i] ↥(Ks (D.nbr i w hw).Kw 1) (Om (D.nd.l i))`. Use `haveI hN : FiniteDimensional ℚ_[D.nd.l i] ↥N := normalClosure.is_finiteDimensional _ _ _`. Set `LL : FinExt (D.nd.l i)` to `⟨N ⊔ (D.nbr i w hw).LL.1, inferInstance⟩`. Use `⟨⟨LL, le_sup_right⟩, hur, h2, le_rfl, fun h => absurd h h2, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : K0 (D.nbr i w hw).Kw = (D.nbr i w hw).Kw.1` using `inf_eq_left.mpr hur`.
+
+Unfold `Ks`. Rewrite using `[h0]`. Conclude with `le_sup_left`. Introduce `τ x`. Apply `le_sup_left (b := (D.nbr i w hw).LL.1)` to reduce the goal to its premises.
+
+Conclude with `AlgHom.fieldRange_le_normalClosure τ ⟨x, rfl⟩`.
+-/
 theorem exists_caseA_enl : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)), D.nd.l i ∉ D.host.small → D.nd.l i ≠ D.host.q →
     D.nd.l i ≠ D.host.d → ∃ C : TruncatedSeriesCountingIdentities.CoefExt D i w hw, CaseA (D.nbr i w hw).Kw C.LL := by

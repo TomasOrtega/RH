@@ -12,6 +12,15 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `S B _ X _ _ _ h u hu`. Set `b` to `Module.Free.chooseBasis ℤ X`. Set `l : _ → (X →+ ULift.{0} ℤ)` to `fun i => (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).symm.toAddMonoidHom.comp (b.coord i).toAddMonoidHom`. Set `c : _ → (ULift.{0} ℤ →+ X)` to `fun i => SplitTorus.uliftMultiples X (b i)`. Establish `h1 : ∀ i, SplitTorus.torusMap S ((c i).comp (l i)) ≫ u = 1` using `fun i => by`.
+
+Establish `e : SplitTorus.torusMap S (l i) ≫ u = 1` using `h _ (inferInstanceAs (IsMonHom (SplitTorus.torusMap S (l i) ≫ u)))`. Rewrite using `[SplitTorus.torusMap_comp, Category.assoc, e, MonObj.comp_one]`. Establish `h2 : ∀ s : Finset (Module.Free.ChooseBasisIndex ℤ X), SplitTorus.torusMap S (∑ i ∈ s, (c i).comp (l i)) ≫ u = 1` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, SplitTorus.torusMap_zero, MonObj.one_comp]`.
+
+Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, SplitTorus.torusMap_add, MonObj.mul_comp, h1, ih, _root_.mul_one]`. Establish `h3 : (∑ i, (c i).comp (l i)) = AddMonoidHom.id X`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.finset_sum_apply]`.
+
+Conclude with `b.sum_repr x`. Use `h2 Finset.univ` as an intermediate fact. Rewrite `this` using `[h3, SplitTorus.torusMap_id, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem splitTorus_hom_eq_one_of_no_cocharacter :
     ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] (X : Type) [AddCommGroup X] [Module.Free ℤ X]
       [Module.Finite ℤ X], (∀ f : Gm S ⟶ B, IsMonHom f → f = 1) →

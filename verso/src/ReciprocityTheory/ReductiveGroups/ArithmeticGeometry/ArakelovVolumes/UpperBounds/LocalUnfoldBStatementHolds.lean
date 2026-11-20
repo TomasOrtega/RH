@@ -12,12 +12,21 @@ open NumberField
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `LUB.localUnfoldB_of lu_holds`.
+-/
 theorem localUnfoldBStatement_holds : LocalUnfoldBStatement (E := E) :=
   LUB.localUnfoldB_of lu_holds
 
+/- English proof (translation)
+The claim follows from `OW.ontoWeight_of localUnfoldBStatement_holds`.
+-/
 theorem ontoWeightStatement_holds : OntoWeightStatement (E := E) :=
   OW.ontoWeight_of localUnfoldBStatement_holds
 
+/- English proof (translation)
+The claim follows from `divCore_up_of ontoWeightStatement_holds upDiv_holds DivStartStatement_holds`.
+-/
 theorem divCoreStatement_holds : DivCoreStatement (E := E) :=
   divCore_up_of ontoWeightStatement_holds upDiv_holds DivStartStatement_holds
 

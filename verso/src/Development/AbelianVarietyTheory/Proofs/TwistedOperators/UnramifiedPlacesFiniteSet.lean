@@ -22,6 +22,11 @@ noncomputable section
 
 namespace GlobalTheory.SphFix
 
+/- English proof (translation)
+Introduce `P F E _ _ _ _ _ σ B a a' G X om om' hT`. Take `⟨S₁, h₁⟩` from `GlobalTheory.T.unramified_places_invariant P F E σ B a a' G X om om' hT`. Take `⟨S₂, h₂⟩` from `GlobalTheory.T.unramified_places_spherical P F E σ B a a' G X om om' hT`. Use `⟨S₁ ∪ S₂, fun S hS k hinf hSk hl hl' => ⟨fun f φ hφ hv => ?_, fun f φ hφ hv => ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor F E σ a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om S (Nat.zero_lt_of_lt hT.geo.lt) hT.geo.hV.lat hT.geo.hW.lat hT.geo.hM hT.weil (fun v hv k hk => h₁ v (fun h => hv (hS (Finset.mem_union_left _ h))) k hk) k hinf hSk hl …`.
+
+Conclude with `GlobalTheory.T.latticeStabilizers_fix_vacua_fixes_pureTensor F E σ a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' S (lt_of_le_of_lt (Nat.zero_le _) hT.geo.aBig) hT.geo.hV'.lat hT.geo.hW.lat hT.geo.hM' hT.weil' (fun v hv k hk => h₂ v (fun h => hv (hS (Finset.mem_union_right _ h …`.
+-/
 theorem fixes_pure_vacua : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →

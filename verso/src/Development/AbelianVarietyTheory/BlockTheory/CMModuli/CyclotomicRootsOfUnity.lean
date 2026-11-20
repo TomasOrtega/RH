@@ -13,6 +13,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.I
 
 def LiesOver (W : ValuationSubring ℂ) (p : ℕ) : Prop := (p : ℂ) ∈ W.nonunits
 
+/- English proof (translation)
+Establish `hI : Ideal.span {((p : ℕ) : (⊥ : Subring ℂ))} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `h`. Take `⟨⟨x, hx⟩, h1⟩` from `h.exists_right_inv`. Take `⟨m, rfl⟩` from `Subring.mem_bot.mp hx`.
+
+Establish `h2 : ((p : ℤ) : ℂ) * (m : ℂ) = 1` using `by simpa using congrArg Subtype.val h1`. Establish `h3 : (p : ℤ) * m = 1` using `by exact_mod_cast h2`. Establish `h4 : (p : ℤ) ∣ 1` using `⟨m, h3.symm⟩`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp (by exact_mod_cast h4))`. Take `⟨W, -, hW⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`.
+
+Conclude with `⟨W, hW ⟨_, Ideal.subset_span rfl, by simp⟩⟩`.
+-/
 example (p : ℕ) (hp : p.Prime) : ∃ W : ValuationSubring ℂ, LiesOver W p := by
   have hI : Ideal.span {((p : ℕ) : (⊥ : Subring ℂ))} ≠ ⊤ := by
     rw [Ne, Ideal.span_singleton_eq_top]
@@ -36,6 +43,13 @@ def locMap (W : ValuationSubring ℂ) {F F' : IntermediateField ℚ ℂ} (h : F 
     locRing W F →+* locRing W F' :=
   ((IntermediateField.inclusion h).toRingHom.comp (locIncl W F)).codRestrict (locRing W F') fun x => x.2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `hdn : (d : ℂ) ∈ W.nonunits` using `(W.mem_nonunits_iff_or).mpr (Or.inr h)`. Establish `hc : IsCoprime (p : ℤ) (d : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hp).mpr hd)`. Take `⟨a, b, hab⟩` from `hc`. Establish `h1 : (a : ℂ) * p + (b : ℂ) * d = 1` using `by exact_mod_cast hab`.
+
+Establish `hv : ∀ (m : ℤ) (x : ℂ), W.valuation x < 1 → W.valuation ((m : ℂ) * x) < 1` using `fun m x hx => by`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((W.valuation_le_one_iff _).mpr (intCast_mem W m))) hx`. Use `Valuation.map_add_lt W.valuation (hv a _ (W.mem_nonunits_iff.mp hW)) (hv b _ (W.mem_nonunits_iff.mp hdn))` as an intermediate fact. Rewrite `this` using `[h1, map_one]`.
+
+Conclude with `lt_irrefl _ this`.
+-/
 theorem inv_natCast_mem {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime) (hW : LiesOver W p) {d : ℕ}
     (hd : ¬ p ∣ d) : (d : ℂ)⁻¹ ∈ W := by
   by_contra h
@@ -50,12 +64,20 @@ theorem inv_natCast_mem {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime) (hW 
   rw [h1, map_one] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `h1 : zeta M ^ M = 1` using `(Complex.isPrimitiveRoot_exp M hM).pow_eq_one`. Rewrite using `[← W.valuation_le_one_iff]`. Establish `h2 : W.valuation (zeta M) ^ M = 1` using `by rw [← map_pow, h1, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg zero_le' hM).mp h2).le`.
+-/
 theorem zeta_mem_valuationSubring (W : ValuationSubring ℂ) {M : ℕ} (hM : M ≠ 0) : zeta M ∈ W := by
   have h1 : zeta M ^ M = 1 := (Complex.isPrimitiveRoot_exp M hM).pow_eq_one
   rw [← W.valuation_le_one_iff]
   have h2 : W.valuation (zeta M) ^ M = 1 := by rw [← map_pow, h1, map_one]
   exact ((pow_eq_one_iff_of_nonneg zero_le' hM).mp h2).le
 
+/- English proof (translation)
+Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x (⟨q, hq, rfl⟩ | hx)`. Use `⟨?_, SubfieldClass.ratCast_mem F q⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(q : ℂ) ∈ W`. Rewrite using `[Rat.cast_def, div_eq_mul_inv]`.
+
+Conclude with `mul_mem (intCast_mem W _) (inv_natCast_mem hp hW hq)`. Take `rfl : x = zeta M` from `hx`. Conclude with `⟨zeta_mem_valuationSubring W hM, hF⟩`.
+-/
 theorem cycloLocal_le {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime) (hW : LiesOver W p) {M : ℕ} (hM : M ≠ 0)
     {F : IntermediateField ℚ ℂ} (hF : zeta M ∈ F) : cycloLocal p M ≤ W.toSubring ⊓ F.toSubfield.toSubring := by
   refine Subring.closure_le.mpr ?_
@@ -72,6 +94,11 @@ def cycloMap {W : ValuationSubring ℂ} {p : ℕ} (hp : p.Prime) (hW : LiesOver 
   ((cycloLocal p M).subtype.codRestrict F fun x => (cycloLocal_le hp hW hM hF x.2).2).codRestrict
     (locRing W F) fun x => (cycloLocal_le hp hW hM hF x.2).1
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Establish `hk : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (right_ne_zero_of_mul hN)`. Establish `: zeta a = zeta (a * k) ^ k`. Rewrite using `[zeta, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `pow_mem hF k`.
+-/
 theorem zeta_mem_of_dvd {F : IntermediateField ℚ ℂ} {a N : ℕ} (hN : N ≠ 0) (h : a ∣ N) (hF : zeta N ∈ F) :
     zeta a ∈ F := by
   obtain ⟨k, rfl⟩ := h
@@ -84,6 +111,13 @@ theorem zeta_mem_of_dvd {F : IntermediateField ℚ ℂ} {a N : ℕ} (hN : N ≠ 
   rw [this]
   exact pow_mem hF k
 
+/- English proof (translation)
+Establish `ha' : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr ha`. Establish `hb' : (b : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hb`. Establish `hl : ((Nat.lcm a b : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.lcm_ne_zero ha hb)`. Establish `e1 : ((Nat.gcd a b : ℕ) : ℂ) * (Nat.lcm a b : ℕ) = a * b` using `by exact_mod_cast Nat.gcd_mul_lcm a b`. Establish `e2 : ((Nat.gcd a b : ℕ) : ℂ) = a * (Nat.gcdA a b : ℂ) + b * (Nat.gcdB a b : ℂ)`.
+
+Conclude with `Nat.gcd_eq_gcd_ab a b` after adjusting the coercions. Establish `: zeta (Nat.lcm a b) = zeta a ^ Nat.gcdB a b * zeta b ^ Nat.gcdA a b`. Rewrite using `[zeta, zeta, zeta, ← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-1 : ℂ) * e1 + (Nat.lcm a b : ℂ) * e2`. Rewrite using `[this]`. Conclude with `mul_mem (zpow_mem h₁ _) (zpow_mem h₂ _)`.
+-/
 theorem zeta_lcm_mem {F : IntermediateField ℚ ℂ} {a b : ℕ} (ha : a ≠ 0) (hb : b ≠ 0) (h₁ : zeta a ∈ F)
     (h₂ : zeta b ∈ F) : zeta (Nat.lcm a b) ∈ F := by
   have ha' : (a : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr ha
@@ -110,14 +144,23 @@ abbrev Idx.F {p : ℕ} (i : Idx H p) : IntermediateField ℚ ℂ := i.2.F
 
 def Idx.Le {p : ℕ} (i j : Idx H p) : Prop := i.l.Dvd j.l ∧ i.F ≤ j.F
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl⟩`.
+-/
 theorem Idx.Le.refl {p : ℕ} (i : Idx H p) : i.Le i := ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.1.1.trans h'.1.1, h'.1.2.1.trans h.1.2.1, h.1.2.2.trans h'.1.2.2⟩, h.2.trans h'.2⟩`.
+-/
 theorem Idx.Le.trans {p : ℕ} {i j k : Idx H p} (h : i.Le j) (h' : j.Le k) : i.Le k :=
   ⟨⟨h.1.1.trans h'.1.1, h'.1.2.1.trans h.1.2.1, h.1.2.2.trans h'.1.2.2⟩, h.2.trans h'.2⟩
 
 def addLevel (l : Level H) {N : ℕ} (hN : N ≠ 0) : Level H :=
   { l with A := Nat.lcm l.A N, A_pos := Nat.lcm_pos l.A_pos (Nat.pos_of_ne_zero hN) }
 
+/- English proof (translation)
+The claim follows from `(le_sup_right : _ ≤ F ⊔ _) (IntermediateField.subset_adjoin _ _ rfl)`.
+-/
 theorem zeta_mem_sup (F : IntermediateField ℚ ℂ) (N : ℕ) :
     zeta N ∈ F ⊔ IntermediateField.adjoin ℚ {zeta N} :=
   (le_sup_right : _ ≤ F ⊔ _) (IntermediateField.subset_adjoin _ _ rfl)
@@ -149,9 +192,15 @@ def addCoeff {l : Level H} (c : Coeff l) {N : ℕ} (hN : N ≠ 0) : Coeff (addLe
 def Idx.add {p : ℕ} (i : Idx H p) {N : ℕ} (hN : N ≠ 0) : Idx H p :=
   ⟨⟨addLevel i.l hN, i.1.2⟩, addCoeff i.2 hN⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨dvd_rfl, le_rfl, Nat.dvd_lcm_left _ _⟩, le_sup_left⟩`.
+-/
 theorem Idx.le_add {p : ℕ} (i : Idx H p) {N : ℕ} (hN : N ≠ 0) : i.Le (i.add hN) :=
   ⟨⟨dvd_rfl, le_rfl, Nat.dvd_lcm_left _ _⟩, le_sup_left⟩
 
+/- English proof (translation)
+The claim follows from `zeta_mem_sup _ _`.
+-/
 theorem Idx.zeta_mem_add {p : ℕ} (i : Idx H p) {N : ℕ} (hN : N ≠ 0) : zeta N ∈ (i.add hN).F :=
   zeta_mem_sup _ _
 
@@ -160,6 +209,9 @@ def abOpen {S : Scheme.{0}} (G : Over S) : S.Opens := ⟨interior (abLocus G), i
 def IsBirational {X Z : Scheme.{0}} (h : X ⟶ Z) : Prop :=
   ∃ V : Z.Opens, Dense (V : Set Z) ∧ Dense ((h ⁻¹ᵁ V : X.Opens) : Set X) ∧ IsIso (h ∣_ V)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, dense_univ, dense_univ, inferInstance⟩`.
+-/
 example (X : Scheme.{0}) : IsBirational (𝟙 X) :=
   ⟨⊤, dense_univ, dense_univ, inferInstance⟩
 

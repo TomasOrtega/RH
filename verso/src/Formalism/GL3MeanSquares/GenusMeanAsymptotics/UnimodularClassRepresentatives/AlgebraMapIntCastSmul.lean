@@ -14,6 +14,13 @@ section Gen
 
 variable {W : Type} [AddCommGroup W] [Module (𝓞 K) W]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, (Ideal.ne_top_iff_one 𝔭).mp hp.ne_top, map_one _⟩`.
+
+Consider the case `mul a b _ _ iha ihb`. Take `⟨t, ht, rfl⟩` from `iha`. Take `⟨u, hu, rfl⟩` from `ihb`. Conclude with `⟨t * u, fun h => (hp.mem_or_mem h).elim ht hu, map_mul _ _ _⟩`. Introduce `hs`.
+
+Conclude with `Submonoid.subset_closure hs`.
+-/
 theorem mem_closure_iff {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (s : 𝓞 K) :
     s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s} ↔
       ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t = s := by
@@ -29,6 +36,11 @@ theorem mem_closure_iff {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (s : 𝓞 K)
   · intro hs
     exact Submonoid.subset_closure hs
 
+/- English proof (translation)
+Unfold `locF`. Rewrite using `[Formalism.HermitianLatticesTheory.locBasic_mem_locS]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Take `⟨t, ht, rfl⟩` from `(mem_closure_iff hp s).mp hs`.
+
+Conclude with `⟨t, ht, hx⟩`. Introduce and unpack `⟨t, ht, hx⟩`. Conclude with `⟨_, (mem_closure_iff hp _).mpr ⟨t, ht, rfl⟩, hx⟩`.
+-/
 theorem mem_locF_iff {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (L : Submodule (𝓞 K) W) (x : W) :
     x ∈ locF 𝔭 L ↔ ∃ t : 𝓞 F, t ∉ 𝔭 ∧ algebraMap (𝓞 F) (𝓞 K) t • x ∈ L := by
   unfold locF
@@ -40,17 +52,35 @@ theorem mem_locF_iff {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsPrime) (L : Submodule 
   · rintro ⟨t, ht, hx⟩
     exact ⟨_, (mem_closure_iff hp _).mpr ⟨t, ht, rfl⟩, hx⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.locBasic_le_locS _ L`.
+-/
 theorem le_locF (𝔭 : Ideal (𝓞 F)) (L : Submodule (𝓞 K) W) : L ≤ locF 𝔭 L :=
   Formalism.HermitianLatticesTheory.locBasic_le_locS _ L
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.locBasic_locS_mono _ h`.
+-/
 theorem locF_mono (𝔭 : Ideal (𝓞 F)) {L M : Submodule (𝓞 K) W} (h : L ≤ M) :
     locF 𝔭 L ≤ locF 𝔭 M :=
   Formalism.HermitianLatticesTheory.locBasic_locS_mono _ h
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.locBasic_locS_idem _ L`.
+-/
 theorem locF_idem (𝔭 : Ideal (𝓞 F)) (L : Submodule (𝓞 K) W) :
     locF 𝔭 (locF 𝔭 L) = locF 𝔭 L :=
   Formalism.HermitianLatticesTheory.locBasic_locS_idem _ L
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Assume the negation of the conclusion as `hxL`. Set `I : Ideal (𝓞 F)` to `Ideal.comap (algebraMap (𝓞 F) (𝓞 K)) (Submodule.comap (LinearMap.toSpanSingleton (𝓞 K) W x) L)`. Establish `hmem : ∀ r : 𝓞 F, r ∈ I ↔ algebraMap (𝓞 F) (𝓞 K) r • x ∈ L`.
+
+Introduce `r`. Simplify using `[I]`. Establish `hI : I ≠ ⊤`. Introduce `h`. Apply `hxL` to reduce the goal to its premises.
+
+Establish `h1 : (1 : 𝓞 F) ∈ I` using `h ▸ Submodule.mem_top`. Simplify using `using (hmem 1).mp h1`. Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I hI`. Establish `h2` using `(Submodule.mem_iInf _).mp hx ⟨p, hp⟩`. Take `⟨t, ht, htx⟩` from `(mem_locF_iff hp.isPrime L x).mp h2`.
+
+Conclude with `ht (hIp ((hmem t).mpr htx))`. Conclude with `le_iInf fun 𝔭 => le_locF 𝔭.1 L`.
+-/
 theorem iInf_locF (L : Submodule (𝓞 K) W) :
     (⨅ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, locF 𝔭.1 L) = L := by
   apply le_antisymm
@@ -74,6 +104,15 @@ theorem iInf_locF (L : Submodule (𝓞 K) W) :
 
 end Gen
 
+/- English proof (translation)
+Establish `hc' : Ideal.span {c} ≠ (0 : Ideal (𝓞 F))`. Simplify using `using hc`. Establish `hu : ¬ IsUnit 𝔭`. Rewrite using `[Ideal.isUnit_iff]`. Conclude with `hp.ne_top`.
+
+Take `⟨𝔟, hb, hnd⟩` from `(FiniteMultiplicity.of_not_isUnit hu hc').exists_eq_pow_mul_and_not_dvd`. Rewrite `hnd` using `[Ideal.dvd_iff_le]`. Take `⟨t, htb, htp⟩` from `SetLike.not_le_iff_exists.mp hnd`. Use `⟨t, htp, fun 𝔮 hq hne => ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ 𝔭 ^ multiplicity 𝔭 (Ideal.span {c}) ≤ 𝔮`.
+
+Introduce `hle`. Conclude with `hne (hp.eq_of_le hq.ne_top (hq.isPrime.le_of_pow_le hle)).symm`. Take `⟨u, hu1, hu2⟩` from `SetLike.not_le_iff_exists.mp h1`. Use `⟨u, hu2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, hb]`.
+
+Conclude with `Ideal.mul_mem_mul hu1 htb`.
+-/
 theorem exists_prime_to_part {c : 𝓞 F} (hc : c ≠ 0) {𝔭 : Ideal (𝓞 F)} (hp : 𝔭.IsMaximal) :
     ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∀ 𝔮 : Ideal (𝓞 F), 𝔮.IsMaximal → 𝔮 ≠ 𝔭 → ∃ u : 𝓞 F, u ∉ 𝔮 ∧ c ∣ u * t := by
   have hc' : Ideal.span {c} ≠ (0 : Ideal (𝓞 F)) := by
@@ -98,6 +137,13 @@ section Lat
 variable [StarRing K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hA.fg`. Use `choose n hn hnx using fun x : V => Formalism.HermitianLatticesTheory.traceReal_mult B hB x`. Use `⟨∏ x ∈ S, n x, Finset.prod_ne_zero_iff.mpr fun x _ => hn x, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem n hy`. Rewrite using `[hm, mul_comm, mul_smul]`. Conclude with `zsmul_mem (hnx y) m`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `B.zero_mem`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `B.add_mem hy hz`. Consider the case `smul a y _ hy => rw [smul_comm]`. Conclude with `B.smul_mem a hy`.
+-/
 theorem exists_zsmul_le {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsLattice K B) : ∃ n : ℤ, n ≠ 0 ∧ ∀ x ∈ A, n • x ∈ B := by
   obtain ⟨S, hS⟩ := hA.fg
@@ -113,10 +159,44 @@ theorem exists_zsmul_le {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K
   | add y z _ _ hy hz => rw [smul_add]; exact B.add_mem hy hz
   | smul a y _ hy => rw [smul_comm]; exact B.smul_mem a hy
 
+/- English proof (translation)
+Rewrite using `[map_intCast, Int.cast_smul_eq_zsmul]`.
+-/
 theorem algebraMap_intCast_smul (n : ℤ) (x : V) :
     algebraMap (𝓞 F) (𝓞 K) (n : 𝓞 F) • x = n • x := by
   rw [map_intCast, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Use `choose n₁ hn₁ hn₁x using fun 𝔭 => exists_zsmul_le (hB 𝔭) hL₀`. Use `choose n₂ hn₂ hn₂x using fun 𝔭 => exists_zsmul_le hL₀ (hB 𝔭)`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hN1, hN2⟩ : ∃ N : ℤ, N ≠ 0 ∧ (∀ 𝔭, ∀ x ∈ B 𝔭, N • x ∈ L₀) ∧ ∀ 𝔭, ∀ x ∈ L₀, N • x ∈ B 𝔭 := by`. Use `⟨∏ 𝔭 ∈ s, (n₁ 𝔭 * n₂ 𝔭), Finset.prod_ne_zero_iff.mpr fun 𝔭 _ => mul_ne_zero (hn₁ 𝔭) (hn₂ 𝔭), ?_, ?_⟩` and prove the remaining obligations. Introduce `𝔭 x hx`.
+
+Distinguish the cases in `h𝔭 : 𝔭 ∈ s`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun 𝔭 => n₁ 𝔭 * n₂ 𝔭) h𝔭`. Rewrite using `[hm, show n₁ 𝔭 * n₂ 𝔭 * m = (n₂ 𝔭 * m) * n₁ 𝔭 by ring, mul_smul]`. Conclude with `zsmul_mem (hn₁x 𝔭 x hx) _`. Rewrite `hx` using `[hBs 𝔭 h𝔭]`.
+
+Conclude with `zsmul_mem hx _`. Introduce `𝔭 x hx`. Distinguish the cases in `h𝔭 : 𝔭 ∈ s`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun 𝔭 => n₁ 𝔭 * n₂ 𝔭) h𝔭`. Rewrite using `[hm, show n₁ 𝔭 * n₂ 𝔭 * m = (n₁ 𝔭 * m) * n₂ 𝔭 by ring, mul_smul]`.
+
+Conclude with `zsmul_mem (hn₂x 𝔭 x hx) _`. Rewrite using `[hBs 𝔭 h𝔭]`. Conclude with `zsmul_mem hx _`. Use `set Λ : Submodule (𝓞 K) V := ⨅ 𝔭, locF 𝔭.1 (B 𝔭) with hΛ`. Establish `hΛle : ∀ 𝔭, Λ ≤ locF 𝔭.1 (B 𝔭)` using `fun 𝔭 => iInf_le _ 𝔭`.
+
+Establish `h2 : ∀ x ∈ L₀, N • x ∈ Λ`. Introduce `x hx`. Rewrite using `[hΛ, Submodule.mem_iInf]`. Conclude with `fun 𝔭 => le_locF 𝔭.1 _ (hN2 𝔭 x hx)`. Establish `h3 : ∀ x ∈ Λ, N • x ∈ L₀`.
+
+Introduce `x hx`. Rewrite using `[← iInf_locF (F := F) L₀, Submodule.mem_iInf]`. Introduce `𝔭`. Take `⟨t, ht, htx⟩` from `(mem_locF_iff 𝔭.2.isPrime _ x).mp (hΛle 𝔭 hx)`. Use `(mem_locF_iff 𝔭.2.isPrime _ _).mpr ⟨t, ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_comm]`. Conclude with `hN1 𝔭 _ htx`. Establish `hNK : (N : K) ≠ 0` using `by exact_mod_cast hN`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Set `φ : V →ₗ[𝓞 K] V` to `N • LinearMap.id`.
+
+Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Establish `: N • x = N • y` using `hxy`. Rewrite `this` using `[← Int.cast_smul_eq_zsmul K, ← Int.cast_smul_eq_zsmul K]`. Conclude with `smul_right_injective V hNK this`.
+
+Apply `Submodule.fg_of_fg_map_injective φ hφ` to reduce the goal to its premises. Establish `hle : Λ.map φ ≤ L₀`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `h3 x hx`. Conclude with `hL₀.fg.of_le hle`.
+
+Rewrite using `[eq_top_iff, ← hL₀.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `h4 : (N : K)⁻¹ • (N • x) ∈ Submodule.span K (Λ : Set V)` using `Submodule.smul_mem _ _ (Submodule.subset_span (h2 x hx))`. Rewrite `h4` using `[← Int.cast_smul_eq_zsmul K, smul_smul, inv_mul_cancel₀ hNK, one_smul]`. Then use the resulting hypothesis. Introduce `𝔭`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Take `⟨t₀, ht₀, hy⟩` from `(mem_locF_iff 𝔭.2.isPrime _ x).mp hx`. Establish `hc : ((N * N : ℤ) : 𝓞 F) ≠ 0`.
+
+Conclude with `mul_ne_zero hN hN` after adjusting the coercions. Take `⟨t, ht, hq⟩` from `exists_prime_to_part hc 𝔭.2`. Use `(mem_locF_iff 𝔭.2.isPrime _ x).mpr ⟨t * t₀, fun h => (𝔭.2.isPrime.mem_or_mem h).elim ht ht₀, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul]`. Generalize the expression as in `algebraMap (𝓞 F) (𝓞 K) t₀ • x = y at hy`.
+
+Establish `hcy : (N * N) • y ∈ Λ`. Rewrite using `[mul_smul]`. Conclude with `h2 _ (hN1 𝔭 y hy)`. Rewrite using `[hΛ, Submodule.mem_iInf]`. Introduce `𝔮`.
+
+Distinguish the cases in `hqp : 𝔮 = 𝔭`. Rewrite using `[hqp]`. Conclude with `Submodule.smul_mem _ _ (le_locF _ _ hy)`. Take `⟨u, hu, d, hd⟩` from `hq 𝔮.1 𝔮.2 (fun h => hqp (Subtype.ext h))`. Rewrite using `[← locF_idem]`.
+
+Use `(mem_locF_iff 𝔮.2.isPrime _ _).mpr ⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, ← map_mul, hd, mul_comm, map_mul, mul_smul, algebraMap_intCast_smul]`. Conclude with `Submodule.smul_mem _ _ (hΛle 𝔮 hcy)`.
+-/
 theorem patch {L₀ : Submodule (𝓞 K) V} (hL₀ : Submodule.IsLattice K L₀)
     (s : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal})
     (B : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} → Submodule (𝓞 K) V)

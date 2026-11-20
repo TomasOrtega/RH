@@ -14,6 +14,17 @@ namespace GlobalTheory.IntertwinerTransfer
 
 variable {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Use `⟨hIt.ne, hIt.bdd, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ g hg φ φ' h v`. Rewrite `h` using `[hω₁ τ g hg]`. Use `hIt.eqK τ g hg φ φ' ?_ v` and prove the remaining obligations. Rewrite using `[hω τ g hg, hpt₁ h]`.
+
+Introduce `τ X hX φ φ' h v`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (GlobalTheory.CompactIntertwiner.isUnit_gram M τ) hX t`. Simplify using `only [oneP, hω₁ τ _ (hm _)] at h`. Use `hIt.eqg τ X hX φ φ' (fun z => ?_) v` and prove the remaining obligations. Simplify using `only [oneP, hω τ _ (hm _)]`.
+
+Conclude with `GlobalTheory.CompactIntertwiner.hasDerivAt_pol pt₁ hpt₁ (fun t : ℝ => ρ τ (NormedSpace.exp (t • X)) φ) _ (fun t => hd τ _ φ) φ' h (LinearMap.proj z ∘ₗ pt)`. Introduce `τ h hh φ φ' v v' e e'`. Rewrite `e` using `[hω₁' τ h hh]`. Use `hIt.invK τ h hh φ φ' v v' ?_ e'` and prove the remaining obligations. Rewrite using `[hω' τ h hh, hpt₁ e]`.
+
+Introduce `τ X hX φ φ' v v' h h'`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (GlobalTheory.CompactIntertwiner.isUnit_gram M' τ) hX t`. Simplify using `only [oneP, hω₁' τ _ (hm _)] at h`. Use `hIt.invg τ X hX φ φ' v v' (fun z => ?_) h'` and prove the remaining obligations. Simplify using `only [oneP, hω' τ _ (hm _)]`.
+
+Conclude with `GlobalTheory.CompactIntertwiner.hasDerivAt_pol pt₁ hpt₁ (fun t : ℝ => ρ' τ (NormedSpace.exp (t • X)) φ) _ (fun t => hd' τ _ φ) φ' h (LinearMap.proj z ∘ₗ pt)`.
+-/
 theorem isItW_transfer (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
     (ρ : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ → PolF D W.rank V.rank → PolF D W.rank V.rank)
     (ρ' : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ → PolF D W.rank V.rank → PolF D W.rank V.rank)
@@ -54,6 +65,13 @@ theorem isItW_transfer (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S')
 
 open Classical in
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Establish `hp` using `fun τ => GlobalTheory.T.lastStep_parameters_partition_extended_by_zeros D k τ V.rank W.rank (M.lam τ) (M.ε τ) (M'.lam τ) (M'.ε τ) hk rV rW (M.enum τ) (M'.enum τ)`. Establish `hε` using `fun τ => (hp τ).1`. Establish `hε'` using `fun τ => (hp τ).2.1`. Use `choose x₁ x₃ h1 h3 _ using fun τ => (hp τ).2.2`.
+
+Establish `act : ∀ (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (f : WO V W → ℂ), IsStepWeil k ψ V W ω → IsVacVec ψ θ M M' f → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ φ, ω (atTau θ V τ g, 1) (ptOf ψ θ M M' f φ) = ptOf ψ θ M M' f (polAct M M' x₁ x₃ (Function.upda …`. Introduce `ω f hω hf`. Use `⟨fun τ g hg φ => ?_, fun τ h hh φ => ?_⟩` and prove the remaining obligations. Use `om_ptOf hθ hV hW M M' hε hε' x₁ x₃ h1 h3 hω hf (GlobalTheory.PointAtPlaceHom.atTau_mem (θ := θ) V τ g) (one_mem _) φ` as an intermediate fact. Rewrite `this` using `[compAt_atTau hθ τ hg, compAt_one]`. Then use the resulting hypothesis.
+
+Use `om_ptOf hθ hV hW M M' hε hε' x₁ x₃ h1 h3 hω hf (one_mem _) (GlobalTheory.PointAtPlaceHom.atTau_mem (θ := θ) W τ h) φ` as an intermediate fact. Rewrite `this` using `[compAt_atTau hθ τ hh, compAt_one]`. Then use the resulting hypothesis. Establish `a0` using `act ω f hω hf`. Establish `a1` using `act ω₁ f₁ hω₁ hf₁`. Conclude with `isItW_transfer θ M M' (fun τ g => polAct M M' x₁ x₃ (Function.update (fun _ => 1) τ g) fun _ => 1) (fun τ h => polAct M M' x₁ x₃ (fun _ => 1) (Function.update (fun _ => 1) τ h)) (fun _ _ _ => totalDegree_polAct _ _ _ _ _ _ _) (fun _ _ _ => totalDegree_polAct _ _ _ _ _ _ _) ω ω₁ ( …`.
+-/
 theorem isItW_lastStep_transfer (k : Fin D.R.m) (hk : (k : ℕ) + 1 = D.R.m) (a : ℕ) (ha : a = k) (hV : V.SigOK)
     (hW : W.SigOK) (rV : V.rank = D.R.r + k * D.R.t) (rW : W.rank = V.rank + D.R.t)
     (M : DSModel V (parB (Ptw D) a)) (M' : DSModel W (parB (Ptw D) D.R.m)) (θ : InfFam D) (hθ : IsInfFam θ)
@@ -89,6 +107,13 @@ theorem isItW_lastStep_transfer (k : Fin D.R.m) (hk : (k : ℕ) + 1 = D.R.m) (a 
     (GlobalTheory.T.fockVectorsOfThetaDatum_injective D V W _ _ ψ θ M M' f₁ hω₁.choose_spec.choose_spec.1.std hθ hf₁)
     a0.1 a0.2 a1.1 a1.2 It hIt
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hL hM hω hv t₀ y hy t`. Establish `hm` using `D.R.two_le_m`. Set `k : Fin D.R.m` to `⟨D.R.m - 1, by omega⟩`. Establish `hk : (k : ℕ) = D.R.m - 1` using `rfl`. Establish `hS` using `fun t => GlobalTheory.T.lastThetaChainStep_exponents_and_nonzero_vacuum D G Pl0 T A Ks R hL hM.inf hω hv t k hk`.
+
+Establish `rV : (Yc D (D.R.m - 1)).rank = D.R.r + k * D.R.t`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left (Nat.sub_le _ _)]`. Both sides reduce to the same expression. Establish `rW : D.sp.X'.rank = (Yc D (D.R.m - 1)).rank + D.R.t`. Rewrite using `[rV, D.sp.X'_rank, Ranks.rankX', add_assoc, ← Nat.succ_mul]`.
+
+Use `congr 2`. Use linear arithmetic over natural numbers and integers. Conclude with `isItW_lastStep_transfer k (by omega) (min (D.R.m - 1) D.R.m) (by omega) (D.sp.Y_sig _) D.sp.X'_sig rV rW (R.MY (D.R.m - 1)) R.MX R.θ hM.inf R.ψ y (R.ωX t₀) (R.ωX t) (R.vX t₀) (R.vX t) (hS t₀).1 (hS t₀).2 (hS t).1 (hS t).2 hy`.
+-/
 theorem pItX_of_one : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → R.chain_ωX → R.chain_vX → ∀ (t₀ : T) (y : PolF D D.sp.X'.rank (Yc D (D.R.m - 1)).rank →ₗ[ℂ] SmT R.MX →ₗ[ℂ] SmT (R.MY (D.R.m - 1))), IsItW R.θ (R.MY (D.R.m - 1)) R.MX (R.ωX t₀) (R.ptX t₀) y → R.PItX y := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hL hM hω hv t₀ y hy t
   have hm := D.R.two_le_m

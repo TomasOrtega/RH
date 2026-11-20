@@ -28,6 +28,11 @@ namespace GlobalTheory.MiTop.BotTwo
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [BesLev.per, besPer, besFun, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem per_smul_f {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ) (φ : GA D B.A → ℂ) (b : ℂ) (f : GA D B.V → ℂ) :
     B.per ψ φ (b • f) = b * B.per ψ φ f := by
   simp only [BesLev.per, besPer, besFun, Pi.smul_apply, smul_eq_mul]
@@ -36,19 +41,38 @@ theorem per_smul_f {ρ : ℕ} (B : BesLev D ρ) (ψ : AddChar (AF D.host.F) ℂ)
   rw [← integral_const_mul]
   congr 1; funext n; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, continuous_const⟩`.
+-/
 theorem contAut_zero (V : HSp D) : IsContAut V (0 : GA D V → ℂ) :=
   ⟨fun _ _ _ => rfl, continuous_const⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩`.
+-/
 theorem contAut_add {V : HSp D} {f g : GA D V → ℂ} (hf : IsContAut V f) (hg : IsContAut V g) :
     IsContAut V (f + g) :=
   ⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩`.
+-/
 theorem contAut_smul {V : HSp D} {f : GA D V → ℂ} (hf : IsContAut V f) (c : ℂ) : IsContAut V (c • f) :=
   ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [rTrans, mul_assoc, hf.1 γ hγ], hf.2.comp (continuous_mul_const h)⟩`.
+-/
 theorem contAut_rTrans {V : HSp D} {f : GA D V → ℂ} (h : GA D V) (hf : IsContAut V f) : IsContAut V (rTrans h f) :=
   ⟨fun γ hγ x => by simp only [rTrans, mul_assoc, hf.1 γ hγ], hf.2.comp (continuous_mul_const h)⟩
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `hG`. Proceed by induction on `hT using Submodule.span_induction generalizing x with`. Consider the case `mem T hT`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+
+Rewrite using `[map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`. Conclude with `contAut_smul ⟨(hT.aut v).left, (hT.aut v).cont⟩ r`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `contAut_add hx hy`. Consider the case `zero => simpa using contAut_zero V`.
+
+Consider the case `add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `contAut_add (h₁ x) (h₂ x)`. Consider the case `smul c T _ h => rw [map_smul, LinearMap.smul_apply]`. Conclude with `contAut_smul (h x) c`.
+-/
 theorem contAut_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {G : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hG : G ∈ MultT θ M J χ) (x : SmT M) : IsContAut V (G x) := by
   obtain ⟨T, hT, rfl⟩ := hG
@@ -63,6 +87,13 @@ theorem contAut_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {
   | add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]; exact contAut_add (h₁ x) (h₂ x)
   | smul c T _ h => rw [map_smul, LinearMap.smul_apply]; exact contAut_smul (h x) c
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `hG`. Proceed by induction on `hT using Submodule.span_induction generalizing x g with`. Consider the case `mem T hT`. Proceed by induction on `x using PiTensorProduct.induction_on generalizing g with`. Consider the case `smul_tprod r v`.
+
+Rewrite using `[map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hT.lev v k hk g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `zero => simp`. Consider the case `add T₁ T₂ _ _ h₁ h₂ => simp only [map_add, LinearMap.add_apply, Pi.add_apply, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul c T _ h => simp only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lev_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {G : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hG : G ∈ MultT θ M J χ) (x : SmT M) {k : GA D V} (hk : k ∈ J)
     (g : GA D V) : G x (g * k) = χ k * G x g := by
@@ -78,6 +109,9 @@ theorem lev_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : 
   | add T₁ T₂ _ _ h₁ h₂ => simp only [map_add, LinearMap.add_apply, Pi.add_apply, h₁, h₂]; ring
   | smul c T _ h => simp only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, h]; ring
 
+/- English proof (translation)
+Apply `ι.injective` to reduce the goal to its premises. Simplify using `only [map_mul, MulEquiv.apply_symm_apply]`. Use `ext`. Simplify using `[hw]`. Simplify using `[mul_assoc]`.
+-/
 theorem shift_swap {G A B : Type} [Group G] [Group A] [Group B] (ι : G ≃* A × B) (g w : G) (y : A) (x : B)
     (hw : (ι w).1 = 1) : ι.symm (ι g * (y, x)) * w = g * (ι.symm (1, x) * w) * ι.symm (y, 1) := by
   apply ι.injective
@@ -86,6 +120,9 @@ theorem shift_swap {G A B : Type} [Group G] [Group A] [Group B] (ι : G ≃* A �
   · simp [hw]
   · simp [mul_assoc]
 
+/- English proof (translation)
+Establish `hI : ∫ y, α * F y ∂ν = ∫ y, -(α' * F' y) ∂ν` using `integral_congr_ae (Filter.Eventually.of_forall fun y => eq_neg_of_add_eq_zero_left (h y))`. Rewrite `hI` using `[integral_neg, integral_const_mul, integral_const_mul]`. Take the linear combination `c * hI`.
+-/
 theorem comb_integral {Y : Type} [MeasurableSpace Y] (ν : Measure Y) (c α α' : ℂ) (F F' : Y → ℂ)
     (h : ∀ y, α * F y + α' * F' y = 0) : α * (c * ∫ y, F y ∂ν) + α' * (c * ∫ y, F' y ∂ν) = 0 := by
   have hI : ∫ y, α * F y ∂ν = ∫ y, -(α' * F' y) ∂ν :=
@@ -98,6 +135,39 @@ end GlobalTheory.MiTop.BotTwo
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.MiTop.BotTwo in
 
+/- English proof (translation)
+Introduce `_ hCR D L hT Gi Gl Kc Yd cX ex W hB z hzf hzc u d hP`. Take `⟨-, hθ, hψ, hMatch, hχ, -⟩` from `GlobalTheory.MiTop.botHyp_match W hB`. Apply the tactic sequence `obtain ⟨R, hR⟩ := GlobalTheory.T.bessel_column_form_isometry W hB u d z hP`. Take `⟨ξ, hξspan, hξ⟩` from `GlobalTheory.T.dictionaryColumnScalarForm_eq_traceColumnForm D W.S.X W.Q.instEq u W.Q.Rl.ψ d.B (F0 W u) (W.S.tr u) W.S.Y.hK W.Q.Rl.θ d.a₀ hθ hB.idE hP.adapted hP.h0 (hB.hyp.2.1 u)`. Establish `hRS` using `GlobalTheory.Core.Mi.SeeReal.realSplit_of_idE D W.S.X W.Q.instEq W.Q.Rl.θ hθ hB.idE`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.conjugateRow_pairing_poincareSeries_besselPeriods D W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0) d.B W.S.Y hψ (hB.fin.inHH u)`. Establish `hMt` using `hMatch z hzf hzc`. Establish `hf1 : (iotaX W.S.X W.Q.instEq (z * (show GA D (D.sp.Y 0) from W.Q.tS))).1 = 1` using `(hRS.1 _).1 hMt.1`. Establish `hcont : ∀ (C : Cu W.S.X u W.S.Y.hK) ξ', IsContAut (D.sp.X 0) (d.B.colForm C.1 ξ')` using `fun C => (GlobalTheory.Core.Mi.PhCol.ph_colForm D W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0) d.B W.S.Y.hK C).1`. Establish `hram : (D.mem u).A.Mram ≤ (D.mem u).A.Mu0` using `inf_le_left`.
+
+Set `e` to `Formalism.L2.SG.ColDict.colDict W.S.X (W.S.tr u) W.S.Y.hK (W.S.into u) (W.S.bij u)`. Establish `hcol : ∀ φ : D.what₂.Mu u, Formalism.L2.SG.ColDict.colDictL W.S.X (W.S.tr u) W.S.Y.hK (e.symm (Submodule.inclusion hram (D.eMu u φ))) = (D.eMu u φ).1` using `fun φ => congrArg Subtype.val (e.apply_symm_apply (Submodule.inclusion hram (D.eMu u φ)))`. Establish `L1 : ∀ (φ : D.what₂.Mu u) (C : Cu W.S.X u W.S.Y.hK), IsCol W u C (R φ) → ∀ T ∈ ThetaLiftSpaceZero W, ∀ y v, d.per φ T y v = rChi W d.k * d.B.lev.per W.Q.Rl.ψ (d.B.colForm C.1 (ξ y)) (rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) …`. Introduce `φ C hC T hT y v`. Establish `hC₀ : IsCol W u (e.symm (Submodule.inclusion hram (D.eMu u φ))) φ` using `hcol φ`.
+
+Establish `e1 : (chart0 (F0 W u)).rd W.Q.Rl.θ (D.eMu u φ).1 y = fun g => d.B.colForm C.1 (ξ y) (g * (d.a₀ * d.a)⁻¹)`. Rewrite using `[← hcol φ]`. Use function extensionality and compare the values at `g`. Rewrite using `[hξ _ y g, hR φ C _ hC hC₀ (ξ y)]`. Simplify using `only [rTrans]`.
+
+Use `congr 1`. Rewrite using `[mul_assoc, mul_inv_rev, (Subgroup.mem_center_iff.1 (Subgroup.inv_mem _ hP.cen) d.a₀⁻¹)]`. Establish `e2 : rTrans (embA d.B.d d.B.o (d.a₀ * d.a)) (rTrans d.b (T v)) = rChi W d.k • rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) (T v)`. Use function extensionality and compare the values at `g`. Simplify using `only [rTrans, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_assoc g, hP.eq]`. Use `Eq.trans (congrArg (T v) ?_) (lev_multT hT v hP.lev (g * ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) : GA D (D.sp.Y 0)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g * ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS) * d.k)) = g * ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) * d.k`. Rewrite using `[mul_assoc g, mul_assoc ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))]`. Establish `ea : rTrans (d.a₀ * d.a) (fun g => d.B.colForm C.1 (ξ y) (g * (d.a₀ * d.a)⁻¹)) = d.B.colForm C.1 (ξ y)`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [rTrans, mul_inv_cancel_right]`. Establish `hsh` using `GlobalTheory.Core.Mi.per_rTrans D W.Q.Rl.ψ D.R.rS d.B.lev (fun g => d.B.colForm C.1 (ξ y) (g * (d.a₀ * d.a)⁻¹)) (rTrans d.b (T v)) (d.a₀ * d.a) hψ (contAut_rTrans _ (hcont C (ξ y))) (contAut_rTrans _ (contAut_multT hT v))`. Rewrite `hsh` using `[ea]`. Unfold `BotDat.per`.
+
+Rewrite using `[e1, ← hsh, ← per_smul_f]`. Conclude with `congrArg _ e2`. Use `⟨R, ?_⟩` and prove the remaining obligations. Introduce `φ φ' T hT T' hT' α α' hrel v C C' b b' hC hC' hb hb'`. Establish `hrelξ : ∀ y v, α * d.B.lev.per W.Q.Rl.ψ (d.B.colForm C.1 (ξ y)) (rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) (T v)) + α' * d.B.lev.per W.Q.Rl.ψ (d.B.colForm C'.1 (ξ y)) (rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * …`.
+
+Introduce `y v`. Establish `h0` using `hrel y v`. Rewrite `h0` using `[L1 φ C hC T hT, L1 φ' C' hC' T' hT']`. Use `(mul_eq_zero.1 ?_).resolve_left (hχ _ hP.lev)` and prove the remaining obligations. Rewrite using `[← h0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hrelAll : ∀ ξ' v, α * d.B.lev.per W.Q.Rl.ψ (d.B.colForm C.1 ξ') (rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS))) (T v)) + α' * d.B.lev.per W.Q.Rl.ψ (d.B.colForm C'.1 ξ') (rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z …`. Introduce `ξ' v`. Establish `hmem : ξ' ∈ Submodule.span ℂ (Set.range ξ)` using `by rw [hξspan]; exact Submodule.mem_top`. Take `⟨cf, hcf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hmem`.
+
+Establish `hlin : ∀ C₁ : Cu W.S.X u W.S.Y.hK, d.B.colForm C₁.1 ξ' = ∑ i ∈ cf.support, cf i • d.B.colForm C₁.1 (ξ i)`. Introduce `C₁`. Rewrite using `[← hcf]`. Use function extensionality and compare the values at `g`. Simplify using `only [SBes.colForm, Finsupp.sum, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply]`.
+
+Rewrite using `[hlin C, hlin C', GlobalTheory.SeeSaw.perSum_all D W.Q.Rl.ψ hψ D.R.rS d.B.lev _ (contAut_rTrans _ (contAut_multT hT v)) _ cf.support cf (fun i => d.B.colForm C.1 (ξ i)) (fun i _ => hcont C (ξ i)), GlobalTheory.SeeSaw.perSum_all D W.Q.Rl.ψ hψ D.R.rS d.B.lev _ (contAut_rTrans _ (co …`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `hrelξ i v` as an intermediate fact. Take the linear combination `cf i * this`. Establish `hσ : ∀ y : W.S.X.B.I.Ginf, ∃ σ : SmT (W.Q.Rl.MY 0) →ₗ[ℂ] SmT (W.Q.Rl.MY 0), ∀ T ∈ ThetaLiftSpaceZero W, ∀ x, T (σ x) = rTrans ((iotaX W.S.X W.Q.instEq).symm (y, 1)) (T x)`.
+
+Introduce `y`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealTransSm.rTrans_eq_map D W.Q.Rl.θ (D.sp.Y 0) _ (W.Q.Rl.MY 0) hθ ((iotaX W.S.X W.Q.instEq).symm (y, 1)) ((hRS.2.1 _).2 (congrArg Prod.snd ((iotaX W.S.X W.Q.instEq).apply_symm_apply (y, 1))))`. Conclude with `⟨σ, fun T hT x => hσ (rJ W) (rChi W) T hT x⟩`. Use `choose σ hσ using hσ`. Establish `hpt : ∀ T ∈ ThetaLiftSpaceZero W, ∀ v (y : W.S.X.B.I.Ginf), (fun g => evS W.S.X W.Q.instEq (z * (show GA D (D.sp.Y 0) from W.Q.tS)) (T v) (iotaX W.S.X W.Q.instEq g * (y, W.S.X.xu u))) = rTrans ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * (z * (show GA D (D.sp.Y 0) from W.Q.tS …`.
+
+Introduce `T hT v y`. Use function extensionality and compare the values at `g`. Rewrite using `[hσ y T hT v]`. Simplify using `only [evS, rTrans]`. Conclude with `congrArg (T v) (shift_swap (iotaX W.S.X W.Q.instEq).toMulEquiv g _ y (W.S.X.xu u) hf1)`.
+
+Take `⟨φL, hφL, rfl⟩` from `hb`. Take `⟨φL', hφL', rfl⟩` from `hb'`. Rewrite using `[hc C _ φL (GlobalTheory.Core.Mi.rowFun_evS hCR D W.S.X W.Q.instEq W.Q.Rl.θ _ (W.Q.Rl.MY 0) (rJ W) (rChi W) _ hθ hMt T hT v).1 hφL, hc C' _ φL' (GlobalTheory.Core.Mi.rowFun_evS hCR D W.S.X W.Q.instEq W.Q.Rl.θ _ (W.Q.Rl.MY 0) (rJ W) (rChi W) _ hθ hMt T' hT' v).1 hφL']`. Use `comb_integral _ c α α' _ _ fun y => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hrelAll (W.S.X.Wu u y) (σ y v))` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (fun p q => α * p + α' * q) (congrArg (d.B.lev.per W.Q.Rl.ψ _) (hpt T hT v y)) (congrArg (d.B.lev.per W.Q.Rl.ψ _) (hpt T' hT' v y))`.
+-/
 theorem GlobalTheory.MiTop.botRel_two : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → ∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → ∀ u (d : BotDat W u), d.Pin z → BotRel W z d := by
   intro _ hCR D L hT Gi Gl Kc Yd cX ex W hB z hzf hzc u d hP
   obtain ⟨-, hθ, hψ, hMatch, hχ, -⟩ := GlobalTheory.MiTop.botHyp_match W hB

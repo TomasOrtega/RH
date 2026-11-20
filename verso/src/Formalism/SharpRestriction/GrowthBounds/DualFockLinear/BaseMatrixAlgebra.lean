@@ -51,6 +51,13 @@ def OpFStep (C : ℝ) : Prop :=
 
 def RestOpF : Prop := ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → OpFStep C
 
+/- English proof (translation)
+Take `⟨Ψ0, a0, ha0, t0, f0⟩` from `hX p n' W Qq O Kf ι σ j w hS m r lam hlam`. Take `⟨Ψf, af, haf, tf, ff⟩` from `hX p n' W Qq O Kf ι σ j w hS m r (flW d) (flW_dom d)`. Use `⟨Ψ0, Ψf, t0, tf, ?_⟩` and prove the remaining obligations. Introduce `β F s u hu`. Take `⟨F', h1, h2⟩` from `hOp ((p : Kf) ^ Ar r rest * ((p : Kf) ^ kap1 p lam * a0) / af) β s F`.
+
+Use `⟨F', h1, ?_⟩` and prove the remaining obligations. Introduce `T z hz`. Establish `e1 : T (Θ F') = af * fockR ((Θ F' : Vsp Kf (flW (m` using `m) d)) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) (Ψf T : Vsp Kf (flW (m := m) d)) := by`. Rewrite using `[← ff (Ψf T) (Θ F'), LinearEquiv.symm_apply_apply]`. Rewrite using `[e1, h2 (Ψf T), f0 z u, hu, hz]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tsOpAt_of {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (hS : HidaSetting p n' W Qq O Kf ι σ j w) (hX : RestTSX)
@@ -71,6 +78,11 @@ theorem tsOpAt_of {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsD
   rw [e1, h2 (Ψf T), f0 z u, hu, hz]
   field_simp
 
+/- English proof (translation)
+Introduce `_`. Take `⟨C₁, hC1, h⟩` from `hOp`. Use `⟨C₁, hC1, fun C hC => ?_⟩` and prove the remaining obligations. Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de hh x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ`. Establish `hdom : IsDominant lam0` using `H.2.2.2.2.1.2.1`.
+
+Conclude with `tsOpAt_of hSet.1 hX r TT (dT TT lam0) _ _ (topW_dom TT hdom) c0 Θ (h C hC p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de hh x lam0 aT bT a Y cpp c0 Dp cStar hSet H hm hhm Θ hΘ)`.
+-/
 theorem restTSOp_of (hX : RestTSX) (hOp : RestOpF) (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) :
     RestTSOp D CLa Ck Crk Cdeg := by
   intro _

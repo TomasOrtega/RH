@@ -21,6 +21,39 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle _hov p _ _ T T' i iF hi io y₀ k y hy k' kO hkO hk' yT yyT hT hr`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Establish `hxeq` using `GlobalTheory.CompHt.IsHTFrame.x_eq hy`. Take `⟨hTest, kO₀, P, ψ₀, z, hP, -, hch⟩` from `hy`.
+
+Take `⟨hkO₀, G, t', m₁, m₂, π₀, φ₀, hπ₀, hact₀, hφ₀, hgen₀, hψ₀, hL⟩` from `hP`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f, ∃ m' : SABMap s' s g, m'.φ = m.φ`. Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+
+Establish `hkk : kO₀ = kO.comp i` using `RingHom.ext fun a => P.integers.hom_inj (by`. Rewrite using `[hkO₀ a, RingHom.comp_apply, hkO (i a), hi, hk']`. Use the proof step `rfl)`. Establish `hkk' : k'.comp iF = k.toRingHom` using `RingHom.ext fun a => hk' a`. Establish `hii : (algebraMap T'.V T'.Fr).comp i = iF.comp (algebraMap T.V T.Fr)` using `RingHom.ext hi`.
+
+Establish `hOO : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO = k'.comp (algebraMap T'.V T'.Fr)` using `RingHom.ext hkO`. Establish `hx' : yyT ≫ r ≫ pullback.fst _ _ = spMap iF ≫ y₀.1.x`. Rewrite using `[← Category.assoc, hr, Category.assoc]`. Use `congr 1`. Conclude with `pullback.lift_fst _ _ _`.
+
+Take `⟨G', ⟨a⟩⟩` from `exists_sab (spMap i) G`. Take `⟨Yt', ⟨b⟩⟩` from `exists_sab yT Y.t`. Take `⟨t₂, ⟨q⟩⟩` from `exists_sab yyT Y.oF.t`. Take `⟨t₁, ⟨c₁⟩⟩` from `exists_sab (spMap (algebraMap T'.V T'.Fr)) G'`. Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν q`.
+
+Take `⟨e₂, he₂⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m q`. Take `⟨e₂', he₂'⟩` from `tr (show yyT ≫ Y.jQ ≫ pullback.fst _ _ = spMap (algebraMap T'.V T'.Fr) ≫ yT from hT.symm) e₂`. Take `⟨n₂, hn₂⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ b e₂'`. Take `⟨e₁, he₁⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ a c₁`. Take `⟨e₁', he₁'⟩` from `tr (show spMap (algebraMap T'.V T'.Fr) ≫ spMap i = spMap iF ≫ spMap (algebraMap T.V T.Fr) by`.
+
+Rewrite using `[spMap_spMap, spMap_spMap, hii]) e₁`. Take `⟨d, hd⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m₂ e₁'`. Take `⟨m₁', hm₁'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m₁ d`. Take `⟨m₁'', hm₁''⟩` from `tr hx'.symm m₁'`. Take `⟨κ, nn, hκ, hnn⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T'.V T'.Fr _ G' Yt' t₁ t₂ m₁'' c₁ n₁ n₂`.
+
+Establish `w₁ : π₀ ≫ G.G.hom = (P.G.hom ≫ spMap kO) ≫ spMap i`. Rewrite using `[hπ₀.1.w, Category.assoc, spMap_spMap, hkk]`. Set `π₁ : P.G.left ⟶ G'.G.left` to `a.cart.1.lift π₀ (P.G.hom ≫ spMap kO) w₁`. Establish `hπ₁a : π₁ ≫ a.φ = π₀` using `a.cart.1.lift_fst _ _ _`. Establish `hπ₁s : π₁ ≫ G'.G.hom = P.G.hom ≫ spMap kO` using `a.cart.1.lift_snd _ _ _`.
+
+Establish `hπ₁ : IsGrpPullback P.G G'.G (spMap kO) π₁` using `a.cart.cancel (hπ₀.congr (by rw [spMap_spMap, hkk]) hπ₁a.symm) hπ₁s`. Establish `w₂ : φ₀ ≫ t'.G.hom = (P.A.A.hom ≫ spMap k') ≫ spMap iF`. Rewrite using `[hφ₀.1.w, Category.assoc, spMap_spMap, hkk']`. Set `ψ₁ : P.A.A.left ⟶ t₁.G.left` to `d.cart.1.lift φ₀ (P.A.A.hom ≫ spMap k') w₂`. Establish `hψ₁d : ψ₁ ≫ d.φ = φ₀` using `d.cart.1.lift_fst _ _ _`.
+
+Establish `hψ₁s : ψ₁ ≫ t₁.G.hom = P.A.A.hom ≫ spMap k'` using `d.cart.1.lift_snd _ _ _`. Establish `hψ₁ : IsGrpPullback P.A.A t₁.G (spMap k') ψ₁` using `d.cart.cancel (hφ₀.congr (by rw [spMap_spMap, hkk']) hψ₁d.symm) hψ₁s`. Establish `key : ψ₁ ≫ c₁.φ = P.gen ≫ π₁`. Apply `a.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hπ₁a, ← he₁, ← he₁', hd, ← Category.assoc, hψ₁d, hgen₀]`.
+
+Rewrite using `[Category.assoc, Category.assoc, hπ₁s, c₁.cart.1.w, ← Category.assoc, hψ₁s, ← Category.assoc, P.gen_pull.1.w, Category.assoc, Category.assoc, spMap_spMap, spMap_spMap, hOO]`. Use `⟨P, π₁ ≫ nn.φ ≫ b.φ, ψ₁ ≫ κ.φ ≫ q.φ, ?_⟩` and prove the remaining obligations. Establish `hψν : (ψ₁ ≫ κ.φ ≫ q.φ) ≫ ν.φ = ψ₀`. Rewrite using `[Category.assoc, Category.assoc, ← hn₁, hκ, hm₁'', hm₁', ← Category.assoc, hψ₁d, hψ₀]`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, hTest, ?_, z, by rw [hψν]; exact hch⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spMap_spMap, hOO, ← spMap_spMap, Category.assoc, hT, Category.assoc]`. Conclude with `((hπ₁.comp nn.cart).comp b.cart).congr (by rw [Category.comp_id]) (by rw [Category.assoc])`. Introduce `a₀`. Establish `h1 : (P.oG.act a₀).left ≫ π₁ = π₁ ≫ (G'.act.act a₀).left`. Apply `a.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hπ₁a, hact₀, a.act, ← Category.assoc, hπ₁a]`. Rewrite using `[Category.assoc, Category.assoc, hπ₁s, Over.w, hπ₁s, ← Category.assoc, Over.w]`. Simplify using `only [Category.assoc, reassoc_of% h1, reassoc_of% (nn.act a₀), b.act a₀]`. Conclude with `((hψ₁.comp κ.cart).comp q.cart).congr (by rw [Category.comp_id]) (by rw [Category.assoc])`. Establish `h2 : q.φ ≫ Y.m.φ = n₂.φ ≫ b.φ` using `by rw [← he₂, ← he₂', hn₂]`.
+
+Rewrite using `[Category.assoc, Category.assoc, h2, ← Category.assoc κ.φ, ← hnn]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% key]`. Conclude with `LBIso.trans P.A.isLB (pull_isLB Xo.univ.t.PP.isLB _) (pull_isLB Y.oF.t.PP.isLB _) hL (GlobalTheory.LN.GenericPoint.lbIso_pull (GlobalTheory.LN.GenericPoint.lbIso_of_sabMap ν) _ hψν.symm).symm`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[ptF, pullback.lift_fst, hxeq, Category.assoc, Category.assoc, hx', ← Category.assoc, spMap_spMap, hkk']`. Rewrite using `[ptF, pullback.lift_snd]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hr, ← Category.assoc, spMap_spMap, hkk', ptF, pullback.lift_snd, spMap_spMap]`. Use `congr 1`.
+
+Conclude with `(RingHom.ext fun x => k.commutes x).symm`.
+-/
 theorem cmpSt_holds : CmpSt := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle _hov p _ _ T T' i iF hi io y₀ k y hy k' kO hkO hk' yT yyT hT hr
   letI := H.starRing

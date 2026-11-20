@@ -22,6 +22,15 @@ open GlobalTheory.CechPic
 
 namespace GlobalTheory.NefTens
 
+/- English proof (translation)
+Introduce `HC k _ X _ p D hX L M NL NM`. Establish `HE` using `HC.arExists`. Establish `hex (L : HermLB p) : ∃ h, L.IsArithHeight h` using `(HE k X p D hX).1 L`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `hp : IsProjOver p` using `hX.isProjOver`.
+
+Use `⟨NL.semiPos.tens NM.semiPos, ?_, fun Z i _ _ _ hc hd => ?_⟩` and prove the remaining obligations. Introduce `Z i _ _ κ _ _ _ hd`. Rewrite using `[NefHodgeTateAt.topSelf_of_cls_eq_add hp (L.tens M).isLB L.isLB M.isLB (cls_tens L.isLB M.isLB _) Z i κ hd]`. Conclude with `add_nonneg (NL.vertical Z i κ hd) (NM.vertical Z i κ hd)`. Take `⟨h, H⟩` from `hex L`.
+
+Take `⟨h', H'⟩` from `hex M`. Take `⟨h'', H''⟩` from `hex (L.tens M)`. Take `⟨r, hr⟩` from `exists_isRatSec ((L.tens M).restr i).isLB`. Take `⟨r₁, hr₁, h1⟩` from `NL.horizontal Z i hc hd`. Take `⟨r₂, hr₂, h2⟩` from `NM.horizontal Z i hc hd`.
+
+Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← H''.point Z i hc hd r hr, PtHtComb.height_tens hX H H' H'' (HtSelfInter.isAlgPt_genericPoint i hc hd), H.point Z i hc hd r₁ hr₁, H'.point Z i hc hd r₂ hr₂]`. Conclude with `add_nonneg h1 h2`.
+-/
 theorem isNef_tens : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ L M : HermLB p, L.IsNef D → M.IsNef D → (L.tens M).IsNef D := by
   intro HC k _ X _ p D hX L M NL NM
@@ -45,6 +54,9 @@ theorem isNef_tens : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing 
       H.point Z i hc hd r₁ hr₁, H'.point Z i hc hd r₂ hr₂]
     exact add_nonneg h1 h2
 
+/- English proof (translation)
+The claim follows from `isNef_tens`.
+-/
 example : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ L M : HermLB p, L.IsNef D → M.IsNef D → (L.tens M).IsNef D := isNef_tens
 

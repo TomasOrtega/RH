@@ -18,11 +18,17 @@ def phi {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m 
     (x : Sx E N U) (w : ℤ) (c : Pr N →₀ ℤ) : Sec (K.X w) U :=
   c.sum fun z a => a • phiT μ hk α β x w z
 
+/- English proof (translation)
+Simplify using `[ev, Cochain.sub_v, Preadditive.comp_sub]`. Both sides reduce to the same expression.
+-/
 theorem ev_sub' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n) p s h U x :
     ev (α - β) p s h U x = ev α p s h U x - ev β p s h U x := by
   simp [ev, Cochain.sub_v, Preadditive.comp_sub]
   rfl
 
+/- English proof (translation)
+Simplify using `[ev, Cochain.smul_v, Linear.comp_smul]`. Both sides reduce to the same expression.
+-/
 theorem ev_zsmul' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n) p s h U x
     (c : ℤ) : ev (c • α) p s h U x = c • ev α p s h U x := by
   simp [ev, Cochain.smul_v, Linear.comp_smul]
@@ -47,6 +53,9 @@ def cupflip_eta_delta : Prop :=
     ∀ N t ht U x, ev (δ (k - 1) k η) N t ht U x =
       (k.negOnePow : ℤ) • (phi μ hk α.1 β.1 x t (Pr.aw N) - phi μ hk α.1 β.1 x t (Pr.wa N))
 
+/- English proof (translation)
+Rewrite using `[hγ N t ht U x, phi, Pr.aw, ← Finsupp.sum_finsetSum_index (fun z => zero_smul ℤ (phiT μ hk α β x t z)) (fun z a b => add_smul a b (phiT μ hk α β x t z))]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_smul ℤ (phiT μ hk α β x t _)), one_smul, phiT, dif_pos (by have := p.2; push_cast [Nat.cast_sub (by omega : (p : ℕ) ≤ N)]; omega)]`. Rewrite using `[Units.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem phi_aw {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
     (α : Cochain ((chains R).obj E) I n) (β : Cochain ((chains R).obj E) J m) (γ : Cochain ((chains R).obj E) K k)
     (hγ : μ.IsAW hk α β γ) (N : ℕ) (t : ℤ) (ht : -(N : ℤ) + k = t) (U : Scheme.{0}) (x : Sx E N U) :
@@ -66,6 +75,15 @@ def cupflip_phi_diag : Prop :=
       ∀ (N : ℕ) (t : ℤ) (ht : -(N : ℤ) + k = t) (U : Scheme.{0}) (x : Sx E N U),
         phi μ hk α β x t (Pr.wa N) = ((n * m).negOnePow : ℤ) • ev γ' N t ht U x
 
+/- English proof (translation)
+Introduce `R _ I J K μ ν hflip E n m k hk hk' α β γ' hγ' N t ht U x`. Rewrite using `[hγ' N t ht U x, phi, Pr.wa, ← Finsupp.sum_finsetSum_index (fun z => zero_smul ℤ (phiT μ hk α β x t z)) (fun z a b => add_smul a b (phiT μ hk α β x t z)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `hp` using `p.2`. Rewrite using `[Finsupp.sum_single_index (zero_smul ℤ (phiT μ hk α β x t _)), phiT, dif_pos (by push_cast [Nat.cast_sub (by omega : (p : ℕ) ≤ N)]; omega)]`.
+
+Rewrite using `[hflip U _ _ t (by push_cast [Nat.cast_sub (by omega : (p : ℕ) ≤ N)]; omega)]`. Simplify using `only [Units.smul_def, smul_smul]`. Use `congr 1`. Establish `e : ((-1 : ℤ) ^ ((p : ℕ) * (N - p))) = (((p : ℕ) : ℤ) * ((N - p : ℕ) : ℤ)).negOnePow`. Rewrite using `[Int.negOnePow_def, ← Nat.cast_mul, zpow_natCast]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Simplify using `only [← Units.val_mul, ← Int.negOnePow_add]`. Use `congr 1`. Rewrite using `[Int.negOnePow_eq_iff]`.
+
+Conclude with `⟨m * ((N - p : ℕ) : ℤ) - n * m, by ring⟩`.
+-/
 theorem cupflip_phi_diag_pf : cupflip_phi_diag := by
   intro R _ I J K μ ν hflip E n m k hk hk' α β γ' hγ' N t ht U x
   rw [hγ' N t ht U x, phi, Pr.wa, ← Finsupp.sum_finsetSum_index (fun z => zero_smul ℤ (phiT μ hk α β x t z))
@@ -85,6 +103,11 @@ theorem cupflip_phi_diag_pf : cupflip_phi_diag := by
   rw [Int.negOnePow_eq_iff]
   exact ⟨m * ((N - p : ℕ) : ℤ) - n * m, by ring⟩
 
+/- English proof (translation)
+Introduce `h hs R _ I J K μ ν hflip E n m k hk hk' α β γ γ' hγ hγ'`. Take `⟨η, hη⟩` from `hmk h hs.1 R μ E hk α.1 β.1`. Establish `hd` using `hdl h hs R μ E hk α β η hη`. Use `⟨((k.negOnePow : ℤˣ) : ℤ) • η, ?_⟩` and prove the remaining obligations. Rewrite using `[show δ (k - 1) k (((k.negOnePow : ℤˣ) : ℤ) • η) = ((k.negOnePow : ℤˣ) : ℤ) • δ (k - 1) k η from (δ_hom ℤ _ _ (k - 1) k).map_smul _ _]`.
+
+Apply `hext R` to reduce the goal to its premises. Introduce `N t ht U x`. Establish `h1` using `phi_aw μ hk α.1 β.1 γ.1 hγ N t ht U x`. Establish `h2` using `cupflip_phi_diag_pf R μ ν hflip E hk hk' α.1 β.1 γ'.1 hγ' N t ht U x`. Rewrite using `[ev_zsmul', hd N t ht U x, h1, h2, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul, Units.smul_def, ev_sub', ev_zsmul']`.
+-/
 theorem cupflip_homotopy_of (hext : cupflip_ev_ext) (hmk : cupflip_eta_mk) (hdl : cupflip_eta_delta) :
     cupflip_homotopy := by
   intro h hs R _ I J K μ ν hflip E n m k hk hk' α β γ γ' hγ hγ'

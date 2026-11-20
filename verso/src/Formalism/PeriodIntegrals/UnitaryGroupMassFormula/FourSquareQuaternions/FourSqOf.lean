@@ -24,6 +24,9 @@ def FromDiag : Prop :=
     (∀ i, 0 < q i) → DiagId (K := K) cj b q →
       ∃ g : (Fin 4 → E) ≃ₗ[K] (Fin 4 × n → K), IsIsom cj g
 
+/- English proof (translation)
+Introduce `K E _ _ _ _ _ cj n _ h2 hn hc hpos`. Take `⟨b, q, hq, hb⟩` from `hA K E cj n h2 hn hc hpos`. Conclude with `hB K E cj n b q hq hb`.
+-/
 theorem fourSq_of (hA : OrthDiag) (hB : FromDiag) : FourSq := by
   intro K E _ _ _ _ _ cj n _ h2 hn hc hpos
   obtain ⟨b, q, hq, hb⟩ := hA K E cj n h2 hn hc hpos

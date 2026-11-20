@@ -27,10 +27,20 @@ section Lattices
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨k, hk, h1, h2⟩` from `hT`. Conclude with `⟨k, hk.coprime_dvd_right h, h1, h2⟩`.
+-/
 theorem trivAt_of_dvd {Λ : GenLat E n} {a b : ℕ} (h : a ∣ b) (hT : Λ.TrivAt b) : Λ.TrivAt a := by
   obtain ⟨k, hk, h1, h2⟩ := hT
   exact ⟨k, hk.coprime_dvd_right h, h1, h2⟩
 
+/- English proof (translation)
+Take `⟨t, ht, hw⟩` from `h`. Establish `h1 : ∀ j : Fin n, (Pi.single j 1 : Fin n → E) ∈ stdLat E n` using `fun j i _ => by`. Use `Submodule.mem_one.2 ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij; exact ⟨1, by simp⟩` using the available equality.
+
+Conclude with `⟨0, by simp [hij]⟩`. Use `choose w hw1 hw2 using fun j => hw _ (h1 j)`. Use `choose u hu using fun j i => Submodule.mem_one.1 (hw1 j i (Set.mem_univ _))`. Use `⟨t, ht, fun i j => u j i, fun i j => ?_⟩` and prove the remaining obligations. Use `congrFun (hw2 j) i` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, Pi.sub_apply, nsmul_eq_mul, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply, ← hu] at this`. Conclude with `this`.
+-/
 theorem entries_of_congAt {b : ℕ} {g : Matrix (Fin n) (Fin n) E} (h : UnRep.CongAt (stdLat E n) b b g) :
     ∃ t : ℕ, t.Coprime b ∧ ∃ w : Fin n → Fin n → 𝓞 E, ∀ i j,
       (t : E) * (g i j - if i = j then 1 else 0) = (b : E) * (w i j : E) := by
@@ -52,16 +62,31 @@ end Lattices
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul ha trivial`.
+-/
 theorem quot_smul {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {I : Ideal R} {a : R} (ha : a ∈ I)
     (q : V ⧸ (I • ⊤ : Submodule R V)) : a • q = 0 := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]
   exact Submodule.smul_mem_smul ha trivial
 
+/- English proof (translation)
+Establish `h : Ideal.span {((l.M : ℕ) : 𝓞 E)} ≤ l.Mb` using `l.prod.symm.le.trans Ideal.mul_le_left`. Conclude with `quot_smul (h (Ideal.mem_span_singleton_self _)) q`.
+-/
 theorem level_smul (q : LevQ Dw l) : (l.M : 𝓞 E) • q = 0 := by
   have h : Ideal.span {((l.M : ℕ) : 𝓞 E)} ≤ l.Mb := l.prod.symm.le.trans Ideal.mul_le_left
   exact quot_smul (h (Ideal.mem_span_singleton_self _)) q
 
+/- English proof (translation)
+Take `⟨t, ht, u, hu⟩` from `entries_of_congAt h`. Introduce and unpack `q q' ⟨k, G, hk, hG, hq⟩`. Use `congr 1`. Use function extensionality and compare the values at `i`. Take `⟨e, rfl⟩` from `hb`.
+
+Establish `hent : ∀ j, (t : 𝓞 E) * G i j = (if i = j then (t : 𝓞 E) * k else 0) + (k * e * u i j) * (l.M : 𝓞 E)` using `fun j => by`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Establish `h1` using `hu i j`. Establish `h2` using `hG i j`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap] at h1 h2`.
+
+Simplify using `only [map_mul, map_add, map_natCast, h2, apply_ite (algebraMap (𝓞 E) E), map_zero]`. Move the coercions through the operations in `at h1`. Apply the tactic sequence `split_ifs at h1 ⊢ <;> linear_combination (k : E) * h1`. Establish `key : ((t : 𝓞 E) * k) • (q' i - q i) = 0`. Rewrite using `[smul_sub, mul_smul, hq i, Finset.smul_sum]`.
+
+Simplify using `only [smul_smul, hent, add_smul, mul_smul _ (l.M : 𝓞 E), level_smul, smul_zero, add_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Establish `hco : IsCoprime ((t * k : ℕ) : 𝓞 E) (l.M : 𝓞 E)` using `(ht.coprime_mul_right_right.mul_left hk).cast`. Take `⟨x, y, hxy⟩` from `hco`. Rewrite using `[← sub_eq_zero, ← one_smul (𝓞 E) (q' i - q i), ← hxy, add_smul, mul_smul, mul_smul y, level_smul, Nat.cast_mul, key, smul_zero, smul_zero, add_zero]`.
+-/
 theorem fixesDatum_of_congAt (c : Coeff l) {n b : ℕ} (hb : l.M ∣ b) {g : Matrix (Fin n) (Fin n) E}
     (h : UnRep.CongAt (stdLat E n) b b g) (w : (Fin n → LevQ Dw l) → c.F) : FixesDatum c g w := by
   obtain ⟨t, ht, u, hu⟩ := entries_of_congAt h
@@ -88,6 +113,9 @@ theorem fixesDatum_of_congAt (c : Coeff l) {n b : ℕ} (hb : l.M ∣ b) {g : Mat
   rw [← sub_eq_zero, ← one_smul (𝓞 E) (q' i - q i), ← hxy, add_smul, mul_smul, mul_smul y, level_smul,
     Nat.cast_mul, key, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Unfold `evR evalAt`. Use `split_ifs`. Rewrite using `[hf, map_mul, AlgHom.commutes]`. Rewrite using `[mul_zero]`.
+-/
 theorem evR_mul (Xo : Moduli Dw l) (c : Coeff l) (z : c.F) (f f' : Rul Xo c)
     (hf : ∀ p y, f' p y = algebraMap c.F p.R z * f p y) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     evR Xo c f' y = algebraMap c.F S z * evR Xo c f y := by
@@ -100,6 +128,11 @@ section Cover
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
+/- English proof (translation)
+Establish `hex` using `GlobalTheory.betaExists_of_ne_one E H Dw l c n bad hb hK Λ hU hT`. Establish `hs` using `hex.choose_spec`. Establish `e : betaH (Dw` using `Dw) c Λ = hex.choose := dif_pos hex`. Rewrite using `[e]`. Use `⟨by simpa using hs.1, (PlaceInt.eF_transfer E H Dw l Xo c n d Λ).1 _ hs.2.1, fun s => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hs.2.2 (s.comp (d.eF : c.F →+* d.c₂.F))`.
+-/
 theorem isBeta_cover (hK : KPsiIn (Dw := Dw) c) {bad : ℕ} (hb : bad ≠ 1) (Λ : GenLat E n) (hU : Λ.Unimod)
     (hT : Λ.TrivAt bad) : IsBeta Dw d.c₂ Λ (d.eF (betaH (Dw := Dw) c Λ)) := by
   have hex := GlobalTheory.betaExists_of_ne_one E H Dw l c n bad hb hK Λ hU hT
@@ -109,6 +142,11 @@ theorem isBeta_cover (hK : KPsiIn (Dw := Dw) c) {bad : ℕ} (hb : bad ≠ 1) (Λ
   refine ⟨by simpa using hs.1, (PlaceInt.eF_transfer E H Dw l Xo c n d Λ).1 _ hs.2.1, fun s => ?_⟩
   exact hs.2.2 (s.comp (d.eF : c.F →+* d.c₂.F))
 
+/- English proof (translation)
+Establish `he : ∀ τ x, (d.eF : c.F →+* d.c₂.F) (embF c τ x) = embF d.c₂ τ x` using `PlaceInt.eF_embF d`. Generalize the expression as in `(d.eF : c.F →+* d.c₂.F) = f at he ⊢`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [pushLet]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, MvPolynomial.map_X]`. Use `congr 1`. Simplify using `only [pushLet, MvPolynomial.aeval_X, letB, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, he]`.
+-/
 theorem map_pushLet (g : Matrix (Fin n) (Fin n) E) (P : MvPolynomial (LtN Dw n) c.F) :
     MvPolynomial.map (d.eF : c.F →+* d.c₂.F) (pushLet c g P) =
       pushLet d.c₂ g (MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P) := by

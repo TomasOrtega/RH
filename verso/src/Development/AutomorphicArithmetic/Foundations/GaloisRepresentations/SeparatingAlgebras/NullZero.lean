@@ -1,9 +1,15 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.StLocB
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma pt_coe {n : ℕ} (θ : Fin n → UnitAddCircle) (i : Fin n) :
     ((pt θ i : ℂˣ) : ℂ) = ((AddCircle.toCircle (θ i) : Circle) : ℂ) := rfl
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.eval_eq_eval_mv_eval']`. Establish `h : (fun i => (pt (Fin.cons s θ : Fin (n + 1) → UnitAddCircle) i : ℂ)) = (Fin.cons ((AddCircle.toCircle s : Circle) : ℂ) (fun i => (pt θ i : ℂ)) : Fin (n + 1) → ℂ)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [pt_coe]`. Rewrite using `[h]`.
+-/
 private lemma eval_cons_pt {n : ℕ} (s : UnitAddCircle) (θ : Fin n → UnitAddCircle)
     (p : MvPolynomial (Fin (n + 1)) ℂ) :
     MvPolynomial.eval (fun i => (pt (Fin.cons s θ : Fin (n + 1) → UnitAddCircle) i : ℂ)) p =
@@ -16,6 +22,11 @@ private lemma eval_cons_pt {n : ℕ} (s : UnitAddCircle) (θ : Fin n → UnitAdd
     refine Fin.cases ?_ (fun j => ?_) i <;> simp [pt_coe]
   rw [h]
 
+/- English proof (translation)
+Establish `h1 : Continuous fun x : Fin n → ℂ => MvPolynomial.eval x p` using `MvPolynomial.continuous_eval p`. Establish `h2 : Continuous fun θ : Fin n → UnitAddCircle => (fun i => (pt θ i : ℂ))`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [pt_coe]`. Conclude with `continuous_subtype_val.comp ((AddCircle.continuous_toCircle).comp (continuous_apply i))`.
+
+Conclude with `h1.comp h2`.
+-/
 private lemma continuous_eval_pt {n : ℕ} (p : MvPolynomial (Fin n) ℂ) :
     Continuous fun θ : Fin n → UnitAddCircle => MvPolynomial.eval (fun i => (pt θ i : ℂ)) p := by
   have h1 : Continuous fun x : Fin n → ℂ => MvPolynomial.eval x p := MvPolynomial.continuous_eval p
@@ -25,6 +36,11 @@ private lemma continuous_eval_pt {n : ℕ} (p : MvPolynomial (Fin n) ℂ) :
     exact continuous_subtype_val.comp ((AddCircle.continuous_toCircle).comp (continuous_apply i))
   exact h1.comp h2
 
+/- English proof (translation)
+Use `haveI : NullSingletonClass (volume : Measure UnitAddCircle) := ⟨fun x => by`. Establish `h` using `AddCircle.volume_closedBall (T := (1 : ℝ)) (x := x) 0`. Simplify using `using h⟩`. Establish `hinj : Function.Injective fun s : UnitAddCircle => ((AddCircle.toCircle s : Circle) : ℂ)` using `Circle.coe_injective.comp (AddCircle.injective_toCircle one_ne_zero)`. Establish `hfin : ({s : UnitAddCircle | r.eval ((AddCircle.toCircle s : Circle) : ℂ) = 0}).Finite`.
+
+Use `Set.Finite.of_finite_image (f := fun s : UnitAddCircle => ((AddCircle.toCircle s : Circle) : ℂ)) ?_ hinj.injOn` and prove the remaining obligations. Use `(Polynomial.finite_setOf_isRoot hr).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `hs`. Conclude with `hfin.measure_zero _`.
+-/
 private lemma circle_zero_null (r : Polynomial ℂ) (hr : r ≠ 0) :
     volume {s : UnitAddCircle | r.eval ((AddCircle.toCircle s : Circle) : ℂ) = 0} = 0 := by
   haveI : NullSingletonClass (volume : Measure UnitAddCircle) := ⟨fun x => by
@@ -39,6 +55,25 @@ private lemma circle_zero_null (r : Polynomial ℂ) (hr : r ≠ 0) :
     exact hs
   exact hfin.measure_zero _
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hp`. Take `⟨a, rfl⟩ : ∃ a, p = MvPolynomial.C a` from `⟨_, MvPolynomial.eq_C_of_isEmpty p⟩`.
+
+Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hp`. Use `Filter.Eventually.of_forall fun θ => ?_` and prove the remaining obligations. Simplify using `using ha`.
+
+Consider the case `succ n ih`. Introduce `p hp`. Establish `hq : MvPolynomial.finSuccEquiv ℂ n p ≠ 0`. Simplify using `using hp`. Establish `hc` using `ih (MvPolynomial.finSuccEquiv ℂ n p).leadingCoeff (Polynomial.leadingCoeff_ne_zero.mpr hq)`.
+
+Establish `hmp` using `volume_preserving_piFinSuccAbove (fun _ : Fin (n + 1) => UnitAddCircle) 0`. Use `set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n + 1) => UnitAddCircle) 0 with he`. Establish `hclosed : IsClosed {θ : Fin (n + 1) → UnitAddCircle | MvPolynomial.eval (fun i => (pt θ i : ℂ)) p = 0}` using `isClosed_eq (continuous_eval_pt p) continuous_const`. Establish `hm : MeasurableSet {z : UnitAddCircle × (Fin n → UnitAddCircle) | MvPolynomial.eval (fun i => (pt (e.symm z) i : ℂ)) p ≠ 0}` using `e.symm.measurable hclosed.measurableSet.compl`. Establish `hsymm : ∀ (s : UnitAddCircle) (θ : Fin n → UnitAddCircle), e.symm (s, θ) = (Fin.cons s θ : Fin (n + 1) → UnitAddCircle)`.
+
+Introduce `s θ`. Simplify using `[he, MeasurableEquiv.piFinSuccAbove, Fin.insertNth_zero']`. Both sides reduce to the same expression. Establish `hprod : ∀ᵐ z ∂(volume.prod volume : Measure (UnitAddCircle × (Fin n → UnitAddCircle))), MvPolynomial.eval (fun i => (pt (e.symm z) i : ℂ)) p ≠ 0`. Use `(Measure.ae_prod_iff_ae_ae hm).2 ?_` and prove the remaining obligations.
+
+Use `(Measure.ae_ae_comm hm).2 ?_` and prove the remaining obligations. Use `filter_upwards [hc] with θ' hθ'`. Establish `hr : Polynomial.map (MvPolynomial.eval (fun i => (pt θ' i : ℂ))) (MvPolynomial.finSuccEquiv ℂ n p) ≠ 0`. Introduce `h`. Apply `hθ'` to reduce the goal to its premises.
+
+Rewrite using `[Polynomial.leadingCoeff, ← Polynomial.coeff_map, h, Polynomial.coeff_zero]`. Use `ae_iff.2 (measure_mono_null ?_ (circle_zero_null _ hr))` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : MvPolynomial.eval (fun i => (pt (e.symm (s, θ')) i : ℂ)) p = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hs h`. Rewrite `hs'` using `[hsymm, eval_cons_pt]`. Conclude with `hs'`. Use `hmp.quasiMeasurePreserving.ae hprod` as an intermediate fact. Use `filter_upwards [this] with θ hθ`.
+
+Rewrite `hθ` using `[e.symm_apply_apply]`. Conclude with `hθ`.
+-/
 theorem UpperTheory.Gal.Gen.nullZero_pf :
     UpperTheory.Gal.Gen.NullZero := by
   intro n

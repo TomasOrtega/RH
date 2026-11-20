@@ -8,12 +8,32 @@ namespace PI.PoleLengthCount
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Rewrite using `[algebraMap_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply (Op X la N) (Rp X la N) (Lw X la w)]`.
+-/
 theorem algebraMap_Op_mul {N : ℕ} (la : HeightOneSpectrum (𝓞 B.KO)) (w : Fin N → B.Cusp j wL) (a : Op X la N)
     (y : Lw X la w) :
     algebraMap (Rp X la N) (Lw X la w) (algebraMap (Op X la N) (Rp X la N) a) * y =
       algebraMap (Op X la N) (Kp X la N) a • y := by
   rw [algebraMap_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply (Op X la N) (Rp X la N) (Lw X la w)]
 
+/- English proof (translation)
+Introduce `k β r x hx hβ`. Establish `hP` using `hasse_preserves_kernel G la`. Use `set c := algebraMap (Op X la G.N) (Kp X la G.N) r with hc`. Establish `h1 : hasse X la G.w β ((c • x : ↥(HK X la G.w wF)) : Lw X la G.w) ∈ HK X la G.w wF` using `hP β _ (c • x).2`. Establish `h2 : hasse X la G.w β (x : Lw X la G.w) ∈ HK X la G.w wF` using `hP β _ x.2`.
+
+Unfold `rD`. Rewrite using `[dif_pos h1, dif_pos h2]`. Use `show _ = c • toA0K X la G.w wF ⟨_, h2⟩`. Rewrite using `[← LinearMap.map_smul_of_tower, ← sub_eq_zero, ← map_sub]`. Use `leading_coeff_eq_zero_of_jet la G.w _ ?_` and prove the remaining obligations.
+
+Establish `hA : ∀ (q : Idx D j G.N →₀ ℕ) (a : Op X la G.N), PI.HJP.H X la G.w q (algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) a)) = algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) (hasseOp X la G.N q a))` using `fun q a => hasse_algebraMap_Op X la G.w q a`. Establish `e0 : ((c • x : ↥(HK X la G.w wF)) : Lw X la G.w) = algebraMap (Rp X la G.N) (Lw X la G.w) (algebraMap (Op X la G.N) (Rp X la G.N) r) * (x : Lw X la G.w)` using `(algebraMap_Op_mul la G.w r x).symm`. Use `show PI.HJP.H X la G.w β ((c • x : ↥(HK X la G.w wF)) : Lw X la G.w) - c • PI.HJP.H X la G.w β (x : Lw X la G.w) ∈ JHfr X la G.w wF 1`. Rewrite using `[e0, PI.HJP.H_mul]`. Simplify using `only [hA, algebraMap_Op_mul la G.w]`.
+
+Establish `hmem : ((0 : Idx D j G.N →₀ ℕ), β) ∈ antidiagonal β` using `by simp`. Rewrite using `[← Finset.add_sum_erase _ _ hmem, hasseOp_zero, add_sub_cancel_left]`. Use `Submodule.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Take `⟨hne, hq⟩` from `Finset.mem_erase.1 hq`. Rewrite `hq` using `[mem_antidiagonal]`.
+
+Establish `hq1 : q.1 ≠ 0`. Introduce and unpack `h0`. Apply `hne` to reduce the goal to its premises. Use `ext1`. Conclude with `h0`.
+
+Simplify `hq` using `[h0]`. Establish `hdeg : Finsupp.degree q.2 < k`. Establish `e1 : Finsupp.degree β = Finsupp.degree q.1 + Finsupp.degree q.2` using `by rw [← hq, map_add]`. Establish `e2 : Finsupp.degree q.1 ≠ 0` using `fun h => hq1 ((Finsupp.degree_eq_zero_iff q.1).1 h)`. Rewrite `hβ` using `[PI.HJP.sum_eq_degree]`.
+
+Use linear arithmetic over natural numbers and integers. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `show hasse X la G.w q.2 (x : Lw X la G.w) ∈ _`. Establish `h3` using `hasse_jid_power X la G.w wF q.2 k _ ((mem_pow_smul_top_iff la G.w).1 hx)`. Rewrite `h3` using `[PI.HJP.sum_eq_degree]`.
+
+Conclude with `PI.HJP.JHfr_anti X la G.w wF (by omega) h3`.
+-/
 theorem restricted_derivative_linear (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) : LinOp G la := by
   intro k β r x hx hβ
   have hP := hasse_preserves_kernel G la

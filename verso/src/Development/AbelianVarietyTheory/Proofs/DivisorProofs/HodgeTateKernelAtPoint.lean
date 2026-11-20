@@ -29,6 +29,17 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.PDivGroup GlobalTheory.WeilInt
 
 namespace GlobalTheory.HTKernel
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P`. Establish `hv` using `P.integers`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Take `⟨ε, hε₁⟩` from `ReciprocityTheory.PGsh.exists_eps (p := p) C _ O hv`. Establish `hε : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε` using `GlobalTheory.PrismModel.isPrimitiveSystem_of_one hε₁`.
+
+Establish `hS` using `GlobalTheory.DieudonneSandwich.hodgeTateSandwich_of_prismaticDieudonne₂ h p C v O hv ε hε`. Take `⟨G, e, l, c, ζ, tw, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_pdiv_group_tate_lie p C v O Λ P`. Take `⟨hf, hfr, hb⟩` from `GlobalTheory.T.pDivGroup_omega_finite_free_and_p_sq_mem_dlog_span p C v O ε hε hv hS G`. Establish `hcok : CokernelBound P` using `GlobalTheory.T.pdiv_group_tate_lie_compat p C v O Λ P G e l c ζ h1 h2 h3 hf hfr hb`. Establish `hint : WeilIntegralFinite P` using `GlobalTheory.T.weil_integral_local_to_finite p C v O Λ P (GlobalTheory.T.weil_pairing_integral p C v O Λ P (GlobalTheory.T.polarized_abelian_cube_function C P.A) (GlobalTheory.T.trivialising_open_exists p C v O Λ P (GlobalTheory.T.special_fibre_not_in_closure p C v O hv)) (Global …`.
+
+Take `⟨φ, hφ⟩` from `GlobalTheory.T.exists_polarization_torsion_tower p C v O Λ P hint G tw`. Establish `hiso` using `GlobalTheory.T.hodge_tate_sandwich_point_property p C v O Λ P ε hε hS G e l c ζ φ h1 h2 h3 fun s s' => muRoot_ext fun n => hv.hom_inj (by`. Rewrite using `[hφ, muRoot_smul, map_pow, h5, ← h4, ← h4, ← pow_pairT P.A P.eps, Units.val_pow_eq_pow_val])`. Take `⟨horth, hrank⟩` from `GlobalTheory.T.hodge_tate_kernel_annihilator p C v O Λ P`. Establish `hdim` using `GlobalTheory.T.finrank_W_eq_dimension p C v O Λ P hcok`.
+
+Establish `hle : Submodule.span C (Set.range P.bLie) ≤ P.W` using `Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact (hiso x).1)`. Establish `hW : P.W = Submodule.span C (Set.range P.bLie)` using `(Submodule.eq_of_le_of_finrank_eq hle (by omega)).symm`. Use `⟨GlobalTheory.T.level_reduction_holds p C v O Λ P, (weilChar_surjective_and_map_range_al p C v O Λ P).1, hcok, hdim, fun a x hx => ?_, hW ▸ GlobalTheory.T.tate_torus_le_lie_span p C v O Λ P, ?_, fun x => ?_, GlobalTheory.T.eigen_finrank_of_cokernel p C v O Λ P hcok hW, hW⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.alC _ = 0`. Rewrite using `[P.isEquivariant_alC a x, show P.alC x = 0 from hx, map_zero]`.
+
+Rewrite using `[hW]`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact (hiso x).2)`. Rewrite using `[horth, ← hW]`.
+-/
 theorem hodgeTateKernelAtPoint_of_dieudonne (h : GlobalTheory.Published.PrismaticDieudonneHodge) :
     GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P
@@ -61,6 +72,9 @@ theorem hodgeTateKernelAtPoint_of_dieudonne (h : GlobalTheory.Published.Prismati
     exact Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact (hiso x).2)
   · rw [horth, ← hW]
 
+/- English proof (translation)
+Introduce `h` and use `hodgeTateKernelAtPoint_of_dieudonne h.q4`.
+-/
 theorem hodgeTateKernelAtPoint : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint :=
   fun h => hodgeTateKernelAtPoint_of_dieudonne h.q4
 

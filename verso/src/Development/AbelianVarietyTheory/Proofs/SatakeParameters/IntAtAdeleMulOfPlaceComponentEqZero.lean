@@ -7,6 +7,11 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.VanishAtOver
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v Q hv a ha c`. Apply `GlobalTheory.VanishAwayInt.intAtA_of_prV_eq_zero` to reduce the goal to its premises. Introduce `w hw`. Establish `hwv : w = v` using `HeightOneSpectrum.ext (hw.trans hv.symm)`. Substitute `hwv` using the available equality.
+
+Rewrite using `[map_mul, ha, mul_zero]`.
+-/
 theorem intAtA_mul_of_prV_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (Q : HeightOneSpectrum (𝓞 E)), Formalism.L2.Col.IsOver v Q →
     ∀ a : TensorProduct F E (FiniteAdeleRing (𝓞 F) F), Formalism.UG.prV (E := E) v a = 0 →

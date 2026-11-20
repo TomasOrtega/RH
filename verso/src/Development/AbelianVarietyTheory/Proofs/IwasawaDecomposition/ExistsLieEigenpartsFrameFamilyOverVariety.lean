@@ -17,10 +17,18 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.ShFam.TieBase
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_trans {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `EigLoc.exists_stalk_factor x _ (specializes_refl _)`. Use `⟨ψ.comp (Y.presheaf.germ U _ h).hom, ?_⟩` and prove the remaining obligations. Establish `hg : spMap (Y.presheaf.germ U _ h).hom ≫ hU.fromSpec = Y.fromSpecStalk _`. Rewrite using `[← hU.fromSpecStalk_eq_fromSpecStalk h]`. Both sides reduce to the same expression.
+
+Rewrite using `[spMap_trans, Category.assoc, hg, hψ]`.
+-/
 theorem exists_affine_factor {Y : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (x : Sp R ⟶ Y) {U : Y.Opens}
     (hU : IsAffineOpen U) (h : x (IsLocalRing.closedPoint R) ∈ U) :
     ∃ ψ : Γ(Y, U) →+* R, spMap ψ ≫ hU.fromSpec = x := by
@@ -30,6 +38,17 @@ theorem exists_affine_factor {Y : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRi
     rw [← hU.fromSpecStalk_eq_fromSpecStalk h]; rfl
   rw [spMap_trans, Category.assoc, hg, hψ]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hP`. Establish `hent : ∀ τ i j, ∃ r, a r = P τ i j` using `fun τ i j => (hO _).1 ((hP τ).1 i j)`. Use `choose G₀ hG using hent`. Set `G : Mat m R` to `fun τ => Matrix.of (G₀ τ)`.
+
+Establish `hGP : P = G.map a`. Use function extensionality and compare the values at `τ i j`. Conclude with `(hG τ i j).symm`. Use `⟨G, fun τ => ?_, hGP⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `(hO _).1 (hP τ).2.2.1`.
+
+Establish `hdet : a (G τ).det = (P τ).det`. Rewrite using `[hGP]`. Conclude with `RingHom.map_det a (G τ)`. Use `isUnit_iff_exists_inv.2 ⟨s, ha ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hdet, hs, map_one, mul_inv_cancel₀ (hP τ).2.1]`.
+
+Introduce and unpack `⟨G, hG, rfl⟩ τ`. Establish `hdet : (G.map a τ).det = a (G τ).det` using `(RingHom.map_det a (G τ)).symm`. Take `⟨u, hu⟩` from `hG τ`. Use `⟨fun i j => (hO _).2 ⟨G τ i j, rfl⟩, ?_, ?_, fun i j hi _ => absurd hi (Nat.not_lt_zero _)⟩` and prove the remaining obligations. Rewrite using `[hdet, ← hu]`.
+
+Conclude with `(u.isUnit.map a).ne_zero`. Rewrite using `[hdet, ← hu]`. Conclude with `(hO _).2 ⟨((u⁻¹ : Rˣ) : R), by rw [map_units_inv]⟩`.
+-/
 theorem par_zero_iff {ι : Type} {m : ι → ℕ} {R K : Type} [CommRing R] [Field K] (a : R →+* K)
     (ha : Function.Injective a) (O : Subring K) (hO : ∀ x, x ∈ O ↔ ∃ r, a r = x) (P : Mat m K) :
     Par 0 O P ↔ ∃ G : Mat m R, (∀ τ, IsUnit (G τ).det) ∧ P = G.map a := by
@@ -60,6 +79,25 @@ theorem par_zero_iff {ι : Type} {m : ι → ℕ} {R K : Type} [CommRing R] [Fie
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Establish `hU` using `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f K φ₀ x₀ (a.comp ψ) inferInstance hf hT.1 hT.2.1).1 f₀`. Establish `huniq : ∀ B, f.Coord (a.comp ψ) f₀ B → B = T` using `fun B hB => hU.1.unique hB hT`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, φ₁, g, hg⟩`. Establish `hφ₁ : φ₁ = ψ.comp φ`.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply `ha` to reduce the goal to its premises. Establish `h` using `RingHom.congr_fun (hg.2.1.symm.trans hT.2.1) r`. Simplify using `using h`.
+
+Substitute `hφ₁` using the available equality. Take `⟨hE, hunits⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).1 g`. Take `⟨G, hG, -⟩` from `hE`. Use `⟨G, hunits G hG, ?_⟩` and prove the remaining obligations. Establish `hc` using `GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G A⁻¹ inferInstance hG hg`.
+
+Rewrite using `[← huniq _ hc, ← mul_assoc, Mat.mul_inv hA, one_mul]`. Introduce and unpack `⟨G, hG, hAT⟩`. Take `⟨g, hfg⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ ψ inferInstance hf hx rfl).2 G hG`. Establish `hgs : g.Stable` using `GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g inferInstance`. Establish `hx₀ : x₀ = spMap a ≫ x₁` using `by rw [hT.1, hx, spMap_trans, Category.assoc]`.
+
+Establish `hφ₀ : φ₀ = a.comp (ψ.comp φ)` using `hT.2.1.trans (RingHom.comp_assoc _ _ _)`. Take `⟨⟨B, hB, -⟩, -⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z R₁ (ψ.comp φ) x₁ g K φ₀ x₀ a inferInstance hgs hx₀ hφ₀).1 f₀`. Establish `hc` using `GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z R φ x f R₁ (ψ.comp φ) x₁ g K φ₀ x₀ f₀ ψ a G B inferInstance hfg hB`. Establish `hTB : B * G.map a = T` using `huniq _ hc`. Establish `hGd : ∀ τ, (G.map a τ).det ≠ 0` using `fun τ => by`.
+
+Establish `h` using `((hG τ).map a).ne_zero`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `hAB : A * B = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = A * (B * G.map a) * (G.map a)⁻¹ := by simp only [mul_assoc]`. Use `_ = 1 := by rw [hTB, hAT, Mat.mul_inv hGd]`. Establish `hAτ : ∀ τ, A τ * B τ = 1` using `fun τ => congrFun hAB τ`. Establish `hAd : ∀ τ, (A τ).det ≠ 0` using `fun τ hd => by`. Establish `h` using `congrArg Matrix.det (hAτ τ)`.
+
+Rewrite `h` using `[Matrix.det_mul, hd, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h`. Establish `hAi : A⁻¹ = B` using `funext fun τ => Matrix.inv_eq_right_inv (hAτ τ)`. Use `⟨hAd, ψ.comp φ, g, ?_⟩` and prove the remaining obligations. Rewrite using `[hAi]`.
+
+Conclude with `hB`.
+-/
 theorem frames_iff {R R₁ K : Type} [CommRing R] [CommRing R₁] [IsLocalRing R₁] [Field K] {φ : c.F →+* R}
     {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) (hf : f.Stable) (ψ : R →+* R₁) (a : R₁ →+* K) (ha : Function.Injective a)
     {x₁ : Sp R₁ ⟶ Z.X} (hx : x₁ = spMap ψ ≫ x) {φ₀ : c.F →+* K} {x₀ : Sp K ⟶ Z.X} (f₀ : EigFrame Z φ₀ x₀)
@@ -110,12 +148,24 @@ theorem frames_iff {R R₁ K : Type} [CommRing R] [CommRing R₁] [IsLocalRing R
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+Unfold `genericPt stalkPt`. Rewrite using `[← Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)]`. Both sides reduce to the same expression.
+-/
 theorem genericPt_eq (B : GlobalTheory.ProjVar.Var F) (y : B.X) :
     genericPt B = spMap (algebraMap (B.X.presheaf.stalk y) B.X.functionField) ≫ stalkPt B y := by
   unfold genericPt stalkPt
   rw [← Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)]
   rfl
 
+/- English proof (translation)
+Establish `hs : genericPt B ≫ B.str = spMap (algebraMap F B.Fn)`. Apply `ext_of_isAffine` to reduce the goal to its premises. Unfold `genericPt spMap`. Rewrite using `[Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, ← cancel_mono (Scheme.ΓSpecIso _).hom, Scheme.ΓSpecIso_naturality]`. Use extensionality with `a`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`. Rewrite using `[IsScalarTower.algebraMap_apply F Γ(B.X, ⊤) B.Fn, GlobalTheory.ProjVar.Var.algebraMap_Γ, GlobalTheory.Cartier.CartierDiv.algebraMap_top, CommRingCat.inv_hom_apply]`. Establish `hmap : (Spec (B.X.presheaf.stalk (genericPoint B.X))).presheaf.map (homOfLE (le_top : (⊤ : (Spec (B.X.presheaf.stalk (genericPoint B.X))).Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[show (homOfLE (le_top : (⊤ : (Spec (B.X.presheaf.stalk (genericPoint B.X))).Opens) ≤ ⊤)) = 𝟙 _ from rfl]`. Conclude with `CategoryTheory.Functor.map_id _ _`.
+
+Rewrite using `[hmap, CommRingCat.hom_id, RingHom.id_apply]`. Conclude with `CommRingCat.hom_inv_apply _ _`. Establish `hid : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Rewrite using `[← spMap_trans, RingEquiv.toRingHom_comp_symm_toRingHom]`. Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+
+Unfold `constF`. Rewrite using `[spMap_trans, ← hs, ← hj]`. Simplify using `only [Category.assoc, hid, Category.comp_id]`.
+-/
 theorem genericPt_str (e : F ≃+* c.F) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z)
     (hj : j ≫ genStr Z ≫ spMap e.toRingHom = B.str) : (genericPt B ≫ j) ≫ genStr Z = spMap (constF e B) := by
   have hs : genericPt B ≫ B.str = spMap (algebraMap F B.Fn) := by
@@ -180,6 +230,21 @@ end GlobalTheory.ShFam.TieBase
 
 open GlobalTheory.ShFam.TieBase in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e B j hj`. Establish `hx : (genericPt B ≫ j) ≫ genι Z = genericPt B ≫ j ≫ genι Z` using `Category.assoc _ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨f₀⟩ : Nonempty (EigFrame Z (constF e B) (genericPt B ≫ j ≫ genι Z)) := by`. Rewrite using `[← hx]`. Conclude with `EigLoc.exists_eigFrame E H Dw l Xo c O β Z B.Fn (constF e B) (genericPt B ≫ j) (genericPt_str e B j hj)`.
+
+Use `⟨f₀, fam e B j hj f₀, 1, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.ShFam.Tied`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hst : f₀.Stable` using `GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ inferInstance`. Establish `hsp : spMap (RingHom.id B.Fn) = 𝟙 _` using `by simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+
+Take `⟨⟨A₁, hA₁, huq⟩, hu⟩` from `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ (RingHom.id B.Fn) inferInstance hst (by rw [hsp, Category.id_comp]) (RingHom.id_comp _).symm).1 f₀`. Establish `h2` using `GlobalTheory.T.lie_eigenspace_frame_coordinates_comp E H Dw l Xo c O β Z B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀ B.Fn (constF e B) _ f₀ (RingHom.id B.Fn) (RingHom.id B.Fn) A₁ A₁ inferInstance hA₁ hA₁`. Establish `hm : A₁.map (RingHom.id B.Fn) = A₁`. Use function extensionality and compare the values at `τ i j`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[RingHom.id_comp, hm]`. Establish `hsq : A₁ * A₁ = A₁` using `huq _ h2`. Establish `hdet : ∀ τ, (A₁ τ).det ≠ 0` using `fun τ => (hu A₁ hA₁ τ).ne_zero`. Establish `h1 : A₁ = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = 1 := by rw [hsq, Mat.inv_mul hdet]`. Establish `hinv : (1 : Mat Dw.mult B.Fn)⁻¹ = 1` using `funext fun τ => by simp`. Establish `halg : @algebraMap (B.X.presheaf.stalk (genericPoint B.X)) B.X.functionField _ _ (AlgebraicGeometry.stalkFunctionFieldAlgebra (X` using `B.X) (genericPoint B.X)) = RingHom.id _ := by`. Use extensionality with `r`. Use `show (B.X.presheaf.stalkSpecializes _).hom r = r`.
+
+Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Both sides reduce to the same expression. Use `show (∀ τ, ((1 : Mat Dw.mult B.Fn) τ).det ≠ 0) ∧ ∃ (φ : c.F →+* B.X.presheaf.stalk (genericPoint B.X)) (f : EigFrame Z φ (stalkPt B (genericPoint B.X) ≫ j ≫ genι Z)), f.Coord (@algebraMap (B.X.presheaf.stalk (genericPoint B.X)) B.X.functionField _ _ (AlgebraicGeometry.stalkFuncti …`. Use `⟨fun τ => by simp, constF e B, f₀, ?_⟩` and prove the remaining obligations. Rewrite using `[halg, hinv, ← h1]`.
+
+Conclude with `hA₁`. Introduce `y A hA`. Establish `hA' : (∀ τ, (A τ).det ≠ 0) ∧ ∃ (φ : c.F →+* B.X.presheaf.stalk y) (f : EigFrame Z φ (stalkPt B y ≫ j ≫ genι Z)), f.Coord (algebraMap (B.X.presheaf.stalk y) B.X.functionField) f₀ A⁻¹` using `hA`. Take `⟨-, φ, f, hf⟩` from `hA'`. Conclude with `⟨φ, f, by rw [one_mul]; exact hf⟩`.
+-/
 theorem GlobalTheory.ShFam.TieBase.exists_tied : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z), j ≫ genStr Z ≫ spMap e.toRingHom = B.str → ∃ (f₀ : EigFrame Z (constF e B) (genericPt B ≫ j ≫ genι Z)) (S : Fr (ratOf B) Dw.mult 0) (A₀ : Mat Dw.mult B.Fn), Tied e B j f₀ S A₀ := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e B j hj
   have hx : (genericPt B ≫ j) ≫ genι Z = genericPt B ≫ j ≫ genι Z := Category.assoc _ _ _

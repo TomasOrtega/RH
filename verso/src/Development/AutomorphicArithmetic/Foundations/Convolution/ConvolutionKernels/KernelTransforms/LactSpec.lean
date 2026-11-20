@@ -11,12 +11,22 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Conclude with `congrArg (fun T : Module.End ℂ ((isExpLieAlgebra K n).smoothFuns (F := ℂ)) => T f) (Algebra.TensorProduct.lift_tmul (Algebra.ofId ℂ _) (isExpLieAlgebra K n).rightUAction (fun c _ => Algebra.commute_algebraMap_left c _) c a)`.
+-/
 private theorem rUC_tmul (c : ℂ) (a : UEnv K n) (f : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) :
     rUC (c ⊗ₜ[ℝ] a) f = c • (isExpLieAlgebra K n).rightUAction a f := by
   exact congrArg (fun T : Module.End ℂ ((isExpLieAlgebra K n).smoothFuns (F := ℂ)) => T f)
     (Algebra.TensorProduct.lift_tmul (Algebra.ofId ℂ _) (isExpLieAlgebra K n).rightUAction
       (fun c _ => Algebra.commute_algebraMap_left c _) c a)
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero, LinearMap.zero_apply, Submodule.coe_zero]`. Simplify using the standard rewrite rules. Consider the case `tmul c a`.
+
+Rewrite using `[rUC_tmul, Submodule.coe_smul]`. Use `subset_trans ?_ ((UpperTheory.ConvolutionTheory.Tf.invSmooth K n f f.2).2.2.2 f.2 a)` and prove the remaining obligations. Conclude with `tsupport_smul_subset_right (fun _ => c) _`. Consider the case `add u v hu hv`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`.
+
+Conclude with `(tsupport_add _ _).trans (Set.union_subset hu hv)`.
+-/
 private theorem tsupport_rUC (u : UC K n) (f : (isExpLieAlgebra K n).smoothFuns (F := ℂ)) :
     tsupport (rUC u f : archGroup K n → ℂ) ⊆ tsupport (f : archGroup K n → ℂ) := by
   induction u using TensorProduct.induction_on with
@@ -31,6 +41,11 @@ private theorem tsupport_rUC (u : UC K n) (f : (isExpLieAlgebra K n).smoothFuns 
     rw [map_add, LinearMap.add_apply, Submodule.coe_add]
     exact (tsupport_add _ _).trans (Set.union_subset hu hv)
 
+/- English proof (translation)
+Establish `e : ∀ φ : archGroup K n → ℂ, tsupport (fun g => φ g⁻¹) = (Homeomorph.inv (archGroup K n)) ⁻¹' tsupport φ`. Introduce `φ`. Rewrite using `[tsupport, tsupport, Homeomorph.preimage_closure]`. Both sides reduce to the same expression. Rewrite using `[e, e]`.
+
+Conclude with `Set.preimage_mono h`.
+-/
 private theorem tsupport_inv_subset {f f' : archGroup K n → ℂ} (h : tsupport f ⊆ tsupport f') :
     tsupport (fun g => f g⁻¹) ⊆ tsupport (fun g => f' g⁻¹) := by
   have e : ∀ φ : archGroup K n → ℂ, tsupport (fun g => φ g⁻¹) = (Homeomorph.inv (archGroup K n)) ⁻¹' tsupport φ := by
@@ -40,16 +55,25 @@ private theorem tsupport_inv_subset {f f' : archGroup K n → ℂ} (h : tsupport
   rw [e, e]
   exact Set.preimage_mono h
 
+/- English proof (translation)
+The claim follows from `(UpperTheory.ConvolutionTheory.Tf.invSmooth K n (fun g => β g) ((isExpLieAlgebra K n).mem_smoothFuns.2 hβ)).1`.
+-/
 private theorem smooth_inv {β : TI K n} (hβ : SmoothT β) :
     (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ) :=
   (UpperTheory.ConvolutionTheory.Tf.invSmooth K n (fun g => β g) ((isExpLieAlgebra K n).mem_smoothFuns.2 hβ)).1
 
+/- English proof (translation)
+Use `tsupport_inv_subset (tsupport_rUC u ⟨fun g => β g⁻¹, h⟩)` as an intermediate fact. Simplify `this` using `only [inv_inv]`.
+-/
 private theorem tsupport_rightUniversal {β : TI K n} (h : (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ))
     (u : UC K n) :
     tsupport (fun g => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹) ⊆ tsupport β := by
   have := tsupport_inv_subset (tsupport_rUC u ⟨fun g => β g⁻¹, h⟩)
   simpa only [inv_inv] using this
 
+/- English proof (translation)
+Establish `hc : Continuous (fun g : archGroup K n => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹)` using `(UpperTheory.ConvolutionTheory.Tf.invSmooth K n _ (rUC u ⟨fun g => β g⁻¹, h⟩).2).2.1.comp continuous_inv`. Establish `hs : HasCompactSupport (fun g : archGroup K n => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹)` using `β.hasCompactSupport.of_isClosed_subset (isClosed_tsupport _) (tsupport_rightUniversal h u)`. Establish `H : ∃ (h : (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) (γ : TI K n), ∀ g, γ g = (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹ := ⟨h, ⟨⟨_, hc⟩, hs⟩, fun _ => rfl⟩`. Rewrite using `[lact, dif_pos H]`. Conclude with `H.choose_spec.choose_spec g`.
+-/
 private theorem lact_apply {β : TI K n} (h : (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ))
     (u : UC K n) (g : archGroup K n) :
     lact u β g = (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹ := by
@@ -63,6 +87,9 @@ private theorem lact_apply {β : TI K n} (h : (fun g => β g⁻¹) ∈ (isExpLie
   rw [lact, dif_pos H]
   exact H.choose_spec.choose_spec g
 
+/- English proof (translation)
+Establish `e : (fun g => lact u β g) = fun g => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹`. Use function extensionality and compare the values at `(lact_apply h u)`. Rewrite using `[SmoothT, e]`. Conclude with `(isExpLieAlgebra K n).mem_smoothFuns.1 (UpperTheory.ConvolutionTheory.Tf.invSmooth K n _ (rUC u ⟨fun g => β g⁻¹, h⟩).2).1`.
+-/
 private theorem lact_smooth {β : TI K n} (h : (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ))
     (u : UC K n) : SmoothT (lact u β) := by
   have e : (fun g => lact u β g) = fun g => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹ :=
@@ -73,6 +100,19 @@ private theorem lact_smooth {β : TI K n} (h : (fun g => β g⁻¹) ∈ (isExpLi
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ n β hβ`. Establish `h` using `smooth_inv hβ`. Use `⟨h, lact_apply h, fun u => ⟨lact_smooth h u, ?_⟩, ?_, fun u v => ⟨?_, ?_⟩, fun c u => ⟨?_, ?_⟩, fun β' hβ' => ⟨?_, fun u => ?_⟩, fun a g => ?_⟩` and prove the remaining obligations. Establish `e : (lact u β : archGroup K n → ℂ) = fun g => (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹`. Use function extensionality and compare the values at `(lact_apply h u)`.
+
+Rewrite using `[e]`. Conclude with `tsupport_rightUniversal h u`. Use extensionality with `g`. Rewrite using `[lact_apply h, map_one, Module.End.one_apply]`. Simplify using `only [inv_inv]`.
+
+Use extensionality with `g`. Establish `h'` using `smooth_inv (lact_smooth h v)`. Establish `e : (⟨fun g => lact v β g⁻¹, h'⟩ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) = rUC v ⟨fun g => β g⁻¹, h⟩ := Subtype.ext (funext fun x => by rw [← inv_inv x, ← lact_apply h v, inv_inv])`. Rewrite using `[lact_apply h, lact_apply h', e, map_mul, Module.End.mul_apply]`. Use extensionality with `g`.
+
+Rewrite using `[CompactlySupportedContinuousMap.add_apply, lact_apply h, lact_apply h, lact_apply h, map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Use extensionality with `g`. Rewrite using `[CompactlySupportedContinuousMap.smul_apply, lact_apply h, lact_apply h, map_smul, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Use extensionality with `g`. Establish `h' : (fun g => (c • β) g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F` using `ℂ) := Submodule.smul_mem _ c h`.
+
+Establish `e : (⟨fun g => (c • β) g⁻¹, h'⟩ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) = c • ⟨fun g => β g⁻¹, h⟩ := rfl`. Rewrite using `[CompactlySupportedContinuousMap.smul_apply, lact_apply h', lact_apply h, e, map_smul, Submodule.coe_smul, Pi.smul_apply]`. Conclude with `(isExpLieAlgebra K n).mem_smoothFuns.1 (Submodule.add_mem _ ((isExpLieAlgebra K n).mem_smoothFuns.2 hβ) ((isExpLieAlgebra K n).mem_smoothFuns.2 hβ'))`. Use extensionality with `g`. Establish `h₂` using `smooth_inv hβ'`.
+
+Establish `h' : (fun g => (β + β') g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F` using `ℂ) := Submodule.add_mem _ h h₂`. Establish `e : (⟨fun g => (β + β') g⁻¹, h'⟩ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) = ⟨fun g => β g⁻¹, h⟩ + ⟨fun g => β' g⁻¹, h₂⟩ := rfl`. Rewrite using `[CompactlySupportedContinuousMap.add_apply, lact_apply h', lact_apply h, lact_apply h₂, e, map_add, Submodule.coe_add, Pi.add_apply]`. Rewrite using `[lact_apply h, rUC_tmul, one_smul]`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.lactSpec :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (β : TI K n), SmoothT β → ∃ h : (fun g => β g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ),
       (∀ (u : UC K n) (g : archGroup K n), lact u β g = (rUC u ⟨fun g => β g⁻¹, h⟩ : archGroup K n → ℂ) g⁻¹) ∧

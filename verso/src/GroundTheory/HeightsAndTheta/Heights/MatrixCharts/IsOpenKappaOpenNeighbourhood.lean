@@ -196,6 +196,11 @@ def exampleChart : PeriodChartData 1 1 2 1 2 where
     rw [Metric.mem_ball, dist_zero_right, pi_norm_lt_iff (by norm_num)]
     intro i; norm_num
 
+/- English proof (translation)
+Use `⟨((fun _ => (1 / 2 : ℂ)), (fun _ => (0 : ℂ))), rfl, ?_, ?_⟩` and prove the remaining obligations. Use `show (fun _ => (1 / 2 : ℂ)) ∈ Metric.ball (0 : Fin 1 → ℂ) 1`. Rewrite using `[Metric.mem_ball, dist_zero_right, pi_norm_lt_iff (by norm_num)]`. Introduce `i`. Evaluate the numerical expressions.
+
+Introduce `i`. Evaluate the numerical expressions.
+-/
 theorem exampleChart_K_meets : ∃ p ∈ exampleChart.K, p.1 ∈ exampleChart.Ustar := by
   refine ⟨((fun _ => (1 / 2 : ℂ)), (fun _ => (0 : ℂ))), rfl, ?_, ?_⟩
   · show (fun _ => (1 / 2 : ℂ)) ∈ Metric.ball (0 : Fin 1 → ℂ) 1
@@ -203,6 +208,13 @@ theorem exampleChart_K_meets : ∃ p ∈ exampleChart.K, p.1 ∈ exampleChart.Us
     intro i; norm_num
   · intro i; norm_num
 
+/- English proof (translation)
+Evaluate the numerical expressions using `B_support := by`. Introduce `i j l h`. Apply the tactic sequence `fin_cases j <;> fin_cases l <;> simp_all [exampleChart]`. Use `sum_posDef := by`. Establish `: ((∑ i, exampleChart.B i).submatrix (Fin.castLE (by norm_num : 1 ≤ 2)) (Fin.castLE (by norm_num : 1 ≤ 2))) = (1 : Matrix (Fin 1) (Fin 1) ℝ)`.
+
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[exampleChart]`. Rewrite using `[this]`.
+
+Conclude with `PosDef.one`.
+-/
 theorem exampleChart_toricBlock : ToricBlock exampleChart 1 where
   r_le := by norm_num
   B_support := by
@@ -234,6 +246,9 @@ def examplePsh : PshData 1 2 2 where
   F_analytic := fun _ _ => analyticOnNhd_const
   F_rank := fun _ _ => by simp [Matrix.rank_one]
 
+/- English proof (translation)
+The claim follows from `PosDef.one`.
+-/
 theorem posDef_one_two_blocks : (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℝ).PosDef := PosDef.one
 
 end

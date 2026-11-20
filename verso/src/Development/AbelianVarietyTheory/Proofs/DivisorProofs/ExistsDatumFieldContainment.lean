@@ -28,6 +28,9 @@ abbrev rowsOver (W : Type) (Dst : ℝ) : Rows.Data R :=
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) (fun _ _ _ => 0) (fun _ _ _ => 0) (fun _ => false)
     (fun _ => rfl)
 
+/- English proof (translation)
+Introduce `p _ n _ _` and use `shaExample_eq H p n hcard := rfl hg := hg`.
+-/
 theorem rowsOver_hyp (W : Type) (Dst : ℝ)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
     NHyp H (rowsOver H L e W Dst) where
@@ -220,6 +223,9 @@ def recordOver : D7 :=
 
 end Record
 
+/- English proof (translation)
+The claim follows from `D.ntypes.g_cond bb := D.ntypes.BB_disj jac := fun k => by have h := D.ntypes.g_cond k have h4 : D.host.g k % (4 * D.host.d) = 1 % (4 * D.host.d) := by have hd : 4 * D.host.d ∣ D.host.QS * D.host.q * D.host.d := Nat.mul_dvd_mul ((dvd_trans ⟨2 ^ D.R.e, by ring⟩ D.host.tower_dvd : 4 …`.
+-/
 theorem typePrimes (D : D7) : THyp D.host where
   cond := D.ntypes.g_cond
   bb := D.ntypes.BB_disj
@@ -239,6 +245,11 @@ theorem typePrimes (D : D7) : THyp D.host where
     rw [Int.natAbs_neg, Int.natAbs_natCast] at this
     rw [← this, jacobiSym.one_right]
 
+/- English proof (translation)
+Use `haveI : ∀ u, Fact ((D.mem u).A.T).Prime := fun u => ⟨(D.mem u).A.T_prime⟩`. Use `choose pz hK hpz hcong using D.T_norm`. Use `⟨recordOver D.host L e hstar j hj D.u₀ (fun u τ => D.hcW u (D.eTau.symm τ)) (fun u τ => (D.hcW_v u _).trans (D.hcW_v _ _).symm) (fun u τ => (D.hcW_b u _).trans (D.hcW_b _ _).symm) (fun u τ => (D.hcW_e u _).trans (D.hcW_e _ _).symm) (fun u τ h => (D.hcW_first u _ h).trans (D.hcW_f …` and prove the remaining obligations. Establish `h` using `D.T_win u`. Simplify using `only [ColumnsAtT.Tstar, ColumnsAtT.Xu] at h ⊢`.
+
+Rewrite `h` using `[D.Dstar_eq u, D.GamP_eq u]`. Conclude with `h`.
+-/
 theorem exists_record_over (D : D7) (L : Type) [Field L] [NumberField L] [StarRing L] (e : L →+* ℂ)
     [IsTotallyComplex L] [IsGalois ℚ L] (hstar : ∀ x : L, e (star x) = starRingEnd ℂ (e x))
     (j : D.host.E →+* L) (hj : e.comp j = D.host.φ₀) :
@@ -271,6 +282,15 @@ theorem exists_record_over (D : D7) (L : Type) [Field L] [NumberField L] [StarRi
     rw [map_mul, mul_comm]
   star_add := fun x y => map_add ((starRingEnd ℂ).toRatAlgHom.restrictNormal L) x y
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ (GlobalTheory.ShFam.fieldLL D) := (AlgEquiv.ofInjectiveField D.what₂.embLL.toRatAlgHom).toLinearEquiv.finiteDimensional`. Set `M : IntermediateField ℚ ℂ` to `K ⊔ GlobalTheory.ShFam.fieldLL D`. Use `haveI : FiniteDimensional ℚ M := IntermediateField.finiteDimensional_sup _ _`. Set `L : IntermediateField ℚ ℂ` to `IntermediateField.normalClosure ℚ M ℂ`. Use `haveI : FiniteDimensional ℚ L := normalClosure.is_finiteDimensional ℚ M ℂ`.
+
+Use `haveI : IsNormalClosure ℚ M L := Algebra.IsAlgebraic.isNormalClosure_normalClosure (fun x => IsAlgClosed.splits _)`. Use `haveI : Normal ℚ L := IsNormalClosure.normal (K := M)`. Use `haveI : NumberField L := {}`. Use `haveI : IsGalois ℚ L := {}`. Establish `hML : M ≤ L` using `IntermediateField.le_normalClosure M`.
+
+Establish `hmem : ∀ x, D.what₂.embLL x ∈ L` using `fun x => hML (le_sup_right (a := K) ⟨x, rfl⟩)`. Set `i : D.what₂.LL →+* L` to `D.what₂.embLL.codRestrict L.toSubfield hmem`. Use `haveI : IsTotallyComplex L := by`. Use `letI : Algebra D.what₂.LL L := i.toAlgebra`. Conclude with `isTotallyComplex_of_algebra D.what₂.LL L`.
+
+Use `letI : StarRing L := conjStar L`. Take `⟨D', h1, h2, h3⟩` from `exists_record_over D L (algebraMap L ℂ) (fun x => (starRingEnd ℂ).toRatAlgHom.restrictNormal_commutes L x) (i.comp D.embE) D.embE_φ₀`. Use `⟨D', h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `fun x hx => ⟨⟨x, hML hx⟩, rfl⟩`.
+-/
 theorem exists_record_ge (D : D7) (K : IntermediateField ℚ ℂ) (hK : FiniteDimensional ℚ K) :
     ∃ D' : D7, D'.R = D.R ∧ HEq D'.host D.host ∧ K ⊔ GlobalTheory.ShFam.fieldLL D ≤ GlobalTheory.ShFam.fieldLL D' := by
   haveI : FiniteDimensional ℚ (GlobalTheory.ShFam.fieldLL D) :=
@@ -297,6 +317,9 @@ theorem exists_record_ge (D : D7) (K : IntermediateField ℚ ℂ) (hK : FiniteDi
   rw [h3]
   exact fun x hx => ⟨⟨x, hML hx⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨D', h1, h2, h3⟩` from `exists_record_ge D K hK`. Conclude with `⟨D', h1, h2, le_sup_left.trans h3⟩`.
+-/
 theorem exists_record_le_fieldLL (D : D7) (K : IntermediateField ℚ ℂ) (hK : FiniteDimensional ℚ K) :
     ∃ D' : D7, D'.R = D.R ∧ HEq D'.host D.host ∧ K ≤ GlobalTheory.ShFam.fieldLL D' := by
   obtain ⟨D', h1, h2, h3⟩ := exists_record_ge D K hK

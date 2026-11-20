@@ -9,6 +9,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.RgGu
 
+/- English proof (translation)
+Take `⟨e⟩` from `hH ψ hc h1 h N d hd X π hs`. Conclude with `e.rank_eq.le.trans (GlobalTheory.T.tensor_product_rank_le_one _ hr)`.
+-/
 theorem rank_twJacquet_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hH : GlobalTheory.BZMir.Leib.WhitHeredity k) (ψ : AddChar k Circle) (hc : Continuous ψ)
     (h1 : ψ ≠ 1) (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (X : Fin h → Type) [∀ a, AddCommGroup (X a)]
@@ -18,6 +21,9 @@ theorem rank_twJacquet_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [T
   obtain ⟨e⟩ := hH ψ hc h1 h N d hd X π hs
   exact e.rank_eq.le.trans (GlobalTheory.T.tensor_product_rank_le_one _ hr)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hH hR ψ hc h1 h N x hd`. Conclude with `rank_twJacquet_multiProd_le_one hH ψ hc h1 h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth) (fun a => hR ψ hc h1 (x a).1 (x a).2.rep.V (x a).rep (x a).2.rep.smooth (x a).2.rep.irr)`.
+-/
 theorem rank_twJacquet_prodIrr_le_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k →
     ∀ (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (h N : ℕ) (x : Fin h → IrrGL k)

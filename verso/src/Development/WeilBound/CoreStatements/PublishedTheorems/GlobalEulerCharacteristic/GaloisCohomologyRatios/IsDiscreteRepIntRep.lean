@@ -18,6 +18,9 @@ noncomputable def intRep (M : Rep.{0} (ZMod ℓ) G) : Rep.{0} (ULift.{0} ℤ) G 
       map_one' := by ext m; simp
       map_mul' := fun g h => by ext m; simp [Module.End.mul_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intRep_ρ_apply (M : Rep.{0} (ZMod ℓ) G) (g : G) (m : M) : (intRep M).ρ g m = M.ρ g m := rfl
 
 def intRepEquiv (M : Rep.{0} (ZMod ℓ) G) : M ≃+ intRep M := AddEquiv.refl M
@@ -29,6 +32,9 @@ instance isDiscreteRep_intRep (M : Rep.{0} (ZMod ℓ) G) [IsDiscreteRep M] : IsD
 
 instance finite_intRep (M : Rep.{0} (ZMod ℓ) G) [Finite M] : Finite (intRep M) := ‹Finite M›
 
+/- English proof (translation)
+Establish `h : ℓ • (show M from m) = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod ℓ), ZMod.natCast_self, zero_smul]`. Conclude with `h`.
+-/
 theorem nsmul_intRep (M : Rep.{0} (ZMod ℓ) G) (m : intRep M) : ℓ • m = 0 := by
   have h : ℓ • (show M from m) = 0 := by
     rw [← Nat.cast_smul_eq_nsmul (ZMod ℓ), ZMod.natCast_self, zero_smul]

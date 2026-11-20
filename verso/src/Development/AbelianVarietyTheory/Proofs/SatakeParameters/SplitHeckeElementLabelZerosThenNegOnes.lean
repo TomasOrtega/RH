@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Hk3Split
 
+/- English proof (translation)
+Unfold `splitLab`. Rewrite using `[List.pairwise_append]`. Use `⟨by simp, by simp, fun a ha b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]`. Evaluate the numerical expressions.
+-/
 theorem splitLab_pairwise (n k : ℕ) : (splitLab n k).Pairwise (fun a b => b ≤ a) := by
   unfold splitLab
   rw [List.pairwise_append]
@@ -22,6 +25,11 @@ theorem splitLab_pairwise (n k : ℕ) : (splitLab n k).Pairwise (fun a b => b �
   rw [List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]
   norm_num
 
+/- English proof (translation)
+Introduce `D V Pl0 pl ok i x`. Use `⟨fun hk h => ?_, fun h => ?_, splitLab_pairwise _ _⟩` and prove the remaining obligations. Take `⟨α, ⟨e, ϖ, he, h1, h2, hα⟩, hx⟩` from `h hk`. Establish `hI : IsPrimeIdem (pl i.1) e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Establish `H` using `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`.
+
+Take `⟨hf1, hf2, -⟩` from `H.2.2.1 _ _ _ hI`. Take `⟨⟨L, hL⟩, -⟩` from `H.1 _ hf1 hf2`. Conclude with `⟨e, e + cA D e, ϖ, α⁻¹, hI, h1, h2, inv_mem hα.1, hx, (hL _).1 (inv_mem ((hL _).2 hα.2.1)), GlobalTheory.SplitDivisors.divAt_inv_of_isHeckeElt V _ e ϖ _ α he h1 h2 hk hα⟩`. Take `⟨e, α, he, hα, hs, hx⟩` from `h`. Conclude with `⟨e, e + cA D e, α, Or.inl ⟨he, rfl⟩, hα, hx, hs⟩`.
+-/
 theorem isLabElt_of_isTEnv : ∀ {D : D7} (V : HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ) (x : Bridge.Gf V), (i.2 ≤ V.rank → isTEnv V pl ok i x → IsLabElt V (pl i.1) (splitLab V.rank i.2) x) ∧ (isLocEnv V pl ok i x → IsLocElt V (pl i.1) x) ∧ (splitLab V.rank i.2).Pairwise (fun a b => b ≤ a) := by
   intro D V Pl0 pl ok i x
   refine ⟨fun hk h => ?_, fun h => ?_, splitLab_pairwise _ _⟩

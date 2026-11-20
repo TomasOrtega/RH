@@ -11,6 +11,11 @@ section Decomposition
 variable {ι M M' σ τ : Type*} [DecidableEq ι] [AddCommMonoid M] [AddCommMonoid M']
   [SetLike σ M] [AddSubmonoidClass σ M] [SetLike τ M'] [AddSubmonoidClass τ M']
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.Decomposition.inductionOn ℳ with`. Consider the case `zero => simp`. Consider the case `@homogeneous j x`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Rewrite using `[DirectSum.decompose_of_mem_same ℳ' (hφ j _ x.2), DirectSum.decompose_of_mem_same ℳ x.2]`. Rewrite using `[DirectSum.decompose_of_mem_ne ℳ' (hφ j _ x.2) h, DirectSum.decompose_of_mem_ne ℳ x.2 h, map_zero]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem decompose_addMonoidHom (ℳ : ι → σ) (ℳ' : ι → τ) [DirectSum.Decomposition ℳ]
     [DirectSum.Decomposition ℳ'] (φ : M →+ M') (hφ : ∀ i, ∀ x ∈ ℳ i, φ x ∈ ℳ' i) (x : M) (i : ι) :
     (DirectSum.decompose ℳ' (φ x) i : M') = φ (DirectSum.decompose ℳ x i) := by
@@ -31,6 +36,11 @@ section Ideals
 variable {K L A B G : Type*} [Field K] [Field L] [Algebra K L] [Ring A] [Ring B] [Algebra K A]
   [Algebra K B] [Algebra L B] [IsScalarTower K L B] {j : A →ₐ[K] B}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span`. Consider the case `exact _root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span`. Consider the case `(apply _root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span ..)`.
+-/
 theorem restrictScalars_map_eq_span (hj : IsBaseChange L j.toLinearMap) (I : Ideal A) :
     (I.map j).restrictScalars L =
       Submodule.span L (j.toLinearMap '' (I.restrictScalars K : Submodule K A)) := by
@@ -42,6 +52,9 @@ theorem restrictScalars_map_eq_span (hj : IsBaseChange L j.toLinearMap) (I : Ide
   | (intros; apply @_root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RestrictScalarsSpan.restrictScalars_map_eq_span ..)
 
+/- English proof (translation)
+Use extensionality with `a`. Use `SetLike.ext_iff.1 (comap_span_image hj (I.restrictScalars K)) a` as an intermediate fact. Rewrite `this` using `[← restrictScalars_map_eq_span hj]`. Conclude with `this`.
+-/
 theorem ideal_comap_map (hj : IsBaseChange L j.toLinearMap) (I : Ideal A) :
     (I.map j).comap j = I := by
   ext a
@@ -49,6 +62,11 @@ theorem ideal_comap_map (hj : IsBaseChange L j.toLinearMap) (I : Ideal A) :
   rw [← restrictScalars_map_eq_span hj] at this
   exact this
 
+/- English proof (translation)
+Use `le_antisymm Ideal.map_comap_le fun x hx => ?_` and prove the remaining obligations. Establish `hle : Submodule.span L (j.toLinearMap '' N) ≤ ((I.comap j).map j).restrictScalars L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `Ideal.mem_map_of_mem j ?_` and prove the remaining obligations.
+
+Conclude with `h.le (Submodule.subset_span ⟨a, ha, rfl⟩)`. Conclude with `hle (h.ge hx)`.
+-/
 theorem ideal_map_comap_of_span (I : Ideal B) (N : Submodule K A)
     (h : Submodule.span L (j.toLinearMap '' N) = I.restrictScalars L) :
     (I.comap j).map j = I := by
@@ -60,6 +78,9 @@ theorem ideal_map_comap_of_span (I : Ideal B) (N : Submodule K A)
     exact h.le (Submodule.subset_span ⟨a, ha, rfl⟩)
   exact hle (h.ge hx)
 
+/- English proof (translation)
+The claim follows from `ideal_map_comap_of_span I _ (span_image_comap_eq hj s hs φ hφ (I.restrictScalars L) hI)`.
+-/
 theorem ideal_map_comap_of_stable (hj : IsBaseChange L j.toLinearMap) (s : G → L →+* L)
     (hs : ∀ x, (∀ g, s g x = x) → x ∈ Set.range (algebraMap K L))
     (φ : G → B →+ B) (hφ : ∀ g l a, φ g (l • j a) = s g l • j a)
@@ -71,6 +92,9 @@ section Graded
 variable {ι σ τ : Type*} [DecidableEq ι] [AddMonoid ι] [SetLike σ A] [AddSubmonoidClass σ A]
   [SetLike τ B] [AddSubmonoidClass τ B] (𝒜 : ι → σ) (ℬ : ι → τ) [GradedRing 𝒜] [GradedRing ℬ]
 
+/- English proof (translation)
+The claim follows from `(HomogeneousIdeal.comap (⟨j.toRingHom, fun {i a} => h i a⟩ : 𝒜 →+*ᵍ ℬ) ⟨I, hI⟩).isHomogeneous`.
+-/
 theorem isHomogeneous_comap (h : ∀ i, ∀ a ∈ 𝒜 i, j a ∈ ℬ i) {I : Ideal B}
     (hI : I.IsHomogeneous ℬ) : (I.comap j).IsHomogeneous 𝒜 :=
   (HomogeneousIdeal.comap (⟨j.toRingHom, fun {i a} => h i a⟩ : 𝒜 →+*ᵍ ℬ) ⟨I, hI⟩).isHomogeneous
@@ -91,6 +115,9 @@ noncomputable def quotientEquivOfMapEq {A : Type*} [CommRing A] [Algebra K A] (I
   (tensorQuotientEquiv (R := K) L A L I₀).trans (Ideal.quotientEquivAlgOfEq L h)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotientEquivOfMapEq_tmul {A : Type*} [CommRing A] [Algebra K A] (I₀ : Ideal A)
     (I : Ideal (L ⊗[K] A)) (h : I₀.map (includeRight : A →ₐ[K] L ⊗[K] A) = I) (l : L) (a : A) :
     quotientEquivOfMapEq I₀ I h (l ⊗ₜ Ideal.Quotient.mk I₀ a) = Ideal.Quotient.mk I (l ⊗ₜ a) :=
@@ -104,6 +131,9 @@ open MvPolynomial
 
 variable {K L G σ : Type*} [Field K] [Field L] [Algebra K L]
 
+/- English proof (translation)
+Introduce `d hd` and use `hp fun h => hd (by rw [coeff_map, h, map_zero])`.
+-/
 theorem isWeightedHomogeneous_map {M : Type*} [AddCommMonoid M] (w : σ → M) (m : M)
     (f : K →+* L) {p : MvPolynomial σ K} (hp : p.IsWeightedHomogeneous w m) :
     (map f p).IsWeightedHomogeneous w m := fun d hd =>
@@ -111,6 +141,9 @@ theorem isWeightedHomogeneous_map {M : Type*} [AddCommMonoid M] (w : σ → M) (
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+The claim follows from `isHomogeneous_comap (j := mapAlgHom (σ := σ) (Algebra.ofId K L)) _ _ (fun i a ha => isWeightedHomogeneous_map 1 i _ ha) hI`.
+-/
 theorem mvPolynomial_isHomogeneous_comap {I : Ideal (MvPolynomial σ L)}
     (hI : I.IsHomogeneous (homogeneousSubmodule σ L)) :
     (I.comap (map (algebraMap K L) : MvPolynomial σ K →+* _)).IsHomogeneous

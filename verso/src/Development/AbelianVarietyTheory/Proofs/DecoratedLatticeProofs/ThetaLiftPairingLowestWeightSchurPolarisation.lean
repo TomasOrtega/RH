@@ -11,6 +11,13 @@ open GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLe
 
 namespace GlobalTheory.CoefSchur
 
+/- English proof (translation)
+Establish `h0 : ∀ x, (F - G) x x = 0` using `fun x => by simp [h x]`. It suffices to establish `hD : ∀ x y, (F - G) x y = 0 by`. Use extensionality with `x y`. Use `hD x y` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Introduce `x y`. Establish `h1` using `h0 (x + y)`. Establish `h2` using `h0 (x + Complex.I • y)`. Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, h0, Complex.conj_I, mul_zero, add_zero, zero_add] at h1 h2`. Establish `hI` using `Complex.I_sq`.
+
+Take the linear combination `(-(Complex.I) / 2 * Complex.I) * h1 + (Complex.I / 2) * h2 + ((F - G) x y) * hI`.
+-/
 theorem sesq_eq_of_diag {E : Type*} [AddCommGroup E] [Module ℂ E]
     (F G : E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ) (h : ∀ x, F x x = G x x) : F = G := by
   have h0 : ∀ x, (F - G) x x = 0 := fun x => by simp [h x]
@@ -26,6 +33,19 @@ theorem sesq_eq_of_diag {E : Type*} [AddCommGroup E] [Module ℂ E]
   have hI := Complex.I_sq
   linear_combination (-(Complex.I) / 2 * Complex.I) * h1 + (Complex.I / 2) * h2 + ((F - G) x y) * hI
 
+/- English proof (translation)
+Set `b` to `stdOrthonormalBasis ℂ E`. Set `A : E →ₗ[ℂ] E` to `∑ i, (B.flip (b i)).smulRight (b i)`. Establish `hA : ∀ x y, B x y = ⟪y, A x⟫_ℂ`. Introduce `x y`. Use `conv_lhs => rw [← b.sum_repr' y]`.
+
+Simplify using `[A, map_sum, inner_sum, inner_smul_right, inner_conj_symm, mul_comm]`. Establish `hcomm : ∀ h x, A (ρ h x) = ρ h (A x)`. Introduce `h x`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`.
+
+Establish `hy : ρ h (ρ h⁻¹ y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue A`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`.
+
+Establish `hinv : ∀ h, Submodule.map (ρ h) (Module.End.eigenspace A c) ≤ Module.End.eigenspace A c`. Introduce and unpack `h _ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[Module.End.mem_eigenspace_iff, hcomm, hx, map_smul]`. Establish `htop : Module.End.eigenspace A c = ⊤`.
+
+Break down `hirr _ hinv with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hmem : v ∈ Module.End.eigenspace A c` using `Module.End.mem_eigenspace_iff.mpr hv.apply_eq_smul`. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Conclude with `hv.2 hmem`.
+
+Conclude with `h`. Use `⟨c, fun x y => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Module.End.eigenspace A c` using `htop ▸ Submodule.mem_top`. Rewrite `hx` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hA, hx, inner_smul_right]`.
+-/
 theorem schur_sesq {G : Type*} [Group G] {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [Nontrivial E] (ρ : G →* Module.End ℂ E)
     (hu : ∀ h x y, ⟪ρ h x, ρ h y⟫_ℂ = ⟪x, y⟫_ℂ)
@@ -77,6 +97,9 @@ section
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {μ : Measure (WO S T)} {𝓧 : Set (WO S T)}
 
+/- English proof (translation)
+Use `(GlobalTheory.RawLift.FockCoef.integrable_pair hW hC hb ha).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show star (b x) * a x = a x * (starRingEnd ℂ) (b x)`. Rewrite using `[starRingEnd_apply, mul_comm]`.
+-/
 theorem integrable_mul_conj (hW : IsWeilDatumO ψ S T χS χT om) (hC : IsCovolOne (ratL T S) μ 𝓧)
     {a b : WO S T → ℂ} (ha : IsThetaFunO ψ S T a) (hb : IsThetaFunO ψ S T b) :
     Integrable (fun x => a x * (starRingEnd ℂ) (b x)) (μ.restrict 𝓧) := by
@@ -85,6 +108,11 @@ theorem integrable_mul_conj (hW : IsWeilDatumO ψ S T χS χT om) (hC : IsCovolO
   show star (b x) * a x = a x * (starRingEnd ℂ) (b x)
   rw [starRingEnd_apply, mul_comm]
 
+/- English proof (translation)
+Establish `key : ∀ f g : WO S T → ℂ, l2 μ 𝓧 f g = GlobalTheory.RawLift.thetaIP μ 𝓧 g f`. Introduce `f g`. Simplify using `only [l2, Lift.pet, GlobalTheory.RawLift.thetaIP]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[starRingEnd_apply, mul_comm]`. Rewrite using `[key, key, GlobalTheory.WeilPairing.thetaInner_weilRep D ψ S T χS χT om μ 𝓧 hW hC p b a hb ha]`.
+-/
 theorem thetaFunctionPairing_weilAction_invariant (hW : IsWeilDatumO ψ S T χS χT om) (hC : IsCovolOne (ratL T S) μ 𝓧)
     (p : GA D S × GA D T) {a b : WO S T → ℂ} (ha : IsThetaFunO ψ S T a)
     (hb : IsThetaFunO ψ S T b) : l2 μ 𝓧 (om p a) (om p b) = l2 μ 𝓧 a b := by
@@ -119,6 +147,9 @@ noncomputable def thetaForm (hW : IsWeilDatumO ψ S T χS χT om) (hC : IsCovolO
       funext z
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaForm_apply (hW : IsWeilDatumO ψ S T χS χT om) (hC : IsCovolOne (ratL T S) μ 𝓧)
     {E : Type*} [AddCommGroup E] [Module ℂ E] (a b : E →ₗ[ℂ] (WO S T → ℂ))
     (ha : ∀ x, IsThetaFunO ψ S T (a x)) (hb : ∀ y, IsThetaFunO ψ S T (b y)) (x y : E) :
@@ -130,6 +161,13 @@ end GlobalTheory.CoefSchur
 
 namespace GlobalTheory.CoefSchur
 
+/- English proof (translation)
+Take `⟨L, -, hL2, -, -, -, hLat, -, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ T hθ`. Establish `h1UH : ∀ τ, (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) ∈ Formalism.QuantumDeterminants.UH (gramAt D T τ)`. Introduce `τ`. Simplify using `[Formalism.QuantumDeterminants.UH]`. Establish `h1UG : (1 : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) ∈ GlobalTheory.HolDict.UG (gramAt D T)` using `fun τ => h1UH τ`.
+
+Establish `hL1 : L 1 = 1`. Use `hL2 1 h1UG 1 h1UG` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `mul_left_cancel (a := L 1) (by rw [mul_one]; exact this.symm)`. Establish `hat : ∀ τ, atTau θ T τ 1 = 1`.
+
+Introduce `τ`. Rewrite using `[hLat τ 1 (h1UH τ), Pi.mulSingle_one, hL1]`. Simplify using `[realElt, hat]`.
+-/
 theorem realElt_one {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (T : HSp D) :
     realElt θ T 1 = 1 := by
   classical
@@ -146,6 +184,29 @@ theorem realElt_one {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (T : HSp D) :
     intro τ; rw [hLat τ 1 (h1UH τ), Pi.mulSingle_one, hL1]
   simp [realElt, hat]
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om hθ hW Sp M μ 𝓧 hC c hc pt hpt Δ io hio hN g hg e e' w w'`. Take `⟨hio1, -, v₀, w₀, hv₀, hw₀, hΔ⟩` from `hio`. Use `haveI : Nontrivial c.W := hc.2.2.2.1`. Establish `hr1` using `realElt_one θ hθ T`. Establish `hom1 : om (1, realElt θ T 1) = 1` using `by rw [hr1]; exact map_one om`.
+
+Establish `hth : ∀ p P, IsThetaFunO ψ S T (om p (pt P))` using `fun p P => hW.om_pres p _ (hpt P)`. Set `b₀ : c.W →ₗ[ℂ] (WO S T → ℂ)` to `pt.comp (io (PiTensorProduct.tprod ℂ v₀))`. Set `B` to `thetaForm hW hC b₀ b₀ (fun _ => hpt _) (fun _ => hpt _)`. Establish `hBinf : ∀ u ∈ GinfC S, ∀ x y, B (c.ρ u x) (c.ρ u y) = B x y`. Introduce `u hu x y`.
+
+Establish `hio1' : ∀ (x : LowT M) (w : c.W), om (u, 1) (pt (io x w)) = pt (io x (c.ρ u w))` using `hio1 u hu`. Simplify using `only [B, thetaForm_apply, b₀, LinearMap.comp_apply]`. Rewrite using `[← hio1', ← hio1']`. Conclude with `thetaFunctionPairing_weilAction_invariant hW hC _ (hpt _) (hpt _)`. Establish `hBinv : ∀ h x y, B (c.ρ h x) (c.ρ h y) = B x y`.
+
+Introduce `h x y`. Take `⟨L, -, -, -, -, -, -, hdec, -⟩` from `GlobalTheory.RealLift.exists_real_lift D θ S hθ`. Take `⟨a, ha, u, hu, rfl⟩` from `hdec h`. Rewrite using `[map_mul, Module.End.mul_apply, Module.End.mul_apply, hc.1 a ha, Module.End.one_apply, Module.End.one_apply]`. Conclude with `hBinf u hu x y`.
+
+Take `⟨lam, hlam⟩` from `schur_sesq c.ρ hc.2.1 hc.2.2.2.2 B hBinv`. Establish `hlam0 : lam = l2 μ 𝓧 (pt Δ) (pt Δ)`. Use `hlam w₀ w₀` as an intermediate fact. Simplify using `only [B, thetaForm_apply, b₀, LinearMap.comp_apply, hΔ] at this`. Rewrite using `[this, inner_self_eq_norm_sq_to_K, hw₀]`.
+
+Simplify using the standard rewrite rules. Establish `hP0 : ∏ ρ, ⟪((v₀ ρ : M.sm ρ) : M.H ρ), M.rep ρ ((1 : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) ρ) ((v₀ ρ : M.sm ρ) : M.H ρ)⟫_ℂ = 1`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `ρ _`. Establish `hfr : M.fr ρ * (1 : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) ρ * (M.fr ρ)⁻¹ = 1`.
+
+Rewrite using `[Pi.one_apply, mul_one]`. Conclude with `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit ρ))`. Establish `hσ : M.σ ρ 1 = 1` using `(M.ds ρ).2.2.1.1.1`. Rewrite using `[DSModel.rep, hfr, hσ, ContinuousLinearMap.one_apply, inner_self_eq_norm_sq_to_K, hv₀ ρ]`. Simplify using the standard rewrite rules.
+
+Establish `h1mem : ∀ ρ, (1 : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)`. Introduce `ρ`. Simplify using `[Formalism.QuantumDeterminants.UH]`. Establish `hdiag : ∀ x : c.W, ∀ g : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ, (∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)) → ∀ e e' : ∀ ρ, lowT M ρ, l2 μ 𝓧 (om (1, realElt θ T g) (pt (io (PiTensorProduct.tprod ℂ e) x))) (pt (io (PiTensorProduct.tprod ℂ e') x)) = l2 μ …`. Introduce `x g hg e e'`.
+
+Take `⟨N, hNx⟩` from `hN x`. Establish `h1` using `hNx 1 h1mem v₀ v₀`. Rewrite `h1` using `[hP0, mul_one, hom1, Module.End.one_apply]`. Establish `hBx : B x x = N` using `h1`. Rewrite `hBx` using `[hlam, hlam0]`.
+
+Rewrite using `[hNx g hg e e', ← hBx]`. Expand and normalize the polynomial expressions, which then agree. Set `F : c.W →ₗ[ℂ] c.W →ₗ⋆[ℂ] ℂ` to `thetaForm hW hC ((om (1, realElt θ T g)).comp (pt.comp (io (PiTensorProduct.tprod ℂ e)))) (pt.comp (io (PiTensorProduct.tprod ℂ e'))) (fun _ => hth _ _) (fun _ => hpt _)`. Set `G : c.W →ₗ[ℂ] c.W →ₗ⋆[ℂ] ℂ` to `(l2 μ 𝓧 (pt Δ) (pt Δ) * ∏ ρ, ⟪((e' ρ : M.sm ρ) : M.H ρ), M.rep ρ (g ρ) ((e ρ : M.sm ρ) : M.H ρ)⟫_ℂ) • (innerₛₗ ℂ).flip`. Establish `hFG` using `sesq_eq_of_diag F G (fun x => by`.
+
+Simplify using `only [F, G, thetaForm_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.flip_apply, smul_eq_mul]`. Conclude with `hdiag x g hg e e')`. Use `LinearMap.congr_fun₂ hFG w w'` as an intermediate fact. Simplify using `only [F, G, thetaForm_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.flip_apply, smul_eq_mul] at this`. Conclude with `this`.
+-/
 theorem thetaLiftPairing_lowestWeight_schur_polarisation_alt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsInfFam θ → IsWeilDatumO ψ S T χS χT om → ∀ (Sp : D.what₂.Tau → SPar) (M : DSModel T Sp), ∀ (μ : Measure (WO S T)) (𝓧 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓧 → ∀ c : CoefA S, c.Is → ∀ pt : PolF D T.rank S.rank →ₗ[ℂ] (WO S T → ℂ), (∀ P, IsThetaFunO ψ S T (pt P)) → ∀ (Δ : PolF D T.rank S.rank) (io : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] PolF D T.rank S.rank), IsIoW θ M c om (fun P => pt P) Δ io → (∀ w : c.W, ∃ N : ℂ, ∀ g : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ, (∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)) → ∀ (e e' : ∀ ρ, lowT M ρ), l2 μ 𝓧 (om (1, realElt θ T g) (pt (io (PiTensorProduct.tprod ℂ e) w))) (pt (io (PiTensorProduct.tprod ℂ e') w)) = N * (∏ ρ, ⟪((e' ρ : M.sm ρ) : M.H ρ), M.rep ρ (g ρ) ((e ρ : M.sm ρ) : M.H ρ)⟫_ℂ)) → ∀ g : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ, (∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D T ρ)) → ∀ (e e' : ∀ ρ, lowT M ρ) (w w' : c.W), l2 μ 𝓧 (om (1, realElt θ T g) (pt (io (PiTensorProduct.tprod ℂ e) w))) (pt (io (PiTensorProduct.tprod ℂ e') w')) = l2 μ 𝓧 (pt Δ) (pt Δ) * (∏ ρ, ⟪((e' ρ : M.sm ρ) : M.H ρ), M.rep ρ (g ρ) ((e ρ : M.sm ρ) : M.H ρ)⟫_ℂ) * ⟪w', w⟫_ℂ := by
   intro D ψ θ S T χS χT om hθ hW Sp M μ 𝓧 hC c hc pt hpt Δ io hio hN g hg e e' w w'
   obtain ⟨hio1, -, v₀, w₀, hv₀, hw₀, hΔ⟩ := hio

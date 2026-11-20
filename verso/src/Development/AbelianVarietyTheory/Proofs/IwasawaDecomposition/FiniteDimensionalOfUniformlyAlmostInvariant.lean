@@ -5,6 +5,11 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h` using `ContinuousMap.inner_toLp μ g g`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K]`. Rewrite `h` using `[Complex.mul_conj']`. Establish `h2 : (∫ x, ((‖g x‖ : ℂ)) ^ 2 ∂μ) = ((∫ x, ‖g x‖ ^ 2 ∂μ : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[h2]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← h, Complex.ofReal_pow]`. Both sides reduce to the same expression.
+-/
 theorem norm_sq_toLp_two_eq_integral_norm_sq {K : Type} [TopologicalSpace K] [CompactSpace K]
     [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] (g : C(K, ℂ)) :
     ‖ContinuousMap.toLp 2 μ ℂ g‖ ^ 2 = ∫ x, ‖g x‖ ^ 2 ∂μ := by
@@ -18,6 +23,37 @@ theorem norm_sq_toLp_two_eq_integral_norm_sq {K : Type} [TopologicalSpace K] [Co
   rw [← h, Complex.ofReal_pow]
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ _ _ μ _ _ _ E hE U hU hinv`. Take `⟨β, hβ1, -, hβU, hβ01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen (isCompact_singleton (x := (1 : K))) isOpen_interior (Set.singleton_subset_iff.2 (mem_interior_iff_mem_nhds.2 hU))`. Establish `hβ0 : ∀ x, 0 ≤ β x` using `fun x => (hβ01 x).1`. Establish `hβU' : ∀ u, β u ≠ 0 → u ∈ U` using `fun u hu => interior_subset (hβU (subset_tsupport _ hu))`. Use `set c : ℝ := ∫ u, β u ∂μ with hc`.
+
+Establish `hcpos : 0 < c` using `β.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (HasCompactSupport.of_compactSpace _) hβ0 (by simp [hβ1 (Set.mem_singleton _)])`. Use `set L := ContinuousMap.toLp (α := K) (E := ℂ) 2 μ ℂ with hL`. Set `b : C(K, C(K, ℂ))` to `ContinuousMap.curry ⟨fun p : K × K => (β (p.1⁻¹ * p.2) : ℂ), by fun_prop⟩`. Establish `hb : Continuous fun x => L (b x)` using `L.continuous.comp b.continuous`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover (fun x : K => (fun y => L (b y)) ⁻¹' Metric.ball (L (b x)) (c / 4)) (fun x _ => hb.continuousAt.preimage_mem_nhds (Metric.ball_mem_nhds _ (by positivity)))`.
+
+Set `ι : E →ₗ[ℂ] C(K, ℂ)` to `{ toFun := fun f => ⟨f.1, hE f.1 f.2⟩ map_add' := fun f g => by ext; simp map_smul' := fun a f => by ext; simp }`. Set `Φ : E →ₗ[ℂ] (t → ℂ)` to `LinearMap.pi fun j : t => (innerSL ℂ (L (b j.1))).toLinearMap ∘ₗ L.toLinearMap ∘ₗ ι`. Use `FiniteDimensional.of_injective Φ ((injective_iff_map_eq_zero Φ).2 fun f hf => ?_)` and prove the remaining obligations. Establish `hf0 : ∀ j ∈ t, inner ℂ (L (b j)) (L (ι f)) = 0` using `fun j hj => by`. Simplify `congrFun hf ⟨j, hj⟩` using `[Φ]`.
+
+Use `set g : C(K, ℂ) := ι f with hg`. Set `R : C(K, C(K, ℂ))` to `ContinuousMap.curry ⟨fun p : K × K => g (p.2 * p.1), by fun_prop⟩`. Establish `hint : ∀ {V : Type} [NormedAddCommGroup V] {F : K → V}, Continuous F → Integrable F μ` using `fun hF => hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hi1 : Integrable (fun u => β u • R u) μ` using `hint (by fun_prop)`. Use `set T : C(K, ℂ) := ∫ u, β u • R u ∂μ with hT`.
+
+Establish `hTx : ∀ x, T x = inner ℂ (L (b x)) (L g)` using `fun x => by`. Rewrite using `[hT, ContinuousMap.integral_apply hi1, hL, ContinuousMap.inner_toLp, ← integral_mul_left_eq_self (μ := μ) (fun z => g z * (starRingEnd ℂ) (b x z)) x]`. Use `congr 1`. Use extensionality with `u`. Simplify using `[R, b, mul_comm]`.
+
+Establish `hTb : ∀ x, ‖T x‖ ≤ c / 4 * ‖L g‖` using `fun x => by`. Take `⟨j, hj, hx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Establish `hx' : ‖L (b x) - L (b j)‖ ≤ c / 4`. Rewrite using `[← dist_eq_norm]`. Conclude with `le_of_lt hx`.
+
+Establish `: T x = inner ℂ (L (b x) - L (b j)) (L g)`. Rewrite using `[inner_sub_left, hf0 j hj, sub_zero, hTx]`. Rewrite using `[this]`. Conclude with `(norm_inner_le_norm _ _).trans (by gcongr)`. Establish `hLT : ‖L T‖ ≤ c / 4 * ‖L g‖`.
+
+Use `Lp.norm_le_of_ae_bound (f := L T) (C := c / 4 * ‖L g‖) (by positivity) (by filter_upwards [ContinuousMap.coeFn_toLp (p := 2) (𝕜 := ℂ) μ T] with x hx` as an intermediate fact. Rewrite using `[hL, hx]`. Conclude with `hTb x)`. Simplify `this` using `[measureUnivNNReal]`. Establish `hmove : ∀ u ∈ U, ‖L (R u) - L g‖ ≤ 1 / 2 * ‖L g‖` using `fun u hu => by`.
+
+Establish `h1` using `hinv f.1 f.2 u hu`. Establish `h2 : ‖L (R u - g)‖ ^ 2 ≤ (1 / 2 * ‖L g‖) ^ 2`. Rewrite using `[mul_pow, hL, norm_sq_toLp_two_eq_integral_norm_sq, norm_sq_toLp_two_eq_integral_norm_sq]`. Evaluate the numerical expressions. Simplify `h1` using `[R, hg, ι]`.
+
+Rewrite using `[← map_sub]`. Conclude with `le_of_sq_le_sq h2 (by positivity)`. Establish `hdiff : L T - c • L g = ∫ u, β u • (L (R u) - L g) ∂μ`. Rewrite using `[hT, ← L.integral_comp_comm hi1, hc, ← integral_smul_const, ← integral_sub]`. Use `congr 1 ext1 u`.
+
+Rewrite using `[smul_sub, L.map_smul_of_tower]`. Conclude with `L.integrable_comp hi1`. Conclude with `hint (by fun_prop)`. Establish `hdn : ‖L T - c • L g‖ ≤ c * (1 / 2 * ‖L g‖)`. Rewrite using `[hdiff, hc, ← integral_mul_const]`.
+
+Use `norm_integral_le_of_norm_le (hint (by fun_prop)) (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg (hβ0 u)]`. Distinguish the cases in `hu : β u = 0`. Simplify using `[hu]`. Conclude with `mul_le_mul_of_nonneg_left (hmove u (hβU' u hu)) (hβ0 u)`.
+
+Establish `hfin : c * ‖L g‖ ≤ c / 4 * ‖L g‖ + c * (1 / 2 * ‖L g‖)`. Establish `: ‖c • L g‖ ≤ ‖L T‖ + ‖L T - c • L g‖`. Simplify using `using norm_sub_le (L T) (L T - c • L g)`. Rewrite `this` using `[norm_smul, Real.norm_of_nonneg hcpos.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hg0 : ‖L g‖ = 0`. Use `norm_nonneg (L g)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hg1 : g = 0` using `ContinuousMap.toLp_injective (p := 2) (𝕜 := ℂ) μ (by rw [map_zero]; exact norm_eq_zero.1 hg0)`. Use extensionality with `x`.
+
+Simplify `congrArg (fun h : C(K, ℂ) => h x) hg1` using `[hg, ι]`.
+-/
 theorem finiteDimensional_of_uniformly_almost_invariant :
     ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K]
       [T2Space K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsHaarMeasure]

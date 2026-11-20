@@ -17,6 +17,9 @@ local notation "θ" => fontaineTheta (normInteger K) p
 local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 local notation "θdR" => IsPerfectoidField.thetaBDeRhamPlusField (K := K) p
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, phiPlus_algebraMap, Function.iterate_succ_apply']`.
+-/
 theorem iterate_phiPlus_algebraMap (n : ℕ) (x : ACris K p) :
     (phiPlus K p)^[n] (algebraMap (ACris K p) (BCrisPlus K p) x) =
       algebraMap (ACris K p) (BCrisPlus K p) ((phi K p)^[n] x) := by
@@ -24,10 +27,16 @@ theorem iterate_phiPlus_algebraMap (n : ℕ) (x : ACris K p) :
   | zero => rfl
   | succ n ih => rw [Function.iterate_succ_apply', ih, phiPlus_algebraMap, Function.iterate_succ_apply']
 
+/- English proof (translation)
+Rewrite using `[iotaPlus_algebraMap, thetaField_iota]`.
+-/
 theorem thetaField_iotaPlus_algebraMap (x : ACris K p) :
     θdR (iotaPlus K p (algebraMap (ACris K p) (BCrisPlus K p) x)) = (theta K p x : K) := by
   rw [iotaPlus_algebraMap, thetaField_iota]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[ZeroMemClass.coe_zero, ← thetaField_iotaPlus_algebraMap, ← iterate_phiPlus_algebraMap, ← hya, ← RingHom.coe_pow, map_mul, map_mul, map_mul, RingHom.coe_pow, hy n, zero_mul]`.
+-/
 theorem theta_phi_iterate_eq_zero_of_mul_eq {y : BCrisPlus K p} {a : ACris K p} {k : ℕ}
     (hya : y * algebraMap (ACris K p) (BCrisPlus K p) ((p : ACris K p) ^ k) =
       algebraMap (ACris K p) (BCrisPlus K p) a)
@@ -39,6 +48,15 @@ theorem theta_phi_iterate_eq_zero_of_mul_eq {y : BCrisPlus K p} {a : ACris K p} 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers (p : ACris K p)) y`. Take `⟨k, hk⟩` from `s.2`. Simplify using `only at hs`. Rewrite `hs` using `[← hk]`. Establish `ha` using `theta_phi_iterate_eq_zero_of_mul_eq hs hy`.
+
+Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (p_mul_phi_mem_span_mu hε hζ ha)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (mu_mem_span_periodT (K := K) hε hζ)`. Establish `hpa : (p : ACris K p) * phi K p a = periodT hε * (c * w)`. Rewrite using `[← hw, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1` using `congrArg (phiPlus K p) hs`. Rewrite `h1` using `[map_mul, phiPlus_algebraMap, phiPlus_algebraMap, map_pow, map_natCast]`. Establish `hu : IsUnit (algebraMap (ACris K p) (BCrisPlus K p) ((p : ACris K p) ^ (k + 1)))` using `IsLocalization.map_units (BCrisPlus K p) (⟨(p : ACris K p) ^ (k + 1), k + 1, rfl⟩ : Submonoid.powers (p : ACris K p))`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨algebraMap (ACris K p) (BCrisPlus K p) (c * w) * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : phiPlus K p y * algebraMap (ACris K p) (BCrisPlus K p) ((p : ACris K p) ^ (k + 1)) = algebraMap (ACris K p) (BCrisPlus K p) (periodT hε) * algebraMap (ACris K p) (BCrisPlus K p) (c * w)`. Rewrite using `[pow_succ, map_mul, ← mul_assoc, h1, ← map_mul, mul_comm (phi K p a), hpa, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem phiPlus_mem_span_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {y : BCrisPlus K p}
     (hy : ∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] y)) = 0) :
@@ -73,6 +91,19 @@ theorem phiPlus_mem_span_periodT {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `set v : AInf K p := (φ).symm (AInf.mu ε) with hv`. Use `set V : BCrisPlus K p := algebraMap (AInf K p) (BCrisPlus K p) v with hV`. Establish `hVa : ∀ w : AInf K p, algebraMap (AInf K p) (BCrisPlus K p) w = algebraMap (ACris K p) (BCrisPlus K p) (algebraMap (AInf K p) (ACris K p) w)` using `fun w => IsScalarTower.algebraMap_apply _ _ _ w`. Establish `hθV : ∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] V)) = θ ((φ ^ n) v)`. Introduce `n`.
+
+Rewrite using `[hV, hVa, iterate_phiPlus_algebraMap, thetaField_iotaPlus_algebraMap, theta_phi_iterate_algebraMap]`. Establish `hyz : ∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] (V * z))) = 0`. Introduce `n`. Rewrite using `[← RingHom.coe_pow, map_mul, map_mul, map_mul, RingHom.coe_pow, hθV]`. Break down `n with _ | n` into its components or cases.
+
+Rewrite using `[Function.iterate_zero_apply, hz, mul_zero]`. Rewrite using `[pow_succ, RingAut.mul_apply, hv, RingEquiv.apply_symm_apply, AInf.fontaineTheta_frobenius_pow_mu hε, ZeroMemClass.coe_zero, zero_mul]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (H _ hyz)`. Take `⟨u, -, hu⟩` from `exists_periodT_eq_mu_mul_unit hε hζ`. Establish `e : V * z = V * (algebraMap (AInf K p) (BCrisPlus K p) (AInf.xi ε) * (algebraMap (ACris K p) (BCrisPlus K p) u * a))`.
+
+Rewrite using `[← ha, hu, map_mul, ← hVa, AInf.mu_eq_xi_mul ε, map_mul, ← hv, ← hV]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV0 : iotaPlus K p V ≠ 0`. Introduce `h0`. Establish `h1` using `hθV 0`.
+
+Rewrite `h1` using `[Function.iterate_zero_apply, h0, map_zero, pow_zero, RingAut.one_apply, hv, AInf.frobeniusEquiv_symm_mu, map_sub, map_one, fontaineTheta_teichmuller]`. Apply `hζ` to reduce the goal to its premises. Establish `h2 : ((PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) - 1 : normInteger K) : K) = 0` using `h1.symm`. Rewrite `h2` using `[AddSubgroupClass.coe_sub, OneMemClass.coe_one, sub_eq_zero]`. Conclude with `Subtype.ext (by rw [h2, OneMemClass.coe_one])`.
+
+Establish `e2` using `congrArg (iotaPlus K p) e`. Rewrite `e2` using `[map_mul, map_mul (iotaPlus K p) V]`. Establish `e3` using `iotaPlus_injective (K := K) (p := p) (mul_left_cancel₀ hV0 e2)`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨algebraMap (ACris K p) (BCrisPlus K p) u * a, by rw [e3]; ring⟩`.
+-/
 theorem mem_span_xi_of_forall_imp {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1)
     (H : ∀ y : BCrisPlus K p, (∀ n : ℕ, θdR (iotaPlus K p ((phiPlus K p)^[n] y)) = 0) →

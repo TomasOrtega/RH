@@ -12,6 +12,15 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 
 namespace GlobalTheory.ConeSoB
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he X om om' om₁ om₁' hT hT₁ ei ev hei hvm hloc`. Take `⟨ι₁, hι₁⟩` from `GlobalTheory.T.exists_linear_bar_model_triple B G₁ X om₁ om₁' hT₁`. Use `⟨ι₁, hι₁, ?_⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨hφ, ι, hι, hsupp⟩ l Y hY`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`.
+
+Establish `hSB : ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁), ev B.v₁ φ ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁)` using `fun φ hφ => (hvm B.v₁).2 ▸ Submodule.mem_map_of_mem hφ`. Establish `hheis : ∀ z : Matrix (Fin b) (Fin (a + b)) (AE F E), At (evFin F B.v₁) z → ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁), ev B.v₁ (schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (GlobalTheory.LatVac.locCo G.M'.co B.v₁ (incM F H.ι * z * (incM F H'.ι)ᵀ)) φ) = schr (GlobalTheory …` using `fun z hz φ hφ => GlobalTheory.T.eigen_relation_continuous B G.M' G₁.M' H.ι H'.ι _ e' he hψ hT.geo.hM' hT₁.geo.hM' ei ev hei hvm hloc B.v₁ z hz φ hφ`. Establish `hinv : ∀ u ∈ isoB H H', At (evFin F B.v₁) u → ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁), ev B.v₁ (schr (GlobalTheory.LatVac.psiAt B.ψ B.v₁) (GlobalTheory.LatVac.locCo G.M'.co B.v₁ u) φ) = ev B.v₁ φ` using `fun u hu hu' φ hφ => GlobalTheory.ThK.EvLocInv.ev_schr_of_mem B G.M' G₁.M' H.ι H'.ι _ e' he hψ hT.geo.hM' hT₁.geo.hM' ei ev hei hvm hloc B.v₁ u hu hu' φ hφ`. Take `⟨P, Q, A, A', g, x, hf⟩` from `GlobalTheory.T.config_b_triple_compatibility_alt B G G₁ H H' hC X om om' om₁ om₁' hT hT₁ (ev B.v₁) hSB hheis hinv ι ι₁ hι hι₁ φ hφ l`. Rewrite using `[hf Y]`.
+
+Establish `hlt : Y.rank < b` using `lt_of_le_of_ne (Y.rank_le_card_height.trans (by simp)) hY`. Establish `h0 : ∀ r c, ι φ (P * insS (A * Y * A') r c x * Q) = 0` using `fun r c => by`. Apply `hsupp` to reduce the goal to its premises. Establish `h2 : (A * Y * A').rank ≤ Y.rank` using `(Matrix.rank_mul_le_left (A * Y) A').trans (Matrix.rank_mul_le_right A Y)`. Establish `h1 : (P * insS (A * Y * A') r c x * Q).rank ≤ (insS (A * Y * A') r c x).rank` using `(Matrix.rank_mul_le_left _ _).trans (Matrix.rank_mul_le_right _ _)`.
+
+Establish `h3` using `GlobalTheory.T.rank_insert_le_add_two (A * Y * A') r c x`. Use linear arithmetic over natural numbers and integers. Simplify using `[h0]`.
+-/
 theorem ev_shift_vanish_off_rank : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ (e' : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F b (a + b)), IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' →

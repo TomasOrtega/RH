@@ -5,6 +5,15 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
+/- English proof (translation)
+Introduce `hfin k _ _ Y hY δ ε hδ hε hε1`. Establish `hY' : IsCompact (Y ∩ {x : k | δ ≤ ‖x‖})` using `hY.inter_right (isClosed_le continuous_const continuous_norm)`. Establish `hnhds : ∀ c ∈ Y ∩ {x : k | δ ≤ ‖x‖}, Metric.closedBall c (‖c‖ / 2) ∈ nhds c`. Introduce `c hc`. Establish `hc' : δ ≤ ‖c‖` using `hc.2`.
+
+Conclude with `Metric.closedBall_mem_nhds c (by linarith)`. Take `⟨s, hs, hcov⟩` from `hY'.elim_nhds_subcover (fun c => Metric.closedBall c (‖c‖ / 2)) hnhds`. Take `⟨p, h1, h2, h3⟩` from `hfin k s δ ε hδ hε hε1 (fun c hc => (hs c hc).2)`. Establish `hbig : ∀ x ∈ Y, δ ≤ ‖x‖ → ‖p.eval x‖ ≤ ε`. Introduce `x hx hxδ`.
+
+Establish `hmem` using `hcov ⟨hx, hxδ⟩`. Simplify using `only [Set.mem_iUnion, exists_prop] at hmem`. Take `⟨c, hc, hxc⟩` from `hmem`. Conclude with `h2 c hc x (by simpa [dist_eq_norm] using hxc)`. Use `⟨p, fun x hx => ?_, hbig, h3⟩` and prove the remaining obligations.
+
+Break down `le_total ‖x‖ δ with h | h` into its components or cases. Conclude with `h1 x h`. Conclude with `(hbig x hx h).trans hε1`.
+-/
 theorem UpperTheory.Gal.Wt.kapl_of :
     UpperTheory.Gal.Wt.KaplFin → UpperTheory.Gal.Wt.Kapl := by
   intro hfin k _ _ Y hY δ ε hδ hε hε1

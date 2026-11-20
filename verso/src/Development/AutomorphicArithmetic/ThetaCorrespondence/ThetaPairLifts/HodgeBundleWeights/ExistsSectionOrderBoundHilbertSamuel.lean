@@ -17,6 +17,19 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.HSApp
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `h1 h2 h3 h4`. Use `((_root_.GlobalTheory.T.exists_form_cusp_value_bound h1 h2 h3 h4).and (_root_.GlobalTheory.T.germ_factorization_unit_mul_evaluation h1 h2 h3 h4)).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨C, hC, x0, hx⟩, ⟨C', hC', x1, hx1⟩⟩` from `h`. Use `⟨C, hC, max x0 x1, fun x hx' hle ι p hp i hi Y hY Z TF la hla y hy ν hν φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨T, io, y', g, ρ, φT, hρ, hφT, rfl, hpt, hval⟩` from `hφ`.
+
+Use `haveI hg : IsLocalHom g := isLocalHom_of_centred hν T g ρ hρ hval`. Take `⟨w, hw0, hwb⟩` from `hx x hx' ((le_max_left _ _).trans hle) ι p hp i hi Y hY Z TF la hla y hy T io y' g φT hg hφT hpt`. Use `⟨w.1, w.2, fun j' hj' => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hx1 x hx' ((le_max_right _ _).trans hle) ι p hp i hi Y hY Z TF la w y T io y' g hg hpt j' hj'`. Establish `hu0 : algebraMap T.V T.Fr (u : T.V) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 u.ne_zero`.
+
+Establish `hg0 : algebraMap T.V T.Fr (g (H0.germ j' y (memTop y) hj' w.1)) ≠ 0`. Rewrite using `[hu]`. Conclude with `mul_ne_zero hu0 hw0`. Establish `hgerm : H0.germ j' y (memTop y) hj' w.1 ≠ 0`. Introduce `h`.
+
+Rewrite `hg0` using `[h, map_zero, map_zero]`. Conclude with `hg0 rfl`. Establish `hne : ν (H0.germ j' y (memTop y) hj' w.1) ≠ 0` using `fun h => hgerm (hν.2.2 _ h)`. Use `⟨hne, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hv` using `hval _ hne`.
+
+Rewrite `hv` using `[hm, log_ofAdd_neg, hu, vV_mul hu0 hw0, vV_algebraMap_unit, zero_add]`. Establish `e : (m : ℝ) = ρ * (vV T.V (evI y' ((ofSpace TF.X Z Y.U la w : Cusp Z Y.U la) : Rul Y.d.Xo₂ Y.d.c₂)) : ℝ)`. Rewrite using `[← hv]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hwb hρ.le`.
+-/
 theorem exists_subspace_vanishing_order_le_phi : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∀ φ : ℝ, PhiAt TF.X Z y ν φ → ∃ w ∈ space TF.X Z Y.U la, ∀ (j' : (L₀ TF.X Z la).ι) (hj' : y ∈ (L₀ TF.X Z la).U j'), ν (H0.germ j' y (memTop y) hj' w) ≠ 0 ∧ ∀ m : ℤ, ν (H0.germ j' y (memTop y) hj' w) = ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → (m : ℝ) ≤ φ / 2500 := by
   intro h1 h2 h3 h4
   refine ((_root_.GlobalTheory.T.exists_form_cusp_value_bound h1 h2 h3 h4).and (_root_.GlobalTheory.T.germ_factorization_unit_mul_evaluation h1 h2 h3 h4)).imp fun Fm CH _ h => ?_
@@ -54,6 +67,9 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi | exact _root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi | (intros; apply _root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_section_order_bound_hilbertSamuel : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ la ∈ ({(⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁, (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub} : Set (AllWt.Weight (dat p i))), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∀ φ : ℝ, PhiAt TF.X Z y ν φ → ∃ w ∈ space TF.X Z Y.U la, ∀ (j' : (L₀ TF.X Z la).ι) (hj' : y ∈ (L₀ TF.X Z la).U j'), ν (H0.germ j' y (memTop y) hj' w) ≠ 0 ∧ ∀ m : ℤ, ν (H0.germ j' y (memTop y) hj' w) = ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → (m : ℝ) ≤ φ / 2500 := by
   first | exact @_root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi | exact _root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi | (intros; apply _root_.GlobalTheory.HSApp.exists_subspace_vanishing_order_le_phi <;> assumption)
 end

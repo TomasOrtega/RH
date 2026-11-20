@@ -18,6 +18,9 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 
 namespace GlobalTheory.Mem.R3.Rw.ChiTr
 
+/- English proof (translation)
+Establish `e` using `Formalism.IndefR.FWT.chiTie_of_chiR z.core z.R.toRealDat z.geo.fw.alg_eq z.geo.fw.laws.pins.2.2.1 z.geo.fw.chiR j`. Rewrite using `[e]`. Establish `h1` using `z.lev.is.mu0 j`. Rewrite `h1` using `[z.lev.C]`. Conclude with `h1`.
+-/
 theorem coreCharacter_fieldInclusion_eq_columnHeckeChar {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {h : B.fields.Ok} {W : Set B.places.Pl}
     (z : Dat (w.st Z) w.I h T W) (j : Fin B.R.m) :
     ChrEq (z.core.chiW ((j : ℕ) + 1) z.core.toCore.σ₀) (w.I.C.mu0 j) := by
@@ -27,6 +30,9 @@ theorem coreCharacter_fieldInclusion_eq_columnHeckeChar {B : Base} {f : Fr B.toP
   rw [z.lev.C] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `(w.ok.ch_tied.mu0 j).atg p x y c hx hc`. Rewrite using `[h1, Units.val_inv_eq_inv_val, map_inv₀, inv_inv]`.
+-/
 theorem embLL_chi {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j : Fin B.R.m)
     (p : {p // p ∈ (B.primes w.px).vGs}) (c : (𝓞 B.fields.E ⧸ p.1.asIdeal)ˣ) (y : 𝓞 B.fields.E) (x : B.fields.Eˣ)
     (hx : (x : B.fields.E) = y) (hc : (c : 𝓞 B.fields.E ⧸ p.1.asIdeal) = Ideal.Quotient.mk p.1.asIdeal y) :
@@ -36,6 +42,9 @@ theorem embLL_chi {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j 
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Consider the cases of `hH`. Consider the cases of `hl`. Consider the cases of `hc`. Consider the cases of `hχ`. Both sides reduce to the same expression.
+-/
 theorem app_chiW {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Type} [Monoid A]
     {H₁ H₂ : Host E} {l₁ : Level H₁} {l₂ : Level H₂} {c₁ : Coeff l₁} {c₂ : Coeff l₂}
     {χ₁ : ℕ → (c₁.F →+* ℂ) → A →* Circle} {χ₂ : ℕ → (c₂.F →+* ℂ) → A →* Circle}
@@ -47,6 +56,19 @@ end GlobalTheory.Mem.R3.Rw.ChiTr
 
 namespace GlobalTheory.Mem.R3.Rw.ChiTr
 
+/- English proof (translation)
+Introduce `B₁ B₂ f₁ f₂ T₁ T₂ w₁ w₂ Z₁ Z₂ h₁ h₂ W₁ W₂ z₁ z₂ hE hX j₁ j₂ hj p₁ p₂ hp c₁ c₂ hc`. Establish `A₁` using `coreCharacter_fieldInclusion_eq_columnHeckeChar z₁ j₁`. Establish `A₂` using `coreCharacter_fieldInclusion_eq_columnHeckeChar z₂ j₂`. Establish `eH` using `hX.H`. Establish `el` using `hX.l`.
+
+Establish `ec` using `hX.c`. Establish `eχ` using `hX.chiW`. Take `⟨hP, -⟩` from `hE`. Use `clear hX`. Break down `B₂ with ⟨P₂⟩` into its components or cases.
+
+Express the relevant statement in the definitionally equal form `P₂ = B₁.toPre at hP`. Substitute `hP` using the available equality. Establish `ec₀` using `app_chiW eH el ec eχ ((j₁ : ℕ) + 1)`. Rewrite `A₂` using `[← hj]`. Establish `A₂' : ChrEq (D` using `(w₁.st Z₁).toD7) (z₁.core.chiW ((j₁ : ℕ) + 1) z₁.core.Q.c.F.val.toRingHom) (w₂.I.C.mu0 j₂) := by`.
+
+Rewrite using `[← ec₀]`. Conclude with `A₂`. Establish `hχ : w₁.I.C.mu0 j₁ = w₂.I.C.mu0 j₂` using `(GlobalTheory.ChrEqUnique.chrEq_unique _).1 _ _ _ A₁ A₂'`. Break down `p₂ with ⟨q₂, hq₂⟩` into its components or cases. Establish `eq : q₂ = p₁.1` using `eq_of_heq hp`.
+
+Substitute `eq` using the available equality. Establish `ecc : c₂ = c₁` using `eq_of_heq hc`. Substitute `ecc` using the available equality. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (c₂ : 𝓞 B₁.fields.E ⧸ p₁.1.asIdeal)`. Establish `hy0 : ((y : 𝓞 B₁.fields.E) : B₁.fields.E) ≠ 0`.
+
+Introduce `h0`. Establish `h0' : y = 0` using `RingOfIntegers.coe_injective (h0.trans (by simp))`. Rewrite `hy` using `[h0', map_zero]`. Conclude with `c₂.ne_zero hy.symm`. Rewrite using `[embLL_chi w₂ j₂ _ c₂ y (Units.mk0 _ hy0) rfl hy.symm, embLL_chi w₁ j₁ p₁ c₂ y (Units.mk0 _ hy0) rfl hy.symm, hχ]`.
+-/
 theorem embLL_chi_ext : ∀ {B₁ B₂ : Base} {f₁ : Fr B₁.toPre} {f₂ : Fr B₂.toPre} {T₁ : TwDat B₁} {T₂ : TwDat B₂} {w₁ : ColW B₁ f₁ T₁} {w₂ : ColW B₂ f₂ T₂} {Z₁ : w₁.Lt} {Z₂ : w₂.Lt} {h₁ : B₁.fields.Ok} {h₂ : B₂.fields.Ok} {W₁ : Set B₁.places.Pl} {W₂ : Set B₂.places.Pl} (z₁ : Dat (w₁.st Z₁) w₁.I h₁ T₁ W₁) (z₂ : Dat (w₂.st Z₂) w₂.I h₂ T₂ W₂), Enl B₁ B₂ → Ext z₁ z₂ → ∀ (j₁ : Fin B₁.R.m) (j₂ : Fin B₂.R.m), (j₁ : ℕ) = j₂ → ∀ (p₁ : {p // p ∈ (B₁.primes w₁.px).vGs}) (p₂ : {p // p ∈ (B₂.primes w₂.px).vGs}), HEq p₂.1 p₁.1 → ∀ (c₁ : (𝓞 B₁.fields.E ⧸ p₁.1.asIdeal)ˣ) (c₂ : (𝓞 B₂.fields.E ⧸ p₂.1.asIdeal)ˣ), HEq c₂ c₁ → B₂.embLL ((w₂.I.Ch.chi j₂ p₂ c₂ : B₂.fields.Kˣ) : B₂.fields.K) = B₁.embLL ((w₁.I.Ch.chi j₁ p₁ c₁ : B₁.fields.Kˣ) : B₁.fields.K) := by
   intro B₁ B₂ f₁ f₂ T₁ T₂ w₁ w₂ Z₁ Z₂ h₁ h₂ W₁ W₂ z₁ z₂ hE hX j₁ j₂ hj p₁ p₂ hp c₁ c₂ hc
   have A₁ := coreCharacter_fieldInclusion_eq_columnHeckeChar z₁ j₁

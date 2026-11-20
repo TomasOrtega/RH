@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 
 namespace GlobalTheory.HSFloor
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `(ReciprocityTheory.MultiplicativeHeights.Closed.torus_l2_cauchy_inequality σ (MvPolynomial.map s k)).2 m`. Establish `hz : ∀ i, ‖ReciprocityTheory.MultiplicativeHeights.torusPoint θ i‖ ≤ 1`. Introduce `i`. Simplify using `[ReciprocityTheory.MultiplicativeHeights.torusPoint, Complex.norm_exp]`. Rewrite `hθ` using `[MvPolynomial.coeff_map, MvPolynomial.eval_map]`.
+
+Conclude with `hθ.trans (hB _ hz)`.
+-/
 theorem coeff_le_of_bounded {E : Type} [Field E] {σ : Type} [Fintype σ] (k : MvPolynomial σ E)
     (s : E →+* ℂ) (B : ℝ) (hB : ∀ z : σ → ℂ, (∀ i, ‖z i‖ ≤ 1) → ‖eval₂ s z k‖ ≤ B) (m : σ →₀ ℕ) :
     ‖s (coeff m k)‖ ≤ B := by
@@ -24,6 +29,11 @@ theorem coeff_le_of_bounded {E : Type} [Field E] {σ : Type} [Fintype σ] (k : M
   rw [MvPolynomial.coeff_map, MvPolynomial.eval_map] at hθ
   exact hθ.trans (hB _ hz)
 
+/- English proof (translation)
+Introduce `E _ _ σ _ k B hk hB`. Take `⟨m, hm⟩` from `MvPolynomial.ne_zero_iff.mp hk`. Use `le_trans ?_ ((GlobalTheory.HSFinPart.finPart_props E σ σ).2.2 k m hm)` and prove the remaining obligations. Rewrite using `[neg_le_neg_iff]`. Unfold `mean`.
+
+Use `gcongr with τ _`. Establish `hpos : 0 < ‖τ (coeff m k)‖` using `norm_pos_iff.mpr ((map_ne_zero τ).mpr hm)`. Conclude with `Real.log_le_log hpos (coeff_le_of_bounded k τ (B τ) (hB τ) m)`.
+-/
 theorem floor : ∀ (E : Type) [Field E] [NumberField E] (σ : Type) [Fintype σ] (k : MvPolynomial σ E)
     (B : (E →+* ℂ) → ℝ), k ≠ 0 →
     (∀ (s : E →+* ℂ) (z : σ → ℂ), (∀ i, ‖z i‖ ≤ 1) → ‖eval₂ s z k‖ ≤ B s) →

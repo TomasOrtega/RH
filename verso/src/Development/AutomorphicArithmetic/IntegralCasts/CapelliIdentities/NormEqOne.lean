@@ -4,6 +4,11 @@ import Mathlib
     (l : ℕ) → [Fact (Nat.Prime l)] → Type :=
     fun (l : ℕ) [Fact (Nat.Prime l)] ↦ PadicAlgCl l
 
+/- English proof (translation)
+Introduce `l _ x h`. Establish `hne : ‖x - 1‖ ≠ ‖(1 : UpperTheory.Reformulated.B.Qk14.Qbar l)‖`. Rewrite using `[norm_one]`. Conclude with `h.ne`. Establish `key` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne`.
+
+Rewrite `key` using `[sub_add_cancel, norm_one]`. Rewrite using `[key]`. Conclude with `max_eq_right h.le`.
+-/
 theorem UpperTheory.Reformulated.B.Qk14.norm_eq_one :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {x : UpperTheory.Reformulated.B.Qk14.Qbar l},
       ‖x - (1 : UpperTheory.Reformulated.B.Qk14.Qbar l)‖ < (1 : ℝ) → ‖x‖ = (1 : ℝ) := by

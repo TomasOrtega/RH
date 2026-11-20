@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.TwoLat
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB d hq hW M M' r τ t t' ht ht' U U' f hf f' hf' g hg g' hg' A A' hA hA' a`. Establish `key : ∀ k, ∑ b, trCo hf' g' k b * resG X (inf_le_right : U ⊓ U' ≤ U') (A' b a) = ∑ b, resG X (inf_le_left : U ⊓ U' ≤ U) (A k b) * trCo hf g b a`. Introduce `k`. Break down `((U ⊓ U' : X.Opens) : Set X).eq_empty_or_nonempty with hV | hV` into its components or cases. Establish `hb : U ⊓ U' = ⊥` using `TopologicalSpace.Opens.coe_eq_empty.1 hV haveI : Subsingleton Γ(X, U ⊓ U') := CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hb)`.
+
+Conclude with `Subsingleton.elim _ _`. Take `⟨K, _, x, ψ, hψ, h, hinj⟩` from `exists_generic_evalPt_injective hq hW _ hV`. Establish `hU : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U` using `h.trans ((x ≫ jB).preimage_mono inf_le_left)`. Establish `hU' : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U'` using `h.trans ((x ≫ jB).preimage_mono inf_le_right)`. Establish `bf` using `ht.1 U f hf K x hU ψ hψ`.
+
+Establish `bg` using `ht.1 U' g hg K x hU' ψ hψ`. Establish `bf'` using `ht'.1 U f' hf' K x hU ψ hψ`. Establish `bg'` using `ht'.1 U' g' hg' K x hU' ψ hψ`. Establish `h1` using `isCombAtG_mul Z.t _ (fun a => (bf'.1 a).1) (fun a => (bg'.1 a).1) (bg.1 a).1 (Matrix.of fun i j => TangentOrigin.evalPt (x ≫ jB) _ h (trCo hf' g' i j)) _ (fun i => ht'.2.1 U U' f' g' hf' hg' K x hU hU' h i) (hA' K x hU' a)`. Establish `h2` using `isCombAtG_mul Z.t _ (fun a => (bf'.1 a).1) (fun a => (bf.1 a).1) (bg.1 a).1 (A.map (TangentOrigin.evalPt (x ≫ jB) _ hU)) _ (fun i => hA K x hU i) (ht.2.1 U U' f g hf hg K x hU hU' h a)`.
+
+Establish `h3` using `congrFun ((bf'.2 _ (bg.1 a)).unique h1 h2) k`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [Matrix.of_apply, Matrix.map_apply, map_sum, map_mul] at h3 ⊢`. Simplify using `only [TangentOrigin.evalPt_res (x ≫ jB) inf_le_left hU h, TangentOrigin.evalPt_res (x ≫ jB) inf_le_right hU' h]`. Conclude with `h3`.
+
+Use `(hf'.basis (inf_le_left : U ⊓ U' ≤ U)).ext_elem fun k => ?_` and prove the remaining obligations. Establish `e1 (b : Fin r) : Twist.resM M' (inf_le_left : U ⊓ U' ≤ U) (f' b) = hf'.basis inf_le_left b` using `(VB.IsFrame.basis_apply _ _ _).symm`. Simplify using `only [map_sum, Twist.resM_smul, e1, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul, Module.Basis.repr_self, Finsupp.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `key k` as an intermediate fact. Simplify using `only [mul_comm (trCo hf' g' k _), mul_comm _ (trCo hf g _ a)] at this`.
+
+Conclude with `this`.
+-/
 theorem coordMat_compat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

@@ -433,12 +433,18 @@ def nexpL {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.LL]
   thP i := i.elim
   hkF i := i.elim
 
+/- English proof (translation)
+Introduce `i` and use `i.elim`.
+-/
 theorem l_Z_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))
     (hlab : ∀ k σ v, (lab k σ v).Monic ∧ (lab k σ v).natDegree = R.r) :
     ∀ i x, x ∈ (ndL H what₂ h lab hlab).Z i ↔ x ∈ Formalism.MainNotions.N.ZN (ndL H what₂ h lab hlab) (nautL H what₂ h lab hlab) i :=
   fun i => i.elim
 
+/- English proof (translation)
+Introduce `i` and use `i.elim`.
+-/
 theorem l_Zgood_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))
     (hlab : ∀ k σ v, (lab k σ v).Monic ∧ (lab k σ v).natDegree = R.r) :
@@ -446,6 +452,9 @@ theorem l_Zgood_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
       x ∈ Formalism.MainNotions.N.ZgoodN (ndL H what₂ h lab hlab) (nautL H what₂ h lab hlab) i :=
   fun i => i.elim
 
+/- English proof (translation)
+Introduce `j w _ _`. Rewrite using `[hη]`. Both sides reduce to the same expression.
+-/
 theorem l_etaJ_tie (what₂ : Rows.Data R) (h : NHyp H what₂)
     (lab : ∀ k, what₂.FT → Fin R.f → Polynomial (ZMod (H.g k)))
     (hlab : ∀ k σ v, (lab k σ v).Monic ∧ (lab k σ v).natDegree = R.r) (hη : ∀ j w, what₂.etaJ j w = 0) :

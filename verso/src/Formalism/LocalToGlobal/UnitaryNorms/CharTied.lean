@@ -46,12 +46,18 @@ structure ValLL (D : D7) (C : CharFrame D) : Prop where
   del : C.del.ValuesIn 0 D.what₂.embLL
   del' : C.del'.ValuesIn 0 D.what₂.embLL
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨y, hy⟩` from `h v hv`. Conclude with `⟨D.LL0.val y, hy⟩`.
+-/
 theorem HChar.ValuesIn.ofLL0 {D : D7} {χ : HChar D.host.E} {s : ℝ} (h : χ.ValuesIn s (embLL0 D)) :
     χ.ValuesIn s D.what₂.embLL := by
   intro v hv
   obtain ⟨y, hy⟩ := h v hv
   exact ⟨D.LL0.val y, hy⟩
 
+/- English proof (translation)
+Conclude with `⟨fun j => HChar.ValuesIn.ofLL0 (h.mu0 j), HChar.ValuesIn.ofLL0 h.eta, HChar.ValuesIn.ofLL0 h.chiPsi, HChar.ValuesIn.ofLL0 h.del, HChar.ValuesIn.ofLL0 h.del'⟩`.
+-/
 theorem ValLL0.toLL {D : D7} {C : CharFrame D} (h : ValLL0 D C) : ValLL D C := by
   exact ⟨fun j => HChar.ValuesIn.ofLL0 (h.mu0 j), HChar.ValuesIn.ofLL0 h.eta,
     HChar.ValuesIn.ofLL0 h.chiPsi, HChar.ValuesIn.ofLL0 h.del, HChar.ValuesIn.ofLL0 h.del'⟩
@@ -79,6 +85,9 @@ structure TupTied (D : D7) (C : CharFrame D) (nch : NChoice D) where
 
   psi_un : ∀ w, D.what₂.muAt w = D.what₂.mu0 → psi w = 1
 
+/- English proof (translation)
+Distinguish the cases in `hw : D.what₂.muAt w = D.what₂.mu0`. Rewrite using `[Tp.psi_un w hw]`. Conclude with `⟨∅, isPsi_one _⟩`. Conclude with `⟨_, Tp.psi_is w hw⟩`.
+-/
 theorem TupTied.psi_gen {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch) (w : D.what₂.places.Pl) :
     ∃ Q, IsPsi (D.what₂.places.resChar w) Q (Tp.psi w) := by
   by_cases hw : D.what₂.muAt w = D.what₂.mu0
@@ -145,6 +154,9 @@ structure ThetaChrTied (D : D7) (C : CharFrame D) (nch : NChoice D) (Tp : TupTie
   chrOf : ∀ μ (j : Fin D.R.m), eChr (X.chrOf μ (j.1 + 1)) = Tp.tup μ j
   etaT : eChr X.etaT = C.eta
 
+/- English proof (translation)
+Unfold `ThetaX.carY`. Use `split_ifs with hi`. Rewrite using `[map_mul, map_inv, T.chrOf, T.etaT]`. Rewrite using `[T.chrOf]`.
+-/
 theorem ThetaChrTied.carY {D : D7} {C : CharFrame D} {nch : NChoice D} {Tp : TupTied D C nch} {X : ThetaX D}
     (T : ThetaChrTied D C nch Tp X) (μ : D.what₂.Tup) (j : Fin D.R.m) (i : ℕ) :
     T.eChr (X.carY μ (j.1 + 1) i) = if Even i then Tp.tup μ j * C.eta⁻¹ else Tp.tup μ j := by

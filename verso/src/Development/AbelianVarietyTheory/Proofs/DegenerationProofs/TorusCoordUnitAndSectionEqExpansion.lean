@@ -21,12 +21,24 @@ open GlobalTheory.FormalValue Filter Topology ReciprocityTheory.ChartRestriction
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 variable {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
+/- English proof (translation)
+Establish `: IsProper u.D.toPre.P.A.hom` using `u.D.toPre.P.isAb.proper`. Use `GlobalTheory.ZJ.AddExt.isDominant_gPt p` as an intermediate fact. Conclude with `ext_of_isDominant_of_isSeparated u.D.toPre.P.A.hom (ext_of_isDominant (gPt p) (by rw [← Category.assoc, h, Category.assoc])) (gPt p) h`.
+-/
 theorem gPt_cancel {ψ ψ' : Sp (OO p) ⟶ u.D.toPre.P.A.left} (h : gPt p ≫ ψ = gPt p ≫ ψ') : ψ = ψ' := by
   have : IsProper u.D.toPre.P.A.hom := u.D.toPre.P.isAb.proper
   have := GlobalTheory.ZJ.AddExt.isDominant_gPt p
   exact ext_of_isDominant_of_isSeparated u.D.toPre.P.A.hom
     (ext_of_isDominant (gPt p) (by rw [← Category.assoc, h, Category.assoc])) (gPt p) h
 
+/- English proof (translation)
+Take `⟨b₀, hb, H⟩` from `h`. Introduce `J hJ χ`. Take `⟨ce, hce⟩` from `exists_level_point u c hc 0`. Take `⟨hbe, H⟩` from `H 0 ce hce`. Use `GlobalTheory.ZJ.AddExt.isDominant_gPt p` as an intermediate fact.
+
+Establish `hb₀ : b₀ ≫ u.D.toPre.P.A.hom = spMap u.j`. Use `ext_of_isDominant (gPt p) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hb]`. Use `(Over.w g.b).trans ?_` and prove the remaining obligations. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `ht : ⊤ ≤ ce ⁻¹ᵁ LB.wchart u.D.toPre.P.L (u.D.toPre.Oφ (u.U.gt 0).pG χ) (fun k => J (DegPre.gtφ u.D.toPre (PadicAlgCl p) g.b χ k))` using `fun y _ => Set.mem_iInter.2 fun i => by`. Establish `h1` using `hJ (b₀ ≫ u.D.toPre.Oφ (𝟙 _) χ i) (by rw [Category.assoc, Oφ_over, hb₀])`. Rewrite `h1` using `[← Category.assoc, hb, ← gtφ_eq]`.
+
+Conclude with `(congrArg (fun q => q y ∈ u.D.toPre.P.L.U _) (level_Oφ u b₀ ce hbe χ i)).mpr (top_le_comp h1 _ trivial)`. Take `⟨x, hx, hx'⟩` from `H χ _ ht`. Rewrite using `[← hx, norm_eq_one_of_isUnit u (e := 0) (by rw [hx']; exact isUnit_valR _ _ ht _)]`. Simplify using the standard rewrite rules.
+-/
 theorem gtN_zero (c : Sp (OO p) ⟶ u.G.left) (g : GtPtF u.D.toPre (PadicAlgCl p)) (hc : c ≫ u.G.hom = spMap u.j)
     (h : u.Lev c g) : u.GtN g 0 := by
   obtain ⟨b₀, hb, H⟩ := h
@@ -50,6 +62,23 @@ theorem gtN_zero (c : Sp (OO p) ⟶ u.G.left) (g : GtPtF u.D.toPre (PadicAlgCl p
   rw [← hx, norm_eq_one_of_isUnit u (e := 0) (by rw [hx']; exact isUnit_valR _ _ ht _)]
   simp
 
+/- English proof (translation)
+Take `⟨b₀, hb, H⟩` from `h`. Introduce `w hw l hl`. Use `choose ce hce using exists_level_point u c hc`. Establish `hbe` using `fun e => (H e (ce e) (hce e)).1`. Use `choose d hd using fun y => exists_chart u.D.toPre.P.isLB y`.
+
+Take `⟨jL, hjL⟩` from `exists_chart u.U.LG.isLB (c (cpt _))`. Establish `hL : ⊤ ≤ c ⁻¹ᵁ u.U.LG.L.U jL` using `(top_le_iff_cpt _ _).2 hjL`. Establish `hM : ⊤ ≤ b₀ ⁻¹ᵁ u.D.toPre.P.L.U (d (b₀ (cpt _)))` using `(top_le_iff_cpt _ _).2 (hd _)`. Take `⟨ω, ωe, hω0, hω, hωe⟩` from `exists_omega u c b₀ ce hce hbe hL hM hc`. Establish `hθ : ∀ θ : u.D.toPre.P.A.left ⟶ u.D.toPre.P.A.left, ⊤ ≤ (b₀ ≫ θ) ⁻¹ᵁ u.D.toPre.P.L.U (d ((b₀ ≫ θ) (cpt _)))` using `fun θ => (top_le_iff_cpt _ _).2 (hd _)`.
+
+Use `choose x hx hx' using fun e χ => (H e (ce e) (hce e)).2 χ (fun i => d ((b₀ ≫ u.D.toPre.Oφ (𝟙 _) χ i) (cpt _))) (fun y _ => Set.mem_iInter.2 fun i => (congrArg (fun q => q y ∈ u.D.toPre.P.L.U _) (level_Oφ u b₀ (ce e) (hbe e) χ i)).mpr (top_le_comp (hθ _) _ trivial))`. Establish `hx0 : ∀ e χ, x 0 χ = x e χ` using `fun e χ => Subtype.ext ((hx 0 χ).trans (hx e χ).symm)`. Establish `HS` using `fun σ f hE => hasSum_integral u c b₀ ce hce hbe hL d hd (x 0) (fun e χ => by rw [hx0 e, hx']) ω ωe hω hωe (k := k) σ f hE`. Set `z : Sp (PadicAlgCl p)` to `cpt _`. Take `⟨J, hJ, eJ⟩` from `exists_good u.D.toPre.P.L u.D.toPre.P.isLB z (fun θ : u.D.toPre.P.A.left ⟶ u.D.toPre.P.A.left => gPt p ≫ b₀ ≫ θ) (fun θ => d ((b₀ ≫ θ) (cpt _))) (fun θ θ' e => by rw [gPt_cancel u e]) (fun θ => top_le_comp (hθ θ) _ trivial)`.
+
+Set `r : Sp (PadicAlgCl p) ⟶ (UnifPre.GF (G` to `u.G) (PadicAlgCl p)).left := (lift (𝟙 (TFK (R := u.V) (PadicAlgCl p))) a).left`. Establish `hr : r ≫ UnifPre.gFK (G` using `u.G) (PadicAlgCl p) = gPt p ≫ c := by`. Rewrite using `[ha, ← Category.assoc]`. Conclude with `congrArg (fun t : u.PtC => t.left ≫ _) (lift_snd _ _)`. Establish `hr' : r ≫ (fst (TFK (R` using `u.V) (PadicAlgCl p)) ((Over.pullback (jK u.V)).obj u.G)).left = 𝟙 _ := congrArg (fun t => t.left) (lift_fst (𝟙 (TFK (R := u.V) (PadicAlgCl p))) a)`.
+
+Take `⟨τ, τ0, hτ⟩` from `exists_valF_secLin u.U.LG.isLB _ _ r hr' (gPt p ≫ c) hr k (l := l) (l' := jL) (by rw [ha]; exact hl) (top_le_comp hL _)`. Take `⟨κ, κ0, hκ⟩` from `exists_coef_secLin u.D.toPre (PadicAlgCl p) k g w hw z J hJ`. Use `⟨κ * ω ^ k * τ⁻¹, by simp [τ0, κ0, hω0], ?_⟩` and prove the remaining obligations. Introduce and unpack `σ' s ⟨n, cc, σ, f, hE, hσ, hs⟩`. Establish `e₁ : valF r _ (σ'.f (fun _ => l)) = τ * ∑ i, cc i * ((secVal u.U.toUnifPre (σ i) c jL : OO p) : PadicAlgCl p)` using `(hτ σ' n cc σ hσ).trans (congrArg (τ * ·) (Finset.sum_congr rfl fun i _ => congrArg (cc i * ·) (valR_spMap (OO p).subtype c _ (top_le_secChart hL) _)))`.
+
+Establish `e₂ : ∀ χ, coef s g w χ = κ * ∑ i, cc i * ((valR b₀ _ ((f i χ).f (fun j => d ((b₀ ≫ u.D.toPre.famφB χ j) (cpt _)))) * x 0 χ : OO p) : PadicAlgCl p)`. Introduce `χ`. Use `(hκ s χ n cc (fun i => f i χ) (hs χ) (gPt p ≫ b₀) (fun j => d ((b₀ ≫ u.D.toPre.famφB χ j) (cpt _))) (fun i => d ((b₀ ≫ u.D.toPre.Oφ (𝟙 _) χ i) (cpt _))) hb (fun i => by rw [Category.assoc, eJ]) (fun i => by rw [Category.assoc, eJ])).trans (congrArg (κ * ·) (Finset.sum_congr rfl f …` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul]`. Conclude with `congrArg₂ (· * ·) (valR_spMap (OO p).subtype b₀ _ ((top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun j => hd ((b₀ ≫ u.D.toPre.famφB χ j) (cpt _)))) _) (hx 0 χ).symm`.
+
+Establish `hs'` using `(hasSum_sum (s := Finset.univ) fun i _ => (HS (σ i) (f i) (hE i)).mul_left (cc i)).mul_left κ`. Use `show HasSum _ (_ * valF r _ (σ'.f (fun _ => l)))`. Rewrite using `[e₁, funext e₂]`. Use `(congrArg (HasSum _ ·) ?_).mp hs'` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem parAt [ArithBase o Ω] (c : Sp (OO p) ⟶ u.G.left) (g : GtPtF u.D.toPre (PadicAlgCl p)) (a : u.PtC)
     (hc : c ≫ u.G.hom = spMap u.j) (ha : gPt p ≫ c = u.toG a) (h : u.Lev c g) (k : ℕ) : u.ParAt k a g := by
   obtain ⟨b₀, hb, H⟩ := h
@@ -107,6 +136,9 @@ theorem parAt [ArithBase o Ω] (c : Sp (OO p) ⟶ u.G.left) (g : GtPtF u.D.toPre
   refine Finset.sum_congr rfl fun i _ => ?_
   field_simp
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ u c g a hc ha h` and use `⟨gtN_zero u c g hc h, fun k _ => parAt u c g a hc ha h k⟩`.
+-/
 theorem gtN_zero_and_parAt : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (c : Sp (OO p) ⟶ u.G.left) (g : GtPtF u.D.toPre (PadicAlgCl p)) (a : u.PtC), c ≫ u.G.hom = spMap u.j → gPt p ≫ c = u.toG a → u.Lev c g → u.GtN g 0 ∧ ∀ k, 1 ≤ k → u.ParAt k a g :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ u c g a hc ha h => ⟨gtN_zero u c g hc h, fun k _ => parAt u c g a hc ha h k⟩
 

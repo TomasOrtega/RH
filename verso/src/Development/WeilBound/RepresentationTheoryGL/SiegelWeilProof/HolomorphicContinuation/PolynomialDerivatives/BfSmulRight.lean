@@ -13,6 +13,11 @@ def gf (w : (τ →₀ ℕ) → ℂ) (p q : MvPolynomial τ ℂ) : ℂ :=
 
 variable (w : (τ →₀ ℕ) → ℂ)
 
+/- English proof (translation)
+Unfold `gf`. Use `Finset.sum_subset (Finset.union_subset hp hq) fun s _ hs => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hs`. Establish `h0 : p.coeff s = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hs.1 (MvPolynomial.mem_support_iff.mpr h)`. Simplify using `[h0]`.
+-/
 theorem gf_eq (S : Finset (τ →₀ ℕ)) {p q : MvPolynomial τ ℂ} (hp : p.support ⊆ S) (hq : q.support ⊆ S) :
     gf w p q = ∑ s ∈ S, star (p.coeff s) * q.coeff s * w s := by
   unfold gf
@@ -22,6 +27,9 @@ theorem gf_eq (S : Finset (τ →₀ ℕ)) {p q : MvPolynomial τ ℂ} (hp : p.s
     by_contra h; exact hs.1 (MvPolynomial.mem_support_iff.mpr h)
   simp [h0]
 
+/- English proof (translation)
+Establish `h1` using `support_add (p := p) (q := p')`. Rewrite using `[gf_eq w (p.support ∪ p'.support ∪ q.support) (h1.trans Finset.subset_union_left) Finset.subset_union_right, gf_eq w (p.support ∪ p'.support ∪ q.support) ((Finset.subset_union_left).trans Finset.subset_union_left) Finset.subset_union_right, gf_eq w (p.support ∪ p'.support ∪ q.sup …`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gf_add_left (p p' q : MvPolynomial τ ℂ) : gf w (p + p') q = gf w p q + gf w p' q := by
   classical
   have h1 := support_add (p := p) (q := p')
@@ -33,6 +41,9 @@ theorem gf_add_left (p p' q : MvPolynomial τ ℂ) : gf w (p + p') q = gf w p q 
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_add, star_add]; ring
 
+/- English proof (translation)
+Establish `h1` using `support_add (p := q) (q := q')`. Rewrite using `[gf_eq w (p.support ∪ (q.support ∪ q'.support)) Finset.subset_union_left (h1.trans Finset.subset_union_right), gf_eq w (p.support ∪ (q.support ∪ q'.support)) Finset.subset_union_left ((Finset.subset_union_left).trans Finset.subset_union_right), gf_eq w (p.support ∪ (q.support ∪ q …`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gf_add_right (p q q' : MvPolynomial τ ℂ) : gf w p (q + q') = gf w p q + gf w p q' := by
   classical
   have h1 := support_add (p := q) (q := q')
@@ -44,6 +55,9 @@ theorem gf_add_right (p q q' : MvPolynomial τ ℂ) : gf w p (q + q') = gf w p q
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_add]; ring
 
+/- English proof (translation)
+Rewrite using `[gf_eq w (p.support ∪ q.support) ((MvPolynomial.support_smul).trans Finset.subset_union_left) Finset.subset_union_right, gf_eq w (p.support ∪ q.support) Finset.subset_union_left Finset.subset_union_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_smul, star_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gf_smul_left (r : ℂ) (p q : MvPolynomial τ ℂ) : gf w (r • p) q = star r * gf w p q := by
   classical
   rw [gf_eq w (p.support ∪ q.support) ((MvPolynomial.support_smul).trans Finset.subset_union_left) Finset.subset_union_right,
@@ -51,6 +65,9 @@ theorem gf_smul_left (r : ℂ) (p q : MvPolynomial τ ℂ) : gf w (r • p) q = 
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_smul, star_mul]; ring
 
+/- English proof (translation)
+Rewrite using `[gf_eq w (p.support ∪ q.support) Finset.subset_union_left ((MvPolynomial.support_smul).trans Finset.subset_union_right), gf_eq w (p.support ∪ q.support) Finset.subset_union_left Finset.subset_union_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gf_smul_right (r : ℂ) (p q : MvPolynomial τ ℂ) : gf w p (r • q) = r * gf w p q := by
   classical
   rw [gf_eq w (p.support ∪ q.support) Finset.subset_union_left ((MvPolynomial.support_smul).trans Finset.subset_union_right),
@@ -58,18 +75,33 @@ theorem gf_smul_right (r : ℂ) (p q : MvPolynomial τ ℂ) : gf w p (r • q) =
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_smul]; ring
 
+/- English proof (translation)
+Rewrite using `[show -p = (-1 : ℂ) • p by simp, gf_smul_left]; simp`.
+-/
 theorem gf_neg_left (p q : MvPolynomial τ ℂ) : gf w (-p) q = -gf w p q := by
   rw [show -p = (-1 : ℂ) • p by simp, gf_smul_left]; simp
 
+/- English proof (translation)
+Rewrite using `[show -q = (-1 : ℂ) • q by simp, gf_smul_right]; simp`.
+-/
 theorem gf_neg_right (p q : MvPolynomial τ ℂ) : gf w p (-q) = -gf w p q := by
   rw [show -q = (-1 : ℂ) • q by simp, gf_smul_right]; simp
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, gf_add_left, gf_neg_left, ← sub_eq_add_neg]`.
+-/
 theorem gf_sub_left (p p' q : MvPolynomial τ ℂ) : gf w (p - p') q = gf w p q - gf w p' q := by
   rw [sub_eq_add_neg, gf_add_left, gf_neg_left, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, gf_add_right, gf_neg_right, ← sub_eq_add_neg]`.
+-/
 theorem gf_sub_right (p q q' : MvPolynomial τ ℂ) : gf w p (q - q') = gf w p q - gf w p q' := by
   rw [sub_eq_add_neg, gf_add_right, gf_neg_right, ← sub_eq_add_neg]
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp [gf]`. Consider the case `insert a I ha ih => rw [Finset.sum_insert ha, gf_add_left, ih, Finset.sum_insert ha]`.
+-/
 theorem gf_sum_left {ι : Type} (I : Finset ι) (f : ι → MvPolynomial τ ℂ) (q : MvPolynomial τ ℂ) :
     gf w (∑ i ∈ I, f i) q = ∑ i ∈ I, gf w (f i) q := by
   classical
@@ -77,6 +109,9 @@ theorem gf_sum_left {ι : Type} (I : Finset ι) (f : ι → MvPolynomial τ ℂ)
   | empty => simp [gf]
   | insert a I ha ih => rw [Finset.sum_insert ha, gf_add_left, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp [gf]`. Consider the case `insert a I ha ih => rw [Finset.sum_insert ha, gf_add_right, ih, Finset.sum_insert ha]`.
+-/
 theorem gf_sum_right {ι : Type} (I : Finset ι) (p : MvPolynomial τ ℂ) (f : ι → MvPolynomial τ ℂ) :
     gf w p (∑ i ∈ I, f i) = ∑ i ∈ I, gf w p (f i) := by
   classical
@@ -84,6 +119,11 @@ theorem gf_sum_right {ι : Type} (I : Finset ι) (p : MvPolynomial τ ℂ) (f : 
   | empty => simp [gf]
   | insert a I ha ih => rw [Finset.sum_insert ha, gf_add_right, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Rewrite using `[gf_eq w {s, t} ((support_monomial_subset).trans (by simp)) ((support_monomial_subset).trans (by simp))]`. Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using `[coeff_monomial]`. Rewrite using `[Finset.sum_pair h]`.
+
+Simplify using `[coeff_monomial, h, Ne.symm h]`.
+-/
 theorem gf_monomial (s t : τ →₀ ℕ) (a b : ℂ) :
     gf w (monomial s a) (monomial t b) = if s = t then star a * b * w s else 0 := by
   classical
@@ -92,6 +132,11 @@ theorem gf_monomial (s t : τ →₀ ℕ) (a b : ℂ) :
   · subst h; simp [coeff_monomial]
   · rw [Finset.sum_pair h]; simp [coeff_monomial, h, Ne.symm h]
 
+/- English proof (translation)
+Introduce `p q`. Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Proceed by induction on `q using MvPolynomial.induction_on' with`. Consider the case `monomial t b => exact hm s t a b`.
+
+Consider the case `add q q' h1 h2 => exact hr _ _ _ h1 h2`. Consider the case `add p p' h1 h2 => exact hl _ _ _ h1 h2`.
+-/
 theorem gf_induction {P : MvPolynomial τ ℂ → MvPolynomial τ ℂ → Prop}
     (hm : ∀ s t (a b : ℂ), P (monomial s a) (monomial t b))
     (hl : ∀ p p' q, P p q → P p' q → P (p + p') q) (hr : ∀ p q q', P p q → P p q' → P p (q + q')) :
@@ -107,6 +152,17 @@ theorem gf_induction {P : MvPolynomial τ ℂ → MvPolynomial τ ℂ → Prop}
 variable {w} (κ : ℂ) (hw : ∀ s k, w (Finsupp.single k 1 + s) = κ * ((s k : ℂ) + 1) * w s)
 include hw
 
+/- English proof (translation)
+Use `revert p q`. Use `gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial, gf_monomial, gf_monomial]`. Distinguish the cases in `h : Finsupp.single k 1 + s = t`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos (add_tsub_cancel_left _ _).symm, hw]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`.
+
+Distinguish the cases in `h' : s = t - Finsupp.single k 1`. Rewrite using `[if_pos h']`. Establish `: t k = 0`. Assume the negation of the conclusion as `h0`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[h', add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0))]`. Simplify using `[this]`. Rewrite using `[if_neg h']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, gf_add_left, gf_add_left, h1, h2, mul_add]`.
+
+Rewrite using `[gf_add_right, map_add, gf_add_right, h1, h2, mul_add]`.
+-/
 theorem gf_X_mul (k : τ) (p q : MvPolynomial τ ℂ) : gf w (X k * p) q = κ * gf w p (pderiv k q) := by
   revert p q
   refine gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)
@@ -128,6 +184,17 @@ theorem gf_X_mul (k : τ) (p q : MvPolynomial τ ℂ) : gf w (X k * p) q = κ * 
   · rw [mul_add, gf_add_left, gf_add_left, h1, h2, mul_add]
   · rw [gf_add_right, map_add, gf_add_right, h1, h2, mul_add]
 
+/- English proof (translation)
+Use `revert p q`. Use `gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial, gf_monomial, gf_monomial]`. Distinguish the cases in `h : s = Finsupp.single k 1 + t`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos (add_tsub_cancel_left _ _), hw, add_tsub_cancel_left]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, star_mul]`. Use `push_cast`. Simplify using `only [Complex.star_def, Complex.conj_natCast, map_add, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg h]`. Distinguish the cases in `h' : s - Finsupp.single k 1 = t`. Rewrite using `[if_pos h']`. Establish `: s k = 0`. Assume the negation of the conclusion as `h0`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[← h', add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0))]`. Simplify using `[this]`. Rewrite using `[if_neg h']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[map_add, gf_add_left, gf_add_left, ← h1, ← h2, mul_add]`. Rewrite using `[gf_add_right, mul_add, mul_add, gf_add_right, h1, h2]`.
+-/
 theorem gf_pderiv (k : τ) (p q : MvPolynomial τ ℂ) : κ * gf w (pderiv k p) q = gf w p (X k * q) := by
   revert p q
   refine gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)
@@ -151,12 +218,18 @@ theorem gf_pderiv (k : τ) (p q : MvPolynomial τ ℂ) : κ * gf w (pderiv k p) 
   · rw [map_add, gf_add_left, gf_add_left, ← h1, ← h2, mul_add]
   · rw [gf_add_right, mul_add, mul_add, gf_add_right, h1, h2]
 
+/- English proof (translation)
+Rewrite using `[gf_X_mul κ hw, gf_pderiv κ hw]`.
+-/
 theorem gf_adj (k l : τ) (p q : MvPolynomial τ ℂ) : gf w (X k * pderiv l p) q = gf w p (X l * pderiv k q) := by
   rw [gf_X_mul κ hw, gf_pderiv κ hw]
 
 omit hw
 
 variable (w) in
+/- English proof (translation)
+Unfold `gf`. Rewrite using `[Finset.union_comm, star_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul, star_mul, star_star, hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gf_herm (hs : ∀ s, star (w s) = w s) (p q : MvPolynomial τ ℂ) : gf w q p = star (gf w p q) := by
   unfold gf
   rw [Finset.union_comm, star_sum]
@@ -164,6 +237,15 @@ theorem gf_herm (hs : ∀ s, star (w s) = w s) (p q : MvPolynomial τ ℂ) : gf 
   rw [star_mul, star_mul, star_star, hs]; ring
 
 variable (w) in
+/- English proof (translation)
+Unfold `gf`. Rewrite using `[Finset.union_self, Complex.re_sum]`. Take `⟨s, hs0⟩` from `(MvPolynomial.ne_zero_iff).mp h`. Establish `hmem : s ∈ p.support` using `MvPolynomial.mem_support_iff.mpr hs0`. Establish `key : ∀ t, (star (p.coeff t) * p.coeff t * w t).re = Complex.normSq (p.coeff t) * (w t).re`.
+
+Introduce `t`. Establish `hw' : (w t).im = 0`. Use `congrArg Complex.im (hs t)` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[show star (p.coeff t) * p.coeff t = (Complex.normSq (p.coeff t) : ℂ) by`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Use the proof step `rfl]`. Simplify using `[Complex.mul_re, hw']`. Use `Finset.sum_pos' (fun t _ => ?_) ⟨s, hmem, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (hp t).le`. Rewrite using `[key]`. Conclude with `mul_pos (Complex.normSq_pos.mpr hs0) (hp s)`.
+-/
 theorem gf_pos (hs : ∀ s, star (w s) = w s) (hp : ∀ s, 0 < (w s).re) (p : MvPolynomial τ ℂ) (h : p ≠ 0) :
     0 < (gf w p p).re := by
   unfold gf
@@ -182,11 +264,21 @@ theorem gf_pos (hs : ∀ s, star (w s) = w s) (hp : ∀ s, 0 < (w s).re) (p : Mv
   · rw [key]; exact mul_pos (Complex.normSq_pos.mpr hs0) (hp s)
 
 omit [Fintype τ] in
+/- English proof (translation)
+Rewrite using `[pderiv_X]`. Distinguish the cases in `h : v = u`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Ne.symm h, h]`.
+-/
 theorem pderiv_X' (v u : τ) : pderiv v (X u : MvPolynomial τ ℂ) = if v = u then 1 else 0 := by
   rw [pderiv_X]; by_cases h : v = u
   · subst h; simp
   · simp [Pi.single_apply, Ne.symm h, h]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p u hp`. Rewrite using `[Derivation.leibniz, hp]`.
+
+Simplify using `only [smul_eq_mul, Derivation.leibniz, pderiv_X', mul_add, Finset.sum_add_distrib]`. Establish `h1 : ∑ v, D (X v) * (p * (if v = u then (1 : MvPolynomial τ ℂ) else 0)) = p * D (X u)`. Simplify using `[mul_ite]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ v, D (X v) * (X u * pderiv v p) = X u * ∑ v, D (X v) * pderiv v p`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun v _ => by ring`. Rewrite using `[h1, h2]`.
+-/
 theorem der_expand (D : Derivation ℂ (MvPolynomial τ ℂ) (MvPolynomial τ ℂ)) (p : MvPolynomial τ ℂ) :
     D p = ∑ v, D (X v) * pderiv v p := by
   induction p using MvPolynomial.induction_on with
@@ -201,6 +293,11 @@ theorem der_expand (D : Derivation ℂ (MvPolynomial τ ℂ) (MvPolynomial τ �
       rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun v _ => by ring
     rw [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[der_expand D p]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hlin v]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc]`.
+-/
 theorem der_expand2 (D : Derivation ℂ (MvPolynomial τ ℂ) (MvPolynomial τ ℂ))
     (hlin : ∀ v, D (X v) = ∑ u, (D (X v)).coeff (Finsupp.single u 1) • X u) (p : MvPolynomial τ ℂ) :
     D p = ∑ v, ∑ u, (D (X v)).coeff (Finsupp.single u 1) • (X u * pderiv v p) := by
@@ -211,6 +308,9 @@ theorem der_expand2 (D : Derivation ℂ (MvPolynomial τ ℂ) (MvPolynomial τ �
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [smul_mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[der_expand2 D hlin p, der_expand2 D' hlin' q]`. Repeatedly rewrite using `[gf_sum_left, gf_sum_right, gf_smul_left, gf_smul_right, gf_adj κ hw, htr]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem der_adj {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Finsupp.single k 1 + s) = κ * ((s k : ℂ) + 1) * w s)
     (D D' : Derivation ℂ (MvPolynomial τ ℂ) (MvPolynomial τ ℂ))
     (hlin : ∀ v, D (X v) = ∑ u, (D (X v)).coeff (Finsupp.single u 1) • X u)
@@ -224,6 +324,11 @@ theorem der_adj {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Finsu
 def bf (w : (τ →₀ ℕ) → ℂ) (p q : MvPolynomial τ ℂ) : ℂ :=
   ∑ s ∈ p.support ∪ q.support, p.coeff s * q.coeff s * w s
 
+/- English proof (translation)
+Unfold `bf`. Use `Finset.sum_subset (Finset.union_subset hp hq) fun s _ hs => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hs`. Establish `h0 : p.coeff s = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hs.1 (MvPolynomial.mem_support_iff.mpr h)`. Simplify using `[h0]`.
+-/
 theorem bf_eq (w : (τ →₀ ℕ) → ℂ) (S : Finset (τ →₀ ℕ)) {p q : MvPolynomial τ ℂ} (hp : p.support ⊆ S)
     (hq : q.support ⊆ S) : bf w p q = ∑ s ∈ S, p.coeff s * q.coeff s * w s := by
   unfold bf
@@ -233,6 +338,9 @@ theorem bf_eq (w : (τ →₀ ℕ) → ℂ) (S : Finset (τ →₀ ℕ)) {p q : 
     by_contra h; exact hs.1 (MvPolynomial.mem_support_iff.mpr h)
   simp [h0]
 
+/- English proof (translation)
+Establish `h1` using `support_add (p := p) (q := p')`. Rewrite using `[bf_eq w (p.support ∪ p'.support ∪ q.support) (h1.trans Finset.subset_union_left) Finset.subset_union_right, bf_eq w (p.support ∪ p'.support ∪ q.support) ((Finset.subset_union_left).trans Finset.subset_union_left) Finset.subset_union_right, bf_eq w (p.support ∪ p'.support ∪ q.sup …`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bf_add_left (w : (τ →₀ ℕ) → ℂ) (p p' q : MvPolynomial τ ℂ) : bf w (p + p') q = bf w p q + bf w p' q := by
   classical
   have h1 := support_add (p := p) (q := p')
@@ -244,6 +352,9 @@ theorem bf_add_left (w : (τ →₀ ℕ) → ℂ) (p p' q : MvPolynomial τ ℂ)
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_add]; ring
 
+/- English proof (translation)
+Establish `h1` using `support_add (p := q) (q := q')`. Rewrite using `[bf_eq w (p.support ∪ (q.support ∪ q'.support)) Finset.subset_union_left (h1.trans Finset.subset_union_right), bf_eq w (p.support ∪ (q.support ∪ q'.support)) Finset.subset_union_left ((Finset.subset_union_left).trans Finset.subset_union_right), bf_eq w (p.support ∪ (q.support ∪ q …`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bf_add_right (w : (τ →₀ ℕ) → ℂ) (p q q' : MvPolynomial τ ℂ) : bf w p (q + q') = bf w p q + bf w p q' := by
   classical
   have h1 := support_add (p := q) (q := q')
@@ -255,6 +366,11 @@ theorem bf_add_right (w : (τ →₀ ℕ) → ℂ) (p q q' : MvPolynomial τ ℂ
   refine Finset.sum_congr rfl fun s _ => ?_
   simp [coeff_add]; ring
 
+/- English proof (translation)
+Rewrite using `[bf_eq w {s, t} ((support_monomial_subset).trans (by simp)) ((support_monomial_subset).trans (by simp))]`. Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using `[coeff_monomial]`. Rewrite using `[Finset.sum_pair h]`.
+
+Simplify using `[coeff_monomial, h, Ne.symm h]`.
+-/
 theorem bf_monomial (w : (τ →₀ ℕ) → ℂ) (s t : τ →₀ ℕ) (a b : ℂ) :
     bf w (monomial s a) (monomial t b) = if s = t then a * b * w s else 0 := by
   classical
@@ -263,6 +379,17 @@ theorem bf_monomial (w : (τ →₀ ℕ) → ℂ) (s t : τ →₀ ℕ) (a b : �
   · subst h; simp [coeff_monomial]
   · rw [Finset.sum_pair h]; simp [coeff_monomial, h, Ne.symm h]
 
+/- English proof (translation)
+Use `revert p q`. Use `gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial, bf_monomial, bf_monomial]`. Distinguish the cases in `h : Finsupp.single k 1 + s = t`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos (add_tsub_cancel_left _ _).symm, hw]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`.
+
+Distinguish the cases in `h' : s = t - Finsupp.single k 1`. Rewrite using `[if_pos h']`. Establish `: t k = 0`. Assume the negation of the conclusion as `h0`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[h', add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0))]`. Simplify using `[this]`. Rewrite using `[if_neg h']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, bf_add_left, bf_add_left, h1, h2, mul_add]`.
+
+Rewrite using `[bf_add_right, map_add, bf_add_right, h1, h2, mul_add]`.
+-/
 theorem bf_X_mul {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Finsupp.single k 1 + s) = κ * ((s k : ℂ) + 1) * w s)
     (k : τ) (p q : MvPolynomial τ ℂ) : bf w (X k * p) q = κ * bf w p (pderiv k q) := by
   revert p q
@@ -285,6 +412,17 @@ theorem bf_X_mul {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Fins
   · rw [mul_add, bf_add_left, bf_add_left, h1, h2, mul_add]
   · rw [bf_add_right, map_add, bf_add_right, h1, h2, mul_add]
 
+/- English proof (translation)
+Use `revert p q`. Use `gf_induction (fun s t a b => ?_) (fun p p' q h1 h2 => ?_) (fun p q q' h1 h2 => ?_)` and prove the remaining obligations. Rewrite using `[X, monomial_mul, one_mul, pderiv_monomial, bf_monomial, bf_monomial]`. Distinguish the cases in `h : s = Finsupp.single k 1 + t`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos (add_tsub_cancel_left _ _), hw, add_tsub_cancel_left]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h]`.
+
+Distinguish the cases in `h' : s - Finsupp.single k 1 = t`. Rewrite using `[if_pos h']`. Establish `: s k = 0`. Assume the negation of the conclusion as `h0`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[← h', add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr h0))]`. Simplify using `[this]`. Rewrite using `[if_neg h']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, bf_add_left, bf_add_left, ← h1, ← h2, mul_add]`.
+
+Rewrite using `[bf_add_right, mul_add, mul_add, bf_add_right, h1, h2]`.
+-/
 theorem bf_pderiv {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Finsupp.single k 1 + s) = κ * ((s k : ℂ) + 1) * w s)
     (k : τ) (p q : MvPolynomial τ ℂ) : κ * bf w (pderiv k p) q = bf w p (X k * q) := by
   revert p q
@@ -307,6 +445,9 @@ theorem bf_pderiv {w : (τ →₀ ℕ) → ℂ} (κ : ℂ) (hw : ∀ s k, w (Fin
   · rw [map_add, bf_add_left, bf_add_left, ← h1, ← h2, mul_add]
   · rw [bf_add_right, mul_add, mul_add, bf_add_right, h1, h2]
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp [bf]`. Consider the case `insert a I ha ih => rw [Finset.sum_insert ha, bf_add_left, ih, Finset.sum_insert ha]`.
+-/
 theorem bf_sum_left (w : (τ →₀ ℕ) → ℂ) {ι : Type} (I : Finset ι) (f : ι → MvPolynomial τ ℂ) (q : MvPolynomial τ ℂ) :
     bf w (∑ i ∈ I, f i) q = ∑ i ∈ I, bf w (f i) q := by
   classical
@@ -314,6 +455,9 @@ theorem bf_sum_left (w : (τ →₀ ℕ) → ℂ) {ι : Type} (I : Finset ι) (f
   | empty => simp [bf]
   | insert a I ha ih => rw [Finset.sum_insert ha, bf_add_left, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp [bf]`. Consider the case `insert a I ha ih => rw [Finset.sum_insert ha, bf_add_right, ih, Finset.sum_insert ha]`.
+-/
 theorem bf_sum_right (w : (τ →₀ ℕ) → ℂ) {ι : Type} (I : Finset ι) (p : MvPolynomial τ ℂ) (f : ι → MvPolynomial τ ℂ) :
     bf w p (∑ i ∈ I, f i) = ∑ i ∈ I, bf w p (f i) := by
   classical

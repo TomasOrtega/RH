@@ -9,6 +9,13 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitDegOneChar
 
+/- English proof (translation)
+Use `set v := PP.under (𝓞 F) with hvdef`. Establish `hle : v.asIdeal ≤ PP.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))` using `le_rfl`. Use `haveI := v.isMaximal`. Use `haveI := PP.isMaximal`. Use `letI := Ideal.Quotient.field v.asIdeal`.
+
+Use `letI : Algebra (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ PP.asIdeal) := Ideal.Quotient.algebraQuotientOfLEComap hle`. Establish `hE : Nat.card (𝓞 E ⧸ PP.asIdeal) = p` using `by rw [← hPP, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Finite (𝓞 E ⧸ PP.asIdeal) := Nat.finite_of_card_ne_zero (by rw [hE]; exact hp.ne_zero)`. Use `haveI : Module.Finite (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ PP.asIdeal) := Module.Finite.of_finite`. Establish `h` using `Module.natCard_eq_pow_finrank (K := 𝓞 F ⧸ v.asIdeal) (V := 𝓞 E ⧸ PP.asIdeal)`.
+
+Rewrite `h` using `[hE]`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `((hp.pow_eq_iff).1 h.symm).1`.
+-/
 theorem absNorm_under {E F : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [Algebra (𝓞 F) (𝓞 E)] [Algebra.IsIntegral (𝓞 F) (𝓞 E)]
     (PP : HeightOneSpectrum (𝓞 E)) (p : ℕ) (hp : p.Prime) (hPP : Ideal.absNorm PP.asIdeal = p) :
@@ -27,6 +34,9 @@ theorem absNorm_under {E F : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   exact ((hp.pow_eq_iff).1 h.symm).1
 
+/- English proof (translation)
+Introduce `h`. Apply `hsq` to reduce the goal to its premises. Establish `h1` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) h`. Rewrite `h1` using `[Ideal.map_pow, map_natCast]`. Conclude with `Ideal.pow_right_mono (Ideal.map_comap_le) 2 h1`.
+-/
 theorem natCast_not_mem_under_sq {E F : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra (𝓞 F) (𝓞 E)] [Algebra.IsIntegral (𝓞 F) (𝓞 E)]
     (PP : HeightOneSpectrum (𝓞 E)) (p : ℕ) (hsq : (p : 𝓞 E) ∉ PP.asIdeal ^ 2) :
@@ -41,6 +51,21 @@ end GlobalTheory.SplitDegOneChar
 
 namespace GlobalTheory.SplitDegOneChar
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q PP p hp hPP hsq hv hint ψ hψ x b hx`. Establish `hpr : ∀ y : D.host.E, (ofSplit q).pr y = q.pr (incA D y)` using `fun _ => rfl`. Use `set c : D.host.F := (b : D.host.F) / (p : D.host.F) with hcdef`. Establish `hc : algebraMap D.host.F D.host.E c = (b : D.host.E) / (p : D.host.E)`. Rewrite using `[hcdef, map_div₀, map_intCast, map_natCast]`.
+
+Establish `hxs : x = (x - (b : D.host.E) / (p : D.host.E)) + algebraMap D.host.F D.host.E c`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hadd : ∀ u w : AE D, psiE ψ (u + w) = psiE ψ u * psiE ψ w`. Introduce `u w`.
+
+Simplify using `only [GlobalTheory.MixPer.psiE, map_add, AddChar.map_add_eq_mul]`. Rewrite using `[hxs, hpr, map_add, map_add, map_add, hadd]`. Establish `hy : q.pr (incA D (x - (b : D.host.E) / (p : D.host.E))) ∈ 𝒪[k]`. Rewrite using `[← hpr]`. Conclude with `(hint _).2 hx`.
+
+Establish `h1 : psiE ψ (q.sec (q.pr (incA D (x - (b : D.host.E) / (p : D.host.E))))) = 1`. Rewrite using `[GlobalTheory.MixPer.psiE, GlobalTheory.SplitCharCond.trace_sec q, GlobalTheory.SplitCharCond.snd_trace, GlobalTheory.SplitCharCond.char_int hψ (GlobalTheory.SplitCharCond.trace_int ((q.int_iff _).1 hy))]`. Rewrite using `[h1, one_mul]`. Take `⟨ε, hε, he⟩` from `q.above`. Establish `htr : Algebra.trace (AF D.host.F) (AE D) q.e = ε`.
+
+Use `Algebra.TensorProduct.includeLeft_injective (S := AF D.host.F) (algebraMap D.host.F D.host.E).injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (AF D.host.F) (AE D) _ = algebraMap (AF D.host.F) (AE D) _`. Rewrite using `[GlobalTheory.FockCompare.SymplVal.trace_AE, he]`. Establish `hinc : incA D (algebraMap D.host.F D.host.E c) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) c)` using `GlobalTheory.SplitCharCond.one_tmul_eq c`. Rewrite using `[q.sec_pr, hinc, mul_comm, ← Algebra.smul_def, GlobalTheory.MixPer.psiE, map_smul, smul_eq_mul, htr, mul_comm]`.
+
+Establish `hnorm : Ideal.absNorm q.v.asIdeal = p` using `by rw [hv]; exact absNorm_under PP p hp hPP`. Establish `hsqv : (p : 𝓞 D.host.F) ∉ q.v.asIdeal ^ 2` using `by rw [hv]; exact natCast_not_mem_under_sq PP p hsq`. Establish `key` using `GlobalTheory.StdCharDegOne.stdChar_placeIdem_div D ψ hψ p hp q.v hnorm hsqv ε hε (b : 𝓞 D.host.F) b (by rw [sub_self]; exact zero_mem _)`. Rewrite using `[← key, hcdef]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem psiE_sec_pr_eq_exp : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E) (p : ℕ), p.Prime → Ideal.absNorm PP.asIdeal = p → ((p : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2 → q.v = PP.under (𝓞 D.host.F) → (∀ x, (ofSplit q).pr x ∈ 𝒪[k] ↔ Formalism.L2.Col.IntAt PP x) → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ (x : D.host.E) (b : ℤ), Formalism.L2.Col.IntAt PP (x - (b : D.host.E) / (p : D.host.E)) → psiE ψ (q.sec ((ofSplit q).pr x)) = Complex.exp (2 * Real.pi * Complex.I * b / (p : ℂ)) := by
   intro D k _ _ _ _ q PP p hp hPP hsq hv hint ψ hψ x b hx
   have hpr : ∀ y : D.host.E, (ofSplit q).pr y = q.pr (incA D y) := fun _ => rfl

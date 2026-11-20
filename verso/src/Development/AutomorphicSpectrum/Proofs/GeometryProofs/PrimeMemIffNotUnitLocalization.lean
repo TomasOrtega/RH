@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.LocalSubringUnits
 
+/- English proof (translation)
+Introduce `K _ T P hP t`. Establish `key : IsUnit (algebraMap T (LocalSubring.ofPrime T P).toSubring t) ↔ t ∉ P` using `IsLocalization.AtPrime.isUnit_to_map_iff (LocalSubring.ofPrime T P).toSubring P t`. Establish `hcoe : ((algebraMap T (LocalSubring.ofPrime T P).toSubring t : (LocalSubring.ofPrime T P).toSubring) : K) = (t : K)` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `ht ⟨h0, hinv⟩`.
+
+Use `key.1 (IsUnit.of_mul_eq_one ⟨(t : K)⁻¹, hinv⟩ ?_) ht` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, hcoe]`. Conclude with `mul_inv_cancel₀ h0`. Introduce `h`.
+
+Assume the negation of the conclusion as `ht`. Take `⟨u, hu⟩` from `(key.2 ht).exists_right_inv`. Establish `hu' : (t : K) * (u : K) = 1`. Use `congrArg (fun x : (LocalSubring.ofPrime T P).toSubring => (x : K)) hu` as an intermediate fact. Simplify `this` using `only [Subring.coe_mul, hcoe, Subring.coe_one]`.
+
+Establish `h0 : (t : K) ≠ 0` using `left_ne_zero_of_mul_eq_one hu'`. Use `h ⟨h0, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hu']`. Conclude with `u.2`.
+-/
 theorem mem_prime_iff_not_inv_mem :
     ∀ {K : Type} [Field K] (T : Subring K) (P : Ideal T) (_ : P.IsPrime) (t : T),
       t ∈ P ↔ ¬ ((t : K) ≠ 0 ∧ (t : K)⁻¹ ∈ (LocalSubring.ofPrime T P).toSubring) := by

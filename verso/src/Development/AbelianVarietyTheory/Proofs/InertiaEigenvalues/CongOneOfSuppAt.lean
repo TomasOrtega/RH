@@ -13,6 +13,45 @@ namespace GlobalTheory.SuppIntCong
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D V Q hQ a ha hQs hs`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨hid, hcj⟩` from `GlobalTheory.ConjVal.components_and_conj_valuation D ι h1 h2 h4`. Take `⟨ev, hev⟩ : ∃ ev : ∀ P : HeightOneSpectrum (𝓞 D.host.E), AE D →+* P.adicCompletion D.host.E, ∀ P z, ev P z = ι (finPart D z) P` from `⟨fun P => ((GlobalTheory.CharLocProd.evalAt P).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩`.
+
+Take `⟨evf, hevf⟩ : ∃ evf : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (Af D.host.F ⊗[D.host.F] D.host.E) →+* P.adicCompletion D.host.E, ∀ P y, evf P y = ι y P` from `⟨fun P => (GlobalTheory.CharLocProd.evalAt P).comp ι.toRingHom, fun _ _ => rfl⟩`. Simplify using `only [← hev] at hid hcj`. Take `⟨⟨es, hes, hsum⟩, -⟩` from `hQs.isIdemSum`. Establish `e2 : ∀ P, P ∉ Q → ev P (idem Q) = 0` using `fun P hP => by`. Rewrite using `[hsum, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun Q' h' => (hid _ _ (hes Q' h')).2.2 P fun hh => hP (hh ▸ h')`. Establish `hA1 : ∀ P, P ∉ Q → GlobalTheory.IdemSupport.cP P ∉ Q → (ev P).mapMatrix (mt V hQ) = 1` using `fun P hP hP' => by`. Establish `hc` using `hcj (idem Q) (GlobalTheory.IdemSupport.cP P)`. Rewrite `hc` using `[e2 _ hP', map_zero, GlobalTheory.ClassScalarValue.cP_cP, map_eq_zero]`. Establish `hu : ev P (idem Q + cA D (idem Q)) = 0` using `by rw [map_add, e2 P hP, hc, add_zero]`.
+
+Establish `: (ev P).mapMatrix (mt V hQ - 1) = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev P ((mt V hQ - 1) i j) = 0`. Rewrite using `[← hs i j, map_mul, hu, zero_mul]`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`.
+
+Conclude with `this`. Establish `hinv : ∀ P, (ev P).mapMatrix (mt V hQ) * (ev P).mapMatrix (mt V hQ⁻¹) = 1` using `fun P => by`. Rewrite using `[← map_mul, show mt V hQ * mt V hQ⁻¹ = 1 by unfold Formalism.L2.Theta.mt; rw [map_inv]; exact Units.mul_inv _, map_one]`. Establish `hB1 : ∀ P, P ∉ Q → GlobalTheory.IdemSupport.cP P ∉ Q → (ev P).mapMatrix (mt V hQ⁻¹) = 1` using `fun P hP hP' => by`. Use `hinv P` as an intermediate fact.
+
+Rewrite `this` using `[hA1 P hP hP', one_mul]`. Then use the resulting hypothesis. Use `set S := Q ∪ Q.image GlobalTheory.IdemSupport.cP with hS`. Establish `hout : ∀ P, P ∉ S → P ∉ Q ∧ GlobalTheory.IdemSupport.cP P ∉ Q` using `fun P hP => ⟨fun h' => hP (Finset.mem_union_left _ h'), fun h' => hP (Finset.mem_union_right _ (Finset.mem_image.2 ⟨_, h', GlobalTheory.ClassScalarValue.cP_cP P⟩))⟩`. Establish `hN : ∀ P ∈ S, ((normProd Q : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `key : ∀ P' ∈ Q, ((normProd Q : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal` using `fun P' hP' => by show ((∏ v ∈ Q, Ideal.absNorm v.asIdeal : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal`.
+
+Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem (fun v : HeightOneSpectrum (𝓞 D.host.E) => Ideal.absNorm v.asIdeal) hP'`. Rewrite using `[hr, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Introduce `P hP`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases.
+
+Conclude with `key P h`. Take `⟨P', hP', rfl⟩` from `Finset.mem_image.1 h`. Rewrite using `[GlobalTheory.IdemSupport.mem_cP, map_natCast]`. Conclude with `key P' hP'`. Establish `hvN : ∀ P ∈ S, ∀ c : ℕ, Valued.v (evf P ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E)) ≤ WithZero.exp (-(c : ℤ))`.
+
+Introduce `P hP c`. Establish `he : evf P ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) = algebraMap D.host.E (P.adicCompletion D.host.E) (algebraMap (𝓞 D.host.E) D.host.E (((normProd Q : ℕ) : 𝓞 D.host.E) ^ c))`. Simplify using `only [map_natCast, map_pow, Nat.cast_pow]`. Rewrite using `[he, GlobalTheory.CharLocProd.val_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_le_pow_iff_mem _ _ _).2 (Ideal.pow_mem_pow (hN P hP) c)`.
+
+Establish `hlog : ∀ x : WithZero (Multiplicative ℤ), ∃ n : ℕ, x ≤ WithZero.exp (n : ℤ)` using `fun x => by`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, hx ▸ zero_le'⟩`. Conclude with `⟨(WithZero.log x).toNat, by`. Rewrite using `[← WithZero.exp_log hx]; exact WithZero.exp_le_exp.2 (by rw [WithZero.log_exp]; exact Int.self_le_toNat _)⟩`.
+
+Use `choose fn hfn using hlog`. Establish `ha0 : (a : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 ha.ne'`. Establish `hgen : ∀ y : Af D.host.F ⊗[D.host.F] D.host.E, (∀ P, P ∉ S → evf P y = 0) → ∃ c0 : ℕ, ∀ c, c0 ≤ c → ∃ w ∈ intAE D, ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * y = ((a ^ 2 : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * w`. Introduce `y hy`. Use `set u : Af D.host.F ⊗[D.host.F] D.host.E := Algebra.TensorProduct.includeRight (R := D.host.F) (A := Af D.host.F) (B := D.host.E) ((a : D.host.E)⁻¹ ^ 2) with hu`.
+
+Establish `hau : ((a ^ 2 : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * u = 1`. Rewrite using `[hu, ← map_natCast (Algebra.TensorProduct.includeRight (R := D.host.F) (A := Af D.host.F) (B := D.host.E)), ← map_mul, Nat.cast_pow, ← mul_pow, mul_inv_cancel₀ ha0, one_pow, map_one]`. Set `f : HeightOneSpectrum (𝓞 D.host.E) → ℕ` to `fun P => fn (Valued.v (evf P u)) + fn (Valued.v (evf P y))`. Use `⟨S.sup f, fun c hc => ⟨u * ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * y, ?_, ?_⟩⟩` and prove the remaining obligations. Use `(h2 _).2 fun P => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hevf, map_mul, map_mul, map_mul, map_mul]`. Distinguish the cases in `hP : P ∈ S`. Establish `hle : f P ≤ c` using `(Finset.le_sup hP).trans hc`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_add, ← WithZero.exp_add]`.
+
+Use `_ ≤ 1 := by`. Rewrite using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_le_exp.2 (by simp only [f] at hle; omega)`. Rewrite using `[hy P hP, map_zero, mul_zero]`. Conclude with `zero_le'`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, hau, one_mul]`. Establish `hone : ∀ P i j, evf P ((1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion D.host.E)) i j` using `fun P i j => by`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Establish `hy1 : ∀ i j P, P ∉ S → evf P ((finHom V hQ).val i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j) = 0`. Introduce `i j P hP`.
+
+Take `⟨o1, o2⟩` from `hout P hP`. Establish `h'` using `congrFun (congrFun (hA1 P o1 o2) i) j`. Rewrite `h'` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Establish `hk : (finHom V hQ).val i j = finPart D (mt V hQ i j)` using `rfl`. Rewrite using `[map_sub, hone, hk, hevf, ← hev, h', sub_self]`.
+
+Establish `hy2 : ∀ i j P, P ∉ S → evf P ((finHom V hQ)⁻¹.val i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j) = 0`. Introduce `i j P hP`. Take `⟨o1, o2⟩` from `hout P hP`. Establish `h'` using `congrFun (congrFun (hB1 P o1 o2) i) j`. Rewrite `h'` using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+
+Establish `hk : (finHom V hQ)⁻¹.val i j = finPart D (mt V hQ⁻¹ i j)` using `by rw [← map_inv]; rfl`. Rewrite using `[map_sub, hone, hk, hevf, ← hev, h', sub_self]`. Use `choose c1 hc1 using fun i j => hgen _ (hy1 i j)`. Use `choose c2 hc2 using fun i j => hgen _ (hy2 i j)`. Set `g : Fin V.rank × Fin V.rank → ℕ` to `fun p => c1 p.1 p.2 + c2 p.1 p.2`.
+
+Use `⟨Finset.univ.sup g, fun i j => ⟨hc1 i j _ ?_, hc2 i j _ ?_⟩⟩` and prove the remaining obligations. Conclude with `le_trans (Nat.le_add_right _ _) (Finset.le_sup (f := g) (Finset.mem_univ (i, j)))`. Conclude with `le_trans (Nat.le_add_left _ _) (Finset.le_sup (f := g) (Finset.mem_univ (i, j)))`.
+-/
 theorem cong_one_of_suppAt : ∀ (D : D7) (V : HSp D) (Q : Finset (Pl D.host.E)) (hQ : GA D V) (a : ℕ), 0 < a → SplitSet Q → SuppAt (idem Q) V hQ → ∃ c : ℕ, ∀ i j, (∃ w ∈ intAE D, ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * ((finHom V hQ).val i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j) = ((a ^ 2 : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * w) ∧ (∃ w ∈ intAE D, ((normProd Q ^ c : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * ((finHom V hQ)⁻¹.val i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j) = ((a ^ 2 : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E) * w) := by
   intro D V Q hQ a ha hQs hs
   classical

@@ -20,6 +20,15 @@ open GlobalTheory.AdelicLatMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hcc, -, -, hG, hdet, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Establish `h1 : ∀ s ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) s ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun _ h => Formalism.UG.P.csDual_sig_mem D.sp.cm.sig h`. Establish `h2 : ∀ z, z ∈ GlobalTheory.AdLat.hat1 D.host.F ((1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Set D.host.E) ↔ GlobalTheory.LevSplit.swp D.host.F D.host.E z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `z`. Rewrite using `[← GlobalTheory.LatDual.integralTensorAdeles_eq_adelicCompletion_one]`.
+
+Conclude with `GlobalTheory.IdemSupport.mem_intAE_iff z`. Establish `h3 : ∀ x, D.sp.cm.sig x = GlobalTheory.Member.cF D x` using `fun _ => rfl`. Use `GlobalTheory.ParahoricLift.hatL_selfDual_gen (GlobalTheory.Member.cF D) D.sp.cm.sig h3 V.gram Λ hΛ.1.fg hΛ.1.span_eq_top hcc hG hdet (fun v => ?_) h1 h2` and prove the remaining obligations. Rewrite using `[hΛ.2 v]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[FractionalIdeal.mem_one_iff]`. Establish `e : (∑ a, ∑ b, v a * V.gramᵀ a b * GlobalTheory.Member.cF D (y b)) = ∑ i, ∑ j, star (y i) * V.gram i j * v j`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_apply, show GlobalTheory.Member.cF D (y a) = star (y a) from rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+-/
 theorem hatSelfDual {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hΛ : IsSelfDualC V Λ) :
     GlobalTheory.ParahoricLift.HatSelfDual D.sp.cm.sig V.gram Λ := by
   obtain ⟨-, -, -, -, hcc, -, -, hG, hdet, -⟩ := GlobalTheory.Member.latHat_eq_hat_and_gram D V
@@ -45,14 +54,29 @@ theorem hatSelfDual {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → 
     ring
   rw [e]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul e α => rw [cF_tmul, cF_tmul, star_star]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem cF_cF (z : EAf D) : cF D (cF D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp only [map_zero]
   | tmul e α => rw [cF_tmul, cF_tmul, star_star]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cF_eToEAf (x : D.host.E) : cF D (eToEAf D x) = eToEAf D (star x) := rfl
 
+/- English proof (translation)
+Use `set Z : Matrix (Fin V.rank) (Fin V.rank) (EAf D) := (β⁻¹).val * (V.gram⁻¹).map (eToEAf D) with hZ`. Establish `hZG : Z * V.gram.map (eToEAf D) = (β⁻¹).val`. Rewrite using `[hZ, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit V), Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `hrow : ∀ l, ∑ k, cF D (cF D (Z j k)) * eToEAf D (V.gram k l) = (β⁻¹).val j l` using `fun l => by`. Rewrite using `[← hZG, Matrix.mul_apply]`.
+
+Simplify using `only [cF_cF, Matrix.map_apply]`. Use `⟨fun k => cF D (Z j k), (hatSelfDual hΛ _).2 fun z hz => ?_, hrow⟩` and prove the remaining obligations. Establish `h1 : cF D (((β⁻¹).val *ᵥ z) j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `Formalism.UG.P.csDual_sig_mem D.sp.cm.sig ((hβ z).1 hz j)`. Establish `e : cF D (((β⁻¹).val *ᵥ z) j) = ∑ a, ∑ b, cF D (z a) * eToEAf D (V.gram a b) * cF D (Z j b)`. Rewrite using `[Matrix.mulVec, dotProduct, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hrow a, map_mul, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, cF_cF, cF_eToEAf, GlobalTheory.LatVac.gram_star]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[e]`. Conclude with `h1`.
+-/
 theorem exists_dual {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hΛ : IsSelfDualC V Λ)
     {β : GL (Fin V.rank) (EAf D)} (hβ : IsFrame β Λ) (j : Fin V.rank) :
     ∃ s ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ, ∀ l, ∑ k, cF D (s k) * eToEAf D (V.gram k l) = (β⁻¹).val j l := by
@@ -76,6 +100,19 @@ theorem exists_dual {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → 
   rw [e] at h1
   exact h1
 
+/- English proof (translation)
+Take `⟨a, ha, haA⟩` from `GlobalTheory.fractionalIdeal_exists_int_not_mem_of_count_eq_zero P D.host.AA (GlobalTheory.SplitHomLattice.ideal_ne_zero D) hP`. Establish `ha0 : a ≠ 0` using `fun h => ha (h ▸ zero_mem _)`. Establish `ha' : (a : D.host.E) ≠ 0` using `by exact_mod_cast ha0`. Establish `hw : finPart D (e * incA D ((a : D.host.E))⁻¹) ∈ intAE D`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ha ((he.2 a ha0).2 h)`. Use `choose s hs hs' using exists_dual hF.sdS hF.frS`. Use `set Y : Matrix (Fin T.rank) (Fin S.rank) (EAf D) := x.map (toEAf D) * F.βS.val with hY`. Establish `ht : ∀ j, (fun i => Y i j) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) F.ΛT := fun j => by`. Use `(hF.frT _).2 fun i => ?_` and prove the remaining obligations.
+
+Establish `e1 : ((F.βT⁻¹).val *ᵥ fun i => Y i j) i = frMapO S T F.βS F.βT x i j`. Rewrite using `[frMapO, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `hx i j`.
+
+Establish `hU` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hw _ (sum_mem fun j (_ : j ∈ Finset.univ) => rankOne_mem_latO S T F.ΛS F.ΛT (a : D.host.E) haA (s j) (hs j) _ (ht j))`. Use `hU using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i l`. Establish `hYZ : ∑ j, Y i j * (F.βS⁻¹).val j l = toEAf D (x i l)`. Rewrite using `[← Matrix.mul_apply, hY, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, Matrix.map_apply]`.
+
+Establish `hsum : (∑ j, rankOne S T (a : D.host.E) (s j) fun i => Y i j) i l = incA D (a : D.host.E) * x i l * finEmb D 1`. Rewrite using `[Matrix.sum_apply, ← finEmb_mul, mul_one, map_mul, toEAf_incA, ← hYZ, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[rankOne, Matrix.of_apply, hs' j l, mul_assoc]`. Establish `h1 : e * finEmb D 1 = e` using `GlobalTheory.PlaceDatum.mul_pair_one (GlobalTheory.SplitScalar.infPart_splitIdem he.1)`.
+
+Establish `h2 : incA D ((a : D.host.E))⁻¹ * incA D (a : D.host.E) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ ha', map_one]`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, hsum]`. Take the linear combination `(-(x i l)) * h1 - (e * x i l * finEmb D 1) * h2`.
+-/
 theorem smul_mem_lat {S T : HSp D} {F : Frame S T} (hF : F.Good) {e : AE D} {P : Pl D.host.E}
     (he : Formalism.L2.NTheta.IsIdemAt e P) (hP : FractionalIdeal.count D.host.E P D.host.AA = 0) {x : WO S T}
     (hx : IsIntM (frMapO S T F.βS F.βT x)) : e • x ∈ F.lat := by
@@ -112,6 +149,11 @@ theorem smul_mem_lat {S T : HSp D} {F : Frame S T} (hF : F.Good) {e : AE D} {P :
   rw [Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, hsum]
   linear_combination (-(x i l)) * h1 - (e * x i l * finEmb D 1) * h2
 
+/- English proof (translation)
+Introduce `D S T F hF R hR x hx hi`. Establish `e : x = ∑ PP ∈ R, idemAt PP • x`. Rewrite using `[← Finset.sum_smul]`. Conclude with `(Matrix.ext fun i j => hx i j).symm`. Rewrite using `[e]`.
+
+Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Take `⟨P, -, hRP, hP⟩` from `hR.split`. Conclude with `smul_mem_lat hF (hP.isIdemAt (hRP hPP)) (hR.prime PP (Or.inr hPP) PP (Or.inl rfl)) hi`.
+-/
 theorem mem_lat_of_frMapO_int : ∀ {D : D7} {S T : HSp D} {F : Frame S T}, F.Good → ∀ {R : Finset (Pl D.host.E)},
     PlacesOK ∅ R → ∀ {x : WO S T}, IsHalf (idem R) x → IsIntM (frMapO S T F.βS F.βT x) → x ∈ F.lat := by
   intro D S T F hF R hR x hx hi

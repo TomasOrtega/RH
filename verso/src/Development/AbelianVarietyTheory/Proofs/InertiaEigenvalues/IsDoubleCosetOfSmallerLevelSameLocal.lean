@@ -6,6 +6,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hDC`. Use `⟨fun a ha => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨⟨k, hk⟩, ⟨k', hk'⟩, rfl⟩` from `h1 a ha`. Take `⟨k₁, hk₁J, k₂, hk₂J, hk₁L, rfl, hk₂c⟩` from `hdec k hk`. Take `⟨k₁', hk₁'J, k₂', hk₂'J, hk₁'L, rfl, -⟩` from `hdec k' hk'`.
+
+Establish `e : k₁ * k₂ * x * (k₁' * k₂') = k₁ * x * k₁' * (k₂ * k₂')`. Establish `c1 : k₂ * x = x * k₂` using `(hk₂c x hx).eq`. Establish `c2 : k₂ * k₁' = k₁' * k₂` using `(hk₂c k₁' hk₁'L).eq`. Combine the equalities or inequalities in the displayed calculation. Establish `haL` using `hA _ ha`.
+
+Establish `hprodL : k₂ * k₂' ∈ Lc`. Establish `: k₂ * k₂' = (k₁ * x * k₁')⁻¹ * (k₁ * k₂ * x * (k₁' * k₂'))` using `by rw [e]; group`. Rewrite using `[this]`. Conclude with `Lc.mul_mem (Lc.inv_mem (Lc.mul_mem (Lc.mul_mem hk₁L hx) hk₁'L)) haL`. Establish `hprod : k₂ * k₂' ∈ J'` using `hLc ⟨J.mul_mem hk₂J hk₂'J, hprodL⟩`.
+
+Establish `hk₁ : k₁ ∈ J'` using `hLc ⟨hk₁J, hk₁L⟩`. Establish `hk₁' : k₁' ∈ J'` using `hLc ⟨hk₁'J, hk₁'L⟩`. Use `⟨⟨k₁, hk₁⟩, ⟨k₁' * (k₂ * k₂'), J'.mul_mem hk₁' hprod⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[e]`.
+
+Use `group`. Take `⟨⟨k, hk⟩, ⟨k', hk'⟩, rfl⟩` from `hg`. Take `⟨k₁, hk₁J, k₂, hk₂J, hk₁L, rfl, hk₂c⟩` from `hdec k (hJJ hk)`. Establish `hk₁ : k₁ ∈ J'` using `hLc ⟨hk₁J, hk₁L⟩`. Establish `hk₂ : k₂ ∈ J'`.
+
+Establish `: k₂ = k₁⁻¹ * (k₁ * k₂)` using `by group`. Rewrite using `[this]`. Conclude with `J'.mul_mem (J'.inv_mem hk₁) hk`. Take `⟨a, ⟨haA, haJ⟩, -⟩` from `h2 (k₁ * x) ⟨⟨k₁, hk₁J⟩, 1, by simp⟩`. Establish `haL : a⁻¹ * (k₁ * x) ∈ Lc` using `Lc.mul_mem (Lc.inv_mem (hA a haA)) (Lc.mul_mem hk₁L hx)`.
+
+Establish `haJ' : a⁻¹ * (k₁ * x) ∈ J'` using `hLc ⟨haJ, haL⟩`. Establish `c1 : k₂ * x = x * k₂` using `(hk₂c x hx).eq`. Use `⟨a, ⟨haA, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: a⁻¹ * (k₁ * k₂ * x * k') = a⁻¹ * (k₁ * x) * (k₂ * k')`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[this]`. Conclude with `J'.mul_mem haJ' (J'.mul_mem hk₂ hk')`. Introduce and unpack `b ⟨hbA, hbJ'⟩`. Establish `hgJ : ∃ m₁ m₂ : J, k₁ * k₂ * x * k' = (m₁ : G) * x * m₂` using `⟨⟨k₁ * k₂, hJJ hk⟩, ⟨k', hJJ hk'⟩, rfl⟩`. Take `⟨c, -, hc⟩` from `h2 _ hgJ`.
+
+Establish `haJg : a⁻¹ * (k₁ * k₂ * x * k') ∈ J`. Establish `: a⁻¹ * (k₁ * k₂ * x * k') = a⁻¹ * (k₁ * x) * (k₂ * k')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `J.mul_mem haJ (J.mul_mem hk₂J (hJJ hk'))`.
+
+Rewrite using `[hc b ⟨hbA, hJJ hbJ'⟩, hc a ⟨haA, haJg⟩]`.
+-/
 theorem isDC_of_smaller_level_same_local {G : Type} [Group G] (J J' Lc : Subgroup G) (x : G) (A : Finset G)
     (hJJ : J' ≤ J) (hLc : J ⊓ Lc ≤ J')
     (hdec : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ Lc ∧ k = k₁ * k₂ ∧ ∀ y ∈ Lc, Commute k₂ y)

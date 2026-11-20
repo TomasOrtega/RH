@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
   GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability GlobalTheory.CuspBlock GlobalTheory.LFun.SplitTie
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockExponent.twist_pairInd | exact GlobalTheory.LeviBlockExponent.twist_pairInd | (intros; apply GlobalTheory.LeviBlockExponent.twist_pairInd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pair_induced_twist_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ) (ν : kˣ →* ℂˣ),
     GlobalTheory.SmGL.IsSmoothChar ν →

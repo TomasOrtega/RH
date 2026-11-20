@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D` and use `GlobalTheory.VacUnique.vacUniqueO D`.
+-/
 theorem vacuum_unique_all : ∀ D : D7, VacUniqueO D :=
   fun D => GlobalTheory.VacUnique.vacUniqueO D
 

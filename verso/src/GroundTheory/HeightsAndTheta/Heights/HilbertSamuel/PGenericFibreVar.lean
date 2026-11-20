@@ -10,6 +10,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D hP`. Take `⟨-, ⟨hPp, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩` from `hP`. Establish `: (mCoordIdeal y).IsPrime` using `hPp`. Establish `hchar : ∀ m : ℤ, (C m : MvPolynomial (Σ k, ι k) ℤ) ∈ mCoordIdeal y → m = 0`. Introduce `m hm`.
+
+Establish `h1 : m ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)` using `hm`. Rewrite `h1` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from hhor, Ideal.mem_bot]`. Conclude with `h1`. Take `⟨hqp, hcomap, hform⟩` from `ReciprocityTheory.AnForm.R.extQ_spec (mCoordIdeal y) hchar`. Establish `hq : ReciprocityTheory.AnForm.R.extQ (mCoordIdeal y) = KH.genIdeal y` using `rfl`.
+
+Rewrite using `[← hq]`. Use `⟨⟨hqp, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨b, hb⟩` from `hS f hf`.
+
+Conclude with `⟨b, fun m hm k => hb m (MvPolynomial.support_map_subset _ _ hm) k⟩`. Use `show (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) = _`. Rewrite using `[hPS, Ideal.map_span]`. Introduce `k`. Take `⟨i, hi⟩` from `hrel k`.
+
+Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomap, Ideal.mem_comap, map_X]`. Conclude with `hX`. Use `GroundTheory.Heights₂.Heights.ObjectsChow.GenericFibreDim.eq_natCast_of_add_one_eq (D + Fintype.card K) _ ?_` and prove the remaining obligations. Rewrite using `[hform, hdim, show D + 1 + Fintype.card K = (D + Fintype.card K) + 1 by omega]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem GenericFibreVar.proof : GenericFibreVar.Statement := by
   intro K _ ι _ Ω _ y D hP
   obtain ⟨-, ⟨hPp, ⟨S, hS, hPS⟩, hrel⟩, hhor, hdim⟩ := hP

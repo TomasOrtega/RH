@@ -15,15 +15,24 @@ variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w
 
 instance eOsurj : RingHomSurjective (D.nbr i w hw).eO.toRingHom := ⟨(D.nbr i w hw).eO.surjective⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j m`. Simplify using `[toLLv]`.
+-/
 theorem toLLv_add {a n : ℕ} (u v : Fin a → Fin n → KK D.nd i) :
     toLLv i w hw (u + v) = toLLv i w hw u + toLLv i w hw v := by
   funext j m; simp [toLLv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j m`. Simplify using `only [toLLv, Pi.smul_apply, Algebra.smul_def, map_mul, Br.toLLK_alg]`.
+-/
 theorem toLLv_smul {a n : ℕ} (c : D.nd.O i) (u : Fin a → Fin n → KK D.nd i) :
     toLLv i w hw (c • u) = (D.nbr i w hw).eO c • toLLv i w hw u := by
   funext j m
   simp only [toLLv, Pi.smul_apply, Algebra.smul_def, map_mul, Br.toLLK_alg]
 
+/- English proof (translation)
+Introduce `u v h`. Use function extensionality and compare the values at `j m`. Conclude with `(Br.toLLK (D.nbr i w hw)).injective (congrFun (congrFun h j) m)`.
+-/
 theorem toLLv_inj {a n : ℕ} : Function.Injective (toLLv (D := D) i w hw (a := a) (n := n)) := by
   intro u v h
   funext j m
@@ -41,9 +50,15 @@ def toX : ↥Y →ₛₗ[(D.nbr i w hw).eO.toRingHom] (Xgrep i w hw r x hc Y hst
   map_add' u v := Subtype.ext (toLLv_add i w hw u.1 v.1)
   map_smul' c u := Subtype.ext (toLLv_smul i w hw c u.1)
 
+/- English proof (translation)
+Introduce `u v h` and use `Subtype.ext (toLLv_inj i w hw (congrArg (fun z : ↥(XV i w hw Y) => (z : Fin a → Fin D.R.nV → Br.LL D.nbr i w hw)) h))`.
+-/
 theorem toX_inj : Function.Injective (toX i w hw r x hc Y hst) := fun u v h =>
   Subtype.ext (toLLv_inj i w hw (congrArg (fun z : ↥(XV i w hw Y) => (z : Fin a → Fin D.R.nV → Br.LL D.nbr i w hw)) h))
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `sumRho (fun j : Fin a => fam i w hw r (x j)) id g (toLLv i w hw y.1) j = _`. Rewrite using `[sumRho_apply]`. Conclude with `loc_mulVec i w hw (rTwO D.nd i r (x j)) g (y.1 j)`.
+-/
 theorem rho_toX (g : Br.G D.nbr i w hw) (y : ↥Y) :
     (Xgrep i w hw r x hc Y hst).ρ g (toX i w hw r x hc Y hst y) =
       toX i w hw r x hc Y hst ⟨_, hst ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) y.1 y.2⟩ := by
@@ -62,6 +77,13 @@ variable {a : ℕ} (x : Fin a → D.nd.X i)
   (hst : ∀ γ : GE D.nd, ∀ y ∈ Y,
     (fun j => (mapM (toK D.nd i) (rTwO D.nd i r (x j)) γ).mulVec (y j)) ∈ Y)
 
+/- English proof (translation)
+Use `⟨fun {c v} h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc0 : c = 0`. Conclude with `Or.inl hc0`. Use `right`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `j m`. Establish `h2` using `congrFun (congrFun (congrArg (fun z : ↥(XV i w hw Y) => z.1) h) j) m`. Express the relevant statement in the definitionally equal form `c • (show ↥(XV i w hw Y) from v).1 j m = 0 at h2`. Express the relevant statement in the definitionally equal form `(show ↥(XV i w hw Y) from v).1 j m = 0`. Rewrite `h2` using `[Subalgebra.smul_def, smul_eq_mul]`.
+
+Conclude with `(mul_eq_zero.1 h2).resolve_left (fun h0 => hc0 (Subtype.ext h0))`.
+-/
 theorem noZero : NoZeroSMulDivisors (Br.OLL D.nbr i w hw) (Xgrep i w hw r x hc Y hst).V := by
   refine ⟨fun {c v} h => ?_⟩
   by_cases hc0 : c = 0
@@ -75,6 +97,9 @@ theorem noZero : NoZeroSMulDivisors (Br.OLL D.nbr i w hw) (Xgrep i w hw r x hc Y
   rw [Subalgebra.smul_def, smul_eq_mul] at h2
   exact (mul_eq_zero.1 h2).resolve_left (fun h0 => hc0 (Subtype.ext h0))
 
+/- English proof (translation)
+Rewrite using `[LinearMap.range_eq_map]`. Conclude with `((Submodule.fg_top Y).2 hY).map _`.
+-/
 theorem range_fg (hY : Y.FG) : (LinearMap.range (toX i w hw r x hc Y hst)).FG := by
   rw [LinearMap.range_eq_map]
   exact ((Submodule.fg_top Y).2 hY).map _
@@ -113,6 +138,9 @@ instance eOinv : RingHomInvPair (D.nbr i w hw).eO.toRingHom (D.nbr i w hw).eO.sy
 instance eOinv' : RingHomInvPair (D.nbr i w hw).eO.symm.toRingHom (D.nbr i w hw).eO.toRingHom :=
   ⟨by ext; simp, by ext; simp⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Br.vecS (D.nbr i w hw) k ((matRep (mapM (toK D.nd i) M) _) u)) = Submodule.Quotient.mk ((matRep (Br.loc D.nbr i w hw M) g) (Br.vecS (D.nbr i w hw) k u))`. Use `congr 1`. Conclude with `(loc_mulVec i w hw M g u).symm`.
+-/
 theorem phi_WKG {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (z : KOG (D.nd.O i) k) :
     Br.phi (D.nbr i w hw) k (WKG M ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) z) =
@@ -139,6 +167,9 @@ def phiY (φ : ↥Y →ₗ[D.nd.O i] KOG (D.nd.O i) k) :
       ((ModuleGaloisRepresentation i w hw M hM).V ⧸ (Br.locLat D.nbr i w hw M).T) :=
   ((Br.phi (D.nbr i w hw) k).comp φ).comp (eY i w hw r x hc Y hst).symm.toLinearMap
 
+/- English proof (translation)
+Establish `e : (eY i w hw r x hc Y hst).symm ⟨_, h⟩ = y` using `(eY i w hw r x hc Y hst).symm_apply_eq.2 (Subtype.ext rfl)`. Express the relevant statement in the definitionally equal form `Br.phi (D.nbr i w hw) k (φ ((eY i w hw r x hc Y hst).symm ⟨_, h⟩)) = _`. Rewrite using `[e]`.
+-/
 theorem phiY_toX (φ : ↥Y →ₗ[D.nd.O i] KOG (D.nd.O i) k) (y : ↥Y)
     (h : toX i w hw r x hc Y hst y ∈ (latY i w hw r x hc Y hst hY).T) :
     phiY i w hw r x hc Y hst hY M hM φ ⟨_, h⟩ = Br.phi (D.nbr i w hw) k (φ y) := by
@@ -147,6 +178,11 @@ theorem phiY_toX (φ : ↥Y →ₗ[D.nd.O i] KOG (D.nd.O i) k) (y : ↥Y)
   change Br.phi (D.nbr i w hw) k (φ ((eY i w hw r x hc Y hst).symm ⟨_, h⟩)) = _
   rw [e]
 
+/- English proof (translation)
+Introduce `g v`. Take `⟨v, y, rfl⟩` from `v`. Establish `e1 : actT (latY i w hw r x hc Y hst hY) g ⟨_, ⟨y, rfl⟩⟩ = ⟨toX i w hw r x hc Y hst ⟨_, hst ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) y.1 y.2⟩, ⟨_, rfl⟩⟩` using `Subtype.ext (rho_toX i w hw r x hc Y hst g y)`. Use `(congrArg (phiY i w hw r x hc Y hst hY M hM φ) e1).trans ?_` and prove the remaining obligations. Use `(phiY_toX i w hw r x hc Y hst hY M hM φ _ _).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg (repD (Br.locLat D.nbr i w hw M) g) (phiY_toX i w hw r x hc Y hst hY M hM φ y ⟨y, rfl⟩).symm)` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `phi_WKG i w hw M g (φ y)`.
+-/
 theorem phiY_gmap (φ : ↥Y →ₗ[D.nd.O i] KOG (D.nd.O i) k)
     (hφ : ∀ (γ : GE D.nd) (y : ↥Y), φ ⟨_, hst γ y.1 y.2⟩ = WKG M γ (φ y)) :
     BlochKatoDuality.IsGMapD (latY i w hw r x hc Y hst hY) (Br.locLat D.nbr i w hw M) (phiY i w hw r x hc Y hst hY M hM φ) := by
@@ -175,6 +211,11 @@ variable {a : ℕ} (x : Fin a → D.nd.X i)
 def cocY (g : Br.G D.nbr i w hw) : (Xgrep i w hw r x hc Y hst).V :=
   toX i w hw r x hc Y hst ⟨_, hE ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j m`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, sumRho_apply]`. Establish `h1` using `congrFun (loc_mulVec i w hw (rTwO D.nd i r (x j)) g (E j)) m`. Express the relevant statement in the definitionally equal form `Br.toLLK (D.nbr i w hw) (((mapM (toK D.nd i) (rTwO D.nd i r (x j)) _).mulVec (E j) - E j) m) = _`. Rewrite using `[Pi.sub_apply, map_sub, ← h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cocY_val (g : Br.G D.nbr i w hw) :
     (show ↥(XV i w hw Y) from cocY i w hw r x hc Y hst E hE g).1 =
       sumRho (fun j : Fin a => fam i w hw r (x j)) id g (toLLv i w hw E) - toLLv i w hw E := by
@@ -193,6 +234,9 @@ variable {a : ℕ} (x : Fin a → D.nd.X i)
 
 include hc in
 
+/- English proof (translation)
+Use `haveI := isTopRing i w hw`. Establish `hc' : ∀ (j : Fin a) (v : Fin D.R.nV → Br.LL D.nbr i w hw), Continuous fun g => ((fam i w hw r (x j)).comp (Subgroup.inclusion (GK_le h)) g).mulVec v` using `fun j v => ((hc j).comp (continuous_inclusion (GK_le h))).matrix_mulVec continuous_const`. Establish `hF'` using `hAdm (D.nd.l i) K' (D.nbr i w hw).LL`. Establish `hcr : ∀ j, IsCrys ((D.loc (D.nd.l i)).PD K') (matRep ((fam i w hw r (x j)).comp (Subgroup.inclusion (GK_le h))))` using `fun j => ((GlobalTheory.PcRes.main (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS _ (matRep (fam i w hw r (x j)))).2.1 (hpot j))`. Conclude with `(cj_sum (Qp := ℚ_[D.nd.l i]) (O := ↥(OL (D.nbr i w hw).LL)) (fun j : Fin a => (fam i w hw r (x j)).comp (Subgroup.inclusion (GK_le h))) hc' hF' (S := fun _ => Set.univ) (fun j => ⟨hcr j, fun τ b _ => Set.mem_univ _⟩) a id).1`.
+-/
 theorem sum_crys (hAdm : FontaineAtPlacesOverL (D := D)) (K' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).Kw.1 ≤ K'.1)
     (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex)
     (hS : ∀ (g : ↥(GK (D.nbr i w hw).Kw)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'),
@@ -220,6 +264,9 @@ variable (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
   (E : Fin a → Fin D.R.nV → KK D.nd i)
   (hE : ∀ γ : GE D.nd, (fun j => (mapM (toK D.nd i) (rTwO D.nd i r (x j)) γ).mulVec (E j) - E j) ∈ Y)
 
+/- English proof (translation)
+Use `haveI := isTopRing i w hw`. Establish `hF'` using `hAdm (D.nd.l i) K' (D.nbr i w hw).LL`. Conclude with `GlobalTheory.Pass.FinDesc.main (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF (fun A₀ A₁ A₂ ι π h1 h2 h3 h4 h5 hA => ⟨((hF'.1 A₀ A₁ A₂ ι π h1 h2 h3 h4 h5).1 hA).1, ((hF'.1 A₀ A₁ A₂ ι π h1 h2 h3 h4 h5).1 hA).2.1⟩) (GRep.sum (Qp := ℚ_[D.nd.l i]) (O := …`.
+-/
 theorem pushoutCocycle_mem_blochKatoSelmer (hAdm : FontaineAtPlacesOverL (D := D)) (K' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).Kw.1 ≤ K'.1)
     (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex)
     (hS : ∀ (g : ↥(GK (D.nbr i w hw).Kw)) (c : ↥(K0 K')), ∃ c' : ↥(K0 K'),
@@ -240,6 +287,11 @@ theorem pushoutCocycle_mem_blochKatoSelmer (hAdm : FontaineAtPlacesOverL (D := D
 
 end Crys
 
+/- English proof (translation)
+Introduce `D hAdm i r _ Xs w hw n hpf k M hM a x hx hc E Y hY hst hE c hcm`. Take `⟨K', h, hN, hF, hS, Sig, Fr, -, -, -, -, hall⟩` from `hpf`. Take `⟨φ, hφ, rfl⟩` from `hcm`. Establish `hz` using `pushoutCocycle_mem_blochKatoSelmer i w hw r x hc Y hst E hE hAdm K' h hN hF hS (fun j => (hall ⟨x j, hx j⟩).1)`. Establish `hT : cocY i w hw r x hc Y hst E hE ∈ latticeCocycles (latY i w hw r x hc Y hst hY)` using `⟨hz.1, fun g _ => ⟨_, rfl⟩⟩`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨latY i w hw r x hc Y hst hY, phiY i w hw r x hc Y hst hY M hM φ, phiY_gmap i w hw r x hc Y hst hY M hM φ hφ, ⟨_, hT⟩, ⟨hT, hz⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Conclude with `(phiY_toX i w hw r x hc Y hst hY M hM φ _ _).symm`.
+-/
 theorem main : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → ∀ (Xs : Set (D.nd.X i)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (n : ℕ), PotFam i w hw (fun x : ↥Xs => rTwO D.nd i r x) n → ∀ {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (hM : Continuous fun g => M g) (a : ℕ) (x : Fin a → D.nd.X i), (∀ j, x j ∈ Xs) → ∀ (hc : ∀ j, Continuous fun g => Br.loc D.nbr i w hw (rTwO D.nd i r (x j)) g) (E : Fin a → Fin D.R.nV → KK D.nd i) (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i)), Y.FG → ∀ (hst : (∀ γ : GE D.nd, ∀ y ∈ Y, (fun j => (mapM (toK D.nd i) (rTwO D.nd i r (x j)) γ).mulVec (y j)) ∈ Y)) (hE : (∀ γ : GE D.nd, (fun j => (mapM (toK D.nd i) (rTwO D.nd i r (x j)) γ).mulVec (E j) - E j) ∈ Y)), ∀ c ∈ GlobalTheory.Pass.LocDirect.pushSet i w hw r M x E Y hst hE, c ∈ BlochKatoDuality.spanPush (Br.PD D.loc D.nbr i w hw) (GlobalTheory.Pass.LocDirect.Xgrep i w hw r x hc Y hst) (GlobalTheory.Pass.LocDirect.ModuleGaloisRepresentation i w hw M hM) (Br.locLat D.nbr i w hw M) := by
   intro D hAdm i r _ Xs w hw n hpf k M hM a x hx hc E Y hY hst hE c hcm
   obtain ⟨K', h, hN, hF, hS, Sig, Fr, -, -, -, -, hall⟩ := hpf

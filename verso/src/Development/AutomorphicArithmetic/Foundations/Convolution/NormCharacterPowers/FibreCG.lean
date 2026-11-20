@@ -7,6 +7,19 @@ open UpperTheory.ConvolutionTheory.R
 
 open GlobalTheory.CuspRep Formalism.L2.Host
 
+/- English proof (translation)
+Introduce `hC hN hP K M _ _ _ _ _ _ _ _ hl n π P hn hπ`. Take `⟨η, hη⟩` from `hC K M hl`. Take `⟨hp1, hp2⟩` from `hP K M hl η hη`. Establish `key : ∀ π₁ : CG K n, UpperTheory.V.Published.WeakBC π₁.HasSat P.HasSat → ((Finset.range (Module.finrank K M)).filter fun j => π₁ = π.twist (η ^ j)).card = 1`. Introduce `π₁ h₁`.
+
+Use `hN K M hl η hη n π π₁ Unit (fun _ => n) (fun _ => P) hn (fun _ => hn) (by rw [sumSat_unit]; exact hπ) (by rw [sumSat_unit]; exact h₁)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Use `⟨fun χ hχ he => ?_, fun π₁ h₁ => ?_⟩` and prove the remaining obligations. Take `⟨j, hj0, hjl, rfl⟩` from `hp1 χ hχ`.
+
+Take `⟨a, ha⟩` from `Finset.card_eq_one.1 (key π hπ)`. Establish `h0 : 0 ∈ (Finset.range (Module.finrank K M)).filter fun j => π = π.twist (η ^ j)`. Rewrite using `[Finset.mem_filter, Finset.mem_range, pow_zero, CG.twist_one]`. Conclude with `⟨hl.pos, rfl⟩`. Establish `h1 : j ∈ (Finset.range (Module.finrank K M)).filter fun j => π = π.twist (η ^ j)`.
+
+Rewrite using `[Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨hjl, he.symm⟩`. Rewrite `h0`, `h1` using `[ha, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `Finset.card_eq_one.1 (key π₁ h₁)`.
+
+Establish `h1 : a ∈ (Finset.range (Module.finrank K M)).filter fun j => π₁ = π.twist (η ^ j)`. Rewrite using `[ha]`. Conclude with `Finset.mem_singleton_self a`. Rewrite `h1` using `[Finset.mem_filter, Finset.mem_range]`. Use `⟨η ^ a, ?_, h1.2.symm⟩` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos a with rfl | h` into its components or cases. Conclude with `Or.inl (pow_zero _)`. Conclude with `Or.inr (hp2 a h h1.1)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R.fibreCG :
     ClassChar → Count → NormCharPow → FibreCG := by
   intro hC hN hP K M _ _ _ _ _ _ _ _ hl n π P hn hπ

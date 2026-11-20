@@ -44,6 +44,9 @@ noncomputable def prodEquiv {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSettin
       (iotaX X h).continuous.comp continuous_subtype_val
     exact ((continuous_fst.comp hc).subtype_mk _).prodMk ((continuous_snd.comp hc).subtype_mk _)
 
+/- English proof (translation)
+Use `show iotaX X h ((iotaX X h).symm _) = _`. Simplify using the standard rewrite rules.
+-/
 theorem iota_prodEquiv {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     {u : D.what₂.Word} {ψ : AddChar (AF D.host.F) ℂ} {A : HSp D} (B : SBes X h u ψ A)
     (p : Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u) × Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) :
@@ -51,6 +54,25 @@ theorem iota_prodEquiv {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) 
   show iotaX X h ((iotaX X h).symm _) = _
   simp
 
+/- English proof (translation)
+Introduce `D X h u ψ A B μSf hSf hσf hS`. Use `haveI := hSf`. Use `haveI := hσf`. Establish `hR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Use `haveI : BorelSpace X.B.I.GA := hR.2.2.2.1`.
+
+Use `haveI : SecondCountableTopology X.B.I.GA := hR.2.1`. Use `haveI : LocallyCompactSpace X.B.I.GA := hR.1`. Use `haveI : SecondCountableTopology X.B.I.Gf := Formalism.L2.SG.Pf.gf_secondCountable X.B.I`. Use `haveI : SecondCountableTopology (GA D (D.sp.Y 0)) := (iotaX X h).toHomeomorph.secondCountableTopology`. Use `haveI : LocallyCompactSpace (GA D (D.sp.Y 0)) := (iotaX X h).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+
+Establish `hcl : IsClosed (besGrp B.d B.o : Set (GA D (D.sp.Y 0)))` using `GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ B.d B.o`. Use `haveI : LocallyCompactSpace (besGrp B.d B.o) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : B.lev.μR.IsHaarMeasure := (GlobalTheory.BesselQuot.besGrp_quotient D D.R.rS B.lev).1`. Establish `hSi : IsClosed ((Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u) : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf)` using `Formalism.L2.SG.WuDecayPf.isClosed_sinfU X u`. Use `haveI : LocallyCompactSpace (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) := hSi.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Take `⟨hHaar', -, -⟩` from `Formalism.L2.SG.Pf.haarOnSet_isHaar_inst X.B.I (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) hSi _ hS`. Use `haveI := hHaar'`. Establish `hmap` using `Formalism.L2.SG.Pf.map_comap_subgroup (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) hSi _ hS.2.2.1`. Use `set μS' := (((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)).comap ((↑) : (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) → X.B.I.Ginf) with hμS'`. Use `haveI : SigmaFinite μS' := inferInstance`.
+
+Set `e` to `GlobalTheory.Core.Mi.BesHaar.prodEquiv X h B`. Use `haveI : LocallyCompactSpace ((Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u))) := e.toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `haveI : (B.lev.μR.map e.symm).IsHaarMeasure := e.symm.isHaarMeasure_map B.lev.μR`. Use `haveI : (μS'.prod μSf).IsHaarMeasure := Measure.prod.instIsHaarMeasure μS' μSf`. Establish `hcpos` using `Measure.haarScalarFactor_pos_of_isHaarMeasure (B.lev.μR.map e.symm) (μS'.prod μSf)`.
+
+Use `set c : ℝ≥0 := (B.lev.μR.map e.symm).haarScalarFactor (μS'.prod μSf) with hc`. Establish `hme : Measurable (e : (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) → besGrp B.d B.o)` using `e.continuous.measurable`. Establish `hEq : B.lev.μR = (c • μS'.prod μSf).map e`. Rewrite using `[hc, ← Measure.isMulLeftInvariant_eq_smul, Measure.map_map hme (show Measurable (e.symm : besGrp B.d B.o → (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u))) from e.symm.continuous.measurable)]`. Simplify using the standard rewrite rules.
+
+Use `⟨(c : ℝ), hcpos, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hv : Measurable (fun p : (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) => ((p.1 : X.B.I.Ginf), (p.2 : X.B.I.Gf)))` using `(measurable_subtype_coe.comp measurable_fst).prodMk (measurable_subtype_coe.comp measurable_snd)`. Establish `hΦ' : Measurable (fun p : (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) => Φ ((p.1 : X.B.I.Ginf), (p.2 : X.B.I.Gf)))` using `hΦ.comp hv`. Establish `hin : Measurable (fun a : X.B.I.Ginf => ∫⁻ t, Φ (a, (t : X.B.I.Gf)) ∂μSf)`. Establish `: Measurable (Function.uncurry fun (a : X.B.I.Ginf) (t : Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)) => Φ (a, (t : X.B.I.Gf)))` using `hΦ.comp (measurable_fst.prodMk (measurable_subtype_coe.comp measurable_snd))`.
+
+Conclude with `this.lintegral_prod_right'`. Establish `hΦι : Measurable (fun s : besGrp B.d B.o => Φ (iotaX X h s.1))` using `hΦ.comp ((iotaX X h).continuous.measurable.comp measurable_subtype_coe)`. Rewrite using `[hEq, lintegral_map hΦι hme]`. Establish `hιe : ∀ p : (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)) × (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)), iotaX X h (e p).1 = ((p.1 : X.B.I.Ginf), (p.2 : X.B.I.Gf))` using `GlobalTheory.Core.Mi.BesHaar.iota_prodEquiv X h B`. Repeatedly rewrite using `[hιe]`.
+
+Rewrite using `[lintegral_smul_measure, lintegral_prod _ hΦ'.aemeasurable, ← hmap, lintegral_map hin measurable_subtype_coe, ENNReal.ofReal_coe_nnreal, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem lintegral_besGrp_eq : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (μSf : Measure (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u))), μSf.IsHaarMeasure → SigmaFinite μSf → IsHaarOnSet X.B.I (X.SinfU u) (((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)) → ∃ c : ℝ, 0 < c ∧ ∀ Φ : X.B.I.GA → ENNReal, Measurable Φ → ∫⁻ s, Φ (iotaX X h s.1) ∂B.lev.μR = ENNReal.ofReal c * ∫⁻ a, ∫⁻ t, Φ (a, t.1) ∂μSf ∂(((X.muN u).prod (X.muH u)).map (fun p => p.1 * p.2)) := by
   intro D X h u ψ A B μSf hSf hσf hS
   haveI := hSf

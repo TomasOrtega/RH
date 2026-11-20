@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SepPer
 
+/- English proof (translation)
+Introduce `D V γ hγ y`. Take `⟨e, he⟩` from `GlobalTheory.Ker.Grp.exists_equiv V`. Establish `h : mt V γ = ((e.symm ⟨γ, hγ⟩).1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (incA D)`. Use `he (e.symm ⟨γ, hγ⟩)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`.
+
+Conclude with `this`. Use `⟨((e.symm ⟨γ, hγ⟩).1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use function extensionality and compare the values at `i`. Simplify using `only [ratV]`.
+
+Conclude with `(RingHom.map_mulVec (incA D) _ y i).symm`.
+-/
 theorem ratPt_mulVec_ratV : ∀ (D : D7) (V : HSp D) (γ : GA D V), γ ∈ GQ V → ∀ y : Fin V.rank → D.host.E,
     ∃ z : Fin V.rank → D.host.E, mt V γ *ᵥ ratV y = ratV z := by
   intro D V γ hγ y

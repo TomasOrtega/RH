@@ -125,12 +125,18 @@ section Alg
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext i; rfl)`. Consider the case `(ext i; simp [Algebra.smul_def])`.
+-/
 theorem coe_smul (r : 𝓞 E) (v : Fin N → E) : (r : E) • v = r • v := by
   first
   | rfl
   | (ext i; rfl)
   | (ext i; simp [Algebra.smul_def])
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `L.sub_mem hy (he y hy)`.
+-/
 theorem pres_one_sub {L : Submodule (𝓞 E) (Fin N → E)} {e : Matrix (Fin N) (Fin N) E}
     (he : Pres L e) : Pres L (1 - e) := by
   intro y hy
@@ -139,6 +145,11 @@ theorem pres_one_sub {L : Submodule (𝓞 E) (Fin N → E)} {e : Matrix (Fin N) 
 
 variable {Q : Ideal (𝓞 E)} [hQ : Q.IsPrime] {c : 𝓞 E} {L : Submodule (𝓞 E) (Fin N → E)}
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨s, hs, m, hm, h1⟩` from `h y hy`. Take `⟨s', hs', m', hm', h2⟩` from `h' y hy`. Use `⟨s * s', fun hss => (hQ.mem_or_mem hss).elim hs hs', s' • m + s • m', L.add_mem (L.smul_mem _ hm) (L.smul_mem _ hm'), ?_⟩` and prove the remaining obligations. Establish `e1 : (s * s') • (M *ᵥ y) = s' • (c • m)` using `by rw [mul_comm, mul_smul, h1]`.
+
+Establish `e2 : (s * s') • (M' *ᵥ y) = s • (c • m')` using `by rw [mul_smul, h2]`. Rewrite using `[Matrix.add_mulVec, smul_add, e1, e2]`. Use `module`.
+-/
 theorem smallAt_add {M M' : Matrix (Fin N) (Fin N) E} (h : SmallAt Q c L M)
     (h' : SmallAt Q c L M') : SmallAt Q c L (M + M') := by
   intro y hy
@@ -151,11 +162,17 @@ theorem smallAt_add {M M' : Matrix (Fin N) (Fin N) E} (h : SmallAt Q c L M)
   rw [Matrix.add_mulVec, smul_add, e1, e2]
   module
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨s, hs, m, hm, h1⟩` from `h y hy`. Conclude with `⟨s, hs, -m, L.neg_mem hm, by rw [Matrix.neg_mulVec, smul_neg, h1, smul_neg]⟩`.
+-/
 theorem smallAt_neg {M : Matrix (Fin N) (Fin N) E} (h : SmallAt Q c L M) : SmallAt Q c L (-M) := by
   intro y hy
   obtain ⟨s, hs, m, hm, h1⟩ := h y hy
   exact ⟨s, hs, -m, L.neg_mem hm, by rw [Matrix.neg_mulVec, smul_neg, h1, smul_neg]⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨s, hs, m, hm, h1⟩` from `h _ (hB y hy)`. Conclude with `⟨s, hs, m, hm, by rw [← Matrix.mulVec_mulVec, h1]⟩`.
+-/
 theorem smallAt_mul {M B : Matrix (Fin N) (Fin N) E} (h : SmallAt Q c L M) (hB : Pres L B) :
     SmallAt Q c L (M * B) := by
   intro y hy
@@ -163,15 +180,26 @@ theorem smallAt_mul {M B : Matrix (Fin N) (Fin N) E} (h : SmallAt Q c L M) (hB :
   exact ⟨s, hs, m, hm, by rw [← Matrix.mulVec_mulVec, h1]⟩
 
 omit hQ in
+/- English proof (translation)
+Use `noncomm_ring`.
+-/
 theorem adj_eq (e : Matrix (Fin N) (Fin N) E) : eᴴ * e = -(e * e - e) + (e + eᴴ - 1) * e := by
   noncomm_ring
 
 omit hQ in
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one]`. Use `noncomm_ring`.
+-/
 theorem adj_eq' (e : Matrix (Fin N) (Fin N) E) :
     (1 - e)ᴴ * (1 - e) = -(e * e - e) + -((e + eᴴ - 1) * (1 - e)) := by
   rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_one]
   noncomm_ring
 
+/- English proof (translation)
+Take `⟨g1, g2, g3, g4⟩` from `hg`. Break down `hM with rfl | rfl | rfl` into its components or cases. Conclude with `⟨g1, g2⟩`. Rewrite using `[adj_eq]`. Conclude with `⟨smallAt_add (smallAt_neg g1) (smallAt_mul g3 he'), smallAt_add (smallAt_neg g2) (smallAt_mul g4 he'')⟩`.
+
+Rewrite using `[adj_eq']`. Conclude with `⟨smallAt_add (smallAt_neg g1) (smallAt_neg (smallAt_mul g3 (pres_one_sub he'))), smallAt_add (smallAt_neg g2) (smallAt_neg (smallAt_mul g4 (pres_one_sub he'')))⟩`.
+-/
 theorem three_small {L' L'' : Submodule (𝓞 E) (Fin N → E)} {e : Matrix (Fin N) (Fin N) E}
     (he' : Pres L' e) (he'' : Pres L'' e) (hg : Good Q c L' L'' e)
     (M : Matrix (Fin N) (Fin N) E)
@@ -189,6 +217,11 @@ theorem three_small {L' L'' : Submodule (𝓞 E) (Fin N → E)} {e : Matrix (Fin
 
 end Alg
 
+/- English proof (translation)
+Introduce `hcQ`. Establish `hcop : Nat.Coprime p c` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hc`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr hcop`. Establish `h1 : (a : 𝓞 E) * (p : 𝓞 E) + (b : 𝓞 E) * (c : 𝓞 E) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 E) hab` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h1Q : (1 : 𝓞 E) ∈ Q` using `h1 ▸ Q.add_mem (Q.mul_mem_left _ hpQ) (Q.mul_mem_left _ hcQ)`. Conclude with `hQ.ne_top ((Ideal.eq_top_iff_one _).mpr h1Q)`.
+-/
 theorem nat_notMem {Q : Ideal (𝓞 E)} (hQ : Q.IsMaximal) {p c : ℕ} (hp : p.Prime) (hc : ¬ p ∣ c)
     (hpQ : (p : 𝓞 E) ∈ Q) : (c : 𝓞 E) ∉ Q := by
   intro hcQ
@@ -201,6 +234,27 @@ theorem nat_notMem {Q : Ideal (𝓞 E)} (hQ : Q.IsMaximal) {p c : ℕ} (hp : p.P
   have h1Q : (1 : 𝓞 E) ∈ Q := h1 ▸ Q.add_mem (Q.mul_mem_left _ hpQ) (Q.mul_mem_left _ hcQ)
   exact hQ.ne_top ((Ideal.eq_top_iff_one _).mpr h1Q)
 
+/- English proof (translation)
+Unfold `PLocalAll`. Introduce `E _ _ _ hE N L' L'' hN h' h'' n hn p hp`. Unfold `PLocal`. Take `⟨c, hc0, hc⟩` from `h2 E N L' L'' h' h'' n hn`. Take `⟨a, c', hc', hcc⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hc0 p hp.ne_one`.
+
+Take `⟨e, he', he'', hg⟩` from `h3 E hE N L' L'' hN h' h'' p hp a`. Use `⟨e, he', he'', ?_⟩` and prove the remaining obligations. Introduce `M hM y hy`. Establish `hcast : ((c : ℕ) : 𝓞 E) = (c' : 𝓞 E) * (p : 𝓞 E) ^ a`. Rewrite using `[hcc]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `X : Submodule (𝓞 E) (Fin N → E)` to `(L' ⊓ L'').map (n • LinearMap.id)`. Establish `hloc : ∀ Q : Ideal (𝓞 E), Q.IsMaximal → (p : 𝓞 E) ∈ Q → ∃ s : 𝓞 E, s ∉ Q ∧ s • ((c' : 𝓞 E) • (M *ᵥ y)) ∈ X`. Introduce `Q hQ hpQ`.
+
+Use `haveI : Q.IsPrime := hQ.isPrime`. Establish `hsm` using `three_small he' he'' (hg Q hQ hpQ) M hM`. Establish `key : ∃ s : 𝓞 E, s ∉ Q ∧ ∃ m, (m ∈ L' ∨ m ∈ L'') ∧ s • (M *ᵥ y) = (p : 𝓞 E) ^ a • m`. Break down `hy with hy | hy` into its components or cases. Take `⟨s, hs, m, hm, h⟩` from `hsm.1 y hy`.
+
+Conclude with `⟨s, hs, m, Or.inl hm, h⟩`. Take `⟨s, hs, m, hm, h⟩` from `hsm.2 y hy`. Conclude with `⟨s, hs, m, Or.inr hm, h⟩`. Take `⟨s, hs, m, hm, h⟩` from `key`. Take `⟨m', hm1, hm2, hm'⟩` from `hc m hm`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_map]`. Use `⟨m', ⟨hm1, hm2⟩, ?_⟩` and prove the remaining obligations. Use `show n • m' = s • ((c' : 𝓞 E) • (M *ᵥ y))`. Rewrite using `[← hm', smul_smul, mul_comm s, ← smul_smul, h, smul_smul, ← hcast]`.
+
+Take `⟨s, hsp, hsx⟩` from `h1 E (Fin N → E) X ((c' : 𝓞 E) • (M *ᵥ y)) p hp hloc`. Rewrite `hsx` using `[Submodule.mem_map]`. Take `⟨m, ⟨hm1, hm2⟩, hmeq⟩` from `hsx`. Establish `hmeq' : n • m = (s : 𝓞 E) • ((c' : 𝓞 E) • (M *ᵥ y))` using `hmeq`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`.
+
+Establish `hnd : ¬ (p : ℤ) ∣ s * (c' : ℤ)`. Introduce `hd`. Break down `hpZ.dvd_or_dvd hd with hd | hd` into its components or cases. Conclude with `hsp hd`. Conclude with `hc' (by exact_mod_cast hd)`.
+
+Establish `heq : (((s * (c' : ℤ)) : ℤ) : 𝓞 E) • (M *ᵥ y) = n • m`. Rewrite using `[hmeq', smul_smul]`. Use `push_cast`. Both sides reduce to the same expression. Use `⟨s * (c' : ℤ), hnd, m, hm1, hm2, ?_⟩` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact heq`. Consider the case `simpa only [coe_smul, Int.cast_smul_eq_zsmul] using heq`. Consider the case `simpa [coe_smul] using heq`.
+-/
 theorem pLocalAll_of_glued (h1 : LocGlob) (h2 : IntMul) (h3 : Glued) : PLocalAll := by
   unfold PLocalAll
   intro E _ _ _ hE N L' L'' hN h' h'' n hn p hp
@@ -252,6 +306,11 @@ theorem pLocalAll_of_glued (h1 : LocGlob) (h2 : IntMul) (h3 : Glued) : PLocalAll
   | simpa only [coe_smul, Int.cast_smul_eq_zsmul] using heq
   | simpa [coe_smul] using heq
 
+/- English proof (translation)
+Apply `hG` to reduce the goal to its premises. Introduce `E _ _ _ hE N L' L'' hN h' h'' Q hQ c hc`. Distinguish the cases in `hq : Q.comap (cj E) = Q`. Take `⟨e, h1, h2, h3⟩` from `hI E hE N L' L'' hN h' h'' Q hQ hq c hc`. Use `⟨e, h1, h2, h3, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hq]`. Conclude with `h3`. Conclude with `hS E hE N L' L'' hN h' h'' Q hQ hq c hc`.
+-/
 theorem glued_of (hG : Glue) (hS : SplitPlace) (hI : InertPlace) : Glued := by
   apply hG
   intro E _ _ _ hE N L' L'' hN h' h'' Q hQ c hc
@@ -262,6 +321,9 @@ theorem glued_of (hG : Glue) (hS : SplitPlace) (hI : InertPlace) : Glued := by
     exact h3
   · exact hS E hE N L' L'' hN h' h'' Q hQ hq c hc
 
+/- English proof (translation)
+The claim follows from `pLocalAll_of_glued h1 h2 (glued_of h3 h4 (h5 hLC h6 h7 h8 h9))`.
+-/
 theorem sqPairLocal_of_steps (hLC : LocCartanPair) (h1 : LocGlob) (h2 : IntMul) (h3 : Glue)
     (h4 : SplitPlace) (h5 : InertAsm) (h6 : ModelEx) (h7 : Dict) (h8 : LocMat) (h9 : PowLoc) :
     PLocalAll := pLocalAll_of_glued h1 h2 (glued_of h3 h4 (h5 hLC h6 h7 h8 h9))

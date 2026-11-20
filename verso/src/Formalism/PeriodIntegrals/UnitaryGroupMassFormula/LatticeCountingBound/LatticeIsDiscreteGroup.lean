@@ -10,15 +10,26 @@ namespace PI.UnitaryGroupMassFormula.LCG
 
 open PI.LatCountG
 
+/- English proof (translation)
+Unfold `hsN`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem hsN_nonneg' {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hsN A := by
   unfold hsN
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Introduce `I x`. Apply the tactic sequence `obtain ⟨Λ, h1, h2, h3⟩ := PI.UnitaryGroupMassFormula.LSC.lattice_isometry I x`. Conclude with `⟨Λ, h1, h2, h3⟩`.
+-/
 theorem lattice_is_discrete_group : LatIsG := by
   intro I x
   obtain ⟨Λ, h1, h2, h3⟩ := PI.UnitaryGroupMassFormula.LSC.lattice_isometry I x
   exact ⟨Λ, h1, h2, h3⟩
 
+/- English proof (translation)
+Set `C : Matrix (Fin I.n) (Fin j) ℂ` to `Matrix.of fun i a => coordV I z v (b a) i`. Establish `hG : gramV I z v b = Cᴴ * C`. Use extensionality with `a c`. Simplify using `[gramV, C, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hG]`.
+
+Conclude with `(hDM I.n j C 1 1 zero_le_one (fun w => by simp)).1`.
+-/
 theorem gram_nonneg (hDM : PI.UnitaryGroupMassFormula.LSC.DetMono) (I : Formalism.MainNotions.S.AutInst) (z : I.GA) (v : InfinitePlace I.F) {j : ℕ}
     (b : Fin j → Fin I.n → I.E) : 0 ≤ ((gramV I z v b).det).re := by
   let C : Matrix (Fin I.n) (Fin j) ℂ := Matrix.of fun i a => coordV I z v (b a) i
@@ -28,9 +39,25 @@ theorem gram_nonneg (hDM : PI.UnitaryGroupMassFormula.LSC.DetMono) (I : Formalis
   rw [hG]
   exact (hDM I.n j C 1 1 zero_le_one (fun w => by simp)).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ht_eq (I : Formalism.MainNotions.S.AutInst) {z : I.GA} (s : Sub I z) :
     ht I s = (∏ v, ((gramV I z v s.b).det).re) / (idx I s.B s.b : ℝ) := rfl
 
+/- English proof (translation)
+Establish `hf : 0 < I.f` using `Module.finrank_pos`. Establish `hj : 0 < s.j` using `s.j_pos`. Establish `hN : (0 : ℝ) < 2 * (I.f : ℝ) * (s.j : ℝ)`. Establish `: (0 : ℝ) < I.f` using `by exact_mod_cast hf`. Establish `: (0 : ℝ) < s.j` using `by exact_mod_cast hj`.
+
+Check the signs of the components of the expression. Establish `hht : ∀ t : Sub I z, 0 ≤ ht I t`. Introduce `t`. Rewrite using `[ht_eq]`. Conclude with `div_nonneg (Finset.prod_nonneg fun v _ => gram_nonneg hDM I z v t.b) (Nat.cast_nonneg _)`.
+
+Establish `hsize : ∀ t : Sub I z, 0 ≤ size I t` using `fun t => Real.rpow_nonneg (hht t) _`. Establish `hle : tau1 I z ≤ size I s` using `(min_le_right _ _).trans (ciInf_le ⟨0, by rintro _ ⟨t, rfl⟩; exact hsize t⟩ s)`. Establish `hpow : size I s ^ (2 * I.f * s.j) = ht I s`. Unfold `size`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (hht s)]`.
+
+Use `push_cast`. Rewrite using `[one_div_mul_cancel hN.ne', Real.rpow_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `h0`.
+
+Establish `h1 : ht I s = 0`. Rewrite using `[ht_eq, h0]`. Simplify using the standard rewrite rules. Establish `hs0 : size I s = 0`. Unfold `size`.
+
+Rewrite using `[h1, Real.zero_rpow (one_div_pos.2 hN).ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tau_pow_le_ht (hDM : PI.UnitaryGroupMassFormula.LSC.DetMono) (I : Formalism.MainNotions.S.AutInst) (z : I.GA) (hz : 0 < tau1 I z) (s : Sub I z) :
     tau1 I z ^ (2 * I.f * s.j) ≤ ht I s ∧ idx I s.B s.b ≠ 0 := by
   have hf : 0 < I.f := Module.finrank_pos
@@ -63,6 +90,31 @@ theorem tau_pow_le_ht (hDM : PI.UnitaryGroupMassFormula.LSC.DetMono) (I : Formal
       rw [h1, Real.zero_rpow (one_div_pos.2 hN).ne']
     linarith
 
+/- English proof (translation)
+Introduce `hLat hDual hCh hArch hIdx hNP hDM _hCard I x y hx hy δ hδ hmap`. Take `⟨Λ, hFG, hspan, hΛ⟩` from `hLat I y`. Take `⟨k, u, b', hk, hu, hind1, hspan1, hb', hind2, hperp, hspan2⟩` from `hCh I y δ hδ`. Establish `huΛ : ∀ c, u c ∈ Λ` using `fun c => by`. Use `hu c` as an intermediate fact.
+
+Rewrite `this` using `[hΛ]`. Conclude with `this`. Establish `hbΛ : ∀ a, b' a ∈ Λ` using `fun a => by`. Use `hb' a` as an intermediate fact. Rewrite `this` using `[hΛ]`.
+
+Conclude with `this`. Set `s₁ : Sub I x` to `{ j := k j_pos := hk b := fun c => δ *ᵥ u c b_ind := hind1 B := imSub I Λ δ B_lat := by`. Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hz`. Conclude with `hmap w (by rw [hΛ]; exact hw)`.
+
+Use `b_mem := fun c => Submodule.mem_map.2 ⟨u c, huΛ c, rfl⟩`. Use `B_span := by`. Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hz`. Conclude with `hspan1 w }`.
+
+Set `s₂ : Sub I y` to `{ j := k j_pos := hk b := b' b_ind := hind2 B := perpSub I Λ δ B_lat := by`. Introduce `z hz`. Rewrite using `[hΛ]`. Conclude with `(Submodule.mem_inf.1 hz).1`. Use `b_mem := fun a => Submodule.mem_inf.2 ⟨hbΛ a, hperp a⟩`.
+
+Use `B_span := fun z hz => hspan2 z (Submodule.mem_inf.1 hz).2 }`. Take `⟨h1, hi1⟩` from `tau_pow_le_ht hDM I x hx s₁`. Take `⟨h2, hi2⟩` from `tau_pow_le_ht hDM I y hy s₂`. Rewrite `h1`, `h2` using `[ht_eq]`. Express the relevant statement in the definitionally equal form `tau1 I x ^ (2 * I.f * k) ≤ (∏ v, ((gramV I x v (fun c => δ *ᵥ u c)).det).re) / (idx I (imSub I Λ δ) (fun c => δ *ᵥ u c) : ℝ) at h1`.
+
+Express the relevant statement in the definitionally equal form `tau1 I y ^ (2 * I.f * k) ≤ (∏ v, ((gramV I y v b').det).re) / (idx I (perpSub I Λ δ) b' : ℝ) at h2`. Express the relevant statement in the definitionally equal form `idx I (imSub I Λ δ) (fun c => δ *ᵥ u c) ≠ 0 at hi1`. Express the relevant statement in the definitionally equal form `idx I (perpSub I Λ δ) b' ≠ 0 at hi2`. Establish `hdualΛ : ∀ w, (∀ w' ∈ Λ, hf I w' w ∈ (algebraMap (𝓞 I.E) I.E).range) → w ∈ Λ`. Introduce `w hw`.
+
+Use `hDual I y w (by rw [hΛ]; exact hw)` as an intermediate fact. Rewrite `this` using `[hΛ]`. Conclude with `this`. Establish `hN` using `hIdx I Λ hFG hspan hdualΛ δ k u b' huΛ hind1 hspan1 hbΛ hind2 hperp hspan2 hi1 hi2`. Establish `hNP'` using `hNP I (pairM I b' u).det`.
+
+Establish `hi1' : (0 : ℝ) < idx I (imSub I Λ δ) (fun c => δ *ᵥ u c)` using `by exact_mod_cast Nat.pos_of_ne_zero hi1`. Establish `hi2' : (0 : ℝ) < idx I (perpSub I Λ δ) b'` using `by exact_mod_cast Nat.pos_of_ne_zero hi2`. Establish `hHp : 0 ≤ ∏ v, hsN (amat I x y v δ)` using `Finset.prod_nonneg fun v _ => hsN_nonneg' _`. Establish `key : ((tau1 I x * tau1 I y) ^ I.f) ^ (2 * k) ≤ (∏ v, hsN (amat I x y v δ)) ^ (2 * k)`. Rewrite using `[← pow_mul, mul_pow, show I.f * (2 * k) = 2 * I.f * k by ring]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, div_mul_div_comm]`. Use `_ ≤ (∏ v, (hsN (amat I x y v δ) ^ (2 * k) * ‖I.φ v (pairM I b' u).det‖ ^ 2)) / ((idx I (imSub I Λ δ) (fun c => δ *ᵥ u c) : ℝ) * (idx I (perpSub I Λ δ) b' : ℝ)) := by`. Apply `div_le_div_of_nonneg_right _ (mul_pos hi1' hi2').le` to reduce the goal to its premises. Conclude with `Finset.prod_le_prod (fun v _ => mul_nonneg (gram_nonneg hDM I x v _) (gram_nonneg hDM I y v _)) (fun v _ => hArch I x y δ k u b' v hind1 hspan1 hind2 hperp)`.
+
+Use `_ = (∏ v, hsN (amat I x y v δ)) ^ (2 * k) * |((Algebra.norm ℚ (pairM I b' u).det : ℚ) : ℝ)| / ((idx I (imSub I Λ δ) (fun c => δ *ᵥ u c) : ℝ) * (idx I (perpSub I Λ δ) b' : ℝ)) := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow, hNP']`. Use `_ ≤ (∏ v, hsN (amat I x y v δ)) ^ (2 * k) := by`. Rewrite using `[div_le_iff₀ (mul_pos hi1' hi2')]`. Conclude with `mul_le_mul_of_nonneg_left hN (pow_nonneg hHp _)`.
+
+Conclude with `le_of_pow_le_pow_left₀ (by omega) hHp key`.
+-/
 theorem separation_of_points : SepOf := by
   intro hLat hDual hCh hArch hIdx hNP hDM _hCard I x y hx hy δ hδ hmap
   obtain ⟨Λ, hFG, hspan, hΛ⟩ := hLat I y

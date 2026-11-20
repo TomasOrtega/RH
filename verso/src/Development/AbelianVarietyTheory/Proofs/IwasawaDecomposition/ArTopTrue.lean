@@ -23,6 +23,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ArTopTrue
 
+/- English proof (translation)
+Introduce `hC hD hB D A N j S κ s x Φ k R hR`. Establish `hI5` using `GlobalTheory.T.adelic_divisor_induced_exists hB D A N j S κ s x Φ k R hR`. Establish `top : ∀ (w : Sym D.host.E →₀ ℤ) (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (L : GlobalTheory.HermLB M.p) (m : ℕ+) (a : ℝ), (adlOf (Φ.C k) (metsOf x Φ k) w).Induced M L m 0 → (haveI` using `M.ar.isIntegral; L.IsSelfInter a) → (adlOf (Φ.C k) (metsOf x Φ k) w).IsArTop (a / ((m : ℕ) : ℝ) ^ ((Φ.C k).Y.dim + 1) / (Module.finrank ℚ D.what₂.LL : ℝ)) := by`. Introduce `w M L m a hI ha`. Use `⟨M, L, m, 0, a, hI, ha, ?_⟩` and prove the remaining obligations.
+
+Establish `hn : (adlOf (Φ.C k) (metsOf x Φ k) w).n = 1` using `rfl`. Simplify using `[hn]`. Use `⟨fun w hw => ?_, fun ι _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨M, L, m, hI⟩` from `hI5 w hw haveI := M.ar.isIntegral`. Take `⟨h, hh⟩` from `(hC.arExists _ M.X M.p _ M.ar).1 L`.
+
+Conclude with `⟨_, top w M L m _ hI ⟨h, hh, rfl⟩⟩`. Take `⟨M₀, -, -, -⟩` from `hI5 0 (by simp)`. Use `choose Mi Li mi hIi using fun i => hI5 (w i) (hw i)`. Take `⟨P, π, hπ⟩` from `GlobalTheory.T.exists_common_refinement_models _ _ M₀ ι Mi`. Establish `hE : 0 < ∏ i, (mi i : ℕ)` using `Finset.prod_pos fun i _ => (mi i).pos`.
+
+Set `m : ℕ+` to `⟨∏ i, (mi i : ℕ), hE⟩`. Establish `hdiv : ∀ i, (mi i : ℕ) ∣ ∏ i, (mi i : ℕ)` using `fun i => Finset.dvd_prod_of_mem _ (Finset.mem_univ i)`. Set `e : ι → ℕ+` to `fun i => ⟨(∏ i, (mi i : ℕ)) / mi i, Nat.div_pos (Nat.le_of_dvd hE (hdiv i)) (mi i).pos⟩`. Establish `hme : ∀ i, mi i * e i = m` using `fun i => PNat.eq (by rw [PNat.mul_coe, PNat.mk_coe]; exact Nat.mul_div_cancel' (hdiv i))`. Set `L : ι → GlobalTheory.HermLB P.p` to `fun i => ((Li i).pull (π i) (hπ i).1).pow (e i)`.
+
+Establish `hL : ∀ i, (adlOf (Φ.C k) (metsOf x Φ k) (w i)).Induced P (L i) m 0` using `fun i => by`. Establish `h1` using `GlobalTheory.T.induced_metric_pow _ _ _ _ P _ (mi i) (e i) 0 (GlobalTheory.T.induced_metric_pullback _ _ _ _ (Mi i) P (π i) (hπ i).1 (hπ i).2 (Li i) (mi i) 0 (hIi i))`. Rewrite `h1` using `[hme i]`. Then use the resulting hypothesis. Use `haveI := P.ar.isIntegral`. Take `⟨Ψ, hΨ⟩` from `((hC.arExists _ P.X P.p _ P.ar).2 ι L).1`.
+
+Use `⟨P, L, m, Ψ, hL, hΨ, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ n : ι → ℤ, (adlOf (Φ.C k) (metsOf x Φ k) (∑ i, n i • w i)).arTop = Ψ (GlobalTheory.ArInt.lin (fun i => (n i : ℝ)) ^ ((Φ.C k).Y.dim + 1)) / ((m : ℕ) : ℝ) ^ ((Φ.C k).Y.dim + 1) / (Module.finrank ℚ D.what₂.LL : ℝ)`. Introduce `n`. Establish `hI` using `GlobalTheory.T.adelic_divisor_induced_linear D A N j S κ s x Φ k R P ι w L m (fun i a ha => (hw i a ha).2) hL n`. Establish `ht` using `top _ P _ m _ hI (hΨ.1 n)`.
+
+Establish `hex : ∃ t, (adlOf (Φ.C k) (metsOf x Φ k) (∑ i, n i • w i)).IsArTop t` using `⟨_, ht⟩`. Rewrite using `[Adl.arTop, dif_pos hex]`. Conclude with `GlobalTheory.TrueGeo.ArUniq.isArTop_unique hC hD _ _ _ _ _ _ hex.choose_spec ht`. Establish `h4` using `GlobalTheory.T.polarization_of_homogeneous ι (Sym D.host.E →₀ ℤ) w (fun v => (adlOf (Φ.C k) (metsOf x Φ k) v).arTop) ((Φ.C k).Y.dim + 1) Ψ (1 / ((((m : ℕ) : ℝ)) ^ ((Φ.C k).Y.dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ))) (fun n => by rw [hsum n]; ring) μ hμ`. Express the relevant statement in the definitionally equal form `polar (fun v => (adlOf (Φ.C k) (metsOf x Φ k) v).arTop) (μ.map w) = _`.
+
+Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arTop_true : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → HTBoundSt → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (R : ℝ), 2 ≤ R → (∀ w : Sym D.host.E →₀ ℤ, (∀ a ∈ w.support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R) → ∃ t, (adlOf (Φ.C k) (metsOf x Φ k) w).IsArTop t) ∧ ∀ (ι : Type) [Fintype ι] (w : ι → Sym D.host.E →₀ ℤ), (∀ i, ∀ a ∈ (w i).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R) → ∃ (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (L : ι → GlobalTheory.HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ), (∀ i, (adlOf (Φ.C k) (metsOf x Φ k) (w i)).Induced M (L i) m 0) ∧ (haveI := M.ar.isIntegral; GlobalTheory.ArInt.IsArFun L (Φ.C k).Y.dim Ψ) ∧ ∀ μ : Multiset ι, Multiset.card μ = (Φ.C k).Y.dim + 1 → (arIn s Φ (metsOf x Φ)).num k (μ.map w) = Ψ ((μ.map MvPolynomial.X).prod) / ((((m : ℕ) : ℝ)) ^ ((Φ.C k).Y.dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) := by
   intro hC hD hB D A N j S κ s x Φ k R hR
   have hI5 := GlobalTheory.T.adelic_divisor_induced_exists hB D A N j S κ s x Φ k R hR

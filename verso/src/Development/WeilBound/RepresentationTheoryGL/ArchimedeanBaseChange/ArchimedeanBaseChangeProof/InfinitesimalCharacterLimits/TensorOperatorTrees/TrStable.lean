@@ -15,6 +15,13 @@ open PositivityTheory.Rg.Rs PositivityTheory.Rg.Rs.InducedTensorMap PositivityTh
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r s : ℕ}
 
+/- English proof (translation)
+Take `⟨n, ψ₁, ψ₂, u₁, u₂, rfl⟩` from `tensor_pair_finite_sum hF`. Establish `m₁` using `InducedTensorMap.A.sum_mem (ψ₁ := fun i => lie E r Z₁ (ψ₁ i)) (ψ₂ := ψ₂) (fun i => hU₁ (.lie Z₁) _ (u₁ i)) u₂`. Establish `m₂` using `InducedTensorMap.A.sum_mem (ψ₁ := ψ₁) (ψ₂ := fun i => lie E s Z₂ (ψ₂ i)) u₁ (fun i => hU₂ (.lie Z₂) _ (u₂ i))`. Use `⟨_, add_mem m₁ m₂, fun m => ?_⟩` and prove the remaining obligations. Establish `key : HasDerivAt (fun t => ∑ i, (ψ₁ i).1 (m.1 * infGL E r (γ₁ t)) * (ψ₂ i).1 (m.2 * infGL E s (γ₂ t))) (∑ i, (lie E r Z₁ (ψ₁ i)).1 m.1 * (ψ₂ i).1 m.2 + ∑ i, (ψ₁ i).1 m.1 * (lie E s Z₂ (ψ₂ i)).1 m.2) 0`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations. Use `(hasDerivAt_curve (ψ₁ i) m.1 γ₁ Z₁ h₁ hγ₁).mul (hasDerivAt_curve (ψ₂ i) m.2 γ₂ Z₂ h₂ hγ₂)` as an intermediate fact. Simplify using `only [h₁, h₂, map_one, mul_one] at this`. Conclude with `this`.
+
+Conclude with `key`.
+-/
 theorem tensor_span_hasDerivAt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁) (hU₂ : IsStable U₂)
     (γ₁ : ℝ → GL (Fin r) (Cinf E)) (γ₂ : ℝ → GL (Fin s) (Cinf E)) (Z₁ : Lie E r) (Z₂ : Lie E s) (h₁ : γ₁ 0 = 1)
     (h₂ : γ₂ 0 = 1) (hγ₁ : HasDerivAt (fun t => toL (γ₁ t).val) Z₁ 0)
@@ -33,6 +40,15 @@ theorem tensor_span_hasDerivAt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule
     exact this
   exact key
 
+/- English proof (translation)
+Take `⟨n, G, C, b₁, b₂, hG, hC, hb₁, hb₂, h₁, h₂, e⟩` from `exists_expansion hF hK`. Establish `g₁ : (fun t : ℝ => b₁ (oneL E (r + s) + t • X)) 0 = 1` using `by simp only [zero_smul, add_zero, h₁]`. Establish `g₂ : (fun t : ℝ => b₂ (oneL E (r + s) + t • X)) 0 = 1` using `by simp only [zero_smul, add_zero, h₂]`. Use `choose G' hG' hd using fun j => tensor_span_hasDerivAt hU₁ hU₂ (fun t : ℝ => b₁ (oneL E (r + s) + t • X)) (fun t : ℝ => b₂ (oneL E (r + s) + t • X)) _ _ g₁ g₂ (PositivityTheory.Rg.Rs.InducedTensorMap.F.hasDerivAt_line hb₁ X) (PositivityTheory.Rg.Rs.InducedTensorMap.F.hasDerivAt_l …`. Establish `hid : ∀ j, tensOp LinearMap.id LinearMap.id (G j) = G j` using `fun j => tensOp_id (hG j)`.
+
+Establish `eF : ∀ m : GA E r × GA E s, chart F.1 (lev (Ad E) r s m) =ᶠ[nhds (oneL E (r + s))] fun y => ∑ j, C j y * G j (m.1 * infGL E r (b₁ y), m.2 * infGL E s (b₂ y))`. Introduce `m`. Use `e (good_id hU₁ hU₂) m` as an intermediate fact. Rewrite `this` using `[ind_id hU₁ hU₂ hF]`. Simplify `this` using `only [hid]`.
+
+Establish `eq1 : res 1 (lie E (r + s) X F).1 = ∑ j, (fderiv ℝ (C j) (oneL E (r + s)) X • G j + C j (oneL E (r + s)) • G' j)`. Use function extensionality and compare the values at `m`. Rewrite using `[res_apply, mul_one, lie_apply, lieD_of_expansion F.2 G C b₁ b₂ hC h₁ h₂ m (eF m) X (fun j => G' j m) (fun j => hd j m)]`. Simplify using `[Finset.sum_apply]`. Rewrite using `[eq1]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => add_mem (Submodule.smul_mem _ _ (hG j)) (Submodule.smul_mem _ _ (hG' j))`.
+-/
 theorem res_one_lie_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁)
     (hU₂ : IsStable U₂) {F : Sm E (r + s)} (hF : F ∈ indSub U₁ U₂) (hK : F ∈ finVec (cptRep E (r + s)))
     (X : Lie E (r + s)) : res 1 (lie E (r + s) X F).1 ∈ tens2 U₁ U₂ := by
@@ -58,6 +74,17 @@ theorem res_one_lie_mem {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (S
   rw [eq1]
   exact Submodule.sum_mem _ fun j _ => add_mem (Submodule.smul_mem _ _ (hG j)) (Submodule.smul_mem _ _ (hG' j))
 
+/- English proof (translation)
+Use `⟨fun u x => ?_, fun k g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lieD X F.1 (unip u * x) = lieD X F.1 x`. Establish `e : chart F.1 (unip u * x) = chart F.1 x`. Use function extensionality and compare the values at `y`. Unfold `chart`.
+
+Use `split_ifs`. Rewrite using `[mul_assoc, hF.1]`. Both sides reduce to the same expression. Unfold `lieD`. Rewrite using `[e]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨X', hX'⟩ : ∃ X', rt E (r + s) (cf (r + s) k g) * lie E (r + s) X = lie E (r + s) X' * rt E (r + s) (cf (r + s) k g) := by`. Use `⟨toL ((Unitary.toUnits k).val * Matrix.of X * ((Unitary.toUnits k)⁻¹).val), ?_⟩` and prove the remaining obligations. Rewrite using `[cf, map_mul, mul_assoc, ← lie_rt_fin, ← mul_assoc, ← mul_assoc]`. Conclude with `congrArg (· * _) (GlobalTheory.CapAdInv.rt_lie (Unitary.toUnits k) (Matrix.of X))`. Establish `ec : res (cf (r + s) k g) (lie E (r + s) X F).1 = res 1 (lie E (r + s) X' (rt E (r + s) (cf (r + s) k g) F)).1` using `funext fun m => by`.
+
+Use `congrArg (fun f : Module.End ℂ (Sm E (r + s)) => (f F).1 (lev (Ad E) r s m * 1)) hX'` as an intermediate fact. Simplify using `only [Module.End.mul_apply, rt_apply, mul_one] at this`. Rewrite using `[res_apply, res_apply, mul_one]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `res (cf (r + s) k g) (lie E (r + s) X F).1 ∈ tens2 U₁ U₂`.
+
+Rewrite using `[ec]`. Conclude with `res_one_lie_mem hU₁ hU₂ (isInd_rt hF k g) (finVec_rt hK k g) X'`.
+-/
 theorem lie_mem_indSub {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁)
     (hU₂ : IsStable U₂) {F : Sm E (r + s)} (hF : F ∈ indSub U₁ U₂) (hK : F ∈ finVec (cptRep E (r + s)))
     (X : Lie E (r + s)) : lie E (r + s) X F ∈ indSub U₁ U₂ := by
@@ -86,6 +113,13 @@ theorem lie_mem_indSub {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm
     rw [ec]
     exact res_one_lie_mem hU₁ hU₂ (isInd_rt hF k g) (finVec_rt hK k g) X'
 
+/- English proof (translation)
+Establish `hS : {φ : Sm E (r + s) | MemInd2 U₁ U₂ φ ∧ φ ∈ finVec (cptRep E (r + s))} = ((indSub U₁ U₂ ⊓ finVec (cptRep E (r + s)) : Submodule ℂ (Sm E (r + s))) : Set (Sm E (r + s)))` using `Set.ext fun _ => Iff.rfl`. Rewrite using `[hS, Submodule.span_eq]`. Introduce `o φ hφ`. Take `⟨hI, hK⟩` from `Submodule.mem_inf.1 hφ`. Use `Submodule.mem_inf.2 ?_` and prove the remaining obligations.
+
+Consider the cases of `o with`. Consider the case `fin g`. Establish `e : act (.fin g) φ = rt E (r + s) (cf (r + s) 1 g) φ` using `Subtype.ext (by rw [act_fin_val]; rfl)`. Rewrite using `[e]`. Conclude with `⟨isInd_rt hI 1 g, finVec_rt hK 1 g⟩`.
+
+Consider the case `cpt k`. Establish `e : act (.cpt k) φ = rt E (r + s) (cf (r + s) k 1) φ` using `Subtype.ext (by rw [act_cpt_val]; rfl)`. Rewrite using `[e]`. Conclude with `⟨isInd_rt hI k 1, finVec_rt hK k 1⟩`. Consider the case `lie X => exact ⟨lie_mem_indSub hU₁ hU₂ hI hK X, GlobalTheory.CuspRep.KFin.kfin_lie E (r + s) X φ hK⟩`.
+-/
 theorem isStable_indFin {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁)
     (hU₂ : IsStable U₂) :
     IsStable (Submodule.span ℂ {φ | MemInd2 U₁ U₂ φ ∧ φ ∈ finVec (cptRep E (r + s))}) := by
@@ -107,12 +141,18 @@ theorem isStable_indFin {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (S
     exact ⟨isInd_rt hI k 1, finVec_rt hK k 1⟩
   | lie X => exact ⟨lie_mem_indSub hU₁ hU₂ hI hK X, GlobalTheory.CuspRep.KFin.kfin_lie E (r + s) X φ hK⟩
 
+/- English proof (translation)
+The claim follows from `| _, .leaf V z, h => ParabolicProjection.isStable_tw h z | _, .node t₁ t₂, h => by obtain ⟨h₁, h₂⟩ := h exact isStable_indFin (ParabolicProjection.isStable_tw (isStable_space t₁ h₁) _) (ParabolicProjection.isStable_tw (isStable_space t₂ h₂) _)`.
+-/
 theorem isStable_space : ∀ {N : ℕ} (t : Tr E N), (t.AllLeaves fun _ V => IsStable V) → IsStable t.space
   | _, .leaf V z, h => ParabolicProjection.isStable_tw h z
   | _, .node t₁ t₂, h => by
     obtain ⟨h₁, h₂⟩ := h
     exact isStable_indFin (ParabolicProjection.isStable_tw (isStable_space t₁ h₁) _) (ParabolicProjection.isStable_tw (isStable_space t₂ h₂) _)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ t h` and use `isStable_space t h`.
+-/
 theorem trStable : TrStable := fun _ _ _ _ _ t h => isStable_space t h
 
 end PositivityTheory.Rg.BcB.SpectralAccumulation.Trees

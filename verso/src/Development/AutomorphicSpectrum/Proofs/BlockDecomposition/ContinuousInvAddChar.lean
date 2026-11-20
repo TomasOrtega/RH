@@ -30,6 +30,11 @@ namespace GlobalTheory.CompanionTheory.BZCuspPair
 section Proofs
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hi` using `τ.irr`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ.ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+
+Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`.
+-/
 theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep G) : Nontrivial τ.V := by
   have hi := τ.irr
   by_contra hs
@@ -40,6 +45,9 @@ theorem nontrivial_of_irr {G : Type} [Group G] [TopologicalSpace G] (τ : IrrRep
   rw [Subsingleton.elim x 0]
   exact ⟨fun _ => zero_mem _, fun _ => zero_mem _⟩
 
+/- English proof (translation)
+Establish `: (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a)` using `funext fun a => AddChar.inv_apply ψ a`. Rewrite using `[this]`. Conclude with `hc.comp continuous_neg`.
+-/
 theorem continuous_inv_addChar (ψ : AddChar k Circle) (hc : Continuous ψ) : Continuous (ψ⁻¹ : AddChar k Circle) := by
   have : (⇑(ψ⁻¹ : AddChar k Circle)) = fun a => ψ (-a) := funext fun a => AddChar.inv_apply ψ a
   rw [this]

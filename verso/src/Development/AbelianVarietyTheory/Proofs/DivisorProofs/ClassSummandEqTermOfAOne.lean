@@ -30,6 +30,9 @@ open GlobalTheory.LKCx.Regroup
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce and unpack `y h hne ⟨z, hz, hfix⟩`. Conclude with `GlobalTheory.LKCx.minpoly_of_regAf_of_fixL p G v hv β hsym hR x t hx y h ⟨z, hz⟩ hfix (hreg _ hne)`.
+-/
 theorem sep_of_regAf (G : HTGroup p) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1) (f : G.GAf → ℂ)
     (hreg : ∀ g, f g ≠ 0 → RegAf G g) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) (hsym : sh G β = β) (hR : ∃ z : (ℝ ⊗[ℚ] G.C)ˣ, Triv G ℝ β z 1) :
@@ -37,6 +40,11 @@ theorem sep_of_regAf (G : HTGroup p) (v : InfinitePlace G.F) (hv : sigPosH (G.gr
   rintro y h hne ⟨z, hz, hfix⟩
   exact GlobalTheory.LKCx.minpoly_of_regAf_of_fixL p G v hv β hsym hR x t hx y h ⟨z, hz⟩ hfix (hreg _ hne)
 
+/- English proof (translation)
+Establish `hsep` using `sep_of_regAf G v hv f hreg β x t hx hsym htr`. Take `⟨Y, hY⟩` from `Classical.axiomOfChoice (fun P => GlobalTheory.T.orbital_integral_test_function_first p G ha v hv L f hf K' f' hf' β x t hx hsep hsym htr P)`. Use `((GlobalTheory.T.orbital_term_real_trivialisation p G ha v hv L f hf K' f' hf' β x t hx hsym htr).biUnion (fun P _ => (Y P).finite_toSet.biUnion (fun y₀ _ => GlobalTheory.T.orbital_integral_test_function_second p G ha v hv L f hf K' f' hf' β x t hx hsep hsym htr y₀))).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨y, hy, hne⟩`. Take `⟨y₀, hy₀, γ, rfl⟩` from `hY _ y rfl ⟨Quot.out q, hy, hne⟩`.
+
+Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨_, ⟨γ * y₀ * γ⁻¹, Quot.out q, rfl, hy, hne⟩, y₀, hy₀, γ, hy, hne⟩`.
+-/
 theorem finite_pts_reg (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1)
     (L : G.Level) (f : G.GAf → ℂ) (hf : IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f)
     (hreg : ∀ g, f g ≠ 0 → RegAf G g) (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ)
@@ -56,6 +64,17 @@ theorem finite_pts_reg (G : HTGroup p) (ha : G.a = 1) (v : InfinitePlace G.F) (h
   simp only [Set.mem_iUnion]
   exact ⟨_, ⟨γ * y₀ * γ⁻¹, Quot.out q, rfl, hy, hne⟩, y₀, hy₀, γ, hy, hne⟩
 
+/- English proof (translation)
+Introduce `p _ G hG v hv wt Kf f K' f' hf hf' P x t hx r hr`. Establish `hiff` using `fix_iff_mark G hG v hv P r hr`. Distinguish the cases in `hm : ∃ μ, P.Mark μ`. Rewrite using `[if_pos (hiff.2 hm), if_pos hm]`. Take `⟨μ, hμ⟩` from `hm`.
+
+Establish `hpos` using `cent_sim_pos p G P μ hG hμ`. Use `set e := centEquiv G P hpos r hr with he`. Establish `h1 : (toAfF G P.β x t hx).comp (Subgroup.centralizer {r}).subtype = (P.toAf x t hx).comp e.toMonoidHom` using `by ext1 y; rfl`. Establish `h2 : (toP1 G P.β).comp (Subgroup.centralizer {r}).subtype = (P.toQr 1 1).comp e.toMonoidHom` using `by ext1 y show inclG G 1 (locC G y.1.1) = (MulAut.conj (1 : Gr G 1)⁻¹) (inclG G 1 (locC G y.1.1))`. Simplify using the standard rewrite rules.
+
+Establish `h3 : toAfF G P.β x t hx r = P.toAf x t hx P.self`. Take `⟨r, hr'⟩` from `r`. Simplify using `only at hr`. Substitute `hr` using the available equality. Both sides reduce to the same expression.
+
+Establish `h4 : toP1 G P.β r = inclG G 1 P.atP` using `by show inclG G 1 (locC G (r : G.Cˣ × ℚˣ)) = _`. Rewrite using `[hr]`. Both sides reduce to the same expression. Establish `h5 : minpoly G.F (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = P.pol`. Rewrite using `[hr]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2, h3, h4, h5, GlobalTheory.pointSum_comp_mulEquiv, GlobalTheory.T.orbital_term_point_sum p G P Kf f K' f' hf hf' x t hx]`. Rewrite using `[if_neg (fun h => hm (hiff.1 h)), if_neg hm]`.
+-/
 theorem class_summand_eq_term_of_a_one : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ v : InfinitePlace G.F, sigPosH (G.gram_herm v) = 1 → ∀ (wt : Polynomial G.F → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ), (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K', ∀ g, f' (k⁻¹ * g * sigG G 1 k) = f' g) → ∀ (P : Pair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (r : grp G P.β), (r : G.Cˣ × ℚˣ) = (P.γ, P.c) → (if (∃ z : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v P.β *ᵥ z)).re ∧ FixL G v P.β r z) then wt (minpoly G.F (((r : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) * pointSum ((toAfF G P.β x t hx).comp (Subgroup.centralizer {r}).subtype) ((toP1 G P.β).comp (Subgroup.centralizer {r}).subtype) (MonoidHom.id (Gr G 1)) Kf K' (toAfF G P.β x t hx r) (toP1 G P.β r) f f' else 0) = (if ∃ μ, P.Mark μ then wt P.pol * P.term Kf f 1 K' f' else 0) := by
   intro p _ G hG v hv wt Kf f K' f' hf hf' P x t hx r hr
   have hiff := fix_iff_mark G hG v hv P r hr

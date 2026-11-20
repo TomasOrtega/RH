@@ -18,6 +18,9 @@ section One
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target hU`. Conclude with `((hf j).contDiffAt (ho.mem_nhds ⟨hy, hyU⟩)).of_le (by norm_cast)`.
+-/
 theorem cd_at {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) (hyU : (A.chart j).symm y ∈ U) :
     ContDiffAt ℝ 2 (f ∘ (A.chart j).symm) y := by
@@ -28,31 +31,52 @@ theorem cd_at {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) 
 def CdAt (A : FinHolAtlas e X) (P : LocPot X) (j : Fin A.n) (y : Fin e → ℂ) : Prop :=
   ContDiffAt ℝ 2 (P.φ ((A.chart j).symm y) ∘ (A.chart j).symm) y
 
+/- English proof (translation)
+The claim follows from `cd_at (P.isOpen_U _) (hP.1 _) j hy (P.mem_U _)`.
+-/
 theorem cdAt_pot {P : LocPot X} (hP : IsPotential A P) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) : CdAt A P j y :=
   cd_at (P.isOpen_U _) (hP.1 _) j hy (P.mem_U _)
 
+/- English proof (translation)
+The claim follows from `cd_at isOpen_univ hg j hy (Set.mem_univ _)`.
+-/
 theorem cdAt_fun {g : X → ℝ} (hg : A.Smooth g) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) : CdAt A (LocPot.ofFun g) j y :=
   cd_at isOpen_univ hg j hy (Set.mem_univ _)
 
+/- English proof (translation)
+The claim follows from `ContDiffAt.add hP hQ`.
+-/
 theorem CdAt.add {P Q : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (hP : CdAt A P j y) (hQ : CdAt A Q j y) :
     CdAt A (P + Q) j y := ContDiffAt.add hP hQ
 
+/- English proof (translation)
+The claim follows from `ContDiffAt.mul contDiffAt_const hP`.
+-/
 theorem CdAt.rsmul {P : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (c : ℝ) (hP : CdAt A P j y) :
     CdAt A (P.rsmul c) j y := ContDiffAt.mul contDiffAt_const hP
 
+/- English proof (translation)
+Establish `h` using `levi_add_smul (1 : ℝ) hP hQ w`. Simplify using `only [one_mul] at h`. Conclude with `h`.
+-/
 theorem leviAt_add {P Q : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (hP : CdAt A P j y) (hQ : CdAt A Q j y)
     (w : Fin e → ℂ) : leviAt A (P + Q) j y w = leviAt A P j y w + leviAt A Q j y w := by
   have h := levi_add_smul (1 : ℝ) hP hQ w
   simp only [one_mul] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `levi_add_smul c hP hQ w`.
+-/
 theorem leviAt_add_rsmul {P Q : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (c : ℝ) (hP : CdAt A P j y)
     (hQ : CdAt A Q j y) (w : Fin e → ℂ) :
     leviAt A (P + Q.rsmul c) j y w = leviAt A P j y w + c * leviAt A Q j y w :=
   levi_add_smul c hP hQ w
 
+/- English proof (translation)
+Establish `h1` using `leviAt_add_rsmul c hQ hQ w`. Establish `h2` using `leviAt_add hQ (hQ.rsmul c) w`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem leviAt_rsmul {Q : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (c : ℝ)
     (hQ : CdAt A Q j y) (w : Fin e → ℂ) :
     leviAt A (Q.rsmul c) j y w = c * leviAt A Q j y w := by
@@ -60,6 +84,15 @@ theorem leviAt_rsmul {Q : LocPot X} {j : Fin A.n} {y : Fin e → ℂ} (c : ℝ)
   have h2 := leviAt_add hQ (hQ.rsmul c) w
   linarith
 
+/- English proof (translation)
+Introduce `x j y hy w`. Establish `h0` using `h x j y hy w`. Establish `hyO : (A.chart j).symm y ∈ Om.U x` using `hy.2.1`. Establish `hyθ : (A.chart j).symm y ∈ θ.U x` using `hy.2.2`. Establish `c1` using `cd_at (Om.isOpen_U x) (hO.1 x) j hy.1 hyO`.
+
+Establish `c2` using `cd_at (θ.isOpen_U x) (hθ x) j hy.1 hyθ`. Establish `c3 : ContDiffAt ℝ 2 ((Om.rsmul K + θ).φ x ∘ (A.chart j).symm) y` using `ContDiffAt.add (ContDiffAt.mul contDiffAt_const c1) c2`. Establish `h1` using `levi_add_smul (K' - K) c3 c1 w`. Establish `h2 : 0 ≤ levi (Om.φ x ∘ (A.chart j).symm) y w`. Distinguish the cases in `hw : w = 0`.
+
+Rewrite using `[hw, levi_zero]`. Conclude with `(hp x j y ⟨hy.1, hyO⟩ w hw).le`. Establish `h3 : ((Om.rsmul K' + θ).φ x ∘ (A.chart j).symm) = fun y => ((Om.rsmul K + θ).φ x ∘ (A.chart j).symm) y + (K' - K) * (Om.φ x ∘ (A.chart j).symm) y`. Use function extensionality and compare the values at `z`. Use `show K' * _ + _ = (K * _ + _) + (K' - K) * _`.
+
+Simplify using `only [Function.comp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h1]`. Use `mul_nonneg (sub_nonneg.2 hK) h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isPsh_mono {Om θ : LocPot X} (hO : IsPotential A Om) (hp : IsPosPot A Om)
     (hθ : ∀ x, A.SmoothOn (θ.U x) (θ.φ x)) {K K' : ℝ} (hK : K ≤ K') (h : IsPsh A (Om.rsmul K + θ)) :
     IsPsh A (Om.rsmul K' + θ) := by
@@ -88,11 +121,17 @@ theorem isPsh_mono {Om θ : LocPot X} (hO : IsPotential A Om) (hp : IsPosPot A O
 
 variable {Z : Set X} {r : X → ℝ} {Om : LocPot X}
 
+/- English proof (translation)
+Establish `h` using `hb.2.2.2.2.2.1 x hx`. Rewrite using `[Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) h)]`. Conclude with `h`.
+-/
 theorem one_le_log (hb : IsBd A Z r Om) {x : X} (hx : x ∉ Z) : 1 ≤ Real.log (r x) := by
   have h := hb.2.2.2.2.2.1 x hx
   rw [Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) h)]
   exact h
 
+/- English proof (translation)
+Take `⟨θ, u, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Use `⟨θ, u, h1, h2, isPsh_mono hb.2.2.1 hb.2.2.2.1 h2.1 hK h3, isPsh_mono hb.2.2.1 hb.2.2.2.1 (fun x j => ContDiffOn.mul contDiffOn_const (h2.1 x j)) hK h4, h5, fun x hx => ⟨le_trans ?_ (h6 x hx).1, (h6 x hx).2⟩, h7, h8⟩` and prove the remaining obligations. Use `one_le_log hb hx` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem listForm_mono (hb : IsBd A Z r Om) {K K' : ℝ} (hK : K ≤ K') {T : LocPot X}
     (h : ListForm A Z r Om K T) : ListForm A Z r Om K' T := by
   obtain ⟨θ, u, h1, h2, h3, h4, h5, h6, h7, h8⟩ := h
@@ -102,6 +141,9 @@ theorem listForm_mono (hb : IsBd A Z r Om) {K K' : ℝ} (hK : K ≤ K') {T : Loc
   have := one_le_log hb hx
   nlinarith
 
+/- English proof (translation)
+Take `⟨-, T, c, h1, h2⟩` from `h`. Conclude with `⟨hP, T, c, fun l => ⟨listForm_mono hb hK (h1 l).1, (h1 l).2.trans hK⟩, fun j y hy hz w => (hPQ j y hy w).trans (h2 j y hy hz w)⟩`.
+-/
 theorem comb_transfer (hb : IsBd A Z r Om) {K K' : ℝ} (hK : K ≤ K') {P Q : LocPot X} (hP : IsPotential A P)
     (hPQ : LeviEq A P Q) (h : Comb A Z r Om K Q) : Comb A Z r Om K' P := by
   obtain ⟨-, T, c, h1, h2⟩ := h
@@ -110,6 +152,11 @@ theorem comb_transfer (hb : IsBd A Z r Om) {K K' : ℝ} (hK : K ≤ K') {P Q : L
 
 end One
 
+/- English proof (translation)
+Introduce `j y hy w`. Establish `pot` using `fun v => cdAt_pot ((T.K B c).firstChern_isPotential v σ) j hy`. Establish `ht` using `cdAt_pot (T.th_pot c u σ) j hy`. Establish `ha` using `cdAt_pot (T.a_pot c σ) j hy`. Rewrite using `[(T.K B c).isOneCochain_add _ _ σ j y hy w, leviAt_add (pot _) (pot _), (T.K B c).isOneCochain_add _ _ σ j y hy w, leviAt_add (pot _) (pot _), (T.K B c).firstChern_smul_leviEq _ _ σ j y hy w, leviAt_rsmul _ (pot _), (T.K B c).c1_ar g hg σ j y hy w, T.c1_L B c u σ j y hy w, T.firs …`.
+
+Unfold `An.form`. Rewrite using `[leviAt_add (ht.add (ha.rsmul s)) (cdAt_fun (hg σ) j hy), leviAt_add_rsmul s ht ha]`.
+-/
 theorem first_chern_form_levi_sum {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 Y) (B : ℝ) (c : Y.Comp) (u : Wt Y) (s : ℝ)
     (g : (T.M c).Fun) (hg : (T.M c).Smooth g) (σ : Fin ((T.M c).n + 1)) :
     LeviEq ((T.M c).A σ) ((T.K B c).c1 (T.L B c u + s • T.a B c + (T.K B c).ar g) σ) ((T.F c).form u s g σ) := by
@@ -123,6 +170,9 @@ theorem first_chern_form_levi_sum {D : D7} {Y : ShimX D.what₂.Tau} (T : Real0 
   unfold An.form
   rw [leviAt_add (ht.add (ha.rsmul s)) (cdAt_fun (hg σ) j hy), leviAt_add_rsmul s ht ha]
 
+/- English proof (translation)
+The claim follows from `|K.top (v + K.ar (F.phS u s)) - K.top (v + K.ar (F.phR R u))| ≤ C * s := by obtain ⟨K₁, h1⟩ := hR Λ obtain ⟨s₁, hs₁, K₂, h2⟩ := hS Λ obtain ⟨k, hk0, hk1, hk2⟩ : ∃ k : ℝ, 0 ≤ k ∧ K₁ ≤ k ∧ K₂ ≤ k := ⟨max 0 (max K₁ K₂), le_max_left _ _, (le_max_left _ _).trans (le_max_right _ _), (l …`.
+-/
 theorem key {e : ℕ} (M : Man e) {ι : Type} [Fintype ι] {N : ℕ} (F : An M ι N) (j : ℕ) (hR : F.FamR j)
     (hS : F.FamS) (Λ : ℝ) : ∃ s₀ : ℝ, 0 < s₀ ∧ ∃ C : ℝ, ∀ (K : Calc M) (v : K.V) (u : ι → Fin N → ℝ) (s : ℝ),
       Dom u → ‖u‖ ≤ Λ → 0 < s → s ≤ s₀ →
@@ -227,6 +277,9 @@ theorem key {e : ℕ} (M : Man e) {ι : Type} [Fintype ι] {N : ℕ} (F : An M �
     push_cast
     exact le_of_eq (by ring)
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ supAbs Y u` using `Real.iSup_nonneg fun _ => abs_nonneg _`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun i => ?_` and prove the remaining obligations. Conclude with `le_ciSup (f := fun x : Rt D.what₂.Tau Y.N => |u x.1 x.2|) (Set.finite_range _).bddAbove (τ, i)`.
+-/
 theorem norm_le_supAbs {D : D7} (Y : ShimX D.what₂.Tau) (u : Wt Y) : ‖u‖ ≤ supAbs Y u := by
   have h0 : 0 ≤ supAbs Y u := Real.iSup_nonneg fun _ => abs_nonneg _
   refine (pi_norm_le_iff_of_nonneg h0).2 fun τ => (pi_norm_le_iff_of_nonneg h0).2 fun i => ?_
@@ -236,6 +289,17 @@ end GlobalTheory.Mean4O.AgreePf
 
 open GlobalTheory.Mean4O.AgreePf in
 
+/- English proof (translation)
+Introduce `Λ`. Use `choose s₀ hs₀ C hC using fun c => key (T.M c) (T.F c) Y.j (hR c) (hS c) (Λ + ‖A.dir‖)`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, ht1, hts⟩ : ∃ t : ℝ, 0 < t ∧ t ≤ 1 ∧ ∀ c, t ≤ s₀ c := by`. Establish `h1 : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ c, t ≤ s₀ c` using `Filter.eventually_all.2 fun c => nhdsWithin_le_nhds (ge_mem_nhds (hs₀ c))`. Establish `h2 : ∀ᶠ t in 𝓝[>] (0 : ℝ), t ≤ 1` using `nhdsWithin_le_nhds (ge_mem_nhds one_pos)`.
+
+Take `⟨t, h⟩` from `(h1.and (h2.and self_mem_nhdsWithin)).exists`. Conclude with `⟨t, h.2.2, h.2.1, h.1⟩`. Use `⟨t, ht, ∑ c, |C c|, fun B hB u s hu hΛ hs hst hd c => ?_⟩` and prove the remaining obligations. Establish `hs' : (0 : ℝ) < s` using `by exact_mod_cast hs`. Establish `hn : ‖A.sh u s‖ ≤ Λ + ‖A.dir‖`.
+
+Establish `: A.sh u s = u - (s : ℝ) • A.dir` using `rfl`. Rewrite using `[this]`. Use `(norm_sub_le _ _).trans (add_le_add ((norm_le_supAbs Y u).trans hΛ) ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg hs'.le]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hst.trans ht1)`.
+
+Establish `hk` using `fun c => hC c (T.K B c) (T.L B c (A.sh u s) + (s : ℝ) • T.a B c) (A.sh u s) s hd hn hs' (hst.trans (hts c)) (fun g hg σ => first_chern_form_levi_sum T B c _ _ g hg σ)`. Rewrite using `[((hM B hB u s hu hs).2 hd fun c => (hk c).1).1 c]`. Establish `hlim` using `((tendsto_const_nhds (x := (T.K B c).top (T.L B c (A.sh u s) + (s : ℝ) • T.a B c + (T.K B c).ar ((T.F c).phS (A.sh u s) s)))).sub ((hP B hB c).2 (A.sh u s) s)).abs`. Establish `hb` using `le_of_tendsto hlim (b := C c * s) (by filter_upwards [eventually_ge_atTop (Real.exp 2), eventually_ge_atTop ((((s : ℝ) ^ 2)⁻¹) ^ 2)] with R h1 h2`. Conclude with `(hk c).2 R h1 h2)`.
+
+Use `hb.trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans ?_) hs'.le)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun c => |C c|) (fun _ _ => abs_nonneg _) (Finset.mem_univ c)`.
+-/
 theorem GlobalTheory.Mean4O.agree_of_families (D : D7) (Y : ShimX D.what₂.Tau) (T : Real0 Y) (A : SlopeTestRemainingChoices Y)
     (hR : ∀ c, (T.F c).FamR Y.j) (hS : ∀ c, (T.F c).FamS) (hP : TiePs T A) (hM : TieM T A) : Agree A := by
   intro Λ

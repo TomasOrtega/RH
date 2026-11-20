@@ -4,6 +4,15 @@ namespace GlobalTheory.CompanionTheory.ExpSums
 
 open Matrix in
 
+/- English proof (translation)
+Take `⟨V, hV⟩ : ∃ V : Matrix (Fin r) (Fin r) ℂ, V = Matrix.vandermonde α` from `⟨_, rfl⟩`. Establish `hdet : IsUnit V.det`. Rewrite using `[isUnit_iff_ne_zero, hV]`. Conclude with `Matrix.det_vandermonde_ne_zero_iff.mpr hα`. Use `⟨∑ s : Fin r, ∑ j : Fin r, ‖V⁻¹ s j‖, ?_⟩` and prove the remaining obligations.
+
+Introduce `c i`. Establish `hsum : ∀ s : Fin r, Matrix.vecMul c V s = ∑ k, c k * α k ^ (s : ℕ)`. Introduce `s`. Simplify using `[Matrix.vecMul, dotProduct, hV, Matrix.vandermonde_apply]`. Establish `hc : c = Matrix.vecMul (Matrix.vecMul c V) V⁻¹`.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet, Matrix.vecMul_one]`. Establish `hC : ∀ s : Fin r, ‖V⁻¹ s i‖ ≤ ∑ s : Fin r, ∑ j : Fin r, ‖V⁻¹ s j‖` using `fun s => (Finset.single_le_sum (f := fun j => ‖V⁻¹ s j‖) (fun j _ => norm_nonneg _) (Finset.mem_univ i)).trans (Finset.single_le_sum (f := fun s => ∑ j, ‖V⁻¹ s j‖) (fun s _ => Finset.sum_nonneg fun j _ => norm_nonneg _) (Finset.mem_univ s))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, mul_comm]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun s _ => by rw [hsum]`.
+-/
 theorem vandermonde_separation (r : ℕ) (α : Fin r → ℂ) (hα : Function.Injective α) :
     ∃ C : ℝ, ∀ (c : Fin r → ℂ) (i : Fin r),
       ‖c i‖ ≤ C * ∑ s : Fin r, ‖∑ k, c k * α k ^ (s : ℕ)‖ := by

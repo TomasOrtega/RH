@@ -2,6 +2,9 @@ import Mathlib
 
 namespace MultisetMapEqExistsEquivPerm
 
+/- English proof (translation)
+Rewrite using `[Multiset.countP_map, Fintype.card_subtype]`. Both sides reduce to the same expression.
+-/
 private lemma card_fiber {α : Type*} [DecidableEq α] {l : ℕ} (x : Fin l → α) (v : α) :
     Fintype.card {a : Fin l // x a = v} =
       (Multiset.map x Finset.univ.val).countP (fun b => b = v) := by
@@ -10,6 +13,11 @@ private lemma card_fiber {α : Type*} [DecidableEq α] {l : ℕ} (x : Fin l → 
 
 end MultisetMapEqExistsEquivPerm
 
+/- English proof (translation)
+Introduce `α l x y h`. Establish `hc : ∀ v : α, Fintype.card {a : Fin l // y a = v} = Fintype.card {a : Fin l // x a = v}`. Introduce `v`. Use `(MultisetMapEqExistsEquivPerm.card_fiber y v).trans ((congrArg (fun m => Multiset.countP (fun b => b = v) m) h).trans (MultisetMapEqExistsEquivPerm.card_fiber x v).symm)` and compare the differences between its conclusion and the goal. Set `E : ∀ v : α, {a : Fin l // y a = v} ≃ {a : Fin l // x a = v}` to `fun v => Fintype.equivOfCardEq (hc v)`.
+
+Use `⟨Equiv.ofFiberEquiv E, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.ofFiberEquiv_map E a).symm`.
+-/
 theorem UpperTheory.Reformulated.B.Yhb6.main.{u_1} :
     ∀ {α : Type u_1} {l : ℕ} {x y : Fin l → α},
       Multiset.map y Finset.univ.val = Multiset.map x Finset.univ.val →

@@ -5,9 +5,15 @@ open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolati
 private def Pm {Λ R Γ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group Γ] (r : Γ →* M4 R) (E : Subalgebra Λ R)
     (w : ℤ × ℤ) (x : R) : Prop := ∃ e ∈ E, ∃ m ∈ mono r w, x = e * m
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, hx, 1, ⟨[], by simp, by simp⟩, by simp⟩`.
+-/
 private theorem Pm_mem {Λ R Γ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group Γ] (r : Γ →* M4 R) (E : Subalgebra Λ R)
     {x : R} (hx : x ∈ E) : Pm r E 0 x := ⟨x, hx, 1, ⟨[], by simp, by simp⟩, by simp⟩
 
+/- English proof (translation)
+Take `⟨e, he, m, ⟨L, hL, rfl⟩, rfl⟩` from `hx`. Take `⟨e', he', m', ⟨L', hL', rfl⟩, rfl⟩` from `hy`. Use `⟨e * e', mul_mem he he', _, ⟨L ++ L', by rw [List.map_append, List.sum_append, hL, hL'], rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_append, List.prod_append]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem Pm_mul {Λ R Γ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group Γ] {r : Γ →* M4 R} {E : Subalgebra Λ R}
     {w w' : ℤ × ℤ} {x y : R} (hx : Pm r E w x) (hy : Pm r E w' y) : Pm r E (w + w') (x * y) := by
   obtain ⟨e, he, m, ⟨L, hL, rfl⟩, rfl⟩ := hx
@@ -16,12 +22,28 @@ private theorem Pm_mul {Λ R Γ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R
   rw [List.map_append, List.prod_append]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `Pm_mem r E (one_mem E)`. Consider the case `succ k ih => rw [succ_nsmul, pow_succ]`. Conclude with `Pm_mul ih hx`.
+-/
 private theorem Pm_pow {Λ R Γ : Type} [CommRing Λ] [CommRing R] [Algebra Λ R] [Group Γ] {r : Γ →* M4 R} {E : Subalgebra Λ R}
     {w : ℤ × ℤ} {x : R} (hx : Pm r E w x) (k : ℕ) : Pm r E (k • w) (x ^ k) := by
   induction k with
   | zero => rw [zero_smul, pow_zero]; exact Pm_mem r E (one_mem E)
   | succ k ih => rw [succ_nsmul, pow_succ]; exact Pm_mul ih hx
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ _ _ R _ _ _ D W E hG hm hψ n hn`. Establish `hz : ∀ s, Pm D.r E (W.wt s) (W.z s)`. Introduce `s`. Break down `hG.var s with ⟨g, i, j, c, h1, h2, h3⟩ | ⟨v, i, t, c, h1, h2⟩` into its components or cases. Establish `hmem : D.r g i j ∈ mono D.r (wt i j)` using `⟨[(g, i, j)], by simp, by simp⟩`.
+
+Distinguish the cases in `hij : i = j`. Establish `h0 : wt i j = 0` using `(wt_eq_zero i j).2 hij`. Rewrite using `[h2, h1, h0]`. Rewrite `hmem` using `[h0]`. Conclude with `Pm_mem _ _ (sub_mem (hm hmem) (E.algebraMap_mem c))`.
+
+Rewrite using `[h2, h1, h3 hij, map_zero, sub_zero]`. Conclude with `⟨1, one_mem E, _, hmem, (one_mul _).symm⟩`. Rewrite using `[h2, h1]`. Conclude with `Pm_mem _ _ (sub_mem (hψ v i t) (E.algebraMap_mem c))`. Establish `key : ∀ n : W.σ →₀ ℕ, Pm D.r E (Finsupp.weight W.wt n) (n.prod fun s k => W.z s ^ k)`.
+
+Introduce `n`. Proceed by induction on `n using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero, Finsupp.prod_zero_index]`. Conclude with `Pm_mem _ _ (one_mem E)`. Consider the case `add f g hf hg`.
+
+Rewrite using `[map_add, Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Conclude with `Pm_mul hf hg`. Consider the case `single s k`. Rewrite using `[Finsupp.prod_single_index (h := fun s k => W.z s ^ k) (pow_zero _), Finsupp.weight_single]`. Conclude with `Pm_pow (hz s) k`.
+
+Take `⟨e, he, m, hm', h⟩` from `key n`. Rewrite using `[h]`. Rewrite `hm'` using `[hn]`. Conclude with `mul_mem he (hm hm')`.
+-/
 theorem UpperTheory.V.Ws.sxZMono :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {D : RD Φ R} {W : WPres Λ (ℤ × ℤ) R} (E : Subalgebra Λ R), D.Graded W → mono D.r 0 ⊆ E → (∀ v i s, D.ψ v i s ∈ E) → ∀ n : W.σ →₀ ℕ, Finsupp.weight W.wt n = 0 → (n.prod fun s k => W.z s ^ k) ∈ E := by
   intro O Γ _ _ _ Φ Λ _ _ _ _ R _ _ _ D W E hG hm hψ n hn

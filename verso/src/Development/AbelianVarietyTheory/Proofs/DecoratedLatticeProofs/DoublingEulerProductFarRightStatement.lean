@@ -12,5 +12,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.EulerProd.eulerRight | exact GlobalTheory.Core.Rk.EulerProd.eulerRight | (intros; apply GlobalTheory.Core.Rk.EulerProd.eulerRight <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubling_eulerProduct_farRight : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SphFactor D → LocalZetaOn D (fun _ => True) → ParamBoundOn D (fun _ => True) → EulerRight D := by
   first | exact @GlobalTheory.Core.Rk.EulerProd.eulerRight | exact GlobalTheory.Core.Rk.EulerProd.eulerRight | (intros; apply GlobalTheory.Core.Rk.EulerProd.eulerRight <;> assumption)

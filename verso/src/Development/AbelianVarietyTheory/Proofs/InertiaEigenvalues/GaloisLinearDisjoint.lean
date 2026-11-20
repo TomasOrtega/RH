@@ -11,6 +11,25 @@ variable {k M F D : Type*} [Field k] [Field M] [Field F] [Field D] [Algebra k M]
 end
 
 open Polynomial in
+/- English proof (translation)
+Use `set ψ : k →+* F := (o.comp (algebraMap k Ω)).codRestrict F (fun c => (hF _).2 ⟨c, rfl⟩)`. Establish `hcomp : F.subtype.comp ψ = o.comp (algebraMap k Ω)` using `by ext; rfl`. Establish `hcomp' : (algebraMap F D).comp ψ = o.comp (algebraMap k Ω)` using `by ext; rfl`. Establish `hmon : ((minpoly k α).map ψ).Monic` using `(minpoly.monic hα).map ψ`. Establish `hroot : aeval (o α) ((minpoly k α).map ψ) = 0`.
+
+Rewrite using `[aeval_def, eval₂_map, hcomp', ← hom_eval₂, ← aeval_def, minpoly.aeval, map_zero]`. Establish `hβ : IsIntegral F (o α)` using `⟨_, hmon, hroot⟩`. Establish `hdvd : minpoly F (o α) ∣ (minpoly k α).map ψ` using `minpoly.dvd F _ hroot`. Establish `hP : ((minpoly k α).map ψ).map F.subtype = ((minpoly k α).map (algebraMap k Ω)).map o`. Rewrite using `[map_map, map_map, hcomp]`.
+
+Establish `hP0 : ((minpoly k α).map ψ).map F.subtype ≠ 0` using `(hmon.map _).ne_zero`. Establish `hGdvd : (minpoly F (o α)).map F.subtype ∣ ((minpoly k α).map ψ).map F.subtype` using `Polynomial.map_dvd _ hdvd`. Establish `hGs : ((minpoly F (o α)).map F.subtype).Splits`. Use `Splits.of_dvd ?_ hP0 hGdvd` and prove the remaining obligations. Rewrite using `[hP]`.
+
+Conclude with `hsplit.map o`. Establish `hGm : ((minpoly F (o α)).map F.subtype).Monic` using `(minpoly.monic hβ).map _`. Establish `hlift : (minpoly F (o α)).map F.subtype ∈ lifts o`. Use `hGs.mem_lift_of_roots_mem_range hGm o fun a ha => ?_` and prove the remaining obligations. Establish `h1` using `Multiset.mem_of_le (Polynomial.roots.le_of_dvd hP0 hGdvd) ha`.
+
+Rewrite `h1` using `[hP, hsplit.roots_map o]`. Take `⟨r, -, rfl⟩` from `Multiset.mem_map.1 h1`. Conclude with `⟨r, rfl⟩`. Establish `hlift' : (minpoly F (o α)).map F.subtype ∈ lifts (o.comp (algebraMap k Ω))`. Rewrite `hlift`, the goal using `[lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Take `⟨y, hy⟩` from `hlift n`. Establish `hyF : o y ∈ F`. Rewrite using `[hy, coeff_map]`. Conclude with `((minpoly F (o α)).coeff n).2`.
+
+Take `⟨c, rfl⟩` from `(hF y).1 hyF`. Conclude with `⟨c, hy⟩`. Take `⟨g, hg⟩` from `(mem_lifts _).1 hlift'`. Establish `hinj : Function.Injective (o.comp (algebraMap k Ω))` using `RingHom.injective _`. Establish `hg0 : g ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hg` using `[Polynomial.map_zero]`. Conclude with `hGm.ne_zero hg.symm`. Establish `hgα : aeval α g = 0`. Apply `o.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, aeval_def, hom_eval₂, ← eval_map, hg, eval_map]`. Conclude with `minpoly.aeval F (o α)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hg, natDegree_map_eq_of_injective hinj]`. Use `_ = (minpoly F (o α)).natDegree := natDegree_map_eq_of_injective (RingHom.injective _) _`.
+-/
 private theorem natDegree_minpoly_le_natDegree_minpoly_map {k Ω D : Type} [Field k] [Field Ω] [Field D]
     [Algebra k Ω] (o : Ω →+* D) (F : Subfield D)
     (hF : ∀ x : Ω, o x ∈ F ↔ x ∈ (algebraMap k Ω).range) (α : Ω) (hα : IsIntegral k α)
@@ -66,6 +85,29 @@ private theorem natDegree_minpoly_le_natDegree_minpoly_map {k Ω D : Type} [Fiel
 
 open Polynomial in
 
+/- English proof (translation)
+Introduce `k Ω D _ _ _ _ _ o F hF m x hx b hb hsum`. Use `set M := IntermediateField.adjoin k (Set.range x)`. Use `haveI : FiniteDimensional k M := IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Take `⟨α', hα'⟩` from `Field.exists_primitive_element k M`. Use `set α : Ω := (α' : Ω) with hαdef`.
+
+Establish `hxα : ∀ i, x i ∈ IntermediateField.adjoin k {α}`. Introduce `i`. Establish `h1 : (IntermediateField.adjoin k {α'}).map M.val = IntermediateField.adjoin k {α}`. Rewrite using `[IntermediateField.adjoin_map, Set.image_singleton]`. Both sides reduce to the same expression.
+
+Rewrite using `[← h1, hα']`. Conclude with `⟨⟨x i, IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩⟩, trivial, rfl⟩`. Establish `hint : IsIntegral k α` using `Algebra.IsIntegral.isIntegral α`. Use `set pb := IntermediateField.adjoin.powerBasis hint`. Establish `hdim : pb.dim ≤ (minpoly F (o α)).natDegree`.
+
+Rewrite using `[IntermediateField.adjoin.powerBasis_dim]`. Conclude with `natDegree_minpoly_le_natDegree_minpoly_map o F hF α hint (IsGalois.splits k α)`. Establish `hli : LinearIndependent F (fun j : Fin pb.dim => o α ^ (j : ℕ))` using `(linearIndependent_pow (o α)).comp (Fin.castLE hdim) (Fin.castLE_injective hdim)`. Use `set c : Fin m → Fin pb.dim → k := fun i j => pb.basis.repr ⟨x i, hxα i⟩ j`. Establish `hexp : ∀ i, x i = ∑ j, c i j • α ^ (j : ℕ)`.
+
+Introduce `i`. Establish `h` using `congrArg Subtype.val (pb.basis.sum_repr ⟨x i, hxα i⟩)`. Use `h.symm.trans ?_` and prove the remaining obligations. Simplify using `[c, pb, IntermediateField.adjoin.powerBasis_gen]`. Establish `hd : ∀ j, ∑ i, o (algebraMap k Ω (c i j)) * b i = 0`.
+
+Establish `hmem : ∀ j, ∑ i, o (algebraMap k Ω (c i j)) * b i ∈ F` using `fun j => F.sum_mem fun i _ => F.mul_mem ((hF _).2 ⟨_, rfl⟩) (hb i)`. Introduce `j`. Use `Fintype.linearIndependent_iff.1 hli (fun j => ⟨_, hmem j⟩) ?_ j` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Rewrite using `[← hsum]`.
+
+Simplify using `only [hexp, Subfield.smul_def, map_sum, map_smul, Algebra.smul_def, map_mul, map_pow, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i, o (algebraMap k Ω (c i j)) * b i) * o α ^ (j : ℕ) = _`. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Take `⟨g, hg⟩` from `LinearMap.exists_extend hx.repr`. Establish `hgx : ∀ i, g (x i) = Finsupp.single i 1`. Introduce `i`. Use `LinearMap.congr_fun hg ⟨x i, Submodule.subset_span ⟨i, rfl⟩⟩` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this, hx.repr_eq_single i _ rfl]`. Introduce `l`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hgx, Finsupp.single_apply]`.
+
+Use `_ = ∑ j : Fin pb.dim, o (algebraMap k Ω (g (α ^ (j : ℕ)) l)) * ∑ i, o (algebraMap k Ω (c i j)) * b i := by`. Simplify using `only [hexp, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = 0 := by simp [hd]`.
+-/
 theorem _root_.GlobalTheory.GalDisj.galois_linearDisjoint : ∀ (k Ω D : Type) [Field k] [Field Ω] [Field D] [Algebra k Ω] [IsGalois k Ω] (o : Ω →+* D) (F : Subfield D), (∀ x : Ω, o x ∈ F ↔ x ∈ (algebraMap k Ω).range) → ∀ (m : ℕ) (x : Fin m → Ω), LinearIndependent k x → ∀ b : Fin m → D, (∀ i, b i ∈ F) → ∑ i, o (x i) * b i = 0 → ∀ i, b i = 0 := by
   intro k Ω D _ _ _ _ _ o F hF m x hx b hb hsum
   classical

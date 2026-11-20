@@ -7,6 +7,15 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 
 namespace GlobalTheory.LamTie.InfType
 
+/- English proof (translation)
+Establish `hx : ∀ x, (χ.1 x) ^ n = 1` using `fun x => congrArg (fun ξ : Formalism.L2.Host.HChar L => ξ.1 x) h`. Establish `hw : ∀ (w : InfinitePlace L) (y : (w.Completion)ˣ), χ.locInf w y = 1`. Introduce `w y`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (y : w.Completion)) hn`.
+
+Establish `hz' : (e.symm z) ^ n = y` using `by rw [← map_pow, hz]; simp`. Establish `hz0 : e.symm z ≠ 0`. Introduce `h0`. Rewrite `hz'` using `[h0, zero_pow hn.ne']`. Conclude with `y.ne_zero hz'.symm`.
+
+Establish `: y = (Units.mk0 _ hz0) ^ n` using `Units.ext (by simp [hz'])`. Rewrite using `[this, map_pow]`. Conclude with `hx _`. Use `show χ.1 (Formalism.L2.Host.infDiag k) = 1`. Unfold `Formalism.L2.Host.infDiag`.
+
+Rewrite using `[MonoidHom.finset_prod_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => hw w _`.
+-/
 theorem inf_eq_one {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {χ : Formalism.L2.Host.HChar L} {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (k : Lˣ) : χ.inf k = 1 := by
   have hx : ∀ x, (χ.1 x) ^ n = 1 := fun x => congrArg (fun ξ : Formalism.L2.Host.HChar L => ξ.1 x) h
@@ -25,11 +34,19 @@ theorem inf_eq_one {L : Type} [Field L] [NumberField L] [IsTotallyComplex L] {χ
   rw [MonoidHom.finset_prod_apply, map_prod]
   exact Finset.prod_eq_one fun w _ => hw w _
 
+/- English proof (translation)
+Establish `h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Rewrite using `[Complex.norm_conj, inv_div, div_eq_div_iff h1 hz, ← sq, ← Complex.mul_conj', mul_comm]`.
+-/
 theorem conj_div_norm {z : ℂ} (hz : z ≠ 0) :
     starRingEnd ℂ z / ((‖starRingEnd ℂ z‖ : ℝ) : ℂ) = (z / ((‖z‖ : ℝ) : ℂ))⁻¹ := by
   have h1 : ((‖z‖ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hz
   rw [Complex.norm_conj, inv_div, div_eq_div_iff h1 hz, ← sq, ← Complex.mul_conj', mul_comm]
 
+/- English proof (translation)
+Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Unfold `CharFrame.delAt`. Use `split_ifs`. Take `⟨n, hn, h⟩` from `C.isDel'.fin`. Conclude with `inf_eq_one hn h k`.
+
+Take `⟨n, hn, h⟩` from `C.isDel.fin`. Conclude with `inf_eq_one hn h k`.
+-/
 theorem delAt_inf {D : D7} (C : CharFrame D) (l : ℕ) (k : D.host.Eˣ) : (C.delAt l).inf k = 1 := by
   haveI : IsCMField D.host.E := D.host.isCMField_hostE
   unfold CharFrame.delAt
@@ -39,6 +56,21 @@ theorem delAt_inf {D : D7} (C : CharFrame D) (l : ℕ) (k : D.host.Eˣ) : (C.del
   · obtain ⟨n, hn, h⟩ := C.isDel.fin
     exact inf_eq_one hn h k
 
+/- English proof (translation)
+Establish `he : ∀ g, ∃ z : ℤ, eExp D j g = z` using `fun g => (D.hc _).e_int j`. Use `choose e he using he`. Establish `hpos : ∀ g, 1 ≤ e g + Z.c a g - s` using `fun g => by`. Establish `h` using `hZ.big j a g`. Rewrite `h` using `[he]`.
+
+Establish `h' : (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1 < e g + Z.c a g` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hk : ∀ g, (Z.kap j a s g : ℤ) = e g + Z.c a g - s` using `fun g => by`. Unfold `LamDat.kap`. Rewrite using `[he, Int.floor_intCast]`.
+
+Conclude with `Int.toNat_of_nonneg (by have := hpos g; omega)`. Use `⟨fun g => by have := hk g; have := hpos g; omega, fun k => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h1⟩` from `(Z.C.isMu0 j).inf`. Take `⟨n', hn', h2⟩` from `(hZ.aux a).inf`. Unfold `LamDat.lam0`.
+
+Rewrite using `[HChar.inf_mul, HChar.inf_mul, HChar.inf_inv, delAt_inf, mul_one, Units.val_mul, Units.val_inv_eq_inv_val, h1 k, h2 k, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `hz : embPsi D.host g (k : D.host.E) ≠ 0` using `by simp`. Establish `hu : embPsi D.host g (k : D.host.E) / ((‖embPsi D.host g (k : D.host.E)‖ : ℝ) : ℂ) ≠ 0` using `div_ne_zero hz (by exact_mod_cast norm_ne_zero_iff.2 hz)`. Establish `e1 : n g = 2 * -(e g)`.
+
+Use `hn g` as an intermediate fact. Simplify using `only [he] at this`. Conclude with `this` after adjusting the coercions. Establish `e2 : n' g = 2 * Z.c a g`. Use `hn' g` as an intermediate fact.
+
+Use `beta_reduce at this`. Conclude with `this` after adjusting the coercions. Establish `e3 : phi D.host g (k : D.host.E) = starRingEnd ℂ (embPsi D.host g (k : D.host.E))` using `rfl`. Rewrite using `[e3, conj_div_norm hz, inv_zpow', ← zpow_neg, ← zpow_add₀ hu, e1, e2]`. Use `congr 1`.
+
+Use `beta_reduce`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toricLam0_hasInfinityType_conjRatio (D : D7) (Z : LamDat D) (hZ : Z.Ok) (l : ℕ) (j a : Fin D.R.m) (s : ℕ)
     (hs : (s : ℤ) ≤ (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1) :
     (∀ g, 1 ≤ Z.kap j a s g) ∧

@@ -10,12 +10,20 @@ noncomputable section
 
 namespace GlobalTheory.KinfFin
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [← add_assoc, pow_succ', pow_mul, ϖ.seq_succ, ih]`.
+-/
 theorem seq_add_pow {l : ℕ} [Fact l.Prime] {e : ℕ} (ϖ : PiSys l e) (m k : ℕ) :
     ϖ.seq (m + k) ^ l ^ k = ϖ.seq m := by
   induction k with
   | zero => simp
   | succ k ih => rw [← add_assoc, pow_succ', pow_mul, ϖ.seq_succ, ih]
 
+/- English proof (translation)
+Introduce `m n hmn`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Use `IntermediateField.adjoin_simple_le_iff.2 ?_` and prove the remaining obligations. Establish `: ϖ.seq m ^ e = (ϖ.seq (m + k) ^ e) ^ l ^ k`. Rewrite using `[← pow_mul, mul_comm, pow_mul, seq_add_pow]`.
+
+Rewrite using `[this]`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _`.
+-/
 theorem adjoin_mono {l : ℕ} [Fact l.Prime] {e : ℕ} (ϖ : PiSys l e) :
     Monotone fun n => IntermediateField.adjoin ℚ_[l] {ϖ.seq n ^ e} := by
   intro m n hmn
@@ -26,16 +34,27 @@ theorem adjoin_mono {l : ℕ} [Fact l.Prime] {e : ℕ} (ϖ : PiSys l e) :
   rw [this]
   exact pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _
 
+/- English proof (translation)
+Rewrite using `[PiSys.Kinf, ← IntermediateField.biSup_adjoin_simple, iSup_range]`.
+-/
 theorem Kinf_eq_iSup {l : ℕ} [Fact l.Prime] {e : ℕ} (ϖ : PiSys l e) :
     ϖ.Kinf = ⨆ n, IntermediateField.adjoin ℚ_[l] {ϖ.seq n ^ e} := by
   rw [PiSys.Kinf, ← IntermediateField.biSup_adjoin_simple, iSup_range]
 
+/- English proof (translation)
+Rewrite `hx` using `[Kinf_eq_iSup, ← SetLike.mem_coe, IntermediateField.coe_iSup_of_directed (adjoin_mono ϖ).directed_le, Set.mem_iUnion]`. Conclude with `hx`.
+-/
 theorem exists_mem_of_mem_Kinf {l : ℕ} [Fact l.Prime] {e : ℕ} (ϖ : PiSys l e) {x : Om l}
     (hx : x ∈ ϖ.Kinf) : ∃ n, x ∈ IntermediateField.adjoin ℚ_[l] {ϖ.seq n ^ e} := by
   rw [Kinf_eq_iSup, ← SetLike.mem_coe,
     IntermediateField.coe_iSup_of_directed (adjoin_mono ϖ).directed_le, Set.mem_iUnion] at hx
   exact hx
 
+/- English proof (translation)
+Introduce `l _ e ϖ F hF hle`. Set `b` to `Module.finBasis ℚ_[l] F`. Use `choose N hN using fun i => exists_mem_of_mem_Kinf ϖ (hle (b i).2)`. Use `⟨Finset.univ.sup N, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((⟨x, hx⟩ : F) : Om l) ∈ _`.
+
+Rewrite using `[← b.sum_repr ⟨x, hx⟩, IntermediateField.coe_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.coe_smul]`. Use `IntermediateField.smul_mem _ ?_` and prove the remaining obligations. Conclude with `adjoin_mono ϖ (Finset.le_sup (f := N) (Finset.mem_univ i)) (hN i)`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (e : ℕ) (ϖ : PiSys l e) (F : IntermediateField ℚ_[l] (Om l)),
     FiniteDimensional ℚ_[l] F → F ≤ ϖ.Kinf → ∃ n : ℕ, F ≤ IntermediateField.adjoin ℚ_[l] {ϖ.seq n ^ e} := by
   intro l _ e ϖ F hF hle

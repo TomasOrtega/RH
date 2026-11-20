@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `V _ _ G _ _ _ ρ K hK w hw`. Establish `hloc : IsLocallyConstant (fun g : G => ρ g w)`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `k`. Use `⟨(fun g : G => k⁻¹ * g) ⁻¹' {g : G | ρ g w = w}, hw.preimage (continuous_const.mul continuous_id), by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Establish `hg' : ρ (k⁻¹ * g) w = w` using `hg`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : CompactSpace (K : Set G) := isCompact_iff_compactSpace.mp hK`. Establish `hfin` using `(hloc.comp_continuous (continuous_subtype_val (p := fun g : G => g ∈ (K : Set G)))).range_finite`.
+
+Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, rfl⟩`. Conclude with `⟨⟨k, hk⟩, rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qf32.orbit_finite :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] {G : Type}
     [inst_2 : Group G] [inst_3 : TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G V) (K : Subgroup G),

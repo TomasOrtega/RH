@@ -9,6 +9,9 @@ open GlobalTheory.SignedHC GlobalTheory.ChiGrid Formalism.L2.DIV Formalism.L2.Ke
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FunObj.StdVertex.exists_std_vertex | exact GlobalTheory.FunObj.StdVertex.exists_std_vertex | (intros; apply GlobalTheory.FunObj.StdVertex.exists_std_vertex <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_orthonormalBasis_splitSupported_adelicPoint : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), V.SigOK →
     (∀ τ, V.sig τ = (V.rank, 0)) → IsSelfDualC V Λ → ∀ S : Finset ℕ, (∀ q ∈ S, q.Prime) →
     ∃ (fr : GL (Fin V.rank) D.host.E) (u : GfC V),

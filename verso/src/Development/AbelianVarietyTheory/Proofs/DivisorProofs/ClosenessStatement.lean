@@ -23,9 +23,15 @@ open GlobalTheory GlobalTheory.ShFam GlobalTheory.ChernReg GlobalTheory.CxPts Gl
 
 namespace GlobalTheory.CloseReg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.log_power_sqrt_le_cube_root`.
+-/
 theorem asymp : ∀ (A B μ K : ℝ), 0 ≤ A → 0 ≤ B → 0 ≤ μ → 0 ≤ K → ∃ t₀ : ℝ, 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
     A * (Real.log (1 / t) + B) ^ μ * t ^ ((1 : ℝ) / 2) + K * t ^ 2 ≤ t ^ ((1 : ℝ) / 3) := GlobalTheory.T.log_power_sqrt_le_cube_root
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.chart_compact_cover_bounds`.
+-/
 theorem geom : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ), O.CoreWith x P →
     ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ), ∃ (n : ℕ) (ch : Fin n → AlgChart (O.var c).str σ (O.var c).dim)
       (K : Fin n → Set (V (O.var c).dim)) (κ B : ℝ), 0 < κ ∧ 0 ≤ B ∧
@@ -35,6 +41,9 @@ theorem geom : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s)
           (ch j).e.symm w ∈ offBd O.Φ c σ ∧ O.met.r c σ ((ch j).e.symm w) ≤ O.met.r c σ y + B ∧
           ∀ ξ : V (O.var c).dim, P.om c σ (ch j) ((ch j).e.symm w) ξ.ofLp ≤ B * ‖ξ‖ ^ 2 := GlobalTheory.T.chart_compact_cover_bounds
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rho_sub_self_le_of_fderiv_le`.
+-/
 theorem avg : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     (a : ChartForm p σ d) (E : ChartMap p σ d) (c : AlgChart p σ d) (f : CxPts p σ → ℝ) (y : CxPts p σ) (t Cc M : ℝ),
     IsKaehlerForm (AnRead.all p σ d) a → IsExph a E → y ∈ c.e.source → 0 < t → 0 < Cc → 0 ≤ M →
@@ -45,6 +54,11 @@ theorem avg : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ 
     (∀ w ∈ Metric.ball (c.e y) (Cc * t), DifferentiableAt ℝ (f ∘ c.e.symm) w ∧ ‖fderiv ℝ (f ∘ c.e.symm) w‖ ≤ M) →
     rho a E f y t - f y ≤ Cc * (volume (Metric.ball (0 : V d) 1)).toReal * Cc ^ (2 * d) * Cc * M * t := GlobalTheory.T.rho_sub_self_le_of_fderiv_le
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Establish `hs : 0 ≤ ∑ i, 1 / f i` using `Finset.sum_nonneg fun i _ => (one_div_pos.2 (hf i)).le`. Use `⟨1 / (1 + ∑ i, 1 / f i), by positivity, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 / f i ≤ ∑ j, 1 / f j` using `Finset.single_le_sum (f := fun j => 1 / f j) (fun j _ => (one_div_pos.2 (hf j)).le) (Finset.mem_univ i)`. Establish `hfi` using `hf i`.
+
+Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: f i * (1 / f i) = 1` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_pos_le {ι : Type} [Finite ι] (f : ι → ℝ) (hf : ∀ i, 0 < f i) : ∃ t : ℝ, 0 < t ∧ ∀ i, t ≤ f i := by
   haveI := Fintype.ofFinite ι
   have hs : 0 ≤ ∑ i, 1 / f i := Finset.sum_nonneg fun i _ => (one_div_pos.2 (hf i)).le
@@ -56,16 +70,55 @@ theorem exists_pos_le {ι : Type} [Finite ι] (f : ι → ℝ) (hf : ∀ i, 0 < 
   have : f i * (1 / f i) = 1 := by field_simp
   nlinarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_div, Real.log_inv, Real.exp_log ht]`. Use `_ = Real.exp (Real.log t * (1 / 2)) := by rw [← Real.exp_add]; ring_nf`. Use `_ = _ := (Real.rpow_def_of_pos ht _).symm`.
+-/
 theorem exp_half_log_mul {t : ℝ} (ht : 0 < t) : Real.exp (Real.log (1 / t) / 2) * t = t ^ ((1 : ℝ) / 2) := by
   calc Real.exp (Real.log (1 / t) / 2) * t = Real.exp (-Real.log t / 2) * Real.exp (Real.log t) := by
         rw [one_div, Real.log_inv, Real.exp_log ht]
     _ = Real.exp (Real.log t * (1 / 2)) := by rw [← Real.exp_add]; ring_nf
     _ = _ := (Real.rpow_def_of_pos ht _).symm
 
+/- English proof (translation)
+Rewrite using `[Real.sqrt_eq_rpow, ← exp_half_log_mul ht, one_div, Real.log_inv]`. Rewrite using `[show -(-Real.log t / 2) = -Real.log t / 2 + Real.log t by ring, Real.exp_add, Real.exp_log ht]`.
+-/
 theorem exp_neg_half_log {t : ℝ} (ht : 0 < t) : Real.exp (-(Real.log (1 / t) / 2)) = √t := by
   rw [Real.sqrt_eq_rpow, ← exp_half_log_mul ht, one_div, Real.log_inv]
   rw [show -(-Real.log t / 2) = -Real.log t / 2 + Real.log t by ring, Real.exp_add, Real.exp_log ht]
 
+/- English proof (translation)
+Take `⟨n, ch, Kc, κ, B, hκ, hB, hKc, hcov, hball⟩` from `geom D O x P h c σ`. Establish `hka : IsKaehlerForm (AnRead.all (O.var c).str σ (O.var c).dim) (P.om c σ)` using `P.om_kaehler c σ`. Establish `hE` using `P.exph_is c σ`. Use `choose Ck tk hCk htk hker using fun j => hK _ _ _ _ _ (P.om c σ) (P.exph c σ) hka hE (ch j) (Kc j) (hKc j).1 (hKc j).2`. Establish `hcore : O.Core` using `⟨x, P, h⟩`.
+
+Take `⟨vol, hvol⟩ : ∃ v : ℝ, v = (volume (Metric.ball (0 : V (O.var c).dim) 1)).toReal` from `⟨_, rfl⟩`. Establish `hvol0 : 0 ≤ vol` using `hvol ▸ ENNReal.toReal_nonneg`. Take `⟨Aj, hAj⟩ : ∃ Aj : Fin n → ℝ, Aj = fun j => Ck j * vol * Ck j ^ (2 * (O.var c).dim) * Ck j` from `⟨_, rfl⟩`. Establish `hAj0 : ∀ j, 0 ≤ Aj j` using `fun j => by have := hCk j; rw [hAj]; positivity`. Establish `hAs : ∀ j, Aj j ≤ ∑ j, Aj j` using `fun j => Finset.single_le_sum (f := Aj) (fun j _ => hAj0 j) (Finset.mem_univ j)`.
+
+Establish `hAs0 : 0 ≤ ∑ j, Aj j` using `Finset.sum_nonneg fun j _ => hAj0 j`. Take `⟨t₁, ht₁, ht₁le⟩` from `exists_pos_le (fun j => min (tk j) ((κ / Ck j) ^ 2)) (fun j => lt_min (htk j) (by have := hCk j; positivity))`. Use `⟨(∑ j, Aj j) * Cg * Real.exp (B / 2) * √B, B, t₁, by positivity, hB, ht₁, fun t ht htt τ i y hy hry => ?_⟩` and prove the remaining obligations. Take `⟨j, hyj, hyK⟩` from `hcov y`. Establish `htj : t ≤ tk j` using `htt.trans ((ht₁le j).trans (min_le_left _ _))`.
+
+Take `⟨hbsub, -, hkerj⟩` from `hker j y hyj hyK t ht htj`. Take `⟨ℓ, hℓ⟩ : ∃ ℓ : ℝ, ℓ = Real.log (1 / t)` from `⟨_, rfl⟩`. Rewrite `hry`, the goal using `[← hℓ]`. Establish `hre : Real.exp 1 ≤ O.met.r c σ y` using `hcore.exp_le_r c σ y`. Establish `hℓ0 : 0 ≤ ℓ` using `le_trans (by positivity) (hre.trans hry)`.
+
+Establish `hrad : Ck j * t ≤ κ * Real.exp (-(O.met.r c σ y / 2))`. Establish `h1 : t ≤ (κ / Ck j) ^ 2` using `htt.trans ((ht₁le j).trans (min_le_right _ _))`. Establish `hC` using `hCk j`. Establish `h2 : √t ≤ κ / Ck j`. Rewrite using `[← Real.sqrt_sq (div_pos hκ hC).le]`.
+
+Conclude with `Real.sqrt_le_sqrt h1`. Establish `h3 : Real.exp (-(ℓ / 2)) = √t` using `hℓ ▸ exp_neg_half_log ht`. Establish `h4 : Real.exp (-(ℓ / 2)) ≤ Real.exp (-(O.met.r c σ y / 2))` using `Real.exp_le_exp.2 (by linarith)`. Establish `h5 : t = √t * √t` using `(Real.mul_self_sqrt ht.le).symm`. Establish `h6 : Ck j * √t ≤ κ` using `by rwa [le_div_iff₀ hC, mul_comm] at h2`.
+
+Establish `h7 : 0 ≤ √t` using `Real.sqrt_nonneg t`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow0 : 0 ≤ (ℓ + B) ^ μ` using `Real.rpow_nonneg (by linarith) _`. Take `⟨M, hM⟩ : ∃ M : ℝ, M = Cg * (ℓ + B) ^ μ * Real.exp ((ℓ + B) / 2) * √B` from `⟨_, rfl⟩`. Establish `hM0 : 0 ≤ M` using `by rw [hM]; positivity`.
+
+Establish `hder : ∀ w ∈ Metric.ball ((ch j).e y) (Ck j * t), DifferentiableAt ℝ (psi O x c σ τ i ∘ (ch j).e.symm) w ∧ ‖fderiv ℝ (psi O x c σ τ i ∘ (ch j).e.symm) w‖ ≤ M`. Introduce `w hw`. Take `⟨hwT, hwoff, hwr, hwom⟩` from `hball j y hyj hyK hy w (Metric.ball_subset_ball hrad hw)`. Establish `hzs : (ch j).e.symm w ∈ (ch j).e.source` using `(ch j).e.map_target hwT`. Establish `hzw : (ch j).e ((ch j).e.symm w) = w` using `(ch j).e.right_inv hwT`.
+
+Take `⟨hd1, hd2⟩` from `hgr c σ τ i (ch j) _ hzs hwoff`. Rewrite `hd1`, `hd2` using `[hzw]`. Use `⟨hd1, ContinuousLinearMap.opNorm_le_bound _ hM0 fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨rz, hrz⟩ : ∃ rz, rz = O.met.r c σ ((ch j).e.symm w)` from `⟨_, rfl⟩`. Take `⟨q, hq⟩ : ∃ q, q = P.om c σ (ch j) ((ch j).e.symm w) ξ.ofLp` from `⟨_, rfl⟩`.
+
+Establish `hd3` using `hd2 ξ`. Rewrite `hd3` using `[← hrz, ← hq]`. Establish `hq'` using `hwom ξ`. Rewrite `hq'` using `[← hq]`. Rewrite `hwr` using `[← hrz]`.
+
+Establish `hrz1 : Real.exp 1 ≤ rz` using `hrz ▸ hcore.exp_le_r c σ _`. Establish `hrz0 : 0 ≤ rz` using `le_trans (by positivity) hrz1`. Establish `hrz' : rz ≤ ℓ + B` using `by linarith`. Establish `hp1 : rz ^ μ ≤ (ℓ + B) ^ μ` using `Real.rpow_le_rpow hrz0 hrz' hμ`. Establish `hp2 : Real.exp (rz / 2) ≤ Real.exp ((ℓ + B) / 2)` using `Real.exp_le_exp.2 (by linarith)`.
+
+Establish `hp3 : √q ≤ √B * ‖ξ‖`. Rewrite using `[← Real.sqrt_sq (norm_nonneg ξ), ← Real.sqrt_mul hB]`. Conclude with `Real.sqrt_le_sqrt hq'`. Establish `hp4 : 0 ≤ rz ^ μ` using `Real.rpow_nonneg hrz0 _`. Rewrite using `[Real.norm_eq_abs]`.
+
+Use `hd3.trans ?_` and prove the remaining obligations. Establish `hp5 : Cg * rz ^ μ ≤ Cg * (ℓ + B) ^ μ` using `mul_le_mul_of_nonneg_left hp1 hCg`. Establish `hp6 : Cg * rz ^ μ * Real.exp (rz / 2) ≤ Cg * (ℓ + B) ^ μ * Real.exp ((ℓ + B) / 2)` using `mul_le_mul hp5 hp2 (Real.exp_pos _).le (by positivity)`. Establish `hp7` using `mul_le_mul hp6 hp3 (Real.sqrt_nonneg _) (by positivity)`. Use `hp7.trans_eq ?_` and prove the remaining obligations.
+
+Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `avg _ _ _ _ _ (P.om c σ) (P.exph c σ) (ch j) (psi O x c σ τ i) y t (Ck j) M hka hE hyj ht (hCk j) hM0 hbsub hkerj hder`. Establish `e1 : Ck j * (volume (Metric.ball (0 : V (O.var c).dim) 1)).toReal * Ck j ^ (2 * (O.var c).dim) * Ck j * M * t = Aj j * M * t` using `by rw [hAj, hvol]`. Establish `e2 : Real.exp ((ℓ + B) / 2) * t = Real.exp (B / 2) * t ^ ((1 : ℝ) / 2)`.
+
+Rewrite using `[← exp_half_log_mul ht, ← hℓ, show (ℓ + B) / 2 = ℓ / 2 + B / 2 by ring, Real.exp_add]; ring`. Establish `hMt : 0 ≤ M * t` using `mul_nonneg hM0 ht.le`. Establish `e3 : (∑ j, Aj j) * M * t = (∑ j, Aj j) * Cg * (ℓ + B) ^ μ * √B * (Real.exp ((ℓ + B) / 2) * t)`. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem local_close (hK : KernelSt) {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ) (h : O.CoreWith x P)
     (Cg μ : ℝ) (hCg : 0 ≤ Cg) (hμ : 0 ≤ μ)
     (hgr : ∀ c σ τ i (ch : AlgChart (O.var c).str σ (O.var c).dim), ∀ y ∈ ch.e.source, y ∈ offBd O.Φ c σ →
@@ -163,6 +216,19 @@ theorem local_close (hK : KernelSt) {D : D7} (O : Setup D) (x : ToroidalCompacti
     _ ≤ (∑ j, Aj j) * M * t := by rw [mul_assoc, mul_assoc]; exact mul_le_mul_of_nonneg_right (hAs j) hMt
     _ = _ := by rw [e3, e2]; ring
 
+/- English proof (translation)
+Introduce `_ _ hK hG D O x P h hf hR`. Take `⟨Cg, μ, hCg, hμ, hgr⟩` from `hG D O x P h hf hR`. Use `choose A B t₁ hA hB ht₁ hclose using fun c σ => local_close hK O x P h Cg μ hCg hμ hgr c σ`. Use `haveI : Fintype O.s.Comp := Fintype.ofFinite _`. Use `haveI : Fintype (D.what₂.LL →+* ℂ) := Fintype.ofFinite _`.
+
+Establish `hle_sum : ∀ (F : O.s.Comp → (D.what₂.LL →+* ℂ) → ℝ), (∀ c σ, 0 ≤ F c σ) → ∀ c σ, F c σ ≤ ∑ c, ∑ σ, F c σ` using `fun F hF c σ => (Finset.single_le_sum (f := fun σ => F c σ) (fun σ _ => hF c σ) (Finset.mem_univ σ)).trans (Finset.single_le_sum (f := fun c => ∑ σ, F c σ) (fun c _ => Finset.sum_nonneg fun σ _ => hF c σ) (Finset.mem_univ c))`. Take `⟨As, hAs⟩ : ∃ a : ℝ, a = ∑ c, ∑ σ, A c σ` from `⟨_, rfl⟩`. Take `⟨Bs, hBs⟩ : ∃ b : ℝ, b = ∑ c, ∑ σ, B c σ` from `⟨_, rfl⟩`. Establish `hAs0 : 0 ≤ As` using `hAs ▸ Finset.sum_nonneg fun c _ => Finset.sum_nonneg fun σ _ => hA c σ`. Establish `hBs0 : 0 ≤ Bs` using `hBs ▸ Finset.sum_nonneg fun c _ => Finset.sum_nonneg fun σ _ => hB c σ`.
+
+Take `⟨t₂, ht₂, hle⟩` from `exists_pos_le (fun q : O.s.Comp × (D.what₂.LL →+* ℂ) => t₁ q.1 q.2) fun q => ht₁ _ _`. Take `⟨t₃, ht₃, hasy⟩` from `asymp As Bs μ |P.K| hAs0 hBs0 hμ (abs_nonneg _)`. Use `⟨min t₂ t₃, lt_min ht₂ ht₃, fun t ht htt c σ τ i hi y hy hry => ?_⟩` and prove the remaining obligations. Establish `e : P.regFund c σ τ i t y = rho (P.om c σ) (P.exph c σ) (psi O x c σ τ i) y t + P.K * t ^ 2` using `if_pos hi`. Rewrite using `[e]`.
+
+Establish `h1` using `hclose c σ t ht (htt.trans ((min_le_left _ _).trans (hle (c, σ)))) τ i y hy hry`. Establish `hcore : O.Core` using `⟨x, P, h⟩`. Establish `hℓ0 : 0 ≤ Real.log (1 / t)` using `le_trans (by positivity) ((hcore.exp_le_r c σ y).trans hry)`. Establish `hb : B c σ ≤ Bs` using `hBs ▸ hle_sum B hB c σ`. Establish `ha : A c σ ≤ As` using `hAs ▸ hle_sum A hA c σ`.
+
+Establish `hp : (Real.log (1 / t) + B c σ) ^ μ ≤ (Real.log (1 / t) + Bs) ^ μ` using `Real.rpow_le_rpow (by linarith [hB c σ]) (by linarith) hμ`. Establish `hp0 : 0 ≤ (Real.log (1 / t) + B c σ) ^ μ` using `Real.rpow_nonneg (by linarith [hB c σ]) _`. Establish `hs0 : 0 ≤ t ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg ht.le _`. Establish `h2 : A c σ * (Real.log (1 / t) + B c σ) ^ μ * t ^ ((1 : ℝ) / 2) ≤ As * (Real.log (1 / t) + Bs) ^ μ * t ^ ((1 : ℝ) / 2)` using `mul_le_mul_of_nonneg_right (mul_le_mul ha hp hp0 hAs0) hs0`. Establish `h3 : P.K * t ^ 2 ≤ |P.K| * t ^ 2` using `mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)`.
+
+Establish `h4` using `hasy t ht (htt.trans (min_le_right _ _))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem closeSt : Hypotheses2 → HypothesesH → KernelSt → GradSt → CloseSt := by
   intro _ _ hK hG D O x P h hf hR
   obtain ⟨Cg, μ, hCg, hμ, hgr⟩ := hG D O x P h hf hR

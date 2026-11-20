@@ -15,6 +15,11 @@ open Matrix (vecMulVec)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `: Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+
+Conclude with `this.comp continuous_fst`.
+-/
 theorem continuous_evI : Continuous (evI F) := by
   have : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
     change Continuous fun x : InfiniteAdeleRing F =>
@@ -25,6 +30,11 @@ theorem continuous_evI : Continuous (evI F) := by
     · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
   exact this.comp continuous_fst
 
+/- English proof (translation)
+Establish `h : ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (y j)) ≤ ∑ _j : κ, ∑ _w : InfinitePlace F, ‖fun j => evI F (y j)‖` using `Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun w _ => by`. Use `le_trans ?_ (norm_le_pi_norm (fun j => evI F (y j)) j)` and prove the remaining obligations. Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun w => mixedEmbedding.normAtPlace w (evI F (y j))) (Finset.mem_univ w)`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h`.
+
+Establish `h0` using `norm_nonneg fun j => evI F (y j)`. Establish `h1 : (0 : ℝ) ≤ Fintype.card κ * Fintype.card (InfinitePlace F)` using `by positivity`. Unfold `PositivityTheory.ThKCT.sz`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sz_le {κ : Type} [Fintype κ] (y : κ → AF F) :
     PositivityTheory.ThKCT.sz y ≤ (1 + Fintype.card κ * Fintype.card (InfinitePlace F)) * (1 + ‖fun j => evI F (y j)‖) := by
   have h : ∑ j, ∑ w : InfinitePlace F, mixedEmbedding.normAtPlace w (evI F (y j)) ≤
@@ -39,6 +49,31 @@ theorem sz_le {κ : Type} [Fintype κ] (y : κ → AF F) :
   unfold PositivityTheory.ThKCT.sz
   nlinarith
 
+/- English proof (translation)
+Take `⟨K, hK, hc⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Take `⟨G, hG⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Establish `hG0 : 0 ≤ G` using `(norm_nonneg _).trans (hG 0)`. Establish `hKp : IsCompact (Set.univ.pi fun _ : κ => K)` using `isCompact_univ_pi fun _ => hK`. Take `⟨A, hA⟩` from `hKp.exists_bound_of_continuousOn (f := fun k : κ → AF F => fun j => evI F (k j)) (continuous_pi fun j => continuous_evI.comp (continuous_apply j)).continuousOn`.
+
+Establish `hC : IsCompact ((fun x : (κ → Af F) × (κ → AF F) => x.1 - fun j => (x.2 j).2) '' (tsupport g ×ˢ Set.univ.pi fun _ : κ => K))` using `(hg.2.isCompact.prod hKp).image (continuous_fst.sub (continuous_pi fun j => ((continuous_apply j).comp continuous_snd).snd))`. Take `⟨N, hN⟩` from `summable_wt hC`. Use `set C := (fun x : (κ → Af F) × (κ → AF F) => x.1 - fun j => (x.2 j).2) '' (tsupport g ×ˢ Set.univ.pi fun _ : κ => K) with hCd`. Use `set wt : (κ → F) → ℝ := fun ξ => if (fun j => (algebraMap F (AF F) (ξ j)).2) ∈ C then (PositivityTheory.ThKCT.sz (fun j => algebraMap F (AF F) (ξ j)) ^ N)⁻¹ else 0 with hwt`. Establish `hw0 : ∀ ξ, 0 ≤ wt ξ` using `fun ξ => by`.
+
+Rewrite using `[hwt]`. Simplify using `only`. Use `split_ifs`. Conclude with `inv_nonneg.2 (pow_pos (sz_pos _) _).le`. Conclude with `le_rfl`.
+
+Use `set c : ℝ := (1 + Fintype.card κ * Fintype.card (InfinitePlace F)) * (1 + |A|) with hcdef`. Establish `hc0 : 0 < c` using `by positivity`. Set `q : Seminorm ℂ (SInf F κ)` to `(Finset.Iic (N, 0)).sup (schwartzSeminormFamily ℂ _ ℂ)`. Establish `hq : Continuous q` using `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i`. Set `D : ℝ≥0` to `⟨2 ^ N * G * c ^ N * ∑' ξ, wt ξ, mul_nonneg (by positivity) (tsum_nonneg hw0)⟩`.
+
+Use `⟨D • q, hq.const_smul D, fun f w => ?_⟩` and prove the remaining obligations. Use `choose a ha using fun j => hc (w.1 j)`. Use `set k : κ → AF F := fun j => w.1 j - algebraMap F (AF F) (a j) with hk`. Establish `hkK : k ∈ Set.univ.pi fun _ : κ => K` using `fun j _ => ha j`. Establish `key : ∀ ξ : κ → F, ‖schr ψ w (pureA F f g) fun i => algebraMap F (AF F) (ξ i)‖ ≤ (2 ^ N * G * c ^ N * q f) * wt (ξ + a)`.
+
+Introduce `ξ`. Establish `e : (fun i => algebraMap F (AF F) (ξ i)) + w.1 = (fun i => algebraMap F (AF F) ((ξ + a) i)) + k`. Use function extensionality and compare the values at `i`. Simplify using `[hk]`. Rewrite using `[schr, norm_mul, std_norm hψ, one_mul, e]`.
+
+Use `set η := ξ + a`. Use `set y : κ → AF F := fun i => algebraMap F (AF F) (η i)`. Express the relevant statement in the definitionally equal form `‖f (fun i => evI F ((y + k) i)) * g (fun i => ((y + k) i).2)‖ ≤ _`. Distinguish the cases in `h0 : g (fun i => ((y + k) i).2) = 0`. Rewrite using `[h0, mul_zero, norm_zero]`.
+
+Conclude with `mul_nonneg (by positivity) (hw0 _)`. Establish `hm : wt η = (PositivityTheory.ThKCT.sz y ^ N)⁻¹` using `if_pos ⟨(_, k), ⟨subset_tsupport g h0, hkK⟩, by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(y i).2 + (k i).2 - (k i).2 = _`. Rewrite using `[add_sub_cancel_right]⟩`.
+
+Use `set v : κ → mixedEmbedding.mixedSpace F := fun i => evI F ((y + k) i)`. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (N, 0)) (k := N) (n := 0) le_rfl le_rfl f v`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Establish `h2 : PositivityTheory.ThKCT.sz y ≤ c * (1 + ‖v‖)`. Use `(sz_le y).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hcdef, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `e2 : (fun j => evI F (y j)) = v - fun j => evI F (k j)` using `funext fun j => eq_sub_of_add_eq (map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) (y j).1 (k j).1).symm`. Use `norm_sub_le v fun j => evI F (k j)` as an intermediate fact. Establish `h3` using `(hA k hkK).trans (le_abs_self A)`.
+
+Rewrite using `[e2]`. Use polynomial arithmetic with `[norm_nonneg v, abs_nonneg A]`. Rewrite using `[hm, ← div_eq_mul_inv, le_div_iff₀ (pow_pos (sz_pos _) _), norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs : HasSum (fun ξ => wt (ξ + a)) (∑' ξ, wt ξ)` using `(Equiv.addRight a).hasSum_iff.2 hN.hasSum`.
+
+Use `(tsum_of_norm_bounded (hs.mul_left _) key).trans_eq ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (2 ^ N * G * c ^ N * ∑' ξ, wt ξ) * q f`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_unif {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
     ∃ p : Seminorm ℂ (SInf F κ), Continuous p ∧ ∀ (f : SInf F κ) w, ‖thetaSum F (schr ψ w (pureA F f g))‖ ≤ p f := by
   obtain ⟨K, hK, hc⟩ := GlobalTheory.AdeleCocompact.exists_compact_adele F
@@ -110,6 +145,21 @@ variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} 
   {M : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}
   {I : Set (Ten F E n d)} {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} {u z : Fin m → Matrix (Fin n) (Fin d) E}
 
+/- English proof (translation)
+Take `⟨l, -, hl⟩` from `(GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F (Fin n₁ × Fin d₁)).2.1`. Establish `h` using `hB.std`. It suffices to establish `∃ b : (Fin m → F) → ℝ, Summable b ∧ ∀ y w, ‖l (rhoL B M₁ w (e (rhoL B M (lin u fun j => algebraMap F (AF F) (y j)) Φ)))‖ ≤ b y by`. Take `⟨b, h1, h2⟩` from `this`. Conclude with `⟨b, h1, fun y w => by rw [← hl _ (rho_mem M₁ h _ (he.maps _ (rho_mem M h _ hΦ)))]; exact h2 y w⟩`.
+
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h0`. Take `⟨f, φ, hφ, rfl⟩` from `h0`. Take `⟨r, φ₁, C, A, h1, hC, -, h2, h3, h4⟩` from `hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he m u z hD φ hφ`. Take `⟨N, hN⟩` from `summable_wt hC`.
+
+Use `choose q hq hb using fun i => theta_unif h (h1 i)`. Use `choose p hp hpq using fun i => h4 (q i) N (hq i)`. Use `⟨_, hN.mul_left (∑ i, p i f), fun y w => ?_⟩` and prove the remaining obligations. Rewrite using `[show e (rhoL B M _ _) = _ from h2 _ f, map_sum, map_sum]`. Establish `hb' : ∀ i (f' : SInf F (Fin n₁ × Fin d₁)), ‖l (rhoL B M₁ w (pureA F f' (φ₁ i)))‖ ≤ q i f'` using `fun i f' => (congrArg norm (hl _ (rho_mem M₁ h w (Submodule.subset_span ⟨f', _, h1 i, rfl⟩)))).trans_le (hb i f' _)`.
+
+Use `split_ifs with hy`. Rewrite using `[Finset.sum_mul]`. Use `norm_sum_le_of_le _ fun i _ => (hb' i _).trans ?_` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (pow_pos (sz_pos _) _)]`. Conclude with `hpq i i _ f`.
+
+Use `(norm_sum_le_of_le _ fun i _ => hb' i _).trans ?_` and prove the remaining obligations. Simplify using `[h3 _ _ hy]`. Consider the case `zero => exact ⟨0, summable_zero, fun y w => by simp⟩`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨a, a1, a2⟩` from `h1`.
+
+Take `⟨b, b1, b2⟩` from `h2`. Conclude with `⟨a + b, a1.add b1, fun y w => by`. Simplify using `only [map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (a2 y w) (b2 y w))⟩`. Consider the case `smul c Φ _ h1`.
+
+Take `⟨a, a1, a2⟩` from `h1`. Conclude with `⟨fun y => ‖c‖ * a y, a1.mul_left _, fun y w => by`. Simplify using `only [map_smul, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (a2 y w) (norm_nonneg c)⟩`.
+-/
 theorem slice_unif (hS : Slice) (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ) (he : IsEv B M M₁ ι ι' I e)
     (hD : Dual σ X W I u z) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) : ∃ b : (Fin m → F) → ℝ, Summable b ∧ ∀ y w,
       ‖thetaSum F (M₁.co.rho B.ψ w (e (M.co.rho B.ψ (lin u fun j => algebraMap F (AF F) (y j)) Φ)))‖ ≤ b y := by

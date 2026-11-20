@@ -21,9 +21,19 @@ variable {D : D7} {n : ℕ} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (
   {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ν : Measure (GA D V)}
   {τ : D.what₂.Tau} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} {ι : GR n →* G D n}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold rhoT; split_ifs <;> norm_num`.
+-/
 theorem rhoT_sq {m : ℕ} (t : ℝ) (ε : Fin m → Bool) (a : Fin m) : (rhoT t ε a) ^ 2 = 1 := by
   unfold rhoT; split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hc : ∀ j, 0 < Real.cos (φ j / 2)` using `fun j => Real.cos_pos_of_mem_Ioo ⟨by linarith [(hφ j).1, Real.pi_pos], by linarith [(hφ j).2, Real.pi_pos]⟩`. Establish `hk : mkG (kth φ) (inK_kth φ).1 = mkG (kth fun j => φ j / 2) (inK_kth _).1 * mkG (kth fun j => φ j / 2) (inK_kth _).1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `kth_half φ`.
+
+Establish `hf0 : IsSch (DG (n` using `n) K (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) := isSch_DG hGZ ε (tLoc l τ) (cLoc l τ) (cpos hl0) tabs K`. Rewrite using `[hk, hLM D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL _ _ _ hf0, rot_DG hC hl0 hN hNb hLM hGZ L hL e hlev _ hc K, rot_DG hC hl0 hN hNb hLM hGZ L hL e hlev _ hc _]`. Use `congr 1`. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `dbl_angle _ _ (rhoT_sq _ _ a)`.
+-/
 theorem rot_gen (hC : Cx D n V ψ χ θ μ ω H l s ν τ ε fr ι) (hl0 : l τ ≠ 0) (hN : LawN) (hNb : LawNbar) (hLM : LocMul)
     (hGZ : GZSch) (L : GR n → ((Fin V.rank → Fin n → ℂ) → ℂ) → ((Fin V.rank → Fin n → ℂ) → ℂ))
     (hL : IsLocFact ω τ fr ι L) (e : ℤ)

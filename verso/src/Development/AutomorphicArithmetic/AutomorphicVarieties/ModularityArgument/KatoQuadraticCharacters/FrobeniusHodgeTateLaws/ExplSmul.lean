@@ -3,12 +3,28 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Kato.Joint
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ
 
+/- English proof (translation)
+Unfold `Cg at h ⊢`. Rewrite using `[ha, hb, ← mul_sub, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hx).trans h`.
+-/
 private theorem cg_mul_left {l : ℕ} [Fact l.Prime] {n : ℕ} {a b a' b' : Qbar l} (x : Qbar l) (hx : ‖x‖ ≤ 1)
     (h : Cg n a b) (ha : a' = x * a) (hb : b' = x * b) : Cg n a' b' := by
   unfold Cg at h ⊢
   rw [ha, hb, ← mul_sub, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) hx).trans h
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ ι e A c Z j s u w α B cc n β t m ⟨κ, v, m₀, c₀, hκ, hv, ζ, hζ, H⟩`. Establish `hl1 : ‖((l : ℕ) : Qbar l)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one (PadicAlgCl l) l`. Establish `hx : ‖((l : ℕ) : Qbar l) ^ m‖ ≤ 1`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hl1`.
+
+Establish `hl0 : ((l : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Use `⟨(l : Qbar l) ^ m * κ, v, m₀, c₀, mul_ne_zero (pow_ne_zero _ hl0) hκ, hv, ζ, hζ, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨I, inst, P, o, ⟨p1, p2, p3, p4, q1, q2, q3, q4, q5⟩, hc⟩` from `H k hk`. Use `⟨I, inst, P, fun i => (l : Qbar l) ^ m * o i, ⟨p1, p2, fun i => c.O.mul_mem (c.O.pow_mem (natCast_mem c.O l) m) (p3 i), p4, q1, q2, q3, fun i => ?_, fun s hs h1 h2 => ?_⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_one₀ hx (norm_nonneg _) (q4 i)`. Take `⟨kk, a1, a2⟩` from `q5 s hs h1 h2`. Use `⟨kk, a1, cg_mul_left _ hx a2 rfl ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_assoc _ _ _`.
+
+Use `cg_mul_left _ hx (hc ψ hψ) ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `htv`. Rewrite using `[mul_left_comm]`.
+
+Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_assoc _ _ _`. Use `beta_reduce split_ifs`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem UpperTheory.V.Z.Kato.Joint.explSmul :
     UpperTheory.V.Z.Kato.Joint.ExplSmul := by
   intro l _ Ω _ _ ι e A c Z j s u w α B cc n β t m ⟨κ, v, m₀, c₀, hκ, hv, ζ, hζ, H⟩

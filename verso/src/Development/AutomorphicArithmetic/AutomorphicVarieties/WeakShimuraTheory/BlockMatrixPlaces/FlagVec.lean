@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1 : a + b ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).mpr h`. Establish `h2 : a ∈ maximalIdeal R` using `by simpa using (maximalIdeal R).sub_mem h1 hb`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h2 ha`.
+-/
 private theorem unit_add_mem {R : Type} [CommRing R] [IsLocalRing R] {a b : R} (ha : IsUnit a)
     (hb : b ∈ maximalIdeal R) : IsUnit (a + b) := by
   by_contra h
@@ -9,6 +12,11 @@ private theorem unit_add_mem {R : Type} [CommRing R] [IsLocalRing R] {a b : R} (
   have h2 : a ∈ maximalIdeal R := by simpa using (maximalIdeal R).sub_mem h1 hb
   exact (IsLocalRing.mem_maximalIdeal _).mp h2 ha
 
+/- English proof (translation)
+Take `⟨s', hs'⟩` from `hs.exists_right_inv`. Establish `hb : b = -(s' * r) * a` using `by linear_combination s' * e2 - b * hs'`. Establish `hm : q * s' * r ∈ maximalIdeal R` using `(maximalIdeal R).mul_mem_right _ ((maximalIdeal R).mul_mem_right _ hq)`. Establish `hu : IsUnit (p + -(q * s' * r))` using `unit_add_mem hp ((maximalIdeal R).neg_mem hm)`. Establish `ha : a = 0` using `(hu.mul_right_eq_zero).mp (by linear_combination e1 - q * hb)`.
+
+Use `⟨ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem two_kill {R : Type} [CommRing R] [IsLocalRing R] {p q r s a b : R} (hp : IsUnit p) (hs : IsUnit s)
     (hq : q ∈ maximalIdeal R) (e1 : p * a + q * b = 0) (e2 : r * a + s * b = 0) : a = 0 ∧ b = 0 := by
   obtain ⟨s', hs'⟩ := hs.exists_right_inv
@@ -21,6 +29,21 @@ private theorem two_kill {R : Type} [CommRing R] [IsLocalRing R] {p q r s a b : 
   rw [hb, ha]
   ring
 
+/- English proof (translation)
+Establish `h01 : IsUnit (X 0 0 - X 1 1)` using `hs.unit 0 1 (by decide)`. Establish `h21 : IsUnit (X 2 2 - X 1 1)` using `hs.unit 2 1 (by decide)`. Establish `p0 : IsUnit (X 0 0 - U 1 1)`. Use `unit_add_mem h01 (neg_mem (hc 1))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `p2 : IsUnit (X 2 2 - U 1 1)`. Use `unit_add_mem h21 (neg_mem (hc 1))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `pU : IsUnit (U 0 0 - U 1 1)`. Use `unit_add_mem p0 (hc 0)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩` from `pU.exists_left_inv`.
+
+Establish `z01` using `hb 0 1 (by decide)`. Establish `z03` using `hb 0 3 (by decide)`. Establish `z21` using `hb 2 1 (by decide)`. Establish `z23` using `hb 2 3 (by decide)`. Establish `y10` using `hU 1 0 (by decide)`.
+
+Establish `y20` using `hU 2 0 (by decide)`. Establish `y30` using `hU 3 0 (by decide)`. Establish `y21` using `hU 2 1 (by decide)`. Establish `y31` using `hU 3 1 (by decide)`. Establish `e00` using `congrFun (congrFun e 0) 0`.
+
+Establish `e01` using `congrFun (congrFun e 0) 1`. Establish `e20` using `congrFun (congrFun e 2) 0`. Establish `e21` using `congrFun (congrFun e 2) 1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, z01, z03, z21, z23, y10, y20, y30, y21, y31, zero_mul, mul_zero, add_zero] at e00 e01 e20 e21`. Use `two_kill (a := u 0 1 - U 0 1 * w * u 0 0) (b := u 2 1 - U 0 1 * w * u 2 0) (r := X 2 0) p0 p2 (hs.off 0 2 (by decide)) (by linear_combination e01 - U 0 1 * w * e00 - U 0 1 * u 0 0 * hw) (by linear_combination e21 - U 0 1 * w * e20 - U 0 1 * u 2 0 * hw)` as an intermediate fact.
+
+Conclude with `⟨U 0 1 * w, sub_eq_zero.mp this.1, sub_eq_zero.mp this.2⟩`.
+-/
 private theorem cols {R : Type} [CommRing R] [IsLocalRing R] (X u U : M4 R) (hb : IsBlock X) (hs : Sep X)
     (e : X * u = u * U) (hU : IsUp U) (hc : ∀ i, U i i - X i i ∈ maximalIdeal R) :
     ∃ y, u 0 1 = y * u 0 0 ∧ u 2 1 = y * u 2 0 := by
@@ -57,6 +80,17 @@ private theorem cols {R : Type} [CommRing R] [IsLocalRing R] (X u U : M4 R) (hb 
     (by linear_combination e21 - U 0 1 * w * e20 - U 0 1 * u 2 0 * hw)
   exact ⟨U 0 1 * w, sub_eq_zero.mp this.1, sub_eq_zero.mp this.2⟩
 
+/- English proof (translation)
+Establish `X10 : X 1 0 = 0` using `hb 1 0 (by simp [lamW])`. Establish `coord_mul_inv_coord_eq_one : X 1 2 = 0` using `hb 1 2 (by simp [lamW])`. Establish `X30 : X 3 0 = 0` using `hb 3 0 (by simp [lamW])`. Establish `X32 : X 3 2 = 0` using `hb 3 2 (by simp [lamW])`. Establish `U10 : U 1 0 = 0` using `hU 1 0 (by decide)`.
+
+Establish `U20 : U 2 0 = 0` using `hU 2 0 (by decide)`. Establish `U30 : U 3 0 = 0` using `hU 3 0 (by decide)`. Establish `r10` using `congrFun (congrFun e 1) 0`. Establish `r30` using `congrFun (congrFun e 3) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, X10, coord_mul_inv_coord_eq_one, X30, X32, U10, U20, U30, zero_mul, mul_zero, add_zero, zero_add] at r10 r30`.
+
+Establish `hc0` using `hc 0`. Establish `hp : IsUnit (X 1 1 - U 0 0)`. Establish `e' : X 1 1 - U 0 0 = (X 1 1 - X 0 0) + -(U 0 0 - X 0 0)` using `by ring`. Rewrite using `[e']`. Conclude with `unit_add_mem (hs.unit 1 0 (by simp [lamW])) ((maximalIdeal R).neg_mem hc0)`.
+
+Establish `hs' : IsUnit (X 3 3 - U 0 0)`. Establish `e' : X 3 3 - U 0 0 = (X 3 3 - X 0 0) + -(U 0 0 - X 0 0)` using `by ring`. Rewrite using `[e']`. Conclude with `unit_add_mem (hs.unit 3 0 (by simp [lamW])) ((maximalIdeal R).neg_mem hc0)`. Establish `hq : X 1 3 ∈ maximalIdeal R` using `hs.off 1 3 (by decide)`.
+
+Conclude with `two_kill (r := X 3 1) (a := u 1 0) (b := u 3 0) hp hs' hq (by linear_combination r10) (by linear_combination r30)`.
+-/
 private theorem entries_one_three_zero_eq_zero_of_intertwine_up {R : Type} [CommRing R] [IsLocalRing R] (X u U : M4 R) (hb : IsBlock X)
     (hs : Sep X) (e : X * u = u * U) (hU : IsUp U) (hc : ∀ i, U i i - X i i ∈ maximalIdeal R) :
     u 1 0 = 0 ∧ u 3 0 = 0 := by
@@ -84,6 +118,41 @@ private theorem entries_one_three_zero_eq_zero_of_intertwine_up {R : Type} [Comm
   exact two_kill (r := X 3 1) (a := u 1 0) (b := u 3 0) hp hs' hq
     (by linear_combination r10) (by linear_combination r30)
 
+/- English proof (translation)
+Introduce `R _ _ X u hb hs hg hup hc`. Establish `hinv : adj u * u = 1` using `by simpa [IsGSp] using hg`. Establish `e : X * u = u * (adj u * X * u)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_eq_one_comm.mp hinv, Matrix.one_mul]`. Take `⟨y, hy1, hy2⟩` from `cols X u _ hb hs e hup hc`.
+
+Take `⟨h10, h30⟩` from `entries_one_three_zero_eq_zero_of_intertwine_up X u _ hb hs e hup hc`. Establish `I10` using `congrFun (congrFun hinv 1) 0`. Establish `I11` using `congrFun (congrFun hinv 1) 1`. Establish `I00` using `congrFun (congrFun hinv 0) 0`. Establish `I31` using `congrFun (congrFun hinv 3) 1`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] at I10 I11 I00 I31`. Establish `iso : u 0 0 * u 3 1 = u 2 0 * u 1 1`. Take the linear combination `I31 - u 2 1 * h10 + u 0 1 * h30`. Take `⟨w, hw⟩ : ∃ w : Fin 4 → R, w = ![0, u 1 1, 0, u 3 1]` from `⟨_, rfl⟩`. Take `⟨φ, hφ⟩ : ∃ φ : Fin 4 → R, φ = ![u 2 0, 0, -u 0 0, 0]` from `⟨_, rfl⟩`.
+
+Take `⟨Y, hYd⟩ : ∃ Y : M4 R, Y = Matrix.vecMulVec w φ` from `⟨_, rfl⟩`. Establish `hYm : Y ∈ uM R` using `by show Y ∈ hAB R ⊓ sp4 R`. Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ∀ i j, ¬ lamW i < lamW j → Y i j = 0`.
+
+Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [lamW, Matrix.vecMulVec_apply]`. Use `show adj Y = -Y`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (try simp [hYd, hw, hφ, adj_apply, sgn, Fin.rev, Matrix.vecMulVec_apply]) <;> first`.
+
+Consider the case `linear_combination iso`. Consider the case `linear_combination (-1 : R) * iso`. Establish `hv : w = Matrix.mulVec u ![-y, 1, 0, 0]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [hw, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> first`.
+
+Consider the case `linear_combination (-1 : R) * hy1`. Consider the case `linear_combination y * h10`. Consider the case `linear_combination (-1 : R) * hy2`. Consider the case `linear_combination y * h30`. Consider the case `linear_combination hy1`.
+
+Consider the case `linear_combination hy2`. Consider the case `linear_combination (-y) * h10`. Consider the case `linear_combination (-y) * h30`. Establish `hA : Matrix.mulVec (adj u) w = ![-y, 1, 0, 0]`. Rewrite using `[hv, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+
+Establish `hB0 : Matrix.vecMul φ u 0 = 0`. Apply the tactic sequence `simp [hφ, Matrix.vecMul, dotProduct, Fin.sum_univ_four] <;> ring`. Establish `hB1 : Matrix.vecMul φ u 1 = 0`. Apply the tactic sequence `simp [hφ, Matrix.vecMul, dotProduct, Fin.sum_univ_four] <;>`. Take the linear combination `u 2 0 * hy1 - u 0 0 * hy2`.
+
+Establish `hN : adj u * Y * u = Matrix.vecMulVec ![-y, 1, 0, 0] (Matrix.vecMul φ u)`. Rewrite using `[hYd, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, hA]`. Establish `hsup : IsSUp (adj u * Y * u)`. Introduce `i j hji`. Rewrite using `[hN, Matrix.vecMulVec_apply]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `(simp [hB0, hB1]; done)`. Consider the case `(exfalso; simp at hji; done)`. Consider the case `(exfalso; revert hji; decide)`. Rewrite using `[Submodule.ne_bot_iff]`.
+
+Use `⟨⟨Y, hYm⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hsup`. Introduce `hY0`. Establish `hY : Y = 0` using `congrArg Subtype.val hY0`. Establish `f1 : u 1 1 * u 2 0 = 0`.
+
+Establish `h` using `congrFun (congrFun hY 1) 0`. Simplify using `[hYd, hw, hφ, Matrix.vecMulVec_apply, -mul_eq_zero] at h`. Apply the tactic sequence `first | linear_combination h | linear_combination (-1 : R) * h`. Establish `f2 : u 1 1 * u 0 0 = 0`. Establish `h` using `congrFun (congrFun hY 1) 2`.
+
+Simplify using `[hYd, hw, hφ, Matrix.vecMulVec_apply, -mul_eq_zero, -neg_eq_zero, -mul_neg] at h`. Apply the tactic sequence `first | linear_combination h | linear_combination (-1 : R) * h`. Establish `f3 : u 3 1 * u 2 0 = 0`. Establish `h` using `congrFun (congrFun hY 3) 0`. Simplify using `[hYd, hw, hφ, Matrix.vecMulVec_apply, -mul_eq_zero] at h`.
+
+Apply the tactic sequence `first | linear_combination h | linear_combination (-1 : R) * h`. Establish `f4 : u 3 1 * u 0 0 = 0`. Establish `h` using `congrFun (congrFun hY 3) 2`. Simplify using `[hYd, hw, hφ, Matrix.vecMulVec_apply, -mul_eq_zero, -neg_eq_zero, -mul_neg] at h`. Apply the tactic sequence `first | linear_combination h | linear_combination (-1 : R) * h`.
+
+Establish `J : u 2 2 * u 1 1 - u 0 2 * u 3 1 = 1`. Take the linear combination `I11 - u 3 2 * hy1 + u 1 2 * hy2 - y * I10 + y * u 2 2 * h10 - y * u 0 2 * h30`. Establish `z00 : u 0 0 = 0` using `by linear_combination (-u 0 0) * J + u 2 2 * f2 - u 0 2 * f4`. Establish `z20 : u 2 0 = 0` using `by linear_combination (-u 2 0) * J + u 2 2 * f1 - u 0 2 * f3`. Establish `h1 : (1 : R) = 0`.
+
+Take the linear combination `(-1 : R) * I00 + u 3 3 * z00 + u 2 3 * h10 - u 1 3 * z20 - u 0 3 * h30`. Conclude with `one_ne_zero h1`.
+-/
 theorem UpperTheory.V.Ws.Bl.flagVec :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (X u : M4 R), IsBlock X → Sep X → IsGSp 1 u → IsUp (adj u * X * u) → (∀ i, (adj u * X * u) i i - X i i ∈ maximalIdeal R) → uPlus u ≠ ⊥ := by
   intro R _ _ X u hb hs hg hup hc

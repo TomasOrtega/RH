@@ -13,6 +13,11 @@ open scoped IntermediateField
 
 namespace GlobalTheory.Mem.ValFin
 
+/- English proof (translation)
+Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e x) hn`. Establish `hz' : (e.symm z) ^ n = x` using `by rw [← map_pow, hz, e.symm_apply_apply]`. Establish `h0 : e.symm z ≠ 0` using `fun h0 => x.ne_zero (by rw [← hz', h0, zero_pow hn.ne'])`. Establish `hx : x = Units.mk0 _ h0 ^ n` using `Units.ext hz'.symm`.
+
+Rewrite using `[hx, map_pow, map_pow]`. Conclude with `congrArg (fun χ : HChar E => χ.1 (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E w (Units.mk0 _ h0))) h`.
+-/
 theorem locInf_eq_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E) {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (w : InfinitePlace E) (x : (w.Completion)ˣ) : χ.1 (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E w x) = 1 := by
   let e := InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)
@@ -23,12 +28,20 @@ theorem locInf_eq_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] 
   rw [hx, map_pow, map_pow]
   exact congrArg (fun χ : HChar E => χ.1 (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E w (Units.mk0 _ h0))) h
 
+/- English proof (translation)
+Use `show χ.1 (infDiag k) = 1`. Rewrite using `[infDiag, MonoidHom.finset_prod_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => locInf_eq_one χ hn h w _`.
+-/
 theorem inf_eq_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E) {n : ℕ} (hn : 0 < n)
     (h : χ.OrderDvd n) (k : Eˣ) : χ.inf k = 1 := by
   show χ.1 (infDiag k) = 1
   rw [infDiag, MonoidHom.finset_prod_apply, map_prod]
   exact Finset.prod_eq_one fun w _ => locInf_eq_one χ hn h w _
 
+/- English proof (translation)
+Introduce `E _ _ _ χ M hn hM x`. Take `⟨n, hn0, hord⟩` from `hn`. Establish `hinf : ∀ k : Eˣ, ((χ.inf k : ℂˣ) : ℂ) ∈ M` using `fun k => by`. Rewrite using `[inf_eq_one χ hn0 hord k, Units.val_one]`. Conclude with `one_mem M`.
+
+Rewrite using `[← GlobalTheory.Mem.ReadEx.map_finPartI hn0 hord x]`. Conclude with `GlobalTheory.T.heckeCharacter_finiteIdele_value_mem_field E χ M hM hinf (GlobalTheory.Mem.Chr.finPartI E x) fun w => by`. Rewrite using `[GlobalTheory.Mem.Chr.finPartI_fst]`. Both sides reduce to the same expression.
+-/
 theorem mem_of_orderDvd : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E) (M : IntermediateField ℚ ℂ), (∃ n : ℕ, 0 < n ∧ χ.OrderDvd n) → valueField χ 0 ≤ M → ∀ x, ((χ.1 x : ℂˣ) : ℂ) ∈ M := by
   intro E _ _ _ χ M hn hM x
   obtain ⟨n, hn0, hord⟩ := hn

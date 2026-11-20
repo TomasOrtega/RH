@@ -31,6 +31,19 @@ namespace AnLogRes
 
 variable {d : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `hc : IsClosed (interior S)`. Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, r, f, hf, hSW⟩` from `hS x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `ho : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' W)` using `(A.chart j).symm.isOpen_inter_preimage hW`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 ho (A.chart j x) ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hxW⟩`. Establish `hN : IsOpen ((A.chart j).source ∩ A.chart j ⁻¹' Metric.ball (A.chart j x) ε)` using `(A.chart j).isOpen_inter_preimage Metric.isOpen_ball`. Establish `hxN : x ∈ (A.chart j).source ∩ A.chart j ⁻¹' Metric.ball (A.chart j x) ε` using `⟨hj, Metric.mem_ball_self hε⟩`. Take `⟨p, hpN, hpS⟩` from `mem_closure_iff.1 hx _ hN hxN`. Establish `hz : ∀ i, Set.EqOn (f i ∘ (A.chart j).symm) 0 (Metric.ball (A.chart j x) ε)`.
+
+Introduce `i`. Use `((hf i j).mono hball).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hpN.2 ?_` and prove the remaining obligations. Establish `ho' : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (interior S ∩ W))` using `(A.chart j).symm.isOpen_inter_preimage (isOpen_interior.inter hW)`. Establish `hpW : p ∈ W` using `by simpa [(A.chart j).left_inv hpN.1] using (hball hpN.2).2`. Use `filter_upwards [ho'.mem_nhds ⟨(A.chart j).map_source hpN.1, by`.
+
+Simplify `And.intro hpS hpW⟩] with w hw` using `[(A.chart j).left_inv hpN.1]`. Establish `: (A.chart j).symm w ∈ S ∩ W` using `⟨interior_subset hw.2.1, hw.2.2⟩`. Rewrite `this` using `[hSW]`. Conclude with `this.2 i`. Use `mem_interior.2 ⟨_, fun y hy => ?_, hN, hxN⟩` and prove the remaining obligations.
+
+Establish `hyW : y ∈ W` using `by simpa [(A.chart j).left_inv hy.1] using (hball hy.2).2`. Establish `: y ∈ S ∩ W`. Rewrite using `[hSW]`. Conclude with `⟨hyW, fun i => by simpa [(A.chart j).left_inv hy.1] using hz i hy.2⟩`. Conclude with `this.1`.
+
+Conclude with `Set.eq_univ_of_univ_subset ((IsClopen.eq_univ ⟨hc, isOpen_interior⟩ h).symm.subset.trans interior_subset)`.
+-/
 theorem eq_univ_of_interior_nonempty [PreconnectedSpace X] (A : FinHolAtlas d X) {S : Set X}
     (hS : A.IsAnalyticSubset S) (h : (interior S).Nonempty) : S = Set.univ := by
   have hc : IsClosed (interior S) := by
@@ -67,6 +80,11 @@ theorem eq_univ_of_interior_nonempty [PreconnectedSpace X] (A : FinHolAtlas d X)
   exact Set.eq_univ_of_univ_subset
     ((IsClopen.eq_univ ⟨hc, isOpen_interior⟩ h).symm.subset.trans interior_subset)
 
+/- English proof (translation)
+Use `⟨fun x => ⟨Set.univ, isOpen_univ, trivial, 0, Fin.elim0, fun i => i.elim0, by simp⟩, Set.univ_nonempty, fun Z₁ Z₂ h₁ h₂ h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : Set.univ = Z₁`. Conclude with `Or.inl e`. Use `Or.inr (eq_univ_of_interior_nonempty A h₂ ?_).symm` and prove the remaining obligations. Take `⟨x, hx⟩` from `(Set.ne_univ_iff_exists_notMem _).1 (Ne.symm e)`.
+
+Use `⟨x, mem_interior.2 ⟨Z₁ᶜ, fun y hy => ?_, (pushA_isClosed A h₁).isOpen_compl, hx⟩⟩` and prove the remaining obligations. Conclude with `(h ▸ Set.mem_univ y : y ∈ Z₁ ∪ Z₂).resolve_left hy`.
+-/
 theorem isIrreducibleAnalytic_univ [ConnectedSpace X] (A : FinHolAtlas d X) :
     IsIrreducibleAnalytic A Set.univ := by
   refine ⟨fun x => ⟨Set.univ, isOpen_univ, trivial, 0, Fin.elim0, fun i => i.elim0, by simp⟩,

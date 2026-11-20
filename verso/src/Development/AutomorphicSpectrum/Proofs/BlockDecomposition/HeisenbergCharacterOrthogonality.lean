@@ -18,6 +18,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE
 
+/- English proof (translation)
+Establish `hbd : ∀ i x, ‖h x * (c i x * a i)‖ ≤ B * ‖a i‖` using `fun i x => by`. Rewrite using `[norm_mul, norm_mul, hc1, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB x) (norm_nonneg _)`. Establish `hint : ∀ i, Integrable (fun x => h x * (c i x * a i)) ν` using `fun i => Integrable.of_bound (hh.mul ((hc i).mul aestronglyMeasurable_const)) (B * ‖a i‖) (Eventually.of_forall (hbd i))`. Establish `hsum : Summable fun i => ∫ x, ‖h x * (c i x * a i)‖ ∂ν`.
+
+Use `Summable.of_nonneg_of_le (fun i => integral_nonneg fun x => norm_nonneg _) (fun i => ?_) ((ha.mul_left B).mul_left (ν.real Set.univ))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `hasSum_integral_of_summable_integral_norm hint hsum`. Establish `e1 : ∀ x, ∑' i, h x * (c i x * a i) = h x * ∑' i, c i x * a i` using `fun x => tsum_mul_left`. Establish `e2 : ∀ i, ∫ x, h x * (c i x * a i) ∂ν = (∫ x, h x * c i x ∂ν) * a i` using `fun i => by`.
+
+Rewrite using `[← integral_mul_const]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => by simp only [mul_assoc])`. Simplify using `only [e1, e2] at key`. Conclude with `key.tsum_eq.symm`.
+-/
 theorem integral_mul_tsum_unimod {ι X : Type} [Countable ι] [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν]
     {c : ι → X → ℂ} {h : X → ℂ} {a : ι → ℂ} (hc : ∀ i, AEStronglyMeasurable (c i) ν)
     (hc1 : ∀ i x, ‖c i x‖ = 1) (hh : AEStronglyMeasurable h ν) {B : ℝ} (hB : ∀ x, ‖h x‖ ≤ B)
@@ -43,6 +50,23 @@ theorem integral_mul_tsum_unimod {ι X : Type} [Countable ι] [MeasurableSpace X
   simp only [e1, e2] at key
   exact key.tsum_eq.symm
 
+/- English proof (translation)
+Take `⟨-, hadd, hnorm, hneg, -, hcont⟩` from `GlobalTheory.T.heisenberg_character_bilinear_laws (p := p) ψ hψ b₀`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Use `haveI : Countable (Matrix (Fin ρ) (Fin p) D.host.E) := inferInstanceAs (Countable (Fin ρ → Fin p → D.host.E))`. Use `haveI : IsProbabilityMeasure (m.μ.restrict m.𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact m.hμ.2.2⟩`. Establish `hcm : ∀ η : Matrix (Fin ρ) (Fin p) D.host.E, StronglyMeasurable (fun x : Mx D ρ p => chv ψ b₀ x (rt η))` using `fun η => (hcont.comp (Continuous.prodMk continuous_id continuous_const)).stronglyMeasurable`.
+
+Establish `hcm' : ∀ ξ : Matrix (Fin ρ) (Fin p) D.host.E, StronglyMeasurable (fun x : Mx D ρ p => conj (chv ψ b₀ x (rt ξ)))` using `fun ξ => Complex.continuous_conj.comp_stronglyMeasurable (hcm ξ)`. Establish `hc1 : ∀ (η : Matrix (Fin ρ) (Fin p) D.host.E) (x : Mx D ρ p), ‖chv ψ b₀ x (rt η)‖ = 1` using `fun η x => hnorm x _`. Establish `hc1' : ∀ (ξ : Matrix (Fin ρ) (Fin p) D.host.E) (x : Mx D ρ p), ‖conj (chv ψ b₀ x (rt ξ))‖ = 1` using `fun ξ x => by rw [RCLike.norm_conj]; exact hc1 ξ x`. Establish `horth : ∀ ξ η : Matrix (Fin ρ) (Fin p) D.host.E, ∫ x in m.𝓕, conj (chv ψ b₀ x (rt ξ)) * chv ψ b₀ x (rt η) ∂m.μ = if η = ξ then 1 else 0`. Introduce `ξ η`.
+
+Distinguish the cases in `h : η = ξ`. Substitute `h` using the available equality. Establish `e : ∀ x : Mx D ρ p, conj (chv ψ b₀ x (rt η)) * chv ψ b₀ x (rt η) = 1` using `fun x => by`. Rewrite using `[Complex.conj_mul', hc1]`. Simplify using the standard rewrite rules.
+
+Simplify using `[e]`. Establish `e : ∀ x : Mx D ρ p, conj (chv ψ b₀ x (rt ξ)) * chv ψ b₀ x (rt η) = chv ψ b₀ x (rt (η - ξ))` using `fun x => by`. Establish `hr : (rt (η - ξ) : Mx D ρ p) = rt η + -rt ξ`. Rewrite using `[← sub_eq_add_neg]`. Conclude with `rat_sub η ξ`.
+
+Rewrite using `[hr, hadd, hneg, mul_comm]`. Simplify using `only [e, if_neg h]`. Conclude with `GlobalTheory.T.heisenberg_character_integral_vanishes m ψ hψ b₀ hb₀ (η - ξ) (sub_ne_zero.2 h)`. Establish `hs : ∀ x : Mx D ρ p, Summable fun η => chv ψ b₀ x (rt η) * a η` using `fun x => Summable.of_norm (by simpa only [norm_mul, hc1, one_mul] using ha)`. Establish `hfm : StronglyMeasurable fun x : Mx D ρ p => ∑' η, chv ψ b₀ x (rt η) * a η` using `tsum_meas (fun η => (hcm η).mul_const _) hs`.
+
+Establish `hfB : ∀ x : Mx D ρ p, ‖∑' η, chv ψ b₀ x (rt η) * a η‖ ≤ ∑' η, ‖a η‖` using `fun x => by`. Establish `h1` using `norm_tsum_le_tsum_norm (f := fun η => chv ψ b₀ x (rt η) * a η) (by simpa only [norm_mul, hc1, one_mul] using ha)`. Simplify `h1` using `only [norm_mul, hc1, one_mul]`. Establish `hcoef : ∀ ξ : Matrix (Fin ρ) (Fin p) D.host.E, ∫ x in m.𝓕, (∑' η, chv ψ b₀ x (rt η) * a η) * conj (chv ψ b₀ x (rt ξ)) ∂m.μ = a ξ`. Introduce `ξ`.
+
+Establish `h1` using `integral_mul_tsum_unimod (m.μ.restrict m.𝓕) (c := fun (η : Matrix (Fin ρ) (Fin p) D.host.E) (x : Mx D ρ p) => chv ψ b₀ x (rt η)) (h := fun x => conj (chv ψ b₀ x (rt ξ))) (a := a) (B := 1) (fun η => (hcm η).aestronglyMeasurable) hc1 (hcm' ξ).aestronglyMeasurable (fun x => (hc1' ξ …`. Simplify using `only [horth, ite_mul, one_mul, zero_mul, tsum_ite_eq] at h1`. Rewrite using `[← h1]`. Conclude with `integral_congr_ae (Eventually.of_forall fun x => mul_comm _ _)`. Establish `hconj : ∀ x : Mx D ρ p, conj (∑' ξ, chv ψ b₀ x (rt ξ) * b ξ) = ∑' ξ, conj (chv ψ b₀ x (rt ξ)) * conj (b ξ)` using `fun x => by`.
+
+Rewrite using `[Complex.conj_tsum]`. Simplify using `only [map_mul]`. Establish `h2` using `integral_mul_tsum_unimod (m.μ.restrict m.𝓕) (c := fun (ξ : Matrix (Fin ρ) (Fin p) D.host.E) (x : Mx D ρ p) => conj (chv ψ b₀ x (rt ξ))) (h := fun x => ∑' η, chv ψ b₀ x (rt η) * a η) (a := fun ξ => conj (b ξ)) (fun ξ => (hcm' ξ).aestronglyMeasurable) hc1' hfm.aestronglyMeasurable …`. Simplify using `only [hconj, h2, hcoef]`.
+-/
 theorem parseval {D : D7} {ρ p : ℕ} (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ)
     (b₀ : HermE D ρ) (hb₀ : b₀.1.det ≠ 0) (a b : Matrix (Fin ρ) (Fin p) D.host.E → ℂ)
     (ha : Summable (fun η => ‖a η‖)) (hb : Summable (fun η => ‖b η‖)) :

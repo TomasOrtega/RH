@@ -8,6 +8,13 @@ namespace GlobalTheory.PadicNormCastBounds
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `hz : ∀ a : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Conclude with `a.2`. Set `v` to `NormedField.valuation (K := PadicAlgCl l)`.
+
+Set `φ : ℤ_[l] →+* v.integer` to `(algebraMap ℤ_[l] (PadicAlgCl l)).codRestrict v.integer fun a => by`. Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `hz a` after adjusting the coercions. Establish `h1 : IsIntegral v.integer x` using `hx.map_of_comp_eq φ (RingHom.id _) (by ext a; rfl)`. Establish `h2` using `(Valuation.integer.integers v).mem_of_integral h1`.
+
+Rewrite `h2` using `[Valuation.mem_integer_iff]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {x : PadicAlgCl l} (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   have hz : ∀ a : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
     intro a
@@ -23,10 +30,20 @@ theorem norm_le_one_of_isIntegral {x : PadicAlgCl l} (hx : IsIntegral ℤ_[l] x)
   rw [Valuation.mem_integer_iff] at h2
   exact_mod_cast h2
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `ha.symm`.
+-/
 theorem norm_natCast_of_coprime {a : ℕ} (ha : a.Coprime l) : ‖(a : PadicAlgCl l)‖ = 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact ha.symm
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Establish `h0 : (u : ZMod (l ^ 0)).val = 0`. Use `ZMod.val_lt (u : ZMod (l ^ 0))` as an intermediate fact. Simplify using `using this`. Rewrite using `[h0]`.
+
+Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[he.ne']`. Establish `hc : (u : ZMod (l ^ r)).val.Coprime l` using `(ZMod.val_coe_unit_coprime u).coprime_dvd_right (dvd_pow_self l hr.ne')`. Rewrite using `[norm_inv, norm_pow, norm_natCast_of_coprime hc]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_inv_pow_val_le (r e : ℕ) (u : (ZMod (l ^ r))ˣ) :
     ‖((((u : ZMod (l ^ r)).val : ℕ) : PadicAlgCl l) ^ e)⁻¹‖ ≤ 1 := by
   rcases Nat.eq_zero_or_pos r with rfl | hr
@@ -42,6 +59,11 @@ theorem norm_inv_pow_val_le (r e : ℕ) (u : (ZMod (l ^ r))ˣ) :
     rw [norm_inv, norm_pow, norm_natCast_of_coprime hc]
     simp
 
+/- English proof (translation)
+Establish `na` using `norm_natCast_of_coprime ha`. Establish `nb` using `norm_natCast_of_coprime hb`. Establish `a0 : (a : PadicAlgCl l) ^ e ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [na]; exact one_ne_zero))`. Establish `b0 : (b : PadicAlgCl l) ^ e ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.1 (by rw [nb]; exact one_ne_zero))`. Take `⟨k, hk⟩` from `(h.pow e).dvd`.
+
+Establish `hk' : (b : PadicAlgCl l) ^ e - (a : PadicAlgCl l) ^ e = (l : PadicAlgCl l) ^ r * (k : PadicAlgCl l)`. Conclude with `congrArg (Int.cast : ℤ → PadicAlgCl l) hk` after adjusting the coercions. Rewrite using `[inv_sub_inv a0 b0, hk', norm_div, norm_mul, norm_mul, norm_pow (a : PadicAlgCl l), norm_pow (b : PadicAlgCl l), na, nb, one_pow, one_mul, div_one]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ k)`.
+-/
 theorem norm_inv_pow_sub_le {a b r : ℕ} (e : ℕ) (ha : a.Coprime l) (hb : b.Coprime l) (h : a ≡ b [MOD l ^ r]) :
     ‖((a : PadicAlgCl l) ^ e)⁻¹ - ((b : PadicAlgCl l) ^ e)⁻¹‖ ≤ ‖(l : PadicAlgCl l) ^ r‖ := by
   have na := norm_natCast_of_coprime ha
@@ -55,6 +77,17 @@ theorem norm_inv_pow_sub_le {a b r : ℕ} (e : ℕ) (ha : a.Coprime l) (hb : b.C
     na, nb, one_pow, one_mul, div_one]
   exact mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ k)
 
+/- English proof (translation)
+Establish `h1` using `hχ r x`. Generalize the expression as in `hy : Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r)) : ZMod (l ^ Nat.succ r) →* ZMod (l ^ r)) x = y at h1 ⊢`. Establish `hint : ‖χ r y‖ ≤ 1` using `norm_le_one_of_isIntegral ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨χ r y, hO r y⟩ : c.O)).map c.O.val)`. Establish `hA` using `norm_inv_pow_val_le (r + 1) e x`. Establish `hB` using `norm_inv_pow_val_le r e y`.
+
+Establish `hAB : ‖((((x : ZMod (l ^ (r + 1))).val : ℕ) : PadicAlgCl l) ^ e)⁻¹ - ((((y : ZMod (l ^ r)).val : ℕ) : PadicAlgCl l) ^ e)⁻¹‖ ≤ ‖(l : PadicAlgCl l) ^ r‖`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Rewrite using `[pow_zero (l : PadicAlgCl l), norm_one, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hA ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+
+Use `norm_inv_pow_sub_le e ((ZMod.val_coe_unit_coprime x).coprime_dvd_right (dvd_pow_self l r.succ_ne_zero)) ((ZMod.val_coe_unit_coprime y).coprime_dvd_right (dvd_pow_self l hr.ne')) ?_` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, ZMod.natCast_val, ← hy]`. Both sides reduce to the same expression. Simplify using `only`. Use `set A := ((((x : ZMod (l ^ (r + 1))).val : ℕ) : PadicAlgCl l) ^ e)⁻¹`.
+
+Use `set B := ((((y : ZMod (l ^ r)).val : ℕ) : PadicAlgCl l) ^ e)⁻¹`. Establish `hsplit : A * χ (r + 1) x - B * χ r y = A * (χ (r + 1) x - χ r y) + (A - B) * χ r y` using `by ring`. Rewrite using `[hsplit]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hA).trans h1`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hint).trans hAB`.
+-/
 theorem twist_compat (l : ℕ) [inst : Fact (Nat.Prime l)] (c : UpperTheory.V.HV.Coef l) (e : ℕ)
     (χ : (r : ℕ) → (ZMod (l ^ r))ˣ → Formalism.ConjugateSelfDual.Qbar l)
     (hO : ∀ (r : ℕ) (x : (ZMod (l ^ r))ˣ), χ r x ∈ c.O)

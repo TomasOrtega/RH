@@ -21,6 +21,9 @@ namespace GlobalTheory.Cartier.DomPull
 
 variable {X X' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] (φ : X' ⟶ X) [IsDominant φ]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Conclude with `⟨φ.stalkMap x a, ha.map _, (functionFieldMap_algebraMap φ x a).symm⟩`.
+-/
 theorem unitAt_map {x : X'} {f : X.functionField} (h : UnitAt (φ x) f) :
     UnitAt x (GlobalTheory.functionFieldMap φ f) := by
   obtain ⟨a, ha, rfl⟩ := h
@@ -28,6 +31,9 @@ theorem unitAt_map {x : X'} {f : X.functionField} (h : UnitAt (φ x) f) :
 
 abbrev unitsMap : X.functionFieldˣ →* X'.functionFieldˣ := Units.map (GlobalTheory.functionFieldMap φ).toMonoidHom
 
+/- English proof (translation)
+Rewrite using `[germOf_eq_iff]`. Use `unitAt_map φ (hg.iff_unitAt.1 hg')` as an intermediate fact. Simplify `this` using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, map_div₀]`.
+-/
 theorem germOf_map_eq (D : CartierDiv X) {x : X'} {g g' : X.functionFieldˣ} (hg : D.IsEqn (φ x) g)
     (hg' : D.IsEqn (φ x) g') : germOf x (unitsMap φ g) = germOf x (unitsMap φ g') := by
   rw [germOf_eq_iff]
@@ -40,10 +46,16 @@ def pullback (D : CartierDiv X) : CartierDiv X' :=
     exact ⟨φ ⁻¹ᵁ U, hU, unitsMap φ g, fun y hy =>
       germOf_map_eq φ D (D.exists_isEqn (φ y)).choose_spec (hg _ hy)⟩⟩
 
+/- English proof (translation)
+The claim follows from `germOf_map_eq φ D (D.exists_isEqn (φ x)).choose_spec h`.
+-/
 theorem isEqn_pullback (D : CartierDiv X) {x : X'} {g : X.functionFieldˣ} (h : D.IsEqn (φ x) g) :
     (pullback φ D).IsEqn x (unitsMap φ g) :=
   germOf_map_eq φ D (D.exists_isEqn (φ x)).choose_spec h
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_germ (x := φ (genericPoint X')) hU a, functionFieldMap_algebraMap]`. Use `erw [Scheme.Hom.germ_stalkMap_apply]`. Conclude with `(algebraMap_germ (X := X') hU _).symm`.
+-/
 theorem fnOf_app {U : X.Opens} (hU : genericPoint X' ∈ φ ⁻¹ᵁ U) (a : Γ(X, U)) :
     fnOf (φ ⁻¹ᵁ U) hU (φ.app U a) = GlobalTheory.functionFieldMap φ (fnOf U (gen_mem (x := φ (genericPoint X')) hU) a) := by
   rw [← algebraMap_germ (x := φ (genericPoint X')) hU a, functionFieldMap_algebraMap]
@@ -53,6 +65,9 @@ theorem fnOf_app {U : X.Opens} (hU : genericPoint X' ∈ φ ⁻¹ᵁ U) (a : Γ(
 def pullEqns (D : CartierDiv X) (J : ((toLB D).pull φ).ι) : X'.functionFieldˣ :=
   unitsMap φ (J PUnit.unit).1.2
 
+/- English proof (translation)
+Establish `h₀ : genericPoint X' ∈ φ ⁻¹ᵁ ((toLB D).U (J PUnit.unit) ⊓ (toLB D).U (J' PUnit.unit))` using `⟨mem_pull.1 hg.1, mem_pull.1 hg.2⟩`. Use `show fnOf _ hg (Units.val (∏ _k : PUnit.{1}, _ ^ (1 : ℤ))) = _`. Rewrite using `[Fintype.prod_unique]`. Use `erw [zpow_one, LB.val_res, fnOf_resG]`. Conclude with `(fnOf_app φ h₀ _).trans (congrArg _ (fnOf_toLB_g _ _ _))`.
+-/
 theorem fnOf_pull_g (D : CartierDiv X) (J J' : ((toLB D).pull φ).ι)
     (hg : genericPoint X' ∈ ((toLB D).pull φ).U J ⊓ ((toLB D).pull φ).U J') :
     fnOf _ hg (((toLB D).pull φ).g J J' : Γ(X', ((toLB D).pull φ).U J ⊓ ((toLB D).pull φ).U J')) =
@@ -64,6 +79,9 @@ theorem fnOf_pull_g (D : CartierDiv X) (J J' : ((toLB D).pull φ).ι)
   erw [zpow_one, LB.val_res, fnOf_resG]
   exact (fnOf_app φ h₀ _).trans (congrArg _ (fnOf_toLB_g _ _ _))
 
+/- English proof (translation)
+Use `⟨LB.isLB_pull (isLB_toLB D) φ, fun J J' hg => ?_, fun J x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[fnOf_pull_g φ D J J' hg] show GlobalTheory.functionFieldMap φ _ = GlobalTheory.functionFieldMap φ _ * GlobalTheory.functionFieldMap φ _`. Rewrite using `[← map_mul, div_mul_cancel₀ _ (Units.ne_zero _)]`. Conclude with `isEqn_pullback φ D ((J PUnit.unit).2.2 _ (mem_pull.1 hx))`.
+-/
 theorem presents_pullback (D : CartierDiv X) :
     Presents (pullback φ D) ((toLB D).pull φ) (pullEqns φ D) := by
   refine ⟨LB.isLB_pull (isLB_toLB D) φ, fun J J' hg => ?_, fun J x hx => ?_⟩
@@ -78,6 +96,9 @@ namespace GlobalTheory.Cartier
 
 open DomPull in
 
+/- English proof (translation)
+Introduce `X X' _ _ φ _ D`. Use `⟨pullback φ D, ?_, fun x g h => isEqn_pullback φ D h⟩` and prove the remaining obligations. Rewrite using `[← toPic_apply]`. Conclude with `(presents_pullback φ D).toPic_eq`.
+-/
 theorem exists_pullback_cartierDiv : ∀ (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (φ : X' ⟶ X) [IsDominant φ]
     (D : CartierDiv X), ∃ D' : CartierDiv X', cls (toLB D') (isLB_toLB D') =
       cls ((toLB D).pull φ) (LB.isLB_pull (isLB_toLB D) φ) ∧

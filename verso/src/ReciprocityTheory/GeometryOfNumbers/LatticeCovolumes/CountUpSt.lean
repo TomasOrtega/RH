@@ -14,6 +14,11 @@ def intBasisBound (K : Type*) [Field K] [NumberField K] : ℝ :=
 variable {K : Type*} [Field K] [NumberField K] {V : Type*} [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Unfold `HermFam.nrm`. Establish `h2 : h.form σ (c • x) x = starRingEnd ℂ (σ c) * h.form σ x x`. Rewrite using `[← h.conj_symm σ x (c • x), h.smul_right, map_mul, h.conj_symm σ x x]`. Establish `h1 : h.form σ (c • x) (c • x) = ((‖σ c‖ ^ 2 : ℝ) : ℂ) * h.form σ x x`. Rewrite using `[h.smul_right, h2, ← mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Rewrite using `[h1, Complex.re_ofReal_mul, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem HermFam.nrm_smul_up (h : HermFam K V) (σ : K →+* ℂ) (c : K) (x : V) :
     h.nrm σ (c • x) = ‖σ c‖ * h.nrm σ x := by
   unfold HermFam.nrm

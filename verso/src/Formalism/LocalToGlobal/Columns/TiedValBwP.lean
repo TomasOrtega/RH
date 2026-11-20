@@ -19,6 +19,15 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
 
 include hX in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, h⟩ c`. Conclude with `⟨t, ht, h _⟩`. Introduce `h classical`. Set `_` to `(stepOk W Λ hX u i).fintypeCl`.
+
+Use `choose t ht htx using h`. Use `⟨∏ c, t c, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Take `⟨c, -, hc'⟩` from `(w.isPrime.prod_mem_iff).1 hmem`. Conclude with `ht c hc'`.
+
+Use `((stepGSD W Λ u i).mem_intOf_iff _ (BvLat_equivG W u i (Λ i) v) (stepGSD W Λ u i).outSec _).2 fun c => ?_` and prove the remaining obligations. Establish `h2 : ∀ F : VV X.K (W.lamTrue u i), t c • F ∈ BvLat W u i v ((stepGSD W Λ u i).outSec.rep c) → (∏ c, t c) • F ∈ BvLat W u i v ((stepGSD W Λ u i).outSec.rep c)`. Introduce `F hF`. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ c), mul_comm]`. Establish `e : ((∏ x ∈ Finset.univ.erase c, t x) * t c) • F = (∏ x ∈ Finset.univ.erase c, t x) • (t c • F)` using `mul_smul _ _ _`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hF`. Conclude with `h2 _ (htx c)`.
+-/
 theorem mem_localization_stepLattice_iff (w : HeightOneSpectrum (𝓞 X.K)) (v : {P // P ∈ Pr.vT u}) (x : (stepGSD W Λ u i).EqFun) :
     x ∈ localization₂ w.asIdeal (stepBv W Λ u i v) ↔ ∀ c : StCl W Λ u i,
       (x : (stepGSD W Λ u i).D → (stepGSD W Λ u i).V) ((stepGSD W Λ u i).outSec.rep c) ∈
@@ -44,6 +53,21 @@ theorem mem_localization_stepLattice_iff (w : HeightOneSpectrum (𝓞 X.K)) (v :
         exact Submodule.smul_mem _ _ hF
       exact h2 _ (htx c)
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Take `rfl : Pv = fun v => v.1.asIdeal` from `funext hPv`. Introduce `w hw hs v x`. Use `hX.nonempty_Tau` as an intermediate fact. Establish `hT : (Pr.T u : 𝓞 X.K) ∈ (pw w).asIdeal` using `hw ▸ vl_resChar_mem Pl pw hval w`.
+
+Establish `htau : tauOfR hX hPr u (pw w) v = tauOfC (pw w) v.1`. Unfold `tauOfR`. Rewrite using `[dif_pos hT]`. Both sides reduce to the same expression. Rewrite using `[vl_mem_span_intW_iff Pl pw hval w (stepBv W Λ u i v) x, mem_localization_stepLattice_iff W Λ hX u i (pw w) v x]`.
+
+Use `forall_congr' fun c => ?_` and prove the remaining obligations. Use `(vb_mem_locP_BvLat_iff W hX hPr σ₀ Pl pw hval u i (W.lamN u i) (vl_natW_lamTrue W u i) w hw hs v ((stepGSD W Λ u i).outSec.rep c) ((x : (stepGSD W Λ u i).D → (stepGSD W Λ u i).V) ((stepGSD W Λ u i).outSec.rep c))).trans ?_` and prove the remaining obligations. Establish `hd : dualL (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L = ((stepGSD W Λ u i).outSec.rep c).1.Lsh` using `rlc_span_dualSet hc (R.N i) _`. Prove the components needed by the constructor for the conclusion. Introduce `h B B' hB hB'`.
+
+Establish `hB1 : IsLocBasis (Pr.T u) (dualL (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L : Set (Fin (R.N i) → X.E)) B` using `hB`. Establish `hB2 : IsLocBasis (Pr.T u) ((((stepGSD W Λ u i).outSec.rep c).1.L ⊔ v.1.asIdeal • dualL (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L : Submodule (𝓞 X.E) (Fin (R.N i) → X.E)) : Set (Fin (R.N i) → X.E)) B'` using `hB'`. Rewrite `hB1`, `hB2` using `[hd]`. Take `⟨P, hP, he⟩` from `h B B' hB1 hB2`. Use `⟨P, hP, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htau]`. Conclude with `congrFun he z`. Introduce `h B B' hB hB'`. Establish `hB1 : IsLocBasis (Pr.T u) (dualL (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L : Set (Fin (R.N i) → X.E)) B`. Rewrite using `[hd]`.
+
+Conclude with `hB`. Establish `hB2 : IsLocBasis (Pr.T u) ((((stepGSD W Λ u i).outSec.rep c).1.L ⊔ v.1.asIdeal • dualL (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L : Submodule (𝓞 X.E) (Fin (R.N i) → X.E)) : Set (Fin (R.N i) → X.E)) B'`. Rewrite using `[hd]`. Conclude with `hB'`. Take `⟨P, hP, he⟩` from `h B B' hB1 hB2`.
+
+Rewrite `he` using `[htau]`. Conclude with `⟨P, hP, funext he⟩`.
+-/
 theorem Val.bw (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X.K))
     (hval : ∀ w (x : X.K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ)) (Q : ValCrd W Λ σ₀ u i)
     (Pv : {P // P ∈ Pr.vT u} → Ideal (𝓞 X.E)) (hPv : ∀ v, Pv v = v.1.asIdeal) :

@@ -47,6 +47,15 @@ def anFibBas {H : Geo.Tor.Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Mod
   χ_norm := A.χ_norm
   fr_per v hv j z hz := by rw [h, h]; exact A.fr_per v hv j z hz
 
+/- English proof (translation)
+Take `⟨i, rfl⟩` from `idx.surjective p`. Take `⟨j, rfl⟩` from `idx.surjective q`. Establish `hsp` using `((hx_laws E r X g bas idx 0 hs Even.zero x hx').2.2.2.2.2.2.1 ⊤ (by simp)).1`. Establish `key : ∀ z : Fin g → ℂ, z i = z j`. Introduce `z`.
+
+Establish `hz : z ∈ Submodule.span ℝ (pv X idx x '' ((⊤ : Lt E r) : Set (Fin r → E)))` using `hsp ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨v, -, rfl⟩ := hz`. Conclude with `h v`. Consider the case `zero => rfl`.
+
+Consider the case `add a b _ _ ha hb => simp only [Pi.add_apply, ha, hb]`. Consider the case `smul a b _ hb => simp only [Pi.smul_apply, hb]`. Assume the negation of the conclusion as `hne`. Establish `hij : j ≠ i` using `fun e => hne (by rw [e])`. Use `key (Pi.single i 1)` as an intermediate fact.
+
+Rewrite `this` using `[Pi.single_eq_same, Pi.single_eq_of_ne hij]`. Conclude with `one_ne_zero this`.
+-/
 theorem coord_eq {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas)
     {x : Frame X.Ψ r} (hx' : x ∈ X.dom) {p q : X.Ψ × Fin r} (h : ∀ v, per X x v p = per X x v q) : p = q := by
   obtain ⟨i, rfl⟩ := idx.surjective p
@@ -68,6 +77,13 @@ theorem coord_eq {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.�
 
 variable {H : Geo.Tor.Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Establish `hg : g' = g` using `by simpa using Fintype.card_congr (idx'.trans idx.symm)`. Substitute `hg` using the available equality. Take `⟨π, rfl⟩ : ∃ π : Equiv.Perm (Fin g'), e' = π.trans e` from `⟨e'.trans e.symm, by ext1; simp⟩`. Establish `hidx : idx' = π.trans idx` using `by ext1 j`. Conclude with `coord_eq idx hs x.2 fun v => (hi'.1 x.1 v j).trans (hi.1 x.1 v (π j)).symm`.
+
+Substitute `hidx` using the available equality. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Take `⟨A, hA⟩` from `h`. Establish `hb : ∀ z w, hx (U.X k) bas idx x.1 z w = hx (U.X k) bas' idx x.1 z w` using `fun z w => by`. Rewrite using `[(hx_of_isONFr E r g' 0 _ bas idx hs Even.zero _ hon).2.2, (hx_of_isONFr E r g' 0 _ bas' idx hs' Even.zero _ hon).2.2]`.
+
+Use `⟨ϑ' ∘ ren π, ⟨anFibBas hb (anFibRen π A), fun j z pt h1 h2 h3 => hA j (ren π z) pt h1 h2 h3⟩, fun u => ⟨rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `hx_ren _ bas' idx π x.1 (u ∘ idx) (u ∘ idx)`.
+-/
 theorem genReads_change (U : Unf Xo c σ r) (k : U.Comp) {g g' : ℕ}
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw)
     (bas' : (Fin g' ⊕ Fin g' → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx' : Fin g' ≃ (U.X k).Ψ × Fin r) (e' : Fin g' ≃ Lt1 Dw)
@@ -92,12 +108,30 @@ theorem genReads_change (U : Unf Xo c σ r) (k : U.Comp) {g g' : ℕ}
 
 end Gen
 
+/- English proof (translation)
+Simplify using `only [thA, SW.thS, show ∀ y, (a • φ) y = a * φ y from fun _ => rfl, _root_.mul_assoc, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thA_smul' {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : Data E r)
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (a : ℂ) (φ : TF n g) (x : Frame X.Ψ r)
     (z : Fin n → Fin g → ℂ) : thA X bas idx (a • φ) x z = a * thA X bas idx φ x z := by
   simp only [thA, SW.thS, show ∀ y, (a • φ) y = a * φ y from fun _ => rfl, _root_.mul_assoc, tsum_mul_left]
   ring
 
+/- English proof (translation)
+Establish `hU' : Formalism.L2.PjFree.IsUnf (Formalism.L2.PjFree.Unf.ofPj U)` using `hU`. Take `⟨Wt⟩` from `nonempty_uw hU'`. Establish `hw : IsIntegral ℤ (H.w0 : D.host.E)` using `H.w0.isIntegral_coe`. Establish `hw' : (H.w0 : D.host.E) + cc (H.w0 : D.host.E) = 1`. Rewrite using `[cc, ← H.bar_eq]`.
+
+Conclude with `congrArg (fun t : 𝓞 D.host.E => (t : D.host.E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` after adjusting the coercions. Establish `key : ∀ k : U.Comp, ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ (h : GA D W) (x : (U.X k).dom), latR hr (latG W h) = (U.X k).Λ → x.1 = frMove θ W hr (U.X k) h (fun τ => x₀ τ.1) → ∀ (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw), IsSympl (U.X k …`. Introduce `k`. Establish `hsd : SelfD (U.X k) (U.X k).Λ` using `(uw_lattice _ H Dw l Xo c σ _ _ hσ hU' hr1 Wt k).2.1`. Take `⟨Dc, -, -⟩` from `exists_dic _ H Dw l c σ _ Wt.g V.rank (U.X k) a Wt.e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 hsd hdom`.
+
+Establish `hi : IdxIs c σ (U.X k) Dc.idx Dc.e` using `⟨Dc.per_eq, Dc.ty_eq⟩`. Take `⟨v, hv⟩` from `(TensVac.vacua _ _ _ _ Dc.bas Dc.idx V.rank Dc.sympl hP.even _ hw hw' _ hsd 1 _ (Base.stdL_mem_Vset V.rank 1)).1`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.pow_generator_eq_const_mul_vacuum_theta hci _ H Dw l Xo c σ r U hσ hU hr1 hA k V.rank _ Dc.bas Dc.idx Dc.e hP.even Dc.sympl hi v hv`. Take `⟨κ, -, hκ, hrd⟩` from `GlobalTheory.T.exists_vacuum_multiplier_constant_per_lattice D ψ θ V W χV χW om hP mu hmu r _ hr (U.X k) Dc.bas Dc.idx (hmod k) Dc.sympl H hrt ΛV ΛW hV0 h1 h2 h3 h4 h5 hsd _ s (hon k) (hinv k) f hf v hv`. Use `⟨κ / C, ?_, fun h x hL hxe g bas idx e hs hie ϑ' hϑ' w hw0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hd, hu, -⟩` from `hx_of_isONFr _ r _ 0 _ Dc.bas Dc.idx Dc.sympl Even.zero _ (hon k)`. Take `⟨⟨ϑ, hϑ⟩, hall⟩` from `hC ⟨_, hd⟩ hu`. Take `⟨t1, t2, t3⟩` from `hall ϑ hϑ`. Rewrite using `[norm_div, ← hκ _ hd hu ϑ C t1 t2 t3, div_self (norm_ne_zero_iff.2 hC0)]`. Take `⟨hon', -, hread⟩` from `hrd h hL`.
+
+Rewrite `hon'`, `hread` using `[← hxe]`. Take `⟨-, hu, -⟩` from `hx_of_isONFr _ r _ 0 _ Dc.bas Dc.idx Dc.sympl Even.zero _ hon'`. Take `⟨ϑ, hϑ, hch⟩` from `genReads_change U k Dc.bas Dc.idx Dc.e bas idx e Dc.sympl hs hi hie x hon' ϑ' hϑ'`. Establish `t3` using `((hC x hu).2 ϑ hϑ).2.2 (zOf θ V W hr (U.X k) Dc.idx x.1 w)`. Establish `e1 : ∏ b, ϑ' (zOf θ V W hr (U.X k) idx x.1 w b) = ∏ b, ϑ (zOf θ V W hr (U.X k) Dc.idx x.1 w b)` using `Finset.prod_congr rfl fun b _ => (hch _).1`.
+
+Establish `e2 : ∑ b, hx (U.X k) bas idx x.1 (zOf θ V W hr (U.X k) idx x.1 w b) (zOf θ V W hr (U.X k) idx x.1 w b) = ∑ b, hx (U.X k) Dc.bas Dc.idx x.1 (zOf θ V W hr (U.X k) Dc.idx x.1 w b) (zOf θ V W hr (U.X k) Dc.idx x.1 w b)` using `Finset.sum_congr rfl fun b _ => (hch _).2`. Rewrite using `[hread w hw0, e1, e2, t3, thA_smul']`. Clear the denominators using the available nonvanishing facts. Use `choose cc hcc hkey using key`. Use `⟨cc, hcc, fun h γ hat hx' g bas idx e hs hi ϑ hϑ w hw0 => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hmuQ γ hat.1 h]`. Conclude with `hkey _ (γ * h) ⟨_, hx'⟩ hat.2.1 hat.2.2 g bas idx e hs hi ϑ hϑ w hw0`.
+-/
 theorem exists_ccIs_of_pair (hci : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {V W : HSp D} {χV χW : (AE D)ˣ →* Circle} {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
     (hP : IsPair ψ θ V W χV χW om) {mu : GA D W → ℂ} (hmu : MuVal W χV mu) (hmuQ : ∀ γ ∈ GQ W, ∀ h, mu (γ * h) = mu h)
@@ -160,6 +194,15 @@ theorem exists_ccIs_of_pair (hci : Formalism.MainNotions.ModuliIntegralCharts.H1
   rw [← hmuQ γ hat.1 h]
   exact hkey _ (γ * h) ⟨_, hx'⟩ hat.2.1 hat.2.2 g bas idx e hs hi ϑ hϑ w hw0
 
+/- English proof (translation)
+Introduce `hci D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT i Tp tup O hO`. Establish `hs0 : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Establish `hσ : GoodEmb T.Q.c O.s0` using `rfl`. Take `⟨hP, hV0, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.theta_pair_characters_at_level D G Pl0 T0 A _ R F hC i A.μ0 hO.lift.std`. Establish `hM` using `GlobalTheory.T.level_form_compat_base_embedding D G Pl0 T0 A T R F κ v₀ hC hT i O.s0 hs0`.
+
+Establish `hχ : (Lift.chrTh (R.toLevCh.mu A.μ0) R.eta ((i : ℕ) + 1)).1 = T.chiW ((i : ℕ) + 1) O.s0`. Rewrite using `[hs0, chiTie_of_chiR T R hT.alg hT.laws.pins.2.2.1 hT.chiR i]`. Use `ext1 x`. Express the relevant statement in the definitionally equal form `R.mu0 _ x * R.xi A.μ0 x = _`. Rewrite using `[TwistFactorCompare.eq_one_of_chrEq_one (χ := R.xi A.μ0) (hC.lev.xi_base ▸ hC.lev.xi A.μ0) x, mul_one]`.
+
+Establish `hcast : ∀ (W : HSp D) (hV : T.V ((i : ℕ) + 1) O.s0 = W), MuVal W (T.chiW ((i : ℕ) + 1) O.s0) (castDict hV (T.mu ((i : ℕ) + 1) O.s0)) ∧ ∀ γ ∈ GQ W, ∀ h, castDict hV (T.mu ((i : ℕ) + 1) O.s0) (γ * h) = castDict hV (T.mu ((i : ℕ) + 1) O.s0) h`. Introduce `W hV`. Substitute `hV` using the available equality. Establish `hu` using `hT.laws.muUnit _ (inR i) _ hσ`. Conclude with `⟨hT.laws.muVal _ (inR i) _ hσ, fun γ hγ h => (hu.1 γ h).trans (by rw [hu.2.2.1 γ hγ, one_mul]; rfl)⟩`.
+
+Take `⟨hmu, hmuQ⟩` from `hcast _ O.hV`. Take `⟨-, -, -, -, -, -, hr1, hrt, -, -, hdom, -⟩` from `hM (O.dict 1).1`. Conclude with `exists_ccIs_of_pair hci hP (hχ ▸ hmu) hmuQ (rank_Wc i) hrt _ hσ (hT.laws.unf _ (inR i) _ hσ) hr1 hT.laws.pins.2.1.2 hdom hV0 h1 h2 h3 h4 h5 _ _ (fun k => (hM k).1) (fun k => (hM k).2.1) (fun k => (hM k).2.2.1) (hC.thP.vP i A.μ0).1 _`.
+-/
 theorem exists_ccIs : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∃ cc, CcIs R.θ (Vc D i) (Wc D i) (rank_Wc i) (T.U ((i : ℕ) + 1) O.s0) O.dict O.mu (T.x₀ ((i : ℕ) + 1) O.s0) (R.ωP i A.μ0) (R.vacP i) cc := by
   intro hci D G _ _ Pl0 T0 A T _ R F κ v₀ hC hT i Tp tup O hO
   have hs0 : O.s0 = T.toCore.σ₀ := sOv_eq _ _ _

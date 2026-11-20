@@ -3,6 +3,31 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T V B hinj hbdd htb`. Establish `hmem : ∀ φ : V, Memℓp (fun x : B => (φ : T → ℂ) x) (⊤ : ENNReal)`. Introduce `φ`. Take `⟨M, hM⟩` from `hbdd φ φ.2`. Apply `memℓp_infty` to reduce the goal to its premises.
+
+Use `⟨M, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hM x x.2`. Set `L : V →ₗ[ℂ] lp (fun _ : B => ℂ) (⊤ : ENNReal)` to `{ toFun := fun φ => ⟨fun x : B => (φ : T → ℂ) x, hmem φ⟩ map_add' := fun φ ψ => lp.ext (funext fun _ => rfl) map_smul' := fun c φ => lp.ext (funext fun _ => rfl) }`. Establish `hLapp : ∀ (φ : V) (x : B), (L φ) x = (φ : T → ℂ) x` using `fun _ _ => rfl`.
+
+Establish `hL : Function.Injective L`. Use `(injective_iff_map_eq_zero L).2 fun φ hφ => ?_` and prove the remaining obligations. Establish `h0 : ∀ x ∈ B, (φ : T → ℂ) x = 0`. Introduce `x hx`. Rewrite using `[← hLapp φ ⟨x, hx⟩, hφ]`.
+
+Both sides reduce to the same expression. Conclude with `Subtype.ext (hinj φ φ.2 h0)`. Use `haveI : FiniteDimensional ℂ (LinearMap.range L) := by`. Assume the negation of the conclusion as `hfin`. Take `⟨R, f, hR, hfR, hsep⟩` from `exists_seq_norm_le_one_le_norm_sub hfin`.
+
+Establish `hRpos : 0 < R` using `by linarith`. Take `⟨F, hF⟩` from `htb (1 / (3 * R)) (by positivity)`. Establish `hpre : ∀ n, ∃ φ : V, L φ = (f n : lp (fun _ : B => ℂ) (⊤ : ENNReal))` using `fun n => (f n).2`. Use `choose φ hφ using hpre`. Establish `hφle : ∀ n, ∀ x ∈ B, ‖(φ n : T → ℂ) x‖ ≤ R`.
+
+Introduce `n x hx`. Rewrite using `[← hLapp (φ n) ⟨x, hx⟩, hφ n]`. Conclude with `(lp.norm_apply_le_norm ENNReal.top_ne_zero _ _).trans (hfR n)`. Establish `hball : ∀ n, ∀ x ∈ B, ‖((R : ℂ)⁻¹ • (φ n : T → ℂ)) x‖ ≤ 1`. Introduce `n x hx`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hRpos.le]`. Rewrite using `[inv_mul_le_iff₀ hRpos, mul_one]`. Conclude with `hφle n x hx`. Establish `hch : ∀ n, ∃ ψ ∈ F, ∀ x ∈ B, ‖((R : ℂ)⁻¹ • (φ n : T → ℂ)) x - ψ x‖ ≤ 1 / (3 * R)` using `fun n => hF _ (V.smul_mem _ (φ n).2) (hball n)`. Use `choose ψ hψF hψ using hch`.
+
+Take `⟨m, n, hmn, hmn'⟩` from `Finite.exists_ne_map_eq_of_infinite (fun k : ℕ => (⟨ψ k, hψF k⟩ : F))`. Establish `hψeq : ψ m = ψ n` using `congrArg Subtype.val hmn'`. Establish `hpt : ∀ x ∈ B, ‖(φ m : T → ℂ) x - (φ n : T → ℂ) x‖ ≤ 2 / 3`. Introduce `x hx`. Establish `h1` using `hψ m x hx`.
+
+Establish `h2` using `hψ n x hx`. Rewrite `h1` using `[hψeq]`. Establish `h3 : ‖((R : ℂ)⁻¹ • (φ m : T → ℂ)) x - ((R : ℂ)⁻¹ • (φ n : T → ℂ)) x‖ ≤ 2 / (3 * R)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := norm_sub_le _ _`. Use `_ ≤ 1 / (3 * R) + 1 / (3 * R) := add_le_add h1 h2`. Use `_ = 2 / (3 * R) := by ring`. Rewrite `h3` using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_sub, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hRpos.le]`.
+
+Rewrite `h3` using `[inv_mul_le_iff₀ hRpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : ‖f m - f n‖ ≤ 2 / 3` using `by show ‖((f m : lp (fun _ : B => ℂ) (⊤ : ENNReal)) - (f n : lp (fun _ : B => ℂ) (⊤ : ENNReal)))‖ ≤ 2 / 3`. Rewrite using `[← hφ m, ← hφ n]`. Use `lp.norm_le_of_forall_le (by norm_num) fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[lp.coeFn_sub, Pi.sub_apply, hLapp, hLapp]`. Conclude with `hpt x x.2`. Use `hsep hmn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `LinearEquiv.finiteDimensional (LinearEquiv.ofInjective L hL).symm`.
+-/
 theorem finiteDimensional_of_totallyBounded_supBall :
     ∀ (T : Type) (V : Submodule ℂ (T → ℂ)) (B : Set T), (∀ φ ∈ V, (∀ x ∈ B, φ x = 0) → φ = 0) →
       (∀ φ ∈ V, ∃ M : ℝ, ∀ x ∈ B, ‖φ x‖ ≤ M) →

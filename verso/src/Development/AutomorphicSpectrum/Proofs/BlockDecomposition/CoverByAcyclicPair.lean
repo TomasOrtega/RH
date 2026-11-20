@@ -19,6 +19,9 @@ open GlobalTheory.CompanionTheory.DSICKoszul (homotopy_ring filt mem_filt_succ e
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `CompanionTheory.D.LK.key`. Establish `h1` using `p.1.1.2`. Establish `h2` using `p.1.2.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key_lt (p : Pos n) : CompanionTheory.D.LK.key p < n * n := by
   unfold CompanionTheory.D.LK.key
   have h1 := p.1.1.2
@@ -26,6 +29,11 @@ theorem key_lt (p : Pos n) : CompanionTheory.D.LK.key p < n * n := by
   calc (p.1.1 : ℕ) * n + p.1.2 < ((p.1.1 : ℕ) + 1) * n := by rw [add_mul, one_mul]; omega
     _ ≤ n * n := Nat.mul_le_mul_right _ h1
 
+/- English proof (translation)
+Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Establish `hp` using `key_lt p`. Establish `hq` using `key_lt q`. Unfold `keyR at h`.
+
+Apply the tactic sequence `cases s <;> cases t <;> simp only [Bool.false_eq_true, if_false, if_true, zero_add] at h`. Rewrite using `[CompanionTheory.D.LK.Car.key_inj h]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[CompanionTheory.D.LK.Car.key_inj (Nat.add_left_cancel h)]`.
+-/
 theorem keyR_inj {i j : Ix n} (h : keyR i = keyR j) : i = j := by
   obtain ⟨s, p⟩ := i
   obtain ⟨t, q⟩ := j
@@ -40,11 +48,20 @@ theorem keyR_inj {i j : Ix n} (h : keyR i = keyR j) : i = j := by
 
 def twR (i j : Ix n) : ℂ := if keyR j < keyR i then -1 else 1
 
+/- English proof (translation)
+Simplify using `[twR]`.
+-/
 theorem twR_self (i : Ix n) : twR i i = 1 := by simp [twR]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold twR; split_ifs <;> simp`.
+-/
 theorem twR_mul_self (i j : Ix n) : twR i j * twR i j = 1 := by
   unfold twR; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hk : keyR i ≠ keyR j` using `fun e => h (keyR_inj e)`. Unfold `twR`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases. Simplify using `[h1, h1.not_gt]`. Simplify using `[h1, h1.not_gt]`.
+-/
 theorem twR_swap {i j : Ix n} (h : i ≠ j) : twR j i = -twR i j := by
   have hk : keyR i ≠ keyR j := fun e => h (keyR_inj e)
   unfold twR
@@ -52,10 +69,18 @@ theorem twR_swap {i j : Ix n} (h : i ≠ j) : twR j i = -twR i j := by
   · simp [h1, h1.not_gt]
   · simp [h1, h1.not_gt]
 
+/- English proof (translation)
+Unfold `sgR`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem sgR_mul_self (i : Ix n) (A : Finset (Ix n)) : sgR i A * sgR i A = 1 := by
   unfold sgR
   rw [← mul_pow]; simp
 
+/- English proof (translation)
+Unfold `sgR twR`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with hk`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sgR_insert (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∉ A) :
     sgR i (insert j A) = twR i j * sgR i A := by
   unfold sgR twR
@@ -64,6 +89,9 @@ theorem sgR_insert (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∉ A) :
   · rw [Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]; ring
   · simp
 
+/- English proof (translation)
+Establish `h1` using `sgR_insert i (Finset.notMem_erase j A)`. Rewrite `h1` using `[Finset.insert_erase h]`. Rewrite using `[h1, ← mul_assoc, twR_mul_self, one_mul]`.
+-/
 theorem sgR_erase (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∈ A) :
     sgR i (A.erase j) = twR i j * sgR i A := by
   have h1 := sgR_insert i (Finset.notMem_erase j A)
@@ -72,15 +100,33 @@ theorem sgR_erase (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∈ A) :
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem annR_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
     annR i x A = if i ∈ A then 0 else sgR i A • x (insert i A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem creR_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
     creR i x A = if i ∈ A then sgR i A • x (A.erase i) else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftR_apply {V' : Type} [AddCommGroup V'] [Module ℂ V'] (T : V →ₗ[ℂ] V') (x : Cr n V) (A : Finset (Ix n)) :
     liftR n T x A = T (x A) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, annR_apply, creR_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, sgR_erase i hi, twR_self, smul_smul, sgR_mul_self, Finset.insert_erase hi]`. Simplify using `[hi, sgR_insert i hi, twR_self, smul_smul, sgR_mul_self, Finset.erase_insert hi]`. Establish `hji : j ≠ i` using `fun e => hij e.symm`. Rewrite using `[if_neg hij, LinearMap.zero_apply, Pi.zero_apply]`. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, hij]`. Distinguish the cases in `hj : j ∈ A`. Use `swap`. Simplify using `[hj, hji]`. Simplify using `only [hi, hj, Finset.mem_insert, Finset.mem_erase, or_true, and_false, if_true, if_false]`.
+
+Rewrite using `[sgR_insert j hi, sgR_erase i hj, twR_swap hij, Finset.erase_insert_of_ne hij, smul_smul, smul_smul, ← add_smul]`. Establish `: sgR i A * (-twR i j * sgR j A) + sgR j A * (twR i j * sgR i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+-/
 theorem annR_creR (i j : Ix n) :
     (annR i * creR j + creR j * annR i : Module.End ℂ (Cr n V)) = if i = j then 1 else 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -103,46 +149,70 @@ theorem annR_creR (i j : Ix n) :
   have : sgR i A * (-twR i j * sgR j A) + sgR j A * (twR i j * sgR i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Distinguish the cases in `h : i ∈ A`. Simplify using `[creR_apply, annR_apply, h, sgR_erase i h, twR_self, smul_smul, sgR_mul_self, insert_erase h]`. Simplify using `[creR_apply, h]`.
+-/
 theorem creR_annR_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
     creR i (annR i x) A = if i ∈ A then x A else 0 := by
   by_cases h : i ∈ A
   · simp [creR_apply, annR_apply, h, sgR_erase i h, twR_self, smul_smul, sgR_mul_self, insert_erase h]
   · simp [creR_apply, h]
 
+/- English proof (translation)
+Rewrite using `[annR_apply]`. Use `split_ifs`. Conclude with `Q.zero_mem`. Conclude with `Q.smul_mem _ (h _)`.
+-/
 theorem annR_mem {Q : Submodule ℂ V} {x : Cr n V} (h : ∀ A, x A ∈ Q) (i : Ix n) (A : Finset (Ix n)) :
     annR i x A ∈ Q := by
   rw [annR_apply]; split_ifs
   · exact Q.zero_mem
   · exact Q.smul_mem _ (h _)
 
+/- English proof (translation)
+Rewrite using `[creR_apply]`. Use `split_ifs`. Conclude with `Q.smul_mem _ (h _)`. Conclude with `Q.zero_mem`.
+-/
 theorem creR_mem {Q : Submodule ℂ V} {x : Cr n V} (h : ∀ A, x A ∈ Q) (i : Ix n) (A : Finset (Ix n)) :
     creR i x A ∈ Q := by
   rw [creR_apply]; split_ifs
   · exact Q.smul_mem _ (h _)
   · exact Q.zero_mem
 
+/- English proof (translation)
+Rewrite `h` using `[annR_apply]`. Distinguish the cases in `hi : i ∈ A`. Simplify using `[hi] at h`. Conclude with `⟨hi, fun h0 => h (by simp [hi, h0])⟩`.
+-/
 theorem annR_ne {i : Ix n} {x : Cr n V} {A : Finset (Ix n)} (h : annR i x A ≠ 0) : i ∉ A ∧ x (insert i A) ≠ 0 := by
   rw [annR_apply] at h
   by_cases hi : i ∈ A
   · simp [hi] at h
   · exact ⟨hi, fun h0 => h (by simp [hi, h0])⟩
 
+/- English proof (translation)
+Rewrite `h` using `[creR_apply]`. Distinguish the cases in `hi : i ∈ A`. Conclude with `⟨hi, fun h0 => h (by simp [hi, h0])⟩`. Simplify using `[hi] at h`.
+-/
 theorem creR_ne {i : Ix n} {x : Cr n V} {A : Finset (Ix n)} (h : creR i x A ≠ 0) : i ∈ A ∧ x (A.erase i) ≠ 0 := by
   rw [creR_apply] at h
   by_cases hi : i ∈ A
   · exact ⟨hi, fun h0 => h (by simp [hi, h0])⟩
   · simp [hi] at h
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [annR_apply, liftR_apply, h]`.
+-/
 theorem annR_liftR (i : Ix n) (T : Module.End ℂ V) :
     Commute (annR i : Module.End ℂ (Cr n V)) (liftR n T) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   by_cases h : i ∈ A <;> simp [annR_apply, liftR_apply, h]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ∈ A <;> simp [creR_apply, liftR_apply, h]`.
+-/
 theorem creR_liftR (i : Ix n) (T : Module.End ℂ V) :
     Commute (creR i : Module.End ℂ (Cr n V)) (liftR n T) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   by_cases h : i ∈ A <;> simp [creR_apply, liftR_apply, h]
 
+/- English proof (translation)
+Simplify using `only [bdR, LinearMap.add_apply, Pi.add_apply, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, Module.End.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem bdR_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cr n V) (A : Finset (Ix n)) :
     bdR E1 E2 x A = (∑ i : Ix n, rl E1 E2 i (annR i x A)) +
       (1 / 2 : ℂ) • ∑ i : Ix n, ∑ j : Ix n, ∑ k : Ix n, cst i j k • creR k (annR j (annR i x)) A := by
@@ -150,6 +220,17 @@ theorem bdR_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cr n V) (A
     Pi.smul_apply, Module.End.mul_apply]
   rfl
 
+/- English proof (translation)
+Introduce `A hA`. Assume the negation of the conclusion as `hc`. Apply `hA` to reduce the goal to its premises. Rewrite using `[bdR_apply, Finset.sum_eq_zero, Finset.sum_eq_zero, smul_zero, add_zero]`. Use `fun i _ => Finset.sum_eq_zero fun j' _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : creR k (annR j' (annR i y)) A = 0`. Rewrite using `[h, smul_zero]`. It suffices to derive a contradiction. Take `⟨h1, h2⟩` from `creR_ne h`. Take `⟨h3, h4⟩` from `annR_ne h2`.
+
+Take `⟨h5, h6⟩` from `annR_ne h4`. Establish `e1` using `hy _ h6`. Rewrite `e1` using `[card_insert_of_notMem h5, card_insert_of_notMem h3]`. Establish `e2` using `card_erase_add_one h1`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `i _`. Distinguish the cases in `h : annR i y A = 0`. Rewrite using `[h, map_zero]`. It suffices to derive a contradiction. Take `⟨h1, h2⟩` from `annR_ne h`.
+
+Establish `e1` using `hy _ h2`. Rewrite `e1` using `[card_insert_of_notMem h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem degR_bdR (E1 E2 : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {y : Cr n V} (hy : DegR (j + 1) y) :
     DegR j (bdR E1 E2 y) := by
   intro A hA
@@ -187,6 +268,53 @@ structure FiltR (R a d : Ix n → Module.End ℂ V) (Fil : ℕ → Submodule ℂ
   d_mem : ∀ i k, ∀ z ∈ Fil (k + 1), d i z ∈ Fil k
   d_zero : ∀ i, ∀ z ∈ Fil 0, d i z = 0
 
+/- English proof (translation)
+Set `H : Module.End ℂ (Cr n Z)` to `∑ i : Ix n, (liftR n (d i) : Module.End ℂ (Cr n Z)) * creR i`. Set `Da : Module.End ℂ (Cr n Z)` to `∑ i : Ix n, (liftR n (a i) : Module.End ℂ (Cr n Z)) * annR i`. Set `N : Module.End ℂ Z` to `∑ i : Ix n, a i * d i`. Set `G : ℕ → Submodule ℂ Z` to `fun k => Nat.casesOn k ⊥ Fil`. Establish `hdG : ∀ i k, ∀ z ∈ G (k + 1), d i z ∈ G k` using `fun i k z hz => by`.
+
+Consider the cases of `k with`. Consider the case `zero => exact hF.d_zero i z hz`. Consider the case `succ k => exact hF.d_mem i k z hz`. Establish `hNG : ∀ k, ∀ z ∈ G k, N z ∈ G k` using `fun k z hz => by`. Consider the cases of `k with`.
+
+Consider the case `zero => obtain rfl : z = 0 := hz`. Simplify using the standard rewrite rules. Consider the case `succ k`. Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Consider the cases of `k with`. Consider the case `zero => rw [Module.End.mul_apply, hF.d_zero _ z hz, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ k => exact hF.a_mem _ k _ (hF.d_mem _ k z hz)`. Establish `hrG : ∀ i k, ∀ z ∈ G k, rl E1 E2 i z - a i z ∈ G k` using `fun i k z hz => by`.
+
+Consider the cases of `k with`. Consider the case `zero => obtain rfl : z = 0 := hz`. Simplify using the standard rewrite rules. Consider the case `succ k => exact hF.r_mem i k z hz`. Establish `hGf : ∀ k, G k ≤ filt d k` using `fun k => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact bot_le`. Consider the case `succ k ih => exact fun z hz => (mem_filt_succ _ _ _).2 fun i => ih (hdG _ k z hz)`. Establish `hGm : ∀ k, G k ≤ G (k + 1)` using `fun k => by`. Consider the cases of `k with`.
+
+Consider the case `zero => exact bot_le`. Consider the case `succ k => exact hF.mono (Nat.le_succ k)`. Establish `hH : ∀ (y : Cr n Z) A, H y A = ∑ i : Ix n, d i (creR i y A)` using `fun y A => by`. Simplify using `only [H, LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Establish `hHG : ∀ k (y : Cr n Z), (∀ A, y A ∈ G (k + 1)) → ∀ A, H y A ∈ G k` using `fun k y hy A => by`. Rewrite using `[hH]`. Conclude with `Submodule.sum_mem _ fun i _ => hdG _ k _ (creR_mem hy _ _)`. Establish `hρ : ∀ k (y : Cr n Z), (∀ A, y A ∈ G k) → ∀ A, (bdR E1 E2 y - Da y) A ∈ G k` using `fun k y hy A => by`. Establish `e : Da y A = ∑ i : Ix n, a i (annR i y A)`.
+
+Simplify using `only [Da, LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[Pi.sub_apply, bdR_apply, e, add_sub_right_comm, ← Finset.sum_sub_distrib]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => ?_) (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun k _ => ?_))` and prove the remaining obligations. Conclude with `hrG i _ _ (annR_mem hy _ _)`.
+
+Conclude with `Submodule.smul_mem _ _ (creR_mem (annR_mem (annR_mem hy _) _) _ _)`. Establish `hom : Da * H + H * Da = ∑ i : Ix n, (liftR n (a i) : Module.End ℂ (Cr n Z)) * liftR n (d i) + ∑ i : Ix n, creR i * annR i`. Use `homotopy_ring (fun i : Ix n => (liftR n (a i) : Module.End ℂ (Cr n Z))) (fun i => liftR n (d i)) (fun i => annR i) (fun i => creR i) (fun i j => annR_liftR _ _) (fun i j => creR_liftR _ _) (fun i j => ?_) (fun i j => annR_creR i j)` and prove the remaining obligations. Use `LinearMap.ext fun y => funext fun A => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun T : Module.End ℂ Z => T (y A)) (hF.da i j)`.
+
+Distinguish the cases in `h : i = j`. Simplify `e` using `[h, liftR_apply]`. Simplify `e` using `[h, liftR_apply]`. Establish `hHs : ∀ (m : ℕ) (y : Cr n Z), DegR m y → DegR (m + 1) (H y)` using `fun m y hy A hA => by`. Rewrite `hA` using `[hH]`.
+
+Take `⟨i, -, hi⟩` from `exists_ne_zero_of_sum_ne_zero hA`. Take `⟨h1, h2⟩` from `creR_ne (fun h => hi (by rw [h, map_zero]) : creR i y A ≠ 0)`. Establish `e1` using `hy _ h2`. Establish `e2` using `card_erase_add_one h1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hΔ : ∀ y : Cr n Z, DegR (j + 1) y → bdR E1 E2 y = 0 → ∀ A, bdR E1 E2 (H y) A = N (y A) + ((j + 1 : ℕ) : ℂ) • y A + ((bdR E1 E2 (H y) - Da (H y)) A + H (bdR E1 E2 y - Da y) A)`. Introduce `y hy hc A`. Establish `e` using `congrArg (fun T : Module.End ℂ (Cr n Z) => T y A) hom`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.sum_apply, Finset.sum_apply, creR_annR_apply, liftR_apply] at e`. Establish `e2 : (∑ i : Ix n, if i ∈ A then y A else 0) = ((j + 1 : ℕ) : ℂ) • y A`.
+
+Distinguish the cases in `h : y A = 0`. Simplify using `[h]`. Rewrite using `[← hy A h, ← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Use `congr 2`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Establish `e3 : N (y A) = ∑ i : Ix n, a i (d i (y A))` using `by simp only [N, LinearMap.sum_apply]; rfl`. Rewrite using `[e3, ← e2, ← e, hc, zero_sub, map_neg, Pi.sub_apply, Pi.neg_apply]`. Normalize the expressions using the abelian group laws. Establish `main : ∀ k (y : Cr n Z), (∀ A, y A ∈ G k) → DegR (j + 1) y → bdR E1 E2 y = 0 → ∃ t : Cr n Z, DegR (j + 2) t ∧ bdR E1 E2 t = y`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact fun y hy _ _ => ⟨0, fun _ h => absurd rfl h, by rw [map_zero]; exact (funext hy).symm⟩`. Consider the case `succ k ihk`. Establish `inner : ∀ m (y : Cr n Z), (∀ A, y A ∈ G (k + 1)) → (∀ A, y A ∈ filt d m ⊔ G k) → DegR (j + 1) y → bdR E1 E2 y = 0 → ∃ t : Cr n Z, DegR (j + 2) t ∧ bdR E1 E2 t = y`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun y _ hy => ihk y fun A => by simpa [filt] using hy A`. Consider the case `succ m ih`. Introduce `y hy1 hy2 hs hc`.
+
+Establish `hne : ((m : ℂ) + (j + 1 : ℕ)) ≠ 0` using `by exact_mod_cast (by omega : m + (j + 1) ≠ 0)`. Establish `hL : ∀ A, (bdR E1 E2 (H y) - Da (H y)) A + H (bdR E1 E2 y - Da y) A ∈ G k` using `fun A => Submodule.add_mem _ (hρ k _ (hHG k y hy1) A) (hHG k _ (hρ (k + 1) y hy1) A)`. Establish `hw : ∀ A, (bdR E1 E2 (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) A = (N (y A) - (m : ℂ) • y A) + ((bdR E1 E2 (H y) - Da (H y)) A + H (bdR E1 E2 y - Da y) A)` using `fun A => by`. Rewrite using `[Pi.sub_apply, hΔ y hs hc A, Pi.smul_apply, add_smul]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨t, ht, hbt⟩` from `ih (bdR E1 E2 (H y) - ((m : ℂ) + (j + 1 : ℕ)) • y) (fun A => by`. Rewrite using `[hw]`. Conclude with `Submodule.add_mem _ (Submodule.sub_mem _ (hNG (k + 1) _ (hy1 A)) (Submodule.smul_mem _ _ (hy1 A))) (hGm k (hL A)))`. Use the proof step `(fun A => by`. Rewrite using `[hw]`.
+
+Take `⟨u, hu, g, hg, e⟩` from `Submodule.mem_sup.1 (hy2 A)`. Use `Submodule.add_mem _ ?_ (Submodule.mem_sup_right (hL A))` and prove the remaining obligations. Rewrite using `[← e, map_add, smul_add, add_sub_add_comm]`. Conclude with `Submodule.add_mem_sup (euler_filt a d hF.d_comm hF.da m u hu) (Submodule.sub_mem _ (hNG _ _ hg) (Submodule.smul_mem _ _ hg)))`. Use the proof step `(fun A hA => by`.
+
+Distinguish the cases in `h : y A = 0`. Conclude with `degR_bdR E1 E2 (hHs (j + 1) y hs) A fun h' => hA (by simp [h, h'])`. Conclude with `hs A h)`. Use the proof step `(by`. Rewrite using `[map_sub, map_smul, hc, smul_zero, sub_zero]`.
+
+Conclude with `LinearMap.congr_fun hS _)`. Use `⟨((m : ℂ) + (j + 1 : ℕ))⁻¹ • (H y - t), fun A hA => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : t A = 0`. Conclude with `hHs (j + 1) y hs A fun h' => hA (by simp [h, h'])`. Conclude with `ht A h`.
+
+Rewrite using `[map_smul, map_sub, hbt, sub_sub_cancel, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Conclude with `fun y hy => inner (k + 1) y hy fun A => Submodule.mem_sup_left (hGf _ (hy A))`. Use `choose f hf using hF.exh`. Conclude with `main ((univ.sup fun A => f (x A)) + 1) x (fun A => hF.mono (Finset.le_sup (f := fun A => f (x A)) (mem_univ A)) (hf _)) hx hcyc`.
+-/
 theorem acycR {Z : Type} [AddCommGroup Z] [Module ℂ Z] (E1 E2 : Fin n → Fin n → Module.End ℂ Z)
     (a d : Ix n → Module.End ℂ Z) (Fil : ℕ → Submodule ℂ Z) (hS : bdR E1 E2 * bdR E1 E2 = 0)
     (hF : FiltR (rl E1 E2) a d Fil) (j : ℕ) (x : Cr n Z) (hx : DegR (j + 1) x) (hcyc : bdR E1 E2 x = 0) :
@@ -320,21 +448,35 @@ variable {Z : Type} [AddCommGroup Z] [Module ℂ Z]
 def FW (Fil : ℕ → Submodule ℂ Z) (k : ℕ) : Submodule ℂ (Z ⊗[ℂ] Z) :=
   Submodule.span ℂ {t | ∃ k₁ k₂ z w, z ∈ Fil k₁ ∧ w ∈ Fil k₂ ∧ k₁ + k₂ ≤ k ∧ t = z ⊗ₜ[ℂ] w}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨k₁, k₂, z, w, hz, hw, h, rfl⟩`.
+-/
 theorem tmul_mem_FW (Fil : ℕ → Submodule ℂ Z) {k k₁ k₂ : ℕ} {z w : Z} (hz : z ∈ Fil k₁) (hw : w ∈ Fil k₂)
     (h : k₁ + k₂ ≤ k) : z ⊗ₜ[ℂ] w ∈ FW Fil k :=
   Submodule.subset_span ⟨k₁, k₂, z, w, hz, hw, h, rfl⟩
 
+/- English proof (translation)
+Use `fun t ht => (Submodule.span_le (p := Q.comap T)).2 ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨k₁, k₂, z, w, hz, hw, hk, rfl⟩`. Conclude with `h k₁ k₂ z w hz hw hk`.
+-/
 theorem FW_map (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ (Z ⊗[ℂ] Z)) (k : ℕ) (Q : Submodule ℂ (Z ⊗[ℂ] Z))
     (h : ∀ k₁ k₂ z w, z ∈ Fil k₁ → w ∈ Fil k₂ → k₁ + k₂ ≤ k → T (z ⊗ₜ[ℂ] w) ∈ Q) : ∀ t ∈ FW Fil k, T t ∈ Q := by
   refine fun t ht => (Submodule.span_le (p := Q.comap T)).2 ?_ ht
   rintro _ ⟨k₁, k₂, z, w, hz, hw, hk, rfl⟩
   exact h k₁ k₂ z w hz hw hk
 
+/- English proof (translation)
+Introduce `k l hkl` and use `Submodule.span_mono (by rintro _ ⟨k₁, k₂, z, w, hz, hw, hk, rfl⟩ exact ⟨k₁, k₂, z, w, hz, hw, hk.trans hkl, rfl⟩)`.
+-/
 theorem FW_mono (Fil : ℕ → Submodule ℂ Z) : Monotone (FW Fil) := fun k l hkl =>
   Submodule.span_mono (by
     rintro _ ⟨k₁, k₂, z, w, hz, hw, hk, rfl⟩
     exact ⟨k₁, k₂, z, w, hz, hw, hk.trans hkl, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul z w`. Take `⟨k, hk⟩` from `he z`. Take `⟨l, hl⟩` from `he w`.
+
+Conclude with `⟨k + l, tmul_mem_FW Fil hk hl le_rfl⟩`. Consider the case `add p q hp hq`. Take `⟨k, hk⟩` from `hp`. Take `⟨l, hl⟩` from `hq`. Conclude with `⟨max k l, Submodule.add_mem _ (FW_mono Fil (le_max_left _ _) hk) (FW_mono Fil (le_max_right _ _) hl)⟩`.
+-/
 theorem FW_exh (Fil : ℕ → Submodule ℂ Z) (hm : Monotone Fil) (he : ∀ z, ∃ k, z ∈ Fil k) (t : Z ⊗[ℂ] Z) :
     ∃ k, t ∈ FW Fil k := by
   induction t using TensorProduct.induction_on with
@@ -348,18 +490,27 @@ theorem FW_exh (Fil : ℕ → Submodule ℂ Z) (hm : Monotone Fil) (he : ∀ z, 
     obtain ⟨l, hl⟩ := hq
     exact ⟨max k l, Submodule.add_mem _ (FW_mono Fil (le_max_left _ _) hk) (FW_mono Fil (le_max_right _ _) hl)⟩
 
+/- English proof (translation)
+The claim follows from `FW_map Fil _ k _ fun k₁ k₂ z w hz hw hk => by rw [LinearMap.rTensor_tmul] exact tmul_mem_FW Fil (h _ _ hz) hw (by omega)`.
+-/
 theorem rT_mem (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (s : ℕ) (h : ∀ l, ∀ z ∈ Fil l, T z ∈ Fil (l + s))
     (k : ℕ) : ∀ t ∈ FW Fil k, (T.rTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t ∈ FW Fil (k + s) :=
   FW_map Fil _ k _ fun k₁ k₂ z w hz hw hk => by
     rw [LinearMap.rTensor_tmul]
     exact tmul_mem_FW Fil (h _ _ hz) hw (by omega)
 
+/- English proof (translation)
+The claim follows from `FW_map Fil _ k _ fun k₁ k₂ z w hz hw hk => by rw [LinearMap.lTensor_tmul] exact tmul_mem_FW Fil hz (h _ _ hw) (by omega)`.
+-/
 theorem lT_mem (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (s : ℕ) (h : ∀ l, ∀ z ∈ Fil l, T z ∈ Fil (l + s))
     (k : ℕ) : ∀ t ∈ FW Fil k, (T.lTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t ∈ FW Fil (k + s) :=
   FW_map Fil _ k _ fun k₁ k₂ z w hz hw hk => by
     rw [LinearMap.lTensor_tmul]
     exact tmul_mem_FW Fil hz (h _ _ hw) (by omega)
 
+/- English proof (translation)
+The claim follows from `FW_map Fil _ _ _ fun k₁ k₂ z w hz hw hk => by rw [LinearMap.rTensor_tmul] cases k₁ with | zero => rw [h0 z hz, TensorProduct.zero_tmul]; exact Submodule.zero_mem _ | succ k₁ => exact tmul_mem_FW Fil (h _ _ hz) hw (by omega)`.
+-/
 theorem rT_low (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h : ∀ l, ∀ z ∈ Fil (l + 1), T z ∈ Fil l)
     (h0 : ∀ z ∈ Fil 0, T z = 0) (k : ℕ) :
     ∀ t ∈ FW Fil (k + 1), (T.rTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t ∈ FW Fil k :=
@@ -369,6 +520,9 @@ theorem rT_low (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h : ∀ l
     | zero => rw [h0 z hz, TensorProduct.zero_tmul]; exact Submodule.zero_mem _
     | succ k₁ => exact tmul_mem_FW Fil (h _ _ hz) hw (by omega)
 
+/- English proof (translation)
+The claim follows from `FW_map Fil _ _ _ fun k₁ k₂ z w hz hw hk => by rw [LinearMap.lTensor_tmul] cases k₂ with | zero => rw [h0 w hw, TensorProduct.tmul_zero]; exact Submodule.zero_mem _ | succ k₂ => exact tmul_mem_FW Fil hz (h _ _ hw) (by omega)`.
+-/
 theorem lT_low (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h : ∀ l, ∀ z ∈ Fil (l + 1), T z ∈ Fil l)
     (h0 : ∀ z ∈ Fil 0, T z = 0) (k : ℕ) :
     ∀ t ∈ FW Fil (k + 1), (T.lTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t ∈ FW Fil k :=
@@ -378,6 +532,9 @@ theorem lT_low (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h : ∀ l
     | zero => rw [h0 w hw, TensorProduct.tmul_zero]; exact Submodule.zero_mem _
     | succ k₂ => exact tmul_mem_FW Fil hz (h _ _ hw) (by omega)
 
+/- English proof (translation)
+Introduce `t ht` and use `by have := FW_map Fil (T.rTensor Z) 0 ⊥ (fun k₁ k₂ z w hz hw hk => by obtain rfl : k₁ = 0 := by omega rw [LinearMap.rTensor_tmul, h0 z hz, TensorProduct.zero_tmul]; exact Submodule.zero_mem _) t ht simpa using this`.
+-/
 theorem rT_zero (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h0 : ∀ z ∈ Fil 0, T z = 0) :
     ∀ t ∈ FW Fil 0, (T.rTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t = 0 := fun t ht => by
   have := FW_map Fil (T.rTensor Z) 0 ⊥ (fun k₁ k₂ z w hz hw hk => by
@@ -385,6 +542,9 @@ theorem rT_zero (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h0 : ∀
     rw [LinearMap.rTensor_tmul, h0 z hz, TensorProduct.zero_tmul]; exact Submodule.zero_mem _) t ht
   simpa using this
 
+/- English proof (translation)
+Introduce `t ht` and use `by have := FW_map Fil (T.lTensor Z) 0 ⊥ (fun k₁ k₂ z w hz hw hk => by obtain rfl : k₂ = 0 := by omega rw [LinearMap.lTensor_tmul, h0 w hw, TensorProduct.tmul_zero]; exact Submodule.zero_mem _) t ht simpa using this`.
+-/
 theorem lT_zero (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h0 : ∀ z ∈ Fil 0, T z = 0) :
     ∀ t ∈ FW Fil 0, (T.lTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) t = 0 := fun t ht => by
   have := FW_map Fil (T.lTensor Z) 0 ⊥ (fun k₁ k₂ z w hz hw hk => by
@@ -392,6 +552,9 @@ theorem lT_zero (Fil : ℕ → Submodule ℂ Z) (T : Module.End ℂ Z) (h0 : ∀
     rw [LinearMap.lTensor_tmul, h0 w hw, TensorProduct.tmul_zero]; exact Submodule.zero_mem _) t ht
   simpa using this
 
+/- English proof (translation)
+Use `show _ * _ = _ * _`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z w`. Simplify using the standard rewrite rules.
+-/
 theorem rT_lT_comm (S T : Module.End ℂ Z) :
     Commute (S.rTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) (T.lTensor Z) := by
   show _ * _ = _ * _
@@ -399,12 +562,18 @@ theorem rT_lT_comm (S T : Module.End ℂ Z) :
   intro z w
   simp
 
+/- English proof (translation)
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z w`. Simplify using the standard rewrite rules.
+-/
 theorem rT_mul (S T : Module.End ℂ Z) :
     ((S * T).rTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) = S.rTensor Z * T.rTensor Z := by
   apply TensorProduct.ext'
   intro z w
   simp
 
+/- English proof (translation)
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `z w`. Simplify using the standard rewrite rules.
+-/
 theorem lT_mul (S T : Module.End ℂ Z) :
     ((S * T).lTensor Z : Module.End ℂ (Z ⊗[ℂ] Z)) = S.lTensor Z * T.lTensor Z := by
   apply TensorProduct.ext'
@@ -413,6 +582,51 @@ theorem lT_mul (S T : Module.End ℂ Z) :
 
 end Tens
 
+/- English proof (translation)
+Take `⟨Z, _, _, M, χ, z₀, a, d, Fil, hM, h1, h0, hF⟩` from `CompanionTheory.D.LK.free_all n n`. Set `R : Module.End ℂ Z → Module.End ℂ (Z ⊗[ℂ] Z)` to `fun T => T.rTensor Z`. Set `L : Module.End ℂ Z → Module.End ℂ (Z ⊗[ℂ] Z)` to `fun T => T.lTensor Z`. Establish `hRL : ∀ S T, R S * L T = L T * R S` using `fun S T => (rT_lT_comm S T).eq`. Establish `hR1 : R 1 = 1` using `LinearMap.rTensor_id _ _`.
+
+Establish `hL1 : L 1 = 1` using `LinearMap.lTensor_id _ _`. Establish `hR0 : R 0 = 0` using `LinearMap.rTensor_zero _`. Establish `hL0 : L 0 = 0` using `LinearMap.lTensor_zero _`. Establish `hRm : ∀ S T, R (S * T) = R S * R T` using `rT_mul`. Establish `hLm : ∀ S T, L (S * T) = L S * L T` using `lT_mul`.
+
+Establish `hRs : ∀ S T, R (S - T) = R S - R T` using `fun S T => LinearMap.rTensor_sub _ _`. Establish `hLs : ∀ S T, L (S - T) = L S - L T` using `fun S T => LinearMap.lTensor_sub _ _`. Set `χ' : Z ⊗[ℂ] Z →ₗ[ℂ] ℂ` to `LinearMap.mul' ℂ ℂ ∘ₗ TensorProduct.map χ χ`. Establish `hχ : ∀ z w, χ' (z ⊗ₜ w) = χ z * χ w` using `fun z w => by simp [χ']`. Set `aR : Ix n → Module.End ℂ (Z ⊗[ℂ] Z)` to `fun i => if i.1 then R (a i.2) + L (a i.2) else L (a i.2)`.
+
+Set `dR : Ix n → Module.End ℂ (Z ⊗[ℂ] Z)` to `fun i => if i.1 then R (d i.2) else L (d i.2) - R (d i.2)`. Establish `hda : ∀ p q : Pos n, d p * a q = a q * d p + if p = q then 1 else 0` using `fun p q => by`. Rewrite using `[← hF.da p q p.1.1.2]`. Normalize the expressions using the abelian group laws. Establish `hr : ∀ p q : Pos n, R (d p) * R (a q) = R (a q) * R (d p) + if p = q then 1 else 0` using `fun p q => by`.
+
+Use `congrArg R (hda p q)` as an intermediate fact. Distinguish the cases in `h : p = q`. Simplify `this` using `[h, hRm, ← hR1, R, LinearMap.rTensor_add]`. Simplify `this` using `[h, hRm, hR0, R, LinearMap.rTensor_add]`. Establish `hl : ∀ p q : Pos n, L (d p) * L (a q) = L (a q) * L (d p) + if p = q then 1 else 0` using `fun p q => by`.
+
+Use `congrArg L (hda p q)` as an intermediate fact. Distinguish the cases in `h : p = q`. Simplify `this` using `[h, hLm, ← hL1, L, LinearMap.lTensor_add]`. Simplify `this` using `[h, hLm, hL0, L, LinearMap.lTensor_add]`. Establish `hcomR : ∀ {S T : Module.End ℂ Z}, Commute S T → Commute (R S) (R T)` using `fun h => by show _ * _ = _ * _`.
+
+Rewrite using `[← hRm, ← hRm, h.eq]`. Establish `hcomL : ∀ {S T : Module.End ℂ Z}, Commute S T → Commute (L S) (L T)` using `fun h => by show _ * _ = _ * _`. Rewrite using `[← hLm, ← hLm, h.eq]`. Establish `hRLc : ∀ S T, Commute (R S) (L T)` using `fun S T => rT_lT_comm S T`. Use `⟨Z ⊗[ℂ] Z, inferInstance, inferInstance, fun c e => R (M c e), fun c e => L (M c e), χ', z₀ ⊗ₜ z₀, aR, dR, FW Fil, ⟨?_, ?_, ?_⟩, by simp [hχ, h1], ?_, ?_, ⟨?_, ?_, ?_, FW_mono Fil, FW_exh Fil hF.mono hF.exh, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `a' b c e`. Use `congrArg R (hM a' b c e)` as an intermediate fact. Rewrite `this` using `[hRs, hRm, hRm, hRs]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [hR0]`.
+
+Introduce `a' b c e`. Use `congrArg L (hM a' b c e)` as an intermediate fact. Rewrite `this` using `[hLs, hLm, hLm, hLs]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [hL0]`.
+
+Conclude with `fun a' b c e => hRL _ _`. Introduce `c e t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z w => simp [R, hχ, h0]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq, add_zero]`. Introduce `c e t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z w => simp [L, hχ, h0]`.
+
+Consider the case `add p q hp hq => simp only [map_add, hp, hq, add_zero]`. Introduce and unpack `⟨s, p⟩ ⟨t, q⟩`. Establish `c1` using `hF.a_comm p q`. Apply the tactic sequence `cases s <;> cases t <;> simp only [aR, Bool.false_eq_true, if_false, if_true]`. Conclude with `hcomL c1`.
+
+Conclude with `(hRLc _ _).symm.add_right (hcomL c1) |>.symm.symm`. Conclude with `(hRLc _ _).add_left (hcomL c1)`. Conclude with `((hcomR c1).add_right (hRLc _ _)).add_left ((hRLc _ _).symm.add_right (hcomL c1))`. Introduce and unpack `⟨s, p⟩ ⟨t, q⟩`. Establish `c1` using `hF.d_comm p q`.
+
+Apply the tactic sequence `cases s <;> cases t <;> simp only [dR, Bool.false_eq_true, if_false, if_true]`. Conclude with `((hcomL c1).sub_right (hRLc _ _).symm).sub_left ((hRLc _ _).sub_right (hcomR c1))`. Conclude with `(hRLc _ _).symm.sub_left (hcomR c1)`. Conclude with `(hRLc _ _).sub_right (hcomR c1)`. Conclude with `hcomR c1`.
+
+Introduce and unpack `⟨s, p⟩ ⟨t, q⟩`. Establish `c1` using `hRL (d p) (a q)`. Establish `c2` using `hRL (a q) (d p)`. Establish `r1` using `hr p q`. Establish `l1` using `hl p q`.
+
+Apply the tactic sequence `cases s <;> cases t <;> simp only [aR, dR, Bool.false_eq_true, if_false, if_true, sub_mul, mul_sub, add_mul, mul_add, r1, l1, c1, ← c2, Prod.mk.injEq, reduceCtorEq, false_and, true_and, and_true] <;> by_cases h : p = q <;> simp [h] <;> abel`. Introduce and unpack `⟨s, p⟩ k t ht`. Consider the cases of `s`. Conclude with `lT_mem Fil (a p) 1 (fun l z hz => hF.a_mem p l z hz) k t ht`. Conclude with `Submodule.add_mem _ (rT_mem Fil (a p) 1 (fun l z hz => hF.a_mem p l z hz) k t ht) (lT_mem Fil (a p) 1 (fun l z hz => hF.a_mem p l z hz) k t ht)`.
+
+Introduce and unpack `⟨s, p⟩ k t ht`. Establish `h3 : ∀ l, ∀ z ∈ Fil l, (M p.1.1 p.1.2 - a p) z ∈ Fil (l + 0)` using `fun l z hz => hF.r_mem p l z hz`. Consider the cases of `s`. Use `lT_mem Fil _ 0 h3 k t ht` as an intermediate fact. Simplify `this` using `[rl, aR, L, LinearMap.lTensor_sub]`.
+
+Establish `e1` using `rT_mem Fil _ 0 h3 k t ht`. Establish `e2` using `lT_mem Fil _ 0 h3 k t ht`. Establish `e3` using `Submodule.add_mem _ e1 e2`. Use `show (R (M p.1.1 p.1.2) + L (M p.1.1 p.1.2)) t - (R (a p) + L (a p)) t ∈ FW Fil k`. Establish `e4 : (R (M p.1.1 p.1.2) + L (M p.1.1 p.1.2)) t - (R (a p) + L (a p)) t = R (M p.1.1 p.1.2 - a p) t + L (M p.1.1 p.1.2 - a p) t`.
+
+Rewrite using `[hRs, hLs]`. Simplify using `only [LinearMap.add_apply, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e4]`. Conclude with `e3`.
+
+Introduce and unpack `⟨s, p⟩ k t ht`. Establish `e1` using `rT_low Fil (d p) (fun l z hz => ?_) (hF.d_zero p) k t ht`. Establish `e2` using `lT_low Fil (d p) (fun l z hz => ?_) (hF.d_zero p) k t ht`. Consider the cases of `s`. Conclude with `Submodule.sub_mem _ e2 e1`.
+
+Conclude with `e1`. Conclude with `hF.d_mem p l z hz`. Conclude with `hF.d_mem p l z hz`. Introduce and unpack `⟨s, p⟩ t ht`. Establish `e1` using `rT_zero Fil (d p) (hF.d_zero p) t ht`.
+
+Establish `e2` using `lT_zero Fil (d p) (hF.d_zero p) t ht`. Consider the cases of `s`. Simplify using `only [dR, Bool.false_eq_true, if_false, LinearMap.sub_apply]`. Rewrite using `[show R (d p) t = 0 from e1, show L (d p) t = 0 from e2, sub_zero]`. Simplify `e1` using `[dR, R]`.
+-/
 theorem freeR (n : ℕ) : ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (P1 P2 : Fin n → Fin n → Module.End ℂ W)
     (χ : W →ₗ[ℂ] ℂ) (w₀ : W) (a d : Ix n → Module.End ℂ W) (Fil : ℕ → Submodule ℂ W),
     Pair2 P1 P2 ∧ χ w₀ = 1 ∧ (∀ c e w, χ (P1 c e w) = 0) ∧ (∀ c e w, χ (P2 c e w) = 0) ∧
@@ -533,6 +747,31 @@ theorem freeR (n : ℕ) : ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W)
       rw [show R (d p) t = 0 from e1, show L (d p) t = 0 from e2, sub_zero]
     · simpa [dR, R] using e1
 
+/- English proof (translation)
+Introduce `n V _ _ E1 E2 hE`. Take `⟨W, _, _, P1, P2, χ, w₀, a, d, Fil, hP, h1, h01, h02, hF⟩` from `freeR n`. Set `F1 : Fin n → Fin n → Module.End ℂ (V ⊗[ℂ] W)` to `fun c e => (E1 c e).rTensor W + (P1 c e).lTensor V`. Set `F2 : Fin n → Fin n → Module.End ℂ (V ⊗[ℂ] W)` to `fun c e => (E2 c e).rTensor W + (P2 c e).lTensor V`. Establish `hPair : Pair2 F1 F2`.
+
+Use `⟨fun a' b c e => CompanionTheory.D.LK.kRel_tens (ε := CompanionTheory.D.LK.allT n) (fun a b c d _ _ => hE.gl1 a b c d) hP.gl1 a' b c e rfl rfl, fun a' b c e => CompanionTheory.D.LK.kRel_tens (ε := CompanionTheory.D.LK.allT n) (fun a b c d _ _ => hE.gl2 a b c d) hP.gl2 a' b c e rf …` and prove the remaining obligations. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v w`. Establish `e1` using `LinearMap.congr_fun (hE.comm a' b c e) v`. Establish `e2` using `LinearMap.congr_fun (hP.comm a' b c e) w`.
+
+Simplify using `only [Module.End.mul_apply] at e1 e2`. Simplify using `only [F1, F2, Module.End.mul_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, e1, e2, TensorProduct.add_tmul, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws. Set `S : ℕ → Set (V ⊗[ℂ] W)` to `fun k => {t | ∃ v z, z ∈ Fil k ∧ t = v ⊗ₜ z}`. Establish `hin : ∀ {k : ℕ} (v : V) {z : W}, z ∈ Fil k → v ⊗ₜ[ℂ] z ∈ Submodule.span ℂ (S k)` using `fun v _ hz => Submodule.subset_span ⟨_, _, hz, rfl⟩`.
+
+Establish `hmap : ∀ (T : Module.End ℂ (V ⊗[ℂ] W)) (k : ℕ) (Q : Submodule ℂ (V ⊗[ℂ] W)), (∀ v z, z ∈ Fil k → T (v ⊗ₜ z) ∈ Q) → ∀ t ∈ Submodule.span ℂ (S k), T t ∈ Q`. Introduce `T k Q h`. Use `fun t ht => (Submodule.span_le (p := Q.comap T)).2 ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨v, z, hz, rfl⟩`. Conclude with `h v z hz`.
+
+Establish `hm : Monotone fun k => Submodule.span ℂ (S k)` using `fun k l hkl => Submodule.span_mono (by rintro _ ⟨v, z, hz, rfl⟩; exact ⟨v, z, hF.mono hkl hz, rfl⟩)`. Establish `hFY : FiltR (rl F1 F2) (fun i => (a i).lTensor V) (fun i => (d i).lTensor V) (fun k => Submodule.span ℂ (S k))`. Use `⟨?_, ?_, ?_, hm, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun i j => (hF.a_comm i j).map (Module.End.lTensorAlgHom ℂ W V)`. Conclude with `fun i j => (hF.d_comm i j).map (Module.End.lTensorAlgHom ℂ W V)`.
+
+Introduce `i j`. Use `congrArg (Module.End.lTensorAlgHom ℂ W V) (hF.da i j)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, apply_ite (Module.End.lTensorAlgHom ℂ W V), map_one, map_zero]`. Conclude with `this`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v z`. Take `⟨k, hk⟩` from `hF.exh z`. Conclude with `⟨_, hin v hk⟩`.
+
+Consider the case `add p q hp hq`. Take `⟨k, hk⟩` from `hp`. Take `⟨l, hl⟩` from `hq`. Conclude with `⟨max k l, Submodule.add_mem _ (hm (le_max_left _ _) hk) (hm (le_max_right _ _) hl)⟩`. Conclude with `fun i k => hmap _ k _ fun v z hz => hin v (hF.a_mem i _ z hz)`.
+
+Introduce `i k`. Use `hmap (rl F1 F2 i - (a i).lTensor V) k _ fun v z hz => ?_` and prove the remaining obligations. Establish `e : (rl F1 F2 i - (a i).lTensor V : Module.End ℂ (V ⊗[ℂ] W)) (v ⊗ₜ z) = rl E1 E2 i v ⊗ₜ z + v ⊗ₜ (rl P1 P2 i z - a i z)`. Take `⟨s, p⟩` from `i`. Apply the tactic sequence `cases s <;> simp only [rl, F1, F2, Bool.false_eq_true, if_false, if_true, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, TensorProduct.tmul_sub, TensorProduct.add_tmul, TensorProduct.tmul_add] <;> abel`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (hin _ hz) (hin _ (hF.r_mem i _ z hz))`. Conclude with `fun i k => hmap _ _ _ fun v z hz => hin v (hF.d_mem i _ z hz)`. Conclude with `fun i => hmap _ _ ⊥ fun v z hz => by simp [hF.d_zero i z hz]`. Use `⟨V ⊗[ℂ] W, inferInstance, inferInstance, F1, F2, (TensorProduct.rid ℂ V).toLinearMap ∘ₗ χ.lTensor V, hPair, fun v => ⟨v ⊗ₜ w₀, by simp [h1]⟩, fun c e t => ?_, fun c e t => ?_, fun j x hx hc => acycR F1 F2 _ _ _ (hS n _ F1 F2 hPair) hFY j x hx hc⟩` and prove the remaining obligations.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v f => simp [F1, h01]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v f => simp [F2, h02]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+-/
 theorem coverR_of (hS : BdSqR) : CoverR := by
   intro n V _ _ E1 E2 hE
   obtain ⟨W, _, _, P1, P2, χ, w₀, a, d, Fil, hP, h1, h01, h02, hF⟩ := freeR n
@@ -606,6 +845,9 @@ theorem coverR_of (hS : BdSqR) : CoverR := by
     | tmul v f => simp [F2, h02]
     | add p q hp hq => simp only [map_add, hp, hq]
 
+/- English proof (translation)
+The claim follows from `coverR_of GlobalTheory.CompanionTheory.RealMult.BdSqProof.bdSqR`.
+-/
 theorem cover_by_acyclic_pair : CoverR := coverR_of GlobalTheory.CompanionTheory.RealMult.BdSqProof.bdSqR
 
 end GlobalTheory.CompanionTheory.RealMult.CovR

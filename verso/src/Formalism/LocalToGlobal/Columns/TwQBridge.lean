@@ -17,6 +17,9 @@ variable {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Sta
 
 def qbPi (P : Q) : 𝓞 E := Classical.choose (qsp_exists hc P.1 (hQ P))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (qsp_exists hc P.1 (hQ P))`.
+-/
 theorem qbPi_spec (P : Q) : qbPi hc hQ P ∈ P.1.asIdeal ∧ cO E (qbPi hc hQ P) ∉ P.1.asIdeal ∧
     Nonempty (Formalism.MainNotions.Gaps.LG.SplitAt hc.sig (underPl F P.1) ((qbPi hc hQ P : 𝓞 E) : E)) :=
   Classical.choose_spec (qsp_exists hc P.1 (hQ P))
@@ -26,17 +29,29 @@ def qbSp (P : Q) : Formalism.MainNotions.Gaps.LG.SplitAt hc.sig (underPl F P.1) 
 
 def qbN (P : Q) : ℕ := Classical.choose (hΘ P)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (hΘ P)`.
+-/
 theorem qbN_spec (P : Q) : 0 < qbN Θ hΘ P ∧ ∀ g : ↥(GLint E n P.1), lqPrinc P.1 (qbN Θ hΘ P) (g : Sp E n ≃ₗ[E] Sp E n) →
     ∃ h : g ∈ (Θ P).H, (Θ P).lam ⟨g, h⟩ = 1 :=
   Classical.choose_spec (hΘ P)
 
 abbrev qbD (P : Q) : E := ((qbPi hc hQ P : 𝓞 E) : E) ^ qbN Θ hΘ P
 
+/- English proof (translation)
+Introduce `h` and use `(qbPi_spec hc hQ P).2.1 (by rw [h, map_zero]; exact zero_mem _)`.
+-/
 theorem qbPi_ne (P : Q) : qbPi hc hQ P ≠ 0 := fun h => (qbPi_spec hc hQ P).2.1 (by rw [h, map_zero]; exact zero_mem _)
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (fun h => qbPi_ne hc hQ P (by exact_mod_cast h))`.
+-/
 theorem qbD_ne (P : Q) : qbD hc Θ hQ hΘ P ≠ 0 :=
   pow_ne_zero _ (fun h => qbPi_ne hc hQ P (by exact_mod_cast h))
 
+/- English proof (translation)
+Establish `h1 : qbPi hc hQ P ^ qbN Θ hΘ P ∈ P.1.asIdeal ^ qbN Θ hΘ P` using `Ideal.pow_mem_pow (qbPi_spec hc hQ P).1 _`. Use `(P.1.intValuation_le_pow_iff_mem _ _).2 h1` as an intermediate fact. Rewrite `this` using `[← HeightOneSpectrum.valuation_of_algebraMap (K := E)]`. Simplify using `using this`.
+-/
 theorem qbD_val (P : Q) : P.1.valuation E (qbD hc Θ hQ hΘ P) ≤ WithZero.exp (-(qbN Θ hΘ P : ℤ)) := by
   have h1 : qbPi hc hQ P ^ qbN Θ hΘ P ∈ P.1.asIdeal ^ qbN Θ hΘ P := Ideal.pow_mem_pow (qbPi_spec hc hQ P).1 _
   have := (P.1.intValuation_le_pow_iff_mem _ _).2 h1
@@ -45,12 +60,21 @@ theorem qbD_val (P : Q) : P.1.valuation E (qbD hc Θ hQ hΘ P) ≤ WithZero.exp 
 
 abbrev qbF (P : Q) : E →+* (qv F P.1).adicCompletion F := qbPhi hc P.1 (qbPi hc hQ P) (qbSp hc hQ P)
 
+/- English proof (translation)
+The claim follows from `phi_integral_valuation_le_one hc P.1 _ (qbSp hc hQ P) r`.
+-/
 theorem qbF_int (P : Q) (r : 𝓞 E) : Valued.v (qbF hc hQ P (algebraMap (𝓞 E) E r)) ≤ 1 :=
   phi_integral_valuation_le_one hc P.1 _ (qbSp hc hQ P) r
 
+/- English proof (translation)
+The claim follows from `qsp_sp_P hc P.1 _ (qbPi_spec hc hQ P).1 (qbPi_spec hc hQ P).2.1 (qbSp hc hQ P) r`.
+-/
 theorem qbF_P (P : Q) (r : 𝓞 E) : Valued.v (qbF hc hQ P (algebraMap (𝓞 E) E r)) < 1 ↔ r ∈ P.1.asIdeal :=
   qsp_sp_P hc P.1 _ (qbPi_spec hc hQ P).1 (qbPi_spec hc hQ P).2.1 (qbSp hc hQ P) r
 
+/- English proof (translation)
+Use `⟨hx.1, hx.2.1, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hx.2.2 i j`. Conclude with `⟨w * z, Subring.mul_mem _ hw hz, by rw [e, mul_assoc]⟩`.
+-/
 theorem qbK_mono {v : HeightOneSpectrum (𝓞 F)} {c w : v.adicCompletion F} (hw : w ∈ v.adicCompletionIntegers F)
     {x : GL (Fin n) (v.adicCompletion F)} (hx : x ∈ qbK (c * w)) : x ∈ qbK c := by
   refine ⟨hx.1, hx.2.1, fun i j => ?_⟩
@@ -59,6 +83,17 @@ theorem qbK_mono {v : HeightOneSpectrum (𝓞 F)} {c w : v.adicCompletion F} (hw
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `qsp_norm_mem hc (qbPi hc hQ P)`. Establish `hbP : b ∈ (underPl F P.1).asIdeal` using `by show algebraMap (𝓞 F) (𝓞 E) b ∈ P.1.asIdeal`. Rewrite using `[hb]`. Conclude with `Ideal.mul_mem_right _ _ (qbPi_spec hc hQ P).1`. Establish `hb0 : b ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero, eq_comm, mul_eq_zero]`. Break down `hb with h | h` into its components or cases. Conclude with `qbPi_ne hc hQ P h`. Conclude with `(qbPi_spec hc hQ P).2.1 (by rw [h]; exact zero_mem _)`.
+
+Establish `hNpos` using `(qbN_spec Θ hΘ P).1`. Establish `hD0 : b ^ qbN Θ hΘ P ≠ 0` using `pow_ne_zero _ hb0`. Establish `hDv : b ^ qbN Θ hΘ P ∈ (underPl F P.1).asIdeal` using `Ideal.pow_mem_of_mem _ hbP _ hNpos`. Take `⟨g, hg⟩` from `qsp_dense P.1 (qbF hc hQ P) (qbF_int hc hQ P) (qbF_P hc hQ P) (qsp_sp_F hc P.1 _ (qbSp hc hQ P)) (qsp_isOver P.1) (b ^ qbN Θ hΘ P) hD0 hDv k hk hk'`. Establish `hbE : algebraMap (𝓞 F) ((qv F P.1).adicCompletion F) b = qbF hc hQ P ((qbPi hc hQ P : 𝓞 E) : E) * qbF hc hQ P (algebraMap (𝓞 E) E (cO E (qbPi hc hQ P)))`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F ((qv F P.1).adicCompletion F), ← qsp_sp_F hc P.1 _ (qbSp hc hQ P), ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, hb, map_mul, map_mul]`. Establish `hDE : algebraMap (𝓞 F) ((qv F P.1).adicCompletion F) (b ^ qbN Θ hΘ P) = qbF hc hQ P (qbD hc Θ hQ hΘ P) * qbF hc hQ P (algebraMap (𝓞 E) E (cO E (qbPi hc hQ P))) ^ qbN Θ hΘ P`. Rewrite using `[map_pow, hbE, mul_pow, map_pow]`. Rewrite `hg` using `[hDE]`. Establish `hw : qbF hc hQ P (algebraMap (𝓞 E) E (cO E (qbPi hc hQ P))) ^ qbN Θ hΘ P ∈ ((qv F P.1).adicCompletionIntegers F)` using `Subring.pow_mem _ ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (qbF_int hc hQ P _)) _`.
+
+Establish `hg2` using `qbK_mono hw hg`. Use `⟨g, hg2.1, hg2.2.1, 1, (Θ P).H.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `using hg2`.
+-/
 theorem qbU_dense (P : Q) (k : GL (Fin n) ((qv F P.1).adicCompletion F))
     (hk : qbInt (k : Matrix (Fin n) (Fin n) ((qv F P.1).adicCompletion F)))
     (hk' : qbInt ((k⁻¹ : GL (Fin n) ((qv F P.1).adicCompletion F)) : Matrix (Fin n) (Fin n) ((qv F P.1).adicCompletion F))) :

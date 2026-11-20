@@ -18,6 +18,11 @@ section Generic
 
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
 
+/- English proof (translation)
+Establish `h : (A.map (starRingEnd ℂ))⁻¹ = A⁻¹.map (starRingEnd ℂ)` using `Matrix.inv_eq_left_inv (by`. Rewrite using `[← Matrix.map_mul, A.nonsing_inv_mul hA.isUnit, Matrix.map_one _ (map_zero _) (map_one _)])`. Rewrite using `[frameNorm, frameNorm, h]`. Use `congrArg _ (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Complex.norm_conj (A⁻¹.mulVec x i), RingHom.map_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frameNorm_conj {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) (x : Fin N → ℂ) :
     frameNorm (A.map (starRingEnd ℂ)) (fun j => starRingEnd ℂ (x j)) = frameNorm A x := by
   have h : (A.map (starRingEnd ℂ))⁻¹ = A⁻¹.map (starRingEnd ℂ) := Matrix.inv_eq_left_inv (by
@@ -27,6 +32,19 @@ theorem frameNorm_conj {N : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : A.det �
   rw [← Complex.norm_conj (A⁻¹.mulVec x i), RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Take `⟨N, ⟨b, X⟩, hX⟩` from `hG`. Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hL`. Establish `hd : ∀ v, (X v).det ≠ 0` using `fun v => (hX v).1.ne_zero`. Establish `hdc : ∀ v, ((X v).map (starRingEnd ℂ)).det ≠ 0` using `fun v => by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `(map_ne_zero _).2 (hd v)`. Establish `hmk : ∀ σ : K →+* ℂ, InfinitePlace.mk ((starRingEnd ℂ).comp σ) = InfinitePlace.mk σ` using `InfinitePlace.mk_conjugate_eq`. Establish `hor : ∀ σ : K →+* ℂ, (InfinitePlace.mk σ).embedding ≠ σ → (InfinitePlace.mk σ).embedding = (starRingEnd ℂ).comp σ` using `fun σ h => (InfinitePlace.embedding_mk_eq σ).resolve_left h`. Establish `hn : ∀ (v : InfinitePlace K) x, frameNorm (X v) (fun j => v.embedding (b.repr x j)) = Nm v.embedding x` using `fun v x => (hX v).2 x`. Use `⟨N, n, b, Matrix.of fun j k => b.repr (g k) j, fun σ => if (InfinitePlace.mk σ).embedding = σ then X (InfinitePlace.mk σ) else (X (InfinitePlace.mk σ)).map (starRingEnd ℂ), ?_, ?_, fun σ => ?_, fun σ x => ?_, fun σ x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.of_apply, Basis.sum_repr]`. Conclude with `hg`. Establish `h1 : Submodule.span K (Set.range g) = ⊤` using `by rw [← hs, ← hg, Submodule.span_span_of_tower]`. Establish `h2` using `congrArg (Submodule.map b.equivFun.toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`.
+
+Conclude with `h2`. Use `split_ifs exacts [hd _, hdc _]`. Simplify using `only [hmk]`. Distinguish the cases in `h : (InfinitePlace.mk σ).embedding = σ`. Rewrite using `[if_pos h, if_neg fun h' => hK σ (h'.symm.trans h), frameNorm_conj (hd _)]`.
+
+Rewrite using `[if_neg h, if_pos (hor σ h), ← frameNorm_conj (hd _)]`. Simplify using `only [Complex.conj_conj]`. Distinguish the cases in `h : (InfinitePlace.mk σ).embedding = σ`. Rewrite using `[if_pos h]`. Use `hn (InfinitePlace.mk σ) x` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Then use the resulting hypothesis. Use `hn (InfinitePlace.mk σ) x` as an intermediate fact. Rewrite `this` using `[hor σ h, hc, ← frameNorm_conj (hd _)]`. Rewrite using `[if_neg h, ← this]`. Simplify using `only [RingHom.comp_apply, Complex.conj_conj]`.
+-/
 theorem exists_isFrame [IsScalarTower (𝓞 K) K V] (hK : ∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ)
     {Nm : (K →+* ℂ) → V → ℝ} (hc : ∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) (hG : HasGram Nm)
     {L : Submodule (𝓞 K) V} (hL : L.FG) (hs : Submodule.span K (L : Set V) = ⊤) :
@@ -77,6 +95,9 @@ structure IsShortGen {κ : Type} (Nm : κ → V → ℝ) (L : Submodule (𝓞 K)
 
   one_le : 1 ≤ abelian₂
 
+/- English proof (translation)
+Take `⟨n, w, hw⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (hL.restrictScalars (R := ℤ))`. Take `⟨B, hB⟩` from `(Set.finite_range fun p : Fin n × κ => Nm p.2 (w p.1)).bddAbove`. Conclude with `⟨n, w, max B 1, fun x => by rw [hw]; rfl, fun i k => (hB ⟨(i, k), rfl⟩).trans (le_max_left _ _), le_max_right _ _⟩`.
+-/
 theorem exists_isShortGen {κ : Type} [Finite κ] (Nm : κ → V → ℝ) {L : Submodule (𝓞 K) V} (hL : L.FG) :
     ∃ (n : ℕ) (w : Fin n → V) (abelian₂ : ℝ), IsShortGen Nm L w abelian₂ := by
   obtain ⟨n, w, hw⟩ := Submodule.fg_iff_exists_fin_generating_family.1 (hL.restrictScalars (R := ℤ))
@@ -86,12 +107,18 @@ theorem exists_isShortGen {κ : Type} [Finite κ] (Nm : κ → V → ℝ) {L : S
 
 omit [NumberField K] [Module K V] in
 
+/- English proof (translation)
+Use `CompHt.log_le_cStar (Nat.pos_of_ne_zero ?_) h.one_le` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hL ((Submodule.eq_bot_iff _).2 fun x hx => by simpa using (h.gen x).1 hx)`.
+-/
 theorem IsShortGen.log_le_cStar {κ : Type} {Nm : κ → V → ℝ} {L : Submodule (𝓞 K) V} {n : ℕ} {w : Fin n → V} {abelian₂ : ℝ}
     (h : IsShortGen Nm L w abelian₂) (hL : L ≠ ⊥) : 0 ≤ Real.log abelian₂ ∧ Real.log abelian₂ ≤ cStar n abelian₂ := by
   refine CompHt.log_le_cStar (Nat.pos_of_ne_zero ?_) h.one_le
   rintro rfl
   exact hL ((Submodule.eq_bot_iff _).2 fun x hx => by simpa using (h.gen x).1 hx)
 
+/- English proof (translation)
+The claim follows from `exists_isShortGen _ (Submodule.fg_span (Set.finite_range _))`.
+-/
 example : ∃ (n : ℕ) (w : Fin n → Fin 2 → ℚ) (abelian₂ : ℝ), IsShortGen (stdNorm 2) (stdLat 2) w abelian₂ :=
   exists_isShortGen _ (Submodule.fg_span (Set.finite_range _))
 
@@ -110,6 +137,9 @@ def hodgeWt (Dw : Datum H) : Weight Dw := barWt (Psi H) (Dw.p + Dw.q) Dw.p
 
 def uPrime (Dw : Datum H) (u : Weight Dw) : Weight Dw := u - (3 * ((Dw.p + Dw.q : ℕ) : ℤ)) • hodgeWt Dw
 
+/- English proof (translation)
+Simplify using `only [uPrime, hodgeWt, barWt, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem uPrime_apply (u : Weight Dw) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
     uPrime Dw u τ i = if (i : ℕ) < Dw.p then u τ i else u τ i + 3 * ((Dw.p + Dw.q : ℕ) : ℤ) := by
   simp only [uPrime, hodgeWt, barWt, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
@@ -117,6 +147,9 @@ theorem uPrime_apply (u : Weight Dw) (τ : Psi H) (i : Fin (Dw.p + Dw.q)) :
 
 def rhoB (Dw : Datum H) (u : Weight Dw) : ℝ := rhoOf (uPrime Dw u) u
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp only [zero_smul, wtOf_zero]`. Consider the case `succ t ih => rw [succ_nsmul, succ_nsmul, succ_nsmul, ih, wtOf_add]`.
+-/
 theorem nsmul_wtOf (t : ℕ) (la : Weight Dw) (m : ℤ) : t • wtOf Dw la m = wtOf Dw (t • la) (t • m) := by
   induction t with
   | zero => simp only [zero_smul, wtOf_zero]
@@ -125,6 +158,9 @@ theorem nsmul_wtOf (t : ℕ) (la : Weight Dw) (m : ℤ) : t • wtOf Dw la m = w
 def genVal (Z : Comp Xo c) : Rul Xo c →ₐ[c.F] Om Z :=
   evCAlg (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1 ((Reg.genFrEx_and_genFromTest E H Dw l Xo c).2 _) Z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genVal_apply (h : GenFrEx Xo c) (Z : Comp Xo c) (f : Rul Xo c) : genVal Z f = evC h Z f := rfl
 
 variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) {D : D7} (V : (c.F →+* ℂ) → HSp D)
@@ -132,6 +168,9 @@ variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) {D : D7} (V : (c.
 
 def genPoint (Z : Comp Xo c) (C : Submodule c.F (Rul Xo c)) : C →ₗ[c.F] Om Z := (genVal Z).toLinearMap ∘ₗ C.subtype
 
+/- English proof (translation)
+Rewrite using `[imageIdeal, mem_coneIdeal_of_isHomogeneous _ hg, ← AlgHom.comp_apply, comp_aeval]`. Both sides reduce to the same expression.
+-/
 theorem mem_imageIdeal_genPoint (Z : Comp Xo c) {C : Submodule c.F (Rul Xo c)} {N : ℕ} (b : Basis (Fin N) c.F C) {d : ℕ}
     {g : MvPolynomial (Fin N) c.F} (hg : g.IsHomogeneous d) :
     g ∈ imageIdeal (genPoint Z C) b ↔ genVal Z (aeval (fun j => (b j : Rul Xo c)) g) = 0 := by
@@ -141,16 +180,25 @@ theorem mem_imageIdeal_genPoint (Z : Comp Xo c) {C : Submodule c.F (Rul Xo c)} {
 def compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
     Ideal (MvPolynomial (Fin N) c.F) := imageIdeal (genPoint Z (cuspOn U Z G)) b
 
+/- English proof (translation)
+The claim follows from `isPrime_coneIdeal _`.
+-/
 theorem isPrime_compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
     (compIdeal U Z G b).IsPrime := isPrime_coneIdeal _
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+The claim follows from `isHomogeneous_coneIdeal _`.
+-/
 theorem isHomogeneous_compIdeal (Z : Comp Xo c) (G : WTZ E) {N : ℕ} (b : Basis (Fin N) c.F (cuspOn U Z G)) :
     (compIdeal U Z G b).IsHomogeneous (homogeneousSubmodule (Fin N) c.F) := isHomogeneous_coneIdeal _
 
 def compDeg (Z : Comp Xo c) (G : WTZ E) : ℕ := imageDeg (genPoint Z (cuspOn U Z G)) (dimFlag Dw)
 
+/- English proof (translation)
+The claim follows from `IsImageDeg.imageDeg_eq ⟨N, b, f, hf⟩`.
+-/
 theorem compDeg_eq {Z : Comp Xo c} {G : WTZ E} {N δ : ℕ} {b : Basis (Fin N) c.F (cuspOn U Z G)}
     {f : MvPolynomial (Fin (dimFlag Dw + 1) × Fin N) c.F} (hf : IsChowFormInt (compIdeal U Z G b) (dimFlag Dw) δ f) :
     compDeg U Z G = δ := IsImageDeg.imageDeg_eq ⟨N, b, f, hf⟩
@@ -164,6 +212,9 @@ def compHeight (Z : Comp Xo c) (G : WTZ E) : ℝ :=
 def CompPresents (Z : Comp Xo c) (G : WTZ E) (T : Adelic.HermSys c.F) : Prop :=
   T.D = dimFlag Dw ∧ Presents T (normOn U x V dict Z G) (latOn U Z G) (genPoint Z (cuspOn U Z G))
 
+/- English proof (translation)
+Introduce `h'` and use `by have h1 : starRingEnd ℂ H.rt0 = H.rt0 := (congrArg (starRingEnd ℂ) h).symm.trans h' have him : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h1 have hre := congrArg Complex.re H.sqrt_neg_disc_sq have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos simp only [sq, Complex.mul_r …`.
+-/
 theorem not_goodEmb_conj {σ : c.F →+* ℂ} (h : GoodEmb c σ) : ¬ GoodEmb c ((starRingEnd ℂ).comp σ) := fun h' => by
   have h1 : starRingEnd ℂ H.rt0 = H.rt0 := (congrArg (starRingEnd ℂ) h).symm.trans h'
   have him : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h1
@@ -172,6 +223,11 @@ theorem not_goodEmb_conj {σ : c.F →+* ℂ} (h : GoodEmb c σ) : ¬ GoodEmb c 
   simp only [sq, Complex.mul_re, him, Complex.neg_re, Complex.natCast_re] at hre
   nlinarith [mul_self_nonneg H.rt0.re]
 
+/- English proof (translation)
+Establish `e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ` using `RingHom.ext fun a => Complex.conj_conj _`. Distinguish the cases in `h : GoodEmb c σ`. Rewrite using `[goodOf, goodOf, if_pos h, if_neg (not_goodEmb_conj h), e]`. Establish `h'` using `goodEmb_goodOf c σ`. Rewrite `h'` using `[goodOf, if_neg h]`.
+
+Rewrite using `[goodOf, goodOf, if_neg h, if_pos h']`.
+-/
 theorem goodOf_conj (σ : c.F →+* ℂ) : goodOf c ((starRingEnd ℂ).comp σ) = goodOf c σ := by
   have e : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ := RingHom.ext fun a => Complex.conj_conj _
   by_cases h : GoodEmb c σ
@@ -180,18 +236,27 @@ theorem goodOf_conj (σ : c.F →+* ℂ) : goodOf c ((starRingEnd ℂ).comp σ) 
     rw [goodOf, if_neg h] at h'
     rw [goodOf, goodOf, if_neg h, if_pos h']
 
+/- English proof (translation)
+Introduce `e` and use `by have h := goodEmb_goodOf c σ have e' : goodOf c σ = σ := by rw [goodOf, e, ite_self] rw [e'] at h exact not_goodEmb_conj h (e.symm ▸ h)`.
+-/
 theorem conj_comp_ne (σ : c.F →+* ℂ) : (starRingEnd ℂ).comp σ ≠ σ := fun e => by
   have h := goodEmb_goodOf c σ
   have e' : goodOf c σ = σ := by rw [goodOf, e, ite_self]
   rw [e'] at h
   exact not_goodEmb_conj h (e.symm ▸ h)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun s => petAt (U s) x (V s) (dict s) (muOn (U s) (V s) (dict s) Z) G f) (goodOf_conj σ)`.
+-/
 theorem petOn_conj (Z : Comp Xo c) (G : WTZ E) (σ : c.F →+* ℂ) (f : Rul Xo c) :
     petOn U x V dict Z G ((starRingEnd ℂ).comp σ) f = petOn U x V dict Z G σ f :=
   congrArg (fun s => petAt (U s) x (V s) (dict s) (muOn (U s) (V s) (dict s) Z) G f) (goodOf_conj σ)
 
 variable {U x V dict} in
 
+/- English proof (translation)
+The claim follows from `isImageHeight_imageHeight (exists_isImageHeight_iff.2 ⟨exists_isFrame (Nm := normOn U x V dict Z G) conj_comp_ne (fun σ f => petOn_conj U x V dict Z G σ f) h.1 h.2.1 h.2.2, hd⟩)`.
+-/
 theorem isCompHeight_compHeight {Z : Comp Xo c} {G : WTZ E} (h : GoodOn U x V dict Z G) (hd : 0 < compDeg U Z G) :
     IsCompHeight U x V dict Z G (compHeight U x V dict Z G) :=
   isImageHeight_imageHeight (exists_isImageHeight_iff.2
@@ -199,6 +264,9 @@ theorem isCompHeight_compHeight {Z : Comp Xo c} {G : WTZ E} (h : GoodOn U x V di
 
 variable {U x V dict} in
 
+/- English proof (translation)
+Rewrite using `[IsCompHeight, ← hT.1]`. Conclude with `hT.2.isImageHeight hh`.
+-/
 theorem CompPresents.isCompHeight {Z : Comp Xo c} {G : WTZ E} {T : Adelic.HermSys c.F}
     (hT : CompPresents U x V dict Z G T) {h : ℝ} (hh : T.IsHeight h) : IsCompHeight U x V dict Z G h := by
   rw [IsCompHeight, ← hT.1]
@@ -209,6 +277,9 @@ def CompShortGen (G : WTZ E) {n : ℕ} (w : Fin n → cuspW Xo c U G) (abelian�
 
 def depth_vw (G : WTZ E) (v : Rul Xo c → EReal) : EReal := ⨅ w ∈ latW U G, v w
 
+/- English proof (translation)
+The claim follows from `le_iInf₂ fun _ hw => hw la v hv`.
+-/
 theorem depth_vw_nonneg (G : WTZ E) {la : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal}
     (hv : v ∈ valSet Xo c (algCls Xo c) la) : 0 ≤ depth_vw U G v :=
   le_iInf₂ fun _ hw => hw la v hv
@@ -224,17 +295,26 @@ def growthOn (Z : Comp Xo c) (G : WTZ E) : ℝ≥0∞ :=
 def vZero (Z : Comp Xo c) : ℝ :=
   (growthOn U Z (wtOf Dw (stdWt (Psi H) (Dw.p + Dw.q)) 0)).toReal / (vdm (stdWt (Psi H) (Dw.p + Dw.q)) : ℤ)
 
+/- English proof (translation)
+The claim follows from `div_nonneg ENNReal.toReal_nonneg (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).le`.
+-/
 theorem vZero_nonneg (Z : Comp Xo c) : 0 ≤ vZero U Z :=
   div_nonneg ENNReal.toReal_nonneg (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).le
 
 def topDeg (Z : Comp Xo c) (la : Weight Dw) : ℝ := vZero U Z * (vdm la : ℤ)
 
+/- English proof (translation)
+The claim follows from `div_mul_cancel₀ _ (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).ne'`.
+-/
 theorem topDeg_stdWt (Z : Comp Xo c) : topDeg U Z (stdWt (Psi H) (Dw.p + Dw.q)) =
     (growthOn U Z (wtOf Dw (stdWt (Psi H) (Dw.p + Dw.q)) 0)).toReal :=
   div_mul_cancel₀ _ (Int.cast_pos.2 (vdm_pos strictAnti_stdWt)).ne'
 
 def delPrime (Z : Comp Xo c) (u : Weight Dw) : ℝ := topDeg U Z (uPrime Dw u)
 
+/- English proof (translation)
+Rewrite using `[delPrime, topDeg, topDeg, ← one_sub_rhoOf_mul (u' := uPrime Dw u) h, rhoB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem delPrime_eq (Z : Comp Xo c) {u : Weight Dw} (h : vdm u ≠ 0) :
     delPrime U Z u = (1 - rhoB Dw u) * topDeg U Z u := by
   rw [delPrime, topDeg, topDeg, ← one_sub_rhoOf_mul (u' := uPrime Dw u) h, rhoB]
@@ -257,22 +337,34 @@ def ValFam.patch (S : Set ℕ) (A B : ValFam Xo c) : ValFam Xo c :=
     split_ifs at hv
     exacts [A.2 la v hv, B.2 la v hv]⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun la => by simp [ValFam.patch])`.
+-/
 example (A B : ValFam Xo c) : ValFam.patch ∅ A B = B := Subtype.ext (funext fun la => by simp [ValFam.patch])
 
 def latVal (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Submodule (𝓞 c.F) (cuspOn U Z G) :=
   latOf (cuspOn U Z G) Vs.1 Vs.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latVal_recVals (Z : Comp Xo c) (G : WTZ E) : latVal U (recVals Xo c) Z G = latOn U Z G := rfl
 
 def smallOn (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) (R : ℝ) : Set (cuspOn U Z G) :=
   {f | f ∈ latVal U Vs Z G ∧ ∀ σ, GoodEmb c σ → ∀ z ∈ framesOn (U σ) Z, homN (U σ) x G f z ≤ R}
 
+/- English proof (translation)
+Introduce `_ _ h _ hf` and use `⟨hf.1, fun σ hσ z hz => (hf.2 σ hσ z hz).trans h⟩`.
+-/
 theorem smallOn_mono (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Monotone (smallOn U x Vs Z G) :=
   fun _ _ h _ hf => ⟨hf.1, fun σ hσ z hz => (hf.2 σ hσ z hz).trans h⟩
 
 def compVol (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) (t : ℝ) : ℝ≥0∞ :=
   countVol (dimFlag Dw) (finrank ℚ c.F) a fun τ => (smallOn U x Vs Z (τ • G) (Real.exp (τ * t))).encard
 
+/- English proof (translation)
+Introduce `_ _ h` and use `countVol_mono _ _ _ fun τ => Set.encard_le_encard (smallOn_mono U x Vs Z _ (Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left h τ.cast_nonneg)))`.
+-/
 theorem compVol_mono (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : Monotone (compVol U x a Vs Z G) :=
   fun _ _ h => countVol_mono _ _ _ fun τ => Set.encard_le_encard (smallOn_mono U x Vs Z _
     (Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left h τ.cast_nonneg)))
@@ -280,6 +372,9 @@ theorem compVol_mono (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (G : WTZ E) : 
 def compVolSlope (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (la : Weight Dw) : EReal :=
   volSlope (topDeg U Z la) (compVol U x a Vs Z (wtOf Dw la 0))
 
+/- English proof (translation)
+The claim follows from `le_volSlope_iff h _ s`.
+-/
 theorem le_compVolSlope_iff (a : ℕ) (Vs : ValFam Xo c) {Z : Comp Xo c} {la : Weight Dw} (h : 0 < topDeg U Z la) (s : ℝ) :
     (s : EReal) ≤ compVolSlope U x a Vs Z la ↔
       ∀ t : ℝ, ENNReal.ofReal (topDeg U Z la * (s + t)) ≤ compVol U x a Vs Z (wtOf Dw la 0) t :=
@@ -289,6 +384,9 @@ def compDegSlope (a : ℕ) (Vs : ValFam Xo c) (Z : Comp Xo c) (la : Weight Dw) :
   degSlope a (fun τ => AllWt.deg (normOn U x V dict Z (τ • wtOf Dw la 0)) (latVal U Vs Z (τ • wtOf Dw la 0)))
     fun τ => Formalism.HN.rkK (latVal U Vs Z (τ • wtOf Dw la 0))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isLimSlope_iff {D' : D7} (Y : Formalism.BasicNotions.DV.ShimX D'.what₂.Tau) (B : ℝ) (u : D'.what₂.Tau → Fin Y.N → ℝ) (k : Y.Comp)
     (s : ℝ) : IsLimSlope (Formalism.MainNotions.WeightThresholdDefs.dimY Y) (fun t => Y.arSelfC (Y.Mbar B u t) k) (fun t => Y.geoC (Y.Mbar B u t) k) s ↔
       IndefiniteRowSideFullHecke.EqualVolumeMeanCorrection.IsSlope Y B u k s := Iff.rfl

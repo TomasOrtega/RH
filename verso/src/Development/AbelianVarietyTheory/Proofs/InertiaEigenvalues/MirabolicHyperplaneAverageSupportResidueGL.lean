@@ -16,11 +16,23 @@ namespace GlobalTheory.DownLift.GenSplit
 section Reindex
 variable {n K L : Type} [Fintype n] [CommRing K] [CommRing L]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `(RingHom.map_mulVec ρ.symm.toRingHom M x j).symm`.
+-/
 theorem map_symm_mulVec_comp (ρ : K ≃+* L) (M : Matrix n n L) (x : n → L) :
     (M.map ρ.symm) *ᵥ (fun j => ρ.symm (x j)) = fun j => ρ.symm ((M *ᵥ x) j) := by
   funext j
   exact (RingHom.map_mulVec ρ.symm.toRingHom M x j).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Establish `hd : (fun j => ρ (a j)) ⬝ᵥ (fun j => ρ (w j)) = 0`. Use `(RingHom.map_dotProduct ρ.toRingHom a w).symm` as an intermediate fact. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, hw, map_zero] at this`.
+
+Conclude with `this`. Establish `h1` using `h _ hd`. Establish `h2` using `map_symm_mulVec_comp ρ M (fun j => ρ (w j))`. Rewrite `h2` using `[h1]`. Simplify `h2` using `only [RingEquiv.symm_apply_apply]`.
+
+Introduce `h x hx`. Establish `hd : a ⬝ᵥ (fun j => ρ.symm (x j)) = 0`. Use `(RingHom.map_dotProduct ρ.symm.toRingHom (fun j => ρ (a j)) x).symm` as an intermediate fact. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, hx, map_zero] at this`. Simplify `this` using `only [Function.comp_def, RingEquiv.symm_apply_apply]`.
+
+Establish `h1` using `h _ hd`. Rewrite `h1` using `[map_symm_mulVec_comp]`. Use function extensionality and compare the values at `j`. Use `congrArg ρ (congrFun h1 j)` as an intermediate fact. Simplify `this` using `only [RingEquiv.apply_symm_apply]`.
+-/
 theorem fix_hyperplane_map_iff (ρ : K ≃+* L) (M : Matrix n n L) (a : n → K) :
     (∀ x, (fun j => ρ (a j)) ⬝ᵥ x = 0 → M *ᵥ x = x) ↔ ∀ w, a ⬝ᵥ w = 0 → (M.map ρ.symm) *ᵥ w = w := by
   constructor
@@ -46,6 +58,23 @@ theorem fix_hyperplane_map_iff (ρ : K ≃+* L) (M : Matrix n n L) (a : n → K)
 
 end Reindex
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i PP hPP v ρk a F`. Use `set P : R.Pg := ⟨PP, hPP⟩ with hP`. Establish `key : ∀ g : G, ((∀ x, (fun j => ρk (a j)) ⬝ᵥ x = 0 → ((R.eG g P : GL (Fin D.R.r) (kP PP)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP)) *ᵥ x = x) ↔ ∀ w, a ⬝ᵥ w = 0 → ((Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (R.eG g P) : GL (Fin D.R.r) _) : Matrix (Fin D.R.r) (Fin D.R.r) _) * …` using `fun g => fix_hyperplane_map_iff ρk _ a`. Establish `hset : {g : G | mirC R i P (fun j => ρk (a j)) false 1 g ≠ 0} = {g : G | (∀ PP', PP' ≠ P → R.eG g PP' = 1) ∧ ∀ w, a ⬝ᵥ w = 0 → ((Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (R.eG g P) : GL (Fin D.R.r) _) : Matrix (Fin D.R.r) (Fin D.R.r) _) *ᵥ w = w}`. Use extensionality with `g`.
+
+Rewrite using `[Set.mem_setOf_eq, Set.mem_setOf_eq, ← key g]`. Simplify using `only [mirC, Bool.false_eq_true, ↓reduceIte, zpow_one]`. Use `split_ifs with hc`. Simplify using `only [ne_eq, Units.ne_zero, not_false_eq_true, true_iff]`. Conclude with `hc`.
+
+Simplify using `only [ne_eq, not_true_eq_false, false_iff]`. Conclude with `hc`. Rewrite using `[hset]`. Apply `finsum_mem_eq_of_bijOn (fun g => Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (R.eG g P))` to reduce the goal to its premises. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨_, hg⟩`. Conclude with `hg`. Introduce and unpack `g₁ ⟨h1, _⟩ g₂ ⟨h2, _⟩ he`. Apply `R.eG.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `PP'`.
+
+Distinguish the cases in `hq : PP' = P`. Rewrite using `[hq]`. Establish `he' : ((R.eG g₁ P : GL (Fin D.R.r) (kP PP)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP)).map ρk.symm = ((R.eG g₂ P : GL (Fin D.R.r) (kP PP)) : Matrix (Fin D.R.r) (Fin D.R.r) (kP PP)).map ρk.symm` using `congrArg Units.val he`. Conclude with `Units.ext (Matrix.map_injective ρk.symm.injective he')`. Rewrite using `[h1 PP' hq, h2 PP' hq]`.
+
+Introduce `g₀ hg₀`. Establish `hcomp : Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (Matrix.GeneralLinearGroup.map ρk.toRingHom g₀) = g₀`. Use extensionality with `j k`. Simplify using the standard rewrite rules. Use `⟨R.eG.symm (Pi.mulSingle P (Matrix.GeneralLinearGroup.map ρk.toRingHom g₀)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `PP' hq`. Rewrite using `[MulEquiv.apply_symm_apply, Pi.mulSingle_eq_of_ne hq]`. Rewrite using `[MulEquiv.apply_symm_apply, Pi.mulSingle_eq_same, hcomp]`. Conclude with `hg₀`. Use `show Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (R.eG (R.eG.symm _) P) = g₀`.
+
+Rewrite using `[MulEquiv.apply_symm_apply, Pi.mulSingle_eq_same, hcomp]`. Introduce `g _`. Both sides reduce to the same expression.
+-/
 theorem mirC_hyperplane_reindex : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), ∀ (i : Fin D.R.m) (PP : Pl D.host.E) (hPP : PP ∈ R.Pg) (v : FinPl D) (ρk : IsLocalRing.ResidueField (OI v) ≃+* kP PP) (a : Fin D.R.r → IsLocalRing.ResidueField (OI v)) (F : GL (Fin D.R.r) (IsLocalRing.ResidueField (OI v)) → ℂ), (∑ᶠ g ∈ {g : G | mirC R i ⟨PP, hPP⟩ (fun j => ρk (a j)) false 1 g ≠ 0}, F (Matrix.GeneralLinearGroup.map ρk.symm.toRingHom (R.eG g ⟨PP, hPP⟩))) = ∑ᶠ g ∈ {g : GL (Fin D.R.r) (IsLocalRing.ResidueField (OI v)) | ∀ w, a ⬝ᵥ w = 0 → (g : Matrix (Fin D.R.r) (Fin D.R.r) (IsLocalRing.ResidueField (OI v))).mulVec w = w}, F g := by
   classical
   intro D G _ _ Pl0 T A Ks _ _ _ R i PP hPP v ρk a F

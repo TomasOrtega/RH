@@ -16,6 +16,9 @@ open scoped Classical
 
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ x ∂μ, ∫ y, ∫ z, H x y z ∂ρ ∂ν = ∫ q, H x q.1 q.2 ∂(ν.prod ρ)` using `by filter_upwards [hH.prod_right_ae] with x hx`. Conclude with `(integral_prod _ hx).symm`. Rewrite using `[integral_congr_ae h1, ← integral_prod (fun p : X × Y × Z => H p.1 p.2.1 p.2.2) hH, integral_prod_symm _ hH]`. Conclude with `integral_prod (fun q : Y × Z => ∫ x, H x q.1 q.2 ∂μ) hH.integral_prod_right`.
+-/
 private theorem swap3 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableSpace Z]
     (μ : Measure X) (ν : Measure Y) (ρ : Measure Z) [SFinite μ] [SFinite ν] [SFinite ρ]
     (H : X → Y → Z → ℂ) (hH : Integrable (fun p : X × Y × Z => H p.1 p.2.1 p.2.2) (μ.prod (ν.prod ρ))) :
@@ -27,6 +30,9 @@ private theorem swap3 {X Y Z : Type} [MeasurableSpace X] [MeasurableSpace Y] [Me
     integral_prod_symm _ hH]
   exact integral_prod (fun q : Y × Z => ∫ x, H x q.1 q.2 ∂μ) hH.integral_prod_right
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM]`.
+-/
 private theorem dM_one' : dM (1 : (A ℚ)ˣ) = 1 := by
   apply Units.ext
   ext i j
@@ -34,6 +40,35 @@ private theorem dM_one' : dM (1 : (A ℚ)ˣ) = 1 := by
 
 end UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Introduce `hMaj hTh E _ _ _ D W M N P ph hph φ hφ π f hf`. Take `⟨-, hsc, hnu, hnug, -⟩` from `szLaws E D`. Take `⟨c, hc, hred⟩` from `UpperTheory.ConvolutionTheory.R2.red ℚ`. Establish `hKc : IsCompact (KK ℚ)` using `(UpperTheory.ConvolutionTheory.R2.Ff.iwa ℚ).1`. Establish `hC' : IsCompact (gl (F` using `ℚ) '' KK ℚ) := hKc.image continuous_gl`.
+
+Take `⟨hfc, hdec⟩` from `UpperTheory.ConvolutionTheory.R2.decay ℚ π f hf`. Take `⟨B₂, hB₂⟩` from `hdec _ hC' c hc 2`. Use `set C : Set (GL (Fin 2) (A E)) := (fun u : IdeleGroup.normOneSubgroup E => sZ D (u : IdeleGroup E)) '' closure (normOneFundamentalDomain E) with hCdef`. Establish `hCc : IsCompact C` using `(isCompact_closure_normOneFundamentalDomain E).image (hsc.comp continuous_subtype_val)`. Establish `hCn : ∀ k ∈ C, nu ℚ k = 1`.
+
+Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `hnu _`. Take `⟨B₁, hB₁⟩` from `hMaj E D W M N P ph hph φ hφ C hCc hCn c hc 0`. Establish `hbound : ∀ (g : G1 ℚ) (h : G1 E), ∀ k ∈ C, ‖f.1 (gl g) * (Th (W.Om g (W.L (gl h * k) ph)).1 * φ.1 (gl h * k))‖ ≤ B₂ * B₁`. Introduce `g h k hk`.
+
+Take `⟨γ, b, a, k', hk', hg, ha⟩` from `hred g`. Establish `hp : 0 < ab a` using `ab_pos a`. Establish `e1 : f.1 (gl g) = f.1 (gl (nU b * mD a) * gl k')`. Rewrite using `[← gl_mul, ← hg, gl_mul, gl_ratS, (π.cusp _ hf).1.left]`. Establish `e2 : Th (W.Om g (W.L (gl h * k) ph)).1 = Th (W.Om (nU b * mD a * k') (W.L (gl h * k) ph)).1`.
+
+Rewrite using `[← hg]`. Conclude with `((UpperTheory.ConvolutionTheory.R2.Ff.thMeas ℚ E D W (W.L (gl h * k) ph)).2.1 γ g).symm`. Take `⟨hs, h2, -⟩` from `hB₁ b a k' hk' ha h k hk`. Establish `h1` using `hB₂ b a (gl k') ⟨k', hk', rfl⟩ ha`. Establish `h3 : ‖Th (W.Om (nU b * mD a * k') (W.L (gl h * k) ph)).1‖ ≤ ∑' ξ : Fin 4 → ℚ, ‖(W.Om (nU b * mD a * k') (W.L (gl h * k) ph)).1 (rp ξ)‖` using `norm_tsum_le_tsum_norm hs`.
+
+Rewrite using `[e1, e2, norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hφc : Continuous φ.1` using `(UpperTheory.ConvolutionTheory.RankTwoDescent.decE E P φ hφ).1.1`. Set `H : G1 ℚ → IdeleGroup.normOneSubgroup E → G1 E → ℂ` to `fun g u h => f.1 (gl g) * (Th (W.Om g (W.L (gl h * sZ D (u : IdeleGroup E)) ph)).1 * φ.1 (gl h * sZ D (u : IdeleGroup E)))`. Establish `hx : Continuous fun p : G1 ℚ × IdeleGroup.normOneSubgroup E × G1 E => gl p.2.2 * sZ D (p.2.1 : IdeleGroup E)` using `(continuous_gl.comp (continuous_snd.comp continuous_snd)).mul (hsc.comp (continuous_subtype_val.comp (continuous_fst.comp continuous_snd)))`.
+
+Establish `hnux : ∀ (h : G1 E) (u : IdeleGroup.normOneSubgroup E), nu ℚ (gl h * sZ D (u : IdeleGroup E)) = 1`. Introduce `h u`. Rewrite using `[nu_mul, hnug, hnu, one_mul]`. Establish `hTc : Continuous fun p : G1 ℚ × IdeleGroup.normOneSubgroup E × G1 E => Th (W.Om p.1 (W.L (gl p.2.2 * sZ D (p.2.1 : IdeleGroup E)) ph)).1`. Establish `h0` using `hTh E D W M N P ph hph Set.univ`.
+
+Establish `h1 : Continuous fun p : G1 ℚ × IdeleGroup.normOneSubgroup E × G1 E => ((p.1, gl p.2.2 * sZ D (p.2.1 : IdeleGroup E)) : G1 ℚ × GL (Fin 2) (A E))` using `continuous_fst.prodMk hx`. Establish `h2` using `h0.comp_continuous h1 (fun p => hnux _ _)`. Use `h2.congr fun p => ?_` and prove the remaining obligations. Conclude with `tsum_univ (fun ξ : Fin 4 → ℚ => (W.Om p.1 (W.L (gl p.2.2 * sZ D (p.2.1 : IdeleGroup E)) ph)).1 (rp ξ))`. Establish `hHc : Continuous fun p : G1 ℚ × IdeleGroup.normOneSubgroup E × G1 E => H p.1 p.2.1 p.2.2` using `(hfc.comp (continuous_gl.comp continuous_fst)).mul (hTc.mul (hφc.comp hx))`.
+
+Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using UpperTheory.ConvolutionTheory.R2.Ff.vol ℚ M⟩`. Use `haveI : IsFiniteMeasure ((normOneMeasure E).restrict (normOneFundamentalDomain E)) := ⟨by simpa using normOneMeasure_normOneFundamentalDomain_lt_top E⟩`. Use `haveI : IsFiniteMeasure (N.μ.restrict N.D) := ⟨by simpa using UpperTheory.ConvolutionTheory.RankTwoDescent.volE E N⟩`. Establish `hae : ∀ᵐ p ∂((M.μ.restrict M.D).prod (((normOneMeasure E).restrict (normOneFundamentalDomain E)).prod (N.μ.restrict N.D))), p.2.1 ∈ normOneFundamentalDomain E`. Establish `h1 : ∀ᵐ u ∂((normOneMeasure E).restrict (normOneFundamentalDomain E)), u ∈ normOneFundamentalDomain E` using `ae_restrict_mem (measurableSet_normOneFundamentalDomain E)`.
+
+Conclude with `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae h1)`. Establish `hInt : Integrable (fun p : G1 ℚ × IdeleGroup.normOneSubgroup E × G1 E => H p.1 p.2.1 p.2.2) ((M.μ.restrict M.D).prod (((normOneMeasure E).restrict (normOneFundamentalDomain E)).prod (N.μ.restrict N.D)))`. Use `Integrable.of_bound hHc.aestronglyMeasurable (B₂ * B₁) ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Conclude with `hbound p.1 p.2.2 _ ⟨p.2.1, subset_closure hp, rfl⟩`.
+
+Establish `hL : ∀ g : G1 ℚ, f.1 (gl g) * f0 W N ph φ.1 g = ∫ u in normOneFundamentalDomain E, ∫ h in N.D, H g u h ∂N.μ ∂normOneMeasure E`. Introduce `g`. Simplify using `only [f0, J1, UI, mean, H]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations.
+
+Conclude with `(integral_const_mul _ _).symm`. Establish `hR : (J1 D N fun x => lift W M f.1 ph x * φ.1 x) = ∫ u in normOneFundamentalDomain E, ∫ h in N.D, ∫ g in M.D, H g u h ∂M.μ ∂N.μ ∂normOneMeasure E`. Simplify using `only [J1, UI, mean]`. Use `integral_congr_ae (ae_of_all _ fun u => integral_congr_ae (ae_of_all _ fun h => ?_))` and prove the remaining obligations. Simplify using `only [lift, H]`.
+
+Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Simplify using `only [hnux, dM_one', mul_one, mul_assoc]`. Simplify using `only [hL]`. Rewrite using `[hR]`.
+
+Conclude with `swap3 _ _ _ H hInt`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.fub :
     Maj → ThCont → Fub := by
   intro hMaj hTh E _ _ _ D W M N P ph hph φ hφ π f hf

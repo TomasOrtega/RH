@@ -35,25 +35,55 @@ def New.ofDiv (D : D7) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V)
 
 instance instInhabitedNew (D : D7) : Inhabited (New D) := ⟨New.self D⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_ofDiv (D : D7) (N : ∀ u, Submodule (𝓞 D.what₂.LL) (D.div.Nu u).V) (h : D.what₂.Word → ℝ) :
     reD D (New.ofDiv D N h) = GlobalTheory.EX.OB.setDiv D N h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_rows : (reD D Z).what₂ = D.what₂ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_host : (reD D Z).host = D.host := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redivision_structure_eq : (reD D Z).s = mix D.s Z.Z.s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_atP : (reD D Z).s.atP = D.s.atP := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_HH : (reD D Z).s.HH = Z.Z.s.HH := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_h : (reD D Z).div.h = Z.h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reD_L (u : D.what₂.Word) : ((reD D Z).div.Nu u).L = Z.N u := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : D7) (u : D.what₂.Word) : (reD D (New.ofDiv D (fun _ => ⊥) fun _ => 1)).div.h u = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : D7) : (reD D (New.self D)).s = D.s := rfl
 
 set_option maxHeartbeats 4000000 in

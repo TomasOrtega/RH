@@ -27,6 +27,13 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Take `⟨hlen, σ, h0, hpb, hc⟩` from `h`. Establish `hlA : (BlowupSequenceData.ofSequenceOfBlowups B').toSequenceOfBlowups.length = B'.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.ofSequenceOfBlowups_length]`. Establish `hlB : (BlowupSequenceData.ofSequenceOfBlowups B).toSequenceOfBlowups.length = B.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length, BlowupSequenceData.ofSequenceOfBlowups_length]`.
+
+Use `⟨by rw [hlA, hlB, hlen], fun i hi => σ i (hi.trans_eq hlA), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_isoObjZero, BlowupSequenceData.ofSequenceOfBlowups_isoObjZero]`. Conclude with `h0`. Introduce `i hi`. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.ofSequenceOfBlowups_blowupMorphism]`.
+
+Conclude with `hpb i (hi.trans_eq hlA)`. Introduce `i hi`. Simplify using `only [BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.ofSequenceOfBlowups_center]`. Conclude with `hc i (hi.trans_eq hlA)`.
+-/
 private theorem isStrictPullbackBlowupSeq_ofSequenceOfBlowups {X X' : Scheme.{u}} (φ : X' ⟶ X) (B' : SequenceOfBlowups X')
     (B : SequenceOfBlowups X) (h : IsStrictPullbackBlowupSeq φ B' B) :
     IsStrictPullbackBlowupSeq φ (BlowupSequenceData.ofSequenceOfBlowups B').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups B).toSequenceOfBlowups := by
@@ -45,6 +52,9 @@ private theorem isStrictPullbackBlowupSeq_ofSequenceOfBlowups {X X' : Scheme.{u}
     simp only [BlowupSequenceData.toSequenceOfBlowups_center, BlowupSequenceData.ofSequenceOfBlowups_center]
     exact hc i (hi.trans_eq hlA)
 
+/- English proof (translation)
+Rewrite using `[MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence sA, MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence sB]`. Conclude with `isStrictPullbackBlowupSeq_ofSequenceOfBlowups φ _ _ h`.
+-/
 theorem IsStrictPullbackBlowupSeq.ofMarkedSequence {A B : MarkedIdealWithBoundary.{u}} (φ : A.scheme ⟶ B.scheme)
     (sA : A.SequenceOfBlowups) (sB : B.SequenceOfBlowups)
     (h : IsStrictPullbackBlowupSeq φ sA.toSequenceOfBlowups sB.toSequenceOfBlowups) :
@@ -54,6 +64,9 @@ theorem IsStrictPullbackBlowupSeq.ofMarkedSequence {A B : MarkedIdealWithBoundar
     MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence sB]
   exact isStrictPullbackBlowupSeq_ofSequenceOfBlowups φ _ _ h
 
+/- English proof (translation)
+Substitute `hZZ` using the available equality. Both sides reduce to the same expression.
+-/
 theorem BlowupSequenceData.prepend_toSequenceOfBlowups_congr {X : Scheme.{u}} {Z Z' : X.IdealSheafData} (hZZ : Z = Z')
     (hZ : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z) (hZ' : Blowup.IsBlowupAlongIdealSheaf (𝟙 X) Z') (d : BlowupSequenceData X) :
     (BlowupSequenceData.prepend Z hZ d).toSequenceOfBlowups = (BlowupSequenceData.prepend Z' hZ' d).toSequenceOfBlowups := by
@@ -138,6 +151,25 @@ def DivisorReductionSeqEqAmbient (hres : FunctorialResolution.Blowup.StrictTrans
                 (lowerBoundaryAfterBlowup T j hj) (L (restrictTwistedToDivisor T j hj)) hpr)).toMarkedBlowupSequenceData
               T.structMap T.ideal T.mult T.boundary hmk).toMarkedSequenceOfBlowups)
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsNoetherian T.scheme` using `isNoetherian_scheme_of_isAdmissible T hV`. Establish `: AlgebraicGeometry.IsNoetherian ((T.pullbackAlong Y q h).withBoundary E').scheme` using `isNoetherian_scheme_of_isAdmissible _ hV'`. Establish `: AlgebraicGeometry.IsNoetherian Y` using `isNoetherian_scheme_of_isAdmissible _ hV'`. Establish `: AlgebraicGeometry.Flat h` using `hsf.flat_of_smooth T.scheme Y h inferInstance`. Rewrite using `[divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq hres L j ((T.pullbackAlong Y q h).withBoundary E'), divisorFamily_canonicalAlgorithmRules_eq_divisorReductionSeq hres L j T]`.
+
+Distinguish the cases in `hcs : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `hcs2 : orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal T.mult = ∅`. Apply `Set.eq_empty_iff_forall_notMem.2` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[orderAtLeastLocus_withBoundary_pullbackAlong hbc T hV Y q h hq E' T.mult, hcs]`.
+
+Conclude with `hx`. Rewrite using `[divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian ((T.pullbackAlong Y q h).withBoundary E') (fun S _ => L S) j hjE hcs2, divisorReductionSeq_eq_empty_of_orderAtLeastLocus_eq_empty hres blowupPreservesNoetherian T (fun S _ => L S) j hj hcs]`. Conclude with `IsStrictPullbackBlowupSeq.of_length_zero h _ _ rfl rfl`. Establish `hcsne : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hcs`. Establish `hcsne' : (orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal T.mult).Nonempty`.
+
+Take `⟨x, hx⟩` from `hcsne`. Take `⟨y, rfl⟩` from `h.surjective x`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[orderAtLeastLocus_withBoundary_pullbackAlong hbc T hV Y q h hq E' T.mult]`. Conclude with `hx`.
+
+Establish `hpre : containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE = (containedComponentsIdeal T j hj).comap h` using `hbc.preIdeal_comap T hV Y q h hq E' hBE j hj hjE htake hV'`. Establish `hsT` using `hshape T hV hj hdim hO hbal hcsne`. Establish `hsT'` using `hshape ((T.pullbackAlong Y q h).withBoundary E') hV' hjE hdim' hO' hDB' hcsne'`. Unfold `DivisorReductionSeqEqAmbient at hsT hsT'`. Break down `hsT with ⟨hZ, hpr, _hmk, hstep⟩ | ⟨hZ, hb, hpr, _hmk, hstep⟩` into its components or cases.
+
+Break down `hsT' with ⟨hZ', hpr', _hmk', hstep'⟩ | ⟨hZ', _hb', _hpr', _hmk', _hstep'⟩` into its components or cases. Rewrite using `[hstep, hstep', BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups, BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`. Conclude with `hfacts.isStrictPullbackSeq_ambientTower _ _ _ _ (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h (divisorPullbackMap T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) Y h (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htake)) (( …`. It suffices to derive a contradiction. Establish `htc : (containedComponentsIdeal T j hj).comap h = ⊤`.
+
+Rewrite using `[hZ]`. Simplify using the standard rewrite rules. Conclude with `hZ' (hpre.trans htc)`. Break down `hsT' with ⟨hZ', _hpr', _hmk', _hstep'⟩ | ⟨_hZ', hb', hpr', _hmk', hstep'⟩` into its components or cases. Establish `hcontra : (containedComponentsIdeal T j hj).comap h = ⊤` using `by rw [← hpre]; exact hZ'`.
+
+Conclude with `absurd hcontra (comap_ne_top_of_surjective hbc h (containedComponentsIdeal T j hj) hZ)`. Rewrite using `[hstep, hstep', BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups, BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`. Establish `hb'' : Blowup.IsBlowupAlongIdealSheaf (𝟙 Y) ((containedComponentsIdeal T j hj).comap h)` using `isBlowupAlongIdealSheaf_id_comap_containedComponentsIdeal hres hfacts j T Y q h E' hV' hj hjE hpre`. Establish `hamb` using `hfacts.isStrictPullbackSeq_ambientTower _ _ _ _ (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h (divisorPullbackMap T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) Y h (E'.get ⟨j, hjE⟩) (get_eq_comap_get_boundary T j hj Y q h E' hjE htak …`. Establish `key` using `hamb.prepend (containedComponentsIdeal T j hj) hb hb''`.
+
+Rewrite using `[BlowupSequenceData.prepend_toSequenceOfBlowups_congr hpre hb' hb'' (ambientBlowupSeq hres blowupPreservesNoetherian ((T.pullbackAlong Y q h).withBoundary E') j hjE (lowerIdealAfterBlowup ((T.pullbackAlong Y q h).withBoundary E') j hjE) (lowerBoundaryAfterBlowup ((T.pullbackAlong …`. Conclude with `key`.
+-/
 theorem divisorFamily_isStrictPullbackBlowupSeq_of_smooth (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
     (hbc : SmoothPullbackCompatibility.{u}) (hsf : FlatOfSmooth.{u}) (n : ℕ) (L : PrincipalizationAssignment.{u})

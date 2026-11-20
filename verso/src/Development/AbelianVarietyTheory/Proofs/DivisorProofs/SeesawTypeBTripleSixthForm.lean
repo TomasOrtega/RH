@@ -16,6 +16,35 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 namespace GlobalTheory.ConeStabLv
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' X om om' om₁ om₁' hc hT hT₁ e' he' ei ev hei hev hpure K hK μKv μv hμK hμ h hh φ hφ φ₁ hφ₁ hAct`. Establish `hPr` using `hKP.base`. Establish `hLP : GlobalTheory.ThK.LemF.IsLocPart G.M' G₁.M' e' ei ev` using `⟨hei, hev, hpure⟩`. Take `⟨hSBc, -, hLv⟩` from `GlobalTheory.T.cone_law_second_of_hypotheses hPr F E σ B a b G G₁ H H' hc e' he' ei ev hLP K hK X om om' om₁ om₁' hT hT₁ B.v₁ μKv μv hμK.1 hμ.1`. Establish `hA : ActsEx` using `GlobalTheory.ThK.LocalOps.actsEx hPr`.
+
+Establish `hP'` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hP₁'` using `GlobalTheory.ThK.Inhab.pairV' hT₁`. Establish `mul` using `GlobalTheory.ThK.LemF.locOpMul hPr F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hP₁' B.v₁`. Establish `h1V` using `GlobalTheory.ThK.LemF.one_mem_UAt (σ := σ) G.V' (evFin F B.v₁)`. Establish `h1V₁` using `GlobalTheory.ThK.LemF.one_mem_UAt (σ := σ) G₁.V' (evFin F B.v₁)`.
+
+Establish `h1W₁` using `GlobalTheory.ThK.LemF.one_mem_UAt (σ := σ) G₁.W (evFin F B.v₁)`. Use `set N := Submodule.span ℂ (coneFin B G.M' om' B.v₁ (ev B.v₁) K μKv μv (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) '' G.M'.SoLoc B.ψ B.τ₁) ⊔ augAt om₁' B.v₁ with hN`. Establish `hex : ∀ ψ ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁), ∃ ψ₁, ψ₁ ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁) ∧ Acts (evFin F B.v₁) (om₁' (1, h)) ψ ψ₁` using `fun ψ hψ => ⟨_, locOp_mem _ _ _, acts_locOp_om hA hP₁' h1V₁ hh hψ⟩`. Establish `lin` using `fun c d {ψ ψ'} (hψ : ψ ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁)) (hψ' : ψ' ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁)) => locOp_lin (om₁' (1, h)).isLinear hex c d hψ hψ'`. Establish `hNSB : N ≤ SB (Fin b × Fin (a + b) → Fv F B.v₁)`.
+
+Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Conclude with `hSBc ψ hψ.1`. Introduce and unpack `_ ⟨g, -, ψ, hψ, ψ₁, hψ₁, -, rfl⟩`. Conclude with `sub_mem hψ₁ hψ`.
+
+Set `P : Submodule ℂ ((Fin b × Fin (a + b) → Fv F B.v₁) → ℂ)` to `{ carrier := {ψ | ψ ∈ SB (Fin b × Fin (a + b) → Fv F B.v₁) ∧ locOp B.v₁ (om₁' (1, h)) ψ ∈ N} add_mem' := by`. Introduce and unpack `ψ ψ' ⟨hψ, h1⟩ ⟨hψ', h2⟩`. Use `⟨add_mem hψ hψ', ?_⟩` and prove the remaining obligations. Establish `e` using `lin 1 1 hψ hψ'`. Simplify using `only [one_smul] at e`.
+
+Rewrite using `[e]`. Conclude with `add_mem h1 h2`. Use the proof step `zero_mem' := by`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Establish `e` using `lin 0 0 (zero_mem _) (zero_mem _)`.
+
+Simplify using `only [zero_smul, add_zero] at e`. Rewrite using `[e]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := by`. Introduce and unpack `c ψ ⟨hψ, h1⟩`.
+
+Use `⟨(SB _).smul_mem c hψ, ?_⟩` and prove the remaining obligations. Establish `e` using `lin c 0 hψ hψ`. Simplify using `only [zero_smul, add_zero] at e`. Rewrite using `[e]`. Conclude with `N.smul_mem c h1 }`.
+
+Establish `hNP : N ≤ P`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Use `⟨hSBc ψ hψ.1, ?_⟩` and prove the remaining obligations. Take `⟨m, hm, -⟩` from `GlobalTheory.PlaneLeviExt.levi_existsUnique F E σ B _ _ G.W G₁.W H' a (a + b + 1) _ _ _ _ (GlobalTheory.AdelicU.cm_conj_conj hT.base.cm) hT.geo.hW hT₁.geo.hW hc.hH' h`.
+
+Establish `hmv : m ∈ UAt σ G.W (evFin F B.v₁)` using `GlobalTheory.JacquetFlagLevi.levi_mem_UAt (GlobalTheory.JacquetFlagLevi.adapted_spans B hc.hH' hT.geo.hW.lat.span_eq_top) hm (fun c _ => by simp) (fun c _ => by simp) hh`. Establish `e` using `hLv 1 h m hm hmv hh ψ hψ.1`. Rewrite `e` using `[GlobalTheory.ThK.LemF.fac_one, one_smul]`. Express the relevant statement in the definitionally equal form `locOp B.v₁ (om₁' (1, h)) _ ∈ N`. Rewrite using `[← e]`.
+
+Use `Submodule.mem_sup_left (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations. Conclude with `GlobalTheory.SoLocW.soLoc_stable hKP F E σ B a (b + 2) G X om om' hT m hmv ψ hψ _ (locOp_mem _ _ _) (acts_locOp_om hA hP' h1V hmv hψ.1)`. Introduce and unpack `_ ⟨g, hg, ψ, hψ, ψ₁, hψ₁, hact, rfl⟩`. Use `⟨sub_mem hψ₁ hψ, ?_⟩` and prove the remaining obligations. Establish `e` using `lin 1 (-1) hψ₁ hψ`.
+
+Simplify using `only [one_smul, neg_one_smul, ← sub_eq_add_neg] at e`. Express the relevant statement in the definitionally equal form `locOp B.v₁ (om₁' (1, h)) (ψ₁ - ψ) ∈ N`. Rewrite using `[e]`. Establish `e1 : ψ₁ = locOp B.v₁ (om₁' (g, 1)) ψ` using `(locOp_eq hψ hψ₁ hact).symm`. Establish `e2 : locOp B.v₁ (om₁' (1, h)) (locOp B.v₁ (om₁' (g, 1)) ψ) = locOp B.v₁ (om₁' (g, 1)) (locOp B.v₁ (om₁' (1, h)) ψ)`.
+
+Rewrite using `[← mul (1, h) (g, 1) h1V₁ hh hg h1W₁ ψ hψ, ← mul (g, 1) (1, h) hg h1W₁ h1V₁ hh ψ hψ, GlobalTheory.ThK.LemF.prod_comm_one]`. Rewrite using `[e1, e2]`. Use `Submodule.mem_sup_right (Submodule.subset_span ⟨g, hg, _, locOp_mem _ _ _, _, locOp_mem _ _ _, acts_locOp_om hA hP₁' hg h1W₁ (locOp_mem _ _ _), rfl⟩)` and prove the remaining obligations. Establish `hφP` using `hNP hφ`. Establish `e` using `locOp_eq hφP.1 hφ₁ hAct`.
+
+Rewrite using `[← e]`. Conclude with `hφP.2`.
+-/
 theorem span_cone_aug_stable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

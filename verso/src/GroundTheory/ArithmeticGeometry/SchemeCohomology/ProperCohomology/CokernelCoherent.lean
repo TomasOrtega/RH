@@ -22,6 +22,9 @@ def cokernelTildeIso (hM : IsIso M.fromTildeΓ) (hN : IsIso N.fromTildeΓ) :
     cokernel.mapIso ((moduleSpecΓFunctor ⋙ tilde.functor R).map ψ) ψ p q
       (Scheme.Modules.fromTildeΓNatTrans.naturality ψ)
 
+/- English proof (translation)
+Establish `h : (tilde.functor R).map (cokernel.π (moduleSpecΓFunctor.map ψ)) ≫ (PreservesCokernel.iso (tilde.functor R) (moduleSpecΓFunctor.map ψ)).hom = cokernel.π ((tilde.functor R).map (moduleSpecΓFunctor.map ψ))`. Rewrite using `[← π_comp_cokernelComparison, ← PreservesCokernel.iso_inv, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[cokernelTildeIso, Iso.trans_hom, ← Category.assoc, h]`. Simplify using `[cokernel.mapIso]`. Apply the tactic sequence `try rfl`.
+-/
 lemma cokernelTildeIso_comm (hM : IsIso M.fromTildeΓ) (hN : IsIso N.fromTildeΓ) :
     (tilde.functor R).map (cokernel.π (moduleSpecΓFunctor.map ψ)) ≫
       (cokernelTildeIso ψ hM hN).hom = N.fromTildeΓ ≫ cokernel.π ψ := by
@@ -34,12 +37,24 @@ lemma cokernelTildeIso_comm (hM : IsIso M.fromTildeΓ) (hN : IsIso N.fromTildeΓ
   simp [cokernel.mapIso]
   try rfl
 
+/- English proof (translation)
+The claim follows from `(SheafOfModules.isQuasicoherent (Spec (.of R)).ringCatSheaf).prop_of_iso (cokernelTildeIso ψ inferInstance inferInstance) (inferInstanceAs ((tilde.functor R).obj _).IsQuasicoherent)`.
+-/
 lemma isQuasicoherent_cokernel_spec [M.IsQuasicoherent] [N.IsQuasicoherent] :
     (cokernel ψ).IsQuasicoherent :=
   (SheafOfModules.isQuasicoherent (Spec (.of R)).ringCatSheaf).prop_of_iso
     (cokernelTildeIso ψ inferInstance inferInstance)
     (inferInstanceAs ((tilde.functor R).obj _).IsQuasicoherent)
 
+/- English proof (translation)
+Establish `hM : IsIso M.fromTildeΓ` using `inferInstance`. Establish `hN : IsIso N.fromTildeΓ` using `inferInstance`. Use `set Q := cokernel (moduleSpecΓFunctor.map ψ)`. Use `set q := cokernel.π (moduleSpecΓFunctor.map ψ)`. Establish `hq : Function.Surjective q` using `(ModuleCat.epi_iff_surjective q).1 inferInstance`.
+
+Establish `h1 : Function.Surjective (((tilde.functor R).map q).app ⊤)`. Establish `e` using `tilde.toOpen_map_app q ⊤`. Introduce `y`. Take `⟨y', rfl⟩` from `(ConcreteCategory.bijective_of_isIso (tilde.toOpen Q ⊤)).2 y`. Take `⟨z, rfl⟩` from `hq y'`.
+
+Use `⟨tilde.toOpen _ ⊤ z, ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => g.hom z) e` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Conclude with `this`. Establish `h2 : ∀ x, (cokernelTildeIso ψ hM hN).hom.app ⊤ (((tilde.functor R).map q).app ⊤ x) = (cokernel.π ψ).app ⊤ (N.fromTildeΓ.app ⊤ x)` using `fun x => by`.
+
+Use `congrArg (fun g => (g.app ⊤) x) (cokernelTildeIso_comm ψ hM hN)` as an intermediate fact. Conclude with `this`. Introduce `y`. Take `⟨x, hx⟩` from `((ConcreteCategory.bijective_of_isIso ((cokernelTildeIso ψ hM hN).hom.app ⊤)).2.comp h1) y`. Conclude with `⟨N.fromTildeΓ.app ⊤ x, (h2 x).symm.trans hx⟩`.
+-/
 lemma surjective_cokernel_π_app_top [M.IsQuasicoherent] [N.IsQuasicoherent] :
     Function.Surjective ((cokernel.π ψ).app ⊤) := by
   have hM : IsIso M.fromTildeΓ := inferInstance
@@ -71,6 +86,9 @@ section Scheme
 
 variable {X : Scheme.{u}} {F G : X.Modules} (φ : F ⟶ G)
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨e.inv.app U, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.hom_inv_id]`. Both sides reduce to the same expression. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 lemma bijective_app_of_iso {M N : X.Modules} (e : M ≅ N) (U : X.Opens) :
     Function.Bijective (e.hom.app U) := by
   refine Function.bijective_iff_has_inverse.2 ⟨e.inv.app U, fun x => ?_, fun y => ?_⟩
@@ -79,6 +97,9 @@ lemma bijective_app_of_iso {M N : X.Modules} (e : M ≅ N) (U : X.Opens) :
   · rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id]
     rfl
 
+/- English proof (translation)
+Set `Rf` to `Scheme.Modules.restrictFunctor hU.fromSpec`. Establish `: (Rf.obj F).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Establish `: (Rf.obj G).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Establish `h` using `isQuasicoherent_cokernel_spec (R := Γ(X, U)) (Rf.map φ)`. Conclude with `(SheafOfModules.isQuasicoherent (Spec Γ(X, U)).ringCatSheaf).prop_of_iso (PreservesCokernel.iso Rf φ).symm h`.
+-/
 lemma isQuasicoherent_restrict_cokernel [F.IsQuasicoherent] [G.IsQuasicoherent] {U : X.Opens}
     (hU : IsAffineOpen U) : ((cokernel φ).restrict hU.fromSpec).IsQuasicoherent := by
   let Rf := Scheme.Modules.restrictFunctor hU.fromSpec
@@ -94,6 +115,13 @@ instance isQuasicoherent_cokernel [F.IsQuasicoherent] [G.IsQuasicoherent] :
     (iSup_affineOpens_eq_top X)
     fun U => nonempty_presentation_restrict _ U.2 (isQuasicoherent_restrict_cokernel φ U.2)
 
+/- English proof (translation)
+Set `Rf` to `Scheme.Modules.restrictFunctor hU.fromSpec`. Establish `: (Rf.obj F).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Establish `: (Rf.obj G).IsQuasicoherent` using `Scheme.Modules.isQuasicoherent_restrictFunctor _ _`. Establish `h1` using `surjective_cokernel_π_app_top (R := Γ(X, U)) (Rf.map φ)`. Establish `h2 : Rf.map (cokernel.π φ) = cokernel.π (Rf.map φ) ≫ (PreservesCokernel.iso Rf φ).inv`.
+
+Rewrite using `[PreservesCokernel.iso_inv, π_comp_cokernelComparison]`. Establish `h3 : Function.Surjective ((Rf.map (cokernel.π φ)).app ⊤)`. Rewrite using `[h2]`. Conclude with `(bijective_app_of_iso (PreservesCokernel.iso Rf φ).symm ⊤).2.comp h1`. Rewrite using `[← fromSpec_image_top hU]`.
+
+Conclude with `h3`.
+-/
 lemma surjective_cokernel_π_app [F.IsQuasicoherent] [G.IsQuasicoherent] {U : X.Opens}
     (hU : IsAffineOpen U) : Function.Surjective ((cokernel.π φ).app U) := by
   let Rf := Scheme.Modules.restrictFunctor hU.fromSpec
@@ -108,6 +136,9 @@ lemma surjective_cokernel_π_app [F.IsQuasicoherent] [G.IsQuasicoherent] {U : X.
   rw [← fromSpec_image_top hU]
   exact h3
 
+/- English proof (translation)
+Use `hG.1` as an intermediate fact. Use `⟨inferInstance, fun U hU => ?_⟩` and prove the remaining obligations. Use `hG.2 U hU` as an intermediate fact. Set `π' : Γ(G, U) →ₗ[Γ(X, U)] Γ(cokernel φ, U)` to `{ toFun := (cokernel.π φ).app U map_add' := map_add _ map_smul' := Scheme.Modules.Hom.app_smul _ }`. Conclude with `Module.Finite.of_surjective π' (surjective_cokernel_π_app φ hU)`.
+-/
 theorem isCoherent_cokernel [F.IsQuasicoherent] (hG : IsCoherent G) :
     IsCoherent (cokernel φ) := by
   have := hG.1
@@ -128,6 +159,9 @@ variable {C : Type*} [Category C] [Abelian C] {P Q : C} (α : P ⟶ Q)
 def kerCoimSC : ShortComplex C :=
   ShortComplex.mk (kernel.ι α) (Abelian.coimage.π α) (cokernel.condition _)
 
+/- English proof (translation)
+The claim follows from `ShortComplex.ShortExact.mk' ((kerCoimSC α).exact_of_g_is_cokernel (cokernelIsCokernel (kernel.ι α))) (inferInstanceAs (Mono (kernel.ι α))) (inferInstanceAs (Epi (Abelian.coimage.π α)))`.
+-/
 lemma kerCoimSC_shortExact : (kerCoimSC α).ShortExact :=
   ShortComplex.ShortExact.mk' ((kerCoimSC α).exact_of_g_is_cokernel
     (cokernelIsCokernel (kernel.ι α))) (inferInstanceAs (Mono (kernel.ι α)))
@@ -148,6 +182,9 @@ def coimCokIsColimit :
     (fun b hb m hm => by
       exact (cancel_epi (cokernel.π α)).1 (by rw [hm, cokernel.π_desc]))
 
+/- English proof (translation)
+The claim follows from `ShortComplex.ShortExact.mk' ((coimCokSC α).exact_of_g_is_cokernel (coimCokIsColimit α)) (inferInstanceAs (Mono (Abelian.factorThruCoimage α))) (inferInstanceAs (Epi (cokernel.π α)))`.
+-/
 lemma coimCokSC_shortExact : (coimCokSC α).ShortExact :=
   ShortComplex.ShortExact.mk' ((coimCokSC α).exact_of_g_is_cokernel (coimCokIsColimit α))
     (inferInstanceAs (Mono (Abelian.factorThruCoimage α))) (inferInstanceAs (Epi (cokernel.π α)))

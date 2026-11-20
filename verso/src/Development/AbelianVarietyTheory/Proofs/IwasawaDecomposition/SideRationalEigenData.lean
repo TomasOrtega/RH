@@ -39,12 +39,22 @@ set_option synthInstance.maxHeartbeats 400000
 def feSup {l : ℕ} [Fact l.Prime] (K L : Loc.FinExt l) : Loc.FinExt l :=
   ⟨K.1 ⊔ L.1, haveI := K.2; haveI := L.2; IntermediateField.finiteDimensional_sup _ _⟩
 
+/- English proof (translation)
+Introduce `j w y` and use `IsIntegrallyClosed.isIntegral_iff.1 <| by obtain ⟨p, hp, h0⟩ := D.O_int y refine ⟨p.map (Int.castRingHom _), hp.map _, ?_⟩ rw [eval₂_map, Subsingleton.elim (RingHom.comp _ _) ((B.ec j w).comp (algebraMap ℤ D.what₂.LL)), ← hom_eval₂, h0, map_zero]`.
+-/
 theorem osInt (D : D7) (B : LocBase0 D.host D.what₂) : OsInt B := fun j w y =>
   IsIntegrallyClosed.isIntegral_iff.1 <| by
     obtain ⟨p, hp, h0⟩ := D.O_int y
     refine ⟨p.map (Int.castRingHom _), hp.map _, ?_⟩
     rw [eval₂_map, Subsingleton.elim (RingHom.comp _ _) ((B.ec j w).comp (algebraMap ℤ D.what₂.LL)), ← hom_eval₂, h0, map_zero]
 
+/- English proof (translation)
+Establish `key : ∀ v v', D.naut.plGw 0 v ≠ D.naut.plGw 1 v'` using `fun v v' e => by`. Establish `h0 : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw 0 v).asIdeal` using `D.naut.plGw_over 0 v`. Establish `h1 : ((D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw 1 v').asIdeal` using `D.naut.plGw_over 1 v'`. Rewrite `h1` using `[← e]`. Take `⟨a, b, hab⟩ : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ((D.host.g 1 : ℕ) : 𝓞 D.host.E)` from `((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne).cast`.
+
+Conclude with `(D.naut.plGw 0 v).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h0) (Ideal.mul_mem_left _ _ h1)))`. Introduce `k k' v v' e`. Apply the tactic sequence `fin_cases k <;> fin_cases k'`. Both sides reduce to the same expression. Conclude with `absurd e (key v v')`.
+
+Conclude with `absurd e.symm (key v' v)`. Both sides reduce to the same expression.
+-/
 theorem plGwDisj (D : D7) : PlGwDisj D := by
   have key : ∀ v v', D.naut.plGw 0 v ≠ D.naut.plGw 1 v' := fun v v' e => by
     have h0 : ((D.host.g 0 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw 0 v).asIdeal := D.naut.plGw_over 0 v
@@ -69,12 +79,18 @@ variable {D : D7} {C : NChoice D} {X : CoefIn D.what₂} {ψ0 : D.what₂.places
       ((C.psi' w (D.ntw.art (C.twI w) (C.Q w) g) : (D.ntw.Ok (C.twI w) (C.k' w))ˣ) : D.ntw.Ok (C.twI w) (C.k' w))))
   (hP : PsiInt X ψ0) (j : ℕ) (w : D.what₂.places.Pl)
 
+/- English proof (translation)
+The claim follows from `unitsLift_spec ((Units.map (ecC X j w).toMonoidHom).comp (ψ0 w)) (hP j w) g`.
+-/
 theorem psN_spec (g : G D.host.E D.nd.Om) : algebraMap (OcC X j w) (FractionRing (OcC X j w)) (psN X ψ0 hP j w g : OcC X j w) =
     ecC X j w ((ψ0 w g : (D.what₂.LL)ˣ) : D.what₂.LL) :=
   unitsLift_spec ((Units.map (ecC X j w).toMonoidHom).comp (ψ0 w)) (hP j w) g
 
 include hψ0 in
 
+/- English proof (translation)
+Rewrite using `[← Units.val_eq_one, ← map_eq_one_iff _ (IsFractionRing.injective (OcC X j w) (FractionRing (OcC X j w))), psN_spec, map_eq_one_iff _ (ecC X j w).injective, ← map_eq_one_iff _ (C.embW w).injective, hψ0, map_eq_one_iff _ (IsFractionRing.injective (C.Oe w) (FractionRing (C.Oe w))), …`. Both sides reduce to the same expression.
+-/
 theorem psN_eq_one (g : G D.host.E D.nd.Om) : psN X ψ0 hP j w g = 1 ↔ ((C.psi' w).comp (D.ntw.art (C.twI w) (C.Q w))) g = 1 := by
   rw [← Units.val_eq_one, ← map_eq_one_iff _ (IsFractionRing.injective (OcC X j w) (FractionRing (OcC X j w))), psN_spec,
     map_eq_one_iff _ (ecC X j w).injective, ← map_eq_one_iff _ (C.embW w).injective, hψ0,
@@ -83,25 +99,40 @@ theorem psN_eq_one (g : G D.host.E D.nd.Om) : psN X ψ0 hP j w g = 1 ↔ ((C.psi
   rfl
 
 include hψ0 in
+/- English proof (translation)
+Rewrite using `[psN_eq_one hψ0, MonoidHom.comp_apply, h, map_one]`.
+-/
 theorem psN_of_art {g : G D.host.E D.nd.Om} (h : D.ntw.art (C.twI w) (C.Q w) g = 1) : psN X ψ0 hP j w g = 1 := by
   rw [psN_eq_one hψ0, MonoidHom.comp_apply, h, map_one]
 
 include hψ0 in
+/- English proof (translation)
+Take `⟨n, hn⟩` from `D.ntw.RCG_l _ _ (D.ntw.art (C.twI w) (C.Q w) g)`. Rewrite `hn` using `[C.twI_l, ← map_pow]`. Conclude with `⟨n, by rw [← map_pow]; exact psN_of_art hψ0 hP j w hn⟩`.
+-/
 theorem psN_ord (g : G D.host.E D.nd.Om) : ∃ n : ℕ, psN X ψ0 hP j w g ^ (D.what₂.places.resChar w ^ n) = 1 := by
   obtain ⟨n, hn⟩ := D.ntw.RCG_l _ _ (D.ntw.art (C.twI w) (C.Q w) g)
   rw [C.twI_l, ← map_pow] at hn
   exact ⟨n, by rw [← map_pow]; exact psN_of_art hψ0 hP j w hn⟩
 
 include hψ0 in
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₁ := (D.ntw.art (C.twI w) (C.Q w)).ker) (fun _ hg => psN_of_art hψ0 hP j w hg) (D.ntw.art_cont _ _)`.
+-/
 theorem psN_open : IsOpen ((psN X ψ0 hP j w).ker : Set (G D.host.E D.nd.Om)) :=
   Subgroup.isOpen_mono (H₁ := (D.ntw.art (C.twI w) (C.Q w)).ker) (fun _ hg => psN_of_art hψ0 hP j w hg) (D.ntw.art_cont _ _)
 
 include hψ0 in
+/- English proof (translation)
+Introduce `g g' h` and use `by rw [eq_inv_iff_mul_eq_one, ← map_mul] exact psN_of_art hψ0 hP j w (by rw [map_mul, D.ntw.art_anti _ _ g g' h, inv_mul_cancel])`.
+-/
 theorem psN_anti : AntiHom D.ntw.cc (psN X ψ0 hP j w) := fun g g' h => by
   rw [eq_inv_iff_mul_eq_one, ← map_mul]
   exact psN_of_art hψ0 hP j w (by rw [map_mul, D.ntw.art_anti _ _ g g' h, inv_mul_cancel])
 
 include hψ0 in
+/- English proof (translation)
+Introduce `v A hA` and use `by constructor · rintro ⟨σ, hσ, hne⟩ by_contra hv exact hne (psN_of_art hψ0 hP j w (D.ntw.art_unr _ _ v hv A hA σ hσ)) · intro hv obtain ⟨σ, hσ, hne⟩ := h v hv A hA exact ⟨σ, hσ, fun e => hne ((psN_eq_one hψ0 hP j w σ).1 e)⟩`.
+-/
 theorem psN_ram (h : ∀ v ∈ C.Q w, ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∃ σ ∈ Ine (F := D.host.E) A, ((C.psi' w).comp (D.ntw.art (C.twI w) (C.Q w))) σ ≠ 1) :
     RamExactly (psN X ψ0 hP j w) (↑(C.Q w) : Set (HeightOneSpectrum (𝓞 D.host.E))) := fun v A hA => by
   constructor
@@ -116,6 +147,33 @@ end Psi
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hArt hStd D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI _ _ hpd hCheb hOS hVal big`. Take `⟨hO, hc⟩` from `GlobalTheory.T.twistConductors_over_real_places_and_conj_stable D cf C tp hCS.off`. Establish `hG` using `GlobalTheory.T.heckeGeneratorPlacesOutsideLevel_of_stable D cf M C tp hMI hO`. Establish `hX` using `GlobalTheory.T.exists_conjugate_splitPlace_and_uniformizer D`. Establish `hR` using `GlobalTheory.T.exists_coefficientLinear_lift_doubleCosetOperators D M C tp.tup hStd hG hMI`.
+
+Establish `hCm` using `GlobalTheory.T.liftedHeckeOperators_at_generators_commute D M C hR hStd hG hX`. Use `choose F1 hF1 using GlobalTheory.T.exists_padicFiniteExt_containing_all_hecke_eigenvalues D M C hR (plEmb A.pl) hCm`. Use `choose F2 hF2 hF2' using GlobalTheory.T.exists_padicFiniteExt_containing_coeffField_and_numbers D A.pl big`. Use `choose F3 hF3 using GlobalTheory.T.localBridges_at_placesOverResidueChar_of_large_coeff D`. Use `choose F4 hF4 using GlobalTheory.T.exists_twist_ring_map_large_coefficient_rings D C Bs.twF low (plEmb A.pl) Bs.tw hCS.choice`.
+
+Take `⟨X, hXE, h1, h2, h3, h4⟩ : ∃ X : CoefIn D.what₂, X.E = plEmb A.pl ∧ (∀ j w, (F1 j w).1 ≤ (X.Kx j w).1) ∧ (∀ j w, (F2 w).1 ≤ (X.Kx j w).1) ∧ (∀ j w, (F3 w).1 ≤ (X.Kx j w).1) ∧ ∀ j w, (F4 w).1 ≤ (X.Kx j w).1` from `⟨coefIn A.pl (fun j w => feSup (feSup (F1 j w) (F2 w)) (feSup (F3 w) (F4 w))) (fun j w x => (le_sup_of_le_left le_sup_right : (F2 w).1 ≤ ((F1 j w).1 ⊔ (F2 w).1) ⊔ ((F3 w).1 ⊔ (F4 w).1)) (hF2 w x)), rfl, fun _ _ => le_sup_of_le_left le_sup_left, fun _ _ => le_sup_of_le_left le_sup …`. Establish `hS : SplitK (mt0 M) C.Q hR X` using `fun j w => hF1 j w X hXE (h1 j w)`. Use `choose twC hTwA hTwR hTwE using fun j w => hF4 w X j hXE (h4 j w)`. Take `⟨ψ0, -, hψ0, -⟩` from `hCS.nct.psi_eq`. Establish `hP` using `GlobalTheory.T.twistCharacterValues_integral_units_at_place D C X ψ0 hψ0`.
+
+Establish `hs` using `GlobalTheory.T.heckeStandardFacts_on_localisation_base D M C hR X hS hStd hG hX hCm`. Establish `hd` using `GlobalTheory.T.finiteDimensional_localisation_space_all (base M C hR X hS)`. Establish `hML` using `LatticeFinitenessFree.mtLoc_holds (partCompl_of hs hd)`. Establish `hAct` using `GlobalTheory.T.heckeRing_acts_faithfully_on_localisedLattice _ hs hd hML (GlobalTheory.T.heckeOperator_integral_on_lattice_at_twisted_places D M C hR X hS tp.tup hMI hX) (GlobalTheory.T.heckeOperators_on_localisation_space_semisimple D M C hR X hS hStd GlobalTheory.T.splitPlace_d …`. Establish `hAHK` using `GlobalTheory.T.heckeRing_acts_on_lattice_as_operators _ hs hd hML hAct`.
+
+Establish `hI` using `osInt D (base M C hR X hS)`. Establish `hGal` using `fun w (hw : TwistedAt D w) => GlobalTheory.T.twistCharacter_ramified_at_conductor_trivial_above_l D cf C tp w hArt hCheb hCS.psi hw (hVal w hw) (hCS.adm w hw)`. Establish `htw : ∀ w v, v ∈ C.Q w → TwistedAt D w` using `fun w v hv => by`. Assume the negation of the conclusion as `hw`. Rewrite `hv` using `[hCS.off w hw]`.
+
+Conclude with `absurd hv (Finset.notMem_empty v)`. Establish `hQl : ∀ w v, v ∈ C.Q w → v ∉ placesOver D.host.E (D.what₂.places.resChar w)` using `fun w v hv => C.twI_l w ▸ ((hCS.adm w (htw w v hv)).1 v hv).2`. Establish `hQS : ∀ w v, v ∈ C.Q w → v ∉ exceptionalPlaces D.host (D.what₂.places.resChar w)` using `fun w v hv h => by`. Establish `ha` using `(hCS.adm w (htw w v hv)).2.1 v hv`. Break down `h.1 with h | h | h` into its components or cases.
+
+Conclude with `ha.2 0 h`. Conclude with `ha.2 1 h`. Use `ha.1 (Finset.mem_coe.1 ?_)` and prove the remaining obligations. Rewrite using `[D.ntw.pD_eq, C.twI_l]`. Conclude with `h`.
+
+Establish `hSs : ∀ l v, v ∈ exceptionalPlaces D.host l → IsSplitPl D.host v` using `fun l v h => by`. Break down `h.1 with h | h | h` into its components or cases. Conclude with `GlobalTheory.T.typePrime_places_isSplitPlace D 0 v h`. Conclude with `GlobalTheory.T.typePrime_places_isSplitPlace D 1 v h`. Use `split_ifs at h`.
+
+Conclude with `hpd v (Or.inr h)`. Conclude with `hpd v (Or.inl h)`. Establish `hRP` using `fun j w (hw : TwistedAt D w) => psN_ram hψ0 hP j w (hGal w hw).1`. Use `⟨_, _, nonempty_spec (base M C hR X hS) C hs hd hML (LatticeFinitenessFree.mtSub_free _) (LatticeFinitenessFree.mtSub_finite _) (GlobalTheory.T.localisation_heckeRing_isLocalRing _ hs hd) hAct (GlobalTheory.T.heckeEigenspace_ne_bot_every_localisation_point _ hs hd hML hAct hAHK) …` and prove the remaining obligations. Introduce `i v hv`.
+
+Establish `hw : TwistedAt D (wOf _ i)` using `i.2.2.2.2.2`. Take `⟨σ, hσ, hne⟩` from `(hRP (jOf _ i) _ hw v _ (D.nd.plOm.2 v)).2 hv`. Establish `ha` using `hCS.adm _ hw`. Establish `h1` using `D.ntw.twistCharacterFamily_unramified (C.twI (wOf _ i)) (jOf _ i) (C.sd (wOf _ i)) v (ha.1 v hv).2 (ha.2.1 v hv).2 (ha.2.1 v hv).1 _ (D.nd.plOm.2 v) σ hσ`. Use `⟨σ, hσ, fun e => hne ?_⟩` and prove the remaining obligations.
+
+Establish `e' : Units.map (twC (jOf _ i) (wOf _ i)).toMonoidHom (D.ntw.chi1 (C.twI (wOf _ i)) (jOf _ i) (C.sd (wOf _ i)) σ) * psN X ψ0 hP (jOf _ i) (wOf _ i) σ = 1` using `e`. Rewrite `e'` using `[h1, map_one, one_mul]`. Then use the resulting hypothesis. Introduce `j w x`. Express the relevant statement in the definitionally equal form `A.pl.ι w (iqC X j w (ecC X j w x)) = _`. Rewrite using `[iqC_ec, hXE]`.
+
+Conclude with `(A.pl.ι w).apply_symm_apply _`. Introduce `j w z hz`. Take `⟨x, hx⟩` from `iqC_surj X j w _ (h2 j w (hF2' w z hz))`. Conclude with `⟨x, (congrArg (A.pl.ι w) hx).trans ((A.pl.ι w).apply_symm_apply z)⟩`. Introduce `a g y hy`.
+
+Take `rfl` from `(C.embW _).injective (hy.trans (hψ0 _ g).symm)`. Conclude with `(psN_spec hP _ _ g).symm`.
+-/
 theorem ndSpec_exists : GlobalTheory.Published.GlobalArtinReciprocity → HeckeStdPlain → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd → (Function.Injective D.what₂.OtoLL ∧ ∃ F : Subfield D.what₂.LL, ∀ x, x ∈ D.what₂.OtoLL.range ↔ x ∈ F ∧ IsIntegral ℤ x) → (∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → (tp.psi w).ValuesIn 0 D.what₂.embLL) → ∀ big : D.what₂.places.Pl → Finset ℂ, ∃ (X : LocNd (lay0 D)) (T : LocTw X), Nonempty (NdSpec A.pl M C big X T) := by
   intro hArt hStd D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI _ _ hpd hCheb hOS hVal big
   obtain ⟨hO, hc⟩ := GlobalTheory.T.twistConductors_over_real_places_and_conj_stable D cf C tp hCS.off

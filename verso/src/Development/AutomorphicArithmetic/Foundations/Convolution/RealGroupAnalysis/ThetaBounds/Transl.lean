@@ -6,6 +6,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M f φ h h₀`. Establish `hnu : nu F (h * h₀) = nu F h * nu F h₀`. Simplify using `only [nu, map_mul]`. Unfold `lift`. Use `congrArg (fun u : G1 F → ℂ => ∫ g in M.D, u g ∂M.μ) (funext fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hnu, dM_mul, map_mul, Module.End.mul_apply, mul_assoc]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.transl :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F), Transl W M := by
   intro F E _ _ _ _ _ _ _ D W M f φ h h₀

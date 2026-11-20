@@ -8,6 +8,9 @@ open scoped ComplexOrder ENNReal
 
 namespace GlobalTheory.FlagFibre
 
+/- English proof (translation)
+Set `e : Fin (nd X) ≃ Tau × Low r` to `((Equiv.prodCongr κ (Equiv.refl (Low r))).trans (Fintype.equivFin (Ent X))).symm`. Establish `h1` using `GlobalTheory.volume_preserving_ofLp_complex (Fin (nd X))`. Establish `h2` using `volume_preserving_arrowCongr' e (MeasurableEquiv.refl ℂ) (MeasurePreserving.id _)`. Establish `h3` using `GlobalTheory.FlagBase.PoissonV.measurePreserving_curry Tau (Low r)`. Conclude with `h3.comp (h2.comp h1)`.
+-/
 theorem measurePreserving_coords_sorted (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (Tau : Type) [Fintype Tau] (κ : Tau ≃ X.Ψ) :
     MeasurePreserving (coords X κ) volume volume := by

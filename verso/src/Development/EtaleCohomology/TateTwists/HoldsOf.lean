@@ -17,9 +17,18 @@ import Development.EtaleCohomology.TateTwists.EtaleKummerTorsorRootsOfUnityListT
 namespace LateralTheory.Fix.EtaleKummerClassExplicitCocycle
 open LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+The claim follows from `etale_locally_roots_of_unity_structure_of_exists_and_kummer etale_locally_exists_primitive_root_of_unity_of_invertible_order etale_locally_kummer_roots_of_units_of_invertible_order`.
+-/
 theorem primLoc : EtalePrimitiveRootsExistLocally := etale_locally_roots_of_unity_structure_of_exists_and_kummer etale_locally_exists_primitive_root_of_unity_of_invertible_order etale_locally_kummer_roots_of_units_of_invertible_order
+/- English proof (translation)
+The claim follows from `etaleSheaf_injectiveResolution_sections_exact_of_local_exactness LateralTheory.EtaleFoundations.ResSecPf.exact_loc_of`.
+-/
 theorem resSec : EtaleInjectiveResolutionSectionsLocallyExact := etaleSheaf_injectiveResolution_sections_exact_of_local_exactness LateralTheory.EtaleFoundations.ResSecPf.exact_loc_of
 
+/- English proof (translation)
+Establish `he : kum_exists` using `kum_exists_of hK primLoc etale_sheaf_sections_glue_of_forget_isSheaf LateralTheory.Fix.EtaleSchemeGlobalSectionCohomologyClass.intersectionNumber_baseChange resSec`. Conclude with `etale_kummer_class_specification_of_existence_naturality_additivity he (kum_nat_of he etale_chain_cochain_eval_basic_properties_hold primLoc etale_sheaf_sections_glue_of_forget_isSheaf) (kum_add_of he (kum_uniq_of primLoc etale_sheaf_sections_glue_of_forget_isSheaf etale_chain_co …`.
+-/
 theorem holds_of (hK : EtaleKummerTriangleExists) : EtaleKummerClassExplicitCocycle := by
   have he : kum_exists := kum_exists_of hK primLoc etale_sheaf_sections_glue_of_forget_isSheaf LateralTheory.Fix.EtaleSchemeGlobalSectionCohomologyClass.intersectionNumber_baseChange resSec
   exact etale_kummer_class_specification_of_existence_naturality_additivity he
@@ -28,6 +37,9 @@ theorem holds_of (hK : EtaleKummerTriangleExists) : EtaleKummerClassExplicitCocy
       (kum_mul_coc_of hK primLoc etale_sheaf_sections_glue_of_forget_isSheaf etale_chain_cochain_exists_of_eval_data etale_chain_cochain_eval_differential_formula_holds etale_chain_cochain_eval_basic_properties_hold)
       (kum_pow_coc_of hK etale_chain_cochain_exists_of_eval_data etale_chain_cochain_eval_differential_formula_holds he))
 
+/- English proof (translation)
+The claim follows from `holds_of LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange`.
+-/
 theorem intersectionNumber_baseChange : EtaleKummerClassExplicitCocycle := holds_of LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange
 
 end LateralTheory.Fix.EtaleKummerClassExplicitCocycle
